@@ -75,19 +75,14 @@ function we_tag_sessionField($attribs, $content){
 					substr($lang, 0, 2) :
 					array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
 
-			if(!Zend_Locale::hasCache()){
-				Zend_Locale::setCache(getWEZendCache());
-			}
-
-			//$zendsupported = Zend_Locale::getTranslationList('territory', $langcode, 2);
 			$topCountries = WE_COUNTRIES_TOP ? array_flip(explode(',', WE_COUNTRIES_TOP)) : array();
 			foreach($topCountries as $countrykey => &$countryvalue){
-				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+				$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
 			}
 
 			$shownCountries = WE_COUNTRIES_SHOWN ? array_flip(explode(',', WE_COUNTRIES_SHOWN)) : array();
 			foreach($shownCountries as $countrykey => &$countryvalue){
-				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+				$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
 			}
 			unset($countryvalue);
 			$oldLocale = setlocale(LC_ALL, NULL);
@@ -125,13 +120,9 @@ function we_tag_sessionField($attribs, $content){
 				$lccode = explode('_', $lcvalue);
 				$lcvalue = $lccode[0];
 			}
-			if(!Zend_Locale::hasCache()){
-				Zend_Locale::setCache(getWEZendCache());
-			}
-
 			$frontendLL = array();
 			foreach($frontendL as &$lcvalue){
-				$frontendLL[$lcvalue] = Zend_Locale::getTranslation($lcvalue, 'language', $langcode);
+				$frontendLL[$lcvalue] = we_base_country::getTranslation($lcvalue, we_base_country::LANGUAGE, $langcode);
 			}
 
 			$oldLocale = setlocale(LC_ALL, NULL);
@@ -151,7 +142,7 @@ function we_tag_sessionField($attribs, $content){
 
 		case 'choice':
 			$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'maxlength', 'rows', 'cols', 'wysiwyg'));
-			return we_html_tools::htmlInputChoiceField('s_' . $name . '', $orgVal, $values, $newAtts, weTag_getAttribute('mode', $attribs, '', we_base_request::STRING));
+			return we_html_tools::htmlInputChoiceField('s_' . $name, $orgVal, $values, $newAtts, weTag_getAttribute('mode', $attribs, '', we_base_request::STRING));
 
 		case 'textinput':
 			$choice = weTag_getAttribute('choice', $attribs, false, we_base_request::BOOL);
@@ -164,12 +155,12 @@ function we_tag_sessionField($attribs, $content){
 				$optionsAr = explode(',', weTag_getAttribute('options', $attribs, '', we_base_request::RAW));
 				$isin = 0;
 				$options = '';
-				for($i = 0; $i < count($optionsAr); $i++){
-					if($optionsAr[$i] == $orgVal){
-						$options .= getHtmlTag('option', array('value' => oldHtmlspecialchars($optionsAr[$i]), 'selected' => 'selected'), $optionsAr[$i], true);
-						$isin = 1;
+				foreach($optionsAr as $cur){
+					if($cur == $orgVal){
+						$options .= getHtmlTag('option', array('value' => oldHtmlspecialchars($cur), 'selected' => 'selected'), $cur, true);
+						$isin = true;
 					} else {
-						$options .= getHtmlTag('option', array('value' => oldHtmlspecialchars($optionsAr[$i])), $optionsAr[$i], true);
+						$options .= getHtmlTag('option', array('value' => oldHtmlspecialchars($cur)), $cur, true);
 					}
 				}
 				if(!$isin){
@@ -210,15 +201,12 @@ function we_tag_sessionField($attribs, $content){
 		case 'password':
 			$newAtts = removeAttribs($attribs, array('checked', 'options', 'selected', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'wysiwyg'));
 			$newAtts['name'] = 's[' . $name . ']';
-			$newAtts['value'] = isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] ? we_customer_customer::NOPWD_CHANGE : '';
+			$newAtts['value'] = !empty($_SESSION['webuser']['registered']) ? we_customer_customer::NOPWD_CHANGE : '';
 			return getHtmlTag('input', $newAtts);
 		case 'print':
 			$ascountry = weTag_getAttribute('ascountry', $attribs, false, we_base_request::BOOL);
 			$aslanguage = weTag_getAttribute('aslanguage', $attribs, false, we_base_request::BOOL);
 			if($ascountry || $aslanguage){
-				if(!Zend_Locale::hasCache()){
-					Zend_Locale::setCache(getWEZendCache());
-				}
 
 				$lang = weTag_getAttribute('outputlanguage', $attribs, '', we_base_request::STRING);
 				if(!$lang){
@@ -230,7 +218,7 @@ function we_tag_sessionField($attribs, $content){
 					$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 					$langcode = array_search($lang[0], getWELangs());
 				}
-				return ($ascountry && $orgVal === '--' ? '' : CheckAndConvertISOfrontend(Zend_Locale::getTranslation($orgVal, ($ascountry ? 'territory' : 'language'), $langcode)));
+				return ($ascountry && $orgVal === '--' ? '' : CheckAndConvertISOfrontend(we_base_country::getTranslation($orgVal, ($ascountry ? we_base_country::TERRITORY : we_base_country::LANGUAGE), $langcode)));
 			}
 			if($dateformat){//FIXME: use document settings for dateformat => get locale - note DateTime doesn't use locale settings
 				try{
@@ -312,20 +300,20 @@ function we_tag_sessionField($attribs, $content){
 
 			if($showcontrol){
 				$checked = '';
-
+				$inputstyle = ($size ? 'width:' . $size . 'em;' . $inputstyle : $inputstyle);
 				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
 	<tr>
-		<td class="weEditmodeStyle" colspan="2" align="center">' .
+		<td class="weEditmodeStyle" colspan="2" style="text-align:center">' .
 					$imgTag . '
 			<input type="hidden" name="s[' . $name . ']" value="' . $_SESSION['webuser']['imgtmp'][$name]["id"] . '" /></td>
 	</tr>
 	<tr>
-		<td class="weEditmodeStyle" colspan="2" align="left">
-			<input' . ($size ? ' size="' . $size . '"' : '') . ' name="WE_SF_IMG_DATA[' . $name . ']" type="file" accept="' . implode(',', we_base_ContentTypes::inst()->getRealContentTypes(we_base_ContentTypes::IMAGE)) . '"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . ' />
+		<td class="weEditmodeStyle" colspan="2" style="text-align:left">
+			<input name="WE_SF_IMG_DATA[' . $name . ']" type="file" accept="' . implode(',', we_base_ContentTypes::inst()->getRealContentTypes(we_base_ContentTypes::IMAGE)) . '"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . ' />
 		</td>
 	</tr>
 	<tr>
-		<td class="weEditmodeStyle" colspan="2" align="left">
+		<td class="weEditmodeStyle" colspan="2" style="text-align:left">
 			<table class="weEditTable padding0 spacing0 border0">
 				<tr>
 					<td style="padding-right: 5px;">

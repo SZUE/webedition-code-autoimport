@@ -52,7 +52,7 @@ function we_core_JsonRpc(url, callback) {
 			var len = this.form.elements.length;
 			for (var key in this.form.elements) {
 				var elem = this.form.elements[key];
-				if (elem != null && typeof (elem.nodeName) !== "undefined" && elem.name !== "") {
+				if (elem != null && elem.nodeName !== undefined && elem.name !== "") {
 					var tag = elem.nodeName.toLowerCase();
 					switch (tag) {
 						case "textarea":
@@ -125,18 +125,18 @@ we_core_JsonRpc.callMethod = function(cmdObj, url, service, method) {
 	var args = null;
 
 	// arguments handling
-	if (typeof (arguments[4]) == "object" && typeof (arguments[4].nodeName) != "undefined" && arguments[4].nodeName == "FORM") {
+	if (typeof (arguments[4]) == "object" && arguments[4].nodeName !== undefined && arguments[4].nodeName == "FORM") {
 		//5th argument is a form, so we need to set the rpcs form variable
 		form = arguments[4];
 		// look if there are additional parameters
 		if (arguments.length > 5) {
-			args = new Array();
+			args = [];
 			for (var i = 5; i < arguments.length; i++) {
 				args.push(arguments[i]);
 			}
 		}
 	} else if (arguments.length > 4) {
-		args = new Array();
+		args = [];
 		for (var i = 4; i < arguments.length; i++) {
 			args.push(arguments[i]);
 		}
@@ -180,7 +180,7 @@ we_core_JsonRpc.callMethod = function(cmdObj, url, service, method) {
 	if (form) {
 		rpc.setForm(form);
 	}
-	if (args !== null && typeof (args) == "object" && typeof (args.length) != "undefined") {
+	if (args !== null && typeof (args) == "object" && args.length !== undefined) {
 		rpc.call(service, method, args);
 	} else {
 		rpc.call(service, method);

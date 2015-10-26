@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -30,7 +29,6 @@
  * XML data by the XPath language.
  */
 class we_xml_parser{
-
 	/**
 	 * Name of the file to read and parse, used by the error handler.
 	 * @var        string
@@ -2369,7 +2367,7 @@ class we_xml_parser{
 				$node = $this->nodes[$node]['parent'];
 
 				// Check if there is a language definition.
-				if(!empty($this->nodes[$node]['attributes']['xml:lang'])){
+				if($this->nodes[$node]['attributes']['xml:lang']){
 					// Check if it is the requested language.
 					return (stripos($this->nodes[$node]['attributes']['xml:lang'], $args) === 0);
 				}
@@ -2476,7 +2474,7 @@ class we_xml_parser{
 				$str .= ", \$args[" . $i . "]";
 			}
 
-			eval($str);//FIXME: remove eval
+			eval($str); //FIXME: remove eval
 		}
 
 		// show error message
@@ -2495,15 +2493,15 @@ class we_xml_parser{
 	 */
 	function getEncoding($file = '', $data = ''){
 
-		if(!empty($file)){
+		if($file){
 			$data = we_base_file::loadPart($file, 0, 256);
 		}
 
-		if(empty($data)){
+		if(!$data){
 			return false;
-		} else {
-			$data = substr($data, 0, 256);
 		}
+		$data = substr($data, 0, 256);
+
 
 		$match = array();
 		$encoding = 'ISO-8859-1';

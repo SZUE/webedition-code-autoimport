@@ -52,9 +52,8 @@ class rpcGetUpdateDocumentCustomerFilterQuestionCmd extends rpcCmd{
 			$folder = new we_folder();
 			$folder->initByID($id, $table);
 			return $folder->documentCustomerFilter;
-		} else {
-			return "";
 		}
+		return "";
 	}
 
 }

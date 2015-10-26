@@ -25,11 +25,11 @@
 function we_tag_ifSelf($attribs){
 
 	$ids = weTag_getAttribute('id', $attribs, array(), we_base_request::INTLISTA)? :
-			(explode(',', isset($GLOBALS['we_obj']) ?
-							$GLOBALS['we_obj']->ID :
-							(isset($GLOBALS['lv']) && $GLOBALS['lv'] instanceof stdClass ?
-									$GLOBALS['lv']->ID :
-									$GLOBALS['WE_MAIN_DOC']->ID)));
+		(explode(',', isset($GLOBALS['we_obj']) ?
+				$GLOBALS['we_obj']->ID :
+				(isset($GLOBALS['lv']) && $GLOBALS['lv'] instanceof stdClass ?
+					$GLOBALS['lv']->ID :
+					$GLOBALS['WE_MAIN_DOC']->ID)));
 
 	$type = weTag_getAttribute('doc', $attribs, weTag_getAttribute('type', $attribs, '', we_base_request::STRING), we_base_request::STRING);
 
@@ -38,10 +38,9 @@ function we_tag_ifSelf($attribs){
 		case 'listview':
 			switch(get_class($GLOBALS['lv'])){
 				case 'we_object_listview':
-					return in_array($GLOBALS['lv']->getDBf('OF_ID'), $ids);
 				case 'we_listview_search':
-					return in_array($GLOBALS['lv']->getDBf('WE_ID'), $ids);
-				case 'we_shop_listviewShopVariants':
+					return in_array($GLOBALS['lv']->f('WE_ID'), $ids);
+				case 'we_listview_variants':
 					reset($GLOBALS['lv']->Record);
 					$key = key($GLOBALS['lv']->Record);
 					if(isset($GLOBALS['we_doc']->Variant)){

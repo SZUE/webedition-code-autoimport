@@ -129,7 +129,7 @@ function we_tag_paypal($attribs){
 		if(isset($formField[4])){ // determine the City
 			$sendCity = $_SESSION['webuser'][$formField[4]];
 		}
-		if(isset($formField[18]) && $formField[18]){ // determine the City
+		if(!empty($formField[18])){ // determine the City
 			$sSendEmail = $_SESSION['webuser'][$formField[18]];
 		}
 
@@ -179,7 +179,7 @@ function we_tag_paypal($attribs){
 
 				$i = 0;
 				$summit = 0;
-				foreach($shoppingItems as $key => $item){
+				foreach($shoppingItems as $item){
 					$i++; //  loop through basket
 
 					$p->add_field('business', $paypalEmail);
@@ -219,7 +219,7 @@ function we_tag_paypal($attribs){
 					if(we_shop_category::isCategoryMode()){
 						$wedocCategory = ((isset($item['serial']['we_wedoc_Category'])) ? $item['serial']['we_wedoc_Category'] : $item['serial']['wedoc_Category']);
 						$billingCountry = $countrycode ? : we_shop_category::getDefaultCountry();
-						$catId = isset($item['serial'][WE_SHOP_CATEGORY_FIELD_NAME]) && $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME] ? $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME] : 0;
+						$catId = !empty($item['serial'][WE_SHOP_CATEGORY_FIELD_NAME]) ? $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME] : 0;
 
 						$shopVat = we_shop_category::getShopVatByIdAndCountry($catId, $wedocCategory, $billingCountry, true);
 						$shopCategory = we_shop_category::getShopCatFieldByID($catId, $wedocCategory, 'ID');

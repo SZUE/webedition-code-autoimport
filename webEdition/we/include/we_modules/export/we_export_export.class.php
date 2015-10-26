@@ -32,7 +32,6 @@ class we_export_export extends weModelBase{
 	var $ID;
 	var $Text;
 	var $ParentID;
-	var $Icon;
 	var $IsFolder;
 	var $Path;
 	var $ExportTo; // local | server
@@ -62,7 +61,7 @@ class we_export_export extends weModelBase{
 	var $ExportDepth;
 	var $Log = array();
 	var $ExportFilename;
-	var $protected = array('ID', 'ParentID', 'Icon', 'IsFolder', 'Path', 'Text');
+	var $protected = array('ID', 'ParentID', 'IsFolder', 'Path', 'Text');
 
 	/**
 	 * Default Constructor
@@ -76,31 +75,30 @@ class we_export_export extends weModelBase{
 			$this->load($exportID);
 		}
 		// clear expiered stuff
-		$this->selDocs = $this->clearExpiered($this->selDocs, FILE_TABLE);
-		$this->selTempl = $this->clearExpiered($this->selTempl, TEMPLATES_TABLE);
+		$this->selDocs = $this->clearExpired($this->selDocs, FILE_TABLE);
+		$this->selTempl = $this->clearExpired($this->selTempl, TEMPLATES_TABLE);
 		if(defined('OBJECT_TABLE')){
-			$this->selObjs = $this->clearExpiered($this->selObjs, OBJECT_FILES_TABLE);
-			$this->selClasses = $this->clearExpiered($this->selClasses, OBJECT_TABLE);
+			$this->selObjs = $this->clearExpired($this->selObjs, OBJECT_FILES_TABLE);
+			$this->selClasses = $this->clearExpired($this->selClasses, OBJECT_TABLE);
 		} else {
 			$this->selObjs = '';
 			$this->selClasses = '';
 		}
 	}
 
-	function clearExpiered($ids, $table, $idfield = 'ID'){
+	function clearExpired($ids, $table, $idfield = 'ID'){
 		$idsarr = makeArrayFromCSV($ids);
 		$new = array();
 		$db = new DB_WE();
 		foreach($idsarr as $id){
-			if(f('SELECT ' . $db->escape($idfield) . ' FROM ' . $db->escape($table) . ' WHERE ' . $db->escape($idfield) . '=\'' . (is_numeric($id) ? $id : $db->escape($id)) . '\';', $idfield, $db)){
+			if(f('SELECT ' . $db->escape($idfield) . ' FROM ' . $db->escape($table) . ' WHERE ' . $db->escape($idfield) . '=\'' . (is_numeric($id) ? $id : $db->escape($id)) . '\'', $idfield, $db)){
 				$new[] = $id;
 			}
 		}
-		return makeCSVFromArray($new);
+		return implode(',', $new);
 	}
 
 	function save($force_new = false){
-		$this->Icon = ($this->IsFolder == 1 ? we_base_ContentTypes::FOLDER_ICON : we_base_ContentTypes::FILE_ICON);
 		$sets = array();
 		$wheres = array();
 		foreach($this->persistent_slots as $val){
@@ -170,7 +168,6 @@ class we_export_export extends weModelBase{
 	function setDefaults(){
 		$this->ParentID = 0;
 		$this->Text = "weExport_" . time();
-		$this->Icon = we_base_ContentTypes::FILE_ICON;
 		$this->Selection = 'auto';
 		$this->SelectionType = 'doctype';
 		$this->Filename = $this->Text . ".xml";

@@ -23,42 +23,101 @@
 */
 
 div.we_file_drag{
+	width: 300px;
+	height: 116px;
 	display: block;
 	font-weight: normal;
 	font-size: 12px;
 	text-align: center;
-	margin: 1em 0;
 	color: #555;
-	border: 2px dotted #555;
-	/*border-radius: 7px;*/
 	cursor: default;
 	background-color: white;
+	margin: 0 0.2em 0px 0.1em;
+	border: 2px dotted gray;
+	border-radius: 0px;
+	box-shadow: none;
+}
+div.we_file_drag_mask{
+	position: absolute;
+	/* top: 21px; */
+	background: transparent;
+	margin: 0 0 10px 0;
+}
+div.we_file_drag_content{
+	float: left;
+	margin: 0 0 10px 0;
+	border: 2px dotted gray;
+}
+div.we_file_drag_preview{
+	float: left;
+	margin: 0 0 10px 0;
+	border: 2px dotted gray;
+	display: none;
 }
 div.we_file_drag_hover{
 	color: #00cc00;
 	border: 2px solid #00cc00;
 	box-shadow: inset 0 3px 4px #888;
-	background-color: rgb(243, 247, 255);
 }
 div.we_fileInputWrapper{
 	overflow: hidden;
 	position: relative;
 	cursor: pointer;
-	background-color: #DDF;
 }
 .fileInput{
 	cursor: pointer;
 	height: 100%;
-	position:absolute;
+	position: absolute;
 	width: 286px;
 	height: 22px;
 }
 .fileInputList{
 	width: 24px;
 }
-.fileInputIE10{
-	left: -202px;
-}
 .fileInputHidden {
 	opacity: 0;
+}
+
+div.filedrag_content_left{
+	display: table-cell;
+	width: 178px;
+	height: 116px;
+	padding-left: 4px;
+	vertical-align: middle;
+	color: #cccccc;
+	font-weight: normal;
+	font-size: 16px;
+}
+div.filedrag_content_right{
+	display: table-cell;
+	height: 116px;
+	width: 120px;
+	vertical-align: middle;
+	text-align: center;
+}
+.filedrag_content_right img{
+	max-height: 100px;
+	max-width: 100px;
+}
+div.filedrag_preview_left{
+	display: table-cell;
+	width: 178px;
+	height: 116px;
+	padding-left: 10px;
+	vertical-align: middle;
+	text-align: left;
+	color: #333;
+	font-weight: normal;
+	font-size: 12px
+}
+div.filedrag_preview_right{
+	display: table-cell;
+	height: 116px;
+	width: 120px;
+	vertical-align: middle;
+	text-align: center;
+}
+.filedrag_preview_right img{
+	max-height: 100px;
+	max-width: 100px;
 }

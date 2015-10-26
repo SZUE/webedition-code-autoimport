@@ -63,7 +63,7 @@ class we_object_exImport extends we_object{
 				'PRIMARY KEY (OF_ID)',
 			);
 
-			$this->SerializedArray = unserialize($this->DefaultValues);
+			$this->SerializedArray = we_unserialize($this->DefaultValues);
 			$this->SerializedArray = is_array($this->SerializedArray) ? $this->SerializedArray : array();
 
 			$noFields = array('WorkspaceFlag', 'elements', 'WE_CSS_FOR_CLASS');
@@ -74,7 +74,7 @@ class we_object_exImport extends we_object{
 					$type = $this->switchtypes2($arr[0], $len);
 					if(!empty($type)){
 						$qarr[] = $key . $type;
-						//add index for complex queries
+//add index for complex queries
 						if($arr[0] === 'object'){
 							$indexe[] = 'KEY ' . $key . ' (' . $key . ')';
 						}
@@ -87,21 +87,21 @@ class we_object_exImport extends we_object{
 			$this->DB_WE->query('DROP TABLE IF EXISTS ' . $ctable);
 			$this->DB_WE->query('CREATE TABLE ' . $ctable . ' (' . $q . ',' . implode(',', $indexe) . ') ENGINE=MYISAM ' . we_database_base::getCharsetCollation());
 
-			//dummy eintrag schreiben
+//dummy eintrag schreiben
 			$this->DB_WE->query('INSERT INTO ' . $ctable . ' SET OF_ID=0');
 
 
-			// folder in object schreiben
+// folder in object schreiben
 			if(!($this->OldPath && ($this->OldPath != $this->Path))){
 				$fold = new we_class_folder();
 				$fold->initByPath($this->getPath(), OBJECT_FILES_TABLE);
 			}
 
-			////// resave the line O to O.....
+////// resave the line O to O.....
 			$this->DB_WE->query('REPLACE INTO ' . $ctable . ' SET OF_ID=0');
-			////// resave the line O to O.....
+////// resave the line O to O.....
 		} else {
-			$this->SerializedArray = unserialize($this->DefaultValues);
+			$this->SerializedArray = we_unserialize($this->DefaultValues);
 			$this->SerializedArray = is_array($this->SerializedArray) ? $this->SerializedArray : array();
 
 			$noFields = array('WorkspaceFlag', 'elements', 'WE_CSS_FOR_CLASS');
@@ -122,7 +122,7 @@ class we_object_exImport extends we_object{
 
 				if(isset($tableInfo['meta'][$fieldname])){
 					$props = $tableInfo[$tableInfo['meta'][$fieldname]];
-					// the field exists
+// the field exists
 					if(!empty($fieldtype) && (strtolower($fieldtype) == strtolower($props['type']))){
 						if($len != $props['len']){
 							$alter[$fieldname] = $fieldname . $type;
@@ -146,8 +146,8 @@ class we_object_exImport extends we_object{
 				}
 			}
 
-			//FIXME: deactivated for #9899 - some elements are not present (e.g. object-references) & will be deleted therefore
-			//With $this->isForceDropOnSave drops can be activated
+//FIXME: deactivated for #9899 - some elements are not present (e.g. object-references) & will be deleted therefore
+//With $this->isForceDropOnSave drops can be activated
 			if($this->isForceDropOnSave){
 				foreach($drop as $key => $value){
 					$this->DB_WE->query('ALTER TABLE ' . $ctable . ' DROP ' . $value);
@@ -232,7 +232,7 @@ class we_object_exImport extends we_object{
 	}
 
 	function isFieldExists($name, $type = ''){
-		$this->SerializedArray = unserialize($this->DefaultValues);
+		$this->SerializedArray = we_unserialize($this->DefaultValues);
 		$noFields = array('WorkspaceFlag', 'elements', 'WE_CSS_FOR_CLASS');
 		foreach($this->SerializedArray as $fieldname => $value){
 			$arr = explode('_', $fieldname);
@@ -253,20 +253,20 @@ class we_object_exImport extends we_object{
 	}
 
 	function getFieldPrefix($name){
-		$this->SerializedArray = unserialize($this->DefaultValues);
-		//$noFields = array('WorkspaceFlag', 'elements', 'WE_CSS_FOR_CLASS');
+		$this->SerializedArray = we_unserialize($this->DefaultValues);
+//$noFields = array('WorkspaceFlag', 'elements', 'WE_CSS_FOR_CLASS');
 		foreach(array_keys($this->SerializedArray) as $fieldname){
 			$arr = explode('_', $fieldname);
 			if(!isset($arr[1])){
 				continue;
 			}
-		$fieldtype = $arr[0];
-		unset($arr[0]);
-		$fieldname = implode('_', $arr);
-		if($fieldname == $name){
-			return $fieldtype;
-		}
-		return false;
+			$fieldtype = $arr[0];
+			unset($arr[0]);
+			$fieldname = implode('_', $arr);
+			if($fieldname == $name){
+				return $fieldtype;
+			}
+			return false;
 		}
 	}
 
@@ -333,11 +333,11 @@ class we_object_exImport extends we_object{
 	function renameField($name, $newname){
 		$ctable = OBJECT_X_TABLE . intval($this->ID);
 		$this->wasUpdate = true;
-		$this->SerializedArray = unserialize($this->DefaultValues);
+		$this->SerializedArray = we_unserialize($this->DefaultValues);
 		$type = $this->getFieldPrefix($name);
 		$this->SerializedArray[$type . '_' . $newname] = $this->SerializedArray[$type . '_' . $name];
 		unset($this->SerializedArray[$type . '_' . $name]);
-		$this->DefaultValues = serialize($this->SerializedArray);
+		$this->DefaultValues = we_serialize($this->SerializedArray);
 		$this->DB_WE->query('ALTER TABLE ' . $ctable . ' CHANGE ' . $type . '_' . $name . ' ' . $type . '_' . $newname . ' ' . $this->switchtypes2($type));
 		unset($this->elements);
 		$this->i_savePersistentSlotsToDB();
@@ -346,9 +346,9 @@ class we_object_exImport extends we_object{
 
 	function addField($name, $type = '', $default = ''){
 		$defaultArr = $this->getDefaultArray($name, $type, $default);
-		$this->SerializedArray = unserialize($this->DefaultValues);
+		$this->SerializedArray = we_unserialize($this->DefaultValues);
 		$this->SerializedArray[$type . '_' . $name] = $defaultArr;
-		$this->DefaultValues = serialize($this->SerializedArray);
+		$this->DefaultValues = we_serialize($this->SerializedArray);
 		if(isset($this->strOrder)){
 			$arrOrder = explode(',', $this->strOrder);
 			$arrOrder[] = max($arrOrder) + 1;
@@ -363,7 +363,7 @@ class we_object_exImport extends we_object{
 	}
 
 	function dropField($name, $type = ''){
-		$this->SerializedArray = unserialize($this->DefaultValues);
+		$this->SerializedArray = we_unserialize($this->DefaultValues);
 		$isfound = false;
 		foreach($this->SerializedArray as $field => $value){
 			$arr = explode('_', $field);
@@ -386,7 +386,7 @@ class we_object_exImport extends we_object{
 			}
 		}
 		if($isfound){
-			$this->DefaultValues = serialize($this->SerializedArray);
+			$this->DefaultValues = we_serialize($this->SerializedArray);
 			$arrOrder = explode(',', $this->strOrder);
 
 			unset($arrOrder[array_search(max($arrOrder), $arrOrder)]);
@@ -394,16 +394,15 @@ class we_object_exImport extends we_object{
 			$this->strOrder = implode(',', $arrOrder);
 			if($this->isDropFieldNoSave){
 				return true;
-			} else {
-				return $this->saveToDB(true);
 			}
+			return $this->saveToDB(true);
 		}
 
 		return false;
 	}
 
 	function modifyField($name, $newtype, $type, $default = '', $delete = ''){
-		$this->SerializedArray = unserialize($this->DefaultValues);
+		$this->SerializedArray = we_unserialize($this->DefaultValues);
 		$defaultArr = $this->SerializedArray[$type . '_' . $name];
 		if($newtype == $type){
 			if($default != '' && is_array($default)){
@@ -435,7 +434,7 @@ class we_object_exImport extends we_object{
 			}
 			$this->SerializedArray[$newtype . '_' . $name] = $defaultArr;
 		}
-		$this->DefaultValues = serialize($this->SerializedArray);
+		$this->DefaultValues = we_serialize($this->SerializedArray);
 
 		return ($this->isModifyFieldNoSave ?
 				true :

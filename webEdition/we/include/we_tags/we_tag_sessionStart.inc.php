@@ -34,7 +34,7 @@ function we_tag_sessionStart($attribs){
 	}
 
 	if(!empty($_REQUEST['we_webUser_logout'])){
-		if(isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && isset($_SESSION['webuser']['ID']) && $_SESSION['webuser']['ID']){
+		if(!empty($_SESSION['webuser']['registered']) && !empty($_SESSION['webuser']['ID'])){
 			if(( (isset($_REQUEST['s']['AutoLogin']) && !$_REQUEST['s']['AutoLogin']) || (isset($_SESSION['webuser']['AutoLogin']) && !$_SESSION['webuser']['AutoLogin'])) && isset($_SESSION['webuser']['AutoLoginID'])){
 				$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE AutoLoginID="' . $GLOBALS['DB_WE']->escape(sha1($_SESSION['webuser']['AutoLoginID'])) . '"');
 				setcookie('_we_autologin', '', (time() - 3600), '/');
@@ -55,7 +55,7 @@ function we_tag_sessionStart($attribs){
 
 	$SessionAutologin = 0;
 
-	if(!(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
+	if((empty($GLOBALS['we_editmode']))){
 		if(!isset($_SESSION['webuser'])){
 			$_SESSION['webuser'] = array(
 				'registered' => false
@@ -79,7 +79,7 @@ function we_tag_sessionStart($attribs){
 			}
 			unset($_REQUEST['s']['Password']);
 		}
-		if($persistentlogins && ((isset($_SESSION['webuser']['registered']) && !$_SESSION['webuser']['registered']) || !isset($_SESSION['webuser']['registered']) ) && isset($_COOKIE['_we_autologin'])){
+		if($persistentlogins && (!$_SESSION['webuser']['registered']) && isset($_COOKIE['_we_autologin'])){
 			if(!wetagsessionStartdoAutoLogin()){
 				wetagsessionHandleFailedLogin();
 			} else {
@@ -87,7 +87,7 @@ function we_tag_sessionStart($attribs){
 			}
 		}
 
-		if(isset($_SESSION['webuser']['registered']) && isset($_SESSION['webuser']['ID']) && isset($_SESSION['webuser']['Username']) && $_SESSION['webuser']['registered'] && $_SESSION['webuser']['ID'] && $_SESSION['webuser']['Username'] != ''){
+		if(!empty($_SESSION['webuser']['registered']) && !empty($_SESSION['webuser']['ID']) && !empty($_SESSION['webuser']['Username'])){
 			if($_SESSION['webuser']['LastAccess'] + 60 < time()){
 				$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET LastAccess=UNIX_TIMESTAMP() WHERE ID=' . intval($_SESSION['webuser']['ID']));
 				$_SESSION['webuser']['LastAccess'] = time();
@@ -185,7 +185,8 @@ function wetagsessionStartdoLogin($persistentlogins, &$SessionAutologin, $extern
 			if((SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_DBPASSWORD) == 0){
 				unset($u['Password']);
 			}
-			$_SESSION['webuser'] = $u;
+
+			$_SESSION['webuser'] = array_merge($u, we_customer_customer::getEncryptedFields());
 			//keep Password if known
 			if(SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_PASSWORD){
 				$_SESSION['webuser']['_Password'] = $_REQUEST['s']['Password'];
@@ -226,7 +227,7 @@ function wetagsessionStartdoAutoLogin(){
 				unset($u['Password']);
 			}
 
-			$_SESSION['webuser'] = $u;
+			$_SESSION['webuser'] = array_merge($u, we_customer_customer::getEncryptedFields());
 			//try to decrypt password if possible
 			if(SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_PASSWORD){
 				$_SESSION['webuser']['_Password'] = we_customer_customer::decryptData($_SESSION['webuser']['Password']);

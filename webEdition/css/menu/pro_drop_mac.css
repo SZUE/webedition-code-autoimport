@@ -20,15 +20,6 @@
  * @package    webEdition_update
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-.preload1 {
-	background: url(/webEdition/images/menu/arr_mac_over.gif);
-}
-.preload2 {
-	background: url(/webEdition/images/menu/arr_mac.gif);
-}
-.preload3 {
-	background: url(/webEdition/images/menu/bg_mac_active.gif);
-}
 
 #nav {
 	font-size: 11pt;
@@ -57,8 +48,7 @@
 }
 
 #nav li div.click:hover ul{
-	background-color: transparent;
-	background: url(/webEdition/images/menu/bg_mac.png) repeat;
+	background-color: white;
 	opacity: 0.98;
 	border: 1px solid #cccccc;
 	width: 16.6em;
@@ -80,7 +70,7 @@
 }
 
 #nav li div.click:hover ul.sub li:hover{
-	background: url(/webEdition/images/menu/bg_mac_active.gif) repeat;
+	background-color: #225ff5;
 	opacity: 1.0;
 	border-top: solid 1px #3366ff;
 	border-bottom: solid 1px #0066ff;
@@ -102,12 +92,9 @@
 #nav li div.click:hover ul.sub li ul li a{
 	width: 12.8em;
 	line-height: 1.9ex;
-	padding-left: 2.4em;
-	padding-right: 1em;
+	padding: 1px 1em 1px 2.4em;
 	text-indent: -1em;
-	margin: 0px 0px 1px 0px;
-	padding-top: 1px;
-	padding-bottom: 1px;
+	margin: 0px 10px 0px 0px;
 }
 
 #nav li div.click:hover ul.sub li ul li a{
@@ -116,7 +103,6 @@
 
 #nav li ul.sub li a.fly {
 	background-color: transparent;
-	background: url(/webEdition/images/menu/arr_mac.gif) 99% 50% no-repeat;
 }
 
 #nav li div.click:hover ul.sub li a:hover {
@@ -124,12 +110,10 @@
 }
 #nav li div.click:hover ul.sub li a.fly:hover {
 	background-color: transparent;
-	background: url(/webEdition/images/menu/arr_mac_over.gif) 99% 50% no-repeat;
 }
 
 #nav li div.click ul li:hover > a.fly {
 	background-color: transparent;
-	background: url(/webEdition/images/menu/arr_mac_over.gif) 99% 50% no-repeat;
 }
 
 #nav li div.click:hover ul li:hover ul,
@@ -142,7 +126,6 @@
 	border: 1px solid #cccccc;
 	width: 15em;
 	padding: 4px 0px 5px 0px;
-	border-radius: 5px;
 	color: #000000;
 }
 
@@ -164,4 +147,8 @@
 	border-top: solid 1px #cccccc;
 	border-bottom: none;
 	margin: 4px 0px 6px 0px;
+}
+#nav i.fa{
+	position:absolute;
+	right:0px;
 }

@@ -46,7 +46,6 @@ abstract class we_listview_base{
 	var $workspaceID = ''; /* commaseperated string of id's of workspace */
 	var $count = 0; /* internal counter */
 	var $Record = array(); /* array to store results */
-	var $ClassName = __CLASS__; /* Name of class */
 	private $close_a = true; /* close </a> when endtag used */
 	var $customerFilterType = false; // shall we control customer-filter?
 	var $calendar_struct = array();
@@ -198,7 +197,9 @@ abstract class we_listview_base{
 	 * @param   key  string - name of field to return
 	 *
 	 */
-	abstract function f($key);
+	function f($key){
+		return (isset($this->Record[$key]) ? $this->Record[$key] : '');
+	}
 
 	/**
 	 * hasNextPage()
@@ -208,7 +209,7 @@ abstract class we_listview_base{
 	 *
 	 */
 	public function hasNextPage($parentEnd = false){
-		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != ''){
+		if(!empty($this->calendar_struct['calendar'])){
 			return true;
 		}
 		if($parentEnd && ($end = we_base_request::_(we_base_request::INT, 'we_lv_pend_' . $this->name))){
@@ -225,7 +226,7 @@ abstract class we_listview_base{
 	 *
 	 */
 	public function hasPrevPage($parentStart = false){
-		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != ''){
+		if(!empty($this->calendar_struct['calendar'])){
 			return true;
 		}
 		if($parentStart && ($start = we_base_request::_(we_base_request::INT, 'we_lv_pstart_' . $this->name, 0))){
@@ -244,7 +245,7 @@ abstract class we_listview_base{
 	public function getBackLink($attribs){
 		$only = weTag_getAttribute('only', $attribs, '', we_base_request::STRING);
 		$urlID = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
-		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != ''){
+		if(!empty($this->calendar_struct['calendar'])){
 
 			$month = $this->calendar_struct['month_human'];
 			$day = $this->calendar_struct['day_human'];
@@ -350,7 +351,7 @@ abstract class we_listview_base{
 	public function getNextLink($attribs){
 		$only = weTag_getAttribute('only', $attribs, '', we_base_request::STRING);
 		$urlID = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
-		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != ''){
+		if(!empty($this->calendar_struct['calendar'])){
 
 			$month = $this->calendar_struct['month_human'];
 			$day = $this->calendar_struct['day_human'];

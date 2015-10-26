@@ -190,7 +190,7 @@ abstract class we_customer_abstractFilter{
 		}
 
 		if($invalidFields){
-			t_e('Customerfilter on document ? has invalid Parameters, maybe deleted Customer fields: ' . implode(',', $invalidFields));
+			t_e('Customerfilter on document/navigation has invalid Parameters, maybe deleted Customer fields: ' . implode(',', $invalidFields));
 		}
 
 		return $hasPermission;
@@ -255,7 +255,7 @@ abstract class we_customer_abstractFilter{
 		while(true){
 			if(($field = we_base_request::_(we_base_request::STRING, 'filterSelect_' . $count))){
 
-				if(trim(($val = we_base_request::_(we_base_request::STRINGC, 'filterValue_' . $count)))){
+				if(trim(($val = we_base_request::_(we_base_request::STRING, 'filterValue_' . $count)))){
 					$filter[] = array(
 						'logic' => (we_base_request::_(we_base_request::STRING, 'filterLogic_' . $count) === 'OR' ? ' OR ' : ' AND '),
 						'field' => $field,
@@ -283,11 +283,11 @@ abstract class we_customer_abstractFilter{
 		$customers = array();
 		$i = 0;
 		while(true){
-			if(($val = we_base_request::_(we_base_request::STRINGC, $name . '_variant0_' . $name . '_item' . $i))){
+			if(($val = we_base_request::_(we_base_request::STRING, $name . '_variant0_' . $name . '_item' . $i))){
 				$customers[] = $val;
 				$i++;
 			} else {
-				return weConvertToIds($customers, CUSTOMER_TABLE);
+				return path_to_id($customers, CUSTOMER_TABLE, $GLOBALS['DB_WE']);
 			}
 		}
 	}
@@ -306,11 +306,11 @@ abstract class we_customer_abstractFilter{
 
 		$i = 0;
 		while(true){
-			if(($val = we_base_request::_(we_base_request::STRINGC, $name . '_variant0_' . $name . '_item' . $i))){
+			if(($val = we_base_request::_(we_base_request::STRING, $name . '_variant0_' . $name . '_item' . $i))){
 				$blackList[] = $val;
 				$i++;
 			} else {
-				return weConvertToIds($blackList, CUSTOMER_TABLE);
+				return path_to_id($blackList, CUSTOMER_TABLE, $GLOBALS['DB_WE']);
 			}
 		}
 	}
@@ -328,11 +328,11 @@ abstract class we_customer_abstractFilter{
 		$whiteList = array();
 		$i = 0;
 		while(true){
-			if(($val = we_base_request::_(we_base_request::STRINGC, $name . '_variant0_' . $name . '_item' . $i))){
+			if(($val = we_base_request::_(we_base_request::STRING, $name . '_variant0_' . $name . '_item' . $i))){
 				$whiteList[] = $val;
 				$i++;
 			} else {
-				return weConvertToIds($whiteList, CUSTOMER_TABLE);
+				return path_to_id($whiteList, CUSTOMER_TABLE, $GLOBALS['DB_WE']);
 			}
 		}
 	}

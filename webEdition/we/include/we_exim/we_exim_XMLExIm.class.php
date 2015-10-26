@@ -142,11 +142,11 @@ class we_exim_XMLExIm{
 				return DOC_TYPES_TABLE;
 			case "category":
 				return CATEGORY_TABLE;
-			case "object":
+			case we_base_ContentTypes::OBJECT:
 				return (defined('OBJECT_TABLE')) ? OBJECT_TABLE : null;
 			case we_base_ContentTypes::TEMPLATE:
 				return TEMPLATES_TABLE;
-			case "objectFile":
+			case we_base_ContentTypes::OBJECT_FILE:
 				return (defined('OBJECT_FILES_TABLE')) ? OBJECT_FILES_TABLE : null;
 			case "weBinary":
 				return null;
@@ -223,7 +223,7 @@ class we_exim_XMLExIm{
 	}
 
 	function getIDs($selIDs, $table, $with_dirs = false){
-		$ret = $tmp = array();
+		$tmp = array();
 		$db = new DB_WE();
 		$allow = $this->queryForAllowed($table);
 		foreach($selIDs as $v){
@@ -288,10 +288,10 @@ class we_exim_XMLExIm{
 				$selClasses = defined('OBJECT_FILES_TABLE') ? $this->getIDs($selClasses, OBJECT_TABLE, false) : '';
 			} else {
 				switch($art){
-					case "docs":
+					case 'docs':
 						$selDocs = $this->getIDs($selDocs, FILE_TABLE);
 						break;
-					case "objects":
+					case 'objects':
 						$selObjs = defined('OBJECT_FILES_TABLE') ? $this->getIDs($selObjs, OBJECT_FILES_TABLE) : "";
 						break;
 				}
@@ -299,7 +299,7 @@ class we_exim_XMLExIm{
 			return;
 		}
 		switch($type){
-			case "doctype":
+			case 'doctype':
 				$cat_sql = ($categories ? we_category::getCatSQLTail('', FILE_TABLE, true, $db, 'Category', $categories) : '');
 				if($dir != 0){
 					$workspace = id_to_path($dir, FILE_TABLE, $db);

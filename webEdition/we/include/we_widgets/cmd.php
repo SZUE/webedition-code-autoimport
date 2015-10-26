@@ -23,7 +23,7 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-$cmd1 = we_base_request::_(we_base_request::RAW_CHECKED, 'we_cmd', '', 1);
+$cmd1 = we_base_request::_(we_base_request::SERIALIZED_KEEP, 'we_cmd', '', 1);
 switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case 'save' :
 		we_base_preferences::setUserPref('cockpit_dat', $cmd1);
@@ -54,32 +54,27 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 			if($aProps[0] === 'msg'){
 				$_transact = md5(uniqid(__FUNCTION__, true));
 			}
-			include_once (WE_INCLUDES_PATH . 'we_widgets/mod/' . $aProps[0] . '.php');
+			include_once (WE_INCLUDES_PATH . 'we_widgets/mod/' . $aProps[0] . '.inc.php');
 		}
 		include_once (WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php');
 
 		$js = "
-function gel(id_){
-	return document.getElementById?document.getElementById(id_):null;
-}
 function transmit(){
-	if(top.weEditorFrameController.getActiveDocumentReference() && top.weEditorFrameController.getActiveDocumentReference().quickstart){
-		top.weEditorFrameController.getActiveDocumentReference().pushContent('" . $aProps[0] . "','m_" . $iCurrId . "',gel('content').innerHTML,gel('prefix').innerHTML,gel('postfix').innerHTML,gel('csv').innerHTML);
+	if(WE().layout.weEditorFrameController.getActiveDocumentReference() && WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart){
+		WE().layout.weEditorFrameController.getActiveDocumentReference().pushContent('" . $aProps[0] . "','m_" . $iCurrId . "',gel('content').innerHTML,gel('prefix').innerHTML,gel('postfix').innerHTML,gel('csv').innerHTML);
 	}
 }
 
-var widgetFrame = top.weEditorFrameController.getActiveDocumentReference();
+var widgetFrame = WE().layout.weEditorFrameController.getActiveDocumentReference();
 ";
-		echo we_html_element::htmlDocType() .
-			we_html_element::htmlHtml(
-				we_html_element::htmlHead(
-					we_html_element::cssElement('div,span{display:none;}') . we_html_element::jsElement($js)) .
-				we_html_element::htmlBody(
-					array('onload' => 'transmit();'
-					), we_html_element::htmlDiv(array('id' => 'content'), $oTblCont->getHtml()) .
-					we_html_element::htmlSpan(array('id' => 'prefix'), $aLang[0]) .
-					we_html_element::htmlSpan(array('id' => 'postfix'), $aLang[1]) .
-					we_html_element::htmlSpan(array('id' => 'csv'), (isset($aProps[3]) ? $aProps[3] : ''))));
+		echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssElement('div,span{display:none;}') .
+			we_html_element::jsElement($js), we_html_element::htmlBody(
+				array('onload' => 'transmit();'
+				), we_html_element::htmlDiv(array('id' => 'content'), $oTblDiv) .
+				we_html_element::htmlSpan(array('id' => 'prefix'), $aLang[0]) .
+				we_html_element::htmlSpan(array('id' => 'postfix'), $aLang[1]) .
+				we_html_element::htmlSpan(array('id' => 'csv'), (isset($aProps[3]) ? $aProps[3] : '')))
+		);
 		break;
 
 	//added to fix bug #6538

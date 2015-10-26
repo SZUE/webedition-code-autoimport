@@ -28,7 +28,6 @@
  *
  */
 class we_shop_listviewOrderitem extends we_listview_base{
-	var $ClassName = __CLASS__;
 	var $condition = '';
 	var $Path = '';
 	var $docID = 0;
@@ -56,18 +55,26 @@ class we_shop_listviewOrderitem extends we_listview_base{
 		}
 		$this->docID = $docID;
 		$this->orderID = $orderID;
-		$this->condition = $condition ? : (isset($GLOBALS['we_lv_condition']) ? $GLOBALS['we_lv_condition'] : '');
+		$this->condition = $condition;
 
 		if(strpos($this->condition, 'ID') !== false && strpos($this->condition, 'IntID') === false){
 			$this->condition = str_replace('ID', 'IntID', $this->condition);
 		}
 		// und nun sind alle anderen kaputt und werden repariert
 		$this->condition = strtr($this->condition, array(
-			'OrderIntID' => 'IntOrderID',
-			'CustomerIntID' => 'IntCustomerID',
-			'ArticleIntID' => 'IntArticleID',
+			'OrderIntID' => 'OrderID',
+			'CustomerIntID' => 'CustomerID',
+			'ArticleIntID' => 'ArticleID',
+			'IntOrderID' => 'IntOrderID', //prevents accidential replacements
+			'OrderID' => 'IntOrderID',
+			'IntCustomerID' => 'IntCustomerID', //prevents accidential replacements
+			'CustomerID' => 'IntCustomerID',
+			'IntArticleID' => 'IntArticleID', //prevents accidential replacements
+			'ArticleID' => 'IntArticleID',
+			'IntQuantity' => 'IntQuantity', //prevents accidential replacements
 			'Quantity' => 'IntQuantity',
-			'Payment_Type' => 'IntPayment_Type',
+			'IntPayment_Type' => 'IntPayment_Type', //prevents accidential replacements
+			'Payment_Type' => 'IntPayment_Type'
 		));
 
 		$this->Path = ($this->docID ? id_to_path($this->docID, FILE_TABLE, $this->DB_WE) : (isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : ''));
@@ -87,7 +94,7 @@ class we_shop_listviewOrderitem extends we_listview_base{
 				case 'ArticleID':
 				case 'Quantity':
 				case 'Payment_Type':
-					$this->order = 'Int' . $this->order;
+					$this->order = 'Int' . trim($this->order);
 			}
 
 			$orderstring = ' ORDER BY ' . $this->order;
@@ -107,43 +114,43 @@ class we_shop_listviewOrderitem extends we_listview_base{
 
 	function next_record(){
 		if(($ret = $this->DB_WE->next_record(MYSQL_ASSOC))){
-			$strSerial = unserialize($this->DB_WE->Record['strSerial']);
+			$strSerial = we_unserialize($this->DB_WE->Record['strSerial']);
 			unset($this->DB_WE->Record['strSerial']);
-			if(is_array($strSerial)){
-				$this->DB_WE->Record['articleIsObject'] = isset($strSerial['OF_ID']) ? 1 : 0;
-				if($this->DB_WE->Record['articleIsObject']){//Object based Article
-					foreach($strSerial as $key => &$value){
-						switch($key){
-							case WE_SHOP_ARTICLE_CUSTOM_FIELD:
-							case 'WE_VARIANT':
-								continue;
-							default:
-								if(strpos($key, 'we_WE') === false){
-									$this->DB_WE->Record[substr($key, 3)] = $value; //key without "we_" because of internal problems in shop modul backend view
-								}
 
-								$this->DB_WE->Record[$key] = (is_array($value) ?
-										$value :
-										(substr($value, 0, 2) === 'a:' ?
-											unserialize($value) :
-											$value));
-						}
+			$this->DB_WE->Record['articleIsObject'] = isset($strSerial['OF_ID']) ? 1 : 0;
+			if($this->DB_WE->Record['articleIsObject']){//Object based Article
+				foreach($strSerial as $key => &$value){
+					switch($key){
+						case WE_SHOP_ARTICLE_CUSTOM_FIELD:
+						case 'WE_VARIANT':
+							continue;
+						default:
+							if(strpos($key, 'we_WE') === false){
+								$this->DB_WE->Record[substr($key, 3)] = $value; //key without "we_" because of internal problems in shop modul backend view
+							}
+
+							$this->DB_WE->Record[$key] = (is_array($value) ?
+									$value :
+									(substr($value, 0, 2) === 'a:' ?
+										we_unserialize($value) :
+										$value));
 					}
-				} else {//Document based Article
-					foreach($strSerial as $key => &$value){
-						switch($key){
-							case WE_SHOP_ARTICLE_CUSTOM_FIELD:
-							case 'Charset':
-							case 'WE_VARIANT':
-								continue;
-							default:
-								if(strpos($key, 'wedoc_') === false){
-									$this->DB_WE->Record[$key] = $value;
-								}
-						}
+				}
+			} else {//Document based Article
+				foreach($strSerial as $key => &$value){
+					switch($key){
+						case WE_SHOP_ARTICLE_CUSTOM_FIELD:
+						case 'Charset':
+						case 'WE_VARIANT':
+							continue;
+						default:
+							if(strpos($key, 'wedoc_') === false){
+								$this->DB_WE->Record[$key] = $value;
+							}
 					}
 				}
 			}
+
 			unset($value);
 
 			foreach($strSerial[WE_SHOP_ARTICLE_CUSTOM_FIELD] as $key => &$value){

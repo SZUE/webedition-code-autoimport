@@ -54,7 +54,7 @@ abstract class we_versions_logBase{
 
 		$content = array();
 		$tableInfo = $this->db->metadata($this->table);
-		$this->db->query('SELECT ID,timestamp,action,userID FROM ' . $this->db->escape($this->table) . ' ORDER BY timestamp DESC');
+		$this->db->query('SELECT ID,timestamp,typ,userID FROM ' . $this->db->escape($this->table) . ' ORDER BY timestamp DESC');
 		$m = 0;
 		while($this->db->next_record()){
 			for($i = 0; $i < count($tableInfo); $i++){

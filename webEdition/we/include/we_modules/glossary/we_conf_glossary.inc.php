@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,4 +27,4 @@ define('WE_GLOSSARY_MODULE_PATH', WE_MODULES_PATH . 'glossary/');
 
 we_loadLanguageConfig();
 
-we_base_request::registerTables(array(GLOSSARY_TABLE));
+we_base_request::registerTables(array('GLOSSARY_TABLE' => GLOSSARY_TABLE));

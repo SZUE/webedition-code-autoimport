@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -38,8 +39,8 @@ if(!$cmd){
 if(($cmd === 'export' || $cmd === 'import') && isset($_SESSION['weS']['weBackupVars'])){
 	$last = $_SESSION['weS']['weBackupVars']['limits']['requestTime'];
 	$_SESSION['weS']['weBackupVars']['limits']['requestTime'] = (isset($_SERVER['REQUEST_TIME']) ? $_SERVER['REQUEST_TIME'] :
-			//we don't have the time of the request, assume some time is already spent.
-			time() - 3);
+					//we don't have the time of the request, assume some time is already spent.
+					time() - 3);
 
 	if(we_base_request::_(we_base_request::BOOL, 'reload')){
 		$tmp = $_SESSION['weS']['weBackupVars']['limits']['requestTime'] - $last;
@@ -112,7 +113,7 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 						$oldPercent = $percent;
 					}
 					we_backup_util::writeLog();
-				} while(!empty($_SESSION['weS']['weBackupVars']['extern_files']) && we_backup_backup::limitsReached('', microtime(true) - $start));
+				}while(!empty($_SESSION['weS']['weBackupVars']['extern_files']) && we_backup_backup::limitsReached('', microtime(true) - $start));
 				$_SESSION['weS']['weBackupVars']['close']($fh);
 			}
 		} else {
@@ -138,7 +139,7 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 					}
 				}
 				we_backup_util::writeLog();
-			} while(we_backup_backup::limitsReached(we_backup_util::getCurrentTable(), microtime(true) - $start));
+			}while(we_backup_backup::limitsReached(we_backup_util::getCurrentTable(), microtime(true) - $start));
 			$_SESSION['weS']['weBackupVars']['close']($_fh);
 		}
 		if(($_SESSION['weS']['weBackupVars']['row_counter'] < $_SESSION['weS']['weBackupVars']['row_count']) || (isset($_SESSION['weS']['weBackupVars']['extern_files']) && count($_SESSION['weS']['weBackupVars']['extern_files']) > 0) || we_backup_util::hasNextTable()){
@@ -196,7 +197,7 @@ run();');
 
 //copy the file to right location
 			if($_SESSION['weS']['weBackupVars']['options']['export2server'] == 1){
-				$_backup_filename = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'data/' . $_SESSION['weS']['weBackupVars']['filename'];
+				$_backup_filename = BACKUP_PATH . 'data/' . $_SESSION['weS']['weBackupVars']['filename'];
 
 				we_backup_util::addLog('Move file to ' . $_backup_filename);
 
@@ -209,11 +210,11 @@ run();');
 			}
 
 			if($_SESSION['weS']['weBackupVars']['options']['export2send'] == 1){
-				we_base_file::insertIntoCleanUp($_SESSION['weS']['weBackupVars']['backup_file'], time() + 8 * 3600); //8h
+				we_base_file::insertIntoCleanUp($_SESSION['weS']['weBackupVars']['backup_file'], 8 * 3600); //8h
 			}
 
 			echo we_html_element::jsElement(we_backup_util::getProgressJS(100, g_l('backup', '[finished]'), true) . '
-top.body.setLocation("' . WE_INCLUDES_DIR . 'we_editors/we_make_backup.php?pnt=body&step=2");
+top.body.setLocation("' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=make_backup&pnt=body&step=2");
 top.cmd.location = "about:blank";
 ');
 			flush();
@@ -271,7 +272,7 @@ top.cmd.location = "about:blank";
 					we_backup_util::getProgressJS($percent, $description, false);
 					$oldPercent = $percent;
 				}
-			} while(!empty($_SESSION['weS']['weBackupVars']['files_to_delete']) && we_backup_backup::limitsReached('', microtime(true) - $start));
+			}while(!empty($_SESSION['weS']['weBackupVars']['files_to_delete']) && we_backup_backup::limitsReached('', microtime(true) - $start));
 		} elseif(($_SESSION['weS']['weBackupVars']['offset'] < $_SESSION['weS']['weBackupVars']['offset_end'])){
 			if($_SESSION['weS']['weBackupVars']['options']['format'] === 'xml'){
 				$oldPercent = 0;
@@ -308,7 +309,7 @@ top.cmd.location = "about:blank";
 						$oldPercent = $percent;
 					}
 					we_backup_util::writeLog();
-				} while(we_backup_backup::limitsReached('', microtime(true) - $start));
+				}while(we_backup_backup::limitsReached('', microtime(true) - $start));
 				we_backup_fileReader::closeFile();
 			} else {
 				we_backup_importSql::import($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset'], $_SESSION['weS']['weBackupVars']['backup_steps'], $_SESSION['weS']['weBackupVars']['options']['compress'], $_SESSION['weS']['weBackupVars']['encoding'], $_SESSION['weS']['weBackupVars']['backup_log']);
@@ -321,7 +322,7 @@ top.cmd.location = "about:blank";
 		}
 
 		if(($_SESSION['weS']['weBackupVars']['offset'] <= $_SESSION['weS']['weBackupVars']['offset_end']) ||
-			(isset($_SESSION['weS']['weBackupVars']['files_to_delete']) && !empty($_SESSION['weS']['weBackupVars']['files_to_delete']))
+				(isset($_SESSION['weS']['weBackupVars']['files_to_delete']) && !empty($_SESSION['weS']['weBackupVars']['files_to_delete']))
 		){
 
 			we_backup_util::addLog('Issuing next request.');
@@ -342,22 +343,22 @@ run();');
 				we_backup_importSql::delBackupTable();
 			}
 
-			if(is_file($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $_SESSION['weS']['weBackupVars']['backup_file'])){
-				unlink($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $_SESSION['weS']['weBackupVars']['backup_file']);
+			if(is_file(BACKUP_PATH . 'tmp/' . $_SESSION['weS']['weBackupVars']['backup_file'])){
+				unlink(BACKUP_PATH . 'tmp/' . $_SESSION['weS']['weBackupVars']['backup_file']);
 			}
 
 // reload user prefs
 			$_SESSION['prefs'] = we_users_user::readPrefs($_SESSION['user']['ID'], $DB_WE);
 
 			echo we_html_element::jsElement('
-var op = top.opener.top.makeFoldersOpenString();
+var op = top.opener.top.treeData.makeFoldersOpenString();
 top.opener.top.we_cmd("load", top.opener.top.treeData.table);
 ' . we_main_headermenu::getMenuReloadCode() . '
-top.busy.location="' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=busy&operation_mode=busy&current_description=' . g_l('backup', '[finished]') . '&percent=100";
+top.busy.location="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=busy&operation_mode=busy&current_description=' . g_l('backup', '[finished]') . '&percent=100";
 ' . ( $_SESSION['weS']['weBackupVars']['options']['rebuild'] ?
-					'top.cmd.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=cmd&operation_mode=rebuild";' :
-					'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=4&temp_filename=' . $_SESSION['weS']['weBackupVars']['backup_file'] . '";'
-				) . we_backup_util::getProgressJS(100, g_l('backup', '[finished]'), true));
+							'top.cmd.location = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=cmd&operation_mode=rebuild";' :
+							'top.body.location = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=4&temp_filename=' . $_SESSION['weS']['weBackupVars']['backup_file'] . '";'
+					) . we_backup_util::getProgressJS(100, g_l('backup', '[finished]'), true));
 			flush();
 			we_backup_util::addLog('Backup import finished');
 		}
@@ -368,8 +369,8 @@ top.busy.location="' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=b
 
 	case 'rebuild':
 		echo we_html_element::jsElement('
-top.opener.top.openWindow("' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_all&responseText=' . g_l('backup', '[finished_success]') . '", "rebuildwin", -1, -1, 600, 130, 0, true);
-setTimeout("top.close();", 300);
+top.opener.top.openWindow(WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_all&responseText=' . g_l('backup', '[finished_success]') . '", "rebuildwin", -1, -1, 600, 130, 0, true);
+top.close();
 ');
 		break;
 

@@ -26,10 +26,10 @@
 /**
  * Document Definition base class
  */
-abstract class we_banner_base{
+abstract class we_banner_base{ // FIXME: base on we_ModelBase to us registerFileLink()
 
 	protected $db;
-	protected $persistents = array();
+	public $persistents = array();
 	protected $table = "";
 	var $ClassName = __CLASS__;
 

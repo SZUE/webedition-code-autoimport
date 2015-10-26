@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -40,11 +39,7 @@ $jsFunction = '
     }
 
 	function doUnload() {
-		if (!!jsWindow_count) {
-			for (i = 0; i < jsWindow_count; i++) {
-				eval("jsWindow" + i + "Object.close()");
-			}
-		}
+		WE().util.jsWindow.prototype.closeAll(window);
 	}
 
 	function we_cmd(){
@@ -71,7 +66,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'saveShopSta
 
 // array with all rules
 
-$ignoreFields = array('ID', 'Forename', 'Surname', 'Password', 'Username', 'ParentID', 'Path', 'IsFolder', 'Icon', 'Text');
+$ignoreFields = array('ID', 'Forename', 'Surname', 'Password', 'Username', 'ParentID', 'Path', 'IsFolder', 'Text');
 $customerTableFields = $DB_WE->metadata(CUSTOMER_TABLE);
 $selectFields['-'] = '-';
 foreach($customerTableFields as $tblField){
@@ -80,7 +75,7 @@ foreach($customerTableFields as $tblField){
 	}
 }
 
-$tabStatus = new we_html_table(array("border" => 0, "cellpadding" => 2, "cellspacing" => 4), $rows_num = 5, $cols_num = 17);
+$tabStatus = new we_html_table(array("cellpadding" => 2, "cellspacing" => 4), $rows_num = 5, $cols_num = 17);
 $i = 0;
 $tabStatus->setCol($i, 0, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 110), g_l('modules_shop', '[statusmails][fieldname]'));
 
@@ -123,7 +118,7 @@ $parts = array(
 	),
 );
 
-$tabEMail = new we_html_table(array("border" => 0, "cellpadding" => 2, "cellspacing" => 4), $rows_num = 4, $cols_num = 6);
+$tabEMail = new we_html_table(array("cellpadding" => 2, "cellspacing" => 4), $rows_num = 4, $cols_num = 6);
 $tabEMail->setCol(0, 0, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 220), g_l('modules_shop', '[statusmails][AbsenderAdresse]') .
 	'<br/>' . we_class::htmlTextInput("EMailData[address]", 30, $weShopStatusMails->EMailData['address']));
 $tabEMail->setCol(1, 0, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 220), g_l('modules_shop', '[statusmails][AbsenderName]') .
@@ -156,7 +151,7 @@ $parts[] = array(
 	'html' => $tabEMail->getHtml(),
 );
 
-$tabSprache = new we_html_table(array("border" => 0, "cellpadding" => 2, "cellspacing" => 4), $rows_num = 2, $cols_num = 5);
+$tabSprache = new we_html_table(array("cellpadding" => 2, "cellspacing" => 4), $rows_num = 2, $cols_num = 5);
 $tabSprache->setCol(0, 0, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 220), we_html_forms::checkboxWithHidden($weShopStatusMails->LanguageData['useLanguages'], 'LanguageData[useLanguages]', g_l('modules_shop', '[statusmails][useLanguages]'), false, "defaultfont"));
 $tabSprache->setCol(0, 2, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 220), g_l('modules_shop', '[statusmails][SprachenFeld]') . we_class::htmlSelect('LanguageData[languageField]', $selectFields, 1, $weShopStatusMails->LanguageData['languageField']) . we_html_forms::checkboxWithHidden($weShopStatusMails->LanguageData['languageFieldIsISO'], 'LanguageData[languageFieldIsISO]', g_l('modules_shop', '[preferences][ISO-Kodiert]'), false, "defaultfont"));
 
@@ -180,7 +175,7 @@ $parts[] = array(
 	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[statusmails][hintISO]'), we_html_tools::TYPE_INFO, 650, false),
 	'space' => 0
 );
-$tabDokumente = new we_html_table(array("border" => 0, "cellpadding" => 2, "cellspacing" => 4), $rows_num = 2, $cols_num = 17);
+$tabDokumente = new we_html_table(array("cellpadding" => 2, "cellspacing" => 4), $rows_num = 2, $cols_num = 17);
 $i = 0;
 $tabDokumente->setCol($i, 0, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 110), g_l('modules_shop', '[statusmails][fieldname]'));
 
@@ -202,7 +197,7 @@ unset($lcvalue);
 foreach($frontendL as $langkey){
 	$tabDokumente->addRow();
 	$i++;
-	$tabDokumente->setCol($i, 0, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap"), g_l('languages', '['.$langkey.']') . ' (' . $langkey . ')');
+	$tabDokumente->setCol($i, 0, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap"), g_l('languages', '[' . $langkey . ']') . ' (' . $langkey . ')');
 	foreach(we_shop_statusMails::$StatusFields as $fieldkey => $fieldname){
 		$tabDokumente->setCol($i, $fieldkey + 1, array("class" => "defaultfont", "nowrap" => "nowrap"), we_class::htmlTextInput('FieldsDocuments[' . $langkey . '][' . $fieldname . ']', 15, $weShopStatusMails->FieldsDocuments[$langkey][$fieldname]));
 	}
@@ -225,15 +220,18 @@ $parts[] = array(
 	'html' => $tabDokumente->getHtml()
 );
 
-echo we_html_element::jsElement($jsFunction) .
- '</head>
+echo we_html_element::jsElement($jsFunction);
+?>
+</head>
 <body class="weDialogBody" onload="window.focus();">
 	<form name="we_form" method="post" >
-	<input type="hidden" name="we_cmd[0]" value="saveShopStatusMails" />' .
- we_html_multiIconBox::getHTML(
-	'weShopStatusMails', 700, $parts, 30, we_html_button::position_yes_no_cancel(
-		we_html_button::create_button('save', 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button('cancel', 'javascript:we_cmd(\'close\');')
-	), -1, '', '', false, g_l('modules_shop', '[statusmails][box_headline]'), '', '', 'scroll'
-) . '</form>
+		<input type="hidden" name="we_cmd[0]" value="saveShopStatusMails" />
+		<?php
+		echo we_html_multiIconBox::getHTML('weShopStatusMails', $parts, 30, we_html_button::position_yes_no_cancel(
+				we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button(we_html_button::CANCEL, 'javascript:we_cmd(\'close\');')
+			), -1, '', '', false, g_l('modules_shop', '[statusmails][box_headline]'), '', '', 'scroll'
+		);
+		?>
+	</form>
 </body>
-</html>';
+</html>

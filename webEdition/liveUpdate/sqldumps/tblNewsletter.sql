@@ -1,8 +1,10 @@
+###UPDATEDROPCOL(Icon,###TBLPREFIX###tblNewsletter)###
+/* query separator */
+
 CREATE TABLE ###TBLPREFIX###tblNewsletter (
   ID bigint(20) unsigned NOT NULL auto_increment,
   ParentID bigint(20) unsigned NOT NULL default '0',
   IsFolder tinyint(1) unsigned NOT NULL default '0',
-  Icon ENUM('folder.gif','newsletter.gif') NOT NULL default 'newsletter.gif',
   Path varchar(255) NOT NULL default '',
   `Text` varchar(255) NOT NULL default '',
   Subject varchar(255) NOT NULL default '',

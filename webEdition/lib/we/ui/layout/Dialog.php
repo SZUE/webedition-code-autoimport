@@ -43,7 +43,7 @@ class we_ui_layout_Dialog extends we_ui_layout_HTMLPage{
 	 */
 	public function __construct($properties = null){
 		$this->addInlineJS('
-self.dialog = eval("opener." + self.name + "_Object");
+self.dialog = opener[self.name + "_Object"];
 ');
 		parent::__construct($properties);
 	}

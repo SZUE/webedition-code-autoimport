@@ -156,7 +156,7 @@ function we_tag_saferpay($attribs){
 			if(we_shop_category::isCategoryMode()){
 				$wedocCategory = ((isset($item['serial']['we_wedoc_Category'])) ? $item['serial']['we_wedoc_Category'] : $item['serial']['wedoc_Category']);
 				$billingCountry = we_shop_category::getCountryFromCustomer(true);
-				$catId = isset($item['serial'][WE_SHOP_CATEGORY_FIELD_NAME]) && $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME] ? $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME] : 0;
+				$catId = !empty($item['serial'][WE_SHOP_CATEGORY_FIELD_NAME]) ? $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME] : 0;
 
 				$shopVat = we_shop_category::getShopVatByIdAndCountry($catId, $wedocCategory, $billingCountry, true);
 				$shopCategory = we_shop_category::getShopCatFieldByID($catId, $wedocCategory, 'ID');

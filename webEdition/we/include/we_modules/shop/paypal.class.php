@@ -74,7 +74,7 @@ class paypal_class{
 	var $ipn_data = array();		 // array contains the POST values for IPN
 	var $fields = array();			// array holds the fields to submit to paypal
 
-	function paypal_class(){
+	function __construct(){
 
 		// initialization constructor.  Called when class is created.
 		//$this->paypal_url = 'https://www.sandbox.paypal.com/cgi-bin/webscr'; //testing
@@ -143,10 +143,10 @@ class paypal_class{
 
 			echo "</form>\n";
 		} else {
-			echo "<html>\n";
-			echo "<body onload=\"document.forms['paypal_form'].submit();\">\n";
-			echo "<body>\n";
-			echo "<center><h2>" . $messageAuto . "</h2></center>\n";
+			echo "<html>";
+			echo "<body onload=\"document.forms['paypal_form'].submit();\">";
+			echo "<body>";
+			echo "<div style='text-align:center'><h2>" . $messageAuto . "</h2></center>\n";
 			echo "<form method=\"post\" name=\"paypal_form\" ";
 			echo "action=\"" . $this->paypal_url . "\">\n";
 
@@ -154,7 +154,7 @@ class paypal_class{
 				echo "<input type=\"hidden\" name=\"$name\" value=\"$value\"/>\n";
 			}
 
-			echo "<center><br/><br/>" . $messageMan . "<br/><br/>\n";
+			echo "</div><br/><br/>" . $messageMan . "<br/><br/>\n";
 			echo "<input type=\"submit\" value=\"PayPal\" /></center>\n";
 
 			echo "</form>\n";
@@ -171,7 +171,6 @@ class paypal_class{
 		// _POST vars into an arry so we can play with them from the calling
 		// script.
 		$post_string = '';
-		//FIXME: POST
 		foreach($_POST as $field => $value){
 			$this->ipn_data["$field"] = $value;
 			$post_string .= $field . '=' . urlencode($value) . '&';
@@ -225,10 +224,11 @@ class paypal_class{
 		$text = '[' . date('m/d/Y g:i A') . '] - ';
 
 		// Success or failure being logged?
-		if($success)
+		if($success){
 			$text .= "SUCCESS!\n";
-		else
+		}else{
 			$text .= 'FAIL: ' . $this->last_error . "\n";
+		}
 
 		// Log the POST variables
 		$text .= "IPN POST Vars from Paypal:\n";
@@ -253,10 +253,10 @@ class paypal_class{
 		// add_field() function.
 
 		echo "<h3>paypal_class->dump_fields() Output:</h3>";
-		echo "<table width=\"95%\" border=\"1\" cellpadding=\"2\" cellspacing=\"0\">
+		echo "<table style=\"width:95%;border:1px solid black;\">
             <tr>
-               <td bgcolor=\"black\"><b><font color=\"white\">Field Name</font></b></td>
-               <td bgcolor=\"black\"><b><font color=\"white\">Value</font></b></td>
+               <td style=\"background-color:black;text-weight:bold;color:white;\">Field Name</td>
+               <td style=\"background-color:black;text-weight:bold;color:white;\">Value</td>
             </tr>";
 
 		ksort($this->fields);

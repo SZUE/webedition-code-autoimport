@@ -31,10 +31,43 @@ abstract class we_html_button{
 	const HEIGHT = 22;
 	const WIDTH = 100;
 	const AUTO_WIDTH = -1;
-	const WE_IMAGE_BUTTON_IDENTIFY = 'image:';
+	const WE_IMAGE_BUTTON_IDENTIFY = 'image';
+	//simple button with icon
+	const WE_FA_BUTTON_IDENTIFY = 'fa';
+	//button with an icon that is composed of more icons
+	const WE_FASTACK_BUTTON_IDENTIFY = 'fas';
+	//button with icon & text
+	const WE_FATEXT_BUTTON_IDENTIFY = 'fat';
 	const WE_FORM_BUTTON_IDENTIFY = 'form:';
 	const WE_SUBMIT_BUTTON_IDENTIFY = 'submit:';
 	const WE_JS_BUTTON_IDENTIFY = 'javascript:';
+	const DELETE_ALL = 'fa:delete_all,fa-lg fa-database,fa-lg fa-trash-o';
+	const DELETE = 'fa:delete,fa-lg fa-trash-o';
+	const ADD = 'fa:add,fa-lg fa-plus';
+	const EDIT = 'fa:btn_edit,fa-lg fa-edit';
+	const TRASH = 'fa:btn_function_trash,fa-lg fa-trash-o';
+	const PLUS = 'fa:btn_function_plus,fa-lg fa-plus';
+	const DIRUP = 'fa:btn_direction_up,fa-lg fa-caret-up';
+	const DIRDOWN = 'fa:btn_direction_down,fa-lg fa-caret-down';
+	const DIRRIGHT = 'fa:btn_direction_right,fa-lg fa-caret-right';
+	const VIEW = 'fa:btn_function_view,fa-lg fa-eye';
+	const RELOAD = 'fa:btn_function_reload,fa-lg fa-refresh';
+	const SELECT = 'fa:select,fa-lg fa-hand-o-right,fa-lg fa-file-o';
+	const SAVE = 'fat:save,fa-lg fa-save';
+	const NEXT = 'fat:next,fa-lg fa-step-forward';
+	const BACK = 'fat:back,fa-lg fa-step-backward';
+	const REFRESH = 'fat:refresh,fa-lg fa-refresh';
+	const SEARCH = 'fa:btn_function_search,fa-lg fa-search';
+	const CLOSE = 'fat:close,fa-lg fa-close fa-cancel';
+	const CANCEL = 'fat:cancel,fa-lg fa-ban fa-cancel';
+	const NO = 'fat:no,fa-lg fa-close fa-cancel';
+	const YES = 'fat:yes,fa-lg fa-check fa-ok';
+	const OK = 'fat:ok,fa-lg fa-check fa-ok';
+	const UPLOAD = 'fat:upload,fa-lg fa-upload';
+	const PREVIEW = 'fat:preview,fa-lg fa-eye';
+	const CALENDAR = 'fa:date_picker,fa-lg fa-calendar';
+	const PUBLISH = 'fat:publish,fa-lg fa-sun-o';
+	const NOT_FOUND = '.fa-lg fa-bullseye';
 
 	/**
 	 * Gets the HTML Code for the button.
@@ -53,15 +86,12 @@ abstract class we_html_button{
 	 * @param boolean $important
 	 * @static
 	 */
-	static function getButton($value, $id, $cmd = '', $width = self::WIDTH, $title = '', $disabled = false, $margin = '', $padding = '', $key = '', $float = '', $display = '', $important = true, $isFormButton = false){
-		return '<table  ' . ($title ? ' title="' . oldHtmlspecialchars($title) . '"' : '') .
-			' id="' . $id . '" class="weBtn' . ($disabled ? 'Disabled' : '') .
-			'"' . self::getInlineStyleByParam(($width ? : ($width == self::AUTO_WIDTH ? 0 : self::WIDTH)), '', $float, $margin, $padding, $display, '', $important) .
-			' onmouseout="weButton.out(this);" onmousedown="weButton.down(this);" onmouseup="if(weButton.up(this)){' . oldHtmlspecialchars($cmd) . ';}">' .
-			'<tr><td class="weBtnLeft' . ($disabled ? 'Disabled' : '') . '" ></td>' .
-			'<td class="weBtnMiddle' . ($disabled ? 'Disabled' : '') . '">' . $value . '</td>' .
-			'<td class="weBtnRight' . ($disabled ? 'Disabled' : '') . '"'.($isFormButton ? 'style="margin-right:1px;"' : '').'></td>' .
-			'</tr></table>';
+	static function getButton($value, $id, $cmd = '', $width = self::WIDTH, $title = '', $disabled = false, $margin = '', $padding = '', $key = '', $float = '', $display = '', $important = true, $isFormButton = false, $class = ''){
+		return '<button type="' . ($isFormButton ? 'submit' : 'button') . '" ' . ($title ? ' title="' . oldHtmlspecialchars($title) . '"' : '') .
+			($disabled ? ' disabled="disabled"' : '') .
+			' id="' . $id . '" class="weBtn' . ($class ? ' ' . $class : '') . '" ' . self::getInlineStyleByParam(($width ? : ($width == self::AUTO_WIDTH ? 0 : self::WIDTH)), '', $float, $margin, $padding, $display, '', $important) .
+			' onclick="' . oldHtmlspecialchars($cmd) . '"' .
+			'>' . $value . '</button>';
 	}
 
 	/**
@@ -80,7 +110,7 @@ abstract class we_html_button{
 
 		$_imp = $important ? ' ! important' : '';
 
-		return ' style="border-style:none; padding:0px;border-spacing:0px;' . ($width > 0 ? 'width:' . $width . 'px' . $_imp . ';' : '') .
+		return ' style="' . /* border-style:none; padding:0px;border-spacing:0px;' . */ ($width > 0 ? 'width:' . $width . 'px' . $_imp . ';' : '') .
 			($height ? 'height:' . $height . 'px' . $_imp . ';' : '') .
 			($float ? 'float:' . $float . $_imp . ';' : '') .
 			($clear ? 'clear:' . $clear . $_imp . ';' : '') .
@@ -88,46 +118,6 @@ abstract class we_html_button{
 			($display ? 'display:' . $display . $_imp . ';' : '') .
 			($padding ? 'padding:' . $padding . $_imp . ';' : '') .
 			$extrastyle . '"';
-	}
-
-	/*	 * ***********************************************************************
-	 * FUNCTIONS
-	 * *********************************************************************** */
-
-	/**
-	 * This function creates the JavaScript that switches the state of a button.
-	 *
-	 * @param      $standalone                             bool                (optional)
-	 *
-	 * @return     string
-	 */
-	static function create_state_changer($standalone = true){
-		// Build the main preload function
-		/**
-		 * This functions switches the state of a text(!!!) button.
-		 *
-		 * @param      element                                 string
-		 * @param      button                                  string
-		 * @param      state                                   string
-		 * @param      type                                    bool                (optional)
-		 *
-		 * @return     button                                  bool
-		 */
-		$_JavaScript_functions = '
-function switch_button_state(element, button, state, type) {
-	if (state == "enabled") {
-		weButton.enable(element);
-		return true;
-	} else if (state == "disabled") {
-		weButton.disable(element);
-	}
-
-	return false;
-}';
-
-		// Build string to be returned by the function
-
-		return ($standalone ? we_html_element::jsElement($_JavaScript_functions) : $_JavaScript_functions);
 	}
 
 	/**
@@ -146,7 +136,7 @@ function switch_button_state(element, button, state, type) {
 	 *
 	 * @return     string
 	 */
-	static function create_button($name, $href, $alt = true, $width = self::WIDTH, $height = self::HEIGHT, $on_click = '', $target = '', $disabled = false, $uniqid = true, $suffix = '', $opensDialog = false){
+	static function create_button($name, $href, $alt = true, $width = self::WIDTH, $height = self::HEIGHT, $on_click = '', $target = '', $disabled = false, $uniqid = true, $suffix = '', $opensDialog = false, $title = '', $class = ''){
 		$cmd = '';
 
 		// Check width
@@ -155,28 +145,73 @@ function switch_button_state(element, button, state, type) {
 		// Check height
 		$height = ($height ? : self::HEIGHT);
 
-		$isImg = strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) !== false;
+		restart:
+		$all = explode(':', $name, 2);
+		list($type, $names) = count($all) == 1 ? array('', '') : $all;
 		/**
 		 * DEFINE THE NAME OF THE BUTTON
 		 */
 		// Check if the button is a text button or an image button
-		if($isImg){ // Button is an image
-			$name = substr($name, strlen(self::WE_IMAGE_BUTTON_IDENTIFY));
+		$value = '';
+		if($on_click){
+			if($href){
+				t_e('onclick on button is not supported');
+			} else {
+				$href = self::WE_JS_BUTTON_IDENTIFY . $on_click;
+			}
 		}
 
-		$_button_name = ($uniqid ? 'we' . $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name) . $suffix;
-		/**
-		 * CHECK IF THE LANGUAGE FILE DEFINES ANOTHER WIDTH FOR THE BUTTON
-		 */
-		// Check if the button will a text button or a image button
-		if($isImg){ // Button will be an image
-			//set width for image button if given width has not default value
-			$width = ($width == self::WIDTH ? self::AUTO_WIDTH : $width);
-		} else {
-			$tmp = g_l('button', '[' . $name . '][width]', true);
-			if(!empty($tmp) && ($width == self::WIDTH)){
-				$width = $tmp;
-			}
+		switch($type){
+			//FIXME: remove image buttons - we don't have any
+			case self::WE_IMAGE_BUTTON_IDENTIFY:// Button is an image
+				//fixes for Update
+				switch($name){
+					case 'image:btn_function_reload':
+						$name = self::REFRESH;
+						goto restart;
+					default:
+						t_e('old image button', $name);
+						$name = str_replace(self::WE_IMAGE_BUTTON_IDENTIFY, 'fa', $name) . self::NOT_FOUND;
+				}
+			case self::WE_FASTACK_BUTTON_IDENTIFY://fixme: add stack class
+				//set width for image button if given width has not default value
+				$width = ($width == self::WIDTH ? self::AUTO_WIDTH : $width);
+				//get name for title
+				list($name, $names) = explode(',', $names, 2);
+				$fas = explode(',', $names);
+				$value = '<span class="fa-stack">';
+				foreach($fas as $cnt => $fa){
+					$value.='<i class="fa ' . ($cnt == 0 ? 'fa-stack-2x ' : 'fa-stack-1x ') . $fa . '"></i>';
+				}
+				$value.='</span>';
+				break;
+			case self::WE_FATEXT_BUTTON_IDENTIFY:
+			case self::WE_FA_BUTTON_IDENTIFY:
+				//set width for image button if given width has not default value
+				if($type == self::WE_FA_BUTTON_IDENTIFY){
+					$width = ($width == self::WIDTH ? self::AUTO_WIDTH : $width);
+				}
+				//get name for title
+				list($name, $names) = explode(',', $names, 2);
+				$fas = explode(',', $names);
+				if(count($fas) > 1){
+					$class.=' multiicon';
+				}
+				$value = '';
+				foreach($fas as $cnt => $fa){
+					$value.='<i class="fa ' . ($cnt > 0 ? 'fa-moreicon ' : 'fa-firsticon ') . $fa . '"></i>';
+				}
+				if($type == self::WE_FA_BUTTON_IDENTIFY){
+					break;
+				}
+				//add text, no break;
+				$value.=' ';
+			default:
+				if(($width == self::WIDTH) && ($tmp = g_l('button', '[' . $name . '][width]', true))){
+					$width = $tmp;
+				}
+				$text = g_l('button', '[' . $name . '][value]') . ($opensDialog ? '&hellip;' : '');
+				$value = ($name == 'next' ? $text . ' ' . $value : $value . $text);
 		}
 
 		// Check if the button will be used in a form or not
@@ -190,7 +225,7 @@ function switch_button_state(element, button, state, type) {
 				// Render link
 				$cmd .= 'document.' . substr($href, strlen(self::WE_FORM_BUTTON_IDENTIFY)) . '.submit();return false;';
 			}
-		} elseif(strpos($href, self::WE_JS_BUTTON_IDENTIFY) !== false){ // Buttons target will  be a JavaScript
+		} elseif(strpos($href, self::WE_JS_BUTTON_IDENTIFY) !== false){ // Buttons target will be a JavaScript
 			// Get content of JavaScript
 			$_javascript_content = substr($href, strlen(self::WE_JS_BUTTON_IDENTIFY));
 
@@ -211,13 +246,7 @@ function switch_button_state(element, button, state, type) {
 			$cmd .= $_button_link;
 		}
 
-		$value = $isImg ?
-			we_html_element::htmlImg(array('src' => BUTTONS_DIR . 'icons/' . str_replace('btn_', '', $name) . '.gif', 'class' => 'weBtnImage')) :
-			g_l('button', '[' . $name . '][value]') . ($opensDialog ? '&hellip;' : '');
-
-		$title = $alt && ($tmp = g_l('button', '[' . $name . '][alt]', true)) ? $tmp : '';
-
-		return self::getButton($value, $_button_name, $cmd, $width, $title, $disabled, '', '', '', '', '', true, (strpos($href, self::WE_FORM_BUTTON_IDENTIFY) !== false));
+		return self::getButton($value, ($uniqid ? 'we' . $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name) . $suffix, $cmd, $width, ($alt ? ($title ? : (($tmp = g_l('button', '[' . $name . '][alt]', true)) ? $tmp : '')) : ''), $disabled, '', '', '', '', '', true, (strpos($href, self::WE_FORM_BUTTON_IDENTIFY) !== false), $class);
 	}
 
 	/**
@@ -234,30 +263,18 @@ function switch_button_state(element, button, state, type) {
 	 *
 	 * @return     string
 	 */
-	static function create_button_table($buttons, $gap = 10, $attribs = ''){
-		// Get number of buttons
-		$_count_button = count($buttons);
-
-		// Create array for table attributes
-		$attr = array('style' => 'border-style:none; padding:0px;border-spacing:0px;');
-
-		// Check for attribute parameters
-		if($attribs && is_array($attribs)){
+	static function create_button_table($buttons, $attribs = ''){
+		if(is_array($attribs)){
+			$attr = '';
 			foreach($attribs as $k => $v){
-				$attr[$k] = $v;
+				$attr .= ' ' . $k . '="' . $v . '"';
 			}
+		} else {
+			$attr = $attribs;
 		}
 
-		// Create table
-		$_button_table = new we_html_table($attr, 1, $_count_button);
-
-		// Build cols for every button
-		foreach($buttons as $i => $button){
-			$_button_table->setCol(0, $i, array('class' => 'weEditmodeStyle', 'style' => ( $i < $_count_button - 1 ? 'padding-right:' . $gap . 'px' : '')), $button);
-		}
-
-		// Get created HTML
-		return $_button_table->getHtml();
+		//FIMXE: change all calls to this function => remove
+		return ($attribs ? '<span ' . $attr . '>' : '') . implode('', $buttons) . ($attribs ? '</span>' : '');
 	}
 
 	/**
@@ -281,45 +298,27 @@ function switch_button_state(element, button, state, type) {
 	 *
 	 * @return     string
 	 */
-	static function position_yes_no_cancel($yes_button, $no_button = null, $cancel_button = null, $gap = 10, $align = '', $attribs = array(), $aligngap = 0){
+	//FIXME: this function is used at many places where yes buttons contains more than one button!!
+	static function position_yes_no_cancel($yes_button, $no_button = '', $cancel_button = '', $gap = 10, $align = '', $attribs = array(), $aligngap = 0){
 		//	Create default attributes for table
-		$align = /*$align ? 'right' :*/ 'right';
+		$align = /* $align ? 'right' : */ 'right';
 		$attr = array(
-			'style' => 'border-style:none; padding-top:0px;padding-bottom:0px;padding-left:' . ($align === 'left' ? $aligngap : 0) . 'px;padding-right:' . ($align === 'right' ? $aligngap : 0) . 'px;border-spacing:0px;',
-			'align' => $align,
+			'style' => 'border-style:none; padding:0 ' . ($align === 'right' ? $aligngap : 0) . ' 0 ' . ($align === 'left' ? $aligngap : 0) . ';border-spacing:0px;float:' . $align . ';'
 		);
 
-		// Check for attribute parameters
-		if($attribs && is_array($attribs)){
-			foreach($attribs as $k => $v){
-				$attr[$k] = $v;
-			}
+		if(is_array($attribs) && count($attribs) > 0){
+			array_merge($attr, $attribs);
 		}
+
 
 		//	Create button array
-		$_buttons = array();
 		//	button order depends on OS
-		$_order = (we_base_browserDetect::isMAC() ? array('no_button', 'cancel_button', 'yes_button') : array('yes_button', 'no_button', 'cancel_button'));
+		$buttons = (we_base_browserDetect::isMAC() ?
+				$no_button . $cancel_button . $yes_button :
+				$yes_button . $no_button . $cancel_button);
 
-		//	Existing buttons are added to array
-		for($_i = 0; $_i < count($_order); $_i++){
-			if(isset($$_order[$_i]) && $$_order[$_i] != ''){
-				$_buttons[] = $$_order[$_i];
-			}
-		}
 
-		$_count_button = count($_buttons);
-
-		//	Create_table
-		$_button_table = new we_html_table($attr, 1, $_count_button);
-
-		//	Write buttons
-		foreach($_buttons as $i => $button){
-			$_button_table->setCol(0, $i, array('class' => 'weEditmodeStyle', 'style' => ( $i < $_count_button - 1 ? 'padding-right:' . $gap . 'px' : '')), $button);
-		}
-
-		// Return created HTML
-		return $_button_table->getHtml();
+		return we_html_element::htmlDiv($attr, $buttons);
 	}
 
 }

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -59,44 +58,17 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		break;
 }
 
-echo we_html_element::jsElement(
-		'var isGecko = ' . (we_base_browserDetect::isGecko() ? 'true' : 'false') . ';' .
-		(we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ?
-				'document.addEventListener("keyup",doKeyDown,true);' :
-				'document.onkeydown = doKeyDown;'
-		) . '
-function doKeyDown(e) {
-	var key;' .
-(we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ?
-		'key = e.keyCode;' :
-		'key = event.keyCode;'
-) . '
-	switch (key) {
-		case 27:
-			top.close();
-			break;	}
-}
-
-function IsDigit(e) {
-	var key;' .
-(we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ?
-		'key = e.charCode;' :
-		'key = event.keyCode;'
-) . '
-	return ( (key == 46) || ((key >= 48) && (key <= 57)) || (key == 0) || (key == 13)  || (key == 8) || (key <= 63235 && key >= 63232) || (key == 63272));
+echo we_html_element::jsElement('
+function closeOnEscape() {
+	return true;
 }
 
 function doUnload() {
-	if (!!jsWindow_count) {
-		for (i = 0; i < jsWindow_count; i++) {
-			eval("jsWindow" + i + "Object.close()");
-		}
-	}
+	WE().util.jsWindow.prototype.closeAll(window);
 }
 
 function we_cmd(){
-	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
+	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
 	for(var i = 0; i < arguments.length; i++){
 			url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
 			if(i < (arguments.length - 1)){
@@ -157,8 +129,9 @@ function addShippingCostTableRow() {
 	var cell4 = document.createElement("TD");
 	var cell5 = document.createElement("TD");
 
-	eval("cell5.innerHTML=\'<img onclick=\"we_cmd(\\\\\'deleteShippingCostTableRow\\\\\', \\\\\'weShippingId_" + entryId + "\\\\\');\" style=\"cursor: pointer;\" src=\"' . BUTTONS_DIR . 'btn_function_trash.gif\" />\';");
+	var tmp=\'' . addslashes(we_html_button::create_button(we_html_button::TRASH, "we_cmd('deleteShippingCostTableRow', 'weShippingId_#####placeHolder#####');")) . '\';
 
+cell5.innerHTML=tmp.replace("#####placeHolder#####",entryId);
 	theNewRow.appendChild(cell1);
 	theNewRow.appendChild(cell2);
 	theNewRow.appendChild(cell3);
@@ -186,11 +159,10 @@ function we_submitForm(url){
 	f.method = "post";
 
 	f.submit();
-}' . 
-
-(isset($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) : '')
-	) .
-	'</head>
+}' .
+	(isset($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) : '')
+) .
+ '</head>
 <body class="weDialogBody" onload="window.focus();">
 <form name="we_form">
 <input type="hidden" id="we_cmd_field" name="we_cmd[0]" value="saveShipping" />';
@@ -200,18 +172,16 @@ function we_submitForm(url){
 // first show fields: country, vat, isNet?
 
 $customerTableFields = $DB_WE->metadata(CUSTOMER_TABLE);
-$selectFieldsTbl = array();
+$selectFieldsCtl = $selectFieldsVat = $selectFieldsTbl = array();
 foreach($customerTableFields as $tblField){
 	$selectFieldsTbl[$tblField['name']] = $tblField['name'];
 }
 $shopVats = we_shop_vats::getAllShopVATs();
-$selectFieldsVat = array();
 foreach($shopVats as $id => $shopVat){ //Fix #9625 use shopVat->Id as key instead of the sorted array $id!
-	$selectFieldsVat[$shopVat->id] = $shopVat->vat . '% - ' . $shopVat->getNaturalizedText() . ' (' . $shopVat->territory  . ')';
+	$selectFieldsVat[$shopVat->id] = $shopVat->vat . '% - ' . $shopVat->getNaturalizedText() . ' (' . $shopVat->territory . ')';
 }
 // selectBox with all existing shippings
 // select menu with all available shipping costs
-$selectFieldsCtl = array();
 foreach($weShippingControl->shippings as $key => $shipping){
 	$selectFieldsCtl[$key] = $shipping->text;
 }
@@ -237,14 +207,14 @@ $parts = array(
 	array(
 		'headline' => g_l('modules_shop', '[shipping][insert_packaging]'),
 		'space' => 200,
-		'html' => '<table border="0" cellpadding="0" cellpsacing="0" class="defaultfont">
+		'html' => '<table class="default defaultfont">
 	<tr>
 		<td>' . we_class::htmlSelect('editShipping', $selectFieldsCtl, 4, we_base_request::_(we_base_request::RAW, 'weShippingId', ''), false, array('onchange' => 'document.location=\'' . $_SERVER['SCRIPT_NAME'] . '?we_cmd[0]=editShipping&weShippingId=\' + this.options[this.selectedIndex].value;'), 'value', 280) . '</td>
 		<td width="10"></td>
-		<td valign="top">'
+		<td style="vertical-align:top">'
 		. we_html_button::create_button("new_entry", 'javascript:we_cmd(\'newEntry\');') .
 		'<div style="margin:5px;"></div>' .
-		we_html_button::create_button('delete', 'javascript:we_cmd(\'delete\')') .
+		we_html_button::create_button(we_html_button::DELETE, 'javascript:we_cmd(\'delete\')') .
 		'</td>
 	</tr>
 	</table>'
@@ -278,11 +248,11 @@ if(isset($weShipping)){ // show the shipping which must be edited
 
 			$tblPart .= '
 			<tr id="' . $tblRowName . '">
-				<td>' . we_class::htmlTextInput('weShipping_cartValue[]', 24, $weShipping->cartValue[$i], '', 'onkeypress="return IsDigit(event);"') . '</td>
+				<td>' . we_class::htmlTextInput('weShipping_cartValue[]', 24, $weShipping->cartValue[$i], '', 'onkeypress="return WE().util.IsDigit(event);"') . '</td>
 				<td></td>
-				<td>' . we_class::htmlTextInput('weShipping_shipping[]', 20, $weShipping->shipping[$i], '', 'onkeypress="return IsDigit(event);"') . '</td>
+				<td>' . we_class::htmlTextInput('weShipping_shipping[]', 20, $weShipping->shipping[$i], '', 'onkeypress="return WE().util.IsDigit(event);"') . '</td>
 				<td></td>
-				<td><img style="cursor: pointer;" src="' . BUTTONS_DIR . 'btn_function_trash.gif" onclick="we_cmd(\'deleteShippingCostTableRow\',\'' . $tblRowName . '\');" /></td>
+				<td>' . we_html_button::create_button(we_html_button::TRASH, "we_cmd('deleteShippingCostTableRow','" . $tblRowName . "');") . '</td>
 			</tr>';
 		}
 	}
@@ -291,7 +261,7 @@ if(isset($weShipping)){ // show the shipping which must be edited
 		'headline' => g_l('modules_shop', '[shipping][costs]'),
 		'space' => 200,
 		'html' =>
-		'<table border="0" cellpadding="0" cellspacing="0" width="100%" class="defaultfont" id="shippingCostTable">
+		'<table width="100%" class="default defaultfont" id="shippingCostTable">
 		<tr>
 			<td><b>' . g_l('modules_shop', '[shipping][order_value]') . '</b></td>
 			<td width="10"></td>
@@ -302,7 +272,7 @@ if(isset($weShipping)){ // show the shipping which must be edited
 	' . $tblPart . '
 		</tbody>
 	</table>' .
-		we_html_button::create_button('image:btn_function_plus', 'javascript:we_cmd(\'addShippingCostTableRow\',\'12\');'),
+		we_html_button::create_button(we_html_button::PLUS, 'javascript:we_cmd(\'addShippingCostTableRow\',\'12\');'),
 		'noline' => 1
 	);
 	$parts[] = array(
@@ -313,10 +283,10 @@ if(isset($weShipping)){ // show the shipping which must be edited
 	);
 }
 
-echo we_html_multiIconBox::getHTML(
-				'weShipping', "100%", $parts, 30, we_html_button::position_yes_no_cancel(
-						we_html_button::create_button('save', 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button('close', 'javascript:we_cmd(\'close\');')
-				), -1, '', '', false, g_l('modules_shop', '[shipping][shipping_package]')
-		) . '
+echo we_html_multiIconBox::getHTML('weShipping', $parts, 30, we_html_button::position_yes_no_cancel(
+		we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')
+	), -1, '', '', false, g_l('modules_shop', '[shipping][shipping_package]')
+);
+?>
 </form>
-</body></html>';
+</body></html>

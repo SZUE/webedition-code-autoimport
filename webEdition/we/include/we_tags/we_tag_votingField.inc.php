@@ -175,7 +175,7 @@ function we_tag_votingField($attribs){
 										}
 									}
 								}
-								if(isset($GLOBALS['_we_voting']->IsRadio) && $GLOBALS['_we_voting']->IsRadio){
+								if(!empty($GLOBALS['_we_voting']->IsRadio)){
 									$atts['onkeydown'] = '';
 									for($i = 0; $i < $countanswers - 1; $i++){
 										$atts['onkeydown'] .= '_we_voting_answer_' . $GLOBALS['_we_voting']->ID . '_' . $i . '.checked=0;';
@@ -205,7 +205,7 @@ function we_tag_votingField($attribs){
 										}
 									}
 								}
-								if(isset($GLOBALS['_we_voting']->IsRadio) && $GLOBALS['_we_voting']->IsRadio){
+								if(!empty($GLOBALS['_we_voting']->IsRadio)){
 									$atts['onkeydown'] = '';
 									for($i = 0; $i < $countanswers - 1; $i++){
 										$atts['onkeydown'] .= '_we_voting_answer_' . $GLOBALS['_we_voting']->ID . '_' . $i . '.checked=0;';

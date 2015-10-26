@@ -5,13 +5,11 @@ $appName = $controller->getParam('appName');
 
 $page = we_ui_layout_HTMLPage::getInstance();
 
-$page->addJSFile(JS_DIR.'windows.js');
-$page->addJSFile(JS_DIR.'we_showMessage.js');
-$page->addJSFile(JS_DIR.'images.js');
+//$page->addJSFile(JS_DIR.'windows.js');
 
 
 $nodes = array();
-$table = <?php echo (isset($TABLECONSTANT) && !empty($TABLECONSTANT) && $TABLEEXISTS) ? $TABLECONSTANT : "''"; ?>;
+$table = <?php echo (!empty($TABLECONSTANT) && $TABLEEXISTS) ? $TABLECONSTANT : "''"; ?>;
 
 $TreeDiv = new we_ui_layout_Div();
 $TreeDiv->setId('TreeDiv_<?php echo $TOOLNAME; ?>');
@@ -26,7 +24,7 @@ if($table!="") {
 
 $InfoField = new we_ui_layout_Div();
 $InfoField->setId('infoField');
-$InfoField->setStyle('position:absolute;bottom:0px;height:40px;background:url('.IMAGE_DIR.'edit/editfooterback.gif);left:0px;width:100%;margin:0px;');
+$InfoField->setClass('editfooter');
 
 $InfoFieldId = new we_ui_layout_Div();
 $InfoFieldId->setId('infoFieldId');
@@ -48,7 +46,7 @@ function subscribeLabelClick(){
 	weTree = new we_ui_controls_Tree("' . $tree->getId() . '");
 }
 function delaySubcriptionForIE9(){
-	window.setTimeout("subscribeLabelClick()", 1000);
+	window.setTimeout(subscribeLabelClick, 1000);
 }
 	YAHOO.util.Event.addListener(window, "load", delaySubcriptionForIE9());
 
@@ -83,7 +81,7 @@ function delaySubcriptionForIE9(){
 
  	function resizeTreeDiv(){
  		var h = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight;
-		document.getElementById(\''.$TreeDiv->getId().'\').style.height = eval(h-50)+"px";
+		document.getElementById(\''.$TreeDiv->getId().'\').style.height = (h-50)+"px";
 	}
 
 	weEventController.register("delete", function(data, sender) {

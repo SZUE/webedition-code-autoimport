@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -27,7 +26,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $aCols = we_base_request::_(we_base_request::STRING, 'we_cmd');
 $newSCurrId = we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 5);
-require_once('../../mod/shp.php');
+require_once('../../mod/shp.inc.php');
 
 $sJsCode = "
 var _sObjId='" . $newSCurrId . "';
@@ -38,18 +37,16 @@ function init(){
 	parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
 }";
 
-print we_html_element::htmlDocType() . we_html_element::htmlHtml(
-		we_html_element::htmlHead(
-			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[shop_dashboard][headline]') . '&nbsp;' . $interval) . STYLESHEET . we_html_element::jsElement(
-				$sJsCode)) . we_html_element::htmlBody(
-			array(
-			"marginwidth" => 15,
-			"marginheight" => 10,
-			"leftmargin" => 15,
-			"topmargin" => 10,
-			"onload" => "if(parent!=self)init();"
-			), we_html_element::htmlDiv(array(
-				"id" => "shp"
-				), we_html_element::htmlDiv(array('id' => 'shp_data'), $shopDashboard)
+echo we_html_tools::getHtmlTop(g_l('cockpit', '[shop_dashboard][headline]') . '&nbsp;' . $interval, '', '', STYLESHEET . we_html_element::jsElement(
+		$sJsCode), we_html_element::htmlBody(
+		array(
+		"marginwidth" => 15,
+		"marginheight" => 10,
+		"leftmargin" => 15,
+		"topmargin" => 10,
+		"onload" => "if(parent!=self){init();}"
+		), we_html_element::htmlDiv(array(
+			"id" => "shp"
+			), we_html_element::htmlDiv(array('id' => 'shp_data'), $shopDashboard)
 )));
 

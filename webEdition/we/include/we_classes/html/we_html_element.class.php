@@ -72,10 +72,9 @@ abstract class we_html_element{
 	public static function htmlRadioCheckbox(array $attribs = array()){
 		$attribs['type'] = 'checkbox';
 
-		$table = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0), 1, 3);
-		$table->setColContent(0, 0, self::htmlInput($attribs));
-		$table->setColContent(0, 1, we_html_tools::getPixel(4, 2));
-		$table->setColContent(0, 2, self::htmlLabel(array('for' => $name, 'title' => sprintf(g_l('htmlForms', '[click_here]'), $attribs['title']), $attribs['title'])));
+		$table = new we_html_table(array('class' => 'default'), 1, 2);
+		$table->setCol(0, 0, array('style' => "padding-left:2px;"), self::htmlInput($attribs));
+		$table->setColContent(0, 1, self::htmlLabel(array('for' => $name, 'title' => sprintf(g_l('htmlForms', '[click_here]'), $attribs['title']), $attribs['title'])));
 
 		return $table->getHtml();
 	}
@@ -94,11 +93,11 @@ abstract class we_html_element{
 		return we_html_baseElement::getHtmlCode(new we_html_baseElement('style', true, $attribs, $content));
 	}
 
-	public static function jsScript($name){
-		$attribs = array(
-			'src' => self::getUnCache($name),
-			'type' => 'text/javascript',
-		);
+	public static function jsScript($name, $onload = '', $attribs = array()){
+		$attribs['src'] = self::getUnCache($name);
+		if($onload){
+			$attribs['onload'] = $onload;
+		}
 		return we_html_baseElement::getHtmlCode(new we_html_baseElement('script', true, $attribs));
 	}
 
@@ -111,16 +110,17 @@ abstract class we_html_element{
 	 * @return		string
 	 */
 	public static function jsElement($content = '', array $attribs = array()){
-		$attribs['type'] = 'text/javascript';
 		if(strpos($content, '<!--') === FALSE){
 			$content = "<!--\n" . trim($content, " \n") . "\n//-->\n";
 		}
 		return we_html_baseElement::getHtmlCode(new we_html_baseElement('script', true, $attribs, $content));
 	}
 
-	public static function cssLink($url){
-		return we_html_baseElement::getHtmlCode(new we_html_baseElement('link', false, array('href' => self::getUnCache($url), 'rel' => 'styleSheet', 'type' => 'text/css')
-		));
+	public static function cssLink($url, array $attribs = array()){
+		$attribs['href'] = self::getUnCache($url);
+		$attribs['rel'] = 'styleSheet';
+		$attribs['type'] = 'text/css';
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('link', false, $attribs));
 	}
 
 	/**
@@ -221,9 +221,6 @@ abstract class we_html_element{
 	 */
 	public static function htmlBody(array $attribs = array(), $content = ''){
 		$body = new we_html_baseElement('body', true, $attribs, $content);
-		if(!$body->hasStyle('margin')){
-			$body->setStyle('margin', '0px 0px 0px 0px');
-		}
 		return $body->getHTML();
 	}
 
@@ -246,9 +243,30 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 	 */
-	public static function htmlHidden(array $attribs = array()){
-		$attribs['type'] = 'hidden';
+	public static function htmlHidden($name, $value, $id = ''){
+		$attribs = array(
+			'type' => 'hidden',
+			'name' => $name,
+			'value' => strpos($value, '"') !== false ? oldHtmlspecialchars($value) : $value
+		);
+		if($id){
+			$attribs['id'] = $id;
+		}
 		return we_html_baseElement::getHtmlCode(new we_html_baseElement('input', 'selfclose', $attribs));
+	}
+
+	public static function htmlHiddens(array $vals){
+		$ret = '';
+		foreach($vals as $key => $value){
+			if($key){
+				$ret.=we_html_baseElement::getHtmlCode(new we_html_baseElement('input', 'selfclose', array(
+						'name' => $key,
+						'value' => strpos($value, '"') !== false ? oldHtmlspecialchars($value) : $value,
+						'type' => 'hidden'
+				)));
+			}
+		}
+		return $ret;
 	}
 
 	/**
@@ -299,13 +317,11 @@ abstract class we_html_element{
 	 */
 	public static function htmlDocType($version = '4Trans'){
 		switch($version){
+			default:
 			case 5:
 			case '5':
 				return '<!DOCTYPE html>';
-			case 'frameset':
-				return '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">';
 			case '4Trans':
-			default:
 				return '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">';
 		}
 	}
@@ -410,15 +426,18 @@ abstract class we_html_element{
 		return $url . (strstr($url, '?') ? '&amp;' : '?') . $cache;
 	}
 
-	public static function htmlIFrame($name, $src, $style = '', $iframestyle = ''){
-		$iframestyle = empty($iframestyle) ? 'border:0px;width:100%;height:100%;overflow: ' . (we_base_browserDetect::isFF() ? 'auto' : 'hidden') . ';' : $iframestyle;
-		return self::htmlDiv(array('style' => $style, 'name' => $name . 'Div', 'id' => $name . 'Div')
+	public static function htmlIFrame($name, $src, $style = '', $iframestyle = '', $onload = '', $scroll = true, $class = ''){
+		static $isApple = -1;
+		$isApple = ($isApple !== -1 ? $isApple : we_base_browserDetect::inst()->getBrowser() == we_base_browserDetect::APPLE);
+		$iframestyle = $iframestyle ? : 'border:0px;width:100%;height:100%;overflow: ' . (false && we_base_browserDetect::isFF() ? 'auto' : 'hidden') . ';';
+
+		return self::htmlDiv(array('style' => $style, 'name' => $name . 'Div', 'id' => $name . 'Div', 'class' => $class)
 				, we_html_baseElement::getHtmlCode(
-					new we_html_baseElement('iframe', true, array('name' => $name, 'id' => $name, 'frameBorder' => 0, 'src' => $src, 'style' => $iframestyle))
+					new we_html_baseElement('iframe', true, array('name' => $name, 'id' => $name, 'frameBorder' => 0, 'src' => $src, 'style' => $iframestyle, 'onload' => 'try{' . ($scroll ? 'this.contentDocument.body.style.overflow=\'' . ($isApple ? 'scroll !important' : 'auto') . '\';' . ($isApple ? 'this.contentDocument.body.style[\'-webkit-overflow-scrolling\']=\'touch !important\';' : '') : 'this.contentDocument.body.style.overflow=\'hidden\';') . '}catch(e){}' . $onload))
 		));
 	}
 
-	public static function htmlExIFrame($__name, $__src, $__style, $class = ''){
+	public static function htmlExIFrame($__name, $__src, $__style = '', $class = ''){
 		if(strpos($__src, $_SERVER['DOCUMENT_ROOT']) === 0){
 			ob_start();
 			include $__src;
@@ -426,11 +445,7 @@ abstract class we_html_element{
 		} else {
 			$tmp = $__src;
 		}
-		$tmpArray = array('style' => $__style, 'name' => $__name . 'Div', 'id' => $__name . 'Div');
-		if(!empty($class)){
-			$tmpArray['class'] = $class;
-		}
-		return self::htmlDiv($tmpArray, $tmp);
+		return self::htmlDiv(array('style' => $__style, 'name' => $__name . 'Div', 'id' => $__name . 'Div', 'class' => $class), $tmp);
 	}
 
 }

@@ -97,6 +97,7 @@ class we_wysiwyg_ToolbarButton extends we_wysiwyg_ToolbarElement{
 			case 'unlink':
 				return parent::hasProp('', $contextMenu) || parent::hasProp('link', $contextMenu);
 			case 'insertimage':
+			case 'insertgallery':
 			case 'hr':
 			case 'inserthorizontalrule':
 			case 'insertspecialchar':

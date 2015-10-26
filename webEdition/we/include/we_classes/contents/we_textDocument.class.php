@@ -32,7 +32,6 @@ class we_textDocument extends we_document{
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_VALIDATION, we_base_constants::WE_EDITPAGE_VERSIONS);
 		}
 		$this->setElement('Charset', DEFAULT_CHARSET, 'attrib');
-		$this->Icon = we_base_ContentTypes::FILE_ICON;
 	}
 
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
@@ -40,13 +39,15 @@ class we_textDocument extends we_document{
 	function editor(){
 
 		switch($this->EditPageNr){
+			default:
+				$_SESSION['weS']['EditPageNr'] = $this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
 			case we_base_constants::WE_EDITPAGE_PROPERTIES:
-				return 'we_templates/we_editor_properties.inc.php';
+				return 'we_editors/we_editor_properties.inc.php';
 			case we_base_constants::WE_EDITPAGE_INFO:
-				return 'we_templates/we_editor_info.inc.php';
+				return 'we_editors/we_editor_info.inc.php';
 			case we_base_constants::WE_EDITPAGE_CONTENT:
 				$GLOBALS['we_editmode'] = true;
-				return 'we_templates/we_srcTmpl.inc.php';
+				return 'we_editors/we_srcTmpl.inc.php';
 			case we_base_constants::WE_EDITPAGE_PREVIEW:
 				if($GLOBALS['we_EDITOR']){
 					$GLOBALS['we_file_to_delete_after_include'] = TEMP_PATH . we_base_file::getUniqueId() . $this->Extension;
@@ -56,13 +57,9 @@ class we_textDocument extends we_document{
 				$GLOBALS['we_editmode'] = false;
 				return 'we_templates/we_srcTmpl.inc.php';
 			case we_base_constants::WE_EDITPAGE_VALIDATION:
-				return 'we_templates/validateDocument.inc.php';
+				return 'we_editors/validateDocument.inc.php';
 			case we_base_constants::WE_EDITPAGE_VERSIONS:
 				return 'we_editors/we_editor_versions.inc.php';
-			default:
-				$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
-				$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PROPERTIES;
-				return 'we_templates/we_editor_properties.inc.php';
 		}
 		return $this->TemplatePath;
 	}
@@ -80,17 +77,21 @@ class we_textDocument extends we_document{
 		return parent::isValidEditPage($editPageNr);
 	}
 
-	private static function replaceWEIDs($doc){
+	function replaceWEIDs($doc = '', $registerOnly = false){
+		$doc = $doc ? : parent::i_getDocumentToSave();
 		$matches = array();
 		if(preg_match_all('|#WE:(\d+)#|', $doc, $matches)){
 			$matches = array_unique($matches[1], SORT_NUMERIC);
-			if(!$matches){
-				return $doc;
-			}
-			$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE'], true);
-			$paths = id_to_path($matches, FILE_TABLE, $GLOBALS['DB_WE'], false, true);
-			foreach($paths as $match => $path){
-				$doc = str_replace('#WE:' . $match . '#', ($urlReplace ? preg_replace($urlReplace, array_keys($urlReplace), $path) : $path), $doc);
+			$this->MediaLinks = $matches;
+			if(!$registerOnly){
+				if(!$matches){
+					return $doc;
+				}
+				$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE'], true);
+				$paths = id_to_path($matches, FILE_TABLE, $GLOBALS['DB_WE'], false, true);
+				foreach($paths as $match => $path){
+					$doc = str_replace('#WE:' . $match . '#', ($urlReplace ? preg_replace($urlReplace, array_keys($urlReplace), $path) : $path), $doc);
+				}
 			}
 		}
 		return $doc;
@@ -115,7 +116,12 @@ class we_textDocument extends we_document{
 				return false;
 			}
 		}
-		return parent::we_save($resave, $skipHook);
+
+		if(($ret = parent::we_save($resave, $skipHook))){
+			$ret = $this->registerMediaLinks(true, true);
+		}
+
+		return $ret;
 	}
 
 	protected function i_writeSiteDir($doc){
@@ -173,7 +179,7 @@ class we_textDocument extends we_document{
 				}
 			//no break;
 			case we_base_ContentTypes::JS:
-				$doc = self::replaceWEIDs($doc);
+				$doc = $this->replaceWEIDs($doc);
 				//FIXME: write all dependend files to database link, this should be the same table, as used for media queries in 6.5
 				break;
 			default:
@@ -183,6 +189,17 @@ class we_textDocument extends we_document{
 
 	function formParseFile(){
 		return we_html_forms::checkboxWithHidden((bool) $this->parseFile, 'we_' . $this->Name . '_parseFile', g_l('weClass', '[parseFile]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
+	}
+
+	public function getPropertyPage(){
+
+		echo we_html_multiIconBox::getHTML('PropertyPage', array(
+			array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => 120),
+			($this->ContentType == we_base_ContentTypes::CSS ? array('icon' => 'doc.gif', 'headline' => g_l('weClass', '[document]'), 'html' => $this->formParseFile(), 'space' => 140) : null),
+			array('icon' => 'charset.gif', 'headline' => g_l('weClass', '[Charset]'), 'html' => $this->formCharset(), 'space' => 120),
+			array('icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners(), 'space' => 120),
+			array('icon' => 'copy.gif', 'headline' => g_l('weClass', '[copy' . $this->ContentType . ']'), 'html' => $this->formCopyDocument(), 'space' => 120))
+		);
 	}
 
 }

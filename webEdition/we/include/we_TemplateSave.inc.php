@@ -27,9 +27,8 @@ if(!($trans = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', 0, 1)))
 
 we_html_tools::protect();
 
-echo we_html_tools::getHtmlTop() .
- we_html_element::jsScript(JS_DIR . 'windows.js') .
- we_html_element::jsElement('url="' . WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array(
+echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '',
+	we_html_element::jsElement('var url=WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?' . http_build_query(array(
 			'we_cmd' => array(
 				0 => 'save_document',
 				1 => $trans,
@@ -39,12 +38,7 @@ echo we_html_tools::getHtmlTop() .
 			),
 			'we_transaction' => $trans,
 			'we_complete_request' => 1
-				), null, '&') .
+			), null, '&') .
 		'";
-new jsWindow(url,"templateSaveQuestion",-1,-1,400,170,true,false,true);
-');
-?>
-</head>
-<body>
-</body>
-</html>
+new (WE().util.jsWindow)(window, url,"templateSaveQuestion",-1,-1,400,170,true,false,true);
+'), '<body></body>');

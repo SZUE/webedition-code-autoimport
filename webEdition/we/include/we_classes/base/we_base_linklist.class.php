@@ -24,7 +24,6 @@
  */
 class we_base_linklist{
 	private $name = "";
-	private $sString = "";
 	private $listArray;
 	private $db;
 	private $rollScript = "";
@@ -38,20 +37,15 @@ class we_base_linklist{
 	private $cnt = 0;
 	private $pos = -1;
 
-	function __construct($sString, $hidedirindex = false, $objectseourls = false, $docName = '', $attribs = array()){
-		$this->sString = $sString;
+	function __construct(array $listArray, $hidedirindex = false, $objectseourls = false, $docName = '', $attribs = array()){
 		$this->hidedirindex = $hidedirindex;
 		$this->objectseourls = $objectseourls;
 		$this->docName = $docName;
 		$this->attribs = $attribs;
-		$this->listArray = $sString && $sString{0} === 'a' ? unserialize($sString) : array();
-		if(!is_array($this->listArray)){
-			$this->listArray = array();
-		} else {
-			ksort($this->listArray, SORT_NUMERIC);
-		}
-		$limit = isset($attribs['limit']) && $attribs['limit'] > 0 ? abs($attribs['limit']) : 0;
-		$editmode = (isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"] && (!isset($GLOBALS["lv"])));
+		$this->listArray = $listArray;
+		ksort($this->listArray, SORT_NUMERIC);
+		$limit = !empty($attribs['limit']) ? abs($attribs['limit']) : 0;
+		$editmode = (!empty($GLOBALS["we_editmode"]) && (!isset($GLOBALS["lv"])));
 		if(!$editmode){
 			$this->show = count($this->listArray);
 			if($limit > 0 && $this->show > $limit){
@@ -160,7 +154,7 @@ class we_base_linklist{
 			$lattribs[$n] = $v;
 		}
 
-		if(isset($jswinAttribs) && is_array($jswinAttribs) && isset($jswinAttribs["jswin"]) && $jswinAttribs["jswin"]){ //popUp
+		if(isset($jswinAttribs) && is_array($jswinAttribs) && !empty($jswinAttribs["jswin"])){ //popUp
 			$js = "var we_winOpts = '';";
 			if($jswinAttribs["jscenter"] && $jswinAttribs["jswidth"] && $jswinAttribs["jsheight"]){
 				$js .= 'if (window.screen) {var w = ' . $jswinAttribs["jswidth"] . ';var h = ' . $jswinAttribs["jsheight"] . ';var screen_height = screen.availHeight - 70;var screen_width = screen.availWidth-10;var w = Math.min(screen_width,w);var h = Math.min(screen_height,h);var x = (screen_width - w) / 2;var y = (screen_height - h) / 2;we_winOpts = \'left=\'+x+\',top=\'+y;}else{we_winOpts=\'\';};';
@@ -180,7 +174,7 @@ class we_base_linklist{
 				'we_winOpts += (we_winOpts ? \',\' : \'\')+\'menubar=' . ($jswinAttribs["jsmenubar"] ? 'yes' : 'no') . '\';' .
 				'we_winOpts += (we_winOpts ? \',\' : \'\')+\'resizable=' . ($jswinAttribs["jsresizable"] ? 'yes' : 'no') . '\';' .
 				'we_winOpts += (we_winOpts ? \',\' : \'\')+\'location=' . ($jswinAttribs["jslocation"] ? 'yes' : 'no') . '\';' .
-				'we_winOpts += (we_winOpts ? \',\' : \'\')+\'toolbar=' . (isset($jswinAttribs["jstoolbar"]) && $jswinAttribs["jstoolbar"] ? 'yes' : 'no') . '\';';
+				'we_winOpts += (we_winOpts ? \',\' : \'\')+\'toolbar=' . (!empty($jswinAttribs["jstoolbar"]) ? 'yes' : 'no') . '\';';
 			$foo = $js . "var we_win = window.open('','" . "we_ll_" . key($this->listArray) . "',we_winOpts);";
 
 			$lattribs = removeAttribs($lattribs, array('name', 'href', 'onClick'));
@@ -215,10 +209,10 @@ class we_base_linklist{
 			$this->cache[$id] = getHash('SELECT IsDynamic,Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->db);
 		}
 		$row = $this->cache[$id];
-		if(isset($row['Path']) && $this->hidedirindex){
-			$path_parts = pathinfo($row["Path"]);
-			if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-				$row["Path"] = ($path_parts['dirname'] != DIRECTORY_SEPARATOR ? $path_parts['dirname'] : '') . DIRECTORY_SEPARATOR;
+		if($this->hidedirindex && isset($row['Path'])){
+			$path_parts = pathinfo($row['Path']);
+			if(seoIndexHide($path_parts['basename'])){
+				$row['Path'] = ($path_parts['dirname'] != DIRECTORY_SEPARATOR ? $path_parts['dirname'] : '') . DIRECTORY_SEPARATOR;
 			}
 		}
 
@@ -326,7 +320,7 @@ class we_base_linklist{
 	}
 
 	function getString(){
-		return ($this->listArray ? serialize($this->listArray) : '');
+		return ($this->listArray ? we_serialize($this->listArray, 'json') : '');
 	}
 
 	//added for #7269
@@ -452,30 +446,27 @@ class we_base_linklist{
 			return $ret & ($this->length() > 0);
 		}
 
-		$editmode = (isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"] && (!isset($GLOBALS["lv"])));
+		$editmode = (!empty($GLOBALS["we_editmode"]) && (!isset($GLOBALS["lv"])));
 
 		if($editmode){
 			$disabled = ($this->show > 0 && $this->length() >= $this->show);
-			$plusbut = we_html_button::create_button(
-					"image:btn_add_link", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('insert_link_at_linklist','" . $this->attribs["name"] . "','" . key($this->listArray) . "')", true, 100, 22, "", "", $disabled);
+			$plusbut = we_html_button::create_button("fa:btn_add_link,fa-plus,fa-lg fa-link", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('insert_link_at_linklist','" . $this->attribs["name"] . "','" . key($this->listArray) . "')", true, 100, 22, "", "", $disabled);
 			if($ret === false){
-				if(isset($GLOBALS["we_list_inserted"]) && isset($GLOBALS["we_list_inserted"]) && ($GLOBALS["we_list_inserted"] == $this->attribs["name"])){
-					echo we_html_element::jsElement('we_cmd(\'edit_linklist\',\'' . $this->attribs["name"] . '\',\'' . ((isset(
-							$GLOBALS["we_list_insertedNr"]) && $GLOBALS["we_list_insertedNr"] ) ? $GLOBALS["we_list_insertedNr"] : $this->getMaxListNrID()) . '\');');
+				if(isset($GLOBALS["we_list_inserted"]) && ($GLOBALS["we_list_inserted"] == $this->attribs["name"])){
+					echo we_html_element::jsElement('we_cmd("edit_linklist","' . $this->attribs["name"] . '","' . (!empty($GLOBALS["we_list_insertedNr"]) ? $GLOBALS["we_list_insertedNr"] : $this->getMaxListNrID()) . '");');
 				}
 				if($this->show == -1 || ($this->show > $this->length())){
-					echo "<br/>" . we_html_button::create_button("image:btn_add_link", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('add_link_to_linklist','" . $this->attribs["name"] . "')", true, 100, 22, "", "", $disabled) .
-					'<input type="hidden" name="we_' . $this->docName . '_linklist[' . $this->attribs["name"] . ']" value="' . oldHtmlspecialchars(
-						$this->getString()) . '" />' . ($this->length() ? '' : $plusbut);
+					echo "<br/>" . we_html_button::create_button("fa:btn_add_link,fa-plus,fa-lg fa-link", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('add_link_to_linklist','" . $this->attribs["name"] . "')", true, 100, 22, "", "", $disabled) .
+					we_html_element::htmlHidden('we_' . $this->docName . '_linklist[' . $this->attribs["name"] . ']', $this->getString()) . ($this->length() ? '' : $plusbut);
 				}
 			} else {
 				// Create button object
 				// Create buttons
-				$upbut = we_html_button::create_button("image:btn_direction_up", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('up_link_at_list','" . $this->attribs["name"] . "','" . key($this->listArray) . "')", true, 0, 0, "", "", !($this->cnt > 0));
-				$downbut = we_html_button::create_button("image:btn_direction_down", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('down_link_at_list','" . $this->attribs["name"] . "','" . key($this->listArray) . "')", true, 0, 0, "", "", !($this->cnt < (count($this->listArray) - 1)));
-				$editbut = we_html_button::create_button("image:btn_edit_link", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('edit_linklist','" . $this->attribs["name"] . "','" . key($this->listArray) . "')", true);
-				$trashbut = we_html_button::create_button("image:btn_function_trash", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('delete_linklist','" . $this->attribs["name"] . "','" . key($this->listArray) . "','')", true);
-				echo we_html_button::create_button_table(array($plusbut, $upbut, $downbut, $editbut, $trashbut), 5);
+				$upbut = we_html_button::create_button(we_html_button::DIRUP, "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('up_link_at_list','" . $this->attribs["name"] . "','" . key($this->listArray) . "')", true, 0, 0, "", "", !($this->cnt > 0));
+				$downbut = we_html_button::create_button(we_html_button::DIRDOWN, "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('down_link_at_list','" . $this->attribs["name"] . "','" . key($this->listArray) . "')", true, 0, 0, "", "", !($this->cnt < (count($this->listArray) - 1)));
+				$editbut = we_html_button::create_button("fa:btn_edit_link,fa-lg fa-pencil,fa-lg fa-link", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('edit_linklist','" . $this->attribs["name"] . "','" . key($this->listArray) . "')", true);
+				$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('delete_linklist','" . $this->attribs["name"] . "','" . key($this->listArray) . "','')", true);
+				echo $plusbut . $upbut . $downbut . $editbut . $trashbut;
 			}
 		}
 		$ret&= next($this->listArray);
@@ -620,16 +611,15 @@ class we_base_linklist{
 	}
 
 	function mta($hash, $key){
-		return (isset($hash[$key]) && $hash[$key]) ? (' ' . $key . '="' . $hash[$key] . '"') : '';
+		return (!empty($hash[$key]) ? (' ' . $key . '="' . $hash[$key] . '"') : '');
 	}
 
 	function last(){
-		$editmode = (isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"] && (!isset($GLOBALS["lv"])));
+		$editmode = (!empty($GLOBALS["we_editmode"]) && (!isset($GLOBALS["lv"])));
 		if($editmode && ($this->show == -1 || ($this->show > $this->length()))){
-			echo "<br/>" . we_html_button::create_button(
-				"image:btn_add_link", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('add_link_to_linklist','" . $this->attribs["name"] . "')", true, 100, 22, "", "", false);
-			echo '<input type="hidden" name="we_' . $this->docName . '_linklist[' . $this->attribs["name"] . ']" value="' . oldHtmlspecialchars(
-				$this->getString()) . '" />';
+			echo "<br/>" .
+			we_html_button::create_button("fa:btn_add_link,fa-plus,fa-lg fa-link", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('add_link_to_linklist','" . $this->attribs["name"] . "')", true, 100, 22, "", "", false) .
+			we_html_element::htmlHidden('we_' . $this->docName . '_linklist[' . $this->attribs["name"] . ']', $this->getString());
 		}
 	}
 

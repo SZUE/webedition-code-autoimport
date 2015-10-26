@@ -26,29 +26,29 @@
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-$aCols = we_base_request::_(we_base_request::STRINGC, 'we_cmd');
-require_once('../../mod/mfd.php');
-
+$aCols = we_base_request::_(we_base_request::STRING, 'we_cmd');
+require_once('../../mod/mfd.inc.php');
 $sJsCode = "
 var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5) . "';
 var _sType='mfd';
-var _sTb='" . g_l('cockpit', '[last_modified]') . "';
+WE().consts.g_l.cockpit.mfd={
+	last_modified:'" . g_l('cockpit', '[last_modified]') . "'
+};
 
 function init(){
-	parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
+	WE().util.setIconOfDocClass(document,'mfdIcon');
+	parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),WE().consts.g_l.cockpit.mfd.last_modified);
 }";
 
-echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
-		we_html_element::htmlHead(
-			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[last_modified]')) . STYLESHEET . we_html_element::jsElement(
-				$sJsCode)) . we_html_element::htmlBody(
-			array(
+echo we_html_tools::getHtmlTop(g_l('cockpit', '[last_modified]'), '', '', STYLESHEET .
+		we_html_element::jsElement($sJsCode), we_html_element::htmlBody(
+				array(
 			"marginwidth" => 15,
 			"marginheight" => 10,
 			"leftmargin" => 15,
 			"topmargin" => 10,
-			"onload" => "if(parent!=self)init();"
-			), we_html_element::htmlDiv(array(
-				"id" => "mfd"
-				), we_html_element::htmlDiv(array('id' => 'mfd_data'), $lastModified)
+			"onload" => 'init();'
+				), we_html_element::htmlDiv(array(
+					'id' => 'mfd'
+						), we_html_element::htmlDiv(array('id' => 'mfd_data'), $lastModified)
 )));

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -31,7 +30,6 @@
  * Description: Provides functions for creating html tags
  */
 class we_html_baseElement{
-
 	var $uid;
 	var $tag_name = '';
 	var $need_end_tag = true;

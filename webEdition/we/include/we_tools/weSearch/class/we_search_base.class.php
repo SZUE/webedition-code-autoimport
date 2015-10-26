@@ -152,40 +152,34 @@ class we_search_base{
 	function countitems($where = '', $table = ''){
 		$this->table = ($table ? : ($this->table ? : ''));
 
-		if($this->table){
-			$this->where = ($where ? : ($this->where ? : '1'));
-			return f('SELECT COUNT(1) FROM ' . $this->db->escape($this->table) . ' WHERE ' . $this->where, '', $this->db);
+		if(!$this->table){
+			return -1;
 		}
-		return -1;
+		$this->where = ($where ? : ($this->where ? : '1'));
+		return f('SELECT COUNT(1) FROM ' . $this->db->escape($this->table) . ' WHERE ' . $this->where, '', $this->db);
 	}
 
 	function searchquery($where = '', $get = '*', $table = '', $order = '', $limit = ''){
+		$this->table = ($table ? : $this->table);
 
-		$this->table = ($table ? : ($this->table ? : ''));
-
-		if($this->table){
-			$this->where = (empty($where)) ? ((empty($this->where)) ? '' : ' WHERE ' . $this->where) : ' WHERE ' . $where;
-			$this->get = (empty($get)) ? ((empty($this->get)) ? '*' : $this->get) : $get;
-			$this->Order = (!empty($order)) ? $order : $this->Order;
-			$order = ((empty($this->Order)) ? '' : ' ORDER BY ' . $this->Order);
-
-			$this->limit = ' ' . $this->searchstart . ',' . $this->anzahl . ' ';
-
-			$this->limit = ' LIMIT ' . ($limit ? : $this->limit);
-
-			$this->db->query('SELECT ' . rtrim($this->get, ',') . ' FROM ' . $this->db->escape($this->table) . ' ' . $this->where . ' ' . $order . ' ' . $this->limit);
-		} else {
+		if(!$this->table){
 			return -1;
 		}
+		$this->where = ($where? : $this->where);
+		$this->get = ($get? : rtrim($this->get, ',')? : '*' );
+		$this->Order = ($order? : $this->Order);
+
+		$this->limit = ' LIMIT ' . ($limit ? : $this->searchstart . ',' . $this->anzahl . ' ');
+
+		$this->db->query('SELECT ' . $this->get . ' FROM ' . $this->db->escape($this->table) . ' ' . ($this->where ? ' WHERE ' . $this->where : '') . ' ' . ($this->Order ? ' ORDER BY ' . $this->Order : '') . ' ' . $this->limit);
 	}
 
 	function setlimit($anzahl = '', $searchstart = ''){
 		$this->anzahl = ($anzahl ? : ($this->anzahl ? : $this->defaultanzahl));
 		$this->searchstart = ($searchstart ? : ($this->searchstart ? : '0'));
 
-		$this->limit = ' ' . $this->searchstart . ',' . $this->anzahl . ' ';
 
-		return $this->limit;
+		return ($this->limit = ' ' . $this->searchstart . ',' . $this->anzahl . ' ');
 	}
 
 	function getlimit(){
@@ -212,39 +206,6 @@ class we_search_base{
 		$this->get = $z;
 	}
 
-	function getJSinWElistnavigation($name){
-		return $this->getJSinWEforwardbackward($name) . $this->getJSinWEorder($name);
-	}
-
-	function getJSinWEforwardbackward($name){
-		return we_html_element::jsScript(JS_DIR . 'tooltip.js') . we_html_element::jsElement('
-_EditorFrame.setEditorIsHot(false);
-
-function next(){
-	document.we_form.elements[\'SearchStart\'].value = parseInt(document.we_form.elements[\'SearchStart\'].value) + ' . $this->anzahl . ';
-	top.we_cmd("reload_editpage");
-}
-function back(){
-	document.we_form.elements[\'SearchStart\'].value = parseInt(document.we_form.elements[\'SearchStart\'].value) - ' . $this->anzahl . ';
-	top.we_cmd("reload_editpage");
-}');
-	}
-
-	function getJSinWEorder($name){
-		return we_html_element::jsElement('
-function setOrder(order){
-
-	foo = document.we_form.elements[\'Order\'].value;
-
-	if(((foo.substring(foo.length-5,foo.length) == " DESC") && (foo.substring(0,order.length-5) == order)) || foo != order){
-		document.we_form.elements[\'Order\'].value=order;
-	}else{
-		document.we_form.elements[\'Order\'].value=order+" DESC";
-	}
-	top.we_cmd("reload_editpage");
-}');
-	}
-
 	static function getLocation($name = 'locationField', $select = '', $size = 1){
 		return we_html_tools::htmlSelect($name, we_search_search::getLocation(), $size, $select);
 	}
@@ -258,28 +219,25 @@ function setOrder(order){
 	}
 
 	function getNextPrev($we_search_anzahl){
-		$out = '<table cellpadding="0" cellspacing="0" border="0">
+		$out = '<table class="default">
 <tr>
 	<td>' .
 			($this->searchstart ?
-				we_html_button::create_button('back', 'javascript:back();') : //bt_back
-				we_html_button::create_button('back', '', true, 100, 22, '', '', true)
+				we_html_button::create_button(we_html_button::BACK, 'javascript:back();') : //bt_back
+				we_html_button::create_button(we_html_button::BACK, '', true, 100, 22, '', '', true)
 			) . '
 	</td>
-	<td>' . we_html_tools::getPixel(10, 2) . '</td>
 	<td class="defaultfont"><b>' . (($we_search_anzahl) ? $this->searchstart + 1 : 0) . '-' .
 			(($we_search_anzahl - $this->searchstart) < $this->anzahl ?
 				$we_search_anzahl :
 				$this->searchstart + $this->anzahl) .
 			' ' . g_l('global', '[from]') . ' ' . $we_search_anzahl . '</b></td>
-	<td>' . we_html_tools::getPixel(10, 2) . '</td>
 	<td>' .
 			(($this->searchstart + $this->anzahl) < $we_search_anzahl ?
-				we_html_button::create_button("next", "javascript:next();") : //bt_back
+				we_html_button::create_button(we_html_button::NEXT, "javascript:next();") : //bt_back
 
-				we_html_button::create_button("next", "", true, 100, 22, "", "", true)) .
+				we_html_button::create_button(we_html_button::NEXT, "", true, 100, 22, "", "", true)) .
 			'</td>
-	<td>' . we_html_tools::getPixel(10, 2) . '</td>
 	<td>';
 
 		$pages = array();
@@ -289,14 +247,13 @@ function setOrder(order){
 
 		$page = ceil($this->searchstart / $this->anzahl) * $this->anzahl;
 
-		$select = we_html_tools::htmlSelect("page", $pages, 1, $page, false, array("onchange" => "this.form.elements['SearchStart'].value = this.value;we_cmd('reload_editpage');"));
-		if(!defined('SearchStart')){
+		$select = we_html_tools::htmlSelect("page", $pages, 1, $page, false, array("onchange" => "this.form.elements.SearchStart.value = this.value;we_cmd('reload_editpage');"));
+		if(!defined('SearchStart')){//we need this, since pager is shown above & under the results
 			define("SearchStart", true);
 			$out .= we_html_tools::hidden("SearchStart", $this->searchstart);
 		}
 
-		$out .= $select . '</td></tr></table>';
-		return $out;
+		return $out . $select . '</td></tr></table>';
 	}
 
 	function next_record(){

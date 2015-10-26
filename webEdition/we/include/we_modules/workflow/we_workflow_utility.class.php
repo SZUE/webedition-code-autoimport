@@ -117,7 +117,7 @@ abstract class we_workflow_utility{
 	 */
 	static function getWorkflowDocumentID($docID, $table, $status = we_workflow_document::STATUS_UNKNOWN){
 		$doc = self::getWorkflowDocument($docID, $table, $status);
-		return (isset($doc->ID) && $doc->ID ? $doc->ID : false);
+		return (!empty($doc->ID) ? $doc->ID : false);
 	}
 
 	/**
@@ -159,7 +159,7 @@ abstract class we_workflow_utility{
 
 	static function inWorkflow($docID, $table, we_database_base $db = null){
 		$doc = self::getWorkflowDocument($docID, $table, we_workflow_document::STATUS_UNKNOWN, $db);
-		return (isset($doc->ID) && $doc->ID);
+		return (!empty($doc->ID));
 	}
 
 	static function isWorkflowFinished($docID, $table){
@@ -314,7 +314,7 @@ abstract class we_workflow_utility{
 
 	static function getLogButton($docID, $table){
 		$type = self::getTypeForTable($table);
-		return we_html_button::create_button("logbook", "javascript:new jsWindow('" . WE_WORKFLOW_MODULE_DIR . "edit_workflow_frameset.php?pnt=log&art=" . $docID . "&type=" . $type . "','workflow_history',-1,-1,640,480,true,false,true);");
+		return we_html_button::create_button("logbook", "javascript:new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=workflow&pnt=log&art=" . $docID . "&type=" . $type . "','workflow_history',-1,-1,640,480,true,false,true);");
 	}
 
 }

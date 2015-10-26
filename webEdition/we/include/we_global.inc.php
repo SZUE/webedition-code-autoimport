@@ -21,9 +21,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-if(isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == str_replace(dirname(__FILE__), '', __FILE__)){
-	exit();
-}
 
 function weFileExists($id, $table = FILE_TABLE, we_database_base $db = NULL){
 	t_e('deprecated', __FUNCTION__);
@@ -50,7 +47,7 @@ function makePIDTail($pid, $cid, we_database_base $db = null, $table = FILE_TABL
 	}
 	$cid = intval($cid);
 	$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($cid), '', $db);
-	$fooArr = unserialize($foo);
+	$fooArr = we_unserialize($foo);
 	$flag = (isset($fooArr['WorkspaceFlag']) ? $fooArr['WorkspaceFlag'] : 1);
 	$pid_tail = array();
 	if($flag){
@@ -189,17 +186,13 @@ function we_getParentIDs($table, $id, &$ids, we_database_base $db = null){
  * @return type
  */
 function makeArrayFromCSV($csv){
-	$csv = trim(str_replace('\\,', '###komma###', $csv), ',');
+	$csv = trim($csv, ',');
 
 	if($csv === ''){
 		return array();
 	}
 
-	$foo = explode(',', $csv);
-	foreach($foo as &$f){
-		$f = trim(str_replace('###komma###', ',', $f));
-	}
-	return $foo;
+	return explode(',', $csv);
 }
 
 /**
@@ -282,41 +275,22 @@ function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, we_database_base $db = 
 	return false;
 }
 
-function path_to_id($path, $table = FILE_TABLE, we_database_base $db = null){
-	//FIXME: make them all use $db at call
-	if($path === '/'){
-		return 0;
+function path_to_id($path, $table = FILE_TABLE, we_database_base $db = null, $asArray = false){
+	if(empty($path)){
+		return $asArray ? array() : '';
+	}
+	if(!is_array($path)){
+		$path = array($path);
 	}
 	$db = ($db ? : new DB_WE());
-	return intval(f('SELECT ID FROM ' . $db->escape($table) . ' WHERE Path="' . $db->escape($path) . '" LIMIT 1', '', $db));
-}
-
-function weConvertToIds($paths, $table){
-	if(!is_array($paths)){
-		return array();
-	}
-	$paths = array_unique($paths);
-	$ids = array();
-	foreach($paths as $p){
-		$ids[] = path_to_id($p, $table);
-	}
-	return $ids;
-}
-
-function path_to_id_ct($path, $table, &$contentType){
-	if($path === '/'){
-		return 0;
-	}
-	$db = new DB_WE();
-	$res = getHash('SELECT ID,ContentType FROM ' . $db->escape($table) . ' WHERE Path="' . $db->escape($path) . '"', $db);
-	$contentType = isset($res['ContentType']) ? $res['ContentType'] : null;
-
-	return intval(isset($res['ID']) ? $res['ID'] : 0);
+	$db->query('SELECT ID FROM ' . $db->escape($table) . ' WHERE Path IN ("' . implode('","', array_map('escape_sql_query', array_map('trim', $path))) . '")');
+	$ret = (in_array('/', $path) ? array(0) : array()) + $db->getAll(true);
+	return $asArray ? $ret : implode(',', $ret);
 }
 
 function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $prePostKomma = false, $asArray = false, $endslash = false, $isPublished = false){
 	if(!is_array($IDs) && !$IDs){
-		return ($asArray ? array('/') : '/');
+		return ($asArray ? array(0 => '/') : '/');
 	}
 
 	$db = $db ? : new DB_WE();
@@ -338,7 +312,7 @@ function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $pre
 			}
 		}
 	}
-	return $asArray ? $foo : makeCSVFromArray($foo, $prePostKomma);
+	return $asArray ? $foo : implode(',', $foo);
 }
 
 /**
@@ -423,22 +397,13 @@ function pushChilds(&$arr, $id, $table = FILE_TABLE, $isFolder = '', we_database
 	}
 }
 
-function uniqueCSV($csv, $prePost = false){
-	$arr = array_unique(makeArrayFromCSV($csv));
-	$foo = array();
-	foreach($arr as $v){
-		$foo[] = $v;
-	}
-	return makeCSVFromArray($foo, $prePost);
-}
-
-function get_ws($table = FILE_TABLE, $prePostKomma = false, $asArray = false){
+function get_ws($table = FILE_TABLE, $asArray = false){
 	if(isset($_SESSION) && isset($_SESSION['perms'])){
 		if(permissionhandler::hasPerm('ADMINISTRATOR')){
 			return $asArray ? array() : '';
 		}
-		if($_SESSION['user']['workSpace'] && isset($_SESSION['user']['workSpace'][$table]) && $_SESSION['user']['workSpace'][$table] != ''){
-			return $asArray ? $_SESSION['user']['workSpace'][$table] : makeCSVFromArray($_SESSION['user']['workSpace'][$table], $prePostKomma);
+		if($_SESSION['user']['workSpace'] && !empty($_SESSION['user']['workSpace'][$table])){
+			return $asArray ? $_SESSION['user']['workSpace'][$table] : implode(',', $_SESSION['user']['workSpace'][$table]);
 		}
 	}
 	return $asArray ? array() : '';
@@ -512,8 +477,8 @@ function getWsQueryForSelector($tab, $includingFolders = true){
 	return ' AND (' . implode(' OR ', $wsQuery) . ')';
 }
 
-function get_def_ws($table = FILE_TABLE, $prePostKomma = false){
-	if(!get_ws($table, $prePostKomma)){ // WORKARROUND
+function get_def_ws($table = FILE_TABLE){
+	if(!get_ws($table)){ // WORKARROUND
 		return '';
 	}
 	if(permissionhandler::hasPerm('ADMINISTRATOR')){
@@ -521,10 +486,10 @@ function get_def_ws($table = FILE_TABLE, $prePostKomma = false){
 	}
 
 	$foo = f('SELECT workSpaceDef FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']['ID']), '', new DB_WE());
-	$ws = makeCSVFromArray(makeArrayFromCSV($foo), $prePostKomma);
+	$ws = implode(',', explode(',', $foo));
 
 	if(!$ws){
-		$wsA = makeArrayFromCSV(get_ws($table, $prePostKomma));
+		$wsA = explode(',', get_ws($table));
 		return ($wsA ? $wsA[0] : '');
 	}
 	return $ws;
@@ -562,12 +527,7 @@ function t_e($type = 'warning'){
 			break;
 		case 'deprecated':
 			$inc = true;
-			if(defined('E_USER_DEPRECATED')){ //not defined in php <5.3; write warning instead
-				$type = E_USER_DEPRECATED;
-			} else {
-				$data[] = 'DEPRECATED';
-				$type = E_USER_NOTICE;
-			}
+			$type = E_USER_DEPRECATED;
 			break;
 		case 'warning':
 			$inc = true;
@@ -586,7 +546,7 @@ function t_e($type = 'warning'){
 		}
 	}
 
-	if(count($data) > 0){
+	if($data){
 		trigger_error(implode("\n---------------------------------------------------\n", $data), $type);
 	}
 }
@@ -611,7 +571,7 @@ function we_mail($recipient, $subject, $txt, $from = '', $replyTo = ''){
 		$txt = str_replace("\n", "\r\n", $txt);
 	}
 
-	$phpmail = new we_util_Mailer($recipient, $subject, $from, $replyTo);
+	$phpmail = new we_helpers_mail($recipient, $subject, $from, $replyTo);
 	$phpmail->setCharSet($GLOBALS['WE_BACKENDCHARSET']);
 	$txtMail = strip_tags($txt);
 	if($txt != $txtMail){
@@ -673,16 +633,6 @@ function getUploadMaxFilesize($mysql = false, we_database_base $db = null){
 	return (intval(FILE_UPLOAD_MAX_UPLOAD_SIZE) == 0 ?
 			$min :
 			min(FILE_UPLOAD_MAX_UPLOAD_SIZE * 1024 * 1024, $min));
-}
-
-/**
- *
- * @param we_database_base $db
- * @return type
- * @deprecated since version 6.3.8
- */
-function getMaxAllowedPacket(we_database_base $db){
-	return $db->getMaxAllowedPacket();
 }
 
 function we_convertIniSizes($in){
@@ -759,7 +709,7 @@ function getServerUrl($useUserPwd = false){
 	return getServerProtocol(true) . ($useUserPwd && strlen($pwd) > 3 ? $pwd : '') . $_SERVER['SERVER_NAME'] . $port;
 }
 
-function we_check_email($email){ // Zend validates only the pure address
+function we_check_email($email){ // php validates only the pure address
 	if(($pos = strpos($email, '<'))){//format is "xxx xx" <test@test.de>
 		++$pos;
 		$email = substr($email, $pos, strrpos($email, '>') - $pos);
@@ -807,7 +757,7 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 		$_xmlClose = true;
 
 		if(XHTML_DEBUG){ //  check if XHTML_DEBUG is activated - system pref
-			$showWrong = (isset($_SESSION['prefs']['xhtml_show_wrong']) && $_SESSION['prefs']['xhtml_show_wrong'] && isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition); //  check if XML_SHOW_WRONG is true (user) - only in webEdition
+			$showWrong = (!empty($_SESSION['prefs']['xhtml_show_wrong']) && isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition); //  check if XML_SHOW_WRONG is true (user) - only in webEdition
 // at the moment only transitional is supported
 			$xhtmlType = weTag_getAttribute('xmltype', $attribs, 'transitional', we_base_request::STRING);
 			$attribs = removeAttribs($attribs, $removeAttribs);
@@ -864,14 +814,11 @@ function getWeFrontendLanguagesForBackend(){
 		return array();
 	}
 	$targetLang = array_search($GLOBALS['WE_LANGUAGE'], getWELangs());
-	if(!Zend_Locale::hasCache()){
-		Zend_Locale::setCache(getWEZendCache());
-	}
 	foreach($GLOBALS['weFrontendLanguages'] as $Locale){
 		$temp = explode('_', $Locale);
 		$la[$Locale] = (count($temp) == 1 ?
-				CheckAndConvertISObackend(Zend_Locale::getTranslation($temp[0], 'language', $targetLang) . ' ' . $Locale) :
-				CheckAndConvertISObackend(Zend_Locale::getTranslation($temp[0], 'language', $targetLang) . ' (' . Zend_Locale::getTranslation($temp[1], 'territory', $targetLang) . ') ' . $Locale));
+				CheckAndConvertISObackend(we_base_country::getTranslation($temp[0], we_base_country::LANGUAGE, $targetLang) . ' ' . $Locale) :
+				CheckAndConvertISObackend(we_base_country::getTranslation($temp[0], we_base_country::LANGUAGE, $targetLang) . ' (' . we_base_country::getTranslation($temp[1], we_base_country::TERRITORY, $targetLang) . ') ' . $Locale));
 	}
 	return $la;
 }
@@ -921,7 +868,7 @@ function getVarArray($arr, $string){
 }
 
 function CheckAndConvertISOfrontend($utf8data){
-	$to = (isset($GLOBALS['CHARSET']) && $GLOBALS['CHARSET'] ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET);
+	$to = (!empty($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET);
 	return ($to === 'UTF-8' ? $utf8data : mb_convert_encoding($utf8data, $to, 'UTF-8'));
 }
 
@@ -932,7 +879,7 @@ function CheckAndConvertISObackend($utf8data){
 
 /* * internal function - do not call */
 
-function g_l_encodeArray($tmp){//FIXME: move to closure as of php 5.3
+function g_l_encodeArray($tmp){
 	$charset = (isset($_SESSION['user']) && isset($_SESSION['user']['isWeSession']) ? $GLOBALS['WE_BACKENDCHARSET'] : (isset($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET'] : $GLOBALS['WE_BACKENDCHARSET']));
 	return (is_array($tmp) ?
 			array_map(__METHOD__, $tmp) :
@@ -954,7 +901,7 @@ function g_l($name, $specific, $omitErrors = false){
 //inside we
 			(isset($GLOBALS['we']['PageCharset']) ? $GLOBALS['we']['PageCharset'] : $GLOBALS['WE_BACKENDCHARSET']) :
 //front-end
-			(isset($GLOBALS['CHARSET']) && $GLOBALS['CHARSET'] ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET) );
+			(!empty($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET) );
 //	return $name.$specific;
 //cache last accessed lang var
 	static $cache = array();
@@ -1004,7 +951,7 @@ function we_templateInit(){
 		$GLOBALS['WE_TEMPLATE_INIT'] = 1;
 
 		// Activate the autoloader & webEdition error handler
-		require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.inc.php');
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_autoload.inc.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tag.inc.php');
 
 		if(!isset($GLOBALS['DB_WE'])){
@@ -1025,10 +972,14 @@ function we_templateInit(){
 			$GLOBALS['WE_MAIN_ID'] = $GLOBALS['we_doc']->ID;
 		}
 		if(!isset($GLOBALS['WE_MAIN_DOC'])){
-			$GLOBALS['WE_MAIN_DOC'] = clone($GLOBALS['we_doc']);
+			$GLOBALS['WE_MAIN_DOC'] = isset($GLOBALS['we_obj']) ? $GLOBALS['we_obj'] : clone($GLOBALS['we_doc']);
 		}
 		if(!isset($GLOBALS['WE_MAIN_DOC_REF'])){
-			$GLOBALS['WE_MAIN_DOC_REF'] = &$GLOBALS['we_doc'];
+			if(isset($GLOBALS['we_obj'])){
+				$GLOBALS['WE_MAIN_DOC_REF'] = &$GLOBALS['we_obj'];
+			} else {
+				$GLOBALS['WE_MAIN_DOC_REF'] = &$GLOBALS['we_doc'];
+			}
 		}
 		if(!isset($GLOBALS['WE_MAIN_EDITMODE'])){
 			$GLOBALS['WE_MAIN_EDITMODE'] = isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : false;
@@ -1057,30 +1008,25 @@ function we_templateHead($fullHeader = false){
 		((!isset($GLOBALS['we_editmode']) || (!$GLOBALS['we_editmode']) && isset($_SESSION['weS']) && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE))){
 		return;
 	}
-	if($fullHeader){
-		if(isset($GLOBALS['WE_HTML_HEAD_BODY'])){
-			echo we_templatePreContent(); //to increment we_templatePreContent-var
-			return;
-		}
+	if($fullHeader && isset($GLOBALS['WE_HTML_HEAD_BODY'])){
+		echo we_templatePreContent(); //to increment we_templatePreContent-var
+		return;
 	}
-	echo ($fullHeader ? we_html_element::htmlDocType() . '<html><head><title>WE</title>' . we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['CHARSET']) : '') .
-	we_html_tools::getJSErrorHandler() .
+	echo ($fullHeader ? we_html_element::htmlDocType() . '<html><head><title>WE</title>' . we_html_tools::htmlMetaCtCharset($GLOBALS['CHARSET']) : '') .
+	we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 	STYLESHEET_BUTTONS_ONLY .
-	SCRIPT_BUTTONS_ONLY .
-	we_html_element::jsScript(JS_DIR . 'windows.js') .
-	we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
 	weSuggest::getYuiFiles() .
-	we_html_element::jsElement('parent.openedWithWE = 1;');
+	we_html_element::jsElement('parent.openedWithWE=true;');
 	require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 	if($fullHeader){
-		echo '</head><body onunload="doUnload()">';
+		echo '</head><body onload="doScrollTo();" onunload="doUnload()">';
 		we_templatePreContent();
 		$GLOBALS['WE_HTML_HEAD_BODY'] = true;
 	}
 }
 
 function we_templatePreContent($force = false){//force is used by templates with a full html/body.
-	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
+	if(!empty($GLOBALS['we_editmode'])){
 		if($force || (!isset($GLOBALS['WE_HTML_HEAD_BODY']) && !isset($GLOBALS['we_templatePreContent']))){
 			echo '<form name="we_form" action="" method="post" onsubmit="return false;">' .
 			we_class::hiddenTrans();
@@ -1090,14 +1036,15 @@ function we_templatePreContent($force = false){//force is used by templates with
 }
 
 function we_templatePostContent($force = false, $fullPoster = false){//force on </body tag
-	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'] && ($force || ( --$GLOBALS['we_templatePreContent']) == 0)){
+	if(!empty($GLOBALS['we_editmode']) && ($force || ( --$GLOBALS['we_templatePreContent']) == 0)){
 		if($force){//never do this again
 			$GLOBALS['we_templatePreContent'] = -10000;
 		}
 		$yuiSuggest = &weSuggest::getInstance();
 		//FIXME: check this new field to determine if all data has been transmitted
-		echo $yuiSuggest->getYuiCode() . '<input type="hidden" name="we_complete_request" value="1"/></form>' .
-		we_html_element::jsElement('setTimeout("doScrollTo();",100);') .
+		echo $yuiSuggest->getYuiJs() .
+		we_html_element::htmlHidden("we_complete_request", 1) .
+		'</form>' .
 		($fullPoster ? '</body></html>' : '');
 	}
 }
@@ -1150,8 +1097,12 @@ function show_SeoLinks(){
 		);
 }
 
+function seoIndexHide($basename){
+	return show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($basename, array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)));
+}
+
 function we_TemplateExit($param = 0){
-	if(isset($GLOBALS['FROM_WE_SHOW_DOC']) && $GLOBALS['FROM_WE_SHOW_DOC']){
+	if(!empty($GLOBALS['FROM_WE_SHOW_DOC'])){
 		exit($param);
 	}
 //we are inside we, we don't terminate here
@@ -1160,20 +1111,6 @@ function we_TemplateExit($param = 0){
 	}
 //FIXME: use g_l
 	t_e('template forces document to exit, see Backtrace for template name. Message of statement', $param);
-}
-
-function getWEZendCache($lifetime = 1800){
-	return Zend_Cache::factory('Core', 'File', array('lifetime' => $lifetime, 'automatic_serialization' => true), array('cache_dir' => WE_CACHE_PATH));
-}
-
-/**
- * removes unneded js-open/close tags
- * @param string $js
- * @return string given param without duplicate js-open/close tags
- */
-function implodeJS($js){
-	list($pre, $post) = explode(';', we_html_element::jsElement(';'));
-	return preg_replace('|' . preg_quote($post, '|') . '[\n\t ]*' . preg_quote($pre, '|') . '|', "\n", $js);
 }
 
 /**
@@ -1202,7 +1139,7 @@ function update_mem_limit($newLimit){
  * @return bool true if inside WE
  */
 function isWE(){
-	return isset($_SESSION['user']['isWeSession']) && $_SESSION['user']['isWeSession'];
+	return !empty($_SESSION['user']['isWeSession']);
 }
 
 function getWELangs(){
@@ -1240,17 +1177,17 @@ function we_unserialize($string, $default = array(), $quiet = false){
 	if(is_array($string)){
 		return $string;
 	}
-	//no content, return default
-	if(!$string){
-		return $default;
-	}
 	//compressed?
-	if($string[0] === 'x'){
+	if($string && $string[0] === 'x'){
 		$string = gzuncompress($string);
+	}
+	//no content, return default
+	if($string === '' || $string === false){
+		return $default;
 	}
 	//std-serialized data by php
 	if(preg_match('|^[asO]:\d+:|', $string)){
-		$ret = unserialize($string);
+		$ret = @unserialize($string);
 		return ($ret === false ? $default : $ret);
 	}
 	//json data
@@ -1265,6 +1202,9 @@ function we_unserialize($string, $default = array(), $quiet = false){
 		return (array) $json->decode($string);
 	}
 	//data is really not serialized!
+	if(preg_match('|^\d+(,\d+)*$|', $string)){
+		return explode(',', $string);
+	}
 	if(!$quiet){
 		t_e('unable to decode', $string);
 	}
@@ -1278,25 +1218,30 @@ function we_unserialize($string, $default = array(), $quiet = false){
  * @param bool $numeric forces data to be treated as numeric (not assotiative) array - no position data will be used
  * @return string serialized data
  */
-function we_serialize(array $array, $target = 'serialize', $numeric = false){
+function we_serialize($array, $target = 'serialize', $numeric = false, $compression = 0){
 	if(!$array){
 		return '';
 	}
 	switch($target){
 		//remove defined after php 5.3 support ends
 		case 'json':
-			$ret = json_encode($numeric ? array_values($array) : $array, (defined('JSON_UNESCAPED_UNICODE') ? JSON_UNESCAPED_UNICODE : 0));
-			if($ret){
-				return $ret;
+			if(!is_object($array)){
+				//we don't encode objects as json!
+				$ret = json_encode($numeric ? array_values($array) : $array, (defined('JSON_UNESCAPED_UNICODE') ? JSON_UNESCAPED_UNICODE : 0));
+				if($ret){
+					break;
+				}
+				static $json = null;
+				$json = $json? : new Services_JSON(Services_JSON::SERVICES_JSON_USE_NO_CHARSET_CONVERSION);
+				$ret = $json->encode($numeric ? array_values($array) : $array, false);
+				break;
 			}
-			static $json = null;
-			$json = $json? : new Services_JSON(SERVICES_JSON_USE_NO_CHARSET_CONVERSION);
-			return $json->encode($numeric ? array_values($array) : $array, false);
-		//no break, return default serialize
 		default:
 		case 'serialize':
-			return serialize($numeric ? array_values($array) : $array);
+			$ret = serialize($numeric ? array_values($array) : $array);
+			break;
 	}
+	return $compression ? gzcompress($ret, $compression) : $ret;
 }
 
 if(!function_exists('hex2bin')){//FIXME: remove if php >= 5.4

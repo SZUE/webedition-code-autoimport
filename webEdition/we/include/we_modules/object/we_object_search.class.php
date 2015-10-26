@@ -28,7 +28,6 @@ class we_object_search extends we_search_base{
 	var $searchlocation;
 	var $searchfield;
 	var $show;
-
 	private static $intFields = array();
 	private static $realFields = array();
 
@@ -53,8 +52,7 @@ class we_object_search extends we_search_base{
 		}
 	}
 
-	function getFields($name = 'obj_searchField', $size = 1, $select = "", $Path, $multi = ""){
-
+	function getFields($name, $size, $select, $Path, $multi = ""){
 		$objID = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape($Path) . '"');
 		$opts = '';
 		$all = array();
@@ -96,25 +94,41 @@ class we_object_search extends we_search_base{
 	}
 
 	function getJSinWEsearchobj($name){
-		return $this->getJSinWElistnavigation($name) . $this->getJSinWEworkspace($name) . $this->getJSinWEshowVisible($name);
-	}
-
-	function getJSinWEworkspace($name){
 		return we_html_element::jsElement('
-				function setWs(path,id) {
-					document.we_form.elements[\'we_' . $name . '_WorkspacePath\'].value=path;
-					document.we_form.elements[\'we_' . $name . '_WorkspaceID\'].value=id;
-					top.we_cmd("reload_editpage");
-				}');
-	}
+_EditorFrame.setEditorIsHot(false);
 
-	function getJSinWEshowVisible($name){
-		return we_html_element::jsElement('
-				function toggleShowVisible(c) {
-					c.value=(c.checked ? 1 : 0);
-					document.we_form.elements[\'SearchStart\'].value = 0;
-					top.we_cmd(\'reload_editpage\');
-				}');
+function next(){
+	document.we_form.elements.SearchStart.value = parseInt(document.we_form.elements.SearchStart.value) + ' . $this->anzahl . ';
+	top.we_cmd("reload_editpage");
+}
+function back(){
+	document.we_form.elements.SearchStart.value = parseInt(document.we_form.elements.SearchStart.value) - ' . $this->anzahl . ';
+	top.we_cmd("reload_editpage");
+}
+
+function setOrder(order){
+
+	foo = document.we_form.elements.Order.value;
+
+	if(((foo.substring(foo.length-5,foo.length) == " DESC") && (foo.substring(0,order.length-5) == order)) || foo != order){
+		document.we_form.elements.Order.value=order;
+	}else{
+		document.we_form.elements.Order.value=order+" DESC";
+	}
+	top.we_cmd("reload_editpage");
+}
+
+function setWs(path,id) {
+	document.we_form.elements[\'we_' . $name . '_WorkspacePath\'].value=path;
+	document.we_form.elements[\'we_' . $name . '_WorkspaceID\'].value=id;
+	top.we_cmd("reload_editpage");
+}
+
+function toggleShowVisible(c) {
+	c.value=(c.checked ? 1 : 0);
+	document.we_form.elements.SearchStart.value = 0;
+	top.we_cmd(\'reload_editpage\');
+}');
 	}
 
 	function greenOnly($GreenOnly, $pid, $cid){
@@ -128,37 +142,34 @@ class we_object_search extends we_search_base{
 		if(empty($exws)){
 			return "-";
 		}
-		$out = '<table border="0" cellpadding="0" cellspacing="0">';
+		$isAdmin = permissionhandler::hasPerm("ADMINISTRATOR");
+		$out = '<table class="default">';
 		for($i = 0; $i < count($exws); $i++){
 			if($exws[$i] != ""){
-				if(permissionhandler::hasPerm("ADMINISTRATOR")){
-					$foo = true;
-				} else {
-					$foo = in_workspace($exws[$i], $userWSArray);
-				}
-				if($foo){
-					$checkbox = '<a href="javascript:we_cmd(\'object_toggleExtraWorkspace\',\'' . $GLOBALS["we_transaction"] . '\',\'' . $this->db->f("ID") . '\',\'' . $exws[$i] . '\',\'' . $id . '\')"><img name="check_' . $id . '_' . $this->db->f("ID") . '" src="' . TREE_IMAGE_DIR . 'check' . (strstr($this->db->f("OF_ExtraWorkspacesSelected"), "," . $exws[$i] . ",") ? "1" : "0") . '.gif" width="16" height="18" border="0" /></a>';
-				} else {
-					$checkbox = '<img name="check_' . $id . '_' . $this->db->f("ID") . '" src="' . TREE_IMAGE_DIR . 'check' . (strstr($this->db->f("OF_ExtraWorkspacesSelected"), "," . $exws[$i] . ",") ? "1" : "0") . '_disabled.gif" width="16" height="18" border="0" />';
-				}
+
+				$checkbox = ($isAdmin || in_workspace($exws[$i], $userWSArray) ?
+						'<a href="javascript:we_cmd(\'object_toggleExtraWorkspace\',\'' . $GLOBALS["we_transaction"] . '\',\'' . $this->db->f("ID") . '\',\'' . $exws[$i] . '\',\'' . $id . '\')"><i name="check_' . $id . '_' . $this->db->f("ID") . '" class="fa fa-'.(strstr($this->db->f("OF_ExtraWorkspacesSelected"), "," . $exws[$i] . ",") ?'check-':'').'square-o wecheckIcon"></i></a>' :
+						'<i name="check_' . $id . '_' . $this->db->f("ID") . '" class="fa fa-' . (strstr($this->db->f("OF_ExtraWorkspacesSelected"), "," . $exws[$i] . ",") ? 'check-' : '') . 'square-o wecheckIcon"></i>'
+					);
+
 				$p = id_to_path($exws[$i]);
 				$out .= '
 <tr>
 	<td>' . $checkbox . '</td>
-	<td>' . we_html_tools::getPixel(5, 2) . '</td>
-	<td class="middlefont">&nbsp;<a href="javascript:setWs(\'' . $p . '\',\'' . $exws[$i] . '\')" class="middlefont" title="' . $p . '">' . we_util_Strings::shortenPath($p, $we_extraWsLength) . '</a><td>
+	<td style="width:5px;"></td>
+	<td class="middlefont">&nbsp;<a href="javascript:setWs(\'' . $p . '\',\'' . $exws[$i] . '\')" class="middlefont" title="' . $p . '">' . we_base_util::shortenPath($p, $we_extraWsLength) . '</a><td>
 </tr>';
 			}
 		}
-		$out .= '</table>';
-		return $out;
+
+		return $out . '</table>';
 	}
 
-	function getWorkspaces($foo, $we_wsLength){
-		if(empty($foo)){
+	function getWorkspaces(array $foo, $we_wsLength){
+		if(!$foo){
 			return '-';
 		}
-		$out = '<table border="0" cellpadding="0" cellspacing="0">';
+		$out = '<table class="default">';
 		foreach($foo as $cur){
 			if($cur != ""){
 				$p = id_to_path($cur);
@@ -166,12 +177,12 @@ class we_object_search extends we_search_base{
 				$out .= '
 <tr>
 	<td class="middlefont">
-		&nbsp;<a href="javascript:setWs(\'' . $p . '\',\'' . $cur . '\')" class="middlefont" title="' . $p . '">' . we_util_Strings::shortenPath($p, $we_wsLength) . '</a><td>
+		&nbsp;<a href="javascript:setWs(\'' . $p . '\',\'' . $cur . '\')" class="middlefont" title="' . $p . '">' . we_base_util::shortenPath($p, $we_wsLength) . '</a><td>
 </tr>';
 			}
 		}
-		$out .= '</table>';
-		return $out;
+
+		return $out . '</table>';
 	}
 
 	function searchfor($searchname, $searchfield, $searchlocation, $tablename, $rows = -1, $start = 0, $order = '', $desc = 0){
@@ -179,11 +190,11 @@ class we_object_search extends we_search_base{
 			$filteredFields = '';
 			$fieldsToFilterOut = array();
 
-			$type = !preg_match('/^[-+]?\d*\.?\d+$/', $searchname[$i]) ? 1 : (!preg_match('/^[-+]?\d+$/', $searchname[$i])? 2 : 0);
+			$type = !preg_match('/^[-+]?\d*\.?\d+$/', $searchname[$i]) ? 1 : (!preg_match('/^[-+]?\d+$/', $searchname[$i]) ? 2 : 0);
 			switch($type){
 				case 1:
 					$fieldsToFilterOut = array_merge($fieldsToFilterOut, $this->getRealFields($tablename));
-					//no break!
+				//no break!
 				case 2:
 					$fieldsToFilterOut = array_merge($fieldsToFilterOut, $this->getIntFields($tablename));
 			}

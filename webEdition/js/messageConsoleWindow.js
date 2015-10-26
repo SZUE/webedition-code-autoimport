@@ -30,7 +30,6 @@ function messageConsoleWindow(win) {
 
 	this.notify = function (lastMessage) {
 		this.addMessage(lastMessage);
-
 	};
 
 	/**
@@ -38,66 +37,60 @@ function messageConsoleWindow(win) {
 	 */
 	this.register = function () {
 		top.opener.top.messageConsole.addObserver(this);
-
 	};
 
 	this.remove = function () {
 		top.opener.top.messageConsole.removeObserver(this);
+	};
 
-	}
 	this.addMessage = function (msg) {
-		var _className;
-		var _theImg;
+		var _className,className;
 
-		switch (msg["prio"]) {
+		switch (msg.prio) {
 			default:
-				_className = "msgNotice";
-				_theImg = this.win._imgNoticeActive.src;
+				_className = "imgNoticeActive";
+				className="info";
 				break;
 
 			case 2:
-				_className = "msgWarning";
-				_theImg = this.win._imgWarningActive.src;
+				_className = "imgWarningActive";
+				className="lightbulb-o";
 				break;
 			case 4:
-				_className = "msgError";
-				_theImg = this.win._imgErrorActive.src;
+				_className = "imgErrorActive";
+				className="exclamation-triangle";
 				break;
 
 		}
 
 		var _li = this.doc.createElement("li");
 		_li.className = "defaultfont " + _className;
-		_txt = this.doc.createTextNode(msg["message"]);
+		var i= this.doc.createElement("i");
+		i.className="fa-li fa fa-lg active fa-"+className;
+		_txt = this.doc.createTextNode(msg.message);
+		_li.appendChild(i);
 		_li.appendChild(_txt);
 
 		var _pElem = this.doc.getElementById("jsMessageUl");
 		if (_pElem.childNodes.length) {
 			this.doc.getElementById("jsMessageUl").insertBefore(_li, _pElem.childNodes[0]);
-
 		} else {
 			this.doc.getElementById("jsMessageUl").appendChild(_li);
-
 		}
-	}
+	};
 
 	this.init = function () {
 		_messages = top.opener.top.messageConsole.getMessages();
 		for (i = 0; i < _messages.length; i++) {
 			this.addMessage(_messages[i]);
-
 		}
-
 	};
 
 	this.removeMessages = function () {
 		top.opener.top.messageConsole.removeMessages();
 		this.doc.getElementById("jsMessageUl").innerHTML = "";
-
-	}
-
+	};
 }
-;
 
 messageConsoleWindow = new messageConsoleWindow(window);
 messageConsoleWindow.register();

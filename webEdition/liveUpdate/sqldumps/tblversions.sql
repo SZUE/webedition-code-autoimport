@@ -1,10 +1,12 @@
 ###UPDATEDROPCOL(IsNotEditable,###TBLPREFIX###tblversions)###
 /* query separator */
+###UPDATEDROPCOL(Icon,###TBLPREFIX###tblversions)###
+/* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblversions (
   ID bigint(20) unsigned NOT NULL auto_increment,
   documentID int(11) unsigned NOT NULL,
-  documentTable varchar(64) NOT NULL,
+  documentTable tinytext NOT NULL,
   documentElements longblob NOT NULL,
   documentScheduler blob NOT NULL,
   documentCustomFilter blob NOT NULL,
@@ -20,7 +22,6 @@ CREATE TABLE ###TBLPREFIX###tblversions (
   ContentType enum('image/*','text/html','text/webedition','text/weTmpl','text/js','text/css','text/htaccess','text/plain','folder','class_folder','application/x-shockwave-flash','video/quicktime','application/*','text/xml','object','objectFile','video/*','audio/*') NOT NULL,
   Text varchar(255) NOT NULL,
   ParentID int(11) unsigned NOT NULL,
-  Icon varchar(64) NOT NULL,
   CreationDate int(10) unsigned NOT NULL,
   CreatorID int(11) unsigned NOT NULL,
   Path varchar(255) NOT NULL,

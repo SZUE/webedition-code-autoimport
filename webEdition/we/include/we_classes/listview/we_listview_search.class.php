@@ -35,7 +35,6 @@ class we_listview_search extends we_listview_base{
 	var $class = 0; /* ID of a class. Search only in Objects of this class */
 	var $triggerID = 0; /* ID of a document which to use for displaying thr detail page */
 	var $casesensitive = false; /* set to true when a search should be case sensitive */
-	var $ClassName = __CLASS__;
 	var $languages = ''; //string of Languages, separated by ,
 	var $objectseourls = false;
 	var $hidedirindex = false;
@@ -66,7 +65,7 @@ class we_listview_search extends we_listview_base{
 		$this->hidedirindex = $hidedirindex;
 		$this->languages = $languages ? : (isset($GLOBALS['we_lv_languages']) ? $GLOBALS['we_lv_languages'] : '');
 
-		$where_lang = ($this->languages ? ' AND Language IN ("' . implode('","', array_filter(explode(',', $this->languages))) . '") ' : '');
+		$where_lang = ($this->languages ? ' AND Language IN ("' . implode('","', array_map('escape_sql_query', array_filter(array_map('trim', explode(',', $this->languages))))) . '") ' : '');
 
 		// correct order
 		$orderArr = array();
@@ -171,7 +170,7 @@ class we_listview_search extends we_listview_base{
 		}
 
 		$weDocumentCustomerFilter_tail = (defined('CUSTOMER_FILTER_TABLE') ?
-				we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this->ClassName) :
+				we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this) :
 				'');
 
 		$where = ' WHERE ' . $bedingung_sql . ' ' . $dtcl_query . ' ' . $cat_tail . ' ' . $ws_where . ' ' . $where_lang . ' ' . $weDocumentCustomerFilter_tail;
@@ -197,7 +196,7 @@ class we_listview_search extends we_listview_base{
 
 				$pidstr = ($this->DB_WE->Record['WorkspaceID'] ? '?pid=' . intval($this->DB_WE->Record['WorkspaceID']) : '');
 
-				if(NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+				if($this->hidedirindex && seoIndexHide($path_parts['basename'])){
 					$this->DB_WE->Record['WE_PATH'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') .
 						($objectdaten['Url'] ?
 							'/' . $objectdaten['Url'] . $pidstr :

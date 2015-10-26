@@ -81,6 +81,58 @@ abstract class we_rebuild_base{
 					flush();
 				}
 				break;
+			case 'medialink':
+				switch($data['cn']){
+					case 'we_banner_banner':
+					case 'we_category':
+					case 'we_customer_customer':
+					case 'we_glossary_glossary':
+					case 'we_navigation_navigation':
+					case 'we_newsletter_newsletter':
+						$model = new $data['cn'](intval($data['id']));
+						if($printIt){
+							echo ('Rebulding Media-Links for: ' . $model->Text);
+							flush();
+						}
+						$model->registerMediaLinks();
+						break;
+					case 'we_temporaryDocument':
+						$content = we_temporaryDocument::load($data['id'], $data['tbl'], $GLOBALS['DB_WE']);
+						if($data['tbl'] === 'tblFile'){
+							$doc = new we_webEditionDocument();
+							$doc->Table = FILE_TABLE;
+						} else {
+							$doc = new we_objectFile();
+							$doc->Table = OBJECT_FILES_TABLE;
+							$doc->TableID = $content[0]['TableID'];
+						}
+						$doc->elements = $content[0]['elements'];
+						$doc->ID = $data['id'];
+						if($printIt){
+							echo ('Rebulding Media-Links for: ' . $doc->Path);
+							flush();
+						}
+						$doc->parseTextareaFields('temp');
+						$doc->registerMediaLinks(true);
+						unset($doc);
+						break;
+					default:
+						$doc = new $data['cn'];
+						$doc->initByID($data['id'], $doc->Table);
+						if($printIt){
+							echo ('Rebulding Media-Links for: ' . $doc->Path);
+							flush();
+						}
+						$doc->correctFields();
+						$doc->parseTextareaFields('main');
+						$doc->registerMediaLinks();
+						unset($doc);
+				}
+				if($printIt){
+					echo ("   done$_newLine");
+					flush();
+				}
+				break;
 			default:
 				switch($data['type']){
 					case 'document':
@@ -260,6 +312,89 @@ abstract class we_rebuild_base{
 		return $data;
 	}
 
+	public static function getMediaLinks(){
+		// delete all media links
+		$GLOBALS['DB_WE']->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE type="media"');
+
+
+		//FIXME: add permission
+		$data = array();
+		//FIXME: add classes and templates
+		//FIXME: pack this queries into the loop too
+		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path,ModDate,Published FROM ' . FILE_TABLE . ' WHERE
+			ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::CSS . '","' . we_base_ContentTypes::JS . '")
+			AND IsFolder = 0 ORDER BY ID');
+		while($GLOBALS['DB_WE']->next_record()){
+			// beware of a very special case: when a document is unpublished && mofified we must not have any main-table entries!
+			if($GLOBALS['DB_WE']->f('Published') > 0 || $GLOBALS['DB_WE']->f('Published') == $GLOBALS['DB_WE']->f('ModDate')){
+				$data[] = array(
+					'id' => $GLOBALS['DB_WE']->f('ID'),
+					'type' => 'medialink',
+					'cn' => $GLOBALS['DB_WE']->f('ClassName'),
+					'mt' => 1,
+					'tt' => 0,
+					'path' => $GLOBALS['DB_WE']->f('Path'),
+					'it' => 0);
+			}
+		}
+
+		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder = 0 ORDER BY ID');
+		while($GLOBALS['DB_WE']->next_record()){
+			// beware of a very special case: when an object is unpublished && mofified we must not have any main-table entries!
+			if($GLOBALS['DB_WE']->f('Published') > 0 || $GLOBALS['DB_WE']->f('Published') == $GLOBALS['DB_WE']->f('ModDate')){
+				$data[] = array(
+					'id' => $GLOBALS['DB_WE']->f('ID'),
+					'type' => 'medialink',
+					'cn' => $GLOBALS['DB_WE']->f('ClassName'),
+					'mt' => 1,
+					'tt' => 0,
+					'path' => $GLOBALS['DB_WE']->f('Path'),
+					'it' => 0);
+			}
+		}
+
+		$GLOBALS['DB_WE']->query('SELECT DocumentID,DocTable FROM ' . TEMPORARY_DOC_TABLE . ' ORDER BY DocumentID');
+		while($GLOBALS['DB_WE']->next_record()){
+			$data[] = array(
+				'id' => $GLOBALS['DB_WE']->f('DocumentID'),
+				'type' => 'medialink',
+				'cn' => 'we_temporaryDocument',
+				'tbl' => $GLOBALS['DB_WE']->f('DocTable'),
+				'mt' => 0,
+				'tt' => 1,
+				'path' => '',
+				'it' => 0);
+		}
+
+		$tables = array(
+			array(TEMPLATES_TABLE, 'WHERE IsFolder = 0', 'we_template'),
+			array(OBJECT_TABLE, 'WHERE IsFolder = 0', 'we_object'),
+			array(VFILE_TABLE, 'WHERE IsFolder = 0', 'we_collection'),
+			array(BANNER_TABLE, '', 'we_banner_banner'),
+			array(CATEGORY_TABLE, 'WHERE Description != ""', 'we_category'),
+			array(GLOSSARY_TABLE, 'WHERE IsFolder = 0 AND type = "link"', 'we_glossary_glossary'),
+			array(NAVIGATION_TABLE, 'WHERE IconID != 0 OR (SelectionType = "docLink" AND LinkID != 0)', 'we_navigation_navigation'),
+			array(NEWSLETTER_TABLE, '', 'we_newsletter_newsletter'),
+			array(CUSTOMER_TABLE, 'WHERE IsFolder = 0', 'we_customer_customer'),
+		);
+
+		foreach($tables as $table){
+			$GLOBALS['DB_WE']->query('SELECT ID,Path FROM ' . $table[0] . ' ' . $table[1] . ' ORDER BY ID');
+			while($GLOBALS['DB_WE']->next_record()){
+				$data[] = array(
+					'id' => $GLOBALS['DB_WE']->f('ID'),
+					'type' => 'medialink',
+					'cn' => $table[2],
+					'mt' => 1,
+					'tt' => 0,
+					'path' => $GLOBALS['DB_WE']->f('Path'),
+					'it' => 0);
+			}
+		}
+
+		return $data;
+	}
+
 	private static function insertTemplatesInArray(array $all, array &$data, $mt, $tt){
 		foreach($all as $cur){
 			$data[] = array(
@@ -276,7 +411,7 @@ abstract class we_rebuild_base{
 
 	private static function getDependendTemplates(we_database_base $db, array $done, array &$data, $mt, $tt){
 		//get other, these have to be processed in php
-		$db->query('SELECT ID,ClassName,Path,MasterTemplateID,IncludedTemplates FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND ID NOT IN (' . (empty($done) ? 0 : implode(',', $done)) . ') ORDER BY (`IncludedTemplates` = "") DESC');
+		$db->query('SELECT ID,ClassName,Path,MasterTemplateID,IncludedTemplates FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND ID NOT IN (' . ($done ? implode(',', $done) : 0) . ') ORDER BY (`IncludedTemplates` = "") DESC');
 
 		$todo = array();
 		while($db->next_record(MYSQL_ASSOC)){
@@ -553,7 +688,7 @@ abstract class we_rebuild_base{
 			$_foo = makeArrayFromCSV($thumbsFolders);
 			$_foldersList = array();
 			foreach($_foo as $folderID){
-				$_foldersList[] = makeCSVFromArray(we_base_file::getFoldersInFolder($folderID));
+				$_foldersList[] = implode(',', we_base_file::getFoldersInFolder($folderID));
 			}
 			$_folders_query = '( ParentID IN(' . implode(',', $_foldersList) . ') )';
 		} else {

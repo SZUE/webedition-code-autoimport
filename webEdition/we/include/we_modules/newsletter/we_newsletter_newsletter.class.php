@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  *
  */
 class we_newsletter_newsletter extends we_newsletter_base{
-
 	const SAVE_PATH_NOK = -10;
 	const MALFORMED_SENDER = -1;
 	const MALFORMED_REPLY = -2;
@@ -50,7 +48,6 @@ class we_newsletter_newsletter extends we_newsletter_base{
 	var $IsFolder = 0;
 	var $Text = '';
 	var $Path = '/';
-	var $Icon = 'newsletter.gif';
 	var $Subject = '';
 	var $Sender = '';
 	var $Reply = '';
@@ -65,6 +62,7 @@ class we_newsletter_newsletter extends we_newsletter_base{
 	var $blocks = array();
 	var $groups = array();
 	var $isEmbedImages = '';
+	protected $MediaLinks = array();
 
 	/**
 	 * Default Constructor
@@ -82,15 +80,14 @@ class we_newsletter_newsletter extends we_newsletter_base{
 			'ParentID' => we_base_request::INT,
 			'Text' => we_base_request::STRING,
 			'Path' => we_base_request::FILE,
-			'Icon' => we_base_request::STRING,
 			'Subject' => we_base_request::STRING,
 			'Sender' => we_base_request::EMAIL,
 			'Reply' => we_base_request::EMAIL,
 			'Test' => we_base_request::EMAIL,
-			'Step' => we_base_request::RAW,
-			'Offset' => we_base_request::RAW,
+			'Step' => we_base_request::INT,
+			'Offset' => we_base_request::INT,
 			'IsFolder' => we_base_request::BOOL,
-			'Charset' => we_base_request::RAW,
+			'Charset' => we_base_request::STRING,
 			'isEmbedImages' => we_base_request::BOOL,
 		);
 		$this->Charset = $GLOBALS['WE_BACKENDCHARSET'];
@@ -138,7 +135,6 @@ class we_newsletter_newsletter extends we_newsletter_base{
 		}
 
 		if($this->IsFolder){
-			$this->Icon = we_base_ContentTypes::FOLDER_ICON;
 			$this->fixChildsPaths();
 		}
 
@@ -167,14 +163,67 @@ class we_newsletter_newsletter extends we_newsletter_base{
 					unset($groups[$k]);
 				}
 			}
-			$block->Groups = makeCSVFromArray($groups);
+			$block->Groups = implode(',', $groups);
 			$block->NewsletterID = $this->ID;
 			$block->save();
 			//#8199: thrown out all addslashes() and stripslashes() here!
 		}
 
+		$this->registerMediaLinks();
 		$this->addLog('log_save_newsletter');
 		return 0;
+	}
+
+	public function registerMediaLinks(){
+		$this->unregisterMediaLinks();
+		foreach($this->blocks as $block){
+			switch($block->Type){
+				case 6:
+				case 1:
+				case 0:
+					if($block->LinkID){
+						$this->MediaLinks[] = $block->LinkID;
+					}
+					break;
+				case 5:
+					if($block->Html){
+						$this->MediaLinks = array_merge($this->MediaLinks, we_wysiwyg_editor::reparseInternalLinks($content));
+					}
+			}
+		}
+
+		$c = count($this->MediaLinks);
+		for($i = 0; $i < $c; $i++){
+			if(!$this->MediaLinks[$i] || !is_numeric($this->MediaLinks[$i])){
+				unset($this->MediaLinks[$i]);
+			}
+		}
+
+		// the following would be obsolete, when class was based on we_modelBase
+		if(!empty($this->MediaLinks)){
+			$whereType = 'AND ContentType IN ("' . we_base_ContentTypes::APPLICATION . '","' . we_base_ContentTypes::FLASH . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::QUICKTIME . '","' . we_base_ContentTypes::VIDEO . '")';
+			$this->db->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', array_unique($this->MediaLinks)) . ') ' . $whereType);
+			$this->MediaLinks = array();
+			while($this->db->next_record()){
+				$this->MediaLinks[] = $this->db->f('ID');
+			}
+		}
+
+		foreach(array_unique($this->MediaLinks) as $remObj){
+			$this->db->query('REPLACE INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
+					'ID' => $this->ID,
+					'DocumentTable' => stripTblPrefix($this->table),
+					'type' => 'media',
+					'remObj' => $remObj,
+					'remTable' => stripTblPrefix(FILE_TABLE),
+					'position' => 0,
+					'isTemp' => 0
+			)));
+		}
+	}
+
+	function unregisterMediaLinks(){
+		$this->db->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . $this->db->escape(stripTblPrefix($this->table)) . '"  AND type="media"');
 	}
 
 	/**
@@ -197,6 +246,8 @@ class we_newsletter_newsletter extends we_newsletter_base{
 		}
 		$this->clearLog();
 		parent::delete();
+		$this->unregisterMediaLinks();
+
 		return true;
 	}
 
@@ -297,7 +348,7 @@ class we_newsletter_newsletter extends we_newsletter_base{
 					unset($arr[$k]);
 				}
 			}
-			$this->blocks[$bk]->Groups = makeCSVFromArray($arr, true);
+			$this->blocks[$bk]->Groups = implode(',', $arr);
 		}
 		unset($this->groups[$group]);
 	}

@@ -37,11 +37,11 @@ function we_tag_newsletterSwitch(){
 
 	return '
 <table style="padding:5px;border:0px;background-color:silver;background-image:none;" class="weEditTable">
-	<tr><td><b>' . g_l('modules_newsletter', '[newsletter][preview]') . '</b>&nbsp;</td>
+	<tr><td style="padding: 0px 1em;"><b>' . g_l('modules_newsletter', '[newsletter][preview]') . '</b></td>
 	<td><input id="set_newsletterHtml" type="radio" name="we_set_newsletterFormat" value="0" onclick="top.we_cmd(\'reload_editpage\');"' . (!$val ? ' checked' : '') . ' /></td>
-	<td>&nbsp;<label for="set_newsletterHtml">HTML&nbsp;' . g_l('modules_newsletter', '[email]') . '</label>&nbsp;&nbsp;&nbsp;</td>
+	<td style="padding: 0px 1em 0px 0px;"><label for="set_newsletterHtml">HTML&nbsp;' . g_l('modules_newsletter', '[email]') . '</label></td>
 	<td><input id="set_newsletterText" type="radio" name="we_set_newsletterFormat" value="1" onclick="top.we_cmd(\'reload_editpage\');"' . ($val ? ' checked' : '') . ' /></td>
-	<td>&nbsp;<label for="set_newsletterText">' . g_l('modules_newsletter', '[type_text]') . '&nbsp;' . g_l('modules_newsletter', '[email]') . '</label></td>
+	<td style="padding: 0px 1em 0px 0px;"><label for="set_newsletterText">' . g_l('modules_newsletter', '[type_text]') . ' ' . g_l('modules_newsletter', '[email]') . '</label></td>
 	</tr>
 </table>';
 }

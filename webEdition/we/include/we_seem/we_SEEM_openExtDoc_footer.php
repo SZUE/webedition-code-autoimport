@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -30,18 +29,10 @@ we_html_tools::protect();
 //	the navigation history
 
 
-$_table = new we_html_table(array("cellpadding" => 0,
-	"cellspacing" => 0,
-	"border" => 0), 2, 2);
-$_table->setColContent(0, 0, we_html_tools::getPixel(20, 6));
-$_table->setColContent(1, 1, we_html_button::create_button("back", "javascript:top.weNavigationHistory.navigateBack();"));
+$_table = new we_html_table(array("border" => 0), 1, 2);
+$_table->setColContent(0, 1, we_html_button::create_button(we_html_button::BACK, "javascript:top.weNavigationHistory.navigateBack();"));
 
 
-$_body = we_html_element::htmlBody(array("bgcolor" => "white",
-			"background" => EDIT_IMAGE_DIR . "editfooterback.gif",
-			"marginwidth" => 0,
-			"marginheight" => 0,
-			"leftmargin" => 0,
-			"topmargin" => 0), $_table->getHtml());
 
-echo we_html_element::htmlDocType() . we_html_element::htmlHtml(STYLESHEET_BUTTONS_ONLY . SCRIPT_BUTTONS_ONLY . $_body);
+echo we_html_tools::getHtmlTop('', '', '', STYLESHEET, we_html_element::htmlBody(array("id" => "footerBody"), $_table->getHtml())
+);

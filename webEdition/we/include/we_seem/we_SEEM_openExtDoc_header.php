@@ -33,23 +33,10 @@ $_errormsg = (strpos($url, $_webEditionSiteUrl) === 0 ?
 		sprintf(g_l('SEEM', '[ext_doc]'), $url));
 
 
-$_table = new we_html_table(array("cellpadding" => 0,
-	"cellspacing" => 0,
-	"border" => 0), 2, 4);
-
-$_table->setColContent(0, 0, we_html_tools::getPixel(20, 6));
-$_table->setColContent(1, 0, we_html_tools::getPixel(1, 1));
-$_table->setColContent(1, 1, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif", "width" => 25, "height" => 27)));
-$_table->setColContent(1, 2, we_html_tools::getPixel(9, 1));
-$_table->setCol(1, 3, array("class" => "middlefontred"), $_errormsg);
+$_table = new we_html_table(array('class' => 'default withSpace', 'style' => 'margin:5px 0 20px 0'), 1, 2);
+$_table->setColContent(0, 1, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif", "width" => 25, "height" => 27)));
+$_table->setCol(0, 1, array("class" => "middlefontred", 'style' => 'padding-left:9px;'), $_errormsg);
 
 
-echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
-	STYLESHEET .
-	we_html_element::htmlBody(array("bgcolor" => "white",
-		"background" => IMAGE_DIR . "backgrounds/header_with_black_lines.gif",
-		"marginwidth" => 0,
-		"marginheight" => 0,
-		"leftmargin" => 0,
-		"topmargin" => 0), $_table->getHtml())
+echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, we_html_element::htmlBody(array("id" => 'eHeaderBody',), $_table->getHtml())
 );

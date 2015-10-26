@@ -28,7 +28,7 @@ class rpcGetRssCmd extends rpcCmd{
 		//close session, we don't need it anymore
 		session_write_close();
 		$sRssUri = we_base_request::_(we_base_request::URL, 'we_cmd', '', 0);
-		$sCfgBinary = we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 1); //note binary content
+		$sCfgBinary = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1); //note binary content
 		$bCfgTitle = (bool) $sCfgBinary{0};
 		$bCfgLink = (bool) $sCfgBinary{1};
 		$bCfgDesc = (bool) $sCfgBinary{2};
@@ -50,7 +50,7 @@ class rpcGetRssCmd extends rpcCmd{
 				$iNumItems = 50;
 				break;
 		}
-		$sTbBinary = we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 3); //binary
+		$sTbBinary = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3); //binary
 		$bTbLabel = (bool) $sTbBinary{0};
 		$bTbTitel = (bool) $sTbBinary{1};
 		$bTbDesc = (bool) $sTbBinary{2};
@@ -88,7 +88,7 @@ class rpcGetRssCmd extends rpcCmd{
 			$sLink = (($bCfgLink && isset($item['link'])) && !$bShowTitle) ? " &nbsp;" .
 				we_html_element::htmlA(array("href" => $item['link'], "target" => "_blank", "style" => "text-decoration:underline;"), g_l('cockpit', '[more]')) : "";
 			if($bShowContEnc){
-				$contEnc = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 1);
+				$contEnc = new we_html_table(array("class" => 'default'), 1, 1);
 				$contEnc->setCol(0, 0, null, $item['content:encoded'] . ((!$bCfgDesc) ? $sLink : ""));
 			}
 
@@ -117,7 +117,7 @@ class rpcGetRssCmd extends rpcCmd{
 						'')
 				) .
 				($bShowDesc || $bShowContEnc ?
-					we_html_tools::getPixel(1, 10) . we_html_element::htmlBr() :
+					we_html_element::htmlBr() :
 					"");
 			if($iNumItems){
 				$iCurrItem++;

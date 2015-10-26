@@ -33,7 +33,7 @@ function we_tag_options($attribs){
 			$GLOBALS['WE_OBJECT_DEFARRAY'] = array();
 		}
 		if(!isset($GLOBALS['WE_OBJECT_DEFARRAY']['cid_' . $classid])){
-			$GLOBALS['WE_OBJECT_DEFARRAY']['cid_' . $classid] = unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid)));
+			$GLOBALS['WE_OBJECT_DEFARRAY']['cid_' . $classid] = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid)));
 		}
 		$foo = $GLOBALS['WE_OBJECT_DEFARRAY']['cid_' . $classid]['meta_' . $field]['meta'];
 		foreach($foo as $key => $val){

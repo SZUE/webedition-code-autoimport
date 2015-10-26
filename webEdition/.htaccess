@@ -1,4 +1,4 @@
-<FilesMatch "\.inc.php$">
+<FilesMatch "\.(inc|class|conf).php$">
 	<ifModule mod_authz_core>
 		Require all denied
 	</ifModule>
@@ -7,21 +7,19 @@
 		Deny from all
 	</ifModule>
 </FilesMatch>
-<FilesMatch "\.class.php$">
-	<ifModule mod_authz_core>
-		Require all denied
-	</ifModule>
-	<ifModule !mod_authz_core>
-		Order Allow,Deny
-		Deny from all
-	</ifModule>
-</FilesMatch>
-<FilesMatch "\.conf.php$">
-	<ifModule mod_authz_core>
-		Require all denied
-	</ifModule>
-	<ifModule !mod_authz_core>
-		Order Allow,Deny
-		Deny from all
-	</ifModule>
-</FilesMatch>
+#<ifModule mod_expires.c>
+#ExpiresActive On
+#ExpiresDefault "access plus 1 month"
+#ExpiresByType text/javascript   "access plus 1 month"
+#ExpiresByType application/javascript   "access plus 1 month"
+#ExpiresByType text/css   "access plus 1 month"
+#ExpiresByType image/svg+xml "access plus 1 month"
+#ExpiresByType image/gif "access plus 1 month"
+#ExpiresByType image/jpeg        "access plus 1 month"
+#ExpiresByType image/png        "access plus 1 month"
+
+
+#</ifModule>
+#<ifModule mod_deflate.c>
+#	AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript
+#</ifModule>

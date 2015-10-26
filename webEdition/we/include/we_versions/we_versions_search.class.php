@@ -96,7 +96,7 @@ class we_versions_search{
 							}
 							break;
 						case "timestamp":
-							if(($loc = we_base_request::_(we_base_request::RAW, 'location', '', $k)) && ($search = we_base_request::_(we_base_request::STRING, 'search', '', $k))){
+							if(($loc = we_base_request::_(we_base_request::STRING, 'location', '', $k)) && ($search = we_base_request::_(we_base_request::STRING, 'search', '', $k))){
 
 								$date = explode('.', $search);
 								$day = $date[0];
@@ -167,9 +167,9 @@ class we_versions_search{
 								}
 							}
 							if($mtof){
-								$where .= ' AND ID IN (' . makeCSVFromArray($arr) . ') ';
+								$where .= ' AND ID IN (' . implode(',', $arr) . ') ';
 							} elseif(!empty($_ids[0])){
-								$where .= ' AND ID IN (' . makeCSVFromArray($_ids[0]) . ') ';
+								$where .= ' AND ID IN (' . implode(',', $_ids[0]) . ') ';
 							} else {
 								$where .= ' AND 0';
 							}

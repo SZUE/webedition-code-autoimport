@@ -31,7 +31,7 @@ abstract class we_captcha_captcha{
 	 */
 	static function display($image, $type = "gif"){
 
-		$code = "";
+		$code = '';
 		$im = $image->get($code);
 		// save the code to the memory
 		self::save($code);

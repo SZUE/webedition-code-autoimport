@@ -22,31 +22,29 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_navigation_tree extends we_modules_tree{
+class we_navigation_tree extends weTree{
 
-	function __construct($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
-		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
-	}
-
-	function getJSTreeFunctions(){
-
-		$out = weTree::getJSTreeFunctions();
-
-		$out .= '
-				function doClick(id,typ){
-					var node=' . $this->topFrame . '.get(id);
-					' . $this->topFrame . '.editor.edbody.we_cmd("module_navigation_edit",node.id);
-				}
-				' . $this->topFrame . '.loaded=1;
-			';
-		return $out;
+	function customJSFile(){
+		return we_html_element::jsScript(JS_DIR . 'navigation_tree.js');
 	}
 
 	function getJSTreeCode(){
-		return parent::getJSTreeCode() . we_html_element::jsElement(
-				'
- 					drawTree.selection_table="' . NAVIGATION_TABLE . '";
- 				');
+		return parent::getJSTreeCode() .
+			we_html_element::jsElement('drawTree.selection_table="' . NAVIGATION_TABLE . '";');
+	}
+
+	function getJSStartTree(){
+		return '
+function startTree(){
+frames={
+	"top":' . $this->topFrame . ',
+	"cmd":' . $this->cmdFrame . '
+};
+	pid = arguments[0] ? arguments[0] : 0;
+	offset = arguments[1] ? arguments[1] : 0;
+	frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=cmd&pid="+pid+"&offset="+offset;
+	drawTree();
+}';
 	}
 
 }

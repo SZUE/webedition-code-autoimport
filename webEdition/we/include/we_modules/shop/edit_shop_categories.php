@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -30,7 +29,7 @@ we_html_tools::protect($protect);
 
 //FIXME: mak sowme view class for this editor and use processVariables() and processCommands()?
 //process request
-$shopCategoriesDir = ($val = we_base_request::_(we_base_request::INT, 'weShopCatDir', false)) !== false ? $val : we_shop_category::getShopCatDir();//(f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_cats_dir"', '', $DB_WE, -1));
+$shopCategoriesDir = ($val = we_base_request::_(we_base_request::INT, 'weShopCatDir', false)) !== false ? $val : we_shop_category::getShopCatDir(); //(f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_cats_dir"', '', $DB_WE, -1));
 $relations = array();
 $saveSuccess = false;
 $onsaveClose = we_base_request::_(we_base_request::BOOL, 'onsaveclose', false);
@@ -116,12 +115,11 @@ if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
 				}
 			}
 		}
-		
 	}
 
 	$shopCategories = we_shop_category::getShopCatFieldsFromDir('', false, true, $shopCategoriesDir, true, true, true, '', 'Path');
-	$catsTable = new we_html_table(array('border' => 0, 'cellpadding' => 2, 'cellspacing' => 4), (count($shopCategories) * 6), 5);
-	$catsDirTable = new we_html_table(array('border' => 0, 'cellpadding' => 2, 'cellspacing' => 4), 7, 5);
+	$catsTable = new we_html_table(array('cellpadding' => 2, 'cellspacing' => 4), (count($shopCategories) * 6), 5);
+	$catsDirTable = new we_html_table(array('cellpadding' => 2, 'cellspacing' => 4), 7, 5);
 	if(is_array($shopCategories) && count($shopCategories) > 1){
 		$i = $iTmp = 0;
 
@@ -136,7 +134,7 @@ if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
 			}
 
 			$j = 0;
-			$table->setCol($i, 1, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 140), '<abbr title="ShopCatID: '.$cat['ID'].'">'.$cat['Category'].'</abbr>');
+			$table->setCol($i, 1, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 140), '<abbr title="ShopCatID: ' . $cat['ID'] . '">' . $cat['Category'] . '</abbr>');
 			$table->setCol($i, 2, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 20));
 			$table->setCol($i++, 3, array('class' => 'defaultfont', 'style' => 'font-weight:bold', 'colspan' => 2, 'nowrap' => 'nowrap', 'width' => 174), $cat['Path']);
 			if($cat['ID'] != $shopCategoriesDir){
@@ -147,7 +145,7 @@ if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
 			//set attribute $unique for radio button to 'true' for corret labels
 			$taxPrinciple = we_html_forms::radioButton(0, ($cat['DestPrinciple'] == 0 ? '1' : '0'), 'weShopCatDestPrinciple[' . $cat['ID'] . ']', g_l('modules_shop', '[shopcats][text_originPrinciple]'), true, 'defaultfont', 'we_switch_principle_by_id(' . $cat['ID'] . ', this, ' . ($isShopCatsDir ? 'true' : 'false') . ')') .
 				we_html_forms::radioButton(1, ($cat['DestPrinciple'] == 1 ? '1' : '0'), 'weShopCatDestPrinciple[' . $cat['ID'] . ']', g_l('modules_shop', '[shopcats][text_destPrinciple]'), true, 'defaultfont', 'we_switch_principle_by_id(' . $cat['ID'] . ', this, ' . ($isShopCatsDir ? 'true' : 'false') . ')') .
-				we_html_element::htmlHidden(array('id' => 'taxPrinciple_tmp[' . $cat['ID'] . ']', 'value' => $cat['DestPrinciple']));
+				we_html_element::htmlHidden('taxPrinciple_tmp[' . $cat['ID'] . ']', $cat['DestPrinciple'], 'taxPrinciple_tmp[' . $cat['ID'] . ']');
 
 			$table->setRow($i, array('id' => 'destPrincipleRow_' . $cat['ID'], 'style' => ($cat['IsInactive'] == 1 ? 'display: none;' : '')));
 			$table->setCol($i, 3, array('class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 174, 'style' => 'padding-bottom: 10px'), g_l('modules_shop', '[shopcats][title_taxationMode]'));
@@ -156,8 +154,8 @@ if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
 			if(!count($allVats)){
 				$table->setCol($i, 3, array('class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 140), g_l('modules_shop', '[shopcats][warning_noVatsDefined]'));
 			} else {
-				$holderCountryTable = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 1, 2);
-				$countriesTable = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), max((count($allVats) - 1), 1), 2);
+				$holderCountryTable = new we_html_table(array('class' => 'default'), 1, 2);
+				$countriesTable = new we_html_table(array('class' => 'default'), max((count($allVats) - 1), 1), 2);
 
 				$c = -1;
 				foreach($vatGroups as $k => $v){
@@ -172,7 +170,7 @@ if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
 						$isDefCountry = false;
 					}
 
-					$value = isset($relations[$cat['ID']][$k]) && $relations[$cat['ID']][$k] ? $relations[$cat['ID']][$k] : 0;
+					$value = !empty($relations[$cat['ID']][$k]) ? $relations[$cat['ID']][$k] : 0;
 					$selAttribs = array('id' => 'weShopCatRels[' . $cat['ID'] . '][' . $k . ']');
 					$sel = we_html_tools::htmlSelect('weShopCatRels[' . $cat['ID'] . '][' . $k . ']', $v['selOptions'], 1, $value, false, $selAttribs, 'value', 220);
 
@@ -221,31 +219,27 @@ $jsFunction = '
 	}
 
 	function doUnload() {
-		if (!!jsWindow_count) {
-			for (i = 0; i < jsWindow_count; i++) {
-				eval("jsWindow" + i + "Object.close()");
-			}
-		}
+		WE().util.jsWindow.prototype.closeAll(window);
 	}
 
 	function we_cmd(){
 		switch (arguments[0]) {
 			case "close":
 				if(hot){
-					new jsWindow("' . WE_SHOP_MODULE_DIR . 'edit_shop_exitQuestion.php","we_exit_doc_question",-1,-1,380,130,true,false,true);
+					new (WE().util.jsWindow)(window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_exitQuestion.php","we_exit_doc_question",-1,-1,380,130,true,false,true);
 				} else {
 					window.close();
 				}
 			break;
 
 			case "save":
-				document.forms["we_form"]["we_cmd[0]"].value = "saveShopCatRels";
+				document.we_form["we_cmd[0]"].value = "saveShopCatRels";
 				document.we_form.onsaveclose.value = 1;
 				we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
 			break;
 
 			case "save_notclose":
-				document.forms["we_form"]["we_cmd[0]"].value = "saveShopCatRels";
+				document.we_form["we_cmd[0]"].value = "saveShopCatRels";
 				we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
 			break;
 		}
@@ -253,12 +247,12 @@ $jsFunction = '
 
 	function we_switch_active_by_id(id){
 		try{
-			document.getElementById("destPrincipleRow_" + id).style.display = 
-				document.getElementById("defCountryRow_" + id).style.display = 
+			document.getElementById("destPrincipleRow_" + id).style.display =
+				document.getElementById("defCountryRow_" + id).style.display =
 				(document.getElementById("check_weShopCatIsActive[" + id + "]").checked) ? "" : "none";
 
-			document.getElementById("countriesRow_" + id).style.display = 
-				document.getElementById("check_weShopCatIsActive[" + id + "]").checked && 
+			document.getElementById("countriesRow_" + id).style.display =
+				document.getElementById("check_weShopCatIsActive[" + id + "]").checked &&
 				(document.getElementById("taxPrinciple_tmp[" + id + "]").value == 1) ? "" : "none";
 		} catch(e){}
 	}
@@ -268,7 +262,7 @@ $jsFunction = '
 			var active = isShopCatsDir ? true : document.getElementById("check_weShopCatIsActive[" + id + "]").checked;
 
 			document.getElementById("taxPrinciple_tmp[" + id + "]").value = obj.value;
-			document.getElementById("countriesRow_" + id).style.display = 
+			document.getElementById("countriesRow_" + id).style.display =
 				(active && obj.value == 1) ? "" : "none";
 		} catch(e){}
 	}
@@ -280,7 +274,6 @@ $parts = array(
 		'headline' => g_l('modules_shop', '[shopcats][text_shopCatDir]'),
 		'space' => 200,
 		'html' => $selCategoryDirs,
-
 	),
 );
 
@@ -331,14 +324,13 @@ $parts[] = array(
 	//'html' => $debug_output
 );
 
-echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement($jsFunction) .
+echo we_html_element::jsElement($jsFunction) .
  '</head>
 <body class="weDialogBody" onload="window.focus(); addListeners();">
 	<form name="we_form" method="post" >
 	<input type="hidden" name="we_cmd[0]" value="load" /><input type="hidden" name="onsaveclose" value="0" />' .
- we_html_multiIconBox::getHTML(
-	'weShopCategories', 700, $parts, 30, we_html_button::position_yes_no_cancel(
-		we_html_button::create_button('save', 'javascript:we_cmd(\'save_notclose\');'), '', we_html_button::create_button('close', 'javascript:we_cmd(\'close\');')
+ we_html_multiIconBox::getHTML('weShopCategories', $parts, 30, we_html_button::position_yes_no_cancel(
+		we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save_notclose\');'), '', we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')
 	), -1, '', '', false, g_l('modules_shop', '[shopcats][title_editorShopCats]'), '', '', 'scroll'
 ) . '</form>
 

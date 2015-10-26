@@ -30,9 +30,11 @@ $we_dt = $_SESSION['weS']['we_data'][$we_transaction];
 include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 if(we_workflow_utility::approve($we_doc->ID, $we_doc->Table, $_SESSION['user']['ID'], '', true)){
-	if(($time=$we_doc->i_publInScheduleTable())){
-		$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][autoschedule]'), date(g_l('date', '[format][default]'), $time));
-
+	if($we_doc->i_publInScheduleTable()){
+		if(!is_numeric($we_doc->From)){
+			t_e('from is non numeric', $we_doc->From);
+		}
+		$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][autoschedule]'), date(g_l('date', '[format][default]'), $we_doc->From));
 		$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 	} else if($we_doc->we_publish()){
 		$we_JavaScript = '_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');' . $we_doc->getUpdateTreeScript();
@@ -41,8 +43,11 @@ if(we_workflow_utility::approve($we_doc->ID, $we_doc->Table, $_SESSION['user']['
 		if(($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_INFO)){
 			$GLOBALS['we_responseJS'] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");'; // wird in Templ eingef�gt
 		}
-		//this should never be opener
-		$we_JavaScript .= 'if(opener){opener.top.weEditorFrameController.getActiveDocumentReference().frames[3].location.reload();}else{top.weEditorFrameController.getActiveDocumentReference().frames[3].location.reload();}_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');' . $we_doc->getUpdateTreeScript();
+			$we_JavaScript .= 'if(opener){
+WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter.location.reload();_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');
+}else{
+WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter.location.reload();_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');
+}' . $we_doc->getUpdateTreeScript();
 	} else {
 		$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_notok]'), $we_doc->Path);
 		$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
@@ -52,4 +57,4 @@ if(we_workflow_utility::approve($we_doc->ID, $we_doc->Table, $_SESSION['user']['
 	$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 }
 
-include(WE_INCLUDES_PATH . 'we_templates/we_editor_save.inc.php');
+include(WE_INCLUDES_PATH . 'we_editors/we_editor_save.inc.php');

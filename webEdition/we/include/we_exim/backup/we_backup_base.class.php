@@ -153,8 +153,8 @@ abstract class we_backup_base{
 
 		if(defined('CUSTOMER_TABLE')){
 			$this->table_map = array_merge($this->table_map, array(
-				'tblwebuser' => CUSTOMER_TABLE,
-				'tblwebadmin' => CUSTOMER_ADMIN_TABLE));
+				'tblwebuser' => CUSTOMER_TABLE
+				));
 		}
 
 		if(defined('OBJECT_TABLE')){
@@ -201,7 +201,6 @@ abstract class we_backup_base{
 				'tblnewslettergroup' => NEWSLETTER_GROUP_TABLE,
 				'tblnewsletterblock' => NEWSLETTER_BLOCK_TABLE,
 				'tblnewsletterlog' => NEWSLETTER_LOG_TABLE,
-				'tblnewsletterprefs' => NEWSLETTER_PREFS_TABLE,
 				'tblnewsletterconfirm' => NEWSLETTER_CONFIRM_TABLE
 				)
 			);
@@ -211,7 +210,6 @@ abstract class we_backup_base{
 			$this->table_map = array_merge($this->table_map, array(
 				'tblbanner' => BANNER_TABLE,
 				'tblbannerclicks' => BANNER_CLICKS_TABLE,
-				'tblbannerprefs' => BANNER_PREFS_TABLE,
 				'tblbannerviews' => BANNER_VIEWS_TABLE
 				)
 			);
@@ -416,7 +414,7 @@ abstract class we_backup_base{
 	 */
 	function printDump2BackupDir(){
 		if($this->export2server == 1){
-			$backupfilename = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "weBackup_" . time() . ".php";
+			$backupfilename = BACKUP_PATH . "weBackup_" . time() . ".php";
 			return @copy($this->dumpfilename, $backupfilename);
 		}
 		return true;
@@ -533,7 +531,7 @@ abstract class we_backup_base{
 
 				if($open_new){
 					$num++;
-					$filename_tmp = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . '/tmp/' . basename($filename) . '_' . $num;
+					$filename_tmp = BACKUP_PATH . '/tmp/' . basename($filename) . '_' . $num;
 					$fh_temp = fopen($filename_tmp, "wb");
 					$open_new = false;
 				}
@@ -659,7 +657,7 @@ abstract class we_backup_base{
 		unlink($filename);
 		$tn = strtolower($ctbl . $itbl);
 
-		$this->current_description = (isset($this->description["import"]["$tn"]) && $this->description["import"]["$tn"] ?
+		$this->current_description = (!empty($this->description["import"]["$tn"]) ?
 				$this->description["import"][$tn] :
 				g_l('backup', '[working]'));
 
@@ -902,7 +900,7 @@ abstract class we_backup_base{
 	}
 
 	protected function _saveState(){
-		//FIXME: use __sleep/__wakeup + serialize/unserialize
+		//FIXME: use __sleep/__wakeup
 		//		// Initialize variable
 		return '
 $this->errors=' . var_export($this->errors, true) . ';
@@ -923,7 +921,7 @@ $this->dummy=' . var_export($this->dummy, true) . ';
 	 */
 	function saveState($of = ""){
 		$of = ($of ? : we_base_file::getUniqueId()); // #6590, changed from: uniqid(time())
-		we_base_file::save($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $of, $this->_saveState(), 'wb');
+		we_base_file::save(BACKUP_PATH . 'tmp/' . $of, $this->_saveState(), 'wb');
 		return $of;
 	}
 
@@ -933,27 +931,27 @@ $this->dummy=' . var_export($this->dummy, true) . ';
 	 * Description:
 	 */
 	function restoreState($temp_filename){
-		//FIXME: use __sleep/__wakeup + serialize/unserialize
-		if(file_exists($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $temp_filename)){
-			include($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $temp_filename);
+		//FIXME: use __sleep/__wakeup
+		if(file_exists(BACKUP_PATH . "tmp/" . $temp_filename)){
+			include(BACKUP_PATH . "tmp/" . $temp_filename);
 			return $temp_filename;
 		}
 		return 0;
 	}
 
 	private function clearOldTmp(){
-		if(!is_writable($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp")){
+		if(!is_writable(BACKUP_PATH . "tmp")){
 			$this->setError(sprintf(g_l('backup', '[cannot_save_tmpfile]'), BACKUP_DIR));
 			return -1;
 		}
 
-		$d = dir($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp");
+		$d = dir(BACKUP_PATH . "tmp");
 		$co = -1;
 		$limit = time() - 86400;
 		while(false !== ($entry = $d->read())){
-			if($entry != "." && $entry != ".." && $entry != "CVS" && !@is_dir($entry)){
-				if(filemtime($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . '/tmp/' . $entry) < $limit){
-					unlink($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . '/tmp/' . $entry);
+			if($entry != "." && $entry != ".." && !@is_dir($entry)){
+				if(filemtime(BACKUP_PATH . '/tmp/' . $entry) < $limit){
+					unlink(BACKUP_PATH . '/tmp/' . $entry);
 				}
 			}
 		}

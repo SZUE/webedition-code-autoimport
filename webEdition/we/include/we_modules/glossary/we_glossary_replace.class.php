@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_glossary_replace{
-	const configFile = 'we_conf_glossary_settings.inc.php';
 
 	public static function useAutomatic(){
 		return f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="glossary" AND pref_name="GlossaryAutomaticReplacement"', '', new DB_WE(), 1);

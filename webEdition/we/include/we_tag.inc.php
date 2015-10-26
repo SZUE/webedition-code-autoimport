@@ -115,7 +115,7 @@ function we_tag($name, $attribs = array(), $content = ''){
 	if(isset($attribs['name'])){
 		$attribs['_name_orig'] = $attribs['name'];
 		$attribs['name'] = we_tag_getPostName($attribs['name']);
-		if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'] && ($GLOBALS['we_doc'] instanceof we_webEditionDocument)){
+		if(!empty($GLOBALS['we_editmode']) && ($GLOBALS['we_doc'] instanceof we_webEditionDocument)){
 			$GLOBALS['we_doc']->addUsedElement($name, $attribs['name']);
 		}
 	}
@@ -548,7 +548,7 @@ function we_tag_ifLastCol(){
 }
 
 function we_tag_ifNotEmpty($attribs){
-	return (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) || !we_tag('ifEmpty', $attribs);
+	return (!empty($GLOBALS['we_editmode'])) || !we_tag('ifEmpty', $attribs);
 }
 
 function we_tag_ifReturnPage(){

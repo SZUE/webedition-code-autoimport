@@ -24,155 +24,24 @@
  */
 class we_customer_tree extends weTree{
 
-	function __construct($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
-		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
-
-		$this->setStyles(array(
-			'.item {color: black; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . ';}',
-			'.item a { text-decoration:none;}',
-			'.loginDenied {color:red;}',
-			'.group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . ';}',
-			'.group a { text-decoration:none;}',
-		));
-	}
-
-	function getJSCustomDraw(){
-		return array_merge(parent::getJSCustomDraw(), array(
-			"sort" => '
-var newAst = zweigEintrag;
-var zusatz = (ai == nf.laenge) ? "end" : "";
-var oc_img;
-var oc_js;
-
-oc_img="' . $this->tree_image_dir . '"+(nf[ai].open == 0?"auf":"zu")+zusatz+".gif";
-oc_js=treeData.topFrame+".openClose(\'" + nf[ai].id + "\')\"";
-
-row+="&nbsp;&nbsp;<a href=\"javascript:"+oc_js+" border=0><img src="+oc_img+" width=19 height=18 align=absmiddle border=0 Alt=\"\"></a>";
-row+="<a name=\'_"+nf[ai].id+"\' href=\"javascript://\" onclick=\""+oc_js+";return true;\" border=0>";
-row+="<img src=' . $this->tree_image_dir . 'icons/"+nf[ai].icon+" width=16 height=18 align=absmiddle border=0 Alt=\"\">";
-row+="</a>";
-row+="<a name=\'_"+nf[ai].id+"\' href=\"javascript://\" onclick=\""+oc_js+";return true;\">";
-row+="<label style=\"cursor:pointer\" id=\"lab_"+nf[ai].id+"\" class=\""+treeData.node_layout[nf[ai].state]+"\">&nbsp;" + nf[ai].text+"</label>";
-row+="</a>";
-row+="&nbsp;&nbsp;<br/>\n";
-
-if (nf[ai].open){
-	newAst = newAst + "<img src=' . $this->tree_image_dir . '"+(ai == nf.laenge?"leer.gif":"strich2.gif")+" width=19 height=18 align=absmiddle border=0>";
-	row+=draw(nf[ai].id,newAst);
-}
-			',
-			"group" => '
-var newAst = zweigEintrag;
-var zusatz = (ai == nf.len) ? "end" : "";
-var oc_img;
-var oc_js;
-
-oc_img="' . $this->tree_image_dir . '"+(nf[ai].open == 1?"zu":"auf")+zusatz+".gif";
-if(nf[ai].disabled!=1){
-	oc_js=treeData.topFrame+".setScrollY();"+treeData.topFrame+".openClose(\'" + nf[ai].id + "\')\"";
-} else{
-	oc_js="//";
-}
-oc_js=treeData.topFrame+".setScrollY();"+treeData.topFrame+".openClose(\'" + nf[ai].id + "\')\"";
-row+="&nbsp;&nbsp;<a href=\"javascript:"+oc_js+" border=0><img src="+oc_img+" width=19 height=18 align=absmiddle border=0 Alt=\"\"></a>";
-
-var folder_icon;
-folder_icon="folder"+(nf[ai].open==1 ? "open" : "")+(nf[ai].disabled==1 ? "_disabled" : "")+".gif";
-nf[ai].icon=folder_icon;
-
-if(nf[ai].disabled!=1){
-	row+="<a name=\'_"+nf[ai].id+"\' href=\"javascript:"+oc_js+"\">";
-}
-row+="<img src=' . $this->tree_image_dir . 'icons/"+nf[ai].icon+" width=16 height=18 align=absmiddle border=0 alt=\"\">";
-if(nf[ai].disabled!=1){
-	row+="</a>";
-	row+="<a name=\'_"+nf[ai].id+"\' href=\"javascript:"+oc_js+"\">";
-}
-row+="<label style=\"cursor:pointer;\" id=\"lab_"+nf[ai].id+"\" class=\""+nf[ai].getlayout()+"\">&nbsp;" + nf[ai].text+"</label>";
-if(nf[ai].disabled!=1){
-	row+="</a>";
-}
-row+="&nbsp;&nbsp;<br/>\n";
-if (nf[ai].open==1){
-	newAst = newAst + "<img src=' . $this->tree_image_dir . '"+(ai == nf.len?"leer.gif":"strich2.gif")+" width=19 height=18 align=absmiddle border=0>";
-	row+=draw(nf[ai].id,newAst);
-}
-			'));
-	}
-
-	function getJSOpenClose(){
-		return '
-function openClose(id){
-	var sort="";
-	if(id==""){
-		return;
-	}
-	var eintragsIndex = indexOfEntry(id);
-	var openstatus;
-
-	if(treeData[eintragsIndex].typ=="group"){
-		sort=' . $this->topFrame . '.document.we_form_treeheader.sort.value;
-	}
-
-	openstatus=(treeData[eintragsIndex].open==0?1:0);
-
-	treeData[eintragsIndex].open=openstatus;
-
-	if(openstatus && treeData[eintragsIndex].loaded!=1){
-		id = encodeURI(id);
-		sort = encodeURI(sort);
-		id = id.replace(/\+/g,"%2B");
-		sort = sort.replace(/\+/g,"%2B");
-		' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+id+(sort!=""?"&sort="+sort:"");
-	}else{
-		drawTree();
-	}
-	if(openstatus==1){
-		treeData[eintragsIndex].loaded=1;
-	}
-}';
-	}
-
-	function getJSUpdateItem(){
-		return '
-function updateEntry(id,text){
-			var ai = 1;
-			while (ai <= treeData.len) {
-					if (treeData[ai].id==id) {
-						text = text.replace(/</g,"&lt;");
-			text = text.replace(/>/g,"&gt;");
-							treeData[ai].text=text;
-					}
-					ai++;
-			}
-			drawTree();
-}';
-	}
-
-	function getJSTreeFunctions(){
-		return parent::getJSTreeFunctions() . '
-function doClick(id,typ){
-	var node=' . $this->topFrame . '.get(id);
-		if(node.typ=="item")
-		' . $this->topFrame . '.we_cmd(\'customer_edit\',node.id,node.typ,node.table);
-}
-' . $this->topFrame . '.loaded=1;';
+	function customJSFile(){
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_tree.js');
 	}
 
 	function getJSStartTree(){
 		return '
 function startTree(){
-	' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid=0";
+	frames={
+	"top":' . $this->topFrame . ',
+	"cmd":' . $this->cmdFrame . '
+};
+	treeData.frames=frames;
+	frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=cmd&pid=0";
 	drawTree();
 }';
 	}
 
-	function getJSIncludeFunctions(){
-		return parent::getJSIncludeFunctions() .
-			$this->getJSStartTree();
-	}
-
-	function getJSLoadTree($treeItems){
+	function getJSLoadTree($rootID, array $treeItems){
 		$days = array(
 			'Sunday' => 0,
 			'Monday' => 1,
@@ -198,9 +67,14 @@ function startTree(){
 			'December' => 11
 		);
 
-		$js = 'var attribs=new Array();';
+		$js = (!$rootID ?
+				$this->topFrame . '.treeData.clear();' .
+				$this->topFrame . '.treeData.add(' . $this->topFrame . '.node.prototype.rootEntry(\'' . $rootID . '\',\'root\',\'root\'));' : '') .
+			'var attribs={};';
 		foreach($treeItems as $item){
-			$js.='if(' . $this->topFrame . '.indexOfEntry(\'' . str_replace(array("\n", "\r", '\''), '', $item["id"]) . '\')<0){';
+			$js.=($rootID ? 'if(' . $this->topFrame . '.treeData.indexOfEntry(\'' . str_replace(array("\n", "\r", '\''), '', $item["id"]) . '\')<0){' : '') .
+				'attribs={';
+
 			foreach($item as $k => $v){
 				if($k === 'text'){
 					if(in_array($v, array_keys($days))){
@@ -210,36 +84,279 @@ function startTree(){
 						$v = g_l('date', '[month][long][' . $months[$v] . ']');
 					}
 				}
-				$js.='attribs["' . strtolower($k) . '"]=\'' . addslashes(stripslashes(str_replace(array("\n", "\r", '\''), '', $v))) . '\';';
+				$js.= strtolower($k) . ':' . ($v === 1 || $v === 0 || is_bool($v) || $v === 'true' || $v === 'false' || is_int($v) ?
+						intval($v) :
+						'\'' . str_replace(array('"', '\'', '\\'), '',$v) . '\'') .
+					',';
 			}
-			$js.=$this->topFrame . '.treeData.add(new ' . $this->topFrame . '.node(attribs));
-				}';
+
+			$js.='};' .
+				$this->topFrame . '.treeData.add(new ' . $this->topFrame . '.node(attribs));' .
+				($rootID ? '}' : '');
 		}
 		$js.=$this->topFrame . '.drawTree();';
 
 		return $js;
 	}
 
-	function getJSShowSegment(){
-		return '
-function showSegment(){
-	var sort="";
-	parentnode=' . $this->topFrame . '.get(this.parentid);
-	parentnode.clear();
-	sort=' . $this->topFrame . '.document.we_form_treheader.sort.value;
-	we_cmd("load",parentnode.id,this.offset,sort);
-}';
+	static function getItems($pid, $offset = 0, $segment = 500, $sort = ""){
+		return (empty($sort) ?
+				self::getItemsFromDB($pid, $offset, $segment) :
+				self::getSortFromDB($pid, $sort, $offset, $segment));
 	}
 
-	function getJSGetLayout(){
-		return '
-function getLayout(){
-		if(this.typ=="threedots") return treeData.node_layouts["threedots"];
-		var layout_key=(this.typ=="group" ? "group" : "item");
+	private static function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,Forename,Surname', $addWhere = "", $addOrderBy = ""){
+		$db = new DB_WE();
+
+		$prevoffset = max(0, $offset - $segment);
+		$items = ($offset && $segment ?
+				array(array(
+					"id" => "prev_" . $ParentID,
+					"parentid" => $ParentID,
+					"text" => "display (" . $prevoffset . "-" . $offset . ")",
+					"contenttype" => "arrowup",
+					"table" => CUSTOMER_TABLE,
+					"typ" => "threedots",
+					"open" => 0,
+					"published" => 1,
+					"disabled" => 0,
+					"tooltip" => "",
+					"offset" => $prevoffset
+				)) : array());
 
 
-		return treeData.node_layouts[layout_key]+(this.typ=="item" && this.published==1 ? " loginDenied" : "");
-}';
+		$settings = new we_customer_settings();
+		$settings->load();
+
+
+		$where = ' WHERE 1 ' .
+			(!permissionhandler::hasPerm("ADMINISTRATOR") && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? ' AND ' . $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '') .
+			' ' . $addWhere;
+
+		$db->query('SELECT ' . $settings->treeTextFormatSQL . ' AS treeFormat, 0 AS ParentID,' . $elem . ',LoginDenied FROM ' . CUSTOMER_TABLE . ' ' . $where . ' ' . self::getSortOrder($settings) . ($segment ? ' LIMIT ' . $offset . ',' . $segment : ''));
+
+		while($db->next_record(MYSQL_ASSOC)){
+			$typ = array(
+				'typ' => ($db->f("IsFolder") == 1 ? "group" : "item"),
+				'contenttype' => ($db->f("IsFolder") == 1 ? "folder" : "we/costumer"),
+				'disabled' => 0,
+				'published' => $db->f('LoginDenied'),
+				'tooltip' => $db->f("ID"),
+				'offset' => $offset,
+			);
+
+			$tt = $db->f('treeFormat');
+			$fileds = array();
+
+			foreach($db->Record as $k => $v){
+				$fileds[strtolower($k)] = $v;
+			}
+
+			$fileds["text"] = oldHtmlspecialchars($tt);
+			$items[] = array_merge($fileds, $typ);
+		}
+
+		$total = f('SELECT COUNT(1) FROM ' . CUSTOMER_TABLE . ' ' . $where, '', $db);
+		$nextoffset = $offset + $segment;
+		if($segment && ($total > $nextoffset)){
+			$items[] = array(
+				"id" => "next_" . $ParentID,
+				"parentid" => 0,
+				"text" => "display (" . $nextoffset . "-" . ($nextoffset + $segment) . ")",
+				"contenttype" => "arrowdown",
+				"table" => CUSTOMER_TABLE,
+				"typ" => "threedots",
+				"open" => 0,
+				"disabled" => 0,
+				"tooltip" => "",
+				"offset" => $nextoffset
+			);
+		}
+
+		return $items;
+	}
+
+	private static function getSortFromDB($pid, $sort, $offset = 0, $segment = 500){
+		$db = new DB_WE();
+
+		$havingarr = $sort_defs = $pidarr = $check = array();
+
+		$notroot = (preg_match('|\{.\}|', $pid)) ? true : false;
+
+		$pid = str_replace(array('{', '}', '*****quot*****'), array('', '', "\\\\\'"), $pid);
+
+		if($pid || $notroot){
+			$pidarr = explode("-|-", $pid);
+		}
+
+		$settings = new we_customer_settings();
+		$settings->load(false);
+
+		if(isset($settings->SortView[$sort])){
+			$sort_defs = $settings->SortView[$sort];
+		}
+
+		$select = $grouparr = $orderarr = array();
+
+		$total = f('SELECT COUNT(1) FROM ' . CUSTOMER_TABLE);
+
+		foreach($sort_defs as $c => $sortdef){
+			if(!empty($sortdef['function'])){
+				$select[] = ($settings->customer->isInfoDate($sortdef['field']) ?
+						sprintf($settings->FunctionTable[$sortdef['function']], 'FROM_UNIXTIME(' . $sortdef['field'] . ')') . ' AS ' . $sortdef["field"] . "_" . $sortdef["function"] :
+						sprintf($settings->FunctionTable[$sortdef['function']], $sortdef['field']) . ' AS ' . $sortdef['field'] . '_' . $sortdef["function"]);
+
+				$grouparr[] = $sortdef['field'] . '_' . $sortdef['function'];
+				$orderarr[] = $sortdef['field'] . '_' . $sortdef['function'] . ' ' . $sortdef['order'];
+				$orderarr[] = $sortdef['field'] . ' ' . $sortdef['order'];
+				if(isset($pidarr[$c])){
+					$havingarr[] = ($pidarr[$c] == g_l('modules_customer', '[no_value]') ?
+							'(' . $sortdef['field'] . '_' . $sortdef["function"] . "='' OR " . $sortdef['field'] . '_' . $sortdef['function'] . ' IS NULL)' :
+							$sortdef['field'] . '_' . $sortdef['function'] . "='" . $pidarr[$c] . "'");
+				}
+			} else {
+				$select[] = $sortdef['field'];
+				$grouparr[] = $sortdef['field'];
+				$orderarr[] = $sortdef['field'] . ' ' . $sortdef['order'];
+				if(!empty($pidarr[$c])){
+					$havingarr[] = ($pidarr[$c] == g_l('modules_customer', '[no_value]') ?
+							'(' . $sortdef['field'] . "='' OR " . $sortdef['field'] . ' IS NULL)' :
+							$sortdef['field'] . "='" . $pidarr[$c] . "'");
+				}
+			}
+		}
+
+		$level = count($pidarr);
+		$levelcount = count($grouparr);
+
+		$grp = implode(',', array_slice($grouparr, 0, $level + 1));
+
+		$db->query('SELECT ' . $settings->treeTextFormatSQL . ' AS treeFormat,ID,LoginDenied,Forename,Surname' .
+			($select ? ',' . implode(',', $select) : '' ) . ' FROM ' . CUSTOMER_TABLE .
+			(!permissionhandler::hasPerm("ADMINISTRATOR") && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? ' WHERE ' . $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '') .
+			' GROUP BY ' . $grp . (count($grouparr) ? ($level ? ',ID' : '') : 'ID') . (count($havingarr) ? ' HAVING ' . implode(' AND ', $havingarr) : '') . ' ORDER BY ' . implode(',', $orderarr) . self::getSortOrder($settings, ($orderarr ? ',' : '')) . (($level == $levelcount && $segment) ? ' LIMIT ' . $offset . ',' . $segment : ''));
+
+		$items = $foo = array();
+		$gname = '';
+		$old = '0';
+		$first = true;
+
+		while($db->next_record()){
+			$old = 0;
+
+			if($level == 0){
+				$gname = $db->f($grouparr[0]) ? : g_l('modules_customer', '[no_value]');
+				$gid = '{' . $gname . '}';
+
+				$groupTotal = f('SELECT COUNT(ID) FROM ' . CUSTOMER_TABLE . ' WHERE ' . $grp . '="' . $db->escape($gname) . '"' .
+					(!permissionhandler::hasPerm('ADMINISTRATOR') && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? ' AND ' . $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '') .
+					(count($havingarr) ? ' HAVING ' . implode(' AND ', $havingarr) : ''));
+
+				$items[] = array(
+					'id' => str_replace("\'", '*****quot*****', $gid),
+					'parentid' => $old,
+					'path' => '',
+					'text' => $gname . ' (' . $groupTotal . '/' . '<abbr title="' . g_l('modules_customer', '[all]') . ' ' . g_l('modules_customer', '[customer_data]') . '">' . $total . '</abbr>)',
+					'contentType' => 'folder',
+					'isfolder' => 1,
+					'typ' => 'group',
+					'disabled' => 0,
+					'open' => 0
+				);
+				$check[$gname] = 1;
+			} else {
+				$foo = array();
+				for($i = 0; $i < $levelcount; $i++){
+					$foo[] = ($i == 0 ?
+							('{' . ($db->f($grouparr[$i]) ? : g_l('modules_customer', '[no_value]')) . '}') :
+							($db->f($grouparr[$i]) ? : g_l('modules_customer', '[no_value]')));
+					$gname = implode('-|-', $foo);
+					if($i >= $level){
+						if(!isset($check[$gname])){
+							$items[] = array(
+								'id' => $gname,
+								'parentid' => $old,
+								'path' => '',
+								'text' => ($db->f($grouparr[$i]) ? : g_l('modules_customer', '[no_value]')),
+								'contentType' => 'folder',
+								'isfolder' => 1,
+								'typ' => 'group',
+								'disabled' => 0,
+								'open' => 0
+							);
+							$check[$gname] = 1;
+						}
+					}
+					$old = $gname;
+				}
+				$gname = implode('-|-', $foo);
+				if($level == $levelcount){
+					$tt = $db->f('treeFormat');
+					if($first){
+						$prevoffset = max(0, $offset - $segment);
+						if($offset && $segment){
+							$items[] = array(
+								'id' => "prev_" . $gname,
+								'parentid' => $gname,
+								'text' => 'display (' . $prevoffset . '-' . $offset . ')',
+								'contenttype' => "arrowup",
+								'table' => CUSTOMER_TABLE,
+								'typ' => "threedots",
+								'open' => 0,
+								'published' => 1,
+								'disabled' => 0,
+								'tooltip' => "",
+								'offset' => $prevoffset
+							);
+						}
+						$first = false;
+					}
+					$items[] = array(
+						'id' => $db->f("ID"),
+						'parentid' => str_replace("\'", "*****quot*****", $gname),
+						'path' => '',
+						'text' => oldHtmlspecialchars($tt),
+						'contentType' => 'we/customer',
+						'isfolder' => $db->f("IsFolder"),
+						'typ' => "item",
+						'disabled' => 0,
+						'published' => $db->f('LoginDenied'),
+						'tooltip' => $db->f("ID")
+					);
+				}
+			}
+		}
+
+		if($level == $levelcount){
+			$total = f('SELECT COUNT(ID) ' . (empty($select) ? '' : ',' . implode(',', $select)) . ' FROM ' . CUSTOMER_TABLE . ' GROUP BY ' . $grp . (empty($grouparr) ? 'ID' : ($level ? ',ID' : '')) . (empty($havingarr) ? '' : ' HAVING ' . implode(' AND ', $havingarr)), '', $db);
+
+			$nextoffset = $offset + $segment;
+			if($segment && ($total > $nextoffset)){
+				$items[] = array(
+					'id' => "next_" . str_replace("\'", "*****quot*****", $old),
+					'parentid' => str_replace("\'", "*****quot*****", $old),
+					'text' => "display (" . $nextoffset . "-" . ($nextoffset + $segment) . ")",
+					'contenttype' => "arrowdown",
+					'table' => CUSTOMER_TABLE,
+					'typ' => "threedots",
+					'open' => 0,
+					'disabled' => 0,
+					'tooltip' => "",
+					'offset' => $nextoffset
+				);
+			}
+		}
+
+		return $items;
+	}
+
+	public static function getSortOrder($settings, $concat = 'ORDER BY'){
+		$ret = ($settings->getSettings('default_order') ?
+				($settings->formatFields ?
+					implode(' ' . $settings->getSettings('default_order') . ',', $settings->formatFields) . ' ' . $settings->getSettings('default_order') :
+					'Text ' . $settings->getSettings('default_order')) :
+				'');
+		return ($ret ? $concat . ' ' . $ret : '');
 	}
 
 }

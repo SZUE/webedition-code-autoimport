@@ -7,7 +7,7 @@ $this->Groups[] = 'if_tags';
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes[] = new weTagData_multiSelectorAttribute('id', FILE_TABLE, 'text/webedition', 'ID', false, '');
+$this->Attributes[] = new weTagData_multiSelectorAttribute('id', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, 'ID', false, '');
 $this->Attributes[] = new weTagData_selectAttribute('doc', array(new weTagDataOption('top'),
 	new weTagDataOption('self'),
 	new weTagDataOption('listview'),

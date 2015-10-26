@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_export_preparer extends we_exim_XMLExIm{
-
 	var $RefTable;
 	var $options;
 	var $PatternSearch;
@@ -49,7 +48,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 		foreach($this->PatternSearch->doc_patterns["path"] as $pattern){
 			if(preg_match_all($pattern, $text, $match)){
 				foreach($match[2] as $path){
-					$include = path_to_id($path);
+					$include = path_to_id($path, FILE_TABLE, $GLOBALS['DB_WE']);
 					$this->addToDepArray($level, $include);
 				}
 			}
@@ -85,8 +84,8 @@ class we_export_preparer extends we_exim_XMLExIm{
 					foreach($match[2] as $external){
 						$path = $this->isPathLocal($external);
 						if($path && $path != '/'){
-							$id = path_to_id($path);
-							$this->addToDepArray($level, $id, (isset($id) && $id ? '' : 'weBinary'));
+							$id = path_to_id($path, FILE_TABLE, $GLOBALS['DB_WE']);
+							$this->addToDepArray($level, $id, (!empty($id) ? '' : 'weBinary'));
 						}
 					}
 				}
@@ -102,8 +101,8 @@ class we_export_preparer extends we_exim_XMLExIm{
 				foreach($match[2] as $value){
 					if(is_numeric($value)){
 						$_path = ($value ?
-										f('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($value), '', $_db) :
-										'');
+								f('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($value), '', $_db) :
+								'');
 
 						$this->addToDepArray($level, $value, 'weNavigation', NAVIGATION_TABLE);
 						$this->getNavigationRule($value, $level);
@@ -203,15 +202,15 @@ class we_export_preparer extends we_exim_XMLExIm{
 	function getDepFromArray($array){
 		$ret = array("docs" => array(), "objs" => array());
 
-		if(isset($array['id']) && $array['id']){
+		if(!empty($array['id'])){
 			$ret["docs"][] = $array['id'];
 		}
 
-		if(isset($array['img_id']) && $array['id']){
+		if(!empty($array['img_id'])){
 			$ret["docs"][] = $array['img_id'];
 		}
 
-		if(isset($array['obj_id']) && $array['obj_id']){
+		if(!empty($array['obj_id'])){
 			$ret["objs"][] = $array['obj_id'];
 		} else {
 			foreach($array as $key => $value){
@@ -240,7 +239,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 					}
 
 					if(isset($ev["dat"])){
-						$dat = @unserialize($ev["dat"]);
+						$dat = we_unserialize($ev["dat"]);
 						if(!is_array($dat) && $this->options["handle_document_linked"]){
 							$this->getExternalLinked($ev["dat"], $level);
 						}
@@ -253,12 +252,12 @@ class we_export_preparer extends we_exim_XMLExIm{
 							$this->addToDepArray($level, $ev['dat']);
 						}
 					} else if(isset($ev["dat"])){
-						$dat = @unserialize($ev["dat"]);
+						$dat = we_unserialize($ev["dat"], array(), true);
 						if(is_array($dat)){
 							$elarray = $this->getDepFromArray($dat);
 							foreach($elarray as $elk => $elv){
 								foreach($elv as $id){
-									if(!empty($id)){
+									if($id){
 										$this->addToDepArray($level, $id, ($elk === "docs" ? '' : "objectFile"));
 									}
 								}
@@ -267,7 +266,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 							$this->getIncludesFromWysiwyg($ev["dat"], $level);
 						}
 					}
-					if(isset($ev["bdid"]) && $ev["bdid"]){
+					if(!empty($ev["bdid"])){
 						$this->addToDepArray($level, $ev['bdid']);
 					}
 				}
@@ -307,7 +306,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 			}
 		}
 
-		if(isset($object->TemplateID) && $object->TemplateID && $this->options["handle_def_templates"]){
+		if(!empty($object->TemplateID) && $this->options["handle_def_templates"]){
 			$this->addToDepArray($level, $object->TemplateID, we_base_ContentTypes::TEMPLATE);
 		}
 
@@ -315,11 +314,11 @@ class we_export_preparer extends we_exim_XMLExIm{
 			$this->addToDepArray($level, $object->TableID, "object");
 		}
 
-		if(isset($object->DocType) && $object->DocType && $object->ClassName != "we_docTypes" && $this->options["handle_doctypes"]){
+		if(!empty($object->DocType) && $object->ClassName != "we_docTypes" && $this->options["handle_doctypes"]){
 			$this->addToDepArray($level, $object->DocType, "doctype");
 		}
 
-		if(isset($object->Category) && $object->Category && $object->ClassName != "we_category" && $this->options["handle_categorys"]){
+		if(!empty($object->Category) && $object->ClassName != "we_category" && $this->options["handle_categorys"]){
 			$cats = makeArrayFromCSV($object->Category);
 			foreach($cats as $cat){
 				$this->addToDepArray($level, $cat, "category");
@@ -335,7 +334,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 				}
 				if(preg_match('|we_object_[0-9]+_path|', $key)){
 					if(isset($value['dat'])){
-						$this->addToDepArray($level, path_to_id($value['dat'], OBJECT_FILES_TABLE), 'objectFile');
+						$this->addToDepArray($level, path_to_id($value['dat'], OBJECT_FILES_TABLE, $GLOBALS['DB_WE']), 'objectFile');
 					}
 				}
 
@@ -348,7 +347,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 
 	function makeExportList(){
 
-		$serachCT = array(we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::TEMPLATE, 'doctype', 'category', 'object', 'objectFile', we_base_ContentTypes::IMAGE);
+		$serachCT = array(we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::TEMPLATE, 'doctype', 'category', we_base_ContentTypes::OBJECT, we_base_ContentTypes::OBJECT_FILE, we_base_ContentTypes::IMAGE);
 
 		$_step = 0;
 		$id = $this->RefTable->getNext();
@@ -406,10 +405,10 @@ class we_export_preparer extends we_exim_XMLExIm{
 		we_updater::fixInconsistentTables();
 
 		if($this->options['handle_def_templates'] || $this->options['handle_doctypes'] ||
-				$this->options['handle_categorys'] || $this->options['handle_def_classes'] ||
-				$this->options['handle_document_includes'] || $this->options['handle_document_linked'] ||
-				$this->options['handle_object_includes'] || $this->options['handle_object_embeds'] ||
-				$this->options['handle_class_defs'] || $this->options['handle_owners'] || $this->options['handle_navigation'] || $this->options['handle_thumbnails']
+			$this->options['handle_categorys'] || $this->options['handle_def_classes'] ||
+			$this->options['handle_document_includes'] || $this->options['handle_document_linked'] ||
+			$this->options['handle_object_includes'] || $this->options['handle_object_embeds'] ||
+			$this->options['handle_class_defs'] || $this->options['handle_owners'] || $this->options['handle_navigation'] || $this->options['handle_thumbnails']
 		){
 
 			$this->makeExportList();

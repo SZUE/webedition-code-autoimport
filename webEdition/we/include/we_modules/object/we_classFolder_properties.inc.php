@@ -53,7 +53,6 @@
 we_html_tools::protect();
 
 echo we_html_tools::getHtmlTop() .
- we_html_element::jsScript(JS_DIR . 'windows.js') .
  $we_doc->getSearchJS() .
  (isset($javascript) ? we_html_element::jsElement($javascript) : '');
 
@@ -69,6 +68,6 @@ $_parts = array(
 	array('html' => $we_doc->searchProperties())
 );
 
-echo we_html_multiIconBox::getHTML('', '100%', $_parts, 30, '', -1, '', '', false) . '
+echo we_html_multiIconBox::getHTML('', $_parts, 30, '', -1, '', '', false) . '
 </body>
 </html>';

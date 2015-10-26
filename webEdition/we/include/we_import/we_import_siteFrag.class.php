@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_import_siteFrag extends we_fragment_base{
-
 	var $_obj = null;
 
 	function __construct($obj){
@@ -41,7 +40,7 @@ class we_import_siteFrag extends we_fragment_base{
 	function doTask(){
 		$path = substr($this->data["path"], strlen($_SERVER['DOCUMENT_ROOT']));
 		$progress = intval((100 / count($this->alldata)) * $this->currentTask);
-		$progressText = we_util_Strings::shortenPath($path, 30);
+		$progressText = we_base_util::shortenPath($path, 30);
 
 		if($this->data["contentType"] === "post/process"){
 			we_import_site::postprocessFile($this->data["path"], $this->data["sourceDir"], $this->data["destDirID"]);
@@ -53,22 +52,20 @@ class we_import_siteFrag extends we_fragment_base{
 		}
 		echo we_html_element::jsElement('
 top.siteimportbuttons.document.getElementById("progressBarDiv").style.display="block";
-top.siteimportbuttons.weButton.disable("back");
-top.siteimportbuttons.weButton.disable("next");
+WE().layout.button.disable(top.siteimportbuttons.document, "back");
+WE().layout.button.disable(top.siteimportbuttons.document, "next");
 top.siteimportbuttons.setProgress(' . $progress . ');
 top.siteimportbuttons.document.getElementById("progressTxt").innerHTML="' . oldHtmlspecialchars($progressText, ENT_QUOTES) . '";');
 	}
 
 	function finish(){
 		echo we_html_element::jsElement(
-				"top.siteimportbuttons.setProgress(100);setTimeout('" . we_message_reporting::getShowMessageCall(
-					g_l('siteimport', '[importFinished]'), we_message_reporting::WE_MESSAGE_NOTICE) . "top.close();',100);top.opener.top.we_cmd('load','" . FILE_TABLE . "');");
+			"top.siteimportbuttons.setProgress(100);setTimeout('" . we_message_reporting::getShowMessageCall(
+				g_l('siteimport', '[importFinished]'), we_message_reporting::WE_MESSAGE_NOTICE) . "top.close();',100);top.opener.top.we_cmd('load','" . FILE_TABLE . "');");
 	}
 
 	function printHeader(){
-		echo we_html_element::htmlDocType() . we_html_element::htmlhtml(we_html_element::htmlHead(//FIXME: missing title
-					we_html_tools::getHtmlInnerHead() .
-					STYLESHEET), false);
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET);
 	}
 
 }

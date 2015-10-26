@@ -57,14 +57,14 @@ class weTagData_selectorAttribute extends weTagDataAttribute{
 
 		switch($this->Table){
 			case CATEGORY_TABLE:
-				$weCmd = 'openCatselector';
+				$weCmd = 'we_selector_category';
 				$this->Selectable = '';
 				break;
 			case NAVIGATION_TABLE:
-				$weCmd = 'openSelector';
+				$weCmd = 'we_selector_file';
 				break;
 			default:
-				$weCmd = ($this->Selectable == self::FOLDER ? 'openDirselector' : 'openDocselector');
+				$weCmd = ($this->Selectable == self::FOLDER ? 'we_selector_directory' : 'we_selector_document');
 		}
 
 		$input = we_html_element::htmlInput(

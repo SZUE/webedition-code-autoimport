@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -22,14 +21,10 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-if(str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == str_replace(dirname(__FILE__), '', __FILE__)){
-	exit();
-}
-
 $DB_WE->query('DELETE FROM ' . LOCK_TABLE . ' WHERE UserID=' . intval($_SESSION['user']['ID']) . ' AND sessionID="' . session_id() . '"');
 //FIXME: table is set to false value, if 2 sessions are open; but this is updated shortly - so ignore it now
 //TODO: update to time if still locked files open
-$DB_WE->query('UPDATE ' . USER_TABLE . ' SET Ping=0 WHERE ID=' . intval($_SESSION['user']['ID']));
+$DB_WE->query('UPDATE ' . USER_TABLE . ' SET Ping=NULL WHERE ID=' . intval($_SESSION['user']['ID']));
 
 we_base_file::cleanTempFiles(true);
 
@@ -41,22 +36,17 @@ $_path = (isset($_SESSION['weS']['SEEM']['startId']) ? // logout from webEdition
 we_base_sessionHandler::makeNewID(true);
 
 if(!isset($GLOBALS['isIncluded']) || !$GLOBALS['isIncluded']){
-	echo we_html_element::jsElement('
-	for(i=0;i<top.jsWindow_count;i++){
-		eval("var obj=top.jsWindow"+i+"Object");
-		try{
-			obj.close();
-		}catch(err){}
-	}
+	echo we_html_tools::getHtmlTop() . we_html_element::jsElement('
+	WE().util.jsWindow.prototype.closeAll();
 
-	if(typeof(top.tinyMceDialog) !== "undefinded" && top.tinyMceDialog !== null){
+	if(top.tinyMceDialog !== undefined && top.tinyMceDialog !== null){
 		var tinyDialog = top.tinyMceDialog;
 		try{
 			tinyDialog.close();
 		}catch(err){}
 	}
 
-	if(typeof(top.tinyMceSecondaryDialog) !== "undefinded" && top.tinyMceSecondaryDialog !== null){
+	if(top.tinyMceSecondaryDialog !== undefined && top.tinyMceSecondaryDialog !== null){
 		var tinyDialog = top.tinyMceSecondaryDialog;
 		try{
 			tinyDialog.close();

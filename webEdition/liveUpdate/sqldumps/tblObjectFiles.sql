@@ -2,11 +2,12 @@
 /* query separator */
 ###UPDATEDROPCOL(IsNotEditable,###TBLPREFIX###tblObjectFiles)###
 /* query separator */
+###UPDATEDROPCOL(Icon,###TBLPREFIX###tblObjectFiles)###
+/* query separator */
 CREATE TABLE ###TBLPREFIX###tblObjectFiles (
   ID int(11) unsigned NOT NULL auto_increment,
   ParentID int(11) unsigned NOT NULL default '0',
   `Text` varchar(255) NOT NULL default '',
-  Icon enum('class_folder.gif','folder.gif','objectFile.gif') NOT NULL,
   IsFolder tinyint(1) unsigned NOT NULL default '0',
   ContentType enum('folder','objectFile') NOT NULL,
   CreationDate int(11) unsigned NOT NULL default '0',

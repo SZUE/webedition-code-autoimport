@@ -17,7 +17,7 @@ if(defined('OBJECT_FILES_TABLE')){
 }
 $this->Attributes[] = new weTagData_textAttribute('size', false, '');
 if(defined('FILE_TABLE')){
-	$this->Attributes[] = new weTagData_selectorAttribute('triggerid', FILE_TABLE, 'text/webedition', false, '');
+	$this->Attributes[] = new weTagData_selectorAttribute('triggerid', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '');
 }
 $this->Attributes[] = new weTagData_selectAttribute('hidedirindex', weTagData_selectAttribute::getTrueFalse(), false, '');
 $this->Attributes[] = new weTagData_selectAttribute('objectseourls', weTagData_selectAttribute::getTrueFalse(), false, '');

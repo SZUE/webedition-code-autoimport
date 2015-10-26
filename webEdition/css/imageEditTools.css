@@ -1,0 +1,160 @@
+/**
+ * webEdition SDK
+ *
+ * webEdition CMS
+ * $Rev: 10485 $
+ * $Author: mokraemer $
+ * $Date: 2015-09-24 01:04:31 +0200 (Do, 24 Sep 2015) $
+ *
+ * This source is part of the webEdition SDK. The webEdition SDK is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU Lesser General Public License can be found at
+ * http://www.gnu.org/licenses/lgpl-3.0.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionSDK/License.txt
+ *
+ *
+ * @category   we
+ * @package    we_ui
+ * @subpackage we_ui_layout
+ * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
+ */
+
+#weImgDiv {
+	border: 0px solid #CECECE;
+}
+#weImagePanelBorder {
+	border: 0px solid #808080;
+}
+#weControl img {
+	border:none;
+}
+#weSizeDiv {
+	float:left;
+	width:60px;
+	height:15px;
+	padding:0px;
+	margin-right:4px;
+	background-image:url(/webEdition/images/crop/size_wh.gif);background-repeat:no-repeat;
+}
+#weSizeDiv input {
+	display:block;
+	width:24px;
+	height:13px;
+	text-align:center;
+	border:none;
+	font-family:Arial,Verdana,sans-serif;
+	font-size:10px;
+	color:#000000;
+	background-color:transparent;
+}
+#CropWidth {
+	float:left;
+}
+#CropHeight {
+	float:right;
+}
+.clHorLine {
+	position:absolute;
+	left:0px;
+	top:0px;
+	width:1px;
+	height:1px;
+	font:1px/1px verdana,sans-serif;
+	background-image:url(/webEdition/images/crop/horizontal.gif);
+	background-repeat: repeat-x;
+	z-index:10;
+	cursor:n-resize;
+	visibility:hidden;
+	background-color:#000000;
+}
+.clVerLine {
+	position: absolute;
+	left:0px;
+	top:0px;
+	width:1px;
+	height:1px;
+	font: 1px/1px verdana,sans-serif;
+	background-image:url(/webEdition/images/crop/vertical.gif);
+	background-repeat:repeat-y;
+	z-index:10;
+	cursor:e-resize;
+	visibility:hidden;
+	background-color:#000000;
+}
+#weImage {
+	display:block;
+	position:relative;
+	left:0px;
+	top:0px;
+	z-index:3;
+}
+#weImagePanel {
+	position:relative;
+	left:0px;
+	top:0px;
+	z-index:1;
+	background:#CECECE;
+}
+#weCoverPanel {
+	position:absolute;
+	left:0px;
+	top:0px;
+	background:#000000;
+	z-index:4;
+	cursor:default;
+	visibility:hidden;
+	filter:alpha(opacity=60);
+	opacity:0.6;
+}
+#weCropPanel {
+	position:absolute;
+	left:0px;
+	top:0px;
+	display:block;
+	overflow:hidden;
+	z-index:9;
+	visibility:hidden;
+}
+#cropButtonZoomIn,
+#cropButtonZoomOut {
+	cursor:pointer;
+	display:block;
+	float:left;
+	width:18px;
+	height:18px;
+	background-repeat:no-repeat;
+}
+#cropButtonZoomIn:hover i{
+	background-color: black;
+	color: white;
+}
+#cropButtonZoomOut:hover {
+	background-color: black;
+	color: white;
+}
+#imgfocus_point {
+	width:0px;
+	height:0px;
+	position:absolute;
+	border:1px solid white;
+	border-radius:50%;
+	box-shadow:0 0 0 1px black;
+	z-index:10;
+}
+#imgfocus_point:before {
+	content:"";
+	display:block;
+	position:absolute;
+	left:-16px;
+	top:-16px;
+	width:30px;
+	height:30px;
+	border:1px solid white;
+	border-radius:50%;
+	box-shadow:0 0 0 1px black;
+}

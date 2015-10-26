@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_versions_version{
+
 	protected $ID;
 	protected $documentID;
 	protected $documentTable;
@@ -41,7 +42,6 @@ class we_versions_version{
 	protected $ContentType;
 	protected $Text;
 	protected $ParentID;
-	protected $Icon;
 	protected $CreationDate;
 	protected $CreatorID;
 	protected $Path;
@@ -282,13 +282,6 @@ class we_versions_version{
 	 */
 	public function getFromScheduler(){
 		return $this->fromScheduler;
-	}
-
-	/**
-	 * @return unknown
-	 */
-	public function getIcon(){
-		return $this->icon;
 	}
 
 	/**
@@ -629,13 +622,6 @@ class we_versions_version{
 	}
 
 	/**
-	 * @param unknown_type $Icon
-	 */
-	public function setIcon($icon){
-		$this->icon = $icon;
-	}
-
-	/**
 	 * @param unknown_type $ID
 	 */
 	public function setID($iD){
@@ -811,13 +797,16 @@ class we_versions_version{
 	 */
 	public static function getContentTypesVersioning(){
 
-		$contentTypes = array();
-		$contentTypes[] = 'all';
+		$contentTypes = array('all');
 		$ct = we_base_ContentTypes::inst();
 		foreach($ct->getContentTypes() as $k){
-//if($k != "object" && $k != "text/weTmpl" && $k != "folder") { vor #4120
-			if($k != "object" && $k != "folder" && $k != "class_folder"){
-				$contentTypes[] = $k;
+			switch($k){
+				case we_base_ContentTypes::OBJECT:
+				case we_base_ContentTypes::FOLDER:
+				case we_base_ContentTypes::CLASS_FOLDER:
+					break;
+				default:
+					$contentTypes[] = $k;
 			}
 		}
 		return $contentTypes;
@@ -842,7 +831,7 @@ class we_versions_version{
 	 * @abstract looks if versions exist for the document
 	 */
 	private static function versionsExist($id, $contentType){
-		return f('SELECT 1 FROM ' . VERSIONS_TABLE . ' WHERE documentId=' . intval($id) . " AND ContentType = '" . escape_sql_query($contentType) . "' LIMIT 1", '', new DB_WE()) == 1;
+		return f('SELECT 1 FROM ' . VERSIONS_TABLE . ' WHERE documentId=' . intval($id) . " AND ContentType='" . escape_sql_query($contentType) . "' LIMIT 1", '', new DB_WE()) == 1;
 	}
 
 	/**
@@ -921,9 +910,9 @@ class we_versions_version{
 			$_SESSION['weS']['versions']['fromImport'] = 1;
 			$this->saveVersion($docObj);
 		} else {
-			if((isset($_SESSION['weS']['versions']['fromScheduler']) && $_SESSION['weS']['versions']['fromScheduler']) ||
-				((we_base_request::_(we_base_request::STRING, "type") === "reset_versions") ||
-				(isset($_SESSION['weS']['versions']['initialVersions']) && $_SESSION['weS']['versions']['initialVersions']))){
+			if((!empty($_SESSION['weS']['versions']['fromScheduler'])) ||
+					((we_base_request::_(we_base_request::STRING, "type") === "reset_versions") ||
+					(!empty($_SESSION['weS']['versions']['initialVersions'])))){
 				$cmd0 = "save_document";
 				if(isset($_SESSION['weS']['versions']['initialVersions'])){
 					unset($_SESSION['weS']['versions']['initialVersions']);
@@ -944,13 +933,11 @@ class we_versions_version{
 	/**
 	 * @abstract apply preferences
 	 */
-	function CheckPreferencesCtypes($ct){
+	public static function CheckPreferencesCtypes($ct){
 
 //if folder was saved don' make versions (if path was changed of folder)
-		if(isset($GLOBALS['we_doc']->ClassName)){
-			if(($GLOBALS['we_doc'] instanceof we_folder) || ($GLOBALS['we_doc'] instanceof we_class_folder)){
-				return false;
-			}
+		if(($GLOBALS['we_doc'] instanceof we_folder) || ($GLOBALS['we_doc'] instanceof we_class_folder)){
+			return false;
 		}
 
 //apply content types in preferences
@@ -986,9 +973,9 @@ class we_versions_version{
 				return VERSIONING_TEXT_XML;
 			case we_base_ContentTypes::OBJECT_FILE:
 				return VERSIONING_OBJECT;
+			default:
+				return true;
 		}
-
-		return true;
 	}
 
 	function CheckPreferencesTime($docID, $docTable){
@@ -1050,17 +1037,17 @@ class we_versions_version{
 			$document = self::objectToArray($document);
 		}
 
-		if(isset($document["documentCustomerFilter"]) && is_object($document["documentCustomerFilter"])){
-			$document["documentCustomerFilter"] = self::objectToArray($document["documentCustomerFilter"]);
+		if(isset($document['documentCustomerFilter']) && is_object($document['documentCustomerFilter'])){
+			$document['documentCustomerFilter'] = self::objectToArray($document['documentCustomerFilter']);
 		}
 
 //preferences
-		if(!$this->CheckPreferencesCtypes($document["ContentType"])){
+		if(!self::CheckPreferencesCtypes($document["ContentType"])){
 			return;
 		}
 
 		if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "save_document" &&
-			we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 5)){
+				we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 5)){
 			$status = "published";
 		}
 
@@ -1074,25 +1061,25 @@ class we_versions_version{
 					break;
 				}
 			default:
-				$status = "saved";
+				$status = 'saved';
 		}
 		switch($status){
-			case "unpublished":
-			case "deleted":
+			case 'unpublished':
+			case 'deleted':
 				break;
 			default:
 				if($this->IsScheduler()){
 					$status = "published";
 				}
 		}
-		if(isset($_SESSION['weS']['versions']['doPublish']) && $_SESSION['weS']['versions']['doPublish']){
-			$status = "published";
+		if(!empty($_SESSION['weS']['versions']['doPublish'])){
+			$status = 'published';
 		}
 
-		switch($document["ContentType"]){
+		switch($document['ContentType']){
 			case we_base_ContentTypes::TEMPLATE:
 				if(VERSIONS_CREATE_TMPL){
-					if($status != "published" && !we_base_request::_(we_base_request::BOOL, 'we_cmd', true, 5)){
+					if($status != 'published' && !we_base_request::_(we_base_request::BOOL, 'we_cmd', true, 5)){
 						return;
 					}
 					break;
@@ -1111,8 +1098,8 @@ class we_versions_version{
 		if(isset($_SESSION['weS']['versions']['versionToCompare'][$document["Table"]][$document["ID"]]) && ($lastEntry = $_SESSION['weS']['versions']['versionToCompare'][$document['Table']][$document['ID']]) != ''){
 
 			$diffExists = (is_array($document) && $lastEntry ?
-					($docHash != $lastEntry) :
-					false);
+							($docHash != $lastEntry) :
+							false);
 
 			$lastEntry = self::getLastEntry($document['ID'], $document['Table'], $db);
 
@@ -1133,9 +1120,9 @@ class we_versions_version{
 		foreach($tblversionsFields as $fieldName){
 			if($fieldName != 'ID'){
 				$set[$fieldName] = (isset($document[$fieldName]) ?
-						$document[$fieldName] :
-						$this->makePersistentEntry($fieldName, $status, $document, $documentObj)
-					);
+								$document[$fieldName] :
+								$this->makePersistentEntry($fieldName, $status, $document, $documentObj)
+						);
 			}
 		}
 
@@ -1160,25 +1147,25 @@ class we_versions_version{
 		$db = new DB_WE();
 
 		switch($fieldName){
-			case "documentID":
-				$entry = $document["ID"];
+			case 'documentID':
+				$entry = $document['ID'];
 				break;
 			case 'documentTable':
 				$entry = $document['Table']; //FIXME: check if this is tblFile or Prefixed version
 				break;
 			case 'documentElements':
 				if(isset($document['elements']) && is_array($document['elements'])){
-					$entry = sql_function('x\'' . bin2hex(gzcompress(serialize($document["elements"]), 9)) . '\'');
+					$entry = sql_function('x\'' . bin2hex(we_serialize($document["elements"], false, 9)) . '\'');
 				}
 				break;
 			case 'documentScheduler':
 				if(isset($document['schedArr']) && is_array($document['schedArr'])){
-					$entry = sql_function('x\'' . bin2hex(gzcompress(serialize($document["schedArr"]), 9)) . '\'');
+					$entry = sql_function('x\'' . bin2hex(we_serialize($document["schedArr"], false, 9)) . '\'');
 				}
 				break;
-			case "documentCustomFilter":
+			case 'documentCustomFilter':
 				if(isset($document["documentCustomerFilter"]) && is_array($document["documentCustomerFilter"])){
-					$entry = sql_function('x\'' . bin2hex(gzcompress(serialize($document["documentCustomerFilter"]), 9)) . '\'');
+					$entry = sql_function('x\'' . bin2hex(we_serialize($document["documentCustomerFilter"], false, 9)) . '\'');
 				}
 				break;
 			case 'timestamp':
@@ -1222,7 +1209,7 @@ class we_versions_version{
 							$this->writePreviewDynFile($document['ID'], $siteFile, $_SERVER['DOCUMENT_ROOT'] . $binaryPath, $documentObj);
 						} elseif(file_exists($siteFile) && $document['Extension'] === '.php' && ($document['ContentType'] == we_base_ContentTypes::WEDOCUMENT || $document['ContentType'] == we_base_ContentTypes::HTML)){
 							we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $binaryPath, gzencode(file_get_contents($siteFile), 9));
-						} elseif(isset($document['TemplatePath']) && $document['TemplatePath'] && substr($document['TemplatePath'], -18) != '/' . we_template::NO_TEMPLATE_INC && $document['ContentType'] == we_base_ContentTypes::WEDOCUMENT){
+						} elseif(!empty($document['TemplatePath']) && substr($document['TemplatePath'], -18) != '/' . we_template::NO_TEMPLATE_INC && $document['ContentType'] == we_base_ContentTypes::WEDOCUMENT){
 							$includeTemplate = preg_replace('/.tmpl$/i', '.php', $document['TemplatePath']);
 							$this->writePreviewDynFile($document['ID'], $includeTemplate, $_SERVER['DOCUMENT_ROOT'] . $binaryPath, $documentObj);
 						} else {
@@ -1276,10 +1263,10 @@ class we_versions_version{
 								if(!$lastEntryField){
 									$lastEntryField = array();
 								} else {
-									$lastEntryField = unserialize(
-										(substr_compare($lastEntryField, 'a%3A', 0, 4) == 0 ?
-											html_entity_decode(urldecode($lastEntryField), ENT_QUOTES) :
-											gzuncompress($lastEntryField))
+									$lastEntryField = we_unserialize(
+											(substr_compare($lastEntryField, 'a%3A', 0, 4) == 0 ?
+													html_entity_decode(urldecode($lastEntryField), ENT_QUOTES) :
+													$lastEntryField)
 									);
 								}
 								switch($val){
@@ -1290,10 +1277,10 @@ class we_versions_version{
 											foreach($newData as $k => $vl){
 												if(isset($lastEntryField[$k]) && is_array($lastEntryField[$k]) && is_array($vl)){
 													if(isset($vl['dat'])){
-														$vl['dat'] = is_array($vl['dat']) ? serialize($vl['dat']) : $vl['dat'];
+														$vl['dat'] = is_array($vl['dat']) ? we_serialize($vl['dat']) : $vl['dat'];
 													}
 													if(isset($lastEntryField[$k]['dat'])){
-														$lastEntryField[$k]['dat'] = is_array($lastEntryField[$k]['dat']) ? serialize($lastEntryField[$k]['dat']) : $lastEntryField[$k]['dat'];
+														$lastEntryField[$k]['dat'] = is_array($lastEntryField[$k]['dat']) ? we_serialize($lastEntryField[$k]['dat']) : $lastEntryField[$k]['dat'];
 													}
 													$_diff = array_diff_assoc($vl, $lastEntryField[$k]);
 													if(!empty($_diff) && isset($_diff['dat'])){
@@ -1314,10 +1301,10 @@ class we_versions_version{
 													$_tmpArr1 = array();
 													$_tmpArr2 = array();
 													foreach($vl as $_k => $_v){
-														$_tmpArr1[$_k] = is_array($_v) ? serialize($_v) : $_v;
+														$_tmpArr1[$_k] = is_array($_v) ? we_serialize($_v) : $_v;
 													}
 													foreach($lastEntryField[$k] as $_k => $_v){
-														$_tmpArr2[$_k] = is_array($_v) ? serialize($_v) : $_v;
+														$_tmpArr2[$_k] = is_array($_v) ? we_serialize($_v) : $_v;
 													}
 													$_diff = array_diff_assoc($_tmpArr1, $_tmpArr2);
 													if(!empty($_diff)){
@@ -1333,10 +1320,10 @@ class we_versions_version{
 											$_tmpArr1 = array();
 											$_tmpArr2 = array();
 											foreach($document["documentCustomerFilter"] as $_k => $_v){
-												$_tmpArr1[$_k] = is_array($_v) ? serialize($_v) : $_v;
+												$_tmpArr1[$_k] = is_array($_v) ? we_serialize($_v) : $_v;
 											}
 											foreach($lastEntryField as $_k => $_v){
-												$_tmpArr2[$_k] = is_array($_v) ? serialize($_v) : $_v;
+												$_tmpArr2[$_k] = is_array($_v) ? we_serialize($_v) : $_v;
 											}
 											$_diff = array_diff_assoc($_tmpArr1, $_tmpArr2);
 											if(!empty($_diff)){
@@ -1381,10 +1368,10 @@ class we_versions_version{
 				$entry = $this->IsScheduler();
 				break;
 			case 'fromImport':
-				$entry = (isset($_SESSION['weS']['versions']['fromImport']) && $_SESSION['weS']['versions']['fromImport']) ? 1 : 0;
+				$entry = (!empty($_SESSION['weS']['versions']['fromImport'])) ? 1 : 0;
 				break;
 			case 'resetFromVersion':
-				$entry = (isset($document['resetFromVersion']) && $document['resetFromVersion'] != '') ? $document['resetFromVersion'] : 0;
+				$entry = (!empty($document['resetFromVersion'])) ? $document['resetFromVersion'] : 0;
 				break;
 			default:
 				$entry = '';
@@ -1534,7 +1521,7 @@ class we_versions_version{
 		unset($lastEntry['ID']);
 
 		//preferences
-		$doDelete = $this->CheckPreferencesCtypes($ct);
+		$doDelete = self::CheckPreferencesCtypes($ct);
 
 		// always write delete versions, if enabled, so ignore VERSIONS_CREATE
 		if($lastEntry && $doDelete){
@@ -1606,47 +1593,37 @@ class we_versions_version{
 		}
 
 		if($resetArray){
-			$resetDoc = new $resetArray["ClassName"]();
-
+			$resetDoc = new $resetArray['ClassName']();
 			foreach($resetArray as $k => $v){
-
 				if(isset($resetDoc->$k)){
-					if($k != "ID"){
-						$resetDoc->$k = $v;
+					switch($k){
+						case 'ID':
+							break;
+						default:
+							$resetDoc->$k = $v;
 					}
 				} else {
 					switch($k){
-						case "documentID":
+						case 'documentID':
 							$resetDoc->ID = $v;
 							break;
-						case "documentElements":
+						case 'documentElements':
 							if($v){
-								$docElements = we_unserialize((substr_compare($v, 'a%3A', 0, 4) == 0 ?
-										html_entity_decode(urldecode($v), ENT_QUOTES) :
-										$v)
-								);
-								$resetDoc->elements = $docElements;
+								$resetDoc->elements = we_unserialize($v);
 							}
 							break;
 						case 'documentScheduler':
 							if($v){
-								$docElements = we_unserialize((substr_compare($v, 'a%3A', 0, 4) == 0 ?
-										html_entity_decode(urldecode($v), ENT_QUOTES) :
-										$v)
-								);
-								$resetDoc->schedArr = $docElements;
+								$resetDoc->schedArr = we_unserialize($v);
 							}
 							break;
 						case 'documentCustomFilter':
 							if($v){
-								$docElements = we_unserialize((substr_compare($v, 'a%3A', 0, 4) == 0 ?
-										html_entity_decode(urldecode($v), ENT_QUOTES) :
-										$v)
-								);
+								$docElements = we_unserialize($v);
 								$resetDoc->documentCustomerFilter = new we_customer_documentFilter();
 								foreach($docElements as $k => $v){
 									if(isset($resetDoc->documentCustomerFilter->$k)){
-										if($v != "" || !empty($v)){
+										if($v){
 											$resetDoc->documentCustomerFilter->$k = $v;
 										}
 									}
@@ -1658,56 +1635,48 @@ class we_versions_version{
 			}
 
 			if($resetDoc->ContentType == we_base_ContentTypes::IMAGE){
-				$lastBinaryPath = f('SELECT binaryPath FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($resetArray["documentID"]) . " AND documentTable='" . $resetArray["documentTable"] . "' AND version <='" . $version . "' AND binaryPath !='' ORDER BY version DESC LIMIT 1", 'binaryPath', $db);
+				$lastBinaryPath = f('SELECT binaryPath FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($resetArray['documentID']) . ' AND documentTable="' . $resetArray['documentTable'] . '" AND version <="' . $version . '" AND binaryPath !="" ORDER BY version DESC LIMIT 1', '', $db);
 				$resetDoc->elements["data"]["dat"] = $_SERVER['DOCUMENT_ROOT'] . $lastBinaryPath;
 			}
 
 			$resetDoc->EditPageNr = $_SESSION['weS']['EditPageNr'];
 
-			$existsInFileTable = f('SELECT ID FROM ' . $db->escape($resetArray["documentTable"]) . ' WHERE ID=' . intval($resetDoc->ID), "", $db);
+			$existsInFileTable = getHash('SELECT ID,ParentID FROM ' . $db->escape($resetArray['documentTable']) . ' WHERE ID=' . intval($resetDoc->ID), $db);
 //if document was deleted
 
-			if(!$existsInFileTable){
+			if($existsInFileTable){
+				$resetDoc->ParentID = $existsInFileTable['ParentID'];
+				$resetDoc->Path = $resetDoc->getPath();
+			} else {
 //save this id and contenttype to turn the id for the versions
 				$oldId = $resetDoc->ID;
 				$oldCt = $resetDoc->ContentType;
 				$resetDoc->ID = 0;
-				$lastEntryVersion = f('SELECT version FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($resetArray["documentID"]) . " AND documentTable='" . $db->escape($resetArray["documentTable"]) . "' ORDER BY version DESC LIMIT 1", "version", $db);
+				$lastEntryVersion = f('SELECT version FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($resetArray["documentID"]) . ' AND documentTable="' . $db->escape($resetArray['documentTable']) . '" ORDER BY version DESC LIMIT 1', '', $db);
 				$resetDoc->version = $lastEntryVersion + 1;
 			}
 
-			if($resetArray["ParentID"] != 0){
+			if($resetDoc->ParentID){
 //if folder was deleted
-				$existsPath = f('SELECT 1 FROM ' . $db->escape($resetArray["documentTable"]) . ' WHERE ID=' . intval($resetArray["ParentID"]) . ' AND IsFolder=1', '', $db);
+				$existsPath = f('SELECT 1 FROM ' . $db->escape($resetArray['documentTable']) . ' WHERE ID=' . intval($resetDoc->ParentID) . ' AND IsFolder=1', '', $db);
 
 				if(!$existsPath){
 // create old folder if it does not exists
-
 					$folders = explode('/', $resetArray["Path"]);
 					foreach($folders as $k => $v){
 						if($k != 0 && $k != (count($folders) - 1)){
 
 							$parentID = (isset($_SESSION['weS']['versions']['lastPathID'])) ? $_SESSION['weS']['versions']['lastPathID'] : 0;
 							$folder = (defined('OBJECT_FILES_TABLE') && $resetArray['documentTable'] == OBJECT_FILES_TABLE ?
-									new we_class_folder() : new we_folder());
+											new we_class_folder() : new we_folder());
 
-							$folder->we_new();
-							$folder->setParentID($parentID);
-							$folder->Table = $resetArray["documentTable"];
-							$folder->Text = $v;
-							$folder->CreationDate = time();
-							$folder->ModDate = time();
-							$folder->Filename = $v;
-							$folder->Published = time();
-							$folder->Path = $folder->getPath();
-							$folder->CreatorID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : "";
-							$folder->ModifierID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : "";
-							$existsFolderPathID = f('SELECT ID FROM ' . $db->escape($resetArray["documentTable"]) . " WHERE Path='" . $db->escape($folder->Path) . "' AND IsFolder=1 ", '', $db);
-							if(empty($existsFolderPathID)){
+							$folder->we_new($resetArray['documentTable'], $parentID, $v);
+							$existsFolderPathID = f('SELECT ID FROM ' . $db->escape($resetArray['documentTable']) . ' WHERE Path="' . $db->escape($folder->Path) . '" AND IsFolder=1', '', $db);
+							if($existsFolderPathID){
+								$_SESSION['weS']['versions']['lastPathID'] = $existsFolderPathID;
+							} else {
 								$folder->we_save();
 								$_SESSION['weS']['versions']['lastPathID'] = $folder->ID;
-							} else {
-								$_SESSION['weS']['versions']['lastPathID'] = $existsFolderPathID;
 							}
 						}
 					}
@@ -1718,14 +1687,14 @@ class we_versions_version{
 				}
 			}
 
-			$existsFile = f('SELECT 1 FROM ' . $db->escape($resetArray["documentTable"]) . ' WHERE ID!=' . intval($resetArray["documentID"]) . " AND Path= '" . $db->escape($resetDoc->Path) . "' LIMIT 1", '', $db);
+			$existsFile = f('SELECT 1 FROM ' . $db->escape($resetArray["documentTable"]) . ' WHERE ID!=' . intval($resetArray["documentID"]) . ' AND Path="' . $db->escape($resetDoc->Path) . '" LIMIT 1', '', $db);
 
 			$doPark = false;
 			if($existsFile){
-				$resetDoc->Path = str_replace($resetDoc->Text, "_" . $resetArray["documentID"] . "_" . $resetDoc->Text, $resetDoc->Path);
-				$resetDoc->Text = "_" . $resetArray["documentID"] . "_" . $resetDoc->Text;
-				if(isset($resetDoc->Filename) && $resetDoc->Filename != ""){
-					$resetDoc->Filename = "_" . $resetArray["documentID"] . "_" . $resetDoc->Filename;
+				$resetDoc->Path = str_replace($resetDoc->Text, '_' . $resetArray['documentID'] . '_' . $resetDoc->Text, $resetDoc->Path);
+				$resetDoc->Text = '_' . $resetArray["documentID"] . '_' . $resetDoc->Text;
+				if(!empty($resetDoc->Filename)){
+					$resetDoc->Filename = '_' . $resetArray["documentID"] . '_' . $resetDoc->Filename;
 					$publish = 0;
 					$doPark = true;
 				}
@@ -1747,7 +1716,7 @@ class we_versions_version{
 			$resetDoc->ModDate = time();
 			$resetDoc->Published = $resetArray["timestamp"];
 
-			$wasPublished = f('SELECT status FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($resetArray["documentID"]) . " AND documentTable='" . $db->escape($resetArray["documentTable"]) . "' AND status='published' ORDER BY version DESC LIMIT 1", '', $db);
+			$wasPublished = f('SELECT status FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($resetArray["documentID"]) . " AND documentTable='" . $db->escape($resetArray['documentTable']) . "' AND status='published' ORDER BY version DESC LIMIT 1", '', $db);
 			$publishedDoc = $_SERVER['DOCUMENT_ROOT'] . $resetDoc->Path;
 			$publishedDocExists = true;
 			if($resetArray['ContentType'] != we_base_ContentTypes::OBJECT_FILE){
@@ -1767,7 +1736,7 @@ class we_versions_version{
 
 			if(defined('WORKFLOW_TABLE') && $resetDoc->ContentType == we_base_ContentTypes::WEDOCUMENT){
 				if(we_workflow_utility::inWorkflow($resetDoc->ID, $resetDoc->Table)){
-					we_workflow_utility::removeDocFromWorkflow($resetDoc->ID, $resetDoc->Table, $_SESSION["user"]["ID"], "");
+					we_workflow_utility::removeDocFromWorkflow($resetDoc->ID, $resetDoc->Table, $_SESSION['user']['ID'], '');
 				}
 			}
 
@@ -1832,7 +1801,7 @@ class we_versions_version{
 							if($fieldValueText != ''){
 								$fieldValueText .= '<br/>';
 							}
-							$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
+							$fieldValueText .= we_base_util::shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
 						}
 					}
 				}
@@ -1846,7 +1815,7 @@ class we_versions_version{
 							if($fieldValueText != ""){
 								$fieldValueText .= '<br/>';
 							}
-							$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
+							$fieldValueText .= we_base_util::shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
 						}
 					}
 				}
@@ -1860,7 +1829,7 @@ class we_versions_version{
 							if(!empty($fieldValueText)){
 								$fieldValueText .= '<br/>';
 							}
-							$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
+							$fieldValueText .= we_base_util::shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
 						}
 					}
 				}
@@ -1874,7 +1843,7 @@ class we_versions_version{
 							if(!empty($fieldValueText)){
 								$fieldValueText .= '<br/>';
 							}
-							$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
+							$fieldValueText .= we_base_util::shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
 						}
 					}
 				}
@@ -1888,7 +1857,7 @@ class we_versions_version{
 							if(!empty($fieldValueText)){
 								$fieldValueText .= '<br/>';
 							}
-							$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
+							$fieldValueText .= we_base_util::shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
 						}
 					}
 				}
@@ -1907,7 +1876,7 @@ class we_versions_version{
 						if($fieldValueText != ""){
 							$fieldValueText .= "<br/>";
 						}
-						$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($key, CATEGORY_TABLE), $pathLength);
+						$fieldValueText .= we_base_util::shortenPathSpace(id_to_path($key, CATEGORY_TABLE), $pathLength);
 					}
 				}
 				return $fieldValueText;
@@ -1919,14 +1888,14 @@ class we_versions_version{
 						if($fieldValueText != ""){
 							$fieldValueText .= "<br/>";
 						}
-						$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($key, USER_TABLE), $pathLength);
+						$fieldValueText .= we_base_util::shortenPathSpace(id_to_path($key, USER_TABLE), $pathLength);
 					}
 				}
 				return $fieldValueText;
 			case 'OwnersReadOnly':
 				$fieldValueText = "";
 				if($v != '' && !is_array($v)){
-					$v = unserialize($v);
+					$v = we_unserialize($v);
 				}
 				if(is_array($v) && !empty($v)){
 					foreach($v as $key => $val){
@@ -1934,14 +1903,14 @@ class we_versions_version{
 							$fieldValueText .= "<br/>";
 						}
 						$stat = g_l('versions', ($val == 1) ? '[activ]' : '[notactiv]');
-						$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($key, USER_TABLE), $pathLength) . ": " . $stat;
+						$fieldValueText .= we_base_util::shortenPathSpace(id_to_path($key, USER_TABLE), $pathLength) . ": " . $stat;
 					}
 				}
 				return $fieldValueText;
 			case 'weInternVariantElement':
 				$fieldValueText = "";
 				if($v != '' && !is_array($v)){
-					$v = unserialize($v);
+					$v = we_unserialize($v);
 				}
 				if(is_array($v) && !empty($v)){
 					foreach($v as $key => $val){
@@ -1955,7 +1924,7 @@ class we_versions_version{
 										if($key3 != ""){
 											$fieldValueText .= $key3 . ': ';
 										}
-										if(isset($val3['dat']) && $val3['dat'] != ""){
+										if(!empty($val3['dat'])){
 											$fieldValueText .= $val3['dat'] . '<br/>';
 										}
 									}
@@ -2021,7 +1990,7 @@ class we_versions_version{
 						if($fieldValueText != ''){
 							$fieldValueText .= '<br/>';
 						}
-						$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($key, CATEGORY_TABLE), $pathLength);
+						$fieldValueText .= we_base_util::shortenPathSpace(id_to_path($key, CATEGORY_TABLE), $pathLength);
 					}
 				}
 				return $fieldValueText;
@@ -2031,9 +2000,9 @@ class we_versions_version{
 			case '_accessControlOnTemplate':
 				return g_l('versions', ($v == 1) ? '[yes]' : '[no]');
 			case '_errorDocNoLogin':
-				return we_util_Strings::shortenPathSpace(id_to_path($v, FILE_TABLE), $pathLength);
+				return we_base_util::shortenPathSpace(id_to_path($v, FILE_TABLE), $pathLength);
 			case '_errorDocNoAccess':
-				return we_util_Strings::shortenPathSpace(id_to_path($v, FILE_TABLE), $pathLength);
+				return we_base_util::shortenPathSpace(id_to_path($v, FILE_TABLE), $pathLength);
 			case '_mode':
 				switch($v){
 					case 0:
@@ -2054,7 +2023,7 @@ class we_versions_version{
 						if($fieldValueText != ''){
 							$fieldValueText .= '<br/>';
 						}
-						$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($key, CUSTOMER_TABLE), $pathLength);
+						$fieldValueText .= we_base_util::shortenPathSpace(id_to_path($key, CUSTOMER_TABLE), $pathLength);
 					}
 				}
 				return $fieldValueText;
@@ -2065,7 +2034,7 @@ class we_versions_version{
 						if($fieldValueText != ""){
 							$fieldValueText .= "<br/>";
 						}
-						$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($key, CUSTOMER_TABLE), $pathLength);
+						$fieldValueText .= we_base_util::shortenPathSpace(id_to_path($key, CUSTOMER_TABLE), $pathLength);
 					}
 				}
 				return $fieldValueText;
@@ -2076,7 +2045,7 @@ class we_versions_version{
 						if($fieldValueText != ''){
 							$fieldValueText .= '<br/>';
 						}
-						$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($key, CUSTOMER_TABLE), $pathLength);
+						$fieldValueText .= we_base_util::shortenPathSpace(id_to_path($key, CUSTOMER_TABLE), $pathLength);
 					}
 				}
 				return $fieldValueText;
@@ -2123,7 +2092,7 @@ class we_versions_version{
 
 		foreach($_arr as $key => $val){
 			//$val = (is_array($val) || is_object($val)) ? self::objectToArray($val) : $val;
-			$arr[$key] = (is_array($val) ? self::objectToArray($val) : (is_object($val) ? serialize($val) : $val));
+			$arr[$key] = (is_array($val) ? self::objectToArray($val) : (is_object($val) ? we_serialize($val) : $val));
 		}
 
 		return $arr;
@@ -2131,7 +2100,7 @@ class we_versions_version{
 
 	private static function removeUnneededCompareFields(&$doc){
 		unset(
-			$doc['Published'], $doc['ModDate'], $doc['RebuildDate'], $doc['EditPageNr'], $doc['DocStream'], $doc['DB_WE'], $doc['Filehash'], $doc['usedElementNames'], $doc['hasVariants'], $doc['editorSaves'], $doc['Name'], $doc['wasUpdate'], $doc['InWebEdition'], $doc['PublWhenSave'], $doc['IsTextContentDoc'], $doc['fileExists'], $doc['elements']['allVariants'], $doc['persistent_slots']
+				$doc['Published'], $doc['ModDate'], $doc['RebuildDate'], $doc['EditPageNr'], $doc['DocStream'], $doc['DB_WE'], $doc['Filehash'], $doc['usedElementNames'], $doc['hasVariants'], $doc['editorSaves'], $doc['Name'], $doc['wasUpdate'], $doc['InWebEdition'], $doc['PublWhenSave'], $doc['IsTextContentDoc'], $doc['fileExists'], $doc['elements']['allVariants'], $doc['persistent_slots']
 		);
 		return $doc;
 	}
@@ -2151,12 +2120,23 @@ class we_versions_version{
 	 * @return array with fields and values
 	 */
 	private static function getLastEntry($docID, $docTable, we_database_base $db){
-		return getHash('SELECT * FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($docID) . " AND documentTable='" . $db->escape($docTable) . "' AND status IN ('saved','published','unpublished','deleted') ORDER BY version DESC LIMIT 1", $db, MYSQL_ASSOC);
+		return getHash('SELECT * FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($docID) . ' AND documentTable="' . $db->escape($docTable) . '" AND status IN ("saved","published","unpublished","deleted") ORDER BY version DESC LIMIT 1', $db, MYSQL_ASSOC);
 	}
 
 	public static function versionExists($docID, $docTable){
 		$db = new DB_WE();
-		return f('SELECT 1 FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($docID) . " AND documentTable='" . $db->escape($docTable) . "' AND status IN ('saved','published','unpublished','deleted') LIMIT 1", '', $db);
+		return f('SELECT 1 FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($docID) . ' AND documentTable="' . $db->escape($docTable) . '" AND status IN ("saved","published","unpublished","deleted") LIMIT 1', '', $db);
+	}
+
+	public static function updateLastVersionPath($docID, $docTable, $parentId, $path){
+		$db = new DB_WE();
+		$fields = self::getLastEntry($docID, $docTable, $db);
+		if($fields){
+			$db->query('UPDATE ' . VERSIONS_TABLE . ' SET ' . we_database_base::arraySetter(array(
+						'ParentID' => $parentId,
+						'Path' => $path
+			)));
+		}
 	}
 
 	/**

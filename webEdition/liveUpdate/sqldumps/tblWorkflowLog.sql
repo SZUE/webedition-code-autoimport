@@ -5,6 +5,6 @@ CREATE TABLE ###TBLPREFIX###tblWorkflowLog (
   userID int(11) unsigned NOT NULL default '0',
   logDate int(10) unsigned NOT NULL default '0',
   `Type` tinyint(4) unsigned NOT NULL default '0',
-  Description varchar(255) NOT NULL default '',
+  Description tinytext NOT NULL,
   PRIMARY KEY  (ID)
 ) ENGINE=MyISAM;

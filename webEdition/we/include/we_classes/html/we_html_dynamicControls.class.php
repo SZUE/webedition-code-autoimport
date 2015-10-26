@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -22,6 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+//FIXME: remove this class, since only used in we_users
 
 /**
  * Class we_dynamicControls
@@ -32,9 +32,6 @@ class we_html_dynamicControls{
 	/*	 * ***********************************************************************
 	 * VARIABLES
 	 * *********************************************************************** */
-
-	var $_arrow_image_closed;
-	var $_arrow_image_opened;
 	var $_arrow_hint_closed;
 	var $_arrow_hint_opened;
 
@@ -48,9 +45,6 @@ class we_html_dynamicControls{
 	 * @return     we_html_dynamicControls
 	 */
 	function __construct(){
-		// Set path to images for the groups arrows
-		$this->_arrow_image_closed = IMAGE_DIR . "modules/users/arrow_open.gif";
-		$this->_arrow_image_opened = IMAGE_DIR . "modules/users/arrow_close.gif";
 
 		// Set hint text for the groups arrows
 		$this->_arrow_hint_closed = g_l('dynamicControls', '[expand_group]');
@@ -72,37 +66,7 @@ class we_html_dynamicControls{
 	 *
 	 * @return     string
 	 */
-	function js_fold_checkbox_groups($groups, $filter, $use_with_user_module){
-		// Build regular JavaScript functions
-		$_JavaScript_functions = '
-				/**
-				 * This function opens or closes one group
-				 *
-				 * @param      image_name                              string
-				 * @param      display_style                           string
-				 *
-				 * @see        toggle()
-				 * @see        toggle_all()
-				 *
-				 * @return     void
-				 */
-
-				function toggle_arrow(image_name, display_style) {
-					// Check if the browser supports changing properties of images
-					if (document.images) {
-						// Check state of arrow
-						if (display_style == "closed") {
-							// Group is folded
-							document.images[image_name].src = "' . $this->_arrow_image_closed . '";
-							document.images[image_name].alt = "' . $this->_arrow_hint_closed . '";
-						} else {
-							// Group is expanded
-							document.images[image_name].src = "' . $this->_arrow_image_opened . '";
-							document.images[image_name].alt = "' . $this->_arrow_hint_opened . '";
-						}
-					}
-				}';
-
+	private function js_fold_checkbox_groups($groups, $filter, $use_with_user_module){
 		// Initialize string representing the array of all groups
 		$_groups_array = "";
 
@@ -110,7 +74,7 @@ class we_html_dynamicControls{
 		$i = 0;
 
 		// Build array of all groups
-		foreach($groups as $_groups_key => $_groups_value){
+		foreach(array_keys($groups) as $_groups_key){
 			// Filter out groups not to be shown
 			$_count_filters = count($filter);
 			$_show_group = true;
@@ -126,7 +90,7 @@ class we_html_dynamicControls{
 
 			// Now build string representing the array of all groups if this group is visible
 			if($_show_group){
-				$_groups_array .= "_all_groups[" . $i . "] = \"" . $_groups_key . "\";\n";
+				$_groups_array .= '_all_groups[' . $i . '] = "' . $_groups_key . '";';
 
 				// Increase counter
 				$i++;
@@ -137,101 +101,34 @@ class we_html_dynamicControls{
 		$i--;
 
 		// Continue building JavaScript functions
-		$_JavaScript_functions .= '
-				/**
-				 * This function closes all groups
-				 *
-				 * @see        toggle()
-				 * @see        toggle_arrow()
-				 *
-				 * @return     void
-				 */
+		$_JavaScript_functions = '
+/**
+ * This function closes all groups
+ *
+ * @see        toggle()
+ * @see        toggle_arrow()
+ *
+ * @return     void
+ */
 
-				function toggle_all() {
-					// Define all groups
-					_all_groups = new Array(2);
+function toggle_all() {
+	// Define all groups
+	_all_groups = [2];
 
-					' . $_groups_array . '
+	' . $_groups_array . '
 
-					// Hide all groups
-					for (i = 0; i <= ' . $i . '; i++) {
-						// Check if that group is open
-						if (document.getElementById("group_" + _all_groups[i]).style.display == "block") {
-							// Hide the group
-							toggle(_all_groups[i], "close");
-						}
-					}
-				}';
-
-		$_JavaScript_functions .= '
-				var opened_group = "";
-
-				/**
-				 * This function opens or closes one group
-				 *
-				 * @param      group_id                                string
-				 * @param      display_style                           string
-				 * @param      use_form                                bool
-				 * @param      form_name                               string
-				 * @param      form_group_name                         string
-				 *
-				 * @see        toggle_arrow()
-				 * @see        toggle_all()
-				 *
-				 * @return     void
-				 */
-
-				function toggle(group_id, display_style, use_form, form_name, form_group_name) {
-					// Check if to close all other groups
-					if (display_style == "show_single") {
-						// Remember old group state
-						_old_display_style = document.getElementById("group_" + group_id).style.display;
-						// Close all other groups an show only the requested one
-						toggle_all();
-
-						// Check, if we need to open the current group
-						if (_old_display_style == "none"
-							&& document.getElementById("group_" + group_id).style.display == "none") {
-							// Show the group
-							toggle(group_id, "open", use_form, form_name, form_group_name);
-						} else {
-							// Reset the arrow
-							toggle_arrow("arrow_" + group_id, "closed");
-						}
-					} else {
-						// Check if to hide or to unhide the group
-						if (document.getElementById("group_" + group_id).style.display == "none"
-							|| display_style == "open") {
-							// Show the group
-							document.getElementById("group_" + group_id).style.display = "block";
-
-							// set the var to locate which group is opened
-							opened_group = group_id;
-
-							// Set value for arrow
-							display_style = "opened";
-
-							// Check if forms should be used
-							if (use_form) {
-								// Tell the form which group is open
-								_document_form = eval(\'document.\' + form_name + \'.\' + form_group_name);
-								_document_form.value = group_id;
-							}
-						} else {
-							// Hide the group
-							document.getElementById("group_" + group_id).style.display = "none";
-
-							// Set value for arrow
-							display_style = "closed";
-						}
-
-						// Change the arrow
-						toggle_arrow("arrow_" + group_id, display_style);
-					}
-				}';
+	// Hide all groups
+	for (i = 0; i <= ' . $i . '; i++) {
+		// Check if that group is open
+		if (document.getElementById("group_" + _all_groups[i]).style.display == "block") {
+			// Hide the group
+			toggle(_all_groups[i], "close");
+		}
+	}
+}';
 
 		// Build string to be returned by the function
-		return we_html_element::jsElement($_JavaScript_functions);
+		return we_html_element::jsScript(JS_DIR . 'dynamicControls.js') . we_html_element::jsElement($_JavaScript_functions);
 	}
 
 	/**
@@ -293,25 +190,13 @@ class we_html_dynamicControls{
 				//	the different permission-groups shall be sorted alphabetically
 				//	therefore the content is first saved in an array.
 				// Build header of group
-				$_contentTable[$main_titles[$_groups_key]] = '
-					<table cellpadding="0" cellspacing="0" border="0" width="' . $width . '">';
-
-				$_seperator_color = $seperator_color;
-
-				// Output the seperator
-				$_contentTable[$main_titles[$_groups_key]] .= '
-					<tr valign="middle" bgcolor="' . $_seperator_color . '">
-						<td>' . we_html_tools::getPixel(10, 1) . '</td>
-						<td>' . we_html_tools::getPixel(15, 1) . '</td>
-						<td>' . we_html_tools::getPixel($width, 1) . '</td>
-					</tr>';
+				$_contentTable[$main_titles[$_groups_key]] = '<table class="default" width="' . $width . '" style="border-top:5px solid ' . $seperator_color . '">';
 
 				// Continue building header of group
 				$_contentTable[$main_titles[$_groups_key]] .= '
-					<tr valign="middle" bgcolor="' . $bgcolor . '">
-						<td width="30" nowrap>
-							' . we_html_tools::getPixel(5, 24) . '
-							<a href="javascript:toggle(\'' . $_groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');" name="arrow_link' . $_groups_key . '">';
+<tr style="vertical-align:middle;background-color:' . $bgcolor . ';line-height:24px;">
+	<td width="30" nowrap style="padding-left:5px;">
+		<a href="javascript:toggle(\'' . $_groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');" name="arrow_link' . $_groups_key . '">';
 
 				// If a group is open display it unfolded
 				$_show_open = false;
@@ -323,30 +208,25 @@ class we_html_dynamicControls{
 
 				if($_show_open){
 					// Define various values for expanded groups
-					$_arrow_image = $this->_arrow_image_opened;
+					$_arrow_image = 'fa fa-lg fa-caret-down fa-fw';
 					$_arrow_hint = $this->_arrow_hint_opened;
 					$_style_display = "block";
 				} else {
 					// Define various values for folded groups
-					$_arrow_image = $this->_arrow_image_closed;
+					$_arrow_image = 'fa fa-lg fa-caret-right fa-fw';
 					$_arrow_hint = $this->_arrow_hint_closed;
 					$_style_display = "none";
 				}
 
 				// Build header for open group
 				$_contentTable[$main_titles[$_groups_key]] .= '
-								<img src="' . $_arrow_image . '" width="19" height="18" border="0" alt="' . $_arrow_hint . '" name="arrow_' . $_groups_key . '" /></a></td>
-							<td class="defaultfont" colspan="3">
-								<label for="arrow_link_' . $_groups_key . '" style="cursor: pointer;" onclick="toggle(\'' . $_groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');"><b>' . $_checkbox_title . '</b></label></td>
-						</tr>
-						<tr valign="middle" bgcolor="' . $bgcolor . '">
-							<td>' . we_html_tools::getPixel(10, 1) . '</td>
-							<td>' . we_html_tools::getPixel($width, 1) . '</td>
-						</tr>
-					</table>';
+			<i class="' . $_arrow_image . '" title="' . $_arrow_hint . '" name="arrow_' . $_groups_key . '"></i></a></td>
+		<td class="defaultfont" colspan="3"><label for="arrow_link_' . $_groups_key . '" style="cursor: pointer;" onclick="toggle(\'' . $_groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');"><b>' . $_checkbox_title . '</b></label></td>
+	</tr>
+</table>';
 
 				// Now fill the group with content
-				$_contentTable[$main_titles[$_groups_key]] .= '<table cellpadding="0" cellspacing="0" border="0" width="' . $width . '" style="display: ' . $_style_display . '" id="group_' . $_groups_key . '">';
+				$_contentTable[$main_titles[$_groups_key]] .= '<table class="default" width="' . $width . '" style="display: ' . $_style_display . '" id="group_' . $_groups_key . '">';
 
 				// first of all order all the entries
 				$_groups = array();
@@ -359,9 +239,6 @@ class we_html_dynamicControls{
 				}
 
 				foreach($_groups as $_groups_key => $_group_item){
-
-					//ksort($_group_item);
-
 					foreach($_group_item as $_group_item_values){
 
 						$_group_item_key = $_group_item_values['perm'];
@@ -370,15 +247,9 @@ class we_html_dynamicControls{
 						if(($check_permissions && permissionhandler::hasPerm($_group_item_key)) || !$check_permissions){
 							// Display the items of the group
 							$_contentTable[$main_titles[$_groups_key]] .= '
-								<tr>
-								<td></td>
-									<td>' . ($parentGroups === false ? '' : '<img class="showParentPerms" src="' . IMAGE_DIR . (isset($parentGroups[$_group_item_values['perm']]) ? 'icons/valid.gif' : 'navigation/close.gif') . '"/>') . '</td>
-									<td style="padding:5px 0;">
-										' . we_html_forms::checkbox(1, ($_group_item_value ? true : false), $item_names . '_Permission_' . $_group_item_key, $titles[$_groups_key][$_group_item_key], false, "defaultfont", "top.content.setHot();") . '</td>
-								<tr>
-									<td>
-										' . we_html_tools::getPixel(15, 3) . '</td>
-								</tr>';
+<tr>
+	<td>' . ($parentGroups === false ? '' : '<i class="showParentPerms fa fa-' . (isset($parentGroups[$_group_item_values['perm']]) ? 'check" style="color:lightgreen"' : 'close" style="color:red"') . '></i>') . '</td>
+	<td style="padding:5px 0;">		' . we_html_forms::checkbox(1, ($_group_item_value ? true : false), $item_names . '_Permission_' . $_group_item_key, $titles[$_groups_key][$_group_item_key], false, "defaultfont", "top.content.setHot();") . '</td></tr>';
 						}
 					}
 				}
@@ -455,24 +326,18 @@ class we_html_dynamicControls{
 				//	therefore the content is first saved in an array.
 				// Build header of group
 				$_contentTable[$main_titles[$_groups_key]] = '
-					<table cellpadding="0" cellspacing="0" border="0" width="' . $width . '">';
+					<table class="default" width="' . $width . '">';
 
 				$_seperator_color = $seperator_color;
 
 				// Output the seperator
 				$_contentTable[$main_titles[$_groups_key]] .= '
-					<tr valign="middle" bgcolor="' . $_seperator_color . '">
-						<td>
-							' . we_html_tools::getPixel(10, 1) . '</td>
-						<td>
-							' . we_html_tools::getPixel($width, 1) . '</td>
-					</tr>';
+					<tr><td colspan="2" style="border-bottom:10px solid ' . $_seperator_color . ';"></td></tr>';
 
 				// Continue building header of group
 				$_contentTable[$main_titles[$_groups_key]] .= '
-					<tr valign="middle" bgcolor="' . $bgcolor . '">
-						<td width="30" nowrap>
-							' . we_html_tools::getPixel(5, 24) . '
+					<tr style="vertical-align:middle;background-color:' . $bgcolor . ';line-height:24px;">
+						<td width="30" nowrap style="padding-left:5px;">
 							<a href="javascript:toggle(\'' . $_groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');" name="arrow_link' . $_groups_key . '">';
 
 				// If a group is open display it unfolded
@@ -485,32 +350,29 @@ class we_html_dynamicControls{
 
 				if($_show_open){
 					// Define various values for expanded groups
-					$_arrow_image = $this->_arrow_image_opened;
+					$_arrow_image = 'fa fa-lg fa-caret-down fa-fw';
 					$_arrow_hint = $this->_arrow_hint_opened;
 					$_style_display = "block";
 				} else {
 					// Define various values for folded groups
-					$_arrow_image = $this->_arrow_image_closed;
+					$_arrow_image = 'fa fa-lg fa-caret-right fa-fw';
 					$_arrow_hint = $this->_arrow_hint_closed;
 					$_style_display = "none";
 				}
 
 				// Build header for open group
 				$_contentTable[$main_titles[$_groups_key]] .= '
-								<img src="' . $_arrow_image . '" width="19" height="18" border="0" alt="' . $_arrow_hint . '" name="arrow_' . $_groups_key . '" /></a></td>
-							<td class="defaultfont" colspan="3">
-								<label for="arrow_link_' . $_groups_key . '" style="cursor: pointer;" onclick="toggle(\'' . $_groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');"><b>' . $_checkbox_title . '</b></label></td>
-						</tr>
-						<tr valign="middle" bgcolor="' . $bgcolor . '">
-							<td>
-								' . we_html_tools::getPixel(10, 1) . '</td>
-							<td>
-								' . we_html_tools::getPixel($width, 1) . '</td>
-						</tr>
-					</table>';
+			<i class="' . $_arrow_image . '" title="' . $_arrow_hint . '" name="arrow_' . $_groups_key . '"></i></a></td>
+		<td class="defaultfont" colspan="3">
+			<label for="arrow_link_' . $_groups_key . '" style="cursor: pointer;" onclick="toggle(\'' . $_groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');"><b>' . $_checkbox_title . '</b></label></td>
+	</tr>
+	<tr>
+	<td colspan="2" style="border-bottom:10px solid ' . $bgcolor . '">
+	</tr>
+</table>';
 
 				// Now fill the group with content
-				$_contentTable[$main_titles[$_groups_key]] .= '<table cellpadding="0" cellspacing="0" border="0" width="' . $width . '" style="display: ' . $_style_display . '" id="group_' . $_groups_key . '"><tr><td>' . we_html_tools::getPixel(30, 10) . '</td><td colspan="2">' . we_html_tools::getPixel($width, 10) . '</td></tr>';
+				$_contentTable[$main_titles[$_groups_key]] .= '<table class="default" width="' . $width . '" style="margin:10px 30px 0 0;display: ' . $_style_display . '" id="group_' . $_groups_key . '">';
 
 				// Go through all items of the group
 				foreach($multiboxes[$_groups_key] as $i => $c){
@@ -519,18 +381,12 @@ class we_html_dynamicControls{
 						$c["headline"] = '';
 					}
 					$_contentTable[$main_titles[$_groups_key]] .= '
-								<tr>
-									<td></td>
-									<td valign="top" align="left"><span  id="headline_' . $i . '" class="weMultiIconBoxHeadline">' . $c["headline"] . '</span></td>
-									<td class="defaultfont">' . $c["html"] . '</td>
-								</tr>
-								<tr>
-									<td></td>
-									<td>' . we_html_tools::getPixel($c["space"], 15) . '</td>
-									<td></td>
-								</tr>';
+<tr>
+	<td style="text-align:left;vertical-align:top;padding-bottom:15px;"><span  id="headline_' . $i . '" class="weMultiIconBoxHeadline">' . $c["headline"] . '</span></td>
+	<td class="defaultfont">' . $c["html"] . '</td>
+</tr>';
 					if($i < (count($multiboxes[$_groups_key]) - 1) && (!isset($c["noline"]))){
-						$_contentTable[$main_titles[$_groups_key]] .= '<tr><td></td><td colspan="2"><div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div></td></tr>';
+						$_contentTable[$main_titles[$_groups_key]] .= '<tr><td colspan="2"><div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div></td></tr>';
 					}
 				}
 				$_contentTable[$main_titles[$_groups_key]] .= '</table>';
@@ -538,7 +394,7 @@ class we_html_dynamicControls{
 		}
 		//	sort the permission-groups alphabetically (perm_group_name)
 		ksort($_contentTable);
-		foreach($_contentTable as $key => $value){
+		foreach($_contentTable as $value){
 			$_content .= $value;
 		}
 		return $_content;

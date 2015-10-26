@@ -36,13 +36,12 @@ function we_tag_addDelShopItem($attribs){
 
 	we_base_moduleInfo::isActive('shop');
 
-	$floatfilter = new Zend_Filter_LocalizedToNormalized(); //FIXME: no local set, this won't work if server settings not correct or not match document-settings
 	$rShopname = we_base_request::_(we_base_request::STRING, 'shopname');
 	if($rShopname == $shopname || !$rShopname){
 		if(is_array(($cartIDs = we_base_request::_(we_base_request::HTML, 'shop_cart_id')))){
 			if(we_base_request::_(we_base_request::INT, 't', 0) > (isset($_SESSION['tb']) ? $_SESSION['tb'] : 0 )){
 				foreach($cartIDs as $cart_id => $cart_amount){
-					$GLOBALS[$shopname]->Set_Cart_Item(filterXss($cart_id), $floatquantities ? $floatfilter->filter($cart_amount) : intval($cart_amount));
+					$GLOBALS[$shopname]->Set_Cart_Item(filterXss($cart_id), $floatquantities ? we_base_util::std_numberformat($cart_amount) : intval($cart_amount));
 					$_SESSION[$shopname . '_save'] = $GLOBALS[$shopname]->getCartProperties();
 				}
 			}
@@ -52,7 +51,7 @@ function we_tag_addDelShopItem($attribs){
 				$shop_articleid_variant = $shop_anzahl = '';
 				foreach($shopAnzahl as $shop_articleid_variant => $shop_anzahl){
 					$articleInfo = explode('_', filterXss($shop_articleid_variant));
-					$GLOBALS[$shopname]->Set_Item(intval($articleInfo[0]), ($floatquantities ? $floatfilter->filter($shop_anzahl) : intval($shop_anzahl)), $articleInfo[1], (isset($articleInfo[2]) ? $articleInfo[2] : ''));
+					$GLOBALS[$shopname]->Set_Item(intval($articleInfo[0]), ($floatquantities ? we_base_util::std_numberformat($shop_anzahl) : intval($shop_anzahl)), $articleInfo[1], (isset($articleInfo[2]) ? $articleInfo[2] : ''));
 					$_SESSION[$shopname . '_save'] = $GLOBALS[$shopname]->getCartProperties();
 					unset($articleInfo);
 				}

@@ -7,7 +7,7 @@ $this->NeedsEndTag = true;
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$id = new weTagData_selectorAttribute('id', FILE_TABLE, 'text/webedition', false, '');
+$id = new weTagData_selectorAttribute('id', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '');
 $name = new weTagData_textAttribute('name', false, '');
 $nameid = new weTagData_textAttribute('nameid', false, '');
 $method = new weTagData_selectAttribute('method', array(new weTagDataOption('get'),
@@ -19,10 +19,10 @@ $target = new weTagData_choiceAttribute('target', array(new weTagDataOption('_to
 	new weTagDataOption('_blank'),
 	), false, false, '');
 $recipient = new weTagData_textAttribute('recipient', true, '');
-$onsuccess = new weTagData_selectorAttribute('onsuccess', FILE_TABLE, 'text/webedition', false, '');
-$onerror = new weTagData_selectorAttribute('onerror', FILE_TABLE, 'text/webedition', false, '');
-$onmailerror = new weTagData_selectorAttribute('onmailerror', FILE_TABLE, 'text/webedition', false, '');
-$onrecipienterror = new weTagData_selectorAttribute('onrecipienterror', FILE_TABLE, 'text/webedition', false, '');
+$onsuccess = new weTagData_selectorAttribute('onsuccess', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '');
+$onerror = new weTagData_selectorAttribute('onerror', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '');
+$onmailerror = new weTagData_selectorAttribute('onmailerror', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '');
+$onrecipienterror = new weTagData_selectorAttribute('onrecipienterror', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '');
 $from = new weTagData_textAttribute('from', false, '');
 $subject = new weTagData_textAttribute('subject', false, '');
 $charset = new weTagData_textAttribute('charset', false, '');

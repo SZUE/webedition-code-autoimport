@@ -33,7 +33,7 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-we_ui_controls_WeWysiwygEditor = new Object();
+we_ui_controls_WeWysiwygEditor = {};
 /**
  * enables / disables TextInput and Button of AC element
  *
@@ -73,7 +73,7 @@ we_ui_controls_WeWysiwygEditor.setDataView = function(idOrObject, data)
 we_ui_controls_WeWysiwygEditor.openWeWysiwyg = function()
 {
 	var args = "";
-	var url = "/webEdition/editors/content/tinymce/we_tinymce/WeWysiwygEditorWindow.php?";
+	var url = "/webEdition/dynamic/wysiwyg/WeWysiwygEditorWindow.php?";
 	url += "we_cmd[0]=" +encodeURI(arguments[0]) + "&";
 	url += "we_cmd[1]=" +encodeURI(arguments[1]) + "&";
 	url += "we_cmd[2]=" +encodeURI(arguments[2] - 50) + "&";
@@ -85,7 +85,7 @@ we_ui_controls_WeWysiwygEditor.openWeWysiwyg = function()
 	url += "we_cmd[8]=&we_cmd[9]=337&we_cmd[10]=94&we_cmd[11]=1&we_cmd[12]=1&we_cmd[13]=&we_cmd[14]=&we_cmd[15]=UTF-8&";
 	url += "we_cmd[16]=" +encodeURI(arguments[6]) + "&";
 	url += "we_cmd[17]=";
-	new jsWindow(url, "we_" + arguments[4] + "_wysiwyg", -1, -1, arguments[2] - 30, arguments[3] + 70, true, true, true);
+	new (WE().util.jsWindow)(window, url, "we_" + arguments[4] + "_wysiwyg", -1, -1, arguments[2] - 30, arguments[3] + 70, true, true, true);
 }
 
 

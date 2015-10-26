@@ -28,7 +28,7 @@
  *
  */
 
-$searchButton = we_html_button::create_button('search', $_SERVER['SCRIPT_NAME'] . '?section=upgrade&update_cmd=upgrade&detail=lookForUpgrade');
+$searchButton = we_html_button::create_button(we_html_button::SEARCH, $_SERVER['SCRIPT_NAME'] . '?section=upgrade&update_cmd=upgrade&detail=lookForUpgrade');
 
 $content = '
 <table class="defaultfont" width="100%">

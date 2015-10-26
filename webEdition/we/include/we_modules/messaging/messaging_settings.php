@@ -30,32 +30,28 @@ we_html_tools::protect();
 $messaging = new we_messaging_messaging($_SESSION['weS']['we_data']['we_messagin_setting']);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 $messaging->init($_SESSION['weS']['we_data']['we_messagin_setting']);
-echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[settings]')) .
- we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
+echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[settings]'));
 ?>
-<script type="text/javascript"><!--
 <?php
 if(we_base_request::_(we_base_request::STRING, 'mcmd') === 'save_settings' && ($cstep = we_base_request::_(we_base_request::STRING, 'check_step'))){
 	if($messaging->save_settings(array('check_step' => $cstep))){
 		echo we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
 		?>
-		window.close();
-		//-->
 		</script>
 		</head>
-		<body></body>
+		<body onload="window.close();"></body>
 		</html>
 		<?php
 		exit;
 	}
 }
 ?>
+<script><!--
 function save() {
-document.settings.submit();
-}
+		document.settings.submit();
+	}
 //-->
 </script>
-
 <?php
 we_html_tools::protect();
 
@@ -82,7 +78,7 @@ echo STYLESHEET;
 </tr>
 </table>';
 
-		$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("save", "javascript:save()"), "", we_html_button::create_button("cancel", "javascript:window.close();")
+		$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, "javascript:save()"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:window.close();")
 			)
 		;
 

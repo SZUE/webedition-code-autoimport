@@ -59,8 +59,9 @@ class we_customer_documentFilterView extends we_customer_filterView{
 
 		$selectorNoLoginId = "wecf_noLoginId";
 		$selectorNoLoginText = "wecf_InputNoLoginText";
+		//$selectorNoLoginError = "wecf_ErrorMarkNoLoginText";
 		$cmd1 = "document.we_form.elements['" . $selectorNoLoginId . "'].value";
-		$selectorNoLoginButton = we_html_button::create_button("select", "javascript:we_cmd('openDocselector'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $selectorNoLoginText . "'].value") . "','" . we_base_request::encCmd("opener." . $this->getHotScript() . ";") . "','','','" . we_base_ContentTypes::WEDOCUMENT . "',1)") . "<div id=\"wecf_container_noLoginId\"></div>";
+		$selectorNoLoginButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $selectorNoLoginText . "'].value") . "','" . we_base_request::encCmd("opener." . $this->getHotScript() . ";") . "','','','" . we_base_ContentTypes::WEDOCUMENT . "',1)") . "<div id=\"wecf_container_noLoginId\"></div>";
 
 		$yuiSuggest->setAcId("NoLogin");
 		$yuiSuggest->setContentType("folder," . we_base_ContentTypes::WEDOCUMENT);
@@ -84,11 +85,9 @@ class we_customer_documentFilterView extends we_customer_filterView{
 
 		$selectorNoAccessId = "wecf_noAccessId";
 		$selectorNoAccessText = "wecf_InputNoAccessText";
-		$selectorNoAccessError = "wecf_ErrorMarkNoAccessText";
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $selectorNoAccessId . "'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $selectorNoAccessText . "'].value");
-		$wecmdenc3 = we_base_request::encCmd("opener." . $this->getHotScript());
-		$selectorNoAccessButton = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['" . $selectorNoAccessId . "'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::WEDOCUMENT . "',1)");
+		//$selectorNoAccessError = "wecf_ErrorMarkNoAccessText";
+		$cmd1 = "document.we_form.elements['" . $selectorNoAccessId . "'].value";
+		$selectorNoAccessButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $selectorNoAccessText . "'].value") . "','" . we_base_request::encCmd("opener." . $this->getHotScript()) . "','','','" . we_base_ContentTypes::WEDOCUMENT . "',1)");
 
 		$yuiSuggest->setAcId("NoAccess");
 		$yuiSuggest->setContentType("folder," . we_base_ContentTypes::WEDOCUMENT);
@@ -111,10 +110,7 @@ class we_customer_documentFilterView extends we_customer_filterView{
 				we_html_forms::radiobutton(
 						"errorDoc", !$_filter->getAccessControlOnTemplate(), "wecf_accessControlOnTemplate", g_l('modules_customerFilter', '[accessControlOnErrorDoc]'), true, "defaultfont", "updateView();" . $this->getHotScript()
 				) .
-				we_customer_documentFilterView::getDiv(
-						$weAcSelector . "\n" .
-						$weAcSelector2 . "\n", 'accessControlSelectorDiv', (!$_filter->getAccessControlOnTemplate()), 25
-		);
+				we_customer_documentFilterView::getDiv($weAcSelector . $weAcSelector2, 'accessControlSelectorDiv', (!$_filter->getAccessControlOnTemplate()), 25);
 
 
 
@@ -128,17 +124,16 @@ class we_customer_documentFilterView extends we_customer_filterView{
 	 * @return string
 	 */
 	function getFolderApplyHTML(){
-		$_ok_button = we_html_button::create_button("ok", "javascript:if (_EditorFrame.getEditorIsHot()) { " . we_message_reporting::getShowMessageCall(g_l('modules_customerFilter', '[apply_filter_isHot]'), we_message_reporting::WE_MESSAGE_INFO) . " } else { we_cmd('copyWeDocumentCustomerFilter', '" . $GLOBALS['we_doc']->ID . "', '" . $GLOBALS['we_doc']->Table . "');}");
+		$_ok_button = we_html_button::create_button(we_html_button::OK, "javascript:if (_EditorFrame.getEditorIsHot()) { " . we_message_reporting::getShowMessageCall(g_l('modules_customerFilter', '[apply_filter_isHot]'), we_message_reporting::WE_MESSAGE_INFO) . " } else { we_cmd('copyWeDocumentCustomerFilter', '" . $GLOBALS['we_doc']->ID . "', '" . $GLOBALS['we_doc']->Table . "');}");
 
-		return "
-			<div class=\"weMultiIconBoxHeadline paddingVertical\">" . g_l('modules_customerFilter', '[apply_filter]') . "</div>
-			<table>
-			<tr>
-				<td>" . we_html_tools::htmlAlertAttentionBox(g_l('modules_customerFilter', '[apply_filter_info]'), we_html_tools::TYPE_INFO, 432, false) . "</td>
-				<td style=\"padding-left:17px;\">" . $_ok_button . "</td>
-			</tr>
-			</table>
-		";
+		return '
+<div class="weMultiIconBoxHeadline paddingVertical" style="padding-top: 10px;padding-bottom: 10px;">' . g_l('modules_customerFilter', '[apply_filter]') . '</div>
+<table>
+	<tr>
+		<td>' . we_html_tools::htmlAlertAttentionBox(g_l('modules_customerFilter', '[apply_filter_info]'), we_html_tools::TYPE_INFO, 432, false) . '</td>
+		<td style="padding-left:17px;">' . $_ok_button . '</td>
+	</tr>
+</table>';
 	}
 
 	/**

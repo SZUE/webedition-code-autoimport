@@ -28,7 +28,6 @@
  *
  */
 class we_customer_listview extends we_listview_base{
-	var $ClassName = __CLASS__;
 	var $condition = '';
 	var $Path = '';
 	var $docID = 0;
@@ -51,7 +50,7 @@ class we_customer_listview extends we_listview_base{
 		parent::__construct($name, $rows, $offset, $order, $desc, '', false, 0, $cols);
 
 		$this->docID = $docID;
-		$this->condition = $condition ? : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : "");
+		$this->condition = $condition;
 
 		$this->Path = ($this->docID ?
 				id_to_path($this->docID, FILE_TABLE, $this->DB_WE) :
@@ -81,14 +80,14 @@ class we_customer_listview extends we_listview_base{
 
 		$this->anz_all = f('SELECT COUNT(1) FROM ' . CUSTOMER_TABLE . $where, '', $this->DB_WE);
 
-		$this->DB_WE->query('SELECT * ' . $extra . ' FROM ' . CUSTOMER_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage)
-					: ''));
+		$this->DB_WE->query('SELECT * ' . $extra . ' FROM ' . CUSTOMER_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : ''));
 		$this->anz = $this->DB_WE->num_rows();
 	}
 
 	function next_record(){
-		$ret = $this->DB_WE->next_record();
+		$ret = $this->DB_WE->next_record(MYSQL_ASSOC);
 		if($ret){
+			array_merge($this->DB_WE->Record, we_customer_customer::getEncryptedFields());
 			$this->DB_WE->Record['wedoc_Path'] = $this->Path . '?we_cid=' . $this->DB_WE->Record['ID'];
 			$this->DB_WE->Record['WE_PATH'] = $this->Path . '?we_cid=' . $this->DB_WE->Record['ID'];
 			$this->DB_WE->Record['WE_TEXT'] = $this->DB_WE->Record['Username'];

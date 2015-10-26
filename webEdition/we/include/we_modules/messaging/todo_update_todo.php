@@ -36,17 +36,13 @@ $messaging->init($_SESSION['weS']['we_data'][$transaction]);
 echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]') . ' - Update Status') .
  STYLESHEET;
 ?>
-<script type="text/javascript"><!--
+<script><!--
 function do_confirm() {
 		document.update_todo_form.submit();
 	}
 
 	function doUnload() {
-		if (top.jsWindow_count) {
-			for (i = 0; i < top.jsWindow_count; i++) {
-				eval("jsWindow" + i + "Object.close()");
-			}
-		}
+		WE().util.jsWindow.prototype.closeAll(window);
 	}
 //-->
 </script>
@@ -104,9 +100,9 @@ function do_confirm() {
 			)
 		);
 
-		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:do_confirm();"), "", we_html_button::create_button("cancel", "javascript:top.window.close()")
+		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:do_confirm();"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:top.window.close()")
 		);
-		echo we_html_multiIconBox::getHTML("todoStatusUpdate", "100%", $parts, 30, $buttons, -1, "", "", false, $heading);
+		echo we_html_multiIconBox::getHTML("todoStatusUpdate", $parts, 30, $buttons, -1, "", "", false, $heading);
 		?>
 	</form>
 </body>

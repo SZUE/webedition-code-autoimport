@@ -40,17 +40,20 @@ class we_html_table extends we_html_baseCollection{
 	 */
 	function __construct(array $attribs = array(), $rows_num = 0, $cols_num = 0, array $content = null){
 		parent::__construct('table', true, $attribs);
-		$this->addRow($rows_num);
-		$this->addCol($cols_num);
+		if($rows_num){
+			$this->addRow($rows_num);
+			$this->addCol($cols_num);
+		}
 		$this->setTableContent($content);
 	}
 
 	public function setTableContent(array $content = null){
-		if($content){
-			foreach($content as $rowNo => $rowContent){
-				foreach($rowContent as $colNo => $col){
-					$this->setCol($rowNo, $colNo, $col[0], $col[1]);
-				}
+		if(!$content){
+			return;
+		}
+		foreach($content as $rowNo => $rowContent){
+			foreach($rowContent as $colNo => $col){
+				$this->setCol($rowNo, $colNo, $col[0], $col[1]);
 			}
 		}
 	}
@@ -131,7 +134,10 @@ class we_html_table extends we_html_baseCollection{
 	 * @return     void
 	 */
 	function setCol($rowid, $colid, $attribs = array(), $content = ''){
-		$col = &$this->getChild($rowid)->getChild($colid);
+		while(!isset($this->childs[$rowid])){
+			$this->addRow();
+		}
+		$col = $this->getChild($rowid)->getChild($colid);
 		$col->setAttributes($attribs);
 		$col->setContent($content);
 	}
@@ -208,7 +214,7 @@ class we_html_table extends we_html_baseCollection{
 						continue;
 					}
 					if(in_array('colspan', array_keys($col->attribs))){
-						$colspan = $col->getAttribute('colspan')-1;
+						$colspan = $col->getAttribute('colspan') - 1;
 					}
 				}
 			}

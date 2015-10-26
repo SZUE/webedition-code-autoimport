@@ -29,6 +29,7 @@
  * Function:    Utility class that implements operations on tables
  *
  * Description: Provides functions for creating html tags used in forms.
+ * @deprecated since version 6.3.0
  */
 //FIXME:remove
 class we_html_frameset extends we_html_baseCollection{

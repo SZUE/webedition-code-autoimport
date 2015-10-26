@@ -23,10 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_versions_log extends we_versions_logBase{
-
-	const VERSIONS_DELETE = 1;
-	const VERSIONS_RESET = 2;
-	const VERSIONS_PREFS = 3;
+	const VERSIONS_DELETE = 'delete';
+	const VERSIONS_RESET = 'reset';
+	const VERSIONS_PREFS = 'prefs';
 
 	public $action;
 	public $data;
@@ -36,10 +35,8 @@ class we_versions_log extends we_versions_logBase{
 	}
 
 	function saveVersionsLog($logArray, $action = ""){
-
-		$this->action = $action;
-		$this->data = serialize($logArray);
-
+		$this->typ = $action;
+		$this->data = we_serialize($logArray);
 		$this->saveLog();
 	}
 

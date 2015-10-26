@@ -38,7 +38,7 @@ class rpcJsonView{
 		$status = ($response->Success ? "response" : "error");
 
 
-		// DONT TOUCH THIS -  this is also  used forDreamweaver extension !!!!
+		// DONT TOUCH THIS -  this is also  used forDreamweaver extension !
 		return
 			'var weResponse = {
 			"type":"' . $status . '",

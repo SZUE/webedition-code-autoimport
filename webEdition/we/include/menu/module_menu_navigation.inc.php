@@ -69,7 +69,7 @@ $we_menu_navigation = array(
 	array(
 		'text' => g_l('navigation', '[menu_exit]'),
 		'parent' => 100,
-		'cmd' => 'module_navigation_exit',
+		'cmd' => 'exit_navigation',
 		'perm' => '',
 		'enabled' => 1,
 	),

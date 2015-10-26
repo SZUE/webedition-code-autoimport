@@ -25,9 +25,7 @@
 class we_customer_selector extends we_users_selector{
 
 	public function __construct($id, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $rootDirID = 0, $filter = '', $multiple = true){
-		$mid = (is_numeric($id) ? $id : 0);
-
-		parent::__construct($mid, CUSTOMER_TABLE, $JSIDName, $JSTextName, $JSCommand, $order, $rootDirID, $multiple, $filter);
+		parent::__construct((is_numeric($id) ? $id : 0), CUSTOMER_TABLE, $JSIDName, $JSTextName, $JSCommand, $order, $rootDirID, $multiple, $filter);
 		$this->title = g_l('fileselector', '[userSelector][title]');
 		$this->canSelectDir = false;
 		$this->dir = (is_numeric($id) ? '' : $id);
@@ -80,7 +78,7 @@ class we_customer_selector extends we_users_selector{
 			$select = $grouparr = $orderarr = array();
 
 			foreach($sort_defs as $c => $sortdef){
-				if(isset($sortdef['function']) && $sortdef['function']){
+				if(!empty($sortdef['function'])){
 					$select[] = '@select' . count($select) . ':=' . ($settings->customer->isInfoDate($sortdef['field']) ?
 							sprintf($settings->FunctionTable[$sortdef['function']], 'FROM_UNIXTIME(' . $sortdef['field'] . ')') . ' AS ' . $sortdef['field'] . "_" . $sortdef["function"] :
 							sprintf($settings->FunctionTable[$sortdef['function']], $sortdef['field']) . ' AS ' . $sortdef['field'] . '_' . $sortdef['function']);
@@ -97,7 +95,7 @@ class we_customer_selector extends we_users_selector{
 					$select[] = '@select' . count($select) . ':=' . $sortdef['field'];
 					$grouparr[] = $sortdef['field'];
 					$orderarr[] = $sortdef['field'] . ' ' . $sortdef['order'];
-					if(isset($pidarr[$c]) && $pidarr[$c]){
+					if(!empty($pidarr[$c])){
 						$havingarr[] = (empty($pidarr[$c]) ?
 								'(' . $sortdef['field'] . "='' OR " . $sortdef['field'] . ' IS NULL)' :
 								$sortdef['field'] . "='" . $pidarr[$c] . "'");
@@ -111,64 +109,45 @@ class we_customer_selector extends we_users_selector{
 			$grp = implode(',', array_slice($grouparr, 0, $level + 1));
 
 			if($level < $levelcount){
-				$fields = 'ID,"' . we_base_ContentTypes::FOLDER_ICON . '" AS Icon,1 AS IsFolder' . (empty($select) ? '' : ',' . implode(',', $select) ) . ', COALESCE(NULLIF(@select' . $level . ',""),"' . g_l('modules_customer', '[no_value]') . '") AS Text,CONCAT("' . $pid . '",@select' . $level . ',"-|-") AS Path';
+				$fields = 'ID,1 AS IsFolder' . ($select ? ',' . implode(',', $select) : '') . ', COALESCE(NULLIF(@select' . $level . ',""),"' . g_l('modules_customer', '[no_value]') . '") AS Text,CONCAT("' . $pid . '",@select' . $level . ',"-|-") AS Path';
 			} else {
-				$fields = $settings->treeTextFormatSQL . ' AS Text,ID,ParentID,Path,Icon,0 AS IsFolder' . (empty($select) ? '' : ',' . implode(',', $select) );
+				$fields = $settings->treeTextFormatSQL . ' AS Text,ID,Username AS Path,0 AS IsFolder' . (empty($select) ? '' : ',' . implode(',', $select) );
 			}
 
 			$this->db->query('SELECT ' . $fields . ' FROM ' . CUSTOMER_TABLE . ' WHERE ' .
 				($optionalID ? ' ID=' . intval($optionalID) : '1') . ' AND ' .
 				(!permissionhandler::hasPerm("ADMINISTRATOR") && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '1 ') .
 				' GROUP BY ' . $grp . ($grouparr ? ($level == $levelcount ? ',ID' : '') : 'ID') . ($havingarr ? ' HAVING ' . implode(' AND ', $havingarr) : '') .
-				' ORDER BY ' . implode(',', $orderarr) . we_customer_treeLoader::getSortOrder($settings, ','));
+				' ORDER BY ' . implode(',', $orderarr) . we_customer_tree::getSortOrder($settings, ','));
 			return ($level < $levelcount);
 		} else {
-			$this->db->query('SELECT ID,ParentID,Path,IsFolder,Icon,' . $settings->treeTextFormatSQL . ' AS Text FROM ' . CUSTOMER_TABLE .
-				' WHERE ' . (!permissionhandler::hasPerm("ADMINISTRATOR") && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '1 ') . we_customer_treeLoader::getSortOrder($settings));
+			$this->db->query('SELECT ID,Username AS Path,0 AS IsFolder,' . $settings->treeTextFormatSQL . ' AS Text FROM ' . CUSTOMER_TABLE .
+				' WHERE ' . (!permissionhandler::hasPerm("ADMINISTRATOR") && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '1 ') . we_customer_tree::getSortOrder($settings));
 			//no need to search directory
 			return false;
 		}
 	}
 
 	function printSetDirHTML(){
-		echo '<script type="text/javascript"><!--
-top.clearEntries();
-' .
-		$this->printCmdAddEntriesHTML() .
-		$this->printCMDWriteAndFillSelectorHTML() .
-		'top.fsheader.' . (empty($this->dir) ? 'disable' : 'enable') . 'RootDirButs();';
+		$js = 'top.clearEntries();' .
+			$this->printCmdAddEntriesHTML() .
+			$this->printCMDWriteAndFillSelectorHTML() .
+			'top.' . (($this->dir) ? 'enable' : 'disable' ) . 'RootDirButs();';
 
-		if(permissionhandler::hasPerm("ADMINISTRATOR")){
+		if(permissionhandler::hasPerm('ADMINISTRATOR')){
 			if($this->id == 0){
 				$this->path = '/';
 			}
-			echo 'top.currentPath = "' . $this->path . '";
+			$js.= 'top.currentPath = "' . $this->path . '";
 top.currentID = "' . $this->id . '";';
-//top.fsfooter.document.we_form.fname.value = "' . $this->values["Text"] . '";';
 		}
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
-//top.parentID = "' . $this->values["ParentID"] . '";
-		echo 'top.currentDir = "' . $this->dir . '";
-//-->
-</script>';
+		$js.='top.currentDir = "' . $this->dir . '";';
+		echo we_html_element::jsElement($js);
 	}
 
-	protected function printFramesetJSsetDir(){
-		return we_html_element::jsElement('
-function setDir(id){
-	if(id>=0 || id<0){
-		e = getEntry(id);
-		currentDir = id;
-		path=e.path;
-		if(path=="/"){
-			path=0;
-		}
-	}else{
-		path=id;
-	}
-	top.fscmd.location.replace(top.queryString(' . we_selector_multiple::SETDIR . ',path));
-}'
-		);
+	protected function getFramsetJSFile(){
+		return parent::getFramsetJSFile() . we_html_element::jsScript(JS_DIR . 'selectors/customer_selector.js');
 	}
 
 	private function getHeaderElements(){
@@ -181,29 +160,17 @@ function setDir(id){
 		return $out;
 	}
 
-	protected function printHeaderOptions(){
-		$elem = $this->getHeaderElements();
-		end($elem);
-		$last = key($elem);
-		$out = '';
-		foreach($elem as $key => $val){
-			$out.='<option value="' . $key . '"' . ($last == $key ? ' selected="selected"' : '') . '>' . $val . '</option>';
-		}
-		return $out;
-	}
-
-	protected function printCMDWriteAndFillSelectorHTML(){
+	protected function printCMDWriteAndFillSelectorHTML($withWrite = true){
 		$elem = $this->getHeaderElements();
 		$out = '';
 		foreach($elem as $key => $val){
-			$out .= 'top.fsheader.addOption("' . $val . '","' . $key . '");';
+			$out .= 'top.addOption("' . $val . '","' . $key . '");';
 		}
 
-		return '
-top.writeBody(top.fsbody.document);
-top.fsheader.clearOptions();' .
+		return ($withWrite ? 'top.writeBody(top.fsbody.document.body);' : '') . '
+top.clearOptions();' .
 			$out . '
-top.fsheader.selectIt();';
+top.selectIt();';
 	}
 
 }

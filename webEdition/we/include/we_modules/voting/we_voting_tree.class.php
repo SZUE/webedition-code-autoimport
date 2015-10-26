@@ -22,149 +22,97 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_voting_tree extends weMainTree{
+class we_voting_tree extends weTree{
 
-	function __construct($frameset = "", $topFrame = "", $treeFrame = "", $cmdFrame = ""){
-
-		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
-
-		$this->setStyles(array(
-			'.item {color: black; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . ';}',
-			'.item a { text-decoration:none;}',
-			'.group {color: black; font-weight: bold; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . ';}',
-			'.group a { text-decoration:none;}',
-			'.notpublished {color: green; font-size: ' . (((we_base_browserDetect::isUNIX()) ? "11px" : "9px")) . '; font-family: ' . g_l('css', '[font_family]') . '; cursor: pointer;}',
-			'.notpublished a { text-decoration:none;}',
-		));
-	}
-
-	function getJSOpenClose(){
-		return '
-function openClose(id){
-	var sort="";
-	if(id=="") return;
-	var eintragsIndex = indexOfEntry(id);
-	var openstatus;
-
-
-	if(treeData[eintragsIndex].open==0) openstatus=1;
-	else openstatus=0;
-
-	treeData[eintragsIndex].open=openstatus;
-
-	if(openstatus && treeData[eintragsIndex].loaded!=1){
-		if(sort!=""){
-			' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+id+"&sort="+sort;
-		}else{
-			' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+id;
-		}
-	}else{
-		drawTree();
-	}
-	if(openstatus==1) treeData[eintragsIndex].loaded=1;
-}';
-	}
-
-	function getJSUpdateItem(){
-		return '
-function updateEntry(id,text,pid,pub){
-			var ai = 1;
-			while (ai <= treeData.len) {
-					if (treeData[ai].id==id) {
-							treeData[ai].text=text;
-							treeData[ai].parentid=pid;
-							treeData[ai].published=pub;
-					}
-					ai++;
-			}
-	drawTree();
-}';
-	}
-
-	function getJSTreeFunctions(){
-		return weTree::getJSTreeFunctions() . '
-function doClick(id,typ){
-	var cmd = "";
-	if(top.content.hot == "1") {
-		if(confirm("' . g_l('modules_voting', '[save_changed_voting]') . '")) {
-			cmd = "save_voting";
-			top.content.we_cmd("save_voting");
-		} else {
-			top.content.usetHot();
-			cmd = "voting_edit";
-			var node=' . $this->topFrame . '.get(id);
-			' . $this->topFrame . '.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
-		}
-	} else {
-		cmd = "voting_edit";
-		var node=' . $this->topFrame . '.get(id);
-		' . $this->topFrame . '.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
-	}
-}
-' . $this->topFrame . '.loaded=1;';
+	function customJSFile(){
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'voting/voting_tree.js');
 	}
 
 	function getJSStartTree(){
-
-		return 'function startTree(){
-				' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid=0";
+		return '
+function startTree(){
+			frames={
+	"top":' . $this->topFrame . ',
+	"cmd":' . $this->cmdFrame . '
+};
+treeData.frames=frames;
+				frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=cmd&pid=0";
 				drawTree();
 			}';
 	}
 
-	function getJSIncludeFunctions(){
-		return weTree::getJSIncludeFunctions() . $this->getJSStartTree();
-	}
+	static function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = "ID,ParentID,Path,Text,IsFolder,RestrictOwners,Owners,Active,ActiveTime,Valid", $addWhere = "", $addOrderBy = ""){
+		$db = new DB_WE();
+		$table = VOTING_TABLE;
 
-	function getJSMakeNewEntry(){
-		return '
-			function makeNewEntry(icon,id,pid,txt,open,ct,tab,pub){
-					if(treeData[indexOfEntry(pid)]){
-						if(treeData[indexOfEntry(pid)].loaded){
+		$items = array();
 
-	 						if(ct=="folder") ct="group";
-	 						else ct="item";
+		$owners_sql = we_voting_voting::getOwnersSql();
 
-							var attribs=new Array();
+		$prevoffset = max(0, $offset - $segment);
+		if($offset && $segment){
+			$items[] = array(
+				"id" => "prev_" . $ParentID,
+				"parentid" => $ParentID,
+				"text" => "display (" . $prevoffset . "-" . $offset . ")",
+				"contenttype" => "arrowup",
+				"table" => VOTING_TABLE,
+				"typ" => "threedots",
+				"open" => 0,
+				"published" => 0,
+				"disabled" => 0,
+				"tooltip" => "",
+				"offset" => $prevoffset
+			);
+		}
 
-							attribs["id"]=id;
-							attribs["icon"]=icon;
-							attribs["text"]=txt;
-							attribs["parentid"]=pid;
-							attribs["open"]=open;
+		$where = ' WHERE ParentID=' . intval($ParentID) . ' ' . $addWhere . $owners_sql;
 
-	 						attribs["tooltip"]=id;
-	 						attribs["typ"]=ct;
+		$db->query('SELECT ' . $db->escape($elem) . ' FROM ' . $db->escape($table) . $where . ' ORDER BY IsFolder DESC,(text REGEXP "^[0-9]") DESC,ABS(text),Text' . ($segment ? ' LIMIT ' . abs($offset) . "," . abs($segment) : '' ));
+		$now = time();
 
+		while($db->next_record()){
+			$typ = array(
+				'typ' => ($db->f('IsFolder') == 1 ? 'group' : 'item'),
+				'open' => 0,
+				'disabled' => 0,
+				'tooltip' => $db->f('ID'),
+				'offset' => $offset,
+				'contentType'=>($db->f('IsFolder') == 1 ? 'folder' : 'we/voting'),
+			);
 
-							attribs["disabled"]=0;
-							if(ct=="item") attribs["published"]=pub;
-							else attribs["published"]=1;
-
-							attribs["selected"]=0;
-
-							treeData.addSort(new node(attribs));
-
-							drawTree();
-						}
-					}
+			if($db->f('IsFolder') == 0){
+				$typ['published'] = ($db->f('Active') && ($db->f('ActiveTime') == 0 || ($now < $db->f('Valid')))) ? 1 : 0;
 			}
-			';
-	}
+			$fileds = array();
 
-	function getJSInfo(){
-		return 'function info(text) {}';
-	}
-
-	function getJSShowSegment(){
-		return '
- 				function showSegment(){
-					parentnode=' . $this->topFrame . '.get(this.parentid);
-					parentnode.clear();
-					' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+this.parentid+"&offset="+this.offset;
-					drawTree();
+			foreach($db->Record as $k => $v){
+				if(!is_numeric($k)){
+					$fileds[strtolower($k)] = $v;
 				}
-			';
+			}
+
+			$items[] = array_merge($fileds, $typ);
+		}
+
+		$total = f('SELECT COUNT(1) FROM ' . $db->escape($table) . ' ' . $where, '', $db);
+		$nextoffset = $offset + $segment;
+		if($segment && ($total > $nextoffset)){
+			$items[] = array(
+				"id" => "next_" . $ParentID,
+				"parentid" => 0,
+				"text" => "display (" . $nextoffset . "-" . ($nextoffset + $segment) . ")",
+				"contenttype" => "arrowdown",
+				"table" => VOTING_TABLE,
+				"typ" => "threedots",
+				"open" => 0,
+				"disabled" => 0,
+				"tooltip" => "",
+				"offset" => $nextoffset
+			);
+		}
+
+		return $items;
 	}
 
 }

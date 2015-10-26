@@ -33,4 +33,8 @@ define('WE_OBJECT_MODULE_PATH', WE_MODULES_PATH . 'object/');
 // Number of displayed objects in the left navigation
 define('OBJECT_FILES_TREE_COUNT', 20);
 
-we_base_request::registerTables(array(OBJECT_TABLE, OBJECT_FILES_TABLE, OBJECTLINK_TABLE));
+we_base_request::registerTables(array(
+	'OBJECT_TABLE' => OBJECT_TABLE,
+	'OBJECT_FILES_TABLE' => OBJECT_FILES_TABLE,
+	'OBJECTLINK_TABLE' => OBJECTLINK_TABLE
+));

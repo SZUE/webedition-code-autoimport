@@ -27,7 +27,7 @@ abstract class we_backup_import{
 	static function import($filename, &$offset, $lines = 1, $iscompressed = 0, $encoding = 'ISO-8859-1'){
 		we_backup_util::addLog(sprintf('Reading offset %s, %s lines, Mem: %s', $offset, $lines, memory_get_usage(true)));
 		we_backup_util::writeLog();
-		$header = (isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset'] ?
+		$header = (!empty($_SESSION['weS']['weBackupVars']['options']['convert_charset']) ?
 				we_exim_XMLExIm::getHeader($_SESSION['weS']['weBackupVars']['encoding'], 'backup') :
 				we_exim_XMLExIm::getHeader('', 'backup'));
 		$data = $header . we_backup_fileReader::readLine($filename, $offset, $lines, $iscompressed);
@@ -90,7 +90,7 @@ abstract class we_backup_import{
 							if($element_value === 'Field'){
 								$element_name = $parser->getNodeData();
 							}
-							if(isset($element_name) && $element_name){
+							if(!empty($element_name)){
 								$object->elements[$element_name][$element_value] = $parser->getNodeData();
 							}
 						} while($parser->nextSibling());
@@ -127,7 +127,7 @@ abstract class we_backup_import{
 				} while($parser->nextSibling());
 
 				$addtext = '';
-				if(isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset']){
+				if(!empty($_SESSION['weS']['weBackupVars']['options']['convert_charset'])){
 					$addtext = (method_exists($object, 'convertCharsetEncoding') ?
 							" - Converting Charset: " . $_SESSION['weS']['weBackupVars']['encoding'] . " -> " . DEFAULT_CHARSET :
 							" - Converting Charset: NO ");
@@ -149,7 +149,7 @@ abstract class we_backup_import{
 						we_backup_util::addLog($_prefix . $classname . ':' . $object->ID . ':' . $object->Path . $addtext);
 						break;
 				}
-				if(isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset'] && method_exists($object, 'convertCharsetEncoding')){
+				if(!empty($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && method_exists($object, 'convertCharsetEncoding')){
 					$object->convertCharsetEncoding($_SESSION['weS']['weBackupVars']['encoding'], DEFAULT_CHARSET);
 				}
 				if(isset($object->Path) && $object->Path == WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php'){

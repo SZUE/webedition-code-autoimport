@@ -37,13 +37,12 @@ if(!$weTag){
 // needed javascript for the individual tags
 // #1 - all attributes of this we:tag (ids of attributes)
 $_attributes = $weTag->getAllAttributes(true);
-$jsAllAttributes = 'var allAttributes = new Array(' . ($_attributes ? '"' . implode('", "', $_attributes) . '"' : '') . ');';
 
 // #2 all required attributes
 $_reqAttributes = $weTag->getRequiredAttributes();
-$jsReqAttributes = "var reqAttributes = new Object();";
+$jsReqAttributes = array();
 foreach($_reqAttributes as $_attribName){
-	$jsReqAttributes .= 'reqAttributes["' . $_attribName . '"] = 1;';
+	$jsReqAttributes[] = '"' . $_attribName . '": 1';
 }
 
 // #3 all neccessary stuff for typeAttribute
@@ -57,26 +56,26 @@ if(($typeAttribute = $weTag->getTypeAttribute())){
 
 	if($_typeOptions){
 		$typeAttributeJs .= '
-var typeAttributeAllows = new Object();
-var typeAttributeRequires = new Object();';
+var typeAttributeAllows = {};
+var typeAttributeRequires = {};';
 
 		foreach($_typeOptions as $option){
 			$_allowedAttribs = $option->getAllowedAttributes();
 			if(empty($_allowedAttribs)){
-				$typeAttributeJs .= 'typeAttributeAllows["' . $option->getName() . '"] = new Array();';
+				$typeAttributeJs .= 'typeAttributeAllows["' . $option->getName() . '"] = [];';
 			} else {
-				$typeAttributeJs .= 'typeAttributeAllows["' . $option->getName() . '"] = new Array("' .
+				$typeAttributeJs .= 'typeAttributeAllows["' . $option->getName() . '"] = ["' .
 					implode('","', $_allowedAttribs) .
-					'");';
+					'"];';
 			}
 
 			$_reqAttribs = $option->getRequiredAttributes($_attributes);
-			if(empty($_reqAttribs)){
-				$typeAttributeJs .= "typeAttributeRequires[\"" . $option->getName() . "\"] = new Array();";
-			} else {
-				$typeAttributeJs .= "typeAttributeRequires[\"" . $option->getName() . "\"] = new Array(\"" .
+			if($_reqAttribs){
+				$typeAttributeJs .= 'typeAttributeRequires["' . $option->getName() . '"] = ["' .
 					implode('","', $_reqAttribs) .
-					"\");";
+					'"];';
+			} else {
+				$typeAttributeJs .= 'typeAttributeRequires["' . $option->getName() . '"] = [];';
 			}
 		}
 
@@ -90,68 +89,48 @@ weTagWizard.typeAttributeRequires = typeAttributeRequires;';
 }
 // additional javascript for the individual tags - end
 // print html header of page
-echo we_html_tools::getHtmlTop() .
- STYLESHEET .
- we_html_element::cssLink(CSS_DIR . 'tagWizard.css') .
- we_html_element::jsScript(JS_DIR . 'windows.js') .
- we_html_element::jsScript(JS_DIR . 'tagWizard.js') .
- we_html_element::jsScript(JS_DIR . 'keyListener.js') .
- we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') . we_html_element::jsElement('
-
-
-function closeOnEscape() {
-	return true;
-}
-
-function applyOnEnter(evt) {
-	_elemName = "target";
-	if ( typeof(evt["srcElement"]) != "undefined" ) { // IE
-		_elemName = "srcElement";
-	}
-
-	if (	!( evt[_elemName].tagName == "SELECT")) {
-		we_cmd("saveTag");
-		return true;
-	}
-
-
-}
-
-' . $jsAllAttributes .
-	$jsReqAttributes . '
+echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
+	we_html_element::cssLink(CSS_DIR . 'tagWizard.css') .
+	we_html_element::jsScript(JS_DIR . 'tagWizard.js') .
+	we_html_element::jsElement('
 
 weTagWizard = new weTagWizard("' . $weTag->getName() . '");
-weTagWizard.allAttributes = allAttributes;
-weTagWizard.reqAttributes = reqAttributes;
-' . ($weTag->needsEndTag() ? 'weTagWizard.needsEndTag = true;' : '') . '
+weTagWizard.allAttributes = [' . ($_attributes ? '"' . implode('", "', $_attributes) . '"' : '') . '];
+weTagWizard.reqAttributes = {' . implode(',', $jsReqAttributes) . '};
+weTagWizard.needsEndTag = ' . ($weTag->needsEndTag() ? 'true' : 'false') . ';
 
 // information about the type-attribute
 ' . $typeAttributeJs . '
 function we_cmd(){
-	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var args = [];
+	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
+	for(var i = 0; i < arguments.length; i++){
+				args.push(arguments[i]);
+	url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+	if(i < (arguments.length - 1)){
+	url += "&";
+	}
+	}
 	switch (arguments[0]){
-
 		case "switch_type":
 			weTagWizard.changeType(arguments[1]);
 		break;
 
 		case "saveTag":
 
-			if (strWeTag = weTagWizard.getWeTag()) {' .
-	( $openAtCursor ? '
-				var contentEditor = opener.top.weEditorFrameController.getVisibleEditorFrame();
+			if (strWeTag = weTagWizard.getWeTag()) {
+				var contentEditor = WE().layout.weEditorFrameController.getVisibleEditorFrame();
+			' .
+		( $openAtCursor ? '
 				contentEditor.window.addCursorPosition( strWeTag );
 				self.close();;
 				' : '
-				var contentEditor = opener.top.weEditorFrameController.getVisibleEditorFrame();
-				contentEditor.document.we_form.elements["tag_edit_area"].value=strWeTag;
-    			contentEditor.document.we_form.elements["tag_edit_area"].select();
+				contentEditor.document.we_form.elements.tag_edit_area.value=strWeTag;
+   			contentEditor.document.we_form.elements.tag_edit_area.select();
     			self.close();'
-	) . '
+		) . '
 			} else {
 				if (weTagWizard.missingFields.length) {
-
 					req = "";
 					for (i=0;i<weTagWizard.missingFields.length;i++) {
 						req += "- " + weTagWizard.missingFields[i] + "\n";
@@ -164,31 +143,28 @@ function we_cmd(){
 			}
 		break;
 
-		case "openDirselector":
-			new jsWindow(url,"we_fileselector",-1,-1,' . we_selector_file::WINDOW_DIRSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT . ',true,true,true,true);
+		case "we_selector_directory":
+			new (WE().util.jsWindow)(window, url,"we_fileselector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
 			break;
-		case "openDocselector":
-		case "openImgselector":
-			new jsWindow(url,"we_fileselector",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
+		case "we_selector_document":
+		case "we_selector_image":
+			new (WE().util.jsWindow)(window, url,"we_fileselector",-1,-1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height,true,true,true,true);
 			break;
-		case "openSelector":
-			new jsWindow(url,"we_fileselector",-1,-1,' . we_selector_file::WINDOW_SELECTOR_WIDTH . ',' . we_selector_file::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
+		case "we_selector_file":
+			new (WE().util.jsWindow)(window, url,"we_fileselector",-1,-1,WE().consts.size.windowSelect.width,WE().consts.size.windowSelect.height,true,true,true,true);
 			break;
-		case "openCatselector":
-			new jsWindow(url,"we_catselector",-1,-1,' . we_selector_file::WINDOW_CATSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
+		case "we_selector_category":
+			new (WE().util.jsWindow)(window, url,"we_catselector",-1,-1,WE().consts.size.catSelect.width,WE().consts.size.catSelect.height,true,true,true,true);
 			break;
-		case "browse_users":
-	        new jsWindow(url,"browse_users",-1,-1,500,300,true,false,true);
+		case "we_users_selector":
+	        new (WE().util.jsWindow)(window, url,"browse_users",-1,-1,500,300,true,false,true);
 	        break;
 		default:
-			for(var i = 0; i < arguments.length; i++){
-				args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
-			}
-			eval("opener.top.we_cmd("+args+")");
+			opener.we_cmd.apply(this, args);
+
 			break;
 	 }
-}') . '
-</head>
+}')) . '
 <body onload="window.focus();" class="defaultfont">
 <form name="we_form" onsubmit="we_cmd(\'saveTag\'); return false;">';
 // start building the content of the page
@@ -228,7 +204,7 @@ $code = '<fieldset>
 	$defaultValueCode;
 
 $_buttons = we_html_button::position_yes_no_cancel(
-		we_html_button::create_button('ok', "javascript:we_cmd('saveTag');"), null, we_html_button::create_button('cancel', "javascript:self.close();")
+		we_html_button::create_button(we_html_button::OK, "javascript:we_cmd('saveTag');"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();")
 );
 ?>
 <div id="divTagName">

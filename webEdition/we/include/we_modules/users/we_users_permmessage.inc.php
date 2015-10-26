@@ -22,22 +22,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-
-echo we_html_tools::getHtmlTop() . STYLESHEET;
-
-$content = "<p class=\"defaultfont\">" . (isset($we_message) ? $we_message : sprintf(g_l('alert', '[no_perms]'), f("SELECT Username FROM " . USER_TABLE . " WHERE ID='" . $we_doc->CreatorID . "'", "Username", $DB_WE))) . "</p>";
+echo we_html_tools::getHtmlTop(g_l('alert', '[no_perms_title]'), '', '', STYLESHEET .
+	we_html_element::jsElement('
+	WE().layout.weEditorFrameController.getEditorFrame(window.name).setEditorIsLoading(false);'));
 ?>
-<script  type="text/javascript"><!--
-	top.toggleBusy(0);
-	var _EditorFrame = top.weEditorFrameController.getEditorFrame(window.name);
-	_EditorFrame.setEditorIsLoading(false);
-	//-->
-</script>
-</head>
-
-<body class="weDialogBody">
-	<?php
-	echo we_html_tools::htmlDialogLayout($content, g_l('alert', '[no_perms_title]'));
+<body class="weDialogBody"><?php
+	echo we_html_tools::htmlDialogLayout('<p class="defaultfont">' . (isset($we_message) ? $we_message : sprintf(g_l('alert', '[no_perms]'), f('SELECT Username FROM ' . USER_TABLE . ' WHERE ID=' . intval($we_doc->CreatorID)))) . '</p>', g_l('alert', '[no_perms_title]'));
 	?>
 </body>
 </html>

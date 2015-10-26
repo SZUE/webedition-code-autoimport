@@ -33,17 +33,15 @@ function we_tag_author($attribs){
 		case 'listview' :
 			$authorID = '';
 			switch(get_class($GLOBALS['lv'])){
-				case 'we_object_listview'://listview type=object
-					$objID = $GLOBALS['lv']->getDBf('OF_ID');
-					break;
 				case 'we_object_tag'://we:object
-					$objID = $GLOBALS['lv']->id;
+				case 'we_object_listview'://listview type=object
+					$objID = $GLOBALS['lv']->f('WE_ID');
 					break;
 				case 'we_listview_search'://listview type=search
-					if($$GLOBALS['lv']->getDBf('ClassID')){//object
-						$objID = $GLOBALS['lv']->getDBf('WE_ID');
+					if($GLOBALS['lv']->f('ClassID')){//object
+						$objID = $GLOBALS['lv']->f('WE_ID');
 					} else {//document
-						$docID = $GLOBALS['lv']->getDBf('WE_ID');
+						$docID = $GLOBALS['lv']->f('WE_ID');
 					}
 					break;
 				default://we_listview (document)
@@ -52,7 +50,7 @@ function we_tag_author($attribs){
 			}
 
 			if(!$authorID){
-				$authorID = (isset($objID) && $objID  ?
+				$authorID = (!empty($objID) ?
 								f('SELECT ' . $author . ' FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($objID)) :
 								f('SELECT ' . $author . ' FROM ' . FILE_TABLE . ' WHERE ID=' . intval($docID)));
 			}

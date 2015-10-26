@@ -19,14 +19,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_wysiwyg_ToolbarSeparator extends we_wysiwyg_ToolbarElement{
-
 	var $classname = __CLASS__;
 	public $conditional = false;
 
 	public function __construct($editor, $conditional = false, $width = 5, $height = 22){
-		$width = $conditional ? 0 : $width;//TinyMCE: 3px separator + 1px block-border on both sides
+		$width = $conditional ? 0 : $width; //TinyMCE: 3px separator + 1px block-border on both sides
 		parent::__construct($editor, '', $width, $height);
 		$this->conditional = $conditional;
+		$this->isSeparator = true;
 	}
 
 	function getHTML(){

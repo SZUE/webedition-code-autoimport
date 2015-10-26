@@ -62,6 +62,18 @@ $_we_available_modules = array(
 		'dependson' => '',
 		'childmodule' => ''
 	),
+	'collection' => array(
+		'name' => 'collection',
+		'perm' => 'CAN_SEE_COLLECTIONS || DELETE_COLLECTIONS || EDIT_COLLECTIONS || NEW_COLLECTIONS || ADMINISTRATOR',
+		'text' => g_l('javaMenu_moduleInformation', '[collection][text]'),
+		'text_short' => g_l('javaMenu_moduleInformation', '[collection][text_short]'),
+		'inModuleMenu' => false,
+		'integrated' => true,
+		'alwaysActive' => false,
+		'hasSettings' => false,
+		'dependson' => '',
+		'childmodule' => ''
+	),
 	'shop' => array(
 		'name' => 'shop',
 		'text' => g_l('javaMenu_moduleInformation', '[shop][text]'),

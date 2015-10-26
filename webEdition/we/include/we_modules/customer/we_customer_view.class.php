@@ -25,7 +25,6 @@
 /* the parent class of storagable webEdition classes */
 
 class we_customer_view extends we_modules_view{
-
 	var $customer;
 	var $settings;
 
@@ -35,7 +34,8 @@ class we_customer_view extends we_modules_view{
 	const ERR_SAVE_FIELD_EXISTS = -4;
 	const ERR_SAVE_FIELD_NOT_EMPTY = -3;
 
-	function __construct($frameset = '', $topframe = 'top.content'){
+	function __construct($frameset){
+		$topframe = 'top.content';
 		parent::__construct($frameset, $topframe);
 		$this->customer = new we_customer_customer();
 		$this->settings = new we_customer_settings();
@@ -44,11 +44,13 @@ class we_customer_view extends we_modules_view{
 	}
 
 	function getCommonHiddens($cmds = array()){
-		return $this->htmlHidden('cmd', (isset($cmds['cmd']) ? $cmds['cmd'] : '')) .
-				$this->htmlHidden('pnt', (isset($cmds['pnt']) ? $cmds['pnt'] : '')) .
-				$this->htmlHidden('cmdid', (isset($cmds['cmdid']) ? $cmds['cmdid'] : '')) .
-				$this->htmlHidden('activ_sort', (isset($cmds['activ_sort']) ? $cmds['activ_sort'] : '')) .
-				$this->htmlHidden('branch', we_base_request::_(we_base_request::STRING, 'branch', g_l('modules_customer', '[common]')));
+		return we_html_element::htmlHiddens(array(
+				'cmd' => (isset($cmds['cmd']) ? $cmds['cmd'] : ''),
+				'pnt' => (isset($cmds['pnt']) ? $cmds['pnt'] : 'edbody'),
+				'cmdid' => (isset($cmds['cmdid']) ? $cmds['cmdid'] : ''),
+				'activ_sort' => (isset($cmds['activ_sort']) ? $cmds['activ_sort'] : ''),
+				'branch' => we_base_request::_(we_base_request::STRING, 'branch', g_l('modules_customer', '[common]'))
+		));
 	}
 
 	function getJSTop(){
@@ -57,435 +59,83 @@ class we_customer_view extends we_modules_view{
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
 		return
-				parent::getJSTop() .
-				we_html_element::jsElement('
-var get_focus = 1;
-var activ_tab = 0;
-var hot= 0;
-var scrollToVal=0;
-
-function setHot() {
-	hot = "1";
-}
-
+			parent::getJSTop() .
+			we_html_element::jsElement('
 parent.document.title = "' . $title . '";
+WE().consts.dirs.WE_CUSTOMER_MODULE_DIR="' . WE_CUSTOMER_MODULE_DIR . '";
+WE().consts.g_l.customer.view={
+	save_changed_customer:"' . g_l('modules_customer', '[save_changed_customer]') . '",
+	delete_alert:"' . g_l('modules_customer', '[delete_alert]') . '",
+	nothing_to_delete:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[nothing_to_delete]')) . '",
+	nothing_to_save:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[nothing_to_save]')) . '"
+};
+WE().consts.g_l.customer.admin={
+	del_fild_question:"' . g_l('modules_customer', '[del_fild_question]') . '",
+	reset_edit_order_question:"' . g_l('modules_customer', '[reset_edit_order_question]') . '",
+	other:"' . g_l('modules_customer', '[other]') . '",
+	no_field: "' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[no_field]')) . '",
+	no_branch:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[no_branch]')) . '",
+	branch_no_edit:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[branch_no_edit]')) . '",
+	we_fieldname_notValid:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[we_fieldname_notValid]')) . '"
+};
 
-function usetHot() {
-	hot = "0";
-}
-
-function doUnload() {
-	if (!!jsWindow_count) {
-		for (i = 0; i < jsWindow_count; i++) {
-			eval("jsWindow" + i + "Object.close()");
-		}
-	}
-}
-
-function we_cmd() {
-	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-	if(hot == "1" && arguments[0] != "save_customer") {
-		if(confirm("' . g_l('modules_customer', '[save_changed_customer]') . '")) {
-			arguments[0] = "save_customer";
-		} else {
-			top.content.usetHot();
-		}
-	}
-	switch (arguments[0]) {
-		case "exit_customer":
-			if(hot != "1") {
-				eval(\'top.opener.top.we_cmd("exit_modules")\');
-			}
-			break;
-		case "new_customer":
-			if(' . $this->topFrame . '.editor.edbody.loaded) {
-				' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value = arguments[0];
-				' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value = arguments[1];
-				' . $this->topFrame . '.editor.edbody.submitForm();
-			} else {
-				setTimeout(\'we_cmd("new_customer");\', 10);
-			}
-			break;
-
-		case "delete_customer":
-			if(top.content.editor.edbody.document.we_form.cmd.value=="home") return;
-			' . (!permissionhandler::hasPerm("DELETE_CUSTOMER") ?
-								('
-				' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			') :
-								('
-					if (' . $this->topFrame . '.editor.edbody.loaded) {
-						if (confirm("' . g_l('modules_customer', '[delete_alert]') . '")) {
-							' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
-							' . $this->topFrame . '.editor.edbody.submitForm();
-						}
-					} else {
-						' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-					}
-
-			')) . '
-			break;
-
-		case "save_customer":
-			if(top.content.editor.edbody.document.we_form.cmd.value=="home") return;
-			' . ((!permissionhandler::hasPerm("EDIT_CUSTOMER") && !permissionhandler::hasPerm("NEW_CUSTOMER")) ?
-								('
-				' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			') :
-								('
-
-					if (' . $this->topFrame . '.editor.edbody.loaded) {
-							' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
-							' . $this->topFrame . '.editor.edbody.submitForm();
-					} else {
-						' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-					}
-			')) . '
-			top.content.usetHot();
-			break;
-
-		case "customer_edit":
-			' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
-			' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value=arguments[1];
-			' . $this->topFrame . '.editor.edbody.submitForm();
-		break;
-		case "show_admin":
-		case "show_sort_admin":
-			if(' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=="home") ' . $this->topFrame . '.editor.edbody.document.we_form.home.value="1";
-			' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
-			' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value=arguments[1];
-			' . $this->topFrame . '.editor.edbody.submitForm();
-		break;
-		case "show_search":
-		case "show_customer_settings":
-		case "export_customer":
-		case "import_customer":
-			' . $this->topFrame . '.editor.edbody.we_cmd(arguments[0]);
-		break;
-		case "load":
-			' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&pid="+arguments[1]+"&offset="+arguments[2]+"&sort="+arguments[3];
-		break;
-		default:
-			for (var i = 0; i < arguments.length; i++) {
-				args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
-			}
-			eval("top.opener.top.we_cmd(" + args + ")");
-	}
-}');
+var topFrame=top.content;
+var frameUrl="' . $this->frameset . '";
+') .
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_top.js');
 	}
 
 	function getJSProperty(){
-		return parent::getJSProperty() .
-				we_html_element::jsElement('
+		return we_html_element::jsElement('
 var loaded=0;
-
-function doUnload() {
-	if (!!jsWindow_count) {
-		for (i = 0; i < jsWindow_count; i++) {
-			eval("jsWindow" + i + "Object.close()");
-		}
-	}
-}
-
-function we_cmd() {
-	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-
-	switch (arguments[0]) {
-		case "browse_users":
-			new jsWindow(url,"browse_users",-1,-1,500,300,true,false,true);
-		break;
-		case "openImgselector":
-		case "openDocselector":
-			new jsWindow(url,"we_fileselector",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
-		break;
-		case "switchPage":
-			document.we_form.cmd.value=arguments[0];
-			document.we_form.branch.value=arguments[1];
-			submitForm();
-		break;
-		case "show_search":
-			keyword = top.content.we_form_treefooter.keyword.value;
-			new jsWindow("' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=search&search=1&keyword=" + keyword,"search",-1,-1,650,600,true,true,true,false);
-			break;
-		case "show_customer_settings":
-			new jsWindow("' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=settings","customer_settings",-1,-1,570,270,true,true,true,false);
-			break;
-		case "export_customer":
-			new jsWindow("' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=export","export_customer",-1,-1,640,600,true,true,true,false);
-			break;
-		case "import_customer":
-			new jsWindow("' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=import","import_customer",-1,-1,640,600,true,true,true,false);
-			break;
-		default:
-			for (var i = 0; i < arguments.length; i++) {
-				args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
-			}
-			eval("top.content.we_cmd("+args+")");
-	}
-}
-
-function setMultiSelectData(name,max){
-	var tmp="";
-	for (var i=0; i<max; ++i){
-		var val=document.getElementsByName(name+"_multi_"+i)[0];
-		if(val.checked){
-			tmp+=val.value+",";
-		}
-	}
-	tmp=tmp.substr(0,tmp.length-1);
-	document.getElementsByName(name)[0].value=tmp;
-	top.content.setHot();
-}
-
-function formatDate(date,format){
-
-	var daynum=date.getDate();
-	var day=daynum.toString();
-	if(format.search("d")!=-1)
-		if(daynum<10) day="0"+day;
-
-	format=format.replace("d",day);
-	format=format.replace("j",day);
-
-	var monthnum=date.getMonth()+1;
-	var month=monthnum.toString();
-	if(format.search("m")!=-1)
-		if(monthnum<10) month="0"+month;
-
-	format=format.replace("m",month);
-	format=format.replace("n",month);
-
-	format=format.replace("Y",date.getFullYear());
-	var yearnum=date.getYear();
-	var year=yearnum.toString();
-	format=format.replace("y",year.substr(2,2));
-
-	var hournum=date.getHours();
-	var hour=hournum.toString();
-	if(format.search("H")!=-1)
-		if(hournum<10) hour="0"+hour;
-
-	format=format.replace("H",hour);
-	format=format.replace("G",hour);
-
-	var minnum=date.getMinutes();
-	var min=minnum.toString();
-	if(minnum<10) min="0"+min;
-
-	format=format.replace("i",min);
-
-
-	/*var secnum=date.getSeconds();
-	var sec=secnum.toString();
-	if(secnum<10) sec="0"+sec;*/
-
-	var sec="00";
-
-	format=format.replace("s",sec);
-
-	format=format.replace(/\\\/g,"");
-
-	return format;
-}
 
 function refreshForm(){
 	if(document.we_form.cmd.value!="home"){
-		we_cmd("switchPage",' . $this->topFrame . '.activ_tab);
-		' . $this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Text) . '";
+		we_cmd("switchPage",top.content.activ_tab);
+		top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->customer->Username) . '";
 	}
-}' . $this->getJSSubmitFunction());
-	}
-
-	function getJSSortAdmin(){
-		return we_customer_add::getJSSortAdmin($this);
+}' . $this->getJSSubmitFunction()) .
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_property.js');
 	}
 
 	function getJSAdmin(){
-		return '
-function doUnload() {
-	if (!!jsWindow_count) {
-		for (i = 0; i < jsWindow_count; i++) {
-			eval("jsWindow" + i + "Object.close()");
-		}
-	}
-}
-
-function we_cmd(){
-	var args = "";
-	var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-
-	switch (arguments[0]) {
-		case "open_add_field":
-			var branch=document.we_form.branch.value;
-			url = "' . $this->frameset . '?pnt=field_editor&art=add&branch="+branch;
-			new jsWindow(url,"field_editor",-1,-1,380,250,true,false,true);
-		break;
-		case "open_edit_field":
-			var field=document.we_form.fields_select.value;
-			var branch=document.we_form.branch.value;
-			if(field=="") {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[no_field]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			} else{
-					url = "' . $this->frameset . '?pnt=field_editor&art=edit&field="+field+"&branch="+branch;
-					new jsWindow(url,"field_editor",-1,-1,380,250,true,false,true);
-			}
-		break;
-		case "delete_field":
-			var field=document.we_form.fields_select.value;
-			if(field=="") {
-			 ' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[no_field]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			} else{
-				if(confirm("' . g_l('modules_customer', '[del_fild_question]') . '")){
-					document.we_form.cmd.value=arguments[0];
-					submitForm();
-				}
-			}
-		break;
-		case "reset_edit_order":
-			var field=document.we_form.fields_select.value;
-			var branch=document.we_form.branch.value;
-				if(confirm("' . g_l('modules_customer', '[reset_edit_order_question]') . '")){
-					document.we_form.cmd.value=arguments[0];
-					submitForm();
-				}
-		break;
-		case "move_field_up":
-			var field=document.we_form.fields_select.value;
-			var branch=document.we_form.branch.value;
-			if(field=="") {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[no_field]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			} else{
-					document.we_form.cmd.value=arguments[0];
-					submitForm();
-			}
-		break;
-		case "move_field_down":
-			var field=document.we_form.fields_select.value;
-			var branch=document.we_form.branch.value;
-			if(field=="") {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[no_field]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			} else{
-					document.we_form.cmd.value=arguments[0];
-					submitForm();
-			}
-		break;
-		case "open_edit_branch":
-			var branch=document.we_form.branch_select.options[document.we_form.branch_select.selectedIndex].text;
-			if(branch=="") {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[no_branch]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			} else if(branch=="' . g_l('modules_customer', '[other]') . '") {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[branch_no_edit]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			} else{
-					url = "' . $this->frameset . '?pnt=branch_editor&art=edit&&branch="+branch;
-					new jsWindow(url,"field_editor",-1,-1,380,250,true,false,true);
-			}
-		break;
-		case "save_branch":
-		case "save_field":
-			var field_name=document.we_form.name.value;
-			if(field_name=="" || field_name.match(/[^a-zA-Z0-9\_]/)!=null){
-				' . we_message_reporting::getShowMessageCall(g_l('modules_customer', '[we_fieldname_notValid]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			}
-			else{
-				document.we_form.cmd.value=arguments[0];
-				submitForm("field_editor");
-			}
-		break;
-		default:
-			for (var i = 0; i < arguments.length; i++) {
-				args += \'arguments[\'+i+\']\' + ((i < (arguments.length-1)) ? \',\' : \'\');
-			}
-			eval(\'top.content.we_cmd(\'+args+\')\');
-	}
-}
-
-function selectBranch(){
-	var f=document.we_form;
-	var txt=f.branch;
-	var sel=f.branch_select.options[f.branch_select.selectedIndex].text;
-
-	f.cmd.value="switchBranch";
-	txt.value=sel;
-	submitForm();
-
-}
-
-function saveField(){
-	document.we_form.cmd.value="save_field";
-	submitForm();
-}' .
-				$this->getJSSubmitFunction("customer_admin");
+		return we_html_element::jsElement('
+var frameUrl="' . $this->frameset . '";
+' . $this->getJSSubmitFunction("customer_admin")
+			) .
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_admin.js');
 	}
 
 	function getJSTreeHeader(){
-		return '
-function applySort(){
-	document.we_form_treeheader.pnt.value="cmd";
-	document.we_form_treeheader.cmd.value="applySort";
-	submitForm("", "", "", "we_form_treeheader");
-}
-
-function addSorting(sortname) {
-	var found=false;
-	len = document.we_form_treeheader.sort.options.length;
-	for(i=0;i<len;i++) {
-		if(document.we_form_treeheader.sort.options[i].value==sortname){
-			found = true;
-		}
-	}
-	if(!found){
-		document.we_form_treeheader.sort.options[len] = new Option(sortname,sortname);
-	}
-
-}
-
-/*
-//obsolete after removing treeheader frame
-function doUnload() {
-	if (!!jsWindow_count) {
-		for (i = 0; i < jsWindow_count; i++) {
-			eval("jsWindow" + i + "Object.close()");
-		}
-	}
-}
-*/
-
-/*
-//this function was used to loop treeheader.we_cmd() to content.we_cmd: obsolete, because all treeheader-JS was moved to content
-function we_cmd(){
-	var args = "";
-	var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-	switch (arguments[0]) {
-		default:
-			for (var i = 0; i < arguments.length; i++) {
-				args += \'arguments[\'+i+\']\' + ((i < (arguments.length-1)) ? \',\' : \'\');
-			}
-			eval(\'top.content.we_cmd(\'+args+\')\')//da;
-	}
-}
-*/' .
-				$this->getJSSubmitFunction('cmd', 'post', 'we_form_treeheader');
+		return we_html_element::jsElement($this->getJSSubmitFunction('cmd', 'post', 'we_form_treeheader')) .
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_treeHeader.js');
 	}
 
 	function getJSSearch(){
-		return we_customer_add::getJSSearch($this);
+		return we_html_element::jsElement('
+var frames={
+	"set":"' . $this->frameset . '"
+};
+' .
+				$this->getJSSubmitFunction("search")
+			) .
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_search.js');
 	}
 
 	function getJSSettings(){
 		return '
 function doUnload() {
-	if (!!jsWindow_count) {
-		for (i = 0; i < jsWindow_count; i++) {
-			eval("jsWindow" + i + "Object.close()");
-		}
-	}
+	WE().util.jsWindow.prototype.closeAll(window);
 }
 
 function we_cmd(){
-	var args = "";
-	var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = "' . $this->frameset . '?";
+	for(var i = 0; i < arguments.length; i++){
+		url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+		if(i < (arguments.length - 1)){
+			url += "&";
+		}
+	}
 	switch (arguments[0]) {
 		case "save_settings":
 			document.we_form.cmd.value=arguments[0];
@@ -493,9 +143,7 @@ function we_cmd(){
 		break;
 		default:
 	}
-}
-
-self.focus();' . $this->getJSSubmitFunction("customer_settings");
+}' . $this->getJSSubmitFunction("customer_settings");
 	}
 
 	/* use parent
@@ -508,15 +156,15 @@ self.focus();' . $this->getJSSubmitFunction("customer_settings");
 				$this->customer = new we_customer_customer();
 				$this->settings->initCustomerWithDefaults($this->customer);
 				echo we_html_element::jsElement(
-						$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Text) . '";' .
-						$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
+					'top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->customer->Username) . '";' .
+					'top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";'
 				);
 				break;
 			case 'customer_edit':
 				$this->customer = new we_customer_customer(we_base_request::_(we_base_request::INT, "cmdid"));
 				echo we_html_element::jsElement(
-						$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Text) . '";' .
-						$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
+					'top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->customer->Username) . '";' .
+					'top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";'
 				);
 				break;
 			case 'save_customer':
@@ -532,15 +180,12 @@ self.focus();' . $this->getJSSubmitFunction("customer_settings");
 					break;
 				}
 
-				$newone = true;
-				if($this->customer->ID){
-					$newone = false;
-				}
+				$newone = ($this->customer->ID ? false : true);
 
 				$exists = f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $this->db->escape($this->customer->Username) . '"' . ($newone ? '' : ' AND ID!=' . $this->customer->ID), '', $this->db);
 				if($exists){
 					echo we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[username_exists]'), $this->customer->Username), we_message_reporting::WE_MESSAGE_ERROR)
+						we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[username_exists]'), $this->customer->Username), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					break;
 				}
@@ -552,31 +197,30 @@ self.focus();' . $this->getJSSubmitFunction("customer_settings");
 				$saveOk = $this->customer->save();
 
 				if($saveOk){
-					$tt = addslashes(f('SELECT ' . $this->settings->treeTextFormatSQL . ' AS treeFormat FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($this->customer->ID), '', $this->db));
-					if($newone){
-						$js = '
-var attribs = new Array();
-attribs["icon"]="' . $this->customer->Icon . '";
-attribs["id"]="' . $this->customer->ID . '";
-attribs["typ"]="item";
-attribs["parentid"]="0";
-attribs["text"]="' . $tt . '";
-attribs["disable"]="0";
-attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Surname != "") ? $this->customer->Forename . "&nbsp;" . $this->customer->Surname : "") . '";' .
-								$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));';
-						$js .= $this->topFrame . '.applySort();';
-					} else {
-						$js = $this->topFrame . '.updateEntry(' . $this->customer->ID . ',"' . $tt . '");' . "\n";
-					}
+					$tt = strtr(addslashes(f('SELECT ' . $this->settings->treeTextFormatSQL . ' AS treeFormat FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($this->customer->ID), '', $this->db)), array('>' => '&gt;', '<' => '&lt;'));
+					$js = ($newone ? '
+var attribs = {
+	id:"' . $this->customer->ID . '",
+	typ:"item",
+	parentid:"0",
+	text:"' . $tt . '",
+	disable:"0",
+	tooltip:"' . (($this->customer->Forename != "" || $this->customer->Surname != "") ? $this->customer->Forename . "&nbsp;" . $this->customer->Surname : "") . '"
+}
+top.content.treeData.addSort(new top.content.node(attribs));
+top.content.applySort();' :
+							'top.content.treeData.updateEntry({id:' . $this->customer->ID . ',text:"' . $tt . '"});
+							top.content.editor.edheader.document.getElementById("titlePath").innerText="' . $this->customer->Username . '";'
+						);
 				} else {
 					$js = '';
 				}
 
 				echo we_html_element::jsElement(
-						$js . ($saveOk ?
-								we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[customer_saved_ok]'), addslashes($this->customer->Text)), we_message_reporting::WE_MESSAGE_NOTICE) :
-								we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[customer_saved_nok]'), addslashes($this->customer->Text)), we_message_reporting::WE_MESSAGE_ERROR)
-						)
+					$js . ($saveOk ?
+						we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[customer_saved_ok]'), addslashes($this->customer->Username)), we_message_reporting::WE_MESSAGE_NOTICE) :
+						we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[customer_saved_nok]'), addslashes($this->customer->Username)), we_message_reporting::WE_MESSAGE_ERROR)
+					)
 				);
 				break;
 			case 'delete_customer':
@@ -585,33 +229,32 @@ attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Su
 				$this->customer = new we_customer_customer();
 
 				echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('modules_customer', '[customer_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE) .
-						$this->topFrame . '.deleteEntry("' . $oldid . '"); ' .
-						$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?home=1&pnt=edheader"; ' .
-						$this->topFrame . '.editor.edbody.location="' . $this->frameset . '?home=1&pnt=edbody"; ' .
-						$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?home=1&pnt=edfooter";'
+					we_message_reporting::getShowMessageCall(g_l('modules_customer', '[customer_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE) .
+					'top.content.treeData.deleteEntry("' . $oldid . '");
+top.content.editor.edheader.location="' . $this->frameset . '?home=1&pnt=edheader";
+top.content.editor.edbody.location="' . $this->frameset . '?home=1&pnt=edbody"
+top.content.editor.edfooter.location="' . $this->frameset . '?home=1&pnt=edfooter";'
 				);
 
 				break;
 			case 'switchPage':
-
 				break;
-
 			case 'show_admin':
-				echo we_html_element::jsScript(JS_DIR . "windows.js") .
+				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 				we_html_element::jsElement('
-						url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=customer_admin";
-						new jsWindow(url,"customer_admin",-1,-1,600,420,true,true,true,false);
-					');
+url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=customer_admin";
+new (WE().util.jsWindow)(window, url,"customer_admin",-1,-1,600,420,true,true,true,false);');
 				break;
 			case 'save_field':
 				$branch = we_base_request::_(we_base_request::STRING, 'branch');
 				$field = we_base_request::_(we_base_request::STRING, 'field');
 				$field_name = we_base_request::_(we_base_request::STRING, 'name');
 				$field_type = we_base_request::_(we_base_request::STRING, 'field_type');
-				$field_default = we_base_request::_(we_base_request::STRINGC, 'field_default');
+				$field_default = we_base_request::_(we_base_request::STRING, 'field_default');
+				$field_encrypt = we_base_request::_(we_base_request::BOOL, 'field_encrypt');
 
-				$saveret = $this->saveField($field, $branch, $field_name, $field_type, $field_default);
+
+				$saveret = $this->saveField($field, $branch, $field_name, $field_type, $field_default, $field_encrypt);
 
 				switch($saveret){
 					case self::ERR_SAVE_BRANCH:
@@ -635,8 +278,6 @@ attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Su
 						$sortarray = makeArrayFromCSV($sort);
 						$orderedarray = $this->customer->persistent_slots;
 
-						$cs = count($sortarray);
-						$co = count($orderedarray);
 						if(count($sortarray) != count($orderedarray)){
 							if(count($sortarray) < count($orderedarray)){
 								$sortarray[] = max($sortarray) + 1;
@@ -651,13 +292,13 @@ attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Su
 								$sortarray = range(0, count($orderedarray) - 1);
 							}
 						}
-						$this->settings->setEditSort(makeCSVFromArray($sortarray, true));
+						$this->settings->setEditSort(implode(',', $sortarray));
 						$this->settings->save();
 
 						$js = '
-							opener.submitForm();
-							opener.opener.refreshForm();
-							close();';
+opener.submitForm();
+opener.opener.refreshForm();
+close();';
 				}
 				echo we_html_element::jsElement($js);
 
@@ -684,7 +325,7 @@ attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Su
 				if($sortarray[count($sortarray) - 1] == ''){
 					array_pop($sortarray);
 				}
-				$this->settings->setEditSort(makeCSVFromArray($sortarray, true));
+				$this->settings->setEditSort(implode(',', $sortarray));
 				$this->settings->save();
 
 				$ber = '';
@@ -694,14 +335,14 @@ attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Su
 
 				$this->customer->loadPresistents();
 				echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[field_deleted]'), $fname, $ber), we_message_reporting::WE_MESSAGE_NOTICE) .
-						'opener.refreshForm();'
+					we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[field_deleted]'), $fname, $ber), we_message_reporting::WE_MESSAGE_NOTICE) .
+					'opener.refreshForm();'
 				);
 				break;
 			case 'reset_edit_order':
 				$orderedarray = $this->customer->persistent_slots;
 				$sortarray = range(0, count($orderedarray) - 1);
-				$this->settings->setEditSort(makeCSVFromArray($sortarray, true));
+				$this->settings->setEditSort(implode(',', $sortarray));
 				$this->settings->save();
 				break;
 			case 'move_field_up':
@@ -767,7 +408,7 @@ attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Su
 
 				if($branch_new == g_l('modules_customer', '[common]') || $branch_new == g_l('modules_customer', '[other]') || $branch_new == g_l('modules_customer', '[all]')){
 					echo we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('modules_customer', '[branch_no_edit]'), we_message_reporting::WE_MESSAGE_ERROR)
+						we_message_reporting::getShowMessageCall(g_l('modules_customer', '[branch_no_edit]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					return;
 				}
@@ -777,7 +418,7 @@ attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Su
 
 					if(in_array($branch_new, $arr)){
 						echo we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(g_l('modules_customer', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR)
+							we_message_reporting::getShowMessageCall(g_l('modules_customer', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR)
 						);
 						return;
 					}
@@ -785,7 +426,7 @@ attribs["tooltip"]="' . (($this->customer->Forename != "" || $this->customer->Su
 
 				if($this->saveBranch($branch_old, $branch_new) == -5){
 					echo we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[cannot_save_property]'), $field), we_message_reporting::WE_MESSAGE_ERROR)
+						we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[cannot_save_property]'), $field), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 				} else {
 					$this->customer->loadPresistents();
@@ -799,9 +440,9 @@ close();');
 
 				break;
 			case 'show_sort_admin':
-				echo we_html_element::jsScript(JS_DIR . 'windows.js') .
-				we_html_element::jsElement('url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=sort_admin";
-new jsWindow(url,"sort_admin",-1,-1,750,500,true,true,true,true);');
+				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
+				we_html_element::jsElement('url =WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=sort_admin";
+new (WE().util.jsWindow)(window, url,"sort_admin",-1,-1,750,500,true,true,true,true);');
 
 				break;
 			case 'add_sort':
@@ -829,7 +470,7 @@ new jsWindow(url,"sort_admin",-1,-1,750,500,true,true,true,true);');
 				break;
 			case 'del_sort_field':
 				if(($i = we_base_request::_(we_base_request::STRING, 'sortindex')) !== false &&
-						($j = we_base_request::_(we_base_request::INT, 'fieldindex')) !== false){
+					($j = we_base_request::_(we_base_request::INT, 'fieldindex')) !== false){
 
 					unset($this->settings->SortView[$i][$j]);
 				}
@@ -837,52 +478,52 @@ new jsWindow(url,"sort_admin",-1,-1,750,500,true,true,true,true);');
 			case 'save_sort':
 
 				$this->settings->save();
-				$_sorting = 'opener.' . $this->topFrame . '.addSorting("' . g_l('modules_customer', '[no_sort]') . '");' . "\n";
+				$_sorting = 'opener.top.content.addSorting("' . g_l('modules_customer', '[no_sort]') . '");' . "\n";
 				foreach(array_keys($this->settings->SortView) as $_sort){
-					$_sorting .= 'opener.' . $this->topFrame . '.addSorting("' . $_sort . '");' . "\n";
+					$_sorting .= 'opener.top.content.addSorting("' . $_sort . '");' . "\n";
 				}
 
-				echo we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
+				echo we_html_element::jsScript(JS_DIR . "global.js", 'initWE();') .
 				we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_customer', '[sort_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-var selected = opener.' . $this->topFrame . '.document.we_form_treeheader.sort.selectedIndex;
-opener.' . $this->topFrame . '.document.we_form_treeheader.sort.options.length=0;
+var selected = opener.top.content.document.we_form_treeheader.sort.selectedIndex;
+opener.top.content.document.we_form_treeheader.sort.options.length=0;
 ' . $_sorting . '
 
-if(selected<opener.' . $this->topFrame . '.document.we_form_treeheader.sort.options.length){
-	opener.' . $this->topFrame . '.document.we_form_treeheader.sort.selectedIndex = selected;
+if(selected<opener.top.content.document.we_form_treeheader.sort.options.length){
+	opener.top.content.document.we_form_treeheader.sort.selectedIndex = selected;
 } else {
-	opener.' . $this->topFrame . '.document.we_form_treeheader.sort.selectedIndex = opener.' . $this->topFrame . '.document.we_form_treeheader.sort.options.length-1;
+	opener.top.content.document.we_form_treeheader.sort.selectedIndex = opener.top.content.document.we_form_treeheader.sort.options.length-1;
 }
 
-opener.' . $this->topFrame . '.applySort();
+opener.top.content.applySort();
 self.close();');
 				break;
 			case 'applySort':
-				echo we_html_element::jsElement($this->topFrame . '.clearTree();');
+				echo we_html_element::jsElement('top.content.treeData.clear();');
 				break;
 			case 'show_search':
-				echo we_html_element::jsScript(JS_DIR . "windows.js") .
-				we_html_element::jsElement('url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=search&search=1&keyword=' . we_base_request::_(we_base_request::STRINGC, "keyword") . '";
-						new jsWindow(url,"search",-1,-1,650,600,true,true,true,false);');
+				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
+				we_html_element::jsElement('url =WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=search&search=1&keyword=' . we_base_request::_(we_base_request::STRING, "keyword") . '";
+						new (WE().util.jsWindow)(window, url,"search",-1,-1,650,600,true,true,true,false);');
 				break;
 			case 'show_customer_settings':
-				echo we_html_element::jsScript(JS_DIR . "windows.js") .
-				we_html_element::jsElement('url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=settings";
-						new jsWindow(url,"customer_settings",-1,-1,550,250,true,true,true,false);');
+				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
+				we_html_element::jsElement('url =WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=settings";
+						new (WE().util.jsWindow)(window, url,"customer_settings",-1,-1,550,250,true,true,true,false);');
 				break;
 			case 'import_customer':
-				echo we_html_element::jsScript(JS_DIR . "windows.js") .
-				we_html_element::jsElement('url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=import";
-						new jsWindow(url,"import_customer",-1,-1,640,600,true,true,true,false);');
+				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
+				we_html_element::jsElement('url =WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=import";
+						new (WE().util.jsWindow)(window, url,"import_customer",-1,-1,640,600,true,true,true,false);');
 				break;
 			case 'export_customer':
-				echo we_html_element::jsScript(JS_DIR . "windows.js") .
-				we_html_element::jsElement('url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=export";
-						new jsWindow(url,"export_customer",-1,-1,640,600,true,true,true,false);');
+				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
+				we_html_element::jsElement('url =WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=export";
+						new (WE().util.jsWindow)(window, url,"export_customer",-1,-1,640,600,true,true,true,false);');
 				break;
 			case 'save_settings':
 				foreach($this->settings->getAllSettings() as $k => $v){
-					$set = we_base_request::_(we_base_request::STRINGC, $k);
+					$set = we_base_request::_(we_base_request::STRING, $k);
 					if($set !== false){
 						$this->settings->setSettings($k, $set);
 					}
@@ -893,11 +534,11 @@ self.close();');
 						$this->settings->properties[$k] = $set;
 					}
 				}
-				echo we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
+				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 				we_html_element::jsElement(
-						$this->settings->save() ?
-								we_message_reporting::getShowMessageCall(g_l('modules_customer', '[settings_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) . 'self.close();' :
-								we_message_reporting::getShowMessageCall(g_l('modules_customer', '[settings_not_saved]'), we_message_reporting::WE_MESSAGE_NOTICE)
+					$this->settings->save() ?
+						we_message_reporting::getShowMessageCall(g_l('modules_customer', '[settings_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) . 'self.close();' :
+						we_message_reporting::getShowMessageCall(g_l('modules_customer', '[settings_not_saved]'), we_message_reporting::WE_MESSAGE_NOTICE)
 				);
 				break;
 			default:
@@ -917,31 +558,36 @@ self.close();');
 		}
 		we_base_util::convertDateInRequest($_REQUEST);
 		if(is_array($this->customer->persistent_slots)){
-			foreach($this->customer->persistent_slots as $val){
-				$varname = $val;
+			foreach($this->customer->persistent_slots as $varname){
 				switch($varname){
 					case 'LoginDenied':
 						if(we_base_request::_(we_base_request::BOOL, 'LoginDenied')){
 							$this->customer->LoginDenied = 1;
-						} elseif(we_base_request::_(we_base_request::STRINGC, 'Username')){
+						} elseif(we_base_request::_(we_base_request::STRING, 'Username')){
 							$this->customer->LoginDenied = 0;
 						}
 						break;
 					case 'Password':
-						$pw = we_base_request::_(we_base_request::RAW, 'Password');
+						$pw = we_base_request::_(we_base_request::RAW_CHECKED, 'Password');
 						if($pw && $pw != we_customer_customer::NOPWD_CHANGE){//keep old pwd
 							$this->customer->Password = we_customer_customer::cryptPassword($pw);
 						}
 						break;
 					default:
-						if(($v = we_base_request::_(we_base_request::STRINGC, $varname)) !== false){
-							$this->customer->{$val} = $v;
+						if(($v = we_base_request::_(we_base_request::STRING, $varname)) !== false){
+							$isEncField = $this->settings->retriveFieldAdd($varname, 'encrypt');
+							if($isEncField){
+								if($v != we_customer_customer::ENCRYPTED_DATA){
+									//fixme: should we store bin data??
+									$this->customer->{$varname} = we_customer_customer::cryptData($v, SECURITY_ENCRYPTION_KEY, false);
+								}
+							} else {
+								$this->customer->{$varname} = $v;
+							}
 						}
 				}
 			}
 		}
-
-
 		if(we_base_request::_(we_base_request::STRING, 'pnt') === 'sort_admin'){
 			$counter = we_base_request::_(we_base_request::INT, 'counter');
 
@@ -949,8 +595,8 @@ self.close();');
 				$this->settings->SortView = array();
 
 				for($i = 0; $i < $counter; $i++){
-					$sort_name = we_base_request::_(we_base_request::STRING, 'sort_' . $i);
-					$sort_name = $sort_name ? : g_l('modules_customer', '[sort_name]') . '_' . $i;
+					$sort_name = we_base_request::_(we_base_request::STRING, 'sort_' . $i)? :
+						g_l('modules_customer', '[sort_name]') . '_' . $i;
 
 
 					$fcounter = we_base_request::_(we_base_request::INT, 'fcounter_' . $i, 1);
@@ -965,8 +611,8 @@ self.close();');
 						}
 						if(($field = we_base_request::_(we_base_request::STRING, 'field_' . $i . '_' . $j))){
 							$new['field'] = ($new['branch'] == g_l('modules_customer', '[common]') ?
-											str_replace(g_l('modules_customer', '[common]') . '_', '', $field) :
-											$field);
+									str_replace(g_l('modules_customer', '[common]') . '_', '', $field) :
+									$field);
 						}
 						if(($func = we_base_request::_(we_base_request::STRING, 'function_' . $i . '_' . $j))){
 							$new['function'] = $func;
@@ -982,20 +628,21 @@ self.close();');
 	}
 
 	function getFieldProperties($field){
-		$ret = array();
-
-		//if(preg_match(g_l('modules_customer','[other]'),$field)) $field=str_replace(g_l('modules_customer','[other]')."_","",$field);
+		$ret = array(
+			'encrypt' => $this->settings->retriveFieldAdd($field, 'encrypt'),
+			'default' => $this->settings->retriveFieldAdd($field, 'default', '')
+		);
 
 		$props = $this->customer->getFieldDbProperties($field);
 
 		if(isset($props['Field'])){
+			$branch = '';
 			$ret['name'] = $this->customer->transFieldName($props['Field'], $branch);
 		}
 		if(isset($props['Type'])){
 			$ret['type'] = $this->settings->getFieldType($props['Field']);
 		}
 
-		$ret['default'] = (isset($this->settings->FieldAdds[$field]['default']) ? $this->settings->FieldAdds[$field]['default'] : '');
 
 		return $ret;
 	}
@@ -1005,7 +652,7 @@ self.close();');
 	// field_name - field name without branch name
 	// field_default - predefined values
 
-	function saveField($field, $branch, $field_name, $field_type, $field_default){
+	function saveField($field, $branch, $field_name, $field_type, $field_default, $encrypt){
 		if($branch == g_l('modules_customer', '[common]')){
 			return self::ERR_SAVE_BRANCH;
 		}
@@ -1029,10 +676,11 @@ self.close();');
 			return self::ERR_SAVE_FIELD_EXISTS;
 		}
 
-		if($this->customer->isProperty($field) || $this->customer->isProtected($field) || $this->customer->isProperty($new_field_name) || $this->customer->isProtected($new_field_name)){
-			return self::ERR_SAVE_PROPERTY;
-		}
-		if($branch == g_l('modules_customer', '[other]') && $this->settings->isReserved($new_field_name)){
+		if($this->customer->isProperty($field) ||
+			$this->customer->isProtected($field) ||
+			$this->customer->isProperty($new_field_name) ||
+			$this->customer->isProtected($new_field_name) ||
+			($branch == g_l('modules_customer', '[other]') && $this->settings->isReserved($new_field_name))){
 			return self::ERR_SAVE_PROPERTY;
 		}
 
@@ -1041,8 +689,9 @@ self.close();');
 		}
 		$this->settings->storeFieldAdd($new_field_name, 'default', $field_default);
 		$this->settings->storeFieldAdd($new_field_name, 'type', $field_type);
+		$this->settings->storeFieldAdd($new_field_name, 'encrypt', $encrypt);
 
-		$this->db->query('ALTER TABLE ' . CUSTOMER_TABLE . ' ' . ((count($h)) ? 'CHANGE ' . $field : 'ADD') . ' ' . $new_field_name . ' ' . $this->settings->getDbType($field_type, $new_field_name) . ' NOT NULL');
+		$this->db->query('ALTER TABLE ' . CUSTOMER_TABLE . ' ' . ((count($h)) ? 'CHANGE ' . $field : 'ADD') . ' ' . $new_field_name . ' ' . ($encrypt ? 'BLOB' : $this->settings->getDbType($field_type, $new_field_name)) . ' NOT NULL');
 
 		$this->settings->save();
 	}
@@ -1116,13 +765,13 @@ self.close();');
 					}
 				}
 				$condition.=($condition ?
-								' ' . $ak . ' (' . implode(' OR ', $conditionarr) . ')' :
-								' (' . implode(' OR ', $conditionarr) . ')'
-						);
+						' ' . $ak . ' (' . implode(' OR ', $conditionarr) . ')' :
+						' (' . implode(' OR ', $conditionarr) . ')'
+					);
 			}
 		}
 
-		$this->db->query('SELECT ID, CONCAT(Username, " (",Forename," ",Surname,")") AS user FROM ' . $this->db->escape($this->customer->table) . ($condition ? ' WHERE ' . $condition : '') . ' ORDER BY Username' . " LIMIT 0,$res_num");
+		$this->db->query('SELECT ID,CONCAT(Username, " (",Forename," ",Surname,")") AS user FROM ' . $this->db->escape($this->customer->table) . ($condition ? ' WHERE ' . $condition : '') . ' ORDER BY Username' . " LIMIT 0,$res_num");
 		return array_map('oldHtmlspecialchars', $this->db->getAllFirst(false));
 	}
 
@@ -1162,25 +811,27 @@ self.close();');
 		return $sort;
 	}
 
-	function getHTMLFieldControl($field, $value = null){ //Code used, when data is in session, not intial/DB
+	function getHTMLFieldControl($field, $value = null, $isEncrypted = false){ //Code used, when data is in session, not intial/DB
 		$props = $this->getFieldProperties($field);
-
+		$hasEncContent = $isEncrypted && $value;
 		switch($props['type']){
 			case 'input':
-				return we_html_tools::htmlTextInput($field, 32, $value, '', "onchange=\"top.content.setHot();\" style='width:240px;'");
+				return we_html_tools::htmlTextInput($field, 32, ($hasEncContent ? we_customer_customer::ENCRYPTED_DATA : $value), '', "onchange=\"top.content.setHot();\" style='width:240px;'");
+			case 'textarea':
+				return we_html_element::htmlTextArea(array("name" => $field, "style" => "width:240px;", "class" => "wetextarea"), ($hasEncContent ? we_customer_customer::ENCRYPTED_DATA : $value));
 			case 'number':
 				return we_html_tools::htmlTextInput($field, 32, intval($value), '', "onchange=\"top.content.setHot();\" style='width:240px;'", 'number');
 			case 'multiselect':
 				if(!$this->customer->ID && $value == null){
 					$value = $props['default'];
 				}
-				$out = we_html_element::htmlHidden(array('name' => $field, 'value' => $value));
+				$out = we_html_element::htmlHidden($field, $value);
 				$values = explode(',', $value);
 				$defs = explode(',', $props['default']);
 				$cnt = count($defs);
 				$i = 0;
 				foreach($defs as $def){
-					$attribs = array('type' => 'checkbox', 'name' => $field . '_multi_' . ($i++), 'value' => $def, (we_base_browserDetect::isIE() ? 'onclick' : 'onchange') => 'setMultiSelectData(\'' . $field . '\',' . $cnt . ');');
+					$attribs = array('type' => 'checkbox', 'name' => $field . '_multi_' . ($i++), 'value' => $def, 'onclick' => 'setMultiSelectData(\'' . $field . '\',' . $cnt . ');');
 					if(in_array($def, $values)){
 						$attribs['checked'] = 'checked';
 					}
@@ -1196,16 +847,13 @@ self.close();');
 
 				$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
 
-				if(!Zend_Locale::hasCache()){
-					Zend_Locale::setCache(getWEZendCache());
-				}
 				foreach($topCountries as $countrykey => &$countryvalue){
-					$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+					$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
 				}
 				unset($countryvalue);
 				$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
 				foreach($shownCountries as $countrykey => &$countryvalue){
-					$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+					$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
 				}
 				unset($countryvalue);
 				$oldLocale = setlocale(LC_ALL, NULL);
@@ -1267,49 +915,126 @@ self.close();');
 				}
 				$select->selectOption($value);
 				return $select->getHtml();
-			case 'textarea':
-				return we_html_element::htmlTextArea(array("name" => $field, "style" => "width:240px;", "class" => "wetextarea"), $value);
 			case 'date':
 				$date_format = DATE_ONLY_FORMAT;
 				$format = g_l('weEditorInfo', '[date_only_format]');
 			case 'dateTime':
-				//$out = we_html_element::htmlHidden(array('name' => $field, 'value' => $value));
+				//$out = rray('name' => $field, 'value' => $value));
 				try{
 					$value = $value && $value != '0000-00-00' ? new DateTime($value /* ? $value : $this->settings->getSettings('start_year') . '-01-01' */) : 0;
-				}catch(Exception $e){
+				} catch (Exception $e){
 					$value = 0;
 				}
 				$date_format = (isset($date_format) ? $date_format : DATE_FORMAT);
 
 				$format = (isset($format) ? $format : g_l('weEditorInfo', '[date_format]'));
 
-				return we_html_tools::getDateInput2('we_date_' . $field . '%s', $value, false, $format, '', "weSelect", false, $this->settings->getSettings('start_year')) .
-						we_html_tools::getPixel(5, 5);
+				return we_html_tools::getDateInput2('we_date_' . $field . '%s', $value, false, $format, '', "weSelect", false, $this->settings->getSettings('start_year'));
 			case 'password':
 				return we_html_tools::htmlTextInput($field, 32, $value, 32, 'onchange="top.content.setHot();" style="width:240px;" autocomplete="off" ', 'password');
 			case 'img':
-				$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $field . "'].value");
+				$cmd1 = "document.we_form.elements['" . $field . "'].value";
 				$wecmdenc3 = we_base_request::encCmd("opener.refreshForm()");
 				$imgId = intval($value);
 				$img = new we_imageDocument();
 
 				$img->initByID($imgId, FILE_TABLE);
 				return '
-<table cellpadding="2" cellspacing="2" style="border: solid #006DB8 1px;background-image:url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);">
+<table class="weEditTable">
 	<tr>
-		<td class="weEditmodeStyle" colspan="2" align="center">' . $img->getHtml() . '
-			<input type="hidden" name="' . $field . '" value="' . $imgId . '" /></td>
+		<td class="weEditmodeStyle" colspan="2" style="text-align:center">' . $img->getHtml() . we_html_element::htmlHidden($field, $imgId) . '</td>
 	</tr>
 	<tr>
-		<td class="weEditmodeStyle" colspan="2" align="center">' .
-						we_html_button::create_button_table(array(we_html_button::create_button('image:btn_select_image', "javascript:we_cmd('openDocselector', '" . $imgId . "', '" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','', '', '" . we_base_ContentTypes::IMAGE . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true), we_html_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['" . $field . "'].value='';refreshForm();", true)), 5) .
-						'</td>
+		<td class="weEditmodeStyle" colspan="2" style="text-align:center">' .
+					we_html_button::create_button('fa:btn_select_image,fa-lg fa-exchange,fa-lg fa-file-image-o', "javascript:we_cmd('we_selector_image', '" . $imgId . "', '" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','','" . $wecmdenc3 . "','', '', '" . we_base_ContentTypes::IMAGE . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true) . we_html_button::create_button(we_html_button::TRASH, "javascript:" . $cmd1 . "='';refreshForm();", true) .
+					'</td>
 	</tr>
 </table>';
 			default:
 				return we_html_tools::htmlTextInput($field, 32, $value, '', "onchange=\"top.content.setHot();\" style='width:240px;'");
 		}
 		return null;
+	}
+
+	private function getCommonTable(array $common, $isAll){
+		$table = new we_html_table(array('width' => 500, 'height' => 50, 'class' => 'customer'), 1, 2);
+		$c = 0;
+		$table->setRow(0, array('style' => 'vertical-align:top'));
+		foreach($common as $pk => $pv){
+			if($this->customer->isInfoDate($pk)){
+				$pv = ($pv == '' || !is_numeric($pv)) ? 0 : $pv;
+				$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(($pv ? we_html_element::htmlDiv(array('class' => 'defaultgray'), date(g_l('weEditorInfo', '[date_format]'), $pv)) : '-' . we_html_tools::getPixel(100, 5)), $this->settings->getPropertyTitle($pk)));
+			} else {
+				switch($pk){
+					case 'ID':
+						$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(($pv ? we_html_element::htmlDiv(array('class' => 'defaultgray'), $pv) : '-' . we_html_tools::getPixel(100, 5)), $this->settings->getPropertyTitle($pk)));
+						++$c;
+						$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), '');
+						break;
+					case 'LoginDenied':
+						$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray'), we_html_forms::checkbox(1, $pv, 'LoginDenied', g_l('modules_customer', '[login_denied]'), false, 'defaultfont', 'top.content.setHot();')), $this->settings->getPropertyTitle($pk)));
+						break;
+					case 'AutoLoginDenied':
+						$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray'), we_html_forms::checkbox(1, $pv, 'AutoLoginDenied', g_l('modules_customer', '[login_denied]'), false, 'defaultfont', 'top.content.setHot();')), $this->settings->getPropertyTitle($pk)));
+						break;
+					case 'AutoLogin':
+						$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray'), we_html_forms::checkbox(1, $pv, 'AutoLogin', g_l('modules_customer', '[autologin_request]'), false, 'defaultfont', 'top.content.setHot();')), $this->settings->getPropertyTitle($pk)));
+						break;
+					case 'Password':
+						$table->setCol($c / 2, $c % 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, ($this->customer->ID ? we_customer_customer::NOPWD_CHANGE : ''), '', 'onchange="top.content.setHot();" autocomplete="off" ', 'password', "240px"), $this->settings->getPropertyTitle($pk)));
+						break;
+					case 'Username':
+						$inputattribs = ' id="yuiAcInputPathName" onblur="parent.edheader.weTabs.setTitlePath(this.value);"';
+						$table->setCol($c / 2, $c % 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, $pv, '', 'onchange="top.content.setHot();" ' . $inputattribs, "text", "240px"), $this->settings->getPropertyTitle($pk)));
+						break;
+					case 'failedLogins':
+						$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray', 'id' => 'FailedCustomerLogins'), intval($common['failedLogins']) . ' / ' . SECURITY_LIMIT_CUSTOMER_NAME), sprintf(g_l('modules_customer', '[failedLogins]'), SECURITY_LIMIT_CUSTOMER_NAME_HOURS)));
+						break;
+					case 'resetFailed':
+						$but = we_html_button::create_button('reset', 'javascript:resetLogins(' . $this->customer->ID . ')');
+						$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray'), $but), ''));
+						break;
+					default:
+						$inputattribs = '';
+						$table->setCol($c / 2, $c % 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, $pv, '', "onchange=\"top.content.setHot();\" " . $inputattribs, "text", "240px"), $this->settings->getPropertyTitle($pk)));
+				}
+			}
+			if(++$c % 2 == 0){
+				$table->addRow();
+				$table->setRow($c / 2, array('style' => 'vertical-align:top'));
+			}
+		}
+		return array(
+			'headline' => g_l('modules_customer', ($isAll ? '[common]' : '[data]')),
+			'html' => $table->getHtml(),
+			'space' => 120
+		);
+	}
+
+	private function getOtherTable(array $other, $isAll){
+		$table = new we_html_table(array('width' => 500, 'height' => 50, 'class' => 'customer'), 1, 2);
+		$c = 0;
+		$table->setRow(0, array('style' => 'vertical-align:top'));
+		foreach($other as $k => $v){
+			$isEncField = $this->settings->retriveFieldAdd($k, 'encrypt');
+			$control = $this->getHTMLFieldControl($k, $v, $isEncField);
+			if($control){
+				$table->setCol($c / 2, $c % 2, array(), we_html_tools::htmlFormElementTable($control, $k . ($isEncField ? $this->getEncryptionHandling($k, $v != '') : '')));
+				if(++$c % 2 == 0){
+					$table->addRow();
+					$table->setRow($c / 2, array('style' => 'vertical-align:top'));
+				}
+			}
+		}
+		return array(
+			'headline' => g_l('modules_customer', ($isAll ? '[other]' : '[data]')),
+			'html' => $table->getHtml(),
+			'space' => 120
+		);
+	}
+
+	private function getEncryptionHandling($field, $hasContent){
+		return '<span style="margin-left:1em;" class="fa fa-lock" onclick=""></span>';
 	}
 
 	function getHTMLProperties($preselect = ''){
@@ -1326,165 +1051,66 @@ self.close();');
 		}
 
 		switch($preselect){
-			case g_l('modules_customer', '[all]'):
 			case g_l('modules_customer', '[common]'):
-				$table = new we_html_table(array('width' => 300, 'height' => 50, 'cellpadding' => 10, 'cellspacing' => 0, 'border' => 0), 1, 2);
-				$r = 0;
-				$c = 0;
-				$table->setRow(0, array('valign' => 'top'));
-				foreach($common as $pk => $pv){
-					if($this->customer->isInfoDate($pk)){
-						$pv = ($pv == '' || !is_numeric($pv)) ? 0 : $pv;
-						$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(($pv ? we_html_element::htmlDiv(array('class' => 'defaultgray'), date(g_l('weEditorInfo', '[date_format]'), $pv)) : '-' . we_html_tools::getPixel(100, 5)), $this->settings->getPropertyTitle($pk)));
-					} else {
-						switch($pk){
-							case 'ID':
-								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(($pv ? we_html_element::htmlDiv(array('class' => 'defaultgray'), $pv) : '-' . we_html_tools::getPixel(100, 5)), $this->settings->getPropertyTitle($pk)));
-								++$c;
-								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), '');
-								break;
-							case 'LoginDenied':
-								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray'), we_html_forms::checkbox(1, $pv, 'LoginDenied', g_l('modules_customer', '[login_denied]'), false, 'defaultfont', 'top.content.setHot();')), $this->settings->getPropertyTitle($pk)));
-								break;
-							case 'AutoLoginDenied':
-								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray'), we_html_forms::checkbox(1, $pv, 'AutoLoginDenied', g_l('modules_customer', '[login_denied]'), false, 'defaultfont', 'top.content.setHot();')), $this->settings->getPropertyTitle($pk)));
-								break;
-							case 'AutoLogin':
-								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray'), we_html_forms::checkbox(1, $pv, 'AutoLogin', g_l('modules_customer', '[autologin_request]'), false, 'defaultfont', 'top.content.setHot();')), $this->settings->getPropertyTitle($pk)));
-								break;
-							case 'Password':
-								$table->setCol($c / 2, $c % 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, ($this->customer->ID ? we_customer_customer::NOPWD_CHANGE : ''), '', 'onchange="top.content.setHot();" autocomplete="off" ', 'password', "240px"), $this->settings->getPropertyTitle($pk)));
-								break;
-							case 'Username':
-								$inputattribs = ' id="yuiAcInputPathName" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()"';
-								$table->setCol($c / 2, $c % 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, $pv, '', 'onchange="top.content.setHot();" ' . $inputattribs, "text", "240px"), $this->settings->getPropertyTitle($pk)));
-								break;
-							case 'failedLogins':
-								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray', 'id' => 'FailedCustomerLogins'), intval($common['failedLogins']) . ' / ' . SECURITY_LIMIT_CUSTOMER_NAME), sprintf(g_l('modules_customer', '[failedLogins]'), SECURITY_LIMIT_CUSTOMER_NAME_HOURS)));
-								break;
-							case 'resetFailed':
-								$tmp = 'YAHOO.util.Connect.asyncRequest( "GET", "' . WEBEDITION_DIR . 'rpc/rpc.php?cmd=ResetFailedCustomerLogins&cns=customer&custid=' . $this->customer->ID . '", ajaxCallbackResetLogins );';
-								$but = we_html_element::jsElement('
-var ajaxCallbackResetLogins = {
-success: function(o) {
-	if(typeof(o.responseText) != undefined && o.responseText != "") {
-		var weResponse = false;
-		try {
-			eval( "var weResponse = "+o.responseText );
-			if ( weResponse ) {
-				if (weResponse["DataArray"]["data"] == "true") {
-
-					document.getElementById("FailedCustomerLogins").innerText=weResponse["DataArray"]["value"];
-				}
-			}
-		} catch (exc){}
-	}
-},
-failure: function(o) {
-
-}}') . we_html_button::create_button('reset', 'javascript:' . $tmp);
-								$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray'), $but), ''));
-								break;
-							default:
-								$inputattribs = '';
-								$table->setCol($c / 2, $c % 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, $pv, '', "onchange=\"top.content.setHot();\" " . $inputattribs, "text", "240px"), $this->settings->getPropertyTitle($pk)));
-						}
-					}
-					if(++$c % 2 == 0){
-						$table->addRow();
-						$table->setRow($c / 2, array('valign' => 'top'));
-					}
-				}
-				$parts[] = array(
-					'headline' => g_l('modules_customer', ($preselect == g_l('modules_customer', '[all]') ? '[common]' : '[data]')),
-					'html' => $table->getHtml(),
-					'space' => 120
-				);
-				if($preselect != g_l('modules_customer', '[all]')){
-					break;
-				}
+				$parts = array($this->getCommonTable($common, false));
+				break;
 			case g_l('modules_customer', '[other]'):
-
-				$table = new we_html_table(array('width' => 500, 'height' => 50, 'cellpadding' => 10, 'cellspacing' => 0, 'border' => 0), 1, 2);
-				$r = 0;
-				$c = 0;
-				$table->setRow(0, array('valign' => 'top'));
-				foreach($other as $k => $v){
-					$control = $this->getHTMLFieldControl($k, $v);
-					if($control != ''){
-						$table->setCol($r, $c, array(), we_html_tools::htmlFormElementTable($control, $k));
-						$c++;
-						if($c > 1){
-							++$r;
-							$table->addRow();
-							$table->setRow($r, array('valign' => 'top'));
-						}
-						if($c > 1){
-							$c = 0;
-						}
-					}
-				}
-				$parts[] = array(
-					'headline' => g_l('modules_customer', ($preselect == g_l('modules_customer', '[all]') ? '[other]' : '[data]')),
-					'html' => $table->getHtml(),
-					'space' => 120
-				);
+				$parts = array($this->getOtherTable($other, false));
 				break;
 			case g_l('modules_customer', '[orderTab]'):
-				$orderStr = we_shop_functions::getCustomersOrderList($this->customer->ID, false);
-
-				$parts[] = array(
-					'html' => $orderStr,
-					'space' => 0
+				$parts = array(array(
+						'html' => we_shop_functions::getCustomersOrderList($this->customer->ID, false),
+						'space' => 0
+					)
 				);
 				break;
-
 			case g_l('modules_customer', '[objectTab]'):
 				$DB_WE = new DB_WE();
 				$DB_WE->query('SELECT ID,TableID,ContentType,Path,Text,ModDate,Published FROM ' . OBJECT_FILES_TABLE . ' WHERE ' . OBJECT_FILES_TABLE . '.WebUserID = ' . $this->customer->ID . ' ORDER BY ' . OBJECT_FILES_TABLE . '.Path');
 				$objectStr = '';
 				if($DB_WE->num_rows()){
 					$objectStr.='<table class="defaultfont" width="600">' .
-						'<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer', '[ID]') . '</b></td><td><b>'. g_l('modules_object', '[class]') .'</b></td><td><b>' . g_l('modules_customer', '[filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td>';
+						'<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer', '[ID]') . '</b></td><td><b>' . g_l('modules_object', '[class]') . '</b></td><td><b>' . g_l('modules_customer', '[filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td>';
 					while($DB_WE->next_record()){
 						$objectStr.='<tr>
-							<td>' . we_html_button::create_button('image:btn_edit_edit', "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','" . OBJECT_FILES_TABLE . "'); }") . '</td>
-							<td>' . $DB_WE->f('ID') . '</td>
-							<td title="'. g_l('modules_object', '[class_id]') . ': ' . $DB_WE->f('TableID') . '">' . f('SELECT Text FROM ' . OBJECT_FILES_TABLE . ' WHERE ContentType="'. we_base_ContentTypes::FOLDER .'" AND TableID='. intval($DB_WE->f('TableID'))) . '</td>
-							<td title="' . $DB_WE->f('Path') . '">' . we_util_Strings::shortenPath($DB_WE->f('Text'), 50) . '</td>
-							<td class="' . ($DB_WE->f('Published') ? ($DB_WE->f('ModDate') > $DB_WE->f('Published') ? 'changed defaultfont' : 'defaultfont') : 'npdefaultfont') . '">' . date('d.m.Y H:i', $DB_WE->f('ModDate')) . '</td>
-						</tr>';
+	<td>' . we_html_button::create_button(we_html_button::EDIT, "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','" . OBJECT_FILES_TABLE . "'); }") . '</td>
+	<td>' . $DB_WE->f('ID') . '</td>
+	<td title="' . $DB_WE->f('Path') . '">' . $DB_WE->f('Text') . '</td>
+	<td class="' . ($DB_WE->f('Published') ? ($DB_WE->f('ModDate') > $DB_WE->f('Published') ? 'changed defaultfont' : 'defaultfont') : 'npdefaultfont') . '">' . date('d.m.Y H:i', $DB_WE->f('ModDate')) . '</td>
+</tr>';
 					}
 					$objectStr.='</table>';
 				} else {
 					$objectStr = g_l('modules_customer', '[NoObjects]');
 				}
 
-				$parts[] = array(
-					"html" => $objectStr,
-					"space" => 0
+				$parts = array(
+					array(
+						"html" => $objectStr,
+						"space" => 0
+					)
 				);
 				break;
 			case g_l('modules_customer', '[documentTab]'):
 				$DB_WE = new DB_WE();
 				$DB_WE->query('SELECT f.ID,f.Path,f.ContentType,f.Text,f.Published,f.ModDate,c1.Dat AS title,c2.Dat AS description' .
-						' FROM ' .
-						FILE_TABLE . ' f LEFT JOIN ' .
-						LINK_TABLE . ' l1 ON (l1.DID=f.ID AND l1.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND l1.Name="Title") LEFT JOIN ' .
-						CONTENT_TABLE . ' c1 ON l1.CID=c1.ID LEFT JOIN ' .
-						LINK_TABLE . ' l2 ON (l2.DID=f.ID AND l2.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND l2.Name="Description") LEFT JOIN ' .
-						CONTENT_TABLE . ' c2 ON l2.CID=c2.ID' .
-						' WHERE f.WebUserID=' . intval($this->customer->ID) . ' ORDER BY f.Path');
+					' FROM ' .
+					FILE_TABLE . ' f LEFT JOIN ' .
+					LINK_TABLE . ' l1 ON (l1.DID=f.ID AND l1.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND l1.Name="Title") LEFT JOIN ' .
+					CONTENT_TABLE . ' c1 ON l1.CID=c1.ID LEFT JOIN ' .
+					LINK_TABLE . ' l2 ON (l2.DID=f.ID AND l2.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND l2.Name="Description") LEFT JOIN ' .
+					CONTENT_TABLE . ' c2 ON l2.CID=c2.ID' .
+					' WHERE f.WebUserID=' . intval($this->customer->ID) . ' ORDER BY f.Path');
 
 				if($DB_WE->num_rows()){
-					$documentStr='<table class="defaultfont" width="600">' .
-							'<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer', '[ID]') . '</b></td><td><b>' . g_l('modules_customer', '[filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td><td><b>' . g_l('modules_customer', '[Titel]') . '</b></td>' .
-							'</tr>';
+					$documentStr = '<table class="defaultfont" width="600">' .
+						'<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer', '[ID]') . '</b></td><td><b>' . g_l('modules_customer', '[filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td><td><b>' . g_l('modules_customer', '[Titel]') . '</b></td>' .
+						'</tr>';
 					while($DB_WE->next_record()){
 						$documentStr.='<tr>' .
-							'<td>' . we_html_button::create_button('image:btn_edit_edit', "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','" . FILE_TABLE . "'); }") . '</td>' .
+							'<td>' . we_html_button::create_button(we_html_button::EDIT, "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','" . FILE_TABLE . "'); }") . '</td>' .
 							'<td>' . $DB_WE->f('ID') . '</td>' .
-							'<td title="' . $DB_WE->f('Path') . '">' . we_util_Strings::shortenPath($DB_WE->f('Text'), 50) . '</td>' .
+							'<td title="' . $DB_WE->f('Path') . '">' . $DB_WE->f('Text') . '</td>' .
 							'<td class="' .
 							($DB_WE->f('Published') ? ($DB_WE->f('ModDate') > $DB_WE->f('Published') ? 'changeddefaultfont' : 'defaultfont') : 'npdefaultfont')
 							. '">' . date('d.m.Y H:i', $DB_WE->f('ModDate')) . '</td>' .
@@ -1496,45 +1122,62 @@ failure: function(o) {
 					$documentStr = g_l('modules_customer', '[NoDocuments]');
 				}
 
-				$parts[] = array(
-					"html" => $documentStr,
-					"space" => 0
+				$parts = array(
+					array(
+						"html" => $documentStr,
+						"space" => 0
+					)
 				);
-		}
-
-		foreach($branches as $bk => $branch){
-			if($preselect != '' && $preselect != g_l('modules_customer', '[all]')){
-				if($bk != $preselect){
-					continue;
-				}
-			}
-			$table = new we_html_table(array("width" => 500, "height" => 50, "cellpadding" => 10, "cellspacing" => 0, "border" => 0), 1, 2);
-			$r = 0;
-			$c = 0;
-			$table->setRow(0, array("valign" => "top"));
-			foreach($branch as $k => $v){
-				$control = $this->getHTMLFieldControl($bk . '_' . $k, $v);
-				if($control != ''){
-
-					$table->setCol($r, $c, array(), we_html_tools::htmlFormElementTable($control, $k));
-
-					++$c;
-					if($c > 1){
-						$r++;
-						$table->addRow();
-						$table->setRow($r, array("valign" => "top"));
+				break;
+			case g_l('modules_customer', '[all]'):
+				$isAll = true;
+				$parts = array(
+					$this->getCommonTable($common, true),
+					$this->getOtherTable($other, true)
+				);
+//no break;
+			default:
+				foreach($branches as $bk => $branch){
+					if($preselect && $preselect != g_l('modules_customer', '[all]')){
+						if($bk != $preselect){
+							continue;
+						}
 					}
-					if($c > 1)
-						$c = 0;
+
+					$table = new we_html_table(array("width" => 500, "height" => 50, "class" => 'customer'), 1, 2);
+					$c = 0;
+					$table->setRow(0, array('style' => 'vertical-align:top;'));
+					foreach($branch as $k => $v){
+						$isEncField = $this->settings->retriveFieldAdd($bk . '_' . $k, 'encrypt');
+						$control = $this->getHTMLFieldControl($bk . '_' . $k, $v, $isEncField);
+						if(!$control){
+							continue;
+						}
+						$table->setCol($c / 2, $c % 2, array(), we_html_tools::htmlFormElementTable($control, $k . ($isEncField ? $this->getEncryptionHandling($bk . '_' . $k, $v != '') : '')));
+
+						if(++$c % 2 == 1){
+							$table->addRow();
+							$table->setRow($c / 2, array('style' => 'vertical-align:top;'));
+						}
+					}
+					$parts[] = array(
+						"headline" => (isset($isAll) ? $bk : g_l('modules_customer', '[data]')),
+						"html" => $table->getHtml(),
+						"space" => 120
+					);
 				}
-			}
-			$parts[] = array(
-				"headline" => ($preselect == g_l('modules_customer', '[all]') ? $bk : g_l('modules_customer', '[data]')),
-				"html" => $table->getHtml(),
-				"space" => 120
-			);
 		}
-		return we_html_multiIconBox::getHTML('', 680, $parts, 30);
+
+		return we_html_multiIconBox::getHTML('', $parts, 30);
+	}
+
+	public function getHomeScreen(){
+		$hiddens['cmd'] = 'home';
+		$GLOBALS['we_head_insert'] = $this->getJSProperty();
+		$GLOBALS['we_body_insert'] = we_html_element::htmlForm(array('name' => 'we_form'), $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden('home', 0));
+		$content = we_html_button::create_button("fat:new_customer,fa-lg fa-user-plus", "javascript:top.opener.top.we_cmd('new_customer');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_CUSTOMER"));
+
+		return parent::getHomeScreen('customer', "customer.gif", $content);
 	}
 
 }

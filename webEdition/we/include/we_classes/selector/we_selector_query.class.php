@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -30,7 +29,6 @@ class we_selector_query{
 	/*	 * ***********************************************************************
 	 * VARIABLES
 	 * *********************************************************************** */
-
 	private $db;
 	var $result = array();
 	var $fields;
@@ -45,7 +43,7 @@ class we_selector_query{
 	 *
 	 * @return we_selector_query
 	 */
-	function __construct(){
+	public function __construct(){
 		$this->db = new DB_WE();
 		$this->fields = array('ID', 'Path');
 	}
@@ -63,7 +61,6 @@ class we_selector_query{
 	 * @return void
 	 */
 	function queryTable($search, $table, array $types, $limit = null){
-		$search = strtr($search, array('[' => '\\[', ']' => '\\]'));
 		$userExtraSQL = $this->getUserExtraQuery($table);
 
 		switch($table){
@@ -75,6 +72,7 @@ class we_selector_query{
 				$typeField = "ContentType";
 				$userExtraSQL = '';
 				break;
+			case VFILE_TABLE:
 			case CATEGORY_TABLE:
 			case (defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : ""):
 				break;
@@ -93,7 +91,7 @@ class we_selector_query{
 			$type = str_replace(" ", "", $type);
 			if($type == we_base_ContentTypes::FOLDER){
 				$q[] = 'IsFolder=1';
-			} elseif(isset($typeField) && $typeField){
+			} elseif(!empty($typeField)){
 				$q[] = $typeField . '="' . $this->db->escape($type) . '"';
 				$isFolder = 0;
 				$addCT = 1;
@@ -140,6 +138,7 @@ class we_selector_query{
 				$typeField = "ContentType";
 				$userExtraSQL = '';
 				break;
+			case VFILE_TABLE:
 			case CATEGORY_TABLE:
 			case (defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : ""):
 				break;
@@ -148,16 +147,15 @@ class we_selector_query{
 		}
 
 		$rootOnly = $rootDir && ($search === "/" || strpos($rootDir, $search) === 0);
-		$where = $rootOnly ? "Path LIKE '" . $rootDir . "'" :
-				"Path REGEXP '^" . preg_quote(preg_quote($search)) . "[^/]*$'" . (($rootDir) ? " AND (Path LIKE '" . $this->db->escape($rootDir) . "' OR Path LIKE '" . $this->db->escape($rootDir) . "%')" : "");
+		$where = ($rootOnly ?
+				"Path LIKE '" . $rootDir . "'" :
+				"Path REGEXP '^" . preg_quote(preg_quote($search)) . "[^/]*$'" . (
+				($rootDir) ?
+					" AND (Path LIKE '" . $this->db->escape($rootDir) . "' OR Path LIKE '" . $this->db->escape($rootDir) . "%')" :
+					''));
 
 		$isFolder = 0;
 		$addCT = 0;
-
-
-
-
-
 
 		$types = array_unique(array_filter($types));
 
@@ -166,7 +164,7 @@ class we_selector_query{
 			$type = str_replace(" ", "", $type);
 			if($type == we_base_ContentTypes::FOLDER){
 				$q[] = 'IsFolder=1';
-			} elseif(isset($typeField) && $typeField){
+			} elseif(!empty($typeField)){
 				$q[] = $typeField . '="' . $this->db->escape($type) . '"';
 				$isFolder = 0;
 				$addCT = 1;
@@ -190,7 +188,6 @@ class we_selector_query{
 			$where.=we_navigation_navigation::getWSQuery();
 		}
 		//FIXME: what about other workspacequeries?!
-
 		$this->db->query('SELECT ' . implode(', ', $this->fields) . ' FROM ' . $this->db->escape($table) . ' WHERE ' . $where . ' ORDER BY ' . ($isFolder ? 'isFolder DESC, Path' : 'Path') . ' ASC ' . ($limit ? ' LIMIT ' . $limit : ''));
 	}
 
@@ -223,8 +220,8 @@ class we_selector_query{
 			$ctntQuery = '';
 		}
 
-		$this->db->query('SELECT ' . implode(',', $this->fields) . ' FROM ' . $this->db->escape($table) . ' WHERE ParentID = ' . intval($id) . ' AND ( IsFolder = 1 ' . $ctntQuery . ' ) ' .
-				$userExtraSQL . ' ORDER BY IsFolder DESC, Path ');
+		$this->db->query('SELECT ' . implode(',', $this->fields) . ' FROM ' . $this->db->escape($table) . ' WHERE ParentID=' . intval($id) . ' AND (IsFolder=1 ' . $ctntQuery . ' ) ' .
+			$userExtraSQL . ' ORDER BY IsFolder DESC, Path ');
 	}
 
 	/**
@@ -233,7 +230,7 @@ class we_selector_query{
 	 * @param integer $id
 	 * @param string $table
 	 */
-	function getItemById($id, $table, $fields = "", $useExtraSQL = true){
+	function getItemById($id, $table, $fields = '', $useExtraSQL = true){
 		$_votingTable = defined('VOTING_TABLE') ? VOTING_TABLE : "";
 		switch($table){
 			case $_votingTable:
@@ -244,7 +241,7 @@ class we_selector_query{
 		}
 
 		$userExtraSQL = (!defined('BANNER_TABLE') || $table != BANNER_TABLE ?
-						($useExtraSQL ? $this->getUserExtraQuery($table, $useCreatorID) : '') : '');
+				($useExtraSQL ? $this->getUserExtraQuery($table, $useCreatorID) : '') : '');
 
 		$this->addQueryField("Text");
 		$this->addQueryField("ParentID");
@@ -273,7 +270,7 @@ class we_selector_query{
 				$this->addQueryField($val);
 			}
 		}
-		$this->db->query('SELECT ' . implode(',', $this->fields) . ' FROM ' . $this->db->escape($table) . ' WHERE	Path = "' . $this->db->escape($path) . '" ' . $userExtraSQL);
+		$this->db->query('SELECT ' . implode(',', $this->fields) . ' FROM ' . $this->db->escape($table) . ' WHERE	Path="' . $this->db->escape($path) . '" ' . $userExtraSQL);
 		return $this->getResult();
 	}
 

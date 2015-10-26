@@ -144,8 +144,8 @@ class we_ui_controls_DateTime extends we_ui_abstract_AbstractInputElement{
 
 		// add needed JS Files
 		$this->addJSFile(we_ui_abstract_AbstractElement::computeJSURL(__CLASS__));
-		$this->addJSFile(JS_DIR . 'libs/yui/yahoo-min.js');
-		$this->addJSFile(JS_DIR . 'libs/yui/dom-min.js');
+		$this->addJSFile(LIB_DIR . 'additional/yui/yahoo-min.js');
+		$this->addJSFile(LIB_DIR . 'additional/yui/dom-min.js');
 	}
 
 	/**
@@ -514,7 +514,7 @@ class we_ui_controls_DateTime extends we_ui_abstract_AbstractInputElement{
 
 		$OnChange = 'we_ui_controls_DateTime.setDateTimeValueOnChange(\'' . $this->getId() . '\');';
 		$codes = array();
-		$code = '<input type="hidden" name="' . $this->getName() . '" id="' . $this->getId() . '" value="' . $this->getValue() . '"/><table cellpadding="0" cellspacing="0" border="0" id="' . $this->getContainerId() . '"' . $this->_getComputedClassAttrib($class) . $this->_getNonBooleanAttribs('onchange') . $this->_getBooleanAttribs('disabled') . ' ><tr> ';
+		$code = '<input type="hidden" name="' . $this->getName() . '" id="' . $this->getId() . '" value="' . $this->getValue() . '"/><table class="default" id="' . $this->getContainerId() . '"' . $this->_getComputedClassAttrib($class) . $this->_getNonBooleanAttribs('onchange') . $this->_getBooleanAttribs('disabled') . ' ><tr> ';
 		if($this->_getYearPos()){
 			$codes[$this->_getYearPos()] = '<td><select id="' . $this->getYearsId() . '" onchange="' . $OnChange . '" ' . $this->_getComputedClassAttrib($class) . $this->_getBooleanAttribs('disabled') . ' >';
 			for($i = $this->getMinYear(); $i <= $this->getMaxYear(); $i++){

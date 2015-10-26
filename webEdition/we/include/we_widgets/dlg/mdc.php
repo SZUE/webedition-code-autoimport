@@ -63,12 +63,10 @@ function getHTMLDirSelector($_selType){
 	$showAC = true;
 	$rootDirID = 0;
 	$folderID = 0;
-	$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['FolderID'].value");
-	$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['FolderPath'].value");
-	$_button_doc = we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "')");
-	$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['FolderID'].value");
-	$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['FolderPath'].value");
-	$_button_obj = defined('OBJECT_TABLE') ? we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['FolderID'].value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "')") : '';
+	$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.FolderID.value");
+	$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.FolderPath.value");
+	$_button_doc = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.FolderID.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "')");
+	$_button_obj = defined('OBJECT_TABLE') ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.FolderID.value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "')") : '';
 
 	$_buttons = '<div id="docFolder" style="display: ' . (!$_selType ? "inline" : "none") . '">' . $_button_doc . "</div>" . '<div id="objFolder" style="display: ' . ($_selType ? "inline" : "none") . '">' . $_button_obj . "</div>";
 	$_path = id_to_path($folderID, (!$_selType ? FILE_TABLE : (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : "")));
@@ -79,9 +77,8 @@ function getHTMLDirSelector($_selType){
 			), we_html_tools::htmlFormElementTable(
 				"<div id=\"yuiAcLayerDoc\" class=\"yuiAcLayer\">" . $yuiSuggest->getErrorMarkPlaceHolder(
 					"yuiAcErrorMarkDoc") . we_html_tools::htmlTextInput(
-					"FolderPath", 58, $_path, "", 'onchange="" id="yuiAcInputDoc"', "text", (420 - 120), 0) . "<div id=\"yuiAcContainerDoc\"></div></div>", g_l('cockpit', '[dir]'), "left", "defaultfont", we_html_tools::getPixel(300, 20), we_html_element::htmlHidden(array(
-					"name" => "FolderID", "value" => $folderID, "id" => "yuiAcIdDoc"
-				)), we_html_tools::getPixel(20, 4), $_buttons));
+					"FolderPath", 58, $_path, "", 'onchange="" id="yuiAcInputDoc"', "text", (420 - 120), 0) . "<div id=\"yuiAcContainerDoc\"></div></div>", g_l('cockpit', '[dir]'), "left", "defaultfont", we_html_element::htmlHidden("FolderID", $folderID, "yuiAcIdDoc"
+				), $_buttons));
 }
 
 $docTypes = array(0 => g_l('cockpit', '[no_entry]'));
@@ -104,7 +101,7 @@ $cls = new we_html_select(
 	));
 $optid = 0;
 $cls->insertOption($optid, 0, g_l('cockpit', '[no_entry]'));
-$ac = makeCSVFromArray(we_users_util::getAllowedClasses($DB_WE));
+$ac = implode(',', we_users_util::getAllowedClasses($DB_WE));
 if($ac){
 	$DB_WE->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' ' . ($ac ? ' WHERE ID IN(' . $ac . ') ' : '') . 'ORDER BY Text');
 	while($DB_WE->next_record()){
@@ -117,23 +114,13 @@ if($ac){
 }
 
 function getHTMLCategory(){
-	$addbut = we_html_button::create_button(
-			"add", "javascript:we_cmd('openCatselector',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
-	$del_but = addslashes(
-		we_html_element::htmlImg(
-			array(
-				'src' => BUTTONS_DIR . 'btn_function_trash.gif',
-				'onclick' => 'javascript:#####placeHolder#####;top.mark();',
-				'style' => 'cursor: pointer; width: 27px;'
-	)));
-
-	$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js');
+	$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
+	$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;top.mark();'));
 
 	$variant_js = '
 		var categories_edit=new multi_edit("categories",document.we_form,0,"' . $del_but . '",390,false);
 		categories_edit.addVariant();
 		document.we_form.CategoriesControl.value=categories_edit.name;
-
 	';
 	$Categories = '';
 	if(is_array($Categories)){
@@ -145,77 +132,29 @@ function getHTMLCategory(){
 		}
 	}
 
-	$variant_js .= '
-		categories_edit.showVariant(0);
-	';
-
-	$js .= we_html_element::jsElement($variant_js);
+	$variant_js .= 'categories_edit.showVariant(0);';
 
 	$table = new we_html_table(
 		array(
 		'id' => 'CategoriesBlock',
-		'style' => 'display: block;',
-		'cellpadding' => 0,
-		'cellspacing' => 0,
-		'border' => 0
+		'style' => 'display: block;margin-top: 5px;',
+		'class' => 'default'
 		), 5, 1);
 
-	$table->setColContent(0, 0, we_html_tools::getPixel(5, 5));
-	$table->setCol(1, 0, array(
-		'class' => 'defaultfont'
-		), "Kategorien");
-	$table->setColContent(
-		2, 0, we_html_element::htmlDiv(
+	$table->setCol(1, 0, array('class' => 'defaultfont'), "Kategorien");
+	$table->setColContent(2, 0, we_html_element::htmlDiv(
 			array(
 				'id' => 'categories',
 				'class' => 'blockWrapper',
-				'style' => 'width:420px;height:60px;border:#AAAAAA solid 1px;'
+				'style' => 'width:420px;height:60px;border:#AAAAAA solid 1px;margin-bottom:5px;'
 	)));
 
-	$table->setColContent(3, 0, we_html_tools::getPixel(5, 5));
+	$table->setCol(4, 0, array('colspan' => 2, 'style' => 'text-align:right'), we_html_button::create_button(we_html_button::DELETE_ALL, 'javascript:removeAllCats()') . $addbut);
 
-	$table->setCol(
-		4, 0, array(
-		'colspan' => 2, 'align' => 'right'
-		), we_html_button::create_button_table(
-			array(
-				we_html_button::create_button('delete_all', 'javascript:removeAllCats()'), $addbut
-	)));
-
-	return $table->getHtml() . $js . we_html_element::jsElement(
-			"
-function removeAllCats(){
-	if(categories_edit.itemCount>0){
-		while(categories_edit.itemCount>0){
-			categories_edit.delItem(categories_edit.itemCount);
-		}
-	}
+	return $table->getHtml() . we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
+		we_html_element::jsElement($variant_js);
 }
 
-function addCat(paths){
-	var path=paths.split(',');
-	var found=false;
-	var j=0;
-	for(var i=0;i<path.length;i++){
-		if(path[i]!=''){
-			found=false;
-			for(j=0;j<categories_edit.itemCount;j++){
-				if(categories_edit.form.elements[categories_edit.name+'_variant0_'+categories_edit.name+'_item'+j].value==path[i]){
-					found=true;
-				}
-			}
-			if(!found){
-				categories_edit.addItem();
-				categories_edit.setItem(0,(categories_edit.itemCount-1),path[i]);
-			}
-		}
-	}
-	categories_edit.showVariant(0);
-}
-	");
-}
-
-$parts = array();
 $jsCode = "
 var _oCsv_;
 var _sCsv;
@@ -226,8 +165,7 @@ var _sMdcInc='mdc/mdc';
 var table='" . $_selTable . "';
 
 function we_cmd(){
-	var args='';
-	var url='" . WEBEDITION_DIR . "we_cmd.php?';
+	var url=WE().consts.dirs.WEBEDITION_DIR +'we_cmd.php?';
 	for(var i=0;i<arguments.length;i++){
 		url+='we_cmd['+i+']='+encodeURI(arguments[i]);
 		if(i<(arguments.length-1)){
@@ -235,50 +173,20 @@ function we_cmd(){
 		}
 	}
 	switch(arguments[0]){
-		case 'openDirselector':
-			new jsWindow(url,'we_fileselector',-1,-1," . we_selector_file::WINDOW_DIRSELECTOR_WIDTH . "," . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT . ",true,true,true,true);
+		case 'we_selector_directory':
+			new (WE().util.jsWindow)(window, url,'we_fileselector',-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
 			break;
-		case 'openCatselector':
-			new jsWindow(url,'we_catselector',-1,-1," . we_selector_file::WINDOW_CATSELECTOR_WIDTH . "," . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ",true,true,true,true);
+		case 'we_selector_category':
+			new (WE().util.jsWindow)(window, url,'we_catselector',-1,-1,WE().consts.size.catSelect.width,WE().consts.size.catSelect.height,true,true,true,true);
 			break;
 		default:
-			for(var i=0;i<arguments.length;i++){
-				args+='arguments['+i+']'+((i<(arguments.length-1))?',':'');
+					var args = [];
+			for (var i = 0; i < arguments.length; i++) {
+				args.push(arguments[i]);
 			}
-			eval('parent.we_cmd('+args+')');
+			parent.we_cmd.apply(this, args);
+
 	}
-}
-
-function we_submit(){
-	var bSelection=_fo.Selection.selectedIndex;
-	var bSelType=_fo.headerSwitch.selectedIndex;
-	_fo.action='" . WE_INCLUDES_DIR . "we_widgets/dlg/mdc.php?we_cmd[0]='+_sObjId+'&we_cmd[1]='+opener.base64_encode(_fo.title.value)+';'+
-		(bSelection?'1':'0')+(bSelType?'1':'0')+';'+(bSelection?getTreeSelected():'');
-	_fo.method='post';
-	_fo.submit();
-}
-
-function toggle(id){
-	var elem=document.getElementById(id);
-	if(elem){
-		if(elem.style.display=='none') elem.style.display='block';
-		else elem.style.display='none';
-	}
-}
-
-function setVisible(id,visible){
-	var elem=document.getElementById(id);
-	if(elem){
-		if(visible==true) elem.style.display='block';
-		else elem.style.display='none';
-	}
-}
-
-function setPresentation(type){" . "}
-
-function closeAllSelection(){
-	setVisible('dynamic',false);
-	setVisible('static',false);
 }
 
 function init(){
@@ -287,7 +195,7 @@ function init(){
 	_oCsv_=opener.gel(_sObjId+'_csv');
 	_sInitCsv_=_oCsv_.value;
 	_sInitTitle_=opener.gel(_sObjId+'_prefix').value;
-	_fo.elements['title'].value=_sInitTitle_;
+	_fo.elements.title.value=_sInitTitle_;
 	var aInitCsv=_sInitCsv_.split(';');
 	var dir=aInitCsv[2].split(',');
 	var sBinary='" . $selBinary . "';
@@ -300,75 +208,13 @@ function init(){
 				var obj=parseInt(sBinary.substr(1))?_fo.classID:_fo.DocTypeID;
 				obj.value=aInitCsv[3];
 			}
-			if(typeof aInitCsv[4]!='undefined'&&aInitCsv[4]!='')addCat(opener.base64_decode(aInitCsv[4]));
+			if(aInitCsv[4]!==undefined&&aInitCsv[4]!='')addCat(opener.base64_decode(aInitCsv[4]));
 		}
 	}
 }
-
-function save(){
-	var sTitle=_fo.title.value;
-	var sSel=(_fo.Selection.selectedIndex)?'1':'0';
-	var sSwitch=(_fo.headerSwitch.selectedIndex)?'1':'0';
-	var sCsv=(parseInt(sSel))?getTreeSelected():getCsv(parseInt(sSwitch));
-	opener.rpc(sSel+sSwitch,sCsv,'','',sTitle,_sObjId,_sMdcInc);
-	_oCsv_.value=opener.base64_encode(sTitle)+';'+sSel+sSwitch+';'+sCsv;
-	savePrefs();
-	" . we_message_reporting::getShowMessageCall(
-		g_l('cockpit', '[prefs_saved_successfully]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-	self.close();
-}
-
-function getCsv(bTbl){
-	var iFolderID=_fo.FolderID.value;
-	var sFolderPath=_fo.FolderPath.value;
-	var iDtOrCls=(bTbl)?_fo.classID.value:_fo.DocTypeID.value;
-	var sCats='';
-	for(var j=0;j<categories_edit.itemCount;j++){
-		sCats+=opener.base64_encode(categories_edit.form.elements[categories_edit.name+'_variant0_'+categories_edit.name+'_item'+j].value);
-		if(j<categories_edit.itemCount-1) sCats+=',';
-	}
-	var sCsv=iFolderID+','+sFolderPath+';'+iDtOrCls+';'+sCats;
-	return sCsv;
-}
-
-function getTreeSelected(){
-	var sCsvIds='';
-	var iTemsLen=SelectedItems[table].length;
-	for(var i=0;i<iTemsLen;i++){
-		sCsvIds+=SelectedItems[table][i];
-		if(i<iTemsLen-1&&typeof SelectedItems[table][i]!='undefined'&&SelectedItems[table][i]!='') sCsvIds+=',';
-	}
-	return sCsvIds;
-}
-
-function preview(){
-	var sTitle=_fo.title.value;
-	var sSel=(_fo.Selection.selectedIndex)?'1':'0';
-	var sSwitch=(_fo.headerSwitch.selectedIndex)?'1':'0';
-	var sCsv=(parseInt(sSel))?getTreeSelected():getCsv(parseInt(sSwitch));
-	previewPrefs();
-	opener.rpc(sSel+sSwitch,(sCsv)?sCsv:'','','',sTitle,_sObjId,_sMdcInc);
-}
-
-function exit_close(){
-	var sTitle=_fo.elements['title'].value;
-	var sSel=(_fo.Selection.selectedIndex)?'1':'0';
-	var sSwitch=(_fo.headerSwitch.selectedIndex)?'1':'0';
-	var sCsv=(parseInt(sSel))?getTreeSelected():getCsv(parseInt(sSwitch));
-	var aInitCsv=_sInitCsv_.split(';');
-	var sInitTitle=opener.base64_decode(aInitCsv[0]);
-	if((sInitTitle!=''&&sInitTitle!=sTitle)||aInitCsv[1]!=sSel+sSwitch||aInitCsv[2]!=sCsv){
-		opener.rpc(aInitCsv[1],aInitCsv[2],'','',sInitTitle,_sObjId,_sMdcInc);
-	}
-	exitPrefs();
-	self.close();
-}
 ";
 
-
-$_seltype = array(
-	'doctype' => g_l('cockpit', '[documents]')
-);
+$_seltype = array('doctype' => g_l('cockpit', '[documents]'));
 if(defined('OBJECT_TABLE')){
 	$_seltype['classname'] = g_l('cockpit', '[objects]');
 }
@@ -391,10 +237,9 @@ if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFI
 }
 
 $divDynamic = we_html_element::htmlDiv(
-		array(
-		"id" => "dynamic", "style" => (!$_selection ? 'display:block;' : 'display:none;')
-		), getHTMLDirSelector($_selType) . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . ((!$_selType) ? $doctypeElement : we_html_tools::htmlFormElementTable(
-				$cls->getHTML(), g_l('cockpit', '[class]'))) . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . getHTMLCategory());
+		array("id" => "dynamic", "style" => (!$_selection ? 'display:block;' : 'display:none;')
+		), getHTMLDirSelector($_selType) . we_html_element::htmlBr() . ((!$_selType) ? $doctypeElement : we_html_tools::htmlFormElementTable(
+				$cls->getHTML(), g_l('cockpit', '[class]'))) . we_html_element::htmlBr() . getHTMLCategory());
 
 $divContent = we_html_element::htmlDiv(
 		array(
@@ -403,44 +248,42 @@ $divContent = we_html_element::htmlDiv(
 			"Selection", array(
 			"dynamic" => g_l('cockpit', '[dyn_selection]'), "static" => g_l('cockpit', '[stat_selection]')
 			), 1, ($_selection ? "static" : "dynamic"), false, array('style' => "width:420px;border:#AAAAAA solid 1px;", 'onchange' => "closeAllSelection();we_submit();"), 'value') . we_html_element::htmlBr() . we_html_tools::htmlSelect(
-			"headerSwitch", $captions, 1, (!$_selType ? FILE_TABLE : OBJECT_FILES_TABLE), false, array('style' => "width:420px;border:#AAAAAA solid 1px;margin-top:10px;", 'onchange' => "setHead(this.value);we_submit();"), 'value', 420) . $divStatic . $divDynamic . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . we_html_tools::htmlFormElementTable(
+			"headerSwitch", $captions, 1, (!$_selType ? FILE_TABLE : OBJECT_FILES_TABLE), false, array('style' => "width:420px;border:#AAAAAA solid 1px;margin-top:10px;", 'onchange' => "setHead(this.value);we_submit();"), 'value', 420) . $divStatic . $divDynamic . we_html_element::htmlBr() . we_html_tools::htmlFormElementTable(
 			we_html_tools::htmlTextInput(
 				$name = "title", $size = 55, $value = $_title, $maxlength = 255, $attribs = "", $type = "text", $width = 420, $height = 0), g_l('cockpit', '[title]'), "left", "defaultfont"));
 
-$parts[] = array(
-	"headline" => "", "html" => $divContent, "space" => 0
-);
-$parts[] = array(
-	"headline" => "", "html" => $oSelCls->getHTML(), "space" => 0
+$parts = array(
+	array(
+		"headline" => "",
+		"html" => $divContent,
+		"space" => 0
+	),
+	array(
+		"headline" => "",
+		"html" => $oSelCls->getHTML(),
+		"space" => 0
+	)
 );
 
-$save_button = we_html_button::create_button("save", "javascript:save();", false, 0, 0);
-$preview_button = we_html_button::create_button("preview", "javascript:preview();", false, 0, 0);
-$cancel_button = we_html_button::create_button("close", "javascript:exit_close();");
+$save_button = we_html_button::create_button(we_html_button::SAVE, "javascript:save();", false, 0, 0);
+$preview_button = we_html_button::create_button(we_html_button::PREVIEW, "javascript:preview();", false, 0, 0);
+$cancel_button = we_html_button::create_button(we_html_button::CLOSE, "javascript:exit_close();");
 $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
-$sTblWidget = we_html_multiIconBox::getHTML("mdcProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[my_documents]'));
+$sTblWidget = we_html_multiIconBox::getHTML("mdcProps", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[my_documents]'));
 
-echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
-	we_html_element::htmlHead(
-		we_html_tools::getHtmlInnerHead(g_l('cockpit', '[my_documents]')) . weSuggest::getYuiFiles() . STYLESHEET .
-		we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
-		we_html_element::jsScript(JS_DIR . "windows.js") .
-		we_html_element::jsElement($jsPrefs . $jsCode)) .
-	we_html_element::htmlBody(
+echo we_html_tools::getHtmlTop(g_l('cockpit', '[my_documents]'), '', '', weSuggest::getYuiFiles() . STYLESHEET .
+		$jsFile.
+	we_html_element::jsElement($jsPrefs . $jsCode . $jsTree) .
+	we_html_element::jsScript(JS_DIR . 'widgets/mdc.js'), we_html_element::htmlBody(
 		array(
 		"class" => "weDialogBody", "onload" => "init();startInit();"
 		), we_html_element::htmlForm(
-			"", we_html_element::htmlHidden(array(
-				"name" => "table", "value" => ""
-			)) . we_html_element::htmlHidden(array(
-				"name" => "FolderID", "value" => 0
-			)) . we_html_element::htmlHidden(
-				array(
-					"name" => "CategoriesControl",
-					"value" => we_base_request::_(we_base_request::INT, 'CategoriesCount', 0)
-			)) . $sTblWidget . we_html_element::jsElement($jsTree))));
+			"", we_html_element::htmlHiddens(array(
+				"table" => "",
+				"FolderID" => 0,
+				"CategoriesControl" => we_base_request::_(we_base_request::INT, 'CategoriesCount', 0)
+			)) . $sTblWidget)));
 if($showAC){
-	echo $yuiSuggest->getYuiCss() .
-	$yuiSuggest->getYuiJs();
+	echo $yuiSuggest->getYuiJs();
 }

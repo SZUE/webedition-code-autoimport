@@ -165,7 +165,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					$object->Path = we_base_file::clearPath($object->Path);
 
 					//fix Path if there is a conflict
-					$id = path_to_id($object->Path, $object->Table);
+					$id = path_to_id($object->Path, $object->Table, $GLOBALS['DB_WE']);
 
 					if($id){
 						if($this->options["handle_collision"] === "replace" ||
@@ -324,7 +324,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					$newid = f('SELECT ID FROM ' . THUMBNAILS_TABLE . ' t WHERE t.Name="' . escape_sql_query($newname) . '"', '', new DB_WE());
 					break;
 				default:
-					$newid = path_to_id(we_base_file::clearPath(dirname($object->Path) . "/" . $newname), $object->Table);
+					$newid = path_to_id(we_base_file::clearPath(dirname($object->Path) . '/' . $newname), $object->Table, FILE_TABLE, $GLOBALS['DB_WE']);
 			}
 		} while($newid);
 		$this->renameObject($object, $newname);
@@ -472,7 +472,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					return $this->options['target_encoding'];
 				}
 				if(self::isSerialized($value)){
-					$usv = unserialize($value);
+					$usv = we_unserialize($value);
 					if(is_array($usv)){
 						foreach($usv as &$av){
 							if($this->options['xml_encoding'] === 'ISO-8859-1'){
@@ -481,7 +481,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 								$av = utf8_decode($av);
 							}
 						}
-						$sv = serialize($usv);
+						$sv = we_serialize($usv);
 						return $sv;
 					}
 					return $value;
@@ -532,7 +532,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 				} else if($this->options['owners_overwrite'] && $this->options['owners_overwrite_id']){
 					$own = $this->options['owners_overwrite_id'];
 				}
-				if(isset($own) && $own && !in_array($own, $newowners)){
+				if(!empty($own) && !in_array($own, $newowners)){
 					if(!$object->CreatorID){
 						$object->CreatorID = $own;
 					}
@@ -542,9 +542,9 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					$newowners[] = $own;
 				}
 			}
-			$object->Owners = makeCSVFromArray($newowners);
+			$object->Owners = implode(',', $newowners);
 			if(isset($object->OwnersReadOnly)){
-				$readonly = unserialize($object->OwnersReadOnly);
+				$readonly = we_unserialize($object->OwnersReadOnly);
 				$readonly_new = array();
 				if(is_array($readonly)){
 					foreach($readonly as $key => $value){
@@ -560,7 +560,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 							$readonly_new[$newkey] = $value;
 						}
 					}
-					$object->OwnersReadOnly = serialize($readonly_new);
+					$object->OwnersReadOnly = we_serialize($readonly_new);
 				}
 			}
 		} else {
@@ -739,7 +739,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 		foreach($patharr as $elem){
 			if($elem != '' && $elem != '/'){
 				$mkpath .= '/' . $elem;
-				$id = path_to_id($mkpath, $table);
+				$id = path_to_id($mkpath, $table, $GLOBALS['DB_WE']);
 				if(!$id){
 					$new = new we_folder();
 					$new->Text = $elem;

@@ -119,7 +119,7 @@ body {
 .ygtvloading {
 	width: 16px;
 	height: 16px;
-	background: url(../../../../../../images/busy2.gif) 0 0 no-repeat;
+/*	background: url(../../../../../../images/busy2.gif) 0 0 no-repeat;*/
 }
 
 /* the style for the empty cells that are used for rendering the depth

@@ -31,16 +31,18 @@ class we_listview_document extends we_listview_base{
 	var $docType = ''; /* doctype string */
 	var $IDs = array(); /* array of ids with pages which are found */
 	var $casesensitive = false; /* set to true when a search should be case sensitive */
-	var $ClassName = __CLASS__;
 	var $contentTypes = '';
 	var $searchable = true;
 	var $condition = ''; /* condition string (like SQL) */
-	var $defaultCondition = '';
 	var $subfolders = true; // regard subfolders
 	var $customers = '';
 	var $languages = ''; //string of Languages, separated by ,
 	var $numorder = false; // #3846
 	public $triggerID = 0;
+	protected $joins = array();
+	protected $orderWhere = array();
+	protected $table = FILE_TABLE;
+	protected $group = '';
 
 	/**
 	 *
@@ -69,7 +71,6 @@ class we_listview_document extends we_listview_base{
 	 */
 	function __construct($name, $rows, $offset, $order, $desc, $docType, $cats, $catOr, $casesensitive, $workspaceID, $contentTypes, $cols, $searchable, $condition, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType, $subfolders, $customers, $id, $languages, $numorder, $hidedirindex, $triggerID){
 		parent::__construct($name, $rows, $offset, $order, $desc, $cats, $catOr, $workspaceID, $cols, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType, $id);
-
 		$this->docType = trim($docType);
 		$this->casesensitive = $casesensitive;
 		$this->contentTypes = $contentTypes;
@@ -77,6 +78,11 @@ class we_listview_document extends we_listview_base{
 		$this->subfolders = $subfolders;
 		$this->customers = $customers;
 		$this->customerArray = array();
+		if($this->table == VFILE_TABLE){
+			$id = $this->id = 0;
+		}
+
+		$this->group.=($this->group ? ',' : '') . FILE_TABLE . '.ID';
 
 		$calendar_select = $calendar_where = '';
 
@@ -84,8 +90,7 @@ class we_listview_document extends we_listview_base{
 			$this->fetchCalendar($condition, $calendar_select, $calendar_where);
 		}
 
-		$this->defaultCondition = $condition;
-		$this->condition = $condition ? : (isset($GLOBALS['we_lv_condition']) ? $GLOBALS['we_lv_condition'] : '');
+		$this->condition = $condition;
 
 		$cond_where = // #3763
 			($this->condition != '' && ($condition_sql = $this->makeConditionSql($this->condition)) ?
@@ -93,19 +98,11 @@ class we_listview_document extends we_listview_base{
 				'');
 
 		$this->languages = $languages ? : (isset($GLOBALS['we_lv_languages']) ? $GLOBALS['we_lv_languages'] : '');
+		$langArray = $this->languages ? array_filter(array_map('trim', explode(',', $this->languages))) : '';
 
-		if($this->languages != ''){
-			$where_lang = ' AND (';
-			$langArray = makeArrayFromCSV($this->languages);
-			$where_lang .= FILE_TABLE . '.Language = "" ';
-			for($i = 0; $i < count($langArray); $i++){
-				$where_lang .= ' OR ' . FILE_TABLE . '.Language = "' . $langArray[$i] . '" ';
-			}
-
-			$where_lang .= ' ) ';
-		} else {
-			$where_lang = '';
-		}
+		$where_lang = ($this->languages ?
+				' AND ' . FILE_TABLE . '.Language IN("","' . implode('","', array_map('escape_sql_query', $this->languages)) . '") ' :
+				'');
 
 		if(stripos($this->order, ' desc') !== false){//was #3849
 			$this->order = str_ireplace(' desc', '', $this->order);
@@ -118,7 +115,7 @@ class we_listview_document extends we_listview_base{
 		$this->triggerID = $triggerID;
 		$random = false;
 
-		$order = $joins = $orderWhere = array();
+		$order = array();
 		$tmpOrder = explode(',', $this->order);
 		foreach($tmpOrder as $ord){
 			switch(trim($ord)){
@@ -145,10 +142,13 @@ class we_listview_document extends we_listview_base{
 					$order[] = 'RANDOM';
 				case '':
 					break;
+				case 'VFILE':
+					$order[] = 'fl.position';
+					break;
 				default:
-					$cnt = count($order);
-					$joins[] = ' LEFT JOIN ' . LINK_TABLE . ' ll' . $cnt . ' ON ll' . $cnt . '.DID=' . FILE_TABLE . '.ID LEFT JOIN ' . CONTENT_TABLE . ' cc' . $cnt . ' ON ll' . $cnt . '.CID=cc' . $cnt . '.ID';
-					$orderWhere[] = 'll' . $cnt . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND ll' . $cnt . '.Name="' . $this->DB_WE->escape($ord) . '"';
+					$cnt = count($this->joins);
+					$this->joins[] = ' LEFT JOIN ' . LINK_TABLE . ' ll' . $cnt . ' ON ll' . $cnt . '.DID=' . FILE_TABLE . '.ID LEFT JOIN ' . CONTENT_TABLE . ' cc' . $cnt . ' ON ll' . $cnt . '.CID=cc' . $cnt . '.ID';
+					$this->orderWhere[] = 'll' . $cnt . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND ll' . $cnt . '.Name="' . $this->DB_WE->escape($ord) . '"';
 					if($this->search){
 						$order[] = 'ranking';
 					}
@@ -156,9 +156,9 @@ class we_listview_document extends we_listview_base{
 					break;
 			}
 		}
-		$orderstring = empty($order) ? '' : ' ORDER BY ' . implode(',', $order);
-		$joinstring = implode('', $joins);
-		$orderwhereString = implode(' AND ', $orderWhere) . (empty($orderWhere) ? '' : ' AND ');
+		$orderstring = $order ? ' ORDER BY ' . implode(',', $order) : '';
+		$joinstring = implode('', $this->joins);
+		$orderwhereString = implode(' AND ', $this->orderWhere) . ($this->orderWhere ? ' AND ' : '');
 
 		$sql_tail = ($this->cats || $this->categoryids ? we_category::getCatSQLTail($this->cats, FILE_TABLE, $this->catOr, $this->DB_WE, 'Category', $this->categoryids) : '');
 
@@ -174,12 +174,12 @@ class we_listview_document extends we_listview_base{
 			}
 		}
 		if(defined('CUSTOMER_FILTER_TABLE')){
-			$sql_tail .= we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this->ClassName, 0, $id);
+			$sql_tail .= we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this, 0, $id);
 		}
 
 		if($this->customers && $this->customers !== '*'){
 			foreach(explode(',', $this->customers) as $cid){
-				$customerData = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($cid), $this->DB_WE);
+				$customerData = array_merge(getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($cid), $this->DB_WE), we_customer_customer::getEncryptedFields());
 				$this->customerArray['cid_' . $customerData['ID']] = $customerData;
 			}
 
@@ -189,13 +189,13 @@ class we_listview_document extends we_listview_base{
 		$sql_tail .= $this->getIdQuery(FILE_TABLE . '.ID');
 
 		if($this->search){
-			if($this->workspaceID != ''){
-				$workspaces = makeArrayFromCSV($this->workspaceID);
+			if($this->workspaceID){
 				$cond = array();
-				foreach($workspaces as $wid){
-					$workspace = id_to_path($wid, FILE_TABLE, $this->DB_WE);
+				$workspaces = array_map('escape_sql_query', id_to_path(explode(',', $this->workspaceID), FILE_TABLE, $this->DB_WE));
+				$cond[] = INDEX_TABLE . '.Workspace IN("' . implode('","', $workspaces) . '")';
+
+				foreach($workspaces as $workspace){
 					$cond[] = INDEX_TABLE . '.Workspace LIKE "' . $workspace . '/%"';
-					$cond[] = INDEX_TABLE . '.Workspace="' . $this->DB_WE->escape($workspace) . '"';
 				}
 				$ws_where = ' AND (' . implode(' OR ', $cond) . ')';
 			}
@@ -214,30 +214,27 @@ class we_listview_document extends we_listview_base{
 						$klammer[] = sprintf("%s LIKE '%%%s%%'", $v, addslashes($bed));
 					}
 					if($not){
-						$bedingungen3_sql[] = ' NOT (' . implode($klammer, ' OR ') . ')';
+						$bedingungen_sql[] = ' NOT (' . implode(' OR ', $klammer) . ')';
 					} else {
-						$bedingungen_sql[] = '(' . implode($klammer, ' OR ') . ')';
+						$bedingungen_sql[] = '(' . implode(' OR ', $klammer) . ')';
 					}
 				} else {
 					$klammer = array();
 					foreach($spalten as $v){
 						$klammer[] = sprintf("%s LIKE '%%%s%%'", $v, addslashes($v1));
 					}
-					$bed2 = '(' . implode($klammer, ' OR ') . ')';
+					$bed2 = '(' . implode(' OR ', $klammer) . ')';
 					$ranking .= '-' . $bed2;
 					$bedingungen2_sql[] = $bed2;
 				}
 			}
 
-			if(isset($bedingungen_sql) && count($bedingungen_sql) > 0){
-				$bedingung_sql1 = ' ( ' . implode(' AND ', $bedingungen_sql) . (isset($bedingungen3_sql) && count($bedingungen3_sql) ? (' AND ' . implode(' AND ', $bedingungen3_sql)) : '') . ' ) ';
-			} else if(isset($bedingungen2_sql) && count($bedingungen2_sql) > 0){
-				$bedingung_sql2 = ' ( ( ' . implode(' OR ', $bedingungen2_sql) . (isset($bedingungen3_sql) && count($bedingungen3_sql) ? (' ) AND ' . implode(' AND ', $bedingungen3_sql)) : ' ) ') . ' ) ';
-			} else if(isset($bedingungen3_sql) && count($bedingungen3_sql) > 0){
-				$bedingung_sql2 = implode(' AND ', $bedingungen3_sql);
+			if(isset($bedingungen2_sql) && $bedingungen2_sql){
+				$bedingung_sql = ' ( ( ' . implode(' OR ', $bedingungen2_sql) . (isset($bedingungen_sql) && $bedingungen_sql ? (' ) AND ' . implode(' AND ', $bedingungen_sql)) : ' ) ') . ' ) ';
+			} else if(isset($bedingungen_sql) && $bedingungen_sql){
+				$bedingung_sql = implode(' AND ', $bedingungen_sql);
 			}
 
-			$bedingung_sql = (isset($bedingung_sql1) ? $bedingung_sql1 : $bedingung_sql2);
 
 			$extraSelect = ',' . ($random ? ' RAND() as RANDOM ' : $ranking . ' AS ranking ') . $calendar_select;
 			$limit = (($this->maxItemsPerPage > 0) ? (' LIMIT ' . abs($this->start) . ',' . abs($this->maxItemsPerPage)) : '');
@@ -246,12 +243,12 @@ class we_listview_document extends we_listview_base{
 				$workspaces = explode(',', $this->workspaceID);
 				if($this->subfolders){ // all entries with given parentIds
 					$cond = array();
-					foreach($workspaces as $wid){
-						$workspace = id_to_path($wid, FILE_TABLE, $this->DB_WE);
+					$workspacePaths = id_to_path($workspaces, FILE_TABLE, $this->DB_WE);
+					foreach($workspacePaths as $workspace){
 						$cond[] = 'Path LIKE "' . $this->DB_WE->escape($workspace) . '/%"';
 					}
-					$this->DB_WE->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ' . implode(' OR ', $cond));
-					$workspaces = array_unique(array_merge($workspaces, $this->DB_WE->getAll(true)));
+					$this->DB_WE->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE IsFolder=1 AND (' . implode(' OR ', $cond) . ')');
+					$workspaces = array_unique($workspaces + $this->DB_WE->getAll(true));
 				}
 				$ws_where = ' AND (ParentID IN (' . implode(', ', $workspaces) . '))';
 			}
@@ -269,8 +266,8 @@ class we_listview_document extends we_listview_base{
 			$ws_where . ' AND ' .
 			FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0 ' .
 			(isset($bedingung_sql) ? ' AND ' . $bedingung_sql : '') .
-			(($dt != "#NODOCTYPE#") ? (" AND " . FILE_TABLE . '.DocType=' . intval($dt)) : '') .
-			' ' . $sql_tail . $calendar_where . ' GROUP BY ID ' . $orderstring .
+			(($dt != "#NODOCTYPE#") ? (' AND ' . FILE_TABLE . '.DocType=' . intval($dt)) : '') .
+			' ' . $sql_tail . $calendar_where . ' GROUP BY ' . $this->group . ' ' . $orderstring .
 			$limit
 		);
 
@@ -289,8 +286,9 @@ class we_listview_document extends we_listview_base{
 		}
 		if($this->customers === '*' && $_idListArray){
 			$this->DB_WE->query('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . implode(',', array_unique($_idListArray)) . ')');
+			$encrypted = we_customer_customer::getEncryptedFields();
 			while($this->DB_WE->next_record(MYSQL_ASSOC)){
-				$this->customerArray['cid_' . $this->DB_WE->f('ID')] = $this->DB_WE->getRecord();
+				$this->customerArray['cid_' . $this->DB_WE->f('ID')] = array_merge($this->DB_WE->getRecord(), $encrypted);
 			}
 			unset($_idListArray);
 		}
@@ -312,7 +310,7 @@ class we_listview_document extends we_listview_base{
 			(($dt != '#NODOCTYPE#') ? (' AND ' . FILE_TABLE . '.DocType=' . intval($dt)) : '') . ' ' .
 			$sql_tail .
 			$calendar_where .
-			' GROUP BY ID ' . $orderstring);
+			' GROUP BY ' . $this->group . ' ' . $orderstring);
 
 		$this->anz_all = $this->DB_WE->num_rows();
 		if($calendar != ''){
@@ -324,7 +322,7 @@ class we_listview_document extends we_listview_base{
 		if($this->count < $this->anz){
 			$count = $this->count;
 			$fetch = false;
-			if($this->calendar_struct['calendar'] != ''){
+			if($this->calendar_struct['calendar']){
 				parent::next_record();
 				$count = $this->calendar_struct['count'];
 				$fetch = $this->calendar_struct['forceFetch'];
@@ -334,16 +332,16 @@ class we_listview_document extends we_listview_base{
 				$id = $this->IDs[$count];
 				$this->DB_WE->query('SELECT l.Name,IF(c.BDID!=0,c.BDID,c.Dat) AS data FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.DID=' . intval($id) . ' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
 				$this->Record = $this->DB_WE->getAllFirst(false);
-				$tmp = getHash('SELECT ID,ParentID,Text,Icon,IsFolder,ContentType,CreationDate,ModDate,Path,TemplateID,Filename,Extension,IsDynamic,IsSearchable,DocType,ClassName,Category,Published,CreatorID,ModifierID,RestrictOwners,Owners,OwnersReadOnly,Language,WebUserID,InGlossar FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->DB_WE, MYSQL_ASSOC);
+				$tmp = getHash('SELECT ID,ParentID,Text,IsFolder,ContentType,CreationDate,ModDate,Path,TemplateID,Filename,Extension,IsDynamic,IsSearchable,DocType,ClassName,Category,Published,CreatorID,ModifierID,RestrictOwners,Owners,OwnersReadOnly,Language,WebUserID,InGlossar FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->DB_WE, MYSQL_ASSOC);
 				foreach($tmp as $key => $val){
 					$this->Record['wedoc_' . $key] = $val;
 				}
 
-				$this->Record['WE_SHOPVARIANTS'] = 0;
-				if(defined('WE_SHOP_VARIANTS_ELEMENT_NAME') && isset($this->Record[WE_SHOP_VARIANTS_ELEMENT_NAME]) && $this->Record[WE_SHOP_VARIANTS_ELEMENT_NAME]){
-					$ShopVariants = is_string($this->Record[WE_SHOP_VARIANTS_ELEMENT_NAME]) && $this->Record[WE_SHOP_VARIANTS_ELEMENT_NAME]{0} == 'a' ? unserialize($this->Record[WE_SHOP_VARIANTS_ELEMENT_NAME]) : array();
-					if(is_array($ShopVariants) && count($ShopVariants) > 0){
-						$this->Record['WE_SHOPVARIANTS'] = count($ShopVariants);
+				$this->Record['WE_SHOPVARIANTS'] = 0; //check this for global variants
+				if(!empty($this->Record[we_base_constants::WE_VARIANTS_ELEMENT_NAME])){
+					$variants = is_string($this->Record[we_base_constants::WE_VARIANTS_ELEMENT_NAME]) ? we_unserialize($this->Record[we_base_constants::WE_VARIANTS_ELEMENT_NAME]) : array();
+					if(is_array($variants) && count($variants) > 0){
+						$this->Record['WE_SHOPVARIANTS'] = count($variants);
 					}
 				}
 
@@ -363,24 +361,19 @@ class we_listview_document extends we_listview_base{
 			}
 
 			return true;
-		} else {
-			$this->stop_next_row = $this->shouldPrintEndTR();
-			if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
-				$this->Record = array();
-				$this->DB_WE->Record = array(
-					'WE_PATH' => '',
-					'WE_TEXT' => '',
-					'WE_ID' => '',
-				);
-				$this->count++;
-				return true;
-			}
+		}
+		$this->stop_next_row = $this->shouldPrintEndTR();
+		if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
+			$this->Record = array();
+			$this->DB_WE->Record = array(
+				'WE_PATH' => '',
+				'WE_TEXT' => '',
+				'WE_ID' => '',
+			);
+			$this->count++;
+			return true;
 		}
 		return false;
-	}
-
-	function f($key){
-		return isset($this->Record[$key]) ? $this->Record[$key] : '';
 	}
 
 	function makeConditionSql($cond){

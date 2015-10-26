@@ -31,5 +31,5 @@
  * @return	boolean
  */
 function we_tag_ifHasShopVariants(){
-	return (defined('SHOP_TABLE') && we_shop_variants::getNumberOfVariants($GLOBALS['we_doc']) > 0);
+	return (we_base_variants::getNumberOfVariants($GLOBALS['we_doc']) > 0);
 }

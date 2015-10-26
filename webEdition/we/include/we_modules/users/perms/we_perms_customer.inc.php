@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -32,7 +31,10 @@ $perm_defaults[$perm_group_name] = array(
 	//'CUSTOMER_PASSWORD_VISIBLE' => 0,
 	'CUSTOMER_AUTOLOGINID_VISIBLE' => 0,
 	'CAN_EDIT_CUSTOMERFILTER' => 1,
-	'CAN_CHANGE_DOCS_CUSTOMER' => 1);
+	'CAN_CHANGE_DOCS_CUSTOMER' => 1,
+	'CUSTOMER_DECRYPT_FIELD' => 1,
+	'CUSTOMER_CHANGE_ENCRYPTED_FIELD' => 1,
+);
 
 $perm_values[$perm_group_name] = array_keys($perm_defaults[$perm_group_name]);
 

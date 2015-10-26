@@ -35,6 +35,26 @@ function findInclude($cmd){
 	switch($cmd){
 		case ''://empty command
 			exit();
+		case 'we_selector_delete':
+			if(isset($_SESSION['weS']['seemForOpenDelSelector']['Table'])){
+				unset($_SESSION['weS']['seemForOpenDelSelector']['Table']);
+			}
+		//no break
+		case 'we_selector_file':
+		case 'we_selector_category':
+		case 'we_selector_document':
+		case 'we_selector_image':
+		case 'we_selector_directory':
+			return 'selectors.inc.php';
+		case 'we_fileupload_editor':
+			return 'we_editors/we_fileupload.inc.php';
+		case 'backupLog':
+			return 'we_exim/backup/backuplog.inc.php';
+		case 'newMsg':
+			return 'newMsg.inc.php';
+		case 'phpinfo':
+		case 'sysinfo':
+			return 'sysinfo.inc.php';
 		case 'versions_preview':
 			return 'we_versions/weVersionsPreview.inc.php';
 		case 'versions_wizard':
@@ -53,13 +73,8 @@ function findInclude($cmd){
 		case 'siteImport':
 		case 'updateSiteImportTable':
 			return 'we_siteimport.inc.php';
-		case 'openSelector':
-		case 'openDirselector':
-		case 'openDocselector':
-		case 'openCatselector':
-		case 'openDelSelector':
-		case 'openImgselector':
-			return 'we_fs.inc.php';
+		case 'loadTree':
+			return 'loadTree.inc.php';
 		case 'open_tag_wizzard':
 			return 'weTagWizard/we_tag_wizzard.inc.php';
 		case 'change_passwd':
@@ -94,8 +109,10 @@ function findInclude($cmd){
 			return 'we_editors/we_preferences_frameset.inc.php';
 		case 'editThumbs':
 			return 'we_editors/we_thumbnails.inc.php';
+		case 'editNewCollection':
+			return 'we_editors/we_newCollection.inc.php';
 		case 'editMetadataFields':
-			return 'we_editors/we_metadata_fields/edit_metadatafields.inc.php';
+			return 'we_editors/edit_metadatafields.inc.php';
 		case 'show':
 			$GLOBALS['FROM_WE_SHOW_DOC'] = true;
 			return 'we_showDocument.inc.php';
@@ -134,7 +151,6 @@ function findInclude($cmd){
 		case 'up_entry_at_list':
 		case 'down_link_at_list':
 		case 'up_link_at_list':
-		case 'edit_list':
 		case 'delete_list':
 		case 'add_entry_to_list':
 		case 'add_link_to_linklist':
@@ -183,38 +199,38 @@ function findInclude($cmd){
 			return (we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 1) ? 'we_delete.inc.php' : 'home.inc.php');
 		case 'move':
 			return (we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 1) ? 'we_move.inc.php' : 'home.inc.php');
+		case 'addToCollection':
+			return (we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 1) ? 'we_addToCollection.inc.php' : 'home.inc.php');
 		case 'do_delete':
 		case 'delete_single_document':
 			return 'we_delete.inc.php';
 		case 'do_move':
 		case 'move_single_document':
 			return 'we_move.inc.php';
-		case 'editor_uploadFile':
-			return 'we_editors/uploadFile.inc.php';
-		case 'do_upload_file':
-			return 'we_fileupload.inc.php';
+		case 'do_addToCollection':
+			return 'we_addToCollection.inc.php';
 		case 'show_binaryDoc':
 			return 'we_editors/we_showBinaryDoc.inc.php';
 		case 'pref_ext_changed':
 			return 'we_prefs.inc.php';
 		case 'exit_doc_question':
-			return 'we_templates/we_exit_doc_question.inc.php';
+			return 'we_editors/we_exit_doc_question.inc.php';
 		case 'exit_multi_doc_question':
-			return 'we_templates/we_exit_multi_doc_question.inc.php';
+			return 'we_editors/we_exit_multi_doc_question.inc.php';
 		case 'browse_server':
 			return 'we_editors/we_sfileselector_frameset.inc.php';
 		case 'make_backup':
-			return 'we_editors/we_make_backup.php';
+			return 'we_editors/we_make_backup.inc.php';
 		case 'recover_backup':
-			return 'we_editors/we_recover_backup.php';
+			return 'we_editors/we_recover_backup.inc.php';
+		case 'messageConsole':
+			return 'jsMessageConsole/messageConsole.inc.php';
 		case 'import_docs':
 			return 'we_editors/we_import_documents.inc.php';
-		case 'browse_users':
-			return 'we_modules/users/browse_users_frameset.inc.php';
 		case 'start_multi_editor':
 			return 'multiEditor/start_multi_editor.inc.php';
 		case 'import':
-			return 'we_import/we_wiz_frameset.php';
+			return 'we_import/we_import_frameset.inc.php';
 		case 'export':
 			return 'we_modules/export/export_frameset.php';
 		case 'copyFolder':
@@ -236,14 +252,15 @@ function findInclude($cmd){
 			return 'wysiwygWindow.inc.php';
 		//  stuff about accessibility/validation
 		case 'checkDocument':
-			return 'accessibility/checkDocument.inc.php'; //  Here request is performed
+			return 'we_editors/checkDocument.inc.php'; //  Here request is performed
 		case 'customValidationService':
-			return 'we_templates/customizeValidation.inc.php'; //  edit parameters
+			return 'we_editors/customizeValidation.inc.php'; //  edit parameters
 
 		default:
 			//	In we.inc.php all names of the active modules have already been searched
 //	so we only have to use the array $GLOBALS['_we_active_integrated_modules']
-			list($m) = explode('_', $cmd);
+			list($m, $m2) = explode('_', $cmd);
+			$m = ($m == 'we' ? $m2 : $m);
 			if(in_array($m, $GLOBALS['_we_active_integrated_modules'])){
 				if(($INCLUDE = include(WE_MODULES_PATH . $m . '/we_cmd_' . $m . '.inc.php'))){
 					return $INCLUDE;
@@ -265,7 +282,7 @@ function findInclude($cmd){
 			}
 			//	This is ONLY used in the edit-mode of the documents.
 			//	This statement prevents the page from being reloaded.
-			echo we_html_element::jsElement('parent.openedWithWE = 1;');
+			echo we_html_element::jsElement('parent.openedWithWE=true;');
 			t_e('error', 'command \'' . $cmd . '\' not known!');
 			exit('command \'' . $cmd . '\' not known!');
 	}
@@ -277,12 +294,10 @@ if(($inc = findInclude($cmd))){
 	//  reloaded. All entries in this array represent values for we_cmd[0]
 	//  when the javascript command shall NOT be inserted (p.ex while saving the file.)
 	//	This is ONLY used in the edit-mode of the documents.
-	$cmds_no_js = array('siteImport', 'mod_home', 'import_images', 'getWeDocFromID', 'rebuild', 'open_url_in_editor', 'open_form_in_editor', 'users_unlock', 'edit_document', 'load_editor', 'load_edit_header', 'load_edit_footer', 'exchange', 'validateDocument', 'show', 'editor_uploadFile', 'do_upload_file');
+	$cmds_no_js = array('siteImport', 'mod_home', 'import_images', 'getWeDocFromID', 'rebuild', 'open_url_in_editor', 'open_form_in_editor', 'users_unlock', 'edit_document', 'load_editor', 'load_edit_header', 'load_edit_footer', 'exchange', 'validateDocument', 'show', 'we_fileupload_editor');
 
 	require((substr($inc, 0, 5) === 'apps/' ? WEBEDITION_PATH : WE_INCLUDES_PATH) . $inc);
 	//  This statement prevents the page from being reloaded
-	echo (!in_array($cmd, $cmds_no_js) ? we_html_element::jsElement('parent.openedWithWE = 1;') : '') .
-	(in_array($cmd, array('edit_document', 'switch_edit_page', 'load_editor')) ? we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') : '');
+	echo (!in_array($cmd, $cmds_no_js) ? we_html_element::jsElement('parent.openedWithWE=true;') : '');
+	//.	(in_array($cmd, array('edit_document', 'switch_edit_page', 'load_editor')) ? we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') : '');
 }
-
-exit();

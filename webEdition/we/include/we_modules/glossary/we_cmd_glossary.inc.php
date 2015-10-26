@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -33,8 +32,9 @@ switch($cmd){
 	case 'glossary_view_folder':
 	case 'glossary_view_type':
 	case 'glossary_view_exception':
-		$GLOBALS['mod'] = 'glossary';
-		return 'we_modules/show_frameset.php';
+		$_REQUEST['mod'] = 'glossary';
+		$_REQUEST['pnt'] = 'show_frameset';
+		return '../../we_showMod.php';
 
 	case 'glossary_settings':
 		return 'we_modules/glossary/edit_glossary_settings_frameset.php';

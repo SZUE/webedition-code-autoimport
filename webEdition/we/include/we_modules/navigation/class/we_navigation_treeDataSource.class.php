@@ -28,7 +28,7 @@ class we_navigation_treeDataSource extends we_tool_treeDataSource{
 		parent::__construct($ds);
 	}
 
-	function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,Icon,IsFolder,Ordn,Depended,Charset', $addWhere = '', $addOrderBy = ''){
+	function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,IsFolder,Ordn,Depended,Charset', $addWhere = '', $addOrderBy = ''){
 		$db = new DB_WE();
 		$table = $this->SourceName;
 
@@ -48,7 +48,6 @@ class we_navigation_treeDataSource extends we_tool_treeDataSource{
 		$prevoffset = max(0, $offset - $segment);
 		if($offset && $segment){
 			$items[] = array(
-				'icon' => 'arrowup.gif',
 				'id' => 'prev_' . $ParentID,
 				'parentid' => $ParentID,
 				'text' => 'display (' . $prevoffset . '-' . $offset . ')',
@@ -59,7 +58,7 @@ class we_navigation_treeDataSource extends we_tool_treeDataSource{
 				'published' => 0,
 				'disabled' => 0,
 				'tooltip' => '',
-				'offset' => $prevoffset
+				'offset' => $prevoffset,
 			);
 		}
 
@@ -67,25 +66,23 @@ class we_navigation_treeDataSource extends we_tool_treeDataSource{
 
 		$db->query('SELECT ' . $elem . ', abs(text) as Nr, (text REGEXP "^[0-9]") AS isNr FROM ' . $table . ' WHERE ' . $where . ' ORDER BY Ordn, isNr DESC,Nr,Text ' . ($segment ? 'LIMIT ' . $offset . ',' . $segment : ''));
 
-		while($db->next_record()){
-
+		while($db->next_record(MYSQL_ASSOC)){
 			$typ = array(
 				'typ' => ($db->f('IsFolder') == 1 ? 'group' : 'item'),
 				'open' => 0,
 				'disabled' => 0,
-				'tooltip' => $db->f('ID'),
+				'tooltip' => intval($db->f('ID')),
 				'offset' => $offset,
-				'order' => $db->f('Ordn'),
+				'order' => intval($db->f('Ordn')),
 				'published' => $db->f('Depended') ? 0 : 1,
 				'disabled' => in_array($db->f('Path'), $parentpaths) ? 1 : 0,
+				'contentType' => ($db->f('IsFolder') == 1 ? 'folder' : 'we/navigation'),
 			);
 
 			$fileds = array();
 
 			foreach($db->Record as $k => $v){
-				if(!is_numeric($k)){
-					$fileds[strtolower($k)] = $v;
-				}
+				$fileds[strtolower($k)] = $v;
 			}
 
 			if($db->f('IsFolder') == 0){
@@ -112,11 +109,10 @@ class we_navigation_treeDataSource extends we_tool_treeDataSource{
 			$items[] = array_merge($fileds, $typ);
 		}
 
-		$total = f('SELECT COUNT(1) as total FROM ' . $table . ' WHERE ' . $where, 'total', $db);
+		$total = f('SELECT COUNT(1) FROM ' . $table . ' WHERE ' . $where, '', $db);
 		$nextoffset = $offset + $segment;
 		if($segment && ($total > $nextoffset)){
 			$items[] = array(
-				'icon' => 'arrowdown.gif',
 				'id' => 'next_' . $ParentID,
 				'parentid' => $ParentID,
 				'text' => 'display (' . $nextoffset . '-' . ($nextoffset + $segment) . ')',

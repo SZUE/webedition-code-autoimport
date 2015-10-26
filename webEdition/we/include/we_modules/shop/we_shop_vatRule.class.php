@@ -139,14 +139,14 @@ class we_shop_vatRule{
 	function save(){
 		$DB_WE = $GLOBALS['DB_WE'];
 
-		if($DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' set strFelder="' . $DB_WE->escape(serialize($this)) . '", strDateiname="weShopVatRule"')){
+		if($DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' set strFelder="' . $DB_WE->escape(we_serialize($this)) . '", strDateiname="weShopVatRule"')){
 			$strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"', '', $DB_WE);
 			if($strFelder !== ''){
 				$DB_WE->next_record();
-				$CLFields = unserialize($strFelder);
+				$CLFields = we_unserialize($strFelder);
 				$CLFields['stateField'] = $this->stateField;
 				$CLFields['stateFieldIsISO'] = $this->stateFieldIsISO;
-				$DB_WE->query('UPDATE ' . WE_SHOP_PREFS_TABLE . " SET strFelder='" . $DB_WE->escape(serialize($CLFields)) . "' WHERE strDateiname ='shop_CountryLanguage'");
+				$DB_WE->query('UPDATE ' . WE_SHOP_PREFS_TABLE . " SET strFelder='" . $DB_WE->escape(we_serialize($CLFields)) . "' WHERE strDateiname ='shop_CountryLanguage'");
 			}
 
 			return true;

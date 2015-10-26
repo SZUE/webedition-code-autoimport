@@ -91,16 +91,16 @@ class we_backup_table{
 
 			$_defalut_for_type = stripos($element["Type"], 'int') !== false || stripos($element["Type"], 'double') !== false || stripos($element["Type"], 'float') !== false ? 0 : "''";
 
-			$_default_value = ("DEFAULT " . ((isset($element["Default"]) && $element["Default"] != "") ? ("'" . $element["Default"] . "'") : ((isset($element["Null"]) && $element["Null"] === "YES") ? "NULL" : $_defalut_for_type)));
+			$_default_value = ("DEFAULT " . ((!empty($element["Default"])) ? ("'" . $element["Default"] . "'") : ((isset($element["Null"]) && $element["Null"] === "YES") ? "NULL" : $_defalut_for_type)));
 
 			$cols[$element["Field"]] = $element["Type"] . " " . ((isset($element["Null"]) && $element["Null"] === "YES") ? "NULL " : "NOT NULL ") . ((isset($element["Extra"]) && strtolower($element["Extra"]) != "auto_increment") ? $_default_value : "") . " " . ((isset($element["Extra"])) ? $element["Extra"] : '');
 
-			if(isset($element["Key"]) && $element["Key"] && $element["Key"] === "PRI"){
+			if(!empty($element["Key"]) && $element["Key"] === "PRI"){
 				$keys[] = "PRIMARY KEY (" . $element["Field"] . ")";
 			}
 		}
 
-		if(!empty($cols)){
+		if($cols){
 			return $this->db->addTable($this->table, $cols, $keys);
 		}
 

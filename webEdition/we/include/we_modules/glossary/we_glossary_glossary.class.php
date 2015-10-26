@@ -56,13 +56,6 @@ class we_glossary_glossary extends weModelBase{
 	var $IsFolder = false;
 
 	/**
-	 * Icon of the item
-	 *
-	 * @var string
-	 */
-	var $Icon = "";
-
-	/**
 	 * Text of the item
 	 *
 	 * @var string
@@ -216,7 +209,7 @@ class we_glossary_glossary extends weModelBase{
 			);
 
 			if($GLOBALS['DB_WE']->f("Type") != self::TYPE_FOREIGNWORD){
-				$temp = unserialize($GLOBALS['DB_WE']->f("Attributes"));
+				$temp = we_unserialize($GLOBALS['DB_WE']->f("Attributes"));
 				$Item['Lang'] = (isset($temp['lang']) ? $temp['lang'] : '');
 			} else {
 				$Item['Lang'] = '';
@@ -241,7 +234,7 @@ class we_glossary_glossary extends weModelBase{
 
 		// serialize all needed attributes
 		foreach($this->_Serialized as $Attribute){
-			$this->$Attribute = unserialize($this->$Attribute);
+			$this->$Attribute = we_unserialize($this->$Attribute);
 		}
 	}
 
@@ -250,13 +243,11 @@ class we_glossary_glossary extends weModelBase{
 	 *
 	 */
 	function save(){
-		$this->Icon = ($this->IsFolder == 1 ? we_base_ContentTypes::FOLDER_ICON : 'prog.gif');
-
 		$this->setPath();
 
 		// serialize all needed attributes
 		foreach($this->_Serialized as $Attribute){
-			$this->$Attribute = serialize($this->$Attribute);
+			$this->$Attribute = we_serialize($this->$Attribute);
 		}
 
 		if(!$this->ID){
@@ -273,12 +264,28 @@ class we_glossary_glossary extends weModelBase{
 			$this->ID = $this->db->getInsertId();
 		}
 
+		if($retVal){
+			$this->registerMediaLinks();
+		}
+
 		// unserialize all needed attributes
 		foreach($this->_Serialized as $Attribute){
-			$this->$Attribute = unserialize($this->$Attribute);
+			$this->$Attribute = we_unserialize($this->$Attribute);
 		}
 
 		return $retVal;
+	}
+
+	function registerMediaLinks(){
+		$this->unregisterMediaLinks();
+		if($this->Type === 'link' && !intval($this->IsFolder)){
+			$attribs = is_array($this->Attributes) ? $this->Attributes : we_unserialize($this->Attributes);
+			if(!empty($attribs) && $attribs['mode'] === 'intern' && $attribs['InternLinkID']){
+				$this->MediaLinks[] = $attribs['InternLinkID'];
+			}
+		}
+
+		parent::registerMediaLinks();
 	}
 
 	/**
@@ -380,7 +387,7 @@ class we_glossary_glossary extends weModelBase{
 	 * @return boolean
 	 */
 	function saveField($Name){
-		$value = (in_array($Name, $this->_Serialized) ? unserialize($this->$Name) : $this->$Name);
+		$value = (in_array($Name, $this->_Serialized) ? we_unserialize($this->$Name) : $this->$Name);
 		$this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . $this->db->escape($Name) . '="' . $this->db->escape($value) . '" WHERE ID=' . intval($this->ID));
 
 		return $this->db->affected_rows();

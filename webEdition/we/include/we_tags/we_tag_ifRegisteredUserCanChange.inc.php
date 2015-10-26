@@ -26,10 +26,10 @@ function we_tag_ifRegisteredUserCanChange($attribs){
 	$admin = weTag_getAttribute('admin', $attribs, '', we_base_request::STRING);
 	$userid = weTag_getAttribute('userid', $attribs, '', we_base_request::STRING); // deprecated  use protected=true instead
 	$protected = weTag_getAttribute('protected', $attribs, false, we_base_request::BOOL);
-	if(!(isset($_SESSION['webuser']) && isset($_SESSION['webuser']['ID']) && isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'])){
+	if(!(isset($_SESSION['webuser']) && isset($_SESSION['webuser']['ID']) && !empty($_SESSION['webuser']['registered']))){
 		return false;
 	}
-	if($admin && (isset($_SESSION['webuser'][$admin]) && $_SESSION['webuser'][$admin])){
+	if($admin && (!empty($_SESSION['webuser'][$admin]))){
 		return true;
 	}
 

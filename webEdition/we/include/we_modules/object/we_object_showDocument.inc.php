@@ -21,9 +21,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-if(str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == str_replace(dirname(__FILE__), '', __FILE__)){
-	exit();
-}
 
 if(!defined('NO_SESS')){
 	define('NO_SESS', 1);
@@ -204,6 +201,7 @@ if(!$tid){
 		$tid = $tids[0];
 	}
 }
+
 $tmplPath = $tid ? preg_replace('/.tmpl$/i', '.php', f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($tid))) : '';
 
 if(!$tid || !$tmplPath || !is_readable(TEMPLATES_PATH . $tmplPath)){
@@ -220,14 +218,14 @@ if(!$tid || !$tmplPath || !is_readable(TEMPLATES_PATH . $tmplPath)){
 }
 
 
-if((!defined('WE_CONTENT_TYPE_SET')) && isset($GLOBALS['we_doc']->Charset) && $GLOBALS['we_doc']->Charset){ //	send charset which might be determined in template
+if((!defined('WE_CONTENT_TYPE_SET')) && !empty($GLOBALS['we_doc']->Charset)){ //	send charset which might be determined in template
 	define('WE_CONTENT_TYPE_SET', 1);
 	//	@ -> to aware of unproper use of this element, f. ex in include-File
 	we_html_tools::headerCtCharset('text/html', $GLOBALS['we_doc']->Charset);
 }
 
 //	If in webEdition, parse the document !!!!
-if(isset($_SESSION['weS']['we_data'][$we_transaction]['0']['InWebEdition']) && $_SESSION['weS']['we_data'][$we_transaction]['0']['InWebEdition']){ //	In webEdition, parse the file.
+if(!empty($_SESSION['weS']['we_data'][$we_transaction]['0']['InWebEdition'])){ //	In webEdition, parse the file.
 	ob_start();
 	include(TEMPLATES_PATH . $tmplPath);
 

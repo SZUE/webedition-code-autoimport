@@ -63,7 +63,7 @@ abstract class we_app_service_AbstractCmd extends we_service_AbstractService{
 
 		$newBeforeSaving = $model->ID == 0;
 		// check if user has the permissions to create new entries
-		if($model->ID == 0 && !we_core_Permissions::hasPerm('NEW_APP_' . strtoupper($appName))){
+		if($model->ID == 0 && !permissionhandler::hasPerm('NEW_APP_' . strtoupper($appName))){
 			$ex = new we_service_Exception($translate->_('You do not have the permission to create new entries or folders!'));
 			$ex->setType('warning');
 			throw $ex;

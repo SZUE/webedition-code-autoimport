@@ -33,7 +33,7 @@ $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"
 $messaging->init($_SESSION['weS']['we_data'][$transaction]);
 echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[folder_settings]'));
 ?>
-<script type="text/javascript"><!--
+<script><!--
 <?php
 $mode = we_base_request::_(we_base_request::STRING, 'mode');
 if(we_base_request::_(we_base_request::STRING, 'mcmd') === 'save_folder_settings'){
@@ -50,7 +50,7 @@ if(we_base_request::_(we_base_request::STRING, 'mcmd') === 'save_folder_settings
 
 		$messaging->saveInSession($_SESSION['weS']['we_data'][$transaction]);
 		?>
-		top.content.cmd.location = '<?php echo WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&we_transaction=<?php echo $transaction ?>&mcmd=save_folder_settings&name=<?php echo $foldername; ?>&id=<?php echo $ID ?>&mode=<?php echo $mode; ?>&parent_id=<?php echo $parentfolder; ?>&type=<?php echo $types; ?>';
+		top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=messaging&pnt=cmd&we_transaction=<?php echo $transaction ?>&mcmd=save_folder_settings&name=<?php echo $foldername; ?>&id=<?php echo $ID ?>&mode=<?php echo $mode; ?>&parent_id=<?php echo $parentfolder; ?>&type=<?php echo $types; ?>';
 			top.content.we_cmd('messaging_start_view', '', '<?php echo we_base_request::_(we_base_request::TABLE, 'table', ""); ?>');
 			//-->
 		</script>
@@ -131,7 +131,7 @@ echo STYLESHEET;
 	</tr>
       </table>';
 
-		$_btn_tbl = we_html_button::position_yes_no_cancel(we_html_button::create_button("save", "javascript:save()"), "", we_html_button::create_button("cancel", "javascript:top.content.we_cmd('messaging_start_view','', '" . we_base_request::_(we_base_request::TABLE, "table", "") . "')")
+		$_btn_tbl = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, "javascript:save()"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:top.content.we_cmd('messaging_start_view','', '" . we_base_request::_(we_base_request::TABLE, "table", "") . "')")
 			)
 		;
 		echo we_html_tools::htmlDialogLayout($input_tbl, $heading, $_btn_tbl, "100%", 30, "", "none");

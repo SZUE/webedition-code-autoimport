@@ -1,8 +1,9 @@
+###UPDATEDROPCOL(Icon,###TBLPREFIX###tblglossary)###
+/* query separator */
 CREATE TABLE ###TBLPREFIX###tblglossary (
   ID INT(10) unsigned NOT NULL auto_increment,
   Path VARCHAR(255) DEFAULT NULL,
-  IsFolder tinyINT(1) unsigned DEFAULT NULL,
-  Icon enum('folder.gif','prog.gif') NOT NULL,
+  IsFolder tinyint(1) unsigned DEFAULT NULL,
   `Text` VARCHAR(255) NOT NULL DEFAULT '',
   `Type` enum('abbreviation','acronym','foreignword','link','textreplacement') NOT NULL DEFAULT 'abbreviation',
   Language CHAR(5) NOT NULL DEFAULT '',

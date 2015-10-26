@@ -22,92 +22,71 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
 */
 
-.weBtn, .weBtnLeft, .weBtnMiddle, .weBtnRight, .weBtnClicked, .weBtnLeftClicked, .weBtnMiddleClicked, .weBtnRightClicked, .weBtnDisabled, .weBtnLeftDisabled, .weBtnMiddleDisabled, .weBtnRightDisabled {
-	height:22px ! important;
-}
-
-.weBtn,.weBtnDisabled,.weBtnClicked{
-	width:auto;
-	background-color:transparent ! important;
-}
-
-.weBtnLeft,.weBtnLeftDisabled,.weBtnLeftClicked{
-	width:6px ! important;
-	background-position: top left;
-}
-
-.weBtnMiddle,.weBtnMiddleDisabled,.weBtnMiddleClicked{
-	width:auto;
-	background-position: top;
-}
-
-.weBtnRight,.weBtnRightDisabled,.weBtnRightClicked{
-	width:6px ! important;
-	background-position: top right;
-}
-
 .weBtn{
+	height:22px ! important;
+	width:auto;
+	background-color:darkgrey ! important;
 	cursor:pointer;
 	border-width: 0px;
 	border-collapse: collapse;
 	padding: 0px;
 }
 
-.weBtnLeft{
-	background-image: url(../images/button/btn_normal_left.gif);
-}
-
-.weBtnImage{
-	border-width: 0px;
+button.weBtn img{
+	border: none;
 	margin: 0px;
 	padding:0px;
 	display:block;
 }
 
-
-.weBtnLeft, .weBtnMiddle, .weBtnRight, .weBtnMiddleDisabled, .weBtnMiddleClicked, .weBtnRightClicked, .weBtnRightDisabled,.weBtnLeftDisabled,.weBtnLeftClicked{
-	border: 0px ! important;
-	margin: 0px ! important;
-	padding: 0px ! important;
-}
-
-.weBtnMiddle,.weBtnMiddleClicked,.weBtnMiddleDisabled{
+button.weBtn{
+	color:black;
+	border-radius: 4px;
+	background: linear-gradient(to bottom, #F3F7FC, #E9F0FB 50%, #DCE8F8 50%,#D8E4F9);
 	font-family: verdana, arial, helvetica;
-	background-repeat: repeat-x;
 	font-size: 10px ! important;
 	text-align: center;
-	padding-top: 1px ! important;
-}
-.weBtnMiddle{
-	background-image: url(../images/button/btn_normal_middle.gif);
-	color: black ! important;
-}
-.weBtnRight{
-	background-image: url(../images/button/btn_normal_right.gif);
-}
-.weBtnLeftClicked{
-	background-image: url(../images/button/btn_clicked_left.gif);
-}
-.weBtnMiddleClicked{
-	background-image: url(../images/button/btn_clicked_middle.gif);
-	color: black ! important;
-}
-.weBtnRightClicked{
-	background-image: url(../images/button/btn_clicked_right.gif);
-}
-.weBtnLeftDisabled{
-	background-image: url(../images/button/btn_disabled_left.gif);
-}
-.weBtnMiddleDisabled{
-	background-image: url(../images/button/btn_disabled_middle.gif);
-	color: grey ! important;
-}
-.weBtnRightDisabled{
-	background-image: url(../images/button/btn_disabled_right.gif);
+	padding-left: 0.5em !important;
+	padding-right: 0.5em !important;
+	box-shadow: 2px 2px 2px #555555;
+	margin-left:0.5em;
+	margin-right:0.5em;
+	margin-bottom: 1ex;
+	min-width: 2.5em;
 }
 
-.weBtnDisabled{
-	cursor:default;
-	border-width: 0px;
+button.noMarginLeft {
+	margin-left:0;
 }
 
+button.multiicon{
+	min-width: 4em;
+}
+
+button.weBtn:active{
+	background: linear-gradient(to bottom, #EDF4FC, #DCE7F9 50%, #C7DAF4 50%,#C1D4F5);
+	box-shadow: none;
+}
+
+button.weBtn[disabled]{
+	color:grey !important;
+	background: linear-gradient(to bottom, #F4F4F4, #E9E9E9 50%, #DEDEDE 50%,#D9D9D9);
+}
+
+button.weBtn i.fa-moreicon {
+	padding-left: 0.3em;
+}
+
+i.fa-ban{
+	color:red;
+}
+button i.fa-folder{
+	color:#006db8;
+}
+i.fa-ok{
+	color:green;
+}
+
+i.fa-cancel{
+	color:red;
+}

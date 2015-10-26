@@ -29,8 +29,6 @@
  *
  */
 class we_banner_listview extends we_listview_base{
-
-	var $ClassName = __CLASS__;
 	var $allviews = 0;
 	var $allclicks = 0;
 	var $UseFilter = 0;
@@ -66,7 +64,7 @@ class we_banner_listview extends we_listview_base{
 		$tempArray2 = array();
 
 		$ord = stripos($this->order, "views") === 0 ? 'ORDER BY ' . $this->order : '';
-		$this->DB_WE->query('SELECT DID, COUNT(ID)  AS views FROM ' . BANNER_VIEWS_TABLE . ' WHERE DID!=0 AND (Page="" OR page="0") AND ID=' . intval($this->bannerID) . ' ' . ($this->UseFilter ? ' AND (Timestamp BETWEEN ' . intval($this->FilterDate) . ' AND ' . intval($this->FilterDateEnd) . ')' : '') . ' GROUP  BY DID');
+		$this->DB_WE->query('SELECT DID, COUNT(ID) AS views FROM ' . BANNER_VIEWS_TABLE . ' WHERE DID!=0 AND (Page="" OR page="0") AND ID=' . intval($this->bannerID) . ' ' . ($this->UseFilter ? ' AND (Timestamp BETWEEN ' . intval($this->FilterDate) . ' AND ' . intval($this->FilterDateEnd) . ')' : '') . ' GROUP  BY DID');
 		while($this->DB_WE->next_record()){
 			$tempArray[$this->DB_WE->f("DID")] = array(
 				"views" => $this->DB_WE->f("views")
@@ -80,7 +78,7 @@ class we_banner_listview extends we_listview_base{
 			$this->allclicks += intval($this->DB_WE->f("clicks"));
 		}
 
-		$this->DB_WE->query('SELECT Page,COUNT(ID) AS views FROM ' . BANNER_VIEWS_TABLE . " WHERE  Page!='' AND Page!='0' AND ID=" . intval($this->bannerID) . ' ' . ($this->UseFilter ? ' AND (Timestamp>=' . intval($this->FilterDate) . ' AND Timestamp<' . intval($this->FilterDateEnd) . ')' : '') . ' GROUP  BY Page');
+		$this->DB_WE->query('SELECT Page,COUNT(ID) AS views FROM ' . BANNER_VIEWS_TABLE . " WHERE Page!='' AND Page!='0' AND ID=" . intval($this->bannerID) . ' ' . ($this->UseFilter ? ' AND (Timestamp>=' . intval($this->FilterDate) . ' AND Timestamp<' . intval($this->FilterDateEnd) . ')' : '') . ' GROUP  BY Page');
 		while($this->DB_WE->next_record()){
 
 			$tempArray2[$this->DB_WE->f("Page")] = array(
@@ -88,14 +86,14 @@ class we_banner_listview extends we_listview_base{
 			);
 			$this->allviews += intval($this->DB_WE->f("views"));
 		}
-		$this->DB_WE->query('SELECT Page,COUNT(ID) AS clicks FROM ' . BANNER_CLICKS_TABLE . " WHERE  Page != '' AND Page != '0' AND ID=" . intval($this->bannerID) . ' ' . ($this->UseFilter ? " AND (Timestamp>='" . $this->FilterDate . "' AND Timestamp<'" . ($this->FilterDateEnd) . "')" : "") . " GROUP  BY Page");
+		$this->DB_WE->query('SELECT Page,COUNT(ID) AS clicks FROM ' . BANNER_CLICKS_TABLE . " WHERE Page!='' AND Page!='0' AND ID=" . intval($this->bannerID) . ' ' . ($this->UseFilter ? " AND (Timestamp>='" . $this->FilterDate . "' AND Timestamp<'" . ($this->FilterDateEnd) . "')" : "") . " GROUP  BY Page");
 		while($this->DB_WE->next_record()){
 			$tempArray2[$this->DB_WE->f("Page")]["clicks"] = $this->DB_WE->f("clicks");
 			$this->allclicks += intval($this->DB_WE->f("clicks"));
 		}
 
 		// correct views entry on main banner table
-		$allviews = f('SELECT COUNT(ID) AS views FROM ' . BANNER_VIEWS_TABLE . ' WHERE ID=' . intval($this->bannerID), "views", $this->DB_WE);
+		$allviews = f('SELECT COUNT(ID) FROM ' . BANNER_VIEWS_TABLE . ' WHERE ID=' . intval($this->bannerID), '', $this->DB_WE);
 		$this->DB_WE->query('UPDATE ' . BANNER_TABLE . ' SET views=' . $allviews . ' WHERE ID=' . intval($this->bannerID));
 
 
@@ -143,10 +141,6 @@ class we_banner_listview extends we_listview_base{
 		$this->Record["rate"] = round($this->Record["views"] ? (100 * ($this->Record["clicks"] / $this->Record["views"])) : 0, 1);
 		$this->count++;
 		return true;
-	}
-
-	function f($key){
-		return $this->Record[$key];
 	}
 
 	function getAllviews(){

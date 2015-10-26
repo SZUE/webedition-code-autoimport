@@ -22,209 +22,87 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_export_tree extends weMainTree{
+class we_export_tree extends weTree{
 
-	public function __construct($frameset = "", $topFrame = "", $treeFrame = "", $cmdFrame = ""){
-		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
+	function customJSFile(){
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_tree.js');
 	}
 
-	function getJSInfo(){
-		return 'function info(text) {}';
-	}
-
-	function getJSOpenClose(){
-
-		return '
-function openClose(id){
-
-	if(id=="") return;
-
-	var eintragsIndex = indexOfEntry(id);
-	var status;
-
-	if(treeData[eintragsIndex].open==0) openstatus=1;
-	else openstatus=0;
-	treeData[eintragsIndex].open=openstatus;
-	if(openstatus && treeData[eintragsIndex].loaded!=1){
-		' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=load&tab="+' . $this->topFrame . '.table+"&cmd=load&pid="+id;
-		' . $this->topFrame . '.openFolders[' . $this->topFrame . '.table]+=","+id;
-	}else{
-		var arr = ' . $this->topFrame . '.openFolders[' . $this->topFrame . '.table].split(",");
-		' . $this->topFrame . '.openFolders[' . $this->topFrame . '.table]="";
-		for(var t=0;t<arr.length;t++){
-			if(arr[t]!="" && arr[t]!=id){
-				' . $this->topFrame . '.openFolders[' . $this->topFrame . '.table]+=","+arr[t];
-			}
-		}
-		drawTree();
-	}
-	if(openstatus==1) treeData[eintragsIndex].loaded=1;
-}';
-	}
-
-	function getJSLoadTree($treeItems){
-		$js = '
-function in_array(arr,item){
-	for(i=0;i<arr.length;i++){
-		if(arr[i]==item) return true;
-	}
-	return false;
-}
-var attribs=new Array();' .
-			$this->topFrame . '.treeData.table=' . $this->topFrame . '.table;';
+	function getJSLoadTree($clear, array $treeItems){
+		$js = $this->topFrame . '.treeData.table=' . $this->topFrame . '.table;';
 
 		foreach($treeItems as $item){
-			//if(strpos($item["contenttype"], "text") !== false || strpos($item["contenttype"], "folder") !== false || strpos($item["contenttype"], "object") !== false){
 
-			$js.="if(" . $this->topFrame . ".indexOfEntry('" . $item["id"] . "')<0){ \n";
+			$js.=($clear ? '' : 'if(' . $this->topFrame . '.treeData.indexOfEntry("' . $item['id'] . '")<0){' ) .
+					$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node({';
+			$elems = '';
 			foreach($item as $k => $v){
-				if(strtolower($k) === "checked"){
-					$js.='
-if(in_array(' . $this->topFrame . '.SelectedItems[attribs["table"]],"' . $item["id"] . '")){
-	attribs["' . strtolower($k) . '"]=\'1\';
-}else{
-	attribs["' . strtolower($k) . '"]=\'' . $v . '\';
-}';
-				} else {
-					$js.='attribs["' . strtolower($k) . '"]=\'' . $v . '\';';
-				}
+				$elems.='"' . strtolower($k) . '":' .
+						(strtolower($k) === "checked" ?
+								'(WE().util.in_array("' . $item["id"] . '", ' . $this->topFrame . '.SelectedItems.' . $item['table'] . ')?
+	\'1\':
+	\'' . $v . '\'),
+' :
+								'\'' . $v . '\',');
 			}
-			$js.=$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));
-					}';
-			//}
+			$js.=rtrim($elems, ',') . '}));' . ($clear ? '' : '}');
 		}
-		$js.=$this->topFrame . '.treeData.setstate(' . $this->topFrame . '.treeData.tree_states["select"]);' .
-			$this->topFrame . '.drawTree();';
+		$js.=$this->topFrame . '.treeData.setState(' . $this->topFrame . '.treeData.tree_states["select"]);' .
+				$this->topFrame . '.drawTree();';
 
 		return $js;
 	}
 
 	function getJSStartTree(){
 		return 'function startTree(){
-				' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=load&cmd=load&tab="+' . $this->topFrame . '.table+"&pid=0&openFolders="+' . $this->topFrame . '.openFolders[' . $this->topFrame . '.table];
-			}';
-	}
-
-	function getJSTreeCode(){
-		return weMainTree::getJSTreeCode() .
-			we_html_element::jsElement($this->getJSStartTree());
+	frames={
+		top:' . $this->topFrame . ',
+		cmd:' . $this->cmdFrame . ',
+		tree:' . $this->treeFrame . '
+	};
+	treeData.frames=frames;
+	frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=load&cmd=load&tab="+frames.top.table+"&pid=0&openFolders="+frames.top.openFolders[frames.top.table];
+}';
 	}
 
 	function getJSDrawTree(){
-
 		return '
 function drawTree(){
-	var out=\'<table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td>' . we_html_tools::getPixel(5, 7) . '</td></tr><tr><td class="\'+treeData.getlayout()+\'">\n<nobr>\n\';
-	out+=draw(treeData.startloc,"");
-	out+="</nobr>\n</td></tr></table>\n";
-	' . $this->treeFrame . '.document.getElementById("treetable").innerHTML=out;
-	/*nurl="treeMain.php";
-	win=window.open(nurl);
-	win.document.open();
-	win.document.write(top.treeHTML.innerHTML);
-	win.document.close();*/
-	}' . $this->getJSDraw();
-	}
-
-	function getJSCheckNode(){
-		return '
-function checkNode(imgName) {
-	var object_name = imgName.substring(4,imgName.length);
-	for(i=1;i<=treeData.len;i++) {
-		if(treeData[i].id == object_name) {
-			' . $this->treeFrame . '.populate(treeData[i].id,treeData.table);
-			if(treeData[i].checked==1) {
-				if(document.images) {
-					eval("if("+treeData.treeFrame+".document.images[imgName]) "+treeData.treeFrame+".document.images[imgName].src=treeData.check0_img.src;");
-				}
-				treeData[i].checked=0;
-				if(' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].length>1){
-					found=false;
-					' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].length=' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].length+1;
-					for(z=0;z<' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].length;z++){
-						if(' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table][z]==treeData[i].id) found=true;
-						if(found){
-							' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table][z]=' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table][z+1];
-					}}
-					' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].length=' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].length-2;
-				}
-				else ' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table]=new Array();
-
-				treeData[i].applylayout();
-				break;
-			}
-			else {
-				if(document.images) {
-					eval("if("+treeData.treeFrame+".document.images[imgName]) "+treeData.treeFrame+".document.images[imgName].src=treeData.check1_img.src;");
-				}
-				treeData[i].checked=1;
-				' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].push(treeData[i].id);
-				treeData[i].applylayout();
-				break;
-			}
-		}
-
-	}
-	if(top.content) {
-		if(typeof(top.content.hot) != "undefined") {
-			top.content.hot=1;
-		}
-	}
-	if(!document.images){
-	 drawTree();
-	}
-}';
+	var out=\'<div class="treetable \'+treeData.getLayout()+\'"><nobr>\'+
+		treeData.draw(treeData.startloc,"")+
+		"</nobr></div>";
+	frames.tree.document.getElementById("treetable").innerHTML=out;
+	}';
 	}
 
 	function getHTMLMultiExplorer($width = 500, $height = 250, $useSelector = true){
 		$js = $this->getJSTreeCode() . we_html_element::jsElement('
-function populate(id,table){
+var SelectedItems={
+	' . FILE_TABLE . ':[],
+	' . TEMPLATES_TABLE . ':[],' .
+						(defined('OBJECT_FILES_TABLE') ? ('
+	' . OBJECT_FILES_TABLE . ':[],
+	' . OBJECT_TABLE . ':[],
+	') : ''
+						) . '
+};
 
-}
-
-function setHead(tab){
-	' . $this->topFrame . '.table=tab;
-	' . $this->topFrame . '.document.we_form.table.value=tab;
-	setTimeout("' . $this->topFrame . '.startTree()",100);
-}
-
-var SelectedItems= new Array();
-SelectedItems["' . FILE_TABLE . '"]=new Array();' .
-				(defined('OBJECT_FILES_TABLE') ? (
-					'SelectedItems["' . OBJECT_FILES_TABLE . '"]=new Array();
-	SelectedItems["' . OBJECT_TABLE . '"]=new Array();
-	') : '') . '
-
-SelectedItems["' . TEMPLATES_TABLE . '"]=new Array();
-
-var openFolders= new Array();
-openFolders["' . FILE_TABLE . '"]="";' .
-				(defined('OBJECT_FILES_TABLE') ? ('
-openFolders["' . OBJECT_FILES_TABLE . '"]="";
-openFolders["' . OBJECT_TABLE . '"]="";
-') : '') . '
-openFolders["' . TEMPLATES_TABLE . '"]="";
-
-
-' . $this->getJSStartTree());
-
-		$style_code = "";
-		if(isset($this->SelectionTree->styles)){
-			foreach($this->SelectionTree->styles as $st){
-				$style_code.=$st . "\n";
-			}
-		}
+var openFolders= {
+	' . FILE_TABLE . ':"",
+	' . TEMPLATES_TABLE . ':"",' .
+						(defined('OBJECT_FILES_TABLE') ? ('
+	' . OBJECT_FILES_TABLE . ':"",
+	' . OBJECT_TABLE . ':"",
+') : ''
+						) . '
+};' . $this->getJSStartTree()) . we_html_element::cssLink(CSS_DIR . 'tree.css');
 
 		if($useSelector){
-			$header = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
-
-			$header->setCol(0, 0, array("bgcolor" => "white"), we_html_tools::getPixel(5, 5));
 			$captions = array();
-
-			if(permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
+			if(permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
 				$captions[FILE_TABLE] = g_l('export', '[documents]');
 			}
-			if(permissionhandler::hasPerm("CAN_SEE_TEMPLATES")){
+			if(permissionhandler::hasPerm('CAN_SEE_TEMPLATES')){
 				$captions[TEMPLATES_TABLE] = g_l('export', '[templates]');
 			}
 			if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
@@ -233,10 +111,11 @@ openFolders["' . TEMPLATES_TABLE . '"]="";
 			if(defined('OBJECT_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTS")){
 				$captions[OBJECT_TABLE] = g_l('export', '[classes]');
 			}
+			if(we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION) && permissionhandler::hasPerm("CAN_SEE_COLLECTIONS")){
+				$captions[VFILE_TABLE] = g_l('export', '[collections]');
+			}
 
-			$header->setColContent(1, 0, we_html_tools::htmlSelect('headerSwitch', $captions, 1, we_base_request::_(we_base_request::TABLE, 'headerSwitch', 0), false, array('onchange' => "setHead(this.value);"), 'value', $width));
-			$header->setColContent(2, 0, we_html_tools::getPixel(5, 5));
-			$header = $header->getHtml();
+			$header = we_html_element::htmlDiv(array('style' => 'margin:5px 0px;'), we_html_tools::htmlSelect('headerSwitch', $captions, 1, we_base_request::_(we_base_request::TABLE, 'headerSwitch', 0), false, array('onchange' => "setHead(this.value);"), 'value', $width));
 		} else {
 			$header = '';
 		}
@@ -252,81 +131,67 @@ openFolders["' . TEMPLATES_TABLE . '"]="";
 		return $out ? implode(' OR ', $out) : '';
 	}
 
-	private static function getItems($table, $ParentID, array &$treeItems){
-		static $openFolders = array();
+	private static function getItems($table, $ParentID, array &$treeItems, $of = array(), we_database_base $DB_WE = null){
+		static $openFolders = -1;
+		if($openFolders == -1){
+			$openFolders = $of;
+		}
 
-		$DB_WE = new DB_WE();
-		$where = ' WHERE  ParentID=' . intval($ParentID) . ' AND((1' . we_users_util::makeOwnersSql() . ')' . $GLOBALS['wsQuery'] . ')';
-		//if($GLOBALS['table']==FILE_TABLE) $where .= " AND (ClassName='we_webEditionDocument' OR ClassName='we_folder')";
-		$elem = 'ID,ParentID,Path,Text,Icon,IsFolder,ModDate' . (($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE)) ? ",Published" : "") . ((defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE) ? ",IsClassFolder" : "");
+		$DB_WE = $DB_WE? : new DB_WE();
+		$elem = 'ID,ParentID,Path,Text,IsFolder,ModDate,ContentType';
 
 		switch($table){
 			case FILE_TABLE :
-			case TEMPLATES_TABLE:
-			case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
+				$selDocs = isset($_SESSION['weS']['export_session']) ? explode(',', $_SESSION['weS']['export_session']->selDocs) : array();
+				$elem.=',Published,0 AS IsClassFolder';
+				break;
+			case (defined('TEMPLATES_TABLE') ? TEMPLATES_TABLE : 'TEMPLATES_TABLE'):
+				$selDocs = isset($_SESSION['weS']['export_session']) ? explode(',', $_SESSION['weS']['export_session']->selTempl) : array();
+				$elem.=',ModDate AS Published,0 AS IsClassFolder';
+				break;
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-				$elem .= ',ContentType';
+				$elem.=',Published,IsClassFolder';
+				$selDocs = isset($_SESSION['weS']['export_session']) ? explode(',', $_SESSION['weS']['export_session']->selObjs) : array();
+				break;
+			case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
+				$selDocs = isset($_SESSION['weS']['export_session']) ? explode(',', $_SESSION['weS']['export_session']->selClasses) : array();
+				$elem.=',ModDate AS Published,0 AS IsClassFolder';
+				break;
 		}
 
-		$DB_WE->query('SELECT ' . $elem . ', ABS(text) as Nr, (text REGEXP "^[0-9]") AS isNr FROM ' . $DB_WE->escape($table) . ' ' . $where . ' ORDER BY isNr DESC,Nr,Text');
+		$DB_WE->query('SELECT ' . $elem . ' FROM ' . $DB_WE->escape($table) . ' WHERE ParentID=' . intval($ParentID) . ' AND((1' . we_users_util::makeOwnersSql() . ')' . $GLOBALS['wsQuery'] . ') ORDER BY IsFolder DESC,(text REGEXP "^[0-9]") DESC,ABS(text),Text');
 
-		while($DB_WE->next_record()){
-			$ID = $DB_WE->f("ID");
-			$ParentID = $DB_WE->f("ParentID");
-			$Text = $DB_WE->f("Text");
-			$Path = $DB_WE->f("Path");
-			$IsFolder = $DB_WE->f("IsFolder");
-			$ContentType = $DB_WE->f("ContentType");
-			$Icon = $DB_WE->f("Icon");
-			$IsClassFolder = $DB_WE->f("IsClassFolder");
+		$entries = $DB_WE->getAll();
 
-			$checked = 0;
-			switch($table){
-				case FILE_TABLE:
-					$published = (($DB_WE->f("Published") != 0) && ($DB_WE->f("Published") < $DB_WE->f("ModDate"))) ? -1 : $DB_WE->f("Published");
-					if(isset($_SESSION['weS']['exportVars_session']["selDocs"]) && in_array($ID, makeArrayFromCSV($_SESSION['weS']['exportVars_session']["selDocs"]))){
-						$checked = 1;
-					}
-					break;
-				case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-					$published = (($DB_WE->f("Published") != 0) && ($DB_WE->f("Published") < $DB_WE->f("ModDate"))) ? -1 : $DB_WE->f("Published");
-					if(isset($_SESSION['weS']['exportVars_session']["selObjs"]) && in_array($ID, makeArrayFromCSV($_SESSION['weS']['exportVars_session']["selObjs"]))){
-						$checked = 1;
-					}
-					break;
-				default:
-					$published = 1;
-					break;
-			}
+		foreach($entries as $entry){
+			$ID = $entry["ID"];
+			$IsFolder = $entry["IsFolder"];
+			$published = $entry["Published"];
 
-			$OpenCloseStatus = (in_array($ID, $openFolders) ? 1 : 0);
-			$disabled = in_array($Path, $GLOBALS['parentpaths']) ? 1 : 0;
-
-			$typ = $IsFolder ? "group" : "item";
+			$OpenCloseStatus = in_array($ID, $openFolders);
 
 			$treeItems[] = array(
-				"icon" => $Icon,
-				"id" => $ID,
-				"parentid" => $ParentID,
-				"text" => $Text,
-				"contenttype" => $ContentType,
-				"isclassfolder" => $IsClassFolder,
-				"table" => $table,
-				"checked" => $checked,
-				"typ" => $typ,
-				"open" => $OpenCloseStatus,
-				"published" => $published,
-				"disabled" => $disabled,
-				"tooltip" => $ID
+				'id' => $ID,
+				'parentid' => $entry['ParentID'],
+				'text' => $entry['Text'],
+				'contenttype' => $entry['ContentType'],
+				'isclassfolder' => $entry['IsClassFolder'],
+				'table' => $table,
+				'checked' => (isset($selDocs) && in_array($ID, $selDocs)),
+				'typ' => $IsFolder ? 'group' : 'item',
+				'open' => $OpenCloseStatus,
+				'published' => ($published && ($published < $entry['ModDate'])) ? -1 : $published,
+				'disabled' => in_array($entry['Path'], $GLOBALS['parentpaths']),
+				'tooltip' => $ID
 			);
 
-			if($typ === "group" && $OpenCloseStatus == 1){
-				self::getItems($table, $ID, $treeItems);
+			if($IsFolder && $OpenCloseStatus){
+				self::getItems($table, $ID, $treeItems, $of, $DB_WE);
 			}
 		}
 	}
 
-	public function loadHTML($table, $parentFolder){
+	public function loadHTML($table, $parentFolder, $openFolders){
 		$GLOBALS["OBJECT_FILES_TREE_COUNT"] = 20;
 		$GLOBALS['parentpaths'] = $wsQuery = array();
 
@@ -339,16 +204,7 @@ openFolders["' . TEMPLATES_TABLE . '"]="";
 					$path = dirname($path);
 				}
 			}
-		} else if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
-			$ac = we_users_util::getAllowedClasses($GLOBALS['DB_WE']);
-			foreach($ac as $cid){
-				$path = id_to_path($cid, OBJECT_TABLE);
-				$wsQuery[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
-				$wsQuery[] = 'Path="' . $GLOBALS['DB_WE']->escape($path) . '"';
-			}
 		}
-
-		$GLOBALS['wsQuery'] = ' ' . ($wsQuery ? ' OR (' . implode(' OR ', $wsQuery) . ')' : '');
 
 		switch($table){
 			case FILE_TABLE:
@@ -365,32 +221,43 @@ openFolders["' . TEMPLATES_TABLE . '"]="";
 				if(!permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
 					return 0;
 				}
+				if(!permissionhandler::hasPerm("ADMINISTRATOR")){
+					$ac = we_users_util::getAllowedClasses($GLOBALS['DB_WE']);
+					foreach($ac as $cid){
+						$path = id_to_path($cid, OBJECT_TABLE);
+						$wsQuery[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
+						$wsQuery[] = 'Path="' . $GLOBALS['DB_WE']->escape($path) . '"';
+					}
+				}
 				break;
 			case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
 				if(!permissionhandler::hasPerm("CAN_SEE_OBJECTS")){
 					return 0;
 				}
 				break;
+			case VFILE_TABLE:
+				if(!permissionhandler::hasPerm("CAN_SEE_COLLECTIONS")){
+					return 0;
+				}
+				break;
 		}
+
+		$GLOBALS['wsQuery'] = ' ' . ($wsQuery ? ' OR (' . implode(' OR ', $wsQuery) . ')' : '');
 
 		$treeItems = array();
 
-		self::getItems($table, $parentFolder, $treeItems);
+		self::getItems($table, $parentFolder, $treeItems, $openFolders);
 
-		echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
-			we_html_element::htmlHead(we_html_tools::getHtmlInnerHead() .
-				we_html_element::jsElement('
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement('
 if(!' . $this->topFrame . '.treeData) {' .
-					we_message_reporting::getShowMessageCall("A fatal error occured", we_message_reporting::WE_MESSAGE_ERROR) . '
+						we_message_reporting::getShowMessageCall("A fatal error occured", we_message_reporting::WE_MESSAGE_ERROR) . '
 }' .
-					($parentFolder ? '' :
-						$this->topFrame . '.treeData.clear();' .
-						$this->topFrame . '.treeData.add(new ' . $this->topFrame . '.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\'));'
-					) .
-					$this->getJSLoadTree($treeItems)
-				)
-			) .
-			we_html_element::htmlBody(array("bgcolor" => "#ffffff"))
+						($parentFolder ? '' :
+								$this->topFrame . '.treeData.clear();' .
+								$this->topFrame . '.treeData.add(' . $this->topFrame . '.node.prototype.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\'));'
+						) .
+						$this->getJSLoadTree(!$parentFolder, $treeItems)
+				), we_html_element::htmlBody(array("bgcolor" => "#ffffff"))
 		);
 	}
 

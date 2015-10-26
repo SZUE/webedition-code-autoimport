@@ -92,13 +92,13 @@ class we_exim_contentProvider{
 					case we_base_ContentTypes::TEMPLATE:
 						$we_Table = TEMPLATES_TABLE;
 						break;
-					case 'object':
+					case we_base_ContentTypes::OBJECT:
 						if(!defined('OBJECT_TABLE')){
 							return $we_doc;
 						}
 						$we_Table = OBJECT_TABLE;
 						break;
-					case 'objectFile':
+					case we_base_ContentTypes::OBJECT_FILE:
 						if(!defined('OBJECT_FILES_TABLE')){
 							return $we_doc;
 						}
@@ -172,7 +172,7 @@ class we_exim_contentProvider{
 		}
 
 		if($data !== self::CODING_OLD){//all arrays, strings & objects can be changed due to line-ending conversion
-			return preg_match('!(^a:\d+:{)|(^s:\d+:)|(^O:\d+:)|([\\x0-\x08\x0e-\x19\x11\x12<>&])!', $data); //exclude x9:\t,x10:\n,x13:\r,x20:space
+			return preg_match('!(^[asO]:\d+:)|([\\x0-\x08\x0e-\x19\x11\x12<>&])!', $data); //exclude x9:\t,x10:\n,x13:\r,x20:space
 		}
 //FIXME: remove the following code in 6.5
 		$encoded = array(
@@ -232,7 +232,7 @@ class we_exim_contentProvider{
 			'we_objectFile' => array('DefArray', 'schedArr')
 		);
 
-		if($prop === 'Dat' && $classname === 'we_element' && defined('WE_SHOP_VARIANTS_ELEMENT_NAME') && $object->Name == WE_SHOP_VARIANTS_ELEMENT_NAME){
+		if($prop === 'Dat' && $classname === 'we_element' && $object->Name == we_base_constants::WE_VARIANTS_ELEMENT_NAME){
 			// exception for shop - handling arrays in the content
 			return true;
 		}
@@ -375,14 +375,14 @@ class we_exim_contentProvider{
 		switch($classname){
 			case 'we_object':
 				$tableInfo = self::objectMetadata(OBJECT_X_TABLE . $object->ID);
-				$defvalues = unserialize($object->DefaultValues);
+				$defvalues = we_unserialize($object->DefaultValues);
 				foreach($tableInfo as $cur){
 					$fieldname = $cur['name'];
 					if(isset($defvalues[$fieldname])){
 						$defvalues[$fieldname]['length'] = ($cur['len'] > 255) ? 255 : $cur['len'];
 					}
 				}
-				$object->DefaultValues = serialize($defvalues);
+				$object->DefaultValues = we_serialize($defvalues);
 				break;
 			// fix ends -----------------------------------------------------------
 
@@ -403,7 +403,7 @@ class we_exim_contentProvider{
 				continue;
 			}
 			if(self::needSerialize($object, $classname, $v)){
-				$content = serialize($content);
+				$content = we_serialize($content);
 				$coding = array(self::CODING_ATTRIBUTE => self::CODING_SERIALIZE);
 			} else {
 				$content = (isset($object->$v) ? $object->$v : '');
@@ -523,7 +523,7 @@ class we_exim_contentProvider{
 			case self::CODING_ENCODE:
 				return self::decode($data);
 			case self::CODING_SERIALIZE:
-				return unserialize($data);
+				return we_unserialize($data);
 			case self::CODING_NONE:
 			default:
 				return $data;

@@ -22,16 +22,12 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$oTblCont = new we_html_table(array(
-	"border" => 0, "cellpadding" => 0, "cellspacing" => 0
-	), 1, 1);
-$oTblCont->setCol(
-	0, 0, null, we_html_element::htmlDiv(
-		array(
-		'id' => 'm_' . $iCurrId . '_inline',
-		"style" => "width:" . $iWidth . "px;height:" . ($aPrefs[$aProps[0]]["height"]) . "px;overflow:auto;"
-		), we_html_element::htmlDiv(array('id' => 'mfd_data'), $lastModified)
-));
+$oTblDiv = we_html_element::htmlDiv(
+				array(
+			'id' => 'm_' . $iCurrId . '_inline',
+			"style" => 'width:100%;height:' . ($aPrefs[$aProps[0]]["height"]) . 'px;overflow:auto;',
+				), we_html_element::htmlDiv(array('id' => 'mfd_data'), $lastModified)
+		) . we_html_element::jsElement("WE().util.setIconOfDocClass(document,'mfdIcon');");
 $aLang = array(
 	g_l('cockpit', '[last_modified]'), ""
 );

@@ -30,8 +30,8 @@ if(permissionhandler::hasPerm('administrator')){
 		$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_LOG_TABLE);
 	}
 
-	$close = we_html_button::create_button("close", "javascript:self.close();");
-	$refresh = we_html_button::create_button("refresh", "javascript:location.reload();");
+	$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
+	$refresh = we_html_button::create_button(we_html_button::REFRESH, "javascript:location.reload();");
 	$deleteLogBut = we_html_button::create_button("clear_log", "javascript:clearLog()");
 
 
@@ -61,17 +61,17 @@ if(permissionhandler::hasPerm('administrator')){
 
 		$next = $start + $count;
 
-		$nextprev = '<table style="margin-top: 10px;" border="0" cellpadding="0" cellspacing="0"><tr><td>' .
+		$nextprev = '<table style="margin-top: 10px;" class="default"><tr><td style="padding-right:20px;">' .
 			($start > 0 ?
-				we_html_button::create_button("back", $_SERVER['SCRIPT_NAME'] . "?start=" . ($start - $count)) : //bt_back
-				we_html_button::create_button("back", "", false, 100, 22, "", "", true)
+				we_html_button::create_button(we_html_button::BACK, $_SERVER['SCRIPT_NAME'] . "?start=" . ($start - $count)) : //bt_back
+				we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true)
 			) .
-			we_html_tools::getPixel(23, 1) . "</td><td align='center' class='defaultfont' width='120'><b>" . ($start + 1) . "&nbsp;-&nbsp;" .
+			 '</td><td class="defaultfont" width="120" style="text-align:center;padding-right:20px;"><b>' . ($start + 1) . "&nbsp;-&nbsp;" .
 			min($num_all, $start + $count) .
-			"&nbsp;" . g_l('global', '[from]') . " " . ($num_all) . "</b></td><td>" . we_html_tools::getPixel(23, 1) .
+			"&nbsp;" . g_l('global', '[from]') . " " . ($num_all) . "</b></td><td>" .
 			($next < $num_all ?
-				we_html_button::create_button("next", $_SERVER['SCRIPT_NAME'] . "?start=" . $next) : //bt_next
-				we_html_button::create_button("next", "", "", 100, 22, "", "", true)
+				we_html_button::create_button(we_html_button::NEXT, $_SERVER['SCRIPT_NAME'] . "?start=" . $next) : //bt_next
+				we_html_button::create_button(we_html_button::NEXT, "", "", 100, 22, "", "", true)
 			) .
 			"</td></tr></table>";
 
@@ -96,7 +96,7 @@ if(permissionhandler::hasPerm('administrator')){
 		);
 	}
 
-	$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_multiIconBox::getHTML("show_log_data", "100%", $parts, 30, we_html_button::position_yes_no_cancel($refresh, $close, $deleteLogBut), -1, '', '', false, g_l('prefs', '[formmail_log]'), "", 558) .
+	$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_multiIconBox::getHTML("show_log_data", $parts, 30, we_html_button::position_yes_no_cancel($refresh, $close, $deleteLogBut), -1, '', '', false, g_l('prefs', '[formmail_log]'), "", 558) .
 			we_html_element::jsElement("self.focus();")
 	);
 
@@ -112,9 +112,5 @@ function clearLog() {
 }
 
 function getHTMLDocument($body, $head = ""){
-	$head = we_html_tools::getHtmlInnerHead(g_l('prefs', '[formmail_log]')) . STYLESHEET . $head;
-	return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-			we_html_element::htmlHead($head) .
-			$body
-	);
+	return we_html_tools::getHtmlTop(g_l('prefs', '[formmail_log]'), '', '', STYLESHEET . $head, $body);
 }

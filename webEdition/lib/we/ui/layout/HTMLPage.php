@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -30,7 +29,6 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
-
 	/**
 	 * title tag
 	 *
@@ -164,7 +162,7 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
 	/**
 	 * adds CSS code to the page
 	 * Will be inserted into the header section of the page
-	 * using the <style> tag
+	 * using the style tag
 	 *
 	 * @param string $css CSS code to add
 	 * @return void
@@ -178,7 +176,7 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
 	/**
 	 * adds JavaScript code to the page
 	 * Will be inserted into the header section of the page
-	 * using the <script> tag
+	 * using the script tag
 	 *
 	 * @param string $js JavaScript code to add
 	 * @return void
@@ -208,7 +206,14 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
 	 */
 	protected function _renderHTML(){
 
-		$this->addJSFile(JS_DIR . 'attachKeyListener.js');
+		$this->addJSFiles(array(
+			//JS_DIR . 'windows.js',
+			LIB_DIR . 'additional/yui/yahoo-min.js',
+			LIB_DIR . 'additional/yui/event-min.js',
+			LIB_DIR . 'additional/yui/connection-min.js',
+			LIB_DIR . 'additional/yui/json-min.js',
+			LIB_DIR . 'we/core/JsonRpc.js',
+		));
 
 		$js = '';
 		// write in all frames except in top frame
@@ -216,17 +221,17 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
 			$js = <<<EOS
 
 function weGetTop() {
-	return  (self != parent && typeof(parent.weGetTop) != "undefined"?
+	return  (self != parent && parent.weGetTop !== undefined?
 		parent.weGetTop():parent);
 }
 
 function weCC() {
-	if (typeof(weGetTop().we_core_CmdController) != "undefined") {
+	if (weGetTop().we_core_CmdController !== undefined) {
 		return weGetTop().we_core_CmdController.getInstance();
 	} else if (opener){
-		if (typeof(opener.we_core_CmdController) != "undefined") {
+		if (opener.we_core_CmdController !== undefined) {
 			return opener.we_core_CmdController.getInstance();
-		} else if (typeof(opener.weCC) != "undefined"){
+		} else if (opener.weCC !== undefined){
 			return opener.weCC();
 		}
 	}
@@ -235,12 +240,12 @@ function weCC() {
 
 function weEC() {
 	var topFrame = weGetTop();
-	if (typeof(topFrame.weEventController) !== "undefined") {
+	if (topFrame.weEventController !== undefined) {
 		return topFrame.weEventController;
 	} else if (opener){
-		if (typeof(opener.weEventController) != "undefined") {
+		if (opener.weEventController !== undefined) {
 			return opener.weEventController;
-		} else if (typeof(opener.weEC) != "undefined"){
+		} else if (opener.weEC != undefined){
 			return opener.weEC();
 		}
 	}
@@ -267,7 +272,6 @@ EOS;
 				}
 				$this->addJSFile(we_main_headermenu::getJsForCssMenu());
 				$this->addCSSFile(LIB_DIR . 'we/ui/themes/default/we_ui_controls_MessageConsole/style.css');
-				$this->addJSFile(WEBEDITION_DIR . 'js/messageConsoleImages.js');
 				$this->addJSFile(WEBEDITION_DIR . 'js/messageConsoleView.js');
 			}
 			$js = <<<EOS
@@ -283,7 +287,7 @@ EOS;
 			// add <header> tag
 			'<head>' .
 			// add meta tag for charset if not empty
-			($this->getCharset() !== '' ? we_html_tools::htmlMetaCtCharset('text/html', $this->getCharset()) . "\n" : '') .
+			($this->getCharset() !== '' ? we_html_tools::htmlMetaCtCharset($this->getCharset()) . "\n" : '') .
 			// add title tag if not empty
 			($this->getTitle() !== '' ? '<title>' . $this->getTitle() . '</title>' . "\n" : '');
 
@@ -301,7 +305,7 @@ EOS;
 			}
 			$html .= "\t</style>\n";
 		}
-
+		$html.=we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();');
 		// add javascript tags for external JavaScript files
 		foreach($this->_JSFiles as $file){
 			$html .= we_html_element::jsScript($file);
@@ -312,7 +316,7 @@ EOS;
 			'</head>';
 		return ($this->_framesetHTML !== '' ?
 				$html . $this->_framesetHTML . '</html>' :
-				$html . we_xml_Tags::createStartTag('body', $this->_bodyAttributes) . $this->getBodyHTML() . '</body></html>');
+				$html . getHtmlTag('body', $this->_bodyAttributes, $this->getBodyHTML()) . '</html>');
 	}
 
 	/**

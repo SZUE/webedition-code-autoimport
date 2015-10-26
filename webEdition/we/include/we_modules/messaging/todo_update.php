@@ -61,13 +61,13 @@ echo we_html_tools::getHtmlTop($heading) .
 
 <body class="weDialogBody">
 	<?php
-	$tbl = '<table align="center" cellpadding="0" cellspacing="0" width="100%">
+	$tbl = '<table style="text-align:center" class="default" width="100%">
 					<tr>
-						<td class="defaultfont" align="center">
+						<td class="defaultfont" style="text-align:center">
 							' . $res['msg'] . '</td>
 					</tr>
 				</table>';
-	echo we_html_tools::htmlDialogLayout($tbl, $heading, we_html_button::create_button("ok", "javascript:top.window.close()"), "100%", 30, "", "hidden");
+	echo we_html_tools::htmlDialogLayout($tbl, $heading, we_html_button::create_button(we_html_button::OK, "javascript:top.window.close()"), "100%", 30, "", "hidden");
 	?>
 </body>
 

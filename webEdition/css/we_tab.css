@@ -23,23 +23,47 @@
  */
 
 body {
+	margin:0px; padding:0px;
+	border: 0px;
+	font-family: Verdana, Arial, sans-serif;
+	font-size: 10px;
+	color: #000000;
+}
+#tabContainer{
+	width:100%;
+	margin: 0px; padding: 0;
+	border: 0px;
+	overflow:hidden;
+}
+
+div.tabActive,
+div.tabNormal {
 	margin: 0px;
-	padding: 0px;
-	background-color: #FFFFFF;
+	padding: 0;
+	border:0px;
+	float:left;
+	display: inline-block;
+	line-height:21px;
+	cursor:pointer;
+	border-right:1px solid #888888;
 }
-.tab_normal {
-	font-family: Verdana, Arial, sans-serif;
-	font-size: 10px;
-	color: #000000;
-	background-color: #FFFFFF;
-	background-image: url("/webEdition/images/tabs/tab_middle_normal.gif");
-	cursor: pointer;
+
+div.tabNormal {
+	background-color: #D3D3D3;
+	background: linear-gradient(#dbdbdb, #cccccc 50%,#999999);
 }
-.tab_hover {
-	font-family: Verdana, Arial, sans-serif;
+
+div.tabActive {
+	background-color:#ededed;
+}
+
+span.text{
+	margin:0px 1em;
+	padding:0px;
 	font-size: 10px;
-	color: #000000;
-	background-color: #FFFFFF;
-	background-image: url("/webEdition/images/tabs/tab_middle_hover.gif");
-	cursor: pointer;
+	vertical-align:top;
+}
+span.spacer{
+	font-size: 17px;
+	vertical-align:top;
 }

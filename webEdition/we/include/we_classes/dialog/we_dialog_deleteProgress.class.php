@@ -26,42 +26,33 @@ abstract class we_dialog_deleteProgress{
 
 	public static function main(){
 
-		$WE_PB = new we_progressBar(0, 0, true);
+		$WE_PB = new we_progressBar(0, true);
 		$WE_PB->setStudLen(490);
 		$WE_PB->addText("", 0, "pb1");
 		$js = $WE_PB->getJSCode();
 
-		$cancelButton = we_html_button::create_button("cancel", "javascript:top.close();");
+		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
 		$pb = we_html_tools::htmlDialogLayout($WE_PB->getHTML(), g_l('delete', '[delete]'), $cancelButton);
 
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(
-					STYLESHEET .
-					$js) .
-				we_html_element::htmlBody(array(
+		return we_html_tools::getHtmlTop('', '', '', STYLESHEET .
+				$js, we_html_element::htmlBody(array(
 					"class" => "weDialogBody"
 					), $pb
 				)
 		);
 	}
 
-	public static function frameset($table, $currentID){
-		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', "onload" => "delcmd.location='" . WEBEDITION_DIR . "delFrag.php?frame=cmd" . ($table ? ("&amp;table=" . rawurlencode($table)) : "") . "&currentID=" . $currentID . "';")
-				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-					, we_html_element::htmlIFrame('delmain', WEBEDITION_DIR . "delFrag.php?frame=main", 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden') .
-					we_html_element::htmlIFrame('delcmd', "about:blank", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
-		));
-
-
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(
-					we_html_tools::getHtmlInnerHead(g_l('delete', '[delete]')) .
-					we_html_element::jsScript(JS_DIR . "we_showMessage.js") . STYLESHEET
-				) . $body);
+	public static function getHTML($table, $currentID){
+		return we_html_tools::getHtmlTop(g_l('delete', '[delete]'), '', '', STYLESHEET, we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => "delcmd.location='" . WEBEDITION_DIR . "delFrag.php?frame=cmd" . ($table ? ("&amp;table=" . rawurlencode($table)) : "") . "&currentID=" . $currentID . "';")
+					, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+						, we_html_element::htmlIFrame('delmain', WEBEDITION_DIR . "delFrag.php?frame=main", 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden') .
+						we_html_element::htmlIFrame('delcmd', "about:blank", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
+				))
+		);
 	}
 
 	public static function cmd(){
-		if(isset($_SESSION['weS']['backup_delete']) && $_SESSION['weS']['backup_delete']){
+		if(!empty($_SESSION['weS']['backup_delete'])){
 			$taskname = md5(session_id() . "_backupdel");
 			new we_backup_delete($taskname, 1, 0);
 		} else {

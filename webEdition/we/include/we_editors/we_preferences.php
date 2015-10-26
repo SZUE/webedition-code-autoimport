@@ -53,22 +53,21 @@ $tabname = we_base_request::_(we_base_request::STRING, 'tabname', 'setting_ui');
  *
  * @return         string
  */
-function create_dialog($name, array $content, $expand = -1, $show_text = '', $hide_text = '', $JS = ''){
-	$_output = ($JS ? : '') .
-		($expand != -1 ? we_html_multiIconBox::getJS() : '');
+function create_dialog($name, array $content, $expand = -1, $show_text = '', $hide_text = ''){
+	$_output = ($expand != -1 ? we_html_multiIconBox::getJS() : '');
 
 	// Return HTML code of dialog
-	return $_output . we_html_multiIconBox::getHTML($name, '100%', $content, 30, '', $expand, $show_text, $hide_text);
+	return $_output . we_html_multiIconBox::getHTML($name, $content, 30, '', $expand, $show_text, $hide_text);
 }
 
 function getColorInput($name, $value, $disabled = false, $width = 20, $height = 20){
-	return we_html_tools::hidden($name, $value) . '<table cellpadding="0" cellspacing="0" style="border:1px solid grey;margin:2px 0;"><tr><td' .
+	return we_html_tools::hidden($name, $value) . '<table class="default" style="border:1px solid grey;margin:2px 0px;"><tr><td' .
 		($disabled ? ' class="disabled"' : '') .
 		' id="color_' . $name . '" ' .
 		($value ? (' style="background-color:' . $value . ';"') : '') .
 		'><a style="cursor:' .
 		($disabled ? "default" : "pointer") .
-		';" href="javascript:if(document.getElementById(&quot;color_' . $name . '&quot;).getAttribute(&quot;class&quot;)!=&quot;disabled&quot;) {we_cmd(\'openColorChooser\',\'' . $name . '\',document.we_form.elements[\'' . $name . '\'].value,&quot;opener.setColorField(\'' . $name . '\');&quot;);}">' . we_html_tools::getPixel($width, $height) . '</a></td></tr></table>';
+		';" href="javascript:if(document.getElementById(&quot;color_' . $name . '&quot;).getAttribute(&quot;class&quot;)!=&quot;disabled&quot;) {we_cmd(\'openColorChooser\',\'' . $name . '\',document.we_form.elements[\'' . $name . '\'].value,&quot;opener.setColorField(\'' . $name . '\');&quot;);}"><span style="width:' . $width . 'px;height:' . $height . '"></span></a></td></tr></table>';
 }
 
 /**
@@ -109,13 +108,13 @@ function get_value($settingname){
 			return defined('WE_PROXYHOST');
 
 		case 'message_reporting':
-			return (isset($_SESSION['prefs']['message_reporting']) && $_SESSION['prefs']['message_reporting']) ? $_SESSION['prefs']['message_reporting'] : (we_message_reporting::WE_MESSAGE_ERROR + we_message_reporting::WE_MESSAGE_WARNING + we_message_reporting::WE_MESSAGE_NOTICE);
+			return (!empty($_SESSION['prefs']['message_reporting'])) ? $_SESSION['prefs']['message_reporting'] : (we_message_reporting::WE_MESSAGE_ERROR + we_message_reporting::WE_MESSAGE_WARNING + we_message_reporting::WE_MESSAGE_NOTICE);
 
 		default:
 			if(isset($GLOBALS['configs']['user'][$settingname])){
 				if(isset($all[1])){
 					//handle subkey
-					$tmp = @unserialize(isset($_SESSION['prefs'][$settingname]) ? $_SESSION['prefs'][$settingname] : $GLOBALS['configs']['user'][$settingname][0]);
+					$tmp = we_unserialize(isset($_SESSION['prefs'][$settingname]) ? $_SESSION['prefs'][$settingname] : $GLOBALS['configs']['user'][$settingname][0]);
 					return isset($tmp[$all[1]]) ? $tmp[$all[1]] : 0;
 				}
 				return (isset($_SESSION['prefs'][$settingname]) ? $_SESSION['prefs'][$settingname] : $GLOBALS['configs']['user'][$settingname][0]);
@@ -222,7 +221,7 @@ parent.opener.top.moveTo((screen.width / 2) - " . ($settingvalue / 2) . ", (scre
 				// editor font has changed - mark all editors to reload!
 				$GLOBALS['save_javascript'] .= '
 if (!_multiEditorreload) {
-	var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
+	var _usedEditors =  WE().layout.weEditorFrameController.getEditorsInUse();
 		for (frameId in _usedEditors) {
 
 			if ( (_usedEditors[frameId].getEditorEditorTable() == "' . TEMPLATES_TABLE . '" || _usedEditors[frameId].getEditorEditorTable() == "' . FILE_TABLE . '") &&
@@ -243,7 +242,7 @@ _multiEditorreload = true;';
 			return;
 
 		case 'editorCodecompletion':
-			$_SESSION['prefs'][$settingname] = is_array($settingvalue) ? serialize($settingvalue) : '';
+			$_SESSION['prefs'][$settingname] = is_array($settingvalue) ? we_serialize($settingvalue, 'json') : '';
 			return;
 		case 'editorFontname':
 		case 'editorFontsize':
@@ -268,7 +267,7 @@ _multiEditorreload = true;';
 				// editor tooltip font has changed - mark all editors to reload!
 				$GLOBALS['save_javascript'] .= '
 if (!_multiEditorreload) {
-	var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
+	var _usedEditors =  WE().layout.weEditorFrameController.getEditorsInUse();
 		for (frameId in _usedEditors) {
 
 			if ( (_usedEditors[frameId].getEditorEditorTable() == "' . TEMPLATES_TABLE . '" || _usedEditors[frameId].getEditorEditorTable() == "' . FILE_TABLE . '") &&
@@ -299,7 +298,7 @@ _multiEditorreload = true;';
 				// complete webEdition reload: anpassen nach Wegfall der Frames
 				$GLOBALS['save_javascript'] .= "
 // reload current document => reload all open Editors on demand
-var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
+var _usedEditors =  WE().layout.weEditorFrameController.getEditorsInUse();
 for (frameId in _usedEditors) {
 
 	if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
@@ -397,11 +396,11 @@ _multiEditorreload = true;";
 						$_single_recipient = explode('<#>', $_recipient);
 
 						if(isset($_single_recipient[0]) && ($_single_recipient[0] === '#')){
-							if(isset($_single_recipient[1]) && $_single_recipient[1]){
+							if(!empty($_single_recipient[1])){
 								$DB_WE->query('INSERT INTO ' . RECIPIENTS_TABLE . ' (Email) VALUES("' . $DB_WE->escape($_single_recipient[1]) . '")');
 							}
 						} else {
-							if(isset($_single_recipient[1]) && isset($_single_recipient[0]) && $_single_recipient[1] && $_single_recipient[0]){
+							if(!empty($_single_recipient[1]) && !empty($_single_recipient[0])){
 								$DB_WE->query('UPDATE ' . RECIPIENTS_TABLE . ' SET Email="' . $DB_WE->escape($_single_recipient[1]) . '" WHERE ID=' . intval($_single_recipient[0]));
 							}
 						}
@@ -433,7 +432,7 @@ $GLOBALS[\'_we_active_integrated_modules\'] = array(
 				$host = we_base_request::_(we_base_request::STRING, 'newconf', '', "proxyhost");
 				$port = we_base_request::_(we_base_request::INT, 'newconf', '', "proxyport");
 				$user = we_base_request::_(we_base_request::STRING, 'newconf', '', "proxyuser");
-				$pass = we_base_request::_(we_base_request::RAW, 'newconf', '', "proxypass");
+				$pass = we_base_request::_(we_base_request::RAW_CHECKED, 'newconf', '', "proxypass");
 				we_base_preferences::setConfigContent('proxysettings', '<?php
 	define(\'WE_PROXYHOST\', "' . $host . '");
 	define(\'WE_PROXYPORT\', ' . $port . ');
@@ -650,11 +649,11 @@ function build_dialog($selected_setting = 'ui'){
 				$_languages->selectOption(get_value('Language'));
 				// Lang notice
 				$langNote = '<div id="langnote" style="padding: 5px; background-color: rgb(221, 221, 221); width: 190px; display:none">
-<table border="0" cellpadding="2" width="100%">
+<table width="100%">
 <tbody>
 <tr>
-<td style="padding-right: 10px;" valign="top">
-  <img src="' . IMAGE_DIR . 'info_small.gif" height="22" width="20" />
+<td style="padding-right: 10px;vertical-align:top">
+	<span class="fa-stack fa-lg" style="font-size: 14px;color:#007de3;"><i class="fa fa-circle fa-stack-2x" ></i><i class="fa fa-info fa-stack-1x fa-inverse"></i></span>
 </td>
 <td class="middlefont">' . g_l('prefs', '[language_notice]') . '
 </td>
@@ -689,7 +688,7 @@ function build_dialog($selected_setting = 'ui'){
 				$GLOBALS['weDefaultCharset'] = get_value('DEFAULT_CHARSET');
 				$_defaultCharset = we_html_tools::htmlTextInput('newconf[DEFAULT_CHARSET]', 8, $GLOBALS['weDefaultCharset'], 255, '', 'text', 100);
 				$_defaultCharsetChooser = we_html_tools::htmlSelect('DefaultCharsetSelect', $_charsets, 1, $GLOBALS['weDefaultCharset'], false, array("onchange" => "document.forms[0].elements['newconf[DEFAULT_CHARSET]'].value=this.options[this.selectedIndex].value;"), "value", 100, "defaultfont", false);
-				$DEFAULT_CHARSET = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_defaultCharset . '</td><td>' . $_defaultCharsetChooser . '</td></tr></table>';
+				$DEFAULT_CHARSET = '<table class="default"><tr><td>' . $_defaultCharset . '</td><td>' . $_defaultCharsetChooser . '</td></tr></table>';
 
 				$_settings[] = array(
 					'headline' => g_l('prefs', '[default_charset]'),
@@ -710,9 +709,6 @@ function build_dialog($selected_setting = 'ui'){
 			 * SEEM
 			 * *************************************************************** */
 
-			// Generate needed JS
-			$_needed_JavaScript = we_html_button::create_state_changer();
-
 			if(we_base_preferences::userIsAllowed('WE_SEEM')){
 				// Build maximize window
 				$_seem_disabler = we_html_forms::checkbox(1, get_value('WE_SEEM') == 0 ? 1 : 0, 'newconf[WE_SEEM]', g_l('prefs', '[seem_deactivate]'));
@@ -723,110 +719,6 @@ function build_dialog($selected_setting = 'ui'){
 
 			// SEEM start document
 			if(we_base_preferences::userIsAllowed('seem_start_type')){
-				// Generate needed JS
-				$_needed_JavaScript .= we_html_element::jsElement("
-							function selectSidebarDoc() {
-								myWind = false;
-
-								for (k = parent.opener.top.jsWindow_count; k > -1; k--) {
-									eval('if (parent.opener.top.jsWindow' + k + 'Object) {' +
-										 ' if (parent.opener.top.jsWindow' + k + \"Object.ref == 'preferences') {\" +
-										 '     myWind = parent.opener.top.jsWindow' + k + \"Object.wind;\" +
-										 \"     myWindStr = 'top.jsWindow\" + k + \"Object.wind';\" +
-										 ' }' +
-										 '}');
-
-									if (myWind) {
-										break;
-									}
-								}
-								parent.opener.top.we_cmd('openDocselector',document.getElementsByName('newconf[SIDEBAR_DEFAULT_DOCUMENT]').value,'" . FILE_TABLE . "',myWindStr + '.content.document.getElementsByName(\'newconf[SIDEBAR_DEFAULT_DOCUMENT]\')[0].value',myWindStr + '.content.document.getElementsByName(\'ui_sidebar_file_name\')[0].value','','', '', '" . we_base_ContentTypes::WEDOCUMENT . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
-							}
-
-							function select_seem_start() {
-								myWind = false;
-
-								for (k = parent.opener.top.jsWindow_count; k > -1; k--) {
-									eval('if (parent.opener.top.jsWindow' + k + 'Object) {' +
-										 '	if (parent.opener.top.jsWindow' + k + \"Object.ref == 'preferences') {\" +
-										 '		myWind = parent.opener.top.jsWindow' + k + \"Object.wind;\" +
-										 \"		myWindStr = 'top.jsWindow\" + k + \"Object.wind';\" +
-										 '	}' +
-										 '}');
-
-									if (myWind) {
-										break;
-									}
-								}
-								if(document.getElementById('seem_start_type').value == 'object') {
-								" .
-						//FIXME frames['content'] will probably not work here
-						(defined('OBJECT_FILES_TABLE') ?
-							"parent.opener.top.we_cmd('openDocselector', document.getElementsByName('seem_start_object')[0].value, '" . OBJECT_FILES_TABLE . "', myWindStr + '.content.document.getElementsByName(\'seem_start_object\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_object_name\')[0].value', '', '', '', 'objectFile',1);" : '') .
-						"} else {
-									parent.opener.top.we_cmd('openDocselector', document.getElementsByName('seem_start_document')[0].value, '" . FILE_TABLE . "', myWindStr + '.content.document.getElementsByName(\'seem_start_document\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_document_name\')[0].value', '', '', '', '" . we_base_ContentTypes::WEDOCUMENT . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
-								}
-							}
-							function show_seem_chooser(val) {
-								if(val == 'document') {
-									if(!!document.getElementById('selectordummy')) {
-										document.getElementById('selectordummy').style.display = 'none';
-									}
-									if(!!document.getElementById('seem_start_object')) {
-										document.getElementById('seem_start_object').style.display = 'none';
-									}
-									if(!!document.getElementById('seem_start_weapp')) {
-										document.getElementById('seem_start_weapp').style.display = 'none';
-									}
-									if(!!document.getElementById('seem_start_document')) {
-										document.getElementById('seem_start_document').style.display = 'block';
-									}
-
-							" .
-						(defined('OBJECT_FILES_TABLE') ?
-							"} else if(val == 'object') {
-									if(!!document.getElementById('selectordummy')) {
-										document.getElementById('selectordummy').style.display = 'none';
-									}
-									if(!!document.getElementById('seem_start_weapp')) {
-										document.getElementById('seem_start_weapp').style.display = 'none';
-									}
-									if(!!document.getElementById('seem_start_document')) {
-										document.getElementById('seem_start_document').style.display = 'none';
-									}
-									if(!!document.getElementById('seem_start_object')) {
-										document.getElementById('seem_start_object').style.display = 'block';
-									}
-							" : '') . "
-								} else if(val == 'weapp'){
-									if(!!document.getElementById('selectordummy')) {
-										document.getElementById('selectordummy').style.display = 'none';
-									}
-									if(!!document.getElementById('seem_start_document')) {
-										document.getElementById('seem_start_document').style.display = 'none';
-									}
-									if(!!document.getElementById('seem_start_weapp')) {
-										document.getElementById('seem_start_weapp').style.display = 'block';
-									}
-									if(!!document.getElementById('seem_start_object')) {
-										document.getElementById('seem_start_object').style.display = 'none';
-									}
-								} else {
-									if(!!document.getElementById('selectordummy')) {
-										document.getElementById('selectordummy').style.display = 'block';
-									}
-									if(!!document.getElementById('seem_start_document')) {
-										document.getElementById('seem_start_document').style.display = 'none';
-									}
-									if(!!document.getElementById('seem_start_weapp')) {
-										document.getElementById('seem_start_weapp').style.display = 'none';
-									}
-									if(!!document.getElementById('seem_start_object')) {
-										document.getElementById('seem_start_object').style.display = 'none';
-									}
-
-								}
-							}");
 
 				// Cockpit
 				$_document_path = $_object_path = '';
@@ -880,7 +772,7 @@ function build_dialog($selected_setting = 'ui'){
 				$showStartType = false;
 				$permitedStartTypes = array('');
 				$_start_type->addOption(0, '-');
-				$_seem_cockpit_selectordummy = "<div id='selectordummy' style='height:" . (we_base_browserDetect::isIE() ? '33px' : '24px') . ";'>&nbsp;</div>";
+				$_seem_cockpit_selectordummy = "<div id='selectordummy' style='height:24px;'>&nbsp;</div>";
 				if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 					$_start_type->addOption('cockpit', g_l('prefs', '[seem_start_type_cockpit]'));
 					$showStartType = true;
@@ -901,10 +793,10 @@ function build_dialog($selected_setting = 'ui'){
 					$yuiSuggest->setResult('seem_start_document', $_document_id);
 					$yuiSuggest->setSelector(weSuggest::DocSelector);
 					$yuiSuggest->setWidth(150);
-					$yuiSuggest->setSelectButton(we_html_button::create_button('select', 'javascript:select_seem_start()', true, 100, 22, '', '', false, false), 10);
+					$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, 'javascript:select_seem_start()', true, 100, 22, '', '', false, false), 10);
 					$yuiSuggest->setContainerWidth(259);
 
-					$_seem_document_chooser = we_html_button::create_button_table(array($yuiSuggest->getHTML()), 0, array('id' => 'seem_start_document', 'style' => 'display:none'));
+					$_seem_document_chooser = we_html_element::htmlSpan(array('id' => 'seem_start_document', 'style' => 'display:none'), $yuiSuggest->getHTML());
 					$permitedStartTypes[] = 'document';
 				}
 				$_seem_object_chooser = '';
@@ -914,7 +806,7 @@ function build_dialog($selected_setting = 'ui'){
 					// Build SEEM select start object chooser
 
 					$yuiSuggest->setAcId('Obj');
-					$yuiSuggest->setContentType('folder,objectFile');
+					$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::OBJECT_FILE);
 					$yuiSuggest->setInput('seem_start_object_name', $_object_path, '', get_value('seem_start_file'));
 					$yuiSuggest->setMaxResults(20);
 					$yuiSuggest->setMayBeEmpty(false);
@@ -922,10 +814,10 @@ function build_dialog($selected_setting = 'ui'){
 					$yuiSuggest->setSelector(weSuggest::DocSelector);
 					$yuiSuggest->setTable(OBJECT_FILES_TABLE);
 					$yuiSuggest->setWidth(150);
-					$yuiSuggest->setSelectButton(we_html_button::create_button('select', 'javascript:select_seem_start()', true, 100, 22, '', '', false, false), 10);
+					$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, 'javascript:select_seem_start()', true, 100, 22, '', '', false, false), 10);
 					$yuiSuggest->setContainerWidth(259);
 
-					$_seem_object_chooser = we_html_button::create_button_table(array($yuiSuggest->getHTML()), 0, array('id' => 'seem_start_object', 'style' => 'display:none'));
+					$_seem_object_chooser = we_html_element::htmlSpan(array('id' => 'seem_start_object', 'style' => 'display:none'), $yuiSuggest->getHTML());
 					$permitedStartTypes[] = 'object';
 				}
 				$_start_weapp = new we_html_select(array('name' => 'newconf[seem_start_weapp]', 'class' => 'weSelect', 'id' => 'seem_start_weapp'));
@@ -938,11 +830,11 @@ function build_dialog($selected_setting = 'ui'){
 				$_seem_weapp_chooser = '';
 				if($_start_weapp->getOptionNum()){
 					$_start_type->addOption('weapp', g_l('prefs', '[seem_start_type_weapp]'));
-					if(isset($_seem_start_weapp) && $_seem_start_weapp != ''){
+					if(!empty($_seem_start_weapp)){
 						$_start_weapp->selectOption($_seem_start_weapp);
 					}
 					$weAPPSelector = $_start_weapp->getHtml();
-					$_seem_weapp_chooser = we_html_button::create_button_table(array($weAPPSelector), 10, array('id' => 'seem_start_weapp', 'style' => 'display:none'));
+					$_seem_weapp_chooser = we_html_element::htmlSpan(array('id' => 'seem_start_weapp', 'style' => 'display:none'), $weAPPSelector);
 					$permitedStartTypes[] = 'weapp';
 				}
 
@@ -953,7 +845,7 @@ function build_dialog($selected_setting = 'ui'){
 					} else {
 						$_seem_start_type = $permitedStartTypes[0];
 					}
-					$_seem_html = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 2, 1);
+					$_seem_html = new we_html_table(array('class' => 'default'), 2, 1);
 					$_seem_html->setCol(0, 0, array('class' => 'defaultfont'), $_start_type->getHtml());
 					$_seem_html->setCol(1, 0, array('style' => 'padding-top:5px;'), $_seem_cockpit_selectordummy . $_seem_document_chooser . $_seem_object_chooser . $_seem_weapp_chooser);
 					$_settings[] = array('headline' => g_l('prefs', '[seem_startdocument]'), 'html' => $_seem_html->getHtml() . we_html_element::jsElement('show_seem_chooser("' . $_seem_start_type . '");'), "space" => 200);
@@ -988,7 +880,7 @@ function build_dialog($selected_setting = 'ui'){
 				$_sidebar_width_chooser = we_html_tools::htmlSelect('tmp_sidebar_width', array('' => '', 100 => 100, 150 => 150, 200 => 200, 250 => 250, 300 => 300, 350 => 350, 400 => 400), 1, '', false, array("onchange" => "document.forms[0].elements['newconf[SIDEBAR_DEFAULT_WIDTH]'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), "value", 100, "defaultfont");
 
 				// Sidebar document
-				$_sidebar_document_button = we_html_button::create_button('select', 'javascript:selectSidebarDoc()');
+				$_sidebar_document_button = we_html_button::create_button(we_html_button::SELECT, 'javascript:selectSidebarDoc()');
 
 				$yuiSuggest->setAcId('SidebarDoc');
 				$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT);
@@ -1002,20 +894,19 @@ function build_dialog($selected_setting = 'ui'){
 				$yuiSuggest->setContainerWidth(259);
 
 				// build html
-				$_sidebar_html1 = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 1, 1);
+				$_sidebar_html1 = new we_html_table(array('class' => 'default'), 1, 1);
 
 				$_sidebar_html1->setCol(0, 0, null, $_sidebar_disabler);
 
 				// build html
-				$_sidebar_html2 = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'id' => 'sidebar_options', 'style' => 'display:' . $_sidebar_show), 8, 3);
+				$_sidebar_html2 = new we_html_table(array('class' => 'default', 'id' => 'sidebar_options', 'style' => 'display:' . $_sidebar_show), 8, 2);
 
 				$_sidebar_html2->setCol(0, 0, array('colspan' => 3, 'height' => 10), '');
 				$_sidebar_html2->setCol(1, 0, array('colspan' => 3, 'height' => 10), $_sidebar_show_on_startup);
 				$_sidebar_html2->setCol(2, 0, array('colspan' => 3, 'height' => 10), '');
 				$_sidebar_html2->setCol(3, 0, array('colspan' => 3, 'class' => 'defaultfont'), g_l('prefs', '[sidebar_width]'));
 				$_sidebar_html2->setCol(4, 0, null, $_sidebar_width);
-				$_sidebar_html2->setCol(4, 1, null, we_html_tools::getPixel(10, 1));
-				$_sidebar_html2->setCol(4, 2, null, $_sidebar_width_chooser);
+				$_sidebar_html2->setCol(4, 1, array('style' => 'padding-left:10px;'), $_sidebar_width_chooser);
 				$_sidebar_html2->setCol(5, 0, array('colspan' => 3, 'height' => 10), '');
 				$_sidebar_html2->setCol(6, 0, array('colspan' => 3, 'class' => 'defaultfont'), g_l('prefs', '[sidebar_document]'));
 				$_sidebar_html2->setCol(7, 0, array('colspan' => 3), $yuiSuggest->getHTML());
@@ -1066,46 +957,31 @@ function build_dialog($selected_setting = 'ui'){
 			$_window_specify_code = we_html_forms::radiobutton(1, !(get_value('sizeOpt') == 0), 'newconf[sizeOpt]', g_l('prefs', '[specify]'), true, 'defaultfont', "document.getElementsByName('newconf[weWidth]')[0].disabled = false;document.getElementsByName('newconf[weHeight]')[0].disabled = false;");
 
 			// Create specify window dimension input
-			$_window_specify_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 4, 4);
+			$_window_specify_table = new we_html_table(array('class' => 'default', 'style' => 'margin-top:10px;margin-left:50px;'), 4, 4);
 
-			$_window_specify_table->setCol(0, 0, null, we_html_tools::getPixel(1, 10));
-			$_window_specify_table->setCol(1, 0, null, we_html_tools::getPixel(50, 1));
-			$_window_specify_table->setCol(2, 0, null, we_html_tools::getPixel(1, 5));
-			$_window_specify_table->setCol(3, 0, null, we_html_tools::getPixel(50, 1));
+			$_window_specify_table->setCol(0, 0, array('class' => 'defaultfont'), g_l('prefs', '[width]') . ':');
+			$_window_specify_table->setCol(1, 0, array('class' => 'defaultfont'), g_l('prefs', '[height]') . ':');
 
-			$_window_specify_table->setCol(1, 1, array('class' => 'defaultfont'), g_l('prefs', '[width]') . ':');
-			$_window_specify_table->setCol(3, 1, array('class' => 'defaultfont'), g_l('prefs', '[height]') . ':');
-
-			$_window_specify_table->setCol(1, 2, null, we_html_tools::getPixel(10, 1));
-			$_window_specify_table->setCol(3, 2, null, we_html_tools::getPixel(10, 1));
-
-			$_window_specify_table->setCol(1, 3, null, we_html_tools::htmlTextInput('newconf[weWidth]', 6, (get_value('sizeOpt') ? get_value('weWidth') : ''), 4, (get_value('sizeOpt') == 0 ? "disabled=\"disabled\"" : ""), "number", 60));
-			$_window_specify_table->setCol(3, 3, null, we_html_tools::htmlTextInput('newconf[weHeight]', 6, (get_value('sizeOpt') ? get_value('weHeight') : ''), 4, (get_value('sizeOpt') == 0 ? "disabled=\"disabled\"" : ""), "number", 60));
+			$_window_specify_table->setCol(0, 1, null, we_html_tools::htmlTextInput('newconf[weWidth]', 6, (get_value('sizeOpt') ? get_value('weWidth') : ''), 4, (get_value('sizeOpt') == 0 ? 'disabled="disabled"' : ""), "number", 60));
+			$_window_specify_table->setCol(1, 1, null, we_html_tools::htmlTextInput('newconf[weHeight]', 6, (get_value('sizeOpt') ? get_value('weHeight') : ''), 4, (get_value('sizeOpt') == 0 ? 'disabled="disabled"' : ""), "number", 60));
 
 			// Build apply current window dimension
-			$_window_current_dimension_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 1, 2);
-
-			$_window_current_dimension_table->setCol(0, 0, null, we_html_tools::getPixel(50, 1));
-			$_window_current_dimension_table->setCol(0, 1, null, we_html_button::create_button('apply_current_dimension', "javascript:document.getElementsByName('newconf[sizeOpt]')[1].checked = true;document.getElementsByName('newconf[weWidth]')[0].disabled = false;document.getElementsByName('newconf[weHeight]')[0].disabled = false;document.getElementsByName('newconf[weWidth]')[0].value = " . (we_base_browserDetect::isIE() ? "parent.opener.top.document.body.clientWidth" : "parent.opener.top.window.outerWidth") . ";document.getElementsByName('newconf[weHeight]')[0].value = " . (we_base_browserDetect::isIE() ? "parent.opener.top.document.body.clientHeight;" : "parent.opener.top.window.outerHeight;"), true));
+			$_window_current_dimension_table = we_html_button::create_button('apply_current_dimension', "javascript:document.getElementsByName('newconf[sizeOpt]')[1].checked = true;document.getElementsByName('newconf[weWidth]')[0].disabled = false;document.getElementsByName('newconf[weHeight]')[0].disabled = false;document.getElementsByName('newconf[weWidth]')[0].value = parent.opener.top.window.outerWidth;document.getElementsByName('newconf[weHeight]')[0].value = parent.opener.top.window.outerHeight;", true);
 
 			// Build final HTML code
-			$_window_html = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 5, 1);
-			$_window_html->setCol(0, 0, null, $_window_max_code);
-			$_window_html->setCol(1, 0, null, we_html_tools::getPixel(1, 10));
-			$_window_html->setCol(2, 0, null, $_window_specify_code . $_window_specify_table->getHtml());
-			$_window_html->setCol(3, 0, null, we_html_tools::getPixel(1, 10));
-			$_window_html->setCol(4, 0, null, $_window_current_dimension_table->getHtml());
+			$_window_html = new we_html_table(array('class' => 'default'), 5, 1);
+			$_window_html->setCol(0, 0, array('style' => 'padding-bttom:10px;'), $_window_max_code);
+			$_window_html->setCol(2, 0, array('style' => 'padding-bttom:10px;'), $_window_specify_code . $_window_specify_table->getHtml());
+			$_window_html->setCol(4, 0, array('style' => 'padding-left:50px;'), $_window_current_dimension_table);
 
 			// Build dialog
 			$_settings[] = array('headline' => g_l('prefs', '[dimension]'), 'html' => $_window_html->getHtml(), 'space' => 200);
-			return create_dialog('', /* g_l('prefs', '[tab][ui]'), */ $_settings, -1, '', '', (isset($_needed_JavaScript) ? $_needed_JavaScript : ''));
+			return create_dialog('', /* g_l('prefs', '[tab][ui]'), */ $_settings, -1);
 
 		case 'defaultAttribs':
 			if(!permissionhandler::hasPerm('ADMINISTRATOR')){
 				break;
 			}
-
-			$_needed_JavaScript = '';
 
 			/**
 			 * inlineedit setting
@@ -1121,10 +997,27 @@ function build_dialog($selected_setting = 'ui'){
 			$CSSAPPLYTO_DEFAULT->addOption('wysiwyg', 'wysiwyg');
 			$CSSAPPLYTO_DEFAULT->selectOption(get_value('CSSAPPLYTO_DEFAULT') ? : 'around');
 
+			$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[IMAGESTARTID_DEFAULT]'].value");
+			$wecmdenc2 = we_base_request::encCmd("document.forms[0].elements.imagestartid_default_text.value");
+			$_acButton1 = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', document.forms[0].elements['newconf[IMAGESTARTID_DEFAULT]'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','', '" . we_base_ContentTypes::FOLDER . "', 1)");
+			$_acButton2 = we_html_button::create_button(we_html_button::TRASH, 'javascript:document.forms[0].elements[\'newconf[IMAGESTARTID_DEFAULT]\'].value = 0;document.forms[0].elements.imagestartid_default_text.value = \'\'');
+
+			$yuiSuggest->setAcId("doc2");
+			$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
+			$yuiSuggest->setInput('imagestartid_default_text', (IMAGESTARTID_DEFAULT ? id_to_path(IMAGESTARTID_DEFAULT) : ''));
+			$yuiSuggest->setMaxResults(20);
+			$yuiSuggest->setMayBeEmpty(true);
+			$yuiSuggest->setResult('newconf[IMAGESTARTID_DEFAULT]', (IMAGESTARTID_DEFAULT ? : 0));
+			$yuiSuggest->setSelector(weSuggest::DirSelector);
+			$yuiSuggest->setWidth(226);
+			$yuiSuggest->setSelectButton($_acButton1, 10);
+			$yuiSuggest->setTrashButton($_acButton2, 4);
+
 			$_settings = array(
 				array('headline' => g_l('prefs', '[default_php_setting]'), 'html' => getTrueFalseSelect('WE_PHP_DEFAULT'), 'space' => 200),
 				array('headline' => g_l('prefs', '[xhtml_default]'), 'html' => getTrueFalseSelect('XHTML_DEFAULT'), 'space' => 200),
 				array('headline' => g_l('prefs', '[inlineedit_default]'), 'html' => getTrueFalseSelect('INLINEEDIT_DEFAULT'), 'space' => 200),
+				array('headline' => g_l('prefs', '[imagestartid_default]'), 'html' => $yuiSuggest->getHTML(), 'space' => 200),
 				array('headline' => g_l('prefs', '[commands_default]'), 'html' => '<div>' . $commands_default_tmp . '</div><div style="margin-top:4px">' . $COMMANDS_DEFAULT . '</div>', 'space' => 200),
 				array('headline' => g_l('prefs', '[removefirstparagraph_default]'), 'html' => getTrueFalseSelect('REMOVEFIRSTPARAGRAPH_DEFAULT'), 'space' => 200),
 				array('headline' => g_l('prefs', '[showinputs_default]'), 'html' => getTrueFalseSelect('SHOWINPUTS_DEFAULT'), 'space' => 200),
@@ -1134,15 +1027,11 @@ function build_dialog($selected_setting = 'ui'){
 				array('headline' => g_l('prefs', '[cssapplyto_default]'), 'html' => $CSSAPPLYTO_DEFAULT->getHtml(), 'space' => 200),
 			);
 
-
-			return create_dialog(''/* , 'we:tag Standards' g_l('prefs', '[tab][defaultAttribs]') */, $_settings, -1, '', '', (isset($_needed_JavaScript) ? $_needed_JavaScript : ''));
+			return create_dialog(''/* , 'we:tag Standards' g_l('prefs', '[tab][defaultAttribs]') */, $_settings, -1);
 
 		case 'countries':
 			if(!we_base_preferences::userIsAllowed('WE_COUNTRIES_DEFAULT')){
 				break;
-			}
-			if(!Zend_Locale::hasCache()){
-				Zend_Locale::setCache(getWEZendCache());
 			}
 
 			$_countries_default = we_html_tools::htmlTextInput('newconf[WE_COUNTRIES_DEFAULT]', 22, get_value('WE_COUNTRIES_DEFAULT'), '', '', 'text', 225);
@@ -1150,20 +1039,20 @@ function build_dialog($selected_setting = 'ui'){
 			$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 			$langcode = array_search($lang[0], getWELangs());
 			$countrycode = array_search($langcode, getWECountries());
-			$zendsupported = Zend_Locale::getTranslationList('territory', $langcode, 2);
+			$supported = we_base_country::getTranslationList(we_base_country::TERRITORY, $langcode);
 			$oldLocale = setlocale(LC_ALL, NULL);
 			setlocale(LC_ALL, $langcode . '_' . $countrycode . '.UTF-8');
-			asort($zendsupported, SORT_LOCALE_STRING);
+			asort($supported, SORT_LOCALE_STRING);
 			setlocale(LC_ALL, $oldLocale);
 			$countries_top = explode(',', get_value('WE_COUNTRIES_TOP'));
 			$countries_shown = explode(',', get_value('WE_COUNTRIES_SHOWN'));
-			$tabC = new we_html_table(array('border' => 1, 'cellpadding' => 2, 'cellspacing' => 0), 1, 4);
+			$tabC = new we_html_table(array('style' => 'border:1px solid black'), 1, 4);
 			$i = 0;
 			$tabC->setCol($i, 0, array('class' => 'defaultfont', 'style' => 'font-weight:bold', 'nowrap' => 'nowrap'), g_l('prefs', '[countries_country]'));
 			$tabC->setCol($i, 1, array('class' => 'defaultfont', 'style' => 'font-weight:bold', 'nowrap' => 'nowrap'), g_l('prefs', '[countries_top]'));
 			$tabC->setCol($i, 2, array('class' => 'defaultfont', 'style' => 'font-weight:bold', 'nowrap' => 'nowrap'), g_l('prefs', '[countries_show]'));
 			$tabC->setCol($i, 3, array('class' => 'defaultfont', 'style' => 'font-weight:bold', 'nowrap' => 'nowrap'), g_l('prefs', '[countries_noshow]'));
-			foreach($zendsupported as $countrycode => $country){
+			foreach($supported as $countrycode => $country){
 				$i++;
 				$tabC->addRow();
 				$tabC->setCol($i, 0, array('class' => 'defaultfont'), CheckAndConvertISObackend($country));
@@ -1187,167 +1076,28 @@ function build_dialog($selected_setting = 'ui'){
 			$default = get_value('locale_default');
 			$locales = get_value('locale_locales');
 
-			$preJs = we_html_element::jsElement("
-function addLocale() {
-	var LanguageIndex = document.getElementById('locale_language').selectedIndex;
-	var LanguageValue = document.getElementById('locale_language').options[LanguageIndex].value;
-	var LanguageText = document.getElementById('locale_language').options[LanguageIndex].text;
-
-	var CountryIndex = document.getElementById('locale_country').selectedIndex;
-	var CountryValue = document.getElementById('locale_country').options[CountryIndex].value;
-	var CountryText = document.getElementById('locale_country').options[CountryIndex].text;
-
-	if(LanguageValue.substr(0, 1) == \"~\") {
-		LanguageValue = LanguageValue.substr(1);
-	}
-	if(LanguageValue == \"\") {
-		return;
-	}
-
-	if(CountryValue.substr(0, 1) == \"~\") {
-		CountryValue = CountryValue.substr(1);
-	}
-	if(CountryValue != \"\") {
-		var LocaleValue = LanguageValue + '_' + CountryValue;
-		var LocaleText = LanguageText + ' (' + CountryText + ')';
-	} else {
-		var LocaleValue = LanguageValue;
-		var LocaleText = LanguageText;
-	}
-
-	var found = false;
-	for(i = 0; i < document.getElementById('locale_temp_locales').options.length; i++) {
-		if(document.getElementById('locale_temp_locales').options[i].value == LocaleValue) {
-			found = true;
-		}
-	}
-
-	if(found == true) {
-		" . we_message_reporting::getShowMessageCall(g_l('prefs', '[language_already_exists]'), we_message_reporting::WE_MESSAGE_ERROR) . "
-	} else {
-		if (CountryValue == \"\") {
-			" . we_message_reporting::getShowMessageCall(g_l('prefs', '[language_country_missing]'), we_message_reporting::WE_MESSAGE_ERROR) . "
-		} else {
-
-			var option = new Option(LocaleText, LocaleValue, false, false);
-			document.getElementById('locale_temp_locales').options[document.getElementById('locale_temp_locales').options.length] = option
-
-			if(document.getElementById('locale_temp_locales').options.length == 1) {
-				setDefaultLocale(LocaleValue);
-			}
-" . (defined('SPELLCHECKER') ? "
-			// Wörterbuch hinzufügen
-			if(confirm('" . g_l('prefs', '[add_dictionary_question]') . "')) {
-				top.opener.top.we_cmd('spellchecker_edit_ifthere');
-			}
-" : '') . "
-		}
-	}
-	resetLocales();
-
-}
-
-function deleteLocale() {
-
-	if(document.getElementById('locale_temp_locales').selectedIndex > -1) {
-		var LocaleIndex = document.getElementById('locale_temp_locales').selectedIndex;
-		var LocaleValue =  document.getElementById('locale_temp_locales').options[LocaleIndex].value;
-
-		if(LocaleValue == document.getElementById('locale_default').value) {
-			" . we_message_reporting::getShowMessageCall(g_l('prefs', '[cannot_delete_default_language]'), we_message_reporting::WE_MESSAGE_ERROR) . "
-		} else {
-			document.getElementById('locale_temp_locales').options[LocaleIndex] = null;
-		}
-		resetLocales();
-	}
-
-}
-
-function defaultLocale() {
-
-	if(document.getElementById('locale_temp_locales').selectedIndex > -1) {
-		var LocaleIndex = document.getElementById('locale_temp_locales').selectedIndex;
-		var LocaleValue =  document.getElementById('locale_temp_locales').options[LocaleIndex].value;
-
-		setDefaultLocale(LocaleValue);
-	}
-
-}
-
-function setDefaultLocale(Value) {
-
-	if(document.getElementById('locale_temp_locales').options.length > 0) {
-		Index = 0;
-		for(i = 0; i < document.getElementById('locale_temp_locales').options.length; i++) {
-			if(document.getElementById('locale_temp_locales').options[i].value == Value) {
-				Index = i;
-			}
-			document.getElementById('locale_temp_locales').options[i].style.background = '#ffffff';
-		}
-		document.getElementById('locale_temp_locales').options[Index].style.background = '#cccccc';
-		document.getElementById('locale_temp_locales').options[Index].selected = false;
-		document.getElementById('locale_default').value = Value;
-	}
-
-}
-
-function resetLocales() {
-
-	if(document.getElementById('locale_temp_locales').options.length > 0) {
-		var temp = new Array(document.getElementById('locale_temp_locales').options.length);
-		for(i = 0; i < document.getElementById('locale_temp_locales').options.length; i++) {
-			temp[i] = document.getElementById('locale_temp_locales').options[i].value;
-		}
-		document.getElementById('locale_locales').value = temp.join(\",\");
-	}
-
-}
-
-function initLocale(Locale) {
-	if(Locale != \"\") {
-		setDefaultLocale(Locale);
-	}
-	resetLocales();
-}
-
-Array.prototype.contains = function(obj) {
-	var i, listed = false;
-	for (i=0; i<this.length; i++) {
-		if (this[i] === obj) {
-			listed = true;
-			break;
-		}
-	}
-	return listed;
-}");
 
 			$postJs = we_html_element::jsElement('initLocale("' . $default . '");');
 
-			$_hidden_fields = we_html_element::htmlHidden(array('name' => 'newconf[locale_default]', 'value' => $default, 'id' => 'locale_default')) .
-				we_html_element::htmlHidden(array('name' => 'newconf[locale_locales]', 'value' => implode(',', array_keys($locales)), 'id' => 'locale_locales'));
+			$_hidden_fields = we_html_element::htmlHidden('newconf[locale_default]', $default, 'locale_default') .
+				we_html_element::htmlHidden('newconf[locale_locales]', implode(',', array_keys($locales)), 'locale_locales');
 
 			//Locales
 			$_select_box = new we_html_select(array('class' => 'weSelect', 'name' => 'locale_temp_locales', 'size' => 10, 'id' => 'locale_temp_locales', 'style' => 'width: 340px'));
-			$_select_box->addOptions(count($locales), array_keys($locales), array_values($locales));
+			$_select_box->addOptions($locales);
 
 			$_enabled_buttons = (count($locales) > 0);
 
 
 			// Create edit list
-			$_editlist_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 2, 3);
+			$_editlist_table = new we_html_table(array('class' => 'default'), 1, 2);
 
 			// Buttons
 			$default = we_html_button::create_button('default', 'javascript:defaultLocale()', true, 100, 22, '', '', !$_enabled_buttons);
-			$delete = we_html_button::create_button('delete', 'javascript:deleteLocale()', true, 100);
+			$delete = we_html_button::create_button(we_html_button::DELETE, 'javascript:deleteLocale()', true, 100);
 
-			$_html = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 1, 3);
-			$_html->setCol(0, 0, array('class' => 'defaultfont'), $default);
-			$_html->setCol(0, 1, null, we_html_tools::getPixel(25, 2));
-			$_html->setCol(0, 2, array('class' => 'defaultfont'), $delete);
-
-			$_editlist_table->setCol(0, 0, null, $_hidden_fields . $_select_box->getHtml());
-			$_editlist_table->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
-			$_editlist_table->setCol(0, 2, array('valign' => 'top'), $default . we_html_tools::getPixel(1, 10) . $delete);
+			$_editlist_table->setCol(0, 0, array('style' => 'padding-right:10px;'), $_hidden_fields . $_select_box->getHtml());
+			$_editlist_table->setCol(0, 1, array('style' => 'vertical-align:top'), $default . $delete);
 
 			// Add Locales
 			// Languages
@@ -1368,7 +1118,7 @@ Array.prototype.contains = function(obj) {
 			$Languages = array_merge($TopLanguages, $Languages);
 
 			$_languages = new we_html_select(array('name' => 'newconf[locale_language]', 'id' => 'locale_language', 'style' => 'width: 139px', 'class' => 'weSelect'));
-			$_languages->addOptions(count($Languages), array_keys($Languages), array_values($Languages));
+			$_languages->addOptions($Languages);
 
 			// Countries
 			$Countries = g_l('countries', '');
@@ -1391,10 +1141,10 @@ Array.prototype.contains = function(obj) {
 			$Countries = array_merge(array('' => ''), $TopCountries, $Countries);
 
 			$_countries = new we_html_select(array('name' => 'newconf[locale_country]', 'id' => 'locale_country', 'style' => 'width: 139px', 'class' => 'weSelect'));
-			$_countries->addOptions(count($Countries), array_keys($Countries), array_values($Countries));
+			$_countries->addOptions($Countries);
 
 			// Button
-			$_add_button = we_html_button::create_button('add', 'javascript:addLocale()', true, 139);
+			$_add_button = we_html_button::create_button(we_html_button::ADD, 'javascript:addLocale()', true, 139);
 
 			// Build final HTML code
 			$_add_html = g_l('prefs', '[locale_languages]') . '<br />' .
@@ -1403,17 +1153,16 @@ Array.prototype.contains = function(obj) {
 				$_countries->getHtml() . '<br /><br />' .
 				$_add_button;
 
-			//Todo: remove: g_l('prefs', '[langlink_support_backlinks_information]'), g_l('prefs', '[langlink_support_backlinks]'),g_l('prefs', '[langlink_support_recursive_information]'),g_l('prefs', '[langlink_support_recursive]')
+			//Todo: remove: g_l('prefs', '[langlink_support_backlinks_information]'), g_l('prefs', '[langlink_support_backlinks]'),g_l('prefs', '[langlink_support_recursive_information]'),g_l('prefs', '[langlink_support_recursive]') g_l('prefs', '[langlink_abandoned_options]')
 			$_settings = array(
 				array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[locale_information]'), we_html_tools::TYPE_INFO, 450, false), 'space' => 0),
 				array('headline' => '', 'html' => $_editlist_table->getHtml(), 'space' => 0),
 				array('headline' => g_l('prefs', '[locale_add]'), 'html' => $_add_html, 'space' => 200),
 				array('headline' => g_l('prefs', '[langlink_headline]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[langlink_information]'), we_html_tools::TYPE_INFO, 450, false), 'space' => 0, 'noline' => 1),
 				array('headline' => g_l('prefs', '[langlink_support]'), 'html' => getTrueFalseSelect('LANGLINK_SUPPORT'), 'space' => 200, 'noline' => 1),
-				array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[langlink_abandoned_options]'), we_html_tools::TYPE_INFO, 450, false), 'space' => 0, 'noline' => 1),
 			);
 
-			return $preJs . create_dialog('', /* g_l('prefs', '[tab][language]'), */ $_settings) . $postJs;
+			return create_dialog('', /* g_l('prefs', '[tab][language]'), */ $_settings) . $postJs;
 
 		case 'extensions':
 			//FILE EXTENSIONS
@@ -1459,71 +1208,13 @@ Array.prototype.contains = function(obj) {
 		case 'editor':
 			//EDITOR PLUGIN
 
-			$_needed_JavaScript = we_html_element::jsElement('
-
-function setJavaEditorDisabled(disabled) {
-	document.getElementById("_newconf[specify_jeditor_colors]").disabled = disabled;
-	document.getElementById("label__newconf[specify_jeditor_colors]").style.color = (disabled ? "grey" : "");
-	document.getElementById("label__newconf[specify_jeditor_colors]").style.cursor = (disabled ? "default" : "pointer");
-	if (document.getElementById("_newconf[specify_jeditor_colors]").checked) {
-		setEditorColorsDisabled(disabled);
-	} else {
-		setEditorColorsDisabled(true);
-	}
-}
-
-function setEditorColorsDisabled(disabled) {
-	setColorChooserDisabled("editorFontcolor", disabled);
-	setColorChooserDisabled("editorWeTagFontcolor", disabled);
-	setColorChooserDisabled("editorWeAttributeFontcolor", disabled);
-	setColorChooserDisabled("editorHTMLTagFontcolor", disabled);
-	setColorChooserDisabled("editorHTMLAttributeFontcolor", disabled);
-	setColorChooserDisabled("editorPiTagFontcolor", disabled);
-	setColorChooserDisabled("editorCommentFontcolor", disabled);
-}
-
-function setColorChooserDisabled(id, disabled) {
-	var td = document.getElementById("color_newconf["+ id+"]");
-	td.setAttribute("class", disabled ? "disabled" : "");
-	td.firstChild.style.cursor = disabled ? "default" : "pointer";
-	document.getElementById("label_"+id).style.color=disabled ? "grey" : "";
-}
-
-function displayEditorOptions(editor) {
-	tmp=document.getElementsByClassName("editor");
-	for( var k=0; k<tmp .length; k++ ) {
-		tmp[k].style.display="none";
-	}
-
-	tmp=document.getElementsByClassName("editor_"+editor);
-	for( var k=0; k<tmp .length; k++ ) {
-		tmp[k].style.display="block";
-	}
-}
-
-function initEditorMode() {
-	displayEditorOptions(document.getElementsByName("newconf[editorMode]")[0].options[document.getElementsByName("newconf[editorMode]")[0].options.selectedIndex].value);
-}
-
-if(window.onload) {
-	var previousOnload = window.onload;
-	window.onload = function(e) {
-		previousOnload(e);
-		initEditorMode();
-	};
-}else {
-	window.onload = function(e) {
-		initEditorMode();
-	};
-}');
-
 			$_attr = ' class="defaultfont" style="width:150px;"';
 			$_attr_dis = ' class="defaultfont" style="width:150px;color:grey;"';
 
 			$_template_editor_mode = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorMode]', 'size' => 1, 'onchange' => 'displayEditorOptions(this.options[this.options.selectedIndex].value);'));
 			$_template_editor_mode->addOption('textarea', g_l('prefs', '[editor_plaintext]'));
 			$_template_editor_mode->addOption('codemirror2', g_l('prefs', '[editor_javascript2]'));
-			$_template_editor_mode->addOption('java', g_l('prefs', '[editor_java]'));
+			//$_template_editor_mode->addOption('java', g_l('prefs', '[editor_java]'));
 			$_template_editor_mode->selectOption(get_value('editorMode'));
 
 			/**
@@ -1559,16 +1250,16 @@ if(window.onload) {
 
 			$_template_editor_font_select_box = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorFontname]', 'size' => 1, 'style' => 'width: 135px;', ($_template_editor_font_specify ? 'enabled' : 'disabled') => ($_template_editor_font_specify ? 'enabled' : 'disabled')));
 
-			$_colorsDisabled = get_value('specify_jeditor_colors') == 0 || (get_value('editorMode') != 'java');
+			/* 			$_colorsDisabled = true;
 
-			$_template_editor_fontcolor_selector = getColorInput('newconf[editorFontcolor]', get_value('editorFontcolor'), $_colorsDisabled);
-			$_template_editor_we_tag_fontcolor_selector = getColorInput('newconf[editorWeTagFontcolor]', get_value('editorWeTagFontcolor'), $_colorsDisabled);
-			$_template_editor_we_attribute_fontcolor_selector = getColorInput('newconf[editorWeAttributeFontcolor]', get_value('editorWeAttributeFontcolor'), $_colorsDisabled);
-			$_template_editor_html_tag_fontcolor_selector = getColorInput('newconf[editorHTMLTagFontcolor]', get_value('editorHTMLTagFontcolor'), $_colorsDisabled);
-			$_template_editor_html_attribute_fontcolor_selector = getColorInput('newconf[editorHTMLAttributeFontcolor]', get_value('editorHTMLAttributeFontcolor'), $_colorsDisabled);
-			$_template_editor_pi_tag_fontcolor_selector = getColorInput('newconf[editorPiTagFontcolor]', get_value('editorPiTagFontcolor'), $_colorsDisabled);
-			$_template_editor_comment_fontcolor_selector = getColorInput('newconf[editorCommentFontcolor]', get_value('editorCommentFontcolor'), $_colorsDisabled);
-
+			  $_template_editor_fontcolor_selector = getColorInput('newconf[editorFontcolor]', get_value('editorFontcolor'), $_colorsDisabled);
+			  $_template_editor_we_tag_fontcolor_selector = getColorInput('newconf[editorWeTagFontcolor]', get_value('editorWeTagFontcolor'), $_colorsDisabled);
+			  $_template_editor_we_attribute_fontcolor_selector = getColorInput('newconf[editorWeAttributeFontcolor]', get_value('editorWeAttributeFontcolor'), $_colorsDisabled);
+			  $_template_editor_html_tag_fontcolor_selector = getColorInput('newconf[editorHTMLTagFontcolor]', get_value('editorHTMLTagFontcolor'), $_colorsDisabled);
+			  $_template_editor_html_attribute_fontcolor_selector = getColorInput('newconf[editorHTMLAttributeFontcolor]', get_value('editorHTMLAttributeFontcolor'), $_colorsDisabled);
+			  $_template_editor_pi_tag_fontcolor_selector = getColorInput('newconf[editorPiTagFontcolor]', get_value('editorPiTagFontcolor'), $_colorsDisabled);
+			  $_template_editor_comment_fontcolor_selector = getColorInput('newconf[editorCommentFontcolor]', get_value('editorCommentFontcolor'), $_colorsDisabled);
+			 */
 			foreach($_template_fonts as $font){
 				$_template_editor_font_select_box->addOption($font, $font);
 			}
@@ -1583,26 +1274,26 @@ if(window.onload) {
 			$_template_editor_font_sizes_select_box->selectOption(get_value('editorFontsize'));
 
 
-			$_template_editor_font_specify_table = '<table style="margin:0px 0px 20px 50px;" border="0" cellpadding="0" cellspacing="0">
+			$_template_editor_font_specify_table = '<table style="margin:0px 0px 20px 50px;" class="default">
 	<tr><td' . $_attr . '>' . g_l('prefs', '[editor_fontname]') . '</td><td>' . $_template_editor_font_select_box->getHtml() . '</td></tr>
 	<tr><td' . $_attr . '>' . g_l('prefs', '[editor_fontsize]') . '</td><td>' . $_template_editor_font_sizes_select_box->getHtml() . '</td></tr>
 </table>';
-
-			$_template_editor_font_color_checkbox = we_html_forms::checkboxWithHidden(get_value('specify_jeditor_colors'), "newconf[specify_jeditor_colors]", g_l('prefs', '[editor_font_colors]'), false, "defaultfont", "setEditorColorsDisabled(!this.checked);");
-			$attr = ($_colorsDisabled ? $_attr_dis : $_attr);
-			$_template_editor_font_color_table = '<table id="editorColorTable" style="margin: 10px 0px 0px 50px;" border="0" cellpadding="0" cellspacing="0">
-	<tr><td id="label_editorFontcolor" ' . $attr . '>' . g_l('prefs', '[editor_normal_font_color]') . '</td><td>' . $_template_editor_fontcolor_selector . '</td></tr>
-	<tr><td id="label_editorWeTagFontcolor"' . $attr . '>' . g_l('prefs', '[editor_we_tag_font_color]') . '</td><td>' . $_template_editor_we_tag_fontcolor_selector . '</td></tr>
-	<tr><td id="label_editorWeAttributeFontcolor"' . $attr . '>' . g_l('prefs', '[editor_we_attribute_font_color]') . '</td><td>' . $_template_editor_we_attribute_fontcolor_selector . '</td></tr>
-	<tr><td id="label_editorHTMLTagFontcolor"' . $attr . '>' . g_l('prefs', '[editor_html_tag_font_color]') . '</td><td>' . $_template_editor_html_tag_fontcolor_selector . '</td></tr>
-	<tr><td id="label_editorHTMLAttributeFontcolor"' . $attr . '>' . g_l('prefs', '[editor_html_attribute_font_color]') . '</td><td>' . $_template_editor_html_attribute_fontcolor_selector . '</td></tr>
-	<tr><td id="label_editorPiTagFontcolor"' . $attr . '>' . g_l('prefs', '[editor_pi_tag_font_color]') . '</td><td>' . $_template_editor_pi_tag_fontcolor_selector . '</td></tr>
-	<tr><td id="label_editorCommentFontcolor"' . $attr . '>' . g_l('prefs', '[editor_comment_font_color]') . '</td><td>' . $_template_editor_comment_fontcolor_selector . '</td></tr>
-</table>';
-
+			/*
+			  $_template_editor_font_color_checkbox = we_html_forms::checkboxWithHidden(get_value('specify_jeditor_colors'), "newconf[specify_jeditor_colors]", g_l('prefs', '[editor_font_colors]'), false, "defaultfont", "setEditorColorsDisabled(!this.checked);");
+			  $attr = ($_colorsDisabled ? $_attr_dis : $_attr);
+			  $_template_editor_font_color_table = '<table id="editorColorTable" style="margin: 10px 0px 0px 50px;" class="default">
+			  <tr><td id="label_editorFontcolor" ' . $attr . '>' . g_l('prefs', '[editor_normal_font_color]') . '</td><td>' . $_template_editor_fontcolor_selector . '</td></tr>
+			  <tr><td id="label_editorWeTagFontcolor"' . $attr . '>' . g_l('prefs', '[editor_we_tag_font_color]') . '</td><td>' . $_template_editor_we_tag_fontcolor_selector . '</td></tr>
+			  <tr><td id="label_editorWeAttributeFontcolor"' . $attr . '>' . g_l('prefs', '[editor_we_attribute_font_color]') . '</td><td>' . $_template_editor_we_attribute_fontcolor_selector . '</td></tr>
+			  <tr><td id="label_editorHTMLTagFontcolor"' . $attr . '>' . g_l('prefs', '[editor_html_tag_font_color]') . '</td><td>' . $_template_editor_html_tag_fontcolor_selector . '</td></tr>
+			  <tr><td id="label_editorHTMLAttributeFontcolor"' . $attr . '>' . g_l('prefs', '[editor_html_attribute_font_color]') . '</td><td>' . $_template_editor_html_attribute_fontcolor_selector . '</td></tr>
+			  <tr><td id="label_editorPiTagFontcolor"' . $attr . '>' . g_l('prefs', '[editor_pi_tag_font_color]') . '</td><td>' . $_template_editor_pi_tag_fontcolor_selector . '</td></tr>
+			  <tr><td id="label_editorCommentFontcolor"' . $attr . '>' . g_l('prefs', '[editor_comment_font_color]') . '</td><td>' . $_template_editor_comment_fontcolor_selector . '</td></tr>
+			  </table>';
+			 */
 			$_template_editor_theme = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorTheme]', 'size' => 1));
-			foreach(glob(WEBEDITION_PATH . 'editors/template/CodeMirror/theme/*.css') as $filename){
-				$theme = str_replace(array('.css', WEBEDITION_PATH . 'editors/template/CodeMirror/theme/'), '', $filename);
+			foreach(glob(WE_LIB_PATH . 'additional/CodeMirror/theme/*.css') as $filename){
+				$theme = str_replace(array('.css', WE_LIB_PATH . 'additional/CodeMirror/theme/'), '', $filename);
 				$_template_editor_theme->addOption($theme, $theme);
 			}
 			$_template_editor_theme->selectOption(get_value('editorTheme'));
@@ -1630,7 +1321,7 @@ if(window.onload) {
 
 			$_template_editor_tabstop_code = we_html_forms::checkbox(1, get_value('editorShowTab'), 'editorShowTab', g_l('prefs', '[show]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorShowTab]\');') .
 				we_html_tools::hidden('newconf[editorShowTab]', get_value('editorShowTab')) .
-				'<table border="0" cellpadding="0" cellspacing="0">
+				'<table class="default">
 				<tr><td class="defaultfont" style="width:200px;">' . g_l('prefs', '[editor_tabSize]') . '</td><td>' . we_html_tools::htmlTextInput("newconf[editorTabSize]", 2, get_value("editorTabSize"), 2, "", "number", 135) . '</td></tr>
 			</table>';
 
@@ -1662,7 +1353,7 @@ if(window.onload) {
 				$_template_editor_tooltip_font_sizes_select_box->addOption($sz, $sz);
 			}
 			$_template_editor_tooltip_font_sizes_select_box->selectOption($_template_editor_tooltip_font_specify ? get_value("editor_tooltip_font_size") : 11);
-			$_template_editor_tooltip_font_specify_table = '<table style="margin:0px 0px 20px 50px;" border="0" cellpadding="0" cellspacing="0">
+			$_template_editor_tooltip_font_specify_table = '<table style="margin:0px 0px 20px 50px;" class="default">
 				<tr><td' . $_attr . '>' . g_l('prefs', '[editor_fontname]') . '</td><td>' . $_template_editor_tooltip_font_select_box->getHtml() . '</td></tr>
 				<tr><td' . $_attr . '>' . g_l('prefs', '[editor_fontsize]') . '</td><td>' . $_template_editor_tooltip_font_sizes_select_box->getHtml() . '</td></tr>
 			</table>';
@@ -1687,7 +1378,7 @@ for(i=0;i<elements.length; ++i){
 				array('headline' => g_l('prefs', '[editor_mode]'), 'html' => $_template_editor_mode->getHtml(), 'space' => 150),
 				array('class' => 'editor editor_codemirror2 editor_textarea', 'headline' => g_l('prefs', '[editor_font]'), 'html' => $_template_editor_font_specify_code . $_template_editor_font_specify_table, 'space' => 150),
 				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_theme]'), 'html' => $_template_editor_theme->getHtml(), 'space' => 150),
-				array('class' => 'editor editor_java', 'headline' => g_l('prefs', '[editor_highlight_colors]'), 'html' => $_template_editor_font_color_checkbox . $_template_editor_font_color_table, 'space' => 150),
+//				array('class' => 'editor editor_java', 'headline' => g_l('prefs', '[editor_highlight_colors]'), 'html' => $_template_editor_font_color_checkbox . $_template_editor_font_color_table, 'space' => 150),
 				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_linenumbers]'), 'html' => $_template_editor_linenumbers_code, 'space' => 150),
 				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_highlightLine]'), 'html' => $_template_editor_highlightLine_code, 'space' => 150),
 				array('class' => 'editor editor_codemirror2 editor_textarea', 'headline' => g_l('global', '[wrapcheck]'), 'html' => $_template_editor_Wrap_code, 'space' => 150),
@@ -1699,7 +1390,7 @@ for(i=0;i<elements.length; ++i){
 				//array('class'=>'editor editor_codemirror2','headline' => g_l('prefs', '[editor_docuclick]'), 'html' => $_template_editor_docuintegration_code, 'space' => 150),
 			);
 
-			return create_dialog("settings_editor_predefined", /* g_l('prefs', '[tab][editor]'), */ $_settings, count($_settings), g_l('prefs', '[show_predefined]'), g_l('prefs', '[hide_predefined]'), $_needed_JavaScript);
+			return create_dialog("settings_editor_predefined", /* g_l('prefs', '[tab][editor]'), */ $_settings, count($_settings), g_l('prefs', '[show_predefined]'), g_l('prefs', '[hide_predefined]'));
 
 		case "recipients":
 			if(!we_base_preferences::userIsAllowed('FORMMAIL_VIAWEDOC')){
@@ -1708,176 +1399,6 @@ for(i=0;i<elements.length; ++i){
 			$_settings = array();
 			//FORMMAIL RECIPIENTS
 			if(we_base_preferences::userIsAllowed('FORMMAIL_BLOCK')){
-
-				// Generate needed JS
-				$_needed_JavaScript = we_html_element::jsElement('
-var hot = false;
-' . (!permissionhandler::hasPerm("CHANGE_START_DOCUMENT") ? we_html_button::create_state_changer(false) : "") . "
-function set_state_edit_delete_recipient() {
-	var p = document.forms[0].elements[\"we_recipient\"];
-	var i = p.length;
-
-	if (i == 0) {
-		edit_enabled = switch_button_state('edit', 'edit_enabled', 'disabled');
-		delete_enabled = switch_button_state('delete', 'delete_enabled', 'disabled');
-	} else {
-		edit_enabled = switch_button_state('edit', 'edit_enabled', 'enabled');
-		delete_enabled = switch_button_state('delete', 'delete_enabled', 'enabled');
-	}
-}
-
-function inSelectBox(val) {
-	var p = document.forms[0].elements[\"we_recipient\"];
-
-	for (var i = 0; i < p.options.length; i++) {
-		if (p.options[i].text == val) {
-			return true;
-		}
-	}
-	return false;
-}
-
-function addElement(value, text, sel) {
-	var p = document.forms[0].elements[\"we_recipient\"];
-	var i = p.length;
-
-	p.options[i] =  new Option(text, value);
-
-	if (sel) {
-		p.selectedIndex = i;
-	}
-}
-
-function in_array(n, h) {
-	for (var i = 0; i < h.length; i++) {
-		if (h[i] == n) {
-			return true;
-		}
-	}
-	return false;
-}
-
-function add_recipient() {
-	var newRecipient = prompt(\"" . g_l('alert', '[input_name]') . "\", \"\");
-	var p = document.forms[0].elements[\"we_recipient\"];
-
-	if (newRecipient != null) {
-		if (newRecipient.length > 0) {
-			if (newRecipient.length > 255 ) {
-				" . we_message_reporting::getShowMessageCall(g_l('alert', '[max_name_recipient]'), we_message_reporting::WE_MESSAGE_ERROR) . "
-				return;
-			}
-
-			if (!inSelectBox(newRecipient)) {
-				addElement(\"#\", newRecipient, true);
-				hot = true;
-
-				set_state_edit_delete_recipient();
-				send_recipients();
-			} else {
-				" . we_message_reporting::getShowMessageCall(g_l('alert', '[recipient_exists]'), we_message_reporting::WE_MESSAGE_ERROR) . "
-			}
-		} else {
-			" . we_message_reporting::getShowMessageCall(g_l('alert', '[not_entered_recipient]'), we_message_reporting::WE_MESSAGE_ERROR) . "
-		}
-	}
-}
-
-function delete_recipient() {
-	var p = document.forms[0].elements[\"we_recipient\"];
-
-	if (p.selectedIndex >= 0) {
-		if (confirm(\"" . g_l('alert', '[delete_recipient]') . "\")) {
-			hot = true;
-
-			var d = document.forms[0].elements[\"newconf[formmail_deleted]\"];
-
-			d.value += ((d.value)  ? \",\" : \"\") + p.options[p.selectedIndex].value;
-			p.options[p.selectedIndex] = null;
-
-			set_state_edit_delete_recipient();
-		}
-	}
-}
-
-function edit_recipient() {
-	var p = document.forms[0].elements[\"we_recipient\"];
-
-	if (p.selectedIndex >= 0) {
-		var editRecipient = p.options[p.selectedIndex].text;
-
-		editRecipient = prompt(\"" . g_l('alert', '[recipient_new_name]') . "\", editRecipient);
-	}
-
-	if (p.selectedIndex >= 0 && editRecipient != null) {
-		if (editRecipient != \"\") {
-			if (p.options[p.selectedIndex].text == editRecipient) {
-				return;
-			}
-
-			if (editRecipient.length > 255 ) {
-				" . we_message_reporting::getShowMessageCall(g_l('alert', '[max_name_recipient]'), we_message_reporting::WE_MESSAGE_ERROR) . "
-				return;
-			}
-
-			if (!inSelectBox(editRecipient)) {
-				p.options[p.selectedIndex].text = editRecipient;
-				hot = true;
-				send_recipients();
-			} else {
-				" . we_message_reporting::getShowMessageCall(g_l('alert', '[recipient_exists]'), we_message_reporting::WE_MESSAGE_ERROR) . "
-			}
-		} else {
-			" . we_message_reporting::getShowMessageCall(g_l('alert', '[not_entered_recipient]'), we_message_reporting::WE_MESSAGE_ERROR) . "
-		}
-	}
-}
-
-function send_recipients() {
-	if (hot) {
-		var p = document.forms[0].elements[\"we_recipient\"];
-		var v = document.forms[0].elements[\"newconf[formmail_values]\"];
-
-		v.value = \"\";
-
-		for (var i = 0; i < p.options.length; i++) {
-			v.value += p.options[i].value + \"<#>\" + p.options[i].text + ( (i < (p.options.length -1 )) ? \"<##>\" : \"\");
-		}
-	}
-}
-
-function formmailLogOnOff() {
-	var formmail_log = document.forms[0].elements[\"newconf[FORMMAIL_LOG]\"];
-	var formmail_block = document.forms[0].elements[\"newconf[FORMMAIL_BLOCK]\"];
-	var formmail_emptylog = document.forms[0].elements[\"newconf[FORMMAIL_EMPTYLOG]\"];
-	var formmail_span = document.forms[0].elements[\"newconf[FORMMAIL_SPAN]\"];
-	var formmail_trials = document.forms[0].elements[\"newconf[FORMMAIL_TRIALS]\"];
-	var formmail_blocktime = document.forms[0].elements[\"newconf[FORMMAIL_BLOCKTIME]\"];
-
-	var flag = formmail_log.options[formmail_log.selectedIndex].value == 1;
-
-	formmail_emptylog.disabled = !flag;
-
-	formmail_block.disabled = !flag;
-	if (formmail_block.options[formmail_block.selectedIndex].value == 1) {
-		formmail_span.disabled = !flag;
-		formmail_trials.disabled = !flag;
-		formmail_blocktime.disabled = !flag;
-	}
-}
-function formmailBlockOnOff() {
-	var formmail_block = document.forms[0].elements[\"newconf[FORMMAIL_BLOCK]\"];
-	var formmail_span = document.forms[0].elements[\"newconf[FORMMAIL_SPAN]\"];
-	var formmail_trials = document.forms[0].elements[\"newconf[FORMMAIL_TRIALS]\"];
-	var formmail_blocktime = document.forms[0].elements[\"newconf[FORMMAIL_BLOCKTIME]\"];
-
-	var flag = formmail_block.options[formmail_block.selectedIndex].value == 1;
-
-	formmail_span.disabled = !flag;
-	formmail_trials.disabled = !flag;
-	formmail_blocktime.disabled = !flag;
-}");
-
 				// Build dialog if user has permission
 				$_settings[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[formmail_information]'), we_html_tools::TYPE_INFO, 450, false), "space" => 0);
 
@@ -1896,15 +1417,15 @@ function formmailBlockOnOff() {
 				}
 
 				// Create needed hidden fields
-				$_hidden_fields = we_html_element::htmlHidden(array("name" => "newconf[formmail_values]", "value" => "")) .
-					we_html_element::htmlHidden(array("name" => "newconf[formmail_deleted]", "value" => ""));
+				$_hidden_fields = we_html_element::htmlHiddens(array(
+						"newconf[formmail_values]" => "",
+						"newconf[formmail_deleted]" => ""));
 
 				// Create edit list
-				$_editlist_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 2, 3);
+				$_editlist_table = new we_html_table(array('class' => 'default'), 2, 3);
 
-				$_editlist_table->setCol(0, 0, null, $_hidden_fields . $_select_box->getHtml());
-				$_editlist_table->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
-				$_editlist_table->setCol(0, 2, array("valign" => "top"), we_html_button::create_button('add', "javascript:add_recipient();") . we_html_tools::getPixel(1, 10) . we_html_button::create_button("edit", "javascript:edit_recipient();", true, 100, 22, "", "", !$_enabled_buttons, false) . we_html_tools::getPixel(1, 10) . we_html_button::create_button("delete", "javascript:delete_recipient();", true, 100, 22, "", "", !$_enabled_buttons, false));
+				$_editlist_table->setCol(0, 0, array('style' => 'padding-right:10px;'), $_hidden_fields . $_select_box->getHtml());
+				$_editlist_table->setCol(0, 2, array('style' => 'vertical-align:top;'), we_html_button::create_button(we_html_button::ADD, "javascript:add_recipient();") . we_html_button::create_button(we_html_button::EDIT, "javascript:edit_recipient();", true, 100, 22, "", "", !$_enabled_buttons, false) . we_html_button::create_button(we_html_button::DELETE, "javascript:delete_recipient();", true, 100, 22, "", "", !$_enabled_buttons, false));
 
 				// Build dialog if user has permission
 				$_settings[] = array("headline" => "", "html" => $_editlist_table->getHtml(), "space" => 0);
@@ -1926,7 +1447,7 @@ function formmailBlockOnOff() {
 				$_formmail_log->addOption(0, g_l('prefs', '[no]'));
 				$_formmail_log->selectOption(get_value("FORMMAIL_LOG") ? 1 : 0);
 
-				$_html = '<table border="0" cellpading="0" cellspacing="0">
+				$_html = '<table class="default">
 							<tr>
 								<td>' . $_formmail_log->getHtml() . '</td>
 								<td style="padding-left:10px;">' . we_html_button::create_button("logbook", 'javascript:we_cmd(\'show_formmail_log\')') . '</td>
@@ -1974,7 +1495,7 @@ function formmailBlockOnOff() {
 				$_formmail_block->addOption(0, g_l('prefs', '[no]'));
 				$_formmail_block->selectOption(get_value("FORMMAIL_BLOCK") ? 1 : 0);
 
-				$_html = '<table border="0" cellpading="0" cellspacing="0">
+				$_html = '<table class="default">
 							<tr>
 								<td>' . $_formmail_block->getHtml() . '</td>
 								<td style="padding-left:10px;">' . we_html_button::create_button("logbook", 'javascript:we_cmd(\'show_formmail_block_log\')') . '</td>
@@ -1986,7 +1507,7 @@ function formmailBlockOnOff() {
 				$_isDisabled = $_isDisabled || (get_value("FORMMAIL_BLOCK") == 0);
 
 				// table is IE fix. Without table IE has a gap on the left of the input
-				$_formmail_trials = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
+				$_formmail_trials = '<table class="default"><tr><td>' .
 					we_html_tools::htmlTextInput("newconf[FORMMAIL_TRIALS]", 24, get_value("FORMMAIL_TRIALS"), "", "", "text", 88, 0, "", $_isDisabled) .
 					'</td></tr></table>';
 
@@ -2043,7 +1564,7 @@ function formmailBlockOnOff() {
 				$_settings[] = array('html' => $_formmail_blocktime->getHtml(), "space" => 250, "headline" => g_l('prefs', '[blockFor]'), "noline" => 1);
 			}
 
-			return create_dialog("", /* g_l('prefs', '[formmail_recipients]'), */ $_settings, -1, "", "", $_needed_JavaScript);
+			return create_dialog("", /* g_l('prefs', '[formmail_recipients]'), */ $_settings, -1);
 
 		case "modules":
 			if(!we_base_preferences::userIsAllowed('active_integrated_modules')){
@@ -2081,22 +1602,6 @@ function formmailBlockOnOff() {
 			/**
 			 * Proxy server
 			 */
-			// Generate needed JS
-			$_needed_JavaScript = we_html_element::jsElement("
-							function set_state() {
-								if (document.getElementsByName('newconf[useproxy]')[0].checked == true) {
-									_new_state = false;
-								} else {
-									_new_state = true;
-								}
-
-								document.getElementsByName('newconf[proxyhost]')[0].disabled = _new_state;
-								document.getElementsByName('newconf[proxyport]')[0].disabled = _new_state;
-								document.getElementsByName('newconf[proxyuser]')[0].disabled = _new_state;
-								document.getElementsByName('newconf[proxypass]')[0].disabled = _new_state;
-							}");
-
-
 			// Check Proxy settings  ...
 			$_proxy = get_value("proxy_proxy");
 
@@ -2117,7 +1622,7 @@ function formmailBlockOnOff() {
 				array("headline" => g_l('prefs', '[proxypass]'), "html" => $_proxypass, "space" => 200, "noline" => 1),
 			);
 			// Build dialog element if user has permission
-			return create_dialog("", /* g_l('prefs', '[tab][proxy]'), */ $_settings, -1, "", "", $_needed_JavaScript);
+			return create_dialog("", /* g_l('prefs', '[tab][proxy]'), */ $_settings, -1);
 
 
 		case "advanced":
@@ -2145,7 +1650,7 @@ function formmailBlockOnOff() {
 			  $_settings[] = array("headline" => "Editor für textareas im Frontend", "html" => $WYSIWYG_TYPE_FRONTEND->getHtml(), "space" => 200);
 			 */
 			$_we_doctype_workspace_behavior = get_value("WE_DOCTYPE_WORKSPACE_BEHAVIOR");
-			$_we_doctype_workspace_behavior_table = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
+			$_we_doctype_workspace_behavior_table = '<table class="default"><tr><td>' .
 				we_html_forms::radiobutton(0, (!$_we_doctype_workspace_behavior), "newconf[WE_DOCTYPE_WORKSPACE_BEHAVIOR]", g_l('prefs', '[we_doctype_workspace_behavior_0]'), true, "defaultfont", "", false, g_l('prefs', '[we_doctype_workspace_behavior_hint0]'), 0, 430) .
 				'</td></tr><tr><td style="padding-top:10px;">' .
 				we_html_forms::radiobutton(1, $_we_doctype_workspace_behavior, "newconf[WE_DOCTYPE_WORKSPACE_BEHAVIOR]", g_l('prefs', '[we_doctype_workspace_behavior_1]'), true, "defaultfont", "", false, g_l('prefs', '[we_doctype_workspace_behavior_hint1]'), 0, 430) .
@@ -2193,27 +1698,20 @@ function formmailBlockOnOff() {
 			$NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->selectOption(get_value("NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH") ? 1 : 0);
 			$_settings[] = array("headline" => g_l('prefs', '[navigation_rules_continue]'), "html" => $NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->getHtml(), "space" => 200);
 
-			return create_dialog("", /* g_l('prefs', '[tab][advanced]'), */ $_settings, -1, '', '', isset($_needed_JavaScript) ? $_needed_JavaScript : '');
+			return create_dialog("", /* g_l('prefs', '[tab][advanced]'), */ $_settings, -1);
 
 		case "system":
 			if(!permissionhandler::hasPerm("ADMINISTRATOR")){
 				break;
 			}
 
-			$_we_max_upload_size = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
-				we_html_tools::htmlTextInput("newconf[FILE_UPLOAD_MAX_UPLOAD_SIZE]", 22, get_value("FILE_UPLOAD_MAX_UPLOAD_SIZE"), "", ' onkeypress="return IsDigit(event);"', "number", 60) . ' MB</td><td style="padding-left:20px;" class="small">' .
+			$_we_max_upload_size = '<table class="default"><tr><td>' .
+				we_html_tools::htmlTextInput("newconf[FILE_UPLOAD_MAX_UPLOAD_SIZE]", 22, get_value("FILE_UPLOAD_MAX_UPLOAD_SIZE"), "", ' onkeypress="return WE().util.IsDigit(event);"', "number", 60) . ' MB</td><td style="padding-left:20px;" class="small">' .
 				g_l('prefs', '[upload][we_max_size_hint]') .
 				'</td></tr></table>';
-			$_needed_JavaScript = we_html_element::jsElement('function IsDigit(e) {
-					var key =  (e != null && e.charCode?e.charCode:event.keyCode);
-					return (((key >= 48) && (key <= 57)) || (key == 0) || (key == 13));
-				}');
 
-			// FILE UPLOAD
-			$_fileuploader_use_legacy = we_html_forms::checkbox(1, get_value('FILE_UPLOAD_USE_LEGACY'), 'newconf[FILE_UPLOAD_USE_LEGACY]', g_l('prefs', '[upload][use_legacy]'), false, 'defaultfont', '');
-
-			$_we_new_folder_mod = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
-				we_html_tools::htmlTextInput("newconf[WE_NEW_FOLDER_MOD]", 22, get_value("WE_NEW_FOLDER_MOD"), 3, ' onkeypress="return IsDigit(event);"', "text", 60) . '</td><td style="padding-left:20px;" class="small">' .
+			$_we_new_folder_mod = '<table class="default"><tr><td>' .
+				we_html_tools::htmlTextInput("newconf[WE_NEW_FOLDER_MOD]", 22, get_value("WE_NEW_FOLDER_MOD"), 3, ' onkeypress="return WE().util.IsDigit(event);"', "text", 60) . '</td><td style="padding-left:20px;" class="small">' .
 				g_l('prefs', '[we_new_folder_mod_hint]') .
 				'</td></tr></table>';
 
@@ -2257,21 +1755,6 @@ function formmailBlockOnOff() {
 				}
 			}
 
-			// Generate needed JS
-			$_needed_JavaScript .= we_html_element::jsElement("
-function set_state_auth() {
-	if (document.getElementsByName('useauthEnabler')[0].checked == true) {
-		document.getElementsByName('newconf[useauth]')[0].value = 1;
-		_new_state = false;
-	} else {
-		document.getElementsByName('newconf[useauth]')[0].value = 0;
-		_new_state = true;
-	}
-
-	document.getElementsByName('newconf[HTTP_USERNAME]')[0].disabled = _new_state;
-	document.getElementsByName('newconf[HTTP_PASSWORD]')[0].disabled = _new_state;
-}");
-
 			// Check authentication settings  ...
 			$_auth = get_value("HTTP_USERNAME");
 			$_auth_user = get_value("HTTP_USERNAME");
@@ -2290,13 +1773,13 @@ function set_state_auth() {
 
 			if(we_base_imageEdit::gd_version() > 0){ //  gd lib ist installiert
 				$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[WE_THUMBNAIL_DIRECTORY]'].value");
-				$_but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '" . we_base_ContentTypes::FOLDER . "', document.forms[0].elements['newconf[WE_THUMBNAIL_DIRECTORY]'].value, '')") : "";
+				$_but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '" . we_base_ContentTypes::FOLDER . "', document.forms[0].elements['newconf[WE_THUMBNAIL_DIRECTORY]'].value, '')") : "";
 				$_inp = we_html_tools::htmlTextInput("newconf[WE_THUMBNAIL_DIRECTORY]", 12, get_value("WE_THUMBNAIL_DIRECTORY"), "", "", "text", 125);
-				$_thumbnail_dir = we_html_button::create_button_table(array($_inp, $_but));
+				$_thumbnail_dir = $_inp . $_but;
 			} else { //  gd lib ist nicht installiert
-				$_but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button("select", "#", true, 100, 22, '', '', true) : "";
+				$_but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "#", true, 100, 22, '', '', true) : "";
 				$_inp = we_html_tools::htmlTextInput("newconf[WE_THUMBNAIL_DIRECTORY]", 12, get_value("WE_THUMBNAIL_DIRECTORY"), "", "", "text", 125, 0, '', true);
-				$_thumbnail_dir = we_html_button::create_button_table(array($_inp, $_but)) . '<br/>' . g_l('thumbnails', '[add_description_nogdlib]');
+				$_thumbnail_dir = $_inp . $_but . '<br/>' . g_l('thumbnails', '[add_description_nogdlib]');
 			}
 
 			//  select if hooks can be executed
@@ -2314,8 +1797,8 @@ function set_state_auth() {
 			$useSession->addOption(1, g_l('prefs', '[yes]'));
 			$useSession->selectOption(get_value("SYSTEM_WE_SESSION") ? 1 : 0);
 
-			$sessionTime = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
-				we_html_tools::htmlTextInput("newconf[SYSTEM_WE_SESSION_TIME]", 22, abs(get_value("SYSTEM_WE_SESSION_TIME")), "", ' onkeypress="return IsDigit(event);"', "text", 60) . '</td><td style="padding-left:20px;" class="small">s</td></tr></table>';
+			$sessionTime = '<table class="default"><tr><td>' .
+				we_html_tools::htmlTextInput("newconf[SYSTEM_WE_SESSION_TIME]", 22, abs(get_value("SYSTEM_WE_SESSION_TIME")), "", ' onkeypress="return WE().util.IsDigit(event);"', "text", 60) . '</td><td style="padding-left:20px;" class="small">s</td></tr></table>';
 
 			$cryptSession = new we_html_select(array("name" => 'newconf[SYSTEM_WE_SESSION_CRYPT]', 'class' => "weSelect", 'onchange' => 'alert(\'' . g_l('prefs', '[session][crypt][alert]') . '\');'));
 			$cryptSession->addOption(0, g_l('prefs', '[no]'));
@@ -2329,7 +1812,6 @@ function set_state_auth() {
 
 			$_settings = array(
 				array("headline" => g_l('prefs', '[upload][we_max_size]'), "html" => $_we_max_upload_size, "space" => 200),
-				array('headline' => g_l('prefs', '[upload][title]'), 'html' => $_fileuploader_use_legacy, 'space' => 200),
 				array("headline" => g_l('prefs', '[we_new_folder_mod]'), "html" => $_we_new_folder_mod, "space" => 200),
 				array("headline" => g_l('prefs', '[db_connect]'), "html" => $_db_connect->getHtml(), "space" => 200, "noline" => 1),
 				array("headline" => g_l('prefs', '[db_set_charset]'), "html" => $html_db_charset_information . $_db_set_charset->getHtml() . $html_db_charset_warning, "space" => 200),
@@ -2343,7 +1825,7 @@ function set_state_auth() {
 				array("headline" => g_l('prefs', '[session][crypt][title]'), "html" => $cryptSession->getHtml(), "space" => 200),
 			);
 			// Build dialog element if user has permission
-			return create_dialog("", /* g_l('prefs', '[tab][system]'), */ $_settings, -1, "", "", $_needed_JavaScript);
+			return create_dialog("", /* g_l('prefs', '[tab][system]'), */ $_settings, -1);
 
 		case "seolinks":
 			/*			 * *******************************************************************
@@ -2352,14 +1834,13 @@ function set_state_auth() {
 			if(!permissionhandler::hasPerm("ADMINISTRATOR")){
 				break;
 			}
-			$_needed_JavaScript = "";
 			// Build dialog if user has permission
 
 			$_navigation_directoryindex_names = we_html_tools::htmlTextInput("newconf[NAVIGATION_DIRECTORYINDEX_NAMES]", 22, get_value("NAVIGATION_DIRECTORYINDEX_NAMES"), "", "", "text", 225);
 			$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[ERROR_DOCUMENT_NO_OBJECTFILE]'].value");
-			$wecmdenc2 = we_base_request::encCmd("document.forms[0].elements['error_document_no_objectfile_text'].value");
-			$_acButton1 = we_html_button::create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['newconf[ERROR_DOCUMENT_NO_OBJECTFILE]'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','', '" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::HTML . "', 1)");
-			$_acButton2 = we_html_button::create_button('image:btn_function_trash', 'javascript:document.forms[0].elements[\'newconf[ERROR_DOCUMENT_NO_OBJECTFILE]\'].value = 0;document.forms[0].elements[\'error_document_no_objectfile_text\'].value = \'\'');
+			$wecmdenc2 = we_base_request::encCmd("document.forms[0].elements.error_document_no_objectfile_text.value");
+			$_acButton1 = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', document.forms[0].elements['newconf[ERROR_DOCUMENT_NO_OBJECTFILE]'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','', '" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::HTML . "', 1)");
+			$_acButton2 = we_html_button::create_button(we_html_button::TRASH, 'javascript:document.forms[0].elements[\'newconf[ERROR_DOCUMENT_NO_OBJECTFILE]\'].value = 0;document.forms[0].elements.error_document_no_objectfile_text.value = \'\'');
 
 			$yuiSuggest->setAcId("doc2");
 			$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML);
@@ -2380,7 +1861,9 @@ function set_state_auth() {
 				array("headline" => g_l('prefs', '[navigation_directoryindex_names]'), "html" => $_navigation_directoryindex_names, "space" => 200, "noline" => 1),
 				array("html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[general_directoryindex_hide_description]'), we_html_tools::TYPE_INFO, 480), "noline" => 1),
 				array("headline" => g_l('prefs', '[taglinks_directoryindex_hide]'), "html" => getTrueFalseSelect('TAGLINKS_DIRECTORYINDEX_HIDE'), "space" => 200),
-				array("headline" => g_l('prefs', '[general_objectseourls]'), "noline" => 1),
+				array("headline" => g_l('prefs', '[general_objectseourls]'), "html" => "", "space" => 480, "noline" => 1),
+				array("html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[objectseourls_lowercase_description]'), we_html_tools::TYPE_INFO, 480), "noline" => 1),
+				array("headline" => g_l('prefs', '[objectseourls_lowercase]'), "html" => getTrueFalseSelect('OBJECTSEOURLS_LOWERCASE'), "space" => 200, "noline" => 1),
 				array("headline" => g_l('prefs', '[navigation_objectseourls]'), "html" => getTrueFalseSelect('NAVIGATION_OBJECTSEOURLS'), "space" => 200, "noline" => 1),
 				array("headline" => g_l('prefs', '[wysiwyglinks_objectseourls]'), "html" => getTrueFalseSelect('WYSIWYGLINKS_OBJECTSEOURLS'), "space" => 200, "noline" => 1),
 				array("html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[general_objectseourls_description]'), we_html_tools::TYPE_INFO, 480), "noline" => 1),
@@ -2392,54 +1875,15 @@ function set_state_auth() {
 				array("headline" => g_l('prefs', '[seoinside_hideinwebedition]'), "html" => getTrueFalseSelect('SEOINSIDE_HIDEINWEBEDITION'), "space" => 200),
 				array('headline' => g_l('prefs', '[error_no_object_found]'), 'html' => $yuiSuggest->getHTML(), 'space' => 200, "noline" => 1),
 				array('headline' => g_l('prefs', '[suppress404code]'), 'html' => getTrueFalseSelect('SUPPRESS404CODE'), 'space' => 200, 'noline' => 0),
+				array("html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[force404redirect_description]'), we_html_tools::TYPE_INFO, 480), "noline" => 1),
+				array('headline' => g_l('prefs', '[force404redirect]'), 'html' => getTrueFalseSelect('FORCE404REDIRECT'), 'space' => 200, 'noline' => 0),
 			);
-			return create_dialog('', /* g_l('prefs', '[tab][seolinks]'), */ $_settings, -1, '', '', null, $_needed_JavaScript);
+			return create_dialog('', /* g_l('prefs', '[tab][seolinks]'), */ $_settings, -1, '', '', null);
 
 		case 'error_handling':
 			if(!permissionhandler::hasPerm('ADMINISTRATOR')){
 				break;
 			}
-
-			// Generate needed JS
-			$_needed_JavaScript = we_html_element::jsElement("
-function set_state_error_handler() {
-	if (document.getElementsByName('newconf[WE_ERROR_HANDLER]')[0].checked == true) {
-		_new_state = false;
-		_new_style = 'black';
-		_new_cursor = document.all ? 'hand' : 'pointer';
-	} else {
-		_new_state = true;
-		_new_style = 'gray';
-		_new_cursor = '';
-	}
-
-	document.getElementsByName('newconf[WE_ERROR_NOTICES]')[0].disabled = _new_state;
-	document.getElementsByName('newconf[WE_ERROR_WARNINGS]')[0].disabled = _new_state;
-	document.getElementsByName('newconf[WE_ERROR_ERRORS]')[0].disabled = _new_state;
-	document.getElementsByName('newconf[WE_ERROR_DEPRECATED]')[0].disabled = _new_state;
-
-	document.getElementById('label_newconf[WE_ERROR_NOTICES]').style.color = _new_style;
-	document.getElementById('label_newconf[WE_ERROR_WARNINGS]').style.color = _new_style;
-	document.getElementById('label_newconf[WE_ERROR_ERRORS]').style.color = _new_style;
-	document.getElementById('label_newconf[WE_ERROR_DEPRECATED]').style.color = _new_style;
-
-	document.getElementById('label_newconf[WE_ERROR_NOTICES]').style.cursor = _new_cursor;
-	document.getElementById('label_newconf[WE_ERROR_WARNINGS]').style.cursor = _new_cursor;
-	document.getElementById('label_newconf[WE_ERROR_ERRORS]').style.cursor = _new_cursor;
-	document.getElementById('label_newconf[WE_ERROR_DEPRECATED]').style.cursor = _new_cursor;
-
-	document.getElementsByName('newconf[WE_ERROR_SHOW]')[0].disabled = _new_state;
-	document.getElementsByName('newconf[WE_ERROR_LOG]')[0].disabled = _new_state;
-	document.getElementsByName('newconf[WE_ERROR_MAIL]')[0].disabled = _new_state;
-
-	document.getElementById('label_newconf[WE_ERROR_SHOW]').style.color = _new_style;
-	document.getElementById('label_newconf[WE_ERROR_LOG]').style.color = _new_style;
-	document.getElementById('label_newconf[WE_ERROR_MAIL]').style.color = _new_style;
-
-	document.getElementById('label_newconf[WE_ERROR_SHOW]').style.cursor = _new_cursor;
-	document.getElementById('label_newconf[WE_ERROR_LOG]').style.cursor = _new_cursor;
-	document.getElementById('label_newconf[WE_ERROR_MAIL]').style.cursor = _new_cursor;
-}");
 
 			/**
 			 * Error handler
@@ -2447,7 +1891,7 @@ function set_state_error_handler() {
 			$_foldAt = 4;
 
 			// Create checkboxes
-			$_template_error_handling_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 8, 1);
+			$_template_error_handling_table = new we_html_table(array('class' => 'default'), 8, 1);
 			$_template_error_handling_table->setCol(0, 0, null, we_html_forms::checkbox(1, get_value('DISABLE_TEMPLATE_CODE_CHECK'), 'DISABLE_TEMPLATE_CODE_CHECK', g_l('prefs', '[disable_template_code_check]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[DISABLE_TEMPLATE_CODE_CHECK]\');') .
 				we_html_tools::hidden('newconf[DISABLE_TEMPLATE_CODE_CHECK]', get_value('DISABLE_TEMPLATE_CODE_CHECK')));
 
@@ -2456,37 +1900,27 @@ function set_state_error_handler() {
 
 			// Error types
 			// Create checkboxes
-			$_error_handling_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 8, 1);
+			$_error_handling_table = new we_html_table(array('class' => 'default'), 8, 1);
 
 			$_error_handling_table->setCol(0, 0, null, we_html_forms::checkbox(1, get_value('WE_ERROR_ERRORS'), 'newconf[WE_ERROR_ERRORS]', g_l('prefs', '[error_errors]'), false, 'defaultfont', '', !get_value('WE_ERROR_HANDLER')));
-			$_error_handling_table->setCol(1, 0, null, we_html_tools::getPixel(1, 5));
 			$_error_handling_table->setCol(2, 0, null, we_html_forms::checkbox(1, get_value('WE_ERROR_WARNINGS'), 'newconf[WE_ERROR_WARNINGS]', g_l('prefs', '[error_warnings]'), false, 'defaultfont', '', !get_value('WE_ERROR_HANDLER')));
-			$_error_handling_table->setCol(3, 0, null, we_html_tools::getPixel(1, 5));
 			$_error_handling_table->setCol(4, 0, null, we_html_forms::checkbox(1, get_value('WE_ERROR_NOTICES'), 'newconf[WE_ERROR_NOTICES]', g_l('prefs', '[error_notices]'), false, 'defaultfont', '', !get_value('WE_ERROR_HANDLER')));
-			$_error_handling_table->setCol(5, 0, null, we_html_tools::getPixel(1, 5));
 			$_error_handling_table->setCol(6, 0, null, we_html_forms::checkbox(1, get_value('WE_ERROR_DEPRECATED'), 'newconf[WE_ERROR_DEPRECATED]', g_l('prefs', '[error_deprecated]'), false, 'defaultfont', '', !get_value('WE_ERROR_HANDLER')));
-			$_error_handling_table->setCol(7, 0, null, we_html_tools::getPixel(1, 5));
 
 			// Create checkboxes
-			$_error_display_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 8, 1);
+			$_error_display_table = new we_html_table(array('class' => 'default'), 8, 1);
 			$_error_display_table->setCol(0, 0, array('class' => 'defaultfont', 'style' => 'padding-left: 25px;'), we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[error_notices_warning]'), we_html_tools::TYPE_ALERT, 260));
 
 			$_error_display_table->setCol(1, 0, null, we_html_forms::checkbox(1, get_value('WE_ERROR_SHOW'), 'newconf[WE_ERROR_SHOW]', g_l('prefs', '[error_display]'), false, 'defaultfont', '', !get_value('WE_ERROR_HANDLER')));
-			$_error_display_table->setCol(2, 0, null, we_html_tools::getPixel(1, 5));
 			$_error_display_table->setCol(3, 0, null, we_html_forms::checkbox(1, get_value('WE_ERROR_LOG'), 'newconf[WE_ERROR_LOG]', g_l('prefs', '[error_log]'), false, 'defaultfont', '', !get_value('WE_ERROR_HANDLER')));
-			$_error_display_table->setCol(4, 0, null, we_html_tools::getPixel(1, 5));
 			$_error_display_table->setCol(5, 0, null, we_html_forms::checkbox(1, get_value('WE_ERROR_MAIL'), 'newconf[WE_ERROR_MAIL]', g_l('prefs', '[error_mail]'), false, 'defaultfont', '', !get_value('WE_ERROR_HANDLER')));
 
 			// Create specify mail address input
-			$_error_mail_specify_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 1, 4);
+			$_error_mail_specify_table = new we_html_table(array('class' => 'default', 'style' => 'margin-left:25px;'), 1, 4);
 
-			$_error_mail_specify_table->setCol(0, 0, null, we_html_tools::getPixel(25, 1));
-			$_error_mail_specify_table->setCol(0, 1, array('class' => 'defaultfont'), g_l('prefs', '[error_mail_address]') . ':');
-			$_error_mail_specify_table->setCol(0, 2, null, we_html_tools::getPixel(6, 1));
+			$_error_mail_specify_table->setCol(0, 1, array('class' => 'defaultfont'), g_l('prefs', '[error_mail_address]') . ': ');
+			$_error_mail_specify_table->setCol(0, 2, array('style' => 'text-align:left'), we_html_tools::htmlTextInput('newconf[WE_ERROR_MAIL_ADDRESS]', 6, (get_value('WE_ERROR_MAIL') ? get_value('WE_ERROR_MAIL_ADDRESS') : ''), 100, 'placeholder="mail@example"', 'email', 195));
 
-			$_error_mail_specify_table->setCol(0, 3, array('align' => 'left'), we_html_tools::htmlTextInput('newconf[WE_ERROR_MAIL_ADDRESS]', 6, (get_value('WE_ERROR_MAIL') ? get_value('WE_ERROR_MAIL_ADDRESS') : ''), 100, 'placeholder="mail@example"', 'email', 195));
-
-			$_error_display_table->setCol(6, 0, null, we_html_tools::getPixel(1, 10));
 			$_error_display_table->setCol(7, 0, null, $_error_mail_specify_table->getHtml());
 
 			$_settings = array(
@@ -2496,7 +1930,7 @@ function set_state_error_handler() {
 				array('headline' => g_l('prefs', '[error_displaying]'), 'html' => $_error_display_table->getHtml(), 'space' => 200),
 			);
 
-			return create_dialog('settings_error_expert', /* g_l('prefs', '[tab][error_handling]'), */ $_settings, $_foldAt, g_l('prefs', '[show_expert]'), g_l('prefs', '[hide_expert]'), $_needed_JavaScript);
+			return create_dialog('settings_error_expert', /* g_l('prefs', '[tab][error_handling]'), */ $_settings, $_foldAt, g_l('prefs', '[show_expert]'), g_l('prefs', '[hide_expert]'));
 
 		/*		 * *******************************************************************
 		 * Validation (XHTML)
@@ -2504,21 +1938,6 @@ function set_state_error_handler() {
 		case 'message_reporting':
 
 			$_val = get_value('message_reporting');
-
-			$_js = we_html_element::jsElement('
-			function handle_message_reporting_click() {
-				val = 0;
-				var fields = new Array("message_reporting_notices", "message_reporting_warnings", "message_reporting_errors");
-				for (i=0;i<fields.length;i++) {
-
-					if (document.getElementById(fields[i]).checked) {
-						val += parseInt(document.getElementById(fields[i]).value);
-					}
-				}
-				document.getElementById("message_reporting").value = val;
-
-			}');
-
 
 			$_html = "<input type=\"hidden\" id=\"message_reporting\" name=\"newconf[message_reporting]\" value=\"$_val\" />" . we_html_forms::checkbox(we_message_reporting::WE_MESSAGE_ERROR, 1, "message_reporting_errors", g_l('prefs', '[message_reporting][show_errors]'), false, "defaultfont", "handle_message_reporting_click();", true) . "<br />" .
 				we_html_forms::checkbox(we_message_reporting::WE_MESSAGE_WARNING, $_val & we_message_reporting::WE_MESSAGE_WARNING, "message_reporting_warnings", g_l('prefs', '[message_reporting][show_warnings]'), false, "defaultfont", "handle_message_reporting_click();") . "<br />" .
@@ -2529,7 +1948,7 @@ function set_state_error_handler() {
 				array('headline' => g_l('prefs', '[message_reporting][headline]'), 'html' => $_html, 'space' => 200),
 			);
 
-			return create_dialog('settings_message_reporting', /* g_l('prefs', '[tab][message_reporting]'), */ $_settings, -1, '', '', $_js);
+			return create_dialog('settings_message_reporting', /* g_l('prefs', '[tab][message_reporting]'), */ $_settings, -1);
 
 		/*		 * *******************************************************************
 		 * Validation (XHTML)
@@ -2538,30 +1957,6 @@ function set_state_error_handler() {
 			if(!permissionhandler::hasPerm('ADMINISTRATOR')){
 				break;
 			}
-
-			$js = we_html_element::jsElement('
-mainXhtmlFields  = Array("setXhtml_remove_wrong","setXhtml_show_wrong");
-showXhtmlFields = Array("setXhtml_show_wrong_text","setXhtml_show_wrong_js","setXhtml_show_wrong_error_log");
-
-function disable_xhtml_fields(val,fields){
-		for(i=0;i<fields.length;i++){
-				elem = document.forms[0][fields[i]];
-				label = document.getElementById("label_" + fields[i]);
-				if(val == 1){
-						elem.disabled = false;
-						label.style.color = "black";
-						label.style.cursor = document.all ? "hand" : "pointer";
-				} else {
-						elem.disabled = true;
-						label.style.color = "grey";
-						label.style.cursor = "";
-				}
-		}
-}
-
-function set_xhtml_field(val, field){
-		document.forms[0][field].value = (val ? 1 : 0);
-}');
 
 			//  activate xhtml_debug
 			$_xhtml_debug = we_html_forms::checkbox(1, get_value('XHTML_DEBUG'), 'setXhtml_debug', g_l('prefs', '[xhtml_debug_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[XHTML_DEBUG]\');disable_xhtml_fields(this.checked, mainXhtmlFields);disable_xhtml_fields((document.forms[0][\'setXhtml_show_wrong\'].checked && this.checked), showXhtmlFields);') .
@@ -2598,14 +1993,14 @@ function set_xhtml_field(val, field){
 				array('html' => $_xhtml_show_wrong_error_log, 'space' => 220, 'noline' => 1),
 			);
 
-			return create_dialog('', /* g_l('prefs', '[tab][validation]'), */ $_settings, -1, '', '', $js);
+			return create_dialog('', /* g_l('prefs', '[tab][validation]'), */ $_settings, -1);
 
 		case 'security':
 			if(!permissionhandler::hasPerm('ADMINISTRATOR')){
 				return;
 			}
 			$row = 0;
-			$customer_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'id' => 'customer_table'), 9, 10);
+			$customer_table = new we_html_table(array('class' => 'default', 'id' => 'customer_table'), 9, 10);
 			$customer_table->setCol($row, 0, array('class' => 'defaultfont', 'width' => '20px'), '');
 			$customer_table->setCol($row, 1, array('class' => 'defaultfont', 'colspan' => 5), g_l('prefs', '[security][customer][disableLogins]') . ':');
 			$customer_table->setCol($row, 6, array('width' => 300));
@@ -2625,7 +2020,7 @@ function set_xhtml_field(val, field){
 			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][errorPage]'));
 
 			$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value");
-			$wecmdenc2 = we_base_request::encCmd("document.forms[0].elements['SECURITY_LIMIT_CUSTOMER_REDIRECT_text'].value");
+			$wecmdenc2 = we_base_request::encCmd("document.forms[0].elements.SECURITY_LIMIT_CUSTOMER_REDIRECT_text.value");
 
 			$yuiSuggest->setAcId('SECURITY_LIMIT_CUSTOMER_REDIRECT_doc');
 			$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML);
@@ -2635,8 +2030,8 @@ function set_xhtml_field(val, field){
 			$yuiSuggest->setResult('newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]', ( SECURITY_LIMIT_CUSTOMER_REDIRECT ? : 0));
 			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setWidth(250);
-			$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','', '" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::HTML . "', 1)"), 10);
-			$yuiSuggest->setTrashButton(we_html_button::create_button('image:btn_function_trash', 'javascript:document.forms[0].elements[\'newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]\'].value = 0;document.forms[0].elements[\'SECURITY_LIMIT_CUSTOMER_REDIRECT_text\'].value = \'\''), 4);
+			$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','', '" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::HTML . "', 1)"), 10);
+			$yuiSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, 'javascript:document.forms[0].elements[\'newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]\'].value = 0;document.forms[0].elements[\'SECURITY_LIMIT_CUSTOMER_REDIRECT_text\'].value = \'\''), 4);
 
 			$customer_table->setCol($row, 3, array('class' => 'defaultfont', 'colspan' => 5), $yuiSuggest->getHTML());
 
@@ -2655,7 +2050,7 @@ function set_xhtml_field(val, field){
 				mcrypt_module_close($res);
 			}
 
-			$encryption->addOption(we_customer_customer::ENCRYPT_HASH, g_l('prefs', '[security][encryption][type][2]'), ((version_compare(PHP_VERSION, '5.3.7') >= 0) ? array() : array('disabled' => 'disabled')));
+			$encryption->addOption(we_customer_customer::ENCRYPT_HASH, g_l('prefs', '[security][encryption][type][2]'), array());
 			$encryption->selectOption(get_value('SECURITY_ENCRYPTION_TYPE_PASSWORD'));
 
 
@@ -2689,34 +2084,25 @@ function set_xhtml_field(val, field){
 			if(permissionhandler::hasPerm('ADMINISTRATOR')){
 				$_emailSelect = we_html_tools::htmlSelect('newconf[WE_MAILER]', array('php' => g_l('prefs', '[mailer_php]'), 'smtp' => g_l('prefs', '[mailer_smtp]')), 1, get_value('WE_MAILER'), false, array("onchange" => "var el = document.getElementById('smtp_table').style; if(this.value=='smtp') el.display='block'; else el.display='none';"), 'value', 300, 'defaultfont');
 
-				$_smtp_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'id' => 'smtp_table', 'width' => 300, 'style' => 'display: ' . ((get_value('WE_MAILER') === 'php') ? 'none' : 'block') . ';'), 9, 3);
-				$_smtp_table->setCol(0, 0, array('class' => 'defaultfont'), g_l('prefs', '[smtp_server]'));
-				$_smtp_table->setCol(0, 1, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 5));
-				$_smtp_table->setCol(0, 2, array('align' => 'right'), we_html_tools::htmlTextInput('newconf[SMTP_SERVER]', 24, get_value('SMTP_SERVER'), 180, '', 'text', 180));
-				$_smtp_table->setCol(1, 0, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 10));
+				$_smtp_table = new we_html_table(array('class' => 'default', 'id' => 'smtp_table', 'width' => 300, 'style' => 'display: ' . ((get_value('WE_MAILER') === 'php') ? 'none' : 'block') . ';'), 9, 3);
+				$_smtp_table->setCol(0, 0, array('class' => 'defaultfont', 'style' => 'padding-right:10px;'), g_l('prefs', '[smtp_server]'));
+				$_smtp_table->setCol(0, 2, array('styke' => 'text-align:right'), we_html_tools::htmlTextInput('newconf[SMTP_SERVER]', 24, get_value('SMTP_SERVER'), 180, '', 'text', 180));
 				$_smtp_table->setCol(2, 0, array('class' => 'defaultfont'), g_l('prefs', '[smtp_port]'));
-				$_smtp_table->setCol(2, 2, array('align' => 'right'), we_html_tools::htmlTextInput('newconf[SMTP_PORT]', 24, get_value('SMTP_PORT'), 180, '', 'text', 180));
+				$_smtp_table->setCol(2, 2, array('style' => 'text-align:right'), we_html_tools::htmlTextInput('newconf[SMTP_PORT]', 24, get_value('SMTP_PORT'), 180, '', 'text', 180));
 
 
 				$_encryptSelect = we_html_tools::htmlSelect('newconf[SMTP_ENCRYPTION]', array(0 => g_l('prefs', '[smtp_encryption_none]'), 'ssl' => g_l('prefs', '[smtp_encryption_ssl]'), 'tls' => g_l('prefs', '[smtp_encryption_tls]')), 1, get_value('SMTP_ENCRYPTION'), false, array(), 'value', 180, 'defaultfont');
 
-				$_smtp_table->setCol(3, 0, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 10));
 				$_smtp_table->setCol(4, 0, array('class' => 'defaultfont'), g_l('prefs', '[smtp_encryption]'));
-				$_smtp_table->setCol(4, 2, array('align' => 'left'), $_encryptSelect);
+				$_smtp_table->setCol(4, 2, array('style' => 'text-align:left'), $_encryptSelect);
 
 
-				$_auth_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'id' => 'auth_table', 'width' => 200, 'style' => 'display: ' . ((get_value('SMTP_AUTH') == 1) ? 'block' : 'none') . ';'), 4, 3);
+				$_auth_table = new we_html_table(array('class' => 'default', 'id' => 'auth_table', 'width' => 200, 'style' => 'display: ' . ((get_value('SMTP_AUTH') == 1) ? 'block' : 'none') . ';'), 4, 3);
 				$_auth_table->setCol(0, 0, array('class' => 'defaultfont'), g_l('prefs', '[smtp_username]'));
-				$_auth_table->setCol(0, 1, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 10));
-				$_auth_table->setCol(0, 2, array('align' => 'right'), we_html_tools::htmlTextInput('newconf[SMTP_USERNAME]', 14, get_value('SMTP_USERNAME'), 105, '', 'text', 105));
-				$_auth_table->setCol(1, 0, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 10));
+				$_auth_table->setCol(0, 2, array('style' => 'text-align:right'), we_html_tools::htmlTextInput('newconf[SMTP_USERNAME]', 14, get_value('SMTP_USERNAME'), 105, '', 'text', 105));
 				$_auth_table->setCol(2, 0, array('class' => 'defaultfont'), g_l('prefs', '[smtp_password]'));
-				$_auth_table->setCol(2, 2, array('align' => 'right'), we_html_tools::htmlTextInput('newconf[SMTP_PASSWORD]', 14, get_value('SMTP_PASSWORD'), 105, '', 'password', 105));
-				$_auth_table->setCol(3, 0, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 10));
-				$_smtp_table->setCol(5, 0, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 20));
+				$_auth_table->setCol(2, 2, array('style' => 'text-align:right'), we_html_tools::htmlTextInput('newconf[SMTP_PASSWORD]', 14, get_value('SMTP_PASSWORD'), 105, '', 'password', 105));
 				$_smtp_table->setCol(6, 0, array('class' => 'defaultfont', 'colspan' => 3), we_html_forms::checkbox(1, get_value('SMTP_AUTH'), 'newconf[SMTP_AUTH]', g_l('prefs', '[smtp_auth]'), false, 'defaultfont', "var el2 = document.getElementById('auth_table').style; if(this.checked) el2.display='block'; else el2.display='none';"));
-				$_smtp_table->setCol(7, 0, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 10));
-				$_smtp_table->setCol(8, 0, array('align' => 'right', 'colspan' => 3), we_html_tools::getPixel(5, 5) . $_auth_table->getHtml());
 
 				$_settings[] = array('headline' => g_l('prefs', '[mailer_type]'), 'html' => $_emailSelect, 'space' => 120, 'noline' => 1);
 				$_settings[] = array('headline' => '', 'html' => $_smtp_table->getHtml(), 'space' => 120, 'noline' => 1);
@@ -2745,7 +2131,7 @@ function set_xhtml_field(val, field){
 					we_base_ContentTypes::AUDIO => 'VERSIONING_AUDIO',
 					we_base_ContentTypes::APPLICATION => 'VERSIONING_SONSTIGE',
 					we_base_ContentTypes::XML => 'VERSIONING_TEXT_XML',
-					'objectFile' => 'VERSIONING_OBJECT',
+					we_base_ContentTypes::OBJECT_FILE => 'VERSIONING_OBJECT',
 				),
 				'other' => array(
 					'VERSIONS_TIME_DAYS' => 'VERSIONS_TIME_DAYS',
@@ -2773,16 +2159,7 @@ function checkAll(val) {
 	checked=(val.checked)?1:0;
 	' . $jsCheckboxCheckAll . ';
 }
-
-function checkAllRevert() {
-	var checkbox = document.getElementById("version_all");
-	checkbox.checked = false;
-}
-
-function openVersionWizard() {
-	parent.opener.top.we_cmd("versions_wizard");
-
-}');
+');
 
 			$_SESSION['weS']['versions']['logPrefs'] = array();
 			foreach($versionsPrefs as $v){
@@ -2799,7 +2176,6 @@ function openVersionWizard() {
 
 			$_versions_time_days = new we_html_select(array(
 				'name' => 'newconf[VERSIONS_TIME_DAYS]',
-				'style' => '',
 				'class' => 'weSelect'
 				)
 			);
@@ -2814,7 +2190,6 @@ function openVersionWizard() {
 
 			$_versions_time_weeks = new we_html_select(array(
 				'name' => 'newconf[VERSIONS_TIME_WEEKS]',
-				'style' => '',
 				'class' => 'weSelect')
 			);
 			$_versions_time_weeks->addOption(-1, '');
@@ -2827,7 +2202,6 @@ function openVersionWizard() {
 
 			$_versions_time_years = new we_html_select(array(
 				'name' => 'newconf[VERSIONS_TIME_YEARS]',
-				'style' => '',
 				'class' => 'weSelect'
 				)
 			);
@@ -2844,7 +2218,6 @@ function openVersionWizard() {
 
 			$_versions_time_days_tmpl = new we_html_select(array(
 				'name' => 'newconf[VERSIONS_TIME_DAYS_TMPL]',
-				'style' => '',
 				'class' => 'weSelect'
 				)
 			);
@@ -2859,7 +2232,6 @@ function openVersionWizard() {
 
 			$_versions_time_weeks_tmpl = new we_html_select(array(
 				'name' => 'newconf[VERSIONS_TIME_WEEKS_TMPL]',
-				'style' => '',
 				'class' => 'weSelect')
 			);
 			$_versions_time_weeks_tmpl->addOption(-1, '');
@@ -2871,7 +2243,6 @@ function openVersionWizard() {
 
 			$_versions_time_years_tmpl = new we_html_select(array(
 				'name' => 'newconf[VERSIONS_TIME_YEARS_TMPL]',
-				'style' => '',
 				'class' => 'weSelect'
 				)
 			);
@@ -2984,8 +2355,6 @@ function render_dialog(){
 		$ret .= we_html_element::htmlDiv(array('id' => 'setting_' . $tab, 'style' => ($GLOBALS['tabname'] === 'setting_' . $tab ? '' : 'display: none;')), build_dialog($tab));
 	}
 	return $ret;
-	// Hide preload screen
-	//we_html_element::jsElement("setTimeout(\"top.we_cmd('show_tabs');\", 50);");
 }
 
 function getYesNoSelect($setting){
@@ -3076,77 +2445,101 @@ if(we_base_request::_(we_base_request::BOOL, 'save_settings')){
 	}
 	$doSave = true;
 }
-
+?>
+<script><!--
+	var hot = false;
+	var modules = {
+		SPELLCHECKER: '<?php echo intval(defined('SPELLCHECKER')); ?>'
+	};
+	WE().consts.g_l.prefs = {
+		language_already_exists: '<?php echo we_message_reporting::prepareMsgForJS(g_l('prefs', '[language_already_exists]')); ?>',
+		language_country_missing: '<?php echo we_message_reporting::prepareMsgForJS(g_l('prefs', '[language_country_missing]')); ?>',
+		cannot_delete_default_language: '<?php echo we_message_reporting::prepareMsgForJS(g_l('prefs', '[cannot_delete_default_language]')); ?>',
+		max_name_recipient: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[max_name_recipient]')); ?>',
+		recipient_exists: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[recipient_exists]')); ?>',
+		not_entered_recipient: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[not_entered_recipient]')); ?>',
+		add_dictionary_question: '<?php echo g_l('prefs', '[add_dictionary_question]'); ?>',
+		delete_recipient: '<?php echo g_l('alert', '[delete_recipient]'); ?>',
+		recipient_new_name: '<?php echo g_l('alert', '[recipient_new_name]'); ?>',
+		input_name: '<?php echo g_l('alert', '[input_name]'); ?>'
+	};
+	var args = "";
+	var url = "<?php echo WEBEDITION_DIR; ?> 'we_cmd.php?";
+//--></</script><?php
+echo STYLESHEET .
+	weSuggest::getYuiFiles() .
+ we_html_element::jsScript(JS_DIR . 'preferences.js');
 if($doSave && !$acError){
 	save_all_values();
 
-	echo STYLESHEET .
+	echo
 	we_html_element::jsElement('
-							function doClose() {
+function doClose() {
 
-								var _multiEditorreload = false;
-							   ' . $save_javascript .
+var _multiEditorreload = false;
+' . $save_javascript .
 		(!$email_saved ? we_message_reporting::getShowMessageCall(g_l('prefs', '[error_mail_not_saved]'), we_message_reporting::WE_MESSAGE_ERROR) : we_message_reporting::getShowMessageCall(g_l('prefs', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE)) . '
 var childs=top.document.getElementById("tabContainer").children;
 childs[0].className="tabActive";
 for(i=1;i<childs.length;++i){
 	childs[i].className="tabNormal";
-}
+	}
 
-this.location = "' . WE_INCLUDES_DIR . 'we_editors/we_preferences.php";
-setTimeout(function(){
+	this.location = "' . WE_INCLUDES_DIR . 'we_editors/we_preferences.php";
+	setTimeout(function(){
 	top.document.getElementById("tabContainer").children[0].click();
-}, 1000);
+	}, 1000);
 
 
-							}
-					   ') .
+	}
+	') .
 	'</head>' .
 	we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'doClose()'), build_dialog('saved')) . '</html>';
 } else {
-	$_form = we_html_element::htmlForm(array('onSubmit' => 'return false;', 'name' => 'we_form', 'method' => 'post', 'action' => $_SERVER['SCRIPT_NAME']), we_html_element::htmlHidden(array('name' => 'save_settings', 'value' => 0)) . render_dialog());
+	$_form = we_html_element::htmlForm(array('onSubmit' => 'return false;', 'name' => 'we_form', 'method' => 'post', 'action' => $_SERVER['SCRIPT_NAME']), we_html_element::htmlHidden('save_settings', 0) . render_dialog());
 
 	$_we_cmd_js = we_html_element::jsElement('function we_cmd(){
+			var args = [];
 
-	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-	switch (arguments[0]){
-		case "browse_server":
-            new jsWindow(url,"browse_server",-1,-1,840,400,true,false,true);
-			break;
-		case "openImgselector":
-		case "openDocselector":
-			new jsWindow(url,"openDocselector",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,false,true,true);
-			break;
-		case "show_formmail_log":
-			url = "' . WE_INCLUDES_DIR . 'we_editors/weFormmailLog.php"
-			new jsWindow(url,"openDocselector",-1,-1,840,400,true,false,true);
-			break;
-		case "show_formmail_block_log":
-			url = "' . WE_INCLUDES_DIR . 'we_editors/weFormmailBlockLog.php"
-			new jsWindow(url,"openDocselector",-1,-1,840,400,true,false,true);
-			break;
-		case "openColorChooser":
-			new jsWindow(url,"we_colorChooser",-1,-1,430,370,true,true,true);
-			break;
+for(var i = 0; i < arguments.length; i++){
+				args.push(arguments[i]);
+		 url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+		 if(i < (arguments.length - 1)){
+		 url += "&";
+		 }}
+switch (arguments[0]){
+case "browse_server":
+new (WE().util.jsWindow)(window, url,"browse_server",-1,-1,840,400,true,false,true);
+break;
+case "we_selector_image":
+case "we_selector_document":
+new (WE().util.jsWindow)(window, url,"we_selector_document",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,false,true,true);
+break;
+case "show_formmail_log":
+url = "' . WE_INCLUDES_DIR . 'we_editors/weFormmailLog.php"
+new (WE().util.jsWindow)(window, url,"we_selector_document",-1,-1,840,400,true,false,true);
+break;
+case "show_formmail_block_log":
+url = "' . WE_INCLUDES_DIR . 'we_editors/weFormmailBlockLog.php"
+new (WE().util.jsWindow)(window, url,"we_selector_document",-1,-1,840,400,true,false,true);
+break;
+case "openColorChooser":
+new (WE().util.jsWindow)(window, url,"we_colorChooser",-1,-1,430,370,true,true,true);
+break;
 
-		default:
-			for(var i = 0; i < arguments.length; i++){
-				args += \'arguments[\'+i+\']\' + ((i < (arguments.length-1)) ? \',\' : \'\');
-			}
-			eval(\'parent.we_cmd(\'+args+\')\');
-	}
+default:
+			parent.we_cmd.apply(this, args);
+
+}
 }
 
 function setColorField(name) {
-	document.getElementById("color_" + name).style.backgroundColor=document.we_form.elements[name].value;
+document.getElementById("color_" + name).style.backgroundColor=document.we_form.elements[name].value;
 }' . ($acError ? we_message_reporting::getShowMessageCall(g_l('alert', '[field_in_tab_notvalid_pre]') . "\\n\\n" . $acErrorMsg . "\\n" . g_l('alert', '[field_in_tab_notvalid_post]'), we_message_reporting::WE_MESSAGE_ERROR) : ""));
 
 
-	echo STYLESHEET .
-	$_we_cmd_js . we_html_element::jsScript(JS_DIR . 'windows.js') . weSuggest::getYuiFiles() . '</head>' .
-	we_html_element::htmlBody(array('class' => 'weDialogBody'), $_form) .
-	$yuiSuggest->getYuiCss() .
+	echo $_we_cmd_js . '</head>' .
+	we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'startPrefs();'), $_form) .
 	$yuiSuggest->getYuiJs() .
 	'</html>';
 }

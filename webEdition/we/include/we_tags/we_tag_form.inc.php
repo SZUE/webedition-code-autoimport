@@ -90,28 +90,27 @@ function we_tag_form($attribs){
 						'value' => (
 						isset($GLOBALS['lv']->classID) || (isset($GLOBALS['lv']) && $GLOBALS['lv'] instanceof we_object_tag) ?
 							we_shop_shop::OBJECT :
-							(isset($GLOBALS['lv']->ID) ?
+							($GLOBALS['lv'] instanceof we_listview_document ?
 								we_shop_shop::DOCUMENT :
-								(isset($GLOBALS['we_obj']) ? //Fix #9949
+								($GLOBALS['we_doc'] instanceof we_objectFile) ?
 									we_shop_shop::OBJECT :
 									we_shop_shop::DOCUMENT
-								)
 							)
 						),
 					)) .
 					getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 'shop_artikelid',
 						'value' => (isset($GLOBALS['lv']->classID) || isset($GLOBALS['we_doc']->ClassID) ?
-							(isset($GLOBALS['lv']) && $GLOBALS['lv']->getDBf('OF_ID') != '' ?
-								$GLOBALS['lv']->getDBf('OF_ID') :
-								($GLOBALS['we_doc']->getDBf('OF_ID') ? :
+							(isset($GLOBALS['lv']) && $GLOBALS['lv']->f('WE_ID') ?
+								$GLOBALS['lv']->f('WE_ID') :
+								($GLOBALS['we_doc']->getDBf('OF_ID') ? : //FIXME: wtf???? where is this set??? which kind of document is not object, but has this record?
 									(isset($GLOBALS['we_obj']) ?
 										$GLOBALS['we_obj']->ID :
 										$GLOBALS['we_doc']->ID))) :
 							(isset($GLOBALS['lv']) ?
 								($GLOBALS['lv'] instanceof we_object_tag ?
-									$GLOBALS['lv']->id :
-									(isset($GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1]) && $GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1] != '' ?
-										$GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1] :
+									$GLOBALS['lv']->f('WE_ID') :
+									($GLOBALS['lv'] instanceof we_listview_document && ($lastE = end($GLOBALS['lv']->IDs)) ?
+										$lastE :
 										$GLOBALS['we_doc']->ID)
 								) :
 								$GLOBALS['we_doc']->ID)
@@ -181,7 +180,7 @@ function we_tag_form($attribs){
 			$onmailerror = weTag_getAttribute('onmailerror', $attribs, 0, we_base_request::INT);
 			$onrecipienterror = weTag_getAttribute('onrecipienterror', $attribs, 0, we_base_request::INT);
 			$oncaptchaerror = weTag_getAttribute('oncaptchaerror', $attribs, 0, we_base_request::INT);
-			$recipient = weTag_getAttribute('recipient', $attribs, '', we_base_request::STRING); //FIXME:email_list???
+			$recipient = weTag_getAttribute('recipient', $attribs, '', we_base_request::EMAILLIST);
 
 			$preconfirm = $confirmmail && $preconfirm ? str_replace("'", "\\'", $GLOBALS['we_doc']->getElement($preconfirm)) : '';
 			$postconfirm = $confirmmail && $postconfirm ? str_replace("'", "\\'", $GLOBALS['we_doc']->getElement($postconfirm)) : '';

@@ -1,0 +1,57 @@
+/**
+ * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
+ * This source is part of webEdition CMS. webEdition CMS is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionCMS/License.txt
+ *
+ * @category   webEdition
+ * @package none
+ * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ */
+
+.weMarkInputError,
+input:invalid {
+	background-color: #ff8888 ! important;
+}
+.weEditmodeStyle {
+	border: 0px ! important;
+}
+.weEditTable{
+	background-color: #F5F5F5;
+	border: solid #006DB8 1px;
+	color: black;
+}
+
+.spacing0{
+	border-spacing: 0px;
+}
+.spacing2{
+	border-spacing: 2px;
+}
+
+.padding0 td{
+	padding: 0px;
+}
+.padding2 td{
+	padding: 2px;
+}
+.border0{
+	border-style: none;
+}
+
+div.we_blockControls button,
+div.we_blockControls select{
+	margin-right:1em;
+}

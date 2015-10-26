@@ -48,8 +48,8 @@ class we_newsletter_view extends we_modules_view{
 	protected $show_import_box = -1;
 	protected $show_export_box = -1;
 
-	public function __construct(){
-		parent::__construct(WE_NEWSLETTER_MODULE_DIR . 'edit_newsletter_frameset.php', '');
+	public function __construct($frameset){
+		parent::__construct($frameset, '');
 
 		$this->newsletter = new we_newsletter_newsletter();
 
@@ -68,31 +68,29 @@ class we_newsletter_view extends we_modules_view{
 		$this->newsletter->Reply = $this->settings['default_reply'];
 		$this->newsletter->Test = $this->settings['test_account'];
 		$this->newsletter->isEmbedImages = $this->settings['isEmbedImages'];
-	}
-
-	function setFrames($topFrame, $treeFrame, $cmdFrame){
-		$this->topFrame = $topFrame;
-		$this->treeFrame = $treeFrame;
-		$this->cmdFrame = $cmdFrame;
+		$this->topFrame = 'top.content';
+		$this->treeFrame = 'top.content.tree';
+		$this->cmdFrame = 'top.content.cmd';
 	}
 
 	function getHiddens($predefs = array()){
-		return $this->htmlHidden('ncmd', (isset($predefs['ncmd']) ? $predefs['ncmd'] : 'new_newsletter')) .
-			$this->htmlHidden('we_cmd[0]', 'show_newsletter') .
-			$this->htmlHidden('nid', (isset($predefs['nid']) ? $predefs['nid'] : $this->newsletter->ID)) .
-			$this->htmlHidden('pnt', (isset($predefs['pnt']) ? $predefs['pnt'] : we_base_request::_(we_base_request::RAW, 'pnt'))) .
-			$this->htmlHidden('page', (isset($predefs['page']) ? $predefs['page'] : $this->page)) .
-			$this->htmlHidden('gview', (isset($predefs['gview']) ? $predefs['gview'] : 0)) .
-			$this->htmlHidden('hm', (isset($predefs['hm']) ? $predefs['hm'] : 0)) .
-			$this->htmlHidden('ask', (isset($predefs['ask']) ? $predefs['ask'] : 1)) .
-			$this->htmlHidden('test', (isset($predefs['test']) ? $predefs['test'] : 0));
+		return we_html_element::htmlHiddens(array(
+				'ncmd' => (isset($predefs['ncmd']) ? $predefs['ncmd'] : 'new_newsletter'),
+				'we_cmd[0]' => 'show_newsletter',
+				'nid' => (isset($predefs['nid']) ? $predefs['nid'] : $this->newsletter->ID),
+				'pnt' => (isset($predefs['pnt']) ? $predefs['pnt'] : we_base_request::_(we_base_request::STRING, 'pnt')),
+				'page' => (isset($predefs['page']) ? $predefs['page'] : $this->page),
+				'gview' => (isset($predefs['gview']) ? $predefs['gview'] : 0),
+				'hm' => (isset($predefs['hm']) ? $predefs['hm'] : 0),
+				'ask' => (isset($predefs['ask']) ? $predefs['ask'] : 1),
+				'test' => (isset($predefs['test']) ? $predefs['test'] : 0)
+		));
 	}
 
 	function newsletterHiddens(){
 		$out = '';
 		foreach($this->hiddens as $val){
-			$out .= $this->htmlHidden($val, (isset($this->newsletter->persistents[$val]) ?
-					$this->newsletter->$val : $this->$val)
+			$out .= we_html_element::htmlHidden($val, (isset($this->newsletter->persistents[$val]) ? $this->newsletter->$val : $this->$val)
 			);
 		}
 
@@ -108,28 +106,32 @@ class we_newsletter_view extends we_modules_view{
 
 			foreach(array_keys($group->persistents) as $per){
 				$val = $group->$per;
-				$out .= $this->htmlHidden('group' . $counter . '_' . $per, $val);
+				$out .= we_html_element::htmlHidden('group' . $counter . '_' . $per, $val);
 			}
 
 			$counter++;
 		}
 
-		$out .= $this->htmlHidden('groups', $counter) .
-			$this->htmlHidden('Step', $this->newsletter->Step) .
-			$this->htmlHidden('Offset', $this->newsletter->Offset) .
-			$this->htmlHidden('IsFolder', $this->newsletter->IsFolder);
+		$out .= we_html_element::htmlHiddens(array(
+				'groups' => $counter,
+				'Step' => $this->newsletter->Step,
+				'Offset' => $this->newsletter->Offset,
+				'IsFolder' => $this->newsletter->IsFolder)
+		);
 		return $out;
 	}
 
 	function getHiddensPropertyPage(){
-		return $this->htmlHidden('Text', $this->newsletter->Text) .
-			$this->htmlHidden('Subject', $this->newsletter->Subject) .
-			$this->htmlHidden('ParentID', $this->newsletter->ParentID) .
-			$this->htmlHidden('Sender', $this->newsletter->Sender) .
-			$this->htmlHidden('Reply', $this->newsletter->Reply) .
-			$this->htmlHidden('Test', $this->newsletter->Test) .
-			$this->htmlHidden('Charset', $this->newsletter->Charset) .
-			$this->htmlHidden('isEmbedImages', $this->newsletter->isEmbedImages);
+		return we_html_element::htmlHiddens(array(
+				'Text' => $this->newsletter->Text,
+				'Subject' => $this->newsletter->Subject,
+				'ParentID' => $this->newsletter->ParentID,
+				'Sender' => $this->newsletter->Sender,
+				'Reply' => $this->newsletter->Reply,
+				'Test' => $this->newsletter->Test,
+				'Charset' => $this->newsletter->Charset,
+				'isEmbedImages' => $this->newsletter->isEmbedImages
+		));
 	}
 
 	function getHiddensMailingPage(){
@@ -139,12 +141,12 @@ class we_newsletter_view extends we_modules_view{
 		foreach($this->newsletter->groups as $g => $group){
 			$filter = $group->getFilter();
 			if($filter){
-				$out.=$this->htmlHidden('filter_' . $g, count($filter));
+				$out.=we_html_element::htmlHidden('filter_' . $g, count($filter));
 
 				foreach($filter as $k => $v){
 					foreach($fields_names as $field){
 						if(isset($v[$field])){
-							$out.=$this->htmlHidden('filter_' . $field . '_' . $g . '_' . $k, $v[$field]);
+							$out.=we_html_element::htmlHidden('filter_' . $field . '_' . $g . '_' . $k, $v[$field]);
 						}
 					}
 				}
@@ -161,13 +163,13 @@ class we_newsletter_view extends we_modules_view{
 		foreach($this->newsletter->blocks as $bk => $bv){
 
 			foreach(array_keys($this->newsletter->blocks[$bk]->persistents) as $per){
-				$out .= $this->htmlHidden('block' . $counter . '_' . $per, $bv->$per);
+				$out .= we_html_element::htmlHidden('block' . $counter . '_' . $per, $bv->$per);
 			}
 
 			$counter++;
 		}
 
-		$out .= $this->htmlHidden('blocks', $counter);
+		$out .= we_html_element::htmlHidden('blocks', $counter);
 
 		return $out;
 	}
@@ -180,107 +182,9 @@ class we_newsletter_view extends we_modules_view{
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
-		$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['" . $IDName . "'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $IDName . "'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")");
 
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', ' readonly', 'text', $width, 0), '', 'left', 'defaultfont', $this->htmlHidden($IDName, $IDValue), we_html_tools::getPixel(20, 4), $button);
-	}
-
-	/* creates the FileChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
-
-	function formFileChooser($width = '', $IDName = 'ParentID', $IDValue = '/', $cmd = '', $filter = '', $acObject = null, $contentType = ''){
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
-		$button = we_html_button::create_button('select', "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','" . $filter . "',document.we_form.elements['" . $IDName . "'].value);");
-
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, '', 'readonly', 'text', $width, 0), '', 'left', 'defaultfont', '', we_html_tools::getPixel(20, 4), permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? $button : '');
-	}
-
-	function formWeChooser($table = FILE_TABLE, $width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/', $cmd = '', $open_doc = '', $acObject = null, $contentType = ''){
-		if(!$Pathvalue){
-			$Pathvalue = f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue), 'Path', $this->db);
-		}
-
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
-		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
-		$button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "','','" . $open_doc . "')");
-		if(is_object($acObject)){
-
-			$yuiSuggest = $acObject;
-			$yuiSuggest->setAcId($IDName);
-			$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::TEMPLATE);
-			$yuiSuggest->setInput($Pathname, $Pathvalue);
-			$yuiSuggest->setMaxResults(10);
-			$yuiSuggest->setMayBeEmpty(true);
-			$yuiSuggest->setResult($IDName, $IDValue);
-			$yuiSuggest->setSelector(weSuggest::DocSelector);
-			$yuiSuggest->setTable($table);
-			$yuiSuggest->setWidth($width);
-			$yuiSuggest->setSelectButton($button);
-			return $yuiSuggest->getHTML();
-		} else {
-			return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', 'top.content.hot=1; readonly', 'text', $width, 0), '', 'left', 'defaultfont', $this->htmlHidden($IDName, $IDValue), we_html_tools::getPixel(20, 4), $button);
-		}
-	}
-
-	function formWeDocChooser($table = FILE_TABLE, $width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/', $cmd = '', $filter = we_base_ContentTypes::WEDOCUMENT, $acObject = null){
-		if(!$Pathvalue){
-			$Pathvalue = f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue), 'Path', $this->db);
-		}
-
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
-		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
-
-		$button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "','" . $filter . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")");
-		if(is_object($acObject)){
-
-			$yuiSuggest = $acObject;
-			$yuiSuggest->setAcId($IDName);
-			$yuiSuggest->setContentType(implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH, we_base_ContentTypes::QUICKTIME)));
-			$yuiSuggest->setInput($Pathname, $Pathvalue);
-			$yuiSuggest->setMaxResults(10);
-			$yuiSuggest->setMayBeEmpty(true);
-			$yuiSuggest->setResult($IDName, $IDValue);
-			$yuiSuggest->setSelector(weSuggest::DocSelector);
-			$yuiSuggest->setTable($table);
-			$yuiSuggest->setWidth($width);
-			$yuiSuggest->setSelectButton($button);
-			return $yuiSuggest->getHTML();
-		} else {
-			return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, "", 'top.content.hot=1; readonly', "text", $width, 0), "", "left", "defaultfont", $this->htmlHidden($IDName, $IDValue), we_html_tools::getPixel(20, 4), $button);
-		}
-	}
-
-	function formNewsletterDirChooser($width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/', $cmd = '', $acObject = null){
-		$table = NEWSLETTER_TABLE;
-		if(!$Pathvalue){
-			$Pathvalue = f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue), 'Path', $this->db);
-		}
-
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
-		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
-
-		$button = we_html_button::create_button('select', "javascript:we_cmd('openNewsletterDirselector',document.we_form.elements['" . $IDName . "'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
-		if(is_object($acObject)){
-			$yuiSuggest = $acObject;
-			$yuiSuggest->setAcId('PathGroup');
-			$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-			$yuiSuggest->setInput($Pathname, str_replace('\\', '/', $Pathvalue));
-			$yuiSuggest->setMaxResults(10);
-			$yuiSuggest->setMayBeEmpty(true);
-			$yuiSuggest->setResult($IDName, $IDValue);
-			$yuiSuggest->setSelector(weSuggest::DirSelector);
-			$yuiSuggest->setTable(NEWSLETTER_TABLE);
-			$yuiSuggest->setWidth($width);
-			$yuiSuggest->setSelectButton($button);
-
-			return $yuiSuggest->getHTML();
-		} else {
-
-			return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', 'top.content.hot=1; readonly id="yuiAcInputPathGroup"', "text", $width, 0), "", "left", "defaultfont", $this->htmlHidden($IDName, $IDValue), we_html_tools::getPixel(20, 4), $button
-			);
-		}
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', ' readonly', 'text', $width, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden($IDName, $IDValue), $button);
 	}
 
 	function getFields($id, $table){
@@ -306,896 +210,61 @@ class we_newsletter_view extends we_modules_view{
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
 		return we_html_element::jsElement('
-var get_focus = 1;
-var hot = 0;
-
-function setHot() {
-	hot = "1";
-}
-
-function usetHot() {
-	hot = "0";
-}
-
-function doUnload() {
-	if (!!jsWindow_count) {
-		for (i = 0; i < jsWindow_count; i++) {
-			eval("jsWindow" + i + "Object.close()");
-		}
-	}
-}
-
 parent.document.title = "' . $title . '";
-
-/**
-	* Menu command controler
-	*/
-function we_cmd() {
-	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-
-	if(hot == "1" && arguments[0] != "save_newsletter") {
-		if(confirm("' . g_l('modules_newsletter', '[save_changed_newsletter]') . '")) {
-			arguments[0] = "save_newsletter";
-		} else {
-			top.content.usetHot();
-		}
-	}
-	switch (arguments[0]) {
-		case "exit_newsletter":
-			if(hot != "1") {
-				eval(\'top.opener.top.we_cmd("exit_modules")\');
-			}
-			break;
-
-		case "new_newsletter":
-			if(top.content.editor.edbody.loaded) {
-				top.content.editor.edbody.document.we_form.ncmd.value = arguments[0];
-				top.content.editor.edbody.submitForm();
-			} else {
-				setTimeout("we_cmd(\"new_newsletter\");", 10);
-			}
-			break;
-
-		case "new_newsletter_group":
-			if(top.content.editor.edbody.loaded) {
-				top.content.editor.edbody.document.we_form.ncmd.value = arguments[0];
-				top.content.editor.edbody.submitForm();
-			} else {
-				setTimeout("we_cmd(\"new_newsletter_group\");", 10);
-			}
-			break;
-
-		case "delete_newsletter":
-			if(top.content.editor.edbody.document.we_form.ncmd.value=="home") {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_newsletter_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			} else {
-				' . ((!permissionhandler::hasPerm("DELETE_NEWSLETTER")) ? (
-					we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
-					) : ('
-						if (top.content.editor.edbody.loaded) {
-							var delQuestion = top.content.editor.edbody.document.we_form.IsFolder.value == 1 ? "' . g_l('modules_newsletter', '[delete_group_question]') . '" : "' . g_l('modules_newsletter', '[delete_question]') . '";
-							if (!confirm(delQuestion)) {
-								return;
-							}
-						} else {
-							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-						}
-						' . $this->topFrame . '.editor.edheader.location="' . $this->frameset . '?home=1&pnt=edheader";
-						' . $this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?home=1&pnt=edfooter";
-						top.content.editor.edbody.document.we_form.ncmd.value=arguments[0];
-						top.content.editor.edbody.submitForm();
-				')) . '
-			}
-			break;
-
-		case "save_newsletter":
-			if(top.content.editor.edbody.document.we_form.ncmd.value=="home") {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_newsletter_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			} else {
-				' . ((!permissionhandler::hasPerm("EDIT_NEWSLETTER") && !permissionhandler::hasPerm("NEW_NEWSLETTER")) ? (
-					we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
-					) : ('
-						if (top.content.editor.edbody.loaded) {
-							if (!top.content.editor.edbody.checkData()) {
-								return;
-							}
-							top.content.editor.edbody.document.we_form.ncmd.value=arguments[0];
-							top.content.editor.edbody.submitForm();
-
-						} else {
-							' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-						}
-				')) . '
-				top.content.usetHot();
-			}
-			break;
-
-		case "newsletter_edit":
-			top.content.hot=0;
-			top.content.editor.edbody.document.we_form.ncmd.value=arguments[0];
-			top.content.editor.edbody.document.we_form.nid.value=arguments[1];
-			top.content.editor.edbody.submitForm();
-			break;
-
-		case "send_test":
-			if(top.content.editor.edbody.document.we_form.ncmd.value=="home") {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_newsletter_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			} else if(top.content.editor.edbody.document.we_form.IsFolder.value==1) {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_newsletter_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			} else {
-				top.content.editor.edbody.we_cmd("send_test");
-			}
-			break;
-
-		case "empty_log":
-			if(top.content.editor.edbody.document.we_form.ncmd.value=="home") {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_newsletter_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			} else if(top.content.editor.edbody.document.we_form.IsFolder.value==1) {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_newsletter_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			} else {
-				new jsWindow("' . $this->frameset . '?pnt=qlog","log_question",-1,-1,330,230,true,false,true);
-			}
-			break;
-
-		case "preview_newsletter":
-			if(top.content.editor.edbody.document.we_form.ncmd.value=="home") {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_newsletter_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			} else if(top.content.editor.edbody.document.we_form.IsFolder.value==1) {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_newsletter_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			} else {
-				top.content.editor.edbody.we_cmd("popPreview");
-			}
-			break;
-
-		case "send_newsletter":
-			if(top.content.editor.edbody.document.we_form.ncmd.value=="home") {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_newsletter_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			} else if(top.content.editor.edbody.document.we_form.IsFolder.value==1) {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_newsletter_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			} else {
-				top.content.editor.edbody.we_cmd("popSend");
-			}
-			break;
-
-		case "test_newsletter":
-			if(top.content.editor.edbody.document.we_form.ncmd.value=="home") {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_newsletter_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			} else if(top.content.editor.edbody.document.we_form.IsFolder.value==1) {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_newsletter_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			} else {
-				top.content.editor.edbody.we_cmd("popSend","1");
-			}
-			break;
-
-		case "domain_check":
-		case "show_log":
-		case "print_lists":
-		case "search_email":
-		case "clear_log":
-			if(top.content.editor.edbody.document.we_form.ncmd.value=="home") {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_newsletter_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			} else if(top.content.editor.edbody.document.we_form.IsFolder.value==1) {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_newsletter_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			} else {
-				top.content.editor.edbody.we_cmd(arguments[0]);
-			}
-			break;
-
-		case "newsletter_settings":
-		case "black_list":
-		case "edit_file":
-			top.content.editor.edbody.we_cmd(arguments[0]);
-			break;
-
-		case "home":
-			top.content.editor.location="' . $this->frameset . '?pnt=editor";
-			break;
-
-		default:
-			for (var i = 0; i < arguments.length; i++) {
-				args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
-			}
-			eval("top.opener.top.we_cmd(" + args + ")");
-	}
-}');
-	}
-
-	function getJSFooterCode(){
-		return we_html_element::jsElement('
-function doUnload() {
-	if (!!jsWindow_count) {
-		for (i = 0; i < jsWindow_count; i++) {
-			eval("jsWindow" + i + "Object.close()");
-		}
-	}
-}
-
-function we_cmd() {
-	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-
-	switch (arguments[0]) {
-		case "empty_log":
-			break;
-
-		default:
-			for (var i = 0; i < arguments.length; i++) {
-				args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
-			}
-			eval("parent.edbody.we_cmd(" + args + ")");
-	}
-}');
+WE().consts.g_l.newsletter = {
+	save_changed_newsletter:"' . g_l('modules_newsletter', '[save_changed_newsletter]') . '",
+	no_newsletter_selected: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[no_newsletter_selected]')) . '",
+	nothing_to_save: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[nothing_to_save]')) . '",
+	nothing_to_delete: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[nothing_to_delete]')) . '",
+	delete_group_question:	"' . g_l('modules_newsletter', '[delete_group_question]') . '",
+	delete_question:"' . g_l('modules_newsletter', '[delete_question]') . '",
+	must_save_preview: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[must_save_preview]')) . '",
+	no_newsletter_selected: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[no_newsletter_selected]')) . '",
+	must_save: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[must_save]')) . '",
+	send_test_question:"' . g_l('modules_newsletter', '[send_test_question]') . '",
+	send_question:"' . g_l('modules_newsletter', '[send_question]') . '",
+	no_email: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[no_email]')) . '",
+	search_text:"' . g_l('modules_newsletter', '[search_text]') . '",
+	test_email_question:"' . sprintf(g_l('modules_newsletter', '[test_email_question]'), $this->newsletter->Test) . '",
+	empty_name: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[empty_name]')) . '",
+	email_max_len: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[email_max_len]')) . '",
+	email_exists: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[email_exists]')) . '",
+	email_delete:"' . g_l('modules_newsletter', '[email_delete]') . '",
+	email_delete_all:"' . g_l('modules_newsletter', '[email_delete_all]') . '",
+	search_finished:"' . g_l('modules_newsletter', '[search_finished]') . '"
+};
+var topFrame=top.content;
+var frameSet="' . $this->frameset . '";
+') . we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_top.js');
 	}
 
 	function getJSCmd(){
 		return we_html_element::jsElement('
 function submitForm() {
 	var f = self.document.we_form;
-
 	f.target = "cmd";
 	f.method = "post";
 	f.submit();
 }');
 	}
 
-	function getJSProperty(){
-		$_mailCheck = (isset($this->settings['reject_save_malformed']) && $this->settings['reject_save_malformed'] ?
+	function getJSProperty($load = ''){
+		$_mailCheck = (!empty($this->settings['reject_save_malformed']) ?
 				"we.validate.email(email);" :
 				"true");
 
 		return
 			parent::getJSProperty() .
-			we_html_element::jsScript(JS_DIR . "libs/we/weValidate.js") .
+			we_html_element::jsScript(JS_DIR . 'weValidate.js') .
+			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 			we_html_element::jsElement('
-function doUnload() {
-	if (!!jsWindow_count) {
-		for (i = 0; i < jsWindow_count; i++) {
-			eval("jsWindow" + i + "Object.close()");
-		}
-	}
-}
-
-/**
-	* Newsletter command controler
-	*/
-function we_cmd() {
-
-	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-
-	if (arguments[0] != "switchPage") {
-		self.setScrollTo();
-	}
-
-	switch (arguments[0]) {
-		case "browse_users":
-			new jsWindow(url,"browse_users",-1,-1,500,300,true,false,true);
-			break;
-
-		case "browse_server":
-			new jsWindow(url,"browse_server",-1,-1,840,400,true,false,true);
-			break;
-
-		case "openImgselector":
-		case "openDocselector":
-			new jsWindow(url,"we_docselector",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
-			break;
-
-		case "openSelector":
-			new jsWindow(url,"we_selector",-1,-1,' . we_selector_file::WINDOW_SELECTOR_WIDTH . ',' . we_selector_file::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
-			break;
-
-		case "openNewsletterDirselector":
-			url = "' . WE_MODULES_DIR . 'newsletter/we_dirfs.php?";
-			for(var i = 0; i < arguments.length; i++){
-				url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }
-			}
-			new jsWindow(url,"we_newsletter_dirselector",-1,-1,600,400,true,true,true);
-			break;
-
-		case "add_customer":
-			document.we_form.ngroup.value=arguments[2];
-
-		case "del_customer":
-			document.we_form.ncmd.value=arguments[0];
-			document.we_form.ncustomer.value=arguments[1];
-			top.content.hot=1;
-			submitForm();
-			break;
-
-		case "del_all_customers":
-		case "del_all_files":
-			top.content.hot=1;
-			document.we_form.ncmd.value=arguments[0];
-			document.we_form.ngroup.value=arguments[1];
-			submitForm();
-			break;
-
-		case "add_file":
-			document.we_form.ngroup.value=arguments[2];
-		case "del_file":
-			document.we_form.ncmd.value=arguments[0];
-			document.we_form.nfile.value=arguments[1];
-			top.content.hot=1;
-			submitForm();
-			break;
-
-		case "switchPage":
-			document.we_form.ncmd.value=arguments[0];
-			document.we_form.page.value=arguments[1];
-			submitForm();
-			break;
-
-		case "set_import":
-		case "reset_import":
-		case "set_export":
-		case "reset_export":
-			document.we_form.ncmd.value=arguments[0];
-			document.we_form.ngroup.value=arguments[1];
-			submitForm();
-			break;
-
-		case "addBlock":
-		case "delBlock":
-			document.we_form.ncmd.value=arguments[0];
-			document.we_form.blockid.value=arguments[1];
-			top.content.hot=1;
-			submitForm();
-			break;
-
-		case "addGroup":
-		case "delGroup":
-			document.we_form.ncmd.value=arguments[0];
-			document.we_form.ngroup.value=arguments[1];
-			top.content.hot=1;
-			submitForm();
-			break;
-
-		case "popPreview":
-			if(document.we_form.ncmd.value=="home") return;
-			if (top.content.hot!=0) {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[must_save_preview]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			} else {
-				document.we_form.elements["we_cmd[0]"].value="preview_newsletter";
-				document.we_form.gview.value=parent.edfooter.document.we_form.gview.value;
-				document.we_form.hm.value=parent.edfooter.document.we_form.hm.value;
-				popAndSubmit("newsletter_preview","preview",800,800)
-			}
-			break;
-
-		case "popSend":
-			if(document.we_form.ncmd.value=="home") {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_newsletter_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			} else if (top.content.hot!=0) {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[must_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			} else if(document.we_form.IsFolder.value==1) {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_newsletter_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			} else {
-
-				if (arguments[1]) {
-					message_text="' . g_l('modules_newsletter', '[send_test_question]') . '";
-				} else {
-					message_text="' . g_l('modules_newsletter', '[send_question]') . '";
-				}
-
-				if (confirm(message_text)) {
-						document.we_form.ncmd.value=arguments[0];
-						if(arguments[1]) document.we_form.test.value=arguments[1];
-						submitForm();
-				}
-			}
-			break;
-
-		case "send_test":
-			if(document.we_form.ncmd.value=="home") {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_newsletter_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			} else if (top.content.hot!=0) {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[must_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			} else if(document.we_form.IsFolder.value==1) {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_newsletter_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			} else {
-				if (confirm("' . sprintf(g_l('modules_newsletter', '[test_email_question]'), $this->newsletter->Test) . '")) {
-					document.we_form.ncmd.value=arguments[0];
-					document.we_form.gview.value=parent.edfooter.document.we_form.gview.value;
-					document.we_form.hm.value=parent.edfooter.document.we_form.hm.value;
-					submitForm();
-				}
-			}
-			break;
-		case "print_lists":
-		case "domain_check":
-		case "show_log":
-			if(document.we_form.ncmd.value!="home")
-				popAndSubmit(arguments[0],arguments[0],650,650);
-			break;
-		case "newsletter_settings":
-			new jsWindow("' . $this->frameset . '?pnt="+arguments[0],arguments[0],-1,-1,600,750,true,true,true,true);
-			break;
-
-		case "black_list":
-			new jsWindow("' . $this->frameset . '?pnt="+arguments[0],arguments[0],-1,-1,560,460,true,true,true,true);
-			break;
-
-		case "edit_file":
-			if (arguments[1]){
-				new jsWindow("' . $this->frameset . '?pnt="+arguments[0]+"&art="+arguments[1],arguments[0],-1,-1,950,640,true,true,true,true);
-			} else {
-				new jsWindow("' . $this->frameset . '?pnt="+arguments[0],arguments[0],-1,-1,950,640,true,true,true,true);
-			}
-			break;
-
-		case "reload_table":
-		case "copy_newsletter":
-			top.content.hot=1;
-			document.we_form.ncmd.value=arguments[0];
-			submitForm();
-			break;
-
-		case "add_filter":
-		case "del_filter":
-		case "del_all_filters":
-			top.content.hot=1;
-			document.we_form.ncmd.value=arguments[0];
-			document.we_form.ngroup.value=arguments[1];
-			submitForm();
-			break;
-
-		case "switch_sendall":
-			document.we_form.ncmd.value=arguments[0];
-			top.content.hot=1;
-			eval("if(document.we_form.sendallcheck_"+arguments[1]+".checked) document.we_form.group"+arguments[1]+"_SendAll.value=1; else document.we_form.group"+arguments[1]+"_SendAll.value=0;");
-			submitForm();
-			break;
-
-		case "save_settings":
-			document.we_form.ncmd.value=arguments[0];
-			submitForm("newsletter_settings");
-			break;
-
-		case "import_csv":
-		case "export_csv":
-			document.we_form.ncmd.value=arguments[0];
-			submitForm();
-			break;
-
-		case "do_upload_csv":
-			document.we_form.ncmd.value=arguments[0];
-			submitForm("upload_csv");
-			break;
-
-		case "do_upload_black":
-			document.we_form.ncmd.value=arguments[0];
-			submitForm("upload_black");
-			break;
-
-		case "upload_csv":
-		case "upload_black":
-			new jsWindow("' . $this->frameset . '?pnt="+arguments[0]+"&grp="+arguments[1],arguments[0],-1,-1,450,270,true,true,true,true);
-			break;
-
-		case "add_email":
-			var email=document.we_form.group=arguments[1];
-			new jsWindow("' . $this->frameset . '?pnt=eemail&grp="+arguments[1],"edit_email",-1,-1,450,270,true,true,true,true);
-			break;
-
-		case "edit_email":
-			eval("var p=document.we_form.we_recipient"+arguments[1]+";");
-
-			if (p.selectedIndex < 0) {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_email]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-				return;
-			}
-
-			eval("var dest=document.we_form.group"+arguments[1]+"_Emails;");
-
-			var str=dest.value;
-
-			var arr = str.split("\n");
-
-			var str2=arr[p.selectedIndex];
-			var arr2=str2.split(",");
-			var eid=p.selectedIndex;
-			var email=p.options[p.selectedIndex].text;
-			var htmlmail=arr2[1];
-			var salutation=arr2[2];
-			var title=arr2[3];
-			var firstname=arr2[4];
-			var lastname=arr2[5];
-
-			salutation=encodeURIComponent(salutation.replace("+","[:plus:]"));
-			title=encodeURIComponent(title.replace("+","[:plus:]"));
-			firstname=encodeURIComponent(firstname.replace("+","[:plus:]"));
-			lastname=encodeURIComponent(lastname.replace("+","[:plus:]"));
-			email = encodeURIComponent(email);
-			new jsWindow("' . $this->frameset . '?pnt=eemail&grp="+arguments[1]+"&etyp=1&eid="+eid+"&email="+email+"&htmlmail="+htmlmail+"&salutation="+salutation+"&title="+title+"&firstname="+firstname+"&lastname="+lastname,"edit_email",-1,-1,450,270,true,true,true,true);
-			break;
-
-		case "save_black":
-		case "import_black":
-		case "export_black":
-			document.we_form.ncmd.value=arguments[0];
-			PopulateVar(document.we_form.blacklist_sel,document.we_form.black_list);
-			submitForm("black_list");
-			break;
-		case "search_email":
-			if(document.we_form.ncmd.value=="home") return;
-			var searchname=prompt("' . g_l('modules_newsletter', '[search_text]') . '","");
-
-			if (searchname != null) {
-				searchEmail(searchname);
-			}
-
-			break;
-		case "clear_log":
-			new jsWindow("' . $this->frameset . '?pnt="+arguments[0],arguments[0],-1,-1,450,300,true,true,true,true);
-			break;
-
-		default:
-			for (var i = 0; i < arguments.length; i++) {
-				args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
-			}
-			eval("top.content.we_cmd("+args+")");
-	}
-}
-
-function submitForm() {
-
-	if (self.weWysiwygSetHiddenText) {
-		weWysiwygSetHiddenText();
-	}
-
-	var f = self.document.we_form;
-
-	f.target = (arguments[0]?arguments[0]:"edbody");
-	f.action = (arguments[1]?arguments[1]:"' . $this->frameset . '");
-	f.method = (arguments[2]?arguments[2]:"post");
-
-	f.submit();
-}
-
-function popAndSubmit(wname, pnt, width, height) {
-
-	old = document.we_form.pnt.value;
-	document.we_form.pnt.value=pnt;
-
-	new jsWindow("about:blank",wname,-1,-1,width,height,true,true,true,true);
-
-
-	' . (((we_base_browserDetect::isMAC()) && (we_base_browserDetect::isIE())) ? '
-				setTimeout("submitForm(\'"+wname+"\');", 250);
-				setTimeout("document.we_form.pnt.value=old;", 350);
-	' : '
-
-		submitForm(wname);
-		document.we_form.pnt.value=old;
-	') . '
-
-}
-
-function doScrollTo() {
-	if (parent.scrollToVal) {
-		window.scrollTo(0, parent.scrollToVal);
-		parent.scrollToVal = 0;
-	}
-}
-
-function setScrollTo() {
-	parent.scrollToVal = ' . ((we_base_browserDetect::isIE()) ? 'document.body.scrollTop' : 'pageYOffset') . ';
-}
-
-function switchRadio(a, b) {
-	a.value = 1;
-	a.checked = true;
-	b.value = 0;
-	b.checked = false;
-
-	if (arguments[3]) {
-		c = arguments[3];
-		c.value = 0;
-		c.checked = false;
-	}
-}
-
-function clickCheck(a) {
-	if (a.checked) {
-		a.value = 1;
-	} else {
-		a.value=0;
-	}
-}
+var modFrameSet="' . $this->frameset . '";
+var checkMail=' . intval(!empty($this->settings['reject_save_malformed'])) . ';
 
 function getStatusContol() {
 	return document.we_form.' . (isset($this->uid) ? $this->uid : "") . '_Status.value;
-}
-
-function getNumOfDocs() {
-	return 0;
-}
-
-function sprintf() {
-	if (!arguments || arguments.length < 1) {
-		return;
-	}
-
-	var argum = arguments[0];
-	var regex = /([^%]*)%(%|d|s)(.*)/;
-	var arr = new Array();
-	var iterator = 0;
-	var matches = 0;
-
-	while (arr = regex.exec(argum)) {
-		var left = arr[1];
-		var type = arr[2];
-		var right = arr[3];
-
-		matches++;
-		iterator++;
-
-		var replace = arguments[iterator];
-
-		if (type=="d") {
-			replace = parseInt(param) ? parseInt(param) : 0;
-		} else if (type=="s") {
-			replace = arguments[iterator];
-		}
-
-		argum = left + replace + right;
-	}
-
-	return argum;
-}
-
-function checkData() {
-	if (document.we_form.Text.value == "") {
-		' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[empty_name]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-		return false;
-	}
-
-	return true;
-}
-
-function markEMails() {
-
-}
-function add(group, newRecipient, htmlmail, salutation, title, firstname, lastname) {
-	var p = document.forms[0].elements["we_recipient"+group];
-
-	if (newRecipient != null) {
-
-		if (newRecipient.length > 0) {
-
-			if (newRecipient.length > 255 ) {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[email_max_len]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-				return;
-			}
-
-			if (!inSelectBox(document.forms[0].elements["we_recipient"+group], newRecipient)) {
-				if(isValidEmail(newRecipient)) optionClassName = "markValid";
-				else optionClassName = "markNotValid";
-				addElement(document.forms[0].elements["we_recipient"+group],"#",newRecipient,true,optionClassName);
-				addEmail(group,newRecipient,htmlmail,salutation,title,firstname,lastname);
-			} else {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[email_exists]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			}
-		} else {
-			' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_email]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-		}
-		//set_state_edit_delete_recipient("we_recipient"+group);
-	}
-}
-
-function isValidEmail(email){
-	email = email.toLowerCase();
-	return ' . ($_mailCheck) . ';
-	//return (email.match(/^([[:space:]_:\+\.0-9a-z-]+[\<]{1})?[_\.0-9a-z-]+@([0-9a-z-]+\.)+[a-z]{2,6}(\>)?$/) ? true : false);
-}
-
-function deleteit(group) {
-	var p=document.forms[0].elements["we_recipient"+group];
-
-	if (p.selectedIndex >= 0) {
-		if (confirm("' . g_l('modules_newsletter', '[email_delete]') . '")) {
-			delEmail(group,p.selectedIndex);
-			p.options[p.selectedIndex] = null;
-		}
-	} else {
-		' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_email]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-	}
-	//set_state_edit_delete_recipient("we_recipient"+group);
-}
-
-function deleteall(group) {
-	var p = document.forms[0].elements["we_recipient"+group];
-
-	if (confirm("' . g_l('modules_newsletter', '[email_delete_all]') . '")) {
-		delallEmails(group);
-		we_cmd("switchPage",1);
-	}
-	//set_state_edit_delete_recipient("we_recipient"+group);
-}
-
-function in_array(n, h) {
-	for (var i = 0; i < h.length; i++) {
-
-		if (h[i] == n) {
-			return true;
-		}
-	}
-
-	return false;
-}
-
-function editIt(group, index, editRecipient, htmlmail, salutation, title, firstname, lastname) {
-	var p = document.forms[0].elements["we_recipient"+group];
-
-	if (index >= 0 && editRecipient != null) {
-
-		if (editRecipient != "") {
-
-			if (editRecipient.length > 255 ) {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[email_max_len]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-				return;
-			}
-			if(isValidEmail(editRecipient)) optionClassName = "markValid";
-			else optionClassName = "markNotValid";
-			p.options[index].text = editRecipient;
-			p.options[index].className = optionClassName;
-			editEmail(group,index,editRecipient,htmlmail,salutation,title,firstname,lastname);
-		} else {
-			' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_email]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-		}
-	}
-}
-
-function PopulateVar(p, dest) {
-	var arr = new Array();
-
-	for (i = 0; i < p.length; i++) {
-		arr[i] = p.options[i].text;
-	}
-
-	dest.value=arr.join();
-}
-
-function PopulateMultipleVar(p, dest){
-	var arr = new Array();
-	c = 0;
-
-	for (i = 0; i < p.length; i++) {
-		if (p.options[i].selected) {
-			c++;
-			arr[c] = p.options[i].value;
-		}
-	}
-
-	dest.value=arr.join();
-}
-
-function addEmail(group, email, html, salutation, title, firstname, lastname) {
-	var dest = document.forms[0].elements["group"+group+"_Emails"]
-	var str = dest.value;
-
-	var arr = ( str.length > 0?str.split("\n"):new Array());
-
-	arr[arr.length] = email+","+html+","+salutation+","+title+","+firstname+","+lastname;
-
-	dest.value = arr.join("\n");
-
-	top.content.hot=1;
-}
-
-function editEmail(group, id, email, html, salutation, title, firstname, lastname) {
-	var dest = document.forms[0].elements["group"+group+"_Emails"]
-	var str = dest.value;
-
-	var arr = str.split("\n");
-
-	arr[id] = email+","+html+","+salutation+","+title+","+firstname+","+lastname;
-
-	dest.value = arr.join("\n");
-
-	top.content.hot = 1;
-}
-
-function mysplice(arr, id) {
-	var newarr = new Array();
-
-	for (i = 0; i < arr.lenght; i++) {
-		if (i!=id) {
-			newarr[newarr.lenght] = arr[id];
-		}
-	}
-	return newarr;
-}
-
-function delEmail(group,id) {
-	var dest = document.forms[0].elements["group"+group+"_Emails"]
-	var str = dest.value;
-	var arr = str.split("\n");
-
-	arr.splice(id, 1);
-	dest.value = arr.join("\n");
-	top.content.hot=1;
-}
-
-function delallEmails(group) {
-	var dest = document.forms[0].elements["group"+group+"_Emails"]
-
-	dest.value = "";
-	top.content.hot = 1;
-}
-
-function inSelectBox(p, val) {
-	for (var i = 0; i < p.options.length; i++) {
-
-		if (p.options[i].text == val) {
-			return true;
-		}
-	}
-	return false;
-}
-
-function addElement(p,value, text, sel, optionClassName) {
-	var i = p.length;
-
-	p.options[i] =  new Option(text,value);
-	p.options[i].className = optionClassName;
-
-	if (sel) {
-		p.selectedIndex = i;
-	}
-}
-
-function getGroupsNum() {
-	return document.we_form.groups.value;
-}
-
-function searchEmail(searchname) {
-	var f = document.we_form;
-	var c;
-	var hit = 0;
-
-	if(document.we_form.page.value==1){
-		for (i = 0; i < f.groups.value; i++) {
-			c = f.elements["we_recipient" + i];
-			c.selectedIndex = -1;
-
-			for (j = 0; j < c.length; j++) {
-				if (c.options[j].text == searchname) {
-					c.selectedIndex = j;
-					hit++;
-				}
-			}
-		}
-		msg = sprintf("' . g_l('modules_newsletter', '[search_finished]') . '",hit);
-		' . we_message_reporting::getShowMessageCall("msg", we_message_reporting::WE_MESSAGE_NOTICE, true) . '
-	}
-
-}
-
-function set_state_edit_delete_recipient(control) {
-		var p = document.forms[0].elements[control];
-		var i = p.length;
-
-		if (i == 0) {
-			switch_button_state("edit", "edit_enabled", "disabled");
-			switch_button_state("delete", "delete_enabled", "disabled");
-			switch_button_state("delete_all", "delete_all_enabled", "disabled");
-			//edit_enabled = switch_button_state("edit", "edit_enabled", "disabled");
-			//delete_enabled = switch_button_state("delete", "delete_enabled", "disabled");
-			//delete_all_enabled = switch_button_state("delete_all", "delete_all_enabled", "disabled");
-
-		} else {
-			switch_button_state("edit", "edit_enabled", "enabled");
-			switch_button_state("delete", "delete_enabled", "enabled");
-			switch_button_state("delete_all", "delete_all_enabled", "enabled");
-			//edit_enabled = switch_button_state("edit", "edit_enabled", "enabled");
-			//delete_enabled = switch_button_state("delete", "delete_enabled", "enabled");
-			//delete_all_enabled = switch_button_state("delete_all", "delete_all_enabled", "enabled");
-		}
-}');
-		//$js.=we_button::create_state_changer();
+}') .
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_property.js', $load);
 	}
 
 	function processCommands(){
@@ -1210,8 +279,8 @@ function set_state_edit_delete_recipient(control) {
 				$this->newsletter->isEmbedImages = $this->settings['isEmbedImages'];
 
 				echo we_html_element::jsElement('
-							top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader' . (($page = we_base_request::_(we_base_request::INT, "page")) !== false ? "&page=" . $page : "") . '";
-							top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
+							top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader' . (($page = we_base_request::_(we_base_request::INT, "page")) !== false ? "&page=" . $page : "") . '";
+							top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 					');
 				break;
 			case "new_newsletter_group":
@@ -1220,9 +289,9 @@ function set_state_edit_delete_recipient(control) {
 				$this->newsletter->IsFolder = "1";
 				$this->newsletter->Text = g_l('modules_newsletter', '[new_newsletter_group]');
 				echo we_html_element::jsElement('
-							top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader&group=1";
-							top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter&group=1";
-					');
+top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&group=1";
+top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter&group=1";
+');
 				break;
 			case "add_customer":
 				$ngroup = we_base_request::_(we_base_request::STRING, 'ngroup');
@@ -1237,7 +306,7 @@ function set_state_edit_delete_recipient(control) {
 							}
 						}
 
-						$this->newsletter->groups[$ngroup]->Customers = makeCSVFromArray($arr, true);
+						$this->newsletter->groups[$ngroup]->Customers = implode(',', $arr);
 					}
 				}
 				break;
@@ -1254,7 +323,7 @@ function set_state_edit_delete_recipient(control) {
 								unset($arr[$k]);
 							}
 						}
-						$this->newsletter->groups[$ngroup]->Customers = makeCSVFromArray($arr, true);
+						$this->newsletter->groups[$ngroup]->Customers = implode(',', $arr);
 					}
 				}
 				break;
@@ -1276,8 +345,7 @@ function set_state_edit_delete_recipient(control) {
 				if(($ngroup = we_base_request::_(we_base_request::STRING, 'ngroup')) !== false){
 					$arr = explode(',', $this->newsletter->groups[$ngroup]->Extern);
 					if(($nfile = we_base_request::_(we_base_request::FILE, "nfile")) !== false){
-						$pos = array_search($nfile, $arr);
-						if($pos !== false){
+						if(($pos = array_search($nfile, $arr)) !== false){
 							unset($arr[$pos]);
 						}
 						$this->newsletter->groups[$ngroup]->Extern = implode(',', $arr);
@@ -1297,9 +365,9 @@ function set_state_edit_delete_recipient(control) {
 
 			case "reload":
 				echo we_html_element::jsElement('
-							top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader&page=' . $this->page . '&txt=' . urlencode($this->newsletter->Text) . ($this->newsletter->IsFolder ? '&group=1' : '') . '";
-							top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter' . ($this->newsletter->IsFolder ? '&group=1' : '') . '";
-					');
+top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&page=' . $this->page . '&txt=' . urlencode($this->newsletter->Text) . ($this->newsletter->IsFolder ? '&group=1' : '') . '";
+top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter' . ($this->newsletter->IsFolder ? '&group=1' : '') . '";
+');
 				break;
 
 			case "newsletter_edit":
@@ -1385,11 +453,11 @@ function set_state_edit_delete_recipient(control) {
 					$h = getHash('SELECT Step,Offset FROM ' . NEWSLETTER_TABLE . ' WHERE ID=' . intval($this->newsletter->ID), $this->db);
 
 					if($h['Step'] != 0 || $h['Offset'] != 0){
-						echo we_html_element::jsScript(JS_DIR . 'windows.js') .
+						echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 						we_html_element::jsElement('
 										self.focus();
 										top.content.get_focus=0;
-										new jsWindow("' . $this->frameset . '?pnt=qsave1","save_question",-1,-1,350,200,true,true,true,false);
+										new (WE().util.jsWindow)(window, "' . $this->frameset . '&pnt=qsave1","save_question",-1,-1,350,200,true,true,true,false);
 									');
 						break;
 					}
@@ -1410,7 +478,7 @@ function set_state_edit_delete_recipient(control) {
 					$this->newsletter->isEmbedImages = $this->settings["isEmbedImages"];
 				}
 
-				$double = intval(f('SELECT COUNT(1) AS Count FROM ' . NEWSLETTER_TABLE . " WHERE Path='" . $this->db->escape($this->newsletter->Path) . "'" . ($newone ? '' : ' AND ID<>' . $this->newsletter->ID), 'Count', $this->db));
+				$double = intval(f('SELECT COUNT(1) FROM ' . NEWSLETTER_TABLE . " WHERE Path='" . $this->db->escape($this->newsletter->Path) . "'" . ($newone ? '' : ' AND ID<>' . $this->newsletter->ID), '', $this->db));
 
 				if(!permissionhandler::hasPerm("EDIT_NEWSLETTER") && !permissionhandler::hasPerm("NEW_NEWSLETTER")){
 					echo we_html_element::jsElement(
@@ -1459,9 +527,9 @@ function set_state_edit_delete_recipient(control) {
 						break;
 					case 0:
 						$jsmess = ($newone ?
-								$this->topFrame . '.makeNewEntry(\'' . $this->newsletter->Icon . '\',\'' . $this->newsletter->ID . '\',\'' . $this->newsletter->ParentID . '\',\'' . $this->newsletter->Text . '\',0,\'' . ($this->newsletter->IsFolder ? we_base_ContentTypes::FOLDER : 'item') . '\',\'' . NEWSLETTER_TABLE . '\');' :
-								$this->topFrame . '.updateEntry("' . $this->newsletter->ID . '","' . $this->newsletter->Text . '","' . $this->newsletter->ParentID . '");') .
-							$this->topFrame . '.drawTree();' .
+								'top.content.treeData.makeNewEntry({id:\'' . $this->newsletter->ID . '\',parentid:\'' . $this->newsletter->ParentID . '\',text:\'' . $this->newsletter->Text . '\',open:0,contenttype:\'' . ($this->newsletter->IsFolder ? we_base_ContentTypes::FOLDER : 'we/newsletter') . '\',table:\'' . NEWSLETTER_TABLE . '\'});' :
+								'top.content.treeData.updateEntry({id:' . $this->newsletter->ID . ',text:"' . $this->newsletter->Text . '",parentid:' . $this->newsletter->ParentID . '});') .
+							'top.content.drawTree();' .
 							we_message_reporting::getShowMessageCall(g_l('modules_newsletter', ($this->newsletter->IsFolder == 1 ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) .
 							'top.content.hot=0;';
 						break;
@@ -1474,15 +542,11 @@ function set_state_edit_delete_recipient(control) {
 				$nid = we_base_request::_(we_base_request::INT, "nid");
 				if($nid !== false){
 					if(!$nid){
-						echo we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[delete_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
-						);
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[delete_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
 						return;
 					}
 					if(!permissionhandler::hasPerm("DELETE_NEWSLETTER")){
-						echo we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
-						);
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 						return;
 					} else {
 						$this->newsletter = new we_newsletter_newsletter($nid);
@@ -1490,21 +554,17 @@ function set_state_edit_delete_recipient(control) {
 						if($this->newsletter->delete()){
 							$this->newsletter = new we_newsletter_newsletter();
 							echo we_html_element::jsElement('
-										top.content.deleteEntry(' . $nid . ',"file");
-										setTimeout(\'' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', (we_base_request::_(we_base_request::BOOL, "IsFolder") ? '[delete_group_ok]' : '[delete_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) . '\',500);
+top.content.treeData.deleteEntry(' . $nid . ',"file");
+setTimeout(function(){' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', (we_base_request::_(we_base_request::BOOL, "IsFolder") ? '[delete_group_ok]' : '[delete_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) . '},500);
 								');
 							$_REQUEST['home'] = 1;
 							$_REQUEST['pnt'] = 'edbody';
 						} else {
-							echo we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(g_l('modules_newsletter', (we_base_request::_(we_base_request::BOOL, "IsFolder") ? '[delete_group_nok]' : '[delete_nok]')), we_message_reporting::WE_MESSAGE_ERROR)
-							);
+							echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_newsletter', (we_base_request::_(we_base_request::BOOL, "IsFolder") ? '[delete_group_nok]' : '[delete_nok]')), we_message_reporting::WE_MESSAGE_ERROR));
 						}
 					}
 				} else {
-					echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('modules_newsletter', (we_base_request::_(we_base_request::BOOL, "IsFolder") ? '[delete_group_nok]' : '[delete_nok]')), we_message_reporting::WE_MESSAGE_ERROR)
-					);
+					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_newsletter', (we_base_request::_(we_base_request::BOOL, "IsFolder") ? '[delete_group_nok]' : '[delete_nok]')), we_message_reporting::WE_MESSAGE_ERROR));
 				}
 				break;
 
@@ -1669,9 +729,9 @@ edf.populateGroups();');
 					$fname = rtim(we_base_request::_(we_base_request::FILE, "csv_dir" . $exportno), '/') . "/emails_export_" . time() . ".csv";
 
 					we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $fname, $this->newsletter->groups[$exportno]->Emails);
-					echo we_html_element::jsScript(JS_DIR . "windows.js") .
+					echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 					we_html_element::jsElement('
-							new jsWindow("' . $this->frameset . '?pnt=export_csv_mes&lnk=' . $fname . '","edit_email",-1,-1,440,250,true,true,true,true);
+							new (WE().util.jsWindow)(window, "' . $this->frameset . '&pnt=export_csv_mes&lnk=' . $fname . '","edit_email",-1,-1,440,250,true,true,true,true);
 						');
 				}
 				break;
@@ -1684,31 +744,13 @@ edf.populateGroups();');
 			case "do_upload_csv":
 			case "do_upload_black":
 				$group = we_base_request::_(we_base_request::INT, "group", 0);
-				$weFileupload = new we_fileupload_include('we_File');
-				if(!$weFileupload->processFileRequest()){
-					//ajax resonse allready written: return here to send response only
-					$this->jsonOnly = true;
-
-					return;
-				}
 
 				//set header we avoided when sending JSON only
 				we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);
 				echo we_html_tools::getHtmlTop('newsletter') . STYLESHEET;
 
 				//we have finished upload or we are in fallback mode
-				$tempName = str_replace($_SERVER['DOCUMENT_ROOT'], "", $weFileupload->getFileNameTemp());
-				if(!$tempName && isset($_FILES["we_File"]) && $_FILES["we_File"]["size"]){
-					//fallback or legacy mode
-					$we_File = $_FILES["we_File"];
-					$tempName = TEMP_PATH . we_base_file::getUniqueId();
-
-					if(!move_uploaded_file($we_File["tmp_name"], $tempName)){
-						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[upload_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
-						return;
-					}
-					$tempName = str_replace($_SERVER['DOCUMENT_ROOT'], "", $tempName);
-				}
+				$tempName = we_fileupload::commitFile('we_File');
 
 				//print next command
 				echo we_html_element::jsElement($ncmd === 'do_upload_csv' ? '
@@ -1736,7 +778,7 @@ self.close();');
 				$emails[$nrid] = array($email, $htmlmail, $salutation, $title, $firstname, $lastname);
 				$emails_out = "";
 				foreach($emails as $email){
-					$emails_out.=makeCSVFromArray(array_slice($email, 0, 6)) . "\n";
+					$emails_out.=implode(',', array_slice($email, 0, 6)) . "\n";
 				}
 
 				if($csv_file){
@@ -1754,7 +796,7 @@ self.close();');
 					unset($emails[$nrid]);
 					$emails_out = '';
 					foreach($emails as $email){
-						$emails_out.=makeCSVFromArray($email) . "\n";
+						$emails_out.=implode(',', $email) . "\n";
 					}
 
 					if($csv_file){
@@ -1763,12 +805,11 @@ self.close();');
 				}
 				break;
 			case "popSend":
-
-				echo we_html_element::jsScript(JS_DIR . "windows.js") .
+				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 				we_html_element::jsElement(
 					((!trim($this->newsletter->Subject)) ? 'if(confirm("' . g_l('modules_newsletter', '[no_subject]') . '")){' : '') . '
-							url ="' . $this->frameset . '?pnt=send&nid=' . $this->newsletter->ID . (we_base_request::_(we_base_request::BOOL, "test") ? '&test=1' : '') . '";
-							new jsWindow(url,"newsletter_send",-1,-1,600,400,true,true,true,false);
+url ="' . $this->frameset . '&pnt=send&nid=' . $this->newsletter->ID . (we_base_request::_(we_base_request::BOOL, "test") ? '&test=1' : '') . '";
+new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,true,false);
 						' . (!(trim($this->newsletter->Subject)) ? '}' : '')
 				);
 				break;
@@ -1921,7 +962,7 @@ self.close();');
 			include($path);
 		} else {
 			echo STYLESHEET .
-			'<div class="defaultgray"><center>' . g_l('modules_newsletter', '[cannot_preview]') . '</center></div>';
+			'<div class="defaultgray" style="text-align:center">' . g_l('modules_newsletter', '[cannot_preview]') . '</div>';
 		}
 	}
 
@@ -1990,8 +1031,8 @@ self.close();');
 					$content = $blockHtml ?
 						$blockHtml :
 						strtr($block->Source, array(
-							"\r\n" => "\n",
-							"\r" => "\n",
+							"\r\n" => '<br/>',
+							"\r" => '<br/>',
 							'&' => '&amp;',
 							'<' => '&lt;',
 							'>' => '&gt;',
@@ -2054,8 +1095,8 @@ self.close();');
 		}
 
 
-		$port = (isset($this->settings["use_port"]) && $this->settings["use_port"]) ? ':' . $this->settings["use_port"] : '';
-		$protocol = (isset($this->settings["use_https_refer"]) && $this->settings["use_https_refer"] ? 'https://' : 'http://');
+		$port = (!empty($this->settings["use_port"])) ? ':' . $this->settings["use_port"] : '';
+		$protocol = (!empty($this->settings["use_https_refer"]) ? 'https://' : 'http://');
 
 		if($hm){
 			if($block->Type != we_newsletter_block::URL){
@@ -2218,7 +1259,7 @@ self.close();');
 
 		$atts = $this->getAttachments($group);
 		//$_clean = $this->getCleanMail($this->newsletter->Reply);
-		$phpmail = new we_util_Mailer($this->newsletter->Test, $this->newsletter->Subject, $this->newsletter->Sender, $this->newsletter->Reply, $this->newsletter->isEmbedImages);
+		$phpmail = new we_helpers_mail($this->newsletter->Test, $this->newsletter->Subject, $this->newsletter->Sender, $this->newsletter->Reply, $this->newsletter->isEmbedImages);
 		if(!$this->settings["use_base_href"]){
 			$phpmail->setIsUseBaseHref($this->settings["use_base_href"]);
 		}
@@ -2243,7 +1284,7 @@ self.close();');
 
 			//if(file_exists(WE_NEWSLETTER_CACHE_DIR . $ret["blockcache"]."_h_".$cc)) weFile::delete(WE_NEWSLETTER_CACHE_DIR . $ret["blockcache"]."_h_".$cc);
 			if(file_exists(WE_NEWSLETTER_CACHE_DIR . $ret["blockcache"] . "_h_" . $cc)){
-				$_buffer = unserialize(we_base_file::load(WE_NEWSLETTER_CACHE_DIR . $ret["blockcache"] . "_h_" . $cc));
+				$_buffer = we_unserialize(we_base_file::load(WE_NEWSLETTER_CACHE_DIR . $ret["blockcache"] . "_h_" . $cc));
 				if(is_array($_buffer) && isset($_buffer['inlines'])){
 					foreach($_buffer['inlines'] as $_fn){
 						if(file_exists($_fn)){
@@ -2264,16 +1305,19 @@ self.close();');
 
 	function getFilterSQL($filter){
 		$filterSQL = $filter["fieldname"];
-		if($filter["fieldname"] === 'MemberSince' || $filter["fieldname"] === 'LastLogin' || $filter["fieldname"] === 'LastAccess'){
-			if(stristr($filter['fieldvalue'], '.')){
-				$date = explode(".", $filter['fieldvalue']);
-				$day = $date[0];
-				$month = $date[1];
-				$year = $date[2];
-				$hour = $filter['hours'];
-				$minute = $filter['minutes'];
-				$filter['fieldvalue'] = mktime($hour, $minute, 0, $month, $day, $year);
-			}
+		switch($filter["fieldname"]){
+			case 'MemberSince':
+			case 'LastLogin':
+			case 'LastAccess':
+				if(stristr($filter['fieldvalue'], '.')){
+					$date = explode(".", $filter['fieldvalue']);
+					$day = $date[0];
+					$month = $date[1];
+					$year = $date[2];
+					$hour = $filter['hours'];
+					$minute = $filter['minutes'];
+					$filter['fieldvalue'] = mktime($hour, $minute, 0, $month, $day, $year);
+				}
 		}
 
 		switch($filter["operator"]){
@@ -2297,8 +1341,9 @@ self.close();');
 				return $filterSQL . " LIKE '" . $filter["fieldvalue"] . "%'";
 			case we_newsletter_newsletter::OP_ENDS:
 				return $filterSQL . " LIKE '%" . $filter["fieldvalue"] . "'";
+			default:
+				return $filterSQL;
 		}
-		return $filterSQL;
 	}
 
 	function getEmails($group, $select = 0, $emails_only = 0){
@@ -2336,7 +1381,7 @@ self.close();');
 					implode(',', array_map('intval', explode(',', $this->newsletter->groups[$group - 1]->Customers))));
 
 
-			$_default_html = f('SELECT pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name="default_htmlmail";', 'pref_value', $this->db);
+			$_default_html = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="newsletter" AND pref_name="default_htmlmail"', '', $this->db);
 			$selectX = $this->settings['customer_email_field'] .
 				($emails_only ? '' :
 					',' . $this->settings['customer_html_field'] . ',' .
@@ -2413,7 +1458,7 @@ self.close();');
 			'use_base_href' => 1
 		);
 
-		$db->query('SELECT pref_name,pref_value FROM ' . NEWSLETTER_PREFS_TABLE);
+		$db->query('SELECT pref_name,pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="newsletter"');
 		while($db->next_record()){
 			$ret[$db->f("pref_name")] = $db->f("pref_value");
 		}
@@ -2425,7 +1470,7 @@ self.close();');
 
 	function putSetting($name, $value){
 		$db = new DB_WE();
-		$db->query('INSERT IGNORE INTO ' . NEWSLETTER_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array('pref_name' => $name, pref_value => $value)));
+		$db->query('INSERT IGNORE INTO ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(array('tool' => 'newsletter', 'pref_name' => $name, pref_value => $value)));
 	}
 
 	function saveSettings(){
@@ -2433,14 +1478,14 @@ self.close();');
 		// WORKARROUND BUG NR 7450
 		foreach($this->settings as $key => $value){
 			if($key != 'black_list'){
-				$db->query('REPLACE INTO ' . NEWSLETTER_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array('pref_name' => $key, 'pref_value' => $value)));
+				$db->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(array('tool' => 'newsletter', 'pref_name' => $key, 'pref_value' => $value)));
 			}
 		}
 	}
 
 	function saveSetting($name, $value){
 		$db = new DB_WE();
-		$db->query('REPLACE INTO ' . NEWSLETTER_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array('pref_name' => $name, 'pref_value' => $value)));
+		$db->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(array('tool' => 'newsletter', 'pref_name' => $name, 'pref_value' => $value)));
 	}
 
 	function getBlackList(){
@@ -2467,10 +1512,10 @@ self.close();');
 	 * @return Array
 	 */
 	function cacheNewsletter($nid = 0, $cachemails = true){
-
 		$ret = array();
-		if($nid)
+		if($nid){
 			$this->newsletter = new we_newsletter_newsletter($nid);
+		}
 
 		if($cachemails){
 			// BEGIN cache emails groups
@@ -2498,7 +1543,6 @@ self.close();');
 				}
 			}
 
-
 			$cc = 0;
 			foreach($buffer as $k => $one){
 				$buffer[$cc] = $one;
@@ -2517,9 +1561,9 @@ self.close();');
 			while($go){
 				$tmp = array_slice($buffer, $offset, $this->settings["send_step"]);
 				if(!empty($tmp)){
-					$offset+=$this->settings["send_step"];
+					$offset+=$this->settings['send_step'];
 					$groups++;
-					$this->saveToCache(serialize($tmp), $emailcache . "_$groups");
+					$this->saveToCache(we_serialize($tmp, 'json'), $emailcache . "_$groups");
 				} else {
 					$go = false;
 				}
@@ -2618,7 +1662,7 @@ self.close();');
 	function getFromCache($cache){
 		$cache = WE_NEWSLETTER_CACHE_DIR . basename($cache);
 		$buffer = we_base_file::load($cache);
-		return ($buffer ? unserialize($buffer) : array());
+		return we_unserialize($buffer);
 	}
 
 	function getCleanMail($mail){
@@ -2635,8 +1679,7 @@ self.close();');
 			we_base_file::createLocalFolder(WE_NEWSLETTER_CACHE_DIR);
 		}
 
-		$filename = WE_NEWSLETTER_CACHE_DIR . basename($filename);
-		return we_base_file::save($filename, $content);
+		return we_base_file::save(WE_NEWSLETTER_CACHE_DIR . basename($filename), $content);
 	}
 
 	public function getShowImportBox(){
@@ -2645,6 +1688,16 @@ self.close();');
 
 	public function getShowExportBox(){
 		return $this->show_export_box;
+	}
+
+	public function getHomeScreen(){
+		$GLOBALS['we_head_insert'] = $this->getJSProperty();
+		$GLOBALS['we_body_insert'] = we_html_element::htmlForm(array('name' => 'we_form'), $this->getHiddens(array('ncmd' => 'home')) . we_html_element::htmlHidden('home', 0));
+		$content = we_html_button::create_button("new_newsletter", "javascript:top.opener.top.we_cmd('new_newsletter');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_NEWSLETTER")) .
+			'<br/>' .
+			we_html_button::create_button("new_newsletter_group", "javascript:top.opener.top.we_cmd('new_newsletter_group');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_NEWSLETTER"));
+
+		return parent::getHomeScreen('newsletter', "newsletter.gif", $content);
 	}
 
 }

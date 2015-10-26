@@ -38,11 +38,6 @@ class we_search_model extends we_tool_model{
 	var $ModelClassName = __CLASS__;
 
 	/**
-	 * @var string: name of the icon in the tree
-	 */
-	var $Icon = 'Suche.gif';
-
-	/**
 	 * @var string: toolname
 	 */
 	var $toolName = 'weSearch';
@@ -59,6 +54,7 @@ class we_search_model extends we_tool_model{
 	 */
 	var $searchstartDocSearch = 0;
 	var $searchstartTmplSearch = 0;
+	var $searchstartMediaSearch = 0;
 	var $searchstartAdvSearch = 0;
 
 	/**
@@ -66,6 +62,7 @@ class we_search_model extends we_tool_model{
 	 */
 	var $searchDocSearch = array();
 	var $searchTmplSearch = array();
+	var $searchMediaSearch = array();
 	var $searchAdvSearch = array();
 
 	/**
@@ -73,6 +70,7 @@ class we_search_model extends we_tool_model{
 	 */
 	var $locationDocSearch = array();
 	var $locationTmplSearch = array();
+	var $locationMediaSearch = array();
 	var $locationAdvSearch = array();
 
 	/**
@@ -89,6 +87,18 @@ class we_search_model extends we_tool_model{
 	var $searchForContentTmplSearch = 0;
 
 	/**
+	 * @var tinyint: flag that shows what you are searching for in the mediaearch
+	 */
+	var $searchForTextMediaSearch = 1;
+	var $searchForTitleMediaSearch = 0;
+	var $searchForMetaMediaSearch = 0;
+	public $searchForImageMediaSearch = 1;
+	public $searchForVideoMediaSearch = 0;
+	public $searchForAudioMediaSearch = 0;
+	public $searchForPdfMediaSearch = 1;
+	public $search_contentTypes_mediaSearch = array();
+
+	/**
 	 * @var array: shows which tables you have to search in in the advsearch
 	 */
 	var $search_tables_advSearch = array();
@@ -98,12 +108,14 @@ class we_search_model extends we_tool_model{
 	 */
 	var $folderIDDoc;
 	var $folderIDTmpl;
+	var $folderIDMedia;
 
 	/**
 	 * @var tinyint: flag that shows what view is set in each search
 	 */
 	var $setViewDocSearch = 0;
 	var $setViewTmplSearch = 0;
+	var $setViewMediaSearch = 0;
 	var $setViewAdvSearch = 0;
 
 	/**
@@ -111,6 +123,7 @@ class we_search_model extends we_tool_model{
 	 */
 	var $anzahlDocSearch = 10;
 	var $anzahlTmplSearch = 10;
+	var $anzahlMediaSearch = 10;
 	var $anzahlAdvSearch = 10;
 
 	/**
@@ -118,6 +131,7 @@ class we_search_model extends we_tool_model{
 	 */
 	var $OrderDocSearch = "Text";
 	var $OrderTmplSearch = "Text";
+	var $OrderMediaSearch = "Text";
 	var $OrderAdvSearch = "Text";
 
 	/**
@@ -125,6 +139,7 @@ class we_search_model extends we_tool_model{
 	 */
 	var $searchFieldsDocSearch = array();
 	var $searchFieldsTmplSearch = array();
+	var $searchFieldsMediaSearch = array();
 	var $searchFieldsAdvSearch = array();
 	var $activTab = 1;
 
@@ -147,16 +162,15 @@ class we_search_model extends we_tool_model{
 	function load($id = 0, $isAdvanced = false){
 		parent::load($id);
 		$array = get_object_vars($this);
-		foreach($array as $key => &$cur){
+		foreach($array as $key => $cur){
 			if(is_string($cur) && substr($cur, 0, 2) === 'a:'){
-				$this->{$key} = unserialize($cur);
+				$this->{$key} = we_unserialize($cur);
 			}
 		}
 	}
 
 	function setIsFolder($value){
 		$this->IsFolder = $value;
-		$this->Icon = ($value ? we_base_ContentTypes::FOLDER_ICON : 'Suche.gif');
 	}
 
 	function filenameNotValid($text){

@@ -57,13 +57,9 @@ function setFrameSize() {
 		fsRows[0] = tabsHeight;
 		fs.rows = fsRows.join(",");
 	} else {
-		setTimeout("setFrameSize()", 100);
+		setTimeout(setFrameSize, 100);
 	}
 }
-/**
- * var resizeDummy
- */
-var resizeDummy = 1;
 
 /**
  * name of the title path
@@ -107,27 +103,4 @@ function setTitlePath(group, name) {
 		}
 		titlePathNameElem.innerHTML = titlePathName;
 	}
-}
-
-/**
- * set the path name
- *
- * @static
- * @param {string} pathName
- * @return void
- */
-function setPathName(pathName) {
-	titlePathName = pathName;
-}
-
-/**
- * set the path group
- *
- * @static
- * @param {string} pathGroup
- * @return void
- */
-function setPathGroup(pathGroup) {
-	//DUMMY for compatibility
-	//titlePathGroup = pathGroup;
 }

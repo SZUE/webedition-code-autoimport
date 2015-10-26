@@ -54,17 +54,16 @@ class we_navigation_ruleControl{
 				$db = new DB_WE();
 
 				if(f('SELECT 1 FROM ' . NAVIGATION_RULE_TABLE . ' WHERE NavigationName="' . $db->escape($this->NavigationRule->NavigationName) . '" AND ID!=' . intval($this->NavigationRule->ID) . ' LIMIT 1', '', $db)){
-					$js = we_message_reporting::getShowMessageCall(
-							sprintf(g_l('navigation', '[rules][name_exists]'), $this->NavigationRule->NavigationName), we_message_reporting::WE_MESSAGE_ERROR);
+					$js = we_message_reporting::getShowMessageCall(sprintf(g_l('navigation', '[rules][name_exists]'), $this->NavigationRule->NavigationName), we_message_reporting::WE_MESSAGE_ERROR);
 					$save = false;
 				}
 
 				if($save && $this->NavigationRule->save()){
 
-					$js = "doc = top.frames['content'];
-							doc.weSelect." . ($isNew ? 'addOption' : 'updateOption') . "('navigationRules', " . $this->NavigationRule->ID . ", '" . $this->NavigationRule->NavigationName . "');
-							doc.weSelect.selectOption('navigationRules', " . $this->NavigationRule->ID . ");
-							doc.weInput.setValue('ID', " . $this->NavigationRule->ID . ");" .
+					$js = "doc = top.frames.content;
+doc.weSelect." . ($isNew ? 'addOption' : 'updateOption') . "('navigationRules', " . $this->NavigationRule->ID . ", '" . $this->NavigationRule->NavigationName . "');
+doc.weSelect.selectOption('navigationRules', " . $this->NavigationRule->ID . ");
+doc.weInput.setValue('ID', " . $this->NavigationRule->ID . ");" .
 						we_message_reporting::getShowMessageCall(sprintf(g_l('navigation', '[rules][saved_successful]'), $this->NavigationRule->NavigationName), we_message_reporting::WE_MESSAGE_NOTICE);
 				}
 				break;
@@ -72,9 +71,9 @@ class we_navigation_ruleControl{
 			case "delete_navigation_rule" :
 				if($this->NavigationRule->delete()){
 
-					$js = "doc = top.frames['content'];
-						doc.weSelect.removeOption('navigationRules', " . $this->NavigationRule->ID . ", '" . $this->NavigationRule->NavigationName . "');
-						doc.weInput.setValue('ID', 0);";
+					$js = "doc = top.frames.content;
+doc.weSelect.removeOption('navigationRules', " . $this->NavigationRule->ID . ", '" . $this->NavigationRule->NavigationName . "');
+doc.weInput.setValue('ID', 0);";
 				}
 				break;
 
@@ -87,13 +86,13 @@ class we_navigation_ruleControl{
 				$NavigationIDPath = htmlspecialchars_decode($this->NavigationRule->NavigationID ? id_to_path($this->NavigationRule->NavigationID, NAVIGATION_TABLE) : '', ENT_NOQUOTES);
 
 				// workspaces:
-				$_workspaceList = 'optionList.push({"text":"' . g_l('navigation', '[no_entry]') . '","value":"0"});';
+				$_workspaceList = array('{"text":"' . g_l('navigation', '[no_entry]') . '","value":"0"}');
 				$_selectWorkspace = '';
 				if(defined('OBJECT_TABLE') && $this->NavigationRule->ClassID){
 					$_workspaces = $this->getWorkspacesByClassID($this->NavigationRule->ClassID);
 
 					foreach($_workspaces as $key => $value){
-						$_workspaceList .= 'optionList.push({"text":"' . $value . '","value":"' . $key . '"});';
+						$_workspaceList[] = '{"text":"' . $value . '","value":"' . $key . '"}';
 					}
 					$_selectWorkspace = 'doc.weSelect.selectOption("WorkspaceID", "' . $this->NavigationRule->WorkspaceID . '" );';
 				}
@@ -113,7 +112,7 @@ class we_navigation_ruleControl{
 				}
 
 				$js = "
-doc = top.frames['content'];
+doc = top.frames.content;
 doc.clearNavigationForm();
 
 doc.weInput.setValue('ID', " . $this->NavigationRule->ID . ");
@@ -140,8 +139,7 @@ doc.categories_edit.showVariant(0);
 doc.weInput.setValue('CategoriesCount', doc.categories_edit.itemCount);
 
 
-var optionList = new Array();
-$_workspaceList
+var optionList = [" . implode(',', $_workspaceList) . "];
 doc.weSelect.setOptions('WorkspaceID', optionList);
 $_selectWorkspace";
 				break;
@@ -150,18 +148,17 @@ $_selectWorkspace";
 
 				if(defined('OBJECT_TABLE') && ($classid = we_base_request::_(we_base_request::INT, 'ClassID'))){
 					$_workspaces = $this->getWorkspacesByClassID($classid);
-					$optionList = 'optionList.push({"text":"' . g_l('navigation', '[no_entry]') . '","value":"0"});';
+					$optionList = array('{"text":"' . g_l('navigation', '[no_entry]') . '","value":"0"}');
 
 					foreach($_workspaces as $key => $value){
-						$optionList .= 'optionList.push({"text":"' . $value . '","value":"' . $key . '"});';
+						$optionList[]= '{"text":"' . $value . '","value":"' . $key . '"}';
 					}
 
-					$js = "
-							doc = top.frames['content'];
-							var optionList = new Array();
-							$optionList
-							doc.weSelect.setOptions('WorkspaceID', optionList);
-						";
+					$js = '
+doc = top.frames.content;
+var optionList = ['.implode(',',$optionList).'];
+doc.weSelect.setOptions("WorkspaceID", optionList);
+';
 				}
 
 				break;
@@ -169,9 +166,7 @@ $_selectWorkspace";
 				return;
 		}
 
-		echo we_html_tools::getHtmlTop() .
-		we_html_element::jsElement($js) .
-		'</head><body>' . $html . '</body></html>';
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement($js), '<body>' . $html . '</body>');
 		exit();
 	}
 

@@ -34,8 +34,8 @@ function we_tag_path($attribs){
 	$oldHtmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, we_base_request::BOOL);
 	$fieldforfolder = weTag_getAttribute('fieldforfolder', $attribs, false, we_base_request::BOOL);
 	$docAttr = weTag_getAttribute('doc', $attribs, '', we_base_request::STRING);
-	$sep = weTag_getAttribute('separator', $attribs, '/', we_base_request::RAW);
-	$home = weTag_getAttribute('home', $attribs, 'home', we_base_request::RAW);
+	$sep = weTag_getAttribute('separator', $attribs, '/', we_base_request::RAW_CHECKED);
+	$home = weTag_getAttribute('home', $attribs, 'home', we_base_request::RAW_CHECKED);
 	$hidehome = weTag_getAttribute('hidehome', $attribs, false, we_base_request::BOOL);
 	$class = weTag_getAttribute('class', $attribs, '', we_base_request::STRING);
 	$style = weTag_getAttribute('style', $attribs, '', we_base_request::STRING);

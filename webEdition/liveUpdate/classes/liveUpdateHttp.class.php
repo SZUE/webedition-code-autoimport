@@ -153,19 +153,17 @@ class liveUpdateHttp{
 			$params .= '<input type="hidden" name="' . $LU_name . '" value="' . urlencode((is_array($LU_value) ? base64_encode(serialize($LU_value)) : $LU_value)) . '" />';
 		}
 
-		return we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']) . we_html_element::htmlDocType() . '<html>
-<head>
-	' . LIVEUPDATE_CSS . '
-<head>
+		return we_html_tools::getHtmlTop('', '', '', LIVEUPDATE_CSS, '
 <body onload="document.getElementById(\'liveUpdateForm\').submit();">
-<form id="liveUpdateForm" action="https://' . LIVEUPDATE_SERVER . LIVEUPDATE_SERVER_SCRIPT . '" method="post">
-	<input type="hidden" name="update_cmd" value="startSession" /><br />
-	<input type="hidden" name="next_cmd" value="' . we_base_request::_(we_base_request::STRING, 'update_cmd') . '" />
-	<input type="hidden" name="detail" value="' . we_base_request::_(we_base_request::STRING, 'detail') . '" />
-	' . $params . '
+<form id="liveUpdateForm" action="https://' . LIVEUPDATE_SERVER . LIVEUPDATE_SERVER_SCRIPT . '" method="post">' .
+				we_html_element::htmlHiddens(array(
+					"update_cmd" => "startSession",
+					"next_cmd" => we_base_request::_(we_base_request::STRING, 'update_cmd'),
+					"detail" => we_base_request::_(we_base_request::STRING, 'detail')
+				)) . $params . '
 </form>
 </body>
-</html>';
+');
 	}
 
 }

@@ -73,18 +73,24 @@ function we_error_handler($in_webEdition = true){
 	}
 	$called = true;
 	// Get way of how to show errors
-	if(defined('NO_SESS') || $in_webEdition){
+	if($in_webEdition){
 		$GLOBALS['we']['errorhandler']['display'] = false;
 		ini_set('display_errors', false);
+		if(!defined('WE_ERROR_LOG')){
+			define('WE_ERROR_LOG', 1);
+		}
+		if(!defined('WE_ERROR_HANDLER')){
+			define('WE_ERROR_HANDLER', 1);
+		}
 		//we want all errors inside WE
 		we_error_setHandleAll();
 	} else {
 		$GLOBALS['we']['errorhandler']['display'] = defined('WE_ERROR_SHOW') ? (WE_ERROR_SHOW == 1 ? true : false) : true;
 	}
 
-	if((defined('WE_ERROR_HANDLER') && WE_ERROR_HANDLER == 1) || defined('NO_SESS') || $in_webEdition){
+	if((defined('WE_ERROR_HANDLER') && WE_ERROR_HANDLER)){
 		$_error_level = 0 +
-			((version_compare(PHP_VERSION, '5.3.0') >= 0) && $GLOBALS['we']['errorhandler']['deprecated'] && defined('E_DEPRECATED') ? E_DEPRECATED | E_USER_DEPRECATED | E_STRICT : 0) +
+			($GLOBALS['we']['errorhandler']['deprecated'] ? E_DEPRECATED | E_USER_DEPRECATED | E_STRICT : 0) +
 			($GLOBALS['we']['errorhandler']['notice'] ? E_NOTICE | E_USER_NOTICE | E_STRICT : 0) +
 			($GLOBALS['we']['errorhandler']['warning'] ? E_WARNING | E_CORE_WARNING | E_COMPILE_WARNING | E_USER_WARNING : 0) +
 			($GLOBALS['we']['errorhandler']['error'] ? E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR : 0);
@@ -96,12 +102,11 @@ function we_error_handler($in_webEdition = true){
 		set_exception_handler('we_exception_handler');
 	} else {
 		//disable strict & deprecated errors
-		if(version_compare(PHP_VERSION, '5.3.0') >= 0){
-			$cur_error = error_reporting();
-			if(($cur_error & (E_DEPRECATED | E_STRICT) ) > 0){
-				$new_error = $cur_error & ~(E_DEPRECATED | E_STRICT);
-				error_reporting($new_error);
-			}
+
+		$cur_error = error_reporting();
+		if(($cur_error & (E_DEPRECATED | E_STRICT) ) > 0){
+			$new_error = $cur_error & ~(E_DEPRECATED | E_STRICT);
+			error_reporting($new_error);
 		}
 	}
 }
@@ -131,11 +136,11 @@ function translate_error_type($type){
 			return 'User warning';
 		case E_USER_NOTICE:
 			return 'User notice';
-		case (defined('E_DEPRECATED') ? E_DEPRECATED : 8192):
+		case E_DEPRECATED:
 			return 'Deprecated notice';
-		case (defined('E_STRICT') ? E_STRICT : 2048):
+		case E_STRICT:
 			return 'Strict Error';
-		case (defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : 16384):
+		case E_USER_DEPRECATED:
 			return 'User deprecated notice';
 		case E_SQL:
 			return 'SQL Error';
@@ -147,7 +152,7 @@ function translate_error_type($type){
 function getBacktrace($skip){
 	$_detailedError = $_caller = $_file = $_line = '';
 
-	$_backtrace = debug_backtrace(defined('DEBUG_BACKTRACE_IGNORE_ARGS') ? DEBUG_BACKTRACE_IGNORE_ARGS : false);
+	$_backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 	$cnt = 0;
 	$found = false;
 	//error handler called directly caused by an error
@@ -194,34 +199,34 @@ function display_error_message($type, $message, $file, $line, $skipBT = false){
 	}
 
 	// Build the error table
-	echo '<br /><table align="center" bgcolor="#FFFFFF" cellpadding="4" cellspacing="0" style="border: 1px solid #265da6;" width="95%"><colgroup><col width="10%"/><col width="90%" /></colgroup>
-		<tr bgcolor="#f7f7f7" valign="top">
-			<td colspan="2" style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2">An error occurred while executing this script.</font></td>
+	echo '<br /><table bgcolor="#FFFFFF" cellpadding="4" style="text-align:center;border: 1px solid #265da6;" width="95%"><colgroup><col width="10%"/><col width="90%" /></colgroup>
+		<tr bgcolor="#f7f7f7" style="vertical-align:top">
+			<td colspan="2" style="border-bottom: 1px solid #265da6;">An error occurred while executing this script.</td>
 		</tr>
-	<tr valign="top">
-		<td style="white-space:nowrap;border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Error type:</b></font></td>
-		<td style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><i>' . translate_error_type($type) . '</i></font></td>
+	<tr style="vertical-align:top">
+		<td style="white-space:nowrap;border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;text-weight:bold;">Error type:</td>
+		<td style="border-bottom: 1px solid #265da6;"><i>' . translate_error_type($type) . '</i></td>
 	</tr>
-	<tr valign="top">
-			<td style="white-space:nowrap;border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Error message:</b></font></td>
-			<td style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><i><pre>' . str_replace($_SERVER['DOCUMENT_ROOT'], "", $message) . '</pre></i></font></td>
+	<tr style="vertical-align:top">
+			<td style="white-space:nowrap;border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;text-weight:bold;">Error message:</td>
+			<td style="border-bottom: 1px solid #265da6;"><i><pre>' . str_replace($_SERVER['DOCUMENT_ROOT'], "", $message) . '</pre></i></td>
 	</tr>
-	<tr valign="top">
-			<td style="white-space:nowrap;border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Script name:</b></font></td>
-			<td style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><i>' . str_replace($_SERVER['DOCUMENT_ROOT'], "", $file) . '</i></font></td>
+	<tr style="vertical-align:top">
+			<td style="white-space:nowrap;border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;text-weight:bold;">Script name:</td>
+			<td style="border-bottom: 1px solid #265da6;"><i>' . str_replace($_SERVER['DOCUMENT_ROOT'], "", $file) . '</i></td>
 	</tr>
-	<tr valign="top">
-			<td style="white-space:nowrap;border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Line number:</b></font></td>
-			<td style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><i>' . $line . '</i></font></td>
+	<tr style="vertical-align:top">
+			<td style="white-space:nowrap;border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;text-weight:bold;">Line number:</td>
+			<td style="border-bottom: 1px solid #265da6;"><i>' . $line . '</i></td>
 	</tr>
-	<tr valign="top">
-			<td style="white-space:nowrap;border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Backtrace</b></font></td>
-			<td ><font face="Verdana, Arial, Helvetica, sans-serif" size="2">' . str_replace(array("\r", "\n"), '', nl2br($detailedError)) . ' 	</font></td>
+	<tr style="vertical-align:top">
+			<td style="white-space:nowrap;border-right: 1px solid #265da6;text-weight:bold;">Backtrace</td>
+			<td>' . str_replace(array("\r", "\n"), '', nl2br($detailedError)) . '</td>
 	</tr>
 	</table><br />';
 }
 
-function getVariableMax($var, we_database_base $db = null){
+function getVariableMax($var){
 	static $max = 65500; //max lenght of text-col in mysql - this is enough debug-data, leave some space...
 	switch($var){
 		case 'Request':
@@ -234,7 +239,7 @@ function getVariableMax($var, we_database_base $db = null){
 			}
 			$ret = '';
 			//FIXME: clone will be reduced to unsetting weS+webuser if all vars have moved
-			if(isset($_SESSION['webuser']) && isset($_SESSION['webuser']['ID'])&& $_SESSION['webuser']['registered']){
+			if(isset($_SESSION['webuser']) && isset($_SESSION['webuser']['ID']) && $_SESSION['webuser']['registered']){
 				$ret.= 'webUser: ' . print_r(array('ID' => $_SESSION['webuser']['ID'], 'Username' => $_SESSION['webuser']['Username'] . '(' . $_SESSION['webuser']['Forename'] . ' ' . $_SESSION['webuser']['Surname'] . ')'), true);
 			}
 			if(isset($_SESSION['user']) && isset($_SESSION['user']['ID'])){
@@ -320,7 +325,7 @@ function log_error_message($type, $message, $file, $_line, $skipBT = false){
 			} else {
 				$id = $db->getInsertId();
 				foreach($logVars as $var){
-					$db->query('UPDATE ' . $tbl . ' SET ' . getVariableMax($var, $db) . ' WHERE ID=' . $id);
+					$db->query('UPDATE ' . $tbl . ' SET ' . getVariableMax($var) . ' WHERE ID=' . $id);
 				}
 			}
 		} else {
@@ -387,7 +392,7 @@ function mail_error_message($type, $message, $file, $line, $skipBT = false, $ins
 
 	// Log the error
 	if(defined('WE_ERROR_MAIL_ADDRESS')){
-		if(!mail(WE_ERROR_MAIL_ADDRESS, 'webEdition: ' . $ttype . ' (' . $_caller . ') [' . $_SERVER['SERVER_NAME'] . ']', $_detailedError)){
+		if(!mail(WE_ERROR_MAIL_ADDRESS, $ttype .': '.$_SERVER['SERVER_NAME']. '(webEdition)', $_detailedError)){
 			if(in_array($type, array('E_ERROR', 'E_CORE_ERROR', 'E_COMPILE_ERROR', 'E_USER_ERROR'))){
 				echo 'Cannot log error! Could not send e-mail: <pre>' . $_detailedError . '</pre>';
 			}
@@ -411,7 +416,7 @@ function error_showDevice($type, $message, $file, $line, $skip = false){
 	}
 
 	// Mail error?
-	if(isset($GLOBALS['we']['errorhandler']) && isset($GLOBALS['we']['errorhandler']['send']) && $GLOBALS['we']['errorhandler']['send']){
+	if(isset($GLOBALS['we']['errorhandler']) && !empty($GLOBALS['we']['errorhandler']['send'])){
 		mail_error_message($type, $message, $file, $line, $skip, isset($insertID) ? $insertID : false);
 	}
 }
@@ -432,7 +437,7 @@ function error_handler($type, $message, $file, $line, $context){
 	switch($type){
 		case E_NOTICE:
 		case E_USER_NOTICE:
-			if(defined('WE_ERROR_NOTICES') && (WE_ERROR_NOTICES == 1)){
+			if($GLOBALS['we']['errorhandler']['notice']){
 				error_showDevice($type, $message, $file, $line);
 			}
 			break;
@@ -442,7 +447,7 @@ function error_handler($type, $message, $file, $line, $context){
 		case E_CORE_WARNING:
 		case E_COMPILE_WARNING:
 		case E_USER_WARNING:
-			if(defined('WE_ERROR_WARNINGS') && (WE_ERROR_WARNINGS == 1)){
+			if($GLOBALS['we']['errorhandler']['warning']){
 				error_showDevice($type, $message, $file, $line);
 			}
 
@@ -454,16 +459,16 @@ function error_handler($type, $message, $file, $line, $context){
 		case E_COMPILE_ERROR:
 		case E_USER_ERROR:
 		case E_RECOVERABLE_ERROR:
-			if(defined('WE_ERROR_ERRORS') && (WE_ERROR_ERRORS == 1)){
+			if($GLOBALS['we']['errorhandler']['error']){
 				error_showDevice($type, $message, $file, $line, true);
 			}
 
 			// Stop execution
 			die();
 			break;
-		case (defined('E_DEPRECATED') ? E_DEPRECATED : 8192):
-		case (defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : 16384):
-			if(defined('WE_ERROR_DEPRECATED') && (WE_ERROR_DEPRECATED == 1)){
+		case E_DEPRECATED:
+		case E_USER_DEPRECATED:
+			if($GLOBALS['we']['errorhandler']['deprecated']){
 				error_showDevice($type, $message, $file, $line);
 			}
 			break;

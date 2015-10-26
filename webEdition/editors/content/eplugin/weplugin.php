@@ -23,184 +23,62 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
 we_html_tools::protect();
-
-$js = we_html_element::jsElement('
-	var code;
-	var to;
-
-	var isLodaed = false;
-
-	function setIsLoaded(flag) {
-		self.isLoaded = flag;
-	}
-
-	function editSettings() {
-		if (self.isLoaded) {
-			document.WePlugin.editSettings();
-		}
-	}
-
-	function editSource(filename,ct,charset){
-
-		var _EditorFrame = top.weEditorFrameController.getActiveEditorFrame();
-
-		var source = "###EDITORPLUGIN:EMPTYSTRING###";
-		if(_EditorFrame.getContentEditor().getSource){
-			source = _EditorFrame.getContentEditor().getSource();
-			document.we_form.acceptCharset = _EditorFrame.getContentEditor().getCharset();
-		}
-
-		document.we_form.elements[\'we_cmd[0]\'].value="editSource";
-		document.we_form.elements[\'we_cmd[1]\'].value=filename;
-		document.we_form.elements[\'we_cmd[2]\'].value=_EditorFrame.getEditorTransaction();
-		document.we_form.elements[\'we_cmd[3]\'].value=ct;
-		document.we_form.elements[\'we_cmd[4]\'].value=source;
-
-		document.we_form.submit();
-
-	}
-
-	function editFile(){
-		var _EditorFrame = top.weEditorFrameController.getActiveEditorFrame();
-		document.we_form.elements[\'we_cmd[0]\'].value="editFile";
-		document.we_form.elements[\'we_cmd[1]\'].value=_EditorFrame.getEditorTransaction();
-		document.we_form.submit();
-	}
-
-	function setSource(trans){
-		var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction(trans);
-		if(_EditorFrame) {
-			_EditorFrame.setEditorIsHot(true);
-			var source =  (self.isLoaded) ? document.WePlugin.getSource(trans).replace(/\r?\n?$/,"") : "";
-
-			if(_EditorFrame && _EditorFrame.getContentEditor().setSource){
-				_EditorFrame.getContentEditor().setSource(source);
-			} else{
-				document.we_form.elements[\'we_cmd[0]\'].value="setSource";
-				document.we_form.elements[\'we_cmd[1]\'].value=trans;
-				document.we_form.elements[\'we_cmd[2]\'].value=source;
-
-				document.we_form.submit();
-			}
-		}
-	}
-
-	function setFile(source,trans){
-		document.we_form.elements[\'we_cmd[0]\'].value="setFile";
-		document.we_form.elements[\'we_cmd[1]\'].value=trans;
-		document.we_form.elements[\'we_cmd[2]\'].value=source;
-		document.we_form.submit();
-	}
-
-
-
-	function reloadContentFrame(trans){
-		document.we_form.elements[\'we_cmd[0]\'].value="reloadContentFrame";
-		document.we_form.elements[\'we_cmd[1]\'].value=trans;
-		document.we_form.submit();
-	}
-
-	function remove(transaction) {
-		if (self.isLoaded && (typeof document.WePlugin.removeDocument == "function")) {
-			document.WePlugin.removeDocument(transaction);
-		}else{
-			self.isLoaded =false;
-		}
-	}
-
-	function isInEditor(transaction) {
-		if (self.isLoaded && transaction!=null && (typeof document.WePlugin.inEditor == "function")) {
-			return document.WePlugin.inEditor(transaction);
-		}
-		return false;
-	}
-
-	function getDocCount() {
-		if (self.isLoaded) {
-			return document.WePlugin.getDocCount();
-		}
-		return 1;
-	}
-
-	function pingPlugin() {
-		if(document.WePlugin && self.isLoaded) {
-			c++;
-			if(document.WePlugin.hasMessages) {
-				if(document.WePlugin.hasMessages()) {
-					var messages = document.WePlugin.getMessages();
-					eval(""+messages);
-				}
-			}
-
-		}
-		to = window.setTimeout("pingPlugin()",1000);
-	}
-
-	var c = 0;');
-
-$applet = we_html_element::htmlApplet(array(
-		'name' => 'WePlugin',
-		'code' => 'EPlugin',
-		'archive' => 'weplugin.jar',
-		'codebase' => getServerUrl(true) . WEBEDITION_DIR . 'editors/content/eplugin/',
-		'width' => 10,
-		'height' => 10,
-		' width' => 100, //keep html attributes
-		' height' => 100,
-		), '', array(
-		'permissions' => 'all-permissions',
-		'param_list' => 'lan_main_dialog_title,lan_alert_noeditor_title,lan_alert_noeditor_text,lan_select_text,lan_select_button,lan_start_button,lan_close_button,lan_clear_button,lan_list_label,lan_showall_label,lan_edit_button,lan_default_for,lan_editor_name,lan_path,lan_args,lan_contenttypes,lan_defaultfor_label,lan_del_button,lan_save_button,lan_autostart_label,lan_settings_dialog_title,lan_alert_nodefeditor_text,lan_del_question,lan_clear_question,lan_encoding,lan_add_button',
-		'host' => getServerUrl(true),
-		'cmdentry' => getServerUrl(true) . WEBEDITION_DIR . 'editors/content/eplugin/weplugin_cmd.php',
-		'lan_main_dialog_title' => g_l('eplugin', '[lan_main_dialog_title]'),
-		'lan_settings_dialog_title' => g_l('eplugin', '[lan_settings_dialog_title]'),
-		'lan_alert_noeditor_title' => g_l('eplugin', '[lan_alert_noeditor_title]'),
-		'lan_alert_noeditor_text' => g_l('eplugin', '[lan_alert_noeditor_text]'),
-		'lan_select_text' => g_l('eplugin', '[lan_select_text]'),
-		'lan_select_button' => g_l('eplugin', '[lan_select_button]'),
-		'lan_start_button' => g_l('eplugin', '[lan_start_button]'),
-		'lan_close_button' => g_l('eplugin', '[lan_close_button]'),
-		'lan_clear_button' => g_l('eplugin', '[lan_clear_button]'),
-		'lan_list_label' => g_l('eplugin', '[lan_list_label]'),
-		'lan_showall_label' => g_l('eplugin', '[lan_showall_label]'),
-		'lan_edit_button' => g_l('eplugin', '[lan_edit_button]'),
-		'lan_default_for' => g_l('eplugin', '[lan_default_for]'),
-		'lan_editor_name' => g_l('eplugin', '[lan_editor_name]'),
-		'lan_path' => g_l('eplugin', '[lan_path]'),
-		'lan_args' => g_l('eplugin', '[lan_args]'),
-		'lan_contenttypes' => g_l('eplugin', '[lan_contenttypes]'),
-		'lan_defaultfor_label' => g_l('eplugin', '[lan_defaultfor_label]'),
-		'lan_del_button' => g_l('eplugin', '[lan_del_button]'),
-		'lan_save_button' => g_l('eplugin', '[lan_save_button]'),
-		'lan_editor_prop' => g_l('eplugin', '[lan_editor_prop]'),
-		'lan_autostart_label' => g_l('eplugin', '[lan_autostart_label]'),
-		'lan_alert_nodefeditor_text' => g_l('eplugin', '[lan_alert_nodefeditor_text]'),
-		'lan_del_question' => g_l('eplugin', '[lan_del_question]'),
-		'lan_clear_question' => g_l('eplugin', '[lan_clear_question]'),
-		'lan_encoding' => g_l('eplugin', '[lan_encoding]'),
-		'lan_add_button' => g_l('eplugin', '[lan_add_button]'),
-		'lan_add_button' => g_l('eplugin', '[lan_add_button]'),
-		)
-);
 
 $charset = '';
 
 //FIXME: charset
-echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
-	we_html_element::htmlHead(
-		we_html_element::htmlMeta(array('http-equiv' => 'content-type', 'content' => 'text/html; charset=' . $GLOBALS['WE_BACKENDCHARSET'])) .
-		we_html_element::htmlTitle('start wePlugin') .
-		$js) .
-	we_html_element::htmlBody(array('bgcolor' => 'white', 'onload' => "to=window.setTimeout('pingPlugin()',5000);"),
-		we_html_element::htmlHidden(array('name' => 'hm', 'value' => 0)) .
-		$applet .
-		we_html_element::htmlForm(array('name' => 'we_form', 'target' => 'load', 'action' => WEBEDITION_DIR . 'editors/content/eplugin/weplugin_cmd.php', 'method' => 'post', 'accept-charset' => $charset), we_html_element::htmlHidden(array('name' => 'we_cmd[0]', 'value' => '')) .
-			we_html_element::htmlHidden(array('name' => 'we_cmd[1]', 'value' => '')) .
-			we_html_element::htmlHidden(array('name' => 'we_cmd[2]', 'value' => '')) .
-			we_html_element::htmlHidden(array('name' => 'we_cmd[3]', 'value' => '')) .
-			we_html_element::htmlHidden(array('name' => 'we_cmd[4]', 'value' => ''))
+echo we_html_tools::getHtmlTop('start wePlugin', '', '', we_html_element::jsScript(JS_DIR . 'weplugin.js'), we_html_element::htmlBody(array('style' => 'background-color:white', 'onload' => "to=window.setInterval(pingPlugin,5000);"), we_html_element::htmlHidden('hm', 0) .
+				we_html_element::htmlApplet(array(
+					'name' => 'WePlugin',
+					'code' => 'EPlugin',
+					'archive' => 'weplugin.jar',
+					'codebase' => getServerUrl(true) . WEBEDITION_DIR . 'editors/content/eplugin/',
+					'width' => 10,
+					'height' => 10,
+					' width' => 100, //keep html attributes
+					' height' => 100,
+						), '', array(
+					'permissions' => 'all-permissions',
+					'param_list' => 'lan_main_dialog_title,lan_alert_noeditor_title,lan_alert_noeditor_text,lan_select_text,lan_select_button,lan_start_button,lan_close_button,lan_clear_button,lan_list_label,lan_showall_label,lan_edit_button,lan_default_for,lan_editor_name,lan_path,lan_args,lan_contenttypes,lan_defaultfor_label,lan_del_button,lan_save_button,lan_autostart_label,lan_settings_dialog_title,lan_alert_nodefeditor_text,lan_del_question,lan_clear_question,lan_encoding,lan_add_button',
+					'host' => getServerUrl(true),
+					'cmdentry' => getServerUrl(true) . WEBEDITION_DIR . 'editors/content/eplugin/weplugin_cmd.php',
+					'lan_main_dialog_title' => g_l('eplugin', '[lan_main_dialog_title]'),
+					'lan_settings_dialog_title' => g_l('eplugin', '[lan_settings_dialog_title]'),
+					'lan_alert_noeditor_title' => g_l('eplugin', '[lan_alert_noeditor_title]'),
+					'lan_alert_noeditor_text' => g_l('eplugin', '[lan_alert_noeditor_text]'),
+					'lan_select_text' => g_l('eplugin', '[lan_select_text]'),
+					'lan_select_button' => g_l('eplugin', '[lan_select_button]'),
+					'lan_start_button' => g_l('eplugin', '[lan_start_button]'),
+					'lan_close_button' => g_l('eplugin', '[lan_close_button]'),
+					'lan_clear_button' => g_l('eplugin', '[lan_clear_button]'),
+					'lan_list_label' => g_l('eplugin', '[lan_list_label]'),
+					'lan_showall_label' => g_l('eplugin', '[lan_showall_label]'),
+					'lan_edit_button' => g_l('eplugin', '[lan_edit_button]'),
+					'lan_default_for' => g_l('eplugin', '[lan_default_for]'),
+					'lan_editor_name' => g_l('eplugin', '[lan_editor_name]'),
+					'lan_path' => g_l('eplugin', '[lan_path]'),
+					'lan_args' => g_l('eplugin', '[lan_args]'),
+					'lan_contenttypes' => g_l('eplugin', '[lan_contenttypes]'),
+					'lan_defaultfor_label' => g_l('eplugin', '[lan_defaultfor_label]'),
+					'lan_del_button' => g_l('eplugin', '[lan_del_button]'),
+					'lan_save_button' => g_l('eplugin', '[lan_save_button]'),
+					'lan_editor_prop' => g_l('eplugin', '[lan_editor_prop]'),
+					'lan_autostart_label' => g_l('eplugin', '[lan_autostart_label]'),
+					'lan_alert_nodefeditor_text' => g_l('eplugin', '[lan_alert_nodefeditor_text]'),
+					'lan_del_question' => g_l('eplugin', '[lan_del_question]'),
+					'lan_clear_question' => g_l('eplugin', '[lan_clear_question]'),
+					'lan_encoding' => g_l('eplugin', '[lan_encoding]'),
+					'lan_add_button' => g_l('eplugin', '[lan_add_button]'),
+					'lan_add_button' => g_l('eplugin', '[lan_add_button]'),
+						)
+				) .
+				we_html_element::htmlForm(array('name' => 'we_form', 'target' => 'load', 'action' => WEBEDITION_DIR . 'editors/content/eplugin/weplugin_cmd.php', 'method' => 'post', 'accept-charset' => $charset), we_html_element::htmlHiddens(array(
+							'we_cmd[0]' => '',
+							'we_cmd[1]' => '',
+							'we_cmd[2]' => '',
+							'we_cmd[3]' => '',
+							'we_cmd[4]' => ''))
+				)
 		)
-	)
 );

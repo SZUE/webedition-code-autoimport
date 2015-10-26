@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_shop_shippingControl{
-
 	var $stateField = '';
 	var $isNet = true;
 	var $vatId = 0;
@@ -43,14 +42,16 @@ class we_shop_shippingControl{
 		$data = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="weShippingControl"');
 
 		if($data){
-			$shippingControl = unserialize(strtr($data, array('O:17:"weShippingControl"' => 'O:' . strlen(__CLASS__) . ':"' . __CLASS__ . '"', 'O:10:"weShipping"' => 'O:' . strlen('we_shop_shipping') . ':"we_shop_shipping"',
+			$shippingControl = we_unserialize(strtr($data, array(
+				'O:17:"weShippingControl"' => 'O:' . strlen(__CLASS__) . ':"' . __CLASS__ . '"',
+				'O:10:"weShipping"' => 'O:' . strlen('we_shop_shipping') . ':"we_shop_shipping"',
 				'O:17:"weshippingcontrol"' => 'O:' . strlen(__CLASS__) . ':"' . __CLASS__ . '"',
 				'O:10:"weshipping"' => 'O:' . strlen('we_shop_shipping') . ':"we_shop_shipping"'
 				)));
-		if(is_object($shippingControl)){
-			$shippingControl->vatRate = we_shop_vats::getVatRateForSite($shippingControl->vatId);
-			return $shippingControl;
-		}
+			if(is_object($shippingControl)){
+				$shippingControl->vatRate = we_shop_vats::getVatRateForSite($shippingControl->vatId);
+				return $shippingControl;
+			}
 		}
 		return new self('', 1, 1, array());
 	}
@@ -64,7 +65,7 @@ class we_shop_shippingControl{
 		if(isset($req['weShippingId'])){
 
 			$newShipping = new we_shop_shipping(
-					$req['weShippingId'], $req['weShipping_text'], we_shop_vatRule::makeArrayFromReq($req['weShipping_countries']), $req['weShipping_cartValue'], $req['weShipping_shipping'], ($req['weShipping_default'] == '1' ? 1 : 0)
+				$req['weShippingId'], $req['weShipping_text'], we_shop_vatRule::makeArrayFromReq($req['weShipping_countries']), $req['weShipping_cartValue'], $req['weShipping_shipping'], ($req['weShipping_default'] == '1' ? 1 : 0)
 			);
 			$this->shippings[$req['weShippingId']] = $newShipping;
 
@@ -82,9 +83,9 @@ class we_shop_shippingControl{
 		$DB_WE = $GLOBALS['DB_WE'];
 
 		return $DB_WE->query('REPLACE INTO ' . WE_SHOP_PREFS_TABLE . ' SET ' .
-						we_database_base::arraySetter(array(
-							'strDateiname' => 'weShippingControl',
-							'strFelder' => serialize($this)
+				we_database_base::arraySetter(array(
+					'strDateiname' => 'weShippingControl',
+					'strFelder' => we_serialize($this)
 		)));
 	}
 
@@ -111,9 +112,8 @@ class we_shop_shippingControl{
 	function getShippingCostByOrderValue($orderValue, $customer = false){
 		if($customer){
 			// foreach, search the shipping
-
 			if(isset($customer[$this->stateField])){
-				foreach($this->shippings as $key => $tmpShipping){
+				foreach($this->shippings as $tmpShipping){
 					if(in_array($customer[$this->stateField], $tmpShipping->countries)){
 						$shipping = $tmpShipping;
 						continue;
@@ -121,21 +121,22 @@ class we_shop_shippingControl{
 				}
 			}
 		}
-		if(!isset($shipping)){ // take default shipping
-			$shipping = $this->getDefaultShipping();
+		$shipping = (empty($shipping) ? // take default shipping
+				$this->getDefaultShipping() :
+				$shipping);
+
+		if(!$shipping){
+			return 0;
 		}
 
-		if($shipping){
-			$shippingId = 0;
-			for($i = 0; $i < count($shipping->cartValue); $i++){
-				if($shipping->cartValue[$i] > $orderValue){
-					continue;
-				}
-				$shippingId = $i;
+		$shippingId = 0;
+		foreach($shipping->cartValue as $i => $cur){
+			if($cur > $orderValue){
+				continue;
 			}
-			return $shipping->shipping[$shippingId];
+			$shippingId = $i;
 		}
-		return 0;
+		return $shipping->shipping[$shippingId];
 	}
 
 }

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -22,15 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-/*
- * due to parser limits this does not work now
-  function we_parse_tag_blockControls($attribs,$content){
-  eval('$arr = ' . str_replace('$','\$',$attribs) . ';');
-  if (($foo = attributFehltError($arr, 'name', __FUNCTION__)))	return $foo;
-  $name = weTag_getParserAttribute("name", $arr);
-  return '<?php if(we_tag(\'ifEditmode\')){echo we_tag_blockControls('.$name.'));}?>';
-  }
- */
+include_once('we_tag_blockControls.inc.php');
 
 function we_parse_tag_block($attribs, $content, array $arr){
 	$GLOBALS['blkCnt'] = (isset($GLOBALS['blkCnt']) ? $GLOBALS['blkCnt'] + 1 : 0);
@@ -47,25 +38,26 @@ function we_parse_tag_block($attribs, $content, array $arr){
 
 	$blockName = weTag_getParserAttribute('name', $arr);
 	$name = str_replace(array('$', '.', '/', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9), '', md5($blockName)) . $GLOBALS['blkCnt'];
-	$ctlPre = '<?php if($GLOBALS[\'we_editmode\']){echo we_tag_blockControls(';
-	$ctlPost = ');}?>';
 
-	//if(strpos($content,'blockControls')===false){
-	if(preg_match('/^< ?(tr|td)/i', trim($content))){
-		$content = str_replace(array('=>', '?>'), array('#####PHPCALSSARROW####', '#####PHPENDBRACKET####'), $content);
-		$content = preg_replace('|(< ?td[^>]*>)(.*< ?/ ?td[^>]*>)|si', '$1' . $ctlPre . '$block_' . $name . $ctlPost . '$2', $content, 1);
-		$content = str_replace(array('#####PHPCALSSARROW####', '#####PHPENDBRACKET####'), array('=>', '?>'), $content);
+
+	if(($content = str_replace('we_tag_blockControls("##blockControlsREPL##"', 'we_tag_blockControls($block_' . $name, $content, $count)) && $count){
+		//nothing to do, we have a userdefined blockcontrol
 	} else {
-		$content = $ctlPre . '$block_' . $name . $ctlPost . $content;
+		$content = (preg_match('/< ?(tr|td)/i', $content) ?
+				//table found
+				strtr(preg_replace('|(< ?td[^>]*>)|si', '$1' . '<?php we_tag_blockControls($block_' . $name . ');?>', strtr($content, array('=>' => '#####PHPCALSSARROW####', '?>' => '#####PHPENDBRACKET####')), 1), array('#####PHPCALSSARROW####' => '=>', '#####PHPENDBRACKET####' => '?>')) :
+				//no tables found
+				'<?php we_tag_blockControls($block_' . $name . ');?>' . $content
+			);
 	}
 //	}
 	//here postTagName is explicitly needed, because the control-element is not "inside" the block-tag (no block defined/first element) but controls its elements
-	return '<?php if(($block_' . $name . '=' . we_tag_tagParser::printTag('block', $attribs) . ')!==false){' . "\n\t" .
-			'while(we_condition_tag_block($block_' . $name . ')){ ?>' . $content . '<?php }}else{ ?>' .
-			$ctlPre . 'array(\'name\'=>we_tag_getPostName("' . $blockName . '"),\'pos\'=>0,\'listSize\'=>0,' .
-			'\'ctlShowSelect\'=>' . (weTag_getParserAttribute('showselect', $arr, true, true) ? 'true' : 'false') . ',' .
-			'\'ctlShow\'=>' . intval(weTag_getParserAttribute('limit', $arr, 10)) . ')' . $ctlPost .
-			'<?php } unset($block_' . $name . '); ?>';
+	return '<?php
+$block_' . $name . '=' . we_tag_tagParser::printTag('block', $attribs) . ';
+while(we_condition_tag_block($block_' . $name . ')){
+	?>' . $content . '<?php
+}
+unset($block_' . $name . '); ?>';
 }
 
 function we_condition_tag_block(&$block){
@@ -78,7 +70,7 @@ function we_condition_tag_block(&$block){
 		//end of list
 		//we need a last add button in editmode
 		if($GLOBALS['we_editmode']){
-			echo printElement(we_tag_blockControls($block));
+			we_tag_blockControls($block);
 		}
 		//reset data
 		unset($GLOBALS['we_position']['block'][$block['name']]);
@@ -97,7 +89,6 @@ function we_condition_tag_block(&$block){
 function we_tag_block($attribs){
 	$origName = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
 	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
-	$showselect = weTag_getAttribute('showselect', $attribs, true, we_base_request::BOOL);
 	$start = weTag_getAttribute('start', $attribs, 0, we_base_request::INT);
 	$limit = weTag_getAttribute('limit', $attribs, 0, we_base_request::INT);
 
@@ -110,17 +101,16 @@ function we_tag_block($attribs){
 		$list = $GLOBALS['we_doc']->getElement($name);
 	}
 
-	if($list && is_string($list) && $list{0} === 'a'){
-		$list = unserialize($list);
+	if(($list = we_unserialize($list, array(), true))){
 		if(is_array($list) && count($list) && ((count($list) - 1) != max(array_keys($list)))){
 			//reorder list!
 			$list = array_values($list);
-			$GLOBALS['we_doc']->setElement($name, serialize($list));
+			$GLOBALS['we_doc']->setElement($name, we_serialize($list));
 		}
 	} else if($start){
 		$list = array();
-		if($limit && $limit > 0 && $limit < $start){
-			$start = $limit;
+		if($limit > 0){
+			$start = min($start, $limit);
 		}
 		for($i = 1; $i <= $start; $i++){
 			$list[] = '_' . $i;
@@ -128,87 +118,22 @@ function we_tag_block($attribs){
 	}
 
 	$listlen = count($list);
-	if(!$list || $listlen == 0){
-		return false;
-	}
-
 	$show = 10;
-	if(!$GLOBALS['we_editmode']){
-		if($limit > 0 && $listlen > $limit){
-			$listlen = $limit;
+	if($limit > 0){
+		if($GLOBALS['we_editmode']){
+			$diff = $limit - $listlen;
+			$show = ($diff > 0 ? min($show, $diff) : 0);
+		} else {
+			$listlen = min($listlen, $limit);
 		}
-	} elseif($limit && $limit > 0){
-		$diff = $limit - $listlen;
-		$show = ($diff > 0 ? min($show, $diff) : 0);
 	}
-
 	return array(
 		'name' => $name,
 		'list' => $list,
 		'listSize' => $listlen,
 		'ctlShow' => $show,
-		'ctlShowSelect' => $showselect,
+		'ctlShowSelect' => weTag_getAttribute('showselect', $attribs, true, we_base_request::BOOL),
 		'pos' => -1,
 		'lastPostName' => isset($GLOBALS['postTagName']) ? $GLOBALS['postTagName'] : '',
 	);
-}
-
-function we_tag_blockControls($attribs){
-	//if in listview no Buttons are shown!
-	if(!$GLOBALS['we_editmode'] || isset($GLOBALS['lv'])){
-		return '';
-	}
-	if(!isset($attribs['ctlName'])){
-		$attribs['ctlName'] = md5(str_replace('.', '', uniqid('', true))); // #6590, changed from: uniqid(time())
-	}
-
-	if($attribs['pos'] < $attribs['listSize']){
-		$tabArray = array();
-		if($attribs['ctlShowSelect'] && $attribs['ctlShow'] > 0){
-			$jsSelector = $attribs['pos'] . ",document.we_form.elements['" . $attribs['ctlName'] . "_" . $attribs['pos'] . "'].options[document.we_form.elements['" . $attribs['ctlName'] . "_" . $attribs['pos'] . "'].selectedIndex].text";
-			$tabArray[] = we_html_button::create_button('image:btn_add_listelement', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_list','" . $attribs['name'] . "'," . $jsSelector . ")", true, 100, 22, '', '', !($attribs['ctlShow'] > 0));
-
-			$selectb = '<select name="' . $attribs['ctlName'] . '_' . $attribs['pos'] . '">';
-			for($j = 0; $j < $attribs['ctlShow']; $j++){
-				$selectb .= '<option value="' . ($j + 1) . '">' . ($j + 1) . '</option>';
-			}
-			$selectb .= '</select>';
-			$tabArray[] = $selectb;
-		} else {
-			$tabArray[] = we_html_button::create_button('image:btn_add_listelement', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_list','" . $attribs['name'] . "','" . $attribs['pos'] . "',1)", true, 100, 22, '', '', !($attribs['ctlShow'] > 0));
-			$jsSelector = 1;
-		}
-		$tabArray[] = (($attribs['pos'] > 0) ?
-						//enabled upBtn
-						we_html_button::create_button('image:btn_direction_up', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('up_entry_at_list','" . $attribs['name'] . "','" . $attribs['pos'] . "'," . $jsSelector . ")") :
-						//disabled upBtn
-						we_html_button::create_button('image:btn_direction_up', '', true, 0, 0, '', '', true));
-		$tabArray[] = (($attribs['pos'] == $attribs['listSize'] - 1) ?
-						//disabled downBtn
-						we_html_button::create_button('image:btn_direction_down', '', true, 0, 0, '', '', true) :
-						//enabled downBtn
-						we_html_button::create_button('image:btn_direction_down', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('down_entry_at_list','" . $attribs['name'] . "','" . $attribs['pos'] . "'," . $jsSelector . ")"));
-		$tabArray[] = we_html_button::create_button('image:btn_function_trash', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('delete_list','" . $attribs['name'] . "','" . $attribs['pos'] . "','" . $GLOBALS['postTagName'] . "',1)");
-
-		return we_html_button::create_button_table($tabArray, 5);
-	} else {
-
-		if($attribs['ctlShowSelect'] && $attribs['ctlShow'] > 0){
-			$selectb = '<select name="' . $attribs['ctlName'] . '_00">';
-			for($j = 1; $j <= $attribs['ctlShow']; $j++){
-				$selectb .= '<option value="' . $j . '">' . $j . '</option>';
-			}
-			$selectb .= '</select>';
-			$plusbut = we_html_button::create_button_table(
-							array(
-								we_html_button::create_button('image:btn_add_listelement', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('add_entry_to_list','" . $attribs['name'] . "',document.we_form.elements['" . $attribs['ctlName'] . "_00'].options[document.we_form.elements['" . $attribs['ctlName'] . "_00'].selectedIndex].text);", true, 100, 22, '', '', !($attribs['ctlShow'] > 0)),
-								$selectb));
-		} else {
-			$plusbut = we_html_button::create_button('image:btn_add_listelement', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('add_entry_to_list','" . $attribs['name'] . "',1)", true, 100, 22, '', '', !($attribs['ctlShow'] > 0));
-		}
-
-		return '<input type="hidden" name="we_' . $GLOBALS['we_doc']->Name . '_block[' . $attribs['name'] . ']" value="' .
-				htmlentities(serialize(isset($attribs['list']) ? $attribs['list'] : array())) . //FIXME: do we really need this serialized in the document???
-				'">' . $plusbut;
-	}
 }

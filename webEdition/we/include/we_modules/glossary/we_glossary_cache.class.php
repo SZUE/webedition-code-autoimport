@@ -123,8 +123,8 @@ class we_glossary_cache{
 			$Type = $DB_WE->f('Type');
 			$Text = trim($DB_WE->f('Text'));
 			$Title = trim($DB_WE->f('Title'));
-			$Attributes = substr($DB_WE->f('Attributes'), 0, 2) == 'a:' ? unserialize($DB_WE->f('Attributes')) : array();
-			$Attributes = array_map('trim', $Attributes);
+			$Attributes = we_unserialize($DB_WE->f('Attributes'));
+			$Attributes = !is_array($Attributes) ? array() : array_map('trim', $Attributes);
 
 
 			if($GLOBALS['WE_BACKENDCHARSET'] === 'UTF-8' && isset($GLOBALS['we_doc']->elements['Charset']['dat']) && $GLOBALS['we_doc']->elements['Charset']['dat'] != 'UTF-8'){
@@ -144,7 +144,7 @@ class we_glossary_cache{
 			}
 
 			// Language
-			if(isset($Attributes['lang']) && $Attributes['lang']){
+			if(!empty($Attributes['lang'])){
 				$temp['lang'] = $Attributes['lang'];
 				$temp['xml:lang'] = $temp['lang'];
 			}
@@ -160,12 +160,12 @@ class we_glossary_cache{
 						case "extern":
 
 							// Href
-							$temp['href'] = (isset($Attributes['ExternUrl']) && $Attributes['ExternUrl'] && $Attributes['ExternUrl'] != we_base_link::EMPTY_EXT ?
+							$temp['href'] = (!empty($Attributes['ExternUrl']) && $Attributes['ExternUrl'] != we_base_link::EMPTY_EXT ?
 									$Attributes['ExternUrl'] :
 									'');
 
 							// Parameter
-							if(isset($Attributes['ExternParameter']) && $Attributes['ExternParameter']){
+							if(!empty($Attributes['ExternParameter'])){
 								$urladd[] = $Attributes['ExternParameter'];
 							}
 							break;
@@ -173,28 +173,28 @@ class we_glossary_cache{
 						case "intern":
 
 							// LinkID
-							$temp['href'] = (isset($Attributes['InternLinkID']) && $Attributes['InternLinkID'] ?
+							$temp['href'] = (!empty($Attributes['InternLinkID']) ?
 									id_to_path($Attributes['InternLinkID']) :
 									'');
 
 							// Parameter
-							if(isset($Attributes['InternParameter']) && $Attributes['InternParameter']){
+							if(!empty($Attributes['InternParameter'])){
 								$urladd[] = $Attributes['InternParameter'];
 							}
 							break;
 						// Object Link
 						case "object":
 							// LinkID
-							$temp['href'] = (isset($Attributes['ObjectLinkPath']) && $Attributes['ObjectLinkPath'] ?
+							$temp['href'] = (!empty($Attributes['ObjectLinkPath']) ?
 									$Attributes['ObjectLinkPath'] :
 									'');
 
-							if(isset($Attributes['ObjectLinkID']) && $Attributes['ObjectLinkID']){
+							if(!empty($Attributes['ObjectLinkID'])){
 								$urladd[] = 'we_objectID=' . $Attributes['ObjectLinkID'];
 							}
 
 							// Parameter
-							if(isset($Attributes['ObjectParameter']) && $Attributes['ObjectParameter']){
+							if(!empty($Attributes['ObjectParameter'])){
 								$urladd[] = $Attributes['ObjectParameter'];
 							}
 							break;
@@ -204,23 +204,23 @@ class we_glossary_cache{
 							$temp['href'] = '';
 							if(isset($Attributes['modeCategory']) && $Attributes['modeCategory'] === 'intern'){
 								// LinkID
-								if(isset($Attributes['CategoryInternLinkID']) && $Attributes['CategoryInternLinkID']){
+								if(!empty($Attributes['CategoryInternLinkID'])){
 									$temp['href'] .= id_to_path($Attributes['CategoryInternLinkID']);
 								}
 							} else {
 								// Href
-								if(isset($Attributes['CategoryUrl']) && $Attributes['CategoryUrl']){
+								if(!empty($Attributes['CategoryUrl'])){
 									$temp['href'] .= $Attributes['CategoryUrl'];
 								}
 							}
 
 							// Cat Parameter & Cat ID
-							if(isset($Attributes['CategoryCatParameter']) && $Attributes['CategoryCatParameter'] && isset($Attributes['CategoryLinkID']) && $Attributes['CategoryLinkID']){
+							if(!empty($Attributes['CategoryCatParameter']) && !empty($Attributes['CategoryLinkID'])){
 								$urladd[] = $Attributes['CategoryCatParameter'] . '=' . $Attributes['CategoryLinkID'];
 							}
 
 							// Parameter
-							if(isset($Attributes['CategoryParameter']) && $Attributes['CategoryParameter']){
+							if(!empty($Attributes['CategoryParameter'])){
 								$urladd[] = $Attributes['CategoryParameter'];
 							}
 							break;
@@ -229,57 +229,57 @@ class we_glossary_cache{
 
 
 				// Attribute
-				if(isset($Attributes['attribute']) && $Attributes['attribute']){
+				if(!empty($Attributes['attribute'])){
 					$temp['attribute'] = ' ' . addslashes($Attributes['attribute'] . " ");
 				}
 
 				// Target
-				if(isset($Attributes['target']) && $Attributes['target']){
+				if(!empty($Attributes['target'])){
 					$temp['target'] = $Attributes['target'];
 				}
 
 				// hreflang
-				if(isset($Attributes['hreflang']) && $Attributes['hreflang']){
+				if(!empty($Attributes['hreflang'])){
 					$temp['hreflang'] = $Attributes['hreflang'];
 				}
 
 				// Accesskey
-				if(isset($Attributes['accesskey']) && $Attributes['accesskey']){
+				if(!empty($Attributes['accesskey'])){
 					$temp['accesskey'] = $Attributes['accesskey'];
 				}
 
 				// tabindex
-				if(isset($Attributes['tabindex']) && $Attributes['tabindex']){
+				if(!empty($Attributes['tabindex'])){
 					$temp['tabindex'] = $Attributes['tabindex'];
 				}
 
 				// rel
-				if(isset($Attributes['rel']) && $Attributes['rel']){
+				if(!empty($Attributes['rel'])){
 					$temp['rel'] = $Attributes['rel'];
 				}
 
 				// rev
-				if(isset($Attributes['rev']) && $Attributes['rev']){
+				if(!empty($Attributes['rev'])){
 					$temp['rev'] = $Attributes['rev'];
 				}
 
 				$temp['href'] .= ($urladd ? '?' . implode('&', $urladd) : '') .
 					// Anchor
-					(isset($Attributes['anchor']) && $Attributes['anchor'] ?
+					(!empty($Attributes['anchor']) ?
 						'#' . $Attributes['anchor'] :
 						'');
 
 				// popup_open
 				if(isset($Attributes['popup_open']) && $Attributes['popup_open'] == 1){
 					// popup_width
-					$width = (isset($Attributes['popup_width']) && $Attributes['popup_width'] ? $Attributes['popup_width'] : 100);
+					$width = (!empty($Attributes['popup_width']) ? $Attributes['popup_width'] : 100);
 
 					// popup_height
-					$height = (isset($Attributes['popup_height']) && $Attributes['popup_height'] ? $Attributes['popup_height'] : 100);
+					$height = (!empty($Attributes['popup_height']) ? $Attributes['popup_height'] : 100);
 
 					$temp['onclick'] = 'var we_winOpts=\'\';' .
 						// popup_center
-						(isset($Attributes['popup_center']) && $Attributes['popup_center'] ? '
+						(!empty($Attributes['popup_center']) ? '
 if (window.screen) {
 	var w=' . $width . ';
 	var h=' . $height . ';
@@ -293,11 +293,11 @@ if (window.screen) {
 	we_winOpts = \'left=\'+x+\',top=\'+y;
 }' :
 // popup_xposition
-							(isset($Attributes['popup_xposition']) && $Attributes['popup_xposition'] ?
+							(!empty($Attributes['popup_xposition']) ?
 								"we_winOpts += (we_winOpts ? ',' : '')+'left=" . $Attributes['popup_xposition'] . "';" :
 								'') .
 							// popup_yposition
-							(isset($Attributes['popup_yposition']) && $Attributes['popup_yposition'] ?
+							(!empty($Attributes['popup_yposition']) ?
 								"we_winOpts += (we_winOpts ? ',' : '')+'top=" . $Attributes['popup_yposition'] . "';" :
 								'')
 						) .
@@ -306,17 +306,17 @@ if (window.screen) {
 							// popup_height
 							"we_winOpts += (we_winOpts ? ',' : '')+'height=" . $height . "';" .
 							// popup_status
-							"we_winOpts += (we_winOpts ? ',' : '')+'status=" . (isset($Attributes['popup_status']) && $Attributes['popup_status'] == 1 ? 'yes' : 'no') . "';" .
+							"we_winOpts += (we_winOpts ? ',' : '')+'status=" . (!empty($Attributes['popup_status']) ? 'yes' : 'no') . "';" .
 							// popup_scrollbars
-							"we_winOpts += (we_winOpts ? ',' : '')+'scrollbars=" . (isset($Attributes['popup_scrollbars']) && $Attributes['popup_scrollbars'] == 1 ? 'yes' : 'no') . "';" .
+							"we_winOpts += (we_winOpts ? ',' : '')+'scrollbars=" . (!empty($Attributes['popup_scrollbars']) ? 'yes' : 'no') . "';" .
 							// popup_menubar
-							"we_winOpts += (we_winOpts ? ',' : '')+'menubar=" . (isset($Attributes['popup_menubar']) && $Attributes['popup_menubar'] == 1 ? 'yes' : 'no') . "';" .
+							"we_winOpts += (we_winOpts ? ',' : '')+'menubar=" . (!empty($Attributes['popup_menubar']) ? 'yes' : 'no') . "';" .
 							// popup_resizable
-							"we_winOpts += (we_winOpts ? ',' : '')+'resizable=" . (isset($Attributes['popup_resizable']) && $Attributes['popup_resizable'] == 1 ? 'yes' : 'no') . "';" .
+							"we_winOpts += (we_winOpts ? ',' : '')+'resizable=" . (!empty($Attributes['popup_resizable']) ? 'yes' : 'no') . "';" .
 							// popup_location
-							"we_winOpts += (we_winOpts ? ',' : '')+'location=" . (isset($Attributes['popup_location']) && $Attributes['popup_location'] == 1 ? 'yes' : 'no') . "';" .
+							"we_winOpts += (we_winOpts ? ',' : '')+'location=" . (!empty($Attributes['popup_location']) ? 'yes' : 'no') . "';" .
 							// popup_toolbar
-							"we_winOpts += (we_winOpts ? ',' : '')+'toolbar=" . (isset($Attributes['popup_toolbar']) && $Attributes['popup_toolbar'] == 1 ? 'yes' : 'no') . "';" .
+							"we_winOpts += (we_winOpts ? ',' : '')+'toolbar=" . (!empty($Attributes['popup_toolbar']) ? 'yes' : 'no') . "';" .
 							"var we_win = window.open('" . $temp['href'] . "','we_test',we_winOpts);", array('\'' => '@@@we@@@'));
 
 					$temp['href'] = '#';
@@ -392,7 +392,7 @@ if (window.screen) {
 			}
 		}
 
-		return we_base_file::save($cacheFilename, gzdeflate(serialize($content), 9));
+		return we_base_file::save($cacheFilename, we_serialize($content, 'json', false, 9));
 	}
 
 	/**
@@ -409,14 +409,8 @@ if (window.screen) {
 					return array();
 				}
 			}
-			if(we_base_file::load($cacheFilename, 'rb', 5) === '<?php'){
-				include($cacheFilename);
-				$this->content = $content;
-				//update old cache file!
-				we_base_file::save($cacheFilename, gzdeflate(serialize($content), 9));
-			} else {
-				$this->content = @unserialize(@gzinflate(we_base_file::load($cacheFilename)));
-			}
+			$data = we_base_file::load($cacheFilename);
+			$this->content = $data ? we_unserialize($data[0] === 'x' ? gzuncompress($data) : gzinflate($data)) : '';
 		}
 		return ($this->content ?
 				$this->content[$type] :

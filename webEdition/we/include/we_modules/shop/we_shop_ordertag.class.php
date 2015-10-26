@@ -55,8 +55,4 @@ class we_shop_ordertag{//FIXME: remove in 6.6
 		return ($this->id ? $this->object->f($key) : '');
 	}
 
-	public function getObject(){//FIXME: remove this
-		return $this->object;
-	}
-
 }

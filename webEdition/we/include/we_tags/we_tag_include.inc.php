@@ -69,10 +69,6 @@ function we_setBackVar($we_unique){
 }
 
 function we_resetBackVar($we_unique){
-	/* 	if(!is_object($GLOBALS['we']['backVars'][$we_unique]['we_doc'])){
-	  t_e($we_unique, $GLOBALS['we']['backVars']);
-	  return;
-	  } */
 	$GLOBALS['we_doc'] = clone($GLOBALS['we']['backVars'][$we_unique]['we_doc']);
 	foreach($GLOBALS['we']['backVars'][$we_unique]['GLOBAL'] as $key => $val){
 		$GLOBALS[$key] = $val;
@@ -190,7 +186,7 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 		$content = /* ($isSeemode ? file_get_contents($realPath) : */ 'include' . ($once ? '_once' : '') . '(\'' . $realPath . '\');'/* ) */;
 	}
 
-	if(isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars'])){
+	if(!empty($GLOBALS['we']['backVars'])){
 		end($GLOBALS['we']['backVars']);
 		$we_unique = key($GLOBALS['we']['backVars']) + 1;
 		$GLOBALS['we']['backVars'][$we_unique] = array();
@@ -203,6 +199,6 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 
 	return 'we_setBackVar(' . $we_unique . ');' .
 		$content .
-		($isSeemode && $seeMode && ($id || $path) ? 'echo \'' . we_SEEM::getSeemAnchors(($id ? : path_to_id($path)), 'include') . '\';' : '') .
+		($isSeemode && $seeMode && ($id || $path) ? 'echo \'' . we_SEEM::getSeemAnchors(($id ? : path_to_id($path, FILE_TABLE, $GLOBALS['DB_WE'])), 'include') . '\';' : '') .
 		'we_resetBackVar(' . $we_unique . ');';
 }

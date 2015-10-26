@@ -25,21 +25,17 @@
 class we_search_treeDataSource extends we_tool_treeDataSource{
 	var $treeItems = array();
 
-	function __construct($ds){
-		parent::__construct($ds);
-	}
-
-	function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,Icon,IsFolder', $addWhere = '', $addOrderBy = ''){
+	function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,IsFolder', $addWhere = '', $addOrderBy = ''){
 		$db = new DB_WE();
 		$table = $this->SourceName;
 		$openFolders = array();
 
 		if(isset($_SESSION['weS']['weSearch']["modelidForTree"])){
 			$id = $_SESSION['weS']['weSearch']["modelidForTree"];
-			$pid = f('SELECT ParentID FROM ' . $db->escape($table) . ' WHERE ID=' . intval($id), "", $db);
+			$pid = f('SELECT ParentID FROM ' . $db->escape($table) . ' WHERE ID=' . intval($id), '', $db);
 			$openFolders[] = $pid;
 			while($pid > 0){
-				$pid = f('SELECT ParentID FROM ' . $db->escape($table) . ' WHERE ID=' . intval($pid), "", $db);
+				$pid = f('SELECT ParentID FROM ' . $db->escape($table) . ' WHERE ID=' . intval($pid), '', $db);
 				$openFolders[] = $pid;
 			}
 		}
@@ -48,7 +44,6 @@ class we_search_treeDataSource extends we_tool_treeDataSource{
 		$prevoffset = max(0, $offset - $segment);
 		if($offset && $segment){
 			$this->treeItems[] = array(
-				'icon' => 'arrowup.gif',
 				'id' => 'prev_' . $ParentID,
 				'parentid' => $ParentID,
 				'text' => 'display (' . $prevoffset . '-' . $offset . ')',
@@ -63,9 +58,9 @@ class we_search_treeDataSource extends we_tool_treeDataSource{
 			);
 		}
 
-		$where = " WHERE $wsQuery ParentID=" . intval($ParentID) . " " . $addWhere;
+		$where = ' WHERE ' . $wsQuery . ' ParentID=' . intval($ParentID) . ' ' . $addWhere;
 
-		$db->query("SELECT $elem, LOWER(Text) AS lowtext, abs(Text) as Nr, (Text REGEXP '^[0-9]') as isNr FROM " . $db->escape($table) . " $where ORDER BY isNr DESC,Nr,lowtext,Text " . ($segment ? "LIMIT " . abs($offset) . "," . abs($segment) : ''));
+		$db->query('SELECT ' . $elem . ' FROM ' . $db->escape($table) . $where . ' ORDER BY (Text REGEXP "^[0-9]") DESC,abs(Text),Text' . ($segment ? ' LIMIT ' . abs($offset) . ',' . abs($segment) : ''));
 
 		while($db->next_record(MYSQL_ASSOC)){//FIXME: this is no good code
 			if(($db->f('ID') == 3 || $db->f('ID') == 7) && (!defined('OBJECT_FILES_TABLE') || !defined('OBJECT_TABLE') || !permissionhandler::hasPerm('CAN_SEE_OBJECTFILES'))){
@@ -79,7 +74,7 @@ class we_search_treeDataSource extends we_tool_treeDataSource{
 
 				$typ = array(
 					'typ' => ($db->f('IsFolder') ? 'group' : 'item'),
-					'icon' => $db->f('Icon'),
+					'contentType' => ($db->f('IsFolder') ? 'folder' : 'we/search'),
 					'open' => $OpenCloseStatus,
 					'disabled' => 0,
 					'tooltip' => $db->f('ID'),
@@ -107,7 +102,6 @@ class we_search_treeDataSource extends we_tool_treeDataSource{
 		$nextoffset = $offset + $segment;
 		if($segment && ($total > $nextoffset)){
 			$this->treeItems[] = array(
-				'icon' => 'arrowdown.gif',
 				'id' => 'next_' . $ParentID,
 				'parentid' => $ParentID,
 				'text' => 'display (' . $nextoffset . '-' . ($nextoffset + $segment) . ')',

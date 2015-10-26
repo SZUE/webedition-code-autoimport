@@ -53,7 +53,6 @@ switch(we_base_request::_(we_base_request::STRING,'do')){
 
 we_html_tools::protect();
 echo we_html_tools::getHtmlTop() .
- we_html_element::jsScript(JS_DIR . 'windows.js') .
  $we_doc->getSearchJS() .
  (isset($javascript) ? we_html_element::jsElement($javascript) : '');
 
@@ -67,6 +66,6 @@ $_parts = array(
 echo STYLESHEET .
  '</head>
 <body class="weEditorBody" onunload="doUnload()">' .
- we_html_multiIconBox::getHTML('', '100%', $_parts, 30, '', -1, '', '', false) .
+ we_html_multiIconBox::getHTML('', $_parts, 30, '', -1, '', '', false) .
  '</body>
 </html>';

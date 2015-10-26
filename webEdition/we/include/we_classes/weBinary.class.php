@@ -86,7 +86,7 @@ class weBinary{
 		if(!file_exists($path)){
 			$path = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $this->Path;
 		}
-		return filesize($path);
+		return file_exists($path) ? filesize($path) : 0;
 	}
 
 }

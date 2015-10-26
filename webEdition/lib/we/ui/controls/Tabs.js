@@ -33,7 +33,7 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-we_ui_controls_Tabs = new Object();
+we_ui_controls_Tabs = {};
 
 
 /**
@@ -164,19 +164,7 @@ we_ui_controls_Tabs.close = function(idOrObject, tab)
  */
 we_ui_controls_Tabs.allowed_change_edit_page = function()
 {
-	if (top.opener) {
-		if (top.opener.top.opener) {
-			if (top.opener.top.opener.top.weEditorFrameController) {
-				var contentEditor = top.opener.top.opener.top.weEditorFrameController.getVisibleEditorFrame();
-			}
-		}
-		else if (top.opener.top.weEditorFrameController) {
-			var contentEditor = top.opener.top.weEditorFrameController.getVisibleEditorFrame();
-		}
-	}
-	else if (top.weEditorFrameController) {
-		var contentEditor = top.weEditorFrameController.getVisibleEditorFrame()
-	}
+	var contentEditor = WE().layout.weEditorFrameController.getVisibleEditorFrame()
 	if (contentEditor && contentEditor.fields_are_valid) {
 		return contentEditor.fields_are_valid();
 	}

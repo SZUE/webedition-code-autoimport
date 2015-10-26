@@ -30,7 +30,7 @@ class rpcGetSearchResultCmd extends rpcCmd{
 
 		we_html_tools::protect();
 
-		$setView = we_base_request::_(we_base_request::INT, 'we_cmd', '', 'setView');
+		$setView = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'setView');
 
 		if(($trans = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0))){
 			$we_dt = isset($_SESSION['weS']['we_data'][$trans]) ? $_SESSION['weS']['we_data'][$trans] : '';

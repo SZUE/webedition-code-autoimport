@@ -34,12 +34,12 @@ class we_import_updater extends we_exim_XMLExIm{
 
 	public function updateObject(/* we_document */ &$object){ //FIXME: imported types are not of type we_document
 		if($this->debug){
-			t_e("Updating object", $object->ID, (isset($object->Path) ? $object->Path : ''), (isset($object->Table) ? $object->Table : ''));
+			t_e('Updating object', $object->ID, (isset($object->Path) ? $object->Path : ''), (isset($object->Table) ? $object->Table : ''));
 		}
 
 		$this->Patterns = new we_exim_searchPatterns();
 
-		if(isset($object->MasterTemplateID) && $object->MasterTemplateID){
+		if(!empty($object->MasterTemplateID)){
 			$ref = $this->RefTable->getRef(
 				array(
 					'OldID' => $object->MasterTemplateID,
@@ -71,18 +71,18 @@ class we_import_updater extends we_exim_XMLExIm{
 		}
 
 		if($this->debug){
-			t_e("Updating TemplateID property");
+			t_e('Updating TemplateID property');
 		}
-		if(isset($object->TemplateID) && $object->TemplateID){
+		if(!empty($object->TemplateID)){
 			$ref = $this->RefTable->getRef(
 				array(
-					"OldID" => $object->TemplateID,
-					"ContentType" => we_base_ContentTypes::TEMPLATE
+					'OldID' => $object->TemplateID,
+					'ContentType' => we_base_ContentTypes::TEMPLATE
 				)
 			);
 			if($ref){
 				$object->TemplateID = $ref->ID;
-			} else if(isset($object->TemplatePath) && $object->TemplatePath){
+			} else if(!empty($object->TemplatePath)){
 				$ref = $this->RefTable->getRef(
 					array(
 						"ID" => $object->ID,
@@ -91,8 +91,7 @@ class we_import_updater extends we_exim_XMLExIm{
 				);
 				if($ref && isset($ref->OldTemplatePath)){
 					$tpath = we_base_file::clearPath(preg_replace('|^.+' . ltrim(TEMPLATES_DIR, '/') . '|i', '', $ref->OldTemplatePath));
-					$id = path_to_id($tpath, TEMPLATES_TABLE);
-					if($id){
+					if(($id = path_to_id($tpath, TEMPLATES_TABLE, $GLOBALS['DB_WE']))){
 						$object->TemplateID = $id;
 					}
 				}
@@ -111,13 +110,13 @@ class we_import_updater extends we_exim_XMLExIm{
 			);
 			if($ref){
 				$object->DocType = $ref->ID;
-			} else if(isset($object->OldDocTypeName) && $object->OldDocTypeName){
+			} else if(!empty($object->OldDocTypeName)){
 				$object->DocType = intval(f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' dt WHERE dt.DocType="' . $GLOBALS['DB_WE']->escape($object->OldDocTypeName) . '"'));
 			}
 		}
 
 		if($this->debug){
-			t_e("Updating Category property");
+			t_e('Updating Category property');
 		}
 		if(isset($object->Category) && $object->ClassName != "we_category"){
 			$cats = makeArrayFromCSV($object->Category);
@@ -134,7 +133,7 @@ class we_import_updater extends we_exim_XMLExIm{
 				}
 			}
 			if($newcats){
-				$object->Category = makeCSVFromArray($newcats);
+				$object->Category = implode(',', $newcats);
 			}
 		}
 
@@ -227,7 +226,7 @@ class we_import_updater extends we_exim_XMLExIm{
 								$objid = $objref->ID;
 								$objpath = $objref->Path;
 							} else {
-								$objid = path_to_id($objpath, OBJECT_FILES_TABLE);
+								$objid = path_to_id($objpath, OBJECT_FILES_TABLE, $GLOBALS['DB_WE']);
 							}
 							if($objid){
 								$del_elements[] = $regs[1];
@@ -320,16 +319,18 @@ class we_import_updater extends we_exim_XMLExIm{
 					debug2($ev);
 				}
 				if(isset($ev["dat"])){
-					$dat = @unserialize($ev["dat"]);
+					$dat = we_unserialize($ev['dat'], '');
 					if(is_array($dat)){
 						$this->updateArray($dat);
-						$object->elements[$ek]["dat"] = serialize($dat);
-					} else {
-						if(isset($object->ContentType) && ($object->ContentType == we_base_ContentTypes::WEDOCUMENT || $object->ContentType == we_base_ContentTypes::HTML)){
-							$source = $ev["dat"];
-							$this->updateSource($this->Patterns->wysiwyg_patterns['doc'], $source);
-							$this->updateSource($this->Patterns->wysiwyg_patterns['obj'], $source);
-							$object->elements[$ek]["dat"] = $source;
+						$object->elements[$ek]['dat'] = we_serialize($dat);
+					} elseif(isset($object->ContentType)){
+						switch($object->ContentType){
+							case we_base_ContentTypes::WEDOCUMENT:
+							case we_base_ContentTypes::HTML:
+								$source = $ev["dat"];
+								$this->updateSource($this->Patterns->wysiwyg_patterns['doc'], $source);
+								$this->updateSource($this->Patterns->wysiwyg_patterns['obj'], $source);
+								$object->elements[$ek]["dat"] = $source;
 						}
 					}
 				}
@@ -397,7 +398,7 @@ class we_import_updater extends we_exim_XMLExIm{
 			unset($object->SerializedArray[$d]);
 		}
 		$object->SerializedArray = array_merge($object->SerializedArray, $new);
-		$object->DefaultValues = serialize($object->SerializedArray);
+		$object->DefaultValues = we_serialize($object->SerializedArray);
 	}
 
 	private function updateDocType(we_docTypes &$object){
@@ -405,8 +406,8 @@ class we_import_updater extends we_exim_XMLExIm{
 			t_e("Updating doctype object...\n");
 		}
 		// quick fix for fsw
-		if(isset($object->ParentPath) && $object->ParentPath){
-			$_new_id = path_to_id($object->ParentPath);
+		if(!empty($object->ParentPath)){
+			$_new_id = path_to_id($object->ParentPath, FILE_TABLE, $GLOBALS['DB_WE']);
 			if($_new_id){
 				$object->ParentID = $_new_id;
 			} else {
@@ -430,7 +431,7 @@ class we_import_updater extends we_exim_XMLExIm{
 					$_new_tids[] = $_ref->ID;
 				}
 			}
-			$object->Templates = makeCSVFromArray($_new_tids);
+			$object->Templates = implode(',', $_new_tids);
 		}
 	}
 
@@ -446,12 +447,12 @@ class we_import_updater extends we_exim_XMLExIm{
 				switch(isset($object->Selection) ? $object->Selection : ''){
 					case we_navigation_navigation::SELECTION_DYNAMIC:
 						switch($object->SelectionType){
-							case we_navigation_navigation::STPYE_DOCTYPE:
+							case we_navigation_navigation::STYPE_DOCTYPE:
 								$this->updateField($object, 'DocTypeID', DOC_TYPES_TABLE);
 								$this->updateField($object, 'FolderID', FILE_TABLE);
 								break;
 
-							case we_navigation_navigation::STPYE_CLASS:
+							case we_navigation_navigation::STYPE_CLASS:
 								if(defined('OBJECT_TABLE')){
 									$this->updateField($object, 'ClassID', OBJECT_TABLE);
 									$this->updateField($object, 'FolderID', OBJECT_FILES_TABLE);
@@ -459,7 +460,7 @@ class we_import_updater extends we_exim_XMLExIm{
 								}
 								break;
 
-							case we_navigation_navigation::STPYE_CATEGORY:
+							case we_navigation_navigation::STYPE_CATEGORY:
 								$this->updateField($object, 'FolderID', CATEGORY_TABLE);
 								if($object->LinkSelection === we_navigation_navigation::LSELECTION_INTERN){
 									$this->updateField($object, 'UrlID', FILE_TABLE);
@@ -470,13 +471,13 @@ class we_import_updater extends we_exim_XMLExIm{
 
 					case we_navigation_navigation::SELECTION_STATIC:
 						switch($object->SelectionType){
-							case we_navigation_navigation::STPYE_DOCLINK:
+							case we_navigation_navigation::STYPE_DOCLINK:
 								$this->updateField($object, 'LinkID', FILE_TABLE);
 								break;
-							case we_navigation_navigation::STPYE_OBJLINK:
+							case we_navigation_navigation::STYPE_OBJLINK:
 								$this->updateField($object, 'LinkID', OBJECT_FILES_TABLE);
 								break;
-							case we_navigation_navigation::STPYE_CATLINK:
+							case we_navigation_navigation::STYPE_CATLINK:
 								$this->updateField($object, 'LinkID', CATEGORY_TABLE);
 								if($object->LinkSelection === we_navigation_navigation::LSELECTION_INTERN){
 									$this->updateField($object, 'UrlID', FILE_TABLE);
@@ -591,7 +592,7 @@ class we_import_updater extends we_exim_XMLExIm{
 						continue;
 					}
 					if($include == 0 && $table == NAVIGATION_TABLE){
-						$_new_id = path_to_id($this->options['navigation_path'], NAVIGATION_TABLE);
+						$_new_id = path_to_id($this->options['navigation_path'], NAVIGATION_TABLE, $GLOBALS['DB_WE']);
 						$source = str_replace($match[1][$k] . $match[2][$k] . $match[3][$k], $match[1][$k] . $_new_id . $match[3][$k], $source);
 					} else {
 						$ref = $this->RefTable->getRef(

@@ -59,19 +59,19 @@ class rpcChangeDocTypeCmd extends rpcCmd{
 					$_noDocTypeLayerDisplay = 'block';
 				}
 				$_templateName = '';
-				if(isset($values['TemplateID']) && $values['TemplateID'] > 0){
+				if(!empty($values['TemplateID'])){
 					$_templateName = f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($values['TemplateID']));
 				}
 				$resp->setData('elements', array(
-					"self.document.forms['we_form'].elements['v[store_to_id]']" => array("value" => $values["ParentID"] | 0),
-					"self.document.forms['we_form'].elements['v[store_to_path]']" => array("value" => $values["Path"] | "/"),
-					"self.document.forms['we_form'].elements['v[we_TemplateID]']" => array("value" => $values["TemplateID"] | 0),
-					"self.document.forms['we_form'].elements['v[we_TemplateName]']" => array("value" => $_templateName | ""),
-					"self.document.forms['we_form'].elements['v[we_Extension]']" => array("value" => $values["Extension"] | ""),
-					"self.document.forms['we_form'].elements['v[is_dynamic]']" => array("value" => $values["IsDynamic"] | 0),
-					"self.document.forms['we_form'].elements['chbxIsDynamic']" => array("checked" => $values["IsDynamic"] | 0),
-					"self.document.forms['we_form'].elements['v[docCategories]']" => array("value" => $values["Category"] | ""),
-					"self.document.forms['we_form'].elements['noDocTypeTemplateId']" => array("value" => 0),
+					"self.document.we_form.elements['v[store_to_id]']" => array("value" => $values["ParentID"] | 0),
+					"self.document.we_form.elements['v[store_to_path]']" => array("value" => $values["ParentPath"] | "/"),
+					"self.document.we_form.elements['v[we_TemplateID]']" => array("value" => $values["TemplateID"] | 0),
+					"self.document.we_form.elements['v[we_TemplateName]']" => array("value" => $_templateName | ""),
+					"self.document.we_form.elements['v[we_Extension]']" => array("value" => $values["Extension"] | ""),
+					"self.document.we_form.elements['v[is_dynamic]']" => array("value" => $values["IsDynamic"] | 0),
+					"self.document.we_form.elements['chbxIsDynamic']" => array("checked" => $values["IsDynamic"] | 0),
+					"self.document.we_form.elements['v[docCategories]']" => array("value" => $values["Category"] | ""),
+					"self.document.we_form.elements.noDocTypeTemplateId" => array("value" => 0),
 					"document.getElementById('docTypeLayer')" => array("innerHTML" => addslashes($templateElement), "style.display" => $_docTypeLayerDisplay),
 					"document.getElementById('noDocTypeLayer')" => array("style.display" => $_noDocTypeLayerDisplay),
 					"document.getElementById('docCatTable')" => array("innerHTML" => addslashes($categories)
@@ -80,15 +80,15 @@ class rpcChangeDocTypeCmd extends rpcCmd{
 				);
 			} else {
 				$resp->setData("elements", array(
-					"self.document.forms['we_form'].elements['v[store_to_id]']" => array("value" => 0),
-					"self.document.forms['we_form'].elements['v[store_to_path]']" => array("value" => "/"),
-					"self.document.forms['we_form'].elements['v[we_TemplateID]']" => array("value" => 0),
-					"self.document.forms['we_form'].elements['v[we_TemplateName]']" => array("value" => "/"),
-					"self.document.forms['we_form'].elements['v[we_Extension]']" => array("value" => ""),
-					"self.document.forms['we_form'].elements['v[is_dynamic]']" => array("value" => 0),
-					"self.document.forms['we_form'].elements['chbxIsDynamic']" => array("checked" => 0),
-					"self.document.forms['we_form'].elements['v[docCategories]']" => array("value" => ""),
-					"self.document.forms['we_form'].elements['noDocTypeTemplateId']" => array("value" => 0),
+					"self.document.we_form.elements['v[store_to_id]']" => array("value" => 0),
+					"self.document.we_form.elements['v[store_to_path]']" => array("value" => "/"),
+					"self.document.we_form.elements['v[we_TemplateID]']" => array("value" => 0),
+					"self.document.we_form.elements['v[we_TemplateName]']" => array("value" => "/"),
+					"self.document.we_form.elements['v[we_Extension]']" => array("value" => ""),
+					"self.document.we_form.elements['v[is_dynamic]']" => array("value" => 0),
+					"self.document.we_form.elements['chbxIsDynamic']" => array("checked" => 0),
+					"self.document.we_form.elements['v[docCategories]']" => array("value" => ""),
+					"self.document.we_form.elements.noDocTypeTemplateId" => array("value" => 0),
 					"document.getElementById('docTypeLayer')" => array("innerHTML" => "", "style.display" => "none"),
 					"document.getElementById('noDocTypeLayer')" => array("style.display" => "block"),
 					"document.getElementById('docCatTable')" => array("innerHTML" => $categories
@@ -101,7 +101,7 @@ class rpcChangeDocTypeCmd extends rpcCmd{
 	}
 
 	private function getCategories($obj, $categories, $catField = ''){
-		$cats = new we_chooser_multiDirExtended(410, $categories, 'delete_' . $obj . 'Cat', '', '', 'Icon,Path', CATEGORY_TABLE);
+		$cats = new we_chooser_multiDirExtended(410, $categories, 'delete_' . $obj . 'Cat', '', '', '"we/category"', CATEGORY_TABLE);
 		$cats->setRowPrefix($obj);
 		$cats->setCatField($catField);
 		return $cats->getTableRows();

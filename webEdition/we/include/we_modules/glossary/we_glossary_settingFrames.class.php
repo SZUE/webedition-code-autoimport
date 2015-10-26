@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_glossary_settingFrames{
-
 	private $Frameset;
 	var $Controller;
 	var $db;
@@ -46,24 +45,15 @@ class we_glossary_settingFrames{
 
 	function getHTMLFrameset(){
 		return
-			we_html_tools::getHtmlTop() .
-			STYLESHEET .
-			we_html_element::jsScript(JS_DIR . 'formFunctions.js') .
-			'</head>' .
-			we_html_element::htmlBody(array('class' => 'weDialogBody', 'style' => 'background-image: url(' . IMAGE_DIR . 'backgrounds/aquaBackground.gif);background-repeat:repeat;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;')
-				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-					, we_html_element::htmlExIFrame('content', $this->getHTMLContent(), 'position:absolute;top:0px;bottom:1px;left:0px;right:0px;overflow: hidden;') .
-					we_html_element::htmlIFrame('cmdFrame',  'about:blank', 'position:absolute;height:1px;bottom:0px;left:0px;right:0px;overflow: hidden;')
-			)) . '</html>';
+			we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
+				we_html_element::jsScript(JS_DIR . 'formFunctions.js'), we_html_element::htmlBody(array('class' => 'weDialogBody')
+					, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+						, we_html_element::htmlExIFrame('content', $this->getHTMLContent(), 'position:absolute;top:0px;bottom:1px;left:0px;right:0px;overflow: hidden;', '', '', false) .
+						we_html_element::htmlIFrame('cmdFrame', 'about:blank', 'position:absolute;height:1px;bottom:0px;left:0px;right:0px;overflow: hidden;')
+		)));
 	}
 
 	function getHTMLContent(){
-		$configFile = WE_GLOSSARY_MODULE_PATH . we_glossary_replace::configFile;
-		if(!file_exists($configFile) || !is_file($configFile)){
-			we_glossary_settingControl::saveSettings(true);
-		}
-		include($configFile);
-
 		// Automatic Replacement
 		$content = we_html_forms::checkboxWithHidden(we_glossary_replace::useAutomatic(), 'GlossaryAutomaticReplacement', g_l('modules_glossary', '[enable_replacement]'));
 
@@ -78,8 +68,8 @@ class we_glossary_settingFrames{
 		return
 			'<form name="we_form" target="cmdFrame" action="' . $this->Frameset . '">
 	' . we_html_tools::hidden('cmd', 'save_glossary_setting') . '
-	' . we_html_multiIconBox::getHTML('GlossaryPreferences', "100%", $parts, 30, we_html_button::position_yes_no_cancel(
-					we_html_button::create_button('save', 'javascript:document.we_form.submit();'), null, we_html_button::create_button('close', 'javascript:top.window.close();')), -1, '', '', false, g_l('modules_glossary', '[menu_settings]')) . '
+	' . we_html_multiIconBox::getHTML('GlossaryPreferences', $parts, 30, we_html_button::position_yes_no_cancel(
+					we_html_button::create_button(we_html_button::SAVE, 'javascript:document.we_form.submit();'), null, we_html_button::create_button(we_html_button::CLOSE, 'javascript:top.window.close();')), -1, '', '', false, g_l('modules_glossary', '[menu_settings]')) . '
 	</form>';
 	}
 

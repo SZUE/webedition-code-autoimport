@@ -24,131 +24,91 @@
  */
 class we_export_treeMain extends weTree{
 
-	function __construct($frameset = "", $topFrame = "", $treeFrame = "", $cmdFrame = ""){
-
-		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
-	}
-
-	function getJSOpenClose(){
-		return '
-  			function openClose(id){
-				var sort="";
-				if(id=="") return;
-				var eintragsIndex = indexOfEntry(id);
-				var openstatus;
-
-
-				if(treeData[eintragsIndex].open==0) openstatus=1;
-				else openstatus=0;
-
-				treeData[eintragsIndex].open=openstatus;
-
-				if(openstatus && treeData[eintragsIndex].loaded!=1){
-					if(sort!=""){
-						' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&cmd=mainload&pid="+id+"&sort="+sort;
-					}else{
-						' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&cmd=mainload&pid="+id;
-					}
-				}else{
-					drawTree();
-				}
-				if(openstatus==1) treeData[eintragsIndex].loaded=1;
- 			}
- 			';
-	}
-
-	function getJSUpdateItem(){
-		return '
- 				function updateEntry(id,text,pid){
-        			var ai = 1;
-        			while (ai <= treeData.len) {
-            			if (treeData[ai].id==id) {
-                 			treeData[ai].text=text;
-                 			treeData[ai].parentid=pid;
-             			}
-            	 		ai++;
-        			}
-					drawTree();
- 				}
-			';
-	}
-
-	function getJSTreeFunctions(){
-		$out = weTree::getJSTreeFunctions();
-
-		$out.='
-				function doClick(id,typ){
-					var cmd = "";
-					if(top.content.hot == "1") {
-						if(confirm("' . g_l('export', '[save_changed_export]') . '")) {
-							cmd = "save_export";
-							top.content.we_cmd("save_export");
-						} else {
-							top.content.usetHot();
-							cmd = "export_edit";
-							var node=' . $this->topFrame . '.get(id);
-							' . $this->topFrame . '.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
-						}
-					} else {
-						cmd = "export_edit";
-						var node=' . $this->topFrame . '.get(id);
-						' . $this->topFrame . '.editor.edbody.location="' . $this->frameset . '?pnt=edbody&cmd="+cmd+"&cmdid="+node.id+"&tabnr="+' . $this->topFrame . '.activ_tab;
-					}
-				}
-				' . $this->topFrame . '.loaded=1;
-			';
-		return $out;
+	function customJSFile(){
+		return parent::customJSFile() . we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_treeMain.js');
 	}
 
 	function getJSStartTree(){
-
-		return 'function startTree(){
-				' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&cmd=mainload&pid=0";
-				drawTree();
+		return '
+function startTree(){
+	frames={
+	top:' . $this->topFrame . ',
+	cmd:' . $this->cmdFrame . '
+};
+treeData.frames=frames;
+	frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=cmd&cmd=mainload&pid=0";
+	drawTree();
 			}';
 	}
 
-	function getJSIncludeFunctions(){
+	public static function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,IsFolder', $addWhere = '', $addOrderBy = ''){
+		$db = new DB_WE();
+		$table = EXPORT_TABLE;
 
-		$out = weTree::getJSIncludeFunctions();
-		$out.="\n" . $this->getJSStartTree() . "\n";
+		$items = array();
 
-		return $out;
-	}
+		$prevoffset = max(0, $offset - $segment);
+		if($offset && $segment){
+			$items[] = array(
+				'id' => 'prev_' . $ParentID,
+				'parentid' => $ParentID,
+				'text' => 'display (' . $prevoffset . '-' . $offset . ')',
+				'contenttype' => 'arrowup',
+				'table' => EXPORT_TABLE,
+				'typ' => 'threedots',
+				'open' => 0,
+				'published' => 0,
+				'disabled' => 0,
+				'tooltip' => '',
+				'offset' => $prevoffset
+			);
+		}
 
-	function getJSMakeNewEntry(){
-		return '
-			function makeNewEntry(icon,id,pid,txt,open,ct,tab){
-					if(treeData[indexOfEntry(pid)]){
-						if(treeData[indexOfEntry(pid)].loaded){
+		$where = ' WHERE ParentID=' . intval($ParentID) . ' ' . $addWhere;
 
-	 						if(ct=="folder") ct="group";
-	 						else ct="item";
+		$db->query('SELECT ' . $elem . ' FROM ' . $table . $where . ' ORDER BY IsFolder DESC,(text REGEXP "^[0-9]") DESC,abs(text),Text' . ($segment ? " LIMIT $offset,$segment" : '' ));
 
-							var attribs=new Array();
+		while($db->next_record()){
+			$typ = array(
+				'typ' => ($db->f('IsFolder') == 1 ? 'group' : 'item'),
+				'open' => 0,
+				'contentType'=>($db->f('IsFolder') == 1 ? 'folder' : 'we/export'),
+				'disabled' => 0,
+				'tooltip' => $db->f('ID'),
+				'offset' => $offset,
+			);
+			$tt = '';
 
-							attribs["id"]=id;
-							attribs["icon"]=icon;
-							attribs["text"]=txt;
-							attribs["parentid"]=pid;
-							attribs["open"]=open;
+			$fileds = array();
 
-	 						attribs["tooltip"]=id;
-	 						attribs["typ"]=ct;
-
-
-							attribs["disabled"]=0;
-							if(attribs["typ"]=="item") attribs["published"]=0;
-
-							attribs["selected"]=0;
-
-							treeData.addSort(new node(attribs));
-
-							drawTree();
-						}
-					}
+			foreach($db->Record as $k => $v){
+				if(!is_numeric($k)){
+					$fileds[strtolower($k)] = $v;
+				}
 			}
-			';
+
+			$fileds['text'] = trim($tt) ? $tt : $db->f('Text');
+			$items[] = array_merge($fileds, $typ);
+		}
+
+		$total = f('SELECT COUNT(1) FROM ' . $table . ' ' . $where, '', $db);
+		$nextoffset = $offset + $segment;
+		if($segment && ($total > $nextoffset)){
+			$items[] = array(
+				'id' => 'next_' . $ParentID,
+				'parentid' => 0,
+				'text' => 'display (' . $nextoffset . '-' . ($nextoffset + $segment) . ')',
+				'contenttype' => 'arrowdown',
+				'table' => EXPORT_TABLE,
+				'typ' => 'threedots',
+				'open' => 0,
+				'disabled' => 0,
+				'tooltip' => '',
+				'offset' => $nextoffset
+			);
+		}
+
+		return $items;
 	}
 
 }

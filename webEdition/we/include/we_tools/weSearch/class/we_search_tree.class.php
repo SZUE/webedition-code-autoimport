@@ -22,38 +22,30 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_search_tree extends we_tool_tree{
-
-	function we_search_tree($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
-
-		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
-		$this->setTreeIconDir(WE_INCLUDES_DIR . 'we_tools/weSearch/layout/icons/');
-	}
-
-	function getJSTreeFunctions(){
-
-		$out = weTree::getJSTreeFunctions();
-
-		$out .= '
-				function doClick(id,typ){
-					var node=' . $this->topFrame . '.get(id);
-
-					' . $this->topFrame . '.resize.right.editor.edbody.we_cmd("tool_weSearch_edit",node.id);
-
-				}
-				' . $this->topFrame . '.loaded=1;
-			';
-		return $out;
-	}
+class we_search_tree extends weTree{
 
 	function getJSTreeCode(){
+		return parent::getJSTreeCode() .
+			we_html_element::jsElement('drawTree.selection_table="' . SUCHE_TABLE . '";');
+	}
 
-		return parent::getJSTreeCode() . we_html_element::jsElement(
-				'
- 					drawTree.selection_table="' . SUCHE_TABLE . '";
- 				');
+	function getJSStartTree(){
+		return '
+function startTree(){
+frames={
+	"top":' . $this->topFrame . ',
+	"cmd":' . $this->cmdFrame . '
+};
+treeData.frames=frames;
+	pid = arguments[0] ? arguments[0] : 0;
+	offset = arguments[1] ? arguments[1] : 0;
+	frames.cmd.location=treeData.frameset+"?pnt=cmd&pid="+pid+"&offset="+offset;
+	drawTree();
+}';
+	}
+
+	function customJSFile(){
+		return we_html_element::jsScript(JS_DIR . 'search_tree.js');
 	}
 
 }
-
-?>

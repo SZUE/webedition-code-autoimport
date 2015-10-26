@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  *
  */
 class we_banner_banner extends we_banner_base{
-
 	const PAGE_PROPERTY = 0;
 	const PAGE_PLACEMENT = 1;
 	const PAGE_STATISTICS = 2;
@@ -46,7 +44,6 @@ class we_banner_banner extends we_banner_base{
 	var $clickPrice = 0;
 	var $showPrice = 0;
 	var $IsFolder = 0;
-	var $Icon = "banner.gif";
 	var $Path = "";
 	var $IntHref = 0;
 	var $FileIDs;
@@ -63,6 +60,7 @@ class we_banner_banner extends we_banner_base{
 	var $Customers = '';
 	var $TagName = '';
 	var $weight = 4;
+	protected $MediaLinks = array();
 
 	/**
 	 * steps for WorkFlow Definition
@@ -84,44 +82,39 @@ class we_banner_banner extends we_banner_base{
 		$this->table = BANNER_TABLE;
 
 		$this->persistents = array(
-			"ID" => we_base_request::INT,
-			"Text" => we_base_request::STRING,
-			"ParentID" => we_base_request::INT,
-			"bannerID" => we_base_request::INT,
-			"bannerUrl" => we_base_request::URL,
-			"bannerIntID" => we_base_request::INT,
-			"maxShow" => we_base_request::INT,
-			"maxClicks" => we_base_request::INT,
-			"IsDefault" => we_base_request::RAW,
-			"clickPrice" => we_base_request::RAW,
-			"showPrice" => we_base_request::RAW,
-			"IsFolder" => we_base_request::BOOL,
-			"Icon" => we_base_request::RAW,
-			"Path" => we_base_request::STRINGC,
-			"IntHref" => we_base_request::RAW,
-			"FileIDs" => we_base_request::INTLIST,
-			"FolderIDs" => we_base_request::INTLIST,
-			"CategoryIDs" => we_base_request::INTLIST,
-			"DoctypeIDs" => we_base_request::INTLIST,
-			"StartDate" => we_base_request::INT,
-			"EndDate" => we_base_request::INT,
-			"StartOk" => we_base_request::BOOL,
-			"EndOk" => we_base_request::BOOL,
-			"IsActive" => we_base_request::BOOL,
-			"clicks" => we_base_request::INT,
-			"views" => we_base_request::INT,
-			"Customers" => we_base_request::RAW,
-			"TagName" => we_base_request::RAW,
-			"weight" => we_base_request::INT,
+			'ID' => we_base_request::INT,
+			'Text' => we_base_request::STRING,
+			'ParentID' => we_base_request::INT,
+			'bannerID' => we_base_request::INT,
+			'bannerUrl' => we_base_request::URL,
+			'bannerIntID' => we_base_request::INT,
+			'maxShow' => we_base_request::INT,
+			'maxClicks' => we_base_request::INT,
+			'IsDefault' => we_base_request::BOOL,
+			'clickPrice' => we_base_request::FLOAT,
+			'showPrice' => we_base_request::FLOAT,
+			'IsFolder' => we_base_request::BOOL,
+			'Path' => we_base_request::STRING,
+			'IntHref' => we_base_request::URL,
+			'FileIDs' => we_base_request::INTLIST,
+			'FolderIDs' => we_base_request::INTLIST,
+			'CategoryIDs' => we_base_request::INTLIST,
+			'DoctypeIDs' => we_base_request::INTLIST,
+			'StartDate' => we_base_request::INT,
+			'EndDate' => we_base_request::INT,
+			'StartOk' => we_base_request::BOOL,
+			'EndOk' => we_base_request::BOOL,
+			'IsActive' => we_base_request::BOOL,
+			'clicks' => we_base_request::INT,
+			'views' => we_base_request::INT,
+			'Customers' => we_base_request::INTLIST,
+			'TagName' => we_base_request::RAW,
+			'weight' => we_base_request::INT,
 		);
 
 		$this->IsFolder = $IsFolder;
 		$this->Text = g_l('modules_banner', ($this->IsFolder ? '[newbannergroup]' : '[newbanner]'));
 		$this->Path = '/' . g_l('modules_banner', ($this->IsFolder ? '[newbannergroup]' : '[newbanner]'));
-
-		if($this->IsFolder){
-			$this->Icon = "banner_folder.gif";
-		}
 
 		if($bannerID){
 			$this->ID = $bannerID;
@@ -150,7 +143,7 @@ class we_banner_banner extends we_banner_base{
 	 */
 	function getAllBanners(){
 		//FIXME: check for e.g. group by, having, ..
-		$this->db->query('SELECT ID,abs(text) AS Nr, (text REGEXP "^[0-9]") AS isNr FROM ' . $this->table . ' ORDER BY isNr DESC,Nr,Text');
+		$this->db->query('SELECT ID FROM ' . $this->table . ' ORDER BY (text REGEXP "^[0-9]") DESC,abs(text),Text');
 
 		$out = array();
 		while($this->db->next_record()){
@@ -164,8 +157,56 @@ class we_banner_banner extends we_banner_base{
 	 */
 	public function save(){
 		$ppath = id_to_path($this->ParentID, BANNER_TABLE);
-		$this->Path = ($ppath === "/") ? $ppath . $this->Text : $ppath . '/' . $this->Text;
-		parent::save();
+		$this->Path = ($ppath === '/') ? $ppath . $this->Text : $ppath . '/' . $this->Text;
+		$retVal = parent::save();
+
+		//if($retVal){
+		$this->registerMediaLinks();
+		//}
+	}
+
+	function registerMediaLinks(){// FIXME: base banner on we_ModelBase to us registerFileLink()
+		$this->unregisterMediaLinks();
+
+		if($this->bannerID){
+			$this->MediaLinks[] = $this->bannerID;
+		}
+		if(!intval($this->IsFolder) && $this->IntHref && $this->bannerIntID){
+			$this->MediaLinks[] = $this->bannerIntID;
+		}
+
+		$c = count($this->MediaLinks);
+		for($i = 0; $i < $c; $i++){
+			if(!$this->MediaLinks[$i] || !is_numeric($this->MediaLinks[$i])){
+				unset($this->MediaLinks[$i]);
+			}
+		}
+
+		// the following would be obsolete, when class was based on we_modelBase
+		if(!empty($this->MediaLinks)){
+			$whereType = 'AND ContentType IN ("' . we_base_ContentTypes::APPLICATION . '","' . we_base_ContentTypes::FLASH . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::QUICKTIME . '","' . we_base_ContentTypes::VIDEO . '")';
+			$this->db->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', array_unique($this->MediaLinks)) . ') ' . $whereType);
+			$this->MediaLinks = array();
+			while($this->db->next_record()){
+				$this->MediaLinks[] = $this->db->f('ID');
+			}
+		}
+
+		foreach(array_unique($this->MediaLinks) as $remObj){
+			$this->db->query('REPLACE INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
+					'ID' => $this->ID,
+					'DocumentTable' => stripTblPrefix($this->table),
+					'type' => 'media',
+					'remObj' => $remObj,
+					'remTable' => stripTblPrefix(FILE_TABLE),
+					'position' => 0,
+					'isTemp' => 0
+			)));
+		}
+	}
+
+	function unregisterMediaLinks(){
+		$this->db->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . $this->db->escape(stripTblPrefix($this->table)) . '"  AND type="media"');
 	}
 
 	/**
@@ -242,7 +283,7 @@ class we_banner_banner extends we_banner_base{
 		$weight = rand(0, intval($maxweight));
 		$anz = 0;
 		while($anz == 0 && $weight <= $maxweight){
-			$db->query('SELECT ID, bannerID FROM ' . BANNER_TABLE . " WHERE $where AND weight <= $weight AND (TagName='' OR TagName='" . $db->escape($bannername) . "')");
+			$db->query('SELECT ID, bannerID FROM ' . BANNER_TABLE . " WHERE $where AND weight<=$weight AND (TagName='' OR TagName='" . $db->escape($bannername) . "')");
 			$anz = $db->num_rows();
 			if($anz == 0){
 				++$weight;
@@ -263,8 +304,7 @@ class we_banner_banner extends we_banner_base{
 		return array("ID" => 0, "bannerID" => 0);
 	}
 
-	private static function getImageInfos($fileID){
-		$db = new DB_WE();
+	private static function getImageInfos($fileID, we_database_base $db){
 		$db->query('SELECT l.Name AS Name, c.Dat AS Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.Type="attrib" AND l.DID=' . intval($fileID));
 		return $db->getAllFirst(false);
 	}
@@ -279,75 +319,75 @@ class we_banner_banner extends we_banner_base{
 
 		if(($id = $bannerData['ID'])){
 			if($bannerData['bannerID']){
-				$bannersrc = id_to_path($bannerData['bannerID']);
-				$attsImage = array_merge($attsImage, self::getImageInfos($bannerData['bannerID']));
+				$bannersrc = id_to_path($bannerData['bannerID'], FILE_TABLE, $db);
+				$attsImage = array_merge($attsImage, self::getImageInfos($bannerData['bannerID'], $db));
 				if(isset($attsImage['longdescid'])){
 					unset($attsImage['longdescid']);
 				}
 			} else {
 				$bannersrc = $getbanner . '?' . http_build_query(array(
-							($nocount ? 'nocount' : 'n') => $nocount,
-							'u' => $uniq,
-							'bannername' => $bannername,
-							'id' => $bannerData["ID"],
-							'bid' => $bannerData["bannerID"],
-							'did' => $did,
-							'page' => $page
-				));
-			}
-			$bannerlink = $bannerclick . '?' . http_build_query(array(
 						($nocount ? 'nocount' : 'n') => $nocount,
 						'u' => $uniq,
 						'bannername' => $bannername,
 						'id' => $bannerData["ID"],
+						'bid' => $bannerData["bannerID"],
 						'did' => $did,
 						'page' => $page
+				));
+			}
+			$bannerlink = $bannerclick . '?' . http_build_query(array(
+					($nocount ? 'nocount' : 'n') => $nocount,
+					'u' => $uniq,
+					'bannername' => $bannername,
+					'id' => $bannerData["ID"],
+					'did' => $did,
+					'page' => $page
 			));
 		} else {
-			$id = f('SELECT pref_value FROM ' . BANNER_PREFS_TABLE . ' WHERE pref_name="DefaultBannerID"', '', $db);
+			$id = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="banner" AND pref_name="DefaultBannerID"', '', $db);
 
 			$bannerID = f('SELECT bannerID FROM ' . BANNER_TABLE . ' WHERE ID=' . intval($id), '', $db);
 			if($bannerID){
-				$bannersrc = id_to_path($bannerID);
-				$attsImage = array_merge($attsImage, self::getImageInfos($bannerID));
+				$bannersrc = id_to_path($bannerID, FILE_TABLE, $db);
+				$attsImage = array_merge($attsImage, self::getImageInfos($bannerID), $db);
 				if(isset($attsImage['longdescid'])){
 					unset($attsImage['longdescid']);
 				}
 			} else {
 				$bannersrc = $getbanner . '?' . http_build_query(array(
-							($nocount ? 'nocount' : 'n') => $nocount,
-							'u' => $uniq,
-							'bannername' => $bannername,
-							'id' => $id,
-							'bid' => $bannerID,
-							'did' => $did
-				));
-				$showlink = false;
-			}
-			$bannerlink = $bannerclick . '?' . http_build_query(array(
 						($nocount ? 'nocount' : 'n') => $nocount,
 						'u' => $uniq,
 						'bannername' => $bannername,
 						'id' => $id,
-						'did' => $did,
-						'page' => $page
+						'bid' => $bannerID,
+						'did' => $did
+				));
+				$showlink = false;
+			}
+			$bannerlink = $bannerclick . '?' . http_build_query(array(
+					($nocount ? 'nocount' : 'n') => $nocount,
+					'u' => $uniq,
+					'bannername' => $bannername,
+					'id' => $id,
+					'did' => $did,
+					'page' => $page
 			));
 		}
 		if(!$nocount){
 			$db->query('INSERT INTO ' . BANNER_VIEWS_TABLE . ' SET ' . we_database_base::arraySetter(array(
-						'ID' => intval($id),
-						'Timestamp' => sql_function('UNIX_TIMESTAMP()'),
-						'IP' => $_SERVER['REMOTE_ADDR'],
-						'Referer' => $referer ? : (isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : ""),
-						'DID' => intval($did),
-						'Page' => $page
+					'ID' => intval($id),
+					'Timestamp' => sql_function('UNIX_TIMESTAMP()'),
+					'IP' => $_SERVER['REMOTE_ADDR'],
+					'Referer' => $referer ? : (isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : ""),
+					'DID' => intval($did),
+					'Page' => $page
 			)));
 			$db->query('UPDATE ' . BANNER_TABLE . ' SET views=views+1 WHERE ID=' . intval($id));
 		}
 
 		$attsImage['xml'] = $xml ? 'true' : 'false';
-
 		$attsImage['src'] = $bannersrc;
+
 		if($width){
 			$attsImage['width'] = $width;
 		}
@@ -378,18 +418,17 @@ class we_banner_banner extends we_banner_base{
 
 	public static function getBannerURL($bid){
 		$h = getHash('SELECT IntHref,bannerIntID,bannerURL FROM ' . BANNER_TABLE . ' WHERE ID=' . intval($bid));
-		return $h['IntHref'] ? id_to_path($h['bannerIntID'], FILE_TABLE) : $h['bannerURL'];
+		return $h['IntHref'] ? id_to_path($h['bannerIntID'], FILE_TABLE, $GLOBALS['DB_WE']) : $h['bannerURL'];
 	}
 
 	public static function customerOwnsBanner($customerID, $bannerID, we_database_base $db){
-		$res = getHash('SELECT Customers,ParentID FROM ' . BANNER_TABLE . ' WHERE ID=' . intval($bannerID), $db);
-		if(strstr($res["Customers"], "," . $customerID . ",") != false){
-			return true;
-		}
-		if($res["ParentID"]){
-			return self::customerOwnsBanner($customerID, $res["ParentID"], $db);
-		}
-		return false;
+		$res = getHash('SELECT FIND_IN_SET(' . $customerID . ',Customers) AS found,ParentID FROM ' . BANNER_TABLE . ' WHERE ID=' . intval($bannerID), $db);
+		return ($res['found'] ?
+				true :
+				($res['ParentID'] ?
+					self::customerOwnsBanner($customerID, $res["ParentID"], $db) :
+					false)
+			);
 	}
 
 }

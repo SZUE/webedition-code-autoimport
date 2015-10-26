@@ -1,9 +1,13 @@
+###UPDATEDROPCOL(Portal,###TBLPREFIX###tblUser)###
+/* query separator */
+###UPDATEDROPCOL(Icon,###TBLPREFIX###tblUser)###
+/* query separator */
+
 CREATE TABLE ###TBLPREFIX###tblUser (
   ID int(11) unsigned NOT NULL auto_increment,
   ParentID int(11) unsigned NOT NULL default '0',
   `Text` varchar(255) NOT NULL default '',
   Path varchar(255) NOT NULL default '',
-  Icon ENUM('user.gif','usergroup.gif','user_alias.gif') NOT NULL default 'user.gif',
   IsFolder tinyint(1) unsigned NOT NULL default '0',
   `Type` tinyint(1) unsigned NOT NULL default '0',
   username varchar(255) NOT NULL default '',
@@ -17,7 +21,7 @@ CREATE TABLE ###TBLPREFIX###tblUser (
   CreateDate int(10) unsigned NOT NULL default '0',
   ModifierID int(11) unsigned NOT NULL default '0',
   ModifyDate int(10) unsigned NOT NULL default '0',
-  Ping int(11) unsigned NOT NULL default '0',
+  Ping datetime default NULL,
   workSpace TEXT NOT NULL default '',
   workSpaceDef TEXT NOT NULL default '',
   workSpaceTmp TEXT NOT NULL default '',

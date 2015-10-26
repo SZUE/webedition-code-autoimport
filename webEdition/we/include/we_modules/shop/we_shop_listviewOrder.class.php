@@ -28,7 +28,6 @@
  *
  */
 class we_shop_listviewOrder extends we_listview_base{
-	var $ClassName = __CLASS__;
 	var $condition = '';
 	var $Path = '';
 	var $docID = 0;
@@ -46,54 +45,51 @@ class we_shop_listviewOrder extends we_listview_base{
 	 * @param   $docID	   	   string - id of a document where a we:customer tag is on
 	 *
 	 */
-	function __construct($name, $rows, $offset, $order, $desc, $condition, $cols, $docID, $hidedirindex){
-
+	public function __construct($name, $rows, $offset, $order, $desc, $condition, $cols, $docID, $hidedirindex){
 		parent::__construct($name, $rows, $offset, $order, $desc, '', false, 0, $cols);
 		if($GLOBALS['WE_MAIN_DOC']->InWebEdition){
 			//do nothing inside we
 			return;
 		}
 		$this->docID = $docID;
-		$this->condition = $condition ? : (isset($GLOBALS['we_lv_condition']) ? $GLOBALS['we_lv_condition'] : '');
+		$this->condition = $condition;
+		$this->hidedirindex = $hidedirindex;
+		// IMPORTANT for seeMode !!!! #5317
+		$this->LastDocPath = (isset($_SESSION['weS']['last_webEdition_document'])) ? $_SESSION['weS']['last_webEdition_document']['Path'] : '';
+		$this->Path = $this->docID ? id_to_path($this->docID, FILE_TABLE, $this->DB_WE) : (isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : '');
 
 		if(strpos($this->condition, 'ID') !== false && strpos($this->condition, 'IntID') === false){
 			$this->condition = str_replace('ID', 'IntID', $this->condition);
 		}
 		// und nun sind alle anderen kaputt und werden repariert
-		$this->condition = str_replace('OrderIntID', 'OrderID', $this->condition);
-		$this->condition = str_replace('CustomerIntID', 'CustomerID', $this->condition);
-		$this->condition = str_replace('ArticleIntID', 'ArticleID', $this->condition);
+		$this->condition = strtr($this->condition, array(
+			'OrderIntID' => 'OrderID',
+			'CustomerIntID' => 'CustomerID',
+			'ArticleIntID' => 'ArticleID',
+			'IntOrderID' => 'IntOrderID', //prevents accidential replacements
+			'OrderID' => 'IntOrderID',
+			'IntCustomerID' => 'IntCustomerID', //prevents accidential replacements
+			'CustomerID' => 'IntCustomerID',
+			'IntArticleID' => 'IntArticleID', //prevents accidential replacements
+			'ArticleID' => 'IntArticleID',
+			'IntQuantity' => 'IntQuantity', //prevents accidential replacements
+			'Quantity' => 'IntQuantity',
+			'IntPayment_Type' => 'IntPayment_Type', //prevents accidential replacements
+			'Payment_Type' => 'IntPayment_Type'
+		));
 
-		if(strpos($this->condition, 'OrderID') !== false && strpos($this->condition, 'IntOrderID') === false){
-			$this->condition = str_replace('OrderID', 'IntOrderID', $this->condition);
-		}
-		if(strpos($this->condition, 'CustomerID') !== false && strpos($this->condition, 'IntCustomerID') === false){
-			$this->condition = str_replace('CustomerID', 'IntCustomerID', $this->condition);
-		}
-		if(strpos($this->condition, 'ArticleID') !== false && strpos($this->condition, 'IntArticleID') === false){
-			$this->condition = str_replace('ArticleID', 'IntArticleID', $this->condition);
-		}
-		if(strpos($this->condition, 'Quantity') !== false && strpos($this->condition, 'IntQuantity') === false){
-			$this->condition = str_replace('Quantity', 'IntQuantity', $this->condition);
-		}
-		if(strpos($this->condition, 'Payment_Type') !== false && strpos($this->condition, 'IntPayment_Type') === false){
-			$this->condition = str_replace('Payment_Type', 'Payment_Type', $this->condition);
-		}
-
-		$this->Path = $this->docID ? id_to_path($this->docID, FILE_TABLE, $this->DB_WE) : (isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : '');
-
-		$this->hidedirindex = $hidedirindex;
-		// IMPORTANT for seeMode !!!! #5317
-		$this->LastDocPath = (isset($_SESSION['weS']['last_webEdition_document'])) ? $_SESSION['weS']['last_webEdition_document']['Path'] : '';
-
-
-		if($this->desc && $this->order != '' && (!preg_match('|.+ desc$|i', $this->order))){
+		if($this->desc && $this->order && (!preg_match('|.+ desc$|i', $this->order))){
 			$this->order .= ' DESC';
 		}
 
-		if($this->order != ''){
-			if(trim($this->order) === 'ID' || trim($this->order) === 'CustomerID' || trim($this->order) === 'ArticleID' || trim($this->order) === 'Quantity' || trim($this->order) === 'Payment_Type'){
-				$this->order = 'Int' . $this->order;
+		if($this->order){
+			switch(trim($this->order)){
+				case 'ID':
+				case 'CustomerID':
+				case 'ArticleID':
+				case 'Quantity':
+				case 'Payment_Type':
+					$this->order = 'Int' . trim($this->order);
 			}
 			$orderstring = ' ORDER BY ' . $this->order . ' ';
 		} else {
@@ -118,40 +114,41 @@ class we_shop_listviewOrder extends we_listview_base{
 	function next_record(){
 		$ret = $this->DB_WE->next_record();
 		if($ret){
-			$strSerialOrder = unserialize($this->DB_WE->Record['strSerialOrder']);
+			$strSerialOrder = we_unserialize($this->DB_WE->Record['strSerialOrder']);
 			unset($this->DB_WE->Record['strSerialOrder']);
-			if(is_array($strSerialOrder)){
-				if(is_array($strSerialOrder['we_sscf'])){
-					foreach($strSerialOrder['we_sscf'] as $key => &$value){
-						$this->DB_WE->Record[$key] = $value;
-					}
-					unset($value);
+
+			if(is_array($strSerialOrder['we_sscf'])){
+				foreach($strSerialOrder['we_sscf'] as $key => &$value){
+					$this->DB_WE->Record[$key] = $value;
 				}
-				if(is_array($strSerialOrder['we_shopPriceShipping'])){
-					foreach($strSerialOrder['we_shopPriceShipping'] as $key => &$value){
-						$this->DB_WE->Record['Shipping_' . $key] = $value;
-					}
-					unset($value);
-				}
-				if(is_array($strSerialOrder['we_shopCustomer'])){
-					foreach($strSerialOrder['we_shopCustomer'] as $key => &$value){
-						if(!is_numeric($key)){
-							$this->DB_WE->Record['Customer_' . $key] = $value;
-						}
-					}
-					unset($value);
-				}
-				if(isset($strSerialOrder['we_shopPriceIsNet'])){
-					$this->DB_WE->Record['shopPriceIsNet'] = $strSerialOrder['we_shopPriceIsNet'];
-				}
-				if(isset($strSerialOrder['we_shopCalcVat'])){
-					$this->DB_WE->Record['shopCalcVat'] = $strSerialOrder['we_shopCalcVat'];
-				}
-				//Fix #7993
-				if(isset($strSerialOrder['we_shopPricename'])){
-					$this->DB_WE->Record['shopPricename'] = $strSerialOrder['we_shopPricename'];
-				}
+				unset($value);
 			}
+			if(is_array($strSerialOrder['we_shopPriceShipping'])){
+				foreach($strSerialOrder['we_shopPriceShipping'] as $key => &$value){
+					$this->DB_WE->Record['Shipping_' . $key] = $value;
+				}
+				unset($value);
+			}
+			if(is_array($strSerialOrder['we_shopCustomer'])){
+				foreach($strSerialOrder['we_shopCustomer'] as $key => &$value){
+					if(!is_numeric($key)){
+						$this->DB_WE->Record['Customer_' . $key] = $value;
+					}
+				}
+				unset($value);
+			}
+			if(isset($strSerialOrder['we_shopPriceIsNet'])){
+				$this->DB_WE->Record['shopPriceIsNet'] = $strSerialOrder['we_shopPriceIsNet'];
+			}
+			if(isset($strSerialOrder['we_shopCalcVat'])){
+				$this->DB_WE->Record['shopCalcVat'] = $strSerialOrder['we_shopCalcVat'];
+			}
+			//Fix #7993
+			if(isset($strSerialOrder['we_shopPricename'])){
+				$this->DB_WE->Record['shopPricename'] = $strSerialOrder['we_shopPricename'];
+			}
+
+			//$this->DB_WE->Record['CustomerID'] = $this->DB_WE->Record['IntCustomerID'];
 			$this->DB_WE->Record['we_cid'] = $this->DB_WE->Record['CustomerID'];
 			$this->DB_WE->Record['we_orderid'] = $this->DB_WE->Record['OrderID'];
 			$this->DB_WE->Record['wedoc_Path'] = $this->Path . '?we_orderid=' . $this->DB_WE->Record['OrderID'];

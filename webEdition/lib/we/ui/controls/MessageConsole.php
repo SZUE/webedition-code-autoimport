@@ -66,7 +66,6 @@ class we_ui_controls_MessageConsole extends we_ui_abstract_AbstractElement{
 		parent::__construct($properties);
 
 		// add needed JS Files
-		$this->addJSFile(JS_DIR . 'messageConsoleImages.js');
 		$this->addJSFile(JS_DIR . 'messageConsoleView.js');
 
 		// add needed CSS Files
@@ -81,17 +80,7 @@ class we_ui_controls_MessageConsole extends we_ui_abstract_AbstractElement{
 	protected function _renderHTML(){
 		$page = we_ui_layout_HTMLPage::getInstance();
 
-		$noticeText = str_replace('"', '\"', g_l('messageConsole', '[iconBar][notice]'));
-		$warningText = str_replace('"', '\"', g_l('messageConsole', '[iconBar][warning]'));
-		$errorText = str_replace('"', '\"', g_l('messageConsole', '[iconBar][error]'));
-
 		$js = <<<EOS
-
-var _msgNotice  = "$noticeText";
-var _msgWarning = "$warningText";
-var _msgError   = "$errorText";
-
-
 var _console_$this->_consoleName = new messageConsoleView( '$this->_consoleName', this.window );
 _console_$this->_consoleName.register();
 
@@ -106,19 +95,15 @@ EOS;
 		$iconClassNormal = self::kHeaderIconNormalClass;
 		$iconClassOver = self::kHeaderIconOverClass;
 
-		$imgPath = IMAGE_DIR . 'messageConsole/notice.gif';
 		return <<<EOHTML
-
 <div>
 	<table>
 	<tr>
-		<td valign="middle">
-		<span class="$headerClass" id="messageConsoleMessage$this->_consoleName" style="display: none;">
-			--
-		</span>
+		<td style="vertical-align:middle">
+		<span class="$headerClass" id="messageConsoleMessage$this->_consoleName" style="display: none;">--</span>
 		</td>
 		<td>
-			<div onclick="_console_$this->_consoleName.openMessageConsole();" class="$iconClassNormal" onmouseover="this.className=&quot;$iconClassOver&quot;" onmouseout="this.className=&quot;$iconClassNormal&quot;"><img id="messageConsoleImage$this->_consoleName" src="$imgPath" /></div>
+			<div onclick="_console_$this->_consoleName.openMessageConsole();" class="$iconClassNormal" onmouseover="this.className=&quot;$iconClassOver&quot;" onmouseout="this.className=&quot;$iconClassNormal&quot;"><i id="messageConsoleImage$this->_consoleName" class="fa fa-lg fa-info"></i></div>
 		</td>
 	</tr>
 	</table>

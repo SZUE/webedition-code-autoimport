@@ -38,13 +38,15 @@ function encode64(inp) {
 		if (isNaN(chr3)) {
 			enc4 = 64;
 			chr3 = 0;
-		} else
-			enc4 = chr3 & 63
+		} else {
+			enc4 = chr3 & 63;
+		}
 		if (isNaN(chr2)) {
 			enc3 = 64;
 			chr2 = 0;
-		} else
-			enc3 = ((chr2 << 2) | (chr3 >> 6)) & 63
+		} else {
+			enc3 = ((chr2 << 2) | (chr3 >> 6)) & 63;
+		}
 		out += key.charAt((chr1 >> 2) & 63) + key.charAt(((chr1 << 4) | (chr2 >> 4)) & 63) + key.charAt(enc3) + key.charAt(enc4);
 	}
 	return encodeURIComponent(out);

@@ -35,7 +35,7 @@ class we_document_video extends we_binaryDocument{
 	function editor(){
 		switch($this->EditPageNr){
 			case we_base_constants::WE_EDITPAGE_PREVIEW:
-				return 'we_templates/we_editor_document_preview.inc.php';
+				return 'we_editors/we_editor_document_preview.inc.php';
 			default:
 				return parent::editor();
 		}
@@ -43,46 +43,24 @@ class we_document_video extends we_binaryDocument{
 
 	function formProperties(){
 		$yuiSuggest = & weSuggest::getInstance();
-		return '<table style="border-spacing: 0px;border-style:none" cellpadding="0">
-	<tr valign="top">
+		return '<table class="default propertydualtable">
+	<tr>
 		<td>' . $this->formInputInfo2(155, 'width', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"', 'origwidth') . '</td>
-		<td>' . we_html_tools::getPixel(18, 2) . '</td>
 		<td>' . $this->formInputInfo2(155, 'height', 10, "attrib", 'onchange="_EditorFrame.setEditorIsHot(true);"', 'origheight') . '</td>
-		<td>' . we_html_tools::getPixel(18, 2) . '</td>
 		<td>' . $this->formDocChooser(155, 'poster', 'attrib') . '</td>
 	</tr>
-	<tr valign="top">
-		<td colspan="5">' . we_html_tools::getPixel(2, 5) . '</td>
-	</tr>' . /*
-			  <tr valign="top">
-			  <td>' . $this->formInput2(155, "hspace", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-			  <td>' . we_html_tools::getPixel(18, 2) . '</td>
-			  <td>' . $this->formInput2(155, "vspace", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-			  <td>' . we_html_tools::getPixel(18, 2) . '</td>
-			  <td>' . $this->formInput2(155, "name", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-			  </tr> */
-			'<tr valign="top">
-		<td colspan="5">' . we_html_tools::getPixel(2, 5) . '</td>
-	</tr>
-	<tr valign="top">
+	<tr>
 		<td>' . $this->formSelectElement(155, 'autoplay', array(0 => g_l('global', '[false]'), 1 => g_l('global', '[true]')), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
-		<td>' . we_html_tools::getPixel(18, 2) . '</td>
 		<td>' . $this->formSelectElement(155, 'controller', array(1 => g_l('global', '[true]'), 0 => g_l('global', '[false]')), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
-		<td>' . we_html_tools::getPixel(18, 2) . '</td>
-		<td>' . $this->formColor(155, 'bgcolor', 25, "attrib") . '</td>
+		<td>' . $this->formColor(155, 'bgcolor', "attrib") . '</td>
 	</tr>
-	<tr valign="top">
-		<td colspan="5">' . we_html_tools::getPixel(2, 5) . '</td>
-	</tr>
-	<tr valign="top">
-		<td>' . $this->formSelectElement(155, 'mute', array(0 => g_l('global', '[false]'), 1 => g_l('global', '[true]')), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>' .
-			'<td>' . we_html_tools::getPixel(18, 2) . '</td>
+	<tr>
+		<td>' . $this->formSelectElement(155, 'mute', array(0 => g_l('global', '[false]'), 1 => g_l('global', '[true]')), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
 		<td>' . $this->formSelectElement(155, 'loop', array(0 => g_l('global', '[false]'), 1 => g_l('global', '[true]')), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
-		<td>' . we_html_tools::getPixel(18, 2) . '</td>
 		<td>' . $this->formInput2(155, 'name', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"') . '</td>
 	</tr>
 </table>' .
-			weSuggest::getYuiFiles() . $yuiSuggest->getYuiCode()
+			$yuiSuggest->getYuiJs()
 		;
 	}
 

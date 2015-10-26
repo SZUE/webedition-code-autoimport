@@ -47,22 +47,14 @@ we_html_tools::protect();
 echo we_html_tools::getHtmlTop() .
  STYLESHEET;
 ?>
-<style>
-	.quote_lvl_0 {}
-	.quote_lvl_1 {color:#ff0000}
-	.quote_lvl_2 {color:#00ff00}
-	.quote_lvl_3 {color:#0000ff}
-</style>
-<script type="text/javascript"><!--
+<script><!--
 	function todo_markdone() {
-		top.content.cmd.location = '<?php echo WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&mcmd=todo_markdone&we_transaction=<?php echo $transaction; ?>';
+		top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=messaging&pnt=cmd&mcmd=todo_markdone&we_transaction=<?php echo $transaction; ?>';
 			}
 //-->
 </script>
 </head>
-<body class="weDialogBody">
-
-	<?php
+<body class="weDialogBody"><?php
 	if(isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->selected_message['hdrs']['ClassName'] === 'we_todo'){
 		$parts = array(
 			array("headline" => g_l('modules_messaging', '[subject]'),
@@ -76,9 +68,8 @@ echo we_html_tools::getHtmlTop() .
 				"space" => 140
 			),
 			array("headline" => g_l('modules_messaging', '[status]'),
-				"html" => '<table border="0" cellpadding="0" cellspacing="0"><tr><td class="defaultfont">' . $messaging->selected_message['hdrs']['status'] . '%</td><td>' . we_html_tools::getPixel(20, 2) .
-				(($messaging->selected_message['hdrs']['status'] < 100) ? '<td>' . we_html_button::create_button(
-								"percent100", "javascript:todo_markdone()") . '</td>' : '') . '</tr></table>',
+				"html" => '<table class="default"><tr><td class="defaultfont">' . $messaging->selected_message['hdrs']['status'] . '%</td>'.
+				($messaging->selected_message['hdrs']['status'] < 100 ? '<td>' . we_html_button::create_button("percent100", "javascript:todo_markdone()") . '</td>' : '') . '</tr></table>',
 				"noline" => 1,
 				"space" => 140
 			),
@@ -143,7 +134,7 @@ echo we_html_tools::getHtmlTop() .
 	}
 
 	echo we_html_multiIconBox::getJS() .
-			we_html_multiIconBox::getHTML("weMessageView", "100%", $parts, 30, "", -1, "", "", false, g_l('modules_messaging', (isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->selected_message['hdrs']['ClassName'] === 'we_todo' ? '[type_todo]' : '[type_message]')));
+	we_html_multiIconBox::getHTML("weMessageView", $parts, 30, "", -1, "", "", false, g_l('modules_messaging', (isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->selected_message['hdrs']['ClassName'] === 'we_todo' ? '[type_todo]' : '[type_message]')));
 	?>
 </body>
 </html>

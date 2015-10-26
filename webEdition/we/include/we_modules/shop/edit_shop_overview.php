@@ -32,9 +32,8 @@ echo we_html_tools::getHtmlTop() .
 $feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"'));
 
 $waehr = '&nbsp;' . oldHtmlspecialchars($feldnamen[0]);
-$dbPreisname = 'Preis';
 $numberformat = $feldnamen[2];
-$mwst = ($feldnamen[1]) ? (($feldnamen[1] / 100) + 1) : "";
+$mwst = max($feldnamen[1] ? (($feldnamen[1] / 100) + 1) : 1, 1);
 $year = abs(substr($_REQUEST["mid"], -4));
 $month = abs(str_replace($year, "", $_REQUEST["mid"]));
 
@@ -65,13 +64,10 @@ while($DB_WE->next_record()){
 	$orderid = $DB_WE->f("IntOrderID");
 }
 
-$mwst = max($mwst ,1);
 $info = g_l('modules_shop', '[anzahl]') . ": <b>" . ($f + $r) . "</b><br/>" . g_l('modules_shop', '[unbearb]') . ": " . (($f) ? $f : "0");
-$stat = g_l('modules_shop', '[umsatzgesamt]') . ": <b>" . we_util_Strings::formatNumber(($bezahlt + $unbezahlt) * $mwst) . " $waehr </b><br/><br/>" . g_l('modules_shop', '[schonbezahlt]') . ": " . we_util_Strings::formatNumber($bezahlt * $mwst) . " $waehr <br/>" . g_l('modules_shop', '[unbezahlt]') . ": " . we_util_Strings::formatNumber($unbezahlt * $mwst) . " $waehr";
-echo we_html_element::jsScript(JS_DIR . 'images.js') . we_html_element::jsScript(JS_DIR . 'windows.js');
+$stat = g_l('modules_shop', '[umsatzgesamt]') . ": <b>" . we_base_util::formatNumber(($bezahlt + $unbezahlt) * $mwst) . " $waehr </b><br/><br/>" . g_l('modules_shop', '[schonbezahlt]') . ": " . we_base_util::formatNumber($bezahlt * $mwst) . " $waehr <br/>" . g_l('modules_shop', '[unbezahlt]') . ": " . we_base_util::formatNumber($unbezahlt * $mwst) . " $waehr";
 ?>
 </head>
-
 <body class="weEditorBody" onunload="doUnload()"><?php
 	$parts = array(
 		array(
@@ -86,5 +82,5 @@ echo we_html_element::jsScript(JS_DIR . 'images.js') . we_html_element::jsScript
 		)
 	);
 
-	echo we_html_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('tabs', '[module][overview]'));
+	echo we_html_multiIconBox::getHTML("", $parts, 30, "", -1, "", "", false, g_l('tabs', '[module][overview]'));
 	?></body></html>

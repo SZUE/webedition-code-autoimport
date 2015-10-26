@@ -31,11 +31,7 @@ class rpcGetAllDocElementsView extends rpcView{
 		print_r($response->getData('elements'));
 		$out = ob_get_clean();
 
-		$html = '<pre>element:' .
-			$out . '</pre>'
-		;
-
-		return $html;
+		return '<pre>element:' . $out . '</pre>';
 	}
 
 }

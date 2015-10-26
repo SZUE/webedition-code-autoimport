@@ -27,7 +27,7 @@ function we_tag_ifIsDomain($attribs){
 		print($foo);
 		return false;
 	}
-	if((isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
+	if((!empty($GLOBALS['we_editmode']))){
 		return true;
 	}
 

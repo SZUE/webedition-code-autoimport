@@ -31,9 +31,9 @@ $fields = array(
 	'windowwidth' => we_base_request::_(we_base_request::UNIT, 'we_cmd', 0, 2),
 	'windowheight' => we_base_request::_(we_base_request::UNIT, 'we_cmd', 0, 3),
 	'empty' => we_base_request::_(we_base_request::CMD, 'we_cmd', 0, 4),
-	'propstring' => we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 5),
-	'classname' => we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 6),
-	'fontnames' => we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 7),
+	'propstring' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5),
+	'classname' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 6),
+	'fontnames' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 7),
 	'outsidewe' => we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 8),
 	'width' => we_base_request::_(we_base_request::UNIT, 'we_cmd', 0, 9),
 	'height' => we_base_request::_(we_base_request::UNIT, 'we_cmd', 0, 10),
@@ -42,7 +42,7 @@ $fields = array(
 	'bgcolor' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 13),
 	'baseHref' => we_base_request::_(we_base_request::URL, 'we_cmd', '', 14),
 	'charset' => we_base_request::_(we_base_request::STRING, 'we_cmd', DEFAULT_CHARSET, 15)? : DEFAULT_CHARSET,
-	'cssClasses' => we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 16),
+	'cssClasses' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 16),
 	'Language' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 17),
 	'documentCss' => we_base_request::_(we_base_request::CMD, 'we_cmd', '', 18),
 	'origName' => we_base_request::_(we_base_request::CMD, 'we_cmd', '', 19),
@@ -52,7 +52,9 @@ $fields = array(
 	'isInFrontend' => we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 23),
 	'templates' => we_base_request::_(we_base_request::INTLIST, 'we_cmd', '', 24),
 	'formats' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 25),
-	'fontsizes' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 26),
+	'imagestartid' => we_base_request::_(we_base_request::INT, 'we_cmd', '', 26),
+	'galleryTemplates' => we_base_request::_(we_base_request::INTLIST, 'we_cmd', '', 27),
+	'fontsizes' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 28),
 );
 
 
@@ -60,7 +62,7 @@ if($fields['charset'] != DEFAULT_CHARSET && $_charsets && is_array($_charsets)){
 	$found = false;
 	$tmp = strtolower($fields['charset']);
 	foreach($_charsets as $v){
-		if(isset($v['charset']) && $v['charset']){
+		if(!empty($v['charset'])){
 			if(strtolower($v['charset']) == $tmp){
 				$found = true;
 				break;
@@ -88,7 +90,7 @@ if(preg_match('%^.+_te?xt\[.+\]$%i', $fields['name'])){
 	$writeToFrontend = true;
 }
 
-echo we_html_tools::getHtmlTop(sprintf('', $fieldName), $fields['charset']);
+echo we_html_tools::getHtmlTop($fieldName, $fields['charset']);
 
 if(isset($fieldName) && we_base_request::_(we_base_request::BOOL, 'we_okpressed')){
 	if(!isset($writeToFrontend)){
@@ -97,13 +99,17 @@ if(isset($fieldName) && we_base_request::_(we_base_request::BOOL, 'we_okpressed'
 		} else if(preg_match('|^(.+_input)\[.+\]$|i', $fields['name'])){
 			$reqName = preg_replace('/^(.+_input)\[.+\]$/', '$1', $fields['name']);
 		}
-		$openerDocument = 'top.opener.top.weEditorFrameController.getVisibleEditorFrame().document';
+		$openerDocument = 'WE().layout.weEditorFrameController.getVisibleEditorFrame().document';
 	} else {
 		$reqName = str_replace('[' . $fieldName . ']', '', $fields['name']);
 		$openerDocument = 'top.opener.document';
 	}
 
-	$value = preg_replace('|(</?)script([^>]*>)|i', '${1}scr"+"ipt${2}', strtr(we_base_request::_(we_base_request::RAW_CHECKED, $reqName, '', $fieldName), array("\r" => '\r', "\n" => '\n', "'" => '&#039;')));
+	$value = preg_replace('|(</?)script([^>]*>)|i', '${1}scr"+"ipt${2}', strtr(we_base_request::_(we_base_request::RAW_CHECKED, $reqName, '', $fieldName), array(
+		"\r" => '\r',
+		"\n" => '\n',
+		"'" => '&#039;'
+	)));
 	$replacements = array(
 		'"' => '\"',
 		"\xe2\x80\xa8" => '',
@@ -120,36 +126,33 @@ try{
 	' . $openerDocument . '.getElementById("div_wysiwyg_' . $fields['name'] . '").innerHTML=\'' . $divValue . '\';
 } catch(err){}
 try{
-	top.opener.top.weEditorFrameController.getVisibleEditorFrame().seeMode_dealWithLinks();
+	WE().layout.weEditorFrameController.getVisibleEditorFrame().seeMode_dealWithLinks();
 } catch(err){}
 
 top.close();');
 	?>
 
 	</head>
-	<body marginwidth="0" marginheight="0" leftmargin="0" topmargin="0">
+	<body class="weDialogBody">
 		<?php
 	} else {
-
-		echo STYLESHEET .
-		we_html_element::jsScript(JS_DIR . 'windows.js') .
-		we_html_element::jsElement('top.focus();');
+		echo STYLESHEET;
 		?>
 	</head>
-	<body class="weDialogBody" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" style="margin:0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;background-image:url(<?php echo IMAGE_DIR; ?>backgrounds/aquaBackground.gif);">
+	<body class="weDialogBody" onload="top.focus();">
 		<form action="<?php echo $_SERVER['SCRIPT_NAME']; ?>" name="we_form" method="post">
 			<input type="hidden" name="we_okpressed" value="1" />
 			<?php
 			$pos = 0;
 			foreach($fields as $v){
-				echo '<input type="hidden" name="we_cmd[' . ($pos++) . ']" value="' . $v . '" />';
+				echo we_html_element::htmlHidden('we_cmd[' . ($pos++) . ']', $v);
 			}
 
 			$e = new we_wysiwyg_editor(
-				$fields['name'], '100%', '100%', $fields['empty'], $fields['propstring'], $fields['bgcolor'], '', $fields['classname'], $fields['fontnames'], $fields['outsidewe'], $fields['xml'], $fields['removeFirstParagraph'], true, $fields['baseHref'], $fields['charset'], $fields['cssClasses'], $fields['Language'], '', true, $fields['isInFrontend'], 'top', true, $fields['documentCss'], $fields['origName'], $fields['tinyParams'], $fields['contextmenu'], true, $fields['templates'], $fields['formats'], $fields['fontsizes']
+				$fields['name'], '100%', '100%', $fields['empty'], $fields['propstring'], $fields['bgcolor'], '', $fields['classname'], $fields['fontnames'], $fields['outsidewe'], $fields['xml'], $fields['removeFirstParagraph'], true, $fields['baseHref'], $fields['charset'], $fields['cssClasses'], $fields['Language'], '', true, $fields['isInFrontend'], 'top', true, $fields['documentCss'], $fields['origName'], $fields['tinyParams'], $fields['contextmenu'], true, $fields['templates'], $fields['formats'], $fields['imagestartid'], $fields['galleryTemplates'], $fields['fontsizes']
 			);
-			$cancelBut = we_html_button::create_button('cancel', "javascript:top.close()");
-			$okBut = we_html_button::create_button('ok', "javascript:weWysiwygSetHiddenText();document.we_form.submit();");
+			$cancelBut = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close()");
+			$okBut = we_html_button::create_button(we_html_button::OK, "javascript:weWysiwygSetHiddenText();document.we_form.submit();");
 
 			echo we_html_element::htmlDiv(
 				array('style' => 'position:absolute;top:0;bottom:42px;left:0px;right:0px;overflow:hidden;margin:0px'),

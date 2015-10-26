@@ -162,7 +162,7 @@ class we_backup_tableItem extends weModelBase{
 			if($this->doConvertCharset($key)){
 				$mydata = $val;
 				if(we_exim_XMLImport::isSerialized($mydata)){ //mainly for tblcontent, where serialized data is mixed with others, but stored in backup as binary
-					$mydataUS = unserialize($mydata);
+					$mydataUS = we_unserialize($mydata);
 					if(is_array($mydataUS)){
 						foreach($mydataUS as &$ad){
 							if(is_array($ad)){
@@ -185,7 +185,7 @@ class we_backup_tableItem extends weModelBase{
 								$ad = self::convertCharsetString($fromC, $toC, $ad);
 							}
 						}
-						$val = serialize($mydataUS);
+						$val = we_serialize($mydataUS);
 					}
 				} else {
 					$val = self::convertSCharsetEncoding($fromC, $toC, $mydata);
@@ -205,7 +205,7 @@ class we_backup_tableItem extends weModelBase{
 
 			if($this->doCorrectSerializedExactCharsetString($key)){
 				$mydata = $val;
-				$mydataUS = @unserialize($mydata);
+				$mydataUS = we_unserialize($mydata);
 				if(is_array($mydataUS)){
 					foreach($mydataUS as &$ad){
 						if(isset($ad['Charset']) && isset($ad['Charset']['dat'])){
@@ -213,7 +213,7 @@ class we_backup_tableItem extends weModelBase{
 						}
 					}
 				}
-				$val = @serialize($mydataUS);
+				$val = we_serialize($mydataUS);
 			}
 		}
 	}

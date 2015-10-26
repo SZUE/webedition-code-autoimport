@@ -22,15 +22,14 @@ $table = new we_ui_layout_Table();
 $table->setWidth('100%');
 
 $table->addElement($menu, 0, 0);
-$table->setCellAttributes(array('align' => 'left', 'valign' => 'top'));
+$table->setCellAttributes(array('style'=>'text-align:left;vertical-align:top'));
 $table->addElement($messageConsole, 1, 0);
-$table->setCellAttributes(array('style'=>'padding-right:10px;', 'align' => 'right', 'valign' => 'bottom'));
+$table->setCellAttributes(array('style'=>'padding-right:10px;text-align::right;vertical-align:bottom'));
 
 $page = we_ui_layout_HTMLPage::getInstance();
 $page->setBodyAttributes(array('class'=>'weMenuBody'));
 $page->addElement($table);
 
-// needed for menu !!
-$page->addJSFile(JS_DIR.'attachKeyListener.js');
+// needed for menu !
 
 echo $page->getHTML();

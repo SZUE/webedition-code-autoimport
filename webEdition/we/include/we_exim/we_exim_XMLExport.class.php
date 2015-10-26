@@ -114,16 +114,16 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 					$selClasses = defined('OBJECT_FILES_TABLE') ? array_unique($this->getIDs($selClasses, OBJECT_TABLE, false)) : "";
 				} else {
 					switch($art){
-						case "docs":
+						case 'docs':
 							$selDocs = $this->getIDs($selDocs, FILE_TABLE);
 							break;
-						case "objects":
+						case 'objects':
 							$selObjs = defined('OBJECT_FILES_TABLE') ? $this->getIDs($selObjs, OBJECT_FILES_TABLE) : "";
 							break;
 					}
 				}
 				break;
-			case "doctype":
+			case 'doctype':
 				$cat_sql = ($categories ? we_category::getCatSQLTail('', FILE_TABLE, true, $this->db, 'Category', $categories) : '');
 				if($dir != 0){
 					$workspace = id_to_path($dir, FILE_TABLE, $this->db);
@@ -148,7 +148,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 		foreach($selDocs as $k => $v){
 			$this->RefTable->add2(array(
 				"ID" => $v,
-				"ContentType" => f('Select ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($v), "", $this->db),
+				"ContentType" => f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($v), "", $this->db),
 				"level" => 0
 				)
 			);
@@ -166,7 +166,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 			foreach($selObjs as $k => $v){
 				$this->RefTable->add2(array(
 					"ID" => $v,
-					"ContentType" => "objectFile",
+					"ContentType" => we_base_ContentTypes::OBJECT_FILE,
 					"level" => 0
 					)
 				);

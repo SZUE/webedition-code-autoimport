@@ -54,12 +54,10 @@ class weTagData_typeAttribute extends weTagDataAttribute{
 	 * @return string
 	 */
 	function getCodeForTagWizard(){
-		$keys = array('');
-		$values = array(g_l('taged', '[select_type]'));
+		$entries = array('' => g_l('taged', '[select_type]'));
 
 		foreach($this->Options as $option){
-			$keys[] = $option->Value;
-			$values[] = ($option->getName() === '-' ? '' : $option->getName());
+			$entries[$option->Value] = ($option->getName() === '-' ? '' : $option->getName());
 		}
 
 		$js = "we_cmd('switch_type', this.value);";
@@ -71,7 +69,7 @@ class weTagData_typeAttribute extends weTagDataAttribute{
 			'onchange' => $js,
 			'class' => 'defaultfont selectinput'
 		));
-		$select->addOptions(count($values), $keys, $values);
+		$select->addOptions($entries);
 
 		return '
 					<table class="attribute">

@@ -22,6 +22,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
+weTextarea_count = 0;
+
 //FIXME: change/remove this!
 function we_textarea(name, value, cols, rows, width, height, autobr, autobrName, showAutobr, showRTF, language, classname, style, wrap, changehandler, xml, id, showSpell, origName) {
 	this.TAName = name;
@@ -38,7 +41,6 @@ function we_textarea(name, value, cols, rows, width, height, autobr, autobrName,
 	this.ButtonDown = we_textarea_ButtonDown;
 	this.xml = xml;
 	this.id = id;
-
 	if (style.length) {
 		if (style.substring(style.length - 1, style.length) != ";") {
 			style += ";";
@@ -51,35 +53,28 @@ function we_textarea(name, value, cols, rows, width, height, autobr, autobrName,
 		style += "height:" + height + "px;";
 	}
 	val = value ? value : "";
-
 	if (val) {
 		val = val.replace(/##\|n##/gi, "\n");
 		val = val.replace(/<##scr#ipt##/gi, "<script");
 		val = val.replace(/<\/##scr#ipt##/gi, "</script");
 		val = val.replace(/##\|lt\;\?##/gi, "<?");
-
 	}
-	out = '<input type="hidden" name="';
-
-	out += autobrName;
-	out += '" value="';
-	out += this.autobr ? 'on' : 'off';
-	out += '"><table border="0" cellpadding="0" cellspacing="0" background="/webEdition/images/backgrounds/aquaBackground.gif">';
+	out = '<input type="hidden" name="' +
+					autobrName +
+					'" value="' +
+					(this.autobr ? 'on' : 'off') +
+					'"><table class="default" style="background-color: #F5F5F5;">';
 	if (showAutobr) {
-		out += '<tr><td><table border="0" cellpadding="0" cellspacing="0">';
-	}
-	if (showAutobr) {
-
-
-		out += '<td><input type="checkbox" name="check';
-		out += name;
-		out += '" id="check';
-		out += name;
-		out += '" onClick="if(self.' + this.name + 'Object){';
-		out += this.name;
-		out += 'Object.translate(this);this.form.elements[\'' + autobrName + '\'].value=(this.checked ? \'on\' : \'off\');}"';
-		out += this.autobr ? ' checked' : '';
-		out += '>&nbsp;</td><td style=" color:black;font-weight: bold; font-size: 10px; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;cursor: pointer;" onClick="if(self.' + this.name + 'Object){var cb=document.getElementById(\'check' + name + '\');cb.checked=cb.checked ? false : true;' + this.name + 'Object.translate(cb);cb.form.elements[\'' + autobrName + '\'].value=(cb.checked ? \'on\' : \'off\');}">autobr</td>';
+		out += '<tr><td><table class="default">' +
+						'<td><input type="checkbox" name="check' +
+						name +
+						'" id="check' +
+						name +
+						'" onClick="if(self.' + this.name + 'Object){' +
+						this.name +
+						'Object.translate(this);this.form.elements[\'' + autobrName + '\'].value=(this.checked ? \'on\' : \'off\');}"' +
+						(this.autobr ? ' checked' : '') +
+						'>&nbsp;</td><td style=" color:black;font-weight: bold; font-size: 10px; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;cursor: pointer;" onClick="if(self.' + this.name + 'Object){var cb=document.getElementById(\'check' + name + '\');cb.checked=cb.checked ? false : true;' + this.name + 'Object.translate(cb);cb.form.elements[\'' + autobrName + '\'].value=(cb.checked ? \'on\' : \'off\');}">autobr</td>';
 	}
 
 	if (showAutobr && (showRTF || showSpell)) {
@@ -87,47 +82,41 @@ function we_textarea(name, value, cols, rows, width, height, autobr, autobrName,
 	}
 
 	if (showSpell) {
-		out += '<td unselectable="on"><div unselectable="on">' + "\n";
-		out += '<img  style="border: 0px; margin: 1px;" unselectable="on" width="23" height="22" src="/webEdition/images/wysiwyg/spellcheck.gif"' + "\n";
-		out += 'onmouseover="if(self.' + this.name + 'Object){' + this.name + 'Object.ButtonOverUp(this);}"' + "\n";
-		out += 'onmouseout="if(self.' + this.name + 'Object){' + this.name + 'Object.ButtonNormal(this);}"' + "\n";
-		out += 'onmousedown="if(self.' + this.name + 'Object){' + this.name + 'Object.ButtonOverDown(this);}"' + "\n";
-		out += 'onclick="window.open(\'/webEdition/we/include/we_modules/spellchecker/weSpellchecker.php?editname=areatmp_' + encodeURI(name) + '\',\'spellchechecker\',\'height=450,width=500,scrollbars=0\');"></div></td>';
+		out += '<td unselectable="on"><div unselectable="on">' +
+						'<img  style="border: 0px; margin: 1px;" unselectable="on" width="23" height="22" src="/webEdition/images/wysiwyg/spellcheck.gif"' +
+						'onmouseover="if(self.' + this.name + 'Object){' + this.name + 'Object.ButtonOverUp(this);}"' +
+						'onmouseout="if(self.' + this.name + 'Object){' + this.name + 'Object.ButtonNormal(this);}"' +
+						'onmousedown="if(self.' + this.name + 'Object){' + this.name + 'Object.ButtonOverDown(this);}"' +
+						'onclick="window.open(\'/webEdition/we/include/we_modules/spellchecker/weSpellchecker.php?editname=areatmp_' + encodeURI(name) + '\',\'spellchechecker\',\'height=450,width=500,scrollbars=0\');"></div></td>';
 	}
 
 	if (showAutobr) {
 		out += '</table></td></tr>';
 	}
 
-	out += '<tr><td><textarea name="areatmp_';
-	out += name;
-	out += '"';
-	out += 'class="' + (classname ? classname + ' ' : '') + 'wetextarea wetextarea-' + origName + '"';
-	out += cols ? ' cols="' + cols + '"' : '';
-	out += wrap ? ' wrap="' + wrap + '"' : '';
-	out += rows ? ' rows="' + rows + '"' : '';
-	out += id ? ' id="' + id + '"' : '';
-	out += style ? ' style="' + style + '"' : '';
-	out += ' ' + changehandler + '="if (_EditorFrame && this.value != this.form.elements[\'';
-	out += name;
-	out += '\'].value){_EditorFrame.setEditorIsHot(true)};this.form.elements[\'';
-	out += name;
-	out += '\'].value=(';
-	out += this.name;
-	out += 'Object.autobr ? ';
-	out += this.name;
-	out += 'Object.nl2br(this.value,' + (this.xml ? 'true' : 'false') + ') : this.value);" onblur="if(self.' + this.name + 'Object){this.form.elements[\'';
-	out += name;
-	out += '\'].value=(';
-	out += this.name + 'Object.autobr ? ';
-	out += this.name;
-	out += 'Object.nl2br(this.value,' + (this.xml ? 'true' : 'false') + ') : this.value);}">';
-	if (val)
-		out += this.htmlspecialchars(this.autobr ? this.br2nl(val) : val);
-	out += '</textarea>';
-	out += '<input type="hidden" name="';
-	out += name;
-	out += '" value=""></td></tr></table>';
+	out += '<tr><td><textarea name="areatmp_' + name + '"' +
+					'class="' + (classname ? classname + ' ' : '') + 'wetextarea wetextarea-' + origName + '"' +
+					(cols ? ' cols="' + cols + '"' : '') +
+					(wrap ? ' wrap="' + wrap + '"' : '') +
+					(rows ? ' rows="' + rows + '"' : '') +
+					(id ? ' id="' + id + '"' : '') +
+					(style ? ' style="' + style + '"' : '') +
+					' ' + changehandler + '="if (_EditorFrame && this.value != this.form.elements[\'' +
+					name + '\'].value){_EditorFrame.setEditorIsHot(true)};this.form.elements[\'' +
+					name +
+					'\'].value=(' +
+					this.name +
+					'Object.autobr ? ' +
+					this.name +
+					'Object.nl2br(this.value,' + (this.xml ? 'true' : 'false') + ') : this.value);" onblur="if(self.' + this.name + 'Object){this.form.elements[\'' +
+					name +
+					'\'].value=(' +
+					this.name + 'Object.autobr ? ' +
+					this.name +
+					'Object.nl2br(this.value,' + (this.xml ? 'true' : 'false') + ') : this.value);}">' +
+					(val ? this.htmlspecialchars(this.autobr ? this.br2nl(val) : val) : '') +
+					'</textarea>' +
+					'<input type="hidden" name="' + name + '" value=""></td></tr></table>';
 	this.form = null;
 	document.writeln(out);
 	for (var i = 0; i < document.forms.length; i++) {
@@ -136,12 +125,13 @@ function we_textarea(name, value, cols, rows, width, height, autobr, autobrName,
 			break;
 		}
 	}
-	if (this.form != null) {
+	if (this.form !== null) {
 		this.form.elements[name].value = val;
 	}
 
 	this.translate = we_textarea_translate;
-	eval(this.obj + "=this");
+	//FIXME: do we need this as a global var?
+	window[this.obj] = this;
 }
 
 function we_textarea_translate(check) {
@@ -220,4 +210,34 @@ function we_textarea_ButtonDown(bt) {
 	bt.style.borderTop = "#000000 solid 1px";
 }
 
-weTextarea_count = 0;
+//used for we:userInput
+function open_wysiwyg_win() {
+	var url = "/webEdition/we_cmd_frontend.php?";
+	for (var i = 0; i < arguments.length; i++) {
+		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
+		if (i < (arguments.length - 1))
+			url += "&";
+	}
+
+	if (window.screen) {
+		h = ((screen.height - 100) > screen.availHeight) ? screen.height - 100 : screen.availHeight;
+		w = screen.availWidth;
+	}
+	var wyw = Math.max(arguments[2], arguments[9]);
+	wyw = wyw ? wyw : 800;
+	var wyh = parseInt(arguments[3]) + parseInt(arguments[10]);
+	wyh = wyh ? wyh : 600;
+	if (window.screen) {
+		var screen_height = ((screen.height - 50) > screen.availHeight) ? screen.height - 50 : screen.availHeight;
+		screen_height = screen_height - 40;
+		var screen_width = screen.availWidth - 10;
+		wyw = Math.min(screen_width, wyw);
+		wyh = Math.min(screen_height, wyh);
+	}
+// set new width & height;
+
+	url = url.replace(/we_cmd\[2\]=[^&]+/, "we_cmd[2]=" + wyw);
+	url = url.replace(/we_cmd\[3\]=[^&]+/, "we_cmd[3]=" + (wyh - arguments[10]));
+	new (WE !== undefined ? WE().util.jsWindow : jsWindow)(window, url, "we_wysiwygWin", -1, -1, Math.max(220, wyw + (document.all ? 0 : ((navigator.userAgent.toLowerCase().indexOf('safari') > -1) ? 20 : 4))), Math.max(100, wyh + 60), true, false, true);
+	//doPostCmd(arguments,"we_wysiwygWin");
+}

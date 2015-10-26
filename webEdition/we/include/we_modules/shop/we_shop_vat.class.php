@@ -58,7 +58,7 @@ class we_shop_vat{
 
 		$this->country = substr($territory, 0, 2);
 		$this->province = (strlen($territory) > 2 ? substr($territory, 3) : '');
-		$this->textTerritory = $textProvince ?: Zend_Locale::getTranslation($this->country, 'territory', array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
+		$this->textTerritory = $textProvince ?: we_base_country::getTranslation($this->country, we_base_country::TERRITORY, array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
 		$this->textTerritorySortable = str_replace(array('Ä', 'Ö', 'Ü', 'ä', 'ö', 'ü'), array('Ae', 'Oe', 'Ue', 'ae', 'oe', 'ue'), $this->textTerritory);
 
 	}

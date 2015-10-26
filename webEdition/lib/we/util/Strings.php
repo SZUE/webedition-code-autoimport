@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -28,7 +27,6 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 abstract class we_util_Strings{
-
 	const PRECISION = 2;
 
 	/**
@@ -104,11 +102,7 @@ abstract class we_util_Strings{
 	 * @return string
 	 */
 	static function shortenPath($path, $len){
-		if(strlen($path) <= $len || strlen($path) < 10){
-			return $path;
-		}
-		$l = ($len / 2) - 2;
-		return substr($path, 0, $l) . '...' . substr($path, $l * -1);
+		return we_base_util::shortenPath($path, $len);
 	}
 
 	/**
@@ -123,11 +117,7 @@ abstract class we_util_Strings{
 	 * @return string
 	 */
 	static function shortenPathSpace($path, $len){
-		if(strlen($path) <= $len || strlen($path) < 10){
-			return $path;
-		}
-		$l = $len;
-		return substr($path, 0, $l) . ' ' . self::shortenPathSpace(substr($path, $l), $len);
+		return we_base_util::shortenPathSpace($path, $len);
 	}
 
 	/**
@@ -140,18 +130,7 @@ abstract class we_util_Strings{
 	 * @return string
 	 */
 	static function formatNumber($number, $format = '', $precision = self::PRECISION){
-		switch($format){
-			case 'german':
-			case 'deutsch':
-				return number_format(floatval($number), $precision, ',', '.');
-			case 'french':
-				return number_format(floatval($number), $precision, ',', ' ');
-			case 'swiss':
-				return number_format(floatval($number), $precision, '.', "'");
-			case 'english':
-			default:
-				return number_format(floatval($number), $precision, '.', '');
-		}
+		return we_base_util::formatNumber($number, $format, $precision);
 	}
 
 	/**
@@ -168,9 +147,9 @@ abstract class we_util_Strings{
 	 */
 	static function version2number($version, $isApp = false){
 		if($isApp){
-			if(substr($version, 0, 1) == 0){
+			if($version{0} == 0){
 				if(strlen($version) == 3){
-					$numberStr = '0.0' . substr($version, 2, 1);
+					$numberStr = '0.0' . $version{2};
 					$number = (float) $numberStr;
 				} else {
 					$numberStr = '0.' . substr($version, 2, 2);
@@ -183,7 +162,7 @@ abstract class we_util_Strings{
 			}
 		} else {
 			$count = 3;
-			if(substr($version, 0, 1) == 6){
+			if($version{0} == 6){
 				$numberStr = str_replace('.', '', $version, $count);
 				$number = (float) $numberStr;
 			} else {
@@ -207,8 +186,10 @@ abstract class we_util_Strings{
 	 * @param float $number  The version number to convert into a string.
 	 * @param bool  $isApp   Handle minor version (default: false)
 	 * @return string
+	 * @deprecated since 6.5.0
 	 */
 	static function number2version($number, $isApp = false){
+		t_e('deprecated');
 
 		$mynumber = "$number";
 		$numbers = array();
@@ -269,12 +250,12 @@ abstract class we_util_Strings{
 	 * This function prints recursively any array or object.
 	 *
 	 * @param *       $val   The variable to print
- 	 * @param boolean $html  Whether to apply oldHtmlspecialchars (default: true)
+	 * @param boolean $html  Whether to apply oldHtmlspecialchars (default: true)
 	 * @param boolean $useTA Whether output is formated as textarea (dfault: false)
 	 * @return void
 	 */
 	static function p_r($val, $html = true, $useTA = false){
-		return p_r($val,$html,$useTA);
+		return p_r($val, $html, $useTA);
 	}
 
 }

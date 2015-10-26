@@ -117,12 +117,12 @@ class we_workflow_workflow extends we_workflow_base{
 	 */
 	function loadDocuments(){
 		$docTable = ($this->Type == self::OBJECT ? OBJECT_FILES_TABLE : FILE_TABLE );
-		$this->db->query('SELECT w.ID,d.Text,d.Icon FROM ' . WORKFLOW_DOC_TABLE . ' w JOIN ' . $docTable . ' d ON w.documentID=d.ID  WHERE w.workflowID=' . intval($this->ID) . ' AND Status=0');
+		$this->db->query('SELECT w.ID,d.Text,d.ContentType FROM ' . WORKFLOW_DOC_TABLE . ' w JOIN ' . $docTable . ' d ON w.documentID=d.ID  WHERE w.workflowID=' . intval($this->ID) . ' AND Status=0');
 		while($this->db->next_record()){
 			$newdoc = array(
 				'ID' => $this->db->f('ID'),
 				'Text' => $this->db->f('Text'),
-				'Icon' => $this->db->f('Icon')
+				'contentType' => $this->db->f('ContentType')
 			);
 			$this->documents[] = $newdoc;
 		}

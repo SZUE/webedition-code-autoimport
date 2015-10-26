@@ -37,7 +37,7 @@ function we_parse_tag_checkForm($attribs, $content, array $arr){
  */
 function we_tag_checkForm($attribs, $content){
 	//  dont make this in editMode
-	if(isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"]){
+	if(!empty($GLOBALS["we_editmode"])){
 		return "";
 	}
 
@@ -77,7 +77,7 @@ if(self.' . $onError . '){' .
 	if($mandatory){
 		$_fields = explode(',', $mandatory);
 		$jsMandatory = '//  check mandatory
-        var required = new Array("' . implode('", "', $_fields) . '");
+        var required = ["' . implode('", "', $_fields) . '"];
         missingReq = weCheckFormMandatory(formular, required);';
 	} else {
 		$jsMandatory = '';
@@ -85,7 +85,7 @@ if(self.' . $onError . '){' .
 
 	$jsEmail = ($email ? //  code to check Emails
 					'//  validate emails
-        var email = new Array("' . implode('", "', explode(',', $email)) . '");
+        var email = ["' . implode('", "', explode(',', $email)) . '"];
         wrongEmail = weCheckFormEmail(formular, email);' :
 					'');
 
@@ -97,7 +97,7 @@ if(self.' . $onError . '){' .
 			return parseError(g_l('parser', '[checkForm_password]'));
 		}
 		$jsPasword = '//  check passwords
-        var password = new Array("' . implode('", "', $_pwFields) . '");
+        var password = ["' . implode('", "', $_pwFields) . '"];
         pwError = weCheckFormPassword(formular, password);
         ';
 	} else {
@@ -127,8 +127,8 @@ if(self.' . $onError . '){' .
     );';
 			$checkFunction = 'function weCheckForm_id_' . $match . '(ev){
 
-        var missingReq = new Array(0);
-        var wrongEmail = new Array(0);
+        var missingReq = [0];
+        var wrongEmail = [0];
         var pwError    = false;
 
         formular = document.getElementById("' . $match . '");
@@ -158,8 +158,8 @@ if(self.' . $onError . '){' .
     );';
 			$checkFunction = '
     function weCheckForm_n_' . $match . '(ev){
-        var missingReq = new Array(0);
-        var wrongEmail = new Array(0);
+        var missingReq = [0];
+        var wrongEmail = [0];
         var pwError    = false;
 
         formular = document.forms["' . $match . '"];

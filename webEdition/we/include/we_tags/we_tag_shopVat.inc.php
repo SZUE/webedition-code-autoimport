@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_shopVat($attribs){
-	
+
 	if(!we_shop_category::isCategoryMode()){
 		$name = WE_SHOP_VAT_FIELD_NAME;
 
@@ -108,10 +108,10 @@ function we_tag_shopVat($attribs){
 					if(!$iso){
 						$lang = array_search($GLOBALS['WE_LANGUAGE'], getWELangs());
 						//TODO: get translation from we_shop_vat
-						return $translation = Zend_Locale::getTranslation($vat->$field, 'territory', $lang) ? : $vat->territory;
+						return $translation = we_base_country::getTranslation($vat->$field, we_base_country::LANGUAGE, $lang) ? : $vat->territory;
 					}
 					return $vat->territory;
-				default: 
+				default:
 					return $vat->$field;
 			}
 		}

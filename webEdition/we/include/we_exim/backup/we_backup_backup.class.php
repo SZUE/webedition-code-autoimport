@@ -78,8 +78,8 @@ class we_backup_backup extends we_backup_base{
 
 		$this->mode = 'xml';
 
-		$this->backup_dir = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR;
-		$this->backup_dir_tmp = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/';
+		$this->backup_dir = BACKUP_PATH;
+		$this->backup_dir_tmp = BACKUP_PATH . 'tmp/';
 	}
 
 	function splitFile2(){
@@ -135,7 +135,7 @@ class we_backup_backup extends we_backup_base{
 			return;
 		}
 		$tablename = $this->fixTableName($tablename);
-		$this->current_description = (isset($this->description["import"][strtolower($tablename)]) && $this->description["import"][strtolower($tablename)] ?
+		$this->current_description = (!empty($this->description["import"][strtolower($tablename)]) ?
 				$this->description["import"][strtolower($tablename)] :
 				g_l('backup', '[working]'));
 
@@ -305,7 +305,7 @@ class we_backup_backup extends we_backup_base{
 						$this->backup_step = 0;
 						$this->table_end = 0;
 
-						$this->table_end = f('SELECT COUNT(1) AS Count FROM ' . $this->backup_db->escape($table), 'Count', $this->backup_db);
+						$this->table_end = f('SELECT COUNT(1) FROM ' . $this->backup_db->escape($table), '', $this->backup_db);
 					}
 
 					$this->current_description = (isset($this->description["export"][strtolower($table)]) ?
@@ -379,7 +379,7 @@ class we_backup_backup extends we_backup_base{
 	 * Description: This function saves the dump to the backup directory.
 	 */
 	function printDump2BackupDir(){
-		$backupfilename = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $this->filename;
+		$backupfilename = BACKUP_PATH . $this->filename;
 		if($this->compress != self::NO_COMPRESSION && $this->compress != ""){
 			$this->dumpfilename = we_base_file::compress($this->dumpfilename, $this->compress);
 			$this->filename = $this->filename . '.' . we_base_file::getZExtension($this->compress);
@@ -425,7 +425,7 @@ class we_backup_backup extends we_backup_base{
 	 */
 	function isFixed($tab){
 		if(defined('OBJECT_X_TABLE') && stripos($tab, OBJECT_X_TABLE) !== false){
-			return !(isset($this->handle_options["object"]) && $this->handle_options["object"]);
+			return (empty($this->handle_options["object"]));
 		}
 		if(stripos($tab, "tblobject") !== false){
 			return true;
@@ -537,7 +537,7 @@ class we_backup_backup extends we_backup_base{
 	}
 
 	function saveState($of = ""){
-//FIXME: use __sleep/__wakeup + serialize/unserialize
+//FIXME: use __sleep/__wakeup
 		$save = $this->_saveState() . '
 $this->file_list=' . var_export($this->file_list, true) . ';';
 

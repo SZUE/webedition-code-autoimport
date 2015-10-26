@@ -6,4 +6,4 @@ CREATE TABLE ###TBLPREFIX###tblWebUserAutoLogin (
   PRIMARY KEY  (AutoLoginID,WebUserID),
   KEY `LastLogin` (`LastLogin`),
 	KEY WebUserID(WebUserID)
-) ENGINE=MyISAM;
+)  ENGINE=MyISAM;

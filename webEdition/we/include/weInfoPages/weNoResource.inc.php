@@ -23,17 +23,11 @@
  */
 we_html_tools::protect();
 
-echo we_html_tools::getHtmlTop() .
- STYLESHEET .
- we_html_element::jsElement('
-	top.toggleBusy(0);
-	var _EditorFrame = top.weEditorFrameController.getEditorFrame(window.name);
-	_EditorFrame.setEditorIsLoading(false);');
+echo we_html_tools::getHtmlTop(g_l('alert', '[noResourceTitle]'), '', '', STYLESHEET .
+	we_html_element::jsElement('
+	WE().layout.weEditorFrameController.getEditorFrame(window.name).setEditorIsLoading(false);'));
 ?>
-</head>
-
-<body class="weDialogBody">
-	<?php
+<body class="weDialogBody"><?php
 	echo we_html_tools::htmlDialogLayout('<p class="defaultfont">' . g_l('alert', '[noResource]') . '</p>', g_l('alert', '[noResourceTitle]'));
 	?>
 </body>

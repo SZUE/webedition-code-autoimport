@@ -27,7 +27,6 @@ function we_tag_userInput($attribs, $content){
 		return $foo;
 	}
 
-
 	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
 	$type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING);
 	$property = weTag_getAttribute('property', $attribs, false, we_base_request::BOOL);
@@ -137,20 +136,20 @@ function we_tag_userInput($attribs, $content){
 					$imgTag = $GLOBALS['we_doc']->getField($attribs, 'img');
 				}
 
-				$checked = (isset($_SESSION[$_imgDataId]['doDelete']) && $_SESSION[$_imgDataId]['doDelete']) ? ' checked' : '';
-
+				$checked = (!empty($_SESSION[$_imgDataId]['doDelete'])) ? ' checked' : '';
+				$inputstyle = ($size ? 'width:' . $size . 'em;' . $inputstyle : $inputstyle);
 				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
 	<tr>
-		<td class="weEditmodeStyle" colspan="2" align="center">' . $imgTag . '
+		<td class="weEditmodeStyle" colspan="2" style="text-align:center">' . $imgTag . '
 			<input type="hidden" name="WE_UI_IMG_DATA_ID_' . $name . '" value="' . $_imgDataId . '" /></td>
 	</tr>
 	<tr>
-		<td class="weEditmodeStyle" colspan="2" align="left">
-			<input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="' . implode(',', we_base_ContentTypes::inst()->getRealContentTypes(we_base_ContentTypes::IMAGE)) . '"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
+		<td class="weEditmodeStyle" colspan="2" style="text-align:left">
+			<input name="' . $fieldname . '" type="file" accept="' . implode(',', we_base_ContentTypes::inst()->getRealContentTypes(we_base_ContentTypes::IMAGE)) . '"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
 		</td>
 	</tr>
 	<tr>
-		<td class="weEditmodeStyle" colspan="2" align="left">
+		<td class="weEditmodeStyle" colspan="2" style="text-align:left">
 			<table class="weEditTable padding0 spacing0 border0">
 				<tr>
 					<td style="padding-right: 5px;"><input style="border:0px solid black;" type="checkbox" id="WE_UI_DEL_CHECKBOX_' . $name . '" name="WE_UI_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/></td>
@@ -170,11 +169,11 @@ function we_tag_userInput($attribs, $content){
 				return '<img src="' . $src . '" alt="" width="' . $_SESSION[$_imgDataId]["imgwidth"] . '" height="' . $_SESSION[$_imgDataId]["imgheight"] . '" />' . $hidden;
 			}
 
-			if(isset($_SESSION[$_imgDataId]['doDelete']) && $_SESSION[$_imgDataId]['doDelete']){
+			if(!empty($_SESSION[$_imgDataId]['doDelete'])){
 				return $hidden;
 			}
 
-			if((isset($_SESSION[$_imgDataId]['id']) && $_SESSION[$_imgDataId]['id']) || (isset($orgVal) && $orgVal)){//Fix #9835
+			if((!empty($_SESSION[$_imgDataId]['id'])) || (isset($orgVal) && $orgVal)){//Fix #9835
 				unset($attribs['width']);
 				unset($attribs['height']);
 				$attribs['id'] = $_SESSION[$_imgDataId]['id'] ? $_SESSION[$_imgDataId]['id'] : $orgVal;
@@ -219,22 +218,22 @@ function we_tag_userInput($attribs, $content){
 					unset($attribs['height']);
 
 					// Include Flash class
-					$flashmovieTag = (isset($attribs['id']) && $attribs['id'] ?
+					$flashmovieTag = (!empty($attribs['id']) ?
 							$GLOBALS['we_doc']->getField($attribs, 'flashmovie') :
 							'<img src="' . ICON_DIR . 'no_flashmovie.gif" alt="" width="64" height="64" />');
 				}
 
-				$checked = (isset($_SESSION[$_flashmovieDataId]['doDelete']) && $_SESSION[$_flashmovieDataId]['doDelete'] ? ' checked' : '');
-
+				$checked = (!empty($_SESSION[$_flashmovieDataId]['doDelete']) ? ' checked' : '');
+				$inputstyle = ($size ? 'width:' . $size . 'em;' . $inputstyle : $inputstyle);
 				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
 	<tr>
-		<td class="weEditmodeStyle" colspan="2" align="center">' . $flashmovieTag . '<input type="hidden" name="WE_UI_FLASHMOVIE_DATA_ID_' . $name . '" value="' . $_flashmovieDataId . '" /></td>
+		<td class="weEditmodeStyle" colspan="2" style="text-align:center">' . $flashmovieTag . '<input type="hidden" name="WE_UI_FLASHMOVIE_DATA_ID_' . $name . '" value="' . $_flashmovieDataId . '" /></td>
 	</tr>
 	<tr>
-		<td class="weEditmodeStyle" colspan="2" align="left"><input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="application/x-shockwave-flash"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/></td>
+		<td class="weEditmodeStyle" colspan="2" style="text-align:left"><input name="' . $fieldname . '" type="file" accept="application/x-shockwave-flash"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/></td>
 	</tr>
 	<tr>
-		<td class="weEditmodeStyle" colspan="2" align="left">
+		<td class="weEditmodeStyle" colspan="2" style="text-align:left">
 			<table class="weEditTable padding0 spacing0 border0">
 				<tr>
 					<td style="padding-right: 5px;"><input style="border:0px solid black;" type="checkbox" id="WE_UI_DEL_CHECKBOX_' . $name . '" name="WE_UI_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/></td>
@@ -252,9 +251,9 @@ function we_tag_userInput($attribs, $content){
 
 				return $hidden;
 			}
-			if(isset($_SESSION[$_flashmovieDataId]['id']) && $_SESSION[$_flashmovieDataId]['id']){
+			if(!empty($_SESSION[$_flashmovieDataId]['id'])){
 
-				if(isset($_SESSION[$_flashmovieDataId]['doDelete']) && $_SESSION[$_flashmovieDataId]['doDelete']){
+				if(!empty($_SESSION[$_flashmovieDataId]['doDelete'])){
 					return $hidden;
 				}
 
@@ -300,38 +299,38 @@ function we_tag_userInput($attribs, $content){
 				} else {
 					unset($attribs['width']);
 					unset($attribs['height']);
-					$quicktimeTag = (isset($attribs['id']) && $attribs['id'] ?
+					$quicktimeTag = (!empty($attribs['id']) ?
 							$GLOBALS['we_doc']->getField($attribs, 'quicktime') :
 							'<img src="' . ICON_DIR . 'no_quicktime.gif" alt="" width="64" height="64" />');
 				}
 
-				$checked = (isset($_SESSION[$_quicktimeDataId]["doDelete"]) && $_SESSION[$_quicktimeDataId]["doDelete"] ? ' checked' : '');
-
+				$checked = (!empty($_SESSION[$_quicktimeDataId]["doDelete"]) ? ' checked' : '');
+				$inputstyle = ($size ? 'width:' . $size . 'em;' . $inputstyle : $inputstyle);
 				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
-						<tr>
-							<td class="weEditmodeStyle" colspan="2" align="center">' . $quicktimeTag . '
-								<input type="hidden" name="WE_UI_QUICKTIME_DATA_ID_' . $name . '" value="' . $_quicktimeDataId . '" /></td>
-						</tr>
-						<tr>
-							<td class="weEditmodeStyle" colspan="2" align="left">
-								<input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="video/quicktime"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
-							</td>
-						</tr>
-						<tr>
-							<td class="weEditmodeStyle" colspan="2" align="left">
-								<table class="weEditTable padding0 spacing0 border0">
-									<tr>
-										<td style="padding-right: 5px;">
-											<input style="border:0px solid black;" type="checkbox" id="WE_UI_DEL_CHECKBOX_' . $name . '" name="WE_UI_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/>
-										</td>
-										<td>
-											<label for="WE_UI_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"') : '') . '>' . $checkboxtext . '</label>
-										</td>
-									</tr>
-								</table>
-							</td>
-						</tr>
-					</table>';
+	<tr>
+		<td class="weEditmodeStyle" colspan="2" style="text-align:center">' . $quicktimeTag . '
+			<input type="hidden" name="WE_UI_QUICKTIME_DATA_ID_' . $name . '" value="' . $_quicktimeDataId . '" /></td>
+	</tr>
+	<tr>
+		<td class="weEditmodeStyle" colspan="2" style="text-align:left">
+			<input name="' . $fieldname . '" type="file" accept="video/quicktime"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
+		</td>
+	</tr>
+	<tr>
+		<td class="weEditmodeStyle" colspan="2" style="text-align:left">
+			<table class="weEditTable padding0 spacing0 border0">
+				<tr>
+					<td style="padding-right: 5px;">
+						<input style="border:0px solid black;" type="checkbox" id="WE_UI_DEL_CHECKBOX_' . $name . '" name="WE_UI_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/>
+					</td>
+					<td>
+						<label for="WE_UI_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"') : '') . '>' . $checkboxtext . '</label>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>';
 			}
 			$hidden = '<input type="hidden" name="WE_UI_QUICKTIME_DATA_ID_' . $name . '" value="' . $_quicktimeDataId . '" />';
 
@@ -339,9 +338,9 @@ function we_tag_userInput($attribs, $content){
 				$src = '/' . ltrim(substr($_SESSION[$_quicktimeDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
 				return $hidden;
 			}
-			if(isset($_SESSION[$_quicktimeDataId]['id']) && $_SESSION[$_quicktimeDataId]['id']){
+			if(!empty($_SESSION[$_quicktimeDataId]['id'])){
 
-				if(isset($_SESSION[$_quicktimeDataId]['doDelete']) && $_SESSION[$_quicktimeDataId]['doDelete']){
+				if(!empty($_SESSION[$_quicktimeDataId]['doDelete'])){
 					return $hidden;
 				}
 
@@ -391,29 +390,29 @@ function we_tag_userInput($attribs, $content){
 					$imgTag = '<a href="' . $binaryTag[1] . '" target="_blank">' . $fn . '</a>';
 				}
 
-				$checked = (isset($_SESSION[$_binaryDataId]['doDelete']) && $_SESSION[$_binaryDataId]['doDelete'] ? ' checked' : '');
-
+				$checked = (!empty($_SESSION[$_binaryDataId]['doDelete']) ? ' checked' : '');
+				$inputstyle = ($size ? 'width:' . $size . 'em;' . $inputstyle : $inputstyle);
 				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
-						<tr>
-							<td class="weEditmodeStyle" colspan="2" align="center">' . $imgTag . '
-								<input type="hidden" name="WE_UI_BINARY_DATA_ID_' . $name . '" value="' . $_binaryDataId . '" /></td>
-						</tr>
-						<tr>
-							<td class="weEditmodeStyle" colspan="2" align="left">
-								<input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="application/*"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
-							</td>
-						</tr>
-						<tr>
-							<td class="weEditmodeStyle" colspan="2" align="left">
-								<table class="weEditTable padding0 spacing0 border0">
-									<tr>
-										<td style="padding-right: 5px;"><input style="border:0px solid black;" type="checkbox" id="WE_UI_DEL_CHECKBOX_' . $name . '" name="WE_UI_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/></td>
-										<td><label for="WE_UI_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"') : '') . '>' . $checkboxtext . '</label></td>
-									</tr>
-								</table>
-							</td>
-						</tr>
-					</table>';
+	<tr>
+		<td class="weEditmodeStyle" colspan="2" style="text-align:center">' . $imgTag . '
+			<input type="hidden" name="WE_UI_BINARY_DATA_ID_' . $name . '" value="' . $_binaryDataId . '" /></td>
+	</tr>
+	<tr>
+		<td class="weEditmodeStyle" colspan="2" style="text-align:left">
+			<input name="' . $fieldname . '" type="file" accept="application/*"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
+		</td>
+	</tr>
+	<tr>
+		<td class="weEditmodeStyle" colspan="2" style="text-align:left">
+			<table class="weEditTable padding0 spacing0 border0">
+				<tr>
+					<td style="padding-right: 5px;"><input style="border:0px solid black;" type="checkbox" id="WE_UI_DEL_CHECKBOX_' . $name . '" name="WE_UI_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/></td>
+					<td><label for="WE_UI_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"') : '') . '>' . $checkboxtext . '</label></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>';
 			}
 			if(!isset($_SESSION[$_binaryDataId])){
 				$_SESSION[$_binaryDataId] = array();
@@ -428,8 +427,8 @@ function we_tag_userInput($attribs, $content){
 				$src = '/' . ltrim(substr($_SESSION[$_binaryDataId]["serverPath"], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
 				return $hidden;
 			}
-			if(isset($_SESSION[$_binaryDataId]["id"]) && $_SESSION[$_binaryDataId]["id"]){
-				if(isset($_SESSION[$_binaryDataId]["doDelete"]) && $_SESSION[$_binaryDataId]["doDelete"]){
+			if(!empty($_SESSION[$_binaryDataId]["id"])){
+				if(!empty($_SESSION[$_binaryDataId]["doDelete"])){
 					return $hidden;
 				}
 
@@ -475,55 +474,21 @@ function we_tag_userInput($attribs, $content){
 				));
 				return we_getTextareaField($fieldname, ($content ? : $value), $atts);
 			}
-			echo we_html_element::jsElement('weFrontpageEdit=true;') .
-			we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
-			we_html_element::jsScript(JS_DIR . 'windows.js');
 
-			if(!$inlineedit){
-				//TODO: move js function open_wysiwyg_win to separate js file
-				echo we_html_element::jsScript(JS_DIR . 'weButton.js') .
-				we_html_element::jsScript(JS_DIR . 'weTinyMceDialogs.js') .
-				we_html_element::jsElement('
-function open_wysiwyg_win(){
-	//var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
-	var url = "' . WEBEDITION_DIR . 'we_cmd_frontend.php?";
-	for(var i = 0; i < arguments.length; i++) {
-	url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
-	if(i < (arguments.length - 1))
-		url += "&";
-	}
-
-	if (window.screen) {
-		h = ((screen.height - 100) > screen.availHeight ) ? screen.height - 100 : screen.availHeight;
-		w = screen.availWidth;
-	}
-	var wyw = Math.max(arguments[2],arguments[9]);
-	wyw = wyw ? wyw : 800;
-	var wyh = parseInt(arguments[3]) +parseInt(arguments[10]);
-	wyh = wyh ? wyh : 600;
-
-	if (window.screen) {
-		var screen_height = ((screen.height - 50) > screen.availHeight ) ? screen.height - 50 : screen.availHeight;
-		screen_height = screen_height - 40;
-		var screen_width = screen.availWidth-10;
-		wyw = Math.min(screen_width, wyw);
-		wyh = Math.min(screen_height, wyh);
-	}
-	// set new width & height;
-
-	url = url.replace(/we_cmd\[2\]=[^&]+/, "we_cmd[2]=" + wyw);
-	url = url.replace(/we_cmd\[3\]=[^&]+/, "we_cmd[3]="+ (wyh-arguments[10]));
-
-	new jsWindow(url,"we_wysiwygWin",-1,-1,Math.max(220,wyw+(document.all ? 0 : ((navigator.userAgent.toLowerCase().indexOf(\'safari\') > -1) ? 20 : 4))),Math.max(100,wyh+60),true,false,true);
-	//doPostCmd(arguments,"we_wysiwygWin");
-}');
-			}
 			$autobr = $autobrAttr ? 'on' : 'off';
 			$showAutobr = isset($attribs['autobr']);
 			$charset = weTag_getAttribute('charset', $attribs, 'iso-8859-1', we_base_request::STRING);
-			$ret = we_html_forms::weTextarea($fieldname, ($content ? : $value), $attribs, $autobr, 'autobr', $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, $charset, false, true, $name);
 
-			return $ret;
+			return we_html_element::jsElement('weFrontpageEdit=true;') .
+				we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
+				we_html_element::jsScript(JS_DIR . 'windows.js') .
+				(!$inlineedit ?
+					//FIXME: does tiny really use weButtons?!
+					STYLESHEET_BUTTONS_ONLY .
+					we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') :
+					''
+				) .
+				we_html_forms::weTextarea($fieldname, ($content ? : $value), $attribs, $autobr, 'autobr', $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, $charset, false, true, $name);
 
 		case 'checkbox' :
 			$atts = removeAttribs($attribs, array(
@@ -602,18 +567,14 @@ function open_wysiwyg_win(){
 					substr($lang, 0, 2) :
 					array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
 
-			if(!Zend_Locale::hasCache()){
-				Zend_Locale::setCache(getWEZendCache());
-			}
-
 			$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
 			foreach($topCountries as $countrykey => &$countryvalue){
-				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+				$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
 			}
 			unset($countryvalue);
 			$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
 			foreach($shownCountries as $countrykey => &$countryvalue){
-				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+				$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
 			}
 			unset($countryvalue);
 			$oldLocale = setlocale(LC_ALL, NULL);
@@ -655,12 +616,9 @@ function open_wysiwyg_win(){
 				$lccode = explode('_', $lcvalue);
 				$lcvalue = $lccode[0];
 			}
-			if(!Zend_Locale::hasCache()){
-				Zend_Locale::setCache(getWEZendCache());
-			}
 			$frontendLL = array();
 			foreach($frontendL as &$lcvalue){
-				$frontendLL[$lcvalue] = Zend_Locale::getTranslation($lcvalue, 'language', $langcode);
+				$frontendLL[$lcvalue] = we_base_country::getTranslation($lcvalue, we_base_country::LANGUAGE, $langcode);
 			}
 
 			$oldLocale = setlocale(LC_ALL, NULL);

@@ -618,18 +618,19 @@ class we_shop_category extends we_category{
 	 * @return object
 	 */
 	public static function getCountryFromCustomer($useFallback = false, $customer = false, $customerId = 0, $getAllData = false){
-		if(!$customer){
-			if(isset($_SESSION['webuser'])){
-				$customer = $_SESSION['webuser'];
-			} elseif($customerId){
-				$cust = new we_customer_customertag($GLOBALS[$customerId]);
-				$carray = $cust->getDBRecord();
-				unset($cust);
-				$customer = ($carray ? : false);
-			}
-		}
+		$customer = ($customer? :
+				(isset($_SESSION['webuser']) ?
+					$_SESSION['webuser'] :
+					($customerId ?
+						(getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($GLOBALS[$customerId]))? :
+							false) :
+						false
+					)
+				)
+			);
 
 		if($customer){
+			$customer = array_merge($customer, we_customer_customer::getEncryptedFields());
 			$stateField = we_shop_vatRule::getStateField();
 			if(isset($customer[$stateField]) && ($c = $customer[$stateField])){
 				return $getAllData ? array('country' => $c, 'isFallback' => false, "customer" => $customer) : $c;

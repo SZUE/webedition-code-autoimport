@@ -7,4 +7,3 @@ CREATE TABLE ###TBLPREFIX###tblPrefs (
   PRIMARY KEY (`userID`,`key`),
 	KEY lookup (`key`)
 ) ENGINE=MyISAM;
-

@@ -1,0 +1,241 @@
+/**
+ * webEdition CMS
+ *
+ * webEdition CMS
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
+ * This source is part of webEdition CMS. webEdition CMS is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionCMS/License.txt
+ *
+ * @category   webEdition
+ * @package    webEdition_base
+ * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+*/
+
+/* CSS for home screen*/
+
+body{
+	background-color: #F5F5F5;
+	margin:10px;
+}
+
+body.noHome {
+	background: #DDE7F1 url("/webEdition/images/backgrounds/blank_editor.gif") no-repeat fixed bottom right;
+	height:100%;
+	margin: 0px;
+	padding: 0px;
+	text-align: center;
+}
+
+.errorMessage {
+	position: relative;
+	top: 250px;
+	display: block;
+	border: 1px solid #999;
+	margin: auto;
+	padding: 1px;
+}
+
+.rssDiv,
+.rssDiv *{
+	background-color: transparent;
+}
+
+.rssDiv a {
+	color: black;
+	text-decoration:none;
+}
+
+div.le_widget{
+	margin-top:1ex;
+	margin-right:1em;
+	position:relative;
+	top:0px;
+	left:0px;
+}
+
+div.le_widget:first-child{
+	margin-top:0px;
+}
+
+.rpcBusy img{
+	width:32px;
+	height:32px;
+	border:0px;
+	margin-left:10px;
+
+}
+#divClone{
+	position:relative;
+	display:none;
+}
+
+.wildcard{
+	position:relative;
+	width:1px;
+	height:1px;
+}
+
+#widgets{
+	position:absolute;
+	top:27px;
+	left:45px;
+	z-index:3;
+}
+#widgets > table{
+	height:98%;
+}
+
+#widgets > table > tr >td{
+	vertical-align:top;
+	width:100%;
+	text-align:left
+}
+
+#le_tblWidgets{
+	table-layout:fixed;
+}
+.widgetTitle{
+	border-bottom: 2px solid white;
+	height:32px;
+	line-height: 32px;
+}
+.bgc_white{
+	background-color:#FFFFFF;
+}
+.widgetTitle_white{
+	background-color: #CCCCCC;
+}
+
+.label{
+	font-family:Arial,Helvetica,sans-serif;
+	font-size:15px;
+	color:white;
+	font-weight:bold;
+}
+
+.bgc_lightCyan{
+	background-color:#F1F5FF;
+}
+.widgetTitle_lightCyan{
+	background-color: #7FA5CA;
+}
+
+.bgc_blue{
+	background-color:#CCE4FC;
+}
+.widgetTitle_blue{
+	background-color: #7FA5CA;
+}
+
+.bgc_green{
+	background-color:#E2FDC7;
+}
+.widgetTitle_green{
+	background-color: #A4CB63;
+}
+
+.bgc_orange{
+	background-color:#FBF2C9;
+}
+.widgetTitle_orange{
+	background-color: #FFA343;
+}
+
+.bgc_red{
+	background-color:#FDE4CB;
+}
+.widgetTitle_red{
+	background-color: #CC6633;
+}
+
+.bgc_yellow{
+	background-color:#FDFDBA;
+}
+.widgetTitle_yellow{
+	background-color: #CBCB5D;
+}
+
+.widget{
+	border-radius: 10px;
+	width:100%;
+	border: 1px solid #B7B7B7;
+}
+
+.widget td{
+	padding: 0px;
+	vertical-align: top;
+}
+
+.widget_controls table{
+	border-spacing: 0px;
+}
+.widget_controls{
+	border-spacing: 0px;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	width:100%;
+	background-color:lightgrey;/*for old browsers*/
+	background: linear-gradient(white, #E1E1E1 50%);/*edit/editfooterback.gif*/
+	height: 16px;
+	border-bottom: 1px solid #B7B7B7;
+	font-size: 10px;
+	color: #ababab;
+	padding-right: 3px;
+}
+.widget_controls i.fa-stack-1x:hover{
+	color:black;
+}
+
+div.content{
+	text-align:left;
+	vertical-align:top;
+	padding-top:10px;
+	padding-bottom:11px;
+}
+
+div.widgetTitle,
+div.content{
+	padding-left:11px;
+	padding-right:11px;
+}
+
+td.mfdIcon,
+td.upbIcon,
+td.mdcIcon{
+	width:20px;
+	height:20px;
+	padding-right:4px;
+}
+
+#users_online td{
+	vertical-align:middle;
+}
+
+#users_online td.we-user{
+	font-weight:bold;
+}
+
+td.sctFileIcon{
+	width:34px;
+	height:34px;
+	padding-right:5px;
+	padding-bottom:3px;
+	cursor:pointer;
+}
+
+td.sctText{
+	vertical-align:middle;
+	font-weight:bold;
+	cursor:pointer;
+}

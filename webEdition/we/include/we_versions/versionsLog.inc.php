@@ -22,65 +22,29 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $versionsLogView = new we_versions_logView();
-$out = $versionsLogView->printContent();
 
 echo we_html_tools::getHtmlTop(g_l('versions', '[versions_log]')) .
  STYLESHEET .
- we_html_element::jsScript(JS_DIR . 'windows.js') .
- we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
- we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
- we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js');
-
-echo $versionsLogView->getJS();
-
-$closeButton = we_html_button::create_button("close", "javascript:window.close();");
+ we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
+ we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
+ we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
+ $versionsLogView->getJS().
+ we_html_element::cssLink(CSS_DIR.'messageConsole.css');
 ?>
-<style type="text/css">
-
-	#headlineDiv {
-		height				: 40px;
-	}
-	#headlineDiv div {
-		padding				: 10px 0 0 15px;
-	}
-
-	#versionsDiv {
-		background			: #fff;
-		overflow			: auto;
-		height				: 420px ! important;
-		margin				: 0px ! important;
-	}
-
-	.dialogButtonDiv {
-		left				: 0;
-		height				: 40px;
-		background-image	: url(<?php echo IMAGE_DIR; ?>edit/editfooterback.gif);
-		position			: absolute;
-		bottom				: 0;
-		width				: 100%;
-	}
-
-
-</style>
-
 </head>
 
 <body class="weDialogBody">
-
 	<div id="headlineDiv">
 		<div class="weDialogHeadline">
 			<?php echo g_l('versions', '[versions_log]') ?>
 		</div>
 	</div>
-	<div id="versionsDiv">
-		<?php
-		echo $out;
-		?>
-
-	</div>
+	<div id="versionsDiv"><?php
+		echo $versionsLogView->printContent();
+		?></div>
 	<div class="dialogButtonDiv">
 		<div style="position:absolute;top:10px;right:20px;">
-			<?php echo $closeButton; ?>
+			<?php echo we_html_button::create_button(we_html_button::CLOSE, "javascript:window.close();"); ?>
 		</div>
 	</div>
 </body>

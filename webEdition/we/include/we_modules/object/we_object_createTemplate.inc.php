@@ -24,7 +24,7 @@
  */
 function getObjectTags($id, $isField = false){
 	$tableInfo = we_objectFile::getSortedTableInfo($id, true);
-	$content = '<table cellpadding="2" cellspacing="0" border="1" width="400">';
+	$content = '<table style="border:1px solid black;width:400px">';
 	$regs = array();
 	foreach($tableInfo as $cur){
 		if(preg_match('/(.+?)_(.*)/', $cur["name"], $regs)){
@@ -42,7 +42,7 @@ function getMultiObjectTags($name){
 	}
 	$id = $_SESSION['weS']['we_data'][$cmd3][0]["elements"][we_objectFile::TYPE_MULTIOBJECT . '_' . $name . "class"]["dat"];
 	$tableInfo = we_objectFile::getSortedTableInfo($id, true);
-	$content = '<table cellpadding="2" cellspacing="0" border="1" width="400">';
+	$content = '<table style="border:1px solid black;width:400px">';
 
 	//FIXME: causes internal server error
 	$regs = array();
@@ -118,7 +118,6 @@ function getTmplTableRow($type, $name, $isField = false){
 $cmd3 = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 3);
 
 echo we_html_tools::getHtmlTop(g_l('weClass', '[generateTemplate]')) .
- we_html_element::jsScript(JS_DIR . 'windows.js') .
  STYLESHEET;
 
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
@@ -147,7 +146,7 @@ $content = '<html>
 		<we:keywords></we:keywords>
 	</head>
 	<body>
-		<table cellpadding="2" cellspacing="0" border="1" width="400">
+		<table style="border1px solid black;width:400px">
 ';
 
 if($sort){
@@ -165,7 +164,7 @@ if($_SESSION['weS']['we_data'][$cmd3][0]["ID"]){
 		<p>
 		<we:listview type="object" classid="' . $_SESSION['weS']['we_data'][$cmd3][0]["ID"] . '" rows="10">
 			<we:repeat>
-		<p><table cellpadding="2" cellspacing="0" border="1" width="400">';
+		<p><table style="border:1px solid black;width:400px">';
 
 
 	if($sort){
@@ -180,13 +179,13 @@ if($_SESSION['weS']['we_data'][$cmd3][0]["ID"]){
 	$content .= '</table></p>
 			</we:repeat>
 			<we:ifFound>
-				<p><table border="0" cellpadding="0" cellspacing="0" width="400">
+				<p><table class="default" width="400">
 					<tr>
 						<we:ifBack>
 							<td><we:back>back</we:back></td>
 						</we:ifBack>
 						<we:ifNext>
-							<td align="right"><we:next>next</we:next></td>
+							<td style="text-align:right"><we:next>next</we:next></td>
 						</we:ifNext>
 					</tr>
 				</table></p>
@@ -206,13 +205,15 @@ $content .= '
 $_SESSION['weS']['content'] = $content;
 
 $buttons = we_html_button::position_yes_no_cancel(
-		we_html_button::create_button("save", "javascript:if(document.forms['we_form'].we_" . $tmpl->Name . "_Filename.value != ''){ document.forms['we_form'].action='" . WE_OBJECT_MODULE_DIR . "we_object_createTemplatecmd.php';document.forms['we_form'].submit();}else{ " . we_message_reporting::getShowMessageCall(g_l('alert', '[input_file_name]'), we_message_reporting::WE_MESSAGE_ERROR) . " }"), null, we_html_button::create_button("cancel", "javascript:self.close();")
+		we_html_button::create_button(we_html_button::SAVE, "javascript:if(document.we_form.we_" . $tmpl->Name . "_Filename.value != ''){ document.we_form.action='" . WE_OBJECT_MODULE_DIR . "we_object_createTemplatecmd.php';document.we_form.submit();}else{ " . we_message_reporting::getShowMessageCall(g_l('alert', '[input_file_name]'), we_message_reporting::WE_MESSAGE_ERROR) . " }"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();")
 );
 
 
-echo we_html_tools::htmlDialogLayout($tmpl->formPath(), g_l('weClass', '[generateTemplate]'), $buttons) . '
-<input type="hidden" name="SID" value="' . $tmpl->Name . '" />
-<input type="hidden" name="we_cmd[3]" value="' . $cmd3 . '" />
-<input type="hidden" name="we_cmd[2]" value="' . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 2) . '" />
+echo we_html_tools::htmlDialogLayout($tmpl->formPath(), g_l('weClass', '[generateTemplate]'), $buttons) .
+ we_html_element::htmlHiddens(array(
+	"SID" => $tmpl->Name,
+	"we_cmd[3]" => $cmd3,
+	"we_cmd[2]" => we_base_request::_(we_base_request::RAW, 'we_cmd', '', 2)
+)) . '
 </form>
 </body></html>';

@@ -1,0 +1,214 @@
+/**
+ * webEdition SDK
+ *
+ * webEdition CMS
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
+ * This source is part of the webEdition SDK. The webEdition SDK is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU Lesser General Public License can be found at
+ * http://www.gnu.org/licenses/lgpl-3.0.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionSDK/License.txt
+ *
+ *
+ * @category   we
+ * @package    we_ui
+ * @subpackage we_ui_layout
+ * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
+ */
+
+#treetable{
+	margin: 0px;
+	background-color: #F3F7FF;
+	padding: 0px;
+	/*padding-left:1ex;*/
+}
+
+#treetable {
+	color: black;
+	border-width: 0px;
+	border-collapse: collapse;
+	padding: 0px;
+	padding-left:1ex;
+}
+
+#treetable table{
+	border: none;
+	width: 100%;
+	border-spacing: 0px;
+	border-collapse: collapse;
+}
+
+#treetable label{
+	padding-left:.5ex;
+}
+
+#treetable span.treeKreuz{
+	width: 16px;
+	height: 1.8em;
+	vertical-align: middle;
+	position: relative;
+	display:inline-block;
+	/*for lines*/
+	border: 0px solid darkgray;
+}
+
+#treetable .item,
+#treetable .group,
+#treetable a,
+#treetable .selected_item,
+#treetable .selected_group{
+	color: black;
+	cursor: pointer;
+}
+
+#treetable .disabled a,
+#treetable a,
+#treetable a:active,
+#treetable a:visited,
+#treetable .item a,
+#treetable .group a,
+#treetable .selected_item a,
+#treetable .selected_group a,
+#treetable .notpublished a,.selected_open_group a,
+#treetable .selected_notpublished_item a ,
+#treetable .selected_changed_item a,
+#treetable .checked_item a,
+#treetable .checked_group a,
+#treetable .checked_notpublished a,
+#treetable .checked_changed a,
+#treetable .selected_notpublished_item a,
+#treetable .selected_changed_item a,
+#treetable .selected_open_group a {
+	text-decoration:none;
+}
+
+#treetable .group,
+#treetable .selected_group {
+	font-weight: bold;
+}
+
+#treetable .selected_item,
+#treetable .selected_group{
+	background-color: #6070B6;
+}
+
+#treetable .loginDenied {
+	color:red;
+}
+
+#treetable .selected_notpublished_item,
+#treetable .selected_changed_item,
+#treetable .selected_open_group,
+#treetable .checked_changed,
+#treetable .checked_item,
+#treetable .checked_group,
+#treetable .checked_notpublished{
+	color: #3366CC;
+	background-color: #D4DBFA;
+	cursor: pointer;
+}
+
+#treetable .selected_open_group,
+#treetable .checked_group{
+	color: black;
+	font-weight: bold;
+}
+
+#treetable .disabled {
+	color: grey;
+	cursor: pointer;
+}
+
+#treetable .checked_item,
+#treetable .checked_group{
+	color: black;
+}
+
+#treetable .notpublished,
+#treetable .checked_notpublished,
+#treetable .selected_notpublished_item {
+	color: red;
+}
+
+#treetable .bold{
+	font-weight: bold;
+}
+
+#treetable .blue{
+	color:blue;
+}
+
+#treetable .red{
+	color:red;
+}
+/*change fa sizes in tree*/
+#treetable fa-stack{
+	height: 1em;
+	line-height: 1em;
+	width: 1em;
+}
+#treetable i.fa-folder-open,
+#treetable i.fa-folder{
+	color: #ADC5E3;
+}
+
+#treetable span.threedots{
+	display:inline-block;
+	background-color:lightgrey;
+	width:80%;
+	text-align:center;
+}
+
+#treetable span.strich{
+	width:1ex;
+	margin-left:1ex;
+	border-left-width: 1px;
+}
+
+
+#treetable span.kreuzung{
+	width: 1ex;
+	margin-left:1ex;
+	border-left-width: 1px;
+}
+
+#treetable span.kreuzung::before,
+#treetable span.kreuzungend::before{
+	content:" ";
+	display:inline-block;
+	position: absolute;
+	top: 1.4ex;
+	width:1em;
+	border-bottom:1px solid darkgrey;
+}
+
+#treetable span.kreuzungend{
+	width:1ex;
+	margin-left:1ex;
+	border-left: 1px solid darkgrey;
+	height:.8em;
+	margin-bottom: 1em;
+}
+
+#treetable span.kreuzung i::before,
+#treetable span.kreuzungend i::before{
+	position: absolute;
+	top:0px;
+	left:-5px;
+}
+
+#treetable .selected_group,
+#treetable .selected_item {
+	background-color: #D4DBFA;
+}
+#treetable .selected_open_group {
+	color: black;
+}

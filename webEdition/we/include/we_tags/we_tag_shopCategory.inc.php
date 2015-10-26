@@ -45,7 +45,7 @@ function we_tag_shopCategory($attribs){
 		}
 
 		if($id && $dosave){
-			$ret .= we_html_element::htmlHidden(array('name' => 'we_' . $GLOBALS['we_doc']->Name . '_category[' . WE_SHOP_CATEGORY_FIELD_NAME . ']', 'value' => $id));
+			$ret .= we_html_element::htmlHidden('we_' . $GLOBALS['we_doc']->Name . '_category[' . WE_SHOP_CATEGORY_FIELD_NAME . ']', $id);
 		}
 	}
 

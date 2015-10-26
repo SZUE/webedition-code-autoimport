@@ -36,12 +36,12 @@ function we_tag_select($attribs, $content){
 	if(!$GLOBALS['we_editmode']){
 		return $val;
 	}
-	
+
 	$onchange = weTag_getAttribute('onchange', $attribs, '', we_base_request::JS);
 	$reload = weTag_getAttribute('reload', $attribs, false, we_base_request::BOOL);
 	switch(weTag_getAttribute('type', $attribs, '', we_base_request::STRING)){
 		case 'csv':
-			$vals = explode(',', weTag_getAttribute('values', $attribs, $content, we_base_request::RAW));
+			$vals = weTag_getAttribute('values', $attribs, $content, we_base_request::STRING_LIST);
 			$content = '';
 			foreach($vals as $cur){
 				$content.=($cur == $val ?

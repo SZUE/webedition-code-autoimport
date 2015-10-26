@@ -27,7 +27,7 @@ function we_tag_saveRegisteredUser($attribs){
 	$userempty = weTag_getAttribute('userempty', $attribs, '', we_base_request::STRING);
 	$passempty = weTag_getAttribute('passempty', $attribs, '', we_base_request::STRING);
 	$changesessiondata = weTag_getAttribute('changesessiondata', $attribs, true, we_base_request::BOOL);
-	$default_register = f('SELECT Value FROM ' . CUSTOMER_ADMIN_TABLE . ' WHERE Name="default_saveRegisteredUser_register"') === 'true';
+	$default_register = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="webadmin"  AND pref_name="default_saveRegisteredUser_register"') === 'true';
 	$registerallowed = (isset($attribs['register']) ? weTag_getAttribute('register', $attribs, $default_register, we_base_request::BOOL) : $default_register);
 	$protected = weTag_getAttribute('protected', $attribs, '', we_base_request::STRING_LIST);
 	$allowed = weTag_getAttribute('allowed', $attribs, '', we_base_request::STRING_LIST);
@@ -43,11 +43,11 @@ function we_tag_saveRegisteredUser($attribs){
 	$password = we_base_request::_(we_base_request::RAW, 's', false, 'Password');
 	//register new User
 	if(($uid === false || $uid <= 0) && (!isset($_SESSION['webuser']['ID'])) && $registerallowed && (!isset($_SESSION['webuser']['registered']) || !$_SESSION['webuser']['registered'])){ // neuer User
-		if(strlen($username) == 0){
+		if(!$username){
 			we_tag_saveRegisteredUser_keepInput();
 			$GLOBALS['ERROR']['saveRegisteredUser'] = we_customer_customer::PWD_USER_EMPTY;
 			if($userempty !== ''){
-				echo getHtmlTag('script', array('type' => 'text/javascript'), we_message_reporting::getShowMessageCall(($userempty ? : g_l('modules_customer', '[username_empty]')), we_message_reporting::WE_MESSAGE_FRONTEND));
+				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(($userempty ? : g_l('modules_customer', '[username_empty]')), we_message_reporting::WE_MESSAGE_FRONTEND));
 			}
 			return;
 		}
@@ -56,15 +56,15 @@ function we_tag_saveRegisteredUser($attribs){
 			we_tag_saveRegisteredUser_keepInput();
 			$GLOBALS['ERROR']['saveRegisteredUser'] = we_customer_customer::PWD_USER_EXISTS;
 			if($userexists !== ''){
-				echo getHtmlTag('script', array('type' => 'text/javascript'), we_message_reporting::getShowMessageCall(sprintf(($userexists ? : g_l('modules_customer', '[username_exists]')), $username), we_message_reporting::WE_MESSAGE_FRONTEND));
+				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(($userexists ? : g_l('modules_customer', '[username_exists]')), $username), we_message_reporting::WE_MESSAGE_FRONTEND));
 			}
 			return;
 		}
-		if(strlen($password) == 0){
+		if(!$password){
 			we_tag_saveRegisteredUser_keepInput();
 			$GLOBALS['ERROR']['saveRegisteredUser'] = we_customer_customer::PWD_FIELD_NOT_SET;
 			if($passempty !== ''){
-				echo getHtmlTag('script', array('type' => 'text/javascript'), we_message_reporting::getShowMessageCall(($passempty ? : g_l('modules_customer', '[password_empty]')), we_message_reporting::WE_MESSAGE_FRONTEND));
+				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(($passempty ? : g_l('modules_customer', '[password_empty]')), we_message_reporting::WE_MESSAGE_FRONTEND));
 			}
 			return;
 		}
@@ -109,7 +109,7 @@ function we_tag_saveRegisteredUser($attribs){
 		if(f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $GLOBALS['DB_WE']->escape($weUsername) . '" AND ID!=' . intval($_SESSION['webuser']['ID']))){
 			$GLOBALS['ERROR']['saveRegisteredUser'] = we_customer_customer::PWD_USER_EXISTS;
 			if($userexists !== ''){
-				echo getHtmlTag('script', array('type' => 'text/javascript'), we_message_reporting::getShowMessageCall(sprintf($userexists ? : g_l('modules_customer', '[username_exists]'), $weUsername), we_message_reporting::WE_MESSAGE_FRONTEND));
+				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf($userexists ? : g_l('modules_customer', '[username_exists]'), $weUsername), we_message_reporting::WE_MESSAGE_FRONTEND));
 			}
 			return;
 		}
@@ -119,13 +119,13 @@ function we_tag_saveRegisteredUser($attribs){
 
 			we_saveCustomerImages();
 			$set_a = we_tag_saveRegisteredUser_processRequest($protected, $allowed);
-			$password = we_base_request::_(we_base_request::RAW, 's', false, 'Password');
+			$password = we_base_request::_(we_base_request::RAW_CHECKED, 's', false, 'Password');
 			if($password !== false && $password != we_customer_customer::NOPWD_CHANGE){
-				if(strlen($password) == 0){
+				if(!$password){
 					we_tag_saveRegisteredUser_keepInput();
 					$GLOBALS['ERROR']['saveRegisteredUser'] = we_customer_customer::PWD_FIELD_NOT_SET;
 					if($passempty !== ''){
-						echo getHtmlTag('script', array('type' => 'text/javascript'), we_message_reporting::getShowMessageCall(($passempty ? : g_l('modules_customer', '[password_empty]')), we_message_reporting::WE_MESSAGE_FRONTEND));
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(($passempty ? : g_l('modules_customer', '[password_empty]')), we_message_reporting::WE_MESSAGE_FRONTEND));
 					}
 					return;
 				}
@@ -147,14 +147,14 @@ function we_tag_saveRegisteredUser($attribs){
 	}
 
 	//die neuen daten in die session schreiben
-	$oldReg = isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'];
+	$oldReg = !empty($_SESSION['webuser']['registered']);
 	if($changesessiondata && $oldReg){
 		//keep Password if known
 		if(SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_PASSWORD){
 			//FIXME: on register password is in $_REQUEST['s']['Password']
 			$oldPwd = $_SESSION['webuser']['_Password'];
 		}
-		$_SESSION['webuser'] = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $_SESSION['webuser']['ID'], null, MYSQL_ASSOC);
+		$_SESSION['webuser'] = array_merge(getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $_SESSION['webuser']['ID'], null, MYSQL_ASSOC), we_customer_customer::getEncryptedFields());
 		if((SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_DBPASSWORD) == 0){
 			unset($_SESSION['webuser']['Password']);
 		}
@@ -208,11 +208,11 @@ function we_saveCustomerImages(){
 						$_text = $_fileName . $_extension;
 
 						//image needs to be scaled
-						if((isset($_SESSION['webuser']['imgtmp'][$imgName]['width']) && $_SESSION['webuser']['imgtmp'][$imgName]['width']) ||
-							(isset($_SESSION['webuser']['imgtmp'][$imgName]['height']) && $_SESSION['webuser']['imgtmp'][$imgName]['height'])){
+						if((!empty($_SESSION['webuser']['imgtmp'][$imgName]['width'])) ||
+							(!empty($_SESSION['webuser']['imgtmp'][$imgName]['height']))){
 							$imageData = we_base_file::load($_serverPath);
 							$thumb = new we_thumbnail();
-							$thumb->init('dummy', $_SESSION['webuser']['imgtmp'][$imgName]['width'], $_SESSION['webuser']['imgtmp'][$imgName]['height'], $_SESSION['webuser']['imgtmp'][$imgName]['keepratio'], $_SESSION['webuser']['imgtmp'][$imgName]['maximize'], false, false, '', 'dummy', 0, '', '', $_extension, $we_size[0], $we_size[1], $imageData, '', $_SESSION['webuser']['imgtmp'][$imgName]['quality'], true);
+							$thumb->init('dummy', $_SESSION['webuser']['imgtmp'][$imgName]['width'], $_SESSION['webuser']['imgtmp'][$imgName]['height'], array($_SESSION['webuser']['imgtmp'][$imgName]['keepratio'] ? we_thumbnail::OPTION_RATIO : 0, $_SESSION['webuser']['imgtmp'][$imgName]['maximize'] ? we_thumbnail::OPTION_MAXSIZE : 0), '', 'dummy', 0, '', '', $_extension, $we_size[0], $we_size[1], $imageData, '', $_SESSION['webuser']['imgtmp'][$imgName]['quality'], true);
 
 							$imgData = '';
 							$thumb->getThumb($imgData);
@@ -287,6 +287,7 @@ function we_tag_saveRegisteredUser_keepInput(){
 
 function we_tag_saveRegisteredUser_processRequest(array $protected, array $allowed){
 	$set = array();
+	$allEncryptedFields = we_customer_customer::getEncryptedFields();
 
 	foreach($_REQUEST['s'] as $name => $val){
 		switch($name){
@@ -294,15 +295,13 @@ function we_tag_saveRegisteredUser_processRequest(array $protected, array $allow
 				$set['Username'] = we_base_util::rmPhp($val);
 				$set['Path'] = '/' . we_base_util::rmPhp($val);
 				$set['Text'] = we_base_util::rmPhp($val);
-				$set['Icon'] = 'customer.gif';
 				break;
 			case 'Text':
 			case 'Path':
-			case 'Icon':
 			case 'ID':
 				break;
 			case 'Password':
-				if($val == we_customer_customer::NOPWD_CHANGE || strlen($val) == 0){
+				if($val == we_customer_customer::NOPWD_CHANGE || !$val){
 					continue;
 				}
 				$val = we_customer_customer::cryptPassword($val);
@@ -311,7 +310,10 @@ function we_tag_saveRegisteredUser_processRequest(array $protected, array $allow
 					($allowed && !in_array($name, $allowed))){
 					continue;
 				}
-				$set[$name] = $val;
+				$set[$name] = (isset($allEncryptedFields[$name]) && $val != we_customer_customer::ENCRYPTED_DATA ?
+						we_customer_customer::cryptData(we_base_util::rmPhp($val), SECURITY_ENCRYPTION_KEY, false) :
+						we_base_util::rmPhp($val)
+					);
 				break;
 		}
 	}

@@ -22,9 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-if(str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == str_replace(dirname(__FILE__), '', __FILE__)){
-	exit();
-}
 
 list($pad_header_enc, $pad_csv) = explode(',', $aProps[3]);
 
@@ -38,18 +35,14 @@ $_iFrmPadAtts['src'] = WE_INCLUDES_DIR . 'we_widgets/mod/pad.php?' . http_build_
 				6 => $aProps[1],
 				7 => 'home')));
 $_iFrmPadAtts['id'] = 'm_' . $iCurrId . '_inline';
-$_iFrmPadAtts['style'] = 'width:' . $iWidth . 'px;height:287px';
+$_iFrmPadAtts['style'] = 'width:100%;height:287px';
 $_iFrmPadAtts['scrolling'] = 'no';
 $_iFrmPadAtts['marginheight'] = 0;
 $_iFrmPadAtts['marginwidth'] = 0;
 $_iFrmPadAtts['frameborder'] = 0;
 
-$_iFrmPad = str_replace('>', ' allowtransparency="true">', getHtmlTag('iframe', $_iFrmPadAtts, '', true));
+$oTblDiv = str_replace('>', ' allowtransparency="true">', getHtmlTag('iframe', $_iFrmPadAtts, '', true));
 
-$oTblCont = new we_html_table(array(
-	"cellpadding" => 0, "cellspacing" => 0, "border" => 0
-		), 1, 1);
-$oTblCont->setCol(0, 0, null, $_iFrmPad);
 $aLang = array(
 	g_l('cockpit', '[notes]') . " - " . base64_decode($pad_header_enc), ""
 );

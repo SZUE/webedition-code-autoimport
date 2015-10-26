@@ -3,6 +3,7 @@
 abstract class we_base_moduleInfo{
 
 	const BANNER = 'banner';
+	const COLLECTION = 'collection';
 	const CUSTOMER = 'customer';
 	const EDITOR = 'editor';
 	const EXPORT = 'export';

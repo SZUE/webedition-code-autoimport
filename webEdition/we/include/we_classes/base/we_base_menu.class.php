@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_base_menu{
-
 	private $entries;
 	private $lcmdFrame = '';
 	private $menuaction = '';
@@ -41,16 +40,19 @@ class we_base_menu{
 	}
 
 	public function getJS(){
-		return we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
+		return we_html_element::jsScript(JS_DIR . 'we_lcmd.js') .
 			we_html_element::jsElement('
-function menuaction(cmd) {
-	' . $this->lcmdFrame . '.location.replace("' . WEBEDITION_DIR . 'we_lcmd.php?we_cmd[0]="+cmd);
+function menuaction(cmd,cmd1) {
+if(cmd1===undefined){
+we_lcmd(cmd);
+}else{
+we_lcmd(cmd,cmd1);
+}
 }');
 	}
 
 	public function getHTML(){
-		$out = '<span class="preload1"></span><span class="preload2"></span><span class="preload3"></span><span class="preload4"></span>' .
-			'<ul id="nav">';
+		$out = '<ul id="nav">';
 		$menus = array();
 		foreach($this->entries as $id => $e){
 			if($e['parent'] == 0){
@@ -70,8 +72,7 @@ function menuaction(cmd) {
 		foreach($menus as $menu){
 			$foo = $menu['code'];
 			$this->h_pCODE($this->entries, $foo, $menu['id'], '');
-			$foo .= '</ul></div></li>';
-			$out .= $foo;
+			$out .= $foo . '</ul></div></li>';
 		}
 
 		$out .= '</ul>';
@@ -118,18 +119,18 @@ function menuaction(cmd) {
 						($e['text'][$GLOBALS['WE_LANGUAGE']] ? : '') :
 						(isset($e['text']) ? $e['text'] : ''));
 
-				if(isset($e['hide']) && $e['hide']){
+				if(!empty($e['hide'])){
 
 				} else {
-					if((!(isset($e['cmd']) && $e['cmd'])) && $mtext){
+					if(empty($e['cmd']) && $mtext){
 						if($e['enabled'] == 1){
-							$opt .= '<li><a class="fly" href="#void">' . $mtext . '</a><ul>' . "\n";
+							$opt .= '<li><a class="fly" href="#void">' . $mtext . '<i class="fa fa-caret-right"></i></a><ul>';
 							$this->h_pCODE($men, $opt, $id, $newAst);
-							$opt .= '</ul></li>' . "\n";
+							$opt .= '</ul></li>';
 						}
 					} else if($mtext){
 						if($e['enabled'] == 1){
-							$opt .= '<li><a href="#void" onclick="' . $this->menuaction . 'menuaction(\'' . $e["cmd"] . '\')">' . $mtext . '</a></li>';
+							$opt .= '<li><a href="#void" onclick="' . $this->menuaction . 'menuaction(\'' . (is_array($e["cmd"]) ? implode('\',\'', $e["cmd"]) : $e["cmd"]) . '\')">' . $mtext . '</a></li>';
 						}
 					} elseif($e['enabled'] == 1){//separator
 						$opt .= '<li class="disabled"></li>';
@@ -140,4 +141,3 @@ function menuaction(cmd) {
 	}
 
 }
-

@@ -36,15 +36,15 @@ class we_fragment_copyFolder extends we_fragment_base{
 
 		$CreateTemplateInFolderID = we_base_request::_(we_base_request::INT, 'CreateTemplateInFolderID', 0);
 		$OverwriteCategories = we_base_request::_(we_base_request::BOOL, 'OverwriteCategories', false);
-		$newCategories = array();
+		$vals = array();
 		foreach($_REQUEST as $name => $val){
 			if(!is_array($val)){
 				if(preg_match('%^me(.*)variant0_me(.*)_item%i', $name)){
-					$newCategories[] = path_to_id($val, CATEGORY_TABLE);
+					$vals[] = $val;
 				}
 			}
 		}
-		$newCategories = implode(',', $newCategories);
+		$newCategories = path_to_id($vals, CATEGORY_TABLE, $GLOBALS['DB_WE']);
 
 		if(isset($_SESSION['weS']['WE_CREATE_DOCTYPE'])){
 			unset($_SESSION['weS']['WE_CREATE_DOCTYPE']);
@@ -213,7 +213,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 			case we_base_ContentTypes::FOLDER:
 				$we_ContentType = $this->data['ContentType'];
 				return new we_class_folder();
-			case 'objectFile':
+			case we_base_ContentTypes::OBJECT_FILE:
 				$we_ContentType = $this->data['ContentType'];
 				return new we_objectFile();
 		}
@@ -301,7 +301,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 										$newTemplateIDs[] = $id;
 									}
 								}
-								$dt->Templates = makeCSVFromArray($newTemplateIDs);
+								$dt->Templates = implode(',', $newTemplateIDs);
 								$dt->TemplateID = $GLOBALS['we_doc']->TemplateID;
 							}
 
@@ -506,14 +506,14 @@ class we_fragment_copyFolder extends we_fragment_base{
 						$elem = $we_doc->getElement($k);
 						if(preg_match('|(.+)' . we_base_link::MAGIC_INFIX . '(.+)|', $k, $regs)){ // is a we:href field
 							$v['type'] = 'href';
-						} elseif(substr($elem, 0, 2) === 'a:' && is_array($link = unserialize($elem))){ // is a we:link field
+						} elseif(substr($elem, 0, 2) === 'a:' && is_array($link = we_unserialize($elem))){ // is a we:link field
 							if(isset($link['type']) && ($link['type'] == we_base_link::TYPE_INT)){
 								$intID = $link['id'];
 								$path = id_to_path($intID, FILE_TABLE, $DB_WE);
 								if($this->mustChange($path)){
 									$pathTo = $this->getNewPath($path);
 									$link['id'] = path_to_id($pathTo, FILE_TABLE, $DB_WE);
-									$we_doc->setElement($k, serialize($link), 'link');
+									$we_doc->setElement($k, we_serialize($link), 'link');
 								}
 							}
 						} else { // its a normal  text field
@@ -632,7 +632,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 	}
 
 	function finish(){
-		//$cancelButton = we_html_button::create_button('cancel', 'javascript:top.close()');
+		//$cancelButton = we_html_button::create_button(we_html_button::CANCEL, 'javascript:top.close()');
 
 		if(isset($_SESSION['weS']['WE_CREATE_DOCTYPE'])){
 			unset($_SESSION['weS']['WE_CREATE_DOCTYPE']);
@@ -643,19 +643,20 @@ class we_fragment_copyFolder extends we_fragment_base{
 
 			echo we_html_element::jsElement('parent.document.getElementById("pbTd").style.display="block";parent.setProgress(0);parent.setProgressText("pbar1","' . addslashes($pbText) . '");');
 			flush();
-			echo we_html_element::jsElement('setTimeout(\'self.location = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=copyFolder&finish=1"\',100);');
+			echo we_html_element::jsElement('self.location=WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=copyFolder&finish=1";');
 			#unset($_SESSION['weS']['WE_CREATE_TEMPLATE']);
 		} elseif(!isset($_SESSION['weS']['WE_COPY_OBJECTS'])){
-			echo we_html_element::jsElement('top.opener.top.we_cmd("load","' . FILE_TABLE . '");' . we_message_reporting::getShowMessageCall(g_l('copyFolder', '[copy_success]'), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.close();');
+			echo we_html_element::jsElement('top.opener.top.we_cmd("load","' . FILE_TABLE . '");WE().util.showMessage(WE().consts.g_l.main.folder_copy_success, WE().consts.message.WE_MESSAGE_NOTICE, window);top.close();');
 		} else {
 			unset($_SESSION['weS']['WE_COPY_OBJECTS']);
-			echo we_html_element::jsElement('top.opener.top.we_cmd("load","' . OBJECT_FILES_TABLE . '");' . we_message_reporting::getShowMessageCall(g_l('copyFolder', '[copy_success]'), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.close();');
+			echo we_html_element::jsElement('top.opener.top.we_cmd("load","' . OBJECT_FILES_TABLE . '");WE().util.showMessage(WE().consts.g_l.main.folder_copy_success, WE().consts.message.WE_MESSAGE_NOTICE, window);top.close();');
 		}
 	}
 
+	//FIXME: this function is called statically!
 	function printHeader(){
 		//FIXME: missing title
-		echo we_html_element::htmlHead(we_html_tools::getHtmlInnerHead() . STYLESHEET . weSuggest::getYuiFiles() .
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET . weSuggest::getYuiFiles() .
 			we_html_element::jsElement('
 function fsubmit(e) {
 	return false;
@@ -677,24 +678,18 @@ function fsubmit(e) {
 		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setTable(TEMPLATES_TABLE);
 		$yuiSuggest->setWidth(370);
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['CreateTemplateInFolderID'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['foo'].value");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.CreateTemplateInFolderID.value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.foo.value");
 		$wecmdenc3 = we_base_request::encCmd("opener.document.we_form.CreateTemplate.checked=true;");
-		$yuiSuggest->setSelectButton(we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['CreateTemplateInFolderID'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')", true, 100, 22, "", "", true, false));
+		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.CreateTemplateInFolderID.value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')", true, 100, 22, "", "", true, false));
 
 		return $yuiSuggest->getHTML();
 	}
 
 	function formCreateCategoryChooser(){
 
-		$addbut = we_html_button::create_button("add", "javascript:we_cmd('openCatselector',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')");
-		$del_but = addslashes(
-			we_html_element::htmlImg(
-				array(
-					'src' => BUTTONS_DIR . 'btn_function_trash.gif',
-					'onclick' => 'javascript:#####placeHolder#####;',
-					'style' => 'cursor: pointer; width: 27px;'
-		)));
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')");
+		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;'));
 
 		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
 			we_html_element::jsElement('
@@ -707,13 +702,10 @@ function fsubmit(e) {
 			array(
 			'id' => 'CategoriesBlock',
 			'style' => 'display: block;',
-			'cellpadding' => 0,
-			'cellspacing' => 0,
-			'border' => 0
+			'class' => 'default',
 			), 5, 2);
 
-		$table->setCol(0, 0, array('colspan' => 2), we_html_tools::getPixel(5, 5));
-		$table->setCol(1, 0, array('class' => 'defaultfont', 'width' => 100), g_l('copyFolder', '[categories]'));
+		$table->setCol(1, 0, array('class' => 'defaultfont', 'width' => 100, 'style' => 'padding-top:5px;'), g_l('copyFolder', '[categories]'));
 		$table->setCol(1, 1, array('class' => 'defaultfont'), we_html_forms::checkbox(1, 0, 'OverwriteCategories', g_l('copyFolder', '[overwrite_categories]'), false, "defaultfont", "toggleButton();"));
 		$table->setCol(2, 0, array('colspan' => 2), we_html_element::htmlDiv(
 				array(
@@ -722,8 +714,7 @@ function fsubmit(e) {
 					'style' => 'width: 488px; height: 60px; border: #AAAAAA solid 1px;'
 		)));
 
-		$table->setCol(3, 0, array('colspan' => 2), we_html_tools::getPixel(5, 5));
-		$table->setCol(4, 0, array('colspan' => 2, 'align' => 'right'), we_html_button::create_button_table(array(we_html_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut)));
+		$table->setCol(4, 0, array('colspan' => 2, 'style' => 'text-align:right;padding-top:5px;'), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut);
 
 		return $table->getHtml() . $js;
 	}

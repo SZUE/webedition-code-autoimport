@@ -39,7 +39,7 @@ switch($cmd){
 	case 'object_delete_link_at_class':
 	case 'object_change_link_at_class':
 	case 'object_change_multiobject_at_class':
-		return 'we_modules/object/we_editor_contentobject_load.inc.php';
+		return 'we_editors/we_editor_contentobject_load.inc.php';
 
 	case 'object_reload_entry_at_object':
 	case 'object_down_meta_at_object':
@@ -50,7 +50,7 @@ switch($cmd){
 	case 'object_remove_image_at_object':
 	case 'object_delete_link_at_object':
 	case 'object_change_link_at_object':
-		return 'we_modules/object/we_editor_contentobjectFile_load.inc.php';
+		return 'we_editors/we_editor_contentobjectFile_load.inc.php';
 
 	case 'object_add_css':
 	case 'object_del_css':

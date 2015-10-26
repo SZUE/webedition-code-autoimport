@@ -38,6 +38,13 @@ class we_dialog_acronym extends we_dialog_base{
 		$this->defaultInit();
 	}
 
+	function getOkJs(){
+		return '
+WeacronymDialog.insert();
+top.close();
+';
+	}
+
 	function defaultInit(){
 		$this->args = array(
 			"title" => "",
@@ -49,32 +56,7 @@ class we_dialog_acronym extends we_dialog_base{
 
 	public static function getTinyMceJS(){
 		return parent::getTinyMceJS() .
-			we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/weacronym/js/acronym_init.js');
-	}
-
-	function getJs(){
-
-		$js = we_dialog_base::getJs();
-
-		if(defined('GLOSSARY_TABLE') && !$this->noInternals){
-			$js .= we_html_element::jsElement('
-					function weSaveToGlossaryFn() {
-						if(typeof(isTinyMCE) != "undefined" && isTinyMCE === true){
-							document.we_form.elements[\'weSaveToGlossary\'].value = 1;
-						} else{
-							eval("var editorObj = top.opener.weWysiwygObject_"+document.we_form.elements["we_dialog_args[editname]"].value);
-							document.we_form.elements[\'weSaveToGlossary\'].value = 1;
-							if(editorObj.getSelectedText().length > 0) {
-								document.we_form.elements[\'text\'].value = editorObj.getSelectedText();
-							} else{
-								document.we_form.elements[\'text\'].value = editorObj.getNodeUnderInsertionPoint("ACRONYM",true,false).innerHTML;
-							}
-						}
-						document.we_form.submit();
-					}');
-		}
-
-		return $js;
+			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/weacronym/js/acronym_init.js');
 	}
 
 	function getDialogContentHTML(){
@@ -83,9 +65,8 @@ class we_dialog_acronym extends we_dialog_base{
 
 		$lang = $this->getLangField("lang", g_l('wysiwyg', '[language]'), 350);
 
-		return '<table border="0" cellpadding="0" cellspacing="0">
-<tr><td>' . $title . '</td></tr>
-<tr><td>' . we_html_tools::getPixel(225, 10) . '</td></tr>
+		return '<table class="default">
+<tr><td style="padding-bottom:10px;">' . $title . '</td></tr>
 <tr><td>' . $lang . '</td></tr>
 </table>
 ' .
@@ -97,17 +78,15 @@ class we_dialog_acronym extends we_dialog_base{
 	}
 
 	function getDialogButtons(){
-		$buttons = array(
-			we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['we_dialog_args[title]'].value='';weDoOk();")
-		);
+		$buttons = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['we_dialog_args[title]'].value='';weDoOk();");
 
 		if(defined('GLOSSARY_TABLE') && permissionhandler::hasPerm("NEW_GLOSSARY") && !$this->noInternals){
-			$buttons[] = we_html_button::create_button("to_glossary", "javascript:weSaveToGlossaryFn();", true, 100);
+			$buttons.= we_html_button::create_button("to_glossary", "javascript:weSaveToGlossaryFn();", true, 100);
 		}
 
-		$buttons[] = parent::getDialogButtons();
+		$buttons.= parent::getDialogButtons();
 
-		return we_html_button::create_button_table($buttons);
+		return $buttons;
 	}
 
 }

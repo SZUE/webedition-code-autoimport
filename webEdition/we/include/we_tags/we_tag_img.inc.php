@@ -90,8 +90,8 @@ function we_tag_img($attribs){
 		$title = $GLOBALS['we_doc']->getElement($titleField);
 		if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2) === 'change_image'){
 			//in case of changed images give them priority to already set text
-			$tagAttribs['alt'] = (isset($tagAttribs['alt']) && $tagAttribs['alt'] ? $tagAttribs['alt'] : $alt);
-			$tagAttribs['title'] = (isset($tagAttribs['title']) && $tagAttribs['title'] ? $tagAttribs['title'] : $title);
+			$tagAttribs['alt'] = (!empty($tagAttribs['alt']) ? $tagAttribs['alt'] : $alt);
+			$tagAttribs['title'] = (!empty($tagAttribs['title']) ? $tagAttribs['title'] : $title);
 		} else {
 			$tagAttribs['alt'] = $alt ? : (isset($tagAttribs['alt']) ? $tagAttribs['alt'] : '');
 			$tagAttribs['title'] = $title ? : (isset($tagAttribs['title']) ? $tagAttribs['title'] : '');
@@ -121,20 +121,30 @@ function we_tag_img($attribs){
 		$out = ''; //no_image war noch in der Vorschau sichtbar
 	}
 
+	$btnSelectWecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $fname . "'].value");
+	$btnSelectCallback = "var ed = WE().layout.weEditorFrameController.getVisibleEditorFrame(); ed.setScrollTo(); ed._EditorFrame.setEditorIsHot(true); top.we_cmd('reload_editpage','" . $name . "','change_image');";
+	$btnSelectWecmdenc3 = we_base_request::encCmd($btnSelectCallback);
+
+	$dropzoneCallbackInt = "if(id){document.we_form.elements['" . $fname . "'].value=id;}";
+	$dropzoneCallbackExt = "WE().layout.weEditorFrameController.getVisibleEditorFrame().document.we_form.elements['" . $fname . "'].value = importedDocument.id;";
+	$dropzoneCmdencInt = we_base_request::encCmd($dropzoneCallbackInt . $btnSelectCallback);
+	$dropzoneCmdencExt = we_base_request::encCmd($dropzoneCallbackExt . $btnSelectCallback . 'setTimeout(self.close, 250);');
+	if($GLOBALS['we_editmode'] && $out) { //in editMode we surround image with dropzone
+		$out = we_fileupload_ui_base::getExternalDropZone('we_File', $out, 'width:auto;height:auto;padding:12px;', we_base_ContentTypes::IMAGE, array('tree' => $dropzoneCmdencInt, 'external' => $dropzoneCmdencExt), 'weimg');
+	}
+
 	if(!$id && (!$GLOBALS['we_editmode'])){
 		return '';
 	}
 
 	if($showcontrol && $GLOBALS['we_editmode']){
-		if(!$id){
-			$id = '';
-		}
+		$id = $id? : '';
 		$out = '
 <table class="weEditTable padding2 spacing2">
-	<tr><td class="weEditmodeStyle" colspan="2" align="center">' . $out . '<input onchange="_EditorFrame.setEditorIsHot(true);" type="hidden" name="' . $fname . '" value="' . $id . '" /></td></tr>' .
+	<tr><td class="weEditmodeStyle" colspan="2" style="text-align:center">' . $out . '<input onchange="_EditorFrame.setEditorIsHot(true);" type="hidden" name="' . $fname . '" value="' . $id . '" /></td></tr>' .
 			($showinputs ? //  only when wanted
 				'
-	<tr><td class="weEditmodeStyle" align="center" colspan="2" style="width: 180px;">
+	<tr><td class="weEditmodeStyle" colspan="2" style="text-align:center;width: 180px;">
 			<table class="weEditTable padding0 spacing0 border0">
 				<tr>
 					<td class="weEditmodeStyle" style="color: black; font-size: 12px; font-family: ' . g_l('css', '[font_family]') . ';">' . g_l('weClass', '[alt_kurz]') . ':&nbsp;</td>
@@ -153,16 +163,16 @@ function we_tag_img($attribs){
 
 		if($showThumb){ //  only when wanted
 			$db = $GLOBALS['DB_WE'];
-			$db->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
+			$db->query('SELECT ID,Name,description FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
 			if($db->num_rows()){
 				$thumbnails = '<select name="' . $thumbname . '" size="1" onchange="top.we_cmd(\'reload_editpage\'); _EditorFrame.setEditorIsHot(true);">' .
-					'<option value=""' . (($thumbattr == '') ? (' selected="selected"') : "") . '></option>';
+					'<option title="' . $db->f('description') . '" value=""' . (($thumbattr == '') ? (' selected="selected"') : "") . '></option>';
 				while($db->next_record()){
 					$thumbnails .= '<option value="' . $db->f("Name") . '"' . (($thumbattr == $db->f("Name")) ? (' selected="selected"') : "") . '>' . $db->f("Name") . '</option>';
 				}
 				$thumbnails .= '</select>';
 				$out .= '
-	<tr><td class="weEditmodeStyle" align="center" colspan="2" style="width: 180px;">
+	<tr><td class="weEditmodeStyle" colspan="2" style="text-align:center;width: 180px;">
 			<table class="weEditTable padding0 spacing0 border0">
 				<tr>
 					<td class="weEditmodeStyle" style="color: black; font-size: 12px; font-family: ' . g_l('css', '[font_family]') . ';">' . g_l('weClass', '[thumbnails]') . ':&nbsp;</td>
@@ -172,25 +182,21 @@ function we_tag_img($attribs){
 			}
 		}
 		$out .= '
-	<tr><td class="weEditmodeStyle" colspan="2" align="center">';
+	<tr><td class="weEditmodeStyle" colspan="2" style="text-align:center">';
 
 		$_editButton = ($id ?
-				////	show edit_image_button
+				//	show edit_image_button
 				//	we use hardcoded Content-Type - because it must be an image -> <we:img  >
-				we_html_button::create_button("image:btn_edit_image", "javascript:top.doClickDirect($id,'" . we_base_ContentTypes::IMAGE . "', '" . FILE_TABLE . "'  )") :
-// disable edit_image_button
-				we_html_button::create_button("image:btn_edit_image", "#", false, 100, 20, "", "", true)
-			);
-
-		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $fname . "'].value");
-		$wecmdenc3 = we_base_request::encCmd("opener.setScrollTo(); opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('reload_editpage','" . $name . "','change_image'); opener.top.hot = 1;");
+				we_html_button::create_button("fa:btn_edit_image,fa-lg fa-pencil,fa-lg fa-file-image-o", "javascript:top.doClickDirect($id,'" . we_base_ContentTypes::IMAGE . "', '" . FILE_TABLE . "'  )") :
+				// disable edit_image_button
+				we_html_button::create_button("fa:btn_edit_image,fa-lg fa-pencil,fa-lg fa-file-image-o", "#", false, 100, 20, "", "", true));
 
 		$out .= we_html_button::create_button_table(
 				array(
 				$_editButton,
-				we_html_button::create_button("image:btn_select_image", "javascript:we_cmd('openDocselector', '" . ($id ? : $startid) . "', '" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "',''," . $parentid . ",'" . we_base_ContentTypes::IMAGE . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true),
-				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('remove_image', '" . $name . "')", true)
-				), 5) . '</td></tr></table>';
+				we_html_button::create_button("fa:btn_select_image,fa-lg fa-exchange,fa-lg fa-file-image-o", "javascript:we_cmd('we_selector_image', '" . ($id ? : $startid) . "', '" . FILE_TABLE . "','" . $btnSelectWecmdenc1 . "','','" . $btnSelectWecmdenc3 . "',''," . $parentid . ",'" . we_base_ContentTypes::IMAGE . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true),
+				we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('remove_image', '" . $name . "')", true)
+				)) . '</td></tr></table>';
 	}
 	return $out;
 }

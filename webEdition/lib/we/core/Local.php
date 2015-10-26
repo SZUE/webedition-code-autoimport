@@ -139,7 +139,7 @@ class we_core_Local{
 				  } */
 			}
 
-			if(isset($_SESSION['prefs']['Language']) && $_SESSION['prefs']['Language'] !== ''){
+			if(!empty($_SESSION['prefs']['Language'])){
 				if(is_dir(WE_INCLUDES_PATH . 'we_language/' . $_SESSION['prefs']['Language'])){
 					self::$_lang = $_SESSION['prefs']['Language'];
 				} else if(defined('WE_LANGUAGE')){ //  bugfix #4229

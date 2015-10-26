@@ -24,11 +24,11 @@
  */
 function we_core_CmdController() {
 
-	this.cmds = new Array();
+	this.cmds = [];
 
 	//register all command (TopFrameView)
 	this.register = function(cmdid, cmdName, fn, scope, checkFn) {
-		var obj = new Object();
+		var obj = {};
 		obj.checkFn = checkFn ? checkFn : null;
 		obj.cmd = {"cmdName": cmdName};
 		obj.fn = fn;
@@ -73,7 +73,7 @@ function we_core_CmdController() {
 	}
 
 	this.cmdOk = function(cmdObj) {
-		if (typeof (cmdObj.followCmd) != "undefined") {
+		if (cmdObj.followCmd !== undefined) {
 			this.fire(cmdObj.followCmd);
 		}
 	}

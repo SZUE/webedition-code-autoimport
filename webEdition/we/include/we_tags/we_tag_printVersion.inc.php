@@ -61,7 +61,6 @@ function we_tag_printVersion($attribs, $content){
 			$_query_string['pv_id'] = $id;
 			$_query_string['pv_tid'] = $tid;
 		} else {
-
 			return $content;
 			/*
 			  $_query_string['we_cmd[0]'] = 'show';

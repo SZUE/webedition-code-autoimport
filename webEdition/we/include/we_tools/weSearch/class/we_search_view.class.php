@@ -22,105 +22,236 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_search_view{
+class we_search_view extends we_modules_view{
+	const VIEW_LIST = 'list';
+	const VIEW_ICONS = 'icons';
+	const SEARCH_DOCS = 'DocSearch';
+	const SEARCH_MEDIA = 'MediaSearch';
+	const SEARCH_TMPL = 'TmplSearch';
+	const SEARCH_ADV = 'AdvSearch';
+
 	var $Model;
 	var $toolName;
-	var $toolDir;
-	var $toolUrl;
 	var $db;
 	var $frameset;
 	var $topFrame;
 	var $editorBodyFrame;
-	var $editorBodyForm;
 	var $editorHeaderFrame;
 	var $editorFooterFrame;
 	var $icon_pattern = '';
-	var $item_pattern = '';
-	var $group_pattern = '';
 	var $page = 1;
 	var $searchclass;
 	var $searchclassExp;
+	private $searchMediaOptFieldIndex = 0;
+
+	//private $view = self::VIEW_LIST;
 
 	public function __construct($frameset = '', $topframe = 'top'){
+		parent::__construct($frameset, $topframe);
+		$this->editorBodyFrame = $this->topFrame . '.editor.edbody';
+		$this->editorHeaderFrame = $this->topFrame . '.editor.edheader';
+		$this->editorFooterFrame = $this->topFrame . '.editor.edfooter';
+
 		$this->toolName = 'weSearch';
-		$this->db = new DB_WE();
-		$this->setFramesetName($frameset);
-		$this->setTopFrame($topframe);
 		$this->Model = new we_search_model();
-		$this->item_pattern = '<img style=\"vertical-align: bottom\" src=\"' . TREE_ICON_DIR . we_base_ContentTypes::FILE_ICON . '\" />&nbsp;';
-		$this->group_pattern = '<img style=\"vertical-align: bottom\" src=\"' . TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '\" />&nbsp;';
 		$this->yuiSuggest = & weSuggest::getInstance();
 		$this->searchclass = new we_search_search();
 		$this->searchclassExp = new we_search_exp();
 	}
 
 	function getJSTop(){
-		return we_html_element::jsScript(JS_DIR . "windows.js") .
-			we_html_element::jsElement(
-				'var activ_tab = "1";
-   var hot = 0;
+		return we_html_element::jsElement('
+var activ_tab = 1;
+var hot = 0;
 
-   function we_cmd() {
-    var args = "";
-    var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-    if(' . $this->topFrame . '.hot && (arguments[0]=="tool_' . $this->toolName . '_edit" || arguments[0]=="tool_' . $this->toolName . '_new" || arguments[0]=="tool_' . $this->toolName . '_new_group" || arguments[0]=="tool_' . $this->toolName . '_exit")){
-     ' . $this->editorBodyFrame . '.document.we_form.delayCmd.value = arguments[0];
-     ' . $this->editorBodyFrame . '.document.we_form.delayParam.value = arguments[1];
-     arguments[0] = "exit_doc_question";
-    }
-    switch (arguments[0]) {
-     case "tool_' . $this->toolName . '_edit":
-      if(' . $this->editorBodyFrame . '.loaded) {
-       ' . $this->editorBodyFrame . '.document.we_form.cmd.value = arguments[0];
-       ' . $this->editorBodyFrame . '.document.we_form.cmdid.value=arguments[1];
-       ' . $this->editorBodyFrame . '.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
-       ' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
-       ' . $this->editorBodyFrame . '.submitForm();
-      } else {
-       setTimeout(\'we_cmd("tool_' . $this->toolName . '_edit",\'+arguments[1]+\');\', 10);
-      }
-     break;
-     case "tool_' . $this->toolName . '_new":
-     case "tool_' . $this->toolName . '_new_group":
-      if(' . $this->editorBodyFrame . '.loaded) {
-       ' . $this->topFrame . '.hot = 0;
-       ' . $this->editorBodyFrame . '.document.we_form.cmd.value = arguments[0];
-       ' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
-       ' . $this->editorBodyFrame . '.document.we_form.tabnr.value = 1;
-       ' . $this->editorBodyFrame . '.submitForm();
-      } else {
-       setTimeout(\'we_cmd("tool_' . $this->toolName . '_new");\', 10);
-      }
-      if(treeData){
-       treeData.unselectnode();
-      }
-     break;
+function we_cmd() {
+ var args = [];
+ var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
+	 for(var i = 0; i < arguments.length; i++){
+					 args.push(arguments[i]);
 
-     case "tool_' . $this->toolName . '_exit":
-      top.close();
-     break;
-     case "exit_doc_question":
-      url = "' . $this->frameset . '?pnt=exit_doc_question&delayCmd="+' . $this->editorBodyFrame . '.document.getElementsByName("delayCmd")[0].value+"&delayParam="+' . $this->editorBodyFrame . '.document.getElementsByName("delayParam")[0].value;
-      new jsWindow(url,"we_exit_doc_question",-1,-1,380,130,true,false,true);
-     break;
-     ' . $this->getTopJSAdditional() . '
-     default:
-      for (var i = 0; i < arguments.length; i++) {
-       args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
-      }
-      eval("top.opener.top.we_cmd(" + args + ")");
-    }
-   }
+	 url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+	 if(i < (arguments.length - 1)){
+		url += "&";
+	}
+	 }
 
-   function mark() {
-    hot=1;
-    ' . $this->editorHeaderFrame . '.mark();
-   }');
+ if(' . $this->topFrame . '.hot){
+	 switch(args[0]){
+	 case "tool_weSearch_edit":
+	 case "tool_weSearch_new":
+	 case "tool_weSearch_new_group":
+	 case "tool_weSearch_exit":
+	' . $this->editorBodyFrame . '.document.we_form.delayCmd.value = args[0];
+	' . $this->editorBodyFrame . '.document.we_form.delayParam.value = args[1];
+	args[0] = "exit_doc_question";
+	}
+ }
+ switch (args[0]) {
+	case "tool_weSearch_edit":
+	 if(' . $this->editorBodyFrame . '.loaded) {
+		' . $this->editorBodyFrame . '.document.we_form.cmd.value = args[0];
+		' . $this->editorBodyFrame . '.document.we_form.cmdid.value=args[1];
+		' . $this->editorBodyFrame . '.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
+		' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
+		' . $this->editorBodyFrame . '.submitForm();
+	 } else {
+		setTimeout(function(){we_cmd("tool_weSearch_edit",\'+args[1]+\');}, 10);
+	 }
+	break;
+	case "tool_weSearch_new":
+	case "tool_weSearch_new_group":
+	 if(' . $this->editorBodyFrame . '.loaded) {
+		' . $this->topFrame . '.hot = 0;
+		' . $this->editorBodyFrame . '.document.we_form.cmd.value = args[0];
+		' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
+		' . $this->editorBodyFrame . '.document.we_form.tabnr.value = 1;
+		' . $this->editorBodyFrame . '.submitForm();
+	 } else {
+		setTimeout(function(){we_cmd("tool_weSearch_new");}, 10);
+	 }
+	 if(treeData){
+		treeData.unselectNode();
+	 }
+	break;
+
+	case "tool_weSearch_exit":
+	 top.close();
+	break;
+	case "exit_doc_question":
+	 url = "' . $this->frameset . '?pnt=exit_doc_question&delayCmd="+' . $this->editorBodyFrame . '.document.getElementsByName("delayCmd")[0].value+"&delayParam="+' . $this->editorBodyFrame . '.document.getElementsByName("delayParam")[0].value;
+	 new (WE().util.jsWindow)(window, url,"we_exit_doc_question",-1,-1,380,130,true,false,true);
+	break;
+	case "tool_weSearch_save":
+	if(' . $this->editorBodyFrame . '.document.we_form.predefined.value==1) {
+	 ' . we_message_reporting::getShowMessageCall(
+					g_l('searchtool', '[predefinedSearchmodify]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+	 break;
+	}else if (' . $this->editorBodyFrame . '.loaded) {
+	 if(' . $this->editorBodyFrame . '.document.we_form.newone.value==1) {
+		var name = prompt("' . g_l('searchtool', '[nameForSearch]') . '", "");
+		if (name == null) {
+		 break;
+		} else {
+		 ' . $this->editorBodyFrame . '.document.we_form.savedSearchName.value=name;
+		}
+	 }
+	 ' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
+ //' . $this->editorBodyFrame . '.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
+	 ' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
+	 ' . $this->editorBodyFrame . '.submitForm();
+	}else {
+	 ' . we_message_reporting::getShowMessageCall(g_l('tools', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+	}
+
+	break;
+
+ case "tool_weSearch_delete":
+	if(' . $this->editorBodyFrame . '.document.we_form.predefined.value==1) {' .
+				we_message_reporting::getShowMessageCall(g_l('searchtool', '[predefinedSearchdelete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+	 return;
+	}
+	if(' . $this->topFrame . '.editor.edbody.document.we_form.newone.value==1){
+	 ' . we_message_reporting::getShowMessageCall(g_l('tools', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+	 return;
+	}
+	' . (!permissionhandler::hasPerm("DELETE_" . strtoupper($this->toolName)) ? (
+					we_message_reporting::getShowMessageCall(g_l('tools', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)) : ('
+			if (' . $this->topFrame . '.editor.edbody.loaded) {
+
+			 if (confirm("' . g_l('searchtool', '[confirmDel]') . '")) {
+				' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
+				' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
+				' . $this->editorHeaderFrame . '.location="' . $this->frameset . '?home=0&pnt=edheader";
+				' . $this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?home=0&pnt=edfooter";
+				' . $this->topFrame . '.editor.edbody.submitForm();
+
+			 }
+			} else {' .
+					we_message_reporting::getShowMessageCall(g_l('tools', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+			}
+		')) . '
+				break;
+
+ case "tool_weSearch_new_forDocuments":
+	 if (' . $this->editorBodyFrame . '.loaded) {
+		 ' . $this->topFrame . '.hot = 0;
+		 ' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
+		 ' . $this->topFrame . '.activ_tab=1;
+		 ' . $this->editorBodyFrame . '.document.we_form.tabnr.value=1;
+		 ' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
+		 ' . $this->editorBodyFrame . '.submitForm();
+	 } else {
+		 setTimeout(function(){we_cmd("tool_weSearch_new_forDocuments");}, 10);
+	 }
+	 if(treeData){
+		 treeData.unselectNode();
+	 }
+	 break;
+
+ case "tool_weSearch_new_forTemplates":
+	 if (' . $this->editorBodyFrame . '.loaded) {
+		 ' . $this->topFrame . '.hot = 0;
+		 ' . $this->topFrame . '.activ_tab=2;
+		 ' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
+		 ' . $this->editorBodyFrame . '.document.we_form.tabnr.value=2;
+		 ' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
+		 ' . $this->editorBodyFrame . '.submitForm();
+	 } else {
+		 setTimeout(function(){we_cmd("tool_weSearch_new_forTemplates");}, 10);
+	}
+	 if(treeData){
+	 treeData.unselectNode();
+	 }
+	 break;
+
+ case "tool_weSearch_new_forObjects":
+	if (' . $this->editorBodyFrame . '.loaded) {
+	 ' . $this->topFrame . '.hot = 0;
+	 ' . $this->topFrame . '.activ_tab=3;
+			' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
+				 ' . $this->editorBodyFrame . '.document.we_form.tabnr.value=3;
+				 ' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
+				 ' . $this->editorBodyFrame . '.submitForm();
+		 } else {
+	 setTimeout(function(){we_cmd("tool_weSearch_new_forObjects");}, 10);
+	}
+		 if(treeData){
+	 treeData.unselectNode();
+	}
+		 break;
+
+
+			 case "tool_weSearch_new_advSearch":
+	if (' . $this->editorBodyFrame . '.loaded) {
+	 ' . $this->topFrame . '.hot = 0;
+	 ' . $this->topFrame . '.activ_tab=3;
+			' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
+				 ' . $this->editorBodyFrame . '.document.we_form.tabnr.value=3;
+				 ' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
+				 ' . $this->editorBodyFrame . '.submitForm();
+		 } else {
+	 setTimeout(function(){we_cmd("tool_weSearch_new_advSearch");}, 10);
+	}
+	 if(treeData){
+		 treeData.unselectNode();
+	 }
+	 break;
+	default:
+	 top.opener.top.we_cmd.apply(this, args);
+
+ }
+}
+
+function mark() {
+ hot=1;
+ ' . $this->editorHeaderFrame . '.mark();
+}');
 	}
 
 	function processCommands(){
 		$cmdid = we_base_request::_(we_base_request::INT, 'cmdid');
-		switch(($cmd = we_base_request::_(we_base_request::STRING, 'cmd'))){
+		switch(($cmd = we_base_request::_(we_base_request::STRING, 'cmd', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))){
 			case 'tool_weSearch_new' :
 			case 'tool_weSearch_new_forDocuments' :
 			case 'tool_weSearch_new_forTemplates' :
@@ -135,16 +266,13 @@ class we_search_view{
 					$this->editorHeaderFrame . '.location="' . $this->frameset . '?pnt=edheader' .
 					($tab !== false ? '&tab=' . $tab : '') .
 					'&text=' . urlencode($this->Model->Text) . '";' .
-					$this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
+					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
 				break;
 
 			case 'tool_weSearch_edit' :
 				$this->Model = new we_search_model($cmdid);
-
 				if(!$this->Model->isAllowedForUser()){
-					echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(
-							g_l('tools', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('tools', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 					$this->Model = new we_search_model();
 					$_REQUEST['home'] = true;
 					break;
@@ -153,10 +281,10 @@ class we_search_view{
 					$this->editorHeaderFrame . '.location="' . $this->frameset . '?pnt=edheader' .
 					($cmdid !== false ? '&cmdid=' . $cmdid : '') . '&text=' .
 					urlencode($this->Model->Text) . '";' .
-					$this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
+					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
         if(' . $this->topFrame . '.treeData){
-         ' . $this->topFrame . '.treeData.unselectnode();
-         ' . $this->topFrame . '.treeData.selectnode("' . $this->Model->ID . '");
+         ' . $this->topFrame . '.treeData.unselectNode();
+         ' . $this->topFrame . '.treeData.selectNode("' . $this->Model->ID . '");
         }
      ');
 				break;
@@ -201,8 +329,8 @@ class we_search_view{
 					$this->Model->updateChildPaths($oldpath);
 
 					$js = we_html_element::jsElement(($newone ?
-								$this->topFrame . '.makeNewEntry(\'' . $this->Model->Icon . '\',\'' . $this->Model->ID . '\',\'' . $this->Model->ParentID . '\',\'' . addslashes($this->Model->Text) . '\',0,\'' . ($this->Model->IsFolder ? 'folder' : 'item') . '\',\'' . SUCHE_TABLE . '\',0,0);' :
-								$this->topFrame . '.updateEntry(\'' . $this->Model->ID . '\',\'' . $this->Model->Text . '\',\'' . $this->Model->ParentID . '\',0,0,\'' . ($this->Model->IsFolder ? 'folder' : 'item') . '\',\'' . SUCHE_TABLE . '\',0,0);') .
+								$this->topFrame . '.treeData.makeNewEntry({id:' . $this->Model->ID . ',parentid:' . $this->Model->ParentID . ',text:\'' . addslashes($this->Model->Text) . '\',open:0,contenttype:\'' . ($this->Model->IsFolder ? 'folder' : 'we/search') . '\',table:\'' . SUCHE_TABLE . '\',published:0});' :
+								$this->topFrame . '.treeData.updateEntry({id:' . $this->Model->ID . ',text:\'' . $this->Model->Text . '\',parentid:' . $this->Model->ParentID . ',order:0,tooltip:' . $this->Model->ID . '});') .
 							$this->editorHeaderFrame . '.location.reload();' .
 							we_message_reporting::getShowMessageCall(
 								g_l('searchtool', ($this->Model->IsFolder == 1 ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) .
@@ -228,12 +356,12 @@ class we_search_view{
 
 				break;
 			case 'tool_weSearch_delete' :
-				echo we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
+				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();');
 				if($this->Model->delete()){
 					echo we_html_element::jsElement(
-						$this->topFrame . '.deleteEntry("' . $this->Model->ID . '");
-        setTimeout(\'' . we_message_reporting::getShowMessageCall(
-							g_l('tools', ($this->Model->IsFolder == 1 ? '[group_deleted]' : '[item_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE) . '\',500);' .
+						$this->topFrame . '.treeData.deleteEntry("' . $this->Model->ID . '");
+        setTimeout(function(){' . we_message_reporting::getShowMessageCall(
+							g_l('tools', ($this->Model->IsFolder == 1 ? '[group_deleted]' : '[item_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE) . '},500);' .
 						$this->topFrame . '.we_cmd("tool_weSearch_edit");'
 					);
 					$this->Model = new we_search_model();
@@ -247,1044 +375,85 @@ class we_search_view{
 		$_SESSION["weSearch_session"] = $this->Model;
 	}
 
-	function getTopJSAdditional(){
-		return '
-case "tool_weSearch_save":
- if(' . $this->editorBodyFrame . '.document.we_form.predefined.value==1) {
-	' . we_message_reporting::getShowMessageCall(
-				g_l('searchtool', '[predefinedSearchmodify]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-	break;
- }else if (' . $this->editorBodyFrame . '.loaded) {
-	if(' . $this->editorBodyFrame . '.document.we_form.newone.value==1) {
-	 var name = prompt("' . g_l('searchtool', '[nameForSearch]') . '", "");
-	 if (name == null) {
-		break;
-	 } else {
-		' . $this->editorBodyFrame . '.document.we_form.savedSearchName.value=name;
-	 }
-	}
-	' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
-//' . $this->editorBodyFrame . '.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
-	' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
-	' . $this->editorBodyFrame . '.submitForm();
- }else {
-	' . we_message_reporting::getShowMessageCall(
-				g_l('tools', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
- }
-
- break;
-
-case "tool_weSearch_delete":
- if(' . $this->editorBodyFrame . '.document.we_form.predefined.value==1) {' .
-			we_message_reporting::getShowMessageCall(g_l('searchtool', '[predefinedSearchdelete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-	return;
- }
- if(' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.newone.value==1){
-	' . we_message_reporting::getShowMessageCall(g_l('tools', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-	return;
- }
- ' . (!permissionhandler::hasPerm("DELETE_" . strtoupper($this->toolName)) ? (we_message_reporting::getShowMessageCall(
-					g_l('tools', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)) : ('
-		 if (' . $this->topFrame . '.resize.right.editor.edbody.loaded) {
-
-			if (confirm("' . g_l('searchtool', '[confirmDel]') . '")) {
-			 ' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmd.value=arguments[0];
-			 ' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
-			 ' . $this->editorHeaderFrame . '.location="' . $this->frameset . '?home=0&pnt=edheader";
-			 ' . $this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?home=0&pnt=edfooter";
-			 ' . $this->topFrame . '.resize.right.editor.edbody.submitForm();
-
-			}
-
-		 } else {' .
-				we_message_reporting::getShowMessageCall(g_l('tools', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-		 }
-
-	 ')) . '
-			 break;
-
-case "tool_weSearch_new_forDocuments":
-	if (' . $this->editorBodyFrame . '.loaded) {
-		' . $this->topFrame . '.hot = 0;
-		' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
-		' . $this->topFrame . '.activ_tab=1;
-		' . $this->editorBodyFrame . '.document.we_form.tabnr.value=1;
-		' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
-		' . $this->editorBodyFrame . '.submitForm();
-	} else {
-		setTimeout(\'we_cmd("tool_' . $this->toolName . '_new_forDocuments");\', 10);
-	}
-	if(treeData){
-		treeData.unselectnode();
-	}
-	break;
-
-case "tool_weSearch_new_forTemplates":
-	if (' . $this->editorBodyFrame . '.loaded) {
-		' . $this->topFrame . '.hot = 0;
-		' . $this->topFrame . '.activ_tab=2;
-		' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
-		' . $this->editorBodyFrame . '.document.we_form.tabnr.value=2;
-		' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
-		' . $this->editorBodyFrame . '.submitForm();
-	} else {
-		setTimeout(\'we_cmd("tool_' . $this->toolName . '_new_forTemplates");\', 10);
- }
-	if(treeData){
-	treeData.unselectnode();
-	}
-	break;
-
-case "tool_weSearch_new_forObjects":
- if (' . $this->editorBodyFrame . '.loaded) {
-	' . $this->topFrame . '.hot = 0;
-	' . $this->topFrame . '.activ_tab=3;
-		 ' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
-				' . $this->editorBodyFrame . '.document.we_form.tabnr.value=3;
-				' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
-				' . $this->editorBodyFrame . '.submitForm();
-		} else {
-	setTimeout(\'we_cmd("tool_' . $this->toolName . '_new_forObjects");\', 10);
- }
-		if(treeData){
-	treeData.unselectnode();
- }
-		break;
-
-
-			case "tool_weSearch_new_advSearch":
- if (' . $this->editorBodyFrame . '.loaded) {
-	' . $this->topFrame . '.hot = 0;
-	' . $this->topFrame . '.activ_tab=3;
-		 ' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
-				' . $this->editorBodyFrame . '.document.we_form.tabnr.value=3;
-				' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
-				' . $this->editorBodyFrame . '.submitForm();
-		} else {
-	setTimeout(\'we_cmd("tool_' . $this->toolName . '_new_advSearch");\', 10);
- }
-	if(treeData){
-		treeData.unselectnode();
-	}
-	break;';
-	}
-
 	function getSearchJS($whichSearch){
 		switch($whichSearch){
 			case "AdvSearch":
-				$h = (we_base_browserDetect::isIE() ? 125 : 140);
+				$h = 140;
 				//add height of each input row to calculate the scrollContent-height
 				$addinputRows = 'for(i=1;i<newID;i++) {
         //scrollheight = scrollheight + 28;
        }';
 				break;
 			default:
-				$h = (we_base_browserDetect::isIE() ? 155 : 170);
+				$h = 170;
 				$addinputRows = "";
 		}
 
-
-		$scrollContentFunction = ($this->Model->IsFolder == 0 ? '
-if (' . $this->editorBodyFrame . '.loaded) {
- var elem = document.getElementById("filterTableAdvSearch");
- newID = elem.rows.length-1;
-
- scrollheight = ' . $h . ';' .
-				$addinputRows . '
- var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
- var scrollContent = document.getElementById("scrollContent_' . $whichSearch . '");
-
- var heightDiv = ' . (we_base_browserDetect::isIE() ? 200 : 180) . ';
-
- if((h - heightDiv)>0){
-	scrollContent.style.height = (h - heightDiv)+"px";
- }
-
- if((scrollContent.offsetHeight - scrollheight)>0){
-	scrollContent.style.height = (scrollContent.offsetHeight - scrollheight) +"px";
- }
-}else {
- setTimeout(\'sizeScrollContent();\', 1000);
-}' :
-				'');
-
 		switch($whichSearch){
-			case "DocSearch" :
+			case self::SEARCH_DOCS :
 				$anzahl = $this->Model->anzahlDocSearch;
 				break;
-			case "TmplSearch" :
+			case self::SEARCH_TMPL :
 				$anzahl = $this->Model->anzahlTmplSearch;
 				break;
-			case "AdvSearch" :
+			case self::SEARCH_MEDIA :
+				$anzahl = $this->Model->anzahlMediaSearch;
+				break;
+			case self::SEARCH_ADV :
 				$anzahl = $this->Model->anzahlAdvSearch;
 				break;
 			default:
 				$anzahl = 0;
 		}
 
-		$objectFilesTable = defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : "";
-
 		$tab = we_base_request::_(we_base_request::INT, 'tab', we_base_request::_(we_base_request::INT, 'tabnr', 1));
 
-		$showHideSelects = $showSelects = '';
-
-
-		$_js = we_html_element::jsElement('
-var ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
-var ajaxCallbackResultList = {
- success: function(o) {
-	if(typeof(o.responseText) != "undefined" && o.responseText != "") {
-	 ' . $this->editorBodyFrame . '.document.getElementById("scrollContent_' . $whichSearch . '").innerHTML = o.responseText;
-	 makeAjaxRequestParametersTop();
-	 makeAjaxRequestParametersBottom();
-
-	}
- },
- failure: function(o) {
-	//alert("Failure");
- }
-}
-var ajaxCallbackParametersTop = {
- success: function(o) {
-	if(typeof(o.responseText) != "undefined" && o.responseText != "") {
-	 ' . $this->editorBodyFrame . '.document.getElementById("parametersTop_' . $whichSearch . '").innerHTML = o.responseText;
-	}
- },
- failure: function(o) {
-	//alert("Failure");
- }
-}
-var ajaxCallbackParametersBottom = {
- success: function(o) {
-	if(typeof(o.responseText) != "undefined" && o.responseText != "") {
-	 ' . $this->editorBodyFrame . '.document.getElementById("parametersBottom_' . $whichSearch . '").innerHTML = o.responseText;
-	}
- },
- failure: function(o) {
-	//alert("Failure");
- }
-}
-var ajaxCallbackgetMouseOverDivs = {
- success: function(o) {
-	if(typeof(o.responseText) != "undefined" && o.responseText != "") {
-	 ' . $this->editorBodyFrame . '.document.getElementById("mouseOverDivs_' . $whichSearch . '").innerHTML = o.responseText;
-	}
- },
- failure: function(o) {
-	//alert("Failure");
- }
-}
-
-
-function search(newSearch) {
-	' . (intval(!we_search_search::checkRightTempTable() && !we_search_search::checkRightDropTable()) ?
-					we_message_reporting::getShowMessageCall(g_l('searchtool', '[noTempTableRightsSearch]'), we_message_reporting::WE_MESSAGE_NOTICE) : '
-
-		var Checks = new Array();
-		' . ($whichSearch === "AdvSearch" ? '
-
-		var m = 0;
-		for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
-			var table = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
-			if(table.substring(0,23)=="search_tables_advSearch") {
-				if(encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value) == 1) {
-					Checks[m] = encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
-					m++;
-				}
-			}
-		}
-		if(Checks.length==0) {' .
-						we_message_reporting::getShowMessageCall(g_l('searchtool', '[nothingCheckedAdv]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-		}' : '') .
-					($whichSearch === "DocSearch" ? '
-		var m = 0;
-		for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
-			var table = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
-			if(table=="searchForTextDocSearch" || table=="searchForTitleDocSearch" || table=="searchForContentDocSearch") {
-				if(encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value) == 1) {
-					Checks[m] = encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
-					m++;
-				}
-			}
-		}
-		if(Checks.length==0) {' .
-						we_message_reporting::getShowMessageCall(g_l('searchtool', '[nothingCheckedTmplDoc]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-		}' : '') .
-					($whichSearch === "TmplSearch" ? '
-		var m = 0;
-		for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
-			var table = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
-			if(table=="searchForTextTmplSearch" || table=="searchForContentTmplSearch") {
-				if(encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value) == 1) {
-					Checks[m] = encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
-					m++;
-				}
-			}
-		}
-		if(Checks.length==0) {' .
-						we_message_reporting::getShowMessageCall(g_l('searchtool', '[nothingCheckedTmplDoc]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-		}' : '') . '
-		 if(Checks.length!=0) {
-			 if(newSearch) {' .
-					$this->editorBodyFrame . '.document.we_form.searchstart' . $whichSearch . '.value=0;
-			 }
-			 makeAjaxRequestDoclist();
-	}') . '
-}
-
-function makeAjaxRequestDoclist() {
- getMouseOverDivs();
- var args = "";
- var newString = "";
- for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
-	newString = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
-	args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
- }
- ' . $this->editorBodyFrame . '.document.getElementById("scrollContent_' . $whichSearch . '").innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /><div id=\'scrollActive\'></div></td></tr></table>";
- YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResultList, "protocol=json&cns=tools/weSearch&tab=' . $tab . '&cmd=GetSearchResult&whichsearch=' . $whichSearch . '&classname=' . $this->Model->ModelClassName . '&id=' . $this->Model->ID . '&we_transaction=' . $GLOBALS['we_transaction'] . '"+args+"");
-}
-
-function makeAjaxRequestParametersTop() {
- var args = "";
- var newString = "";
- for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
-	newString = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
-	args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
- }
-	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersTop, "protocol=json&cns=tools/weSearch&tab=' . $tab . '&cmd=GetSearchParameters&position=top&whichsearch=' . $whichSearch . '&classname' . $this->Model->ModelClassName . '=&id=' . $this->Model->ID . '&we_transaction=' . $GLOBALS['we_transaction'] . '"+args+"");
-}
-
-function makeAjaxRequestParametersBottom() {
- var args = "";
- var newString = "";
- for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
-	newString = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
-	args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
- }
-	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersBottom, "protocol=json&cns=tools/weSearch&tab=' . $tab . '&cmd=GetSearchParameters&position=bottom&whichsearch=' . $whichSearch . '&classname=' . $this->Model->ModelClassName . '&id=' . $this->Model->ID . '&we_transaction=' . $GLOBALS['we_transaction'] . '"+args+"");
-}
-
-function getMouseOverDivs() {
- var args = "";
- var newString = "";
- for(var i = 0; i < ' . $this->editorBodyFrame . '.document.we_form.elements.length; i++) {
-	newString = ' . $this->editorBodyFrame . '.document.we_form.elements[i].name;
-	args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(' . $this->editorBodyFrame . '.document.we_form.elements[i].value);
- }
- YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackgetMouseOverDivs, "protocol=json&cns=tools/weSearch&tab=' . $tab . '&cmd=GetMouseOverDivs&whichsearch=' . $whichSearch . '&classname=' . $this->Model->ModelClassName . '&id=' . $this->Model->ID . '&we_transaction=' . $GLOBALS['we_transaction'] . '"+args+"");
-}
-
-function setView(value){
- ' . $this->editorBodyFrame . '.document.we_form.setView' . $whichSearch . '.value=value;
- search(false);
-}
-
-elem = null;
-
-function showImageDetails(picID){
- elem = document.getElementById(picID);
- elem.style.visibility = "visible";
-}
-
-function hideImageDetails(picID){
- elem = document.getElementById(picID);
- elem.style.visibility = "hidden";
- elem.style.left = "-9999px";
- ' . $showSelects . '
-}
-
-
-document.onmousemove = updateElem;
-
-function updateElem(e) {
- var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
- var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;
- x = (document.all) ? window.event.x + document.body.scrollLeft : e.pageX;
- y = (document.all) ? window.event.y + document.body.scrollTop  : e.pageY;
-
- if (elem != null && elem.style.visibility == "visible") {
-		elemWidth = elem.offsetWidth;
-		elemHeight = elem.offsetHeight;
-		elem.style.left = (x + 10) + "px";
-		elem.style.top = (y - 120) + "px";
-
-		if((w-x)<400 && (h-y)<250) {
-		 elem.style.left = (x - elemWidth - 10) + "px";
-		 elem.style.top = (y - elemHeight - 10) + "px";
-		}
-		else if((w-x)<400) {
-		 elem.style.left = (x - elemWidth - 10) + "px";
-		}
-		else if((h-y)<250) {
-		 elem.style.top = (y - elemHeight - 10) + "px";
-		}
-		' . $showHideSelects . '
- }
-}
-
-function absLeft(el) {
-		return (el.offsetParent)?
-	 el.offsetLeft+absLeft(el.offsetParent) : el.offsetLeft;
- }
-
-function absTop(el) {
-	 return (el.offsetParent)?
-	 el.offsetTop+absTop(el.offsetParent) : el.offsetTop;
- }
-
-
-function next(anzahl){
-var scrollActive = document.getElementById("scrollActive");
-if(scrollActive==null) {' .
-				$this->editorBodyFrame . '.document.we_form.elements[\'searchstart' . $whichSearch . '\'].value = parseInt(' . $this->editorBodyFrame . '.document.we_form.elements[\'searchstart' . $whichSearch . '\'].value) + anzahl;
-	search(false);
-
- }
-}
-
-function back(anzahl){
-	var scrollActive = document.getElementById("scrollActive");
-	if(scrollActive==null) {' .
-				$this->editorBodyFrame . '.document.we_form.elements[\'searchstart' . $whichSearch . '\'].value = parseInt(' . $this->editorBodyFrame . '.document.we_form.elements[\'searchstart' . $whichSearch . '\'].value) - anzahl;
-		search(false);
-	}
-}
-
-function openToEdit(tab,id,contentType){
- if(top.opener && top.opener.top.weEditorFrameController) {
-	top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
- } else if(top.opener.top.opener && top.opener.top.opener.top.weEditorFrameController) {
-	top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
- } else if(top.opener.top.opener.top.opener && top.opener.top.opener.top.opener.top.weEditorFrameController) {
-	top.opener.top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
- }
-}
-
-
-function setOrder(order, whichSearch){
-
-	columns = new Array("Text", "SiteTitle", "CreationDate", "ModDate");
-	for(var i=0;i<columns.length;i++) {
-	 if(order!=columns[i]) {
-		deleteArrow = document.getElementById(""+columns[i]+"_"+whichSearch);
-		deleteArrow.innerHTML = "";
-	 }
-	}
-	arrow = document.getElementById(order+"_"+whichSearch);
-	foo = document.we_form.elements["Order"+whichSearch].value;
-
-	if(order+" DESC"==foo){
-	 document.we_form.elements["Order"+whichSearch].value=order;
-	 arrow.innerHTML = "<img border=\"0\" width=\"11\" height=\"8\" src=\"' . IMAGE_DIR . 'arrow_sort_asc.gif\" />";
-	}else{
-	 document.we_form.elements["Order"+whichSearch].value=order+" DESC";
-	 arrow.innerHTML = "<img border=\"0\" width=\"11\" height=\"8\" src=\"' . IMAGE_DIR . 'arrow_sort_desc.gif\" />";
-	}
-	search(false);
-}
-
-function sizeScrollContent() {
- ' . $scrollContentFunction . '
-}
-
-function init() {
- if (' . $this->editorBodyFrame . '.loaded) {
-	sizeScrollContent();
-		} else {
-	setTimeout(\'init());\', 10);
- }
-}
-
-var rows = ' . (isset($_REQUEST["searchFieldsAdvSearch"]) ? count($_REQUEST["searchFieldsAdvSearch"]) - 1 : 0) . ';
-
-function newinputAdvSearch() {
-
- var searchFields = "' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('searchFieldsAdvSearch[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", ""), 1, "", false, array('class' => "defaultfont", 'id' => "searchFieldsAdvSearch[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
- var locationFields = "' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('locationAdvSearch[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "locationAdvSearch[__we_new_id__]")))) . '";
- var search = "' . addslashes(we_html_tools::htmlTextInput('searchAdvSearch[__we_new_id__]', 24, "", "", " class=\"wetextinput\" id=\"searchAdvSearch[__we_new_id__]\" ", "text", 170)) . '";
-
- var elem = document.getElementById("filterTableAdvSearch");
- newID = elem.rows.length-1;
- rows++;
-
- var scrollContent = document.getElementById("scrollContent_' . $whichSearch . '");
- //scrollContent.style.height = scrollContent.offsetHeight - 28 +"px";
-
- if(elem){
-	var newRow = document.createElement("TR");
-		 newRow.setAttribute("id", "filterRow_" + rows);
-
-		 var cell = document.createElement("TD");
-		 cell.innerHTML=searchFields.replace(/__we_new_id__/g,rows)+"<input type=\"hidden\" value=\"\" name=\"hidden_searchFieldsAdvSearch["+rows+"]\"";;
-	newRow.appendChild(cell);
-
-	cell = document.createElement("TD");
-	cell.setAttribute("id", "td_locationAdvSearch["+rows+"]");
-		 cell.innerHTML=locationFields.replace(/__we_new_id__/g,rows);
-		 newRow.appendChild(cell);
-
-	cell = document.createElement("TD");
-	cell.setAttribute("id", "td_searchAdvSearch["+rows+"]");
-		 cell.innerHTML=search.replace(/__we_new_id__/g,rows);
-		 newRow.appendChild(cell);
-
-		 cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_delButton["+rows+"]");
-		 cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rows+')") . '\';
-		 newRow.appendChild(cell);
-
-	elem.appendChild(newRow);
- }
-}
-
-function delRow(id) {
- var scrollContent = document.getElementById("scrollContent_' . $whichSearch . '");
- //scrollContent.style.height = scrollContent.offsetHeight + 28 +"px";
-
- var elem = document.getElementById("filterTableAdvSearch");
- if(elem){
-	trows = elem.rows;
-	rowID = "filterRow_" + id;
-	for (i=0;i<trows.length;i++) {
-	 if(rowID == trows[i].id) {
-		elem.deleteRow(i);
-	 }
-	}
- }
-}
-
-function changeit(value, rowNr){
- var setValue = document.getElementsByName("searchAdvSearch["+rowNr+"]")[0].value;
- var from = document.getElementsByName("hidden_searchFieldsAdvSearch["+rowNr+"]")[0].value;
-
- var searchFields = "' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('searchFieldsAdvSearch[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", ""), 1, "", false, array('class' => "defaultfont", 'id' => "searchFieldsAdvSearch[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
- var locationFields = "' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('locationAdvSearch[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "locationAdvSearch[__we_new_id__]")))) . '";
- var search = "' . addslashes(we_html_tools::htmlTextInput('searchAdvSearch[__we_new_id__]', 24, "", "", " class=\"wetextinput\" id=\"searchAdvSearch[__we_new_id__]\" ", "text", 170)) . '";
-
- var row = document.getElementById("filterRow_"+rowNr);
- var locationTD = document.getElementById("td_locationAdvSearch["+rowNr+"]");
- var searchTD = document.getElementById("td_searchAdvSearch["+rowNr+"]");
- var delButtonTD = document.getElementById("td_delButton["+rowNr+"]");
- var location = document.getElementById("locationAdvSearch["+rowNr+"]");
-
- if(value=="Content") {
-	if (locationTD!=null) {
-	 location.disabled = true;
-	}
-	row.removeChild(searchTD);
-
-	if (delButtonTD!=null) {
-	 row.removeChild(delButtonTD);
-	}
-	cell = document.createElement("TD");
-	cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
-		 cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
-		 row.appendChild(cell);
-
-		 cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
-		 cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-		 row.appendChild(cell);
-		 document.getElementById("searchAdvSearch["+rowNr+"]").value = setValue;
-
- }
- else if(value=="temp_category") {
-	if (locationTD!=null) {
-	 location.disabled = true;
-	}
-	row.removeChild(searchTD);
-
-	var innerhtml= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>"
-		+ "<input class=\"wetextinput\" name=\"searchAdvSearch["+rowNr+"]\" size=\"58\" value=\"\"  id=\"searchAdvSearch["+rowNr+"]\" readonly=\"1\" style=\"width: 170px;\" type=\"text\" />"
-		+ "</td><td><input value=\"\" name=\"searchAdvSearchParentID["+rowNr+"]\" type=\"hidden\"></td><td>' . addslashes(we_html_tools::getPixel(5, 4)) . '</td><td>"
-		+ "<table title=\"' . g_l('button', '[select][value]') . '\" class=\"weBtn\" style=\"width: 70px\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){we_cmd(\'openCatselector\',document.we_form.elements[\'searchAdvSearchParentID["+rowNr+"]\'].value,\'' . CATEGORY_TABLE . '\',\'document.we_form.elements[\\\\\'searchAdvSearchParentID["+rowNr+"]\\\\\'].value\',\'document.we_form.elements[\\\\\'searchAdvSearch["+rowNr+"]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">"
-		+ "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\" style=\"width: 58px\">"
-		+ "' . g_l('button', '[select][value]') . '"
-		+ "</td><td class=\"weBtnRight\"></td></tr></tbody></table></td></tr></tbody></table>";
-
-
-	cell = document.createElement("TD");
-	cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
-		 cell.innerHTML=innerhtml;
-		 row.appendChild(cell);
-
-	if (delButtonTD!=null) {
-	 row.removeChild(delButtonTD);
-	}
-
-	cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
-		 cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-		 row.appendChild(cell);
- }
- else if(value=="temp_template_id" || value=="MasterTemplateID") {
-	if (locationTD!=null) {
-	 location.disabled = true;
-	}
-	row.removeChild(searchTD);
-
-	var innerhtml= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>"
-		+ "<input class=\"wetextinput\" name=\"searchAdvSearch["+rowNr+"]\" size=\"58\" value=\"\"  id=\"searchAdvSearch["+rowNr+"]\" readonly=\"1\" style=\"width: 170px;\" type=\"text\" />"
-		+ "</td><td><input value=\"\" name=\"searchAdvSearchParentID["+rowNr+"]\" type=\"hidden\" /></td><td>' . addslashes(we_html_tools::getPixel(5, 4)) . '</td><td>"
-		+ "<table title=\"' . g_l('button', '[select][value]') . '\" class=\"weBtn\" style=\"width: 70px\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){we_cmd(\'openDocselector\',document.we_form.elements[\'searchAdvSearchParentID["+rowNr+"]\'].value,\'' . TEMPLATES_TABLE . '\',\'document.we_form.elements[\\\\\'searchAdvSearchParentID["+rowNr+"]\\\\\'].value\',\'document.we_form.elements[\\\\\'searchAdvSearch["+rowNr+"]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">"
-		+ "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\" style=\"width: 58px\">"
-		+ "' . g_l('button', '[select][value]') . '"
-		+ "</td><td class=\"weBtnRight\"></td></tr></tbody></table></td></tr></tbody></table>";
-
-
-	cell = document.createElement("TD");
-	cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
-		 cell.innerHTML=innerhtml;
-		 row.appendChild(cell);
-
-	if (delButtonTD!=null) {
-	 row.removeChild(delButtonTD);
-	}
-
-	cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
-		 cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-		 row.appendChild(cell);
- }
- else if(value=="ParentIDDoc" || value=="ParentIDObj" || value=="ParentIDTmpl") {
-	if (locationTD!=null) {
-	 location.disabled = true;
-	}
-	row.removeChild(searchTD);
-
-	var table;
-
-	if (value=="ParentIDDoc") {
-	 table = "' . FILE_TABLE . '";
-	}
-	else if (value=="ParentIDObj") {
-	 table = "' . $objectFilesTable . '";
-	}
-	else if (value=="ParentIDTmpl") {
-	 table = "' . TEMPLATES_TABLE . '";
-	}
-
-	var innerhtml= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>"
-		+ "<input class=\"wetextinput\" name=\"searchAdvSearch["+rowNr+"]\" size=\"58\" value=\"\"  id=\"searchAdvSearch["+rowNr+"]\" readonly=\"1\" style=\"width: 170px;\" type=\"text\" />"
-		+ "</td><td><input value=\"\" name=\"searchAdvSearchParentID["+rowNr+"]\" type=\"hidden\" /></td><td>' . addslashes(we_html_tools::getPixel(5, 4)) . '</td><td>"
-		+ "<table title=\"' . g_l('button', '[select][value]') . '\" class=\"weBtn\" style=\"width: 70px\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){we_cmd(\'openDirselector\',document.we_form.elements[\'searchAdvSearchParentID["+rowNr+"]\'].value,\'"+table+"\',\'document.we_form.elements[\\\\\'searchAdvSearchParentID["+rowNr+"]\\\\\'].value\',\'document.we_form.elements[\\\\\'searchAdvSearch["+rowNr+"]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">"
-		+ "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\" style=\"width: 58px\">"
-		+ "' . g_l('button', '[select][value]') . '"
-		+ "</td><td class=\"weBtnRight\"></td></tr></tbody></table></td></tr></tbody></table>";
-
-
-	cell = document.createElement("TD");
-	cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
-		 cell.innerHTML=innerhtml;
-		 row.appendChild(cell);
-
-	if (delButtonTD!=null) {
-	 row.removeChild(delButtonTD);
-	}
-
-	cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
-		 cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-		 row.appendChild(cell);
- }
- else if(value=="Status") {
-	if (locationTD!=null) {
-	 location.disabled = true;
-	}
-	row.removeChild(searchTD);
-	if (delButtonTD!=null) {
-	 row.removeChild(delButtonTD);
-	}
-
-	search = "' . str_replace(
-					"\n", '\n', addslashes(
-						we_html_tools::htmlSelect(
-							'searchAdvSearch[__we_new_id__]', $this->searchclass->getFieldsStatus(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]")))) . '";
-
-	var cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
-		 cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
-	row.appendChild(cell);
-
-	cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
-		 cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-		 row.appendChild(cell);
-
- }
- else if(value=="Speicherart") {
-	if (locationTD!=null) {
-	 location.disabled = true;
-	}
-	row.removeChild(searchTD);
-	if (delButtonTD!=null) {
-	 row.removeChild(delButtonTD);
-	}
-
-	search = "' . str_replace(
-					"\n", '\n', addslashes(
-						we_html_tools::htmlSelect(
-							'searchAdvSearch[__we_new_id__]', $this->searchclass->getFieldsSpeicherart(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]")))) . '";
-
-	var cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
-		 cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
-	row.appendChild(cell);
-
-	cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
-		 cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-		 row.appendChild(cell);
-
- }
- else if(value=="Published" || value=="CreationDate" || value=="ModDate") {
-
-	row.removeChild(locationTD);
-
-	locationFields = "' . str_replace(
-					"\n", '\n', addslashes(
-						we_html_tools::htmlSelect(
-							'locationAdvSearch[__we_new_id__]', we_search_search::getLocation("date"), 1, "", false, array('class' => "defaultfont", 'id' => "locationAdvSearch[__we_new_id__]")))) . '";
-
-	var cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_locationAdvSearch["+rowNr+"]");
-		 cell.innerHTML=locationFields.replace(/__we_new_id__/g,rowNr);
-	row.appendChild(cell);
-
-	row.removeChild(searchTD);
-
-	var innerhtml= "<table id=\"searchAdvSearch["+rowNr+"]_cell\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td></td><td></td><td>"
-		+ "<input class=\"wetextinput\" name=\"searchAdvSearch["+rowNr+"]\" size=\"55\" value=\"\" maxlength=\"10\" id=\"searchAdvSearch["+rowNr+"]\" readonly=\"1\" style=\"width: 100px;\" type=\"text\" />"
-		+ "</td><td>&nbsp;</td><td><a href=\"#\">"
-		+ "<table id=\"date_picker_from"+rowNr+"\" class=\"weBtn\" onmouseout=\"weButton.out(this);\" onmousedown=\"weButton.down(this);\" onmouseup=\"if(weButton.up(this)){;}\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">"
-		+ "<tbody><tr><td class=\"weBtnLeft\"></td><td class=\"weBtnMiddle\">"
-		+ "<img src=\"' . BUTTONS_DIR . 'icons/date_picker.gif\" class=\"weBtnImage\" alt=\"\"/>"
-		+ "</td><td class=\"weBtnRight\"></td></tr></tbody></table></a></td></tr></tbody></table>";
-
-
-	cell = document.createElement("TD");
-	cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
-		 cell.innerHTML=innerhtml;
-		 row.appendChild(cell);
-
-		 Calendar.setup({inputField:"searchAdvSearch["+rowNr+"]",ifFormat:"%d.%m.%Y",button:"date_picker_from"+rowNr+"",align:"Tl",singleClick:true});
-
-	if (delButtonTD!=null) {
-	 row.removeChild(delButtonTD);
-	}
-
-	cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
-		 cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-		 row.appendChild(cell);
-
- }
- else if(value=="allModsIn") {
-if (locationTD!=null) {
-	 location.disabled = true;
-	}
-	row.removeChild(searchTD);
-	if (delButtonTD!=null) {
-	 row.removeChild(delButtonTD);
-	}
-
-	search = "' . str_replace(
-					"\n", '\n', addslashes(
-						we_html_tools::htmlSelect(
-							'searchAdvSearch[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]")))) . '";
-
-	var cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
-		 cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
-	row.appendChild(cell);
-
-	cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
-		 cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-		 row.appendChild(cell);
- }
-
-else if(value=="modifierID") {
- if (locationTD!=null) {
-	 location.disabled = true;
-	}
-	row.removeChild(searchTD);
-	if (delButtonTD!=null) {
-	 row.removeChild(delButtonTD);
-	}
-
-	search = "' . str_replace(
-					"\n", '\n', addslashes(
-						we_html_tools::htmlSelect(
-							'searchAdvSearch[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "searchAdvSearch[__we_new_id__]")))) . '";
-
-	var cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
-		 cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
-	row.appendChild(cell);
-
-	cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
-		 cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-		 row.appendChild(cell);
-
-}
- else {
-	row.removeChild(searchTD);
-
-	if (locationTD!=null) {
-	 row.removeChild(locationTD);
-	}
-	if (delButtonTD!=null) {
-	 row.removeChild(delButtonTD);
-	}
-
-	cell = document.createElement("TD");
-	cell.setAttribute("id", "td_locationAdvSearch["+rowNr+"]");
-		 cell.innerHTML=locationFields.replace(/__we_new_id__/g,rowNr);
-		 row.appendChild(cell);
-
-	cell = document.createElement("TD");
-	cell.setAttribute("id", "td_searchAdvSearch["+rowNr+"]");
-		 cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
-		 row.appendChild(cell);
-
-		 cell = document.createElement("TD");
-		 cell.setAttribute("id", "td_delButton["+rowNr+"]");
-		 cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
-		 row.appendChild(cell);
-
-		 document.getElementById("searchAdvSearch["+rowNr+"]").value = setValue;
-
- }
-
- switch(from){
- case "allModsIn":
- case "MasterTemplateID":
- case "ParentIDTmpl":
- case "ParentIDObj":
- case "ParentIDDoc":
- case "temp_template_id":
- case "ContentType":
- case "temp_category":
- case "Status":
- case "Speicherart":
- case "Published":
- case "CreationDate":
- case "ModDate":
-	 document.getElementById("searchAdvSearch["+rowNr+"]").value = "";
-		 /*|| value =="allModsIn" || value =="MasterTemplateID" || value=="ParentIDTmpl" || value=="ParentIDObj" || value=="ParentIDDoc" || value=="temp_template_id" || value=="ContentType" || value=="temp_category" || value=="Status" || value=="Speicherart" || value=="Published" || value=="CreationDate" || value=="ModDate") {*/
-
- default:
-	 document.getElementById("searchAdvSearch["+rowNr+"]").value = setValue;
-}
-
- document.getElementsByName("hidden_searchFieldsAdvSearch["+rowNr+"]")[0].value = value;
-
-}
-
-var ajaxCallbackResetVersion = {
- success: function(o) {
-	 //top.we_cmd("save_document","' . $GLOBALS['we_transaction'] . '","0","1","0", "","");
-	 ' . we_message_reporting::getShowMessageCall(
-					g_l('versions', '[resetAllVersionsOK]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-	 // reload current document => reload all open Editors on demand
-	 var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
-	 for (frameId in _usedEditors) {
-
-		 if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
-			 _usedEditors[frameId].setEditorReloadAllNeeded(true);
-			 _usedEditors[frameId].setEditorIsActive(true);
-
-		 } else {
-			 _usedEditors[frameId].setEditorReloadAllNeeded(true);
-		 }
-	 }
-	 _multiEditorreload = true;
-
-	 //reload tree
-	 if(top.opener.treeData) {
-		 top.opener.we_cmd("load", top.opener.treeData.table ,0);
-	 }
-	 document.getElementById("resetBusyAdvSearch").innerHTML = "";
- },
- failure: function(o) {
- }
-}
-
-function resetVersionAjax(id, documentID, version, table) {
- document.getElementById("resetBusyAdvSearch").innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /><div id=\'scrollActive\'></div></td></tr></table>";
-
-YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResetVersion, "protocol=json&cns=versionlist&cmd=ResetVersion&id="+id+"&documentID="+documentID+"&version="+version+"&documentTable="+table+"&we_transaction=' . $GLOBALS['we_transaction'] . '");
-
-}
-
-function resetVersions() {
-
- var checkboxes = new Array();
- check = false;
- var m = 0;
-			for(var i = 0; i < document.we_form.elements.length; i++) {
-				var table = document.we_form.elements[i].name;
-				if(table.substring(0,12)=="resetVersion") {
-					if(document.we_form.elements[i].checked == true) {
-						checkboxes[m] = document.we_form.elements[i].value;
-						check = true;
-						m++;
-					}
-				}
-		 }
-
-
- if(check==false) {
-	 ' . we_message_reporting::getShowMessageCall(
-					g_l('versions', '[notChecked]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
- }else {
-	 Check = confirm("' . g_l('versions', '[resetVersionsSearchtool]') . '");
-	 if (Check == true) {
-		 var vals = "";
-		 for(var i = 0; i < checkboxes.length; i++) {
-			 if(vals!="") vals += ",";
-			 vals += checkboxes[i];
-			 if(document.getElementById("publishVersion_"+checkboxes[i])!=null) {
-				 if(document.getElementById("publishVersion_"+checkboxes[i]).checked) {
-					 vals += "___1";
-				 }
-				 else {
-					 vals += "___0";
-				 }
-			 }
-		 }
-		 resetVersionAjax(vals, 0, 0, 0);
-
-	 }
-
- }
-
-}
-
-function checkAllPubChecks(whichSearch) {
-
- var checkAll = document.getElementsByName("publish_all_"+whichSearch);
- var checkboxes = document.getElementsByName("publish_docs_"+whichSearch);
- var check = false;
-
- if(checkAll[0].checked) {
-	 check = true;
- }
- for(var i = 0; i < checkboxes.length; i++) {
-	 checkboxes[i].checked = check;
- }
-
-}
-
-function publishDocs(whichSearch) {
-
- var checkAll = document.getElementsByName("publish_all_"+whichSearch);
- var checkboxes = document.getElementsByName("publish_docs_"+whichSearch);
- var check = false;
-
- for(var i = 0; i < checkboxes.length; i++) {
-	 if(checkboxes[i].checked) {
-		 check = true;
-		 break;
-	 }
- }
-
- if(checkboxes.length==0) {
-	 check = false;
- }
-
- if(check==false) {
-	 ' . we_message_reporting::getShowMessageCall(
-					g_l('searchtool', '[notChecked]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
- }
- else {
-
-	 Check = confirm("' . g_l('searchtool', '[publish_docs]') . '");
-		 if (Check == true) {
-			 publishDocsAjax(whichSearch);
-		 }
- }
-}
-
-var ajaxCallbackPublishDocs = {
-	 success: function(o) {
-
-		 // reload current document => reload all open Editors on demand
-
-	 var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
-	 for (frameId in _usedEditors) {
-
-		 if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
-			 _usedEditors[frameId].setEditorReloadAllNeeded(true);
-			 _usedEditors[frameId].setEditorIsActive(true);
-
-		 } else {
-			 _usedEditors[frameId].setEditorReloadAllNeeded(true);
-		 }
-	 }
-	 _multiEditorreload = true;
-
-	 //reload tree
-	 if(top.opener.treeData) {
-		 top.opener.we_cmd("load", top.opener.treeData.table ,0);
-	 }
-	 document.getElementById("resetBusyAdvSearch").innerHTML = "";
-		 document.getElementById("resetBusyDocSearch").innerHTML = "";
-		 ' . we_message_reporting::getShowMessageCall(
-					g_l('searchtool', '[publishOK]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-
-	 },
-	 failure: function(o) {
-		//alert("Failure");
-	 }
-}
-
-function publishDocsAjax(whichSearch) {
-
-	var args = "";
-	var check = "";
-	var checkboxes = document.getElementsByName("publish_docs_"+whichSearch);
-	for(var i = 0; i < checkboxes.length; i++) {
-		if(checkboxes[i].checked) {
-				if(check!="") check += ",";
-				check += checkboxes[i].value;
-		}
-	}
-	args += "&we_cmd[0]="+encodeURI(check);
-	var scroll = document.getElementById("resetBusy"+whichSearch);
-	scroll.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /></td></tr></table>";
-
-	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackPublishDocs, "protocol=json&cns=tools/weSearch&cmd=PublishDocs&"+args+"");
-
-}
-
- function previewVersion(ID) {
-	top.we_cmd("versions_preview", ID, 0);
-	//new jsWindow("' . WEBEDITION_DIR . 'we/include/we_versions/weVersionsPreview.php?ID="+ID+"", "version_preview",-1,-1,1000,750,true,true,true,true);
-
-}
-
-function calendarSetup(x){
- for(i=0;i<x;i++) {
-	if(document.getElementById("date_picker_from"+i+"") != null) {
-	 Calendar.setup({inputField:"searchAdvSearch["+i+"]",ifFormat:"%d.%m.%Y",button:"date_picker_from"+i+"",align:"Tl",singleClick:true});
-	}
- }
-}');
-
-		return $_js;
+		$showSelects = '';
+		return we_html_element::jsScript(JS_DIR . 'we_modules/search/search_view.js') .
+			we_html_element::jsElement('
+WE().consts.weSearch= {
+	SEARCH_DOCS: "' . self::SEARCH_DOCS . '",
+	SEARCH_TMPL: "' . self::SEARCH_TMPL . '",
+	SEARCH_MEDIA: "' . self::SEARCH_MEDIA . '",
+	SEARCH_ADV: "' . self::SEARCH_ADV . '"
+};
+weSearch.conf = {
+	whichsearch: "' . $whichSearch . '",
+	editorBodyFrame : ' . $this->editorBodyFrame . ',
+	ajaxURL: WE().consts.dirs.WEBEDITION_DIR+"rpc/rpc.php",
+	tab: "' . $tab . '",
+	modelClassName: "' . $this->Model->ModelClassName . '",
+	modelID: "' . $this->Model->ID . '",
+	modelIsFolder: ' . ($this->Model->IsFolder ? 1 : 0) . ',
+	showSelects: ' . ($showSelects ? 1 : 0) . ',
+	rows: ' . ((isset($_REQUEST["searchFields" . $whichSearch]) ? count($_REQUEST["searchFields" . $whichSearch]) - ($whichSearch == self::SEARCH_ADV ? 1 : 0) : ($whichSearch == self::SEARCH_MEDIA ? $this->searchMediaOptFieldIndex : 0))) . ',
+	we_transaction: "' . $GLOBALS["we_transaction"] . '",
+	checkRightTempTable: ' . (we_search_search::checkRightTempTable() ? 1 : 0) . ',
+	checkRightDropTable: ' . (we_search_search::checkRightDropTable() ? 1 : 0) . '
+};
+weSearch.elems = {
+	btnTrash: \'' . str_replace("'", "\'", we_html_button::create_button(we_html_button::TRASH, "javascript:weSearch.delRow(__we_new_id__)")) . '\',
+	btnSelector: \'' . str_replace("'", "\'", we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('__we_selector__', document.we_form.elements['search" . $whichSearch . "ParentID[__we_new_id__]'].value, '__we_sel_table__', 'document.we_form.elements[\\\'search" . $whichSearch . "ParentID[__we_new_id__]\\\'].value', 'document.we_form.elements[\\\'search" . $whichSearch . "[__we_new_id__]\\\'].value');")) . '\',
+	fieldSearch: \'' . str_replace("'", "\'", we_html_tools::htmlTextInput('search' . $whichSearch . '[__we_new_id__]', 58, '', '', ' __we_read_only__class="wetextinput" id="search' . $whichSearch . '[__we_new_id__]"', 'text', 170)) . '\',
+	selStatus: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('search' . $whichSearch . '[__we_new_id__]', $this->searchclass->getFieldsStatus(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . $whichSearch . "[__we_new_id__]"))) . '\',
+	selSpeicherart: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('search' . $whichSearch . '[__we_new_id__]', $this->searchclass->getFieldsSpeicherart(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . $whichSearch . "[__we_new_id__]"))) . '\',
+	selLocation: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('location' . $whichSearch . '[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "location" . $whichSearch . "[__we_new_id__]"))) . '\',
+	selModFields: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('search' . $whichSearch . '[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . $whichSearch . "[__we_new_id__]"))) . '\',
+	selUsers: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('search' . $whichSearch . '[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . $whichSearch . "[__we_new_id__]"))) . '\',
+	pixel: \'' . str_replace("'", "\'", we_html_tools::getPixel(5, 4)) . '\',
+	searchFields: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('searchFields' . $whichSearch . '[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", $whichSearch), 1, "", false, array('class' => "defaultfont", 'id' => "searchFields" . $whichSearch . "[__we_new_id__]", 'onchange' => "weSearch.changeit(this.value, __we_new_id__);"))) . '\'
+};
+WE().consts.g_l.weSearch = {
+	noTempTableRightsSearch: "' . g_l('searchtool', '[noTempTableRightsSearch]') . '",
+	nothingCheckedAdv: \'' . g_l('searchtool', '[nothingCheckedAdv]') . '\',
+	nothingCheckedTmplDoc: \'' . g_l('searchtool', '[nothingCheckedTmplDoc]') . '\',
+	buttonSelectValue: "' . g_l('button', '[select][value]') . '",
+	versionsResetAllVersionsOK: "' . g_l('versions', '[resetAllVersionsOK]') . '",
+	versionsNotChecked: "' . g_l('versions', '[notChecked]') . '",
+	searchtool__notChecked: "' . g_l('searchtool', '[notChecked]') . '",
+	searchtool__publishOK: "' . g_l('searchtool', '[publishOK]') . '"
+};
+');
 	}
 
 	function getNextPrev($we_search_anzahl, $whichSearch, $isTop = true){
@@ -1296,15 +465,19 @@ function calendarSetup(x){
 			$searchstart = $_SESSION['weS']['weSearch']['searchstart' . $whichSearch];
 		} else {
 			switch($whichSearch){
-				case "DocSearch" :
+				case self::SEARCH_DOCS :
 					$anzahl = $this->Model->anzahlDocSearch;
 					$searchstart = $this->Model->searchstartDocSearch;
 					break;
-				case "TmplSearch" :
+				case self::SEARCH_TMPL :
 					$anzahl = $this->Model->anzahlTmplSearch;
 					$searchstart = $this->Model->searchstartTmplSearch;
 					break;
-				case "AdvSearch" :
+				case self::SEARCH_MEDIA :
+					$anzahl = $this->Model->anzahlMediaSearch;
+					$searchstart = $this->Model->searchstartMediaSearch;
+					break;
+				case self::SEARCH_ADV :
 					$anzahl = $this->Model->anzahlAdvSearch;
 					$searchstart = $this->Model->searchstartAdvSearch;
 					break;
@@ -1314,30 +487,32 @@ function calendarSetup(x){
 			}
 		}
 
-		$out = '<table cellpadding="0" cellspacing="0" border="0"><tr><td>' .
+		$out = '<table class="default"><tr><td>' .
 			($searchstart ?
-				we_html_button::create_button("back", "javascript:back(" . $anzahl . ");") :
-				we_html_button::create_button("back", "", true, 100, 22, "", "", true)
+				we_html_button::create_button(we_html_button::BACK, "javascript:weSearch.back(" . $anzahl . ");") :
+				we_html_button::create_button(we_html_button::BACK, "", true, 100, 22, "", "", true)
 			) .
-			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
+			'</td><td width="10"></td><td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
 			(($we_search_anzahl - $searchstart) < $anzahl ?
 				$we_search_anzahl :
 				$searchstart + $anzahl
 			) .
-			' ' . g_l('global', '[from]') . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' .
+			' ' . g_l('global', '[from]') . ' ' . $we_search_anzahl . '</b></td><td width="10"></td><td>' .
 			(($searchstart + $anzahl) < $we_search_anzahl ?
 				//bt_back
-				we_html_button::create_button("next", "javascript:next(" . $anzahl . ");") :
-				we_html_button::create_button("next", "", true, 100, 22, "", "", true)
+				we_html_button::create_button(we_html_button::NEXT, "javascript:weSearch.next(" . $anzahl . ");") :
+				we_html_button::create_button(we_html_button::NEXT, "", true, 100, 22, "", "", true)
 			) .
-			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
+			'</td><td width="10"></td><td>';
 
 		$pages = array();
-		for($i = 0; $i < ceil($we_search_anzahl / $anzahl); $i++){
-			$pages[($i * $anzahl)] = ($i + 1);
+		if($anzahl){
+			for($i = 0; $i < ceil($we_search_anzahl / $anzahl); $i++){
+				$pages[($i * $anzahl)] = ($i + 1);
+			}
 		}
 
-		$page = ceil($searchstart / $anzahl) * $anzahl;
+		$page = $anzahl ? ceil($searchstart / $anzahl) * $anzahl : 0;
 
 		$select = we_html_tools::htmlSelect("page", $pages, 1, $page, false, array("onchange" => "this.form.elements['searchstart" . $whichSearch . "'].value = this.value;search(false);"));
 		if(!isset($GLOBALS['setInputSearchstart']) && !defined('searchstart' . $whichSearch) && $isTop){
@@ -1354,49 +529,112 @@ function calendarSetup(x){
 		if($ord){
 			if(strpos($ord, $for) === 0){
 				if(strpos($ord, 'DESC')){
-					return '<img border="0" width="11" height="8" src="' . IMAGE_DIR . 'arrow_sort_desc.gif" />';
+					return '<i class="fa fa-sort-desc fa-lg"></i>';
 				}
-				return '<img border="0" width="11" height="8" src="' . IMAGE_DIR . 'arrow_sort_asc.gif" />';
+				return '<i class="fa fa-sort-asc fa-lg"></i>';
 			}
 		}
-		return we_html_tools::getPixel(11, 8);
+		return '<i class="fa fa-sort fa-lg"></i>';
 	}
 
-	function getSearchDialogCheckboxes($whichSearch){
+	function getSearchDialogOptions($whichSearch){
 
+		$_table = new we_html_table(array('style' => 'width:500px',), 3, 2);
+		$row = 0;
+		switch($whichSearch){
+			case self::SEARCH_DOCS :
+				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTextDocSearch ? true : false, "searchForTextDocSearch", g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
+				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTitleDocSearch ? true : false, "searchForTitleDocSearch", g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
+				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForContentDocSearch ? true : false, "searchForContentDocSearch", g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
+				break;
+			case self::SEARCH_TMPL :
+				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTextTmplSearch ? true : false, "searchForTextTmplSearch", g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
+				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForContentTmplSearch ? true : false, "searchForContentTmplSearch", g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
+				break;
+			case self::SEARCH_MEDIA :
+				//$_table->setCol($row++, 0, array('style' => 'padding-top: 10px'), we_html_tools::htmlAlertAttentionBox('Ohne Suchbegriff werden alle Medien-Dokumente ausgegeben.', we_html_tools::TYPE_INFO, 440));
+
+				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTextMediaSearch ? true : false, "searchForTextMediaSearch", g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
+				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTitleMediaSearch ? true : false, "searchForTitleMediaSearch", g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
+				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForMetaMediaSearch ? true : false, "searchForMetaMediaSearch", 'In Metadaten', false, 'defaultfont', '')); //FIXME: G_L()
+				//$_table->setCol($row++, 1, array('style' => 'text-align:right'), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
+
+				return $_table->getHtml();
+		}
+		$_table->setCol($row, 0, array('style' => 'padding-right:20px;'), we_html_tools::getPixel(380, 10));
+		$_table->setCol($row++, 1, array('style' => 'text-align:right'), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
+
+		return $_table->getHtml();
+	}
+
+	function getSearchDialogMediaType($whichSearch){
+		$_table = new we_html_table(array('style' => 'width:400px',), 7, 2);
+		switch($whichSearch){
+			case self::SEARCH_MEDIA :
+				/*
+				 * FIXME: add meta tags using advsearch gui elements! (they are AND-connected)
+				 */
+				$n = 1;
+				$_table->setCol(0, 0, array(), we_html_element::htmlHiddens(array(
+						'searchFieldsMediaSearch[' . $n . ']' => 'ContentType',
+						'searchMediaSearch[' . $n . ']' => 1,
+						'locationMediaSearch[' . $n++ . ']' => 'IN')) .
+					we_html_forms::checkboxWithHidden($this->Model->searchForImageMediaSearch ? true : false, "searchForImageMediaSearch", 'Bilder', false, 'defaultfont withSpace', ''));
+				$_table->setCol(0, 1, array(), we_html_forms::checkboxWithHidden($this->Model->searchForAudioMediaSearch ? true : false, "searchForAudioMediaSearch", 'Audio', false, 'defaultfont', ''));
+				$_table->setCol(1, 1, array(), we_html_forms::checkboxWithHidden($this->Model->searchForVideoMediaSearch ? true : false, "searchForVideoMediaSearch", 'Video', false, 'defaultfont', ''));
+				$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForPdfMediaSearch ? true : false, "searchForOtherMediaSearch", 'Sonstige Medien-Dateien', false, 'defaultfont', '', false));
+
+
+				break;
+			default:
+				return;
+		}
+
+		return $_table->getHtml();
+	}
+
+	function getSearchDialogFilter($whichSearch){
 		$_table = new we_html_table(
 			array(
-			'border' => 0,
-			'cellpadding' => 2,
-			'cellspacing' => 0,
-			'width' => 500,
-			'height' => 50
-			), 4, 2);
+			'width' => 400,
+			), 4, 4);
 
 		switch($whichSearch){
-			case "DocSearch" :
-				$_table->setCol(0, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTextDocSearch ? true : false, "searchForTextDocSearch", g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
+			case self::SEARCH_MEDIA :
+				$n = 2;
 
-				$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTitleDocSearch ? true : false, "searchForTitleDocSearch", g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
+				$_table->setCol(0, 0, array(), g_l('searchtool', '[usage_state]') . ': ');
+				$_table->setCol(0, 1, array('colspan' => 2), we_html_element::htmlHiddens(array(
+						'searchFieldsMediaSearch[' . $n . ']' => 'IsUsed',
+						'locationMediaSearch[' . $n . ']' => 'IS')) .
+					we_html_tools::htmlSelect('searchMediaSearch[' . $n . ']', array(
+						0 => g_l('searchtool', '[all]'),
+						1 => g_l('searchtool', '[only_unsed]'),
+						2 => g_l('searchtool', '[only_unused]')), 1, isset($this->Model->searchMediaSearch[$n]) ? $this->Model->searchMediaSearch[$n++] : '', false, array(), 'value', 220));
 
-				$_table->setCol(2, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForContentDocSearch ? true : false, "searchForContentDocSearch", g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
+				$_table->setCol(1, 0, array(), g_l('searchtool', '[protection]') . ': ');
+				$_table->setCol(1, 1, array('colspan' => 2), we_html_element::htmlHiddens(array(
+						'searchFieldsMediaSearch[' . $n . ']' => 'IsProtected',
+						'locationMediaSearch[' . $n . ']' => 'IS')) .
+					we_html_tools::htmlSelect('searchMediaSearch[' . $n . ']', array(
+						0 => g_l('searchtool', '[all]'),
+						1 => g_l('searchtool', '[only_protected]'),
+						2 => g_l('searchtool', '[only_unprotected]')), 1, isset($this->Model->searchMediaSearch[$n]) ? $this->Model->searchMediaSearch[$n++] : '', false, array(), 'value', 220));
 
+				$this->searchMediaOptFieldIndex = $n;
 				break;
-			case "TmplSearch" :
-				$_table->setCol(0, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTextTmplSearch ? true : false, "searchForTextTmplSearch", g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
-
-				$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForContentTmplSearch ? true : false, "searchForContentTmplSearch", g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
-
-				break;
+			default:
+				return;
 		}
-		$_table->setCol(2, 1, array('align' => 'right'), we_html_button::create_button("search", "javascript:search(true);"));
+		$_table->setCol(2, 0, array('colspan' => 4), $this->getSearchDialogOptFields($whichSearch));
+		$_table->setCol(3, 3, array(), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
 
 		return $_table->getHtml();
 	}
 
 	function getSearchDialogCheckboxesAdvSearch(){
 		if(!is_array($this->Model->search_tables_advSearch)){
-			$this->Model->search_tables_advSearch = unserialize($this->Model->search_tables_advSearch);
+			$this->Model->search_tables_advSearch = we_unserialize($this->Model->search_tables_advSearch);
 			if(is_array($this->Model->search_tables_advSearch)){
 				//tablenames are hardcoded in the tblsearchtool, get the real tablenames if they have a prefix
 				foreach($this->Model->search_tables_advSearch as $k => $v){
@@ -1512,49 +750,30 @@ function calendarSetup(x){
 			unset($_SESSION['weS']['weSearch']["checkWhich"]);
 		}
 
-		$_table = new we_html_table(
-			array(
-			'border' => 0,
-			'cellpadding' => 2,
-			'cellspacing' => 0,
-			'width' => 550,
-			'height' => 50
-			), 4, 3);
+		$_table = new we_html_table(array('style' => 'width:550px',), 4, 3);
 
 		if(permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
-			$_table->setCol(
-				0, 0, array(), we_html_forms::checkboxWithHidden(
-					$this->Model->search_tables_advSearch[FILE_TABLE] ? true : false, 'search_tables_advSearch[' . FILE_TABLE . ']', g_l('searchtool', '[documents]'), false, 'defaultfont', ''));
+			$_table->setCol(0, 0, array(), we_html_forms::checkboxWithHidden($this->Model->search_tables_advSearch[FILE_TABLE] ? true : false, 'search_tables_advSearch[' . FILE_TABLE . ']', g_l('searchtool', '[documents]'), false, 'defaultfont', ''));
 		}
 
 		if(permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
-			$_table->setCol(
-				1, 0, array(), we_html_forms::checkboxWithHidden(
-					$this->Model->search_tables_advSearch[TEMPLATES_TABLE] ? true : false, 'search_tables_advSearch[' . TEMPLATES_TABLE . ']', g_l('searchtool', '[templates]'), false, 'defaultfont', ''));
+			$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($this->Model->search_tables_advSearch[TEMPLATES_TABLE] ? true : false, 'search_tables_advSearch[' . TEMPLATES_TABLE . ']', g_l('searchtool', '[templates]'), false, 'defaultfont', ''));
 		}
 
 		if(defined('OBJECT_TABLE')){
 			if(permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
-				$_table->setCol(
-					0, 1, array(), we_html_forms::checkboxWithHidden(
-						$this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] ? true : false, 'search_tables_advSearch[' . OBJECT_FILES_TABLE . ']', g_l('searchtool', '[objects]'), false, 'defaultfont', ''));
+				$_table->setCol(0, 1, array(), we_html_forms::checkboxWithHidden($this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] ? true : false, 'search_tables_advSearch[' . OBJECT_FILES_TABLE . ']', g_l('searchtool', '[objects]'), false, 'defaultfont', ''));
 			}
 			if(permissionhandler::hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
-				$_table->setCol(
-					1, 1, array(), we_html_forms::checkboxWithHidden(
-						$this->Model->search_tables_advSearch[OBJECT_TABLE] ? true : false, 'search_tables_advSearch[' . OBJECT_TABLE . ']', g_l('searchtool', '[classes]'), false, 'defaultfont', ''));
+				$_table->setCol(1, 1, array(), we_html_forms::checkboxWithHidden($this->Model->search_tables_advSearch[OBJECT_TABLE] ? true : false, 'search_tables_advSearch[' . OBJECT_TABLE . ']', g_l('searchtool', '[classes]'), false, 'defaultfont', ''));
 			}
 		}
 
 		if(permissionhandler::hasPerm('SEE_VERSIONS')){
-			$_table->setCol(
-				0, 2, array(), we_html_forms::checkboxWithHidden(
-					$this->Model->search_tables_advSearch[VERSIONS_TABLE] ? true : false, 'search_tables_advSearch[' . VERSIONS_TABLE . ']', g_l('versions', '[versions]'), false, 'defaultfont', ''));
+			$_table->setCol(0, 2, array(), we_html_forms::checkboxWithHidden($this->Model->search_tables_advSearch[VERSIONS_TABLE] ? true : false, 'search_tables_advSearch[' . VERSIONS_TABLE . ']', g_l('versions', '[versions]'), false, 'defaultfont', ''));
 		}
 
-		$_table->setCol(1, 2, array(
-			'align' => 'right'
-			), we_html_button::create_button("search", "javascript:search(true);"));
+		$_table->setCol(2, 2, array('style' => 'text-align:right'), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
 
 		return $_table->getHtml();
 	}
@@ -1562,7 +781,7 @@ function calendarSetup(x){
 	function getSearchDialog($whichSearch){
 
 		switch($whichSearch){
-			case "DocSearch" :
+			case self::SEARCH_DOCS :
 				$this->Model->locationDocSearch = (($op = we_base_request::_(we_base_request::STRING, "locationDocSearch")) ?
 						$op :
 						array("CONTAIN"));
@@ -1575,32 +794,25 @@ function calendarSetup(x){
 				if($this->Model->searchForTextDocSearch){
 					$this->Model->searchFieldsDocSearch[] = "Text";
 				}
-
 				if($this->Model->searchForTitleDocSearch){
 					$this->Model->searchFieldsDocSearch[] = "Title";
 				}
-
 				if($this->Model->searchForContentDocSearch){
 					$this->Model->searchFieldsDocSearch[] = "Content";
 				}
-
-				if((isset($_SESSION['weS']['weSearch']["keyword"]) && $_SESSION['weS']['weSearch']["keyword"] != "") && we_base_request::_(we_base_request::INT, "tab") == 1){
-					$this->Model->searchDocSearch[0] = ($_SESSION['weS']['weSearch']["keyword"]);
+				if(!empty($_SESSION['weS']['weSearch']['keyword']) && we_base_request::_(we_base_request::INT, 'tab') == 1){
+					$this->Model->searchDocSearch[0] = ($_SESSION['weS']['weSearch']['keyword']);
 					if($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8"){
 						$this->Model->searchDocSearch[0] = utf8_encode($this->Model->searchDocSearch[0]);
 					}
-
-					unset($_SESSION['weS']['weSearch']["keyword"]);
+					unset($_SESSION['weS']['weSearch']['keyword']);
 				}
-
 				if(!is_array($this->Model->searchDocSearch)){
-					$this->Model->searchDocSearch = unserialize($this->Model->searchDocSearch);
+					$this->Model->searchDocSearch = we_unserialize($this->Model->searchDocSearch);
 				}
-
 				$searchInput = we_html_tools::htmlTextInput($searchTextName, 30, (isset($this->Model->searchDocSearch) && is_array($this->Model->searchDocSearch) && isset($this->Model->searchDocSearch[0]) ? $this->Model->searchDocSearch[0] : ''), "", "", "search", 380);
-
 				break;
-			case "TmplSearch" :
+			case self::SEARCH_TMPL :
 				$this->Model->locationTmplSearch = (($op = we_base_request::_(we_base_request::STRING, "locationTmplSearch")) ?
 						$op :
 						array("CONTAIN"));
@@ -1613,29 +825,62 @@ function calendarSetup(x){
 				if($this->Model->searchForTextTmplSearch){
 					$this->Model->searchFieldsTmplSearch[] = "Text";
 				}
-
 				if($this->Model->searchForContentTmplSearch){
 					$this->Model->searchFieldsTmplSearch[] = "Content";
 				}
-
-				if((isset($_SESSION['weS']['weSearch']["keyword"]) && $_SESSION['weS']['weSearch']["keyword"] != "") && we_base_request::_(we_base_request::INT, "tab") == 2){
+				if((!empty($_SESSION['weS']['weSearch']['keyword'])) && we_base_request::_(we_base_request::INT, "tab") == 2){
 					$this->Model->searchTmplSearch[0] = $_SESSION['weS']['weSearch']["keyword"];
 					if($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8"){
 						$this->Model->searchTmplSearch[0] = utf8_encode($this->Model->searchTmplSearch[0]);
 					}
 					unset($_SESSION['weS']['weSearch']["keyword"]);
 				}
-
 				if(!is_array($this->Model->searchTmplSearch)){
-					$this->Model->searchTmplSearch = unserialize($this->Model->searchTmplSearch);
+					$this->Model->searchTmplSearch = we_unserialize($this->Model->searchTmplSearch);
+				}
+				$searchInput = we_html_tools::htmlTextInput($searchTextName, 30, (isset($this->Model->searchTmplSearch) && is_array($this->Model->searchTmplSearch) && isset($this->Model->searchTmplSearch[0]) ? $this->Model->searchTmplSearch[0] : ''), "", "", "search", 380);
+				break;
+
+			case self::SEARCH_MEDIA :
+				$this->Model->locationMediaSearch = (($op = we_base_request::_(we_base_request::STRING, 'locationMediaSearch')) ?
+						$op :
+						array('CONTAIN'));
+
+				$this->Model->searchFieldsMediaSearch = array();
+				$locationName = "locationMediaSearch[0]";
+				$searchTextName = "searchMediaSearch[0]";
+				$searchFieldName = "searchFieldsMediaSearch[0]";
+
+				$searchTables = "search_tables_MediaSearch[" . FILE_TABLE . "]";
+
+				if($this->Model->searchForTextMediaSearch){
+					$this->Model->searchFieldsMediaSearch[] = "Text";
+				}
+				if($this->Model->searchForTitleMediaSearch){
+					$this->Model->searchFieldsMediaSearch[] = "Title";
+				}
+				if($this->Model->searchForMetaMediaSearch){
+					$this->Model->searchFieldsMediaSearch[] = "Meta";
 				}
 
-				$searchInput = we_html_tools::htmlTextInput($searchTextName, 30, (isset($this->Model->searchTmplSearch) && is_array($this->Model->searchTmplSearch) && isset($this->Model->searchTmplSearch[0]) ? $this->Model->searchTmplSearch[0] : ''), "", "", "search", 380);
+				if((!empty($_SESSION['weS']['weSearch']["keyword"])) && we_base_request::_(we_base_request::INT, "tab") == 1){
+					$this->Model->searchMediaSearch[0] = ($_SESSION['weS']['weSearch']["keyword"]);
+					if($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8"){
+						$this->Model->searchMediaSearch[0] = utf8_encode($this->Model->searchMediaSearch[0]);
+					}
+					unset($_SESSION['weS']['weSearch']["keyword"]);
+				}
 
+				if(!is_array($this->Model->searchMediaSearch)){
+					$this->Model->searchMediaSearch = we_unserialize($this->Model->searchMediaSearch);
+				}
+
+				$searchInput = we_html_element::htmlHidden($searchFieldName, 'keyword') .
+					we_html_tools::htmlTextInput($searchTextName, 30, (isset($this->Model->searchMediaSearch) && is_array($this->Model->searchMediaSearch) && isset($this->Model->searchMediaSearch[0]) ? $this->Model->searchMediaSearch[0] : ''), "", "", "search", 380);
 				break;
 		}
 
-		return '<div id="mouseOverDivs_' . $whichSearch . '"></div><table cellpadding="0" cellspacing="0" border="0">
+		return '<div id="mouseOverDivs_' . $whichSearch . '"></div><table class="default">
 <tbody>
 <tr>
  <td></td>
@@ -1645,10 +890,15 @@ function calendarSetup(x){
  <td></td>
 </tr>
 <tr>
- <td>' . $searchInput . '</td>
+ <td style="padding-right:20px;">' . $searchInput . '</td>
+ <td>' . we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);") . '</td>
  <td>' . we_html_tools::hidden($locationName, 'CONTAIN') . '</td>
  <td>' . we_html_tools::hidden($searchTables, 1) . '</td>
-</tr></tbody></table>';
+ <td></td>
+</tr>' . ( $whichSearch == self::SEARCH_MEDIA ?
+				'<tr><td colspan="5">' . we_html_tools::htmlAlertAttentionBox("Ohne Suchbegriff werden alle Medien-Dokumente ausgegeben.", we_html_tools::TYPE_INFO, 380) . '</td></tr>' :
+				'') . '
+</tbody></table>';
 	}
 
 	function searchProperties($whichSearch){
@@ -1672,7 +922,7 @@ function calendarSetup(x){
 			}
 
 			switch($whichSearch){
-				case 'DocSearch':
+				case self::SEARCH_DOCS:
 					$_tables[0] = FILE_TABLE;
 					$folderID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'folderIDDoc');
 					foreach(we_base_request::_(we_base_request::RAW, 'we_cmd') as $k => $v){
@@ -1691,7 +941,7 @@ function calendarSetup(x){
 						}
 					}
 					break;
-				case 'TmplSearch':
+				case self::SEARCH_TMPL:
 					$_tables[0] = TEMPLATES_TABLE;
 					$folderID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'folderIDTmpl');
 					foreach(we_base_request::_(we_base_request::RAW, 'we_cmd') as $k => $v){
@@ -1704,6 +954,54 @@ function calendarSetup(x){
 									$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Content';
 									break;
 							}
+						}
+					}
+					break;
+				case self::SEARCH_MEDIA:
+					$_tables[0] = FILE_TABLE;
+					$folderID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'folderIDMedia');
+					$searchForContentTypesMediaSearch = '';
+
+					foreach(we_base_request::_(we_base_request::RAW, 'we_cmd') as $k => $v){
+						if(is_string($v) && $v == 1){
+							switch($k){
+								case 'searchForTextMediaSearch':
+								case 'searchForTitleMediaSearch':
+								case 'searchForMetaMediaSearch':
+									$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = $k === 'searchForTextMediaSearch' ? 'Text' :
+										($k === 'searchForTitleMediaSearch' ? 'Title' : 'Meta');
+									$_REQUEST['we_cmd']['search' . $whichSearch][] = $_REQUEST['we_cmd']['search' . $whichSearch][0];
+									$_REQUEST['we_cmd']['location' . $whichSearch][] = 'CONTAIN';
+									break;
+								case 'searchForImageMediaSearch':
+									$searchForContentTypesMediaSearch .= "'" . we_base_ContentTypes::IMAGE . "',";
+									break;
+								case 'searchForVideoMediaSearch':
+									$searchForContentTypesMediaSearch .= "'" . we_base_ContentTypes::VIDEO . "','" . we_base_ContentTypes::QUICKTIME . "'" . "'" . we_base_ContentTypes::FLASH . "',";
+									break;
+								case 'searchForAudioMediaSearch':
+									$searchForContentTypesMediaSearch .= "'" . we_base_ContentTypes::AUDIO . "',";
+									break;
+								//case 'searchForPdfMediaSearch':
+								case 'searchForOtherMediaSearch':
+									$searchForContentTypesMediaSearch .= "'" . we_base_ContentTypes::APPLICATION . "',";
+									//$searchForContentTypesMediaSearch .= "'#PDF#',";
+									break;
+							}
+						}
+					}
+					foreach(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'searchFields' . $whichSearch) as $k => $v){
+						switch($v){
+							case 'ContentType':
+								if(!$cts = trim($searchForContentTypesMediaSearch, ',')){
+									$cts = "'" . we_base_ContentTypes::IMAGE . "','" . we_base_ContentTypes::VIDEO . "','" . we_base_ContentTypes::QUICKTIME . "','" . we_base_ContentTypes::FLASH . "','" . we_base_ContentTypes::AUDIO . "','" . we_base_ContentTypes::APPLICATION . "'"; //"','#PDF#'";
+								}
+								$_REQUEST['we_cmd']['search' . $whichSearch][$k] = $cts;
+								break;
+							default:
+								if(strpos($v, 'meta__') === 0 && $_REQUEST['we_cmd']['search' . $whichSearch][$k] === '' && $_REQUEST['we_cmd']['location' . $whichSearch][$k] === 'IS'){
+									$_REQUEST['we_cmd']['search' . $whichSearch][$k] = "#EMPTY#";
+								}
 						}
 					}
 					break;
@@ -1737,7 +1035,7 @@ function calendarSetup(x){
 			$location = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'location' . $whichSearch);
 			$searchText = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 'search' . $whichSearch); //allow to search for tags
 			$_order = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'Order' . $whichSearch);
-			$_view = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'setView' . $whichSearch);
+			$_view = we_base_request::_(we_base_request::STRING, 'we_cmd', self::VIEW_LIST, 'setView' . $whichSearch);
 
 			$_searchstart = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'searchstart' . $whichSearch);
 			$_anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'anzahl' . $whichSearch);
@@ -1745,7 +1043,7 @@ function calendarSetup(x){
 			$obj = $this->Model;
 
 			switch($whichSearch){
-				case 'DocSearch':
+				case self::SEARCH_DOCS:
 					$obj->searchstartDocSearch = we_base_request::_(we_base_request::STRING, "searchstartDocSearch", $obj->searchstartDocSearch);
 					$_table = FILE_TABLE;
 					$_tables[0] = $_table;
@@ -1757,13 +1055,11 @@ function calendarSetup(x){
 					$_view = $obj->setViewDocSearch;
 					$_searchstart = $obj->searchstartDocSearch;
 					$_anzahl = $obj->anzahlDocSearch;
-
 					break;
-				case 'TmplSearch':
+				case self::SEARCH_TMPL:
 					$obj->searchstartTmplSearch = we_base_request::_(we_base_request::INT, "searchstartTmplSearch", $obj->searchstartTmplSearch);
 					$_table = TEMPLATES_TABLE;
 					$_tables[0] = $_table;
-
 					$searchFields = $obj->searchFieldsTmplSearch;
 					$searchText = $obj->searchTmplSearch;
 					$location = $obj->locationTmplSearch;
@@ -1773,7 +1069,20 @@ function calendarSetup(x){
 					$_searchstart = $obj->searchstartTmplSearch;
 					$_anzahl = $obj->anzahlTmplSearch;
 					break;
-				case 'AdvSearch':
+				case self::SEARCH_MEDIA:
+					$obj->searchstartMediaSearch = we_base_request::_(we_base_request::STRING, "searchstartMediaSearch", $obj->searchstartMediaSearch);
+					$_table = FILE_TABLE;
+					$_tables[0] = $_table;
+					$searchFields = $obj->searchFieldsMediaSearch;
+					$searchText = $obj->searchMediaSearch;
+					$location = $obj->locationMediaSearch;
+					$folderID = $obj->folderIDMedia;
+					$_order = $obj->OrderMediaSearch;
+					$_view = $obj->setViewMediaSearch;
+					$_searchstart = $obj->searchstartMediaSearch;
+					$_anzahl = $obj->anzahlMediaSearch;
+					break;
+				case self::SEARCH_ADV:
 					$obj->searchstartAdvSearch = we_base_request::_(we_base_request::INT, "searchstartAdvSearch", $obj->searchstartAdvSearch);
 					if(!($obj->searchFieldsAdvSearch)){
 						$obj->searchFieldsAdvSearch = array("ID");
@@ -1825,7 +1134,7 @@ function calendarSetup(x){
 				$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = count($_result);
 			}
 		} elseif(
-			($obj->IsFolder != 1 && ( ($whichSearch === 'DocSearch' && $tab === 1) || ($whichSearch === 'TmplSearch' && $tab === 2) || ($whichSearch === 'AdvSearch' && $tab === 3)) ) ||
+			($obj->IsFolder != 1 && ( ($whichSearch === self::SEARCH_DOCS && $tab === 1) || ($whichSearch === self::SEARCH_TMPL && $tab === 2) || ($whichSearch === self::SEARCH_ADV && $tab === 3)) || ($whichSearch === self::SEARCH_MEDIA && $tab === 5) ) ||
 			(we_base_request::_(we_base_request::INT, 'cmdid')) ||
 			(($view = we_base_request::_(we_base_request::STRING, 'view')) === "GetSearchResult" || $view === "GetMouseOverDivs")
 		){
@@ -1835,29 +1144,79 @@ function calendarSetup(x){
 				return;
 			}
 			$this->searchclass->createTempTable();
-			$op = ($whichSearch === "AdvSearch" ? ' AND ' : ' OR ');
+			$op = ($whichSearch === self::SEARCH_ADV || $whichSearch === self::SEARCH_MEDIA ? ' AND ' : ' OR ');
 
 			foreach($_tables as $_table){
 				$where = '';
+				$where_OR = '';
 				$this->searchclass->settable($_table);
 
 				if(!defined('OBJECT_TABLE') || (defined('OBJECT_TABLE') && $_table != OBJECT_TABLE)){
-					$workspaces = makeArrayFromCSV(get_ws($_table, true));
+					$workspaces = get_ws($_table, true);
 				}
 
 				for($i = 0; $i < count($searchFields); $i++){
 					$w = '';
+					$done = false;
 					if(isset($searchText[0])){
-						$searchString = ($whichSearch === 'AdvSearch' && isset($searchText[$i]) ?
+						$searchString = (($whichSearch === self::SEARCH_ADV || $whichSearch === self::SEARCH_MEDIA) && isset($searchText[$i]) ?
 								($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8" ? utf8_encode($searchText[$i]) : $searchText[$i]) :
 								($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8" ? utf8_encode($searchText[0]) : $searchText[0]));
 					}
-					if(isset($searchString) && $searchString){
+					if(!empty($searchString)){
 						if($searchFields[$i] != "Status" && $searchFields[$i] != "Speicherart"){
 							$searchString = str_replace(array('\\', '_', '%'), array('\\\\', '\_', '\%'), $searchString);
 						}
 
-						if($whichSearch === "AdvSearch" && isset($location[$i])){
+						if($_table === FILE_TABLE && $whichSearch === self::SEARCH_MEDIA){
+							$done = true;
+							switch($searchFields[$i]){
+								case "Title": // IMPORTANT: in media search options are generally AND-linked, but not "search in Title, Text, Meta!
+									$where_OR .= ($where_OR ? 'OR ' : '') . $this->searchclass->searchInTitle($searchString, $_table);
+									break;
+								case "Text":
+									$where_OR .= ($where_OR ? 'OR ' : '') . $_table . '.`Text` LIKE "%' . $DB_WE->escape(trim($searchString)) . '%" ';
+									break;
+								case "Meta":
+									$where_OR .= ($where_OR ? 'OR ' : '') . $this->searchclass->searchInAllMetas($searchString);
+									break;
+								case 'ContentType':
+									/*
+									  if(strpos($searchString, "'#PDF#'") !== false){
+									  $searchString = str_replace(array("',#PDF'", "'#PDF#'"), '', $searchString);
+									  $where .= ' AND (' . $_table . '.ContentType IN (' . trim($searchString, ',') . ') OR ' . $_table . '.Extension = ".pdf") ';
+									  } else {
+									 *
+									 */
+									$where .= ' AND ' . $_table . '.ContentType IN (' . $searchString . ')';
+									/*
+									  }
+									 *
+									 */
+									break;
+								case 'IsUsed':
+									$where .= $this->searchclass->searchMediaLinks($searchString, $_view !== self::VIEW_ICONS);
+									break;
+								case 'IsProtected':
+									switch($searchString){
+										case 1:
+											$where .= ' AND ' . $_table . '.IsProtected=1 ';
+											break;
+										case 2:
+											$where .= ' AND ' . $_table . '.IsProtected=0 ';
+											break;
+									}
+									break;
+								default:
+									$done = false;
+							}
+							if(substr($searchFields[$i], 0, 6) === 'meta__'){
+								$where .= $this->searchclass->searchInMeta($searchString, substr($searchFields[$i], 6), $location[$i], $_table);
+								$done = true;
+							}
+						}
+
+						if($whichSearch === self::SEARCH_ADV && isset($location[$i])){
 							switch($searchFields[$i]){
 								case "Content":
 								case "Status":
@@ -1870,13 +1229,42 @@ function calendarSetup(x){
 									$where .= $this->searchclass->searchfor($searchString, $searchFields[$i], $location[$i], $_table);
 							}
 						}
-						switch($searchFields[$i]){
-							case 'Content':
-								$objectTable = defined('OBJECT_TABLE') ? OBJECT_TABLE : '';
-								if($objectTable != "" && $_table == $objectTable){
 
-								} else {
-									$w = $this->searchclass->searchContent($searchString, $_table);
+						if(!$done){
+							switch($searchFields[$i]){
+								case 'Content':
+									$objectTable = defined('OBJECT_TABLE') ? OBJECT_TABLE : '';
+									if($objectTable != "" && $_table == $objectTable){
+
+									} else {
+										$w = $this->searchclass->searchContent($searchString, $_table);
+										if($where == '' && $w == ''){
+											$where .= ' AND 0 ';
+										} elseif($where == '' && $w != ''){
+											$where .= ' AND ' . $w;
+										} elseif($w != ''){
+											$where .= $op . ' ' . $w;
+										}
+									}
+									break;
+
+								case 'modifierID':
+									if($_table == VERSIONS_TABLE){
+										$w .= $this->searchclass->searchModifier($searchString, $_table);
+										$where .= $w;
+									}
+									break;
+
+								case 'allModsIn':
+									if($_table == VERSIONS_TABLE){
+										$w .= $this->searchclass->searchModFields($searchString, $_table);
+										$where .= $w;
+									}
+									break;
+
+								case 'Title':
+									$w = $this->searchclass->searchInTitle($searchString, $_table);
+
 									if($where == '' && $w == ''){
 										$where .= ' AND 0 ';
 									} elseif($where == '' && $w != ''){
@@ -1884,95 +1272,72 @@ function calendarSetup(x){
 									} elseif($w != ''){
 										$where .= $op . ' ' . $w;
 									}
-								}
-								break;
-
-							case 'modifierID':
-								if($_table == VERSIONS_TABLE){
-									$w .= $this->searchclass->searchModifier($searchString, $_table);
-									$where .= $w;
-								}
-								break;
-
-							case 'allModsIn':
-								if($_table == VERSIONS_TABLE){
-									$w .= $this->searchclass->searchModFields($searchString, $_table);
-									$where .= $w;
-								}
-								break;
-
-							case 'Title':
-								$w = $this->searchclass->searchInTitle($searchString, $_table);
-
-								if($where == '' && $w == ''){
-									$where .= ' AND 0 ';
-								} elseif($where == '' && $w != ''){
-									$where .= ' AND ' . $w;
-								} elseif($w != ''){
-									$where .= $op . ' ' . $w;
-								}
-								break;
-							case 'Status':
-							case 'Speicherart':
-								if($_table == FILE_TABLE || $_table == VERSIONS_TABLE || $_table == OBJECT_FILES_TABLE){
-									$w = $this->searchclass->getStatusFiles($searchString, $_table);
-									if($_table == VERSIONS_TABLE){
-										$docTableChecked = (in_array(FILE_TABLE, $_tables)) ? true : false;
-										$objTableChecked = (defined('OBJECT_FILES_TABLE') && (in_array(OBJECT_FILES_TABLE, $_tables))) ? true : false;
-										if($objTableChecked && $docTableChecked){
-											$w .= ' AND (v.documentTable="' . FILE_TABLE . '" OR documentTable="' . OBJECT_FILES_TABLE . '") ';
-										} elseif($docTableChecked){
-											$w .= ' AND v.documentTable="' . FILE_TABLE . '" ';
-										} elseif($objTableChecked){
-											$w .= ' AND v.documentTable="' . OBJECT_FILES_TABLE . '" ';
+									break;
+								case 'Status':
+								case 'Speicherart':
+									if($_table == FILE_TABLE || $_table == VERSIONS_TABLE || $_table == OBJECT_FILES_TABLE){
+										$w = $this->searchclass->getStatusFiles($searchString, $_table);
+										if($_table == VERSIONS_TABLE){
+											$docTableChecked = (in_array(FILE_TABLE, $_tables)) ? true : false;
+											$objTableChecked = (defined('OBJECT_FILES_TABLE') && (in_array(OBJECT_FILES_TABLE, $_tables))) ? true : false;
+											if($objTableChecked && $docTableChecked){
+												$w .= ' AND (v.documentTable="' . FILE_TABLE . '" OR documentTable="' . OBJECT_FILES_TABLE . '") ';
+											} elseif($docTableChecked){
+												$w .= ' AND v.documentTable="' . FILE_TABLE . '" ';
+											} elseif($objTableChecked){
+												$w .= ' AND v.documentTable="' . OBJECT_FILES_TABLE . '" ';
+											}
 										}
+										$where .= $w;
 									}
+									break;
+								case 'CreatorName':
+								case 'WebUserName':
+									if(isset($searchFields[$i]) && isset($location[$i])){
+										$w = $this->searchclass->searchSpecial($searchString, $searchFields[$i], $location[$i]);
+										$where .= ' AND ' . $w;
+									}
+									break;
+								case 'temp_category':
+									$w = $this->searchclass->searchCategory($searchString, $_table, $searchFields[$i]);
 									$where .= $w;
-								}
-								break;
-							case 'CreatorName':
-							case 'WebUserName':
-								if(isset($searchFields[$i]) && isset($location[$i])){
-									$w = $this->searchclass->searchSpecial($searchString, $searchFields[$i], $location[$i]);
-									$where .= ' AND ' . $w;
-								}
-								break;
-							case 'temp_category':
-								$w = $this->searchclass->searchCategory($searchString, $_table, $searchFields[$i]);
-								$where .= $w;
-								break;
-							default:
-								if($whichSearch != "AdvSearch"){
-									$where .= $this->searchclass->searchfor($searchString, $searchFields[$i], $location[$i], $_table);
-								}
+									break;
+								default:
+									if($whichSearch != "AdvSearch"){
+										$where .= $this->searchclass->searchfor($searchString, $searchFields[$i], $location[$i], $_table);
+									}
+							}
 						}
 					}
 				}
 
-				if($where != ''){
+				if($where || $where_OR){
 
 					if(isset($folderID) && ($folderID != '' && $folderID != 0)){
-						$where = ' AND (1 ' . $where . ')' . we_search_search::ofFolderAndChildsOnly($folderID, $_table);
+						$where = ' AND (' . $where . ')' . we_search_search::ofFolderAndChildsOnly($folderID, $_table);
 					}
 
 					if($_table == VERSIONS_TABLE){
-						$workspacesTblFile = makeArrayFromCSV(get_ws(FILE_TABLE, true));
+						$workspacesTblFile = get_ws(FILE_TABLE, true);
 						if(defined('OBJECT_FILES_TABLE')){
-							$workspacesObjFile = makeArrayFromCSV(get_ws(OBJECT_FILES_TABLE, true));
+							$workspacesObjFile = get_ws(OBJECT_FILES_TABLE, true);
 						}
 					}
 
 					if($workspaces){
-						$where = ' AND (1 ' . $where . ')' . we_search_search::ofFolderAndChildsOnly($workspaces, $_table);
+						$where = ' (' . $where . ')' . we_search_search::ofFolderAndChildsOnly($workspaces, $_table);
 					}
 
-					$whereQuery = '1 ' . $where;
+					$whereQuery = $where;
 
 					//query for restrict users for FILE_TABLE, VERSIONS_TABLE AND OBJECT_FILES_TABLE
 					$restrictUserQuery = ' AND ((' . escape_sql_query($_table) . '.RestrictOwners=0 OR ' . escape_sql_query($_table) . '.RestrictOwners= ' . intval($_SESSION["user"]["ID"]) . ') OR (FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',' . escape_sql_query($_table) . '.Owners)))';
 
 					switch($_table){
 						case FILE_TABLE:
+							if($where_OR){
+								$whereQuery .= ' AND (' . $where_OR . ') ';
+							}
 							$whereQuery .= $restrictUserQuery;
 							break;
 
@@ -2017,15 +1382,20 @@ function calendarSetup(x){
 					}
 
 					$this->searchclass->setwhere($whereQuery);
-
 					$this->searchclass->insertInTempTable($whereQuery, $_table);
+
+					// when MediaSearch add attrib_alt, attrib_title, IsUsed to SEARCH_TEMP_TABLE
+					if(self::SEARCH_MEDIA){
+						$this->searchclass->insertMediaAttribsToTempTable();
+						//SELECT id,alt,title FROM SEARCH_TEMP_TABLE JOIN tblLink JOIN tblContent ON bla WHERE alt  OR title...
+					}
 				}
 			}
 
 			$this->searchclass->selectFromTempTable($_searchstart, $_anzahl, $_order);
 
 			while($this->searchclass->next_record()){
-				if(isset($this->searchclass->Record['VersionID']) && $this->searchclass->Record['VersionID'] != 0){
+				if(!empty($this->searchclass->Record['VersionID'])){
 
 					$versionsFound[] = array(
 						$this->searchclass->Record['ContentType'],
@@ -2079,7 +1449,7 @@ function calendarSetup(x){
 			} elseif($_result[$k]['docTable'] == FILE_TABLE){
 				$tempDoc = f('SELECT DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID =' . intval($_result[$k]["docID"]) . ' AND DocTable = "tblFile" AND Active = 1', 'DocumentObject', $DB_WE);
 				if(!empty($tempDoc)){
-					$tempDoc = unserialize($tempDoc);
+					$tempDoc = we_unserialize($tempDoc);
 					if(isset($tempDoc[0]['elements']['Description']) && $tempDoc[0]['elements']['Description']['dat'] != ''){
 						$_result[$k]["Description"] = $tempDoc[0]['elements']['Description']['dat'];
 					}
@@ -2093,15 +1463,26 @@ function calendarSetup(x){
 	}
 
 	function makeHeadLines($whichSearch){
-		return array(
-			array("dat" => '<a href="javascript:setOrder(\'Text\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[dateiname]') . '</a> <span id="Text_' . $whichSearch . '" >' . $this->getSortImage('Text', $whichSearch) . '</span>'),
-			array("dat" => '<a href="javascript:setOrder(\'SiteTitle\',\'' . $whichSearch . '\');">' . ($whichSearch === 'TmplSearch' ? g_l('weClass', '[path]') : g_l('searchtool', '[seitentitel]')) . '</a> <span id="SiteTitle_' . $whichSearch . '" >' . $this->getSortImage('SiteTitle', $whichSearch) . '</span>'),
-			array("dat" => '<a href="javascript:setOrder(\'CreationDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[created]') . '</a> <span id="CreationDate_' . $whichSearch . '" >' . $this->getSortImage('CreationDate', $whichSearch) . '</span>'),
-			array("dat" => '<a href="javascript:setOrder(\'ModDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[modified]') . '</a> <span id="ModDate_' . $whichSearch . '" >' . $this->getSortImage('ModDate', $whichSearch) . '</span>')
+		return $whichSearch !== self::SEARCH_MEDIA ?
+			array(
+			array("dat" => '<a href="javascript:weSearch.setOrder(\'Text\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[dateiname]') . '</a> <span id="Text_' . $whichSearch . '" >' . $this->getSortImage('Text', $whichSearch) . '</span>'),
+			array("dat" => '<a href="javascript:weSearch.setOrder(\'SiteTitle\',\'' . $whichSearch . '\');">' . ($whichSearch === 'TmplSearch' ? g_l('weClass', '[path]') : g_l('searchtool', '[seitentitel]')) . '</a> <span id="SiteTitle_' . $whichSearch . '" >' . $this->getSortImage('SiteTitle', $whichSearch) . '</span>'),
+			array("dat" => '<a href="javascript:weSearch.setOrder(\'CreationDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[created]') . '</a> <span id="CreationDate_' . $whichSearch . '" >' . $this->getSortImage('CreationDate', $whichSearch) . '</span>'),
+			array("dat" => '<a href="javascript:weSearch.setOrder(\'ModDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[modified]') . '</a> <span id="ModDate_' . $whichSearch . '" >' . $this->getSortImage('ModDate', $whichSearch) . '</span>')
+			) :
+			array(
+			array("dat" => '<a href="javascript:weSearch.setOrder(\'Text\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[dateiname]') . '</a> <span id="Text_' . $whichSearch . '" >' . $this->getSortImage('Text', $whichSearch) . '</span>'),
+			array("dat" => '<a href="javascript:weSearch.setOrder(\'FileSize\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[groesse]') . '</a> <span id="FileSize_' . $whichSearch . '" >' . $this->getSortImage('fileSize', $whichSearch) . '</span>'),
+			array("dat" => '<a href="javascript:weSearch.setOrder(\'Status\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[Status]') . '</a> <span id="Status_' . $whichSearch . '" >' . $this->getSortImage('status', $whichSearch) . '</span>'),
+			array("dat" => '<a href="javascript:weSearch.setOrder(\'Alt\',\'' . $whichSearch . '\');">alt</a> <span id="Alt_' . $whichSearch . '" >' . $this->getSortImage('alt', $whichSearch) . '</span>'),
+			array("dat" => '<a href="javascript:weSearch.setOrder(\'Title\',\'' . $whichSearch . '\');">title</a> <span id="Title_' . $whichSearch . '" >' . $this->getSortImage('title', $whichSearch) . '</span>'),
+			array("dat" => '<a href="javascript:weSearch.setOrder(\'CreationDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[created]') . '</a> <span id="CreationDate_' . $whichSearch . '" >' . $this->getSortImage('CreationDate', $whichSearch) . '</span>'),
+			array("dat" => '<a href="javascript:weSearch.setOrder(\'ModDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[modified]') . '</a> <span id="ModDate_' . $whichSearch . '" >' . $this->getSortImage('ModDate', $whichSearch) . '</span>'),
+			array("dat" => '')
 		);
 	}
 
-	private function makeContent($_result, $view, $whichSearch){
+	private function makeContent($_result = array(), $view = self::VIEW_LIST, $whichSearch = self::SEARCH_DOCS){
 		$DB_WE = new DB_WE();
 
 		$content = array();
@@ -2110,35 +1491,30 @@ function calendarSetup(x){
 		for($f = 0; $f < $resultCount; $f++){
 			$fontColor = '';
 			$showPubCheckbox = true;
-			if(isset($_result[$f]["Published"])){
-				switch($_result[$f]["ContentType"]){
-					case we_base_ContentTypes::HTML:
-					case we_base_ContentTypes::WEDOCUMENT:
-					case "objectFile":
-						$published = ((($_result[$f]["Published"] != 0) && ($_result[$f]["Published"] < $_result[$f]["ModDate"])) ? -1 : $_result[$f]["Published"]);
-						if($published == 0){
-							$fontColor = 'notpublished';
-							$showPubCheckbox = false;
-						} elseif($published == -1){
-							$fontColor = 'changed';
-							$showPubCheckbox = false;
-						}
-						break;
-					default:
-						$published = $_result[$f]["Published"];
-				}
-			} else {
-				$published = 1;
+			switch($_result[$f]["ContentType"]){
+				case we_base_ContentTypes::HTML:
+				case we_base_ContentTypes::WEDOCUMENT:
+				case we_base_ContentTypes::OBJECT_FILE:
+					$published = ((($_result[$f]["Published"] != 0) && ($_result[$f]["Published"] < $_result[$f]["ModDate"])) ? -1 : $_result[$f]["Published"]);
+					if($published == 0){
+						$fontColor = 'notpublished';
+						$showPubCheckbox = false;
+					} elseif($published == -1){
+						$fontColor = 'changed';
+						$showPubCheckbox = false;
+					}
+					break;
+				default:
+					$published = (isset($_result[$f]["Published"]) ? $_result[$f]["Published"] : 1);
 			}
+
 			$ext = isset($_result[$f]["Extension"]) ? $_result[$f]["Extension"] : "";
-			$Icon = we_base_ContentTypes::getIcon($_result[$f]["ContentType"], we_base_ContentTypes::FILE_ICON, $ext);
 			$foundInVersions = isset($_result[$f]["foundInVersions"]) ? makeArrayFromCSV($_result[$f]["foundInVersions"]) : "";
 
-			if($view == 0){
+			if(!$view || $view == self::VIEW_LIST){
 				if(is_array($foundInVersions) && !empty($foundInVersions)){
 
 					rsort($foundInVersions);
-
 					foreach($foundInVersions as $k){
 
 						$resetDisabled = false;
@@ -2146,14 +1522,9 @@ function calendarSetup(x){
 							$resetDisabled = true;
 						}
 
-						$DB_WE->query('SELECT ID,timestamp, version, active FROM ' . VERSIONS_TABLE . ' WHERE ID=' . intval($k));
-						while($DB_WE->next_record()){
-							$timestamp = $DB_WE->f('timestamp');
-							$version = $DB_WE->f('version');
-							$ID = $DB_WE->f('ID');
-							$active = $DB_WE->f('active');
-						}
-						$previewButton = we_html_button::create_button("preview", "javascript:previewVersion('" . $ID . "');");
+						list($ID, $timestamp, $version, $active) = getHash('SELECT ID,timestamp,version,active FROM ' . VERSIONS_TABLE . ' WHERE ID=' . intval($k), $DB_WE, MYSQL_NUM)? : array(0, 0, 0, 0);
+
+						$previewButton = we_html_button::create_button(we_html_button::PREVIEW, "javascript:weSearch.previewVersion('" . $ID . "');");
 
 						$fileExists = f('SELECT 1 FROM ' . escape_sql_query($_result[$f]["docTable"]) . ' WHERE ID=' . intval($_result[$f]["docID"]), '', $DB_WE);
 
@@ -2163,7 +1534,7 @@ function calendarSetup(x){
 
 						$classNotExistsText = '';
 						//if class doesn't exists it's not possible to reset object-version!
-						if($_result[$f]['ContentType'] === "objectFile"){
+						if($_result[$f]['ContentType'] === we_base_ContentTypes::OBJECT_FILE){
 
 							if(!f('SELECT 1 FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($_result[$f]["TableID"]), '', $DB_WE)){
 								$resetDisabled = true;
@@ -2171,7 +1542,7 @@ function calendarSetup(x){
 							}
 						}
 
-						$content[$f] = array(
+						$content[] = array(
 							array("version" => array($k => "")),
 							array("version" => array($k => "<span style='margin-left:5px;'>" . g_l('versions', '[version]') . " " . $version . "</span> <br/><span style='font-weight:100;color:red;margin-left:10px;'>" . $classNotExistsText . "</span>")),
 							array("version" => array($k => "<div style='margin-bottom:5px;margin-left:5px;float:left;'>" .
@@ -2179,69 +1550,108 @@ function calendarSetup(x){
 							array("version" => array($k => "<span style='margin-left:5px;'>" . date("d.m.Y", $timestamp) . "</span>")),
 							array("version" => array($k => "")),
 							array("version" => array($k => "<div style='margin-left:5px;'>" .
-									(($_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_result[$f]["ContentType"] == we_base_ContentTypes::HTML || $_result[$f]["ContentType"] === "objectFile") ?
+									(($_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_result[$f]["ContentType"] == we_base_ContentTypes::HTML || $_result[$f]["ContentType"] === we_base_ContentTypes::OBJECT_FILE) ?
 										we_html_forms::checkbox($ID, 0, "publishVersion_" . $ID, g_l('versions', '[publishIfReset]'), false, "middlefont", "") :
 										"") .
 									"</div>")),
 						);
 					}
 				}
-
-				switch($_result[$f]["ContentType"]){
-					case we_base_ContentTypes::WEDOCUMENT:
-					case we_base_ContentTypes::HTML:
-					case "objectFile":
-						$publishCheckbox = (!$showPubCheckbox ? (permissionhandler::hasPerm(
-									'PUBLISH') && f('SELECT 1 FROM ' . escape_sql_query($_result[$f]["docTable"]) . ' WHERE ID=' . intval($_result[$f]["docID"]), '', $DB_WE)) ? we_html_forms::checkbox(
-										$_result[$f]["docID"] . "_" . $_result[$f]["docTable"], 0, "publish_docs_" . $whichSearch, "", false, "middlefont", "") : we_html_tools::getPixel(20, 10) : '');
-						break;
-					default:
-						$publishCheckbox = '';
+//Checkbox
+				if($whichSearch !== self::SEARCH_MEDIA){
+					switch($_result[$f]["ContentType"]){
+						case we_base_ContentTypes::WEDOCUMENT:
+						case we_base_ContentTypes::HTML:
+						case "objectFile":
+							$actionCheckbox = (!$showPubCheckbox ? (permissionhandler::hasPerm(
+										'PUBLISH') && f('SELECT 1 FROM ' . escape_sql_query($_result[$f]["docTable"]) . ' WHERE ID=' . intval($_result[$f]["docID"]), '', $DB_WE)) ? we_html_forms::checkbox(
+											$_result[$f]["docID"] . "_" . $_result[$f]["docTable"], 0, "publish_docs_" . $whichSearch, "", false, "middlefont", "") : we_html_tools::getPixel(20, 10) : '');
+							break;
+						default:
+							$actionCheckbox = '';
+					}
+				} else {
+					switch($_result[$f]["ContentType"]){
+						case we_base_ContentTypes::IMAGE:
+						case we_base_ContentTypes::AUDIO:
+						case we_base_ContentTypes::VIDEO:
+						case we_base_ContentTypes::QUICKTIME:
+						case we_base_ContentTypes::FLASH:
+						case we_base_ContentTypes::APPLICATION:
+							$actionCheckbox = '';
+							if($_result[$f]["IsProtected"]){
+								$actionCheckbox = ' <img title="Dokument ist geschützt und kann nicht gelöscht werden!" src="' . IMAGE_DIR . 'alert_tiny.gif" border="0" />';
+							} else if(!in_array($_result[$f]["docID"], $this->searchclass->getUsedMedia())){
+								$actionCheckbox = permissionhandler::hasPerm('DELETE_DOCUMENT') && f('SELECT 1 FROM ' . escape_sql_query($_result[$f]["docTable"]) . ' WHERE ID=' . intval($_result[$f]["docID"]), '', $DB_WE) ?
+									we_html_forms::checkbox($_result[$f]["docID"] . "_" . $_result[$f]["docTable"], 0, "delete_docs_" . $whichSearch, "", false, "middlefont", "") : we_html_tools::getPixel(20, 10);
+							}
+							break;
+						default:
+							$actionCheckbox = '';
+					}
 				}
 
-				$content[$f] = array(
-					array("dat" => we_html_tools::getPixel(20, 1) . $publishCheckbox),
-					array("dat" => '<img src="' . TREE_ICON_DIR . $Icon . '" border="0" width="16" height="18" />'),
-					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . '"><u>' . $_result[$f]["Text"]),
+				$_result[$f]['size'] = file_exists($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) : 0;
+				$_result[$f]['fileSize'] = we_base_file::getHumanFileSize($_result[$f]['size']);
+				$iconHTML = $this->getHtmlIconThmubnail($_result[$f]);
+				$standardStyle = 'height:12px;padding-top:6px;font-size:11px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;';
+				$content[] = $whichSearch !== self::SEARCH_MEDIA ?
+					array(
+					array("dat" => we_html_tools::getPixel(20, 1) . $actionCheckbox),
+					array("dat" => we_html_element::jsElement('document.write(WE().util.getTreeIcon("' . $_result[$f]["ContentType"] . '"))')),
+					array("dat" => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . '"><u>' . $_result[$f]["Text"]),
 					array("dat" => ($whichSearch === 'TmplSearch' ? str_replace('/' . $_result[$f]["Text"], '', $_result[$f]["Path"]) : $_result[$f]["SiteTitle"])),
 					array("dat" => isset($_result[$f]["VersionID"]) && $_result[$f]['VersionID'] ? "-" : ($_result[$f]["CreationDate"] ? date(
 									g_l('searchtool', '[date_format]'), $_result[$f]["CreationDate"]) : "-")),
 					array("dat" => ($_result[$f]["ModDate"] ? date(g_l('searchtool', '[date_format]'), $_result[$f]["ModDate"]) : "-")),
+					) :
+					array(
+					array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'vertical-align:top;"', 'dat' => array(
+							array('elem' => 'table', '' => '', 'dat' => array(
+									array('elem' => 'row', 'dat' => array(
+											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'padding-top:10px;"', 'dat' => $actionCheckbox),
+										)),
+									array('elem' => 'row', 'attribs' => '', 'dat' => array(
+											array('elem' => 'td', 'attribs' => '', 'dat' => '&nbsp;'),
+										))
+								)
+							)
+						)),
+					array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'vertical-align:top;"', 'dat' => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . '">' . $iconHTML['imageView']),
+					array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'vertical-align:top;"', 'dat' => array(
+							array('elem' => 'table', '' => '', 'dat' => array(
+									array('elem' => 'row', 'dat' => array(
+											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'font-weight:bold;"', 'dat' => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . ' (ID: ' . $_result[$f]['docID'] . ')"><u>' . $_result[$f]["Text"] . '</u></a>'),
+											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'width:75px;text-align:left"', 'dat' => ($_result[$f]['IsUsed'] ? we_html_button::create_button(we_html_button::DIRRIGHT, "javascript:weSearch.toggleAdditionalContent(this, " . $_result[$f]['docID'] . ")", true, 21, 22, "", "", false, false, '__' . $_result[$f]['docID'], false, 'Verwendet in:') : '')),
+											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'width:70px;text-align:left"', 'dat' => $_result[$f]['fileSize']),
+											array('elem' => 'td', 'attribs' => ($_result[$f]['IsUsed'] ? 'title="Dokument wird benutzt." onclick="weSearch.showAdditional(' . $_result[$f]['docID'] . ')" style="cursor:pointer;width:45px;text-align:left;' . $standardStyle . 'height:auto;"' : 'title="Dokument wird nicht benutzt!" style="width:45px;text-align:left;' . $standardStyle . '"'), 'dat' => '<i class="fa fa-lg fa-circle" style="color:' . ($_result[$f]['IsUsed'] ? 'green' : 'yellow') . ';"></i>'),
+											array('elem' => 'td', 'attribs' => 'title="' . ($_result[$f]['media_alt'] ? : 'Alt-Attribut nicht gesetzt" ') . '" style="width:45px;text-align:left;' . $standardStyle . '"', 'dat' => '<i class="fa fa-lg fa-circle" style="color:' . ($_result[$f]['media_alt'] ? 'green' : 'red') . ';"></i>'),
+											array('elem' => 'td', 'attribs' => 'title="' . ($_result[$f]['media_title'] ? : 'Title-Attribut nicht gesetzt" ') . '" style="width:45px;text-align:left;' . $standardStyle . '"', 'dat' => '<i class="fa fa-lg fa-circle" style="color:' . ($_result[$f]['media_title'] ? 'green' : 'red') . ';"></i>'),
+											array('elem' => 'td', 'attribs' => 'style="width:90px;' . $standardStyle . '"', 'dat' => $_result[$f]['CreationDate'] ? date(g_l('searchtool', '[date_format]'), $_result[$f]['CreationDate']) : '-'),
+											array('elem' => 'td', 'attribs' => 'style="width:90px;' . $standardStyle . '"', 'dat' => $_result[$f]['ModDate'] ? date(g_l('searchtool', '[date_format]'), $_result[$f]['ModDate']) : '-'),
+											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'width:30px;text-align:left"', 'dat' => we_html_button::create_button(we_html_button::EDIT, "javascript:weSearch.openToEdit('" . FILE_TABLE . "'," . $_result[$f]["docID"] . ",'" . $_result[$f]["ContentType"] . "');", true, 27, 22)),
+										)),
+									array('elem' => 'row', 'dat' => array(
+											array('elem' => 'td', 'attribs' => 'id="infoTable_' . $_result[$f]["docID"] . '" style="display:none;width:100%;text-align:left;"' . $standardStyle . 'height:auto;overflow:visible;" colspan="7"', 'dat' => $this->makeAdditionalContentMedia($_result[$f])),
+										))
+								), 'colgroup' => '</colgroup>
+	<col style="text-align:left;"/>
+	<col style="width:40px;text-align:left;"/>
+	<col style="width:70px;text-align:left;"/>
+	<col style="width:45px;text-align:left;"/>
+	<col style="width:45px;text-align:left;"/>
+	<col style="width:45px;text-align:left;"/>
+	<col style="width:90px;text-align:left;"/>
+	<col style="width:90px;text-align:left;"/>
+	<col style="width:50px;text-align:left;"/>
+</colgroup>'
+							)
+						)),
 				);
 			} else {
-				$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) : 0;
-				$filesize = we_base_file::getHumanFileSize($fs);
-
-				if($_result[$f]["ContentType"] == we_base_ContentTypes::IMAGE){
-					$smallSize = 64;
-					$bigSize = 140;
-
-					if($fs > 0){
-						$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]);
-						if(file_exists(WE_THUMB_PREVIEW_PATH . $_result[$f]["docID"] . '_' . $smallSize . '_' . $smallSize . strtolower($_result[$f]["Extension"]))){
-							$thumbpath = WE_THUMB_PREVIEW_DIR . $_result[$f]["docID"] . '_' . $smallSize . '_' . $smallSize . strtolower($_result[$f]["Extension"]);
-							$imageView = "<img src='" . $thumbpath . "' border='0' /></a>";
-						} else {
-							$imageView = "<img src='" . WEBEDITION_DIR . 'thumbnail.php?id=' . $_result[$f]["docID"] . "&size=" . $smallSize . "&path=" . urlencode($_result[$f]["Path"]) . "&extension=" . $_result[$f]["Extension"] . "' border='0' /></a>";
-						}
-						if(file_exists(WE_THUMB_PREVIEW_PATH . $_result[$f]["docID"] . '_' . $bigSize . '_' . $bigSize . strtolower($_result[$f]["Extension"]))){
-							$thumbpathPopup = WE_THUMB_PREVIEW_DIR . $_result[$f]["docID"] . '_' . $bigSize . '_' . $bigSize . strtolower($_result[$f]["Extension"]);
-							$imageViewPopup = "<img src='" . $thumbpathPopup . "' border='0' /></a>";
-						} else {
-							$imageViewPopup = "<img src='" . WEBEDITION_DIR . "thumbnail.php?id=" . $_result[$f]["docID"] . "&size=" . $bigSize . "&path=" . $_result[$f]["Path"] . "&extension=" . $_result[$f]["Extension"] . "' border='0' /></a>";
-						}
-					} else {
-						$imagesize = array(0, 0);
-						$thumbpath = ICON_DIR . 'doclist/' . we_base_ContentTypes::IMAGE_ICON;
-						$imageView = "<img src='" . $thumbpath . "' border='0' />";
-						$imageViewPopup = "<img src='" . $thumbpath . "' border='0' />";
-					}
-				} else {
-					$imagesize = array(0, 0);
-					$imageView = '<img src="' . ICON_DIR . 'doclist/' . $Icon . '" border="0" width="64" height="64" />';
-					$imageViewPopup = '<img src="' . ICON_DIR . 'doclist/' . $Icon . '" border="0" width="64" height="64" />';
-				}
-
+				$_result[$f]['size'] = file_exists($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) : 0;
+				$_result[$f]['fileSize'] = we_base_file::getHumanFileSize($_result[$f]['size']);
+				$iconHTML = $this->getHtmlIconThmubnail($_result[$f], 64, $whichSearch === self::SEARCH_MEDIA ? 180 : 140);
 				$creator = $_result[$f]["CreatorID"] ? id_to_path($_result[$f]["CreatorID"], USER_TABLE, $DB_WE) : g_l('searchtool', '[nobody]');
 
 				if($_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT && $_result[$f]["Table"] != VERSIONS_TABLE){
@@ -2251,9 +1661,9 @@ function calendarSetup(x){
 
 					$templateText = g_l('searchtool', '[no_template]');
 					if($templateID){
-						$DB_WE->query('SELECT ID, Text FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($templateID));
+						$DB_WE->query('SELECT ID,Text FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($templateID));
 						while($DB_WE->next_record()){
-							$templateText = we_util_Strings::shortenPath($DB_WE->f('Text'), 20) . ' (ID=' . $DB_WE->f('ID') . ')';
+							$templateText = we_base_util::shortenPath($DB_WE->f('Text'), 20) . ' (ID=' . $DB_WE->f('ID') . ')';
 						}
 					}
 				} else {
@@ -2262,37 +1672,34 @@ function calendarSetup(x){
 
 				$_defined_fields = we_metadata_metaData::getDefinedMetaDataFields();
 				$metafields = array();
-				$_fieldcount = count($_defined_fields);
-				if($_fieldcount > 6){
-					$_fieldcount = 6;
-				}
+				$_fieldcount = min(count($_defined_fields), 6);
 				for($i = 0; $i < $_fieldcount; $i++){
 					$_tagName = $_defined_fields[$i]["tag"];
 
 					if(we_exim_contentProvider::isBinary($_result[$f]["docID"])){
-						$DB_WE->query("SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID=" . intval($_result[$f]["docID"]) . " AND b.Name='" . escape_sql_query($_tagName) . "' AND b.DocumentTable='" . FILE_TABLE . "'");
-						$metafields[$_tagName] = "";
+						$DB_WE->query('SELECT a.ID,c.Dat FROM (' . FILE_TABLE . ' a LEFT JOIN ' . LINK_TABLE . ' b ON (a.ID=b.DID)) LEFT JOIN ' . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID=" . intval($_result[$f]["docID"]) . ' AND b.Name="' . escape_sql_query($_tagName) . '" AND b.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
+						$metafields[$_tagName] = '';
 						while($DB_WE->next_record()){
-							$metafields[$_tagName] = we_util_Strings::shortenPath($DB_WE->f('Dat'), 45);
+							$metafields[$_tagName] = we_base_util::shortenPath($DB_WE->f('Dat'), 45);
 						}
 					}
 				}
 
-				$content[$f] = array(
-					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $_result[$f]["Text"] . '">' . $imageView . '</a>'),
-					array("dat" => we_util_Strings::shortenPath($_result[$f]["SiteTitle"], 17)),
-					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . ' middlefont" title="' . $_result[$f]["Text"] . '"><u>' . we_util_Strings::shortenPath($_result[$f]["Text"], 20) . '</u></a>'),
+				$content[] = array(
+					array("dat" => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $_result[$f]["Text"] . '">' . $iconHTML['imageView'] . '</a>'),
+					array("dat" => we_base_util::shortenPath($_result[$f]["SiteTitle"], 17)),
+					array("dat" => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . ' middlefont" title="' . ($whichSearch === self::SEARCH_MEDIA ? $_result[$f]["Path"] : $_result[$f]["Text"]) . '"><u>' . we_base_util::shortenPath($_result[$f]["Text"], 20) . '</u></a>'),
 					array("dat" => '<nobr>' . ($_result[$f]["CreationDate"] ? date(g_l('searchtool', '[date_format]'), $_result[$f]["CreationDate"]) : "-") . '</nobr>'),
 					array("dat" => '<nobr>' . ($_result[$f]["ModDate"] ? date(g_l('searchtool', '[date_format]'), $_result[$f]["ModDate"]) : "-") . '</nobr>'),
-					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $_result[$f]["Text"] . '">' . $imageViewPopup . '</a>'),
-					array("dat" => $filesize),
-					array("dat" => $imagesize[0] . " x " . $imagesize[1]),
-					array("dat" => we_util_Strings::shortenPath(g_l('contentTypes', '[' . $_result[$f]['ContentType'] . ']'), 22)),
-					array("dat" => '<span class="' . $fontColor . '">' . we_util_Strings::shortenPath($_result[$f]["Text"], 30) . '</span>'),
-					array("dat" => we_util_Strings::shortenPath($_result[$f]["SiteTitle"], 45)),
-					array("dat" => we_util_Strings::shortenPath($_result[$f]["Description"], 100)),
+					array("dat" => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $_result[$f]["Text"] . '">' . $iconHTML['imageViewPopup'] . '</a>'),
+					array("dat" => $_result[$f]['fileSize']),
+					array("dat" => $iconHTML['sizeX'] . " x " . $iconHTML['sizeY']),
+					array("dat" => we_base_util::shortenPath(g_l('contentTypes', '[' . $_result[$f]['ContentType'] . ']'), 22)),
+					array("dat" => '<span class="' . $fontColor . '">' . we_base_util::shortenPath($_result[$f]["Text"], 30) . '</span>'),
+					array("dat" => we_base_util::shortenPath($_result[$f]["SiteTitle"], 45)),
+					array("dat" => we_base_util::shortenPath($_result[$f]["Description"], 100)),
 					array("dat" => $_result[$f]['ContentType']),
-					array("dat" => we_util_Strings::shortenPath($creator, 22)),
+					array("dat" => we_base_util::shortenPath($creator, 22)),
 					array("dat" => $templateText),
 					array("dat" => $metafields),
 					array("dat" => $_result[$f]["docID"]),
@@ -2303,65 +1710,137 @@ function calendarSetup(x){
 		return $content;
 	}
 
-	function getSearchParameterTop($foundItems, $whichSearch){
+	function makeAdditionalContentMedia($result){
+		$usedMediaLinks = $this->searchclass->getUsedMediaLinks();
 
-		if(isset($GLOBALS['we_cmd_obj'])){
-			$_view = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'setView' . $whichSearch);
-			$view = "setView" . $whichSearch;
-			$_order = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'Order' . $whichSearch);
-			$order = "Order" . $whichSearch;
-			$_anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', '', 'anzahl' . $whichSearch);
-			$anzahl = "anzahl" . $whichSearch;
-			$searchstart = "searchstart" . $whichSearch;
-		} else {
-
-			switch($whichSearch){
-				case "DocSearch" :
-					$_view = $this->Model->setViewDocSearch;
-					$view = "setViewDocSearch";
-					$_order = $this->Model->OrderDocSearch;
-					$order = "OrderDocSearch";
-					$_anzahl = $this->Model->anzahlDocSearch;
-					$anzahl = "anzahlDocSearch";
-					$searchstart = "searchstartDocSearch";
-					break;
-				case "TmplSearch" :
-					$_view = $this->Model->setViewTmplSearch;
-					$view = "setViewTmplSearch";
-					$_order = $this->Model->OrderTmplSearch;
-					$order = "OrderTmplSearch";
-					$_anzahl = $this->Model->anzahlTmplSearch;
-					$anzahl = "anzahlTmplSearch";
-					$searchstart = "searchstartTmplSearch";
-					break;
-				case "AdvSearch" :
-					$_view = $this->Model->setViewAdvSearch;
-					$view = "setViewAdvSearch";
-					$_order = $this->Model->OrderAdvSearch;
-					$order = "OrderAdvSearch";
-					$_anzahl = $this->Model->anzahlAdvSearch;
-					$anzahl = "anzahlAdvSearch";
-					$searchstart = "searchstartAdvSearch";
-					break;
+		if(!empty($usedMediaLinks['mediaID_' . $result['docID']])){
+			$out = '<table style="font-weight:normal; background-color:#fafafa;width:480px"><tr><td colspan="2" style="padding:4px 0 0 6px;"><strong>Dieses Medien-Dokument wird an folgenden Stellen referenziert:</stong></td></tr>'; // FIXME: G_L()
+			foreach($usedMediaLinks['mediaID_' . $result['docID']] as $type => $links){
+				$out .= '<tr><td style="padding:4px 0 0 6px;"><em>' . $type . ':</em></td></tr>';
+				foreach($links as $link){
+					$color = 'black';
+					$makeLink = true;
+					switch($link['referencedIn']){
+						case 'temp':
+						case 'both':
+							if($link['isUnpublished']){
+								$color = 'red';
+							} else {
+								$color = '#3366cc';
+							}
+							break;
+						case 'main':
+							if($link['isModified']){
+								$color = 'gray';
+								$makeLink = false;
+							} else if($link['isUnpublished']){
+								$color = 'red';
+							}
+					}
+					$out .= '<tr>' .
+						($makeLink ? '
+							<td style="padding-left:26px;width:410px;"><a href="javascript:' . $link['onclick'] . '" title="' . $link['path'] . ' (' . $link["id"] . ')"><span style="color:' . $color . ';"><u>' . $link['path'] . '</u></span></a></td>
+							<td>' . we_html_button::create_button(we_html_button::EDIT, "javascript:weSearch.openToEdit('" . $link['table'] . "'," . $link["id"] . ",'');", true, 27, 22) . '</td>' :
+							'<td style="padding-left:26px;width:410px;"><span style="color:' . $color . ';">' . $link['path'] . '</span></td>
+							<td>' . we_html_button::create_button(we_html_button::EDIT, '', true, 27, 22, '', '', true, false, '', false, 'Der Link wurde bei einer unveröffentlichten Änderung entfernt: Er existiert nur noch in der veröffentlichten Version!') . '</td>') .
+						'</tr>';
+				}
 			}
+			$out .= '</table>';
+
+			return $out;
+		}
+	}
+
+	function getHtmlIconThmubnail($file, $smallSize = 64, $bigSize = 140){
+		$urlPopup = $url = '';
+		if($file["ContentType"] == we_base_ContentTypes::IMAGE){
+			if($file["size"] > 0){
+				$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $file["Path"]);
+				$url = WEBEDITION_DIR . 'thumbnail.php?id=' . $file["docID"] . "&size=" . $smallSize . "&path=" . urlencode($file["Path"]) . "&extension=" . $file["Extension"]
+				;
+				$imageView = "<img src='" . $url . "' border='0' /></a>";
+
+				$urlPopup = WEBEDITION_DIR . "thumbnail.php?id=" . $file["docID"] . "&size=" . $bigSize . "&path=" . $file["Path"] . "&extension=" . $file["Extension"];
+				$imageViewPopup = "<img src='" . $urlPopup . "' border='0' /></a>";
+			} else {
+				$imagesize = array(0, 0);
+				$imageView = $imageViewPopup = we_html_element::jsElement('document.write(WE().util.getTreeIcon("' . we_base_ContentTypes::IMAGE . '"))');
+			}
+		} else {
+			$imagesize = array(0, 0);
+			$imageView = $imageViewPopup = we_html_element::jsElement('document.write(WE().util.getTreeIcon("' . $file["ContentType"] . '",false,"' . $file['Extension'] . '"))');
+		}
+
+		return array('imageView' => $imageView, 'imageViewPopup' => $imageViewPopup, 'sizeX' => $imagesize[0], 'sizeY' => $imagesize[1], 'url' => $url, 'urlPopup' => $urlPopup);
+	}
+
+	function getSearchParameterTop($foundItems, $whichSearch){
+		switch(isset($GLOBALS['we_cmd_obj']) ? 'we_cmd_obj' : $whichSearch){
+			case 'we_cmd_obj':
+				$_view = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'setView' . $whichSearch);
+				$view = "setView" . $whichSearch;
+				$_order = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'Order' . $whichSearch);
+				$order = "Order" . $whichSearch;
+				$_anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', '', 'anzahl' . $whichSearch);
+				$anzahl = "anzahl" . $whichSearch;
+				$searchstart = "searchstart" . $whichSearch;
+				break;
+			case self::SEARCH_DOCS :
+				$_view = $this->Model->setViewDocSearch;
+				$view = "setViewDocSearch";
+				$_order = $this->Model->OrderDocSearch;
+				$order = "OrderDocSearch";
+				$_anzahl = $this->Model->anzahlDocSearch;
+				$anzahl = "anzahlDocSearch";
+				$searchstart = "searchstartDocSearch";
+				break;
+			case self::SEARCH_TMPL :
+				$_view = $this->Model->setViewTmplSearch;
+				$view = "setViewTmplSearch";
+				$_order = $this->Model->OrderTmplSearch;
+				$order = "OrderTmplSearch";
+				$_anzahl = $this->Model->anzahlTmplSearch;
+				$anzahl = "anzahlTmplSearch";
+				$searchstart = "searchstartTmplSearch";
+				break;
+			case self::SEARCH_MEDIA :
+				$_view = $this->Model->setViewMediaSearch;
+				$view = "setViewMediaSearch";
+				$_order = $this->Model->OrderMediaSearch;
+				$order = "OrderMediaSearch";
+				$_anzahl = $this->Model->anzahlMediaSearch;
+				$anzahl = "anzahlMediaSearch";
+				$searchstart = "searchstartMediaSearch";
+				break;
+			case self::SEARCH_ADV :
+				$_view = $this->Model->setViewAdvSearch;
+				$view = "setViewAdvSearch";
+				$_order = $this->Model->OrderAdvSearch;
+				$order = "OrderAdvSearch";
+				$_anzahl = $this->Model->anzahlAdvSearch;
+				$anzahl = "anzahlAdvSearch";
+				$searchstart = "searchstartAdvSearch";
+				break;
 		}
 
 		$values = array(10 => 10, 25 => 25, 50 => 50, 100 => 100);
 
-		return '
-<input type="hidden" name="' . $view . '" value="' . $_view . '" />
-<input type="hidden" name="position" />
-<input type="hidden" name="' . $order . '" value="' . $_order . '" />
-<input type="hidden" name="do" />
-<table border="0" cellpadding="0" cellspacing="0">
+		return we_html_element::htmlHiddens(array(
+				$view => $_view,
+				"position" => '',
+				$order => $_order,
+				"do" => ''
+			)) . '
+<table class="default">
 <tr>
  <td>' . we_html_tools::getPixel(30, 12) . '</td>
  <td style="font-size:12px;width:125px;">' . g_l('searchtool', '[eintraege_pro_seite]') . ':</td>
  <td class="defaultgray" style="width:60px;">
  ' . we_html_tools::htmlSelect($anzahl, $values, 1, $_anzahl, "", array('onchange' => 'this.form.elements["' . $searchstart . '"].value=0;search(false);')) . '</td>
  <td style="width:400px;">' . $this->getNextPrev($foundItems, $whichSearch) . '</td>
- <td style="width:35px;">' . we_html_button::create_button("image:iconview", "javascript:setView(1);", true, "", "", "", "", false) . '</td>
- <td>' . we_html_button::create_button("image:listview", "javascript:setView(0);", true, "", "", "", "", false) . '</td>
+ <td style="width:35px;">' . we_html_button::create_button("fa:iconview,fa-lg fa-th", "javascript:weSearch.setView('" . self::VIEW_ICONS . "');", true, "", "", "", "", false) . '</td>
+ <td>' . we_html_button::create_button("fa:listview,fa-lg fa-align-justify", "javascript:weSearch.setView('" . self::VIEW_LIST . "');", true, "", "", "", "", false) . '</td>
 </tr>
 <tr>
 	<td colspan="12">' . we_html_tools::getPixel(1, 12) . '</td>
@@ -2371,23 +1850,38 @@ function calendarSetup(x){
 
 	function getSearchParameterBottom($foundItems, $whichSearch){
 		$resetButton = (permissionhandler::hasPerm('RESET_VERSIONS') && $whichSearch === "AdvSearch" ?
-				we_html_button::create_button("reset", "javascript:resetVersions();", true, 100, 22, "", "") :
+				we_html_button::create_button("reset", "javascript:.weSearch.resetVersions();", true, 100, 22, "", "") :
 				'');
-		if(permissionhandler::hasPerm('PUBLISH') && ($whichSearch === "AdvSearch" || $whichSearch === "DocSearch")){
-			$publishButtonCheckboxAll = we_html_forms::checkbox(1, 0, "publish_all_" . $whichSearch, "", false, "middlefont", "checkAllPubChecks('" . $whichSearch . "')");
-			$publishButton = we_html_button::create_button("publish", "javascript:publishDocs('" . $whichSearch . "');", true, 100, 22, "", "");
-		} else {
-			$publishButton = $publishButtonCheckboxAll = "";
+
+		switch($whichSearch){
+			case self::SEARCH_ADV:
+			case self::SEARCH_DOCS:
+				if(permissionhandler::hasPerm('PUBLISH')){
+					$actionButtonCheckboxAll = we_html_forms::checkbox(1, 0, "action_all_" . $whichSearch, "", false, "middlefont", "weSearch.checkAllActionChecks('" . $whichSearch . "')");
+					$actionButton = we_html_button::create_button(we_html_button::PUBLISH, "javascript:weSearch.publishDocs('" . $whichSearch . "');", true, 100, 22, "", "");
+					$publishButtonCheckboxAll = we_html_forms::checkbox(1, 0, "publish_all_" . $whichSearch, "", false, "middlefont", "weSearch.checkAllPubChecks('" . $whichSearch . "')");
+					$publishButton = we_html_button::create_button(we_html_button::PUBLISH, "javascript:weSearch.publishDocs('" . $whichSearch . "');", true, 100, 22, "", "");
+					break;
+				}
+				$actionButton = $actionButtonCheckboxAll = $publishButton = $publishButtonCheckboxAll = "";
+				break;
+			case self::SEARCH_MEDIA:
+				$actionButtonCheckboxAll = we_html_forms::checkbox(1, 0, "action_all_" . $whichSearch, "", false, "middlefont", "weSearch.checkAllActionChecks('" . $whichSearch . "')");
+				$actionButton = we_html_button::create_button(we_html_button::DELETE, "javascript:weSearch.deleteDocs('" . $whichSearch . "');", true, 100, 22, "", "");
+				$publishButton = $publishButtonCheckboxAll = "";
+				break;
+			default:
+				$actionButton = $actionButtonCheckboxAll = $publishButton = $publishButtonCheckboxAll = "";
 		}
 
-		return '<table border="0" cellpadding="0" cellspacing="0" style="margin-top:10px;">
+
+		return '<table class="default" style="margin-top:10px;">
 <tr>
-	 <td>' . $publishButtonCheckboxAll . '</td>
-	 <td style="font-size:12px;width:140px;">' . $publishButton . '</td>
+	 <td style="padding-bottom:10px;">' . $actionButtonCheckboxAll . '</td>
+	 <td style="font-size:12px;width:140px;">' . $actionButton . '</td>
 	 <td style="width:60px;" id="resetBusy' . $whichSearch . '"></td>
 	 <td style="width:400px;">' . $resetButton . '</td>
 </tr>
-<tr><td>' . we_html_tools::getPixel(10, 12) . '</td>	</tr>
 <tr>
 	<td>' . we_html_tools::getPixel(19, 12) . '</td>
 	<td style="font-size:12px;width:140px;">' . we_html_tools::getPixel(30, 12) . '</td>
@@ -2397,8 +1891,9 @@ function calendarSetup(x){
 </table>';
 	}
 
+	// FIXME: is obsolete as soon as getSearchDialogOptionalFields() works properly
 	function getSearchDialogAdvSearch(){
-		if((isset($_SESSION['weS']['weSearch']["keyword"]) && $_SESSION['weS']['weSearch']["keyword"] != "") && (we_base_request::_(we_base_request::INT, "tab") == 3)){
+		if((!empty($_SESSION['weS']['weSearch']["keyword"])) && (we_base_request::_(we_base_request::INT, "tab") == 3)){
 			$this->Model->searchAdvSearch[0] = $_SESSION['weS']['weSearch']["keyword"];
 			if($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8"){
 				$this->Model->searchAdvSearch[0] = utf8_encode($this->Model->searchAdvSearch[0]);
@@ -2440,7 +1935,7 @@ function calendarSetup(x){
 			$this->searchclass->height = 0;
 		}
 
-		$out = '<div style="margin-left:123px;"><div id="mouseOverDivs_AdvSearch"></div><table cellpadding="3" cellspacing="0" border="0">
+		$out = '<div style="margin-left:123px;"><div id="mouseOverDivs_AdvSearch"></div><table>
 <tbody id="filterTableAdvSearch">
 <tr>
  <td></td>
@@ -2465,7 +1960,7 @@ function calendarSetup(x){
 			array();
 
 		for($i = 0; $i < $this->searchclass->height; $i++){
-			$button = we_html_button::create_button("image:btn_function_trash", 'javascript:delRow(' . $i . ');', true, '', '', '', '', false);
+			$button = we_html_button::create_button(we_html_button::TRASH, 'javascript:weSearch.delRow(' . $i . ');', true, '', '', '', '', false);
 
 			$locationDisabled = $handle = '';
 
@@ -2513,10 +2008,10 @@ function calendarSetup(x){
 						$_rootDirID = 0;
 						$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value");
 						$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['searchAdvSearch[" . $i . "]'].value");
-						$_cmd = "javascript:we_cmd('openDirselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','')";
-						$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
+						$_cmd = "javascript:we_cmd('we_selector_directory',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','')";
+						$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 70, 22, '', '', false);
 						$selector = we_html_tools::htmlFormElementTable(
-								we_html_tools::htmlTextInput('searchAdvSearch[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(array('name' => 'searchAdvSearchParentID[' . $i . ']', "value" => "")), we_html_tools::getPixel(5, 4), $_button);
+								we_html_tools::htmlTextInput('searchAdvSearch[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('searchAdvSearchParentID[' . $i . ']', ""), we_html_tools::getPixel(5, 4), $_button);
 
 						$searchInput = $selector;
 						break;
@@ -2528,8 +2023,7 @@ function calendarSetup(x){
 						$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value");
 						$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['searchAdvSearch[" . $i . "]'].value");
 
-						$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')";
-						$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
+						$_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')", true, 70, 22, '', '', false);
 						$selector = we_html_tools::htmlFormElementTable(
 								we_html_tools::htmlTextInput(
 									'searchAdvSearch[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(
@@ -2543,8 +2037,7 @@ function calendarSetup(x){
 						$_linkPath = $this->Model->searchAdvSearch[$i];
 						$_rootDirID = 0;
 
-						$_cmd = "javascript:we_cmd('openCatselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'searchAdvSearchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'searchAdvSearch[" . $i . "]\\'].value','','','" . $_rootDirID . "','','')";
-						$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
+						$_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_category',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'searchAdvSearchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'searchAdvSearch[" . $i . "]\\'].value','','','" . $_rootDirID . "','','')", true, 70, 22, '', '', false);
 						$selector = we_html_tools::htmlFormElementTable(
 								we_html_tools::htmlTextInput(
 									'searchAdvSearch[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(
@@ -2557,11 +2050,201 @@ function calendarSetup(x){
 			}
 
 			$out .= '<tr id="filterRow_' . $i . '">
-     <td>' . we_html_tools::hidden("hidden_searchFieldsAdvSearch[" . $i . "]", isset($this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : "") .
-				we_html_tools::htmlSelect("searchFieldsAdvSearch[" . $i . "]", $this->searchclass->getFields($i, ""), 1, (isset($this->Model->searchFieldsAdvSearch) && is_array($this->Model->searchFieldsAdvSearch) && isset($this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : ""), false, array('class' => "defaultfont", 'id' => 'searchFieldsAdvSearch[' . $i . ']', 'onchange' => 'changeit(this.value, ' . $i . ');')) .
+	<td>' . we_html_tools::hidden("hidden_searchFieldsAdvSearch[" . $i . "]", isset($this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : "") .
+				we_html_tools::htmlSelect("searchFieldsAdvSearch[" . $i . "]", $this->searchclass->getFields($i, 'AdvSearch'), 1, (isset($this->Model->searchFieldsAdvSearch) && is_array($this->Model->searchFieldsAdvSearch) && isset($this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : ""), false, array('class' => "defaultfont", 'id' => 'searchFieldsAdvSearch[' . $i . ']', 'onchange' => 'weSearch.changeit(this.value, ' . $i . ');')) .
 				'</td>
-     <td id="td_locationAdvSearch[' . $i . ']">' . we_html_tools::htmlSelect("locationAdvSearch[" . $i . "]", we_search_search::getLocation($handle), 1, (isset($this->Model->locationAdvSearch) && is_array($this->Model->locationAdvSearch) && isset($this->Model->locationAdvSearch[$i]) ? $this->Model->locationAdvSearch[$i] : ""), false, array('class' => "defaultfont", $locationDisabled => $locationDisabled, 'id' => 'locationAdvSearch[' . $i . ']')) . '</td>
-     <td id="td_searchAdvSearch[' . $i . ']">' . $searchInput . '</td>
+	<td id="td_locationAdvSearch[' . $i . ']">' . we_html_tools::htmlSelect("locationAdvSearch[" . $i . "]", we_search_search::getLocation($handle), 1, (isset($this->Model->locationAdvSearch) && is_array($this->Model->locationAdvSearch) && isset($this->Model->locationAdvSearch[$i]) ? $this->Model->locationAdvSearch[$i] : ""), false, array('class' => "defaultfont", $locationDisabled => $locationDisabled, 'id' => 'locationAdvSearch[' . $i . ']')) . '</td>
+	<td id="td_searchAdvSearch[' . $i . ']">' . $searchInput . '</td>
+	<td id="td_delButton[' . $i . ']">' . $button . '</td>
+	</tr>';
+		}
+
+		$out .= '</tbody></table>' .
+			'<table>
+<tr>
+<td>' . we_html_button::create_button(we_html_button::ADD, "javascript:weSearch.newinputAdvSearch();") . '</td>
+<td>' . we_html_tools::getPixel(10, 10) . '</td>
+<td colspan="7" style="text-align:right"></td>
+</tr>
+</table></div>' .
+			we_html_element::jsElement("weSearch.calendarSetup(" . $this->searchclass->height . ");");
+
+		return $out;
+	}
+
+	function getSearchDialogOptFields($whichSearch){
+		if($whichSearch !== self::SEARCH_ADV && $whichSearch !== self::SEARCH_MEDIA){
+			return;
+		}
+
+		$searchWhichSearch = $whichSearch === self::SEARCH_ADV ? "searchAdvSearch" : "searchMediaSearch";
+		$searchFieldsWhichSearch = $whichSearch === self::SEARCH_ADV ? "searchFieldsAdvSearch" : "searchFieldsMediaSearch";
+		$locationWhichSearch = $whichSearch === self::SEARCH_ADV ? "locationAdvSearch" : "locationMediaSearch";
+
+		if((!empty($_SESSION['weS']['weSearch']['keyword'])) && (we_base_request::_(we_base_request::INT, 'tab') === ($whichSearch === self::SEARCH_ADV ? 3 : (self::SEARCH_MEDIA ? 5 : -1)))){
+			$this->Model->$searchWhichSearch[0] = $_SESSION['weS']['weSearch']['keyword'];
+			if($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8"){
+				$this->Model->$searchWhichSearch[0] = utf8_encode($this->Model->$searchWhichSearch[0]);
+			}
+			unset($_SESSION['weS']['weSearch']["keyword"]);
+		}
+
+		$this->searchclass->height = count($this->Model->$searchFieldsWhichSearch);
+
+		$cmd = we_base_request::_(we_base_request::STRING, 'cmd');
+		$cmdid = we_base_request::_(we_base_request::INT, 'cmdid');
+
+		if(isset($_REQUEST[$searchFieldsWhichSearch])){
+			if($cmdid !== false){
+				if($cmdid != ""){
+					$this->searchclass->height = count($this->Model->$searchFieldsWhichSearch);
+				} elseif($cmd != "" && $cmd != "tool_weSearch_save"){
+					$this->searchclass->height = 1;
+				}
+			} else {
+				$this->searchclass->height = count($_REQUEST[$searchFieldsWhichSearch]);
+			}
+		} else {
+			if($cmdid !== false){
+				if($cmdid){
+					$this->searchclass->height = count($this->Model->$searchFieldsWhichSearch);
+				} elseif(!$cmd){
+					$this->searchclass->height = 0;
+				} elseif($cmd != "tool_weSearch_save"){
+					$this->searchclass->height = 1;
+				}
+			} else {
+				$this->searchclass->height = (isset($this->Model->$searchFieldsWhichSearch[0]) ?
+						count($this->Model->$searchFieldsWhichSearch) : 1);
+			}
+		}
+		//if own search was saved without fields
+		if(!$this->Model->$searchFieldsWhichSearch && !$this->Model->predefined){
+			$this->searchclass->height = 0;
+		}
+
+		$out = '<div ' . ($whichSearch === self::SEARCH_MEDIA ? '' : 'style="margin-left:123px;"') . '><div id="mouseOverDivs_' . $whichSearch . '"></div><table>
+<tbody id="filterTable' . $whichSearch . '">
+<tr>
+ <td></td>
+ <td></td>
+ <td></td>
+ <td></td>
+ <td></td>
+</tr>';
+
+		$$locationWhichSearch = we_base_request::_(we_base_request::STRING, $locationWhichSearch);
+		$this->Model->$locationWhichSearch = ($locationWhichSearch && is_array($locationWhichSearch) ?
+				$$locationWhichSearch :
+				is_array($this->Model->$locationWhichSearch) ? array_values($this->Model->$locationWhichSearch) :
+					array());
+
+		$this->Model->$searchWhichSearch = is_array($this->Model->$searchWhichSearch) ?
+			array_values($this->Model->$searchWhichSearch) :
+			array();
+
+		$this->Model->$searchFieldsWhichSearch = is_array($this->Model->$searchFieldsWhichSearch) ?
+			array_values($this->Model->$searchFieldsWhichSearch) :
+			array();
+
+		for($i = ($whichSearch === self::SEARCH_MEDIA ? $this->searchMediaOptFieldIndex : 0); $i < $this->searchclass->height; $i++){
+			$button = we_html_button::create_button(we_html_button::TRASH, 'javascript:weSearch.delRow(' . $i . ');', true, '', '', '', '', false);
+
+			$locationDisabled = $handle = '';
+
+			$searchInput = we_html_tools::htmlTextInput($searchWhichSearch . '[' . $i . ']', 30, ( isset($this->Model->$searchWhichSearch) && is_array($this->Model->$searchWhichSearch) && isset($this->Model->$searchWhichSearch[$i]) ? $this->Model->$searchWhichSearch[$i] : ''), "", " class=\"wetextinput\"  id=\"' . $searchWhichSearch . '[" . $i . "]\" ", "search", 170);
+
+			if(isset($this->Model->$searchFieldsWhichSearch[$i])){
+				switch($this->Model->$searchFieldsWhichSearch[$i]){
+					case "ParentIDDoc":
+					case "ParentIDObj":
+					case "ParentIDTmpl":
+					case "Content":
+					case "Status":
+					case "Speicherart":
+					case "MasterTemplateID":
+					case "temp_template_id":
+					case "temp_category":
+						$locationDisabled = "disabled";
+				}
+
+				switch($this->Model->$searchFieldsWhichSearch[$i]){
+					case "allModsIn":
+						$searchInput = we_html_tools::htmlSelect($searchWhichSearch . "[" . $i . "]", $this->searchclass->getModFields(), 1, ( isset($this->Model->$searchWhichSearch) && is_array($this->Model->$searchWhichSearch) && isset($this->Model->$searchWhichSearch[$i]) ? $this->Model->$searchWhichSearch[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => $searchWhichSearch . '[' . $i . ']'));
+						break;
+
+					case "Status":
+						$searchInput = we_html_tools::htmlSelect($searchWhichSearch . "[" . $i . "]", $this->searchclass->getFieldsStatus(), 1, (isset($this->Model->$searchWhichSearch) && is_array($this->Model->$searchWhichSearch) && isset($this->Model->$searchWhichSearch[$i]) ? $this->Model->$searchWhichSearch[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => $searchWhichSearch . '[' . $i . ']'));
+						break;
+
+					case "Speicherart":
+						$searchInput = we_html_tools::htmlSelect($searchWhichSearch . "[" . $i . "]", $this->searchclass->getFieldsSpeicherart(), 1, (isset($this->Model->$searchWhichSearch) && is_array($this->Model->$searchWhichSearch) && isset($this->Model->$searchWhichSearch[$i]) ? $this->Model->$searchWhichSearch[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => $searchWhichSearch . '[' . $i . ']'));
+						break;
+
+					case "Published":
+					case "CreationDate":
+					case "ModDate":
+						$handle = "date";
+						$searchInput = we_html_tools::getDateSelector($searchWhichSearch . "[" . $i . "]", "_from" . $i, $this->Model->$searchWhichSearch[$i]);
+						break;
+
+					case "ParentIDDoc":
+					case "ParentIDObj":
+					case "ParentIDTmpl":
+						$_linkPath = $this->Model->$searchWhichSearch[$i];
+
+						$_rootDirID = 0;
+						$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $searchWhichSearch . "ParentID[" . $i . "]'].value");
+						$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $searchWhichSearch . "[" . $i . "]'].value");
+						$_cmd = "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $searchWhichSearch . "ParentID[" . $i . "]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','')";
+						$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 70, 22, '', '', false);
+						$selector = we_html_tools::htmlFormElementTable(
+								we_html_tools::htmlTextInput($searchWhichSearch . '[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden($searchWhichSearch . 'ParentID[' . $i . ']', ""), we_html_tools::getPixel(5, 4), $_button);
+
+						$searchInput = $selector;
+						break;
+					case "MasterTemplateID":
+					case "temp_template_id":
+						$_linkPath = $this->Model->$searchWhichSearch[$i];
+
+						$_rootDirID = 0;
+						$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $searchWhichSearch . "ParentID[" . $i . "]'].value");
+						$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $searchWhichSearch . "[" . $i . "]'].value");
+
+						$_cmd = "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $searchWhichSearch . "ParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')";
+						$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 70, 22, '', '', false);
+						$selector = we_html_tools::htmlFormElementTable(
+								we_html_tools::htmlTextInput(
+									$searchWhichSearch . '[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(
+									array(
+										'name' => $searchWhichSearch . 'ParentID[' . $i . ']', "value" => ""
+								)), we_html_tools::getPixel(5, 4), $_button);
+
+						$searchInput = $selector;
+						break;
+					case "temp_category":
+						$_linkPath = $this->Model->$searchWhichSearch[$i];
+						$_rootDirID = 0;
+
+						$_cmd = "javascript:we_cmd('we_selector_category',document.we_form.elements['" . $searchWhichSearch . "ParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'" . $searchWhichSearch . "ParentID[" . $i . "]\\'].value','document.we_form.elements[\\'" . $searchWhichSearch . "[" . $i . "]\\'].value','','','" . $_rootDirID . "','','')";
+						$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 70, 22, '', '', false);
+						$selector = we_html_tools::htmlFormElementTable(
+								we_html_tools::htmlTextInput(
+									$searchWhichSearch . '[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(
+									array(
+										'name' => $searchWhichSearch . 'ParentID[' . $i . ']', "value" => ""
+								)), we_html_tools::getPixel(5, 4), $_button);
+
+						$searchInput = $selector;
+				}
+			}
+
+			$out .= '<tr id="filterRow_' . $i . '">
+     <td>' . we_html_tools::hidden("hidden_" . $searchFieldsWhichSearch . "[" . $i . "]", isset($this->Model->$searchFieldsWhichSearch[$i]) ? $this->Model->$searchFieldsWhichSearch[$i] : "") .
+				we_html_tools::htmlSelect($searchFieldsWhichSearch . "[" . $i . "]", $this->searchclass->getFields($i, $whichSearch), 1, (isset($this->Model->$searchFieldsWhichSearch) && is_array($this->Model->$searchFieldsWhichSearch) && isset($this->Model->$searchFieldsWhichSearch[$i]) ? $this->Model->$searchFieldsWhichSearch[$i] : ""), false, array('class' => "defaultfont", 'id' => $searchFieldsWhichSearch . '[' . $i . ']', 'onchange' => 'weSearch.changeit(this.value, ' . $i . ');')) .
+				'</td>
+     <td id="td_' . $locationWhichSearch . '[' . $i . ']">' . we_html_tools::htmlSelect($locationWhichSearch . "[" . $i . "]", we_search_search::getLocation($handle), 1, (isset($this->Model->$locationWhichSearch) && is_array($this->Model->$locationWhichSearch) && isset($this->Model->$locationWhichSearch[$i]) ? $this->Model->$locationWhichSearch[$i] : ""), false, array('class' => "defaultfont", $locationDisabled => $locationDisabled, 'id' => $locationWhichSearch . '[' . $i . ']')) . '</td>
+     <td id="td_' . $searchWhichSearch . '[' . $i . ']">' . $searchInput . '</td>
      <td id="td_delButton[' . $i . ']">' . $button . '</td>
     </tr>';
 		}
@@ -2569,28 +2252,31 @@ function calendarSetup(x){
 		$out .= '</tbody></table>' .
 			'<table>
 <tr>
- <td>' . we_html_button::create_button("add", "javascript:newinputAdvSearch();") . '</td>
+ <td>' . we_html_button::create_button(we_html_button::ADD, "javascript:weSearch.newinputAdvSearch();") . '</td>
  <td>' . we_html_tools::getPixel(10, 10) . '</td>
- <td colspan="7" align="right"></td>
+ <td colspan="7" style="text-align:right"></td>
 </tr>
 </table></div>' .
-			we_html_element::jsElement("calendarSetup(" . $this->searchclass->height . ");");
+			we_html_element::jsElement("weSearch.calendarSetup(" . $this->searchclass->height . ");");
 
 		return $out;
 	}
 
 	function tblList($content, $headline, $whichSearch){
 		$class = "middlefont";
-		$view = 0;
+		$view = self::VIEW_LIST;
 
 		switch($whichSearch){
-			case "DocSearch" :
+			case self::SEARCH_DOCS :
 				$view = $this->Model->setViewDocSearch;
 				break;
-			case "TmplSearch" :
+			case self::SEARCH_TMPL :
 				$view = $this->Model->setViewTmplSearch;
 				break;
-			case "AdvSearch" :
+			case self::SEARCH_DOCS :
+				$view = $this->Model->setViewMediaSearch;
+				break;
+			case self::SEARCH_ADV :
 				$view = $this->Model->setViewAdvSearch;
 				break;
 			// for doclistsearch
@@ -2599,19 +2285,31 @@ function calendarSetup(x){
 		}
 
 		$anz = count($headline);
-		$out = '<table style="table-layout:fixed;white-space:nowrap;width:100%;padding:0 0 0 0;margin:0 0 0 0;background-color:#fff;border-bottom:1px solid #D1D1D1;" >
-<colgroup>
+		$out = '<table style="table-layout:fixed;white-space:nowrap;width:100%;padding:0 0 0 0;margin:0 0 0 0;background-color:#fff;border-bottom:1px solid #D1D1D1;" >' .
+			($whichSearch !== self::SEARCH_MEDIA ? '<colgroup>
 <col style="width:30px;text-align:center;"/>
 <col style="width:2%;text-align:left;"/>
 <col style="width:28%;text-align:left;"/>
 <col style="width:36%;text-align:left;"/>
 <col style="width:15%;text-align:left;"/>
 <col style="width:18%;text-align:left;"/>
-</colgroup>
-
-<tr style="height:20px;">
-     <td style="">&nbsp;</td>
-     <td style="">&nbsp;</td>';
+</colgroup>' :
+				'<colgroup>
+<col style="width:30px;text-align:center;"/>
+<col style="width:80px;text-align:center;"/>
+<col style="text-align:left;"/>
+<col style="width:70px;text-align:left;"/>
+<col style="width:45px;text-align:left;"/>
+<col style="width:45px;text-align:left;"/>
+<col style="width:45px;text-align:left;"/>
+<col style="width:90px;text-align:left;"/>
+<col style="width:90px;text-align:left;"/>
+<col style="width:40px;text-align:left;"/>
+</colgroup>'
+			) .
+			'<tr style="height:20px;">
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>';
 
 		for($f = 0; $f < $anz; $f++){
 			$out .= '<td  class="' . $class . '">' . $headline[$f]["dat"] . '</td>';
@@ -2619,17 +2317,20 @@ function calendarSetup(x){
 
 		$out .= '</tr></table>' .
 			//FIXME: realize with tbody?
-			'<div id="scrollContent_' . $whichSearch . '" style="overflow-y:auto;background-color:#fff;width:100%;height:100%;">' .
+			'<div class="largeicons" id="scrollContent_' . $whichSearch . '" style="overflow-y:auto;background-color:#fff;width:100%;height:100%;">' .
 			$this->tabListContent($view, $content, $class, $whichSearch) .
 			'</div>';
 
 		return $out;
 	}
 
-	public function tabListContent($view = "", $content = "", $class = "", $whichSearch = ""){
+	public function tabListContent($view = self::VIEW_LIST, $content = "", $class = "", $whichSearch = ""){
 		$x = count($content);
-		if($view == 0){
-			$out = '<table style="table-layout:fixed;white-space:nowrap;border:0px;width:100%;padding:0 0 0 0;margin:0 0 0 0;">
+		switch($view){
+			default:
+			case self::VIEW_LIST:
+				$out = '<table style="border-spacing: 0 10px;table-layout:fixed;white-space:nowrap;border:0px;width:100%;padding:0 0 0 0;margin:0 0 0 0;">';
+				$out .= $whichSearch !== self::SEARCH_MEDIA ? '
 <colgroup>
 <col style="width:30px;text-align:center;"/>
 <col style="width:2%;text-align:left;"/>
@@ -2637,116 +2338,99 @@ function calendarSetup(x){
 <col style="width:36%;text-align:left;"/>
 <col style="width:15%;text-align:left;"/>
 <col style="width:18%;text-align:left;"/>
-</colgroup>';
+</colgroup>' : '
+<colgroup>
+<col style="width:30px;text-align:center;"/>
+<col style="width:80px;text-align:left;"/>
+<col style="text-align:left;"/>
+</colgroup>
+';
 
-			for($m = 0; $m < $x; $m++){
-				$out .= '<tr>' . ($whichSearch != "doclist" ?
-						$this->tblListRow($content[$m]) :
-						we_search_view::tblListRow($content[$m])) . '</tr>';
-			}
-			$out .= '</tbody></table>';
-			return $out;
+				for($m = 0; $m < $x; $m++){
+					$out .= '<tr>' . ($whichSearch === 'doclist' ? self::tblListRow($content[$m]) :
+							($whichSearch === self::SEARCH_MEDIA ? self::tblListRowMedia($content[$m]) : self::tblListRow($content[$m]))) . '</tr>';
+				}
+				return $out . '</tbody></table>';
+			case self::VIEW_ICONS:
+				$out = '<table class="default" width="100%"><tr><td style="text-align:center">';
+
+				for($m = 0; $m < $x; $m++){
+					$out .= $whichSearch !== self::SEARCH_MEDIA ? ('<div style="float:left;width:180px;height:100px;margin:20px 0px 0px 20px;z-index:1;">' .
+						self::tblListRowIconView($content[$m], $class, $m, $whichSearch)
+						. '</div>') :
+						('<div style="float:left;width:200px;height:200px;margin:20px 0px 0px 20px;z-index:1;">' .
+						self::tblListRowMediaIconView($content[$m], $class, $m, $whichSearch)
+						. '</div>');
+				}
+
+				$out .= '</td></tr></table>' .
+					we_html_element::jsElement("document.getElementById('mouseOverDivs_" . $whichSearch . "').innerHTML = '" . addslashes(self::makeMouseOverDivs($x, $content, $whichSearch)) . "';");
+
+				return $out;
 		}
-		$out = '<table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td align="center">';
-
-		for($m = 0; $m < $x; $m++){
-			$out .= '<div style="float:left;width:180px;height:100px;margin:20px 0px 0px 20px;z-index:1;">' .
-				($whichSearch != "doclist" ?
-					$this->tblListRowIconView($content[$m], $class, $m, $whichSearch) :
-					we_search_view::tblListRowIconView($content[$m], $class, $m, $whichSearch)
-				) . '</div>';
-		}
-
-		$out .= '</td></tr></table>';
-
-		$allDivs = ($whichSearch != "doclist" ?
-				$this->makeMouseOverDivs($x, $content, $whichSearch) :
-				we_search_view::makeMouseOverDivs($x, $content, $whichSearch));
-
-
-		$out .= we_html_element::jsElement("document.getElementById('mouseOverDivs_" . $whichSearch . "').innerHTML = '" . addslashes($allDivs) . "';");
-
-		return $out;
 	}
 
-	function makeMouseOverDivs($x, $content, $whichSearch){
+	static function makeMouseOverDivs($x, $content, $whichSearch){
 		$allDivs = '';
 
-		$width = (we_base_browserDetect::isIE() ? "400px" : "398px");
-
 		for($n = 0; $n < $x; $n++){
-			$outDivs = '<div style="position:absolute;left:-9999px;width:400px;text-align:left;z-index:10000;visibility:visible;" class="middlefont" id="ImgDetails_' . $n . '_' . $whichSearch . '">
-			<div style="width:17px;height:22px;position:absolute;top:0px;left:0px;background-image:url(' . IMAGE_DIR . 'backgrounds/doclistBg/loDoclistDiv.gif);"></div>
-			<div style="width:365px;height:22px;position:absolute;top:0px;left:17px;padding-top:3px;background-image:url(' . IMAGE_DIR . 'backgrounds/doclistBg/moDoclistDiv.gif);" class="weDocListSearchHeadlineDivs">' . $content[$n][10]["dat"] . '</div>
-			<div style="width:18px;height:22px;position:absolute;top:0px;left:382px;background-image:url(' . IMAGE_DIR . 'backgrounds/doclistBg/roDoclistDiv.gif);"></div>
-			<div style="width:' . $width . ';position:relative;top:22px;left:0px;border-right:1px solid #A8A7A8;border-left:1px solid #A8A7A8;">
-			<div style="width:100%;height:1px;overflow:hidden;background-color:#DDDDDD;">
-			</div>
-			<div style="width:100%;background-color:#EDEDED;position:relative;">
-			<div style="padding:15px;position:absolute;">' . $content[$n][5]["dat"] . '</div>
-			<div style="padding:15px;position:relative;top:0px;left:160px;width:200px;">
+			$outDivs = '<div style="position:absolute;left:-9999px;width:400px;text-align:left;z-index:10000;visibility:visible;border:1px solid #bab9ba; border-radius:20px;background-color:#EDEDED;" class="middlefont" id="ImgDetails_' . $n . '_' . $whichSearch . '">
+			<div style="margin-left:18px;margin-right:18px;height:22px;padding-top:3px;" class="weDocListSearchHeadlineDivs">' . $content[$n][10]["dat"] . '</div>
+			<div style="width:100%;border-top:1px solid #DDDDDD;">
+				<div style="padding:15px;display: inline-block;">' . $content[$n][5]["dat"] . '</div>
 
-			<table style="font-size:10px;" border="0" cellspacing="0" cellpadding="3">
-			<tr>
-			<td colspan="2" style="font-size:12px;">' . $content[$n][9]["dat"] . '<br/><br/></td></tr>
-			<tr><td valign="top">' . g_l('searchtool', '[idDiv]') . ': </td><td>' . $content[$n][16]["dat"] . '</td></tr>
-			<tr><td valign="top">' . g_l('searchtool', '[dateityp]') . ': </td><td>' . $content[$n][8]["dat"] . '</td></tr>';
-			if($content[$n][12]["dat"] == we_base_ContentTypes::IMAGE || $content[$n][12]["dat"] == we_base_ContentTypes::APPLICATION){
-				$outDivs .= '<tr><td valign="top">' . g_l('searchtool', '[groesse]') . ': </td><td>' . $content[$n][6]["dat"] . '</td></tr>';
-				if($content[$n][12]["dat"] == we_base_ContentTypes::IMAGE){
-					$outDivs .= '<tr><td valign="top">' . g_l('searchtool', '[aufloesung]') . ': </td><td>' . $content[$n][7]["dat"] . '</td></tr>';
-				}
+					<table style="font-size:10px;margin-left:150px;width:200px;display:inline-table;">
+					<tr>
+					<td colspan="2" style="font-size:12px;padding-bottom:2em;">' . $content[$n][9]["dat"] . '</td></tr>
+					<tr><td style="vertical-align:top">' . g_l('searchtool', '[idDiv]') . ': </td><td>' . $content[$n][16]["dat"] . '</td></tr>
+					<tr><td style="vertical-align:top">' . g_l('searchtool', '[dateityp]') . ': </td><td>' . $content[$n][8]["dat"] . '</td></tr>';
+			switch($content[$n][12]["dat"]){
+				case we_base_ContentTypes::IMAGE:
+					$outDivs .= '<tr><td style="vertical-align:top">' . g_l('searchtool', '[aufloesung]') . ': </td><td>' . $content[$n][7]["dat"] . '</td></tr>';
+				//no break;
+				case we_base_ContentTypes::APPLICATION:
+					$outDivs .= '<tr><td style="vertical-align:top">' . g_l('searchtool', '[groesse]') . ': </td><td>' . $content[$n][6]["dat"] . '</td></tr>';
+					break;
+				case we_base_ContentTypes::WEDOCUMENT:
+					$outDivs .= '<tr><td style="vertical-align:top">' . g_l('searchtool', '[template]') . ': ' . '</td>
+							<td>' . $content[$n][14]["dat"] . '</td></tr>';
+					break;
 			}
-			if($content[$n][12]["dat"] == we_base_ContentTypes::WEDOCUMENT){
-				$outDivs .= '<tr><td valign="top">' . g_l('searchtool', '[template]') . ': ' . '</td>
-					<td>' . $content[$n][14]["dat"] . '</td></tr>';
-			}
-			$outDivs .= '<tr><td valign="top">' . g_l('searchtool', '[creator]') . ': </td><td>' . $content[$n][13]["dat"] . '</td></tr>
-			<tr><td valign="top">' . g_l('searchtool', '[created]') . ': </td><td>' . $content[$n][3]["dat"] . '</td></tr>
-			<tr><td valign="top">' . g_l('searchtool', '[modified]') . ': </td><td>' . $content[$n][4]["dat"] . '</td></tr></table>
-			</div>
-			<div style="padding:0px 0px 6px 15px;position:relative;top:0px;left:0px;width:360px;">';
-			if($content[$n][11]["dat"] != ""){
-				$outDivs .= '<table cellpadding="0" cellspacing="0" border="0" style="font-size:10px;"><tr><td valign="top">' . g_l('searchtool', '[beschreibung]') . ':</td><td>' . we_html_tools::getPixel(
+			$outDivs .= '<tr><td style="vertical-align:top">' . g_l('searchtool', '[creator]') . ': </td><td>' . $content[$n][13]["dat"] . '</td></tr>
+					<tr><td style="vertical-align:top">' . g_l('searchtool', '[created]') . ': </td><td>' . $content[$n][3]["dat"] . '</td></tr>
+					<tr><td style="vertical-align:top">' . g_l('searchtool', '[modified]') . ': </td><td>' . $content[$n][4]["dat"] . '</td></tr></table>
+
+				<div style="padding:0px 0px 6px 15px;width:360px;">';
+			if($content[$n][11]["dat"]){
+				$outDivs .= '<table class="default" style="font-size:10px;"><tr><td style="vertical-align:top">' . g_l('searchtool', '[beschreibung]') . ':</td><td>' . we_html_tools::getPixel(
 						15, 5) . '</td><td>' .
-					we_util_Strings::shortenPath($content[$n][11]["dat"], 150) .
+					we_base_util::shortenPath($content[$n][11]["dat"], 150) .
 					'</td></tr></table>';
 			}
 			$outDivs .= '</div>
-				</div>';
+			</div>';
 			if($content[$n][15]["dat"]){
-				$outDivs .= '<div style="width:100%;position:relative;top:0px;height:1px;overflow:hidden;background-color:#DDDDDD;"></div>
-					<div style="width:100%;position:relative;top:0px;height:1px;overflow:hidden;background-color:#FFF;"></div>
-					<div style="width:100%;position:relative;top:0px;height:20px;overflow:hidden;background-color:#DDDDDD;">
-						<div style="margin:5px 0px 0px 15px">' . g_l('searchtool', '[metafelder]') . ':</div>
-						</div>
-						<div style="width:100%;position:relative;top:0px;background-color:#FFF;">
-						<div style="padding:10px 0px 10px 15px;">
-						<table style="font-size:10px;" border="0" cellspacing="0" cellpadding="3">';
+				$outDivs .= '
+					<div style="height:20px;overflow:hidden;border-top:1px solid #DDDDDD;margin-top:15px;padding:5px 0px 0px 15px;">' . g_l('searchtool', '[metafelder]') . ':</div>
+						<div style="background-color:#FFF;margin:10px 10px 10px 15px;">
+						<table style="font-size:10px;">';
 				foreach($content[$n][15]["dat"] as $k => $v){
-					$outDivs .= '<tr><td>' . we_util_Strings::shortenPath($k, 90) . ':' . '</td><td>' . we_util_Strings::shortenPath($v, 90) . '</td></tr>';
+					$outDivs .= '<tr><td>' . we_base_util::shortenPath($k, 90) . ':' . '</td><td>' . we_base_util::shortenPath($v, 90) . '</td></tr>';
 				}
 				$outDivs .= '</table>
-					</div>
 					</div>';
 			}
 
-			$outDivs .= '<div style="width:100%;position:relative;top:0px;height:1px;overflow:hidden;background-color:#DDDDDD;">
+			$outDivs .= '
 				</div>
-				</div>
-				<div style="position:relative;">
-				<div style="width:15px;height:20px;position:absolute;top:20px;background-image:url(' . IMAGE_DIR . 'backgrounds/doclistBg/luDoclistDiv.gif);"></div>
-					<div style="width:371px;height:20px;position:absolute;top:20px;left:15px;background-image:url(' . IMAGE_DIR . 'backgrounds/doclistBg/muDoclistDiv.gif);"></div>
-						<div style="width:14px;height:20px;position:absolute;top:20px;left:386px;background-image:url(' . IMAGE_DIR . 'backgrounds/doclistBg/ruDoclistDiv.gif);"></div>
-							</div>
-							</div>';
+				</div>';
 			$allDivs .= $outDivs;
 		}
 
-		return $allDivs;
+		return str_replace("\n", '', $allDivs);
 	}
 
-	function tblListRow($content, $class = "middlefont", $bgColor = ""){
+	private static function tblListRow($content, $class = "middlefont", $bgColor = ""){
 		$anz = count($content);
 		if(isset($content[0]["version"])){
 			$anz = count($content) - 1;
@@ -2754,7 +2438,7 @@ function calendarSetup(x){
 
 		$out = '';
 		for($f = 0; $f < $anz; $f++){
-			$out .= '<td ' . ($f < 2 ? '' : 'style="font-weight:bold;height:30px;font-size:11px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;"') . '>' . ((isset($content[$f]["dat"]) && $content[$f]["dat"]) ? $content[$f]["dat"] : "&nbsp;") . '</td>';
+			$out .= '<td ' . ($f < 2 ? '' : 'style="font-weight:bold;height:30px;font-size:11px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;"') . '>' . ((!empty($content[$f]["dat"])) ? $content[$f]["dat"] : "&nbsp;") . '</td>';
 		}
 
 		if(isset($content[0]["version"])){
@@ -2771,7 +2455,7 @@ function calendarSetup(x){
 				for($y = 0; $y < $anz; $y++){
 					$out .= '<td style="font-weight:bold;font-size:11px;' . ($f == 0 ? "width:30px;" : '') . '">' . ($y == 2 ?
 							$content[5]["version"][$k] . '<br/>' :
-							we_html_tools::getPixel(1, 1)
+							''
 						) . '</td>';
 				}
 			}
@@ -2780,38 +2464,89 @@ function calendarSetup(x){
 		return $out;
 	}
 
-	function tblListRowIconView($content, $class = "defaultfont", $i, $whichSearch){
-		return '<table border="0" width="100%" cellpadding="0" cellspacing="0" class="' . $class . '">
+	private static function tblListRowMedia($content){
+		$out = '';
+		for($i = 0; $i < count($content); $i++){
+			switch($content[$i]['elem']){
+				case 'td':
+					$out .= '<td ' . ($content[$i]['attribs'] ? $content[$i]['attribs'] : '') . '>' .
+						(!isset($content[$i]['dat']) || !$content[$i]['dat'] ? '&nbsp;' : (!is_array($content[$i]["dat"]) ? $content[$i]["dat"] : self::tblListRowMedia($content[$i]["dat"]))) .
+						'</td>';
+					break;
+				case 'table':
+					// FIXME :this whole colgroup-stuff in dynamically built tables is absurde! throw out or generate dynamically too!
+					$out .=!isset($content[$i]['dat']) || !is_array($content[$i]['dat']) ? '&nbsp;' : ('<table style="table-layout:fixed;white-space:nowrap;width:100%;padding:0 0 0 0;margin:0 0 0 0;background-color:#fff;" >' .
+						(!empty($content[$i]['colgroup']) ? $content[$i]['colgroup'] : '') .
+						self::tblListRowMedia($content[$i]["dat"]) .
+						'</table>');
+					break;
+				case 'row':
+					$out .= '<tr style="width:100%" ' . (isset($content[$i]['attribs']) ? $content[$i]['attribs'] : '') . '>' .
+						(!isset($content[$i]['dat']) || !is_array($content[$i]['dat']) ? '<td>&nbsp;</td>' : self::tblListRowMedia($content[$i]["dat"])) .
+						'</tr>';
+					break;
+			}
+		}
+
+		return $out;
+	}
+
+	private static function tblListRowIconView($content, $class, $i, $whichSearch){
+		return '<table width="100%" class="default ' . $class . '">
 <tr>
-	<td width="75" valign="top" align="center" onmouseover="showImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\',1)" onmouseout="hideImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\')">' .
-			((isset($content[0]["dat"]) && $content[0]["dat"]) ? $content[0]["dat"] : "&nbsp;") . '</td>
-		<td width="105" valign="top" style="line-height:20px;">
-		<span>' . ((isset($content[2]["dat"]) && $content[2]["dat"]) ? $content[2]["dat"] : "&nbsp;") . '</span><br/><br/>
-		<span>' . ((isset($content[1]["dat"]) && $content[1]["dat"]) ? $content[1]["dat"] : "&nbsp;") . '</span></td>
+	<td width="75" style="vertical-align:top;text-align:center" onmouseover="showImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\',1)" onmouseout="hideImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\')">' .
+			((!empty($content[0]["dat"])) ? $content[0]["dat"] : "&nbsp;") . '</td>
+		<td width="105" style="vertical-align:top;line-height:20px;">
+		<div style="padding-bottom:2em;">' . ((!empty($content[2]["dat"])) ? $content[2]["dat"] : "&nbsp;") . '</div>
+		<span>' . ((!empty($content[1]["dat"])) ? $content[1]["dat"] : "&nbsp;") . '</span></td>
+</tr></table>';
+	}
+
+	private static function tblListRowMediaIconView($content, $class, $i, $whichSearch){
+		return '<table width="100%" class="default ' . $class . '">
+<tr>
+	<td width="100%" style="vertical-align:top;text-align:center" onmouseover="showImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\',1)" onmouseout="hideImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\')">' .
+			((!empty($content[5]["dat"])) ? $content[5]["dat"] : "&nbsp;") .
+			'</td>
+</tr>
+<tr>
+		<td width="100%" style="vertical-align:top;line-height:20px;text-align:center">
+		<span>' . ((!empty($content[2]["dat"])) ? $content[2]["dat"] : "&nbsp;") . '</span>
 </tr></table>';
 	}
 
 	function getDirSelector($whichSearch){
+		$yuiSuggest = & weSuggest::getInstance();
 		switch($whichSearch){
-			case "DocSearch" :
+			case self::SEARCH_DOCS :
 				$folderID = "folderIDDoc";
 				$folderPath = "folderPathDoc";
 				$table = FILE_TABLE;
 				$pathID = $this->Model->folderIDDoc;
 				$ACname = "docu";
+				$yuiSuggest->setWidth(380);
 				break;
-			case "TmplSearch" :
+			case self::SEARCH_MEDIA :
+				$folderID = "folderIDMedia";
+				$folderPath = "folderPathMedia";
+				$table = FILE_TABLE;
+				$pathID = $this->Model->folderIDMedia;
+				$ACname = "docu";
+				$yuiSuggest->setWidth(380);
+				break;
+			case self::SEARCH_TMPL :
 				$folderID = "folderIDTmpl";
 				$folderPath = "folderPathTmpl";
 				$table = TEMPLATES_TABLE;
 				$pathID = $this->Model->folderIDTmpl;
 				$ACname = "Tmpl";
+				$yuiSuggest->setWidth(380);
 				break;
 		}
 
 		$_path = id_to_path($pathID, $table, $this->db);
 
-		$yuiSuggest = & weSuggest::getInstance();
+
 		$yuiSuggest->setAcId($ACname);
 		$yuiSuggest->setContentType("folder");
 		$yuiSuggest->setInput($folderPath, $_path);
@@ -2821,113 +2556,78 @@ function calendarSetup(x){
 		$yuiSuggest->setResult($folderID, $pathID);
 		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setTable($table);
-		$yuiSuggest->setWidth(380);
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $folderID . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $folderPath . "'].value");
 		$yuiSuggest->setSelectButton(
-			we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['" . $folderID . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "')"));
+			we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $folderID . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "')"));
 
 		return
 			weSuggest::getYuiFiles() .
 			$yuiSuggest->getHTML() .
-			$yuiSuggest->getYuiCode();
-	}
-
-	//----------- Utility functions ------------------
-
-	function htmlHidden($name, $value = ''){
-		return we_html_element::htmlHidden(array('name' => trim($name), 'value' => oldHtmlspecialchars($value)));
-	}
-
-	function setFramesetName($frameset){
-		$this->frameset = $frameset;
-	}
-
-	function setTopFrame($frame){
-		$this->topFrame = $frame;
-		$this->editorBodyFrame = $frame . '.resize.right.editor.edbody';
-		$this->editorBodyForm = $this->editorBodyFrame . '.document.we_form';
-		$this->editorHeaderFrame = $frame . '.resize.right.editor.edheader';
-		$this->editorFooterFrame = $frame . '.resize.right.editor.edfooter';
+			$yuiSuggest->getYuiJs();
 	}
 
 	function getCommonHiddens($cmds = array()){
-		return $this->htmlHidden('cmd', (isset($cmds['cmd']) ? $cmds['cmd'] : '')) .
-			$this->htmlHidden('cmdid', (isset($cmds['cmdid']) ? $cmds['cmdid'] : '')) .
-			$this->htmlHidden('pnt', (isset($cmds['pnt']) ? $cmds['pnt'] : '')) .
-			$this->htmlHidden('tabnr', (isset($cmds['tabnr']) ? $cmds['tabnr'] : '')) .
-			$this->htmlHidden('vernr', (isset($cmds['vernr']) ? $cmds['vernr'] : 0)) .
-			$this->htmlHidden('delayCmd', (isset($cmds['delayCmd']) ? $cmds['delayCmd'] : '')) .
-			$this->htmlHidden('delayParam', (isset($cmds['delayParam']) ? $cmds['delayParam'] : ''));
-	}
-
-	function getPropertyJSAdditional(){
-		return '';
+		return we_html_element::htmlHiddens(array(
+				'cmd' => (isset($cmds['cmd']) ? $cmds['cmd'] : ''),
+				'cmdid' => (isset($cmds['cmdid']) ? $cmds['cmdid'] : ''),
+				'pnt' => (isset($cmds['pnt']) ? $cmds['pnt'] : ''),
+				'tabnr' => (isset($cmds['tabnr']) ? $cmds['tabnr'] : ''),
+				'vernr' => (isset($cmds['vernr']) ? $cmds['vernr'] : 0),
+				'delayCmd' => (isset($cmds['delayCmd']) ? $cmds['delayCmd'] : ''),
+				'delayParam' => (isset($cmds['delayParam']) ? $cmds['delayParam'] : '')
+		));
 	}
 
 	function getJSProperty(){
-		return we_html_element::jsScript(JS_DIR . "windows.js") .
+		return we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 			we_html_element::jsElement('
 var loaded=0;
 function we_cmd() {
-	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var args = [];
+	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
+	for(var i = 0; i < arguments.length; i++){
+				args.push(arguments[i]);
+	url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+	if(i < (arguments.length - 1)){
+	url += "&";
+	}}
 	switch (arguments[0]) {
-		case "openImgselector":
-		case "openDocselector":
-			new jsWindow(url,"we_docselector",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
+		case "we_selector_image":
+		case "we_selector_document":
+			new (WE().util.jsWindow)(window, url,"we_docselector",-1,-1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height,true,true,true,true);
 			break;
-		case "openSelector":
-			new jsWindow(url,"we_selector",-1,-1,' . we_selector_file::WINDOW_SELECTOR_WIDTH . ',' . we_selector_file::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
+		case "we_selector_file":
+			new (WE().util.jsWindow)(window, url,"we_selector",-1,-1,WE().consts.size.windowSelect.width,WE().consts.size.windowSelect.height,true,true,true,true);
 			break;
-		case "openDirselector":
-			new jsWindow(url,"we_selector",-1,-1,' . we_selector_file::WINDOW_DIRSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT . ',true,true,true,true);
+		case "we_selector_directory":
+			new (WE().util.jsWindow)(window, url,"we_selector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
 			break;
-		case "openCatselector":
-			new jsWindow(url,"we_catselector",-1,-1,' . we_selector_file::WINDOW_CATSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
+		case "we_selector_category":
+			new (WE().util.jsWindow)(window, url,"we_catselector",-1,-1,WE().consts.size.catSelect.width,WE().consts.size.catSelect.height,true,true,true,true);
 			break;
-		case "open' . $this->toolName . 'Dirselector":
-			url = "' . WEBEDITION_DIR . 'apps/' . $this->toolName . '/we_' . $this->toolName . 'DirSelect.php?";
+		case "openweSearchDirselector":
+			url = WE().consts.dirs.WEBEDITION_DIR+"apps/weSearch/we_weSearchDirSelect.php?";
 			for(var i = 0; i < arguments.length; i++){
 				url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }
 			}
-			new jsWindow(url,"we_' . $this->toolName . '_dirselector",-1,-1,600,400,true,true,true);
+			new (WE().util.jsWindow)(window, url,"we_weSearch_dirselector",-1,-1,600,400,true,true,true);
 			break;
-			' . $this->getPropertyJSAdditional() . '
 		default:
-			for (var i = 0; i < arguments.length; i++) {
-				args += "arguments["+i+"]" + ((i < (arguments.length-1)) ? "," : "");
-			}
-			eval("' . $this->topFrame . '.we_cmd("+args+")");
+			' . $this->topFrame . '.we_cmd.apply(this, args);
 	}
-}' .
-				$this->getJSSubmitFunction());
-	}
-
-	function getJSTreeHeader(){
-		return '
-function we_cmd(){
-	var args = "";
-	var url = "' . $this->frameset . '?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-	switch (arguments[0]) {
-		default:
-			for (var i = 0; i < arguments.length; i++) {
-				args += \'arguments[\'+i+\']\' + ((i < (arguments.length-1)) ? \',\' : \'\');
-			}
-			eval(\'' . $this->topFrame . '.we_cmd(\'+args+\')\');
-	}
-}' . $this->getJSSubmitFunction('cmd');
-	}
-
-	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){
-		return '
+}
 function submitForm() {
 	var f = self.document.we_form;
-	f.target = (arguments[0]?arguments[0]:"' . $def_target . '");
+	f.target = (arguments[0]?arguments[0]:"edbody");
 	f.action = (arguments[1]?arguments[1]:"' . $this->frameset . '");
-	f.method = (arguments[2]?arguments[2]:"' . $def_method . '");
+	f.method = (arguments[2]?arguments[2]:"post");
 	f.submit();
-}';
+}');
+	}
+
+	function getJSSubmitFunction(){
+		return '';
 	}
 
 	function processVariables(){
@@ -2937,7 +2637,7 @@ function submitForm() {
 
 		if(is_array($this->Model->persistent_slots)){
 			foreach($this->Model->persistent_slots as $val){
-				if(($tmp = we_base_request::_(we_base_request::STRINGC, $val))){
+				if(($tmp = we_base_request::_(we_base_request::STRING, $val))){
 					$this->Model->$val = $tmp;
 				}
 			}

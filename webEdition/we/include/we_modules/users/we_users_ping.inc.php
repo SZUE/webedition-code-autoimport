@@ -22,20 +22,20 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 if($_SESSION["user"]["ID"]){
-	$GLOBALS['DB_WE']->query("UPDATE " . USER_TABLE . " SET Ping=UNIX_TIMESTAMP(NOW()) WHERE ID=" . $_SESSION["user"]["ID"]);
+	$GLOBALS['DB_WE']->query('UPDATE ' . USER_TABLE . ' SET Ping=NOW() WHERE ID=' . $_SESSION['user']['ID']);
 	$GLOBALS['DB_WE']->query('UPDATE ' . LOCK_TABLE . ' SET lockTime=NOW() + INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND WHERE UserID=' . intval($_SESSION["user"]["ID"]) . ' AND sessionID="' . session_id() . '"');
 }
 
-echo we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
- we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
- we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js');
+echo we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
+ we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
+ we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js');
 ?>
-<script  type="text/javascript"><!--
+<script><!--
 
 	var ajaxURL = "<?php echo WEBEDITION_DIR; ?>rpc/rpc.php";
 	var weRpcFailedCnt = 0;
 	var ajaxCallback = {
-		success: function(o) {
+		success: function (o) {
 			if (typeof (o.responseText) !== undefined && o.responseText !== '') {
 				try {
 					eval("var result=" + o.responseText);
@@ -43,26 +43,25 @@ echo we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
 					try {
 						//console.log(exp + " " + o.responseText);
 					} catch (ex) {
-						var result='';
+						var result = '';
 					}
 				}
 				if (result && result.Success) {
 					var num_users = result.DataArray.num_users;
 					weRpcFailedCnt = 0;
-					if (top.weEditorFrameController) {
-						var _ref = top.weEditorFrameController.getActiveDocumentReference();
-						if (_ref) {
-							if (_ref.setUsersOnline && _ref.setUsersListOnline) {
-								_ref.setUsersOnline(num_users);
-								var usersHTML = result.DataArray.users;
-								if (usersHTML) {
-									_ref.setUsersListOnline(usersHTML);
-								}
+					var _ref = WE().layout.weEditorFrameController.getActiveDocumentReference();
+					if (_ref) {
+						if (_ref.setUsersOnline && _ref.setUsersListOnline) {
+							_ref.setUsersOnline(num_users);
+							var usersHTML = result.DataArray.users;
+							if (usersHTML) {
+								_ref.setUsersListOnline(usersHTML);
 							}
-							mfdData = result.DataArray.mfd_data;
-							if (_ref.setMfdData && mfdData !== undefined) {
-								_ref.setMfdData(mfdData);
-							}
+						}
+						mfdData = result.DataArray.mfd_data;
+						if (_ref.setMfdData && mfdData !== undefined) {
+							_ref.setMfdData(mfdData);
+
 						}
 					}
 <?php if(defined('MESSAGING_SYSTEM')){ ?>
@@ -77,10 +76,10 @@ echo we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
 				}
 			}
 		},
-		failure: function(o) {
+		failure: function (o) {
 			if (weRpcFailedCnt++ > 5) {
 				//in this case, rpc failed 5 times, this is severe, user should be in informed!
-				alert("<?php echo g_l('global', '[unable_to_call_ping]'); ?>");
+				alert(WE().consts.g_l.main.unable_to_call_ping);
 			}
 		}
 	}

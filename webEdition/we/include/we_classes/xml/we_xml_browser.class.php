@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_xml_browser extends we_xml_parser{
-
 	var $cache;
 
 	function __construct($filename = '', $mode = 'backup'){
@@ -45,19 +44,17 @@ class we_xml_browser extends we_xml_parser{
 	  } */
 
 	function saveCache($cache = '', $expire = 0){
-		if(empty($cache)){
+		if(!$cache){
 			$cache = $this->cache;
 		} else {
 			$this->cache = $cache;
 		}
-		if($expire == 0){
-			$expire = time() + 1800;
-		}
+		$expire = $expire? : 1800;
 
 		if(!is_dir(dirname($cache))){
 			we_base_file::createLocalFolder(dirname($cache));
 		}
-		if(we_base_file::save($cache, serialize($this->nodes))){
+		if(we_base_file::save($cache, we_serialize($this->nodes))){
 			we_base_file::insertIntoCleanUp($cache, $expire);
 		}
 	}
@@ -68,7 +65,7 @@ class we_xml_browser extends we_xml_parser{
 		} else {
 			$this->cache = $cache;
 		}
-		$this->nodes = unserialize(we_base_file::load($cache));
+		$this->nodes = we_unserialize(we_base_file::load($cache));
 	}
 
 	function getNodeDataset($xpath = "*"){

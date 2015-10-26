@@ -31,7 +31,7 @@ class rpcGetMouseOverDivsCmd extends rpcCmd{
 		we_html_tools::protect();
 
 		$whichsearch = we_base_request::_(we_base_request::STRING, 'whichsearch', '');
-		$setView = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'setView');
+		$setView = we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 'setView');
 		$anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'anzahl');
 		$searchstart = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'searchstart');
 
@@ -44,17 +44,21 @@ class rpcGetMouseOverDivsCmd extends rpcCmd{
 
 		$GLOBALS['we_cmd_obj'] = $_document;
 
-		if($setView == 1){
+		switch($setView){
+			case we_search_view::VIEW_ICONS:
 			$content = doclistView::searchProperties();
 
-			$x = $searchstart + $anzahl;
-			if($x > count($content)){
-				$x = $x - ($x - count($content));
-			}
+				$x = $searchstart + $anzahl;
+				if($x > count($content)){
+					$x = $x - ($x - count($content));
+				}
 
-			$code = we_search_view::makeMouseOverDivs($x, $content, $whichsearch);
-		} else {
-			$code = '';
+				$code = we_search_view::makeMouseOverDivs($x, $content, $whichsearch);
+				break;
+			default:
+			case we_search_view::VIEW_LIST:
+				$code = '';
+				break;
 		}
 
 		$resp->setData("data", $code);

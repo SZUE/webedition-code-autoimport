@@ -45,8 +45,8 @@ h1 {
 
 #divTagName {
 	height: 35px;
-	background: #C7D7EB;
-	background-image: url('/webEdition/images/menu/background.gif');
+	background-color:#efefef;
+	background: linear-gradient(#F7F7F7, #E8E8E8); /*menu/background.gif*/
 }
 
 #divContent {
@@ -58,8 +58,8 @@ h1 {
 
 #divButtons {
 	height: 40px;
-	background-image: url('/webEdition/images/edit/editfooterback.gif');
-	background-color: #C5C5C5;
+	background-color:grey;/*for old browsers*/
+	background: linear-gradient(#B4B3B3, #C6C5C5);
 }
 
 fieldset {

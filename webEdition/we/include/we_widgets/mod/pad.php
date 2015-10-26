@@ -22,14 +22,115 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-require_once (WE_INCLUDES_PATH . 'we_widgets/mod/wePadFunctions.inc.php');
+
+function convertDate($date){
+	return implode('.', array_reverse(explode('-', $date)));
+}
+
+/**
+ * Creates the HTML code for the date picker button
+ *
+ * @param unknown_type $_label
+ * @param unknown_type $_name
+ * @param unknown_type $_btn
+ * @return unknown
+ */
+function getDateSelector($_label, $_name, $_btn){
+	$btnDatePicker = we_html_button::create_button(we_html_button::CALENDAR, 'javascript:', null, null, null, null, null, null, false, $_btn);
+	$oSelector = new we_html_table(array('class' => 'default', 'id' => $_name . '_cell'), 1, 5);
+	$oSelector->setCol(0, 0, array('class' => 'middlefont'), $_label);
+	$oSelector->setCol(0, 2, null, we_html_tools::htmlTextInput($_name, 55, '', 10, 'id="' . $_name . '" readonly="1"', "text", 70, 0));
+	$oSelector->setCol(0, 4, null, we_html_element::htmlA(array("href" => "#"), $btnDatePicker));
+	return $oSelector->getHTML();
+}
+
+/**
+ * Creates the HTML code with the note list
+ *
+ * @param unknown_type $_sql
+ * @param unknown_type $bDate
+ * @return unknown
+ */
+function getNoteList($_sql, $bDate, $bDisplay){
+	global $DB_WE;
+	$DB_WE->query($_sql);
+	$_notes = '<table style="width:100%;padding:0px 5px;" class="default">';
+	$_rcd = 0;
+	$_fields = array(
+		'ID',
+		'WidgetName',
+		'UserID',
+		'CreationDate',
+		'Title',
+		'Text',
+		'Priority',
+		'Valid',
+		'ValidFrom',
+		'ValidUntil'
+	);
+	while($DB_WE->next_record()){
+		foreach($_fields as $_fld){
+			$dbf = $DB_WE->f($_fld);
+
+			$_fldValue = CheckAndConvertISObackend(str_replace(array('<', '>', '\'', '"'), array('&lt;', '&gt;', '&#039;', '&quot;'), ($_fld === 'ValidUntil' && ($dbf === '3000-01-01' || $dbf === '0000-00-00' || !$dbf) ? '' : $dbf)));
+			$_notes .= we_html_element::htmlHidden($_rcd . '_' . $_fld, $_fldValue, $_rcd . '_' . $_fld);
+		}
+
+		$validity = $DB_WE->f("Valid");
+		switch($bDate){
+			case 1 :
+				$showDate = ($validity === 'always' ? '-' : convertDate($DB_WE->f("ValidFrom")));
+				break;
+			case 2 :
+				$showDate = ($validity === 'always' || $validity === 'date' ? '-' : convertDate($DB_WE->f("ValidUntil")));
+				break;
+			default :
+				$showDate = convertDate($DB_WE->f("CreationDate"));
+		}
+
+		$today = date("Ymd");
+		$vFrom = str_replace('-', '', $DB_WE->f("ValidFrom"));
+		$vTill = str_replace('-', '', $DB_WE->f("ValidUntil"));
+		if($bDisplay == 1 && $DB_WE->f("Valid") != 'always'){
+			if($DB_WE->f('Valid') === 'date'){
+				if($today < $vFrom){
+					continue;
+				}
+			} else {
+				if($today < $vFrom || $today > $vTill){
+					continue;
+				}
+			}
+		}
+		$showTitle = str_replace(array('<', '>', '\'', '"'), array('&lt;', '&gt;', '&#039;', '&quot;'), $DB_WE->f("Title"));
+		switch($DB_WE->f("Priority")){
+			case 'high':
+				$color = 'red';
+				break;
+			case 'medium':
+				$color = 'yellow';
+				break;
+			case 'low':
+				$color = 'green';
+				break;
+		}
+		$_notes .= '<tr style="cursor:pointer;" id="' . $_rcd . '_tr" onmouseover="fo=document.forms[0];if(fo.elements.mark.value==\'\'){setColor(this,' . $_rcd . ',\'#EDEDED\');}" onmouseout="fo=document.forms[0];if(fo.elements.mark.value==\'\'){setColor(this,' . $_rcd . ',\'#FFFFFF\');}" onmousedown="selectNote(' . $_rcd . ');">
+		<td style="width:15px;height:20px;vertical-align:middle" nowrap><i class="fa fa-dot-circle-o" style="color:' . $color . '"></i></td>
+		<td style="width:60px;padding-left:5px;vertical-align:middle;text-align:center" class="middlefont">' . $showDate . '</td>
+		<td style="padding-left:5px;vertical-align:middle" class="middlefont">' . CheckAndConvertISObackend($showTitle) . '</td>
+		</tr>';
+		$_rcd++;
+	}
+	$_notes .= '</table>';
+	return $_notes;
+}
 
 we_html_tools::protect();
 /**
  * Table with the notes
  * @var string
  */
-$_sInitProps = substr(we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 0), -5); //binary data
+$_sInitProps = substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), -5); //binary data
 $bSort = $_sInitProps{0};
 $bDisplay = $_sInitProps{1};
 $bDate = $_sInitProps{2};
@@ -99,502 +200,124 @@ switch($bSort){
 		$q_sort = 'CreationDate, Title';
 }
 
-if(!$bDisplay){
-	$_sql = 'SELECT * FROM ' . NOTEPAD_TABLE . " WHERE
+$_sql = 'SELECT * FROM ' . NOTEPAD_TABLE . " WHERE
 		WidgetName = '" . $GLOBALS['DB_WE']->escape($title) . "' AND
-		UserID = " . intval($_SESSION['user']['ID']) . "
-		ORDER BY " . $q_sort;
-} else {
-	$_sql = 'SELECT * FROM ' . NOTEPAD_TABLE . " WHERE
-		WidgetName = '" . $GLOBALS['DB_WE']->escape($title) . "' AND
-		UserID = " . intval($_SESSION['user']['ID']) . " AND (
+		UserID = " . intval($_SESSION['user']['ID']) .
+	($bDisplay ?
+		" AND (
 			Valid = 'always' OR (
 				Valid = 'date' AND ValidFrom <= DATE_FORMAT(NOW(), \"%Y-%m-%d\")
 			) OR (
 				Valid = 'period' AND ValidFrom <= DATE_FORMAT(NOW(), \"%Y-%m-%d\") AND ValidUntil >= DATE_FORMAT(NOW(), \"%Y-%m-%d\")
 			)
-		)
+		)" : ''
+	) .
+	' ORDER BY ' . $q_sort;
 
-		ORDER BY " . $q_sort;
-}
 // validity settings
 $sctValid = we_html_tools::htmlSelect("sct_valid", array(
 		g_l('cockpit', '[always]'), g_l('cockpit', '[from_date]'), g_l('cockpit', '[period]')
 		), 1, g_l('cockpit', '[always]'), false, array('style' => "width:100px;", 'onchange' => "toggleTblValidity()"), 'value', 100, 'middlefont');
-$oTblValidity = new we_html_table(array(
-	"cellpadding" => 0, "cellspacing" => 0, "border" => 0, "id" => "oTblValidity"
-	), 1, 3);
+$oTblValidity = new we_html_table(array('class' => 'default', "id" => "oTblValidity"), 1, 3);
 $oTblValidity->setCol(0, 0, null, getDateSelector(g_l('cockpit', '[from]'), "f_ValidFrom", "_from"));
 $oTblValidity->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
 $oTblValidity->setCol(0, 2, null, getDateSelector(g_l('cockpit', '[until]'), "f_ValidUntil", "_until"));
-$oTblPeriod = new we_html_table(array(
-	"width" => "100%", "cellpadding" => 0, "cellspacing" => 0, "border" => 0
-	), 1, 2);
-$oTblPeriod->setCol(0, 0, array(
-	"class" => "middlefont"
-	), $sctValid);
-$oTblPeriod->setCol(0, 1, array(
-	"align" => "right"
-	), $oTblValidity->getHTML());
+$oTblPeriod = new we_html_table(array("width" => "100%", 'class' => 'default'), 1, 2);
+$oTblPeriod->setCol(0, 0, array("class" => "middlefont"), $sctValid);
+$oTblPeriod->setCol(0, 1, array("style" => "text-align:right"), $oTblValidity->getHTML());
 
 // Edit note prio settings
-$rdoPrio[0] = we_html_forms::radiobutton(0, 0, "rdo_prio", g_l('cockpit', '[high]'), true, "middlefont", "", false, "", 0, "");
-$rdoPrio[1] = we_html_forms::radiobutton(1, 0, "rdo_prio", g_l('cockpit', '[medium]'), true, "middlefont", "", false, "", 0, "");
-$rdoPrio[2] = we_html_forms::radiobutton(2, 1, "rdo_prio", g_l('cockpit', '[low]'), true, "middlefont", "", false, "", 0, "");
-$oTblPrio = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 8);
+$rdoPrio = array(
+	we_html_forms::radiobutton(0, 0, "rdo_prio", g_l('cockpit', '[high]'), true, "middlefont", "", false, "", 0, ""),
+	we_html_forms::radiobutton(1, 0, "rdo_prio", g_l('cockpit', '[medium]'), true, "middlefont", "", false, "", 0, ""),
+	we_html_forms::radiobutton(2, 1, "rdo_prio", g_l('cockpit', '[low]'), true, "middlefont", "", false, "", 0, "")
+);
+$oTblPrio = new we_html_table(array('class' => 'default'), 1, 8);
 $oTblPrio->setCol(0, 0, null, $rdoPrio[0]);
-$oTblPrio->setCol(0, 1, null, we_html_element::htmlImg(
-		array(
-			"src" => IMAGE_DIR . "pd/prio_high.gif",
-			"width" => 13,
-			"height" => 14,
-			"style" => "margin-left:5px"
-)));
+$oTblPrio->setCol(0, 1, null, '<i class="fa fa-dot-circle-o" style="color:red;margin-left:5px;"></i>');
 $oTblPrio->setCol(0, 2, null, we_html_tools::getPixel(15, 1));
 $oTblPrio->setCol(0, 3, null, $rdoPrio[1]);
 $oTblPrio->setCol(
-	0, 4, null, we_html_element::htmlImg(
-		array(
-			"src" => IMAGE_DIR . "pd/prio_medium.gif",
-			"width" => 13,
-			"height" => 14,
-			"style" => "margin-left:5px"
-)));
+	0, 4, null, '<i class="fa fa-dot-circle-o" style="color:yellow;margin-left:5px;"></i>');
 $oTblPrio->setCol(0, 5, null, we_html_tools::getPixel(15, 1));
 $oTblPrio->setCol(0, 6, null, $rdoPrio[2]);
 $oTblPrio->setCol(
-	0, 7, null, we_html_element::htmlImg(
-		array(
-			"src" => IMAGE_DIR . "pd/prio_low.gif",
-			"width" => 13,
-			"height" => 14,
-			"style" => "margin-left:5px"
-)));
+	0, 7, null, '<i class="fa fa-dot-circle-o" style="color:green;margin-left:5px;"></i>');
 
 // Edit note buttons
-$delete_button = we_html_button::create_button("delete", "javascript:deleteNote();", false, 0, 0, "", "", true, false);
-$cancel_button = we_html_button::create_button("cancel", "javascript:cancelNote();", false, 0, 0);
-$save_button = we_html_button::create_button("save", "javascript:saveNote();");
+$delete_button = we_html_button::create_button(we_html_button::DELETE, "javascript:deleteNote();", false, 0, 0, "", "", true, false);
+$cancel_button = we_html_button::create_button(we_html_button::CANCEL, "javascript:cancelNote();", false, 0, 0);
+$save_button = we_html_button::create_button(we_html_button::SAVE, "javascript:saveNote();");
 $buttons = we_html_button::position_yes_no_cancel($delete_button, $cancel_button, $save_button);
 
 // Edit note dialog
-$oTblProps = new we_html_table(array(
-	"width" => "100%", "cellpadding" => 0, "cellspacing" => 0, "border" => 0
-	), 9, 2);
-$oTblProps->setCol(0, 0, array(
-	"class" => "middlefont"
-	), g_l('cockpit', '[valid]') . '&nbsp;');
-$oTblProps->setCol(0, 1, array(
-	"colspan" => 2, "align" => "right"
-	), $oTblPeriod->getHTML());
-$oTblProps->setCol(1, 0, null, we_html_tools::getPixel(1, 8));
-$oTblProps->setCol(2, 0, array(
-	"class" => "middlefont"
-	), g_l('cockpit', '[prio]'));
+$oTblProps = new we_html_table(array("width" => "100%", 'class' => 'default'), 9, 2);
+$oTblProps->setCol(0, 0, array("class" => "middlefont", 'style' => "padding-bottom:8px;"), g_l('cockpit', '[valid]') . '&nbsp;');
+$oTblProps->setCol(0, 1, array("colspan" => 2, "style" => "text-align:right"), $oTblPeriod->getHTML());
+$oTblProps->setCol(2, 0, array("class" => "middlefont", 'style' => "padding-bottom:8px;"), g_l('cockpit', '[prio]'));
 $oTblProps->setCol(2, 1, null, $oTblPrio->getHTML());
-$oTblProps->setCol(3, 0, null, we_html_tools::getPixel(1, 8));
-$oTblProps->setCol(4, 0, array(
-	"class" => "middlefont"
-	), g_l('cockpit', '[title]'));
-$oTblProps->setCol(
-	4, 1, null, we_html_tools::htmlTextInput(
-		"props_title", 255, "", 255, "", "text", "100%", 0));
-$oTblProps->setCol(5, 0, null, we_html_tools::getPixel(1, 8));
-$oTblProps->setCol(6, 0, array(
-	"class" => "middlefont", "valign" => "top"
-	), g_l('cockpit', '[note]'));
-$oTblProps->setCol(
-	6, 1, null, we_html_element::htmlTextArea(
-		array(
+$oTblProps->setCol(4, 0, array("class" => "middlefont", 'style' => "padding-bottom:8px;"), g_l('cockpit', '[title]'));
+$oTblProps->setCol(4, 1, null, we_html_tools::htmlTextInput("props_title", 255, "", 255, "", "text", "100%", 0));
+$oTblProps->setCol(6, 0, array("class" => "middlefont", 'style' => 'vertical-align:top;padding-bottom:8px;'), g_l('cockpit', '[note]'));
+$oTblProps->setCol(6, 1, null, we_html_element::htmlTextArea(array(
 		'name' => 'props_text',
 		'id' => 'previewCode',
 		'style' => 'width:100%;height:60px;',
 		'class' => 'wetextinput',
 		), ""));
-$oTblProps->setCol(7, 0, null, we_html_tools::getPixel(1, 8));
-$oTblProps->setCol(8, 0, array(
-	"colspan" => 3
-	), $buttons);
+$oTblProps->setCol(8, 0, array("colspan" => 3), $buttons);
 
 // Button: add note
-$oTblBtnProps = new we_html_table(array(
-	"width" => "100%", "cellpadding" => 0, "cellspacing" => 0, "border" => 0
-	), 1, 1);
-$oTblBtnProps->setCol(0, 0, array(
-	"align" => "right"
-	), we_html_button::create_button("image:btn_add_note", "javascript:displayNote();", false, 0, 0));
+$oTblBtnProps = new we_html_table(array("width" => "100%", 'class' => 'default'), 1, 1);
+$oTblBtnProps->setCol(0, 0, array("style" => "text-align:"), we_html_button::create_button("fa:btn_add_note,fa-plus,fa-lg fa-newspaper-o", "javascript:displayNote();", false, 0, 0));
 
 // Table with the note list
 $oPad = new we_html_table(
 	array(
-	"width" => "100%",
-	"cellpadding" => 0,
-	"cellspacing" => 0,
-	"border" => 0,
-	"style" => "table-layout:fixed;"
-	), 3, 3);
-$oPad->setCol(0, 0, array(
-	"width" => 6
-	), we_html_element::htmlImg(array(
-		"src" => IMAGE_DIR . "pd/pad_corner_lt.gif", "width" => 6, "height" => 4
-)));
-$oPad->setCol(0, 1, array(
-	"class" => "cl_notes"
-	), "");
-$oPad->setCol(0, 2, array(
-	"width" => 6
-	), we_html_element::htmlImg(array(
-		"src" => IMAGE_DIR . "pd/pad_corner_rt.gif", "width" => 6, "height" => 4
-)));
-$oPad->setCol(1, 0, array(
-	"colspan" => 3, "class" => "cl_notes"
-	), we_html_element::htmlDiv(array(
+	"style" => "table-layout:fixed;width:100%;padding-top:6px;padding-bottom:6px;background-color:white;",
+	'class' => 'default'
+	), 1, 1);
+
+$oPad->setCol(0, 0, array("colspan" => 3, "class" => "cl_notes"), we_html_element::htmlDiv(array(
 		"id" => "notices"
 		), getNoteList($_sql, $bDate, $bDisplay)));
-$oPad->setCol(2, 0, array(
-	'width' => 6
-	), we_html_element::htmlImg(array(
-		'src' => IMAGE_DIR . 'pd/pad_corner_lb.gif', "width" => 6, "height" => 6
-)));
-$oPad->setCol(2, 1, array(
-	"class" => "cl_notes"
-	), "");
-$oPad->setCol(2, 2, array(
-	"width" => 6
-	), we_html_element::htmlImg(array(
-		"src" => IMAGE_DIR . "pd/pad_corner_rb.gif", "width" => 6, "height" => 6
-)));
 
-$_notepad = $oPad->getHTML() . we_html_element::htmlDiv(array(
-		"id" => "props"
-		), $oTblProps->getHTML()) . we_html_element::htmlDiv(array(
-		"id" => "view"
-		), $oTblBtnProps->getHTML());
+$_notepad = $oPad->getHTML() .
+	we_html_element::htmlDiv(array("id" => "props"), $oTblProps->getHTML()) .
+	we_html_element::htmlDiv(array("id" => "view"), $oTblBtnProps->getHTML());
 
-$_notepad .= we_html_element::jsElement('
-function toggleTblValidity(){
-	var weNoteValidity = getCurrentQuery().Validity;
-	if (getCurrentQuery().Validity=="always") {
-		document.getElementById("f_ValidFrom_cell").style.visibility = "hidden";
-		document.getElementById("f_ValidUntil_cell").style.visibility = "hidden";
-	} else if(weNoteValidity=="date"){
-		document.getElementById("f_ValidFrom_cell").style.visibility = "visible";
-		document.getElementById("f_ValidUntil_cell").style.visibility = "hidden";
-	} else {
-		document.getElementById("f_ValidFrom_cell").style.visibility = "visible";
-		document.getElementById("f_ValidUntil_cell").style.visibility = "visible";
-	}
+echo we_html_tools::getHtmlTop(g_l('cockpit', '[notepad]'), '', '', STYLESHEET .
+	we_html_element::cssLink(CSS_DIR . 'pad.css') .
+	we_html_tools::getCalendarFiles() .
+	we_html_element::jsElement(
+		(($type === "pad/pad") ? "
+var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 5) . "';
+var _sCls_=parent.gel(_sObjId+'_cls').value;
+var _sType='pad';
+var _sTb='" . g_l('cockpit', '[notes]') . " - " . $title . "';
+" : "
+var _sObjId='m_" . we_base_request::_(we_base_request::INT, 'we_cmd', 0, 5) . "';
+var _sTb='" . $title . "';
+var _sInitProps='" . $_sInitProps . "';") . "
+var _ttlB64Esc='';
+WE().consts.g_l.cockpit.pad={
+	until_befor_from: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[until_befor_from]')) . "',
+	note_not_modified: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[note_not_modified]')) . "',
+	title_empty: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[title_empty]')) . "',
+	date_empty: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[date_empty]')) . "',
+};
+if(typeof parent.base64_encode=='function'){
+_ttlB64Esc=escape(parent.base64_encode(_sTb));
 }
-toggleTblValidity();');
 
-print we_html_element::htmlDocType() . we_html_element::htmlHtml(
-		we_html_element::htmlHead(
-			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[notepad]')) . STYLESHEET . we_html_element::cssElement(
-				getCSS()) . we_html_element::linkElement(
-				array(
-					"rel" => "stylesheet",
-					"type" => "text/css",
-					"href" => JS_DIR . "jscalendar/skins/aqua/theme.css",
-					"title" => "Aqua"
-			)) . we_html_element::jsScript(JS_DIR . "jscalendar/calendar.js") .
-			we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
-			we_html_element::jsScript(JS_DIR . "jscalendar/calendar-setup.js") .
-			we_html_button::create_state_changer() . we_html_element::jsElement(
-				(($type === "pad/pad") ? "
-			var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 5) . "';
-			var _sCls_=parent.gel(_sObjId+'_cls').value;
-			var _sType='pad';
-			var _sTb='" . g_l('cockpit', '[notes]') . " - " . $title . "';
-			function init(){
-				parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
-			}
-			" : "
-			var _sObjId='m_" . we_base_request::_(we_base_request::INT, 'we_cmd', 0, 5) . "';
-			var _sTb='" . $title . "';
-			var _sInitProps='" . $_sInitProps . "';") . "
-			var _ttlB64Esc='';
-			if(typeof parent.base64_encode=='function')_ttlB64Esc=escape(parent.base64_encode(_sTb));
-
-			function gel(id_){
-				return document.getElementById?document.getElementById(id_):null;
-			}
-
-			function weEntity2char(weString){
-				weString = weString.replace('&lt;','<');
-				weString = weString.replace('&gt;','>');
-				return weString;
-			}
-
-			function weChar2entity(weString){
-				weString = weString.replace('<','&lt;');
-				weString = weString.replace('>','&gt;');
-				return weString;
-			}
-
-			function weEntity2char(weString){
-				weString = weString.replace('&lt;','<');
-				weString = weString.replace('&gt;','>');
-				return weString;
-			}
-
-			function weChar2entity(weString){
-				weString = weString.replace('<','&lt;');
-				weString = weString.replace('>','&gt;');
-				return weString;
-			}
-
-			function calendarSetup(){
-				Calendar.setup({inputField:'f_ValidFrom',ifFormat:'%d.%m.%Y',button:'date_picker_from',align:'Tl',singleClick:true});
-				Calendar.setup({inputField:'f_ValidUntil',ifFormat:'%d.%m.%Y',button:'date_picker_until',align:'Tl',singleClick:true});
-			}
-
-			function getCls(){
-				return parent.gel(_sObjId+'_cls').value;
-			}
-			// displays the note dialog on click on a note
-			function selectNote(id){
-				var fo=document.forms[0];
-				if(!isHotNote()){
-					cancelNote();
-					setColor(gel(id+'_tr'),id,'#EDEDED');
-					fo.elements['mark'].value=id;
-					populate(id);
-				}
-			}
-			// displays the note dialog on click the add note button
-			function displayNote(){
-				gel('view').style.display='none';
-				gel('notices').style.height='90px';
-				gel('props').style.display='block';
-				toggleTblValidity();
-			}
-			//close a open note
-			function cancelNote(){
-				fo=document.forms[0];
-				gel('props').style.display='none';
-				gel('notices').style.height='250px';
-				gel('view').style.display='block';
-				var oMark=fo.elements['mark'];
-				var mark=oMark.value;
-				if(mark!=''){
-					oMark.value='';
-					setColor(gel(mark+'_tr'),mark,'#FFFFFF');
-				}
-				unpopulate();
-				switch_button_state('delete','delete_enabled','disabled');
-			}
-			// deletes a note
-			function deleteNote(){
-				var fo=document.forms[0];
-				var mark=fo.elements['mark'].value;
-				var q_ID=gel(mark+'_ID').value;
-				parent.rpc(_ttlB64Esc.concat(','+_sInitProps),q_ID,'delete','',_ttlB64Esc,_sObjId,'pad/pad');
-			}
-
-			function isHotNote(){
-				var fo=document.forms[0];
-				var _id=fo.elements['mark'].value;
-				var q_init;
-				if(_id!='')q_init=getInitialQueryById(_id);
-				else q_init={'Validity':'always','ValidFrom':'','ValidUntil':'','Priority':'low','Title':'','Text':''};
-				var q_curr=getCurrentQuery();
-				var idx=['Title','Text','Priority','Validity','ValidFrom','ValidUntil'];
-				var idx_len=idx.length;
-				for(var i=0;i<idx_len;i++){
-					if(q_init[idx[i]]!=q_curr[idx[i]]) return true;
-				}
-				return false;
-			}
-			// saves a note, using the function rpc() in home.inc.php (750)
-			function saveNote(){
-				var fo=document.forms[0];
-				var _id=fo.elements['mark'].value;
-				var q_init;
-				if(_id!='') q_init=getInitialQueryById(_id);
-				else q_init={'Validity':'always','ValidFrom':'','ValidUntil':'','Priority':'low','Title':'','Text':''};
-				var q_curr=getCurrentQuery();
-				var hot=false;
-				var idx=['Title','Text','Priority','Validity','ValidFrom','ValidUntil'];
-				var csv='';
-				var idx_len=idx.length;
-				for(var i=0;i<idx_len;i++){
-					if(q_init[idx[i]]!=q_curr[idx[i]])hot=true;
-					csv+=(idx[i]=='Title'||idx[i]=='Text')?parent.base64_encode(q_curr[idx[i]]):q_curr[idx[i]];
-					if(i<idx_len-1)csv+=';';
-				}
-
-				if(_id!=''){
-					if(hot){
-						// update note
-
-						if(q_curr['Validity'] == 'period') {
-							weValidFrom = q_curr['ValidFrom'].replace(/-/g, '');
-							weValidUntil = q_curr['ValidUntil'].replace(/-/g, '');
-							if(weValidFrom>weValidUntil) {
-								" . we_message_reporting::getShowMessageCall(
-					g_l('cockpit', '[until_befor_from]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-								return false;
-							}
-						}
-						if(q_curr['Title']=='') {
-							" . we_message_reporting::getShowMessageCall(
-					g_l('cockpit', '[title_empty]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-							return false;
-						}
-						var q_ID=gel(_id+'_ID').value;
-						parent.rpc(_ttlB64Esc.concat(','+_sInitProps),(q_ID+';'+encodeURI(csv)),'update','',_ttlB64Esc,_sObjId,'pad/pad',escape(q_curr['Title']),escape(q_curr['Text']));
-					}else{
-						" . we_message_reporting::getShowMessageCall(
-					g_l('cockpit', '[note_not_modified]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-					}
-				}else{
-					if(hot){
-						// insert note
-						if(q_curr['Validity'] == 'period') {
-							weValidFrom = q_curr['ValidFrom'].replace(/-/g, '');
-							weValidUntil = q_curr['ValidUntil'].replace(/-/g, '');
-							if(weValidFrom>weValidUntil) {
-								" . we_message_reporting::getShowMessageCall(
-					g_l('cockpit', '[until_befor_from]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-								return false;
-							} else if(!weValidFrom || !weValidUntil) {
-								" . we_message_reporting::getShowMessageCall(
-					g_l('cockpit', '[date_empty]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-								return false;
-							}
-						} else if(q_curr['Validity'] == 'date' && !q_curr['ValidFrom']){
-								" . we_message_reporting::getShowMessageCall(
-					g_l('cockpit', '[date_empty]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-								return false;
-						}
-						if(q_curr['Title']=='') {
-							" . we_message_reporting::getShowMessageCall(
-					g_l('cockpit', '[title_empty]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-							return false;
-						}
-						parent.rpc(_ttlB64Esc.concat(','+_sInitProps),escape(csv),'insert','',_ttlB64Esc,_sObjId,'pad/pad',escape(q_curr['Title']),escape(q_curr['Text']));
-					}else{
-						" . we_message_reporting::getShowMessageCall(
-					g_l('cockpit', '[title_empty]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-					}
-				}
-			}
-
-			function getInitialQueryById(id){
-				return asoc={
-					'Validity':gel(id+'_Valid').value,
-					'ValidFrom':gel(id+'_ValidFrom').value,
-					'ValidUntil':gel(id+'_ValidUntil').value,
-					'Priority':gel(id+'_Priority').value,
-					'Title':gel(id+'_Title').value,
-					'Text':gel(id+'_Text').value
-				};
-			}
-
-			function getCurrentQuery(){
-				var fo=document.forms[0];
-				var oSctValid=fo.elements['sct_valid'];
-				var validSel=oSctValid.options[oSctValid.selectedIndex].value;
-				var oRdoPrio=fo.elements['rdo_prio'];
-				var sValidFrom=fo.elements['f_ValidFrom'].value;
-				var sValidUntil=fo.elements['f_ValidUntil'].value;
-				return asoc={
-					'Validity':(validSel==0)?'always':((validSel==1)?'date':'period'),
-					'ValidFrom':convertDate(sValidFrom,'%Y-%m-%d'),
-					'ValidUntil':convertDate(sValidUntil,'%Y-%m-%d'),
-					'Priority':(oRdoPrio[0].checked)?'high':(oRdoPrio[1].checked)?'medium':'low',
-					'Title':fo.elements['props_title'].value,
-					'Text':fo.elements['props_text'].value
-				};
-			}
-
-			function populate(r){
-				fo=document.forms[0];
-				var sValidity=gel(r+'_Valid').value;
-				var sValidityIndex = sValidity == 'always' ? 0 : (sValidity == 'date' ? 1 : 2);
-				var oSctValid=fo.elements['sct_valid'];
-				var iSctValidLen=oSctValid.length;
-				for(var i=iSctValidLen-1;i>=0;i--){
-					if(oSctValid.options[i].value==sValidityIndex){
-						oSctValid.options[i].selected=true;
-						break;
-					}
-				}
-				toggleTblValidity();
-				fo.elements['f_ValidFrom'].value=convertDate(gel(r+'_ValidFrom').value,'%d.%m.%Y');
-				fo.elements['f_ValidUntil'].value=convertDate(gel(r+'_ValidUntil').value,'%d.%m.%Y');
-				var prio=gel(r+'_Priority').value;
-				fo.elements['rdo_prio'][prio=='high'?0:prio=='medium'?1:2].checked=true;
-				fo.elements['props_title'].value=gel(r+'_Title').value;
-				fo.elements['props_text'].value=gel(r+'_Text').value;
-				switch_button_state('delete','delete_enabled','enabled');
-				displayNote();
-			}
-
-			function unpopulate(){
-				fo=document.forms[0];
-				var oSctValid=fo.elements['sct_valid'];
-				oSctValid.options[0].selected=true;
-				fo.elements['f_ValidFrom'].value='';
-				fo.elements['f_ValidUntil'].value='';
-				fo.elements['rdo_prio'][2].checked=true;
-				fo.elements['props_title'].value='';
-				fo.elements['props_text'].value='';
-			}
-
-			function setColor(theRow,theRowNum,newColor){
-				fo=document.forms[0];
-				var theCells=null;
-				if(fo.elements['mark'].value!=''||typeof(theRow.style)=='undefined'){
-					return false;
-				}
-				if(typeof(document.getElementsByTagName)!='undefined'){
-					theCells=theRow.getElementsByTagName('td');
-				}
-				else if(typeof(theRow.cells)!='undefined'){
-					theCells=theRow.cells;
-				}else{
-					return false;
-				}
-				var rowCellsCnt=theCells.length;
-				var domDetect=null;
-				if(typeof(window.opera)=='undefined'&&typeof(theCells[0].getAttribute)!='undefined'){
-					domDetect=true;
-				}else{
-					domDetect=false;
-				}
-				var c=null;
-				if(domDetect){
-					for(c=0;c<rowCellsCnt;c++){
-						theCells[c].setAttribute('bgcolor',newColor,0);
-					}
-				}else{
-					for(c=0;c<rowCellsCnt;c++){
-						theCells[c].style.backgroundColor=newColor;
-					}
-				}
-				return true;
-			}
-
-			function convertDate(sDate,sFormat){
-				var fixedImplode='';
-				var arr=sDate.split((sFormat=='%Y-%m-%d')?'.':'-')
-				separator=(sFormat=='%Y-%m-%d')?'-':'.';
-				for(var x=arr.length-1;x>=0;x--){
-					fixedImplode+=(separator+String(arr[x]));
-				}
-				fixedImplode=fixedImplode.substring(separator.length,fixedImplode.length);
-				return fixedImplode;
-			}
-		")) . we_html_element::htmlBody(
-			array(
-			"marginwidth" => 0,
-			"marginheight" => 0,
-			"leftmargin" => 0,
-			"topmargin" => 0,
-			"onload" => (($type === "pad/pad") ? "if(parent!=self)init();" : "")
-			), we_html_element::htmlForm(array("style" => "display:inline;"), we_html_element::htmlDiv(
-					array("id" => "pad"), $_notepad .
-					we_html_element::htmlHidden(array("name" => "mark", "value" => "")) .
-					we_html_element::jsElement("calendarSetup();")
+") . we_html_element::jsScript(JS_DIR . 'widgets/pad.js'), we_html_element::htmlBody(
+		array(
+		"marginwidth" => 0,
+		"marginheight" => 0,
+		"leftmargin" => 0,
+		"topmargin" => 0,
+		"onload" => (($type === "pad/pad") ? "if(parent!=self)init();" : "") . 'calendarSetup();toggleTblValidity();'
+		), we_html_element::htmlForm(array("style" => "display:inline;"), we_html_element::htmlDiv(
+				array("id" => "pad"), $_notepad .
+				we_html_element::htmlHidden("mark", "")
 ))));

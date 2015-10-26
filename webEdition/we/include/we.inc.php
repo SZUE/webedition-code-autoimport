@@ -21,10 +21,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-// exit if script called directly
-if(isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == str_replace(dirname(__FILE__), '', __FILE__)){
-	exit();
-}
 
 // remove trailing slash
 if(isset($_SERVER['DOCUMENT' . '_ROOT'])){ //so zerlegt stehen lassen: Bug #6318
@@ -67,10 +63,43 @@ if(!(defined('SYSTEM_WE_SESSION') && SYSTEM_WE_SESSION) && ini_get('session.gc_p
 }
 
 //start autoloader!
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_autoload.inc.php');
 //register all used tables.
 we_base_request::registerTables(array(
-	CATEGORY_TABLE, CAPTCHA_TABLE, CLEAN_UP_TABLE, CONTENT_TABLE, DOC_TYPES_TABLE, ERROR_LOG_TABLE, FAILED_LOGINS_TABLE, FILE_TABLE, INDEX_TABLE, LINK_TABLE, LANGLINK_TABLE, PREFS_TABLE, RECIPIENTS_TABLE, TEMPLATES_TABLE, TEMPORARY_DOC_TABLE, UPDATE_LOG_TABLE, THUMBNAILS_TABLE, VALIDATION_SERVICES_TABLE, HISTORY_TABLE, FORMMAIL_LOG_TABLE, FORMMAIL_BLOCK_TABLE, METADATA_TABLE, NOTEPAD_TABLE, PWDRESET_TABLE, VERSIONS_TABLE, VERSIONSLOG_TABLE, SESSION_TABLE, NAVIGATION_TABLE, NAVIGATION_RULE_TABLE, USER_TABLE, LOCK_TABLE, SETTINGS_TABLE
+	'CATEGORY_TABLE' => CATEGORY_TABLE,
+	'CAPTCHA_TABLE' => CAPTCHA_TABLE,
+	'CLEAN_UP_TABLE' => CLEAN_UP_TABLE,
+	'CONTENT_TABLE' => CONTENT_TABLE,
+	'DOC_TYPES_TABLE' => DOC_TYPES_TABLE,
+	'ERROR_LOG_TABLE' => ERROR_LOG_TABLE,
+	'FAILED_LOGINS_TABLE' => FAILED_LOGINS_TABLE,
+	'FILE_TABLE' => FILE_TABLE,
+	'INDEX_TABLE' => INDEX_TABLE,
+	'LINK_TABLE' => LINK_TABLE,
+	'LANGLINK_TABLE' => LANGLINK_TABLE,
+	'PREFS_TABLE' => PREFS_TABLE,
+	'RECIPIENTS_TABLE' => RECIPIENTS_TABLE,
+	'TEMPLATES_TABLE' => TEMPLATES_TABLE,
+	'TEMPORARY_DOC_TABLE' => TEMPORARY_DOC_TABLE,
+	'UPDATE_LOG_TABLE' => UPDATE_LOG_TABLE,
+	'THUMBNAILS_TABLE' => THUMBNAILS_TABLE,
+	'VALIDATION_SERVICES_TABLE' => VALIDATION_SERVICES_TABLE,
+	'HISTORY_TABLE' => HISTORY_TABLE,
+	'FORMMAIL_LOG_TABLE' => FORMMAIL_LOG_TABLE,
+	'FORMMAIL_BLOCK_TABLE' => FORMMAIL_BLOCK_TABLE,
+	'METADATA_TABLE' => METADATA_TABLE,
+	'NOTEPAD_TABLE' => NOTEPAD_TABLE,
+	'PWDRESET_TABLE' => PWDRESET_TABLE,
+	'VERSIONS_TABLE' => VERSIONS_TABLE,
+	'VERSIONSLOG_TABLE' => VERSIONSLOG_TABLE,
+	'SESSION_TABLE' => SESSION_TABLE,
+	'NAVIGATION_TABLE' => NAVIGATION_TABLE,
+	'NAVIGATION_RULE_TABLE' => NAVIGATION_RULE_TABLE,
+	'USER_TABLE' => USER_TABLE,
+	'LOCK_TABLE' => LOCK_TABLE,
+	'SETTINGS_TABLE' => SETTINGS_TABLE,
+	'VFILE_TABLE' => VFILE_TABLE,
+	'FILELINK_TABLE' => FILELINK_TABLE
 ));
 
 require_once(WE_INCLUDES_PATH . 'we_global.inc.php');
@@ -116,7 +145,7 @@ if(defined('WE_WEBUSER_LANGUAGE')){
 }
 
 
-if(isset($_SESSION['prefs']['Language']) && !empty($_SESSION['prefs']['Language'])){
+if(!empty($_SESSION['prefs']['Language'])){
 	$GLOBALS['WE_LANGUAGE'] = (is_dir(WE_INCLUDES_PATH . 'we_language/' . $_SESSION['prefs']['Language']) ?
 			$_SESSION['prefs']['Language'] :
 			//  bugfix #4229
@@ -125,10 +154,14 @@ if(isset($_SESSION['prefs']['Language']) && !empty($_SESSION['prefs']['Language'
 	$GLOBALS['WE_LANGUAGE'] = WE_LANGUAGE;
 }
 
-include_once (WE_INCLUDES_PATH . 'define_styles.inc.php');
+define('STYLESHEET_BUTTONS_ONLY', we_html_element::cssLink(CSS_DIR . 'we_button.css') . we_html_element::cssLink(LIB_DIR . 'additional/fontawesome/css/font-awesome.min.css'));
+define('STYLESHEET', we_html_element::cssLink(CSS_DIR . 'global.php') .
+	STYLESHEET_BUTTONS_ONLY .
+	we_html_element::cssLink(CSS_DIR . 'webEdition.css')
+);
 
 if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
-	$GLOBALS['WE_BACKENDCHARSET'] = (isset($_SESSION['prefs']['BackendCharset']) && $_SESSION['prefs']['BackendCharset'] ?
+	$GLOBALS['WE_BACKENDCHARSET'] = (!empty($_SESSION['prefs']['BackendCharset']) ?
 			$_SESSION['prefs']['BackendCharset'] : 'UTF-8');
 
 	//send header?
@@ -154,7 +187,7 @@ if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 				));
 			break;
 		case '__default__':
-			$header = !((isset($GLOBALS['show_stylesheet']) && $GLOBALS['show_stylesheet']));
+			$header = empty($GLOBALS['show_stylesheet']);
 			break;
 		default:
 			$header = true;

@@ -1,6 +1,6 @@
 <?php
 
-if(isset($TABLECONSTANT) && isset($TABLENAME) && !empty($TABLECONSTANT) && !empty($TABLENAME)) {?>
+if(!empty($TABLECONSTANT) && !empty($TABLENAME)) {?>
 define("<?php echo $TABLECONSTANT;?>","<?php echo $TABLENAME;?>");
 
 <?php }?>

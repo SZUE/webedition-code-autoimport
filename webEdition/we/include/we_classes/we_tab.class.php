@@ -26,11 +26,10 @@ class we_tab{
 
 	const ACTIVE = 'TAB_ACTIVE';
 	const NORMAL = 'TAB_NORMAL';
-	const DISABLED = 'TAB_DISABLED';
 
 	private $tab;
 
-	function __construct($href, $text, $status = self::NORMAL, $jscmd = '', $attribs = array()){
+	function __construct($text, $status = self::NORMAL, $jscmd = '', $attribs = array()){
 		$class = ($status == self::ACTIVE ? 'tabActive' : 'tabNormal');
 		$att = '';
 		if(isset($attribs) && is_array($attribs)){
@@ -39,7 +38,7 @@ class we_tab{
 			}
 		}
 
-		$this->tab = '<div ' . $att . ' onclick="if ( allowed_change_edit_page() ){ setTabClass(this); ' . $jscmd . '}" class="' . $class . '"><nobr><span class="spacer">&nbsp;&nbsp;</span><span class="text">' . $text . '</span>&nbsp;&nbsp;<img src="' . IMAGE_DIR . 'multiTabs/tabBorder.gif" height="21" style="vertical-align:bottom;" /></nobr>' . (we_base_browserDetect::isSafari() ? '<span><img src="' . IMAGE_DIR . 'pixel.gif" height="0" /></span>' : '') . '</div>';
+		$this->tab = '<div ' . $att . ' onclick="if ( weTabs.allowed_change_edit_page() ){ weTabs.setTabClass(this); ' . $jscmd . '}" class="' . $class . '"><nobr><span class="text">' . $text . '</span></nobr></div>';
 	}
 
 	function getHTML(){

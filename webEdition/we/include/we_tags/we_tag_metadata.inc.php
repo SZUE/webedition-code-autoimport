@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_parse_tag_metadata($attribs, $content, array $arr){
-	if(($foo = attributFehltError($arr, 'name', __FUNCTION__))){
+	if(($foo = attributFehltError($arr, 'name', __FUNCTION__)) && attributFehltError($arr, 'id', __FUNCTION__)){
 		return $foo;
 	}
 	return '<?php if(' . we_tag_tagParser::printTag('metadata', $attribs) . '){?>' . $content . '<?php } we_post_tag_listview();?>';
@@ -31,13 +31,12 @@ function we_parse_tag_metadata($attribs, $content, array $arr){
 
 function we_tag_metadata($attribs){
 	$name = weTag_getAttribute("name", $attribs, '', we_base_request::STRING);
-
+	$id = weTag_getAttribute("id", $attribs, 0, we_base_request::INT);
 	if(!isset($GLOBALS['we_lv_array'])){
 		$GLOBALS['we_lv_array'] = array();
 	}
 
-	$GLOBALS['lv'] = new metadatatag($name);
-//$lv = clone($GLOBALS["lv"]); // for backwards compatibility
+	$GLOBALS['lv'] = new metadatatag($name, $id);
 	if(is_array($GLOBALS['we_lv_array']))
 		$GLOBALS['we_lv_array'][] = clone($GLOBALS["lv"]);
 

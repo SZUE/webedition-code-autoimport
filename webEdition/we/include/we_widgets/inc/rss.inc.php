@@ -51,25 +51,14 @@ $aLang = array(
 );
 
 $_iFrmRss = we_html_element::jsElement("
-if ( window.addEventListener ) { // moz
 	window.addEventListener(
-		\"load\",
+		'load',
 		function() {
-			top.cockpitFrame.executeAjaxRequest('" . base64_decode(
-			$_rssUri) . "', '" . $_rssCont . "', '" . $_rssNumItems . "', '" . $_rssTb . "', '" . $sTbPrefix . "', '" . 'm_' . $iCurrId . "');
+			WE().layout.cockpitFrame.executeAjaxRequest('" . base64_decode($_rssUri) . "', '" . $_rssCont . "', '" . $_rssNumItems . "', '" . $_rssTb . "', '" . $sTbPrefix . "', '" . 'm_' . $iCurrId . "');
 		},
 		true
 	);
 
-} else if ( window.attachEvent ) { // IE
-	window.attachEvent( \"onload\", function(){
-			top.cockpitFrame.executeAjaxRequest('" . base64_decode(
-			$_rssUri) . "', '" . $_rssCont . "', '" . $_rssNumItems . "', '" . $_rssTb . "', '" . $sTbPrefix . "', '" . 'm_' . $iCurrId . "');
-		}
-	);
-}") . '<div class="rssDiv" id="m_' . $iCurrId . '_inline" style="width: ' . $iWidth . 'px;height:287px ! important; overflow: auto;"></div>';
+") . '<div class="rssDiv middlefont" id="m_' . $iCurrId . '_inline" style="width:100%;height:287px ! important; overflow: auto;"></div>';
 
-$oTblCont = new we_html_table(array(
-	"cellpadding" => 0, "cellspacing" => 0, "border" => 0
-	), 1, 1);
-$oTblCont->setCol(0, 0, null, $_iFrmRss);
+$oTblDiv = $_iFrmRss;
