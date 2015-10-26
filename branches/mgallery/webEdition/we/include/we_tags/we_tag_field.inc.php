@@ -248,6 +248,10 @@ function we_tag_field($attribs){
 				$_imgAtts = removeEmptyAttribs($_imgAtts, array('alt'));
 
 				$out = getHtmlTag('img', $_imgAtts);
+				if(!$out){
+					//we have no image, so we don't generate an link
+					return '';
+				}
 				break;
 			}
 		//intentionally no break
