@@ -27,6 +27,7 @@ $l_weClass=array(
 	
 	'collection'=>array(
 		'add'=>'',
+		'add_help'=>'',
 		'allowDuplicates'=>'Allow duplicates',
 		'attentionBox'=>'--',
 		'attr_alt'=>'Attribute alt',

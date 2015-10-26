@@ -27,6 +27,7 @@ $l_weClass=array(
 	
 	'collection'=>array(
 		'add'=>'Elemente einer Sammlung zufügen',
+		'add_help'=>'Markieren Sie die Einträge, die Sie zufügen wollen, wählen Sie eine Sammlung und bestätigen Sie mit "OK". Einträgen die nicht den Einstellungen der Ziel-Sammlung entsprechen, werden automatisch abgewiesen.',
 		'allowDuplicates'=>'Dubletten sind erlaubt',
 		'attentionBox'=>'--',
 		'attr_alt'=>'alt-Attribut',
