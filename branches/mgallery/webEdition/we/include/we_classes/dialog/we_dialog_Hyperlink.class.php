@@ -26,7 +26,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 
 	var $ClassName = __CLASS__;
 	var $changeableArgs = array(
-		'type', 'extHref', 'fileID', 'href', 'fileHref', 'objID', 'objHref', 'mailHref', 'target', 'class',
+		'type', 'extHref', 'fileID', 'href', 'fileHref', 'fileCT', 'objID', 'objHref', 'mailHref', 'target', 'class',
 		'param', 'anchor', 'lang', 'hreflang', 'title', 'accesskey', 'tabindex', 'rel', 'rev'
 	);
 
@@ -85,6 +85,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 					$this->args['extHref'] = '';
 					$this->args['fileID'] = '';
 					$this->args['fileHref'] = '';
+					$this->args['fileCT'] = '';
 					$this->args['mailHref'] = '';
 					$this->args['objID'] = $ref;
 					$this->args['objHref'] = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->args['objID']), 'Path', $this->db);
@@ -93,7 +94,9 @@ class we_dialog_Hyperlink extends we_dialog_base{
 					$this->args['type'] = we_base_link::TYPE_INT;
 					$this->args['extHref'] = '';
 					$this->args['fileID'] = $ref;
-					$this->args['fileHref'] = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->args['fileID']), 'Path', $this->db);
+					$hash = getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->args['fileID']), $this->db);
+					$this->args['fileHref'] = $hash['Path'];
+					$this->args['fileCT'] = $hash['ContentType'];
 					$this->args['mailHref'] = '';
 					$this->args['objID'] = '';
 					$this->args['objHref'] = '';
@@ -104,6 +107,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 					$this->args['extHref'] = '';
 					$this->args['fileID'] = '';
 					$this->args['fileHref'] = '';
+					$this->args['fileCT'] = '';
 					$this->args['objID'] = '';
 					$this->args['objHref'] = '';
 					$match = array();
@@ -124,6 +128,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 					$this->args['fileID'] = '';
 					$this->args['fileHref'] = '';
 					$this->args['mailHref'] = '';
+					$this->args['fileCT'] = '';
 					$this->args['objID'] = '';
 					$this->args['objHref'] = '';
 			}
@@ -146,7 +151,9 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$this->args['type'] = we_base_link::TYPE_INT;
 			$this->args['extHref'] = '';
 			$this->args['fileID'] = $fileID;
-			$this->args['fileHref'] = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->args['fileID']), 'Path', $this->db);
+			$hash = getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->args['fileID']), $this->db);
+			$this->args['fileHref'] = $hash['Path'];
+			$this->args['fileCT'] = $hash['ContentType'];
 			$this->args['objID'] = '';
 			$this->args['mailHref'] = '';
 			$this->args['objHref'] = '';
@@ -172,6 +179,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$this->args['extHref'] = '';
 			$this->args['fileID'] = '';
 			$this->args['fileHref'] = '';
+			$this->args['fileCT'] = '';
 			$this->args['mailHref'] = '';
 			$this->args['objID'] = $objID;
 			$this->args['objHref'] = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->args['objID']), 'Path', $this->db);
@@ -197,6 +205,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$this->args['extHref'] = '';
 			$this->args['fileID'] = '';
 			$this->args['fileHref'] = '';
+			$this->args['fileCT'] = '';
 			$this->args['mailHref'] = $mailHref;
 			$this->args['objID'] = '';
 			$this->args['objHref'] = '';
@@ -292,6 +301,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			'extHref' => '',
 			'fileID' => '',
 			'fileHref' => '',
+			'fileCT' => '',
 			'objID' => '',
 			'objHref' => '',
 			'mailHref' => '',
@@ -350,11 +360,10 @@ if(this.value === \'\' || this.value === consts.EMPTY_EXT){
 		document.getElementsByName(\'we_dialog_args[anchor]\')[0].value=x[5];
 	}}"', "url", 300), "", "left", "defaultfont", $_external_select_button, '', '', '', '', 0) . '</div>';
 
-
 			// INTERNAL LINK
 			$cmd1 = "document.we_form.elements['we_dialog_args[fileID]'].value";
-			$_internal_select_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', " . $cmd1 . ", '" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['we_dialog_args[fileHref]'].value") . "','','',0, '', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
-
+			$cmd3 = "if(currentID){opener.document.we_form.yuiAcResultCT.value = currentType;opener.document.getElementById(\"btn_edit_file\").disabled=false;}";
+			$_internal_select_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', " . $cmd1 . ", '" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['we_dialog_args[fileHref]'].value") . "','" . we_base_request::encCmd($cmd3) . "','',0, '', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 			$yuiSuggest->setAcId("Path");
 			$yuiSuggest->setContentType(implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::QUICKTIME)));
 			$yuiSuggest->setInput("we_dialog_args[fileHref]", $this->args["fileHref"]);
@@ -364,8 +373,9 @@ if(this.value === \'\' || this.value === consts.EMPTY_EXT){
 			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setWidth(300);
 			$yuiSuggest->setSelectButton($_internal_select_button, 10);
+			$yuiSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:if(top.document.we_form.elements['yuiAcResultPath'].value){if(opener.top.doClickDirect!==undefined){var p=opener.top;}else if(opener.top.opener.top.doClickDirect!==undefined){var p=opener.top.opener.top;}else{return;}p.doClickDirect(document.we_form.elements['yuiAcResultPath'].value, document.we_form.elements['yuiAcResultCT'].value, '" . FILE_TABLE . "'); }", true, 0, 0, '', '', ($this->args["fileID"] ? false: true), false, '_file'));
+			$_internal_link = $yuiSuggest->getHTML() . we_html_element::htmlHidden('yuiAcResultCT', ($this->args['fileCT'] ? $this->args['fileCT'] : we_base_ContentTypes::WEDOCUMENT));
 
-			$_internal_link = $yuiSuggest->getHTML();
 			// E-MAIL LINK
 
 			$_email_link = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[mailHref]", 30, $this->args["mailHref"], "", '', "email", 300), "", "left", "defaultfont", "", "", "", "", "", 0);
