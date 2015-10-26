@@ -26,6 +26,7 @@ $l_weClass=array(
 	'change_compression'=>'Komprimierung ändern',
 	
 	'collection'=>array(
+		'add'=>'Elemente einer Sammlung zufügen',
 		'allowDuplicates'=>'Dubletten sind erlaubt',
 		'attentionBox'=>'--',
 		'attr_alt'=>'alt-Attribut',

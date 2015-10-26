@@ -26,6 +26,7 @@ $l_weClass=array(
 	'change_compression'=>'Wijzig compressie',
 	
 	'collection'=>array(
+		'add'=>'',
 		'allowDuplicates'=>'Allow duplicates',
 		'attentionBox'=>'--',
 		'attr_alt'=>'Attribute alt',
