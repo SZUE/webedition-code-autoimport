@@ -1,3 +1,5 @@
+/* global WE, top */
+
 /**
  * webEdition CMS
  *
@@ -134,7 +136,7 @@ function editFile() {
 			new (WE().util.jsWindow)(window, url, "we_fseditFile", -1, -1, 600, 500, true, false, true, true);
 		}
 		else {
-			top.we_showMessage(g_l.edit_file_nok, WE().consts.message.WE_MESSAGE_ERROR, window);
+			top.we_showMessage(WE().consts.g_l.sfselector.edit_file_nok, WE().consts.message.WE_MESSAGE_ERROR, window);
 		}
 	}
 	else {

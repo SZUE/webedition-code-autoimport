@@ -57,16 +57,7 @@ if(!$cmd || $cmd != "save_last"){
 				top.currentDir = dir;
 				selectDir();
 			} else {
-	<?php echo we_message_reporting::getShowMessageCall(g_l('fileselector', '[already_root]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-			}
-		}
-
-		function goUp() {
-			var a = top.document.getElementById("lookin").options;
-			if (a.length - 2 > -1) {
-				setDir(a[a.length - 2].value);
-			} else {
-	<?php echo we_message_reporting::getShowMessageCall(g_l('fileselector', '[already_root]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+				top.we_showMessage(WE().consts.g_l.sfselector.already_root, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 		}
 
@@ -89,15 +80,6 @@ if(!$cmd || $cmd != "save_last"){
 					setTimeout('top.fsbody.location="we_sselector_body.php?dir=' + encodeURI(top.rootDir + dir) + '&file=' + top.currentFilter + '&curID=' + encodeURI(top.currentID) + '&selectOwn=<?php echo $selectOwn; ?>"', 100);
 			}
 		}
-
-		function delFile() {
-			if ((top.currentID !== "") && (top.document.getElementsByName("fname")[0].value !== "")) {
-				top.fscmd.location = "we_sselector_cmd.php?cmd=delete_file&fid=" + top.currentID + "&ask=" + arguments[0];
-			} else {
-	<?php echo we_message_reporting::getShowMessageCall(g_l('fileselector', '[edit_file_nok]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-			}
-		}
-
 	<?php
 
 	function delDir($dir){

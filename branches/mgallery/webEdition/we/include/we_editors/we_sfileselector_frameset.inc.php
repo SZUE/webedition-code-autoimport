@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -22,6 +21,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+we_html_tools::protect(array('BROWSE_SERVER', 'SITE_IMPORT', 'ADMINISTRATOR'));
+
 function printHeaderHTML($ret){
 	return '
 		<table class="selectorHeaderTable">
@@ -51,7 +52,7 @@ function printHeaderHTML($ret){
 		';
 }
 
-function printFooterTable($ret, $filter, $currentName){
+function printFooterTable($ret, $filter){
 	if($ret){
 		$cancel_button = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
 		$yes_button = we_html_button::create_button(we_html_button::OK, "javascript:top.exit_close();");
@@ -83,94 +84,95 @@ function printFooterTable($ret, $filter, $currentName){
 ';
 }
 
-if(!$_SESSION['user']['Username']){
-	session_id;
-}
-
-we_html_tools::protect(array('BROWSE_SERVER', 'SITE_IMPORT', 'ADMINISTRATOR'));
-echo we_html_tools::getHtmlTop('', '', 'frameset');
+function printFrameSet(){
+	echo we_html_tools::getHtmlTop('', '', 'frameset');
 
 
-$docroot = str_replace('\\', '/', rtrim($_SERVER['DOCUMENT_ROOT'], '/'));
-$cmd1 = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 1);
+	$docroot = str_replace('\\', '/', rtrim($_SERVER['DOCUMENT_ROOT'], '/'));
+	$cmd1 = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 1);
 
 
-$filter = we_base_request::_(we_base_request::STRING, 'we_cmd', 'all_Types', 2);
-$url = we_base_request::_(we_base_request::URL, 'we_cmd', '', 3);
-$currentDir = str_replace('\\', '/', ( $url ?
-				($url === '/' ? '' :
-						( parse_url($url) === FALSE && is_dir($docroot . $url) ?
-								$url :
-								dirname($url))) :
-				''));
-$currentName = ($filter != we_base_ContentTypes::FOLDER ? basename($url) : '');
-if(!file_exists($docroot . $currentDir . '/' . $currentName)){
-	$currentDir = '';
-	$currentName = '';
-}
-$currentID = $docroot . $currentDir . ($filter == we_base_ContentTypes::FOLDER || $filter === 'filefolder' ? '' : (($currentDir != '') ? '/' : '') . $currentName);
-
-$currentID = str_replace('\\', '/', $currentID);
-
-$rootDir = we_base_request::_(we_base_request::FILE, 'we_cmd', '', 5);
-$selectOwn = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 6);
-?>
-<script><!--
-	var rootDir = "<?php echo $rootDir; ?>";
-	var currentID = "<?php echo $currentID; ?>";
-	var currentDir = "<?php echo str_replace($rootDir, '', $currentDir); ?>";
-	var currentName = "<?php echo $currentName; ?>";
-	var currentFilter = "<?php echo str_replace(' ', '%20', g_l('contentTypes', '[' . $filter . ']', true) !== false ? g_l('contentTypes', '[' . $filter . ']') : ''); ?>";
-	var filter = '<?php echo $filter; ?>';
-	var browseServer = <?php echo $cmd1 ? 'false' : 'true'; ?>
-
-	var currentType = "<?php echo ($filter == we_base_ContentTypes::FOLDER) ? we_base_ContentTypes::FOLDER : ''; ?>";
-	var sitepath = "<?php echo $docroot; ?>";
-	var dirsel = 1;
-	var scrollToVal = 0;
-	var allentries = [];
-	var g_l = {
-		"edit_file_nok": "<?php echo we_message_reporting::prepareMsgForJS(g_l('fileselector', '[edit_file_nok]')); ?>",
-		"edit_file_is_folder": "<?php echo we_message_reporting::prepareMsgForJS(g_l('fileselector', '[edit_file_is_folder]')); ?>"
-	};
-	function exit_close() {
-		if (!browseServer) {
-			var foo = (!currentID || (currentID === sitepath) ? "/" : currentID.substring(sitepath.length));
-
-			opener.<?php echo $cmd1? : 'x'; ?> = foo;
-			if (opener.postSelectorSelect !== undefined) {
-				opener.postSelectorSelect('selectFile');
-			}
-		}
-<?php
-if(($cmd4 = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4))){
-	echo $cmd4 . ';';
-}
-?>
-		close();
+	$filter = we_base_request::_(we_base_request::STRING, 'we_cmd', 'all_Types', 2);
+	$url = we_base_request::_(we_base_request::URL, 'we_cmd', '', 3);
+	$currentDir = str_replace('\\', '/', ( $url ?
+					($url === '/' ? '' :
+							( parse_url($url) === FALSE && is_dir($docroot . $url) ?
+									$url :
+									dirname($url))) :
+					''));
+	$currentName = ($filter != we_base_ContentTypes::FOLDER ? basename($url) : '');
+	if(!file_exists($docroot . $currentDir . '/' . $currentName)){
+		$currentDir = '';
+		$currentName = '';
 	}
+	$currentID = $docroot . $currentDir . ($filter == we_base_ContentTypes::FOLDER || $filter === 'filefolder' ? '' : (($currentDir != '') ? '/' : '') . $currentName);
 
-	//-->
-</script>
-<?php
-echo STYLESHEET .
- we_html_element::cssLink(CSS_DIR . 'selectors.css') .
- we_html_element::cssElement('
+	$currentID = str_replace('\\', '/', $currentID);
+
+	$rootDir = we_base_request::_(we_base_request::FILE, 'we_cmd', '', 5);
+	$selectOwn = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 6);
+	?>
+	<script><!--
+		var rootDir = "<?php echo $rootDir; ?>";
+		var currentID = "<?php echo $currentID; ?>";
+		var currentDir = "<?php echo str_replace($rootDir, '', $currentDir); ?>";
+		var currentName = "<?php echo $currentName; ?>";
+		var currentFilter = "<?php echo str_replace(' ', '%20', g_l('contentTypes', '[' . $filter . ']', true) !== false ? g_l('contentTypes', '[' . $filter . ']') : ''); ?>";
+		var filter = '<?php echo $filter; ?>';
+		var browseServer = <?php echo $cmd1 ? 'false' : 'true'; ?>
+
+		var currentType = "<?php echo ($filter == we_base_ContentTypes::FOLDER) ? we_base_ContentTypes::FOLDER : ''; ?>";
+		var sitepath = "<?php echo $docroot; ?>";
+		var dirsel = 1;
+		var scrollToVal = 0;
+		var allentries = [];
+		WE().consts.g_l.sfselector = {
+			edit_file_nok: "<?php echo we_message_reporting::prepareMsgForJS(g_l('fileselector', '[edit_file_nok]')); ?>",
+			edit_file_is_folder: "<?php echo we_message_reporting::prepareMsgForJS(g_l('fileselector', '[edit_file_is_folder]')); ?>",
+			already_root: "<?php echo we_message_reporting::prepareMsgForJS(g_l('fileselector', '[already_root]')); ?>",
+		};
+		function exit_close() {
+			if (!browseServer) {
+				var foo = (!currentID || (currentID === sitepath) ? "/" : currentID.substring(sitepath.length));
+
+				opener.<?php echo $cmd1? : 'x'; ?> = foo;
+				if (opener.postSelectorSelect !== undefined) {
+					opener.postSelectorSelect('selectFile');
+				}
+			}
+	<?php
+	if(($cmd4 = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4))){
+		echo $cmd4 . ';';
+	}
+	?>
+			close();
+		}
+
+		//-->
+	</script>
+	<?php
+	echo STYLESHEET .
+	we_html_element::cssLink(CSS_DIR . 'selectors.css') .
+	we_html_element::cssElement('
 #fsfooter{
 	 bottom:0px;
 }
 ') .
- we_html_element::jsScript(JS_DIR . 'selectors/we_sselector_header.js');
-?>
-</head>
-<body onload="setLookin();
-		top.fscmd.selectDir();" onunload="doUnload();">
+	we_html_element::jsScript(JS_DIR . 'selectors/we_sselector_header.js');
+	?>
+	</head>
+	<body onload="setLookin();
+			top.fscmd.selectDir();" onunload="doUnload();">
 				<?php
-				$footerHeight = (we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 2) ? 60 : 90);
-				echo we_html_element::htmlDiv(array('id' => 'fsheader'), printHeaderHTML(($cmd1 ? 1 : 0))) .
-				we_html_element::htmlIFrame('fsbody', 'about:blank', 'position:absolute;top:73px;bottom:' . $footerHeight . 'px;left:0px;right:0px;', '', '', true) .
-				we_html_element::htmlDiv(array('id' => 'fsfooter'), printFooterTable(($cmd1 ? 1 : 0), $filter, $currentName)) .
-				we_html_element::htmlIFrame('fscmd', 'we_sselector_cmd.php?ret=' . ($cmd1 ? 1 : 0) . '&filter=' . $filter . '&currentName=' . $currentName . '&selectOwn=' . $selectOwn, 'display:none;', '', '', false);
-				?>
-</body>
-</html>
+					$footerHeight = (we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 2) ? 60 : 90);
+					echo we_html_element::htmlDiv(array('id' => 'fsheader'), printHeaderHTML(($cmd1 ? 1 : 0))) .
+					we_html_element::htmlIFrame('fsbody', 'about:blank', 'position:absolute;top:73px;bottom:' . $footerHeight . 'px;left:0px;right:0px;', '', '', true) .
+					we_html_element::htmlDiv(array('id' => 'fsfooter'), printFooterTable(($cmd1 ? 1 : 0), $filter)) .
+					we_html_element::htmlIFrame('fscmd', 'we_sselector_cmd.php?ret=' . ($cmd1 ? 1 : 0) . '&filter=' . $filter . '&currentName=' . $currentName . '&selectOwn=' . $selectOwn, 'display:none;', '', '', false);
+					?>
+	</body>
+	</html>
+	<?php
+}
+
+printFrameSet();

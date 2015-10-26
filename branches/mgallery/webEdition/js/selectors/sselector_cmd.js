@@ -1,3 +1,5 @@
+/* global top, WE */
+
 /**
  * webEdition CMS
  *
@@ -39,7 +41,7 @@ function setFilter(filter) {
 function selectFile(fid) {
 	var i;
 	if (fid !== "/") {
-		top.currentID = top.sitepath + top.rootDir + top.currentDir + ((top.currentDir != "/") ? "/" : "") + fid;
+		top.currentID = top.sitepath + top.rootDir + top.currentDir + ((top.currentDir !== "/") ? "/" : "") + fid;
 		top.currentName = fid;
 		top.document.getElementsByName("fname")[0].value = fid;
 		if (top.fsbody.document.getElementById(fid)) {
@@ -86,4 +88,21 @@ function selectDir() {
 
 	drawDir(top.currentDir);
 
+}
+
+function goUp() {
+	var a = top.document.getElementById("lookin").options;
+	if (a.length - 2 > -1) {
+		setDir(a[a.length - 2].value);
+	} else {
+		top.we_showMessage(WE().consts.g_l.sfselector.already_root, WE().consts.message.WE_MESSAGE_ERROR, window);
+	}
+}
+
+function delFile() {
+	if ((top.currentID !== "") && (top.document.getElementsByName("fname")[0].value !== "")) {
+		top.fscmd.location = "we_sselector_cmd.php?cmd=delete_file&fid=" + top.currentID + "&ask=" + arguments[0];
+	} else {
+		top.we_showMessage(WE().consts.g_l.sfselector.edit_file_nok, WE().consts.message.WE_MESSAGE_ERROR, window);
+	}
 }

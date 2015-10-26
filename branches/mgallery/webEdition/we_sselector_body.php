@@ -25,9 +25,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect(array('BROWSE_SERVER', 'SITE_IMPORT', 'ADMINISTRATOR'));
 
-$supportDebuggingFile = WEBEDITION_PATH . 'we_sselector_inc.php';
+
 $GLOBALS['supportDebugging'] = false;
-if(file_exists($supportDebuggingFile)){
+if(file_exists(($supportDebuggingFile = WEBEDITION_PATH . 'we_sselector_inc.php'))){
 	include($supportDebuggingFile);
 	if(defined('SUPPORT_IP') && defined('SUPPORT_DURATION') && defined('SUPPORT_START')){
 		if(SUPPORT_IP == $_SERVER['REMOTE_ADDR'] && (time() - SUPPORT_DURATION) < SUPPORT_START){
@@ -58,7 +58,7 @@ echo we_html_element::jsScript(JS_DIR . 'selectors/we_sselector_body.js') .
 			function getDataType($dat){
 				$ct = getContentTypeFromFile($dat);
 				return (($ct = g_l('contentTypes', '[' . $ct . ']', true)) !== false ?
-						$ct : '');
+								$ct : '');
 			}
 
 			$arDir = $arFile = $ordDir = $ordFile = $final = array();
@@ -220,10 +220,10 @@ var i = 0;';
 				$filesize = file_exists($dir . '/' . $entry) ? filesize($dir . '/' . $entry) : 0;
 
 				$_size = ($isfolder ?
-						'' :
-						($islink ?
-							'-> ' . readlink($dir . '/' . $entry) :
-							'<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . oldHtmlspecialchars($filesize) . '">' . we_base_file::getHumanFileSize($filesize) . '</span>'));
+								'' :
+								($islink ?
+										'-> ' . readlink($dir . '/' . $entry) :
+										'<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . oldHtmlspecialchars($filesize) . '">' . we_base_file::getHumanFileSize($filesize) . '</span>'));
 
 				switch((($entry == $sid) && (!$indb) ? $nf : '')){
 					case "rename_folder":
@@ -242,8 +242,8 @@ var i = 0;';
 						break;
 					default:
 						$_text_to_show = '<div class="cutText" title="' . oldHtmlspecialchars($entry) . '">' .
-							((strlen($entry) > 24) ? oldHtmlspecialchars($entry) : oldHtmlspecialchars($entry)) .
-							'</div>';
+								((strlen($entry) > 24) ? oldHtmlspecialchars($entry) : oldHtmlspecialchars($entry)) .
+								'</div>';
 						$_type = '<div class="cutText" title="' . oldHtmlspecialchars($type) . '">' . oldHtmlspecialchars($type) . '</div>';
 						$_date = (file_exists($dir . "/" . $entry) ? date("d.m.Y H:i:s", filectime($dir . '/' . $entry)) : 'n/a');
 				}
