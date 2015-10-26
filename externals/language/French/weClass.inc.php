@@ -26,21 +26,27 @@ $l_weClass=array(
 	'change_compression'=>'Changer la compression',
 	
 	'collection'=>array(
-		'add'=>'',
-		'add_help'=>'',
+		'add'=>'Add elements to a collection',
+		'add_help'=>'Mark the elements to add to the collection. All elements that do not fit the collection are automatically rejected.',
 		'allowDuplicates'=>'Allow duplicates',
 		'attentionBox'=>'--',
 		'attr_alt'=>'Attribute alt',
 		'attr_title'=>'Attribute title',
 		'collectionTitle'=>'Content of the collection',
+		'contentDoesntMatch'=>'none of the items selected does matche the collection`s content types',
 		'dblClick_to_insert'=>'Doubleclick to insert new entry',
 		'filter_class'=>'Permit objects of the following classes only',
 		'filter_contenttype'=>'Permit documents of the following content types only',
 		'infoAddFiles'=>'Inserted: ##INS##\nAs duplicates rejected: ##REJ##\n\nOther items may have been rejecected because of inapropriate class/mime type.',
 		'insertRecursive'=>'Insert folders recursive',
+		'insertedAndDuplicates'=>'Added: %s
+Rejected as duplicate: %s
+
+Not shown: elements not matching the content type of the collection.',
 		'notSet'=>'not set',
 		'not_set'=>'delete!',
 		'number'=>'Number',
+		'wrongTable'=>'The selected items cannot be added to the selected collection',
 	),
 	'confirm_ext_change'=>'Vous avez changer `Créer site dynamiquement`!\nVoulez-vous remettre l`extension de fichier à la valeur standard?',
 	'contenttable'=>'Tableau de Contenu',

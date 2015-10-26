@@ -33,14 +33,20 @@ $l_weClass=array(
 		'attr_alt'=>'alt-Attribut',
 		'attr_title'=>'title-Attribut',
 		'collectionTitle'=>'Inhalt der Sammlung',
+		'contentDoesntMatch'=>'keines der ausgewählten Elemente entspricht dem Typ der Sammlung',
 		'dblClick_to_insert'=>'Doppelklick zum Einfügen eines leeren Eintrags',
 		'filter_class'=>'Erlaubte Objekte auf folgende Klassen einschränken',
 		'filter_contenttype'=>'Erlaubte Dokumente auf folgende Typen einschränken',
 		'infoAddFiles'=>'Eingefügt: ##INS##\nAls Dubletten abgewiesen: ##REJ##\n\nWeitere Elemente können aufgrund unpassender Klassen bzw. MIME-Typen abgewiesen worden sein.',
 		'insertRecursive'=>'Verzeichnisse rekursiv einfügen',
+		'insertedAndDuplicates'=>'Eingefügt: %s
+Als Duplikate verworfen: %s
+
+Nicht aufgeführt: Elemente die nicht zu Sammlung passen.',
 		'notSet'=>'nicht gesetzt',
 		'not_set'=>'delete!',
 		'number'=>'Anzahl',
+		'wrongTable'=>'In dieser Sammlung können die ausgewählten Elemente nicht hinzugefügt werden.',
 	),
 	'confirm_ext_change'=>'Sie haben `Seite dynamisch generieren` verändert!\nMöchten Sie die Dateierweiterung auf den Standardwert zurücksetzen?',
 	'contenttable'=>'Content Tabelle',
