@@ -113,7 +113,7 @@ class we_workflow_document extends we_workflow_base{
 			$this->finishWorkflow(1, $uID);
 			$this->document->save();
 			if($this->document->i_publInScheduleTable()){
-				$this->document->getNextPublishDate();
+				//$this->document->getNextPublishDate();
 			} else {
 				$this->document->we_publish();
 			}
