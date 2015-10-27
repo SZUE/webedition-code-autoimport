@@ -906,6 +906,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	},
 	weFullscrenParams : {
 		outsideWE: "' . $wefullscreenVars['outsideWE'] . '",
+		isInPopup : ' . ($this->isInPopup ? 1 : 0) . ',
 		xml: "' . $wefullscreenVars['xml'] . '",
 		removeFirstParagraph: "' . $wefullscreenVars['removeFirstParagraph'] . '",
 		baseHref: "' . urlencode($this->baseHref) . '",
@@ -1209,7 +1210,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 			editorLevel = "inline";
 			weEditorFrame = _EditorFrame;
 		} else {
-		//FIXME: check if WE().layout.weEditorFrameController cannot be used
+			//FIXME: check if WE().layout.weEditorFrameController cannot be used
 			if(top.opener !== null && top.opener.top.WebEdition.layout.weEditorFrameController !== undefined && top.isWeDialog === undefined){
 				editorLevel = "popup";
 				weEditorFrame = top.opener.top.WebEdition.layout.weEditorFrameController;
