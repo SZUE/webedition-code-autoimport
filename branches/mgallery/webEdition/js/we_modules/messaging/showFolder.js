@@ -69,7 +69,7 @@ function doSelectMessage(id) {
 
 	parent.parent.last_entry_selected = id;
 
-	if (document.getElementsByName("read_0")) {
+	if (document.getElementsByName("read_0").length) {
 		document.getElementsByName("read_0")[0].classList.remove("msgUnRead");
 		document.getElementsByName("read_0")[0].classList.add("msgRead");
 	}
@@ -103,7 +103,7 @@ function highlight_TR(id, color, text_color) {
 	}
 }
 
-function unSelectMessage(id, unsel_all) {
+function unSelectMessage(id) {
 	highlight_TR(id, default_color, default_text_color);
 
 	parent.entries_selected = array_rm_elem(parent.entries_selected, id, -1);

@@ -45,32 +45,25 @@ function check(img) {
 			continue;
 		}
 		if (treeData[i].checked) {
-			if (document.images && document.images[img]) {
-				document.images[img].src = tree_img_dir + "check0.gif";
-			}
 			treeData[i].checked = false;
-			if (document.getElementsByName(imgName)) {
-				var tmp = document.getElementsByName(imgName)[0];
+			if (document.getElementsByName(img)) {
+				var tmp = document.getElementsByName(img)[0];
 				tmp.classList.remove('fa-check-square-o');
 				tmp.classList.add('fa-square-o');
 			}
 
-			unSelectMessage(img, "elem", "");
+			unSelectMessage(img, "");
 			break;
 		}
 		treeData[i].checked = true;
-		if (document.getElementsByName(imgName)) {
-			var tmp = document.getElementsByName(imgName)[0];
+		if (document.getElementsByName(img)) {
+			var tmp = document.getElementsByName(img)[0];
 			tmp.classList.add('fa-check-square-o');
 			tmp.classList.remove('fa-square-o');
 		}
-		doSelectMessage(img, "elem", "");
+		doSelectMessage(img, "");
 		break;
 	}
-}
-if (!document.images) {
-	drawTree();
-
 }
 
 
@@ -218,7 +211,7 @@ container.prototype.drawGroup = function (nf, ai, zweigEintrag) {
 	var ret = "<a href=\"javascript:top.content.treeData.openClose('" + nf[ai].id + "',1)\"><span class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open ? "minus" : "plus") + "-square-o fa-stack-1x'></i></span></a>";
 	if (deleteMode) {
 		if (nf[ai].id != -1) {
-			trg = "javascript:top.content.check(\"img_" + nf[ai].id + "\");";
+			trg = "javascript:top.content.check('img_" + nf[ai].id + "');";
 			ret += "<a href=\"" + trg + "\"><i class=\"fa fa-" + (nf[ai].checked ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + nf[ai].id + '"></i></a>';
 		}
 	} else {
@@ -250,7 +243,7 @@ container.prototype.drawItem = function (nf, ai) {
 	}
 	if (deleteMode) {
 		if (nf[ai].id != -1) {
-			trg = "javascript:top.content.check(\"img_" + nf[ai].id + "\");";
+			trg = "javascript:top.content.check('img_" + nf[ai].id + "');";
 			ret += '<a href="' + trg + '"><i class="fa fa-' + (nf[ai].checked ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + nf[ai].id + '"></i>';
 		}
 	} else {

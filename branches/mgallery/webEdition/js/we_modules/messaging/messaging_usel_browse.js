@@ -75,7 +75,7 @@ function check(entry) {
 					tmp.classList.remove('fa-check-square-o');
 					tmp.classList.add('fa-square-o');
 				}
-				unSelectMessage(entry, 'elem', messaging_usel_main);
+				unSelectMessage(entry, messaging_usel_main);
 				break;
 			}
 			treeData[i].checked = true;
@@ -84,7 +84,7 @@ function check(entry) {
 				tmp.classList.add('fa-check-square-o');
 				tmp.classList.remove('fa-square-o');
 			}
-			doSelectMessage(entry, 'elem', messaging_usel_main);
+			doSelectMessage(entry, messaging_usel_main);
 			break;
 		}
 	}
