@@ -1184,7 +1184,19 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 					}
 				}
 			}
-			o.content = c.innerHTML;
+
+			// remove border="0" and border="" from table tags
+			var tables;
+			if(tables = c.getElementsByTagName("TABLE")){
+				for(var i = 0; i < tables.length; i++){
+					if(tables[i].getAttribute("border") === "0" || tables[i].getAttribute("border") === ""){
+						tables[i].removeAttribute("border");
+					}
+				}
+			}
+
+			// write content back
+			o.content = c.innerHTML;top.console.debug("after pp", o.content);
 		});' . ($this->isFrontendEdit ? '' : '
 
 		/* set EditorFrame.setEditorIsHot(true) */
@@ -1236,7 +1248,8 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		*/
 
 		ed.onNodeChange.add(function(ed, cm, n) {
-			var pc, tmp, td = ed.dom.getParent(n, "td");
+			var pc, tmp, 
+				td = ed.dom.getParent(n, "td");
 
 			if(typeof td === "object" && td && td.getElementsByTagName("p").length === 1){
 				pc = td.getElementsByTagName("p")[0].cloneNode(true);

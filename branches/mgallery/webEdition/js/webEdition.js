@@ -967,9 +967,9 @@ function we_cmd_base(args, url) {
 				WE().layout.weEditorFrameController.getActiveDocumentReference().openedWithWE = false;
 			}
 			var wyw = args[2];
-			wyw = Math.max((wyw ? wyw : 800));
+			wyw = Math.max((wyw ? wyw : 0), 400);
 			var wyh = args[3];
-			wyh = Math.max((wyh ? wyh : 600));
+			wyh = Math.max((wyh ? wyh : 0), 300);
 			if (window.screen) {
 				var screen_height = ((screen.height - 50) > screen.availHeight) ? screen.height - 50 : screen.availHeight;
 				screen_height = screen_height - 40;
