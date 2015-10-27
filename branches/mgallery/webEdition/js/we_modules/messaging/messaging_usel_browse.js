@@ -70,21 +70,21 @@ function check(entry) {
 		if (treeData[i].id == id) {
 			if (treeData[i].checked) {
 				treeData[i].checked = false;
-				if (messaging_usel_main.document.getElementsByName(imgName)) {
-					var tmp = messaging_usel_main.document.getElementsByName(imgName)[0];
+				if (document.getElementsByName(imgName)) {
+					var tmp = document.getElementsByName(imgName)[0];
 					tmp.classList.remove('fa-check-square-o');
 					tmp.classList.add('fa-square-o');
 				}
-				unSelectMessage(entry, messaging_usel_main);
+				unSelectMessage(entry, "");
 				break;
 			}
 			treeData[i].checked = true;
-			if (messaging_usel_main.document.getElementsByName(imgName)) {
-				var tmp = messaging_usel_main.document.getElementsByName(imgName)[0];
+			if (document.getElementsByName(imgName)) {
+				var tmp = document.getElementsByName(imgName)[0];
 				tmp.classList.add('fa-check-square-o');
 				tmp.classList.remove('fa-square-o');
 			}
-			doSelectMessage(entry, messaging_usel_main);
+			doSelectMessage(entry, "");
 			break;
 		}
 	}
@@ -146,13 +146,13 @@ function deleteEntry(id) {
 }
 
 
-container.prototype.openClose = function(id, status) {
+openClose = function(id, status) {
 	var eintragsIndex = treeData.indexOfEntry(id);
 	treeData[eintragsIndex].open = status;
 	drawTree();
 };
 
-container.prototype.indexOfEntry = function (id) {
+indexOfEntry = function (id) {
 	for (var ai = 1; ai <= this.len; ai++) {
 		if ((this[ai].typ === 'root') || (this[ai].typ === 'folder')) {
 			if (this[ai].id == id) {
@@ -176,12 +176,11 @@ function search(eintrag) {
 }
 
 function drawTree() {//FIXME: we don't have an existing document to write on, change this, as is changed in tree
-	messaging_usel_main.window.document.body.innerHTML = "<table class=\"default\" style=\"width:100%\"><tr><td class=\"tree\"><nobr>" +
+	window.document.body.innerHTML = "<table class=\"default\" style=\"width:100%\"><tr><td class=\"tree\"><nobr>" +
 					draw(treeData.startloc, "") +
 					"</nobr></td></tr></table>";
 
-
 	for (var k = 0; k < parent.entries_selected.length; k++) {
-		parent.highlight_Elem(parent.entries_selected[k], parent.sel_color, parent.messaging_usel_main);
+		parent.highlight_Elem(parent.entries_selected[k], parent.sel_color, parent);
 	}
 }

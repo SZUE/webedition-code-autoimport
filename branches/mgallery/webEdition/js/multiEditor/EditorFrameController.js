@@ -1,4 +1,4 @@
-/* global WE */
+/* global WE, top */
 
 /**
  * webEdition CMS
@@ -460,32 +460,34 @@ function EditorFrameController() {
 		var docRef;
 		if (this.EditorFrames[frameId]) {
 
-			if (this.EditorFrames[frameId].EditorType === "cockpit") {
-				docRef = this.EditorFrames[frameId].getDocumentReference();
-				// close all modal dialogs
-				docRef.closeAllModalWindows();
-
-				if (docRef.isHot()) {
-					// save changes, in cockpit
-					docRef.saveSettings();
-				}
-
-			} else if (this.EditorFrames[frameId].EditorType === "model") {
-				docRef = this.EditorFrames[frameId].getDocumentReference();
-				if (docRef.closeAllModalWindows) {
+			switch (this.EditorFrames[frameId].EditorType) {
+				case "cockpit":
+					docRef = this.EditorFrames[frameId].getDocumentReference();
+					// close all modal dialogs
 					docRef.closeAllModalWindows();
-				}
-				// unlock document
-				trans = this.EditorFrames[frameId].getEditorTransaction();
-				if (trans) {
-					top.we_cmd('users_unlock', this.EditorFrames[frameId].getEditorDocumentId(), WE().session.userID, this.EditorFrames[frameId].getEditorEditorTable(), trans);
-					top.we_cmd("remove_from_editor_plugin", trans);
-				}
 
-				if (this.getEditorFrame(frameId).EditorExitDocQuestionDialog) {
-					this.getEditorFrame(frameId).EditorExitDocQuestionDialog.close();
-					this.getEditorFrame(frameId).EditorExitDocQuestionDialog = false;
-				}
+					if (docRef.isHot()) {
+						// save changes, in cockpit
+						docRef.saveSettings();
+					}
+					break;
+				case "model":
+					docRef = this.EditorFrames[frameId].getDocumentReference();
+					if (docRef.closeAllModalWindows) {
+						docRef.closeAllModalWindows();
+					}
+					// unlock document
+					trans = this.EditorFrames[frameId].getEditorTransaction();
+					if (trans) {
+						top.we_cmd('users_unlock', this.EditorFrames[frameId].getEditorDocumentId(), WE().session.userID, this.EditorFrames[frameId].getEditorEditorTable(), trans);
+						top.we_cmd("remove_from_editor_plugin", trans);
+					}
+
+					if (this.getEditorFrame(frameId).EditorExitDocQuestionDialog) {
+						this.getEditorFrame(frameId).EditorExitDocQuestionDialog.close();
+						this.getEditorFrame(frameId).EditorExitDocQuestionDialog = false;
+					}
+					break;
 			}
 
 			// remove from tree, if possible
@@ -969,7 +971,7 @@ function EditorFrame(ref, elementId) {
 
 	this.freeEditor = function () {
 
-		this.EditorFrameWindow.location = WE().consts.dirs.WEBEDITION_DIR + "html/blank_editor.html";
+		this.setEmptyEditor();
 
 		this.EditorType = null;	// model|cockpit, etc
 
@@ -1178,7 +1180,7 @@ function EditorFrame(ref, elementId) {
 		if (newVal) {
 			var _theEditorFrame = this.getEditorFrameWindow();
 			if (this.getEditorReloadAllNeeded()) {
-				if (this.getEditorType() === "cockpit") {
+				if (this.EditorType === "cockpit") {
 					if (_theEditorFrame.saveSettings !== undefined) {
 						_theEditorFrame.saveSettings();
 					}
@@ -1203,7 +1205,7 @@ function EditorFrame(ref, elementId) {
 				this.setEditorReloadAllNeeded(false);
 				this.setEditorReloadNeeded(false);
 			} else if (this.getEditorReloadNeeded()) {
-				if (this.getEditorType() === "cockpit") {
+				if (this.EditorType === "cockpit") {
 					_theEditorFrame.location.reload();
 				} else {
 					top.we_cmd("reload_editpage");

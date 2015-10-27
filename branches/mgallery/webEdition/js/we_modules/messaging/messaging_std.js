@@ -77,7 +77,7 @@ function highlight_TR(id, color) {
 
 function unSelectMessage(id, doc) {
 	entries_selected = array_rm_elem(entries_selected, id, -1);
-	highlight_Elem(id, default_color, messaging_usel_main);
+	highlight_Elem(id, default_color, '');
 }
 
 //Highlighting-Stuff end
@@ -142,4 +142,21 @@ function get_sel_elems(sel_box) {
 
 function close_win(name) {
 	WE().util.jsWindow.prototype.closeByName(name);
+}
+
+
+function init_check() {
+	var i;
+	for (i = 0; i < opener.current_sel.length; i++) {
+		if (opener.current_sel[i][0] != 'we_message') {
+			continue;
+		}
+		check(opener.current_sel[i][1] + '&' + opener.current_sel[i][2]);
+	}
+}
+
+function start() {
+	loadData();
+	drawTree();
+	self.focus();
 }
