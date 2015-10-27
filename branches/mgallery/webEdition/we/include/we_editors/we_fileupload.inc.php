@@ -59,7 +59,7 @@ $fileUpload->setEditorJS(array(
 
 echo we_html_tools::getHtmlTop('fileupload') . 
 	STYLESHEET . $fileUpload->getEditorJS() .
-	we_html_element::jsScript(JS_DIR . 'global.js') .
+	we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 	we_html_element::jsScript(JS_DIR . 'keyListener.js') .
 	we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js');
 
