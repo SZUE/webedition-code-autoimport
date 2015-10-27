@@ -152,7 +152,7 @@ echo we_html_tools::getHtmlTop() . STYLESHEET . we_html_element::jsElement('
 
 
 function we_footerLoaded(){
-if(doc.isTemplate){
+if(doc.isTemplate && !doc.isFolder){
 			setTemplate();
 			}' .
 		$_js_permnew .
