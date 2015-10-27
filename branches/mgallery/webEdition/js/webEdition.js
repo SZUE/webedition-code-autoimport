@@ -573,7 +573,7 @@ function we_cmd_base(args, url) {
 			var cType = WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorContentType();
 			var eTable = WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorEditorTable();
 
-			if (weWE().layout.weEditorFrameController.getActiveDocumentReference()) {
+			if (WE().layout.weEditorFrameController.getActiveDocumentReference()) {
 				if (!hasPermDelete(eTable, (cType === "folder"))) {
 					top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, window);
 				} else {
