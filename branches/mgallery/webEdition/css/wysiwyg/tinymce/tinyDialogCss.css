@@ -37,10 +37,10 @@ body form table{
 }
 
 .tabs{
-	background-color: c8d8ed;
+	background: rgba(0, 0, 0, 0) linear-gradient(#c9d9ed, #afc3de) repeat scroll 0 0;
+	border: none;
 	border-bottom: 1px solid #888888;
 	display:block;
-	border: none;
 	height: 21px;
 	padding-left:0px;
 }
@@ -155,6 +155,7 @@ height:19px;
 	text-align:right;
 	padding:0px;
 	padding-bottom:10px;
+	border-top: 2px groove white;
 }
 
 .mceActionPanel #insert,
@@ -162,13 +163,22 @@ height:19px;
 .mceActionPanel #apply,
 body .mceActionPanel #replaceBtn,
 .mceActionPanel #replaceAllBtn {
-	background-position: left top;
 	height: 22px !important;
 	color: black !important;
 	float: none;
-	margin-left: 0px;
-	margin-right:10px;
 	font-weight:normal;
+	background: rgba(0, 0, 0, 0) linear-gradient(to bottom, #f3f7fc, #e9f0fb 50%, #dce8f8 50%, #d8e4f9) repeat scroll 0 0;
+	border-radius: 4px;
+	box-shadow: 2px 2px 2px #555555;
+	font-family: verdana,arial,helvetica;
+	font-size: 10px !important;
+	margin-bottom: 1ex;
+	margin-left: 0.5em;
+	margin-right: 0.5em;
+	min-width: 2.5em;
+	padding-left: 0.5em !important;
+	padding-right: 0.5em !important;
+	text-align: center;
 }
 
 .mceActionPanel #preview{

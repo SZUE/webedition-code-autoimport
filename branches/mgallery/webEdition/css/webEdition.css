@@ -684,6 +684,7 @@ optgroup.lvl2{
 	width:100%;
 	background-color:grey;/*for old browsers*/
 	background: linear-gradient(#B4B3B3, #C6C5C5);
+	border-top: 2px groove white;
 }
 
 .weDialogButtonsBody {
