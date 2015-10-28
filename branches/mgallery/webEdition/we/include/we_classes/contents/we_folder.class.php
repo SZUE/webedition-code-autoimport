@@ -289,8 +289,7 @@ class we_folder extends we_root{
 		}
 
 		// Adapt tblLangLink-entries of folders to the new language
-		$DB_WE->query('SELECT ID FROM ' . $DB_WE->escape($this->Table) . ' WHERE Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND ContentType="folder"');
-		$ids = implode(',', $DB_WE->getAll(true));
+		$ids = implode(',', $DB_WE->getAllq('SELECT ID FROM ' . $DB_WE->escape($this->Table) . ' WHERE Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND ContentType="folder"', true));
 		if($ids){
 			$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DID IN(' . $ids . ') AND DocumentTable="' . $DB_WE->escape($documentTable) . '" AND IsFolder=1 AND Locale="' . $DB_WE->escape($language) . '"');
 			$DB_WE->query('UPDATE ' . LANGLINK_TABLE . ' SET DLocale="' . $DB_WE->escape($language) . '" WHERE DID IN(' . $ids . ') AND DocumentTable="' . $DB_WE->escape($documentTable) . '" AND IsFolder=1');

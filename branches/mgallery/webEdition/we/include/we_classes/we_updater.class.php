@@ -219,9 +219,9 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 					$data = we_unserialize($db->f('Catfields'));
 					if($data){
 						$udb->query('UPDATE ' . CATEGORY_TABLE . ' SET ' . we_database_base::arraySetter(array(
-								'Title' => $data['default']['Title'],
-								'Description' => $data['default']['Description'],
-							)) . ' WHERE ID=' . $db->f('ID'));
+									'Title' => $data['default']['Title'],
+									'Description' => $data['default']['Description'],
+								)) . ' WHERE ID=' . $db->f('ID'));
 					}
 				}
 			}
@@ -271,7 +271,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 		$last = $now;
 	}
 
-	public static function removeObsoleteFiles($path=''){
+	public static function removeObsoleteFiles($path = ''){
 		$path = $path ? : WEBEDITION_PATH . 'liveUpdate/includes/';
 		if(is_file($path . 'del.files')){
 			if(($all = file($path . 'del.files', FILE_IGNORE_NEW_LINES))){
@@ -293,6 +293,50 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 		}
 
 		return true;
+	}
+
+	public static function updateContentTable(we_database_base $db){
+		return;
+		//FIXME: change tabledefinition of content table
+		define('CONTENT_TABLEx', CONTENT_TABLE . 'XX');
+		define('LINK_TABLEx', LINK_TABLE . 'xx');
+
+		if(!f('SELECT COUNT(1) FROM ' . CONTENT_TABLEx . ' WHERE Dat IS NOT NULL AND hash=x\'00000000000000000000000000000000\'')){
+			//	return;
+		}
+		$db->query('UPDATE ' . CONTENT_TABLEx . ' SET Dat=NULL WHERE Dat="" AND BDID>0');
+		if(version_compare("5.5.3", we_database_base::getMysqlVer(false)) > 1){
+			//md5 is binary in mysql <5.5.3
+			$db->query('UPDATE ' . CONTENT_TABLEx . ' SET hash=md5(Dat)');
+		} else {
+			$db->query('UPDATE ' . CONTENT_TABLEx . ' SET hash=unhex(md5(Dat))');
+		}
+		//eleminate duplicates
+
+		$db->query('CREATE TABLE IF NOT EXISTS WE_tmp (
+  `ID` int(10) unsigned NOT NULL,
+  `hash` binary(16) NOT NULL,
+  `BDID` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY (`hash`),
+  KEY(`BDID`)
+	)');
+		$db->query('TRUNCATE WE_tmp');
+
+		$db->query('INSERT INTO WE_tmp (ID,hash,BDID) SELECT ID,hash,BDID FROM ' . CONTENT_TABLEx . ' WHERE 1 GROUP BY hash,BDID,Dat HAVING COUNT(1)>1 ');
+		//check if we have clashes
+		if(f('SELECT 1 FROM WE_tmp GROUP BY hash,BDID HAVING COUNT(1)>1')){
+			//we can't reduce, this will be complex if the time is limited
+			return;
+		}
+
+		//we must change update - this will take too long!
+		return;
+
+		//this will not work due to indices on tblLink
+		$db->query('UPDATE LOW_PRIORITY ' . LINK_TABLEx . ' l JOIN ' . CONTENT_TABLEx . ' c ON l.CID=c.ID JOIN WE_tmp t ON c.hash=t.hash SET l.CID=t.ID');
+		$db->query('DELETE FROM ' . CONTENT_TABLEx . ' WHERE ID NOT IN (SELECT CID FROM ' . LINK_TABLEx . ')');
+		$db->delTable('WE_tmp');
 	}
 
 	public static function doUpdate(){
@@ -319,6 +363,8 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 		self::meassure('updateCats');
 		self::fixHistory();
 		self::meassure('fixHistory');
+		/* self::updateContentTable($db);
+		  self::meassure('updateContent'); */
 		self::replayUpdateDB();
 		self::meassure('replayUpdateDB');
 		self::meassure(-1);

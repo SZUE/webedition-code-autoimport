@@ -715,8 +715,7 @@ abstract class we_class{
 		if(!$isfolder){
 			foreach($LangLinkArray as $locale => $LDID){
 				if($LDID > 0){
-					$this->DB_WE->query('SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DID=' . intval($this->ID) . ' AND DocumentTable="' . $this->DB_WE->escape($type) . '" AND IsObject=' . ($isobject ? 1 : 0));
-					$rows = $this->DB_WE->getAll();
+					$rows = $this->DB_WE->getAllq('SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DID=' . intval($this->ID) . ' AND DocumentTable="' . $this->DB_WE->escape($type) . '" AND IsObject=' . ($isobject ? 1 : 0));
 					if(count($rows) > 1){
 						foreach($rows as $i => $row){
 							$j = ($i + 1) % count($rows);

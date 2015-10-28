@@ -39,7 +39,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 		}
 		session_start();
 		if($this->releaseError){
-			$this->releaseError=false;
+			$this->releaseError = false;
 			t_e('session was not releases properly, emergency release done, see restored (old) session below', session_id(), $this->sessionName);
 		}
 	}
@@ -89,7 +89,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 				if($data && $data[0] === 'x'){
 					//valid gzip
 					$data = gzuncompress($data);
-					$this->hash = md5($sessID . $data);
+					$this->hash = md5($sessID . $data, true);
 					return $data;
 				}//else we need a new sessionid; if decrypt failed we might else destroy an existing valid session
 			}
@@ -106,7 +106,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 			return $this->destroy($sessID);
 		}
 		$sessID = self::getSessionID($sessID);
-		if(md5($sessID . $sessData) == $this->hash){//if nothing changed,we don't have to bother the db
+		if(md5($sessID . $sessData, true) == $this->hash){//if nothing changed,we don't have to bother the db
 			$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET ' .
 					we_database_base::arraySetter(array(
 						'lockid' => $lock ? $this->id : '',
@@ -117,7 +117,6 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 				return true;
 			}
 		}
-
 
 		$sessData = SYSTEM_WE_SESSION_CRYPT && $this->crypt ? we_customer_customer::cryptData(gzcompress($sessData, 4), $this->crypt, true) : gzcompress($sessData, 4);
 

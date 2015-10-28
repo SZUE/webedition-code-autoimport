@@ -26,6 +26,7 @@
 
 class we_binaryDocument extends we_document{
 	/* The HTML-Code which can be included in a HTML Document */
+
 	protected $html = '';
 
 	/**
@@ -112,12 +113,11 @@ class we_binaryDocument extends we_document{
 	}
 
 	private function i_writeMetaValues(){
-		$this->DB_WE->query('SELECT tag,type,importFrom,mode FROM ' . METADATA_TABLE);
-		foreach($this->DB_WE->getAll() as $meta){
+		foreach($this->DB_WE->getAllq('SELECT tag,type,importFrom,mode FROM ' . METADATA_TABLE) as $meta){
 			if($meta['mode'] === 'auto' && $meta['type'] === 'textfield' && $this->getElement($meta['tag'])){
 				$this->DB_WE->query('INSERT INTO ' . METAVALUES_TABLE . ' SET ' . we_database_base::arraySetter(array(
-						'tag' => $meta['tag'],
-						'value' => $this->getElement($meta['tag'])
+							'tag' => $meta['tag'],
+							'value' => $this->getElement($meta['tag'])
 				)));
 			}
 		}
@@ -130,11 +130,11 @@ class we_binaryDocument extends we_document{
 	function i_getDocument($size = -1){
 		$file = $this->getElement('data');
 		return ($file && file_exists($file) ?
-				($size == -1 ?
-					we_base_file::load($file) :
-					we_base_file::loadPart($file, 0, $size)
-				) :
-				'');
+						($size == -1 ?
+								we_base_file::load($file) :
+								we_base_file::loadPart($file, 0, $size)
+						) :
+						'');
 	}
 
 	protected function i_writeDocument(){
@@ -288,13 +288,13 @@ class we_binaryDocument extends we_document{
 						break;
 					case 'date':
 						$_inp = we_html_tools::htmlFormElementTable(
-								we_html_tools::getDateInput2('we_' . $this->Name . '_date[' . $_tagName . ']', abs($this->getElement($_tagName)), true), $_tagName
+										we_html_tools::getDateInput2('we_' . $this->Name . '_date[' . $_tagName . ']', abs($this->getElement($_tagName)), true), $_tagName
 						);
 						break;
 					default:
 						$_inp = $_mode === 'none' || !isset($_defined_values[$_tagName]) || !is_array($_defined_values[$_tagName]) ?
-							$this->formInput2(508, $_tagName, 23, "txt", ' onchange="_EditorFrame.setEditorIsHot(true);"') :
-							$this->formInput2WithSelect(308, $_tagName, 23, 'txt', $attribs = '', $_defined_values[$_tagName], 200, false, true);
+								$this->formInput2(508, $_tagName, 23, "txt", ' onchange="_EditorFrame.setEditorIsHot(true);"') :
+								$this->formInput2WithSelect(308, $_tagName, 23, 'txt', $attribs = '', $_defined_values[$_tagName], 200, false, true);
 				}
 
 				$_content->setCol($i, 0, array("colspan" => 5, 'style' => 'padding-bottom:5px;'), $_inp);
@@ -331,11 +331,11 @@ class we_binaryDocument extends we_document{
 		$ft = g_l('metadata', '[filetype]') . ': ' . ($this->Extension ? substr($this->Extension, 1) : '');
 
 		$md = ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE ?
-				'' :
-				g_l('metadata', '[supported_types]') . ': ' .
-				'<a href="javascript:parent.frames.editHeader.weTabs.setActiveTab(\'tab_2\');we_cmd(\'switch_edit_page\',2,\'' . $GLOBALS['we_transaction'] . '\');">' .
-				(count($_mdtypes) > 0 ? implode(', ', $_mdtypes) : g_l('metadata', '[none]')) .
-				'</a>');
+						'' :
+						g_l('metadata', '[supported_types]') . ': ' .
+						'<a href="javascript:parent.frames.editHeader.weTabs.setActiveTab(\'tab_2\');we_cmd(\'switch_edit_page\',2,\'' . $GLOBALS['we_transaction'] . '\');">' .
+						(count($_mdtypes) > 0 ? implode(', ', $_mdtypes) : g_l('metadata', '[none]')) .
+						'</a>');
 
 		$fileUpload = new we_fileupload_ui_wedoc($this->ContentType, $this->Extension);
 
