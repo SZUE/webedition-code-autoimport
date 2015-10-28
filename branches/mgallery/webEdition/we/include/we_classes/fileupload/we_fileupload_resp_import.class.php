@@ -33,21 +33,21 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 	protected function initByHttp(){
 		parent::initByHttp();
 
-		$this->docVars = array_filter(
-			array(
-				'transaction' => we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', we_base_request::NOT_VALID),
-				'importMetadata' => we_base_request::_(we_base_request::INT, "importMetadata", we_base_request::NOT_VALID),
-				'imgsSearchable' => we_base_request::_(we_base_request::INT, "imgsSearchable", we_base_request::NOT_VALID),
+		$this->docVars = array_filter(array(
+				'transaction' => we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', $this->docVars['transaction']),
+				'importMetadata' => we_base_request::_(we_base_request::BOOL, 'importMetadata', $this->docVars['importMetadata']),
+				'imgsSearchable' => we_base_request::_(we_base_request::BOOL, 'imgsSearchable', $this->docVars['imgsSearchable']),
+				'widthSelect' => we_base_request::_(we_base_request::STRING, 'widthSelect', $this->docVars['widthSelect']),
+				'heightSelect' => we_base_request::_(we_base_request::STRING, 'heightSelect', $this->docVars['heightSelect']),
+				'quality' => we_base_request::_(we_base_request::INT, 'quality', $this->docVars['quality']),
+				'keepRatio' => we_base_request::_(we_base_request::BOOL, 'keepRatio', $this->docVars['keepRatio']),
+				'degrees' => we_base_request::_(we_base_request::INT, 'degrees', $this->docVars['degrees']),
+				// unset the followng entries when not in request!
 				'title' => we_base_request::_(we_base_request::STRING, 'img_title', we_base_request::NOT_VALID),
 				'alt' => we_base_request::_(we_base_request::STRING, 'img_alt', we_base_request::NOT_VALID),
 				'thumbs' => we_base_request::_(we_base_request::INTLIST, 'thumbs', we_base_request::NOT_VALID),
-				'width' => we_base_request::_(we_base_request::INT, "width", we_base_request::NOT_VALID),
-				'widthSelect' => we_base_request::_(we_base_request::STRING, "widthSelect", we_base_request::NOT_VALID),
-				'height' => we_base_request::_(we_base_request::INT, "height", we_base_request::NOT_VALID),
-				'heihgtSelect' => we_base_request::_(we_base_request::STRING, "heightSelect", we_base_request::NOT_VALID),
-				'quality' => we_base_request::_(we_base_request::INT, "quality", we_base_request::NOT_VALID),
-				'keepRatio' => we_base_request::_(we_base_request::BOOL, "keepRatio", we_base_request::NOT_VALID),
-				'degrees' => we_base_request::_(we_base_request::INT, "degrees", we_base_request::NOT_VALID),
+				'width' => we_base_request::_(we_base_request::INT, 'width', we_base_request::NOT_VALID),
+				'height' => we_base_request::_(we_base_request::INT, 'height', we_base_request::NOT_VALID),
 			), function($var){return $var !== we_base_request::NOT_VALID;}
 		);
 	}
@@ -184,11 +184,10 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 				'weDoc' => ''
 			);
 		}
-
 		switch($we_doc->ContentType){
 			case we_base_ContentTypes::IMAGE:
-				if(isset($this->docVars['importMetadata']) && $this->docVars['importMetadata']){
-					$we_doc->importMetaData($tempFile);
+				if($this->docVars['importMetadata']){// FIXME: on we_doc we have import_metadata!!
+					$we_doc->importMetaData();
 				}
 				// no break
 			case we_base_ContentTypes::FLASH:
@@ -205,16 +204,11 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 				$this->fileVars['weFileSize'] = $this->fileVars['weFileSize'] < 1 ? 1 : $this->fileVars['weFileSize'];
 				$we_doc->setElement('filesize', $this->fileVars['weFileSize'], 'attrib');
 				/*
-				now change the category
-					$we_doc->Category = isset($this->docVars['categories']) && $this->docVars['categories'] = $this->docVars['categories'] : $we_doc->Category;
+				//now change the category
+				$we_doc->Category = isset($this->docVars['categories']) && $this->docVars['categories'] = $this->docVars['categories'] : $we_doc->Category;
 				*/
-				if(isset($this->docVars['importMetadata']) && $this->docVars['importMetadata']){
-					if($we_doc->Extension === '.pdf'){
-						$we_doc->setMetaDataFromFile($tempFile);
-					}
-					if(we_base_request::_(we_base_request::BOOL, 'import_metadata')){
-						$we_doc->importMetaData($tempFile);
-					}
+				if($this->docVars['importMetadata'] && $we_doc->Extension === '.pdf'){
+					$we_doc->setMetaDataFromFile($tempFile);
 				}
 				$we_doc->DocChanged = true;
 		}
@@ -222,20 +216,21 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 		if($we_doc->ContentType == we_base_ContentTypes::IMAGE){
 			$newWidth = 0;
 			$newHeight = 0;
-			if(isset($this->docVars['width'])){
+			if(isset($this->docVars['width']) && $this->docVars['width']){
 				$newWidth = ($this->docVars['widthSelect'] === 'percent' ?
 						round(($we_doc->getElement("origwidth") / 100) * $this->docVars['width']) :
 						$this->docVars['width']);
 			}
-			if(isset($this->docVars['height'])){
+			if(isset($this->docVars['height']) && $this->docVars['height']){
 				$newHeight = ($this->docVars['heightSelect'] === 'percent' ?
 						round(($we_doc->getElement("origheight") / 100) * $this->docVars['height']) :
 						$this->docVars['height']);
 			}
 			if(($newWidth && ($newWidth != $we_doc->getElement("origwidth"))) || ($newHeight && ($newHeight != $we_doc->getElement("origheight")))){
 				if($we_doc->resizeImage($newWidth, $newHeight, $this->docVars['quality'], $this->docVars['keepRatio'])){
-					$this->docVars['width'] = $newWidth;
-					$this->docVars['height'] = $newHeight;
+					// why set this vals?
+					//$this->docVars['width'] = $newWidth;
+					//$this->docVars['height'] = $newHeight;
 				}
 			}
 			if($this->docVars['degrees']){
@@ -246,18 +241,16 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 						$we_doc->getElement("origheight") :
 						$we_doc->getElement("origwidth")), $this->docVars['degrees'], $this->docVars['quality']);
 			}
+			$we_doc->IsSearchable = isset($this->docVars['imgsSearchable']) ? $this->docVars['imgsSearchable'] : $we_doc->IsSearchable;
+			$we_doc->setElement('title', (isset($this->docVars['title']) ? $this->docVars['title'] : $we_doc->getElement('title')), 'attrib');
+			$we_doc->setElement('alt', (isset($this->docVars['alt']) ? $this->docVars['alt'] : $we_doc->getElement('alt')), 'attrib');
+			$we_doc->Thumbs = isset($this->docVars['thumbs']) ? $this->docVars['thumbs'] : $we_doc->Thumbs;
 		}
 
 		if($this->docVars['transaction']){
 			$_SESSION['weS']['we_data']['tmpName'] = $tempFile;// what's this?
 			$we_doc->saveInSession($_SESSION['weS']['we_data'][$this->docVars['transaction']]); // save the changed object in session
 		} else {
-			$we_doc->setElement('title', (isset($this->docVars['title']) ? $this->docVars['title'] : $we_doc->title), 'attrib');
-			$we_doc->setElement('alt', (isset($this->docVars['alt']) ? $this->docVars['alt'] : $we_doc->alt), 'attrib');
-			$we_doc->setElement('Thumbs', (isset($this->docVars['thumbs']) ? $this->docVars['thumbs'] : $we_doc->alt), 'attrib');
-			$we_doc->Thumbs = isset($this->docVars['thumbs']) ? $this->docVars['thumbs'] : $we_doc->thumbs;
-			$we_doc->IsSearchable = isset($this->docVars['imgsSearchable']) ? $this->docVars['imgsSearchable'] : $we_doc->thumbs;
-
 			if(!$we_doc->we_save()){
 				return array(
 					'error' => g_l('importFiles', '[save_error]'),

@@ -68,10 +68,8 @@ class we_fileupload_resp_base extends we_fileupload{
 		);
 	protected $docVars = array(
 			'transaction' => '',
-			//'sameName' => '',
-			//'importToID' => 0,
-			'importMetadata' => 1,
-			'imgsSearchable' => 0,
+			'importMetadata' => false,
+			'imgsSearchable' => true,
 			'title' => '',
 			'alt' => '',
 			'thumbs' => '',

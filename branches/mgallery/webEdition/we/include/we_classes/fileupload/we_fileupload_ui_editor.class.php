@@ -291,7 +291,7 @@ documentWriteback = function(importedDocument){
 		$widthSelect = '<select size="1" class="weSelect" name="widthSelect"><option value="pixel" selected="selected">' . g_l('weClass', '[pixel]') . '</option><option value="percent">' . g_l('weClass', '[percent]') . '</option></select>';
 		$heightSelect = '<select size="1" class="weSelect" name="heightSelect"><option value="pixel" selected="selected">' . g_l('weClass', '[pixel]') . '</option><option value="percent">' . g_l('weClass', '[percent]') . '</option></select>';
 
-		$ratio_checkbox = we_html_forms::checkbox(1, false, "keepRatio", g_l('thumbnails', '[ratio]'));
+		$ratio_checkbox = we_html_forms::checkboxWithHidden(false, 'keepRatio', g_l('thumbnails', '[ratio]'), false, 'defaultfont', '');
 
 		$_resize = '<table>
 <tr>

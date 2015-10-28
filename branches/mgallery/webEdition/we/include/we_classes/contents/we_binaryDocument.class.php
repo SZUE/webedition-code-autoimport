@@ -371,7 +371,7 @@ class we_binaryDocument extends we_document{
 		$search = new we_search_search();
 		$search->searchMediaLinks(0, true, $this->ID);
 		$ml = $search->getUsedMediaLinks();
-		$references = $ml['mediaID_' . $this->ID]; //IMPORTANT: we hava a nested structure: make optgroupa
+		$references = isset($ml['mediaID_' . $this->ID]) ? $ml['mediaID_' . $this->ID] : array(); //IMPORTANT: we hava a nested structure: make optgroupa
 
 		if(empty($references)){
 			return g_l('weClass', '[notReferenced]');
