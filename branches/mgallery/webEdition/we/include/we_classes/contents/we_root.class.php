@@ -1053,7 +1053,6 @@ abstract class we_root extends we_class{
 		we_loadLanguageConfig();
 		$_languages = getWeFrontendLanguagesForBackend();
 		$langkeys = array_keys($_languages);
-		$langkeys = array_keys($_languages);
 		if(LANGLINK_SUPPORT){
 			$isFolder = $this instanceof we_folder;
 			$isObject = (defined('OBJECT_FILES_TABLE') ? $this->Table == OBJECT_FILES_TABLE || $this->Table == OBJECT_TABLE : false);
@@ -1087,6 +1086,7 @@ abstract class we_root extends we_class{
 		}
 		//don't stress index:
 		$replace = $this->getLinkReplaceArray();
+		t_e($this->elements );
 		foreach($this->elements as $k => $v){
 			if(!$this->i_isElement($k) ||
 					//ignore fields which result in empty entry
@@ -1117,7 +1117,7 @@ abstract class we_root extends we_class{
 					'Dat' => $bdid ? sql_function('NULL') : (is_array($dat) ? we_serialize($dat) : $dat),
 					'BDID' => intval($bdid),
 				);
-				
+
 				$key = $v['type'] . '_' . $k;
 				if(isset($replace[$key])){
 					$cid = $replace[$key];

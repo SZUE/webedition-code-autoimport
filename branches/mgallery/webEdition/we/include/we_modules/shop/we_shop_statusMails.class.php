@@ -291,9 +291,9 @@ class we_shop_statusMails{
 			}
 			if(!empty($this->EMailData['DocumentAttachmentFieldB'])){
 				$attachmentBinternal = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldB'] . we_base_link::MAGIC_INT_LINK);
-				$attachmentB = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldB'] . ($attachmentBinternal ? we_base_link::MAGIC_INT_LINK_PATH : ''));
+				$attachmentB = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldB'] . ($attachmentBinternal ? we_base_link::MAGIC_INT_LINK_ID : ''));
 				if($attachmentB){
-					$phpmail->doaddAttachment($_SERVER['DOCUMENT_ROOT'] . $attachmentB);
+					$phpmail->doaddAttachment($_SERVER['DOCUMENT_ROOT'] . ($attachmentBinternal ? id_to_path($attachmentB) : $attachmentB));
 				}
 			}
 			$phpmail->buildMessage();

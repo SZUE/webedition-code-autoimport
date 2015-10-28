@@ -538,7 +538,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 										$pathTo = $this->getNewPath($path);
 										$idTo = path_to_id($pathTo, FILE_TABLE, $DB_WE);
 										$we_doc->setElement($regs[1] . we_base_link::MAGIC_INT_LINK_ID, ( $idTo ? : '##WEPATH##' . $pathTo . ' ###WEPATH###'), 'href', 'bdid');
-										$we_doc->setElement($regs[1] . we_base_link::MAGIC_INT_LINK_PATH, $pathTo, 'href');
+										//$we_doc->setElement($regs[1] . we_base_link::MAGIC_INT_LINK_PATH, $pathTo, 'href');
 									}
 								}
 							} elseif(($path = $we_doc->getElement($regs[1]))){

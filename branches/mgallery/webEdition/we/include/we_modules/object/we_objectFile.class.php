@@ -1078,7 +1078,7 @@ class we_objectFile extends we_document{
 		$intPath = $intID ? id_to_path($intID) : '';
 		$extPath = isset($hrefArr['extPath']) ? $hrefArr['extPath'] : '';
 		$int_elem_Name = 'we_' . $this->Name . '_href[' . $nint . ']';
-		$intPath_elem_Name = 'we_' . $this->Name . '_href[' . $nintPath . ']';
+		$intPath_elem_Name = 'we_' . $this->Name . '_vars[' . $nintPath . ']';
 		$intID_elem_Name = 'we_' . $this->Name . '_href[' . $nintID . ']';
 		$ext_elem_Name = 'we_' . $this->Name . '_href[' . $nextPath . ']';
 		switch(isset($attribs['hreftype']) ? $attribs['hreftype'] : ''){

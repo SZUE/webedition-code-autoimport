@@ -170,7 +170,10 @@ abstract class we_updater{
 		$db = $GLOBALS['DB_WE'];
 		$db->query('SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND DID NOT IN(SELECT ID FROM ' . FILE_TABLE . ')
 UNION
-SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NOT IN(SELECT ID FROM ' . TEMPLATES_TABLE . ')', true);
+SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NOT IN(SELECT ID FROM ' . TEMPLATES_TABLE . ')
+UNION
+SELECT CID FROM FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="href" AND Name LIKE "%_intPath"
+', true);
 
 		if(($del = $db->getAll(true))){
 			$db->query('DELETE FROM ' . LINK_TABLE . ' WHERE CID IN (' . implode(',', $del) . ')');
@@ -304,7 +307,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 		if(!f('SELECT COUNT(1) FROM ' . CONTENT_TABLEx . ' WHERE Dat IS NOT NULL AND hash=x\'00000000000000000000000000000000\'')){
 			//	return;
 		}
-		$db->query('UPDATE ' . CONTENT_TABLEx . ' SET Dat=NULL WHERE Dat="" AND BDID>0');
+
 		if(version_compare("5.5.3", we_database_base::getMysqlVer(false)) > 1){
 			//md5 is binary in mysql <5.5.3
 			$db->query('UPDATE ' . CONTENT_TABLEx . ' SET hash=md5(Dat)');
