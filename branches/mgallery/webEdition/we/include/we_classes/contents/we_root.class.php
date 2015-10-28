@@ -178,6 +178,7 @@ abstract class we_root extends we_class{
 
 	//FIXME: make this __sleep
 	function saveInSession(&$save){
+		//NOTE: this is used for temporary documents! so be carefull when changing
 		$save = array(
 			array(),
 			$this->elements
@@ -186,13 +187,13 @@ abstract class we_root extends we_class{
 			$bb = isset($this->{$slot}) ? $this->{$slot} : '';
 			if(!is_object($bb)){
 				$save[0][$slot] = $bb;
-			} else {//FIXME: will this ever be restored???
-				$save[0][$slot . '_class'] = we_serialize($bb);
+			} else {
+				t_e('try to serialize object');
 			}
 		}
 		// save weDocumentCustomerFilter in Session
 		if(isset($this->documentCustomerFilter) && defined('CUSTOMER_TABLE')){
-			$save[3] = we_serialize($this->documentCustomerFilter);
+			$save[3] = $this->documentCustomerFilter;
 		}
 	}
 
@@ -1092,25 +1093,29 @@ abstract class we_root extends we_class{
 					$data = array();
 					foreach($tableInfo as $t){
 						$fieldName = $t['name'];
-						$val = isset($v[strtolower($fieldName)]) ? $v[strtolower($fieldName)] : '';
+						$idx = strtolower($fieldName);
+						$val = isset($v[$idx]) ? $v[$idx] : '';
 						if($k === 'data' && $this->isBinary()){
-							break;
+							continue;
 						}
-						if($fieldName === 'Dat' && !empty($v['ffname'])){
-							$v['type'] = 'formfield';
-							$val = we_serialize($v);
-							// Artjom garbage fix
+						switch(empty($v['type']) ? '' : $v['type']){
+							case '':
+								$v['type'] = 'txt';
+								break;
+							case 'date':
+								$val = sprintf('%016d', $val);
 						}
-
-						if(!isset($v['type']) || !$v['type']){
-							$v['type'] = 'txt';
+						switch($fieldName){
+							case 'ID':
+								continue;
+							case 'Dat':
+								if(!empty($v['ffname'])){
+									$v['type'] = 'formfield';
+									$val = we_serialize($v);
+									// Artjom garbage fix
+								}
 						}
-						if($v['type'] === 'date'){
-							$val = sprintf('%016d', $val);
-						}
-						if($fieldName != 'ID'){
-							$data[$fieldName] = is_array($val) ? we_serialize($val) : $val;
-						}
+						$data[$fieldName] = is_array($val) ? we_serialize($val) : $val;
 					}
 					if($data){
 						$data = we_database_base::arraySetter($data);
@@ -1141,7 +1146,8 @@ abstract class we_root extends we_class{
 			}
 		}
 
-		if(($replace = implode(',', $replace))){
+		if($replace){
+			$replace = implode(',', $replace);
 			$this->DB_WE->query('DELETE FROM ' . LINK_TABLE . ' WHERE DocumentTable="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '" AND CID IN(' . $replace . ')');
 			$this->DB_WE->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID IN (' . $replace . ')');
 		}

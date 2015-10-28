@@ -87,7 +87,7 @@ class we_folder extends we_root{
 			}
 			if(we_base_request::_(we_base_request::BOOL, 'we_edit_weDocumentCustomerFilter')){
 				$this->documentCustomerFilter = we_customer_documentFilter::getCustomerFilterFromRequest($this->ID, $this->ContentType, $this->Table);
-			} else if(isset($sessDat[3])){ // init webUser from session
+			} else if(isset($sessDat[3])){ // init webUser from session - only for old temporary documents
 				$this->documentCustomerFilter = we_unserialize($sessDat[3]);
 			}
 		}

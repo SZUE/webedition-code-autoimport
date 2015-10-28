@@ -664,16 +664,10 @@ class we_document extends we_root{
 				$this->To = mktime($hour, $min, 0, $month, $day, $year);
 			}
 		}
-		/* if(isset($sessDat[2])){
-		  $this->NavigationItems = $sessDat[2];
-		  } else {
-		  $this->i_loadNavigationItems();
-		  } */
-
 
 		if(we_base_request::_(we_base_request::INT, 'wecf_mode') !== false){
 			$this->documentCustomerFilter = we_customer_documentFilter::getCustomerFilterFromRequest($this->ID, $this->ContentType, $this->Table);
-		} else if(isset($sessDat[3])){ // init webUser from session
+		} else if(isset($sessDat[3])){ // init webUser from session - unserialize is only needed for old temporary docs
 			$this->documentCustomerFilter = we_unserialize($sessDat[3]);
 		}
 
@@ -818,7 +812,7 @@ class we_document extends we_root{
 						$img->setElement('name', $img->getElement('name'), 'attrib');
 					}
 				}
-				
+
 				switch($pathOnly ? 'path' : (isset($attribs['only']) ? $attribs['only'] : '')){
 					case 'src': //TODO: make separate case for multi domain project to devide between path and src
 					case 'path':
@@ -826,7 +820,7 @@ class we_document extends we_root{
 					case 'id':
 						return $img->ID;
 				}
-				
+
 				return $img->getHtml(false, true);
 			case 'binary':
 				$bin = new we_otherDocument();

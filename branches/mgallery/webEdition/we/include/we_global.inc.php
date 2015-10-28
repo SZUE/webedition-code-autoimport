@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,7 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 function weFileExists($id, $table = FILE_TABLE, we_database_base $db = NULL){
 	t_e('deprecated', __FUNCTION__);
 	return we_base_file::isWeFile($id, $table, $db);
@@ -1174,7 +1174,7 @@ function getMysqlVer($nodots = true){
 
 function we_unserialize($string, $default = array(), $quiet = false){
 	//already unserialized
-	if(is_array($string)){
+	if(is_array($string) || is_object($string)){
 		return $string;
 	}
 	//compressed?
