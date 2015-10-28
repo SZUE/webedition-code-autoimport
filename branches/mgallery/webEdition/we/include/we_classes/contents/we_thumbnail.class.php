@@ -567,7 +567,7 @@ class we_thumbnail{
 	 */
 	private function getImageData($getBinary = false, $onlyFocus = false){
 		$this->db->query('SELECT l.Name,c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID WHERE l.DID=' . intval($this->imageID) .
-			' AND l.DocumentTable="tblFile"' . ($onlyFocus ? ' AND l.Name="focus"' : ''));
+			' AND l.DocumentTable="tblFile"' . ($onlyFocus ? ' AND l.nHash=x\'' . md5("focus") . '\'' : ''));
 
 		while($this->db->next_record()){
 			switch($this->db->f('Name')){

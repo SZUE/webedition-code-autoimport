@@ -148,7 +148,7 @@ class we_listview_document extends we_listview_base{
 				default:
 					$cnt = count($this->joins);
 					$this->joins[] = ' LEFT JOIN ' . LINK_TABLE . ' ll' . $cnt . ' ON ll' . $cnt . '.DID=' . FILE_TABLE . '.ID LEFT JOIN ' . CONTENT_TABLE . ' cc' . $cnt . ' ON ll' . $cnt . '.CID=cc' . $cnt . '.ID';
-					$this->orderWhere[] = 'll' . $cnt . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND ll' . $cnt . '.Name="' . $this->DB_WE->escape($ord) . '"';
+					$this->orderWhere[] = 'll' . $cnt . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND ll' . $cnt . '.nHash=x\'' . md5($ord) . '\'';
 					if($this->search){
 						$order[] = 'ranking';
 					}
@@ -421,7 +421,7 @@ class we_listview_document extends we_listview_base{
 	}
 
 	function makeFieldCondition($name, $operation, $value){
-		return '(' . LINK_TABLE . '.Name="' . $this->DB_WE->escape($name) . '" AND ' . CONTENT_TABLE . '.Dat ' . $operation . ' ' . $value . ')';
+		return '(' . LINK_TABLE . '.nHash=x\'' . md5($name) . '\' AND ' . CONTENT_TABLE . '.Dat ' . $operation . ' ' . $value . ')';
 	}
 
 }

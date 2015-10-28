@@ -147,7 +147,7 @@ if(isset($daten)){
 	function array_select($arr_value, $select_name, $label){ // function for a selectbox for the purpose of selecting a class
 		$shopConfig = !empty($GLOBALS['feldnamen']) ?
 			$GLOBALS['feldnamen'] :
-			explode('|', f('SELECT pref_value FROM ' . SETTINGS_TABLE. ' WHERE tool="shop" AND pref_name="shop_pref"'));
+			explode('|', f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_pref"'));
 
 		$fe = (isset($shopConfig[3]) ?
 				array_map('intval', array_filter(explode(',', $shopConfig[3]))) : //determine more than just one class-ID

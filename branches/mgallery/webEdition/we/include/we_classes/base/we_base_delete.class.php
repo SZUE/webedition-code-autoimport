@@ -141,7 +141,7 @@ abstract class we_base_delete{
 
 		switch($table){
 			case FILE_TABLE:
-				$DB_WE->query('UPDATE ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID SET BDID=0 WHERE l.Type IN ("href","img") AND c.BDID=' . intval($id));
+				$DB_WE->query('UPDATE ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID SET c.BDID=0 WHERE l.Type IN ("href","img") AND c.BDID=' . intval($id));
 				$DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=0 AND ID=' . intval($id));
 
 				if(defined('SCHEDULE_TABLE')){ //	Delete entries from schedule as well

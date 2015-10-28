@@ -674,7 +674,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		$orCustomElement = ' OR (l.Name = "elemIMG" AND c.Dat != "") OR (l.Name = "elemIMG" AND c.BDID != 0)';
 		if($this->remTable == stripTblPrefix(FILE_TABLE)){
 			$this->DB_WE->query('SELECT l.DID, l.Name, l.type, c.Dat, c.BDID FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID = c.ID
-				WHERE l.DID IN (' . rtrim($itemsCsv, ',') . ') AND ((l.type = "attrib" AND l.Name IN ("title", "alt")) OR (l.type = "txt" AND l.Name IN ("Title", "Description")) ' . $orCustomElement . ')'
+				WHERE l.DocumentTable="tblFile" AND l.DID IN (' . rtrim($itemsCsv, ',') . ') AND ((l.type="attrib" AND l.Name IN ("title", "alt")) OR (l.type="txt" AND l.Name IN ("Title", "Description")) ' . $orCustomElement . ')'
 			);
 
 			while($this->DB_WE->next_record()){

@@ -188,7 +188,7 @@ function doUnload() {
 	 * @return	array
 	 */
 	private static function _getFieldsFromTemplate($tid){
-		$templateCode = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . intval($tid) . ' AND l.Name="completeData"');
+		$templateCode = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . intval($tid) . ' AND l.nHash=x\'' . md5("completeData") . '\'');
 		$tp = new we_tag_tagParser($templateCode);
 		$tags = $tp->getAllTags();
 		$records = $regs = array();

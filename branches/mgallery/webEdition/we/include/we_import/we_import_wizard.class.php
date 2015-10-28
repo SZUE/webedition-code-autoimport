@@ -302,7 +302,7 @@ function handle_event(evt) {
 			else {
 				handle_eventNext();
 			}" :
-					"handle_eventNext();") . "
+				"handle_eventNext();") . "
 			break;
 		case 'cancel':
 			top.close();
@@ -860,7 +860,7 @@ function handle_event(evt) {
 			else {
 					handle_eventNext();
 			}" :
-					"handle_eventNext();") . "
+				"handle_eventNext();") . "
 			break;
 		case 'cancel':
 			top.close();
@@ -892,17 +892,17 @@ function handle_eventNext(){
 		" . we_message_reporting::getShowMessageCall(g_l('import', '[select_source_file]'), we_message_reporting::WE_MESSAGE_ERROR) . " return;
 	}
 	if(!f.elements['v[we_TemplateID]'].value ) f.elements['v[we_TemplateID]'].value =f.elements.noDocTypeTemplateId.value;" .
-				(defined('OBJECT_TABLE') ?
-					"if((f.elements['v[import_type]'][0].checked == true && f.elements['v[we_TemplateID]'].value != 0) || (f.elements['v[import_type]'][1].checked == true)) {\n" :
-					"if(f.elements['v[we_TemplateID]'].value!=0) {\n"
-				) . "
+			(defined('OBJECT_TABLE') ?
+				"if((f.elements['v[import_type]'][0].checked == true && f.elements['v[we_TemplateID]'].value != 0) || (f.elements['v[import_type]'][1].checked == true)) {\n" :
+				"if(f.elements['v[we_TemplateID]'].value!=0) {\n"
+			) . "
 			f.step.value = 2;
 			we_submit_form(f, 'wizbody', '" . $this->path . "');
 	} else {" .
-				(defined('OBJECT_TABLE') ?
-					"				if(f.elements['v[import_type]'][0].checked == true) " . we_message_reporting::getShowMessageCall(g_l('import', '[select_docType]'), we_message_reporting::WE_MESSAGE_ERROR) :
-					we_message_reporting::getShowMessageCall(g_l('import', '[select_docType]'), we_message_reporting::WE_MESSAGE_ERROR)
-				) . "
+			(defined('OBJECT_TABLE') ?
+				"				if(f.elements['v[import_type]'][0].checked == true) " . we_message_reporting::getShowMessageCall(g_l('import', '[select_docType]'), we_message_reporting::WE_MESSAGE_ERROR) :
+				we_message_reporting::getShowMessageCall(g_l('import', '[select_docType]'), we_message_reporting::WE_MESSAGE_ERROR)
+			) . "
 	}
 }
 ";
@@ -1386,7 +1386,7 @@ function handle_event(evt) {
 		$dateFields = array();
 
 		if($v['import_type'] === 'documents'){
-			$templateCode = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . intval($v['we_TemplateID']) . ' AND l.Name="completeData"', '', $db);
+			$templateCode = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . intval($v['we_TemplateID']) . ' AND l.Name=x\'' . md5("completeData") . '\'', '', $db);
 			$tp = new we_tag_tagParser($templateCode);
 			$tags = $tp->getAllTags();
 			$regs = array();
@@ -1629,7 +1629,7 @@ function handle_event(evt) {
 			else {
 				handle_eventNext();
 			}" :
-					"handle_eventNext();") . "
+				"handle_eventNext();") . "
 			break;
 		case 'cancel':
 			top.close();
@@ -1652,7 +1652,7 @@ function handle_eventNext(){
 		ext = fl.substr(fl.length-4,4);
 		f.elements['v[import_from]'].value = fl;
 	}else if (fs=='/' || fl=='') {" .
-				(we_message_reporting::getShowMessageCall(g_l('import', '[select_source_file]'), we_message_reporting::WE_MESSAGE_ERROR)) . " return;
+			(we_message_reporting::getShowMessageCall(g_l('import', '[select_source_file]'), we_message_reporting::WE_MESSAGE_ERROR)) . " return;
 	}
 	if (fvalid && f.elements['v[csv_seperator]'].value=='') { fvalid=false; " . we_message_reporting::getShowMessageCall(g_l('import', '[select_seperator]'), we_message_reporting::WE_MESSAGE_ERROR) . "}
 	if (fvalid) {
@@ -2256,7 +2256,7 @@ function handle_event(evt) {
 		$records = $dateFields = array();
 
 		if(we_base_request::_(we_base_request::STRING, 'v', '', "import_type") === "documents"){
-			$templateCode = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID  WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . we_base_request::_(we_base_request::INT, 'v', 0, 'we_TemplateID') . ' AND l.Name="completeData"', '', $db);
+			$templateCode = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID  WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . we_base_request::_(we_base_request::INT, 'v', 0, 'we_TemplateID') . ' AND l.Name=x\'' . md5("completeData") . '\'', '', $db);
 			$tp = new we_tag_tagParser($templateCode);
 
 			$tags = $tp->getAllTags();

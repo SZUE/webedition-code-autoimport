@@ -21,7 +21,7 @@
 //FIXME: remove this file almost complete; at least all DB queries. Replace by Update-Script calls on DB-Files.
 abstract class we_updater{
 
-	private static function replayUpdateDB($specFile = ''){
+	static function replayUpdateDB($specFile = ''){
 		include_once(WEBEDITION_PATH . 'liveUpdate/conf/conf.inc.php');
 		include_once(WEBEDITION_PATH . 'liveUpdate/classes/liveUpdateFunctions.class.php');
 		$lf = new liveUpdateFunctions();
@@ -166,17 +166,48 @@ abstract class we_updater{
 	  }
 	  } */
 
-	public static function fixInconsistentTables(){//from backup
-		$db = $GLOBALS['DB_WE'];
+	public static function fixInconsistentTables(we_database_base $db = null){//from backup
+		$db = $db? : $GLOBALS['DB_WE'];
 		$db->query('SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND DID NOT IN(SELECT ID FROM ' . FILE_TABLE . ')
 UNION
 SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NOT IN(SELECT ID FROM ' . TEMPLATES_TABLE . ')
 UNION
-SELECT CID FROM FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="href" AND Name LIKE "%_intPath"
+SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="href" AND Name LIKE "%_intPath"
 ', true);
 
 		if(($del = $db->getAll(true))){
 			$db->query('DELETE FROM ' . LINK_TABLE . ' WHERE CID IN (' . implode(',', $del) . ')');
+		}
+
+		if(f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE nHash=x\'00000000000000000000000000000000\' LIMIT 1')){
+			if(version_compare("5.5.3", we_database_base::getMysqlVer(false)) > 1){
+				//md5 is binary in mysql <5.5.3
+				$db->query('UPDATE ' . LINK_TABLE. ' SET nHash=md5(Name)');
+			} else {
+				$db->query('UPDATE ' . LINK_TABLE . ' SET nHash=unhex(md5(Name))');
+			}
+			$db->delKey(LINK_TABLE, 'PRIMARY');
+			$db->addKey(LINK_TABLE, 'PRIMARY KEY (DID,DocumentTable,nHash,`Type`)');
+		}
+
+		if(!$db->getPrimaryKeys(LINK_TABLE)){
+			$db->addKey(LINK_TABLE, 'INDEX tmpHash(nHash)');
+			//unique is not set, we have to make updates
+			$db->query('CREATE TABLE IF NOT EXISTS WE_tmp(
+  DID int(11) unsigned NOT NULL,
+  CID int(11) unsigned NOT NULL,
+  `Type` tinytext,
+  DocumentTable tinytext,
+	nHash binary(16) NOT NULL,
+  KEY DID (DID,DocumentTable(5))
+)');
+			$db->query('TRUNCATE WE_tmp');
+			$db->query('INSERT INTO WE_tmp (SELECT DID,MAX(CID),Type,DocumentTable,nHash FROM ' . LINK_TABLE . ' group by nHash,Type,DID having count(1)>1 )');
+			$db->query('DELETE FROM ' . LINK_TABLE . ' WHERE (DID,Type,DocumentTable,nHash) IN (SELECT DID,Type,DocumentTable,nHash FROM WE_tmp) AND CID NOT IN (SELECT CID FROM WE_tmp)');
+			//finally delete key
+			$db->delKey(LINK_TABLE, 'tmpHash');
+			$db->addKey(LINK_TABLE, 'PRIMARY KEY (DID,DocumentTable,nHash,`Type`)');
+			$db->query('DROP TABLE WE_tmp');
 		}
 
 		$db->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID NOT IN (SELECT CID FROM ' . LINK_TABLE . ')');
@@ -222,9 +253,9 @@ SELECT CID FROM FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="
 					$data = we_unserialize($db->f('Catfields'));
 					if($data){
 						$udb->query('UPDATE ' . CATEGORY_TABLE . ' SET ' . we_database_base::arraySetter(array(
-									'Title' => $data['default']['Title'],
-									'Description' => $data['default']['Description'],
-								)) . ' WHERE ID=' . $db->f('ID'));
+								'Title' => $data['default']['Title'],
+								'Description' => $data['default']['Description'],
+							)) . ' WHERE ID=' . $db->f('ID'));
 					}
 				}
 			}
@@ -358,7 +389,7 @@ SELECT CID FROM FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="
 		  self::convertTemporaryDoc();
 		  self::meassure('convertTemporaryDoc');
 		 * */
-		self::fixInconsistentTables();
+		self::fixInconsistentTables($db);
 		self::meassure('fixInconsistentTables');
 		self::updateGlossar();
 		self::meassure('updateGlossar');
