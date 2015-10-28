@@ -1086,7 +1086,6 @@ abstract class we_root extends we_class{
 		}
 		//don't stress index:
 		$replace = $this->getLinkReplaceArray();
-		t_e($this->elements );
 		foreach($this->elements as $k => $v){
 			if(!$this->i_isElement($k) ||
 					//ignore fields which result in empty entry
