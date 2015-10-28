@@ -1,7 +1,3 @@
-liveUpdate/sqldumps/tblWebAdmin.sql
-html/white.html
-html/usel.html
-html/gray.html
 wysiwyg/weWysiwygSafari.js
 wysiwyg/weWysiwygLang.php
 wysiwyg/weWysiwyg.js
@@ -2468,6 +2464,7 @@ liveUpdate/sqldumps/tblMessages.sql
 liveUpdate/sqldumps/tblIcons.sql
 liveUpdate/sqldumps/tblContentTypes.sql
 liveUpdate/sqldumps/tblbannerprefs.sql
+liveUpdate/sqldumps/tblAnzeigePrefs.sql
 licenses/SMTP_PHPClass/License.txt
 licenses/PhpMailer/License.txt
 licenses/PEAR/PHP_License.txt
@@ -3294,12 +3291,15 @@ images/arrow_sort_asc.gif
 html/whiteWithTopLine.html
 html/whiteWithLeftLine.html
 html/white_inc.html
+html/white.html
+html/usel.html
 html/safariResize.html
 html/msg_white_fr.html
 html/msg_white_fr2.html
 html/msg_aqua_sep.html
 html/ieResize.html
 html/grayWithTopLine.html
+html/gray.html
 html/gray2.html
 html/frameheader.html
 html/blank.html
