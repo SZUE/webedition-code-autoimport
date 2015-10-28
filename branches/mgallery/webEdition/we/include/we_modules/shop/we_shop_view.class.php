@@ -161,16 +161,15 @@ function submitForm() {
 		$weShopStatusMails = we_shop_statusMails::getShopStatusMails();
 
 		// Get Country and Langfield Data
-		$strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"', '', $this->db);
-		$this->CLFields = (we_unserialize($strFelder)? : array(
-				'stateField' => '-',
-				'stateFieldIsISO' => 0,
-				'languageField' => '-',
-				'languageFieldIsISO' => 0
+		$this->CLFields = we_unserialize(f('SELECT strFelder FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_CountryLanguage"', '', $this->db), array(
+			'stateField' => '-',
+			'stateFieldIsISO' => 0,
+			'languageField' => '-',
+			'languageFieldIsISO' => 0
 		));
 
 		// config
-		$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"', '', $this->db));
+		$feldnamen = explode('|', f('SELECT pref_value FROM ' . SETTINGS_TABLE. ' WHERE tool="shop" AND pref_name="shop_pref"', '', $this->db));
 		$waehr = '&nbsp;' . oldHtmlspecialchars($feldnamen[0]);
 		$numberformat = $feldnamen[2];
 		$classid = (isset($feldnamen[3]) ? $feldnamen[3] : '');
@@ -207,7 +206,7 @@ function submitForm() {
 		// Get Customer data
 		$_REQUEST['cid'] = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid . ' LIMIT 1', '', $this->db);
 
-		if(($fields = we_unserialize(f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="edit_shop_properties"', '', $this->db)))){
+		if(($fields = we_unserialize(f('SELECT pref_value FROM ' . SETTINGS_TABLE. ' WHERE tool="shop" AND pref_name="edit_shop_properties"', '', $this->db)))){
 			// we have an array with following syntax:
 			// array ( 'customerFields' => array('fieldname ...',...)
 			//         'orderCustomerFields' => array('fieldname', ...) )
@@ -1523,7 +1522,7 @@ top.content.drawTree();' :
 
 	public function getHomeScreen(){
 
-		$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . " WHERE strDateiname='shop_pref'"));
+		$feldnamen = explode('|', f('SELECT pref_value FROM ' . SETTINGS_TABLE. ' WHERE tool="shop" AND pref_name="shop_pref"'));
 		for($i = 0; $i <= 3; $i++){
 			$feldnamen[$i] = isset($feldnamen[$i]) ? $feldnamen[$i] : '';
 		}

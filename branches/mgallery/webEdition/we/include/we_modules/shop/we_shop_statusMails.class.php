@@ -164,7 +164,7 @@ class we_shop_statusMails{
 			'languageFieldIsISO' => 0
 			), $documentsarray
 		);
-		$zw2 = strtr(f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="weShopStatusMails"', '', $DB_WE), array(
+		$zw2 = strtr(f('SELECT pref_value FROM ' . SETTINGS_TABLE. ' WHERE tool="shop" AND pref_name="weShopStatusMails"', '', $DB_WE), array(
 			'O:17:"weShopStatusMails":' => 'O:19:"we_shop_statusMails":',
 			'O:17:"weshopstatusmails":' => 'O:19:"we_shop_statusMails":',
 		));
@@ -287,7 +287,6 @@ class we_shop_statusMails{
 				$attachment = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldA'] . ($attachmentinternal ? we_base_link::MAGIC_INT_LINK_ID : ''));
 				if($attachment){
 					$phpmail->doaddAttachment($_SERVER['DOCUMENT_ROOT'] . ($attachmentinternal ? id_to_path($attachment) : $attachment));
-
 				}
 			}
 			if(!empty($this->EMailData['DocumentAttachmentFieldB'])){
@@ -295,7 +294,6 @@ class we_shop_statusMails{
 				$attachmentB = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldB'] . ($attachmentBinternal ? we_base_link::MAGIC_INT_LINK_PATH : ''));
 				if($attachmentB){
 					$phpmail->doaddAttachment($_SERVER['DOCUMENT_ROOT'] . $attachmentB);
-
 				}
 			}
 			$phpmail->buildMessage();
@@ -338,14 +336,15 @@ class we_shop_statusMails{
 	function save(){
 		$DB_WE = $GLOBALS['DB_WE'];
 
-		if($DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET strFelder="' . $DB_WE->escape(we_serialize($this)) . '",strDateiname="weShopStatusMails"')){
-			$strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"', '', $DB_WE);
-			if($strFelder !== ''){
-				$CLFields = we_unserialize($strFelder);
-				$CLFields['languageField'] = $this->LanguageData['languageField'];
-				$CLFields['languageFieldIsISO'] = $this->LanguageData['languageFieldIsISO'];
-				$DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET strFelder="' . $DB_WE->escape(we_serialize($CLFields)) . '", strDateiname ="shop_CountryLanguage"');
+		if($DB_WE->query('REPLACE ' . SETTINGS_TABLE. ' SET pref_value="' . $DB_WE->escape(we_serialize($this)) . '",tool="shop",pref_name="weShopStatusMails"')){
+			$CLFields = we_unserialize(f('SELECT pref_value FROM ' . SETTINGS_TABLE. ' WHERE tool="shop" AND pref_name="shop_CountryLanguage"', '', $DB_WE));
+			if(!$CLFields){
+				$CLFields = array(
+					'languageField' => $this->LanguageData['languageField'],
+					'languageFieldIsISO' => $this->LanguageData['languageFieldIsISO']);
+				$DB_WE->query('REPLACE ' . SETTINGS_TABLE . ' SET pref_value="' . $DB_WE->escape(we_serialize($CLFields)) . '",tool="shop",pref_name="shop_CountryLanguage"');
 			}
+
 			return true;
 		}
 		return false;

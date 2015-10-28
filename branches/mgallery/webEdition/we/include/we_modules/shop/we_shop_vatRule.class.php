@@ -94,7 +94,7 @@ class we_shop_vatRule{
 	}
 
 	public static function getShopVatRule(){
-		if(($strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="weShopVatRule"'))){
+		if(($strFelder = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="weShopVatRule"'))){
 			//FIX old class names
 			return we_unserialize(strtr($strFelder, array('O:13:"weShopVatRule":' => 'O:15:"we_shop_vatRule":', 'O:13:"weshopvatrule":' => 'O:15:"we_shop_vatRule":')));
 		}
@@ -139,14 +139,14 @@ class we_shop_vatRule{
 	function save(){
 		$DB_WE = $GLOBALS['DB_WE'];
 
-		if($DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' set strFelder="' . $DB_WE->escape(we_serialize($this)) . '", strDateiname="weShopVatRule"')){
-			$strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"', '', $DB_WE);
-			if($strFelder !== ''){
-				$DB_WE->next_record();
-				$CLFields = we_unserialize($strFelder);
-				$CLFields['stateField'] = $this->stateField;
-				$CLFields['stateFieldIsISO'] = $this->stateFieldIsISO;
-				$DB_WE->query('UPDATE ' . WE_SHOP_PREFS_TABLE . " SET strFelder='" . $DB_WE->escape(we_serialize($CLFields)) . "' WHERE strDateiname ='shop_CountryLanguage'");
+		if($DB_WE->query('REPLACE ' . SETTINGS_TABLE . ' set pref_value="' . $DB_WE->escape(we_serialize($this)) . '",tool="shop",pref_name="weShopVatRule"')){
+			$CLFields = we_unserialize(f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_CountryLanguage"', '', $DB_WE));
+			if(!$CLFields){
+				$CLFields = array(
+					'stateField' => $this->stateField,
+					'stateFieldIsISO' => $this->stateFieldIsISO
+				);
+				$DB_WE->query('UPDATE ' . SETTINGS_TABLE . ' SET pref_value="' . $DB_WE->escape(we_serialize($CLFields)) . '" WHERE tool="shop",pref_name="shop_CountryLanguage"');
 			}
 
 			return true;

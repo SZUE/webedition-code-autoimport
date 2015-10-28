@@ -566,7 +566,7 @@ class we_shop_category extends we_category{
 			return $getIsFallbackToStandard ? true : ($getRate ? $vat->vat : $vat);
 		}
 
-		$shopPrefs = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"', '', $this->db, -1));
+		$shopPrefs = explode('|', f('SELECT pref_value FROM ' . SETTINGS_TABLE. ' WHERE tool="shop" AND pref_name="shop_pref"', '', $this->db, -1));
 		if(($pref = $shopPrefs[1])){
 			self::$shopVatsByCategoryCountry[$this->ID][$country] = false;
 			if($getIsFallbackToPrefs){

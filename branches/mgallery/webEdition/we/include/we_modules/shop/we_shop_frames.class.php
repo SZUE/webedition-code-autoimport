@@ -46,7 +46,7 @@ class we_shop_frames extends we_modules_frame{
 		}
 		// print $yearTrans;
 		/// config
-		$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"', 'strFelder', $this->db));
+		$feldnamen = explode('|', f('SELECT pref_value FROM ' . SETTINGS_TABLE. ' WHERE tool="shop" AND pref_name="shop_pref"', '', $this->db));
 		for($i = 0; $i <= 3; $i++){
 			$feldnamen[$i] = isset($feldnamen[$i]) ? $feldnamen[$i] : '';
 		}
@@ -199,7 +199,7 @@ function we_cmd() {
 		$headline = $data ? '<a style="text-decoration: none;" href="javascript:we_cmd(\'openOrder\', ' . $data['IntOrderID'] . ',\'shop\',\'' . SHOP_TABLE . '\');">' . sprintf(g_l('modules_shop', '[lastOrder]'), $data['IntOrderID'], $data['orddate']) . '</a>' : '';
 
 /// config
-		$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"', '', $this->db));
+		$feldnamen = explode('|', f('SELECT pref_value FROM ' . SETTINGS_TABLE. ' WHERE tool="shop" AND pref_name="shop_pref"', '', $this->db));
 		for($i = 0; $i <= 3; $i++){
 			$feldnamen[$i] = isset($feldnamen[$i]) ? $feldnamen[$i] : '';
 		}
@@ -285,7 +285,7 @@ function we_cmd() {
 		$bid = we_base_request::_(we_base_request::INT, 'bid', 0);
 
 // config
-		$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"', '', $DB_WE));
+		$feldnamen = explode('|', f('SELECT pref_value FROM ' . SETTINGS_TABLE. ' WHERE tool="shop" AND pref_name="shop_pref"', '', $DB_WE));
 		for($i = 0; $i <= 3; $i++){
 			$feldnamen[$i] = isset($feldnamen[$i]) ? $feldnamen[$i] : '';
 		}
@@ -377,7 +377,7 @@ function setTab(tab) {
 		$headline = ($data ? sprintf(g_l('modules_shop', '[lastOrder]'), $data["IntOrderID"], $data["orddate"]) : '');
 
 /// config
-		$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"', '', $this->db));
+		$feldnamen = explode('|', f('SELECT pref_value FROM ' . SETTINGS_TABLE. ' WHERE tool="shop" AND pref_name="shop_pref"', '', $this->db));
 		$fe = isset($feldnamen[3]) ? explode(",", $feldnamen[3]) : array(0);
 
 		$classid = $fe[0];

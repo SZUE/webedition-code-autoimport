@@ -177,7 +177,7 @@ class we_exim_contentProvider{
 //FIXME: remove the following code in 6.5
 		$encoded = array(
 			'we_element' => array('Dat', 'dat'),
-			'we_backup_tableItem' => array('Dat', 'strFelder', 'strSerial', 'DocumentObject',
+			'we_backup_tableItem' => array('Dat', 'strSerial', 'DocumentObject',
 				'QASet', 'QASetAdditions', 'RevoteUserAgent', 'agent',
 				'LogData', 'strSerialOrder',
 				'documentElements', 'documentScheduler', 'documentCustomFilter'//tblVersions

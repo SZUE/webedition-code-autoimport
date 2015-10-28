@@ -81,7 +81,7 @@ switch($iDate){//FIXME: use cast & between to make this perform better
 }
 
 // get some preferences!
-$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"'));
+$feldnamen = explode('|', f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_pref"'));
 $currency = oldHtmlspecialchars($feldnamen[0]);
 $numberformat = $feldnamen[2];
 $classid = (isset($feldnamen[3]) ? $feldnamen[3] : '');
