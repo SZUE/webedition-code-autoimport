@@ -194,8 +194,8 @@ abstract class we_html_forms{
 
 		$value = self::removeBrokenInternalLinksAndImages($value);
 
-		$width = is_numeric($width) ? max($width ? : intval($cols) * 5.5, we_wysiwyg_editor::MIN_WIDTH) : $width;
-		$height = is_numeric($height) ? max($height ? : intval($rows) * 8, we_wysiwyg_editor::MIN_HEIGTH) : $height;
+		$width = is_numeric($width) ? max($width ? : intval($cols) * 5.5, we_wysiwyg_editor::MIN_WIDTH_INLINE) : $width;
+		$height = is_numeric($height) ? max($height ? : intval($rows) * 8, we_wysiwyg_editor::MIN_HEIGHT_INLINE) : $height;
 
 		if($wysiwyg){
 			if(!$showmenues){

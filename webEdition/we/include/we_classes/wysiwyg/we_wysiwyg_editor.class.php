@@ -93,8 +93,10 @@ class we_wysiwyg_editor{
 	private static $allFontSizes = array('0.5em', '0.8em', '1em', '1.2em', '1.5em', '2em', '8px', '10px', '12px', '14px', '18px', '24px', '36px', 'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large', 'smaller', 'larger', 'inherit');
 
 	const CONDITIONAL = true;
-	const MIN_WIDTH = 200;
-	const MIN_HEIGTH = 100;
+	const MIN_WIDTH_INLINE = 100;
+	const MIN_HEIGHT_INLINE = 100;
+	const MIN_WIDTH_POPUP = 100;
+	const MIN_HEIGHT_POPUP = 100;
 
 	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = '', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $oldHtmlspecialchars = true, $contentCss = '', $origName = '', $tinyParams = '', $contextmenu = '', $isInPopup = false, $templates = '', $formats = '', $fontsizes = ''){
 		$this->propstring = $propstring ? ',' . $propstring . ',' : '';
@@ -542,10 +544,9 @@ td.mceToolbar{
 		$js_function = $this->isFrontendEdit ? 'open_wysiwyg_win' : 'we_cmd';
 		$param4 = !$this->isFrontendEdit ? '' : we_base_request::encCmd('frontend');
 		$width = we_base_util::convertUnits($this->width);
-		$width = max((is_numeric($width) ? "'" . ($width - 0) . "'" : '(' . intval($width) . '/100*screen.availWidth) - 0'), self::MIN_WIDTH); // corrections disabled
-		//even if height in % doesn't make sense... => since 6.4.3 it makes sense in popup!
+		$width = is_numeric($width) ? max($width, self::MIN_WIDTH_POPUP) : '(' . intval($width) . '/100*screen.availWidth)';
 		$height = we_base_util::convertUnits($this->height);
-		$height = max((is_numeric($height) ? "'" . ($height - 0) . "'" : '(' . intval($height) . '/100*screen.availHeight) - 0'), self::MIN_HEIGTH); // corrections disabled
+		$height = is_numeric($height) ? max($height, self::MIN_HEIGHT_POPUP) : '(' . intval($height) . '/100*screen.availHeight)';
 
 		return
 			we_html_button::create_button("image:btn_edit_edit", "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "'," . $width . ", " . $height . ",'" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($this->fontnamesCSV, ',') . "',
@@ -792,9 +793,9 @@ td.mceToolbar{
 		$editorLangSuffix = $editorLang === 'de' ? 'de_' : '';
 
 		$width = we_base_util::convertUnits($this->width);
-		$width = (is_numeric($width) ? round(max($width, self::MIN_WIDTH) / 96, 3) . 'in' : $width);
+		$width = (is_numeric($width) ? round(max($width, self::MIN_WIDTH_INLINE) / 96, 3) . 'in' : $width);
 		$height = we_base_util::convertUnits($this->height);
-		$height = (is_numeric($height) ? round(max($height, self::MIN_HEIGTH) / 96, 3) . 'in' : $height);
+		$height = (is_numeric($height) ? round(max($height, self::MIN_HEIGHT_INLINE) / 96, 3) . 'in' : $height);
 
 		return we_html_element::jsElement(($this->fieldName ? '
 /* -- tinyMCE -- */

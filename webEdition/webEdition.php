@@ -1156,10 +1156,8 @@ echo 'new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
 				if (top.weEditorFrameController.getActiveDocumentReference()) {
 					top.weEditorFrameController.getActiveDocumentReference().openedWithWE = false;
 				}
-				var wyw = arguments[2];
-				wyw = Math.max((wyw ? wyw : 520), 520);
-				var wyh = arguments[3];
-				wyh = Math.max((wyh ? wyh : 400), 400);
+				var wyw = Math.max(parseInt(arguments[2]), <?php echo we_wysiwyg_editor::MIN_WIDTH_POPUP; ?>),
+					wyh = Math.max(parseInt(arguments[3]), <?php echo we_wysiwyg_editor::MIN_HEIGHT_POPUP; ?>);
 
 				if (window.screen) {
 					var screen_height = ((screen.height - 50) > screen.availHeight) ? screen.height - 50 : screen.availHeight;
@@ -1170,10 +1168,9 @@ echo 'new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
 				}
 				// set new width & height
 				url = url.replace(/we_cmd\[2\]=[^&]+/, 'we_cmd[2]=' + wyw);
-				url = url.replace(/we_cmd\[3\]=[^&]+/, 'we_cmd[3]=' + (wyh - arguments[10]));
+				url = url.replace(/we_cmd\[3\]=[^&]+/, 'we_cmd[3]=' + wyh);
 
-				new jsWindow(url, "we_wysiwygWin", -1, -1, Math.max(220, wyw + (document.all ? 0 : ((navigator.userAgent.toLowerCase().indexOf('safari') > -1) ? 20 : 4))), Math.max(100, wyh + 60), true, false, true);
-				//doPostCmd(arguments,"we_wysiwygWin");
+				new jsWindow(url, "we_wysiwygWin", -1, -1, wyw, wyh, true, false, true);
 				break;
 			case "not_installed_modules":
 				we_repl(self.load, url, arguments[0]);
