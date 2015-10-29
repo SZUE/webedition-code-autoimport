@@ -135,7 +135,7 @@ abstract class we_updater{
 				$db->query('UPDATE ' . LINK_TABLE . ' SET nHash=unhex(md5(Name))');
 			}
 			$db->delKey(LINK_TABLE, 'PRIMARY');
-			$db->addKey(LINK_TABLE, 'PRIMARY KEY (DID,DocumentTable,nHash,`Type`)');
+			$db->addKey(LINK_TABLE, 'PRIMARY KEY (DID,DocumentTable,nHash)');
 		}
 
 		if(!$db->getPrimaryKeys(LINK_TABLE)){
@@ -144,17 +144,16 @@ abstract class we_updater{
 			$db->query('CREATE TABLE IF NOT EXISTS WE_tmp(
   DID int(11) unsigned NOT NULL,
   CID int(11) unsigned NOT NULL,
-  `Type` tinytext,
   DocumentTable tinytext,
 	nHash binary(16) NOT NULL,
   KEY DID (DID,DocumentTable(5))
 )');
 			$db->query('TRUNCATE WE_tmp');
-			$db->query('INSERT INTO WE_tmp (SELECT DID,MAX(CID),Type,DocumentTable,nHash FROM ' . LINK_TABLE . ' group by nHash,Type,DID having count(1)>1 )');
-			$db->query('DELETE FROM ' . LINK_TABLE . ' WHERE (DID,Type,DocumentTable,nHash) IN (SELECT DID,Type,DocumentTable,nHash FROM WE_tmp) AND CID NOT IN (SELECT CID FROM WE_tmp)');
+			$db->query('INSERT INTO WE_tmp (SELECT DID,MAX(CID),DocumentTable,nHash FROM ' . LINK_TABLE . ' group by nHash,DID having count(1)>1 )');
+			$db->query('DELETE FROM ' . LINK_TABLE . ' WHERE (DID,DocumentTable,nHash) IN (SELECT DID,DocumentTable,nHash FROM WE_tmp) AND CID NOT IN (SELECT CID FROM WE_tmp)');
 			//finally delete key
 			$db->delKey(LINK_TABLE, 'tmpHash');
-			$db->addKey(LINK_TABLE, 'PRIMARY KEY (DID,DocumentTable,nHash,`Type`)');
+			$db->addKey(LINK_TABLE, 'PRIMARY KEY (DID,DocumentTable,nHash)');
 			$db->query('DROP TABLE WE_tmp');
 		}
 	}

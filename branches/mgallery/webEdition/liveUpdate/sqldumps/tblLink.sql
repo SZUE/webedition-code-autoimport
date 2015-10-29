@@ -23,4 +23,4 @@ CREATE TABLE ###TBLPREFIX###tblLink (
 ) ENGINE=MyISAM;
 
 /* query separator */
-###INSTALLONLY###ALTER TABLE ###TBLPREFIX###tblLink ADD PRIMARY KEY (DID,DocumentTable,nHash,`Type`)
+###INSTALLONLY###ALTER TABLE ###TBLPREFIX###tblLink ADD PRIMARY KEY (DID,DocumentTable,nHash)
