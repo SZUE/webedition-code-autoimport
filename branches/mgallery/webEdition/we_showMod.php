@@ -91,9 +91,7 @@ switch($mod){
 switch($mod){
 	case 'banner':
 		$weFrame = new we_banner_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
-		ob_start();
 		$weFrame->process();
-		$GLOBALS['extraJS'] = ob_get_clean();
 		break;
 	case 'shop':
 		$weFrame = new we_shop_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
@@ -116,27 +114,21 @@ switch($mod){
 		break;
 	case 'users':
 		$weFrame = new we_users_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
-
-		ob_start();
 		$weFrame->process();
-		$GLOBALS['extraJS'] = ob_get_clean();
 		break;
 
 	case 'export':
 		$weFrame = new we_export_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
-		$weFrame->getHTMLDocumentHeader($what);
 		$weFrame->process();
 		break;
 
 	case 'glossary':
 		$weFrame = new we_glossary_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
-		echo $weFrame->getHTMLDocumentHeader();
 		$weFrame->process();
 		break;
 
 	case 'voting':
 		$weFrame = new we_voting_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
-		echo $weFrame->getHTMLDocumentHeader();
 		$weFrame->process();
 		break;
 
@@ -148,12 +140,13 @@ switch($mod){
 				we_html_tools::protect(array('EDIT_NAVIAGTION_RULES'));
 
 				$weFrame = new we_navigation_ruleFrames();
+				ob_start();
 				$weFrame->Controller->processVariables();
 				$weFrame->Controller->processCommands();
+				$GLOBALS['extraJS'] = ob_get_clean();
 				break;
 			default:
 				$weFrame = new we_navigation_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
-				echo $weFrame->getHTMLDocumentHeader();
 				$weFrame->process();
 				break;
 		}

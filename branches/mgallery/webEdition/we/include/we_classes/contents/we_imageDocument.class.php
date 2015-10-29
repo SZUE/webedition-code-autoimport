@@ -512,7 +512,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 				case 'alt':
 				case 'width':
 				case 'height':
-					return $attribs[$showAttrOnly];
+					return empty($attribs[$showAttrOnly]) ? '' : $attribs[$showAttrOnly];
 				case 'filename':
 					return $this->Filename;
 				case 'size':

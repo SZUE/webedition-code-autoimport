@@ -282,8 +282,10 @@ var currentModule="' . $module . '";
 	 */
 
 	public function process(){
+		ob_start();
 		$this->View->processVariables();
 		$this->View->processCommands();
+		$GLOBALS['extraJS'] = ob_get_clean();
 	}
 
 }
