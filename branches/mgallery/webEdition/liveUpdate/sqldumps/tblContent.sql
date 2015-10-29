@@ -12,6 +12,8 @@ CREATE TABLE ###TBLPREFIX###tblContent (
   ID int(11) unsigned NOT NULL auto_increment,
   BDID int(11) unsigned NOT NULL default '0',
   Dat longtext,
+	dHash binary(16) NOT NULL,
   PRIMARY KEY (ID),
-  KEY BDID (BDID)
+  KEY BDID (BDID),
+	KEY dHash(dHash)
 ) ENGINE=MyISAM;
