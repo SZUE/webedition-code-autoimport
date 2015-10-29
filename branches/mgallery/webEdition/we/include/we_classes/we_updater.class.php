@@ -337,6 +337,29 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="href"
 		$db->delTable('WE_tmp');
 	}
 
+	private static function cleanUnreferencedVersions(we_database_base $db){
+		$all = array();
+		$d = dir(rtrim($_SERVER['DOCUMENT_ROOT'] . VERSION_DIR, '/'));
+		while(false !== ($entry = $d->read())){
+			switch($entry){
+				case '.':
+				case '..':
+					break;
+				default:
+					$all[] = VERSION_DIR . $entry;
+			}
+		}
+
+		$db->query('CREATE TEMPORARY TABLE tmp(b varchar(255) NOT NULL,KEY b (b))');
+		$db->query('INSERT INTO tmp VALUES ("' . implode('"),("', $all) . '")');
+		//we add a limit since this file might not be executed to the end
+		$db->query('SELECT b FROM tmp LEFT JOIN ' . VERSIONS_TABLE . ' ON b=binaryPath WHERE ID IS NULL LIMIT 1000');
+		$all = $db->getAll(true);
+		foreach($all as $cur){
+			we_base_file::delete($_SERVER['DOCUMENT_ROOT'] . $cur);
+		}
+	}
+
 	public static function doUpdate(){
 		$db = new DB_WE();
 		self::meassure('start');
@@ -363,6 +386,8 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="href"
 		self::meassure('fixHistory');
 		self::updateContentTable($db);
 		self::meassure('updateContent');
+		self::cleanUnreferencedVersions($db);
+		self::meassure('fixVersions');
 		self::replayUpdateDB();
 		self::meassure('replayUpdateDB');
 		self::meassure(-1);

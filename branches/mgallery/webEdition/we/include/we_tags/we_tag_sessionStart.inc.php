@@ -179,7 +179,7 @@ function wetagsessionStartdoLogin($persistentlogins, &$SessionAutologin, $extern
 		if(wetagsessionStartCheckDenied()){
 			return false;
 		}
-		$wasRegistered = $_SESSION['webuser']['registered'];
+		$wasRegistered = empty($_SESSION['webuser']['registered']) ? false : $_SESSION['webuser']['registered'];
 		$u = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE Password!="" AND LoginDenied=0 AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '"', null, MYSQL_ASSOC);
 		if($u && ($externalPasswordCheck || we_customer_customer::comparePassword($u['Password'], $_REQUEST['s']['Password']))){
 			if((SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_DBPASSWORD) == 0){

@@ -102,7 +102,9 @@ class we_dialog_Hyperlink extends we_dialog_base{
 					break;
 				case we_base_link::TYPE_MAIL_PREFIX:
 					$this->args['type'] = we_base_link::TYPE_MAIL;
-					$this->args['mailHref'] = trim($ref, '/?#');
+					$match = array();
+					preg_match('|^([^\?#]+).*$|', $ref, $match);
+					$this->args['mailHref'] = trim($match[1], '/');
 					$this->args['extHref'] = '';
 					$this->args['fileID'] = '';
 					$this->args['fileHref'] = '';

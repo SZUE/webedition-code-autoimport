@@ -187,8 +187,8 @@ abstract class we_html_forms{
 		$inlineedit = // we are in frontend, where default is inlineedit = true
 			weTag_getAttribute('inlineedit', $attribs, ($inwebedition ? INLINEEDIT_DEFAULT : true), we_base_request::BOOL);
 		$value = self::removeBrokenInternalLinksAndImages($value);
-		$width = is_numeric($width) ? max($width ? : intval($cols) * 5.5, we_wysiwyg_editor::MIN_WIDTH) : $width;
-		$height = is_numeric($height) ? max($height ? : intval($rows) * 8, we_wysiwyg_editor::MIN_HEIGTH) : $height;
+		$width = is_numeric($width) ? max($width ? : intval($cols) * 5.5, we_wysiwyg_editor::MIN_WIDTH_INLINE) : $width;
+		$height = is_numeric($height) ? max($height ? : intval($rows) * 8, we_wysiwyg_editor::MIN_HEIGHT_INLINE) : $height;
 
 		if($wysiwyg){
 			$commands = ($showmenues ? $commands : str_replace(array('formatblock,', 'fontname,', 'fontsize,',), '', $commands ? : implode(',', we_wysiwyg_editor::getAllCmds())));
