@@ -381,9 +381,9 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 				$data = unserialize($db->f('Catfields'));
 				if($data){
 					$udb->query('UPDATE ' . CATEGORY_TABLE . ' SET ' . we_database_base::arraySetter(array(
-								'Title' => $data['default']['Title'],
-								'Description' => $data['default']['Description'],
-							)) . ' WHERE ID=' . $db->f('ID'));
+							'Title' => $data['default']['Title'],
+							'Description' => $data['default']['Description'],
+						)) . ' WHERE ID=' . $db->f('ID'));
 				}
 			}
 			$db->delCol(CATEGORY_TABLE, 'Catfields');
@@ -432,7 +432,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 		$last = $now;
 	}
 
-	public static function removeObsoleteFiles($path=''){
+	public static function removeObsoleteFiles($path = ''){
 		$path = $path ? : WEBEDITION_PATH . 'liveUpdate/includes/';
 		if(is_file($path . 'del.files')){
 			$all = array();
@@ -455,6 +455,29 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 		}
 
 		return true;
+	}
+
+	private static function cleanUnreferencedVersions(we_database_base $db){
+		$all = array();
+		$d = dir(rtrim($_SERVER['DOCUMENT_ROOT'] . VERSION_DIR, '/'));
+		while(false !== ($entry = $d->read())){
+			switch($entry){
+				case '.':
+				case '..':
+					break;
+				default:
+					$all[] = VERSION_DIR . $entry;
+			}
+		}
+
+		$db->query('CREATE TEMPORARY TABLE tmp(b varchar(255) NOT NULL,KEY b (b))');
+		$db->query('INSERT INTO tmp VALUES ("' . implode('"),("', $all) . '")');
+		//we add a limit since this file might not be executed to the end
+		$db->query('SELECT b FROM tmp LEFT JOIN ' . VERSIONS_TABLE . ' ON b=binaryPath WHERE ID IS NULL LIMIT 1000');
+		$all = $db->getAll(true);
+		foreach($all as $cur){
+			we_base_file::delete($_SERVER['DOCUMENT_ROOT'] . $cur);
+		}
 	}
 
 	public static function doUpdate(){
@@ -485,6 +508,8 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 		self::meassure('updateCats');
 		self::fixHistory();
 		self::meassure('fixHistory');
+		self::cleanUnreferencedVersions($db);
+		self::meassure('fixVersions');
 		self::replayUpdateDB();
 		self::meassure('replayUpdateDB');
 		self::removeObsoleteFiles();
