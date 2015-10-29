@@ -23,9 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_fileupload_resp_import extends we_fileupload_resp_base{
-	//protected $writeToID = 0;
-	//protected $importToID = 0;//Parent
-
 	public function __construct($name = '', $contentType = '', $FILE = array(), $fileVars = array(), $controlVars = array(), $docVars = array()){
 		parent::__construct($name, $contentType, $FILE, $fileVars, $controlVars, $docVars);
 	}
@@ -35,19 +32,19 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 
 		$this->docVars = array_filter(array(
 				'transaction' => we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', $this->docVars['transaction']),
-				'importMetadata' => we_base_request::_(we_base_request::BOOL, 'importMetadata', $this->docVars['importMetadata']),
-				'imgsSearchable' => we_base_request::_(we_base_request::BOOL, 'imgsSearchable', $this->docVars['imgsSearchable']),
-				'widthSelect' => we_base_request::_(we_base_request::STRING, 'widthSelect', $this->docVars['widthSelect']),
-				'heightSelect' => we_base_request::_(we_base_request::STRING, 'heightSelect', $this->docVars['heightSelect']),
-				'quality' => we_base_request::_(we_base_request::INT, 'quality', $this->docVars['quality']),
-				'keepRatio' => we_base_request::_(we_base_request::BOOL, 'keepRatio', $this->docVars['keepRatio']),
-				'degrees' => we_base_request::_(we_base_request::INT, 'degrees', $this->docVars['degrees']),
+				'importMetadata' => we_base_request::_(we_base_request::BOOL, 'fu_doc_importMetadata', $this->docVars['importMetadata']),
+				'isSearchable' => we_base_request::_(we_base_request::BOOL, 'fu_doc_isSearchable', $this->docVars['isSearchable']),
+				'widthSelect' => we_base_request::_(we_base_request::STRING, 'fu_doc_widthSelect', $this->docVars['widthSelect']),
+				'heightSelect' => we_base_request::_(we_base_request::STRING, 'fu_doc_heightSelect', $this->docVars['heightSelect']),
+				'quality' => we_base_request::_(we_base_request::INT, 'fu_doc_quality', $this->docVars['quality']),
+				'keepRatio' => we_base_request::_(we_base_request::BOOL, 'fu_doc_keepRatio', $this->docVars['keepRatio']),
+				'degrees' => we_base_request::_(we_base_request::INT, 'fu_doc_degrees', $this->docVars['degrees']),
 				// unset the followng entries when not in request!
-				'title' => we_base_request::_(we_base_request::STRING, 'img_title', we_base_request::NOT_VALID),
-				'alt' => we_base_request::_(we_base_request::STRING, 'img_alt', we_base_request::NOT_VALID),
-				'thumbs' => we_base_request::_(we_base_request::INTLIST, 'thumbs', we_base_request::NOT_VALID),
-				'width' => we_base_request::_(we_base_request::INT, 'width', we_base_request::NOT_VALID),
-				'height' => we_base_request::_(we_base_request::INT, 'height', we_base_request::NOT_VALID),
+				'title' => we_base_request::_(we_base_request::STRING, 'fu_doc_title', we_base_request::NOT_VALID),
+				'alt' => we_base_request::_(we_base_request::STRING, 'fu_doc_alt', we_base_request::NOT_VALID),
+				'thumbs' => we_base_request::_(we_base_request::INTLIST, 'fu_doc_thumbs', we_base_request::NOT_VALID),
+				'width' => we_base_request::_(we_base_request::INT, 'fu_doc_width', we_base_request::NOT_VALID),
+				'height' => we_base_request::_(we_base_request::INT, 'fu_doc_height', we_base_request::NOT_VALID),
 			), function($var){return $var !== we_base_request::NOT_VALID;}
 		);
 	}
@@ -88,13 +85,27 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 			$we_doc->Extension = strtolower((strpos($this->fileVars['weFileName'], '.') > 0) ? preg_replace('/^.+(\..+)$/', '$1', $this->fileVars['weFileName']) : ''); //strtolower for feature 3764
-			if((!$we_doc->Filename) || (!$we_doc->ID)){
+
+			if((!$we_doc->Filename) || (!$we_doc->ID)){ // new document not yet saved
 				// Bug Fix #6284
 				$we_doc->Filename = preg_replace('/[^A-Za-z0-9._-]/', '', $this->fileVars['weFileName']);
 				$we_doc->Filename = preg_replace('/^(.+)\..+$/', '$1', $we_doc->Filename);
+				$we_doc->Text = $we_doc->Filename . $we_doc->Extension;
+				$we_doc->Path = $we_doc->getParentPath() . (($we_doc->getParentPath() != '/') ? '/' : '') . $we_doc->Text;
+
+				if(f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape($we_doc->Path) . '"')){
+					// make fn rename to avoid redundant code
+					$z = 0;
+					$footext = $we_doc->Filename . '_' . $z . $we_doc->Extension;
+					while(f('SELECT ID FROM ' . FILE_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($we_doc->ParentID))){
+						$z++;
+						$footext = $we_doc->Filename . '_' . $z . $we_doc->Extension;
+					}
+					$we_doc->Text = $footext;
+					$we_doc->Filename = $we_doc->Filename . "_" . $z;
+					$we_doc->Path = $we_doc->getParentPath() . (($we_doc->getParentPath() != '/') ? '/' : '') . $we_doc->Text;
+				}
 			}
-			$we_doc->Text = $we_doc->Filename . $we_doc->Extension;
-			$we_doc->Path = $we_doc->getPath();
 
 			return $we_doc;
 		}
@@ -121,7 +132,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			$we_doc->Extension = '';
 		}
 		$we_doc->Text = $we_doc->Filename . $we_doc->Extension;
-		$we_doc->setParentID($this->fileVars['saveToID']);
+		$we_doc->setParentID($this->fileVars['parentID']);
 		$we_doc->Path = $we_doc->getParentPath() . (($we_doc->getParentPath() != '/') ? '/' : '') . $we_doc->Text;
 
 		// if file exists we have to see if we should create a new one or overwrite it!
@@ -133,9 +144,10 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 					$we_doc->initByID($file_id, FILE_TABLE);
 					break;
 				case "rename":
+					// make fn rename to avoid redundant code
 					$z = 0;
 					$footext = $we_doc->Filename . '_' . $z . $we_doc->Extension;
-					while(f('SELECT ID FROM ' . FILE_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($this->fileVars['saveToID']))){
+					while(f('SELECT ID FROM ' . FILE_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($this->fileVars['parentID']))){
 						$z++;
 						$footext = $we_doc->Filename . '_' . $z . $we_doc->Extension;
 					}
@@ -186,7 +198,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 		}
 		switch($we_doc->ContentType){
 			case we_base_ContentTypes::IMAGE:
-				if($this->docVars['importMetadata']){// FIXME: on we_doc we have import_metadata!!
+				if($this->docVars['importMetadata']){
 					$we_doc->importMetaData();
 				}
 				// no break
@@ -241,7 +253,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 						$we_doc->getElement("origheight") :
 						$we_doc->getElement("origwidth")), $this->docVars['degrees'], $this->docVars['quality']);
 			}
-			$we_doc->IsSearchable = isset($this->docVars['imgsSearchable']) ? $this->docVars['imgsSearchable'] : $we_doc->IsSearchable;
+			$we_doc->IsSearchable = isset($this->docVars['isSearchable']) ? $this->docVars['isSearchable'] : $we_doc->IsSearchable;
 			$we_doc->setElement('title', (isset($this->docVars['title']) ? $this->docVars['title'] : $we_doc->getElement('title')), 'attrib');
 			$we_doc->setElement('alt', (isset($this->docVars['alt']) ? $this->docVars['alt'] : $we_doc->getElement('alt')), 'attrib');
 			$we_doc->Thumbs = isset($this->docVars['thumbs']) ? $this->docVars['thumbs'] : $we_doc->Thumbs;

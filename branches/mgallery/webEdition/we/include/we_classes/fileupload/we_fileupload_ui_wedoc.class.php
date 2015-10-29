@@ -26,14 +26,13 @@ class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
 	public function __construct($contentType = array(), $extensions = '', $doImport = true){
 		parent::__construct($contentType, $extensions);
 		$this->dimensions['dragWidth'] = 300;
-		$this->moreFieldsToAppend = array(
+		$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, array(
 			array('we_transaction', 'text'),
-			array('import_metadata', 'check'),
 			array('we_doc_ct', 'text'),
 			array('we_doc_ext', 'text')
-		);
+		));
 	}
-	
+
 	public function getHTML($fs = '', $ft = '', $md = '', $thumbnailSmall = '', $thumbnailBig = ''){
 		$isIE10 = we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11;
 
@@ -58,7 +57,7 @@ class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
 					<td width="300px">' .
 						we_html_element::htmlDiv(array('id' => 'div_fileupload_right', 'style'=>"position:relative;"),
 							$this->getHtmlDropZone('preview', $thumbnailSmall) .
-							($this->contentType === we_base_ContentTypes::IMAGE ? '<br />' . we_html_forms::checkbox(1, true, "import_metadata", g_l('metadata', '[import_metadata_at_upload]')) : '')
+							($this->contentType === we_base_ContentTypes::IMAGE ? '<br />' . $this->getFormImportMeta() : '')
 						) . '
 					</td>
 				</tr>
@@ -70,6 +69,5 @@ class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
 				</tr>
 			</table>';
 	}
-
 }
 

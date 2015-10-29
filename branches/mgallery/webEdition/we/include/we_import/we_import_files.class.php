@@ -44,7 +44,6 @@ class we_import_files{
 	private $fileNameTemp = '';
 	private $partNum = 0;
 	private $partCount = 0;
-	private $showErrorAtChunkNr = 0; //Trigger an Error at n-th chunk of 100KB to demonstrate error response. TODO: Use this construct to abort on Max_FILE_SIZE!!
 
 	const CHUNK_SIZE = 256;
 
@@ -65,19 +64,19 @@ class we_import_files{
 
 		$this->importToID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1) ? : we_base_request::_(we_base_request::INT, "importToID", $this->importToID);
 		$this->callBack = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 2) ? : (we_base_request::_(we_base_request::RAW, 'callBack', '') ? : '');
-		$this->sameName = we_base_request::_(we_base_request::STRING, "sameName", $this->sameName);
-		$this->importMetadata = we_base_request::_(we_base_request::INT, "importMetadata", $this->importMetadata);
-		$this->imgsSearchable = we_base_request::_(we_base_request::INT, "imgsSearchable", $this->imgsSearchable);
+		$this->sameName = we_base_request::_(we_base_request::STRING, "fu_file_sameName", $this->sameName);
+		$this->importMetadata = we_base_request::_(we_base_request::INT, "fu_doc_importMetadata", $this->importMetadata);
+		$this->imgsSearchable = we_base_request::_(we_base_request::INT, "fu_doc_isSearchable", $this->imgsSearchable);
 		$this->step = we_base_request::_(we_base_request::INT, "step", $this->step);
 		$this->cmd = we_base_request::_(we_base_request::RAW, "cmd", $this->cmd);
-		$this->thumbs = we_base_request::_(we_base_request::INTLIST, 'thumbs', $this->thumbs);
-		$this->width = we_base_request::_(we_base_request::INT, "width", $this->width);
-		$this->height = we_base_request::_(we_base_request::INT, "height", $this->height);
-		$this->widthSelect = we_base_request::_(we_base_request::STRING, "widthSelect", $this->widthSelect);
-		$this->heightSelect = we_base_request::_(we_base_request::STRING, "heightSelect", $this->heightSelect);
-		$this->keepRatio = we_base_request::_(we_base_request::BOOL, "keepRatio", $this->keepRatio);
-		$this->quality = we_base_request::_(we_base_request::INT, "quality", $this->quality);
-		$this->degrees = we_base_request::_(we_base_request::INT, "degrees", $this->degrees);
+		$this->thumbs = we_base_request::_(we_base_request::INTLIST, 'fu_doc_thumbs', $this->thumbs);
+		$this->width = we_base_request::_(we_base_request::INT, "fu_doc_width", $this->width);
+		$this->height = we_base_request::_(we_base_request::INT, "fu_doc_height", $this->height);
+		$this->widthSelect = we_base_request::_(we_base_request::STRING, "fu_doc_widthSelect", $this->widthSelect);
+		$this->heightSelect = we_base_request::_(we_base_request::STRING, "fu_doc_heightSelect", $this->heightSelect);
+		$this->keepRatio = we_base_request::_(we_base_request::BOOL, "fu_doc_keepRatio", $this->keepRatio);
+		$this->quality = we_base_request::_(we_base_request::INT, "fu_doc_quality", $this->quality);
+		$this->degrees = we_base_request::_(we_base_request::INT, "fu_doc_degrees", $this->degrees);
 		$this->partNum = we_base_request::_(we_base_request::INT, "wePartNum", 0);
 		$this->partCount = we_base_request::_(we_base_request::INT, "wePartCount", 0);
 		$this->fileNameTemp = we_base_request::_(we_base_request::FILE, "weFileNameTemp", '');
@@ -147,7 +146,7 @@ class we_import_files{
 				'headline' => g_l('importFiles', '[destination_dir]'),
 				'html' =>
 				we_html_tools::hidden('we_cmd[0]', 'import_files') . we_html_tools::hidden('callBack', $this->callBack) . we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', '2') . // fix for categories require reload!
-				we_html_element::htmlHidden('categories', '') .
+				we_html_element::htmlHidden('fu_doc_categories', '') .
 				$yuiSuggest->getHTML(),
 				'space' => 150
 			),
@@ -155,9 +154,10 @@ class we_import_files{
 				'headline' => g_l('importFiles', '[sameName_headline]'),
 				'html' =>
 				we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[sameName_expl]'), we_html_tools::TYPE_INFO, 380) .
-				we_html_element::htmlDiv(array('style' => 'margin-top:10px'), we_html_forms::radiobutton('overwrite', ($this->sameName === "overwrite"), "sameName", g_l('importFiles', '[sameName_overwrite]')) .
-					we_html_forms::radiobutton('rename', ($this->sameName === "rename"), "sameName", g_l('importFiles', '[sameName_rename]')) .
-					we_html_forms::radiobutton('nothing', ($this->sameName === "nothing"), "sameName", g_l('importFiles', '[sameName_nothing]'))),
+				we_html_element::htmlDiv(array('style' => 'margin-top:10px'),
+					we_html_forms::radiobutton('overwrite', ($this->sameName === "overwrite"), "fu_file_sameName", g_l('importFiles', '[sameName_overwrite]')) .
+					we_html_forms::radiobutton('rename', ($this->sameName === "rename"), "fu_file_sameName", g_l('importFiles', '[sameName_rename]')) .
+					we_html_forms::radiobutton('nothing', ($this->sameName === "nothing"), "fu_file_sameName", g_l('importFiles', '[sameName_nothing]'))),
 				'space' => 150
 			),
 		);
@@ -176,27 +176,27 @@ class we_import_files{
 			$parts[] = array(
 				'headline' => g_l('importFiles', '[metadata]'),
 				'html' => we_html_forms::checkboxWithHidden(
-					$this->importMetadata == true, 'importMetadata', g_l('importFiles', '[import_metadata]')),
+					$this->importMetadata == true, 'fu_doc_importMetadata', g_l('importFiles', '[import_metadata]')),
 				'space' => 150
 			);
 
 			$parts[] = array(
 				'headline' => g_l('importFiles', '[imgsSearchable]'),
 				'html' => we_html_forms::checkboxWithHidden(
-					$this->imgsSearchable == true, 'imgsSearchable', g_l('importFiles', '[imgsSearchable_label]')),
+					$this->imgsSearchable == true, 'fu_doc_isSearchable', g_l('importFiles', '[imgsSearchable_label]')),
 				'space' => 150
 			);
 
 			if(we_base_imageEdit::gd_version() > 0){
 				$GLOBALS['DB_WE']->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE . ' ORDER By Name');
-				$Thselect = g_l('importFiles', '[thumbnails]') . "<br/><br/>" . '<select class="defaultfont" name="thumbs_tmp" size="5" multiple style="width: 260px" onchange="this.form.thumbs.value=\'\';for(var i=0;i<this.options.length;i++){if(this.options[i].selected){this.form.thumbs.value +=(this.options[i].value+\',\');}};this.form.thumbs.value=this.form.thumbs.value.replace(/^(.+),$/,\'$1\');">' . "\n";
+				$Thselect = g_l('importFiles', '[thumbnails]') . "<br/><br/>" . '<select class="defaultfont" name="thumbs_tmp" size="5" multiple style="width: 260px" onchange="this.form.fu_doc_thumbs.value=\'\';for(var i=0;i<this.options.length;i++){if(this.options[i].selected){this.form.fu_doc_thumbs.value +=(this.options[i].value+\',\');}};this.form.fu_doc_thumbs.value=this.form.thumbs.value.replace(/^(.+),$/,\'$1\');">' . "\n";
 
 				$thumbsArray = explode(',', $this->thumbs);
 				while($GLOBALS['DB_WE']->next_record()){
 					$Thselect .= '<option value="' . $GLOBALS['DB_WE']->f("ID") . '"' . (in_array(
 							$GLOBALS['DB_WE']->f("ID"), $thumbsArray) ? " selected" : "") . '>' . $GLOBALS['DB_WE']->f("Name") . "</option>\n";
 				}
-				$Thselect .= '</select><input type="hidden" name="thumbs" value="' . $this->thumbs . '" />' . "\n";
+				$Thselect .= '</select><input type="hidden" name="fu_doc_thumbs" value="' . $this->thumbs . '" />' . "\n";
 
 				$parts[] = array(
 					"headline" => g_l('importFiles', '[make_thumbs]'),
@@ -204,13 +204,13 @@ class we_import_files{
 					"space" => 150
 				);
 
-				$widthInput = we_html_tools::htmlTextInput("width", 10, $this->width, "", '', "text", 60);
-				$heightInput = we_html_tools::htmlTextInput("height", 10, $this->height, "", '', "text", 60);
+				$widthInput = we_html_tools::htmlTextInput("fu_doc_width", 10, $this->width, "", '', "text", 60);
+				$heightInput = we_html_tools::htmlTextInput("fu_doc_height", 10, $this->height, "", '', "text", 60);
 
-				$widthSelect = '<select size="1" class="weSelect" name="widthSelect"><option value="pixel"' . (($this->widthSelect === "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass', '[pixel]') . '</option><option value="percent"' . (($this->widthSelect === "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass', '[percent]') . '</option></select>';
-				$heightSelect = '<select size="1" class="weSelect" name="heightSelect"><option value="pixel"' . (($this->heightSelect === "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass', '[pixel]') . '</option><option value="percent"' . (($this->heightSelect === "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass', '[percent]') . '</option></select>';
+				$widthSelect = '<select size="1" class="weSelect" name="fu_doc_widthSelect"><option value="pixel"' . (($this->widthSelect === "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass', '[pixel]') . '</option><option value="percent"' . (($this->widthSelect === "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass', '[percent]') . '</option></select>';
+				$heightSelect = '<select size="1" class="weSelect" name="fu_doc_heightSelect"><option value="pixel"' . (($this->heightSelect === "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass', '[pixel]') . '</option><option value="percent"' . (($this->heightSelect === "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass', '[percent]') . '</option></select>';
 
-				$ratio_checkbox = we_html_forms::checkbox(1, $this->keepRatio, "keepRatio", g_l('thumbnails', '[ratio]'));
+				$ratio_checkbox = we_html_forms::checkbox(1, $this->keepRatio, "fu_doc_keepRatio", g_l('thumbnails', '[ratio]'));
 
 				$_resize = '<table>
 <tr>
@@ -232,10 +232,10 @@ class we_import_files{
 					"headline" => g_l('weClass', '[resize]'), "html" => $_resize, "space" => 150
 				);
 
-				$_radio0 = we_html_forms::radiobutton(0, $this->degrees == 0, "degrees", g_l('weClass', '[rotate0]'));
-				$_radio180 = we_html_forms::radiobutton(180, $this->degrees == 180, "degrees", g_l('weClass', '[rotate180]'));
-				$_radio90l = we_html_forms::radiobutton(90, $this->degrees == 90, "degrees", g_l('weClass', '[rotate90l]'));
-				$_radio90r = we_html_forms::radiobutton(270, $this->degrees == 270, "degrees", g_l('weClass', '[rotate90r]'));
+				$_radio0 = we_html_forms::radiobutton(0, $this->degrees == 0, "fu_doc_degrees", g_l('weClass', '[rotate0]'));
+				$_radio180 = we_html_forms::radiobutton(180, $this->degrees == 180, "fu_doc_degrees", g_l('weClass', '[rotate180]'));
+				$_radio90l = we_html_forms::radiobutton(90, $this->degrees == 90, "fu_doc_degrees", g_l('weClass', '[rotate90l]'));
+				$_radio90r = we_html_forms::radiobutton(270, $this->degrees == 270, "fu_doc_degrees", g_l('weClass', '[rotate90r]'));
 
 				$parts[] = array(
 					"headline" => g_l('weClass', '[rotate]'),
@@ -245,7 +245,7 @@ class we_import_files{
 
 				$parts[] = array(
 					"headline" => g_l('weClass', '[quality]'),
-					"html" => we_base_imageEdit::qualitySelect("quality", $this->quality),
+					"html" => we_base_imageEdit::qualitySelect("fu_doc_quality", $this->quality),
 					"space" => 150
 				);
 			} else {
@@ -419,18 +419,18 @@ function next() {
 				'step' => 1,
 				// these are used by we_fileupload to grasp these values AND by editor to have when going back one step
 				'importToID' => $this->importToID,
-				'sameName' => $this->sameName,
-				'thumbs' => $this->thumbs,
-				'width' => $this->width,
-				'height' => $this->height,
-				'widthSelect' => $this->widthSelect,
-				'heightSelect' => $this->heightSelect,
-				'keepRatio' => $this->keepRatio,
-				'degrees' => $this->degrees,
-				'quality' => $this->quality,
-				'categories' => $this->categories,
-				'imgsSearchable' => $this->imgsSearchable,
-				'importMetadata' => $this->importMetadata,
+				'fu_file_sameName' => $this->sameName,
+				'fu_doc_thumbs' => $this->thumbs,
+				'fu_doc_width' => $this->width,
+				'fu_doc_height' => $this->height,
+				'fu_doc_widthSelect' => $this->widthSelect,
+				'fu_doc_heightSelect' => $this->heightSelect,
+				'fu_doc_keepRatio' => $this->keepRatio,
+				'fu_doc_degrees' => $this->degrees,
+				'fu_doc_quality' => $this->quality,
+				'fu_doc_categories' => $this->categories,
+				'fu_doc_isSearchable' => $this->imgsSearchable,
+				'fu_doc_importMetadata' => $this->importMetadata,
 		));
 	}
 
@@ -518,7 +518,7 @@ function selectCategories() {
 	for(var i=0;i<categories_edit.itemCount;i++){
 		cats.push(categories_edit.form.elements[categories_edit.name+"_variant0_"+categories_edit.name+"_item"+i].value);
 	}
-	categories_edit.form.categories.value=cats.join(",");
+	categories_edit.form.fu_doc_categories.value=cats.join(",");
 }');
 	}
 

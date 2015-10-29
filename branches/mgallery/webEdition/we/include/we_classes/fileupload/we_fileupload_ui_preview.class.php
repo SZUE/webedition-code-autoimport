@@ -25,7 +25,7 @@
 class we_fileupload_ui_preview extends we_fileupload_ui_base{
 	protected $layout = 'vertical';
 	protected $isExternalBtnUpload = false;
-	protected $importToID = array(
+	protected $parentID = array(
 		'setField' => false,
 		'preset' => IMAGESTARTID_DEFAULT,
 		'setFixed' => false,
@@ -49,6 +49,10 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 		$this->setTypeCondition('accepted', array($contentType));
 		$this->setDimensions(array('width' => 200, 'dragHeight' => 116, 'alertBoxWidth' => 507));
 		//$this->binDocProperties = $this->getDocProperties();
+		$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, array(
+			array('fu_doc_importMetadata', 'text'),
+			array('fu_file_sameName', 'text'),
+		));
 	}
 
 	public function getCss(){
@@ -99,10 +103,14 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 	}
 
 	protected function getHiddens(){
-		return $hiddens =  parent::getHiddens() . we_html_element::htmlHiddens(array(
+		return $hiddens = parent::getHiddens() . we_html_element::htmlHiddens(array(
 			'we_doc_ct' => $this->contentType,
 			'we_doc_ext' => $this->extension,
 		));
+	}
+
+	protected function getFormImportMeta(){
+		return we_html_forms::checkboxWithHidden(true, 'fu_doc_importMetadata', g_l('importFiles', '[import_metadata]'), false, 'defaultfont', '');
 	}
 
 	public function getJsBtnCmd($btn = 'upload'){
@@ -127,7 +135,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 		$this->isExternalBtnUpload = $isExternal;
 	}
 
-	public function setFieldImportToID($importToID = array()){
-		$this->importToID = array_merge($this->importToID, $importToID);
+	public function setFieldParentID($parentID = array()){
+		$this->parentID = array_merge($this->parentID, $parentID);
 	}
 }

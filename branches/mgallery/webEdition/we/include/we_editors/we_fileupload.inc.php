@@ -43,13 +43,7 @@ $fileUpload->setCallback('top.doOnImportSuccess(scope.weDoc);');
 $fileUpload->setDimensions(array('dragWidth' => 374, 'inputWidth' => 378));
 $fileUpload->setIsPreset($isPreset);
 $fileUpload->setIsExternalBtnUpload(true);
-$fileUpload->setFieldImportToID(array('setField' => true, 'preset' => $importToID, 'setFixed' => $setFixedImportTo));
-$fileUpload->setMoreFieldsToAppend(array(
-	array('imgsSearchable', 'text'),
-	array('importMetadata', 'text'),
-	array('sameName', 'text'),
-	array('importToID', 'text')
-));
+$fileUpload->setFieldParentID(array('setField' => true, 'preset' => $importToID, 'setFixed' => $setFixedImportTo));
 $fileUpload->setEditorJS(array(
 	'writebackTarget' => $writebackTarget,
 	'customCallback' => $customCallback,

@@ -82,7 +82,6 @@ class we_fileupload_ui_base extends we_fileupload{
 	protected $layout = 'horizontal';
 	public $moreFieldsToAppend = array();
 
-
 	protected $isUploadComplete = false;
 	protected $fileNameTemp = "";
 	protected $fileNameTempParts = array(

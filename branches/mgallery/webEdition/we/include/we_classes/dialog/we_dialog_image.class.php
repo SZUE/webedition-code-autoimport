@@ -235,20 +235,13 @@ class we_dialog_image extends we_dialog_base{
 		$this->weFileupload->setCallback('top.doOnImportSuccess(scope.weDoc);');
 		//$this->weFileupload->setIsInternalBtnUpload(true);
 		$this->weFileupload->setDimensions(array('dragWidth' => 374, 'inputWidth' => 378));
-		// TODO: let uploader class set additional fields
-		$this->weFileupload->setMoreFieldsToAppend(array(
-			array('imgsSearchable', 'text'), //we use checkbox width hidden
-			array('importMetadata', 'text'),
-			array('sameName', 'text'),
-			array('importToID', 'text')
-		));
 		$this->weFileupload->setEditorProperties(array('isLayoutSmall' => true));
 		$this->weFileupload->setEditorJS(array(
 			'writebackTarget' => '',
 			'customCallback' => '',
 			'predefinedCallback' => 'imagedialog'
 		));
-		$this->weFileupload->setFieldImportToID(array(
+		$this->weFileupload->setFieldParentID(array(
 			'setField' => true,
 			'preset' => IMAGESTARTID_DEFAULT,
 		));

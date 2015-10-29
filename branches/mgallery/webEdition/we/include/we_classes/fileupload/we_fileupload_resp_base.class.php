@@ -59,24 +59,24 @@ class we_fileupload_resp_base extends we_fileupload{
 			'genericFileNameTemp' => '',
 			'fileTemp' => '',
 			'fileDef' => '',
-			'saveToID' => 0,
-			'saveToDir' => '',
+			'parentID' => 0,
+			'parentDir' => '',
 			'weFileName' => '',
 			'weFileSize' => 1,
 			'weFileCt' => '',
-			'sameName' => '',
+			'sameName' => 'rename',
 		);
 	protected $docVars = array(
 			'transaction' => '',
 			'importMetadata' => false,
-			'imgsSearchable' => true,
+			'isSearchable' => true,
 			'title' => '',
 			'alt' => '',
 			'thumbs' => '',
 			'width' => 0,
 			'widthSelect' => '',
 			'height' => 0,
-			'heihgtSelect' => '',
+			'heightSelect' => '',
 			'quality' => 8,
 			'keepRatio' => 0,
 			'degrees' => 0,
@@ -104,11 +104,11 @@ class we_fileupload_resp_base extends we_fileupload{
 				'fileTemp' => we_base_request::_(we_base_request::STRING, 'weFileNameTemp', we_base_request::NOT_VALID),
 				'saveToID' => we_base_request::_(we_base_request::INT, "importToID", we_base_request::NOT_VALID),
 				//'importToID' => we_base_request::_(we_base_request::INT, "saveToDir", we_base_request::NOT_VALID),
-				'saveToDir' => we_base_request::_(we_base_request::URL, 'saveToDir', we_base_request::NOT_VALID),
+				'parentID' => we_base_request::_(we_base_request::URL, 'fu_file_parentID', we_base_request::NOT_VALID),
 				'weFileName' => we_base_request::_(we_base_request::STRING, 'weFileName', we_base_request::NOT_VALID),
 				'weFileSize' => we_base_request::_(we_base_request::INT, 'weFileSize', we_base_request::NOT_VALID),
 				'weFileCt' => we_base_request::_(we_base_request::STRING, 'weFileCt', we_base_request::NOT_VALID),
-				'sameName' => we_base_request::_(we_base_request::STRING, 'sameName', we_base_request::NOT_VALID)
+				'sameName' => we_base_request::_(we_base_request::STRING, 'fu_file_sameName', we_base_request::NOT_VALID)
 			), function($var){return $var !== we_base_request::NOT_VALID;})
 		);
 		$this->controlVars = array_merge($this->controlVars, array_filter(
@@ -177,7 +177,7 @@ class we_fileupload_resp_base extends we_fileupload{
 	}
 
 	protected function checkSetFile(){
-		$path = rtrim($this->fileVars['saveToDir'] ? : ($this->fileVars['saveToID'] ? id_to_path($this->fileVars['saveToID']) : ''), '/') . '/';
+		$path = rtrim(($this->fileVars['parentID'] ? id_to_path($this->fileVars['parentID']) : ''), '/') . '/';
 
 		if(file_exists($_SERVER['DOCUMENT_ROOT'] . $path . $this->fileVars['weFileName'])){
 			switch($this->fileVars['sameName']){

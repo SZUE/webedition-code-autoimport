@@ -1447,15 +1447,15 @@ var weFileUpload = (function () {
 			var sf = document.we_startform,
 							t = _.sender.transformAll;
 
-			t.width = sf.width.value ? parseInt(sf.width.value) : t.width;
-			t.height = sf.height.value ? parseInt(sf.height.value) : t.height;
-			t.degrees = sf.degrees.value ? parseInt(sf.degrees.value) : t.degrees;
+			t.width = sf.fu_doc_width.value ? parseInt(sf.fu_doc_width.value) : t.width;
+			t.height = sf.fu_doc_height.value ? parseInt(sf.fu_doc_height.value) : t.height;
+			t.degrees = sf.fu_doc_degrees.value ? parseInt(sf.fu_doc_degrees.value) : t.degrees;
 			t.doTrans = t.degrees || t.width || t.height ? true : false;
 			if (t.doTrans) {
-				t.widthSelect = sf.widthSelect.value ? sf.widthSelect.value : t.widthSelect;
-				t.heightSelect = sf.heightSelect.value ? sf.heightSelect.value : t.heightSelect;
-				t.keepRatio = sf.keepRatio.value ? true : t.keepRatio;
-				t.quality = sf.quality.value ? parseFloat(sf.quality.value) : t.quality;
+				t.widthSelect = sf.fu_doc_widthSelect.value ? sf.fu_doc_widthSelect.value : t.widthSelect;
+				t.heightSelect = sf.fu_doc_heightSelect.value ? sf.fu_doc_heightSelect.value : t.heightSelect;
+				t.keepRatio = sf.fu_doc_keepRatio.value ? true : t.fu_doc_keepRatio;
+				t.quality = sf.fu_doc_quality.value ? parseFloat(sf.fu_doc_quality.value) : t.quality;
 			}
 		};
 
@@ -1557,36 +1557,35 @@ var weFileUpload = (function () {
 				//top.we_showMessage(_.utils.gl.uploadCancelled, 1, window);
 			};
 
-			this.appendMoreData = function (fd) {
+			this.appendMoreData = function (fd) { // TODO: set additional fields oninit
 				var sf = document.we_startform,
-								cur = this.currentFile;
+					cur = this.currentFile;
 
 				fd.append('weFormNum', cur.fileNum + 1);
 				fd.append('weFormCount', this.totalFiles);
 				fd.append('we_cmd[0]', 'import_files');
 				fd.append('step', 1);
 
-				fd.append('importToID', sf.importToID.value);
-				fd.append('sameName', sf.sameName.value);
-				fd.append('categories', sf.categories.value);
-				fd.append('importMetadata', sf.importMetadata.value);
-				fd.append('imgsSearchable', sf.imgsSearchable.value);
-				fd.append('thumbs', sf.thumbs.value);
+				fd.append('fu_file_sameName', sf.fu_file_sameName.value);
+				fd.append('fu_file_parentID', sf.importToID.value);
+				fd.append('fu_doc_categories', sf.fu_doc_categories.value);
+				fd.append('fu_doc_importMetadata', sf.fu_doc_importMetadata.value);
+				fd.append('fu_doc_isSearchable', sf.fu_doc_isSearchable.value);
 
 				var transformables = ['image/jpeg', 'image/gif', 'image/png'];//TODO: add all transformable types
-				if (transformables.indexOf(cur.type) !== -1 && cur.partNum === cur.totalParts && this.isGdOk) {
+				if (transformables.indexOf(cur.type) !== -1 && cur.partNum === cur.totalParts) {
 					if (!this.EDIT_IMAGES_CLIENTSIDE) {
-						fd.append('width', sf.width.value);
-						fd.append('height', sf.height.value);
-						fd.append('widthSelect', sf.widthSelect.value);
-						fd.append('heightSelect', sf.heightSelect.value);
-						fd.append('keepRatio', sf.keepRatio.value);
-						fd.append('quality', sf.quality.value);
-						fd.append('degrees', sf.degrees.value);
+						fd.append('fu_doc_width', sf.fu_doc_width.value);
+						fd.append('fu_doc_height', sf.fu_doc_height.value);
+						fd.append('fu_doc_widthSelect', sf.fu_doc_widthSelect.value);
+						fd.append('fu_doc_heightSelect', sf.fu_doc_heightSelect.value);
+						fd.append('fu_doc_keepRatio', sf.fu_doc_keepRatio.value);
+						fd.append('fu_doc_quality', sf.fu_doc_quality.value);
+						fd.append('fu_doc_degrees', sf.fu_doc_degrees.value);
 					} else {
 						fd.append('exif', JSON.stringify(cur.exif));
 					}
-					fd.append('thumbs', sf.thumbs.value);
+					fd.append('fu_doc_thumbs', sf.fu_doc_thumbs.value);
 				}
 
 				return fd;

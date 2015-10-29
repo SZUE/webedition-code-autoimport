@@ -41,9 +41,8 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 
 		$this->dimensions['dragWidth'] = 376;
 		$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, array(
-					array('importToID', 'int'),
-					array('saveToDir', 'text'),
-				));
+			array('fu_file_parentID', 'int'),
+		));
 		$this->doImport = $doImport;
 
 		if($this->doImport){
@@ -51,17 +50,17 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 			if(!$this->contentType || $this->contentType === we_base_ContentTypes::IMAGE){
 				$this->editorProperties['formAttributes'] = $this->editorProperties['formThumbnails'] = $this->editorProperties['formImageEdit'] = true;
 				$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, array(
-					array('import_metadata', 'check'),
-					array('thumbs[]', 'multi_select'),
-					array('img_alt', 'text'),
-					array('img_title', 'text'),
-					array('width', 'int'),
-					array('height', 'int'),
-					array('widthSelect', 'int'),
-					array('heightSelect', 'int'),
-					array('keepRatio', 'int'),
-					array('degrees', 'int'),
-					array('quality', 'int'),
+					array('fu_doc_isSearchable', 'int'),
+					array('fu_doc_thumbs[]', 'multi_select'),
+					array('fu_doc_alt', 'text'),
+					array('fu_doc_title', 'text'),
+					array('fu_doc_width', 'int'),
+					array('fu_doc_height', 'int'),
+					array('fu_doc_widthSelect', 'int'),
+					array('fu_doc_heightSelect', 'int'),
+					array('fu_doc_keepRatio', 'int'),
+					array('fu_doc_degrees', 'int'),
+					array('fu_doc_quality', 'int'),
 				));
 			}
 		} else {
@@ -110,8 +109,8 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 			array('icon' => '', 'headline' => '', 'html' => $this->getFormSameName(), 'space' => 0, 'noline' => false, 'forceRightHeadline' => $this->editorProperties['isLayoutSmall'])
 		);
 
-		if($this->importToID['setField']){
-			$parts[] = array('icon' => '', 'headline' => g_l('importFiles', '[destination_dir]'), 'html' => $this->getFormTargetDir(), "class" => 'paddingTop', 'noline' => true, 'forceRightHeadline' => $this->editorProperties['isLayoutSmall']);
+		if($this->parentID['setField']){
+			$parts[] = array('icon' => '', 'headline' => g_l('importFiles', '[destination_dir]'), 'html' => $this->getFormParentID(), "class" => 'paddingTop', 'noline' => true, 'forceRightHeadline' => $this->editorProperties['isLayoutSmall']);
 		}
 
 		if($this->doImport){
@@ -212,58 +211,59 @@ documentWriteback = function(importedDocument){
 	}
 
 	protected function getFormIsSearchable(){
-		return we_html_element::htmlDiv(array(), we_html_forms::checkboxWithHidden(true, 'imgsSearchable', g_l('weClass', '[IsSearchable]'), false, 'defaultfont', ''));
+		return we_html_element::htmlDiv(array(), we_html_forms::checkboxWithHidden(true, 'fu_doc_isSearchable', g_l('weClass', '[IsSearchable]'), false, 'defaultfont', ''));
 	}
 
 	protected function getFormSameName(){
 		return we_html_element::htmlDiv(array('style' => 'margin:10px 0 0 0;'),
 			we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[sameName_expl]'), we_html_tools::TYPE_INFO, 380) .
 			we_html_element::htmlDiv(array('style' => 'margin-top:10px'), //g_l('newFile', '[caseFileExists]') . '<br/>' .
-				we_html_forms::radiobutton('overwrite', false, "sameName", g_l('importFiles', '[sameName_overwrite]'), false, "defaultfont", 'document.we_form.sameName.value=this.value;') .
-				we_html_forms::radiobutton('rename', true, "sameName", g_l('importFiles', '[sameName_rename]'), false, "defaultfont", 'document.we_form.sameName.value=this.value;') .
-				we_html_forms::radiobutton('nothing', false, "sameName", g_l('importFiles', '[sameName_nothing]'), false, "defaultfont", 'document.we_form.sameName.value=this.value;')
+				we_html_forms::radiobutton('overwrite', false, "sameName", g_l('importFiles', '[sameName_overwrite]'), false, "defaultfont", 'document.we_form.fu_file_sameName.value=this.value;') .
+				we_html_forms::radiobutton('rename', true, "sameName", g_l('importFiles', '[sameName_rename]'), false, "defaultfont", 'document.we_form.fu_file_sameName.value=this.value;') .
+				we_html_forms::radiobutton('nothing', false, "sameName", g_l('importFiles', '[sameName_nothing]'), false, "defaultfont", 'document.we_form.fu_file_sameName.value=this.value;')
 			) .
-			we_html_tools::hidden("sameName", 0)
+			we_html_tools::hidden('fu_file_sameName', 'rename')
 		);
 	}
 
-	protected function getFormImportMeta(){
-		return we_html_forms::checkboxWithHidden(true, 'importMetadata', g_l('importFiles', '[import_metadata]'), false, 'defaultfont', '');
-	}
-
-	protected function getFormTargetDir(){
-			if(!$this->importToID['setFixed'] && is_numeric($this->importToID['preset'])){
+	protected function getFormParentID(){
+			if(!$this->parentID['setFixed'] && is_numeric($this->parentID['preset'])){
 				$yuiSuggest = &weSuggest::getInstance();
-				$cmd1 = "document.we_form.importToID.value";
-				$wecmdenc2 = we_base_request::encCmd("document.we_form.importToDir.value");
+				$cmd1 = "document.we_form.fu_file_parentID.value";
+				$wecmdenc2 = we_base_request::encCmd("document.we_form.fu_file_parentID.value");
 				$wecmdenc3 = ''; //we_base_request::encCmd();
-				$startID = $this->importToID['preset'] !== false ? $this->importToID['preset'] : (IMAGESTARTID_DEFAULT ? : 0);
+				$startID = $this->parentID['preset'] !== false ? $this->parentID['preset'] : (IMAGESTARTID_DEFAULT ? : 0);
 				$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "',''," . $startID . ",'" . we_base_ContentTypes::FOLDER . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
-				$yuiSuggest->setAcId("importToID");
+				$yuiSuggest->setAcId("fu_file_parentID");
 				$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-				$yuiSuggest->setInput("importToDir", $startID ? id_to_path($startID, FILE_TABLE) : '/', '', false);
+				$yuiSuggest->setInput("fu_file_parentID", $startID ? id_to_path($startID, FILE_TABLE) : '/', '', false);
 				$yuiSuggest->setMaxResults(10);
 				$yuiSuggest->setMayBeEmpty(true);
-				$yuiSuggest->setResult("importToID", $startID);
+				$yuiSuggest->setResult("fu_file_parentID", $startID);
 				$yuiSuggest->setSelector(weSuggest::DirSelector);
 				$yuiSuggest->setWidth(320);
 				$yuiSuggest->setSelectButton($but);
 
 				return $yuiSuggest->getHTML();
 			} else {
-				$value = is_numeric($this->importToID['preset']) ? id_to_path($this->importToID['preset']) : $this->importToID['preset'];
+				if(is_numeric($this->parentID['preset'])){
+					$id = $this->parentID['preset'];
+					$path = id_to_path($this->parentID['preset']);
+				} else {
+					$id = path_to_id($this->parentID['preset']);
+					$path = $this->parentID['preset'];
+				}
 
-				return we_html_element::htmlInput(array('value' => $value, 'disabled' => 'disabled')) .
+				return we_html_element::htmlInput(array('value' => $path, 'disabled' => 'disabled')) .
 					we_html_button::create_button(we_html_button::SELECT, '', '', '', '', '', '', true) .
 					we_html_element::htmlHiddens(array(
-						'importToID' => $value,
-						'saveToDir' => $value,
+						'fu_file_parentID' => $id,
 					));
 			}
 	}
 
 	protected function getFormThumbnails(){
-		$_thumbnails = new we_html_select(array('multiple' => 'multiple', 'name' => 'thumbs[]', 'id' => 'thumbs', 'class' => 'defaultfont', 'size' => 6, 'style' => 'width: 330px;'));
+		$_thumbnails = new we_html_select(array('multiple' => 'multiple', 'name' => 'fu_doc_thumbs[]', 'id' => 'fu_doc_thumbs', 'class' => 'defaultfont', 'size' => 6, 'style' => 'width: 330px;'));
 		$DB_WE = new DB_WE();
 		$DB_WE->query('SELECT ID,Name,description FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
 
@@ -277,21 +277,21 @@ documentWriteback = function(importedDocument){
 	}
 
 	protected function getFormImageAttributes(){
-		$html = we_html_element::htmlDiv(array(), we_html_element::htmlLabel(array(), 'Alternativ Text') . '<br>' . we_html_tools::htmlTextInput('img_alt', 24, '', '', '', 'text', 330)) .
-				we_html_element::htmlDiv(array(), we_html_element::htmlLabel(array(), 'Titel') . '<br>' . we_html_tools::htmlTextInput('img_title', 24, '', '', '', 'text', 330));
+		$html = we_html_element::htmlDiv(array(), we_html_element::htmlLabel(array(), 'Alternativ Text') . '<br>' . we_html_tools::htmlTextInput('fu_doc_alt', 24, '', '', '', 'text', 330)) .
+				we_html_element::htmlDiv(array(), we_html_element::htmlLabel(array(), 'Titel') . '<br>' . we_html_tools::htmlTextInput('fu_doc_title', 24, '', '', '', 'text', 330));
 
 		return array(array('icon' => '', 'headline' => 'Attribute', 'html' => $html, "class" => 'paddingTop', 'noline' => $this->editorProperties['isLayoutSmall'], 'forceRightHeadline' => $this->editorProperties['isLayoutSmall']));
 	}
 
 	protected function getFormImageEdit(){
 		$parts = array();
-		$widthInput = we_html_tools::htmlTextInput("width", 10, '', "", '', "text", 60);
-		$heightInput = we_html_tools::htmlTextInput("height", 10, '', "", '', "text", 60);
+		$widthInput = we_html_tools::htmlTextInput("fu_doc_width", 10, '', "", '', "text", 60);
+		$heightInput = we_html_tools::htmlTextInput("fu_doc_height", 10, '', "", '', "text", 60);
 
-		$widthSelect = '<select size="1" class="weSelect" name="widthSelect"><option value="pixel" selected="selected">' . g_l('weClass', '[pixel]') . '</option><option value="percent">' . g_l('weClass', '[percent]') . '</option></select>';
-		$heightSelect = '<select size="1" class="weSelect" name="heightSelect"><option value="pixel" selected="selected">' . g_l('weClass', '[pixel]') . '</option><option value="percent">' . g_l('weClass', '[percent]') . '</option></select>';
+		$widthSelect = '<select size="1" class="weSelect" name="fu_doc_widthSelect"><option value="pixel" selected="selected">' . g_l('weClass', '[pixel]') . '</option><option value="percent">' . g_l('weClass', '[percent]') . '</option></select>';
+		$heightSelect = '<select size="1" class="weSelect" name="fu_doc_heightSelect"><option value="pixel" selected="selected">' . g_l('weClass', '[pixel]') . '</option><option value="percent">' . g_l('weClass', '[percent]') . '</option></select>';
 
-		$ratio_checkbox = we_html_forms::checkboxWithHidden(false, 'keepRatio', g_l('thumbnails', '[ratio]'), false, 'defaultfont', '');
+		$ratio_checkbox = we_html_forms::checkboxWithHidden(false, 'fu_doc_keepRatio', g_l('thumbnails', '[ratio]'), false, 'defaultfont', '');
 
 		$_resize = '<table>
 <tr>
@@ -310,10 +310,10 @@ documentWriteback = function(importedDocument){
 </table>';
 		$parts[] = array("headline" => g_l('weClass', '[resize]'), "html" => $_resize, "class" => 'paddingTop', 'noline' => $this->editorProperties['isLayoutSmall'], 'forceRightHeadline' => $this->editorProperties['isLayoutSmall']);
 
-		$_radio0 = we_html_forms::radiobutton(0, true, "degrees", g_l('weClass', '[rotate0]'));
-		$_radio180 = we_html_forms::radiobutton(180, false, "degrees", g_l('weClass', '[rotate180]'));
-		$_radio90l = we_html_forms::radiobutton(90, false == 90, "degrees", g_l('weClass', '[rotate90l]'));
-		$_radio90r = we_html_forms::radiobutton(270, false == 270, "degrees", g_l('weClass', '[rotate90r]'));
+		$_radio0 = we_html_forms::radiobutton(0, true, "fu_doc_degrees", g_l('weClass', '[rotate0]'));
+		$_radio180 = we_html_forms::radiobutton(180, false, "fu_doc_degrees", g_l('weClass', '[rotate180]'));
+		$_radio90l = we_html_forms::radiobutton(90, false == 90, "fu_doc_degrees", g_l('weClass', '[rotate90l]'));
+		$_radio90r = we_html_forms::radiobutton(270, false == 270, "fu_doc_degrees", g_l('weClass', '[rotate90r]'));
 
 		$parts[] = array(
 			"headline" => g_l('weClass', '[rotate]'),
@@ -325,7 +325,7 @@ documentWriteback = function(importedDocument){
 
 		$parts[] = array(
 			"headline" => g_l('weClass', '[quality]'),
-			"html" => we_base_imageEdit::qualitySelect("quality", 8),
+			"html" => we_base_imageEdit::qualitySelect("fu_doc_quality", 8),
 			"class" => 'paddingTop',
 			'noline' => $this->editorProperties['isLayoutSmall'],
 			'forceRightHeadline' => $this->editorProperties['isLayoutSmall']
