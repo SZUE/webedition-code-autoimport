@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_backup_delete extends we_fragment_base{
+
 	private $db;
 
 	function __construct($name, $taskPerFragment, $pause = 0){
@@ -44,9 +45,7 @@ class we_backup_delete extends we_fragment_base{
 			}
 
 			if(!$this->alldata){
-				echo we_html_element::jsElement(
-					we_message_reporting::getShowMessageCall(g_l('backup', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_WARNING)
-				);
+				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_WARNING));
 				$this->finish();
 			}
 		}
@@ -82,7 +81,7 @@ class we_backup_delete extends we_fragment_base{
 		echo we_html_element::jsElement('top.close();');
 	}
 
-	function printHeader(){
+	static function printHeader(){
 		we_html_tools::protect();
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', ' ');
 	}

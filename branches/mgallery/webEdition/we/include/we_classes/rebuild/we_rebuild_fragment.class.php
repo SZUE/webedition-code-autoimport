@@ -42,7 +42,7 @@ class we_rebuild_fragment extends we_fragment_base{
 			top.close();');
 	}
 
-	function printHeader(){
+	static function printHeader(){
 		we_html_tools::protect();
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', ' ');
 	}

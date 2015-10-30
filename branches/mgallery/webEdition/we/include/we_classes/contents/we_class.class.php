@@ -180,8 +180,7 @@ abstract class we_class{
 	}
 
 	static function htmlTextArea($name, $rows = 10, $cols = 30, $value = '', array $attribs = array()){
-		return we_html_element::htmlTextArea(
-						array_merge(array(
+		return we_html_element::htmlTextArea(array_merge(array(
 					'name' => trim($name),
 					'class' => 'defaultfont wetextarea',
 					'rows' => abs($rows),
@@ -223,8 +222,7 @@ abstract class we_class{
 
 	function formSelectElement($width, $name, $values, $type = 'txt', $size = 1, array $attribs = array()){
 		return we_html_tools::htmlFormElementTable(
-						we_html_tools::html_select('we_' . $this->Name . '_' . $type . '[' . $name . ']', $size, $values, $this->getElement($name), array_merge(
-										array(
+						we_html_tools::html_select('we_' . $this->Name . '_' . $type . '[' . $name . ']', $size, $values, $this->getElement($name), array_merge(array(
 							'class' => 'defaultfont',
 							'width' => $width,
 										), $attribs))
@@ -504,9 +502,7 @@ abstract class we_class{
 					return ($this->prepareSetLanguageLink($LangLinkArray, $origLinks, true, $newLang, $type, $isfolder, $isobject, $ownDocumentTable)) ? true : false;
 				}
 
-				echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(g_l('weClass', '[languageLinksLocaleChanged]'), we_message_reporting::WE_MESSAGE_NOTICE)
-				));
+				echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('weClass', '[languageLinksLocaleChanged]'), we_message_reporting::WE_MESSAGE_NOTICE)));
 				return true;
 			}
 			//default case: there was now change of page language. Loop method call to another method, preparing LangLinks
@@ -565,9 +561,7 @@ abstract class we_class{
 
 				if(($fileLang = f('SELECT Language FROM ' . $this->DB_WE->escape(addTblPrefix($documentTable)) . ' WHERE ID=' . intval($LDID), '', $this->DB_WE))){
 					if($fileLang != $locale){
-						echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement(
-										we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', '[languageLinksLangNotok]'), $locale, $fileLang, $locale), we_message_reporting::WE_MESSAGE_NOTICE)
-						));
+						echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', '[languageLinksLangNotok]'), $locale, $fileLang, $locale), we_message_reporting::WE_MESSAGE_NOTICE)));
 						return true;
 					}
 					if(!$isfolder){
@@ -591,9 +585,7 @@ abstract class we_class{
 						}
 
 						if(!$setThisLink){
-							echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement(
-											we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', '[languageLinksConflicts]'), $locale), we_message_reporting::WE_MESSAGE_NOTICE)
-							));
+							echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', '[languageLinksConflicts]'), $locale), we_message_reporting::WE_MESSAGE_NOTICE)));
 							return true;
 						}
 						// instead of modifying db-Enries, we delete them and create new ones
@@ -611,9 +603,7 @@ abstract class we_class{
 						$this->executeSetLanguageLink($preparedLinkArray, $type, $isfolder, $isobject);
 					} else {//!isfolder
 						if(f('SELECT 1 FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $this->DB_WE->escape($type) . '" AND DLocale="' . $this->DB_WE->escape($ownLocale) . '" AND Locale="' . $this->DB_WE->escape($locale) . '" AND LDID=' . intval($LDID) . ' AND IsObject=' . ($isobject ? 1 : 0) . ' AND IsFolder=1 LIMIT 1', '', $this->DB_WE)){//conflict
-							echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement(
-											we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', '[languageLinksConflicts]'), $locale), we_message_reporting::WE_MESSAGE_NOTICE)
-							));
+							echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', '[languageLinksConflicts]'), $locale), we_message_reporting::WE_MESSAGE_NOTICE)));
 							return true;
 						}
 						$actualLinks = array();

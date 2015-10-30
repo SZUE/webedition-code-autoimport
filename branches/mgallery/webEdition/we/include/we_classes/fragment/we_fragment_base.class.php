@@ -112,7 +112,7 @@ class we_fragment_base{
 			}
 		}
 		$this->numberOfTasks = count($this->alldata);
-		$this->printHeader();
+		static::printHeader();
 		$this->printBodyTag($bodyAttributes);
 		for($i = 0; $i < $this->taskPerFragment; $i++){
 			if($i > 0){
@@ -211,7 +211,7 @@ class we_fragment_base{
 	 * This Function should be overwritten
 	 *
 	 */
-	function printHeader(){
+	static function printHeader(){
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '',' ');
 	}
 

@@ -51,8 +51,7 @@ $aLang = array(
 );
 
 $_iFrmRss = we_html_element::jsElement("
-	window.addEventListener(
-		'load',
+	window.addEventListener('load',
 		function() {
 			WE().layout.cockpitFrame.executeAjaxRequest('" . base64_decode($_rssUri) . "', '" . $_rssCont . "', '" . $_rssNumItems . "', '" . $_rssTb . "', '" . $sTbPrefix . "', '" . 'm_' . $iCurrId . "');
 		},

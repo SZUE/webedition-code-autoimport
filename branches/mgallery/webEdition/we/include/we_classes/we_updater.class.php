@@ -337,6 +337,13 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="href"
 		$db->delTable('WE_tmp');
 	}
 
+	private static function updateVersionsTable(we_database_base $db){
+		if(!f('SELECT 1 FROM tblVersions WHERE binaryPath LIKE "' . WEBEDITION_DIR . '%" LIMIT 1')){
+			return;
+		}
+		$db->query('UPDATE tblVersions SET binaryPath=REPLACE(binaryPath,"' . VERSION_DIR . '","") WHERE binaryPath LIKE "' . WEBEDITION_DIR . '%"');
+	}
+
 	private static function cleanUnreferencedVersions(we_database_base $db){
 		$all = array();
 		$d = dir(rtrim($_SERVER['DOCUMENT_ROOT'] . VERSION_DIR, '/'));
@@ -386,6 +393,8 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="href"
 		self::meassure('fixHistory');
 		self::updateContentTable($db);
 		self::meassure('updateContent');
+		self::updateVersionsTable($db);
+		self::meassure('versions');
 		self::cleanUnreferencedVersions($db);
 		self::meassure('fixVersions');
 		self::replayUpdateDB();

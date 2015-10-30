@@ -87,7 +87,7 @@ class weTagData{
 					require_once ($allapptags[$tagName]);
 					$this->Exists = true;
 					$this->Groups[] = 'apptags';
-					$this->noDocuLink=true;
+					$this->noDocuLink = true;
 				} else {
 					t_e('requested help entry of tag ' . $tagName . ' not found');
 					return;
@@ -316,8 +316,7 @@ class weTagData{
 	 */
 	function getDefaultValueCodeForTagWizard(){
 
-		return we_html_element::htmlTextArea(
-						array(
+		return we_html_element::htmlTextArea(array(
 					'name' => 'weTagData_defaultValue',
 					'id' => 'weTagData_defaultValue',
 					'class' => 'wetextinput wetextarea'

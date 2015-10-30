@@ -60,11 +60,11 @@ class we_search_frames extends we_tool_frames{
 					'pnt' => 'cmd',
 					'cmd' => 'no_cmd'));
 
-		$out = we_html_element::htmlBody(array(), we_html_element::htmlForm(
-								array(
+		$out = we_html_element::htmlBody(array(), we_html_element::htmlForm(array(
 							'name' => 'we_form'
-								), $hiddens . we_html_element::jsElement(
-										$rootjs . $this->Tree->getJSLoadTree(!$pid, $_loader->getItems($pid, $offset, $this->Tree->default_segment, '')))));
+								), $hiddens .
+								we_html_element::jsElement($rootjs .
+										$this->Tree->getJSLoadTree(!$pid, $_loader->getItems($pid, $offset, $this->Tree->default_segment, '')))));
 
 		if(isset($_SESSION['weS']['weSearch']['modelidForTree'])){
 			$out .= we_html_element::jsElement($this->topFrame . '.treeData.selectNode("' . ($_SESSION['weS']['weSearch']["modelidForTree"]) . '");');
@@ -138,8 +138,7 @@ function setTab(tab) {
 					'id' => 'eHeaderBody',
 					'onload' => 'weTabs.setFrameSize()',
 					'onresize' => 'weTabs.setFrameSize()'
-						), '<div id="main"><div id="headrow">&nbsp;' . we_html_element::htmlB(
-								g_l('searchtool', ($this->Model->IsFolder ? '[topDir]' : '[topSuche]')) . ':&nbsp;' .
+						), '<div id="main"><div id="headrow">&nbsp;' . we_html_element::htmlB(g_l('searchtool', ($this->Model->IsFolder ? '[topDir]' : '[topSuche]')) . ':&nbsp;' .
 								$Text . '<div id="mark" style="display: none;">*</div>') . '</div>' .
 						$we_tabs->getHTML() .
 						'</div>' .
@@ -158,10 +157,9 @@ function setTab(tab) {
 						), we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
 						we_html_element::htmlForm(array(
 							'name' => 'we_form', 'onsubmit' => 'return false'
-								), $this->getHTMLProperties() . we_html_element::htmlHiddens(
-										array(
-											'predefined' => $this->Model->predefined,
-											'savedSearchName' => $this->Model->Text
+								), $this->getHTMLProperties() . we_html_element::htmlHiddens(array(
+									'predefined' => $this->Model->predefined,
+									'savedSearchName' => $this->Model->Text
 						)))
 		);
 
@@ -203,8 +201,7 @@ function setTab(tab) {
 	protected function getHTMLEditorFooter(){
 		$_but_table = we_html_button::create_button('save', 'javascript:we_save();', true, 100, 22, '', '', (!permissionhandler::hasPerm('EDIT_NAVIGATION')));
 
-		return $this->getHTMLDocument(
-						we_html_element::jsElement('
+		return $this->getHTMLDocument(we_html_element::jsElement('
           function we_save() {
             ' . $this->topFrame . '.we_cmd("tool_' . $this->module . '_save");
           }
@@ -250,8 +247,7 @@ function setTab(tab) {
 		return array(
 			array(
 				'headline' => g_l('searchtool', '[general]'),
-				'html' => we_html_tools::htmlFormElementTable(
-						we_html_tools::htmlTextInput('Text', '', $this->Model->Text, '', 'style="width: ' . $this->_width_size . 'px" );"', '', '', '', '', $disabled), g_l('searchtool', '[dir]')),
+				'html' => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Text', '', $this->Model->Text, '', 'style="width: ' . $this->_width_size . 'px" );"', '', '', '', '', $disabled), g_l('searchtool', '[dir]')),
 				'space' => $this->_space_size,
 				'noline' => 1
 		));
@@ -305,8 +301,8 @@ function setTab(tab) {
 		$foundItems = $_SESSION['weS']['weSearch']['foundItemsTmplSearch'];
 
 		$_searchResult_block = '<div>
-		<div id="parametersTop_' . $innerSearch . '">' . $this->View->getSearchParameterTop(
-						$foundItems, $innerSearch) . '</div>' . $this->View->tblList($content, $headline, $innerSearch) . '<div id="parametersBottom_TmplSearch">' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
+		<div id="parametersTop_' . $innerSearch . '">' . $this->View->getSearchParameterTop($foundItems, $innerSearch) . '</div>' .
+				$this->View->tblList($content, $headline, $innerSearch) . '<div id="parametersBottom_TmplSearch">' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
 		</div>';
 
 		return array(
@@ -387,8 +383,8 @@ function setTab(tab) {
 		$foundItems = $_SESSION['weS']['weSearch']['foundItems' . $innerSearch];
 
 		$_searchResult_block = '<div>
-      <div id=\'parametersTop_' . $innerSearch . '\'>' . $this->View->getSearchParameterTop(
-						$foundItems, $innerSearch) . '</div>' . $this->View->tblList($content, $headline, $innerSearch) . '<div id=\'parametersBottom_' . $innerSearch . '\'>' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
+      <div id=\'parametersTop_' . $innerSearch . '\'>' . $this->View->getSearchParameterTop($foundItems, $innerSearch) . '</div>' .
+				$this->View->tblList($content, $headline, $innerSearch) . '<div id=\'parametersBottom_' . $innerSearch . '\'>' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
       </div>';
 
 		return array(

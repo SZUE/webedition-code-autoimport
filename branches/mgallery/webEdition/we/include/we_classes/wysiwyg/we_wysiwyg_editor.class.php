@@ -25,6 +25,7 @@
 //make sure we know which browser is used
 
 class we_wysiwyg_editor{
+
 	var $name = '';
 	private $origName = '';
 	private $fieldName = '';
@@ -251,7 +252,7 @@ class we_wysiwyg_editor{
 		$ret = array_merge(array(
 			'',
 			g_l('wysiwyg', '[groups]') => we_html_tools::OPTGROUP
-			), $tmp);
+				), $tmp);
 		foreach($commands as $key => $values){
 			$ret = array_merge($ret, array($key => we_html_tools::OPTGROUP), $values);
 		}
@@ -298,9 +299,9 @@ class we_wysiwyg_editor{
 		}
 
 		return we_html_element::cssLink(CSS_DIR . 'wysiwyg/tinymce/toolbar.css') .
-			we_html_element::jsScript(TINYMCE_SRC_DIR . 'tiny_mce.js') .
-			($loadDialogRegistry ? we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') : '') .
-			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceFunctions.js');
+				we_html_element::jsScript(TINYMCE_SRC_DIR . 'tiny_mce.js') .
+				($loadDialogRegistry ? we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') : '') .
+				we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceFunctions.js');
 	}
 
 	function getAllCmds(){
@@ -390,124 +391,124 @@ class we_wysiwyg_editor{
 		$sepCon = new we_wysiwyg_ToolbarSeparator($this, self::CONDITIONAL);
 
 		//group: font
-		$this->elements = array_filter(
-			array(new we_wysiwyg_ToolbarButton($this, "fontname", 92, 20),
-				new we_wysiwyg_ToolbarButton($this, 'fontsize', 92, 20),
-				$sep,
-				//group: prop
-				new we_wysiwyg_ToolbarButton($this, "formatblock", 92, 20),
-				new we_wysiwyg_ToolbarButton($this, "applystyle", 92, 20),
-				$sep,
-				new we_wysiwyg_ToolbarButton($this, "bold"),
-				new we_wysiwyg_ToolbarButton($this, "italic"),
-				new we_wysiwyg_ToolbarButton($this, "underline"),
-				new we_wysiwyg_ToolbarButton($this, "subscript"),
-				new we_wysiwyg_ToolbarButton($this, "superscript"),
-				new we_wysiwyg_ToolbarButton($this, "strikethrough"),
-				new we_wysiwyg_ToolbarButton($this, "styleprops"),
-				$sepCon,
-				new we_wysiwyg_ToolbarButton($this, "removeformat"),
-				new we_wysiwyg_ToolbarButton($this, "removetags"),
-				$sep,
-				//group: xhtmlxtras
-				new we_wysiwyg_ToolbarButton($this, "cite"),
-				new we_wysiwyg_ToolbarButton($this, "acronym"),
-				new we_wysiwyg_ToolbarButton($this, "abbr"),
-				new we_wysiwyg_ToolbarButton($this, "lang"),
-				$sepCon,
-				new we_wysiwyg_ToolbarButton($this, "del"),
-				new we_wysiwyg_ToolbarButton($this, "ins"),
-				$sepCon,
-				new we_wysiwyg_ToolbarButton($this, "ltr"),
-				new we_wysiwyg_ToolbarButton($this, "rtl"),
-				$sep,
-				//group: color
-				new we_wysiwyg_ToolbarButton($this, "forecolor", 32),
-				new we_wysiwyg_ToolbarButton($this, "backcolor", 32),
-				$sep,
-				//group: justify
-				new we_wysiwyg_ToolbarButton($this, "justifyleft"),
-				new we_wysiwyg_ToolbarButton($this, "justifycenter"),
-				new we_wysiwyg_ToolbarButton($this, "justifyright"),
-				new we_wysiwyg_ToolbarButton($this, "justifyfull"),
-				$sep,
-				//group: list
-				new we_wysiwyg_ToolbarButton($this, "insertunorderedlist", 32),
-				new we_wysiwyg_ToolbarButton($this, "insertorderedlist", 32),
-				$sepCon,
-				new we_wysiwyg_ToolbarButton($this, "indent"),
-				new we_wysiwyg_ToolbarButton($this, "outdent"),
-				new we_wysiwyg_ToolbarButton($this, "blockquote"),
-				$sep,
-				//group: link
-				new we_wysiwyg_ToolbarButton($this, "createlink"),
-				new we_wysiwyg_ToolbarButton($this, "unlink"),
-				new we_wysiwyg_ToolbarButton($this, "anchor"),
-				$sep,
-				//group: table
-				new we_wysiwyg_ToolbarButton($this, "inserttable"),
-				new we_wysiwyg_ToolbarButton($this, "edittable"),
-				new we_wysiwyg_ToolbarButton($this, "deletetable"),
-				new we_wysiwyg_ToolbarButton($this, "editcell"),
-				new we_wysiwyg_ToolbarButton($this, "editrow"),
-				$sepCon,
-				new we_wysiwyg_ToolbarButton($this, "insertcolumnleft"),
-				new we_wysiwyg_ToolbarButton($this, "insertcolumnright"),
-				new we_wysiwyg_ToolbarButton($this, "deletecol"),
-				$sepCon,
-				new we_wysiwyg_ToolbarButton($this, "insertrowabove"),
-				new we_wysiwyg_ToolbarButton($this, "insertrowbelow"),
-				new we_wysiwyg_ToolbarButton($this, "deleterow"),
-				$sepCon,
-				new we_wysiwyg_ToolbarButton($this, "increasecolspan"),
-				new we_wysiwyg_ToolbarButton($this, "decreasecolspan"),
-				new we_wysiwyg_ToolbarButton($this, "caption"),
-				new we_wysiwyg_ToolbarButton($this, "removecaption"),
-				$sep,
-				//group: insert
-				new we_wysiwyg_ToolbarButton($this, "insertimage"),
-				new we_wysiwyg_ToolbarButton($this, "insertgallery"),
-				new we_wysiwyg_ToolbarButton($this, "hr"),
-				new we_wysiwyg_ToolbarButton($this, "inserthorizontalrule"),
-				$sepCon,
-				new we_wysiwyg_ToolbarButton($this, "insertspecialchar"),
-				new we_wysiwyg_ToolbarButton($this, "nonbreaking"),
-				new we_wysiwyg_ToolbarButton($this, "insertbreak"),
-				$sepCon,
-				new we_wysiwyg_ToolbarButton($this, "insertdate"),
-				new we_wysiwyg_ToolbarButton($this, "inserttime"),
-				$sep,
-				//group: copypaste
-				new we_wysiwyg_ToolbarButton($this, "pastetext"),
-				new we_wysiwyg_ToolbarButton($this, "pasteword"),
-				$sep,
-				//group: layer
-				new we_wysiwyg_ToolbarButton($this, "insertlayer"),
-				new we_wysiwyg_ToolbarButton($this, "movebackward"),
-				new we_wysiwyg_ToolbarButton($this, "moveforward"),
-				new we_wysiwyg_ToolbarButton($this, "absolute"),
-				$sep,
-				//group: essential
-				new we_wysiwyg_ToolbarButton($this, "undo"),
-				new we_wysiwyg_ToolbarButton($this, "redo"),
-				$sepCon,
-				(defined('SPELLCHECKER') && $this->showSpell ?
+		$this->elements = array_filter(array(
+			new we_wysiwyg_ToolbarButton($this, "fontname", 92, 20),
+			new we_wysiwyg_ToolbarButton($this, 'fontsize', 92, 20),
+			$sep,
+			//group: prop
+			new we_wysiwyg_ToolbarButton($this, "formatblock", 92, 20),
+			new we_wysiwyg_ToolbarButton($this, "applystyle", 92, 20),
+			$sep,
+			new we_wysiwyg_ToolbarButton($this, "bold"),
+			new we_wysiwyg_ToolbarButton($this, "italic"),
+			new we_wysiwyg_ToolbarButton($this, "underline"),
+			new we_wysiwyg_ToolbarButton($this, "subscript"),
+			new we_wysiwyg_ToolbarButton($this, "superscript"),
+			new we_wysiwyg_ToolbarButton($this, "strikethrough"),
+			new we_wysiwyg_ToolbarButton($this, "styleprops"),
+			$sepCon,
+			new we_wysiwyg_ToolbarButton($this, "removeformat"),
+			new we_wysiwyg_ToolbarButton($this, "removetags"),
+			$sep,
+			//group: xhtmlxtras
+			new we_wysiwyg_ToolbarButton($this, "cite"),
+			new we_wysiwyg_ToolbarButton($this, "acronym"),
+			new we_wysiwyg_ToolbarButton($this, "abbr"),
+			new we_wysiwyg_ToolbarButton($this, "lang"),
+			$sepCon,
+			new we_wysiwyg_ToolbarButton($this, "del"),
+			new we_wysiwyg_ToolbarButton($this, "ins"),
+			$sepCon,
+			new we_wysiwyg_ToolbarButton($this, "ltr"),
+			new we_wysiwyg_ToolbarButton($this, "rtl"),
+			$sep,
+			//group: color
+			new we_wysiwyg_ToolbarButton($this, "forecolor", 32),
+			new we_wysiwyg_ToolbarButton($this, "backcolor", 32),
+			$sep,
+			//group: justify
+			new we_wysiwyg_ToolbarButton($this, "justifyleft"),
+			new we_wysiwyg_ToolbarButton($this, "justifycenter"),
+			new we_wysiwyg_ToolbarButton($this, "justifyright"),
+			new we_wysiwyg_ToolbarButton($this, "justifyfull"),
+			$sep,
+			//group: list
+			new we_wysiwyg_ToolbarButton($this, "insertunorderedlist", 32),
+			new we_wysiwyg_ToolbarButton($this, "insertorderedlist", 32),
+			$sepCon,
+			new we_wysiwyg_ToolbarButton($this, "indent"),
+			new we_wysiwyg_ToolbarButton($this, "outdent"),
+			new we_wysiwyg_ToolbarButton($this, "blockquote"),
+			$sep,
+			//group: link
+			new we_wysiwyg_ToolbarButton($this, "createlink"),
+			new we_wysiwyg_ToolbarButton($this, "unlink"),
+			new we_wysiwyg_ToolbarButton($this, "anchor"),
+			$sep,
+			//group: table
+			new we_wysiwyg_ToolbarButton($this, "inserttable"),
+			new we_wysiwyg_ToolbarButton($this, "edittable"),
+			new we_wysiwyg_ToolbarButton($this, "deletetable"),
+			new we_wysiwyg_ToolbarButton($this, "editcell"),
+			new we_wysiwyg_ToolbarButton($this, "editrow"),
+			$sepCon,
+			new we_wysiwyg_ToolbarButton($this, "insertcolumnleft"),
+			new we_wysiwyg_ToolbarButton($this, "insertcolumnright"),
+			new we_wysiwyg_ToolbarButton($this, "deletecol"),
+			$sepCon,
+			new we_wysiwyg_ToolbarButton($this, "insertrowabove"),
+			new we_wysiwyg_ToolbarButton($this, "insertrowbelow"),
+			new we_wysiwyg_ToolbarButton($this, "deleterow"),
+			$sepCon,
+			new we_wysiwyg_ToolbarButton($this, "increasecolspan"),
+			new we_wysiwyg_ToolbarButton($this, "decreasecolspan"),
+			new we_wysiwyg_ToolbarButton($this, "caption"),
+			new we_wysiwyg_ToolbarButton($this, "removecaption"),
+			$sep,
+			//group: insert
+			new we_wysiwyg_ToolbarButton($this, "insertimage"),
+			new we_wysiwyg_ToolbarButton($this, "insertgallery"),
+			new we_wysiwyg_ToolbarButton($this, "hr"),
+			new we_wysiwyg_ToolbarButton($this, "inserthorizontalrule"),
+			$sepCon,
+			new we_wysiwyg_ToolbarButton($this, "insertspecialchar"),
+			new we_wysiwyg_ToolbarButton($this, "nonbreaking"),
+			new we_wysiwyg_ToolbarButton($this, "insertbreak"),
+			$sepCon,
+			new we_wysiwyg_ToolbarButton($this, "insertdate"),
+			new we_wysiwyg_ToolbarButton($this, "inserttime"),
+			$sep,
+			//group: copypaste
+			new we_wysiwyg_ToolbarButton($this, "pastetext"),
+			new we_wysiwyg_ToolbarButton($this, "pasteword"),
+			$sep,
+			//group: layer
+			new we_wysiwyg_ToolbarButton($this, "insertlayer"),
+			new we_wysiwyg_ToolbarButton($this, "movebackward"),
+			new we_wysiwyg_ToolbarButton($this, "moveforward"),
+			new we_wysiwyg_ToolbarButton($this, "absolute"),
+			$sep,
+			//group: essential
+			new we_wysiwyg_ToolbarButton($this, "undo"),
+			new we_wysiwyg_ToolbarButton($this, "redo"),
+			$sepCon,
+			(defined('SPELLCHECKER') && $this->showSpell ?
 					new we_wysiwyg_ToolbarButton($this, 'spellcheck') :
 					false),
-				new we_wysiwyg_ToolbarButton($this, "selectall"),
-				$sepCon,
-				new we_wysiwyg_ToolbarButton($this, "search"),
-				new we_wysiwyg_ToolbarButton($this, "replace"),
-				$sepCon,
-				($this->fullscreen ?
+			new we_wysiwyg_ToolbarButton($this, "selectall"),
+			$sepCon,
+			new we_wysiwyg_ToolbarButton($this, "search"),
+			new we_wysiwyg_ToolbarButton($this, "replace"),
+			$sepCon,
+			($this->fullscreen ?
 					false :
 					new we_wysiwyg_ToolbarButton($this, "fullscreen")
-				),
-				new we_wysiwyg_ToolbarButton($this, "visibleborders"),
-				$sep,
-				//group: advanced
-				new we_wysiwyg_ToolbarButton($this, "editsource"),
-				new we_wysiwyg_ToolbarButton($this, "template"),
+			),
+			new we_wysiwyg_ToolbarButton($this, "visibleborders"),
+			$sep,
+			//group: advanced
+			new we_wysiwyg_ToolbarButton($this, "editsource"),
+			new we_wysiwyg_ToolbarButton($this, "template"),
 		));
 	}
 
@@ -540,7 +541,7 @@ class we_wysiwyg_editor{
 		$height = we_base_util::convertUnits($this->height);
 		$height = is_numeric($height) ? max($height, self::MIN_HEIGHT_POPUP) : '(' . intval($height) . '/100*screen.availHeight)';
 
-		return we_html_button::create_button(we_html_button::EDIT, "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "', " . $width . ", " . $height . ",'" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" .  rtrim($this->fontnamesCSV, ',') . "','" . $this->outsideWE . "'," . $width . "," . $height . ",'" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . urlencode($this->baseHref) . "','" . $this->charset . "','" . $this->cssClasses . "','" . $this->Language . "','" . we_base_request::encCmd($this->contentCss) . "','" . $this->origName . "','" . we_base_request::encCmd($this->tinyParams) . "','" . we_base_request::encCmd($this->restrictContextmenu) . "', 'true', '" . $this->isFrontendEdit . "','" . $this->templates . "','" . $this->formats . "','" . $this->imageStartID . "','" . $this->galleryTemplates . "','" . $this->fontsizes . "');", true, 25);
+		return we_html_button::create_button(we_html_button::EDIT, "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "', " . $width . ", " . $height . ",'" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($this->fontnamesCSV, ',') . "','" . $this->outsideWE . "'," . $width . "," . $height . ",'" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . urlencode($this->baseHref) . "','" . $this->charset . "','" . $this->cssClasses . "','" . $this->Language . "','" . we_base_request::encCmd($this->contentCss) . "','" . $this->origName . "','" . we_base_request::encCmd($this->tinyParams) . "','" . we_base_request::encCmd($this->restrictContextmenu) . "', 'true', '" . $this->isFrontendEdit . "','" . $this->templates . "','" . $this->formats . "','" . $this->imageStartID . "','" . $this->galleryTemplates . "','" . $this->fontsizes . "');", true, 25);
 	}
 
 	static function parseInternalImageSrc($value){
@@ -565,7 +566,7 @@ class we_wysiwyg_editor{
 			foreach($regs as $reg){
 				$path = empty($lookup[intval($reg[3])]) ? '' : $lookup[intval($reg[3])];
 				$value = $path ? str_ireplace($reg[1], 'src="' . $path . '?id=' . $reg[3] . '&time=' . $t . '"', $value) :
-					str_ireplace($reg[0], '<img src="' . ICON_DIR . 'no_image.gif?id=0">', $value);
+						str_ireplace($reg[0], '<img src="' . ICON_DIR . 'no_image.gif?id=0">', $value);
 			}
 		}
 
@@ -575,7 +576,7 @@ class we_wysiwyg_editor{
 				$thumbObj = new we_thumbnail();
 				$imageExists = $thumbObj->initByImageIDAndThumbID($imgID, $thumbID);
 				$value = $imageExists ? str_ireplace($reg[1], 'src="' . $thumbObj->getOutputPath() . "?thumb=" . $reg[3] . '&time=' . $t . '"', $value) :
-					str_ireplace($reg[0], '<img src="' . ICON_DIR . 'no_image.gif?id=0">', $value);
+						str_ireplace($reg[0], '<img src="' . ICON_DIR . 'no_image.gif?id=0">', $value);
 				unset($thumbObj);
 			}
 		}
@@ -793,10 +794,10 @@ class we_wysiwyg_editor{
 		$this->tinyPlugins = implode(',', array_unique($this->tinyPlugins));
 		$this->wePlugins = implode(',', array_intersect($this->wePlugins, $allCommands));
 		$plugins = ($this->createContextmenu ? 'wecontextmenu,' : '') .
-			($this->tinyPlugins ? $this->tinyPlugins . ',' : '') .
-			($this->wePlugins ? $this->wePlugins . ',' : '') .
-			(in_array('wevisualaid', $allCommands) ? 'visualblocks,' : '') .
-			'weutil,autolink,template,wewordcount'; //TODO: load "templates" on demand as we do it with other plugins
+				($this->tinyPlugins ? $this->tinyPlugins . ',' : '') .
+				($this->wePlugins ? $this->wePlugins . ',' : '') .
+				(in_array('wevisualaid', $allCommands) ? 'visualblocks,' : '') .
+				'weutil,autolink,template,wewordcount'; //TODO: load "templates" on demand as we do it with other plugins
 
 		$height = we_base_util::convertUnits($this->height);
 		$width = we_base_util::convertUnits($this->width);
@@ -1250,7 +1251,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		*/
 
 		ed.onNodeChange.add(function(ed, cm, n) {
-			var pc, tmp, 
+			var pc, tmp,
 				td = ed.dom.getParent(n, "td");
 
 			if(typeof td === "object" && td && td.getElementsByTagName("p").length === 1){
@@ -1373,12 +1374,12 @@ tinyMCE.weResizeEditor = function(render){
 
 tinyMCE.init(tinyMceConfObject__' . $this->fieldName_clean . ');
 ') . getHtmlTag('textarea', array(
-				'wrap' => "off",
-				'style' => 'color:#eeeeee; background-color:#eeeeee;  width:' . $width . '; height:' . $height. ';',
-				'id' => $this->name,
-				'name' => $this->name,
-				'class' => 'wetextarea'
-				), strtr($editValue, array('\n' => '', '&' => '&amp;')), true);
+					'wrap' => "off",
+					'style' => 'color:#eeeeee; background-color:#eeeeee;  width:' . $width . '; height:' . $height . ';',
+					'id' => $this->name,
+					'name' => $this->name,
+					'class' => 'wetextarea'
+						), strtr($editValue, array('\n' => '', '&' => '&amp;')), true);
 	}
 
 }

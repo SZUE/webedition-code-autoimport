@@ -79,17 +79,11 @@ $htmlPage->addJSFile(LIB_DIR . 'additional/yui/JsonRpc.js');
 
 $filenameEmptyMessage = we_util_Strings::quoteForJSString($translate->_('The name must not be empty!'), false);
 
-$filenameEmptyMessageCall = we_core_MessageReporting::getShowMessageCall(
-				$filenameEmptyMessage,
-				we_core_MessageReporting::kMessageWarning
-		);
+$filenameEmptyMessageCall = we_core_MessageReporting::getShowMessageCall(				$filenameEmptyMessage,				we_core_MessageReporting::kMessageWarning		);
 
 $folderNotValidMessage = we_util_Strings::quoteForJSString($translate->_('The folder could not be saved.'), false);
 
-$folderNotValidMessageCall = we_core_MessageReporting::getShowMessageCall(
-				$folderNotValidMessage,
-				we_core_MessageReporting::kMessageWarning
-		);
+$folderNotValidMessageCall = we_core_MessageReporting::getShowMessageCall(				$folderNotValidMessage,				we_core_MessageReporting::kMessageWarning		);
 
 
 $js = '

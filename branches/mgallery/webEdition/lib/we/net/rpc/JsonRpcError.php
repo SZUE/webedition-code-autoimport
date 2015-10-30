@@ -45,9 +45,7 @@ class we_net_rpc_JsonRpcError{
 	const kErrorParameterMismatch = 5;
 	const kErrorPermissionDenied = 6;
 
-	public function __construct(
-	$origin = self::kErrorOriginServer, $code = self::kErrorUnknown, $message = 'Unknown error'
-	){
+	public function __construct($origin = self::kErrorOriginServer, $code = self::kErrorUnknown, $message = 'Unknown error'){
 
 		$this->data = array(
 			'origin' => $origin,

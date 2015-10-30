@@ -23,7 +23,7 @@
  */
 we_html_tools::protect();
 echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
-	we_html_element::jsScript(JS_DIR . 'customizeValidation.js'));
+		we_html_element::jsScript(JS_DIR . 'customizeValidation.js'));
 ?>
 <body class="weDialogBody" style="overflow:hidden;">
 	<?php
@@ -34,9 +34,7 @@ echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET 
 				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][saved_success]'), we_message_reporting::WE_MESSAGE_NOTICE));
 			} else {
 				$selectedService = $_service;
-				echo we_html_element::jsElement(
-					we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][saved_failure]') . (isset($GLOBALS['errorMessage']) ? '\n' . $GLOBALS['errorMessage'] : ''), we_message_reporting::WE_MESSAGE_ERROR)
-				);
+				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][saved_failure]') . (isset($GLOBALS['errorMessage']) ? '\n' . $GLOBALS['errorMessage'] : ''), we_message_reporting::WE_MESSAGE_ERROR));
 			}
 			break;
 		case 'deleteService':
@@ -44,7 +42,7 @@ echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET 
 			if(validation::deleteService($_service)){
 				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][delete_success]'), we_message_reporting::WE_MESSAGE_NOTICE));
 			} else {
-				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][delete_failure]'), WE().consts.message.WE_MESSAGE_ERR)
+				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][delete_failure]'), WE() . consts . message . WE_MESSAGE_ERR)
 				);
 			}
 			break;
@@ -76,7 +74,7 @@ echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET 
 			}
 		}
 		$hiddenFields = we_html_tools::hidden('id', $selectedService->id) .
-			we_html_tools::hidden('art', 'custom');
+				we_html_tools::hidden('art', 'custom');
 	} else {
 		$hiddenFields = we_html_tools::hidden('art', 'custom');
 		$selectArr = array();
@@ -89,12 +87,12 @@ echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET 
 	$_table = '<table>
     <tr><td style="padding-right:10px;">' . we_html_tools::htmlSelect('validationService', $selectArr, 5, (isset($selectedService) ? $selectedService->getName() : ''), false, array('onchange' => 'we_cmd(\'customValidationService\',\'selectService\');'), "value", 320) . '</td>
         <td style="vertical-align:top">' . we_html_button::create_button('new_service', 'javascript:we_cmd(\'customValidationService\',\'newService\');')
-		. '<div style="height:10px;"></div>'
-		. we_html_button::create_button(we_html_button::DELETE, 'javascript:we_cmd(\'customValidationService\',\'deleteService\');', true, 100, 22, '', '', (empty($services))) . '
+			. '<div style="height:10px;"></div>'
+			. we_html_button::create_button(we_html_button::DELETE, 'javascript:we_cmd(\'customValidationService\',\'deleteService\');', true, 100, 22, '', '', (empty($services))) . '
         </td>
     </tr>
     </table>' .
-		$hiddenFields;
+			$hiddenFields;
 
 	$parts = array(
 		array('headline' => g_l('validation', '[available_services]'), 'html' => $_table, 'space' => 150)

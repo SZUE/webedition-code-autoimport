@@ -43,6 +43,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 			strpos($doc->ContentType, "image/") === 0 ||
 			strpos($doc->ContentType, "application/") === 0 ||
 			strpos($doc->ContentType, "video/") === 0)){
+		//FIXME: this should be determined by document, not by type
 			$doc->setElement("data", we_base_file::load($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $doc->Path));
 		}
 

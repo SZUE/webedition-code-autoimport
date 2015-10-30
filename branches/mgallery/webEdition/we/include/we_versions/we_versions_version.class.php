@@ -1203,21 +1203,20 @@ class we_versions_version{
 						$vers = $this->getVersion();
 
 						$versionName = $document['ID'] . '_' . $document['Table'] . '_' . $vers . $document['Extension'];
-						$binaryPath = VERSION_DIR . $versionName . '.gz';
-
+						$binaryPath = $versionName . '.gz';
+						$binaryFile = $_SERVER['DOCUMENT_ROOT'] . VERSION_DIR . $binaryPath;
 						if($document['IsDynamic']){
-							$this->writePreviewDynFile($document['ID'], $siteFile, $_SERVER['DOCUMENT_ROOT'] . $binaryPath, $documentObj);
+							$this->writePreviewDynFile($document['ID'], $siteFile, $binaryFile, $documentObj);
 						} elseif(file_exists($siteFile) && $document['Extension'] === '.php' && ($document['ContentType'] == we_base_ContentTypes::WEDOCUMENT || $document['ContentType'] == we_base_ContentTypes::HTML)){
-							we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $binaryPath, gzencode(file_get_contents($siteFile), 9));
+							we_base_file::save($binaryFile, gzencode(file_get_contents($siteFile), 9));
 						} elseif(!empty($document['TemplatePath']) && substr($document['TemplatePath'], -18) != '/' . we_template::NO_TEMPLATE_INC && $document['ContentType'] == we_base_ContentTypes::WEDOCUMENT){
 							$includeTemplate = preg_replace('/.tmpl$/i', '.php', $document['TemplatePath']);
-							$this->writePreviewDynFile($document['ID'], $includeTemplate, $_SERVER['DOCUMENT_ROOT'] . $binaryPath, $documentObj);
+							$this->writePreviewDynFile($document['ID'], $includeTemplate, $binaryFile, $documentObj);
 						} else {
-							we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $binaryPath, gzencode(file_get_contents($siteFile), 9));
+							we_base_file::save($binaryFile, gzencode(file_get_contents($siteFile), 9));
 						}
-						$usepath = $_SERVER['DOCUMENT_ROOT'] . $binaryPath;
-						if(file_exists($usepath) && is_file($usepath)){
-							$this->Filehash = sha1_file($usepath);
+						if(file_exists($binaryFile) && is_file($binaryFile)){
+							$this->Filehash = sha1_file($binaryFile);
 						}
 				}
 				$this->binaryPath = $binaryPath;
@@ -1556,7 +1555,7 @@ class we_versions_version{
 			);
 		}
 
-		$filePath = $_SERVER['DOCUMENT_ROOT'] . $binaryPath;
+		$filePath = $_SERVER['DOCUMENT_ROOT'] . VERSION_DIR . $binaryPath;
 		$binaryPathUsed = f('SELECT binaryPath FROM ' . VERSIONS_TABLE . ' WHERE ID!=' . intval($ID) . " AND binaryPath='" . $db->escape($binaryPath) . "' LIMIT 1", "", $db);
 
 		if(file_exists($filePath) && !$binaryPathUsed){
@@ -1636,7 +1635,7 @@ class we_versions_version{
 
 			if($resetDoc->ContentType == we_base_ContentTypes::IMAGE){
 				$lastBinaryPath = f('SELECT binaryPath FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($resetArray['documentID']) . ' AND documentTable="' . $resetArray['documentTable'] . '" AND version <="' . $version . '" AND binaryPath !="" ORDER BY version DESC LIMIT 1', '', $db);
-				$resetDoc->elements["data"]["dat"] = $_SERVER['DOCUMENT_ROOT'] . $lastBinaryPath;
+				$resetDoc->elements["data"]["dat"] = $_SERVER['DOCUMENT_ROOT'] . VERSION_DIR . $lastBinaryPath;
 			}
 
 			$resetDoc->EditPageNr = $_SESSION['weS']['EditPageNr'];
@@ -2099,9 +2098,7 @@ class we_versions_version{
 	}
 
 	private static function removeUnneededCompareFields(&$doc){
-		unset(
-				$doc['Published'], $doc['ModDate'], $doc['RebuildDate'], $doc['EditPageNr'], $doc['DocStream'], $doc['DB_WE'], $doc['Filehash'], $doc['usedElementNames'], $doc['hasVariants'], $doc['editorSaves'], $doc['Name'], $doc['wasUpdate'], $doc['InWebEdition'], $doc['PublWhenSave'], $doc['IsTextContentDoc'], $doc['fileExists'], $doc['elements']['allVariants'], $doc['persistent_slots']
-		);
+		unset($doc['Published'], $doc['ModDate'], $doc['RebuildDate'], $doc['EditPageNr'], $doc['DocStream'], $doc['DB_WE'], $doc['Filehash'], $doc['usedElementNames'], $doc['hasVariants'], $doc['editorSaves'], $doc['Name'], $doc['wasUpdate'], $doc['InWebEdition'], $doc['PublWhenSave'], $doc['IsTextContentDoc'], $doc['fileExists'], $doc['elements']['allVariants'], $doc['persistent_slots']);
 		return $doc;
 	}
 

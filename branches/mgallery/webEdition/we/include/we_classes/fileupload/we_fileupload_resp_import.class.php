@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_fileupload_resp_import extends we_fileupload_resp_base{
+
 	public function __construct($name = '', $contentType = '', $FILE = array(), $fileVars = array(), $controlVars = array(), $docVars = array()){
 		parent::__construct($name, $contentType, $FILE, $fileVars, $controlVars, $docVars);
 	}
@@ -31,36 +32,37 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 		parent::initByHttp();
 
 		$this->docVars = array_filter(array(
-				'transaction' => we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', $this->docVars['transaction']),
-				'importMetadata' => we_base_request::_(we_base_request::BOOL, 'fu_doc_importMetadata', $this->docVars['importMetadata']),
-				'isSearchable' => we_base_request::_(we_base_request::BOOL, 'fu_doc_isSearchable', $this->docVars['isSearchable']),
-				'widthSelect' => we_base_request::_(we_base_request::STRING, 'fu_doc_widthSelect', $this->docVars['widthSelect']),
-				'heightSelect' => we_base_request::_(we_base_request::STRING, 'fu_doc_heightSelect', $this->docVars['heightSelect']),
-				'quality' => we_base_request::_(we_base_request::INT, 'fu_doc_quality', $this->docVars['quality']),
-				'keepRatio' => we_base_request::_(we_base_request::BOOL, 'fu_doc_keepRatio', $this->docVars['keepRatio']),
-				'degrees' => we_base_request::_(we_base_request::INT, 'fu_doc_degrees', $this->docVars['degrees']),
-				// unset the followng entries when not in request!
-				'title' => we_base_request::_(we_base_request::STRING, 'fu_doc_title', we_base_request::NOT_VALID),
-				'alt' => we_base_request::_(we_base_request::STRING, 'fu_doc_alt', we_base_request::NOT_VALID),
-				'thumbs' => we_base_request::_(we_base_request::INTLIST, 'fu_doc_thumbs', we_base_request::NOT_VALID),
-				'width' => we_base_request::_(we_base_request::INT, 'fu_doc_width', we_base_request::NOT_VALID),
-				'height' => we_base_request::_(we_base_request::INT, 'fu_doc_height', we_base_request::NOT_VALID),
-			), function($var){return $var !== we_base_request::NOT_VALID;}
-		);
+			'transaction' => we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', $this->docVars['transaction']),
+			'importMetadata' => we_base_request::_(we_base_request::BOOL, 'fu_doc_importMetadata', $this->docVars['importMetadata']),
+			'isSearchable' => we_base_request::_(we_base_request::BOOL, 'fu_doc_isSearchable', $this->docVars['isSearchable']),
+			'widthSelect' => we_base_request::_(we_base_request::STRING, 'fu_doc_widthSelect', $this->docVars['widthSelect']),
+			'heightSelect' => we_base_request::_(we_base_request::STRING, 'fu_doc_heightSelect', $this->docVars['heightSelect']),
+			'quality' => we_base_request::_(we_base_request::INT, 'fu_doc_quality', $this->docVars['quality']),
+			'keepRatio' => we_base_request::_(we_base_request::BOOL, 'fu_doc_keepRatio', $this->docVars['keepRatio']),
+			'degrees' => we_base_request::_(we_base_request::INT, 'fu_doc_degrees', $this->docVars['degrees']),
+			// unset the followng entries when not in request!
+			'title' => we_base_request::_(we_base_request::STRING, 'fu_doc_title', we_base_request::NOT_VALID),
+			'alt' => we_base_request::_(we_base_request::STRING, 'fu_doc_alt', we_base_request::NOT_VALID),
+			'thumbs' => we_base_request::_(we_base_request::INTLIST, 'fu_doc_thumbs', we_base_request::NOT_VALID),
+			'width' => we_base_request::_(we_base_request::INT, 'fu_doc_width', we_base_request::NOT_VALID),
+			'height' => we_base_request::_(we_base_request::INT, 'fu_doc_height', we_base_request::NOT_VALID),
+				), function($var){
+			return $var !== we_base_request::NOT_VALID;
+		});
 	}
 
 	protected function postprocess(){
 		$we_doc = $this->getWebeditionDocument();
 		//TODO: make concise mime and extension test here, taking uploader's typecondition from session
 		/*
-		if($this->typeCondition['accepted']['mime'] && !in_array($this->fileVars['weFileCt'], $this->typeCondition['accepted']['mime'])){
-			if(!empty($this->fileVars['weFileName'])){
-				$we_alerttext = g_l('alert', '[wrong_file][' . $we_doc->ContentType . ']');
-			} else {
-				$we_alerttext = g_l('alert', '[no_file_selected]');
-			}
-		}
-		 * 
+		  if($this->typeCondition['accepted']['mime'] && !in_array($this->fileVars['weFileCt'], $this->typeCondition['accepted']['mime'])){
+		  if(!empty($this->fileVars['weFileName'])){
+		  $we_alerttext = g_l('alert', '[wrong_file][' . $we_doc->ContentType . ']');
+		  } else {
+		  $we_alerttext = g_l('alert', '[no_file_selected]');
+		  }
+		  }
+		 *
 		 */
 
 		$response = $this->writeWebeditionDocument($we_doc);
@@ -128,7 +130,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 		$we_doc->Filename = $matches[1];
 		$we_doc->Extension = strtolower($matches[2]);
 		if(!$we_doc->Filename){ // .htaccess
-			$we_doc->Filename = $matches[2];//.htaccess
+			$we_doc->Filename = $matches[2]; //.htaccess
 			$we_doc->Extension = '';
 		}
 		$we_doc->Text = $we_doc->Filename . $we_doc->Extension;
@@ -168,7 +170,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 	}
 
 	protected function writeWebeditionDocument($we_doc){
-		$tempFile =  $_SERVER['DOCUMENT_ROOT'] . $this->fileVars['fileTemp'];
+		$tempFile = $_SERVER['DOCUMENT_ROOT'] . $this->fileVars['fileTemp'];
 		// TODO: there are more bad combinations to consider
 		if($we_doc->ContentType === we_base_ContentTypes::IMAGE){
 			if(!$we_doc->isSvg() && !in_array(we_base_imageEdit::detect_image_type($tempFile), we_base_imageEdit::$GDIMAGE_TYPE)){
@@ -201,7 +203,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 				if($this->docVars['importMetadata']){
 					$we_doc->importMetaData();
 				}
-				// no break
+			// no break
 			case we_base_ContentTypes::FLASH:
 				$we_size = $we_doc->getimagesize($tempFile);
 				if(is_array($we_size) && count($we_size) >= 2){
@@ -210,15 +212,15 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 					$we_doc->setElement("origwidth", $we_size[0], 'attrib');
 					$we_doc->setElement("origheight", $we_size[1], 'attrib');
 				}
-				// no break
-			default: 
+			// no break
+			default:
 				$we_doc->Table = FILE_TABLE;
 				$this->fileVars['weFileSize'] = $this->fileVars['weFileSize'] < 1 ? 1 : $this->fileVars['weFileSize'];
 				$we_doc->setElement('filesize', $this->fileVars['weFileSize'], 'attrib');
 				/*
-				//now change the category
-				$we_doc->Category = isset($this->docVars['categories']) && $this->docVars['categories'] = $this->docVars['categories'] : $we_doc->Category;
-				*/
+				  //now change the category
+				  $we_doc->Category = isset($this->docVars['categories']) && $this->docVars['categories'] = $this->docVars['categories'] : $we_doc->Category;
+				 */
 				if($this->docVars['importMetadata'] && $we_doc->Extension === '.pdf'){
 					$we_doc->setMetaDataFromFile($tempFile);
 				}
@@ -230,13 +232,13 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			$newHeight = 0;
 			if(isset($this->docVars['width']) && $this->docVars['width']){
 				$newWidth = ($this->docVars['widthSelect'] === 'percent' ?
-						round(($we_doc->getElement("origwidth") / 100) * $this->docVars['width']) :
-						$this->docVars['width']);
+								round(($we_doc->getElement("origwidth") / 100) * $this->docVars['width']) :
+								$this->docVars['width']);
 			}
 			if(isset($this->docVars['height']) && $this->docVars['height']){
 				$newHeight = ($this->docVars['heightSelect'] === 'percent' ?
-						round(($we_doc->getElement("origheight") / 100) * $this->docVars['height']) :
-						$this->docVars['height']);
+								round(($we_doc->getElement("origheight") / 100) * $this->docVars['height']) :
+								$this->docVars['height']);
 			}
 			if(($newWidth && ($newWidth != $we_doc->getElement("origwidth"))) || ($newHeight && ($newHeight != $we_doc->getElement("origheight")))){
 				if($we_doc->resizeImage($newWidth, $newHeight, $this->docVars['quality'], $this->docVars['keepRatio'])){
@@ -247,11 +249,11 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			}
 			if($this->docVars['degrees']){
 				$we_doc->rotateImage(
-					($this->docVars['degrees'] % 180 == 0) ?
-						$we_doc->getElement('origwidth') :
-						$we_doc->getElement("origheight"), ($this->docVars['degrees'] % 180 == 0 ?
-						$we_doc->getElement("origheight") :
-						$we_doc->getElement("origwidth")), $this->docVars['degrees'], $this->docVars['quality']);
+						($this->docVars['degrees'] % 180 == 0 ?
+								$we_doc->getElement('origwidth') :
+								$we_doc->getElement("origheight")), ($this->docVars['degrees'] % 180 == 0 ?
+								$we_doc->getElement("origheight") :
+								$we_doc->getElement("origwidth")), $this->docVars['degrees'], $this->docVars['quality']);
 			}
 			$we_doc->IsSearchable = isset($this->docVars['isSearchable']) ? $this->docVars['isSearchable'] : $we_doc->IsSearchable;
 			$we_doc->setElement('title', (isset($this->docVars['title']) ? $this->docVars['title'] : $we_doc->getElement('title')), 'attrib');
@@ -260,7 +262,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 		}
 
 		if($this->docVars['transaction']){
-			$_SESSION['weS']['we_data']['tmpName'] = $tempFile;// what's this?
+			$_SESSION['weS']['we_data']['tmpName'] = $tempFile; // what's this?
 			$we_doc->saveInSession($_SESSION['weS']['we_data'][$this->docVars['transaction']]); // save the changed object in session
 		} else {
 			if(!$we_doc->we_save()){
@@ -285,4 +287,5 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			'weDoc' => array('id' => $we_doc->ID, 'path' => $we_doc->Path, 'text' => $we_doc->Text)
 		);
 	}
+
 }

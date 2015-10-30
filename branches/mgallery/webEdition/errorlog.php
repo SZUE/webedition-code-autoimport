@@ -123,9 +123,7 @@ foreach(array_keys($GLOBALS['trans']) as $key){
 }
 $url = WEBEDITION_DIR . basename(__FILE__);
 $buttons = g_l('searchtool', '[anzeigen]') . ': <select onchange="document.getElementById(this.value).scrollIntoView();">' . $options . '</select>' .
-		we_html_button::position_yes_no_cancel(
-				we_html_button::create_button(we_html_button::DELETE_ALL, $url . '?deleteAll=1'), we_html_button::create_button(we_html_button::REFRESH, $url), we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close()")
-);
+		we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::DELETE_ALL, $url . '?deleteAll=1'), we_html_button::create_button(we_html_button::REFRESH, $url), we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close()"));
 
 
 $db = $GLOBALS['DB_WE'];

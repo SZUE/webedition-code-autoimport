@@ -504,19 +504,12 @@ function setNavStatDocDisabled() {
 
 		foreach($metaDataFields as $md){
 			if($md['importFrom']){
-				$checked = !empty($metaFields[$md['tag']]);
-				$_html .= we_html_forms::checkbox(1, $checked, "_field[" . $md['tag'] . "]", $md['tag'], false, "defaultfont", "checkForError()");
+				$_html .= we_html_forms::checkbox(1, (!empty($metaFields[$md['tag']])), "_field[" . $md['tag'] . "]", $md['tag'], false, "defaultfont", "checkForError()");
 			}
 		}
 
-		$_html .= we_html_button::create_button_table(
-						array(
-					$selAllBut,
-					$deselAllBut
-						), array('style' => 'margin:10px 0 20px 0;')
-		);
-
-		$_html .= we_html_forms::checkbox(1, $onlyEmpty, 'onlyEmpty', g_l('rebuild', '[onlyEmpty]'));
+		$_html .= we_html_button::create_button_table(array($selAllBut, $deselAllBut), array('style' => 'margin:10px 0 20px 0;')) .
+				we_html_forms::checkbox(1, $onlyEmpty, 'onlyEmpty', g_l('rebuild', '[onlyEmpty]'));
 
 
 		return $_html;

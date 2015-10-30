@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_import_functions{
+
 	const TYPE_CSV = 'CSVImport';
 	const TYPE_GENERIC_XML = 'GXMLImport';
 	const TYPE_WE_XML = 'WXMLImport';
@@ -100,9 +101,9 @@ abstract class we_import_functions{
 		}
 		// PUBLISH OR EXIT
 		return ($publish ?
-				$GLOBALS['we_doc']->we_publish() :
-				true
-			);
+						$GLOBALS['we_doc']->we_publish() :
+						true
+				);
 	}
 
 	/**
@@ -173,8 +174,8 @@ abstract class we_import_functions{
 		}
 		// PUBLISH OR EXIT
 		return ($publish ?
-				$object->we_publish() :
-				true);
+						$object->we_publish() :
+						true);
 	}
 
 	/**
@@ -269,9 +270,7 @@ abstract class we_import_functions{
 				}
 			}
 
-			return mktime(
-				$outarray["hour"], $outarray["minute"], $outarray["second"], $outarray["month"], $outarray["day"], $outarray["year"]
-			);
+			return mktime($outarray["hour"], $outarray["minute"], $outarray["second"], $outarray["month"], $outarray["day"], $outarray["year"]);
 		}
 		return 0;
 	}
