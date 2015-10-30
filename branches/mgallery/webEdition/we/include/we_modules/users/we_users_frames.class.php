@@ -139,7 +139,7 @@ var cgroup=' . ($_SESSION['user']['ID'] ? intval(f('SELECT ParentID FROM ' . USE
 				$_SESSION["user_session_data"] :
 				new we_users_user());
 
-		echo $this->View->getJSProperty();
+		$js= $this->View->getJSProperty();
 		$tab = we_base_request::_(we_base_request::INT, 'tab', 0);
 		$permBranch = oldHtmlspecialchars(we_base_request::_(we_base_request::STRING, "perm_branch", 0));
 		$_content = we_html_element::htmlHiddens(array(
@@ -174,7 +174,7 @@ var cgroup=' . ($_SESSION['user']['ID'] ? intval(f('SELECT ParentID FROM ' . USE
 				'autocomplete' => 'off',
 				'onsubmit' => 'return false'
 				), $_content);
-		return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'), $_form));
+		return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'), $_form),$js);
 	}
 
 	protected function getHTMLEditorFooter(){
