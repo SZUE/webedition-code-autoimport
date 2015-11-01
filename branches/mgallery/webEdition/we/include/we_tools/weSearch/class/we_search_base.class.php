@@ -92,11 +92,11 @@ class we_search_base{
 
 					switch($searchlocation[$i]){
 						case 'END':
-							$searching = " LIKE '%" . $this->db->escape($searchname[$i]) . "' ";
+							$searching = ' LIKE "%' . $this->db->escape($searchname[$i]) . '" ';
 							$sql .= $this->sqlwhere($searchfield[$i], $searching, null);
 							break;
 						case 'START':
-							$searching = " LIKE '" . $this->db->escape($searchname[$i]) . "%' ";
+							$searching = ' LIKE "' . $this->db->escape($searchname[$i]) . '%" ';
 							$sql .= $this->sqlwhere($searchfield[$i], $searching, null);
 							break;
 						case 'IN':
@@ -105,7 +105,7 @@ class we_search_base{
 							$sql .= $this->sqlwhere($searchfield[$i], $searching, null);
 							break;
 						case 'IS':
-							$searching = "='" . $this->db->escape($searchname[$i]) . "' ";
+							$searching = '="' . $this->db->escape($searchname[$i]) . '" ';
 							$sql .= $this->sqlwhere($searchfield[$i], $searching, null);
 							break;
 						case '<':
@@ -116,7 +116,7 @@ class we_search_base{
 							$sql .= $this->sqlwhere($searchfield[$i], $searching, null);
 							break;
 						default :
-							$searching = " LIKE '%" . $this->db->escape($searchname[$i]) . "%' ";
+							$searching = ' LIKE "%' . $this->db->escape($searchname[$i]) . '%" ';
 							$sql .= $this->sqlwhere($searchfield[$i], $searching, null);
 							break;
 					}

@@ -1371,7 +1371,7 @@ WE().consts.g_l.weSearch = {
 							}
 							if($isCheckedFileTable && !$isCheckedObjFileTable){
 								$_SESSION['weS']['weSearch']['onlyObjects'] = false;
-								$whereQuery .= ' AND ' . escape_sql_query($_table) . ".documentTable='" . FILE_TABLE . "' ";
+								$whereQuery .= ' AND ' . escape_sql_query($_table) . '.documentTable="' . FILE_TABLE . '" ';
 								$_SESSION['weS']['weSearch']['ObjectsAndDocs'] = false;
 							}
 							break;
@@ -1760,10 +1760,10 @@ WE().consts.g_l.weSearch = {
 				$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $file["Path"]);
 				$url = WEBEDITION_DIR . 'thumbnail.php?id=' . $file["docID"] . "&size=" . $smallSize . "&path=" . urlencode($file["Path"]) . "&extension=" . $file["Extension"]
 				;
-				$imageView = "<img src='" . $url . "' border='0' /></a>";
+				$imageView = '<img src="' . $url . '" border="0" /></a>';
 
 				$urlPopup = WEBEDITION_DIR . "thumbnail.php?id=" . $file["docID"] . "&size=" . $bigSize . "&path=" . $file["Path"] . "&extension=" . $file["Extension"];
-				$imageViewPopup = "<img src='" . $urlPopup . "' border='0' /></a>";
+				$imageViewPopup = '<img src="' . $urlPopup . '" border="0" /></a>';
 			} else {
 				$imagesize = array(0, 0);
 				$imageView = $imageViewPopup = we_html_element::jsElement('document.write(WE().util.getTreeIcon("' . we_base_ContentTypes::IMAGE . '"))');

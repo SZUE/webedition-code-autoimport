@@ -599,7 +599,7 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 			case 'save_workflow':
 				if(we_base_request::_(we_base_request::INT, 'wid') !== false){
 					$newone = (!$this->workflowDef->ID);
-					$double = intval(f('SELECT COUNT(1) FROM ' . WORKFLOW_TABLE . " WHERE Text='" . $this->db->escape($this->workflowDef->Text) . "'" . ($newone ? '' : ' AND ID!=' . intval($this->workflowDef->ID)), '', $this->db));
+					$double = intval(f('SELECT COUNT(1) FROM ' . WORKFLOW_TABLE . ' WHERE Text="' . $this->db->escape($this->workflowDef->Text) . '"' . ($newone ? '' : ' AND ID!=' . intval($this->workflowDef->ID)), '', $this->db));
 
 					if(!permissionhandler::hasPerm('EDIT_WORKFLOW') && !permissionhandler::hasPerm('NEW_WORKFLOW')){
 						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));

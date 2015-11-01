@@ -831,7 +831,7 @@ class we_versions_version{
 	 * @abstract looks if versions exist for the document
 	 */
 	private static function versionsExist($id, $contentType){
-		return f('SELECT 1 FROM ' . VERSIONS_TABLE . ' WHERE documentId=' . intval($id) . " AND ContentType='" . escape_sql_query($contentType) . "' LIMIT 1", '', new DB_WE()) == 1;
+		return f('SELECT 1 FROM ' . VERSIONS_TABLE . ' WHERE documentId=' . intval($id) . ' AND ContentType="' . escape_sql_query($contentType) . '" LIMIT 1', '', new DB_WE()) == 1;
 	}
 
 	/**
@@ -1016,7 +1016,7 @@ class we_versions_version{
 		if($anzahl > $prefAnzahl && $prefAnzahl != ""){
 			$toDelete = $anzahl - $prefAnzahl;
 			$m = 0;
-			$db->query('SELECT ID, version FROM ' . VERSIONS_TABLE . " WHERE documentId=" . intval($docID) . " AND documentTable='" . $db->escape($docTable) . "' ORDER BY version ASC LIMIT " . intval($toDelete));
+			$db->query('SELECT ID, version FROM ' . VERSIONS_TABLE . " WHERE documentId=" . intval($docID) . ' AND documentTable="' . $db->escape($docTable) . '" ORDER BY version ASC LIMIT ' . intval($toDelete));
 			while($db->next_record()){
 				if($m < $toDelete){
 					$this->deleteVersion($db->f('ID'), '');
@@ -1228,7 +1228,7 @@ class we_versions_version{
 				/* get fields which can be changed */
 				$fields = self::getFieldsFromTable(VERSIONS_TABLE, $db);
 
-				$vals = getHash('SELECT ' . implode(',', $fields) . ' FROM ' . VERSIONS_TABLE . ' WHERE version<' . intval($this->version) . " AND status != 'deleted' AND documentID=" . intval($document["ID"]) . " AND documentTable='" . $db->escape($document["Table"]) . "' ORDER BY version DESC LIMIT 1");
+				$vals = getHash('SELECT ' . implode(',', $fields) . ' FROM ' . VERSIONS_TABLE . ' WHERE version<' . intval($this->version) . " AND status != 'deleted' AND documentID=" . intval($document["ID"]) . ' AND documentTable="' . $db->escape($document["Table"]) . '" ORDER BY version DESC LIMIT 1');
 				foreach($fields as $val){
 					if(isset($this->modFields[$val]) && isset($vals[$val])){
 						$lastEntryField = isset($vals[$val]) ? $vals[$val] : '';
@@ -1556,7 +1556,7 @@ class we_versions_version{
 		}
 
 		$filePath = $_SERVER['DOCUMENT_ROOT'] . VERSION_DIR . $binaryPath;
-		$binaryPathUsed = f('SELECT binaryPath FROM ' . VERSIONS_TABLE . ' WHERE ID!=' . intval($ID) . " AND binaryPath='" . $db->escape($binaryPath) . "' LIMIT 1", "", $db);
+		$binaryPathUsed = f('SELECT binaryPath FROM ' . VERSIONS_TABLE . ' WHERE ID!=' . intval($ID) . ' AND binaryPath="' . $db->escape($binaryPath) . '" LIMIT 1', "", $db);
 
 		if(file_exists($filePath) && !$binaryPathUsed){
 			@unlink($filePath);
@@ -1715,7 +1715,7 @@ class we_versions_version{
 			$resetDoc->ModDate = time();
 			$resetDoc->Published = $resetArray["timestamp"];
 
-			$wasPublished = f('SELECT status FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($resetArray["documentID"]) . " AND documentTable='" . $db->escape($resetArray['documentTable']) . "' AND status='published' ORDER BY version DESC LIMIT 1", '', $db);
+			$wasPublished = f('SELECT status FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($resetArray["documentID"]) . ' AND documentTable="' . $db->escape($resetArray['documentTable']) . '" AND status="published" ORDER BY version DESC LIMIT 1', '', $db);
 			$publishedDoc = $_SERVER['DOCUMENT_ROOT'] . $resetDoc->Path;
 			$publishedDocExists = true;
 			if($resetArray['ContentType'] != we_base_ContentTypes::OBJECT_FILE){
@@ -1749,7 +1749,7 @@ class we_versions_version{
 
 //update versions if id or path were changed
 			if(!$existsInFileTable){
-				$db->query('UPDATE ' . VERSIONS_TABLE . ' SET documentID=' . intval($resetDoc->ID) . ',ParentID=' . intval($resetDoc->ParentID) . ',active=0 WHERE documentID=' . intval($oldId) . " AND ContentType='" . $db->escape($oldCt) . "'");
+				$db->query('UPDATE ' . VERSIONS_TABLE . ' SET documentID=' . intval($resetDoc->ID) . ',ParentID=' . intval($resetDoc->ParentID) . ',active=0 WHERE documentID=' . intval($oldId) . ' AND ContentType="' . $db->escape($oldCt) . '"');
 			}
 		}
 	}

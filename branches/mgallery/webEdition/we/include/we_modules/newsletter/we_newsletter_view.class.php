@@ -238,7 +238,7 @@ var frameSet="' . $this->frameset . '";
 ') . we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_top.js');
 	}
 
-	function getJSCmd(){
+	function getJSSubmitFunction(){
 		return we_html_element::jsElement('
 function submitForm() {
 	var f = self.document.we_form;
@@ -478,7 +478,7 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter' . ($
 					$this->newsletter->isEmbedImages = $this->settings["isEmbedImages"];
 				}
 
-				$double = intval(f('SELECT COUNT(1) FROM ' . NEWSLETTER_TABLE . " WHERE Path='" . $this->db->escape($this->newsletter->Path) . "'" . ($newone ? '' : ' AND ID<>' . $this->newsletter->ID), '', $this->db));
+				$double = intval(f('SELECT COUNT(1) FROM ' . NEWSLETTER_TABLE . ' WHERE Path="' . $this->db->escape($this->newsletter->Path) . '"' . ($newone ? '' : ' AND ID<>' . $this->newsletter->ID), '', $this->db));
 
 				if(!permissionhandler::hasPerm("EDIT_NEWSLETTER") && !permissionhandler::hasPerm("NEW_NEWSLETTER")){
 					echo we_html_element::jsElement(
@@ -1322,25 +1322,25 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 
 		switch($filter["operator"]){
 			case we_newsletter_newsletter::OP_EQ:
-				return $filterSQL . " = '" . $filter["fieldvalue"] . "'";
+				return $filterSQL . ' = "' . $filter["fieldvalue"] . '"';
 			case we_newsletter_newsletter::OP_NEQ:
-				return $filterSQL . " <> '" . $filter["fieldvalue"] . "'";
+				return $filterSQL . ' != "' . $filter["fieldvalue"] . '"';
 			case we_newsletter_newsletter::OP_LE:
-				return $filterSQL . " < '" . $filter["fieldvalue"] . "'";
+				return $filterSQL . ' < "' . $filter["fieldvalue"] . '"';
 			case we_newsletter_newsletter::OP_LEQ:
-				return $filterSQL . " <= '" . $filter["fieldvalue"] . "'";
+				return $filterSQL . ' <= "' . $filter["fieldvalue"] . '"';
 			case we_newsletter_newsletter::OP_GE:
-				return $filterSQL . " > '" . $filter["fieldvalue"] . "'";
+				return $filterSQL . ' > "' . $filter["fieldvalue"] . '"';
 			case we_newsletter_newsletter::OP_GEQ:
-				return $filterSQL . " >= '" . $filter["fieldvalue"] . "'";
+				return $filterSQL . ' >= "' . $filter["fieldvalue"] . '"';
 			case we_newsletter_newsletter::OP_LIKE:
-				return $filterSQL . " LIKE '" . $filter["fieldvalue"] . "'";
+				return $filterSQL . ' LIKE "' . $filter["fieldvalue"] . '"';
 			case we_newsletter_newsletter::OP_CONTAINS:
-				return $filterSQL . " LIKE '%" . $filter["fieldvalue"] . "%'";
+				return $filterSQL . ' LIKE "%' . $filter["fieldvalue"] . '%"';
 			case we_newsletter_newsletter::OP_STARTS:
-				return $filterSQL . " LIKE '" . $filter["fieldvalue"] . "%'";
+				return $filterSQL . ' LIKE "' . $filter["fieldvalue"] . '%"';
 			case we_newsletter_newsletter::OP_ENDS:
-				return $filterSQL . " LIKE '%" . $filter["fieldvalue"] . "'";
+				return $filterSQL . ' LIKE "%' . $filter["fieldvalue"] . '"';
 			default:
 				return $filterSQL;
 		}

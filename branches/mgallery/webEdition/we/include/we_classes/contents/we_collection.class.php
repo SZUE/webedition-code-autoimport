@@ -728,7 +728,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 	}
 
 	protected function i_filenameDouble(){
-		return f('SELECT 1 FROM ' . escape_sql_query($this->Table) . ' WHERE ParentID=' . intval($this->ParentID) . " AND Text='" . escape_sql_query($this->Text) . "' AND ID != " . intval($this->ID), "", $this->DB_WE);
+		return f('SELECT 1 FROM ' . escape_sql_query($this->Table) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Text="' . escape_sql_query($this->Text) . '" AND ID!=' . intval($this->ID), '', $this->DB_WE);
 	}
 
 	public function we_load($from = we_class::LOAD_MAID_DB){
@@ -872,7 +872,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 			if(($ws = get_ws($this->remTable))){
 				$wsPathArray = id_to_path($ws, $this->remTable, $this->DB_WE, false, true);
 				foreach($wsPathArray as $path){
-					$wspaces[] = " Path LIKE '" . $this->DB_WE->escape($path) . "/%' OR " . getQueryParents($path);
+					$wspaces[] = ' Path LIKE "' . $this->DB_WE->escape($path) . '/%" OR ' . getQueryParents($path);
 					while($path != '/' && $path != '\\' && $path){
 						$parentpaths[] = $path;
 						$path = dirname($path);
@@ -882,7 +882,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 				$ac = we_users_util::getAllowedClasses($this->DB_WE);
 				foreach($ac as $cid){
 					$path = id_to_path($cid, OBJECT_TABLE);
-					$wspaces[] = " Path LIKE '" . $this->DB_WE->escape($path) . "/%' OR Path='" . $this->DB_WE->escape($path) . "'";
+					$wspaces[] = ' Path LIKE "' . $this->DB_WE->escape($path) . '/%" OR Path="' . $this->DB_WE->escape($path) . '"';
 				}
 			}
 			$wspaces = empty($wspaces) ? array(false) : $wspaces;

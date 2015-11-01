@@ -97,7 +97,7 @@ class we_selector_document extends we_selector_directory{
 				$wsQueryA = array();
 				foreach($ac as $cid){
 					$path = id_to_path($cid, OBJECT_TABLE);
-					$wsQueryA[] = " Path LIKE '" . $this->db->escape($path) . "/%' OR Path='" . $this->db->escape($path) . "'";
+					$wsQueryA[] = ' Path LIKE "' . $this->db->escape($path) . '/%" OR Path="' . $this->db->escape($path) . '"';
 				}
 				$wsQuery = ($wsQueryA ? ' AND (' . implode(' OR ', $wsQueryA) . ')' : '');
 			}
@@ -440,7 +440,7 @@ top.makeNewDocument = true;' .
 				if($fs === 0){
 					$_imagesize = array(0, 0);
 					$_thumbpath = ICON_DIR . 'no_image.gif';
-					$_imagepreview = "<img src='" . $_thumbpath . "' id='previewpic'><p>" . g_l('fileselector', '[image_not_uploaded]') . "</p>";
+					$_imagepreview = '<img src="' . $_thumbpath . '" id="previewpic"><p>' . g_l('fileselector', '[image_not_uploaded]') . '</p>';
 				} else {
 					$_imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
 					$_thumbpath = WEBEDITION_DIR . 'thumbnail.php?' . http_build_query(array(

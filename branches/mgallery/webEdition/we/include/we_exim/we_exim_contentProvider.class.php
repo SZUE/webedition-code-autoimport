@@ -490,7 +490,7 @@ class we_exim_contentProvider{
 	}
 
 	static function isBinary($id){
-		return f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . " AND ContentType='" . we_base_ContentTypes::IMAGE . "' OR ContentType LIKE 'application/%'  LIMIT 1", '', new DB_WE()) == 1;
+		return f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND ContentType="' . we_base_ContentTypes::IMAGE . '" OR ContentType LIKE "application/%"  LIMIT 1', '', new DB_WE()) == 1;
 	}
 
 	static function getCDATA($data){

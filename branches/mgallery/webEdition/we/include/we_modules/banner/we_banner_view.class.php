@@ -397,7 +397,7 @@ WE().consts.g_l.banner.view = {
 						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[no_group_in_group]'), we_message_reporting::WE_MESSAGE_ERROR));
 						return;
 					}
-					if(f('SELECT 1 FROM ' . BANNER_TABLE . " WHERE Text='" . $this->db->escape($this->banner->Text) . "' AND ParentID=" . intval($this->banner->ParentID) .
+					if(f('SELECT 1 FROM ' . BANNER_TABLE . ' WHERE Text="' . $this->db->escape($this->banner->Text) . '" AND ParentID=' . intval($this->banner->ParentID) .
 							($newone ? '' : ' AND ID!=' . intval($this->banner->ID)), '', $this->db)){
 						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_banner', '[double_name]'), we_message_reporting::WE_MESSAGE_ERROR));
 						return;
@@ -792,11 +792,8 @@ WE().consts.g_l.banner.view = {
 		<td class="defaultfont">&nbsp;<label for="' . $this->uid . '_IntHref1">' . g_l('modules_banner', '[int_url]') . '</label></td>
 	</tr>
 </table>';
-
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $idname . "'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
-		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'')");
+		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value") . "','" . we_base_request::encCmd(str_replace('\\', '', $cmd)) . "','',0,'')");
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId("InternalURL");
 		$yuiSuggest->setContentType(implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH, we_base_ContentTypes::QUICKTIME)));

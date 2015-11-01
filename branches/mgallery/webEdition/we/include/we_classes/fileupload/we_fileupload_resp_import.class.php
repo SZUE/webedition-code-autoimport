@@ -99,7 +99,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 					// make fn rename to avoid redundant code
 					$z = 0;
 					$footext = $we_doc->Filename . '_' . $z . $we_doc->Extension;
-					while(f('SELECT ID FROM ' . FILE_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($we_doc->ParentID))){
+					while(f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Text="' . $GLOBALS['DB_WE']->escape($footext) . '" AND ParentID=' . intval($we_doc->ParentID))){
 						$z++;
 						$footext = $we_doc->Filename . '_' . $z . $we_doc->Extension;
 					}
@@ -149,7 +149,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 					// make fn rename to avoid redundant code
 					$z = 0;
 					$footext = $we_doc->Filename . '_' . $z . $we_doc->Extension;
-					while(f('SELECT ID FROM ' . FILE_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($this->fileVars['parentID']))){
+					while(f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Text="' . $GLOBALS['DB_WE']->escape($footext) . ' AND ParentID=' . intval($this->fileVars['parentID']))){
 						$z++;
 						$footext = $we_doc->Filename . '_' . $z . $we_doc->Extension;
 					}

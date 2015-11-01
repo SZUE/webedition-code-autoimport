@@ -315,7 +315,7 @@ top.content.drawTree();');
 		}
 	}
 
-	//some additional methods called by getJSCmd().
+	//some additional methods called by .
 	private function print_fc_html($blank = true){
 
 		return we_html_element::jsElement('
@@ -334,7 +334,6 @@ if (top.content.editor.edbody.messaging_messages_overview) {
 		}
 
 		$this->messaging->get_fc_data($this->messaging->Folder_ID, '', '', 0);
-		//print $this->print_fc_html($blank);
 		return $this->print_fc_html($blank) . $this->update_treeview();
 	}
 

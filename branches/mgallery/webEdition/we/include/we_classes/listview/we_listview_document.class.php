@@ -211,7 +211,7 @@ class we_listview_document extends we_listview_base{
 					$klammer = array();
 					reset($spalten);
 					foreach($spalten as $v){
-						$klammer[] = sprintf("%s LIKE '%%%s%%'", $v, addslashes($bed));
+						$klammer[] = sprintf('%s LIKE "%%%s%%"', $v, addslashes($bed));
 					}
 					if($not){
 						$bedingungen_sql[] = ' NOT (' . implode(' OR ', $klammer) . ')';
@@ -221,7 +221,7 @@ class we_listview_document extends we_listview_base{
 				} else {
 					$klammer = array();
 					foreach($spalten as $v){
-						$klammer[] = sprintf("%s LIKE '%%%s%%'", $v, addslashes($v1));
+						$klammer[] = sprintf('%s LIKE "%%%s%%"', $v, addslashes($v1));
 					}
 					$bed2 = '(' . implode(' OR ', $klammer) . ')';
 					$ranking .= '-' . $bed2;

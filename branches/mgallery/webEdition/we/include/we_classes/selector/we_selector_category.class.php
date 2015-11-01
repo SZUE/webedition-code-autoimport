@@ -185,7 +185,7 @@ top.selectFile(top.currentID);'), we_html_element::htmlBody());
 			$js.=we_message_reporting::getShowMessageCall(g_l('weEditor', ($what == 1 ? '[folder]' : '[category]') . '[filename_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif(strpos($txt, ',') !== false){
 			$js.=we_message_reporting::getShowMessageCall(g_l('weEditor', '[category][name_komma]'), we_message_reporting::WE_MESSAGE_ERROR);
-		} elseif(f('SELECT 1 FROM ' . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($Path) . "' AND ID!=" . intval($this->we_editCatID) . ' LIMIT 1', '', $this->db)){
+		} elseif(f('SELECT 1 FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($Path) . '" AND ID!=' . intval($this->we_editCatID) . ' LIMIT 1', '', $this->db)){
 			$js.=we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', ($what == 1 ? '[folder]' : '[category]') . '[response_path_exists]'), $Path), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif(preg_match('|[\'"<>/]|', $txt)){
 			$js.=we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][we_filename_notValid]'), $Path), we_message_reporting::WE_MESSAGE_ERROR);

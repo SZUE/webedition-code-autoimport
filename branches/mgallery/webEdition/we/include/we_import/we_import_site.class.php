@@ -1276,7 +1276,7 @@ function doUnload() {
 
 
 			$newTemplateFilename = $templateFilename;
-			$GLOBALS['DB_WE']->query("SELECT Filename FROM " . TEMPLATES_TABLE . " WHERE ParentID=" . abs($templateParentID) . " AND Filename LIKE '" . $GLOBALS['DB_WE']->escape($templateFilename) . "%'");
+			$GLOBALS['DB_WE']->query("SELECT Filename FROM " . TEMPLATES_TABLE . " WHERE ParentID=" . abs($templateParentID) . ' AND Filename LIKE "' . $GLOBALS['DB_WE']->escape($templateFilename) . '%"');
 			$result = array();
 			if($GLOBALS['DB_WE']->num_rows()){
 				while($GLOBALS['DB_WE']->next_record()){
@@ -1661,8 +1661,8 @@ function doUnload() {
 				$GLOBALS["we_doc"]->initByID($id, FILE_TABLE);
 			} elseif($sameName === "rename"){
 				$z = 0;
-				$footext = $GLOBALS["we_doc"]->Filename . "_" . $z . $GLOBALS["we_doc"]->Extension;
-				while(f("SELECT ID FROM " . FILE_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID='" . intval($parentID) . "'", "ID", $GLOBALS['DB_WE'])){
+				$footext = $GLOBALS["we_doc"]->Filename . '_' . $z . $GLOBALS["we_doc"]->Extension;
+				while(f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Text="' . $GLOBALS['DB_WE']->escape($footext) . '" AND ParentID=' . intval($parentID))){
 					$z++;
 					$footext = $GLOBALS["we_doc"]->Filename . "_" . $z . $GLOBALS["we_doc"]->Extension;
 				}

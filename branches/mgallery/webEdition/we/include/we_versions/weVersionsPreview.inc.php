@@ -48,13 +48,13 @@ if(!($isObj OR $isTempl)){
 	//get path of preview-file
 	$binaryPathNew = $newDoc['binaryPath'];
 	if(!$binaryPathNew){
-		$binaryPathNew = f('SELECT binaryPath FROM ' . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<" . intval($newDoc['version']) . " AND documentTable='" . $_db->escape($newDoc['documentTable']) . "' AND documentID=" . intval($newDoc['documentID']) . ' ORDER BY version DESC LIMIT 1');
+		$binaryPathNew = f('SELECT binaryPath FROM ' . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<" . intval($newDoc['version']) . ' AND documentTable="' . $_db->escape($newDoc['documentTable']) . '" AND documentID=' . intval($newDoc['documentID']) . ' ORDER BY version DESC LIMIT 1');
 	}
 
 	if($oldDoc){
 		$binaryPathOld = $oldDoc['binaryPath'];
 		if(!$binaryPathOld){
-			$binaryPathOld = f('SELECT binaryPath FROM ' . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<" . intval($oldDoc['version']) . " AND documentTable='" . $_db->escape($oldDoc['documentTable']) . "' AND documentID=" . intval($oldDoc['documentID']) . ' ORDER BY version DESC LIMIT 1');
+			$binaryPathOld = f('SELECT binaryPath FROM ' . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<" . intval($oldDoc['version']) . ' AND documentTable="' . $_db->escape($oldDoc['documentTable']) . '" AND documentID=' . intval($oldDoc['documentID']) . ' ORDER BY version DESC LIMIT 1');
 		}
 	}
 
@@ -177,7 +177,7 @@ $versionOld = '';
 if(!empty($oldDoc)){
 	$versionOld = ' AND version!=' . intval($oldDoc['version']);
 }
-$_db->query('SELECT ID,version, FROM_UNIXTIME(timestamp,"' . g_l('weEditorInfo', '[mysql_date_format]') . '") AS timestamp FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($newDoc['documentID']) . " AND documentTable='" . $_db->escape($newDoc['documentTable']) . "' AND version!=" . intval($newDoc['version']) . ' ' . $versionOld . "  ORDER BY version ASC");
+$_db->query('SELECT ID,version, FROM_UNIXTIME(timestamp,"' . g_l('weEditorInfo', '[mysql_date_format]') . '") AS timestamp FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($newDoc['documentID']) . ' AND documentTable="' . $_db->escape($newDoc['documentTable']) . '" AND version!=' . intval($newDoc['version']) . ' ' . $versionOld . "  ORDER BY version ASC");
 $versions = $_db->getAllFirst(true, MYSQL_ASSOC);
 
 $_versions_time_days->addOption('', g_l('versions', '[pleaseChoose]'));

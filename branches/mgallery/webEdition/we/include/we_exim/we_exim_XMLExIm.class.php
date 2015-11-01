@@ -261,7 +261,7 @@ class we_exim_XMLExIm{
 		if(($ws = get_ws($table))){
 			$wsPathArray = id_to_path($ws, $table, $db, false, true);
 			foreach($wsPathArray as $path){
-				$wsQuery[] = " Path LIKE '" . $db->escape($path) . "/%' OR " . we_exim_XMLExIm::getQueryParents($path);
+				$wsQuery[] = ' Path LIKE "' . $db->escape($path) . '/%" OR ' . we_exim_XMLExIm::getQueryParents($path);
 				while($path != '/' && $path){
 					$parentpaths[] = $path;
 					$path = dirname($path);
@@ -271,7 +271,7 @@ class we_exim_XMLExIm{
 			$ac = we_users_util::getAllowedClasses($db);
 			foreach($ac as $cid){
 				$path = id_to_path($cid, OBJECT_TABLE);
-				$wsQuery[] = " Path LIKE '" . $db->escape($path) . "/%' OR Path='" . $db->escape($path) . "'";
+				$wsQuery[] = ' Path LIKE "' . $db->escape($path) . '/%" OR Path="' . $db->escape($path) . '"';
 			}
 		}
 
@@ -303,7 +303,7 @@ class we_exim_XMLExIm{
 				$cat_sql = ($categories ? we_category::getCatSQLTail('', FILE_TABLE, true, $db, 'Category', $categories) : '');
 				if($dir != 0){
 					$workspace = id_to_path($dir, FILE_TABLE, $db);
-					$ws_where = ' AND (' . FILE_TABLE . ".Path LIKE '" . $db->escape($workspace) . "/%' OR " . FILE_TABLE . ".Path='" . $db->escape($workspace) . "') ";
+					$ws_where = ' AND (' . FILE_TABLE . '.Path LIKE "' . $db->escape($workspace) . '/%" OR ' . FILE_TABLE . '.Path="' . $db->escape($workspace) . '") ';
 				} else {
 					$ws_where = '';
 				}

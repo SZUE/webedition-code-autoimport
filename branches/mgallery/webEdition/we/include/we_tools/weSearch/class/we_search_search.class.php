@@ -293,7 +293,7 @@ class we_search_search extends we_search_base{
 		$titles = $_db2->getAll(true);
 
 		//check unpublished documents
-		$_db2->query('SELECT DocumentID, DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . " WHERE DocTable = 'tblFile' AND Active = 1 AND DocumentObject LIKE '%" . $_db2->escape(trim($keyword)) . "%'");
+		$_db2->query('SELECT DocumentID, DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocTable="tblFile" AND Active = 1 AND DocumentObject LIKE "%' . $_db2->escape(trim($keyword)) . '%"');
 		while($_db2->next_record()){
 			$tempDoc = we_unserialize($_db2->f('DocumentObject'));
 			if(!empty($tempDoc[0]['elements']['Title'])){
@@ -405,10 +405,10 @@ class we_search_search extends we_search_base{
 		if(isset($searchlocation)){
 			switch($searchlocation){
 				case 'END' :
-					$searching = " LIKE '%" . $_db->escape($keyword) . "' ";
+					$searching = ' LIKE "%' . $_db->escape($keyword) . '" ';
 					break;
 				case 'START' :
-					$searching = " LIKE '" . $_db->escape($keyword) . "%' ";
+					$searching = ' LIKE "' . $_db->escape($keyword) . '%" ';
 					break;
 				case 'IS' :
 					$searching = " = '" . $_db->escape($keyword) . "' ";
@@ -423,7 +423,7 @@ class we_search_search extends we_search_base{
 					$searching = ' ' . $searchlocation . " '" . $_db->escape($keyword) . "' ";
 					break;
 				default :
-					$searching = " LIKE '%" . $_db->escape($keyword) . "%' ";
+					$searching = ' LIKE "%' . $_db->escape($keyword) . '%" ';
 					break;
 			}
 		}
@@ -483,10 +483,10 @@ class we_search_search extends we_search_base{
 		if(isset($searchlocation)){
 			switch($searchlocation){
 				case 'END' :
-					$searching = " LIKE '%" . $_db->escape($keyword) . "' ";
+					$searching = ' LIKE "%' . $_db->escape($keyword) . '" ';
 					break;
 				case 'START' :
-					$searching = " LIKE '" . $_db->escape($keyword) . "%' ";
+					$searching = ' LIKE "' . $_db->escape($keyword) . '%" ';
 					break;
 				case 'IS' :
 					$reverse = $keyword === '#EMPTY#' ? : false;
@@ -502,7 +502,7 @@ class we_search_search extends we_search_base{
 					$searching = ' ' . $searchlocation . " '" . $_db->escape($keyword) . "' ";
 					break;
 				default :
-					$searching = " LIKE '%" . $_db->escape(trim($keyword)) . "%' ";
+					$searching = ' LIKE "%' . $_db->escape(trim($keyword)) . '%" ';
 					break;
 			}
 		}
@@ -627,7 +627,7 @@ class we_search_search extends we_search_base{
 				$_db->query('SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE c.Dat LIKE "%' . $this->db->escape(trim($keyword)) . '%" AND l.Name!="completeData" AND l.DocumentTable="' . $_db->escape(stripTblPrefix(FILE_TABLE)) . '"');
 				$contents = $_db->getAll(true);
 
-				$_db->query('SELECT DocumentID FROM ' . TEMPORARY_DOC_TABLE . " WHERE DocumentObject LIKE '%" . $_db->escape(trim($keyword)) . "%' AND DocTable='" . $this->db->escape(stripTblPrefix($table)) . "' AND Active = 1");
+				$_db->query('SELECT DocumentID FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentObject LIKE "%' . $_db->escape(trim($keyword)) . '%" AND DocTable="' . $this->db->escape(stripTblPrefix($table)) . '" AND Active=1');
 				$contents = array_unique(array_merge($contents, $_db->getAll(true)));
 
 				return ($contents ? ' ' . $table . '.ID IN (' . implode(',', $contents) . ')' : '');
@@ -1119,11 +1119,11 @@ class we_search_search extends we_search_base{
 					} elseif(isset($searchlocation)){
 						switch($searchlocation){
 							case 'END':
-								$searching = " LIKE '%" . $this->db->escape($searchname) . "' ";
+								$searching = ' LIKE "%' . $this->db->escape($searchname) . '" ';
 								$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 								break;
 							case 'START':
-								$searching = " LIKE '" . $this->db->escape($searchname) . "%' ";
+								$searching = ' LIKE "' . $this->db->escape($searchname) . '%" ';
 								$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 								break;
 							case 'IN':
@@ -1131,7 +1131,7 @@ class we_search_search extends we_search_base{
 								$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 								break;
 							case 'IS':
-								$searching = "='" . $this->db->escape($searchname) . "' ";
+								$searching = '="' . $this->db->escape($searchname) . '" ';
 								$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 								break;
 							case '<':
@@ -1142,7 +1142,7 @@ class we_search_search extends we_search_base{
 								$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 								break;
 							default :
-								$searching = " LIKE '%" . $this->db->escape($searchname) . "%' ";
+								$searching = ' LIKE "%' . $this->db->escape($searchname) . '%" ';
 								$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 								break;
 						}

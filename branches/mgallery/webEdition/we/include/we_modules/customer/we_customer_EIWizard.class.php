@@ -107,7 +107,7 @@ class we_customer_EIWizard{
 		$type = we_base_request::_(we_base_request::STRING, "type", we_import_functions::TYPE_GENERIC_XML);
 
 		$generic = new we_html_table(array('class' => 'default withSpace'), 2, 1);
-		$generic->setCol(0, 0, array(), we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($type == we_import_functions::TYPE_GENERIC_XML), "type", g_l('modules_customer', '[gxml_export]'), true, "defaultfont", "if(document.we_form.type[0].checked) top.type='" . we_import_functions::TYPE_GENERIC_XML . "';", false, g_l('modules_customer', '[txt_gxml_export]'), 0, 430));
+		$generic->setCol(0, 0, array(), we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($type == we_import_functions::TYPE_GENERIC_XML), "type", g_l('modules_customer', '[gxml_export]'), true, "defaultfont", "if(document.we_form.type[0].checked){top.type='" . we_import_functions::TYPE_GENERIC_XML . "';}", false, g_l('modules_customer', '[txt_gxml_export]'), 0, 430));
 		$generic->setCol(1, 0, array(), we_html_forms::radiobutton(self::TYPE_CSV, ($type == self::TYPE_CSV), "type", g_l('modules_customer', '[csv_export]'), true, "defaultfont", "if(document.we_form.type[1].checked) top.type='" . self::TYPE_CSV . "';", false, g_l('modules_customer', '[txt_csv_export]'), 0, 430));
 
 		$parts = array(

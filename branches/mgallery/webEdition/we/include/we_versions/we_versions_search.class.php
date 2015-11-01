@@ -87,12 +87,12 @@ class we_versions_search{
 					switch($v){
 						case "modifierID":
 							if(isset($_REQUEST['search'][$k])){
-								$where .= " AND " . $v . "='" . escape_sql_query($_REQUEST['search'][$k]) . "'";
+								$where .= ' AND ' . $v . '="' . escape_sql_query($_REQUEST['search'][$k]) . '"';
 							}
 							break;
 						case "status":
 							if(isset($_REQUEST['search'][$k])){
-								$where .= " AND " . $v . "='" . escape_sql_query($_REQUEST['search'][$k]) . "'";
+								$where .= ' AND ' . $v . '="' . escape_sql_query($_REQUEST['search'][$k]) . '"';
 							}
 							break;
 						case "timestamp":

@@ -1,4 +1,4 @@
-###UPDATEONLY### UPDATE ###TBLPREFIX###tblLink l SET l.Type="href" WHERE l.Name LIKE '%we_jkhdsf_%' AND Type="txt"
+###UPDATEONLY### UPDATE ###TBLPREFIX###tblLink l SET l.Type="href" WHERE l.Name LIKE "%we_jkhdsf_%" AND Type="txt"
 /* query separator */
 ###UPDATEONLY### UPDATE ###TBLPREFIX###tblLink l SET l.Type="txt" WHERE l.Type IN ('text','application')
 /* query separator */

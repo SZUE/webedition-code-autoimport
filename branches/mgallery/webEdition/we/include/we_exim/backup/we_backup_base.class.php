@@ -281,8 +281,8 @@ abstract class we_backup_base{
 	 */
 	protected function isPathExist($path){
 		return
-			f('SELECT 1  FROM ' . FILE_TABLE . " WHERE Path='" . $this->backup_db->escape($path) . "'  LIMIT 1", '', $this->backup_db) == '1' ||
-			f('SELECT 1 FROM ' . TEMPLATES_TABLE . " WHERE Path='" . $this->backup_db->escape($path) . "'  LIMIT 1", '', $this->backup_db) == '1';
+			f('SELECT 1  FROM ' . FILE_TABLE . ' WHERE Path="' . $this->backup_db->escape($path) . '" LIMIT 1', '', $this->backup_db) == '1' ||
+			f('SELECT 1 FROM ' . TEMPLATES_TABLE . ' WHERE Path="' . $this->backup_db->escape($path) . '" LIMIT 1', '', $this->backup_db) == '1';
 	}
 
 	/**
@@ -708,7 +708,7 @@ abstract class we_backup_base{
 			}
 		}
 
-		$this->backup_db->query("SHOW TABLES LIKE '" . $this->backup_db->escape($tab) . "'");
+		$this->backup_db->query('SHOW TABLES LIKE "' . $this->backup_db->escape($tab) . '"');
 		if($this->backup_db->next_record()){
 			$this->backup_db->query('SHOW COLUMNS FROM ' . $this->backup_db->escape($tab));
 			while($this->backup_db->next_record()){

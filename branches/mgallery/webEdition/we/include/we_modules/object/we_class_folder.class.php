@@ -225,12 +225,12 @@ class we_class_folder extends we_folder{
 				'1' . $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID));
 
 		$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID . ' JOIN ' . OBJECT_FILES_TABLE . ' ON ' . OBJECT_X_TABLE . $this->TableID . '.OF_ID = ' . OBJECT_FILES_TABLE . '.ID');
-		$this->searchclass->setwhere($where . ' AND ' . OBJECT_X_TABLE . $this->TableID . ".OF_PATH LIKE '" . $this->Path . "/%' " . ' AND ' . OBJECT_X_TABLE . $this->TableID . '.OF_ID!=0');
+		$this->searchclass->setwhere($where . ' AND ' . OBJECT_X_TABLE . $this->TableID . '.OF_PATH LIKE "' . $this->Path . '/%" AND ' . OBJECT_X_TABLE . $this->TableID . '.OF_ID!=0');
 
 		$foundItems = $this->searchclass->countitems();
 
 
-		$this->searchclass->searchquery($where . ' AND ' . OBJECT_X_TABLE . $this->TableID . ".OF_PATH LIKE '" . $this->Path . "/%' " . ' AND ' . OBJECT_X_TABLE . $this->TableID . '.OF_ID!=0 AND ' . OBJECT_X_TABLE . $this->TableID . '.OF_ID = ' . OBJECT_FILES_TABLE . '.ID', OBJECT_X_TABLE . $this->TableID . '.OF_ID, ' . OBJECT_X_TABLE . $this->TableID . '.OF_Text, ' . OBJECT_X_TABLE . $this->TableID . '.OF_ID, ' . OBJECT_X_TABLE . $this->TableID . '.OF_Path, ' . OBJECT_X_TABLE . $this->TableID . '.OF_ParentID, ' . OBJECT_X_TABLE . $this->TableID . '.OF_Workspaces, ' . OBJECT_X_TABLE . $this->TableID . '.OF_ExtraWorkspaces, ' . OBJECT_X_TABLE . $this->TableID . '.OF_ExtraWorkspacesSelected, ' . OBJECT_X_TABLE . $this->TableID . '.OF_Published, ' . OBJECT_X_TABLE . $this->TableID . '.OF_IsSearchable, ' . OBJECT_X_TABLE . $this->TableID . '.OF_Charset, ' . OBJECT_X_TABLE . $this->TableID . '.OF_Language, ' . OBJECT_X_TABLE . $this->TableID . '.OF_Url, ' . OBJECT_X_TABLE . $this->TableID . '.OF_TriggerID, ' . OBJECT_FILES_TABLE . '.ModDate');
+		$this->searchclass->searchquery($where . ' AND ' . OBJECT_X_TABLE . $this->TableID . '.OF_PATH LIKE "' . $this->Path . '/%" AND ' . OBJECT_X_TABLE . $this->TableID . '.OF_ID!=0 AND ' . OBJECT_X_TABLE . $this->TableID . '.OF_ID = ' . OBJECT_FILES_TABLE . '.ID', OBJECT_X_TABLE . $this->TableID . '.OF_ID, ' . OBJECT_X_TABLE . $this->TableID . '.OF_Text, ' . OBJECT_X_TABLE . $this->TableID . '.OF_ID, ' . OBJECT_X_TABLE . $this->TableID . '.OF_Path, ' . OBJECT_X_TABLE . $this->TableID . '.OF_ParentID, ' . OBJECT_X_TABLE . $this->TableID . '.OF_Workspaces, ' . OBJECT_X_TABLE . $this->TableID . '.OF_ExtraWorkspaces, ' . OBJECT_X_TABLE . $this->TableID . '.OF_ExtraWorkspacesSelected, ' . OBJECT_X_TABLE . $this->TableID . '.OF_Published, ' . OBJECT_X_TABLE . $this->TableID . '.OF_IsSearchable, ' . OBJECT_X_TABLE . $this->TableID . '.OF_Charset, ' . OBJECT_X_TABLE . $this->TableID . '.OF_Language, ' . OBJECT_X_TABLE . $this->TableID . '.OF_Url, ' . OBJECT_X_TABLE . $this->TableID . '.OF_TriggerID, ' . OBJECT_FILES_TABLE . '.ModDate');
 
 
 		$content = array();
@@ -342,7 +342,7 @@ class we_class_folder extends we_folder{
 
 		$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID);
 		//$this->searchclass->setwhere($where." AND OF_ID !=0 "); #4076 orig
-		$this->searchclass->setwhere($where . " AND OF_PATH LIKE '" . $this->Path . "/%' AND OF_ID !=0 ");
+		$this->searchclass->setwhere($where . ' AND OF_PATH LIKE "' . $this->Path . '/%" AND OF_ID!=0 ');
 
 
 		$foundItems = $this->searchclass->countitems();
@@ -350,7 +350,7 @@ class we_class_folder extends we_folder{
 		//$this->searchclass->setorder($z);
 		//$this->searchclass->setstart(1);
 		//$this->searchclass->searchquery($where." AND OF_ID !=0 ",$fields); #4076 orig
-		$this->searchclass->searchquery($where . " AND OF_PATH LIKE '" . $this->Path . "/%' AND OF_ID !=0 ", $fields);
+		$this->searchclass->searchquery($where . ' AND OF_PATH LIKE "' . $this->Path . '/%" AND OF_ID !=0 ', $fields);
 
 		$DefaultValues = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE));
 
@@ -435,10 +435,10 @@ class we_class_folder extends we_folder{
 							$content[$f][$i + 5]['dat'] = date(g_l('date', '[format][default]'), $this->searchclass->f($type[$i + 5] . "_" . $head[$i + 5]['dat']));
 							break;
 						case "object":
-							$tmp = f("SELECT OF_Path FROM " . OBJECT_X_TABLE . $object[$i + 5] . " WHERE OF_ID='" . $this->searchclass->f($type[$i + 5] . "_" . $object[$i + 5]) . "'", '', $this->DB_WE);
+							$tmp = f("SELECT OF_Path FROM " . OBJECT_X_TABLE . $object[$i + 5] . ' WHERE OF_ID="' . $this->searchclass->f($type[$i + 5] . '_' . $object[$i + 5]) . '"', '', $this->DB_WE);
 							if($tmp != ""){
-								$publ = f("SELECT Published FROM " . OBJECT_FILES_TABLE . " WHERE ID='" . $this->searchclass->f($type[$i + 5] . "_" . $object[$i + 5]) . "'", "Published", $this->DB_WE);
-								$obj = '<a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f($type[$i + 5] . "_" . $object[$i + 5]) . ',\'objectFile\');" ' . ($publ ? '' : 'color:red;') . '" class="defaultfont" title="' . $tmp . '">' . we_base_util::shortenPath(f("SELECT OF_Path FROM " . OBJECT_X_TABLE . $object[$i + 5] . " WHERE OF_ID='" . $this->searchclass->f($type[$i + 5] . "_" . $object[$i + 5]) . "'", "OF_Path", $this->DB_WE), $we_obectPathLength) . '</a>';
+								$publ = f("SELECT Published FROM " . OBJECT_FILES_TABLE . ' WHERE ID="' . $this->searchclass->f($type[$i + 5] . '_' . $object[$i + 5]) . '"', '', $this->DB_WE);
+								$obj = '<a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f($type[$i + 5] . "_" . $object[$i + 5]) . ',\'objectFile\');" ' . ($publ ? '' : 'color:red;') . '" class="defaultfont" title="' . $tmp . '">' . we_base_util::shortenPath(f("SELECT OF_Path FROM " . OBJECT_X_TABLE . $object[$i + 5] . ' WHERE OF_ID="' . $this->searchclass->f($type[$i + 5] . '_' . $object[$i + 5]) . '"', '', $this->DB_WE), $we_obectPathLength) . '</a>';
 							} else {
 								$obj = "&nbsp;";
 							}

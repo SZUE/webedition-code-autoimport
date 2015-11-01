@@ -355,7 +355,7 @@ class we_users_user{
 			$try_name = '@' . $foo['username'];
 			$try_text = $foo['username'];
 			while($search){
-				if(f('SELECT 1 FROM ' . USER_TABLE . ' WHERE ID!=' . intval($this->ID) . ' AND ID!=' . intval($uorginal) . " AND username='" . $this->DB_WE->escape($try_name) . "' LIMIT 1", '', $this->DB_WE)){
+				if(f('SELECT 1 FROM ' . USER_TABLE . ' WHERE ID!=' . intval($this->ID) . ' AND ID!=' . intval($uorginal) . ' AND username="' . $this->DB_WE->escape($try_name) . '" LIMIT 1', '', $this->DB_WE)){
 					$try_name = $try_name . '_' . ++$ount;
 				} else {
 					$search = false;

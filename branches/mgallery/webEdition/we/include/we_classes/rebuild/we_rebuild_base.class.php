@@ -258,26 +258,26 @@ abstract class we_rebuild_base{
 				'it' => 0);
 		}
 		/* why do we make an rebuild of navi table?
-		$GLOBALS['DB_WE']->query('SELECT ID,Path FROM ' . NAVIGATION_TABLE . ' WHERE IsFolder=0 ORDER BY ID');
-		while($GLOBALS['DB_WE']->next_record()){
-			$data[] = array(
-				'id' => $GLOBALS['DB_WE']->f('ID'),
-				'type' => 'navigation',
-				'cn' => 'weNavigation',
-				'mt' => $maintable,
-				'tt' => $tmptable,
-				'path' => $GLOBALS['DB_WE']->f('Path'),
-				'it' => 0);
-		}
-		$data[] = array(
-			'id' => 0,
-			'type' => 'navigation',
-			'cn' => 'weNavigation',
-			'mt' => $maintable,
-			'tt' => $tmptable,
-			'path' => $GLOBALS['DB_WE']->f('Path'),
-			'it' => 0
-		);*/
+		  $GLOBALS['DB_WE']->query('SELECT ID,Path FROM ' . NAVIGATION_TABLE . ' WHERE IsFolder=0 ORDER BY ID');
+		  while($GLOBALS['DB_WE']->next_record()){
+		  $data[] = array(
+		  'id' => $GLOBALS['DB_WE']->f('ID'),
+		  'type' => 'navigation',
+		  'cn' => 'weNavigation',
+		  'mt' => $maintable,
+		  'tt' => $tmptable,
+		  'path' => $GLOBALS['DB_WE']->f('Path'),
+		  'it' => 0);
+		  }
+		  $data[] = array(
+		  'id' => 0,
+		  'type' => 'navigation',
+		  'cn' => 'weNavigation',
+		  'mt' => $maintable,
+		  'tt' => $tmptable,
+		  'path' => $GLOBALS['DB_WE']->f('Path'),
+		  'it' => 0
+		  ); */
 
 		return $data;
 	}
@@ -298,7 +298,7 @@ abstract class we_rebuild_base{
 		$data = array();
 		if(permissionhandler::hasPerm('REBUILD_META')){
 			$foldersQuery = count($metaFolders) ? ' AND ParentId IN(' . implode(',', $metaFolders) . ') ' : '';
-			$GLOBALS['DB_WE']->query('SELECT ID,path FROM ' . FILE_TABLE . " WHERE ContentType='" . we_base_ContentTypes::IMAGE . "' AND (Extension='.jpg' OR Extension='jpeg' OR Extension='wbmp') $foldersQuery");
+			$GLOBALS['DB_WE']->query('SELECT ID,path FROM ' . FILE_TABLE . ' WHERE ContentType="' . we_base_ContentTypes::IMAGE . '" AND Extension IN (".jpg","jpeg","wbmp") ' . $foldersQuery);
 			while($GLOBALS['DB_WE']->next_record()){
 				$data[] = array(
 					'id' => $GLOBALS['DB_WE']->f('ID'),

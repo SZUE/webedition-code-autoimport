@@ -378,7 +378,6 @@ class we_object extends we_document{
 						if($this->issetElement($info['name'] . 'defaultkey' . $f)){
 							if((!isset($arrt[$nam]['meta'])) || (!is_array($arrt[$nam]['meta']))){
 								$arrt[$nam]['meta'] = array();
-
 							}
 
 							$_val = $this->getElement($info['name'] . 'defaultvalue' . $f);
@@ -1382,10 +1381,10 @@ class we_object extends we_document{
 		$path = (
 			$this->getElement("we_object_" . $name . "_path")? :
 				($myid ?
-					f("SELECT Path FROM " . OBJECT_FILES_TABLE . " WHERE ID=$myid", "", $db) :
+					f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $myid, "", $db) :
 					''
 				) );
-		$rootDir = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE Path='" . $classPath . "'", '', $db);
+		$rootDir = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $classPath . '"', '', $db);
 
 		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
@@ -1456,7 +1455,7 @@ class we_object extends we_document{
 		$autobrName = 'we_' . $this->Name . '_input[' . $name . 'autobr]';
 
 		$value = $this->getElement($name . "default", "dat");
-		return we_html_forms::weTextarea("we_" . $this->Name . "_input[" . $name . "default]", $value, $attribs, $autobr, $autobrName, true, "", (($this->CSS || $attribs["classes"]) ? false : true), false, false, ($rmfp ? $rmfp === 'on' : REMOVEFIRSTPARAGRAPH_DEFAULT), "");
+		return we_html_forms::weTextarea('we_' . $this->Name . '_input[' . $name . 'default]', $value, $attribs, $autobr, $autobrName, true, "", (($this->CSS || $attribs['classes']) ? false : true), false, false, ($rmfp ? $rmfp === 'on' : REMOVEFIRSTPARAGRAPH_DEFAULT), "");
 	}
 
 	function add_user_to_field($id, $name){
@@ -1476,7 +1475,7 @@ class we_object extends we_document{
 	}
 
 	function formUsers1($name, $nr = 0){
-		$users = $this->getElement($name . "users") ? explode(",", $this->getElement($name . "users")) : array();
+		$users = $this->getElement($name . 'users') ? explode(',', $this->getElement($name . 'users')) : array();
 		$content = '<table class="default" width="388">' .
 			'<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(324, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>';
 		if($users){
@@ -1496,8 +1495,8 @@ class we_object extends we_document{
 
 		$content .= '<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(324, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr></table>';
 
-		$textname = "we_" . $this->Name . "_input[" . $name . "usertext]";
-		$idname = "we_" . $this->Name . "_input[" . $name . "userid]";
+		$textname = 'we_' . $this->Name . '_input[' . $name . 'usertext]';
+		$idname = 'we_' . $this->Name . '_input[' . $name . 'userid]';
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('object_del_all_users','" . $GLOBALS['we_transaction'] . "','" . $nr . "','" . $name . "')", true, 0, 0, "", "", ($users ? false : true));
 		$addbut = we_html_element::htmlHiddens(array($idname => 0, $textname => "")) . we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_users_selector','document.we_form.elements[\\'" . $idname . "\\'].value','document.we_form.elements[\\'" . $textname . "\\'].value','',document.we_form.elements['" . $idname . "'].value,'fillIDs();opener.we_cmd(\\'object_add_user_to_field\\',\\'" . $GLOBALS['we_transaction'] . "\\',\\'" . $nr . "\\', top.allIDs,\\'" . $name . "\\')','','',1)");
 
@@ -1508,7 +1507,6 @@ class we_object extends we_document{
 	function formUsers($canChange = true){
 		$users = makeArrayFromCSV($this->Users);
 		$usersReadOnly = we_unserialize($this->UsersReadOnly);
-
 		$content = '<table class="default" width="388">' .
 			'<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(333, 2) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(80, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>';
 
@@ -1589,7 +1587,7 @@ class we_object extends we_document{
 
 	private function getImageHTML($name, $defaultname, $i = 0){
 		$img = new we_imageDocument();
-		$id = $defaultname; //$this->getElement($defaultname);
+		$id = $defaultname;
 		if($id){
 			$img->initByID($id, FILE_TABLE, false);
 		} else {
@@ -1622,7 +1620,7 @@ class we_object extends we_document{
 
 	private function getFlashmovieHTML($name, $defaultname, $i = 0){
 		$img = new we_flashDocument();
-		$id = $defaultname; //$this->getElement($defaultname);
+		$id = $defaultname;
 		if($id){
 			$img->initByID($id, FILE_TABLE, false);
 		} else {
@@ -1641,7 +1639,7 @@ class we_object extends we_document{
 
 	private function getQuicktimeHTML($name, $defaultname, $i = 0){
 		$img = new we_quicktimeDocument();
-		$id = $defaultname; //$this->getElement($defaultname);
+		$id = $defaultname;
 		if($id){
 			$img->initByID($id, FILE_TABLE, false);
 		} else {
@@ -1929,7 +1927,7 @@ class we_object extends we_document{
 	}
 
 	function del_workspace($id){
-		if(f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=0 AND TableID=' . intval($this->ID) . " AND (Workspaces LIKE '," . intval($id) . ",' OR ExtraWorkspaces LIKE '," . intval($id) . ",') LIMIT 1", '', $this->DB_WE)){
+		if(f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=0 AND TableID=' . intval($this->ID) . ' AND (FIND_IN_SET(' . intval($id) . ',Workspaces) OR FIND_IN_SET(' . intval($id) . ',ExtraWorkspaces)) LIMIT 1', '', $this->DB_WE)){
 			$GLOBALS['WE_DEL_WORKSPACE_ERROR'] = true;
 			return;
 		}

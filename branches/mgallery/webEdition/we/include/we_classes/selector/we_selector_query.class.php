@@ -80,7 +80,7 @@ class we_selector_query{
 				$typeField = "ContentType";
 		}
 
-		$where = "Path='" . $this->db->escape($search) . "'";
+		$where = 'Path="' . $this->db->escape($search) . '"';
 		$isFolder = 1;
 		$addCT = 0;
 
@@ -148,10 +148,10 @@ class we_selector_query{
 
 		$rootOnly = $rootDir && ($search === "/" || strpos($rootDir, $search) === 0);
 		$where = ($rootOnly ?
-				"Path LIKE '" . $rootDir . "'" :
-				"Path REGEXP '^" . preg_quote(preg_quote($search)) . "[^/]*$'" . (
+				'Path LIKE "' . $rootDir . '"' :
+				'Path REGEXP "^' . preg_quote(preg_quote($search)) . '[^/]*$"' . (
 				($rootDir) ?
-					" AND (Path LIKE '" . $this->db->escape($rootDir) . "' OR Path LIKE '" . $this->db->escape($rootDir) . "%')" :
+					' AND (Path LIKE "' . $this->db->escape($rootDir) . '" OR Path LIKE "' . $this->db->escape($rootDir) . '%")' :
 					''));
 
 		$isFolder = 0;

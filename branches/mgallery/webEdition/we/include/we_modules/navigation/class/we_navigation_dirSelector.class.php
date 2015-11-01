@@ -140,7 +140,7 @@ top.clearEntries();
 			$folder->Text = $txt;
 			$folder->Filename = $txt;
 			$folder->Path = $folder->getPath();
-			$this->db->query('SELECT ID,Text FROM ' . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($folder->Path) . "' AND ID != " . intval($this->we_editDirID));
+			$this->db->query('SELECT ID,Text FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($folder->Path) . '" AND ID!=' . intval($this->we_editDirID));
 			if($this->db->next_record()){
 				echo we_message_reporting::getShowMessageCall(sprintf(g_l('navigation', '[folder_exists]'), $folder->Path), we_message_reporting::WE_MESSAGE_ERROR);
 			} elseif(strpbrk($folder->Text, '%/\\"\'') !== false){

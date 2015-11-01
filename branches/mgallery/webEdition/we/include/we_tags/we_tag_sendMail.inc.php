@@ -98,11 +98,11 @@ function we_tag_sendMail($attribs, $content){
 			$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE blockedUntil!=-1 AND blockedUntil<UNIX_TIMESTAMP()');
 
 			// check if ip is allready blocked
-			if(f('SELECT 1 FROM ' . FORMMAIL_BLOCK_TABLE . " WHERE ip='" . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . "' LIMIT 1")){
+			if(f('SELECT 1 FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE ip="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '" LIMIT 1')){
 				$_blocked = true;
 			} else {
 				// ip is not blocked, so see if we need to block it
-				if(f('SELECT COUNT(1) FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime>(NOW()- INTERVAL ' . intval(FORMMAIL_SPAN) . " SECOND) AND ip='" . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . "'") > $_trials){
+				if(f('SELECT COUNT(1) FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime>(NOW()- INTERVAL ' . intval(FORMMAIL_SPAN) . ' SECOND) AND ip="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '"') > $_trials){
 					$_blocked = true;
 					// insert in block table
 					$blockedUntil = (FORMMAIL_BLOCKTIME == -1) ? -1 : '(UNIX_TIMESTAMP()+' . FORMMAIL_BLOCKTIME . ')';

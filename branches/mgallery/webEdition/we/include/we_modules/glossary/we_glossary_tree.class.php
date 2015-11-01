@@ -154,7 +154,7 @@ treeData.frames=frames;
 		}
 
 		$Db->query('SELECT ID,Type,Language,Text,Published,IsFolder FROM ' . GLOSSARY_TABLE . ' ' .
-			" WHERE Language='" . $Db->escape($Language) . "' AND Type='" . $Db->escape($Type) . "'" .
+			' WHERE Language="' . $Db->escape($Language) . '" AND Type="' . $Db->escape($Type) . '"' .
 			' ORDER BY (Text REGEXP "^[0-9]") DESC,abs(Text),Text' .
 			($Segment ? ' LIMIT ' . intval($Offset) . ',' . intval($Segment) : ''));
 

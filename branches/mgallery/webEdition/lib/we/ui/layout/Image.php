@@ -38,18 +38,6 @@ abstract class we_ui_layout_Image{
 	const kLoading = '/webEdition/images/logo-busy.gif';
 
 	/**
-	 * Returns HTML img tag which points to a transparent image
-	 *
-	 * @param integer $w with of the image
-	 * @param integer $h height of the image
-	 * @return string
-	 * @deprecated since 6.5.0
-	 */
-	static function getPixel($w = 1, $h = 1){
-		return we_html_tools::getPixel(intval($w), intval($h));
-	}
-
-	/**
 	 * Maps the contentType to its css class name to display specific icons
 	 *
 	 * @param string $contentType

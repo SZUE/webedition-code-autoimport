@@ -713,7 +713,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		switch($from){
 			case we_class::LOAD_SCHEDULE_DB:
 				if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
-					$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . " AND ClassName='" . $this->DB_WE->escape($this->ClassName) . "' AND Was=" . we_schedpro::SCHEDULE_FROM, '', $this->DB_WE);
+					$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . ' AND ClassName="' . $this->DB_WE->escape($this->ClassName) . '" AND Was=' . we_schedpro::SCHEDULE_FROM, '', $this->DB_WE);
 
 					if($sessDat && $this->i_initSerializedDat(we_unserialize($sessDat))){
 						$this->i_getPersistentSlotsFromDB(self::primaryDBFiels);

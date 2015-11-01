@@ -232,7 +232,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 		} else {
 			$GLOBALS['we_doc']->initByID($this->data['ID']);
 			// if file  exists the file will overwritten, if not a new one (with no id) will be created
-			$GLOBALS['we_doc']->ID = f('SELECT ID FROM ' . FILE_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape($path) . "'");
+			$GLOBALS['we_doc']->ID = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape($path) . '"');
 			$GLOBALS['we_doc']->Path = $path;
 			$GLOBALS['we_doc']->OldPath = '';
 			$pid = $this->getPid($path, $GLOBALS['DB_WE']);
@@ -356,10 +356,10 @@ class we_fragment_copyFolder extends we_fragment_base{
 			$templ->setParentID($parentID);
 			$templ->Path = $templ->getParentPath() . (($templ->getParentPath() != '/') ? '/' : '') . $templ->Text;
 			// if file exists we need  to create a new one!
-			if(($file_id = f('SELECT ID FROM ' . TEMPLATES_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape($templ->Path) . "'"))){
+			if(($file_id = f('SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape($templ->Path) . '"'))){
 				$z = 0;
 				$footext = $templ->Filename . '_' . $z . $templ->Extension;
-				while(f('SELECT ID FROM ' . TEMPLATES_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($templ->ParentID))){
+				while(f('SELECT ID FROM ' . TEMPLATES_TABLE . ' WHERE Text="' . $GLOBALS['DB_WE']->escape($footext) . '" AND ParentID=' . intval($templ->ParentID))){
 					$z++;
 					$footext = $templ->Filename . '_' . $z . $templ->Extension;
 				}
@@ -615,7 +615,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 		if($path === "/"){
 			return 0;
 		}
-		return f('SELECT ID FROM ' . FILE_TABLE . " WHERE Path='" . $db->escape($path) . "'", '', $db);
+		return f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path="' . $db->escape($path) . '"', '', $db);
 	}
 
 	function getDocument(){

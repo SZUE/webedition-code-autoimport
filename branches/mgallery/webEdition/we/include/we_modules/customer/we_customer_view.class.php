@@ -761,7 +761,7 @@ self.close();');
 				$conditionarr = array();
 				foreach($this->customer->persistent_slots as $field){
 					if(!$this->customer->isProtected($field) && $field != "Password"){
-						$conditionarr[] = "$field LIKE '%$value%'";
+						$conditionarr[] = $field . ' LIKE "%' . $value . '%"';
 					}
 				}
 				$condition.=($condition ?
