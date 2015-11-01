@@ -9,6 +9,7 @@ $l_export=array(
 	'class'=>'Luokka',
 	'classes'=>'Luokat',
 	'classname'=>'Objektit luokan perusteella',
+	'collections'=>'Collections',
 	'colon'=>': {kaksoispiste}',
 	'comma'=>', {pilkku}',
 	'csv_delimiter'=>'Erotin',

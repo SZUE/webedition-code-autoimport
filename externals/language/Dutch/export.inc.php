@@ -9,6 +9,7 @@ $l_export=array(
 	'class'=>'Classen',
 	'classes'=>'Classes',
 	'classname'=>'Objecten of classen',
+	'collections'=>'Collections',
 	'colon'=>': {dubbele punt}',
 	'comma'=>', {komma}',
 	'csv_delimiter'=>'Baken af',
