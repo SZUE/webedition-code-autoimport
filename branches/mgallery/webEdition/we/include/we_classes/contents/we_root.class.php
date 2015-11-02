@@ -190,7 +190,7 @@ abstract class we_root extends we_class{
 			if(!is_object($bb)){
 				$save[0][$slot] = $bb;
 			} else {
-				t_e('try to serialize object');
+				t_e('try to serialize object', $slot, $bb);
 			}
 		}
 		// save weDocumentCustomerFilter in Session

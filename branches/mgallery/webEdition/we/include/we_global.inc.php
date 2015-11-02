@@ -309,7 +309,7 @@ function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $pre
 	}
 
 	$foo = (in_array(0, $IDs) ? array(0 => '/') : array()) +
-			we_database_base::getAllFirstq('SELECT ID,' . $select . ' FROM ' . $db->escape($table) . ' WHERE ID IN(' . implode(',', array_map('intval', $IDs)) . ')' . ($isPublished ? ' AND Published>0' : ''), false);
+			$db->getAllFirstq('SELECT ID,' . $select . ' FROM ' . $db->escape($table) . ' WHERE ID IN(' . implode(',', array_map('intval', $IDs)) . ')' . ($isPublished ? ' AND Published>0' : ''), false);
 
 	return $asArray ? $foo : implode(',', $foo);
 }
