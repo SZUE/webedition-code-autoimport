@@ -1689,8 +1689,7 @@ class we_object extends we_document{
 		}
 
 		$all = $this->DefaultText;
-		$text1 = 0;
-		$zahl = 0;
+		$text1 = $zahl = 0;
 		$regs = array();
 
 		while($all){
@@ -1742,8 +1741,7 @@ class we_object extends we_document{
 		}
 
 		$all = $this->DefaultUrl;
-		$text1 = 0;
-		$zahl = 0;
+		$text1 = $zahl = 0;
 
 		while($all){
 			if(preg_match('/^%([^%]+)%/', $all, $regs)){
@@ -1765,20 +1763,20 @@ class we_object extends we_document{
 					foreach(self::$urlFields as $key => $len){
 						if(preg_match('/' . $key . '([^%]*)/', $data, $regs)){
 							$anz = (!$regs[1] ? $len : abs($regs[1]));
-							$select2 .= $this->htmlSelect('we_' . $this->Name . '_input[DefaultUrl_' . $zahl . "]", g_l('modules_object', '[url]'), 1, "%" . $key . "%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
-								we_html_tools::htmlTextInput("we_" . $this->Name . "_input[" . $key . "_" . $zahl . "]", 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
+							$select2 .= $this->htmlSelect('we_' . $this->Name . '_input[DefaultUrl_' . $zahl . ']', g_l('modules_object', '[url]'), 1, "%" . $key . "%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
+								we_html_tools::htmlTextInput('we_' . $this->Name . '_input[' . $key . '_' . $zahl . ']', 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
 							$found = true;
 							break;
 						}
 					}
 					if(!$found){
-						$select2 .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", g_l('modules_object', '[url]'), 1, "%" . $data . "%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;";
+						$select2 .= $this->htmlSelect('we_' . $this->Name . '_input[DefaultUrl_' . $zahl . ']', g_l('modules_object', '[url]'), 1, "%" . $data . "%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;";
 					}
 				}
 			} else if(preg_match('/^([^%]+)/', $all, $regs)){
 				$all = substr($all, strlen($regs[1]));
 				$data = $regs[1];
-				$select2 .= $this->htmlSelect("textwert_" . $zahl, g_l('modules_object', '[url]'), 1, "Text", "", array('onchange' => '_EditorFrame.setEditorIsHot(true); document.we_form.elements[\'we_' . $this->Name . '_input[DefaultUrl_' . $zahl . ']\'].value = this.options[this.selectedIndex].value; we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
+				$select2 .= $this->htmlSelect('textwert_' . $zahl, g_l('modules_object', '[url]'), 1, 'Text', '', array('onchange' => '_EditorFrame.setEditorIsHot(true); document.we_form.elements[\'we_' . $this->Name . '_input[DefaultUrl_' . $zahl . ']\'].value = this.options[this.selectedIndex].value; we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
 					we_html_tools::htmlTextInput("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", 40, $data, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
 			}
 
@@ -1790,21 +1788,16 @@ class we_object extends we_document{
 			'<input type = "hidden" name="we_' . $this->Name . '_input[DefaultanzahlUrl]" value="' . $zahl . '" />';
 
 		return '<table class="default">
-	<tr><td colspan="2" class="defaultfont" style="vertical-align:top">' . g_l('modules_object', '[name]') . '</td><td>' . we_html_tools::getPixel(20, 20) . '</td></tr>
-	<tr><td colspan="3" >' . $select . '</td></tr>
-	<tr><td>' . we_html_tools::getPixel(20, 16) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
-	<tr><td colspan="2" class="defaultfont" style="vertical-align:top">' . g_l('modules_object', '[seourl]') . '</td><td>' . we_html_tools::getPixel(20, 20) . '</td></tr>
-	<tr><td colspan="3" >' . $select2 . '</td></tr>
-	<tr><td>' . we_html_tools::getPixel(20, 16) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
-	<tr><td colspan="3" >' . $this->formTriggerDocument(true) . '</td></tr>
-	<tr><td>' . we_html_tools::getPixel(20, 16) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
-	<tr><td class="defaultfont" style="vertical-align:top">' . g_l('global', '[categorys]') . '</td><td>' . we_html_tools::getPixel(20, 20) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
-	<tr><td colspan="3" >' . $this->formCategory() . '</td></tr>
-	<tr><td>' . we_html_tools::getPixel(20, 16) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
-	<tr><td colspan="3" >' . $this->formRestrictUsers() . '</td></tr>' .
+	<tr><td colspan="3" class="defaultfont" style="vertical-align:top">' . g_l('modules_object', '[name]') . '</td></tr>
+	<tr><td colspan="3" class="withBigSpace" >' . $select . '</td></tr>
+	<tr><td colspan="3" class="defaultfont" style="vertical-align:top">' . g_l('modules_object', '[seourl]') . '</td></tr>
+	<tr><td colspan="3" class="withBigSpace">' . $select2 . '</td></tr>
+	<tr><td colspan="3" class="withBigSpace">' . $this->formTriggerDocument(true) . '</td></tr>
+	<tr><td class="defaultfont" style="vertical-align:top" colspan="3">' . g_l('global', '[categorys]') . '</td></tr>
+	<tr><td colspan="3" class="withBigSpace">' . $this->formCategory() . '</td></tr>
+	<tr><td colspan="3" ' . ($this->RestrictUsers ? 'class="withBigSpace"' : '') . '>' . $this->formRestrictUsers() . '</td></tr>' .
 			($this->RestrictUsers ?
-				'<tr><td>' . we_html_tools::getPixel(20, 10) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
-	<tr><td colspan="3" >' . $this->formUsers() . '</td></tr>' :
+				'<tr><td colspan="3" >' . $this->formUsers() . '</td></tr>' :
 				'') .
 			'</table>';
 	}
@@ -1812,9 +1805,8 @@ class we_object extends we_document{
 	function formRestrictUsers($canChange = true){
 		if($canChange){
 			$hiddenname = 'we_' . $this->Name . '_RestrictUsers';
-			$tmpname = 'tmpwe_' . $this->Name . '_RestrictUsers';
 			$hidden = we_html_element::htmlHidden($hiddenname, abs($this->RestrictUsers));
-			$check = we_html_forms::checkbox(1, $this->RestrictUsers ? true : false, $tmpname, g_l('weClass', '[limitedAccess]'), true, "defaultfont", "_EditorFrame.setEditorIsHot(true);this.form.elements['" . $hiddenname . "'].value=(this.checked ? '1' : '0');we_cmd('reload_editpage');");
+			$check = we_html_forms::checkbox(1, $this->RestrictUsers ? true : false, 'tmp' . $hiddenname, g_l('weClass', '[limitedAccess]'), true, "defaultfont", "_EditorFrame.setEditorIsHot(true);this.form.elements['" . $hiddenname . "'].value=(this.checked ? '1' : '0');we_cmd('reload_editpage');");
 			return $hidden . $check;
 		}
 		return '<table class="default"><tr><td><i class="fa fa-' . ($this->RestrictUsers ? 'check-' : '') . 'square-o wecheckIcon disabled"></i></td><td class="defaultfont">&nbsp;' . g_l('weClass', '[limitedAccess]') . '</td></tr></table>';

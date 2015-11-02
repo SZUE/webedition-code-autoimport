@@ -806,7 +806,7 @@ WE().consts.g_l.banner.view = {
 		$yuiSuggest->setWidth($width);
 		$yuiSuggest->setSelectButton($button);
 
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($this->uid . "_bannerUrl", 30, $this->banner->bannerUrl, "", 'id="' . $this->uid . '_bannerUrl" onkeydown="' . $onkeydown . '"', "text", $width, 0), $title1, "left", "defaultfont", "", "", "", "", "", 0) . we_html_tools::getPixel(10, 5) . $yuiSuggest->getHTML();
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($this->uid . "_bannerUrl", 30, $this->banner->bannerUrl, "", 'id="' . $this->uid . '_bannerUrl" onkeydown="' . $onkeydown . '"', "text", $width, 0), $title1, "left", "defaultfont", "", "", "", "", "", 0) . $yuiSuggest->getHTML();
 	}
 
 }

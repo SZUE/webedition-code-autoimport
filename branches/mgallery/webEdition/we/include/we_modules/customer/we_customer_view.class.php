@@ -107,7 +107,7 @@ var frameUrl="' . $this->frameset . '";
 	}
 
 	function getJSTreeHeader(){
-		return we_html_element::jsElement($this->getJSSubmitFunction('cmd', 'post', 'we_form_treeheader')) .
+		return we_html_element::jsElement($this->getJSSubmitFunction('cmd')) .
 			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_treeHeader.js');
 	}
 
@@ -145,10 +145,6 @@ function we_cmd(){
 	}
 }' . $this->getJSSubmitFunction("customer_settings");
 	}
-
-	/* use parent
-	  function getJSSubmitFunctionBack($def_target = 'edbody', $def_method = 'post'){}
-	 */
 
 	function processCommands(){
 		switch(we_base_request::_(we_base_request::STRING, 'cmd')){

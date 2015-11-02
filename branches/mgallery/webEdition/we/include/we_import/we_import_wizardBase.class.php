@@ -199,10 +199,10 @@ top.wizcmd.we_import(1,-2' . ((we_base_request::_(we_base_request::STRING, 'type
 
 							echo we_html_element::jsElement('
 if (top.wizbody && top.wizbody.addLog){
-	top.wizbody.addLog("<br/>");
-	top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(10, 10)) . we_html_element::htmlB(g_l('import', '[start_import]') . ' - ' . date("d.m.Y H:i:s")) . '<br/><br/>");
-	top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(20, 5)) . we_html_element::htmlB(g_l('import', '[prepare]')) . '<br/>");
-	top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(20, 5)) . we_html_element::htmlB(g_l('import', '[import]')) . '<br/>");
+	top.wizbody.addLog("");
+	top.wizbody.addLog("' . we_html_element::htmlB(g_l('import', '[start_import]') . ' - ' . date("d.m.Y H:i:s")) . '");
+	top.wizbody.addLog("' . we_html_element::htmlB(g_l('import', '[prepare]')) . '");
+	top.wizbody.addLog("' . we_html_element::htmlB(g_l('import', '[import]')) . '");
 }');
 							flush();
 
@@ -332,7 +332,7 @@ if (top.wizbody && top.wizbody.addLog){
 								if($xmlExIm->RefTable->current == 0){
 									echo we_html_element::jsElement('
 if (top.wizbody.addLog){
-	top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(20, 5)) . we_html_element::htmlB(g_l('import', '[update_links]')) . '");
+	top.wizbody.addLog("' . we_html_element::htmlB(g_l('import', '[update_links]')) . '");
 }');
 									flush();
 								}
@@ -429,7 +429,7 @@ setTimeout(function(){we_import(1," . $v['numFiles'] . ");},15);";
 
 										echo we_html_element::jsElement(
 											'if (top.wizbody.addLog){
-												top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(50, 5) . $_progress_text) . '<br/>");
+												top.wizbody.addLog("' . addslashes($_progress_text) . '");
 											}');
 										flush();
 									} else {
@@ -644,19 +644,19 @@ function we_import(mode, cid) {
 
 			default:
 				$JScript = "top.wizbusy.setProgressText('pb1','" . g_l('import', '[finish_progress]') . "');
-							top.wizbusy.setProgress(100);
-							top.opener.top.we_cmd('load', top.opener.top.treeData.table ,0);
-							if(WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart && WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart != undefined) WE().layout.weEditorFrameController.getActiveDocumentReference().location.reload();
-							if(top.wizbusy && top.wizbusy.document.getElementById('progress')) {
-							progress = top.wizbusy.document.getElementById('progress');
-							if(progress!==undefined){
-									progress.style.display = 'none';
-								}
-							}" .
-					($v['type'] == we_import_functions::TYPE_WE_XML ?
-						"if (top.wizbody && top.wizbody.addLog) {
-								top.wizbody.addLog(\"<br/>" . addslashes(we_html_tools::getPixel(10, 10) . we_html_element::htmlB(g_l('import', '[end_import]') . " - " . date("d.m.Y H:i:s"))) . "<br/><br/>\");
-								}" :
+top.wizbusy.setProgress(100);
+top.opener.top.we_cmd('load', top.opener.top.treeData.table ,0);
+if(WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart && WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart != undefined) WE().layout.weEditorFrameController.getActiveDocumentReference().location.reload();
+if(top.wizbusy && top.wizbusy.document.getElementById('progress')) {
+progress = top.wizbusy.document.getElementById('progress');
+if(progress!==undefined){
+		progress.style.display = 'none';
+	}
+}" .
+					($v['type'] == we_import_functions::TYPE_WE_XML ?						"
+if (top.wizbody && top.wizbody.addLog) {
+	top.wizbody.addLog(\"" . addslashes(we_html_element::htmlB(g_l('import', '[end_import]') . " - " . date("d.m.Y H:i:s"))) . "\");
+}" :
 						we_message_reporting::getShowMessageCall(g_l('import', '[finish_import]'), we_message_reporting::WE_MESSAGE_NOTICE) . 'setTimeout(top.close,100);'
 					);
 		}

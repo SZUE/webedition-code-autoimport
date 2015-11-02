@@ -421,7 +421,7 @@ this.selectedIndex = 0;' .
 		if($h == ''){
 			$h = 0;
 		}
-		return '<span style="display:inline-block;width:' . $w . (is_numeric($w) ? 'px' : '') . ';height:' . $h . (is_numeric($h) ? 'px' : '') . ';' . ($border ? 'border:' . $border . 'px solid black;' : '') . '"></span>';
+		return '<span style="display:inline-block;width:' . $w . (is_numeric($w) ? 'px' : '') . ';height:' . $h . (is_numeric($h) ? 'px' : '') . ';' . ($border ? 'border:' . $border . 'px solid black;' : '') . '">P</span>';
 	}
 
 	static function hidden($name, $value, $attribs = null){

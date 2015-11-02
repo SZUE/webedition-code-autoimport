@@ -112,7 +112,7 @@ var data={
 function start() {
 	' . $selected . $opened . ( $this->export->IsFolder == 0 ? '
 	setHead(top.content.editor.edbody.table);' : '') . '
-}') . we_html_element::jsScript(WE_JS_MODULES_DIR . 'export_prop.js');
+}') . we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_prop.js');
 	}
 
 	function getJSSubmitFunction(){

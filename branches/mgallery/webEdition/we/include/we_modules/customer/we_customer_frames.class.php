@@ -196,7 +196,7 @@ function setTab(tab) {
 				'cmd' => 'show_search'));
 
 		$table = new we_html_table(array('class' => 'default', "width" => '100%'), 1, 1);
-		$table->setCol(0, 0, array("nowrap" => null, "class" => "small"), we_html_element::jsElement($this->View->getJSSubmitFunction("cmd", "post")) .
+		$table->setCol(0, 0, array("nowrap" => null, "class" => "small"), we_html_element::jsElement($this->View->getJSSubmitFunction("cmd")) .
 			$hiddens .
 			we_html_tools::htmlTextInput("keyword", 10, '', '', '', "text", "150px") .
 			we_html_button::create_button(we_html_button::SEARCH, "javascript:submitForm('cmd', '', '', 'we_form_treefooter')")

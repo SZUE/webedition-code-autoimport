@@ -287,7 +287,7 @@ class we_navigation_navigation extends weModelBase{
 			$this->previewCode = str_replace('@###PARENTID###@', $this->ID, self::defaultPreviewCode);
 		}
 		$this->Categories = $_paths;
-		
+
 		if($this->IsFolder == 0){
 			$this->Charset = $_charset;
 		}

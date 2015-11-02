@@ -969,7 +969,7 @@ function onSelectionClassChangeJS(value) {
 			$showValue = stristr($value, "_") ? substr($value, strpos($value, "_") + 1) : $value;
 			return we_html_tools::htmlFormElementTable(
 					we_html_tools::hidden($name, $value) .
-					we_html_tools::htmlTextInput("__" . $name, 58, $showValue, '', 'onchange="setFieldValue(\'' . $name . '\',this); top.content.mark();"', 'text', ($this->_width_size - 120) - abs($extraFieldWidth) - 8, 0), $title, 'left', 'defaultfont', '', we_html_tools::getPixel(20, 4), $extraField, $_button);
+					we_html_tools::htmlTextInput("__" . $name, 58, $showValue, '', 'onchange="setFieldValue(\'' . $name . '\',this); top.content.mark();"', 'text', ($this->_width_size - 120) - abs($extraFieldWidth) - 8, 0), $title, 'left', 'defaultfont', '', $extraField, $_button);
 		}
 	}
 

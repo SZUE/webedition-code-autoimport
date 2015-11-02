@@ -688,7 +688,7 @@ function doUnload() {
 		/* Create Main Table */
 		$_attr = array('class' => 'default');
 		$_tableObj = new we_html_table($_attr, 6, 3);
-		$_tableObj->setCol(0, 0, array("colspan" => 2), $_images);
+		$_tableObj->setCol(0, 0, array("colspan" => 2,), $_images);
 		$_tableObj->setCol(0, 2, null, $_jss);
 		$_tableObj->setCol(1, 0, array("colspan" => 2), $_flashmovies);
 		$_tableObj->setCol(1, 2, null, $_css);

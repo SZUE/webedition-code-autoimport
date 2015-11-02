@@ -741,7 +741,7 @@ handle_event("previous");');
 	protected function getWXMLImportStep3(){
 		$functions = '
 function addLog(text){
-	document.getElementById("log").innerHTML+= text;
+	document.getElementById("log").innerHTML+= text+"<br/>";
 	document.getElementById("log").scrollTop = 50000;
 }
 
@@ -1070,10 +1070,8 @@ HTS;
 
 		$docCategories = $this->formCategory2('doc', isset($v['docCategories']) ? $v['docCategories'] : '');
 		$docCats = new we_html_table(array('class' => 'default'), 2, 2);
-		$docCats->setCol(0, 0, array('style' => 'vertical-align:top', 'class' => 'defaultgray'), g_l('import', '[categories]'));
-		$docCats->setCol(0, 1, array(), $docCategories);
-		$docCats->setCol(1, 0, array(), we_html_tools::getPixel(130, 1));
-		$docCats->setCol(1, 1, array(), we_html_tools::getPixel(150, 1));
+		$docCats->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', 'class' => 'defaultgray'), g_l('import', '[categories]'));
+		$docCats->setCol(0, 1, array('style' => 'width:150px;'), $docCategories);
 		$cmd1 = "self.wizbody.document.we_form.elements['v[store_to_id]'].value";
 		$storeToButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("self.wizbody.document.we_form.elements['v[store_to_path]'].value") . "','','','0')"
 		);
@@ -1118,24 +1116,19 @@ HTS;
 		}
 
 		$objClass = new we_html_table(array('class' => 'default'), 2, 2);
-		$objClass->setCol(0, 0, array('style' => 'vertical-align:top', 'class' => 'defaultgray'), g_l('import', '[class]'));
-		$objClass->setCol(0, 1, array(), $CLselect->getHTML());
-		$objClass->setCol(1, 0, array(), we_html_tools::getPixel(130, 10));
-		$objClass->setCol(1, 1, array(), we_html_tools::getPixel(150, 10));
+		$objClass->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', 'class' => 'defaultgray'), g_l('import', '[class]'));
+		$objClass->setCol(0, 1, array('style' => 'width:150px;'), $CLselect->getHTML());
 
 		$objCategories = $this->formCategory2('obj', isset($v['objCategories']) ? $v['objCategories'] : '');
 		$objCats = new we_html_table(array('class' => 'default'), 2, 2);
-		$objCats->setCol(0, 0, array('style' => 'vertical-align:top', 'class' => 'defaultgray'), g_l('import', '[categories]'));
-		$objCats->setCol(0, 1, array(), $objCategories);
-		$objCats->setCol(1, 0, array(), we_html_tools::getPixel(130, 1));
-		$objCats->setCol(1, 1, array(), we_html_tools::getPixel(150, 1));
+		$objCats->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', 'class' => 'defaultgray'), g_l('import', '[categories]'));
+		$objCats->setCol(0, 1, array('style' => 'width:150px;'), $objCategories);
 
-		$objects = new we_html_table(array('class' => 'default'), 4, 2);
-		$objects->setCol(0, 0, array('colspan' => 3), $radioObjs);
-		$objects->setCol(1, 0, array(), we_html_tools::getPixel(1, 10));
-		$objects->setCol(2, 0, array(), we_html_tools::getPixel(50, 1));
-		$objects->setCol(2, 1, array(), $objClass->getHTML());
-		$objects->setCol(3, 1, array(), $objCats->getHTML());
+		$objects = new we_html_table(array('class' => 'default'), 3, 2);
+		$objects->setCol(0, 0, array('colspan' => 3,'class'=>'withBigSpace'), $radioObjs);
+		$objects->setCol(1, 0, array('style'=>'width:50px;'));
+		$objects->setCol(1, 1, array(), $objClass->getHTML());
+		$objects->setCol(2, 1, array(), $objCats->getHTML());
 
 		$specifyDoc = new we_html_table(array('class' => 'default'), 1, 2);
 		$specifyDoc->setCol(0, 1, array('style' => 'vertical-align:bottom'), we_html_forms::checkbox(3, (isset($v['is_dynamic']) ? $v['is_dynamic'] : 0), 'chbxIsDynamic', g_l('import', '[isDynamic]'), true, 'defaultfont', "this.form.elements['v[is_dynamic]'].value=this.checked? 1 : 0; switchExt();"));
@@ -2042,11 +2035,9 @@ HTS;
 		$seaPu->setCol(0, 0, array(), we_html_forms::checkboxWithHidden(isset($v["doc_publish"]) ? $v["doc_publish"] : true, 'v[doc_publish]', g_l('buttons_global', '[publish][value]'), false, 'defaultfont'));
 
 		$docCategories = $this->formCategory2("doc", isset($v["docCategories"]) ? $v["docCategories"] : "");
-		$docCats = new we_html_table(array('class' => 'default'), 2, 2);
-		$docCats->setCol(0, 0, array('style' => 'vertical-align:top;', "class" => "defaultgray"), g_l('import', '[categories]'));
-		$docCats->setCol(0, 1, array(), $docCategories);
-		$docCats->setCol(1, 0, array(), we_html_tools::getPixel(130, 1));
-		$docCats->setCol(1, 1, array(), we_html_tools::getPixel(150, 1));
+		$docCats = new we_html_table(array('class' => 'default'), 1, 2);
+		$docCats->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', "class" => "defaultgray"), g_l('import', '[categories]'));
+		$docCats->setCol(0, 1, array('style'=>'width:150px;'), $docCategories);
 
 		$radioDocs = we_html_forms::radiobutton('documents', ($v["import_type"] === 'documents'), "v[import_type]", g_l('import', '[documents]'));
 		$radioObjs = we_html_forms::radiobutton('objects', ($v["import_type"] === 'objects'), "v[import_type]", g_l('import', '[objects]'), true, "defaultfont", "self.document.we_form.elements['v[store_to_path]'].value='/'; YAHOO.autocoml.setValidById(self.document.we_form.elements['v[store_to_path]'].id); if(self.document.we_form.elements['v[we_TemplateName]']!==undefined) { self.document.we_form.elements['v[we_TemplateName]'].value=''; YAHOO.autocoml.setValidById(self.document.we_form.elements['v[we_TemplateName]'].id); }", (defined('OBJECT_TABLE') ? false : true));
@@ -2082,11 +2073,9 @@ HTS;
 				$CLselect->insertOption($optid, -1, g_l('import', '[none]'));
 			}
 
-			$objClass = new we_html_table(array('class' => 'default'), 2, 2);
-			$objClass->setCol(0, 0, array('style' => 'vertical-align:top;', "class" => "defaultgray"), g_l('import', '[class]'));
-			$objClass->setCol(0, 1, array(), $CLselect->getHTML());
-			$objClass->setCol(1, 0, array(), we_html_tools::getPixel(130, 10));
-			$objClass->setCol(1, 1, array(), we_html_tools::getPixel(150, 10));
+			$objClass = new we_html_table(array('class' => 'default'), 1, 2);
+			$objClass->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', "class" => "defaultgray"), g_l('import', '[class]'));
+			$objClass->setCol(0, 1, array('style'=>'width:150px;'), $CLselect->getHTML());
 
 			$wecmdenc1 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[obj_path_id]'].value");
 			$wecmdenc2 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[obj_path]'].value");
@@ -2112,18 +2101,14 @@ HTS;
 			$objSeaPu->setCol(1, 0, array(), we_html_forms::checkboxWithHidden(!empty($v["obj_search"]), 'v[obj_search]', g_l('weClass', '[IsSearchable]'), false, 'defaultfont'));
 			$objSeaPu->setCol(0, 0, array(), we_html_forms::checkboxWithHidden(isset($v["obj_publish"]) ? $v["obj_publish"] : true, 'v[obj_publish]', g_l('buttons_global', '[publish][value]'), false, 'defaultfont'));
 			$objCategories = $this->formCategory2("obj", isset($v["objCategories"]) ? $v["objCategories"] : "");
-			$objCats = new we_html_table(array('class' => 'default'), 2, 2);
-			$objCats->setCol(0, 0, array('style' => 'vertical-align:top;', "class" => "defaultgray"), g_l('import', '[categories]'));
-			$objCats->setCol(0, 1, array(), $objCategories);
-			$objCats->setCol(1, 0, array(), we_html_tools::getPixel(130, 1));
-			$objCats->setCol(1, 1, array(), we_html_tools::getPixel(150, 1));
+			$objCats = new we_html_table(array('class' => 'default'), 1, 2);
+			$objCats->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', "class" => "defaultgray"), g_l('import', '[categories]'));
+			$objCats->setCol(0, 1, array('style'=>'width:150px;'), $objCategories);
 
-			$objects = new we_html_table(array('class' => 'default'), 4, 2);
-			$objects->setCol(0, 0, array("colspan" => 3), $radioObjs);
-			$objects->setCol(1, 0, array(), we_html_tools::getPixel(1, 10));
-			$objects->setCol(2, 0, array(), we_html_tools::getPixel(50, 1));
-			$objects->setCol(2, 1, array(), $objClass->getHTML());
-			$objects->setCol(3, 1, array(), $objCats->getHTML());
+			$objects = new we_html_table(array('class' => 'default withBigSpace'), 3, 2);
+			$objects->setCol(0, 0, array("colspan" => 3,'style'=>'width:50px;'), $radioObjs);
+			$objects->setCol(1, 1, array(), $objClass->getHTML());
+			$objects->setCol(2, 1, array(), $objCats->getHTML());
 		}
 
 		$specifyDoc = new we_html_table(array('class' => 'default'), 1, 2);
@@ -2135,11 +2120,11 @@ HTS;
 				array(
 					"headline" => (defined('OBJECT_TABLE')) ? $radioDocs : g_l('import', '[documents]'),
 					"html" => weSuggest::getYuiFiles() .
-					$doctypeElement . we_html_tools::getPixel(1, 4) .
-					$templateElement . we_html_tools::getPixel(1, 4) .
-					$storeTo . we_html_tools::getPixel(1, 4) .
-					$specifyDoc->getHTML() . we_html_tools::getPixel(1, 4) .
-					$seaPu->getHtml() . we_html_tools::getPixel(1, 4) .
+					$doctypeElement .
+					$templateElement .
+					$storeTo .
+					$specifyDoc->getHTML() .
+					$seaPu->getHtml() .
 					we_html_tools::htmlFormElementTable($docCategories, g_l('import', '[categories]'), "left", "defaultfont") .
 					(defined('OBJECT_TABLE') ? '' : $yuiSuggest->getYuiJs()),
 					"space" => 120,
@@ -2149,9 +2134,9 @@ HTS;
 			if(defined('OBJECT_TABLE')){
 				$parts[] = array(
 					"headline" => $radioObjs,
-					"html" => we_html_tools::htmlFormElementTable($CLselect->getHTML(), g_l('import', '[class]'), "left", "defaultfont") . we_html_tools::getPixel(1, 4) .
-					$objStoreTo . we_html_tools::getPixel(1, 4) .
-					$objSeaPu->getHtml() . we_html_tools::getPixel(1, 4) .
+					"html" => we_html_tools::htmlFormElementTable($CLselect->getHTML(), g_l('import', '[class]'), "left", "defaultfont") .
+					$objStoreTo .
+					$objSeaPu->getHtml() .
 					we_html_tools::htmlFormElementTable($objCategories, g_l('import', '[categories]'), "left", "defaultfont")
 					. $yuiSuggest->getYuiJs(),
 					"space" => 120,

@@ -103,7 +103,7 @@ var cgroup=' . ($_SESSION['user']['ID'] ? intval(f('SELECT ParentID FROM ' . USE
 				"cmd" => "show_search"));
 
 		$table = new we_html_table(array('class' => 'default', "style" => 'width:100%;margin-top:10px;'), 1, 1);
-		$table->setCol(0, 0, array("nowrap" => null, "class" => "small"), we_html_element::jsElement($this->View->getJSSubmitFunction("cmd", "post")) .
+		$table->setCol(0, 0, array("nowrap" => null, "class" => "small"), we_html_element::jsElement($this->View->getJSSubmitFunction("cmd")) .
 			$hiddens .
 			we_html_tools::htmlTextInput("keyword", 10, "", "", "", "text", "150px") .
 			we_html_button::create_button(we_html_button::SEARCH, "javascript:top.content.we_cmd('search',document.we_form_treefooter.keyword.value);")

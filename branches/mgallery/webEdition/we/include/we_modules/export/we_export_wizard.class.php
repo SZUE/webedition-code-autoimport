@@ -196,7 +196,7 @@ var path="/";
 
 var SelectedItems= {
 "' . FILE_TABLE . '":[],
-"' . TEMPLATES_TABLE . '":[],'.
+"' . TEMPLATES_TABLE . '":[],' .
 				(defined('OBJECT_FILES_TABLE') ? (
 					'"' . OBJECT_FILES_TABLE . '":[],
 	"' . OBJECT_TABLE . '":[],
@@ -676,7 +676,7 @@ function setState(a) {
 				$this->footerFrame . '.location="' . $this->frameset . '&pnt=footer&step=7";');
 
 		$parts = array(
-			array("headline" => g_l('export', '[filename]'), "html" => we_html_tools::getPixel(5, 5) . we_html_tools::htmlTextInput("filename", $_input_size, $filename, "", "", "text", 260), "space" => $_space)
+			array("headline" => g_l('export', '[filename]'), "html" => we_html_tools::htmlTextInput("filename", $_input_size, $filename, "", "", "text", 260), "space" => $_space)
 		);
 
 //	Filetype
@@ -1295,7 +1295,7 @@ function formFileChooser() {
 		break;
 	}
 }') .
-			we_html_tools::htmlFormElementTable(we_html_tools::getPixel(5, 5) . we_html_tools::htmlTextInput($IDName, 42, $IDValue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
+			we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 42, $IDValue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", "", permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
 	}
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
@@ -1344,8 +1344,8 @@ function formFileChooser() {
 		$dir = we_html_tools::htmlFormElementTable($this->formWeChooser(FILE_TABLE, $width, 0, "dir", $dir, "Path", $path), g_l('export', '[dir]'));
 
 		$table = new we_html_table(array('class' => 'default'), 3, 2);
+		$table->setCol(0, 0, array('style' => 'width:' . (defined('OBJECT_FILES_TABLE') ? 25 : 0) . 'px'));
 		$table->setColContent(0, 1, $select->getHtml());
-		$table->setColContent(1, 0, we_html_tools::getPixel(defined('OBJECT_FILES_TABLE') ? 25 : 0, 5));
 		$table->setColContent(2, 1, $dir);
 
 		$headline = defined('OBJECT_FILES_TABLE') ?

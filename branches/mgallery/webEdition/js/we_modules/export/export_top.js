@@ -160,7 +160,7 @@ function we_cmd() {
 					}
 				}
 
-				top.content.editor.edbody.submitForm(args[0] == "start_export" ? "cmd" : "edbody");
+				top.content.editor.edbody.submitForm(args[0] === "start_export" ? "cmd" : "edbody");
 			} else {
 				WE().util.showMessage(WE().consts.g_l.exports.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, window);
 

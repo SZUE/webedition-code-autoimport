@@ -138,7 +138,7 @@ function setTab(tab) {
 			);
 		}
 
-		$table2->setCol(0, $col++, array("nowrap" => null), we_html_tools::getPixel(290, 5));
+		$table2->setCol(0, $col++, array("nowrap" => null,'style'=>'width:290px;'));
 
 		$js = we_html_element::jsElement('
 function we_save() {
@@ -189,7 +189,7 @@ function clearLog(){
 }
 
 function addLog(text){
-	top.content.editor.edbody.document.getElementById("log").innerHTML+= text;
+	top.content.editor.edbody.document.getElementById("log").innerHTML+= text+"<br/>";
 	top.content.editor.edbody.document.getElementById("log").scrollTop = 50000;
 }
 ') .
@@ -484,14 +484,17 @@ function closeAllType(){
 
 			if(!$xmlExIm->prepare){
 				$_progress_update = we_html_element::jsElement('
-										if (top.content.editor.edbody.addLog) top.content.editor.edbody.addLog("' . addslashes(we_html_tools::getPixel(10, 10) . we_html_element::htmlB(g_l('export', '[start_export]') . ' - ' . date("d.m.Y H:i:s"))) . '<br/><br/>");
-										if (top.content.editor.edbody.addLog) top.content.editor.edbody.addLog("' . addslashes(we_html_tools::getPixel(20, 5) . we_html_element::htmlB(g_l('export', '[prepare]'))) . '<br/>");
-										if (top.content.editor.edfooter.doProgress) top.content.editor.edfooter.doProgress(0);
-										if(top.content.editor.edfooter.setProgressText) top.content.editor.edfooter.setProgressText("current_description","' . g_l('export', '[working]') . '");
-										if(top.content.editor.edbody.addLog){
-										top.content.editor.edbody.addLog("' . addslashes(we_html_tools::getPixel(20, 5) . we_html_element::htmlB(g_l('export', '[export]'))) . '<br/>");
-									}
-								');
+if (top.content.editor.edbody.addLog) top.content.editor.edbody.addLog("' . addslashes(we_html_element::htmlB(g_l('export', '[start_export]') . ' - ' . date("d.m.Y H:i:s"))) . '");
+if (top.content.editor.edbody.addLog) top.content.editor.edbody.addLog("' . addslashes(we_html_element::htmlB(g_l('export', '[prepare]'))) . '");
+if (top.content.editor.edfooter.doProgress){
+	top.content.editor.edfooter.doProgress(0);
+}
+if(top.content.editor.edfooter.setProgressText){
+	top.content.editor.edfooter.setProgressText("current_description","' . g_l('export', '[working]') . '");
+}
+if(top.content.editor.edbody.addLog){
+	top.content.editor.edbody.addLog("' . addslashes(we_html_element::htmlB(g_l('export', '[export]'))) . '");
+}');
 				//FIXME: set export type in getHeader
 				we_base_file::save($this->View->export->ExportFilename, we_exim_XMLExIm::getHeader(), "wb");
 				if($this->View->export->HandleOwners){
@@ -539,7 +542,7 @@ function closeAllType(){
 					case 'weBinary':
 						$_progress_update .= "\n" .
 							we_html_element::jsElement('
-											if (top.content.editor.edbody.addLog) top.content.editor.edbody.addLog("' . addslashes(we_html_tools::getPixel(50, 5) . we_html_element::htmlB(g_l('export', '[weBinary]'))) . '&nbsp;&nbsp;' . $ref->ID . '<br/>");
+											if (top.content.editor.edbody.addLog) top.content.editor.edbody.addLog("' . addslashes(we_html_element::htmlB(g_l('export', '[weBinary]'))) . '&nbsp;&nbsp;' . $ref->ID . '");
 										') . "\n";
 						$proceed = false;
 						break;
@@ -568,19 +571,19 @@ function closeAllType(){
 						$_progress_text = addslashes(substr($_progress_text, 0, 65) . '<abbr title="' . $_path . '">...</abbr>' . substr($_progress_text, -10));
 					}
 
-					$_progress_update .= "\n" .
-						we_html_element::jsElement('
-											if (top.content.editor.edbody.addLog) top.content.editor.edbody.addLog("' . addslashes(we_html_tools::getPixel(50, 5) . $_progress_text) . '<br/>");
-										');
+					$_progress_update .= we_html_element::jsElement('
+if (top.content.editor.edbody.addLog){
+	top.content.editor.edbody.addLog("' . addslashes($_progress_text) . '");
+}');
 				}
 			}
 		}
 
 		$percent = max(min(($all ? intval(($exports / $all) * 100) : 0), 100), 0);
-		$_progress_update .= "\n" .
-			we_html_element::jsElement('
-									if (top.content.editor.edfooter.doProgress) top.content.editor.edfooter.doProgress(' . $percent . ');
-						') . "\n";
+		$_progress_update .= we_html_element::jsElement('
+if (top.content.editor.edfooter.doProgress){
+	top.content.editor.edfooter.doProgress(' . $percent . ');
+}');
 		$_SESSION['weS']['ExImCurrentRef'] = $xmlExIm->RefTable->current;
 
 		$hiddens = we_html_element::htmlHiddens(array(
@@ -599,14 +602,14 @@ function closeAllType(){
 		$_progress_update .= "\n" .
 			we_html_element::jsElement('
 									if (top.content.editor.edfooter.doProgress) top.content.editor.edfooter.doProgress(100);
-									if (top.content.editor.edbody.addLog) top.content.editor.edbody.addLog("<br/>' . addslashes(we_html_tools::getPixel(10, 10) . we_html_element::htmlB(g_l('export', '[end_export]') . ' - ' . date("d.m.Y H:i:s"))) . '<br/><br/>");
+									if (top.content.editor.edbody.addLog) top.content.editor.edbody.addLog("' . addslashes(we_html_element::htmlB(g_l('export', '[end_export]') . ' - ' . date("d.m.Y H:i:s"))) . '");
 							') . "\n" .
 			($this->View->export->ExportTo === 'local' ?
 				we_html_element::jsElement('top.content.editor.edbody.addLog(\'' .
-					we_html_element::htmlSpan(array("class" => "defaultfont"), addslashes(we_html_tools::getPixel(10, 1) . g_l('export', '[backup_finished]')) . "<br/>" .
-						addslashes(we_html_tools::getPixel(10, 1)) . g_l('export', '[download_starting2]') . "<br/><br/>" .
-						addslashes(we_html_tools::getPixel(10, 1)) . g_l('export', '[download_starting3]') . "<br/>" .
-						addslashes(we_html_tools::getPixel(10, 1)) . we_html_element::htmlB(we_html_element::htmlA(array("href" => $this->frameset . "&pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename), 'download' => $this->View->export->ExportFilename), g_l('export', '[download]'))) . "<br/><br/>"
+					we_html_element::htmlSpan(array("class" => "defaultfont"), addslashes(g_l('export', '[backup_finished]')) . "<br/>" .
+						 g_l('export', '[download_starting2]') . "<br/><br/>" .
+						g_l('export', '[download_starting3]') . "<br/>" .
+						we_html_element::htmlB(we_html_element::htmlA(array("href" => $this->frameset . "&pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename), 'download' => $this->View->export->ExportFilename), g_l('export', '[download]'))) . "<br/><br/>"
 					) .
 					'\');') :
 				''
