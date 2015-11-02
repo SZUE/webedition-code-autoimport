@@ -387,7 +387,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 			$table->setCol(1, 2, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlSpan(array('id' => 'blacklist_total', 'style' => 'color:' . (($allBlockedByBlacklist > 0) ? 'red' : 'green') . ';'), $allBlockedByBlacklist));
 			$table->setCol(1, 3, array("style" => "padding: 0 5px 0 5px;"), '<i class="fa fa-lg ' . ($allBlockedByBlacklist == 0 ? "fa-check fa-ok" : "fa-close fa-cancel") . '"></i>');
 			//todo: statt show black list, sollte show_log begrenzt auf Log=email_is_black + $start_send + start_end
-			$table->setCol(1, 4, array('style' => 'width: 35px'), (($allBlockedByBlacklist == 0) ? '' : we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::VIEW, "javascript:top.opener.top.we_cmd('black_list');"))));
+			$table->setCol(1, 4, array('style' => 'width: 35px'), (($allBlockedByBlacklist == 0) ? '' : we_html_button::formatButtons(we_html_button::create_button(we_html_button::VIEW, "javascript:top.opener.top.we_cmd('black_list');"))));
 
 			/* process bar blocked by domain check */
 			$allBlockedByDomainCheck = (array_key_exists("domain_nok", $results) ? $results['domain_nok'] : 0);
@@ -404,7 +404,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 			$table->setCol(2, 2, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlSpan(array('id' => 'domain_total', 'style' => 'color:' . (($allBlockedByDomainCheck > 0) ? 'red' : 'green') . ';'), $allBlockedByDomainCheck));
 			$table->setCol(2, 3, array("style" => "padding: 0 5px 0 5px;"), '<i class="fa fa-lg ' . ($allBlockedByDomainCheck == 0 ? "fa-check fa-ok" : "fa-close fa-cancel") . '"></i>');
 			//todo: statt domain, sollte show_log begrenzt auf Log=domain_nok + $start_send + start_end
-			$table->setCol(2, 4, array('style' => 'width: 35px'), (($allBlockedByDomainCheck == 0) ? '' : we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::VIEW, "javascript:top.opener.top.we_cmd('domain_check');"))));
+			$table->setCol(2, 4, array('style' => 'width: 35px'), (($allBlockedByDomainCheck == 0) ? '' : we_html_button::formatButtons(we_html_button::create_button(we_html_button::VIEW, "javascript:top.opener.top.we_cmd('domain_check');"))));
 
 			/* process bar all clear recipients */
 			$allClearRecipients = (array_key_exists("mail_sent", $results) ? $results['mail_sent'] : 0);
@@ -421,7 +421,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 			$table->setCol(3, 2, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlSpan(array('id' => 'recipients_total', 'style' => 'color:' . (($allClearRecipients <= 0) ? 'red' : 'green') . ';'), $allClearRecipients));
 			$table->setCol(3, 3, array("style" => "padding: 0 5px 0 5px;"), '<i class="fa fa-lg ' . ($allClearRecipients == $allRecipients ? "fa-check fa-ok" : "fa-exclamation-triangle fa-cancel") . '" title="' . ($allClearRecipients < $allRecipients ? g_l('modules_newsletter', '[reporting][mailing_advice_not_success]') : '') . '"></i>');
 			//todo: statt show_log, sollte show_log begrenzt auf Log=email_sent + $start_send + start_end
-			$table->setCol(3, 4, array('style' => 'width: 35px'), we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::VIEW, "javascript:top.opener.top.we_cmd('show_log')")));
+			$table->setCol(3, 4, array('style' => 'width: 35px'), we_html_button::formatButtons(we_html_button::create_button(we_html_button::VIEW, "javascript:top.opener.top.we_cmd('show_log')")));
 
 			/* total recipients */
 			$table->addRow();
@@ -597,7 +597,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 		$extra_radio_text = array('use_port');
 		$defaults = array('reject_save_malformed' => 1, 'use_https_refer' => 0, 'send_wait' => 0, 'use_port' => 0, 'use_port_check' => 80, 'isEmbedImages' => 0, 'use_base_href' => 1);
 
-		$table = new we_html_table(array('class' => 'default withSpace'), 1, 3);
+		$table = new we_html_table(array('class' => 'default withSpace', 'style' => 'margin-bottom:10px'), 1, 3);
 		$c = 0;
 
 		foreach($texts as $text){
@@ -669,7 +669,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 
 		$deselect = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.global_mailing_list.value=''");
 
-		$gml_table = new we_html_table(array('class' => 'default withSpace', "width" => 538), 4, 2);
+		$gml_table = new we_html_table(array('class' => 'default withSpace', "style" => 'width:538px;margin:10px; 0px;'), 4, 2);
 		$gml_table->setCol(0, 0, array("class" => "defaultfont"), g_l('modules_newsletter', '[global_mailing_list]'));
 		$gml_table->setCol(2, 0, array(), $this->formFileChooser(380, "global_mailing_list", $settings["global_mailing_list"]));
 		$gml_table->setCol(2, 1, array('style' => 'text-align:right'), $deselect);
@@ -677,11 +677,8 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody", 'onload' => 'self.focus();'), we_html_element::htmlForm(array("name" => "we_form"), $this->View->getHiddens() .
 								we_html_tools::htmlDialogLayout(
 										$table->getHtml() .
-										we_html_tools::getPixel(5, 10) .
 										$radios_code .
-										we_html_tools::getPixel(5, 15) .
-										$gml_table->getHtml() .
-										we_html_tools::getPixel(5, 10), g_l('modules_newsletter', '[settings]'), we_html_button::position_yes_no_cancel($save, $close)
+										$gml_table->getHtml(), g_l('modules_newsletter', '[settings]'), we_html_button::position_yes_no_cancel($save, $close)
 								)
 						)
 						. ($closeflag ? we_html_element::jsElement('top.close();') : "")
@@ -1099,15 +1096,12 @@ window.onload=extraInit;');
 					break;
 			}
 
-			$buttons = we_html_tools::getPixel(440, 1);
-
-			$plus = we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('addBlock','" . $counter . "')");
-			$trash = we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('delBlock','" . $counter . "')");
-
-			$buttons.=(count($this->View->newsletter->blocks) > 1 ?
-							we_html_button::position_yes_no_cancel($plus, $trash) :
-							we_html_button::position_yes_no_cancel($plus)
-					);
+			$buttons='<div style="margin-left:440px;">'.
+					we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('addBlock','" . $counter . "')").
+					(count($this->View->newsletter->blocks) > 1 ?
+							 we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('delBlock','" . $counter . "')") :
+							''
+					).'</div>';
 
 			$parts[] = array("headline" => sprintf(g_l('modules_newsletter', '[block]'), ($counter + 1)), "html" => $content, "space" => 140);
 			$parts[] = array("headline" => "", "html" => $buttons, "space" => 140);
@@ -1662,7 +1656,7 @@ self.focus();
 								($allowClear ?
 										we_html_element::htmlHiddens(array("pnt" => "clear_log", "ncmd" => "do_clear_log")) .
 										we_html_tools::htmlDialogLayout($table->getHtml(), g_l('modules_newsletter', '[clear_log]'), we_html_button::position_yes_no_cancel($ok, null, $cancel), "100%", 30, "", "hidden") :
-										we_html_tools::htmlDialogLayout($table->getHtml(), g_l('modules_newsletter', '[csv_download]'), we_html_button::position_yes_no_cancel(null, $close, null), "100%", 30, "", "hidden")
+										we_html_tools::htmlDialogLayout($table->getHtml(), g_l('modules_newsletter', '[csv_download]'), we_html_button::formatButtons($close), "100%", 30, "", "hidden")
 								) .
 								we_html_element::jsElement("self.focus();")
 						)

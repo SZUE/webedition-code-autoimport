@@ -509,14 +509,13 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 	  $yuiSuggest->setOpenButton($editButton, 4);
 	  $yuiSuggest->setDoOnItemSelect("weCollectionEdit.repaintAndRetrieveCsv();");
 
-	  $rowControllsArr = array();
-	  $rowControllsArr[] = we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "javascript:_EditorFrame.setEditorIsHot(true);weCollectionEdit.doClickAdd(this);//top.we_cmd('switch_edit_page',1,we_transaction);", true, 100, 22);
-	  $rowControllsArr[] = we_html_tools::htmlSelect('numselect_' . $index, array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10), 1, '', false, array('id' => 'numselect_' . $index));
-	  $rowControllsArr[] = we_html_button::create_button(we_html_button::DIRUP, 'javascript:weCollectionEdit.doClickUp(this);', true, 0, 0, '', '', ($index === 1 ? true : false), false, '_' . $index);
-	  $rowControllsArr[] = we_html_button::create_button(we_html_button::DIRDOWN, 'javascript:weCollectionEdit.doClickDown(this);', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index);
-	  $rowControllsArr[] = we_html_button::create_button(we_html_button::TRASH, 'javascript:weCollectionEdit.doClickDelete(this)', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index);
-	  $rowControlls = we_html_button::create_button_table($rowControllsArr);
-
+	  $rowControlls =
+	 we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "javascript:_EditorFrame.setEditorIsHot(true);weCollectionEdit.doClickAdd(this);//top.we_cmd('switch_edit_page',1,we_transaction);", true, 100, 22).
+	  we_html_tools::htmlSelect('numselect_' . $index, array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10), 1, '', false, array('id' => 'numselect_' . $index)).
+	  we_html_button::create_button(we_html_button::DIRUP, 'javascript:weCollectionEdit.doClickUp(this);', true, 0, 0, '', '', ($index === 1 ? true : false), false, '_' . $index).
+	  we_html_button::create_button(we_html_button::DIRDOWN, 'javascript:weCollectionEdit.doClickDown(this);', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index).
+	  we_html_button::create_button(we_html_button::TRASH, 'javascript:weCollectionEdit.doClickDelete(this)', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index);
+	  
 	  $rowHtml = new we_html_table(array('draggable' => 'false'), 1, 3);
 	  $rowHtml->setCol(0, 0, array('width' => '70px', 'style' => 'padding:0 0 0 20px;', 'class' => 'weMultiIconBoxHeadline'), 'Nr. <span id="label_' . $index . '">' . $index . '</span>');
 	  $rowHtml->setCol(0, 1, array('width' => '220px', 'style' => 'padding:4px 40px 0 0;', 'class' => 'weMultiIconBoxHeadline'), $yuiSuggest->getHTML());

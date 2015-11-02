@@ -302,9 +302,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 		if($this->View->voting->IsFolder){
 			$parts[] = array(
 				'headline' => g_l('modules_voting', '[control]'),
-				'html' => we_html_button::position_yes_no_cancel(
-						we_html_button::create_button('logbook', 'javascript:we_cmd(\'show_log\')'), we_html_button::create_button(we_html_button::DELETE, 'javascript:we_cmd(\'delete_log\')'), null
-				),
+				'html' => we_html_button::formatButtons(we_html_button::create_button('logbook', "javascript:we_cmd('show_log')") . we_html_button::create_button(we_html_button::DELETE, "javascript:we_cmd('delete_log')")),
 				'space' => $this->_space_size,
 				'noline' => 1
 			);
@@ -493,9 +491,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 			'space' => $this->_space_size
 		);
 
-		$table = we_html_element::htmlDiv(array('id' => 'LogData', 'style' => 'display: ' . ($this->View->voting->Log ? 'block' : 'none') . ';'), we_html_button::position_yes_no_cancel(
-								we_html_button::create_button('logbook', 'javascript:we_cmd(\'show_log\')'), we_html_button::create_button(we_html_button::DELETE, 'javascript:we_cmd(\'delete_log\')'), null
-						)
+		$table = we_html_element::htmlDiv(array('id' => 'LogData', 'style' => 'display: ' . ($this->View->voting->Log ? 'block' : 'none') . ';'), we_html_button::formatButtons(we_html_button::create_button('logbook', 'javascript:we_cmd(\'show_log\')') . we_html_button::create_button(we_html_button::DELETE, 'javascript:we_cmd(\'delete_log\')'))
 		);
 
 		$parts[] = array(
@@ -796,7 +792,7 @@ function setVisible(id,visible){
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(
 								array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden("group", "") .
 								we_html_tools::htmlDialogLayout(
-										$table->getHtml(), g_l('modules_voting', '[csv_download]'), we_html_button::position_yes_no_cancel(null, $close, null), "100%", 30, 350
+										$table->getHtml(), g_l('modules_voting', '[csv_download]'), we_html_button::formatButtons($close), "100%", 30, 350
 								) .
 								we_html_element::jsElement("self.focus();")
 						)
@@ -819,7 +815,7 @@ function setVisible(id,visible){
 
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden("group", '') .
 								we_html_tools::htmlDialogLayout(
-										$table->getHtml(), g_l('modules_voting', '[csv_download]'), we_html_button::position_yes_no_cancel(null, $close, null), "100%", 30, 350
+										$table->getHtml(), g_l('modules_voting', '[csv_download]'), we_html_button::formatButtons($close), "100%", 30, 350
 								) .
 								we_html_element::jsElement("self.focus();")
 						)
@@ -841,7 +837,7 @@ function setVisible(id,visible){
 		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
 
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_tools::htmlDialogLayout(
-								we_html_element::htmlSpan(array('class' => 'defaultfont'), g_l('modules_voting', '[data_deleted_info]')), g_l('modules_voting', '[voting]'), we_html_button::position_yes_no_cancel(null, $close, null)
+								we_html_element::htmlSpan(array('class' => 'defaultfont'), g_l('modules_voting', '[data_deleted_info]')), g_l('modules_voting', '[voting]'), we_html_button::formatButtons($close)
 						) .
 						we_html_element::jsElement("self.focus();")
 		);
@@ -854,7 +850,7 @@ function setVisible(id,visible){
 		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
 
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_tools::htmlDialogLayout(
-								we_html_element::htmlSpan(array('class' => 'defaultfont'), g_l('modules_voting', '[data_deleted_info]')), g_l('modules_voting', '[voting]'), we_html_button::position_yes_no_cancel(null, $close, null)
+								we_html_element::htmlSpan(array('class' => 'defaultfont'), g_l('modules_voting', '[data_deleted_info]')), g_l('modules_voting', '[voting]'), we_html_button::formatButtons($close)
 						) .
 						we_html_element::jsElement("self.focus();")
 		);
@@ -969,7 +965,7 @@ function setVisible(id,visible){
 			);
 		}
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_multiIconBox::getHTML("show_log_data", $parts, 30, we_html_button::position_yes_no_cancel($refresh, $close, null), -1, '', '', false, g_l('modules_voting', '[voting]'), "", 558) .
+		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_multiIconBox::getHTML("show_log_data", $parts, 30, we_html_button::position_yes_no_cancel($refresh, $close), -1, '', '', false, g_l('modules_voting', '[voting]'), "", 558) .
 						we_html_element::jsElement("self.focus();")
 		);
 		return $this->getHTMLDocument($body);
@@ -1099,7 +1095,7 @@ function setVisible(id,visible){
 			);
 		}
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_multiIconBox::getHTML("show_log_data", $parts, 30, we_html_button::position_yes_no_cancel($refresh, $close, null), -1, '', '', false, g_l('modules_voting', '[voting]'), "", 558) .
+		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_multiIconBox::getHTML("show_log_data", $parts, 30, we_html_button::position_yes_no_cancel($refresh, $close), -1, '', '', false, g_l('modules_voting', '[voting]'), "", 558) .
 						we_html_element::jsElement("self.focus();")
 		);
 		return $this->getHTMLDocument($body);
@@ -1213,7 +1209,7 @@ function setVisible(id,visible){
 			);
 		}
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_multiIconBox::getHTML("show_log_data", $parts, 30, we_html_button::position_yes_no_cancel($refresh, $close, null), -1, '', '', false, g_l('modules_voting', '[voting]'), "", 558) .
+		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_multiIconBox::getHTML("show_log_data", $parts, 30, we_html_button::position_yes_no_cancel($refresh, $close), -1, '', '', false, g_l('modules_voting', '[voting]'), "", 558) .
 						we_html_element::jsElement("self.focus();")
 		);
 		return $this->getHTMLDocument($body);
@@ -1226,7 +1222,7 @@ function setVisible(id,visible){
 
 		return $this->getHTMLDocument(
 						we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_tools::htmlDialogLayout(
-										we_html_element::htmlSpan(array('class' => 'defaultfont'), g_l('modules_voting', '[data_deleted_info]')), g_l('modules_voting', '[voting]'), we_html_button::position_yes_no_cancel(null, $close, null)) .
+										we_html_element::htmlSpan(array('class' => 'defaultfont'), g_l('modules_voting', '[data_deleted_info]')), g_l('modules_voting', '[voting]'), we_html_button::formatButtons($close)) .
 								we_html_element::jsElement("self.focus();")
 						)
 		);

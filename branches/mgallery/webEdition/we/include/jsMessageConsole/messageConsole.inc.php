@@ -21,14 +21,13 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 echo we_html_tools::getHtmlTop(g_l('messageConsole', '[headline]')) .
  STYLESHEET;
 
 $deleteAllButton = we_html_button::create_button(we_html_button::DELETE, "javascript:messageConsoleWindow.removeMessages();");
 $closeButton = we_html_button::create_button(we_html_button::CLOSE, "javascript:window.close();");
 
-$_buttons = we_html_button::position_yes_no_cancel($deleteAllButton, null, $closeButton);
+$_buttons = we_html_button::formatButtons($deleteAllButton . $closeButton);
 
 echo
 we_html_element::cssLink(CSS_DIR . 'messageConsole.css') .
@@ -39,7 +38,7 @@ we_html_element::cssLink(CSS_DIR . 'messageConsole.css') .
 <body onload="messageConsoleWindow.init();" onunload="messageConsoleWindow.remove();" class="weDialogBody">
 	<div id="headlineDiv">
 		<div class="weDialogHeadline">
-<?php echo g_l('messageConsole', '[headline]') ?>
+			<?php echo g_l('messageConsole', '[headline]') ?>
 		</div>
 	</div>
 	<div id="messageDiv">
@@ -47,7 +46,7 @@ we_html_element::cssLink(CSS_DIR . 'messageConsole.css') .
 	</div>
 	<div class="dialogButtonDiv">
 		<div style="padding: 10px 10px 0px 0px;">
-<?php echo $_buttons; ?>
+			<?php echo $_buttons; ?>
 		</div>
 	</div>
 </body>

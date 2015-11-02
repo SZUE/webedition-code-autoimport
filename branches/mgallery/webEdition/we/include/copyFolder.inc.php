@@ -34,9 +34,8 @@ if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3)){
 	$pb = new we_progressBar(0);
 	$pb->setStudLen(270);
 	$pb->addText("&nbsp;", 0, "pbar1");
-	$pbHTML = $pb->getHTML() . $pb->getJSCode();
-
-	$buttons = '<table class="default" width="300"><tr><td id="pbTd" style="text-align:left;display:none;">' . $pbHTML . '</td><td style="text-align:right">' .
+	
+	$buttons = '<table class="default" width="300"><tr><td id="pbTd" style="text-align:left;display:none;">' . $pb->getHTML() . $pb->getJSCode() . '</td><td style="text-align:right">' .
 			we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button) .
 			'</td></tr></table>';
 
