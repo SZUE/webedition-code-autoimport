@@ -266,6 +266,8 @@ abstract class we_html_button{
 	 * @return     string
 	 */
 	static function create_button_table($buttons, $attribs = ''){
+		//FIXME: remove this
+		return '';/*
 		if(is_array($attribs)){
 			$attr = '';
 			foreach($attribs as $k => $v){
@@ -277,6 +279,7 @@ abstract class we_html_button{
 
 		//FIMXE: change all calls to this function => remove
 		return ($attribs ? '<span ' . $attr . '>' : '') . implode('', $buttons) . ($attribs ? '</span>' : '');
+		 */
 	}
 
 	static function formatButtons($buttons){

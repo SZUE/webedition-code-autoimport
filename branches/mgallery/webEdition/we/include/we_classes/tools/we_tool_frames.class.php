@@ -208,10 +208,7 @@ function setTab(tab) {
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#F0EFF0"), ""));
 		}
 
-		$_but_table = we_html_button::create_button_table(array(
-					we_html_button::create_button(we_html_button::SAVE, "javascript:we_save();", true, 100, 22, '', '', (!permissionhandler::hasPerm('EDIT_NAVIGATION')))
-						), array('style' => 'margin-left: 15px;margin-top:10px;')
-		);
+		$_but_table = we_html_element::htmlSpan(array('style' => 'margin-left: 15px;margin-top:10px;'), we_html_button::create_button(we_html_button::SAVE, "javascript:we_save();", true, 100, 22, '', '', (!permissionhandler::hasPerm('EDIT_NAVIGATION'))));
 
 		return $this->getHTMLDocument(we_html_element::jsElement('
 function we_save() {

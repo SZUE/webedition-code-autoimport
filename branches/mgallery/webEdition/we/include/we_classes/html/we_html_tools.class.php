@@ -414,6 +414,7 @@ this.selectedIndex = 0;' .
 	 * @deprecated since version 6.3.0
 	 */
 	static function getPixel($w, $h, $border = 0){
+		//FIXME: remove this
 		return '';/*
 		if($w == ''){
 			$w = 0;

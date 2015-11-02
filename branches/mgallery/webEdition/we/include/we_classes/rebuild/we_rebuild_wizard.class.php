@@ -508,7 +508,7 @@ function setNavStatDocDisabled() {
 			}
 		}
 
-		$_html .= we_html_button::create_button_table(array($selAllBut, $deselAllBut), array('style' => 'margin:10px 0 20px 0;')) .
+		$_html .= we_html_element::htmlSpan(array('style' => 'margin:10px 0 20px 0;'), $selAllBut, $deselAllBut) .
 				we_html_forms::checkbox(1, $onlyEmpty, 'onlyEmpty', g_l('rebuild', '[onlyEmpty]'));
 
 
