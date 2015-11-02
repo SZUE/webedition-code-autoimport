@@ -33,8 +33,7 @@ class we_folder extends we_root{
 	var $Language = '';
 	var $GreenOnly = 0;
 	var $searchclassFolder;
-	var $searchclassFolder_class;
-	//folders are always published
+		//folders are always published
 	public $Published = PHP_INT_MAX;
 	protected $urlMap;
 
@@ -47,7 +46,7 @@ class we_folder extends we_root{
 
 	function __construct(){
 		parent::__construct();
-		array_push($this->persistent_slots, 'SearchStart', 'SearchField', 'Search', 'Order', 'GreenOnly', 'IsClassFolder', 'WorkspacePath', 'WorkspaceID', 'Language', 'TriggerID', 'searchclassFolder', 'searchclassFolder_class', 'urlMap');
+		array_push($this->persistent_slots, 'SearchStart', 'SearchField', 'Search', 'Order', 'GreenOnly', 'IsClassFolder', 'WorkspacePath', 'WorkspaceID', 'Language', 'TriggerID', 'searchclassFolder', 'urlMap');
 		if(isWE()){
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO);
 		}
@@ -88,19 +87,13 @@ class we_folder extends we_root{
 			if(we_base_request::_(we_base_request::BOOL, 'we_edit_weDocumentCustomerFilter')){
 				$this->documentCustomerFilter = we_customer_documentFilter::getCustomerFilterFromRequest($this->ID, $this->ContentType, $this->Table);
 			} else if(isset($sessDat[3])){ // init webUser from session - only for old temporary documents
-				$this->documentCustomerFilter = we_unserialize($sessDat[3]);
+				$this->documentCustomerFilter = $sessDat[3];
 			}
 		}
 		$this->adjustEditPageNr();
 
-		if(isset($this->searchclassFolder_class) && !is_object($this->searchclassFolder_class)){
-			$this->searchclassFolder_class = we_unserialize($this->searchclassFolder_class);
-		}
-		if(is_object($this->searchclassFolder_class)){
-			$this->searchclassFolder = $this->searchclassFolder_class;
-		} else {
+		if(!is_object($this->searchclassFolder)){
 			$this->searchclassFolder = new we_search_search();
-			$this->searchclassFolder_class = we_serialize($this->searchclassFolder);
 		}
 		$this->searchclassFolder->initSearchData();
 	}

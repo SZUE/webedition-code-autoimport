@@ -187,11 +187,8 @@ abstract class we_root extends we_class{
 		);
 		foreach($this->persistent_slots as $slot){
 			$bb = isset($this->{$slot}) ? $this->{$slot} : '';
-			if(!is_object($bb)){
-				$save[0][$slot] = $bb;
-			} else {
-				t_e('try to serialize object', $slot, $bb);
-			}
+//note these are objects: for searchclass, searchclassFolder
+			$save[0][$slot] = $bb;
 		}
 		// save weDocumentCustomerFilter in Session
 		if(isset($this->documentCustomerFilter) && defined('CUSTOMER_TABLE')){
