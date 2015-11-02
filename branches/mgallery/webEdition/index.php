@@ -176,6 +176,7 @@ we_base_file::cleanTempFiles(true);
 cleanWECache();
 we_navigation_cache::clean();
 we_captcha_captcha::cleanup($GLOBALS['DB_WE']);
+we_base_preferences::writeDefaultLanguageConfig();
 
 //clean Error-Log-Table
 $GLOBALS['DB_WE']->query('DELETE FROM ' . ERROR_LOG_TABLE . ' WHERE `Date` < DATE_SUB(NOW(), INTERVAL ' . we_base_constants::ERROR_LOG_HOLDTIME . ' DAY)');

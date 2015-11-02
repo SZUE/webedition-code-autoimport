@@ -112,7 +112,6 @@ class we_document extends we_root{
 		$i = 0;
 		while(!$this->Language){
 			if($ParentID == 0 || $i > 20){
-				we_loadLanguageConfig();
 				$this->Language = self::getDefaultLanguage()? : 'de_DE';
 			} else {
 				$this->DB_WE->query('SELECT Language,ParentID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($ParentID));

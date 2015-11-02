@@ -145,20 +145,20 @@ function we_tag_img($attribs){
 				($showinputs ? //  only when wanted
 						'
 	<tr><td class="weEditmodeStyle" colspan="2" style="text-align:center;width: 180px;">
-			<table class="weEditTable padding0 spacing0 border0">
-				<tr>
-					<td class="weEditmodeStyle" style="color: black; font-size: 12px; font-family: ' . g_l('css', '[font_family]') . ';">' . g_l('weClass', '[alt_kurz]') . ':&nbsp;</td>
-					<td class="weEditmodeStyle">' . we_html_tools::htmlTextInput($altname, 16, $tagAttribs['alt'], '', 'onchange="_EditorFrame.setEditorIsHot(true);"') . '</td>
-				</tr>
-				<tr>
-					<td class="weEditmodeStyle"></td>
-					<td class="weEditmodeStyle"></td>
-				</tr>
-				<tr>
-					<td class="weEditmodeStyle" style="color: black; font-size: 12px; font-family: ' . g_l('css', '[font_family]') . ";\">" . g_l('weClass', '[Title]') . ':&nbsp;</td>
-					<td class="weEditmodeStyle">' . we_html_tools::htmlTextInput($titlename, 16, $tagAttribs['title'], '', 'onchange="_EditorFrame.setEditorIsHot(true);"') . '</td>
-				</tr>
-			</table></td></tr>' : ''
+		<table class="weEditTable padding0 spacing0 border0">
+			<tr>
+				<td class="weEditmodeStyle" style="color: black; font-size: 12px; font-family: ' . g_l('css', '[font_family]') . ';">' . g_l('weClass', '[alt_kurz]') . ':&nbsp;</td>
+				<td class="weEditmodeStyle">' . we_html_tools::htmlTextInput($altname, 16, $tagAttribs['alt'], '', 'onchange="_EditorFrame.setEditorIsHot(true);"') . '</td>
+			</tr>
+			<tr>
+				<td class="weEditmodeStyle"></td>
+				<td class="weEditmodeStyle"></td>
+			</tr>
+			<tr>
+				<td class="weEditmodeStyle" style="color: black; font-size: 12px; font-family: ' . g_l('css', '[font_family]') . ";\">" . g_l('weClass', '[Title]') . ':&nbsp;</td>
+				<td class="weEditmodeStyle">' . we_html_tools::htmlTextInput($titlename, 16, $tagAttribs['title'], '', 'onchange="_EditorFrame.setEditorIsHot(true);"') . '</td>
+			</tr>
+		</table></td></tr>' : ''
 				);
 
 		if($showThumb){ //  only when wanted
@@ -173,12 +173,13 @@ function we_tag_img($attribs){
 				$thumbnails .= '</select>';
 				$out .= '
 	<tr><td class="weEditmodeStyle" colspan="2" style="text-align:center;width: 180px;">
-			<table class="weEditTable padding0 spacing0 border0">
-				<tr>
-					<td class="weEditmodeStyle" style="color: black; font-size: 12px; font-family: ' . g_l('css', '[font_family]') . ';">' . g_l('weClass', '[thumbnails]') . ':&nbsp;</td>
-					<td class="weEditmodeStyle">' . $thumbnails . '</td>
-				</tr>
-			</table></td></tr>';
+		<table class="weEditTable padding0 spacing0 border0">
+			<tr>
+				<td class="weEditmodeStyle" style="color: black; font-size: 12px; font-family: ' . g_l('css', '[font_family]') . ';">' . g_l('weClass', '[thumbnails]') . ':&nbsp;</td>
+				<td class="weEditmodeStyle">' . $thumbnails . '</td>
+			</tr>
+		</table>
+	</td></tr>';
 			}
 		}
 		$out .= '

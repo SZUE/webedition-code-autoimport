@@ -1857,7 +1857,7 @@ function show_seem_chooser(val) {
 				$_seem_start_type = 'object';
 				if($this->Preferences['seem_start_file'] != 0){
 					$_object_id = $this->Preferences['seem_start_file'];
-					$_get_object_paths = getPathsFromTable(OBJECT_FILES_TABLE, null, we_base_constants::FILE_ONLY, $_object_id);
+					$_get_object_paths = getPathsFromTable(OBJECT_FILES_TABLE, $GLOBALS['DB_WE'], we_base_constants::FILE_ONLY, $_object_id);
 
 					if(isset($_get_object_paths[$_object_id])){ //	seeMode start file exists
 						$_object_path = $_get_object_paths[$_object_id];
@@ -1872,7 +1872,7 @@ function show_seem_chooser(val) {
 				$_seem_start_type = 'document';
 				if($this->Preferences['seem_start_file'] != 0){
 					$_document_id = $this->Preferences['seem_start_file'];
-					$_get_document_paths = getPathsFromTable(FILE_TABLE, null, we_base_constants::FILE_ONLY, $_document_id);
+					$_get_document_paths = getPathsFromTable(FILE_TABLE, $GLOBALS['DB_WE'], we_base_constants::FILE_ONLY, $_document_id);
 
 					if(isset($_get_document_paths[$_document_id])){ //	seeMode start file exists
 						$_document_path = $_get_document_paths[$_document_id];

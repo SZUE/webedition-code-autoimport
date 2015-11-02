@@ -159,8 +159,6 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd', '', 0)){
 		break;
 
 	case 'refresh':
-		we_loadLanguageConfig();
-
 		$table = new we_html_table(array('width' => 380, 'style' => 'margin: 5px;'), 1, 6);
 
 		$table->setRow(0, array('style' => 'background-color: silver;font-weight: bold;'), 6);

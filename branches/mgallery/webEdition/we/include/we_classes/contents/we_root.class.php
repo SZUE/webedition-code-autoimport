@@ -606,7 +606,6 @@ abstract class we_root extends we_class{
 	}
 
 	function formLangLinks($withHeadline = true){
-		we_loadLanguageConfig();
 		$_defLang = self::getDefaultLanguage();
 		$value = ($this->Language ? : $_defLang);
 		$inputName = 'we_' . $this->Name . '_Language';
@@ -1049,7 +1048,6 @@ abstract class we_root extends we_class{
 	}
 
 	protected function i_getLangLinks(){
-		we_loadLanguageConfig();
 		$_languages = getWeFrontendLanguagesForBackend();
 		$langkeys = array_keys($_languages);
 		if(LANGLINK_SUPPORT){

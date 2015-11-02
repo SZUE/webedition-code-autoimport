@@ -128,7 +128,6 @@ class we_folder extends we_root{
 		$i = 0;
 		while(!$this->Language){
 			if($ParentID == 0 || $i > 20){
-				we_loadLanguageConfig();
 				$this->Language = $GLOBALS['weDefaultFrontendLanguage'];
 				if(!$this->Language){
 					$this->Language = 'de_DE';
