@@ -29,8 +29,8 @@ we_html_tools::protect();
 $oChbxDocs = we_html_forms::checkbox(0, true, "chbx_type", g_l('cockpit', '[documents]'), true, "defaultfont", "", false, "", 0, 0);
 $oChbxObjs = we_html_forms::checkbox(0, true, "chbx_type", g_l('cockpit', '[objects]'), true, "defaultfont", "", false, "", 0, 0);
 
-$dbTableType = "<table><tr>" .
-		(defined('FILE_TABLE') ? "<td>" . $oChbxDocs . "</td><td>" . we_html_tools::getPixel(10, 1) . "</td>" : '') .
+$dbTableType = '<table><tr>' .
+		(defined('FILE_TABLE') ? '<td>' . $oChbxDocs . ' </td>' : '') .
 		(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES") ? "<td>" . $oChbxObjs . "</td>" : '') .
 		"</tr></table>";
 

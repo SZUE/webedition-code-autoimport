@@ -509,7 +509,7 @@ class we_class_folder extends we_folder{
 		for($i = 0; $i <= $this->searchclass->height; $i++){
 
 			$button = ($i == 0 ?
-					we_html_tools::getPixel(26, 10) :
+					'' :
 					we_html_button::create_button(we_html_button::TRASH, "javascript:del(" . $i . ");", true, 26, 22, "", "", false)
 				);
 
@@ -618,25 +618,19 @@ class we_class_folder extends we_folder{
 		return $this->searchclass->getJSinWEsearchobj($this->Name) . '
 <form name="we_form" method="post">
 ' . we_class::hiddenTrans() . '
-<table class="default">
+<table class="default" style="margin-bottom:20px;">
 	<tr>
 		<td class="defaultgray" style="margin-bottom:12px;">' . g_l('modules_objectClassfoldersearch', '[Verzeichnis]') . '</td>
 		<td colspan="3">' . $this->formDirChooser(388, 0, FILE_TABLE, "WorkspacePath", "WorkspaceID", "opener.we_cmd('reload_editpage');", false) . '</td>
 	</tr>
 	<tr>
-		<td class="defaultgray">' . g_l('modules_objectClassfoldersearch', '[Ansicht]') . '</td>
-		<td>' . we_html_tools::htmlSelect("Anzahl", $values, 1, $this->searchclass->anzahl, "", array('onchange' => 'this.form.elements.SearchStart.value=0;we_cmd(\'reload_editpage\');')) .
+		<td class="defaultgray" style="width:128px;">' . g_l('modules_objectClassfoldersearch', '[Ansicht]') . '</td>
+		<td style="width:40px;">' . we_html_tools::htmlSelect("Anzahl", $values, 1, $this->searchclass->anzahl, "", array('onchange' => 'this.form.elements.SearchStart.value=0;we_cmd(\'reload_editpage\');')) .
 			we_html_tools::hidden("Order", $this->searchclass->Order) .
 			we_html_tools::hidden("do", "") .
 			'</td>
-		<td>&nbsp;</td>
-		<td>' . we_html_forms::checkboxWithHidden($this->GreenOnly == 1 ? true : false, "we_" . $this->Name . "_GreenOnly", g_l('modules_objectClassfoldersearch', '[sicht]'), false, "defaultfont", "toggleShowVisible(document.getElementById('_we_" . $this->Name . "_GreenOnly'));") . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(128, 20) . '</td>
-		<td>' . we_html_tools::getPixel(40, 15) . '</td>
-		<td>' . we_html_tools::getPixel(10, 15) . '</td>
-		<td>' . we_html_tools::getPixel(350, 15) . '</td>
+		<td style="width:10px;">&nbsp;</td>
+		<td style="width:350px;">' . we_html_forms::checkboxWithHidden($this->GreenOnly == 1 ? true : false, "we_" . $this->Name . "_GreenOnly", g_l('modules_objectClassfoldersearch', '[sicht]'), false, "defaultfont", "toggleShowVisible(document.getElementById('_we_" . $this->Name . "_GreenOnly'));") . '</td>
 	</tr>
 	</table>
 	<table class="default">

@@ -218,13 +218,10 @@ $_sql = 'SELECT * FROM ' . NOTEPAD_TABLE . " WHERE
 $sctValid = we_html_tools::htmlSelect("sct_valid", array(
 		g_l('cockpit', '[always]'), g_l('cockpit', '[from_date]'), g_l('cockpit', '[period]')
 		), 1, g_l('cockpit', '[always]'), false, array('style' => "width:100px;", 'onchange' => "toggleTblValidity()"), 'value', 100, 'middlefont');
-$oTblValidity = new we_html_table(array('class' => 'default', "id" => "oTblValidity"), 1, 3);
-$oTblValidity->setCol(0, 0, null, getDateSelector(g_l('cockpit', '[from]'), "f_ValidFrom", "_from"));
-$oTblValidity->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
-$oTblValidity->setCol(0, 2, null, getDateSelector(g_l('cockpit', '[until]'), "f_ValidUntil", "_until"));
+$oTblValidity = getDateSelector(g_l('cockpit', '[from]'), "f_ValidFrom", "_from") . ' ' . getDateSelector(g_l('cockpit', '[until]'), "f_ValidUntil", "_until");
 $oTblPeriod = new we_html_table(array("width" => "100%", 'class' => 'default'), 1, 2);
 $oTblPeriod->setCol(0, 0, array("class" => "middlefont"), $sctValid);
-$oTblPeriod->setCol(0, 1, array("style" => "text-align:right"), $oTblValidity->getHTML());
+$oTblPeriod->setCol(0, 1, array("style" => "text-align:right"), $oTblValidity);
 
 // Edit note prio settings
 $rdoPrio = array(
@@ -232,17 +229,13 @@ $rdoPrio = array(
 	we_html_forms::radiobutton(1, 0, "rdo_prio", g_l('cockpit', '[medium]'), true, "middlefont", "", false, "", 0, ""),
 	we_html_forms::radiobutton(2, 1, "rdo_prio", g_l('cockpit', '[low]'), true, "middlefont", "", false, "", 0, "")
 );
-$oTblPrio = new we_html_table(array('class' => 'default'), 1, 8);
+$oTblPrio = new we_html_table(array('class' => 'default'), 1, 6);
 $oTblPrio->setCol(0, 0, null, $rdoPrio[0]);
-$oTblPrio->setCol(0, 1, null, '<i class="fa fa-dot-circle-o" style="color:red;margin-left:5px;"></i>');
-$oTblPrio->setCol(0, 2, null, we_html_tools::getPixel(15, 1));
-$oTblPrio->setCol(0, 3, null, $rdoPrio[1]);
-$oTblPrio->setCol(
-	0, 4, null, '<i class="fa fa-dot-circle-o" style="color:yellow;margin-left:5px;"></i>');
-$oTblPrio->setCol(0, 5, null, we_html_tools::getPixel(15, 1));
-$oTblPrio->setCol(0, 6, null, $rdoPrio[2]);
-$oTblPrio->setCol(
-	0, 7, null, '<i class="fa fa-dot-circle-o" style="color:green;margin-left:5px;"></i>');
+$oTblPrio->setCol(0, 1, null, '<i class="fa fa-dot-circle-o" style="color:red;margin-left:5px;"></i>  ');
+$oTblPrio->setCol(0, 2, null, $rdoPrio[1]);
+$oTblPrio->setCol(0, 3, null, '<i class="fa fa-dot-circle-o" style="color:yellow;margin-left:5px;"></i>  ');
+$oTblPrio->setCol(0, 4, null, $rdoPrio[2]);
+$oTblPrio->setCol(0, 5, null, '<i class="fa fa-dot-circle-o" style="color:green;margin-left:5px;"></i>');
 
 // Edit note buttons
 $delete_button = we_html_button::create_button(we_html_button::DELETE, "javascript:deleteNote();", false, 0, 0, "", "", true, false);

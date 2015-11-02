@@ -829,7 +829,7 @@ class we_objectFile extends we_document{
 			$uniq = md5(uniqid(__FUNCTION__, true));
 			$openCloseButton = $myid ?
 				we_html_multiIconBox::_getButton($uniq, "weToggleBox('" . $uniq . "','','')", "down", g_l('global', '[openCloseBox]')) :
-				we_html_tools::getPixel(21, 1);
+				'';
 
 			$objectpreview = '<div id="text_' . $uniq . '"></div><div id="table_' . $uniq . '" style="display:block; padding: 10px 0px 20px 30px;">' .
 				($myid ? $ob->getFieldsHTML(0, true) : "") .
@@ -900,7 +900,7 @@ class we_objectFile extends we_document{
 
 			$inputWidth = (true || $isSEEM ? 346 : 411);
 			$editObjectButtonDis = we_html_button::create_button(we_html_button::VIEW, "", true, 0, 0, "", "", true);
-			$openCloseButtonDis = ($isSEEM ? we_html_tools::getPixel(21, 1) : '');
+			$openCloseButtonDis = '';
 
 			$openCloseButton = $reloadEntry = '';
 
@@ -1918,15 +1918,15 @@ class we_objectFile extends we_document{
 						'~/$~',
 						), array(
 						'ss', //ß
-							'-', //~
-							'${1}e', //uml
-							'${1}${3}', //grave
-							'', //;;
-							'', //^a-z
-							'-',//--
-							'/', // //
-							'', // xxx/
-							), htmlentities($text, ENT_COMPAT, $this->Charset)));
+						'-', //~
+						'${1}e', //uml
+						'${1}${3}', //grave
+						'', //;;
+						'', //^a-z
+						'-', //--
+						'/', // //
+						'', // xxx/
+						), htmlentities($text, ENT_COMPAT, $this->Charset)));
 			$this->Url = substr($text, 0, 256);
 		} else {
 			$this->Url = '';

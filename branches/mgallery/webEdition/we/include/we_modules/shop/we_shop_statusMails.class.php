@@ -315,7 +315,7 @@ class we_shop_statusMails{
 
 	function getEMailHandlerCode($was, $dateSet){
 		if(!$this->FieldsMails['Date' . $was]){
-			return we_html_tools::getPixel(30, 15);
+			return '';
 		}
 		$datetimeform = "00.00.0000 00:00";
 		$dateform = "00.00.0000";
@@ -328,7 +328,7 @@ class we_shop_statusMails{
 			$EMailhandler .= '<td class="defaultfont" width="150">&nbsp;</td>';
 			$but = we_html_button::create_button("fa:mail_send,fa-lg fa-envenlope,fa-lg fa-send-o", "javascript:SendMail('" . $was . "')");
 		}
-		$EMailhandler .= '<td class="defaultfont">' . ($dateSet != $dateform ? $but : we_html_tools::getPixel(30, 15)) . '</td></tr></table>';
+		$EMailhandler .= '<td class="defaultfont">' . ($dateSet != $dateform ? $but : '') . '</td></tr></table>';
 
 		return $EMailhandler;
 	}

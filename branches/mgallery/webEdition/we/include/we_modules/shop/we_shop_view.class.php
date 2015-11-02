@@ -428,20 +428,15 @@ function submitForm() {
 			//
 
 			// headline here - these fields are fix.
-			$pixelImg = we_html_tools::getPixel(14, 15);
 			$orderTable = '
 		<table width="99%" class="default defaultfont">
 			<tr>
-				<th class="defaultgray" height="25">' . g_l('modules_shop', '[anzahl]') . '</th>
-				<td>' . $pixelImg . '</td>
-				<th class="defaultgray" height="25">' . g_l('modules_shop', '[Titel]') . '</th>
-				<td>' . $pixelImg . '</td>
-				<th class="defaultgray" height="25">' . g_l('modules_shop', '[Beschreibung]') . '</th>
-				<td>' . $pixelImg . '</td>
-				<th class="defaultgray" height="25">' . g_l('modules_shop', '[Preis]') . '</th>
-				<td>' . $pixelImg . '</td>
-				<th class="defaultgray" height="25">' . g_l('modules_shop', '[Gesamt]') . '</th>' .
-				($calcVat ? '<td>' . $pixelImg . '</td><th class="defaultgray" height="25">' . g_l('modules_shop', '[mwst]') . '</th>' : '' ) . '
+				<th class="defaultgray" style="height:25px;padding-right:15px;">' . g_l('modules_shop', '[anzahl]') . '</th>
+				<th class="defaultgray" style="height:25px;padding-right:15px;">' . g_l('modules_shop', '[Titel]') . '</th>
+				<th class="defaultgray" style="height:25px;padding-right:15px;">' . g_l('modules_shop', '[Beschreibung]') . '</th>
+				<th class="defaultgray" style="height:25px;padding-right:15px;">' . g_l('modules_shop', '[Preis]') . '</th>
+				<th class="defaultgray" style="height:25px;padding-right:15px;">' . g_l('modules_shop', '[Gesamt]') . '</th>' .
+				($calcVat ? '<th class="defaultgray" height="25">' . g_l('modules_shop', '[mwst]') . '</th>' : '' ) . '
 			</tr>';
 
 
@@ -499,7 +494,6 @@ function submitForm() {
 			<td></td>
 			<td class="shopContentfontR">' . we_base_util::formatNumber($articlePrice) . $waehr . '</td>' .
 					($calcVat ? '<td></td><td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = prompt('" . g_l('modules_shop', '[keinezahl]') . "','" . $articleVat . "'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location='" . $this->frameset . "&pnt=edbody&bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&vat=' + vat; } }\">" . we_base_util::formatNumber($articleVat) . "</a>" . '%)</td>' : '') . '
-			<td>' . $pixelImg . '</td>
 			<td>' . we_html_button::create_button(we_html_button::TRASH, "javascript:check=confirm('" . g_l('modules_shop', '[jsloeschen]') . "'); if (check){document.location.href='" . $this->frameset . "&pnt=edbody&bid=" . $_REQUEST["bid"] . "&deleteaarticle=" . $tblOrdersId[$i] . "';}", true, 100, 22, "", "", !permissionhandler::hasPerm("DELETE_SHOP_ARTICLE")) . '</td>
 		</tr>';
 				// if this article has custom fields or is a variant - we show them in a extra rows
@@ -705,12 +699,9 @@ function submitForm() {
 
 			foreach($customCartFields as $key => $value){
 				$customCartFieldsTable .= '<tr>
-						<td class="defaultfont" style="vertical-align:top"><b>' . $key . ':</b></td>
-						<td>' . $pixelImg . '</td>
-						<td class="defaultfont" style="vertical-align:top">' . nl2br($value) . '</td>
-						<td>' . $pixelImg . '</td>
-						<td style="vertical-align:top">' . we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('edit_shop_cart_custom_field','" . $key . "');") . '</td>
-						<td>' . $pixelImg . '</td>
+						<td class="defaultfont" style="padding-right:15px;vertical-align:top"><b>' . $key . ':</b></td>
+						<td class="defaultfont" style="padding-right:15px;vertical-align:top">' . nl2br($value) . '</td>
+						<td style="padding-right:15px;vertical-align:top;">' . we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('edit_shop_cart_custom_field','" . $key . "');") . '</td>
 						<td style="vertical-align:top">' . we_html_button::create_button(we_html_button::TRASH, "javascript:check=confirm('" . sprintf(g_l('modules_shop', '[edit_order][js_delete_cart_field]'), $key) . "'); if (check) { document.location.href='" . $this->frameset . "&pnt=edbody&we_cmd[0]=delete_shop_cart_custom_field&bid=" . $_REQUEST["bid"] . "&cartfieldname=" . $key . "'; }") . '</td>
 					</tr>
 					<tr>

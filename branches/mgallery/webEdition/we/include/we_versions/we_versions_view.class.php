@@ -220,14 +220,14 @@ var searchClass={
 	</td>
 </tr>
  <tr>
-	<td>' . we_html_tools::getPixel(19, 12) . '</td>
+	<td></td>
 	<td id="eintraege_pro_seite" style="font-size:12px;width:130px;">' . g_l('versions', '[eintraege_pro_seite]') . ':</td>
 	<td class="defaultgray" style="width:70px;">' .
 				we_html_tools::htmlSelect('anzahl', $anzahl_all, 1, $_anzahl, "", array('id' => "anzahl", 'onchange' => 'this.form.elements.searchstart.value=0;search(false);')) . '
 	</td>
 	<td class="defaultfont" id="eintraege">' . g_l('versions', '[eintraege]') . '</td>
 	<td>' . $this->getNextPrev($foundItems) . '</td>
-	<td id="print" class="defaultfont">' . we_html_tools::getPixel(10, 12) . '<a href="javascript:printScreen();">' . g_l('versions', '[printPage]') . '</a></td>
+	<td id="print" class="defaultfont"> <a href="javascript:printScreen();">' . g_l('versions', '[printPage]') . '</a></td>
 </tr>
 </table>';
 	}
@@ -237,12 +237,9 @@ var searchClass={
 	 * @return string html-Code
 	 */
 	public function getParameterBottom($foundItems){
-		return '<table class="default" style="margin-top:20px;">
+		return '<table class="default" style="margin-top:20px;margin-left:220px;">
 <tr id="paging_bottom">
- <td>' . we_html_tools::getPixel(19, 12) . '</td>
- <td style="font-size:12px;width:130px;">' . we_html_tools::getPixel(30, 12) . '</td>
- <td class="defaultgray" style="width:70px;">' . we_html_tools::getPixel(30, 12) . '</td>
- <td style="width:370px;" id="bottom">' . $this->getNextPrev($foundItems) . '</td>
+ <td id="bottom">' . $this->getNextPrev($foundItems) . '</td>
 </tr>
 </table>';
 	}
@@ -265,16 +262,15 @@ var searchClass={
 				($searchstart ?
 						we_html_button::create_button(we_html_button::BACK, "javascript:back(" . $anzahl . ");") :
 						we_html_button::create_button(we_html_button::BACK, "", true, 100, 22, "", "", true)) .
-				'</td><td>' . we_html_tools::getPixel(10, 2) . '</td>
-				<td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
+				'</td><td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
 				(($we_search_anzahl - $searchstart) < $anzahl ?
 						$we_search_anzahl :
 						$searchstart + $anzahl) .
-				' ' . g_l('global', '[from]') . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td id="weiter">' .
+				' ' . g_l('global', '[from]') . ' ' . $we_search_anzahl . '</b></td><td id="weiter">' .
 				(($searchstart + $anzahl) < $we_search_anzahl ?
 						we_html_button::create_button(we_html_button::NEXT, "javascript:next(" . $anzahl . ");") : //bt_back
 						we_html_button::create_button(we_html_button::NEXT, "", true, 100, 22, "", "", true)) .
-				'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
+				'</td><td>';
 
 		$pages = array();
 		for($i = 0; $i < ceil($we_search_anzahl / $anzahl); $i++){

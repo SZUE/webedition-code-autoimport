@@ -257,7 +257,6 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 	function getHTMLTab1(){
 		$yuiSuggest = & weSuggest::getInstance();
 		$table = new we_html_table(array('id' => 'ownersTable', 'style' => 'display: ' . ($this->View->voting->RestrictOwners ? 'block' : 'none') . ';'), 3, 2);
-		$table->setColContent(0, 0, we_html_tools::getPixel(10, 5));
 		$table->setCol(0, 1, array('colspan' => 2, 'class' => 'defaultfont'), g_l('modules_voting', '[limit_access_text]'));
 		$table->setColContent(1, 1, we_html_element::htmlDiv(array('id' => 'owners', 'class' => 'multichooser', 'style' => 'width: ' . ($this->_width_size - 10) . 'px; height: 60px; border: #AAAAAA solid 1px;')));
 		$idname = 'owner_id';
@@ -934,10 +933,9 @@ function setVisible(id,visible){
 					($start < $size ?
 							we_html_button::create_button(we_html_button::BACK, $this->frameset . "&pnt=show_log&start=" . $back) : //bt_back
 							we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true)
-					) .
-					we_html_tools::getPixel(23, 1) . "</td><td style='text-align:center' class='defaultfont' width='120'><b>" . ($size - $start + 1) . "&nbsp;-&nbsp;" .
+					) . '</td><td style="text-align:center;width:120px;" class="defaultfont"><b>' . ($size - $start + 1) . "&nbsp;-&nbsp;" .
 					($size - $next) .
-					"&nbsp;" . g_l('global', '[from]') . " " . ($size + 1) . "</b></td><td>" . we_html_tools::getPixel(23, 1) .
+					"&nbsp;" . g_l('global', '[from]') . " " . ($size + 1) . '</b></td><td>' .
 					($next > 0 ?
 							we_html_button::create_button(we_html_button::NEXT, $this->frameset . "&pnt=show_log&start=" . $next) : //bt_next
 							we_html_button::create_button(we_html_button::NEXT, "", "", 100, 22, "", "", true)
@@ -1064,10 +1062,9 @@ function setVisible(id,visible){
 					($start < $size ?
 							we_html_button::create_button(we_html_button::BACK, $this->frameset . "&pnt=show_log&start=" . $back) : //bt_back
 							we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true)
-					) .
-					we_html_tools::getPixel(23, 1) . "</td><td style='text-align:center' class='defaultfont' width='120'><b>" . ($size - $start + 1) . "&nbsp;-&nbsp;" .
+					) . "</td><td style='text-align:center' class='defaultfont' width='120'><b>" . ($size - $start + 1) . "&nbsp;-&nbsp;" .
 					($size - $next) .
-					"&nbsp;" . g_l('global', '[from]') . " " . ($size + 1) . "</b></td><td>" . we_html_tools::getPixel(23, 1) .
+					"&nbsp;" . g_l('global', '[from]') . " " . ($size + 1) . '</b></td><td>' .
 					($next > 0 ?
 							we_html_button::create_button(we_html_button::NEXT, $this->frameset . "&pnt=show_log&start=" . $next) : //bt_next
 							we_html_button::create_button(we_html_button::NEXT, "", "", 100, 22, "", "", true)
@@ -1178,10 +1175,9 @@ function setVisible(id,visible){
 					($start < $size ?
 							we_html_button::create_button(we_html_button::BACK, $this->frameset . "&pnt=show_log&start=" . $back) : //bt_back
 							we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true)
-					) .
-					we_html_tools::getPixel(23, 1) . "</td><td style='text-align:center' class='defaultfont' width='120'><b>" . ($size - $start + 1) . "&nbsp;-&nbsp;" .
+					) . "</td><td style='text-align:center' class='defaultfont' width='120'><b>" . ($size - $start + 1) . "&nbsp;-&nbsp;" .
 					($size - $next) .
-					"&nbsp;" . g_l('global', '[from]') . " " . ($size + 1) . "</b></td><td>" . we_html_tools::getPixel(23, 1) .
+					"&nbsp;" . g_l('global', '[from]') . ' ' . ($size + 1) . '</b></td><td>' .
 					($next > 0 ?
 							we_html_button::create_button(we_html_button::NEXT, $this->frameset . "&pnt=show_log&start=" . $next) : //bt_next
 							we_html_button::create_button(we_html_button::NEXT, "", "", 100, 22, "", "", true)

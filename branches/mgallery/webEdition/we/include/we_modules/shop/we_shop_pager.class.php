@@ -66,7 +66,6 @@
  */
 
 class we_shop_pager{
-
 	// Wer hier Werte setzt, der sollte sicher sein, dass sie richtig sind, geprueft werden sie nicht!
 	// Also lieber die dafuer vorgesehenen Methoden nutzen.
 	//////////////////////////////////////////////////
@@ -347,17 +346,17 @@ class we_shop_pager{
 		$offset = $actPage * $nrOfPage;
 
 		return '<table class="default"><tr><td>' .
-				($actPage > 0 ?
-						we_html_button::create_button(we_html_button::BACK, $url . '&actPage=' . ($actPage - 1)) :
-						we_html_button::create_button(we_html_button::BACK, "#", false, 100, 22, "", "", true)) .
-				'</td><td>' . we_html_tools::getPixel(23, 1) . "</td><td class='defaultfont'><b>" . (($anz) ? $offset + 1 : 0) . "-" .
-				(($anz - $offset) < $nrOfPage ?
-						$anz : $offset + $nrOfPage) .
-				"&nbsp;&nbsp;" . g_l('global', '[from]') . "&nbsp;&nbsp;" . $anz . "</b></td><td>" . we_html_tools::getPixel(23, 1) . '</td><td>' .
-				(($offset + $nrOfPage) < $anz ?
-						we_html_button::create_button(we_html_button::NEXT, $url . '&actPage=' . ($actPage + 1)) :
-						we_html_button::create_button(we_html_button::NEXT, "#", false, 100, 22, "", "", true)) .
-				"</td></tr></table>";
+			($actPage > 0 ?
+				we_html_button::create_button(we_html_button::BACK, $url . '&actPage=' . ($actPage - 1)) :
+				we_html_button::create_button(we_html_button::BACK, "#", false, 100, 22, "", "", true)) .
+			'</td><td class="defaultfont" style="padding:0xp 23px;"><b>' . (($anz) ? $offset + 1 : 0) . "-" .
+			(($anz - $offset) < $nrOfPage ?
+				$anz : $offset + $nrOfPage) .
+			"&nbsp;&nbsp;" . g_l('global', '[from]') . "&nbsp;&nbsp;" . $anz . "</b></td><td>" .
+			(($offset + $nrOfPage) < $anz ?
+				we_html_button::create_button(we_html_button::NEXT, $url . '&actPage=' . ($actPage + 1)) :
+				we_html_button::create_button(we_html_button::NEXT, "#", false, 100, 22, "", "", true)) .
+			"</td></tr></table>";
 	}
 
 	/** Erstellt ein Objekt fuer die Blaetterfunktion
@@ -412,7 +411,7 @@ class we_shop_pager{
 
 		// Wenn sinnvoll ($show_outer===true, aber $link_count<=$show_count*3), dann ueberschreiben wir hier $show_continuous
 		if($show_outer === true &&
-				$link_count <= $show_count * 3){
+			$link_count <= $show_count * 3){
 			$show_continuous = true;
 		}
 
@@ -420,7 +419,7 @@ class we_shop_pager{
 		if($link_count < $active_page){
 			$active_page = $link_count - 1;
 		} elseif(!is_numeric($active_page) ||
-				$active_page < 0){
+			$active_page < 0){
 			$active_page = 0;
 		}
 
@@ -428,12 +427,12 @@ class we_shop_pager{
 		// Sollte eine Seite nicht existieren, dann ist der Wert null (nicht 0!)
 		$page_next = $active_page + 1;
 		if($page_next >= $link_count - 1 &&
-				$active_page == $link_count - 1){
+			$active_page == $link_count - 1){
 			$page_next = null;
 		}
 		$page_prev = $active_page - 1;
 		if($page_prev <= 0 &&
-				$active_page == 0){
+			$active_page == 0){
 			$page_prev = null;
 		}
 		$page_first = 0;
@@ -448,8 +447,8 @@ class we_shop_pager{
 
 		// Wenn kein Blaettern zu Stande kommt, dann mal schauen, ob der Nutzer den einzelnen Link sehen will
 		if(($show_single_link === false ||
-				$show_active_link === false) &&
-				$entries <= $show_count){
+			$show_active_link === false) &&
+			$entries <= $show_count){
 			$links = '';
 			return $links;
 		}
@@ -464,7 +463,7 @@ class we_shop_pager{
 		// Wenn alle Seiten angezeigt werden sollen...
 		// ...oder Anzahl Links kleiner oder gleich der zu zeigenden ist, dann die Links speichern
 		if($show_continuous === true ||
-				$link_count <= $show_count){
+			$link_count <= $show_count){
 			$this->_add_delimiter3();
 		} else {
 			// Oder wenn nicht alle Links angezeigt werden sollen...
@@ -669,12 +668,12 @@ class we_shop_pager{
 		$delimiter4 = &$this->delimiter4;
 
 		if($page_prev !== null &&
-				// Verhindern, dass Delimiter2 gezeigt wird, wenn Delimiter4 schon da ist (pure Schoenheit)
-				substr($links, 0, strlen($delimiter4)) != $delimiter4){
+			// Verhindern, dass Delimiter2 gezeigt wird, wenn Delimiter4 schon da ist (pure Schoenheit)
+			substr($links, 0, strlen($delimiter4)) != $delimiter4){
 			$links = $delimiter2 . $links;
 		}
 		if($page_next !== null &&
-				substr($links, -1 * strlen($delimiter4)) != $delimiter4){
+			substr($links, -1 * strlen($delimiter4)) != $delimiter4){
 			$links = $links . $delimiter2;
 		}
 	}
@@ -800,7 +799,7 @@ class we_shop_pager{
 	 */
 	function set_Entries_Per_Page($epp){
 		if(is_numeric($epp) &&
-				$epp >= 0){
+			$epp >= 0){
 			$this->epp = round($epp);
 			return true;
 		} else {
@@ -897,7 +896,7 @@ class we_shop_pager{
 	 */
 	function set_Link_Active_Bracket($link_active_bracket_left = '[', $link_active_bracket_right = ']'){
 		if(is_string($link_active_bracket_left) &&
-				is_string($link_active_bracket_right)){
+			is_string($link_active_bracket_right)){
 			$this->link_active_bracket_left = trim($link_active_bracket_left);
 			$this->link_active_bracket_right = trim($link_active_bracket_right);
 			return true;
@@ -931,7 +930,7 @@ class we_shop_pager{
 	 */
 	function set_Link_Bracket_Left($link_bracket_left = '', $link_bracket_right = ''){
 		if(is_string($link_bracket_left) &&
-				is_string($link_bracket_right)){
+			is_string($link_bracket_right)){
 			$this->link_bracket_left = trim($link_bracket_left);
 			$this->link_bracket_right = trim($link_bracket_right);
 			return true;
@@ -965,7 +964,7 @@ class we_shop_pager{
 	 */
 	function set_Link_Next_Prev_Text($link_next_text = 'Weiter', $link_prev_text = 'Zur&uuml;ck'){
 		if(is_string($link_next_text) &&
-				is_string($link_prev_text)){
+			is_string($link_prev_text)){
 			$this->link_next_text = $link_next_text;
 			$this->link_prev_text = $link_prev_text;
 			return true;
@@ -999,7 +998,7 @@ class we_shop_pager{
 	 */
 	function set_Link_First_Last_Text($link_first_text = 'Anfang', $link_last_text = 'Ende'){
 		if(is_string($link_first_text) &&
-				is_string($link_last_text)){
+			is_string($link_last_text)){
 			$this->link_first_text = $link_first_text;
 			$this->link_last_text = $link_last_text;
 			return true;
@@ -1032,7 +1031,7 @@ class we_shop_pager{
 	 */
 	function set_Show_Count($show_count = 3){
 		if(is_numeric($show_count) &&
-				$show_count >= 3){
+			$show_count >= 3){
 			$this->show_count = ceil($show_count);
 			return true;
 		} else {
@@ -1048,7 +1047,7 @@ class we_shop_pager{
 	 */
 	function set_Steps_Next_Prev($steps_next_prev = null){
 		if(is_numeric($steps_next_prev) &&
-				$steps_next_prev >= 1){
+			$steps_next_prev >= 1){
 			$this->steps_next_prev = round($steps_next_prev);
 			return true;
 		} else {

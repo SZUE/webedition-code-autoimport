@@ -1377,8 +1377,8 @@ function formFileChooser() {
 
 			$type = we_base_request::_(we_base_request::STRING, "type", '');
 
-			$radio = $showdocs ? we_html_forms::radiobutton("classname", ($type === "classname" ? true : false), "type", g_l('export', '[classname]'), true, "defaultfont", $this->topFrame . ".type='classname'") : we_html_tools::getPixel(25, 5) . g_l('export', '[classname]');
-			return $js . we_html_tools::htmlFormElementTable(we_html_tools::getPixel(25, 5) . $select->getHtml(), $radio);
+			$radio = $showdocs ? we_html_forms::radiobutton("classname", ($type === "classname" ? true : false), "type", g_l('export', '[classname]'), true, "defaultfont", $this->topFrame . ".type='classname'") : g_l('export', '[classname]');
+			return $js . we_html_tools::htmlFormElementTable($select->getHtml(), $radio);
 		}
 		return null;
 	}
@@ -1427,7 +1427,7 @@ function formFileChooser() {
 		if(!permissionhandler::hasPerm("EDIT_KATEGORIE")){
 			$cats->isEditable = false;
 		}
-		return '<table class="default"><tr><td>' . (defined('OBJECT_FILES_TABLE') ? we_html_tools::getPixel(25, 2) : "") . '</td><td>' .
+		return '<table class="default"><tr><td></td><td>' .
 			$hiddens . we_html_tools::htmlFormElementTable($cats->get(), g_l('export', '[categories]'), "left", "defaultfont") .
 			'</td></tr></table>';
 	}
@@ -1459,17 +1459,16 @@ function formFileChooser() {
 	private function getHTMLChooser($name, $value, $values, $title){
 		$input_size = 5;
 
-		$select = new we_html_select(array("name" => $name . "_select", "class" => "weSelect", "onchange" => "document.we_form." . $name . ".value=this.options[this.selectedIndex].value;this.selectedIndex=0", "style" => "width:200;"));
+		$select = new we_html_select(array('name' => $name . '_select', 'class' => 'weSelect', 'onchange' => 'document.we_form.' . $name . '.value=this.options[this.selectedIndex].value;this.selectedIndex=0', 'style' => 'width:200;'));
 		$select->addOption("", "");
 		foreach($values as $k => $v){
 			$select->addOption(oldHtmlspecialchars($k), oldHtmlspecialchars($v));
 		}
 
-		$table = new we_html_table(array('class' => 'default', "width" => 250), 1, 3);
+		$table = new we_html_table(array('class' => 'default', "width" => 250), 1, 2);
 
-		$table->setColContent(0, 0, we_html_tools::htmlTextInput($name, $input_size, $value));
-		$table->setColContent(0, 1, we_html_tools::getPixel(10, 10));
-		$table->setColContent(0, 2, $select->getHtml());
+		$table->setColContent(0, 0, we_html_tools::htmlTextInput($name, $input_size, $value) . '  ');
+		$table->setColContent(0, 1, $select->getHtml());
 
 		return we_html_tools::htmlFormElementTable($table->getHtml(), $title);
 	}

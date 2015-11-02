@@ -125,7 +125,7 @@ $oSelMaxEntries = new we_html_table(array("height" => "100%", 'class' => 'defaul
 $oSelMaxEntries->setCol(0, 0, array("class" => "defaultfont", 'style' => 'vertical-align:middle;padding-right:5px;'), g_l('cockpit', '[max_amount_entries]'));
 $oSelMaxEntries->setCol(0, 2, array('style' => 'vertical-align:middle;'), $oSctNumEntries->getHTML());
 
-$show = $oSelMaxEntries->getHTML() . we_html_tools::getPixel(1, 5) . $oChbxShowMfdBy . $oChbxShowDate . we_html_element::htmlBr() . $oShowUser;
+$show = $oSelMaxEntries->getHTML() . $oChbxShowMfdBy . $oChbxShowDate . we_html_element::htmlBr() . $oShowUser;
 
 $parts = array(
 	array(
