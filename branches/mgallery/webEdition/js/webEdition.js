@@ -510,7 +510,7 @@ function we_openMediaReference(id) {
 				top.we_cmd('editCat', ref.id);
 				break;
 			default:
-				if (ref.isTempPossible && ref.referencedIn == 'main' && ref.isModified) {
+				if (ref.isTempPossible && ref.referencedIn === 'main' && ref.isModified) {
 					top.we_showMessage('Der Link wurde bei einer unveröffentlichten Änderung entfernt: Er existiert nur noch in der veröffentlichten Version!', WE().consts.message.WE_MESSAGE_ERROR, window);
 				} else {
 					WE().layout.weEditorFrameController.openDocument(ref.table, ref.id, ref.ct);
@@ -519,10 +519,28 @@ function we_openMediaReference(id) {
 	}
 }
 
+function we_showInNewTab(arguments, url) {
+	if ((nextWindow = WE().layout.weEditorFrameController.getFreeWindow())) {
+		we_repl(nextWindow.getDocumentReference(), url, arguments[0]);
+		// activate tab
+		var pos = (arguments[0] === "open_cockpit" ? 0 : undefined);
+		WE().layout.multiTabs.addTab(nextWindow.getFrameId(), ' &hellip; ', ' &hellip; ', pos);
+		// set Window Active and show it
+		WE().layout.weEditorFrameController.setActiveEditorFrame(nextWindow.FrameId);
+		WE().layout.weEditorFrameController.toggleFrames();
+	} else {
+		WE().util.showMessage(WE().consts.g_l.main.no_editor_left, WE().consts.message.WE_MESSAGE_INFO, window);
+	}
+}
+
 function we_cmd_base(args, url, scope) {
 	scope = scope ? scope : window;
 
 	switch (args[0]) {
+		case "loadVTab":
+			var op = top.treeData.makeFoldersOpenString();
+			parent.we_cmd("load", arguments[1], 0, op, top.treeData.table);
+			break;
 		case "exit_modules":
 			WE().util.jsWindow.prototype.closeByName('edit_module');
 			break;
@@ -1222,8 +1240,7 @@ function we_cmd_base(args, url, scope) {
 		case "new_widget_fdl":
 			if (topWE().layout.weEditorFrameController.getActiveDocumentReference() && WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart) {
 				WE().layout.weEditorFrameController.getActiveDocumentReference().createWidget(args[0].substr(args[0].length - 3), 1, 1);
-			}
-			else {
+			} else {
 				top.we_showMessage(WE().consts.g_l.main.cockpit_not_activated, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 			break;

@@ -413,10 +413,6 @@ if($diff){
 	case "exit_doc_question":
 					// return !! important for multiEditor
 					return new (WE().util.jsWindow)(window, url, "exit_doc_question", - 1, - 1, 380, 130, true, false, true);
-	case "loadVTab":
-		var op = top.treeData.makeFoldersOpenString();
-		parent.we_cmd("load", arguments[1], 0, op, top.treeData.table);
-		break;
 	case "eplugin_exit_doc" :
 		if (top.plugin !== undefined && top.plugin.document.WePlugin !== undefined) {
 			if (top.plugin.isInEditor(arguments[1])) {
@@ -437,19 +433,8 @@ foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do
 }';
 }
 ?>
-		if ((nextWindow = WE().layout.weEditorFrameController.getFreeWindow())) {
-			_nextContent = nextWindow.getDocumentReference();
-			we_repl(_nextContent, url, arguments[0]);
-			// activate tab
-			var pos=(arguments[0]==="open_cockpit"?0:undefined);
-			WE().layout.multiTabs.addTab(nextWindow.getFrameId(), ' &hellip; ', ' &hellip; ',pos);
-			// set Window Active and show it
-			WE().layout.weEditorFrameController.setActiveEditorFrame(nextWindow.FrameId);
-			WE().layout.weEditorFrameController.toggleFrames();
-		} else {
-			WE().util.showMessage(WE().consts.g_l.main.no_editor_left, WE().consts.message.WE_MESSAGE_INFO, window);
+		we_showInNewTab(arguments,url);
 		}
-	}
 
 	}
 //-->
