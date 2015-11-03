@@ -246,7 +246,7 @@ function selectCategories() {
 		return $this->formElements[$name]['multiIconBox'] ? $this->makeMultiIconRow($name, $headline, $html) : $html;
 	}
 
-	public function getFormParentID($formName = 'we_form'){// TODO: set formName as class prop
+	public function getFormParentID($parentID = 0, $formName = 'we_form'){// TODO: set formName as class prop
 		$name = 'parentId';
 		if(!isset($this->formElements[$name]) || !$this->formElements[$name]['set']){
 			return;
@@ -255,21 +255,22 @@ function selectCategories() {
 		if(!$this->parentID['setFixed'] && is_numeric($this->parentID['preset'])){
 			$yuiSuggest = &weSuggest::getInstance();
 			$cmd1 = "document." . $formName . ".fu_file_parentID.value";
-			$wecmdenc2 = we_base_request::encCmd("document." . $formName . ".fu_file_parentID.value");
+			$wecmdenc2 = we_base_request::encCmd("document." . $formName . ".parentPath.value");
 			$wecmdenc3 = ''; //we_base_request::encCmd();
-			$startID = $this->parentID['preset'] !== false ? $this->parentID['preset'] : (IMAGESTARTID_DEFAULT ? : 0);
-			$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "',''," . $startID . ",'" . we_base_ContentTypes::FOLDER . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+			$parentID = $parentID ? : ($this->parentID['preset'] ? : (IMAGESTARTID_DEFAULT ? : 0));
+			$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',$parentID,'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::FOLDER . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 			$yuiSuggest->setAcId("fu_file_parentID");
 			$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-			$yuiSuggest->setInput("fu_file_parentID", $startID ? id_to_path($startID, FILE_TABLE) : '/', '', false);
+			$yuiSuggest->setInput("parentPath", $parentID ? id_to_path($parentID, FILE_TABLE) : '/', '', false);
 			$yuiSuggest->setMaxResults(10);
 			$yuiSuggest->setMayBeEmpty(true);
-			$yuiSuggest->setResult("fu_file_parentID", $startID);
+			$yuiSuggest->setResult("fu_file_parentID", $parentID);
 			$yuiSuggest->setSelector(weSuggest::DirSelector);
 			$yuiSuggest->setWidth(326);
 			$yuiSuggest->setSelectButton($but);
 
-			$html = $yuiSuggest->getHTML();
+			//$html = $yuiSuggest->getHTML();//; . weSuggest::getYuiFiles() . $yuiSuggest->getYuiJs();
+			$html = $yuiSuggest->getHTML() . weSuggest::getYuiFiles() . $yuiSuggest->getYuiJs(); 
 		} else {
 			if(is_numeric($this->parentID['preset'])){
 				$id = $this->parentID['preset'];

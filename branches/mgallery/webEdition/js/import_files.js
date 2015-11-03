@@ -121,20 +121,33 @@ function checkFileinput() {
 }
 
 function we_cmd() {
-	var url = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
-	for (var i = 0; i < arguments.length; i++) {
-		url += 'we_cmd[' + i + ']=' + encodeURI(arguments[i]);
-		if (i < (arguments.length - 1)) {
-			url += '&';
+	var scope = window,
+		args = [],
+		params = Array.prototype.slice.call(arguments),
+		url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+
+	if(params[0] === 'ispassed'){
+		params.shift();
+		scope = params.shift();
+	}
+
+	for (var i = 0; i < params.length; i++) {
+		args.push(params[i]);
+		url += "we_cmd[" + i + "]=" + escape(params[i]);
+		if (i < (params.length - 1)) {
+			url += "&";
 		}
 	}
 
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case 'we_selector_directory':
-			new (WE().util.jsWindow)(window, url, 'we_fileselector', -1, -1, WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(scope, url, 'we_fileselector', -1, -1, WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
 			break;
 		case 'we_selector_category':
-			new (WE().util.jsWindow)(window, url, 'we_catselector', -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(scope, url, 'we_catselector', -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
 			break;
+		default:
+			args.unshift("ispassed", scope);
+			top.opener.top.we_cmd.apply(this, args);
 	}
 }

@@ -519,7 +519,9 @@ function we_openMediaReference(id) {
 	}
 }
 
-function we_cmd_base(args, url) {
+function we_cmd_base(args, url, scope) {
+	scope = scope ? scope : window;
+
 	switch (args[0]) {
 		case "exit_modules":
 			WE().util.jsWindow.prototype.closeByName('edit_module');
@@ -718,7 +720,7 @@ function we_cmd_base(args, url) {
 			new (WE().util.jsWindow)(window, url, "we_fileselector", -1, -1, WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
 			break;
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(window, url, "we_fileselector", -1, -1, WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(scope, url, "we_fileselector", -1, -1, WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
 			break;
 		case "we_selector_image":
 		case "we_selector_document":

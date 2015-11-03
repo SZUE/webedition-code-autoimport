@@ -365,10 +365,20 @@ foreach($jsCmd as $cur){
 <script><!--
 	function we_cmd() {
 	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
-					for (var i = 0; i < arguments.length; i++) {
-	url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
-					if (i < (arguments.length - 1))
-					url += "&";
+
+	var scope = false;
+	if(arguments[0] === 'ispassed'){
+		var params = Array.prototype.slice.call(arguments);
+		params.shift();
+		scope = params.shift();
+		arguments = params;
+	}
+
+	for (var i = 0; i < arguments.length; i++) {
+		url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
+		if (i < (arguments.length - 1)){
+			url += "&";
+		}
 	}
 
 	/*if (window.screen) {
@@ -422,7 +432,7 @@ if($diff){
 	default:
 <?php
 foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do a switch/case instead of search
-	echo 'if(we_cmd_' . $mod . '(arguments,url)){
+	echo 'if(we_cmd_' . $mod . '(arguments,url,scope)){
 	break;
 }';
 }

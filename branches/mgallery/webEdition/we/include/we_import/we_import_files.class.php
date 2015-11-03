@@ -61,7 +61,7 @@ class we_import_files{
 		} else {
 			$this->categories = we_base_request::_(we_base_request::INTLIST, 'fu_doc_categories', $this->categories);
 		}
-		$this->parentID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1) ? : we_base_request::_(we_base_request::INT, "parentID", $this->parentID);
+		$this->parentID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1) ? : we_base_request::_(we_base_request::INT, "fu_file_parentID", $this->parentID);
 		$this->callBack = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 2) ? : (we_base_request::_(we_base_request::RAW, 'callBack', '') ? : '');
 		$this->sameName = we_base_request::_(we_base_request::STRING, "fu_file_sameName", $this->sameName);
 		$this->importMetadata = we_base_request::_(we_base_request::INT, "fu_doc_importMetadata", $this->importMetadata);
@@ -137,7 +137,7 @@ var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action=
 
 		// create Start Screen ##############################################################################
 		$parts = array();
-		$parts = is_array($form = $fileupload->getFormParentID('we_startform')) ? array_merge($parts, array($form)) : $parts;
+		$parts = is_array($form = $fileupload->getFormParentID($this->parentID, 'we_startform')) ? array_merge($parts, array($form)) : $parts;
 		$parts = is_array($form = $fileupload->getFormSameName()) ? array_merge($parts, array($form)) : $parts;
 		$parts = is_array($form = $fileupload->getFormCategories($this->categories)) ? array_merge($parts, array($form)) : $parts;
 

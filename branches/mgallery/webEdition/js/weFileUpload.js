@@ -1759,7 +1759,7 @@ var weFileUpload = (function () {
 				try {
 					var activeFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
 
-					if (document.we_startform.fu_doc_parentID.value === activeFrame.EditorDocumentId && activeFrame.EditorEditPageNr === 16) {
+					if (document.we_startform.fu_file_parentID.value === activeFrame.EditorDocumentId && activeFrame.EditorEditPageNr === 16) {
 						top.opener.top.we_cmd('switch_edit_page', 16, activeFrame.EditorTransaction);
 					}
 					top.opener.top.we_cmd('load', 'tblFile');
