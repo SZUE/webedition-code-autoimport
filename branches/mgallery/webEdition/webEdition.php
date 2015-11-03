@@ -364,22 +364,24 @@ foreach($jsCmd as $cur){
 ?>
 <script><!--
 	function we_cmd() {
-	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
+	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?",
+		args = [],
+		i = 0,
+		scope = window;
 
-	var scope = false;
-	if(arguments[0] === 'ispassed'){
-		var params = Array.prototype.slice.call(arguments);
-		params.shift();
-		scope = params.shift();
-		arguments = params;
+	if(typeof arguments[0] === 'object'){
+		scope = arguments[0];
+		i++;
 	}
 
-	for (var i = 0; i < arguments.length; i++) {
+	for (i; i < arguments.length; i++) {
+		args.push(arguments[i]);
 		url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
 		if (i < (arguments.length - 1)){
 			url += "&";
 		}
 	}
+	arguments = args; // TODO: change arguments to args in the following
 
 	/*if (window.screen) {
 	 h = ((screen.height - 100) > screen.availHeight) ? screen.height - 100 : screen.availHeight;

@@ -123,18 +123,18 @@ function checkFileinput() {
 function we_cmd() {
 	var scope = window,
 		args = [],
-		params = Array.prototype.slice.call(arguments),
-		url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+		url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?",
+		i = 0;
 
-	if(params[0] === 'ispassed'){
-		params.shift();
-		scope = params.shift();
+	if(typeof arguments[0] === 'object'){
+		scope = arguments[0];
+		i++;
 	}
 
-	for (var i = 0; i < params.length; i++) {
-		args.push(params[i]);
-		url += "we_cmd[" + i + "]=" + escape(params[i]);
-		if (i < (params.length - 1)) {
+	for (i; i < arguments.length; i++) {
+		args.push(arguments[i]);
+		url += "we_cmd[" + i + "]=" + escape(arguments[i]);
+		if (i < (arguments.length - 1)) {
 			url += "&";
 		}
 	}
@@ -147,7 +147,7 @@ function we_cmd() {
 			new (WE().util.jsWindow)(scope, url, 'we_catselector', -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 		default:
-			args.unshift("ispassed", scope);
+			args.unshift(scope);
 			top.opener.top.we_cmd.apply(this, args);
 	}
 }
