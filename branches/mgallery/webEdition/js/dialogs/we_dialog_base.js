@@ -88,7 +88,7 @@ function we_cmd() {
 			new (WE().util.jsWindow)(scope, url, "browse_server", -1, -1, 840, 400, true, false, true);
 			break;
 		case "edit_new_collection":
-			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=editNewCollection&we_cmd[1]=" + args[1] + "&we_cmd[2]=" + args[2] + "&fixedpid=" + arguments[3] + "&fixedremtable=" + arguments[4] + "&caller=" + arguments[5];
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=editNewCollection&we_cmd[1]=" + args[1] + "&we_cmd[2]=" + args[2] + "&fixedpid=" + args[3] + "&fixedremtable=" + args[4] + "&caller=" + args[5];
 			new (WE().util.jsWindow)(scope, url, "weNewCollection", -1, -1, 590, 560, true, true, true, true);
 			break;
 		default:
