@@ -233,7 +233,9 @@ abstract class we_html_button{
 			$cmd .= $_javascript_content;
 		} else {
 			//FIXME: is this really used???
-			t_e('new window by button', $target, $href);
+			if($target){
+				t_e('new window by button', $target, $href);
+			}
 			// Check if the link has to be opened in a different frame or in a new window
 			$cmd .= ($target ? // The link will be opened in a different frame or in a new window
 					// Check if the link has to be opend in a frame or a window

@@ -96,7 +96,7 @@ class we_messaging_frames extends we_modules_frame{
 
 		$extraHead = $this->getJSCmdCode() .
 				we_html_element::jsScript(JS_DIR . 'we_modules/messaging/messaging_std.js') .
-				$this->Tree->getJSTreeCode() .
+				$this->Tree->getJSTreeCode($this->messaging) .
 				we_html_element::jsElement('startTree();');
 
 		return parent::getHTMLFrameset($extraHead, '&we_transaction=' . $this->transaction);
