@@ -71,7 +71,7 @@ function we_cmd() {
 
 	for (i; i < arguments.length; i++) {
 		args.push(arguments[i]);
-		url += "we_cmd[" + i + "]=" + escape(arguments[i]);
+		url += "we_cmd[]=" + escape(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";
 		}

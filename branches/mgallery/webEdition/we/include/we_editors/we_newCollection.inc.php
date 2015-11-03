@@ -88,7 +88,7 @@ function we_cmd() {
 	var cmd = "' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . '";
 	for (var i = 0; i < arguments.length; i++) {
 		args.push(arguments[i]);
-		url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
+		url += "we_cmd[]=" + encodeURIComponent(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";
 		}

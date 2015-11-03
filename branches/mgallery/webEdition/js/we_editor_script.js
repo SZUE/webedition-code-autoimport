@@ -223,8 +223,8 @@ function we_cmd() {
 	var args = [];
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-		url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
+		args.push(arguments[i]);
+		url += "we_cmd[]=" + encodeURIComponent(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";
 		}

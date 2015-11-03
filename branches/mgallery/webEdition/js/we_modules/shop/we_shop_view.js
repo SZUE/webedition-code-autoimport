@@ -33,7 +33,7 @@ function we_cmd() {
 	var url = WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_properties.php?";
 
 	for (var i = 0; i < arguments.length; i++) {
-		url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
+		url += "we_cmd[]=" + encodeURIComponent(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";
 		}

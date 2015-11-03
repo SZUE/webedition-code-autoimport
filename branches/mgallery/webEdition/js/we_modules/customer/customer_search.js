@@ -29,7 +29,7 @@ function doUnload() {
 function we_cmd() {
 	var url = frames.set + "?";
 	for (var i = 0; i < arguments.length; i++) {
-		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
+		url += "we_cmd[]=" + encodeURI(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";
 		}

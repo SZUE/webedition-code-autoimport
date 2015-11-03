@@ -364,42 +364,35 @@ foreach($jsCmd as $cur){
 ?>
 <script><!--
 	function we_cmd() {
-	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?",
-		args = [],
-		i = 0,
+	var i = 0,
 		scope = window;
 
 	if(typeof arguments[0] === 'object'){
 		scope = arguments[0];
 		i++;
 	}
+	var args = Array.prototype.slice.call(arguments,i);
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[]=" + args.map(encodeURIComponent).join("&we_cmd[]=");
 
-	for (i; i < arguments.length; i++) {
-		args.push(arguments[i]);
-		url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
-		if (i < (arguments.length - 1)){
-			url += "&";
-		}
-	}
 	arguments = args; // TODO: change arguments to args in the following
-
-	/*if (window.screen) {
-	 h = ((screen.height - 100) > screen.availHeight) ? screen.height - 100 : screen.availHeight;
-	 w = screen.availWidth;
-	 }*/
 
 	//	When coming from a we_cmd, always mark the document as opened with we !!!!
 	if (WE().layout.weEditorFrameController.getActiveDocumentReference) {
-	try {
-	var _string = ',edit_document,new_document,open_extern_document,edit_document_with_parameters,new_folder,edit_folder';
-					if (_string.indexOf("," + arguments[0] + ",") === - 1) {
-		WE().layout.weEditorFrameController.getActiveDocumentReference().openedWithWE = true;
-	}
-	} catch (exp) {
+
+		switch(args[0]){
+			case 'edit_document':
+			case 'new_document':
+			case 'open_extern_document':
+			case 'edit_document_with_parameters':
+			case 'new_folder':
+			case 'edit_folder':
+				break;
+			default:
+				WE().layout.weEditorFrameController.getActiveDocumentReference().openedWithWE = true;
+		}
 
 	}
-	}
-	switch (arguments[0]) {
+	switch (args[0]) {
 <?php
 // deal with not activated modules
 $diff = array_diff(array_keys(we_base_moduleInfo::getAllModules()), $GLOBALS['_we_active_integrated_modules']);
@@ -417,7 +410,7 @@ if($diff){
 					return new (WE().util.jsWindow)(window, url, "exit_doc_question", - 1, - 1, 380, 130, true, false, true);
 	case "eplugin_exit_doc" :
 		if (top.plugin !== undefined && top.plugin.document.WePlugin !== undefined) {
-			if (top.plugin.isInEditor(arguments[1])) {
+			if (top.plugin.isInEditor(args[1])) {
 				return confirm(WE().consts.g_l.main.eplugin_exit_doc);
 			}
 		}
@@ -430,12 +423,12 @@ if($diff){
 	default:
 <?php
 foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do a switch/case instead of search
-	echo 'if(we_cmd_' . $mod . '(arguments,url,scope)){
+	echo 'if(we_cmd_' . $mod . '(args,url,scope)){
 	break;
 }';
 }
 ?>
-		we_showInNewTab(arguments,url);
+		we_showInNewTab(args,url);
 		}
 
 	}

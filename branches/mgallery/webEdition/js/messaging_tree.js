@@ -113,7 +113,7 @@ function we_cmd() {
 	var args = [];
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_transaction=" + we_transaction + "&";
 	for (var i = 0; i < arguments.length; i++) {
-		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]) + (i < (arguments.length - 1) ? "&" : '');
+		url += "we_cmd[]=" + encodeURI(arguments[i]) + (i < (arguments.length - 1) ? "&" : '');
 		args.push(arguments[i]);
 	}
 

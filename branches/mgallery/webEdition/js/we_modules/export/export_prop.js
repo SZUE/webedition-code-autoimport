@@ -33,7 +33,7 @@ function we_cmd() {
 	var args = [];
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
-		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
+		url += "we_cmd[]=" + encodeURI(arguments[i]);
 		args.push(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";
@@ -47,10 +47,10 @@ function we_cmd() {
 			submitForm();
 			break;
 		case "we_export_dirSelector":
-			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_export_dirSelector&";
-			for (var i = 1; i < arguments.length; i++) {
-				url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
-				if (i < (arguments.length - 1)) {
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[]=we_export_dirSelector&";
+			for (var i = 0; i < args.length; i++) {
+				url += "we_cmd[]=" + encodeURI(args[i]);
+				if (i < (args.length - 1)) {
 					url += "&";
 				}
 			}

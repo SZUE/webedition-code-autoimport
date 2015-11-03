@@ -28,7 +28,7 @@ function doUnload() {
 function we_cmd() {
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
-		url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
+		url += "we_cmd[]=" + encodeURIComponent(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";
 		}

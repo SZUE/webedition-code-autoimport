@@ -206,7 +206,7 @@ function we_cmd() {
 	var i;
 	for (i = 0; i < arguments.length; i++) {
 		args.push(arguments[i]);
-		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
+		url += "we_cmd[]=" + encodeURI(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";
 		}
@@ -235,10 +235,10 @@ function we_cmd() {
 			break;
 
 		case "openNewsletterDirselector":
-			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_newsletter_dirSelector&";
-			for (i = 1; i < arguments.length; i++) {
-				url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
-				if (i < (arguments.length - 1)) {
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[]=we_newsletter_dirSelector&";
+			for (i = 0; i < args.length; i++) {
+				url += "we_cmd[]=" + encodeURI(args[i]);
+				if (i < (args.length - 1)) {
 					url += "&";
 				}
 			}

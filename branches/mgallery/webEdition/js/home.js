@@ -691,7 +691,7 @@ function executeAjaxRequest(param_1, initCfg, param_3, param_4, titel, widgetId)
 	// determine type of the widget
 	var widgetType = gel(widgetId + '_type').value;
 
-	showLoadingSymbol(arguments[5]);
+	showLoadingSymbol(widgetId);
 
 	var args = '';
 	for (var i = 0; i < arguments.length; i++) {
@@ -757,7 +757,7 @@ function rpc() {
 		var _tmpField = document.createElement('input');
 		_tmpForm.appendChild(_tmpField);
 
-		_tmpField.name = "we_cmd[" + i + "]";
+		_tmpField.name = "we_cmd[]";
 		_tmpField.value = unescape(arguments[i]);
 		_tmpField.style.display = "none";
 	}

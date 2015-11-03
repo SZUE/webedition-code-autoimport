@@ -43,12 +43,11 @@ function doUnload() {
  * Menu command controler
  */
 function we_cmd() {
-	var args=[];
+	var args = [];
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-	var i;
-	for (i = 0; i < arguments.length; i++) {
-					args.push(arguments[i]);
-	url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
+	for (var i = 0; i < arguments.length; i++) {
+		args.push(arguments[i]);
+		url += "we_cmd[]=" + encodeURI(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";
 		}

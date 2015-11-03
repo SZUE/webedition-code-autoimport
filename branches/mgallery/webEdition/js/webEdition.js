@@ -488,7 +488,6 @@ function doUnloadNormal(whichWindow) {
 
 }
 
-
 function doUnload(whichWindow) { // triggered when webEdition-window is closed
 	if (WE().session.seemode) {
 		doUnloadSEEM(whichWindow);
@@ -519,11 +518,11 @@ function we_openMediaReference(id) {
 	}
 }
 
-function we_showInNewTab(arguments, url) {
+function we_showInNewTab(args, url) {
 	if ((nextWindow = WE().layout.weEditorFrameController.getFreeWindow())) {
-		we_repl(nextWindow.getDocumentReference(), url, arguments[0]);
+		we_repl(nextWindow.getDocumentReference(), url, args[0]);
 		// activate tab
-		var pos = (arguments[0] === "open_cockpit" ? 0 : undefined);
+		var pos = (args[0] === "open_cockpit" ? 0 : undefined);
 		WE().layout.multiTabs.addTab(nextWindow.getFrameId(), ' &hellip; ', ' &hellip; ', pos);
 		// set Window Active and show it
 		WE().layout.weEditorFrameController.setActiveEditorFrame(nextWindow.FrameId);
@@ -539,7 +538,7 @@ function we_cmd_base(args, url, scope) {
 	switch (args[0]) {
 		case "loadVTab":
 			var op = top.treeData.makeFoldersOpenString();
-			parent.we_cmd("load", arguments[1], 0, op, top.treeData.table);
+			parent.we_cmd("load", args[1], 0, op, top.treeData.table);
 			break;
 		case "exit_modules":
 			WE().util.jsWindow.prototype.closeByName('edit_module');
