@@ -1,3 +1,5 @@
+/* global top */
+
 /**
  * webEdition CMS
  *
@@ -28,23 +30,20 @@ function doUnload() {
 
 function we_cmd() {
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	var args = [];
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[]=" + encodeURI(arguments[i]);
+		args.push(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";
 		}
 	}
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "we_banner_selector":
 			new (WE().util.jsWindow)(window, url, "we_bannerselector", -1, -1, 650, 400, true, true, true);
 			break;
 		default:
-			var args = [];
-			for (i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			top.content.we_cmd.apply(this, args);
-
 	}
 }
 

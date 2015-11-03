@@ -203,8 +203,7 @@ function doUnload() {
 function we_cmd() {
 	var args = [];
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-	var i;
-	for (i = 0; i < arguments.length; i++) {
+	for (var i = 0; i < arguments.length; i++) {
 		args.push(arguments[i]);
 		url += "we_cmd[]=" + encodeURI(arguments[i]);
 		if (i < (arguments.length - 1)) {
@@ -212,11 +211,11 @@ function we_cmd() {
 		}
 	}
 
-	if (arguments[0] != "switchPage") {
+	if (args[0] != "switchPage") {
 		self.setScrollTo();
 	}
 
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "we_users_selector":
 			new (WE().util.jsWindow)(window, url, "browse_users", -1, -1, 500, 300, true, false, true);
 			break;
@@ -235,7 +234,8 @@ function we_cmd() {
 			break;
 
 		case "openNewsletterDirselector":
-			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[]=we_newsletter_dirSelector&";
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+			args[0]="we_newsletter_dirSelector";
 			for (i = 0; i < args.length; i++) {
 				url += "we_cmd[]=" + encodeURI(args[i]);
 				if (i < (args.length - 1)) {

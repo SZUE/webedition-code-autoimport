@@ -69,14 +69,16 @@ function doUnload() {
 
 function we_cmd(){
 	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
+	avr args=[];
 	for(var i = 0; i < arguments.length; i++){
-			url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
-			if(i < (arguments.length - 1)){
+			url += "we_cmd[]="+encodeURI(arguments[i]);
+args.push(arguments[i]);
+if(i < (arguments.length - 1)){
 					url += "&";
 			}
 	}
 
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "save":
 			we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
 		break;

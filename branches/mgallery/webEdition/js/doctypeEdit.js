@@ -93,7 +93,7 @@ function we_cmd() {
 			url += "&";
 		}
 	}
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "we_selector_image":
 		case "we_selector_document":
 		case "we_selector_directory":

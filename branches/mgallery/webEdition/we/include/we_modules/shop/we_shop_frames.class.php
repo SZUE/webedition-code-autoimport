@@ -80,11 +80,11 @@ function we_cmd(){
 	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
 	for(var i = 0; i < arguments.length; i++){
 				args.push(arguments[i]);
-	url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+	url += "we_cmd[]="+encodeURI(arguments[i]);
 	if(i < (arguments.length - 1)){
 	url += "&";
 	}}
-	switch (arguments[0]){
+	switch (args[0]){
 		case "new_shop":
 			top.content.editor.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=editor";
 			break;
@@ -176,7 +176,16 @@ function doUnload() {
 }
 
 function we_cmd() {
-	switch (arguments[0]) {
+var args = [];
+	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
+	for(var i = 0; i < arguments.length; i++){
+				args.push(arguments[i]);
+	url += "we_cmd[]="+encodeURI(arguments[i]);
+	if(i < (arguments.length - 1)){
+	url += "&";
+	}
+	}
+	switch (args[0]) {
 		case "openOrder":
 			//TODO: check this adress: mit oder ohne tree? Bisher: left
 			if(top.content.doClick) {

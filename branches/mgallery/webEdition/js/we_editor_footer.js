@@ -108,13 +108,15 @@ function saveReload() {
 
 function we_cmd() {
 	var url = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
+	var args = [];
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[]=" + encodeURI(arguments[i]);
+		args.push(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";
 		}
 	}
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "glossary_check":
 			new (WE().util.jsWindow)(window, url, "glossary_check", -1, -1, 730, 400, true, false, true);
 			return;
@@ -132,11 +134,6 @@ function we_cmd() {
 		case "object_obj_search":
 			top.we_cmd("object_obj_search", we_transaction, document.we_form.obj_search.value, document.we_form.obj_searchField[document.we_form.obj_searchField.selectedIndex].value);
 			return;
-	}
-	var args = [];
-	for (i = 0; i < arguments.length; i++)
-	{
-		args.push(arguments[i]);
 	}
 	if (top.we_cmd) {
 		top.we_cmd.apply(this, args);

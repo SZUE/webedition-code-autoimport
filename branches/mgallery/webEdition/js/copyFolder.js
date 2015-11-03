@@ -100,7 +100,7 @@ function we_cmd() {
 		}
 	}
 
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "we_selector_directory":
 			new (WE().util.jsWindow)(window, url, "we_fileselector", -1, -1, WE().consts.size.windowDirSelect.height, true, true, true, true);
 			break;

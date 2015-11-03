@@ -816,12 +816,12 @@ function we_cmd() {
 	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
 	for(var i = 0; i < arguments.length; i++){
 	args.push(arguments[i]);
-	url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+	url += "we_cmd[]="+encodeURI(arguments[i]);
 	if(i < (arguments.length - 1)){
 	url += "&";
 	}
 	}
-	switch (arguments[0]) {
+	switch (args[0]) {
 	case "we_selector_directory":
 		new (WE().util.jsWindow)(window, url,"we_fileselector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
 		break;
@@ -829,7 +829,7 @@ function we_cmd() {
 		new (WE().util.jsWindow)(window, url,"we_catselector",-1,-1,WE().consts.size.catSelect.width,WE().consts.size.catSelect.height,true,true,true,true);
 		break;
 	case "add_cat":
-		var catsToAdd = makeArrayFromCSV(arguments[1]);
+		var catsToAdd = makeArrayFromCSV(args[1]);
 		var cats = makeArrayFromCSV(f.categories.value);
 		for(var i=0;i<catsToAdd.length;i++){
 			if(!WE().util.in_array(catsToAdd[i],cats)){
@@ -841,7 +841,7 @@ function we_cmd() {
 		f.submit();
 		break;
 	case "del_cat":
-		var catToDel = arguments[1];
+		var catToDel = args[1];
 		var cats = makeArrayFromCSV(f.categories.value);
 		var newcats = [];
 		for(var i=0;i<cats.length;i++){
@@ -859,7 +859,7 @@ function we_cmd() {
 		f.submit();
 		break;
 	case "add_folder":
-		var foldersToAdd = makeArrayFromCSV(arguments[1]);
+		var foldersToAdd = makeArrayFromCSV(args[1]);
 		var folders = makeArrayFromCSV(f.' . $folders . '.value);
 		for(var i=0;i<foldersToAdd.length;i++){
 			if(!WE().util.in_array(foldersToAdd[i],folders)){
@@ -871,7 +871,7 @@ function we_cmd() {
 		f.submit();
 		break;
 	case "del_folder":
-		var folderToDel = arguments[1];
+		var folderToDel = args[1];
 		var folders = makeArrayFromCSV(f.' . $folders . '.value);
 		var newfolders = [];
 		for(var i=0;i<folders.length;i++){

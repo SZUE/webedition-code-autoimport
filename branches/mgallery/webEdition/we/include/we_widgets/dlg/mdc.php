@@ -157,13 +157,15 @@ var table='" . $_selTable . "';
 
 function we_cmd(){
 	var url=WE().consts.dirs.WEBEDITION_DIR +'we_cmd.php?';
+	var args = [];
 	for(var i=0;i<arguments.length;i++){
 		url+='we_cmd['+i+']='+encodeURI(arguments[i]);
+		args.push(arguments[i]);
 		if(i<(arguments.length-1)){
 			url+='&';
 		}
 	}
-	switch(arguments[0]){
+	switch(args[0]){
 		case 'we_selector_directory':
 			new (WE().util.jsWindow)(window, url,'we_fileselector',-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
 			break;
@@ -171,10 +173,6 @@ function we_cmd(){
 			new (WE().util.jsWindow)(window, url,'we_catselector',-1,-1,WE().consts.size.catSelect.width,WE().consts.size.catSelect.height,true,true,true,true);
 			break;
 		default:
-					var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			parent.we_cmd.apply(this, args);
 
 	}

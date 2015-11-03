@@ -84,7 +84,7 @@ function we_cmd() {
 			url += "&";
 		}
 	}
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "we_selector_image":
 		case "we_selector_document":
 			new (WE().util.jsWindow)(window, url, "we_docselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
@@ -99,7 +99,8 @@ function we_cmd() {
 			new (WE().util.jsWindow)(window, url, "we_catselector", -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 		case "openNavigationDirselector":
-			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[]=we_navigation_dirSelector&";
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+			args[0] = "we_navigation_dirSelector";
 			for (var i = 0; i < args.length; i++) {
 				url += "we_cmd[]=" + encodeURI(args[i]);
 				if (i < (args.length - 1)) {
@@ -109,7 +110,7 @@ function we_cmd() {
 			new (WE().util.jsWindow)(window, url, "we_navigation_dirselector", -1, -1, 600, 400, true, true, true);
 			break;
 		case "openFieldSelector":
-			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=fields&cmd=" + arguments[1] + "&type=" + arguments[2] + "&selection=" + arguments[3] + "&multi=" + arguments[4];
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=fields&cmd=" + args[1] + "&type=" + args[2] + "&selection=" + args[3] + "&multi=" + args[4];
 			new (WE().util.jsWindow)(window, url, "we_navigation_field_selector", -1, -1, 380, 350, true, true, true);
 			break;
 		case "copyNaviFolder":

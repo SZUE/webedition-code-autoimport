@@ -1,3 +1,5 @@
+/* global top */
+
 /**
  * webEdition CMS
  *
@@ -28,8 +30,10 @@ function doUnload() {
 
 function we_cmd() {
 	var url = frames.set + "?";
+	var args = [];
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[]=" + encodeURI(arguments[i]);
+		args.push(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";
 		}
@@ -37,7 +41,7 @@ function we_cmd() {
 	if (document.we_form.mode.value == "1") {
 		transferDateFields();
 	}
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "selectBranch":
 			document.we_form.cmd.value = arguments[0];
 			submitForm();
@@ -64,10 +68,6 @@ function we_cmd() {
 			submitForm();
 			break;
 		default:
-			var args = [];
-			for (i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			top.content.we_cmd.apply(this, args);
 	}
 }

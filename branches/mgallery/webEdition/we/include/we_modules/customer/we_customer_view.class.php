@@ -130,13 +130,15 @@ function doUnload() {
 
 function we_cmd(){
 	var url = "' . $this->frameset . '?";
+		var args=[];
 	for(var i = 0; i < arguments.length; i++){
-		url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+		url += "we_cmd[]="+encodeURI(arguments[i]);
+		args.push(arguments[i]);
 		if(i < (arguments.length - 1)){
 			url += "&";
 		}
 	}
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "save_settings":
 			document.we_form.cmd.value=arguments[0];
 			submitForm();

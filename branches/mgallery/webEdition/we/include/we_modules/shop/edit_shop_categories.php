@@ -223,7 +223,16 @@ $jsFunction = '
 	}
 
 	function we_cmd(){
-		switch (arguments[0]) {
+var args = [];
+	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
+	for(var i = 0; i < arguments.length; i++){
+				args.push(arguments[i]);
+	url += "we_cmd[]="+encodeURI(arguments[i]);
+	if(i < (arguments.length - 1)){
+	url += "&";
+	}
+	}
+		switch (args[0]) {
 			case "close":
 				if(hot){
 					new (WE().util.jsWindow)(window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_exitQuestion.php","we_exit_doc_question",-1,-1,380,130,true,false,true);

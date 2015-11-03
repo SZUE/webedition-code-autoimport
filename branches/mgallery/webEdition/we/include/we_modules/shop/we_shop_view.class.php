@@ -49,16 +49,16 @@ function we_cmd() {
 	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
 	for(var i = 0; i < arguments.length; i++){
 				args.push(arguments[i]);
-	url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+	url += "we_cmd[]="+encodeURI(arguments[i]);
 	if(i < (arguments.length - 1)){
 	url += "&";
 	}}
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "new_raw":
 			if(top.content.editor.edbody.loaded) {
 				top.content.hot = 1;
-				top.content.editor.edbody.document.we_form.cmd.value = arguments[0];
-				top.content.editor.edbody.document.we_form.cmdid.value = arguments[1];
+				top.content.editor.edbody.document.we_form.cmd.value = args[0];
+				top.content.editor.edbody.document.we_form.cmdid.value = args[1];
 				top.content.editor.edbody.document.we_form.tabnr.value = 1;
 				top.content.editor.edbody.submitForm();
 			} else {
@@ -73,7 +73,7 @@ function we_cmd() {
 					('
 					if (top.content.editor.edbody.loaded) {
 						if (confirm("' . g_l('modules_shop', '[delete_alert]') . '")) {
-							top.content.editor.edbody.document.we_form.cmd.value=arguments[0];
+							top.content.editor.edbody.document.we_form.cmd.value=args[0];
 							top.content.editor.edbody.document.we_form.tabnr.value=top.content.activ_tab;
 							top.content.editor.edbody.submitForm();
 						}
@@ -89,7 +89,7 @@ function we_cmd() {
 
 
 					if (top.content.editor.edbody.loaded) {
-							top.content.editor.edbody.document.we_form.cmd.value=arguments[0];
+							top.content.editor.edbody.document.we_form.cmd.value=args[0];
 							top.content.editor.edbody.document.we_form.tabnr.value=top.content.activ_tab;
 
 							top.content.editor.edbody.submitForm();
@@ -101,13 +101,13 @@ function we_cmd() {
 
 		case "edit_raw":
 			top.content.hot=0;
-			top.content.editor.edbody.document.we_form.cmd.value=arguments[0];
-			top.content.editor.edbody.document.we_form.cmdid.value=arguments[1];
+			top.content.editor.edbody.document.we_form.cmd.value=args[0];
+			top.content.editor.edbody.document.we_form.cmdid.value=args[1];
 			top.content.editor.edbody.document.we_form.tabnr.value=top.content.activ_tab;
 			top.content.editor.edbody.submitForm();
 		break;
 		case "load":
-			top.content.cmd.location="' . $this->frameset . '&pnt=cmd&pid="+arguments[1]+"&offset="+arguments[2]+"&sort="+arguments[3];
+			top.content.cmd.location="' . $this->frameset . '&pnt=cmd&pid="+args[1]+"&offset="+args[2]+"&sort="+args[3];
 		break;
 		default:
 			top.opener.top.we_cmd.apply(this, args);
@@ -129,14 +129,14 @@ function we_cmd() {
 	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
 	for(var i = 0; i < arguments.length; i++){
 				args.push(arguments[i]);
-	url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+	url += "we_cmd[]="+encodeURI(arguments[i]);
 	if(i < (arguments.length - 1)){
 	url += "&";
 	}}
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "switchPage":
-			document.we_form.cmd.value=arguments[0];
-			document.we_form.tabnr.value=arguments[1];
+			document.we_form.cmd.value=args[0];
+			document.we_form.tabnr.value=args[1];
 			submitForm();
 			break;
 		default:

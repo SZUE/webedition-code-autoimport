@@ -70,7 +70,7 @@ function we_cmd() {
 	 for(var i = 0; i < arguments.length; i++){
 					 args.push(arguments[i]);
 
-	 url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+	 url += "we_cmd[]="+encodeURI(arguments[i]);
 	 if(i < (arguments.length - 1)){
 		url += "&";
 	}
@@ -2555,11 +2555,11 @@ function we_cmd() {
 	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
 	for(var i = 0; i < arguments.length; i++){
 				args.push(arguments[i]);
-	url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+	url += "we_cmd[]="+encodeURI(arguments[i]);
 	if(i < (arguments.length - 1)){
 	url += "&";
 	}}
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "we_selector_image":
 		case "we_selector_document":
 			new (WE().util.jsWindow)(window, url,"we_docselector",-1,-1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height,true,true,true,true);
@@ -2575,8 +2575,11 @@ function we_cmd() {
 			break;
 		case "openweSearchDirselector":
 			url = WE().consts.dirs.WEBEDITION_DIR+"apps/weSearch/we_weSearchDirSelect.php?";
-			for(var i = 0; i < arguments.length; i++){
-				url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }
+			for(var i = 0; i < args.length; i++){
+				url += "we_cmd[]="+encodeURI(args[i]);
+				if(i < (args.length - 1)){
+				url += "&";
+				}
 			}
 			new (WE().util.jsWindow)(window, url,"we_weSearch_dirselector",-1,-1,600,400,true,true,true);
 			break;

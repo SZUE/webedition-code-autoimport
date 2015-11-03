@@ -2501,11 +2501,11 @@ for(i=1;i<childs.length;++i){
 
 for(var i = 0; i < arguments.length; i++){
 				args.push(arguments[i]);
-		 url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+		 url += "we_cmd[]="+encodeURI(arguments[i]);
 		 if(i < (arguments.length - 1)){
 		 url += "&";
 		 }}
-switch (arguments[0]){
+switch (args[0]){
 case "browse_server":
 new (WE().util.jsWindow)(window, url,"browse_server",-1,-1,840,400,true,false,true);
 break;
@@ -2514,11 +2514,11 @@ case "we_selector_document":
 new (WE().util.jsWindow)(window, url,"we_selector_document",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,false,true,true);
 break;
 case "show_formmail_log":
-url = "' . WE_INCLUDES_DIR . 'we_editors/weFormmailLog.php"
+url = WE().consts.dirs.WE_INCLUDES_DIR+"we_editors/weFormmailLog.php"
 new (WE().util.jsWindow)(window, url,"we_selector_document",-1,-1,840,400,true,false,true);
 break;
 case "show_formmail_block_log":
-url = "' . WE_INCLUDES_DIR . 'we_editors/weFormmailBlockLog.php"
+url = WE().consts.dirs.WE_INCLUDES_DIR+"we_editors/weFormmailBlockLog.php"
 new (WE().util.jsWindow)(window, url,"we_selector_document",-1,-1,840,400,true,false,true);
 break;
 case "openColorChooser":

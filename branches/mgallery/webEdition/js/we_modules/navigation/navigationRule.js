@@ -96,9 +96,9 @@ function we_cmd() {
 		}
 	}
 
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "switchType":
-			switchType(arguments[1]);
+			switchType(args[1]);
 			break;
 		case "new_navigation_rule":
 			clearNavigationForm();
@@ -128,7 +128,7 @@ function we_cmd() {
 			break;
 		case "navigation_edit_rule":
 			weInput.setValue("cmd", "navigation_edit_rule");
-			weInput.setValue("ID", arguments[1]);
+			weInput.setValue("ID", args[1]);
 			document.we_form.submit();
 			break;
 		case "get_workspaces":
@@ -136,17 +136,17 @@ function we_cmd() {
 			document.we_form.submit();
 			break;
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(window, url, arguments[0], -1, -1, WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, args[0], -1, -1, WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
 			break;
 		case "we_selector_category":
-			new (WE().util.jsWindow)(window, url, arguments[0], -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, args[0], -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 		case "we_selector_file":
-			new (WE().util.jsWindow)(window, url, arguments[0], -1, -1, WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, args[0], -1, -1, WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
 			break;
 		case "we_selector_image":
 		case "we_selector_document":
-			new (WE().util.jsWindow)(window, url, arguments[0], -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, args[0], -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 	}
 }

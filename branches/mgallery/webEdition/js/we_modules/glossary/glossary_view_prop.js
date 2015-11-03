@@ -40,10 +40,10 @@ function we_cmd() {
 			url += "&";
 		}
 	}
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "switchPage":
-			document.we_form.cmd.value = arguments[0];
-			document.we_form.tabnr.value = arguments[1];
+			document.we_form.cmd.value = args[0];
+			document.we_form.tabnr.value = args[1];
 			submitForm();
 			break;
 		default:

@@ -45,13 +45,13 @@ function we_cmd() {
 	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
 	for(var i = 0; i < arguments.length; i++){
 				args.push(arguments[i]);
-	url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+	url += "we_cmd[]="+encodeURI(arguments[i]);
 	if(i < (arguments.length - 1)){
 	url += "&";
 	}}
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "load":
-			' . $this->topFrame . '.cmd.location="' . $this->frameset . '&pnt=cmd&pid="+arguments[1]+"&offset="+arguments[2]+"&sort="+arguments[3];
+			' . $this->topFrame . '.cmd.location="' . $this->frameset . '&pnt=cmd&pid="+args[1]+"&offset="+args[2]+"&sort="+args[3];
 		break;
 		default:
 			top.opener.top.we_cmd.apply(this, args);
@@ -132,12 +132,13 @@ function we_cmd() {
 			break;
 		case "openNavigationDirselector":
 		case "openNewsletterDirselector":
+		url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
 			if (args[0] == "openNewsletterDirselector") {
-				url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[]=we_newsletter_dirSelector";//FIXME
+				args[0]="we_newsletter_dirSelector";//FIXME
 			}else {
-				url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[]=we_navigation_dirSelector&";
+				args[0]="we_navigation_dirSelector";
 			}
-			for (var i = 1; i < args.length; i++) {
+			for (var i = 0; i < args.length; i++) {
 				url += "we_cmd[]=" +encodeURI(args[i]);
 				if (i < (args.length - 1)) {
 					url += "&";

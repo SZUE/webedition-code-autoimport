@@ -65,14 +65,16 @@ function wiz_next(frm, url) {
 
 
 function we_cmd() {
+	var args = [];
 	var url = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
 	for (var i = 0; i < arguments.length; i++) {
 		url += 'we_cmd[' + i + ']=' + encodeURI(arguments[i]);
+		args.push(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += '&';
 		}
 	}
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case 'we_selector_directory':
 		case 'we_selector_image':
 		case 'we_selector_document':
@@ -149,10 +151,6 @@ function we_cmd() {
 		case 'reload_editpage':
 			break;
 		default:
-			var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			top.opener.top.we_cmd.apply(this, args);
 	}
 }

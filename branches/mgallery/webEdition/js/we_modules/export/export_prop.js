@@ -40,14 +40,15 @@ function we_cmd() {
 		}
 	}
 
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "switchPage":
-			document.we_form.cmd.value = arguments[0];
-			document.we_form.tabnr.value = arguments[1];
+			document.we_form.cmd.value = args[0];
+			document.we_form.tabnr.value = args[1];
 			submitForm();
 			break;
 		case "we_export_dirSelector":
-			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[]=we_export_dirSelector&";
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+			args[0]="we_export_dirSelector";
 			for (var i = 0; i < args.length; i++) {
 				url += "we_cmd[]=" + encodeURI(args[i]);
 				if (i < (args.length - 1)) {
@@ -65,10 +66,10 @@ function we_cmd() {
 		case "add_cat":
 		case "del_cat":
 		case "del_all_cats":
-			document.we_form.cmd.value = arguments[0];
+			document.we_form.cmd.value = args[0];
 			top.content.editor.edbody.document.we_form.pnt.value = "edbody";
 			document.we_form.tabnr.value = top.content.activ_tab;
-			document.we_form.cat.value = arguments[1];
+			document.we_form.cat.value = args[1];
 			submitForm();
 			break;
 		default:

@@ -41,14 +41,16 @@ function saveField() {
 
 function we_cmd() {
 	var url = frameUrl + "?";
+	var args = [];
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[]=" + encodeURI(arguments[i]);
+		args.push(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";
 		}
 	}
 	var branch, field;
-	switch (arguments[0]) {
+	switch (args[0]) {
 
 		case "open_add_field":
 			branch = document.we_form.branch.value;
@@ -126,10 +128,6 @@ function we_cmd() {
 			}
 			break;
 		default:
-			var args = [];
-			for (i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			top.content.we_cmd.apply(this, args);
 	}
 }

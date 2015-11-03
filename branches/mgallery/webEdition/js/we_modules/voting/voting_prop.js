@@ -38,14 +38,15 @@ function we_cmd() {
 			url += "&";
 		}
 	}
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "switchPage":
-			document.we_form.cmd.value = arguments[0];
-			document.we_form.tabnr.value = arguments[1];
+			document.we_form.cmd.value = args[0];
+			document.we_form.tabnr.value = args[1];
 			submitForm();
 			break;
 		case "we_voting_dirSelector":
-			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[]=we_voting_dirSelector&";
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+			args[0] = "we_voting_dirSelector";
 			for (var i = 0; i < args.length; i++) {
 				url += "we_cmd[]=" + encodeURI(args[i]);
 				if (i < (args.length - 1)) {
@@ -61,8 +62,8 @@ function we_cmd() {
 			new (WE().util.jsWindow)(window, url, "browse_users", -1, -1, 500, 300, true, false, true);
 			break;
 		case "users_add_owner":
-			var owners = arguments[1];
-			var isfolders = arguments[2];
+			var owners = args[1];
+			var isfolders = args[2];
 
 			var own_arr = owners.split(",");
 			var isfolders_arr = isfolders.split(",");
@@ -81,8 +82,8 @@ function we_cmd() {
 			document.we_form.answers_name.value = answers_edit.name;
 			document.we_form.variant_count.value = answers_edit.variantCount;
 			document.we_form.item_count.value = answers_edit.itemCount;
-			document.we_form.cmd.value = arguments[0];
-			document.we_form.pnt.value = arguments[0];
+			document.we_form.cmd.value = args[0];
+			document.we_form.pnt.value = args[0];
 			new (WE().util.jsWindow)(window, "", "export_csv", -1, -1, 420, 250, true, false, true);
 			submitForm("export_csv");
 			document.we_form.cmd.value = oldcmd;
@@ -91,8 +92,8 @@ function we_cmd() {
 		case "exportGroup_csv":
 			oldcmd = document.we_form.cmd.value;
 			oldpnt = document.we_form.pnt.value;
-			document.we_form.cmd.value = arguments[0];
-			document.we_form.pnt.value = arguments[0];
+			document.we_form.cmd.value = args[0];
+			document.we_form.pnt.value = args[0];
 			new (WE().util.jsWindow)(window, "", "exportGroup_csv", -1, -1, 420, 250, true, false, true);
 			submitForm("exportGroup_csv");
 			document.we_form.cmd.value = oldcmd;
@@ -101,8 +102,8 @@ function we_cmd() {
 
 		case "reset_ipdata":
 			if (confirm(WE().consts.g_l.voting.delete_ipdata_question)) {
-				url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=" + arguments[0];
-				new (WE().util.jsWindow)(window, url, arguments[0], -1, -1, 420, 230, true, false, true);
+				url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=" + args[0];
+				new (WE().util.jsWindow)(window, url, args[0], -1, -1, 420, 230, true, false, true);
 				var t = document.getElementById("ip_mem_size");
 				setVisible("delete_ip_data", false);
 				t.innerHTML = "0";
@@ -110,14 +111,13 @@ function we_cmd() {
 			break;
 		case "delete_log":
 			if (confirm(WE().consts.g_l.voting.delete_log_question)) {
-				url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=" + arguments[0];
-				new (WE().util.jsWindow)(window, url, arguments[0], -1, -1, 420, 230, true, false, true);
+				url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=" + args[0];
+				new (WE().util.jsWindow)(window, url, args[0], -1, -1, 420, 230, true, false, true);
 			}
 			break;
 		case "show_log":
-			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=" + arguments[0];
-			new (WE().util.jsWindow)(window, url, arguments[0], -1, -1, 810, 600, true, true, true);
-			break;
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=" + args[0];
+			new (WE().util.jsWindow)(window, url, args[0], -1, -1, 810, 600, true, true, true);
 			break;
 		default:
 			top.content.we_cmd.apply(this, args);

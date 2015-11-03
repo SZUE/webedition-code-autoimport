@@ -67,15 +67,16 @@ function fsubmit(e) {
 }
 
 function we_cmd() {
-	var args = "";
+	var args = [];
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[]=" + encodeURI(arguments[i]);
+		args.push(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";
 		}
 	}
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "we_selector_document":
 		case "we_selector_image":
 		case "we_selector_directory":
@@ -83,6 +84,9 @@ function we_cmd() {
 			break;
 		case "browse_server":
 			new (WE().util.jsWindow)(window, url, "browse_server", -1, -1, 840, 400, true, false, true);
+			break;
+		default :
+			top.opener.we_cmd.apply(this, args);
 			break;
 	}
 }

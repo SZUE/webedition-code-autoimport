@@ -21,6 +21,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+/* global top, WE */
+
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
 }
@@ -94,14 +96,16 @@ function formatDate(date, format) {
 
 function we_cmd() {
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	var args = [];
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[]=" + encodeURI(arguments[i]);
+		args.push(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";
 		}
 	}
 
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "we_users_selector":
 			new (WE().util.jsWindow)(window, url, "browse_users", -1, -1, 500, 300, true, false, true);
 			break;
@@ -128,10 +132,6 @@ function we_cmd() {
 			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=import", "import_customer", -1, -1, 640, 600, true, true, true, false);
 			break;
 		default:
-			var args = [];
-			for (i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			top.content.we_cmd.apply(this, args);
 	}
 }

@@ -30,13 +30,15 @@ function doUnload() {
 
 function we_cmd() {
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	var args=[];
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[]=" + encodeURI(arguments[i]);
+		args.push(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";
 		}
 	}
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "we_users_selector":
 			new (WE().util.jsWindow)(window, url, "browse_users", -1, -1, 500, 300, true, false, true);
 			break;
@@ -47,54 +49,50 @@ function we_cmd() {
 			new (WE().util.jsWindow)(window, url, "we_catselector", -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 		case "openObjselector":
-			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[8]=object&we_cmd[2]=" + WE().consts.tables.OBJECT_TABLE + "&we_cmd[5]=" + arguments[5] + "&we_cmd[9]=1";
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[8]=object&we_cmd[2]=" + WE().consts.tables.OBJECT_TABLE + "&we_cmd[5]=" + args[5] + "&we_cmd[9]=1";
 			new (WE().util.jsWindow)(window, url, "we_objectselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true);
 			break;
 		case "add_cat":
 		case "del_cat":
 		case "del_all_cats":
-			document.we_form.wcmd.value = arguments[0];
-			document.we_form.wcat.value = arguments[1];
+			document.we_form.wcmd.value = args[0];
+			document.we_form.wcat.value = args[1];
 			submitForm();
 			break;
 		case "add_objcat":
 		case "del_objcat":
 		case "del_all_objcats":
-			document.we_form.wcmd.value = arguments[0];
-			document.we_form.wocat.value = arguments[1];
+			document.we_form.wcmd.value = args[0];
+			document.we_form.wocat.value = args[1];
 			submitForm();
 			break;
 		case "add_folder":
 		case "del_folder":
 		case "del_all_folders":
-			document.we_form.wcmd.value = arguments[0];
-			document.we_form.wfolder.value = arguments[1];
+			document.we_form.wcmd.value = args[0];
+			document.we_form.wfolder.value = args[1];
 			submitForm();
 			break;
 		case "add_object_file_folder":
 		case "del_object_file_folder":
 		case "del_all_object_file_folders":
-			document.we_form.wcmd.value = arguments[0];
-			document.we_form.woffolder.value = arguments[1];
+			document.we_form.wcmd.value = args[0];
+			document.we_form.woffolder.value = args[1];
 			submitForm();
 			break;
 		case "add_object":
 		case "del_object":
 		case "del_all_objects":
-			document.we_form.wcmd.value = arguments[0];
-			document.we_form.wobject.value = arguments[1];
+			document.we_form.wcmd.value = args[0];
+			document.we_form.wobject.value = args[1];
 			submitForm();
 			break;
 		case "switchPage":
-			document.we_form.wcmd.value = arguments[0];
-			document.we_form.page.value = arguments[1];
+			document.we_form.wcmd.value = args[0];
+			document.we_form.page.value = args[1];
 			submitForm();
 			break;
 		default:
-			var args = [];
-			for (i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			top.content.we_cmd.apply(this, args);
 	}
 }

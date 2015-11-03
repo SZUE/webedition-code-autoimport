@@ -232,7 +232,7 @@ function we_cmd() {
 
 	var contentEditor = WE().layout.weEditorFrameController.getVisibleEditorFrame();
 
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "edit_link":
 		case "edit_link_at_class":
 		case "edit_link_at_object":

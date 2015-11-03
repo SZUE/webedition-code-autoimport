@@ -138,13 +138,16 @@ class we_import_site{
 	private static function _getJS(){
 		return we_html_element::jsElement('
 function we_cmd() {
-		var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?"; for(var i = 0; i < arguments.length; i++){
-		url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
-		if(i < (arguments.length - 1)){
+		var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
+var args=[];
+for(var i = 0; i < arguments.length; i++){
+				url += "we_cmd[]="+encodeURI(arguments[i]);
+args.push(arguments[i]);
+if(i < (arguments.length - 1)){
 		url += "&";
 		}}
 
-	switch (arguments[0]) {
+	switch (args[0]) {
 			case "we_selector_image":
 			case "we_selector_document":
 			new (WE().util.jsWindow)(window, url,"we_docselector",-1,-1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height,true,true,true,true);

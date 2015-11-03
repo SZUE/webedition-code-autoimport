@@ -31,21 +31,23 @@ function doUnload() {
 
 function we_cmd() {
 	var url = WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_properties.php?";
-
+	var args = [];
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[]=" + encodeURIComponent(arguments[i]);
+		args.push(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";
 		}
 	}
+
 	var wind;
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "edit_shipping_cost":
 			wind = new (WE().util.jsWindow)(window, url + "&bid=" + bid, "edit_shipping_cost", -1, -1, 545, 205, true, true, true, false);
 			break;
 
 		case "edit_shop_cart_custom_field":
-			wind = new (WE().util.jsWindow)(window, url + "&bid=" + bid + "&cartfieldname=" + (arguments[1] ? arguments[1] : ''), "edit_shop_cart_custom_field", -1, -1, 545, 300, true, true, true, false);
+			wind = new (WE().util.jsWindow)(window, url + "&bid=" + bid + "&cartfieldname=" + (args[1] ? args[1] : ''), "edit_shop_cart_custom_field", -1, -1, 545, 300, true, true, true, false);
 			break;
 
 		case "edit_order_customer":

@@ -157,12 +157,14 @@ class we_customer_EIWizard{
 
 			function we_cmd(){
 				var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
+				var args=[];
 				for(var i = 0; i < arguments.length; i++){
-				url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+				url += "we_cmd[]="+encodeURI(arguments[i]);
+				args.push(arguments[i]);
 				if(i < (arguments.length - 1)){
 				url += "&";
 				}}
-				switch (arguments[0]){
+				switch (args[0]){
 					case "del_customer":
 						selector_cmd(arguments[0],arguments[1],arguments[2]);
 					break;
@@ -1455,12 +1457,14 @@ function doNext(){
 		$js = we_html_element::jsElement('
 function formFileChooser() {
 	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
+	var args=[];
 	for(var i = 0; i < arguments.length; i++){
-	url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+	args.push(arguments[i]);
+	url += "we_cmd[]="+encodeURI(arguments[i]);
 	if(i < (arguments.length - 1)){
 	url += "&";
 	}}
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "browse_server":
 			new (WE().util.jsWindow)(window, url,"server_selector",-1,-1,700,400,true,false,true);
 		break;
@@ -1481,12 +1485,14 @@ function formFileChooser() {
 		$js = we_html_element::jsElement('
 function formDirChooser() {
 	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
+	var args=[];
 	for(var i = 0; i < arguments.length; i++){
-	url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+	url += "we_cmd[]="+encodeURI(arguments[i]);
+	args.push(arguments[i]);
 	if(i < (arguments.length - 1)){
 	url += "&";
 	}}
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "we_selector_directory":
 			new (WE().util.jsWindow)(window, url,"dir_selector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,false,true,true);
 		break;
@@ -1527,12 +1533,14 @@ function formDirChooser() {
 		$js = we_html_element::jsElement('
 function selector_cmd(){
 	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
+	var args=[];
 	for(var i = 0; i < arguments.length; i++){
-	url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+	url += "we_cmd[]="+encodeURI(arguments[i]);
+	args.push(arguments[i]);
 	if(i < (arguments.length - 1)){
 	url += "&";
 	}}
-	switch (arguments[0]){
+	switch (args[0]){
 		case "we_selector_file":
 			new (WE().util.jsWindow)(window, url,"we_selector",-1,-1,' . we_selector_file::WINDOW_SELECTOR_WIDTH . ',' . we_selector_file::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
 		break;

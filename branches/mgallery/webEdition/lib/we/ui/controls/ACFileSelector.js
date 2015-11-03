@@ -60,15 +60,16 @@ we_ui_controls_ACFileSelector = {};
  */
 we_ui_controls_ACFileSelector.openSelector = function()
 {
-var args = "";
+var args =[];
 				var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 				for (var i = 0; i < arguments.length; i++) {
 url += "we_cmd[]=" + encodeURI(arguments[i]);
+args.push(arguments[i]);
 				if (i < (arguments.length - 1)) {
 url += "&";
 }
 }
-switch (arguments[0]) {
+switch (args[0]) {
 case "we_selector_document":
 				new (WE().util.jsWindow)(window, url, "we_docselector", - 1, - 1, 900, 685, true, true, true, true);
 				break;
@@ -89,24 +90,25 @@ case "we_selector_document":
  */
 we_ui_controls_ACFileSelector.openToolSelector = function()
 {
-var args = "";
+var args = [];
 				var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 				for (var i = 0; i < arguments.length; i++) {
+					args.push(arguments[i]);
 url += "we_cmd[]=" + encodeURI(arguments[i]);
 				if (i < (arguments.length - 1)) {
 url += "&";
 }
 }
-switch (arguments[0]) {
-case "open" + arguments[5] + "Dirselector":
-				url = "/webEdition/apps/" + arguments[5] + "/we_" + arguments[5] + "DirSelect.php?";
+switch (args[0]) {
+case "open" + args[5] + "Dirselector":
+				url = "/webEdition/apps/" + args[5] + "/we_" + arguments[5] + "DirSelect.php?";
 				for (var i = 0; i < arguments.length; i++) {
 url += "we_cmd[]=" + encodeURI(arguments[i]);
 				if (i < (arguments.length - 1)) {
 url += "&";
 }
 }
-new (WE().util.jsWindow)(window, url, "we_" + arguments[5] + "_dirselector", - 1, - 1, 600, 400, true, true, true);
+new (WE().util.jsWindow)(window, url, "we_" + args[5] + "_dirselector", - 1, - 1, 600, 400, true, true, true);
 				break;
 }
 }

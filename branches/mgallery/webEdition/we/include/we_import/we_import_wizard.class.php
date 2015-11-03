@@ -179,7 +179,7 @@ class we_import_wizard extends we_import_wizardBase{
 						url += '&';
 					}
 				}
-				switch (arguments[0]) {
+				switch (args[0]) {
 					default:
 			parent.we_cmd.apply(this, args);
 
@@ -272,7 +272,7 @@ function we_cmd() {
 			url += '&';
 		}
 	}
-	switch (arguments[0]) {
+	switch (args[0]) {
 		default:
 			parent.we_cmd.apply(this, args);
 
@@ -441,12 +441,12 @@ function we_cmd() {
 			url += '&';
 		}
 	}
-	switch (arguments[0]) {" . '
+	switch (args[0]) {" . '
 		case "openNavigationDirselector":
-				url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=we_navigation_dirSelector&";
-				for(var i = 1; i < arguments.length; i++){
-					url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
-					if(i < (arguments.length - 1)){ url += "&"; }
+				url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[]=we_navigation_dirSelector&";
+				for(var i = 1; i < args.length; i++){
+					url += "we_cmd[]="+encodeURI(arguments[i]);
+					if(i < (args.length - 1)){ url += "&"; }
 				}
 				new (WE().util.jsWindow)(window, url,"we_navigation_dirselector",-1,-1,600,400,true,true,true);
 			break;' . "
@@ -820,7 +820,7 @@ function we_cmd() {
 			url += '&';
 		}
 	}
-	switch (arguments[0]) {
+	switch (args[0]) {
 		default:
 			parent.we_cmd.apply(this, args);
 
@@ -1592,7 +1592,7 @@ function we_cmd() {
 			url += '&';
 		}
 	}
-	switch (arguments[0]) {
+	switch (args[0]) {
 		default:
 			parent.we_cmd.apply(this, args);
 
@@ -1809,7 +1809,7 @@ function we_cmd() {
 			url += '&';
 		}
 	}
-	switch (arguments[0]) {
+	switch (args[0]) {
 		default:
 			parent.we_cmd.apply(this, args);
 
