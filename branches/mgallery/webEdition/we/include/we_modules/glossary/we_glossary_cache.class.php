@@ -291,7 +291,9 @@ if (window.screen) {
 	var x = (screen_width - w) / 2;
 	var y = (screen_height - h) / 2;
 	we_winOpts = \'left=\'+x+\',top=\'+y;
-}' :
+}' :'
+	we_winOpts = \'\';
+'.
 // popup_xposition
 							(!empty($Attributes['popup_xposition']) ?
 								"we_winOpts += (we_winOpts ? ',' : '')+'left=" . $Attributes['popup_xposition'] . "';" :
@@ -302,21 +304,22 @@ if (window.screen) {
 								'')
 						) .
 						// popup_width
-						strtr("we_winOpts += (we_winOpts ? ',' : '')+'width=" . $width . "';" .
+						strtr("we_winOpts += (we_winOpts ? ',' : '')+'width=" . $width .
 							// popup_height
-							"we_winOpts += (we_winOpts ? ',' : '')+'height=" . $height . "';" .
+							",height=" . $height .
 							// popup_status
-							"we_winOpts += (we_winOpts ? ',' : '')+'status=" . (!empty($Attributes['popup_status']) ? 'yes' : 'no') . "';" .
+							",status=" . (!empty($Attributes['popup_status']) ? 'yes' : 'no') .
 							// popup_scrollbars
-							"we_winOpts += (we_winOpts ? ',' : '')+'scrollbars=" . (!empty($Attributes['popup_scrollbars']) ? 'yes' : 'no') . "';" .
+							",scrollbars=" . (!empty($Attributes['popup_scrollbars']) ? 'yes' : 'no') .
 							// popup_menubar
-							"we_winOpts += (we_winOpts ? ',' : '')+'menubar=" . (!empty($Attributes['popup_menubar']) ? 'yes' : 'no') . "';" .
+							",menubar=" . (!empty($Attributes['popup_menubar']) ? 'yes' : 'no') .
 							// popup_resizable
-							"we_winOpts += (we_winOpts ? ',' : '')+'resizable=" . (!empty($Attributes['popup_resizable']) ? 'yes' : 'no') . "';" .
+							",resizable=" . (!empty($Attributes['popup_resizable']) ? 'yes' : 'no') .
 							// popup_location
-							"we_winOpts += (we_winOpts ? ',' : '')+'location=" . (!empty($Attributes['popup_location']) ? 'yes' : 'no') . "';" .
+							",location=" . (!empty($Attributes['popup_location']) ? 'yes' : 'no') .
 							// popup_toolbar
-							"we_winOpts += (we_winOpts ? ',' : '')+'toolbar=" . (!empty($Attributes['popup_toolbar']) ? 'yes' : 'no') . "';" .
+							",toolbar=" . (!empty($Attributes['popup_toolbar']) ? 'yes' : 'no') .
+							"';" .
 							"var we_win = window.open('" . $temp['href'] . "','we_test',we_winOpts);", array('\'' => '@@@we@@@'));
 
 					$temp['href'] = '#';

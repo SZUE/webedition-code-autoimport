@@ -194,16 +194,6 @@ class we_wysiwyg_editor{
 		$this->galleryTemplates = trim($this->galleryTemplates, ',');
 
 		//FIXME: what to do with scripts??
-		/*
-		  if($inlineedit && $value){
-		  //old editor's code
-		  $value = strtr($value, array("\\" => "\\\\", "\n" => '\n', "\r" => '\r'));
-		  $value = str_replace(array('script', 'Script', 'SCRIPT',), array('##scr#ipt##', '##Scr#ipt##', '##SCR#IPT##',), $value);
-		  $value = preg_replace('%<\?xml[^>]*>%i', '', $value);
-		  $value = str_replace(array('<?', '?>',), array('||##?##||', '##||?||##'), $value);
-		  }
-		 *
-		 */
 
 		$this->setToolbarElements();
 		$this->setFilteredElements();
@@ -1077,7 +1067,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 							frameControler.openDocument("' . FILE_TABLE . '", match[1], "");
 						}
 					} else {
-						window.open(src);
+					new (WE().util.jsWindow)(window,src, "_blank", -1, -1, 2500, 2500, true, true, true);
 					}
 				}
 				if (ed.selection.getNode().nodeName == "A" && (href = ed.dom.getAttrib(ed.selection.getNode(), "href", ""))){
@@ -1095,7 +1085,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 							}
 						}
 					} else {
-						window.open(href);
+						new (WE().util.jsWindow)(window,href, "_blank", -1, -1, 2500, 2500, true, true, true);
 					}
 				}
 			}

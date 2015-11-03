@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,6 @@
  * Provides functions for creating webEdition buttons.
  */
 abstract class we_html_button{
-
 	const HEIGHT = 22;
 	const WIDTH = 100;
 	const AUTO_WIDTH = -1;
@@ -90,10 +88,10 @@ abstract class we_html_button{
 	 */
 	static function getButton($value, $id, $cmd = '', $width = self::WIDTH, $title = '', $disabled = false, $margin = '', $padding = '', $key = '', $float = '', $display = '', $important = true, $isFormButton = false, $class = ''){
 		return '<button type="' . ($isFormButton ? 'submit' : 'button') . '" ' . ($title ? ' title="' . oldHtmlspecialchars($title) . '"' : '') .
-				($disabled ? ' disabled="disabled"' : '') .
-				' id="' . $id . '" class="weBtn' . ($class ? ' ' . $class : '') . '" ' . self::getInlineStyleByParam(($width ? : ($width == self::AUTO_WIDTH ? 0 : self::WIDTH)), '', $float, $margin, $padding, $display, '', $important) .
-				' onclick="' . oldHtmlspecialchars($cmd) . '"' .
-				'>' . $value . '</button>';
+			($disabled ? ' disabled="disabled"' : '') .
+			' id="' . $id . '" class="weBtn' . ($class ? ' ' . $class : '') . '" ' . self::getInlineStyleByParam(($width ? : ($width == self::AUTO_WIDTH ? 0 : self::WIDTH)), '', $float, $margin, $padding, $display, '', $important) .
+			' onclick="' . oldHtmlspecialchars($cmd) . '"' .
+			'>' . $value . '</button>';
 	}
 
 	/**
@@ -113,13 +111,13 @@ abstract class we_html_button{
 		$_imp = $important ? ' ! important' : '';
 
 		return ' style="' . /* border-style:none; padding:0px;border-spacing:0px;' . */ ($width > 0 ? 'width:' . $width . 'px' . $_imp . ';' : '') .
-				($height ? 'height:' . $height . 'px' . $_imp . ';' : '') .
-				($float ? 'float:' . $float . $_imp . ';' : '') .
-				($clear ? 'clear:' . $clear . $_imp . ';' : '') .
-				($margin ? 'margin:' . $margin . $_imp . ';' : '') .
-				($display ? 'display:' . $display . $_imp . ';' : '') .
-				($padding ? 'padding:' . $padding . $_imp . ';' : '') .
-				$extrastyle . '"';
+			($height ? 'height:' . $height . 'px' . $_imp . ';' : '') .
+			($float ? 'float:' . $float . $_imp . ';' : '') .
+			($clear ? 'clear:' . $clear . $_imp . ';' : '') .
+			($margin ? 'margin:' . $margin . $_imp . ';' : '') .
+			($display ? 'display:' . $display . $_imp . ';' : '') .
+			($padding ? 'padding:' . $padding . $_imp . ';' : '') .
+			$extrastyle . '"';
 	}
 
 	/**
@@ -234,18 +232,17 @@ abstract class we_html_button{
 			// Render link
 			$cmd .= $_javascript_content;
 		} else {
+			//FIXME: is this really used???
+			t_e('new window by button', $target, $href);
 			// Check if the link has to be opened in a different frame or in a new window
-			$_button_link = ($target ? // The link will be opened in a different frame or in a new window
-							// Check if the link has to be opend in a frame or a window
-							($target === '_blank' ? // The link will be opened in a new window
-									"window.open('" . $href . "', '" . $target . "');" :
-									// The link will be opened in a different frame
-									"target_frame = eval('parent.' + " . $target . ");target_frame.location.href='" . $href . "';") :
-							// The link will be opened in the current frame or window
-							"window.location.href='" . $href . "';");
-
-			// Now assign the link string
-			$cmd .= $_button_link;
+			$cmd .= ($target ? // The link will be opened in a different frame or in a new window
+					// Check if the link has to be opend in a frame or a window
+					($target === '_blank' ? // The link will be opened in a new window
+						"new (WE().util.jsWindow)(window, '" . $href . "','" . $target . "', -1, -1, 500, 550, true, true, true);" :
+						// The link will be opened in a different frame
+						"target_frame = eval('parent.' + " . $target . ");target_frame.location.href='" . $href . "';") :
+					// The link will be opened in the current frame or window
+					"window.location.href='" . $href . "';");
 		}
 
 		return self::getButton($value, ($uniqid ? 'we' . $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name) . $suffix, $cmd, $width, ($alt ? ($title ? : (($tmp = g_l('button', '[' . $name . '][alt]', true)) ? $tmp : '')) : ''), $disabled, '', '', '', '', '', true, (strpos($href, self::WE_FORM_BUTTON_IDENTIFY) !== false), $class);
@@ -267,18 +264,18 @@ abstract class we_html_button{
 	 */
 	static function create_button_table($buttons, $attribs = ''){
 		//FIXME: remove this
-		return '';/*
-		if(is_array($attribs)){
-			$attr = '';
-			foreach($attribs as $k => $v){
-				$attr .= ' ' . $k . '="' . $v . '"';
-			}
-		} else {
-			$attr = $attribs;
-		}
+		return ''; /*
+		  if(is_array($attribs)){
+		  $attr = '';
+		  foreach($attribs as $k => $v){
+		  $attr .= ' ' . $k . '="' . $v . '"';
+		  }
+		  } else {
+		  $attr = $attribs;
+		  }
 
-		//FIMXE: change all calls to this function => remove
-		return ($attribs ? '<span ' . $attr . '>' : '') . implode('', $buttons) . ($attribs ? '</span>' : '');
+		  //FIMXE: change all calls to this function => remove
+		  return ($attribs ? '<span ' . $attr . '>' : '') . implode('', $buttons) . ($attribs ? '</span>' : '');
 		 */
 	}
 
@@ -322,8 +319,8 @@ abstract class we_html_button{
 		//	Create button array
 		//	button order depends on OS
 		$buttons = (we_base_browserDetect::isMAC() ?
-						$no_button . $cancel_button . $yes_button :
-						$yes_button . $no_button . $cancel_button);
+				$no_button . $cancel_button . $yes_button :
+				$yes_button . $no_button . $cancel_button);
 
 		return we_html_element::htmlDiv($attr, $buttons);
 	}

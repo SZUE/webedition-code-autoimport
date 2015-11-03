@@ -87,7 +87,7 @@ function we_textarea(name, value, cols, rows, width, height, autobr, autobrName,
 						'onmouseover="if(self.' + this.name + 'Object){' + this.name + 'Object.ButtonOverUp(this);}"' +
 						'onmouseout="if(self.' + this.name + 'Object){' + this.name + 'Object.ButtonNormal(this);}"' +
 						'onmousedown="if(self.' + this.name + 'Object){' + this.name + 'Object.ButtonOverDown(this);}"' +
-						'onclick="window.open(\'/webEdition/we/include/we_modules/spellchecker/weSpellchecker.php?editname=areatmp_' + encodeURI(name) + '\',\'spellchechecker\',\'height=450,width=500,scrollbars=0\');"></div></td>';
+						'onclick="new (WE().util.jsWindow)(window, \'' + WE().consts.dirs.WE_MODULES_DIR + 'spellchecker/weSpellchecker.php?editname=areatmp_' + encodeURI(name) + '\', "spellchechecker", -1, -1, 450, 500, true, true, true);"></div></td>';
 	}
 
 	if (showAutobr) {

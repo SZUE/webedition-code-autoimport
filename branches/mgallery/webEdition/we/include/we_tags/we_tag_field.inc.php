@@ -453,8 +453,7 @@ function we_tag_field($attribs){
 
 			if(!$GLOBALS['we_doc']->InWebEdition){ //	we are NOT in webEdition open new window
 				$js = '';
-				$newWinProps = '';
-				$winpropsArray = array();
+				$newWinProps = $winpropsArray = array();
 				$probsPairs = makeArrayFromCSV($winprops);
 
 				foreach($probsPairs as $pair){
@@ -466,24 +465,24 @@ function we_tag_field($attribs){
 
 				if(isset($winpropsArray['left']) && ($winpropsArray['left'] == -1) && !empty($winpropsArray['width'])){
 					$js .= 'if (window.screen) {var screen_width = screen.availWidth;var w = Math.min(screen_width, ' . $winpropsArray['width'] . ');} var x = Math.round((screen_width - w) / 2);';
-					$newWinProps .= 'width=\'+w+\',left=\'+x+\',';
+					$newWinProps [] = 'width=\'+w+\',left=\'+x+\'';
 				} else {
 					if(isset($winpropsArray['left'])){
-						$newWinProps .= 'left=' . $winpropsArray['left'] . ',';
+						$newWinProps [] = 'left=' . $winpropsArray['left'];
 					}
 					if(isset($winpropsArray['width'])){
-						$newWinProps .= 'width=' . $winpropsArray['width'] . ',';
+						$newWinProps [] = 'width=' . $winpropsArray['width'];
 					}
 				}
 				if(isset($winpropsArray['top']) && ($winpropsArray['top'] == -1) && !empty($winpropsArray['height'])){
 					$js .= 'if (window.screen) {var screen_height = ((screen.height - 50) > screen.availHeight ) ? screen.height - 50 : screen.availHeight;screen_height = screen_height - 40; var h = Math.min(screen_height, ' . $winpropsArray['height'] . ');} var y = Math.round((screen_height - h) / 2);';
-					$newWinProps .= 'height=\'+h+\',top=\'+y+\',';
+					$newWinProps [] = 'height=\'+h+\',top=\'+y+\'';
 				} else {
 					if(isset($winpropsArray['top'])){
-						$newWinProps .= 'top=' . $winpropsArray['top'] . ',';
+						$newWinProps [] = 'top=' . $winpropsArray['top'];
 					}
 					if(isset($winpropsArray['height'])){
-						$newWinProps .= 'height=' . $winpropsArray['height'] . ',';
+						$newWinProps [] = 'height=' . $winpropsArray['height'];
 					}
 				}
 				foreach($winpropsArray as $k => $v){
@@ -496,12 +495,12 @@ function we_tag_field($attribs){
 							continue;
 						default:
 							if($v){
-								$newWinProps .= $k . '=' . $v . ',';
+								$newWinProps [] = $k . '=' . $v;
 							}
 					}
 				}
 
-				$_linkAttribs['onclick'] = $js . ';var we_win = window.open(\'\',\'win_' . $name . '\',\'' . rtrim($newWinProps, ',') . '\');';
+				$_linkAttribs['onclick'] = $js . ';var we_win = window.open(\'\',\'win_' . $name . '\',\'' . implode(',', $newWinProps) . '\');';
 				$_linkAttribs['target'] = 'win_' . $name;
 			} else { // we are in webEdition
 				if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){ //	we are in seeMode -> open in edit_include ?....

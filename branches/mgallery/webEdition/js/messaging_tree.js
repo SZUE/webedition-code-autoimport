@@ -110,10 +110,11 @@ function doUnload() {
 }
 
 function we_cmd() {
+	var args = [];
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_transaction=" + we_transaction + "&";
 	for (var i = 0; i < arguments.length; i++) {
-		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]) +
-						(i < (arguments.length - 1) ? "&" : '');
+		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]) + (i < (arguments.length - 1) ? "&" : '');
+		args.push(arguments[i]);
 	}
 
 	if (hot === 1 && arguments[0] != "messaging_start_view") {
@@ -193,11 +194,6 @@ function we_cmd() {
 			top.content.cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=paste_msg";
 			break;
 		default:
-			var args = [];
-			for (var i = 0; i < arguments.length; i++)
-			{
-				args.push(arguments[i]);
-			}
 			top.opener.top.we_cmd.apply(this, args);
 	}
 }
@@ -324,8 +320,7 @@ function folder_added(parent_id) {
 			treeData[ind].typ = "group";
 			treeData[ind].open = 0;
 			treeData[ind].leaf_count = 1;
-		}
-		else {
+		} else {
 			treeData[ind].leaf_count++;
 		}
 	}

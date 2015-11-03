@@ -299,8 +299,8 @@ WE().consts.g_l.cockpit.pad={
 	title_empty: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[title_empty]')) . "',
 	date_empty: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[date_empty]')) . "',
 };
-if(typeof parent.base64_encode=='function'){
-_ttlB64Esc=escape(parent.base64_encode(_sTb));
+if(typeof parent.Base64.encode=='function'){
+_ttlB64Esc=escape(parent.Base64.encode(_sTb));
 }
 
 ") . we_html_element::jsScript(JS_DIR . 'widgets/pad.js'), we_html_element::htmlBody(

@@ -1258,15 +1258,15 @@ class we_document extends we_root{
 					}
 				}
 				$js.=
-					(!empty($_popUpCtrl["jswidth"]) ?
-						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'width=' . $_popUpCtrl["jswidth"] . '\';' : '') .
-					(!empty($_popUpCtrl["jsheight"]) ?
-						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'height=' . $_popUpCtrl["jsheight"] . '\';' : '') . 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . (!empty($_popUpCtrl["jsstatus"]) ? 'yes' : 'no') . '\';' .
-					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'scrollbars=' . (!empty($_popUpCtrl["jsscrollbars"]) ? 'yes' : 'no') . '\';' .
-					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'menubar=' . (!empty($_popUpCtrl["jsmenubar"]) ? 'yes' : 'no') . '\';' .
-					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'resizable=' . (!empty($_popUpCtrl["jsresizable"]) ? 'yes' : 'no') . '\';' .
-					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'location=' . (!empty($_popUpCtrl["jslocation"]) ? 'yes' : 'no') . '\';' .
-					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'toolbar=' . (!empty($_popUpCtrl["jstoolbar"]) ? 'yes' : 'no') . '\';';
+					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . (!empty($_popUpCtrl["jsstatus"]) ? 'yes' : 'no') .
+					',scrollbars=' . (!empty($_popUpCtrl["jsscrollbars"]) ? 'yes' : 'no') .
+					',menubar=' . (!empty($_popUpCtrl["jsmenubar"]) ? 'yes' : 'no') .
+					',resizable=' . (!empty($_popUpCtrl["jsresizable"]) ? 'yes' : 'no') .
+					',location=' . (!empty($_popUpCtrl["jslocation"]) ? 'yes' : 'no') .
+					',toolbar=' . (!empty($_popUpCtrl["jstoolbar"]) ? 'yes' : 'no') .
+					(empty($_popUpCtrl["jswidth"]) ? '' : ',width=' . $_popUpCtrl["jswidth"] ) .
+					(empty($_popUpCtrl["jsheight"]) ? '' : ',height=' . $_popUpCtrl["jsheight"] ) .
+					'\';';
 				$foo = $js . "var we_win = window.open('','we_" . (isset($attribs["name"]) ? $attribs["name"] : "") . "',we_winOpts);";
 
 				$_linkAttribs['target'] = 'we_' . (isset($attribs["name"]) ? $attribs["name"] : "");

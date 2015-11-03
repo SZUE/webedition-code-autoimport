@@ -28,24 +28,20 @@ function errorHandler(msg, file, line, col, errObj) {
 		(deb ? console.debug(errObj) : console.log(errObj));
 	}
 	try {//we don' want to raise errors inside
-		postData = 'we_cmd[msg]=' + encodeURIComponent(msg);
-		postData += '&we_cmd[file]=' + encodeURIComponent(file);
-		postData += '&we_cmd[line]=' + encodeURIComponent(line);
-		postData += '&we_cmd[url]=' + encodeURIComponent(this.location.pathname + this.location.search);
-		if (col) {
-			postData += '&we_cmd[col]=' + encodeURIComponent(col);
-		}
-		if (errObj) {
-			postData += '&we_cmd[errObj]=' + encodeURIComponent(errObj.stack);
-		}
+		postData = 'we_cmd[msg]=' + encodeURIComponent(msg) +
+						'&we_cmd[file]=' + encodeURIComponent(file) +
+						'&we_cmd[line]=' + encodeURIComponent(line) +
+						'&we_cmd[url]=' + encodeURIComponent(this.location.pathname + this.location.search) +
+						'&we_cmd[App]=' + encodeURIComponent(navigator.appName) +
+						'&we_cmd[Ver]=' + encodeURIComponent(navigator.appVersion) +
+						'&we_cmd[UA]=' + encodeURIComponent(navigator.userAgent) +
+						(col ? '&we_cmd[col]=' + encodeURIComponent(col) : '') +
+						(errObj ? '&we_cmd[errObj]=' + encodeURIComponent(errObj.stack) : '');
 		lcaller = arguments.callee.caller;
 		while (lcaller) {
 			postData += '&we_cmd[]=' + encodeURIComponent(lcaller.name);
 			lcaller = lcaller.caller;
 		}
-		postData += '&we_cmd[App]=' + encodeURIComponent(navigator.appName);
-		postData += '&we_cmd[Ver]=' + encodeURIComponent(navigator.appVersion);
-		postData += '&we_cmd[UA]=' + encodeURIComponent(navigator.userAgent);
 		xmlhttp = new XMLHttpRequest();
 		xmlhttp.open('POST', WE().consts.dirs.WEBEDITION_DIR + 'rpc/rpc.php?cmd=TriggerJSError&cns=error', true);
 		xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
@@ -54,4 +50,3 @@ function errorHandler(msg, file, line, col, errObj) {
 		(deb ? console.debug(e) : console.log(e));
 	}
 }
-;
