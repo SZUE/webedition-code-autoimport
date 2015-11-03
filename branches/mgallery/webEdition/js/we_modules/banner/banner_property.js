@@ -57,8 +57,8 @@ function we_cmd() {
 			new (WE().util.jsWindow)(window, url, "we_bannerselector", -1, -1, 600, 350, true, true, true);
 			break;
 		case "switchPage":
-			document.we_form.ncmd.value = arguments[0];
-			document.we_form.page.value = arguments[1];
+			document.we_form.ncmd.value = args[0];
+			document.we_form.page.value = args[1];
 			submitForm();
 			break;
 		case "add_cat":
@@ -73,13 +73,13 @@ function we_cmd() {
 		case "del_all_customers":
 		case "del_all_folders":
 		case "add_customer":
-			document.we_form.ncmd.value = arguments[0];
-			document.we_form.ncmdvalue.value = arguments[1];
+			document.we_form.ncmd.value = args[0];
+			document.we_form.ncmdvalue.value = args[1];
 			submitForm();
 			break;
 		case "delete_stat":
 			if (confirm(WE().consts.g_l.banner.view.deleteStatConfirm)) {
-				document.we_form.ncmd.value = arguments[0];
+				document.we_form.ncmd.value = args[0];
 				submitForm();
 			}
 			break;

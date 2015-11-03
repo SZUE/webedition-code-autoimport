@@ -60,22 +60,18 @@ function addKeyListener() {
 
 function we_cmd() {
 	var scope = window,
-		args = [],
-		url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?",
-		i = 0;
+					url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?",
+					i = 0;
 
-	if(typeof arguments[0] === 'object'){
+	if (typeof arguments[0] === 'object') {
 		scope = arguments[0];
 		i++;
 	}
-
-	for (i; i < arguments.length; i++) {
-		args.push(arguments[i]);
-		url += "we_cmd[]=" + escape(arguments[i]);
-		if (i < (arguments.length - 1)) {
-			url += "&";
-		}
+	var args = Array.prototype.slice.call(arguments, i);
+	for (i = 0; i < args.length; i++) {
+		url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
 	}
+
 	switch (args[0]) {
 		case "we_selector_document":
 		case "we_selector_image":

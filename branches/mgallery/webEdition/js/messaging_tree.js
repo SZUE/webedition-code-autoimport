@@ -131,19 +131,19 @@ function we_cmd() {
 			}
 			break;
 		case "show_folder_content":
-			ind = treeData.indexOfEntry(arguments[1]);
+			ind = treeData.indexOfEntry(args[1]);
 			if (ind > -1) {
-				update_icon(arguments[1]);
+				update_icon(args[1]);
 				if (top.content.viewclass != treeData[ind].viewclass) {
 					set_frames(treeData[ind].viewclass);
 				}
 				top.content.viewclass = treeData[ind].viewclass;
 			}
-			cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=show_folder_content&id=" + arguments[1];
+			cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=show_folder_content&id=" + args[1];
 			break;
 		case "edit_folder":
-			update_icon(arguments[1]);
-			top.content.cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=edit_folder&mode=edit&fid=" + arguments[1];
+			update_icon(args[1]);
+			top.content.cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=edit_folder&mode=edit&fid=" + args[1];
 			break;
 		case "folder_new":
 			break;

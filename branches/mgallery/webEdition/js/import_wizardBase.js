@@ -68,7 +68,7 @@ function we_cmd() {
 	var args = [];
 	var url = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
 	for (var i = 0; i < arguments.length; i++) {
-		url += 'we_cmd[' + i + ']=' + encodeURI(arguments[i]);
+		url += 'we_cmd[]=' + encodeURI(arguments[i]);
 		args.push(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += '&';
@@ -90,8 +90,8 @@ function we_cmd() {
 			if (WE().consts.tables.OBJECT_TABLE !== 'OBJECT_TABLE') {
 				self.wizbody.document.we_form.elements['v[import_type]'][0].checked = true;
 			}
-			if (self.wizbody.document.we_form.elements['v[docCategories]'].value.indexOf(',' + arguments[1] + ',') == -1) {
-				var cats = arguments[1].split(/,/);
+			if (self.wizbody.document.we_form.elements['v[docCategories]'].value.indexOf(',' + args[1] + ',') == -1) {
+				var cats = args[1].split(/,/);
 				for (var i = 0; i < cats.length; i++) {
 					if (cats[i] && (self.wizbody.document.we_form.elements['v[docCategories]'].value.indexOf(',' + cats[i] + ',') == -1)) {
 						if (self.wizbody.document.we_form.elements['v[docCategories]'].value) {
@@ -107,9 +107,9 @@ function we_cmd() {
 			}
 			break;
 		case 'delete_docCat':
-			if (self.wizbody.document.we_form.elements['v[docCategories]'].value.indexOf(',' + arguments[1] + ',') != -1) {
+			if (self.wizbody.document.we_form.elements['v[docCategories]'].value.indexOf(',' + args[1] + ',') != -1) {
 				if (self.wizbody.document.we_form.elements['v[docCategories]'].value) {
-					re = new RegExp(',' + arguments[1] + ',');
+					re = new RegExp(',' + args[1] + ',');
 					self.wizbody.document.we_form.elements['v[docCategories]'].value = self.wizbody.document.we_form.elements['v[docCategories]'].value.replace(re, ',');
 					if (self.wizbody.document.we_form.elements['v[docCategories]'].value == ',') {
 						self.wizbody.document.we_form.elements['v[docCategories]'].value = '';
@@ -120,8 +120,8 @@ function we_cmd() {
 			break;
 		case 'add_objCat':
 			self.wizbody.document.we_form.elements['v[import_type]'][1].checked = true;
-			if (self.wizbody.document.we_form.elements['v[objCategories]'].value.indexOf(',' + arguments[1] + ',') == -1) {
-				var cats = arguments[1].split(/,/);
+			if (self.wizbody.document.we_form.elements['v[objCategories]'].value.indexOf(',' + args[1] + ',') == -1) {
+				var cats = args[1].split(/,/);
 				for (var i = 0; i < cats.length; i++) {
 					if (cats[i] && (self.wizbody.document.we_form.elements['v[objCategories]'].value.indexOf(',' + cats[i] + ',') == -1)) {
 						if (self.wizbody.document.we_form.elements['v[objCategories]'].value) {
@@ -137,9 +137,9 @@ function we_cmd() {
 			}
 			break;
 		case 'delete_objCat':
-			if (self.wizbody.document.we_form.elements['v[objCategories]'].value.indexOf(',' + arguments[1] + ',') != -1) {
+			if (self.wizbody.document.we_form.elements['v[objCategories]'].value.indexOf(',' + args[1] + ',') != -1) {
 				if (self.wizbody.document.we_form.elements['v[objCategories]'].value) {
-					re = new RegExp(',' + arguments[1] + ',');
+					re = new RegExp(',' + args[1] + ',');
 					self.wizbody.document.we_form.elements['v[objCategories]'].value = self.wizbody.document.we_form.elements['v[objCategories]'].value.replace(re, ',');
 					if (self.wizbody.document.we_form.elements['v[objCategories]'].value == ',') {
 						self.wizbody.document.we_form.elements['v[objCategories]'].value = '';

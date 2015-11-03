@@ -43,7 +43,7 @@ function we_cmd() {
 	}
 	switch (args[0]) {
 		case "selectBranch":
-			document.we_form.cmd.value = arguments[0];
+			document.we_form.cmd.value = args[0];
 			submitForm();
 			break;
 		case "add_search":

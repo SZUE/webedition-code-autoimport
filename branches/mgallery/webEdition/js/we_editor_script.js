@@ -333,14 +333,11 @@ function we_cmd() {
 			break;
 		case "spellcheck":
 			if (WE_SPELLCHECKER_MODULE_DIR) {
-				var win = new (WE().util.jsWindow)(window, WE_SPELLCHECKER_MODULE_DIR + "/weSpellchecker.php?editname=" + (arguments[1]), "spellcheckdialog", -1, -1, 500, 450, true, false, true, false);
+				var win = new (WE().util.jsWindow)(window, WE_SPELLCHECKER_MODULE_DIR + "/weSpellchecker.php?editname=" + (args[1]), "spellcheckdialog", -1, -1, 500, 450, true, false, true, false);
 			}
 			break;
 			// it must be the last command
 		case "delete_navi":
-			for (i = 0; i < arguments.length; i++) {
-				arguments[i] = encodeURIComponent(arguments[i]);
-			}
 			if (!confirm(g_l.confirm_navDel)) {
 				break;
 			}

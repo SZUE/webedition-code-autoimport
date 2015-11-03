@@ -73,7 +73,7 @@ function we_cmd() {
 				top.we_showMessage(WE().consts.g_l.customer.admin.no_field, WE().consts.message.WE_MESSAGE_ERROR, window);
 			} else {
 				if (confirm(WE().consts.g_l.customer.admin.del_fild_question)) {
-					document.we_form.cmd.value = arguments[0];
+					document.we_form.cmd.value = args[0];
 					submitForm();
 				}
 			}
@@ -82,7 +82,7 @@ function we_cmd() {
 			field = document.we_form.fields_select.value;
 			branch = document.we_form.branch.value;
 			if (confirm(WE().consts.g_l.customer.admin.reset_edit_order_question)) {
-				document.we_form.cmd.value = arguments[0];
+				document.we_form.cmd.value = args[0];
 				submitForm();
 			}
 			break;
@@ -92,7 +92,7 @@ function we_cmd() {
 			if (field === "") {
 				top.we_showMessage(WE().consts.g_l.customer.admin.no_field, WE().consts.message.WE_MESSAGE_ERROR, window);
 			} else {
-				document.we_form.cmd.value = arguments[0];
+				document.we_form.cmd.value = args[0];
 				submitForm();
 			}
 			break;
@@ -102,7 +102,7 @@ function we_cmd() {
 			if (field === "") {
 				top.we_showMessage(WE().consts.g_l.customer.admin.no_field, WE().consts.message.WE_MESSAGE_ERROR, window);
 			} else {
-				document.we_form.cmd.value = arguments[0];
+				document.we_form.cmd.value = args[0];
 				submitForm();
 			}
 			break;
@@ -123,7 +123,7 @@ function we_cmd() {
 			if (field_name === "" || field_name.match(/[^a-zA-Z0-9\_]/) !== null) {
 				top.we_showMessage(WE().consts.g_l.customer.admin.we_fieldname_notValid, WE().consts.message.WE_MESSAGE_ERROR, window);
 			} else {
-				document.we_form.cmd.value = arguments[0];
+				document.we_form.cmd.value = args[0];
 				submitForm("field_editor");
 			}
 			break;

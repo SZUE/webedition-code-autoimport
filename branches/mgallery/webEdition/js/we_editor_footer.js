@@ -123,12 +123,12 @@ function we_cmd() {
 		case "save_document":
 			if (doc.isTemplate) {
 				if (doc.isFolder) {
-					top.we_cmd("save_document", we_transaction, 0, 1, "", "", arguments[6] ? arguments[6] : "", arguments[7] ? arguments[7] : "");
+					top.we_cmd("save_document", we_transaction, 0, 1, "", "", args[6] ? args[6] : "", args[7] ? args[7] : "");
 				} else {
-					top.we_cmd("save_document", we_transaction, 0, 0, "", arguments[5] ? arguments[5] : "", arguments[6] ? arguments[6] : "", arguments[7] ? arguments[7] : "");
+					top.we_cmd("save_document", we_transaction, 0, 0, "", args[5] ? args[5] : "", args[6] ? args[6] : "", args[7] ? args[7] : "");
 				}
 			} else {
-				top.we_cmd("save_document", we_transaction, 0, 1, (doc.makeSameDocCheck && _EditorFrame.getEditorMakeSameDoc() ? 1 : 0), arguments[5] ? arguments[5] : "", arguments[6] ? arguments[6] : "", arguments[7] ? arguments[7] : "");
+				top.we_cmd("save_document", we_transaction, 0, 1, (doc.makeSameDocCheck && _EditorFrame.getEditorMakeSameDoc() ? 1 : 0), args[5] ? args[5] : "", args[6] ? args[6] : "", args[7] ? args[7] : "");
 			}
 			return;
 		case "object_obj_search":

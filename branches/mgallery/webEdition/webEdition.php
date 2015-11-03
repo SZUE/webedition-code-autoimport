@@ -364,15 +364,18 @@ foreach($jsCmd as $cur){
 ?>
 <script><!--
 	function we_cmd() {
-	var i = 0,
-		scope = window;
+	var	scope = window,
+					i=0;
 
 	if(typeof arguments[0] === 'object'){
 		scope = arguments[0];
 		i++;
 	}
 	var args = Array.prototype.slice.call(arguments,i);
-	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[]=" + args.map(encodeURIComponent).join("&we_cmd[]=");
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	for (i=0; i < args.length; i++) {
+		url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i])+(i < (args.length - 1)?"&":"");
+	}
 
 	arguments = args; // TODO: change arguments to args in the following
 

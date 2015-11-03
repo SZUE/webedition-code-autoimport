@@ -66,7 +66,7 @@ function we_cmd() {
 	switch (args[0]) {
 
 		case 'switch_edit_page':
-			_EditorFrame.setEditorEditPageNr(arguments[1]);
+			_EditorFrame.setEditorEditPageNr(args[1]);
 			parent.we_cmd.apply(this, args);
 			break;
 	}

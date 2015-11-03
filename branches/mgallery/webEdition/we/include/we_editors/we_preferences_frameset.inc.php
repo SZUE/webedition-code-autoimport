@@ -69,7 +69,7 @@ function we_cmd() {
 END_OF_SCRIPT;
 foreach($GLOBALS['tabs'] as $name => $perm){
 	if(empty($perm) || permissionhandler::hasPerm($perm)){
-		$_javascript.='case "' . $name . '":' . "\n";
+		$_javascript.='case "' . $name . '":';
 	}
 }
 foreach($GLOBALS['tabs'] as $name => $perm){

@@ -114,8 +114,8 @@ function we_cmd() {
 			new (WE().util.jsWindow)(window, url, "we_fileselector", -1, -1,WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "switchPage":
-			document.we_form.cmd.value = arguments[0];
-			document.we_form.branch.value = arguments[1];
+			document.we_form.cmd.value = args[0];
+			document.we_form.branch.value = args[1];
 			submitForm();
 			break;
 		case "show_search":
