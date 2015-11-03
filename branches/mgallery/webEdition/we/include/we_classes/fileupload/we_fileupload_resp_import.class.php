@@ -31,40 +31,42 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 	protected function initByHttp(){
 		parent::initByHttp();
 
+		if(($catarray = we_base_request::_(we_base_request::STRING_LIST, 'fu_doc_categories', false))){
+			$cats = array();
+			foreach($catarray as $cat){
+				// bugfix Workarround #700
+				$cats[] = (is_numeric($cat) ?
+								$cat :
+								path_to_id($cat, CATEGORY_TABLE, $GLOBALS['DB_WE']));
+			}
+			$categories = implode(',', $cats);
+		} else {
+			$categories = we_base_request::_(we_base_request::INTLIST, 'fu_doc_categories', we_base_request::NOT_VALID);
+		}
+
 		$this->docVars = array_filter(array(
-			'transaction' => we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', $this->docVars['transaction']),
-			'importMetadata' => we_base_request::_(we_base_request::BOOL, 'fu_doc_importMetadata', $this->docVars['importMetadata']),
-			'isSearchable' => we_base_request::_(we_base_request::BOOL, 'fu_doc_isSearchable', $this->docVars['isSearchable']),
-			'widthSelect' => we_base_request::_(we_base_request::STRING, 'fu_doc_widthSelect', $this->docVars['widthSelect']),
-			'heightSelect' => we_base_request::_(we_base_request::STRING, 'fu_doc_heightSelect', $this->docVars['heightSelect']),
-			'quality' => we_base_request::_(we_base_request::INT, 'fu_doc_quality', $this->docVars['quality']),
-			'keepRatio' => we_base_request::_(we_base_request::BOOL, 'fu_doc_keepRatio', $this->docVars['keepRatio']),
-			'degrees' => we_base_request::_(we_base_request::INT, 'fu_doc_degrees', $this->docVars['degrees']),
-			// unset the followng entries when not in request!
-			'title' => we_base_request::_(we_base_request::STRING, 'fu_doc_title', we_base_request::NOT_VALID),
-			'alt' => we_base_request::_(we_base_request::STRING, 'fu_doc_alt', we_base_request::NOT_VALID),
-			'thumbs' => we_base_request::_(we_base_request::INTLIST, 'fu_doc_thumbs', we_base_request::NOT_VALID),
-			'width' => we_base_request::_(we_base_request::INT, 'fu_doc_width', we_base_request::NOT_VALID),
-			'height' => we_base_request::_(we_base_request::INT, 'fu_doc_height', we_base_request::NOT_VALID),
-				), function($var){
-			return $var !== we_base_request::NOT_VALID;
-		});
+				'transaction' => we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', $this->docVars['transaction']),
+				'importMetadata' => we_base_request::_(we_base_request::BOOL, 'fu_doc_importMetadata', $this->docVars['importMetadata']),
+				'isSearchable' => we_base_request::_(we_base_request::BOOL, 'fu_doc_isSearchable', $this->docVars['isSearchable']),
+				'widthSelect' => we_base_request::_(we_base_request::STRING, 'fu_doc_widthSelect', $this->docVars['widthSelect']),
+				'heightSelect' => we_base_request::_(we_base_request::STRING, 'fu_doc_heightSelect', $this->docVars['heightSelect']),
+				'quality' => we_base_request::_(we_base_request::INT, 'fu_doc_quality', $this->docVars['quality']),
+				'keepRatio' => we_base_request::_(we_base_request::BOOL, 'fu_doc_keepRatio', $this->docVars['keepRatio']),
+				'degrees' => we_base_request::_(we_base_request::INT, 'fu_doc_degrees', $this->docVars['degrees']),
+				// unset the followng entries when not in request!
+				'categories' => $categories,
+				'title' => we_base_request::_(we_base_request::STRING, 'fu_doc_title', we_base_request::NOT_VALID),
+				'alt' => we_base_request::_(we_base_request::STRING, 'fu_doc_alt', we_base_request::NOT_VALID),
+				'thumbs' => we_base_request::_(we_base_request::INTLIST, 'fu_doc_thumbs', we_base_request::NOT_VALID),
+				'width' => we_base_request::_(we_base_request::INT, 'fu_doc_width', we_base_request::NOT_VALID),
+				'height' => we_base_request::_(we_base_request::INT, 'fu_doc_height', we_base_request::NOT_VALID),
+			), function($var){return $var !== we_base_request::NOT_VALID;}
+		);
 	}
 
 	protected function postprocess(){
 		$we_doc = $this->getWebeditionDocument();
 		//TODO: make concise mime and extension test here, taking uploader's typecondition from session
-		/*
-		  if($this->typeCondition['accepted']['mime'] && !in_array($this->fileVars['weFileCt'], $this->typeCondition['accepted']['mime'])){
-		  if(!empty($this->fileVars['weFileName'])){
-		  $we_alerttext = g_l('alert', '[wrong_file][' . $we_doc->ContentType . ']');
-		  } else {
-		  $we_alerttext = g_l('alert', '[no_file_selected]');
-		  }
-		  }
-		 *
-		 */
-
 		$response = $this->writeWebeditionDocument($we_doc);
 
 		if($response['success']){
@@ -115,6 +117,17 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 		// make new we_doc
 		$we_ContentType = getContentTypeFromFile($this->fileVars['weFileName']);
 		include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
+		
+		//TODO: check if $we_doc exists: depends on perms!!
+		/*
+		if(!$we_doc){
+			return array(
+				'error' => g_l('importFiles', '[no_perms]'),
+				'success' => false,
+				'weDoc' => ''
+			);
+		}
+		 */
 
 		// set filename, ext and path
 		$filename = we_import_functions::correctFilename($this->fileVars['weFileName']);
@@ -170,6 +183,58 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 	}
 
 	protected function writeWebeditionDocument($we_doc){
+		$error = false;
+		switch($we_doc->ContentType){
+			case we_base_ContentTypes::IMAGE:
+				if(!permissionhandler::hasPerm('NEW_GRAFIK')){
+					$error = true;
+				}
+				break;
+			case we_base_ContentTypes::HTML:
+				if(!permissionhandler::hasPerm('NEW_HTML')){
+					$error = true;
+				}
+				break;
+			case we_base_ContentTypes::FLASH:
+				if(!permissionhandler::hasPerm('NEW_FLASH')){
+					$error = true;
+				}
+				break;
+			case we_base_ContentTypes::QUICKTIME:
+				if(!permissionhandler::hasPerm('NEW_QUICKTIME')){
+					$error = true;
+				}
+				break;
+			case we_base_ContentTypes::JS:
+				if(!permissionhandler::hasPerm('NEW_JS')){
+					$error = true;
+				}
+				break;
+			case we_base_ContentTypes::CSS:
+				if(!permissionhandler::hasPerm('NEW_CSS')){
+					$error = true;
+				}
+				break;
+			case we_base_ContentTypes::TEXT:
+				if(!permissionhandler::hasPerm('NEW_TEXT')){
+					$error = true;
+				}
+				break;
+			default:
+				if(!permissionhandler::hasPerm('NEW_SONSTIGE')){
+					$error = true;
+				}
+				break;
+		}
+		if($error){
+			return array(
+				'filename' => $this->fileVars['weFileName'],
+				'error' => g_l('importFiles', '[no_perms]'),
+				'success' => false,
+				'weDoc' => ''
+			);
+		}
+
 		$tempFile = $_SERVER['DOCUMENT_ROOT'] . $this->fileVars['fileTemp'];
 		// TODO: there are more bad combinations to consider
 		if($we_doc->ContentType === we_base_ContentTypes::IMAGE){
@@ -198,6 +263,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 				'weDoc' => ''
 			);
 		}
+
 		switch($we_doc->ContentType){
 			case we_base_ContentTypes::IMAGE:
 				if($this->docVars['importMetadata']){
@@ -217,10 +283,11 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 				$we_doc->Table = FILE_TABLE;
 				$this->fileVars['weFileSize'] = $this->fileVars['weFileSize'] < 1 ? 1 : $this->fileVars['weFileSize'];
 				$we_doc->setElement('filesize', $this->fileVars['weFileSize'], 'attrib');
-				/*
-				  //now change the category
-				  $we_doc->Category = isset($this->docVars['categories']) && $this->docVars['categories'] = $this->docVars['categories'] : $we_doc->Category;
-				 */
+
+				if(permissionhandler::hasPerm("EDIT_KATEGORIE")){
+					$we_doc->Category = isset($this->docVars['categories']) && $this->docVars['categories'] ? $this->docVars['categories'] : $we_doc->Category;
+				}
+			
 				if($this->docVars['importMetadata'] && $we_doc->Extension === '.pdf'){
 					$we_doc->setMetaDataFromFile($tempFile);
 				}

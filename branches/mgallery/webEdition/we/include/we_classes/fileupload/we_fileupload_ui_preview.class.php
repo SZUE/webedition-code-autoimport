@@ -23,7 +23,19 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_fileupload_ui_preview extends we_fileupload_ui_base{
-	protected $layout = 'vertical';
+	protected $formElements = array(
+		'uploader' => array('set' => false, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => true),
+		'importMeta' => array('set' => false, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => true),
+		'isSearchable' => array('set' => false, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => true),
+		'categories' => array('set' => false, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => true),
+		'parentId' => array('set' => false, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => true),
+		'sameName' => array('set' => false, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => true),
+		'attributes' => array('set' => false, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => true),
+		'thumbnails' => array('set' => false, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => true),
+		'imageResize' => array('set' => false, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => true),
+		'imageRotate' => array('set' => false, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => true),
+		'imageQuality' => array('set' => false, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => true),
+	);
 	protected $isExternalBtnUpload = false;
 	protected $parentID = array(
 		'setField' => false,
@@ -109,9 +121,297 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 		));
 	}
 
-	protected function getFormImportMeta(){
-		return we_html_forms::checkboxWithHidden(true, 'fu_doc_importMetadata', g_l('importFiles', '[import_metadata]'), false, 'defaultfont', '');
+	public function getFormImportMeta(){
+		$name = 'importMeta';
+		if(!isset($this->formElements[$name]) || !$this->formElements[$name]['set']){
+			return false;
+		}
+
+		$html = we_html_forms::checkboxWithHidden(true, 'fu_doc_importMetadata', g_l('importFiles', '[import_metadata]'), false, 'defaultfont', '');
+		$headline = 'Metadaten';
+		
+		return $this->formElements[$name]['multiIconBox'] ? $this->makeMultiIconRow($name, $headline, $html) : $html;
 	}
+
+	function getFormCategories($categories = ''){
+		$name = 'categories';
+		if(!isset($this->formElements[$name]) || !$this->formElements[$name]['set'] || !permissionhandler::hasPerm("NEW_GRAFIK")){
+			return;
+		}
+
+		$_width_size = 378;
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);opener.selectCategories();')");
+		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;if(typeof \'selectCategories\' !== \'undefined\'){selectCategories()};'));
+		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js');
+		$variant_js = '
+			var categories_edit = new multi_edit("categoriesDiv",document.forms[0],0,"' . $del_but . '",' . ($_width_size - 10) . ',false);
+			categories_edit.addVariant();';
+
+		$_cats = makeArrayFromCSV($categories);
+		if(is_array($_cats)){
+			foreach($_cats as $cat){
+				$variant_js .='
+categories_edit.addItem();
+categories_edit.setItem(0,(categories_edit.itemCount-1),"' . id_to_path($cat, CATEGORY_TABLE) . '");';
+			}
+		}
+
+		$variant_js .= 'categories_edit.showVariant(0);';
+		$js .= we_html_element::jsElement($variant_js);
+
+		$table = new we_html_table(
+			array(
+			'id' => 'CategoriesBlock',
+			'style' => 'display: block;',
+			'class' => 'default withSpace'
+			), 2, 1);
+
+		$table->setColContent(0, 0, we_html_element::htmlDiv(
+				array(
+					'id' => 'categoriesDiv',
+					'class' => 'blockWrapper',
+					'style' => 'width: ' . ($_width_size) . 'px; height: 60px; border: #AAAAAA solid 1px;'
+		)));
+		$table->setCol(1, 0, array('colspan' => 2, 'style' => 'text-align:right'
+			), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut
+		);
+
+		$js .= we_html_element::jsElement('
+function removeAllCats(){
+	if(categories_edit.itemCount>0){
+		while(categories_edit.itemCount>0){
+			categories_edit.delItem(categories_edit.itemCount);
+		}
+		categories_edit.showVariant(0);
+		selectCategories();
+	}
+}
+
+function addCat(paths){
+	var path = paths.split(",");
+	for (var i = 0; i < path.length; i++) {
+		if(path[i]!="") {
+			categories_edit.addItem();
+			categories_edit.setItem(0,(categories_edit.itemCount-1),path[i]);
+		}
+	}
+	categories_edit.showVariant(0);
+	//selectCategories();
+}
+
+function selectCategories() {
+	var cats = [];
+	for(var i=0;i<categories_edit.itemCount;i++){
+		cats.push(categories_edit.form.elements[categories_edit.name+"_variant0_"+categories_edit.name+"_item"+i].value);
+	}
+	categories_edit.form.fu_doc_categories.value=cats.join(",");
+}');
+
+		$html = $table->getHtml() . $js . we_html_element::htmlHidden('fu_doc_categories', '');
+		$headline = g_l('global', '[categorys]');
+
+		return $this->formElements[$name]['multiIconBox'] ? $this->makeMultiIconRow($name, $headline, $html) : $html;
+	}
+
+	public function getFormIsSearchable($isMultiIconBox = true){
+		$name = 'isSearchable';
+		if(!isset($this->formElements[$name]) || !$this->formElements[$name]['set']){
+			return;
+		}
+
+		$html = we_html_element::htmlDiv(array(), we_html_forms::checkboxWithHidden(true, 'fu_doc_isSearchable', g_l('importFiles', '[imgsSearchable_label]'), false, 'defaultfont', ''));
+		$headline = g_l('importFiles', '[imgsSearchable]');
+
+		return $this->formElements[$name]['multiIconBox'] ? $this->makeMultiIconRow($name, $headline, $html) : $html;
+	}
+
+	public function getFormSameName(){
+		$name = 'sameName';
+		if(!isset($this->formElements[$name]) || !$this->formElements[$name]['set']){
+			return;
+		}
+
+		$html = we_html_element::htmlDiv(array('style' => 'margin:10px 0 0 0;'),
+			we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[sameName_expl]'), we_html_tools::TYPE_INFO, 380) .
+			we_html_element::htmlDiv(array('style' => 'margin-top:10px'), //g_l('newFile', '[caseFileExists]') . '<br/>' .
+				we_html_forms::radiobutton('overwrite', false, "sameName", g_l('importFiles', '[sameName_overwrite]'), false, "defaultfont", 'document.we_form.fu_file_sameName.value=this.value;') .
+				we_html_forms::radiobutton('rename', true, "sameName", g_l('importFiles', '[sameName_rename]'), false, "defaultfont", 'document.we_form.fu_file_sameName.value=this.value;') .
+				we_html_forms::radiobutton('nothing', false, "sameName", g_l('importFiles', '[sameName_nothing]'), false, "defaultfont", 'document.we_form.fu_file_sameName.value=this.value;')
+			) .
+			we_html_tools::hidden('fu_file_sameName', 'rename')
+		);
+
+		$headline = g_l('importFiles', '[sameName_headline]');
+
+		return $this->formElements[$name]['multiIconBox'] ? $this->makeMultiIconRow($name, $headline, $html) : $html;
+	}
+
+	public function getFormParentID($formName = 'we_form'){// TODO: set formName as class prop
+		$name = 'parentId';
+		if(!isset($this->formElements[$name]) || !$this->formElements[$name]['set']){
+			return;
+		}
+
+		if(!$this->parentID['setFixed'] && is_numeric($this->parentID['preset'])){
+			$yuiSuggest = &weSuggest::getInstance();
+			$cmd1 = "document." . $formName . ".fu_file_parentID.value";
+			$wecmdenc2 = we_base_request::encCmd("document." . $formName . ".fu_file_parentID.value");
+			$wecmdenc3 = ''; //we_base_request::encCmd();
+			$startID = $this->parentID['preset'] !== false ? $this->parentID['preset'] : (IMAGESTARTID_DEFAULT ? : 0);
+			$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "',''," . $startID . ",'" . we_base_ContentTypes::FOLDER . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+			$yuiSuggest->setAcId("fu_file_parentID");
+			$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
+			$yuiSuggest->setInput("fu_file_parentID", $startID ? id_to_path($startID, FILE_TABLE) : '/', '', false);
+			$yuiSuggest->setMaxResults(10);
+			$yuiSuggest->setMayBeEmpty(true);
+			$yuiSuggest->setResult("fu_file_parentID", $startID);
+			$yuiSuggest->setSelector(weSuggest::DirSelector);
+			$yuiSuggest->setWidth(326);
+			$yuiSuggest->setSelectButton($but);
+
+			$html = $yuiSuggest->getHTML();
+		} else {
+			if(is_numeric($this->parentID['preset'])){
+				$id = $this->parentID['preset'];
+				$path = id_to_path($this->parentID['preset']);
+			} else {
+				$id = path_to_id($this->parentID['preset']);
+				$path = $this->parentID['preset'];
+			}
+
+			$html = we_html_element::htmlInput(array('value' => $path, 'disabled' => 'disabled')) .
+				we_html_button::create_button(we_html_button::SELECT, '', '', '', '', '', '', true) .
+				we_html_element::htmlHiddens(array(
+					'fu_file_parentID' => $id,
+				));
+		}
+
+		$headline = g_l('importFiles', '[destination_dir]');
+
+		return $this->formElements[$name]['multiIconBox'] ? $this->makeMultiIconRow($name, $headline, $html) : $html;
+	}
+
+	public function getFormThumbnails($thumbs = ''){
+		$name = 'thumbnails';
+		if(!isset($this->formElements[$name]) || !$this->formElements[$name]['set'] || !permissionhandler::hasPerm("NEW_GRAFIK")){
+			return;
+		}
+
+		$thumbnails = new we_html_select(array(
+			'multiple' => 'multiple',
+			'name' => 'thumbnails_tmp',
+			'id' => 'thumbnails_tmp',
+			'class' => 'defaultfont',
+			'size' => 6,
+			'style' => 'width: 378px;',
+			'onchange' => "this.form.fu_doc_thumbs.value='';for(var i=0;i<this.options.length;i++){if(this.options[i].selected){this.form.fu_doc_thumbs.value +=(this.options[i].value + ',');}};this.form.fu_doc_thumbs.value=this.form.thumbs.value.replace(/^(.+),$/,'$1');"
+		));
+		$DB_WE = new DB_WE();
+		$DB_WE->query('SELECT ID,Name,description FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
+
+		$thumbsArr = explode(',', trim($thumbs, ' ,'));
+		while($DB_WE->next_record()){
+			$attribs = array(
+				'title' => $DB_WE->f('description'),
+			);
+			$attribs = in_array($DB_WE->f('ID'), $thumbsArr) ? array_merge($attribs, array('selected' => 'selected')) : $attribs;
+			$thumbnails->addOption($DB_WE->f('ID'), $DB_WE->f('Name'), $attribs);
+		}
+
+		$html = g_l('importFiles', '[thumbnails]') . "<br/><br/>" . $thumbnails->getHtml() . we_html_element::htmlHidden('fu_doc_thumbs', $thumbs);
+		$headline = g_l('thumbnails', '[create_thumbnails]');
+
+		return $this->formElements[$name]['multiIconBox'] ? $this->makeMultiIconRow($name, $headline, $html) : $html;
+	}
+
+	public function getFormImageAttributes(){
+		$name = 'attributes';
+		if(!isset($this->formElements[$name]) || !$this->formElements[$name]['set'] || !permissionhandler::hasPerm("NEW_GRAFIK")){
+			return;
+		}
+
+		$html = we_html_element::htmlDiv(array(), we_html_element::htmlLabel(array(), 'Alternativ Text') . '<br>' . we_html_tools::htmlTextInput('fu_doc_alt', 24, '', '', '', 'text', 378)) .
+			we_html_element::htmlDiv(array(), we_html_element::htmlLabel(array(), 'Titel') . '<br>' . we_html_tools::htmlTextInput('fu_doc_title', 24, '', '', '', 'text', 378));
+		$headline = 'Attribute';
+
+		return $this->formElements[$name]['multiIconBox'] ? $this->makeMultiIconRow($name, $headline, $html) : $html;
+	}
+
+	public function getFormImageResize($width = '', $height = '', $unitWidth = 'pixel', $unitHeight = 'pixel', $ratio = false){
+		$name = 'imageResize';
+		if(!isset($this->formElements[$name]) || !$this->formElements[$name]['set'] || !permissionhandler::hasPerm("NEW_GRAFIK")){
+			return;
+		}
+
+		$widthInput = we_html_tools::htmlTextInput("fu_doc_width", 10, $width, '', '', "text", 60);
+		$heightInput = we_html_tools::htmlTextInput("fu_doc_height", 10, $height, '', '', "text", 60);
+		$widthSelect = '<select size="1" class="weSelect" name="fu_doc_widthSelect"><option value="pixel"' . ($unitWidth === 'pixel' ? ' selected="selected"' : '') . '>' . g_l('weClass', '[pixel]') . '</option><option value="percent"' . ($unitWidth !== 'pixel' ? ' selected="selected"' : '') . '>' . g_l('weClass', '[percent]') . '</option></select>';
+		$heightSelect = '<select size="1" class="weSelect" name="fu_doc_heightSelect"><option value="pixel"' .  ($unitHeight === 'pixel' ? ' selected="selected"' : '') . '>' . g_l('weClass', '[pixel]') . '</option><option value="percent"' . ($unitHeight !== 'pixel' ? ' selected="selected"' : '') . '>' . g_l('weClass', '[percent]') . '</option></select>';
+		$ratio_checkbox = we_html_forms::checkboxWithHidden($ratio, 'fu_doc_keepRatio', g_l('thumbnails', '[ratio]'), false, 'defaultfont', '');
+
+		$html = '<table>
+			<tr>
+			<td class="defaultfont">' . g_l('weClass', '[width]') . ':</td>
+			<td>' . $widthInput . '</td>
+			<td>' . $widthSelect . '</td>
+			</tr>
+			<tr>
+			<td class="defaultfont">' . g_l('weClass', '[height]') . ':</td>
+			<td>' . $heightInput . '</td>
+			<td>' . $heightSelect . '</td>
+			</tr>
+			<tr>
+			<td colspan="3">' . $ratio_checkbox . '</td>
+			</tr>
+			</table>';
+
+		$headline = g_l('weClass', '[resize]');
+
+		return $this->formElements[$name]['multiIconBox'] ? $this->makeMultiIconRow($name, $headline, $html) : $html;
+	}
+
+	public function getFormImageRotate($degrees = 0){
+		$name = 'imageRotate';
+		if(!isset($this->formElements[$name]) || !$this->formElements[$name]['set'] || !permissionhandler::hasPerm("NEW_GRAFIK")){
+			return;
+		}
+
+		$_radio0 = we_html_forms::radiobutton(0, $degrees == 0, "fu_doc_degrees", g_l('weClass', '[rotate0]'));
+		$_radio180 = we_html_forms::radiobutton(180, $degrees == 180, "fu_doc_degrees", g_l('weClass', '[rotate180]'));
+		$_radio90l = we_html_forms::radiobutton(90, $degrees == 90, "fu_doc_degrees", g_l('weClass', '[rotate90l]'));
+		$_radio90r = we_html_forms::radiobutton(270, $degrees == 270, "fu_doc_degrees", g_l('weClass', '[rotate90r]'));
+
+		$html = $_radio0 . $_radio180 . $_radio90l . $_radio90r;
+		$headline = g_l('weClass', '[rotate]');
+
+		return $this->formElements[$name]['multiIconBox'] ? $this->makeMultiIconRow($name, $headline, $html) : $html;
+	}
+
+	public function getFormImageQuality($quality = 8){
+		$name = 'imageQuality';
+		if(!isset($this->formElements[$name]) || !$this->formElements[$name]['set']  || !permissionhandler::hasPerm("NEW_GRAFIK")){
+			return;
+		}
+
+		$html = we_base_imageEdit::qualitySelect("fu_doc_quality", $quality);
+		$headline = g_l('weClass', '[quality]');
+
+		return $this->formElements[$name]['multiIconBox'] ? $this->makeMultiIconRow($name, $headline, $html) : $html;
+	}
+
+	protected function makeMultiIconRow($formname, $headline, $html){
+		$row = array(
+			'headline' => $headline,
+			'html' => $html,
+			'class' => 'paddingTop',
+			//'noline' => ,//$this->formElements[$formname]['noline'],
+			'forceRightHeadline' => $this->formElements[$formname]['rightHeadline'],
+			'space' => $this->formElements[$formname]['space']
+		);
+
+		return $this->formElements[$formname]['noline'] ? array_merge($row, array('noline' => true)) : $row;
+	}
+
 
 	public function getJsBtnCmd($btn = 'upload'){
 		$call = 'window.we_FileUpload.' . ($btn === 'upload' ? 'startUpload()' : 'cancelUpload()');
@@ -137,5 +437,9 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 
 	public function setFieldParentID($parentID = array()){
 		$this->parentID = array_merge($this->parentID, $parentID);
+	}
+
+	public function setFormElements($formElements = array()){
+		$this->formElements = array_merge($this->formElements, $formElements);
 	}
 }

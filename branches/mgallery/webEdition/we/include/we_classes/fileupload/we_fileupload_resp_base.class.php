@@ -26,15 +26,6 @@ class we_fileupload_resp_base extends we_fileupload{
 
 	protected $name = 'we_File';
 	protected $response = array('status' => '', 'fileNameTemp' => '', 'mimePhp' => 'none', 'message' => '', 'completed' => '', 'weDoc' => '');
-	protected $isUploadComplete = false; // obsolete?
-	//protected $fileNameTemp = ''; // obsolete?
-	protected $fileNameTempParts = array(// obsolete?
-		'path' => TEMP_PATH,
-		'prefix' => '',
-		'postfix' => '',
-		'missingDocRoot' => false,
-		'useFilenameFromUpload' => false
-	);
 	protected $typeCondition = array(
 		'accepted' => array(
 			'mime' => array(),
@@ -53,7 +44,6 @@ class we_fileupload_resp_base extends we_fileupload{
 		'partCount' => 1,
 		'formnum' => 0,
 		'formcount' => 0,
-		//'weIsUploadComplete' => false,//FIXME: do we really need so much vars for execution control?
 		'doCommitFile' => true
 	);
 	protected $fileVars = array(
@@ -70,6 +60,7 @@ class we_fileupload_resp_base extends we_fileupload{
 	protected $docVars = array(
 		'transaction' => '',
 		'importMetadata' => false,
+		'categories' => '',
 		'isSearchable' => true,
 		'title' => '',
 		'alt' => '',
@@ -100,29 +91,22 @@ class we_fileupload_resp_base extends we_fileupload{
 	protected function initByHttp(){
 		$this->FILES = $_FILES;
 		$this->fileVars = array_merge($this->fileVars, array_filter(array(
-			'genericFileNameTemp' => we_base_request::_(we_base_request::STRING, 'genericFilename', we_base_request::NOT_VALID),
-			'fileTemp' => we_base_request::_(we_base_request::STRING, 'weFileNameTemp', we_base_request::NOT_VALID),
-			'saveToID' => we_base_request::_(we_base_request::INT, "importToID", we_base_request::NOT_VALID),
-			//'importToID' => we_base_request::_(we_base_request::INT, "saveToDir", we_base_request::NOT_VALID),
-			'parentID' => we_base_request::_(we_base_request::URL, 'fu_file_parentID', we_base_request::NOT_VALID),
-			'weFileName' => we_base_request::_(we_base_request::STRING, 'weFileName', we_base_request::NOT_VALID),
-			'weFileSize' => we_base_request::_(we_base_request::INT, 'weFileSize', we_base_request::NOT_VALID),
-			'weFileCt' => we_base_request::_(we_base_request::STRING, 'weFileCt', we_base_request::NOT_VALID),
-			'sameName' => we_base_request::_(we_base_request::STRING, 'fu_file_sameName', we_base_request::NOT_VALID)
-						), function($var){
-					return $var !== we_base_request::NOT_VALID;
-				})
+				'genericFileNameTemp' => we_base_request::_(we_base_request::STRING, 'genericFilename', we_base_request::NOT_VALID),
+				'fileTemp' => we_base_request::_(we_base_request::STRING, 'weFileNameTemp', we_base_request::NOT_VALID),
+				'parentID' => we_base_request::_(we_base_request::URL, 'fu_file_parentID', we_base_request::NOT_VALID),
+				'weFileName' => we_base_request::_(we_base_request::STRING, 'weFileName', we_base_request::NOT_VALID),
+				'weFileSize' => we_base_request::_(we_base_request::INT, 'weFileSize', we_base_request::NOT_VALID),
+				'weFileCt' => we_base_request::_(we_base_request::STRING, 'weFileCt', we_base_request::NOT_VALID),
+				'sameName' => we_base_request::_(we_base_request::STRING, 'fu_file_sameName', we_base_request::NOT_VALID)
+			), function($var){return $var !== we_base_request::NOT_VALID;})
 		);
 		$this->controlVars = array_merge($this->controlVars, array_filter(array(
-			'doCommitFile' => we_base_request::_(we_base_request::BOOL, 'doCommitFile', true),
-			'partNum' => we_base_request::_(we_base_request::INT, 'wePartNum', we_base_request::NOT_VALID),
-			'partCount' => we_base_request::_(we_base_request::INT, 'wePartCount', we_base_request::NOT_VALID),
-			'formnum' => we_base_request::_(we_base_request::INT, "weFormNum", we_base_request::NOT_VALID),
-			'formcount' => we_base_request::_(we_base_request::INT, "weFormCount", we_base_request::NOT_VALID),
-						//'weIsUploadComplete' => false,//FIXME: do we really need so much vars for execution control?
-						), function($var){
-					return $var !== we_base_request::NOT_VALID;
-				})
+				'doCommitFile' => we_base_request::_(we_base_request::BOOL, 'doCommitFile', true),
+				'partNum' => we_base_request::_(we_base_request::INT, 'wePartNum', we_base_request::NOT_VALID),
+				'partCount' => we_base_request::_(we_base_request::INT, 'wePartCount', we_base_request::NOT_VALID),
+				'formnum' => we_base_request::_(we_base_request::INT, "weFormNum", we_base_request::NOT_VALID),
+				'formcount' => we_base_request::_(we_base_request::INT, "weFormCount", we_base_request::NOT_VALID),
+			), function($var){return $var !== we_base_request::NOT_VALID;})
 		);
 	}
 

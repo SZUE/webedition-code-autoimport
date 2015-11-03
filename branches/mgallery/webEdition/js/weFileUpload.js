@@ -1567,7 +1567,7 @@ var weFileUpload = (function () {
 				fd.append('step', 1);
 
 				fd.append('fu_file_sameName', sf.fu_file_sameName.value);
-				fd.append('fu_file_parentID', sf.importToID.value);
+				fd.append('fu_file_parentID', sf.fu_file_parentID.value);
 				fd.append('fu_doc_categories', sf.fu_doc_categories.value);
 				fd.append('fu_doc_importMetadata', sf.fu_doc_importMetadata.value);
 				fd.append('fu_doc_isSearchable', sf.fu_doc_isSearchable.value);
@@ -1759,7 +1759,7 @@ var weFileUpload = (function () {
 				try {
 					var activeFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
 
-					if (document.we_startform.importToID.value === activeFrame.EditorDocumentId && activeFrame.EditorEditPageNr === 16) {
+					if (document.we_startform.fu_doc_parentID.value === activeFrame.EditorDocumentId && activeFrame.EditorEditPageNr === 16) {
 						top.opener.top.we_cmd('switch_edit_page', 16, activeFrame.EditorTransaction);
 					}
 					top.opener.top.we_cmd('load', 'tblFile');

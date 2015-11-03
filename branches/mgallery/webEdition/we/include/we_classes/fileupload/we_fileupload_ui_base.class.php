@@ -81,16 +81,7 @@ class we_fileupload_ui_base extends we_fileupload{
 	protected $location = '';
 	protected $layout = 'horizontal';
 	public $moreFieldsToAppend = array();
-
-	protected $isUploadComplete = false;
 	protected $fileNameTemp = "";
-	protected $fileNameTempParts = array(
-		'path' => TEMP_PATH,
-		'prefix' => '',
-		'postfix' => '',
-		'missingDocRoot' => false,
-		'useFilenameFromUpload' => false
-	);
 
 	public function __construct($name){
 		parent::__construct($name);
@@ -298,7 +289,6 @@ doDragFromTree = function(text){
 			'weFileNameTemp' => '',
 			'weFileName' => '',
 			'weFileCt' => '',
-			//'weIsUploadComplete' => 0,
 		));
 	}
 

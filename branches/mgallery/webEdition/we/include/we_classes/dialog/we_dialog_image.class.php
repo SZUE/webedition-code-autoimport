@@ -235,7 +235,18 @@ class we_dialog_image extends we_dialog_base{
 		$this->weFileupload->setCallback('top.doOnImportSuccess(scope.weDoc);');
 		//$this->weFileupload->setIsInternalBtnUpload(true);
 		$this->weFileupload->setDimensions(array('dragWidth' => 374, 'inputWidth' => 378));
-		$this->weFileupload->setEditorProperties(array('isLayoutSmall' => true));
+		$this->weFileupload->setFormElements(array(
+			'parentId' => array('set' => true, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => true),
+			'sameName' => array('set' => true, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => false),
+			'importMeta' => array('set' => true, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => true),
+			'categories' => array('set' => true, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => false),
+			'isSearchable' => array('set' => true, 'multiIconBox' => true, 'space' => 130, 'rightHeadline' => false, 'noline' => false),
+			'attributes' => array('set' => true, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => false),
+			'thumbnails' => array('set' => true, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => false),
+			'imageResize' => array('set' => true, 'multiIconBox' => true, 'space' => 130, 'rightHeadline' => false, 'noline' => true),
+			'imageRotate' => array('set' => true, 'multiIconBox' => true, 'space' => 130, 'rightHeadline' => false, 'noline' => true),
+			'imageQuality' => array('set' => true, 'multiIconBox' => true, 'space' => 130, 'rightHeadline' => false, 'noline' => true),
+		));
 		$this->weFileupload->setEditorJS(array(
 			'writebackTarget' => '',
 			'customCallback' => '',
