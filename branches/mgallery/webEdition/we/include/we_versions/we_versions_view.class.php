@@ -308,7 +308,7 @@ var searchClass={
 		$modificationText = '';
 
 		$where = $this->searchclass->getWhere();
-		$_versions = $this->version->loadVersionsOfId($id, $table, $where);
+		$_versions = we_versions_version::loadVersionsOfId($id, $table, $where);
 		$resultCount = count($_versions);
 		$_SESSION['weS']['versions']['foundItems'] = $resultCount;
 

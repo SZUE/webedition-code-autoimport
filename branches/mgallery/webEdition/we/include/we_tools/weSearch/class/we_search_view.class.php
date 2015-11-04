@@ -531,7 +531,7 @@ WE().consts.g_l.weSearch = {
 
 	function getSearchDialogOptions($whichSearch){
 
-		$_table = new we_html_table(array('class'=>'withBigSpace','style' => 'width:500px',), 3, 2);
+		$_table = new we_html_table(array('class' => 'withBigSpace', 'style' => 'width:500px',), 3, 2);
 		$row = 0;
 		switch($whichSearch){
 			case self::SEARCH_DOCS :
@@ -1171,18 +1171,7 @@ WE().consts.g_l.weSearch = {
 									$where_OR .= ($where_OR ? 'OR ' : '') . $this->searchclass->searchInAllMetas($searchString);
 									break;
 								case 'ContentType':
-									/*
-									  if(strpos($searchString, "'#PDF#'") !== false){
-									  $searchString = str_replace(array("',#PDF'", "'#PDF#'"), '', $searchString);
-									  $where .= ' AND (' . $_table . '.ContentType IN (' . trim($searchString, ',') . ') OR ' . $_table . '.Extension = ".pdf") ';
-									  } else {
-									 *
-									 */
 									$where .= ' AND ' . $_table . '.ContentType IN (' . $searchString . ')';
-									/*
-									  }
-									 *
-									 */
 									break;
 								case 'IsUsed':
 									$where .= $this->searchclass->searchMediaLinks($searchString, $_view !== self::VIEW_ICONS);
@@ -1265,9 +1254,10 @@ WE().consts.g_l.weSearch = {
 									break;
 								case 'Status':
 								case 'Speicherart':
-									if($_table == FILE_TABLE || $_table == VERSIONS_TABLE || $_table == OBJECT_FILES_TABLE){
-										$w = $this->searchclass->getStatusFiles($searchString, $_table);
-										if($_table == VERSIONS_TABLE){
+									switch($_table){
+										case VERSIONS_TABLE:
+											$w = $this->searchclass->getStatusFiles($searchString, $_table);
+
 											$docTableChecked = (in_array(FILE_TABLE, $_tables)) ? true : false;
 											$objTableChecked = (defined('OBJECT_FILES_TABLE') && (in_array(OBJECT_FILES_TABLE, $_tables))) ? true : false;
 											if($objTableChecked && $docTableChecked){
@@ -1277,8 +1267,12 @@ WE().consts.g_l.weSearch = {
 											} elseif($objTableChecked){
 												$w .= ' AND v.documentTable="' . OBJECT_FILES_TABLE . '" ';
 											}
-										}
-										$where .= $w;
+
+											$where .= $w;
+											break;
+										case FILE_TABLE:
+										case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
+											$where .= $this->searchclass->getStatusFiles($searchString, $_table);
 									}
 									break;
 								case 'CreatorName':
@@ -1307,7 +1301,7 @@ WE().consts.g_l.weSearch = {
 						$where = ' AND (' . $where . ')' . we_search_search::ofFolderAndChildsOnly($folderID, $_table);
 					}
 
-					if($_table == VERSIONS_TABLE){
+					if($_table === VERSIONS_TABLE){
 						$workspacesTblFile = get_ws(FILE_TABLE, true);
 						if(defined('OBJECT_FILES_TABLE')){
 							$workspacesObjFile = get_ws(OBJECT_FILES_TABLE, true);
@@ -1331,11 +1325,11 @@ WE().consts.g_l.weSearch = {
 							$whereQuery .= $restrictUserQuery;
 							break;
 
-						case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : -1):
+						case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 							$whereQuery .= $restrictUserQuery;
 							break;
 
-						case (defined('OBJECT_TABLE') ? OBJECT_TABLE : -2):
+						case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
 							$whereQuery .= ' AND ((' . $this->db->escape($_table) . '.RestrictUsers=0 OR ' . $this->db->escape($_table) . '.RestrictUsers=' . intval($_SESSION["user"]["ID"]) . ') OR (FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',' . $this->db->escape($_table) . '.Users))) ';
 							break;
 						case VERSIONS_TABLE:
@@ -1429,12 +1423,12 @@ WE().consts.g_l.weSearch = {
 
 		foreach($_result as $k => $v){
 			$_result[$k]["Description"] = '';
-			if($_result[$k]['docTable'] == FILE_TABLE && $_result[$k]['Published'] >= $_result[$k]['ModDate'] && $_result[$k]['Published'] != 0){
+			if($_result[$k]['docTable'] === FILE_TABLE && $_result[$k]['Published'] >= $_result[$k]['ModDate'] && $_result[$k]['Published'] != 0){
 				$DB_WE->query('SELECT l.DID, c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DID=' . intval($_result[$k]["docID"]) . ' AND l.Name="Description" AND l.DocumentTable="' . FILE_TABLE . '"');
 				while($DB_WE->next_record()){
 					$_result[$k]["Description"] = $DB_WE->f('Dat');
 				}
-			} elseif($_result[$k]['docTable'] == FILE_TABLE){
+			} elseif($_result[$k]['docTable'] === FILE_TABLE){
 				$tempDoc = f('SELECT DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID =' . intval($_result[$k]["docID"]) . ' AND DocTable = "tblFile" AND Active = 1', 'DocumentObject', $DB_WE);
 				if(!empty($tempDoc)){
 					$tempDoc = we_unserialize($tempDoc);
@@ -1483,7 +1477,7 @@ WE().consts.g_l.weSearch = {
 				case we_base_ContentTypes::HTML:
 				case we_base_ContentTypes::WEDOCUMENT:
 				case we_base_ContentTypes::OBJECT_FILE:
-					$published = ((($_result[$f]["Published"] != 0) && ($_result[$f]["Published"] < $_result[$f]["ModDate"])) ? -1 : $_result[$f]["Published"]);
+					$published = ((($_result[$f]['Published'] != 0) && ($_result[$f]['Published'] < $_result[$f]['ModDate'])) ? -1 : $_result[$f]['Published']);
 					if($published == 0){
 						$fontColor = 'notpublished';
 						$showPubCheckbox = false;
@@ -1496,7 +1490,7 @@ WE().consts.g_l.weSearch = {
 					$published = (isset($_result[$f]["Published"]) ? $_result[$f]["Published"] : 1);
 			}
 
-			$ext = isset($_result[$f]["Extension"]) ? $_result[$f]["Extension"] : "";
+			//$ext = isset($_result[$f]['Extension']) ? $_result[$f]['Extension'] : "";
 			$foundInVersions = isset($_result[$f]["foundInVersions"]) ? makeArrayFromCSV($_result[$f]["foundInVersions"]) : "";
 
 			if(!$view || $view == self::VIEW_LIST){
@@ -1514,7 +1508,7 @@ WE().consts.g_l.weSearch = {
 
 						$previewButton = we_html_button::create_button(we_html_button::PREVIEW, "javascript:weSearch.previewVersion('" . $ID . "');");
 
-						$fileExists = f('SELECT 1 FROM ' . escape_sql_query($_result[$f]["docTable"]) . ' WHERE ID=' . intval($_result[$f]["docID"]), '', $DB_WE);
+						$fileExists = f('SELECT 1 FROM ' . escape_sql_query($_result[$f]['docTable']) . ' WHERE ID=' . intval($_result[$f]['docID']), '', $DB_WE);
 
 						if($active && $fileExists){
 							$resetDisabled = true;
@@ -1552,7 +1546,7 @@ WE().consts.g_l.weSearch = {
 						case we_base_ContentTypes::HTML:
 						case 'objectFile':
 							$actionCheckbox = (!$showPubCheckbox ?
-									(permissionhandler::hasPerm('PUBLISH') && f('SELECT 1 FROM ' . escape_sql_query($_result[$f]["docTable"]) . ' WHERE ID=' . intval($_result[$f]["docID"]), '', $DB_WE)) ?
+									(permissionhandler::hasPerm('PUBLISH') && f('SELECT 1 FROM ' . escape_sql_query($_result[$f]['docTable']) . ' WHERE ID=' . intval($_result[$f]['docID']), '', $DB_WE)) ?
 										we_html_forms::checkbox($_result[$f]['docID'] . '_' . $_result[$f]['docTable'], 0, 'publish_docs_' . $whichSearch, '', false, 'middlefont', '') :
 										'' :
 									'');
