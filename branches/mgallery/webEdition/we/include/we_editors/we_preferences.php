@@ -2499,7 +2499,6 @@ for(i=1;i<childs.length;++i){
 	$_we_cmd_js = we_html_element::jsElement('function we_cmd(){
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
 
 	switch (args[0]){
 		case "browse_server":
@@ -2521,7 +2520,7 @@ for(i=1;i<childs.length;++i){
 			new (WE().util.jsWindow)(this, url,"we_colorChooser",-1,-1,430,370,true,true,true);
 			break;
 		default:
-			parent.we_cmd.apply(this, arguments);
+			parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }
 

@@ -23,12 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_cmd() {
-	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	//var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 //	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
 
 	if (top.we_cmd) {
-		top.we_cmd.apply(this, arguments);
+		top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }
 

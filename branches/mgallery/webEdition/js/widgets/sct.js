@@ -147,7 +147,7 @@ function moveSelectedOptions(from, to, select, regex) {
 			from.options[i] = null;
 		}
 	}
-	if ((arguments.length < 3) || (select == true)) {
+	if ((select === undefined) || (select === true)) {
 		sortSelect(from);
 		sortSelect(to);
 	}
@@ -178,7 +178,7 @@ function copySelectedOptions(from, to, select) {
 			}
 		}
 	}
-	if ((arguments.length < 3) || (select == true)) {
+	if ((select === undefined) || (select == true)) {
 		sortSelect(to);
 	}
 	from.selectedIndex = -1;

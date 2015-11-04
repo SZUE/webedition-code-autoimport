@@ -58,8 +58,7 @@ function we_setPath(path, text, id, classname) {
 
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
+	//var url = WE().util.getWe_cmdArgsUrl(args);
 
 	switch (args[0]) {
 		case 'switch_edit_page':
@@ -68,7 +67,7 @@ function we_cmd() {
 			break;
 		default:
 			if (top.we_cmd) {
-				top.we_cmd.apply(this, arguments);
+				top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 			}
 	}
 

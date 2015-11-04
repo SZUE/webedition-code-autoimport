@@ -362,7 +362,6 @@ function we_submit(){
 function we_cmd(){
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
 
 	switch (args[0]){
 		case "we_selector_category":
@@ -379,7 +378,7 @@ function we_cmd(){
 		case "we_selector_directory":
 			new (WE().util.jsWindow)(this, url,"we_selector",-1,-1,' . we_selector_file::WINDOW_SELECTOR_WIDTH . ',' . we_selector_file::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
 		break;
-			top.opener.top.we_cmd.apply(this, arguments);
+			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }');
 		$js.=we_html_element::jsElement(
@@ -1294,7 +1293,6 @@ if (top.footer.setProgress){
 function formFileChooser() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
 
 switch (args[0]) {
 		case "browse_server":
@@ -1314,7 +1312,6 @@ switch (args[0]) {
 				function formDirChooser() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
 
 switch (args[0]) {
 						case "we_selector_directory":

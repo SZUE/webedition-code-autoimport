@@ -109,7 +109,6 @@ function saveReload() {
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
 
 	switch (args[0]) {
 		case "glossary_check":
@@ -131,7 +130,7 @@ function we_cmd() {
 			break
 		default:
 			if (top.we_cmd) {
-				top.we_cmd.apply(this, arguments);
+				top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 			}
 	}
 }

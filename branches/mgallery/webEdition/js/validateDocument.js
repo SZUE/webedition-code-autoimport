@@ -35,7 +35,6 @@ function we_submitForm(target, url) {
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
 
 	switch (args[0]) {
 		case 'checkDocument':
@@ -44,7 +43,7 @@ function we_cmd() {
 			}
 			break;
 		default:
-			parent.we_cmd.apply(this, arguments);
+			parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }
 

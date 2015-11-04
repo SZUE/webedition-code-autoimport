@@ -42,7 +42,6 @@ function saveField() {
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args, frameUrl + "?");
-	var arguments = args;
 
 	var branch, field;
 	switch (args[0]) {
@@ -122,7 +121,7 @@ function we_cmd() {
 			}
 			break;
 		default:
-			top.content.we_cmd.apply(this, arguments);
+			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }
 

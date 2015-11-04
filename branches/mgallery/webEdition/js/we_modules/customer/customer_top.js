@@ -40,8 +40,7 @@ function doUnload() {
 
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
+	//var url = WE().util.getWe_cmdArgsUrl(args);
 
 	if (hot === 1 && args[0] !== "save_customer") {
 		if (confirm(WE().consts.g_l.customer.view.save_changed_customer)) {
@@ -127,6 +126,6 @@ function we_cmd() {
 			top.content.cmd.location = frameUrl + "&pnt=cmd&pid=" + args[1] + "&offset=" + args[2] + "&sort=" + args[3];
 			break;
 		default:
-			top.opener.top.we_cmd.apply(this, arguments);
+			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }

@@ -814,7 +814,6 @@ function we_cmd() {
 	f = document.we_form;
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
 
 	switch (args[0]) {
 		case "we_selector_directory":
@@ -904,7 +903,7 @@ function we_cmd() {
 			document._errorMessage = "";
 			break;
 		default:
-			opener.top.we_cmd.apply(this, arguments);
+			opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }
 function checkForError() {

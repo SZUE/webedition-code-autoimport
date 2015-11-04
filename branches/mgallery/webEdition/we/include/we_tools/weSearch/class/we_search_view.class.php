@@ -67,7 +67,6 @@ var hot = 0;
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
 
 	if(' . $this->topFrame . '.hot){
 		switch(args[0]){
@@ -226,7 +225,7 @@ function we_cmd() {
 	 }
 	 break;
 	default:
-	 top.opener.top.we_cmd.apply(this, arguments);
+	 top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 
  }
 }
@@ -2537,7 +2536,6 @@ var loaded=0;
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
 
 	switch (args[0]) {
 		case "we_selector_image":
@@ -2564,7 +2562,7 @@ function we_cmd() {
 			new (WE().util.jsWindow)(this, url,"we_weSearch_dirselector",-1,-1,600,400,true,true,true);
 			break;
 		default:
-			' . $this->topFrame . '.we_cmd.apply(this, arguments);
+			' . $this->topFrame . '.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }
 function submitForm(target,action,method) {

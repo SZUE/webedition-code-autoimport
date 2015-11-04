@@ -32,8 +32,7 @@ function doUnload() {
 
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
+//	var url = WE().util.getWe_cmdArgsUrl(args);
 
 	switch (args[0]) {
 		case "switchPage":
@@ -42,7 +41,7 @@ function we_cmd() {
 			submitForm();
 			break;
 		default:
-			top.content.we_cmd.apply(this, arguments);
+			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }
 function submitForm(target, action, method) {

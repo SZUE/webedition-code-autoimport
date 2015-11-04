@@ -41,8 +41,7 @@ function usetHot() {
 
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
+	//var url = WE().util.getWe_cmdArgsUrl(args);
 
 	if (hot === 1 && args[0] != "save_banner") {
 		if (confirm(WE().consts.g_l.banner.view.save_changed_banner)) {
@@ -119,7 +118,7 @@ function we_cmd() {
 			top.content.editor.edbody.submitForm();
 			break;
 		default:
-			top.opener.top.we_cmd.apply(this, arguments);
+			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 
 	}
 }

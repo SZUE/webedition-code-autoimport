@@ -98,10 +98,9 @@ echo we_html_tools::getHtmlTop('', '', '', STYLESHEET .
 		}
 	}
 
-	function we_cmd() {
+function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
 
 		switch (args[0]) {
 			case "openOrder": //TODO: check this adress: mit oder ohne tree? Bisher: left
@@ -110,7 +109,7 @@ echo we_html_tools::getHtmlTop('', '', '', STYLESHEET .
 				}
 				break;
 			default: // not needed yet
-				top.opener.top.we_cmd.apply(this, arguments);
+				top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 		}
 	}')) . '
 <body class="weEditorBody" onload="self.focus(); setHeaderTitle();" onunload="">

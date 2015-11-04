@@ -34,8 +34,7 @@ function doUnload() {
 
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
+	//var url = WE().util.getWe_cmdArgsUrl(args);
 
 	if (hot === 1 && args[0] !== "save_workflow") {
 		var hotConfirmMsg = confirm(g_l.save_changed_workflow);
@@ -111,7 +110,7 @@ function we_cmd() {
 			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=workflow&pnt=qlog", "log_question", -1, -1, 360, 230, true, false, true);
 			break;
 		default:
-			top.opener.top.we_cmd.apply(this, arguments);
+			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 
 	}
 }

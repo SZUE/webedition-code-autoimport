@@ -496,14 +496,13 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 function we_cmd(){
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
 
 	switch (args[0]){
 		case "we_selector_file":
 			new (WE().util.jsWindow)(this, url,"we_selector",-1,-1,' . self::WINDOW_SELECTOR_WIDTH . ',' . self::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
 			break;
 		default:
-			parent.we_cmd.apply(this, arguments);
+			parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 
 	}
 }

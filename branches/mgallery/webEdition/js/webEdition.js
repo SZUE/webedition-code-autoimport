@@ -1475,7 +1475,7 @@ WE().util.getTreeIcon = function (contentType, open, extension) {
 };
 
 WE().util.sprintf = function (argum) {
-	if (!arguments || arguments.length < 1) {
+	if (!arguments || arguments.length === 0) {
 		return;
 	}
 

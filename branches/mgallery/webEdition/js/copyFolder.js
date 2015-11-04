@@ -92,7 +92,6 @@ function incTemp(val) {
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
 
 	switch (args[0]) {
 		case "we_selector_directory":
@@ -102,6 +101,6 @@ function we_cmd() {
 			new (WE().util.jsWindow)(this, url, "we_cateditor", -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 		default:
-			opener.we_cmd.apply(this, arguments);
+			opener.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }

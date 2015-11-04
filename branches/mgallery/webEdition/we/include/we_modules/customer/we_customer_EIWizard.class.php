@@ -158,14 +158,13 @@ class we_customer_EIWizard{
 			function we_cmd(){
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
 
 switch (args[0]){
 					case "del_customer":
 						selector_cmd(args[0],args[1],args[2]);
 						break;
 					default:
-						top.opener.top.we_cmd.apply(this, arguments);
+						top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 				}
 			}
 
@@ -1456,7 +1455,6 @@ function doNext(){
 function formFileChooser() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
 	switch (args[0]) {
 		case "browse_server":
 			new (WE().util.jsWindow)(window, url,"server_selector",-1,-1,700,400,true,false,true);
@@ -1479,7 +1477,6 @@ function formFileChooser() {
 function formDirChooser() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
 	switch (args[0]) {
 		case "we_selector_directory":
 			new (WE().util.jsWindow)(window, url,"dir_selector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,false,true,true);
@@ -1522,7 +1519,6 @@ function formDirChooser() {
 function selector_cmd(){
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
 	switch (args[0]){
 		case "we_selector_file":
 			new (WE().util.jsWindow)(window, url,"we_selector",-1,-1,' . we_selector_file::WINDOW_SELECTOR_WIDTH . ',' . we_selector_file::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);

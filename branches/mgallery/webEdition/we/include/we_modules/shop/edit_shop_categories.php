@@ -222,10 +222,9 @@ $jsFunction = '
 		WE().util.jsWindow.prototype.closeAll(window);
 	}
 
-	function we_cmd(){
+function we_cmd(){
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
 
 		switch (args[0]) {
 			case "close":
@@ -245,7 +244,7 @@ $jsFunction = '
 				we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
 				break;
 			default:
-				top.opener.top.we_cmd.apply(this, arguments);
+				top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 		}
 	}
 

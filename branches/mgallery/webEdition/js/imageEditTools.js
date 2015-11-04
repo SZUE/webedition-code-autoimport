@@ -712,8 +712,9 @@ ImageEditTools.Crop = {
 		};
 
 		this.sel.setCursor = function (x1, y1, x2, y2, cr, co) {
-			if (arguments.length == 1)
+			if (arguments.length == 1){
 				y1 = x2 = y2 = cr = co = x1;
+			}
 			document.getElementById(this.idLeft).style.cursor = x1;
 			document.getElementById(this.idTop).style.cursor = y1;
 			document.getElementById(this.idRight).style.cursor = x2;

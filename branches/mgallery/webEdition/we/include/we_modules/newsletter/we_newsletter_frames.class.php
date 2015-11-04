@@ -219,13 +219,12 @@ function doUnload() {
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
 
 	switch (args[0]) {
 		case "empty_log":
 			break;
 		default:
-			parent.edbody.we_cmd.apply(this, arguments);
+			parent.edbody.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 
 	}
 }

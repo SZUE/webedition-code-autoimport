@@ -97,7 +97,6 @@ function formatDate(date, format) {
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
 
 	switch (args[0]) {
 		case "we_users_selector":
@@ -126,7 +125,7 @@ function we_cmd() {
 			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=import", "import_customer", -1, -1, 640, 600, true, true, true, false);
 			break;
 		default:
-			top.content.we_cmd.apply(this, arguments);
+			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }
 

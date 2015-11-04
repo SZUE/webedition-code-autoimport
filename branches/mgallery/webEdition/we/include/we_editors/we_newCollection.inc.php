@@ -85,7 +85,6 @@ function we_submitForm(url){
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
 
 var cmd = "' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . '";
 
@@ -117,7 +116,7 @@ var cmd = "' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . '"
 			window.close();
 			break;
 		default:
-			top.we_cmd.apply(this, arguments);
+			top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }
 ' . (!empty($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) : '') . ($saveSuccess ? 'we_cmd("do_onSuccess");' : '')));

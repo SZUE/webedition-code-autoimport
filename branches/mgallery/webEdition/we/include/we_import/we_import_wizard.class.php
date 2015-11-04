@@ -170,10 +170,9 @@ class we_import_wizard extends we_import_wizardBase{
 		 */
 		return array(
 			"function we_cmd() {
-				var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+				//var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 //				var url = WE().util.getWe_cmdArgsUrl(args);
-				var arguments = args;
-				parent.we_cmd.apply(this, arguments);
+				parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 			}
 			function set_button_state() {
 				top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'disabled');
@@ -253,10 +252,9 @@ class we_import_wizard extends we_import_wizardBase{
 
 		$functions = "
 function we_cmd() {
-	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	//var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 //	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
-	parent.we_cmd.apply(this, arguments);
+	parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 }
 function set_button_state() {
 	top.wizbusy.back_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
@@ -414,7 +412,6 @@ function we_submit_form(we_form, target, url) {
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
 
 	switch (args[0]) {" . '
 		case "openNavigationDirselector":
@@ -429,7 +426,7 @@ function we_cmd() {
 			new (WE().util.jsWindow)(this, url,'we_selector',-1,-1," . we_selector_file::WINDOW_SELECTOR_WIDTH . "," . we_selector_file::WINDOW_SELECTOR_HEIGHT . ",true,true,true,true);
 			break;
 		default:
-			parent.we_cmd.apply(this, arguments);
+			parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 
 	}
 }
@@ -786,10 +783,9 @@ function handle_event(evt) {
 
 		$functions = "
 function we_cmd() {
-	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	//var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 //	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
-	parent.we_cmd.apply(this, arguments);
+	parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 }
 function set_button_state() {
 	top.wizbusy.back_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
@@ -1548,11 +1544,10 @@ function handle_event(evt) {
 
 		$functions = "
 function we_cmd() {
-	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	//var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	//var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
 
-	parent.we_cmd.apply(this, arguments);
+	parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 }
 function set_button_state() {
 	top.frames.wizbusy.back_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
@@ -1756,10 +1751,9 @@ function handle_eventNext(){
 
 		$functions = "
 function we_cmd() {
-	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	//var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 //	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
-	parent.we_cmd.apply(this, arguments);
+	parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 }
 function set_button_state() {
 	top.frames.wizbusy.back_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');

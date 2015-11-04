@@ -33,7 +33,6 @@ function doUnload() {
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
 
 	if (hot === 1 && args[0] !== "save_user") {
 		if (confirm(g_l.save_changed_user)) {
@@ -166,7 +165,7 @@ function we_cmd() {
 			}
 			break;
 		default:
-			top.opener.top.we_cmd.apply(this, arguments);
+			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 
 	}
 }

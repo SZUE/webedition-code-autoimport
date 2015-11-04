@@ -63,7 +63,6 @@ function addKeyListener() {
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
 
 	switch (args[0]) {
 		case "we_selector_document":
@@ -81,6 +80,6 @@ function we_cmd() {
 			new (WE().util.jsWindow)(this, url, "weNewCollection", -1, -1, 590, 560, true, true, true, true);
 			break;
 		default:
-			opener.we_cmd.apply(this, arguments);
+			opener.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }

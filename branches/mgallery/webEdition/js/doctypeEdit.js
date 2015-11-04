@@ -86,7 +86,6 @@ function disableLangDefault(allnames, allvalues, deselect) {
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
 
 	switch (args[0]) {
 		case "we_selector_image":
@@ -131,7 +130,7 @@ function we_cmd() {
 			this.location = url;
 			break;
 		default:
-			opener.top.we_cmd.apply(this, arguments);
+			opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 
 	}
 }

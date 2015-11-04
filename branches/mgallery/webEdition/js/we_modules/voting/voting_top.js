@@ -36,8 +36,7 @@ function doUnload() {
 
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
+	//var url = WE().util.getWe_cmdArgsUrl(args);
 
 	if (hot === 1 && args[0] != "save_voting") {
 		if (confirm(WE().consts.g_l.voting.save_changed_voting)) {
@@ -144,6 +143,6 @@ function we_cmd() {
 			top.content.editor.edbody.parent.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=editor";
 			break;
 		default:
-			top.opener.top.we_cmd.apply(this, arguments);
+			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }

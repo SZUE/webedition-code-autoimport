@@ -112,7 +112,6 @@ function doUnload() {
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args, WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_transaction=" + we_transaction + "&");
-	var arguments = args;
 
 	if (hot === 1 && args[0] !== "messaging_start_view") {
 		if (confirm(WE().consts.g_l.messaging.save_changed_folder)) {
@@ -191,7 +190,7 @@ function we_cmd() {
 			top.content.cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=paste_msg";
 			break;
 		default:
-			top.opener.top.we_cmd.apply(this, arguments);
+			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }
 

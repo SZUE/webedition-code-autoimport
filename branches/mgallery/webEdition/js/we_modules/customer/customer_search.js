@@ -30,8 +30,7 @@ function doUnload() {
 
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args, frames.set + "?");
-	var arguments = args;
+	//var url = WE().util.getWe_cmdArgsUrl(args, frames.set + "?");
 
 	if (document.we_form.mode.value == "1") {
 		transferDateFields();
@@ -63,6 +62,6 @@ function we_cmd() {
 			submitForm();
 			break;
 		default:
-			top.content.we_cmd.apply(this, arguments);
+			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }

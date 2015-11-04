@@ -35,7 +35,6 @@ function doUnload() {
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
 
 	if (hot === 1 && args[0] !== "save_glossary") {
 		if (confirm(WE().consts.g_l.glossary.view.save_changed_glossary)) {
@@ -150,6 +149,6 @@ function we_cmd() {
 			top.content.editor.edbody.parent.location = data.frameset + "&pnt=editor";
 			break;
 		default:
-			top.opener.top.we_cmd.apply(this, arguments);
+			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }

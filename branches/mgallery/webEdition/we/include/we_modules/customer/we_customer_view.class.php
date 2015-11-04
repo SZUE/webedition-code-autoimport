@@ -131,7 +131,6 @@ function doUnload() {
 function we_cmd(){
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args, "' . $this->frameset . '?");
-	var arguments = args;
 
 	switch (args[0]) {
 		case "save_settings":
@@ -139,7 +138,7 @@ function we_cmd(){
 			submitForm();
 			break;
 		default:
-			top.we_cmd.apply(this, arguments);
+			top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }' . $this->getJSSubmitFunction("customer_settings");
 	}

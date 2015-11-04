@@ -140,7 +140,6 @@ class we_import_site{
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
 
 	switch (args[0]) {
 			case "we_selector_image":
@@ -158,7 +157,7 @@ function we_cmd() {
 			new (WE().util.jsWindow)(this, url,"siteImportCreateWePageSettings",-1,-1,520,600,true,false,true);
 			break;
 		default:
-			top.opener.top.we_cmd.apply(this, arguments);
+			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }
 

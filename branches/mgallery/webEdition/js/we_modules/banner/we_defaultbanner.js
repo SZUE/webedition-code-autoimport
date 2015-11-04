@@ -31,14 +31,13 @@ function doUnload() {
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
 
 	switch (args[0]) {
 		case "we_banner_selector":
 			new (WE().util.jsWindow)(this, url, "we_bannerselector", -1, -1, 650, 400, true, true, true);
 			break;
 		default:
-			top.content.we_cmd.apply(this, arguments);
+			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }
 

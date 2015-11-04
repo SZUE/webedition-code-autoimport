@@ -134,7 +134,6 @@ function doUnload() {
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
 
 	switch (args[0]) {
 		case "populateWorkspaces":
@@ -157,7 +156,7 @@ function we_cmd() {
 			new (WE().util.jsWindow)(this, url,"we_catselector",-1,-1,WE().consts.size.catSelect.width,WE().consts.size.catSelect.height,true,true,true,true);
 			break;
 		default:
-			' . $this->topFrame . '.we_cmd.apply(this, arguments);
+			' . $this->topFrame . '.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 
 	}
 }
