@@ -494,8 +494,8 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 			we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
 			we_html_element::jsElement('
 function we_cmd(){
-	var args = WE().util.getArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getArgsUrl(args);
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
 	var arguments = args;
 
 	switch (args[0]){

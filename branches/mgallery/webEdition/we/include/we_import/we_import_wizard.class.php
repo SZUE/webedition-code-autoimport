@@ -170,8 +170,8 @@ class we_import_wizard extends we_import_wizardBase{
 		 */
 		return array(
 			"function we_cmd() {
-				var args = WE().util.getArgsArray(Array.prototype.slice.call(arguments));
-//				var url = WE().util.getArgsUrl(args);
+				var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+//				var url = WE().util.getWe_cmdArgsUrl(args);
 				var arguments = args;
 				parent.we_cmd.apply(this, arguments);
 			}
@@ -253,8 +253,8 @@ class we_import_wizard extends we_import_wizardBase{
 
 		$functions = "
 function we_cmd() {
-	var args = WE().util.getArgsArray(Array.prototype.slice.call(arguments));
-//	var url = WE().util.getArgsUrl(args);
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+//	var url = WE().util.getWe_cmdArgsUrl(args);
 	var arguments = args;
 	parent.we_cmd.apply(this, arguments);
 }
@@ -412,8 +412,8 @@ function we_submit_form(we_form, target, url) {
 
 		$functions = "
 function we_cmd() {
-	var args = WE().util.getArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getArgsUrl(args);
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
 	var arguments = args;
 
 	switch (args[0]) {" . '
@@ -786,8 +786,8 @@ function handle_event(evt) {
 
 		$functions = "
 function we_cmd() {
-	var args = WE().util.getArgsArray(Array.prototype.slice.call(arguments));
-//	var url = WE().util.getArgsUrl(args);
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+//	var url = WE().util.getWe_cmdArgsUrl(args);
 	var arguments = args;
 	parent.we_cmd.apply(this, arguments);
 }
@@ -1548,8 +1548,8 @@ function handle_event(evt) {
 
 		$functions = "
 function we_cmd() {
-	var args = WE().util.getArgsArray(Array.prototype.slice.call(arguments));
-	//var url = WE().util.getArgsUrl(args);
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	//var url = WE().util.getWe_cmdArgsUrl(args);
 	var arguments = args;
 
 	parent.we_cmd.apply(this, arguments);
@@ -1756,8 +1756,8 @@ function handle_eventNext(){
 
 		$functions = "
 function we_cmd() {
-	var args = WE().util.getArgsArray(Array.prototype.slice.call(arguments));
-//	var url = WE().util.getArgsUrl(args);
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+//	var url = WE().util.getWe_cmdArgsUrl(args);
 	var arguments = args;
 	parent.we_cmd.apply(this, arguments);
 }

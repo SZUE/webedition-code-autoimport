@@ -156,8 +156,8 @@ class we_customer_EIWizard{
 			}
 
 			function we_cmd(){
-	var args = WE().util.getArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getArgsUrl(args);
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
 	var arguments = args;
 
 switch (args[0]){
@@ -1454,8 +1454,8 @@ function doNext(){
 
 		$js = we_html_element::jsElement('
 function formFileChooser() {
-	var args = WE().util.getArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getArgsUrl(args);
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
 	var arguments = args;
 	switch (args[0]) {
 		case "browse_server":
@@ -1477,8 +1477,8 @@ function formFileChooser() {
 
 		$js = we_html_element::jsElement('
 function formDirChooser() {
-	var args = WE().util.getArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getArgsUrl(args);
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
 	var arguments = args;
 	switch (args[0]) {
 		case "we_selector_directory":
@@ -1520,8 +1520,8 @@ function formDirChooser() {
 		$customers = array_filter($customers);
 		$js = we_html_element::jsElement('
 function selector_cmd(){
-	var args = WE().util.getArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getArgsUrl(args);
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
 	var arguments = args;
 	switch (args[0]){
 		case "we_selector_file":

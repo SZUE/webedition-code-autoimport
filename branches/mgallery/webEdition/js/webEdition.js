@@ -1526,14 +1526,14 @@ WE().util.IsDigit = function (e) {
 	return ((key == 46) || ((key >= 48) && (key <= 57)) || (key == 0) || (key == 13) || (key == 8) || (key <= 63235 && key >= 63232) || (key == 63272));
 };
 
-WE().util.getArgsArray = function (arr) {
+WE().util.getWe_cmdArgsArray = function (arr) {
 	if (arr.lenght > 0 && typeof arr[0] === "object") {
 		return arr[0];
 	}
 	return arr;
 };
 
-WE().util.getArgsUrl = function (args, base) {
+WE().util.getWe_cmdArgsUrl = function (args, base) {
 	var url = (base === undefined ? WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?" : base);
 
 	if (Object.prototype.toString.call(args) === '[object Array]') {

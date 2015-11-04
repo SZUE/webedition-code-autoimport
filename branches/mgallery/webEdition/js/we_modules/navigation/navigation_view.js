@@ -33,8 +33,8 @@ function mark() {
 }
 
 function we_cmd() {
-	var args = WE().util.getArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getArgsUrl(args);
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
 	var arguments = args;
 
 	if (top.content.hot) {

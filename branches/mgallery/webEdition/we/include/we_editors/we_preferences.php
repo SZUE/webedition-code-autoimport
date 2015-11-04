@@ -2462,7 +2462,7 @@ if(we_base_request::_(we_base_request::BOOL, 'save_settings')){
 		input_name: '<?php echo g_l('alert', '[input_name]'); ?>'
 	};
 	var args = "";
-	var url = "<?php echo WEBEDITION_DIR; ?> 'we_cmd.php?";
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 //--></</script><?php
 echo STYLESHEET .
 	weSuggest::getYuiFiles() .
@@ -2497,8 +2497,8 @@ for(i=1;i<childs.length;++i){
 	$_form = we_html_element::htmlForm(array('onSubmit' => 'return false;', 'name' => 'we_form', 'method' => 'post', 'action' => $_SERVER['SCRIPT_NAME']), we_html_element::htmlHidden('save_settings', 0) . render_dialog());
 
 	$_we_cmd_js = we_html_element::jsElement('function we_cmd(){
-	var args = WE().util.getArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getArgsUrl(args);
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
 	var arguments = args;
 
 	switch (args[0]){
