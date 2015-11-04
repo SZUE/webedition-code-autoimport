@@ -365,8 +365,8 @@ foreach($jsCmd as $cur){
 <script><!--
 	function we_cmd() {
 	var args = WE().util.getArgsArray(Array.prototype.slice.call(arguments));
-	//var url = WE().util.getArgsUrl(args);
-	var arguments = args;
+	var url = WE().util.getArgsUrl(args);
+	//var arguments = args;
 
 	//	When coming from a we_cmd, always mark the document as opened with we !!!!
 	if (WE().layout.weEditorFrameController.getActiveDocumentReference) {

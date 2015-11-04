@@ -513,7 +513,7 @@ function we_showInNewTab(args, url) {
 
 function we_cmd_base() {
 	var args = arguments[0],
-					url = arguments[1];
+		url = arguments[1];
 
 	switch (args[0]) {
 		case "loadVTab":
@@ -1535,15 +1535,18 @@ WE().util.getArgsArray = function (arr) {
 
 WE().util.getArgsUrl = function (args, base) {
 	var url = (base === undefined ? WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?" : base);
+	/*
 	if (typeof args === "object") {
 		url += Object.keys(args).map(function (key) {
 			return key + "=" + encodeURIComponent(args[key]);
 		}).join("&");
-	} else {
+	} else {top.console.debug('b');
+	*/
 		for (var i = 0; i < args.length; i++) {
 			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
 		}
-
+	/*
 	}
+	*/
 	return url;
 };
