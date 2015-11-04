@@ -1,3 +1,5 @@
+/* global WE, top */
+
 /**
  * webEdition SDK
  *

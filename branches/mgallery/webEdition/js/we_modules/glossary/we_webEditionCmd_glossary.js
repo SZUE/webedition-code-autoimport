@@ -1,3 +1,5 @@
+/* global WE, top */
+
 /**
  * webEdition CMS
  *
@@ -24,16 +26,15 @@ function we_cmd_glossary() {
 	var args = arguments[0],
 		url = arguments[1];
 
-	var k, fo = false;
 	switch (args[0]) {
 		case "glossary_check":
 
 			var _EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
 			if (_EditorFrame !== false &&
-							_EditorFrame.getEditorType() == "model" &&
+							_EditorFrame.getEditorType() === "model" &&
 							(
-											_EditorFrame.getEditorContentType() == WE().consts.contentTypes.WEDOCUMENT ||
-											_EditorFrame.getEditorContentType() == WE().consts.contentTypes.OBJECT_FILE
+											_EditorFrame.getEditorContentType() === WE().consts.contentTypes.WEDOCUMENT ||
+											_EditorFrame.getEditorContentType() === WE().consts.contentTypes.OBJECT_FILE
 											)
 							) {
 
@@ -60,7 +61,7 @@ function we_cmd_glossary() {
 		case "glossary_dictionaries":
 			new (WE().util.jsWindow)(this, url, "edit_glossary_dictionaries", -1, -1, 490, 250, true, true, true, true);
 			break;
-		case ((args[0].substr(0, 15) == "GlossaryXYZnew_") ? args[0] : false):
+		case ((args[0].substr(0, 15) === "GlossaryXYZnew_") ? args[0] : false):
 			tempargs = args[0].split("\XYZ");
 
 			var wind = WE().util.jsWindow.prototype.find('edit_module');

@@ -1,3 +1,5 @@
+/* global WE */
+
 /**
  * webEdition CMS
  *
@@ -25,7 +27,6 @@ function we_cmd_banner() {
 		url = arguments[1];
 
 
-	var k, fo = false;
 	switch (args[0]) {
 		case "banner_edit":
 		case "banner_edit_ifthere":
@@ -47,7 +48,7 @@ function we_cmd_banner() {
 			var wind = WE().util.jsWindow.prototype.find('edit_module');
 			if (wind) {
 				wind.content.we_cmd(args[0]);
-				if (args[0] != "empty_log") {
+				if (args[0] !== "empty_log") {
 					wind.focus();
 				}
 			}

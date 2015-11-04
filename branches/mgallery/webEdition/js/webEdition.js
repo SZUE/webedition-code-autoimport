@@ -309,27 +309,6 @@ function we_sbmtFrm(target, url, source) {
 
 }
 
-// use this to submit a cmd with post (if you have much data, which is to long for the url);  // not testet very much!
-function doPostCmd(cmds, target) {
-	var doc = self.postframe.document;
-	if (doc.forms[0]) {
-		doc.body.removeChild(doc.forms[0]);
-	}
-	var formElement = doc.createElement("FORM");
-	formElement.action = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php';
-	formElement.method = "post";
-	formElement.target = target;
-
-	for (var i = 0; i < cmds.length; i++) {
-		var hid = doc.createElement("INPUT");
-		hid.name = "we_cmd[" + i + "]";
-		hid.value = cmds[i];
-		formElement.appendChild(hid);
-	}
-	doc.body.appendChild(formElement);
-	formElement.submit();
-}
-
 function doSave(url, trans, cmd) {
 	_EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction(trans);
 	// _EditorFrame.setEditorIsHot(false);
@@ -1001,7 +980,6 @@ function we_cmd_base() {
 			url = url.replace(/we_cmd\[2\]=[^&]+/, 'we_cmd[2]=' + wyw);
 			url = url.replace(/we_cmd\[3\]=[^&]+/, 'we_cmd[3]=' + (wyh - args[10]));
 			new (WE().util.jsWindow)(this, url, "we_wysiwygWin", -1, -1, Math.max(220, wyw + (document.all ? 0 : ((navigator.userAgent.toLowerCase().indexOf('safari') > -1) ? 20 : 4))), Math.max(100, wyh + 60), true, false, true);
-			//doPostCmd(args,"we_wysiwygWin");
 			break;
 		case "not_installed_modules":
 			we_repl(self.load, url, args[0]);
