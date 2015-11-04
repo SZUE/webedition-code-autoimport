@@ -43,6 +43,7 @@ function doUnload() {
 function we_cmd() {
 	var args = WE().util.getArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getArgsUrl(args);
+	var arguments = args;
 
 	switch (args[0]) {
 		case "load":

@@ -1527,7 +1527,7 @@ WE().util.IsDigit = function (e) {
 };
 
 WE().util.getArgsArray = function (arr) {
-	if (typeof arr[0] === "object") {
+	if (arr.lenght > 0 && typeof arr[0] === "object") {
 		return arr[0];
 	}
 	return arr;
