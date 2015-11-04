@@ -513,7 +513,7 @@ function we_showInNewTab(args, url) {
 
 function we_cmd_base() {
 	var args = arguments[0],
-		url = arguments[1];
+					url = arguments[1];
 
 	switch (args[0]) {
 		case "loadVTab":
@@ -1524,4 +1524,26 @@ WE().util.IsDigitPercent = function (e) {
 WE().util.IsDigit = function (e) {
 	var key = e.charCode === undefined ? event.keyCode : e.charCode;
 	return ((key == 46) || ((key >= 48) && (key <= 57)) || (key == 0) || (key == 13) || (key == 8) || (key <= 63235 && key >= 63232) || (key == 63272));
+};
+
+WE().util.getArgsArray = function (arr) {
+	if (typeof arr[0] === "object") {
+		return arr[0];
+	}
+	return arr;
+};
+
+WE().util.getArgsUrl = function (args, base) {
+	var url = (base === undefined ? WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?" : base);
+	if (typeof args === "object") {
+		url += Object.keys(args).map(function (key) {
+			return key + "=" + encodeURIComponent(args[key]);
+		}).join("&");
+	} else {
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
+		}
+
+	}
+	return url;
 };
