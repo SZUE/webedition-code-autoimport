@@ -258,7 +258,19 @@ function selectCategories() {
 			$wecmdenc2 = we_base_request::encCmd("document." . $formName . ".parentPath.value");
 			$wecmdenc3 = ''; //we_base_request::encCmd();
 			$parentID = $parentID ? : ($this->parentID['preset'] ? : (IMAGESTARTID_DEFAULT ? : 0));
-			$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',$parentID,'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::FOLDER . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+			//$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',$parentID,'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::FOLDER . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+			$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd({
+				'we_cmd[0]': 'we_selector_directory',
+				'we_cmd[1]': " . $parentID . ",
+				'we_cmd[2]': '" . FILE_TABLE . "',
+				'we_cmd[3]': '" . we_base_request::encCmd($cmd1) . "',
+				'we_cmd[4]': '" . $wecmdenc2 . "',
+				'we_cmd[5]': '" . $wecmdenc3 . "',
+				'we_cmd[6]': '',
+				'we_cmd[7]': 0,
+				'we_cmd[8]': '" . we_base_ContentTypes::FOLDER . "',
+				'we_cmd[9]': " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . "
+			});");
 			$yuiSuggest->setAcId("fu_file_parentID");
 			$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
 			$yuiSuggest->setInput("parentPath", $parentID ? id_to_path($parentID, FILE_TABLE) : '/', '', false);

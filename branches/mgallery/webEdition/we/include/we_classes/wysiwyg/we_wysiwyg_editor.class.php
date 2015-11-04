@@ -1072,11 +1072,9 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 				}
 				if (ed.selection.getNode().nodeName == "A" && (href = ed.dom.getAttrib(ed.selection.getNode(), "href", ""))){
 					if(match = href.match(/(' . we_base_link::TYPE_INT_PREFIX . '|' . we_base_link::TYPE_OBJ_PREFIX . '|)(\d+)[^" >]*/)){
-						top.console.debug(match);
 						if(match[1]){
 							switch(match[1]){
 								case "' . we_base_link::TYPE_INT_PREFIX . '":
-									top.console.debug("int");
 									frameControler.openDocument("' . FILE_TABLE . '", match[2], "");
 									break;
 								case "' . we_base_link::TYPE_OBJ_PREFIX . '":
@@ -1189,7 +1187,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 			}
 
 			// write content back
-			o.content = c.innerHTML;top.console.debug("after pp", o.content);
+			o.content = c.innerHTML;
 		});' . ($this->isFrontendEdit ? '' : '
 
 		/* set EditorFrame.setEditorIsHot(true) */
