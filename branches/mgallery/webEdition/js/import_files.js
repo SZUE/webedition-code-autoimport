@@ -141,17 +141,18 @@ function we_cmd() {
 
 	switch (args[0]) {
 		case 'we_selector_directory_':
-			new (WE().util.jsWindow)(scope, url, 'we_fileselector', -1, -1, WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, 'we_fileselector', -1, -1, WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
 			break;
-		case 'we_selector_category':
-			new (WE().util.jsWindow)(scope, url, 'we_catselector', -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
+		case 'we_selector_category_':
+			new (WE().util.jsWindow)(this, url, 'we_catselector', -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 		default:
 			if(typeof arguments[0] === 'object' && arguments[0]['we_cmd[0]'] !== undefined){
 				top.opener.top.we_cmd.apply(this, arguments);
 			} else {
 				args.unshift(scope);
-				top.opener.top.we_cmd.apply(this, args);
+				top.opener.top.we_cmd.apply(this, arguments);
+				//top.opener.top.we_cmd.apply(this, args);
 			}
 	}
 }

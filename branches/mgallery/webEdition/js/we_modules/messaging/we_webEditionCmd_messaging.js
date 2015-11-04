@@ -20,7 +20,10 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_messaging(args, url) {
+function we_cmd_messaging() {
+	var args = arguments[0],
+		url = arguments[1];
+
 	switch (args[0]) {
 		case "messaging_start":
 		case "messaging_edit_ifthere":

@@ -20,7 +20,10 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_glossary(args, url) {
+function we_cmd_glossary() {
+	var args = arguments[0],
+		url = arguments[1];
+
 	var k, fo = false;
 	switch (args[0]) {
 		case "glossary_check":

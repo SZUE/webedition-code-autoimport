@@ -31,7 +31,10 @@ function shopCloseWindow(args) {
 	return false;
 }
 
-function we_cmd_shop(args, url) {
+function we_cmd_shop() {
+	var args = arguments[0],
+		url = arguments[1];
+
 	var swcmd = args[0];
 	if (swcmd.match(/^year\d+$/)) {
 		swcmd = 'yearCmd';

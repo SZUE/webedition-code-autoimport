@@ -532,8 +532,9 @@ function we_showInNewTab(args, url) {
 	}
 }
 
-function we_cmd_base(args, url, scope) {
-	scope = scope ? scope : window;
+function we_cmd_base() {
+	var args = arguments[0],
+		url = arguments[1];
 
 	switch (args[0]) {
 		case "loadVTab":
@@ -545,7 +546,7 @@ function we_cmd_base(args, url, scope) {
 			break;
 		case "openFirstStepsWizardMasterTemplate":
 		case "openFirstStepsWizardDetailTemplates":
-			new (WE().util.jsWindow)(window, url, "we_firststepswizard", -1, -1, 1024, 768, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_firststepswizard", -1, -1, 1024, 768, true, true, true);
 			break;
 		case "openUnpublishedObjects":
 			we_cmd("tool_weSearch_edit", "", "", 7, 3);
@@ -554,7 +555,7 @@ function we_cmd_base(args, url, scope) {
 			we_cmd("tool_weSearch_edit", "", "", 4, 3);
 			break;
 		case "we_selector_category":
-			new (WE().util.jsWindow)(window, url, "we_cateditor", -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_cateditor", -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 		case "openSidebar":
 			WE().layout.sidebar.open("default");
@@ -563,13 +564,13 @@ function we_cmd_base(args, url, scope) {
 			top.weSidebarContent.location.href = url;
 			break;
 		case "versions_preview":
-			new (WE().util.jsWindow)(window, url, "version_preview", -1, -1, 1000, 750, true, false, true, false);
+			new (WE().util.jsWindow)(this, url, "version_preview", -1, -1, 1000, 750, true, false, true, false);
 			break;
 		case "versions_wizard":
-			new (WE().util.jsWindow)(window, url, "versions_wizard", -1, -1, 600, 620, true, false, true);
+			new (WE().util.jsWindow)(this, url, "versions_wizard", -1, -1, 600, 620, true, false, true);
 			break;
 		case "versioning_log":
-			new (WE().util.jsWindow)(window, url, "versioning_log", -1, -1, 600, 500, true, false, true);
+			new (WE().util.jsWindow)(this, url, "versioning_log", -1, -1, 600, 500, true, false, true);
 			break;
 
 		case "delete_single_document_question":
@@ -579,8 +580,8 @@ function we_cmd_base(args, url, scope) {
 
 			if (WE().layout.weEditorFrameController.getActiveDocumentReference()) {
 				if (!hasPermDelete(eTable, (cType === "folder"))) {
-					top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, window);
-				} else if (window.confirm(WE().consts.g_l.main.delete_single_confirm_delete + "\n" + path)) {
+					top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, this);
+				} else if (this.confirm(WE().consts.g_l.main.delete_single_confirm_delete + "\n" + path)) {
 					url2 = url.replace(/we_cmd\[0\]=delete_single_document_question/g, "we_cmd[0]=delete_single_document");
 					submit_we_form(WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter, self.load, url2 + "&we_cmd[2]=" + WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorEditorTable());
 				}
@@ -964,7 +965,7 @@ function we_cmd_base(args, url, scope) {
 			new (WE().util.jsWindow)(window, url, "import_docs", -1, -1, 480, 390, true, false, true);
 			break;
 		case "import":
-			new (WE().util.jsWindow)(window, url, "import", -1, -1, 600, 620, true, false, true);
+			new (WE().util.jsWindow)(this, url, "import", -1, -1, 600, 620, true, false, true);
 			break;
 		case "import_files":
 			new (WE().util.jsWindow)(window, url, "import_files", -1, -1, 600, 620, true, false, true);

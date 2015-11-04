@@ -20,7 +20,10 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_object(args, url) {
+function we_cmd_object() {
+	var args = arguments[0],
+		url = arguments[1];
+
 	switch (args[0]) {
 
 		case "object_edit_ifthere":
