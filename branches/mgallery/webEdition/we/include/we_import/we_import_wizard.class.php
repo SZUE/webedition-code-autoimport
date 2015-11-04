@@ -170,23 +170,9 @@ class we_import_wizard extends we_import_wizardBase{
 		 */
 		return array(
 			"function we_cmd() {
-				/*
-				var url = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
-				if(typeof arguments[0] === 'object' && arguments[0]['we_cmd[0]'] !== undefined){
-					var args = {}, i = 0, tmp = arguments[0];
-					url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + '=' + encodeURIComponent(tmp[key]);}).join('&');
-				} else {
-					var args = Array.prototype.slice.call(arguments);
-					for (var i = 0; i < args.length; i++) {
-						url += 'we_cmd[' + i + ']=' + encodeURIComponent(args[i]) + (i < (args.length - 1) ? '&' : '');
-					}
-				}
-
-				switch (args[0]) {
-					default:
-						parent.we_cmd.apply(this, arguments);
-				}
-				*/
+				var args = WE().util.getArgsArray(Array.prototype.slice.call(arguments));
+//				var url = WE().util.getArgsUrl(args);
+				var arguments = args;
 				parent.we_cmd.apply(this, arguments);
 			}
 			function set_button_state() {
@@ -267,23 +253,9 @@ class we_import_wizard extends we_import_wizardBase{
 
 		$functions = "
 function we_cmd() {
-	/*
-	var url = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
-	if(typeof arguments[0] === 'object' && arguments[0]['we_cmd[0]'] !== undefined){
-		var args = {}, i = 0, tmp = arguments[0];
-		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + '=' + encodeURIComponent(tmp[key]);}).join('&');
-	} else {
-		var args = Array.prototype.slice.call(arguments);
-		for (var i = 0; i < args.length; i++) {
-			url += 'we_cmd[' + i + ']=' + encodeURIComponent(args[i]) + (i < (args.length - 1) ? '&' : '');
-		}
-	}
-
-	switch (args[0]) {
-		default:
-			parent.we_cmd.apply(this, arguments);
-	}
-	*/
+	var args = WE().util.getArgsArray(Array.prototype.slice.call(arguments));
+//	var url = WE().util.getArgsUrl(args);
+	var arguments = args;
 	parent.we_cmd.apply(this, arguments);
 }
 function set_button_state() {
@@ -440,16 +412,9 @@ function we_submit_form(we_form, target, url) {
 
 		$functions = "
 function we_cmd() {
-	var url = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
-	if(typeof arguments[0] === 'object' && arguments[0]['we_cmd[0]'] !== undefined){
-		var args = {}, i = 0, tmp = arguments[0];
-		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + '=' + encodeURIComponent(tmp[key]);}).join('&');
-	} else {
-		var args = Array.prototype.slice.call(arguments);
-		for (var i = 0; i < args.length; i++) {
-			url += 'we_cmd[' + i + ']=' + encodeURIComponent(args[i]) + (i < (args.length - 1) ? '&' : '');
-		}
-	}
+	var args = WE().util.getArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getArgsUrl(args);
+	var arguments = args;
 
 	switch (args[0]) {" . '
 		case "openNavigationDirselector":
@@ -821,23 +786,9 @@ function handle_event(evt) {
 
 		$functions = "
 function we_cmd() {
-	/*
-	var url = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
-	if(typeof arguments[0] === 'object' && arguments[0]['we_cmd[0]'] !== undefined){
-		var args = {}, i = 0, tmp = arguments[0];
-		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + '=' + encodeURIComponent(tmp[key]);}).join('&');
-	} else {
-		var args = Array.prototype.slice.call(arguments);
-		for (var i = 0; i < args.length; i++) {
-			url += 'we_cmd[' + i + ']=' + encodeURIComponent(args[i]) + (i < (args.length - 1) ? '&' : '');
-		}
-	}
-
-	switch (args[0]) {
-		default:
-			parent.we_cmd.apply(this, arguments);
-	}
-	*/
+	var args = WE().util.getArgsArray(Array.prototype.slice.call(arguments));
+//	var url = WE().util.getArgsUrl(args);
+	var arguments = args;
 	parent.we_cmd.apply(this, arguments);
 }
 function set_button_state() {
@@ -1597,23 +1548,10 @@ function handle_event(evt) {
 
 		$functions = "
 function we_cmd() {
-	/*
-	var url = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
-	if(typeof arguments[0] === 'object' && arguments[0]['we_cmd[0]'] !== undefined){
-		var args = {}, i = 0, tmp = arguments[0];
-		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + '=' + encodeURIComponent(tmp[key]);}).join('&');
-	} else {
-		var args = Array.prototype.slice.call(arguments);
-		for (var i = 0; i < args.length; i++) {
-			url += 'we_cmd[' + i + ']=' + encodeURIComponent(args[i]) + (i < (args.length - 1) ? '&' : '');
-		}
-	}
+	var args = WE().util.getArgsArray(Array.prototype.slice.call(arguments));
+	//var url = WE().util.getArgsUrl(args);
+	var arguments = args;
 
-	switch (args[0]) {
-		default:
-			parent.we_cmd.apply(this, arguments);
-	}
-	*/
 	parent.we_cmd.apply(this, arguments);
 }
 function set_button_state() {
@@ -1818,23 +1756,9 @@ function handle_eventNext(){
 
 		$functions = "
 function we_cmd() {
-	/*
-	var url = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
-	if(typeof arguments[0] === 'object' && arguments[0]['we_cmd[0]'] !== undefined){
-		var args = {}, i = 0, tmp = arguments[0];
-		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + '=' + encodeURIComponent(tmp[key]);}).join('&');
-	} else {
-		var args = Array.prototype.slice.call(arguments);
-		for (var i = 0; i < args.length; i++) {
-			url += 'we_cmd[' + i + ']=' + encodeURIComponent(args[i]) + (i < (args.length - 1) ? '&' : '');
-		}
-	}
-
-	switch (args[0]) {
-		default:
-			parent.we_cmd.apply(this, arguments);
-	}
-	*/
+	var args = WE().util.getArgsArray(Array.prototype.slice.call(arguments));
+//	var url = WE().util.getArgsUrl(args);
+	var arguments = args;
 	parent.we_cmd.apply(this, arguments);
 }
 function set_button_state() {

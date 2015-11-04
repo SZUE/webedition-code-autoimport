@@ -156,17 +156,11 @@ class we_customer_EIWizard{
 			}
 
 			function we_cmd(){
-				var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-				if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
-					var args = {}, i = 0, tmp = arguments[0];
-					url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
-				} else {
-					var args = Array.prototype.slice.call(arguments);
-					for (var i = 0; i < args.length; i++) {
-						url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
-					}
-				}
-				switch (args[0]){
+	var args = WE().util.getArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getArgsUrl(args);
+	var arguments = args;
+
+switch (args[0]){
 					case "del_customer":
 						selector_cmd(arguments[0],arguments[1],arguments[2]);
 						break;
@@ -1460,14 +1454,9 @@ function doNext(){
 
 		$js = we_html_element::jsElement('
 function formFileChooser() {
-	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
-	var args=[];
-	for(var i = 0; i < arguments.length; i++){
-	args.push(arguments[i]);
-	url += "we_cmd[]="+encodeURI(arguments[i]);
-	if(i < (arguments.length - 1)){
-	url += "&";
-	}}
+	var args = WE().util.getArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getArgsUrl(args);
+	var arguments = args;
 	switch (args[0]) {
 		case "browse_server":
 			new (WE().util.jsWindow)(window, url,"server_selector",-1,-1,700,400,true,false,true);
@@ -1488,14 +1477,9 @@ function formFileChooser() {
 
 		$js = we_html_element::jsElement('
 function formDirChooser() {
-	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
-	var args=[];
-	for(var i = 0; i < arguments.length; i++){
-	url += "we_cmd[]="+encodeURI(arguments[i]);
-	args.push(arguments[i]);
-	if(i < (arguments.length - 1)){
-	url += "&";
-	}}
+	var args = WE().util.getArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getArgsUrl(args);
+	var arguments = args;
 	switch (args[0]) {
 		case "we_selector_directory":
 			new (WE().util.jsWindow)(window, url,"dir_selector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,false,true,true);
@@ -1536,14 +1520,9 @@ function formDirChooser() {
 		$customers = array_filter($customers);
 		$js = we_html_element::jsElement('
 function selector_cmd(){
-	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
-	var args=[];
-	for(var i = 0; i < arguments.length; i++){
-	url += "we_cmd[]="+encodeURI(arguments[i]);
-	args.push(arguments[i]);
-	if(i < (arguments.length - 1)){
-	url += "&";
-	}}
+	var args = WE().util.getArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getArgsUrl(args);
+	var arguments = args;
 	switch (args[0]){
 		case "we_selector_file":
 			new (WE().util.jsWindow)(window, url,"we_selector",-1,-1,' . we_selector_file::WINDOW_SELECTOR_WIDTH . ',' . we_selector_file::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);

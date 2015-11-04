@@ -853,13 +853,9 @@ function setMfdData(data) {
 }
 
 function getUser() {
-	var url = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
-	for (var i = 0; i < arguments.length; i++) {
-		url += 'we_cmd[]=' + encodeURI(arguments[i]);
-		if (i < (arguments.length - 1)) {
-			url += '&';
-		}
-	}
+	var args = WE().util.getArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getArgsUrl(args);
+	var arguments = args;
 
 	new (WE().util.jsWindow)(window, url, 'browse_users', -1, -1, 500, 300, true, false, true);
 }

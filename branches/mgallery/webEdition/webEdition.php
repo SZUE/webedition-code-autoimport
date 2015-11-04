@@ -364,17 +364,9 @@ foreach($jsCmd as $cur){
 ?>
 <script><!--
 	function we_cmd() {
-	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-	if(typeof arguments[0] === 'object' && arguments[0]['we_cmd[0]'] !== undefined){
-		var args = {}, i = 0, tmp = arguments[0];
-		scope = this;
-		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
-	} else {
-		var args = Array.prototype.slice.call(arguments);
-		for (i=0; i < args.length; i++) {
-			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i])+(i < (args.length - 1)?"&":"");
-		}
-	}
+	var args = WE().util.getArgsArray(Array.prototype.slice.call(arguments));
+	//var url = WE().util.getArgsUrl(args);
+	var arguments = args;
 
 	//	When coming from a we_cmd, always mark the document as opened with we !!!!
 	if (WE().layout.weEditorFrameController.getActiveDocumentReference) {

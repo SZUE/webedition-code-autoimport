@@ -65,16 +65,9 @@ var activ_tab = 1;
 var hot = 0;
 
 function we_cmd() {
-	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
-		var args = {}, i = 0, tmp = arguments[0];
-		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
-	} else {
-		var args = Array.prototype.slice.call(arguments);
-		for (var i = 0; i < args.length; i++) {
-			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
-		}
-	}
+	var args = WE().util.getArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getArgsUrl(args);
+	var arguments = args;
 
 	if(' . $this->topFrame . '.hot){
 		switch(args[0]){
@@ -2542,16 +2535,9 @@ WE().consts.g_l.weSearch = {
 			we_html_element::jsElement('
 var loaded=0;
 function we_cmd() {
-	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
-		var args = {}, i = 0, tmp = arguments[0];
-		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
-	} else {
-		var args = Array.prototype.slice.call(arguments);
-		for (var i = 0; i < args.length; i++) {
-			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
-		}
-	}
+	var args = WE().util.getArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getArgsUrl(args);
+	var arguments = args;
 
 	switch (args[0]) {
 		case "we_selector_image":
