@@ -41,21 +41,23 @@ function doUnload() {
 }
 
 function we_cmd() {
-	var args = [];
-	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
-	for(var i = 0; i < arguments.length; i++){
-				args.push(arguments[i]);
-	url += "we_cmd[]="+encodeURI(arguments[i]);
-	if(i < (arguments.length - 1)){
-	url += "&";
-	}}
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
+		}
+	}
+
 	switch (args[0]) {
 		case "load":
 			' . $this->topFrame . '.cmd.location="' . $this->frameset . '&pnt=cmd&pid="+args[1]+"&offset="+args[2]+"&sort="+args[3];
-		break;
+			break;
 		default:
-			top.opener.top.we_cmd.apply(this, args);
-
+			top.opener.top.we_cmd.apply(this, arguments);
 	}
 }');
 	}
@@ -105,34 +107,31 @@ function doUnload() {
 }
 
 function we_cmd() {
-	var args = [];
-	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
-	for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-		url += "we_cmd[]=" +encodeURI(arguments[i]);
-		if (i < (arguments.length - 1)) {
-			url += "&";
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
 		}
 	}
 
 	switch (args[0]) {
 		case "we_users_selector":
-			new (WE().util.jsWindow)(window, url, "browse_users", -1, -1, 500, 300, true, false, true);
+			new (WE().util.jsWindow)(this, url, "browse_users", -1, -1, 500, 300, true, false, true);
 			break;
-
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(window, url, "we_fileselector", -1, -1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height, true, true, true, true);
 			break;
-
 		case "select_seem_start":
 			myWindStr="WE().util.jsWindow.prototype.find(\'preferences\').wind";
-
 			top.opener.top.we_cmd("we_selector_document", myWind.document.forms[0].elements.seem_start_file.value, "' . FILE_TABLE . '", myWindStr + ".document.forms[0].elements.seem_start_file.value", myWindStr + ".document.forms[0].elements.seem_start_file_name.value", "", "", "", "' . we_base_ContentTypes::WEDOCUMENT . '", 1);
-
 			break;
 		case "openNavigationDirselector":
 		case "openNewsletterDirselector":
-		url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
+			url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
 			if (args[0] == "openNewsletterDirselector") {
 				args[0]="we_newsletter_dirSelector";//FIXME
 			}else {
@@ -144,10 +143,10 @@ function we_cmd() {
 					url += "&";
 				}
 			}
-			new (WE().util.jsWindow)(window, url, "we_navigation_dirselector", -1, -1, 600, 400, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_navigation_dirselector", -1, -1, 600, 400, true, true, true);
 			break;
 		default:
-			top.content.we_cmd.apply(this, args);
+			top.content.we_cmd.apply(this, arguments);
 	}
 }
 		');

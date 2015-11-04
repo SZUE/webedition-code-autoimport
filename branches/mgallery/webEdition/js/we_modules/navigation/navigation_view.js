@@ -33,14 +33,14 @@ function mark() {
 }
 
 function we_cmd() {
-	var args = [];
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-	for (var i = 0; i < arguments.length; i++) {
-		args.push(arguments[i]);
-
-		url += "we_cmd[]=" + encodeURI(arguments[i]);
-		if (i < (arguments.length - 1)) {
-			url += "&";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
 		}
 	}
 	if (top.content.hot) {
@@ -84,7 +84,7 @@ function we_cmd() {
 					we_cmd("\' + args[0] + \'");
 				}, 10);
 			}
-			if ((window.treeData !== undefined) && treeData) {
+			if ((this.treeData !== undefined) && treeData) {
 				treeData.unselectNode();
 			}
 			break;
@@ -107,7 +107,7 @@ function we_cmd() {
 					top.content.editor.edbody.submitForm();
 				}
 			} else {
-				WE().util.showMessage(WE().consts.g_l.navigation.view.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.navigation.view.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, this);
 			}
 			break;
 		case "populate":
@@ -133,17 +133,17 @@ function we_cmd() {
 			break;
 		case "module_navigation_delete":
 			if (top.content.editor.edbody.document.we_form.cmd.value === "home") {
-				WE().util.showMessage(WE().consts.g_l.navigation.view.nothing_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.navigation.view.nothing_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
 				return;
 			}
 			if (top.content.editor.edbody.document.we_form.newone) {
 				if (top.content.editor.edbody.document.we_form.newone.value == 1) {
-					WE().util.showMessage(WE().consts.g_l.navigation.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
+					WE().util.showMessage(WE().consts.g_l.navigation.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
 					return;
 				}
 			}
 			if (!WE().util.hasPerm("DELETE_NAVIGATION")) {
-				WE().util.showMessage(WE().consts.g_l.navigation.view.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.navigation.view.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
 				break;
 			}
 			if (top.content.editor.edbody.loaded) {
@@ -155,7 +155,7 @@ function we_cmd() {
 					top.content.editor.edbody.submitForm();
 				}
 			} else {
-				WE().util.showMessage(WE().consts.g_l.navigation.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.navigation.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
 			}
 
 			break;
@@ -192,7 +192,7 @@ function we_cmd() {
 			break;
 		case "exit_doc_question":
 			url = data.frameset + "&pnt=exit_doc_question&delayCmd=" + top.content.editor.edbody.document.getElementsByName("delayCmd")[0].value + "&delayParam=" + top.content.editor.edbody.document.getElementsByName("delayParam")[0].value;
-			new (WE().util.jsWindow)(window, url, "we_exit_doc_question", -1, -1, 380, 130, true, false, true);
+			new (WE().util.jsWindow)(this, url, "we_exit_doc_question", -1, -1, 380, 130, true, false, true);
 			break;
 
 		case "module_navigation_reset_customer_filter":
@@ -201,7 +201,7 @@ function we_cmd() {
 			}
 			break;
 		default:
-			top.opener.top.we_cmd.apply(this, args);
+			top.opener.top.we_cmd.apply(this, arguments);
 
 	}
 }

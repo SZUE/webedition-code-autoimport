@@ -65,92 +65,94 @@ function wiz_next(frm, url) {
 
 
 function we_cmd() {
-	var args = [];
-	var url = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
-	for (var i = 0; i < arguments.length; i++) {
-		url += 'we_cmd[]=' + encodeURI(arguments[i]);
-		args.push(arguments[i]);
-		if (i < (arguments.length - 1)) {
-			url += '&';
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
 		}
 	}
+
 	switch (args[0]) {
 		case 'we_selector_directory':
 		case 'we_selector_image':
 		case 'we_selector_document':
-			new (WE().util.jsWindow)(window, url, 'we_fileselector', -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true);
+			new (WE().util.jsWindow)(this, url, 'we_fileselector', -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true);
 			break;
 		case 'browse_server':
-			new (WE().util.jsWindow)(window, url, 'browse_server', -1, -1, 840, 400, true, false, true);
+			new (WE().util.jsWindow)(this, url, 'browse_server', -1, -1, 840, 400, true, false, true);
 			break;
 		case 'we_selector_category':
-			new (WE().util.jsWindow)(window, url, 'we_catselector', -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.width, true, true, true);
+			new (WE().util.jsWindow)(this, url, 'we_catselector', -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.width, true, true, true);
 			break;
 		case 'add_docCat':
 			if (WE().consts.tables.OBJECT_TABLE !== 'OBJECT_TABLE') {
-				self.wizbody.document.we_form.elements['v[import_type]'][0].checked = true;
+				this.wizbody.document.we_form.elements['v[import_type]'][0].checked = true;
 			}
-			if (self.wizbody.document.we_form.elements['v[docCategories]'].value.indexOf(',' + args[1] + ',') == -1) {
+			if (this.wizbody.document.we_form.elements['v[docCategories]'].value.indexOf(',' + args[1] + ',') == -1) {
 				var cats = args[1].split(/,/);
 				for (var i = 0; i < cats.length; i++) {
-					if (cats[i] && (self.wizbody.document.we_form.elements['v[docCategories]'].value.indexOf(',' + cats[i] + ',') == -1)) {
-						if (self.wizbody.document.we_form.elements['v[docCategories]'].value) {
-							self.wizbody.document.we_form.elements['v[docCategories]'].value = self.wizbody.document.we_form.elements['v[docCategories]'].value + cats[i] + ',';
+					if (cats[i] && (this.wizbody.document.we_form.elements['v[docCategories]'].value.indexOf(',' + cats[i] + ',') == -1)) {
+						if (this.wizbody.document.we_form.elements['v[docCategories]'].value) {
+							this.wizbody.document.we_form.elements['v[docCategories]'].value = this.wizbody.document.we_form.elements['v[docCategories]'].value + cats[i] + ',';
 						} else {
-							self.wizbody.document.we_form.elements['v[docCategories]'].value = ',' + cats[i] + ',';
+							this.wizbody.document.we_form.elements['v[docCategories]'].value = ',' + cats[i] + ',';
 						}
 						setTimeout(function () {
-							weGetCategories('doc', self.wizbody.document.we_form.elements['v[docCategories]'].value, 'rows');
+							weGetCategories('doc', this.wizbody.document.we_form.elements['v[docCategories]'].value, 'rows');
 						}, 100);
 					}
 				}
 			}
 			break;
 		case 'delete_docCat':
-			if (self.wizbody.document.we_form.elements['v[docCategories]'].value.indexOf(',' + args[1] + ',') != -1) {
-				if (self.wizbody.document.we_form.elements['v[docCategories]'].value) {
+			if (t.wizbody.document.we_form.elements['v[docCategories]'].value.indexOf(',' + args[1] + ',') != -1) {
+				if (this.wizbody.document.we_form.elements['v[docCategories]'].value) {
 					re = new RegExp(',' + args[1] + ',');
-					self.wizbody.document.we_form.elements['v[docCategories]'].value = self.wizbody.document.we_form.elements['v[docCategories]'].value.replace(re, ',');
-					if (self.wizbody.document.we_form.elements['v[docCategories]'].value == ',') {
-						self.wizbody.document.we_form.elements['v[docCategories]'].value = '';
+					this.wizbody.document.we_form.elements['v[docCategories]'].value = this.wizbody.document.we_form.elements['v[docCategories]'].value.replace(re, ',');
+					if (this.wizbody.document.we_form.elements['v[docCategories]'].value == ',') {
+						this.wizbody.document.we_form.elements['v[docCategories]'].value = '';
 					}
 				}
-				self.wizbody.we_submit_form(self.wizbody.document.we_form, 'wizbody', path);
+				this.wizbody.we_submit_form(self.wizbody.document.we_form, 'wizbody', path);
 			}
 			break;
 		case 'add_objCat':
-			self.wizbody.document.we_form.elements['v[import_type]'][1].checked = true;
-			if (self.wizbody.document.we_form.elements['v[objCategories]'].value.indexOf(',' + args[1] + ',') == -1) {
+			this.wizbody.document.we_form.elements['v[import_type]'][1].checked = true;
+			if (this.wizbody.document.we_form.elements['v[objCategories]'].value.indexOf(',' + args[1] + ',') == -1) {
 				var cats = args[1].split(/,/);
 				for (var i = 0; i < cats.length; i++) {
-					if (cats[i] && (self.wizbody.document.we_form.elements['v[objCategories]'].value.indexOf(',' + cats[i] + ',') == -1)) {
-						if (self.wizbody.document.we_form.elements['v[objCategories]'].value) {
-							self.wizbody.document.we_form.elements['v[objCategories]'].value = self.wizbody.document.we_form.elements['v[objCategories]'].value + cats[i] + ',';
+					if (cats[i] && (this.wizbody.document.we_form.elements['v[objCategories]'].value.indexOf(',' + cats[i] + ',') == -1)) {
+						if (this.wizbody.document.we_form.elements['v[objCategories]'].value) {
+							this.wizbody.document.we_form.elements['v[objCategories]'].value = this.wizbody.document.we_form.elements['v[objCategories]'].value + cats[i] + ',';
 						} else {
-							self.wizbody.document.we_form.elements['v[objCategories]'].value = ',' + cats[i] + ',';
+							this.wizbody.document.we_form.elements['v[objCategories]'].value = ',' + cats[i] + ',';
 						}
 						setTimeout(function () {
-							weGetCategories('obj', self.wizbody.document.we_form.elements['v[objCategories]'].value, 'rows');
+							weGetCategories('obj', this.wizbody.document.we_form.elements['v[objCategories]'].value, 'rows');
 						}, 100);
 					}
 				}
 			}
 			break;
 		case 'delete_objCat':
-			if (self.wizbody.document.we_form.elements['v[objCategories]'].value.indexOf(',' + args[1] + ',') != -1) {
-				if (self.wizbody.document.we_form.elements['v[objCategories]'].value) {
+			if (this.wizbody.document.we_form.elements['v[objCategories]'].value.indexOf(',' + args[1] + ',') != -1) {
+				if (this.wizbody.document.we_form.elements['v[objCategories]'].value) {
 					re = new RegExp(',' + args[1] + ',');
-					self.wizbody.document.we_form.elements['v[objCategories]'].value = self.wizbody.document.we_form.elements['v[objCategories]'].value.replace(re, ',');
-					if (self.wizbody.document.we_form.elements['v[objCategories]'].value == ',') {
-						self.wizbody.document.we_form.elements['v[objCategories]'].value = '';
+					this.wizbody.document.we_form.elements['v[objCategories]'].value = this.wizbody.document.we_form.elements['v[objCategories]'].value.replace(re, ',');
+					if (this.wizbody.document.we_form.elements['v[objCategories]'].value == ',') {
+						this.wizbody.document.we_form.elements['v[objCategories]'].value = '';
 					}
 				}
-				self.wizbody.we_submit_form(self.wizbody.document.we_form, 'wizbody', path);
+				this.wizbody.we_submit_form(this.wizbody.document.we_form, 'wizbody', path);
 			}
 			break;
 		case 'reload_editpage':
 			break;
 		default:
-			top.opener.top.we_cmd.apply(this, args);
+			top.opener.top.we_cmd.apply(this, arguments);
 	}
 }

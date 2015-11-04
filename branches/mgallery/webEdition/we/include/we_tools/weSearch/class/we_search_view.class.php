@@ -65,98 +65,95 @@ var activ_tab = 1;
 var hot = 0;
 
 function we_cmd() {
- var args = [];
- var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
-	 for(var i = 0; i < arguments.length; i++){
-					 args.push(arguments[i]);
-
-	 url += "we_cmd[]="+encodeURI(arguments[i]);
-	 if(i < (arguments.length - 1)){
-		url += "&";
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
+		}
 	}
-	 }
 
- if(' . $this->topFrame . '.hot){
-	 switch(args[0]){
-	 case "tool_weSearch_edit":
-	 case "tool_weSearch_new":
-	 case "tool_weSearch_new_group":
-	 case "tool_weSearch_exit":
-	' . $this->editorBodyFrame . '.document.we_form.delayCmd.value = args[0];
-	' . $this->editorBodyFrame . '.document.we_form.delayParam.value = args[1];
-	args[0] = "exit_doc_question";
+	if(' . $this->topFrame . '.hot){
+		switch(args[0]){
+		case "tool_weSearch_edit":
+		case "tool_weSearch_new":
+		case "tool_weSearch_new_group":
+		case "tool_weSearch_exit":
+		' . $this->editorBodyFrame . '.document.we_form.delayCmd.value = args[0];
+		' . $this->editorBodyFrame . '.document.we_form.delayParam.value = args[1];
+		args[0] = "exit_doc_question";
+		}
 	}
- }
- switch (args[0]) {
-	case "tool_weSearch_edit":
-	 if(' . $this->editorBodyFrame . '.loaded) {
-		' . $this->editorBodyFrame . '.document.we_form.cmd.value = args[0];
-		' . $this->editorBodyFrame . '.document.we_form.cmdid.value=args[1];
-		' . $this->editorBodyFrame . '.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
-		' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
-		' . $this->editorBodyFrame . '.submitForm();
-	 } else {
-		setTimeout(function(){we_cmd("tool_weSearch_edit",\'+args[1]+\');}, 10);
-	 }
-	break;
-	case "tool_weSearch_new":
-	case "tool_weSearch_new_group":
-	 if(' . $this->editorBodyFrame . '.loaded) {
-		' . $this->topFrame . '.hot = 0;
-		' . $this->editorBodyFrame . '.document.we_form.cmd.value = args[0];
-		' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
-		' . $this->editorBodyFrame . '.document.we_form.tabnr.value = 1;
-		' . $this->editorBodyFrame . '.submitForm();
-	 } else {
-		setTimeout(function(){we_cmd("tool_weSearch_new");}, 10);
-	 }
-	 if(treeData){
-		treeData.unselectNode();
-	 }
-	break;
 
-	case "tool_weSearch_exit":
-	 top.close();
-	break;
-	case "exit_doc_question":
-	 url = "' . $this->frameset . '?pnt=exit_doc_question&delayCmd="+' . $this->editorBodyFrame . '.document.getElementsByName("delayCmd")[0].value+"&delayParam="+' . $this->editorBodyFrame . '.document.getElementsByName("delayParam")[0].value;
-	 new (WE().util.jsWindow)(window, url,"we_exit_doc_question",-1,-1,380,130,true,false,true);
-	break;
+	switch (args[0]) {
+		case "tool_weSearch_edit":
+			if(' . $this->editorBodyFrame . '.loaded) {
+				' . $this->editorBodyFrame . '.document.we_form.cmd.value = args[0];
+				' . $this->editorBodyFrame . '.document.we_form.cmdid.value=args[1];
+				' . $this->editorBodyFrame . '.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
+				' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
+				' . $this->editorBodyFrame . '.submitForm();
+			} else {
+				setTimeout(function(){we_cmd("tool_weSearch_edit",\'+args[1]+\');}, 10);
+			}
+			break;
+		case "tool_weSearch_new":
+		case "tool_weSearch_new_group":
+			if(' . $this->editorBodyFrame . '.loaded) {
+				' . $this->topFrame . '.hot = 0;
+				' . $this->editorBodyFrame . '.document.we_form.cmd.value = args[0];
+				' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
+				' . $this->editorBodyFrame . '.document.we_form.tabnr.value = 1;
+				' . $this->editorBodyFrame . '.submitForm();
+			} else {
+				setTimeout(function(){we_cmd("tool_weSearch_new");}, 10);
+			}
+			if(treeData){
+				treeData.unselectNode();
+			}
+			break;
+		case "tool_weSearch_exit":
+			top.close();
+			break;
+		case "exit_doc_question":
+			url = "' . $this->frameset . '?pnt=exit_doc_question&delayCmd="+' . $this->editorBodyFrame . '.document.getElementsByName("delayCmd")[0].value+"&delayParam="+' . $this->editorBodyFrame . '.document.getElementsByName("delayParam")[0].value;
+			new (WE().util.jsWindow)(this, url,"we_exit_doc_question",-1,-1,380,130,true,false,true);
+			break;
 	case "tool_weSearch_save":
 	if(' . $this->editorBodyFrame . '.document.we_form.predefined.value==1) {
-	 ' . we_message_reporting::getShowMessageCall(g_l('searchtool', '[predefinedSearchmodify]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-	 break;
+		' . we_message_reporting::getShowMessageCall(g_l('searchtool', '[predefinedSearchmodify]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+		break;
 	}else if (' . $this->editorBodyFrame . '.loaded) {
-	 if(' . $this->editorBodyFrame . '.document.we_form.newone.value==1) {
-		var name = prompt("' . g_l('searchtool', '[nameForSearch]') . '", "");
-		if (name == null) {
-		 break;
+		if(' . $this->editorBodyFrame . '.document.we_form.newone.value==1) {
+			var name = prompt("' . g_l('searchtool', '[nameForSearch]') . '", "");
+			if (name == null) {
+			break;
 		} else {
-		 ' . $this->editorBodyFrame . '.document.we_form.savedSearchName.value=name;
+			' . $this->editorBodyFrame . '.document.we_form.savedSearchName.value=name;
 		}
-	 }
-	 ' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
- //' . $this->editorBodyFrame . '.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
-	 ' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
-	 ' . $this->editorBodyFrame . '.submitForm();
+		}
+		' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
+		//' . $this->editorBodyFrame . '.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
+		' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
+		' . $this->editorBodyFrame . '.submitForm();
 	}else {
-	 ' . we_message_reporting::getShowMessageCall(g_l('tools', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+		' . we_message_reporting::getShowMessageCall(g_l('tools', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 	}
-
 	break;
-
  case "tool_weSearch_delete":
 	if(' . $this->editorBodyFrame . '.document.we_form.predefined.value==1) {' .
 				we_message_reporting::getShowMessageCall(g_l('searchtool', '[predefinedSearchdelete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-	 return;
+		return;
 	}
 	if(' . $this->topFrame . '.editor.edbody.document.we_form.newone.value==1){
-	 ' . we_message_reporting::getShowMessageCall(g_l('tools', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-	 return;
+		' . we_message_reporting::getShowMessageCall(g_l('tools', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+		return;
 	}
 	' . (!permissionhandler::hasPerm("DELETE_" . strtoupper($this->toolName)) ? we_message_reporting::getShowMessageCall(g_l('tools', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) : ('
-			if (' . $this->topFrame . '.editor.edbody.loaded) {
-
+		if (' . $this->topFrame . '.editor.edbody.loaded) {
 			 if (confirm("' . g_l('searchtool', '[confirmDel]') . '")) {
 				' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
 				' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
@@ -236,7 +233,7 @@ function we_cmd() {
 	 }
 	 break;
 	default:
-	 top.opener.top.we_cmd.apply(this, args);
+	 top.opener.top.we_cmd.apply(this, arguments);
 
  }
 }
@@ -2551,27 +2548,30 @@ WE().consts.g_l.weSearch = {
 			we_html_element::jsElement('
 var loaded=0;
 function we_cmd() {
-	var args = [];
-	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
-	for(var i = 0; i < arguments.length; i++){
-				args.push(arguments[i]);
-	url += "we_cmd[]="+encodeURI(arguments[i]);
-	if(i < (arguments.length - 1)){
-	url += "&";
-	}}
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
+		}
+	}
+
 	switch (args[0]) {
 		case "we_selector_image":
 		case "we_selector_document":
-			new (WE().util.jsWindow)(window, url,"we_docselector",-1,-1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(this, url,"we_docselector",-1,-1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height,true,true,true,true);
 			break;
 		case "we_selector_file":
-			new (WE().util.jsWindow)(window, url,"we_selector",-1,-1,WE().consts.size.windowSelect.width,WE().consts.size.windowSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(this, url,"we_selector",-1,-1,WE().consts.size.windowSelect.width,WE().consts.size.windowSelect.height,true,true,true,true);
 			break;
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(window, url,"we_selector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(this, url,"we_selector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
 			break;
 		case "we_selector_category":
-			new (WE().util.jsWindow)(window, url,"we_catselector",-1,-1,WE().consts.size.catSelect.width,WE().consts.size.catSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(this, url,"we_catselector",-1,-1,WE().consts.size.catSelect.width,WE().consts.size.catSelect.height,true,true,true,true);
 			break;
 		case "openweSearchDirselector":
 			url = WE().consts.dirs.WEBEDITION_DIR+"apps/weSearch/we_weSearchDirSelect.php?";
@@ -2581,10 +2581,10 @@ function we_cmd() {
 				url += "&";
 				}
 			}
-			new (WE().util.jsWindow)(window, url,"we_weSearch_dirselector",-1,-1,600,400,true,true,true);
+			new (WE().util.jsWindow)(this, url,"we_weSearch_dirselector",-1,-1,600,400,true,true,true);
 			break;
 		default:
-			' . $this->topFrame . '.we_cmd.apply(this, args);
+			' . $this->topFrame . '.we_cmd.apply(this, arguments);
 	}
 }
 function submitForm() {

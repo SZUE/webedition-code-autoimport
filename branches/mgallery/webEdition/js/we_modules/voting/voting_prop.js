@@ -29,13 +29,14 @@ function doUnload() {
 }
 
 function we_cmd() {
-	var args = [];
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-	for (var i = 0; i < arguments.length; i++) {
-		args.push(arguments[i]);
-		url += "we_cmd[]=" + encodeURI(arguments[i]);
-		if (i < (arguments.length - 1)) {
-			url += "&";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
 		}
 	}
 	switch (args[0]) {
@@ -53,13 +54,13 @@ function we_cmd() {
 					url += "&";
 				}
 			}
-			new (WE().util.jsWindow)(window, url, "we_votingSelector", -1, -1, 600, 350, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_votingSelector", -1, -1, 600, 350, true, true, true);
 			break;
 		case "browse_server":
-			new (WE().util.jsWindow)(window, url, "browse_server", -1, -1, 840, 400, true, false, true);
+			new (WE().util.jsWindow)(this, url, "browse_server", -1, -1, 840, 400, true, false, true);
 			break;
 		case "we_users_selector":
-			new (WE().util.jsWindow)(window, url, "browse_users", -1, -1, 500, 300, true, false, true);
+			new (WE().util.jsWindow)(this, url, "browse_users", -1, -1, 500, 300, true, false, true);
 			break;
 		case "users_add_owner":
 			var owners = args[1];
@@ -103,7 +104,7 @@ function we_cmd() {
 		case "reset_ipdata":
 			if (confirm(WE().consts.g_l.voting.delete_ipdata_question)) {
 				url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=" + args[0];
-				new (WE().util.jsWindow)(window, url, args[0], -1, -1, 420, 230, true, false, true);
+				new (WE().util.jsWindow)(this, url, args[0], -1, -1, 420, 230, true, false, true);
 				var t = document.getElementById("ip_mem_size");
 				setVisible("delete_ip_data", false);
 				t.innerHTML = "0";
@@ -112,14 +113,14 @@ function we_cmd() {
 		case "delete_log":
 			if (confirm(WE().consts.g_l.voting.delete_log_question)) {
 				url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=" + args[0];
-				new (WE().util.jsWindow)(window, url, args[0], -1, -1, 420, 230, true, false, true);
+				new (WE().util.jsWindow)(this, url, args[0], -1, -1, 420, 230, true, false, true);
 			}
 			break;
 		case "show_log":
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=" + args[0];
-			new (WE().util.jsWindow)(window, url, args[0], -1, -1, 810, 600, true, true, true);
+			new (WE().util.jsWindow)(this, url, args[0], -1, -1, 810, 600, true, true, true);
 			break;
 		default:
-			top.content.we_cmd.apply(this, args);
+			top.content.we_cmd.apply(this, arguments);
 	}
 }

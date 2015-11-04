@@ -35,14 +35,14 @@ function doUnload() {
 }
 
 function we_cmd() {
-	var args = [];
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-	for (var i = 0; i < arguments.length; i++) {
-		args.push(arguments[i]);
-
-		url += "we_cmd[]=" + encodeURI(arguments[i]);
-		if (i < (arguments.length - 1)) {
-			url += "&";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
 		}
 	}
 	if (hot === 1 && args[0] != "save_voting") {
@@ -88,11 +88,11 @@ function we_cmd() {
 			if (top.content.editor.edbody.document.we_form.cmd.value == "home")
 				return;
 			if (top.content.editor.edbody.document.we_form.newone.value == 1) {
-				WE().util.showMessage(WE().consts.g_l.voting.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.voting.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
 				return;
 			}
 			if (!WE().util.hasPerm("DELETE_VOTING")) {
-				WE().util.showMessage(WE().consts.g_l.voting.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.voting.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
 				return;
 			}
 			if (top.content.editor.edbody.loaded) {
@@ -104,7 +104,7 @@ function we_cmd() {
 					top.content.editor.edbody.submitForm();
 				}
 			} else {
-				WE().util.showMessage(WE().consts.g_l.voting.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.voting.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
 			}
 			break;
 
@@ -128,14 +128,14 @@ function we_cmd() {
 				top.content.editor.edbody.submitForm();
 				top.content.usetHot();
 			} else {
-				WE().util.showMessage(WE().consts.g_l.voting.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.voting.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, this);
 			}
 
 			break;
 
 		case "voting_edit":
 			if (!WE().util.hasPerm("EDIT_VOTING")) {
-				WE().util.showMessage(WE().consts.g_l.voting.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.voting.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
 				return;
 			}
 			top.content.editor.edbody.document.we_form.cmd.value = args[0];
@@ -150,6 +150,6 @@ function we_cmd() {
 			top.content.editor.edbody.parent.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=editor";
 			break;
 		default:
-			top.opener.top.we_cmd.apply(this, args);
+			top.opener.top.we_cmd.apply(this, arguments);
 	}
 }

@@ -29,19 +29,20 @@ function doUnload() {
 
 function we_cmd() {
 	var url = frames.set + "?";
-	var args = [];
-	for (var i = 0; i < arguments.length; i++) {
-		url += "we_cmd[]=" + encodeURI(arguments[i]);
-		args.push(arguments[i]);
-		if (i < (arguments.length - 1)) {
-			url += "&";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
 		}
 	}
 
 	switch (args[0]) {
 		case "add_sort_field":
 			if (args[1] === "") {
-				top.we_showMessage(g_l.sortname_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(g_l.sortname_empty, WE().consts.message.WE_MESSAGE_ERROR, this);
 				break;
 			}
 			document.we_form.sortindex.value = args[1];
@@ -53,7 +54,7 @@ function we_cmd() {
 			document.we_form.fieldindex.value = args[2];
 		case "del_sort":
 			if (args[1] == settings.default_sort_view) {
-				top.we_showMessage(g_l.default_soting_no_del, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(g_l.default_soting_no_del, WE().consts.message.WE_MESSAGE_ERROR, this);
 			}
 			else {
 				document.we_form.cmd.value = args[0];
@@ -67,7 +68,7 @@ function we_cmd() {
 			submitForm();
 			break;
 		default:
-			top.content.we_cmd.apply(this, args);
+			top.content.we_cmd.apply(this, arguments);
 
 	}
 	setScrollTo();

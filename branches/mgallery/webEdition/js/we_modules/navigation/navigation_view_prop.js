@@ -75,28 +75,29 @@ function populateVars() {
 }
 
 function we_cmd() {
-	var args = [];
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-	for (var i = 0; i < arguments.length; i++) {
-		args.push(arguments[i]);
-		url += "we_cmd[]=" + encodeURI(arguments[i]);
-		if (i < (arguments.length - 1)) {
-			url += "&";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
 		}
 	}
 	switch (args[0]) {
 		case "we_selector_image":
 		case "we_selector_document":
-			new (WE().util.jsWindow)(window, url, "we_docselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_docselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "we_selector_file":
-			new (WE().util.jsWindow)(window, url, "we_selector", -1, -1, WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_selector", -1, -1, WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
 			break;
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(window, url, "we_selector", -1, -1, WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_selector", -1, -1, WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
 			break;
 		case "we_selector_category":
-			new (WE().util.jsWindow)(window, url, "we_catselector", -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_catselector", -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 		case "openNavigationDirselector":
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
@@ -107,11 +108,11 @@ function we_cmd() {
 					url += "&";
 				}
 			}
-			new (WE().util.jsWindow)(window, url, "we_navigation_dirselector", -1, -1, 600, 400, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_navigation_dirselector", -1, -1, 600, 400, true, true, true);
 			break;
 		case "openFieldSelector":
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=fields&cmd=" + args[1] + "&type=" + args[2] + "&selection=" + args[3] + "&multi=" + args[4];
-			new (WE().util.jsWindow)(window, url, "we_navigation_field_selector", -1, -1, 380, 350, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_navigation_field_selector", -1, -1, 380, 350, true, true, true);
 			break;
 		case "copyNaviFolder":
 			folderPath = document.we_form.CopyFolderPath.value;
@@ -124,7 +125,7 @@ function we_cmd() {
 			//new (WE().util.jsWindow)(window, WE().consts.dirs.WE_INCLUDES_DIR+"we_cmd.php?we_cmd[0]=rebuild&step=2&type=rebuild_navigation&responseText=\',\'resave\',-1,-1,600,130,0,true);
 			break;
 		default:
-			top.content.we_cmd.apply(this, args);
+			top.content.we_cmd.apply(this, arguments);
 
 	}
 }

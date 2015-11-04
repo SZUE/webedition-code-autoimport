@@ -76,14 +76,17 @@ function doUnload() {
 }
 
 function we_cmd(){
-	var args = [];
-	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
-	for(var i = 0; i < arguments.length; i++){
-				args.push(arguments[i]);
-	url += "we_cmd[]="+encodeURI(arguments[i]);
-	if(i < (arguments.length - 1)){
-	url += "&";
-	}}
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
+		}
+	}
+
 	switch (args[0]){
 		case "new_shop":
 			top.content.editor.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=editor";
@@ -123,33 +126,28 @@ function we_cmd(){
 
 		$out .= '
 		case "pref_shop":
-			var wind = new (WE().util.jsWindow)(window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_pref.php","shoppref",-1,-1,470,600,true,true,true,false);
+			var wind = new (WE().util.jsWindow)(this, "' . WE_SHOP_MODULE_DIR . 'edit_shop_pref.php","shoppref",-1,-1,470,600,true,true,true,false);
 			break;
-
 		case "edit_shop_vats":
-			var wind = new (WE().util.jsWindow)(window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_vats.php","edit_shop_vats",-1,-1,500,450,true,false,true,false);
+			var wind = new (WE().util.jsWindow)(this, "' . WE_SHOP_MODULE_DIR . 'edit_shop_vats.php","edit_shop_vats",-1,-1,500,450,true,false,true,false);
 			break;
-
 		case "edit_shop_shipping":
-			var wind = new (WE().util.jsWindow)(window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_shipping.php","edit_shop_shipping",-1,-1,700,600,true,false,true,false);
+			var wind = new (WE().util.jsWindow)(this, "' . WE_SHOP_MODULE_DIR . 'edit_shop_shipping.php","edit_shop_shipping",-1,-1,700,600,true,false,true,false);
 			break;
 		case "edit_shop_status":
-			var wind = new (WE().util.jsWindow)(window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_status.php","edit_shop_status",-1,-1,700,780,true,true,true,false);
+			var wind = new (WE().util.jsWindow)(this, "' . WE_SHOP_MODULE_DIR . 'edit_shop_status.php","edit_shop_status",-1,-1,700,780,true,true,true,false);
 			break;
 		case "edit_shop_vat_country":
-			var wind = new (WE().util.jsWindow)(window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_vat_country.php","edit_shop_vat_country",-1,-1,700,780,true,true,true,false);
+			var wind = new (WE().util.jsWindow)(this, "' . WE_SHOP_MODULE_DIR . 'edit_shop_vat_country.php","edit_shop_vat_country",-1,-1,700,780,true,true,true,false);
 			break;
 		case "payment_val":
-			var wind = new (WE().util.jsWindow)(window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_payment.php","shoppref",-1,-1,520,720,true,false,true,false);
+			var wind = new (WE().util.jsWindow)(this, "' . WE_SHOP_MODULE_DIR . 'edit_shop_payment.php","shoppref",-1,-1,520,720,true,false,true,false);
 			break;
-
 		case "edit_shop_categories":
-			var wind = new (WE().util.jsWindow)(window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_categories.php","edit_shop_categories",-1,-1,500,450,true,false,true,false);
+			var wind = new (WE().util.jsWindow)(this, "' . WE_SHOP_MODULE_DIR . 'edit_shop_categories.php","edit_shop_categories",-1,-1,500,450,true,false,true,false);
 			break;
-
 		default:
-			top.opener.top.we_cmd.apply(this, args);
-			break;
+			top.opener.top.we_cmd.apply(this, arguemnts);
 	}
 }
 		';
@@ -176,26 +174,27 @@ function doUnload() {
 }
 
 function we_cmd() {
-var args = [];
-	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
-	for(var i = 0; i < arguments.length; i++){
-				args.push(arguments[i]);
-	url += "we_cmd[]="+encodeURI(arguments[i]);
-	if(i < (arguments.length - 1)){
-	url += "&";
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
+		}
 	}
-	}
+
 	switch (args[0]) {
 		case "openOrder":
 			//TODO: check this adress: mit oder ohne tree? Bisher: left
 			if(top.content.doClick) {
 				top.content.doClick(arguments[1], arguments[2], arguments[3]);//TODO: check this adress
 			}
-		break;
-
+			break;
 		default:
 			// not needed yet
-		break;
+			top.opener.top.we_cmd.apply(this, arguments);
 	}
 }
 

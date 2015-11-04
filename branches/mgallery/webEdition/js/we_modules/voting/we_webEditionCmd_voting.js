@@ -28,7 +28,7 @@ function we_cmd_voting() {
 
 		case "voting_edit":
 		case "voting_edit_ifthere":
-			new (WE().util.jsWindow)(window, url, "edit_module", -1, -1, 970, 760, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, "edit_module", -1, -1, 970, 760, true, true, true, true);
 			return true;
 		case "new_voting":
 		case "new_voting_group":

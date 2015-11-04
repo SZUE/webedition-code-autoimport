@@ -102,22 +102,22 @@ weTagWizard.needsEndTag = ' . ($weTag->needsEndTag() ? 'true' : 'false') . ';
 // information about the type-attribute
 ' . $typeAttributeJs . '
 function we_cmd(){
-	var args = [];
-	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
-	for(var i = 0; i < arguments.length; i++){
-				args.push(arguments[i]);
-	url += "we_cmd[]="+encodeURI(arguments[i]);
-	if(i < (arguments.length - 1)){
-	url += "&";
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
+		}
 	}
-	}
+
 	switch (args[0]){
 		case "switch_type":
 			weTagWizard.changeType(args[1]);
-		break;
-
+			break;
 		case "saveTag":
-
 			if (strWeTag = weTagWizard.getWeTag()) {
 				var contentEditor = WE().layout.weEditorFrameController.getVisibleEditorFrame();
 			' .
@@ -126,8 +126,8 @@ function we_cmd(){
 				self.close();;
 				' : '
 				contentEditor.document.we_form.elements.tag_edit_area.value=strWeTag;
-   			contentEditor.document.we_form.elements.tag_edit_area.select();
-    			self.close();'
+				contentEditor.document.we_form.elements.tag_edit_area.select();
+				self.close();'
 				) . '
 			} else {
 				if (weTagWizard.missingFields.length) {
@@ -141,28 +141,25 @@ function we_cmd(){
 					' . we_message_reporting::getShowMessageCall(g_l('taged', '[no_type_selected]'), we_message_reporting::WE_MESSAGE_WARNING) . '
 				}
 			}
-		break;
-
+			break;
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(window, url,"we_fileselector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(this, url,"we_fileselector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
 			break;
 		case "we_selector_document":
 		case "we_selector_image":
-			new (WE().util.jsWindow)(window, url,"we_fileselector",-1,-1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(this, url,"we_fileselector",-1,-1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height,true,true,true,true);
 			break;
 		case "we_selector_file":
-			new (WE().util.jsWindow)(window, url,"we_fileselector",-1,-1,WE().consts.size.windowSelect.width,WE().consts.size.windowSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(this, url,"we_fileselector",-1,-1,WE().consts.size.windowSelect.width,WE().consts.size.windowSelect.height,true,true,true,true);
 			break;
 		case "we_selector_category":
-			new (WE().util.jsWindow)(window, url,"we_catselector",-1,-1,WE().consts.size.catSelect.width,WE().consts.size.catSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(this, url,"we_catselector",-1,-1,WE().consts.size.catSelect.width,WE().consts.size.catSelect.height,true,true,true,true);
 			break;
 		case "we_users_selector":
-	        new (WE().util.jsWindow)(window, url,"browse_users",-1,-1,500,300,true,false,true);
-	        break;
-		default:
-			opener.we_cmd.apply(this, args);
-
+			new (WE().util.jsWindow)(this, url,"browse_users",-1,-1,500,300,true,false,true);
 			break;
+		default:
+			opener.we_cmd.apply(this, arguments);
 	 }
 }'));
 ?>

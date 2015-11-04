@@ -89,10 +89,13 @@ function addCat(paths, ids) {
 
 function we_cmd() {
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-	for (var i = 0; i < arguments.length; i++) {
-		url += "we_cmd[]=" + encodeURI(arguments[i]);
-		if (i < (arguments.length - 1)) {
-			url += "&";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
 		}
 	}
 
@@ -114,7 +117,7 @@ function we_cmd() {
 				weInput.setValue("cmd", "save_navigation_rule");
 				document.we_form.submit();
 			} else {
-				top.we_showMessage(WE().consts.g_l.navigation.rule.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.navigation.rule.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, this);
 				return false;
 			}
 			break;
@@ -136,17 +139,17 @@ function we_cmd() {
 			document.we_form.submit();
 			break;
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(window, url, args[0], -1, -1, WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, args[0], -1, -1, WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
 			break;
 		case "we_selector_category":
-			new (WE().util.jsWindow)(window, url, args[0], -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, args[0], -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 		case "we_selector_file":
-			new (WE().util.jsWindow)(window, url, args[0], -1, -1, WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, args[0], -1, -1, WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
 			break;
 		case "we_selector_image":
 		case "we_selector_document":
-			new (WE().util.jsWindow)(window, url, args[0], -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, args[0], -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 	}
 }

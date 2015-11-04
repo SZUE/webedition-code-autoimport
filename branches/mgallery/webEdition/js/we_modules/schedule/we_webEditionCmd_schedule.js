@@ -27,7 +27,7 @@ function we_cmd_schedule() {
 	switch (args[0]) {
 		case "edit_schedule":
 		case "schedule_edit_ifthere":
-			new (WE().util.jsWindow)(window, url, "edit_module", -1, -1, 380, 250, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, "edit_module", -1, -1, 380, 250, true, true, true, true);
 			return true;
 	}
 	return false;

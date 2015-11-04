@@ -138,32 +138,34 @@ class we_import_site{
 	private static function _getJS(){
 		return we_html_element::jsElement('
 function we_cmd() {
-		var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
-var args=[];
-for(var i = 0; i < arguments.length; i++){
-				url += "we_cmd[]="+encodeURI(arguments[i]);
-args.push(arguments[i]);
-if(i < (arguments.length - 1)){
-		url += "&";
-		}}
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
+		}
+	}
 
 	switch (args[0]) {
 			case "we_selector_image":
 			case "we_selector_document":
-			new (WE().util.jsWindow)(window, url,"we_docselector",-1,-1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(this, url,"we_docselector",-1,-1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height,true,true,true,true);
 			break;
 
 			case "we_selector_directory":
-			new (WE().util.jsWindow)(window, url,"we_dirselector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(this, url,"we_dirselector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
 			break;
-
 		case "browse_server":
-			new (WE().util.jsWindow)(window, url,"browse_server",-1,-1,800,400,true,false,true);
+			new (WE().util.jsWindow)(this, url,"browse_server",-1,-1,800,400,true,false,true);
 			break;
-
 		case "siteImportCreateWePageSettings":
-			new (WE().util.jsWindow)(window, url,"siteImportCreateWePageSettings",-1,-1,520,600,true,false,true);
+			new (WE().util.jsWindow)(this, url,"siteImportCreateWePageSettings",-1,-1,520,600,true,false,true);
 			break;
+		default:
+			top.opener.top.we_cmd.apply(this, arguments);
 	}
 }
 

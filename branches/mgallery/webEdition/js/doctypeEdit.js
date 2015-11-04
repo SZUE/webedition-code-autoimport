@@ -84,30 +84,32 @@ function disableLangDefault(allnames, allvalues, deselect) {
 }
 
 function we_cmd() {
-	var args = [];
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-	for (var i = 0; i < arguments.length; i++) {
-		url += "we_cmd[]=" + encodeURIComponent(arguments[i]);
-		args.push(arguments[i]);
-		if (i < (arguments.length - 1)) {
-			url += "&";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
 		}
 	}
+
 	switch (args[0]) {
 		case "we_selector_image":
 		case "we_selector_document":
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(window, url, "we_fileselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "we_selector_category":
-			new (WE().util.jsWindow)(window, url, "we_catselector", -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_catselector", -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 		case "add_dt_template":
 		case "delete_dt_template":
 		case "dt_add_cat":
 		case "dt_delete_cat":
 		case "save_docType":
-			we_save_docType(self.name, url)
+			we_save_docType(this.name, url);
 			break;
 		case "newDocType":
 			var name = prompt(WE().consts.g_l.doctypeEdit.newDocTypeName, "");
@@ -126,17 +128,17 @@ function we_cmd() {
 					/*						if (top.opener.top.header) {
 					 top.opener.top.header.location.reload();
 					 }*/
-					self.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=newDocType&we_cmd[1]=" + encodeURIComponent(name);
+					this.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=newDocType&we_cmd[1]=" + encodeURIComponent(name);
 				}
 			}
 			break;
 		case "change_docType":
 		case "deleteDocType":
 		case "deleteDocTypeok":
-			self.location = url;
+			this.location = url;
 			break;
 		default:
-			opener.top.we_cmd.apply(this, args);
+			opener.top.we_cmd.apply(this, arguments);
 
 	}
 }

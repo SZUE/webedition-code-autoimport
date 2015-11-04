@@ -365,7 +365,6 @@ foreach($jsCmd as $cur){
 <script><!--
 	function we_cmd() {
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-
 	if(typeof arguments[0] === 'object' && arguments[0]['we_cmd[0]'] !== undefined){
 		var args = {}, i = 0, tmp = arguments[0];
 		scope = this;

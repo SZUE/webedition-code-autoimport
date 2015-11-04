@@ -201,13 +201,14 @@ function doUnload() {
  * Newsletter command controler
  */
 function we_cmd() {
-	var args = [];
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-	for (var i = 0; i < arguments.length; i++) {
-		args.push(arguments[i]);
-		url += "we_cmd[]=" + encodeURI(arguments[i]);
-		if (i < (arguments.length - 1)) {
-			url += "&";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
 		}
 	}
 
@@ -217,20 +218,20 @@ function we_cmd() {
 
 	switch (args[0]) {
 		case "we_users_selector":
-			new (WE().util.jsWindow)(window, url, "browse_users", -1, -1, 500, 300, true, false, true);
+			new (WE().util.jsWindow)(this, url, "browse_users", -1, -1, 500, 300, true, false, true);
 			break;
 
 		case "browse_server":
-			new (WE().util.jsWindow)(window, url, "browse_server", -1, -1, 840, 400, true, false, true);
+			new (WE().util.jsWindow)(this, url, "browse_server", -1, -1, 840, 400, true, false, true);
 			break;
 
 		case "we_selector_image":
 		case "we_selector_document":
-			new (WE().util.jsWindow)(window, url, "we_docselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_docselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 
 		case "we_selector_file":
-			new (WE().util.jsWindow)(window, url, "we_selector", -1, -1, WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_selector", -1, -1, WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
 			break;
 
 		case "openNewsletterDirselector":
@@ -242,7 +243,7 @@ function we_cmd() {
 					url += "&";
 				}
 			}
-			new (WE().util.jsWindow)(window, url, "we_newsletter_dirselector", -1, -1, 600, 400, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_newsletter_dirselector", -1, -1, 600, 400, true, true, true);
 			break;
 
 		case "add_customer":
@@ -307,7 +308,7 @@ function we_cmd() {
 			if (document.we_form.ncmd.value == "home")
 				return;
 			if (top.content.hot !== 0) {
-				top.we_showMessage(WE().consts.g_l.newsletter.must_save_preview, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.newsletter.must_save_preview, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else {
 				document.we_form.elements["we_cmd[0]"].value = "preview_newsletter";
 				document.we_form.gview.value = parent.edfooter.document.we_form.gview.value;
@@ -318,11 +319,11 @@ function we_cmd() {
 
 		case "popSend":
 			if (document.we_form.ncmd.value == "home") {
-				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else if (top.content.hot !== 0) {
-				top.we_showMessage(WE().consts.g_l.newsletter.must_save, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.newsletter.must_save, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else if (document.we_form.IsFolder.value === 1) {
-				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else {
 
 				message_text = (args[1] ? WE().consts.g_l.newsletter.send_test_question : WE().consts.g_l.newsletter.send_question);
@@ -338,11 +339,11 @@ function we_cmd() {
 
 		case "send_test":
 			if (document.we_form.ncmd.value == "home") {
-				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else if (top.content.hot !== 0) {
-				top.we_showMessage(WE().consts.g_l.newsletter.must_save, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.newsletter.must_save, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else if (document.we_form.IsFolder.value == 1) {
-				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else {
 				if (confirm(WE().consts.g_l.newsletter.test_email_question)) {
 					document.we_form.ncmd.value = args[0];
@@ -359,18 +360,18 @@ function we_cmd() {
 				popAndSubmit(args[0], args[0], 650, 650);
 			break;
 		case "newsletter_settings":
-			new (WE().util.jsWindow)(window, modFrameSet + "&pnt=" + args[0], args[0], -1, -1, 600, 750, true, true, true, true);
+			new (WE().util.jsWindow)(this, modFrameSet + "&pnt=" + args[0], args[0], -1, -1, 600, 750, true, true, true, true);
 			break;
 
 		case "black_list":
-			new (WE().util.jsWindow)(window, modFrameSet + "&pnt=" + args[0], args[0], -1, -1, 560, 460, true, true, true, true);
+			new (WE().util.jsWindow)(this, modFrameSet + "&pnt=" + args[0], args[0], -1, -1, 560, 460, true, true, true, true);
 			break;
 
 		case "edit_file":
 			if (args[1]) {
-				new (WE().util.jsWindow)(window, modFrameSet + "&pnt=" + args[0] + "&art=" + args[1], args[0], -1, -1, 950, 640, true, true, true, true);
+				new (WE().util.jsWindow)(this, modFrameSet + "&pnt=" + args[0] + "&art=" + args[1], args[0], -1, -1, 950, 640, true, true, true, true);
 			} else {
-				new (WE().util.jsWindow)(window, modFrameSet + "&pnt=" + args[0], args[0], -1, -1, 950, 640, true, true, true, true);
+				new (WE().util.jsWindow)(this, modFrameSet + "&pnt=" + args[0], args[0], -1, -1, 950, 640, true, true, true, true);
 			}
 			break;
 
@@ -420,19 +421,19 @@ function we_cmd() {
 
 		case "upload_csv":
 		case "upload_black":
-			new (WE().util.jsWindow)(window, modFrameSet + "&pnt=" + args[0] + "&grp=" + args[1], args[0], -1, -1, 450, 270, true, true, true, true);
+			new (WE().util.jsWindow)(this, modFrameSet + "&pnt=" + args[0] + "&grp=" + args[1], args[0], -1, -1, 450, 270, true, true, true, true);
 			break;
 
 		case "add_email":
 			var email = document.we_form.group = args[1];
-			new (WE().util.jsWindow)(window, modFrameSet + "&pnt=eemail&grp=" + args[1], "edit_email", -1, -1, 450, 270, true, true, true, true);
+			new (WE().util.jsWindow)(this, modFrameSet + "&pnt=eemail&grp=" + args[1], "edit_email", -1, -1, 450, 270, true, true, true, true);
 			break;
 
 		case "edit_email":
 			eval("var p=document.we_form.we_recipient" + args[1] + ";");
 
 			if (p.selectedIndex < 0) {
-				top.we_showMessage(WE().consts.g_l.newsletter.no_email, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.newsletter.no_email, WE().consts.message.WE_MESSAGE_ERROR, this);
 				return;
 			}
 
@@ -457,7 +458,7 @@ function we_cmd() {
 			firstname = encodeURIComponent(firstname.replace("+", "[:plus:]"));
 			lastname = encodeURIComponent(lastname.replace("+", "[:plus:]"));
 			email = encodeURIComponent(email);
-			new (WE().util.jsWindow)(window, modFrameSet + "&pnt=eemail&grp=" + args[1] + "&etyp=1&eid=" + eid + "&email=" + email + "&htmlmail=" + htmlmail + "&salutation=" + salutation + "&title=" + title + "&firstname=" + firstname + "&lastname=" + lastname, "edit_email", -1, -1, 450, 270, true, true, true, true);
+			new (WE().util.jsWindow)(this, modFrameSet + "&pnt=eemail&grp=" + args[1] + "&etyp=1&eid=" + eid + "&email=" + email + "&htmlmail=" + htmlmail + "&salutation=" + salutation + "&title=" + title + "&firstname=" + firstname + "&lastname=" + lastname, "edit_email", -1, -1, 450, 270, true, true, true, true);
 			break;
 
 		case "save_black":
@@ -479,11 +480,11 @@ function we_cmd() {
 
 			break;
 		case "clear_log":
-			new (WE().util.jsWindow)(window, modFrameSet + "&pnt=" + args[0], args[0], -1, -1, 450, 300, true, true, true, true);
+			new (WE().util.jsWindow)(this, modFrameSet + "&pnt=" + args[0], args[0], -1, -1, 450, 300, true, true, true, true);
 			break;
 
 		default:
-			top.content.we_cmd.apply(this, args);
+			top.content.we_cmd.apply(this, arguments);
 
 	}
 }

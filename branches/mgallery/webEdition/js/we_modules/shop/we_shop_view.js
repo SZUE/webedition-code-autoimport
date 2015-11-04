@@ -31,33 +31,34 @@ function doUnload() {
 
 function we_cmd() {
 	var url = WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_properties.php?";
-	var args = [];
-	for (var i = 0; i < arguments.length; i++) {
-		url += "we_cmd[]=" + encodeURIComponent(arguments[i]);
-		args.push(arguments[i]);
-		if (i < (arguments.length - 1)) {
-			url += "&";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
 		}
 	}
 
 	var wind;
 	switch (args[0]) {
 		case "edit_shipping_cost":
-			wind = new (WE().util.jsWindow)(window, url + "&bid=" + bid, "edit_shipping_cost", -1, -1, 545, 205, true, true, true, false);
+			wind = new (WE().util.jsWindow)(this, url + "&bid=" + bid, "edit_shipping_cost", -1, -1, 545, 205, true, true, true, false);
 			break;
 
 		case "edit_shop_cart_custom_field":
-			wind = new (WE().util.jsWindow)(window, url + "&bid=" + bid + "&cartfieldname=" + (args[1] ? args[1] : ''), "edit_shop_cart_custom_field", -1, -1, 545, 300, true, true, true, false);
+			wind = new (WE().util.jsWindow)(this, url + "&bid=" + bid + "&cartfieldname=" + (args[1] ? args[1] : ''), "edit_shop_cart_custom_field", -1, -1, 545, 300, true, true, true, false);
 			break;
 
 		case "edit_order_customer":
-			wind = new (WE().util.jsWindow)(window, url + "&bid=" + bid, "edit_order_customer", -1, -1, 545, 600, true, true, true, false);
+			wind = new (WE().util.jsWindow)(this, url + "&bid=" + bid, "edit_order_customer", -1, -1, 545, 600, true, true, true, false);
 			break;
 		case "customer_edit":
 			top.document.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=customer&pnt=show_frameset&sid=' + cid;
 			break;
 		case "add_new_article":
-			wind = new (WE().util.jsWindow)(window, url + "&bid=" + bid, "add_new_article", -1, -1, 650, 600, true, false, true, false);
+			wind = new (WE().util.jsWindow)(this, url + "&bid=" + bid, "add_new_article", -1, -1, 650, 600, true, false, true, false);
 			break;
 	}
 }

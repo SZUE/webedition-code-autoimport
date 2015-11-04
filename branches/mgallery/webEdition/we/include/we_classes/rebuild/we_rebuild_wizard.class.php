@@ -812,105 +812,106 @@ function handle_event(what){
 }
 function we_cmd() {
 	f = document.we_form;
-	var args = [];
-	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
-	for(var i = 0; i < arguments.length; i++){
-	args.push(arguments[i]);
-	url += "we_cmd[]="+encodeURI(arguments[i]);
-	if(i < (arguments.length - 1)){
-	url += "&";
-	}
-	}
-	switch (args[0]) {
-	case "we_selector_directory":
-		new (WE().util.jsWindow)(window, url,"we_fileselector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
-		break;
-	case "we_selector_category":
-		new (WE().util.jsWindow)(window, url,"we_catselector",-1,-1,WE().consts.size.catSelect.width,WE().consts.size.catSelect.height,true,true,true,true);
-		break;
-	case "add_cat":
-		var catsToAdd = makeArrayFromCSV(args[1]);
-		var cats = makeArrayFromCSV(f.categories.value);
-		for(var i=0;i<catsToAdd.length;i++){
-			if(!WE().util.in_array(catsToAdd[i],cats)){
-				cats.push(catsToAdd[i]);
-			};
-		};
-		f.categories.value = cats.join(",");
-		f.step.value=1;
-		f.submit();
-		break;
-	case "del_cat":
-		var catToDel = args[1];
-		var cats = makeArrayFromCSV(f.categories.value);
-		var newcats = [];
-		for(var i=0;i<cats.length;i++){
-			if(cats[i] != catToDel){
-				newcats.push(cats[i]);
-			};
-		};
-		f.categories.value = newcats.join(",");
-		f.step.value=1;
-		f.submit();
-		break;
-	case "del_all_cats":
-		f.categories.value = "";
-		f.step.value=1;
-		f.submit();
-		break;
-	case "add_folder":
-		var foldersToAdd = makeArrayFromCSV(args[1]);
-		var folders = makeArrayFromCSV(f.' . $folders . '.value);
-		for(var i=0;i<foldersToAdd.length;i++){
-			if(!WE().util.in_array(foldersToAdd[i],folders)){
-				folders.push(foldersToAdd[i]);
-			};
-		};
-		f.' . $folders . '.value = folders.join(",");
-		f.step.value=1;
-		f.submit();
-		break;
-	case "del_folder":
-		var folderToDel = args[1];
-		var folders = makeArrayFromCSV(f.' . $folders . '.value);
-		var newfolders = [];
-		for(var i=0;i<folders.length;i++){
-			if(folders[i] != folderToDel){
-				newfolders.push(folders[i]);
-			};
-		};
-		f.' . $folders . '.value = newfolders.join(",");
-		f.step.value=1;
-		f.submit();
-		break;
-	case "del_all_folders":
-		f.' . $folders . '.value = "";
-		f.step.value=1;
-		f.submit();
-		break;
-	case "deselect_all_fields":
-		var _elem = document.we_form.elements;
-		var _elemLength = _elem.length;
-		for (var i=0; i<_elemLength; i++) {
-			if (_elem[i].name.substring(0,7) == "_field[") {
-				_elem[i].checked = false;
-			}
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
 		}
-		document._errorMessage = "' . addslashes(g_l('rebuild', '[noFieldsChecked]')) . '";
-		break;
-	case "select_all_fields":
-		var _elem = document.we_form.elements;
-		var _elemLength = _elem.length;
-		for (var i=0; i<_elemLength; i++) {
-			if (_elem[i].name.substring(0,7) == "_field[") {
-				_elem[i].checked = true;
-			}
-		}
-		document._errorMessage = "";
-		break;
-	default:
-opener.top.we_cmd.apply(this, args);
+	}
 
+	switch (args[0]) {
+		case "we_selector_directory":
+			new (WE().util.jsWindow)(this, url,"we_fileselector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
+			break;
+		case "we_selector_category":
+			new (WE().util.jsWindow)(this, url,"we_catselector",-1,-1,WE().consts.size.catSelect.width,WE().consts.size.catSelect.height,true,true,true,true);
+			break;
+		case "add_cat":
+			var catsToAdd = makeArrayFromCSV(args[1]);
+			var cats = makeArrayFromCSV(f.categories.value);
+			for(var i=0;i<catsToAdd.length;i++){
+				if(!WE().util.in_array(catsToAdd[i],cats)){
+					cats.push(catsToAdd[i]);
+				};
+			};
+			f.categories.value = cats.join(",");
+			f.step.value=1;
+			f.submit();
+			break;
+		case "del_cat":
+			var catToDel = args[1];
+			var cats = makeArrayFromCSV(f.categories.value);
+			var newcats = [];
+			for(var i=0;i<cats.length;i++){
+				if(cats[i] != catToDel){
+					newcats.push(cats[i]);
+				};
+			};
+			f.categories.value = newcats.join(",");
+			f.step.value=1;
+			f.submit();
+			break;
+		case "del_all_cats":
+			f.categories.value = "";
+			f.step.value=1;
+			f.submit();
+			break;
+		case "add_folder":
+			var foldersToAdd = makeArrayFromCSV(args[1]);
+			var folders = makeArrayFromCSV(f.' . $folders . '.value);
+			for(var i=0;i<foldersToAdd.length;i++){
+				if(!WE().util.in_array(foldersToAdd[i],folders)){
+					folders.push(foldersToAdd[i]);
+				};
+			};
+			f.' . $folders . '.value = folders.join(",");
+			f.step.value=1;
+			f.submit();
+			break;
+		case "del_folder":
+			var folderToDel = args[1];
+			var folders = makeArrayFromCSV(f.' . $folders . '.value);
+			var newfolders = [];
+			for(var i=0;i<folders.length;i++){
+				if(folders[i] != folderToDel){
+					newfolders.push(folders[i]);
+				};
+			};
+			f.' . $folders . '.value = newfolders.join(",");
+			f.step.value=1;
+			f.submit();
+			break;
+		case "del_all_folders":
+			f.' . $folders . '.value = "";
+			f.step.value=1;
+			f.submit();
+			break;
+		case "deselect_all_fields":
+			var _elem = document.we_form.elements;
+			var _elemLength = _elem.length;
+			for (var i=0; i<_elemLength; i++) {
+				if (_elem[i].name.substring(0,7) == "_field[") {
+					_elem[i].checked = false;
+				}
+			}
+			document._errorMessage = "' . addslashes(g_l('rebuild', '[noFieldsChecked]')) . '";
+			break;
+		case "select_all_fields":
+			var _elem = document.we_form.elements;
+			var _elemLength = _elem.length;
+			for (var i=0; i<_elemLength; i++) {
+				if (_elem[i].name.substring(0,7) == "_field[") {
+					_elem[i].checked = true;
+				}
+			}
+			document._errorMessage = "";
+			break;
+		default:
+			opener.top.we_cmd.apply(this, arguments);
 	}
 }
 function checkForError() {

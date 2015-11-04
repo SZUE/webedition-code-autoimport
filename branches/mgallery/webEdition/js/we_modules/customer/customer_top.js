@@ -39,15 +39,17 @@ function doUnload() {
 }
 
 function we_cmd() {
-	var args = [];
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-	for (var i = 0; i < arguments.length; i++) {
-		args.push(arguments[i]);
-		url += "we_cmd[]=" + encodeURI(arguments[i]);
-		if (i < (arguments.length - 1)) {
-			url += "&";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
 		}
 	}
+
 	if (hot === 1 && args[0] !== "save_customer") {
 		if (confirm(WE().consts.g_l.customer.view.save_changed_customer)) {
 			args[0] = "save_customer";
@@ -55,6 +57,7 @@ function we_cmd() {
 			top.content.usetHot();
 		}
 	}
+
 	switch (args[0]) {
 		case "exit_customer":
 			if (hot !== 1) {
@@ -72,13 +75,12 @@ function we_cmd() {
 				}, 10);
 			}
 			break;
-
 		case "delete_customer":
 			if (top.content.editor.edbody.document.we_form.cmd.value === "home") {
 				return;
 			}
 			if (!WE().util.hasPerm("DELETE_CUSTOMER")) {
-				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_WARNING, window);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_WARNING, this);
 				return;
 			}
 
@@ -88,18 +90,15 @@ function we_cmd() {
 					top.content.editor.edbody.submitForm();
 				}
 			} else {
-				top.we_showMessage(WE().consts.g_l.customer.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_WARNING, window);
+				top.we_showMessage(WE().consts.g_l.customer.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_WARNING, this);
 			}
-
-
 			break;
-
 		case "save_customer":
 			if (top.content.editor.edbody.document.we_form.cmd.value === "home") {
 				return;
 			}
 			if (!WE().util.hasPerm("EDIT_CUSTOMER") && !WE().util.hasPerm("NEW_CUSTOMER")) {
-				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_WARNING, window);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_WARNING, this);
 				return;
 			}
 
@@ -107,12 +106,10 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.cmd.value = args[0];
 				top.content.editor.edbody.submitForm();
 			} else {
-				top.we_showMessage(WE().consts.g_l.customer.view.nothing_to_save, WE().consts.message.WE_MESSAGE_WARNING, window);
+				top.we_showMessage(WE().consts.g_l.customer.view.nothing_to_save, WE().consts.message.WE_MESSAGE_WARNING, this);
 			}
-
 			top.content.usetHot();
 			break;
-
 		case "customer_edit":
 			top.content.editor.edbody.document.we_form.cmd.value = args[0];
 			top.content.editor.edbody.document.we_form.cmdid.value = args[1];
@@ -137,6 +134,6 @@ function we_cmd() {
 			top.content.cmd.location = frameUrl + "&pnt=cmd&pid=" + args[1] + "&offset=" + args[2] + "&sort=" + args[3];
 			break;
 		default:
-			top.opener.top.we_cmd.apply(this, args);
+			top.opener.top.we_cmd.apply(this, arguments);
 	}
 }

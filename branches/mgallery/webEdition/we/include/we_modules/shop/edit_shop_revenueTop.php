@@ -99,15 +99,17 @@ echo we_html_tools::getHtmlTop('', '', '', STYLESHEET .
 	}
 
 	function we_cmd() {
-var args = [];
-	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
-	for(var i = 0; i < arguments.length; i++){
-				args.push(arguments[i]);
-	url += "we_cmd[]="+encodeURI(arguments[i]);
-	if(i < (arguments.length - 1)){
-	url += "&";
-	}
-	}
+		var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+		if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+			var args = {}, i = 0, tmp = arguments[0];
+			url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+		} else {
+			var args = Array.prototype.slice.call(arguments);
+			for (var i = 0; i < args.length; i++) {
+				url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
+			}
+		}
+
 		switch (args[0]) {
 			case "openOrder": //TODO: check this adress: mit oder ohne tree? Bisher: left
 				if(top.content.doClick) {
@@ -115,7 +117,7 @@ var args = [];
 				}
 				break;
 			default: // not needed yet
-				break;
+				top.opener.top.we_cmd.apply(this, arguments);
 		}
 	}')) . '
 <body class="weEditorBody" onload="self.focus(); setHeaderTitle();" onunload="">

@@ -68,23 +68,24 @@ function doUnload() {
 }
 
 function we_cmd(){
-	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
-	avr args=[];
-	for(var i = 0; i < arguments.length; i++){
-			url += "we_cmd[]="+encodeURI(arguments[i]);
-args.push(arguments[i]);
-if(i < (arguments.length - 1)){
-					url += "&";
-			}
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
+		}
 	}
 
 	switch (args[0]) {
 		case "save":
 			we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
-		break;
+			break;
 		case "close":
 			window.close();
-		break;
+			break;
 		case "delete":
 			if (confirm("' . g_l('modules_shop', '[delete][shipping]') . '")) {
 				var we_cmd_field = document.getElementById("we_cmd_field");
@@ -92,21 +93,18 @@ if(i < (arguments.length - 1)){
 				we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
 
 			}
-		break;
-
+			break;
 		case "newEntry":
 			document.location = "' . $_SERVER['SCRIPT_NAME'] . '?we_cmd[0]=newShipping";
-		break;
-
+			break;
 		case "addShippingCostTableRow":
 			addShippingCostTableRow();
-		break;
-
+			break;
 		case "deleteShippingCostTableRow":
 			deleteShippingCostTableRow(arguments[1]);
-		break;
-
+			break;
 		default :
+			top.opener.top.we_cmd.apply(this, arguments);
 			break;
 	}
 }

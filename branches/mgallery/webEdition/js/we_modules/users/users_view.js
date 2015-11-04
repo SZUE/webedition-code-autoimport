@@ -31,14 +31,14 @@ function doUnload() {
 }
 
 function we_cmd() {
-	var args = [];
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-
-	for (var i = 0; i < arguments.length; i++) {
-		args.push(arguments[i]);
-		url += "we_cmd[]=" + encodeURI(arguments[i]);
-		if (i < (arguments.length - 1)) {
-			url += "&";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
 		}
 	}
 
@@ -164,7 +164,7 @@ function we_cmd() {
 			top.content.cmd.location = frameset + "&pnt=cmd&ucmd=delete_user";
 			break;
 		case "search":
-			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_USERS_MODULE_DIR + "edit_users_sresults.php?kwd=" + args[1], "customer_settings", -1, -1, 580, 400, true, false, true);
+			new (WE().util.jsWindow)(this, WE().consts.dirs.WE_USERS_MODULE_DIR + "edit_users_sresults.php?kwd=" + args[1], "customer_settings", -1, -1, 580, 400, true, false, true);
 			break;
 		case "new_organization":
 			var orgname = prompt(g_l.give_org_name, "");
@@ -173,7 +173,7 @@ function we_cmd() {
 			}
 			break;
 		default:
-			top.opener.top.we_cmd.apply(this, args);
+			top.opener.top.we_cmd.apply(this, arguments);
 
 	}
 }

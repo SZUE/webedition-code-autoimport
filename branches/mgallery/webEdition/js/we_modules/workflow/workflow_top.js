@@ -33,13 +33,14 @@ function doUnload() {
 
 
 function we_cmd() {
-	var args = [];
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-	for (var i = 0; i < arguments.length; i++) {
-		args.push(arguments[i]);
-		url += "we_cmd[]=" + encodeURI(arguments[i]);
-		if (i < (arguments.length - 1)) {
-			url += "&";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
 		}
 	}
 	if (hot === 1 && args[0] !== "save_workflow") {
@@ -64,13 +65,13 @@ function we_cmd() {
 			break;
 		case "delete_workflow":
 			if (!WE().util.hasPerm("DELETE_WORKFLOW")) {
-				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else {
 				if (top.content.editor.edbody.loaded) {
 					if (!confirm(g_l.delete_question))
 						return;
 				} else {
-					top.we_showMessage(g_l.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
+					top.we_showMessage(g_l.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
 				}
 
 				top.content.editor.edbody.document.we_form.wcmd.value = args[0];
@@ -79,7 +80,7 @@ function we_cmd() {
 			break;
 		case "save_workflow":
 			if (!WE().util.hasPerm("EDIT_WORKFLOW") && !WE().util.hasPerm("NEW_WORKFLOW")) {
-				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else {
 				if (top.content.editor.edbody.loaded) {
 					top.content.editor.edbody.setStatus(top.content.editor.edfooter.document.we_form.status_workflow.value);
@@ -94,7 +95,7 @@ function we_cmd() {
 						}
 					}
 				} else {
-					top.we_showMessage(g_l.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, window);
+					top.we_showMessage(g_l.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, this);
 				}
 				top.content.editor.edbody.document.we_form.wcmd.value = args[0];
 				top.content.editor.edbody.submitForm();
@@ -113,10 +114,10 @@ function we_cmd() {
 			 break;
 			 */
 		case "empty_log":
-			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=workflow&pnt=qlog", "log_question", -1, -1, 360, 230, true, false, true);
+			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=workflow&pnt=qlog", "log_question", -1, -1, 360, 230, true, false, true);
 			break;
 		default:
-			top.opener.top.we_cmd.apply(this, args);
+			top.opener.top.we_cmd.apply(this, arguments);
 
 	}
 }

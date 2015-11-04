@@ -59,36 +59,33 @@ function addKeyListener() {
 }
 
 function we_cmd() {
-	var scope = window,
-					url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?",
-					i = 0;
-
-	if (typeof arguments[0] === 'object') {
-		scope = arguments[0];
-		i++;
-	}
-	var args = Array.prototype.slice.call(arguments, i);
-	for (i = 0; i < args.length; i++) {
-		url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
+		}
 	}
 
 	switch (args[0]) {
 		case "we_selector_document":
 		case "we_selector_image":
-			new (WE().util.jsWindow)(scope, url, "we_fileselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "we_selector_category":
-			new (WE().util.jsWindow)(scope, url, "we_cateditor", -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_cateditor", -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 		case "browse_server":
-			new (WE().util.jsWindow)(scope, url, "browse_server", -1, -1, 840, 400, true, false, true);
+			new (WE().util.jsWindow)(this, url, "browse_server", -1, -1, 840, 400, true, false, true);
 			break;
 		case "edit_new_collection":
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=editNewCollection&we_cmd[1]=" + args[1] + "&we_cmd[2]=" + args[2] + "&fixedpid=" + args[3] + "&fixedremtable=" + args[4] + "&caller=" + args[5];
-			new (WE().util.jsWindow)(scope, url, "weNewCollection", -1, -1, 590, 560, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, "weNewCollection", -1, -1, 590, 560, true, true, true, true);
 			break;
 		default:
-			args.unshift(scope);
-			opener.we_cmd.apply(this, args);
+			opener.we_cmd.apply(this, arguments);
 	}
 }

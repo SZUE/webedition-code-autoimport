@@ -28,7 +28,7 @@ function we_cmd_object() {
 
 		case "object_edit_ifthere":
 		case "edit_object":
-			new (WE().util.jsWindow)(window, url, "edit_module", -1, -1, 380, 250, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, "edit_module", -1, -1, 380, 250, true, true, true, true);
 			break;
 		case "new_objectFile":
 			we_cmd("new", WE().consts.tables.OBJECT_FILES_TABLE, "", "objectFile");
@@ -110,20 +110,20 @@ function we_cmd_object() {
 			top.we_cmd("mv", 1, WE().consts.tables.OBJECT_FILES_TABLE);
 			break;
 		case "object_preview_objectFile":
-			new (WE().util.jsWindow)(window, url, "preview_object", -1, -1, 1600, 1200, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, "preview_object", -1, -1, 1600, 1200, true, true, true, true);
 			break;
 		case "object_create_tmpfromClass":
-			new (WE().util.jsWindow)(window, url, "tmpfromClass", -1, -1, 580, 200, true, false, true, false);
+			new (WE().util.jsWindow)(this, url, "tmpfromClass", -1, -1, 580, 200, true, false, true, false);
 			break;
 		case "open_object":
 			we_cmd("load", WE().consts.tables.OBJECT_TABLE);
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[8]=object&we_cmd[2]=" + WE().consts.tables.OBJECT_TABLE + "&we_cmd[5]=" + encodeURIComponent("WE().layout.weEditorFrameController.openDocument(table,currentID,currentType)") + "&we_cmd[9]=1";
-			new (WE().util.jsWindow)(window, url, "we_dirChooser", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_dirChooser", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true);
 			break;
 		case "open_objectFile":
 			we_cmd("load", WE().consts.tables.OBJECT_FILES_TABLE);
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[8]=objectFile&we_cmd[2]=" + WE().consts.tables.OBJECT_FILES_TABLE + "&we_cmd[5]=" + encodeURIComponent("WE().layout.weEditorFrameController.openDocument(table,currentID,currentType)") + "&we_cmd[9]=1";
-			new (WE().util.jsWindow)(window, url, "we_dirChooser", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_dirChooser", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true);
 			break;
 		default:
 			return false;

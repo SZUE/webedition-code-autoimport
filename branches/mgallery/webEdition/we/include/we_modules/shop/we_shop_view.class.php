@@ -45,14 +45,17 @@ function doUnload() {
 }
 
 function we_cmd() {
-	var args = [];
-	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
-	for(var i = 0; i < arguments.length; i++){
-				args.push(arguments[i]);
-	url += "we_cmd[]="+encodeURI(arguments[i]);
-	if(i < (arguments.length - 1)){
-	url += "&";
-	}}
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
+		}
+	}
+
 	switch (args[0]) {
 		case "new_raw":
 			if(top.content.editor.edbody.loaded) {
@@ -65,7 +68,6 @@ function we_cmd() {
 				setTimeout(function(){we_cmd("new_raw");}, 10);
 			}
 			break;
-
 		case "delete_raw":
 			if(top.content.editor.edbody.document.we_form.cmd.value=="home") return;
 			' . (!permissionhandler::hasPerm("DELETE_RAW") ?
@@ -83,34 +85,32 @@ function we_cmd() {
 
 			')) . '
 			break;
-
 		case "save_raw":
-			if(top.content.editor.edbody.document.we_form.cmd.value=="home") return;
+			if(top.content.editor.edbody.document.we_form.cmd.value=="home") {
+				return;
+			}
 
+			if (top.content.editor.edbody.loaded) {
+					top.content.editor.edbody.document.we_form.cmd.value=args[0];
+					top.content.editor.edbody.document.we_form.tabnr.value=top.content.activ_tab;
 
-					if (top.content.editor.edbody.loaded) {
-							top.content.editor.edbody.document.we_form.cmd.value=args[0];
-							top.content.editor.edbody.document.we_form.tabnr.value=top.content.activ_tab;
-
-							top.content.editor.edbody.submitForm();
-					} else {
-						' . we_message_reporting::getShowMessageCall(g_l('modules_shop', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-					}
-
+					top.content.editor.edbody.submitForm();
+			} else {
+				' . we_message_reporting::getShowMessageCall(g_l('modules_shop', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+			}
 			break;
-
 		case "edit_raw":
 			top.content.hot=0;
 			top.content.editor.edbody.document.we_form.cmd.value=args[0];
 			top.content.editor.edbody.document.we_form.cmdid.value=args[1];
 			top.content.editor.edbody.document.we_form.tabnr.value=top.content.activ_tab;
 			top.content.editor.edbody.submitForm();
-		break;
+			break;
 		case "load":
 			top.content.cmd.location="' . $this->frameset . '&pnt=cmd&pid="+args[1]+"&offset="+args[2]+"&sort="+args[3];
-		break;
+			break;
 		default:
-			top.opener.top.we_cmd.apply(this, args);
+			top.opener.top.we_cmd.apply(this, arguments);
 	}
 }');
 	}
@@ -125,14 +125,17 @@ function doUnload() {
 }
 
 function we_cmd() {
-	var args = [];
-	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
-	for(var i = 0; i < arguments.length; i++){
-				args.push(arguments[i]);
-	url += "we_cmd[]="+encodeURI(arguments[i]);
-	if(i < (arguments.length - 1)){
-	url += "&";
-	}}
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
+		}
+	}
+
 	switch (args[0]) {
 		case "switchPage":
 			document.we_form.cmd.value=args[0];
@@ -140,7 +143,7 @@ function we_cmd() {
 			submitForm();
 			break;
 		default:
-			top.content.we_cmd.apply(this, args);
+			top.content.we_cmd.apply(this, arguments);
 	}
 }
 function submitForm() {

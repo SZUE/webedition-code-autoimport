@@ -64,8 +64,18 @@ $tabname = we_base_request::_(we_base_request::STRING, "tabname", we_base_reques
 $_javascript = <<< END_OF_SCRIPT
 var WE=opener.WE;
 function we_cmd() {
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
+		}
+	}
 
-	switch (arguments[0]) {
+	switch (args[0]) {
 END_OF_SCRIPT;
 foreach($GLOBALS['tabs'] as $name => $perm){
 	if(empty($perm) || permissionhandler::hasPerm($perm)){
@@ -78,7 +88,7 @@ foreach($GLOBALS['tabs'] as $name => $perm){
 
 $_javascript .= "
 	try{
-			content.document.getElementById('setting_' + arguments[0]).style.display = '';
+			content.document.getElementById('setting_' + args[0]).style.display = '';
 			}catch(e){}
 			break;
 	}
