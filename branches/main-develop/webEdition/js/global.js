@@ -68,6 +68,13 @@ function initWE() {
 			document.addEventListener('keydown', function (evt) {
 				WE().handler.dealWithKeyboardShortCut(evt, window);
 			});
+			document.addEventListener('drop', function (evt) {
+				evt.stopPropagation();
+				evt.preventDefault();
+			});
+			document.addEventListener('dragover', function (evt) {
+				evt.preventDefault();
+			});
 		} catch (e) {
 			console.log('unable to add listeners');
 		}

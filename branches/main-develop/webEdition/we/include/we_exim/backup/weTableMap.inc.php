@@ -83,7 +83,6 @@ if(defined('CUSTOMER_TABLE')){
 
 if(defined('SHOP_TABLE')){
 	$tableMap['shop'] = array(
-		strtolower(stripTblPrefix(WE_SHOP_PREFS_TABLE)) => WE_SHOP_PREFS_TABLE,
 		strtolower(stripTblPrefix(SHOP_TABLE)) => SHOP_TABLE,
 		strtolower(stripTblPrefix(WE_SHOP_VAT_TABLE)) => WE_SHOP_VAT_TABLE
 	);

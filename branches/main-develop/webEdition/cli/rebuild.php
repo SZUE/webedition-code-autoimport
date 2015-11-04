@@ -294,9 +294,7 @@ switch(($type = we_base_request::_(we_base_request::STRING, 'type'))){
 		$_REQUEST['type'] = "filter";
 	case 'all':
 	case 'templates':
-		$data = we_rebuild_base::getDocuments(
-				"rebuild_" . $type, $_REQUEST['categories'], $_REQUEST['catAnd'], $_REQUEST['doctypes'], $_REQUEST['directories'], $_REQUEST['rewriteMaintable'], $_REQUEST['rewriteTmptable']
-		);
+		$data = we_rebuild_base::getDocuments("rebuild_" . $type, $_REQUEST['categories'], $_REQUEST['catAnd'], $_REQUEST['doctypes'], $_REQUEST['directories'], $_REQUEST['rewriteMaintable'], $_REQUEST['rewriteTmptable']);
 		break;
 
 	case 'objects':

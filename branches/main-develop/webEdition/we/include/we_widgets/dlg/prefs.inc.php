@@ -28,8 +28,7 @@ var _sCls_=opener.gel(_sObjId+'_cls').value;
 ";
 $jsFile = we_html_element::jsScript(JS_DIR . 'widgets/dlg_prefs.js');
 
-$oSctCls = new we_html_select(
-		array(
+$oSctCls = new we_html_select(array(
 	"name" => "sct_cls",
 	"size" => 1,
 	"class" => "defaultfont",

@@ -8,8 +8,6 @@ CREATE TABLE ###TBLPREFIX###tblSettings (
 ) ENGINE=MyISAM;
 
 /* query separator */
-###UPDATEONLY###DELETE FROM ###TBLPREFIX###tblSettings WHERE tool='shop' AND pref_name IN ('edit_shop_properties','shop_pref');
-/* query separator */
 ###ONTAB(###TBLPREFIX###tblWebAdmin)INSERT INTO ###TBLPREFIX###tblSettings (SELECT "webadmin",Name,Value FROM ###TBLPREFIX###tblWebAdmin);###
 /* query separator */
 ###ONTAB(###TBLPREFIX###tblWebAdmin)DROP TABLE IF EXISTS ###TBLPREFIX###tblWebAdmin;###
@@ -21,19 +19,22 @@ CREATE TABLE ###TBLPREFIX###tblSettings (
 ###ONTAB(###TBLPREFIX###tblNewsletterPrefs)INSERT INTO ###TBLPREFIX###tblSettings (SELECT "newsletter",pref_name,pref_value FROM ###TBLPREFIX###tblNewsletterPrefs);###
 /* query separator */
 ###ONTAB(###TBLPREFIX###tblNewsletterPrefs)DROP TABLE IF EXISTS ###TBLPREFIX###tblNewsletterPrefs;###
-
+/* query separator */
+###ONTAB(###TBLPREFIX###tblAnzeigePrefs)INSERT INTO ###TBLPREFIX###tblSettings (SELECT "shop",strDateiname,strFelder FROM ###TBLPREFIX###tblAnzeigePrefs);###
+/* query separator */
+###ONTAB(###TBLPREFIX###tblAnzeigePrefs)DROP TABLE IF EXISTS ###TBLPREFIX###tblAnzeigePrefs;###
 
 /* query separator */
-###INSTALLONLY###INSERT IGNORE INTO ###TBLPREFIX###tblSettings SET tool='shop',pref_name='edit_shop_properties',pref_value='a:2:{s:14:"customerFields";a:0:{}s:19:"orderCustomerFields";a:0:{}}';
+###INSTALLONLY###INSERT IGNORE INTO ###TBLPREFIX###tblSettings SET tool='shop',pref_name='edit_shop_properties',pref_value='{"customerFields":[],"orderCustomerFields":[]}';
 /* query separator */
 ###INSTALLONLY###INSERT IGNORE INTO ###TBLPREFIX###tblSettings SET tool='shop',pref_name='shop_pref',pref_value='€|19|german';
 /* query separator */
 ###INSTALLONLY###INSERT IGNORE INTO ###TBLPREFIX###tblSettings SET tool='glossary',pref_name='weGlossaryAutomaticReplacement',pref_value='1';
 /* query separator */
-###INSTALLONLY###INSERT IGNORE INTO ###TBLPREFIX###tblSettings SET Name='FieldAdds',Value='a:13:{s:8:"Username";a:1:{s:4:"type";s:5:"input";}s:8:"Password";a:1:{s:4:"type";s:5:"input";}s:8:"Forename";a:1:{s:4:"type";s:5:"input";}s:7:"Surname";a:1:{s:4:"type";s:5:"input";}s:11:"LoginDenied";a:1:{s:4:"type";s:5:"input";}s:11:"MemberSince";a:1:{s:4:"type";s:5:"input";}s:9:"LastLogin";a:1:{s:4:"type";s:5:"input";}s:10:"LastAccess";a:1:{s:4:"type";s:5:"input";}s:15:"AutoLoginDenied";a:1:{s:4:"type";s:5:"input";}s:9:"AutoLogin";a:1:{s:4:"type";s:5:"input";}s:13:"Anrede_Anrede";a:2:{s:7:"default";s:10:",Herr,Frau";s:4:"type";s:6:"select";}s:13:"Newsletter_Ok";a:2:{s:7:"default";s:3:",ja";s:4:"type";s:6:"select";}s:25:"Newsletter_HTMLNewsletter";a:2:{s:7:"default";s:3:",ja";s:4:"type";s:6:"select";}}';
+###INSTALLONLY###INSERT IGNORE INTO ###TBLPREFIX###tblSettings SET tool="webadmin",pref_name='FieldAdds',pref_value='{"Username":{"type":"input"},"Password":{"type":"input"},"Forename":{"type":"input"},"Surname":{"type":"input"},"LoginDenied":{"type":"input"},"MemberSince":{"type":"input"},"LastLogin":{"type":"input"},"LastAccess":{"type":"input"},"AutoLoginDenied":{"type":"input"},"AutoLogin":{"type":"input"},"Anrede_Anrede":{"default":",Herr,Frau","type":"select"},"Newsletter_Ok":{"default":",ja","type":"select"},"Newsletter_HTMLNewsletter":{"default":",ja","type":"select"}}';
 /* query separator */
-###INSTALLONLY###INSERT IGNORE INTO ###TBLPREFIX###tblSettings SET Name='Prefs',Value='a:4:{s:10:"start_year";s:4:"1900";s:17:"default_sort_view";s:20:"--Keine Sortierung--";s:15:"treetext_format";s:30:"#Username (#Forename #Surname)";s:13:"default_order";s:0:"";}';
+###INSTALLONLY###INSERT IGNORE INTO ###TBLPREFIX###tblSettings SET tool="webadmin",pref_name='Prefs',pref_value='{"start_year":1900,"default_sort_view":"--Keine Sortierung--","treetext_format":"#Username (#Forename #Surname)","default_order":""}';
 /* query separator */
-###INSTALLONLY###INSERT IGNORE INTO ###TBLPREFIX###tblSettings SET Name='SortView',Value='';
+###INSTALLONLY###INSERT IGNORE INTO ###TBLPREFIX###tblSettings SET tool="webadmin",pref_name='SortView',pref_value='';
 /* query separator */
-###INSTALLONLY###INSERT IGNORE INTO ###TBLPREFIX###tblSettings SET Name='default_saveRegisteredUser_register',Value='false';
+###INSTALLONLY###INSERT IGNORE INTO ###TBLPREFIX###tblSettings SET tool="webadmin",pref_name='default_saveRegisteredUser_register',pref_value='false';

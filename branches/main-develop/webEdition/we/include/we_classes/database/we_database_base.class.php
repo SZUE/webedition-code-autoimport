@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -28,6 +29,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf.in
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.inc.php');
 
 abstract class we_database_base{
+
 	private static $pool = array(); //fixme: don't repool temporary tables - they require the same connection
 	protected static $conCount = 0;
 	protected static $linkCount = 0;
@@ -626,6 +628,16 @@ abstract class we_database_base{
 		return $ret;
 	}
 
+	public function getAllq($query, $single = false, $resultType = MYSQL_ASSOC){
+		$this->query($query);
+		return $this->getAll($single, $resultType);
+	}
+
+	public function getAllFirstq($query, $useArray = true, $resultType = MYSQL_NUM){
+		$this->query($query);
+		return $this->getAllFirst($useArray, $resultType);
+	}
+
 	/**
 	 * is a handy setter, for executing `a`="\"b\"" set from an assoc array
 	 * @param type $arr
@@ -745,8 +757,8 @@ abstract class we_database_base{
 			$query = array();
 			foreach($table as $key => $value){
 				$query[] = (is_numeric($key) ?
-						$value . ' ' . $mode :
-						$key . ' ' . $value);
+								$value . ' ' . $mode :
+								$key . ' ' . $value);
 			}
 			$query = implode(',', $query);
 		} else {
@@ -890,8 +902,8 @@ abstract class we_database_base{
 	function getTableCreateArray($tab){
 		$this->query('SHOW CREATE TABLE ' . $this->escape($tab));
 		return ($this->next_record()) ?
-			explode("\n", $this->f("Create Table")) :
-			false;
+				explode("\n", $this->f("Create Table")) :
+				false;
 	}
 
 	public function getTableKeyArray($tab){
@@ -1081,10 +1093,8 @@ abstract class we_database_base{
 	 */
 	public static function getMysqlVer(/* $nodots = true */){
 		$DB_WE = new DB_WE();
-		$res = f('SELECT VERSION()', '', $DB_WE)? : f('SHOW VARIABLES LIKE "version"', 'Value', $DB_WE);
-
-		$res = explode('-', $res);
-		return $res[0];
+		list($res) = explode('-', f('SELECT VERSION()', '', $DB_WE)? : f('SHOW VARIABLES LIKE "version"', 'Value', $DB_WE));
+		return $res;
 	}
 
 	/**

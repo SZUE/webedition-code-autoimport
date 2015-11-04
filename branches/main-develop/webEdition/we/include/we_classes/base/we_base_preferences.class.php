@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -85,8 +86,8 @@ class we_base_preferences{
 	static function check_global_config($updateVersion = false, $file = '', $leave = array()){
 		self::loadConfigs();
 		$processedConfigs = ($file ?
-				array('global' => 'contentBak') :
-				array('global' => 'contentDef', 'conf' => 'contentDef'));
+						array('global' => 'contentBak') :
+						array('global' => 'contentDef', 'conf' => 'contentDef'));
 
 		$moveToConf = array('DB_SET_CHARSET');
 		foreach($processedConfigs as $conf => $dataField){
@@ -174,7 +175,7 @@ class we_base_preferences{
 		switch($type){
 			case 'add':
 				return trim($text, "\n\t ") . "\n\n" .
-					self::makeDefine($key, $value, $active, $comment, $encode);
+						self::makeDefine($key, $value, $active, $comment, $encode);
 			case 'define':
 				$match = array();
 				if(preg_match('|/?/?define\(\s*(["\']' . preg_quote($key) . '["\'])\s*,\s*([^\r\n]+)\);[\r\n]?|Ui', $text, $match)){
@@ -187,10 +188,10 @@ class we_base_preferences{
 
 	private static function makeDefine($key, $val, $active = true, $comment = '', $encode = false){
 		return ($comment ? '//' . $comment . "\n" : '') . ($active ? '' : "//") . 'define(\'' . $key . '\', ' .
-			($encode ? 'base64_decode(\'' . base64_encode($val) . '\')' :
-				(is_bool($val) || $val === 'true' || $val === 'false' ? ($val ? 'true' : 'false') :
-					(!is_numeric($val) ? '"' . self::_addSlashes($val) . '"' : intval($val)))
-			) . ');';
+				($encode ? 'base64_decode(\'' . base64_encode($val) . '\')' :
+						(is_bool($val) || $val === 'true' || $val === 'false' ? ($val ? 'true' : 'false') :
+								(!is_numeric($val) ? '"' . self::_addSlashes($val) . '"' : intval($val)))
+				) . ');';
 	}
 
 	private static function _addSlashes($in){
@@ -208,8 +209,8 @@ class we_base_preferences{
 	 */
 	public function getUserPref($name){
 		return (isset($_SESSION['prefs'][$name]) ?
-				$_SESSION['prefs'][$name] :
-				(defined($name) ? constant($name) : ''));
+						$_SESSION['prefs'][$name] :
+						(defined($name) ? constant($name) : ''));
 	}
 
 	/**
@@ -229,6 +230,35 @@ class we_base_preferences{
 			return true;
 		}
 		return false;
+	}
+
+	public static function we_writeLanguageConfig($default, $available = array()){
+		$locales = '';
+		sort($available);
+		foreach($available as $Locale){
+			$locales .= "	'" . $Locale . "',\n";
+		}
+
+		return we_base_file::save(WE_INCLUDES_PATH . 'conf/we_conf_language.inc.php', '<?php
+/**
+ * webEdition CMS configuration file
+ * NOTE: this file is regenerated, so any extra contents will be overwritten
+ */
+
+$GLOBALS[\'weFrontendLanguages\'] = array(
+' . $locales . '
+);
+
+$GLOBALS[\'weDefaultFrontendLanguage\'] = \'' . $default . '\';'
+						, 'w+'
+		);
+	}
+
+	public static function writeDefaultLanguageConfig(){
+		$file = WE_INCLUDES_PATH . 'conf/we_conf_language.inc.php';
+		if(!file_exists($file) || !is_file($file)){
+			self::we_writeLanguageConfig((WE_LANGUAGE === 'Deutsch' || WE_LANGUAGE === 'Deutsch_UTF-8' ? 'de_DE' : 'en_GB'), array('de_DE', 'en_GB'));
+		}
 	}
 
 }

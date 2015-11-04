@@ -60,18 +60,20 @@ if(($format = we_base_request::_(we_base_request::RAW, "format"))){ //	save data
 		)));
 	}
 
-	$DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array(
-			'strDateiname' => "shop_pref",
-			'strFelder' => we_base_request::_(we_base_request::STRING, "waehr") . '|' . we_base_request::_(we_base_request::STRING, "mwst") . '|' . $format . '|' . we_base_request::_(we_base_request::STRING, "classID", 0) . '|' . we_base_request::_(we_base_request::STRING, "pag")
+	$DB_WE->query('REPLACE ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(array(
+			'tool' => 'shop',
+			'pref_name' => "shop_pref",
+			'pref_value' => we_base_request::_(we_base_request::STRING, "waehr") . '|' . we_base_request::_(we_base_request::STRING, "mwst") . '|' . $format . '|' . we_base_request::_(we_base_request::STRING, "classID", 0) . '|' . we_base_request::_(we_base_request::STRING, "pag")
 	)));
 
 	$fields['customerFields'] = we_base_request::_(we_base_request::STRING, 'orderfields', array());
 	$fields['orderCustomerFields'] = we_base_request::_(we_base_request::STRING, 'ordercustomerfields', array());
 
 	// check if field exists
-	$DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array(
-			'strDateiname' => 'edit_shop_properties',
-			'strFelder' => we_serialize($fields)
+	$DB_WE->query('REPLACE ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(array(
+			'tool' => 'shop',
+			'pref_name' => 'edit_shop_properties',
+			'pref_value' => we_serialize($fields, 'json')
 	)));
 
 	$CLFields['stateField'] = we_base_request::_(we_base_request::RAW, 'stateField', '-');
@@ -80,7 +82,7 @@ if(($format = we_base_request::_(we_base_request::RAW, "format"))){ //	save data
 	$CLFields['languageFieldIsISO'] = we_base_request::_(we_base_request::RAW, 'languageFieldIsISO', 0);
 
 	// check if field exists
-	$DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET strDateiname="shop_CountryLanguage", strFelder = "' . $DB_WE->escape(we_serialize($CLFields)) . '"');
+	$DB_WE->query('REPLACE ' . SETTINGS_TABLE . ' SET tool="shop",pref_name="shop_CountryLanguage", pref_value="' . $DB_WE->escape(we_serialize($CLFields)) . '"');
 	// Update Country Field in weShopVatRule
 	$weShopVatRule = we_shop_vatRule::getShopVatRule();
 	$weShopVatRule->stateField = $CLFields['stateField'];
@@ -100,15 +102,12 @@ if(($format = we_base_request::_(we_base_request::RAW, "format"))){ //	save data
 $shoplocation = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_location"');
 $categorymode = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="category_mode"');
 
-$strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"');
-if($strFelder !== ''){
-	$CLFields = we_unserialize($strFelder);
-} else {
-	$CLFields['stateField'] = '-';
-	$CLFields['stateFieldIsISO'] = 0;
-	$CLFields['languageField'] = '-';
-	$CLFields['languageFieldIsISO'] = 0;
-}
+$CLFields = we_unserialize(f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_CountryLanguage"'), array(
+	'stateField' => '-',
+	'stateFieldIsISO' => 0,
+	'languageField' => '-',
+	'languageFieldIsISO' => 0
+	));
 
 
 //	generate html-output table
@@ -116,7 +115,7 @@ $_htmlTable = new we_html_table(array('class' => 'default withBigSpace', 'width'
 
 
 //	NumberFormat - currency and taxes
-$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"'));
+$feldnamen = explode('|', f('SELECT pref_value FROM ' . SETTINGS_TABLE. ' WHERE tool="shop" AND pref_name="shop_pref"'));
 
 $fe = (isset($feldnamen[3]) ? explode(',', $feldnamen[3]) : array());
 
@@ -179,7 +178,7 @@ foreach($extraIgnore as $cur){
 
 
 //	get the already selected fields ...
-$_entry = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="edit_shop_properties"');
+$_entry = f('SELECT pref_value FROM ' . SETTINGS_TABLE. ' WHERE tool="shop" AND pref_name="edit_shop_properties"');
 
 // ...
 if(($fields = we_unserialize($_entry))){

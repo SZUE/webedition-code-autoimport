@@ -81,12 +81,11 @@ class weTagData_choiceAttribute extends weTagDataAttribute{
 <table class="attribute">
 <tr>
 	<td class="attributeName">' . $this->getLabelCodeForTagWizard() . '</td>
-	<td class="attributeField">' . we_html_element::htmlInput(
-						array(
-							'name' => $this->Name,
-							'value' => $this->Value,
-							'id' => $this->getIdName(),
-							'class' => 'wetextinput'
+	<td class="attributeField">' . we_html_element::htmlInput(array(
+					'name' => $this->Name,
+					'value' => $this->Value,
+					'id' => $this->getIdName(),
+					'class' => 'wetextinput'
 				)) . '</td>
 	<td class="attributeButton">' . $select->getHtml() . '</td>
 </tr>

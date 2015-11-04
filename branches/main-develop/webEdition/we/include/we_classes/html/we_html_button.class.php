@@ -232,18 +232,19 @@ abstract class we_html_button{
 			// Render link
 			$cmd .= $_javascript_content;
 		} else {
+			//FIXME: is this really used???
+			if($target){
+				t_e('new window by button', $target, $href);
+			}
 			// Check if the link has to be opened in a different frame or in a new window
-			$_button_link = ($target ? // The link will be opened in a different frame or in a new window
+			$cmd .= ($target ? // The link will be opened in a different frame or in a new window
 					// Check if the link has to be opend in a frame or a window
 					($target === '_blank' ? // The link will be opened in a new window
-						"window.open('" . $href . "', '" . $target . "');" :
+						"new (WE().util.jsWindow)(window, '" . $href . "','" . $target . "', -1, -1, 500, 550, true, true, true);" :
 						// The link will be opened in a different frame
 						"target_frame = eval('parent.' + " . $target . ");target_frame.location.href='" . $href . "';") :
 					// The link will be opened in the current frame or window
 					"window.location.href='" . $href . "';");
-
-			// Now assign the link string
-			$cmd .= $_button_link;
 		}
 
 		return self::getButton($value, ($uniqid ? 'we' . $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name) . $suffix, $cmd, $width, ($alt ? ($title ? : (($tmp = g_l('button', '[' . $name . '][alt]', true)) ? $tmp : '')) : ''), $disabled, '', '', '', '', '', true, (strpos($href, self::WE_FORM_BUTTON_IDENTIFY) !== false), $class);
@@ -264,17 +265,24 @@ abstract class we_html_button{
 	 * @return     string
 	 */
 	static function create_button_table($buttons, $attribs = ''){
-		if(is_array($attribs)){
-			$attr = '';
-			foreach($attribs as $k => $v){
-				$attr .= ' ' . $k . '="' . $v . '"';
-			}
-		} else {
-			$attr = $attribs;
-		}
+		//FIXME: remove this
+		return ''; /*
+		  if(is_array($attribs)){
+		  $attr = '';
+		  foreach($attribs as $k => $v){
+		  $attr .= ' ' . $k . '="' . $v . '"';
+		  }
+		  } else {
+		  $attr = $attribs;
+		  }
 
-		//FIMXE: change all calls to this function => remove
-		return ($attribs ? '<span ' . $attr . '>' : '') . implode('', $buttons) . ($attribs ? '</span>' : '');
+		  //FIMXE: change all calls to this function => remove
+		  return ($attribs ? '<span ' . $attr . '>' : '') . implode('', $buttons) . ($attribs ? '</span>' : '');
+		 */
+	}
+
+	static function formatButtons($buttons){
+		return '<div style="float:right">' . $buttons . '</div>';
 	}
 
 	/**
@@ -310,13 +318,11 @@ abstract class we_html_button{
 			array_merge($attr, $attribs);
 		}
 
-
 		//	Create button array
 		//	button order depends on OS
 		$buttons = (we_base_browserDetect::isMAC() ?
 				$no_button . $cancel_button . $yes_button :
 				$yes_button . $no_button . $cancel_button);
-
 
 		return we_html_element::htmlDiv($attr, $buttons);
 	}

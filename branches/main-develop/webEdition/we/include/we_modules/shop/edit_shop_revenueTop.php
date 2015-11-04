@@ -99,21 +99,32 @@ echo we_html_tools::getHtmlTop('', '', '', STYLESHEET .
 	}
 
 	function we_cmd() {
-		switch (arguments[0]) {
+		var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+		if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+			var args = {}, i = 0, tmp = arguments[0];
+			url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+		} else {
+			var args = Array.prototype.slice.call(arguments);
+			for (var i = 0; i < args.length; i++) {
+				url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
+			}
+		}
+
+		switch (args[0]) {
 			case "openOrder": //TODO: check this adress: mit oder ohne tree? Bisher: left
 				if(top.content.doClick) {
 					top.content.doClick(arguments[1], arguments[2], arguments[3]);//TODO: check this adress
 				}
 				break;
 			default: // not needed yet
-				break;
+				top.opener.top.we_cmd.apply(this, arguments);
 		}
 	}')) . '
 <body class="weEditorBody" onload="self.focus(); setHeaderTitle();" onunload="">
 <form>';
 
 // get some preferences!
-$feldnamen = explode('|', f('SELECT strFelder from ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"'));
+$feldnamen = explode('|', f('SELECT pref_value from ' . SETTINGS_TABLE. ' WHERE tool="shop" AND pref_name="shop_pref"'));
 $waehr = "&nbsp;" . oldHtmlspecialchars($feldnamen[0]);
 $numberformat = $feldnamen[2];
 $classid = (isset($feldnamen[3]) ? $feldnamen[3] : '');

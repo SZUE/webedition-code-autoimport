@@ -30,9 +30,7 @@ $browser = we_base_browserDetect::inst();
 echo we_html_tools::getHtmlTop() .
  STYLESHEET .
  we_html_element::jsScript(JS_DIR . 'we_modules/messaging/messaging_std.js') .
- we_html_element::jsElement('
-var table="' . USER_TABLE . '";'
-) .
+ we_html_element::jsElement('var table="' . USER_TABLE . '";') .
  we_html_element::jsScript(JS_DIR . 'we_modules/messaging/messaging_usel_browse.js');
 
 //FIXME: make the js code equal to *_tree.js
@@ -78,43 +76,22 @@ checked : checked
 ?>
 	}
 
-	function init_check() {
-		var i;
-		for (i = 0; i < opener.current_sel.length; i++) {
-			if (opener.current_sel[i][0] != 'we_message') {
-				continue;
-			}
-			check(opener.current_sel[i][1] + '&' + opener.current_sel[i][2]);
-		}
-	}
-
-	function start() {
-		loadData();
-		drawTree();
-	}
-
-	treeData.startloc = 0;
-
-
 	sel_color = "#697ace";
 	default_color = "#000000";
 
 	function showContent(id) {
 		top.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=<?php echo $we_transaction ?>&mcmd=show_message&id=" + id;
 	}
-	self.focus();
+
 //-->
 </script>
 </head>
-
 <?php
 echo we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'start();')
-	, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-		, we_html_element::htmlIFrame('messaging_usel_main', HTML_DIR . 'usel.html', 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;', 'border:0px;width:100%;height:100%;') .
-		we_html_element::htmlDiv(array('style' => 'height:20px;bottom:0px;left:0px;right:0px;overflow: hidden;padding:10px;', 'class' => 'editfooter'), we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:do_selupdate();"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:close();")
-		))
+		, we_html_element::htmlDiv(array('name' => 'messaging_usel_main', 'style' => 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;padding-bottom:20px;')) .
+		we_html_element::htmlDiv(array('style' => 'position:absolute;height:20px;bottom:0px;left:0px;right:0px;overflow: hidden;padding:10px;', 'class' => 'editfooter'), we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:do_selupdate();"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:close();")
+				)
 ));
 ?>
-
 </body>
 </html>

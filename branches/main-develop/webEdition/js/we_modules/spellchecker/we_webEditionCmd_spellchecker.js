@@ -1,3 +1,5 @@
+/* global WE */
+
 /**
  * webEdition CMS
  *
@@ -20,11 +22,14 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_spellchecker(args,url) {
+function we_cmd_spellchecker() {
+	var args = arguments[0],
+		url = arguments[1];
+
 	switch (args[0]) {
 		case "spellchecker_edit":
 		case "spellchecker_edit_ifthere":
-			new (WE().util.jsWindow)(window, url, "spellcheckadmin", -1, -1, 470, 510, true, false, true, false);
+			new (WE().util.jsWindow)(this, url, "spellcheckadmin", -1, -1, 470, 510, true, false, true, false);
 			return true;
 	}
 	return false;

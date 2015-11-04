@@ -45,32 +45,25 @@ function check(img) {
 			continue;
 		}
 		if (treeData[i].checked) {
-			if (document.images && document.images[img]) {
-				document.images[img].src = tree_img_dir + "check0.gif";
-			}
 			treeData[i].checked = false;
-			if (document.getElementsByName(imgName)) {
-				var tmp = document.getElementsByName(imgName)[0];
+			if (document.getElementsByName(img)) {
+				var tmp = document.getElementsByName(img)[0];
 				tmp.classList.remove('fa-check-square-o');
 				tmp.classList.add('fa-square-o');
 			}
 
-			unSelectMessage(img, "elem", "");
+			unSelectMessage(img, "");
 			break;
 		}
 		treeData[i].checked = true;
-		if (document.getElementsByName(imgName)) {
-			var tmp = document.getElementsByName(imgName)[0];
+		if (document.getElementsByName(img)) {
+			var tmp = document.getElementsByName(img)[0];
 			tmp.classList.add('fa-check-square-o');
 			tmp.classList.remove('fa-square-o');
 		}
-		doSelectMessage(img, "elem", "");
+		doSelectMessage(img, "");
 		break;
 	}
-}
-if (!document.images) {
-	drawTree();
-
 }
 
 
@@ -118,38 +111,43 @@ function doUnload() {
 
 function we_cmd() {
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_transaction=" + we_transaction + "&";
-	for (var i = 0; i < arguments.length; i++) {
-		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]) +
-						(i < (arguments.length - 1) ? "&" : '');
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
+		}
 	}
 
-	if (hot === 1 && arguments[0] != "messaging_start_view") {
+	if (hot === 1 && args[0] != "messaging_start_view") {
 		if (confirm(WE().consts.g_l.messaging.save_changed_folder)) {
 			top.content.editor.document.edit_folder.submit();
 		} else {
 			top.content.usetHot();
 		}
 	}
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "messaging_exit":
 			if (hot !== 1) {
 				top.opener.top.we_cmd("exit_modules");
 			}
 			break;
 		case "show_folder_content":
-			ind = treeData.indexOfEntry(arguments[1]);
+			ind = treeData.indexOfEntry(args[1]);
 			if (ind > -1) {
-				update_icon(arguments[1]);
+				update_icon(args[1]);
 				if (top.content.viewclass != treeData[ind].viewclass) {
 					set_frames(treeData[ind].viewclass);
 				}
 				top.content.viewclass = treeData[ind].viewclass;
 			}
-			cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=show_folder_content&id=" + arguments[1];
+			cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=show_folder_content&id=" + args[1];
 			break;
 		case "edit_folder":
-			update_icon(arguments[1]);
-			top.content.cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=edit_folder&mode=edit&fid=" + arguments[1];
+			update_icon(args[1]);
+			top.content.cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=edit_folder&mode=edit&fid=" + args[1];
 			break;
 		case "folder_new":
 			break;
@@ -200,12 +198,7 @@ function we_cmd() {
 			top.content.cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=paste_msg";
 			break;
 		default:
-			var args = [];
-			for (var i = 0; i < arguments.length; i++)
-			{
-				args.push(arguments[i]);
-			}
-			top.opener.top.we_cmd.apply(this, args);
+			top.opener.top.we_cmd.apply(this, arguments);
 	}
 }
 
@@ -218,7 +211,7 @@ container.prototype.drawGroup = function (nf, ai, zweigEintrag) {
 	var ret = "<a href=\"javascript:top.content.treeData.openClose('" + nf[ai].id + "',1)\"><span class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open ? "minus" : "plus") + "-square-o fa-stack-1x'></i></span></a>";
 	if (deleteMode) {
 		if (nf[ai].id != -1) {
-			trg = "javascript:top.content.check(\"img_" + nf[ai].id + "\");";
+			trg = "javascript:top.content.check('img_" + nf[ai].id + "');";
 			ret += "<a href=\"" + trg + "\"><i class=\"fa fa-" + (nf[ai].checked ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + nf[ai].id + '"></i></a>';
 		}
 	} else {
@@ -250,7 +243,7 @@ container.prototype.drawItem = function (nf, ai) {
 	}
 	if (deleteMode) {
 		if (nf[ai].id != -1) {
-			trg = "javascript:top.content.check(\"img_" + nf[ai].id + "\");";
+			trg = "javascript:top.content.check('img_" + nf[ai].id + "');";
 			ret += '<a href="' + trg + '"><i class="fa fa-' + (nf[ai].checked ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + nf[ai].id + '"></i>';
 		}
 	} else {
@@ -331,8 +324,7 @@ function folder_added(parent_id) {
 			treeData[ind].typ = "group";
 			treeData[ind].open = 0;
 			treeData[ind].leaf_count = 1;
-		}
-		else {
+		} else {
 			treeData[ind].leaf_count++;
 		}
 	}

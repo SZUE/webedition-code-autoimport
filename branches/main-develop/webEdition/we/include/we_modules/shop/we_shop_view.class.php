@@ -45,27 +45,29 @@ function doUnload() {
 }
 
 function we_cmd() {
-	var args = [];
-	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
-	for(var i = 0; i < arguments.length; i++){
-				args.push(arguments[i]);
-	url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
-	if(i < (arguments.length - 1)){
-	url += "&";
-	}}
-	switch (arguments[0]) {
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
+		}
+	}
+
+	switch (args[0]) {
 		case "new_raw":
 			if(top.content.editor.edbody.loaded) {
 				top.content.hot = 1;
-				top.content.editor.edbody.document.we_form.cmd.value = arguments[0];
-				top.content.editor.edbody.document.we_form.cmdid.value = arguments[1];
+				top.content.editor.edbody.document.we_form.cmd.value = args[0];
+				top.content.editor.edbody.document.we_form.cmdid.value = args[1];
 				top.content.editor.edbody.document.we_form.tabnr.value = 1;
 				top.content.editor.edbody.submitForm();
 			} else {
 				setTimeout(function(){we_cmd("new_raw");}, 10);
 			}
 			break;
-
 		case "delete_raw":
 			if(top.content.editor.edbody.document.we_form.cmd.value=="home") return;
 			' . (!permissionhandler::hasPerm("DELETE_RAW") ?
@@ -73,7 +75,7 @@ function we_cmd() {
 					('
 					if (top.content.editor.edbody.loaded) {
 						if (confirm("' . g_l('modules_shop', '[delete_alert]') . '")) {
-							top.content.editor.edbody.document.we_form.cmd.value=arguments[0];
+							top.content.editor.edbody.document.we_form.cmd.value=args[0];
 							top.content.editor.edbody.document.we_form.tabnr.value=top.content.activ_tab;
 							top.content.editor.edbody.submitForm();
 						}
@@ -83,34 +85,32 @@ function we_cmd() {
 
 			')) . '
 			break;
-
 		case "save_raw":
-			if(top.content.editor.edbody.document.we_form.cmd.value=="home") return;
+			if(top.content.editor.edbody.document.we_form.cmd.value=="home") {
+				return;
+			}
 
+			if (top.content.editor.edbody.loaded) {
+					top.content.editor.edbody.document.we_form.cmd.value=args[0];
+					top.content.editor.edbody.document.we_form.tabnr.value=top.content.activ_tab;
 
-					if (top.content.editor.edbody.loaded) {
-							top.content.editor.edbody.document.we_form.cmd.value=arguments[0];
-							top.content.editor.edbody.document.we_form.tabnr.value=top.content.activ_tab;
-
-							top.content.editor.edbody.submitForm();
-					} else {
-						' . we_message_reporting::getShowMessageCall(g_l('modules_shop', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-					}
-
+					top.content.editor.edbody.submitForm();
+			} else {
+				' . we_message_reporting::getShowMessageCall(g_l('modules_shop', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+			}
 			break;
-
 		case "edit_raw":
 			top.content.hot=0;
-			top.content.editor.edbody.document.we_form.cmd.value=arguments[0];
-			top.content.editor.edbody.document.we_form.cmdid.value=arguments[1];
+			top.content.editor.edbody.document.we_form.cmd.value=args[0];
+			top.content.editor.edbody.document.we_form.cmdid.value=args[1];
 			top.content.editor.edbody.document.we_form.tabnr.value=top.content.activ_tab;
 			top.content.editor.edbody.submitForm();
-		break;
+			break;
 		case "load":
-			top.content.cmd.location="' . $this->frameset . '&pnt=cmd&pid="+arguments[1]+"&offset="+arguments[2]+"&sort="+arguments[3];
-		break;
+			top.content.cmd.location="' . $this->frameset . '&pnt=cmd&pid="+args[1]+"&offset="+args[2]+"&sort="+args[3];
+			break;
 		default:
-			top.opener.top.we_cmd.apply(this, args);
+			top.opener.top.we_cmd.apply(this, arguments);
 	}
 }');
 	}
@@ -125,22 +125,25 @@ function doUnload() {
 }
 
 function we_cmd() {
-	var args = [];
-	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
-	for(var i = 0; i < arguments.length; i++){
-				args.push(arguments[i]);
-	url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
-	if(i < (arguments.length - 1)){
-	url += "&";
-	}}
-	switch (arguments[0]) {
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
+		}
+	}
+
+	switch (args[0]) {
 		case "switchPage":
-			document.we_form.cmd.value=arguments[0];
-			document.we_form.tabnr.value=arguments[1];
+			document.we_form.cmd.value=args[0];
+			document.we_form.tabnr.value=args[1];
 			submitForm();
 			break;
 		default:
-			top.content.we_cmd.apply(this, args);
+			top.content.we_cmd.apply(this, arguments);
 	}
 }
 function submitForm() {
@@ -161,16 +164,15 @@ function submitForm() {
 		$weShopStatusMails = we_shop_statusMails::getShopStatusMails();
 
 		// Get Country and Langfield Data
-		$strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"', '', $this->db);
-		$this->CLFields = (we_unserialize($strFelder)? : array(
-				'stateField' => '-',
-				'stateFieldIsISO' => 0,
-				'languageField' => '-',
-				'languageFieldIsISO' => 0
+		$this->CLFields = we_unserialize(f('SELECT strFelder FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_CountryLanguage"', '', $this->db), array(
+			'stateField' => '-',
+			'stateFieldIsISO' => 0,
+			'languageField' => '-',
+			'languageFieldIsISO' => 0
 		));
 
 		// config
-		$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"', '', $this->db));
+		$feldnamen = explode('|', f('SELECT pref_value FROM ' . SETTINGS_TABLE. ' WHERE tool="shop" AND pref_name="shop_pref"', '', $this->db));
 		$waehr = '&nbsp;' . oldHtmlspecialchars($feldnamen[0]);
 		$numberformat = $feldnamen[2];
 		$classid = (isset($feldnamen[3]) ? $feldnamen[3] : '');
@@ -207,7 +209,7 @@ function submitForm() {
 		// Get Customer data
 		$_REQUEST['cid'] = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid . ' LIMIT 1', '', $this->db);
 
-		if(($fields = we_unserialize(f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="edit_shop_properties"', '', $this->db)))){
+		if(($fields = we_unserialize(f('SELECT pref_value FROM ' . SETTINGS_TABLE. ' WHERE tool="shop" AND pref_name="edit_shop_properties"', '', $this->db)))){
 			// we have an array with following syntax:
 			// array ( 'customerFields' => array('fieldname ...',...)
 			//         'orderCustomerFields' => array('fieldname', ...) )
@@ -429,20 +431,15 @@ function submitForm() {
 			//
 
 			// headline here - these fields are fix.
-			$pixelImg = we_html_tools::getPixel(14, 15);
 			$orderTable = '
 		<table width="99%" class="default defaultfont">
 			<tr>
-				<th class="defaultgray" height="25">' . g_l('modules_shop', '[anzahl]') . '</th>
-				<td>' . $pixelImg . '</td>
-				<th class="defaultgray" height="25">' . g_l('modules_shop', '[Titel]') . '</th>
-				<td>' . $pixelImg . '</td>
-				<th class="defaultgray" height="25">' . g_l('modules_shop', '[Beschreibung]') . '</th>
-				<td>' . $pixelImg . '</td>
-				<th class="defaultgray" height="25">' . g_l('modules_shop', '[Preis]') . '</th>
-				<td>' . $pixelImg . '</td>
-				<th class="defaultgray" height="25">' . g_l('modules_shop', '[Gesamt]') . '</th>' .
-				($calcVat ? '<td>' . $pixelImg . '</td><th class="defaultgray" height="25">' . g_l('modules_shop', '[mwst]') . '</th>' : '' ) . '
+				<th class="defaultgray" style="height:25px;padding-right:15px;">' . g_l('modules_shop', '[anzahl]') . '</th>
+				<th class="defaultgray" style="height:25px;padding-right:15px;">' . g_l('modules_shop', '[Titel]') . '</th>
+				<th class="defaultgray" style="height:25px;padding-right:15px;">' . g_l('modules_shop', '[Beschreibung]') . '</th>
+				<th class="defaultgray" style="height:25px;padding-right:15px;">' . g_l('modules_shop', '[Preis]') . '</th>
+				<th class="defaultgray" style="height:25px;padding-right:15px;">' . g_l('modules_shop', '[Gesamt]') . '</th>' .
+				($calcVat ? '<th class="defaultgray" height="25">' . g_l('modules_shop', '[mwst]') . '</th>' : '' ) . '
 			</tr>';
 
 
@@ -500,7 +497,6 @@ function submitForm() {
 			<td></td>
 			<td class="shopContentfontR">' . we_base_util::formatNumber($articlePrice) . $waehr . '</td>' .
 					($calcVat ? '<td></td><td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = prompt('" . g_l('modules_shop', '[keinezahl]') . "','" . $articleVat . "'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location='" . $this->frameset . "&pnt=edbody&bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&vat=' + vat; } }\">" . we_base_util::formatNumber($articleVat) . "</a>" . '%)</td>' : '') . '
-			<td>' . $pixelImg . '</td>
 			<td>' . we_html_button::create_button(we_html_button::TRASH, "javascript:check=confirm('" . g_l('modules_shop', '[jsloeschen]') . "'); if (check){document.location.href='" . $this->frameset . "&pnt=edbody&bid=" . $_REQUEST["bid"] . "&deleteaarticle=" . $tblOrdersId[$i] . "';}", true, 100, 22, "", "", !permissionhandler::hasPerm("DELETE_SHOP_ARTICLE")) . '</td>
 		</tr>';
 				// if this article has custom fields or is a variant - we show them in a extra rows
@@ -706,12 +702,9 @@ function submitForm() {
 
 			foreach($customCartFields as $key => $value){
 				$customCartFieldsTable .= '<tr>
-						<td class="defaultfont" style="vertical-align:top"><b>' . $key . ':</b></td>
-						<td>' . $pixelImg . '</td>
-						<td class="defaultfont" style="vertical-align:top">' . nl2br($value) . '</td>
-						<td>' . $pixelImg . '</td>
-						<td style="vertical-align:top">' . we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('edit_shop_cart_custom_field','" . $key . "');") . '</td>
-						<td>' . $pixelImg . '</td>
+						<td class="defaultfont" style="padding-right:15px;vertical-align:top"><b>' . $key . ':</b></td>
+						<td class="defaultfont" style="padding-right:15px;vertical-align:top">' . nl2br($value) . '</td>
+						<td style="padding-right:15px;vertical-align:top;">' . we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('edit_shop_cart_custom_field','" . $key . "');") . '</td>
 						<td style="vertical-align:top">' . we_html_button::create_button(we_html_button::TRASH, "javascript:check=confirm('" . sprintf(g_l('modules_shop', '[edit_order][js_delete_cart_field]'), $key) . "'); if (check) { document.location.href='" . $this->frameset . "&pnt=edbody&we_cmd[0]=delete_shop_cart_custom_field&bid=" . $_REQUEST["bid"] . "&cartfieldname=" . $key . "'; }") . '</td>
 					</tr>
 					<tr>
@@ -1523,7 +1516,7 @@ top.content.drawTree();' :
 
 	public function getHomeScreen(){
 
-		$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . " WHERE strDateiname='shop_pref'"));
+		$feldnamen = explode('|', f('SELECT pref_value FROM ' . SETTINGS_TABLE. ' WHERE tool="shop" AND pref_name="shop_pref"'));
 		for($i = 0; $i <= 3; $i++){
 			$feldnamen[$i] = isset($feldnamen[$i]) ? $feldnamen[$i] : '';
 		}

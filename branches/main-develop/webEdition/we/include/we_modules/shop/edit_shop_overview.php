@@ -29,7 +29,7 @@ echo we_html_tools::getHtmlTop() .
  STYLESHEET;
 
 /// config
-$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"'));
+$feldnamen = explode('|', f('SELECT pref_value FROM ' . SETTINGS_TABLE. ' WHERE tool="shop" AND pref_name="shop_pref"'));
 
 $waehr = '&nbsp;' . oldHtmlspecialchars($feldnamen[0]);
 $numberformat = $feldnamen[2];

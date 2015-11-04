@@ -252,8 +252,7 @@ this.selectedIndex = 0;' .
 		}
 		$ret .= ($optgroup ? '</optgroup>' : '');
 
-		return ($name ? we_html_element::htmlSelect(array_merge(
-						array(
+		return ($name ? we_html_element::htmlSelect(array_merge(array(
 					'class' => 'weSelect ' . $cls,
 					'name' => trim($name),
 					'size' => abs($size),
@@ -365,21 +364,21 @@ this.selectedIndex = 0;' .
 		return '<table class="default"><tr><td>' . $textField . '</td><td>' . $selectMenue . '</td></tr></table>';
 	}
 
-	/*static function gifButton($name, $href, $language = "Deutsch", $alt = "", $width = "", $height = "", $onClick = "", $bname = "", $target = "", $disabled = false){
-		$img = we_html_element::htmlImg(array(
-				'src' => IMAGE_DIR . 'buttons/' . $name . ($disabled ? '_d' : "") . ($language ? '_' : '') . $language . '.gif',
-				'style' => ($width ? ' width:' . $width . 'px;' : '') . ($height ? ' height:' . $height . 'px' : ''),
-				'alt' => $alt,
-				'border' => 0,
-				'name' => ($bname ? : '')
-		));
+	/* static function gifButton($name, $href, $language = "Deutsch", $alt = "", $width = "", $height = "", $onClick = "", $bname = "", $target = "", $disabled = false){
+	  $img = we_html_element::htmlImg(array(
+	  'src' => IMAGE_DIR . 'buttons/' . $name . ($disabled ? '_d' : "") . ($language ? '_' : '') . $language . '.gif',
+	  'style' => ($width ? ' width:' . $width . 'px;' : '') . ($height ? ' height:' . $height . 'px' : ''),
+	  'alt' => $alt,
+	  'border' => 0,
+	  'name' => ($bname ? : '')
+	  ));
 
-		return ($disabled ?
-				$img : ($href ?
-					'<a href="' . $href . '" onmouseover="window.status=\'' . $alt . '\';return true;" onmouseout="window.status=\'\';return true;"' . ($onClick ? ' onclick="' . $onClick . '"' : '') . ($target ? (' target="' . $target . '"') : '') . '>' . $img . '</a>' :
-					'<input type="image" src="' . IMAGE_DIR . 'buttons/' . $name . ($language ? '_' : '') . $language . '.gif"' . ($width ? ' width="' . $width . '"' : '') . ($height ? ' height="' . $height . '"' : '') . ' border="0" alt="' . $alt . '"' . ($onClick ? ' onclick="' . $onClick . '"' : '') . ($bname ? ' name="' . $bname . '"' : '') . ' />'
-				));
-	}*/
+	  return ($disabled ?
+	  $img : ($href ?
+	  '<a href="' . $href . '" onmouseover="window.status=\'' . $alt . '\';return true;" onmouseout="window.status=\'\';return true;"' . ($onClick ? ' onclick="' . $onClick . '"' : '') . ($target ? (' target="' . $target . '"') : '') . '>' . $img . '</a>' :
+	  '<input type="image" src="' . IMAGE_DIR . 'buttons/' . $name . ($language ? '_' : '') . $language . '.gif"' . ($width ? ' width="' . $width . '"' : '') . ($height ? ' height="' . $height . '"' : '') . ' border="0" alt="' . $alt . '"' . ($onClick ? ' onclick="' . $onClick . '"' : '') . ($bname ? ' name="' . $bname . '"' : '') . ' />'
+	  ));
+	  } */
 
 	static function getExtensionPopup($name, $selected, $extensions, $width = '', $attribs = '', $permission = true){
 		if((isset($extensions)) && (count($extensions) > 1)){
@@ -415,13 +414,15 @@ this.selectedIndex = 0;' .
 	 * @deprecated since version 6.3.0
 	 */
 	static function getPixel($w, $h, $border = 0){
+		//FIXME: remove this
+		return '';/*
 		if($w == ''){
 			$w = 0;
 		}
 		if($h == ''){
 			$h = 0;
 		}
-		return '<span style="display:inline-block;width:' . $w . (is_numeric($w) ? 'px' : '') . ';height:' . $h . (is_numeric($h) ? 'px' : '') . ';' . ($border ? 'border:' . $border . 'px solid black;' : '') . '"></span>';
+		return '<span style="display:inline-block;width:' . $w . (is_numeric($w) ? 'px' : '') . ';height:' . $h . (is_numeric($h) ? 'px' : '') . ';' . ($border ? 'border:' . $border . 'px solid black;' : '') . '"></span>';*/
 	}
 
 	static function hidden($name, $value, $attribs = null){
@@ -651,10 +652,7 @@ this.selectedIndex = 0;' .
 
 	public static function getHtmlTop($title = 'webEdition', $charset = '', $doctype = '', $extraHead = '', $body = '', $skipErrorHandler = true){
 		return we_html_element::htmlDocType($doctype) .
-			we_html_element::htmlhtml(
-				we_html_element::htmlHead(
-					self::getHtmlInnerHead($title, $charset, $skipErrorHandler) . $extraHead, ($extraHead || $body ? true : false)
-				) .
+			we_html_element::htmlhtml(we_html_element::htmlHead(self::getHtmlInnerHead($title, $charset, $skipErrorHandler) . $extraHead, ($extraHead || $body ? true : false)) .
 				$body, ($body ? true : false)
 		);
 	}
@@ -681,7 +679,6 @@ this.selectedIndex = 0;' .
 			we_html_element::htmlMeta(array('http-equiv' => 'imagetoolbar', 'content' => 'no')) .
 			we_html_element::htmlMeta(array('name' => 'generator', 'content' => 'webEdition')) .
 			we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico'));
-			//we_html_element::jsScript(JS_DIR . 'windows.js', '', array('defer' => 'defer'));
 	}
 
 	static function htmlMetaCtCharset($charset){
@@ -724,9 +721,7 @@ this.selectedIndex = 0;' .
 
 		$content->setCol(0, ($img ? 1 : 0), array('class' => 'defaultfont', 'style' => 'padding:10px;'), $text);
 
-		return self::htmlDialogLayout(
-				($script ? we_html_element::jsElement($script) : '') . $content->getHtml()
-				, '', we_html_button::position_yes_no_cancel($yesButton, $noButton, $cancelButton), '99%', 0);
+		return self::htmlDialogLayout(($script ? we_html_element::jsElement($script) : '') . $content->getHtml(), '', we_html_button::position_yes_no_cancel($yesButton, $noButton, $cancelButton), '99%', 0);
 	}
 
 	static function groupArray(array $arr, $sort = true, $len = 1){
@@ -774,7 +769,7 @@ this.selectedIndex = 0;' .
 
 		$text = ($useHtmlSpecialChars) ? oldHtmlspecialchars($text, ENT_COMPAT, 'ISO-8859-1', false) : $text;
 
-		if($clip > 0){
+		if($clip){
 			$unique = md5(uniqid(__FUNCTION__, true)); // #6590, changed from: uniqid(microtime())
 			$smalltext = substr($text, 0, $clip) . ' ... ';
 			$js = we_html_element::jsElement('
@@ -803,7 +798,7 @@ function clip_' . $unique . '(){
 			$width -= ($width > 10 ? 10 : 0);
 		}
 
-		return $js . '<div style="background-color:#dddddd;padding:5px;white-space:normal;' . ($width ? ' width:' . $width . (is_numeric($width) ? 'px' : '') . ';' : '') . '"><table border="0" width="100%"><tr>' . ($icon ? '<td width="30" style="padding-right:10px;vertical-align:top">' . $icon . '</td>' : '') . '<td class="middlefont" ' . ($clip > 0 ? 'id="td_' . $unique . '"' : '') . '>' . $text . '</td>' . ($clip > 0 ? '<td style="vertical-align:top;text-align:right" id="btn_' . $unique . '"><button class="weBtn" onclick="clip_' . $unique . '();"><i class="fa fa-lg fa-caret-right"></i></button><td>' : '') . '</tr></table></div>';
+		return $js . '<div style="background-color:#dddddd;padding:5px;white-space:normal;' . ($width ? ' width:' . $width . (is_numeric($width) ? 'px' : '') . ';' : '') . '"><table border="0" width="100%"><tr>' . ($icon ? '<td width="30" style="padding-right:10px;vertical-align:top">' . $icon . '</td>' : '') . '<td class="middlefont" ' . ($clip ? 'id="td_' . $unique . '"' : '') . '>' . $text . '</td>' . ($clip > 0 ? '<td style="vertical-align:top;text-align:right" id="btn_' . $unique . '"><button class="weBtn" onclick="clip_' . $unique . '();"><i class="fa fa-lg fa-caret-right"></i></button><td>' : '') . '</tr></table></div>';
 	}
 
 	public static function setHttpCode($status){

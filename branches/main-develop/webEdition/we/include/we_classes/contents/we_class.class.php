@@ -177,8 +177,7 @@ abstract class we_class{
 	}
 
 	static function htmlTextArea($name, $rows = 10, $cols = 30, $value = '', array $attribs = array()){
-		return we_html_element::htmlTextArea(
-				array_merge(array(
+		return we_html_element::htmlTextArea(array_merge(array(
 				'name' => trim($name),
 				'class' => 'defaultfont wetextarea',
 				'rows' => abs($rows),
@@ -193,19 +192,18 @@ abstract class we_class{
 		$selIndex = $multiple ? explode(',', $selectedIndex) : array($selectedIndex);
 		$ret = '';
 		foreach($values as $value => $text){
-			if($text == we_html_tools::OPTGROUP){
-				if($optgroup){
-					$optgroup = false;
-					$ret .= '</optgroup>';
-					continue;
-				}
+			if($text === we_html_tools::OPTGROUP){
+				$ret .= ($optgroup ? '</optgroup>' : '') . '<optgroup label="' . oldHtmlspecialchars($value) . '">';
 				$optgroup = true;
-				$ret .= '<optgroup label="' . oldHtmlspecialchars($value) . '">';
 				continue;
 			}
 
 			$ret .= '<option ' . (isset($classes[$value]) ? 'class="' . $classes[$value] . '" ' : '') . ' value="' . oldHtmlspecialchars($value) . '"' . (in_array((($compare === 'value') ? $value : $text), $selIndex) ? ' selected="selected"' : '') . '>' . $text . '</option>';
 		}
+		if($optgroup){
+			$ret .= '</optgroup>';
+		}
+
 		return we_html_element::htmlSelect(array_merge($attribs, array(
 				'id' => trim($name),
 				'class' => "weSelect defaultfont",
@@ -221,8 +219,7 @@ abstract class we_class{
 
 	function formSelectElement($width, $name, $values, $type = 'txt', $size = 1, array $attribs = array()){
 		return we_html_tools::htmlFormElementTable(
-				we_html_tools::html_select('we_' . $this->Name . '_' . $type . '[' . $name . ']', $size, $values, $this->getElement($name), array_merge(
-						array(
+				we_html_tools::html_select('we_' . $this->Name . '_' . $type . '[' . $name . ']', $size, $values, $this->getElement($name), array_merge(array(
 					'class' => 'defaultfont',
 					'width' => $width,
 						), $attribs))
@@ -502,9 +499,7 @@ abstract class we_class{
 					return ($this->prepareSetLanguageLink($LangLinkArray, $origLinks, true, $newLang, $type, $isfolder, $isobject, $ownDocumentTable)) ? true : false;
 				}
 
-				echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('weClass', '[languageLinksLocaleChanged]'), we_message_reporting::WE_MESSAGE_NOTICE)
-				));
+				echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('weClass', '[languageLinksLocaleChanged]'), we_message_reporting::WE_MESSAGE_NOTICE)));
 				return true;
 			}
 			//default case: there was now change of page language. Loop method call to another method, preparing LangLinks
@@ -563,9 +558,7 @@ abstract class we_class{
 
 				if(($fileLang = f('SELECT Language FROM ' . $this->DB_WE->escape(addTblPrefix($documentTable)) . ' WHERE ID=' . intval($LDID), '', $this->DB_WE))){
 					if($fileLang != $locale){
-						echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', '[languageLinksLangNotok]'), $locale, $fileLang, $locale), we_message_reporting::WE_MESSAGE_NOTICE)
-						));
+						echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', '[languageLinksLangNotok]'), $locale, $fileLang, $locale), we_message_reporting::WE_MESSAGE_NOTICE)));
 						return true;
 					}
 					if(!$isfolder){
@@ -589,9 +582,7 @@ abstract class we_class{
 						}
 
 						if(!$setThisLink){
-							echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement(
-									we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', '[languageLinksConflicts]'), $locale), we_message_reporting::WE_MESSAGE_NOTICE)
-							));
+							echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', '[languageLinksConflicts]'), $locale), we_message_reporting::WE_MESSAGE_NOTICE)));
 							return true;
 						}
 						// instead of modifying db-Enries, we delete them and create new ones
@@ -609,9 +600,7 @@ abstract class we_class{
 						$this->executeSetLanguageLink($preparedLinkArray, $type, $isfolder, $isobject);
 					} else {//!isfolder
 						if(f('SELECT 1 FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $this->DB_WE->escape($type) . '" AND DLocale="' . $this->DB_WE->escape($ownLocale) . '" AND Locale="' . $this->DB_WE->escape($locale) . '" AND LDID=' . intval($LDID) . ' AND IsObject=' . ($isobject ? 1 : 0) . ' AND IsFolder=1 LIMIT 1', '', $this->DB_WE)){//conflict
-							echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement(
-									we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', '[languageLinksConflicts]'), $locale), we_message_reporting::WE_MESSAGE_NOTICE)
-							));
+							echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', '[languageLinksConflicts]'), $locale), we_message_reporting::WE_MESSAGE_NOTICE)));
 							return true;
 						}
 						$actualLinks = array();
@@ -657,7 +646,7 @@ abstract class we_class{
 		}
 
 		foreach($LangLinkArray as $locale => $LDID){ //obsolete if we call executeSetLanguageLink with only the link to bechanged (instead of whole $LangLinkArray)
-			if(($ID = f('SELECT ID FROM ' . LANGLINK_TABLE . " WHERE DocumentTable='" . $this->DB_WE->escape($type) . "' AND DID=" . intval($this->ID) . " AND Locale='" . $this->DB_WE->escape($locale) . "' AND isFolder='" . intval($isfolder) . "' AND IsObject=" . intval($isobject), 'ID', $this->DB_WE))){
+			if(($ID = f('SELECT ID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $this->DB_WE->escape($type) . '" AND DID=' . intval($this->ID) . ' AND Locale="' . $this->DB_WE->escape($locale) . '" AND isFolder=' . intval($isfolder) . ' AND IsObject=' . intval($isobject), 'ID', $this->DB_WE))){
 				$this->DB_WE->query('UPDATE ' . LANGLINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
 						'LDID' => $LDID,
 						'DLocale' => $this->Language
@@ -705,7 +694,7 @@ abstract class we_class{
 
 			if(!$isfolder && $LDID < 0 && $LDID != $this->ID){
 				if($LDID > 0){// never happens!
-					$this->DB_WE->query('REPLACE INTO ' . LANGLINK_TABLE . ' SET DID=' . intval($LDID) . ", DLocale='" . $this->DB_WE->escape($locale) . "', LDID=" . intval($this->ID) . ", Locale='" . $this->DB_WE->escape($this->Language) . "', IsObject=" . ($isobject ? 1 : 0) . ", DocumentTable='" . $this->DB_WE->escape($type) . "'");
+					$this->DB_WE->query('REPLACE INTO ' . LANGLINK_TABLE . ' SET DID=' . intval($LDID) . ', DLocale="' . $this->DB_WE->escape($locale) . '", LDID=' . intval($this->ID) . ', Locale="' . $this->DB_WE->escape($this->Language) . '",IsObject=' . ($isobject ? 1 : 0) . ', DocumentTable="' . $this->DB_WE->escape($type) . '"');
 				}
 			}
 		}//foreach
@@ -713,8 +702,7 @@ abstract class we_class{
 		if(!$isfolder){
 			foreach($LangLinkArray as $locale => $LDID){
 				if($LDID > 0){
-					$this->DB_WE->query('SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DID=' . intval($this->ID) . ' AND DocumentTable="' . $this->DB_WE->escape($type) . '" AND IsObject=' . ($isobject ? 1 : 0));
-					$rows = $this->DB_WE->getAll();
+					$rows = $this->DB_WE->getAllq('SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DID=' . intval($this->ID) . ' AND DocumentTable="' . $this->DB_WE->escape($type) . '" AND IsObject=' . ($isobject ? 1 : 0));
 					if(count($rows) > 1){
 						foreach($rows as $i => $row){
 							$j = ($i + 1) % count($rows);

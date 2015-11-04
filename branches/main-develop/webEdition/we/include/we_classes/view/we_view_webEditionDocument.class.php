@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_view_webEditionDocument extends we_view_document{
-
+//FIXME: implement in 7.0.1
 	public function __construct(){
 		$this->doc = new we_webEditionDocument();
 	}

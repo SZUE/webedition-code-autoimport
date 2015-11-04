@@ -233,8 +233,7 @@ class we_app_Model extends we_core_AbstractModel{
 	public function updateChildPaths($oldpath){
 		$db = new DB_WE();
 		if($this->IsFolder && $oldpath != '' && $oldpath != '/' && $oldpath != $this->Path){
-			$db->query('SELECT ' . $this->_primaryKey . ' FROM ' . $this->_table . '  WHERE Path like "' . $db->escape($oldpath . '%') . '" AND ' . $this->_primaryKey . ' !=' . intval($this->{$this->_primaryKey}));
-			$result = $db->getAll();
+			$result = $db->getAllq('SELECT ' . $this->_primaryKey . ' FROM ' . $this->_table . '  WHERE Path like "' . $db->escape($oldpath . '%') . '" AND ' . $this->_primaryKey . ' !=' . intval($this->{$this->_primaryKey}));
 			foreach($result as $row){
 				$updateFields = array('Path' => $this->_evalPath($row[$this->_primaryKey]));
 				$cond = $this->_primaryKey . '=' . intval($row[$this->_primaryKey]);

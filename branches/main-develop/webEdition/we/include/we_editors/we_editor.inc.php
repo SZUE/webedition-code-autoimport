@@ -258,6 +258,10 @@ if($_userID != 0 && $_userID != $_SESSION['user']['ID'] && $we_doc->ID){ // docu
 	if(in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $we_doc->EditPageNrs) && !$we_doc instanceof we_template){
 		$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_PREVIEW;
 		$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PREVIEW;
+	} else if($we_doc instanceof we_folder){
+		$target = in_array(we_base_constants::WE_EDITPAGE_DOCLIST, $we_doc->EditPageNrs) ? we_base_constants::WE_EDITPAGE_DOCLIST : we_base_constants::WE_EDITPAGE_FIELDS;
+		$we_doc->EditPageNr = $target;
+		$_SESSION['weS']['EditPageNr'] = $target;
 	} else {
 		$we_doc->showLockedWarning($_userID);
 	}

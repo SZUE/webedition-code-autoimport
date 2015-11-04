@@ -78,6 +78,11 @@ class we_object_listviewMultiobject extends we_object_listviewBase{
 		$this->objects = $objects;
 		//FIXME: can we use defaultsArray?!
 		$this->classID = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID IN (' . implode(',', $objects) . ') LIMIT 1');
+		if(!$this->classID){
+			$this->Record = array();
+			$this->anz_all = 0;
+			return;
+		}
 		$this->triggerID = $triggerID;
 		$this->condition = $condition;
 		$this->searchable = $searchable;

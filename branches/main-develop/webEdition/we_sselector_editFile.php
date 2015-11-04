@@ -43,9 +43,7 @@ if(we_base_request::_(we_base_request::STRING, "cmd") === "save"){
 	}
 }
 
-$buttons = we_html_button::position_yes_no_cancel(
-		we_html_button::create_button(we_html_button::SAVE, "javascript:document.forms[0].submit();"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();")
-);
+$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, "javascript:document.forms[0].submit();"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();"));
 $content = '<textarea name="editFile" id="editFile" style="width:540px;height:380px;overflow: auto;">' . oldHtmlspecialchars($we_fileData) . '</textarea>';
 ?>
 <script><!--

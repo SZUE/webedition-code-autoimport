@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_import_functions{
+
 	const TYPE_CSV = 'CSVImport';
 	const TYPE_GENERIC_XML = 'GXMLImport';
 	const TYPE_WE_XML = 'WXMLImport';
@@ -63,11 +64,11 @@ abstract class we_import_functions{
 		}
 		$GLOBALS['we_doc']->Path = $GLOBALS['we_doc']->getParentPath() . (($GLOBALS['we_doc']->getParentPath() != "/") ? "/" : "") . $GLOBALS['we_doc']->Text;
 		// IF NAME OF OBJECT EXISTS, WE HAVE TO CREATE A NEW NAME
-		if(($file_id = f('SELECT ID FROM ' . FILE_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape($GLOBALS['we_doc']->Path) . "'"))){
+		if(($file_id = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape($GLOBALS['we_doc']->Path) . '"'))){
 			if($conflict === 'rename'){
 				$z = 0;
 				$footext = $GLOBALS['we_doc']->Filename . "_" . $z . $GLOBALS['we_doc']->Extension;
-				while(f('SELECT ID FROM ' . FILE_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($GLOBALS['we_doc']->ParentID))){
+				while(f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Text="' . $GLOBALS['DB_WE']->escape($footext) . '" AND ParentID=' . intval($GLOBALS['we_doc']->ParentID))){
 					$z++;
 					$footext = $GLOBALS['we_doc']->Filename . "_" . $z . $GLOBALS['we_doc']->Extension;
 				}
@@ -100,9 +101,9 @@ abstract class we_import_functions{
 		}
 		// PUBLISH OR EXIT
 		return ($publish ?
-				$GLOBALS['we_doc']->we_publish() :
-				true
-			);
+						$GLOBALS['we_doc']->we_publish() :
+						true
+				);
 	}
 
 	/**
@@ -141,7 +142,7 @@ abstract class we_import_functions{
 			$object->Text = $filename;
 			$object->Path = $object->getParentPath() . (($object->getParentPath() != "/") ? "/" : "") . $object->Text;
 			// IF NAME OF OBJECT EXISTS, WE HAVE TO CREATE A NEW NAME
-			if(($file_id = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape($object->Path) . "'"))){
+			if(($file_id = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape($object->Path) . '"'))){
 				$name_exists = true;
 				switch($conflict){
 					case 'replace':
@@ -150,7 +151,7 @@ abstract class we_import_functions{
 					case 'rename':
 						$z = 0;
 						$footext = $object->Text . '_' . $z;
-						while(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($object->ParentID))){
+						while(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Text="' . $GLOBALS['DB_WE']->escape($footext) . '" AND ParentID=' . intval($object->ParentID))){
 							$z++;
 							$footext = $object->Text . '_' . $z;
 						}
@@ -173,8 +174,8 @@ abstract class we_import_functions{
 		}
 		// PUBLISH OR EXIT
 		return ($publish ?
-				$object->we_publish() :
-				true);
+						$object->we_publish() :
+						true);
 	}
 
 	/**
@@ -269,9 +270,7 @@ abstract class we_import_functions{
 				}
 			}
 
-			return mktime(
-				$outarray["hour"], $outarray["minute"], $outarray["second"], $outarray["month"], $outarray["day"], $outarray["year"]
-			);
+			return mktime($outarray["hour"], $outarray["minute"], $outarray["second"], $outarray["month"], $outarray["day"], $outarray["year"]);
 		}
 		return 0;
 	}

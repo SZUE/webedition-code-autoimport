@@ -90,6 +90,10 @@ abstract class we_object_listviewBase extends we_listview_base{
 	}
 
 	protected function makeSQLParts($matrix, $classID, $order, $cond, $useTable2){
+		if(!$classID){
+			t_e('no classid given!');
+			return;
+		}
 		//FIXME: order ist totaler nonsense - das geht deutlich einfacher
 		$from = $orderArr = $descArr = $ordertmp = array();
 

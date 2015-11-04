@@ -131,7 +131,6 @@ function we_save() {
 }');
 
 		$table2 = new we_html_table(array('class' => 'default', 'width' => 300), 1, 2);
-		//$table2->setRow(0, array('style'=>'vertical-align:middle'));
 		$table2->setCol(0, 0, array('nowrap' => null), we_html_button::create_button(we_html_button::SAVE, 'javascript:we_save()'));
 		$table2->setCol(0, 1, array('nowrap' => null, 'class' => 'defaultfont'), $this->View->getStatusHTML());
 
@@ -167,7 +166,8 @@ function we_save() {
 
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-						$this->View->getCmdJS() . we_html_element::jsElement($rootjs .
+						$this->View->getCmdJS() .
+					we_html_element::jsElement($rootjs .
 							$this->Tree->getJSLoadTree(!$pid, we_workflow_tree::getItems($pid, $offset, $this->Tree->default_segment))
 						)
 					)

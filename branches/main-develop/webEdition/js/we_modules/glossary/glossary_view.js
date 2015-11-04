@@ -33,13 +33,14 @@ function doUnload() {
 
 
 function we_cmd() {
-	var args = [];
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-	for (var i = 0; i < arguments.length; i++) {
-		args.push(arguments[i]);
-		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
-		if (i < (arguments.length - 1)) {
-			url += "&";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
 		}
 	}
 
@@ -50,6 +51,7 @@ function we_cmd() {
 			top.content.usetHot();
 		}
 	}
+
 	switch (args[0]) {
 		case "exit_glossary":
 			if (hot !== 1) {
@@ -77,7 +79,7 @@ function we_cmd() {
 		case "delete_glossary":
 			var exc = top.content.editor.edbody.document.we_form.cmdid.value;
 			if (exc.substring(exc.length - 10, exc.length) == "_exception") {
-				WE().util.showMessage(WE().consts.g_l.glossary.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.glossary.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
 				break;
 			}
 			switch (top.content.editor.edbody.document.we_form.cmd.value) {
@@ -88,11 +90,11 @@ function we_cmd() {
 					return;
 			}
 			if (top.content.editor.edbody.document.we_form.newone.value == 1) {
-				WE().util.showMessage(WE().consts.g_l.glossary.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.glossary.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
 				return;
 			}
 			if (!WE().util.hasPerm("DELETE_GLOSSARY")) {
-				WE().util.showMessage(WE().consts.g_l.glossary.view.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.glossary.view.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
 				break;
 
 			}
@@ -105,9 +107,8 @@ function we_cmd() {
 					top.content.editor.edbody.submitForm();
 				}
 			} else {
-				WE().util.showMessage(WE().consts.g_l.glossary.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.glossary.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
 			}
-
 			break;
 		case "save_exception":
 		case "save_glossary":
@@ -130,7 +131,7 @@ function we_cmd() {
 					top.content.editor.edbody.submitForm();
 				}
 			} else {
-				WE().util.showMessage(WE().consts.g_l.glossary.view.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.glossary.view.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, this);
 			}
 			top.content.usetHot();
 			break;
@@ -140,7 +141,7 @@ function we_cmd() {
 		case "glossary_edit_link":
 		case "glossary_edit_textreplacement":
 			if (!WE().util.hasPerm("EDIT_GLOSSARY")) {
-				WE().util.showMessage(WE().consts.g_l.glossary.view.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.glossary.view.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
 				break;
 			}
 			top.content.hot = 0;
@@ -156,6 +157,6 @@ function we_cmd() {
 			top.content.editor.edbody.parent.location = data.frameset + "&pnt=editor";
 			break;
 		default:
-			top.opener.top.we_cmd.apply(this, args);
+			top.opener.top.we_cmd.apply(this, arguments);
 	}
 }

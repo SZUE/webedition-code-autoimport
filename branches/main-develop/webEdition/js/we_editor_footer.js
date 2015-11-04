@@ -107,39 +107,39 @@ function saveReload() {
 }
 
 function we_cmd() {
-	var url = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
-	for (var i = 0; i < arguments.length; i++) {
-		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
-		if (i < (arguments.length - 1)) {
-			url += "&";
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
 		}
 	}
-	switch (arguments[0]) {
+
+	switch (args[0]) {
 		case "glossary_check":
-			new (WE().util.jsWindow)(window, url, "glossary_check", -1, -1, 730, 400, true, false, true);
-			return;
+			new (WE().util.jsWindow)(this, url, "glossary_check", -1, -1, 730, 400, true, false, true);
+			break;
 		case "save_document":
 			if (doc.isTemplate) {
 				if (doc.isFolder) {
-					top.we_cmd("save_document", we_transaction, 0, 1, "", "", arguments[6] ? arguments[6] : "", arguments[7] ? arguments[7] : "");
+					top.we_cmd("save_document", we_transaction, 0, 1, "", "", args[6] ? args[6] : "", args[7] ? args[7] : "");
 				} else {
-					top.we_cmd("save_document", we_transaction, 0, 0, "", arguments[5] ? arguments[5] : "", arguments[6] ? arguments[6] : "", arguments[7] ? arguments[7] : "");
+					top.we_cmd("save_document", we_transaction, 0, 0, "", args[5] ? args[5] : "", args[6] ? args[6] : "", args[7] ? args[7] : "");
 				}
 			} else {
-				top.we_cmd("save_document", we_transaction, 0, 1, (doc.makeSameDocCheck && _EditorFrame.getEditorMakeSameDoc() ? 1 : 0), arguments[5] ? arguments[5] : "", arguments[6] ? arguments[6] : "", arguments[7] ? arguments[7] : "");
+				top.we_cmd("save_document", we_transaction, 0, 1, (doc.makeSameDocCheck && _EditorFrame.getEditorMakeSameDoc() ? 1 : 0), args[5] ? args[5] : "", args[6] ? args[6] : "", args[7] ? args[7] : "");
 			}
-			return;
+			break;
 		case "object_obj_search":
 			top.we_cmd("object_obj_search", we_transaction, document.we_form.obj_search.value, document.we_form.obj_searchField[document.we_form.obj_searchField.selectedIndex].value);
-			return;
-	}
-	var args = [];
-	for (i = 0; i < arguments.length; i++)
-	{
-		args.push(arguments[i]);
-	}
-	if (top.we_cmd) {
-		top.we_cmd.apply(this, args);
+			break
+		default:
+			if (top.we_cmd) {
+				top.we_cmd.apply(this, arguments);
+			}
 	}
 }
 

@@ -174,19 +174,10 @@ $select = we_html_tools::htmlSelect('tmp_commands', we_wysiwyg_editor::getEditor
 $select_cm = we_html_tools::htmlSelect('tmp_contextmenu', we_wysiwyg_editor::getEditorCommands(false), 1, "", false, array('onchange' => "var elem=document.getElementById('contextmenu'); var txt = this.options[this.selectedIndex].text; if(elem.value.split(',').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + ',' + txt) : txt;}this.selectedIndex=-1"));
 
 $table = '<table class="default">
-	<tr>
-		<td class="defaultfont" style="vertical-align:top;text-align:right">commands&nbsp;</td><td colspan="5">' . $select . '<br/>' . we_class::htmlTextArea("commands", 3, 30, oldHtmlspecialchars($we_doc->getElement($name . "commands")), array('id' => "commands", 'style' => "width:392px;height:50px")) . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(90, 10) . '</td>
-		<td>' . we_html_tools::getPixel(395, 10) . '</td>
-	</tr>
+	<tr class="withBigSpace">
+		<td class="defaultfont" style="vertical-align:top;text-align:right;width:90px;">commands&nbsp;</td><td colspan="5">' . $select . '<br/>' . we_class::htmlTextArea("commands", 3, 30, oldHtmlspecialchars($we_doc->getElement($name . "commands")), array('id' => "commands", 'style' => "width:392px;height:50px")) . '</td>	</tr>
 	<tr>
 		<td class="defaultfont" valign="top" align="right">contextmenu&nbsp;</td><td colspan="5">' . $select_cm . '<br/>' . we_class::htmlTextArea("contextmenu", 3, 30, oldHtmlspecialchars($we_doc->getElement($name . "contextmenu")), array('id' => "contextmenu", 'style' => "width:392px;height:50px")) . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(90, 1) . '</td>
-		<td>' . we_html_tools::getPixel(395, 1) . '</td>
 	</tr>
 </table>';
 
@@ -200,11 +191,7 @@ $parts[] = array(
 $select = we_html_tools::htmlSelect('tmp_fontnames', we_wysiwyg_editor::getAttributeOptions('fontnames'), 1, "", false, array('onchange' => "var elem=document.we_form.fontnames; var txt = this.options[this.selectedIndex].text; if(elem.value.split(',').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + ',' + txt) : txt;}this.selectedIndex=-1"));
 $table = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td class="defaultfont" valign="top" align="right">fontnames&nbsp;</td><td colspan="5">' . $select . '<br/>' . we_html_tools::htmlTextInput('fontnames', 24, $we_doc->getElement($name . 'fontnames'), 1024, '', 'text', 396, 0) . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(90, 1) . '</td>
-		<td>' . we_html_tools::getPixel(395, 1) . '</td>
+		<td class="defaultfont" valign="top" align="right" style="width:90px;">fontnames&nbsp;</td><td colspan="5">' . $select . '<br/>' . we_html_tools::htmlTextInput('fontnames', 24, $we_doc->getElement($name . 'fontnames'), 1024, '', 'text', 396, 0) . '</td>
 	</tr>
 </table>';
 
@@ -218,11 +205,7 @@ $parts[] = array(
 $select = we_html_tools::htmlSelect('tmp_fontsizes', we_wysiwyg_editor::getAttributeOptions('fontsizes'), 1, "", false, array('onchange' => "var elem=document.we_form.fontsizes; var txt = this.options[this.selectedIndex].text; if(elem.value.split(',').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + ',' + txt) : txt;}this.selectedIndex=-1"));
 $table = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td class="defaultfont" valign="top" align="right">fontsizes&nbsp;</td><td colspan="5">' . $select . '<br/>' . we_html_tools::htmlTextInput('fontsizes', 24, $we_doc->getElement($name . 'fontsizes'), 1024, '', 'text', 396, 0) . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(90, 1) . '</td>
-		<td>' . we_html_tools::getPixel(395, 1) . '</td>
+		<td class="defaultfont" valign="top" align="right" style="width:90px">fontsizes&nbsp;</td><td colspan="5">' . $select . '<br/>' . we_html_tools::htmlTextInput('fontsizes', 24, $we_doc->getElement($name . 'fontsizes'), 1024, '', 'text', 396, 0) . '</td>
 	</tr>
 </table>';
 
@@ -236,11 +219,7 @@ $parts[] = array(
 $select = we_html_tools::htmlSelect('tmp_formats', we_wysiwyg_editor::getAttributeOptions('formats'), 1, "", false, array('onchange' => "var elem=document.we_form.formats; var txt = this.options[this.selectedIndex].text; if(elem.value.split(',').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + ',' + txt) : txt;}this.selectedIndex=-1"));
 $table = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td class="defaultfont" valign="top" align="right">formats&nbsp;</td><td colspan="5">' . $select . '<br/>' . we_html_tools::htmlTextInput('formats', 24, $we_doc->getElement($name . 'formats'), 1024, '', 'text', 396, 0) . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(90, 1) . '</td>
-		<td>' . we_html_tools::getPixel(395, 1) . '</td>
+		<td class="defaultfont" valign="top" align="right" style="width:90px;">formats&nbsp;</td><td colspan="5">' . $select . '<br/>' . we_html_tools::htmlTextInput('formats', 24, $we_doc->getElement($name . 'formats'), 1024, '', 'text', 396, 0) . '</td>
 	</tr>
 </table>';
 
@@ -253,11 +232,7 @@ $parts[] = array(
 // CLASSES
 $table = '<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td class="defaultfont" valign="top" align="right">classes&nbsp;</td><td colspan="5">' . we_html_tools::htmlTextInput('cssClasses', 24, oldHtmlspecialchars($we_doc->getElement($name . "cssClasses")), 1024, '', 'text', 396, 0) . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(90, 1) . '</td>
-		<td>' . we_html_tools::getPixel(395, 1) . '</td>
+		<td class="defaultfont" valign="top" align="right" style="width:90px;">classes&nbsp;</td><td colspan="5">' . we_html_tools::htmlTextInput('cssClasses', 24, oldHtmlspecialchars($we_doc->getElement($name . "cssClasses")), 1024, '', 'text', 396, 0) . '</td>
 	</tr>
 </table>';
 

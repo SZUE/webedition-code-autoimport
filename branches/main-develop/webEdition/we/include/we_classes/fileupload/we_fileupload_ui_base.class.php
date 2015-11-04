@@ -81,17 +81,7 @@ class we_fileupload_ui_base extends we_fileupload{
 	protected $location = '';
 	protected $layout = 'horizontal';
 	public $moreFieldsToAppend = array();
-
-
-	protected $isUploadComplete = false;
 	protected $fileNameTemp = "";
-	protected $fileNameTempParts = array(
-		'path' => TEMP_PATH,
-		'prefix' => '',
-		'postfix' => '',
-		'missingDocRoot' => false,
-		'useFilenameFromUpload' => false
-	);
 
 	public function __construct($name){
 		parent::__construct($name);
@@ -165,8 +155,13 @@ class we_fileupload_ui_base extends we_fileupload{
 	}
 
 	public static function getExternalDropZone($name = 'we_File', $content = '', $style = '', $contentType = '', $callback = array()){
+		if(!self::isDragAndDrop()){
+			return $content;
+		}
+
 		$callback = array_merge(array('external' => '', 'tree' => ''), $callback);
 
+		// move to js file
 		$js = we_html_element::jsElement('
 handleDragOver = function(e){
 	if(e.preventDefault){
@@ -221,8 +216,7 @@ doDragFromTree = function(text){
 		return we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') . $js .
 				we_html_element::htmlDiv(array('id' => 'div_' . $name . '_fileDrag', 'class' => 'we_file_drag', 'ondrop'=> 'handleDrop(event);', 'ondragover' => 'handleDragOver(event);', 'ondragleave' => 'handleDragLeave(event);', 'style' => 'margin-top:0.5em;display:' . (self::isDragAndDrop() ? 'block;' : 'none;') . $style), $content);
 	}
-	
-	
+
 	public function getButtonWrapped($type, $disabled = false, $width = 170){
 		switch($type){
 			case 'browse':
@@ -295,7 +289,6 @@ doDragFromTree = function(text){
 			'weFileNameTemp' => '',
 			'weFileName' => '',
 			'weFileCt' => '',
-			//'weIsUploadComplete' => 0,
 		));
 	}
 

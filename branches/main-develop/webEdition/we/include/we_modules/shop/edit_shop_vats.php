@@ -182,9 +182,7 @@ echo we_html_element::jsElement(
 	(isset($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) . ($saveSuccess && $onsaveClose ? 'window.close()' : '') : '')) . we_html_element::jsScript(JS_DIR . 'we_modules/shop/edit_shop_vats.js') . "
 	</head>
 <body class=\"weDialogBody\" onload='window.focus();addListeners();'>" .
- we_html_multiIconBox::getHTML('weShopVates', $parts, 30, we_html_button::position_yes_no_cancel(
-		'', '', we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')
-	), -1, '', '', false, g_l('modules_shop', '[vat][vat_edit_form_headline_box]'), "", ''
+ we_html_multiIconBox::getHTML('weShopVates', $parts, 30, we_html_button::formatButtons(we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')), -1, '', '', false, g_l('modules_shop', '[vat][vat_edit_form_headline_box]'), "", ''
 );
 ?>
 </body></html>

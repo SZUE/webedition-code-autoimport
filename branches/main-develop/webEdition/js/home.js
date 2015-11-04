@@ -22,6 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+var _propsDlg = [];
+
 var Base64 = {
 	// private property
 	_keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
@@ -105,12 +107,10 @@ var Base64 = {
 
 			if (c < 128) {
 				utftext += String.fromCharCode(c);
-			}
-			else if ((c > 127) && (c < 2048)) {
+			} else if ((c > 127) && (c < 2048)) {
 				utftext += String.fromCharCode((c >> 6) | 192);
 				utftext += String.fromCharCode((c & 63) | 128);
-			}
-			else {
+			} else {
 				utftext += String.fromCharCode((c >> 12) | 224);
 				utftext += String.fromCharCode(((c >> 6) & 63) | 128);
 				utftext += String.fromCharCode((c & 63) | 128);
@@ -148,15 +148,6 @@ var Base64 = {
 	}
 
 };
-
-function base64_encode(str) {
-
-	return Base64.encode(str);
-}
-
-function base64_decode(str) {
-	return Base64.decode(str);
-}
 
 function gel(id_) {
 	return document.getElementById ? document.getElementById(id_) : null;
@@ -700,11 +691,11 @@ function executeAjaxRequest(param_1, initCfg, param_3, param_4, titel, widgetId)
 	// determine type of the widget
 	var widgetType = gel(widgetId + '_type').value;
 
-	showLoadingSymbol(arguments[5]);
+	showLoadingSymbol(widgetId);
 
 	var args = '';
 	for (var i = 0; i < arguments.length; i++) {
-		args += '&we_cmd[' + i + ']=' + encodeURI(arguments[i]);
+		args += '&we_cmd[]=' + encodeURI(arguments[i]);
 	}
 
 	var _cmdName = null;
@@ -766,7 +757,7 @@ function rpc() {
 		var _tmpField = document.createElement('input');
 		_tmpForm.appendChild(_tmpField);
 
-		_tmpField.name = "we_cmd[" + i + "]";
+		_tmpField.name = "we_cmd[]";
 		_tmpField.value = unescape(arguments[i]);
 		_tmpField.style.display = "none";
 	}
@@ -785,19 +776,21 @@ function rpcHandleResponse(sType, sObjId, oDoc, sCsvLabel) {
 
 	oInline.style.display = "block";
 
-	if (sType === 'rss' || sType === 'pad') {
-		if (oInline.contentDocument) {
-			docIFrm = oInline.contentDocument;
-			iFrmScr = oInline.contentWindow;
-		} else if (oInline.contentWindow) {
-			docIFrm = oInline.contentWindow.document;
-			iFrmScr = oInline.contentWindow;
-		} else if (oInline.document) {
-			docIFrm = oInline.document;
-			iFrmScr = oInline;
-		} else {
-			return true;
-		}
+	switch (sType) {
+		case 'rss':
+		case 'pad':
+			if (oInline.contentDocument) {
+				docIFrm = oInline.contentDocument;
+				iFrmScr = oInline.contentWindow;
+			} else if (oInline.contentWindow) {
+				docIFrm = oInline.contentWindow.document;
+				iFrmScr = oInline.contentWindow;
+			} else if (oInline.document) {
+				docIFrm = oInline.document;
+				iFrmScr = oInline;
+			} else {
+				return true;
+			}
 	}
 	var oContent = gel(sObjId + '_content');
 	oContent.style.display = 'block';
@@ -813,11 +806,10 @@ function rpcHandleResponse(sType, sObjId, oDoc, sCsvLabel) {
 	initWidget(sObjId);
 }
 
-var _propsDlg = [];
 function propsWidget() {
 	var iHeight = oCfg[arguments[0] + '_props_'].iDlgHeight;
 	var uri = composeUri(arguments);
-	_propsDlg[arguments[1]] = window.open(uri, arguments[1], 'location=0,status=1,scrollbars=0,width=' + oCfg.general_.iDlgWidth + 'px,height=' + iHeight + 'px');
+	_propsDlg[arguments[1]] =new (WE().util.jsWindow)(window, uri, arguments[1], -1, -1, oCfg.general_.iDlgWidth , iHeight, true, true, true);
 }
 
 function closeAllModalWindows() {
@@ -829,7 +821,6 @@ function closeAllModalWindows() {
 
 	}
 }
-
 
 function setMsgCount(num) {
 	if (gel('msg_count')) {
@@ -864,7 +855,7 @@ function setMfdData(data) {
 function getUser() {
 	var url = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
 	for (var i = 0; i < arguments.length; i++) {
-		url += 'we_cmd[' + i + ']=' + encodeURI(arguments[i]);
+		url += 'we_cmd[]=' + encodeURI(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += '&';
 		}
@@ -916,8 +907,7 @@ function getDimension(theString, styleClassElement) {
 		dim.height = span.offsetHeight;
 		dim.width = span.offsetWidth;
 		document.body.removeChild(span);
-	}
-	else if (document.all && document.body.insertAdjacentHTML) {
+	} else if (document.all && document.body.insertAdjacentHTML) {
 		var html = '';
 		html += '<span id="newSpan" ';
 		html += 'style="position: absolute; visibility: hidden;"';
@@ -931,15 +921,13 @@ function getDimension(theString, styleClassElement) {
 		dim.height = document.all.newSpan.offsetHeight;
 		dim.width = document.all.newSpan.offsetWidth;
 		document.all.newSpan.outerHTML = '';
-	}
-	else if (document.layers) {
+	} else if (document.layers) {
 		var lr = new Layer(window.innerWidth);
 		lr.document.open();
 		if (styleClassElement) {
 			lr.document.write('<span class="' + styleClassElement + '">' +
 							theString + '<\/span>');
-		}
-		else {
+		} else {
 			lr.document.write(theString);
 		}
 		lr.document.close();

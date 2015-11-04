@@ -93,11 +93,9 @@ function get_value($settingname){
 			return $_SESSION['prefs']['seem_start_type'];
 
 		case 'locale_locales':
-			we_loadLanguageConfig();
 			return getWeFrontendLanguagesForBackend();
 
 		case 'locale_default':
-			we_loadLanguageConfig();
 			return $GLOBALS['weDefaultFrontendLanguage'];
 
 		case 'proxy_proxy':
@@ -316,7 +314,7 @@ _multiEditorreload = true;";
 			return;
 		case 'locale_default':
 			if(($loc = we_base_request::_(we_base_request::STRING, 'newconf', '', 'locale_locales')) && ($def = we_base_request::_(we_base_request::STRING, 'newconf', '', 'locale_default'))){
-				we_writeLanguageConfig($def, explode(',', $loc));
+				we_base_preferences::we_writeLanguageConfig($def, explode(',', $loc));
 			}
 			return;
 
@@ -739,7 +737,7 @@ function build_dialog($selected_setting = 'ui'){
 						$_seem_start_type = 'object';
 						if(get_value('seem_start_file') != 0){
 							$_object_id = get_value('seem_start_file');
-							$_get_object_paths = getPathsFromTable(OBJECT_FILES_TABLE, null, we_base_constants::FILE_ONLY, $_object_id);
+							$_get_object_paths = getPathsFromTable(OBJECT_FILES_TABLE, $GLOBALS['DB_WE'], we_base_constants::FILE_ONLY, $_object_id);
 
 							if(isset($_get_object_paths[$_object_id])){ //	seeMode start file exists
 								$_object_path = $_get_object_paths[$_object_id];
@@ -758,7 +756,7 @@ function build_dialog($selected_setting = 'ui'){
 						$_seem_start_type = 'document';
 						if(get_value('seem_start_file') != 0){
 							$_document_id = get_value('seem_start_file');
-							$_get_document_paths = getPathsFromTable(FILE_TABLE, null, we_base_constants::FILE_ONLY, $_document_id);
+							$_get_document_paths = getPathsFromTable(FILE_TABLE, $GLOBALS['DB_WE'], we_base_constants::FILE_ONLY, $_document_id);
 
 							if(isset($_get_document_paths[$_document_id])){ //	seeMode start file exists
 								$_document_path = $_get_document_paths[$_document_id];
@@ -863,7 +861,7 @@ function build_dialog($selected_setting = 'ui'){
 				$_sidebar_show = ($_sidebar_disable) ? 'none' : 'block';
 
 				$_sidebar_id = get_value('SIDEBAR_DEFAULT_DOCUMENT');
-				$_sidebar_paths = getPathsFromTable(FILE_TABLE, null, we_base_constants::FILE_ONLY, $_sidebar_id);
+				$_sidebar_paths = getPathsFromTable(FILE_TABLE, $GLOBALS['DB_WE'], we_base_constants::FILE_ONLY, $_sidebar_id);
 				$_sidebar_path = '';
 				if(isset($_sidebar_paths[$_sidebar_id])){
 					$_sidebar_path = $_sidebar_paths[$_sidebar_id];
@@ -2499,38 +2497,39 @@ for(i=1;i<childs.length;++i){
 	$_form = we_html_element::htmlForm(array('onSubmit' => 'return false;', 'name' => 'we_form', 'method' => 'post', 'action' => $_SERVER['SCRIPT_NAME']), we_html_element::htmlHidden('save_settings', 0) . render_dialog());
 
 	$_we_cmd_js = we_html_element::jsElement('function we_cmd(){
-			var args = [];
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
+		}
+	}
 
-for(var i = 0; i < arguments.length; i++){
-				args.push(arguments[i]);
-		 url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
-		 if(i < (arguments.length - 1)){
-		 url += "&";
-		 }}
-switch (arguments[0]){
-case "browse_server":
-new (WE().util.jsWindow)(window, url,"browse_server",-1,-1,840,400,true,false,true);
-break;
-case "we_selector_image":
-case "we_selector_document":
-new (WE().util.jsWindow)(window, url,"we_selector_document",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,false,true,true);
-break;
-case "show_formmail_log":
-url = "' . WE_INCLUDES_DIR . 'we_editors/weFormmailLog.php"
-new (WE().util.jsWindow)(window, url,"we_selector_document",-1,-1,840,400,true,false,true);
-break;
-case "show_formmail_block_log":
-url = "' . WE_INCLUDES_DIR . 'we_editors/weFormmailBlockLog.php"
-new (WE().util.jsWindow)(window, url,"we_selector_document",-1,-1,840,400,true,false,true);
-break;
-case "openColorChooser":
-new (WE().util.jsWindow)(window, url,"we_colorChooser",-1,-1,430,370,true,true,true);
-break;
-
-default:
-			parent.we_cmd.apply(this, args);
-
-}
+	switch (args[0]){
+		case "browse_server":
+			new (WE().util.jsWindow)(this, url,"browse_server",-1,-1,840,400,true,false,true);
+			break;
+		case "we_selector_image":
+		case "we_selector_document":
+			new (WE().util.jsWindow)(this, url,"we_selector_document",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,false,true,true);
+			break;
+		case "show_formmail_log":
+			url = WE().consts.dirs.WE_INCLUDES_DIR+"we_editors/weFormmailLog.php"
+			new (WE().util.jsWindow)(this, url,"we_selector_document",-1,-1,840,400,true,false,true);
+			break;
+		case "show_formmail_block_log":
+			url = WE().consts.dirs.WE_INCLUDES_DIR+"we_editors/weFormmailBlockLog.php"
+			new (WE().util.jsWindow)(this, url,"we_selector_document",-1,-1,840,400,true,false,true);
+			break;
+		case "openColorChooser":
+			new (WE().util.jsWindow)(this, url,"we_colorChooser",-1,-1,430,370,true,true,true);
+			break;
+		default:
+			parent.we_cmd.apply(this, arguments);
+	}
 }
 
 function setColorField(name) {

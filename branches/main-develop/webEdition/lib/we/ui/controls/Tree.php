@@ -146,8 +146,7 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 		$table = $_table;
 		$limit = ($start === 0 && $anzahl === 0) ? '' : (is_numeric($start) && is_numeric($anzahl)) ? 'LIMIT ' . abs($start) . ',' . abs($anzahl) : '';
 
-		$db->query('SELECT * FROM ' . $db->escape($table) . ' WHERE ParentID= ' . intval($parentID) . ' ORDER BY IsFolder DESC,(Text REGEXP "^[0-9]") DESC,abs(Text),Text ' . $limit);
-		$nodes = $db->getAll();
+		$nodes = $db->getAllq('SELECT * FROM ' . $db->escape($table) . ' WHERE ParentID= ' . intval($parentID) . ' ORDER BY IsFolder DESC,(Text REGEXP "^[0-9]") DESC,abs(Text),Text ' . $limit);
 
 		if(!empty($nodes)){
 			$addPublished = (!array_key_exists('Published', $nodes[0]));

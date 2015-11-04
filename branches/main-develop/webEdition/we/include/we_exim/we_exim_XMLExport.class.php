@@ -43,6 +43,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 			strpos($doc->ContentType, "image/") === 0 ||
 			strpos($doc->ContentType, "application/") === 0 ||
 			strpos($doc->ContentType, "video/") === 0)){
+		//FIXME: this should be determined by document, not by type
 			$doc->setElement("data", we_base_file::load($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $doc->Path));
 		}
 
@@ -127,7 +128,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 				$cat_sql = ($categories ? we_category::getCatSQLTail('', FILE_TABLE, true, $this->db, 'Category', $categories) : '');
 				if($dir != 0){
 					$workspace = id_to_path($dir, FILE_TABLE, $this->db);
-					$ws_where = ' AND (' . FILE_TABLE . ".Path LIKE '" . $this->db->escape($workspace) . "/%' OR " . FILE_TABLE . ".Path='" . $this->db->escape($workspace) . "')";
+					$ws_where = ' AND (' . FILE_TABLE . '.Path LIKE "' . $this->db->escape($workspace) . '/%" OR ' . FILE_TABLE . '.Path="' . $this->db->escape($workspace) . '")';
 				} else {
 					$ws_where = '';
 				}
@@ -193,7 +194,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 				if($wsQuery != ''){
 					$wsQuery .=' OR ';
 				}
-				$wsQuery .= " Path LIKE '" . $db->escape($path) . "/%' OR " . we_exim_XMLExIm::getQueryParents($path);
+				$wsQuery .= ' Path LIKE "' . $db->escape($path) . '/%" OR ' . we_exim_XMLExIm::getQueryParents($path);
 				while($path != "/" && $path){
 					$parentpaths[] = $path;
 					$path = dirname($path);
@@ -206,7 +207,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 				if($wsQuery != ''){
 					$wsQuery .=' OR ';
 				}
-				$wsQuery .= " Path LIKE '" . $db->escape($path) . "/%' OR Path='" . $db->escape($path) . "'";
+				$wsQuery .= ' Path LIKE "' . $db->escape($path) . '/%" OR Path="' . $db->escape($path) . '"';
 			}
 		}
 

@@ -188,9 +188,6 @@ class we_voting_voting extends weModelBase{
 			$this->Owners[] = $_SESSION['user']['ID'];
 		}
 
-		/* $_old_QASet = f('SELECT QASet FROM ' . VOTING_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($this->Text) . "'");
-		  $_new_QASet = $this->QASet;
-		 */
 		if($with_scores || $this->ID == 0){
 			$this->Scores = we_serialize($this->Scores);
 		} elseif(we_base_request::_(we_base_request::BOOL, 'updateScores')){
@@ -635,7 +632,7 @@ class we_voting_voting extends weModelBase{
 	}
 
 	function deleteGroupLogData(){
-		$this->db->query('SELECT ID FROM ' . VOTING_TABLE . " WHERE `Path` LIKE '" . $this->db->escape($this->Path) . "%'");
+		$this->db->query('SELECT ID FROM ' . VOTING_TABLE . ' WHERE Path LIKE "' . $this->db->escape($this->Path) . '%"');
 		while($this->db->next_record()){
 			$child = new we_voting_voting($this->db->f('ID'));
 			$child->deleteLogDataDB();
@@ -661,9 +658,8 @@ class we_voting_voting extends weModelBase{
 	 * @since 5.1.1.2 - 02.05.2008
 	 */
 	function loadDB($id = '0'){
-
 		$logQuery = ($this->IsFolder ?
-						'SELECT A.*, B.* FROM `' . VOTING_TABLE . '` A JOIN `' . VOTING_LOG_TABLE . "` B ON A.ID=B.voting WHERE A.Path LIKE '" . $this->db->escape($this->Path) . "%' AND A.IsFolder=0 ORDER BY B.time" :
+						'SELECT A.*, B.* FROM `' . VOTING_TABLE . '` A JOIN `' . VOTING_LOG_TABLE . '` B ON A.ID=B.voting WHERE A.Path LIKE "' . $this->db->escape($this->Path) . '%" AND A.IsFolder=0 ORDER BY B.time' :
 						'SELECT * FROM `' . VOTING_LOG_TABLE . '` WHERE `voting`=' . intval($id) . ' ORDER BY time'
 				);
 

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -27,7 +26,6 @@
  * simplified representation of the navigation item
  */
 class we_navigation_item{
-
 	var $id;
 	var $icon;
 	var $docid;
@@ -281,10 +279,10 @@ class we_navigation_item{
 		// name
 		if($fieldname){
 			$val = (!empty($this->$fieldname) ?
-							$this->$fieldname :
-							(!empty($this->attributes[$fieldname]) ?
-									$this->attributes[$fieldname] :
-									''));
+					$this->$fieldname :
+					(!empty($this->attributes[$fieldname]) ?
+						$this->attributes[$fieldname] :
+						''));
 			switch($fieldname){
 				case 'title':
 					return oldHtmlspecialchars($val);
@@ -360,12 +358,12 @@ class we_navigation_item{
 						foreach($useFields as $field){
 							if(!empty($this->$field)){
 								$attribs[$field] = ($field === 'title' ?
-												oldHtmlspecialchars($this->$field) :
-												$this->$field);
+										oldHtmlspecialchars($this->$field) :
+										$this->$field);
 							} elseif(!empty($this->attributes[$field])){
 								$attribs[$field] = ($field === 'link_attribute' ? // Bug #3741
-												$this->attributes[$field] :
-												oldHtmlspecialchars($this->attributes[$field]));
+										$this->attributes[$field] :
+										oldHtmlspecialchars($this->attributes[$field]));
 							}
 						}
 
@@ -436,21 +434,19 @@ if (window.screen) {
 				$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'top=' . $this->attributes['popup_yposition'] . '\';';
 			}
 		}
-		if(!empty($this->attributes['popup_width'])){
-			$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'width=' . $this->attributes['popup_width'] . '\';';
-		}
 
-		if(!empty($this->attributes['popup_height'])){
-			$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'height=' . $this->attributes['popup_height'] . '\';';
-		}
-
-		$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . ((!empty($this->attributes['popup_status'])) ? 'yes' : 'no') . '\';' .
-				'we_winOpts += \',scrollbars=' . (!empty($this->attributes['popup_scrollbars']) ? 'yes' : 'no') . '\';' .
-				'we_winOpts += \',menubar=' . (!empty($this->attributes['popup_menubar']) ? 'yes' : 'no') . '\';' .
-				'we_winOpts += \',resizable=' . (!empty($this->attributes['popup_resizable']) ? 'yes' : 'no') . '\';' .
-				'we_winOpts += \',location=' . (!empty($this->attributes['popup_location']) ? 'yes' : 'no') . '\';' .
-				'we_winOpts += \',toolbar=' . (!empty($this->attributes['popup_toolbar']) ? 'yes' : 'no') . '\';' .
-				"var we_win = window.open('" . $this->href . "','" . "we_ll_" . $this->id . "',we_winOpts);";
+		$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . ((!empty($this->attributes['popup_status'])) ? 'yes' : 'no') .
+			',scrollbars=' . (!empty($this->attributes['popup_scrollbars']) ? 'yes' : 'no') .
+			',menubar=' . (!empty($this->attributes['popup_menubar']) ? 'yes' : 'no') .
+			',resizable=' . (!empty($this->attributes['popup_resizable']) ? 'yes' : 'no') .
+			',location=' . (!empty($this->attributes['popup_location']) ? 'yes' : 'no') .
+			',toolbar=' . (!empty($this->attributes['popup_toolbar']) ? 'yes' : 'no') .
+			(empty($this->attributes['popup_width']) ? '' :
+				',width=' . $this->attributes['popup_width'] ) .
+			(empty($this->attributes['popup_height']) ? '' :
+				',height=' . $this->attributes['popup_height']) .
+			'\';' .
+			"var we_win = window.open('" . $this->href . "','" . "we_ll_" . $this->id . "',we_winOpts);";
 
 		$attributes = removeAttribs($attributes, array(
 			'name', 'target', 'onClick', 'onclick'

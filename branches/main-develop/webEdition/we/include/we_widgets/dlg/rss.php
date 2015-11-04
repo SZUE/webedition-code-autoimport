@@ -29,27 +29,26 @@ we_html_tools::protect();
 function htmlClipElement($smalltext, $text, $content){
 	$unique = md5(uniqid(__FUNCTION__, true)); // #6590, changed from: uniqid(microtime())
 	$js = we_html_element::jsElement('
-		var state_' . $unique . '=0;
-		function clip_' . $unique . '(){
-			var text_' . $unique . '="' . addslashes($text) . '";
-			var textsmall_' . $unique . ' = "' . addslashes($smalltext) . '";
-			var oText=gel("' . $unique . '");
-			var oDiv=gel("div_' . $unique . '");
-			var oBtn=gel("btn_' . $unique . '");
+var state_' . $unique . '=0;
+function clip_' . $unique . '(){
+	var text_' . $unique . '="' . addslashes($text) . '";
+	var textsmall_' . $unique . ' = "' . addslashes($smalltext) . '";
+	var oText=gel("' . $unique . '");
+	var oDiv=gel("div_' . $unique . '");
+	var oBtn=gel("btn_' . $unique . '");
 
-			if(state_' . $unique . '==0){
-				oText.innerHTML=text_' . $unique . ';
-				oDiv.style.display="block";
-				oBtn.innerHTML=\'' . we_html_button::create_button(we_html_button::DIRDOWN, 'javascript:clip_' . $unique . '();') . '\';
-				state_' . $unique . '=1;
-			}else{
-				oText.innerHTML=textsmall_' . $unique . ';
-				oDiv.style.display="none";
-				oBtn.innerHTML=\'' . we_html_button::create_button(we_html_button::DIRRIGHT, 'javascript:clip_' . $unique . '();') . '\';
-				state_' . $unique . '=0;
-			}
-		}
-	');
+	if(state_' . $unique . '==0){
+		oText.innerHTML=text_' . $unique . ';
+		oDiv.style.display="block";
+		oBtn.innerHTML=\'' . we_html_button::create_button(we_html_button::DIRDOWN, 'javascript:clip_' . $unique . '();') . '\';
+		state_' . $unique . '=1;
+	}else{
+		oText.innerHTML=textsmall_' . $unique . ';
+		oDiv.style.display="none";
+		oBtn.innerHTML=\'' . we_html_button::create_button(we_html_button::DIRRIGHT, 'javascript:clip_' . $unique . '();') . '\';
+		state_' . $unique . '=0;
+	}
+}');
 
 	$oClip = new we_html_table(array('class' => 'default'), 1, 3);
 	$oClip->setCol(0, 0, array("width" => 21, 'style' => 'vertical-align:top;text-align:right', "id" => "btn_" . $unique), we_html_button::create_button(we_html_button::DIRRIGHT, 'javascript:clip_' . $unique . '();'));
@@ -68,8 +67,7 @@ function htmlClipElement($smalltext, $text, $content){
 
 $oIptUri = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("ipt_uri", 55, "", 255, 'title=""', "text", 380, 0), g_l('cockpit', '[url]'), "left", "defaultfont");
 
-$oSctRss = new we_html_select(
-	array(
+$oSctRss = new we_html_select(	array(
 	"name" => "sct_rss", "size" => 1, "class" => "defaultfont", "onchange" => "onChangeSctRss(this);"
 	));
 $oSctRss->insertOption(0, "", "");
@@ -90,13 +88,12 @@ $oBtnNewFeed->setCol(0, 3, array('style' => 'width:10px;'));
 $oBtnNewFeed->setCol(0, 4, null, $btnDeleteTopRssFeed);
 
 $oNewFeed = new we_html_table(array("width" => 390, 'class' => 'default'), 3, 1);
-$oNewFeed->setCol(
-	0, 0, null, $oRemTopFeeds . we_html_element::htmlBr() . $oIptNewTitle . we_html_element::htmlBr() . $oIptNewUri);
+$oNewFeed->setCol(	0, 0, null, $oRemTopFeeds . we_html_element::htmlBr() . $oIptNewTitle . we_html_element::htmlBr() . $oIptNewUri);
 $oNewFeed->setCol(1, 0, array('style' => 'width:5px;'));
 $oNewFeed->setCol(2, 0, array("style" => "text-align:right"), $oBtnNewFeed->getHTML());
 
-$rssUri = $oIptUri . we_html_element::htmlBr() . $oTblSctRss . we_html_element::htmlBr() . htmlClipElement(
-		g_l('cockpit', '[show_edit_toprssfeeds]'), g_l('cockpit', '[hide_edit_toprssfeeds]'), $oNewFeed->getHTML());
+$rssUri = $oIptUri . we_html_element::htmlBr() . $oTblSctRss . we_html_element::htmlBr() .
+		htmlClipElement(		g_l('cockpit', '[show_edit_toprssfeeds]'), g_l('cockpit', '[hide_edit_toprssfeeds]'), $oNewFeed->getHTML());
 
 $oRemRssConf = we_html_tools::htmlAlertAttentionBox(g_l('cockpit', '[rss_content_rem]'), we_html_tools::TYPE_INFO, 410);
 $oChbxContTitle = we_html_forms::checkbox(0, 0, "chbx_conf", g_l('cockpit', '[title]'), true, "defaultfont", "", false, "", 0, 0);

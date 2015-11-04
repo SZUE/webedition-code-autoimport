@@ -829,7 +829,7 @@ class we_objectFile extends we_document{
 			$uniq = md5(uniqid(__FUNCTION__, true));
 			$openCloseButton = $myid ?
 				we_html_multiIconBox::_getButton($uniq, "weToggleBox('" . $uniq . "','','')", "down", g_l('global', '[openCloseBox]')) :
-				we_html_tools::getPixel(21, 1);
+				'';
 
 			$objectpreview = '<div id="text_' . $uniq . '"></div><div id="table_' . $uniq . '" style="display:block; padding: 10px 0px 20px 30px;">' .
 				($myid ? $ob->getFieldsHTML(0, true) : "") .
@@ -900,7 +900,7 @@ class we_objectFile extends we_document{
 
 			$inputWidth = (true || $isSEEM ? 346 : 411);
 			$editObjectButtonDis = we_html_button::create_button(we_html_button::VIEW, "", true, 0, 0, "", "", true);
-			$openCloseButtonDis = ($isSEEM ? we_html_tools::getPixel(21, 1) : '');
+			$openCloseButtonDis = '';
 
 			$openCloseButton = $reloadEntry = '';
 
@@ -1078,7 +1078,7 @@ class we_objectFile extends we_document{
 		$intPath = $intID ? id_to_path($intID) : '';
 		$extPath = isset($hrefArr['extPath']) ? $hrefArr['extPath'] : '';
 		$int_elem_Name = 'we_' . $this->Name . '_href[' . $nint . ']';
-		$intPath_elem_Name = 'we_' . $this->Name . '_href[' . $nintPath . ']';
+		$intPath_elem_Name = 'we_' . $this->Name . '_vars[' . $nintPath . ']';
 		$intID_elem_Name = 'we_' . $this->Name . '_href[' . $nintID . ']';
 		$ext_elem_Name = 'we_' . $this->Name . '_href[' . $nextPath . ']';
 		switch(isset($attribs['hreftype']) ? $attribs['hreftype'] : ''){
@@ -1502,7 +1502,7 @@ class we_objectFile extends we_document{
 				$where = array();
 				foreach($paths as $path){
 					if($path != '/'){
-						$where[] = "Path LIKE '" . $this->DB_WE->escape($path) . "/%' OR Path = '" . $this->DB_WE->escape($path) . "'";
+						$where[] = 'Path LIKE "' . $this->DB_WE->escape($path) . '/%" OR Path="' . $this->DB_WE->escape($path) . "'";
 					}
 				}
 				$where = (empty($where) ? '' : ' AND (' . implode(' OR ', $where) . ')');
@@ -1906,7 +1906,27 @@ class we_objectFile extends we_document{
 			$text = preg_replace('|\.+$|', '', str_replace(array(' ', '//'), array('-', '/'), (OBJECTSEOURLS_LOWERCASE ? strtolower($text) : $text)));
 			$text = (URLENCODE_OBJECTSEOURLS ?
 					str_replace('%2F', '/', urlencode($text)) :
-					preg_replace(array('~&szlig;~', '~-*&(.)dash;-*~', '~&(.)uml;~', '~&(.)(grave|acute|circ|tilde|ring|cedil|slash|caron);|&(..)(lig);|&#.*;~', '~&[^;]+;~', '~[^0-9a-zA-Z/._-]~', '~//+~', '~--+~'), array('ss', '-', '${1}e', '${1}${3}', '', '/', '-'), htmlentities($text, ENT_COMPAT, $this->Charset)));
+					preg_replace(array(
+						'~&szlig;~',
+						'~-*&(.)dash;-*~',
+						'~&(.)uml;~',
+						'~&(.)(grave|acute|circ|tilde|ring|cedil|slash|caron);|&(..)(lig);|&#.*;~',
+						'~&[^;]+;~',
+						'~[^0-9a-zA-Z/._-]~',
+						'~--+~',
+						'~//+~',
+						'~/$~',
+						), array(
+						'ss', //ß
+						'-', //~
+						'${1}e', //uml
+						'${1}${3}', //grave
+						'', //;;
+						'', //^a-z
+						'-', //--
+						'/', // //
+						'', // xxx/
+						), htmlentities($text, ENT_COMPAT, $this->Charset)));
 			$this->Url = substr($text, 0, 256);
 		} else {
 			$this->Url = '';
@@ -2627,14 +2647,14 @@ class we_objectFile extends we_document{
 	}
 
 	protected function i_filenameDouble(){
-		return f('SELECT 1 FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ParentID=' . intval($this->ParentID) . " AND Text='" . $this->DB_WE->escape($this->Text) . "' AND ID!=" . intval($this->ID), '', $this->DB_WE);
+		return f('SELECT 1 FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Text="' . $this->DB_WE->escape($this->Text) . '" AND ID!=' . intval($this->ID), '', $this->DB_WE);
 	}
 
 	protected function i_urlDouble(){
 		$this->setUrl();
 		$db = new DB_WE();
 
-		return ($this->Url ? f('SELECT ID FROM ' . $db->escape($this->Table) . " WHERE Url='" . $db->escape($this->Url) . "' AND ID!=" . intval($this->ID), '', $db) : false);
+		return ($this->Url ? f('SELECT ID FROM ' . $db->escape($this->Table) . ' WHERE Url="' . $db->escape($this->Url) . '" AND ID!=' . intval($this->ID), '', $db) : false);
 	}
 
 	function i_checkPathDiffAndCreate(){

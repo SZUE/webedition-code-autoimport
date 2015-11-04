@@ -90,8 +90,13 @@ abstract class we_modules_frame{
 			case 'exit_doc_question':
 				return $this->getHTMLExitQuestion();
 			default:
-				t_e(__FILE__ . ' unknown reference: ' . $what);
-				return '';
+				$ret = (empty($GLOBALS['extraJS']) ?
+						'' :
+						$this->getHTMLDocument('<body></body>', $GLOBALS['extraJS'])
+					);
+
+				t_e(__FILE__ . ' unknown reference: ' . $what, ($ret ? 'generated emergency document' : ''));
+				return $ret;
 		}
 	}
 
@@ -282,8 +287,10 @@ var currentModule="' . $module . '";
 	 */
 
 	public function process(){
+		ob_start();
 		$this->View->processVariables();
 		$this->View->processCommands();
+		$GLOBALS['extraJS'] = ob_get_clean();
 	}
 
 }

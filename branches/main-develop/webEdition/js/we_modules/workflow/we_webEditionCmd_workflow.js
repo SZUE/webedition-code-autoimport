@@ -1,3 +1,5 @@
+/* global WE */
+
 /**
  * webEdition CMS
  *
@@ -20,19 +22,22 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_workflow(args, url) {
+function we_cmd_workflow() {
+	var args = arguments[0],
+		url = arguments[1];
+
 	switch (args[0]) {
 		case "workflow_isIn":
 		case "workflow_pass":
 		case "workflow_decline":
-			new (WE().util.jsWindow)(window, url, "choose_workflow", -1, -1, 420, 320, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, "choose_workflow", -1, -1, 420, 320, true, true, true, true);
 			return true;
 		case "workflow_finish":
 			we_repl(self.load, url, args[0]);
 			return true;
 		case "workflow_edit":
 		case "workflow_edit_ifthere":
-			new (WE().util.jsWindow)(window, url, "edit_module", -1, -1, 970, 760, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, "edit_module", -1, -1, 970, 760, true, true, true, true);
 			return true;
 		case "new_user":
 		case "exit_workflow":

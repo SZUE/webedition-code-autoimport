@@ -87,7 +87,7 @@ function we_textarea(name, value, cols, rows, width, height, autobr, autobrName,
 						'onmouseover="if(self.' + this.name + 'Object){' + this.name + 'Object.ButtonOverUp(this);}"' +
 						'onmouseout="if(self.' + this.name + 'Object){' + this.name + 'Object.ButtonNormal(this);}"' +
 						'onmousedown="if(self.' + this.name + 'Object){' + this.name + 'Object.ButtonOverDown(this);}"' +
-						'onclick="window.open(\'/webEdition/we/include/we_modules/spellchecker/weSpellchecker.php?editname=areatmp_' + encodeURI(name) + '\',\'spellchechecker\',\'height=450,width=500,scrollbars=0\');"></div></td>';
+						'onclick="new (WE().util.jsWindow)(window, \'' + WE().consts.dirs.WE_MODULES_DIR + 'spellchecker/weSpellchecker.php?editname=areatmp_' + encodeURI(name) + '\', "spellchechecker", -1, -1, 450, 500, true, true, true);"></div></td>';
 	}
 
 	if (showAutobr) {
@@ -214,7 +214,7 @@ function we_textarea_ButtonDown(bt) {
 function open_wysiwyg_win() {
 	var url = "/webEdition/we_cmd_frontend.php?";
 	for (var i = 0; i < arguments.length; i++) {
-		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
+		url += "we_cmd[]=" + encodeURI(arguments[i]);
 		if (i < (arguments.length - 1))
 			url += "&";
 	}
@@ -239,5 +239,4 @@ function open_wysiwyg_win() {
 	url = url.replace(/we_cmd\[2\]=[^&]+/, "we_cmd[2]=" + wyw);
 	url = url.replace(/we_cmd\[3\]=[^&]+/, "we_cmd[3]=" + (wyh - arguments[10]));
 	new (WE !== undefined ? WE().util.jsWindow : jsWindow)(window, url, "we_wysiwygWin", -1, -1, Math.max(220, wyw + (document.all ? 0 : ((navigator.userAgent.toLowerCase().indexOf('safari') > -1) ? 20 : 4))), Math.max(100, wyh + 60), true, false, true);
-	//doPostCmd(arguments,"we_wysiwygWin");
 }

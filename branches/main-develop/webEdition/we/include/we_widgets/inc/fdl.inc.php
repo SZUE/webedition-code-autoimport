@@ -22,8 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$oTblDiv = we_html_element::htmlDiv(
-				array(
+$oTblDiv = we_html_element::htmlDiv(array(
 			'id' => 'm_' . $iCurrId . '_inline',
 			"style" => "width:100%;height:" . ($aPrefs[$aProps[0]]["height"] - 25) . "px;overflow:auto;"
 				), we_html_element::htmlDiv(array('id' => 'fdl_data'), $failedLoginHTML)

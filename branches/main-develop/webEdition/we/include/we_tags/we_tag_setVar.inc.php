@@ -91,7 +91,7 @@ function we_tag_setVar($attribs){
 			case 'block' :
 				$nameFrom = we_tag_getPostName($nameFrom);
 				if($typeFrom === 'href' && $GLOBALS['we_doc']->issetElement($nameFrom . we_base_link::MAGIC_INT_LINK)){
-					$nameFrom .= we_base_link::MAGIC_INT_LINK_PATH;
+					$nameFrom .= we_base_link::MAGIC_INT_LINK_ID;
 				}
 				$valueFrom = $GLOBALS['WE_MAIN_DOC']->issetElement($nameFrom) ? $GLOBALS['WE_MAIN_DOC']->getField(
 						array(

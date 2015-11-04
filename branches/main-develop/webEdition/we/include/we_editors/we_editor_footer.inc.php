@@ -85,9 +85,9 @@ switch($we_doc->ContentType){
 		break;
 }
 
-$showGlossaryCheck = (isset($_SESSION['prefs']['force_glossary_check']) && $_SESSION['prefs']['force_glossary_check'] == 1 && (
-		$we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType === we_base_ContentTypes::OBJECT_FILE
-		) ? 1 : 0);
+$showGlossaryCheck = (isset($_SESSION['prefs']['force_glossary_check']) &&
+		$_SESSION['prefs']['force_glossary_check'] == 1 &&
+		( $we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType === we_base_ContentTypes::OBJECT_FILE ) ? 1 : 0);
 
 //	added for we:controlElement type="button" name="save" hide="true"
 $_ctrlElem = getControlElement('button', 'save');
@@ -152,7 +152,7 @@ echo we_html_tools::getHtmlTop() . STYLESHEET . we_html_element::jsElement('
 
 
 function we_footerLoaded(){
-if(doc.isTemplate){
+if(doc.isTemplate && !doc.isFolder){
 			setTemplate();
 			}' .
 		$_js_permnew .

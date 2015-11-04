@@ -364,30 +364,35 @@ foreach($jsCmd as $cur){
 ?>
 <script><!--
 	function we_cmd() {
-	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
-					for (var i = 0; i < arguments.length; i++) {
-	url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
-					if (i < (arguments.length - 1))
-					url += "&";
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	if(typeof arguments[0] === 'object' && arguments[0]['we_cmd[0]'] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		scope = this;
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (i=0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i])+(i < (args.length - 1)?"&":"");
+		}
 	}
-
-	/*if (window.screen) {
-	 h = ((screen.height - 100) > screen.availHeight) ? screen.height - 100 : screen.availHeight;
-	 w = screen.availWidth;
-	 }*/
 
 	//	When coming from a we_cmd, always mark the document as opened with we !!!!
 	if (WE().layout.weEditorFrameController.getActiveDocumentReference) {
-	try {
-	var _string = ',edit_document,new_document,open_extern_document,edit_document_with_parameters,new_folder,edit_folder';
-					if (_string.indexOf("," + arguments[0] + ",") === - 1) {
-		WE().layout.weEditorFrameController.getActiveDocumentReference().openedWithWE = true;
-	}
-	} catch (exp) {
+
+		switch(args[0]){
+			case 'edit_document':
+			case 'new_document':
+			case 'open_extern_document':
+			case 'edit_document_with_parameters':
+			case 'new_folder':
+			case 'edit_folder':
+				break;
+			default:
+				WE().layout.weEditorFrameController.getActiveDocumentReference().openedWithWE = true;
+		}
 
 	}
-	}
-	switch (arguments[0]) {
+	switch (args[0]) {
 <?php
 // deal with not activated modules
 $diff = array_diff(array_keys(we_base_moduleInfo::getAllModules()), $GLOBALS['_we_active_integrated_modules']);
@@ -403,13 +408,9 @@ if($diff){
 	case "exit_doc_question":
 					// return !! important for multiEditor
 					return new (WE().util.jsWindow)(window, url, "exit_doc_question", - 1, - 1, 380, 130, true, false, true);
-	case "loadVTab":
-		var op = top.treeData.makeFoldersOpenString();
-		parent.we_cmd("load", arguments[1], 0, op, top.treeData.table);
-		break;
 	case "eplugin_exit_doc" :
 		if (top.plugin !== undefined && top.plugin.document.WePlugin !== undefined) {
-			if (top.plugin.isInEditor(arguments[1])) {
+			if (top.plugin.isInEditor(args[1])) {
 				return confirm(WE().consts.g_l.main.eplugin_exit_doc);
 			}
 		}
@@ -422,24 +423,13 @@ if($diff){
 	default:
 <?php
 foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do a switch/case instead of search
-	echo 'if(we_cmd_' . $mod . '(arguments,url)){
+	echo 'if(we_cmd_' . $mod . '.apply(this,[args, url])){
 	break;
 }';
 }
 ?>
-		if ((nextWindow = WE().layout.weEditorFrameController.getFreeWindow())) {
-			_nextContent = nextWindow.getDocumentReference();
-			we_repl(_nextContent, url, arguments[0]);
-			// activate tab
-			var pos=(arguments[0]==="open_cockpit"?0:undefined);
-			WE().layout.multiTabs.addTab(nextWindow.getFrameId(), ' &hellip; ', ' &hellip; ',pos);
-			// set Window Active and show it
-			WE().layout.weEditorFrameController.setActiveEditorFrame(nextWindow.FrameId);
-			WE().layout.weEditorFrameController.toggleFrames();
-		} else {
-			WE().util.showMessage(WE().consts.g_l.main.no_editor_left, WE().consts.message.WE_MESSAGE_INFO, window);
+		we_showInNewTab(args,url);
 		}
-	}
 
 	}
 //-->
@@ -488,7 +478,7 @@ foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do
 	<div id="cmdDiv">
 		<iframe src="about:blank" name="load"></iframe>
 		<iframe src="about:blank" name="load2"></iframe>
-		<iframe src="about:blank" name="postframe"></iframe>
+		<!-- iframe src="about:blank" name="postframe"></iframe -->
 		<iframe src="about:blank" name="plugin"></iframe>
 	</div>
 	<?php

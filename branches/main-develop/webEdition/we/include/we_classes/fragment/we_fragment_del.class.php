@@ -72,7 +72,7 @@ class we_fragment_del extends we_fragment_base{
 		unset($_SESSION['weS']['we_go_seem_start']);
 	}
 
-	function printHeader(){
+	static function printHeader(){
 		we_html_tools::protect();
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', ' ');
 	}

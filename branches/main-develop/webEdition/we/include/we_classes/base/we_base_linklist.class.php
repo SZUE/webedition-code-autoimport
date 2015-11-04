@@ -167,14 +167,15 @@ class we_base_linklist{
 				}
 			}
 			$js.=
-				($jswinAttribs["jswidth"] ? 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'width=' . $jswinAttribs["jswidth"] . '\';' : '') .
-				($jswinAttribs["jsheight"] ? 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'height=' . $jswinAttribs["jsheight"] . '\';' : '') .
-				'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . ($jswinAttribs["jsstatus"] ? 'yes' : 'no') . '\';' .
-				'we_winOpts += (we_winOpts ? \',\' : \'\')+\'scrollbars=' . ($jswinAttribs["jsscrollbars"] ? 'yes' : 'no') . '\';' .
-				'we_winOpts += (we_winOpts ? \',\' : \'\')+\'menubar=' . ($jswinAttribs["jsmenubar"] ? 'yes' : 'no') . '\';' .
-				'we_winOpts += (we_winOpts ? \',\' : \'\')+\'resizable=' . ($jswinAttribs["jsresizable"] ? 'yes' : 'no') . '\';' .
-				'we_winOpts += (we_winOpts ? \',\' : \'\')+\'location=' . ($jswinAttribs["jslocation"] ? 'yes' : 'no') . '\';' .
-				'we_winOpts += (we_winOpts ? \',\' : \'\')+\'toolbar=' . (!empty($jswinAttribs["jstoolbar"]) ? 'yes' : 'no') . '\';';
+				'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . ($jswinAttribs["jsstatus"] ? 'yes' : 'no') .
+				',scrollbars=' . ($jswinAttribs["jsscrollbars"] ? 'yes' : 'no') .
+				',menubar=' . ($jswinAttribs["jsmenubar"] ? 'yes' : 'no') .
+				',resizable=' . ($jswinAttribs["jsresizable"] ? 'yes' : 'no') .
+				',location=' . ($jswinAttribs["jslocation"] ? 'yes' : 'no') .
+				',toolbar=' . (!empty($jswinAttribs["jstoolbar"]) ? 'yes' : 'no') .
+				($jswinAttribs["jswidth"] ? ',width=' . $jswinAttribs["jswidth"] : '') .
+				($jswinAttribs["jsheight"] ? ',height=' . $jswinAttribs["jsheight"] : '') .
+				'\';';
 			$foo = $js . "var we_win = window.open('','" . "we_ll_" . key($this->listArray) . "',we_winOpts);";
 
 			$lattribs = removeAttribs($lattribs, array('name', 'href', 'onClick'));

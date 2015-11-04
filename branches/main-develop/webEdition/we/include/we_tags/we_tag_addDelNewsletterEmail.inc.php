@@ -124,7 +124,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 			$emailExistsInOneOfTheLists = false;
 			switch($type){
 				case 'customer':
-					$hash = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ' . $_customerFieldPrefs['customer_email_field'] . "='" . $db->escape($f['subscribe_mail']) . "'", $db);
+					$hash = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ' . $_customerFieldPrefs['customer_email_field'] . '="' . $db->escape($f['subscribe_mail']) . '"', $db);
 					// #5589 start
 					if($hash){
 						foreach($abos as $cAbo){
@@ -261,7 +261,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 
 				$placeholderReplaceValue = '';
 				if($type === 'customer'){
-					$customerHash = array_merge(getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ' . $_customerFieldPrefs['customer_email_field'] . "='" . $db->escape($f['subscribe_mail']) . "'", $db), we_customer_customer::getEncryptedFields());
+					$customerHash = array_merge(getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ' . $_customerFieldPrefs['customer_email_field'] . '="' . $db->escape($f['subscribe_mail']) . '"', $db), we_customer_customer::getEncryptedFields());
 				}
 				if(is_array($placeholderfields)){
 					foreach($placeholderfields as $phf){
@@ -474,7 +474,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 
 					_weMailNewSuccessfullNewsletterActiviation($adminmailid, $adminemail, $adminsubject, DEFAULT_CHARSET, $f, weTag_getAttribute('includeimages', $attribs, false, we_base_request::BOOL));
 			}
-			$__db->query('DELETE FROM ' . NEWSLETTER_CONFIRM_TABLE . " WHERE LOWER(subscribe_mail) ='" . $__db->escape(strtolower($f["subscribe_mail"])) . "'");
+			$__db->query('DELETE FROM ' . NEWSLETTER_CONFIRM_TABLE . ' WHERE LOWER(subscribe_mail)="' . $__db->escape(strtolower($f["subscribe_mail"])) . '"');
 		}
 	}
 

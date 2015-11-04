@@ -86,7 +86,7 @@ abstract class we_backup_base{
 		'configuration' => array(),
 		'users' => array('tbluser'),
 		'customers' => array('tblwebuser', 'tblwebadmin'),
-		'shop' => array('tblanzeigeprefs', 'tblorders'),
+		'shop' => array('tblorders'),
 		'workflow' => array(
 			'tblworkflowdef', 'tblworkflowstep', 'tblworkflowtask',
 			'tblworkflowdoc', 'tblworkflowdocstep', 'tblworkflowdoctask',
@@ -167,7 +167,6 @@ abstract class we_backup_base{
 
 		if(defined('SHOP_TABLE')){
 			$this->table_map = array_merge($this->table_map, array(
-				'tblanzeigeprefs' => WE_SHOP_PREFS_TABLE,
 				'tblorders' => SHOP_TABLE));
 		}
 
@@ -240,7 +239,7 @@ abstract class we_backup_base{
 				strtolower(USER_TABLE) => g_l('backup', '[import_user_data]'),
 				defined('CUSTOMER_TABLE') ? strtolower(CUSTOMER_TABLE) : 'CUSTOMER_TABLE' => g_l('backup', '[import_customer_data]'),
 				defined('SHOP_TABLE') ? strtolower(SHOP_TABLE) : 'SHOP_TABLE' => g_l('backup', '[import_shop_data]'),
-				defined('WE_SHOP_PREFS_TABLE') ? strtolower(WE_SHOP_PREFS_TABLE) : 'WE_SHOP_PREFS_TABLE' => g_l('backup', '[import_prefs]'),
+//				defined('WE_SHOP_PREFS_TABLE') ? strtolower(WE_SHOP_PREFS_TABLE) : 'WE_SHOP_PREFS_TABLE' => g_l('backup', '[import_prefs]'),
 				strtolower(SETTINGS_TABLE) => g_l('backup', '[import_prefs]'),
 				strtolower(TEMPLATES_TABLE) => g_l('backup', '[import_templates]'),
 				strtolower(TEMPORARY_DOC_TABLE) => g_l('backup', '[import][temporary_data]'),
@@ -255,7 +254,7 @@ abstract class we_backup_base{
 				strtolower(USER_TABLE) => g_l('backup', '[export_user_data]'),
 				defined('CUSTOMER_TABLE') ? strtolower(CUSTOMER_TABLE) : 'CUSTOMER_TABLE' => g_l('backup', '[export_customer_data]'),
 				defined('SHOP_TABLE') ? strtolower(SHOP_TABLE) : 'SHOP_TABLE' => g_l('backup', '[export_shop_data]'),
-				defined('WE_SHOP_PREFS_TABLE') ? strtolower(WE_SHOP_PREFS_TABLE) : 'WE_SHOP_PREFS_TABLE' => g_l('backup', '[export_prefs]'),
+				//defined('WE_SHOP_PREFS_TABLE') ? strtolower(WE_SHOP_PREFS_TABLE) : 'WE_SHOP_PREFS_TABLE' => g_l('backup', '[export_prefs]'),
 				strtolower(SETTINGS_TABLE) => g_l('backup', '[export_prefs]'),
 				strtolower(TEMPLATES_TABLE) => g_l('backup', '[export_templates]'),
 				strtolower(TEMPORARY_DOC_TABLE) => g_l('backup', '[export][temporary_data]'),
@@ -282,8 +281,8 @@ abstract class we_backup_base{
 	 */
 	protected function isPathExist($path){
 		return
-			f('SELECT 1  FROM ' . FILE_TABLE . " WHERE Path='" . $this->backup_db->escape($path) . "'  LIMIT 1", '', $this->backup_db) == '1' ||
-			f('SELECT 1 FROM ' . TEMPLATES_TABLE . " WHERE Path='" . $this->backup_db->escape($path) . "'  LIMIT 1", '', $this->backup_db) == '1';
+			f('SELECT 1  FROM ' . FILE_TABLE . ' WHERE Path="' . $this->backup_db->escape($path) . '" LIMIT 1', '', $this->backup_db) == '1' ||
+			f('SELECT 1 FROM ' . TEMPLATES_TABLE . ' WHERE Path="' . $this->backup_db->escape($path) . '" LIMIT 1', '', $this->backup_db) == '1';
 	}
 
 	/**
@@ -709,7 +708,7 @@ abstract class we_backup_base{
 			}
 		}
 
-		$this->backup_db->query("SHOW TABLES LIKE '" . $this->backup_db->escape($tab) . "'");
+		$this->backup_db->query('SHOW TABLES LIKE "' . $this->backup_db->escape($tab) . '"');
 		if($this->backup_db->next_record()){
 			$this->backup_db->query('SHOW COLUMNS FROM ' . $this->backup_db->escape($tab));
 			while($this->backup_db->next_record()){

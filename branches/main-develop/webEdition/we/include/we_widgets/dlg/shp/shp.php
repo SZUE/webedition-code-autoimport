@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -37,16 +38,14 @@ function init(){
 	parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
 }";
 
-echo we_html_tools::getHtmlTop(g_l('cockpit', '[shop_dashboard][headline]') . '&nbsp;' . $interval, '', '', STYLESHEET . we_html_element::jsElement(
-		$sJsCode), we_html_element::htmlBody(
-		array(
-		"marginwidth" => 15,
-		"marginheight" => 10,
-		"leftmargin" => 15,
-		"topmargin" => 10,
-		"onload" => "if(parent!=self){init();}"
-		), we_html_element::htmlDiv(array(
-			"id" => "shp"
-			), we_html_element::htmlDiv(array('id' => 'shp_data'), $shopDashboard)
+echo we_html_tools::getHtmlTop(g_l('cockpit', '[shop_dashboard][headline]') . '&nbsp;' . $interval, '', '', STYLESHEET . we_html_element::jsElement($sJsCode), we_html_element::htmlBody(array(
+			"marginwidth" => 15,
+			"marginheight" => 10,
+			"leftmargin" => 15,
+			"topmargin" => 10,
+			"onload" => "if(parent!=self){init();}"
+				), we_html_element::htmlDiv(array(
+					"id" => "shp"
+						), we_html_element::htmlDiv(array('id' => 'shp_data'), $shopDashboard)
 )));
 

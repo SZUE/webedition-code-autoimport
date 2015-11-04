@@ -684,6 +684,7 @@ optgroup.lvl2{
 	width:100%;
 	background-color:grey;/*for old browsers*/
 	background: linear-gradient(#B4B3B3, #C6C5C5);
+	border-top: 2px groove white;
 }
 
 .weDialogButtonsBody {
@@ -1029,7 +1030,9 @@ table.default th{
 table.withSpace tr td{
 	padding-bottom: 5px;
 }
-table.withBigSpace tr td{
+table.withBigSpace tr td,
+tr.withBigSpace td,
+td.withBigSpace{
 	padding-bottom: 12px;
 }
 table.noSpace tr td{

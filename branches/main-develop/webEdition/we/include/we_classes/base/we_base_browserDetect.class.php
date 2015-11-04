@@ -109,7 +109,6 @@ class we_base_browserDetect{
 							self::$br = self::EDGE;
 							self::$v = (preg_match('|edge/(.+)|i', $post, $regs) ? trim($regs[1]) : 12);
 						} elseif(preg_match('|AppleWebKit/([0-9.]+)|i', $post, $regs)){
-
 							if(stristr($post, 'chrome')){
 								self::$v = (preg_match('|chrome/([0-9]+\.[0-9]+)|i', $post, $regs) ? $regs[1] : '1');
 								self::$br = self::CHROME;

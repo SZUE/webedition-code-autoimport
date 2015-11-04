@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,11 +22,10 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$oTblDiv = we_html_element::htmlDiv(
-		array(
-		"id" => "m_" . $iCurrId . "_inline",
-		"style" => "width:" . $iWidth . "px;height:" . ($aPrefs[$aProps[0]]["height"] - 25) . "px;overflow:auto;"
-		), $ct);
+$oTblDiv = we_html_element::htmlDiv(array(
+			"id" => "m_" . $iCurrId . "_inline",
+			"style" => "width:" . $iWidth . "px;height:" . ($aPrefs[$aProps[0]]["height"] - 25) . "px;overflow:auto;"
+				), $ct);
 $bTypeDoc = (bool) $aProps[3]{0};
 $bTypeObj = (bool) $aProps[3]{1};
 $sTb = g_l('cockpit', ($bTypeDoc && $bTypeObj ? '[upb_docs_and_objs]' : ($bTypeDoc ? '[upb_docs]' : ($bTypeObj ? '[upb_objs]' : '[upb_docs_and_objs]'))));

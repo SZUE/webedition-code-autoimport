@@ -21,7 +21,10 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_tool_toolfactory(args,url) {
+function we_cmd_tool_toolfactory() {
+	var args = arguments[0],
+		url = arguments[1];
+
 	switch (args[0]) {
 		case "tool_toolfactory_edit":
 			new (WE().util.jsWindow)(window, url, "tool_window", -1, -1, 970, 760, true, true, true, true);

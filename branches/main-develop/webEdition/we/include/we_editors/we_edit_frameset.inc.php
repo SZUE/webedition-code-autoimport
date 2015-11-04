@@ -243,18 +243,16 @@ echo we_html_tools::getHtmlTop('', '', 'frameset') .
 ?>
 <script><!--
 	var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(window.name);
-	_EditorFrame.initEditorFrameData(
-					{
-						"EditorType": "model",
-						"EditorDocumentText": "<?php echo oldHtmlspecialchars($we_doc->Text); ?>",
-						"EditorDocumentPath": "<?php echo $we_doc->Path; ?>",
-						"EditorEditorTable": "<?php echo $we_doc->Table; ?>",
-						"EditorDocumentId": "<?php echo $we_doc->ID; ?>",
-						"EditorTransaction": "<?php echo $we_transaction; ?>",
-						"EditorContentType": "<?php echo $we_doc->ContentType; ?>",
-						"EditorDocumentParameters":<?php echo (isset($parastr) ? '"' . $parastr . '"' : '""'); ?>
-					}
-	);
+	_EditorFrame.initEditorFrameData({
+		"EditorType": "model",
+		"EditorDocumentText": "<?php echo oldHtmlspecialchars($we_doc->Text); ?>",
+		"EditorDocumentPath": "<?php echo $we_doc->Path; ?>",
+		"EditorEditorTable": "<?php echo $we_doc->Table; ?>",
+		"EditorDocumentId": "<?php echo $we_doc->ID; ?>",
+		"EditorTransaction": "<?php echo $we_transaction; ?>",
+		"EditorContentType": "<?php echo $we_doc->ContentType; ?>",
+		"EditorDocumentParameters":<?php echo (isset($parastr) ? '"' . $parastr . '"' : '""'); ?>
+	});
 
 
 	function doUnload() {
@@ -318,14 +316,12 @@ if($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE){
 		<?php
 	} else {
 		?>
-					_EditorFrame.initEditorFrameData(
-									{
-										"EditorType": "none_webedition",
-										"EditorContentType": "none_webedition",
-										"EditorDocumentText": "Unknown",
-										"EditorDocumentPath": "Unknown"
-									}
-					);
+					_EditorFrame.initEditorFrameData({
+						"EditorType": "none_webedition",
+						"EditorContentType": "none_webedition",
+						"EditorDocumentText": "Unknown",
+						"EditorDocumentPath": "Unknown"
+					});
 
 					editHeader.location = "about:blank";
 					editFooter.location = "<?php echo WE_INCLUDES_DIR . 'we_seem/we_SEEM_openExtDoc_footer.php' ?>";
