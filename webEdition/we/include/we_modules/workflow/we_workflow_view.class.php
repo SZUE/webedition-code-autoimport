@@ -328,7 +328,7 @@ class we_workflow_view extends we_modules_view{
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/animation-min.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/json-min.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/autocomplete-min.js') .
-			weSuggest::getYuiFiles() .			'
+			weSuggest::getYuiFiles() . '
 <table style="margin-right:30px;">
 	<tr style="vertical-align:top">
 		<td>' . we_html_tools::htmlDialogBorder3(400, 300, $content, $headline) . '</td>
@@ -599,7 +599,7 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 			case 'save_workflow':
 				if(we_base_request::_(we_base_request::INT, 'wid') !== false){
 					$newone = (!$this->workflowDef->ID);
-					$double = intval(f('SELECT COUNT(1) FROM ' . WORKFLOW_TABLE . " WHERE Text='" . $this->db->escape($this->workflowDef->Text) . "'" . ($newone ? '' : ' AND ID!=' . intval($this->workflowDef->ID)), '', $this->db));
+					$double = intval(f('SELECT COUNT(1) FROM ' . WORKFLOW_TABLE . ' WHERE Text="' . $this->db->escape($this->workflowDef->Text) . '"' . ($newone ? '' : ' AND ID!=' . intval($this->workflowDef->ID)), '', $this->db));
 
 					if(!permissionhandler::hasPerm('EDIT_WORKFLOW') && !permissionhandler::hasPerm('NEW_WORKFLOW')){
 						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
@@ -1119,11 +1119,11 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 
 		$nextprev = '<table class="default"><tr><td>' .
 			($offset ?
-				we_html_button::create_button(we_html_button::BACK, $this->frameset. "&pnt=log&art=$art&type=$type&offset=" . ($offset - $numRows)) :
+				we_html_button::create_button(we_html_button::BACK, $this->frameset . "&pnt=log&art=$art&type=$type&offset=" . ($offset - $numRows)) :
 				we_html_button::create_button(we_html_button::BACK, '', false, 100, 22, '', '', true)
 			) .
-			we_html_tools::getPixel(23, 1) . "</td><td class='defaultfont' style=\"padding: 0 10px 0 10px;\"><b>" . (($anz) ? $offset + 1 : 0) . "-" .
-			(($anz - $offset) < $numRows ? $anz : $offset + $numRows) . ' ' . g_l('global', '[from]') . ' ' . $anz . '</b></td><td>' . we_html_tools::getPixel(23, 1) .
+			'</td><td class="defaultfont" style="padding: 0 10px 0 10px;"><b>' . (($anz) ? $offset + 1 : 0) . '-' .
+			(($anz - $offset) < $numRows ? $anz : $offset + $numRows) . ' ' . g_l('global', '[from]') . ' ' . $anz . '</b></td><td>' .
 			((($offset + $numRows) < $anz) ?
 				we_html_button::create_button(we_html_button::NEXT, $this->frameset . "&pnt=log&art=$art&type=$type&offset=" . ($offset + $numRows)/* . "&order=$order" */) :
 				we_html_button::create_button(we_html_button::NEXT, '', '', 100, 22, '', '', true)

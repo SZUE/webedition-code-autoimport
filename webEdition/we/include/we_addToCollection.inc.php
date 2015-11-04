@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -44,7 +45,7 @@ $cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 
 if($cmd0 === 'do_addToCollection'){
 	if(($targetCollection = we_base_request::_(we_base_request::INT, 'we_target', 0)) === 0){
-		$script .=  we_message_reporting::getShowMessageCall(g_l('alert', '[move_no_dir]'), we_message_reporting::WE_MESSAGE_ERROR);
+		$script .= we_message_reporting::getShowMessageCall(g_l('alert', '[move_no_dir]'), we_message_reporting::WE_MESSAGE_ERROR);
 	} elseif(!($sel = we_base_request::_(we_base_request::INTLISTA, 'sel', array()))){
 		$script .= we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR);
 	} else {
@@ -58,7 +59,7 @@ if($cmd0 === 'do_addToCollection'){
 		}
 
 		if($collection->getRemTable() !== stripTblPrefix(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2))){
-			$script .= we_message_reporting::getShowMessageCall('wrong table for this collection', we_message_reporting::WE_MESSAGE_ERROR);
+			$script .= we_message_reporting::getShowMessageCall(g_l('weClass','[collection][wrongTable]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$collBefore = $collection->getCollection();
 			if(($items = $collection->getValidItemsFromIDs($sel, false, $recursive = we_base_request::_(we_base_request::BOOL, 'InsertRecursive', false)))){
@@ -68,14 +69,13 @@ if($cmd0 === 'do_addToCollection'){
 				} else {
 					$collection->save();
 				}
-				$script .= we_message_reporting::getShowMessageCall('Inserted: ' . implode(',', $result[0]) . '\nAs duplicates rejected: ' . implode(',', $result[1]) . '. \n\nOthers items may have been rejecected because of inapropriate class/mime type.', we_message_reporting::WE_MESSAGE_ERROR);
+				$script .= we_message_reporting::getShowMessageCall(sprintf(g_l('weClass','[collection][insertedAndDuplicates]'),implode(',', $result[0]),implode(',', $result[1])), we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
-				$script .= we_message_reporting::getShowMessageCall("none of the items selected does matche the collection's content types", we_message_reporting::WE_MESSAGE_INFO);
+				$script .= we_message_reporting::getShowMessageCall(g_l('weClass','[collection][contentDoesntMatch]'), we_message_reporting::WE_MESSAGE_INFO);
 			}
 		}
 	}
-	$script =
-		we_html_element::jsElement($script);
+	$script = we_html_element::jsElement($script);
 }
 
 echo we_html_tools::getHtmlTop() .
@@ -129,7 +129,7 @@ $yuiSuggest->setAdditionalButton(we_html_button::create_button("fa:btn_add_colle
 $weAcSelector = $yuiSuggest->getHTML();
 $_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:weAddToCollection.press_ok_add();"), "", we_html_button::create_button("quit_addToCollection", "javascript:weAddToCollection.we_cmd('exit_addToCollection','','" . $table . "')"), 10, "left");
 
-$recursive = we_html_forms::checkboxWithHidden(1, 'InsertRecursive', 'Verzeichnisse rekursiv einfügen');
+$recursive = we_html_forms::checkboxWithHidden(1, 'InsertRecursive', g_l('weClass','[collection][insertRecursive]'));
 
 echo
 '</head><body class="weTreeHeaderAddToCollection">
@@ -139,10 +139,9 @@ echo
 	'we_targetInsertPos' => $insertPos,
 	'sel' => '')) . '
 <div style="width:440px;">
-<h1 class="big" style="padding:0px;margin:0px;">' . oldHtmlspecialchars(
-	'Elemente einer Sammlung zufügen') . '</h1>
-<p class="small"><span class="middlefont" style="padding-right:5px;padding-bottom:10px;">Markieren Sie die Einträge, die Sie zufügen wollen, wählen Sie eine Sammlung und bestätigen Sie mit "OK". Einträgen die nicht den Einstellungen der Ziel-Sammlung entsprechen, werden automatisch abgewiesen.</span>
-			<p style="margin:0px 0px 10px 0px;padding:0px;">' . $weAcSelector . $recursive .'</p></p>
+<h1 class="big" style="padding:0px;margin:0px;">' . g_l('weClass', '[collection][add]') . '</h1>
+<p class="small"><span class="middlefont" style="padding-right:5px;padding-bottom:10px;">'.g_l('weClass', '[collection][add_help]').'</span>
+<p style="margin:0px 0px 10px 0px;padding:0px;">' . $weAcSelector . $recursive . '</p></p>
 <div>' . $_buttons . '</div></div>
  </form>' .
  $yuiSuggest->getYuiJs() .

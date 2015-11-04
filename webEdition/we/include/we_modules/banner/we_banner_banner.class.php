@@ -283,7 +283,7 @@ class we_banner_banner extends we_banner_base{
 		$weight = rand(0, intval($maxweight));
 		$anz = 0;
 		while($anz == 0 && $weight <= $maxweight){
-			$db->query('SELECT ID, bannerID FROM ' . BANNER_TABLE . " WHERE $where AND weight<=$weight AND (TagName='' OR TagName='" . $db->escape($bannername) . "')");
+			$db->query('SELECT ID, bannerID FROM ' . BANNER_TABLE . ' WHERE '.$where.' AND weight<='.$weight.' AND (TagName="" OR TagName="' . $db->escape($bannername) . '")');
 			$anz = $db->num_rows();
 			if($anz == 0){
 				++$weight;

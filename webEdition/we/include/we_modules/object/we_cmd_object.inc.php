@@ -62,19 +62,14 @@ switch($cmd){
 	case 'object_ws_from_class':
 //	In this file we cant work with WE_OBJECT_MODULE_PATH, because a prefix is already set in : we_cmd.php
 		return 'we_editors/we_editor.inc.php';
-
 	case 'object_toggleExtraWorkspace':
 		return 'we_modules/object/we_object_cmds.inc.php';
-
 	case 'object_obj_search':
 		return 'we_modules/object/search_submit.php';
-
 	case 'object_preview_objectFile':
 		return 'we_modules/object/we_object_showDocument.inc.php';
-
 	case 'object_create_tmpfromClass':
 		return 'we_modules/object/we_object_createTemplate.inc.php';
-
 	case 'object_editObjectTextArea':
 		return 'we_editors/we_editta.inc.php';
 }

@@ -39,7 +39,7 @@ class we_shop_shippingControl{
 	}
 
 	public static function getShippingControl(){
-		$data = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="weShippingControl"');
+		$data = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="weShippingControl"');
 
 		if($data){
 			$shippingControl = we_unserialize(strtr($data, array(
@@ -47,7 +47,7 @@ class we_shop_shippingControl{
 				'O:10:"weShipping"' => 'O:' . strlen('we_shop_shipping') . ':"we_shop_shipping"',
 				'O:17:"weshippingcontrol"' => 'O:' . strlen(__CLASS__) . ':"' . __CLASS__ . '"',
 				'O:10:"weshipping"' => 'O:' . strlen('we_shop_shipping') . ':"we_shop_shipping"'
-				)));
+			)));
 			if(is_object($shippingControl)){
 				$shippingControl->vatRate = we_shop_vats::getVatRateForSite($shippingControl->vatId);
 				return $shippingControl;
@@ -82,10 +82,11 @@ class we_shop_shippingControl{
 	function save(){
 		$DB_WE = $GLOBALS['DB_WE'];
 
-		return $DB_WE->query('REPLACE INTO ' . WE_SHOP_PREFS_TABLE . ' SET ' .
+		return $DB_WE->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET ' .
 				we_database_base::arraySetter(array(
-					'strDateiname' => 'weShippingControl',
-					'strFelder' => we_serialize($this)
+					'tool' => 'shop',
+					'pref_name' => 'weShippingControl',
+					'pref_value' => we_serialize($this)
 		)));
 	}
 

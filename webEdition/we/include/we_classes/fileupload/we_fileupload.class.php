@@ -96,7 +96,7 @@ abstract class we_fileupload{
 			}
 		}
 
-		$mime = array_filter(array_map(function($e){return(strtolower(trim($e, ' ,')));}, $mime), function($var){return !$var ? false : true;});
+//		$mime = array_filter(array_map(function($e){return(strtolower(trim($e, ' ,')));}, $mime), function($var){return !$var ? false : true;});
 		$ext = array_map(function($e){return(strtolower(trim($e, ' ,')));}, $ext);
 
 		$tmp = array(

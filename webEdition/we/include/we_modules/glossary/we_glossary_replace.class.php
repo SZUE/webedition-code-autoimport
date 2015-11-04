@@ -51,7 +51,6 @@ abstract class we_glossary_replace{
 	 */
 	public static function doReplace($src, $language){
 		if(!$language){
-			we_loadLanguageConfig();
 			$language = $GLOBALS['weDefaultFrontendLanguage'];
 		}
 		$matches = array();

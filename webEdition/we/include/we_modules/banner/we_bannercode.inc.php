@@ -114,7 +114,8 @@ document.write ("<" + "script src=\"' . $getscript . '?r="+r+"&amp;bannername=' 
 	}
 </style>
 </head>
-<body class="weDialogBody"<?php if($ok){ ?> onload="self.focus();document.we_form.code.focus();
+<body class="weDialogBody"<?php if($ok){ ?> onload="self.focus();
+			document.we_form.code.focus();
 			document.we_form.code.select();"<?php } ?>>
 	<form onsubmit="return checkForm(this);" name="we_form" action="<?php echo $_SERVER["SCRIPT_NAME"]; ?>" method="get"><input type="hidden" name="ok" value="1" /><input type="hidden" name="we_cmd[0]" value="<?php echo we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0); ?>" />
 		<?php
@@ -149,7 +150,7 @@ document.write ("<" + "script src=\"' . $getscript . '?r="+r+"&amp;bannername=' 
 		$back_button = we_html_button::create_button(we_html_button::BACK, "javascript:history.back();");
 		$close_button = we_html_button::create_button(we_html_button::CLOSE, "javascript:top.close();");
 
-		$buttons = $ok ? we_html_button::position_yes_no_cancel($close_button, null, $back_button) : we_html_button::position_yes_no_cancel($ok_button, null, $cancel_button);
+		$buttons = $ok ? we_html_button::formatButtons($close_button . $back_button) : we_html_button::position_yes_no_cancel($ok_button, null, $cancel_button);
 
 		echo we_html_tools::htmlDialogLayout($content, g_l('modules_banner', $ok ? '[bannercode_copy]' : '[bannercode_ext]'), $buttons);
 		?>

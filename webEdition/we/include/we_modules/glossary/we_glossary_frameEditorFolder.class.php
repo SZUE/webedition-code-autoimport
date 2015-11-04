@@ -59,7 +59,7 @@ class we_glossary_frameEditorFolder extends we_glossary_frameEditor{
 		$parts = array();
 
 		foreach($_list as $key){
-			$items = f('SELECT count(1) FROM ' . GLOSSARY_TABLE . " WHERE Language='" . $language . "' AND Type='" . $key . "'");
+			$items = f('SELECT count(1) FROM ' . GLOSSARY_TABLE . ' WHERE Language="' . $language . '" AND Type="' . $key . '"');
 //FIXME createbuttontable?
 			$button = we_html_button::create_button("new_glossary_" . $key, "javascript:top.opener.top.we_cmd('new_glossary_" . $key . "', '" . $cmdid . "');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -60,8 +61,8 @@ if(permissionhandler::hasPerm("administrator")){
 			$content[$ind] = array();
 			$content[$ind][0]['dat'] = $GLOBALS['DB_WE']->f("ip");
 			$content[$ind][1]['dat'] = ($GLOBALS['DB_WE']->f("blockedUntil") == -1 ?
-					oldHtmlspecialchars(g_l('prefs', '[forever]')) :
-					date(g_l('weEditorInfo', '[date_format]'), $GLOBALS['DB_WE']->f("blockedUntil")));
+							oldHtmlspecialchars(g_l('prefs', '[forever]')) :
+							date(g_l('weEditorInfo', '[date_format]'), $GLOBALS['DB_WE']->f("blockedUntil")));
 
 			$content[$ind][2]['dat'] = '<a href="javascript:clearEntry(' . $GLOBALS['DB_WE']->f("id") . ',\'' . $GLOBALS['DB_WE']->f("ip") . '\')">' . g_l('prefs', '[unblock]') . '</a>';
 
@@ -71,16 +72,16 @@ if(permissionhandler::hasPerm("administrator")){
 		$next = $start + $count;
 
 		$nextprev = '<table style="margin-top: 10px;" class="default"><tr><td style="padding-right:20px;">' .
-			($start > 0 ?
-				we_html_button::create_button(we_html_button::BACK, $_SERVER['SCRIPT_NAME'] . "?start=" . ($start - $count)) : //bt_back
-				we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true)) .
-			"</td><td style='text-align:center' class='defaultfont' width='120'><b>" . ($start + 1) . "&nbsp;-&nbsp;" .
-			min($num_all, $start + $count) .
-			"&nbsp;" . g_l('global', '[from]') . " " . ($num_all) . '</b></td><td style="padding-right:20px;">' .
-			($next < $num_all ?
-				we_html_button::create_button(we_html_button::NEXT, $_SERVER['SCRIPT_NAME'] . "?start=" . $next) : //bt_next
-				we_html_button::create_button(we_html_button::NEXT, "", "", 100, 22, "", "", true)) .
-			'</td></tr></table>';
+				($start > 0 ?
+						we_html_button::create_button(we_html_button::BACK, $_SERVER['SCRIPT_NAME'] . "?start=" . ($start - $count)) : //bt_back
+						we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true)) .
+				"</td><td style='text-align:center' class='defaultfont' width='120'><b>" . ($start + 1) . "&nbsp;-&nbsp;" .
+				min($num_all, $start + $count) .
+				"&nbsp;" . g_l('global', '[from]') . " " . ($num_all) . '</b></td><td style="padding-right:20px;">' .
+				($next < $num_all ?
+						we_html_button::create_button(we_html_button::NEXT, $_SERVER['SCRIPT_NAME'] . "?start=" . $next) : //bt_next
+						we_html_button::create_button(we_html_button::NEXT, "", "", 100, 22, "", "", true)) .
+				'</td></tr></table>';
 
 		$parts = array(
 			array(
@@ -101,8 +102,8 @@ if(permissionhandler::hasPerm("administrator")){
 		);
 	}
 
-	$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_multiIconBox::getHTML("show_log_data", $parts, 30, we_html_button::position_yes_no_cancel($refresh, $close, $deleteLogBut), -1, '', '', false, g_l('prefs', '[formmail_log]'), "", 558) .
-			we_html_element::jsElement("self.focus();")
+	$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_multiIconBox::getHTML("show_log_data", $parts, 30, we_html_button::formatButtons($refresh . $close . $deleteLogBut), -1, '', '', false, g_l('prefs', '[formmail_log]'), "", 558) .
+					we_html_element::jsElement("self.focus();")
 	);
 
 

@@ -33,8 +33,7 @@ class we_folder extends we_root{
 	var $Language = '';
 	var $GreenOnly = 0;
 	var $searchclassFolder;
-	var $searchclassFolder_class;
-	//folders are always published
+		//folders are always published
 	public $Published = PHP_INT_MAX;
 	protected $urlMap;
 
@@ -47,7 +46,7 @@ class we_folder extends we_root{
 
 	function __construct(){
 		parent::__construct();
-		array_push($this->persistent_slots, 'SearchStart', 'SearchField', 'Search', 'Order', 'GreenOnly', 'IsClassFolder', 'WorkspacePath', 'WorkspaceID', 'Language', 'TriggerID', 'searchclassFolder', 'searchclassFolder_class', 'urlMap');
+		array_push($this->persistent_slots, 'SearchStart', 'SearchField', 'Search', 'Order', 'GreenOnly', 'IsClassFolder', 'WorkspacePath', 'WorkspaceID', 'Language', 'TriggerID', 'searchclassFolder', 'urlMap');
 		if(isWE()){
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO);
 		}
@@ -87,20 +86,14 @@ class we_folder extends we_root{
 			}
 			if(we_base_request::_(we_base_request::BOOL, 'we_edit_weDocumentCustomerFilter')){
 				$this->documentCustomerFilter = we_customer_documentFilter::getCustomerFilterFromRequest($this->ID, $this->ContentType, $this->Table);
-			} else if(isset($sessDat[3])){ // init webUser from session
-				$this->documentCustomerFilter = we_unserialize($sessDat[3]);
+			} else if(isset($sessDat[3])){ // init webUser from session - only for old temporary documents
+				$this->documentCustomerFilter = $sessDat[3];
 			}
 		}
 		$this->adjustEditPageNr();
 
-		if(isset($this->searchclassFolder_class) && !is_object($this->searchclassFolder_class)){
-			$this->searchclassFolder_class = we_unserialize($this->searchclassFolder_class);
-		}
-		if(is_object($this->searchclassFolder_class)){
-			$this->searchclassFolder = $this->searchclassFolder_class;
-		} else {
+		if(!is_object($this->searchclassFolder)){
 			$this->searchclassFolder = new we_search_search();
-			$this->searchclassFolder_class = we_serialize($this->searchclassFolder);
 		}
 		$this->searchclassFolder->initSearchData();
 	}
@@ -128,7 +121,6 @@ class we_folder extends we_root{
 		$i = 0;
 		while(!$this->Language){
 			if($ParentID == 0 || $i > 20){
-				we_loadLanguageConfig();
 				$this->Language = $GLOBALS['weDefaultFrontendLanguage'];
 				if(!$this->Language){
 					$this->Language = 'de_DE';
@@ -289,8 +281,7 @@ class we_folder extends we_root{
 		}
 
 		// Adapt tblLangLink-entries of folders to the new language
-		$DB_WE->query('SELECT ID FROM ' . $DB_WE->escape($this->Table) . ' WHERE Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND ContentType="folder"');
-		$ids = implode(',', $DB_WE->getAll(true));
+		$ids = implode(',', $DB_WE->getAllq('SELECT ID FROM ' . $DB_WE->escape($this->Table) . ' WHERE Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND ContentType="folder"', true));
 		if($ids){
 			$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DID IN(' . $ids . ') AND DocumentTable="' . $DB_WE->escape($documentTable) . '" AND IsFolder=1 AND Locale="' . $DB_WE->escape($language) . '"');
 			$DB_WE->query('UPDATE ' . LANGLINK_TABLE . ' SET DLocale="' . $DB_WE->escape($language) . '" WHERE DID IN(' . $ids . ') AND DocumentTable="' . $DB_WE->escape($documentTable) . '" AND IsFolder=1');
@@ -414,7 +405,7 @@ class we_folder extends we_root{
 	function formChangeOwners(){
 		$_disabledNote = ($this->ID ? '' : ' ' . g_l('weClass', '[availableAfterSave]'));
 
-		return '<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('modules_users', '[grant_owners_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, 0, false) . '</td><td>' .
+		return '<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('modules_users', '[grant_owners_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, 390, false) . '</td><td>' .
 				we_html_button::create_button(we_html_button::OK, 'javascript:if(_EditorFrame.getEditorIsHot()) { ' . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('users_changeR','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, '', '', !empty($_disabledNote)) . '</td></tr>
 					</table>';
 	}
@@ -422,7 +413,7 @@ class we_folder extends we_root{
 	function formChangeLanguage(){
 		$_disabledNote = ($this->ID ? '' : ' ' . g_l('weClass', '[availableAfterSave]'));
 
-		return '<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[grant_language_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, 0, false) . '</td><td>' .
+		return '<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[grant_language_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, 390, false) . '</td><td>' .
 				we_html_button::create_button(we_html_button::OK, "javascript:if(_EditorFrame.getEditorIsHot()) { " . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('changeLanguageRecursive','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, '', '', !empty($_disabledNote)) . '</td></tr>
 					</table>';
 	}
@@ -435,7 +426,10 @@ class we_folder extends we_root{
 		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
 		//FIXME: give JS an array!
 		$wecmdenc3 = we_base_request::encCmd("var parents=[" . implode(',', $parents) . "];if(parents.indexOf(currentID) > -1){
-			WE().util.showMessage(WE().consts.g_l.main.copy_folder_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);}else{opener.top.we_cmd('copyFolder', currentID," . $this->ID . ",1,'" . $this->Table . "');}");
+			WE().util.showMessage(WE().consts.g_l.main.copy_folder_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+}else{
+	opener.top.we_cmd('copyFolder', currentID," . $this->ID . ",1,'" . $this->Table . "');
+}");
 		$but = we_html_button::create_button(we_html_button::SELECT, ($this->ID ?
 								"javascript:we_cmd('we_selector_directory', " . $cmd1 . ", '" . $this->Table . "', '" . we_base_request::encCmd($cmd1) . "', '', '" . $wecmdenc3 . "')" :
 								"javascript:" . we_message_reporting::getShowMessageCall(g_l('alert', '[copy_folders_no_id]'), we_message_reporting::WE_MESSAGE_ERROR))
@@ -661,7 +655,7 @@ class we_folder extends we_root{
 		}
 
 		if($this->Table == FILE_TABLE && permissionhandler::hasPerm('CAN_COPY_FOLDERS') ||
-				(defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE && permissionhandler::hasPerm("CAN_COPY_OBJECTS"))){
+				(defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE && permissionhandler::hasPerm('CAN_COPY_OBJECTS'))){
 			$parts[] = array('icon' => 'copy.gif', 'headline' => g_l('weClass', '[copyFolder]'), "html" => $this->formCopyDocument(), 'space' => 140);
 		}
 

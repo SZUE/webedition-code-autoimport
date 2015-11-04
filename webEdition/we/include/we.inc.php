@@ -105,8 +105,7 @@ we_base_request::registerTables(array(
 require_once(WE_INCLUDES_PATH . 'we_global.inc.php');
 update_mem_limit(32);
 
-we_loadLanguageConfig();
-
+include_once (WE_INCLUDES_PATH . 'conf/we_conf_language.inc.php');
 
 //	Insert all config files for all modules.
 include_once(WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php');

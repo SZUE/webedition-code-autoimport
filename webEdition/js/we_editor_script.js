@@ -220,78 +220,79 @@ function goTemplate(tid) {
 }
 
 function we_cmd() {
-	var args = [];
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-	for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-		url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
-		if (i < (arguments.length - 1)) {
-			url += "&";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
 		}
 	}
 
 	var contentEditor = WE().layout.weEditorFrameController.getVisibleEditorFrame();
 
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "edit_link":
 		case "edit_link_at_class":
 		case "edit_link_at_object":
-			new (WE().util.jsWindow)(window, "", "we_linkEdit", -1, -1, 615, 600, true, true, true);
+			new (WE().util.jsWindow)(this, "", "we_linkEdit", -1, -1, 615, 600, true, true, true);
 			if (contentEditor.we_submitForm)
 				contentEditor.we_submitForm("we_linkEdit", url);
 			break;
 		case "edit_linklist":
-			new (WE().util.jsWindow)(window, "", "we_linklistEdit", -1, -1, 615, 600, true, true, true);
+			new (WE().util.jsWindow)(this, "", "we_linklistEdit", -1, -1, 615, 600, true, true, true);
 			if (contentEditor.we_submitForm)
 				contentEditor.we_submitForm("we_linklistEdit", url);
 			break;
 		case "openColorChooser":
-			new (WE().util.jsWindow)(window, "", "we_colorChooser", -1, -1, 430, 370, true, true, true);
+			new (WE().util.jsWindow)(this, "", "we_colorChooser", -1, -1, 430, 370, true, true, true);
 			if (contentEditor.we_submitForm)
 				contentEditor.we_submitForm("we_colorChooser", url);
 			break;
 		case "we_selector_directory":
 		case "we_selector_document":
 		case "we_selector_image":
-			new (WE().util.jsWindow)(window, url, "we_fileselector", -1, -1, winSelectSize.docSelect.width, winSelectSize.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, winSelectSize.docSelect.width, winSelectSize.docSelect.height, true, true, true, true);
 			break;
 		case "we_customer_selector":
 		case "we_selector_file":
-			new (WE().util.jsWindow)(window, url, "we_fileselector", -1, -1, 900, 685, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, 900, 685, true, true, true, true);
 			break;
 		case "we_selector_category":
-			new (WE().util.jsWindow)(window, url, "we_catselector", -1, -1, winSelectSize.catSelect.width, winSelectSize.catSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_catselector", -1, -1, winSelectSize.catSelect.width, winSelectSize.catSelect.height, true, true, true, true);
 			break;
 		case "browse_server":
-			new (WE().util.jsWindow)(window, url, "browse_server", -1, -1, 840, 400, true, false, true);
+			new (WE().util.jsWindow)(this, url, "browse_server", -1, -1, 840, 400, true, false, true);
 			break;
 		case "we_users_selector":
-			new (WE().util.jsWindow)(window, url, "browse_users", -1, -1, 500, 300, true, false, true);
+			new (WE().util.jsWindow)(this, url, "browse_users", -1, -1, 500, 300, true, false, true);
 			break;
 		case "object_editObjectTextArea":
-			new (WE().util.jsWindow)(window, url, "edit_object_text", -1, -1, 550, 455, true, false, true);
+			new (WE().util.jsWindow)(this, url, "edit_object_text", -1, -1, 550, 455, true, false, true);
 			break;
 		case "open_templateSelect":
-			new (WE().util.jsWindow)(window, "", "we_templateSelect", -1, -1, 600, 400, true, true, true);
+			new (WE().util.jsWindow)(this, "", "we_templateSelect", -1, -1, 600, 400, true, true, true);
 			if (contentEditor.we_submitForm)
 				contentEditor.we_submitForm("we_templateSelect", url);
 			break;
 		case "open_tag_wizzard":
-			new (WE().util.jsWindow)(window, url, "we_tag_wizzard", -1, -1, 600, 620, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_tag_wizzard", -1, -1, 600, 620, true, true, true);
 			break;
 		case "glossary_check":
 			if (hasGlossary) {
-				new (WE().util.jsWindow)(window, url, "glossary_check", -1, -1, 730, 400, true, false, true);
+				new (WE().util.jsWindow)(this, url, "glossary_check", -1, -1, 730, 400, true, false, true);
 			}
 			break;
 		case "add_thumbnail":
-			new (WE().util.jsWindow)(window, url, "we_add_thumbnail", -1, -1, 400, 410, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_add_thumbnail", -1, -1, 400, 410, true, true, true);
 			break;
 		case "image_resize":
 			if (hasGD) {
 				ImageEditTools.Resize.start(url, gdType);
 			} else {
-				top.we_showMessage(g_l.gdTypeNotSupported, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(g_l.gdTypeNotSupported, WE().consts.message.WE_MESSAGE_ERROR, this);
 			}
 			break;
 		case "image_convertJPEG":
@@ -302,10 +303,10 @@ function we_cmd() {
 				if (gdSupport) {
 					ImageEditTools.Rotate.start(url, gdType);
 				} else {
-					top.we_showMessage(g_l.gdTypeNotSupported, WE().consts.message.WE_MESSAGE_ERROR, window);
+					top.we_showMessage(g_l.gdTypeNotSupported, WE().consts.message.WE_MESSAGE_ERROR, this);
 				}
 			} else {
-				top.we_showMessage(g_l.noRotate, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(g_l.noRotate, WE().consts.message.WE_MESSAGE_ERROR, this);
 			}
 			break;
 		case "image_focus":
@@ -316,7 +317,7 @@ function we_cmd() {
 				if (gdSupport) {
 					ImageEditTools.Crop.crop();
 				} else {
-					top.we_showMessage(g_l.gdTypeNotSupported, WE().consts.message.WE_MESSAGE_ERROR, window);
+					top.we_showMessage(g_l.gdTypeNotSupported, WE().consts.message.WE_MESSAGE_ERROR, this);
 				}
 			}
 			break;
@@ -333,20 +334,17 @@ function we_cmd() {
 			break;
 		case "spellcheck":
 			if (WE_SPELLCHECKER_MODULE_DIR) {
-				var win = new (WE().util.jsWindow)(window, WE_SPELLCHECKER_MODULE_DIR + "/weSpellchecker.php?editname=" + (arguments[1]), "spellcheckdialog", -1, -1, 500, 450, true, false, true, false);
+				var win = new (WE().util.jsWindow)(this, WE_SPELLCHECKER_MODULE_DIR + "/weSpellchecker.php?editname=" + (args[1]), "spellcheckdialog", -1, -1, 500, 450, true, false, true, false);
 			}
 			break;
 			// it must be the last command
 		case "delete_navi":
-			for (i = 0; i < arguments.length; i++) {
-				arguments[i] = encodeURIComponent(arguments[i]);
-			}
 			if (!confirm(g_l.confirm_navDel)) {
 				break;
 			}
 			//no break;
 		default:
-			parent.we_cmd.apply(this, args);
+			parent.we_cmd.apply(this, arguments);
 
 	}
 }

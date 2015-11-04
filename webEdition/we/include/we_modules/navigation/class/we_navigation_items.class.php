@@ -451,6 +451,9 @@ class we_navigation_items{
 	}
 
 	function setTemplate($content, $type, $level, $current, $position){
+		if($position === 'first'){
+			$position = 1;
+		}
 		$this->templates[$type][$level][$current][$position] = $content;
 	}
 

@@ -23,6 +23,10 @@
  */
 
 function we_lcmd(par) {
+	var args = [];
+	for (var i = 0; i < arguments.length; i++) {
+		args.push(arguments[i]);
+	}
 	switch (par) {
 		case 'trigger_save_document':
 			if (WE().layout.weEditorFrameController.getActiveDocumentReference() && WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter && WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter.weCanSave) {
@@ -117,20 +121,15 @@ function we_lcmd(par) {
 			top.we_cmd("tocollection", 1, WE().consts.tables.OBJECT_FILES_TABLE);
 			return;
 		case 'new_dtPage':
-			top.we_cmd("new", WE().consts.tables.FILE_TABLE, "", WE().consts.contentTypes.WEDOCUMENT, arguments[1]);
+			top.we_cmd("new", WE().consts.tables.FILE_TABLE, "", WE().consts.contentTypes.WEDOCUMENT, args[1]);
 			return;
 		case 'new_ClObjectFile':
-			top.we_cmd("new", WE().consts.tables.OBJECT_FILES_TABLE, "", WE().consts.contentTypes.OBJECT_FILE, arguments[1]);
+			top.we_cmd("new", WE().consts.tables.OBJECT_FILES_TABLE, "", WE().consts.contentTypes.OBJECT_FILE, args[1]);
 			return;
 		case 'we_selector_delete':
 			top.we_cmd('we_selector_delete', '', -1, '', '', '', '', '', '', 1);
 			return;
 		default:
-			var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
-
 			top.we_cmd.apply(this, args);
 
 	}

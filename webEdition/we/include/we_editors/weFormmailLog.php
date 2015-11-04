@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -62,18 +63,18 @@ if(permissionhandler::hasPerm('administrator')){
 		$next = $start + $count;
 
 		$nextprev = '<table style="margin-top: 10px;" class="default"><tr><td style="padding-right:20px;">' .
-			($start > 0 ?
-				we_html_button::create_button(we_html_button::BACK, $_SERVER['SCRIPT_NAME'] . "?start=" . ($start - $count)) : //bt_back
-				we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true)
-			) .
-			 '</td><td class="defaultfont" width="120" style="text-align:center;padding-right:20px;"><b>' . ($start + 1) . "&nbsp;-&nbsp;" .
-			min($num_all, $start + $count) .
-			"&nbsp;" . g_l('global', '[from]') . " " . ($num_all) . "</b></td><td>" .
-			($next < $num_all ?
-				we_html_button::create_button(we_html_button::NEXT, $_SERVER['SCRIPT_NAME'] . "?start=" . $next) : //bt_next
-				we_html_button::create_button(we_html_button::NEXT, "", "", 100, 22, "", "", true)
-			) .
-			"</td></tr></table>";
+				($start > 0 ?
+						we_html_button::create_button(we_html_button::BACK, $_SERVER['SCRIPT_NAME'] . "?start=" . ($start - $count)) : //bt_back
+						we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true)
+				) .
+				'</td><td class="defaultfont" width="120" style="text-align:center;padding-right:20px;"><b>' . ($start + 1) . "&nbsp;-&nbsp;" .
+				min($num_all, $start + $count) .
+				"&nbsp;" . g_l('global', '[from]') . " " . ($num_all) . "</b></td><td>" .
+				($next < $num_all ?
+						we_html_button::create_button(we_html_button::NEXT, $_SERVER['SCRIPT_NAME'] . "?start=" . $next) : //bt_next
+						we_html_button::create_button(we_html_button::NEXT, "", "", 100, 22, "", "", true)
+				) .
+				"</td></tr></table>";
 
 		$parts = array(
 			array(
@@ -96,8 +97,8 @@ if(permissionhandler::hasPerm('administrator')){
 		);
 	}
 
-	$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_multiIconBox::getHTML("show_log_data", $parts, 30, we_html_button::position_yes_no_cancel($refresh, $close, $deleteLogBut), -1, '', '', false, g_l('prefs', '[formmail_log]'), "", 558) .
-			we_html_element::jsElement("self.focus();")
+	$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_multiIconBox::getHTML("show_log_data", $parts, 30, we_html_button::formatButtons($refresh . $close . $deleteLogBut), -1, '', '', false, g_l('prefs', '[formmail_log]'), "", 558) .
+					we_html_element::jsElement("self.focus();")
 	);
 
 

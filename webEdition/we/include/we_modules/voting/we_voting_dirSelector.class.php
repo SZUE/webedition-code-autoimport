@@ -88,7 +88,7 @@ top.clearEntries();
 		} else {
 			$folder = new we_folder();
 			$folder->we_new($this->table, $this->dir, $txt);
-			$this->db->query('SELECT ID FROM ' . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($folder->Path) . "'");
+			$this->db->query('SELECT ID FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($folder->Path) . '"');
 			if($this->db->next_record()){
 				echo we_message_reporting::getShowMessageCall(g_l('modules_voting', '[folder_path_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
 			} elseif(we_voting_voting::filenameNotValid($folder->Text)){
@@ -161,7 +161,7 @@ top.clearEntries();
 			$folder->Text = $txt;
 			$folder->Filename = $txt;
 			$folder->Path = $folder->getPath();
-			$this->db->query("SELECT ID,Text FROM " . $this->db->escape($this->table) . " WHERE Path='" . $folder->Path . "' AND ID != '" . $this->we_editDirID . "'");
+			$this->db->query("SELECT ID,Text FROM " . $this->db->escape($this->table) . ' WHERE Path="' . $folder->Path . '" AND ID!="' . $this->we_editDirID . '"');
 			if($this->db->next_record()){
 				$we_responseText = sprintf(g_l('modules_voting', '[folder_exists]'), $folder->Path);
 				echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);

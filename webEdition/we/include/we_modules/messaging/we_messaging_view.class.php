@@ -49,13 +49,13 @@ class we_messaging_view extends we_modules_view{
 		//
 	}
 
-	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){
+	function getJSSubmitFunction($def_target = "edbody"){
 		return '
 function submitForm() {
 	var f = self.document.we_form;
 	f.target =  (arguments[0]?arguments[0]:"' . $def_target . '");
 	f.action = (arguments[1]?arguments[1]:"' . $this->frameset . '");
-	f.method = (arguments[2]?arguments[2]:"' . $def_method . '");
+	f.method = (arguments[2]?arguments[2]:"post");
 	f.submit();
 }';
 	}
@@ -315,7 +315,7 @@ top.content.drawTree();');
 		}
 	}
 
-	//some additional methods called by getJSCmd().
+	//some additional methods called by .
 	private function print_fc_html($blank = true){
 
 		return we_html_element::jsElement('
@@ -334,7 +334,6 @@ if (top.content.editor.edbody.messaging_messages_overview) {
 		}
 
 		$this->messaging->get_fc_data($this->messaging->Folder_ID, '', '', 0);
-		//print $this->print_fc_html($blank);
 		return $this->print_fc_html($blank) . $this->update_treeview();
 	}
 

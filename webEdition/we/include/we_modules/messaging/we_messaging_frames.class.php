@@ -96,7 +96,7 @@ class we_messaging_frames extends we_modules_frame{
 
 		$extraHead = $this->getJSCmdCode() .
 				we_html_element::jsScript(JS_DIR . 'we_modules/messaging/messaging_std.js') .
-				$this->Tree->getJSTreeCode() .
+				$this->Tree->getJSTreeCode($this->messaging) .
 				we_html_element::jsElement('startTree();');
 
 		return parent::getHTMLFrameset($extraHead, '&we_transaction=' . $this->transaction);
@@ -187,8 +187,8 @@ function clearSearch() {
 	protected function getHTMLEditorBody(){
 		$content = we_html_element::htmlIFrame('messaging_fv_headers', $this->frameset . '?we_transaction=' . $this->transaction . '&pnt=msg_fv_headers', 'position:absolute;top:0px;height:26px;left:0px;right:0px;', '', '', false) .
 				we_html_element::htmlIFrame('x', 'about:blank', 'display:none', '', '', false) . //FIXME: is this command window??
-				we_html_element::htmlDiv(array('style' => 'position:absolute;top:26px;bottom:26px;left:0px;right:0px;'), we_html_element::htmlIFrame('messaging_messages_overview', HTML_DIR . 'white.html', 'position:absolute;top:0px;height:160px;left:0px;right:0px;border-bottom:1px solid black;', '', '', true) .
-						we_html_element::htmlIFrame('messaging_msg_view', HTML_DIR . 'white.html', 'position:absolute;top:160px;bottom:0px;left:0px;right:0px;', '', '', true)
+				we_html_element::htmlDiv(array('style' => 'position:absolute;top:26px;bottom:26px;left:0px;right:0px;'), we_html_element::htmlIFrame('messaging_messages_overview', 'about:blank', 'position:absolute;top:0px;height:160px;left:0px;right:0px;border-bottom:1px solid black;', '', '', true) .
+						we_html_element::htmlIFrame('messaging_msg_view', 'about:blank', 'position:absolute;top:160px;bottom:0px;left:0px;right:0px;', '', '', true)
 		);
 
 		return $this->getHTMLDocument(we_html_element::htmlBody(array('onload' => "top.content.cb_incstate();"), $content));

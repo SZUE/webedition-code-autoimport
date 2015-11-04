@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_exim_XMLImport extends we_exim_XMLExIm{
+
 	var $nodehierarchy = array();
 
 	function __construct(){
@@ -142,16 +143,16 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 								$prefix = id_to_path($this->options["document_path"], FILE_TABLE, $db);
 							}
 							$object->Path = $prefix . ($this->options["restore_doc_path"] ?
-									$object->Path :
-									"/" . $object->Text);
+											$object->Path :
+											"/" . $object->Text);
 							break;
 						case TEMPLATES_TABLE:
 							if($this->options["template_path"]){
 								$prefix = id_to_path($this->options["template_path"], TEMPLATES_TABLE, $db);
 							}
 							$object->Path = $prefix . ($this->options["restore_tpl_path"] ?
-									$object->Path :
-									"/" . $object->Text);
+											$object->Path :
+											"/" . $object->Text);
 							break;
 						case NAVIGATION_TABLE:
 							if($this->options["navigation_path"]){
@@ -169,7 +170,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 
 					if($id){
 						if($this->options["handle_collision"] === "replace" ||
-							($object->ClassName == "we_folder" && $this->RefTable->exists(array("OldID" => $object->ID, "Table" => $object->Table)))
+								($object->ClassName == "we_folder" && $this->RefTable->exists(array("OldID" => $object->ID, "Table" => $object->Table)))
 						){
 							$object->ID = $id;
 							if(isset($object->isnew)){
@@ -211,20 +212,18 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 
 						$h = getHash('SELECT ParentID,Path FROM ' . $db->escape($object->Table) . ' WHERE ID=' . intval($pid), $db);
 						if(!$this->RefTable->exists(array("ID" => $pid, "ContentType" => "folder"))){
-							$this->RefTable->add2(
-								array(
-									"ID" => $pid,
-									"ParentID" => $h["ParentID"],
-									"Path" => $h["Path"],
-									"Table" => $object->Table,
-									"ContentType" => "folder",
-									"OldID" => ($pid == $object->ParentID) ? $_old_pid : null,
-									"OldParentID" => null,
-									"OldPath" => null,
-									"OldTemplatePath" => null,
-									"Examined" => 0,
-								)
-							);
+							$this->RefTable->add2(array(
+								"ID" => $pid,
+								"ParentID" => $h["ParentID"],
+								"Path" => $h["Path"],
+								"Table" => $object->Table,
+								"ContentType" => "folder",
+								"OldID" => ($pid == $object->ParentID) ? $_old_pid : null,
+								"OldParentID" => null,
+								"OldPath" => null,
+								"OldTemplatePath" => null,
+								"Examined" => 0,
+							));
 						}
 					}
 				}
@@ -238,7 +237,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 							do{
 								$_path = $object->Path . '_' . $_c;
 								$_c++;
-							} while(is_file($_SERVER['DOCUMENT_ROOT'] . $_path));
+							}while(is_file($_SERVER['DOCUMENT_ROOT'] . $_path));
 							$object->Path = $_path;
 							unset($_path);
 							unset($_c);
@@ -248,25 +247,22 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					}
 
 					if($save && !$this->RefTable->exists(array('ID' => $object->ID, 'Path' => $object->Path, 'ContentType' => 'weBinary'))){
-						$this->RefTable->add2(
-							array('ID' => $object->ID,
-								'ParentID' => 0,
-								'Path' => $object->Path,
-								'Table' => $object->Table,
-								'ContentType' => 'weBinary'
-							)
-						);
+						$this->RefTable->add2(array(
+							'ID' => $object->ID,
+							'ParentID' => 0,
+							'Path' => $object->Path,
+							'Table' => $object->Table,
+							'ContentType' => 'weBinary'
+						));
 					}
 				}
 			}
 
 			if(defined('OBJECT_TABLE') && ($object->ClassName === 'we_objectFile' || $object->ClassName === 'we_class_folder')){
-				$ref = $this->RefTable->getRef(
-					array(
-						'OldID' => $object->TableID,
-						'ContentType' => "object"
-					)
-				);
+				$ref = $this->RefTable->getRef(array(
+					'OldID' => $object->TableID,
+					'ContentType' => "object"
+				));
 				if($ref){
 					// assign TableID and ParentID from reference
 					$object->TableID = $ref->ID;
@@ -326,7 +322,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 				default:
 					$newid = path_to_id(we_base_file::clearPath(dirname($object->Path) . '/' . $newname), $object->Table, FILE_TABLE, $GLOBALS['DB_WE']);
 			}
-		} while($newid);
+		}while($newid);
 		$this->renameObject($object, $newname);
 	}
 
@@ -345,12 +341,10 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 		}
 		if(isset($object->Path)){
 			$_path = dirname($object->Path);
-			$_ref = $this->RefTable->getRef(
-				array(
-					'OldID' => $object->ParentID,
-					'ContentType' => 'weNavigation'
-				)
-			);
+			$_ref = $this->RefTable->getRef(array(
+				'OldID' => $object->ParentID,
+				'ContentType' => 'weNavigation'
+					));
 			if($_ref){
 				$object->ParentID = $_ref->ID;
 				$object->Path = $_ref->Path . '/' . $new_name;
@@ -434,7 +428,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					default:
 						$node_data[$nodname] = $noddata;
 						$node_coding[$nodname] = $GLOBALS['isNewImport'] ? (isset($attributes[we_exim_contentProvider::CODING_ATTRIBUTE]) ? $attributes[we_exim_contentProvider::CODING_ATTRIBUTE] : we_exim_contentProvider::CODING_NONE) :
-							(we_exim_contentProvider::needCoding($node_data['ClassName'], $nodname, we_exim_contentProvider::CODING_OLD) ? we_exim_contentProvider::CODING_ENCODE : we_exim_contentProvider::CODING_NONE);
+								(we_exim_contentProvider::needCoding($node_data['ClassName'], $nodname, we_exim_contentProvider::CODING_OLD) ? we_exim_contentProvider::CODING_ENCODE : we_exim_contentProvider::CODING_NONE);
 				}
 			}
 		}
@@ -487,8 +481,8 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					return $value;
 				}
 				return ($this->options['xml_encoding'] === 'ISO-8859-1' ?
-						utf8_encode($value) :
-						utf8_decode($value));
+								utf8_encode($value) :
+								utf8_decode($value));
 			}
 		}
 		return $value;

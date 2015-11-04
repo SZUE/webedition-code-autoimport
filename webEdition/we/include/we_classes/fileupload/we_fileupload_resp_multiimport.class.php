@@ -23,8 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_fileupload_resp_multiimport extends we_fileupload_resp_import{
-	
-	
+
 	public function processRequest() {
 		// manage filenumber
 		if($this->controlVars['formcount']){
@@ -39,7 +38,7 @@ class we_fileupload_resp_multiimport extends we_fileupload_resp_import{
 			if(!isset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs'])){
 				$_SESSION['weS']['WE_IMPORT_FILES_ERRORs'] = array();
 			}
-			$_SESSION['weS']['WE_IMPORT_FILES_ERRORs'][] = $response['message'];
+			$_SESSION['weS']['WE_IMPORT_FILES_ERRORs'][] = array('filename' => $this->fileVars['weFileName'], 'error' => $response['message']);
 		} else {
 			$_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS'] = isset($_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS']) ? $_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS'] : array();
 			$_SESSION['weS']['WE_IMPORT_FILES_DOCUMENTS'] = isset($_SESSION['weS']['WE_IMPORT_FILES_DOCUMENTS']) ? $_SESSION['weS']['WE_IMPORT_FILES_DOCUMENTS'] : array();

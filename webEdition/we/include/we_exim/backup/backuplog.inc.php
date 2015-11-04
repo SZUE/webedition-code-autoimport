@@ -57,7 +57,7 @@ echo we_html_tools::getHtmlTop(g_l('backup', '[view_log]')) .
 </head>
 <body class="weDialogBody" style="overflow:hidden;" onload="self.focus();">
 	<div id="info"><?php
-		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close()"), '', '');
+		$buttons = we_html_button::formatButtons(we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close()"));
 
 		echo we_html_multiIconBox::getJS() .
 		we_html_multiIconBox::getHTML('', $_parts, 30, $buttons, -1, '', '', false, "", "", 0, "auto");

@@ -637,21 +637,21 @@ class we_captcha_image{
 				}
 
 				$signs[] = ($use_fontfile ?
-						array(
-						'size' => $size,
-						'angle' => $angle,
-						'xpos' => $xpos,
-						'ypos' => $ypos,
-						'color' => imagecolorallocate($image, $color[0], $color[1], $color[2]),
-						'family' => file_exists($family) ? $family : LIB_DIR . 'additional/fonts/DejaVuSans.ttf',
-						'sign' => $sign,
-						) :
-						array(
-						'xpos' => $xpos,
-						'ypos' => $ypos,
-						'color' => imagecolorallocate($image, $color[0], $color[1], $color[2]),
-						'family' => $family,
-						'sign' => $sign,
+								array(
+							'size' => $size,
+							'angle' => $angle,
+							'xpos' => $xpos,
+							'ypos' => $ypos,
+							'color' => imagecolorallocate($image, $color[0], $color[1], $color[2]),
+							'family' => file_exists($family) ? $family : LIB_DIR . 'additional/fonts/DejaVuSans.ttf',
+							'sign' => $sign,
+								) :
+								array(
+							'xpos' => $xpos,
+							'ypos' => $ypos,
+							'color' => imagecolorallocate($image, $color[0], $color[1], $color[2]),
+							'family' => $family,
+							'sign' => $sign,
 				));
 
 
@@ -680,21 +680,21 @@ class we_captcha_image{
 				break;
 			case 'center':
 				$xoffset = ($use_fontfile ?
-						($this->width / 2) - ($sumwidth / 2) :
-						($this->width / 2) - ($sumwidth / 2) + 3);
+								($this->width / 2) - ($sumwidth / 2) :
+								($this->width / 2) - ($sumwidth / 2) + 3);
 		}
 
 		foreach($signs as $sign){
 			if($use_fontfile){
 				imagettftext(
-					$image, // Imageressource
-					$sign['size'], // Fontsize
-					$sign['angle'], // Angle
-					$xoffset + $sign['xpos'], // X-Position
-					$sign['ypos'], // Y-Position
-					$sign['color'], // Fontcolor
-					$sign['family'], // Font Family (File)
-					$sign['sign'] // Text
+						$image, // Imageressource
+						$sign['size'], // Fontsize
+						$sign['angle'], // Angle
+						$xoffset + $sign['xpos'], // X-Position
+						$sign['ypos'], // Y-Position
+						$sign['color'], // Fontcolor
+						$sign['family'], // Font Family (File)
+						$sign['sign'] // Text
 				);
 			} else {
 				imagestring($image, $sign['family'], $xoffset + $sign['xpos'], $sign['ypos'], $sign['sign'], $sign['color']);

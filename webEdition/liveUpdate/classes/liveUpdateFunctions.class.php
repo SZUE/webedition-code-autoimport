@@ -732,7 +732,6 @@ class liveUpdateFunctions{
 					if(isset($origTableKeys['_temp'])){
 						$alterQueries = array_merge(array('ALTER TABLE `' . $tableName . '` DROP INDEX _temp'), $alterQueries);
 					}
-
 					if($alterQueries){
 						// execute all queries
 						$success = true;

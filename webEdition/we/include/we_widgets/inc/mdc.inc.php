@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -22,11 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $splitMdc = explode(';', $aProps[3]);
-$oTblDiv = we_html_element::htmlDiv(
-		array(
-		"id" => "m_" . $iCurrId . "_inline",
-		"style" => "width:100%;height:" . ($aPrefs[$aProps[0]]["height"] - 25) . "px;overflow:auto;"
-		), $mdc);
+$oTblDiv = we_html_element::htmlDiv(array(
+			"id" => "m_" . $iCurrId . "_inline",
+			"style" => "width:100%;height:" . ($aPrefs[$aProps[0]]["height"] - 25) . "px;overflow:auto;"
+				), $mdc);
 $aLang = array(
 	($splitMdc[0]) ? base64_decode($splitMdc[0]) : g_l('cockpit', (empty($splitMdc[1][1]) ? '[my_documents]' : '[my_objects]')),
 	""

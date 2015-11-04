@@ -98,7 +98,6 @@ class we_docTypes extends we_class{
 		$i = 0;
 		while(!$this->Language){
 			if($ParentID == 0 || $i > 20){
-				we_loadLanguageConfig();
 				$this->Language = ($GLOBALS['weDefaultFrontendLanguage'] ? : 'de_DE');
 			} elseif(($h = getHash('SELECT Language,ParentID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($ParentID), $this->DB_WE))){
 				$this->Language = $h['Language'];
@@ -109,8 +108,6 @@ class we_docTypes extends we_class{
 	}
 
 	private function formLangLinks(){
-		we_loadLanguageConfig();
-
 		$value = ($this->Language ? : $GLOBALS['weDefaultFrontendLanguage']);
 		$inputName = 'we_' . $this->Name . '_Language';
 		$_languages = getWeFrontendLanguagesForBackend();

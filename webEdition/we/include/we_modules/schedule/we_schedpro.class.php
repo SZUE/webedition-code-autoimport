@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -24,6 +25,7 @@
 we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER);
 
 class we_schedpro{
+
 	const SCHEDULE_FROM = 1; //publish
 	const SCHEDULE_TO = 2; //park
 	const DELETE = 3;
@@ -90,7 +92,7 @@ class we_schedpro{
 		for($i = 1; $i <= 36; $i++){
 			if($i <= 31){
 				$days .= '<td>' . we_html_forms::checkbox(1, $this->days[$i - 1], "check_we_schedule_day" . $i . "_" . $this->nr, sprintf('%02d', $i), false, "defaultfont", "this.form.elements['we_schedule_day" . $i . "_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)") .
-					'<input type="hidden" name="we_schedule_day' . $i . '_' . $this->nr . '" value="' . $this->days[$i - 1] . '" /></td><td class="defaultfont">&nbsp;</td>';
+						'<input type="hidden" name="we_schedule_day' . $i . '_' . $this->nr . '" value="' . $this->days[$i - 1] . '" /></td><td class="defaultfont">&nbsp;</td>';
 			} else {
 				$days .= '<td colspan="3">';
 			}
@@ -111,7 +113,7 @@ class we_schedpro{
 
 		for($i = 1; $i <= 7; $i++){
 			$wd .= '<td>' . we_html_forms::checkbox(1, $this->weekdays[$i - 1], "check_we_schedule_wday'.$i.'_'.$this->nr.'", g_l('date', '[day][short][' . ($i - 1) . ']'), false, "defaultfont", "this.form.elements['we_schedule_wday" . $i . "_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)") .
-				'<input type="hidden" name="we_schedule_wday' . $i . '_' . $this->nr . '" value="' . $this->weekdays[$i - 1] . '" /></td><td class="defaultfont">&nbsp;</td>';
+					'<input type="hidden" name="we_schedule_wday' . $i . '_' . $this->nr . '" value="' . $this->weekdays[$i - 1] . '" /></td><td class="defaultfont">&nbsp;</td>';
 		}
 
 		$wd .= '</tr></table>';
@@ -187,8 +189,8 @@ function checkFooter(){
 				$doctypepop .= '</select>';
 				$checknname = md5(uniqid(__FUNCTION__, true));
 				$extracont = '<table class="default"><tr><td>' . $doctypepop . '</td><td class="defaultfont">&nbsp;&nbsp;</td><td>' . we_html_forms::checkbox(1, $this->doctypeAll, $checknname, g_l('modules_schedule', '[doctypeAll]')
-						, false, "defaultfont", "this.form.elements['we_schedule_doctypeAll_" . $this->nr . "'].value=this.checked?1:0;") .
-					'<input type="hidden" name="we_schedule_doctypeAll_' . $this->nr . '" value="' . $this->doctypeAll . '" /></td></tr></table>';
+								, false, "defaultfont", "this.form.elements['we_schedule_doctypeAll_" . $this->nr . "'].value=this.checked?1:0;") .
+						'<input type="hidden" name="we_schedule_doctypeAll_' . $this->nr . '" value="' . $this->doctypeAll . '" /></td></tr></table>';
 				$extraheadl = g_l('modules_schedule', '[doctype]');
 				break;
 			case self::CATEGORY:
@@ -253,8 +255,8 @@ function checkFooter(){
 	<tr style="vertical-align:top">
 		<td class="defaultgray" style="margin-bottom:10px;">' . g_l('modules_schedule', '[task][headline]') . ':</td>
 		<td class="defaultfont"><table class="default"><tr><td>' . $taskpopup . '</td><td class="defaultfont">&nbsp;&nbsp;</td><td>' . we_html_forms::checkbox(1, $this->active, $checknname, g_l('modules_schedule', '[active]')
-				, false, "defaultfont", "this.form.elements['we_schedule_active_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true);checkFooter();") .
-			'<input type="hidden" class="we_schedule_active" name="we_schedule_active_' . $this->nr . '" value="' . $this->active . '" /></td></tr></table></td>
+						, false, "defaultfont", "this.form.elements['we_schedule_active_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true);checkFooter();") .
+				'<input type="hidden" class="we_schedule_active" name="we_schedule_active_' . $this->nr . '" value="' . $this->active . '" /></td></tr></table></td>
 		<td>' . we_html_button::create_button(we_html_button::TRASH, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('schedule_del','" . $this->nr . "')") . '</td>
 	</tr>';
 		if($extracont){
@@ -272,7 +274,6 @@ function checkFooter(){
 		<td class="defaultfont">' . $typepopup . '</td>
 		<td></td>
 	</tr>';
-
 
 		switch($this->type){
 			case self::TYPE_ONCE:
@@ -436,8 +437,8 @@ function checkFooter(){
 
 		if($callPublish){
 			$pub = ($GLOBALS['we_doc']->Published ?
-					$GLOBALS['we_doc']->we_publish() :
-					$GLOBALS['we_doc']->we_unpublish());
+							$GLOBALS['we_doc']->we_publish() :
+							$GLOBALS['we_doc']->we_unpublish());
 
 			if(!$pub){
 				t_e('Error while scheduled publish/unpublish of document', $GLOBALS['we_doc']->getErrMsg(), $GLOBALS['we_doc']);
@@ -563,8 +564,8 @@ function checkFooter(){
 					$trys++;
 				}
 				return ($trys <= 365) ?
-					mktime(date('G', $s['time']), date('i', $s['time']), 0, intval(date('m', $tomorrow)), date('j', $tomorrow), date('Y', $tomorrow)) :
-					0;
+						mktime(date('G', $s['time']), date('i', $s['time']), 0, intval(date('m', $tomorrow)), date('j', $tomorrow), date('Y', $tomorrow)) :
+						0;
 			case self::TYPE_YEAR:
 				$dayNow = date('j', $now);
 				$monthNow = intval(date('m', $now));
@@ -585,8 +586,8 @@ function checkFooter(){
 					$trys++;
 				}
 				return ($trys <= 365) ?
-					mktime(date('G', $s['time']), date('i', $s['time']), 0, intval(date('m', $tomorrow)), date('j', $tomorrow), date('Y', $tomorrow)) :
-					0;
+						mktime(date('G', $s['time']), date('i', $s['time']), 0, intval(date('m', $tomorrow)), date('j', $tomorrow), date('Y', $tomorrow)) :
+						0;
 		}
 	}
 
@@ -668,8 +669,8 @@ function checkFooter(){
 					$trys++;
 				}
 				return ($trys <= 365) ?
-					mktime(date('G', $s['time']), date('i', $s['time']), 0, intval(date('m', $yesterday)), date('j', $yesterday), date('Y', $yesterday)) :
-					0;
+						mktime(date('G', $s['time']), date('i', $s['time']), 0, intval(date('m', $yesterday)), date('j', $yesterday), date('Y', $yesterday)) :
+						0;
 
 			case self::TYPE_YEAR:
 				$dayNow = date('j', $now);
@@ -691,8 +692,8 @@ function checkFooter(){
 					$trys++;
 				}
 				return ($trys <= 365) ?
-					mktime(date('G', $s['time']), date('i', $s['time']), 0, intval(date('m', $yesterday)), date('j', $yesterday), date('Y', $yesterday)) :
-					0;
+						mktime(date('G', $s['time']), date('i', $s['time']), 0, intval(date('m', $yesterday)), date('j', $yesterday), date('Y', $yesterday)) :
+						0;
 		}
 	}
 
@@ -711,15 +712,17 @@ function checkFooter(){
 	static function publInScheduleTable($object, we_database_base $db = null){
 		$db = $db ? : new DB_WE();
 		$db->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($object->ID) . ' AND ClassName="' . $db->escape($object->ClassName) . '"');
-		$makeSched = false;
+		$makeSched = array();
 		foreach($object->schedArr as $s){
 			if($s['task'] == self::SCHEDULE_FROM && $s['active']){
 				$serializedDoc = serialize(we_temporaryDocument::load($object->ID, $object->Table, $db));
-				$makeSched = true;
 			} else {
 				$serializedDoc = '';
 			}
 			$Wann = self::getNextTimestamp($s, time());
+			if($serializedDoc){
+				$makeSched[] = $Wann;
+			}
 
 			if(!$db->query('INSERT INTO ' . SCHEDULE_TABLE . ' SET ' . we_database_base::arraySetter(array(
 						'DID' => $object->ID,
@@ -734,7 +737,7 @@ function checkFooter(){
 				return false;
 			}
 		}
-		return $makeSched;
+		return $makeSched ? min($makeSched) : false;
 	}
 
 }

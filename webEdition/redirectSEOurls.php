@@ -83,7 +83,7 @@ while($urlLookingFor){// first we try to get the object
 /**
  * now we try to get the trigger document
  */
-if(is_array($object) && $object['ID']){
+if($object && $object['ID']){
 	$triggerDocPath = false;
 	if($object['TriggerID'] && ($isDynamic = f('SELECT IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($object['TriggerID'])))){
 		$triggerDocPath = id_to_path($object['TriggerID'], FILE_TABLE);

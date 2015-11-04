@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -27,9 +28,7 @@ we_html_tools::protect();
 switch(we_base_request::_(we_base_request::STRING, "cmd")){
 	case "load" :
 		if(($pid = we_base_request::_(we_base_request::INT, "pid")) !== false){
-			echo
-			we_html_element::jsElement(
-				"self.location='" .WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=loadTree&we_cmd[1]=" . we_base_request::_(we_base_request::TABLE, "tab") . "&we_cmd[2]=" . $pid . "&we_cmd[3]=" . (we_base_request::_(we_base_request::STRING, 'openFolders') ? : "") . "&we_cmd[4]=top'");
+			echo we_html_element::jsElement("self.location='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=loadTree&we_cmd[1]=" . we_base_request::_(we_base_request::TABLE, "tab") . "&we_cmd[2]=" . $pid . "&we_cmd[3]=" . (we_base_request::_(we_base_request::STRING, 'openFolders') ? : "") . "&we_cmd[4]=top'");
 		}
 		break;
 }

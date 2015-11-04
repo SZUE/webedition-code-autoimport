@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -56,14 +57,17 @@ if(permissionhandler::hasPerm('EDIT_MFD_USER') && $users){
 }
 $content .= '</table>';
 
-$sUsrContent = '<table class="default" width="300"><tr><td>' . we_html_element::htmlDiv(
-		array("class" => "multichooser"), $content) . we_html_element::htmlHiddens(array(
-		"UserNameTmp" => "",
-		"UserIDTmp" => ""
-	)) . '</td></tr>' . (permissionhandler::hasPerm('EDIT_MFD_USER') ? '<tr><td style="text-align:right;padding-top:1em;">' .
-		we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:delUser(-1)", true, -1, -1, "", "", ($users ? false : true)) .
-		we_html_button::create_button(we_html_button::ADD, "javascript:opener.getUser('we_users_selector','WE().layout.weEditorFrameController.getActiveDocumentReference()._propsDlg[\"" . $cmd0 . "\"].document.forms[0].elements.UserIDTmp.value','" . $wecmdenc2 . "','','','" . $wecmdenc5 . "','','',1);") .
-		'</td></tr>' : '') . '</table>';
+$sUsrContent = '<table class="default" width="300"><tr><td>' . we_html_element::htmlDiv(array("class" => "multichooser"), $content) .
+		we_html_element::htmlHiddens(array(
+			"UserNameTmp" => "",
+			"UserIDTmp" => ""
+		)) .
+		'</td></tr>' .
+		(permissionhandler::hasPerm('EDIT_MFD_USER') ? '<tr><td style="text-align:right;padding-top:1em;">' .
+				we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:delUser(-1)", true, -1, -1, "", "", ($users ? false : true)) .
+				we_html_button::create_button(we_html_button::ADD, "javascript:opener.getUser('we_users_selector','WE().layout.weEditorFrameController.getActiveDocumentReference()._propsDlg[\"" . $cmd0 . "\"].document.forms[0].elements.UserIDTmp.value','" . $wecmdenc2 . "','','','" . $wecmdenc5 . "','','',1);") .
+				'</td></tr>' : '') .
+		'</table>';
 
 $oShowUser = we_html_tools::htmlFormElementTable($sUsrContent, g_l('cockpit', '[following_users]'), "left", "defaultfont");
 
@@ -76,17 +80,17 @@ if($sType === '0000'){
 }
 
 $oChbxDocs = (permissionhandler::hasPerm('CAN_SEE_DOCUMENTS') ?
-		we_html_forms::checkbox(1, $sType{0}, "chbx_type", g_l('cockpit', '[documents]'), true, "defaultfont", "", !(defined('FILE_TABLE') && permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")), '', 0, 0) :
-		'<input type="hidden" name="chbx_type" value="0"/>');
+				we_html_forms::checkbox(1, $sType{0}, "chbx_type", g_l('cockpit', '[documents]'), true, "defaultfont", "", !(defined('FILE_TABLE') && permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")), '', 0, 0) :
+				'<input type="hidden" name="chbx_type" value="0"/>');
 $oChbxTmpl = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE ?
-		we_html_forms::checkbox(1, $sType{1}, "chbx_type", g_l('cockpit', '[templates]'), true, "defaultfont", "", !(defined('TEMPLATES_TABLE') && permissionhandler::hasPerm('CAN_SEE_TEMPLATES')), "", 0, 0) :
-		'<input type="hidden" name="chbx_type" value="0"/>'); //FIXME: this is needed for getBinary!
+				we_html_forms::checkbox(1, $sType{1}, "chbx_type", g_l('cockpit', '[templates]'), true, "defaultfont", "", !(defined('TEMPLATES_TABLE') && permissionhandler::hasPerm('CAN_SEE_TEMPLATES')), "", 0, 0) :
+				'<input type="hidden" name="chbx_type" value="0"/>'); //FIXME: this is needed for getBinary!
 $oChbxObjs = (permissionhandler::hasPerm('CAN_SEE_OBJECTFILES') ?
-		we_html_forms::checkbox(1, $sType{2}, "chbx_type", g_l('cockpit', '[objects]'), true, "defaultfont", "", !(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')), "", 0, 0) :
-		'<input type="hidden" name="chbx_type" value="0"/>');
+				we_html_forms::checkbox(1, $sType{2}, "chbx_type", g_l('cockpit', '[objects]'), true, "defaultfont", "", !(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')), "", 0, 0) :
+				'<input type="hidden" name="chbx_type" value="0"/>');
 $oChbxCls = (permissionhandler::hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE ?
-		we_html_forms::checkbox(1, $sType{3}, "chbx_type", g_l('cockpit', '[classes]'), true, "defaultfont", "", !(defined('OBJECT_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTS')), "", 0, 0) :
-		'<input type="hidden" name="chbx_type" value="0"/>');
+				we_html_forms::checkbox(1, $sType{3}, "chbx_type", g_l('cockpit', '[classes]'), true, "defaultfont", "", !(defined('OBJECT_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTS')), "", 0, 0) :
+				'<input type="hidden" name="chbx_type" value="0"/>');
 
 $oDbTableType = new we_html_table(array('class' => 'default'), 1, 3);
 $oDbTableType->setCol(0, 0, array('style' => 'padding-right:10px;'), $oChbxDocs . $oChbxTmpl);
@@ -121,7 +125,7 @@ $oSelMaxEntries = new we_html_table(array("height" => "100%", 'class' => 'defaul
 $oSelMaxEntries->setCol(0, 0, array("class" => "defaultfont", 'style' => 'vertical-align:middle;padding-right:5px;'), g_l('cockpit', '[max_amount_entries]'));
 $oSelMaxEntries->setCol(0, 2, array('style' => 'vertical-align:middle;'), $oSctNumEntries->getHTML());
 
-$show = $oSelMaxEntries->getHTML() . we_html_tools::getPixel(1, 5) . $oChbxShowMfdBy . $oChbxShowDate . we_html_element::htmlBr() . $oShowUser;
+$show = $oSelMaxEntries->getHTML() . $oChbxShowMfdBy . $oChbxShowDate . we_html_element::htmlBr() . $oShowUser;
 
 $parts = array(
 	array(
@@ -154,9 +158,9 @@ $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button,
 $sTblWidget = we_html_multiIconBox::getHTML('mfdProps', $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[last_modified]'), "", 390);
 
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[last_modified]'), '', '', STYLESHEET .
-		$jsFile.
-	we_html_element::jsElement($jsPrefs . $jsCode) .
-	we_html_element::jsScript(JS_DIR . 'widgets/mfd.js'), we_html_element::htmlBody(
-		array(
-		"class" => "weDialogBody", "onload" => "init();WE().util.setIconOfDocClass(document,'mfdUIcon');"
-		), we_html_element::htmlForm("", $sTblWidget)));
+		$jsFile .
+		we_html_element::jsElement($jsPrefs . $jsCode) .
+		we_html_element::jsScript(JS_DIR . 'widgets/mfd.js'), we_html_element::htmlBody(
+				array(
+			"class" => "weDialogBody", "onload" => "init();WE().util.setIconOfDocClass(document,'mfdUIcon');"
+				), we_html_element::htmlForm("", $sTblWidget)));

@@ -38,8 +38,7 @@ class rpcCopyNavigationFolderCmd extends rpcCmd{
 
 			$db = $GLOBALS['DB_WE'];
 			$sourceFolder = f('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . $sourceFolderID);
-			$db->query('SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE "' . $db->escape($sourceFolder) . '/%" ORDER BY IsFolder DESC, Path ASC');
-			$result = $db->getAll();
+			$result = $db->getAllq('SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE "' . $db->escape($sourceFolder) . '/%" ORDER BY IsFolder DESC, Path ASC');
 
 			$folders = array($targetFolderID);
 			$mapedId = array($sourceFolderID => array($targetFolderID, $targetFolder));

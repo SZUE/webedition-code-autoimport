@@ -68,7 +68,7 @@ function init() {
 	_fo = document.forms[0];
 	var sCsv_ = opener.gel(_sObjId + '_csv').value;
 	var aCsv = sCsv_.split(',');
-	var sUri = opener.base64_decode(aCsv[0]);
+	var sUri = opener.Base64.decode(aCsv[0]);
 	_sInitUri = sUri;
 	_sInitRssCfg = aCsv[1];
 	var oSctRss = _fo.elements.sct_rss;
@@ -184,14 +184,14 @@ function save() {
 	var oSctConf = _fo.elements.sct_conf;
 	var oCsv_ = opener.gel(_sObjId + '_csv');
 	var oRdoTitle = _fo.elements.rdo_title;
-	oCsv_.value = opener.base64_encode(sUri) + ',' + getBinary('conf') + ',' + oSctConf.selectedIndex +
+	oCsv_.value = opener.Base64.encode(sUri) + ',' + getBinary('conf') + ',' + oSctConf.selectedIndex +
 					',' + getBinary('tb') + ',' + ((oRdoTitle[0].checked) ? 0 : 1);
 	if (_bIsHotTopRssFeeds) {
 		var oSctRss = _fo.elements.sct_rss;
 		var aNewTopRssFeeds = [];
 		for (var i = 0; _iTopRssFeedsLen > i; i++) {
-			aNewTopRssFeeds[i] = [opener.base64_encode(oSctRss.options[i + 1].text),
-				opener.base64_encode(oSctRss.options[i + 1].value)];
+			aNewTopRssFeeds[i] = [opener.Base64.encode(oSctRss.options[i + 1].text),
+				opener.Base64.encode(oSctRss.options[i + 1].value)];
 		}
 		opener._trf = aNewTopRssFeeds;
 		opener._isHotTrf = true;
@@ -279,8 +279,8 @@ function handleTopRssFeed(sAction) {
 
 function populateSct(oSctRss) {
 	for (var i = 0; _iTopRssFeedsLen > i; i++) {
-		var sOptVal = opener.base64_decode(_aTopRssFeeds_[i][1]);
-		var sOptTxt = opener.base64_decode(_aTopRssFeeds_[i][0]);
+		var sOptVal = opener.Base64.decode(_aTopRssFeeds_[i][1]);
+		var sOptTxt = opener.Base64.decode(_aTopRssFeeds_[i][0]);
 		oSctRss.options[oSctRss.options.length] = new Option(sOptTxt, sOptVal);
 	}
 }

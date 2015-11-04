@@ -108,17 +108,17 @@ function startTree(){
 		return $items;
 	}
 
-	function getJSTreeCode(){
+	function getJSTreeCode(we_messaging_messaging $messaging){
 		$mod = we_base_request::_(we_base_request::STRING, 'mod', '');
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 		if(($param = we_base_request::_(we_base_request::INT, 'msg_param'))){
 			switch($param){
 				case we_messaging_frames::TYPE_TODO:
-					$f = $this->messaging->get_inbox_folder('we_todo');
+					$f = $messaging->get_inbox_folder('we_todo');
 					break;
 				case we_messaging_frames::TYPE_MESSAGE:
-					$f = $this->messaging->get_inbox_folder('we_message');
+					$f = $messaging->get_inbox_folder('we_message');
 					break;
 			}
 		}

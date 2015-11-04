@@ -76,7 +76,6 @@ function we_tag_writeShopData($attribs){
 		ERROR_LOG_TABLE => 'write',
 		WE_SHOP_VAT_TABLE => 'read',
 		CATEGORY_TABLE => 'read',
-		WE_SHOP_PREFS_TABLE => 'read',
 		SETTINGS_TABLE => 'read'
 	));
 	$orderID = intval(f('SELECT MAX(IntOrderID) FROM ' . SHOP_TABLE, '', $DB_WE)) + 1;

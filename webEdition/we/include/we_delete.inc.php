@@ -59,17 +59,15 @@ if(!$wfchk){
 				break;
 			}
 		}
-		$wfchk_html .= we_html_element::jsElement(
-						'function confirmDel(){' .
+		$wfchk_html .= we_html_element::jsElement('
+function confirmDel(){' .
 						($found ? 'if(confirm("' . g_l('alert', '[found_in_workflow]') . '")){' : '') .
 						'we_cmd("' . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 0) . '","","' . $table . '",1);' .
 						($found ? '}' : '') .
 						'}');
 	} else {
 		$script = we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_WARNING);
-		$wfchk_html .= we_html_element::jsElement(
-						'function confirmDel(){}'
-		);
+		$wfchk_html .= we_html_element::jsElement('function confirmDel(){}');
 	}
 	$wfchk_html .= '</head><body onload="confirmDel()"><form name="we_form" method="post">' .
 			we_html_tools::hidden("sel", implode(',', $selectedItems)) . "</form>";
@@ -88,7 +86,7 @@ if(!$wfchk){
 				t_e('ID ' . $selectedItems[0] . ' not present in table ' . $table);
 				return;
 			} elseif($idInfos['IsFolder']){
-				$idInfos['hasFiles'] = f('SELECT ID FROM ' . $GLOBALS['DB_WE']->escape($table) . ' WHERE ParentID=' . intval($selectedItems[0]) . " AND  IsFolder = 0 AND Path LIKE '" . $GLOBALS['DB_WE']->escape($idInfos['Path']) . "%'", 'ID', $GLOBALS['DB_WE']) > 0 ? 1 : 0;
+				$idInfos['hasFiles'] = f('SELECT ID FROM ' . $GLOBALS['DB_WE']->escape($table) . ' WHERE ParentID=' . intval($selectedItems[0]) . ' AND IsFolder = 0 AND Path LIKE "' . $GLOBALS['DB_WE']->escape($idInfos['Path']) . '%"') > 0 ? 1 : 0;
 			}
 		}
 
@@ -452,12 +450,25 @@ echo we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_delete]'
 	f.submit();
 }
 function we_cmd() {
-	var args = [];
-	for (var i = 0; i < arguments.length; i++) {
-		args.push(arguments[i]);
+	/*
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
+		}
 	}
+
+	switch (args[0]) {
+		default:
+			top.opener.top.we_cmd.apply(this, arguments);
+	}
+	*/
 	if (top.we_cmd) {
-		top.we_cmd.apply(this, args);
+		top.we_cmd.apply(this, arguments);
 	}
 }
 //-->
@@ -477,8 +488,7 @@ $delete_confirm = g_l('alert', '[delete]');
 
 $content = '<span class="middlefont">' . $delete_text . '</span>';
 
-$_buttons = we_html_button::position_yes_no_cancel(
-				we_html_button::create_button(we_html_button::OK, "javascript:if(confirm('" . $delete_confirm . "')) we_cmd('do_delete','','" . $table . "')"), "", we_html_button::create_button("quit_delete", "javascript:we_cmd('exit_delete','','" . $table . "')"), 10, "left");
+$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:if(confirm('" . $delete_confirm . "')) we_cmd('do_delete','','" . $table . "')"), "", we_html_button::create_button("quit_delete", "javascript:we_cmd('exit_delete','','" . $table . "')"), 10, "left");
 
 $form = '<form name="we_form" method="post">' . we_html_tools::hidden('sel', '') . '</form>';
 

@@ -297,8 +297,6 @@ class we_backup_backup extends we_backup_base{
 
 				if(!$this->isFixed($noprefix)){
 
-//$metadata = $this->backup_db->metadata($table);
-
 					if(!$this->partial){
 						$xmlExport->exportChunk(0, "we_backup_table", $this->dumpfilename, $table, $this->backup_binary);
 

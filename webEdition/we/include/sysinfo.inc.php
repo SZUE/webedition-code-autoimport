@@ -157,9 +157,9 @@ function getOK($message = '', $value = ''){
 $_install_dir = '<abbr title="' . $_install_dir . '">' . we_base_util::shortenPath(WEBEDITION_PATH, 35) . '</abbr>';
 
 $weVersion = WE_VERSION .
-	(defined('WE_SVNREV') && WE_SVNREV != '0000' ? ' (SVN-Revision: ' . WE_SVNREV . ((defined('WE_VERSION_BRANCH') && WE_VERSION_BRANCH != 'trunk') ? '|' . WE_VERSION_BRANCH : '') . ')' : '') .
-	(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP ? ' ' . g_l('global', '[' . WE_VERSION_SUPP . ']') : '') .
-	(defined('WE_VERSION_SUPP_VERSION') && WE_VERSION_SUPP_VERSION ? WE_VERSION_SUPP_VERSION : '');
+		(defined('WE_SVNREV') && WE_SVNREV != '0000' ? ' (SVN-Revision: ' . WE_SVNREV . ((defined('WE_VERSION_BRANCH') && WE_VERSION_BRANCH != 'trunk') ? '|' . WE_VERSION_BRANCH : '') . ')' : '') .
+		(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP ? ' ' . g_l('global', '[' . WE_VERSION_SUPP . ']') : '') .
+		(defined('WE_VERSION_SUPP_VERSION') && WE_VERSION_SUPP_VERSION ? WE_VERSION_SUPP_VERSION : '');
 
 // GD_VERSION is more precise but only available in PHP 5.2.4 or newer
 if(is_callable("gd_info")){
@@ -226,7 +226,6 @@ $_info = array(
 	),
 	'<a href="javascript:showPhpInfo();">PHP</a>' => array(
 		g_l('sysinfo', '[php_version]') => /* version_compare(PHP_VERSION, '5.3.8', '<') ? getWarning('>5.3.8', PHP_VERSION) : */ PHP_VERSION,
-		/* g_l('sysinfo', '[zendframework_version]') => (Zend_Version::VERSION != WE_ZFVERSION) ? getWarning(sprintf(g_l('sysinfo', '[zend_framework warning]'), WE_ZFVERSION), Zend_Version::VERSION) : Zend_Version::VERSION, */
 		'register_globals' => (ini_get_bool('register_globals')) ? getWarning(g_l('sysinfo', '[register_globals warning]'), ini_get('register_globals')) : getOK('', ini_get_message('register_globals')),
 		'max_execution_time' => ini_get('max_execution_time'),
 		'memory_limit' => we_convertIniSizes(ini_get('memory_limit')),
@@ -276,10 +275,7 @@ $_types = array(
 	g_l('sysinfo', '[we_max_upload_size]') => 'bytes'
 );
 
-$buttons = we_html_button::position_yes_no_cancel(
-		we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close()"), '', ''
-);
-
+$buttons = we_html_button::formatButtons(we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close()"));
 
 $_space_size = 150;
 $_parts = array();

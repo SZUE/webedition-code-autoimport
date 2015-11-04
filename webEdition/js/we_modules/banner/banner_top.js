@@ -40,15 +40,17 @@ function usetHot() {
 
 
 function we_cmd() {
-	var args = [];
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-	for (var i = 0; i < arguments.length; i++) {
-		args.push(arguments[i]);
-		url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
-		if (i < (arguments.length - 1)) {
-			url += "&";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
 		}
 	}
+
 	if (hot === 1 && args[0] != "save_banner") {
 		if (confirm(WE().consts.g_l.banner.view.save_changed_banner)) {
 			args[0] = "save_banner";
@@ -84,7 +86,7 @@ function we_cmd() {
 			break;
 		case "delete_banner":
 			if (WE().util.hasPerm("DELETE_BANNER")) {
-				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else {
 
 				if (top.content.editor.edbody.loaded && top.content.editor.edbody.we_is_home === undefined) {
@@ -92,7 +94,7 @@ function we_cmd() {
 						return;
 					}
 				} else {
-					top.we_showMessage(WE().consts.g_l.banner.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_WARNING, window);
+					top.we_showMessage(WE().consts.g_l.banner.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_WARNING, this);
 					return;
 				}
 				top.content.editor.edbody.document.we_form.ncmd.value = args[0];
@@ -106,14 +108,14 @@ function we_cmd() {
 						return;
 					}
 				} else {
-					top.we_showMessage(WE().consts.g_l.banner.view.nothing_to_save, WE().consts.message.WE_MESSAGE_WARNING, window);
+					top.we_showMessage(WE().consts.g_l.banner.view.nothing_to_save, WE().consts.message.WE_MESSAGE_WARNING, this);
 					return;
 				}
 
 				top.content.editor.edbody.document.we_form.ncmd.value = args[0];
 				top.content.editor.edbody.submitForm();
 			} else {
-				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
 
 			}
 			top.content.usetHot();
@@ -124,7 +126,7 @@ function we_cmd() {
 			top.content.editor.edbody.submitForm();
 			break;
 		default:
-			top.opener.top.we_cmd.apply(this, args);
+			top.opener.top.we_cmd.apply(this, arguments);
 
 	}
 }

@@ -57,18 +57,26 @@ function we_setPath(path, text, id, classname) {
 }
 
 function we_cmd() {
-
-	var args = [];
-	for (var i = 0; i < arguments.length; i++) {
-		args.push(arguments[i]);
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
+		}
 	}
 
-	switch (arguments[0]) {
-
+	switch (args[0]) {
 		case 'switch_edit_page':
-			_EditorFrame.setEditorEditPageNr(arguments[1]);
+			_EditorFrame.setEditorEditPageNr(args[1]);
 			parent.we_cmd.apply(this, args);
 			break;
+		default:
+			if (top.we_cmd) {
+				top.we_cmd.apply(this, arguments);
+			}
 	}
 
 }

@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_fileupload_ui_importer extends we_fileupload_ui_base{
+
 	protected $dimensions = array(
 		'width' => 400,
 		'dragHeight' => 30,
@@ -53,18 +54,18 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base{
 		$this->contentName = 'imgimportcontent';
 	}
 
-	public function getHTML($hiddens = ''){t_e('hiddens', $hiddens);
+	public function getHTML($hiddens = ''){
 		$isIE10 = we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11;
 		$alert = we_html_tools::hidden('we_cmd[0]', 'import_files') .
-			we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', 2) .
-			we_html_element::htmlDiv(array('id' => 'desc'), we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[import_expl_js]') . '<br/><br/>' . ($this->maxUploadSizeMBytes == 0 ? g_l('importFiles', '[import_expl_js_no_limit]') : sprintf(g_l('importFiles', '[import_expl_js_limit]'), $this->maxUploadSizeMBytes)), we_html_tools::TYPE_INFO, 520, false, 20));
+				we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', 2) .
+				we_html_element::htmlDiv(array('id' => 'desc'), we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[import_expl_js]') . '<br/><br/>' . ($this->maxUploadSizeMBytes == 0 ? g_l('importFiles', '[import_expl_js_no_limit]') : sprintf(g_l('importFiles', '[import_expl_js_limit]'), $this->maxUploadSizeMBytes)), we_html_tools::TYPE_INFO, 520, false, 20));
 
 		$topParts = array(
 			array("headline" => "", "html" => $alert, "space" => 0)
 		);
 
 		$butBrowse = str_replace(array("\n\r", "\r\n", "\r", "\n"), "", $isIE10 ? we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, 84, we_html_button::HEIGHT, '', '', false, false, '_btn') :
-				we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, 278, we_html_button::HEIGHT, '', '', false, false, '_btn'));
+						we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, 278, we_html_button::HEIGHT, '', '', false, false, '_btn'));
 		$butReset = str_replace(array("\n\r", "\r\n", "\r", "\n"), "", we_html_button::create_button('reset', 'javascript:we_FileUpload.reset()', true, ($isIE10 ? 84 : 100), we_html_button::HEIGHT, '', '', true, false, '_btn'));
 		$fileselect = '
 		<div style="float:left;">
@@ -92,24 +93,22 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base{
 			<p>Please wait: <span id="we_fileUpload_messageNr"></span> images left to process</p><p>(add progressbar here)</p></div>
 		';
 
-		$content = we_html_element::htmlDiv(
-				array("id" => "forms", "style" => "display:block"), we_html_element::htmlForm(
-					array(
-					"action" => WEBEDITION_DIR . "we_cmd.php",
-					"name" => "we_startform",
-					"method" => "post"
-					), $hiddens) .
-				'<div style="overflow:hidden; padding-bottom: 10px">' . we_html_multiIconBox::getHTML("selectFiles", $topParts, 30, "", -1, "", "", "", g_l('importFiles', '[step2]'), "", 0, "hidden") . '</div>' .
-				'<div id="div_upload_files" style="height:310px; width: 100%; overflow:auto">' . we_html_multiIconBox::getHTML("uploadFiles", array(), 30, "", -1, "", "", "", "") . '</div>' .
-				$messageLayer
+		$content = we_html_element::htmlDiv(array("id" => "forms", "style" => "display:block"), we_html_element::htmlForm(array(
+							"action" => WEBEDITION_DIR . "we_cmd.php",
+							"name" => "we_startform",
+							"method" => "post"
+								), $hiddens) .
+						'<div style="overflow:hidden; padding-bottom: 10px">' . we_html_multiIconBox::getHTML("selectFiles", $topParts, 30, "", -1, "", "", "", g_l('importFiles', '[step2]'), "", 0, "hidden") . '</div>' .
+						'<div id="div_upload_files" style="height:310px; width: 100%; overflow:auto">' . we_html_multiIconBox::getHTML("uploadFiles", array(), 30, "", -1, "", "", "", "") . '</div>' .
+						$messageLayer
 		);
 
 		return we_html_element::htmlBody(array("class" => "weDialogBody"), $content);
 	}
 
 	//TODO: add param filetype
-	public static function getBtnImportFiles($importToID = 0, $callback = '', $text = ''){
-		return we_html_button::create_button("fa:" . ($text ? : 'btn_import_files') . ",fa-lg fa-upload", "javascript:top.we_cmd('import_files','" . $importToID . "', '" . $callback . "')", true, 50);
+	public static function getBtnImportFiles($parentID = 0, $callback = '', $text = ''){
+		return we_html_button::create_button("fa:" . ($text ? : 'btn_import_files') . ",fa-lg fa-upload", "javascript:top.we_cmd('import_files','" . $parentID . "', '" . $callback . "')", true, 50);
 	}
 
 	protected function _getHtmlFileRow(){

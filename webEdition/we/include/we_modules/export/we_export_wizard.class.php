@@ -196,7 +196,7 @@ var path="/";
 
 var SelectedItems= {
 "' . FILE_TABLE . '":[],
-"' . TEMPLATES_TABLE . '":[],'.
+"' . TEMPLATES_TABLE . '":[],' .
 				(defined('OBJECT_FILES_TABLE') ? (
 					'"' . OBJECT_FILES_TABLE . '":[],
 	"' . OBJECT_TABLE . '":[],
@@ -360,22 +360,33 @@ function we_submit(){
 
 		$js = we_html_element::jsElement('
 function we_cmd(){
-	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if (i < (arguments.length - 1)){ url += "&"; }}
-	switch (arguments[0]){
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
+		}
+	}
+
+	switch (args[0]){
 		case "we_selector_category":
-			new (WE().util.jsWindow)(window, url,"we_catselector",-1,-1,' . we_selector_file::WINDOW_CATSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
+			new (WE().util.jsWindow)(this, url,"we_catselector",-1,-1,' . we_selector_file::WINDOW_CATSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
 		break;
 		case "add_cat":
 		case "del_cat":
 		case "del_all_cats":
-			document.we_form.wcmd.value=arguments[0];
-			document.we_form.cat.value=arguments[1];
+			document.we_form.wcmd.value=args[0];
+			document.we_form.cat.value=args[1];
 			document.we_form.step.value=2;
 			document.we_form.submit();
 		break;
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(window, url,"we_selector",-1,-1,' . we_selector_file::WINDOW_SELECTOR_WIDTH . ',' . we_selector_file::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
+			new (WE().util.jsWindow)(this, url,"we_selector",-1,-1,' . we_selector_file::WINDOW_SELECTOR_WIDTH . ',' . we_selector_file::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
 		break;
+			top.opener.top.we_cmd.apply(this, arguments);
 	}
 }');
 		$js.=we_html_element::jsElement(
@@ -676,7 +687,7 @@ function setState(a) {
 				$this->footerFrame . '.location="' . $this->frameset . '&pnt=footer&step=7";');
 
 		$parts = array(
-			array("headline" => g_l('export', '[filename]'), "html" => we_html_tools::getPixel(5, 5) . we_html_tools::htmlTextInput("filename", $_input_size, $filename, "", "", "text", 260), "space" => $_space)
+			array("headline" => g_l('export', '[filename]'), "html" => we_html_tools::htmlTextInput("filename", $_input_size, $filename, "", "", "text", 260), "space" => $_space)
 		);
 
 //	Filetype
@@ -1288,14 +1299,21 @@ if (top.footer.setProgress){
 
 		return we_html_element::jsElement('
 function formFileChooser() {
-	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if (i < (arguments.length - 1)){ url += "&"; }}
-	switch (arguments[0]) {
+	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
+	var args=[];
+	for(var i = 0; i < arguments.length; i++){
+	url += "we_cmd[]="+encodeURI(arguments[i]);
+	args.push(arguments[i]);
+	if (i < (arguments.length - 1)){
+	url += "&";
+	}}
+	switch (args[0]) {
 		case "browse_server":
 			new (WE().util.jsWindow)(window, url,"server_selector",-1,-1,500,300,true,false,true);
 		break;
 	}
 }') .
-			we_html_tools::htmlFormElementTable(we_html_tools::getPixel(5, 5) . we_html_tools::htmlTextInput($IDName, 42, $IDValue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
+			we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 42, $IDValue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", "", permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
 	}
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
@@ -1306,8 +1324,14 @@ function formFileChooser() {
 		$js = we_html_element::jsElement('
 				function formDirChooser() {
 					var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
-					for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if (i < (arguments.length - 1)){ url += "&"; }}
-					switch (arguments[0]) {
+					var args=[];
+					for(var i = 0; i < arguments.length; i++){
+					url += "we_cmd[]="+encodeURI(arguments[i]);
+					args.push(arguments[i]);
+					if (i < (arguments.length - 1)){
+					url += "&";
+					}}
+					switch (args[0]) {
 						case "we_selector_directory":
 							new (WE().util.jsWindow)(window, url,"dir_selector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,false,true true);
 						break;
@@ -1344,8 +1368,8 @@ function formFileChooser() {
 		$dir = we_html_tools::htmlFormElementTable($this->formWeChooser(FILE_TABLE, $width, 0, "dir", $dir, "Path", $path), g_l('export', '[dir]'));
 
 		$table = new we_html_table(array('class' => 'default'), 3, 2);
+		$table->setCol(0, 0, array('style' => 'width:' . (defined('OBJECT_FILES_TABLE') ? 25 : 0) . 'px'));
 		$table->setColContent(0, 1, $select->getHtml());
-		$table->setColContent(1, 0, we_html_tools::getPixel(defined('OBJECT_FILES_TABLE') ? 25 : 0, 5));
 		$table->setColContent(2, 1, $dir);
 
 		$headline = defined('OBJECT_FILES_TABLE') ?
@@ -1377,8 +1401,8 @@ function formFileChooser() {
 
 			$type = we_base_request::_(we_base_request::STRING, "type", '');
 
-			$radio = $showdocs ? we_html_forms::radiobutton("classname", ($type === "classname" ? true : false), "type", g_l('export', '[classname]'), true, "defaultfont", $this->topFrame . ".type='classname'") : we_html_tools::getPixel(25, 5) . g_l('export', '[classname]');
-			return $js . we_html_tools::htmlFormElementTable(we_html_tools::getPixel(25, 5) . $select->getHtml(), $radio);
+			$radio = $showdocs ? we_html_forms::radiobutton("classname", ($type === "classname" ? true : false), "type", g_l('export', '[classname]'), true, "defaultfont", $this->topFrame . ".type='classname'") : g_l('export', '[classname]');
+			return $js . we_html_tools::htmlFormElementTable($select->getHtml(), $radio);
 		}
 		return null;
 	}
@@ -1427,7 +1451,7 @@ function formFileChooser() {
 		if(!permissionhandler::hasPerm("EDIT_KATEGORIE")){
 			$cats->isEditable = false;
 		}
-		return '<table class="default"><tr><td>' . (defined('OBJECT_FILES_TABLE') ? we_html_tools::getPixel(25, 2) : "") . '</td><td>' .
+		return '<table class="default"><tr><td></td><td>' .
 			$hiddens . we_html_tools::htmlFormElementTable($cats->get(), g_l('export', '[categories]'), "left", "defaultfont") .
 			'</td></tr></table>';
 	}
@@ -1459,17 +1483,16 @@ function formFileChooser() {
 	private function getHTMLChooser($name, $value, $values, $title){
 		$input_size = 5;
 
-		$select = new we_html_select(array("name" => $name . "_select", "class" => "weSelect", "onchange" => "document.we_form." . $name . ".value=this.options[this.selectedIndex].value;this.selectedIndex=0", "style" => "width:200;"));
+		$select = new we_html_select(array('name' => $name . '_select', 'class' => 'weSelect', 'onchange' => 'document.we_form.' . $name . '.value=this.options[this.selectedIndex].value;this.selectedIndex=0', 'style' => 'width:200;'));
 		$select->addOption("", "");
 		foreach($values as $k => $v){
 			$select->addOption(oldHtmlspecialchars($k), oldHtmlspecialchars($v));
 		}
 
-		$table = new we_html_table(array('class' => 'default', "width" => 250), 1, 3);
+		$table = new we_html_table(array('class' => 'default', "width" => 250), 1, 2);
 
-		$table->setColContent(0, 0, we_html_tools::htmlTextInput($name, $input_size, $value));
-		$table->setColContent(0, 1, we_html_tools::getPixel(10, 10));
-		$table->setColContent(0, 2, $select->getHtml());
+		$table->setColContent(0, 0, we_html_tools::htmlTextInput($name, $input_size, $value) . '  ');
+		$table->setColContent(0, 1, $select->getHtml());
 
 		return we_html_tools::htmlFormElementTable($table->getHtml(), $title);
 	}

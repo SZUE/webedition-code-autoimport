@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_base_file{
+
 	const SZ_HUMAN = 0;
 	const SZ_BYTE = 1;
 	const SZ_KB = 2;
@@ -57,7 +58,7 @@ abstract class we_base_file{
 					break;
 				}
 				$buffer .= $data;
-			} while(true);
+			}while(true);
 			$close($fp);
 			return $buffer;
 		}
@@ -286,17 +287,17 @@ abstract class we_base_file{
 	static function mkpath($path){
 		$path = str_replace('\\', '/', $path);
 		return (self::hasURL($path) ?
-				false :
-				($path ? self::createLocalFolderByPath($path) : false));
+						false :
+						($path ? self::createLocalFolderByPath($path) : false));
 	}
 
 	public static function insertIntoCleanUp($path, $date){
 		$DB_WE = new DB_WE();
 		$date = ($date? : 300); //make each entry last at least 300 seconds
 		$DB_WE->query('INSERT INTO ' . CLEAN_UP_TABLE . ' SET ' . we_database_base::arraySetter(array(
-				'Path' => $DB_WE->escape($path),
-				'Date' => sql_function('(NOW()+ INTERVAL ' . intval($date) . ' SECOND)'),
-			)) . ' ON DUPLICATE KEY UPDATE Date=(NOW()+ INTERVAL ' . intval($date) . ' SECOND)');
+					'Path' => $DB_WE->escape($path),
+					'Date' => sql_function('(NOW()+ INTERVAL ' . intval($date) . ' SECOND)'),
+				)) . ' ON DUPLICATE KEY UPDATE Date=(NOW()+ INTERVAL ' . intval($date) . ' SECOND)');
 	}
 
 	public static function deleteLocalFile($filename){
@@ -458,7 +459,7 @@ abstract class we_base_file{
 					if($_data_size != $_written){
 						return false;
 					}
-				} while(true);
+				}while(true);
 				$close($gzfp);
 			} else {
 				fclose($fp);
@@ -489,7 +490,7 @@ abstract class we_base_file{
 						break;
 					}
 					fwrite($fp, $data);
-				} while(true);
+				}while(true);
 				fclose($fp);
 			} else {
 				gzclose($gzfp);
@@ -608,8 +609,7 @@ abstract class we_base_file{
 
 	public static function cleanTempFiles($cleanSessFiles = false){
 		$db = $GLOBALS['DB_WE'];
-		$db->query('SELECT Path FROM ' . CLEAN_UP_TABLE . ' WHERE Date<=NOW()');
-		$files = $db->getAll(true);
+		$files = $db->getAllq('SELECT Path FROM ' . CLEAN_UP_TABLE . ' WHERE Date<=NOW()', true);
 		foreach($files as $file){
 			if(file_exists($file)){
 				self::deleteLocalFile($file);
@@ -618,8 +618,7 @@ abstract class we_base_file{
 		}
 		if($cleanSessFiles){
 			$seesID = session_id();
-			$db->query('SELECT Path FROM ' . CLEAN_UP_TABLE . ' WHERE Path LIKE "%' . $GLOBALS['DB_WE']->escape($seesID) . '%"');
-			$files = $db->getAll(true);
+			$files = $db->getAllq('SELECT Path FROM ' . CLEAN_UP_TABLE . ' WHERE Path LIKE "%' . $GLOBALS['DB_WE']->escape($seesID) . '%"',true);
 			foreach($files as $file){
 				if(file_exists($file)){
 					self::deleteLocalFile($file);

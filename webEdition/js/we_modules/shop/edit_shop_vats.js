@@ -71,15 +71,18 @@ function doUnload() {
 }
 
 function we_cmd() {
-	var url = WE().consts.dirs + "we_cmd.php?";
-	for (var i = 0; i < arguments.length; i++) {
-		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
-		if (i < (arguments.length - 1)) {
-			url += "&";
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
 		}
 	}
 
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "save":
 			document.we_form.onsaveclose.value = 1;
 			we_submitForm(SCRIPT_NAME);
@@ -91,9 +94,9 @@ function we_cmd() {
 
 		case "close":
 			if (hot) {
-				new (WE().util.jsWindow)(window, WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_exitQuestion.php", "we_exit_doc_question", -1, -1, 380, 130, true, false, true);
+				new (WE().util.jsWindow)(this, WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_exitQuestion.php", "we_exit_doc_question", -1, -1, 380, 130, true, false, true);
 			} else {
-				window.close();
+				this.close();
 			}
 			break;
 
@@ -103,7 +106,7 @@ function we_cmd() {
 				elem.style.display = "";
 			}
 
-			if (theVat = allVats["vat_" + arguments[1]]) {
+			if (theVat = allVats["vat_" + args[1]]) {
 				changeFormTextField("weShopVatId", theVat["id"]);
 				changeFormTextField("weShopVatText", theVat["text"]);
 				changeFormTextField("weShopVatVat", theVat["vat"]);
@@ -116,7 +119,7 @@ function we_cmd() {
 
 		case "delete":
 			if (confirm(WE().consts.g_l.shop.vat_confirm_delete)) {
-				document.location = SCRIPT_NAME + "?we_cmd[0]=deleteVat&weShopVatId=" + arguments[1];
+				document.location = SCRIPT_NAME + "?we_cmd[0]=deleteVat&weShopVatId=" + args[1];
 			}
 			break;
 
@@ -134,9 +137,7 @@ function we_cmd() {
 				changeFormTextField("weShopVatProvince", theVat["province"]);
 				//changeFormTextField("weShopVatTextProvince", theVat["textProvince"]);
 			}
-
 			break;
-
 		default :
 			break;
 	}

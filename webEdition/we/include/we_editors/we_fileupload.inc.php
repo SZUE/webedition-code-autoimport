@@ -43,13 +43,7 @@ $fileUpload->setCallback('top.doOnImportSuccess(scope.weDoc);');
 $fileUpload->setDimensions(array('dragWidth' => 374, 'inputWidth' => 378));
 $fileUpload->setIsPreset($isPreset);
 $fileUpload->setIsExternalBtnUpload(true);
-$fileUpload->setFieldImportToID(array('setField' => true, 'preset' => $importToID, 'setFixed' => $setFixedImportTo));
-$fileUpload->setMoreFieldsToAppend(array(
-	array('imgsSearchable', 'text'),
-	array('importMetadata', 'text'),
-	array('sameName', 'text'),
-	array('importToID', 'text')
-));
+$fileUpload->setFieldParentID(array('setField' => true, 'preset' => $importToID, 'setFixed' => $setFixedImportTo));
 $fileUpload->setEditorJS(array(
 	'writebackTarget' => $writebackTarget,
 	'customCallback' => $customCallback,
@@ -59,8 +53,9 @@ $fileUpload->setEditorJS(array(
 
 echo we_html_tools::getHtmlTop('fileupload') . 
 	STYLESHEET . $fileUpload->getEditorJS() .
-	we_html_element::jsScript(JS_DIR . 'global.js') .
-	we_html_element::jsScript(JS_DIR . 'keyListener.js');
+	we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
+	we_html_element::jsScript(JS_DIR . 'keyListener.js') .
+	we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js');
 
 echo we_html_element::htmlBody(array('style' => 'position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', 'onload' => ''),
 	we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;'),

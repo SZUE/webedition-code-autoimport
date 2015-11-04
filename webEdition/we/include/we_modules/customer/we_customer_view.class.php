@@ -107,7 +107,7 @@ var frameUrl="' . $this->frameset . '";
 	}
 
 	function getJSTreeHeader(){
-		return we_html_element::jsElement($this->getJSSubmitFunction('cmd', 'post', 'we_form_treeheader')) .
+		return we_html_element::jsElement($this->getJSSubmitFunction('cmd')) .
 			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_treeHeader.js');
 	}
 
@@ -130,25 +130,26 @@ function doUnload() {
 
 function we_cmd(){
 	var url = "' . $this->frameset . '?";
-	for(var i = 0; i < arguments.length; i++){
-		url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
-		if(i < (arguments.length - 1)){
-			url += "&";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
 		}
 	}
-	switch (arguments[0]) {
+
+	switch (args[0]) {
 		case "save_settings":
-			document.we_form.cmd.value=arguments[0];
+			document.we_form.cmd.value=args[0];
 			submitForm();
-		break;
+			break;
 		default:
+			top.we_cmd.apply(this, arguments);
 	}
 }' . $this->getJSSubmitFunction("customer_settings");
 	}
-
-	/* use parent
-	  function getJSSubmitFunctionBack($def_target = 'edbody', $def_method = 'post'){}
-	 */
 
 	function processCommands(){
 		switch(we_base_request::_(we_base_request::STRING, 'cmd')){
@@ -761,7 +762,7 @@ self.close();');
 				$conditionarr = array();
 				foreach($this->customer->persistent_slots as $field){
 					if(!$this->customer->isProtected($field) && $field != "Password"){
-						$conditionarr[] = "$field LIKE '%$value%'";
+						$conditionarr[] = $field . ' LIKE "%' . $value . '%"';
 					}
 				}
 				$condition.=($condition ?
@@ -963,11 +964,11 @@ self.close();');
 		foreach($common as $pk => $pv){
 			if($this->customer->isInfoDate($pk)){
 				$pv = ($pv == '' || !is_numeric($pv)) ? 0 : $pv;
-				$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(($pv ? we_html_element::htmlDiv(array('class' => 'defaultgray'), date(g_l('weEditorInfo', '[date_format]'), $pv)) : '-' . we_html_tools::getPixel(100, 5)), $this->settings->getPropertyTitle($pk)));
+				$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(($pv ? we_html_element::htmlDiv(array('class' => 'defaultgray'), date(g_l('weEditorInfo', '[date_format]'), $pv)) : '-'), $this->settings->getPropertyTitle($pk)));
 			} else {
 				switch($pk){
 					case 'ID':
-						$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(($pv ? we_html_element::htmlDiv(array('class' => 'defaultgray'), $pv) : '-' . we_html_tools::getPixel(100, 5)), $this->settings->getPropertyTitle($pk)));
+						$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(($pv ? we_html_element::htmlDiv(array('class' => 'defaultgray'), $pv) : '-'), $this->settings->getPropertyTitle($pk)));
 						++$c;
 						$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), '');
 						break;

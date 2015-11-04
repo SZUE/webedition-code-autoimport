@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -37,15 +38,13 @@ function init(){
 	parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
 }";
 
-echo we_html_tools::getHtmlTop(g_l('cockpit', '[kv_failedLogins][headline]') . ' (' . $maxRows . ')', '', '', STYLESHEET . we_html_element::jsElement(
-		$sJsCode), we_html_element::htmlBody(
-		array(
-		"marginwidth" => 15,
-		"marginheight" => 10,
-		"leftmargin" => 15,
-		"topmargin" => 10,
-		"onload" => "if(parent!=self){init();}"
-		), we_html_element::htmlDiv(array(
-			"id" => "fdl"
-			), we_html_element::htmlDiv(array('id' => 'fdl_data'), $failedLoginHTML)
+echo we_html_tools::getHtmlTop(g_l('cockpit', '[kv_failedLogins][headline]') . ' (' . $maxRows . ')', '', '', STYLESHEET . we_html_element::jsElement($sJsCode), we_html_element::htmlBody(array(
+			"marginwidth" => 15,
+			"marginheight" => 10,
+			"leftmargin" => 15,
+			"topmargin" => 10,
+			"onload" => "if(parent!=self){init();}"
+				), we_html_element::htmlDiv(array(
+					"id" => "fdl"
+						), we_html_element::htmlDiv(array('id' => 'fdl_data'), $failedLoginHTML)
 )));

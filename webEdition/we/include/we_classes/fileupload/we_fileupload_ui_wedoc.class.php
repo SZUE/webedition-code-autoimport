@@ -25,15 +25,17 @@
 class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
 	public function __construct($contentType = array(), $extensions = '', $doImport = true){
 		parent::__construct($contentType, $extensions);
+		$this->formElements = array_merge($this->formElements, array(
+			'importMeta' => array('set' => true, 'multiIconBox' => false, 'space' => 0, 'rightHeadline' => true, 'noline' => true),
+		));
 		$this->dimensions['dragWidth'] = 300;
-		$this->moreFieldsToAppend = array(
+		$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, array(
 			array('we_transaction', 'text'),
-			array('import_metadata', 'check'),
 			array('we_doc_ct', 'text'),
 			array('we_doc_ext', 'text')
-		);
+		));
 	}
-	
+
 	public function getHTML($fs = '', $ft = '', $md = '', $thumbnailSmall = '', $thumbnailBig = ''){
 		$isIE10 = we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11;
 
@@ -42,7 +44,7 @@ class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
 		$progress->setProgressTextPlace(0);
 		$progress->setName('_fileupload');
 		$divProgressbar = we_html_element::htmlDiv(array('id' => 'div_fileupload_progressBar', 'style' => 'margin: 13px 0 10px 0;display:none;'), $progress->getHTML());
-		$divFileInfo = we_html_element::htmlDiv(array('style' => 'margin-top: ' . $leftMarginTop . 'px'), $fs . '<br />' . $ft . '<br />' . $md);
+		$divFileInfo = we_html_element::htmlDiv(array(), $fs . '<br />' . $ft . '<br />' . $md);
 		$divButtons = we_html_element::htmlDiv(array('id' => 'div_fileupload_buttons', 'style' => 'width:204px'),
 				$this->getDivBtnInputReset($isIE10 ? 84 : 170) .
 				$divProgressbar .
@@ -58,7 +60,7 @@ class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
 					<td width="300px">' .
 						we_html_element::htmlDiv(array('id' => 'div_fileupload_right', 'style'=>"position:relative;"),
 							$this->getHtmlDropZone('preview', $thumbnailSmall) .
-							($this->contentType === we_base_ContentTypes::IMAGE ? '<br />' . we_html_forms::checkbox(1, true, "import_metadata", g_l('metadata', '[import_metadata_at_upload]')) : '')
+							($this->contentType === we_base_ContentTypes::IMAGE ? '<br />' . $this->getFormImportMeta() : '')
 						) . '
 					</td>
 				</tr>
@@ -70,6 +72,5 @@ class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
 				</tr>
 			</table>';
 	}
-
 }
 

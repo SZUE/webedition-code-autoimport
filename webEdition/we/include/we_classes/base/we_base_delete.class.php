@@ -72,8 +72,7 @@ abstract class we_base_delete{
 		}
 
 		if($delR){ // recursive delete
-			$DB_WE->query('SELECT ID FROM ' . $DB_WE->escape($table) . ' WHERE ParentID=' . intval($id));
-			$toDeleteArray = $DB_WE->getAll(true);
+			$toDeleteArray = $DB_WE->getAllq('SELECT ID FROM ' . $DB_WE->escape($table) . ' WHERE ParentID=' . intval($id), true);
 			foreach($toDeleteArray as $toDelete){
 				self::deleteEntry($toDelete, $table, true, 0, $DB_WE);
 			}
@@ -142,7 +141,7 @@ abstract class we_base_delete{
 
 		switch($table){
 			case FILE_TABLE:
-				$DB_WE->query('UPDATE ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID SET BDID=0 WHERE l.Type IN ("href","img") AND c.BDID=' . intval($id));
+				$DB_WE->query('UPDATE ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID SET c.BDID=0 WHERE l.Type IN ("href","img") AND c.BDID=' . intval($id));
 				$DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=0 AND ID=' . intval($id));
 
 				if(defined('SCHEDULE_TABLE')){ //	Delete entries from schedule as well
@@ -168,14 +167,12 @@ abstract class we_base_delete{
 					$DB_WE->query('DELETE FROM ' . OBJECT_X_TABLE . intval($tableID) . ' WHERE OF_ID=' . intval($id));
 					$DB_WE->query('DELETE FROM ' . NAVIGATION_TABLE . ' WHERE Selection="static" AND SelectionType="' . we_navigation_navigation::STYPE_OBJLINK . '" AND LinkID=' . intval($id));
 					//Bug 2892
-					$DB_WE->query('SELECT ID FROM ' . OBJECT_TABLE);
-					$foo = $DB_WE->getAll(true);
+					$foo = $DB_WE->getAllq('SELECT ID FROM ' . OBJECT_TABLE, true);
 					foreach($foo as $testclassID){
 						if($DB_WE->isColExist(OBJECT_X_TABLE . $testclassID, we_object::QUERY_PREFIX . $tableID)){
 
 							//das loeschen in der DB wirkt sich nicht auf die Objekte aus, die noch nicht publiziert sind
-							$DB_WE->query('SELECT OF_ID FROM ' . OBJECT_X_TABLE . intval($testclassID) . ' WHERE ' . we_object::QUERY_PREFIX . $tableID . '=' . intval($id));
-							$foos = $DB_WE->getAll(true);
+							$foos = $DB_WE->getAllq('SELECT OF_ID FROM ' . OBJECT_X_TABLE . intval($testclassID) . ' WHERE ' . we_object::QUERY_PREFIX . $tableID . '=' . intval($id), true);
 							foreach($foos as $affectedobjectsID){
 								$obj = new we_objectFile();
 								$obj->initByID($affectedobjectsID, OBJECT_FILES_TABLE);

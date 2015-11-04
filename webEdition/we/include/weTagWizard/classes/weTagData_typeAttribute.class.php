@@ -62,8 +62,7 @@ class weTagData_typeAttribute extends weTagDataAttribute{
 
 		$js = "we_cmd('switch_type', this.value);";
 
-		$select = new we_html_select(
-				array(
+		$select = new we_html_select(array(
 			'name' => $this->Name,
 			'id' => $this->getIdName(),
 			'onchange' => $js,
@@ -72,12 +71,12 @@ class weTagData_typeAttribute extends weTagDataAttribute{
 		$select->addOptions($entries);
 
 		return '
-					<table class="attribute">
-					<tr>
-						<td class="attributeName">' . $this->getLabelCodeForTagWizard() . '</td>
-						<td class="attributeField">' . $select->getHtml() . '</td>
-					</tr>
-					</table>';
+<table class="attribute">
+<tr>
+	<td class="attributeName">' . $this->getLabelCodeForTagWizard() . '</td>
+	<td class="attributeField">' . $select->getHtml() . '</td>
+</tr>
+</table>';
 	}
 
 	/**

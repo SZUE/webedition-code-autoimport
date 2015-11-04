@@ -177,7 +177,7 @@ class we_exim_contentProvider{
 //FIXME: remove the following code in 6.5
 		$encoded = array(
 			'we_element' => array('Dat', 'dat'),
-			'we_backup_tableItem' => array('Dat', 'strFelder', 'strSerial', 'DocumentObject',
+			'we_backup_tableItem' => array('Dat', 'strSerial', 'DocumentObject',
 				'QASet', 'QASetAdditions', 'RevoteUserAgent', 'agent',
 				'LogData', 'strSerialOrder',
 				'documentElements', 'documentScheduler', 'documentCustomFilter'//tblVersions
@@ -490,7 +490,7 @@ class we_exim_contentProvider{
 	}
 
 	static function isBinary($id){
-		return f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . " AND ContentType='" . we_base_ContentTypes::IMAGE . "' OR ContentType LIKE 'application/%'  LIMIT 1", '', new DB_WE()) == 1;
+		return f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND ContentType="' . we_base_ContentTypes::IMAGE . '" OR ContentType LIKE "application/%"  LIMIT 1', '', new DB_WE()) == 1;
 	}
 
 	static function getCDATA($data){

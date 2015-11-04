@@ -107,7 +107,7 @@ class we_customer_EIWizard{
 		$type = we_base_request::_(we_base_request::STRING, "type", we_import_functions::TYPE_GENERIC_XML);
 
 		$generic = new we_html_table(array('class' => 'default withSpace'), 2, 1);
-		$generic->setCol(0, 0, array(), we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($type == we_import_functions::TYPE_GENERIC_XML), "type", g_l('modules_customer', '[gxml_export]'), true, "defaultfont", "if(document.we_form.type[0].checked) top.type='" . we_import_functions::TYPE_GENERIC_XML . "';", false, g_l('modules_customer', '[txt_gxml_export]'), 0, 430));
+		$generic->setCol(0, 0, array(), we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($type == we_import_functions::TYPE_GENERIC_XML), "type", g_l('modules_customer', '[gxml_export]'), true, "defaultfont", "if(document.we_form.type[0].checked){top.type='" . we_import_functions::TYPE_GENERIC_XML . "';}", false, g_l('modules_customer', '[txt_gxml_export]'), 0, 430));
 		$generic->setCol(1, 0, array(), we_html_forms::radiobutton(self::TYPE_CSV, ($type == self::TYPE_CSV), "type", g_l('modules_customer', '[csv_export]'), true, "defaultfont", "if(document.we_form.type[1].checked) top.type='" . self::TYPE_CSV . "';", false, g_l('modules_customer', '[txt_csv_export]'), 0, 430));
 
 		$parts = array(
@@ -156,16 +156,22 @@ class we_customer_EIWizard{
 			}
 
 			function we_cmd(){
-				var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
-				for(var i = 0; i < arguments.length; i++){
-				url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
-				if(i < (arguments.length - 1)){
-				url += "&";
-				}}
-				switch (arguments[0]){
+				var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+				if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+					var args = {}, i = 0, tmp = arguments[0];
+					url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+				} else {
+					var args = Array.prototype.slice.call(arguments);
+					for (var i = 0; i < args.length; i++) {
+						url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
+					}
+				}
+				switch (args[0]){
 					case "del_customer":
 						selector_cmd(arguments[0],arguments[1],arguments[2]);
-					break;
+						break;
+					default:
+						top.opener.top.we_cmd.apply(this, arguments);
 				}
 			}
 
@@ -1455,12 +1461,14 @@ function doNext(){
 		$js = we_html_element::jsElement('
 function formFileChooser() {
 	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
+	var args=[];
 	for(var i = 0; i < arguments.length; i++){
-	url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+	args.push(arguments[i]);
+	url += "we_cmd[]="+encodeURI(arguments[i]);
 	if(i < (arguments.length - 1)){
 	url += "&";
 	}}
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "browse_server":
 			new (WE().util.jsWindow)(window, url,"server_selector",-1,-1,700,400,true,false,true);
 		break;
@@ -1481,12 +1489,14 @@ function formFileChooser() {
 		$js = we_html_element::jsElement('
 function formDirChooser() {
 	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
+	var args=[];
 	for(var i = 0; i < arguments.length; i++){
-	url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+	url += "we_cmd[]="+encodeURI(arguments[i]);
+	args.push(arguments[i]);
 	if(i < (arguments.length - 1)){
 	url += "&";
 	}}
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "we_selector_directory":
 			new (WE().util.jsWindow)(window, url,"dir_selector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,false,true,true);
 		break;
@@ -1527,12 +1537,14 @@ function formDirChooser() {
 		$js = we_html_element::jsElement('
 function selector_cmd(){
 	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
+	var args=[];
 	for(var i = 0; i < arguments.length; i++){
-	url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+	url += "we_cmd[]="+encodeURI(arguments[i]);
+	args.push(arguments[i]);
 	if(i < (arguments.length - 1)){
 	url += "&";
 	}}
-	switch (arguments[0]){
+	switch (args[0]){
 		case "we_selector_file":
 			new (WE().util.jsWindow)(window, url,"we_selector",-1,-1,' . we_selector_file::WINDOW_SELECTOR_WIDTH . ',' . we_selector_file::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
 		break;

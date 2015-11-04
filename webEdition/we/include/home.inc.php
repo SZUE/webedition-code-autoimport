@@ -61,15 +61,13 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 	<script><!--
 		WE().layout.cockpitFrame = WE().layout.weEditorFrameController.getActiveDocumentReference();
 		var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(window.name);
-		_EditorFrame.initEditorFrameData(
-						{
-							EditorType: "cockpit",
-							EditorDocumentText: "<?php echo g_l('cockpit', '[cockpit]'); ?>",
-							EditorDocumentPath: "Cockpit",
-							EditorContentType: "cockpit",
-							EditorEditCmd: "open_cockpit"
-						}
-		);
+		_EditorFrame.initEditorFrameData({
+			EditorType: "cockpit",
+			EditorDocumentText: "<?php echo g_l('cockpit', '[cockpit]'); ?>",
+			EditorDocumentPath: "Cockpit",
+			EditorContentType: "cockpit",
+			EditorEditCmd: "open_cockpit"
+		});
 
 		var _iInitCols = _iLayoutCols =<?php echo intval($iLayoutCols); ?>;
 		var quickstart = true;
@@ -205,40 +203,38 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 			}
 		}
 		$s1 .= '<td id="c_' . $iCurrCol . '" class="cls_' . $iCurrCol . (($bExtendedCol) ? '_expand' : '_collapse') . '">' .
-			$s2 .
-			we_html_element::htmlDiv(array("class" => "wildcard", 'style' => ($iDatLen > $iCurrCol ? 'margin-right:5px' : '')), '') . '</td>';
+				$s2 .
+				we_html_element::htmlDiv(array("class" => "wildcard", 'style' => ($iDatLen > $iCurrCol ? 'margin-right:5px' : '')), '') . '</td>';
 	}
 	while($iCurrCol < $iLayoutCols){
 		$iCurrCol++;
 		$s1 .= '<td id="c_' . $iCurrCol . '" class="cls_' . $iCurrCol . '_collapse">' .
-			we_html_element::htmlDiv(array("class" => "wildcard"), "") . '</td>' .
-			($iLayoutCols > $iCurrCol ? '<td>&nbsp;&nbsp;</td>' : '');
+				we_html_element::htmlDiv(array("class" => "wildcard"), "") . '</td>' .
+				($iLayoutCols > $iCurrCol ? '<td>&nbsp;&nbsp;</td>' : '');
 	}
 
 	$oTblWidgets = new we_html_table(array("class" => 'default'), 1, 1);
-	$oTblWidgets->setCol(0, 0, array(), we_html_element::htmlDiv(
-			array("id" => "modules"), '<table id="le_tblWidgets"><tr id="rowWidgets">' . $s1 . '</tr></table>')
-	);
+	$oTblWidgets->setCol(0, 0, array(), we_html_element::htmlDiv(array("id" => "modules"), '<table id="le_tblWidgets"><tr id="rowWidgets">' . $s1 . '</tr></table>'));
 
 	// this is the clone widget
 	$oClone = we_base_widget::create("clone", "_reCloneType_", null, array('', ''), "white", 0, "", 100, 60);
 
 	echo
 	we_html_element::htmlBody(
-		array(
+			array(
 		'onload' => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});oTblWidgets=gel('le_tblWidgets');initDragWidgets();",
-		), we_html_element::htmlForm(
-			array("name" => "we_form"
-			), we_html_element::htmlHiddens(array(
-				"we_cmd[0]" => "save",
-				"we_cmd[1]" => "",
-				"we_cmd[2]" => ""))
-		) .
-		we_html_element::htmlDiv(array("id" => "rpcBusy", "style" => "display:none;"), '<i class="fa fa-2x fa-spinner fa-pulse"></i>'
-		) . we_html_element::htmlDiv(array("id" => "widgets"), "") .
-		$oTblWidgets->getHtml() .
-		we_base_widget::getJs() .
-		we_html_element::htmlDiv(array("id" => "divClone"), $oClone)
+			), we_html_element::htmlForm(
+					array("name" => "we_form"
+					), we_html_element::htmlHiddens(array(
+						"we_cmd[0]" => "save",
+						"we_cmd[1]" => "",
+						"we_cmd[2]" => ""))
+			) .
+			we_html_element::htmlDiv(array("id" => "rpcBusy", "style" => "display:none;"), '<i class="fa fa-2x fa-spinner fa-pulse"></i>'
+			) . we_html_element::htmlDiv(array("id" => "widgets"), "") .
+			$oTblWidgets->getHtml() .
+			we_base_widget::getJs() .
+			we_html_element::htmlDiv(array("id" => "divClone"), $oClone)
 	);
 } else { // no right to see cockpit!
 	echo
@@ -251,25 +247,23 @@ function closeAllModalWindows(){
 }
 
 var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(window.name);
-_EditorFrame.initEditorFrameData(
-{
+_EditorFrame.initEditorFrameData({
 	"EditorType":"cockpit",
 	"EditorDocumentText":"Cockpit",
 	"EditorDocumentPath":"Cockpit",
 	"EditorContentType":"cockpit",
 	"EditorEditCmd":"open_cockpit"
-}
-);') .
+});') .
 	'</head>' .
 	we_html_element::htmlBody(
-		array(
+			array(
 		'class' => 'noHome',
 		"onload" => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});"
-		), we_html_element::htmlDiv(
-			array("class" => "defaultfont errorMessage", "style" => "width: 400px;"), (permissionhandler::hasPerm("CHANGE_START_DOCUMENT") && permissionhandler::hasPerm("EDIT_SETTINGS") ?
-				we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[question_change_startdocument]') . '</strong><br/><br/>' .
-					we_html_button::create_button("preferences", "javascript:top.we_cmd('openPreferences');"), we_html_tools::TYPE_ALERT, 0, false) :
-				we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[start_with_SEEM_no_startdocument]') . "</strong>", we_html_tools::TYPE_ALERT, 0, false))));
+			), we_html_element::htmlDiv(
+					array("class" => "defaultfont errorMessage", "style" => "width: 400px;"), (permissionhandler::hasPerm("CHANGE_START_DOCUMENT") && permissionhandler::hasPerm("EDIT_SETTINGS") ?
+							we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[question_change_startdocument]') . '</strong><br/><br/>' .
+									we_html_button::create_button("preferences", "javascript:top.we_cmd('openPreferences');"), we_html_tools::TYPE_ALERT, 0, false) :
+							we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[start_with_SEEM_no_startdocument]') . "</strong>", we_html_tools::TYPE_ALERT, 0, false))));
 }
 //FIXME: remove iframe
 ?>

@@ -223,25 +223,36 @@ $jsFunction = '
 	}
 
 	function we_cmd(){
-		switch (arguments[0]) {
+		var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+		if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+			var args = {}, i = 0, tmp = arguments[0];
+			url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+		} else {
+			var args = Array.prototype.slice.call(arguments);
+			for (var i = 0; i < args.length; i++) {
+				url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
+			}
+		}
+
+		switch (args[0]) {
 			case "close":
 				if(hot){
-					new (WE().util.jsWindow)(window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_exitQuestion.php","we_exit_doc_question",-1,-1,380,130,true,false,true);
+					new (WE().util.jsWindow)(this, "' . WE_SHOP_MODULE_DIR . 'edit_shop_exitQuestion.php","we_exit_doc_question",-1,-1,380,130,true,false,true);
 				} else {
 					window.close();
 				}
-			break;
-
+				break;
 			case "save":
 				document.we_form["we_cmd[0]"].value = "saveShopCatRels";
 				document.we_form.onsaveclose.value = 1;
 				we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
-			break;
-
+				break;
 			case "save_notclose":
 				document.we_form["we_cmd[0]"].value = "saveShopCatRels";
 				we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
-			break;
+				break;
+			default:
+				top.opener.top.we_cmd.apply(this, arguments);
 		}
 	}
 

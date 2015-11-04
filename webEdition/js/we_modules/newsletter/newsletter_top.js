@@ -43,14 +43,14 @@ function doUnload() {
  * Menu command controler
  */
 function we_cmd() {
-	var args=[];
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-	var i;
-	for (i = 0; i < arguments.length; i++) {
-					args.push(arguments[i]);
-	url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
-		if (i < (arguments.length - 1)) {
-			url += "&";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
 		}
 	}
 
@@ -92,11 +92,11 @@ function we_cmd() {
 
 		case "delete_newsletter":
 			if (top.content.editor.edbody.document.we_form.ncmd.value == "home") {
-				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
 				break;
 			}
 			if (!WE().util.hasPerm("DELETE_NEWSLETTER")) {
-				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
 				return;
 			}
 			if (top.content.editor.edbody.loaded) {
@@ -105,7 +105,7 @@ function we_cmd() {
 					return;
 				}
 			} else {
-				top.we_showMessage(WE().consts.g_l.newsletter.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.newsletter.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
 			}
 			topFrame.editor.edheader.location = frameSet + "?home=1&pnt=edheader";
 			topFrame.editor.edfooter.location = frameSet + "?home=1&pnt=edfooter";
@@ -116,10 +116,10 @@ function we_cmd() {
 
 		case "save_newsletter":
 			if (top.content.editor.edbody.document.we_form.ncmd.value === "home") {
-				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else {
 				if (!WE().util.hasPerm("EDIT_NEWSLETTER") && !WE().util.hasPerm("NEW_NEWSLETTER")) {
-					top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
+					top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
 					return;
 				}
 				if (top.content.editor.edbody.loaded) {
@@ -130,7 +130,7 @@ function we_cmd() {
 					top.content.editor.edbody.submitForm();
 
 				} else {
-					top.we_showMessage(WE().consts.g_l.newsletter.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, window);
+					top.we_showMessage(WE().consts.g_l.newsletter.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, this);
 				}
 				top.content.usetHot();
 			}
@@ -145,9 +145,9 @@ function we_cmd() {
 
 		case "send_test":
 			if (top.content.editor.edbody.document.we_form.ncmd.value === "home") {
-				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else if (top.content.editor.edbody.document.we_form.IsFolder.value == 1) {
-				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else {
 				top.content.editor.edbody.we_cmd("send_test");
 			}
@@ -155,19 +155,19 @@ function we_cmd() {
 
 		case "empty_log":
 			if (top.content.editor.edbody.document.we_form.ncmd.value === "home") {
-				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else if (top.content.editor.edbody.document.we_form.IsFolder.value == 1) {
-				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else {
-				new (WE().util.jsWindow)(window, frameSet + "&pnt=qlog", "log_question", -1, -1, 330, 230, true, false, true);
+				new (WE().util.jsWindow)(this, frameSet + "&pnt=qlog", "log_question", -1, -1, 330, 230, true, false, true);
 			}
 			break;
 
 		case "preview_newsletter":
 			if (top.content.editor.edbody.document.we_form.ncmd.value === "home") {
-				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else if (top.content.editor.edbody.document.we_form.IsFolder.value == 1) {
-				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else {
 				top.content.editor.edbody.we_cmd("popPreview");
 			}
@@ -175,9 +175,9 @@ function we_cmd() {
 
 		case "send_newsletter":
 			if (top.content.editor.edbody.document.we_form.ncmd.value === "home") {
-				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else if (top.content.editor.edbody.document.we_form.IsFolder.value == 1) {
-				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else {
 				top.content.editor.edbody.we_cmd("popSend");
 			}
@@ -185,9 +185,9 @@ function we_cmd() {
 
 		case "test_newsletter":
 			if (top.content.editor.edbody.document.we_form.ncmd.value === "home") {
-				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else if (top.content.editor.edbody.document.we_form.IsFolder.value == 1) {
-				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else {
 				top.content.editor.edbody.we_cmd("popSend", "1");
 			}
@@ -199,9 +199,9 @@ function we_cmd() {
 		case "search_email":
 		case "clear_log":
 			if (top.content.editor.edbody.document.we_form.ncmd.value === "home") {
-				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else if (top.content.editor.edbody.document.we_form.IsFolder.value == 1) {
-				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else {
 				top.content.editor.edbody.we_cmd(args[0]);
 			}
@@ -218,7 +218,7 @@ function we_cmd() {
 			break;
 
 		default:
-			top.opener.top.we_cmd.apply(this, args);
+			top.opener.top.we_cmd.apply(this, arguments);
 
 	}
 }

@@ -170,20 +170,24 @@ class we_import_wizard extends we_import_wizardBase{
 		 */
 		return array(
 			"function we_cmd() {
-								var args = [];
-				var url = '" . WEBEDITION_DIR . "we_cmd.php?';
-				for(var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-					url += 'we_cmd['+i+']='+encodeURI(arguments[i]);
-					if(i < (arguments.length - 1)) {
-						url += '&';
+				/*
+				var url = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
+				if(typeof arguments[0] === 'object' && arguments[0]['we_cmd[0]'] !== undefined){
+					var args = {}, i = 0, tmp = arguments[0];
+					url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + '=' + encodeURIComponent(tmp[key]);}).join('&');
+				} else {
+					var args = Array.prototype.slice.call(arguments);
+					for (var i = 0; i < args.length; i++) {
+						url += 'we_cmd[' + i + ']=' + encodeURIComponent(args[i]) + (i < (args.length - 1) ? '&' : '');
 					}
 				}
-				switch (arguments[0]) {
-					default:
-			parent.we_cmd.apply(this, args);
 
+				switch (args[0]) {
+					default:
+						parent.we_cmd.apply(this, arguments);
 				}
+				*/
+				parent.we_cmd.apply(this, arguments);
 			}
 			function set_button_state() {
 				top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'disabled');
@@ -263,20 +267,24 @@ class we_import_wizard extends we_import_wizardBase{
 
 		$functions = "
 function we_cmd() {
-					var args = [];
-	var url = '" . WEBEDITION_DIR . "we_cmd.php?';
-	for(var i = 0; i < arguments.length; i++) {
-		url += 'we_cmd['+i+']='+encodeURI(arguments[i]);
-				args.push(arguments[i]);
-		if(i < (arguments.length - 1)) {
-			url += '&';
+	/*
+	var url = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
+	if(typeof arguments[0] === 'object' && arguments[0]['we_cmd[0]'] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + '=' + encodeURIComponent(tmp[key]);}).join('&');
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += 'we_cmd[' + i + ']=' + encodeURIComponent(args[i]) + (i < (args.length - 1) ? '&' : '');
 		}
 	}
-	switch (arguments[0]) {
-		default:
-			parent.we_cmd.apply(this, args);
 
+	switch (args[0]) {
+		default:
+			parent.we_cmd.apply(this, arguments);
 	}
+	*/
+	parent.we_cmd.apply(this, arguments);
 }
 function set_button_state() {
 	top.wizbusy.back_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
@@ -302,7 +310,7 @@ function handle_event(evt) {
 			else {
 				handle_eventNext();
 			}" :
-					"handle_eventNext();") . "
+				"handle_eventNext();") . "
 			break;
 		case 'cancel':
 			top.close();
@@ -432,29 +440,31 @@ function we_submit_form(we_form, target, url) {
 
 		$functions = "
 function we_cmd() {
-					var args = [];
-	var url = '" . WEBEDITION_DIR . "we_cmd.php?';
-	for(var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-		url += 'we_cmd['+i+']='+encodeURI(arguments[i]);
-		if(i < (arguments.length - 1)) {
-			url += '&';
+	var url = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
+	if(typeof arguments[0] === 'object' && arguments[0]['we_cmd[0]'] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + '=' + encodeURIComponent(tmp[key]);}).join('&');
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += 'we_cmd[' + i + ']=' + encodeURIComponent(args[i]) + (i < (args.length - 1) ? '&' : '');
 		}
 	}
-	switch (arguments[0]) {" . '
+
+	switch (args[0]) {" . '
 		case "openNavigationDirselector":
-				url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=we_navigation_dirSelector&";
-				for(var i = 1; i < arguments.length; i++){
-					url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
-					if(i < (arguments.length - 1)){ url += "&"; }
+				url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[]=we_navigation_dirSelector&";
+				for(var i = 1; i < args.length; i++){
+					url += "we_cmd[]="+encodeURI(args[i]);
+					if(i < (args.length - 1)){ url += "&"; }
 				}
-				new (WE().util.jsWindow)(window, url,"we_navigation_dirselector",-1,-1,600,400,true,true,true);
+				new (WE().util.jsWindow)(this, url,"we_navigation_dirselector",-1,-1,600,400,true,true,true);
 			break;' . "
 		case 'we_selector_file':
-			new (WE().util.jsWindow)(window, url,'we_selector',-1,-1," . we_selector_file::WINDOW_SELECTOR_WIDTH . "," . we_selector_file::WINDOW_SELECTOR_HEIGHT . ",true,true,true,true);
+			new (WE().util.jsWindow)(this, url,'we_selector',-1,-1," . we_selector_file::WINDOW_SELECTOR_WIDTH . "," . we_selector_file::WINDOW_SELECTOR_HEIGHT . ",true,true,true,true);
 			break;
 		default:
-			parent.we_cmd.apply(this, args);
+			parent.we_cmd.apply(this, arguments);
 
 	}
 }
@@ -741,7 +751,7 @@ handle_event("previous");');
 	protected function getWXMLImportStep3(){
 		$functions = '
 function addLog(text){
-	document.getElementById("log").innerHTML+= text;
+	document.getElementById("log").innerHTML+= text+"<br/>";
 	document.getElementById("log").scrollTop = 50000;
 }
 
@@ -811,20 +821,24 @@ function handle_event(evt) {
 
 		$functions = "
 function we_cmd() {
-					var args = [];
-	var url = '" . WEBEDITION_DIR . "we_cmd.php?';
-	for(var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-		url += 'we_cmd['+i+']='+encodeURI(arguments[i]);
-		if(i < (arguments.length - 1)) {
-			url += '&';
+	/*
+	var url = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
+	if(typeof arguments[0] === 'object' && arguments[0]['we_cmd[0]'] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + '=' + encodeURIComponent(tmp[key]);}).join('&');
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += 'we_cmd[' + i + ']=' + encodeURIComponent(args[i]) + (i < (args.length - 1) ? '&' : '');
 		}
 	}
-	switch (arguments[0]) {
-		default:
-			parent.we_cmd.apply(this, args);
 
+	switch (args[0]) {
+		default:
+			parent.we_cmd.apply(this, arguments);
 	}
+	*/
+	parent.we_cmd.apply(this, arguments);
 }
 function set_button_state() {
 	top.wizbusy.back_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
@@ -860,7 +874,7 @@ function handle_event(evt) {
 			else {
 					handle_eventNext();
 			}" :
-					"handle_eventNext();") . "
+				"handle_eventNext();") . "
 			break;
 		case 'cancel':
 			top.close();
@@ -892,17 +906,17 @@ function handle_eventNext(){
 		" . we_message_reporting::getShowMessageCall(g_l('import', '[select_source_file]'), we_message_reporting::WE_MESSAGE_ERROR) . " return;
 	}
 	if(!f.elements['v[we_TemplateID]'].value ) f.elements['v[we_TemplateID]'].value =f.elements.noDocTypeTemplateId.value;" .
-				(defined('OBJECT_TABLE') ?
-					"if((f.elements['v[import_type]'][0].checked == true && f.elements['v[we_TemplateID]'].value != 0) || (f.elements['v[import_type]'][1].checked == true)) {\n" :
-					"if(f.elements['v[we_TemplateID]'].value!=0) {\n"
-				) . "
+			(defined('OBJECT_TABLE') ?
+				"if((f.elements['v[import_type]'][0].checked == true && f.elements['v[we_TemplateID]'].value != 0) || (f.elements['v[import_type]'][1].checked == true)) {\n" :
+				"if(f.elements['v[we_TemplateID]'].value!=0) {\n"
+			) . "
 			f.step.value = 2;
 			we_submit_form(f, 'wizbody', '" . $this->path . "');
 	} else {" .
-				(defined('OBJECT_TABLE') ?
-					"				if(f.elements['v[import_type]'][0].checked == true) " . we_message_reporting::getShowMessageCall(g_l('import', '[select_docType]'), we_message_reporting::WE_MESSAGE_ERROR) :
-					we_message_reporting::getShowMessageCall(g_l('import', '[select_docType]'), we_message_reporting::WE_MESSAGE_ERROR)
-				) . "
+			(defined('OBJECT_TABLE') ?
+				"				if(f.elements['v[import_type]'][0].checked == true) " . we_message_reporting::getShowMessageCall(g_l('import', '[select_docType]'), we_message_reporting::WE_MESSAGE_ERROR) :
+				we_message_reporting::getShowMessageCall(g_l('import', '[select_docType]'), we_message_reporting::WE_MESSAGE_ERROR)
+			) . "
 	}
 }
 ";
@@ -1070,10 +1084,8 @@ HTS;
 
 		$docCategories = $this->formCategory2('doc', isset($v['docCategories']) ? $v['docCategories'] : '');
 		$docCats = new we_html_table(array('class' => 'default'), 2, 2);
-		$docCats->setCol(0, 0, array('style' => 'vertical-align:top', 'class' => 'defaultgray'), g_l('import', '[categories]'));
-		$docCats->setCol(0, 1, array(), $docCategories);
-		$docCats->setCol(1, 0, array(), we_html_tools::getPixel(130, 1));
-		$docCats->setCol(1, 1, array(), we_html_tools::getPixel(150, 1));
+		$docCats->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', 'class' => 'defaultgray'), g_l('import', '[categories]'));
+		$docCats->setCol(0, 1, array('style' => 'width:150px;'), $docCategories);
 		$cmd1 = "self.wizbody.document.we_form.elements['v[store_to_id]'].value";
 		$storeToButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("self.wizbody.document.we_form.elements['v[store_to_path]'].value") . "','','','0')"
 		);
@@ -1118,24 +1130,19 @@ HTS;
 		}
 
 		$objClass = new we_html_table(array('class' => 'default'), 2, 2);
-		$objClass->setCol(0, 0, array('style' => 'vertical-align:top', 'class' => 'defaultgray'), g_l('import', '[class]'));
-		$objClass->setCol(0, 1, array(), $CLselect->getHTML());
-		$objClass->setCol(1, 0, array(), we_html_tools::getPixel(130, 10));
-		$objClass->setCol(1, 1, array(), we_html_tools::getPixel(150, 10));
+		$objClass->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', 'class' => 'defaultgray'), g_l('import', '[class]'));
+		$objClass->setCol(0, 1, array('style' => 'width:150px;'), $CLselect->getHTML());
 
 		$objCategories = $this->formCategory2('obj', isset($v['objCategories']) ? $v['objCategories'] : '');
 		$objCats = new we_html_table(array('class' => 'default'), 2, 2);
-		$objCats->setCol(0, 0, array('style' => 'vertical-align:top', 'class' => 'defaultgray'), g_l('import', '[categories]'));
-		$objCats->setCol(0, 1, array(), $objCategories);
-		$objCats->setCol(1, 0, array(), we_html_tools::getPixel(130, 1));
-		$objCats->setCol(1, 1, array(), we_html_tools::getPixel(150, 1));
+		$objCats->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', 'class' => 'defaultgray'), g_l('import', '[categories]'));
+		$objCats->setCol(0, 1, array('style' => 'width:150px;'), $objCategories);
 
-		$objects = new we_html_table(array('class' => 'default'), 4, 2);
-		$objects->setCol(0, 0, array('colspan' => 3), $radioObjs);
-		$objects->setCol(1, 0, array(), we_html_tools::getPixel(1, 10));
-		$objects->setCol(2, 0, array(), we_html_tools::getPixel(50, 1));
-		$objects->setCol(2, 1, array(), $objClass->getHTML());
-		$objects->setCol(3, 1, array(), $objCats->getHTML());
+		$objects = new we_html_table(array('class' => 'default'), 3, 2);
+		$objects->setCol(0, 0, array('colspan' => 3,'class'=>'withBigSpace'), $radioObjs);
+		$objects->setCol(1, 0, array('style'=>'width:50px;'));
+		$objects->setCol(1, 1, array(), $objClass->getHTML());
+		$objects->setCol(2, 1, array(), $objCats->getHTML());
 
 		$specifyDoc = new we_html_table(array('class' => 'default'), 1, 2);
 		$specifyDoc->setCol(0, 1, array('style' => 'vertical-align:bottom'), we_html_forms::checkbox(3, (isset($v['is_dynamic']) ? $v['is_dynamic'] : 0), 'chbxIsDynamic', g_l('import', '[isDynamic]'), true, 'defaultfont', "this.form.elements['v[is_dynamic]'].value=this.checked? 1 : 0; switchExt();"));
@@ -1386,7 +1393,7 @@ function handle_event(evt) {
 		$dateFields = array();
 
 		if($v['import_type'] === 'documents'){
-			$templateCode = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . intval($v['we_TemplateID']) . ' AND l.Name="completeData"', '', $db);
+			$templateCode = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . intval($v['we_TemplateID']) . ' AND l.Name=x\'' . md5("completeData") . '\'', '', $db);
 			$tp = new we_tag_tagParser($templateCode);
 			$tags = $tp->getAllTags();
 			$regs = array();
@@ -1590,20 +1597,24 @@ function handle_event(evt) {
 
 		$functions = "
 function we_cmd() {
-					var args = [];
-	var url = '" . WEBEDITION_DIR . "we_cmd.php?';
-	for(var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-		url += 'we_cmd['+i+']='+encodeURI(arguments[i]);
-		if(i < (arguments.length - 1)) {
-			url += '&';
+	/*
+	var url = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
+	if(typeof arguments[0] === 'object' && arguments[0]['we_cmd[0]'] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + '=' + encodeURIComponent(tmp[key]);}).join('&');
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += 'we_cmd[' + i + ']=' + encodeURIComponent(args[i]) + (i < (args.length - 1) ? '&' : '');
 		}
 	}
-	switch (arguments[0]) {
-		default:
-			parent.we_cmd.apply(this, args);
 
+	switch (args[0]) {
+		default:
+			parent.we_cmd.apply(this, arguments);
 	}
+	*/
+	parent.we_cmd.apply(this, arguments);
 }
 function set_button_state() {
 	top.frames.wizbusy.back_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
@@ -1629,7 +1640,7 @@ function handle_event(evt) {
 			else {
 				handle_eventNext();
 			}" :
-					"handle_eventNext();") . "
+				"handle_eventNext();") . "
 			break;
 		case 'cancel':
 			top.close();
@@ -1652,7 +1663,7 @@ function handle_eventNext(){
 		ext = fl.substr(fl.length-4,4);
 		f.elements['v[import_from]'].value = fl;
 	}else if (fs=='/' || fl=='') {" .
-				(we_message_reporting::getShowMessageCall(g_l('import', '[select_source_file]'), we_message_reporting::WE_MESSAGE_ERROR)) . " return;
+			(we_message_reporting::getShowMessageCall(g_l('import', '[select_source_file]'), we_message_reporting::WE_MESSAGE_ERROR)) . " return;
 	}
 	if (fvalid && f.elements['v[csv_seperator]'].value=='') { fvalid=false; " . we_message_reporting::getShowMessageCall(g_l('import', '[select_seperator]'), we_message_reporting::WE_MESSAGE_ERROR) . "}
 	if (fvalid) {
@@ -1807,20 +1818,24 @@ function handle_eventNext(){
 
 		$functions = "
 function we_cmd() {
-					var args = [];
-	var url = '" . WEBEDITION_DIR . "we_cmd.php?';
-	for(var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-		url += 'we_cmd['+i+']='+encodeURI(arguments[i]);
-		if(i < (arguments.length - 1)) {
-			url += '&';
+	/*
+	var url = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
+	if(typeof arguments[0] === 'object' && arguments[0]['we_cmd[0]'] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + '=' + encodeURIComponent(tmp[key]);}).join('&');
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += 'we_cmd[' + i + ']=' + encodeURIComponent(args[i]) + (i < (args.length - 1) ? '&' : '');
 		}
 	}
-	switch (arguments[0]) {
-		default:
-			parent.we_cmd.apply(this, args);
 
+	switch (args[0]) {
+		default:
+			parent.we_cmd.apply(this, arguments);
 	}
+	*/
+	parent.we_cmd.apply(this, arguments);
 }
 function set_button_state() {
 	top.frames.wizbusy.back_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
@@ -2042,11 +2057,9 @@ HTS;
 		$seaPu->setCol(0, 0, array(), we_html_forms::checkboxWithHidden(isset($v["doc_publish"]) ? $v["doc_publish"] : true, 'v[doc_publish]', g_l('buttons_global', '[publish][value]'), false, 'defaultfont'));
 
 		$docCategories = $this->formCategory2("doc", isset($v["docCategories"]) ? $v["docCategories"] : "");
-		$docCats = new we_html_table(array('class' => 'default'), 2, 2);
-		$docCats->setCol(0, 0, array('style' => 'vertical-align:top;', "class" => "defaultgray"), g_l('import', '[categories]'));
-		$docCats->setCol(0, 1, array(), $docCategories);
-		$docCats->setCol(1, 0, array(), we_html_tools::getPixel(130, 1));
-		$docCats->setCol(1, 1, array(), we_html_tools::getPixel(150, 1));
+		$docCats = new we_html_table(array('class' => 'default'), 1, 2);
+		$docCats->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', "class" => "defaultgray"), g_l('import', '[categories]'));
+		$docCats->setCol(0, 1, array('style'=>'width:150px;'), $docCategories);
 
 		$radioDocs = we_html_forms::radiobutton('documents', ($v["import_type"] === 'documents'), "v[import_type]", g_l('import', '[documents]'));
 		$radioObjs = we_html_forms::radiobutton('objects', ($v["import_type"] === 'objects'), "v[import_type]", g_l('import', '[objects]'), true, "defaultfont", "self.document.we_form.elements['v[store_to_path]'].value='/'; YAHOO.autocoml.setValidById(self.document.we_form.elements['v[store_to_path]'].id); if(self.document.we_form.elements['v[we_TemplateName]']!==undefined) { self.document.we_form.elements['v[we_TemplateName]'].value=''; YAHOO.autocoml.setValidById(self.document.we_form.elements['v[we_TemplateName]'].id); }", (defined('OBJECT_TABLE') ? false : true));
@@ -2082,11 +2095,9 @@ HTS;
 				$CLselect->insertOption($optid, -1, g_l('import', '[none]'));
 			}
 
-			$objClass = new we_html_table(array('class' => 'default'), 2, 2);
-			$objClass->setCol(0, 0, array('style' => 'vertical-align:top;', "class" => "defaultgray"), g_l('import', '[class]'));
-			$objClass->setCol(0, 1, array(), $CLselect->getHTML());
-			$objClass->setCol(1, 0, array(), we_html_tools::getPixel(130, 10));
-			$objClass->setCol(1, 1, array(), we_html_tools::getPixel(150, 10));
+			$objClass = new we_html_table(array('class' => 'default'), 1, 2);
+			$objClass->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', "class" => "defaultgray"), g_l('import', '[class]'));
+			$objClass->setCol(0, 1, array('style'=>'width:150px;'), $CLselect->getHTML());
 
 			$wecmdenc1 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[obj_path_id]'].value");
 			$wecmdenc2 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[obj_path]'].value");
@@ -2112,18 +2123,14 @@ HTS;
 			$objSeaPu->setCol(1, 0, array(), we_html_forms::checkboxWithHidden(!empty($v["obj_search"]), 'v[obj_search]', g_l('weClass', '[IsSearchable]'), false, 'defaultfont'));
 			$objSeaPu->setCol(0, 0, array(), we_html_forms::checkboxWithHidden(isset($v["obj_publish"]) ? $v["obj_publish"] : true, 'v[obj_publish]', g_l('buttons_global', '[publish][value]'), false, 'defaultfont'));
 			$objCategories = $this->formCategory2("obj", isset($v["objCategories"]) ? $v["objCategories"] : "");
-			$objCats = new we_html_table(array('class' => 'default'), 2, 2);
-			$objCats->setCol(0, 0, array('style' => 'vertical-align:top;', "class" => "defaultgray"), g_l('import', '[categories]'));
-			$objCats->setCol(0, 1, array(), $objCategories);
-			$objCats->setCol(1, 0, array(), we_html_tools::getPixel(130, 1));
-			$objCats->setCol(1, 1, array(), we_html_tools::getPixel(150, 1));
+			$objCats = new we_html_table(array('class' => 'default'), 1, 2);
+			$objCats->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', "class" => "defaultgray"), g_l('import', '[categories]'));
+			$objCats->setCol(0, 1, array('style'=>'width:150px;'), $objCategories);
 
-			$objects = new we_html_table(array('class' => 'default'), 4, 2);
-			$objects->setCol(0, 0, array("colspan" => 3), $radioObjs);
-			$objects->setCol(1, 0, array(), we_html_tools::getPixel(1, 10));
-			$objects->setCol(2, 0, array(), we_html_tools::getPixel(50, 1));
-			$objects->setCol(2, 1, array(), $objClass->getHTML());
-			$objects->setCol(3, 1, array(), $objCats->getHTML());
+			$objects = new we_html_table(array('class' => 'default withBigSpace'), 3, 2);
+			$objects->setCol(0, 0, array("colspan" => 3,'style'=>'width:50px;'), $radioObjs);
+			$objects->setCol(1, 1, array(), $objClass->getHTML());
+			$objects->setCol(2, 1, array(), $objCats->getHTML());
 		}
 
 		$specifyDoc = new we_html_table(array('class' => 'default'), 1, 2);
@@ -2135,11 +2142,11 @@ HTS;
 				array(
 					"headline" => (defined('OBJECT_TABLE')) ? $radioDocs : g_l('import', '[documents]'),
 					"html" => weSuggest::getYuiFiles() .
-					$doctypeElement . we_html_tools::getPixel(1, 4) .
-					$templateElement . we_html_tools::getPixel(1, 4) .
-					$storeTo . we_html_tools::getPixel(1, 4) .
-					$specifyDoc->getHTML() . we_html_tools::getPixel(1, 4) .
-					$seaPu->getHtml() . we_html_tools::getPixel(1, 4) .
+					$doctypeElement .
+					$templateElement .
+					$storeTo .
+					$specifyDoc->getHTML() .
+					$seaPu->getHtml() .
 					we_html_tools::htmlFormElementTable($docCategories, g_l('import', '[categories]'), "left", "defaultfont") .
 					(defined('OBJECT_TABLE') ? '' : $yuiSuggest->getYuiJs()),
 					"space" => 120,
@@ -2149,9 +2156,9 @@ HTS;
 			if(defined('OBJECT_TABLE')){
 				$parts[] = array(
 					"headline" => $radioObjs,
-					"html" => we_html_tools::htmlFormElementTable($CLselect->getHTML(), g_l('import', '[class]'), "left", "defaultfont") . we_html_tools::getPixel(1, 4) .
-					$objStoreTo . we_html_tools::getPixel(1, 4) .
-					$objSeaPu->getHtml() . we_html_tools::getPixel(1, 4) .
+					"html" => we_html_tools::htmlFormElementTable($CLselect->getHTML(), g_l('import', '[class]'), "left", "defaultfont") .
+					$objStoreTo .
+					$objSeaPu->getHtml() .
 					we_html_tools::htmlFormElementTable($objCategories, g_l('import', '[categories]'), "left", "defaultfont")
 					. $yuiSuggest->getYuiJs(),
 					"space" => 120,
@@ -2256,7 +2263,7 @@ function handle_event(evt) {
 		$records = $dateFields = array();
 
 		if(we_base_request::_(we_base_request::STRING, 'v', '', "import_type") === "documents"){
-			$templateCode = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID  WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . we_base_request::_(we_base_request::INT, 'v', 0, 'we_TemplateID') . ' AND l.Name="completeData"', '', $db);
+			$templateCode = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID  WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . we_base_request::_(we_base_request::INT, 'v', 0, 'we_TemplateID') . ' AND l.Name=x\'' . md5("completeData") . '\'', '', $db);
 			$tp = new we_tag_tagParser($templateCode);
 
 			$tags = $tp->getAllTags();

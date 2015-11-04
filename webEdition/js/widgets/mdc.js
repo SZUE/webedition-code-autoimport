@@ -55,7 +55,7 @@ function getCsv(bTbl) {
 	var iDtOrCls = (bTbl) ? _fo.classID.value : _fo.DocTypeID.value;
 	var sCats = '';
 	for (var j = 0; j < categories_edit.itemCount; j++) {
-		sCats += opener.base64_encode(categories_edit.form.elements[categories_edit.name + '_variant0_' + categories_edit.name + '_item' + j].value);
+		sCats += opener.Base64.encode(categories_edit.form.elements[categories_edit.name + '_variant0_' + categories_edit.name + '_item' + j].value);
 		if (j < categories_edit.itemCount - 1)
 			sCats += ',';
 	}
@@ -89,7 +89,7 @@ function exit_close() {
 	var sSwitch = (_fo.headerSwitch.selectedIndex) ? '1' : '0';
 	var sCsv = (parseInt(sSel)) ? getTreeSelected() : getCsv(parseInt(sSwitch));
 	var aInitCsv = _sInitCsv_.split(';');
-	var sInitTitle = opener.base64_decode(aInitCsv[0]);
+	var sInitTitle = opener.Base64.decode(aInitCsv[0]);
 	if ((sInitTitle !== '' && sInitTitle != sTitle) || aInitCsv[1] != sSel + sSwitch || aInitCsv[2] != sCsv) {
 		opener.rpc(aInitCsv[1], aInitCsv[2], '', '', sInitTitle, _sObjId, _sMdcInc);
 	}
@@ -143,7 +143,7 @@ function save() {
 	var sSwitch = (_fo.headerSwitch.selectedIndex) ? '1' : '0';
 	var sCsv = (parseInt(sSel)) ? getTreeSelected() : getCsv(parseInt(sSwitch));
 	opener.rpc(sSel + sSwitch, sCsv, '', '', sTitle, _sObjId, _sMdcInc);
-	_oCsv_.value = opener.base64_encode(sTitle) + ';' + sSel + sSwitch + ';' + sCsv;
+	_oCsv_.value = opener.Base64.encode(sTitle) + ';' + sSel + sSwitch + ';' + sCsv;
 	WE().util.showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, top.window);
 	self.close();
 }

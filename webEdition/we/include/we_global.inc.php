@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,7 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 function weFileExists($id, $table = FILE_TABLE, we_database_base $db = NULL){
 	t_e('deprecated', __FUNCTION__);
 	return we_base_file::isWeFile($id, $table, $db);
@@ -79,8 +79,8 @@ function getHttpOption(){
 	if(ini_get('allow_url_fopen') != 1){
 		@ini_set('allow_url_fopen', '1');
 		return (ini_get('allow_url_fopen') != 1 ?
-				(function_exists('curl_init') ? 'curl' : 'none') :
-				'fopen');
+						(function_exists('curl_init') ? 'curl' : 'none') :
+						'fopen');
 	}
 	return 'fopen';
 }
@@ -219,8 +219,8 @@ function makeCSVFromArray($arr, $prePostKomma = false, $sep = ','){
 		$out = $sep . $out . $sep;
 	}
 	return ($replaceKomma ?
-			str_replace('###komma###', '\\' . $sep, $out) :
-			$out);
+					str_replace('###komma###', '\\' . $sep, $out) :
+					$out);
 }
 
 function in_parentID($id, $pid, $table = FILE_TABLE, we_database_base $db = null){
@@ -242,7 +242,7 @@ function in_parentID($id, $pid, $table = FILE_TABLE, we_database_base $db = null
 			return false;
 		}
 		$found[] = $p;
-	} while(($p = f('SELECT ParentID FROM ' . $db->escape($table) . ' WHERE ID=' . intval($p), '', $db)));
+	}while(($p = f('SELECT ParentID FROM ' . $db->escape($table) . ' WHERE ID=' . intval($p), '', $db)));
 	return false;
 }
 
@@ -298,20 +298,22 @@ function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $pre
 	if(!is_array($IDs)){
 		$IDs = makeArrayFromCSV($IDs);
 	}
-	$foo = array();
-	foreach($IDs as $id){
-		if($id == 0){
-			$foo[$id] = '/';
-		} else {
-			$foo2 = getHash('SELECT Path,IsFolder FROM ' . $db->escape($table) . ' WHERE ID=' . intval($id) . ($isPublished ? ' AND Published>0' : ''), $db);
-			if(isset($foo2['Path'])){
-				if($endslash && $foo2['IsFolder']){
-					$foo2['Path'] .= '/';
-				}
-				$foo[$id] = $foo2['Path'];
-			}
-		}
+	switch($table){
+		case CUSTOMER_TABLE:
+			$select = 'Username';
+			break;
+		default:
+			$select = ($endslash ?
+							'IF(IsFolder=1,CONCAT(Path,"/"),Path)' :
+							'Path');
 	}
+
+	$foo = (in_array(0, $IDs) ? array(0 => '/') : array()) +
+			($IDs ?
+					$db->getAllFirstq('SELECT ID,' . $select . ' FROM ' . $db->escape($table) . ' WHERE ID IN(' . implode(',', array_map('intval', $IDs)) . ')' . ($isPublished ? ' AND Published>0' : ''), false) :
+					array()
+			);
+
 	return $asArray ? $foo : implode(',', $foo);
 }
 
@@ -323,25 +325,20 @@ function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $pre
  * @return type
  * @deprecated sicne 6.4.3
  */
-function getHashArrayFromCSV($csv, $firstEntry, we_database_base $db = null){
+function getHashArrayFromCSV($csv, $firstEntry, we_database_base $db){
 	if(!$csv){
 		return array();
 	}
-	$db = $db ? : new DB_WE();
 	$IDArr = makeArrayFromCSV($csv);
-	$out = $firstEntry ? array(
-		0 => $firstEntry
-		) : array();
-	foreach($IDArr as $id){
-		if(strlen($id) && ($path = id_to_path($id, FILE_TABLE, $db))){
-			$out[$id] = $path;
-		}
-	}
+	$out = ($firstEntry ? array(
+				0 => $firstEntry
+					) : array()) +
+			id_to_path($IDArr, FILE_TABLE, $db, false, true);
+
 	return $out;
 }
 
-function getPathsFromTable($table = FILE_TABLE, we_database_base $db = null, $type = we_base_constants::FILE_ONLY, $wsIDs = '', $order = 'Path', $limitCSV = '', $first = ''){
-	$db = ($db ? : new DB_WE());
+function getPathsFromTable($table, we_database_base $db, $type = we_base_constants::FILE_ONLY, $wsIDs = '', $order = 'Path', $limitCSV = '', $first = ''){
 	$limitCSV = trim($limitCSV, ',');
 	$query = array();
 	if($wsIDs){
@@ -411,15 +408,12 @@ function get_ws($table = FILE_TABLE, $asArray = false){
 
 function we_readParents($id, &$parentlist, $tab, $match = 'ContentType', $matchvalue = 'folder', we_database_base $db = null){
 	$db = $db ? : new DB_WE();
-	$pid = f('SELECT ParentID FROM ' . $db->escape($tab) . ' WHERE ID=' . intval($id), '', $db);
-	if($pid !== ''){
+	if(($pid = f('SELECT ParentID FROM ' . $db->escape($tab) . ' WHERE ID=' . intval($id), '', $db)) !== ''){
 		if($pid == 0){
 			$parentlist[] = $pid;
-		} else {
-			if(f('SELECT 1 FROM ' . $db->escape($tab) . ' WHERE ID=' . intval($pid) . ' AND ' . $db->escape($match) . ' = "' . $db->escape($matchvalue) . '" LIMIT 1', '', $db)){
-				$parentlist[] = $pid;
-				we_readParents($pid, $parentlist, $tab, $match, $matchvalue, $db);
-			}
+		} elseif(f('SELECT 1 FROM ' . $db->escape($tab) . ' WHERE ID=' . intval($pid) . ' AND ' . $db->escape($match) . ' = "' . $db->escape($matchvalue) . '" LIMIT 1', '', $db)){
+			$parentlist[] = $pid;
+			we_readParents($pid, $parentlist, $tab, $match, $matchvalue, $db);
 		}
 	}
 }
@@ -631,8 +625,8 @@ function getUploadMaxFilesize($mysql = false, we_database_base $db = null){
 	$min = min($post_max_size, $upload_max_filesize, ($mysql ? $db->getMaxAllowedPacket() : PHP_INT_MAX));
 
 	return (intval(FILE_UPLOAD_MAX_UPLOAD_SIZE) == 0 ?
-			$min :
-			min(FILE_UPLOAD_MAX_UPLOAD_SIZE * 1024 * 1024, $min));
+					$min :
+					min(FILE_UPLOAD_MAX_UPLOAD_SIZE * 1024 * 1024, $min));
 }
 
 function we_convertIniSizes($in){
@@ -675,12 +669,6 @@ function we_getDocumentByID($id, $includepath = '', we_database_base $db = null,
 	return $content;
 }
 
-function we_getObjectFileByID($id, $includepath = ''){
-	$mydoc = new we_objectFile();
-	$mydoc->initByID($id, OBJECT_FILES_TABLE, we_class::LOAD_MAID_DB);
-	return $mydoc->i_getDocument($includepath);
-}
-
 /**
  * @return str
  * @param bool $slash
@@ -692,7 +680,7 @@ function getServerProtocol($slash = false){
 
 function getServerAuth(){
 	$pwd = rawurlencode(defined('HTTP_USERNAME') ? HTTP_USERNAME : (isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : '')) . ':' .
-		rawurlencode(defined('HTTP_PASSWORD') ? HTTP_PASSWORD : (isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : '')) . '@';
+			rawurlencode(defined('HTTP_PASSWORD') ? HTTP_PASSWORD : (isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : '')) . '@';
 	return (strlen($pwd) > 3) ? $pwd : '';
 }
 
@@ -776,13 +764,13 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 
 	foreach($attribs as $k => $v){
 		$tag .= ' ' . ($k === 'link_attribute' ? // Bug #3741
-				$v :
-				str_replace('pass_', '', $k) . '="' . $v . '"');
+						$v :
+						str_replace('pass_', '', $k) . '="' . $v . '"');
 	}
 	return $tag . ($content || $forceEndTag ? //	use endtag
-			'>' . $content . '</' . $element . '>' :
+					'>' . $content . '</' . $element . '>' :
 //	xml style or not
-			( ($_xmlClose && !$onlyStartTag) ? ' />' : '>'));
+					( ($_xmlClose && !$onlyStartTag) ? ' />' : '>'));
 }
 
 /**
@@ -800,14 +788,6 @@ function removeAttribs($attribs, array $remove = array()){
 	return $attribs;
 }
 
-function we_loadLanguageConfig(){
-	$file = WE_INCLUDES_PATH . 'conf/we_conf_language.inc.php';
-	if(!file_exists($file) || !is_file($file)){
-		we_writeLanguageConfig((WE_LANGUAGE === 'Deutsch' || WE_LANGUAGE === 'Deutsch_UTF-8' ? 'de_DE' : 'en_GB'), array('de_DE', 'en_GB'));
-	}
-	include_once ($file);
-}
-
 function getWeFrontendLanguagesForBackend(){
 	$la = array();
 	if(!isset($GLOBALS['weFrontendLanguages'])){
@@ -817,33 +797,10 @@ function getWeFrontendLanguagesForBackend(){
 	foreach($GLOBALS['weFrontendLanguages'] as $Locale){
 		$temp = explode('_', $Locale);
 		$la[$Locale] = (count($temp) == 1 ?
-				CheckAndConvertISObackend(we_base_country::getTranslation($temp[0], we_base_country::LANGUAGE, $targetLang) . ' ' . $Locale) :
-				CheckAndConvertISObackend(we_base_country::getTranslation($temp[0], we_base_country::LANGUAGE, $targetLang) . ' (' . we_base_country::getTranslation($temp[1], we_base_country::TERRITORY, $targetLang) . ') ' . $Locale));
+						CheckAndConvertISObackend(we_base_country::getTranslation($temp[0], we_base_country::LANGUAGE, $targetLang) . ' ' . $Locale) :
+						CheckAndConvertISObackend(we_base_country::getTranslation($temp[0], we_base_country::LANGUAGE, $targetLang) . ' (' . we_base_country::getTranslation($temp[1], we_base_country::TERRITORY, $targetLang) . ') ' . $Locale));
 	}
 	return $la;
-}
-
-function we_writeLanguageConfig($default, $available = array()){
-
-	$locales = '';
-	sort($available);
-	foreach($available as $Locale){
-		$locales .= "	'" . $Locale . "',\n";
-	}
-
-	return we_base_file::save(WE_INCLUDES_PATH . 'conf/we_conf_language.inc.php', '<?php
-/**
- * webEdition CMS configuration file
- * NOTE: this file is regenerated, so any extra contents will be overwritten
- */
-
-$GLOBALS[\'weFrontendLanguages\'] = array(
-' . $locales . '
-);
-
-$GLOBALS[\'weDefaultFrontendLanguage\'] = \'' . $default . '\';'
-			, 'w+'
-	);
 }
 
 function we_isHttps(){
@@ -882,8 +839,8 @@ function CheckAndConvertISObackend($utf8data){
 function g_l_encodeArray($tmp){
 	$charset = (isset($_SESSION['user']) && isset($_SESSION['user']['isWeSession']) ? $GLOBALS['WE_BACKENDCHARSET'] : (isset($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET'] : $GLOBALS['WE_BACKENDCHARSET']));
 	return (is_array($tmp) ?
-			array_map(__METHOD__, $tmp) :
-			mb_convert_encoding($tmp, $charset, 'UTF-8'));
+					array_map(__METHOD__, $tmp) :
+					mb_convert_encoding($tmp, $charset, 'UTF-8'));
 }
 
 /**
@@ -899,9 +856,9 @@ function g_l($name, $specific, $omitErrors = false){
 	//t_e($name,$specific,$GLOBALS['we']['PageCharset'] , $GLOBALS['WE_BACKENDCHARSET']);
 	$charset = (isset($_SESSION['user']) && isset($_SESSION['user']['isWeSession']) ?
 //inside we
-			(isset($GLOBALS['we']['PageCharset']) ? $GLOBALS['we']['PageCharset'] : $GLOBALS['WE_BACKENDCHARSET']) :
+					(isset($GLOBALS['we']['PageCharset']) ? $GLOBALS['we']['PageCharset'] : $GLOBALS['WE_BACKENDCHARSET']) :
 //front-end
-			(!empty($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET) );
+					(!empty($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET) );
 //	return $name.$specific;
 //cache last accessed lang var
 	static $cache = array();
@@ -910,11 +867,11 @@ function g_l($name, $specific, $omitErrors = false){
 		$tmp = getVarArray($cache['l_' . $name], $specific);
 		if(!($tmp === false)){
 			return ($charset != 'UTF-8' ?
-					(is_array($tmp) ?
-						array_map('g_l_encodeArray', $tmp) :
-						mb_convert_encoding($tmp, $charset, 'UTF-8')
-					) :
-					$tmp);
+							(is_array($tmp) ?
+									array_map('g_l_encodeArray', $tmp) :
+									mb_convert_encoding($tmp, $charset, 'UTF-8')
+							) :
+							$tmp);
 		}
 	}
 	$file = WE_INCLUDES_PATH . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/' . str_replace('_', '/', $name) . '.inc.php';
@@ -925,11 +882,11 @@ function g_l($name, $specific, $omitErrors = false){
 		if($tmp !== false){
 			$cache['l_' . $name] = ${'l_' . $name};
 			return ($charset != 'UTF-8' ?
-					(is_array($tmp) ?
-						array_map('g_l_encodeArray', $tmp) :
-						mb_convert_encoding($tmp, $charset, 'UTF-8')
-					) :
-					$tmp);
+							(is_array($tmp) ?
+									array_map('g_l_encodeArray', $tmp) :
+									mb_convert_encoding($tmp, $charset, 'UTF-8')
+							) :
+							$tmp);
 		}
 		if(!$omitErrors){
 			t_e('notice', 'Requested lang entry l_' . $name . $specific . ' not found in ' . $file . ' !');
@@ -959,8 +916,8 @@ function we_templateInit(){
 		}
 //check for Trigger
 		if(!isset($GLOBALS['we']['Scheduler_active']) && we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && (!$GLOBALS['we_doc']->InWebEdition) &&
-			(SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_PREDOC) &&
-			(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0)) //on first call this variable is unset, so we're not inside an include
+				(SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_PREDOC) &&
+				(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0)) //on first call this variable is unset, so we're not inside an include
 		){
 			we_schedpro::trigger_schedule();
 		}
@@ -1005,7 +962,7 @@ function we_templateInit(){
 
 function we_templateHead($fullHeader = false){
 	if(!$GLOBALS['WE_MAIN_DOC']->InWebEdition ||
-		((!isset($GLOBALS['we_editmode']) || (!$GLOBALS['we_editmode']) && isset($_SESSION['weS']) && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE))){
+			((!isset($GLOBALS['we_editmode']) || (!$GLOBALS['we_editmode']) && isset($_SESSION['weS']) && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE))){
 		return;
 	}
 	if($fullHeader && isset($GLOBALS['WE_HTML_HEAD_BODY'])){
@@ -1077,8 +1034,8 @@ function we_templatePost(){
 		}
 		//check for Trigger
 		if(!isset($GLOBALS['we']['Scheduler_active']) && we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
-			(SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_POSTDOC) &&
-			(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0))//not inside an included Doc
+				(SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_POSTDOC) &&
+				(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0))//not inside an included Doc
 		){ //is set to Post or not set (new default)
 			flush();
 			if(function_exists('fastcgi_finish_request')){
@@ -1092,9 +1049,9 @@ function we_templatePost(){
 
 function show_SeoLinks(){
 	return (
-		!(SEOINSIDE_HIDEINWEBEDITION && $GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
-		!(SEOINSIDE_HIDEINEDITMODE && (!empty($GLOBALS['we_editmode']) || (!empty($GLOBALS['WE_MAIN_EDITMODE']))))
-		);
+			!(SEOINSIDE_HIDEINWEBEDITION && $GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
+			!(SEOINSIDE_HIDEINEDITMODE && (!empty($GLOBALS['we_editmode']) || (!empty($GLOBALS['WE_MAIN_EDITMODE']))))
+			);
 }
 
 function seoIndexHide($basename){
@@ -1174,7 +1131,7 @@ function getMysqlVer($nodots = true){
 
 function we_unserialize($string, $default = array(), $quiet = false){
 	//already unserialized
-	if(is_array($string)){
+	if(is_array($string) || is_object($string)){
 		return $string;
 	}
 	//compressed?

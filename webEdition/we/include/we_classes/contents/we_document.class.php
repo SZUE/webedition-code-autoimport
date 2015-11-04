@@ -112,7 +112,6 @@ class we_document extends we_root{
 		$i = 0;
 		while(!$this->Language){
 			if($ParentID == 0 || $i > 20){
-				we_loadLanguageConfig();
 				$this->Language = self::getDefaultLanguage()? : 'de_DE';
 			} else {
 				$this->DB_WE->query('SELECT Language,ParentID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($ParentID));
@@ -664,16 +663,10 @@ class we_document extends we_root{
 				$this->To = mktime($hour, $min, 0, $month, $day, $year);
 			}
 		}
-		/* if(isset($sessDat[2])){
-		  $this->NavigationItems = $sessDat[2];
-		  } else {
-		  $this->i_loadNavigationItems();
-		  } */
-
 
 		if(we_base_request::_(we_base_request::INT, 'wecf_mode') !== false){
 			$this->documentCustomerFilter = we_customer_documentFilter::getCustomerFilterFromRequest($this->ID, $this->ContentType, $this->Table);
-		} else if(isset($sessDat[3])){ // init webUser from session
+		} else if(isset($sessDat[3])){ // init webUser from session - unserialize is only needed for old temporary docs
 			$this->documentCustomerFilter = we_unserialize($sessDat[3]);
 		}
 
@@ -740,7 +733,7 @@ class we_document extends we_root{
 	}
 
 	protected function i_filenameDouble(){
-		return f('SELECT 1 FROM ' . escape_sql_query($this->Table) . ' WHERE ParentID=' . intval($this->ParentID) . " AND Filename='" . escape_sql_query($this->Filename) . "' AND Extension='" . escape_sql_query($this->Extension) . "' AND ID != " . intval($this->ID), "", $this->DB_WE);
+		return f('SELECT 1 FROM ' . escape_sql_query($this->Table) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Filename="' . escape_sql_query($this->Filename) . '" AND Extension="' . escape_sql_query($this->Extension) . '" AND ID!=' . intval($this->ID), "", $this->DB_WE);
 	}
 
 //FIXME: parameter $attrib should be: array $attribs=array()
@@ -818,7 +811,7 @@ class we_document extends we_root{
 						$img->setElement('name', $img->getElement('name'), 'attrib');
 					}
 				}
-				
+
 				switch($pathOnly ? 'path' : (isset($attribs['only']) ? $attribs['only'] : '')){
 					case 'src': //TODO: make separate case for multi domain project to devide between path and src
 					case 'path':
@@ -826,7 +819,7 @@ class we_document extends we_root{
 					case 'id':
 						return $img->ID;
 				}
-				
+
 				return $img->getHtml(false, true);
 			case 'binary':
 				$bin = new we_otherDocument();
@@ -1265,15 +1258,15 @@ class we_document extends we_root{
 					}
 				}
 				$js.=
-					(!empty($_popUpCtrl["jswidth"]) ?
-						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'width=' . $_popUpCtrl["jswidth"] . '\';' : '') .
-					(!empty($_popUpCtrl["jsheight"]) ?
-						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'height=' . $_popUpCtrl["jsheight"] . '\';' : '') . 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . (!empty($_popUpCtrl["jsstatus"]) ? 'yes' : 'no') . '\';' .
-					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'scrollbars=' . (!empty($_popUpCtrl["jsscrollbars"]) ? 'yes' : 'no') . '\';' .
-					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'menubar=' . (!empty($_popUpCtrl["jsmenubar"]) ? 'yes' : 'no') . '\';' .
-					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'resizable=' . (!empty($_popUpCtrl["jsresizable"]) ? 'yes' : 'no') . '\';' .
-					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'location=' . (!empty($_popUpCtrl["jslocation"]) ? 'yes' : 'no') . '\';' .
-					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'toolbar=' . (!empty($_popUpCtrl["jstoolbar"]) ? 'yes' : 'no') . '\';';
+					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . (!empty($_popUpCtrl["jsstatus"]) ? 'yes' : 'no') .
+					',scrollbars=' . (!empty($_popUpCtrl["jsscrollbars"]) ? 'yes' : 'no') .
+					',menubar=' . (!empty($_popUpCtrl["jsmenubar"]) ? 'yes' : 'no') .
+					',resizable=' . (!empty($_popUpCtrl["jsresizable"]) ? 'yes' : 'no') .
+					',location=' . (!empty($_popUpCtrl["jslocation"]) ? 'yes' : 'no') .
+					',toolbar=' . (!empty($_popUpCtrl["jstoolbar"]) ? 'yes' : 'no') .
+					(empty($_popUpCtrl["jswidth"]) ? '' : ',width=' . $_popUpCtrl["jswidth"] ) .
+					(empty($_popUpCtrl["jsheight"]) ? '' : ',height=' . $_popUpCtrl["jsheight"] ) .
+					'\';';
 				$foo = $js . "var we_win = window.open('','we_" . (isset($attribs["name"]) ? $attribs["name"] : "") . "',we_winOpts);";
 
 				$_linkAttribs['target'] = 'we_' . (isset($attribs["name"]) ? $attribs["name"] : "");
@@ -1352,8 +1345,7 @@ class we_document extends we_root{
 				}
 			}
 			foreach($dates as $nr => $v){
-				$this->schedArr[$nr]['time'] = mktime(
-					$dates[$nr]['hour'], $dates[$nr]['minute'], 0, $dates[$nr]['month'], $dates[$nr]['day'], $dates[$nr]['year']);
+				$this->schedArr[$nr]['time'] = mktime($dates[$nr]['hour'], $dates[$nr]['minute'], 0, $dates[$nr]['month'], $dates[$nr]['day'], $dates[$nr]['year']);
 			}
 		}
 		$this->Path = $this->getPath();
@@ -1431,7 +1423,7 @@ class we_document extends we_root{
 
 		return '<table class="default">' .
 			($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[Charset]') . '</td></tr>' : '') .
-			'<tr><td>' . we_html_tools::htmlTextInput($inputName, 24, $value,'', '', 'text', '14em') . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $_charsets, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');", "onchange" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');"), "value", 330) . '</td></tr>' .
+			'<tr><td>' . we_html_tools::htmlTextInput($inputName, 24, $value, '', '', 'text', '14em') . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $_charsets, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');", "onchange" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');"), "value", 330) . '</td></tr>' .
 			'</table>';
 	}
 

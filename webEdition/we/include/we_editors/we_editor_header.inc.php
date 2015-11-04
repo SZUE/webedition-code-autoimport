@@ -136,8 +136,8 @@ switch($_SESSION['weS']['we_mode']){
 }
 
 echo STYLESHEET .
- we_html_element::jsElement(
-	'var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(parent.name);
+ we_html_element::jsElement('
+var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(parent.name);
 _EditorFrame.setEditorEditPageNr(' . $we_doc->EditPageNr . ');' .
 	($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE ? 'parent.openedWithWE=true;' : '')) .
  we_html_element::jsScript(JS_DIR . 'we_editor_header.js');

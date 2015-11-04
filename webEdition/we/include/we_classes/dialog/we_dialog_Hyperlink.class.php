@@ -26,7 +26,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 
 	var $ClassName = __CLASS__;
 	var $changeableArgs = array(
-		'type', 'extHref', 'fileID', 'href', 'fileHref', 'objID', 'objHref', 'mailHref', 'target', 'class',
+		'type', 'extHref', 'fileID', 'href', 'fileHref', 'fileCT', 'objID', 'objHref', 'mailHref', 'target', 'class',
 		'param', 'anchor', 'lang', 'hreflang', 'title', 'accesskey', 'tabindex', 'rel', 'rev'
 	);
 
@@ -45,7 +45,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$back = $this->getBackBut();
 			$next = $this->getNextBut();
 			$okBut = $back && $next ?
-					$back . $next :
+					($back . $next) :
 					($back ? : $next );
 		} else {
 			$back = $this->getBackBut();
@@ -70,9 +70,8 @@ class we_dialog_Hyperlink extends we_dialog_base{
 
 			// Object Links and internal links are not possible when outside webEdition
 			// for exmaple in the wysiwyg (Mantis Bug #138)
-			if(($this->noInternals || (isset($this->args['outsideWE']) && $this->args['outsideWE'] == 1)) && (
-					$type == we_base_link::TYPE_OBJ_PREFIX || $type == we_base_link::TYPE_INT_PREFIX
-					)
+			if(($this->noInternals || (isset($this->args['outsideWE']) && $this->args['outsideWE'] == 1)) &&
+					( $type == we_base_link::TYPE_OBJ_PREFIX || $type == we_base_link::TYPE_INT_PREFIX )
 			){
 				$this->args['href'] = $type = $ref = '';
 			}
@@ -85,28 +84,33 @@ class we_dialog_Hyperlink extends we_dialog_base{
 					$this->args['extHref'] = '';
 					$this->args['fileID'] = '';
 					$this->args['fileHref'] = '';
+					$this->args['fileCT'] = '';
 					$this->args['mailHref'] = '';
-					$this->args['objID'] = $ref;
+					$this->args['objID'] = trim($ref, '/?#');
 					$this->args['objHref'] = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->args['objID']), 'Path', $this->db);
 					break;
 				case we_base_link::TYPE_INT_PREFIX:
 					$this->args['type'] = we_base_link::TYPE_INT;
 					$this->args['extHref'] = '';
-					$this->args['fileID'] = $ref;
-					$this->args['fileHref'] = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->args['fileID']), 'Path', $this->db);
+					$this->args['fileID'] = trim($ref, '/?#');
+					$hash = getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->args['fileID']), $this->db);
+					$this->args['fileHref'] = $hash['Path'];
+					$this->args['fileCT'] = $hash['ContentType'];
 					$this->args['mailHref'] = '';
 					$this->args['objID'] = '';
 					$this->args['objHref'] = '';
 					break;
 				case we_base_link::TYPE_MAIL_PREFIX:
 					$this->args['type'] = we_base_link::TYPE_MAIL;
-					$this->args['mailHref'] = preg_replace('|^([^\?#]+).*$|', '$1', $ref);
+					$match = array();
+					preg_match('|^([^\?#]+).*$|', $ref, $match);
+					$this->args['mailHref'] = trim($match[1], '/');
 					$this->args['extHref'] = '';
 					$this->args['fileID'] = '';
 					$this->args['fileHref'] = '';
+					$this->args['fileCT'] = '';
 					$this->args['objID'] = '';
 					$this->args['objHref'] = '';
-					$match = array();
 					preg_match('|(subject=([^&]*)&?)?(cc=([^&]*)&?)?(bcc=([^&]*)&?)?|', $this->args['param'], $match);
 					$this->args['mailsubject'] = isset($match[2]) ? urldecode($match[2]) : '';
 					$this->args['mailcc'] = isset($match[4]) ? $match[4] : '';
@@ -114,16 +118,19 @@ class we_dialog_Hyperlink extends we_dialog_base{
 					break;
 				default:
 					$this->args['type'] = we_base_link::TYPE_EXT;
-					$this->args['extHref'] = preg_replace(
-							array(
+					$this->args['extHref'] = preg_replace(array(
 						'|^' . WEBEDITION_DIR . 'we_cmd.php[^"\'#]+(#.*)$|',
 						'|^' . WEBEDITION_DIR . '|',
 						'|^([^\?#]+).*$|'
-							), array('$1', '', '$1')
-							, $this->args["href"]);
+							), array(
+						'$1',
+						'',
+						'$1'
+							), $this->args["href"]);
 					$this->args['fileID'] = '';
 					$this->args['fileHref'] = '';
 					$this->args['mailHref'] = '';
+					$this->args['fileCT'] = '';
 					$this->args['objID'] = '';
 					$this->args['objHref'] = '';
 			}
@@ -146,7 +153,9 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$this->args['type'] = we_base_link::TYPE_INT;
 			$this->args['extHref'] = '';
 			$this->args['fileID'] = $fileID;
-			$this->args['fileHref'] = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->args['fileID']), 'Path', $this->db);
+			$hash = getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->args['fileID']), $this->db);
+			$this->args['fileHref'] = $hash['Path'];
+			$this->args['fileCT'] = $hash['ContentType'];
 			$this->args['objID'] = '';
 			$this->args['mailHref'] = '';
 			$this->args['objHref'] = '';
@@ -172,6 +181,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$this->args['extHref'] = '';
 			$this->args['fileID'] = '';
 			$this->args['fileHref'] = '';
+			$this->args['fileCT'] = '';
 			$this->args['mailHref'] = '';
 			$this->args['objID'] = $objID;
 			$this->args['objHref'] = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->args['objID']), 'Path', $this->db);
@@ -197,6 +207,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$this->args['extHref'] = '';
 			$this->args['fileID'] = '';
 			$this->args['fileHref'] = '';
+			$this->args['fileCT'] = '';
 			$this->args['mailHref'] = $mailHref;
 			$this->args['objID'] = '';
 			$this->args['objHref'] = '';
@@ -292,6 +303,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			'extHref' => '',
 			'fileID' => '',
 			'fileHref' => '',
+			'fileCT' => '',
 			'objID' => '',
 			'objHref' => '',
 			'mailHref' => '',
@@ -316,7 +328,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 		// Initialize we_button class
 		$yuiSuggest = &weSuggest::getInstance();
 
-		$extHref = (!$this->args['extHref'] ? we_base_link::EMPTY_EXT : (utf8_decode((substr($this->args['extHref'], 0, 1) === '#') ? '' : $this->args['extHref'])));
+		$extHref = (!$this->args['extHref'] ? we_base_link::EMPTY_EXT : ((substr($this->args['extHref'], 0, 1) === '#') ? '' : $this->args['extHref']));
 		if($this->noInternals || (isset($this->args['outsideWE']) && $this->args['outsideWE'] == 1)){
 			$_select_type = '<option value="' . we_base_link::TYPE_EXT . '"' . (($this->args["type"] == we_base_link::TYPE_EXT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[external_link]') . '</option>
 <option value="' . we_base_link::TYPE_MAIL . '"' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', '[emaillink]') . '</option>';
@@ -336,11 +348,14 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			// EXTERNAL LINK
 			$cmd1 = "document.we_form.elements['we_dialog_args[extHref]'].value";
 			$_external_select_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', '" . we_base_request::encCmd($cmd1) . "', '', " . $cmd1 . ", '')") : "";
+			$openbutton = we_html_button::create_button(we_html_button::EDIT, "javascript:var f=top.document.we_form.elements['we_dialog_args[extHref]']; if(f.value && f.value !== '" . we_base_link::EMPTY_EXT . "'){window.open(f.value);}", true, 0, 0, '', '', ($extHref && $extHref !== we_base_link::EMPTY_EXT ? false : true), false, '_ext', false, g_l('wysiwyg', '[openNewWindow]'));
 
 			$_external_link = "<div style='margin-top:1px'>" . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref, '', 'onfocus="this.value = this.value === \'\' ? consts.EMPTY_EXT : this.value;" onblur="checkMakeEmptyHrefExt();" onchange="
 if(this.value === \'\' || this.value === consts.EMPTY_EXT){
+	document.getElementById(\'btn_edit_ext\').disabled=true;
 	checkMakeEmptyHrefExt();
 }else{
+	document.getElementById(\'btn_edit_ext\').disabled=false;
 	var x=this.value.match(/(.*:\/\/[^#?]*)(\?([^?#]*))?(#([^?#]*))?/);
 	this.value=x[1];
 	if(x[3]!=undefined){
@@ -348,13 +363,12 @@ if(this.value === \'\' || this.value === consts.EMPTY_EXT){
 	}
 	if(x[5]!=undefined){
 		document.getElementsByName(\'we_dialog_args[anchor]\')[0].value=x[5];
-	}}"', "url", 300), "", "left", "defaultfont", $_external_select_button, '', '', '', '', 0) . '</div>';
-
+	}}"', "url", 300), "", "left", "defaultfont", $_external_select_button . $openbutton, '', '', '', '', 0) . '</div>';
 
 			// INTERNAL LINK
 			$cmd1 = "document.we_form.elements['we_dialog_args[fileID]'].value";
-			$_internal_select_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', " . $cmd1 . ", '" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['we_dialog_args[fileHref]'].value") . "','','',0, '', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
-
+			$wecmdenc3 = we_base_request::encCmd("if(currentID){opener.document.we_form.yuiAcResultCT.value = currentType;opener.document.getElementById(\"btn_edit_int\").disabled=false;}");
+			$_internal_select_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', " . $cmd1 . ", '" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['we_dialog_args[fileHref]'].value") . "','" . $wecmdenc3 . "','',0, '', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 			$yuiSuggest->setAcId("Path");
 			$yuiSuggest->setContentType(implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::QUICKTIME)));
 			$yuiSuggest->setInput("we_dialog_args[fileHref]", $this->args["fileHref"]);
@@ -364,19 +378,18 @@ if(this.value === \'\' || this.value === consts.EMPTY_EXT){
 			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setWidth(300);
 			$yuiSuggest->setSelectButton($_internal_select_button, 10);
+			$yuiSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:if(top.document.we_form.elements['yuiAcResultPath'].value){if(opener.top.doClickDirect!==undefined){var p=opener.top;}else if(opener.top.opener.top.doClickDirect!==undefined){var p=opener.top.opener.top;}else{return;}p.doClickDirect(document.we_form.elements['yuiAcResultPath'].value, document.we_form.elements['yuiAcResultCT'].value, '" . FILE_TABLE . "'); }", true, 0, 0, '', '', ($this->args["fileID"] ? false : true), false, '_int'));
+			$_internal_link = $yuiSuggest->getHTML() . we_html_element::htmlHidden('yuiAcResultCT', ($this->args['fileCT'] ? $this->args['fileCT'] : we_base_ContentTypes::WEDOCUMENT));
 
-			$_internal_link = $yuiSuggest->getHTML();
 			// E-MAIL LINK
-
 			$_email_link = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[mailHref]", 30, $this->args["mailHref"], "", '', "email", 300), "", "left", "defaultfont", "", "", "", "", "", 0);
 
 			// OBJECT LINK
 			if(defined('OBJECT_TABLE') && ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"))){
 				$cmd1 = "document.we_form.elements['we_dialog_args[objID]'].value";
 				$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[objHref]'].value");
-				//$wecmdenc3 = we_base_request::encCmd("top.opener._EditorFrame.setEditorIsHot(true);");
-				$_object_select_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', " . $cmd1 . ", '" . OBJECT_FILES_TABLE . "', '" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "', '', '', '', 'objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");", false, 100, 22, "", "", !permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"));
-
+				$wecmdenc3 = we_base_request::encCmd("if(currentID){opener.document.getElementById(\"btn_edit_obj\").disabled=false;}");
+				$_object_select_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', " . $cmd1 . ", '" . OBJECT_FILES_TABLE . "', '" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "', '" . $wecmdenc3 . "', '', '', 'objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");", false, 100, 22, "", "", !permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"));
 				$yuiSuggest->setAcId("Obj");
 				$yuiSuggest->setContentType("folder," . we_base_ContentTypes::OBJECT_FILE);
 				$yuiSuggest->setInput("we_dialog_args[objHref]", $this->args["objHref"]);
@@ -387,7 +400,7 @@ if(this.value === \'\' || this.value === consts.EMPTY_EXT){
 				$yuiSuggest->setTable(OBJECT_FILES_TABLE);
 				$yuiSuggest->setWidth(300);
 				$yuiSuggest->setSelectButton($_object_select_button, 10);
-
+				$yuiSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:if(top.document.we_form.elements['yuiAcResultObj'].value){if(opener.top.doClickDirect!==undefined){var p=opener.top;}else if(opener.top.opener.top.doClickDirect!==undefined){var p=opener.top.opener.top;}else{return;}p.doClickDirect(document.we_form.elements['yuiAcResultObj'].value,'" . we_base_ContentTypes::OBJECT_FILE . "','" . OBJECT_FILES_TABLE . "'); }", true, 0, 0, '', '', ($this->args["objID"] ? false : true), false, '_obj'));
 				$_object_link = $yuiSuggest->getHTML();
 				/*
 				  $_object_link = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[objHref]",30,$this->args["objHref"],"",' readonly="readonly"',"text",300, 0, "", !permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")) .

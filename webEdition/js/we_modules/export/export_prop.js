@@ -30,49 +30,51 @@ function doUnload() {
 }
 
 function we_cmd() {
-	var args = [];
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-	for (var i = 0; i < arguments.length; i++) {
-		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
-		args.push(arguments[i]);
-		if (i < (arguments.length - 1)) {
-			url += "&";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
 		}
 	}
 
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "switchPage":
-			document.we_form.cmd.value = arguments[0];
-			document.we_form.tabnr.value = arguments[1];
+			document.we_form.cmd.value = args[0];
+			document.we_form.tabnr.value = args[1];
 			submitForm();
 			break;
 		case "we_export_dirSelector":
-			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_export_dirSelector&";
-			for (var i = 1; i < arguments.length; i++) {
-				url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
-				if (i < (arguments.length - 1)) {
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+			args[0]="we_export_dirSelector";
+			for (var i = 0; i < args.length; i++) {
+				url += "we_cmd[]=" + encodeURI(args[i]);
+				if (i < (args.length - 1)) {
 					url += "&";
 				}
 			}
-			new (WE().util.jsWindow)(window, url, "we_exportselector", -1, -1, 600, 350, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_exportselector", -1, -1, 600, 350, true, true, true);
 			break;
 		case "we_selector_category":
-			new (WE().util.jsWindow)(window, url, "we_catselector", -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_catselector", -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(window, url, "we_selector", -1, -1, WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_selector", -1, -1, WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
 			break;
 		case "add_cat":
 		case "del_cat":
 		case "del_all_cats":
-			document.we_form.cmd.value = arguments[0];
+			document.we_form.cmd.value = args[0];
 			top.content.editor.edbody.document.we_form.pnt.value = "edbody";
 			document.we_form.tabnr.value = top.content.activ_tab;
-			document.we_form.cat.value = arguments[1];
+			document.we_form.cat.value = args[1];
 			submitForm();
 			break;
 		default:
-			top.content.we_cmd.apply(this, args);
+			top.content.we_cmd.apply(this, arguments);
 	}
 }
 

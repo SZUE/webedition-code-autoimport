@@ -333,7 +333,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 		foreach($_result as $k => $v){
 			$_result[$k]["Description"] = "";
 			if($_result[$k]["Table"] == FILE_TABLE && $_result[$k]['Published'] >= $_result[$k]['ModDate'] && $_result[$k]['Published'] != 0){
-				$_result[$k]["Description"] = f('SELECT c.Dat FROM (' . FILE_TABLE . ' a LEFT JOIN ' . LINK_TABLE . ' b ON (a.ID=b.DID)) LEFT JOIN ' . CONTENT_TABLE . ' c ON (b.CID=c.ID) WHERE a.ID=' . intval($_result[$k]["ID"]) . ' AND b.Name="Description" AND b.DocumentTable="' . FILE_TABLE . '"', '', $DB_WE);
+				$_result[$k]["Description"] = f('SELECT c.Dat FROM (' . FILE_TABLE . ' f LEFT JOIN ' . LINK_TABLE . ' l ON (f.ID=l.DID)) LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE f.ID=' . intval($_result[$k]["ID"]) . ' AND l.nHash=x\'' . md5("Description") . '\' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"', '', $DB_WE);
 			} else {
 				if(($obj = f('SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($_result[$k]["ID"]) . ' AND DocTable="tblFile" AND Active=1', '', $DB_WE))){
 					$tempDoc = we_unserialize($obj);
@@ -469,7 +469,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 					$_tagName = $_defined_fields[$i]["tag"];
 
 					if(we_exim_contentProvider::isBinary($_result[$f]["docID"])){
-						$DB_WE->query('SELECT a.ID, c.Dat FROM (' . FILE_TABLE . ' a LEFT JOIN ' . LINK_TABLE . ' b ON (a.ID=b.DID)) LEFT JOIN ' . CONTENT_TABLE . ' c ON (b.CID=c.ID) WHERE b.DID=' . intval($_result[$f]['docID']) . ' AND b.Name="' . $DB_WE->escape($_tagName) . '" AND b.DocumentTable="' . FILE_TABLE . '"');
+						$DB_WE->query('SELECT l.DID,c.Dat FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DID=' . intval($_result[$f]['docID']) . ' AND l.nHash=x\'' . md5($_tagName) . '\' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
 						$metafields[$_tagName] = "";
 						while($DB_WE->next_record()){
 							$metafields[$_tagName] = we_base_util::shortenPath($DB_WE->f('Dat'), 45);

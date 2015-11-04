@@ -1,3 +1,5 @@
+/* global top */
+
 /**
  * webEdition CMS
  *
@@ -28,18 +30,21 @@ function doUnload() {
 
 function we_cmd() {
 	var url = frames.set + "?";
-	for (var i = 0; i < arguments.length; i++) {
-		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
-		if (i < (arguments.length - 1)) {
-			url += "&";
+	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
+		var args = {}, i = 0, tmp = arguments[0];
+		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
+	} else {
+		var args = Array.prototype.slice.call(arguments);
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
 		}
 	}
 	if (document.we_form.mode.value == "1") {
 		transferDateFields();
 	}
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "selectBranch":
-			document.we_form.cmd.value = arguments[0];
+			document.we_form.cmd.value = args[0];
 			submitForm();
 			break;
 		case "add_search":
@@ -64,10 +69,6 @@ function we_cmd() {
 			submitForm();
 			break;
 		default:
-			var args = [];
-			for (i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
-			top.content.we_cmd.apply(this, args);
+			top.content.we_cmd.apply(this, arguments);
 	}
 }

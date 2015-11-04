@@ -277,30 +277,33 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 		$_docCustomerFilter = $model->documentCustomerFilter; // filter of document
 		$_tmp = self::getFilterByIdAndTable($model->ID, $model->Table, $_db); // filter stored in Database
 
-		if(!self::filterAreQual($_docCustomerFilter, $_tmp)){ // the filter changed
+		if(self::filterAreQual($_docCustomerFilter, $_tmp)){
+			return;
+		}// the filter changed
+		if($_docCustomerFilter->getMode() == we_customer_abstractFilter::OFF){
 			self::deleteForModel($model, $_db);
+			return;
+		}
+		if($model->ID){ // only save if its is active
+			$_filter = $_docCustomerFilter->getFilter();
+			$_specificCustomers = $_docCustomerFilter->getSpecificCustomers();
+			$_blackList = $_docCustomerFilter->getBlackList();
+			$_whiteList = $_docCustomerFilter->getWhiteList();
 
-			if($_docCustomerFilter->getMode() != we_customer_abstractFilter::OFF && $model->ID){ // only save if its is active
-				$_filter = $_docCustomerFilter->getFilter();
-				$_specificCustomers = $_docCustomerFilter->getSpecificCustomers();
-				$_blackList = $_docCustomerFilter->getBlackList();
-				$_whiteList = $_docCustomerFilter->getWhiteList();
-
-				$_db->query('REPLACE INTO ' . CUSTOMER_FILTER_TABLE . ' SET ' . we_database_base::arraySetter(array(
-						'modelId' => $model->ID,
-						'modelType' => $model->ContentType,
-						'modelTable' => stripTblPrefix($model->Table),
-						'accessControlOnTemplate' => $_docCustomerFilter->getAccessControlOnTemplate(),
-						'errorDocNoLogin' => $_docCustomerFilter->getErrorDocNoLogin(),
-						'errorDocNoAccess' => $_docCustomerFilter->getErrorDocNoAccess(),
-						'mode' => $_docCustomerFilter->getMode(),
-						'specificCustomers' => ($_specificCustomers ? implode(',', $_specificCustomers) : ''),
-						'filter' => ($_filter ? we_serialize($_filter) : ''),
-						'whiteList' => ($_whiteList ? implode(',', $_whiteList) : ''),
-						'blackList' => ($_blackList ? implode(',', $_blackList) : ''),
-					))
-				);
-			}
+			$_db->query('REPLACE INTO ' . CUSTOMER_FILTER_TABLE . ' SET ' . we_database_base::arraySetter(array(
+					'modelId' => $model->ID,
+					'modelType' => $model->ContentType,
+					'modelTable' => stripTblPrefix($model->Table),
+					'accessControlOnTemplate' => $_docCustomerFilter->getAccessControlOnTemplate(),
+					'errorDocNoLogin' => $_docCustomerFilter->getErrorDocNoLogin(),
+					'errorDocNoAccess' => $_docCustomerFilter->getErrorDocNoAccess(),
+					'mode' => $_docCustomerFilter->getMode(),
+					'specificCustomers' => ($_specificCustomers ? implode(',', $_specificCustomers) : ''),
+					'filter' => ($_filter ? we_serialize($_filter, 'json') : ''),
+					'whiteList' => ($_whiteList ? implode(',', $_whiteList) : ''),
+					'blackList' => ($_blackList ? implode(',', $_blackList) : ''),
+				))
+			);
 		}
 	}
 

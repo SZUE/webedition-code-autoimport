@@ -509,14 +509,13 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 	  $yuiSuggest->setOpenButton($editButton, 4);
 	  $yuiSuggest->setDoOnItemSelect("weCollectionEdit.repaintAndRetrieveCsv();");
 
-	  $rowControllsArr = array();
-	  $rowControllsArr[] = we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "javascript:_EditorFrame.setEditorIsHot(true);weCollectionEdit.doClickAdd(this);//top.we_cmd('switch_edit_page',1,we_transaction);", true, 100, 22);
-	  $rowControllsArr[] = we_html_tools::htmlSelect('numselect_' . $index, array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10), 1, '', false, array('id' => 'numselect_' . $index));
-	  $rowControllsArr[] = we_html_button::create_button(we_html_button::DIRUP, 'javascript:weCollectionEdit.doClickUp(this);', true, 0, 0, '', '', ($index === 1 ? true : false), false, '_' . $index);
-	  $rowControllsArr[] = we_html_button::create_button(we_html_button::DIRDOWN, 'javascript:weCollectionEdit.doClickDown(this);', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index);
-	  $rowControllsArr[] = we_html_button::create_button(we_html_button::TRASH, 'javascript:weCollectionEdit.doClickDelete(this)', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index);
-	  $rowControlls = we_html_button::create_button_table($rowControllsArr);
-
+	  $rowControlls =
+	 we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "javascript:_EditorFrame.setEditorIsHot(true);weCollectionEdit.doClickAdd(this);//top.we_cmd('switch_edit_page',1,we_transaction);", true, 100, 22).
+	  we_html_tools::htmlSelect('numselect_' . $index, array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10), 1, '', false, array('id' => 'numselect_' . $index)).
+	  we_html_button::create_button(we_html_button::DIRUP, 'javascript:weCollectionEdit.doClickUp(this);', true, 0, 0, '', '', ($index === 1 ? true : false), false, '_' . $index).
+	  we_html_button::create_button(we_html_button::DIRDOWN, 'javascript:weCollectionEdit.doClickDown(this);', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index).
+	  we_html_button::create_button(we_html_button::TRASH, 'javascript:weCollectionEdit.doClickDelete(this)', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index);
+	  
 	  $rowHtml = new we_html_table(array('draggable' => 'false'), 1, 3);
 	  $rowHtml->setCol(0, 0, array('width' => '70px', 'style' => 'padding:0 0 0 20px;', 'class' => 'weMultiIconBoxHeadline'), 'Nr. <span id="label_' . $index . '">' . $index . '</span>');
 	  $rowHtml->setCol(0, 1, array('width' => '220px', 'style' => 'padding:4px 40px 0 0;', 'class' => 'weMultiIconBoxHeadline'), $yuiSuggest->getHTML());
@@ -674,7 +673,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		$orCustomElement = ' OR (l.Name = "elemIMG" AND c.Dat != "") OR (l.Name = "elemIMG" AND c.BDID != 0)';
 		if($this->remTable == stripTblPrefix(FILE_TABLE)){
 			$this->DB_WE->query('SELECT l.DID, l.Name, l.type, c.Dat, c.BDID FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID = c.ID
-				WHERE l.DID IN (' . rtrim($itemsCsv, ',') . ') AND ((l.type = "attrib" AND l.Name IN ("title", "alt")) OR (l.type = "txt" AND l.Name IN ("Title", "Description")) ' . $orCustomElement . ')'
+				WHERE l.DocumentTable="tblFile" AND l.DID IN (' . rtrim($itemsCsv, ',') . ') AND ((l.type="attrib" AND l.Name IN ("title", "alt")) OR (l.type="txt" AND l.Name IN ("Title", "Description")) ' . $orCustomElement . ')'
 			);
 
 			while($this->DB_WE->next_record()){
@@ -728,7 +727,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 	}
 
 	protected function i_filenameDouble(){
-		return f('SELECT 1 FROM ' . escape_sql_query($this->Table) . ' WHERE ParentID=' . intval($this->ParentID) . " AND Text='" . escape_sql_query($this->Text) . "' AND ID != " . intval($this->ID), "", $this->DB_WE);
+		return f('SELECT 1 FROM ' . escape_sql_query($this->Table) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Text="' . escape_sql_query($this->Text) . '" AND ID!=' . intval($this->ID), '', $this->DB_WE);
 	}
 
 	public function we_load($from = we_class::LOAD_MAID_DB){
@@ -872,7 +871,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 			if(($ws = get_ws($this->remTable))){
 				$wsPathArray = id_to_path($ws, $this->remTable, $this->DB_WE, false, true);
 				foreach($wsPathArray as $path){
-					$wspaces[] = " Path LIKE '" . $this->DB_WE->escape($path) . "/%' OR " . getQueryParents($path);
+					$wspaces[] = ' Path LIKE "' . $this->DB_WE->escape($path) . '/%" OR ' . getQueryParents($path);
 					while($path != '/' && $path != '\\' && $path){
 						$parentpaths[] = $path;
 						$path = dirname($path);
@@ -882,7 +881,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 				$ac = we_users_util::getAllowedClasses($this->DB_WE);
 				foreach($ac as $cid){
 					$path = id_to_path($cid, OBJECT_TABLE);
-					$wspaces[] = " Path LIKE '" . $this->DB_WE->escape($path) . "/%' OR Path='" . $this->DB_WE->escape($path) . "'";
+					$wspaces[] = ' Path LIKE "' . $this->DB_WE->escape($path) . '/%" OR Path="' . $this->DB_WE->escape($path) . '"';
 				}
 			}
 			$wspaces = empty($wspaces) ? array(false) : $wspaces;

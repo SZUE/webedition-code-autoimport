@@ -301,7 +301,7 @@ class we_object_exImport extends we_object{
 			'editdescription' => '',
 			'int' => '',
 			'intID' => '',
-			'intPath' => '',
+//			'intPath' => '',
 			'hreftype' => '',
 			'hrefdirectory' => '',
 			'hreffile' => '',

@@ -2,17 +2,21 @@
 /* query separator */
 ###UPDATEDROPCOL(Icon,###TBLPREFIX###tblversions)###
 /* query separator */
+/*###UPDATEDROPCOL(ID,###TBLPREFIX###tblversions)###*/
+/* query separator */
+/*###UPDATEDROPKEY(documentID,###TBLPREFIX###tblversions)###*/
+/* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblversions (
   ID bigint(20) unsigned NOT NULL auto_increment,
   documentID int(11) unsigned NOT NULL,
   documentTable tinytext NOT NULL,
+  version mediumint(6) unsigned NOT NULL,
   documentElements longblob NOT NULL,
   documentScheduler blob NOT NULL,
   documentCustomFilter blob NOT NULL,
   `timestamp` int(10) unsigned NOT NULL,
   `status` enum('saved','published','unpublished','deleted') NOT NULL,
-  version mediumint(6) unsigned NOT NULL,
   binaryPath varchar(255) NOT NULL,
   Filehash char(40) NOT NULL default '',
   modifications varchar(255) NOT NULL,
@@ -59,3 +63,6 @@ CREATE TABLE ###TBLPREFIX###tblversions (
   KEY binaryPath (binaryPath),
   KEY version (version)
 ) ENGINE=MyISAM ;
+
+/* query separator */
+/*###ONKEYFAILED(PRIMARY,###TBLPREFIX###tblversions)ALTER IGNORE TABLE ###TBLPREFIX###tblversions ADD PRIMARY KEY (documentID,documentTable,version);###*/

@@ -67,15 +67,15 @@ abstract class we_html_multiIconBox{
 						'<span style="cursor: pointer;" id="text_' . $uniqname . '" onclick="weToggleBox(\'' . $uniqname . '\',\'' . addslashes($foldDown) . '\',\'' . addslashes($foldRight) . '\');' . ($delegate ? : "" ) . '">' . ($displayAtStartup ? $foldDown : $foldRight) . '</span>'
 					) .
 					'<br/><table id="table_' . $uniqname . '" width="100%" class="default" style="' . ($displayAtStartup ? '' : 'display:none') . '"><tr><td>' : '') .
-				'<div style="margin-left:' . $marginLeft . 'px" id="div_' . $uniqname . '_' . $i . '">' .
+				'<div style="padding-left:' . $marginLeft . 'px;padding-bottom:10px;margin-bottom:10px;'.
+					($i < (count($content) - 1) && (!isset($c['noline'])) ?
+					'border-bottom: 1px solid #AFB0AF;' :
+					'').'" id="div_' . $uniqname . '_' . $i . '">' .
 				($leftContent || $leftWidth ?
 					'<div style="' . ($leftWidth ? ' width:' . $leftWidth . 'px' : '') . '" class="multiiconleft largeicons">' . ((!$leftContent) && $leftWidth ? "&nbsp;" : $leftContent) . '</div>' :
 					'') .
-				$rightContent . '
-					</div><div style="margin:10px 0px;' .
-				($i < (count($content) - 1) && (!isset($c['noline'])) ?
-					'border-top: 1px solid #AFB0AF;' :
-					'') . '"></div>' .
+				$rightContent .
+					'</div>' .
 				(isset($c['class']) ? '</div>' : '');
 		}
 

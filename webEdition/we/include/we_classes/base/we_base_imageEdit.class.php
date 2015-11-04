@@ -492,7 +492,7 @@ abstract class we_base_imageEdit{
 		if($output_format === 'jpeg'){
 			$output_format = 'jpg';
 		}
-
+		$options=  array_filter($options);
 		$_fromFile = (strlen($imagedata) < 255 && @file_exists($imagedata));
 
 		// Output format is available

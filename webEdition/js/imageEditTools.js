@@ -180,8 +180,9 @@ ImageEditTools.Crop = {
 		object[eventName] = function () {
 			var i;
 			var argumentsCopy = [];
-			for (i = 0; i < arguments.length; i++)
+			for (i = 0; i < arguments.length; i++){
 				argumentsCopy[i] = arguments[i];
+			}
 			if (arguments.length === 0 && window.event) {
 				argumentsCopy[0] = CropTool.patchEvent(window.event, this);
 			} else if (arguments[0] && typeof arguments[0] == "object" && arguments[0].toString().search(/event/i) != -1) {
@@ -1056,7 +1057,7 @@ ImageEditTools.Focus = {
 		this.setFocusPositionByValue();
 		_EditorFrame.setEditorIsHot(hot);
 	},
-			
+
 	drop: function(){
 		this.elems.focusPoint.style.display = 'none';
 		this.elems.image.style.cursor = 'default';

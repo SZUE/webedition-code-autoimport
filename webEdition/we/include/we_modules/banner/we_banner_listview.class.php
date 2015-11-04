@@ -72,7 +72,7 @@ class we_banner_listview extends we_listview_base{
 			$this->allviews += intval($this->DB_WE->f("views"));
 		}
 
-		$this->DB_WE->query('SELECT DID,COUNT(ID) AS clicks FROM ' . BANNER_CLICKS_TABLE . " WHERE DID!=0 AND (Page='' OR page='0') AND ID=" . intval($this->bannerID) . ' ' . ($this->UseFilter ? " AND (Timestamp>='" . $this->FilterDate . "' AND Timestamp<'" . ($this->FilterDateEnd) . "')" : "") . " GROUP  BY DID");
+		$this->DB_WE->query('SELECT DID,COUNT(ID) AS clicks FROM ' . BANNER_CLICKS_TABLE . " WHERE DID!=0 AND (Page='' OR page='0') AND ID=" . intval($this->bannerID) . ' ' . ($this->UseFilter ? ' AND (Timestamp>="' . $this->FilterDate . '" AND Timestamp<"' . ($this->FilterDateEnd) . '")' : '') . ' GROUP BY DID');
 		while($this->DB_WE->next_record()){
 			$tempArray[$this->DB_WE->f("DID")]["clicks"] = $this->DB_WE->f("clicks");
 			$this->allclicks += intval($this->DB_WE->f("clicks"));
@@ -86,7 +86,7 @@ class we_banner_listview extends we_listview_base{
 			);
 			$this->allviews += intval($this->DB_WE->f("views"));
 		}
-		$this->DB_WE->query('SELECT Page,COUNT(ID) AS clicks FROM ' . BANNER_CLICKS_TABLE . " WHERE Page!='' AND Page!='0' AND ID=" . intval($this->bannerID) . ' ' . ($this->UseFilter ? " AND (Timestamp>='" . $this->FilterDate . "' AND Timestamp<'" . ($this->FilterDateEnd) . "')" : "") . " GROUP  BY Page");
+		$this->DB_WE->query('SELECT Page,COUNT(ID) AS clicks FROM ' . BANNER_CLICKS_TABLE . " WHERE Page!='' AND Page!='0' AND ID=" . intval($this->bannerID) . ' ' . ($this->UseFilter ? ' AND (Timestamp>="' . $this->FilterDate . '" AND Timestamp<"' . ($this->FilterDateEnd) . '")' : '') . ' GROUP BY Page');
 		while($this->DB_WE->next_record()){
 			$tempArray2[$this->DB_WE->f("Page")]["clicks"] = $this->DB_WE->f("clicks");
 			$this->allclicks += intval($this->DB_WE->f("clicks"));
