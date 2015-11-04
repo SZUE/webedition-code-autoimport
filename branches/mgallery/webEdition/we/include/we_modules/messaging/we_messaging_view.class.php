@@ -51,11 +51,11 @@ class we_messaging_view extends we_modules_view{
 
 	function getJSSubmitFunction($def_target = "edbody"){
 		return '
-function submitForm() {
+function submitForm(target,action,method) {
 	var f = self.document.we_form;
-	f.target =  (arguments[0]?arguments[0]:"' . $def_target . '");
-	f.action = (arguments[1]?arguments[1]:"' . $this->frameset . '");
-	f.method = (arguments[2]?arguments[2]:"post");
+	f.target =  (target?target:"' . $def_target . '");
+	f.action = (action?action:"' . $this->frameset . '");
+	f.method = (method?method:"post");
 	f.submit();
 }';
 	}

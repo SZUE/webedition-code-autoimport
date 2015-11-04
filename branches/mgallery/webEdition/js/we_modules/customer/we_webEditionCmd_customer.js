@@ -22,12 +22,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_customer() {
-	var args = arguments[0],
-		url = arguments[1];
-
+function we_cmd_customer(args, url) {
 	switch (args[0]) {
-
 		case "customer_edit":
 		case "customer_edit_ifthere":
 			new (WE().util.jsWindow)(this, url, "edit_module", -1, -1, 970, 760, true, true, true, true);

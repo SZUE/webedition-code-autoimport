@@ -42,7 +42,7 @@ function we_cmd() {
 			break;
 		case "we_export_dirSelector":
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-			args[0]="we_export_dirSelector";
+			args[0] = "we_export_dirSelector";
 			for (var i = 0; i < args.length; i++) {
 				url += "we_cmd[]=" + encodeURI(args[i]);
 				if (i < (args.length - 1)) {
@@ -71,10 +71,10 @@ function we_cmd() {
 	}
 }
 
-function submitForm() {
+function submitForm(target, action, method) {
 	var f = self.document.we_form;
-	f.target = (arguments[0] ? arguments[0] : "edbody");
-	f.action = (arguments[1] ? arguments[1] : data.frameset);
-	f.method = (arguments[2] ? arguments[2] : "post");
+	f.target = (target ? target : "edbody");
+	f.action = (action ? action : data.frameset);
+	f.method = (method ? method : "post");
 	f.submit();
 }

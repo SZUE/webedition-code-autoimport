@@ -24,7 +24,7 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-container.prototype.openClose = function(id) {
+container.prototype.openClose = function (id) {
 	var sort = "";
 	if (id == "")
 		return;
@@ -35,7 +35,7 @@ container.prototype.openClose = function(id) {
 	treeData[eintragsIndex].open = openstatus;
 
 	if (openstatus && !treeData[eintragsIndex].loaded) {
-		frames.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=cmd&pid=" + id +(sort != ""? "&sort=" + sort:"");
+		frames.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=cmd&pid=" + id + (sort != "" ? "&sort=" + sort : "");
 	} else {
 		drawTree();
 	}
@@ -48,12 +48,11 @@ node.prototype.showSegment = function () {
 	top.reloadGroup(this.parentid, this.offset);
 };
 
-function reloadGroup(pid) {
+function reloadGroup(pid, offset) {
 	var it = get(pid);
-	offset = arguments[1] ? arguments[1] : 0;
 	if (it) {
 		it.clear();
-		startTree(pid, offset);
+		startTree(pid, (offset ? offset : 0));
 	}
 }
 

@@ -94,7 +94,7 @@ function we_cmd(){
 			addShippingCostTableRow();
 			break;
 		case "deleteShippingCostTableRow":
-			deleteShippingCostTableRow(arguments[1]);
+			deleteShippingCostTableRow(args[1]);
 			break;
 		default :
 			top.opener.top.we_cmd.apply(this, arguments);

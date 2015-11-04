@@ -132,11 +132,11 @@ function we_cmd() {
 			top.content.we_cmd.apply(this, arguments);
 	}
 }
-function submitForm() {
+function submitForm(target,action,method) {
 	var f = self.document.we_form;
-	f.target =  (arguments[0]?arguments[0]:"edbody");
-	f.action = (arguments[1]?arguments[1]:"' . $this->frameset . '");
-	f.method = (arguments[2]?arguments[2]:"post");
+	f.target =  (target?target:"edbody");
+	f.action = (action?action:"' . $this->frameset . '");
+	f.method = (method?method:"post");
 	f.submit();
 }');
 	}

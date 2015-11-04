@@ -114,7 +114,7 @@ function we_cmd() {
 	var url = WE().util.getWe_cmdArgsUrl(args, WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_transaction=" + we_transaction + "&");
 	var arguments = args;
 
-	if (hot === 1 && args[0] != "messaging_start_view") {
+	if (hot === 1 && args[0] !== "messaging_start_view") {
 		if (confirm(WE().consts.g_l.messaging.save_changed_folder)) {
 			top.content.editor.document.edit_folder.submit();
 		} else {

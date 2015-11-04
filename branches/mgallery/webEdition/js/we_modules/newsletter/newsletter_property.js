@@ -156,14 +156,13 @@ function getNumOfDocs() {
 	return 0;
 }
 
-function switchRadio(a, b) {
+function switchRadio(a, b, x, c) {
 	a.value = 1;
 	a.checked = true;
 	b.value = 0;
 	b.checked = false;
 
-	if (arguments[3]) {
-		c = arguments[3];
+	if (c) {
 		c.value = 0;
 		c.checked = false;
 	}
@@ -229,7 +228,7 @@ function we_cmd() {
 
 		case "openNewsletterDirselector":
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-			args[0]="we_newsletter_dirSelector";
+			args[0] = "we_newsletter_dirSelector";
 			for (i = 0; i < args.length; i++) {
 				url += "we_cmd[]=" + encodeURI(args[i]);
 				if (i < (args.length - 1)) {
@@ -482,17 +481,14 @@ function we_cmd() {
 	}
 }
 
-function submitForm() {
+function submitForm(target, action, method) {
 	if (self.weWysiwygSetHiddenText) {
 		weWysiwygSetHiddenText();
 	}
-
 	var f = self.document.we_form;
-
-	f.target = (arguments[0] ? arguments[0] : "edbody");
-	f.action = (arguments[1] ? arguments[1] : modFrameSet);
-	f.method = (arguments[2] ? arguments[2] : "post");
-
+	f.target = (target ? target : "edbody");
+	f.action = (action ? action : modFrameSet);
+	f.method = (method ? method : "post");
 	f.submit();
 }
 
@@ -646,11 +642,14 @@ function calendarSetup(group, x) {
 
 function changeFieldValue(val, valueField) {
 	top.content.hot = 1;
-	document.we_form.ncmd.value = arguments[0];
-	document.we_form.ngroup.value = arguments[1];
+	document.we_form.ncmd.value = val;
+	document.we_form.ngroup.value = valueField;
 
-	if (val == "MemberSince" || val == "LastLogin" || val == "LastAccess") {
-		document.getElementById(valueField).value = "";
+	switch (val) {
+		case "MemberSince":
+		case "LastLogin":
+		case "LastAccess":
+			document.getElementById(valueField).value = "";
 	}
 	submitForm();
 }

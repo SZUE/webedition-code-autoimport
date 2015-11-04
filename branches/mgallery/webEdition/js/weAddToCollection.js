@@ -137,11 +137,7 @@ weAddToCollection = {
 		f.submit();
 	},
 	we_cmd: function () {
-		var args = [];
-		for (var i = 0; i < arguments.length; i++)
-		{
-			args.push(arguments[i]);
-		}
+		var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 		if (parent.we_cmd) {
 			parent.we_cmd.apply(this, args);
 		}

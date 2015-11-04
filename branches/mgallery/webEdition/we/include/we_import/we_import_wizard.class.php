@@ -874,8 +874,8 @@ function handle_eventNext(){
 		$functions .= <<<HTS
 
 function deleteCategory(obj,cat){
-	if(document.we_form.elements['v['+obj+'Categories]'].value.indexOf(','+arguments[1]+',') != -1) {
-		re = new RegExp(','+arguments[1]+',');
+	if(document.we_form.elements['v['+obj+'Categories]'].value.indexOf(','+cat+',') != -1) {
+		re = new RegExp(','+cat+',');
 		document.we_form.elements['v['+obj+'Categories]'].value = document.we_form.elements['v['+obj+'Categories]'].value.replace(re,',');
 		document.getElementById(obj+"Cat"+cat).parentNode.removeChild(document.getElementById(obj+"Cat"+cat));
 		if(document.we_form.elements['v['+obj+'Categories]'].value == ',') {
@@ -1828,8 +1828,8 @@ function handle_event(evt) {
 		$functions .= <<<HTS
 
 function deleteCategory(obj,cat){
-	if(document.we_form.elements['v['+obj+'Categories]'].value.indexOf(','+arguments[1]+',') != -1) {
-		re = new RegExp(','+arguments[1]+',');
+	if(document.we_form.elements['v['+obj+'Categories]'].value.indexOf(','+cat+',') != -1) {
+		re = new RegExp(','+cat+',');
 		document.we_form.elements['v['+obj+'Categories]'].value = document.we_form.elements['v['+obj+'Categories]'].value.replace(re,',');
 		document.getElementById(obj+"Cat"+cat).parentNode.removeChild(document.getElementById(obj+"Cat"+cat));
 		if(document.we_form.elements['v['+obj+'Categories]'].value == ',') {

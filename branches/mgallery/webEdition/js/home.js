@@ -1,3 +1,5 @@
+/* global WE, top */
+
 /**
  * webEdition CMS
  *
@@ -692,11 +694,7 @@ function executeAjaxRequest(param_1, initCfg, param_3, param_4, titel, widgetId)
 	var widgetType = gel(widgetId + '_type').value;
 
 	showLoadingSymbol(widgetId);
-
-	var args = '';
-	for (var i = 0; i < arguments.length; i++) {
-		args += '&we_cmd[]=' + encodeURI(arguments[i]);
-	}
+	var url = WE().util.getWe_cmdArgsUrl(Array.prototype.slice.call(arguments), WE().consts.dirs.WEBEDITION_DIR + 'rpc/rpc.php?cmd=' + _cmdName + '&cns=widgets');
 
 	var _cmdName = null;
 
@@ -707,7 +705,7 @@ function executeAjaxRequest(param_1, initCfg, param_3, param_4, titel, widgetId)
 			//FIXME: what about all other tools?!
 	}
 	if (_cmdName) {
-		top.YAHOO.util.Connect.asyncRequest('GET', WE().consts.dirs.WEBEDITION_DIR + 'rpc/rpc.php?cmd=' + _cmdName + '&cns=widgets' + args, ajaxCallback);
+		top.YAHOO.util.Connect.asyncRequest('GET', url, ajaxCallback);
 	}
 }
 
@@ -735,20 +733,20 @@ var ajaxCallback = {
 /**
  * Old ajax functions using an iframe
  */
-function rpc() {
+function rpc(a, b, c, d, e, wid, path) {
 	//FIXME: remove this!
 	if (!document.createElement) {
 		return true;
 	}
 	var docIFrm;
-	var sType = gel(arguments[5] + '_type').value;
-	showLoadingSymbol(arguments[5]);
+	var sType = gel(wid + '_type').value;
+	showLoadingSymbol(wid);
 
 	// temporaryliy add a form submit the form and save all !
 	// start bugfix #1145
 	var _tmpForm = document.createElement("form");
 	document.getElementsByTagName("body")[0].appendChild(_tmpForm);
-	var path = (sType !== 'rss' && sType !== 'pad' && sType !== 'plg' && sType !== 'sct') ? 'dlg/' + arguments[6] : 'mod/' + sType;
+	var path = (sType !== 'rss' && sType !== 'pad' && sType !== 'plg' && sType !== 'sct') ? 'dlg/' + path : 'mod/' + sType;
 	_tmpForm.id = "_tmpSubmitForm";
 	_tmpForm.method = "POST";
 	_tmpForm.action = WE().consts.dirs.WE_INCLUDES_DIR + 'we_widgets/' + path + '.php';
@@ -806,10 +804,10 @@ function rpcHandleResponse(sType, sObjId, oDoc, sCsvLabel) {
 	initWidget(sObjId);
 }
 
-function propsWidget() {
-	var iHeight = oCfg[arguments[0] + '_props_'].iDlgHeight;
+function propsWidget(wid, ref) {
+	var iHeight = oCfg[wid + '_props_'].iDlgHeight;
 	var uri = composeUri(arguments);
-	_propsDlg[arguments[1]] =new (WE().util.jsWindow)(window, uri, arguments[1], -1, -1, oCfg.general_.iDlgWidth , iHeight, true, true, true);
+	_propsDlg[ref] = new (WE().util.jsWindow)(window, uri, ref, -1, -1, oCfg.general_.iDlgWidth, iHeight, true, true, true);
 }
 
 function closeAllModalWindows() {

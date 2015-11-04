@@ -28,12 +28,11 @@ node.prototype.showSegment = function () {
 	top.reloadGroup(this.parentid, this.offset);
 };
 
-function reloadGroup(pid) {
+function reloadGroup(pid,offset) {
 	var it = get(pid);
-	offset = arguments[1] ? arguments[1] : 0;
 	if (it) {
 		it.clear();
-		startTree(pid, offset);
+		startTree(pid, (offset ? offset : 0));
 	}
 }
 

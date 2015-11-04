@@ -128,7 +128,7 @@ function we_cmd() {
 			' . $this->editorBodyFrame . '.document.we_form.savedSearchName.value=name;
 		}
 		}
-		' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
+		' . $this->editorBodyFrame . '.document.we_form.cmd.value=args[0];
 		//' . $this->editorBodyFrame . '.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
 		' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
 		' . $this->editorBodyFrame . '.submitForm();
@@ -148,7 +148,7 @@ function we_cmd() {
 	' . (!permissionhandler::hasPerm("DELETE_" . strtoupper($this->toolName)) ? we_message_reporting::getShowMessageCall(g_l('tools', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) : ('
 		if (' . $this->topFrame . '.editor.edbody.loaded) {
 			 if (confirm("' . g_l('searchtool', '[confirmDel]') . '")) {
-				' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
+				' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=args[0];
 				' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
 				' . $this->editorHeaderFrame . '.location="' . $this->frameset . '?home=0&pnt=edheader";
 				' . $this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?home=0&pnt=edfooter";
@@ -164,7 +164,7 @@ function we_cmd() {
  case "tool_weSearch_new_forDocuments":
 	 if (' . $this->editorBodyFrame . '.loaded) {
 		 ' . $this->topFrame . '.hot = 0;
-		 ' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
+		 ' . $this->editorBodyFrame . '.document.we_form.cmd.value=args[0];
 		 ' . $this->topFrame . '.activ_tab=1;
 		 ' . $this->editorBodyFrame . '.document.we_form.tabnr.value=1;
 		 ' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
@@ -181,7 +181,7 @@ function we_cmd() {
 	 if (' . $this->editorBodyFrame . '.loaded) {
 		 ' . $this->topFrame . '.hot = 0;
 		 ' . $this->topFrame . '.activ_tab=2;
-		 ' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
+		 ' . $this->editorBodyFrame . '.document.we_form.cmd.value=args[0];
 		 ' . $this->editorBodyFrame . '.document.we_form.tabnr.value=2;
 		 ' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
 		 ' . $this->editorBodyFrame . '.submitForm();
@@ -197,7 +197,7 @@ function we_cmd() {
 	if (' . $this->editorBodyFrame . '.loaded) {
 	 ' . $this->topFrame . '.hot = 0;
 	 ' . $this->topFrame . '.activ_tab=3;
-			' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
+			' . $this->editorBodyFrame . '.document.we_form.cmd.value=args[0];
 				 ' . $this->editorBodyFrame . '.document.we_form.tabnr.value=3;
 				 ' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
 				 ' . $this->editorBodyFrame . '.submitForm();
@@ -214,7 +214,7 @@ function we_cmd() {
 	if (' . $this->editorBodyFrame . '.loaded) {
 	 ' . $this->topFrame . '.hot = 0;
 	 ' . $this->topFrame . '.activ_tab=3;
-			' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
+			' . $this->editorBodyFrame . '.document.we_form.cmd.value=args[0];
 				 ' . $this->editorBodyFrame . '.document.we_form.tabnr.value=3;
 				 ' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
 				 ' . $this->editorBodyFrame . '.submitForm();
@@ -2567,11 +2567,11 @@ function we_cmd() {
 			' . $this->topFrame . '.we_cmd.apply(this, arguments);
 	}
 }
-function submitForm() {
+function submitForm(target,action,method) {
 	var f = self.document.we_form;
-	f.target = (arguments[0]?arguments[0]:"edbody");
-	f.action = (arguments[1]?arguments[1]:"' . $this->frameset . '");
-	f.method = (arguments[2]?arguments[2]:"post");
+	f.target = (target?target:"edbody");
+	f.action = (action?action:"' . $this->frameset . '");
+	f.method = (method?method:"post");
 	f.submit();
 }');
 	}

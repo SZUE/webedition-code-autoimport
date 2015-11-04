@@ -162,7 +162,7 @@ class we_customer_EIWizard{
 
 switch (args[0]){
 					case "del_customer":
-						selector_cmd(arguments[0],arguments[1],arguments[2]);
+						selector_cmd(args[0],args[1],args[2]);
 						break;
 					default:
 						top.opener.top.we_cmd.apply(this, arguments);
@@ -1530,8 +1530,8 @@ function selector_cmd(){
 		case "add_customer":
 		case "del_customer":
 		case "del_all_customers":
-			document.we_form.wcmd.value=arguments[0];
-			document.we_form.cus.value=arguments[1];
+			document.we_form.wcmd.value=args[0];
+			document.we_form.cus.value=args[1];
 			document.we_form.submit();
 		break;
 	}
@@ -1585,12 +1585,12 @@ top.customers="' . implode(',', $customers) . '";');
 		}
 
 		$js = we_html_element::jsElement('
-function filter_cmd(){
-	switch (arguments[0]){
+function filter_cmd(what){
+	switch (what){
 		case "add_filter":
 		case "del_filter":
 		case "del_all_filters":
-			document.we_form.fcmd.value=arguments[0];
+			document.we_form.fcmd.value=what;
 			document.we_form.submit();
 			break;
 	}
