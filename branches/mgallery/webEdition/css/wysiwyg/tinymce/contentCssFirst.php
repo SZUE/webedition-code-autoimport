@@ -23,7 +23,11 @@
  */
 define('NO_SESS', 1);
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-header("Content-type: text/css");
+header('Content-type: text/css');
+header('Expires: ' . gmdate('D, d M Y H:i:s', time() + 86400) . ' GMT', true);
+header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime(__FILE__)) . ' GMT', true);
+header('Cache-Control: max-age=86400, must-revalidate', true);
+header('Pragma: ', true);
 ?>
 
 /* css editor body:font-size: this sheet is included first, for font-size to be eventually overwritten by document-css */
