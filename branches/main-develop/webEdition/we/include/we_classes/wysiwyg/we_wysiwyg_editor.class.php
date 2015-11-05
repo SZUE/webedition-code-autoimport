@@ -25,7 +25,6 @@
 //make sure we know which browser is used
 
 class we_wysiwyg_editor{
-
 	var $name = '';
 	private $origName = '';
 	private $fieldName = '';
@@ -242,7 +241,7 @@ class we_wysiwyg_editor{
 		$ret = array_merge(array(
 			'',
 			g_l('wysiwyg', '[groups]') => we_html_tools::OPTGROUP
-				), $tmp);
+			), $tmp);
 		foreach($commands as $key => $values){
 			$ret = array_merge($ret, array($key => we_html_tools::OPTGROUP), $values);
 		}
@@ -289,9 +288,9 @@ class we_wysiwyg_editor{
 		}
 
 		return we_html_element::cssLink(CSS_DIR . 'wysiwyg/tinymce/toolbar.css') .
-				we_html_element::jsScript(TINYMCE_SRC_DIR . 'tiny_mce.js') .
-				($loadDialogRegistry ? we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') : '') .
-				we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceFunctions.js');
+			we_html_element::jsScript(TINYMCE_SRC_DIR . 'tiny_mce.js') .
+			($loadDialogRegistry ? we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') : '') .
+			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceFunctions.js');
 	}
 
 	function getAllCmds(){
@@ -483,16 +482,16 @@ class we_wysiwyg_editor{
 			new we_wysiwyg_ToolbarButton($this, "redo"),
 			$sepCon,
 			(defined('SPELLCHECKER') && $this->showSpell ?
-					new we_wysiwyg_ToolbarButton($this, 'spellcheck') :
-					false),
+				new we_wysiwyg_ToolbarButton($this, 'spellcheck') :
+				false),
 			new we_wysiwyg_ToolbarButton($this, "selectall"),
 			$sepCon,
 			new we_wysiwyg_ToolbarButton($this, "search"),
 			new we_wysiwyg_ToolbarButton($this, "replace"),
 			$sepCon,
 			($this->fullscreen ?
-					false :
-					new we_wysiwyg_ToolbarButton($this, "fullscreen")
+				false :
+				new we_wysiwyg_ToolbarButton($this, "fullscreen")
 			),
 			new we_wysiwyg_ToolbarButton($this, "visibleborders"),
 			$sep,
@@ -520,7 +519,19 @@ class we_wysiwyg_editor{
 	}
 
 	function getHTML(){
-		return ($this->inlineedit ? $this->getInlineHTML() : $this->getEditButtonHTML());
+		return we_html_element::jsElement('
+function getDocumentCss(){
+	var doc=document;
+	var styles=[];
+	for(var i=0;i<doc.styleSheets.length;i++){
+		if(doc.styleSheets[i].href && !doc.styleSheets[i].href.match(/webEdition\//) && (doc.styleSheets[i].media.length==0||doc.styleSheets[i].media.indexOf("all")>=0 || doc.styleSheets[i].media.indexOf("screen")>=0)){
+			styles.push(doc.styleSheets[i].href);
+		}
+	}
+	return styles;
+}
+') .
+			($this->inlineedit ? $this->getInlineHTML() : $this->getEditButtonHTML());
 	}
 
 	private function getEditButtonHTML(){
@@ -531,7 +542,7 @@ class we_wysiwyg_editor{
 		$height = we_base_util::convertUnits($this->height);
 		$height = is_numeric($height) ? max($height, self::MIN_HEIGHT_POPUP) : '(' . intval($height) . '/100*screen.availHeight)';
 
-		return we_html_button::create_button(we_html_button::EDIT, "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "', " . $width . ", " . $height . ",'" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($this->fontnamesCSV, ',') . "','" . $this->outsideWE . "'," . $width . "," . $height . ",'" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . urlencode($this->baseHref) . "','" . $this->charset . "','" . $this->cssClasses . "','" . $this->Language . "','" . we_base_request::encCmd($this->contentCss) . "','" . $this->origName . "','" . we_base_request::encCmd($this->tinyParams) . "','" . we_base_request::encCmd($this->restrictContextmenu) . "', 'true', '" . $this->isFrontendEdit . "','" . $this->templates . "','" . $this->formats . "','" . $this->imageStartID . "','" . $this->galleryTemplates . "','" . $this->fontsizes . "');", true, 25);
+		return we_html_button::create_button(we_html_button::EDIT, "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "', " . $width . ", " . $height . ",'" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($this->fontnamesCSV, ',') . "','" . $this->outsideWE . "'," . $width . "," . $height . ",'" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . urlencode($this->baseHref) . "','" . $this->charset . "','" . $this->cssClasses . "','" . $this->Language . "','" . $this->contentCss . ",'+getDocumentCss().join(','),'" . $this->origName . "','" . we_base_request::encCmd($this->tinyParams) . "','" . we_base_request::encCmd($this->restrictContextmenu) . "', 'true', '" . $this->isFrontendEdit . "','" . $this->templates . "','" . $this->formats . "','" . $this->imageStartID . "','" . $this->galleryTemplates . "','" . $this->fontsizes . "');", true, 25);
 	}
 
 	static function parseInternalImageSrc($value){
@@ -556,7 +567,7 @@ class we_wysiwyg_editor{
 			foreach($regs as $reg){
 				$path = empty($lookup[intval($reg[3])]) ? '' : $lookup[intval($reg[3])];
 				$value = $path ? str_ireplace($reg[1], 'src="' . $path . '?id=' . $reg[3] . '&time=' . $t . '"', $value) :
-						str_ireplace($reg[0], '<img src="' . ICON_DIR . 'no_image.gif?id=0">', $value);
+					str_ireplace($reg[0], '<img src="' . ICON_DIR . 'no_image.gif?id=0">', $value);
 			}
 		}
 
@@ -566,7 +577,7 @@ class we_wysiwyg_editor{
 				$thumbObj = new we_thumbnail();
 				$imageExists = $thumbObj->initByImageIDAndThumbID($imgID, $thumbID);
 				$value = $imageExists ? str_ireplace($reg[1], 'src="' . $thumbObj->getOutputPath() . "?thumb=" . $reg[3] . '&time=' . $t . '"', $value) :
-						str_ireplace($reg[0], '<img src="' . ICON_DIR . 'no_image.gif?id=0">', $value);
+					str_ireplace($reg[0], '<img src="' . ICON_DIR . 'no_image.gif?id=0">', $value);
 				unset($thumbObj);
 			}
 		}
@@ -784,10 +795,10 @@ class we_wysiwyg_editor{
 		$this->tinyPlugins = implode(',', array_unique($this->tinyPlugins));
 		$this->wePlugins = implode(',', array_intersect($this->wePlugins, $allCommands));
 		$plugins = ($this->createContextmenu ? 'wecontextmenu,' : '') .
-				($this->tinyPlugins ? $this->tinyPlugins . ',' : '') .
-				($this->wePlugins ? $this->wePlugins . ',' : '') .
-				(in_array('wevisualaid', $allCommands) ? 'visualblocks,' : '') .
-				'weutil,autolink,template,wewordcount'; //TODO: load "templates" on demand as we do it with other plugins
+			($this->tinyPlugins ? $this->tinyPlugins . ',' : '') .
+			($this->wePlugins ? $this->wePlugins . ',' : '') .
+			(in_array('wevisualaid', $allCommands) ? 'visualblocks,' : '') .
+			'weutil,autolink,template,wewordcount'; //TODO: load "templates" on demand as we do it with other plugins
 
 		$height = we_base_util::convertUnits($this->height);
 		$width = we_base_util::convertUnits($this->width);
@@ -911,7 +922,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		screenHeight: screen.availHeight - 70,
 		className: "' . $this->className . '",
 		propString: "' . urlencode($this->propstring) . '",
-		contentCss: "' . urlencode($this->contentCss) . '",
+		contentCss: "' . urlencode($this->contentCss) . ',"+getDocumentCss().join(","),
 		origName: "' . urlencode($this->origName) . '",
 		tinyParams: "' . urlencode($this->tinyParams) . '",
 		contextmenu: "' . urlencode(trim($this->restrictContextmenu, ',')) . '",
@@ -972,14 +983,14 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	plugin_preview_width : "500",
 	theme_advanced_disable : "",
 
-	extended_valid_elements: "wegallery[id|tmpl|class]",
-	custom_elements: "wegallery",
+	extended_valid_elements: "we-gallery[id|tmpl|class]",
+	custom_elements: "we-gallery",
 	visual : false,
 	//paste_text_use_dialog: true,
 	//fullscreen_new_window: true,
-	editor_css: "' . CSS_DIR . 'wysiwyg/tinymce/editorCss.css",
-	content_css: "' . CSS_DIR . 'wysiwyg/tinymce/contentCssFirst.php?' . time() . '=,' . $contentCss . CSS_DIR . 'wysiwyg/tinymce/contentCssLast.php?' . time() . '=&tinyMceBackgroundColor=' . $this->bgcol . '",
-	popup_css_add: "' . CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss.css' . (we_base_browserDetect::isMAC() ? ',' . CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss_mac.css' : '') . '",
+	editor_css: "' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/editorCss.css') . '",
+	content_css: "' . we_html_element::getUnCache(LIB_DIR . 'additional/fontawesome/css/font-awesome.min.css') . ',' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/contentCssFirst.php') . '&tinyMceBackgroundColor=' . $this->bgcol . ',"+getDocumentCss().join(",")+",' . $contentCss . '",
+	popup_css_add: "' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss.css') . (we_base_browserDetect::isMAC() ? ',' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss_mac.css') : '') . '",
 	' . (in_array('template', $allCommands) && $this->templates ? $this->getTemplates() : '') . '
 
 	// Skin options
@@ -1362,12 +1373,12 @@ tinyMCE.weResizeEditor = function(render){
 
 tinyMCE.init(tinyMceConfObject__' . $this->fieldName_clean . ');
 ') . getHtmlTag('textarea', array(
-					'wrap' => "off",
-					'style' => 'color:#eeeeee; background-color:#eeeeee;  width:' . $width . '; height:' . $height . ';',
-					'id' => $this->name,
-					'name' => $this->name,
-					'class' => 'wetextarea'
-						), strtr($editValue, array('\n' => '', '&' => '&amp;')), true);
+				'wrap' => "off",
+				'style' => 'color:#eeeeee; background-color:#eeeeee;  width:' . $width . '; height:' . $height . ';',
+				'id' => $this->name,
+				'name' => $this->name,
+				'class' => 'wetextarea'
+				), strtr($editValue, array('\n' => '', '&' => '&amp;')), true);
 	}
 
 }

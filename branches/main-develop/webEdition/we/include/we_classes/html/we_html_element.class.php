@@ -419,10 +419,10 @@ abstract class we_html_element{
 	 * @param string $url url to add the version-unique param
 	 * @return string resulting url
 	 */
-	private static function getUnCache($url){
+	public static function getUnCache($url){
 		static $cache = -1;
 		if($cache == -1){
-			$cache = md5(WE_VERSION . filemtime(WE_INCLUDES_PATH . 'we_version.php') . __FILE__);
+			$cache = md5(WE_VERSION . filemtime(WE_INCLUDES_PATH . 'we_version.php'));
 		}
 		return $url . (strstr($url, '?') ? '&amp;' : '?') . $cache;
 	}

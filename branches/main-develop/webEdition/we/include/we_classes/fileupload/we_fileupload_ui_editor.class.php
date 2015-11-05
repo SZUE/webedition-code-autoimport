@@ -138,8 +138,7 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 			return $parts;
 		}
 
-		//$box = we_html_multiIconBox::getHTML("", $parts, 20, '', 3, g_l('importFiles', '[image_options_open]'), g_l('importFiles', '[image_options_close]'), false);
-		$box = we_html_multiIconBox::getHTML("", $parts, 20, '', -1, '', '', false);
+		$box = we_html_multiIconBox::getHTML("", $parts, 20, '', $this->formElements['tableProperties']['foldAtNr'], $this->formElements['tableProperties']['foldAtOpen'], $this->formElements['tableProperties']['foldAtClose'], false);
 		$divBtnUpload = we_html_element::htmlDiv(array('style' => 'float:right;padding-top:10px;width:auto;'), $this->getDivBtnUploadCancel(170));
 
 		return we_html_multiIconBox::getJS() . $box . ($this->isExternalBtnUpload ? '' : $divBtnUpload);

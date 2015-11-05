@@ -70,10 +70,10 @@ function reorderDir(dir, order) {
 	setTimeout('top.fsbody.location="we_sselector_body.php?dir=' + dir + '&ord=' + order + '&file=' + top.currentFilter + '&curID=' + encodeURI(top.currentID) + '"', 100);
 }
 
-function selectDir() {
-	if (arguments[0]) {
-		top.currentDir = top.currentDir + (top.currentDir === "/" ? "" : "/") + arguments[0];
-		top.addOptionh(arguments[0], top.currentDir);
+function selectDir(path) {
+	if (path) {
+		top.currentDir = top.currentDir + (top.currentDir === "/" ? "" : "/") + path;
+		top.addOptionh(path, top.currentDir);
 	}
 
 	if (top.currentDir.substring(0, 12) === "/webEdition/" || top.currentDir === "/webEdition") {
@@ -99,9 +99,9 @@ function goUp() {
 	}
 }
 
-function delFile() {
+function delFile(ask) {
 	if ((top.currentID !== "") && (top.document.getElementsByName("fname")[0].value !== "")) {
-		top.fscmd.location = "we_sselector_cmd.php?cmd=delete_file&fid=" + top.currentID + "&ask=" + arguments[0];
+		top.fscmd.location = "we_sselector_cmd.php?cmd=delete_file&fid=" + top.currentID + "&ask=" + ask;
 	} else {
 		top.we_showMessage(WE().consts.g_l.sfselector.edit_file_nok, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}

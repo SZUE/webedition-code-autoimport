@@ -22,12 +22,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_navigation() {
-	var args = arguments[0],
-		url = arguments[1];
-
+function we_cmd_navigation(args, url) {
 	switch (args[0]) {
-
 		case "navigation_edit":
 		case "navigation_edit_ifthere":
 			new (WE().util.jsWindow)(this, url, "edit_module", -1, -1, 970, 760, true, true, true, true);

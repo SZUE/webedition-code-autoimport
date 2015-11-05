@@ -30,16 +30,8 @@ function doUnload() {
 }
 
 function we_cmd() {
-	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
-		var args = {}, i = 0, tmp = arguments[0];
-		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
-	} else {
-		var args = Array.prototype.slice.call(arguments);
-		for (var i = 0; i < args.length; i++) {
-			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
-		}
-	}
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
 
 	switch (args[0]) {
 		case "we_selector_file":
@@ -86,19 +78,18 @@ function we_cmd() {
 			}
 			break;
 		default:
-			top.content.we_cmd.apply(this, arguments);
+			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }
 
-function submitForm() {
+function submitForm(target, action, method) {
 	var f = self.document.we_form;
-	f.target = (arguments[0] ? arguments[0] : "edbody");
-	f.action = (arguments[1] ? arguments[1] : WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=banner");
-	f.method = (arguments[2] ? arguments[2] : "post");
+	f.target = (target ? target : "edbody");
+	f.action = (action ? action : WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=banner");
+	f.method = (method ? method : "post");
 	f.submit();
 }
 function checkData() {
-
 	return true;
 }
 

@@ -41,15 +41,17 @@ function isUrl(s) {
 	return regexp.test(s);
 }
 
-function handleButtonState() {
+function handleButtonState(enable) {
 	var iArgsLen = arguments.length;
+	var aDisable;
 	var sImplodeArgs = '';
 	for (var i = 1; i < iArgsLen; i++) {
 		sImplodeArgs += '\'' + arguments[i] + '\'' + ((i < iArgsLen - 1) ? ',' : '');
 	}
-	eval('var aDisable=[' + sImplodeArgs + ']');
+	//FIXME:remove eval
+	eval('aDisable=[' + sImplodeArgs + ']');
 	for (i = 0; i < iArgsLen - 1; i++) {
-		WE().layout.button.switch_button_state(document, aDisable[i], (arguments[0]) ? 'enabled' : 'disabled');
+		WE().layout.button.switch_button_state(document, aDisable[i], (enable ? 'enabled' : 'disabled'));
 	}
 }
 

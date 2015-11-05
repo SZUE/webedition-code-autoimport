@@ -138,7 +138,7 @@ weCollectionEdit = {
 		 */
 
 		/* use this to render fron storage */
-		this.renderView(false);
+		this.renderView(true);
 
 	},
 	setView: function (view) {
@@ -148,17 +148,19 @@ weCollectionEdit = {
 		this.ct.list.style.display = this.view === 'list' ? 'block' : 'none';
 		this.sliderDiv.style.display = this.view === 'grid' ? 'block' : 'none';
 		this.dd.counter = 0;
-		this.renderView(false);
+		this.renderView(true);
 	},
-	renderView: function (fromServer) {
+
+	renderView: function (notSetHot) {
 		this.ct[this.view].innerHTML = '';
 		this.maxIndex = 0;
 
 		for (var i = 0; i < this.collectionArr.length; i++) {
 			this.insertItem(null, false, this.storage['item_' + this.collectionArr[i]], this);
 		}
-		this.reindexAndRetrieveCollection();
+		this.reindexAndRetrieveCollection(notSetHot);
 	},
+
 	addListenersToItem: function (view, elem, isItemEmpty) {
 		var t = this, item, input, ctrls, space;
 

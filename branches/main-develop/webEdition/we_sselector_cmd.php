@@ -34,7 +34,7 @@ if($cmd === "save_last"){
 if(!$cmd || $cmd != "save_last"){
 	$selectOwn = we_base_request::_(we_base_request::BOOL, 'selectOwn', false);
 
-	echo we_html_element::jsScript(JS_DIR.'selectors/sselector_cmd.js');
+	echo we_html_element::jsScript(JS_DIR . 'selectors/sselector_cmd.js');
 	?>
 	<script><!--
 		function setDir(dir) {
@@ -47,7 +47,6 @@ if(!$cmd || $cmd != "save_last"){
 					}
 				}
 	<?php
-
 	switch(we_base_request::_(we_base_request::STRING, 'filter')){
 		case we_base_ContentTypes::FOLDER:
 		case 'filefolder':
@@ -61,19 +60,19 @@ if(!$cmd || $cmd != "save_last"){
 			}
 		}
 
-		function drawDir(dir) {
-			switch (arguments[1]) {
+		function drawDir(dir, what, sid) {
+			switch (what) {
 				case "new_folder":
 					top.fsbody.location = "we_sselector_body.php?dir=" + encodeURI(top.rootDir + dir) + "&nf=new_folder&file=" + top.currentFilter + "&curID=" + encodeURI(top.currentID) + "&selectOwn=<?php echo $selectOwn; ?>";
 					break;
 				case "rename_folder":
-					if (arguments[2]) {
-						top.fsbody.location = "we_sselector_body.php?dir=" + encodeURI(top.rootDir + dir) + "&nf=rename_folder&sid=" + encodeURI(arguments[2]) + "&file=" + top.currentFilter + "&curID=" + encodeURI(top.currentID) + "&selectOwn=<?php echo $selectOwn; ?>";
+					if (sid) {
+						top.fsbody.location = "we_sselector_body.php?dir=" + encodeURI(top.rootDir + dir) + "&nf=rename_folder&sid=" + encodeURI(sid) + "&file=" + top.currentFilter + "&curID=" + encodeURI(top.currentID) + "&selectOwn=<?php echo $selectOwn; ?>";
 					}
 					break;
 				case "rename_file":
-					if (arguments[2]) {
-						top.fsbody.location = "we_sselector_body.php?dir=" + encodeURI(top.rootDir + dir) + "&nf=rename_file&sid=" + encodeURI(arguments[2]) + "&file=" + top.currentFilter + "&curID=" + encodeURI(top.currentID) + "&selectOwn=<?php echo $selectOwn; ?>";
+					if (sid) {
+						top.fsbody.location = "we_sselector_body.php?dir=" + encodeURI(top.rootDir + dir) + "&nf=rename_file&sid=" + encodeURI(sid) + "&file=" + top.currentFilter + "&curID=" + encodeURI(top.currentID) + "&selectOwn=<?php echo $selectOwn; ?>";
 					}
 					break;
 				default:
@@ -117,8 +116,8 @@ if(!$cmd || $cmd != "save_last"){
 			$path = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . we_base_request::_(we_base_request::FILE, 'pat') . '/' . $txt);
 			if(!is_dir($path)){
 				echo (!we_base_file::createLocalFolder($path) ?
-						we_message_reporting::getShowMessageCall(g_l('alert', '[create_folder_nok]'), we_message_reporting::WE_MESSAGE_ERROR) :
-						'selectFile("' . $txt . '");top.currentID="' . $path . '";');
+					we_message_reporting::getShowMessageCall(g_l('alert', '[create_folder_nok]'), we_message_reporting::WE_MESSAGE_ERROR) :
+					'selectFile("' . $txt . '");top.currentID="' . $path . '";');
 			} else {
 				echo we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[path_exists]'), str_replace($_SERVER['DOCUMENT_ROOT'], '', $path)), we_message_reporting::WE_MESSAGE_ERROR);
 			}
@@ -140,8 +139,8 @@ if(!$cmd || $cmd != "save_last"){
 			if($old != $new){
 				if(!is_dir($new)){
 					echo (!rename($old, $new) ?
-							we_message_reporting::getShowMessageCall(g_l('alert', '[rename_folder_nok]'), we_message_reporting::WE_MESSAGE_ERROR) :
-							'selectFile("' . $txt . '");');
+						we_message_reporting::getShowMessageCall(g_l('alert', '[rename_folder_nok]'), we_message_reporting::WE_MESSAGE_ERROR) :
+						'selectFile("' . $txt . '");');
 				} else {
 					$we_responseText = sprintf(g_l('alert', '[path_exists]'), str_replace($_SERVER['DOCUMENT_ROOT'], '', $new));
 					echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
@@ -168,8 +167,8 @@ if(!$cmd || $cmd != "save_last"){
 			if($old != $new){
 				if(!file_exists($new)){
 					echo (!rename($old, $new) ?
-							we_message_reporting::getShowMessageCall(g_l('alert', '[rename_file_nok]'), we_message_reporting::WE_MESSAGE_ERROR) :
-							'selectFile("' . $txt . '");');
+						we_message_reporting::getShowMessageCall(g_l('alert', '[rename_file_nok]'), we_message_reporting::WE_MESSAGE_ERROR) :
+						'selectFile("' . $txt . '");');
 				} else {
 					$we_responseText = sprintf(g_l('alert', '[path_exists]'), str_replace($_SERVER['DOCUMENT_ROOT'], '', $new));
 					echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);

@@ -23,10 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function we_cmd_users() {
-	var args = arguments[0],
-		url = arguments[1];
-
+function we_cmd_users(args, url) {
 	switch (args[0]) {
 		case "we_users_selector":
 			if (WE().util.hasPerm('NEW_USER') || WE().util.hasPerm('NEW_GROUP') || WE().util.hasPerm('SAVE_USER') || WE().util.hasPerm('SAVE_GROUP') || WE().util.hasPerm('DELETE_USER') || WE().util.hasPerm('DELETE_GROUP')) {

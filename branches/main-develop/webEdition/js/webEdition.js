@@ -511,10 +511,7 @@ function we_showInNewTab(args, url) {
 	}
 }
 
-function we_cmd_base() {
-	var args = arguments[0],
-		url = arguments[1];
-
+function we_cmd_base(args, url) {
 	switch (args[0]) {
 		case "loadVTab":
 			var op = top.treeData.makeFoldersOpenString();
@@ -1477,11 +1474,11 @@ WE().util.getTreeIcon = function (contentType, open, extension) {
 	}
 };
 
-WE().util.sprintf = function () {
-	if (!arguments || arguments.length < 1)
+WE().util.sprintf = function (argum) {
+	if (!arguments || arguments.length === 0) {
 		return;
+	}
 
-	var argum = arguments[0];
 	var regex = /([^%]*)%(%|d|s)(.*)/;
 	var arr = [];
 	var iterator = 0;
@@ -1523,5 +1520,28 @@ WE().util.IsDigitPercent = function (e) {
 
 WE().util.IsDigit = function (e) {
 	var key = e.charCode === undefined ? event.keyCode : e.charCode;
-	return ((key == 46) || ((key >= 48) && (key <= 57)) || (key == 0) || (key == 13) || (key == 8) || (key <= 63235 && key >= 63232) || (key == 63272));
+	return ((key === 46) || ((key >= 48) && (key <= 57)) || (key === 0) || (key === 13) || (key === 8) || (key <= 63235 && key >= 63232) || (key === 63272));
+};
+
+WE().util.getWe_cmdArgsArray = function (arr) {
+	if (arr.lenght > 0 && typeof arr[0] === "object") {
+		return arr[0];
+	}
+	return arr;
+};
+
+WE().util.getWe_cmdArgsUrl = function (args, base) {
+	var url = (base === undefined ? WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?" : base);
+
+	if (Object.prototype.toString.call(args) === '[object Array]') {
+		for (var i = 0; i < args.length; i++) {
+			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
+		}
+	} else {
+		url += Object.keys(args).map(function (key) {
+			return "we_cmd[" + key + "]=" + encodeURIComponent(args[key]);
+		}).join("&");
+	}
+
+	return url;
 };

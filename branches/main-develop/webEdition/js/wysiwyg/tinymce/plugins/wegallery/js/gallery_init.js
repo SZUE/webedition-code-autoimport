@@ -38,7 +38,7 @@ var WegalleryDialog = { // TODO: clean code by using more vars
 		elm = inst.selection.getNode();
 		sel = inst.selection.getContent({format : 'text'});
 
-		if(elm.nodeName === 'WEGALLERY'){
+		if(elm.nodeName === 'WE-GALLERY'){
 			this.isGallery = true;
 		}
 
@@ -73,7 +73,7 @@ var WegalleryDialog = { // TODO: clean code by using more vars
 				}
 				blank = isBlank ? blank.substr(0,blank.length-6) + ' ' : blank;
 
-				var content = '<wegallery id="' + idValue + '" tmpl="' + tmplValue + '"></wegallery>' + blank;
+				var content = '<we-gallery id="' + idValue + '" tmpl="' + tmplValue + '"></we-gallery>' + blank;
 				inst.execCommand('mceInsertContent', false, content);
 			}
 		}

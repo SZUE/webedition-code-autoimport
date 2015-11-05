@@ -82,9 +82,9 @@ function multi_edit(parentId, form, itemNum, but, width, editable) {
 
 	};
 
-	this.addItem = function () {
-		if (arguments[0]) {
-			this.button = arguments[0];
+	this.addItem = function (buttname) {
+		if (buttname) {
+			this.button = buttname;
 		}
 
 		var butt = this.button.replace("#####placeHolder#####", this.name + ".delItem(" + this.itemCount + ")");

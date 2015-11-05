@@ -33,16 +33,12 @@ function shopCloseWindow(args) {
 	return false;
 }
 
-function we_cmd_shop() {
-	var args = arguments[0],
-		url = arguments[1];
-
+function we_cmd_shop(args, url) {
 	var swcmd = args[0];
 	if (swcmd.match(/^year\d+$/)) {
 		swcmd = 'yearCmd';
 	}
-	var fo = false, k;
-
+	
 	switch (swcmd) {
 		case "shop_edit_ifthere":
 		case "shop_edit":

@@ -65,16 +65,8 @@ var activ_tab = 1;
 var hot = 0;
 
 function we_cmd() {
-	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
-		var args = {}, i = 0, tmp = arguments[0];
-		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
-	} else {
-		var args = Array.prototype.slice.call(arguments);
-		for (var i = 0; i < args.length; i++) {
-			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
-		}
-	}
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
 
 	if(' . $this->topFrame . '.hot){
 		switch(args[0]){
@@ -119,7 +111,7 @@ function we_cmd() {
 			top.close();
 			break;
 		case "exit_doc_question":
-			url = "' . $this->frameset . '?pnt=exit_doc_question&delayCmd="+' . $this->editorBodyFrame . '.document.getElementsByName("delayCmd")[0].value+"&delayParam="+' . $this->editorBodyFrame . '.document.getElementsByName("delayParam")[0].value;
+			url = "' . $this->frameset . '&pnt=exit_doc_question&delayCmd="+' . $this->editorBodyFrame . '.document.getElementsByName("delayCmd")[0].value+"&delayParam="+' . $this->editorBodyFrame . '.document.getElementsByName("delayParam")[0].value;
 			new (WE().util.jsWindow)(this, url,"we_exit_doc_question",-1,-1,380,130,true,false,true);
 			break;
 	case "tool_weSearch_save":
@@ -135,7 +127,7 @@ function we_cmd() {
 			' . $this->editorBodyFrame . '.document.we_form.savedSearchName.value=name;
 		}
 		}
-		' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
+		' . $this->editorBodyFrame . '.document.we_form.cmd.value=args[0];
 		//' . $this->editorBodyFrame . '.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
 		' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
 		' . $this->editorBodyFrame . '.submitForm();
@@ -155,7 +147,7 @@ function we_cmd() {
 	' . (!permissionhandler::hasPerm("DELETE_" . strtoupper($this->toolName)) ? we_message_reporting::getShowMessageCall(g_l('tools', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) : ('
 		if (' . $this->topFrame . '.editor.edbody.loaded) {
 			 if (confirm("' . g_l('searchtool', '[confirmDel]') . '")) {
-				' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
+				' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=args[0];
 				' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
 				' . $this->editorHeaderFrame . '.location="' . $this->frameset . '?home=0&pnt=edheader";
 				' . $this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?home=0&pnt=edfooter";
@@ -171,7 +163,7 @@ function we_cmd() {
  case "tool_weSearch_new_forDocuments":
 	 if (' . $this->editorBodyFrame . '.loaded) {
 		 ' . $this->topFrame . '.hot = 0;
-		 ' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
+		 ' . $this->editorBodyFrame . '.document.we_form.cmd.value=args[0];
 		 ' . $this->topFrame . '.activ_tab=1;
 		 ' . $this->editorBodyFrame . '.document.we_form.tabnr.value=1;
 		 ' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
@@ -188,7 +180,7 @@ function we_cmd() {
 	 if (' . $this->editorBodyFrame . '.loaded) {
 		 ' . $this->topFrame . '.hot = 0;
 		 ' . $this->topFrame . '.activ_tab=2;
-		 ' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
+		 ' . $this->editorBodyFrame . '.document.we_form.cmd.value=args[0];
 		 ' . $this->editorBodyFrame . '.document.we_form.tabnr.value=2;
 		 ' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
 		 ' . $this->editorBodyFrame . '.submitForm();
@@ -204,7 +196,7 @@ function we_cmd() {
 	if (' . $this->editorBodyFrame . '.loaded) {
 	 ' . $this->topFrame . '.hot = 0;
 	 ' . $this->topFrame . '.activ_tab=3;
-			' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
+			' . $this->editorBodyFrame . '.document.we_form.cmd.value=args[0];
 				 ' . $this->editorBodyFrame . '.document.we_form.tabnr.value=3;
 				 ' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
 				 ' . $this->editorBodyFrame . '.submitForm();
@@ -221,7 +213,7 @@ function we_cmd() {
 	if (' . $this->editorBodyFrame . '.loaded) {
 	 ' . $this->topFrame . '.hot = 0;
 	 ' . $this->topFrame . '.activ_tab=3;
-			' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
+			' . $this->editorBodyFrame . '.document.we_form.cmd.value=args[0];
 				 ' . $this->editorBodyFrame . '.document.we_form.tabnr.value=3;
 				 ' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
 				 ' . $this->editorBodyFrame . '.submitForm();
@@ -233,7 +225,7 @@ function we_cmd() {
 	 }
 	 break;
 	default:
-	 top.opener.top.we_cmd.apply(this, arguments);
+	 top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 
  }
 }
@@ -258,10 +250,10 @@ function mark() {
 				$tab = we_base_request::_(we_base_request::INT, 'tabnr');
 
 				echo we_html_element::jsElement(
-					$this->editorHeaderFrame . '.location="' . $this->frameset . '?pnt=edheader' .
+					$this->editorHeaderFrame . '.location="' . $this->frameset . '&pnt=edheader' .
 					($tab !== false ? '&tab=' . $tab : '') .
 					'&text=' . urlencode($this->Model->Text) . '";' .
-					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
+					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');
 				break;
 
 			case 'tool_weSearch_edit' :
@@ -273,10 +265,10 @@ function mark() {
 					break;
 				}
 				echo we_html_element::jsElement(
-					$this->editorHeaderFrame . '.location="' . $this->frameset . '?pnt=edheader' .
+					$this->editorHeaderFrame . '.location="' . $this->frameset . '&pnt=edheader' .
 					($cmdid !== false ? '&cmdid=' . $cmdid : '') . '&text=' .
 					urlencode($this->Model->Text) . '";' .
-					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
+					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
         if(' . $this->topFrame . '.treeData){
          ' . $this->topFrame . '.treeData.unselectNode();
          ' . $this->topFrame . '.treeData.selectNode("' . $this->Model->ID . '");
@@ -531,7 +523,7 @@ WE().consts.g_l.weSearch = {
 
 	function getSearchDialogOptions($whichSearch){
 
-		$_table = new we_html_table(array('class' => 'withBigSpace', 'style' => 'width:500px',), 3, 2);
+		$_table = new we_html_table(array('style' => 'width:500px',), 3, 2);
 		$row = 0;
 		switch($whichSearch){
 			case self::SEARCH_DOCS :
@@ -2542,16 +2534,8 @@ WE().consts.g_l.weSearch = {
 			we_html_element::jsElement('
 var loaded=0;
 function we_cmd() {
-	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
-		var args = {}, i = 0, tmp = arguments[0];
-		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
-	} else {
-		var args = Array.prototype.slice.call(arguments);
-		for (var i = 0; i < args.length; i++) {
-			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
-		}
-	}
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
 
 	switch (args[0]) {
 		case "we_selector_image":
@@ -2578,14 +2562,14 @@ function we_cmd() {
 			new (WE().util.jsWindow)(this, url,"we_weSearch_dirselector",-1,-1,600,400,true,true,true);
 			break;
 		default:
-			' . $this->topFrame . '.we_cmd.apply(this, arguments);
+			' . $this->topFrame . '.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }
-function submitForm() {
+function submitForm(target,action,method) {
 	var f = self.document.we_form;
-	f.target = (arguments[0]?arguments[0]:"edbody");
-	f.action = (arguments[1]?arguments[1]:"' . $this->frameset . '");
-	f.method = (arguments[2]?arguments[2]:"post");
+	f.target = (target?target:"edbody");
+	f.action = (action?action:"' . $this->frameset . '");
+	f.method = (method?method:"post");
 	f.submit();
 }');
 	}

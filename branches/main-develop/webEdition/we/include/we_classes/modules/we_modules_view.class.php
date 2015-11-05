@@ -55,11 +55,11 @@ class we_modules_view implements we_modules_viewIF{
 
 	function getJSSubmitFunction($def_target = "edbody"){
 		return '
-function submitForm() {
-	var f = arguments[3] ? self.document.forms[arguments[3]] : self.document.we_form;
-	f.target = arguments[0]?arguments[0]:"' . $def_target . '";
-	f.action = arguments[1]?arguments[1]:"' . $this->frameset . '";
-	f.method = arguments[2]?arguments[2]:"post";
+function submitForm(target,action,method,form) {
+	var f = form ? self.document.forms[form] : self.document.we_form;
+	f.target = target?target:"' . $def_target . '";
+	f.action = action?action:"' . $this->frameset . '";
+	f.method = method?method:"post";
 
 	f.submit();
 }';
