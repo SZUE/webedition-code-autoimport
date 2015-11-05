@@ -152,8 +152,10 @@ abstract class we_html_forms{
 
 		$contentCss = array_filter((isset($GLOBALS['we_doc']) && is_object($GLOBALS['we_doc']) && !$ignoredocumentcss ? $GLOBALS['we_doc']->getDocumentCss() : array()));
 		if($editorcss){
-			$contentCss = $contentCss + $GLOBALS['DB_WE']->getAllq('SELECT CONCAT(Path,"?",Published) FROM ' . FILE_TABLE . ' WHERE Published>0 AND ID IN (' . implode(',', $editorcss), true);
+			$contentCss = $contentCss + $GLOBALS['DB_WE']->getAllq('SELECT CONCAT(Path,"?",Published) FROM ' . FILE_TABLE . ' WHERE Published>0 AND ID IN (' . implode(',', $editorcss) . ')', true);
 		}
+
+		$contentCss = implode(',', $contentCss);
 
 		if($buttonpos){
 			$foo = makeArrayFromCSV($buttonpos);
