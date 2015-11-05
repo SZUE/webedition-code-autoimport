@@ -111,7 +111,7 @@ function we_cmd() {
 			top.close();
 			break;
 		case "exit_doc_question":
-			url = "' . $this->frameset . '?pnt=exit_doc_question&delayCmd="+' . $this->editorBodyFrame . '.document.getElementsByName("delayCmd")[0].value+"&delayParam="+' . $this->editorBodyFrame . '.document.getElementsByName("delayParam")[0].value;
+			url = "' . $this->frameset . '&pnt=exit_doc_question&delayCmd="+' . $this->editorBodyFrame . '.document.getElementsByName("delayCmd")[0].value+"&delayParam="+' . $this->editorBodyFrame . '.document.getElementsByName("delayParam")[0].value;
 			new (WE().util.jsWindow)(this, url,"we_exit_doc_question",-1,-1,380,130,true,false,true);
 			break;
 	case "tool_weSearch_save":
@@ -250,10 +250,10 @@ function mark() {
 				$tab = we_base_request::_(we_base_request::INT, 'tabnr');
 
 				echo we_html_element::jsElement(
-					$this->editorHeaderFrame . '.location="' . $this->frameset . '?pnt=edheader' .
+					$this->editorHeaderFrame . '.location="' . $this->frameset . '&pnt=edheader' .
 					($tab !== false ? '&tab=' . $tab : '') .
 					'&text=' . urlencode($this->Model->Text) . '";' .
-					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
+					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');
 				break;
 
 			case 'tool_weSearch_edit' :
@@ -265,10 +265,10 @@ function mark() {
 					break;
 				}
 				echo we_html_element::jsElement(
-					$this->editorHeaderFrame . '.location="' . $this->frameset . '?pnt=edheader' .
+					$this->editorHeaderFrame . '.location="' . $this->frameset . '&pnt=edheader' .
 					($cmdid !== false ? '&cmdid=' . $cmdid : '') . '&text=' .
 					urlencode($this->Model->Text) . '";' .
-					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
+					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
         if(' . $this->topFrame . '.treeData){
          ' . $this->topFrame . '.treeData.unselectNode();
          ' . $this->topFrame . '.treeData.selectNode("' . $this->Model->ID . '");
@@ -523,7 +523,7 @@ WE().consts.g_l.weSearch = {
 
 	function getSearchDialogOptions($whichSearch){
 
-		$_table = new we_html_table(array('class' => 'withBigSpace', 'style' => 'width:500px',), 3, 2);
+		$_table = new we_html_table(array( 'style' => 'width:500px',), 3, 2);
 		$row = 0;
 		switch($whichSearch){
 			case self::SEARCH_DOCS :

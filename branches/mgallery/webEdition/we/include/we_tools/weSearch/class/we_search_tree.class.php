@@ -39,7 +39,7 @@ frames={
 treeData.frames=frames;
 	pid = pid? pid : 0;
 	offset = offset ? offset : 0;
-	frames.cmd.location=treeData.frameset+"?pnt=cmd&pid="+pid+"&offset="+offset;
+	frames.cmd.location=treeData.frameset+"&pnt=cmd&pid="+pid+"&offset="+offset;
 	drawTree();
 }';
 	}

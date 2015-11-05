@@ -291,7 +291,7 @@ container.prototype = {
 		var openstatus = (this[eintragsIndex].open ? 0 : 1);
 		this[eintragsIndex].open = openstatus;
 		if (openstatus && !this[eintragsIndex].loaded) {
-			top.content.cmd.location = this.frameset + "?pnt=cmd&pid=" + id;
+			top.content.cmd.location = this.frameset + "&pnt=cmd&pid=" + id;
 		} else {
 			drawTree();
 		}

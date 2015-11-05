@@ -59,7 +59,7 @@ container.prototype.openClose = function(id) {
 	treeData[eintragsIndex].open = openstatus;
 
 	if (openstatus && !treeData[eintragsIndex].loaded) {
-		frames.cmd.location = treeData.frameset + "?pnt=cmd&pid=" + id + (sort ? "&sort=" + sort : "");
+		frames.cmd.location = treeData.frameset + "&pnt=cmd&pid=" + id + (sort ? "&sort=" + sort : "");
 	} else {
 		drawTree();
 	}
