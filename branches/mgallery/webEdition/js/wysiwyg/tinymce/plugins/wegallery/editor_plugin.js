@@ -28,7 +28,7 @@
 			var templates = e.getParam('weGalleryTemplates');
 			e.addButton('wegallery', {
 				title: 'not set',
-				'class' : 'mce_wegallery',
+				'class' : 'mce_wegallery mce_we_fa',
 				cmd: 'mceWegallery'
 			});
 

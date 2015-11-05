@@ -59,10 +59,23 @@ span.mceItemWeLang{
 border: 1px dotted gray;
 }
 
+
 we-gallery{
-background-image: url(/webEdition/images/wysiwyg/wegallery.gif);
-background-repeat: no-repeat;
-display: inline-block;
-width: 65px !important;
-height: 15px !important;
+/* background-image: url(/webEdition/images/wysiwyg/wegallery.gif); */
+/*	background-repeat: no-repeat; */
+	display: block;
+	font-size: 14px;
+}
+
+we-gallery:before {
+	font-family: FontAwesome;
+	content: "\f187 "; 
+	color: #164F94;
+}
+
+we-gallery:after {
+	font-family: Helvetica;
+	content: "<?php echo g_l('contentTypes', '[text/weCollection]'); ?>";
+	color: #164F94;
+	border: 1px dotted gray;
 }
