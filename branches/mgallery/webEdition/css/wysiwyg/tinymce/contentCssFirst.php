@@ -21,6 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+define('NO_SESS', 1);
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 header("Content-type: text/css");
 ?>
@@ -29,4 +30,35 @@ header("Content-type: text/css");
 
 body {
 font-size: <?php echo (we_base_browserDetect::isUNIX() ? 13 : 12); ?>px;
+<?php
+$bgcol = we_base_request::_(we_base_request::STRING, 'tinyMceBackgroundColor');
+$bgcol = preg_match('/^[a-f0-9]{6}$/i', $bgcol) ? '#' . $bgcol : $bgcol;
+echo $bgcol ? '
+background-color: ' . $bgcol . ' !important;
+background-image: none !important;
+' : '';
+?>
+}
+
+
+/* css for plugin wevisialborders */
+
+acronym.mceItemWeAcronym{
+border: 1px dotted gray;
+}
+
+abbr.mceItemWeAbbr{
+border: 1px dotted gray;
+}
+
+span.mceItemWeLang{
+border: 1px dotted gray;
+}
+
+wegallery{
+background-image: url(/webEdition/images/wysiwyg/wegallery.gif);
+background-repeat: no-repeat;
+display: inline-block;
+width: 65px !important;
+height: 15px !important;
 }

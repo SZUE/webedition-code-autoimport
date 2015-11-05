@@ -74,45 +74,44 @@ class we_versions_version{
 	protected $resetFromVersion;
 	public $contentTypes = array();
 	public $persistent_slots = array();
-	public $modFields = array();
+
+	/**
+	 * fields from tblFile and tblObjectFiles which can be modified
+	 */
+	public $modFields = array(//FIXME: use dbset for this!
+		'status' => 1,
+		'ParentID' => 2,
+		'Text' => 3,
+		'IsSearchable' => 4,
+		'Category' => 5,
+		'CreatorID' => 6,
+		'RestrictOwners' => 7,
+		'Owners' => 8,
+		'OwnersReadOnly' => 9,
+		'Language' => 10,
+		'WebUserID' => 11,
+		'documentElements' => 12,
+		'documentScheduler' => 13,
+		'documentCustomFilter' => 14,
+		'TemplateID' => 15,
+		'Filename' => 16,
+		'Extension' => 17,
+		'IsDynamic' => 18,
+		'DocType' => 19,
+		'Workspaces' => 20,
+		'ExtraWorkspaces' => 21,
+		'ExtraWorkspacesSelected' => 22,
+		'Templates' => 23,
+		'ExtraTemplates' => 24,
+		'Charset' => 25,
+		'InGlossar' => 26
+	);
 
 	/**
 	 *  Constructor for class 'weVersions'
 	 */
 	public function __construct(){
 		$this->contentTypes = self::getContentTypesVersioning();
-
-		/**
-		 * fields from tblFile and tblObjectFiles which can be modified
-		 */
-		$this->modFields = array(
-			'status' => 1,
-			'ParentID' => 2,
-			'Text' => 3,
-			'IsSearchable' => 4,
-			'Category' => 5,
-			'CreatorID' => 6,
-			'RestrictOwners' => 7,
-			'Owners' => 8,
-			'OwnersReadOnly' => 9,
-			'Language' => 10,
-			'WebUserID' => 11,
-			'documentElements' => 12,
-			'documentScheduler' => 13,
-			'documentCustomFilter' => 14,
-			'TemplateID' => 15,
-			'Filename' => 16,
-			'Extension' => 17,
-			'IsDynamic' => 18,
-			'DocType' => 19,
-			'Workspaces' => 20,
-			'ExtraWorkspaces' => 21,
-			'ExtraWorkspacesSelected' => 22,
-			'Templates' => 23,
-			'ExtraTemplates' => 24,
-			'Charset' => 25,
-			'InGlossar' => 26
-		);
 	}
 
 	/**
@@ -1133,12 +1132,12 @@ class we_versions_version{
 				}
 				break;
 			case 'documentScheduler':
-				if(isset($document['schedArr']) && is_array($document['schedArr'])){
+				if(!empty($document['schedArr']) && is_array($document['schedArr'])){
 					$entry = sql_function('x\'' . bin2hex(we_serialize($document["schedArr"], false, 9)) . '\'');
 				}
 				break;
 			case 'documentCustomFilter':
-				if(isset($document["documentCustomerFilter"]) && is_array($document["documentCustomerFilter"])){
+				if(!empty($document["documentCustomerFilter"]) && is_array($document["documentCustomerFilter"])){
 					$entry = sql_function('x\'' . bin2hex(we_serialize($document["documentCustomerFilter"], false, 9)) . '\'');
 				}
 				break;
@@ -1274,8 +1273,7 @@ class we_versions_version{
 												$newData = $document["schedArr"];
 												foreach($newData as $k => $vl){
 													if(isset($lastEntryField[$k]) && is_array($lastEntryField[$k]) && is_array($vl)){
-														$_tmpArr1 = array();
-														$_tmpArr2 = array();
+														$_tmpArr1 = $_tmpArr2 = array();
 														foreach($vl as $_k => $_v){
 															$_tmpArr1[$_k] = is_array($_v) ? we_serialize($_v) : $_v;
 														}
@@ -1293,8 +1291,7 @@ class we_versions_version{
 										case 'documentCustomFilter':
 //TODO: imi: check if we need both foreach
 											if(isset($document["documentCustomerFilter"]) && is_array($document["documentCustomerFilter"]) && is_array($lastEntryField)){
-												$_tmpArr1 = array();
-												$_tmpArr2 = array();
+												$_tmpArr1 = $_tmpArr2 = array();
 												foreach($document["documentCustomerFilter"] as $_k => $_v){
 													$_tmpArr1[$_k] = is_array($_v) ? we_serialize($_v) : $_v;
 												}
