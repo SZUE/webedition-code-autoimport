@@ -30,7 +30,7 @@ class we_search_frames extends we_tool_frames{
 		$this->toolUrl = WE_INCLUDES_DIR . 'we_tools/' . $this->module . '/';
 		$this->toolDir = $_SERVER['DOCUMENT_ROOT'] . $this->toolUrl;
 
-		$_frameset = $this->toolUrl . 'edit_' . $this->module . '_frameset.php';
+		$_frameset = $this->toolUrl . 'edit_' . $this->module . '_frameset.php?x=1';
 		parent::__construct($_frameset);
 		$this->Table = SUCHE_TABLE;
 
