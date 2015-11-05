@@ -694,8 +694,6 @@ function executeAjaxRequest(param_1, initCfg, param_3, param_4, titel, widgetId)
 	var widgetType = gel(widgetId + '_type').value;
 
 	showLoadingSymbol(widgetId);
-	var url = WE().util.getWe_cmdArgsUrl(Array.prototype.slice.call(arguments), WE().consts.dirs.WEBEDITION_DIR + 'rpc/rpc.php?cmd=' + _cmdName + '&cns=widgets');
-
 	var _cmdName = null;
 
 	switch (widgetType) {
@@ -704,6 +702,8 @@ function executeAjaxRequest(param_1, initCfg, param_3, param_4, titel, widgetId)
 			break;
 			//FIXME: what about all other tools?!
 	}
+	var url = WE().util.getWe_cmdArgsUrl(Array.prototype.slice.call(arguments), WE().consts.dirs.WEBEDITION_DIR + 'rpc/rpc.php?cmd=' + _cmdName + '&cns=widgets&');
+
 	if (_cmdName) {
 		top.YAHOO.util.Connect.asyncRequest('GET', url, ajaxCallback);
 	}
