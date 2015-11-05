@@ -59,7 +59,7 @@ span.mceItemWeLang{
 border: 1px dotted gray;
 }
 
-wegallery{
+we-gallery{
 background-image: url(/webEdition/images/wysiwyg/wegallery.gif);
 background-repeat: no-repeat;
 display: inline-block;

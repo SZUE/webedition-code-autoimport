@@ -971,8 +971,8 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	plugin_preview_width : "500",
 	theme_advanced_disable : "",
 
-	extended_valid_elements: "wegallery[id|tmpl|class]",
-	custom_elements: "wegallery",
+	extended_valid_elements: "we-gallery[id|tmpl|class]",
+	custom_elements: "we-gallery",
 	visual : false,
 	//paste_text_use_dialog: true,
 	//fullscreen_new_window: true,

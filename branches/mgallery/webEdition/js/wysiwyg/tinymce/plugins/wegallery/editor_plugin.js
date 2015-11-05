@@ -38,9 +38,9 @@
 				if(!templates){
 					return;
 				}
-				if (e.dom.getParent(c.getNode(), 'WEGALLERY') !== null) {
-					weid = e.dom.getParent(c.getNode(), 'WEGALLERY').id;
-					wetmpl = e.dom.getParent(c.getNode(), 'WEGALLERY').getAttribute('tmpl');
+				if (e.dom.getParent(c.getNode(), 'WE-GALLERY') !== null) {
+					weid = e.dom.getParent(c.getNode(), 'WE-GALLERY').id;
+					wetmpl = e.dom.getParent(c.getNode(), 'WE-GALLERY').getAttribute('tmpl');
 				}
 
 				e.windowManager.open({
@@ -59,11 +59,11 @@
 				e.onNodeChange.add(function(e, cm, n) {
 					if(templates){
 						if(!e.selection.isCollapsed()){
-							cm.setDisabled('wegallery', n.nodeName !== 'WEGALLERY');
-							cm.setActive('wegallery', n.nodeName === 'WEGALLERY');
+							cm.setDisabled('wegallery', n.nodeName !== 'WE-GALLERY');
+							cm.setActive('wegallery', n.nodeName === 'WE-GALLERY');
 						} else {
 							cm.setDisabled('wegallery', 0);
-							cm.setActive('wegallery', n.nodeName === 'WEGALLERY');
+							cm.setActive('wegallery', n.nodeName === 'WE-GALLERY');
 						}
 					} else {
 						cm.setDisabled('wegallery', 1);

@@ -50,13 +50,13 @@ function we_tag_textarea($attribs, $content){
 	}
 
 	$fieldVal = we_document::parseInternalLinks($GLOBALS['we_doc']->getField($attribs), 0, '');
-	if(!weTag_getAttribute('wysiwyg', $attribs, false, we_base_request::BOOL) && strpos($fieldVal, '</wegallery>') === false){
+	if(!weTag_getAttribute('wysiwyg', $attribs, false, we_base_request::BOOL) && strpos($fieldVal, '</we-gallery>') === false){
 		return $fieldVal;
 	}
 
-	/* we are in wysiwyg and have at least one wegallery */
+	/* we are in wysiwyg and have at least one we-gallery */
 	$galleryAttribs = $regs = array();
-	if(preg_match_all('/<wegallery *((id|tmpl)="\d+")* *((id|tmpl)="\d+")* *><\/wegallery>/i', $fieldVal, $regs, PREG_SET_ORDER)){
+	if(preg_match_all('/<we-gallery *((id|tmpl)="\d+")* *((id|tmpl)="\d+")* *><\/we-gallery>/i', $fieldVal, $regs, PREG_SET_ORDER)){
 		for($i = 0; $i < count($regs); $i++){
 			array_shift($regs[$i]);
 			foreach($regs[$i] as $reg){
@@ -67,7 +67,7 @@ function we_tag_textarea($attribs, $content){
 		}
 	}
 
-	$splitVal = preg_split('/<wegallery *((id|tmpl)="\d+")* *((id|tmpl)="\d+")* *><\/wegallery>/i', $fieldVal);
+	$splitVal = preg_split('/<we-gallery *((id|tmpl)="\d+")* *((id|tmpl)="\d+")* *><\/we-gallery>/i', $fieldVal);
 	printElement(array_shift($splitVal));
 	foreach($splitVal as $i => $cur){
 		if($galleryAttribs[$i]['id'] && $galleryAttribs[$i]['tmpl']){
