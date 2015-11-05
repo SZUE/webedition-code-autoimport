@@ -624,8 +624,8 @@ function cycle() {
 		}
 	}
 }
-function we_import(mode, cid) {
-	if(arguments[2]==1){
+function we_import(mode, cid,reload) {
+	if(reload==1){
 		top.wizbody.location = '" . $this->path . "&pnt=wizbody&step=3&type=" . we_import_functions::TYPE_WE_XML . "&noload=1';
 	};
 	var we_form = self.document.we_form;

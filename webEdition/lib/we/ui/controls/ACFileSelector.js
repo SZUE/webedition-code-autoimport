@@ -60,11 +60,11 @@ we_ui_controls_ACFileSelector = {};
  */
 we_ui_controls_ACFileSelector.openSelector = function()
 {
-var args =[];
+var args = [];
 				var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 				for (var i = 0; i < arguments.length; i++) {
 url += "we_cmd[]=" + encodeURI(arguments[i]);
-args.push(arguments[i]);
+				args.push(arguments[i]);
 				if (i < (arguments.length - 1)) {
 url += "&";
 }
@@ -93,8 +93,8 @@ we_ui_controls_ACFileSelector.openToolSelector = function()
 var args = [];
 				var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 				for (var i = 0; i < arguments.length; i++) {
-					args.push(arguments[i]);
-url += "we_cmd[]=" + encodeURI(arguments[i]);
+args.push(arguments[i]);
+				url += "we_cmd[]=" + encodeURI(arguments[i]);
 				if (i < (arguments.length - 1)) {
 url += "&";
 }

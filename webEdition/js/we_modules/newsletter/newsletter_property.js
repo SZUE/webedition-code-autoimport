@@ -156,14 +156,13 @@ function getNumOfDocs() {
 	return 0;
 }
 
-function switchRadio(a, b) {
+function switchRadio(a, b, x, c) {
 	a.value = 1;
 	a.checked = true;
 	b.value = 0;
 	b.checked = false;
 
-	if (arguments[3]) {
-		c = arguments[3];
+	if (c) {
 		c.value = 0;
 		c.checked = false;
 	}
@@ -201,16 +200,8 @@ function doUnload() {
  * Newsletter command controler
  */
 function we_cmd() {
-	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
-		var args = {}, i = 0, tmp = arguments[0];
-		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
-	} else {
-		var args = Array.prototype.slice.call(arguments);
-		for (var i = 0; i < args.length; i++) {
-			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
-		}
-	}
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
 
 	if (args[0] != "switchPage") {
 		self.setScrollTo();
@@ -236,7 +227,7 @@ function we_cmd() {
 
 		case "openNewsletterDirselector":
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-			args[0]="we_newsletter_dirSelector";
+			args[0] = "we_newsletter_dirSelector";
 			for (i = 0; i < args.length; i++) {
 				url += "we_cmd[]=" + encodeURI(args[i]);
 				if (i < (args.length - 1)) {
@@ -484,22 +475,19 @@ function we_cmd() {
 			break;
 
 		default:
-			top.content.we_cmd.apply(this, arguments);
+			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 
 	}
 }
 
-function submitForm() {
+function submitForm(target, action, method) {
 	if (self.weWysiwygSetHiddenText) {
 		weWysiwygSetHiddenText();
 	}
-
 	var f = self.document.we_form;
-
-	f.target = (arguments[0] ? arguments[0] : "edbody");
-	f.action = (arguments[1] ? arguments[1] : modFrameSet);
-	f.method = (arguments[2] ? arguments[2] : "post");
-
+	f.target = (target ? target : "edbody");
+	f.action = (action ? action : modFrameSet);
+	f.method = (method ? method : "post");
 	f.submit();
 }
 
@@ -653,11 +641,14 @@ function calendarSetup(group, x) {
 
 function changeFieldValue(val, valueField) {
 	top.content.hot = 1;
-	document.we_form.ncmd.value = arguments[0];
-	document.we_form.ngroup.value = arguments[1];
+	document.we_form.ncmd.value = val;
+	document.we_form.ngroup.value = valueField;
 
-	if (val == "MemberSince" || val == "LastLogin" || val == "LastAccess") {
-		document.getElementById(valueField).value = "";
+	switch (val) {
+		case "MemberSince":
+		case "LastLogin":
+		case "LastAccess":
+			document.getElementById(valueField).value = "";
 	}
 	submitForm();
 }

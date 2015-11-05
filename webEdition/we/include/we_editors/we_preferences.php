@@ -2462,7 +2462,7 @@ if(we_base_request::_(we_base_request::BOOL, 'save_settings')){
 		input_name: '<?php echo g_l('alert', '[input_name]'); ?>'
 	};
 	var args = "";
-	var url = "<?php echo WEBEDITION_DIR; ?> 'we_cmd.php?";
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 //--></</script><?php
 echo STYLESHEET .
 	weSuggest::getYuiFiles() .
@@ -2497,16 +2497,8 @@ for(i=1;i<childs.length;++i){
 	$_form = we_html_element::htmlForm(array('onSubmit' => 'return false;', 'name' => 'we_form', 'method' => 'post', 'action' => $_SERVER['SCRIPT_NAME']), we_html_element::htmlHidden('save_settings', 0) . render_dialog());
 
 	$_we_cmd_js = we_html_element::jsElement('function we_cmd(){
-	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
-		var args = {}, i = 0, tmp = arguments[0];
-		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
-	} else {
-		var args = Array.prototype.slice.call(arguments);
-		for (var i = 0; i < args.length; i++) {
-			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
-		}
-	}
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
 
 	switch (args[0]){
 		case "browse_server":
@@ -2528,7 +2520,7 @@ for(i=1;i<childs.length;++i){
 			new (WE().util.jsWindow)(this, url,"we_colorChooser",-1,-1,430,370,true,true,true);
 			break;
 		default:
-			parent.we_cmd.apply(this, arguments);
+			parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }
 

@@ -37,18 +37,17 @@ WE().layout.sidebar = {
 //
 // ----> Functions to open, close and resize sidebar
 //
-	open: function () {
-		var cmd = Array();
+	open: function (what,width) {
 // load document if needed
-		if (arguments[0] !== undefined) {
-			this.load(arguments[0]);
-		} else if (arguments[0] == "default") {
+		if (what !== undefined) {
+			this.load(what);
+		} else if (what === "default") {
 			this.load('');
 		}
 
 // get width of sidebar frame
-		if (arguments[1] !== undefined) {
-			width = parseInt(arguments[1]);
+		if (width !== undefined) {
+			width = parseInt(width);
 		} else {
 			width = WE().consts.size.sidebar.defaultWidth;
 		}
@@ -83,9 +82,9 @@ WE().layout.sidebar = {
 		obj.ct = (obj.ct === undefined ? WE().consts.contentTypes.WEDOCUMENT : obj.ct);
 		this._open(obj);
 	},
-	openDocumentById: function () {
-		obj.id = (arguments[0] === undefined ? 0 : arguments[0]);
-		obj.ct = (arguments[1] === undefined ? WE().consts.contentTypes.WEDOCUMENT : arguments[1]);
+	openDocumentById: function (id,ct) {
+		obj.id = (id === undefined ? 0 : id);
+		obj.ct = (ct === undefined ? WE().consts.contentTypes.WEDOCUMENT : ct);
 		this._open(obj);
 	},
 	openTemplate: function (obj) {
@@ -93,8 +92,8 @@ WE().layout.sidebar = {
 		obj.ct = WE().consts.contentTypes.TEMPLATE;
 		this._open(obj);
 	},
-	openTemplateById: function () {
-		obj.id = (arguments[0] === undefined ? 0 : arguments[0]);
+	openTemplateById: function (id) {
+		obj.id = (id === undefined ? 0 : id);
 		this._open(obj);
 	},
 	openObject: function (obj) {
@@ -104,8 +103,8 @@ WE().layout.sidebar = {
 			this._open(obj);
 		}
 	},
-	openObjectById: function () {
-		obj.id = (arguments[0] === undefined ? 0 : arguments[0]);
+	openObjectById: function (id) {
+		obj.id = (id === undefined ? 0 : id);
 		this._open(obj);
 	},
 	openClass: function (obj) {
@@ -115,8 +114,8 @@ WE().layout.sidebar = {
 			this._open(obj);
 		}
 	},
-	openClassById: function () {
-		obj.id = (arguments[0] === undefined ? 0 : arguments[0]);
+	openClassById: function (id) {
+		obj.id = (id === undefined ? 0 : id);
 		this._open(obj);
 	},
 	openCockpit: function () {

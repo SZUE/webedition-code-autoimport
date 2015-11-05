@@ -1,3 +1,5 @@
+/* global WE, top */
+
 /**
  * webEdition CMS
  *
@@ -23,10 +25,8 @@
  */
 
 function we_lcmd(par) {
-	var args = [];
-	for (var i = 0; i < arguments.length; i++) {
-		args.push(arguments[i]);
-	}
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+
 	switch (par) {
 		case 'trigger_save_document':
 			if (WE().layout.weEditorFrameController.getActiveDocumentReference() && WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter && WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter.weCanSave) {

@@ -25,9 +25,9 @@
  */
 
 ImageEditTools = {
-	activeTool : '',
-	deactivateAll: function(){
-		switch(this.activeTool){
+	activeTool: '',
+	deactivateAll: function () {
+		switch (this.activeTool) {
 			case 'focus':
 				this.Focus.drop();
 				break;
@@ -52,7 +52,6 @@ ImageEditTools = {
 
 ImageEditTools.Crop = {
 	up: ImageEditTools,
-
 	imgSrc: "",
 	imgW: 0,
 	imgH: 0,
@@ -177,16 +176,13 @@ ImageEditTools.Crop = {
 		if (typeof object[eventName] == "function") {
 			object[eventName + "listeners"][0] = [object[eventName], object];
 		}
-		object[eventName] = function () {
+		object[eventName] = function (a) {
 			var i;
-			var argumentsCopy = [];
-			for (i = 0; i < arguments.length; i++){
-				argumentsCopy[i] = arguments[i];
-			}
+			var argumentsCopy = Array.prototype.slice.call(arguments)
 			if (arguments.length === 0 && window.event) {
 				argumentsCopy[0] = CropTool.patchEvent(window.event, this);
-			} else if (arguments[0] && typeof arguments[0] == "object" && arguments[0].toString().search(/event/i) != -1) {
-				argumentsCopy[0] = CropTool.patchEvent(arguments[0], this);
+			} else if (a && typeof a == "object" && a.toString().search(/event/i) != -1) {
+				argumentsCopy[0] = CropTool.patchEvent(a, this);
 			}
 
 			var listeners = this[eventName + "listeners"];
@@ -716,8 +712,9 @@ ImageEditTools.Crop = {
 		};
 
 		this.sel.setCursor = function (x1, y1, x2, y2, cr, co) {
-			if (arguments.length == 1)
+			if (arguments.length == 1){
 				y1 = x2 = y2 = cr = co = x1;
+			}
 			document.getElementById(this.idLeft).style.cursor = x1;
 			document.getElementById(this.idTop).style.cursor = y1;
 			document.getElementById(this.idRight).style.cursor = x2;
@@ -962,43 +959,43 @@ ImageEditTools.Crop = {
 };
 
 /*if (window.attachEvent) {
-	var clearElementProps = [
-		"onmousedown",
-		"onmouseup",
-		"onmousemove",
-		"onclick",
-		"onkeydown",
-		"onkeyup",
-		"onmousedownlisteners",
-		"onmouseuplisteners",
-		"onmousemovelisteners",
-		"onclicklisteners",
-		"onkeydownlisteners",
-		"onkeyuplisteners"
-	];
+ var clearElementProps = [
+ "onmousedown",
+ "onmouseup",
+ "onmousemove",
+ "onclick",
+ "onkeydown",
+ "onkeyup",
+ "onmousedownlisteners",
+ "onmouseuplisteners",
+ "onmousemovelisteners",
+ "onclicklisteners",
+ "onkeydownlisteners",
+ "onkeyuplisteners"
+ ];
 
-	window.attachEvent("onunload",
-					function () {
-						var el;
-						var all_obj = [];
-						if (document.all)
-							all_obj = document.all;
-						else if (document.getElementsByTagName && !document.all)
-							all_obj = document.getElementsByTagName("*");
-						for (var d = all_obj.length; d--; ) {
-							el = all_obj[d];
-							for (var c = clearElementProps.length; c--; ) {
-								el[clearElementProps[c]] = null;
-							}
-						}
-						window.onload = null;
-						window.onloadlisteners = null;
-						document.handleMouseDragged = null;
-						document.onmousemovelisteners = null;
-						CropTool = null;
-					}
-	);
-}*/
+ window.attachEvent("onunload",
+ function () {
+ var el;
+ var all_obj = [];
+ if (document.all)
+ all_obj = document.all;
+ else if (document.getElementsByTagName && !document.all)
+ all_obj = document.getElementsByTagName("*");
+ for (var d = all_obj.length; d--; ) {
+ el = all_obj[d];
+ for (var c = clearElementProps.length; c--; ) {
+ el[clearElementProps[c]] = null;
+ }
+ }
+ window.onload = null;
+ window.onloadlisteners = null;
+ document.handleMouseDragged = null;
+ document.onmousemovelisteners = null;
+ CropTool = null;
+ }
+ );
+ }*/
 
 
 
@@ -1010,10 +1007,10 @@ ImageEditTools.Crop = {
 ImageEditTools.Focus = {
 	up: ImageEditTools,
 	elems: {
-		focusPoint : null,
-		image : null,
-		x_focus : null,
-		y_focus : null
+		focusPoint: null,
+		image: null,
+		x_focus: null,
+		y_focus: null
 	},
 	vals: {
 		referenceX: 0,
@@ -1027,8 +1024,7 @@ ImageEditTools.Focus = {
 		startMove: null,
 		stopMove: null
 	},
-
-	start: function(){
+	start: function () {
 		this.up.deactivateAll();
 		this.up.activeTool = 'focus';
 
@@ -1048,17 +1044,18 @@ ImageEditTools.Focus = {
 
 		// add listeners (using late binding to set scope, and hold reference to bound fns!)
 		this.elems.image.addEventListener('click', (this.boundFNs.setFocus = this.setFocusPositionByMouse.bind(this)), false);
-		this.elems.focusPoint.addEventListener('mousedown', (this.boundFNs.startMove  = this.startMoveFocusPosition.bind(this)), false);
-		this.elems.focusPoint.addEventListener('mouseup',(this.boundFNs.stopMove = this.stopMoveFocusPosition.bind(this)), false);
+		this.elems.focusPoint.addEventListener('mousedown', (this.boundFNs.startMove = this.startMoveFocusPosition.bind(this)), false);
+		this.elems.focusPoint.addEventListener('mouseup', (this.boundFNs.stopMove = this.stopMoveFocusPosition.bind(this)), false);
 		this.elems.image.addEventListener('mouseup', this.boundFNs.stopMove, false);
-		this.elems.focusPoint.addEventListener('dragstart', function(e){e.preventDefault();}, false);
+		this.elems.focusPoint.addEventListener('dragstart', function (e) {
+			e.preventDefault();
+		}, false);
 
 		var hot = _EditorFrame.getEditorIsHot();
 		this.setFocusPositionByValue();
 		_EditorFrame.setEditorIsHot(hot);
 	},
-
-	drop: function(){
+	drop: function () {
 		this.elems.focusPoint.style.display = 'none';
 		this.elems.image.style.cursor = 'default';
 		this.elems.image.removeEventListener('click', this.boundFNs.setFocus, false);
@@ -1070,8 +1067,7 @@ ImageEditTools.Focus = {
 		this.elems.x_focus.parentNode.style.display = 'none';
 		this.elems.info.style.display = 'none';
 	},
-
-	startMoveFocusPosition : function(e){
+	startMoveFocusPosition: function (e) {
 		this.vals.referenceX = e.clientX;
 		this.vals.referenceY = e.clientY;
 		this.vals.origLeft = parseInt(this.elems.focusPoint.style.left);
@@ -1080,20 +1076,17 @@ ImageEditTools.Focus = {
 		this.elems.focusPoint.addEventListener('mousemove', (this.boundFNs.moveFocus = this.moveFocusPosition.bind(this)), false);
 		this.elems.image.addEventListener('mousemove', this.boundFNs.moveFocus, false);
 	},
-
-	stopMoveFocusPosition : function(e){
+	stopMoveFocusPosition: function (e) {
 		this.elems.focusPoint.removeEventListener('mousemove', this.boundFNs.moveFocus, false);
 		this.elems.image.removeEventListener('mousemove', this.boundFNs.moveFocus, false);
 	},
-
-	moveFocusPosition : function(e){
+	moveFocusPosition: function (e) {
 		var topVal = this.vals.origTop + (e.clientY - this.vals.referenceY),
-			leftVal = this.vals.origLeft + (e.clientX - this.vals.referenceX);
+						leftVal = this.vals.origLeft + (e.clientX - this.vals.referenceX);
 
 		this.setFocusPositionByMouse(null, leftVal, topVal);
 	},
-
-	setFocusPositionByMouse: function(e, topVal, leftVal) {
+	setFocusPositionByMouse: function (e, topVal, leftVal) {
 		//var me = this;
 
 		topVal = e ? e.offsetX : (topVal ? topVal : false);
@@ -1103,10 +1096,9 @@ ImageEditTools.Focus = {
 		this.elems.y_focus.value = ((leftVal - this.elems.image.height / 2) / (this.elems.image.height / 2)).toFixed(2);
 		this.setFocusPositionByValue();
 	},
-
-	setFocusPositionByValue : function(){
+	setFocusPositionByValue: function () {
 		var x = document.getElementById('x_focus').value,
-			y = document.getElementById('y_focus').value;
+						y = document.getElementById('y_focus').value;
 
 		if (Math.abs(this.elems.x_focus) > 1) {
 			this.elems.x_focus = 0;
@@ -1125,13 +1117,12 @@ ImageEditTools.Focus = {
 ImageEditTools.Rotate = {
 	up: ImageEditTools,
 	win: null,
-
-	start: function(url, gdType){
+	start: function (url, gdType) {
 		this.up.deactivateAll();
 		this.up.activeTool = 'rotate';
 		this.win = new (WE().util.jsWindow)(window, url, 'we_rotate', -1, -1, 300, (gdType === 'jpg' ? 230 : 170), true, false, true);
 	},
-	drop: function(){
+	drop: function () {
 		this.win.close();
 	}
 };
@@ -1139,13 +1130,12 @@ ImageEditTools.Rotate = {
 ImageEditTools.Resize = {
 	up: ImageEditTools,
 	win: null,
-
-	start: function(url, gdType){
+	start: function (url, gdType) {
 		this.up.deactivateAll();
 		this.up.activeTool = 'resize';
 		this.win = new (WE().util.jsWindow)(window, url, 'we_image_resize', -1, -1, 260, (gdType === 'jpg' ? 250 : 190), true, false, true);
 	},
-	drop: function(){
+	drop: function () {
 		this.win.close();
 	}
 };
@@ -1153,23 +1143,22 @@ ImageEditTools.Resize = {
 ImageEditTools.ConvertJPEG = {
 	up: ImageEditTools,
 	win: null,
-
-	start: function(url){
+	start: function (url) {
 		this.up.deactivateAll();
 		this.up.activeTool = 'convertJPEG';
 		this.win = new (WE().util.jsWindow)(window, url, 'we_convert_jpg', -1, -1, 260, 160, true, false, true);
 	},
-	drop: function(){
+	drop: function () {
 		this.win.close();
 	}
 };
 
 /*
-ImageEditTools.convertPNG = {
-	up: WE().ImageEditTool
-};
+ ImageEditTools.convertPNG = {
+ up: WE().ImageEditTool
+ };
 
-ImageEditTools.convertGIF = {
-	up: WE().ImageEditTool
-};
-*/
+ ImageEditTools.convertGIF = {
+ up: WE().ImageEditTool
+ };
+ */

@@ -35,6 +35,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 		'imageResize' => array('set' => false, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => true),
 		'imageRotate' => array('set' => false, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => true),
 		'imageQuality' => array('set' => false, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => true),
+		'tableProperties' => array('foldAtNr' => -1, 'foldAtOpen' => '', 'foldAtClose' => '')
 	);
 	protected $isExternalBtnUpload = false;
 	protected $parentID = array(
@@ -232,7 +233,7 @@ function selectCategories() {
 		}
 
 		$html = we_html_element::htmlDiv(array('style' => 'margin:10px 0 0 0;'),
-			we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[sameName_expl]'), we_html_tools::TYPE_INFO, 380) .
+			//we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[sameName_expl]'), we_html_tools::TYPE_INFO, 380) .
 			we_html_element::htmlDiv(array('style' => 'margin-top:10px'), //g_l('newFile', '[caseFileExists]') . '<br/>' .
 				we_html_forms::radiobutton('overwrite', false, "sameName", g_l('importFiles', '[sameName_overwrite]'), false, "defaultfont", 'document.we_form.fu_file_sameName.value=this.value;') .
 				we_html_forms::radiobutton('rename', true, "sameName", g_l('importFiles', '[sameName_rename]'), false, "defaultfont", 'document.we_form.fu_file_sameName.value=this.value;') .
@@ -258,7 +259,8 @@ function selectCategories() {
 			$wecmdenc2 = we_base_request::encCmd("document." . $formName . ".parentPath.value");
 			$wecmdenc3 = ''; //we_base_request::encCmd();
 			$parentID = $parentID ? : ($this->parentID['preset'] ? : (IMAGESTARTID_DEFAULT ? : 0));
-			//$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',$parentID,'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::FOLDER . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+			$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',$parentID,'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::FOLDER . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+			/*
 			$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd({
 				'we_cmd[0]': 'we_selector_directory',
 				'we_cmd[1]': " . $parentID . ",
@@ -271,6 +273,8 @@ function selectCategories() {
 				'we_cmd[8]': '" . we_base_ContentTypes::FOLDER . "',
 				'we_cmd[9]': " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . "
 			});");
+			 * 
+			 */
 			$yuiSuggest->setAcId("fu_file_parentID");
 			$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
 			$yuiSuggest->setInput("parentPath", $parentID ? id_to_path($parentID, FILE_TABLE) : '/', '', false);
@@ -281,8 +285,7 @@ function selectCategories() {
 			$yuiSuggest->setWidth(326);
 			$yuiSuggest->setSelectButton($but);
 
-			//$html = $yuiSuggest->getHTML();//; . weSuggest::getYuiFiles() . $yuiSuggest->getYuiJs();
-			$html = $yuiSuggest->getHTML() . weSuggest::getYuiFiles() . $yuiSuggest->getYuiJs(); 
+			$html = $yuiSuggest->getHTML();
 		} else {
 			if(is_numeric($this->parentID['preset'])){
 				$id = $this->parentID['preset'];
@@ -317,7 +320,7 @@ function selectCategories() {
 			'class' => 'defaultfont',
 			'size' => 6,
 			'style' => 'width: 378px;',
-			'onchange' => "this.form.fu_doc_thumbs.value='';for(var i=0;i<this.options.length;i++){if(this.options[i].selected){this.form.fu_doc_thumbs.value +=(this.options[i].value + ',');}};this.form.fu_doc_thumbs.value=this.form.thumbs.value.replace(/^(.+),$/,'$1');"
+			'onchange' => "this.form.fu_doc_thumbs.value='';for(var i=0;i<this.options.length;i++){if(this.options[i].selected){this.form.fu_doc_thumbs.value +=(this.options[i].value + ',');}};this.form.fu_doc_thumbs.value=this.form.fu_doc_thumbs.value.replace(/^(.+),$/,'$1');"
 		));
 		$DB_WE = new DB_WE();
 		$DB_WE->query('SELECT ID,Name,description FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');

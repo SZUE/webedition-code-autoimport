@@ -22,12 +22,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_object() {
-	var args = arguments[0],
-		url = arguments[1];
-
+function we_cmd_object(args, url) {
 	switch (args[0]) {
-
 		case "object_edit_ifthere":
 		case "edit_object":
 			new (WE().util.jsWindow)(this, url, "edit_module", -1, -1, 380, 250, true, true, true, true);

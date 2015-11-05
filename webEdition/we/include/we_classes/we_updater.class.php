@@ -109,7 +109,7 @@ abstract class we_updater{
 			//this is from 6.3.9
 			$_db = $_db? : new DB_WE();
 
-			if(!f('SELECT 1 FROM' . OBJECT_FILES_TABLE . ' WHERE TableID=0 LIMIT 1')){
+			if(!f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=0 LIMIT 1')){
 				return;
 			}
 			//correct folder properties
@@ -213,9 +213,9 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="href"
 					$data = we_unserialize($db->f('Catfields'));
 					if($data){
 						$udb->query('UPDATE ' . CATEGORY_TABLE . ' SET ' . we_database_base::arraySetter(array(
-									'Title' => $data['default']['Title'],
-									'Description' => $data['default']['Description'],
-								)) . ' WHERE ID=' . $db->f('ID'));
+								'Title' => $data['default']['Title'],
+								'Description' => $data['default']['Description'],
+							)) . ' WHERE ID=' . $db->f('ID'));
 					}
 				}
 			}
@@ -298,9 +298,9 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="href"
 
 		if(version_compare("5.5.3", we_database_base::getMysqlVer(false)) > 1){
 			//md5 is binary in mysql <5.5.3
-			$db->query('UPDATE ' . CONTENT_TABLE . ' SET hash=md5(Dat) WHERE Dat IS NOT NULL AND dHash=x\'00000000000000000000000000000000\'');
+			$db->query('UPDATE ' . CONTENT_TABLE . ' SET dHash=md5(Dat) WHERE Dat IS NOT NULL AND dHash=x\'00000000000000000000000000000000\'');
 		} else {
-			$db->query('UPDATE ' . CONTENT_TABLE . ' SET hash=unhex(md5(Dat)) WHERE Dat IS NOT NULL AND dHash=x\'00000000000000000000000000000000\'');
+			$db->query('UPDATE ' . CONTENT_TABLE . ' SET dHash=unhex(md5(Dat)) WHERE Dat IS NOT NULL AND dHash=x\'00000000000000000000000000000000\'');
 		}
 		return;
 
@@ -338,10 +338,10 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="href"
 	}
 
 	private static function updateVersionsTable(we_database_base $db){
-		if(!f('SELECT 1 FROM tblVersions WHERE binaryPath LIKE "' . WEBEDITION_DIR . '%" LIMIT 1')){
+		if(!f('SELECT 1 FROM ' . VERSIONS_TABLE . ' WHERE binaryPath LIKE "' . WEBEDITION_DIR . '%" LIMIT 1')){
 			return;
 		}
-		$db->query('UPDATE tblVersions SET binaryPath=REPLACE(binaryPath,"' . VERSION_DIR . '","") WHERE binaryPath LIKE "' . WEBEDITION_DIR . '%"');
+		$db->query('UPDATE ' . VERSIONS_TABLE . ' SET binaryPath=REPLACE(binaryPath,"' . VERSION_DIR . '","") WHERE binaryPath LIKE "' . WEBEDITION_DIR . '%"');
 	}
 
 	private static function cleanUnreferencedVersions(we_database_base $db){

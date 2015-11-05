@@ -35,13 +35,13 @@ class we_navigation_tree extends weTree{
 
 	function getJSStartTree(){
 		return '
-function startTree(){
+function startTree(pid,offset){
 frames={
 	"top":' . $this->topFrame . ',
 	"cmd":' . $this->cmdFrame . '
 };
-	pid = arguments[0] ? arguments[0] : 0;
-	offset = arguments[1] ? arguments[1] : 0;
+	pid = pid ? pid : 0;
+	offset = offset ? offset : 0;
 	frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=cmd&pid="+pid+"&offset="+offset;
 	drawTree();
 }';

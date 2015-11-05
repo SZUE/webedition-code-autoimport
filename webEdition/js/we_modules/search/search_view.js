@@ -358,7 +358,7 @@ weSearch = {
 		top.console.debug('is fn');
 
 	},
-	getCell: function (type, rowID) {
+	getCell: function (type, rowID, replacement) {
 		var cell = document.createElement('TD'),
 						html;
 		switch (type) {
@@ -368,7 +368,7 @@ weSearch = {
 				break;
 			case 'searchAdvSearch':
 				cell.setAttribute('id', 'td_searchAdvSearch[' + rowID + ']');
-				cell.innerHTML = this.elems.fieldSearch.replace(/__we_new_id__/g, rowID).replace(/__we_read_only__/g, arguments[2] ? 'readonly="1" ' : '');
+				cell.innerHTML = this.elems.fieldSearch.replace(/__we_new_id__/g, rowID).replace(/__we_read_only__/g, replacement ? 'readonly="1" ' : '');
 				break;
 			case 'locationAdvSearch':
 				cell.setAttribute("id", "td_locationAdvSearch[" + rowID + "]");
@@ -376,7 +376,7 @@ weSearch = {
 				break;
 			case 'searchMediaSearch':
 				cell.setAttribute('id', 'td_searchMediaSearch[' + rowID + ']');
-				cell.innerHTML = this.elems.fieldSearch.replace(/__we_new_id__/g, rowID).replace(/__we_read_only__/g, arguments[2] ? 'readonly="1" ' : '');
+				cell.innerHTML = this.elems.fieldSearch.replace(/__we_new_id__/g, rowID).replace(/__we_read_only__/g, replacement ? 'readonly="1" ' : '');
 				break;
 			case 'locationMediaSearch':
 				cell.setAttribute("id", "td_locationMediaSearch[" + rowID + "]");

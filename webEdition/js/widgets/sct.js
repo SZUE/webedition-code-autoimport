@@ -123,12 +123,9 @@ function selectAllOptions(obj) {
 	}
 }
 
-function moveSelectedOptions(from, to) {
-	if (arguments.length > 3) {
-		var regex = arguments[3];
-		if (regex != '') {
-			unSelectMatchingOptions(from, regex);
-		}
+function moveSelectedOptions(from, to, select, regex) {
+	if (regex) {
+		unSelectMatchingOptions(from, regex);
 	}
 	if (!hasOptions(from)) {
 		return;
@@ -150,7 +147,7 @@ function moveSelectedOptions(from, to) {
 			from.options[i] = null;
 		}
 	}
-	if ((arguments.length < 3) || (arguments[2] == true)) {
+	if ((select === undefined) || (select === true)) {
 		sortSelect(from);
 		sortSelect(to);
 	}
@@ -158,7 +155,7 @@ function moveSelectedOptions(from, to) {
 	to.selectedIndex = -1;
 }
 
-function copySelectedOptions(from, to) {
+function copySelectedOptions(from, to, select) {
 	var options = {};
 	if (hasOptions(to)) {
 		for (var i = 0; i < to.options.length; i++) {
@@ -181,30 +178,24 @@ function copySelectedOptions(from, to) {
 			}
 		}
 	}
-	if ((arguments.length < 3) || (arguments[2] == true)) {
+	if ((select === undefined) || (select == true)) {
 		sortSelect(to);
 	}
 	from.selectedIndex = -1;
 	to.selectedIndex = -1;
 }
 
-function moveAllOptions(from, to) {
+function moveAllOptions(from, to, select, regex) {
 	selectAllOptions(from);
-	if (arguments.length == 2) {
-		moveSelectedOptions(from, to);
-	} else if (arguments.length == 3) {
-		moveSelectedOptions(from, to, arguments[2]);
-	} else if (arguments.length == 4) {
-		moveSelectedOptions(from, to, arguments[2], arguments[3]);
+	if (arguments.length > 1) {
+		moveSelectedOptions.apply(Array.prototype.slice.call(arguments));
 	}
 }
 
-function copyAllOptions(from, to) {
+function copyAllOptions(from, to, select) {
 	selectAllOptions(from);
-	if (arguments.length == 2) {
-		copySelectedOptions(from, to);
-	} else if (arguments.length == 3) {
-		copySelectedOptions(from, to, arguments[2]);
+	if (arguments.length > 1) {
+		copySelectedOptions.apply(this, Array.prototype.slice.call(arguments));
 	}
 }
 

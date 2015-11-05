@@ -44,8 +44,8 @@ function getObjectsForDocWorkspace($id, we_database_base $db){
 
 $table = we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 2);
 $wfchk = defined('WORKFLOW_TABLE') && ($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE)) ?
-		we_base_request::_(we_base_request::BOOL, 'we_cmd', 0, 3) :
-		1;
+	we_base_request::_(we_base_request::BOOL, 'we_cmd', 0, 3) :
+	1;
 $wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 $wfchk_html = '';
 $script = '';
@@ -61,16 +61,16 @@ if(!$wfchk){
 		}
 		$wfchk_html .= we_html_element::jsElement('
 function confirmDel(){' .
-						($found ? 'if(confirm("' . g_l('alert', '[found_in_workflow]') . '")){' : '') .
-						'we_cmd("' . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 0) . '","","' . $table . '",1);' .
-						($found ? '}' : '') .
-						'}');
+				($found ? 'if(confirm("' . g_l('alert', '[found_in_workflow]') . '")){' : '') .
+				'we_cmd("' . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 0) . '","","' . $table . '",1);' .
+				($found ? '}' : '') .
+				'}');
 	} else {
 		$script = we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_WARNING);
 		$wfchk_html .= we_html_element::jsElement('function confirmDel(){}');
 	}
 	$wfchk_html .= '</head><body onload="confirmDel()"><form name="we_form" method="post">' .
-			we_html_tools::hidden("sel", implode(',', $selectedItems)) . "</form>";
+		we_html_tools::hidden("sel", implode(',', $selectedItems)) . "</form>";
 } elseif(in_array($wecmd0, array("do_delete", 'delete_single_document'))){
 	if(($selectedItems = we_base_request::_(we_base_request::INTLISTA, "sel", array()))){
 		//	look which documents must be deleted.
@@ -96,17 +96,17 @@ function confirmDel(){' .
 			switch($table){
 				case FILE_TABLE:
 					$hasPerm = (
-							($idInfos['IsFolder'] && permissionhandler::hasPerm('DELETE_DOC_FOLDER') && !$idInfos['hasFiles']) ||
-							(!$idInfos['IsFolder'] && permissionhandler::hasPerm('DELETE_DOCUMENT')) ||
-							($idInfos['IsFolder'] && permissionhandler::hasPerm('DELETE_DOC_FOLDER') && $idInfos['hasFiles'] && permissionhandler::hasPerm('DELETE_DOCUMENT'))
-							);
+						($idInfos['IsFolder'] && permissionhandler::hasPerm('DELETE_DOC_FOLDER') && !$idInfos['hasFiles']) ||
+						(!$idInfos['IsFolder'] && permissionhandler::hasPerm('DELETE_DOCUMENT')) ||
+						($idInfos['IsFolder'] && permissionhandler::hasPerm('DELETE_DOC_FOLDER') && $idInfos['hasFiles'] && permissionhandler::hasPerm('DELETE_DOCUMENT'))
+						);
 					break;
 				case TEMPLATES_TABLE:
 					$hasPerm = (
-							($idInfos['IsFolder'] && permissionhandler::hasPerm('DELETE_TEMP_FOLDER') && !$idInfos['hasFiles']) ||
-							(!$idInfos['IsFolder'] && permissionhandler::hasPerm('DELETE_TEMPLATE')) ||
-							($idInfos['IsFolder'] && permissionhandler::hasPerm('DELETE_TEMP_FOLDER') && $idInfos['hasFiles'] && permissionhandler::hasPerm('DELETE_TEMPLATE'))
-							);
+						($idInfos['IsFolder'] && permissionhandler::hasPerm('DELETE_TEMP_FOLDER') && !$idInfos['hasFiles']) ||
+						(!$idInfos['IsFolder'] && permissionhandler::hasPerm('DELETE_TEMPLATE')) ||
+						($idInfos['IsFolder'] && permissionhandler::hasPerm('DELETE_TEMP_FOLDER') && $idInfos['hasFiles'] && permissionhandler::hasPerm('DELETE_TEMPLATE'))
+						);
 					break;
 				case OBJECT_FILES_TABLE:
 					$hasPerm = (permissionhandler::hasPerm('DELETE_OBJECTFILE'));
@@ -302,11 +302,11 @@ function confirmDel(){' .
 						}
 
 						we_history::deleteFromHistory(
-								$deletedItems, $table);
+							$deletedItems, $table);
 						if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_TABLE){
 							if(!empty($deleted_objects)){
 								we_history::deleteFromHistory(
-										$deleted_objects, OBJECT_FILES_TABLE);
+									$deleted_objects, OBJECT_FILES_TABLE);
 							}
 						}
 
@@ -373,10 +373,10 @@ for ( frameId in _usedEditors ) {
 
 if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 	echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement(
-					($retVal ? //	document deleted -> go to seeMode startPage
-							we_message_reporting::getShowMessageCall(g_l('alert', '[delete_single][return_to_start]'), we_message_reporting::WE_MESSAGE_NOTICE) . "top.we_cmd('start_multi_editor');" :
-							we_message_reporting::getShowMessageCall(g_l('alert', '[delete_single][no_delete]'), we_message_reporting::WE_MESSAGE_ERROR))
-			), we_html_element::htmlBody());
+			($retVal ? //	document deleted -> go to seeMode startPage
+				we_message_reporting::getShowMessageCall(g_l('alert', '[delete_single][return_to_start]'), we_message_reporting::WE_MESSAGE_NOTICE) . "top.we_cmd('start_multi_editor');" :
+				we_message_reporting::getShowMessageCall(g_l('alert', '[delete_single][no_delete]'), we_message_reporting::WE_MESSAGE_ERROR))
+		), we_html_element::htmlBody());
 	exit();
 }
 ?>
@@ -450,25 +450,11 @@ echo we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_delete]'
 	f.submit();
 }
 function we_cmd() {
-	/*
-	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
-		var args = {}, i = 0, tmp = arguments[0];
-		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
-	} else {
-		var args = Array.prototype.slice.call(arguments);
-		for (var i = 0; i < args.length; i++) {
-			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
-		}
-	}
+//	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	//var url = WE().util.getWe_cmdArgsUrl(args);
 
-	switch (args[0]) {
-		default:
-			top.opener.top.we_cmd.apply(this, arguments);
-	}
-	*/
 	if (top.we_cmd) {
-		top.we_cmd.apply(this, arguments);
+		top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }
 //-->

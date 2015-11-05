@@ -45,8 +45,8 @@ container.prototype = {
 	getLayout: function () {
 		return this.tree_layouts[this.state];
 	},
-	setState: function () {
-		this.state = arguments[0];
+	setState: function (state) {
+		this.state = state;
 		if (this.state == this.tree_states.edit) {
 			for (var i = 1; i <= this.len; i++) {
 				if (this[i].checked == 1) {
@@ -55,8 +55,8 @@ container.prototype = {
 			}
 		}
 	},
-	selectNode: function () {
-		if (arguments[0]) {
+	selectNode: function (node) {
+		if (node) {
 			var ind;
 			if (this.selection !== "" && this.selection_table == this.table) {
 				ind = this.indexOfEntry(this.selection);
@@ -66,13 +66,13 @@ container.prototype = {
 					oldnode.applylayout();
 				}
 			}
-			ind = this.indexOfEntry(arguments[0]);
+			ind = this.indexOfEntry(node);
 			if (ind != -1) {
-				var newnode = this.get(arguments[0]);
+				var newnode = this.get(node);
 				newnode.selected = 1;
 				newnode.applylayout();
 			}
-			this.selection = arguments[0];
+			this.selection = node;
 			this.selection_table = this.table;
 		}
 	},
@@ -291,7 +291,7 @@ container.prototype = {
 		var openstatus = (this[eintragsIndex].open ? 0 : 1);
 		this[eintragsIndex].open = openstatus;
 		if (openstatus && !this[eintragsIndex].loaded) {
-			top.content.cmd.location = this.frameset + "?pnt=cmd&pid=" + id;
+			top.content.cmd.location = this.frameset + "&pnt=cmd&pid=" + id;
 		} else {
 			drawTree();
 		}
@@ -392,9 +392,9 @@ node.prototype = {
 		parentnode.clear();
 		we_cmd("loadFolder", treeData.table, parentnode.id, "", "", "", this.offset);
 	},
-	applylayout: function () {
+	applylayout: function (layout) {
 		eval('if(' + treeData.treeFrame + '.document.getElementById("lab_' + this.id + '"))' + treeData.treeFrame + '.document.getElementById("lab_' + this.id + '").className ="' +
-						(arguments[0] ? arguments[0] : this.getLayout()) +
+						(layout ? layout : this.getLayout()) +
 						'";');
 	},
 	clear: function () {

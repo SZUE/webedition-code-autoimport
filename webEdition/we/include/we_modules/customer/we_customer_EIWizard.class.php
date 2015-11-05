@@ -156,22 +156,15 @@ class we_customer_EIWizard{
 			}
 
 			function we_cmd(){
-				var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-				if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
-					var args = {}, i = 0, tmp = arguments[0];
-					url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
-				} else {
-					var args = Array.prototype.slice.call(arguments);
-					for (var i = 0; i < args.length; i++) {
-						url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
-					}
-				}
-				switch (args[0]){
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
+
+switch (args[0]){
 					case "del_customer":
-						selector_cmd(arguments[0],arguments[1],arguments[2]);
+						selector_cmd(args[0],args[1],args[2]);
 						break;
 					default:
-						top.opener.top.we_cmd.apply(this, arguments);
+						top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 				}
 			}
 
@@ -1460,14 +1453,8 @@ function doNext(){
 
 		$js = we_html_element::jsElement('
 function formFileChooser() {
-	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
-	var args=[];
-	for(var i = 0; i < arguments.length; i++){
-	args.push(arguments[i]);
-	url += "we_cmd[]="+encodeURI(arguments[i]);
-	if(i < (arguments.length - 1)){
-	url += "&";
-	}}
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
 	switch (args[0]) {
 		case "browse_server":
 			new (WE().util.jsWindow)(window, url,"server_selector",-1,-1,700,400,true,false,true);
@@ -1488,14 +1475,8 @@ function formFileChooser() {
 
 		$js = we_html_element::jsElement('
 function formDirChooser() {
-	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
-	var args=[];
-	for(var i = 0; i < arguments.length; i++){
-	url += "we_cmd[]="+encodeURI(arguments[i]);
-	args.push(arguments[i]);
-	if(i < (arguments.length - 1)){
-	url += "&";
-	}}
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
 	switch (args[0]) {
 		case "we_selector_directory":
 			new (WE().util.jsWindow)(window, url,"dir_selector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,false,true,true);
@@ -1536,14 +1517,8 @@ function formDirChooser() {
 		$customers = array_filter($customers);
 		$js = we_html_element::jsElement('
 function selector_cmd(){
-	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
-	var args=[];
-	for(var i = 0; i < arguments.length; i++){
-	url += "we_cmd[]="+encodeURI(arguments[i]);
-	args.push(arguments[i]);
-	if(i < (arguments.length - 1)){
-	url += "&";
-	}}
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
 	switch (args[0]){
 		case "we_selector_file":
 			new (WE().util.jsWindow)(window, url,"we_selector",-1,-1,' . we_selector_file::WINDOW_SELECTOR_WIDTH . ',' . we_selector_file::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
@@ -1551,8 +1526,8 @@ function selector_cmd(){
 		case "add_customer":
 		case "del_customer":
 		case "del_all_customers":
-			document.we_form.wcmd.value=arguments[0];
-			document.we_form.cus.value=arguments[1];
+			document.we_form.wcmd.value=args[0];
+			document.we_form.cus.value=args[1];
 			document.we_form.submit();
 		break;
 	}
@@ -1606,12 +1581,12 @@ top.customers="' . implode(',', $customers) . '";');
 		}
 
 		$js = we_html_element::jsElement('
-function filter_cmd(){
-	switch (arguments[0]){
+function filter_cmd(what){
+	switch (what){
 		case "add_filter":
 		case "del_filter":
 		case "del_all_filters":
-			document.we_form.fcmd.value=arguments[0];
+			document.we_form.fcmd.value=what;
 			document.we_form.submit();
 			break;
 	}

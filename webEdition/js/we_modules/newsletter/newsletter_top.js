@@ -43,16 +43,8 @@ function doUnload() {
  * Menu command controler
  */
 function we_cmd() {
-	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-	if(typeof arguments[0] === "object" && arguments[0]["we_cmd[0]"] !== undefined){
-		var args = {}, i = 0, tmp = arguments[0];
-		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + "=" + encodeURIComponent(tmp[key]);}).join("&");
-	} else {
-		var args = Array.prototype.slice.call(arguments);
-		for (var i = 0; i < args.length; i++) {
-			url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
-		}
-	}
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	//var url = WE().util.getWe_cmdArgsUrl(args);
 
 	if (hot === 1 && args[0] !== "save_newsletter") {
 		if (confirm(WE().consts.g_l.newsletter.save_changed_newsletter)) {
@@ -218,7 +210,7 @@ function we_cmd() {
 			break;
 
 		default:
-			top.opener.top.we_cmd.apply(this, arguments);
+			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 
 	}
 }

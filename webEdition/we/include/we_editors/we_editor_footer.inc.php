@@ -106,8 +106,7 @@ $pass_publish = $canWeSave && ($showPubl || ($we_doc->ContentType == we_base_Con
 $js_we_save_cmd = "we_cmd('save_document','','','',''," . $pass_publish . ",addCmd);";
 
 $js = "
-function generatedSaveDoc(){
-	var addCmd = arguments[0] ? arguments[0] : '';
+function generatedSaveDoc(addCmd){
 	if(weCanSave){
 " . ($we_doc->isBinary() ?
 				we_fileupload_ui_preview::getJsOnLeave($js_we_save_cmd) :

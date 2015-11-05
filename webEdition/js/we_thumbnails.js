@@ -55,9 +55,8 @@ function changeFormat() {
 	}
 }
 
-function change_thumbnail() {
-	var url = consts.reloadUrl + '&id=' + arguments[0];
-	self.location = url;
+function change_thumbnail(id) {
+	self.location = consts.reloadUrl + '&id=' + id;
 }
 
 function add_thumbnail() {

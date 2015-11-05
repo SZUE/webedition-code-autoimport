@@ -35,7 +35,7 @@ CREATE TABLE ###TBLPREFIX###tblversions (
   IsDynamic tinyint(1) unsigned NOT NULL,
   IsSearchable tinyint(1) unsigned NOT NULL,
   ClassName varchar(64) NOT NULL,
-  DocType smallint(6) NOT NULL,
+  DocType smallint(6) unsigned NOT NULL,
   Category text NOT NULL,
   RestrictOwners tinyint(1) unsigned NOT NULL,
   Owners varchar(255) NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE ###TBLPREFIX###tblversions (
   resetFromVersion bigint(20) unsigned NOT NULL,
   InGlossar tinyint(1) unsigned NOT NULL,
   PRIMARY KEY  (ID),
-  KEY documentID (documentID),
+  UNIQUE KEY documentID (documentID,documentTable,version),
   KEY timestamp (timestamp,CreationDate),
   KEY binaryPath (binaryPath),
   KEY version (version)

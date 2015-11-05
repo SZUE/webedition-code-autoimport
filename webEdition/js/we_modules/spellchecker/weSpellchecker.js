@@ -140,7 +140,7 @@ function removeHighlight() {
 	editPanel.innerHTML = orginal;
 }
 
-function replaceWord(text, search) {
+function replaceWord(text, search, append) {
 
 	var replacement = "";
 	var i = -1;
@@ -155,7 +155,6 @@ function replaceWord(text, search) {
 			replacement += text;
 			text = "";
 		} else {
-
 			var next = textsmall.substr(i + searchsmall.length, 1);
 			var last = textsmall.substr(i - 1, 1);
 
@@ -164,8 +163,8 @@ function replaceWord(text, search) {
 				if (text.lastIndexOf(">", i) >= text.lastIndexOf("<", i)) {
 					if (textsmall.lastIndexOf("/script>", i) >= textsmall.lastIndexOf("<script", i)) {
 
-						if (arguments[2]) {
-							replacement += text.substring(0, i) + arguments[2];
+						if (append) {
+							replacement += text.substring(0, i) + append;
 						} else {
 							replacement += text.substring(0, i) + "<span class='highlight' id='highlight" + c + "'>" + text.substr(i, search.length) + "</span>";
 							c++;

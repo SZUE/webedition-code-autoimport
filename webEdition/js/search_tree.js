@@ -28,12 +28,11 @@ node.prototype.showSegment = function () {
 	top.reloadGroup(this.parentid, this.offset);
 };
 
-function reloadGroup(pid) {
+function reloadGroup(pid,offset) {
 	var it = get(pid);
-	offset = arguments[1] ? arguments[1] : 0;
 	if (it) {
 		it.clear();
-		startTree(pid, offset);
+		startTree(pid, (offset ? offset : 0));
 	}
 }
 
@@ -60,7 +59,7 @@ container.prototype.openClose = function(id) {
 	treeData[eintragsIndex].open = openstatus;
 
 	if (openstatus && !treeData[eintragsIndex].loaded) {
-		frames.cmd.location = treeData.frameset + "?pnt=cmd&pid=" + id + (sort ? "&sort=" + sort : "");
+		frames.cmd.location = treeData.frameset + "&pnt=cmd&pid=" + id + (sort ? "&sort=" + sort : "");
 	} else {
 		drawTree();
 	}

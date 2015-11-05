@@ -170,24 +170,9 @@ class we_import_wizard extends we_import_wizardBase{
 		 */
 		return array(
 			"function we_cmd() {
-				/*
-				var url = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
-				if(typeof arguments[0] === 'object' && arguments[0]['we_cmd[0]'] !== undefined){
-					var args = {}, i = 0, tmp = arguments[0];
-					url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + '=' + encodeURIComponent(tmp[key]);}).join('&');
-				} else {
-					var args = Array.prototype.slice.call(arguments);
-					for (var i = 0; i < args.length; i++) {
-						url += 'we_cmd[' + i + ']=' + encodeURIComponent(args[i]) + (i < (args.length - 1) ? '&' : '');
-					}
-				}
-
-				switch (args[0]) {
-					default:
-						parent.we_cmd.apply(this, arguments);
-				}
-				*/
-				parent.we_cmd.apply(this, arguments);
+				//var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+//				var url = WE().util.getWe_cmdArgsUrl(args);
+				parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 			}
 			function set_button_state() {
 				top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'disabled');
@@ -267,24 +252,9 @@ class we_import_wizard extends we_import_wizardBase{
 
 		$functions = "
 function we_cmd() {
-	/*
-	var url = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
-	if(typeof arguments[0] === 'object' && arguments[0]['we_cmd[0]'] !== undefined){
-		var args = {}, i = 0, tmp = arguments[0];
-		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + '=' + encodeURIComponent(tmp[key]);}).join('&');
-	} else {
-		var args = Array.prototype.slice.call(arguments);
-		for (var i = 0; i < args.length; i++) {
-			url += 'we_cmd[' + i + ']=' + encodeURIComponent(args[i]) + (i < (args.length - 1) ? '&' : '');
-		}
-	}
-
-	switch (args[0]) {
-		default:
-			parent.we_cmd.apply(this, arguments);
-	}
-	*/
-	parent.we_cmd.apply(this, arguments);
+	//var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+//	var url = WE().util.getWe_cmdArgsUrl(args);
+	parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 }
 function set_button_state() {
 	top.wizbusy.back_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
@@ -440,16 +410,8 @@ function we_submit_form(we_form, target, url) {
 
 		$functions = "
 function we_cmd() {
-	var url = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
-	if(typeof arguments[0] === 'object' && arguments[0]['we_cmd[0]'] !== undefined){
-		var args = {}, i = 0, tmp = arguments[0];
-		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + '=' + encodeURIComponent(tmp[key]);}).join('&');
-	} else {
-		var args = Array.prototype.slice.call(arguments);
-		for (var i = 0; i < args.length; i++) {
-			url += 'we_cmd[' + i + ']=' + encodeURIComponent(args[i]) + (i < (args.length - 1) ? '&' : '');
-		}
-	}
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
 
 	switch (args[0]) {" . '
 		case "openNavigationDirselector":
@@ -464,7 +426,7 @@ function we_cmd() {
 			new (WE().util.jsWindow)(this, url,'we_selector',-1,-1," . we_selector_file::WINDOW_SELECTOR_WIDTH . "," . we_selector_file::WINDOW_SELECTOR_HEIGHT . ",true,true,true,true);
 			break;
 		default:
-			parent.we_cmd.apply(this, arguments);
+			parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 
 	}
 }
@@ -821,24 +783,9 @@ function handle_event(evt) {
 
 		$functions = "
 function we_cmd() {
-	/*
-	var url = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
-	if(typeof arguments[0] === 'object' && arguments[0]['we_cmd[0]'] !== undefined){
-		var args = {}, i = 0, tmp = arguments[0];
-		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + '=' + encodeURIComponent(tmp[key]);}).join('&');
-	} else {
-		var args = Array.prototype.slice.call(arguments);
-		for (var i = 0; i < args.length; i++) {
-			url += 'we_cmd[' + i + ']=' + encodeURIComponent(args[i]) + (i < (args.length - 1) ? '&' : '');
-		}
-	}
-
-	switch (args[0]) {
-		default:
-			parent.we_cmd.apply(this, arguments);
-	}
-	*/
-	parent.we_cmd.apply(this, arguments);
+	//var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+//	var url = WE().util.getWe_cmdArgsUrl(args);
+	parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 }
 function set_button_state() {
 	top.wizbusy.back_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
@@ -923,8 +870,8 @@ function handle_eventNext(){
 		$functions .= <<<HTS
 
 function deleteCategory(obj,cat){
-	if(document.we_form.elements['v['+obj+'Categories]'].value.indexOf(','+arguments[1]+',') != -1) {
-		re = new RegExp(','+arguments[1]+',');
+	if(document.we_form.elements['v['+obj+'Categories]'].value.indexOf(','+cat+',') != -1) {
+		re = new RegExp(','+cat+',');
 		document.we_form.elements['v['+obj+'Categories]'].value = document.we_form.elements['v['+obj+'Categories]'].value.replace(re,',');
 		document.getElementById(obj+"Cat"+cat).parentNode.removeChild(document.getElementById(obj+"Cat"+cat));
 		if(document.we_form.elements['v['+obj+'Categories]'].value == ',') {
@@ -1597,24 +1544,10 @@ function handle_event(evt) {
 
 		$functions = "
 function we_cmd() {
-	/*
-	var url = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
-	if(typeof arguments[0] === 'object' && arguments[0]['we_cmd[0]'] !== undefined){
-		var args = {}, i = 0, tmp = arguments[0];
-		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + '=' + encodeURIComponent(tmp[key]);}).join('&');
-	} else {
-		var args = Array.prototype.slice.call(arguments);
-		for (var i = 0; i < args.length; i++) {
-			url += 'we_cmd[' + i + ']=' + encodeURIComponent(args[i]) + (i < (args.length - 1) ? '&' : '');
-		}
-	}
+	//var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	//var url = WE().util.getWe_cmdArgsUrl(args);
 
-	switch (args[0]) {
-		default:
-			parent.we_cmd.apply(this, arguments);
-	}
-	*/
-	parent.we_cmd.apply(this, arguments);
+	parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 }
 function set_button_state() {
 	top.frames.wizbusy.back_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
@@ -1818,24 +1751,9 @@ function handle_eventNext(){
 
 		$functions = "
 function we_cmd() {
-	/*
-	var url = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
-	if(typeof arguments[0] === 'object' && arguments[0]['we_cmd[0]'] !== undefined){
-		var args = {}, i = 0, tmp = arguments[0];
-		url += Object.keys(tmp).map(function(key){args[key] = tmp[key]; args[i++] = tmp[key]; return key + '=' + encodeURIComponent(tmp[key]);}).join('&');
-	} else {
-		var args = Array.prototype.slice.call(arguments);
-		for (var i = 0; i < args.length; i++) {
-			url += 'we_cmd[' + i + ']=' + encodeURIComponent(args[i]) + (i < (args.length - 1) ? '&' : '');
-		}
-	}
-
-	switch (args[0]) {
-		default:
-			parent.we_cmd.apply(this, arguments);
-	}
-	*/
-	parent.we_cmd.apply(this, arguments);
+	//var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+//	var url = WE().util.getWe_cmdArgsUrl(args);
+	parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 }
 function set_button_state() {
 	top.frames.wizbusy.back_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
@@ -1904,8 +1822,8 @@ function handle_event(evt) {
 		$functions .= <<<HTS
 
 function deleteCategory(obj,cat){
-	if(document.we_form.elements['v['+obj+'Categories]'].value.indexOf(','+arguments[1]+',') != -1) {
-		re = new RegExp(','+arguments[1]+',');
+	if(document.we_form.elements['v['+obj+'Categories]'].value.indexOf(','+cat+',') != -1) {
+		re = new RegExp(','+cat+',');
 		document.we_form.elements['v['+obj+'Categories]'].value = document.we_form.elements['v['+obj+'Categories]'].value.replace(re,',');
 		document.getElementById(obj+"Cat"+cat).parentNode.removeChild(document.getElementById(obj+"Cat"+cat));
 		if(document.we_form.elements['v['+obj+'Categories]'].value == ',') {
