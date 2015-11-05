@@ -523,7 +523,7 @@ WE().consts.g_l.weSearch = {
 
 	function getSearchDialogOptions($whichSearch){
 
-		$_table = new we_html_table(array( 'style' => 'width:500px',), 3, 2);
+		$_table = new we_html_table(array('style' => 'width:500px',), 3, 2);
 		$row = 0;
 		switch($whichSearch){
 			case self::SEARCH_DOCS :
