@@ -77,7 +77,7 @@ class we_dialog_image extends we_dialog_base{
 
 			if($id !== false){
 				$this->args["type"] = we_base_link::TYPE_INT;
-				$this->args["extSrc"] = "";
+				$this->args["extSrc"] = '';
 				$this->args["fileID"] = $id;
 				$this->args["fileSrc"] = $id == 0 ? '' : $_fileScr;
 				$this->args["thumbnail"] = $thumb;
@@ -88,13 +88,14 @@ class we_dialog_image extends we_dialog_base{
 					'|^' . WEBEDITION_DIR . 'we_cmd.php[^"\'#]+(#.*)$|',
 					'|^' . WEBEDITION_DIR . '|',
 					), array('$1', '$1', ''), $this->args["src"]);
-				$this->args["fileID"] = "";
-				$this->args["fileSrc"] = "";
+				$this->args["fileID"] = '';
+				$this->args["fileSrc"] = '';
 				$this->args["thumbnail"] = 0;
 			}
 		} else {
-			$this->args["type"] = we_base_link::TYPE_EXT;
-			$this->args["extSrc"] = we_base_link::EMPTY_EXT;
+			$this->args["type"] = we_base_link::TYPE_INT;
+			$this->args["extSrc"] = '';
+			$this->args["fileSrc"] = '';
 		}
 		$this->initAttributes($width, $height, $hspace, $vspace, $border, $alt, $align, $name, $class, $title, $longdesc);
 	}
@@ -246,6 +247,7 @@ class we_dialog_image extends we_dialog_base{
 			'imageResize' => array('set' => true, 'multiIconBox' => true, 'space' => 130, 'rightHeadline' => false, 'noline' => true),
 			'imageRotate' => array('set' => true, 'multiIconBox' => true, 'space' => 130, 'rightHeadline' => false, 'noline' => true),
 			'imageQuality' => array('set' => true, 'multiIconBox' => true, 'space' => 130, 'rightHeadline' => false, 'noline' => true),
+			'tableProperties' => array('foldAtNr' => 3, 'foldAtOpen' => g_l('importFiles', '[image_options_open]'), 'foldAtClose' => g_l('importFiles', '[image_options_close]'))
 		));
 		$this->weFileupload->setEditorJS(array(
 			'writebackTarget' => '',
@@ -475,7 +477,7 @@ class we_dialog_image extends we_dialog_base{
 				echo we_html_tools::getHtmlTop($this->dialogTitle, '', '', we_html_element::jsElement($js), we_html_element::htmlBody());
 				break;
 			default:
-				if($args["thumbnail"] && $args["fileID"]){
+				if(isset($args["thumbnail"]) && $args["thumbnail"] && $args["fileID"]){
 					$thumbObj = new we_thumbnail();
 					$thumbObj->initByImageIDAndThumbID($args["fileID"], $args["thumbnail"]);
 					if(!file_exists($thumbObj->getOutputPath(true))){
@@ -488,7 +490,7 @@ class we_dialog_image extends we_dialog_base{
 					we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/weimage/js/image_insert.js') .
 					'<form name="tiny_form">' .
 					we_html_element::htmlHiddens(array(
-						"src" => $args["src"],
+						"src" => (isset($args["src"]) ? $args["src"] : ''),
 						"width" => $attribs["width"],
 						"height" => $attribs["height"],
 						"hspace" => $attribs["hspace"],

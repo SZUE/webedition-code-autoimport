@@ -49,7 +49,7 @@ $fileUpload->setEditorJS(array(
 	'customCallback' => $customCallback,
 	'predefinedCallback' => $predefinedCallback
 ));
-
+$yuiSuggest = &weSuggest::getInstance();
 
 echo we_html_tools::getHtmlTop('fileupload') . 
 	STYLESHEET . $fileUpload->getEditorJS() .
@@ -63,5 +63,5 @@ echo we_html_element::htmlBody(array('style' => 'position:fixed;top:0px;left:0px
 			we_html_element::htmlDiv(array('id' => 'we_fileupload', 'class' => 'weDialogBody', 'style' => 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto;'), $fileUpload->getHtml()) .
 			we_html_element::htmlDiv(array('id' => 'we_fileupload_footer', 'class' => '', 'style' => 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;'), $fileUpload->getHtmlFooter())
 		)
-	)
+	) . weSuggest::getYuiFiles() . $yuiSuggest->getYuiJs()
 ) . '</html>';

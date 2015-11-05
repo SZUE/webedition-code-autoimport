@@ -27,32 +27,32 @@
 
 function imageChanged(wasThumbnailChange) {
 	if (wasThumbnailChange !== null && wasThumbnailChange) {
-		document.we_form.wasThumbnailChange.value = "1";
+		document.we_form.wasThumbnailChange.value = '1';
 	}
 	if (top.opener.tinyMCECallRegisterDialog) {
-		top.opener.tinyMCECallRegisterDialog(null, "block");
+		top.opener.tinyMCECallRegisterDialog(null, 'block');
 	}
 	//document.we_form.target = "we_weImageDialog_edit_area";
-	document.we_form.target = "we_we_dialog_image_cmd_frame";//TODO: send form to iFrame cmd for and for not reloading whole editor
-	document.we_form.we_what.value = "cmd";
-	document.we_form["we_cmd[0]"].value = "update_editor";
-	document.we_form.imgChangedCmd.value = "1";
+	document.we_form.target = 'we_we_dialog_image_cmd_frame';//TODO: send form to iFrame cmd for and for not reloading whole editor
+	document.we_form['we_what'].value = 'cmd';
+	document.we_form['we_cmd[0]'].value = 'update_editor';
+	document.we_form.imgChangedCmd.value = '1';
 	document.we_form.submit();
 }
 
 function checkWidthHeight(field) {
-	var ratioCheckBox = document.getElementById("check_we_dialog_args[ratio]");
+	var ratioCheckBox = document.getElementById('check_we_dialog_args[ratio]');
 	if (ratioCheckBox.checked) {
-		if (field.value.indexOf("%") == -1) {
+		if (field.value.indexOf('%') == -1) {
 			ratiow = ratiow ? ratiow :
 							(field.form.elements.tinyMCEInitRatioW.value ? field.form.elements.tinyMCEInitRatioW.value : 0);
 			ratioh = ratioh ? ratioh :
 							(field.form.elements.tinyMCEInitRatioH.value ? field.form.elements.tinyMCEInitRatioH.value : 0);
 			if (ratiow && ratioh) {
-				if (field.name == "we_dialog_args[height]") {
-					field.form.elements["we_dialog_args[width]"].value = Math.round(field.value * ratioh);
+				if (field.name == 'we_dialog_args[height]') {
+					field.form.elements['we_dialog_args[width]'].value = Math.round(field.value * ratioh);
 				} else {
-					field.form.elements["we_dialog_args[height]"].value = Math.round(field.value * ratiow);
+					field.form.elements['we_dialog_args[height]'].value = Math.round(field.value * ratiow);
 				}
 			}
 		} else {
@@ -71,13 +71,13 @@ function we_cmd() {
 	var url = WE().util.getWe_cmdArgsUrl(args);
 
 	switch (args[0]) {
-		case "we_selector_document":
-		case "we_selector_image":
-		case "we_selector_directory":
-			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+		case 'we_selector_document':
+		case 'we_selector_image':
+		case 'we_selector_directory':
+			new (WE().util.jsWindow)(this, url, 'we_fileselector', -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
-		case "browse_server":
-			new (WE().util.jsWindow)(this, url, "browse_server", -1, -1, 840, 400, true, false, true);
+		case 'browse_server':
+			new (WE().util.jsWindow)(this, url, 'browse_server', -1, -1, 840, 400, true, false, true);
 			break;
 		default :
 			top.opener.we_cmd.apply(this, Array.prototype.slice.call(arguments));
