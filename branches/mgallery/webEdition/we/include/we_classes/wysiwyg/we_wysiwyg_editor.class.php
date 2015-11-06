@@ -25,6 +25,7 @@
 //make sure we know which browser is used
 
 class we_wysiwyg_editor{
+
 	var $name = '';
 	private $origName = '';
 	private $fieldName = '';
@@ -95,6 +96,8 @@ class we_wysiwyg_editor{
 	private static $allFontSizes = array('0.5em', '0.8em', '1em', '1.2em', '1.5em', '2em', '8px', '10px', '12px', '14px', '18px', '24px', '36px', 'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large', 'smaller', 'larger', 'inherit');
 
 	const CONDITIONAL = true;
+	const DEFAULT_WIDTH = 600;
+	const DEFAULT_HEIGHT = 400;
 	const MIN_WIDTH_INLINE = 100;
 	const MIN_HEIGHT_INLINE = 100;
 	const MIN_WIDTH_POPUP = 100;
@@ -241,7 +244,7 @@ class we_wysiwyg_editor{
 		$ret = array_merge(array(
 			'',
 			g_l('wysiwyg', '[groups]') => we_html_tools::OPTGROUP
-			), $tmp);
+				), $tmp);
 		foreach($commands as $key => $values){
 			$ret = array_merge($ret, array($key => we_html_tools::OPTGROUP), $values);
 		}
@@ -567,7 +570,7 @@ function getDocumentCss(){
 			foreach($regs as $reg){
 				$path = empty($lookup[intval($reg[3])]) ? '' : $lookup[intval($reg[3])];
 				$value = $path ? str_ireplace($reg[1], 'src="' . $path . '?id=' . $reg[3] . '&time=' . $t . '"', $value) :
-					str_ireplace($reg[0], '<img src="' . ICON_DIR . 'no_image.gif?id=0">', $value);
+						str_ireplace($reg[0], '<img src="' . ICON_DIR . 'no_image.gif?id=0">', $value);
 			}
 		}
 
@@ -577,7 +580,7 @@ function getDocumentCss(){
 				$thumbObj = new we_thumbnail();
 				$imageExists = $thumbObj->initByImageIDAndThumbID($imgID, $thumbID);
 				$value = $imageExists ? str_ireplace($reg[1], 'src="' . $thumbObj->getOutputPath() . "?thumb=" . $reg[3] . '&time=' . $t . '"', $value) :
-					str_ireplace($reg[0], '<img src="' . ICON_DIR . 'no_image.gif?id=0">', $value);
+						str_ireplace($reg[0], '<img src="' . ICON_DIR . 'no_image.gif?id=0">', $value);
 				unset($thumbObj);
 			}
 		}
@@ -800,11 +803,11 @@ function getDocumentCss(){
 			(in_array('wevisualaid', $allCommands) ? 'visualblocks,' : '') .
 			'weutil,autolink,template,wewordcount'; //TODO: load "templates" on demand as we do it with other plugins
 
-		$height = we_base_util::convertUnits($this->height);
-		$width = we_base_util::convertUnits($this->width);
+		$height = $this->height ? we_base_util::convertUnits($this->height) : self::DEFAULT_HEIGHT;
+		$width = $this->width ? we_base_util::convertUnits($this->width) : self::DEFAULT_WIDTH;
 		if(is_numeric($height) && is_numeric($width) && $width){
 			//only a simple fix
-			$this->height = $height - ($this->buttonpos === 'external' ? 0 : round((($k) / ($width / (5 * 22))) * 26));
+			$this->height = $height = $height - ($this->buttonpos === 'external' ? 0 : round((($k) / ($width / (5 * 22))) * 26));
 		}
 
 		$wefullscreenVars = array(
@@ -818,9 +821,7 @@ function getDocumentCss(){
 		$editorLang = array_search($GLOBALS['WE_LANGUAGE'], getWELangs());
 		$editorLangSuffix = $editorLang === 'de' ? 'de_' : '';
 
-		$width = we_base_util::convertUnits($this->width);
 		$width = (is_numeric($width) ? round(max($width, self::MIN_WIDTH_INLINE) / 96, 3) . 'in' : $width);
-		$height = we_base_util::convertUnits($this->height);
 		$height = (is_numeric($height) ? round(max($height, self::MIN_HEIGHT_INLINE) / 96, 3) . 'in' : $height);
 
 		return we_html_element::jsElement(($this->fieldName ? '
@@ -1373,12 +1374,12 @@ tinyMCE.weResizeEditor = function(render){
 
 tinyMCE.init(tinyMceConfObject__' . $this->fieldName_clean . ');
 ') . getHtmlTag('textarea', array(
-				'wrap' => "off",
-				'style' => 'color:#eeeeee; background-color:#eeeeee;  width:' . $width . '; height:' . $height . ';',
-				'id' => $this->name,
-				'name' => $this->name,
-				'class' => 'wetextarea'
-				), strtr($editValue, array('\n' => '', '&' => '&amp;')), true);
+					'wrap' => "off",
+					'style' => 'color:#eeeeee; background-color:#eeeeee;  width:' . $width . '; height:' . $height . ';',
+					'id' => $this->name,
+					'name' => $this->name,
+					'class' => 'wetextarea'
+						), strtr($editValue, array('\n' => '', '&' => '&amp;')), true);
 	}
 
 }
