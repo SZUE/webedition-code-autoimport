@@ -224,7 +224,7 @@ $l_buttons_global=array(
 		'alt'=>'Remove from collection',
 	),
 	'btn_select_files'=>array(
-		'alt'=>'Select files',
+		'alt'=>'Insert files from tree',
 	),
 	'btn_select_image'=>array(
 		'alt'=>'Valitse kuva',

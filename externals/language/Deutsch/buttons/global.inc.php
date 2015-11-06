@@ -224,7 +224,7 @@ $l_buttons_global=array(
 		'alt'=>'Aus Sammlung entfernen',
 	),
 	'btn_select_files'=>array(
-		'alt'=>'Mehrere Dateien auswählen',
+		'alt'=>'Dateien aus dem Tree einfügen',
 	),
 	'btn_select_image'=>array(
 		'alt'=>'Grafik auswählen',
