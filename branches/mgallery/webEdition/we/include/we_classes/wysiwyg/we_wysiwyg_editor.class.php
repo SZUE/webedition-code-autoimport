@@ -883,7 +883,8 @@ var tinyMceTranslationObject = {' . $editorLang . ':{
 		tt_weinsertbreak:"' . g_l('wysiwyg', '[insert_br]') . '",
 		tt_welink:"' . g_l('wysiwyg', '[hyperlink]') . '",
 		tt_weimage:"' . g_l('wysiwyg', '[insert_edit_image]') . '",
-		tt_wefullscreen:"' . g_l('wysiwyg', '[fullscreen]') . '",
+		tt_wefullscreen_set:"' . ($this->isInPopup ? g_l('wysiwyg', '[maxsize_set]') : g_l('wysiwyg', '[fullscreen]')) . '",
+		tt_wefullscreen_reset:"' . g_l('wysiwyg', '[maxsize_reset]') . '",
 		tt_welang:"' . g_l('wysiwyg', '[language]') . '",
 		tt_wespellchecker:"' . g_l('wysiwyg', '[spellcheck]') . '",
 		tt_wevisualaid:"' . g_l('wysiwyg', '[visualaid]') . '",
@@ -900,7 +901,6 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		weabbr : "' . $editorLangSuffix . 'weabbr",
 		weacronym : "' . $editorLangSuffix . 'weacronym"
 	},
-
 	weFullscreenState : {
 		fullscreen : false,
 		lastX : 0,
