@@ -761,7 +761,7 @@ class we_search_search extends we_search_base{
 						}
 						break;
 					case TEMPLATES_TABLE:
-					case OBJECT_TABLE:
+					case defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE':
 						$db->query('SELECT ID,Path,ContentType FROM ' . addTblPrefix($k) . ' WHERE ID IN (' . implode(',', array_unique($v)) . ')');
 						while($db->next_record()){
 							$paths[$k][$db->f('ID')] = $db->f('Path');
@@ -772,7 +772,7 @@ class we_search_search extends we_search_base{
 							$isTmpPossible[$k][$db->f('ID')] = false;
 						}
 						break;
-					case VFILE_TABLE:
+					case defined('VFILE_TABLE') ? VFILE_TABLE : 'VFILE_TABLE':
 						$db->query('SELECT ID,Path FROM ' . addTblPrefix($k) . ' WHERE ID IN (' . implode(',', array_unique($v)) . ')');
 						while($db->next_record()){
 							$paths[$k][$db->f('ID')] = $db->f('Path');
@@ -783,18 +783,18 @@ class we_search_search extends we_search_base{
 							$isTmpPossible[$k][$db->f('ID')] = false;
 						}
 						break;
-					case BANNER_TABLE:
-					case CUSTOMER_TABLE:
-					case GLOSSARY_TABLE:
-					case NAVIGATION_TABLE:
-					case NEWSLETTER_TABLE:
+					case defined('BANNER_TABLE') ? BANNER_TABLE : 'BANNER_TABLE':
+					case defined('CUSTOMER_TABLE') ? CUSTOMER_TABLE : 'CUSTOMER_TABLE':
+					case defined('GLOSSARY_TABLE') ? GLOSSARY_TABLE : 'GLOSSARY_TABLE':
+					case defined('NAVIGATION_TABLE') ? NAVIGATION_TABLE : 'NAVIGATION_TABLE':
+					case defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : 'NEWSLETTER_TABLE':
 						$paths[$k] = id_to_path($v, addTblPrefix($k), null, false, true);
 						$modules = array(
-							BANNER_TABLE => 'banner',
-							CUSTOMER_TABLE => 'customer',
-							GLOSSARY_TABLE => 'glossary',
-							NAVIGATION_TABLE => 'navigation',
-							NEWSLETTER_TABLE => 'newsletter'
+							defined('BANNER_TABLE') ? BANNER_TABLE : 'BANNER_TABLE' => 'banner',
+							defined('CUSTOMER_TABLE') ? CUSTOMER_TABLE : 'CUSTOMER_TABLE' => 'customer',
+							defined('GLOSSARY_TABLE') ? GLOSSARY_TABLE : 'GLOSSARY_TABLE' => 'glossary',
+							defined('NAVIGATION_TABLE') ? NAVIGATION_TABLE : 'NAVIGATION_TABLE' => 'navigation',
+							defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : 'NEWSLETTER_TABLE' => 'newsletter'
 						);
 						foreach($paths[$k] as $key => $v){
 							$onclick[$k][$key] = 'weSearch.openModule(\'' . $modules[addTblPrefix($k)] . '\',' . $key . ')';
