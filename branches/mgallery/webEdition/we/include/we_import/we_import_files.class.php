@@ -45,6 +45,7 @@ class we_import_files{
 	private $fileNameTemp = '';
 	private $partNum = 0;
 	private $partCount = 0;
+	private $isPreset = false;
 
 	const CHUNK_SIZE = 256;
 
@@ -61,6 +62,7 @@ class we_import_files{
 		} else {
 			$this->categories = we_base_request::_(we_base_request::INTLIST, 'fu_doc_categories', $this->categories);
 		}
+		$this->isPreset = we_base_request::_(we_base_request::INT, 'we_cmd', false, 1) || we_base_request::_(we_base_request::RAW, 'we_cmd', false, 2);
 		$this->parentID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1) ? : we_base_request::_(we_base_request::INT, "fu_file_parentID", $this->parentID);
 		$this->callBack = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 2) ? : (we_base_request::_(we_base_request::RAW, 'callBack', '') ? : '');
 		$this->sameName = we_base_request::_(we_base_request::STRING, "fu_file_sameName", $this->sameName);
@@ -126,8 +128,13 @@ var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action=
 		));
 
 		$cb = $this->callBack;
+		$pid = $this->parentID;
+		$ips = $this->isPreset;
 		$this->loadPropsFromSession();
-		$this->callBack = $cb;
+		if($ips){
+			$this->callBack = $cb;
+			$this->parentID = $pid;
+		}
 
 		$fileupload->setFieldParentID(array(
 			'setField' => true,
@@ -345,8 +352,8 @@ function next() {
 
 		$body = we_html_element::htmlBody(array('id' => 'weMainBody')
 						, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-								, we_html_element::htmlIFrame('imgimportcontent', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import_files&parentID=" . $this->parentID . "&cmd=content" . ($_step > -1 ? '&step=' . $_step : '') . '&callBack=' . $this->callBack, 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;') .
-								we_html_element::htmlIFrame('imgimportbuttons', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import_files&cmd=buttons" . ($_step > -1 ? '&step=' . $_step : '') . '&callBack=' . $this->callBack, 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;', '', '', false)
+								, we_html_element::htmlIFrame('imgimportcontent', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import_files&we_cmd[1]=" . $this->parentID . "&cmd=content" . ($_step > -1 ? '&step=' . $_step : '') . '&we_cmd[2]=' . $this->callBack, 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;') .
+								we_html_element::htmlIFrame('imgimportbuttons', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import_files&cmd=buttons" . ($_step > -1 ? '&step=' . $_step : '') . '&we_cmd[2]=' . $this->callBack, 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;', '', '', false)
 		));
 
 		return $this->_getHtmlPage($body);

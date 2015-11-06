@@ -227,8 +227,9 @@ abstract class we_root extends we_class{
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 
-	function formDirChooser($width = 0, $rootDirID = 0, $table = '', $Pathname = 'ParentPath', $IDName = 'ParentID', $cmd = '', $showTitle = true, $disabled = false){
+	function formDirChooser($width = 0, $rootDirID = 0, $table = '', $Pathname = 'ParentPath', $IDName = 'ParentID', $cmd = '', $lable = true, $disabled = false){
 		$yuiSuggest = &weSuggest::getInstance();
+		$lable === true ? g_l('weClass', '[dir]') : $lable;
 
 		if(!$table){
 			$table = $this->Table;
@@ -260,7 +261,7 @@ abstract class we_root extends we_class{
 		$yuiSuggest->setAcId('Path', id_to_path(array($rootDirID), $table));
 		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER . ',' . we_base_ContentTypes::CLASS_FOLDER);
 		$yuiSuggest->setInput($textname, $path, array('onblur' => $_parentPathChangedBlur));
-		$yuiSuggest->setLabel(g_l('weClass', '[dir]'));
+		$yuiSuggest->setLabel($lable ? : '');
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(0);
 		$yuiSuggest->setResult($idname, $myid);
@@ -451,7 +452,7 @@ abstract class we_root extends we_class{
 		<td></td>
 		<td>' . $this->formExtension2() . '</td>
 	</tr>
-	<tr><td colspan="3">' . $this->formDirChooser(0, 0, '', 'ParentPath', 'ParentID', '', true, $disablePath) . '</td></tr>
+	<tr><td colspan="3">' . $this->formDirChooser(0, 0, '', 'ParentPath', 'ParentID', '', g_l('weClass', '[dir]'), $disablePath) . '</td></tr>
 </table>';
 	}
 
