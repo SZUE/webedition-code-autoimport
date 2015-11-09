@@ -46,12 +46,22 @@ function checkWidthHeight(field) {
 
 	if (ratioCheckBox.checked) {
 		if (field.value.indexOf('%') == -1) {
+			/*
 			ratiow = ratiow ? ratiow : (field.form.elements.tinyMCEInitRatioW.value ? field.form.elements.tinyMCEInitRatioW.value : 0);
 			ratioh = ratioh ? ratioh : (field.form.elements.tinyMCEInitRatioH.value ? field.form.elements.tinyMCEInitRatioH.value : 0);
-			if (ratiow && ratioh) {
-				field.form.elements[(field.name === 'we_dialog_args[height]' ? 'we_dialog_args[width]' : 'we_dialog_args[height]')].value = v ? Math.round(v * ratioh) : '';
+			*/
+
+			ratiow = (parseInt(field.form.elements['we_dialog_args[rendered_width]'].value) / parseInt(field.form.elements['we_dialog_args[rendered_height]'].value));
+			ratioh = (parseInt(field.form.elements['we_dialog_args[rendered_height]'].value) / parseInt(field.form.elements['we_dialog_args[rendered_width]'].value));
+
+			//if ((field.form.elements['we_dialog_args[width]'].value && field.form.elements['we_dialog_args[height]'].value) || (!field.form.elements['we_dialog_args[width]'].value && !field.form.elements['we_dialog_args[height]'].value)) {
+				if(field.name === 'we_dialog_args[height]'){
+					field.form.elements['we_dialog_args[width]'].value = v ? Math.round(v * ratiow) : '';
+				} else {
+					field.form.elements['we_dialog_args[height]'].value = v ? Math.round(v * ratioh) : '';
+				}
 				field.value = v ? v : '';
-			}
+			//}
 		} else {
 			ratioCheckBox.checked = false;
 		}
