@@ -491,8 +491,8 @@ class we_dialog_image extends we_dialog_base{
 					'<form name="tiny_form">' .
 					we_html_element::htmlHiddens(array(
 						"src" => (isset($args["src"]) ? $args["src"] : ''),
-						"width" => $attribs["width"],
-						"height" => $attribs["height"],
+						"width" => (intval($attribs["width"]) === 0 ? '' : $attribs["width"]),
+						"height" => (intval($attribs["height"]) === 0 ? '' : $attribs["height"]),
 						"hspace" => $attribs["hspace"],
 						"vspace" => $attribs["vspace"],
 						"border" => $attribs["border"],

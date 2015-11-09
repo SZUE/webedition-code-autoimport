@@ -41,23 +41,22 @@ function imageChanged(wasThumbnailChange) {
 }
 
 function checkWidthHeight(field) {
-	var ratioCheckBox = document.getElementById('check_we_dialog_args[ratio]');
+	var ratioCheckBox = document.getElementById('check_we_dialog_args[ratio]'), 
+		v = parseInt(field.value);
+
 	if (ratioCheckBox.checked) {
 		if (field.value.indexOf('%') == -1) {
-			ratiow = ratiow ? ratiow :
-							(field.form.elements.tinyMCEInitRatioW.value ? field.form.elements.tinyMCEInitRatioW.value : 0);
-			ratioh = ratioh ? ratioh :
-							(field.form.elements.tinyMCEInitRatioH.value ? field.form.elements.tinyMCEInitRatioH.value : 0);
+			ratiow = ratiow ? ratiow : (field.form.elements.tinyMCEInitRatioW.value ? field.form.elements.tinyMCEInitRatioW.value : 0);
+			ratioh = ratioh ? ratioh : (field.form.elements.tinyMCEInitRatioH.value ? field.form.elements.tinyMCEInitRatioH.value : 0);
 			if (ratiow && ratioh) {
-				if (field.name == 'we_dialog_args[height]') {
-					field.form.elements['we_dialog_args[width]'].value = field.value ? Math.round(field.value * ratioh) : (field.value === '' ? '' : 0);
-				} else {
-					field.form.elements['we_dialog_args[height]'].value = field.value ? Math.round(field.value * ratiow) : (field.value === '' ? '' : 0);
-				}
+				field.form.elements[(field.name === 'we_dialog_args[height]' ? 'we_dialog_args[width]' : 'we_dialog_args[height]')].value = v ? Math.round(v * ratioh) : '';
+				field.value = v ? v : '';
 			}
 		} else {
 			ratioCheckBox.checked = false;
 		}
+	} else {
+		field.value = v ? v : '';
 	}
 	return true;
 }
