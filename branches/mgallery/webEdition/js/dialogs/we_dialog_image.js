@@ -50,9 +50,9 @@ function checkWidthHeight(field) {
 							(field.form.elements.tinyMCEInitRatioH.value ? field.form.elements.tinyMCEInitRatioH.value : 0);
 			if (ratiow && ratioh) {
 				if (field.name == 'we_dialog_args[height]') {
-					field.form.elements['we_dialog_args[width]'].value = Math.round(field.value * ratioh);
+					field.form.elements['we_dialog_args[width]'].value = field.value ? Math.round(field.value * ratioh) : (field.value === '' ? '' : 0);
 				} else {
-					field.form.elements['we_dialog_args[height]'].value = Math.round(field.value * ratiow);
+					field.form.elements['we_dialog_args[height]'].value = field.value ? Math.round(field.value * ratiow) : (field.value === '' ? '' : 0);
 				}
 			}
 		} else {
