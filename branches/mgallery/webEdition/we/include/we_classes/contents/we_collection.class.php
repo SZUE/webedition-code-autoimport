@@ -276,7 +276,7 @@ class we_collection extends we_root{
 
 		$this->DefaultDir = $this->DefaultDir ? : (IMAGESTARTID_DEFAULT ? : 0);
 		$this->DefaultPath = $this->DefaultDir ? id_to_path($this->DefaultDir, FILE_TABLE) : '';
-		$defDir = $this->formDirChooser(330, 0, FILE_TABLE, 'DefaultPath', 'DefaultDir', '', 'Standardverzeichnis der Sammlungselemente', false);
+		$defDir = $this->formDirChooser(330, 0, FILE_TABLE, 'DefaultPath', 'DefaultDir', '', g_l('weClass', '[collection][label_defaultDir]'), false);
 
 		$html = $selRemTable .
 			'<div id="mimetype" class="collection_props-mime" style="' . ($this->remTable === 'tblObjectFiles' ? 'display:none' : 'display:block') . ';">' .
