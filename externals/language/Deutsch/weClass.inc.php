@@ -43,6 +43,7 @@ $l_weClass=array(
 Als Duplikate verworfen: %s
 
 Nicht aufgeführt: Elemente die nicht zu Sammlung passen.',
+		'label_defaultDir'=>'Standardverzeichnis der Sammlungselemente',
 		'notSet'=>'nicht gesetzt',
 		'not_set'=>'delete!',
 		'number'=>'Anzahl',

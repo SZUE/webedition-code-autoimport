@@ -43,6 +43,7 @@ $l_weClass=array(
 Rejected as duplicate: %s
 
 Not shown: elements not matching the content type of the collection.',
+		'label_defaultDir'=>'Default directory for this collection`s elements',
 		'notSet'=>'not set',
 		'not_set'=>'delete!',
 		'number'=>'Number',
