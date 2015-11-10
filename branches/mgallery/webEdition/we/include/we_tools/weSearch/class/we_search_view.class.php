@@ -1556,7 +1556,7 @@ WE().consts.g_l.weSearch = {
 						case we_base_ContentTypes::APPLICATION:
 							$actionCheckbox = '';
 							if($_result[$f]["IsProtected"]){
-								$actionCheckbox = ' <span class="wealertIcon" title="supi"></span>';
+								$actionCheckbox = we_html_element::htmlSpan(array('class' => 'wealertIcon', 'style' => 'margin-left:4px;', 'title' => g_l('searchtool', '[image_protected]')));
 							} else if(!in_array($_result[$f]['docID'], $this->searchclass->getUsedMedia())){
 								$actionCheckbox = permissionhandler::hasPerm('DELETE_DOCUMENT') && f('SELECT 1 FROM ' . escape_sql_query($_result[$f]["docTable"]) . ' WHERE ID=' . intval($_result[$f]['docID']), '', $DB_WE) ?
 									we_html_forms::checkbox($_result[$f]['docID'] . '_' . $_result[$f]['docTable'], 0, 'delete_docs_' . $whichSearch, '', false, 'middlefont', '') : '';

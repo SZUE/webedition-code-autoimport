@@ -986,6 +986,7 @@ span.treeKreuz i.fa-square{
 }
 
 .wealertIcon:before{
+	display: inline-block;
 	font-size:14px;
 	font-family: FontAwesome;
 	content: "\f256"; 
