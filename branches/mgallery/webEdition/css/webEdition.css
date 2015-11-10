@@ -984,6 +984,14 @@ span.treeKreuz i.fa-square{
 	font-size:14px;
 	width: .8em;
 }
+
+.wealertIcon:before{
+	font-size:14px;
+	font-family: FontAwesome;
+	content: "\f256"; 
+	color: red;
+}
+
 i.disabled{
 	color:grey;
 }
