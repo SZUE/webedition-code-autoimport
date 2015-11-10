@@ -63,6 +63,7 @@ $l_searchtool=array(
 	'geparkt_geaendert'=>'geparkt und geändert',
 	'groesse'=>'Größe',
 	'idDiv'=>'ID',
+	'image_protected'=>'Geschützte Dokumente können nicht gelöscht werden',
 	'import_tool_weSearch_data'=>'Die Daten des Tools Suche wiederherstellen',
 	'jeder'=>'alle anzeigen',
 	'menu_advSearch'=>'Erweiterte Suche',

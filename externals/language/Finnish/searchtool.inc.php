@@ -63,6 +63,7 @@ $l_searchtool=array(
 	'geparkt_geaendert'=>'poistettu julkaisusta ja muokattu',
 	'groesse'=>'Koko',
 	'idDiv'=>'ID',
+	'image_protected'=>'You cannot delete protected documents',
 	'import_tool_weSearch_data'=>'Palauta Haku tieto',
 	'jeder'=>'näytä kaikkia',
 	'menu_advSearch'=>'Kehittynyt Haku',

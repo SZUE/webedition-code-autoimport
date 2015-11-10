@@ -63,6 +63,7 @@ $l_searchtool=array(
 	'geparkt_geaendert'=>'ongepubliceerd en gewijzigd',
 	'groesse'=>'Grootte',
 	'idDiv'=>'ID',
+	'image_protected'=>'You cannot delete protected documents',
 	'import_tool_weSearch_data'=>'Herstel Zoeken gegevens',
 	'jeder'=>'toon alle',
 	'menu_advSearch'=>'Geavanceerd zoeken',
