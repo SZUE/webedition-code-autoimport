@@ -158,11 +158,12 @@ switch($class){
 		$fs = new we_customer_selector($id, $JSIDName, $JSTextName, $JSCommand, we_base_request::_(we_base_request::STRING, 'order', ''), $rootDirID, '', $multiple);
 		break;
 	case 'we_selector_category':
-		if(($JSCommand = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 5))){
+		$JSCommand = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 5);
+		$JSIDName = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 3);
+		$JSTextName = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4);
+		if($JSCommand || ($JSIDName && $JSTextName)){
 			$noChoose = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 8);
 			$id = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
-			$JSIDName = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 3);
-			$JSTextName = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4);
 			$rootDirID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 7);
 		} else {
 			$JSIDName = $JSTextName = $JSCommand = '';

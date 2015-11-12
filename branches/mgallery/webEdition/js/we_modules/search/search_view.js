@@ -37,7 +37,7 @@ weSearch = {
 	},
 	elem: null,
 	init: function (we_const, conf, g_l) {
-		top.console.debug("running");
+		//top.console.debug("running");
 		/*
 		 this.we_const = we_const;
 		 this.conf = conf;
@@ -99,7 +99,6 @@ weSearch = {
 	search: function (newSearch) {
 		if (!this.conf.checkRightTempTable && !this.conf.heckRightDropTable) {
 			top.we_showMessage(this.g_l.noTempTableRightsSearch, WE().consts.message.WE_MESSAGE_NOTICE, window);
-			top.console.debug("hier??");
 			return;
 		}
 
@@ -221,10 +220,10 @@ weSearch = {
 	},
 	updateElem: function (e) {
 		var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight,
-						w = window.innerWidth ? window.innerWidth : document.body.offsetWidth,
-						x = (document.all) ? window.event.x + document.body.scrollLeft : e.pageX,
-						y = (document.all) ? window.event.y + document.body.scrollTop : e.pageY,
-						elemWidth = 0, elemHeight = 0;
+			w = window.innerWidth ? window.innerWidth : document.body.offsetWidth,
+			x = (document.all) ? window.event.x + document.body.scrollLeft : e.pageX,
+			y = (document.all) ? window.event.y + document.body.scrollTop : e.pageY,
+			elemWidth = 0, elemHeight = 0;
 
 		if (this.elem !== null && elem.style.visibility == 'visible') {
 			elemWidth = this.elem.offsetWidth;
@@ -315,10 +314,10 @@ weSearch = {
 			}
 
 			var elem = document.getElementById('filterTable' + this.conf.whichsearch),
-							//newID = elem.rows.length - 1,
-							h = window.innerHeight ? window.innerHeight : document.body.offsetHeight,
-							scrollContent = document.getElementById("scrollContent_' + whichSearch + '"),
-							heightDiv = 180;
+				//newID = elem.rows.length - 1,
+				h = window.innerHeight ? window.innerHeight : document.body.offsetHeight,
+				scrollContent = document.getElementById("scrollContent_' + whichSearch + '"),
+				heightDiv = 180;
 
 			if ((h - heightDiv) > 0) {
 				scrollContent.style.height = (h - heightDiv) + 'px';
@@ -333,9 +332,9 @@ weSearch = {
 	},
 	newinputAdvSearch: function () {
 		var elem = document.getElementById('filterTable' + this.conf.whichsearch),
-						newID = elem.rows.length - 1,
-						scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch),
-						newRow, cell;
+			newID = elem.rows.length - 1,
+			scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch),
+			newRow, cell;
 
 		this.conf.rows++;
 
@@ -355,12 +354,12 @@ weSearch = {
 		}
 	},
 	newinpuMediaSearch: function () {
-		top.console.debug('is fn');
+		//top.console.debug('is fn');
 
 	},
 	getCell: function (type, rowID, replacement) {
 		var cell = document.createElement('TD'),
-						html;
+			html;
 		switch (type) {
 			case 'delButton':
 				cell.setAttribute('id', 'td_delButton[' + rowID + ']');
@@ -417,6 +416,7 @@ weSearch = {
 		switch (value) {
 			case 'Content':
 				if (locationTD !== null) {
+					location.value = 'CONTAIN';
 					location.disabled = true;
 				}
 				row.removeChild(searchTD);
@@ -431,18 +431,19 @@ weSearch = {
 				break;
 			case 'temp_category':
 				if (locationTD !== null) {
+					location.value = 'IS';
 					location.disabled = true;
 				}
 				row.removeChild(searchTD);
 
 				var innerhtml = '<table class="default"><tbody><tr>' +
 								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
-								'<td><input value="" name="search" + this.conf.whichsearch + "ParentID[' + rowNr + ']" type="hidden"></td><td></td>' +
+								'<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td></td>' +
 								'<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, WE().consts.tables.CATEGORY_TABLE).replace(/__we_selector__/, 'we_selector_category') + '</td>' +
 								'</tr></tbody></table>';
 
 				var cell = document.createElement('TD');
-				cell.setAttribute('id', 'td_search" + this.conf.whichsearch + "[' + rowNr + ']');
+				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
 				cell.innerHTML = innerhtml;
 				row.appendChild(cell);
 
@@ -454,18 +455,19 @@ weSearch = {
 			case 'temp_template_id':
 			case 'MasterTemplateID':
 				if (locationTD !== null) {
+					location.value = 'IS';
 					location.disabled = true;
 				}
 				row.removeChild(searchTD);
 
-				var innerhtml = "<table class=\"default\"><tbody><tr>" +
+				var innerhtml = '<table class="default"><tbody><tr>' +
 								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
 								'<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td></td>' +
 								'<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, WE().consts.tables.TEMPLATES_TABLE).replace(/__we_selector__/, 'we_selector_document') + '</td>' +
-								"</tr></tbody></table>";
+								'</tr></tbody></table>';
 
-				cell = document.createElement("TD");
-				cell.setAttribute("id", "td_search" + this.conf.whichsearch + "[" + rowNr + "]");
+				cell = document.createElement('TD');
+				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
 				cell.innerHTML = innerhtml;
 				row.appendChild(cell);
 
@@ -478,20 +480,21 @@ weSearch = {
 			case 'ParentIDObj':
 			case 'ParentIDTmpl':
 				if (locationTD !== null) {
+					location.value = 'IS';
 					location.disabled = true;
 				}
 				row.removeChild(searchTD);
 
 				var table = value === 'ParentIDDoc' ? WE().consts.tables.FILE_TABLE : (value === 'ParentIDObj' ? WE().consts.tables.OBJECT_FILES_TABLE : WE().consts.tables.TEMPLATES_TABLE);
 
-				var innerhtml = "<table class=\"default\"><tbody><tr>" +
+				var innerhtml = '<table class="default"><tbody><tr>' +
 								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
 								'<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td></td>' +
 								'<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, table).replace(/__we_selector__/, 'we_selector_directory') + '</td>' +
-								"</tr></tbody></table>";
+								'</tr></tbody></table>';
 
-				cell = document.createElement("TD");
-				cell.setAttribute("id", "td_search" + this.conf.whichsearch + "[" + rowNr + "]");
+				cell = document.createElement('TD');
+				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
 				cell.innerHTML = innerhtml;
 				row.appendChild(cell);
 
@@ -502,6 +505,7 @@ weSearch = {
 				break;
 			case 'Status':
 				if (locationTD !== null) {
+					location.value = 'IS';
 					location.disabled = true;
 				}
 				row.removeChild(searchTD);
@@ -509,8 +513,8 @@ weSearch = {
 					row.removeChild(delButtonTD);
 				}
 
-				var cell = document.createElement("TD");
-				cell.setAttribute("id", "td_search" + this.conf.whichsearch + "[" + rowNr + "]");
+				var cell = document.createElement('TD');
+				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
 				cell.innerHTML = this.elems.selStatus.replace(/__we_new_id__/g, rowNr);
 				row.appendChild(cell);
 
@@ -518,6 +522,7 @@ weSearch = {
 				break;
 			case 'Speicherart':
 				if (locationTD !== null) {
+					location.value = 'IS';
 					location.disabled = true;
 				}
 				row.removeChild(searchTD);
@@ -525,8 +530,8 @@ weSearch = {
 					row.removeChild(delButtonTD);
 				}
 
-				var cell = document.createElement("TD");
-				cell.setAttribute("id", "td_search" + this.conf.whichsearch + "[" + rowNr + "]");
+				var cell = document.createElement('TD');
+				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
 				cell.innerHTML = this.elems.selSpeicherart.replace(/__we_new_id__/g, rowNr);
 				row.appendChild(cell);
 
@@ -535,27 +540,26 @@ weSearch = {
 			case 'Published':
 			case 'CreationDate':
 			case 'ModDate':
-
 				row.removeChild(locationTD);
 				row.appendChild(this.getCell('location' + this.conf.whichsearch, rowNr));
 				row.removeChild(searchTD);
 
 				// FIXME: move datepicker-button to search_view
-				var innerhtml = "<table id=\"search" + this.conf.whichsearch + "[" + rowNr + "]_cell\" class=\"default\"><tbody><tr>" +
-								"<td></td>" +
-								"<td></td>" +
+				var innerhtml = '<table id="search' + this.conf.whichsearch + '[' + rowNr + ']_cell" class="default"><tbody><tr>' +
+								'<td></td>' +
+								'<td></td>' +
 								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ').replace('width: 170px', 'width: 100px') + '</td>' +
-								"<td>&nbsp;</td>" +
-								"<td><a href=\"#\"><button id=\"date_picker_from" + rowNr + "\" class=\"weBtn\"><i class='fa fa-lg fa-calendar'></i></button></a></td>" +
-								"</tr></tbody></table>";
+								'<td>&nbsp;</td>' +
+								'<td><a href="#"><button id="date_picker_from' + rowNr + '" class="weBtn"><i class="fa fa-lg fa-calendar"></i></button></a></td>' +
+								'</tr></tbody></table>';
 
 
-				cell = document.createElement("TD");
-				cell.setAttribute("id", "td_search" + this.conf.whichsearch + "[" + rowNr + "]");
+				cell = document.createElement('TD');
+				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
 				cell.innerHTML = innerhtml;
 				row.appendChild(cell);
 
-				Calendar.setup({inputField: "search" + this.conf.whichsearch + "[" + rowNr + "]", ifFormat: "%d.%m.%Y", button: "date_picker_from" + rowNr + "", align: "Tl", singleClick: true});
+				Calendar.setup({inputField: 'search' + this.conf.whichsearch + '[' + rowNr + ']', ifFormat: '%d.%m.%Y', button: 'date_picker_from' + rowNr + '', align: 'Tl', singleClick: true});
 
 				if (delButtonTD !== null) {
 					row.removeChild(delButtonTD);
@@ -573,8 +577,8 @@ weSearch = {
 					row.removeChild(delButtonTD);
 				}
 
-				var cell = document.createElement("TD");
-				cell.setAttribute("id", "td_search" + this.conf.whichsearch + "[" + rowNr + "]");
+				var cell = document.createElement('TD');
+				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
 				cell.innerHTML = this.elems.selModFields.replace(/__we_new_id__/g, rowNr);
 				row.appendChild(cell);
 
@@ -582,6 +586,7 @@ weSearch = {
 				break;
 			case 'modifierID':
 				if (locationTD !== null) {
+					location.value = 'IS';
 					location.disabled = true;
 				}
 				row.removeChild(searchTD);
@@ -589,8 +594,8 @@ weSearch = {
 					row.removeChild(delButtonTD);
 				}
 
-				var cell = document.createElement("TD");
-				cell.setAttribute("id", "td_search" + this.conf.whichsearch + "[" + rowNr + "]");
+				var cell = document.createElement('TD');
+				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
 				cell.innerHTML = this.elems.selUsers.replace(/__we_new_id__/g, rowNr);
 				row.appendChild(cell);
 
@@ -610,31 +615,32 @@ weSearch = {
 				row.appendChild(this.getCell('search' + this.conf.whichsearch, rowNr));
 				row.appendChild(this.getCell('delButton', rowNr));
 
-				document.getElementById("search" + this.conf.whichsearch + "[" + rowNr + "]").value = setValue;
+				document.getElementById('search' + this.conf.whichsearch + '[' + rowNr + ']').value = setValue;
 		}
 
-		switch (from) {
-			case "allModsIn":
-			case "MasterTemplateID":
-			case "ParentIDTmpl":
-			case "ParentIDObj":
-			case "ParentIDDoc":
-			case "temp_template_id":
-			case "ContentType":
-			case "temp_category":
-			case "Status":
-			case "Speicherart":
-			case "Published":
-			case "CreationDate":
-			case "ModDate":
-				document.getElementById("search" + this.conf.whichsearch + "[" + rowNr + "]").value = "";
+		switch (from) {// FIXME: this is nonsens! move thid to the above cases
+		//switch (value) {
+			case 'allModsIn':
+			case 'MasterTemplateID':
+			case 'ParentIDTmpl':
+			case 'ParentIDObj':
+			case 'ParentIDDoc':
+			case 'temp_template_id':
+			case 'ContentType':
+			case 'temp_category':
+			case 'Status':
+			case 'Speicherart':
+			case 'Published':
+			case 'CreationDate':
+			case 'ModDate':
+				document.getElementById('search' + this.conf.whichsearch + '[' + rowNr + ']').value = '';
+				break;
 				//|| value =="allModsIn" || value =="MasterTemplateID" || value=="ParentIDTmpl" || value=="ParentIDObj" || value=="ParentIDDoc" || value=="temp_template_id" || value=="ContentType" || value=="temp_category" || value=="Status" || value=="Speicherart" || value=="Published" || value=="CreationDate" || value=="ModDate") {
 			default:
-				document.getElementById("search" + this.conf.whichsearch + "[" + rowNr + "]").value = setValue;
-		}
-		;
+				document.getElementById('search' + this.conf.whichsearch + '[' + rowNr + ']').value = setValue;
+		};
 
-		document.getElementsByName("hidden_searchFields" + this.conf.whichsearch + "[" + rowNr + "]")[0].value = value;
+		document.getElementsByName('hidden_searchFields' + this.conf.whichsearch + '[' + rowNr + ']')[0].value = value;
 
 	},
 	ajaxCallbackResetVersion: {
@@ -656,17 +662,17 @@ weSearch = {
 
 			//reload tree
 			if (top.opener.treeData) {
-				top.opener.we_cmd("load", top.opener.treeData.table, 0);
+				top.opener.we_cmd('load', top.opener.treeData.table, 0);
 			}
-			document.getElementById("resetBusy" + this.conf.whichsearch).innerHTML = "";
+			document.getElementById('resetBusy' + this.conf.whichsearch).innerHTML = '';
 		},
 		failure: function (o) {
 		}
 	},
 	resetVersionAjax: function (id, documentID, version, table) {
-		document.getElementById("resetBusy" + this.conf.whichsearch).innerHTML = "<table border='0' width='100%' height='100%'><tr><td align='center'><i class=\"fa fa-2x fa-spinner fa-pulse\"></i><div id='scrollActive'></div></td></tr></table>";
+		document.getElementById('resetBusy' + this.conf.whichsearch).innerHTML = "<table border='0' width='100%' height='100%'><tr><td align='center'><i class=\"fa fa-2x fa-spinner fa-pulse\"></i><div id='scrollActive'></div></td></tr></table>";
 
-		YAHOO.util.Connect.asyncRequest("POST", this.conf.ajaxURL, this.ajaxCallbackResetVersion, "protocol=json&cns=versionlist&cmd=ResetVersion&id=" + id + "&documentID=" + documentID + "&version=" + version + "&documentTable=" + table + "&we_transaction=' . $GLOBALS['we_transaction'] . '");
+		YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackResetVersion, "protocol=json&cns=versionlist&cmd=ResetVersion&id=" + id + "&documentID=" + documentID + "&version=" + version + "&documentTable=" + table + "&we_transaction=' . $GLOBALS['we_transaction'] . '");
 	},
 	resetVersions: function () {
 		var checkboxes = [];
