@@ -382,7 +382,7 @@ class we_search_search extends we_search_base{
 				}
 			}
 		}
-		return $where ? '(' . implode(' OR ', $where) . ')' : ' 0 ';
+		return ' AND ' . ($where ? '(' . implode(' OR ', $where) . ')' : ' 0 ');
 	}
 
 	function searchSpecial($keyword, $searchFields, $searchlocation){
@@ -443,7 +443,7 @@ class we_search_search extends we_search_base{
 			$i++;
 		}
 
-		return $where ? '(' . implode(' OR ', $where) . ')' : ' 0 ';
+		return ' AND ' . ($where ? '(' . implode(' OR ', $where) . ')' : ' 0 ');
 	}
 
 	function addToSearchInMeta($search, $field, $location){
@@ -523,40 +523,48 @@ class we_search_search extends we_search_base{
 		// also kann auch beim verlinkungsstatus auf media-docs eingegremzt werden
 		switch($status){
 			case "jeder" :
-				return $this->db->escape($table) . '.ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '")';
-
+				$ret = $this->db->escape($table) . '.ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '")';
+				break;
 			case "geparkt" :
-				return ($table == VERSIONS_TABLE ?
+				$ret = ($table == VERSIONS_TABLE ?
 						'v.status="unpublished"' :
 						'(' . $this->db->escape($table) . '.Published=0 AND ' . $this->db->escape($table) . '.ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '"))');
-
+				break;
 			case "veroeffentlicht" :
-				return ($table == VERSIONS_TABLE ?
+				$ret = ($table == VERSIONS_TABLE ?
 						'v.status="published"' :
-						'(' . $this->db->escape($table) . '.Published >= ' . $this->db->escape($table) . '.ModDate AND ' . $this->db->escape($table) . '.Published !=0) AND ' . $this->db->escape($table) . '.ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '"))');
+						'(' . $this->db->escape($table) . '.Published >= ' . $this->db->escape($table) . '.ModDate AND ' . $this->db->escape($table) . '.Published !=0 AND ' . $this->db->escape($table) . '.ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '"))');
+				break;
 			case "geaendert" :
-				return ($table == VERSIONS_TABLE ?
+				$ret = ($table == VERSIONS_TABLE ?
 						'v.status="saved"' :
 						'(' . $this->db->escape($table) . '.Published<' . $this->db->escape($table) . '.ModDate AND ' . $this->db->escape($table) . '.Published!=0 AND ' . $this->db->escape($table) . '.ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '"))');
+				break;
 			case "veroeff_geaendert" :
-				return '((' . $this->db->escape($table) . '.Published>=' . $this->db->escape($table) . '.ModDate OR ' . $this->db->escape($table) . '.Published < ' . $this->db->escape($table) . '.ModDate AND ' . $this->db->escape($table) . '.Published !=0) AND ' . $this->db->escape($table) . '.ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '") )';
-
+				$ret = '((' . $this->db->escape($table) . '.Published>=' . $this->db->escape($table) . '.ModDate OR ' . $this->db->escape($table) . '.Published < ' . $this->db->escape($table) . '.ModDate AND ' . $this->db->escape($table) . '.Published !=0) AND ' . $this->db->escape($table) . '.ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '") )';
+				break;
 			case "geparkt_geaendert" :
-				return ($table === VERSIONS_TABLE ?
+				$ret = ($table === VERSIONS_TABLE ?
 						'v.status!="published"' :
 						'((' . $this->db->escape($table) . '.Published=0 OR ' . $this->db->escape($table) . '.Published< ' . $this->db->escape($table) . '.ModDate) AND ' . $this->db->escape($table) . '.ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '") )');
+				break;
 			case "dynamisch" :
-				return ($table !== FILE_TABLE && $table !== VERSIONS_TABLE ? '' :
+				$ret = ($table !== FILE_TABLE && $table !== VERSIONS_TABLE ? '' :
 						'(' . $this->db->escape($table) . '.IsDynamic=1 AND ' . $this->db->escape($table) . '.ContentType="' . we_base_ContentTypes::WEDOCUMENT . '")');
+				break;
 			case "statisch" :
-				return ($table !== FILE_TABLE && $table !== VERSIONS_TABLE ? '' :
+				$ret = ($table !== FILE_TABLE && $table !== VERSIONS_TABLE ? '' :
 						'(' . $this->db->escape($table) . '.IsDynamic=0 AND ' . $this->db->escape($table) . '.ContentType="' . we_base_ContentTypes::WEDOCUMENT . '")');
+				break;
 			case "deleted" :
-				return ($table !== VERSIONS_TABLE ? '' :
+				$ret = ($table !== VERSIONS_TABLE ? '' :
 						'v.status="deleted"' );
+				break;
+			case "default":
+				$ret = 1;
 		}
 
-		return '';
+		return ' AND ' . $ret;
 	}
 
 	function searchModifier($text, $table){
@@ -876,7 +884,7 @@ class we_search_search extends we_search_base{
 			return;
 		}
 
-		$this->where = '1 ' . ($where ? : ($this->where ? : ''));
+		$this->where = '1 ' . ($where ? : ($this->where ? 'AND ' . $this->where : ''));
 
 		switch($this->table){
 			case FILE_TABLE:
@@ -885,6 +893,7 @@ class we_search_search extends we_search_base{
 					$this->where .= ' AND Path LIKE "' . $this->db->escape($path) . '%" ';
 					$tmpTableWhere = ' AND DocumentID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE Path LIKE "' . $this->db->escape($path) . '%" )';
 				}
+				we_database_base::t_e_query(1);
 				$this->db->query('INSERT INTO SEARCH_TEMP_TABLE (docID,docTable,Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,CreationDate,CreatorID,ModDate,Published,Extension) SELECT ID,"' . FILE_TABLE . '",Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,CreationDate,CreatorID,ModDate,Published,Extension FROM `' . FILE_TABLE . '` WHERE ' . $this->where);
 
 				//first check published documents

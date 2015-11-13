@@ -846,11 +846,11 @@ function clip_' . $unique . '(){
 	 * @abstract get code for calendar
 	 * @return html-code for calendar
 	 */
-	public static function getDateSelector($_name, $_btn, $value){
-		$btnDatePicker = we_html_button::create_button(we_html_button::CALENDAR, "javascript:", null, null, null, null, null, null, false, $_btn);
+	public static function getDateSelector($_name, $_btn, $value, $selWidth = 100, $btnClass = ''){
+		$btnDatePicker = we_html_button::create_button(we_html_button::CALENDAR, "javascript:", false, 0, 0, '', '', false, false, $_btn, false, '', $btnClass);
 		$oSelector = new we_html_table(array("class" => 'default', "id" => $_name . "_cell"), 1, 5);
-		$oSelector->setCol(0, 2, null, we_html_tools::htmlTextInput($_name, 55, $value, 10, 'id="' . $_name . '" class="wetextinput" readonly="1"', "text", 100));
-		$oSelector->setCol(0, 3, null, "&nbsp;");
+		$oSelector->setCol(0, 2, null, we_html_tools::htmlTextInput($_name, 55, $value, 10, 'id="' . $_name . '" class="wetextinput" readonly="1"', "text", $selWidth));
+		$oSelector->setCol(0, 3, null, '');
 		$oSelector->setCol(0, 4, null, we_html_element::htmlA(array("href" => "#"), $btnDatePicker));
 
 		return $oSelector->getHTML();

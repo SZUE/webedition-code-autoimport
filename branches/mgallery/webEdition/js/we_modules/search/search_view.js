@@ -548,9 +548,9 @@ weSearch = {
 				var innerhtml = '<table id="search' + this.conf.whichsearch + '[' + rowNr + ']_cell" class="default"><tbody><tr>' +
 								'<td></td>' +
 								'<td></td>' +
-								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ').replace('width: 170px', 'width: 100px') + '</td>' +
-								'<td>&nbsp;</td>' +
-								'<td><a href="#"><button id="date_picker_from' + rowNr + '" class="weBtn"><i class="fa fa-lg fa-calendar"></i></button></a></td>' +
+								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
+								'<td></td>' +
+								'<td><a href="#"><button id="date_picker_from' + rowNr + '" class="weBtn multiicon"><i class="fa fa-lg fa-calendar"></i></button></a></td>' +
 								'</tr></tbody></table>';
 
 

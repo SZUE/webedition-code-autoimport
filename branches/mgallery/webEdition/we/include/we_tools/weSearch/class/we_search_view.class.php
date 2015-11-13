@@ -1186,28 +1186,29 @@ WE().consts.g_l.weSearch = {
 								$done = true;
 							}
 						}
-
+/*
 						if($whichSearch === self::SEARCH_ADV && isset($location[$i])){
 							switch($searchFields[$i]){
-								case "Content":
-								case "Status":
-								case "Speicherart":
-								case "CreatorName":
-								case "WebUserName":
-								case "temp_category":
+								case 'Content':
+								case 'Status':
+								case 'modifierID':
+								case 'allModsIn':
+								case 'Speicherart':
+								case 'CreatorName':
+								case 'WebUserName':
+								case 'temp_category':
 									break;
 								default:
 									$where .= $this->searchclass->searchfor($searchString, $searchFields[$i], $location[$i], $_table);
 							}
 						}
-
+ * 
+ */
 						if(!$done){
 							switch($searchFields[$i]){
 								case 'Content':
 									$objectTable = defined('OBJECT_TABLE') ? OBJECT_TABLE : '';
-									if($objectTable != "" && $_table == $objectTable){
-
-									} else {
+									if($objectTable == '' || $_table != $objectTable){
 										$w = $this->searchclass->searchContent($searchString, $_table);
 										if($where == '' && $w == ''){
 											$where .= ' AND 0 ';
@@ -1218,21 +1219,18 @@ WE().consts.g_l.weSearch = {
 										}
 									}
 									break;
-
 								case 'modifierID':
 									if($_table == VERSIONS_TABLE){
 										$w .= $this->searchclass->searchModifier($searchString, $_table);
 										$where .= $w;
 									}
 									break;
-
 								case 'allModsIn':
 									if($_table == VERSIONS_TABLE){
 										$w .= $this->searchclass->searchModFields($searchString, $_table);
 										$where .= $w;
 									}
 									break;
-
 								case 'Title':
 									$w = $this->searchclass->searchInTitle($searchString, $_table);
 
@@ -1259,19 +1257,18 @@ WE().consts.g_l.weSearch = {
 											} elseif($objTableChecked){
 												$w .= ' AND v.documentTable="' . OBJECT_FILES_TABLE . '" ';
 											}
-
-											$where .= $w;
 											break;
 										case FILE_TABLE:
 										case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-											$where .= $this->searchclass->getStatusFiles($searchString, $_table);
+											$w = $this->searchclass->getStatusFiles($searchString, $_table);
 									}
+									$where .= $w;
 									break;
 								case 'CreatorName':
 								case 'WebUserName':
 									if(isset($searchFields[$i]) && isset($location[$i])){
 										$w = $this->searchclass->searchSpecial($searchString, $searchFields[$i], $location[$i]);
-										$where .= ' AND ' . $w;
+										$where .= $w;
 									}
 									break;
 								case 'temp_category':
@@ -1279,9 +1276,9 @@ WE().consts.g_l.weSearch = {
 									$where .= $w;
 									break;
 								default:
-									if($whichSearch != "AdvSearch"){
+									//if($whichSearch != "AdvSearch"){
 										$where .= $this->searchclass->searchfor($searchString, $searchFields[$i], $location[$i], $_table);
-									}
+									//}
 							}
 						}
 					}
@@ -1975,7 +1972,7 @@ WE().consts.g_l.weSearch = {
 					case "CreationDate":
 					case "ModDate":
 						$handle = "date";
-						$searchInput = we_html_tools::getDateSelector("searchAdvSearch[" . $i . "]", "_from" . $i, $this->Model->searchAdvSearch[$i]);
+						$searchInput = we_html_tools::getDateSelector("searchAdvSearch[" . $i . "]", "_from" . $i, $this->Model->searchAdvSearch[$i], 170, 'multiicon');
 						break;
 
 					case "ParentIDDoc":
