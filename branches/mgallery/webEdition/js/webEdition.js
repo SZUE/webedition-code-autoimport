@@ -1475,16 +1475,10 @@ WE().util.getTreeIcon = function (contentType, open, extension) {
 };
 
 WE().util.resolveIconPlaceholders = function(placeholders){
-	var parents = [],
-		icons = [],
-		i;
-
-	for(i = 0; i < placeholders.length; i++){
-		parents.push(placeholders[i].parentNode);
-		icons.push(WE().util.getTreeIcon(placeholders[i].getAttribute('ct'), (placeholders[i].getAttribute('open') === '1' ? true : false), placeholders[i].getAttribute('ext')));
-	}
-	while(parents.length){
-		parents.shift().innerHTML = icons.shift();
+	var ph;
+	while (placeholders.length) {
+		ph = placeholders.shift();
+		ph.parentNode.innerHTML = WE().util.getTreeIcon(ph.getAttribute('ct'), (ph.getAttribute('open') === '1' || ph.getAttribute('open') === 'true' ? true : false), ph.getAttribute('ext'));
 	}
 };
 
