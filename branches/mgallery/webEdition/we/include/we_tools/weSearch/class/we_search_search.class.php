@@ -78,7 +78,7 @@ class we_search_search extends we_search_base{
 			$obj->searchclassFolder->mode = we_base_request::_(we_base_request::BOOL, 'mode', $obj->searchclassFolder->mode);
 			$obj->searchclassFolder->order = we_base_request::_(we_base_request::STRING, 'order', $obj->searchclassFolder->order);
 			$obj->searchclassFolder->anzahl = we_base_request::_(we_base_request::INT, 'anzahl', $obj->searchclassFolder->anzahl);
-			$obj->searchclassFolder->location = we_base_request::_(we_base_request::RAW, 'location', $obj->searchclassFolder->location);
+			$obj->searchclassFolder->location = we_base_request::_(we_base_request::STRING, 'location', $obj->searchclassFolder->location);
 			$obj->searchclassFolder->search = we_base_request::_(we_base_request::STRING, 'search', $obj->searchclassFolder->search);
 
 			if($view !== false){
@@ -251,18 +251,18 @@ class we_search_search extends we_search_base{
 					'CONTAIN' => g_l('searchtool', '[CONTAIN]'),
 					'START' => g_l('searchtool', '[START]'),
 					'END' => g_l('searchtool', '[END]'),
-					'<' => g_l('searchtool', '[<]'),
-					'<=' => g_l('searchtool', '[<=]'),
-					'>=' => g_l('searchtool', '[>=]'),
-					'>' => g_l('searchtool', '[>]'),
+					'LO' => g_l('searchtool', '[<]'),
+					'LEQ' => g_l('searchtool', '[<=]'),
+					'HEQ' => g_l('searchtool', '[>=]'),
+					'HI' => g_l('searchtool', '[>]'),
 					'IN' => g_l('searchtool', '[IN]'),
 				);
 			case 'date':
 				return array(
-					'<' => g_l('searchtool', '[<]'),
-					'<=' => g_l('searchtool', '[<=]'),
-					'>=' => g_l('searchtool', '[>=]'),
-					'>' => g_l('searchtool', '[>]')
+					'LO' => g_l('searchtool', '[<]'),
+					'LEQ' => g_l('searchtool', '[<=]'),
+					'HEQ' => g_l('searchtool', '[>=]'),
+					'HI' => g_l('searchtool', '[>]')
 				);
 			case 'meta':
 				return array('IS' => g_l('searchtool', '[IS]'));
@@ -415,11 +415,17 @@ class we_search_search extends we_search_base{
 				case 'IN':
 					$searching = ' IN ("' . implode('","', array_map('trim', explode(',', $keyword))) . '") ';
 					break;
-				case '<' :
-				case '<=' :
-				case '>' :
-				case '>=' :
-					$searching = ' ' . $searchlocation . " '" . $_db->escape($keyword) . "' ";
+				case 'LO' :
+					$searching = ' < "' . $_db->escape($keyword) . '" ';
+					break;
+				case 'LEQ' :
+					$searching = ' <= "' . $_db->escape($keyword) . '" ';
+					break;
+				case 'HI' :
+					$searching = ' > "' . $_db->escape($keyword) . '" ';
+					break;
+				case 'HEQ' :
+					$searching = ' >= "' . $_db->escape($keyword) . '" ';
 					break;
 				default :
 					$searching = ' LIKE "%' . $_db->escape($keyword) . '%" ';
@@ -494,11 +500,17 @@ class we_search_search extends we_search_base{
 				case 'IN':
 					$searching = ' IN ("' . implode('","', array_map('trim', explode(',', $keyword))) . '") ';
 					break;
-				case '<' :
-				case '<=' :
-				case '>' :
-				case '>=' :
-					$searching = ' ' . $searchlocation . " '" . $_db->escape($keyword) . "' ";
+				case 'LO' :
+					$searching = ' < "' . $_db->escape($keyword) . '" ';
+					break;
+				case 'LEQ' :
+					$searching = ' <= "' . $_db->escape($keyword) . '" ';
+					break;
+				case 'HI' :
+					$searching = ' > "' . $_db->escape($keyword) . '" ';
+					break;
+				case 'HEQ' :
+					$searching = ' >= "' . $_db->escape($keyword) . '" ';
 					break;
 				default :
 					$searching = ' LIKE "%' . $_db->escape(trim($keyword)) . '%" ';
@@ -1104,20 +1116,20 @@ class we_search_search extends we_search_base{
 										$searching = ' BETWEEN ' . $timestampStart . ' AND ' . $timestampEnd . ' ';
 										$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 										break;
-									case '<':
-										$searching = ' ' . $searchlocation . " '" . $timestampStart . "' ";
+									case 'LO':
+										$searching = ' < "' . $timestampStart . '" ';
 										$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 										break;
-									case '<=':
-										$searching = ' ' . $searchlocation . " '" . $timestampEnd . "' ";
+									case 'LEQ':
+										$searching = ' <= "' . $timestampEnd . '" ';
 										$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 										break;
-									case '>':
-										$searching = ' ' . $searchlocation . " '" . $timestampEnd . "' ";
+									case 'HI':
+										$searching = ' > "' . $timestampEnd . '" ';
 										$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 										break;
-									case '>=':
-										$searching = ' ' . $searchlocation . " '" . $timestampStart . "' ";
+									case 'HEQ':
+										$searching = ' >= "' . $timestampStart . '" ';
 										$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 										break;
 								}
@@ -1141,11 +1153,20 @@ class we_search_search extends we_search_base{
 								$searching = '="' . $this->db->escape($searchname) . '" ';
 								$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 								break;
-							case '<':
-							case '<=':
-							case '>':
-							case '>=':
-								$searching = ' ' . $searchlocation . " '" . $this->db->escape($searchname) . "' ";
+							case 'LO':
+								$searching = ' < "' . $this->db->escape($searchname) . '" ';
+								$sql .= $this->sqlwhere($searchfield, $searching, $operator);
+								break;
+							case 'LEQ':
+								$searching = ' <= "' . $this->db->escape($searchname) . '" ';
+								$sql .= $this->sqlwhere($searchfield, $searching, $operator);
+								break;
+							case 'HI':
+								$searching = ' > "' . $this->db->escape($searchname) . '" ';
+								$sql .= $this->sqlwhere($searchfield, $searching, $operator);
+								break;
+							case 'HEQ':
+								$searching = ' >= "' . $this->db->escape($searchname) . '" ';
 								$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 								break;
 							default :

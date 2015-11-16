@@ -888,7 +888,7 @@ WE().consts.g_l.weSearch = {
 		$DB_WE = new DB_WE();
 		$workspaces = $_result = $versionsFound = $saveArrayIds = $_tables = $searchText = array();
 		$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = 0;
-		$request = we_base_request::_(we_base_request::RAW, 'we_cmd'); //FIXME: due to search for <"
+		$request = we_base_request::_(we_base_request::STRING, 'we_cmd');
 		if(isset($GLOBALS['we_cmd_obj'])){
 			$obj = $GLOBALS['we_cmd_obj'];
 
@@ -945,8 +945,8 @@ WE().consts.g_l.weSearch = {
 					$folderID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'folderIDMedia');
 					$searchForContentTypesMediaSearch = '';
 
-					foreach(we_base_request::_(we_base_request::RAW, 'we_cmd') as $k => $v){
-						if(is_string($v) && $v == 1){
+					foreach(we_base_request::_(we_base_request::INT, 'we_cmd') as $k => $v){
+						if($v === 1){
 							switch($k){
 								case 'searchForTextMediaSearch':
 								case 'searchForTitleMediaSearch':
@@ -989,8 +989,8 @@ WE().consts.g_l.weSearch = {
 					}
 					break;
 				default:
-					foreach(we_base_request::_(we_base_request::RAW, 'we_cmd') as $k => $v){
-						if($v){
+					foreach(we_base_request::_(we_base_request::INT, 'we_cmd') as $k => $v){
+						if($v === 1){
 							switch($k){
 								case 'search_tables_advSearch[' . FILE_TABLE:
 									$_tables[] = FILE_TABLE;
@@ -1014,7 +1014,7 @@ WE().consts.g_l.weSearch = {
 			}
 
 			$searchFields = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'searchFields' . $whichSearch);
-			$location = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 'location' . $whichSearch);
+			$location = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'location' . $whichSearch);
 			$searchText = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 'search' . $whichSearch); //allow to search for tags
 			$_order = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'Order' . $whichSearch);
 			$_view = we_base_request::_(we_base_request::STRING, 'we_cmd', self::VIEW_LIST, 'setView' . $whichSearch);
