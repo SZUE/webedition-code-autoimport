@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_users_user{
-
 	const TYPE_USER = 0;
 	const TYPE_USER_GROUP = 1;
 	const TYPE_ALIAS = 2;
@@ -271,9 +270,8 @@ class we_users_user{
 	function savePersistentSlotsInDB(){
 		$this->ModDate = time();
 		$tableInfo = $this->DB_WE->metadata($this->Table);
-		$useSalt = self::SALT_NONE;
 		if($this->clearpasswd !== ''){
-			$this->passwd = self::makeSaltedPassword($useSalt, $this->username, $this->clearpasswd);
+			$this->passwd = self::makeSaltedPassword($this->username, $this->clearpasswd);
 		}
 
 		$updt = array();
@@ -281,9 +279,9 @@ class we_users_user{
 		foreach($tableInfo as $t){
 			$fieldName = $t['name'];
 			$val = ($fieldName === 'UseSalt' && $useSalt > 0 ?
-							$useSalt :
-							(isset($this->$fieldName) ? $this->$fieldName : 0)
-					);
+					$useSalt :
+					(isset($this->$fieldName) ? $this->$fieldName : 0)
+				);
 			if($fieldName != 'ID'){
 				if($fieldName === 'editorFontname' && $this->Preferences['editorFont'] == '0'){
 					$val = 'none';
@@ -399,57 +397,57 @@ class we_users_user{
 		}
 
 		$save_javascript = 'var _multiEditorreload = false;' .
-				$this->rememberPreference(isset($this->Preferences['Language']) ? $this->Preferences['Language'] : null, 'Language') .
-				$this->rememberPreference(isset($this->Preferences['BackendCharset']) ? $this->Preferences['BackendCharset'] : null, 'BackendCharset') .
-				$this->rememberPreference(isset($this->Preferences['default_tree_count']) ? $this->Preferences['default_tree_count'] : null, 'default_tree_count');
+			$this->rememberPreference(isset($this->Preferences['Language']) ? $this->Preferences['Language'] : null, 'Language') .
+			$this->rememberPreference(isset($this->Preferences['BackendCharset']) ? $this->Preferences['BackendCharset'] : null, 'BackendCharset') .
+			$this->rememberPreference(isset($this->Preferences['default_tree_count']) ? $this->Preferences['default_tree_count'] : null, 'default_tree_count');
 
 		if(isset($this->Preferences['seem_start_type'])){
 			switch($this->Preferences['seem_start_type']){
 				case 'cockpit':
 					$save_javascript .=
-							$this->rememberPreference(0, 'seem_start_file') .
-							$this->rememberPreference("cockpit", 'seem_start_type') .
-							$this->rememberPreference('', 'seem_start_weapp');
+						$this->rememberPreference(0, 'seem_start_file') .
+						$this->rememberPreference("cockpit", 'seem_start_type') .
+						$this->rememberPreference('', 'seem_start_weapp');
 					break;
 				case 'object':
 					$save_javascript .=
-							$this->rememberPreference(isset($this->Preferences['seem_start_object']) ? $this->Preferences['seem_start_object'] : 0, 'seem_start_file') .
-							$this->rememberPreference('object', 'seem_start_type') .
-							$this->rememberPreference('', 'seem_start_weapp');
+						$this->rememberPreference(isset($this->Preferences['seem_start_object']) ? $this->Preferences['seem_start_object'] : 0, 'seem_start_file') .
+						$this->rememberPreference('object', 'seem_start_type') .
+						$this->rememberPreference('', 'seem_start_weapp');
 					break;
 				case 'weapp':
 					$save_javascript .=
-							$this->rememberPreference((isset($this->Preferences['seem_start_weapp']) ? $this->Preferences['seem_start_weapp'] : ''), 'seem_start_weapp') .
-							$this->rememberPreference('weapp', 'seem_start_type') .
-							$this->rememberPreference(0, 'seem_start_file');
+						$this->rememberPreference((isset($this->Preferences['seem_start_weapp']) ? $this->Preferences['seem_start_weapp'] : ''), 'seem_start_weapp') .
+						$this->rememberPreference('weapp', 'seem_start_type') .
+						$this->rememberPreference(0, 'seem_start_file');
 					break;
 				case 'document':
 					$save_javascript .=
-							$this->rememberPreference(isset($this->Preferences['seem_start_document']) ? $this->Preferences['seem_start_document'] : 0, 'seem_start_file') .
-							$this->rememberPreference('document', 'seem_start_type') .
-							$this->rememberPreference('', 'seem_start_weapp');
+						$this->rememberPreference(isset($this->Preferences['seem_start_document']) ? $this->Preferences['seem_start_document'] : 0, 'seem_start_file') .
+						$this->rememberPreference('document', 'seem_start_type') .
+						$this->rememberPreference('', 'seem_start_weapp');
 					break;
 				default:
 					$save_javascript .=
-							$this->rememberPreference('0', 'seem_start_type') .
-							$this->rememberPreference('', 'seem_start_weapp') .
-							$this->rememberPreference(0, 'seem_start_file');
+						$this->rememberPreference('0', 'seem_start_type') .
+						$this->rememberPreference('', 'seem_start_weapp') .
+						$this->rememberPreference(0, 'seem_start_file');
 			}
 		}
 
 		$save_javascript .=
-				$this->rememberPreference(isset($this->Preferences['sizeOpt']) ? $this->Preferences['sizeOpt'] : null, 'sizeOpt') .
-				$this->rememberPreference(isset($this->Preferences['weWidth']) ? $this->Preferences['weWidth'] : null, 'weWidth') .
-				$this->rememberPreference(isset($this->Preferences['weHeight']) ? $this->Preferences['weHeight'] : null, 'weHeight') .
-				$this->rememberPreference(isset($this->Preferences['editorMode']) ? $this->Preferences['editorMode'] : null, 'editorMode') .
-				$this->rememberPreference(isset($this->Preferences['editorFont']) ? $this->Preferences['editorFont'] : null, 'editorFont') .
-				$this->rememberPreference(isset($this->Preferences['editorFontname']) ? $this->Preferences['editorFontname'] : null, 'editorFontname') .
-				$this->rememberPreference(isset($this->Preferences['editorFontsize']) ? $this->Preferences['editorFontsize'] : null, 'editorFontsize') .
-				$this->rememberPreference(isset($this->Preferences['editorSizeOpt']) ? $this->Preferences['editorSizeOpt'] : null, 'editorSizeOpt') .
-				$this->rememberPreference(isset($this->Preferences['editorWidth']) ? $this->Preferences['editorWidth'] : null, 'editorWidth') .
-				$this->rememberPreference(isset($this->Preferences['editorHeight']) ? $this->Preferences['editorHeight'] : null, 'editorHeight') .
-				$this->rememberPreference(isset($this->Preferences['force_glossary_action']) ? $this->Preferences['force_glossary_action'] : null, 'force_glossary_action') .
-				$this->rememberPreference(isset($this->Preferences['force_glossary_check']) ? $this->Preferences['force_glossary_check'] : null, 'force_glossary_check');
+			$this->rememberPreference(isset($this->Preferences['sizeOpt']) ? $this->Preferences['sizeOpt'] : null, 'sizeOpt') .
+			$this->rememberPreference(isset($this->Preferences['weWidth']) ? $this->Preferences['weWidth'] : null, 'weWidth') .
+			$this->rememberPreference(isset($this->Preferences['weHeight']) ? $this->Preferences['weHeight'] : null, 'weHeight') .
+			$this->rememberPreference(isset($this->Preferences['editorMode']) ? $this->Preferences['editorMode'] : null, 'editorMode') .
+			$this->rememberPreference(isset($this->Preferences['editorFont']) ? $this->Preferences['editorFont'] : null, 'editorFont') .
+			$this->rememberPreference(isset($this->Preferences['editorFontname']) ? $this->Preferences['editorFontname'] : null, 'editorFontname') .
+			$this->rememberPreference(isset($this->Preferences['editorFontsize']) ? $this->Preferences['editorFontsize'] : null, 'editorFontsize') .
+			$this->rememberPreference(isset($this->Preferences['editorSizeOpt']) ? $this->Preferences['editorSizeOpt'] : null, 'editorSizeOpt') .
+			$this->rememberPreference(isset($this->Preferences['editorWidth']) ? $this->Preferences['editorWidth'] : null, 'editorWidth') .
+			$this->rememberPreference(isset($this->Preferences['editorHeight']) ? $this->Preferences['editorHeight'] : null, 'editorHeight') .
+			$this->rememberPreference(isset($this->Preferences['force_glossary_action']) ? $this->Preferences['force_glossary_action'] : null, 'force_glossary_action') .
+			$this->rememberPreference(isset($this->Preferences['force_glossary_check']) ? $this->Preferences['force_glossary_check'] : null, 'force_glossary_check');
 
 		return $save_javascript;
 	}
@@ -491,8 +489,8 @@ class we_users_user{
 					$this->permissions_defaults[$perm_group_name] = is_array($perm_defaults[$perm_group_name]) ? $perm_defaults[$perm_group_name] : array();
 					foreach($perm_values[$perm_group_name] as $v){
 						$this->permissions_slots[$perm_group_name][$v] = (is_array($permissions) && isset($permissions[$v]) ?
-										$permissions[$v] :
-										0); //always set unknown fields to 0//(is_array($perm_defaults[$perm_group_name]) ? $perm_defaults[$perm_group_name][$v] : 0);
+								$permissions[$v] :
+								0); //always set unknown fields to 0//(is_array($perm_defaults[$perm_group_name]) ? $perm_defaults[$perm_group_name][$v] : 0);
 					}
 				}
 
@@ -1219,12 +1217,12 @@ _multiEditorreload = true;';
 		switch($tab){
 			case self::TAB_DATA:
 				return weSuggest::getYuiFiles() .
-						$this->formGeneralData();
+					$this->formGeneralData();
 			case self::TAB_PERMISSION:
 				return $this->formPermissions($perm_branch);
 			case self::TAB_WORKSPACES:
 				return weSuggest::getYuiFiles() .
-						$this->formWorkspace();
+					$this->formWorkspace();
 			case self::TAB_SETTINGS:
 				return $this->formPreferences($perm_branch);
 		}
@@ -1356,8 +1354,8 @@ _multiEditorreload = true;';
 		$_username = $this->getUserfield('username', 'username', 'text', 255, false, 'id="yuiAcInputPathName" onblur="parent.frames[0].weTabs.setTitlePath(this.value);"');
 
 		$_password = (!empty($_SESSION['user']['ID']) && $_SESSION['user']['ID'] == $this->ID && !permissionhandler::hasPerm('EDIT_PASSWD') ?
-						'****************' :
-						'<input type="hidden" name="' . $this->Name . '_clearpasswd" value="' . $this->clearpasswd . '" />' . we_html_tools::htmlTextInput('input_pass', 20, "", 255, 'onchange="top.content.setHot()" autocomplete="off"', 'password', 240));
+				'****************' :
+				'<input type="hidden" name="' . $this->Name . '_clearpasswd" value="' . $this->clearpasswd . '" />' . we_html_tools::htmlTextInput('input_pass', 20, "", 255, 'onchange="top.content.setHot()" autocomplete="off"', 'password', 240));
 
 		$parent_name = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ParentID), '', $this->DB_WE)? : '/';
 
@@ -1375,19 +1373,19 @@ _multiEditorreload = true;';
 
 
 		$CreatorIDtext = ($this->CreatorID ?
-						(($hash = getHash('SELECT username,First,Second FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->CreatorID), $this->DB_WE)) ?
-								$hash['username'] . ' (' . $hash['First'] . ' ' . $hash['Second'] . ')' :
-								g_l('modules_users', '[lostID]') . $this->CreatorID . g_l('modules_users', '[lostID2]')) :
-						'-');
+				(($hash = getHash('SELECT username,First,Second FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->CreatorID), $this->DB_WE)) ?
+					$hash['username'] . ' (' . $hash['First'] . ' ' . $hash['Second'] . ')' :
+					g_l('modules_users', '[lostID]') . $this->CreatorID . g_l('modules_users', '[lostID2]')) :
+				'-');
 
 		$ModifierIDtext = ($this->ModifierID ?
-						($this->ModifierID == $this->ID ?
-								$this->username . ' (' . $this->First . ' ' . $this->Second . ')' :
-								(($hash = getHash('SELECT username,First,Second FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ModifierID), $this->DB_WE)) ?
-										$hash['username'] . ' (' . $hash['First'] . ' ' . $hash['Second'] . ')' :
-										g_l('modules_users', '[lostID]') . $this->ModifierID . g_l('modules_users', '[lostID2]'))
-						) :
-						'-');
+				($this->ModifierID == $this->ID ?
+					$this->username . ' (' . $this->First . ' ' . $this->Second . ')' :
+					(($hash = getHash('SELECT username,First,Second FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ModifierID), $this->DB_WE)) ?
+						$hash['username'] . ' (' . $hash['First'] . ' ' . $hash['Second'] . ')' :
+						g_l('modules_users', '[lostID]') . $this->ModifierID . g_l('modules_users', '[lostID2]'))
+				) :
+				'-');
 		$_tableObj = new we_html_table(array(), 5, 2, array(
 			array(
 				array(array('style' => 'padding-bottom:10px;width:280px;'), $_username),
@@ -1677,14 +1675,14 @@ function delElement(elvalues,elem) {
 			$parts[] = array(
 				'headline' => g_l('modules_users', '[workspace_customer]'),
 				'html' => ($this->ParentID ?
-						'<div id="infoCUSTOMER" style="' . ($this->ParentWsCust ? '' : 'display:none;') . '">' . we_html_tools::htmlAlertAttentionBox($parent, we_html_tools::TYPE_INFO, 600) . '</div>' .
-						$this->formInherits('_ParentWsCust', $this->ParentWsCust, g_l('modules_users', '[inherit_cust]'), 'document.getElementById(\'infoCUSTOMER\').style.display=(this.checked?\'inline\':\'none\');') : '') . $view->getFilterCustomers(),
+					'<div id="infoCUSTOMER" style="' . ($this->ParentWsCust ? '' : 'display:none;') . '">' . we_html_tools::htmlAlertAttentionBox($parent, we_html_tools::TYPE_INFO, 600) . '</div>' .
+					$this->formInherits('_ParentWsCust', $this->ParentWsCust, g_l('modules_users', '[inherit_cust]'), 'document.getElementById(\'infoCUSTOMER\').style.display=(this.checked?\'inline\':\'none\');') : '') . $view->getFilterCustomers(),
 				'space' => 200
 			);
 		}
 
 		return $content .
-				we_html_multiIconBox::getHTML('', $parts, 30);
+			we_html_multiIconBox::getHTML('', $parts, 30);
 	}
 
 	function formPreferences($branch = ''){
@@ -1693,7 +1691,7 @@ function delElement(elvalues,elem) {
 		$groups = array(
 			'glossary' => g_l('prefs', '[tab_glossary]'),
 			'ui' => g_l('prefs', '[tab][ui]'),
-				//'editor' => g_l('prefs', '[tab][editor]'),
+			//'editor' => g_l('prefs', '[tab][editor]'),
 		);
 
 		$titles = $groups;
@@ -1701,16 +1699,16 @@ function delElement(elvalues,elem) {
 		$multiboxes = array(
 			'glossary' => $this->formPreferencesGlossary(),
 			'ui' => $this->formPreferencesUI(),
-				//'editor' => $this->formPreferencesEditor(),
+			//'editor' => $this->formPreferencesEditor(),
 		);
 
 		return we_html_multiIconBox::getHTML('', array(
-					array(
-						'headline' => '',
-						'html' => $dynamic_controls->fold_multibox_groups($groups, $titles, $multiboxes, $branch),
-						'space' => 0
-					)
-						), 30);
+				array(
+					'headline' => '',
+					'html' => $dynamic_controls->fold_multibox_groups($groups, $titles, $multiboxes, $branch),
+					'space' => 0
+				)
+				), 30);
 	}
 
 	function formPreferencesGlossary(){
@@ -2019,7 +2017,7 @@ function show_seem_chooser(val) {
 
 		// Build apply current window dimension
 		$_window_current_dimension_table = '<div style="padding-left:90px;">' .
-				we_html_button::create_button("apply_current_dimension", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = top.opener.top.window.outerWidth;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value =top.opener.top.window.outerHeight;", true, 210) . '</div>';
+			we_html_button::create_button("apply_current_dimension", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = top.opener.top.window.outerWidth;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value =top.opener.top.window.outerHeight;", true, 210) . '</div>';
 
 		// Build final HTML code
 		$_window_html = new we_html_table(array('class' => 'default withBigSpace'), 3, 1);
@@ -2034,7 +2032,7 @@ function show_seem_chooser(val) {
 		$_window_predefined_table = new we_html_table(array('class' => 'withBigSpace', 'style' => 'text-align:right'), 2, 1);
 
 		$_window_predefined_table->setCol(0, 0, null, we_html_button::create_button("res_800", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '800';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '600';", true) .
-				we_html_button::create_button("res_1024", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1024';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '768';", true));
+			we_html_button::create_button("res_1024", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1024';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '768';", true));
 		$_window_predefined_table->setCol(1, 0, null, we_html_button::create_button("res_1280", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1280';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '960';", true) . we_html_button::create_button("res_1600", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1600';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '1200';", true));
 
 		// Build dialog
@@ -2194,7 +2192,7 @@ function show_seem_chooser(val) {
 <table class="default" width="500">
 	<tr>
 		<td class="defaultfont">' .
-				we_html_forms::checkbox(1, ($value ? true : false), $this->Name . $name, $title, '', 'defaultfont', 'top.content.setHot();' . $onClick) . '
+			we_html_forms::checkbox(1, ($value ? true : false), $this->Name . $name, $title, '', 'defaultfont', 'top.content.setHot();' . $onClick) . '
 	</tr>
 </table>';
 	}
@@ -2255,8 +2253,8 @@ function resetTabs(){
 		top.content.editor.edbody.document.we_form.tab.value = ' . self::TAB_DATA . ';
 		top.content.editor.edheader.tabCtrl.weTabs.setActiveTab(' . self::TAB_DATA . ');
 }') .
-				$tab_header .
-				'<div id="main"><div id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", ($this->Path ? : $this->getPath($this->ParentID))) . '</b></span></nobr></div>' . $we_tabs->getHTML() . '</div>';
+			$tab_header .
+			'<div id="main"><div id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", ($this->Path ? : $this->getPath($this->ParentID))) . '</b></span></nobr></div>' . $we_tabs->getHTML() . '</div>';
 	}
 
 	public static function getUsername($id, we_database_base $db = null){
@@ -2377,16 +2375,23 @@ function resetTabs(){
 	 * @param type $storedPassword DB-field!!! //needs to be cause of salt!
 	 * @param type $clearPassword //posted password
 	 */
-	static function comparePasswords($useSalt, $username, $storedPassword, $clearPassword){
+	static function comparePasswords($username, $storedPassword, $clearPassword){
+		$matches = array();
+		$useSalt = (!preg_match('|^\$([^$]{2,4})\$([^$]+)\$(.+)$|', $storedPassword, $matches) ?
+				//old md5
+				self::SALT_MD5 :
+				$matches[1]);
+
 		switch($useSalt){
 			default:
-			case self::SALT_NONE:
-				$passwd = md5($clearPassword);
-				break;
+			/* unsupported
+			 * 			case self::SALT_NONE:
+			  $passwd = md5($clearPassword);
+			  break; */
 			case self::SALT_MD5:
 				$passwd = md5($clearPassword . md5($username));
 				break;
-			case self::SALT_CRYPT:
+			case '2y':
 				$passwd = crypt($passwd = substr($clearPassword, 0, 64), $storedPassword);
 				break;
 		}
@@ -2403,9 +2408,8 @@ function resetTabs(){
 		return $salt;
 	}
 
-	public static function makeSaltedPassword(&$useSalt, $username, $passwd, $strength = 15){
+	public static function makeSaltedPassword($username, $passwd, $strength = 15){
 		$passwd = substr($passwd, 0, 64);
-		$useSalt = self::SALT_CRYPT;
 		return crypt($passwd, '$2y$' . sprintf('%02d', $strength) . '$' . self::getHashIV(22));
 	}
 
@@ -2470,12 +2474,12 @@ function resetTabs(){
 	public static function logLoginFailed($table, $user){
 		$db = $GLOBALS['DB_WE'];
 		$db->query('INSERT INTO ' . FAILED_LOGINS_TABLE . ' SET ' . we_database_base::arraySetter(array(
-					'UserTable' => $table,
-					'Username' => $user,
-					'IP' => $_SERVER['REMOTE_ADDR'],
-					'Servername' => $_SERVER['SERVER_NAME'],
-					'Port' => $_SERVER['SERVER_PORT'],
-					'Script' => $_SERVER['SCRIPT_NAME']
+				'UserTable' => $table,
+				'Username' => $user,
+				'IP' => $_SERVER['REMOTE_ADDR'],
+				'Servername' => $_SERVER['SERVER_NAME'],
+				'Port' => $_SERVER['SERVER_PORT'],
+				'Script' => $_SERVER['SCRIPT_NAME']
 		)));
 	}
 
