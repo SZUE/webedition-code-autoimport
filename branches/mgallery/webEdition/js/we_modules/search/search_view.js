@@ -58,9 +58,7 @@ weSearch = {
 		success: function (o) {
 			if (o.responseText !== undefined && o.responseText !== '') {
 				weSearch.conf.editorBodyFrame.document.getElementById('scrollContent_' + weSearch.conf.whichsearch).innerHTML = o.responseText;
-				var iconPlaceHolders = weSearch.conf.editorBodyFrame.document.getElementById('scrollContent_' + weSearch.conf.whichsearch).getElementsByTagName('we-icon');
-				WE().util.resolveIconPlaceholders(iconPlaceHolders);
-
+				WE().util.setIconOfDocClass(document, 'resultIcon');
 				weSearch.makeAjaxRequestParametersTop();
 				weSearch.makeAjaxRequestParametersBottom();
 			}

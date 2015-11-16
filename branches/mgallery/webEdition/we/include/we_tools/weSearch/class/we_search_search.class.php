@@ -78,7 +78,7 @@ class we_search_search extends we_search_base{
 			$obj->searchclassFolder->mode = we_base_request::_(we_base_request::BOOL, 'mode', $obj->searchclassFolder->mode);
 			$obj->searchclassFolder->order = we_base_request::_(we_base_request::STRING, 'order', $obj->searchclassFolder->order);
 			$obj->searchclassFolder->anzahl = we_base_request::_(we_base_request::INT, 'anzahl', $obj->searchclassFolder->anzahl);
-			$obj->searchclassFolder->location = we_base_request::_(we_base_request::STRING, 'location', $obj->searchclassFolder->location);
+			$obj->searchclassFolder->location = we_base_request::_(we_base_request::RAW, 'location', $obj->searchclassFolder->location);
 			$obj->searchclassFolder->search = we_base_request::_(we_base_request::STRING, 'search', $obj->searchclassFolder->search);
 
 			if($view !== false){

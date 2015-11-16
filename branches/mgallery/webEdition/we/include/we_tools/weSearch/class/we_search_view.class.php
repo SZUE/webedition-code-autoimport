@@ -1748,7 +1748,7 @@ WE().consts.g_l.weSearch = {
 			}
 		} else {
 			$imagesize = array(0, 0);
-			$imageView = $imageViewPopup = $iconPlaceholders ? '<we-icon ct="' . $file["ContentType"] . '" open="0" ext="' . $file['Extension'] . '"></we-icon>' :
+			$imageView = $imageViewPopup = $iconPlaceholders ? '<span class="resultIcon" data-contenttype="' . $file["ContentType"] . '" data-extension="' . $file['Extension'] . '"></span>' :
 					we_html_element::jsElement('document.write(WE().util.getTreeIcon("' . $file["ContentType"] . '",false,"' . $file['Extension'] . '"))');
 		}
 
@@ -2244,7 +2244,7 @@ WE().consts.g_l.weSearch = {
 <col style="width:18%;text-align:left;"/>
 </colgroup>' :
 				'<colgroup>
-<col style="width:30px;text-align:center;"/>
+<col style="width:40px;text-align:center;"/>
 <col style="width:80px;text-align:center;"/>
 <col style="text-align:left;"/>
 <col style="width:70px;text-align:left;"/>
@@ -2289,7 +2289,7 @@ WE().consts.g_l.weSearch = {
 <col style="width:18%;text-align:left;"/>
 </colgroup>' : '
 <colgroup>
-<col style="width:30px;text-align:center;"/>
+<col style="width:40px;text-align:center;"/>
 <col style="width:80px;text-align:left;"/>
 <col style="text-align:left;"/>
 </colgroup>

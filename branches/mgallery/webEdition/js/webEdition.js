@@ -1474,16 +1474,6 @@ WE().util.getTreeIcon = function (contentType, open, extension) {
 	}
 };
 
-WE().util.resolveIconPlaceholders = function(placeholders){
-	var arr = Array.prototype.slice.call(placeholders),
-		ph;
-
-	while (arr.length) {
-		ph = arr.shift();
-		ph.parentNode.innerHTML = WE().util.getTreeIcon(ph.getAttribute('ct'), (ph.getAttribute('open') === '1' || ph.getAttribute('open') === 'true'), ph.getAttribute('ext'));
-	}
-};
-
 WE().util.sprintf = function (argum) {
 	if (!arguments || arguments.length === 0) {
 		return;
