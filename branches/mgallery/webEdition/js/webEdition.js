@@ -1475,9 +1475,11 @@ WE().util.getTreeIcon = function (contentType, open, extension) {
 };
 
 WE().util.resolveIconPlaceholders = function(placeholders){
-	var ph;
-	while (placeholders.length) {
-		ph = placeholders.shift();
+	var arr = Array.prototype.slice.call(placeholders),
+		ph;
+
+	while (arr.length) {
+		ph = arr.shift();
 		ph.parentNode.innerHTML = WE().util.getTreeIcon(ph.getAttribute('ct'), (ph.getAttribute('open') === '1' || ph.getAttribute('open') === 'true' ? true : false), ph.getAttribute('ext'));
 	}
 };
