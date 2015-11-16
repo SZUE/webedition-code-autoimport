@@ -1480,7 +1480,7 @@ WE().util.resolveIconPlaceholders = function(placeholders){
 
 	while (arr.length) {
 		ph = arr.shift();
-		ph.parentNode.innerHTML = WE().util.getTreeIcon(ph.getAttribute('ct'), (ph.getAttribute('open') === '1' || ph.getAttribute('open') === 'true' ? true : false), ph.getAttribute('ext'));
+		ph.parentNode.innerHTML = WE().util.getTreeIcon(ph.getAttribute('ct'), (ph.getAttribute('open') === '1' || ph.getAttribute('open') === 'true'), ph.getAttribute('ext'));
 	}
 };
 

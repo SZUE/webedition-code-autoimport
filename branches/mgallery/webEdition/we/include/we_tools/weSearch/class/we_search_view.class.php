@@ -1004,24 +1004,31 @@ WE().consts.g_l.weSearch = {
 								case 'search_tables_advSearch[' . (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 									$_tables[] = OBJECT_FILES_TABLE;
 									break;
-								case 'search_tables_advSearch[' . (defined('OBJECT_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_TABLE'):
+								case 'search_tables_advSearch[' . (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
 									$_tables[] = OBJECT_TABLE;
 									break;
 							}
 						}
 					}
-
 					break;
 			}
 
 			$searchFields = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'searchFields' . $whichSearch);
+		$searchFields = $_REQUEST['we_cmd']['searchFields' . $whichSearch];
 			$location = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'location' . $whichSearch);
+		$location = $_REQUEST['we_cmd']['location' . $whichSearch];
 			$searchText = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 'search' . $whichSearch); //allow to search for tags
+		$searchText = $_REQUEST['we_cmd']['search' . $whichSearch];
 			$_order = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'Order' . $whichSearch);
+		$_order = $_REQUEST['we_cmd']['Order' . $whichSearch];
 			$_view = we_base_request::_(we_base_request::STRING, 'we_cmd', self::VIEW_LIST, 'setView' . $whichSearch);
+		$_view = $_REQUEST['we_cmd']['setView' . $whichSearch];
 
 			$_searchstart = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'searchstart' . $whichSearch);
+		$_searchstart = $_REQUEST['we_cmd']['searchstart' . $whichSearch];
 			$_anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'anzahl' . $whichSearch);
+		$_anzahl = $_REQUEST['we_cmd']['anzahl' . $whichSearch];
+
 		} else {
 			$obj = $this->Model;
 
@@ -1573,7 +1580,7 @@ WE().consts.g_l.weSearch = {
 					array(
 						array("dat" => $actionCheckbox),
 						array("dat" => $iconHTML['imageView']),
-						array("dat" => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . '"><u>' . $_result[$f]["Text"]),
+						array("dat" => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . ' (ID: ' . $_result[$f]['docID'] . ')"><u>' . $_result[$f]["Text"]),
 						array("dat" => ($whichSearch === 'TmplSearch' ? str_replace('/' . $_result[$f]["Text"], '', $_result[$f]["Path"]) : $_result[$f]["SiteTitle"])),
 						array("dat" => isset($_result[$f]["VersionID"]) && $_result[$f]['VersionID'] ?
 								"-" :
