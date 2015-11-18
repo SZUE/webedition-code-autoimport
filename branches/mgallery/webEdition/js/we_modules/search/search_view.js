@@ -1,3 +1,21 @@
+WE().consts.g_l.weSearch = {
+	noTempTableRightsSearch: '',
+	nothingCheckedAdv: '',
+	nothingCheckedTmplDoc: '',
+	buttonSelectValue: '',
+	versionsResetAllVersionsOK: '',
+	versionsNotChecked: '',
+	searchtool__notChecked: '',
+	searchtool__publishOK: ''
+},
+
+WE().consts.weSearch = {
+	SEARCH_DOCS: '',
+	SEARCH_TMPL: '',
+	SEARCH_MEDIA: '',
+	SEARCH_ADV: ''
+};
+
 weSearch = {
 	conf: {
 		whichsearch: '',
@@ -25,16 +43,7 @@ weSearch = {
 		pixel: '',
 		searchFields: ''
 	},
-	g_l: {
-		noTempTableRightsSearch: '',
-		nothingCheckedAdv: '',
-		nothingCheckedTmplDoc: '',
-		buttonSelectValue: '',
-		versionsResetAllVersionsOK: '',
-		versionsNotChecked: '',
-		searchtool__notChecked: '',
-		searchtool__publishOK: ''
-	},
+
 	elem: null,
 	init: function (we_const, conf, g_l) {
 		//top.console.debug("running");
@@ -99,7 +108,7 @@ weSearch = {
 	},
 	search: function (newSearch) {
 		if (!this.conf.checkRightTempTable && !this.conf.heckRightDropTable) {
-			top.we_showMessage(this.g_l.noTempTableRightsSearch, WE().consts.message.WE_MESSAGE_NOTICE, window);
+			top.we_showMessage(WE().consts.g_l.weSearch.noTempTableRightsSearch, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			return;
 		}
 
@@ -117,7 +126,7 @@ weSearch = {
 					}
 				}
 				if (Checks.length === 0) {
-					top.we_showMessage(this.g_l.nothingCheckedAdv, WE().consts.message.WE_MESSAGE_ERROR, window);
+					top.we_showMessage(WE().consts.g_l.weSearch.nothingCheckedAdv, WE().consts.message.WE_MESSAGE_ERROR, window);
 				}
 				break;
 			case WE().consts.weSearch.SEARCH_DOCS:
@@ -137,7 +146,7 @@ weSearch = {
 				if (Checks.length === 0) {
 					//FIXME: dirty fix => allow to search without searchForXX when no searchFieldsMediaSearch[0] is empty
 					if (this.conf.editorBodyFrame.document.we_form.elements['searchMediaSearch[0]'].value) {
-						top.we_showMessage(this.g_l.nothingCheckedTmplDoc, WE().consts.message.WE_MESSAGE_ERROR, window);
+						top.we_showMessage(WE().consts.g_l.weSearch.nothingCheckedTmplDoc, WE().consts.message.WE_MESSAGE_ERROR, window);
 					} else {
 						Checks[0] = '';
 					}
@@ -154,7 +163,7 @@ weSearch = {
 					}
 				}
 				if (Checks.length === 0) {
-					top.we_showMessage(this.g_l.nothingCheckedTmplDoc, WE().consts.message.WE_MESSAGE_ERROR, window);
+					top.we_showMessage(WE().consts.g_l.weSearch.nothingCheckedTmplDoc, WE().consts.message.WE_MESSAGE_ERROR, window);
 				}
 				break;
 		}
@@ -249,6 +258,13 @@ weSearch = {
 	},
 	absTop: function (el) {
 		return (el.offsetParent) ? el.offsetTop + this.absTop(el.offsetParent) : el.offsetTop;
+	},
+	reloadSameRange: function () {
+		var scrollActive = document.getElementById('scrollActive');
+		if (scrollActive === null) {
+			//this.conf.editorBodyFrame.document.we_form.elements['searchstart' + this.conf.whichsearch].value = parseInt(this.conf.editorBodyFrame.document.we_form.elements['searchstart' + this.conf.whichsearch].value) + anzahl;
+			this.search(false);
+		}
 	},
 	next: function (anzahl) {
 		var scrollActive = document.getElementById('scrollActive');
@@ -691,7 +707,7 @@ weSearch = {
 		}
 
 		if (check == false) {
-			top.we_showMessage(this.g_l.versionsNotChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
+			top.we_showMessage(WE().consts.g_l.weSearch.versionsNotChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
 		} else {
 			Check = confirm("' . g_l('versions', '[resetVersionsSearchtool]') . '");
 			if (Check == true) {
@@ -748,38 +764,12 @@ weSearch = {
 		}
 
 		if (check == false) {//searchtool__notChecked
-			top.we_showMessage(this.g_l.searchtool__notChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
+			top.we_showMessage(WE().consts.g_l.weSearch.searchtool__notChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
 		}
 		else {
 			Check = confirm("' . g_l('searchtool', '[publish_docs]') . '");
 			if (Check == true) {
 				this.publishDocsAjax(whichSearch);
-			}
-		}
-	},
-	deleteDocs: function (whichSearch) {
-		//var checkAll = document.getElementsByName("action_all_" + whichSearch);
-		var checkboxes = document.getElementsByName("delete_docs_" + whichSearch);
-		var check = false;
-
-		for (var i = 0; i < checkboxes.length; i++) {
-			if (checkboxes[i].checked) {
-				check = true;
-				break;
-			}
-		}
-
-		if (checkboxes.length == 0) {
-			check = false;
-		}
-
-		if (check == false) {//searchtool__notChecked
-			top.we_showMessage(this.g_l.searchtool__notChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
-		}
-		else {
-			Check = confirm("you really want to delete them?\n=> coming soon...");
-			if (Check == true) {
-				//this.publishDocsAjax(whichSearch);
 			}
 		}
 	},
@@ -803,7 +793,7 @@ weSearch = {
 					_usedEditors[frameId].setEditorReloadAllNeeded(true);
 					_usedEditors[frameId].setEditorIsActive(true);
 				} else {
-					_usedEditors[frameId].setEditorReloadAllNeeded(true);
+					_usedEditors[frameId].setEditorReloadAllNeeded(true); 
 				}
 			}
 			_multiEditorreload = true;
@@ -812,7 +802,7 @@ weSearch = {
 			if (top.opener.treeData) {
 				top.opener.we_cmd("load", top.opener.treeData.table, 0);
 			}
-			document.getElementById("resetBusy" + this.conf.whichsearch).innerHTML = "";
+			document.getElementById("resetBusy" + weSearch.conf.whichsearch).innerHTML = "";
 			document.getElementById("resetBusyDocSearch").innerHTML = "";
 			top.we_showMessage(WE().consts.g_l.weSearch.searchtool__publishOK, WE().consts.message.WE_MESSAGE_NOTICE, window);
 
@@ -849,6 +839,76 @@ weSearch = {
 				//Calendar.setup({inputField:"search" + this.conf.whichsearch + "["+i+"]",ifFormat:"%d.%m.%Y",button:"date_picker_from"+i+"",align:"Tl",singleClick:true});
 			}
 		}
-	}
+	},
+	deleteMediaDocs: function (whichSearch) { 
+		var checkboxes = document.getElementsByName("delete_docs_" + whichSearch);
+		var check = false;
 
+		for (var i = 0; i < checkboxes.length; i++) {
+			if (checkboxes[i].checked) {
+				check = true;
+				break;
+			}
+		}
+
+		if (!check) {
+			top.we_showMessage(WE().consts.g_l.weSearch.searchtool__notChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
+		} else {
+			var conf = confirm("you really want to delete them?");
+			if (conf) {
+				this.deleteMediaDocsAjax(whichSearch);
+			}
+		}
+	},
+	deleteMediaDocsAjax: function (whichSearch) {
+		var args = '',
+			check = '',
+			checkboxes = document.getElementsByName("delete_docs_" + whichSearch);
+
+		for (var i = 0; i < checkboxes.length; i++) {
+			if (checkboxes[i].checked) {
+				check += (check ? ',' : '') + checkboxes[i].value;
+			}
+		}
+		args += '&we_cmd[0]=' + encodeURI(check);
+
+		var scroll = document.getElementById('resetBusy' + whichSearch);
+		scroll.innerHTML = '<div><i class=\"fa fa-2x fa-spinner fa-pulse\"></i></div>';
+
+		YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackDeleteMediaDocs, 'protocol=json&cns=tools/weSearch&cmd=DeleteMediaDocs&' + args + '');
+	},
+	ajaxCallbackDeleteMediaDocs: {
+		success: function (o) {
+			var response = JSON.parse(o.responseText);top.console.log(response.deletedItems.join());
+			top.we_showMessage(response.message, WE().consts.message.WE_MESSAGE_NOTICE, window);
+
+			// close all Editors with deleted documents
+			var _usedEditors =  WE().layout.weEditorFrameController.getEditorsInUse(),
+				_delete_table = WE().consts.tables.FILE_TABLE,
+				_delete_Ids = ',' + response.deletedItems.join() + ',',
+				frameId;
+
+			for (frameId in _usedEditors) {top.console.log('do!', frameId);
+				if (_delete_table == _usedEditors[frameId].getEditorEditorTable() && (_delete_Ids.indexOf(',' + _usedEditors[frameId].getEditorDocumentId() + ',') != -1)) {
+					_usedEditors[frameId].setEditorIsHot(false);
+					WE().layout.weEditorFrameController.closeDocument(frameId);
+				}
+			}
+
+			//reload tree
+			if (top.opener.treeData) {
+				top.opener.we_cmd("load", top.opener.treeData.table, 0);
+			}
+
+			// reset busy
+			document.getElementById("resetBusy" + weSearch.conf.whichsearch).innerHTML = '';
+			document.getElementById("resetBusyDocSearch").innerHTML = '';
+
+			// reload search from same startID
+			weSearch.reloadSameRange();
+		},
+		failure: function (o) {top.console.log("callback failure");
+			//alert("Failure");
+		}
+	}
 };

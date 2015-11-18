@@ -397,12 +397,7 @@ function mark() {
 		$showSelects = '';
 		return we_html_element::jsScript(JS_DIR . 'we_modules/search/search_view.js') .
 			we_html_element::jsElement('
-WE().consts.weSearch= {
-	SEARCH_DOCS: "' . self::SEARCH_DOCS . '",
-	SEARCH_TMPL: "' . self::SEARCH_TMPL . '",
-	SEARCH_MEDIA: "' . self::SEARCH_MEDIA . '",
-	SEARCH_ADV: "' . self::SEARCH_ADV . '"
-};
+
 weSearch.conf = {
 	whichsearch: "' . $whichSearch . '",
 	editorBodyFrame : ' . $this->editorBodyFrame . ',
@@ -427,6 +422,13 @@ weSearch.elems = {
 	selModFields: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('search' . $whichSearch . '[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . $whichSearch . "[__we_new_id__]"))) . '\',
 	selUsers: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('search' . $whichSearch . '[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . $whichSearch . "[__we_new_id__]"))) . '\',
 	searchFields: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('searchFields' . $whichSearch . '[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", $whichSearch), 1, "", false, array('class' => "defaultfont", 'id' => "searchFields" . $whichSearch . "[__we_new_id__]", 'onchange' => "weSearch.changeit(this.value, __we_new_id__);"))) . '\'
+};
+
+WE().consts.weSearch= {
+	SEARCH_DOCS: "' . self::SEARCH_DOCS . '",
+	SEARCH_TMPL: "' . self::SEARCH_TMPL . '",
+	SEARCH_MEDIA: "' . self::SEARCH_MEDIA . '",
+	SEARCH_ADV: "' . self::SEARCH_ADV . '"
 };
 WE().consts.g_l.weSearch = {
 	noTempTableRightsSearch: "' . g_l('searchtool', '[noTempTableRightsSearch]') . '",
@@ -567,8 +569,6 @@ WE().consts.g_l.weSearch = {
 				$_table->setCol(0, 1, array(), we_html_forms::checkboxWithHidden($this->Model->searchForAudioMediaSearch ? true : false, "searchForAudioMediaSearch", 'Audio', false, 'defaultfont', ''));
 				$_table->setCol(1, 1, array(), we_html_forms::checkboxWithHidden($this->Model->searchForVideoMediaSearch ? true : false, "searchForVideoMediaSearch", 'Video', false, 'defaultfont', ''));
 				$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForPdfMediaSearch ? true : false, "searchForOtherMediaSearch", 'Sonstige Medien-Dateien', false, 'defaultfont', '', false));
-
-
 				break;
 			default:
 				return;
@@ -593,18 +593,18 @@ WE().consts.g_l.weSearch = {
 					we_html_tools::htmlSelect('searchMediaSearch[' . $n . ']', array(
 						0 => g_l('searchtool', '[all]'),
 						1 => g_l('searchtool', '[only_unsed]'),
-						2 => g_l('searchtool', '[only_unused]')), 1, isset($this->Model->searchMediaSearch[$n]) ? $this->Model->searchMediaSearch[$n++] : '', false, array(), 'value', 220));
+						2 => g_l('searchtool', '[only_unused]')), 1, isset($this->Model->searchMediaSearch[$n]) ? $this->Model->searchMediaSearch[$n] : '', false, array(), 'value', 220));
 
 				$_table->setCol(1, 0, array(), g_l('searchtool', '[protection]') . ': ');
 				$_table->setCol(1, 1, array('colspan' => 2), we_html_element::htmlHiddens(array(
-						'searchFieldsMediaSearch[' . $n . ']' => 'IsProtected',
+						'searchFieldsMediaSearch[' . ++$n . ']' => 'IsProtected',
 						'locationMediaSearch[' . $n . ']' => 'IS')) .
 					we_html_tools::htmlSelect('searchMediaSearch[' . $n . ']', array(
 						0 => g_l('searchtool', '[all]'),
 						1 => g_l('searchtool', '[only_protected]'),
-						2 => g_l('searchtool', '[only_unprotected]')), 1, isset($this->Model->searchMediaSearch[$n]) ? $this->Model->searchMediaSearch[$n++] : '', false, array(), 'value', 220));
+						2 => g_l('searchtool', '[only_unprotected]')), 1, isset($this->Model->searchMediaSearch[$n]) ? $this->Model->searchMediaSearch[$n] : '', false, array(), 'value', 220));
 
-				$this->searchMediaOptFieldIndex = $n;
+				$this->searchMediaOptFieldIndex = ++$n;
 				break;
 			default:
 				return;
@@ -1844,7 +1844,7 @@ WE().consts.g_l.weSearch = {
 				break;
 			case self::SEARCH_MEDIA:
 				$actionButtonCheckboxAll = we_html_forms::checkbox(1, 0, "action_all_" . $whichSearch, "", false, "middlefont", "weSearch.checkAllActionChecks('" . $whichSearch . "')");
-				$actionButton = we_html_button::create_button(we_html_button::DELETE, "javascript:weSearch.deleteDocs('" . $whichSearch . "');", true, 100, 22, "", "");
+				$actionButton = we_html_button::create_button(we_html_button::DELETE, "javascript:weSearch.deleteMediaDocs('" . $whichSearch . "');", true, 100, 22, "", "");
 				$publishButton = $publishButtonCheckboxAll = "";
 				break;
 			default:
