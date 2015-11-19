@@ -726,15 +726,15 @@ $we_menu = array(
 );
 
 $dtq = we_docTypes::getDoctypeQuery($GLOBALS['DB_WE']);
-$GLOBALS['DB_WE']->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
-$pre = '1010102_';
-$nr = 0;
+$GLOBALS['DB_WE']->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where'].' LIMIT 95');
+$pre = '10101';
+$nr = 1;
 if($GLOBALS['DB_WE']->num_rows() && permissionhandler::hasPerm('NO_DOCTYPE')){
-	$we_menu[$pre . sprintf('%09d', $nr++)] = array('parent' => 1010100); // separator
+	$we_menu[$pre . sprintf('%02d', ++$nr)] = array('parent' => 1010100); // separator
 }
 // File > New > webEdition Document > Doctypes*
 while($GLOBALS['DB_WE']->next_record()){
-	$we_menu[$pre . sprintf('%09d', $nr++)] = array(
+	$we_menu[$pre . sprintf('%02d', ++$nr)] = array(
 		'text' => str_replace(array(',', '"', '\'',), array(' ', ''), $GLOBALS['DB_WE']->f('DocType')),
 		'parent' => 1010100,
 		'cmd' => 'new_dtPage' . $GLOBALS['DB_WE']->f('ID'),
@@ -747,11 +747,11 @@ if(defined('OBJECT_TABLE')){
 	// object from which class
 	$ac = we_users_util::getAllowedClasses($GLOBALS['DB_WE']);
 	if($ac){
-		$GLOBALS['DB_WE']->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' ' . ($ac ? ' WHERE ID IN(' . implode(',', $ac) . ') ' : '') . 'ORDER BY Text');
-		$pre = '1010200_';
+		$GLOBALS['DB_WE']->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' ' . ($ac ? ' WHERE ID IN(' . implode(',', $ac) . ') ' : '') . 'ORDER BY Text LIMIT 95');
+		$pre = '10102';
 		$nr = 0;
 		while($GLOBALS['DB_WE']->next_record()){
-			$we_menu[$pre . sprintf('%09d', $nr++)] = array(
+			$we_menu[$pre . sprintf('%02d', ++$nr)] = array(
 				'text' => str_replace(array('"', '\''), '', $GLOBALS['DB_WE']->f('Text')),
 				'parent' => 1010200,
 				'cmd' => 'new_ClObjectFile' . $GLOBALS['DB_WE']->f('ID'),
@@ -769,7 +769,7 @@ $allModules = we_base_moduleInfo::getAllModules();
 we_base_moduleInfo::orderModuleArray($allModules);
 
 //$moduleList = 'schedpro|';
-$pre = '3000000_';
+$pre = '3000';
 $nr = 0;
 foreach($allModules as $m){
 	if(we_base_moduleInfo::showModuleInMenu($m['name'])){
@@ -778,7 +778,7 @@ foreach($allModules as $m){
 		  $moduleList .= 'customerpro|';
 		  }
 		  $moduleList .= $m['name'] . '|'; */
-		$we_menu[$pre . sprintf('%09d', $nr++)] = array(
+		$we_menu[$pre . sprintf('%03d', ++$nr)] = array(
 			'text' => $m['text'] . '&hellip;',
 			'parent' => 3000000,
 			'cmd' => $m['name'] . '_edit_ifthere',
