@@ -580,6 +580,7 @@ function we_tag_listviewStart(){
 	return $GLOBALS['lv']->start + 1 - abs($GLOBALS['lv']->offset);
 }
 
+//FIXME: remove in 7.1
 function we_tag_ifshopexists(){
 	t_e('deprecated', __FUNCTION__);
 	return we_tag('ifIsActive', array('name' => 'shop'));
