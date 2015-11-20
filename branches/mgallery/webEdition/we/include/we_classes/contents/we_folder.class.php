@@ -258,7 +258,7 @@ class we_folder extends we_root{
 		$DB_WE = new DB_WE();
 
 		$language = $this->Language;
-		$documentTable = ($this->Table == FILE_TABLE) ? 'tblFile' : 'tblObjectFile';
+		$documentTable = stripTblPrefix($this->Table);
 
 		// Adapt tblLangLink-entries of documents and objects to the new language (all published and unpublished)
 

@@ -2206,7 +2206,7 @@ class we_objectFile extends we_document{
 			if(!is_array($this->LangLinks)){
 				$this->LangLinks = array();
 			}
-			$this->setLanguageLink($this->LangLinks, 'tblObjectFile', false, true);
+			$this->setLanguageLink($this->LangLinks, stripTblPrefix(OBJECT_FILES_TABLE), false, true);
 		} else {
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!
 			$this->checkRemoteLanguage($this->Table, false);

@@ -303,7 +303,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="href"
 			$db->query('UPDATE ' . CONTENT_TABLE . ' SET dHash=unhex(md5(Dat)) WHERE Dat IS NOT NULL AND dHash=x\'00000000000000000000000000000000\'');
 		}
 		return;
-
+//the latter will be enabled in future releases
 
 		//FIXME: change tabledefinition of content table
 		define('CONTENT_TABLEx', CONTENT_TABLE . 'XX');

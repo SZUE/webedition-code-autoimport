@@ -430,9 +430,9 @@ abstract class we_class{
 	 */
 	protected function checkRemoteLanguage($table, $isfolder = false){
 		if(($newLang = we_base_request::_(we_base_request::STRING, 'we_' . $this->Name . '_Language'))){
+			$isobject = ($table === OBJECT_FILES_TABLE) ? 1 : 0;
 			$type = stripTblPrefix($table);
-			$isobject = ($type === 'tblObjectFile') ? 1 : 0;
-			$type = ($isfolder && $isobject) ? 'tblFile' : ($isobject ? 'tblObjectFile' : $type);
+			$type = ($isfolder && $isobject) ? 'tblFile' : ($isobject ? 'tblObjectFiles' : $type);
 
 			$delete = f('SELECT 1 FROM ' . LANGLINK_TABLE . ' WHERE DLocale!="' . $this->DB_WE->escape($newLang) . '" AND DocumentTable="' . $this->DB_WE->escape($type) . '" AND IsObject=' . intval($isobject) . ' AND IsFolder=' . intval($isfolder) . ' AND DID=' . intval($this->ID) . ' LIMIT 1', '', $this->DB_WE);
 

@@ -88,7 +88,7 @@ abstract class we_base_delete{
 		}
 		// Fast Fix for deleting entries from tblLangLink: #5840
 		if($DB_WE->query('DELETE FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id))){
-			$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $DB_WE->escape($table) . '" AND IsObject=' . ($table == FILE_TABLE ? 0 : 1) . ' AND IsFolder=1 AND DID=' . intval($id));
+			$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '" AND IsObject=' . ($table == FILE_TABLE ? 0 : 1) . ' AND IsFolder=1 AND DID=' . intval($id));
 		}
 
 		self::deleteContentFromDB($id, $table, $DB_WE);
@@ -189,8 +189,8 @@ abstract class we_base_delete{
 						}
 					}
 					// Fast Fix for deleting entries from tblLangLink: #5840
-					$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblObjectFile" AND DID=' . intval($id));
-					$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblObjectFile" AND LDID=' . intval($id));
+					$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblObjectFiles" AND DID=' . intval($id));
+					$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblObjectFiles" AND LDID=' . intval($id));
 				}
 				if(defined('SCHEDULE_TABLE')){ //	Delete entries from schedule as well
 					$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($id) . ' AND ClassName="we_objectFile"');
