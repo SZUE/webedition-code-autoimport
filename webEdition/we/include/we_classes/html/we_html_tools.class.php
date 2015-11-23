@@ -769,7 +769,8 @@ this.selectedIndex = 0;' .
 		foreach($arr as $key => $value){
 			$newPre = strtoupper(substr($value, 0, $len));
 			if($pre != $newPre){
-				$tmp[$newPre] = self::OPTGROUP;
+				//we add an extra space so it never interferes with numeric keys
+				$tmp[' ' . $newPre] = self::OPTGROUP;
 				$pre = $newPre;
 			}
 			$tmp[$key] = $value;
