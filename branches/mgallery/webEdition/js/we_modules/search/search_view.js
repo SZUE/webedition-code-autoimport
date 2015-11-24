@@ -586,7 +586,7 @@ weSearch = {
 				row.removeChild(searchTD);
 
 				// FIXME: move datepicker-button to search_view
-				var innerhtml = '<table id="search' + this.conf.whichsearch + '[' + rowNr + ']_cell" class="default"><tbody><tr>' +
+				innerhtml = '<table id="search' + this.conf.whichsearch + '[' + rowNr + ']_cell" class="default"><tbody><tr>' +
 								'<td></td>' +
 								'<td></td>' +
 								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
@@ -635,7 +635,7 @@ weSearch = {
 					row.removeChild(delButtonTD);
 				}
 
-				var cell = document.createElement('TD');
+				cell = document.createElement('TD');
 				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
 				cell.innerHTML = this.elems.selUsers.replace(/__we_new_id__/g, rowNr);
 				row.appendChild(cell);

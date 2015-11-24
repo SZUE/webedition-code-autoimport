@@ -768,7 +768,7 @@ function we_cmd_base(args, url) {
 			// set Editor hot
 			_EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
 			_EditorFrame.setEditorIsHot(true);
-			//no break;
+			/* falls through */
 		case "reload_editpage":
 		case "wrap_on_off":
 		case "restore_defaults":
