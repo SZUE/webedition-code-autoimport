@@ -1051,7 +1051,7 @@ abstract class we_root extends we_class{
 		if(LANGLINK_SUPPORT){
 			$isFolder = $this instanceof we_folder;
 			$isObject = (defined('OBJECT_FILES_TABLE') ? $this->Table == OBJECT_FILES_TABLE || $this->Table == OBJECT_TABLE : false);
-			$documentTable = $isObject && !$isFolder ? OBJECT_FILES_TABLE : stripTblPrefix(FILE_TABLE);
+			$documentTable = $isObject && !$isFolder ? stripTblPrefix(OBJECT_FILES_TABLE) : stripTblPrefix(FILE_TABLE);
 			$this->DB_WE->query('SELECT Locale,LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $documentTable . '" AND IsObject=' . intval($isObject) . ' AND DID=' . intval($this->ID) . ' AND Locale IN("' . implode('","', $langkeys) . '")');
 			$tmpIDs = $this->DB_WE->getAllFirst(false);
 

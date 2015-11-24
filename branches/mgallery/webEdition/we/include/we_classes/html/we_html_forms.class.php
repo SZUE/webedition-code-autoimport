@@ -230,11 +230,12 @@ abstract class we_html_forms{
 				($fieldName ? we_html_element::jsElement('tinyEditors["' . $fieldName . '"] = "' . $name . '";') : '') .
 				($buttonTop ? '<div class="tbButtonWysiwygBorder" style="border-bottom:0px;">' . $e->getHTML() . '</div>' : '') . '<div class="tbButtonWysiwygBorder ' . ($class ? : "") . ' wetextarea tiny-wetextarea wetextarea-' . $origName . '" id="div_wysiwyg_' . $name . '">' . $previewDivContent . '</div>' . ($buttonBottom ? '<div class="tbButtonWysiwygBorder" style="border-top:0px;">' . $e->getHTML() . '</div>' : '');
 		}
+
 		if($width){
-			$style[] = 'width:' . $width;
+			$style[] = 'width:' . $width . (is_numeric($width) ? 'px' : '');
 		}
 		if($height){
-			$style[] = 'height:' . $height;
+			$style[] = 'height:' . $height  . (is_numeric($height) ? 'px' : '');
 		}
 
 		if($showAutobr || $showSpell){
