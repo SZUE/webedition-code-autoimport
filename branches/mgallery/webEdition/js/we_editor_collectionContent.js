@@ -114,8 +114,7 @@ weCollectionEdit = {
 		item: 200,
 		icon: 32
 	},
-	gridItemDimension: {},
-					itemsPerRow: 4,
+	itemsPerRow: 4,
 	collectionArr: [],
 	collectionCsv: '',
 	collectionNum: 0,
@@ -374,9 +373,9 @@ weCollectionEdit = {
 	insertItem: function (elem, repaint, item, scope, color) {
 		var t = scope ? scope : this,
 						el = elem ? t.getItem(elem) : null,
-						div, newItem, cmd1, cmd2, cmd3, blank, elPreview,
-						color = color ? color : false;
+						div, newItem, cmd1, cmd2, cmd3, blank, elPreview;
 
+		color = color ? color : false;
 		item = item ? item : this.storage['item_-1'];
 		repaint = repaint || false;
 		++t.maxIndex;
@@ -483,7 +482,7 @@ weCollectionEdit = {
 			 this.dd.IsDuplicates = document.we_form['check_we_' + this.we_doc.name + '_IsDuplicates'].checked;
 			 */
 			while (!isFirstSet && items.length) {
-				var item = items.shift();
+				item = items.shift();
 				if (this.dd.IsDuplicates === 1 || this.collectionCsv.search(',' + item.id + ',') === -1) {
 					var newEl = this.insertItem(el, false, item, this, '#00ee00');
 					this.doClickDelete(el);
@@ -625,6 +624,7 @@ weCollectionEdit = {
 	enterDrag: function (type, view, evt, elem) {
 		var el = this.getItem(elem);
 		var data = evt.dataTransfer.getData("text") ? evt.dataTransfer.getData("text").split(',') : top.dd.dataTransfer.text.split(',');
+		var c, i;
 
 		if (this.view === 'grid' && type === 'item') {
 			this.outMouse(type, this.view, elem);
@@ -633,7 +633,7 @@ weCollectionEdit = {
 		switch (data[0]) {
 			case 'moveItem':
 				if (type === 'item') {
-					var c = this.ct[this.view],
+					c = this.ct[this.view],
 									newPos;
 
 					if (!this.dd.moveItem.removed) {
@@ -654,10 +654,10 @@ weCollectionEdit = {
 				if (this.view === 'grid') {
 					switch (type) {
 						case 'item':
-							var c = this.ct[this.view];
+							c = this.ct[this.view];
 
 							this.dd.counter++;
-							for (var i = 0; i < c.childNodes.length; i++) {
+							for (i = 0; i < c.childNodes.length; i++) {
 								c.childNodes[i].firstChild.border = '1px solid #006db8';
 								c.childNodes[i].firstChild.style.backgroundColor = '#ffffff';
 							}
@@ -688,8 +688,8 @@ weCollectionEdit = {
 					}
 				} else {
 					this.dd.counter++;
-					var c = this.ct[this.view];
-					for (var i = 0; i < c.childNodes.length; i++) {
+					c = this.ct[this.view];
+					for (i = 0; i < c.childNodes.length; i++) {
 						c.childNodes[i].style.border = '1px solid #006db8';
 						c.childNodes[i].firstChild.style.backgroundColor = '#f5f5f5';
 					}
