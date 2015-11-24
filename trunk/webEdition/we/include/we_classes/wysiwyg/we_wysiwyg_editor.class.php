@@ -30,8 +30,8 @@ class we_wysiwyg_editor{
 	private $origName = '';
 	private $fieldName = '';
 	private $fieldName_clean = '';
-	var $width = '';
-	var $height = '';
+	var $width = 600;
+	var $height = 400;
 	var $ref = '';
 	var $propstring = '';
 	var $elements = array();
@@ -94,8 +94,6 @@ class we_wysiwyg_editor{
 	private static $allFontSizes = array('0.5em', '0.8em', '1em', '1.2em', '1.5em', '2em', '8px', '10px', '12px', '14px', '18px', '24px', '36px', 'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large', 'smaller', 'larger', 'inherit');
 
 	const CONDITIONAL = true;
-	const DEFAULT_WIDTH = 600;
-	const DEFAULT_HEIGHT = 400;
 	const MIN_WIDTH_INLINE = 100;
 	const MIN_HEIGHT_INLINE = 100;
 	const MIN_WIDTH_POPUP = 100;
@@ -179,8 +177,8 @@ class we_wysiwyg_editor{
 		$this->baseHref = $baseHref ? : we_base_util::getGlobalPath();
 		$this->charset = $charset;
 
-		$this->width = $width;
-		$this->height = $height;
+		$this->width = $width ? : $this->width;
+		$this->height = $height ? : $this->height;
 		$this->ref = preg_replace('%[^0-9a-zA-Z_]%', '', $this->name);
 		$this->hiddenValue = $value;
 		$this->isInPopup = $isInPopup;
@@ -777,8 +775,8 @@ td.mceToolbar{
 				($this->wePlugins ? $this->wePlugins . ',' : '') .
 				'weutil,autolink,template,wewordcount'; //TODO: load "templates" on demand as we do it with other plugins
 
-		$height = $this->height ? we_base_util::convertUnits($this->height) : self::DEFAULT_HEIGHT;
-		$width = $this->width ? we_base_util::convertUnits($this->width) : self::DEFAULT_WIDTH;
+		$height = we_base_util::convertUnits($this->height);
+		$width = we_base_util::convertUnits($this->width);
 		if(is_numeric($height) && is_numeric($width) && $width){
 			//only a simple fix
 			$this->height = $height = $height - ($this->buttonpos === 'external' ? 0 : round((($k) / ($width / (5 * 22))) * 26));
