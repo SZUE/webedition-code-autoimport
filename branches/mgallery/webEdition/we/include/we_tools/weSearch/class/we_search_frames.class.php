@@ -224,16 +224,16 @@ function setTab(tab) {
 			we_html_element::htmlHidden('newone', ($this->Model->ID == 0 ? 1 : 0)) .
 			we_html_element::htmlDiv(array(
 				'id' => 'tab1', 'style' => ($tabNr == 1 ? 'display: block;' : 'display: none')
-				), $this->getHTMLSearchtool($this->getHTMLTabDocuments())) .
+				), $tabNr == 1 ? $this->getHTMLSearchtool($this->getHTMLTabDocuments()) : '') .
 			we_html_element::htmlDiv(array(
 				'id' => 'tab2', 'style' => ($tabNr == 2 ? 'display: block;' : 'display: none')
-				), $this->getHTMLSearchtool($this->getHTMLTabTemplates())) .
+				), $tabNr == 2 ? $this->getHTMLSearchtool($this->getHTMLTabTemplates()) : '') .
 			we_html_element::htmlDiv(array(
 				'id' => 'tab5', 'style' => ($tabNr == 5 ? 'display: block;' : 'display: none')
-				), $this->getHTMLSearchtool($this->getHTMLTabMedia())) .
+				), $tabNr == 5 ? $this->getHTMLSearchtool($this->getHTMLTabMedia()) : '') .
 			we_html_element::htmlDiv(array(
 				'id' => 'tab3', 'style' => ($tabNr == 3 ? 'display: block;' : 'display: none')
-				), $this->getHTMLSearchtool($this->getHTMLTabAdvanced())) .
+				), $tabNr == 3 ? $this->getHTMLSearchtool($this->getHTMLTabAdvanced()) : '') .
 			we_html_element::htmlDiv(array(
 				'id' => 'tab4', 'style' => ($tabNr == 4 ? 'display: block;' : 'display: none')
 				), $this->getHTMLSearchtool($this->getHTMLGeneral()));

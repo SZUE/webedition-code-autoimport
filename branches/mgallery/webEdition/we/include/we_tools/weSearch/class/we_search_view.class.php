@@ -358,7 +358,7 @@ function mark() {
 			default :
 		}
 
-		$_SESSION["weSearch_session"] = $this->Model;
+		$_SESSION['weS'][$this->toolName . '_session'] = $this->Model;
 	}
 
 	function getSearchJS($whichSearch){
@@ -762,7 +762,6 @@ WE().consts.g_l.weSearch = {
 	}
 
 	function getSearchDialog($whichSearch){
-
 		switch($whichSearch){
 			case self::SEARCH_DOCS :
 				$this->Model->locationDocSearch = (($op = we_base_request::_(we_base_request::STRING, "locationDocSearch")) ?
@@ -2577,13 +2576,19 @@ function submitForm(target,action,method) {
 			$this->Model = $_SESSION['weS'][$this->toolName . '_session'];
 		}
 
-		if(is_array($this->Model->persistent_slots)){
-			foreach($this->Model->persistent_slots as $val){
-				if(($tmp = we_base_request::_(we_base_request::STRING, $val))){
-					$this->Model->$val = $tmp;
-				}
+		$tmp = '';
+		$modelVars = array_merge(array( // some vars are not persistent in db but must be written to session anyway
+			'searchstartDocSearch',
+			'searchstartTmplSearch',
+			'searchstartMediaSearch',
+			'searchstartAdvSearch'), (is_array($this->Model->persistent_slots) ? $this->Model->persistent_slots : array()));
+
+		foreach($modelVars as $val){
+			if(($tmp = we_base_request::_(we_base_request::STRING, $val, we_base_request::NOT_VALID)) !== we_base_request::NOT_VALID){
+				$this->Model->$val = $tmp;
 			}
 		}
+		//t_e('process', $this->Model, $this->Model->persistent_slots);
 	}
 
 }
