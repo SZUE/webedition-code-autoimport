@@ -8,5 +8,5 @@ jshint .
 
 echo "check duplicate code"
 
-jsinspect .
+jsinspect -t 100 .
 
