@@ -279,9 +279,11 @@ abstract class we_base_delete{
 			return true;
 		}
 
-		$DB_WE->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID IN (
-		SELECT CID FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '")');
-		return $DB_WE->query('DELETE FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '"');
+		$DB_WE->query('SELECT CID FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '"');
+		$all = implode(',', $DB_WE->getAll(true));
+
+		$DB_WE->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID IN ('.$all.')');
+		return $DB_WE->query('DELETE FROM ' . LINK_TABLE . ' WHERE CID IN(' . $all . ')');
 	}
 
 }
