@@ -3,9 +3,10 @@ DIR=$1
 
 
 echo "check js errors"
-jshint ${DIR}
+cd ${DIR}
+jshint .
 
 echo "check duplicate code"
 
-jsinspect ${DIR}
+jsinspect .
 
