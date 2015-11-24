@@ -106,7 +106,7 @@ function TinyWrapper(fieldname) {
 		} else {
 			return undefined;
 		}
-	}
+	};
 
 	this.getContent = function (forcePopup) {
 		var _forcePopup = forcePopup === undefined ? false : forcePopup;

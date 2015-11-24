@@ -34,14 +34,14 @@ function imageChanged(wasThumbnailChange) {
 	}
 	//document.we_form.target = "we_weImageDialog_edit_area";
 	document.we_form.target = 'we_we_dialog_image_cmd_frame';//TODO: send form to iFrame cmd for and for not reloading whole editor
-	document.we_form['we_what'].value = 'cmd';
+	document.we_form.we_what.value = 'cmd';
 	document.we_form['we_cmd[0]'].value = 'update_editor';
 	document.we_form.imgChangedCmd.value = '1';
 	document.we_form.submit();
 }
 
 function checkWidthHeight(field) {
-	var ratioCheckBox = document.getElementById('check_we_dialog_args[ratio]'), 
+	var ratioCheckBox = document.getElementById('check_we_dialog_args[ratio]'),
 		v = parseInt(field.value);
 
 	if (ratioCheckBox.checked) {

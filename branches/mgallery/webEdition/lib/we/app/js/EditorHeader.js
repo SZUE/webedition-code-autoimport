@@ -93,13 +93,13 @@ function setTitlePath(group, name) {
 
 	if (titlePathGroupElem) {
 		if (titlePathGroup === "") {
-			titlePathGroup = titlePathGroupElem.innerHTML
+			titlePathGroup = titlePathGroupElem.innerHTML;
 		}
 		titlePathGroupElem.innerHTML = titlePathGroup;
 	}
 	if (titlePathNameElem) {
 		if (titlePathName === "") {
-			titlePathName = titlePathNameElem.innerHTML
+			titlePathName = titlePathNameElem.innerHTML;
 		}
 		titlePathNameElem.innerHTML = titlePathName;
 	}

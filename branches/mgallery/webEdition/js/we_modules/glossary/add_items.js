@@ -38,10 +38,8 @@ function closeOnEscape() {
 }
 
 function customAdapter() {
-	this.innerHTML;
-
 	this.getSelectedText = function () {
-	}
+	};
 }
 
 function spellcheck() {

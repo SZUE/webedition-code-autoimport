@@ -47,4 +47,4 @@ container.prototype.openClose = function(id) {
 	if (openstatus) {
 		treeData[eintragsIndex].loaded = true;
 	}
-}
+};

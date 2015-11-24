@@ -26,22 +26,20 @@
  * Moxiecode Systems AB, http://tinymce.moxiecode.com/license.
  */
 var ImageDialog = {
-	preInit : function() {
+	preInit: function () {
 		var url;
 		//tinyMCEPopup.requireLangPack();
-		if(url = tinyMCEPopup.getParam("external_image_list_url")){
+		if ((url = tinyMCEPopup.getParam("external_image_list_url"))) {
 			document.write('<script src="' + tinyMCEPopup.editor.documentBaseURI.toAbsolute(url) + '"></script>');
 		}
 	},
-
-	init : function(ed) {
-		this.insert('','');
+	init: function (ed) {
+		this.insert('', '');
 	},
-
-	insert : function(file, title) {
+	insert: function (file, title) {
 		var ed = tinyMCEPopup.editor, t = this, f = document.forms[0];
 		// remove <img> if src=""
-		if(f.src.value === '' || f.src.value === 'http://'){
+		if (f.src.value === '' || f.src.value === 'http://') {
 			if (ed.selection.getNode().nodeName == 'IMG') {
 				ed.dom.remove(ed.selection.getNode());
 				ed.execCommand('mceRepaint');
@@ -51,71 +49,70 @@ var ImageDialog = {
 		}
 
 		if (tinyMCEPopup.getParam("accessibility_warnings", 1)) {
-			if(!f.alt.value){
+			if (!f.alt.value) {
 				//tinyMCEPopup.confirm(tinyMCEPopup.getLang('advimage_dlg.missing_alt'), function(s) {
-					//if (s){
-						//t.insertAndClose();
-					//}
+				//if (s){
+				//t.insertAndClose();
+				//}
 				//});
 				return;
 			}
 		}
 		t.insertAndClose();
 	},
-
-	insertAndClose : function() {
+	insertAndClose: function () {
 		var ed = tinyMCEPopup.editor, f = document.forms[0], nl = f.elements, v, args = {}, el;
 
 		tinyMCEPopup.restoreSelection();
 
 		// Fixes crash in Safari
-		if(tinymce.isWebKit){
+		if (tinymce.isWebKit) {
 			ed.getWin().focus();
 		}
 
-		if(!ed.settings.inline_styles){
+		if (!ed.settings.inline_styles) {
 			args = {
-				vspace : nl.vspace.value,
-				hspace : nl.hspace.value,
-				border : nl.border.value,
-				align : getSelectValue(f, 'align')
+				vspace: nl.vspace.value,
+				hspace: nl.hspace.value,
+				border: nl.border.value,
+				align: getSelectValue(f, 'align')
 			};
-		} else{
+		} else {
 			// Remove deprecated values
 			args = {
-				vspace : '',
-				hspace : '',
-				border : '',
-				align : ''
+				vspace: '',
+				hspace: '',
+				border: '',
+				align: ''
 			};
 		}
 
 		tinymce.extend(args, {
-			src : nl.src.value.replace(/ /g, '%20'),
-			width : nl.width.value,
-			height : nl.height.value,
-			hspace : nl.hspace.value,
-			vspace : nl.vspace.value,
-			border : nl.border.value,
-			alt : nl.alt.value,
-			align : nl.align.value,
-			name : nl.name.value,
-			'class' : nl['class'].value, // 'class' is a reserved word in IE <= 8 and therefore needs wrapping
-			title : nl.title.value,
-			longdesc : nl.longdesc.value
-			//style : nl.style.value,
-			//id : nl.id.value,
-			//dir : nl.dir.value,
-			//lang : nl.lang.value,
-			//usemap : nl.usemap.value,
+			src: nl.src.value.replace(/ /g, '%20'),
+			width: nl.width.value,
+			height: nl.height.value,
+			hspace: nl.hspace.value,
+			vspace: nl.vspace.value,
+			border: nl.border.value,
+			alt: nl.alt.value,
+			align: nl.align.value,
+			name: nl.name.value,
+			'class': nl['class'].value, // 'class' is a reserved word in IE <= 8 and therefore needs wrapping
+			title: nl.title.value,
+			longdesc: nl.longdesc.value
+							//style : nl.style.value,
+							//id : nl.id.value,
+							//dir : nl.dir.value,
+							//lang : nl.lang.value,
+							//usemap : nl.usemap.value,
 		});
 
 		el = ed.selection.getNode();
 
-		if(el && el.nodeName == 'IMG'){
+		if (el && el.nodeName == 'IMG') {
 			ed.dom.setAttribs(el, args);
-		} else{
-			ed.execCommand('mceInsertContent', false, '<img id="__mce_tmp" />', {skip_undo : 1});
+		} else {
+			ed.execCommand('mceInsertContent', false, '<img id="__mce_tmp" />', {skip_undo: 1});
 			//ed.execCommand('mceInsertContent', false, '<img />', {skip_undo : 1});
 			ed.dom.setAttribs('__mce_tmp', args);
 			ed.dom.setAttrib('__mce_tmp', 'id', '');

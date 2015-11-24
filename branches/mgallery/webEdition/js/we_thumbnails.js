@@ -72,7 +72,7 @@ function add_thumbnail() {
 
 	if (name.indexOf("'") !== -1 || name.indexOf(",") !== -1) {
 		top.we_showMessage(g_l.thumbnail_hochkomma, WE().consts.message.WE_MESSAGE_ERROR, window);
-	} else if (name == '') {
+	} else if (name === "") {
 		top.we_showMessage(g_l.thumbnail_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
 	} else if (WE().util.in_array(name, thumbnail_names)) {
 		top.we_showMessage(g_l.thumbnail_exists, WE().consts.message.WE_MESSAGE_ERROR, window);

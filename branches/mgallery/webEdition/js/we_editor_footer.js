@@ -127,7 +127,7 @@ function we_cmd() {
 			break;
 		case "object_obj_search":
 			top.we_cmd("object_obj_search", we_transaction, document.we_form.obj_search.value, document.we_form.obj_searchField[document.we_form.obj_searchField.selectedIndex].value);
-			break
+			break;
 		default:
 			if (top.we_cmd) {
 				top.we_cmd.apply(this, Array.prototype.slice.call(arguments));

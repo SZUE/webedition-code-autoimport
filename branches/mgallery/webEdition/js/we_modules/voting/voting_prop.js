@@ -31,6 +31,7 @@ function doUnload() {
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
+	var i;
 
 	switch (args[0]) {
 		case "switchPage":
@@ -41,7 +42,7 @@ function we_cmd() {
 		case "we_voting_dirSelector":
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 			args[0] = "we_voting_dirSelector";
-			for (var i = 0; i < args.length; i++) {
+			for (i = 0; i < args.length; i++) {
 				url += "we_cmd[]=" + encodeURI(args[i]);
 				if (i < (args.length - 1)) {
 					url += "&";
@@ -61,8 +62,8 @@ function we_cmd() {
 
 			var own_arr = owners.split(",");
 			var isfolders_arr = isfolders.split(",");
-			for (var i = 0; i < own_arr.length; i++) {
-				if (own_arr[i] != "") {
+			for (i = 0; i < own_arr.length; i++) {
+				if (own_arr[i] !== "") {
 					owners_label.addItem();
 					owners_label.setItem(0, (owners_label.itemCount - 1), WE().util.getTreeIcon(isfolders_arr[i] == 1 ? "folder" : "we/user") + " " + own_arr[i]);
 					owners_label.showVariant(0);

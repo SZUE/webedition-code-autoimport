@@ -63,6 +63,7 @@ function we_cmd() {
 			if (top.content.editor.edbody.loaded) {
 				top.content.editor.edbody.document.we_form.IsFolder.value = 1;
 			}
+			/* falls through */
 		case "new_export":
 			if (!WE().util.hasPerm("NEW_EXPORT")) {
 				WE().util.showMessage(WE().consts.g_l.exports.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
@@ -111,16 +112,22 @@ function we_cmd() {
 				WE().util.showMessage(WE().consts.g_l.exports.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
 				return;
 			}
-			if (top.content.editor.edheader.setTab)
+			if (top.content.editor.edheader.setTab) {
 				top.content.editor.edheader.weTabs.setActiveTab("tab_3");
-			if (top.content.editor.edheader.setTab)
+			}
+			if (top.content.editor.edheader.setTab) {
 				top.content.editor.edheader.setTab(3);
-			if (top.content.editor.edfooter.doProgress)
+			}
+			if (top.content.editor.edfooter.doProgress) {
 				top.content.editor.edfooter.doProgress(0);
-			if (top.content.editor.edbody.clearLog)
+			}
+			if (top.content.editor.edbody.clearLog) {
 				top.content.editor.edbody.clearLog();
-			if (top.content.editor.edbody.addLog)
+			}
+			if (top.content.editor.edbody.addLog) {
 				top.content.editor.edbody.addLog("<br/><br/>");
+			}
+			/* falls through */
 		case "save_export":
 			if (!WE().util.hasPerm("NEW_EXPORT")) {
 				WE().util.showMessage(WE().consts.g_l.exports.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);

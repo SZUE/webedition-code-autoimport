@@ -1,6 +1,30 @@
+/**
+ * webEdition CMS
+ *
+ * webEdition CMS
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
+ * This source is part of webEdition CMS. webEdition CMS is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionCMS/License.txt
+ *
+ * @category   webEdition
+ * @package    webEdition_base
+ * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ */
+
 wePropertiesEdit = {
 	hasOptions: function (obj) {
-		if (obj != null && obj.options != null) {
+		if (obj !== null && obj.options !== null) {
 			return true;
 		}
 		return false;
@@ -12,19 +36,20 @@ wePropertiesEdit = {
 		if (!this.hasOptions(from)) {
 			return;
 		}
-		for (var i = 0; i < from.options.length; i++) {
-			var o = from.options[i];
+		var index,i,o;
+		for (i = 0; i < from.options.length; i++) {
+			o = from.options[i];
 			if (o.selected) {
 				if (!this.hasOptions(to)) {
-					var index = 0;
+					index = 0;
 				} else {
-					var index = to.options.length;
+					index = to.options.length;
 				}
 				to.options[index] = new Option(o.text, o.value, false, false);
 			}
 		}
-		for (var i = (from.options.length - 1); i >= 0; i--) {
-			var o = from.options[i];
+		for (i = (from.options.length - 1); i >= 0; i--) {
+			o = from.options[i];
 			if (o.selected) {
 				from.options[i] = null;
 			}
@@ -42,10 +67,11 @@ wePropertiesEdit = {
 		if (!this.hasOptions(obj)) {
 			return;
 		}
-		for (var i = 0; i < obj.options.length; i++) {
+		var i;
+		for (i = 0; i < obj.options.length; i++) {
 			o[o.length] = new Option(obj.options[i].text, obj.options[i].value, obj.options[i].defaultSelected, obj.options[i].selected);
 		}
-		if (o.length == 0) {
+		if (o.length === 0) {
 			return;
 		}
 		o = o.sort(
@@ -59,7 +85,7 @@ wePropertiesEdit = {
 							return 0;
 						}
 		);
-		for (var i = 0; i < o.length; i++) {
+		for (i = 0; i < o.length; i++) {
 			obj.options[i] = new Option(o[i].text, o[i].value, o[i].defaultSelected, o[i].selected);
 		}
 	},
@@ -283,20 +309,20 @@ weCollectionEdit = {
 		this.reindexAndRetrieveCollection();
 	},
 	doZoomGrid: function (value) {
-		var attribDivs = this.ct['grid'].getElementsByClassName('toolbarAttribs');
-		var iconDivs = this.ct['grid'].getElementsByClassName('divInner'), next;
+		var attribDivs = this.ct.grid.getElementsByClassName('toolbarAttribs');
+		var iconDivs = this.ct.grid.getElementsByClassName('divInner'), next;
 
 		this.itemsPerRow = 7 - value;
 		this.gridItemDimension = this.gridItemDimensions[this.itemsPerRow];
 		document.we_form['we_' + this.we_doc.name + '_itemsPerRow'].value = this.itemsPerRow;
 
-		for (var i = 0; i < this.ct['grid'].children.length; i++) {
-			this.ct['grid'].children[i].style.width = this.ct['grid'].children[i].style.height = this.gridItemDimension.item + 'px';
+		for (var i = 0; i < this.ct.grid.children.length; i++) {
+			this.ct.grid.children[i].style.width = this.ct.grid.children[i].style.height = this.gridItemDimension.item + 'px';
 			//this.ct['grid'].children[i].style.backgroundSize = Math.max(item.icon.sizeX, item.icon.sizeY) < this.gridItemDimension.item ? 'auto' : 'contain';
 
 			attribDivs[i].style.display = this.itemsPerRow > 5 ? 'none' : 'block';
 			iconDivs[i].firstChild.style.fontSize = this.gridItemDimension.icon + 'px';
-			if (next = iconDivs[i].firstChild.nextSibling) {
+			if ((next = iconDivs[i].firstChild.nextSibling)) {
 				next.style.fontSize = this.gridItemDimension.font + 'px';
 			}
 		}
@@ -361,7 +387,7 @@ weCollectionEdit = {
 
 		div = document.createElement("div");
 		blank = t.blankItem[t.view].replace(/##INDEX##/g, t.maxIndex).replace(/##ID##/g, item.id).replace(/##PATH##/g, item.path).
-						replace(/##CT##/g, item.ct).replace(/##ICONURL##/g, item.icon['url'].replace('%2F', '/')).
+						replace(/##CT##/g, item.ct).replace(/##ICONURL##/g, item.icon.url.replace('%2F', '/')).
 						replace(/##ATTRIB_TITLE##/g, item.elements.attrib_title.Dat).replace(/##S_ATTRIB_TITLE##/g, item.elements.attrib_title.state).
 						replace(/##ATTRIB_ALT##/g, item.elements.attrib_alt.Dat).replace(/##S_ATTRIB_ALT##/g, item.elements.attrib_alt.state).
 						replace(/##META_TITLE##/g, item.elements.meta_title.Dat).replace(/##S_META_TITLE##/g, item.elements.meta_title.state).

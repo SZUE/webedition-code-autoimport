@@ -24,7 +24,7 @@
  */
 function setInfoSize() {
 	infoSize = document.body.clientHeight;
-	if (infoElem = document.getElementById("info")) {
+	if ((infoElem = document.getElementById("info"))) {
 		infoElem.style.height = document.body.clientHeight - (prieviewpic = document.getElementById("previewpic") ? 160 : 0) + "px";
 	}
 }

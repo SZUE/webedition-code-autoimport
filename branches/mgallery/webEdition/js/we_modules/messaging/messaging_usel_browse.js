@@ -65,13 +65,13 @@ function check(entry) {
 	var tarr = entry.split('&');
 	var id = tarr[0];
 	var img = "img_" + id;
-
+var tmp;
 	for (i = 1; i <= treeData.len; i++) {
 		if (treeData[i].id == id) {
 			if (treeData[i].checked) {
 				treeData[i].checked = false;
 				if (document.getElementsByName(imgName)) {
-					var tmp = document.getElementsByName(imgName)[0];
+					tmp = document.getElementsByName(imgName)[0];
 					tmp.classList.remove('fa-check-square-o');
 					tmp.classList.add('fa-square-o');
 				}
@@ -80,7 +80,7 @@ function check(entry) {
 			}
 			treeData[i].checked = true;
 			if (document.getElementsByName(imgName)) {
-				var tmp = document.getElementsByName(imgName)[0];
+				tmp = document.getElementsByName(imgName)[0];
 				tmp.classList.add('fa-check-square-o');
 				tmp.classList.remove('fa-square-o');
 			}
@@ -105,7 +105,7 @@ function draw (startEntry, zweigEintrag) {
 			}
 			ret += WE().util.getTreeIcon(nf[ai].contentType) + "</a>" +
 							"<a href=\"javascript:top.check('" + nf[ai].id + '&' + nf[ai].text + "')\"><i class=\"fa fa-" + (nf[ai].checked ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + nf[ai].id + '"></i></a>' +
-							"&nbsp;<a name='_" + nf[ai].id + "' href=\"javascript:top.check('" + nf[ai].id + '&' + nf[ai].text + "')\"><span id=\"" + nf[ai].id + '&' + nf[ai].text + "\" class=\"u_tree_entry\">" + (parseInt(nf[ai].published) ? " <b>" : "") + nf[ai].text + (parseInt(nf[ai].published) ? " </b>" : "") + "</span></A><br/>"
+							"&nbsp;<a name='_" + nf[ai].id + "' href=\"javascript:top.check('" + nf[ai].id + '&' + nf[ai].text + "')\"><span id=\"" + nf[ai].id + '&' + nf[ai].text + "\" class=\"u_tree_entry\">" + (parseInt(nf[ai].published) ? " <b>" : "") + nf[ai].text + (parseInt(nf[ai].published) ? " </b>" : "") + "</span></A><br/>";
 		} else {
 			var newAst = zweigEintrag;
 

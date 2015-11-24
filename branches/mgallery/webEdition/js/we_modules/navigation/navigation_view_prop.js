@@ -52,7 +52,7 @@ function toggle(id) {
 function setVisible(id, visible) {
 	var elem = document.getElementById(id);
 	if (elem) {
-		elem.style.display = (visible == true ? "block" : "none");
+		elem.style.display = (visible === true ? "block" : "none");
 	}
 }
 
@@ -148,7 +148,7 @@ var copyNaviFolderAjaxCallback = {
 	failure: function (o) {
 		WE().util.showMessage(WE().consts.g_l.main.copy_folder_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
-}
+};
 
 function closeAllSelection() {
 	setVisible(WE().consts.navigation.SELECTION_DYNAMIC, false);
@@ -369,7 +369,7 @@ function clearFields() {
 		weInputRemoveClass(document.we_form.__TitleField, "weMarkInputError");
 		weInputRemoveClass(document.we_form.__SortField, "weMarkInputError");
 		document.we_form.dynamic_Parameter.value = "";
-		if (document.we_form.IsFolder.value == 0) {
+		if (document.we_form.IsFolder.value === 0) {
 			document.we_form.Parameter.value = "";
 			document.we_form.Url.value = "http://";
 		}

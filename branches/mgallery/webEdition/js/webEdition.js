@@ -1429,6 +1429,7 @@ WE().util.getTreeIcon = function (contentType, open, extension) {
 				default:
 					return pre + '<i class="fa fa-file-o fa-stack-2x"></i>' + post;
 			}
+			return '';
 		case 'object':
 			return pre + '<i class="fa fa-file-o fa-stack-2x"></i><span class="we-icon"><i class="fa fa-circle fa-stack-1x"></i><i class="fa fa-stack-1x fa-inverse">e</i></span><span class="we-classification"><i class="fa fa-stack-1x">C</i></span>' + post;
 		case 'objectFile':

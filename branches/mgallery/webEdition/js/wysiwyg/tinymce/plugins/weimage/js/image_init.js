@@ -38,7 +38,7 @@ var ImageDialog = {
 	init: function (ed) {
 		var f = document.forms.we_form;
 		var nl = f.elements;
-		var ed = tinyMCEPopup.editor;
+		ed = tinyMCEPopup.editor;
 		var dom = ed.dom;
 		var n = ed.selection.getNode();
 		var fl = tinyMCEPopup.getParam('external_image_list', 'tinyMCEImageList');

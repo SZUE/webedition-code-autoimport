@@ -31,7 +31,7 @@
  * - the consoleViews in the different windows are observers
  * uses messageConsoleView.php
  */
-var messageConsole = new function () {
+var messageConsole = function () {
 	this.observers = [];
 	this.maxAmount = 35;
 	this.messages = [];

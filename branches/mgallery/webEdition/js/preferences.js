@@ -466,7 +466,7 @@ function show_seem_chooser(val) {
 				break;
 
 			}
-			//no break
+			/* falls through */
 		default:
 			if (document.getElementById('selectordummy') !== undefined) {
 				document.getElementById('selectordummy').style.display = 'block';

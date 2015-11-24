@@ -619,10 +619,11 @@ function EditorFrameController() {
 		if (!this.isInitialized()) {
 
 		}
+		var frameId;
 		//		var _colStr = "";
 		if (!this.ActiveEditorFrameId) {
 			first = true;
-			for (var frameId in this.EditorFrames) {
+			for (frameId in this.EditorFrames) {
 
 				if (first) {
 					this.getEditorFrame(frameId).setEmptyEditor();
@@ -644,7 +645,7 @@ function EditorFrameController() {
 			}
 
 		} else {
-			for (var frameId in this.EditorFrames) {
+			for (frameId in this.EditorFrames) {
 				if (this.ActiveEditorFrameId === frameId) {
 					if (WE().session.isChrome) {
 						this.getEditorFrame(frameId).EditorFrameReference.style.display = "block";

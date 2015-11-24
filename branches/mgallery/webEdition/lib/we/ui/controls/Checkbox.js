@@ -54,7 +54,7 @@ we_ui_controls_Checkbox.setDisabled = function(idOrObject, disabled)
 	if (document.getElementById("label_" + element.id)) {
 		we_ui_controls_Label.setDisabled("label_" + element.id, disabled);
 	}
-}
+};
 
 /**
  * checks Checkbox
@@ -74,7 +74,7 @@ we_ui_controls_Checkbox.setChecked = function(idOrObject, checked)
 	if (!checkbox.disabled) {
 		checkbox.checked = checked;
 	}
-}
+};
 
 /**
  * hides the Checkbox
@@ -93,7 +93,7 @@ we_ui_controls_Checkbox.hide = function(idOrObject)
 		var table = document.getElementById("table_" + element.id);
 		table.style.display = "none";
 	}
-}
+};
 
 /**
  * shows the Checkbox
@@ -112,4 +112,4 @@ we_ui_controls_Checkbox.show = function(idOrObject)
 		var table = document.getElementById("table_" + element.id);
 		table.style.display = "";
 	}
-}
+};

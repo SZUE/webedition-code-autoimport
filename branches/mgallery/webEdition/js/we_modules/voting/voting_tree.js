@@ -41,10 +41,11 @@ container.prototype.openClose = function(id) {
 	if (openstatus) {
 		treeData[eintragsIndex].loaded = true;
 	}
-}
+};
 
 function doClick(id, typ) {
 	var cmd = "";
+	var node;
 	if (top.content.hot === 1) {
 		if (confirm(WE().consts.g_l.voting.save_changed_voting)) {
 			cmd = "save_voting";
@@ -52,12 +53,12 @@ function doClick(id, typ) {
 		} else {
 			top.content.usetHot();
 			cmd = "voting_edit";
-			var node = frames.top.treeData.get(id);
+			node = frames.top.treeData.get(id);
 			frames.top.editor.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=edbody&cmd=" + cmd + "&cmdid=" + node.id + "&tabnr=" + frames.top.activ_tab;
 		}
 	} else {
 		cmd = "voting_edit";
-		var node = frames.top.treeData.get(id);
+		node = frames.top.treeData.get(id);
 		frames.top.editor.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=edbody&cmd=" + cmd + "&cmdid=" + node.id + "&tabnr=" + frames.top.activ_tab;
 	}
 }

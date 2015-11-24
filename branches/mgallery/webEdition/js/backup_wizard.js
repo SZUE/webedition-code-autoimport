@@ -156,7 +156,7 @@ function doClicked(checked, opt) {
 				document.we_form.elements.handle_history.checked = false;
 				mess += "\n-" + WE().consts.g_l.backupWizard.history_data;
 			}
-			if (mess != "") {
+			if (mess !== "") {
 				tmpMess = WE().util.sprintf(WE().consts.g_l.backupWizard.unselect_dep2, WE().consts.g_l.backupWizard.core_data) + mess + "\n" + WE().consts.g_l.backupWizard.unselect_dep3;
 				top.we_showMessage(tmpMess, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			}

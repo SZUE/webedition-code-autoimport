@@ -1,3 +1,29 @@
+/**
+ * webEdition SDK
+ *
+ * webEdition CMS
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
+ * This source is part of the webEdition SDK. The webEdition SDK is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU Lesser General Public License can be found at
+ * http://www.gnu.org/licenses/lgpl-3.0.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionSDK/License.txt
+ *
+ *
+ * @category   we
+ * @package    we_ui
+ * @subpackage we_ui_controls
+ * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
+ */
+
 WE().consts.g_l.weSearch = {
 	noTempTableRightsSearch: '',
 	nothingCheckedAdv: '',
@@ -7,7 +33,7 @@ WE().consts.g_l.weSearch = {
 	versionsNotChecked: '',
 	searchtool__notChecked: '',
 	searchtool__publishOK: ''
-},
+};
 
 WE().consts.weSearch = {
 	SEARCH_DOCS: '',
@@ -43,7 +69,6 @@ weSearch = {
 		pixel: '',
 		searchFields: ''
 	},
-
 	elem: null,
 	init: function (we_const, conf, g_l) {
 		//top.console.debug("running");
@@ -230,10 +255,10 @@ weSearch = {
 	},
 	updateElem: function (e) {
 		var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight,
-			w = window.innerWidth ? window.innerWidth : document.body.offsetWidth,
-			x = (document.all) ? window.event.x + document.body.scrollLeft : e.pageX,
-			y = (document.all) ? window.event.y + document.body.scrollTop : e.pageY,
-			elemWidth = 0, elemHeight = 0;
+						w = window.innerWidth ? window.innerWidth : document.body.offsetWidth,
+						x = (document.all) ? window.event.x + document.body.scrollLeft : e.pageX,
+						y = (document.all) ? window.event.y + document.body.scrollTop : e.pageY,
+						elemWidth = 0, elemHeight = 0;
 
 		if (this.elem !== null && elem.style.visibility == 'visible') {
 			elemWidth = this.elem.offsetWidth;
@@ -244,11 +269,9 @@ weSearch = {
 			if ((w - x) < 400 && (h - y) < 250) {
 				this.elem.style.left = (x - elemWidth - 10) + 'px';
 				this.elem.style.top = (y - elemHeight - 10) + 'px';
-			}
-			else if ((w - x) < 400) {
+			} else if ((w - x) < 400) {
 				this.elem.style.left = (x - elemWidth - 10) + 'px';
-			}
-			else if ((h - y) < 250) {
+			} else if ((h - y) < 250) {
 				this.elem.style.top = (y - elemHeight - 10) + 'px';
 			}
 		}
@@ -331,10 +354,10 @@ weSearch = {
 			}
 
 			var elem = document.getElementById('filterTable' + this.conf.whichsearch),
-				//newID = elem.rows.length - 1,
-				h = window.innerHeight ? window.innerHeight : document.body.offsetHeight,
-				scrollContent = document.getElementById("scrollContent_' + whichSearch + '"),
-				heightDiv = 180;
+							//newID = elem.rows.length - 1,
+							h = window.innerHeight ? window.innerHeight : document.body.offsetHeight,
+							scrollContent = document.getElementById("scrollContent_' + whichSearch + '"),
+							heightDiv = 180;
 
 			if ((h - heightDiv) > 0) {
 				scrollContent.style.height = (h - heightDiv) + 'px';
@@ -349,9 +372,9 @@ weSearch = {
 	},
 	newinputAdvSearch: function () {
 		var elem = document.getElementById('filterTable' + this.conf.whichsearch),
-			newID = elem.rows.length - 1,
-			scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch),
-			newRow, cell;
+						newID = elem.rows.length - 1,
+						scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch),
+						newRow, cell;
 
 		this.conf.rows++;
 
@@ -376,7 +399,7 @@ weSearch = {
 	},
 	getCell: function (type, rowID, replacement) {
 		var cell = document.createElement('TD'),
-			html;
+						html;
 		switch (type) {
 			case 'delButton':
 				cell.setAttribute('id', 'td_delButton[' + rowID + ']');
@@ -429,7 +452,8 @@ weSearch = {
 		var searchTD = document.getElementById('td_search' + this.conf.whichsearch + '[' + rowNr + ']');
 		var delButtonTD = document.getElementById('td_delButton[' + rowNr + ']');
 		var location = document.getElementById('location' + this.conf.whichsearch + '[' + rowNr + ']');
-
+		var innerhtml;
+		var cell;
 		switch (value) {
 			case 'Content':
 				if (locationTD !== null) {
@@ -453,13 +477,13 @@ weSearch = {
 				}
 				row.removeChild(searchTD);
 
-				var innerhtml = '<table class="default"><tbody><tr>' +
+				innerhtml = '<table class="default"><tbody><tr>' +
 								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
 								'<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td></td>' +
 								'<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, WE().consts.tables.CATEGORY_TABLE).replace(/__we_selector__/, 'we_selector_category') + '</td>' +
 								'</tr></tbody></table>';
 
-				var cell = document.createElement('TD');
+				cell = document.createElement('TD');
 				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
 				cell.innerHTML = innerhtml;
 				row.appendChild(cell);
@@ -477,7 +501,7 @@ weSearch = {
 				}
 				row.removeChild(searchTD);
 
-				var innerhtml = '<table class="default"><tbody><tr>' +
+				innerhtml = '<table class="default"><tbody><tr>' +
 								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
 								'<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td></td>' +
 								'<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, WE().consts.tables.TEMPLATES_TABLE).replace(/__we_selector__/, 'we_selector_document') + '</td>' +
@@ -504,7 +528,7 @@ weSearch = {
 
 				var table = value === 'ParentIDDoc' ? WE().consts.tables.FILE_TABLE : (value === 'ParentIDObj' ? WE().consts.tables.OBJECT_FILES_TABLE : WE().consts.tables.TEMPLATES_TABLE);
 
-				var innerhtml = '<table class="default"><tbody><tr>' +
+				innerhtml = '<table class="default"><tbody><tr>' +
 								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
 								'<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td></td>' +
 								'<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, table).replace(/__we_selector__/, 'we_selector_directory') + '</td>' +
@@ -530,7 +554,7 @@ weSearch = {
 					row.removeChild(delButtonTD);
 				}
 
-				var cell = document.createElement('TD');
+				cell = document.createElement('TD');
 				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
 				cell.innerHTML = this.elems.selStatus.replace(/__we_new_id__/g, rowNr);
 				row.appendChild(cell);
@@ -547,7 +571,7 @@ weSearch = {
 					row.removeChild(delButtonTD);
 				}
 
-				var cell = document.createElement('TD');
+				cell = document.createElement('TD');
 				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
 				cell.innerHTML = this.elems.selSpeicherart.replace(/__we_new_id__/g, rowNr);
 				row.appendChild(cell);
@@ -594,7 +618,7 @@ weSearch = {
 					row.removeChild(delButtonTD);
 				}
 
-				var cell = document.createElement('TD');
+				cell = document.createElement('TD');
 				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
 				cell.innerHTML = this.elems.selModFields.replace(/__we_new_id__/g, rowNr);
 				row.appendChild(cell);
@@ -636,7 +660,7 @@ weSearch = {
 		}
 
 		switch (from) {// FIXME: this is nonsens! move thid to the above cases
-		//switch (value) {
+			//switch (value) {
 			case 'allModsIn':
 			case 'MasterTemplateID':
 			case 'ParentIDTmpl':
@@ -655,7 +679,7 @@ weSearch = {
 				//|| value =="allModsIn" || value =="MasterTemplateID" || value=="ParentIDTmpl" || value=="ParentIDObj" || value=="ParentIDDoc" || value=="temp_template_id" || value=="ContentType" || value=="temp_category" || value=="Status" || value=="Speicherart" || value=="Published" || value=="CreationDate" || value=="ModDate") {
 			default:
 				document.getElementById('search' + this.conf.whichsearch + '[' + rowNr + ']').value = setValue;
-		};
+		}
 
 		document.getElementsByName('hidden_searchFields' + this.conf.whichsearch + '[' + rowNr + ']')[0].value = value;
 
@@ -667,7 +691,7 @@ weSearch = {
 
 			// reload current document => reload all open Editors on demand
 			var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
-			for (frameId in _usedEditors) {
+			for (var frameId in _usedEditors) {
 				if (_usedEditors[frameId].getEditorIsActive()) { // reload active editor
 					_usedEditors[frameId].setEditorReloadAllNeeded(true);
 					_usedEditors[frameId].setEditorIsActive(true);
@@ -695,10 +719,11 @@ weSearch = {
 		var checkboxes = [];
 		check = false;
 		var m = 0;
-		for (var i = 0; i < document.we_form.elements.length; i++) {
+		var i;
+		for (i = 0; i < document.we_form.elements.length; i++) {
 			var table = document.we_form.elements[i].name;
-			if (table.substring(0, 12) == "resetVersion") {
-				if (document.we_form.elements[i].checked == true) {
+			if (table.substring(0, 12) === "resetVersion") {
+				if (document.we_form.elements[i].checked === true) {
 					checkboxes[m] = document.we_form.elements[i].value;
 					check = true;
 					m++;
@@ -706,21 +731,21 @@ weSearch = {
 			}
 		}
 
-		if (check == false) {
+		if (check === false) {
 			top.we_showMessage(WE().consts.g_l.weSearch.versionsNotChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
 		} else {
 			Check = confirm("' . g_l('versions', '[resetVersionsSearchtool]') . '");
-			if (Check == true) {
+			if (Check === true) {
 				var vals = "";
-				for (var i = 0; i < checkboxes.length; i++) {
-					if (vals != "")
+				for (i = 0; i < checkboxes.length; i++) {
+					if (vals !== "") {
 						vals += ",";
+					}
 					vals += checkboxes[i];
-					if (document.getElementById("publishVersion_" + checkboxes[i]) != null) {
+					if (document.getElementById("publishVersion_" + checkboxes[i]) !== null) {
 						if (document.getElementById("publishVersion_" + checkboxes[i]).checked) {
 							vals += "___1";
-						}
-						else {
+						} else {
 							vals += "___0";
 						}
 					}
@@ -759,16 +784,15 @@ weSearch = {
 			}
 		}
 
-		if (checkboxes.length == 0) {
+		if (checkboxes.length === 0) {
 			check = false;
 		}
 
-		if (check == false) {//searchtool__notChecked
+		if (check === false) {//searchtool__notChecked
 			top.we_showMessage(WE().consts.g_l.weSearch.searchtool__notChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
-		}
-		else {
+		} else {
 			Check = confirm("' . g_l('searchtool', '[publish_docs]') . '");
-			if (Check == true) {
+			if (Check === true) {
 				this.publishDocsAjax(whichSearch);
 			}
 		}
@@ -788,12 +812,12 @@ weSearch = {
 			// reload current document => reload all open Editors on demand
 
 			var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
-			for (frameId in _usedEditors) {
+			for (var frameId in _usedEditors) {
 				if (_usedEditors[frameId].getEditorIsActive()) { // reload active editor
 					_usedEditors[frameId].setEditorReloadAllNeeded(true);
 					_usedEditors[frameId].setEditorIsActive(true);
 				} else {
-					_usedEditors[frameId].setEditorReloadAllNeeded(true); 
+					_usedEditors[frameId].setEditorReloadAllNeeded(true);
 				}
 			}
 			_multiEditorreload = true;
@@ -817,8 +841,9 @@ weSearch = {
 		var checkboxes = document.getElementsByName("publish_docs_" + whichSearch);
 		for (var i = 0; i < checkboxes.length; i++) {
 			if (checkboxes[i].checked) {
-				if (check != "")
+				if (check !== "") {
 					check += ",";
+				}
 				check += checkboxes[i].value;
 			}
 		}
@@ -835,12 +860,12 @@ weSearch = {
 	},
 	calendarSetup: function (x) {
 		for (i = 0; i < x; i++) {
-			if (document.getElementById("date_picker_from" + i + "") != null) {
+			if (document.getElementById("date_picker_from" + i + "") !== null) {
 				//Calendar.setup({inputField:"search" + this.conf.whichsearch + "["+i+"]",ifFormat:"%d.%m.%Y",button:"date_picker_from"+i+"",align:"Tl",singleClick:true});
 			}
 		}
 	},
-	deleteMediaDocs: function (whichSearch) { 
+	deleteMediaDocs: function (whichSearch) {
 		var checkboxes = document.getElementsByName("delete_docs_" + whichSearch);
 		var check = false;
 
@@ -862,8 +887,8 @@ weSearch = {
 	},
 	deleteMediaDocsAjax: function (whichSearch) {
 		var args = '',
-			check = '',
-			checkboxes = document.getElementsByName("delete_docs_" + whichSearch);
+						check = '',
+						checkboxes = document.getElementsByName("delete_docs_" + whichSearch);
 
 		for (var i = 0; i < checkboxes.length; i++) {
 			if (checkboxes[i].checked) {
@@ -879,16 +904,18 @@ weSearch = {
 	},
 	ajaxCallbackDeleteMediaDocs: {
 		success: function (o) {
-			var response = JSON.parse(o.responseText);top.console.log(response.deletedItems.join());
+			var response = JSON.parse(o.responseText);
+			top.console.log(response.deletedItems.join());
 			top.we_showMessage(response.message, WE().consts.message.WE_MESSAGE_NOTICE, window);
 
 			// close all Editors with deleted documents
-			var _usedEditors =  WE().layout.weEditorFrameController.getEditorsInUse(),
-				_delete_table = WE().consts.tables.FILE_TABLE,
-				_delete_Ids = ',' + response.deletedItems.join() + ',',
-				frameId;
+			var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse(),
+							_delete_table = WE().consts.tables.FILE_TABLE,
+							_delete_Ids = ',' + response.deletedItems.join() + ',',
+							frameId;
 
-			for (frameId in _usedEditors) {top.console.log('do!', frameId);
+			for (frameId in _usedEditors) {
+				top.console.log('do!', frameId);
 				if (_delete_table == _usedEditors[frameId].getEditorEditorTable() && (_delete_Ids.indexOf(',' + _usedEditors[frameId].getEditorDocumentId() + ',') != -1)) {
 					_usedEditors[frameId].setEditorIsHot(false);
 					WE().layout.weEditorFrameController.closeDocument(frameId);
@@ -907,7 +934,8 @@ weSearch = {
 			// reload search from same startID
 			weSearch.reloadSameRange();
 		},
-		failure: function (o) {top.console.log("callback failure");
+		failure: function (o) {
+			top.console.log("callback failure");
 			//alert("Failure");
 		}
 	}

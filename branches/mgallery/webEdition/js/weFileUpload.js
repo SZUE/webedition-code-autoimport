@@ -1042,7 +1042,7 @@ var weFileUpload = (function () {
 							tBuffer[tIndex + 2] += sB * w;
 							tBuffer[tIndex + 3] += sA * w;
 							// add weighted component for next (tX+1) px
-							nw = nwx * scale
+							nw = nwx * scale;
 							tBuffer[tIndex + 4] += sR * nw; // not 3
 							tBuffer[tIndex + 5] += sG * nw; // not 4
 							tBuffer[tIndex + 6] += sB * nw; // not 5
@@ -1055,7 +1055,7 @@ var weFileUpload = (function () {
 							tBuffer[tIndex + 2] += sB * w;
 							tBuffer[tIndex + 3] += sA * w;
 							// add weighted component for next (tY+1) px
-							nw = nwy * scale
+							nw = nwy * scale;
 							tBuffer[tIndex + 4 * tw    ] += sR * nw; // *4, not 3
 							tBuffer[tIndex + 4 * tw + 1] += sG * nw; // *4, not 3
 							tBuffer[tIndex + 4 * tw + 2] += sB * nw; // *4, not 3
@@ -2218,11 +2218,12 @@ var weFileUpload = (function () {
 						return;
 					case 'chunkNOK' :
 						_.sender.processError({from: 'gui', msg: arg.message});
-						//no break;
+						/* falls through */
 					case 'initGui' :
 					case 'fileNOK' :
 					case 'cancelUpload' :
 					case 'resetGui' :
+					/* falls through */
 					default:
 						_.sender.preparedFiles = [];
 						_.sender.currentFile = -1;

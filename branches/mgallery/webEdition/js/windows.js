@@ -106,7 +106,7 @@ jsWindow.prototype = {
 				WE().layout.windows.pop().close();
 			}
 		} else {
-			var refObj = undefined;
+			var refObj;
 			for (var i = 0; i < WE().layout.windows.length; i++) {
 				if (WE().layout.windows[i].wind === ref) {
 					refObj = WE().layout.windows[i];

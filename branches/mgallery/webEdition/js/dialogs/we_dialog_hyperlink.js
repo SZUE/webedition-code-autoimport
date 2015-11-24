@@ -28,7 +28,7 @@ function checkAnchor(el) {
 	if (el.value && !new RegExp('#?[a-z]+[a-z,0-9,_,:,.,-]*$', 'i').test(el.value)) {
 		alert(g_l.anchor_invalid);
 		setTimeout(function () {
-			el.focus()
+			el.focus();
 		}, 10);
 		return false;
 	}
@@ -68,15 +68,16 @@ function showanchors(name, val, onCh) {
 	var pageAnchors = top.opener.document.getElementsByTagName("A");
 	var objAnchors = top.opener["weWysiwygObject_" + editname].eDocument.getElementsByTagName("A");
 	var allAnchors = [];
+	var i;
 
-	for (var i = 0; i < pageAnchors.length; i++) {
-		if (!pageAnchors[i].href && pageAnchors[i].name != "") {
+	for (i = 0; i < pageAnchors.length; i++) {
+		if (!pageAnchors[i].href && pageAnchors[i].name !== "") {
 			allAnchors.push(pageAnchors[i].name);
 		}
 	}
 
-	for (var i = 0; i < objAnchors.length; i++) {
-		if (!objAnchors[i].href && objAnchors[i].name != "") {
+	for (i = 0; i < objAnchors.length; i++) {
+		if (!objAnchors[i].href && objAnchors[i].name !== "") {
 			allAnchors.push(objAnchors[i].name);
 		}
 	}
@@ -84,7 +85,7 @@ function showanchors(name, val, onCh) {
 		document.writeln('<select class="defaultfont" style="width:100px" name="' + name + '" id="' + name + '" size="1"' + (onCh ? ' onchange="' + onCh + '"' : '') + '>');
 		document.writeln('<option value="">');
 
-		for (var i = 0; i < allAnchors.length; i++) {
+		for (i = 0; i < allAnchors.length; i++) {
 			document.writeln('<option value="' + allAnchors[i] + '"' + ((val == allAnchors[i]) ? ' selected' : '') + '>' + allAnchors[i]);
 		}
 

@@ -115,7 +115,7 @@ function addRow() {
 		newRow.appendChild(cell);
 		cell = document.createElement("TD");
 		cell.width = "30";
-		cell.align = "right"
+		cell.align = "right";
 		cell.innerHTML = phpdata.trashButton;
 		newRow.appendChild(cell);
 		elem.appendChild(newRow);

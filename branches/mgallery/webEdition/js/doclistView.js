@@ -442,7 +442,7 @@ function changeit(value, rowNr) {
 	var searchTD = document.getElementById("td_search[" + rowNr + "]");
 	var delButtonTD = document.getElementById("td_delButton[" + rowNr + "]");
 	var location = document.getElementById("location[" + rowNr + "]");
-	var innerhtml;
+	var innerhtml,cell;
 
 	switch (value) {
 		case "Content":
@@ -528,8 +528,7 @@ function changeit(value, rowNr) {
 				row.removeChild(delButtonTD);
 			}
 
-
-			var cell = document.createElement("TD");
+			cell = document.createElement("TD");
 			cell.setAttribute("id", "td_search[" + rowNr + "]");
 			cell.innerHTML = searchClassFolder.replace(/__we_new_id__/g, rowNr);
 			row.appendChild(cell);
@@ -604,12 +603,12 @@ function changeit(value, rowNr) {
 				row.removeChild(delButtonTD);
 			}
 
-			var cell = document.createElement("TD");
+			cell = document.createElement("TD");
 			cell.setAttribute("id", "td_location[" + rowNr + "]");
 			cell.innerHTML = locationDateFields.replace(/__we_new_id__/g, rowNr);
 			row.appendChild(cell);
 
-			var cell = document.createElement("TD");
+			cell = document.createElement("TD");
 			cell.setAttribute("id", "td_search[" + rowNr + "]");
 			cell.innerHTML = searchFields.replace(/__we_new_id__/g, rowNr);
 			row.appendChild(cell);

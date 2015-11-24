@@ -178,7 +178,7 @@ ImageEditTools.Crop = {
 		}
 		object[eventName] = function (a) {
 			var i;
-			var argumentsCopy = Array.prototype.slice.call(arguments)
+			var argumentsCopy = Array.prototype.slice.call(arguments);
 			if (arguments.length === 0 && window.event) {
 				argumentsCopy[0] = CropTool.patchEvent(window.event, this);
 			} else if (a && typeof a == "object" && a.toString().search(/event/i) != -1) {
