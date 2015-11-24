@@ -434,7 +434,7 @@ class we_import_updater extends we_exim_XMLExIm{
 		}
 	}
 
-	private function updateNavigation(we_document &$object){
+	private function updateNavigation(&$object){
 		switch($object->ContentType){
 			case 'weNavigation':
 				if($this->debug){
