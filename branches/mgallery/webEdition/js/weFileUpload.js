@@ -983,8 +983,9 @@ var weFileUpload = (function () {
 			/* GameAlchemist @ http://stackoverflow.com/questions/18922880/html5-canvas-resize-downscale-image-high-quality */
 			//TODO: try to scale width and height by different ratio
 			this.downScaleCanvas = function (cv, scale) {
-				if (!(scale < 1) || !(scale > 0))
+				if (scale <= 0 || scale >= 1){
 					throw ('scale must be a positive number <1 ');
+				}
 				var sqScale = scale * scale; // square scale = area of source pixel within target
 				var sw = cv.width; // source image width
 				var sh = cv.height; // source image height
