@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_glossary_frames extends we_modules_frame{
-
 	var $_space_size = 150;
 	var $_width_size = 535;
 	protected $treeDefaultWidth = 280;
@@ -41,7 +40,7 @@ class we_glossary_frames extends we_modules_frame{
 
 	function getHTMLFrameset(){
 		return parent::getHTMLFrameset(
-						$this->Tree->getJSTreeCode()
+				$this->Tree->getJSTreeCode()
 		);
 	}
 
@@ -121,9 +120,9 @@ class we_glossary_frames extends we_modules_frame{
 		}
 	}
 
-	function getHTMLCmd(){
+	protected function getHTMLCmd(){
 		if(($pid = we_base_request::_(we_base_request::RAW, "pid")) === false){
-			exit;
+			return $this->getHTMLDocument(we_html_element::htmlBody());
 		}
 
 		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
@@ -131,18 +130,18 @@ class we_glossary_frames extends we_modules_frame{
 		$rootjs = "";
 		if(!$pid){
 			$rootjs.=
-					$this->Tree->topFrame . '.treeData.clear();' .
-					$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));';
+				$this->Tree->topFrame . '.treeData.clear();' .
+				$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));';
 		}
 		$hiddens = we_html_element::htmlHiddens(array(
-					"pnt" => "cmd",
-					"cmd" => "no_cmd"));
+				"pnt" => "cmd",
+				"cmd" => "no_cmd"));
 
 		return $this->getHTMLDocument(
-						we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-										we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(!$pid, we_glossary_tree::getItems($pid, $offset, $this->Tree->default_segment)))
-								)
-						)
+				we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
+						we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(!$pid, we_glossary_tree::getItems($pid, $offset, $this->Tree->default_segment)))
+					)
+				)
 		);
 	}
 

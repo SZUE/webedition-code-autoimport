@@ -664,7 +664,7 @@ if (top.content.editor.edfooter.doProgress){
 		exit();
 	}
 
-	function getHTMLCmd(){
+	protected function getHTMLCmd(){
 		switch(we_base_request::_(we_base_request::STRING, "cmd")){
 			case "load":
 				return $this->getLoadCode();

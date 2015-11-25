@@ -29,7 +29,7 @@ node.prototype.showSegment = function () {
 };
 
 function reloadGroup(pid,offset) {
-	var it = get(pid);
+	var it = treeData.get(pid);
 	if (it) {
 		it.clear();
 		startTree(pid, (offset ? offset : 0));

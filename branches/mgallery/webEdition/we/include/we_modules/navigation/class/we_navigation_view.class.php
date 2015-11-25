@@ -347,7 +347,7 @@ top.content.editor.edbody.document.we_form.Position.innerHTML=\'' . $posText . '
 			case 'move_down' :
 				if($this->Model->reorderDown()){
 					$_parentid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->Model->ID), 'ParentID', $this->db);
-					$_num = f('SELECT MAX(Ordn) as OrdCount FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($_parentid), 'OrdCount', $this->db);
+					$_num = f('SELECT MAX(Ordn) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($_parentid), '', $this->db);
 					$posVals = $this->getEditNaviPosition();
 					$posText = '';
 					foreach($posVals as $val => $text){
@@ -358,7 +358,7 @@ top.content.editor.edbody.document.we_form.Ordn.value=' . $this->Model->Ordn . '
 top.content.reloadGroup(' . $this->Model->ParentID . ');
 WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_down", "enabled");
 WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "enabled");
-if(top.content.editor.edbody.document.we_form.Ordn.value==' . ($_num + 1) . '){
+if(top.content.editor.edbody.document.we_form.Ordn.value>=' . $_num  . '){
 	WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_down", "disabled");
 } else {
 	WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_down", "enabled");

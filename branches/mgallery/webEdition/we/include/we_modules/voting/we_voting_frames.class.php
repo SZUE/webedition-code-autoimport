@@ -748,9 +748,9 @@ function setVisible(id,visible){
 		return $yuiSuggest->getHTML();
 	}
 
-	function getHTMLCmd(){
+	protected function getHTMLCmd(){
 		if(($pid = we_base_request::_(we_base_request::INT, "pid")) === false){
-			exit;
+			return $this->getHTMLDocument(we_html_element::htmlBody());
 		}
 
 		$offset = we_base_request::_(we_base_request::INT, "offset", 0);

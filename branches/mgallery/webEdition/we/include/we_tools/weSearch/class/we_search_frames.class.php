@@ -42,9 +42,9 @@ class we_search_frames extends we_tool_frames{
 		$this->Model = &$this->View->Model;
 	}
 
-	function getHTMLCmd(){
+	protected function getHTMLCmd(){
 		if(($pid = we_base_request::_(we_base_request::INT, 'pid')) === false){
-			exit();
+			return $this->getHTMLDocument(we_html_element::htmlBody());
 		}
 
 		$offset = we_base_request::_(we_base_request::INT, 'offset', 0);
@@ -73,12 +73,12 @@ class we_search_frames extends we_tool_frames{
 
 		return $this->getHTMLDocument($out);
 	}
-	
+
 	function getHTMLFrameset($extraUrlParams = ''){
 
 		return parent::getHTMLFrameset(($tab = we_base_request::_(we_base_request::INT, 'tab')) ? '&tab=' . $tab : '');
 	}
-	
+
 	protected function getHTMLEditor($extraUrlParams = '', $extraHead = ''){
 
 		return parent::getHTMLEditor(($tab = we_base_request::_(we_base_request::INT, 'tab')) ? '&tab=' . $tab : '');

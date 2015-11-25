@@ -428,10 +428,10 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 		return $parts;
 	}
 
-	function getHTMLCmd(){
+	protected function getHTMLCmd(){
 		$pid = we_base_request::_(we_base_request::INT, 'pid');
 		if($pid === false){
-			exit;
+			return $this->getHTMLDocument(we_html_element::htmlBody());
 		}
 
 		$rootjs = (!$pid ?

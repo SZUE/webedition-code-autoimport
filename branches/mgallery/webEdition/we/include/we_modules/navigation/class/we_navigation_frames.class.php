@@ -71,10 +71,10 @@ class we_navigation_frames extends we_modules_frame{
 		return '<div id="infoField" class="defaultfont"></div>';
 	}
 
-	function getHTMLCmd(){
+	protected function getHTMLCmd(){
 		$pid = we_base_request::_(we_base_request::INT, 'pid');
 		if($pid === false){
-			exit;
+			return $this->getHTMLDocument(we_html_element::htmlBody());
 		}
 
 		$offset = we_base_request::_(we_base_request::INT, "offset", 0);

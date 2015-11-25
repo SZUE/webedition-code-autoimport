@@ -327,10 +327,10 @@ function setTab(tab) {
 		);
 	}
 
-	function getHTMLCmd(){
+	protected function getHTMLCmd(){
 		$p = we_base_request::_(we_base_request::RAW, 'pid');
 		if($p === false){
-			exit();
+			return $this->getHTMLDocument(we_html_element::htmlBody());
 		}
 		$pid = ($GLOBALS['WE_BACKENDCHARSET'] === 'UTF-8') ?
 			utf8_encode($p) :
