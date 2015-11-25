@@ -213,7 +213,7 @@ weSearch = {
 			args += '&we_cmd[' + encodeURI(newString) + ']=' + encodeURI(elem.value);
 		}
 		this.conf.editorBodyFrame.document.getElementById('scrollContent_' + this.conf.whichsearch).innerHTML = '<table border="0" width="100%" height="100%"><tr><td align="center"><i class="fa fa-2x fa-spinner fa-pulse"></i><div id="scrollActive"></div></td></tr></table>';
-		YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackResultList, 'protocol=json&cns=tools/weSearch&tab=' + this.conf.tab + '&cmd=GetSearchResult&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
+		top.YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackResultList, 'protocol=json&cns=tools/weSearch&tab=' + this.conf.tab + '&cmd=GetSearchResult&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
 	},
 	makeAjaxRequestParametersTop: function () {
 		var args = '', newString = "";
@@ -222,7 +222,7 @@ weSearch = {
 			newString = this.conf.editorBodyFrame.document.we_form.elements[i].name;
 			args += '&we_cmd[' + encodeURI(newString) + ']=' + encodeURI(this.conf.editorBodyFrame.document.we_form.elements[i].value);
 		}
-		YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackParametersTop, 'protocol=json&cns=tools/weSearch&tab=' + this.conf.tab + '&cmd=GetSearchParameters&position=top&whichsearch=' + this.conf.whichsearch + '&classname' + this.conf.modelClassName + '=&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
+		top.YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackParametersTop, 'protocol=json&cns=tools/weSearch&tab=' + this.conf.tab + '&cmd=GetSearchParameters&position=top&whichsearch=' + this.conf.whichsearch + '&classname' + this.conf.modelClassName + '=&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
 	},
 	makeAjaxRequestParametersBottom: function () {
 		var args = '', newString = '';
@@ -230,7 +230,7 @@ weSearch = {
 			newString = this.conf.editorBodyFrame.document.we_form.elements[i].name;
 			args += '&we_cmd[' + encodeURI(newString) + ']=' + encodeURI(this.conf.editorBodyFrame.document.we_form.elements[i].value);
 		}
-		YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackParametersBottom, 'protocol=json&cns=tools/weSearch&tab=' + this.conf.tab + '&cmd=GetSearchParameters&position=bottom&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
+		top.YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackParametersBottom, 'protocol=json&cns=tools/weSearch&tab=' + this.conf.tab + '&cmd=GetSearchParameters&position=bottom&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
 	},
 	getMouseOverDivs: function () {
 		var args = '', newString = '';
@@ -238,7 +238,7 @@ weSearch = {
 			newString = this.conf.editorBodyFrame.document.we_form.elements[i].name;
 			args += '&we_cmd[' + encodeURI(newString) + ']=' + encodeURI(this.conf.editorBodyFrame.document.we_form.elements[i].value);
 		}
-		YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackgetMouseOverDivs, 'protocol=json&cns=tools/weSearch&tab=' + this.conf.tab + '&cmd=GetMouseOverDivs&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
+		top.YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackgetMouseOverDivs, 'protocol=json&cns=tools/weSearch&tab=' + this.conf.tab + '&cmd=GetMouseOverDivs&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
 	},
 	setView: function (value) {
 		this.conf.editorBodyFrame.document.we_form.elements['setView' + this.conf.whichsearch].value = value;
@@ -713,7 +713,7 @@ weSearch = {
 	resetVersionAjax: function (id, documentID, version, table) {
 		document.getElementById('resetBusy' + this.conf.whichsearch).innerHTML = "<table border='0' width='100%' height='100%'><tr><td align='center'><i class=\"fa fa-2x fa-spinner fa-pulse\"></i><div id='scrollActive'></div></td></tr></table>";
 
-		YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackResetVersion, "protocol=json&cns=versionlist&cmd=ResetVersion&id=" + id + "&documentID=" + documentID + "&version=" + version + "&documentTable=" + table + "&we_transaction=' . $GLOBALS['we_transaction'] . '");
+		top.YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackResetVersion, "protocol=json&cns=versionlist&cmd=ResetVersion&id=" + id + "&documentID=" + documentID + "&version=" + version + "&documentTable=" + table + "&we_transaction=' . $GLOBALS['we_transaction'] . '");
 	},
 	resetVersions: function () {
 		var checkboxes = [];
@@ -851,7 +851,7 @@ weSearch = {
 		var scroll = document.getElementById("resetBusy" + whichSearch);
 		scroll.innerHTML = "<table border='0' width='100%' height='100%'><tr><td align='center'><i class=\"fa fa-2x fa-spinner fa-pulse\"></i></td></tr></table>";
 
-		YAHOO.util.Connect.asyncRequest("POST", this.conf.ajaxURL, this.ajaxCallbackPublishDocs, "protocol=json&cns=tools/weSearch&cmd=PublishDocs&" + args + "");
+		top.YAHOO.util.Connect.asyncRequest("POST", this.conf.ajaxURL, this.ajaxCallbackPublishDocs, "protocol=json&cns=tools/weSearch&cmd=PublishDocs&" + args + "");
 
 	},
 	previewVersion: function (ID) {
@@ -900,7 +900,7 @@ weSearch = {
 		var scroll = document.getElementById('resetBusy' + whichSearch);
 		scroll.innerHTML = '<div><i class=\"fa fa-2x fa-spinner fa-pulse\"></i></div>';
 
-		YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackDeleteMediaDocs, 'protocol=json&cns=tools/weSearch&cmd=DeleteMediaDocs&' + args + '');
+		top.YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackDeleteMediaDocs, 'protocol=json&cns=tools/weSearch&cmd=DeleteMediaDocs&' + args + '');
 	},
 	ajaxCallbackDeleteMediaDocs: {
 		success: function (o) {

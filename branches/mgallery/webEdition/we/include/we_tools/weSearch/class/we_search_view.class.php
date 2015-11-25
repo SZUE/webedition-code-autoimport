@@ -270,11 +270,11 @@ function mark() {
 					($cmdid !== false ? '&cmdid=' . $cmdid : '') . '&text=' .
 					urlencode($this->Model->Text) . '";' .
 					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
-        if(' . $this->topFrame . '.treeData){
-         ' . $this->topFrame . '.treeData.unselectNode();
-         ' . $this->topFrame . '.treeData.selectNode("' . $this->Model->ID . '");
-        }
-     ');
+					if(' . $this->topFrame . '.treeData){
+					 ' . $this->topFrame . '.treeData.unselectNode();
+					 ' . $this->topFrame . '.treeData.selectNode("' . $this->Model->ID . '");
+					}
+					');
 				break;
 
 			case 'tool_weSearch_save' :
@@ -828,29 +828,33 @@ WE().consts.g_l.weSearch = {
 						$op :
 						array('CONTAIN'));
 
-				$this->Model->searchFieldsMediaSearch = array();
+				//$this->Model->searchFieldsMediaSearch = array(); // IMI_TMP
 				$locationName = "locationMediaSearch[0]";
 				$searchTextName = "searchMediaSearch[0]";
 				$searchFieldName = "searchFieldsMediaSearch[0]";
 
 				$searchTables = "search_tables_MediaSearch[" . FILE_TABLE . "]";
-
-				if($this->Model->searchForTextMediaSearch){
-					$this->Model->searchFieldsMediaSearch[] = "Text";
-				}
-				if($this->Model->searchForTitleMediaSearch){
-					$this->Model->searchFieldsMediaSearch[] = "Title";
-				}
-				if($this->Model->searchForMetaMediaSearch){
-					$this->Model->searchFieldsMediaSearch[] = "Meta";
-				}
-
+				
+				// preserve keyword when switching from docsearch
 				if((!empty($_SESSION['weS']['weSearch']["keyword"])) && we_base_request::_(we_base_request::INT, "tab") == 1){
 					$this->Model->searchMediaSearch[0] = ($_SESSION['weS']['weSearch']["keyword"]);
 					if($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8"){
 						$this->Model->searchMediaSearch[0] = utf8_encode($this->Model->searchMediaSearch[0]);
 					}
 					unset($_SESSION['weS']['weSearch']["keyword"]);
+				}
+
+				if($this->Model->searchForTextMediaSearch){
+					$this->Model->searchFieldsMediaSearch[] = "Text";
+					$this->Model->searchMediaSearch[] = $this->Model->searchMediaSearch[0]; // IMI_TMP
+				}
+				if($this->Model->searchForTitleMediaSearch){
+					$this->Model->searchFieldsMediaSearch[] = "Title";
+					$this->Model->searchMediaSearch[] = $this->Model->searchMediaSearch[0]; // IMI_TMP
+				}
+				if($this->Model->searchForMetaMediaSearch){
+					$this->Model->searchFieldsMediaSearch[] = "Meta";
+					$this->Model->searchMediaSearch[] = $this->Model->searchMediaSearch[0]; // IMI_TMP
 				}
 
 				if(!is_array($this->Model->searchMediaSearch)){
@@ -1015,14 +1019,14 @@ WE().consts.g_l.weSearch = {
 			$searchFields = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'searchFields' . $whichSearch);
 			$location = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'location' . $whichSearch);
 			$searchText = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 'search' . $whichSearch); //allow to search for tags
-			$_order = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'Order' . $whichSearch);
+			$_order = we_base_request::_(we_base_request::STRING, 'we_cmd', 'Text', 'Order' . $whichSearch); // IMI_TMP: default = 'Text'
 			$_view = we_base_request::_(we_base_request::STRING, 'we_cmd', self::VIEW_LIST, 'setView' . $whichSearch);
 
 			$_searchstart = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'searchstart' . $whichSearch);
 			$_anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'anzahl' . $whichSearch);
 		} else {
 			$obj = $this->Model;
-
+			// t_e('use model') // IMI_TMP
 			switch($whichSearch){
 				case self::SEARCH_DOCS:
 					$obj->searchstartDocSearch = we_base_request::_(we_base_request::STRING, "searchstartDocSearch", $obj->searchstartDocSearch);
@@ -1056,6 +1060,7 @@ WE().consts.g_l.weSearch = {
 					$_tables[0] = $_table;
 					$searchFields = $obj->searchFieldsMediaSearch;
 					$searchText = $obj->searchMediaSearch;
+					//t_e('searchtext', $obj->searchMediaSearch, $obj->searchFieldsMediaSearch); // IMI_TMP
 					$location = $obj->locationMediaSearch;
 					$folderID = $obj->folderIDMedia;
 					$_order = $obj->OrderMediaSearch;
@@ -1115,9 +1120,9 @@ WE().consts.g_l.weSearch = {
 				$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = count($_result);
 			}
 		} elseif(
-			($obj->IsFolder != 1 && ( ($whichSearch === self::SEARCH_DOCS && $tab === 1) || ($whichSearch === self::SEARCH_TMPL && $tab === 2) || ($whichSearch === self::SEARCH_ADV && $tab === 3)) || ($whichSearch === self::SEARCH_MEDIA && $tab === 5) ) ||
-			(we_base_request::_(we_base_request::INT, 'cmdid')) ||
-			(($view = we_base_request::_(we_base_request::STRING, 'view')) === "GetSearchResult" || $view === "GetMouseOverDivs")
+			((!is_object($obj) || $obj->IsFolder != 1) && ( ($whichSearch === self::SEARCH_DOCS && $tab === 1) || ($whichSearch === self::SEARCH_TMPL && $tab === 2) || ($whichSearch === self::SEARCH_ADV && $tab === 3)) || ($whichSearch === self::SEARCH_MEDIA && $tab === 5) ) ||
+				(we_base_request::_(we_base_request::INT, 'cmdid')) ||
+				(($view = we_base_request::_(we_base_request::STRING, 'view')) === "GetSearchResult" || $view === "GetMouseOverDivs")
 		){
 
 			if(!we_search_search::checkRightTempTable() && !we_search_search::checkRightDropTable()){
@@ -1135,7 +1140,7 @@ WE().consts.g_l.weSearch = {
 				if(!defined('OBJECT_TABLE') || (defined('OBJECT_TABLE') && $_table != OBJECT_TABLE)){
 					$workspaces = get_ws($_table, true);
 				}
-
+				$searchFields[1] = "'image/*','application/*'"; // IMI_TMP: correct wrong val from db...
 				for($i = 0; $i < count($searchFields); $i++){
 					$w = '';
 					$done = false;
@@ -1565,7 +1570,7 @@ WE().consts.g_l.weSearch = {
 
 				$_result[$f]['size'] = file_exists($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) : 0;
 				$_result[$f]['fileSize'] = we_base_file::getHumanFileSize($_result[$f]['size']);
-				$iconHTML = $this->getHtmlIconThmubnail($_result[$f], 64, 140, ($this->rpcCmd === 'GetSearchResult' && $whichSearch !== self::SEARCH_MEDIA));
+				$iconHTML = $this->getHtmlIconThmubnail($_result[$f], 64, 140, ($this->rpcCmd === 'GetSearchResult'));
 				$standardStyle = 'height:12px;padding-top:6px;font-size:11px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;';
 				$content[] = $whichSearch !== self::SEARCH_MEDIA ?
 					array(

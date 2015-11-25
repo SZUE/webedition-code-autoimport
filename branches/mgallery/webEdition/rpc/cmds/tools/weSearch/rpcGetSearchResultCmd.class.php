@@ -31,7 +31,7 @@ class rpcGetSearchResultCmd extends rpcCmd{
 		$whichsearch = we_base_request::_(we_base_request::STRING, 'whichsearch', '');
 		$setView = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'setView' . $whichsearch);
 
-		$GLOBALS['we_cmd_obj'] = $_SESSION['weSearch_session'];
+		$GLOBALS['we_cmd_obj'] = $_SESSION['weS']['weSearch'];
 
 		$sview = new we_search_view();
 		$sview->rpcCmd = 'GetSearchResult';

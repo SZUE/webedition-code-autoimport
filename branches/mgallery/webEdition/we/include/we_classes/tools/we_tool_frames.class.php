@@ -71,7 +71,7 @@ abstract class we_tool_frames extends we_modules_frame{
 	}
 
 	//TODO: call parent after if(){}
-	function getHTMLFrameset(){
+	function getHTMLFrameset($extraUrlParams = ''){
 		$this->setTreeWidthFromCookie();
 
 		$this->Model->clearSessionVars();
@@ -91,7 +91,7 @@ abstract class we_tool_frames extends we_modules_frame{
 
 		$body = we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => 'startTree();')
 						, we_html_element::htmlExIFrame('header', parent::getHTMLHeader($this->toolDir . 'conf/we_menu_' . $this->toolName . '.conf.php', $this->toolName)) .
-						$this->getHTMLResize() .
+						$this->getHTMLResize($extraUrlParams . ($modelid ? '&modelid=' . $modelid : '')) .
 						/* we_html_element::htmlIFrame('resize', $this->frameset . '?pnt=resize' . (($tab = we_base_request::_(we_base_request::INT, 'tab')) ? '&tab=' . $tab : '') . ($modelid ? '&modelid=' . $modelid : '') . (($sid = we_base_request::_(we_base_request::INT, 'sid')) ? '&sid=' . $sid : ''), 'overflow: hidden;', '', '', false) . */
 						we_html_element::htmlIFrame('cmd', $this->frameset . '&pnt=cmd' . ($modelid ? '&modelid=' . $modelid : ''))
 		);
