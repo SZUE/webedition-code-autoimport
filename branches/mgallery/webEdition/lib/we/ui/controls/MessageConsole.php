@@ -65,9 +65,6 @@ class we_ui_controls_MessageConsole extends we_ui_abstract_AbstractElement{
 	public function __construct($properties = null){
 		parent::__construct($properties);
 
-		// add needed JS Files
-		$this->addJSFile(JS_DIR . 'messageConsoleView.js');
-
 		// add needed CSS Files
 		$this->addCSSFile(we_ui_layout_Themes::computeCSSURL(__CLASS__));
 	}
@@ -81,7 +78,7 @@ class we_ui_controls_MessageConsole extends we_ui_abstract_AbstractElement{
 		$page = we_ui_layout_HTMLPage::getInstance();
 
 		$js = <<<EOS
-var _console_$this->_consoleName = new messageConsoleView( '$this->_consoleName', this.window );
+var _console_$this->_consoleName = new (WE().layout.messageConsoleView)( '$this->_consoleName', this.window );
 _console_$this->_consoleName.register();
 
 onunload=function() {

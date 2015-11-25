@@ -48,7 +48,7 @@ WE().util.showMessage = function (message, prio, win) {
 	prio = prio ? prio : WE().consts.message.WE_MESSAGE_ERROR;
 
 	// always show in console !
-	messageConsole.addMessage(prio, message);
+	WE().layout.messageConsole.addMessage(prio, message);
 
 	if (prio & WE().session.messageSettings) { // show it, if you should
 
