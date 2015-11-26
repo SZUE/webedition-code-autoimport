@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_navigation_view extends we_modules_view{
+
 	var $navigation;
 	var $icon_pattern = '';
 	var $page = 1;
@@ -36,18 +37,18 @@ class we_navigation_view extends we_modules_view{
 
 	function getCommonHiddens($cmds = array()){
 		return
-			parent::getCommonHiddens($cmds) .
-			we_html_element::htmlHiddens(array(
-				'vernr' => (isset($cmds['vernr']) ? $cmds['vernr'] : 0),
-				'delayCmd' => (isset($cmds['delayCmd']) ? $cmds['delayCmd'] : ''),
-				'delayParam' => (isset($cmds['delayParam']) ? $cmds['delayParam'] : '')
+				parent::getCommonHiddens($cmds) .
+				we_html_element::htmlHiddens(array(
+					'vernr' => (isset($cmds['vernr']) ? $cmds['vernr'] : 0),
+					'delayCmd' => (isset($cmds['delayCmd']) ? $cmds['delayCmd'] : ''),
+					'delayParam' => (isset($cmds['delayParam']) ? $cmds['delayParam'] : '')
 		));
 	}
 
 	function getJSTop(){
 		return
-			parent::getJSTop() .
-			we_html_element::jsElement('
+				parent::getJSTop() .
+				we_html_element::jsElement('
 WE().consts.g_l.navigation.view={
 	documents:"' . g_l('navigation', '[documents]') . '",
 	objects:"' . g_l('navigation', '[objects]') . '",
@@ -86,7 +87,7 @@ WE().consts.navigation={
 var data={
 	frameset:"' . $this->frameset . '",
 };') .
-			we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigation_view.js');
+				we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigation_view.js');
 	}
 
 	function getJSProperty(){
@@ -112,7 +113,7 @@ var data={
 };
 
 var weNavTitleField = [' . implode(',', $_objFields) . '];'
-			) . we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigation_view_prop.js');
+				) . we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigation_view_prop.js');
 	}
 
 	function getJSSubmitFunction(){
@@ -229,8 +230,8 @@ if(top.content.treeData){
 				}
 
 				$js = ($newone ?
-						'top.content.treeData.makeNewEntry({id:\'' . $this->Model->ID . '\',parentid:\'' . $this->Model->ParentID . '\',text:\'' . addslashes($this->Model->Text) . '\',open:0,contenttype:\'' . ($this->Model->IsFolder ? 'folder' : 'we/navigation') . '\',table:\'' . NAVIGATION_TABLE . '\',published:0,order:' . $this->Model->Ordn . '});' :
-						'top.content.treeData.updateEntry({id:' . $this->Model->ID . ',text:\'' . addslashes($this->Model->Text) . '\',parentid:' . $this->Model->ParentID . ',order:\'' . $this->Model->Depended . '\',tooltip:' . $this->Model->ID . '});');
+								'top.content.treeData.makeNewEntry({id:\'' . $this->Model->ID . '\',parentid:\'' . $this->Model->ParentID . '\',text:\'' . addslashes($this->Model->Text) . '\',open:0,contenttype:\'' . ($this->Model->IsFolder ? 'folder' : 'we/navigation') . '\',table:\'' . NAVIGATION_TABLE . '\',published:0,order:' . $this->Model->Ordn . '});' :
+								'top.content.treeData.updateEntry({id:' . $this->Model->ID . ',text:\'' . addslashes($this->Model->Text) . '\',parentid:' . $this->Model->ParentID . ',order:\'' . $this->Model->Depended . '\',tooltip:' . $this->Model->ID . '});');
 
 				if($this->Model->IsFolder && $this->Model->Selection == we_navigation_navigation::SELECTION_DYNAMIC){
 					$_old_items = array();
@@ -257,15 +258,15 @@ if(top.content.treeData){
 				$delaycmd = we_base_request::_(we_base_request::JS, 'delayCmd');
 
 				echo we_html_element::jsElement($js . 'top.content.editor.edheader.location.reload();' .
-					we_message_reporting::getShowMessageCall(g_l('navigation', ($this->Model->IsFolder == 1 ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) . '
+						we_message_reporting::getShowMessageCall(g_l('navigation', ($this->Model->IsFolder == 1 ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) . '
 top.content.hot=0;
 if(top.content.makeNewDoc) {
 	setTimeout("top.content.we_cmd(\"module_navigation_' . (($this->Model->IsFolder == 1) ? 'new_group' : 'new') . '\",100)");
 }' .
-					($delaycmd ?
-						'top.content.we_cmd("' . $delaycmd . '"' . (($dp = we_base_request::_(we_base_request::INT, 'delayParam')) ? ',"' . $dp . '"' : '' ) . ');' :
-						''
-					)
+						($delaycmd ?
+								'top.content.we_cmd("' . $delaycmd . '"' . (($dp = we_base_request::_(we_base_request::INT, 'delayParam')) ? ',"' . $dp . '"' : '' ) . ');' :
+								''
+						)
 				);
 
 				if($delaycmd){
@@ -292,7 +293,7 @@ setTimeout(function(){' . we_message_reporting::getShowMessageCall(g_l('navigati
 					$_REQUEST['pnt'] = 'edbody';
 				} else {
 					echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('navigation', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR)
+							we_message_reporting::getShowMessageCall(g_l('navigation', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 				}
 				break;
@@ -318,7 +319,7 @@ if(top.content.editor.edbody.document.we_form.Ordn.value==0){
 } else {
 	WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "enabled");
 }
-top.content.editor.edbody.document.we_form.Position.innerHTML=\'' . $posText . '\';'
+top.content.editor.edbody.document.we_form.Position.innerHTML=\'' . addcslashes($posText, '\'') . '\';'
 					);
 				}
 				break;
@@ -340,7 +341,7 @@ if(top.content.editor.edbody.document.we_form.Ordn.value==1){
 } else {
 	WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "enabled");
 }
-top.content.editor.edbody.document.we_form.Position.innerHTML=\'' . $posText . '\';'
+top.content.editor.edbody.document.we_form.Position.innerHTML=\'' . addcslashes($posText, '\'') . '\';'
 					);
 				}
 				break;
@@ -358,12 +359,12 @@ top.content.editor.edbody.document.we_form.Ordn.value=' . $this->Model->Ordn . '
 top.content.reloadGroup(' . $this->Model->ParentID . ');
 WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_down", "enabled");
 WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "enabled");
-if(top.content.editor.edbody.document.we_form.Ordn.value>=' . $_num  . '){
+if(top.content.editor.edbody.document.we_form.Ordn.value>=' . $_num . '){
 	WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_down", "disabled");
 } else {
 	WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_down", "enabled");
 }
-top.content.editor.edbody.document.we_form.Position.innerHTML=\'' . $posText . '\';'
+top.content.editor.edbody.document.we_form.Position.innerHTML=\'' . addcslashes($posText, '\'') . '\';'
 					);
 				}
 				break;
@@ -375,8 +376,8 @@ top.content.editor.edbody.document.we_form.Position.innerHTML=\'' . $posText . '
 						top.content.treeData.makeNewEntry({id:\'' . $_item['id'] . '\',parentid:\'' . $this->Model->ID . '\',text:\'' . addslashes($_item['text']) . '\',open:0,contenttype:\'we/navigation\',table:\'' . NAVIGATION_TABLE . '\',published:1,order:' . $_k . '});';
 				}
 				echo we_html_element::jsElement(
-					$_js .
-					we_message_reporting::getShowMessageCall(g_l('navigation', '[populate_msg]'), we_message_reporting::WE_MESSAGE_NOTICE)
+						$_js .
+						we_message_reporting::getShowMessageCall(g_l('navigation', '[populate_msg]'), we_message_reporting::WE_MESSAGE_NOTICE)
 				);
 				break;
 			case 'depopulate':
@@ -400,7 +401,7 @@ top.content.editor.edbody.document.we_form.Position.innerHTML=\'' . $posText . '
 				break;
 			case 'create_template':
 				echo we_html_element::jsElement(
-					'top.content.opener.top.we_cmd("new","' . TEMPLATES_TABLE . '","","' . we_base_ContentTypes::TEMPLATE . '","","' . base64_encode($this->Model->previewCode) . '");
+						'top.content.opener.top.we_cmd("new","' . TEMPLATES_TABLE . '","","' . we_base_ContentTypes::TEMPLATE . '","","' . base64_encode($this->Model->previewCode) . '");
 					');
 				break;
 			case 'populateFolderWs':
@@ -414,20 +415,20 @@ top.content.editor.edbody.document.we_form.Position.innerHTML=\'' . $posText . '
 						$_js .= 'top.content.editor.edbody.document.we_form.FolderWsID.options[top.content.editor.edbody.document.we_form.FolderWsID.options.length] = new Option("' . $_path . '",' . $_id . ');';
 					}
 					echo we_html_element::jsElement(
-						'top.content.editor.edbody.setVisible("objLinkFolderWorkspace",true);
+							'top.content.editor.edbody.setVisible("objLinkFolderWorkspace",true);
 							top.content.editor.edbody.document.we_form.FolderWsID.options.length = 0;
 							' . $_js . '
 						');
 				} elseif(we_navigation_dynList::getWorkspaceFlag($this->Model->LinkID)){
 					echo we_html_element::jsElement(
-						'top.content.editor.edbody.document.we_form.FolderWsID.options.length = 0;
+							'top.content.editor.edbody.document.we_form.FolderWsID.options.length = 0;
 								top.content.editor.edbody.document.we_form.FolderWsID.options[top.content.editor.edbody.document.we_form.FolderWsID.options.length] = new Option("/",0);
 								top.content.editor.edbody.document.we_form.FolderWsID.selectedIndex = 0;
 								top.content.editor.edbody.setVisible("objLinkFolderWorkspace",true);'
 					);
 				} else {
 					echo we_html_element::jsElement(
-						'top.content.editor.edbody.setVisible("objLinkFolderWorkspace' . $_prefix . '",false);
+							'top.content.editor.edbody.setVisible("objLinkFolderWorkspace' . $_prefix . '",false);
 								top.content.editor.edbody.document.we_form.FolderWsID.options.length = 0;
 								top.content.editor.edbody.document.we_form.FolderWsID.options[top.content.editor.edbody.document.we_form.FolderWsID.options.length] = new Option("-1",-1);
 								top.content.editor.edbody.document.we_form.LinkID.value = "";
@@ -470,24 +471,24 @@ top.content.editor.edbody.document.we_form.Position.innerHTML=\'' . $posText . '
 						$_js .= 'top.content.editor.edbody.document.we_form.WorkspaceID' . $_prefix . '.options[top.content.editor.edbody.document.we_form.WorkspaceID' . $_prefix . '.options.length] = new Option("' . $_path . '",' . $_id . ');';
 					}
 					echo we_html_element::jsElement(
-						$_objFields .
-						'top.content.editor.edbody.setVisible("objLinkWorkspace' . $_prefix . '",true);
+							$_objFields .
+							'top.content.editor.edbody.setVisible("objLinkWorkspace' . $_prefix . '",true);
 							top.content.editor.edbody.document.we_form.WorkspaceID' . $_prefix . '.options.length = 0;
 							' . $_js . '
 						');
 				} else { // if the class has no workspaces
 					if(we_navigation_dynList::getWorkspaceFlag($this->Model->LinkID)){
 						echo we_html_element::jsElement(
-							$_objFields .
-							'top.content.editor.edbody.document.we_form.WorkspaceID' . $_prefix . '.options.length = 0;
+								$_objFields .
+								'top.content.editor.edbody.document.we_form.WorkspaceID' . $_prefix . '.options.length = 0;
 								top.content.editor.edbody.document.we_form.WorkspaceID' . $_prefix . '.options[top.content.editor.edbody.document.we_form.WorkspaceID' . $_prefix . '.options.length] = new Option("/",0);
 								top.content.editor.edbody.document.we_form.WorkspaceID' . $_prefix . '.selectedIndex = 0;
 								//top.content.editor.edbody.setVisible("objLinkWorkspace' . $_prefix . '",false);'
 						);
 					} else {
 						echo we_html_element::jsElement(
-							$_objFields .
-							'top.content.editor.edbody.setVisible("objLinkWorkspace' . $_prefix . '",false);
+								$_objFields .
+								'top.content.editor.edbody.setVisible("objLinkWorkspace' . $_prefix . '",false);
 								top.content.editor.edbody.document.we_form.WorkspaceID' . $_prefix . '.options.length = 0;
 								top.content.editor.edbody.document.we_form.WorkspaceID' . $_prefix . '.options[top.content.editor.edbody.document.we_form.WorkspaceID' . $_prefix . '.options.length] = new Option("-1",-1);
 								top.content.editor.edbody.document.we_form.LinkID.value = "";
