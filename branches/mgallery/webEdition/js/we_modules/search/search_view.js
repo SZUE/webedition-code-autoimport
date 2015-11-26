@@ -157,9 +157,10 @@ weSearch = {
 			case WE().consts.weSearch.SEARCH_DOCS:
 			case WE().consts.weSearch.SEARCH_MEDIA:
 				//top.console.debug(this.conf.editorBodyFrame.document.we_form.elements);
+				var thirdName = this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCS ? 'searchForContent' : 'searchForMeta';
 				for (i = 0; i < this.conf.editorBodyFrame.document.we_form.elements.length; i++) {
 					table = this.conf.editorBodyFrame.document.we_form.elements[i].name;
-					if (table === 'searchForText' + this.conf.whichsearch || table === 'searchForTitle' + this.conf.whichsearch || table === 'searchForContent' + this.conf.whichsearch) {
+					if (table === 'searchForText' + this.conf.whichsearch || table === 'searchForTitle' + this.conf.whichsearch || table === thirdName + this.conf.whichsearch) {
 						if (encodeURI(this.conf.editorBodyFrame.document.we_form.elements[i].value) == 1) {
 							Checks[m] = encodeURI(this.conf.editorBodyFrame.document.we_form.elements[i].value);
 							m++;

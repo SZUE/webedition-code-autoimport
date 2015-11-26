@@ -29,7 +29,7 @@ CREATE TABLE ###TBLPREFIX###tblsearchtool (
   searchForImageMediaSearch tinyint(1) unsigned NOT NULL,
   searchForAudioMediaSearch tinyint(1) unsigned NOT NULL,
   searchForVideoMediaSearch tinyint(1) unsigned NOT NULL,
-  searchForPdfMediaSearch tinyint(1) unsigned NOT NULL,
+  searchForOtherMediaSearch tinyint(1) unsigned NOT NULL,
   anzahlDocSearch tinyint(4) unsigned NOT NULL,
   anzahlTmplSearch tinyint(4) unsigned NOT NULL,
   anzahlAdvSearch tinyint(4) unsigned NOT NULL,

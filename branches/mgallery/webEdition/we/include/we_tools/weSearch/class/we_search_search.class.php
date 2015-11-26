@@ -456,7 +456,10 @@ class we_search_search extends we_search_base{
 		$this->collectionMetaSearches[] = array($search, $field, $location);
 	}
 
-	function searchInAllMetas($keyword){
+	function searchInAllMetas($keyword, $table = ''){
+		if($table !== FILE_TABLE){// FIXME: actually no meta search on Versions or unpublished docs!!
+			return;
+		}
 		$_db = new DB_WE();
 		$where = '(';
 		$c = 0;
@@ -475,7 +478,7 @@ class we_search_search extends we_search_base{
 		$_db->query('SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE ' . $where . ' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND ' . $where);
 		$IDs = $_db->getAll(true);
 
-		return $IDs ? 'ID IN (' . implode(',', $IDs) . ')' : '';
+		return $IDs ? $table . '.ID IN (' . implode(',', $IDs) . ')' : '0';
 	}
 
 	function searchInMeta($keyword, $searchField, $searchlocation = 'LIKE', $table = ''){
@@ -483,7 +486,6 @@ class we_search_search extends we_search_base{
 			return;
 		}
 		$_db = new DB_WE();
-
 		$reverse = false;
 		if(isset($searchlocation)){
 			switch($searchlocation){
@@ -494,7 +496,7 @@ class we_search_search extends we_search_base{
 					$searching = ' LIKE "' . $_db->escape($keyword) . '%" ';
 					break;
 				case 'IS' :
-					$reverse = $keyword === '#EMPTY#' ? : false;
+					$reverse = $keyword === '##EMPTY##' ? : false;
 					$searching = " = '" . $_db->escape($keyword) . "' ";
 					break;
 				case 'IN':
@@ -521,7 +523,7 @@ class we_search_search extends we_search_base{
 		$_db->query('SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.Name="' . $searchField . '" ' . ($reverse ? '' : 'AND c.Dat ' . $searching) . ' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
 		$IDs = $_db->getAll(true);
 
-		return $IDs ? 'AND ID ' . ($reverse ? 'NOT' : '') . ' IN (' . implode(',', $IDs) . ')' : 'AND 0';
+		return $IDs ? 'AND ' . $table . '.ID ' . ($reverse ? 'NOT' : '') . ' IN (' . implode(',', $IDs) . ')' : 'AND 0';
 	}
 
 	/*
@@ -905,7 +907,7 @@ class we_search_search extends we_search_base{
 					$this->where .= ' AND Path LIKE "' . $this->db->escape($path) . '%" ';
 					$tmpTableWhere = ' AND DocumentID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE Path LIKE "' . $this->db->escape($path) . '%" )';
 				}
-				we_database_base::t_e_query(1);
+				//we_database_base::t_e_query(1);
 				$this->db->query('INSERT INTO SEARCH_TEMP_TABLE (docID,docTable,Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,CreationDate,CreatorID,ModDate,Published,Extension) SELECT ID,"' . FILE_TABLE . '",Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,CreationDate,CreatorID,ModDate,Published,Extension FROM `' . FILE_TABLE . '` WHERE ' . $this->where);
 
 				//first check published documents

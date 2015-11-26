@@ -62,6 +62,14 @@ $we_menu_weSearch = array(
 		'hide' => (defined('OBJECT_FILES_TABLE') && defined('OBJECT_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES'))
 	),
 	array(
+		'text' => g_l('searchtool', '[forMedia]'),
+		'parent' => 200,
+		'cmd' => 'tool_' . $metaInfo['name'] . '_new_forMedia',
+		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
+		'enabled' => 1,
+		'hide' => !permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')
+	),
+	array(
 		'text' => g_l('searchtool', '[menu_advSearch]'),
 		'parent' => 200,
 		'cmd' => 'tool_' . $metaInfo['name'] . '_new_advSearch',
