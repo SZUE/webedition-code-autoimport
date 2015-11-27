@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -23,74 +22,62 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $we_menu_voting = array(
-	'000100' => array(
+	'voting' => array(
 		'text' => g_l('modules_voting', '[voting]'),
-		'parent' => '000000',
-		'perm' => '',
-		'enabled' => 1,
+
 	),
-	'000200' => array(
+	'new' => array(
 		'text' => g_l('modules_voting', '[menu_new]'),
-		'parent' => '000100',
-		'perm' => '',
-		'enabled' => 1,
+		'parent' => 'voting',
+
 	),
 	array(
 		'text' => g_l('modules_voting', '[voting]'),
-		'parent' => '000200',
+		'parent' => 'new',
 		'cmd' => 'new_voting',
 		'perm' => 'NEW_VOTING || ADMINISTRATOR',
-		'enabled' => 1,
 	),
 	array(
 		'text' => g_l('modules_voting', '[group]'),
-		'parent' => '000200',
+		'parent' => 'new',
 		'cmd' => 'new_voting_group',
 		'perm' => 'NEW_VOTING || ADMINISTRATOR',
-		'enabled' => 1,
 	),
 	array(
 		'text' => g_l('modules_voting', '[menu_save]'),
-		'parent' => '000100',
+		'parent' => 'voting',
 		'cmd' => 'save_voting',
 		'perm' => 'EDIT_VOTING || NEW_VOTING || ADMINISTRATOR',
-		'enabled' => 1,
 	),
 	array(
 		'text' => g_l('modules_voting', '[menu_delete]'),
-		'parent' => '000100',
+		'parent' => 'voting',
 		'cmd' => 'delete_voting',
 		'perm' => 'DELETE_VOTING || ADMINISTRATOR',
-		'enabled' => 1,
 	),
 	array(
-		'parent' => '000100', // separator
+		'parent' => 'voting', // separator
 	),
 	array(
 		'text' => g_l('modules_voting', '[menu_exit]'),
-		'parent' => '000100',
+		'parent' => 'voting',
 		'cmd' => 'exit_voting',
-		'perm' => '',
-		'enabled' => 1,
+
 	),
-	'001100' => array(
+	'help' => array(
 		'text' => g_l('modules_voting', '[menu_help]'),
-		'parent' => '000000',
-		'perm' => '',
-		'enabled' => 1,
+
 	),
 	array(
 		'text' => g_l('modules_voting', '[menu_help]') . '&hellip;',
-		'parent' => '001100',
+		'parent' => 'help',
 		'cmd' => 'help_modules',
-		'perm' => '',
-		'enabled' => 1,
+
 	),
 	array(
 		'text' => g_l('modules_voting', '[menu_info]') . '&hellip;',
-		'parent' => '001100',
+		'parent' => 'help',
 		'cmd' => 'info_modules',
-		'perm' => '',
-		'enabled' => 1,
+
 	)
 );

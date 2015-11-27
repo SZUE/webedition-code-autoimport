@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -23,75 +22,64 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $we_menu_workflow = array(
-	"000100" => array(
-		"text" => g_l('javaMenu_workflow', '[workflow]'),
-		"parent" => "000000",
-		"enabled" => 1,
+	'workflow' => array(
+		'text' => g_l('javaMenu_workflow', '[workflow]'),
 	),
 	array(
-		"text" => g_l('javaMenu_workflow', '[new]'),
-		"cmd" => "new_workflow",
-		"perm" => "NEW_WORKFLOW || ADMINISTRATOR",
-		"parent" => "000100",
-		"enabled" => 0,
+		'text' => g_l('javaMenu_workflow', '[new]'),
+		'cmd' => 'new_workflow',
+		'perm' => 'NEW_WORKFLOW || ADMINISTRATOR',
+		'parent' => 'workflow',
 	),
 	array(
-		"text" => g_l('javaMenu_workflow', '[save]'),
-		"parent" => "000100",
-		"cmd" => "save_workflow",
-		"perm" => "EDIT_WORKFLOW || ADMINISTRATOR",
-		"enabled" => 0,
+		'text' => g_l('javaMenu_workflow', '[save]'),
+		'parent' => 'workflow',
+		'cmd' => 'save_workflow',
+		'perm' => 'EDIT_WORKFLOW || ADMINISTRATOR',
 	),
 	array(
-		"text" => g_l('javaMenu_workflow', '[delete]'),
-		"parent" => "000100",
-		"cmd" => "delete_workflow",
-		"perm" => "DELETE_WORKFLOW || ADMINISTRATOR",
-		"enabled" => 0,
+		'text' => g_l('javaMenu_workflow', '[delete]'),
+		'parent' => 'workflow',
+		'cmd' => 'delete_workflow',
+		'perm' => 'DELETE_WORKFLOW || ADMINISTRATOR',
 	),
 	array(
-		"parent" => "000100", // separator
+		'parent' => 'workflow', // separator
 	),
 	/*
 	  array(
-	  "text"=> g_l('javaMenu_workflow','[reload]'),
-	  "parent"=> "000100",
-	  "cmd"=> "reload_workflow",
-	  "enabled"=> "0",
+	  'text'=> g_l('javaMenu_workflow','[reload]'),
+	  'parent'=> 'workflow',
+	  'cmd'=> 'reload_workflow',
+	  'enabled'=> '0',
 	  ),
-	  $we_menu_workflow["000880"]["parent"] = "000100"; // separator
+	  $we_menu_workflow['000880']['parent'] = 'workflow'; // separator
 	 */
 	array(
-		"text" => g_l('javaMenu_workflow', '[empty_log]') . "&hellip;",
-		"parent" => "000100",
-		"cmd" => "empty_log",
-		"perm" => "EMPTY_LOG || ADMINISTRATOR",
-		"enabled" => 0,
+		'text' => g_l('javaMenu_workflow', '[empty_log]') . '&hellip;',
+		'parent' => 'workflow',
+		'cmd' => 'empty_log',
+		'perm' => 'EMPTY_LOG || ADMINISTRATOR',
 	),
 	array(
-		"parent" => "000100", // separator
+		'parent' => 'workflow', // separator
 	),
 	array(
-		"text" => g_l('javaMenu_workflow', '[quit]'),
-		"parent" => "000100",
-		"cmd" => "exit_workflow",
-		"enabled" => 1,
+		'text' => g_l('javaMenu_workflow', '[quit]'),
+		'parent' => 'workflow',
+		'cmd' => 'exit_workflow',
 	),
-	'001500' => array(
-		"text" => g_l('javaMenu_workflow', '[help]'),
-		"parent" => "000000",
-		"enabled" => 1,
+	'help' => array(
+		'text' => g_l('javaMenu_workflow', '[help]'),
 	),
 	array(
-		"text" => g_l('javaMenu_workflow', '[help]') . "&hellip;",
-		"parent" => "001500",
-		"cmd" => "help_modules",
-		"enabled" => 1,
+		'text' => g_l('javaMenu_workflow', '[help]') . '&hellip;',
+		'parent' => 'help',
+		'cmd' => 'help_modules',
 	),
 	array(
-		"text" => g_l('javaMenu_workflow', '[info]') . "&hellip;",
-		"parent" => "001500",
-		"cmd" => "info_modules",
-		"enabled" => 1,
+		'text' => g_l('javaMenu_workflow', '[info]') . '&hellip;',
+		'parent' => 'help',
+		'cmd' => 'info_modules',
 	)
 );
