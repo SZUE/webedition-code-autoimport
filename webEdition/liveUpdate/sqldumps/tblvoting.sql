@@ -1,6 +1,6 @@
 CREATE TABLE ###TBLPREFIX###tblvoting (
-  ID bigint(20) unsigned NOT NULL auto_increment,
-  ParentID bigint(20) unsigned NOT NULL default '0',
+  ID mediumint(8) unsigned NOT NULL auto_increment,
+  ParentID mediumint(8) unsigned NOT NULL default '0',
   Path varchar(255) default NULL,
   IsFolder tinyint(1) unsigned default NULL,
   Icon ENUM('folder.gif','link.gif') NOT NULL default 'link.gif',
