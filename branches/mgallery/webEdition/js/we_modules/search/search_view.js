@@ -70,7 +70,8 @@ weSearch = {
 		searchFields: ''
 	},
 	elem: null,
-	init: function (we_const, conf, g_l) {
+	rolloverElem: null,
+	init: function (we_const, conf, g_l) { // FIXME: what do we need? check scrollContent!
 		//top.console.debug("running");
 		/*
 		 this.we_const = we_const;
@@ -84,9 +85,9 @@ weSearch = {
 		 this.init();
 		 }, 10);
 		 }
-		 */
+		 */ 
 
-		//document.onmousemove = this.updateElem();
+		document.addEventListener('mousemove', weSearch.updateElem, false);
 	},
 	ajaxCallbackResultList: {
 		success: function (o) {
@@ -246,37 +247,29 @@ weSearch = {
 		this.search(false);
 	},
 	showImageDetails: function (picID) {
-		top.console.debug('show');
-		var elem = document.getElementById(picID);
-		//elem.style.left = '100px';
-		elem.style.visibility = 'visible';
+		if((weSearch.rolloverElem = document.getElementById(picID))){
+			weSearch.rolloverElem.style.visibility = 'visible';
+		}
 	},
 	hideImageDetails: function (picID) {
-		var elem = document.getElementById(picID);
-		elem.style.visibility = 'hidden';
-		elem.style.left = '-9999px';
+		if(weSearch.rolloverElem){
+			weSearch.rolloverElem.style.visibility = 'hidden';
+			weSearch.rolloverElem.style.left = '-9999px';
+		}
 	},
 	updateElem: function (e) {
-		var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight,
-						w = window.innerWidth ? window.innerWidth : document.body.offsetWidth,
-						x = (document.all) ? window.event.x + document.body.scrollLeft : e.pageX,
-						y = (document.all) ? window.event.y + document.body.scrollTop : e.pageY,
-						elemWidth = 0, elemHeight = 0;
+		if (weSearch.rolloverElem && weSearch.rolloverElem.style.visibility === 'visible') {
+			var elem = weSearch.rolloverElem,
+				elemW = elem.offsetWidth,
+				elemH = elem.offsetHeight,
+				frameW = window.innerWidth ? window.innerWidth : document.body.offsetWidth,
+				frameH = window.innerHeight ? window.innerHeight : document.body.offsetHeight,
+				posX = e.pageX,
+				posY = e.pageY,
+				scrollY = window.scrollY;
 
-		if (this.elem !== null && elem.style.visibility == 'visible') {
-			elemWidth = this.elem.offsetWidth;
-			elemHeight = this.elem.offsetHeight;
-			this.elem.style.left = (x + 10) + 'px';
-			this.elem.style.top = (y - 120) + 'px';
-
-			if ((w - x) < 400 && (h - y) < 250) {
-				this.elem.style.left = (x - elemWidth - 10) + 'px';
-				this.elem.style.top = (y - elemHeight - 10) + 'px';
-			} else if ((w - x) < 400) {
-				this.elem.style.left = (x - elemWidth - 10) + 'px';
-			} else if ((h - y) < 250) {
-				this.elem.style.top = (y - elemHeight - 10) + 'px';
-			}
+			elem.style.left = (((frameW - posX) < elemW + 10) ? (posX - elemW - 10) : (posX + 10)) + 'px';
+			elem.style.top = (Math.max((scrollY + 4),(Math.min((scrollY + frameH - elemH - 4), (posY - Math.round(elemH/5*3)))))) + 'px';
 		}
 	},
 	absLeft: function (el) {

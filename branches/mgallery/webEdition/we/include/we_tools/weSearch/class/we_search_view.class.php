@@ -2471,9 +2471,11 @@ WE().consts.g_l.weSearch = {
 	}
 
 	private static function tblListRowIconView($content, $class, $i, $whichSearch){
+		$jsNamespace = $whichSearch === 'doclist' ? '' : 'weSearch.';
+
 		return '<table width="100%" class="default ' . $class . '">
 <tr>
-	<td width="75" style="vertical-align:top;text-align:center" onmouseover="weSearch.showImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\',1)" onmouseout="weSearch.hideImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\')">' .
+	<td width="75" style="vertical-align:top;text-align:center" onmouseover="' . $jsNamespace . 'showImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\',1)" onmouseout="' . $jsNamespace . 'hideImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\')">' .
 			((!empty($content[0]["dat"])) ? $content[0]["dat"] : "&nbsp;") . '</td>
 		<td width="105" style="vertical-align:top;line-height:20px;">
 		<div style="padding-bottom:2em;">' . ((!empty($content[2]["dat"])) ? $content[2]["dat"] : "&nbsp;") . '</div>
@@ -2482,9 +2484,11 @@ WE().consts.g_l.weSearch = {
 	}
 
 	private static function tblListRowMediaIconView($content, $class, $i, $whichSearch){
+		$jsNamespace = $whichSearch === 'doclist' ? '' : 'weSearch.';
+
 		return '<table width="100%" class="default ' . $class . '">
 <tr>
-	<td width="100%" style="vertical-align:top;text-align:center" onmouseover="weSearch.showImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\',1)" onmouseout="weSearch.hideImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\')">' .
+	<td width="100%" style="vertical-align:top;text-align:center" onmouseover="' . $jsNamespace . 'showImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\',1)" onmouseout="' . $jsNamespace . 'hideImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\')">' .
 			((!empty($content[5]["dat"])) ? $content[5]["dat"] : "&nbsp;") .
 			'</td>
 </tr>

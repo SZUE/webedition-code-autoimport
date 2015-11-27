@@ -124,24 +124,27 @@ function back(anzahl) {
 
 function showImageDetails(picID) {
 	elem = document.getElementById(picID);
-	elem.style.visibility = "visible";
+	if(elem){
+		elem.style.visibility = "visible";
+	}
 
 }
 
 function hideImageDetails(picID) {
 	elem = document.getElementById(picID);
-	elem.style.visibility = "hidden";
-	elem.style.left = "-9999px";
+	if(elem){
+		elem.style.visibility = "hidden";
+		elem.style.left = "-9999px";
+	}
 }
 
+// FIXME: take the same fn from search_view.js
 function updateElem(e) {
-	var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
-	var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;
-
-	var x = (document.all) ? window.event.x + document.body.scrollLeft : e.pageX;
-	var y = (document.all) ? window.event.y + document.body.scrollTop : e.pageY;
-
 	if (elem !== null && elem.style.visibility == "visible") {
+		var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
+		var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;
+		var x = (document.all) ? window.event.x + document.body.scrollLeft : e.pageX;
+		var y = (document.all) ? window.event.y + document.body.scrollTop : e.pageY;
 
 		elemWidth = elem.offsetWidth;
 		elemHeight = elem.offsetHeight;
@@ -156,7 +159,6 @@ function updateElem(e) {
 		} else if ((h - y) < 250) {
 			elem.style.top = (y - elemHeight - 10) + "px";
 		}
-
 	}
 }
 
