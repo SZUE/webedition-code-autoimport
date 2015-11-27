@@ -25,7 +25,7 @@
  */
 
 function checkAnchor(el) {
-	if (el.value && !new RegExp('#?[a-z]+[a-z,0-9,_,:,.,-]*$', 'i').test(el.value)) {
+	if (el.value && !new RegExp('#?[a-z]+[a-z0-9_:.-=]*$', 'i').test(el.value)) {
 		alert(g_l.anchor_invalid);
 		setTimeout(function () {
 			el.focus();
