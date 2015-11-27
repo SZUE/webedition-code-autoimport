@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -25,40 +24,32 @@
 require (WE_INCLUDES_PATH . 'we_tools/weSearch/conf/meta.conf.php');
 
 $we_menu_weSearch = array(
-	100 => array(
+	'search' => array(
 		'text' => g_l('searchtool', '[menu_suche]'),
-		'parent' => 0,
-		'perm' => '',
-		'enabled' => 1,
 	),
-	200 => array(
+	'new' => array(
 		'text' => g_l('searchtool', '[menu_new]'),
-		'parent' => 100,
-		'perm' => '',
-		'enabled' => 1,
+		'parent' => 'search',
 	),
 	array(
 		'text' => g_l('searchtool', '[forDocuments]'),
-		'parent' => 200,
+		'parent' => 'new',
 		'cmd' => 'tool_' . $metaInfo['name'] . '_new_forDocuments',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
-		'enabled' => 1,
 		'hide' => !permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')
 	),
 	array(
 		'text' => g_l('searchtool', '[forTemplates]'),
-		'parent' => 200,
+		'parent' => 'new',
 		'cmd' => 'tool_' . $metaInfo['name'] . '_new_forTemplates',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
-		'enabled' => 1,
 		'hide' => !($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE && permissionhandler::hasPerm('CAN_SEE_TEMPLATES'))
 	),
 	array(
 		'text' => g_l('searchtool', '[forObjects]'),
-		'parent' => 200,
+		'parent' => 'new',
 		'cmd' => 'tool_' . $metaInfo['name'] . '_new_forObjects',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
-		'enabled' => 1,
 		'hide' => (defined('OBJECT_FILES_TABLE') && defined('OBJECT_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES'))
 	),
 	array(
@@ -71,51 +62,37 @@ $we_menu_weSearch = array(
 	),
 	array(
 		'text' => g_l('searchtool', '[menu_advSearch]'),
-		'parent' => 200,
+		'parent' => 'new',
 		'cmd' => 'tool_' . $metaInfo['name'] . '_new_advSearch',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
-		'enabled' => 1,
 	),
 	array(
 		'text' => g_l('searchtool', '[menu_save]'),
-		'parent' => 100,
+		'parent' => 'search',
 		'cmd' => 'tool_' . $metaInfo['name'] . '_save',
-		'perm' => '',
-		'enabled' => 1,
 	),
 	array(
 		'text' => g_l('searchtool', '[menu_delete]'),
-		'parent' => 100,
+		'parent' => 'search',
 		'cmd' => 'tool_' . $metaInfo['name'] . '_delete',
-		'perm' => '',
-		'enabled' => 1,
 	),
-	array('parent' => 100), // separator
+	array('parent' => 'search'), // separator
 	array(
 		'text' => g_l('searchtool', '[menu_exit]'),
-		'parent' => 100,
+		'parent' => 'search',
 		'cmd' => 'tool_' . $metaInfo['name'] . '_exit',
-		'perm' => '',
-		'enabled' => 1,
 	),
-	3000 => array(
+	'help' => array(
 		'text' => g_l('searchtool', '[menu_help]'),
-		'parent' => 0,
-		'perm' => '',
-		'enabled' => 1,
 	),
 	array(
 		'text' => g_l('searchtool', '[menu_help]') . '&hellip;',
-		'parent' => 3000,
+		'parent' => 'help',
 		'cmd' => 'help_tools',
-		'perm' => '',
-		'enabled' => 1,
 	),
 	array(
 		'text' => g_l('searchtool', '[menu_info]') . '&hellip;',
-		'parent' => 3000,
+		'parent' => 'help',
 		'cmd' => 'info_tools',
-		'perm' => '',
-		'enabled' => 1,
 	),
 );

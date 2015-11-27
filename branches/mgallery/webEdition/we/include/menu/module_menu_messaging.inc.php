@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -23,101 +22,81 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $we_menu_messaging = array(
-	'000100' => array(
+	'file' => array(
 		'text' => g_l('javaMenu_messaging', '[file]'),
-		'parent' => '000000',
-		'enabled' => 1,
 	),
-	'000110' => array(
+	'new' => array(
 		'text' => g_l('javaMenu_messaging', '[new]'),
-		'parent' => '000100',
-		'enabled' => 1,
+		'parent' => 'file',
 	),
 	array(
 		'text' => g_l('javaMenu_messaging', '[message]') . '&hellip;',
 		'cmd' => 'messaging_new_message',
-		'parent' => '000110',
-		'enabled' => 1,
+		'parent' => 'new',
 	),
 	array(
 		'text' => g_l('javaMenu_messaging', '[todo]') . '&hellip;',
 		'cmd' => 'messaging_new_todo',
-		'parent' => '000110',
-		'enabled' => 1,
+		'parent' => 'new',
 	),
 	array(
 		'text' => g_l('javaMenu_messaging', '[folder]'),
 		'cmd' => 'messaging_new_folder',
-		'parent' => '000110',
-		'enabled' => 1,
+		'parent' => 'new',
 	),
-	'000120' => array(
+	'delete' => array(
 		'text' => g_l('javaMenu_messaging', '[delete]'),
-		'parent' => '000100',
-		'enabled' => 1,
+		'parent' => 'file',
 	),
 	array(
 		'text' => g_l('javaMenu_messaging', '[folder]'),
 		'cmd' => 'messaging_delete_mode_on',
-		'parent' => '000120',
-		'enabled' => 1,
+		'parent' => 'delete',
 	),
 	array(
 		'text' => g_l('javaMenu_messaging', '[quit]'),
 		'cmd' => 'messaging_exit',
-		'parent' => '000100',
-		'enabled' => 1,
+		'parent' => 'file',
 	),
-	'000200' => array(
+	'edit' => array(
 		'text' => g_l('javaMenu_messaging', '[edit]'),
-		'parent' => '000000',
-		'enabled' => 1,
 	),
 	array(
 		'text' => g_l('javaMenu_messaging', '[folder]'),
 		'cmd' => 'messaging_edit_folder',
-		'parent' => '000200',
-		'enabled' => 1,
+		'parent' => 'edit',
 	),
 	array(
 		'text' => g_l('javaMenu_messaging', '[settings]') . '&hellip;',
 		'cmd' => 'messaging_settings',
-		'parent' => '000200',
-		'enabled' => 1,
+		'parent' => 'edit',
 	),
 	array(
 		'text' => g_l('javaMenu_messaging', '[copy]'),
 		'cmd' => 'messaging_copy',
-		'parent' => '000200',
-		'enabled' => 1,
+		'parent' => 'edit',
 	),
 	array(
 		'text' => g_l('javaMenu_messaging', '[cut]'),
 		'cmd' => 'messaging_cut',
-		'parent' => '000200',
-		'enabled' => 1,
+		'parent' => 'edit',
 	),
 	array(
 		'text' => g_l('javaMenu_messaging', '[paste]'),
 		'cmd' => 'messaging_paste',
-		'parent' => '000200',
-		'enabled' => 1,
+		'parent' => 'edit',
 	),
 	'000300' => array(
 		'text' => g_l('javaMenu_messaging', '[help]'),
-		'parent' => '000000',
-		'enabled' => 1,
 	),
 	array(
 		'text' => g_l('javaMenu_messaging', '[help]') . '&hellip;',
 		'parent' => '000300',
 		'cmd' => 'help_modules',
-		'enabled' => 1,
 	),
 	array(
 		'text' => g_l('javaMenu_messaging', '[info]') . '&hellip;',
 		'parent' => '000300',
 		'cmd' => 'info_modules',
-		'enabled' => 1,
 	)
 );
