@@ -314,14 +314,9 @@ weSearch = {
 		top.we_cmd('editCat', id);
 	},
 	setOrder: function (order, whichSearch) {
-		//FIXME: ordering media search does not work yet
-		if (whichSearch === 'MediaSearch') {
-			alert('ordering columns temporarily disabled');
-			return;
-		}
-
-		var columns = ['Text', 'SiteTitle', 'CreationDate', 'ModDate'],
-						deleteArrow, arrow, foo;
+		var columns = whichSearch === 'MediaSearch' ? ['Text', 'media_filesize', 'IsUsed', 'media_alt', 'media_title', 'CreationDate', 'ModDate'] :
+				['Text', 'SiteTitle', 'CreationDate', 'ModDate'];
+		var deleteArrow, arrow, foo;
 
 		for (var i = 0; i < columns.length; i++) {
 			if (order !== columns[i]) {

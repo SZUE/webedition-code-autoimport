@@ -1470,10 +1470,10 @@ WE().consts.g_l.weSearch = {
 			) :
 			array(
 				array("dat" => '<a href="javascript:weSearch.setOrder(\'Text\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[dateiname]') . '</a> <span id="Text_' . $whichSearch . '" >' . $this->getSortImage('Text', $whichSearch) . '</span>'),
-				array("dat" => '<a href="javascript:weSearch.setOrder(\'FileSize\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[groesse]') . '</a> <span id="FileSize_' . $whichSearch . '" >' . $this->getSortImage('fileSize', $whichSearch) . '</span>'),
-				array("dat" => '<a href="javascript:weSearch.setOrder(\'Status\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[Status]') . '</a> <span id="Status_' . $whichSearch . '" >' . $this->getSortImage('status', $whichSearch) . '</span>'),
-				array("dat" => '<a href="javascript:weSearch.setOrder(\'Alt\',\'' . $whichSearch . '\');">alt</a> <span id="Alt_' . $whichSearch . '" >' . $this->getSortImage('alt', $whichSearch) . '</span>'),
-				array("dat" => '<a href="javascript:weSearch.setOrder(\'Title\',\'' . $whichSearch . '\');">title</a> <span id="Title_' . $whichSearch . '" >' . $this->getSortImage('title', $whichSearch) . '</span>'),
+				array("dat" => '<a href="javascript:weSearch.setOrder(\'media_filesize\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[groesse]') . '</a> <span id="media_filesize_' . $whichSearch . '" >' . $this->getSortImage('media_filesize', $whichSearch) . '</span>'),
+				array("dat" => '<a href="javascript:weSearch.setOrder(\'IsUsed\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[Status]') . '</a> <span id="IsUsed_' . $whichSearch . '" >' . $this->getSortImage('IsUsed', $whichSearch) . '</span>'),
+				array("dat" => '<a href="javascript:weSearch.setOrder(\'media_alt\',\'' . $whichSearch . '\');">alt</a> <span id="media_alt_' . $whichSearch . '" >' . $this->getSortImage('media_alt', $whichSearch) . '</span>'),
+				array("dat" => '<a href="javascript:weSearch.setOrder(\'media_title\',\'' . $whichSearch . '\');">title</a> <span id="media_title_' . $whichSearch . '" >' . $this->getSortImage('media_title', $whichSearch) . '</span>'),
 				array("dat" => '<a href="javascript:weSearch.setOrder(\'CreationDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[created]') . '</a> <span id="CreationDate_' . $whichSearch . '" >' . $this->getSortImage('CreationDate', $whichSearch) . '</span>'),
 				array("dat" => '<a href="javascript:weSearch.setOrder(\'ModDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[modified]') . '</a> <span id="ModDate_' . $whichSearch . '" >' . $this->getSortImage('ModDate', $whichSearch) . '</span>'),
 				array("dat" => '')
@@ -1644,7 +1644,7 @@ WE().consts.g_l.weSearch = {
 								), 'colgroup' => '</colgroup>
 	<col style="text-align:left;"/>
 	<col style="width:40px;text-align:left;"/>
-	<col style="width:70px;text-align:left;"/>
+	<col style="width:80px;text-align:left;"/>
 	<col style="width:45px;text-align:left;"/>
 	<col style="width:45px;text-align:left;"/>
 	<col style="width:45px;text-align:left;"/>
@@ -2278,16 +2278,16 @@ WE().consts.g_l.weSearch = {
 <col style="width:18%;text-align:left;"/>
 </colgroup>' :
 				'<colgroup>
-<col style="width:40px;text-align:center;"/>
+<col style="width:35px;text-align:center;"/>
 <col style="width:80px;text-align:center;"/>
 <col style="text-align:left;"/>
 <col style="width:70px;text-align:left;"/>
-<col style="width:45px;text-align:left;"/>
-<col style="width:45px;text-align:left;"/>
-<col style="width:45px;text-align:left;"/>
+<col style="width:55px;text-align:left;"/>
+<col style="width:42px;text-align:left;"/>
+<col style="width:50px;text-align:left;"/>
 <col style="width:90px;text-align:left;"/>
 <col style="width:90px;text-align:left;"/>
-<col style="width:40px;text-align:left;"/>
+<col style="width:50px;text-align:left;"/>
 </colgroup>'
 			) .
 			'<tr style="height:20px;">

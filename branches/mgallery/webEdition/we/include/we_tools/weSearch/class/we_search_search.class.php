@@ -893,18 +893,17 @@ class we_search_search extends we_search_base{
 //FIXME path is only implemented for filetable
 	function insertInTempTable($where = '', $table = '', $path = ''){
 		$this->table = ($table ? : ($this->table ? : ''));
-
 		if(!$this->table){
 			return;
 		}
 
-		$this->where = '1 ' . ($where ? : ($this->where ? 'AND ' . $this->where : ''));
+		$this->where = '1 ' . ($where ? (((substr(trim($where), 0, 4) !== 'AND ') ? 'AND ' : ' ') . trim($where)) : ($this->where ? 'AND ' . $this->where : ''));
 
 		switch($this->table){
 			case FILE_TABLE:
 				$tmpTableWhere = '';
 				if($path){
-					$this->where .= ' AND Path LIKE "' . $this->db->escape($path) . '%" ';
+					$this->where .= ' AND Path LIKE "%' . $this->db->escape($path) . '%" ';
 					$tmpTableWhere = ' AND DocumentID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE Path LIKE "' . $this->db->escape($path) . '%" )';
 				}
 				//we_database_base::t_e_query(1);
@@ -971,8 +970,8 @@ class we_search_search extends we_search_base{
 		$titles = $this->db->getAll();
 		if(is_array($titles) && $titles){
 			foreach($titles as $k => $v){
-				if($v['Dat'] != ""){
-					$this->db->query('UPDATE SEARCH_TEMP_TABLE SET `media_title`="' . $this->db->escape($v['Dat']) . '" WHERE docID=' . intval($k['DID']) . ' AND DocTable="' . FILE_TABLE . '" LIMIT 1');
+				if($v['Dat']){
+					$this->db->query('UPDATE SEARCH_TEMP_TABLE SET `media_title`="' . $this->db->escape($v['Dat']) . '" WHERE docID=' . intval($v['DID']) . ' AND DocTable="' . FILE_TABLE . '" LIMIT 1');
 				}
 			}
 		}
@@ -981,11 +980,40 @@ class we_search_search extends we_search_base{
 		$alts = $this->db->getAll();
 		if(is_array($alts) && $alts){
 			foreach($alts as $v){
-				if($v['Dat'] != ""){
+				if($v['Dat']){
 					$this->db->query('UPDATE SEARCH_TEMP_TABLE SET `media_alt`="' . $this->db->escape($v['Dat']) . '" WHERE docID=' . intval($v['DID']) . ' AND DocTable="' . FILE_TABLE . '" LIMIT 1');
 				}
 			}
 		}
+
+		/*
+		$startTime = microtime(true);
+		$this->db->query('SELECT l.DID, c.Dat FROM `' . LINK_TABLE . '` l JOIN `' . CONTENT_TABLE . '` c ON (l.CID=c.ID) JOIN SEARCH_TEMP_TABLE t ON t.docID=l.DID WHERE t.docTable="' . FILE_TABLE . '"  AND l.Name="filesize" AND l.Type="attrib" AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
+		$filesizes = $this->db->getAll();
+		if(is_array($filesizes) && $filesizes){
+			foreach($filesizes as $v){
+				if($v['Dat'] != ""){
+					$this->db->query('UPDATE SEARCH_TEMP_TABLE SET `media_filesize`="' . $this->db->escape($v['Dat']) . '" WHERE docID=' . intval($v['DID']) . ' AND DocTable="' . FILE_TABLE . '" LIMIT 1');
+				}
+			}
+		}
+		t_e('time used compute filesizes', $firstTime, (microtime(true) - $startTime));
+		 * 
+		 */
+
+		// FIXME: attrib filesize is buggy so use filesize() to get size:
+		// as soon as attrib is fixed we can use the above code (although using filesize seems faster than above JOINs)
+		$startTime = microtime(true);
+		$this->db->query('SELECT docID, Path FROM SEARCH_TEMP_TABLE');
+		$docs = $this->db->getAll();
+		if(is_array($docs) && $docs){
+			foreach($docs as $v){
+				if($v['Path']){
+					$this->db->query('UPDATE SEARCH_TEMP_TABLE SET `media_filesize`="' . intval(filesize($_SERVER['DOCUMENT_ROOT'] . $v['Path'])) . '" WHERE docID=' . intval($v['docID']) . ' AND DocTable="' . FILE_TABLE . '" LIMIT 1');
+				}
+			}
+		}
+		//t_e('time used compute filesizes', (microtime(true) - $startTime));
 
 		//FIXME: remove this query - only temporary, searchMediaLinks should use the join as well
 		$this->db->query('SELECT docID FROM SEARCH_TEMP_TABLE WHERE docTable="' . FILE_TABLE . '"');
@@ -1023,6 +1051,7 @@ class we_search_search extends we_search_base{
 	VersionID BIGINT NOT NULL,
 	media_alt VARCHAR(255) NOT NULL ,
 	media_title VARCHAR(255) NOT NULL ,
+	media_filesize BIGINT NOT NULL ,
 	IsUsed TINYINT NOT NULL ,
 	UNIQUE KEY k (docID,docTable)
 ) ENGINE = MEMORY' . we_database_base::getCharsetCollation());
