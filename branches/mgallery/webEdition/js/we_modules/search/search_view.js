@@ -246,13 +246,15 @@ weSearch = {
 		this.search(false);
 	},
 	showImageDetails: function (picID) {
-		this.elem = document.getElementById(picID);
-		this.elem.style.visibility = 'visible';
+		top.console.debug('show');
+		var elem = document.getElementById(picID);
+		//elem.style.left = '100px';
+		elem.style.visibility = 'visible';
 	},
 	hideImageDetails: function (picID) {
-		this.elem = document.getElementById(picID);
-		this.elem.style.visibility = 'hidden';
-		this.elem.style.left = '-9999px';
+		var elem = document.getElementById(picID);
+		elem.style.visibility = 'hidden';
+		elem.style.left = '-9999px';
 	},
 	updateElem: function (e) {
 		var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight,
