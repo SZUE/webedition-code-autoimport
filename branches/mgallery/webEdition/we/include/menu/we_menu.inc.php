@@ -776,16 +776,18 @@ if(defined('OBJECT_TABLE')){
 	$ac = we_users_util::getAllowedClasses($GLOBALS['DB_WE']);
 	if($ac){
 		$GLOBALS['DB_WE']->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' ' . ($ac ? ' WHERE ID IN(' . implode(',', $ac) . ') ' : '') . 'ORDER BY Text LIMIT 95');
+
 		if($GLOBALS['DB_WE']->num_rows()){
-			$we_menu['file_new_weobj']['hide'] = 1;
 			while($GLOBALS['DB_WE']->next_record()){
 				$we_menu[] = array(
 					'text' => str_replace(array('"', '\''), '', $GLOBALS['DB_WE']->f('Text')),
 					'parent' => 'file_new_weobj',
-					'cmd' => 'new_ClObjectFile' . $GLOBALS['DB_WE']->f('ID'),
+					'cmd' => array('new_ClObjectFile', $GLOBALS['DB_WE']->f('ID')),
 					'perm' => 'NEW_OBJECTFILE',
 				);
 			}
+		} else {
+			$we_menu['file_new_weobj']['hide'] = 1;
 		}
 	}
 }
