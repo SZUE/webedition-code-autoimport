@@ -566,7 +566,7 @@ class we_voting_voting extends weModelBase{
 		}
 		$testtime = ($this->RevoteTime < 0 ? 0 : time() - $this->RevoteTime);
 
-		if(f('SELECT 1 FROM `' . VOTING_LOG_TABLE . '` WHERE `voting`=' . intval($this->ID) . ' AND `userid`=' . intval($userid) . ' AND `time`>' . intval($testtime) . ' LIMIT 1', '', $this->db)){
+		if(f('SELECT 1 FROM `' . VOTING_LOG_TABLE . '` WHERE voting=' . intval($this->ID) . ' AND userid=' . intval($userid) . ' AND time>' . intval($testtime) . ' LIMIT 1', '', $this->db)){
 			return self::ERROR_REVOTE;
 		}
 		return self::SUCCESS;
@@ -677,8 +677,8 @@ class we_voting_voting extends weModelBase{
 	function loadDB($id = '0'){
 
 		$logQuery = ($this->IsFolder ?
-				'SELECT A.*, B.* FROM `' . VOTING_TABLE . '` A JOIN `' . VOTING_LOG_TABLE . "` B ON A.ID=B.voting WHERE A.Path LIKE '" . $this->db->escape($this->Path) . "%' AND A.IsFolder=0 ORDER BY B.time" :
-				'SELECT * FROM `' . VOTING_LOG_TABLE . '` WHERE `voting`=' . intval($id) . ' ORDER BY time'
+				'SELECT v.*, l.* FROM `' . VOTING_TABLE . '` v JOIN `' . VOTING_LOG_TABLE . "` l ON v.ID=l.voting WHERE v.Path LIKE '" . $this->db->escape($this->Path) . "%' AND v.IsFolder=0 ORDER BY l.time" :
+				'SELECT * FROM `' . VOTING_LOG_TABLE . '` WHERE voting=' . intval($id) . ' ORDER BY time'
 			);
 
 		$this->db->query($logQuery);
@@ -755,7 +755,7 @@ class we_voting_voting extends weModelBase{
 	 * @since 5.1.1.2 - 02.05.2008
 	 */
 	function deleteLogDataDB(){
-		$this->db->query('DELETE FROM `' . VOTING_LOG_TABLE . '` WHERE `voting`=' . intval($this->ID));
+		$this->db->query('DELETE FROM `' . VOTING_LOG_TABLE . '` WHERE voting=' . intval($this->ID));
 		return true;
 	}
 
