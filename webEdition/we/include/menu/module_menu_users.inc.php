@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -23,78 +22,65 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $we_menu_users = array(
-	'000100' => array(
+	'user' => array(
 		'text' => g_l('javaMenu_users', '[menu_user]'),
-		'parent' => '000000',
-		'enabled' => 0,
 	),
-	'000150' => array(
+	'new' => array(
 		'text' => g_l('javaMenu_users', '[menu_new]'),
-		'parent' => '000100',
-		'enabled' => 0,
+		'parent' => 'user',
 	),
 	array(
 		'text' => g_l('javaMenu_users', '[menu_user]'),
-		'parent' => '000150',
+		'parent' => 'new',
 		'cmd' => 'new_user',
 		'perm' => 'NEW_USER || ADMINISTRATOR',
-		'enabled' => 0,
+	),
+	array(
+		'text' => g_l('javaMenu_users', '[menu_alias]'),
+		'parent' => 'new',
+		'cmd' => 'new_alias',
+		'perm' => 'NEW_USER || ADMINISTRATOR',
+	),
+	array(
+		'parent' => 'new', // separator
+	),
+	array(
+		'text' => g_l('javaMenu_users', '[group]'),
+		'parent' => 'new',
+		'cmd' => 'new_group',
+		'perm' => 'NEW_GROUP || ADMINISTRATOR',
 	),
 	array(
 		'text' => g_l('javaMenu_users', '[menu_save]'),
-		'parent' => '000100',
+		'parent' => 'user',
 		'cmd' => 'save_user',
 		'perm' => 'NEW_GROUP || NEW_USER || SAVE_USER || SAVE_GROUP || ADMINISTRATOR',
-		'enabled' => 0,
 	),
 	array(
 		'text' => g_l('javaMenu_users', '[menu_delete]'),
-		'parent' => '000100',
+		'parent' => 'user',
 		'cmd' => 'delete_user',
 		'perm' => 'DELETE_USER || DELETE_GROUP || ADMINISTRATOR',
-		'enabled' => 0,
 	),
 	array(
-		'parent' => '000100', // separator
+		'parent' => 'user', // separator
 	),
 	array(
 		'text' => g_l('javaMenu_users', '[menu_exit]'),
-		'parent' => '000100',
+		'parent' => 'user',
 		'cmd' => 'exit_users',
-		'enabled' => 1,
 	),
 	'001500' => array(
 		'text' => g_l('javaMenu_users', '[menu_help]'),
-		'parent' => '000000',
-		'enabled' => 1,
 	),
 	array(
 		'text' => g_l('javaMenu_users', '[menu_help]') . '&hellip;',
 		'parent' => '001500',
 		'cmd' => 'help_modules',
-		'enabled' => 1,
 	),
 	array(
 		'text' => g_l('javaMenu_users', '[menu_info]') . '&hellip;',
 		'parent' => '001500',
 		'cmd' => 'info_modules',
-		'enabled' => 1,
 	),
-	array(
-		'text' => g_l('javaMenu_users', '[menu_alias]'),
-		'parent' => '000150',
-		'cmd' => 'new_alias',
-		'perm' => 'NEW_USER || ADMINISTRATOR',
-		'enabled' => 0,
-	),
-	array(
-		'parent' => '000150', // separator
-	),
-	array(
-		'text' => g_l('javaMenu_users', '[group]'),
-		'parent' => '000150',
-		'cmd' => 'new_group',
-		'perm' => 'NEW_GROUP || ADMINISTRATOR',
-		'enabled' => 0,
-	)
 );

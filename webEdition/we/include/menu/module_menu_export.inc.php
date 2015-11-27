@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -23,68 +22,56 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $we_menu_export = array(
-	'000100' => array(
+	'export' => array(
 		'text' => g_l('export', '[export]'),
-		'parent' => '000000',
-		'enabled' => 1,
 	),
-	'000200' => array(
+	'new' => array(
 		'text' => g_l('export', '[new]'),
-		'parent' => '000100',
-		'enabled' => 0,
+		'parent' => 'export',
 	),
 	array(
 		'text' => g_l('export', '[export]'),
 		'cmd' => 'new_export',
 		'perm' => 'NEW_EXPORT || ADMINISTRATOR',
-		'parent' => '000200',
-		'enabled' => 0,
+		'parent' => 'new',
 	),
 	array(
 		'text' => g_l('export', '[group]'),
 		'cmd' => 'new_export_group',
 		'perm' => 'NEW_EXPORT || ADMINISTRATOR',
-		'parent' => '000200',
-		'enabled' => 0,
+		'parent' => 'new',
 	),
 	array(
 		'text' => g_l('export', '[save]'),
-		'parent' => '000100',
+		'parent' => 'export',
 		'cmd' => 'save_export',
 		'perm' => 'NEW_EXPORT || EDIT_EXPORT || ADMINISTRATOR',
-		'enabled' => 0,
 	),
 	array(
 		'text' => g_l('export', '[delete]'),
-		'parent' => '000100',
+		'parent' => 'export',
 		'cmd' => 'delete_export',
 		'perm' => 'DELETE_EXPORT || ADMINISTRATOR',
-		'enabled' => 0,
 	),
-	'000500' => array(
-		'parent' => '000100', // separator
+	array(
+		'parent' => 'export', // separator
 	),
 	array(
 		'text' => g_l('export', '[quit]'),
-		'parent' => '000100',
+		'parent' => 'export',
 		'cmd' => 'exit_export',
-		'enabled' => 1,
 	),
-	'004000' => array(
+	'help' => array(
 		'text' => g_l('export', '[help]'),
-		'parent' => '000000',
-		'enabled' => 1,
 	),
 	array(
 		'text' => g_l('export', '[help]') . '&hellip;',
-		'parent' => '004000',
+		'parent' => 'help',
 		'cmd' => 'help_modules',
-		'enabled' => 1,
 	),
 	array(
 		'text' => g_l('export', '[info]') . '&hellip;',
-		'parent' => '004000',
+		'parent' => 'help',
 		'cmd' => 'info_modules',
-		'enabled' => 1,
 	),
 );

@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_base_menu{
-
 	private $entries;
 	private $lcmdFrame = '';
 	private $menuaction = '';
@@ -53,7 +52,7 @@ function menuaction(cmd) {
 			'<ul id="nav">';
 		$menus = array();
 		foreach($this->entries as $id => $e){
-			if($e['parent'] == 0){
+			if(empty($e['parent'])){
 				if(isset($e['perm']) ? self::isEnabled($e['perm']) : 1){
 					$mtext = (is_array($e['text']) ?
 							($e['text'][$GLOBALS['WE_LANGUAGE']] ? : '') :
@@ -81,7 +80,7 @@ function menuaction(cmd) {
 	private static function h_search($men, $p){
 		$container = array();
 		foreach($men as $id => $e){
-			if($e['parent'] == $p){
+			if(isset($e['parent']) && $e['parent'] == $p){
 				$container[$id] = $e;
 			}
 		}
@@ -110,34 +109,30 @@ function menuaction(cmd) {
 
 	private function h_pCODE($men, &$opt, $p, $zweig){
 		$nf = self::h_search($men, $p);
-		if(!empty($nf)){
-			foreach($nf as $id => $e){
-				$newAst = $zweig;
-				$e['enabled'] = isset($e['perm']) ? self::isEnabled($e['perm']) : 1;
-				$mtext = (isset($e['text']) && is_array($e['text']) ?
-						($e['text'][$GLOBALS['WE_LANGUAGE']] ? : '') :
-						(isset($e['text']) ? $e['text'] : ''));
+		if(empty($nf)){
+			return;
+		}
 
-				if(isset($e['hide']) && $e['hide']){
+		foreach($nf as $id => $e){
+			$newAst = $zweig;
+			$mtext = (isset($e['text']) && is_array($e['text']) ?
+					($e['text'][$GLOBALS['WE_LANGUAGE']] ? : '') :
+					(isset($e['text']) ? $e['text'] : ''));
 
-				} else {
-					if((!(isset($e['cmd']) && $e['cmd'])) && $mtext){
-						if($e['enabled'] == 1){
-							$opt .= '<li><a class="fly" href="#void">' . $mtext . '</a><ul>' . "\n";
-							$this->h_pCODE($men, $opt, $id, $newAst);
-							$opt .= '</ul></li>' . "\n";
-						}
-					} else if($mtext){
-						if($e['enabled'] == 1){
-							$opt .= '<li><a href="#void" onclick="' . $this->menuaction . 'menuaction(\'' . $e["cmd"] . '\')">' . $mtext . '</a></li>';
-						}
-					} elseif($e['enabled'] == 1){//separator
-						$opt .= '<li class="disabled"></li>';
-					}
+			if(isset($e['hide']) && $e['hide']){
+
+			} elseif((isset($e['perm']) ? self::isEnabled($e['perm']) : 1)){
+				if((!(isset($e['cmd']) && $e['cmd'])) && $mtext){
+					$opt .= '<li><a class="fly" href="#void">' . $mtext . '</a><ul>' . "\n";
+					$this->h_pCODE($men, $opt, $id, $newAst);
+					$opt .= '</ul></li>' . "\n";
+				} else if($mtext){
+					$opt .= '<li><a href="#void" onclick="' . $this->menuaction . 'menuaction(\'' . $e["cmd"] . '\')">' . $mtext . '</a></li>';
+				} else {//separator
+					$opt .= '<li class="disabled"></li>';
 				}
 			}
 		}
 	}
 
 }
-

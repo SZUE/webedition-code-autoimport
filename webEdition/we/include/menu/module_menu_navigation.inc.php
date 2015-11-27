@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -23,98 +22,79 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $we_menu_navigation = array(
-	100 => array(
+	'navigation' => array(
 		'text' => g_l('navigation', '[navigation]'),
-		'parent' => 0,
-		'perm' => '',
-		'enabled' => 1,
+
 	),
-	200 => array(
+	'new' => array(
 		'text' => g_l('navigation', '[menu_new]'),
-		'parent' => 100,
-		'perm' => '',
-		'enabled' => 1,
+		'parent' => 'navigation',
+
 	),
 	array(
 		'text' => g_l('navigation', '[entry]'),
-		'parent' => 200,
+		'parent' => 'new',
 		'cmd' => 'module_navigation_new',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
-		'enabled' => 1,
 	),
 	array(
 		'text' => g_l('navigation', '[group]'),
-		'parent' => 200,
+		'parent' => 'new',
 		'cmd' => 'module_navigation_new_group',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
-		'enabled' => 1,
 	),
 	array(
 		'text' => g_l('navigation', '[menu_save]'),
-		'parent' => 100,
+		'parent' => 'navigation',
 		'cmd' => 'module_navigation_save',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
-		'enabled' => 1,
 	),
 	array(
 		'text' => g_l('navigation', '[menu_delete]'),
-		'parent' => 100,
+		'parent' => 'navigation',
 		'cmd' => 'module_navigation_delete',
 		'perm' => 'DELETE_NAVIGATION || EDIT_NAVIGATION || ADMINISTRATOR',
-		'enabled' => 1,
 	),
 	array(
-		'parent' => 100, // separator
+		'parent' => 'navigation', // separator
 	),
 	array(
 		'text' => g_l('navigation', '[menu_exit]'),
-		'parent' => 100,
+		'parent' => 'navigation',
 		'cmd' => 'module_navigation_exit',
-		'perm' => '',
-		'enabled' => 1,
+
 	),
-	2000 => array(
+	'options' => array(
 		'text' => g_l('navigation', '[menu_options]'),
-		'parent' => 0,
 		'perm' => 'EDIT_NAVIAGTION_RULES',
-		'enabled' => 1,
 	),
 	array(
 		'text' => g_l('navigation', '[menu_highlight_rules]'),
-		'parent' => 2000,
+		'parent' => 'options',
 		'perm' => 'EDIT_NAVIAGTION_RULES',
 		'cmd' => 'module_navigation_rules',
-		'enabled' => 1,
-	));
-if(defined('CUSTOMER_TABLE')){
-	$we_menu_navigation[2200] = array(
+	),
+	array(
 		'text' => g_l('navigation', '[reset_customer_filter]'),
-		'parent' => 2000,
+		'parent' => 'options',
 		'perm' => 'ADMINISTRATOR',
 		'cmd' => 'module_navigation_reset_customer_filter',
-		'enabled' => 1,
-	);
-}
+		'hide' => !defined('CUSTOMER_TABLE')
+	),
+	array(
+		'text' => g_l('navigation', '[menu_help]'),
 
-$we_menu_navigation[3000] = array(
-	'text' => g_l('navigation', '[menu_help]'),
-	'parent' => 0,
-	'perm' => '',
-	'enabled' => 1,
-);
+	),
+	array(
+		'text' => g_l('navigation', '[menu_help]') . '&hellip;',
+		'parent' => 'help',
+		'cmd' => 'help_modules',
 
-$we_menu_navigation[3100] = array(
-	'text' => g_l('navigation', '[menu_help]') . '&hellip;',
-	'parent' => 3000,
-	'cmd' => 'help_modules',
-	'perm' => '',
-	'enabled' => 1,
-);
+	),
+	array(
+		'text' => g_l('navigation', '[menu_info]') . '&hellip;',
+		'parent' => 'help',
+		'cmd' => 'info_modules',
 
-$we_menu_navigation[3200] = array(
-	'text' => g_l('navigation', '[menu_info]') . '&hellip;',
-	'parent' => 3000,
-	'cmd' => 'info_modules',
-	'perm' => '',
-	'enabled' => 1,
+	)
 );

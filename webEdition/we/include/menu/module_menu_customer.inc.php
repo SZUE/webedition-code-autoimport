@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -23,107 +22,85 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $we_menu_customer = array(
-	'000100' => array(
+	'customer' => array(
 		'text' => g_l('modules_customer', '[menu_customer]'),
-		'parent' => '000000',
-		'perm' => '',
-		'enabled' => 1,
 	),
-	'000200' => array(
+	array(
 		'text' => g_l('modules_customer', '[menu_new]'),
-		'parent' => '000100',
+		'parent' => 'customer',
 		'cmd' => 'new_customer',
 		'perm' => 'NEW_CUSTOMER || ADMINISTRATOR',
-		'enabled' => 1,
 	),
-	'000400' => array(
+	array(
 		'text' => g_l('modules_customer', '[menu_save]'),
-		'parent' => '000100',
+		'parent' => 'customer',
 		'cmd' => 'save_customer',
 		'perm' => 'EDIT_CUSTOMER || NEW_CUSTOMER || ADMINISTRATOR',
-		'enabled' => 1,
 	),
-	'000600' => array(
+	array(
 		'text' => g_l('modules_customer', '[menu_delete]'),
-		'parent' => '000100',
+		'parent' => 'customer',
 		'cmd' => 'delete_customer',
 		'perm' => 'DELETE_CUSTOMER || ADMINISTRATOR',
-		'enabled' => 1,
 	),
-	'000700' => array('parent' => '000100',), // separator
-	'000800' => array(
+	array('parent' => 'customer',), // separator
+	'admin' => array(
 		'text' => g_l('modules_customer', '[menu_admin]'),
-		'parent' => '000100',
-		'enabled' => 0,
+		'parent' => 'customer',
 	),
-	'000810' => array(
+	array(
 		'text' => g_l('modules_customer', '[field_admin]') . '&hellip;',
-		'parent' => '000800',
+		'parent' => 'admin',
 		'cmd' => 'show_admin',
 		'perm' => 'SHOW_CUSTOMER_ADMIN || ADMINISTRATOR',
-		'enabled' => 1,),
-	'000820' => array(
+	),
+	array(
 		'text' => g_l('modules_customer', '[sort_admin]') . '&hellip;',
-		'parent' => '000800',
+		'parent' => 'admin',
 		'cmd' => 'show_sort_admin',
 		'perm' => 'SHOW_CUSTOMER_ADMIN || ADMINISTRATOR',
-		'enabled' => 1,),
-	'000850' => array('parent' => '000100',), // separator
-	'000860' => array(
+	),
+	array('parent' => 'customer',), // separator
+	array(
 		'text' => g_l('modules_customer', '[import]') . '&hellip;',
-		'parent' => '000100',
+		'parent' => 'customer',
 		'cmd' => 'import_customer',
 		'perm' => 'SHOW_CUSTOMER_ADMIN || ADMINISTRATOR',
-		'enabled' => 1,
 	),
-	'000870' => array(
+	array(
 		'text' => g_l('modules_customer', '[export]') . '&hellip;',
-		'parent' => '000100',
+		'parent' => 'customer',
 		'cmd' => 'export_customer',
 		'perm' => 'SHOW_CUSTOMER_ADMIN || ADMINISTRATOR',
-		'enabled' => 1,
 	),
-	'000900' => array('parent' => '000100',), // separator
-	'000910' => array(
+	array('parent' => 'customer',), // separator
+	array(
 		'text' => g_l('modules_customer', '[search]') . '&hellip;',
-		'parent' => '000100',
+		'parent' => 'customer',
 		'cmd' => 'show_search',
-		'perm' => '',
-		'enabled' => 1,
 	),
-	'000920' => array(
+	array(
 		'text' => g_l('modules_customer', '[settings]') . '&hellip;',
-		'parent' => '000100',
+		'parent' => 'customer',
 		'cmd' => 'show_customer_settings',
-		'perm' => '',
-		'enabled' => 1,
 	),
-	'000950' => array('parent' => '000100',), // separator
-	'001000' => array(
+	array('parent' => 'customer',), // separator
+	array(
 		'text' => g_l('modules_customer', '[menu_exit]'),
-		'parent' => '000100',
+		'parent' => 'customer',
 		'cmd' => 'exit_customer',
-		'perm' => '',
-		'enabled' => 1,
 	),
-	'001100' => array(
+	'help' => array(
 		'text' => g_l('modules_customer', '[menu_help]'),
-		'parent' => '000000',
-		'perm' => '',
-		'enabled' => 1,
 	),
-	'001200' => array(
+	array(
 		'text' => g_l('modules_customer', '[menu_help]') . '&hellip;',
-		'parent' => '001100',
+		'parent' => 'help',
 		'cmd' => 'help_modules',
-		'perm' => '',
-		'enabled' => 1,
 	),
-	'001300' => array(
+	array(
 		'text' => g_l('modules_customer', '[menu_info]') . '&hellip;',
-		'parent' => '001100',
+		'parent' => 'help',
 		'cmd' => 'info_modules',
-		'perm' => '',
-		'enabled' => 1,
 	),
 );
