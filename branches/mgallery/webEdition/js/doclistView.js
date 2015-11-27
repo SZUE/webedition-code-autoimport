@@ -27,6 +27,7 @@ var ajaxCallbackResultList = {
 	success: function (o) {
 		if (o.responseText !== undefined && o.responseText !== "") {
 			document.getElementById("scrollContent_doclist").innerHTML = o.responseText;
+			WE().util.setIconOfDocClass(document, 'resultIcon');
 			makeAjaxRequestParametersTop();
 			makeAjaxRequestParametersBottom();
 		}
@@ -95,6 +96,7 @@ function delRow(id) {
 }
 
 function init() {
+	WE().util.setIconOfDocClass(document, 'resultIcon');
 	sizeScrollContent();
 }
 
