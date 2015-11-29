@@ -182,7 +182,7 @@
 
 			var langSuffix = ed.settings.language === 'de' ? 'de_' : '';
 
-			var items = new Array();
+			var items = [];
 			items.push(
 				['weadaptbold',ed.settings.wePluginClasses.weadaptbold,'prop'],
 				['weadaptitalic',ed.settings.wePluginClasses.weadaptitalic,'prop'],

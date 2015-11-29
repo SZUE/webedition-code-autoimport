@@ -62,7 +62,7 @@ Calendar = function (firstDayOfWeek, dateStr, onSelected, onClose) {
 		// table of short day names
 		if (typeof Calendar._SDN_len == "undefined")
 			Calendar._SDN_len = 3;
-		var ar = new Array();
+		var ar = [];
 		for (var i = 8; i > 0;) {
 			ar[--i] = Calendar._DN[i].substr(0, Calendar._SDN_len);
 		}
@@ -70,7 +70,7 @@ Calendar = function (firstDayOfWeek, dateStr, onSelected, onClose) {
 		// table of short month names
 		if (typeof Calendar._SMN_len == "undefined")
 			Calendar._SMN_len = 3;
-		ar = new Array();
+		ar = [];
 		for (var i = 12; i > 0;) {
 			ar[--i] = Calendar._MN[i].substr(0, Calendar._SMN_len);
 		}
@@ -142,7 +142,7 @@ Calendar.removeClass = function(el, className) {
 		return;
 	}
 	var cls = el.className.split(" ");
-	var ar = new Array();
+	var ar = [];
 	for (var i = cls.length; i > 0;) {
 		if (cls[--i] != className) {
 			ar[ar.length] = cls[i];
@@ -1114,7 +1114,7 @@ Calendar.prototype._init = function (firstDayOfWeek, date) {
 
 	var row = this.tbody.firstChild;
 	var MN = Calendar._SMN[month];
-	var ar_days = this.ar_days = new Array();
+	var ar_days = this.ar_days = [];
 	var weekend = Calendar._TT["WEEKEND"];
 	var dates = this.multiple ? (this.datesCells = {}) : null;
 	for (var i = 0; i < 6; ++i, row = row.nextSibling) {
