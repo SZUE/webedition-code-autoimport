@@ -62,7 +62,7 @@ function initWeCheckForm_by_id(id) {
 
 function weCheckFormMandatory(form, reqFields) { //  return name of not set mandatory fields
 	//  check required fields
-	var missingFields = new Array();
+	var missingFields = [];
 
 	for (i = 0; i < reqFields.length; i++) {
 
@@ -98,7 +98,7 @@ function weCheckFormMandatory(form, reqFields) { //  return name of not set mand
 
 function weCheckFormEmail(form, emailFields) {    //  return names of invalid email fields
 
-	invalidEmails = new Array();
+	invalidEmails = [];
 
 	if (emailFields.length > 0) {
 
