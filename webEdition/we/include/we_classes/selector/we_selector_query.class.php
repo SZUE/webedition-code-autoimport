@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -30,7 +29,6 @@ class we_selector_query{
 	/*	 * ***********************************************************************
 	 * VARIABLES
 	 * *********************************************************************** */
-
 	private $db;
 	var $result = array();
 	var $fields;
@@ -149,7 +147,7 @@ class we_selector_query{
 
 		$rootOnly = $rootDir && ($search === "/" || strpos($rootDir, $search) === 0);
 		$where = $rootOnly ? "Path LIKE '" . $rootDir . "'" :
-				"Path REGEXP '^" . preg_quote(preg_quote($search)) . "[^/]*$'" . (($rootDir) ? " AND (Path LIKE '" . $this->db->escape($rootDir) . "' OR Path LIKE '" . $this->db->escape($rootDir) . "%')" : "");
+			"Path REGEXP '^" . preg_quote(preg_quote($search)) . "[^/]*$'" . (($rootDir) ? " AND (Path LIKE '" . $this->db->escape($rootDir) . "' OR Path LIKE '" . $this->db->escape($rootDir) . "%')" : "");
 
 		$isFolder = 0;
 		$addCT = 0;
@@ -224,7 +222,7 @@ class we_selector_query{
 		}
 
 		$this->db->query('SELECT ' . implode(',', $this->fields) . ' FROM ' . $this->db->escape($table) . ' WHERE ParentID = ' . intval($id) . ' AND ( IsFolder = 1 ' . $ctntQuery . ' ) ' .
-				$userExtraSQL . ' ORDER BY IsFolder DESC, Path ');
+			$userExtraSQL . ' ORDER BY IsFolder DESC, Path ');
 	}
 
 	/**
@@ -244,7 +242,7 @@ class we_selector_query{
 		}
 
 		$userExtraSQL = (!defined('BANNER_TABLE') || $table != BANNER_TABLE ?
-						($useExtraSQL ? $this->getUserExtraQuery($table, $useCreatorID) : '') : '');
+				($useExtraSQL ? $this->getUserExtraQuery($table, $useCreatorID) : '') : '');
 
 		$this->addQueryField("Text");
 		$this->addQueryField("ParentID");
@@ -352,7 +350,7 @@ class we_selector_query{
 			$ac = we_users_util::getAllowedClasses($this->db);
 			foreach($ac as $cid){
 				$path = id_to_path($cid, OBJECT_TABLE);
-				$wsQuery[] = ' Path LIKE "' . $this->db->escape($path) . '/%" OR Path="' . $this->db->escape($path) . '"';
+				$wsQuery[] = ' Path LIKE "' . $this->db->escape($path) . '/%" OR ID=' . $cid;
 			}
 			if($wsQuery){
 				$userExtraSQL .= ' AND (' . implode(' OR ', $wsQuery) . ')';
