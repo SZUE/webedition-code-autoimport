@@ -460,8 +460,11 @@ function we_readParents($id, &$parentlist, $tab, $match = 'ContentType', $matchv
 }
 
 function we_readChilds($pid, &$childlist, $tab, $folderOnly = true, $where = '', $match = 'ContentType', $matchvalue = 'folder', we_database_base $db = null){
+	if(empty($pid)){
+		return;
+	}
 	$db = $db ? : new DB_WE();
-	$db->query('SELECT ID,' . $db->escape($match) . ' FROM ' . $db->escape($tab) . ' WHERE ' . ($folderOnly ? ' IsFolder=1 AND ' : '') . 'ParentID=' . intval($pid) . ' ' . $where);
+	$db->query('SELECT ID,' . $db->escape($match) . ' FROM ' . $db->escape($tab) . ' WHERE ' . ($folderOnly ? ' IsFolder=1 AND ' : '') . 'ParentID IN (' . (is_array($pid) ? implode(',', $pid) : intval($pid)) . ') ' . $where);
 	$todo = array();
 	while($db->next_record()){
 		if($db->f($match) == $matchvalue){
@@ -469,8 +472,8 @@ function we_readChilds($pid, &$childlist, $tab, $folderOnly = true, $where = '',
 		}
 		$childlist[] = $db->f('ID');
 	}
-	foreach($todo as $id){
-		we_readChilds($id, $childlist, $tab, $folderOnly, $where, $match, $matchvalue, $db);
+	if($todo){
+		we_readChilds($todo, $childlist, $tab, $folderOnly, $where, $match, $matchvalue, $db);
 	}
 }
 
