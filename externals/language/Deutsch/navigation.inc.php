@@ -138,7 +138,7 @@ $l_navigation=array(
 	),
 	'save_group_ok'=>'Der Ordner wurde gespeichert.',
 	'save_ok'=>'Die Navigation wurde gespeichert.',
-	'save_populate_question'=>'Sie haben dynamische Inhalte für den Ordner definiert. Nach dem Speichern des Dokuments werden die generierten Einträge hinzugefügt bzw. erneuert. Möchten Sie fortfahren?',
+	'save_populate_question'=>'Sie haben dynamische Inhalte für den Ordner definiert. Nach dem Speichern des Dokuments werden die generierten Einträge hinzugefügt bzw. überschrieben. Möchten Sie fortfahren?',
 	'select_field_txt'=>'Wählen Sie ein Feld aus',
 	'selected_customers'=>'Nur folgende Kunden können auf den Eintrag zugreifen',
 	'selection'=>'Auswahl',

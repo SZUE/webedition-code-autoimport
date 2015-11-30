@@ -138,7 +138,7 @@ $l_navigation=array(
 	),
 	'save_group_ok'=>'The folder was saved.',
 	'save_ok'=>'The navigation was saved.',
-	'save_populate_question'=>'You have defined the dynamic contents for the folder. After saving the document the generated entries are added resp. renewed. Would you like to proceed?',
+	'save_populate_question'=>'You have defined the dynamic contents for the folder. After saving the document the generated entries are added resp. overwritten. Would you like to proceed?',
 	'select_field_txt'=>'Select a field',
 	'selected_customers'=>'Only folowing customers can access the item',
 	'selection'=>'Selection',
