@@ -71,23 +71,16 @@ weSearch = {
 	},
 	elem: null,
 	rolloverElem: null,
-	init: function (we_const, conf, g_l) { // FIXME: what do we need? check scrollContent!
-		//top.console.debug("running");
-		/*
-		 this.we_const = we_const;
-		 this.conf = conf;
-		 this.g_l = g_l;
-
-		 if (this.conf.editorBodyFrame.loaded) {
-		 this.sizeScrollContent();
-		 } else {
-		 setTimeout(function(){
-		 this.init();
-		 }, 10);
-		 }
-		 */ 
-
-		document.addEventListener('mousemove', weSearch.updateElem, false);
+	init: function (we_const, conf, g_l) {
+		if (weSearch.conf.editorBodyFrame.loaded) {
+			//weSearch.sizeScrollContent();
+			document.addEventListener('mousemove', weSearch.updateElem, false);
+			WE().util.setIconOfDocClass(document, 'resultIcon');
+		} else {
+			setTimeout(function(){
+				this.init();
+			}, 10);
+		}
 	},
 	ajaxCallbackResultList: {
 		success: function (o) {

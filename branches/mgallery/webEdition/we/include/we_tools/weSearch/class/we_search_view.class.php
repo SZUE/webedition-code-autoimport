@@ -528,7 +528,8 @@ WE().consts.g_l.weSearch = {
 	}
 
 	function getSortImage($for, $whichSearch){
-		$ord = we_base_request::_(we_base_request::STRING, 'Order' . $whichSearch);
+		$field = 'Order' . $whichSearch;
+		$ord = $this->Model->$field;
 		if($ord){
 			if(strpos($ord, $for) === 0){
 				if(strpos($ord, 'DESC')){
@@ -536,12 +537,12 @@ WE().consts.g_l.weSearch = {
 				}
 				return '<i class="fa fa-sort-asc fa-lg"></i>';
 			}
+			return '';
 		}
 		return '<i class="fa fa-sort fa-lg"></i>';
 	}
 
 	function getSearchDialogOptions($whichSearch){
-
 		$_table = new we_html_table(array('style' => 'width:500px',), 3, 2);
 		$row = 0;
 		switch($whichSearch){
@@ -1624,8 +1625,8 @@ WE().consts.g_l.weSearch = {
 									)
 								)
 							)),
-					array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'vertical-align:top;"', 'dat' => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . '">' . $iconHTML['imageView']),
-					array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'vertical-align:top;"', 'dat' => array(
+						array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'vertical-align:top;"', 'dat' => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . '">' . $iconHTML['imageView']),
+						array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'vertical-align:top;"', 'dat' => array(
 							array('elem' => 'table', '' => '', 'dat' => array(
 									array('elem' => 'row', 'dat' => array(
 											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'font-weight:bold;"', 'dat' => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . ' (ID: ' . $_result[$f]['docID'] . ')"><u>' . $_result[$f]["Text"] . '</u></a>'),
@@ -1709,7 +1710,11 @@ WE().consts.g_l.weSearch = {
 					array("dat" => we_base_util::shortenPath($creator, 22)),
 					array("dat" => $templateText),
 					array("dat" => $metafields),
-					array("dat" => $_result[$f]["docID"]),
+					array("dat" => $_result[$f]['docID']),
+					array("dat" => (isset($_result[$f]['media_alt']) ? $_result[$f]['media_alt'] : '')),
+					array("dat" => (isset($_result[$f]['media_title']) ? $_result[$f]['media_title'] : '')),
+					array("dat" => (isset($_result[$f]['isProtected']) ? $_result[$f]['isProtected'] : '')),
+					array("dat" => (isset($_result[$f]['isUsed']) ? $_result[$f]['isUsed'] : '')),
 				);
 			}
 		}
@@ -2255,7 +2260,7 @@ WE().consts.g_l.weSearch = {
 			case self::SEARCH_TMPL :
 				$view = $this->Model->setViewTmplSearch;
 				break;
-			case self::SEARCH_DOCS :
+			case self::SEARCH_MEDIA:
 				$view = $this->Model->setViewMediaSearch;
 				break;
 			case self::SEARCH_ADV :
@@ -2275,8 +2280,7 @@ WE().consts.g_l.weSearch = {
 <col style="width:36%;text-align:left;"/>
 <col style="width:15%;text-align:left;"/>
 <col style="width:18%;text-align:left;"/>
-</colgroup>' :
-				'<colgroup>
+</colgroup>' : '<colgroup>
 <col style="width:35px;text-align:center;"/>
 <col style="width:80px;text-align:center;"/>
 <col style="text-align:left;"/>
@@ -2368,9 +2372,26 @@ WE().consts.g_l.weSearch = {
 					<tr><td style="vertical-align:top">' . g_l('searchtool', '[dateityp]') . ': </td><td>' . $content[$n][8]["dat"] . '</td></tr>';
 			switch($content[$n][12]["dat"]){
 				case we_base_ContentTypes::IMAGE:
+					if($whichSearch === self::SEARCH_MEDIA){
+						$outDivs .= '<tr><td style="vertical-align:top">' . g_l('searchtool', '[protection]') . ': </td><td>' . ($content[$n][19]["dat"] ? g_l('global', '[true]') : g_l('global', '[false]')) . '</td></tr>';
+						$outDivs .= '<tr><td style="vertical-align:top">' . g_l('weClass', '[isUsed]') . ': </td><td>' . ($content[$n][20]["dat"] ? g_l('global', '[true]') : g_l('global', '[false]')) . '</td></tr>';
+					}
+					$outDivs .= '<tr><td style="vertical-align:top">' . g_l('searchtool', '[groesse]') . ': </td><td>' . $content[$n][6]["dat"] . '</td></tr>';
 					$outDivs .= '<tr><td style="vertical-align:top">' . g_l('searchtool', '[aufloesung]') . ': </td><td>' . $content[$n][7]["dat"] . '</td></tr>';
-				//no break;
+					if($whichSearch === self::SEARCH_MEDIA){
+						$outDivs .= '<tr><td style="vertical-align:top">' . g_l('weClass', '[collection][attr_alt]') . ': </td><td>' . $content[$n][17]["dat"] . '</td></tr>';
+						$outDivs .= '<tr><td style="vertical-align:top">' . g_l('weClass', '[collection][attr_title]') . ': </td><td>' . $content[$n][18]["dat"] . '</td></tr>';
+					}
+					break;
+				case we_base_ContentTypes::AUDIO:
+				case we_base_ContentTypes::VIDEO:
+				case we_base_ContentTypes::FLASH:
+				case we_base_ContentTypes::QUICKTIME:
 				case we_base_ContentTypes::APPLICATION:
+					if($whichSearch === self::SEARCH_MEDIA){
+						$outDivs .= '<tr><td style="vertical-align:top">' . g_l('searchtool', '[protection]') . ': </td><td>' . ($content[$n][19]["dat"] ? g_l('global', '[true]') : g_l('global', '[false]')) . '</td></tr>';
+						$outDivs .= '<tr><td style="vertical-align:top">' . g_l('weClass', '[isUsed]') . ': </td><td>' . ($content[$n][20]["dat"] ? g_l('global', '[true]') : g_l('global', '[false]')) . '</td></tr>';
+					}
 					$outDivs .= '<tr><td style="vertical-align:top">' . g_l('searchtool', '[groesse]') . ': </td><td>' . $content[$n][6]["dat"] . '</td></tr>';
 					break;
 				case we_base_ContentTypes::WEDOCUMENT:

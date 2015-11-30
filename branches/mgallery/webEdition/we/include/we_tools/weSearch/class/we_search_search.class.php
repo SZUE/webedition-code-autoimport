@@ -1003,7 +1003,7 @@ class we_search_search extends we_search_base{
 
 		// FIXME: attrib filesize is buggy so use filesize() to get size:
 		// as soon as attrib is fixed we can use the above code (although using filesize seems faster than above JOINs)
-		$startTime = microtime(true);
+		//$startTime = microtime(true);
 		$this->db->query('SELECT docID, Path FROM SEARCH_TEMP_TABLE');
 		$docs = $this->db->getAll();
 		if(is_array($docs) && $docs){
