@@ -48,6 +48,7 @@ abstract class we_class{
 
 	/* database table in which the object is stored */
 	var $Table = '';
+	protected $LangLinks = array();
 
 	/* Database Object */
 	protected $DB_WE;
@@ -457,7 +458,7 @@ abstract class we_class{
 		if(!$newLang){
 			return false;
 		}
-
+		$LangLinkArray = array();
 		if($type !== 'tblDocTypes'){
 			$LangLinkArray = array();
 			foreach($LinkArray as $lang => $link){

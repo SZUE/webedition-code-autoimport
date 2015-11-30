@@ -65,6 +65,7 @@ class weModelBase{
 			$this->ID = $id;
 		}
 		if($this->isKeyDefined()){
+			$isAdvanced|=!is_numeric(key($this->persistent_slots));
 			//if($id){
 			//	$this->ID = $id;
 			//}

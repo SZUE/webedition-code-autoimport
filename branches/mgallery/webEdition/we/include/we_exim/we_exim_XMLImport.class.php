@@ -50,9 +50,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 
 				if($this->handleTag($this->xmlBrowser->getNodeName($node))){
 					$tmp = $this->importNodeSet($node);
-					if(!is_object($tmp)){
-						t_e('error in xml-node', $node, $tmp);
-					} else {
+					if(is_object($tmp)){
 						$objects[] = $tmp;
 					}
 				}
@@ -279,6 +277,9 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 
 			// update owners data
 			$this->refreshOwners($object);
+			if(!defined('IMPORT_RUNNING')){
+				define('IMPORT_RUNNING', 1);
+			}
 
 			if($save){
 				$save = $this->saveObject($object);
@@ -363,9 +364,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 	function importNodeSet($node_id){
 		$i = 0;
 		$object = '';
-		$node_props = array();
-		$node_data = array();
-		$node_coding = array();
+		$node_props = $node_data = $node_coding = array();
 
 		if($this->xmlBrowser->getChildren($node_id, $node_props)){
 
@@ -409,9 +408,11 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 							case 'we_class_folder': //Bug 3857 sonderbehandlung hinzugef�gt, da es sonst hier beim letzten else zum Absturz kommt, es wird nichts geladen, da eigentlich alles geladen ist
 								$object = (defined('OBJECT_FILES_TABLE') ? new we_class_folder() : '');
 								break;
+							case 'we_navigation_navigation':
 							case 'weNavigation':
 								$object = new we_navigation_navigation();
 								break;
+							case 'we_navigation_rule':
 							case 'weNavigationRule':
 								$object = new we_navigation_rule();
 								break;

@@ -593,13 +593,13 @@ function getDocumentCss(){
 
 	public static function reparseInternalLinks(&$content, $replace = false){// FIXME: move to we_document?
 		$regs = $internalIDs = array();
-		if(preg_match_all('{src="/[^">]+\\?id=(\\d+)["|&]}i', $content, $regs, PREG_SET_ORDER)){
+		if(preg_match_all('{src="/[^">]+\\?id=(\\d+)["\|&]}i', $content, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
 				$content = $replace ? str_replace($reg[0], 'src="' . we_base_link::TYPE_INT_PREFIX . $reg[1] . '"', $content) : $content;
 				$internalIDs[] = intval($reg[1]);
 			}
 		}
-		if(preg_match_all('{src="/[^">]+\\?thumb=(\\d+,\\d+)["|&]}i', $content, $regs, PREG_SET_ORDER)){
+		if(preg_match_all('{src="/[^">]+\\?thumb=(\\d+,\\d+)["\|&]}i', $content, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
 				$content = $replace ? str_replace($reg[0], 'src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '"', $content) : $content;
 				$internalIDs[] = intval(strstr($reg[1], ',', true));

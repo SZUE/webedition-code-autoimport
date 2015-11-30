@@ -505,7 +505,7 @@ if(top.content.editor.edbody.addLog){
 
 				$xmlExIm->RefTable->reset();
 			} else {
-				$percent = max(min(($all ? (($xmlExIm->RefTable->current / $all) * 100) : 0), 100), 0);
+				$percent = round(max(min(($all ? (($xmlExIm->RefTable->current / $all) * 100) : 0), 100), 0), 2);
 
 				$_progress_update = we_html_element::jsElement('
 									if (top.content.editor.edfooter.doProgress) top.content.editor.edfooter.doProgress("' . $percent . '");
@@ -549,15 +549,15 @@ if(top.content.editor.edbody.addLog){
 						$proceed = false;
 						break;
 					case 'doctype':
-						$_path = f('SELECT DocType FROM ' . $table . ' WHERE ID = ' . intval($ref->ID), '', $this->db);
+						$_path = f('SELECT DocType FROM ' . $table . ' WHERE ID=' . intval($ref->ID), '', $this->db);
 						$proceed = true;
 						break;
 					case 'weNavigationRule':
-						$_path = f('SELECT NavigationName FROM ' . $table . ' WHERE ID = ' . intval($ref->ID), '', $this->db);
+						$_path = f('SELECT NavigationName FROM ' . $table . ' WHERE ID=' . intval($ref->ID), '', $this->db);
 						$proceed = true;
 						break;
 					case 'weThumbnail':
-						$_path = f('SELECT Name FROM ' . $table . ' WHERE ID = ' . intval($ref->ID), '', $this->db);
+						$_path = f('SELECT Name FROM ' . $table . ' WHERE ID=' . intval($ref->ID), '', $this->db);
 						$proceed = true;
 						break;
 
@@ -581,7 +581,7 @@ if (top.content.editor.edbody.addLog){
 			}
 		}
 
-		$percent = max(min(($all ? intval(($exports / $all) * 100) : 0), 100), 0);
+		$percent = round(max(min(($all ? intval(($exports / $all) * 100) : 0), 100), 0), 2);
 		$_progress_update .= we_html_element::jsElement('
 if (top.content.editor.edfooter.doProgress){
 	top.content.editor.edfooter.doProgress(' . $percent . ');

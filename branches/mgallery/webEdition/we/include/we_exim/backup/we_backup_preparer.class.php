@@ -385,8 +385,7 @@ abstract class we_backup_preparer{
 		if(!empty($file)){
 			$data = we_base_file::loadPart($file, 0, 256, $iscompressed);
 			$match = array();
-			$trenner = '[ |\n|\t|\r]*';
-			$pattern = "%(encoding" . $trenner . "=" . $trenner . "[\"|\'|\\\\]" . $trenner . ")([^\'\"> ? \\\]*)%";
+			$pattern = "%(encoding\s*=\s*[\"\'\\\\]\s*)([^\'\"> ? \\\]*)%";
 
 			if(preg_match($pattern, $data, $match)){
 				if(strtoupper($match[2]) != 'ISO-8859-1'){
@@ -402,8 +401,7 @@ abstract class we_backup_preparer{
 		if(!empty($file)){
 			$data = we_base_file::loadPart($file, 0, 256, $iscompressed);
 			$match = array();
-			$trenner = '[ |\n|\t|\r]*';
-			$pattern = "%webEdition" . $trenner . "version" . $trenner . "=" . $trenner . "[\"|\'|\\\\]" . $trenner . "([^\'\"> ? \\\]*)%";
+			$pattern = "%webEdition\s*version\s*=\s*[\"\'\\\\]\s*([^\'\"> ? \\\]*)%";
 
 			if(preg_match($pattern, $data, $match)){
 				return $match[1];

@@ -147,7 +147,6 @@ class we_import_updater extends we_exim_XMLExIm{
 			$this->updateNavigation($object);
 		}
 
-
 		if($this->debug){
 			t_e("Saving object...");
 		}
@@ -523,7 +522,7 @@ class we_import_updater extends we_exim_XMLExIm{
 		}
 	}
 
-	private function updateField(we_document &$object, $field, $table){
+	private function updateField(&$object, $field, $table){
 
 		$_ref = $this->RefTable->getRef(
 			array(
