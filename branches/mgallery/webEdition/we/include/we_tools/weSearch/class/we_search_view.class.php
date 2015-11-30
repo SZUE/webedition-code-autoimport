@@ -1385,7 +1385,7 @@ WE().consts.g_l.weSearch = {
 					$this->searchclass->insertInTempTable($whereQuery, $_table);
 
 					// when MediaSearch add attrib_alt, attrib_title, IsUsed to SEARCH_TEMP_TABLE
-					if(self::SEARCH_MEDIA){
+					if($whichSearch === self::SEARCH_MEDIA){
 						$this->searchclass->insertMediaAttribsToTempTable();
 						//SELECT id,alt,title FROM SEARCH_TEMP_TABLE JOIN tblLink JOIN tblContent ON bla WHERE alt  OR title...
 					}
@@ -1759,7 +1759,7 @@ WE().consts.g_l.weSearch = {
 		}
 	}
 
-	function getHtmlIconThmubnail($file, $smallSize = 64, $bigSize = 140, $iconPlaceholders = false){
+	function getHtmlIconThmubnail($file, $smallSize = 64, $bigSize = 140){
 		$urlPopup = $url = '';
 		if($file["ContentType"] == we_base_ContentTypes::IMAGE){
 			if($file["size"] > 0){
@@ -1775,8 +1775,7 @@ WE().consts.g_l.weSearch = {
 			}
 		} else {
 			$imagesize = array(0, 0);
-			$imageView = $imageViewPopup = $iconPlaceholders ? '<span class="resultIcon" data-contenttype="' . $file["ContentType"] . '" data-extension="' . $file['Extension'] . '"></span>' :
-					we_html_element::jsElement('document.write(WE().util.getTreeIcon("' . $file["ContentType"] . '",false,"' . $file['Extension'] . '"))');
+			$imageView = $imageViewPopup = '<span class="resultIcon" data-contenttype="' . $file["ContentType"] . '" data-extension="' . $file['Extension'] . '"></span>';
 		}
 
 		return array('imageView' => $imageView, 'imageViewPopup' => $imageViewPopup, 'sizeX' => $imagesize[0], 'sizeY' => $imagesize[1], 'url' => $url, 'urlPopup' => $urlPopup);
@@ -2357,7 +2356,7 @@ WE().consts.g_l.weSearch = {
 		$allDivs = '';
 
 		for($n = 0; $n < $x; $n++){
-			$outDivs = '<div style="position:absolute;left:-9999px;width:400px;text-align:left;z-index:10000;visibility:visible;border:1px solid #bab9ba; border-radius:20px;background-color:#EDEDED;" class="middlefont" id="ImgDetails_' . $n . '_' . $whichSearch . '">
+			$outDivs = '<div class="largeicons" style="position:absolute;left:-9999px;width:400px;text-align:left;z-index:10000;visibility:visible;border:1px solid #bab9ba; border-radius:20px;background-color:#EDEDED;" class="middlefont" id="ImgDetails_' . $n . '_' . $whichSearch . '">
 			<div style="margin-left:18px;margin-right:18px;height:22px;padding-top:3px;" class="weDocListSearchHeadlineDivs">' . $content[$n][10]["dat"] . '</div>
 			<div style="width:100%;border-top:1px solid #DDDDDD;">
 				<div style="padding:15px;display: inline-block;">' . $content[$n][5]["dat"] . '</div>
