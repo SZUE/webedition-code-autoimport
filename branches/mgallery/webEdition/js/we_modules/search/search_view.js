@@ -64,6 +64,8 @@ weSearch = {
 		selStatus: '',
 		selSpeicherart: '',
 		selLocation: '',
+		selLocationText: '',
+		selLocationDate: '',
 		selModFields: '',
 		selUsers: '',
 		pixel: '',
@@ -381,9 +383,10 @@ weSearch = {
 		//top.console.debug('is fn');
 
 	},
-	getCell: function (type, rowID, replacement) {
+	getCell: function (type, rowID, replacement) { // FIXME: use this-whichsearch to reduce cases
 		var cell = document.createElement('TD'),
-						html;
+			locationType,
+			html;
 		switch (type) {
 			case 'delButton':
 				cell.setAttribute('id', 'td_delButton[' + rowID + ']');
@@ -394,16 +397,22 @@ weSearch = {
 				cell.innerHTML = this.elems.fieldSearch.replace(/__we_new_id__/g, rowID).replace(/__we_read_only__/g, replacement ? 'readonly="1" ' : '');
 				break;
 			case 'locationAdvSearch':
+			case 'locationDateAdvSearch':
+			case 'locationTextAdvSearch':
+				locationType = (type === 'locationTextAdvSearch' ? 'selLocationText' : (type === 'locationDateAdvSearch' ? 'selLocationDate' : 'selLocation'));
 				cell.setAttribute("id", "td_locationAdvSearch[" + rowID + "]");
-				cell.innerHTML = this.elems.selLocation.replace(/__we_new_id__/g, rowID);
+				cell.innerHTML = this.elems[locationType].replace(/__we_new_id__/g, rowID);
 				break;
 			case 'searchMediaSearch':
 				cell.setAttribute('id', 'td_searchMediaSearch[' + rowID + ']');
 				cell.innerHTML = this.elems.fieldSearch.replace(/__we_new_id__/g, rowID).replace(/__we_read_only__/g, replacement ? 'readonly="1" ' : '');
 				break;
 			case 'locationMediaSearch':
+			case 'locationDateMediaSearch':
+			case 'locationTextMediaSearch':
+				locationType = (type === 'locationTextMediaSearch' ? 'selLocationText' : (type === 'locationDateMediaSearch' ? 'selLocationDate' : 'selLocation'));
 				cell.setAttribute("id", "td_locationMediaSearch[" + rowID + "]");
-				cell.innerHTML = this.elems.selLocation.replace(/__we_new_id__/g, rowID);
+				cell.innerHTML = this.elems[locationType].replace(/__we_new_id__/g, rowID);
 				break;
 		}
 		return cell;
@@ -436,6 +445,7 @@ weSearch = {
 		var searchTD = document.getElementById('td_search' + this.conf.whichsearch + '[' + rowNr + ']');
 		var delButtonTD = document.getElementById('td_delButton[' + rowNr + ']');
 		var location = document.getElementById('location' + this.conf.whichsearch + '[' + rowNr + ']');
+		var locationType = '';
 		var innerhtml;
 		var cell;
 		switch (value) {
@@ -566,7 +576,7 @@ weSearch = {
 			case 'CreationDate':
 			case 'ModDate':
 				row.removeChild(locationTD);
-				row.appendChild(this.getCell('location' + this.conf.whichsearch, rowNr));
+				row.appendChild(this.getCell('locationDate' + this.conf.whichsearch, rowNr));
 				row.removeChild(searchTD);
 
 				// FIXME: move datepicker-button to search_view
@@ -610,6 +620,7 @@ weSearch = {
 				row.appendChild(this.getCell('delButton', rowNr));
 				break;
 			case 'modifierID':
+			//case 'Creator':
 				if (locationTD !== null) {
 					location.value = 'IS';
 					location.disabled = true;
@@ -627,8 +638,27 @@ weSearch = {
 				row.appendChild(this.getCell('delButton', rowNr));
 				break;
 			default:
-				row.removeChild(searchTD);
+				switch(value){
+					case 'meta__Title':
+					case 'meta__Description':
+					case 'meta__Keywords':
+					case 'meta__Autor':
+					case 'meta__MIME':
+					case 'Path':
+					case 'CreatorName': // FIXME: reduce CreatorID and CreatorName to Creator analogue to modifierID
+					case 'Text':
+					case 'ContentType': // FIXME: make select
+					case 'WebUserName':
+						locationType = 'Text';
+						break;
+					case 'ID':
+					case 'CreatorID':
+					case 'WebUserID':
+						locationType = 'Date';
+						break;
+				}
 
+				row.removeChild(searchTD);
 				if (locationTD !== null) {
 					row.removeChild(locationTD);
 				}
@@ -636,14 +666,14 @@ weSearch = {
 					row.removeChild(delButtonTD);
 				}
 
-				row.appendChild(this.getCell('location' + this.conf.whichsearch, rowNr));
+				row.appendChild(this.getCell('location' + locationType + this.conf.whichsearch, rowNr));
 				row.appendChild(this.getCell('search' + this.conf.whichsearch, rowNr));
 				row.appendChild(this.getCell('delButton', rowNr));
 
 				document.getElementById('search' + this.conf.whichsearch + '[' + rowNr + ']').value = setValue;
 		}
 
-		switch (from) {// FIXME: this is nonsens! move thid to the above cases
+		switch (from) {// FIXME: this is nonsens! move this to the above cases
 			//switch (value) {
 			case 'allModsIn':
 			case 'MasterTemplateID':

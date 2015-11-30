@@ -257,8 +257,17 @@ class we_search_search extends we_search_base{
 					'HI' => g_l('searchtool', '[>]'),
 					'IN' => g_l('searchtool', '[IN]'),
 				);
+			case 'text':
+				return array(
+					'IS' => g_l('searchtool', '[IS]'),
+					'CONTAIN' => g_l('searchtool', '[CONTAIN]'),
+					'START' => g_l('searchtool', '[START]'),
+					'END' => g_l('searchtool', '[END]'),
+					'IN' => g_l('searchtool', '[IN]'),
+				);
 			case 'date':
 				return array(
+					'IS' => g_l('searchtool', '[IS]'),
 					'LO' => g_l('searchtool', '[<]'),
 					'LEQ' => g_l('searchtool', '[<=]'),
 					'HEQ' => g_l('searchtool', '[>=]'),
