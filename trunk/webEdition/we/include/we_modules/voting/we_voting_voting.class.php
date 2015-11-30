@@ -143,7 +143,7 @@ class we_voting_voting extends weModelBase{
 		$this->PublishDate = ($this->PublishDate ? : time());
 	}
 
-	function load($id = 0, $isAdvanced = false){
+	function load($id = 0){
 		if(parent::load($id, true)){
 			$this->QASet = unserialize($this->QASet);
 			$this->QASetAdditions = unserialize($this->QASetAdditions);

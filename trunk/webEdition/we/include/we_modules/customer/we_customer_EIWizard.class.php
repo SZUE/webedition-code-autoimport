@@ -1554,22 +1554,19 @@ function doNext(){
 	function getIDs($selIDs, $table){
 		$ret = array();
 		$tmp = array();
+		$db = $GLOBALS['DB_WE'];
+		$db->query('SELECT ID FROM ' . $db->escape($table) . ' WHERE ID IN (' . implode(',', $selIDs) . ') AND IsFolder=1');
+		$folders = $db->getAll(true);
 		foreach($selIDs as $v){
 			if($v){
-				$isfolder = f("SELECT IsFolder FROM " . $this->db->escape($table) . " WHERE ID=" . intval($v), "IsFolder", $this->db);
-				if($isfolder){
-					we_readChilds($v, $tmp, $table, false);
-				} else {
+				if(!in_array($v, $folders)){
 					$tmp[] = $v;
 				}
 			}
 		}
-		foreach($tmp as $v){
-			$isfolder = f("SELECT IsFolder FROM " . $table . " WHERE ID=" . intval($v), "IsFolder", $this->db);
-			if(!$isfolder)
-				$ret[] = $v;
-		}
-		return $ret;
+		we_readChilds($folders, $tmp, $table, false);
+		$db->query('SELECT ID FROM ' . $db->escape($table) . ' WHERE ID IN (' . implode(',', $tmp) . ') AND IsFolder=0');
+		return $db->getAll(true);
 	}
 
 	/* creates the FileChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */

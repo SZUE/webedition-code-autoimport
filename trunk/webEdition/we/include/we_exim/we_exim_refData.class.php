@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_exim_refData{
-
 	var $ID;
 	var $ParentID;
 	var $TemplateID;
@@ -59,6 +58,12 @@ class we_exim_refData{
 			}
 		}
 		return true;
+	}
+
+	public function __sleep(){
+		$tmp = get_object_vars($this);
+		unset($tmp['elements']);
+		return array_keys($tmp);
 	}
 
 }
