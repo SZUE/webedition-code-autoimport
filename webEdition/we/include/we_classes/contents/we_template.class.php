@@ -298,7 +298,6 @@ we_templateInit();?>';
 				), $code);
 
 			$code = str_replace($repl, array_keys($repl), $code);
-
 		} else if(!$this->hasStartAndEndTag('html', $code) && !$this->hasStartAndEndTag('head', $code) && !$this->hasStartAndEndTag('body', $code)){
 			$code = '<?php we_templateHead(true);?>' . $code . '<?php we_templatePostContent(false,true);?>';
 		} else {
@@ -621,7 +620,7 @@ we_templateInit();?>';
 	}
 
 	function _updateCompleteCode(){
-		if(!$this->doUpdateCode){
+		if(!$this->doUpdateCode || defined('IMPORT_RUNNING')){
 			return true;
 		}
 		static $cnt = 0;
