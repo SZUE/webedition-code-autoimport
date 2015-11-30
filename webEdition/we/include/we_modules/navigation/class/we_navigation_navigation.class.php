@@ -175,7 +175,7 @@ class we_navigation_navigation extends weModelBase{
 		$this->Charset = DEFAULT_CHARSET;
 	}
 
-	function load($id = 0, $isAdvanced = false){
+	function load($id = 0){
 		if(parent::load($id, true)){
 			$this->CategoryIDs = $this->Categories;
 
@@ -333,6 +333,7 @@ class we_navigation_navigation extends weModelBase{
 				we_navigation_cache::delNavigationTree($_oldPid);
 			}
 		}
+		return true;
 	}
 
 	function convertToPaths($ids, $table){
@@ -864,12 +865,12 @@ class we_navigation_navigation extends weModelBase{
 	}
 
 	function we_load($id){
-		parent::load($id);
+		parent::load($id, true);
 		$this->ContentType = 'weNavigation';
 	}
 
 	function we_save(){
-		$this->save();
+		return $this->save();
 	}
 
 	function setAttribute($name, $value){

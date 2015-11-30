@@ -117,8 +117,10 @@ class we_exim_XMLExIm{
 				return DOC_TYPES_TABLE;
 			case 'we_category':
 				return CATEGORY_TABLE;
+			case 'we_navigation_navigation':
 			case 'weNavigation':
 				return NAVIGATION_TABLE;
+			case 'we_navigation_rule':
 			case 'weNavigationRule':
 				return NAVIGATION_RULE_TABLE;
 			case 'we_thumbnailEx':
@@ -166,9 +168,9 @@ class we_exim_XMLExIm{
 		}
 	}
 
-	function loadPerserves(){
+	public function loadPerserves(){
 		if(isset($_SESSION['weS']['ExImRefTable'])){
-			$this->RefTable->Array2RefTable($_SESSION['weS']['ExImRefTable']);
+			$this->RefTable = $_SESSION['weS']['ExImRefTable'];
 		}
 		if(isset($_SESSION['weS']['ExImRefUsers'])){
 			$this->RefTable->Users = $_SESSION['weS']['ExImRefUsers'];
@@ -178,13 +180,13 @@ class we_exim_XMLExIm{
 		}
 	}
 
-	function savePerserves($full = true){
-		$_SESSION['weS']['ExImRefTable'] = $this->RefTable->RefTable2Array($full);
+	public function savePerserves(){
+		$_SESSION['weS']['ExImRefTable'] = $this->RefTable;
 		$_SESSION['weS']['ExImRefUsers'] = $this->RefTable->Users;
 		$_SESSION['weS']['ExImCurrentRef'] = $this->RefTable->current;
 	}
 
-	function unsetPerserves(){
+	public function unsetPerserves(){
 		if(isset($_SESSION['weS']['ExImRefTable'])){
 			unset($_SESSION['weS']['ExImRefTable']);
 		}
@@ -212,9 +214,7 @@ class we_exim_XMLExIm{
 	}
 
 	static function getHeader($encoding = '', $type = ''){
-		$encoding = ($encoding ? : $GLOBALS['WE_BACKENDCHARSET']);
-
-		return '<?xml version="1.0" encoding="' . $encoding . '" standalone="yes"?>' . "\n" .
+		return '<?xml version="1.0" encoding="' . ($encoding ? : $GLOBALS['WE_BACKENDCHARSET']) . '" standalone="yes"?>' . "\n" .
 			we_backup_backup::weXmlExImHead . ' version="' . WE_VERSION . '" type="' . $type . '" xmlns:we="we-namespace">' . "\n";
 	}
 
@@ -226,10 +226,13 @@ class we_exim_XMLExIm{
 		$ret = $tmp = array();
 		$db = new DB_WE();
 		$allow = $this->queryForAllowed($table);
+		if($selIDs){
+			$db->query('SELECT ID FROM ' . $table . ' WHERE ID IN (' . implode(',', $selIDs) . ') AND IsFolder=1');
+			$folders = $db->getAll(true);
+		}
 		foreach($selIDs as $v){
 			if($v){
-				if(f('SELECT IsFolder FROM ' . $table . ' WHERE ID=' . intval($v), 'IsFolder', $db)){
-					we_readChilds($v, $tmp, $table, false, $allow);
+				if(in_array($v, $folders)){
 					if($with_dirs){
 						$tmp[] = $v;
 					}
@@ -237,6 +240,9 @@ class we_exim_XMLExIm{
 					$tmp[] = $v;
 				}
 			}
+		}
+		if($folders){
+			we_readChilds($folders, $tmp, $table, false, $allow);
 		}
 		if($with_dirs){
 			return $tmp;
@@ -303,7 +309,7 @@ class we_exim_XMLExIm{
 				$cat_sql = ($categories ? we_category::getCatSQLTail('', FILE_TABLE, true, $db, 'Category', $categories) : '');
 				if($dir != 0){
 					$workspace = id_to_path($dir, FILE_TABLE, $db);
-					$ws_where = ' AND (' . FILE_TABLE . ".Path LIKE '" . $db->escape($workspace) . "/%' OR " . FILE_TABLE . ".Path='" . $db->escape($workspace) . "') ";
+					$ws_where = ' AND (' . FILE_TABLE . ".Path LIKE '" . $db->escape($workspace) . "/%' OR " . FILE_TABLE . ".ID=" . $dir . ") ";
 				} else {
 					$ws_where = '';
 				}
@@ -322,41 +328,38 @@ class we_exim_XMLExIm{
 		}
 	}
 
-	function importInfoMap($nodeset){
-
-	}
-
 	function isBinary(){
 
 	}
 
 	function saveObject(&$object){
+		if(!is_object($object)){
+			return true;
+		}
 		$ret = true;
-		if(is_object($object)){
-			// save binary data first to stay compatible with the new binary feature in v5.1
-			if(method_exists($object, 'savebinarydata')){
-				$object->savebinarydata();
+		// save binary data first to stay compatible with the new binary feature in v5.1
+		if(method_exists($object, 'savebinarydata')){
+			$object->savebinarydata();
+		}
+
+		if($object->ClassName === 'we_docTypes'){
+			$ret = $object->we_save_exim();
+		} else {
+			$GLOBALS['we_doc'] = $object;
+			if(method_exists($object, 'we_save')){
+				if(!$object->we_save()){
+					return false;
+				}
 			}
 
-			if($object->ClassName === 'we_docTypes'){
-				$ret = $object->we_save_exim();
-			} else {
-				$GLOBALS['we_doc'] = $object;
-				if(method_exists($object, 'we_save')){
-					if(!$object->we_save()){
-						return false;
-					}
+			if(method_exists($object, 'we_publish')){
+				if(!$object->we_publish()){
+					return false;
 				}
+			}
 
-				if(method_exists($object, 'we_publish')){
-					if(!$object->we_publish()){
-						return false;
-					}
-				}
-
-				if(method_exists($object, 'savebinarydata')){
-					$object->setElement('data', '');
-				}
+			if(method_exists($object, 'savebinarydata')){
+				$object->setElement('data', '');
 			}
 		}
 		return $ret;

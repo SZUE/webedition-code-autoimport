@@ -558,7 +558,7 @@ function closeAllType(){
 
 				$xmlExIm->RefTable->reset();
 			} else {
-				$percent = max(min(($all ? (($xmlExIm->RefTable->current / $all) * 100) : 0), 100), 0);
+				$percent = round(max(min(($all ? (($xmlExIm->RefTable->current / $all) * 100) : 0), 100), 0), 2);
 
 				$_progress_update = we_html_element::jsElement('
 									if (' . $this->topFrame . '.editor.edfooter.doProgress) ' . $this->topFrame . '.editor.edfooter.doProgress("' . $percent . '");
@@ -603,15 +603,15 @@ function closeAllType(){
 						$proceed = false;
 						break;
 					case 'doctype':
-						$_path = f('SELECT DocType FROM ' . $table . ' WHERE ID = ' . intval($ref->ID), 'DocType', $this->db);
+						$_path = f('SELECT DocType FROM ' . $table . ' WHERE ID=' . intval($ref->ID), '', $this->db);
 						$proceed = true;
 						break;
 					case 'weNavigationRule':
-						$_path = f('SELECT NavigationName FROM ' . $table . ' WHERE ID = ' . intval($ref->ID), 'NavigationName', $this->db);
+						$_path = f('SELECT NavigationName FROM ' . $table . ' WHERE ID=' . intval($ref->ID), '', $this->db);
 						$proceed = true;
 						break;
 					case 'weThumbnail':
-						$_path = f('SELECT Name FROM ' . $table . ' WHERE ID = ' . intval($ref->ID), 'Name', $this->db);
+						$_path = f('SELECT Name FROM ' . $table . ' WHERE ID=' . intval($ref->ID), '', $this->db);
 						$proceed = true;
 						break;
 
@@ -635,7 +635,7 @@ function closeAllType(){
 			}
 		}
 
-		$percent = max(min(($all ? intval(($exports / $all) * 100) : 0), 100), 0);
+		$percent = round(max(min(($all ? intval(($exports / $all) * 100) : 0), 100), 0), 2);
 		$_progress_update .= "\n" .
 			we_html_element::jsElement('
 									if (' . $this->topFrame . '.editor.edfooter.doProgress) ' . $this->topFrame . '.editor.edfooter.doProgress(' . $percent . ');

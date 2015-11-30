@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_exim_refTable{
-
 	var $Storage = array();
 	var $current = 0;
 	var $Users = array(); // username => id
@@ -79,7 +78,7 @@ class we_exim_refTable{
 			$allowed = true;
 			if($rd->Table != DOC_TYPES_TABLE && $rd->Table != CATEGORY_TABLE){
 				$q = we_exim_XMLExIm::queryForAllowed($rd->Table);
-				$id = f('SELECT ID FROM ' . escape_sql_query($rd->Table) . ' WHERE ID=' . intval($rd->ID) . ' ' . $q, 'ID', new DB_WE());
+				$id = f('SELECT ID FROM ' . escape_sql_query($rd->Table) . ' WHERE ID=' . intval($rd->ID) . ' ' . $q);
 				$allowed = $id ? true : false;
 			}
 			switch($rd->Table){
@@ -110,13 +109,12 @@ class we_exim_refTable{
 	}
 
 	function moveItemsToEnd($ct){
-		$regular = array();
-		$moved = array();
-		for($i = 0; $i < count($this->Storage); $i++){
-			if($this->Storage[$i]->ContentType == $ct){
-				$moved[] = $this->Storage[$i];
+		$regular = $moved = array();
+		foreach($this->Storage as $elem){
+			if($elem->ContentType == $ct){
+				$moved[] = $elem;
 			} else {
-				$regular[] = $this->Storage[$i];
+				$regular[] = $elem;
 			}
 		}
 		$this->Storage = array_merge($regular, $moved);
@@ -187,7 +185,11 @@ class we_exim_refTable{
 		return false;
 	}
 
-	function RefTable2Array($full = true){
+	public function __sleep(){
+		return array('Storage');
+	}
+
+/*	function RefTable2Array($full = true){
 		$out = array();
 		foreach($this->Storage as $ref){
 			$item = array();
@@ -203,10 +205,8 @@ class we_exim_refTable{
 		return $out;
 	}
 
-	function Array2RefTable($RefArray, $update = false){
-		if(!$update){
-			$this->Storage = array();
-		}
+	function Array2RefTable($RefArray){
+		$this->Storage = array();
 		foreach($RefArray as $ref){
 			$data = new we_exim_refData();
 			foreach($ref as $k => $v){
@@ -215,12 +215,12 @@ class we_exim_refTable{
 			$this->Storage[] = $data;
 		}
 	}
-
+*/
+	
 	function getNewOwnerID($id){
-		$db = new DB_WE();
 		foreach($this->Users as $user){
 			if($user['id'] == $id){
-				$newid = f('SELECT ID FROM ' . USER_TABLE . ' WHERE Username=\'' . $db->escape($user['user']) . '\'', 'ID', $db);
+				$newid = f('SELECT ID FROM ' . USER_TABLE . ' WHERE Username=\'' . $GLOBALS['DB_WE']->escape($user['user']) . '\'');
 
 				if($newid){
 					return $newid;

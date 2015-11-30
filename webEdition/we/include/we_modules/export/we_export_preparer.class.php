@@ -23,17 +23,18 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_export_preparer extends we_exim_XMLExIm{
-
 	var $RefTable;
 	var $options;
 	var $PatternSearch;
+	protected $db;
 
 	function __construct(){
 		parent::__construct();
 		$this->PatternSearch = new we_exim_searchPatterns();
+		$this->db = new DB_WE();
 	}
 
-	function getDocumentIncludes($text, $level){
+	private function getDocumentIncludes($text, $level){
 		$match = array();
 
 		foreach($this->PatternSearch->doc_patterns["id"] as $pattern){
@@ -46,7 +47,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 			}
 		}
 
-		foreach($this->PatternSearch->doc_patterns["path"] as $pattern){
+		foreach($this->PatternSearch->doc_patterns['path'] as $pattern){
 			if(preg_match_all($pattern, $text, $match)){
 				foreach($match[2] as $path){
 					$include = path_to_id($path);
@@ -56,14 +57,13 @@ class we_export_preparer extends we_exim_XMLExIm{
 		}
 	}
 
-	function getObjectIncludes($text, $level){
-
+	private function getObjectIncludes($text, $level){
 		$match = array();
 
 		foreach($this->PatternSearch->obj_patterns["id"] as $pattern){
 			if(preg_match_all($pattern, $text, $match)){
 				foreach($match[2] as $include){
-					$this->addToDepArray($level, $include, 'objectFile');
+					$this->addToDepArray($level, $include, we_base_ContentTypes::OBJECT_FILE);
 				}
 			}
 		}
@@ -71,13 +71,13 @@ class we_export_preparer extends we_exim_XMLExIm{
 		foreach($this->PatternSearch->class_patterns as $pattern){
 			if(preg_match_all($pattern, $text, $match)){
 				foreach($match[2] as $include){
-					$this->addToDepArray($level, $include, 'object', OBJECT_TABLE);
+					$this->addToDepArray($level, $include, we_base_ContentTypes::OBJECT, OBJECT_TABLE);
 				}
 			}
 		}
 	}
 
-	function getExternalLinked($text, $level){
+	private function getExternalLinked($text, $level){
 		$match = array();
 		if(!is_array($text)){
 			foreach($this->PatternSearch->ext_patterns as $pattern){
@@ -94,55 +94,60 @@ class we_export_preparer extends we_exim_XMLExIm{
 		}
 	}
 
-	function getNavigation(&$text, $level){
-		$_db = new DB_WE();
-		$match = array();
+	private function getNavigation($text, $level){
+		$navrules = $match = array();
 		foreach($this->PatternSearch->navigation_patterns as $pattern){
-			if(preg_match_all($pattern, $text, $match)){
-				foreach($match[2] as $value){
-					if(is_numeric($value)){
-						$_path = ($value ?
-										f('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($value), '', $_db) :
-										'');
+			if(!preg_match_all($pattern, $text, $match)){
+				continue;
+			}
+			foreach($match[2] as $value){
+				if(!is_numeric($value)){
+					continue;
+				}
+				$_path = ($value ?
+						f('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($value), '', $this->db) :
+						'');
 
-						$this->addToDepArray($level, $value, 'weNavigation', NAVIGATION_TABLE);
-						$this->getNavigationRule($value, $level);
+				$this->addToDepArray($level, $value, 'weNavigation', NAVIGATION_TABLE);
+				$navrules[] = $value;
 
-						$_db->query('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE "' . $_db->escape($_path) . '/%"');
-						while($_db->next_record()){
-							$this->addToDepArray($level, $_db->f('ID'), 'weNavigation', NAVIGATION_TABLE);
-							$this->getNavigationRule($_db->f('ID'), $level);
-						}
-					}
+				$this->db->query('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE "' . $this->db->escape($_path) . '/%"');
+				while($this->db->next_record()){
+					$this->addToDepArray($level, $this->db->f('ID'), 'weNavigation', NAVIGATION_TABLE);
+					$navrules[] = $this->db->f('ID');
 				}
 			}
 		}
-	}
-
-	function getNavigationRule($naviid, $level){
-		$_db = new DB_WE();
-		$_db->query('SELECT ID FROM ' . NAVIGATION_RULE_TABLE . ' WHERE NavigationID=' . intval($naviid));
-		while($_db->next_record()){
-			$this->addToDepArray($level, $_db->f('ID'), 'weNavigationRule', NAVIGATION_RULE_TABLE);
+		if($navrules){
+			$this->getNavigationRule($navrules, $level);
 		}
 	}
 
-	function getThumbnail(&$text, $level){
-		$_db = new DB_WE();
-		$match = array();
+	private function getNavigationRule(array $naviid, $level){
+		$this->db->query('SELECT ID FROM ' . NAVIGATION_RULE_TABLE . ' WHERE NavigationID IN (' . implode(',', $naviid) . ')');
+		while($this->db->next_record()){
+			$this->addToDepArray($level, $this->db->f('ID'), 'weNavigationRule', NAVIGATION_RULE_TABLE);
+		}
+	}
+
+	private function getThumbnail($text, $level){
+		$match = $values = array();
 		foreach($this->PatternSearch->thumbnail_patterns as $pattern){
 			if(preg_match_all($pattern, $text, $match)){
 				foreach($match[2] as $value){
-
-					if(($_id = f('SELECT ID FROM ' . THUMBNAILS_TABLE . ' WHERE Name="' . $_db->escape($value) . '"', '', $_db))){
-						$this->addToDepArray($level, $_id, 'weThumbnail', THUMBNAILS_TABLE);
-					}
+					$values[] = $this->db->escape($value);
 				}
+			}
+		}
+		if($values){
+			$this->db->query('SELECT ID FROM ' . THUMBNAILS_TABLE . ' WHERE Name IN ("' . (implode('","', $values)) . '")');
+			while($this->db->next_record()){
+				$this->addToDepArray($level, $this->db->f('ID'), 'weThumbnail', THUMBNAILS_TABLE);
 			}
 		}
 	}
 
-	function getIncludesFromWysiwyg($text, $level){
+	private function getIncludesFromWysiwyg($text, $level){
 		$match = array();
 
 		if(is_array($text)){ // shop exception - handle array in the content
@@ -174,7 +179,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 		}
 	}
 
-	function isPathLocal($path){
+	private function isPathLocal($path){
 		if(stripos($path, $_SERVER['SERVER_NAME']) !== false){
 			$path = str_replace(array(getServerUrl(), getServerUrl(true)), '', $path);
 			//try again with password
@@ -182,7 +187,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 		return (is_readable($_SERVER['DOCUMENT_ROOT'] . $path) ? $path : false);
 	}
 
-	function addToDepArray($level, $id, $ct = "", $table = ""){
+	private function addToDepArray($level, $id, $ct = "", $table = ""){
 		if(!$ct){
 			$table = $table? : FILE_TABLE;
 			$ct = f('SELECT ContentType FROM ' . escape_sql_query($table) . ' WHERE ID=' . intval($id), '', new DB_WE());
@@ -200,7 +205,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 		}
 	}
 
-	function getDepFromArray($array){
+	private function getDepFromArray($array){
 		$ret = array("docs" => array(), "objs" => array());
 
 		if(isset($array['id']) && $array['id']){
@@ -223,7 +228,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 		return $ret;
 	}
 
-	function getDependent(&$object, $level){
+	private function getDependent(&$object, $level){
 		if(isset($object->Table) && ($this->options['handle_document_includes'] || $this->options['handle_document_linked']) && isset($object->elements) && is_array($object->elements)){
 			foreach($object->elements as $ek => $ev){
 
@@ -312,53 +317,52 @@ class we_export_preparer extends we_exim_XMLExIm{
 		}
 
 		if(isset($object->TableID) && $this->options["handle_def_classes"]){
-			$this->addToDepArray($level, $object->TableID, "object");
+			$this->addToDepArray($level, $object->TableID, we_base_ContentTypes::OBJECT);
 		}
 
 		if(isset($object->DocType) && $object->DocType && $object->ClassName != "we_docTypes" && $this->options["handle_doctypes"]){
-			$this->addToDepArray($level, $object->DocType, "doctype");
+			$this->addToDepArray($level, $object->DocType, 'doctype');
 		}
 
 		if(isset($object->Category) && $object->Category && $object->ClassName != "we_category" && $this->options["handle_categorys"]){
 			$cats = makeArrayFromCSV($object->Category);
 			foreach($cats as $cat){
-				$this->addToDepArray($level, $cat, "category");
+				$this->addToDepArray($level, $cat, 'category');
 			}
 		}
 
-		if(defined('OBJECT_TABLE') && isset($object->ClassName) && $object->ClassName === 'we_objectFile' && $this->options['handle_object_embeds']){
+		if($this->options['handle_object_embeds'] && defined('OBJECT_TABLE') && isset($object->ClassName) && $object->ClassName === 'we_objectFile'){
 			foreach($object->elements as $key => $value){
 				if(preg_match('|we_object_[0-9]+|', $key)){
 					if(isset($value['dat'])){
-						$this->addToDepArray($level, $value['dat'], 'objectFile');
+						$this->addToDepArray($level, $value['dat'], we_base_ContentTypes::OBJECT_FILE);
 					}
 				}
 				if(preg_match('|we_object_[0-9]+_path|', $key)){
 					if(isset($value['dat'])){
-						$this->addToDepArray($level, path_to_id($value['dat'], OBJECT_FILES_TABLE), 'objectFile');
+						$this->addToDepArray($level, path_to_id($value['dat'], OBJECT_FILES_TABLE), we_base_ContentTypes::OBJECT_FILE);
 					}
 				}
-
-				if(isset($value['type']) && ($value['type'] === 'img' || $value['type'] === 'binary')){
-					$this->addToDepArray($level, isset($value['bdid']) ? $value['bdid'] : $value['dat']);
+				switch((empty($value['type']) ? '' : $value['type'])){
+					case 'img':
+					case 'binary':
+						$this->addToDepArray($level, isset($value['bdid']) ? $value['bdid'] : $value['dat']);
 				}
 			}
 		}
 	}
 
-	function makeExportList(){
-
-		$serachCT = array(we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::TEMPLATE, 'doctype', 'category', 'object', 'objectFile', we_base_ContentTypes::IMAGE);
+	private function makeExportList(){
+		$searchCT = array(we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::TEMPLATE, 'doctype', 'category', we_base_ContentTypes::OBJECT, we_base_ContentTypes::OBJECT_FILE, we_base_ContentTypes::IMAGE);
 
 		$_step = 0;
-		$id = $this->RefTable->getNext();
-		while($id){
-			$serach = in_array($id->ContentType, $serachCT);
-			if($serach || $this->options["handle_owners"]){
+		while(($id = $this->RefTable->getNext())){
+			$search = in_array($id->ContentType, $searchCT);
+			if($search || $this->options['handle_owners']){
 				$doc = we_exim_contentProvider::getInstance($id->ContentType, $id->ID);
 			}
 
-			if($serach && $this->options["export_depth"] > $id->level){
+			if($search && $this->options['export_depth'] > $id->level){
 				if(!isset($this->analyzed[$id->ContentType])){
 					$this->analyzed[$id->ContentType] = array();
 				}
@@ -382,7 +386,6 @@ class we_export_preparer extends we_exim_XMLExIm{
 				}
 			}
 
-			$id = $this->RefTable->getNext();
 			$_step++;
 			if(10 < $_step){ //FIXME: removed BACKUP_STEPS, should be handled equal to backup
 				break;
@@ -394,24 +397,22 @@ class we_export_preparer extends we_exim_XMLExIm{
 		}
 	}
 
-	function addToRefTable($ids){
-		foreach($ids as $id){
-			if(!$this->RefTable->exists($id)){
-				$this->RefTable->add2($id);
-			}
-		}
-	}
-
-	function prepareExport(){
+	public function prepareExport(){
 		we_updater::fixInconsistentTables();
 
-		if($this->options['handle_def_templates'] || $this->options['handle_doctypes'] ||
-				$this->options['handle_categorys'] || $this->options['handle_def_classes'] ||
-				$this->options['handle_document_includes'] || $this->options['handle_document_linked'] ||
-				$this->options['handle_object_includes'] || $this->options['handle_object_embeds'] ||
-				$this->options['handle_class_defs'] || $this->options['handle_owners'] || $this->options['handle_navigation'] || $this->options['handle_thumbnails']
+		if($this->options['handle_def_templates'] ||
+			$this->options['handle_doctypes'] ||
+			$this->options['handle_categorys'] ||
+			$this->options['handle_def_classes'] ||
+			$this->options['handle_document_includes'] ||
+			$this->options['handle_document_linked'] ||
+			$this->options['handle_object_includes'] ||
+			$this->options['handle_object_embeds'] ||
+			$this->options['handle_class_defs'] ||
+			$this->options['handle_owners'] ||
+			$this->options['handle_navigation'] ||
+			$this->options['handle_thumbnails']
 		){
-
 			$this->makeExportList();
 		}
 
@@ -421,7 +422,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 		}
 	}
 
-	function loadPerserves(){
+	public function loadPerserves(){
 		parent::loadPerserves();
 		if(isset($_SESSION['weS']['ExImPrepare'])){
 			$this->prepare = $_SESSION['weS']['ExImPrepare'];
@@ -431,13 +432,13 @@ class we_export_preparer extends we_exim_XMLExIm{
 		}
 	}
 
-	function savePerserves(){
+	public function savePerserves(){
 		parent::savePerserves();
 		$_SESSION['weS']['ExImPrepare'] = $this->prepare;
 		$_SESSION['weS']['ExImOptions'] = $this->options;
 	}
 
-	function unsetPerserves(){
+	public function unsetPerserves(){
 		parent::unsetPerserves();
 		if(isset($_SESSION['weS']['ExImPrepare'])){
 			unset($_SESSION['weS']['ExImPrepare']);

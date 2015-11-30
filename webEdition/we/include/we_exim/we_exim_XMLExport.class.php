@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_exim_XMLExport extends we_exim_XMLExIm{
-
 	var $db;
 	var $prepare = true;
 
@@ -63,7 +62,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 
 		$this->RefTable->setProp($params, "Examined", 1);
 
-		$classname = (isset($doc->Pseudo) ? $doc->Pseudo : $doc->ClassName);
+		$classname = $doc->ClassName;
 
 		if($classname === "weBinary" && !is_numeric($id)){
 			$doc->Path = $doc->ID;
@@ -84,13 +83,13 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 				break;
 		}
 
-		if($classname != "weBinary"){
+		if($classname != 'weBinary'){
 			we_exim_contentProvider::object2xml($doc, $fh, $attribute);
 		}
 
 		fwrite($fh, we_backup_backup::backupMarker . "\n");
 
-		if($classname === "we_backup_tableItem" && $export_binary &&
+		if($classname === 'we_backup_tableItem' && $export_binary &&
 			strtolower($doc->table) == strtolower(FILE_TABLE) &&
 			($doc->ContentType == we_base_ContentTypes::IMAGE || stripos($doc->ContentType, "application/") !== false)){
 			$bin = we_exim_contentProvider::getInstance("weBinary", $doc->ID);
@@ -127,7 +126,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 				$cat_sql = ($categories ? we_category::getCatSQLTail('', FILE_TABLE, true, $this->db, 'Category', $categories) : '');
 				if($dir != 0){
 					$workspace = id_to_path($dir, FILE_TABLE, $this->db);
-					$ws_where = ' AND (' . FILE_TABLE . ".Path LIKE '" . $this->db->escape($workspace) . "/%' OR " . FILE_TABLE . ".Path='" . $this->db->escape($workspace) . "')";
+					$ws_where = ' AND (' . FILE_TABLE . ".Path LIKE '" . $this->db->escape($workspace) . "/%' OR " . FILE_TABLE . ".ID=" . $dir . ")";
 				} else {
 					$ws_where = '';
 				}
@@ -214,15 +213,17 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 	}
 
 	function getIDs($selIDs, $table, $with_dirs = false){
-		$ret = array();
+		if(empty($selIDs)){
+			return array();
+		}
 		$tmp = array();
 		$db = new DB_WE();
 		$allow = $this->queryForAllowed($table);
+		$db->query('SELECT ID FROM ' . $db->escape($table) . ' WHERE ID IN (' . implode(',', $selIDs) . ') AND IsFolder=1');
+		$folders = $db->getAll(true);
 		foreach($selIDs as $v){
 			if($v){
-				$isfolder = f('SELECT IsFolder FROM ' . $db->escape($table) . ' WHERE ID=' . intval($v), "IsFolder", $db);
-				if($isfolder){
-					we_readChilds($v, $tmp, $table, false, $allow);
+				if(in_array($v, $folders)){
 					if($with_dirs){
 						$tmp[] = $v;
 					}
@@ -231,16 +232,14 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 				}
 			}
 		}
+		if($folders){
+			we_readChilds($folders, $tmp, $table, false, $allow);
+		}
 		if($with_dirs){
 			return $tmp;
 		}
-		foreach($tmp as $v){
-			$isfolder = f('SELECT IsFolder FROM ' . $db->escape($table) . ' WHERE ID=' . intval($v), 'IsFolder', new DB_WE());
-			if(!$isfolder){
-				$ret[] = $v;
-			}
-		}
-		return $ret;
+		$db->query('SELECT ID FROM ' . $db->escape($table) . ' WHERE ID IN (' . implode(',', $tmp) . ') AND IsFolder=0');
+		return $db->getAll(true);
 	}
 
 	function prepareExport(){
@@ -263,7 +262,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 		return $out;
 	}
 
-	function loadPerserves(){
+	public function loadPerserves(){
 		parent::loadPerserves();
 		if(isset($_SESSION['weS']['ExImPrepare'])){
 			$this->prepare = $_SESSION['weS']['ExImPrepare'];
@@ -273,13 +272,13 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 		}
 	}
 
-	function savePerserves(){
+	public function savePerserves(){
 		parent::savePerserves();
 		$_SESSION['weS']['ExImPrepare'] = $this->prepare;
 		$_SESSION['weS']['ExImOptions'] = $this->options;
 	}
 
-	function unsetPerserves(){
+	public function unsetPerserves(){
 		parent::unsetPerserves();
 		if(isset($_SESSION['weS']['ExImPrepare'])){
 			unset($_SESSION['weS']['ExImPrepare']);

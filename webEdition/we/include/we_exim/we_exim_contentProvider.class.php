@@ -31,14 +31,14 @@ class we_exim_contentProvider{
 
 	static function getInstance($we_ContentType, $ID = '', $table = ''){
 		$we_doc = '';
-
-		if($ID != ''){
+		if($ID){
+			//used in include!
 			$we_ID = $ID;
 		}
 		switch($we_ContentType){
 			case 'doctype':
 				$we_doc = new we_docTypes();
-				if($ID != ''){
+				if($ID){
 					$we_doc->initByID($ID, $we_doc->Table);
 				}
 				break;
@@ -125,7 +125,7 @@ class we_exim_contentProvider{
 		}
 
 		foreach($content as $k => $v){
-				$object->$k = $v;
+			$object->$k = $v;
 		}
 		if(isset($object->persistent_slots) && empty($object->persistent_slots)){
 			$object->persistent_slots = array_keys($content);
@@ -133,7 +133,7 @@ class we_exim_contentProvider{
 	}
 
 	static function getTagName($object){
-		switch((isset($object->Pseudo) ? $object->Pseudo : (isset($object->ClassName) ? $object->ClassName : get_class($object)))){//FIXME can we savely use get_class?
+		switch((isset($object->ClassName) ? $object->ClassName : get_class($object))){//FIXME can we savely use get_class?
 			case 'we_template':
 				return 'we:template';
 			case 'we_element':
@@ -154,9 +154,9 @@ class we_exim_contentProvider{
 				return 'we:tableitem';
 			case 'weBinary':
 				return 'we:binary';
-			case 'weNavigation':
+			case 'we_navigation_navigation':
 				return 'we:navigation';
-			case 'weNavigationRule':
+			case 'we_navigation_rule':
 				return 'we:navigationrule';
 			case 'we_thumbnail':
 			case 'we_thumbnailEx':
@@ -240,19 +240,6 @@ class we_exim_contentProvider{
 			return in_array($prop, $serialize[$classname]);
 		}
 		return false;
-	}
-
-	static function isExportable(&$object, $prop){
-		$classname = (isset($object->Pseudo) ? $object->Pseudo : $object->ClassName);
-
-		if(isset($object->table) && $object->table == CONTENT_TABLE){
-			return (!$this->isBinary());
-		}
-
-		$noexport = array(); //future use
-		return (isset($noexport[$classname]) ?
-				!in_array($prop, $noexport[$classname]) :
-				true);
 	}
 
 	static function binary2file(&$object, $file, $fwrite = 'fwrite'){
@@ -353,13 +340,18 @@ class we_exim_contentProvider{
 		return $hash[$obj];
 	}
 
-	static function object2xml(&$object, $file, $attribs = array(), $fwrite = 'fwrite'){
+	static function object2xml($object, $file, array $attribs = array(), $fwrite = 'fwrite'){
 		$classname = (isset($object->Pseudo) ? $object->Pseudo : (isset($object->ClassName) ? $object->ClassName : get_class($object)));
 
 		switch($classname){
-			case 'we_category':
+			case 'we_navigation_navigation':
 			case 'weNavigation':
+				t_e($object);
+				$object->persistent_slots['ClassName']=  we_base_request::STRING;
+				break;
+			case 'we_navigation_rule':
 			case 'weNavigationRule':
+			case 'we_category':
 			case 'we_thumbnailEx':
 			case 'we_thumbnail':
 				$object->persistent_slots = array_merge(array('ClassName'), $object->persistent_slots);
@@ -398,7 +390,11 @@ class we_exim_contentProvider{
 		}
 
 
-		foreach($object->persistent_slots as $v){
+		foreach($object->persistent_slots as $k => $v){
+			if(!is_numeric($k)){
+				//new persistents have the form name=>type
+				$v = $k;
+			}
 			if($v === 'elements' || $v === 'usedElementNames'){
 				continue;
 			}

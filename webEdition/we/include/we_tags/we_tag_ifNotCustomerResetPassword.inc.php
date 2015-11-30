@@ -19,21 +19,23 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifNotCustomerResetPassword(array $attribs){
-	$type = weTag_getAttribute('type', $attribs, 'all', we_base_request::STRING);
-	switch($type){
+	if(empty($GLOBALS['ERROR']['customerResetPassword'])){
+		return false;
+	}
+	switch(weTag_getAttribute('type', $attribs, 'all', we_base_request::STRING)){
 		default:
 		case 'all':
-			return !empty($GLOBALS['ERROR']['customerResetPassword']);
+			return true;
 		case 'passwordMismatch':
-			return isset($GLOBALS['ERROR']['customerResetPassword']) && $GLOBALS['ERROR']['customerResetPassword'] == we_customer_customer::PWD_NOT_MATCH;
+			return $GLOBALS['ERROR']['customerResetPassword'] === we_customer_customer::PWD_NOT_MATCH;
 		case 'passwordRule':
-			return isset($GLOBALS['ERROR']['customerResetPassword']) && $GLOBALS['ERROR']['customerResetPassword'] == we_customer_customer::PWD_NOT_SUFFICIENT;
+			return $GLOBALS['ERROR']['customerResetPassword'] === we_customer_customer::PWD_NOT_SUFFICIENT;
 		case 'required':
-			return isset($GLOBALS['ERROR']['customerResetPassword']) && ($GLOBALS['ERROR']['customerResetPassword'] == we_customer_customer::PWD_FIELD_NOT_SET);
+			return ($GLOBALS['ERROR']['customerResetPassword'] === we_customer_customer::PWD_FIELD_NOT_SET);
 		case 'userNotExists': //FR #9823
-			return isset($GLOBALS['ERROR']['customerResetPassword']) && ($GLOBALS['ERROR']['customerResetPassword'] == we_customer_customer::PWD_NO_SUCH_USER);
+			return ($GLOBALS['ERROR']['customerResetPassword'] === we_customer_customer::PWD_NO_SUCH_USER);
 		case 'token':
-			return isset($GLOBALS['ERROR']['customerResetPassword']) && ($GLOBALS['ERROR']['customerResetPassword'] == we_customer_customer::PWD_TOKEN_INVALID);
+			return ($GLOBALS['ERROR']['customerResetPassword'] === we_customer_customer::PWD_TOKEN_INVALID);
 	}
 	//all|required|passwordMismatch|mailEmpty|illegalToken|tokenTooOld
 }

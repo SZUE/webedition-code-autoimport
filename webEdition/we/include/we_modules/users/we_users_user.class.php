@@ -40,7 +40,7 @@ class we_users_user{
 	// Name of the class => important for reconstructing the class from outside the class
 	var $ClassName = __CLASS__;
 	// In this array are all storagable class variables
-	private $persistent_slots = array(
+	public $persistent_slots = array(
 		'ID' => we_base_request::INT,
 		'Type' => we_base_request::INT,
 		'ParentID' => we_base_request::INT,
