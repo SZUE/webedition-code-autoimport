@@ -23,8 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_exim_refTable{
-
-	var $Storage = array();
+	public $Storage = array();
 	var $current = 0;
 	var $Users = array(); // username => id
 
@@ -41,24 +40,6 @@ class we_exim_refTable{
 		foreach($properties as $k => $v){
 			$rd->$k = $v;
 		}
-		/* 			if($handle_owners){
-		  if(isset($properties['Table'])) $table = $properties['Table'];
-		  else $table = weXMLExIm::getTableForCT($properties['ContentType']);
-		  $db = new DB_WE();
-		  $metadata = $db->metadata($table);
-		  $tables = array(FILE_TABLE);
-		  if(defined('OBJECT_TABLE')){
-		  $tables[] = OBJECT_FILES_TABLE;
-		  $tables[] = OBJECT_TABLE;
-		  }
-		  if(in_array($table,$tables)){
-		  $fields = getHash('SELECT CreatorID,Owners FROM '.$table.' WHERE ID=\''.$properties['ID'].'\'',$db);
-		  $ids = array($fields['CreatorID']);
-		  $ids = array_merge($ids,makeArrayFromCSV($fields['Owners']));
-		  $this->addToUsers($ids);
-		  }
-
-		  } */
 		$rd->Table = we_exim_XMLExIm::getTableForCT($rd->ContentType, (isset($rd->Table)) ? $rd->Table : '');
 		if($this->hasPerms($rd)){
 			$this->Storage[] = $rd;
@@ -76,11 +57,16 @@ class we_exim_refTable{
 
 	function hasPerms($rd){
 		if($rd->Table){
-			$allowed = true;
-			if($rd->Table != DOC_TYPES_TABLE && $rd->Table != CATEGORY_TABLE){
-				$q = we_exim_XMLExIm::queryForAllowed($rd->Table);
-				$id = f('SELECT ID FROM ' . escape_sql_query($rd->Table) . ' WHERE ID=' . intval($rd->ID) . ' ' . $q, 'ID', new DB_WE());
-				$allowed = $id ? true : false;
+			switch($rd->Table){
+				case DOC_TYPES_TABLE:
+				case CATEGORY_TABLE:
+				case NAVIGATION_RULE_TABLE:
+					$allowed = true;
+					break;
+				default:
+					$q = we_exim_XMLExIm::queryForAllowed($rd->Table);
+					$id = f('SELECT ID FROM ' . escape_sql_query($rd->Table) . ' WHERE ID=' . intval($rd->ID) . ' ' . $q);
+					$allowed = $id ? true : false;
 			}
 			switch($rd->Table){
 				case FILE_TABLE:
@@ -112,13 +98,12 @@ class we_exim_refTable{
 	}
 
 	function moveItemsToEnd($ct){
-		$regular = array();
-		$moved = array();
-		for($i = 0; $i < count($this->Storage); $i++){
-			if($this->Storage[$i]->ContentType == $ct){
-				$moved[] = $this->Storage[$i];
+		$regular = $moved = array();
+		foreach($this->Storage as $elem){
+			if($elem->ContentType == $ct){
+				$moved[] = $elem;
 			} else {
-				$regular[] = $this->Storage[$i];
+				$regular[] = $elem;
 			}
 		}
 		$this->Storage = array_merge($regular, $moved);
@@ -176,10 +161,6 @@ class we_exim_refTable{
 		return null;
 	}
 
-	function getLastCount(){
-		return count($this->Storage);
-	}
-
 	function getRef($param){
 		foreach($this->Storage as $ref){
 			if($ref->match($param)){
@@ -189,42 +170,18 @@ class we_exim_refTable{
 		return false;
 	}
 
-	function RefTable2Array($full = true){
-		$out = array();
-		foreach($this->Storage as $ref){
-			$item = array();
-			$vars = array_keys(get_object_vars($ref));
-			foreach($vars as $prop){
-				if($full || $prop != 'elements'){
-					$item[$prop] = $ref->$prop;
-				}
-			}
-			$out[] = $item;
-		}
-
-		return $out;
+	public function __sleep(){
+		return array('Storage');
 	}
 
-	function Array2RefTable($RefArray, $update = false){
-		if(!$update){
-			$this->Storage = array();
-		}
-		foreach($RefArray as $ref){
-			$data = new we_exim_refData();
-			foreach($ref as $k => $v){
-				$data->$k = $v;
-			}
-			$this->Storage[] = $data;
-		}
+	public function getCount(){
+		return count($this->Storage);
 	}
 
 	function getNewOwnerID($id){
-		$db = new DB_WE();
 		foreach($this->Users as $user){
 			if($user['id'] == $id){
-				$newid = f('SELECT ID FROM ' . USER_TABLE . ' WHERE Username=\'' . $db->escape($user['user']) . '\'', 'ID', $db);
-
-				if($newid){
+				if(($newid = f('SELECT ID FROM ' . USER_TABLE . ' WHERE Username=\'' . $GLOBALS['DB_WE']->escape($user['user']) . '\''))){
 					return $newid;
 				}
 			}

@@ -33,6 +33,8 @@ class we_collection extends we_root{
 	public $remTable; //TODO: set getters for all public props
 	public $remCT;
 	public $remClass;
+	protected $DefaultDir = IMAGESTARTID_DEFAULT;
+	protected $DefaultPath = '';
 	public $IsDuplicates;
 	public $InsertRecursive;
 	protected $fileCollection = '';
@@ -62,7 +64,7 @@ class we_collection extends we_root{
 		parent::__construct();
 		$this->Published = 1;
 		$this->Table = VFILE_TABLE;
-		array_push($this->persistent_slots, 'fileCollection', 'objectCollection', 'remTable', 'remCT', 'remClass', 'insertPrefs', 'IsDuplicates', 'InsertRecursive', 'ContentType', 'view', 'itemsPerRow');
+		array_push($this->persistent_slots, 'fileCollection', 'objectCollection', 'remTable', 'remCT', 'remClass', 'DefaultDir', 'insertPrefs', 'IsDuplicates', 'InsertRecursive', 'ContentType', 'view', 'itemsPerRow');
 
 		if(isWE()){
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_INFO);
@@ -272,6 +274,10 @@ class we_collection extends we_root{
 
 		$dublettes = we_html_forms::checkboxWithHidden($this->IsDuplicates, 'we_' . $this->Name . '_IsDuplicates', g_l('weClass', '[collection][allowDuplicates]'));
 
+		$this->DefaultDir = $this->DefaultDir ? : (IMAGESTARTID_DEFAULT ? : 0);
+		$this->DefaultPath = $this->DefaultDir ? id_to_path($this->DefaultDir, FILE_TABLE) : '';
+		$defDir = $this->formDirChooser(330, 0, FILE_TABLE, 'DefaultPath', 'DefaultDir', '', g_l('weClass', '[collection][label_defaultDir]'), false);
+
 		$html = $selRemTable .
 			'<div id="mimetype" class="collection_props-mime" style="' . ($this->remTable === 'tblObjectFiles' ? 'display:none' : 'display:block') . ';">' .
 			'<br/>' . g_l('weClass', '[collection][filter_contenttype]') . ':<br/>' .
@@ -283,7 +289,8 @@ class we_collection extends we_root{
 				we_html_element::htmlHidden('we_' . $this->Name . '_remClass', $this->remClass, 'we_remClass') .
 				$classTable->getHTML() : '') .
 			'</div>' .
-			we_html_element::htmlDiv(array('class' => 'collection_props-dublettes'), $dublettes);
+			we_html_element::htmlDiv(array('class' => 'collection_props-dublettes'), $dublettes) .
+			we_html_element::htmlDiv(array(), $defDir);
 
 		return $html;
 	}
@@ -297,8 +304,8 @@ class we_collection extends we_root{
 
 		//$callback = we_base_request::encCmd("if(WE().layout.weEditorFrameController.getEditorIfOpen('" . VFILE_TABLE . "', " . $this->ID . ", 1)){WE().layout.weEditorFrameController.getEditorIfOpen('" . VFILE_TABLE . "', " . $this->ID . ", 1).weCollectionEdit.insertImportedDocuments(scope.sender.resp.success)} top.close();");
 		$callback = we_base_request::encCmd("var fc, editorID, frame, ce; if((fc = WE().layout.weEditorFrameController) && (editorID = fc.getEditorIdOfOpenDocument('" . VFILE_TABLE . "', " . $this->ID . ")) && (fc.getEditorEditPageNr(editorID) == 1) && (frame = fc.getEditorFrame(editorID)) && (ce = frame.getContentEditor().weCollectionEdit)){ce.insertImportedDocuments(scope.sender.resp.success);} else {top.opener.top.console.debug('error: collection closed or changed tab');} top.close()");
-		$btnImport = we_fileupload_ui_importer::getBtnImportFiles(2, $callback, 'btn_import_files_and_insert');
-		$addFromTreeButton = we_html_button::create_button("fa:btn_select_files,fa-plus,fa-plus, fa-lg fa-file-o", "javascript:weCollectionEdit.doClickAddItems();", true, 52, 22, '', '', false, false, '', false, '', 'btn_addFromTree');
+		$btnImport = we_fileupload_ui_importer::getBtnImportFiles($this->DefaultDir, $callback, 'btn_import_files_and_insert');
+		$addFromTreeButton = we_html_button::create_button("fa:btn_select_files, fa-lg fa-sitemap, fa-lg fa-angle-right, fa-lg fa-copy", "javascript:weCollectionEdit.doClickAddItems();", true, 58, 22, '', '', false, false, '', false, '', 'btn_addFromTree');
 
 		//TODO: use tables and some padding
 		$toolbar = new we_html_table(array(), 1, 7);
@@ -406,8 +413,8 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 			$wecmdenc3 = we_base_request::encCmd($wecmd3);
 		}
 
-		$selectButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . addTblPrefix($this->remTable) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "'," . (permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_OBJECTS') ? 0 : 1) . ")", true, 52, 0, '', '', false, false, '_' . $index);
-		$addFromTreeButton = we_html_button::create_button("fa:btn_select_files,fa-plus,fa-plus, fa-lg fa-file-o", "javascript:weCollectionEdit.doClickAddItems(this);", true, 52, 22, '', '', false, false, '', false, '');
+		$selectButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',(document.we_form.elements['" . $idname . "'].value != -1 ? document.we_form.elements['" . $idname . "'].value : " . $this->DefaultDir . "),'" . addTblPrefix($this->remTable) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "'," . (permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_OBJECTS') ? 0 : 1) . ")", true, 52, 0, '', '', false, false, '_' . $index);
+		$addFromTreeButton = we_html_button::create_button("fa:btn_select_files, fa-lg fa-sitemap, fa-lg fa-angle-right, fa-lg fa-copy", "javascript:weCollectionEdit.doClickAddItems(this);", true, 58, 22, '', '', false, false, '', false, '');
 		$editButton = we_html_button::create_button(we_html_button::EDIT, "javascript:weCollectionEdit.doClickOpenToEdit(" . $item['id'] . ", '" . $item['type'] . "');", true, 27, 22, '', '', ($item['id'] === -1), false, '', false, '', 'btn_edit');
 
 		$yuiSuggest->setTable(addTblPrefix($this->remTable));
@@ -469,73 +476,6 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		return we_html_element::htmlDiv(array('id' => 'list_item_' . $index, 'class' => 'listItem', 'draggable' => 'false'), $rowHtml->getHtml());
 	}
 
-	/*
-	  private function makeListItem_fallback($item, $index, &$yuiSuggest, $itemsNum = 0, $noAcAutoInit = false, $noSelectorAutoInit = false){
-	  $textname = 'we_' . $this->Name . '_ItemName_' . $index;
-	  $idname = 'we_' . $this->Name . '_ItemID_' . $index;
-
-	  $wecmd1 = "document.we_form.elements['" . $idname . "'].value";
-	  $wecmd2 = "document.we_form.elements['" . $textname . "'].value";
-	  $wecmd3 = "opener._EditorFrame.setEditorIsHot(true);opener.weCollectionEdit.repaintAndRetrieveCsv();";
-
-	  if($noSelectorAutoInit){
-	  $this->jsFormCollection .= 'weCollectionEdit.selectorCmds = ["' . $wecmd1 . '","' . $wecmd2 . '"];';
-	  $wecmdenc1 = '##CMD1##';
-	  $wecmdenc2 = '##CMD2##';
-	  } else {
-	  $wecmdenc1 = we_base_request::encCmd($wecmd1);
-	  $wecmdenc2 = we_base_request::encCmd($wecmd2);
-	  }
-	  $wecmdenc3 = we_base_request::encCmd($wecmd3);
-
-	  $button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . addTblPrefix($this->remTable) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")", true, 52, 0, '', '', false, false, '_' . $index);
-	  $addFromTreeButton = we_html_button::create_button("fa:btn_select_files,fa-plus,fa-plus, fa-lg fa-file-o", "javascript:weCollectionEdit.doClickAddItems(this);", true, 52, 22, '', '', false, false, '', false, '');
-
-	  $editButton = we_html_button::create_button(we_html_button::EDIT, "javascript:weCollectionEdit.doClickOpenToEdit(" . $item['id'] . ", '" . $item['type'] . "');", true, 27, 22);
-
-	  $yuiSuggest->setTable(addTblPrefix($this->remTable));
-	  $yuiSuggest->setContentType('folder,' . trim($this->remCT, ','));
-	  $yuiSuggest->setCheckFieldValue(false);
-	  $yuiSuggest->setSelector(weSuggest::DocSelector);
-	  $yuiSuggest->setAcId('Item_' . $index);
-	  $yuiSuggest->setNoAutoInit($noAcAutoInit);
-	  $yuiSuggest->setInput($textname, $item['path'], array("onmouseover" => "document.getElementById('list_item_" . $index . "').draggable=false", "onmouseout" => "document.getElementById('list_item_" . $index . "').draggable=true"));
-	  $yuiSuggest->setResult($idname, $item['id']);
-	  $yuiSuggest->setWidth(240);
-	  $yuiSuggest->setMaxResults(10);
-	  $yuiSuggest->setMayBeEmpty(true);
-	  $yuiSuggest->setSelectButton($button, 4);
-	  $yuiSuggest->setAdditionalButton($addFromTreeButton, 6);
-	  $yuiSuggest->setOpenButton($editButton, 4);
-	  $yuiSuggest->setDoOnItemSelect("weCollectionEdit.repaintAndRetrieveCsv();");
-
-	  $rowControlls =
-	 we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "javascript:_EditorFrame.setEditorIsHot(true);weCollectionEdit.doClickAdd(this);//top.we_cmd('switch_edit_page',1,we_transaction);", true, 100, 22).
-	  we_html_tools::htmlSelect('numselect_' . $index, array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10), 1, '', false, array('id' => 'numselect_' . $index)).
-	  we_html_button::create_button(we_html_button::DIRUP, 'javascript:weCollectionEdit.doClickUp(this);', true, 0, 0, '', '', ($index === 1 ? true : false), false, '_' . $index).
-	  we_html_button::create_button(we_html_button::DIRDOWN, 'javascript:weCollectionEdit.doClickDown(this);', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index).
-	  we_html_button::create_button(we_html_button::TRASH, 'javascript:weCollectionEdit.doClickDelete(this)', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index);
-	  
-	  $rowHtml = new we_html_table(array('draggable' => 'false'), 1, 3);
-	  $rowHtml->setCol(0, 0, array('width' => '70px', 'style' => 'padding:0 0 0 20px;', 'class' => 'weMultiIconBoxHeadline'), 'Nr. <span id="label_' . $index . '">' . $index . '</span>');
-	  $rowHtml->setCol(0, 1, array('width' => '220px', 'style' => 'padding:4px 40px 0 0;', 'class' => 'weMultiIconBoxHeadline'), $yuiSuggest->getHTML());
-	  $rowHtml->setCol(0, 2, array('width' => '', 'style' => 'padding:4px 30px 0 10px;', 'class' => 'weMultiIconBoxHeadline'), $rowControlls);
-
-	  return we_html_element::htmlDiv(array(
-	  'style' => 'margin-top:4px;border:1px solid #006db8;background-color:#f5f5f5;cursor:move;',
-	  'id' => 'list_item_' . $index,
-	  'class' => 'drop_reference',
-	  'draggable' => 'true',
-	  'ondragstart' => 'weCollectionEdit.startMoveItem(event, \'list\')',
-	  'ondrop' => 'weCollectionEdit.dropOnItem(\'item\',\'list\',event, this)',
-	  'ondragover' => 'weCollectionEdit.allowDrop(event)',
-	  'ondragenter' => 'weCollectionEdit.enterDrag(\'item\',\'list\',event, this)',
-	  'ondragend' => 'weCollectionEdit.dragEnd(event)'
-	  ), $rowHtml->getHtml());
-	  }
-	 *
-	 */
-
 	private function makeGridItem($item, $index){ // TODO: maybe write only blank item and let JS render items oninit from storage?
 		$idname = 'collectionItem_we_id_' . $index;
 		$wecmd1 = "document.we_form.elements['" . $idname . "'].value";
@@ -560,7 +500,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 
 		$trashButton = we_html_button::create_button('fa:btn_remove_from_collection,fa-lg fa-trash-o', "javascript:weCollectionEdit.doClickDelete(this);", true, 27, 22);
 		$editButton = we_html_button::create_button(we_html_button::EDIT, "javascript:weCollectionEdit.doClickOpenToEdit(" . $item['id'] . ", '" . $item['type'] . "');", true, 27, 22);
-		$selectButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . addTblPrefix($this->remTable) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "',1)", true, 52, 0, '', '', false, false, '_' . $index);
+		$selectButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',(document.we_form.elements['" . $idname . "'].value != -1 ? document.we_form.elements['" . $idname . "'].value : " . $this->DefaultDir . "),'" . addTblPrefix($this->remTable) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "',1)", true, 52, 0, '', '', false, false, '_' . $index);
 
 		// TODO: make fn for attribs: same structure as in list
 		$toolbar = we_html_element::htmlDiv(array('class' => 'toolbarLeft weMultiIconBoxHeadline'), '<span class="grid_label" id="label_' . $index . '">' . $index . '</span>') .

@@ -230,10 +230,12 @@
 	font-family: FontAwesome;
 	font-size: 14px;
 	padding-left: 3px;
-	padding-top: 3px;
+	padding-top: 4px;
 }
 .o2k7Skin span.mce_wevisualaid {background:url(/webEdition/images/wysiwyg/visualaid.gif)}
-.o2k7Skin span.mce_wefullscreen {background:url(/webEdition/images/wysiwyg/full.gif)}
+.o2k7Skin span.mce_wefullscreen:before {content: "\f065";}
+.o2k7Skin span.mce_wefullscreen_var:before {content: "\f066";}
+
 .o2k7Skin span.mce_welang {background:url(/webEdition/images/wysiwyg/lang.gif)}
 .o2k7Skin span.mce_weinsertbreak {background:url(/webEdition/images/wysiwyg/br.gif)}
 .o2k7Skin span.mce_weimage {background-position:-380px 0}
@@ -247,7 +249,6 @@
 .o2k7Skin span.mce_weadaptitalic {background-position:-60px 0}
 .o2k7Skin span.mce_weabbr {background-position:-860px -20px}
 .o2k7Skin span.mce_weacronym {background-position:-880px -20px}
-/* .o2k7Skin span.mce_wegallery {background:url(/webEdition/images/wysiwyg/gallery.gif)} */
 .o2k7Skin span.mce_wegallery:before {content: "\f187"; color: #164F94;}
 .o2k7Skin span.mce_undo {background-position:-158px 0}
 .o2k7Skin span.mce_charmap {background-position:-239px 0}

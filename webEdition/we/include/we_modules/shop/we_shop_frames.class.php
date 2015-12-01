@@ -234,7 +234,7 @@ function we_cmd() {
 		return $this->getHTMLDocument($body, $extraHead);
 	}
 
-	function getHTMLCmd(){
+	protected function getHTMLCmd(){
 		return $this->getHTMLDocument(we_html_element::htmlBody());
 	}
 

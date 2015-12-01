@@ -38,14 +38,16 @@ function we_cmd() {
 				break;
 			}
 			document.we_form.sortindex.value = args[1];
+			/* falls through */
 		case "add_sort":
 			document.we_form.cmd.value = args[0];
 			submitForm();
 			break;
 		case "del_sort_field":
 			document.we_form.fieldindex.value = args[2];
+			/* falls through */
 		case "del_sort":
-			if (args[1] == settings.default_sort_view) {
+			if (args[1] === settings.default_sort_view) {
 				top.we_showMessage(g_l.default_soting_no_del, WE().consts.message.WE_MESSAGE_ERROR, this);
 			}
 			else {

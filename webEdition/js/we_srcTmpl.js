@@ -304,8 +304,8 @@ function openTagWizardPrompt(_wrongTag) {
 	var _tagExists = false;
 
 	if (typeof (_tagName) == "string") {
-		for (i = 0; i < tagGroups["alltags"].length && !_tagExists; i++) {
-			if (tagGroups["alltags"][i] == _tagName) {
+		for (i = 0; i < tagGroups.alltags.length && !_tagExists; i++) {
+			if (tagGroups.alltags[i] == _tagName) {
 				_tagExists = true;
 			}
 		}

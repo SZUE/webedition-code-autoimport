@@ -4,9 +4,9 @@
  * webEdition CMS
  *
  * webEdition CMS
- * $Rev: 10548 $
- * $Author: mokraemer $
- * $Date: 2015-10-07 16:51:40 +0200 (Mi, 07. Okt 2015) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -26,7 +26,7 @@
 
 function init() {
 	_fo = document.forms[0];
-	_oCsv_ = opener.gel(_sObjId + '_csv')
+	_oCsv_ = opener.gel(_sObjId + '_csv');
 	_sInitCsv_ = _oCsv_.value;
 	_oSctDate = _fo.elements.sct_date;
 	_fo.elements.revenueTarget.value = _sInitNum;

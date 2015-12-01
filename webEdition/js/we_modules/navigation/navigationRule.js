@@ -2,9 +2,9 @@
  * webEdition SDK
  *
  * webEdition CMS
- * $Rev: 10631 $
- * $Author: mokraemer $
- * $Date: 2015-10-20 08:22:44 +0200 (Di, 20. Okt 2015) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of the webEdition SDK. The webEdition SDK is
  * free software; you can redistribute it and/or modify
@@ -34,7 +34,7 @@ var resetFields = [
 function switchType(value) {
 	// 1st hide all
 	for (i = 0; i < allFields.length; i++) {
-		if (elem = document.getElementById("tr" + allFields[i])) {
+		if ((elem = document.getElementById("tr" + allFields[i]))) {
 			elem.style.display = "none";
 		}
 	}
@@ -43,7 +43,7 @@ function switchType(value) {
 	if (dependencies[value]) {
 
 		for (j = 0; j < dependencies[value].length; j++) {
-			if (elem = document.getElementById("tr" + dependencies[value][j])) {
+			if ((elem = document.getElementById("tr" + dependencies[value][j]))) {
 				elem.style.display = "";
 			}
 		}
@@ -57,7 +57,7 @@ function clearNavigationForm() {
 		}
 	}
 
-	document.we_form["ID"].value = "0";
+	document.we_form.ID.value = "0";
 	weSelect.removeOptions("WorkspaceID");
 	removeAllCats();
 }
@@ -77,7 +77,7 @@ function addCat(paths, ids) {
 	var path = paths.split(",");
 	var id = ids.split(",");
 	for (var i = 0; i < path.length; i++) {
-		if (path[i] != "") {
+		if (path[i] !== "") {
 			categories_edit.addItem();
 			categories_edit.setItem(0, (categories_edit.itemCount - 1), path[i], id[i]);
 		}
@@ -100,9 +100,9 @@ function we_cmd() {
 			break;
 		case "save_navigation_rule":
 			var isValid = 1;
-			if (document.we_form.SelectionType.options[0].selected == true) {
+			if (document.we_form.SelectionType.options[0].selected === true) {
 				isValid = YAHOO.autocoml.isValidById("yuiAcInputFolderIDPath");
-			} else if (document.we_form.SelectionType.options[1] !== undefined && document.we_form.SelectionType.options[1].selected == true) {
+			} else if (document.we_form.SelectionType.options[1] !== undefined && document.we_form.SelectionType.options[1].selected === true) {
 				isValid = YAHOO.autocoml.isValidById("yuiAcInputClassIDPath");
 			}
 			if (isValid && YAHOO.autocoml.isValidById("yuiAcInputNavigationIDPath")) {
@@ -114,8 +114,8 @@ function we_cmd() {
 			}
 			break;
 		case "delete_navigation_rule":
-			if (navId = document.we_form["navigationRules"].value) {
-				document.we_form["NavigationName"].value = "";
+			if ((navId = document.we_form.navigationRules.value)) {
+				document.we_form.NavigationName.value = "";
 				weInput.setValue("cmd", "delete_navigation_rule");
 				weInput.setValue("ID", navId);
 				document.we_form.submit();

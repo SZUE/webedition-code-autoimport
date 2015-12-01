@@ -39,18 +39,19 @@ function we_setPath(path, text, id, classname) {
 	path = path.replace(/</g, '&lt;');
 	path = path.replace(/>/g, '&gt;');
 	path = '<span style="font-weight:bold;color:#006699">' + path + '</span>';
+	var div;
 	if (document.getElementById) {
-		var div = document.getElementById('h_path');
+		div = document.getElementById('h_path');
 		div.innerHTML = path;
 		if (id > 0) {
-			var div = document.getElementById('h_id');
+			div = document.getElementById('h_id');
 			div.innerHTML = id;
 		}
 	} else if (document.all) {
-		var div = document.all['h_path'];
+		div = document.all.h_path;
 		div.innerHTML = path;
 		if (id > 0) {
-			var div = document.all['h_id'];
+			div = document.all.h_id;
 			div.innerHTML = id;
 		}
 	}

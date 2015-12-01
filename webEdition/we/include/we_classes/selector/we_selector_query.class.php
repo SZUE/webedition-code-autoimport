@@ -349,7 +349,7 @@ class we_selector_query{
 			$ac = we_users_util::getAllowedClasses($this->db);
 			foreach($ac as $cid){
 				$path = id_to_path($cid, OBJECT_TABLE);
-				$wsQuery[] = ' Path LIKE "' . $this->db->escape($path) . '/%" OR Path="' . $this->db->escape($path) . '"';
+				$wsQuery[] = ' Path LIKE "' . $this->db->escape($path) . '/%" OR ID=' . $cid;
 			}
 			if($wsQuery){
 				$userExtraSQL .= ' AND (' . implode(' OR ', $wsQuery) . ')';

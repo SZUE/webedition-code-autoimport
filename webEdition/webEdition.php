@@ -366,7 +366,7 @@ foreach($jsCmd as $cur){
 	function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	
+
 	//	When coming from a we_cmd, always mark the document as opened with we !!!!
 	if (WE().layout.weEditorFrameController.getActiveDocumentReference) {
 
@@ -469,7 +469,6 @@ foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do
 	<div id="cmdDiv">
 		<iframe src="about:blank" name="load"></iframe>
 		<iframe src="about:blank" name="load2"></iframe>
-		<!-- iframe src="about:blank" name="postframe"></iframe -->
 		<iframe src="about:blank" name="plugin"></iframe>
 	</div>
 	<?php

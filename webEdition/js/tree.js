@@ -173,8 +173,9 @@ container.prototype = {
 			return;
 		}
 		var updated = false;
+		var aname;
 		for (var ai = 1; ai <= treeData.len; ai++) {
-			if (treeData[ai].id == attribs["id"]) {
+			if (treeData[ai].id == attribs.id) {
 				updated = true;
 				for (aname in attribs) {
 					treeData[ai][aname] = attribs[aname];
@@ -283,7 +284,7 @@ container.prototype = {
 		return row;
 	},
 	openClose: function (id) {
-		if (id == "") {
+		if (id === "") {
 			return;
 		}
 

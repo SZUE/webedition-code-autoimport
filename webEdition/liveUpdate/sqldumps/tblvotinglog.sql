@@ -1,7 +1,7 @@
 CREATE TABLE ###TBLPREFIX###tblvotinglog (
-  `id` bigint(20) unsigned NOT NULL auto_increment,
+  `id` int(10) unsigned NOT NULL auto_increment,
   `votingsession` varchar(255) NOT NULL,
-  `voting` bigint(20) unsigned NOT NULL,
+  `voting` mediumint(8) unsigned NOT NULL,
   `time` int(11) unsigned NOT NULL,
   `ip` varchar(40) NOT NULL,
   `agent` varchar(255) NOT NULL,
@@ -13,5 +13,6 @@ CREATE TABLE ###TBLPREFIX###tblvotinglog (
   `answertext` text NOT NULL,
   `successor` int(11) unsigned NOT NULL DEFAULT '0',
   `additionalfields` text NOT NULL,
-  PRIMARY KEY  (`id`)
+  PRIMARY KEY  (id),
+	KEY voting(voting,userid)
 ) ENGINE=MyISAM ;

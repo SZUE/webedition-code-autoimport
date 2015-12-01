@@ -2,9 +2,9 @@
  * webEdition CMS
  *
  * webEdition CMS
- * $Rev: 10550 $
- * $Author: mokraemer $
- * $Date: 2015-10-07 19:56:47 +0200 (Mi, 07. Okt 2015) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -29,11 +29,11 @@ function weToggleBox(name, textDown, textRight) {
 	if (t.style.display == "none") {
 		t.style.display = "";
 		s.innerHTML = textDown;
-		weSetCookieVariable("but_" + name, "down")
+		weSetCookieVariable("but_" + name, "down");
 	} else {
 		t.style.display = "none";
 		s.innerHTML = textRight;
-		weSetCookieVariable("but_" + name, "right")
+		weSetCookieVariable("but_" + name, "right");
 	}
 }
 
@@ -44,7 +44,7 @@ function toggleButton(but, name) {
 function weGetCookieVariable(name) {
 	var c = WE().util.weGetCookie((top.name == "edit_module") ? top.opener.top.document : top.document, "we" + WE().session.sess_id);
 	var vals = [];
-	if (c != null) {
+	if (c !== null) {
 		var parts = c.split(/&/);
 		for (var i = 0; i < parts.length; i++) {
 			var foo = parts[i].split(/=/);
@@ -58,16 +58,17 @@ function weGetCookieVariable(name) {
 function weSetCookieVariable(name, value) {
 	var c = WE().util.weGetCookie((top.name == "edit_module") ? top.opener.top.document : top.document, "we" + WE().session.sess_id);
 	var vals = [];
-	if (c != null) {
+	var i;
+	if (c !== null) {
 		var parts = c.split(/&/);
-		for (var i = 0; i < parts.length; i++) {
+		for (i = 0; i < parts.length; i++) {
 			var foo = parts[i].split(/=/);
 			vals[unescape(foo[0])] = unescape(foo[1]);
 		}
 	}
 	vals[name] = value;
 	c = "";
-	for (var i in vals) {
+	for (i in vals) {
 		c += encodeURI(i) + "=" + encodeURI(vals[i]) + "&";
 	}
 	if (c.length > 0) {

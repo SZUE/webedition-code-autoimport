@@ -25,6 +25,7 @@
 WE().layout.button = {
 	disable: function (doc, id) {
 		var el = doc.getElementById(id);
+		el = (el === null ? doc.getElementById("btn_" + id) : el);
 		if (el !== null) {
 			if (el.tagName === "BUTTON") {
 				el.disabled = true;
@@ -34,6 +35,7 @@ WE().layout.button = {
 	},
 	enable: function (doc, id) {
 		var el = doc.getElementById(id);
+		el = (el === null ? doc.getElementById("btn_" + id) : el);
 		if (el !== null) {
 			if (el.tagName === "BUTTON") {
 				el.disabled = false;
@@ -43,6 +45,7 @@ WE().layout.button = {
 	},
 	setText: function (doc, id, text) {
 		var el = doc.getElementById(id);
+		el = (el === null ? doc.getElementById("btn_" + id) : el);
 		if (el !== null && text !== undefined) {
 			if (el.tagName === "BUTTON") {
 				el.innerHTML = text;
@@ -52,18 +55,21 @@ WE().layout.button = {
 	},
 	hide: function (doc, id) {
 		var el = doc.getElementById(id);
+		el = (el === null ? doc.getElementById("btn_" + id) : el);
 		if (el !== null) {
 			el.style.display = "none";
 		}
 	},
 	show: function (doc, id) {
 		var el = doc.getElementById(id);
+		el = (el === null ? doc.getElementById("btn_" + id) : el);
 		if (el !== null) {
 			el.style.display = "block";
 		}
 	},
 	isDisabled: function (doc, id) {
 		var el = doc.getElementById(id);
+		el = (el === null ? doc.getElementById("btn_" + id) : el);
 		return (el !== null && (el.tagName == "BUTTON" ? el.disabled : el.className == "weBtnDisabled"));
 	},
 	isEnabled: function (doc, id) {

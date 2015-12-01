@@ -32,29 +32,30 @@ function addEntry(sText, sValue) {
 }
 
 function addBtn(obj, text, value, selected) {
-	if (obj != null && obj.options != null) {
+	if (obj !== null && obj.options !== null) {
 		obj.options[obj.options.length] = new Option(text, value, false, selected);
 		deleteEntry(value);
 	}
 }
 
 function hasOptions(obj) {
-	if (obj != null && obj.options != null) {
+	if (obj !== null && obj.options !== null) {
 		return true;
 	}
 	return false;
 }
 
 function selectUnselectMatchingOptions(obj, regex, which, only) {
+	var bSel1, bSel2;
 	if (window.RegExp) {
 		switch (which) {
 			case 'select':
-				var bSel1 = true;
-				var bSel2 = false;
+				bSel1 = true;
+				bSel2 = false;
 				break;
 			case 'unselect':
-				var bSel1 = false;
-				var bSel2 = true;
+				bSel1 = false;
+				bSel2 = true;
 				break;
 			default:
 				return;
@@ -67,7 +68,7 @@ function selectUnselectMatchingOptions(obj, regex, which, only) {
 			if (re.test(obj.options[i].text)) {
 				obj.options[i].selected = bSel1;
 			} else {
-				if (only == true) {
+				if (only === true) {
 					obj.options[i].selected = bSel2;
 				}
 			}
@@ -92,10 +93,11 @@ function sortSelect(obj) {
 	if (!hasOptions(obj)) {
 		return;
 	}
-	for (var i = 0; i < obj.options.length; i++) {
+	var i;
+	for (i = 0; i < obj.options.length; i++) {
 		o[o.length] = new Option(obj.options[i].text, obj.options[i].value, obj.options[i].defaultSelected, obj.options[i].selected);
 	}
-	if (o.length == 0) {
+	if (o.length === 0) {
 		return;
 	}
 	o = o.sort(
@@ -109,7 +111,7 @@ function sortSelect(obj) {
 						return 0;
 					}
 	);
-	for (var i = 0; i < o.length; i++) {
+	for (i = 0; i < o.length; i++) {
 		obj.options[i] = new Option(o[i].text, o[i].value, o[i].defaultSelected, o[i].selected);
 	}
 }
@@ -130,19 +132,20 @@ function moveSelectedOptions(from, to, select, regex) {
 	if (!hasOptions(from)) {
 		return;
 	}
-	for (var i = 0; i < from.options.length; i++) {
-		var o = from.options[i];
+	var i, index, o;
+	for (i = 0; i < from.options.length; i++) {
+		o = from.options[i];
 		if (o.selected) {
 			if (!hasOptions(to)) {
-				var index = 0;
+				index = 0;
 			} else {
-				var index = to.options.length;
+				index = to.options.length;
 			}
 			to.options[index] = new Option(o.text, o.value, false, false);
 		}
 	}
-	for (var i = (from.options.length - 1); i >= 0; i--) {
-		var o = from.options[i];
+	for (i = (from.options.length - 1); i >= 0; i--) {
+		o = from.options[i];
 		if (o.selected) {
 			from.options[i] = null;
 		}
@@ -157,28 +160,29 @@ function moveSelectedOptions(from, to, select, regex) {
 
 function copySelectedOptions(from, to, select) {
 	var options = {};
+	var i, index, o;
 	if (hasOptions(to)) {
-		for (var i = 0; i < to.options.length; i++) {
+		for (i = 0; i < to.options.length; i++) {
 			options[to.options[i].value] = to.options[i].text;
 		}
 	}
 	if (!hasOptions(from)) {
 		return;
 	}
-	for (var i = 0; i < from.options.length; i++) {
-		var o = from.options[i];
+	for (i = 0; i < from.options.length; i++) {
+		o = from.options[i];
 		if (o.selected) {
-			if (options[o.value] == null || options[o.value] === undefined || options[o.value] != o.text) {
+			if (options[o.value] === null || options[o.value] === undefined || options[o.value] != o.text) {
 				if (!hasOptions(to)) {
-					var index = 0;
+					index = 0;
 				} else {
-					var index = to.options.length;
+					index = to.options.length;
 				}
 				to.options[index] = new Option(o.text, o.value, false, false);
 			}
 		}
 	}
-	if ((select === undefined) || (select == true)) {
+	if ((select === undefined) || (select === true)) {
 		sortSelect(to);
 	}
 	from.selectedIndex = -1;
@@ -217,7 +221,7 @@ function moveOptionUp(obj) {
 	}
 	for (i = 0; i < obj.options.length; i++) {
 		if (obj.options[i].selected) {
-			if (i != 0 && !obj.options[i - 1].selected) {
+			if (i !== 0 && !obj.options[i - 1].selected) {
 				swapOptions(obj, i, i - 1);
 				obj.options[i - 1].selected = true;
 			}
@@ -267,7 +271,7 @@ function removeAllOptions(from) {
 }
 
 function addOption(obj, text, value, selected) {
-	if (obj != null && obj.options != null) {
+	if (obj !== null && obj.options !== null) {
 		obj.options[obj.options.length] = new Option(text, value, false, selected);
 	}
 }
@@ -282,7 +286,7 @@ function removeOption(obj) {
 			}
 		}
 		if (obj.length > 0) {
-			obj.selectedIndex = selIndex == 0 ? 0 : selIndex - 1;
+			obj.selectedIndex = selIndex === 0 ? 0 : selIndex - 1;
 		}
 	}
 }
@@ -290,9 +294,9 @@ function removeOption(obj) {
 function getCsv() {
 	aSct = [];
 	aSctLen = [];
-	aSct[0] = _fo['list11'];
+	aSct[0] = _fo.list11;
 	aSctLen[0] = aSct[0].length;
-	aSct[1] = _fo['list21'];
+	aSct[1] = _fo.list21;
 	aSctLen[1] = aSct[1].length;
 	aValue = [];
 	aValue[0] = aValue[1] = '';

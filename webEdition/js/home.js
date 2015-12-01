@@ -126,7 +126,7 @@ var Base64 = {
 	_utf8_decode: function (utftext) {
 		var string = "";
 		var i = 0;
-		var c = c1 = c2 = 0;
+		var c = c2 = 0;
 
 		while (i < utftext.length) {
 			c = utftext.charCodeAt(i);
@@ -206,11 +206,12 @@ function getWidgetProps(p) {
 }
 
 function modifyLayoutCols(iCols) {
+	var i;
 	if (iCols > _iLayoutCols) {
 		var iAppendCols = iCols - _iLayoutCols;
 		var oTbl = gel('le_tblWidgets');
 		var oRow = gel('rowWidgets');
-		for (var i = 1; i <= iAppendCols; i++) {
+		for (i = 1; i <= iAppendCols; i++) {
 			var oCell = document.createElement('TD');
 			oCell.setAttribute('id', 'c_' + (_iLayoutCols + i));
 			oCell.setAttribute('class', 'cls_' + (_iLayoutCols + i) + '_collapse');
@@ -746,7 +747,7 @@ function rpc(a, b, c, d, e, wid, path) {
 	// start bugfix #1145
 	var _tmpForm = document.createElement("form");
 	document.getElementsByTagName("body")[0].appendChild(_tmpForm);
-	var path = (sType !== 'rss' && sType !== 'pad' && sType !== 'plg' && sType !== 'sct') ? 'dlg/' + path : 'mod/' + sType;
+	path = (sType !== 'rss' && sType !== 'pad' && sType !== 'plg' && sType !== 'sct') ? 'dlg/' + path : 'mod/' + sType;
 	_tmpForm.id = "_tmpSubmitForm";
 	_tmpForm.method = "POST";
 	_tmpForm.action = WE().consts.dirs.WE_INCLUDES_DIR + 'we_widgets/' + path + '.php';
@@ -853,8 +854,6 @@ function setMfdData(data) {
 function getUser() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var arguments = args;
-
 	new (WE().util.jsWindow)(window, url, 'browse_users', -1, -1, 500, 300, true, false, true);
 }
 

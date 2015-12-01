@@ -25,7 +25,7 @@
  */
 
 container.prototype.openClose = function (id) {
-	if (id == "") {
+	if (id === "") {
 		return;
 	}
 
@@ -42,7 +42,7 @@ container.prototype.openClose = function (id) {
 		var arr = frames.top.openFolders[frames.top.table].split(",");
 		frames.top.openFolders[frames.top.table] = "";
 		for (var t = 0; t < arr.length; t++) {
-			if (arr[t] != "" && arr[t] != id) {
+			if (arr[t] !== "" && arr[t] != id) {
 				frames.top.openFolders[frames.top.table] += "," + arr[t];
 			}
 		}
@@ -122,7 +122,7 @@ container.prototype.addSort = function (object) {
 		}
 		break;
 	}
-}
+};
 
 function populate(id, table) {
 }

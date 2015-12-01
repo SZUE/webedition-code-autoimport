@@ -27,7 +27,7 @@ function we_core_CmdController() {
 	this.cmds = [];
 
 	//register all command (TopFrameView)
-	this.register = function(cmdid, cmdName, fn, scope, checkFn) {
+	this.register = function (cmdid, cmdName, fn, scope, checkFn) {
 		var obj = {};
 		obj.checkFn = checkFn ? checkFn : null;
 		obj.cmd = {"cmdName": cmdName};
@@ -36,9 +36,9 @@ function we_core_CmdController() {
 		obj.id = cmdid;
 
 		this.cmds.push(obj);
-	}
+	};
 
-	this.unregister = function(cmdid) {
+	this.unregister = function (cmdid) {
 		var newCmds = [];
 		var l = this.cmds.length;
 		for (var i = 0; i < l; i++) {
@@ -47,9 +47,9 @@ function we_core_CmdController() {
 			}
 		}
 		this.cmds = newCmds;
-	}
+	};
 
-	this.fire = function(cmdObj) {
+	this.fire = function (cmdObj) {
 		var l = arguments.length;
 		var i;
 		var args = [];
@@ -70,16 +70,16 @@ function we_core_CmdController() {
 				this.cmds[i].fn.call(this.cmds[i].scope, cmdObj);
 			}
 		}
-	}
+	};
 
-	this.cmdOk = function(cmdObj) {
+	this.cmdOk = function (cmdObj) {
 		if (cmdObj.followCmd !== undefined) {
 			this.fire(cmdObj.followCmd);
 		}
-	}
+	};
 
-	this.cmdError = function(cmdObj) {
-		if (typeof (weEventController) != undefined && weEventController !== null) {
+	this.cmdError = function (cmdObj) {
+		if (typeof (weEventController) !== undefined && weEventController !== null) {
 			if (cmdObj.errorType) {
 				switch (cmdObj.errorType) {
 					case "notice":
@@ -96,14 +96,14 @@ function we_core_CmdController() {
 				weEventController.fire("cmdError", cmdObj);
 			}
 		}
-	}
+	};
 }
 
 we_core_CmdController.__instance = null;
 
-we_core_CmdController.getInstance = function() {
-	if (we_core_CmdController.__instance == null) {
+we_core_CmdController.getInstance = function () {
+	if (we_core_CmdController.__instance === null) {
 		we_core_CmdController.__instance = new we_core_CmdController();
 	}
 	return we_core_CmdController.__instance;
-}
+};

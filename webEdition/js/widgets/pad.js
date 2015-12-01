@@ -133,7 +133,7 @@ function getCurrentQuery() {
 	var sValidFrom = fo.elements.f_ValidFrom.value;
 	var sValidUntil = fo.elements.f_ValidUntil.value;
 	return (asoc = {
-		'Validity': (validSel == 0) ? 'always' : ((validSel == 1) ? 'date' : 'period'),
+		'Validity': (validSel === 0) ? 'always' : ((validSel == 1) ? 'date' : 'period'),
 		'ValidFrom': convertDate(sValidFrom, '%Y-%m-%d'),
 		'ValidUntil': convertDate(sValidUntil, '%Y-%m-%d'),
 		'Priority': (oRdoPrio[0].checked) ? 'high' : (oRdoPrio[1].checked) ? 'medium' : 'low',
@@ -274,7 +274,7 @@ function saveNote() {
 				return false;
 			}
 			var q_ID = gel(_id + '_ID').value;
-			parent.rpc(_ttlB64Esc.concat(',' + _sInitProps), (q_ID + ';' + encodeURI(csv)), 'update', '', _ttlB64Esc, _sObjId, 'pad/pad', escape(q_curr['Title']), escape(q_curr.Text));
+			parent.rpc(_ttlB64Esc.concat(',' + _sInitProps), (q_ID + ';' + encodeURI(csv)), 'update', '', _ttlB64Esc, _sObjId, 'pad/pad', escape(q_curr.Title), escape(q_curr.Text));
 		} else {
 			top.we_showMessage(WE.consts.g_l.cockpit.pad.note_not_modified, WE().consts.message.WE_MESSAGE_NOTICE, window);
 		}
@@ -300,7 +300,7 @@ function saveNote() {
 			top.we_showMessage(WE.consts.g_l.cockpit.pad.title_empty, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			return false;
 		}
-		parent.rpc(_ttlB64Esc.concat(',' + _sInitProps), escape(csv), 'insert', '', _ttlB64Esc, _sObjId, 'pad/pad', escape(q_curr['Title']), escape(q_curr['Text']));
+		parent.rpc(_ttlB64Esc.concat(',' + _sInitProps), escape(csv), 'insert', '', _ttlB64Esc, _sObjId, 'pad/pad', escape(q_curr.Title), escape(q_curr.Text));
 	} else {
 		top.we_showMessage(WE.consts.g_l.cockpit.pad.title_empty, WE().consts.message.WE_MESSAGE_NOTICE, window);
 	}
@@ -313,12 +313,13 @@ function initDlg() {
 	var aCsv = _sInitCsv_.split(',');
 	_sInitTitle = opener.Base64.decode(aCsv[0]);
 	_sInitBin = aCsv[1];
-	for (var i = 0; i < _aRdo.length; i++) {
+	var i;
+	for (i = 0; i < _aRdo.length; i++) {
 		_fo.elements['rdo_' + _aRdo[i]][_sInitBin.charAt(i)].checked = true;
 	}
 	_fo.elements.sct_valid.options[_sInitBin.charAt(4)].selected = true;
 	var oSctTitle = _fo.elements.sct_title;
-	for (var i = oSctTitle.length - 1; i >= 0; i--) {
+	for (i = oSctTitle.length - 1; i >= 0; i--) {
 		oSctTitle.options[i].selected = (oSctTitle.options[i].text == _sInitTitle) ? true : false;
 	}
 	initPrefs();
@@ -330,7 +331,7 @@ function getRdoChecked(sType) {
 	var oRdo = _fo.elements['rdo_' + sType];
 	var iRdoLen = oRdo.length;
 	for (var i = 0; iRdoLen > i; i++) {
-		if (oRdo[i].checked == true)
+		if (oRdo[i].checked === true)
 			return i;
 	}
 }
@@ -355,8 +356,8 @@ function save() {
 	var sTitleEnc = opener.Base64.encode(getTitle());
 	var sBit = getBitString();
 	oCsv_.value = sTitleEnc.concat(',' + sBit);
-	if ((_lastPreviewCsv != '' && sTitleEnc.concat(',' + sBit) != _lastPreviewCsv) ||
-					(_lastPreviewCsv == '' && (_sInitTitle != getTitle() || _sInitBin != getBitString()))) {
+	if ((_lastPreviewCsv !== '' && sTitleEnc.concat(',' + sBit) !== _lastPreviewCsv) ||
+					(_lastPreviewCsv === '' && (_sInitTitle != getTitle() || _sInitBin != getBitString()))) {
 		var sTitleEsc = escape(sTitleEnc);
 		opener.rpc(sTitleEsc.concat(',' + sBit), '', '', '', sTitleEsc, _sObjId, _sPadInc);
 	}
@@ -376,7 +377,7 @@ function preview() {
 }
 
 function exit_close() {
-	if (_lastPreviewCsv != '' && (_sInitTitle != getTitle() || _sInitBin != getBitString())) {
+	if (_lastPreviewCsv !== '' && (_sInitTitle != getTitle() || _sInitBin != getBitString())) {
 		opener.rpc(_sInitCsv_, '', '', '', escape(opener.Base64.encode(_sInitTitle)), _sObjId, _sPadInc);
 	}
 	exitPrefs();

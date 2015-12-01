@@ -37,7 +37,7 @@ function addCat(paths) {
 	var found = false;
 	var j = 0;
 	for (var i = 0; i < path.length; i++) {
-		if (path[i] != "") {
+		if (path[i] !== "") {
 			found = false;
 			for (j = 0; j < categories_edit.itemCount; j++) {
 				if (categories_edit.form.elements[categories_edit.name + "_variant0_" + categories_edit.name + "_item" + j].value == path[i]) {
@@ -56,7 +56,7 @@ function addCat(paths) {
 function toggleButton() {
 	if (document.getElementById('CreateTemplate').checked) {
 		WE().layout.button.enable(document, 'select');
-		if (acin = document.getElementById('yuiAcInputTemplate')) {
+		if ((acin = document.getElementById('yuiAcInputTemplate'))) {
 			document.getElementById('yuiAcInputTemplate').disabled = false;
 			lastCFolder = acin.value;
 			acin.readOnly = false;
@@ -64,7 +64,7 @@ function toggleButton() {
 		return true;
 	} else {
 		WE().layout.button.disable(document, 'select');
-		if (acin = document.getElementById('yuiAcInputTemplate')) {
+		if ((acin = document.getElementById('yuiAcInputTemplate'))) {
 			document.getElementById('yuiAcInputTemplate').disabled = true;
 			acin.readOnly = true;
 			acin.value = lastCFolder;

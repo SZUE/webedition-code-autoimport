@@ -4,9 +4,9 @@
  * webEdition CMS
  *
  * webEdition CMS
- * $Rev: 10522 $
- * $Author: mokraemer $
- * $Date: 2015-10-03 10:55:38 +0200 (Sa, 03. Okt 2015) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -43,6 +43,7 @@ function we_cmd() {
 			top.content.usetHot();
 		}
 	}
+	var exc;
 
 	switch (args[0]) {
 		case "exit_glossary":
@@ -69,7 +70,7 @@ function we_cmd() {
 			}
 			break;
 		case "delete_glossary":
-			var exc = top.content.editor.edbody.document.we_form.cmdid.value;
+			exc = top.content.editor.edbody.document.we_form.cmdid.value;
 			if (exc.substring(exc.length - 10, exc.length) == "_exception") {
 				WE().util.showMessage(WE().consts.g_l.glossary.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
 				break;
@@ -104,7 +105,7 @@ function we_cmd() {
 			break;
 		case "save_exception":
 		case "save_glossary":
-			var exc = top.content.editor.edbody.document.we_form.cmdid.value;
+			exc = top.content.editor.edbody.document.we_form.cmdid.value;
 			if (exc.substring(exc.length - 10, exc.length) == "_exception") {
 				args[0] = "save_exception";
 			}

@@ -26,21 +26,21 @@
 
 node.prototype.getLayout = function () {
 	if (this.typ === "threedots") {
-		return treeData.node_layouts["threedots"];
+		return treeData.node_layouts.threedots;
 	}
 	var layout_key = (this.typ === "group" && this.contenttype !== "text/weCollection" ? "group" : "item") +
 					(this.selected ? "-selected" : "") +
 					(this.disabled ? "-disabled" : "") +
 					(this.checked ? "-checked" : "") +
 					(this.open ? "-open" : "") +
-					(this.typ == "item" && this.published == 0 ? "-notpublished" : "") +
-					(this.typ == "item" && this.published == -1 ? "-changed" : "");
+					(this.typ === "item" && this.published === 0 ? "-notpublished" : "") +
+					(this.typ === "item" && this.published === -1 ? "-changed" : "");
 
 	return treeData.node_layouts[layout_key];
 };
 
 container.prototype.openClose = function (id) {
-	if (id == "") {
+	if (id === "") {
 		return;
 	}
 	var eintragsIndex = treeData.indexOfEntry(id);
@@ -75,16 +75,19 @@ function doClick(id) {
 	var node = frames.top.treeData.get(id);
 	var ct = node.contenttype;
 	var table = node.table;
-	var id = node.we_id ? node.we_id : id;
+	id = node.we_id ? node.we_id : id;
 	setScrollY();
 
 	switch (table) {
 		case WE().consts.tables.FILE_TABLE:
 			if (frames.top.wasdblclick && ct !== "folder") {
 				top.openBrowser(id);
-				setTimeout("wasdblclick=false;", 400);
+				setTimeout(function () {
+					wasdblclick = false;
+				}, 400);
 				break;
 			}
+			/* falls through */
 		default:
 			WE().layout.weEditorFrameController.openDocument(table, id, ct);
 			break;

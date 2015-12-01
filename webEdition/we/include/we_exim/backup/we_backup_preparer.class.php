@@ -50,7 +50,7 @@ abstract class we_backup_preparer{
 			'backup_log_data' => '',
 			'backup_log_file' => BACKUP_PATH . we_backup_backup::logFile,
 			'limits' => array(
-				'mem' => we_convertIniSizes(ini_get('memory_limit')),
+				'mem' => min(60 * 1024 * 1024, we_convertIniSizes(ini_get('memory_limit'))),
 				'exec' => min(30, ($execTime > 120 ? ($execTime > 2000 ? 5 : 15) : $execTime)),
 				/* fix for really faulty php installations, e.g. 1&1
 				 * 1&1 execution time >2000, no matter if the script gets killed after 15 seconds
@@ -385,8 +385,7 @@ abstract class we_backup_preparer{
 		if(!empty($file)){
 			$data = we_base_file::loadPart($file, 0, 256, $iscompressed);
 			$match = array();
-			$trenner = '[ |\n|\t|\r]*';
-			$pattern = "%(encoding" . $trenner . "=" . $trenner . "[\"|\'|\\\\]" . $trenner . ")([^\'\"> ? \\\]*)%";
+			$pattern = "%(encoding\s*=\s*[\"\'\\\\]\s*)([^\'\"> ? \\\]*)%";
 
 			if(preg_match($pattern, $data, $match)){
 				if(strtoupper($match[2]) != 'ISO-8859-1'){
@@ -402,8 +401,7 @@ abstract class we_backup_preparer{
 		if(!empty($file)){
 			$data = we_base_file::loadPart($file, 0, 256, $iscompressed);
 			$match = array();
-			$trenner = '[ |\n|\t|\r]*';
-			$pattern = "%webEdition" . $trenner . "version" . $trenner . "=" . $trenner . "[\"|\'|\\\\]" . $trenner . "([^\'\"> ? \\\]*)%";
+			$pattern = "%webEdition\s*version\s*=\s*[\"\'\\\\]\s*([^\'\"> ? \\\]*)%";
 
 			if(preg_match($pattern, $data, $match)){
 				return $match[1];

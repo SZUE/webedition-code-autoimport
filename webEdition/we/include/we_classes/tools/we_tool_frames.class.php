@@ -42,36 +42,21 @@ abstract class we_tool_frames extends we_modules_frame{
 
 	function getHTML($what){
 		switch($what){
-			case 'frameset':
-				return $this->getHTMLFrameset();
-			case 'header':
-				return $this->getHTMLHeader();
+			/*case 'header':
+				return $this->getHTMLHeader();*/
 			case 'resize':
 				return $this->getHTMLResize();
-			case 'editor':
-				return $this->getHTMLEditor();
-			case 'edheader':
-				return $this->getHTMLEditorHeader();
-			case 'edbody':
-				return $this->getHTMLEditorBody();
-			case 'edfooter':
-				return $this->getHTMLEditorFooter();
-			case 'cmd':
-				return $this->getHTMLCmd();
 			case 'treeheader':
 				return $this->getHTMLTreeHeader();
 			case 'treefooter':
 				return $this->getHTMLTreeFooter();
-			case 'exit_doc_question':
-				return $this->getHTMLExitQuestion();
 			default:
-				t_e(__FILE__ . " unknown reference: $what");
-				return '';
+				return parent::getHTML($what);
 		}
 	}
 
 	//TODO: call parent after if(){}
-	function getHTMLFrameset(){
+	function getHTMLFrameset($extraUrlParams = ''){
 		$this->setTreeWidthFromCookie();
 
 		$this->Model->clearSessionVars();
@@ -91,7 +76,7 @@ abstract class we_tool_frames extends we_modules_frame{
 
 		$body = we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => 'startTree();')
 						, we_html_element::htmlExIFrame('header', parent::getHTMLHeader($this->toolDir . 'conf/we_menu_' . $this->toolName . '.conf.php', $this->toolName)) .
-						$this->getHTMLResize() .
+						$this->getHTMLResize($extraUrlParams . ($modelid ? '&modelid=' . $modelid : '')) .
 						/* we_html_element::htmlIFrame('resize', $this->frameset . '?pnt=resize' . (($tab = we_base_request::_(we_base_request::INT, 'tab')) ? '&tab=' . $tab : '') . ($modelid ? '&modelid=' . $modelid : '') . (($sid = we_base_request::_(we_base_request::INT, 'sid')) ? '&sid=' . $sid : ''), 'overflow: hidden;', '', '', false) . */
 						we_html_element::htmlIFrame('cmd', $this->frameset . '&pnt=cmd' . ($modelid ? '&modelid=' . $modelid : ''))
 		);
@@ -108,7 +93,7 @@ abstract class we_tool_frames extends we_modules_frame{
 	 *
 	 * @return string
 	 */
-	function getHTMLHeader(){
+	/*function getHTMLHeader(){
 		//	Include the menu.
 		include($this->toolDir . 'conf/we_menu_' . $this->toolName . '.conf.php');
 
@@ -123,7 +108,7 @@ abstract class we_tool_frames extends we_modules_frame{
 		$body = we_html_element::htmlBody(array('id' => 'toolMenu'), $table->getHtml());
 
 		return $this->getHTMLDocument($body);
-	}
+	}*/
 
 	/**
 	 * Frame for tubs
@@ -262,10 +247,10 @@ function we_save() {
 		return '<div id="infoField" class="defaultfont"></div>';
 	}
 
-	function getHTMLCmd(){
+	protected function getHTMLCmd(){
 		$pid = we_base_request::_(we_base_request::STRING, "pid");
 		if($pid === false){
-			exit;
+			return $this->getHTMLDocument(we_html_element::htmlBody());
 		}
 
 		$offset = we_base_request::_(we_base_request::INT, "offset", 0);

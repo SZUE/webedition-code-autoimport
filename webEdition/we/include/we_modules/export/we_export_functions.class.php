@@ -213,7 +213,7 @@ abstract class we_export_functions{
 
 		// Set alternative name if no name is now present present
 		return ($tagname ? :
-						(($alternative_number != -1) ? $alternative_name . $alternative_number : $alternative_name) );
+				(($alternative_number != -1) ? $alternative_name . $alternative_number : $alternative_name) );
 	}
 
 	/**
@@ -327,7 +327,7 @@ abstract class we_export_functions{
 
 		// Escape
 		$_corrected_content = (self::checkCompatibility($content, $csv_delimiter, $csv_enclose, "escape") ?
-						self::correctEscape($content) : $content);
+				self::correctEscape($content) : $content);
 
 
 		// Enclose
@@ -387,13 +387,13 @@ abstract class we_export_functions{
 
 				// Generate XML output if content is given
 				return $_tabs . "<" . $tagname . ($content ?
-								'>' . ($fix_content ? ($cdata ? ('<![CDATA[' . $content . "]]>") : oldHtmlspecialchars($content, ENT_QUOTES)) : $content) . "</" . $tagname . ">\n" :
-								"/>\n");
+						'>' . ($fix_content ? ($cdata ? ('<![CDATA[' . $content . "]]>") : oldHtmlspecialchars($content, ENT_QUOTES)) : $content) . "</" . $tagname . ">\n" :
+						"/>\n");
 
 			case "csv":
 				// Generate XML output if content is given
 				return ($content ?
-								self::correctCSV($content, $csv_delimiter, $csv_enclose, $csv_lineend) . $csv_delimiter : $csv_delimiter);
+						self::correctCSV($content, $csv_delimiter, $csv_enclose, $csv_lineend) . $csv_delimiter : $csv_delimiter);
 			case "cdata":
 				// Generate CDATA XML output if content is given
 				return ($content ? '<![CDATA[' . $content . ']]>' : '');
@@ -442,8 +442,7 @@ abstract class we_export_functions{
 	 *
 	 * @return     bool
 	 */
-	static function exportDocument($ID, $format = we_import_functions::TYPE_GENERIC_XML, $filename, $path, $file_create = false, $file_complete = false, $cdata = false){
-
+	static function exportDocument($ID, $format, $filename, $path, $file_create, $file_complete, $cdata){
 		$_export_success = false;
 
 		// Create a new webEdition document object

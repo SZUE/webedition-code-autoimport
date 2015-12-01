@@ -37,11 +37,11 @@ var weGetCategoriesHandleSuccess = function (o) {
 			}
 		}
 	}
-}
+};
 
 var weGetCategoriesHandleFailure = function (o) {
 	alert("failure");
-}
+};
 
 var weGetCategoriesCallback = {
 	success: weGetCategoriesHandleSuccess,
@@ -67,6 +67,8 @@ function wiz_next(frm, url) {
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
+	var cats;
+	var i;
 
 	switch (args[0]) {
 		case 'we_selector_directory':
@@ -85,14 +87,15 @@ function we_cmd() {
 				this.wizbody.document.we_form.elements['v[import_type]'][0].checked = true;
 			}
 			if (this.wizbody.document.we_form.elements['v[docCategories]'].value.indexOf(',' + args[1] + ',') == -1) {
-				var cats = args[1].split(/,/);
-				for (var i = 0; i < cats.length; i++) {
+				cats = args[1].split(/,/);
+				for (i = 0; i < cats.length; i++) {
 					if (cats[i] && (this.wizbody.document.we_form.elements['v[docCategories]'].value.indexOf(',' + cats[i] + ',') == -1)) {
 						if (this.wizbody.document.we_form.elements['v[docCategories]'].value) {
 							this.wizbody.document.we_form.elements['v[docCategories]'].value = this.wizbody.document.we_form.elements['v[docCategories]'].value + cats[i] + ',';
 						} else {
 							this.wizbody.document.we_form.elements['v[docCategories]'].value = ',' + cats[i] + ',';
 						}
+						//FIXME: bad code due to multi function create in loop
 						setTimeout(function () {
 							weGetCategories('doc', this.wizbody.document.we_form.elements['v[docCategories]'].value, 'rows');
 						}, 100);
@@ -115,14 +118,15 @@ function we_cmd() {
 		case 'add_objCat':
 			this.wizbody.document.we_form.elements['v[import_type]'][1].checked = true;
 			if (this.wizbody.document.we_form.elements['v[objCategories]'].value.indexOf(',' + args[1] + ',') == -1) {
-				var cats = args[1].split(/,/);
-				for (var i = 0; i < cats.length; i++) {
+				cats = args[1].split(/,/);
+				for (i = 0; i < cats.length; i++) {
 					if (cats[i] && (this.wizbody.document.we_form.elements['v[objCategories]'].value.indexOf(',' + cats[i] + ',') == -1)) {
 						if (this.wizbody.document.we_form.elements['v[objCategories]'].value) {
 							this.wizbody.document.we_form.elements['v[objCategories]'].value = this.wizbody.document.we_form.elements['v[objCategories]'].value + cats[i] + ',';
 						} else {
 							this.wizbody.document.we_form.elements['v[objCategories]'].value = ',' + cats[i] + ',';
 						}
+						//FIXME: bad code due to function creation in loop
 						setTimeout(function () {
 							weGetCategories('obj', this.wizbody.document.we_form.elements['v[objCategories]'].value, 'rows');
 						}, 100);

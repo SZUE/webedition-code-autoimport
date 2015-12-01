@@ -27,18 +27,18 @@ class we_import_updater extends we_exim_XMLExIm{
 	var $UpdateItemsCount = 1;
 	var $Patterns;
 	var $debug = false;
+	private $processedPatterns = array();
 
 	public function __construct(){
 		parent::__construct();
+		$this->Patterns = new we_exim_searchPatterns();
 	}
 
 	public function updateObject(/* we_document */ &$object){ //FIXME: imported types are not of type we_document
 		if($this->debug){
 			t_e('Updating object', $object->ID, (isset($object->Path) ? $object->Path : ''), (isset($object->Table) ? $object->Table : ''));
 		}
-
-		$this->Patterns = new we_exim_searchPatterns();
-
+		$this->processedPatterns = array();
 		if(!empty($object->MasterTemplateID)){
 			$ref = $this->RefTable->getRef(
 				array(
@@ -146,7 +146,6 @@ class we_import_updater extends we_exim_XMLExIm{
 		if(isset($object->ContentType) && ($object->ContentType === 'weNavigation' || $object->ContentType === 'weNavigationRule')){
 			$this->updateNavigation($object);
 		}
-
 
 		if($this->debug){
 			t_e("Saving object...");
@@ -301,10 +300,10 @@ class we_import_updater extends we_exim_XMLExIm{
 		if(isset($object->ContentType) && ($object->ContentType == we_base_ContentTypes::WEDOCUMENT || $object->ContentType == we_base_ContentTypes::HTML)){
 			if(isset($object->elements["data"])){
 				if($this->debug){
-					t_e("Updating webEdition and html documents for external links\n");
+					t_e('Updating webEdition and html documents for external links');
 				}
-				$source = $object->getElement("data");
-				$this->updateSource($this->Patterns->ext_patterns, $source, "Path");
+				$source = $object->getElement('data');
+				$this->updateSource($this->Patterns->ext_patterns, $source, 'Path', FILE_TABLE);
 				$object->setElement("data", $source);
 			}
 		}
@@ -312,7 +311,7 @@ class we_import_updater extends we_exim_XMLExIm{
 		// update elements serialized data
 		if($object->isBinary() != 1){
 			if($this->debug){
-				t_e("Updating serialized data in elements\n");
+				t_e('Updating serialized data in elements');
 			}
 			foreach($object->elements as $ek => $ev){
 				if($this->debug){
@@ -327,10 +326,10 @@ class we_import_updater extends we_exim_XMLExIm{
 						switch($object->ContentType){
 							case we_base_ContentTypes::WEDOCUMENT:
 							case we_base_ContentTypes::HTML:
-								$source = $ev["dat"];
-								$this->updateSource($this->Patterns->wysiwyg_patterns['doc'], $source);
-								$this->updateSource($this->Patterns->wysiwyg_patterns['obj'], $source);
-								$object->elements[$ek]["dat"] = $source;
+								$source = $ev['dat'];
+								$this->updateSource($this->Patterns->wysiwyg_patterns['doc'], $source, 'ID', FILE_TABLE);
+								$this->updateSource($this->Patterns->wysiwyg_patterns['obj'], $source, 'ID', OBJECT_FILES_TABLE);
+								$object->elements[$ek]['dat'] = $source;
 						}
 					}
 				}
@@ -355,8 +354,8 @@ class we_import_updater extends we_exim_XMLExIm{
 
 		$source = $object->getElement("data");
 
-		$this->updateSource($this->Patterns->doc_patterns["id"], $source, 'ID');
-		$this->updateSource($this->Patterns->doc_patterns["path"], $source, 'Path');
+		$this->updateSource($this->Patterns->doc_patterns["id"], $source, 'ID', FILE_TABLE);
+		$this->updateSource($this->Patterns->doc_patterns["path"], $source, 'Path', FILE_TABLE);
 		if(defined('OBJECT_TABLE')){
 			$this->updateSource($this->Patterns->obj_patterns["id"], $source, 'ID', OBJECT_FILES_TABLE);
 			$this->updateSource($this->Patterns->doc_patterns["path"], $source, 'Path', OBJECT_FILES_TABLE);
@@ -435,7 +434,7 @@ class we_import_updater extends we_exim_XMLExIm{
 		}
 	}
 
-	private function updateNavigation(we_document &$object){
+	private function updateNavigation(&$object){
 		switch($object->ContentType){
 			case 'weNavigation':
 				if($this->debug){
@@ -523,7 +522,7 @@ class we_import_updater extends we_exim_XMLExIm{
 		}
 	}
 
-	private function updateField(we_document &$object, $field, $table){
+	private function updateField(&$object, $field, $table){
 
 		$_ref = $this->RefTable->getRef(
 			array(
@@ -581,28 +580,35 @@ class we_import_updater extends we_exim_XMLExIm{
 					}
 				}
 			}
-		} else {
-			$match = array();
-			foreach($patterns as $pattern){
-				if(!preg_match_all($pattern, $source, $match)){
+			return;
+		}
+		$match = array();
+		foreach($patterns as $pattern){
+			if(!preg_match_all($pattern, $source, $match)){
+				continue;
+			}
+			foreach($match[2] as $k => $include){
+				if(!is_numeric($include) || in_array($match[0][$k], $this->processedPatterns)){
 					continue;
 				}
-				foreach($match[2] as $k => $include){
-					if(!is_numeric($include)){
-						continue;
-					}
-					if($include == 0 && $table == NAVIGATION_TABLE){
-						$_new_id = path_to_id($this->options['navigation_path'], NAVIGATION_TABLE, $GLOBALS['DB_WE']);
-						$source = str_replace($match[1][$k] . $match[2][$k] . $match[3][$k], $match[1][$k] . $_new_id . $match[3][$k], $source);
-					} else {
-						$ref = $this->RefTable->getRef(
-							array(
-								"Old" . $field => $include,
-								"Table" => $table
-							)
-						);
-						if($ref && isset($match[3][$k])){
-							$source = str_replace($match[1][$k] . $match[2][$k] . $match[3][$k], $match[1][$k] . $ref->$field . $match[3][$k], $source);
+				if($include == 0 && $table == NAVIGATION_TABLE){
+					$_new_id = path_to_id($this->options['navigation_path'], NAVIGATION_TABLE, $GLOBALS['DB_WE']);
+					$source = str_replace($match[1][$k] . $match[2][$k] . $match[3][$k], $match[1][$k] . $_new_id . $match[3][$k], $source);
+				} else {
+					$ref = $this->RefTable->getRef(
+						array(
+							'Old' . $field => $include,
+							'Table' => $table
+						)
+					);
+					if(isset($match[3][$k])){
+						$this->processedPatterns[] = $match[0][$k];
+						if($ref){
+							$repl = $match[1][$k] . $ref->$field . $match[3][$k];
+							$source = str_replace($match[1][$k] . $match[2][$k] . $match[3][$k], $repl, $source);
+							$this->processedPatterns[] = '<' . $repl . '>';
+						} else {
+							//t_e('ref not found', $field, $include, $table, $match[1][$k] . $match[2][$k] . $match[3][$k], $this->processedPatterns, $this->RefTable);
 						}
 					}
 				}

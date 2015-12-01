@@ -408,16 +408,15 @@ class we_dialog_image extends we_dialog_base{
 		$parts = array(array('html' => $srctable));
 		//$parts = array_merge($parts, array(array('html' => '<div id="imageUpload">' . $this->weFileupload->getHTML() . '</div>')));
 
-		return array_merge($parts, array(
-			//array('html' => $srctable),
-			array('headline' => g_l('wysiwyg', '[image][formatting]'),
+		return array_merge($parts, [array('headline' => g_l('wysiwyg', '[image][formatting]'),
 				'html' => '<table class="default" width="560">
 					<tr>
 						<td>' . we_html_tools::htmlFormElementTable($thumbnails, g_l('wysiwyg', '[thumbnail]'), 'left', 'defaultfont', '', '', '', '', '', '', 0) . '</td>
 						<td>' . $classSelect . '</td>
 						<td>' . $align . '</td>
 					</tr>
-				</table>'),
+				</table>'
+			),
 			array('headline' => g_l('global', '[attributes]'),
 				'html' => '<table class="default" width="560">
 					<tr><td style="padding-bottom:15px;">' . $width . '</td><td style="padding-bottom:15px;">' . $height . '</td><td style="padding-bottom:15px;">' . $ratio . '</td></tr>
@@ -427,17 +426,22 @@ class we_dialog_image extends we_dialog_base{
 					<tr><td colspan="3" style="padding-bottom:15px;">' . $_longdesc . '</td></tr>
 				</table>
 				<div></div>' .
-				we_html_tools::hidden('we_dialog_args[name]', isset($this->args["name"]) ? $this->args["name"] : '') .
-				we_html_tools::hidden('we_dialog_args[type]', isset($this->args["type"]) ? $this->args["type"] : we_base_link::TYPE_INT) .
-				we_html_tools::hidden("imgChangedCmd", 0) .
-				we_html_tools::hidden("wasThumbnailChange", 0) .
-				we_html_tools::hidden("isTinyMCEInitialization", 0) .
-				we_html_tools::hidden("tinyMCEInitRatioH", 0) .
-				we_html_tools::hidden("tinyMCEInitRatioW", 0) .
+				we_html_element::htmlHiddens(array(
+					'we_dialog_args[name]' => (isset($this->args["name"]) ? $this->args["name"] : ''),
+					'we_dialog_args[type]' => (isset($this->args["type"]) ? $this->args["type"] : we_base_link::TYPE_INT),
+					'we_dialog_args[rendered_width]' => 0,
+					'we_dialog_args[rendered_height]' => 0,
+					'imgChangedCmd' => 0,
+					'wasThumbnailChange' => 0,
+					'isTinyMCEInitialization' => 0,
+					'tinyMCEInitRatioH' => 0,
+					'tinyMCEInitRatioW' => 0
+				)) .
 				weSuggest::getYuiFiles() .
 				$yuiSuggest->getYuiJs() .
-				we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/weimage/js/image_init.js')),
-		));
+				we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/weimage/js/image_init.js')
+			),
+		]);
 	}
 
 	private function getDisplayThumbsSel(){
@@ -491,8 +495,8 @@ class we_dialog_image extends we_dialog_base{
 					'<form name="tiny_form">' .
 					we_html_element::htmlHiddens(array(
 						"src" => (isset($args["src"]) ? $args["src"] : ''),
-						"width" => $attribs["width"],
-						"height" => $attribs["height"],
+						"width" => (intval($attribs["width"]) === 0 ? '' : $attribs["width"]),
+						"height" => (intval($attribs["height"]) === 0 ? '' : $attribs["height"]),
 						"hspace" => $attribs["hspace"],
 						"vspace" => $attribs["vspace"],
 						"border" => $attribs["border"],

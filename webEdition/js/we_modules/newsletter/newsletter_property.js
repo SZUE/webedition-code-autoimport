@@ -239,7 +239,7 @@ function we_cmd() {
 
 		case "add_customer":
 			document.we_form.ngroup.value = args[2];
-			//no break;
+			/* falls through */
 		case "del_customer":
 			document.we_form.ncmd.value = args[0];
 			document.we_form.ncustomer.value = args[1];
@@ -257,6 +257,7 @@ function we_cmd() {
 
 		case "add_file":
 			document.we_form.ngroup.value = args[2];
+			/* falls through */
 		case "del_file":
 			document.we_form.ncmd.value = args[0];
 			document.we_form.nfile.value = args[1];
@@ -437,7 +438,7 @@ function we_cmd() {
 			var str2 = arr[p.selectedIndex];
 			var arr2 = str2.split(",");
 			var eid = p.selectedIndex;
-			var email = p.options[p.selectedIndex].text;
+			var emailx = p.options[p.selectedIndex].text;
 			var htmlmail = arr2[1];
 			var salutation = arr2[2];
 			var title = arr2[3];
@@ -448,8 +449,8 @@ function we_cmd() {
 			title = encodeURIComponent(title.replace("+", "[:plus:]"));
 			firstname = encodeURIComponent(firstname.replace("+", "[:plus:]"));
 			lastname = encodeURIComponent(lastname.replace("+", "[:plus:]"));
-			email = encodeURIComponent(email);
-			new (WE().util.jsWindow)(this, modFrameSet + "&pnt=eemail&grp=" + args[1] + "&etyp=1&eid=" + eid + "&email=" + email + "&htmlmail=" + htmlmail + "&salutation=" + salutation + "&title=" + title + "&firstname=" + firstname + "&lastname=" + lastname, "edit_email", -1, -1, 450, 270, true, true, true, true);
+			emailx = encodeURIComponent(emailx);
+			new (WE().util.jsWindow)(this, modFrameSet + "&pnt=eemail&grp=" + args[1] + "&etyp=1&eid=" + eid + "&email=" + emailx + "&htmlmail=" + htmlmail + "&salutation=" + salutation + "&title=" + title + "&firstname=" + firstname + "&lastname=" + lastname, "edit_email", -1, -1, 450, 270, true, true, true, true);
 			break;
 
 		case "save_black":
@@ -613,14 +614,15 @@ function setHeaderTitle() {
 
 function weShowMailsByStatus(status, group) {
 	var maillist = document.getElementById("we_recipient" + group).options;
+	var i;
 	switch (status) {
 		case "0":
-			for (var i = 0; i < maillist.length; i++) {
+			for (i = 0; i < maillist.length; i++) {
 				maillist[i].style.display = "";
 			}
 			break;
 		case "1":
-			for (var i = 0; i < maillist.length; i++) {
+			for (i = 0; i < maillist.length; i++) {
 				if (maillist[i].className == "markValid") {
 					maillist[i].style.display = "none";
 				}
@@ -633,7 +635,7 @@ function weShowMailsByStatus(status, group) {
 
 function calendarSetup(group, x) {
 	for (i = 0; i <= x; i++) {
-		if (document.getElementById("date_picker_from_" + group + "_" + i + "") != null) {
+		if (document.getElementById("date_picker_from_" + group + "_" + i + "") !== null) {
 			Calendar.setup({inputField: "filter_fieldvalue_" + group + "_" + i + "", ifFormat: "%d.%m.%Y", button: "date_picker_from_" + group + "_" + i + "", align: "Tl", singleClick: true});
 		}
 	}

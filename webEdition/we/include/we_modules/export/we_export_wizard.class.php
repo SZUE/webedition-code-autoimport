@@ -1107,7 +1107,6 @@ if (top.footer.setProgress){
 
 				$cdata = $this->exportVars["cdata"] === "true";
 
-
 				$all = abs(we_base_request::_(we_base_request::INT, "all", 0));
 				$exports = 0;
 
@@ -1124,23 +1123,17 @@ if (top.footer.setProgress){
 					}
 				}
 
-				$percent = (int) ((($all - $exports + 2) / $all) * 100);
-
-				if($percent < 0){
-					$percent = 0;
-				} else if($percent > 100){
-					$percent = 100;
-				}
+				$percent = min(100, max(0, (int) ((($all - $exports + 2) / $all) * 100)));
 
 				$_progress_update = we_html_element::jsElement('
 							if (top.footer.setProgress) top.footer.setProgress(' . $percent . ');
 						');
 
 				if($remaining_docs){
-					$cut = array_shift($remaining_docs);
+					array_shift($remaining_docs);
 					$_SESSION['weS']['exportVars_session']["finalDocs"] = $remaining_docs;
 				} else if($remaining_objs){
-					$cut = array_shift($remaining_objs);
+					array_shift($remaining_objs);
 					$_SESSION['weS']['exportVars_session']["finalObjs"] = $remaining_objs;
 				}
 
@@ -1166,9 +1159,7 @@ if (top.footer.setProgress){
 								"onload" => oldHtmlspecialchars($export_local ? ($this->bodyFrame . ".location='" . $this->frameset . "&pnt=body&step=10&file_name=" . urlencode($filename) . "';" . $this->footerFrame . ".location='" . $this->frameset . "&pnt=footer&step=10';") : (we_message_reporting::getShowMessageCall(g_l('export', '[server_finished]'), we_message_reporting::WE_MESSAGE_NOTICE) . "top.close();")))), null
 				);
 
-
-
-			case "do_wexport":
+			case 'do_wexport':
 				$this->getExportVars();
 
 				$file_format = $this->exportVars["extype"];
@@ -1196,7 +1187,7 @@ if (top.footer.setProgress){
 
 					$ids = array();
 					foreach($finalDocs as $k => $v){
-						$ct = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . $v, "", $this->db);
+						$ct = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . $v, '', $this->db);
 						$ids[] = array(
 							"ID" => $v,
 							"ContentType" => $ct,
@@ -1226,16 +1217,16 @@ if (top.footer.setProgress){
 					}
 					$xmlExIm->setOptions($this->exportVars);
 					$xmlExIm->prepareExport($ids);
-					$_SESSION['weS']['exportVars_session']["RefTable"] = $xmlExIm->RefTable->RefTable2Array();
+					$_SESSION['weS']['exportVars_session']['RefTable'] = $xmlExIm->RefTable;
 					$all = count($xmlExIm->RefTable);
 					$exports = 0;
-					$_SESSION['weS']['exportVars_session']["filename"] = ($export_local ? TEMP_PATH . $filename : $_SERVER['DOCUMENT_ROOT'] . $path . $filename);
+					$_SESSION['weS']['exportVars_session']['filename'] = ($export_local ? TEMP_PATH . $filename : $_SERVER['DOCUMENT_ROOT'] . $path . $filename);
 //FIXME set export type in getHeader
 					we_base_file::save($_SESSION['weS']['exportVars_session']["filename"], we_exim_XMLExIm::getHeader(), "wb");
 				} else {
-					$xmlExIm->RefTable->Array2RefTable($this->exportVars["RefTable"]);
+					$xmlExIm->RefTable = $this->exportVars["RefTable"];
 					$xmlExIm->RefTable->current = $this->exportVars["CurrentRef"];
-					$all = count($xmlExIm->RefTable->Storage);
+					$all = $xmlExIm->RefTable->getCount();
 					$ref = $xmlExIm->RefTable->getNext();
 					if($ref->ID && $ref->ContentType){
 						$xmlExIm->exportChunk($ref->ID, $ref->ContentType, $filename);
@@ -1243,16 +1234,7 @@ if (top.footer.setProgress){
 					$exports = $xmlExIm->RefTable->current;
 				}
 
-				$percent = 0;
-				if($all != 0){
-					$percent = (int) (($exports / $all) * 100);
-				}
-
-				if($percent < 0){
-					$percent = 0;
-				} else if($percent > 100){
-					$percent = 100;
-				}
+				$percent = round(min(100, max(0, ($all != 0 ? (int) (($exports / $all) * 100) : 0))), 2);
 				$_SESSION['weS']['exportVars_session']["CurrentRef"] = $xmlExIm->RefTable->current;
 
 				$hiddens = we_html_element::htmlHiddens(array(
@@ -1346,7 +1328,7 @@ switch (args[0]) {
 
 		$select->selectOption($doctype);
 
-		$path = $dir ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($dir), '', $this->db) : "/";
+		$path = $dir ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($dir), '', $this->db) : '/';
 		$dir = we_html_tools::htmlFormElementTable($this->formWeChooser(FILE_TABLE, $width, 0, "dir", $dir, "Path", $path), g_l('export', '[dir]'));
 
 		$table = new we_html_table(array('class' => 'default'), 3, 2);
@@ -1441,7 +1423,7 @@ switch (args[0]) {
 	private function formWeChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = 0, $Pathname = "Path", $Pathvalue = "/", $cmd = ""){
 		$yuiSuggest = & weSuggest::getInstance();
 		if(!$Pathvalue){
-			$Pathvalue = f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue), "Path", $this->db);
+			$Pathvalue = f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue), "", $this->db);
 		}
 
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");

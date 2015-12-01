@@ -1,3 +1,47 @@
+/**
+ * webEdition SDK
+ *
+ * webEdition CMS
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
+ * This source is part of the webEdition SDK. The webEdition SDK is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU Lesser General Public License can be found at
+ * http://www.gnu.org/licenses/lgpl-3.0.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionSDK/License.txt
+ *
+ *
+ * @category   we
+ * @package    we_ui
+ * @subpackage we_ui_controls
+ * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
+ */
+
+WE().consts.g_l.weSearch = {
+	noTempTableRightsSearch: '',
+	nothingCheckedAdv: '',
+	nothingCheckedTmplDoc: '',
+	buttonSelectValue: '',
+	versionsResetAllVersionsOK: '',
+	versionsNotChecked: '',
+	searchtool__notChecked: '',
+	searchtool__publishOK: ''
+};
+
+WE().consts.weSearch = {
+	SEARCH_DOCS: '',
+	SEARCH_TMPL: '',
+	SEARCH_MEDIA: '',
+	SEARCH_ADV: ''
+};
+
 weSearch = {
 	conf: {
 		whichsearch: '',
@@ -20,44 +64,31 @@ weSearch = {
 		selStatus: '',
 		selSpeicherart: '',
 		selLocation: '',
+		selLocationText: '',
+		selLocationDate: '',
 		selModFields: '',
 		selUsers: '',
 		pixel: '',
 		searchFields: ''
 	},
-	g_l: {
-		noTempTableRightsSearch: '',
-		nothingCheckedAdv: '',
-		nothingCheckedTmplDoc: '',
-		buttonSelectValue: '',
-		versionsResetAllVersionsOK: '',
-		versionsNotChecked: '',
-		searchtool__notChecked: '',
-		searchtool__publishOK: ''
-	},
 	elem: null,
+	rolloverElem: null,
 	init: function (we_const, conf, g_l) {
-		top.console.debug("running");
-		/*
-		 this.we_const = we_const;
-		 this.conf = conf;
-		 this.g_l = g_l;
-
-		 if (this.conf.editorBodyFrame.loaded) {
-		 this.sizeScrollContent();
-		 } else {
-		 setTimeout(function(){
-		 this.init();
-		 }, 10);
-		 }
-		 */
-
-		//document.onmousemove = this.updateElem();
+		if (weSearch.conf.editorBodyFrame.loaded) {
+			//weSearch.sizeScrollContent();
+			document.addEventListener('mousemove', weSearch.updateElem, false);
+			WE().util.setIconOfDocClass(document, 'resultIcon');
+		} else {
+			setTimeout(function(){
+				this.init();
+			}, 10);
+		}
 	},
 	ajaxCallbackResultList: {
 		success: function (o) {
 			if (o.responseText !== undefined && o.responseText !== '') {
 				weSearch.conf.editorBodyFrame.document.getElementById('scrollContent_' + weSearch.conf.whichsearch).innerHTML = o.responseText;
+				WE().util.setIconOfDocClass(document, 'resultIcon');
 				weSearch.makeAjaxRequestParametersTop();
 				weSearch.makeAjaxRequestParametersBottom();
 			}
@@ -98,8 +129,7 @@ weSearch = {
 	},
 	search: function (newSearch) {
 		if (!this.conf.checkRightTempTable && !this.conf.heckRightDropTable) {
-			top.we_showMessage(this.g_l.noTempTableRightsSearch, WE().consts.message.WE_MESSAGE_NOTICE, window);
-			top.console.debug("hier??");
+			top.we_showMessage(WE().consts.g_l.weSearch.noTempTableRightsSearch, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			return;
 		}
 
@@ -117,15 +147,16 @@ weSearch = {
 					}
 				}
 				if (Checks.length === 0) {
-					top.we_showMessage(this.g_l.nothingCheckedAdv, WE().consts.message.WE_MESSAGE_ERROR, window);
+					top.we_showMessage(WE().consts.g_l.weSearch.nothingCheckedAdv, WE().consts.message.WE_MESSAGE_ERROR, window);
 				}
 				break;
 			case WE().consts.weSearch.SEARCH_DOCS:
 			case WE().consts.weSearch.SEARCH_MEDIA:
 				//top.console.debug(this.conf.editorBodyFrame.document.we_form.elements);
+				var thirdName = this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCS ? 'searchForContent' : 'searchForMeta';
 				for (i = 0; i < this.conf.editorBodyFrame.document.we_form.elements.length; i++) {
 					table = this.conf.editorBodyFrame.document.we_form.elements[i].name;
-					if (table === 'searchForText' + this.conf.whichsearch || table === 'searchForTitle' + this.conf.whichsearch || table === 'searchForContent' + this.conf.whichsearch) {
+					if (table === 'searchForText' + this.conf.whichsearch || table === 'searchForTitle' + this.conf.whichsearch || table === thirdName + this.conf.whichsearch) {
 						if (encodeURI(this.conf.editorBodyFrame.document.we_form.elements[i].value) == 1) {
 							Checks[m] = encodeURI(this.conf.editorBodyFrame.document.we_form.elements[i].value);
 							m++;
@@ -137,7 +168,7 @@ weSearch = {
 				if (Checks.length === 0) {
 					//FIXME: dirty fix => allow to search without searchForXX when no searchFieldsMediaSearch[0] is empty
 					if (this.conf.editorBodyFrame.document.we_form.elements['searchMediaSearch[0]'].value) {
-						top.we_showMessage(this.g_l.nothingCheckedTmplDoc, WE().consts.message.WE_MESSAGE_ERROR, window);
+						top.we_showMessage(WE().consts.g_l.weSearch.nothingCheckedTmplDoc, WE().consts.message.WE_MESSAGE_ERROR, window);
 					} else {
 						Checks[0] = '';
 					}
@@ -154,7 +185,7 @@ weSearch = {
 					}
 				}
 				if (Checks.length === 0) {
-					top.we_showMessage(this.g_l.nothingCheckedTmplDoc, WE().consts.message.WE_MESSAGE_ERROR, window);
+					top.we_showMessage(WE().consts.g_l.weSearch.nothingCheckedTmplDoc, WE().consts.message.WE_MESSAGE_ERROR, window);
 				}
 				break;
 		}
@@ -179,7 +210,7 @@ weSearch = {
 			args += '&we_cmd[' + encodeURI(newString) + ']=' + encodeURI(elem.value);
 		}
 		this.conf.editorBodyFrame.document.getElementById('scrollContent_' + this.conf.whichsearch).innerHTML = '<table border="0" width="100%" height="100%"><tr><td align="center"><i class="fa fa-2x fa-spinner fa-pulse"></i><div id="scrollActive"></div></td></tr></table>';
-		YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackResultList, 'protocol=json&cns=tools/weSearch&tab=' + this.conf.tab + '&cmd=GetSearchResult&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
+		top.YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackResultList, 'protocol=json&cns=tools/weSearch&tab=' + this.conf.tab + '&cmd=GetSearchResult&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
 	},
 	makeAjaxRequestParametersTop: function () {
 		var args = '', newString = "";
@@ -188,7 +219,7 @@ weSearch = {
 			newString = this.conf.editorBodyFrame.document.we_form.elements[i].name;
 			args += '&we_cmd[' + encodeURI(newString) + ']=' + encodeURI(this.conf.editorBodyFrame.document.we_form.elements[i].value);
 		}
-		YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackParametersTop, 'protocol=json&cns=tools/weSearch&tab=' + this.conf.tab + '&cmd=GetSearchParameters&position=top&whichsearch=' + this.conf.whichsearch + '&classname' + this.conf.modelClassName + '=&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
+		top.YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackParametersTop, 'protocol=json&cns=tools/weSearch&tab=' + this.conf.tab + '&cmd=GetSearchParameters&position=top&whichsearch=' + this.conf.whichsearch + '&classname' + this.conf.modelClassName + '=&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
 	},
 	makeAjaxRequestParametersBottom: function () {
 		var args = '', newString = '';
@@ -196,7 +227,7 @@ weSearch = {
 			newString = this.conf.editorBodyFrame.document.we_form.elements[i].name;
 			args += '&we_cmd[' + encodeURI(newString) + ']=' + encodeURI(this.conf.editorBodyFrame.document.we_form.elements[i].value);
 		}
-		YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackParametersBottom, 'protocol=json&cns=tools/weSearch&tab=' + this.conf.tab + '&cmd=GetSearchParameters&position=bottom&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
+		top.YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackParametersBottom, 'protocol=json&cns=tools/weSearch&tab=' + this.conf.tab + '&cmd=GetSearchParameters&position=bottom&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
 	},
 	getMouseOverDivs: function () {
 		var args = '', newString = '';
@@ -204,44 +235,36 @@ weSearch = {
 			newString = this.conf.editorBodyFrame.document.we_form.elements[i].name;
 			args += '&we_cmd[' + encodeURI(newString) + ']=' + encodeURI(this.conf.editorBodyFrame.document.we_form.elements[i].value);
 		}
-		YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackgetMouseOverDivs, 'protocol=json&cns=tools/weSearch&tab=' + this.conf.tab + '&cmd=GetMouseOverDivs&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
+		top.YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackgetMouseOverDivs, 'protocol=json&cns=tools/weSearch&tab=' + this.conf.tab + '&cmd=GetMouseOverDivs&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
 	},
 	setView: function (value) {
 		this.conf.editorBodyFrame.document.we_form.elements['setView' + this.conf.whichsearch].value = value;
 		this.search(false);
 	},
 	showImageDetails: function (picID) {
-		this.elem = document.getElementById(picID);
-		this.elem.style.visibility = 'visible';
+		if((weSearch.rolloverElem = document.getElementById(picID))){
+			weSearch.rolloverElem.style.visibility = 'visible';
+		}
 	},
 	hideImageDetails: function (picID) {
-		this.elem = document.getElementById(picID);
-		this.elem.style.visibility = 'hidden';
-		this.elem.style.left = '-9999px';
+		if(weSearch.rolloverElem){
+			weSearch.rolloverElem.style.visibility = 'hidden';
+			weSearch.rolloverElem.style.left = '-9999px';
+		}
 	},
 	updateElem: function (e) {
-		var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight,
-						w = window.innerWidth ? window.innerWidth : document.body.offsetWidth,
-						x = (document.all) ? window.event.x + document.body.scrollLeft : e.pageX,
-						y = (document.all) ? window.event.y + document.body.scrollTop : e.pageY,
-						elemWidth = 0, elemHeight = 0;
+		if (weSearch.rolloverElem && weSearch.rolloverElem.style.visibility === 'visible') {
+			var elem = weSearch.rolloverElem,
+				elemW = elem.offsetWidth,
+				elemH = elem.offsetHeight,
+				frameW = window.innerWidth ? window.innerWidth : document.body.offsetWidth,
+				frameH = window.innerHeight ? window.innerHeight : document.body.offsetHeight,
+				posX = e.pageX,
+				posY = e.pageY,
+				scrollY = window.scrollY;
 
-		if (this.elem !== null && elem.style.visibility == 'visible') {
-			elemWidth = this.elem.offsetWidth;
-			elemHeight = this.elem.offsetHeight;
-			this.elem.style.left = (x + 10) + 'px';
-			this.elem.style.top = (y - 120) + 'px';
-
-			if ((w - x) < 400 && (h - y) < 250) {
-				this.elem.style.left = (x - elemWidth - 10) + 'px';
-				this.elem.style.top = (y - elemHeight - 10) + 'px';
-			}
-			else if ((w - x) < 400) {
-				this.elem.style.left = (x - elemWidth - 10) + 'px';
-			}
-			else if ((h - y) < 250) {
-				this.elem.style.top = (y - elemHeight - 10) + 'px';
-			}
+			elem.style.left = (((frameW - posX) < elemW + 10) ? (posX - elemW - 10) : (posX + 10)) + 'px';
+			elem.style.top = (Math.max((scrollY + 4),(Math.min((scrollY + frameH - elemH - 4), (posY - Math.round(elemH/5*3)))))) + 'px';
 		}
 	},
 	absLeft: function (el) {
@@ -249,6 +272,13 @@ weSearch = {
 	},
 	absTop: function (el) {
 		return (el.offsetParent) ? el.offsetTop + this.absTop(el.offsetParent) : el.offsetTop;
+	},
+	reloadSameRange: function () {
+		var scrollActive = document.getElementById('scrollActive');
+		if (scrollActive === null) {
+			//this.conf.editorBodyFrame.document.we_form.elements['searchstart' + this.conf.whichsearch].value = parseInt(this.conf.editorBodyFrame.document.we_form.elements['searchstart' + this.conf.whichsearch].value) + anzahl;
+			this.search(false);
+		}
 	},
 	next: function (anzahl) {
 		var scrollActive = document.getElementById('scrollActive');
@@ -274,14 +304,9 @@ weSearch = {
 		top.we_cmd('editCat', id);
 	},
 	setOrder: function (order, whichSearch) {
-		//FIXME: ordering media search does not work yet
-		if (whichSearch === 'MediaSearch') {
-			alert('ordering columns temporarily disabled');
-			return;
-		}
-
-		var columns = ['Text', 'SiteTitle', 'CreationDate', 'ModDate'],
-						deleteArrow, arrow, foo;
+		var columns = whichSearch === 'MediaSearch' ? ['Text', 'media_filesize', 'IsUsed', 'media_alt', 'media_title', 'CreationDate', 'ModDate'] :
+				['Text', 'SiteTitle', 'CreationDate', 'ModDate'];
+		var deleteArrow, arrow, foo;
 
 		for (var i = 0; i < columns.length; i++) {
 			if (order !== columns[i]) {
@@ -355,12 +380,13 @@ weSearch = {
 		}
 	},
 	newinpuMediaSearch: function () {
-		top.console.debug('is fn');
+		//top.console.debug('is fn');
 
 	},
-	getCell: function (type, rowID, replacement) {
+	getCell: function (type, rowID, replacement) { // FIXME: use this-whichsearch to reduce cases
 		var cell = document.createElement('TD'),
-						html;
+			locationType,
+			html;
 		switch (type) {
 			case 'delButton':
 				cell.setAttribute('id', 'td_delButton[' + rowID + ']');
@@ -371,16 +397,22 @@ weSearch = {
 				cell.innerHTML = this.elems.fieldSearch.replace(/__we_new_id__/g, rowID).replace(/__we_read_only__/g, replacement ? 'readonly="1" ' : '');
 				break;
 			case 'locationAdvSearch':
+			case 'locationDateAdvSearch':
+			case 'locationTextAdvSearch':
+				locationType = (type === 'locationTextAdvSearch' ? 'selLocationText' : (type === 'locationDateAdvSearch' ? 'selLocationDate' : 'selLocation'));
 				cell.setAttribute("id", "td_locationAdvSearch[" + rowID + "]");
-				cell.innerHTML = this.elems.selLocation.replace(/__we_new_id__/g, rowID);
+				cell.innerHTML = this.elems[locationType].replace(/__we_new_id__/g, rowID);
 				break;
 			case 'searchMediaSearch':
 				cell.setAttribute('id', 'td_searchMediaSearch[' + rowID + ']');
 				cell.innerHTML = this.elems.fieldSearch.replace(/__we_new_id__/g, rowID).replace(/__we_read_only__/g, replacement ? 'readonly="1" ' : '');
 				break;
 			case 'locationMediaSearch':
+			case 'locationDateMediaSearch':
+			case 'locationTextMediaSearch':
+				locationType = (type === 'locationTextMediaSearch' ? 'selLocationText' : (type === 'locationDateMediaSearch' ? 'selLocationDate' : 'selLocation'));
 				cell.setAttribute("id", "td_locationMediaSearch[" + rowID + "]");
-				cell.innerHTML = this.elems.selLocation.replace(/__we_new_id__/g, rowID);
+				cell.innerHTML = this.elems[locationType].replace(/__we_new_id__/g, rowID);
 				break;
 		}
 		return cell;
@@ -413,10 +445,13 @@ weSearch = {
 		var searchTD = document.getElementById('td_search' + this.conf.whichsearch + '[' + rowNr + ']');
 		var delButtonTD = document.getElementById('td_delButton[' + rowNr + ']');
 		var location = document.getElementById('location' + this.conf.whichsearch + '[' + rowNr + ']');
-
+		var locationType = '';
+		var innerhtml;
+		var cell;
 		switch (value) {
 			case 'Content':
 				if (locationTD !== null) {
+					location.value = 'CONTAIN';
 					location.disabled = true;
 				}
 				row.removeChild(searchTD);
@@ -431,18 +466,19 @@ weSearch = {
 				break;
 			case 'temp_category':
 				if (locationTD !== null) {
+					location.value = 'IS';
 					location.disabled = true;
 				}
 				row.removeChild(searchTD);
 
-				var innerhtml = '<table class="default"><tbody><tr>' +
+				innerhtml = '<table class="default"><tbody><tr>' +
 								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
-								'<td><input value="" name="search" + this.conf.whichsearch + "ParentID[' + rowNr + ']" type="hidden"></td><td></td>' +
+								'<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td></td>' +
 								'<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, WE().consts.tables.CATEGORY_TABLE).replace(/__we_selector__/, 'we_selector_category') + '</td>' +
 								'</tr></tbody></table>';
 
-				var cell = document.createElement('TD');
-				cell.setAttribute('id', 'td_search" + this.conf.whichsearch + "[' + rowNr + ']');
+				cell = document.createElement('TD');
+				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
 				cell.innerHTML = innerhtml;
 				row.appendChild(cell);
 
@@ -454,18 +490,19 @@ weSearch = {
 			case 'temp_template_id':
 			case 'MasterTemplateID':
 				if (locationTD !== null) {
+					location.value = 'IS';
 					location.disabled = true;
 				}
 				row.removeChild(searchTD);
 
-				var innerhtml = "<table class=\"default\"><tbody><tr>" +
+				innerhtml = '<table class="default"><tbody><tr>' +
 								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
 								'<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td></td>' +
 								'<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, WE().consts.tables.TEMPLATES_TABLE).replace(/__we_selector__/, 'we_selector_document') + '</td>' +
-								"</tr></tbody></table>";
+								'</tr></tbody></table>';
 
-				cell = document.createElement("TD");
-				cell.setAttribute("id", "td_search" + this.conf.whichsearch + "[" + rowNr + "]");
+				cell = document.createElement('TD');
+				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
 				cell.innerHTML = innerhtml;
 				row.appendChild(cell);
 
@@ -478,20 +515,21 @@ weSearch = {
 			case 'ParentIDObj':
 			case 'ParentIDTmpl':
 				if (locationTD !== null) {
+					location.value = 'IS';
 					location.disabled = true;
 				}
 				row.removeChild(searchTD);
 
 				var table = value === 'ParentIDDoc' ? WE().consts.tables.FILE_TABLE : (value === 'ParentIDObj' ? WE().consts.tables.OBJECT_FILES_TABLE : WE().consts.tables.TEMPLATES_TABLE);
 
-				var innerhtml = "<table class=\"default\"><tbody><tr>" +
+				innerhtml = '<table class="default"><tbody><tr>' +
 								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
 								'<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td></td>' +
 								'<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, table).replace(/__we_selector__/, 'we_selector_directory') + '</td>' +
-								"</tr></tbody></table>";
+								'</tr></tbody></table>';
 
-				cell = document.createElement("TD");
-				cell.setAttribute("id", "td_search" + this.conf.whichsearch + "[" + rowNr + "]");
+				cell = document.createElement('TD');
+				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
 				cell.innerHTML = innerhtml;
 				row.appendChild(cell);
 
@@ -502,6 +540,7 @@ weSearch = {
 				break;
 			case 'Status':
 				if (locationTD !== null) {
+					location.value = 'IS';
 					location.disabled = true;
 				}
 				row.removeChild(searchTD);
@@ -509,8 +548,8 @@ weSearch = {
 					row.removeChild(delButtonTD);
 				}
 
-				var cell = document.createElement("TD");
-				cell.setAttribute("id", "td_search" + this.conf.whichsearch + "[" + rowNr + "]");
+				cell = document.createElement('TD');
+				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
 				cell.innerHTML = this.elems.selStatus.replace(/__we_new_id__/g, rowNr);
 				row.appendChild(cell);
 
@@ -518,6 +557,7 @@ weSearch = {
 				break;
 			case 'Speicherart':
 				if (locationTD !== null) {
+					location.value = 'IS';
 					location.disabled = true;
 				}
 				row.removeChild(searchTD);
@@ -525,8 +565,8 @@ weSearch = {
 					row.removeChild(delButtonTD);
 				}
 
-				var cell = document.createElement("TD");
-				cell.setAttribute("id", "td_search" + this.conf.whichsearch + "[" + rowNr + "]");
+				cell = document.createElement('TD');
+				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
 				cell.innerHTML = this.elems.selSpeicherart.replace(/__we_new_id__/g, rowNr);
 				row.appendChild(cell);
 
@@ -535,27 +575,26 @@ weSearch = {
 			case 'Published':
 			case 'CreationDate':
 			case 'ModDate':
-
 				row.removeChild(locationTD);
-				row.appendChild(this.getCell('location' + this.conf.whichsearch, rowNr));
+				row.appendChild(this.getCell('locationDate' + this.conf.whichsearch, rowNr));
 				row.removeChild(searchTD);
 
 				// FIXME: move datepicker-button to search_view
-				var innerhtml = "<table id=\"search" + this.conf.whichsearch + "[" + rowNr + "]_cell\" class=\"default\"><tbody><tr>" +
-								"<td></td>" +
-								"<td></td>" +
-								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ').replace('width: 170px', 'width: 100px') + '</td>' +
-								"<td>&nbsp;</td>" +
-								"<td><a href=\"#\"><button id=\"date_picker_from" + rowNr + "\" class=\"weBtn\"><i class='fa fa-lg fa-calendar'></i></button></a></td>" +
-								"</tr></tbody></table>";
+				innerhtml = '<table id="search' + this.conf.whichsearch + '[' + rowNr + ']_cell" class="default"><tbody><tr>' +
+								'<td></td>' +
+								'<td></td>' +
+								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
+								'<td></td>' +
+								'<td><a href="#"><button id="date_picker_from' + rowNr + '" class="weBtn multiicon"><i class="fa fa-lg fa-calendar"></i></button></a></td>' +
+								'</tr></tbody></table>';
 
 
-				cell = document.createElement("TD");
-				cell.setAttribute("id", "td_search" + this.conf.whichsearch + "[" + rowNr + "]");
+				cell = document.createElement('TD');
+				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
 				cell.innerHTML = innerhtml;
 				row.appendChild(cell);
 
-				Calendar.setup({inputField: "search" + this.conf.whichsearch + "[" + rowNr + "]", ifFormat: "%d.%m.%Y", button: "date_picker_from" + rowNr + "", align: "Tl", singleClick: true});
+				Calendar.setup({inputField: 'search' + this.conf.whichsearch + '[' + rowNr + ']', ifFormat: '%d.%m.%Y', button: 'date_picker_from' + rowNr + '', align: 'Tl', singleClick: true});
 
 				if (delButtonTD !== null) {
 					row.removeChild(delButtonTD);
@@ -573,15 +612,17 @@ weSearch = {
 					row.removeChild(delButtonTD);
 				}
 
-				var cell = document.createElement("TD");
-				cell.setAttribute("id", "td_search" + this.conf.whichsearch + "[" + rowNr + "]");
+				cell = document.createElement('TD');
+				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
 				cell.innerHTML = this.elems.selModFields.replace(/__we_new_id__/g, rowNr);
 				row.appendChild(cell);
 
 				row.appendChild(this.getCell('delButton', rowNr));
 				break;
 			case 'modifierID':
+			//case 'Creator':
 				if (locationTD !== null) {
+					location.value = 'IS';
 					location.disabled = true;
 				}
 				row.removeChild(searchTD);
@@ -589,16 +630,35 @@ weSearch = {
 					row.removeChild(delButtonTD);
 				}
 
-				var cell = document.createElement("TD");
-				cell.setAttribute("id", "td_search" + this.conf.whichsearch + "[" + rowNr + "]");
+				cell = document.createElement('TD');
+				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
 				cell.innerHTML = this.elems.selUsers.replace(/__we_new_id__/g, rowNr);
 				row.appendChild(cell);
 
 				row.appendChild(this.getCell('delButton', rowNr));
 				break;
 			default:
-				row.removeChild(searchTD);
+				switch(value){
+					case 'meta__Title':
+					case 'meta__Description':
+					case 'meta__Keywords':
+					case 'meta__Autor':
+					case 'meta__MIME':
+					case 'Path':
+					case 'CreatorName': // FIXME: reduce CreatorID and CreatorName to Creator analogue to modifierID
+					case 'Text':
+					case 'ContentType': // FIXME: make select
+					case 'WebUserName':
+						locationType = 'Text';
+						break;
+					case 'ID':
+					case 'CreatorID':
+					case 'WebUserID':
+						locationType = 'Date';
+						break;
+				}
 
+				row.removeChild(searchTD);
 				if (locationTD !== null) {
 					row.removeChild(locationTD);
 				}
@@ -606,35 +666,36 @@ weSearch = {
 					row.removeChild(delButtonTD);
 				}
 
-				row.appendChild(this.getCell('location' + this.conf.whichsearch, rowNr));
+				row.appendChild(this.getCell('location' + locationType + this.conf.whichsearch, rowNr));
 				row.appendChild(this.getCell('search' + this.conf.whichsearch, rowNr));
 				row.appendChild(this.getCell('delButton', rowNr));
 
-				document.getElementById("search" + this.conf.whichsearch + "[" + rowNr + "]").value = setValue;
+				document.getElementById('search' + this.conf.whichsearch + '[' + rowNr + ']').value = setValue;
 		}
 
-		switch (from) {
-			case "allModsIn":
-			case "MasterTemplateID":
-			case "ParentIDTmpl":
-			case "ParentIDObj":
-			case "ParentIDDoc":
-			case "temp_template_id":
-			case "ContentType":
-			case "temp_category":
-			case "Status":
-			case "Speicherart":
-			case "Published":
-			case "CreationDate":
-			case "ModDate":
-				document.getElementById("search" + this.conf.whichsearch + "[" + rowNr + "]").value = "";
+		switch (from) {// FIXME: this is nonsens! move this to the above cases
+			//switch (value) {
+			case 'allModsIn':
+			case 'MasterTemplateID':
+			case 'ParentIDTmpl':
+			case 'ParentIDObj':
+			case 'ParentIDDoc':
+			case 'temp_template_id':
+			case 'ContentType':
+			case 'temp_category':
+			case 'Status':
+			case 'Speicherart':
+			case 'Published':
+			case 'CreationDate':
+			case 'ModDate':
+				document.getElementById('search' + this.conf.whichsearch + '[' + rowNr + ']').value = '';
+				break;
 				//|| value =="allModsIn" || value =="MasterTemplateID" || value=="ParentIDTmpl" || value=="ParentIDObj" || value=="ParentIDDoc" || value=="temp_template_id" || value=="ContentType" || value=="temp_category" || value=="Status" || value=="Speicherart" || value=="Published" || value=="CreationDate" || value=="ModDate") {
 			default:
-				document.getElementById("search" + this.conf.whichsearch + "[" + rowNr + "]").value = setValue;
+				document.getElementById('search' + this.conf.whichsearch + '[' + rowNr + ']').value = setValue;
 		}
-		;
 
-		document.getElementsByName("hidden_searchFields" + this.conf.whichsearch + "[" + rowNr + "]")[0].value = value;
+		document.getElementsByName('hidden_searchFields' + this.conf.whichsearch + '[' + rowNr + ']')[0].value = value;
 
 	},
 	ajaxCallbackResetVersion: {
@@ -644,7 +705,7 @@ weSearch = {
 
 			// reload current document => reload all open Editors on demand
 			var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
-			for (frameId in _usedEditors) {
+			for (var frameId in _usedEditors) {
 				if (_usedEditors[frameId].getEditorIsActive()) { // reload active editor
 					_usedEditors[frameId].setEditorReloadAllNeeded(true);
 					_usedEditors[frameId].setEditorIsActive(true);
@@ -656,26 +717,27 @@ weSearch = {
 
 			//reload tree
 			if (top.opener.treeData) {
-				top.opener.we_cmd("load", top.opener.treeData.table, 0);
+				top.opener.we_cmd('load', top.opener.treeData.table, 0);
 			}
-			document.getElementById("resetBusy" + this.conf.whichsearch).innerHTML = "";
+			document.getElementById('resetBusy' + this.conf.whichsearch).innerHTML = '';
 		},
 		failure: function (o) {
 		}
 	},
 	resetVersionAjax: function (id, documentID, version, table) {
-		document.getElementById("resetBusy" + this.conf.whichsearch).innerHTML = "<table border='0' width='100%' height='100%'><tr><td align='center'><i class=\"fa fa-2x fa-spinner fa-pulse\"></i><div id='scrollActive'></div></td></tr></table>";
+		document.getElementById('resetBusy' + this.conf.whichsearch).innerHTML = "<table border='0' width='100%' height='100%'><tr><td align='center'><i class=\"fa fa-2x fa-spinner fa-pulse\"></i><div id='scrollActive'></div></td></tr></table>";
 
-		YAHOO.util.Connect.asyncRequest("POST", this.conf.ajaxURL, this.ajaxCallbackResetVersion, "protocol=json&cns=versionlist&cmd=ResetVersion&id=" + id + "&documentID=" + documentID + "&version=" + version + "&documentTable=" + table + "&we_transaction=' . $GLOBALS['we_transaction'] . '");
+		top.YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackResetVersion, "protocol=json&cns=versionlist&cmd=ResetVersion&id=" + id + "&documentID=" + documentID + "&version=" + version + "&documentTable=" + table + "&we_transaction=' . $GLOBALS['we_transaction'] . '");
 	},
 	resetVersions: function () {
 		var checkboxes = [];
 		check = false;
 		var m = 0;
-		for (var i = 0; i < document.we_form.elements.length; i++) {
+		var i;
+		for (i = 0; i < document.we_form.elements.length; i++) {
 			var table = document.we_form.elements[i].name;
-			if (table.substring(0, 12) == "resetVersion") {
-				if (document.we_form.elements[i].checked == true) {
+			if (table.substring(0, 12) === "resetVersion") {
+				if (document.we_form.elements[i].checked === true) {
 					checkboxes[m] = document.we_form.elements[i].value;
 					check = true;
 					m++;
@@ -683,21 +745,21 @@ weSearch = {
 			}
 		}
 
-		if (check == false) {
-			top.we_showMessage(this.g_l.versionsNotChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
+		if (check === false) {
+			top.we_showMessage(WE().consts.g_l.weSearch.versionsNotChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
 		} else {
 			Check = confirm("' . g_l('versions', '[resetVersionsSearchtool]') . '");
-			if (Check == true) {
+			if (Check === true) {
 				var vals = "";
-				for (var i = 0; i < checkboxes.length; i++) {
-					if (vals != "")
+				for (i = 0; i < checkboxes.length; i++) {
+					if (vals !== "") {
 						vals += ",";
+					}
 					vals += checkboxes[i];
-					if (document.getElementById("publishVersion_" + checkboxes[i]) != null) {
+					if (document.getElementById("publishVersion_" + checkboxes[i]) !== null) {
 						if (document.getElementById("publishVersion_" + checkboxes[i]).checked) {
 							vals += "___1";
-						}
-						else {
+						} else {
 							vals += "___0";
 						}
 					}
@@ -736,43 +798,16 @@ weSearch = {
 			}
 		}
 
-		if (checkboxes.length == 0) {
+		if (checkboxes.length === 0) {
 			check = false;
 		}
 
-		if (check == false) {//searchtool__notChecked
-			top.we_showMessage(this.g_l.searchtool__notChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
-		}
-		else {
+		if (check === false) {//searchtool__notChecked
+			top.we_showMessage(WE().consts.g_l.weSearch.searchtool__notChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
+		} else {
 			Check = confirm("' . g_l('searchtool', '[publish_docs]') . '");
-			if (Check == true) {
+			if (Check === true) {
 				this.publishDocsAjax(whichSearch);
-			}
-		}
-	},
-	deleteDocs: function (whichSearch) {
-		//var checkAll = document.getElementsByName("action_all_" + whichSearch);
-		var checkboxes = document.getElementsByName("delete_docs_" + whichSearch);
-		var check = false;
-
-		for (var i = 0; i < checkboxes.length; i++) {
-			if (checkboxes[i].checked) {
-				check = true;
-				break;
-			}
-		}
-
-		if (checkboxes.length == 0) {
-			check = false;
-		}
-
-		if (check == false) {//searchtool__notChecked
-			top.we_showMessage(this.g_l.searchtool__notChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
-		}
-		else {
-			Check = confirm("you really want to delete them?\n=> coming soon...");
-			if (Check == true) {
-				//this.publishDocsAjax(whichSearch);
 			}
 		}
 	},
@@ -791,7 +826,7 @@ weSearch = {
 			// reload current document => reload all open Editors on demand
 
 			var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
-			for (frameId in _usedEditors) {
+			for (var frameId in _usedEditors) {
 				if (_usedEditors[frameId].getEditorIsActive()) { // reload active editor
 					_usedEditors[frameId].setEditorReloadAllNeeded(true);
 					_usedEditors[frameId].setEditorIsActive(true);
@@ -805,7 +840,7 @@ weSearch = {
 			if (top.opener.treeData) {
 				top.opener.we_cmd("load", top.opener.treeData.table, 0);
 			}
-			document.getElementById("resetBusy" + this.conf.whichsearch).innerHTML = "";
+			document.getElementById("resetBusy" + weSearch.conf.whichsearch).innerHTML = "";
 			document.getElementById("resetBusyDocSearch").innerHTML = "";
 			top.we_showMessage(WE().consts.g_l.weSearch.searchtool__publishOK, WE().consts.message.WE_MESSAGE_NOTICE, window);
 
@@ -820,8 +855,9 @@ weSearch = {
 		var checkboxes = document.getElementsByName("publish_docs_" + whichSearch);
 		for (var i = 0; i < checkboxes.length; i++) {
 			if (checkboxes[i].checked) {
-				if (check != "")
+				if (check !== "") {
 					check += ",";
+				}
 				check += checkboxes[i].value;
 			}
 		}
@@ -829,7 +865,7 @@ weSearch = {
 		var scroll = document.getElementById("resetBusy" + whichSearch);
 		scroll.innerHTML = "<table border='0' width='100%' height='100%'><tr><td align='center'><i class=\"fa fa-2x fa-spinner fa-pulse\"></i></td></tr></table>";
 
-		YAHOO.util.Connect.asyncRequest("POST", this.conf.ajaxURL, this.ajaxCallbackPublishDocs, "protocol=json&cns=tools/weSearch&cmd=PublishDocs&" + args + "");
+		top.YAHOO.util.Connect.asyncRequest("POST", this.conf.ajaxURL, this.ajaxCallbackPublishDocs, "protocol=json&cns=tools/weSearch&cmd=PublishDocs&" + args + "");
 
 	},
 	previewVersion: function (ID) {
@@ -838,10 +874,83 @@ weSearch = {
 	},
 	calendarSetup: function (x) {
 		for (i = 0; i < x; i++) {
-			if (document.getElementById("date_picker_from" + i + "") != null) {
+			if (document.getElementById("date_picker_from" + i + "") !== null) {
 				//Calendar.setup({inputField:"search" + this.conf.whichsearch + "["+i+"]",ifFormat:"%d.%m.%Y",button:"date_picker_from"+i+"",align:"Tl",singleClick:true});
 			}
 		}
-	}
+	},
+	deleteMediaDocs: function (whichSearch) {
+		var checkboxes = document.getElementsByName("delete_docs_" + whichSearch);
+		var check = false;
 
+		for (var i = 0; i < checkboxes.length; i++) {
+			if (checkboxes[i].checked) {
+				check = true;
+				break;
+			}
+		}
+
+		if (!check) {
+			top.we_showMessage(WE().consts.g_l.weSearch.searchtool__notChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
+		} else {
+			var conf = confirm("you really want to delete them?");
+			if (conf) {
+				this.deleteMediaDocsAjax(whichSearch);
+			}
+		}
+	},
+	deleteMediaDocsAjax: function (whichSearch) {
+		var args = '',
+						check = '',
+						checkboxes = document.getElementsByName("delete_docs_" + whichSearch);
+
+		for (var i = 0; i < checkboxes.length; i++) {
+			if (checkboxes[i].checked) {
+				check += (check ? ',' : '') + checkboxes[i].value;
+			}
+		}
+		args += '&we_cmd[0]=' + encodeURI(check);
+
+		var scroll = document.getElementById('resetBusy' + whichSearch);
+		scroll.innerHTML = '<div><i class=\"fa fa-2x fa-spinner fa-pulse\"></i></div>';
+
+		top.YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackDeleteMediaDocs, 'protocol=json&cns=tools/weSearch&cmd=DeleteMediaDocs&' + args + '');
+	},
+	ajaxCallbackDeleteMediaDocs: {
+		success: function (o) {
+			var response = JSON.parse(o.responseText);
+			top.console.log(response.deletedItems.join());
+			top.we_showMessage(response.message, WE().consts.message.WE_MESSAGE_NOTICE, window);
+
+			// close all Editors with deleted documents
+			var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse(),
+							_delete_table = WE().consts.tables.FILE_TABLE,
+							_delete_Ids = ',' + response.deletedItems.join() + ',',
+							frameId;
+
+			for (frameId in _usedEditors) {
+				top.console.log('do!', frameId);
+				if (_delete_table == _usedEditors[frameId].getEditorEditorTable() && (_delete_Ids.indexOf(',' + _usedEditors[frameId].getEditorDocumentId() + ',') != -1)) {
+					_usedEditors[frameId].setEditorIsHot(false);
+					WE().layout.weEditorFrameController.closeDocument(frameId);
+				}
+			}
+
+			//reload tree
+			if (top.opener.treeData) {
+				top.opener.we_cmd("load", top.opener.treeData.table, 0);
+			}
+
+			// reset busy
+			document.getElementById("resetBusy" + weSearch.conf.whichsearch).innerHTML = '';
+			document.getElementById("resetBusyDocSearch").innerHTML = '';
+
+			// reload search from same startID
+			weSearch.reloadSameRange();
+		},
+		failure: function (o) {
+			top.console.log("callback failure");
+			//alert("Failure");
+		}
+	}
 };

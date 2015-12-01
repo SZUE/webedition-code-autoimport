@@ -65,7 +65,7 @@ CodeMirror.defineMode("text/weTmpl", function (config, parserConfig) {
 										state.attrActive = false;
 										switch (state.attrName) {
 											case "id":
-												if (state.typeName == "") {
+												if (state.typeName === "") {
 													state.typeName = (state.tagName === "object" ? "object" : "document");
 												}
 												return ((value - 0 == value) ? ("number" + " we" + state.typeName + "ID-" + value) + " WEID" : "string");
@@ -98,6 +98,7 @@ CodeMirror.defineMode("text/weTmpl", function (config, parserConfig) {
 									if (stream.skipTo('>')) {
 										stream.next();
 									}
+									/* falls through */
 								case ">":
 									state.insideTag = false;
 									return "weTag " + attrName;
@@ -128,6 +129,7 @@ CodeMirror.defineMode("text/weTmpl", function (config, parserConfig) {
 									state.insideTag = false;
 									return "weSelfClose weTag weTag_" + state.tagName;
 								}
+								/* falls through */
 							case '>':
 								state.insideTag = false;
 								if (state.open) {

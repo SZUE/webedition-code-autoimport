@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_exim_refData{
-
 	var $ID;
 	var $ParentID;
 	var $TemplateID;
@@ -39,7 +38,7 @@ class we_exim_refData{
 	public $OldDocTypeName;
 	var $Examined = 0;
 	var $elements = 0;
-	var $slots = array("ID", "ParentID", "Path", "Table", "ContentType", "TemplateID", "DocType", "Category");
+	private $slots = array('ID', 'ParentID', 'Path', 'Table', 'ContentType', 'TemplateID', 'DocType', 'Category');
 
 	function init($object, $extra = array()){
 		foreach($this->slots as $slot){
@@ -61,4 +60,18 @@ class we_exim_refData{
 		return true;
 	}
 
+	public function __sleep(){
+		$tmp = get_object_vars($this);
+		unset($tmp['elements']);
+		return array_keys($tmp);
+	}
+/*
+	public function __debugInfo(){
+		$ret = array();
+		foreach($this->slots as $slot){
+			$ret[$slot] = $this->$slot;
+		}
+		return $ret;
+	}
+*/
 }

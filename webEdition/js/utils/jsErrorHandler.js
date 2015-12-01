@@ -23,9 +23,17 @@
 
 function errorHandler(msg, file, line, col, errObj) {
 	deb = console.debug !== undefined;
-	(deb ? console.debug(msg) : console.log(msg));
+	if (deb) {
+		console.debug(msg);
+	} else {
+		console.log(msg);
+	}
 	if (errObj) {
-		(deb ? console.debug(errObj) : console.log(errObj));
+		if (deb) {
+			console.debug(errObj);
+		} else {
+			console.log(errObj);
+		}
 	}
 	try {//we don' want to raise errors inside
 		postData = 'we_cmd[msg]=' + encodeURIComponent(msg) +
@@ -47,6 +55,10 @@ function errorHandler(msg, file, line, col, errObj) {
 		xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 		xmlhttp.send(postData);
 	} catch (e) {
-		(deb ? console.debug(e) : console.log(e));
+		if (deb) {
+			console.debug(e);
+		} else {
+			console.log(e);
+		}
 	}
 }

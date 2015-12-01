@@ -39,7 +39,7 @@ container.prototype.openClose = function(id) {
 	if (openstatus) {
 		treeData[eintragsIndex].loaded = true;
 	}
-}
+};
 
 function doClick(id, typ) {
 	var cmd = "";

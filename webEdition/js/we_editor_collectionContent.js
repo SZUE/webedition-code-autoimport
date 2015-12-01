@@ -1,6 +1,30 @@
+/**
+ * webEdition CMS
+ *
+ * webEdition CMS
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
+ * This source is part of webEdition CMS. webEdition CMS is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionCMS/License.txt
+ *
+ * @category   webEdition
+ * @package    webEdition_base
+ * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ */
+
 wePropertiesEdit = {
 	hasOptions: function (obj) {
-		if (obj != null && obj.options != null) {
+		if (obj !== null && obj.options !== null) {
 			return true;
 		}
 		return false;
@@ -12,19 +36,20 @@ wePropertiesEdit = {
 		if (!this.hasOptions(from)) {
 			return;
 		}
-		for (var i = 0; i < from.options.length; i++) {
-			var o = from.options[i];
+		var index,i,o;
+		for (i = 0; i < from.options.length; i++) {
+			o = from.options[i];
 			if (o.selected) {
 				if (!this.hasOptions(to)) {
-					var index = 0;
+					index = 0;
 				} else {
-					var index = to.options.length;
+					index = to.options.length;
 				}
 				to.options[index] = new Option(o.text, o.value, false, false);
 			}
 		}
-		for (var i = (from.options.length - 1); i >= 0; i--) {
-			var o = from.options[i];
+		for (i = (from.options.length - 1); i >= 0; i--) {
+			o = from.options[i];
 			if (o.selected) {
 				from.options[i] = null;
 			}
@@ -42,10 +67,11 @@ wePropertiesEdit = {
 		if (!this.hasOptions(obj)) {
 			return;
 		}
-		for (var i = 0; i < obj.options.length; i++) {
+		var i;
+		for (i = 0; i < obj.options.length; i++) {
 			o[o.length] = new Option(obj.options[i].text, obj.options[i].value, obj.options[i].defaultSelected, obj.options[i].selected);
 		}
-		if (o.length == 0) {
+		if (o.length === 0) {
 			return;
 		}
 		o = o.sort(
@@ -59,7 +85,7 @@ wePropertiesEdit = {
 							return 0;
 						}
 		);
-		for (var i = 0; i < o.length; i++) {
+		for (i = 0; i < o.length; i++) {
 			obj.options[i] = new Option(o[i].text, o[i].value, o[i].defaultSelected, o[i].selected);
 		}
 	},
@@ -88,8 +114,7 @@ weCollectionEdit = {
 		item: 200,
 		icon: 32
 	},
-	gridItemDimension: {},
-					itemsPerRow: 4,
+	itemsPerRow: 4,
 	collectionArr: [],
 	collectionCsv: '',
 	collectionNum: 0,
@@ -283,20 +308,20 @@ weCollectionEdit = {
 		this.reindexAndRetrieveCollection();
 	},
 	doZoomGrid: function (value) {
-		var attribDivs = this.ct['grid'].getElementsByClassName('toolbarAttribs');
-		var iconDivs = this.ct['grid'].getElementsByClassName('divInner'), next;
+		var attribDivs = this.ct.grid.getElementsByClassName('toolbarAttribs');
+		var iconDivs = this.ct.grid.getElementsByClassName('divInner'), next;
 
 		this.itemsPerRow = 7 - value;
 		this.gridItemDimension = this.gridItemDimensions[this.itemsPerRow];
 		document.we_form['we_' + this.we_doc.name + '_itemsPerRow'].value = this.itemsPerRow;
 
-		for (var i = 0; i < this.ct['grid'].children.length; i++) {
-			this.ct['grid'].children[i].style.width = this.ct['grid'].children[i].style.height = this.gridItemDimension.item + 'px';
+		for (var i = 0; i < this.ct.grid.children.length; i++) {
+			this.ct.grid.children[i].style.width = this.ct.grid.children[i].style.height = this.gridItemDimension.item + 'px';
 			//this.ct['grid'].children[i].style.backgroundSize = Math.max(item.icon.sizeX, item.icon.sizeY) < this.gridItemDimension.item ? 'auto' : 'contain';
 
 			attribDivs[i].style.display = this.itemsPerRow > 5 ? 'none' : 'block';
 			iconDivs[i].firstChild.style.fontSize = this.gridItemDimension.icon + 'px';
-			if (next = iconDivs[i].firstChild.nextSibling) {
+			if ((next = iconDivs[i].firstChild.nextSibling)) {
 				next.style.fontSize = this.gridItemDimension.font + 'px';
 			}
 		}
@@ -348,9 +373,9 @@ weCollectionEdit = {
 	insertItem: function (elem, repaint, item, scope, color) {
 		var t = scope ? scope : this,
 						el = elem ? t.getItem(elem) : null,
-						div, newItem, cmd1, cmd2, cmd3, blank, elPreview,
-						color = color ? color : false;
+						div, newItem, cmd1, cmd2, cmd3, blank, elPreview;
 
+		color = color ? color : false;
 		item = item ? item : this.storage['item_-1'];
 		repaint = repaint || false;
 		++t.maxIndex;
@@ -361,7 +386,7 @@ weCollectionEdit = {
 
 		div = document.createElement("div");
 		blank = t.blankItem[t.view].replace(/##INDEX##/g, t.maxIndex).replace(/##ID##/g, item.id).replace(/##PATH##/g, item.path).
-						replace(/##CT##/g, item.ct).replace(/##ICONURL##/g, item.icon['url'].replace('%2F', '/')).
+						replace(/##CT##/g, item.ct).replace(/##ICONURL##/g, item.icon.url.replace('%2F', '/')).
 						replace(/##ATTRIB_TITLE##/g, item.elements.attrib_title.Dat).replace(/##S_ATTRIB_TITLE##/g, item.elements.attrib_title.state).
 						replace(/##ATTRIB_ALT##/g, item.elements.attrib_alt.Dat).replace(/##S_ATTRIB_ALT##/g, item.elements.attrib_alt.state).
 						replace(/##META_TITLE##/g, item.elements.meta_title.Dat).replace(/##S_META_TITLE##/g, item.elements.meta_title.state).
@@ -457,7 +482,7 @@ weCollectionEdit = {
 			 this.dd.IsDuplicates = document.we_form['check_we_' + this.we_doc.name + '_IsDuplicates'].checked;
 			 */
 			while (!isFirstSet && items.length) {
-				var item = items.shift();
+				item = items.shift();
 				if (this.dd.IsDuplicates === 1 || this.collectionCsv.search(',' + item.id + ',') === -1) {
 					var newEl = this.insertItem(el, false, item, this, '#00ee00');
 					this.doClickDelete(el);
@@ -599,6 +624,7 @@ weCollectionEdit = {
 	enterDrag: function (type, view, evt, elem) {
 		var el = this.getItem(elem);
 		var data = evt.dataTransfer.getData("text") ? evt.dataTransfer.getData("text").split(',') : top.dd.dataTransfer.text.split(',');
+		var c, i;
 
 		if (this.view === 'grid' && type === 'item') {
 			this.outMouse(type, this.view, elem);
@@ -607,7 +633,7 @@ weCollectionEdit = {
 		switch (data[0]) {
 			case 'moveItem':
 				if (type === 'item') {
-					var c = this.ct[this.view],
+					c = this.ct[this.view],
 									newPos;
 
 					if (!this.dd.moveItem.removed) {
@@ -628,10 +654,10 @@ weCollectionEdit = {
 				if (this.view === 'grid') {
 					switch (type) {
 						case 'item':
-							var c = this.ct[this.view];
+							c = this.ct[this.view];
 
 							this.dd.counter++;
-							for (var i = 0; i < c.childNodes.length; i++) {
+							for (i = 0; i < c.childNodes.length; i++) {
 								c.childNodes[i].firstChild.border = '1px solid #006db8';
 								c.childNodes[i].firstChild.style.backgroundColor = '#ffffff';
 							}
@@ -662,8 +688,8 @@ weCollectionEdit = {
 					}
 				} else {
 					this.dd.counter++;
-					var c = this.ct[this.view];
-					for (var i = 0; i < c.childNodes.length; i++) {
+					c = this.ct[this.view];
+					for (i = 0; i < c.childNodes.length; i++) {
 						c.childNodes[i].style.border = '1px solid #006db8';
 						c.childNodes[i].firstChild.style.backgroundColor = '#f5f5f5';
 					}

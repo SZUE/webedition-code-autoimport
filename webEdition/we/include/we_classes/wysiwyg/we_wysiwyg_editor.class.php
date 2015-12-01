@@ -25,12 +25,13 @@
 //make sure we know which browser is used
 
 class we_wysiwyg_editor{
+
 	var $name = '';
 	private $origName = '';
 	private $fieldName = '';
 	private $fieldName_clean = '';
-	var $width = '';
-	var $height = '';
+	var $width = 600;
+	var $height = 400;
 	var $ref = '';
 	var $propstring = '';
 	var $elements = array();
@@ -178,8 +179,8 @@ class we_wysiwyg_editor{
 		$this->baseHref = $baseHref ? : we_base_util::getGlobalPath();
 		$this->charset = $charset;
 
-		$this->width = $width;
-		$this->height = $height;
+		$this->width = $width ? : $this->width;
+		$this->height = $height ? : $this->height;
 		$this->ref = preg_replace('%[^0-9a-zA-Z_]%', '', $this->name);
 		$this->hiddenValue = $value;
 		$this->isInPopup = $isInPopup;
@@ -241,7 +242,7 @@ class we_wysiwyg_editor{
 		$ret = array_merge(array(
 			'',
 			g_l('wysiwyg', '[groups]') => we_html_tools::OPTGROUP
-			), $tmp);
+				), $tmp);
 		foreach($commands as $key => $values){
 			$ret = array_merge($ret, array($key => we_html_tools::OPTGROUP), $values);
 		}
@@ -567,7 +568,7 @@ function getDocumentCss(){
 			foreach($regs as $reg){
 				$path = empty($lookup[intval($reg[3])]) ? '' : $lookup[intval($reg[3])];
 				$value = $path ? str_ireplace($reg[1], 'src="' . $path . '?id=' . $reg[3] . '&time=' . $t . '"', $value) :
-					str_ireplace($reg[0], '<img src="' . ICON_DIR . 'no_image.gif?id=0">', $value);
+						str_ireplace($reg[0], '<img src="' . ICON_DIR . 'no_image.gif?id=0">', $value);
 			}
 		}
 
@@ -577,7 +578,7 @@ function getDocumentCss(){
 				$thumbObj = new we_thumbnail();
 				$imageExists = $thumbObj->initByImageIDAndThumbID($imgID, $thumbID);
 				$value = $imageExists ? str_ireplace($reg[1], 'src="' . $thumbObj->getOutputPath() . "?thumb=" . $reg[3] . '&time=' . $t . '"', $value) :
-					str_ireplace($reg[0], '<img src="' . ICON_DIR . 'no_image.gif?id=0">', $value);
+						str_ireplace($reg[0], '<img src="' . ICON_DIR . 'no_image.gif?id=0">', $value);
 				unset($thumbObj);
 			}
 		}
@@ -592,13 +593,13 @@ function getDocumentCss(){
 
 	public static function reparseInternalLinks(&$content, $replace = false){// FIXME: move to we_document?
 		$regs = $internalIDs = array();
-		if(preg_match_all('{src="/[^">]+\\?id=(\\d+)["|&]}i', $content, $regs, PREG_SET_ORDER)){
+		if(preg_match_all('{src="/[^">]+\\?id=(\\d+)["\|&]}i', $content, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
 				$content = $replace ? str_replace($reg[0], 'src="' . we_base_link::TYPE_INT_PREFIX . $reg[1] . '"', $content) : $content;
 				$internalIDs[] = intval($reg[1]);
 			}
 		}
-		if(preg_match_all('{src="/[^">]+\\?thumb=(\\d+,\\d+)["|&]}i', $content, $regs, PREG_SET_ORDER)){
+		if(preg_match_all('{src="/[^">]+\\?thumb=(\\d+,\\d+)["\|&]}i', $content, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
 				$content = $replace ? str_replace($reg[0], 'src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '"', $content) : $content;
 				$internalIDs[] = intval(strstr($reg[1], ',', true));
@@ -804,7 +805,7 @@ function getDocumentCss(){
 		$width = we_base_util::convertUnits($this->width);
 		if(is_numeric($height) && is_numeric($width) && $width){
 			//only a simple fix
-			$this->height = $height - ($this->buttonpos === 'external' ? 0 : round((($k) / ($width / (5 * 22))) * 26));
+			$this->height = $height = $height - ($this->buttonpos === 'external' ? 0 : round((($k) / ($width / (5 * 22))) * 26));
 		}
 
 		$wefullscreenVars = array(
@@ -818,9 +819,7 @@ function getDocumentCss(){
 		$editorLang = array_search($GLOBALS['WE_LANGUAGE'], getWELangs());
 		$editorLangSuffix = $editorLang === 'de' ? 'de_' : '';
 
-		$width = we_base_util::convertUnits($this->width);
 		$width = (is_numeric($width) ? round(max($width, self::MIN_WIDTH_INLINE) / 96, 3) . 'in' : $width);
-		$height = we_base_util::convertUnits($this->height);
 		$height = (is_numeric($height) ? round(max($height, self::MIN_HEIGHT_INLINE) / 96, 3) . 'in' : $height);
 
 		return we_html_element::jsElement(($this->fieldName ? '
@@ -882,7 +881,8 @@ var tinyMceTranslationObject = {' . $editorLang . ':{
 		tt_weinsertbreak:"' . g_l('wysiwyg', '[insert_br]') . '",
 		tt_welink:"' . g_l('wysiwyg', '[hyperlink]') . '",
 		tt_weimage:"' . g_l('wysiwyg', '[insert_edit_image]') . '",
-		tt_wefullscreen:"' . g_l('wysiwyg', '[fullscreen]') . '",
+		tt_wefullscreen_set:"' . ($this->isInPopup ? g_l('wysiwyg', '[maxsize_set]') : g_l('wysiwyg', '[fullscreen]')) . '",
+		tt_wefullscreen_reset:"' . g_l('wysiwyg', '[maxsize_reset]') . '",
 		tt_welang:"' . g_l('wysiwyg', '[language]') . '",
 		tt_wespellchecker:"' . g_l('wysiwyg', '[spellcheck]') . '",
 		tt_wevisualaid:"' . g_l('wysiwyg', '[visualaid]') . '",
@@ -899,7 +899,6 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		weabbr : "' . $editorLangSuffix . 'weabbr",
 		weacronym : "' . $editorLangSuffix . 'weacronym"
 	},
-
 	weFullscreenState : {
 		fullscreen : false,
 		lastX : 0,
@@ -1373,12 +1372,12 @@ tinyMCE.weResizeEditor = function(render){
 
 tinyMCE.init(tinyMceConfObject__' . $this->fieldName_clean . ');
 ') . getHtmlTag('textarea', array(
-				'wrap' => "off",
-				'style' => 'color:#eeeeee; background-color:#eeeeee;  width:' . $width . '; height:' . $height . ';',
-				'id' => $this->name,
-				'name' => $this->name,
-				'class' => 'wetextarea'
-				), strtr($editValue, array('\n' => '', '&' => '&amp;')), true);
+					'wrap' => "off",
+					'style' => 'color:#eeeeee; background-color:#eeeeee;  width:' . $width . '; height:' . $height . ';',
+					'id' => $this->name,
+					'name' => $this->name,
+					'class' => 'wetextarea'
+						), strtr($editValue, array('\n' => '', '&' => '&amp;')), true);
 	}
 
 }

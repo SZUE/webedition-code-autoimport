@@ -309,7 +309,6 @@ $wepos = "";
 
 if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){
 	// Code Wizard
-	$CodeWizard = new we_wizard_code();
 	$allWeTags = we_wizard_tag::getExistingWeTags();
 
 	$tagGroups = we_wizard_tag::getWeTagGroups($allWeTags);
@@ -349,16 +348,17 @@ if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){
 
 	// buttons
 	$editTagbut = we_html_button::create_button(we_html_button::DIRRIGHT, "javascript:executeEditButton();", true, 100, 22, "", "", false, false, "_applyCode");
+	/*
 	$selectallbut = we_html_button::create_button("selectAll", "javascript:document.getElementById(\"tag_edit_area\").focus(); document.getElementById(\"tag_edit_area\").select();");
 	$prependbut = we_html_button::create_button("prepend", 'javascript:insertAtStart(document.getElementById("tag_edit_area").value);');
 	$appendbut = we_html_button::create_button("append", 'javascript:insertAtEnd(document.getElementById("tag_edit_area").value);');
 	$addCursorPositionbut = we_html_button::create_button("addCursorPosition", 'javascript:addCursorPosition(document.getElementById("tag_edit_area").value);_EditorFrame.setEditorIsHot(true);');
-
-	$tagWizardHtml = $CodeWizard->getJavascript() . '
+*/
+	$tagWizardHtml = we_wizard_code::getJavascript() . '
 <table id="wizardTable" style="width:700px;" class="default defaultfont">
 	<tr><td style="padding-bottom:5px;">' . $groupselect . '</td></tr>
 	<tr>
-		<td id="tagSelectCol" style="padding-bottom:5px;width: 250px;">' . $tagselect . $CodeWizard->getSelect() . $CodeWizard->getSelect('custom') . '</td>
+		<td id="tagSelectCol" style="width: 250px;">' . $tagselect . we_wizard_code::getSelect() . we_wizard_code::getSelect('custom') . '</td>
 		<td id="spacerCol" style="width: 50px;text-align:center">' . $editTagbut . '</td>
 		<td id="tagAreaCol" style="width: 100%;text-align:right">' . we_html_element::htmlTextArea(array(
 			'name' => 'we_' . $we_doc->Name . '_TagWizardCode',
@@ -368,7 +368,8 @@ if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){
 			), $we_doc->TagWizardCode) . '</td>
 	</tr>
 </table>
-<table id="wizardTableButtons" class="default defaultfont">
+';
+	/*<table id="wizardTableButtons" class="default defaultfont">
 	<tr>
 		<td id="tagSelectColButtons" style="width: 250px;"></td>
 		<td id="spacerColButtons" style="width: 50px;"></td>
@@ -382,7 +383,7 @@ if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){
 			</table>
 		</td>
 	</tr>
-</table>';
+</table>*/
 	$parts = array(
 		array(),
 		array("headline" => "", "html" => $tagWizardHtml, "space" => 0)

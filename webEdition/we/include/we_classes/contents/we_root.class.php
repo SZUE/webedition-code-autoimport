@@ -162,7 +162,7 @@ abstract class we_root extends we_class{
 		if($Path != $this->Path){
 
 			### check if Path exists in db
-			if(f('SELECT Path FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE Path="' . $this->DB_WE->escape($Path) . '"', 'Path', $this->DB_WE)){
+			if(f('SELECT Path FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE Path="' . $this->DB_WE->escape($Path) . '"', '', $this->DB_WE)){
 				$GLOBALS['we_responseText'] = sprintf(g_l('weClass', '[response_path_exists]'), $Path);
 				return false;
 			}
@@ -227,8 +227,9 @@ abstract class we_root extends we_class{
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 
-	function formDirChooser($width = 0, $rootDirID = 0, $table = '', $Pathname = 'ParentPath', $IDName = 'ParentID', $cmd = '', $showTitle = true, $disabled = false){
+	function formDirChooser($width = 0, $rootDirID = 0, $table = '', $Pathname = 'ParentPath', $IDName = 'ParentID', $cmd = '', $lable = true, $disabled = false){
 		$yuiSuggest = &weSuggest::getInstance();
+		$lable === true ? g_l('weClass', '[dir]') : $lable;
 
 		if(!$table){
 			$table = $this->Table;
@@ -260,7 +261,7 @@ abstract class we_root extends we_class{
 		$yuiSuggest->setAcId('Path', id_to_path(array($rootDirID), $table));
 		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER . ',' . we_base_ContentTypes::CLASS_FOLDER);
 		$yuiSuggest->setInput($textname, $path, array('onblur' => $_parentPathChangedBlur));
-		$yuiSuggest->setLabel(g_l('weClass', '[dir]'));
+		$yuiSuggest->setLabel($lable ? : '');
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(0);
 		$yuiSuggest->setResult($idname, $myid);
@@ -451,7 +452,7 @@ abstract class we_root extends we_class{
 		<td></td>
 		<td>' . $this->formExtension2() . '</td>
 	</tr>
-	<tr><td colspan="3">' . $this->formDirChooser(0, 0, '', 'ParentPath', 'ParentID', '', true, $disablePath) . '</td></tr>
+	<tr><td colspan="3">' . $this->formDirChooser(0, 0, '', 'ParentPath', 'ParentID', '', g_l('weClass', '[dir]'), $disablePath) . '</td></tr>
 </table>';
 	}
 
@@ -1050,7 +1051,7 @@ abstract class we_root extends we_class{
 		if(LANGLINK_SUPPORT){
 			$isFolder = $this instanceof we_folder;
 			$isObject = (defined('OBJECT_FILES_TABLE') ? $this->Table == OBJECT_FILES_TABLE || $this->Table == OBJECT_TABLE : false);
-			$documentTable = $isObject && !$isFolder ? OBJECT_FILES_TABLE : stripTblPrefix(FILE_TABLE);
+			$documentTable = $isObject && !$isFolder ? stripTblPrefix(OBJECT_FILES_TABLE) : stripTblPrefix(FILE_TABLE);
 			$this->DB_WE->query('SELECT Locale,LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $documentTable . '" AND IsObject=' . intval($isObject) . ' AND DID=' . intval($this->ID) . ' AND Locale IN("' . implode('","', $langkeys) . '")');
 			$tmpIDs = $this->DB_WE->getAllFirst(false);
 

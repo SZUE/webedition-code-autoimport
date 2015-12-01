@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_cmd_glossary(args, url) {
+	var wind;
 	switch (args[0]) {
 		case "glossary_check":
 
@@ -61,7 +62,7 @@ function we_cmd_glossary(args, url) {
 		case ((args[0].substr(0, 15) === "GlossaryXYZnew_") ? args[0] : false):
 			tempargs = args[0].split("\XYZ");
 
-			var wind = WE().util.jsWindow.prototype.find('edit_module');
+			wind = WE().util.jsWindow.prototype.find('edit_module');
 			if (wind) {
 				wind.content.we_cmd(tempargs[1], tempargs[2]);
 				wind.focus();
@@ -76,7 +77,7 @@ function we_cmd_glossary(args, url) {
 		case "save_exception":
 		case "save_glossary":
 		case "delete_glossary":
-			var wind = WE().util.jsWindow.prototype.find('edit_module');
+			wind = WE().util.jsWindow.prototype.find('edit_module');
 			if (wind) {
 				if (args[1] !== undefined) {
 					wind.content.we_cmd(args[0], args[1]);

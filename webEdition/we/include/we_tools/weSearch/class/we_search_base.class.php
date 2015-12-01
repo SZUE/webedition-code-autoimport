@@ -108,11 +108,20 @@ class we_search_base{
 							$searching = '="' . $this->db->escape($searchname[$i]) . '" ';
 							$sql .= $this->sqlwhere($searchfield[$i], $searching, null);
 							break;
-						case '<':
-						case '<=':
-						case '>':
-						case '>=':
-							$searching = ' ' . $searchlocation[$i] . " '" . $this->db->escape($searchname[$i]) . "' ";
+						case 'LO':
+							$searching = ' < "' . $this->db->escape($searchname[$i]) . '" ';
+							$sql .= $this->sqlwhere($searchfield[$i], $searching, null);
+							break;
+						case 'LEQ':
+							$searching = ' <= "' . $this->db->escape($searchname[$i]) . '" ';
+							$sql .= $this->sqlwhere($searchfield[$i], $searching, null);
+							break;
+						case 'HI':
+							$searching = ' > "' . $this->db->escape($searchname[$i]) . '" ';
+							$sql .= $this->sqlwhere($searchfield[$i], $searching, null);
+							break;
+						case 'HEQ':
+							$searching = ' >= "' . $this->db->escape($searchname[$i]) . '" ';
 							$sql .= $this->sqlwhere($searchfield[$i], $searching, null);
 							break;
 						default :
