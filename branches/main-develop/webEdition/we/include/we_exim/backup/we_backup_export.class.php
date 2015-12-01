@@ -113,7 +113,7 @@ abstract class we_backup_export{
 
 			switch($_def_table){
 				case 'tblfile':
-					if($export_binarys){
+					if($export_binarys && $_object->ClassName){
 						$obname = $_object->ClassName;
 						$tmp = new $obname;
 						if($tmp->isBinary()){

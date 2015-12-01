@@ -36,11 +36,11 @@ function messageConsoleWindow(win) {
 	 * registers this console to the messageConsole in mainWindow of webEdition
 	 */
 	this.register = function () {
-		top.opener.top.messageConsole.addObserver(this);
+		WE().layout.messageConsole.addObserver(this);
 	};
 
 	this.remove = function () {
-		top.opener.top.messageConsole.removeObserver(this);
+		WE().layout.messageConsole.removeObserver(this);
 	};
 
 	this.addMessage = function (msg) {
@@ -80,14 +80,14 @@ function messageConsoleWindow(win) {
 	};
 
 	this.init = function () {
-		_messages = top.opener.top.messageConsole.getMessages();
+		_messages = WE().layout.messageConsole.getMessages();
 		for (i = 0; i < _messages.length; i++) {
 			this.addMessage(_messages[i]);
 		}
 	};
 
 	this.removeMessages = function () {
-		top.opener.top.messageConsole.removeMessages();
+		WE().layout.messageConsole.removeMessages();
 		this.doc.getElementById("jsMessageUl").innerHTML = "";
 	};
 }

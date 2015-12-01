@@ -87,6 +87,7 @@ function weRegisterTinyMcePopup(win, action) {
 				tinyMceDialog.close();
 			} catch (err) {
 			}
+			/* falls through */
 		case "unregisterSecondaryDialog":
 			try {
 				tinyMceSecondaryDialog.close();

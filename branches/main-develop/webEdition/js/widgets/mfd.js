@@ -52,17 +52,18 @@ function isNoError() {
 
 function delUser(iUsrId) {
 	var sUsers = '';
+	var i;
 	if (iUsrId != -1) {
 		var aUsers = _sUsers.split(',');
 		var iUsersLen = aUsers.length;
-		for (var i = 0; i < iUsersLen; i++) {
+		for (i = 0; i < iUsersLen; i++) {
 			if (aUsers[i] == iUsrId) {
 				aUsers.splice(i, 1);
 				iUsersLen--;
 				break;
 			}
 		}
-		for (var i = 0; i < iUsersLen; i++) {
+		for (i = 0; i < iUsersLen; i++) {
 			sUsers += aUsers[i];
 			if (i != iUsersLen - 1)
 				sUsers += ',';
@@ -88,7 +89,7 @@ function refresh(bRender) {
 
 function init() {
 	_fo = document.forms[0];
-	_oCsv_ = opener.gel(_sObjId + '_csv')
+	_oCsv_ = opener.gel(_sObjId + '_csv');
 	_sInitCsv_ = _oCsv_.value;
 	_oSctDate = _fo.elements.sct_date;
 	_oSctNumEntries = _fo.elements.sct_amount_entries;

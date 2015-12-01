@@ -37,7 +37,7 @@ viewclass = "message";
 mode = "show_folder_content";
 
 function check(img) {
-	var i;
+	var i, tmp;
 	var tarr = img.split("_");
 	var id = tarr[1];
 	for (i = 1; i <= treeData.len; i++) {
@@ -47,7 +47,7 @@ function check(img) {
 		if (treeData[i].checked) {
 			treeData[i].checked = false;
 			if (document.getElementsByName(img)) {
-				var tmp = document.getElementsByName(img)[0];
+				tmp = document.getElementsByName(img)[0];
 				tmp.classList.remove('fa-check-square-o');
 				tmp.classList.add('fa-square-o');
 			}
@@ -57,7 +57,7 @@ function check(img) {
 		}
 		treeData[i].checked = true;
 		if (document.getElementsByName(img)) {
-			var tmp = document.getElementsByName(img)[0];
+			tmp = document.getElementsByName(img)[0];
 			tmp.classList.add('fa-check-square-o');
 			tmp.classList.remove('fa-square-o');
 		}
@@ -274,7 +274,7 @@ container.prototype.openClose = function (id, status) {
 	var eintragsIndex = treeData.indexOfEntry(id);
 	treeData[eintragsIndex].open = status;
 	drawTree();
-}
+};
 
 container.prototype.search = function (eintrag) {
 	var nf = new container();

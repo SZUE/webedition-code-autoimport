@@ -460,7 +460,7 @@ we_templateInit();?>';
 						}
 						//additional parsing for selects
 						if($tagname === 'select'){
-							$spacer = '[ |\n|\t|\r]*';
+							$spacer = '\s*';
 							$selregs = array();
 							//FIXME: this regex is not correct [^name] will not match any of those chars
 							if(preg_match('-(<we:select [^name]*name' . $spacer . '[\=\"|\=\'|\=\\\\|\=]*' . $spacer . preg_quote($att['name'], '-') . '[\'\"]*[^>]*>)(.*)<' . $spacer . '/' . $spacer . 'we:select' . $spacer . '>-i', $templateCode, $selregs)){
@@ -623,7 +623,7 @@ we_templateInit();?>';
 	}
 
 	function _updateCompleteCode(){
-		if(!$this->doUpdateCode){
+		if(!$this->doUpdateCode || defined('IMPORT_RUNNING')){
 			return true;
 		}
 		static $cnt = 0;

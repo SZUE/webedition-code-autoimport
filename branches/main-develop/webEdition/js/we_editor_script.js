@@ -334,7 +334,7 @@ function we_cmd() {
 			if (!confirm(g_l.confirm_navDel)) {
 				break;
 			}
-			//no break;
+			/* falls through */
 		default:
 			parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 

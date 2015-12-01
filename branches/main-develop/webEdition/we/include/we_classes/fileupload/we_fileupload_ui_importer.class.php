@@ -108,7 +108,7 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base{
 
 	//TODO: add param filetype
 	public static function getBtnImportFiles($parentID = 0, $callback = '', $text = ''){
-		return we_html_button::create_button("fa:" . ($text ? : 'btn_import_files') . ",fa-lg fa-upload", "javascript:top.we_cmd('import_files','" . $parentID . "', '" . $callback . "')", true, 50);
+		return we_html_button::create_button("fa:" . ($text ? : 'btn_import_files') . ",fa-lg fa-upload", "javascript:top.we_cmd('import_files','" . $parentID . "', '" . $callback . "')", true, 58);
 	}
 
 	protected function _getHtmlFileRow(){

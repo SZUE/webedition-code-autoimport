@@ -94,7 +94,7 @@ abstract class we_modules_frame{
 						'' :
 						$this->getHTMLDocument('<body></body>', $GLOBALS['extraJS'])
 					);
-
+				unset($GLOBALS['extraJS']);
 				t_e(__FILE__ . ' unknown reference: ' . $what, ($ret ? 'generated emergency document' : ''));
 				return $ret;
 		}
@@ -117,7 +117,7 @@ abstract class we_modules_frame{
 		return $this->getHTMLDocument($body, $extraHead);
 	}
 
-	function getHTMLHeader($_menuFile, $_module){
+	protected function getHTMLHeader($_menuFile, $_module){
 		include($_menuFile);
 
 		$lang_arr = "we_menu_" . $_module;
@@ -227,7 +227,7 @@ function we_save() {
 		return $this->getHTMLDocument(we_html_element::htmlBody(array('id' => 'footerBody'), $table2->getHtml()), $extraHead);
 	}
 
-	function getHTMLCmd(){
+	protected function getHTMLCmd(){
 		return $this->getHTMLDocument(we_html_element::htmlBody(), $this->Tree->getJSLoadTree());
 	}
 

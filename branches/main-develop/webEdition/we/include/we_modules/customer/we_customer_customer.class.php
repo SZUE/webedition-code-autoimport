@@ -335,10 +335,7 @@ class we_customer_customer extends weModelBase{
 			case self::ENCRYPT_SYMMETRIC:
 				return self::cryptData($pass);
 			case self::ENCRYPT_HASH:
-				$useSalt = 0;
-				$pwd = we_users_user::makeSaltedPassword($useSalt, '', $pass, 10);
-				return ($useSalt != we_users_user::SALT_CRYPT ?
-						$pass : $pwd);
+				return we_users_user::makeSaltedPassword('', $pass, 10);
 		}
 	}
 
@@ -354,7 +351,7 @@ class we_customer_customer extends weModelBase{
 			case '-1':
 				return $clearPassword === self::decryptData($storedPassword);
 			case '2y':
-				return we_users_user::comparePasswords(we_users_user::SALT_CRYPT, '', $storedPassword, $clearPassword);
+				return we_users_user::comparePasswords('', $storedPassword, $clearPassword);
 		}
 		return false;
 	}

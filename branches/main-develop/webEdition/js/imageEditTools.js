@@ -2,9 +2,9 @@
  * webEdition SDK
  *
  * webEdition CMS
- * $Rev: 10630 $
- * $Author: lukasimhof $
- * $Date: 2015-10-20 01:16:21 +0200 (Di, 20 Okt 2015) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of the webEdition SDK. The webEdition SDK is
  * free software; you can redistribute it and/or modify
@@ -178,7 +178,7 @@ ImageEditTools.Crop = {
 		}
 		object[eventName] = function (a) {
 			var i;
-			var argumentsCopy = Array.prototype.slice.call(arguments)
+			var argumentsCopy = Array.prototype.slice.call(arguments);
 			if (arguments.length === 0 && window.event) {
 				argumentsCopy[0] = CropTool.patchEvent(window.event, this);
 			} else if (a && typeof a == "object" && a.toString().search(/event/i) != -1) {

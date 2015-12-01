@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -26,141 +25,106 @@
 // ---> Menu File / Glossary
 //
 $we_menu_glossary = array(
-	'001000' => array(
+	'glossary' => array(
 		'text' => g_l('modules_glossary', '[glossary]'),
-		'parent' => '000000',
-		'perm' => '',
-		'enabled' => 1,
 	),
-	'002000' => array(
+	'new' => array(
 		'text' => g_l('modules_glossary', '[menu_new]'),
-		'parent' => '001000',
-		'perm' => '',
-		'enabled' => 1,
+		'parent' => 'glossary',
+	),
+	$we_menu_glossary['005000'] = array(
+	'text' => g_l('modules_glossary', '[menu_save]'),
+	'parent' => 'glossary',
+	'cmd' => 'save_glossary',
+	'perm' => 'EDIT_GLOSSARY || NEW_GLOSSARY || ADMINISTRATOR',
+	),
+	array(
+		'text' => g_l('modules_glossary', '[menu_delete]'),
+		'parent' => 'glossary',
+		'cmd' => 'delete_glossary',
+		'perm' => 'DELETE_GLOSSARY || ADMINISTRATOR',
+	),
+	array('parent' => 'glossary'
+	), // separator
+	array(
+		'text' => g_l('modules_glossary', '[menu_exit]'),
+		'parent' => 'glossary',
+		'cmd' => 'exit_glossary',
+	),
+//
+// ---> Menu Options
+//
+	'options' => array(
+		'text' => g_l('modules_glossary', '[menu_options]'),
+		'perm' => 'ADMINISTRATOR',
+	),
+	array(
+		'text' => g_l('modules_glossary', '[menu_settings]'),
+		'parent' => 'options',
+		'cmd' => 'glossary_settings',
+		'perm' => 'ADMINISTRATOR',
+	),
+//
+// ---> Menu Help
+//
+	'help' => array(
+		'text' => g_l('modules_glossary', '[menu_help]'),
+	),
+	array(
+		'text' => g_l('modules_glossary', '[menu_help]') . '&hellip;',
+		'parent' => 'help',
+		'cmd' => 'help_modules',
+	),
+	array(
+		'text' => g_l('modules_glossary', '[menu_info]') . '&hellip;',
+		'parent' => 'help',
+		'cmd' => 'info_modules',
 	)
 );
-$nr = 300;
+$nr = 3000;
 $langs = getWeFrontendLanguagesForBackend();
 foreach($langs as $key => $language){
+	$parent = $nr;
 
-	$we_menu_glossary['00' . $nr . '0'] = array(
+	$we_menu_glossary[$nr] = array(
 		'text' => $language,
-		'parent' => '002000',
+		'parent' => 'new',
 		'perm' => 'NEW_GLOSSARY || ADMINISTRATOR',
-		'enabled' => 0,
 	);
-	$parent = '00' . $nr . '0';
 
-	$we_menu_glossary['00' . $nr . '1'] = array(
+	$we_menu_glossary[] = array(
 		'text' => g_l('modules_glossary', '[abbreviation]'),
 		'parent' => $parent,
 		'cmd' => 'GlossaryXYZnew_glossary_abbreviationXYZ$key',
 		'perm' => 'NEW_GLOSSARY || ADMINISTRATOR',
-		'enabled' => 1,
 	);
 
-	$we_menu_glossary['00' . $nr . '2'] = array(
+	$we_menu_glossary[] = array(
 		'text' => g_l('modules_glossary', '[acronym]'),
 		'parent' => $parent,
 		'cmd' => 'GlossaryXYZnew_glossary_acronymXYZ$key',
 		'perm' => 'NEW_GLOSSARY || ADMINISTRATOR',
-		'enabled' => 1,
 	);
 
-	$we_menu_glossary['00' . $nr . '3'] = array(
+	$we_menu_glossary[] = array(
 		'text' => g_l('modules_glossary', '[foreignword]'),
 		'parent' => $parent,
 		'cmd' => 'GlossaryXYZnew_glossary_foreignwordXYZ$key',
 		'perm' => 'NEW_GLOSSARY || ADMINISTRATOR',
-		'enabled' => 1,
 	);
 
-	$we_menu_glossary['00' . $nr . '4'] = array(
+	$we_menu_glossary[] = array(
 		'text' => g_l('modules_glossary', '[link]'),
 		'parent' => $parent,
 		'cmd' => 'GlossaryXYZnew_glossary_linkXYZ$key',
 		'perm' => 'NEW_GLOSSARY || ADMINISTRATOR',
-		'enabled' => 1,
 	);
 
-	$we_menu_glossary['00' . $nr . '5'] = array(
+	$we_menu_glossary[] = array(
 		'text' => g_l('modules_glossary', '[textreplacement]'),
 		'parent' => $parent,
 		'cmd' => 'GlossaryXYZnew_glossary_textreplacementXYZ$key',
 		'perm' => 'NEW_GLOSSARY || ADMINISTRATOR',
-		'enabled' => 1,
 	);
-	$nr++;
+	$nr = $parent + 10;
 }
-
-$we_menu_glossary['005000'] = array(
-	'text' => g_l('modules_glossary', '[menu_save]'),
-	'parent' => '001000',
-	'cmd' => 'save_glossary',
-	'perm' => 'EDIT_GLOSSARY || NEW_GLOSSARY || ADMINISTRATOR',
-	'enabled' => 1,
-);
-
-$we_menu_glossary['006000'] = array(
-	'text' => g_l('modules_glossary', '[menu_delete]'),
-	'parent' => '001000',
-	'cmd' => 'delete_glossary',
-	'perm' => 'DELETE_GLOSSARY || ADMINISTRATOR',
-	'enabled' => 1,
-);
-
-$we_menu_glossary['009500'] = array('parent' => '001000'
-); // separator
-
-$we_menu_glossary['020000'] = array(
-	'text' => g_l('modules_glossary', '[menu_exit]'),
-	'parent' => '001000',
-	'cmd' => 'exit_glossary',
-	'perm' => '',
-	'enabled' => 1,
-);
-//
-// ---> Menu Options
-//
-
-$we_menu_glossary['010000'] = array(
-	'text' => g_l('modules_glossary', '[menu_options]'),
-	'parent' => '000000',
-	'perm' => 'ADMINISTRATOR',
-	'enabled' => 1,
-);
-
-$we_menu_glossary['012000'] = array(
-	'text' => g_l('modules_glossary', '[menu_settings]'),
-	'parent' => '010000',
-	'cmd' => 'glossary_settings',
-	'perm' => 'ADMINISTRATOR',
-	'enabled' => 1,
-);
-
-//
-// ---> Menu Help
-//
-
-$we_menu_glossary['021000'] = array(
-	'text' => g_l('modules_glossary', '[menu_help]'),
-	'parent' => '000000',
-	'perm' => '',
-	'enabled' => 1,
-);
-
-$we_menu_glossary['022000'] = array(
-	'text' => g_l('modules_glossary', '[menu_help]') . '&hellip;',
-	'parent' => '021000',
-	'cmd' => 'help_modules',
-	'perm' => '',
-	'enabled' => 1,
-);
-
-$we_menu_glossary['023000'] = array(
-	'text' => g_l('modules_glossary', '[menu_info]') . '&hellip;',
-	'parent' => '021000',
-	'cmd' => 'info_modules',
-	'perm' => '',
-	'enabled' => 1,
-);

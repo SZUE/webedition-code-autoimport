@@ -42,9 +42,13 @@
 						d.settings.weFullscreenState = weFullscreenState;
 						window.resizeTo(screen.availWidth, screen.availHeight);
 						window.moveTo(0,0);
-						top.console.debug(tinymce.ControlManager);
-						//tinymce.ControlManager.setActive('wefullscreen', 1);
+						d.controlManager.setActive('wefullscreen', 1);
+						document.getElementsByClassName('mce_wefullscreen')[1].className = 'mceIcon mce_wefullscreen_var mce_we_fa';
+						document.getElementsByClassName('mce_wefullscreen')[0].title = tinyMceTranslationObject.de.we.tt_wefullscreen_reset;
 					} else {
+						d.controlManager.setActive('wefullscreen', 0);
+						document.getElementsByClassName('mce_wefullscreen_var')[0].className = 'mceIcon mce_wefullscreen mce_we_fa';
+						document.getElementsByClassName('mce_wefullscreen')[0].title = tinyMceTranslationObject.de.we.tt_wefullscreen_set;
 						window.resizeTo(weFullscreenState.lastW, weFullscreenState.lastH);
 						window.moveTo(weFullscreenState.lastX,weFullscreenState.lastY);
 						weFullscreenState.fullscreen = false;
@@ -64,8 +68,9 @@
 			});
 
 			d.addButton('wefullscreen', {
-				title: 'we.tt_wefullscreen',
-				cmd: 'mceWefullscreen'
+				title: 'we.tt_wefullscreen_set',
+				cmd: 'mceWefullscreen',
+				class: 'mce_wefullscreen mce_we_fa'
 			});
 		},
 

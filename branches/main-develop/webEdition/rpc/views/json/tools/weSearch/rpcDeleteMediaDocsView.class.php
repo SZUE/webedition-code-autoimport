@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +22,14 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_parse_tag_ifNotCustomerResetPasswordFailed($attribs, $content){
-	return '<?php if(!' . we_tag_tagParser::printTag('ifCustomerResetPasswordFailed', $attribs) . '){ ?>' . $content . '<?php } ?>';
-}
+class rpcDeleteMediaDocsView extends rpcView{
 
-function we_tag_ifNotCustomerResetPasswordFailed($attribs, $content){
-	return !we_tag('ifCustomerResetPasswordFailed', $attribs, $content);
+	function getResponse($response){
+		// send answer readable for callback
+		$resp = $response->getData('data');
+		$resp['success'] = $response->Success;
+
+		return json_encode($resp);
+	}
+
 }

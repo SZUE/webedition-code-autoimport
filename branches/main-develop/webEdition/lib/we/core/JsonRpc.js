@@ -42,7 +42,7 @@ function we_core_JsonRpc(url, callback) {
 			method: method,
 			params: [],
 			id: new Date().getTime()
-		}
+		};
 
 		// Data of form should be included
 		if (this.form !== null) {
@@ -52,7 +52,7 @@ function we_core_JsonRpc(url, callback) {
 			var len = this.form.elements.length;
 			for (var key in this.form.elements) {
 				var elem = this.form.elements[key];
-				if (elem != null && elem.nodeName !== undefined && elem.name !== "") {
+				if (elem !== null && elem.nodeName !== undefined && elem.name !== "") {
 					var tag = elem.nodeName.toLowerCase();
 					switch (tag) {
 						case "textarea":
@@ -148,12 +148,12 @@ we_core_JsonRpc.callMethod = function(cmdObj, url, service, method) {
 			var obj = null;
 			try {
 				obj = YAHOO.lang.JSON.parse(o.responseText);
-				if (obj.result != null && obj.error == null) {
+				if (obj.result !== null && obj.error === null) {
 					// tell the command controller that the command was ok. Needed to check if there is a following command
 					weCmdController.cmdOk(cmdObj);
 					// fire save Event
 					weEventController.fire(method, obj.result);
-				} else if (obj.error != null) {
+				} else if (obj.error !== null) {
 					// tell the command controller that the command was not ok.
 					cmdObj.errorMessage = obj.error.message;
 					cmdObj.errorType = obj.error.type;
@@ -185,4 +185,4 @@ we_core_JsonRpc.callMethod = function(cmdObj, url, service, method) {
 	} else {
 		rpc.call(service, method);
 	}
-}
+};

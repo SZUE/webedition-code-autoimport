@@ -140,6 +140,10 @@ class we_textDocument extends we_document{
 
 	protected function i_getDocumentToSave(){
 		$doc = parent::i_getDocumentToSave();
+		if(defined('IMPORT_RUNNING')){
+			return $doc;
+		}
+
 		switch($this->ContentType){
 			case we_base_ContentTypes::CSS:
 				switch($this->Extension){

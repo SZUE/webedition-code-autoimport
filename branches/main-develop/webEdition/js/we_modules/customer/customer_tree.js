@@ -102,7 +102,7 @@ container.prototype.drawGroup = function (nf, ai, zweigEintrag) {
 		row += this.draw(cur.id, newAst);
 	}
 	return row;
-}
+};
 
 container.prototype.drawSort = function (nf, ai, zweigEintrag) {
 	var newAst = zweigEintrag;
@@ -123,4 +123,4 @@ container.prototype.drawSort = function (nf, ai, zweigEintrag) {
 						'<span class="strich treeKreuz "></span>');
 		row += this.draw(nf[ai].id, newAst);
 	}
-}
+};

@@ -46,10 +46,10 @@ function wedelRow(nr, but) {
 
 function checkButtons() {
 	try {
-		if (document.JUpload === undefined || (typeof (document.JUpload.isActive) != "function") || document.JUpload.isActive() == false) {
+		if (document.JUpload === undefined || (typeof (document.JUpload.isActive) !== "function") || document.JUpload.isActive() === false) {
 			checkFileinput();
 			window.setTimeout(function () {
-				checkButtons()
+				checkButtons();
 			}, 1000);
 			//recheck
 		} else {
@@ -58,7 +58,7 @@ function checkButtons() {
 	} catch (e) {
 		checkFileinput();
 		window.setTimeout(function () {
-			checkButtons()
+			checkButtons();
 		}, 1000);
 	}
 }
@@ -85,14 +85,14 @@ function makeArrayFromCSV(csv) {
 	if (csv.length && csv.substring(csv.length - 1, csv.length) == ",") {
 		csv = csv.substring(0, csv.length - 1);
 	}
-	if (csv.length == 0) {
+	if (csv.length === 0) {
 		return [];
 	}
 	return csv.split(/,/);
 }
 
 function makeCSVFromArray(arr) {
-	if (arr.length == 0) {
+	if (arr.length === 0) {
 		return "";
 	}
 	return "," + arr.join(",") + ",";

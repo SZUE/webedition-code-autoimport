@@ -61,8 +61,6 @@ border: 1px dotted gray;
 
 
 we-gallery{
-/* background-image: url(/webEdition/images/wysiwyg/wegallery.gif); */
-/*	background-repeat: no-repeat; */
 	display: block;
 	font-size: 14px;
 }

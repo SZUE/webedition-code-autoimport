@@ -4,9 +4,9 @@
  * webEdition CMS
  *
  * webEdition CMS
- * $Rev: 9620 $
- * $Author: mokraemer $
- * $Date: 2015-03-28 18:22:25 +0100 (Sa, 28. Mär 2015) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software, you can redistribute it and/or modify
@@ -72,7 +72,7 @@ function add_thumbnail() {
 
 	if (name.indexOf("'") !== -1 || name.indexOf(",") !== -1) {
 		top.we_showMessage(g_l.thumbnail_hochkomma, WE().consts.message.WE_MESSAGE_ERROR, window);
-	} else if (name == '') {
+	} else if (name === "") {
 		top.we_showMessage(g_l.thumbnail_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
 	} else if (WE().util.in_array(name, thumbnail_names)) {
 		top.we_showMessage(g_l.thumbnail_exists, WE().consts.message.WE_MESSAGE_ERROR, window);

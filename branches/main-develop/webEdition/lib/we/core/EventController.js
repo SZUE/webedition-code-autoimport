@@ -29,18 +29,18 @@ function we_core_EventController() {
 		if (this.events[eventName] !== undefined) {
 			this.events[eventName].fire(data);
 		}
-	}
+	};
 
 	this.register = function(eventName, callbackFn, scope) {
 		if (this.events[eventName] === undefined) {
 			this.events[eventName] = new YAHOO.util.CustomEvent(eventName, scope, false, YAHOO.util.CustomEvent.FLAT);
 		}
 		this.events[eventName].subscribe(callbackFn, self);
-	}
+	};
 
 	this.unregister = function(eventName, callbackFn) {
 		if (this.events[eventName] !== undefined) {
 			this.events[eventName].unsubscribe(callbackFn);
 		}
-	}
+	};
 }

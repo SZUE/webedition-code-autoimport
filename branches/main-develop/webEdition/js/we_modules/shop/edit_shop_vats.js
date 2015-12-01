@@ -2,9 +2,9 @@
  * webEdition CMS
  *
  * webEdition CMS
- * $Rev: 9449 $
- * $Author: mokraemer $
- * $Date: 2015-03-02 00:36:19 +0100 (Mo, 02. Mär 2015) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -41,7 +41,7 @@ function addListeners() {
 	for (var i = 1; i < document.we_form.elements.length; i++) {
 		document.we_form.elements[i].addEventListener("change", function () {
 			hot = 1;
-		})
+		});
 	}
 }
 
@@ -50,7 +50,7 @@ function closeOnEscape() {
 }
 
 function changeFormTextField(theId, newVal) {
-	if (document.getElementById(theId) == null) {
+	if (document.getElementById(theId) === null) {
 		console.log(theId);
 	}
 	document.getElementById(theId).value = newVal;
@@ -98,14 +98,14 @@ function we_cmd() {
 				elem.style.display = "";
 			}
 
-			if (theVat = allVats["vat_" + args[1]]) {
-				changeFormTextField("weShopVatId", theVat["id"]);
-				changeFormTextField("weShopVatText", theVat["text"]);
-				changeFormTextField("weShopVatVat", theVat["vat"]);
-				changeFormSelect("weShopVatStandard", theVat["standard"]);
-				changeFormSelect("weShopVatCountry", theVat["country"]);
-				changeFormTextField("weShopVatProvince", theVat["province"]);
-				//changeFormTextField("weShopVatTextProvince", theVat["textProvince"]);
+			if ((theVat = allVats["vat_" + args[1]])) {
+				changeFormTextField("weShopVatId", theVat.id);
+				changeFormTextField("weShopVatText", theVat.text);
+				changeFormTextField("weShopVatVat", theVat.vat);
+				changeFormSelect("weShopVatStandard", theVat.standard);
+				changeFormSelect("weShopVatCountry", theVat.country);
+				changeFormTextField("weShopVatProvince", theVat.province);
+				//changeFormTextField("weShopVatTextProvince", theVat.textProvince);
 			}
 			break;
 
@@ -120,14 +120,14 @@ function we_cmd() {
 			if (elem.style.display == "none") {
 				elem.style.display = "";
 			}
-			if (theVat = allVats["vat_0"]) {
-				changeFormTextField("weShopVatId", theVat["id"]);
-				changeFormTextField("weShopVatText", theVat["text"]);
-				changeFormTextField("weShopVatVat", theVat["vat"]);
-				changeFormSelect("weShopVatStandard", theVat["standard"]);
-				changeFormSelect("weShopVatCountry", theVat["country"]);
-				changeFormTextField("weShopVatProvince", theVat["province"]);
-				//changeFormTextField("weShopVatTextProvince", theVat["textProvince"]);
+			if ((theVat = allVats.vat_0)) {
+				changeFormTextField("weShopVatId", theVat.id);
+				changeFormTextField("weShopVatText", theVat.text);
+				changeFormTextField("weShopVatVat", theVat.vat);
+				changeFormSelect("weShopVatStandard", theVat.standard);
+				changeFormSelect("weShopVatCountry", theVat.country);
+				changeFormTextField("weShopVatProvince", theVat.province);
+				//changeFormTextField("weShopVatTextProvince", theVat.textProvince);
 			}
 			break;
 		default :

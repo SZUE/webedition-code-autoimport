@@ -270,7 +270,7 @@ abstract class we_SEEM{
 	static function changeSubmitToButton($code){
 		$allInputs = array();
 		//  Searchpattern for all <input ..> in the code
-		$pattern = "/<input[^>]*type=[\"|']?submit[\"|']?[^>]*>/si";
+		$pattern = "/<input[^>]*type=[\"']?submit[\"']?[^>]*>/si";
 		preg_match_all($pattern, $code, $allInputs);
 
 		//  Replace the input type="submit" with input type="button"
@@ -406,7 +406,7 @@ abstract class we_SEEM{
 	 * @return               links without attributes, which can affect bad with webEdition.
 	 */
 	static function cleanLinks(array $linkArray){
-		$trenner = '[ |\n|\t|\r]*';
+		$trenner = '\s*';
 		$pattern = array(
 			'/' . $trenner . 'onclick' . $trenner . '=/i' => ' thiswasonclick=',
 			'/' . $trenner . 'onmouseover' . $trenner . '=/i' => ' thiswasonmouseover=',
@@ -518,10 +518,10 @@ abstract class we_SEEM{
 	 * @return   allLinks    array containing all <a href ...>-Tags, the targets and parameters
 	 */
 	static function getAllHrefs($code){
-		$trenner = '[ |\n|\t|\r]*';
+		$trenner = '\s*';
 		$allLinks = array();
 		//  <a href="(Ziele)(?Parameter)" ...> Ziele und Parameter eines Links ermitteln.
-		preg_match_all('/<(a' . $trenner . '[^>]+href' . $trenner . "[\=\"|\=\'|\=|\=\\\\]*" . $trenner . ")([^\'\"> ? \\\]*)([^\"\' \\\\>]*)(" . '[^>]*)>/sie', $code, $allLinks);
+		preg_match_all('/<(a' . $trenner . '[^>]+href' . $trenner . "(\=\"|\=\'|\=|\=\\\\)*" . $trenner . ")([^\'\"> ? \\\]*)([^\"\' \\\\>]*)(" . '[^>]*)>/sie', $code, $allLinks);
 		return $allLinks;
 	}
 
@@ -750,10 +750,10 @@ abstract class we_SEEM{
 	 */
 	static function getAttributesFromTag($tag){
 		$attribs = array();
-		$trenner = '[ |\n|\t|\r]*';
+		$trenner = '\s*';
 		$parameters = array();
 
-		preg_match_all('/(\w+)' . $trenner . '=' . $trenner . "[\"|\']?([^\"|\'| |>]*)[\"|\']?/i", $tag, $parameters);
+		preg_match_all('/(\w+)' . $trenner . '=' . $trenner . "[\"\']?([^\"\' >]*)[\"\']?/i", $tag, $parameters);
 
 		for($j = 0; $j < count($parameters[1]); $j++){
 			$attribs[$parameters[1][$j]] = $parameters[2][$j];

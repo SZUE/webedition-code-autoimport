@@ -48,7 +48,7 @@ WE().util.showMessage = function (message, prio, win) {
 	prio = prio ? prio : WE().consts.message.WE_MESSAGE_ERROR;
 
 	// always show in console !
-	messageConsole.addMessage(prio, message);
+	WE().layout.messageConsole.addMessage(prio, message);
 
 	if (prio & WE().session.messageSettings) { // show it, if you should
 
@@ -124,7 +124,7 @@ function doClickWithParameters(id, ct, table, parameters) {
 function doExtClick(url) {
 	// split url in url and parameters !
 	var parameters = "";
-	if ((_position = url.indexOf("?")) != -1) {
+	if ((_position = url.indexOf("?")) !== -1) {
 		parameters = url.substring(_position);
 		url = url.substring(0, _position);
 	}
@@ -137,24 +137,24 @@ WE().util.weSetCookie = function (doc, name, value, expires, path, domain) {
 					((expires === undefined) ? "" : "; expires=" + expires.toGMTString()) +
 					((path === undefined) ? "" : "; path=" + path) +
 					((domain === undefined) ? "" : "; domain=" + domain);
-}
+};
 
 WE().util.weGetCookie = function (doc, name) {
 	var cname = name + "=";
 	var dc = doc.cookie;
 	if (dc.length > 0) {
 		begin = dc.indexOf(cname);
-		if (begin != -1) {
+		if (begin !== -1) {
 			begin += cname.length;
 			end = dc.indexOf(";", begin);
-			if (end == -1) {
+			if (end === -1) {
 				end = dc.length;
 			}
 			return unescape(dc.substring(begin, end));
 		}
 	}
 	return null;
-}
+};
 
 function treeResized() {
 	var treeWidth = getTreeWidth();
@@ -171,7 +171,7 @@ function toggleTree() {
 	var tfd = self.document.getElementById("treeFrameDiv");
 	var w = top.getTreeWidth();
 
-	if (tfd.style.display == "none") {
+	if (tfd.style.display === "none") {
 		oldTreeWidth = (oldTreeWidth < WE().consts.size.tree.min ? WE().consts.size.tree.defaultWidth : oldTreeWidth);
 		setTreeWidth(oldTreeWidth);
 		tfd.style.display = "block";
@@ -408,7 +408,7 @@ function doUnloadSEEM(whichWindow) {
 
 	//  only when no SEEM-edit-include window is closed
 
-	if (whichWindow != "include") {
+	if (whichWindow !== "include") {
 		if (opener) {
 			opener.location.replace(WE().consts.dirs.WEBEDITION_DIR + 'we_loggingOut.php');
 		}
@@ -442,7 +442,7 @@ function doUnloadNormal(whichWindow) {
 			}
 		} catch (e) {
 		}
-		if (whichWindow != "include") { 	// only when no SEEM-edit-include window is closed
+		if (whichWindow !== "include") { 	// only when no SEEM-edit-include window is closed
 			// FIXME: closing-actions for SEEM
 			var logoutpopup;
 			if (top.opener) {
@@ -768,7 +768,7 @@ function we_cmd_base(args, url) {
 			// set Editor hot
 			_EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
 			_EditorFrame.setEditorIsHot(true);
-			//no break;
+			/* falls through */
 		case "reload_editpage":
 		case "wrap_on_off":
 		case "restore_defaults":
@@ -1429,6 +1429,7 @@ WE().util.getTreeIcon = function (contentType, open, extension) {
 				default:
 					return pre + '<i class="fa fa-file-o fa-stack-2x"></i>' + post;
 			}
+			return '';
 		case 'object':
 			return pre + '<i class="fa fa-file-o fa-stack-2x"></i><span class="we-icon"><i class="fa fa-circle fa-stack-1x"></i><i class="fa fa-stack-1x fa-inverse">e</i></span><span class="we-classification"><i class="fa fa-stack-1x">C</i></span>' + post;
 		case 'objectFile':
@@ -1496,7 +1497,7 @@ WE().util.sprintf = function (argum) {
 
 		switch (type) {
 			case "d":
-				replace = parseInt(param) ? parseInt(param) : 0;
+				replace = parseInt(arguments[iterator]) ? parseInt(arguments[iterator]) : 0;
 				break;
 			case "s":
 				replace = arguments[iterator];

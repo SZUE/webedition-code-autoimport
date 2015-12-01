@@ -43,8 +43,7 @@ function doClick(id, ct, indb) {
 		if ((old === id) && (!wasdblclick)) {
 			clickEdit(id);
 		}
-	}
-	else {
+	} else {
 		top.fscmd.selectFile(id);
 		top.dirsel = 0;
 	}
@@ -57,7 +56,7 @@ function doSelectFolder(entry, indb) {
 			if (!top.browseServer) {
 				break;
 			}
-			//no break;
+			/* falls through */
 		case "folder":
 		case "filefolder":
 			if (!indb) {

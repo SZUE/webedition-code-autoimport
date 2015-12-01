@@ -38,7 +38,7 @@ var ImageDialog = {
 	init: function (ed) {
 		var f = document.forms.we_form;
 		var nl = f.elements;
-		var ed = tinyMCEPopup.editor;
+		ed = tinyMCEPopup.editor;
 		var dom = ed.dom;
 		var n = ed.selection.getNode();
 		var fl = tinyMCEPopup.getParam('external_image_list', 'tinyMCEImageList');
@@ -54,6 +54,8 @@ var ImageDialog = {
 			imgHeight = dom.getAttrib(n, 'height');
 			nl["we_dialog_args[width]"].value = imgWidth;
 			nl["we_dialog_args[height]"].value = imgHeight;
+			nl["we_dialog_args[rendered_width]"].value = n.width;
+			nl["we_dialog_args[rendered_height]"].value = n.height;
 			nl["we_dialog_args[vspace]"].value = dom.getAttrib(n, 'vspace');
 			nl["we_dialog_args[hspace]"].value = dom.getAttrib(n, 'hspace');
 			nl["we_dialog_args[border]"].value = dom.getAttrib(n, 'border');

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  *
  */
 class we_voting_voting extends weModelBase{
-
 //voting status codes
 
 	const SUCCESS = 1;
@@ -143,7 +141,7 @@ class we_voting_voting extends weModelBase{
 		$this->PublishDate = ($this->PublishDate ? : time());
 	}
 
-	function load($id = 0, $isAdvanced = false){
+	function load($id = 0){
 		if(parent::load($id, true)){
 			$this->QASet = we_unserialize($this->QASet);
 			$this->QASetAdditions = we_unserialize($this->QASetAdditions);
@@ -209,18 +207,15 @@ class we_voting_voting extends weModelBase{
 		unset($this->LogData);
 		$oldid = $this->ID;
 
-		$this->Owners = array_unique($this->Owners);
-		$this->Owners = implode(',', $this->Owners);
-
-		$this->BlackList = array_unique($this->BlackList);
-		$this->BlackList = implode(',', $this->BlackList);
+		$this->Owners = implode(',', array_unique($this->Owners));
+		$this->BlackList = implode(',', array_unique($this->BlackList));
 
 		parent::save(false, true);
 
 		$this->Scores = ($with_scores || $oldid == 0 ? we_unserialize($this->Scores) : $temp);
 
-		$this->Owners = makeArrayFromCSV($this->Owners);
-		$this->BlackList = makeArrayFromCSV($this->BlackList);
+		$this->Owners = explode(',', $this->Owners);
+		$this->BlackList = explode(',', $this->BlackList);
 		$this->LogData = $logdata;
 	}
 
@@ -454,8 +449,8 @@ class we_voting_voting extends weModelBase{
 		if($this->RevoteTime != 0){
 			if($this->RevoteControl == 1){
 				$revotetime = ($this->RevoteTime < 0 ?
-								630720000 : //20 years
-								$this->RevoteTime);
+						630720000 : //20 years
+						$this->RevoteTime);
 				setcookie(md5('_we_voting_' . $this->ID), time(), time() + $revotetime);
 			} else {
 				if(!is_array($this->Revote)){
@@ -552,7 +547,7 @@ class we_voting_voting extends weModelBase{
 		}
 		$testtime = ($this->RevoteTime < 0 ? 0 : time() - $this->RevoteTime);
 
-		if(f('SELECT 1 FROM `' . VOTING_LOG_TABLE . '` WHERE `voting`=' . intval($this->ID) . ' AND `userid`=' . intval($userid) . ' AND `time`>' . intval($testtime) . ' LIMIT 1', '', $this->db)){
+		if(f('SELECT 1 FROM `' . VOTING_LOG_TABLE . '` WHERE voting=' . intval($this->ID) . ' AND userid=' . intval($userid) . ' AND time>' . intval($testtime) . ' LIMIT 1', '', $this->db)){
 			return self::ERROR_REVOTE;
 		}
 		return self::SUCCESS;
@@ -659,9 +654,9 @@ class we_voting_voting extends weModelBase{
 	 */
 	function loadDB($id = '0'){
 		$logQuery = ($this->IsFolder ?
-						'SELECT A.*, B.* FROM `' . VOTING_TABLE . '` A JOIN `' . VOTING_LOG_TABLE . '` B ON A.ID=B.voting WHERE A.Path LIKE "' . $this->db->escape($this->Path) . '%" AND A.IsFolder=0 ORDER BY B.time' :
-						'SELECT * FROM `' . VOTING_LOG_TABLE . '` WHERE `voting`=' . intval($id) . ' ORDER BY time'
-				);
+				'SELECT v.*, l.* FROM `' . VOTING_TABLE . '` v JOIN `' . VOTING_LOG_TABLE . "` l ON v.ID=l.voting WHERE v.Path LIKE '" . $this->db->escape($this->Path) . "%' AND v.IsFolder=0 ORDER BY l.time" :
+				'SELECT * FROM `' . VOTING_LOG_TABLE . '` WHERE voting=' . intval($id) . ' ORDER BY time'
+			);
 
 		$this->db->query($logQuery);
 		$this->LogData = array();
@@ -710,21 +705,21 @@ class we_voting_voting extends weModelBase{
 		}
 		$_cookieStatus = $this->cookieDisabled() ? 0 : 1;
 		$userid = (defined('CUSTOMER_TABLE') && !empty($_SESSION["webuser"]["registered"]) && !empty($_SESSION["webuser"]["ID"]) ?
-						$_SESSION["webuser"]["ID"] : 0);
+				$_SESSION["webuser"]["ID"] : 0);
 		$this->db->query('INSERT INTO `' . VOTING_LOG_TABLE . '` SET ' . we_database_base::arraySetter(array(
-					'votingsession' => $votingsession,
-					'voting' => $this->ID,
-					'time' => sql_function('UNIX_TIMESTAMP()'),
-					'ip' => $_SERVER['REMOTE_ADDR'],
-					'agent' => $_SERVER['HTTP_USER_AGENT'],
-					'userid' => $userid,
-					'cookie' => $_cookieStatus,
-					'fallback' => $this->FallbackActive,
-					'answer' => $answer,
-					'answertext' => $answertext,
-					'successor' => $successor,
-					'additionalfields' => $additionalfields,
-					'status' => $status,
+				'votingsession' => $votingsession,
+				'voting' => $this->ID,
+				'time' => sql_function('UNIX_TIMESTAMP()'),
+				'ip' => $_SERVER['REMOTE_ADDR'],
+				'agent' => $_SERVER['HTTP_USER_AGENT'],
+				'userid' => $userid,
+				'cookie' => $_cookieStatus,
+				'fallback' => $this->FallbackActive,
+				'answer' => $answer,
+				'answertext' => $answertext,
+				'successor' => $successor,
+				'additionalfields' => $additionalfields,
+				'status' => $status,
 		)));
 
 		return true;
@@ -737,7 +732,7 @@ class we_voting_voting extends weModelBase{
 	 * @since 5.1.1.2 - 02.05.2008
 	 */
 	function deleteLogDataDB(){
-		$this->db->query('DELETE FROM `' . VOTING_LOG_TABLE . '` WHERE `voting`=' . intval($this->ID));
+		$this->db->query('DELETE FROM `' . VOTING_LOG_TABLE . '` WHERE voting=' . intval($this->ID));
 		return true;
 	}
 
@@ -754,19 +749,19 @@ class we_voting_voting extends weModelBase{
 		}
 		foreach($LogData as $ld){
 			$this->db->query('INSERT INTO `' . VOTING_LOG_TABLE . '` SET ' . we_database_base::arraySetter(array(
-						'votingsession' => '',
-						'voting' => $this->ID,
-						'time' => $ld['time'],
-						'ip' => $ld['ip'],
-						'agent' => $ld['agent'],
-						'userid' => 0,
-						'cookie' => $ld['cookie'],
-						'fallback' => $ld['fallback'],
-						'answer' => '',
-						'answertext' => '',
-						'successor' => '',
-						'additionalfields' => '',
-						'status' => $ld['status'],
+					'votingsession' => '',
+					'voting' => $this->ID,
+					'time' => $ld['time'],
+					'ip' => $ld['ip'],
+					'agent' => $ld['agent'],
+					'userid' => 0,
+					'cookie' => $ld['cookie'],
+					'fallback' => $ld['fallback'],
+					'answer' => '',
+					'answertext' => '',
+					'successor' => '',
+					'additionalfields' => '',
+					'status' => $ld['status'],
 			)));
 		}
 		$this->LogData = '';

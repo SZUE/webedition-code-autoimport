@@ -29,7 +29,7 @@ node.prototype.showSegment = function () {
 };
 
 function reloadGroup(pid,offset) {
-	var it = get(pid);
+	var it = treeData.get(pid);
 	if (it) {
 		it.clear();
 		startTree(pid, (offset ? offset : 0));
@@ -48,7 +48,7 @@ function info(text) {
 }
 
 container.prototype.openClose = function(id) {
-	if (id == "") {
+	if (id === "") {
 		return;
 	}
 	var sort = "";
@@ -66,7 +66,7 @@ container.prototype.openClose = function(id) {
 	if (openstatus) {
 		treeData[eintragsIndex].loaded = true;
 	}
-}
+};
 
 function doClick(id, typ) {
 	var node = top.content.treeData.get(id);

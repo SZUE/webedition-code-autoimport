@@ -121,7 +121,7 @@ function addCat(paths) {
 	var found = false;
 	var j = 0;
 	for (var i = 0; i < path.length; i++) {
-		if (path[i] != '') {
+		if (path[i] !== '') {
 			found = false;
 			for (j = 0; j < categories_edit.itemCount; j++) {
 				if (categories_edit.form.elements[categories_edit.name + '_variant0_' + categories_edit.name + '_item' + j].value == path[i]) {

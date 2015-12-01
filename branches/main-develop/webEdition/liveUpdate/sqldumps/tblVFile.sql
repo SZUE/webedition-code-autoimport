@@ -15,6 +15,7 @@ CREATE TABLE ###TBLPREFIX###tblVFile (
   remTable enum('tblFile','tblObjectFiles') NOT NULL default 'tblFile',
   remCT varchar(255) NOT NULL default '',
   remClass TEXT NOT NULL default '',
+  DefaultDir int(11) unsigned NOT NULL default '0',
   IsDuplicates tinyint(1) unsigned NOT NULL default '1',
   InsertRecursive tinyint(1) unsigned NOT NULL default '1',
   PRIMARY KEY (ID),

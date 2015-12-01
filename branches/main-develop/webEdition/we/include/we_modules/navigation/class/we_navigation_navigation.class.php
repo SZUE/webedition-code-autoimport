@@ -176,7 +176,7 @@ class we_navigation_navigation extends weModelBase{
 		$this->Charset = DEFAULT_CHARSET;
 	}
 
-	function load($id = 0, $isAdvanced = false){
+	function load($id = 0){
 		if(parent::load($id, true)){
 			$this->CategoryIDs = $this->Categories;
 
@@ -229,8 +229,11 @@ class we_navigation_navigation extends weModelBase{
 		if($id && $table){
 			$docFilter = we_customer_documentFilter::getFilterByIdAndTable($id, $table);
 			if($docFilter){
-				we_navigation_customerFilter::translateModeToNavModel($docFilter->getMode(), $this);
-				$this->Customers = $docFilter->getSpecificCustomers();
+				//quick hack
+				$mode = $docFilter->getMode();
+				$cust = $docFilter->getSpecificCustomers();
+				we_navigation_customerFilter::translateModeToNavModel($mode, $this);
+				$this->Customers = ($mode == we_customer_abstractFilter::SPECIFIC && empty($cust) ? array(-1) : $cust);
 				$this->CustomerFilter = $docFilter->getFilter();
 				$this->BlackList = $docFilter->getBlackList();
 				$this->WhiteList = $docFilter->getWhiteList();
@@ -303,6 +306,7 @@ class we_navigation_navigation extends weModelBase{
 				we_navigation_cache::delNavigationTree($_oldPid);
 			}
 		}
+		return true;
 	}
 
 	function registerMediaLinks(){
@@ -656,7 +660,7 @@ class we_navigation_navigation extends weModelBase{
 		if(!($this->ID && $this->Ordn > 0)){
 			return false;
 		}
-		$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval(--$this->Ordn));
+		$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval( --$this->Ordn));
 		$this->saveField('Ordn');
 		$this->reorder($this->ParentID);
 		return true;
@@ -668,7 +672,7 @@ class we_navigation_navigation extends weModelBase{
 		}
 		$_num = f('SELECT COUNT(1) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ParentID), '', $this->db);
 		if($this->Ordn < ($_num - 1)){
-			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval(++$this->Ordn));
+			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval( ++$this->Ordn));
 			$this->saveField('Ordn');
 			$this->reorder($this->ParentID);
 			return true;
@@ -845,12 +849,12 @@ class we_navigation_navigation extends weModelBase{
 	}
 
 	function we_load($id){
-		parent::load($id);
+		parent::load($id, true);
 		$this->ContentType = 'weNavigation';
 	}
 
 	function we_save(){
-		$this->save();
+		return $this->save();
 	}
 
 	function setAttribute($name, $value){

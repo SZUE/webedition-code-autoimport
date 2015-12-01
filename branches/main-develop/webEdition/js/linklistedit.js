@@ -60,9 +60,11 @@ function changeTypeSelect(s) {
 	}
 }
 function changeCTypeSelect(s) {
+	var imgPropsObj;
+	var trObj;
 	for (var i = 0; i < s.options.length; i++) {
-		var trObj = document.getElementById("c" + s.options[i].value + "_tr");
-		var imgPropsObj = document.getElementById("cimgprops_tr");
+		trObj = document.getElementById("c" + s.options[i].value + "_tr");
+		imgPropsObj = document.getElementById("cimgprops_tr");
 		if (i != s.selectedIndex) {
 			trObj.style.display = "none";
 		} else {

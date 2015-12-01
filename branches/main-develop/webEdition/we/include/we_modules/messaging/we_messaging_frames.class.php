@@ -107,7 +107,7 @@ class we_messaging_frames extends we_modules_frame{
 		return $iconbar->getHTML();
 	}
 
-	function getHTMLCmd(){
+	protected function getHTMLCmd(){
 
 		$head = $this->View->processCommands();
 		$tree = '';

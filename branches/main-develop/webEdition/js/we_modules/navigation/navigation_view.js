@@ -170,11 +170,12 @@ function we_cmd() {
 			top.content.editor.edbody.submitForm("cmd");
 			break;
 		case "del_mode":
-			top.content.treeData.setState(treeData.tree_states["select"]);
+			top.content.treeData.setState(treeData.tree_states.select);
 			top.content.treeData.unselectNode();
 			top.content.drawTree();
+			/* falls through */
 		case "move_mode":
-			top.content.treeData.setState(treeData.tree_states["selectitem"]);
+			top.content.treeData.setState(treeData.tree_states.selectitem);
 			top.content.treeData.unselectNode();
 			top.content.drawTree();
 			break;

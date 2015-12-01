@@ -143,7 +143,7 @@ class we_base_request{
 				$mails = array_map('trim', explode(',', str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $var)));
 				$regs = array();
 				foreach($mails as &$mail){
-					if(!preg_match('-("[\S\s]+"\s*|\S+\s*)<(\S+)@(\S+)>-', $mail, $regs)){ //mail formats "yy" <...@...>, =..... <...@...>
+					if(!preg_match('-(["\'][\S\s]+["\']\s*|\S+\s*)<(\S+)@(\S+)>-', $mail, $regs)){ //mail formats "yy" <...@...>, =..... <...@...>
 						//if format didn't match, filter the whole var as one address
 						$regs = array_merge(array('', ''), explode('@', $mail, 2));
 						if(!isset($regs[3])){
@@ -153,8 +153,8 @@ class we_base_request{
 					}
 					$host = (function_exists('idn_to_ascii') ? idn_to_ascii($regs[3]) : $regs[3]);
 					$mail = (filter_var($regs[2] . '@' . $host, FILTER_VALIDATE_EMAIL) !== false ?
-									$regs[1] . $regs[2] . '@' . $regs[3] :
-									'');
+							$regs[1] . ($regs[1] ? '<' : '') . $regs[2] . '@' . $regs[3] . ($regs[1] ? '>' : '') :
+							'');
 				}//if format didn't match, filter the whole var as one address
 
 				$mails = array_filter($mails);
@@ -163,7 +163,7 @@ class we_base_request{
 			case self::EMAIL://removes mailto:
 				$regs = array();
 				$mail = trim(str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $var));
-				if(!preg_match('-("[\S\s]+"\s*|\S+\s*)<(\S+)@(\S+)>-', $mail, $regs)){ //mail formats "yy" <...@...>, =..... <...@...>
+				if(!preg_match('-(["\'][\S\s]+["\']\s*|\S+\s*)<(\S+)@(\S+)>-', $mail, $regs)){ //mail formats "yy" <...@...>, =..... <...@...>
 					//if format didn't match, filter the whole var as one address
 					$regs = array_merge(array('', ''), explode('@', $mail, 2));
 					if(!isset($regs[3])){
@@ -174,8 +174,8 @@ class we_base_request{
 				$host = (function_exists('idn_to_ascii') ? idn_to_ascii($regs[3]) : $regs[3]);
 
 				$var = (filter_var($regs[2] . '@' . $host, FILTER_VALIDATE_EMAIL) !== false ?
-								$regs[1] . $regs[2] . '@' . $regs[3] :
-								'');
+						$regs[1] . ($regs[1] ? '<' : '') . $regs[2] . '@' . $regs[3] . ($regs[1] ? '>' : '') :
+						'');
 				return;
 			case self::WEFILELIST:
 			case self::WEFILELISTA:
