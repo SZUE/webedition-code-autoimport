@@ -231,7 +231,7 @@ function printElement($code){
 	eval('?>' . str_replace(array('<?php', '?>'), array('<?php ', ' ?>'), $code));
 }
 
-function getArrayValue($var, $name, $arrayIndex){
+function getArrayValue($var, $name, $arrayIndex, $isset = false){
 	$arr_matches = preg_split('/\]\[|\[|\]/', $arrayIndex);
 	if(count($arr_matches) > 1){
 		unset($arr_matches[count($arr_matches) - 1]);
@@ -241,11 +241,11 @@ function getArrayValue($var, $name, $arrayIndex){
 	}
 	foreach($arr_matches as $cur){
 		if(!isset($var[$cur])){
-			return '';
+			return ($isset ? false : '');
 		}
 		$var = $var[$cur];
 	}
-	return $var;
+	return ($isset ? true : $var);
 }
 
 /**
