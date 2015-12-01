@@ -29,6 +29,10 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		we_base_preferences::setUserPref('cockpit_dat', $cmd1);
 		we_base_preferences::setUserPref('cockpit_rss', we_base_request::_(we_base_request::SERIALIZED_KEEP, 'we_cmd', '', 2));
 		break;
+	case 'reload':
+		$mod=we_base_request::_(we_base_request::STRING, 'mod');
+		include_once (WE_INCLUDES_PATH . 'we_widgets/mod/' . $mod . '.inc.php');
+		break;
 	case 'add' :
 		include_once(WE_INCLUDES_PATH . 'we_widgets/cfg.inc.php');
 		$cmd2 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2);

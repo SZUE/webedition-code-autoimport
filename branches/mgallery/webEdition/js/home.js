@@ -739,7 +739,6 @@ function rpc(a, b, c, d, e, wid, path) {
 	if (!document.createElement) {
 		return true;
 	}
-	var docIFrm;
 	var sType = gel(wid + '_type').value;
 	showLoadingSymbol(wid);
 
@@ -747,10 +746,20 @@ function rpc(a, b, c, d, e, wid, path) {
 	// start bugfix #1145
 	var _tmpForm = document.createElement("form");
 	document.getElementsByTagName("body")[0].appendChild(_tmpForm);
-	path = (sType !== 'rss' && sType !== 'pad' && sType !== 'plg' && sType !== 'sct') ? 'dlg/' + path : 'mod/' + sType;
+	switch (sType) {
+		case 'rss':
+		case 'sct':
+			path = 'cmd.php?we_cmd[0]=reload&mod=' + sType;
+			break;
+		case 'pad':
+			path = 'mod/' + sType + '.php';
+			break;
+		default:
+			path = 'dlg/' + path + '.php';
+	}
 	_tmpForm.id = "_tmpSubmitForm";
 	_tmpForm.method = "POST";
-	_tmpForm.action = WE().consts.dirs.WE_INCLUDES_DIR + 'we_widgets/' + path + '.php';
+	_tmpForm.action = WE().consts.dirs.WE_INCLUDES_DIR + 'we_widgets/' + path;
 	_tmpForm.target = "RSIFrame";
 	for (var i = 0; i < arguments.length; i++) {
 		var _tmpField = document.createElement('input');
@@ -770,7 +779,7 @@ function rpc(a, b, c, d, e, wid, path) {
 
 
 function rpcHandleResponse(sType, sObjId, oDoc, sCsvLabel) {
-	var docIFrm, iFrmScr;
+	var docIFrm, iFrmScr, doc;
 	var oInline = gel(sObjId + '_inline');
 
 	oInline.style.display = "block";
@@ -795,7 +804,14 @@ function rpcHandleResponse(sType, sObjId, oDoc, sCsvLabel) {
 	oContent.style.display = 'block';
 
 	hideLoadingSymbol(sObjId);
-	var doc = (sType === 'rss' || sType === 'pad' ? docIFrm.getElementById(sType) : oInline);
+	switch (sType) {
+		case 'rss':
+		case 'pad':
+			doc = docIFrm.getElementById(sType);
+			break;
+		default:
+			doc = oInline;
+	}
 	doc.innerHTML = oDoc.innerHTML;
 	if (sType === 'pad') {
 		iFrmScr.calendarSetup();
