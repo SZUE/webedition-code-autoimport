@@ -52,7 +52,7 @@ function we_tag_input($attribs, $content){
 				$attribs['type'] = 'checkbox';
 				$attribs['name'] = 'we_' . $GLOBALS['we_doc']->Name . '_attrib_' . $name;
 				$attribs['value'] = 1;
-				$attribs['onclick'] = '_EditorFrame.setEditorIsHot(true);this.form.elements[\'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']\'].value=(this.checked ? 1 : \'\');' . ($reload ? (';setScrollTo();top.we_cmd(\'reload_editpage\');') : '');
+				$attribs['onclick'] = '_EditorFrame.setEditorIsHot(true);this.form.elements[\'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']\'].value=(this.checked ? 1 : 0);' . ($reload ? (';setScrollTo();top.we_cmd(\'reload_editpage\');') : '');
 				if($val){
 					$attribs['checked'] = 'checked';
 				}

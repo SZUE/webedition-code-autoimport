@@ -491,8 +491,8 @@ if (top.wizbody.addLog){
 								if($ref){
 									$xmlExIm->savePerserves();
 
-									$JScript = "top.wizbusy.setProgressText('pb1','" . g_l('import', '[update_links]') . $xmlExIm->RefTable->current . '/' . count($xmlExIm->RefTable->Storage) . "');
-										top.wizbusy.setProgress(Math.floor(((" . (int) ($v['cid'] + $xmlExIm->RefTable->current) . "+1)/" . (int) ($xmlExIm->RefTable->getLastCount() + $v["numFiles"]) . ")*100));";
+									$JScript = "top.wizbusy.setProgressText('pb1','" . g_l('import', '[update_links]') . $xmlExIm->RefTable->current . '/' . $xmlExIm->RefTable->getCount() . "');
+										top.wizbusy.setProgress(Math.floor(((" . (int) ($v['cid'] + $xmlExIm->RefTable->current) . "+1)/" . (int) ($xmlExIm->RefTable->getCount() + $v["numFiles"]) . ")*100));";
 
 
 									$out .= we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
@@ -537,9 +537,9 @@ setTimeout('we_import(1," . $v['numFiles'] . ");',15);";
 									));
 									$imported = $xmlExIm->import($chunk);
 									$xmlExIm->savePerserves();
-									$ref = $xmlExIm->RefTable->getLast();
 									if($imported){
 										$_status = g_l('import', '[import]');
+										$ref = $xmlExIm->RefTable->getLast();
 
 										switch($ref->ContentType){
 											case 'weBinary':
@@ -548,13 +548,13 @@ setTimeout('we_import(1," . $v['numFiles'] . ");',15);";
 												$_path_info = $ref->Path;
 												break;
 											case 'doctype':
-												$_path_info = f('SELECT DocType FROM ' . escape_sql_query($ref->Table) . ' WHERE ID=' . intval($ref->ID), 'DocType', new DB_WE());
+												$_path_info = f('SELECT DocType FROM ' . escape_sql_query($ref->Table) . ' WHERE ID=' . intval($ref->ID), '', new DB_WE());
 												break;
 											case 'weNavigationRule':
-												$_path_info = f('SELECT NavigationName FROM ' . escape_sql_query($ref->Table) . ' WHERE ID=' . intval($ref->ID), 'NavigationName', new DB_WE());
+												$_path_info = f('SELECT NavigationName FROM ' . escape_sql_query($ref->Table) . ' WHERE ID=' . intval($ref->ID), '', new DB_WE());
 												break;
 											case 'weThumbnail':
-												$_path_info = f('SELECT Name FROM ' . escape_sql_query($ref->Table) . ' WHERE ID=' . intval($ref->ID), 'Name', new DB_WE());
+												$_path_info = f('SELECT Name FROM ' . escape_sql_query($ref->Table) . ' WHERE ID=' . intval($ref->ID), '', new DB_WE());
 												break;
 											default:
 												$_path_info = id_to_path($ref->ID, $ref->Table);
@@ -577,7 +577,7 @@ setTimeout('we_import(1," . $v['numFiles'] . ");',15);";
 										$_status = g_l('import', '[skip]');
 										echo we_html_element::jsElement(
 											'if (top.wizbody.addLog){
-												top.wizbody.addLog("' . addslashes(g_l('import', '[skip]') . we_html_tools::getPixel(50, 5) . $ref->Path) . '<br/>");
+												top.wizbody.addLog("' . addslashes(g_l('import', '[skip]')) . '<br/>");
 											}');
 									}
 

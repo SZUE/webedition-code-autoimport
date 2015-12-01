@@ -167,7 +167,6 @@ class we_base_request{
 						continue;
 					}
 				}
-				t_e($regs);
 				$host = (function_exists('idn_to_ascii') ? idn_to_ascii($regs[3]) : $regs[3]);
 
 				$var = (filter_var($regs[2] . '@' . $host, FILTER_VALIDATE_EMAIL) !== false ?
