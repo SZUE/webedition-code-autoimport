@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -33,9 +34,9 @@ var state_' . $unique . '=0;
 function clip_' . $unique . '(){
 	var text_' . $unique . '="' . addslashes($text) . '";
 	var textsmall_' . $unique . ' = "' . addslashes($smalltext) . '";
-	var oText=gel("' . $unique . '");
-	var oDiv=gel("div_' . $unique . '");
-	var oBtn=gel("btn_' . $unique . '");
+	var oText=document.getElementById("' . $unique . '");
+	var oDiv=document.getElementById("div_' . $unique . '");
+	var oBtn=document.getElementById("btn_' . $unique . '");
 
 	if(state_' . $unique . '==0){
 		oText.innerHTML=text_' . $unique . ';
@@ -54,22 +55,22 @@ function clip_' . $unique . '(){
 	$oClip->setCol(0, 0, array("width" => 21, 'style' => 'vertical-align:top;text-align:right', "id" => "btn_" . $unique), we_html_button::create_button(we_html_button::DIRRIGHT, 'javascript:clip_' . $unique . '();'));
 	$oClip->setCol(0, 1, array("width" => 10, "nowrap" => "nowrap"));
 	$oClip->setCol(0, 2, null, we_html_element::htmlSpan(array(
-			"id" => $unique,
-			"class" => "defaultfont",
-			"style" => "cursor:pointer;",
-			"onclick" => "clip_" . $unique . "();"
-			), addslashes($smalltext)));
+				"id" => $unique,
+				"class" => "defaultfont",
+				"style" => "cursor:pointer;",
+				"onclick" => "clip_" . $unique . "();"
+					), addslashes($smalltext)));
 
 	return $js . $oClip->getHTML() . we_html_element::htmlDiv(array(
-			"id" => "div_" . $unique, "style" => "display:none;"
-			), we_html_element::htmlBr() . $content);
+				"id" => "div_" . $unique, "style" => "display:none;"
+					), we_html_element::htmlBr() . $content);
 }
 
 $oIptUri = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("ipt_uri", 55, "", 255, 'title=""', "text", 380, 0), g_l('cockpit', '[url]'), "left", "defaultfont");
 
-$oSctRss = new we_html_select(	array(
+$oSctRss = new we_html_select(array(
 	"name" => "sct_rss", "size" => 1, "class" => "defaultfont", "onchange" => "onChangeSctRss(this);"
-	));
+		));
 $oSctRss->insertOption(0, "", "");
 $oTblSctRss = we_html_tools::htmlFormElementTable($oSctRss->getHTML(), g_l('cockpit', '[rss_top_feeds]'), 'left', 'defaultfont');
 
@@ -88,12 +89,13 @@ $oBtnNewFeed->setCol(0, 3, array('style' => 'width:10px;'));
 $oBtnNewFeed->setCol(0, 4, null, $btnDeleteTopRssFeed);
 
 $oNewFeed = new we_html_table(array("width" => 390, 'class' => 'default'), 3, 1);
-$oNewFeed->setCol(	0, 0, null, $oRemTopFeeds . we_html_element::htmlBr() . $oIptNewTitle . we_html_element::htmlBr() . $oIptNewUri);
+$oNewFeed->setCol(0, 0, null, $oRemTopFeeds . we_html_element::htmlBr() . $oIptNewTitle . we_html_element::htmlBr() . $oIptNewUri);
 $oNewFeed->setCol(1, 0, array('style' => 'width:5px;'));
 $oNewFeed->setCol(2, 0, array("style" => "text-align:right"), $oBtnNewFeed->getHTML());
 
-$rssUri = $oIptUri . we_html_element::htmlBr() . $oTblSctRss . we_html_element::htmlBr() .
-		htmlClipElement(		g_l('cockpit', '[show_edit_toprssfeeds]'), g_l('cockpit', '[hide_edit_toprssfeeds]'), $oNewFeed->getHTML());
+$rssUri = $oIptUri . we_html_element::htmlBr() . $oTblSctRss .
+		we_html_element::htmlBr() .
+		htmlClipElement(g_l('cockpit', '[show_edit_toprssfeeds]'), g_l('cockpit', '[hide_edit_toprssfeeds]'), $oNewFeed->getHTML());
 
 $oRemRssConf = we_html_tools::htmlAlertAttentionBox(g_l('cockpit', '[rss_content_rem]'), we_html_tools::TYPE_INFO, 410);
 $oChbxContTitle = we_html_forms::checkbox(0, 0, "chbx_conf", g_l('cockpit', '[title]'), true, "defaultfont", "", false, "", 0, 0);
@@ -113,69 +115,47 @@ for($iCurrEntry = 1; $iCurrEntry <= 50; $iCurrEntry++){
 }
 
 $oRssContR = new we_html_table(array("height" => "100%", 'class' => 'default'), 2, 3);
-$oRssContR->setCol(0, 0, array(
-	'style' => 'vertical-align:middle;', "class" => "defaultfont"
-	), g_l('cockpit', '[limit_entries]'));
+$oRssContR->setCol(0, 0, array('style' => 'vertical-align:middle;', "class" => "defaultfont"), g_l('cockpit', '[limit_entries]'));
 $oRssContR->setCol(0, 1, array('style' => 'width:5px;'));
-$oRssContR->setCol(0, 2, array(
-	'style' => 'vertical-align:middle;'
-	), $oSctNumEntries->getHTML());
-$oRssContR->setCol(1, 0, array(
-	"colspan" => 3, 'style' => 'vertical-align:bottom;'
-	), $oChbxContPubDate . $oChbxContCategory);
+$oRssContR->setCol(0, 2, array('style' => 'vertical-align:middle;'), $oSctNumEntries->getHTML());
+$oRssContR->setCol(1, 0, array("colspan" => 3, 'style' => 'vertical-align:bottom;'), $oChbxContPubDate . $oChbxContCategory);
 
 $oSelectRssCont = new we_html_table(array('class' => 'default'), 1, 2);
-$oSelectRssCont->setCol(0, 0, array(
-	"width" => 165
-	), $oChbxContTitle . $oChbxContLink . $oChbxContDesc . $oChbxContEnc);
-$oSelectRssCont->setCol(0, 1, array(
-	"height" => "100%", 'style' => 'vertical-align:top;'
-	), $oRssContR->getHTML());
+$oSelectRssCont->setCol(0, 0, array("width" => 165), $oChbxContTitle . $oChbxContLink . $oChbxContDesc . $oChbxContEnc);
+$oSelectRssCont->setCol(0, 1, array("height" => "100%", 'style' => 'vertical-align:top;'), $oRssContR->getHTML());
 
 $rssConf = $oRemRssConf . we_html_element::htmlBr() . htmlClipElement(
-		g_l('cockpit', '[show_select_rsscontent]'), g_l('cockpit', '[hide_select_rsscontent]'), $oSelectRssCont->getHTML());
+				g_l('cockpit', '[show_select_rsscontent]'), g_l('cockpit', '[hide_select_rsscontent]'), $oSelectRssCont->getHTML());
 
 $oRemLabel = we_html_tools::htmlAlertAttentionBox(g_l('cockpit', '[rss_label_rem]'), we_html_tools::TYPE_INFO, 410);
-$oChbxTb[0] = we_html_forms::checkbox($value = "", $checked = 0, $name = "chbx_tb", $text = g_l('cockpit', '[label_rssfeed]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$oChbxTb[1] = we_html_forms::checkbox($value = "", $checked = 0, $name = "chbx_tb", $text = g_l('cockpit', '[title]'), $uniqid = true, $class = "defaultfont", $onClick = "onDisableRdoGroup('title');", $disabled = false, $description = "", $type = 0, $width = 0);
-$oChbxTb[2] = we_html_forms::checkbox($value = "", $checked = 0, $name = "chbx_tb", $text = g_l('cockpit', '[desc]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$oChbxTb[3] = we_html_forms::checkbox($value = "", $checked = 0, $name = "chbx_tb", $text = g_l('cockpit', '[link_url]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$oChbxTb[4] = we_html_forms::checkbox($value = "", $checked = 0, $name = "chbx_tb", $text = g_l('cockpit', '[pubdate]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$oChbxTb[5] = we_html_forms::checkbox($value = "", $checked = 0, $name = "chbx_tb", $text = g_l('cockpit', '[copyright]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $width = 0);
-$oRdoTitle[0] = we_html_forms::radiobutton($value = 1, $checked = 0, $name = "rdo_title", $text = g_l('cockpit', '[original_of_rssfeed]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
-$oRdoTitle[1] = we_html_forms::radiobutton($value = 0, $checked = 0, $name = "rdo_title", $text = g_l('cockpit', '[personalized]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
+$oChbxTb[0] = we_html_forms::checkbox("", 0, "chbx_tb", g_l('cockpit', '[label_rssfeed]'), true, "defaultfont", "", false, "", 0, 0);
+$oChbxTb[1] = we_html_forms::checkbox("", 0, "chbx_tb", g_l('cockpit', '[title]'), true, "defaultfont", "onDisableRdoGroup('title');", false, "", 0, $width = 0);
+$oChbxTb[2] = we_html_forms::checkbox("", 0, "chbx_tb", g_l('cockpit', '[desc]'), true, "defaultfont", "", false, "", 0, $width = 0);
+$oChbxTb[3] = we_html_forms::checkbox("", 0, "chbx_tb", g_l('cockpit', '[link_url]'), true, "defaultfont", "", false, "", 0, $width = 0);
+$oChbxTb[4] = we_html_forms::checkbox("", 0, "chbx_tb", g_l('cockpit', '[pubdate]'), true, "defaultfont", "", false, "", 0, $width = 0);
+$oChbxTb[5] = we_html_forms::checkbox("", 0, "chbx_tb", g_l('cockpit', '[copyright]'), true, "defaultfont", "", false, "", 0, $width = 0);
+$oRdoTitle[0] = we_html_forms::radiobutton(1, 0, "rdo_title", g_l('cockpit', '[original_of_rssfeed]'), true, "defaultfont", "", false, "", 0, "");
+$oRdoTitle[1] = we_html_forms::radiobutton(0, 0, "rdo_title", g_l('cockpit', '[personalized]'), true, "defaultfont", "", false, "", 0, "");
 
 $oTitleTb = new we_html_table(array('class' => 'default'), 2, 1);
 $oTitleTb->setCol(0, 0, array(
 	"width" => 165
-	), $oRdoTitle[0]);
+		), $oRdoTitle[0]);
 $oTitleTb->setCol(1, 0, array(
 	"width" => 165
-	), $oRdoTitle[1]);
+		), $oRdoTitle[1]);
 
 $oEditTb = new we_html_table(array('class' => 'default'), 6, 2);
 $oEditTb->setCol(0, 0, array("width" => 165), $oChbxTb[0]);
-$oEditTb->setCol(1, 0, array(
-	"width" => 165, 'style' => 'vertical-align:top;'
-	), $oChbxTb[1]);
-$oEditTb->setCol(1, 1, array(
-	"width" => 165
-	), $oTitleTb->getHTML());
-$oEditTb->setCol(2, 0, array(
-	"width" => 165
-	), $oChbxTb[2]);
-$oEditTb->setCol(3, 0, array(
-	"width" => 165
-	), $oChbxTb[3]);
-$oEditTb->setCol(4, 0, array(
-	"width" => 165
-	), $oChbxTb[4]);
-$oEditTb->setCol(5, 0, array(
-	"width" => 165
-	), $oChbxTb[5]);
+$oEditTb->setCol(1, 0, array("width" => 165, 'style' => 'vertical-align:top;'), $oChbxTb[1]);
+$oEditTb->setCol(1, 1, array("width" => 165), $oTitleTb->getHTML());
+$oEditTb->setCol(2, 0, array("width" => 165), $oChbxTb[2]);
+$oEditTb->setCol(3, 0, array("width" => 165), $oChbxTb[3]);
+$oEditTb->setCol(4, 0, array("width" => 165), $oChbxTb[4]);
+$oEditTb->setCol(5, 0, array("width" => 165), $oChbxTb[5]);
 
 $rssLabel = $oRemLabel . we_html_element::htmlBr() . htmlClipElement(
-		g_l('cockpit', '[show_edit_titlebar]'), g_l('cockpit', '[hide_edit_titlebar]'), $oEditTb->getHTML());
+				g_l('cockpit', '[show_edit_titlebar]'), g_l('cockpit', '[hide_edit_titlebar]'), $oEditTb->getHTML());
 
 $parts = array(
 	array(
@@ -200,11 +180,11 @@ $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button,
 $sTblWidget = we_html_multiIconBox::getHTML('rssProps', $parts, 30, $buttons, -1, '', '', '', g_l('cockpit', '[rss_feed]'), '', 439);
 
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[rss_feed]'), '', '', STYLESHEET .
-		$jsFile.
-	we_html_element::jsElement($jsPrefs . "
+		$jsFile .
+		we_html_element::jsElement($jsPrefs . "
 var g_l={
 	invalid_url: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[invalid_url]')) . "'
 };") .
-	we_html_element::jsScript(JS_DIR . 'widgets/rss.js'), we_html_element::htmlBody(
-		array('class' => 'weDialogBody', 'onload' => 'init();'), we_html_element::htmlForm("", $sTblWidget)
+		we_html_element::jsScript(JS_DIR . 'widgets/rss.js'), we_html_element::htmlBody(
+				array('class' => 'weDialogBody', 'onload' => 'init();'), we_html_element::htmlForm("", $sTblWidget)
 ));

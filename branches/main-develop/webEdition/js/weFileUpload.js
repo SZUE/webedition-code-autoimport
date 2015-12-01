@@ -751,7 +751,7 @@ var weFileUpload = (function () {
 				fd.append('weFileSize', fsize);
 				fd.append('weFileName', fileName);
 				fd.append('weFileCt', fileCt);
-				fd.append(typeof this.currentFile.field !== 'undefined' ? this.currentFile.field : _.fieldName, part, fileName);//FIXME: take fieldname allways from cur!
+				fd.append(this.currentFile.field !== undefined ? this.currentFile.field : _.fieldName, part, fileName);//FIXME: take fieldname allways from cur!
 				fd = this.appendMoreData(fd);
 				xhr.open('POST', this.form.action, true);
 				xhr.send(fd);

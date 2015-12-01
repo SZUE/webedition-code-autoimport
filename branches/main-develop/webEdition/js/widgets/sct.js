@@ -326,7 +326,7 @@ function exit_close() {
 
 function init() {
 	_fo = document.forms[0];
-	_sCsvInit_ = opener.gel(_sObjId + '_csv').value;
+	_sCsvInit_ = opener.document.getElementById(_sObjId + '_csv').value;
 	var aCsv = _sCsvInit_.split(';');
 	for (var i = 0; i < aCsv.length; i++) {
 		var aVals = aCsv[i].split(',');
@@ -358,7 +358,7 @@ function deleteEntry(sValue) {
 
 function save() {
 	var sCsv = getCsv();
-	var oCsv_ = opener.gel(_sObjId + '_csv');
+	var oCsv_ = opener.document.getElementById(_sObjId + '_csv');
 	oCsv_.value = sCsv;
 	//savePrefs();
 	if (_sCsvInit_ != sCsv) {

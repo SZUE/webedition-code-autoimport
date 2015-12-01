@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,9 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
-we_html_tools::protect();
 $aCols = explode(';', isset($aProps) ? $aProps[3] : we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0));
 $_disableNew = true;
 $_cmdNew = "javascript:top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "');";
@@ -150,13 +148,13 @@ if(!isset($aProps)){
 	}";
 
 	echo we_html_tools::getHtmlTop(g_l('cockpit', '[shortcuts]'), '', '', STYLESHEET . we_html_element::jsElement($sJsCode), we_html_element::htmlBody(
-			array(
-			"marginwidth" => 15,
-			"marginheight" => 10,
-			"leftmargin" => 15,
-			"topmargin" => 10,
-			"onload" => "if(parent!=self)init();"
-			), we_html_element::htmlDiv(array(
-				"id" => "sct"
-				), $sc->getHtml())));
+					array(
+				"marginwidth" => 15,
+				"marginheight" => 10,
+				"leftmargin" => 15,
+				"topmargin" => 10,
+				"onload" => "if(parent!=self)init();"
+					), we_html_element::htmlDiv(array(
+						"id" => "sct"
+							), $sc->getHtml())));
 }

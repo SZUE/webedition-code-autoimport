@@ -1,4 +1,4 @@
-/* global WE */
+/* global WE, top */
 
 /**
  * webEdition CMS
@@ -92,7 +92,6 @@ function we_cmd_users(args, url) {
 			top.YAHOO.util.Connect.asyncRequest('GET', url, {success: function () {
 				}, failure: function () {
 				}});
-//		we_repl(self.load,url,args[0]);
 			break;
 		case "users_add_owner":
 		case "users_del_owner":

@@ -1,3 +1,5 @@
+/* global top, WE */
+
 /**
  * webEdition CMS
  *
@@ -144,7 +146,29 @@ function updateCustomerFilterIfNeeded() {
 	if ((_elem = document.we_form["we_" + docName + "_ParentID"])) {
 		_parentid = _elem.value;
 		if (_parentid !== _oldparentid) {
-			top.YAHOO.util.Connect.asyncRequest('GET', WE().consts.dirs.WEBEDITION_DIR + 'rpc/rpc.php?cmd=GetUpdateDocumentCustomerFilterQuestion&cns=customer&folderId=' + _parentid + '&we_transaction=' + we_transaction + '&table=' + docTable + '&classname=' + docClass, ajaxCallback);
+			top.YAHOO.util.Connect.asyncRequest('GET', WE().consts.dirs.WEBEDITION_DIR + 'rpc/rpc.php?cmd=GetUpdateDocumentCustomerFilterQuestion&cns=customer&folderId=' + _parentid + '&we_transaction=' + we_transaction + '&table=' + docTable + '&classname=' + docClass, {
+				// check if parentId was changed
+				success: function (o) {
+					if (o.responseText !== undefined && o.responseText !== '') {
+						var weResponse = false;
+						try {
+							eval(o.responseText);
+							if (weResponse) {
+								if (weResponse.data === "true") {
+									_question = g_l.confirm_applyFilter;
+									if (confirm(_question)) {
+										top.we_cmd("customer_applyWeDocumentCustomerFilterFromFolder");
+									}
+								}
+							}
+						} catch (exc) {
+						}
+					}
+				},
+				failure: function (o) {
+				}
+			}
+			);
 			_oldparentid = _parentid;
 		}
 	}
@@ -186,36 +210,13 @@ function pathOfDocumentChanged() {
 	}
 }
 
-// check if parentId was changed
-var ajaxCallback = {
-	success: function (o) {
-		if (o.responseText !== undefined && o.responseText !== '') {
-			var weResponse = false;
-			try {
-				eval(o.responseText);
-				if (weResponse) {
-					if (weResponse.data === "true") {
-						_question = g_l.confirm_applyFilter;
-						if (confirm(_question)) {
-							top.we_cmd("customer_applyWeDocumentCustomerFilterFromFolder");
-						}
-					}
-				}
-			} catch (exc) {
-			}
-		}
-	},
-	failure: function (o) {
-	}
-};
-
 function setScrollTo() {
 	parent.scrollToVal = pageYOffset;
 }
 
 function goTemplate(tid) {
 	if (tid > 0) {
-		WE().layout.weEditorFrameController.openDocument(TEMPLATES_TABLE, tid, CTYPE_TEMPLATE);
+		WE().layout.weEditorFrameController.openDocument(WE().consts.tables.TEMPLATES_TABLE, tid, WE().consts.contentTypes.TEMPLATE);
 	}
 }
 
@@ -246,14 +247,14 @@ function we_cmd() {
 		case "we_selector_directory":
 		case "we_selector_document":
 		case "we_selector_image":
-			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, winSelectSize.docSelect.width, winSelectSize.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "we_customer_selector":
 		case "we_selector_file":
 			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, 900, 685, true, true, true, true);
 			break;
 		case "we_selector_category":
-			new (WE().util.jsWindow)(this, url, "we_catselector", -1, -1, winSelectSize.catSelect.width, winSelectSize.catSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_catselector", -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 		case "browse_server":
 			new (WE().util.jsWindow)(this, url, "browse_server", -1, -1, 840, 400, true, false, true);
@@ -281,24 +282,24 @@ function we_cmd() {
 			new (WE().util.jsWindow)(this, url, "we_add_thumbnail", -1, -1, 400, 410, true, true, true);
 			break;
 		case "image_resize":
-			if (hasGD) {
+			if (WE().consts.graphic.hasGD) {
 				ImageEditTools.Resize.start(url, gdType);
 			} else {
-				top.we_showMessage(g_l.gdTypeNotSupported, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().util.sprintf(WE().consts.g_l.editorScript.gdTypeNotSupported, gdType), WE().consts.message.WE_MESSAGE_ERROR, this);
 			}
 			break;
 		case "image_convertJPEG":
 			ImageEditTools.ConvertJPEG.start(url);
 			break;
 		case "image_rotate":
-			if (canRotate) {
+			if (WE().consts.graphic.canRotate) {
 				if (gdSupport) {
 					ImageEditTools.Rotate.start(url, gdType);
 				} else {
-					top.we_showMessage(g_l.gdTypeNotSupported, WE().consts.message.WE_MESSAGE_ERROR, this);
+					top.we_showMessage(WE().util.sprintf(WE().consts.g_l.editorScript.gdTypeNotSupported, gdType), WE().consts.message.WE_MESSAGE_ERROR, this);
 				}
 			} else {
-				top.we_showMessage(g_l.noRotate, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.editorScript.noRotate, WE().consts.message.WE_MESSAGE_ERROR, this);
 			}
 			break;
 		case "image_focus":
@@ -309,7 +310,7 @@ function we_cmd() {
 				if (gdSupport) {
 					ImageEditTools.Crop.crop();
 				} else {
-					top.we_showMessage(g_l.gdTypeNotSupported, WE().consts.message.WE_MESSAGE_ERROR, this);
+					top.we_showMessage(WE().util.sprintf(WE().consts.g_l.editorScript.gdTypeNotSupported, gdType), WE().consts.message.WE_MESSAGE_ERROR, this);
 				}
 			}
 			break;
@@ -331,7 +332,7 @@ function we_cmd() {
 			break;
 			// it must be the last command
 		case "delete_navi":
-			if (!confirm(g_l.confirm_navDel)) {
+			if (!confirm(WE().consts.g_l.editorScript.confirm_navDel)) {
 				break;
 			}
 			/* falls through */
@@ -357,32 +358,32 @@ function fields_are_valid() {
 					case "int":
 					case "integer":
 						if (!theVal.match(/^-{0,1}\d+$/)) {
-							top.we_showMessage(g_l.field_contains_incorrect_chars.replace(/%s/, theType), WE().consts.message.WE_MESSAGE_ERROR, window);
+							top.we_showMessage(WE().consts.g_l.editorScript.field_contains_incorrect_chars.replace(/%s/, theType), WE().consts.message.WE_MESSAGE_ERROR, window);
 							theInputs[i].focus();
 							return false;
 						} else if (theVal > 2147483647) {
-							top.we_showMessage(g_l.field_int_value_to_height, WE().consts.message.WE_MESSAGE_ERROR, window);
+							top.we_showMessage(WE().consts.g_l.editorScript.field_int_value_to_height, WE().consts.message.WE_MESSAGE_ERROR, window);
 							theInputs[i].focus();
 							return false;
 						}
 						break;
 					case "float":
 						if (isNaN(theVal)) {
-							top.we_showMessage(g_l.field_int_value_to_height, WE().consts.message.WE_MESSAGE_ERROR, window);
+							top.we_showMessage(WE().consts.g_l.editorScript.field_int_value_to_height, WE().consts.message.WE_MESSAGE_ERROR, window);
 							theInputs[i].focus();
 							return false;
 						}
 						break;
 					case "weObject_input_length":
 						if (!theVal.match(/^-{0,1}\d+$/) || theVal < 1 || theVal > 1023) {
-							top.we_showMessage(g_l.field_input_contains_incorrect_length, WE().consts.message.WE_MESSAGE_ERROR, window);
+							top.we_showMessage(WE().consts.g_l.editorScript.field_input_contains_incorrect_length, WE().consts.message.WE_MESSAGE_ERROR, window);
 							theInputs[i].focus();
 							return false;
 						}
 						break;
 					case "weObject_int_length":
 						if (!theVal.match(/^-{0,1}\d+$/) || theVal < 1 || theVal > 20) {
-							top.we_showMessage(g_l.field_int_contains_incorrect_length, WE().consts.message.WE_MESSAGE_ERROR, window);
+							top.we_showMessage(WE().consts.g_l.editorScript.field_int_contains_incorrect_length, WE().consts.message.WE_MESSAGE_ERROR, window);
 							theInputs[i].focus();
 							return false;
 						}
@@ -397,17 +398,17 @@ function fields_are_valid() {
 
 function we_checkObjFieldname(i) {
 	if (i.value.search(/^([a-zA-Z0-9_+-])*$/)) {
-		top.we_showMessage(g_l.fieldNameNotValid, WE().consts.message.WE_MESSAGE_ERROR, window);
+		top.we_showMessage(WE().consts.g_l.editorScript.fieldNameNotValid, WE().consts.message.WE_MESSAGE_ERROR, window);
 		i.focus();
 		i.select();
 		i.value = i.getAttribute("oldValue");
 	} else if (i.value === 'Title' || i.value === 'Description') {
-		top.we_showMessage(g_l.fieldNameNotTitleDesc, WE().consts.message.WE_MESSAGE_ERROR, window);
+		top.we_showMessage(WE().consts.g_l.editorScript.fieldNameNotTitleDesc, WE().consts.message.WE_MESSAGE_ERROR, window);
 		i.focus();
 		i.select();
 		i.value = i.getAttribute("oldValue");
 	} else if (i.value.length === 0) {
-		top.we_showMessage(g_l.fieldNameEmpty, WE().consts.message.WE_MESSAGE_ERROR, window);
+		top.we_showMessage(WE().consts.g_l.editorScript.fieldNameEmpty, WE().consts.message.WE_MESSAGE_ERROR, window);
 		//		i.focus(); # 1052
 		//		i.select();
 		i.value = i.getAttribute("oldValue");

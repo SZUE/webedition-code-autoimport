@@ -271,11 +271,8 @@ function addLoadEvent(func) {
 }
 
 addLoadEvent( function() {
-	var options;
-	var widgetDoc = window.widgetFrame !== undefined ? window.widgetFrame.document : " . ($isRefresh ? 'parent.document' : 'document') . ";
-
 	// Draw the gauge using custom settings
-	options = {
+	var options = {
 		value: " . we_base_util::formatNumber(($total - $canceled)) . ",
 		label: 'Ziel in " . $currency . "',
 		unitsLabel: ' " . $currency . "',
@@ -290,6 +287,6 @@ addLoadEvent( function() {
 		redTo: " . ($sRevenueTarget * 0.9) . "
 	};
 
-	new Gauge(widgetDoc.getElementById('" . $newSCurrId . "_chart_div'), options );
+	new Gauge(WE().layout.cockpitFrame.getElementById('" . $newSCurrId . "_chart_div'), options );
 });");
 }

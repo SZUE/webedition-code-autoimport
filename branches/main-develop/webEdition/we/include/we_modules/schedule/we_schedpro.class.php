@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -25,7 +24,6 @@
 we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER);
 
 class we_schedpro{
-
 	const SCHEDULE_FROM = 1; //publish
 	const SCHEDULE_TO = 2; //park
 	const DELETE = 3;
@@ -92,7 +90,7 @@ class we_schedpro{
 		for($i = 1; $i <= 36; $i++){
 			if($i <= 31){
 				$days .= '<td>' . we_html_forms::checkbox(1, $this->days[$i - 1], "check_we_schedule_day" . $i . "_" . $this->nr, sprintf('%02d', $i), false, "defaultfont", "this.form.elements['we_schedule_day" . $i . "_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)") .
-						'<input type="hidden" name="we_schedule_day' . $i . '_' . $this->nr . '" value="' . $this->days[$i - 1] . '" /></td><td class="defaultfont">&nbsp;</td>';
+					'<input type="hidden" name="we_schedule_day' . $i . '_' . $this->nr . '" value="' . $this->days[$i - 1] . '" /></td><td class="defaultfont">&nbsp;</td>';
 			} else {
 				$days .= '<td colspan="3">';
 			}
@@ -113,7 +111,7 @@ class we_schedpro{
 
 		for($i = 1; $i <= 7; $i++){
 			$wd .= '<td>' . we_html_forms::checkbox(1, $this->weekdays[$i - 1], "check_we_schedule_wday'.$i.'_'.$this->nr.'", g_l('date', '[day][short][' . ($i - 1) . ']'), false, "defaultfont", "this.form.elements['we_schedule_wday" . $i . "_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)") .
-					'<input type="hidden" name="we_schedule_wday' . $i . '_' . $this->nr . '" value="' . $this->weekdays[$i - 1] . '" /></td><td class="defaultfont">&nbsp;</td>';
+				'<input type="hidden" name="we_schedule_wday' . $i . '_' . $this->nr . '" value="' . $this->weekdays[$i - 1] . '" /></td><td class="defaultfont">&nbsp;</td>';
 		}
 
 		$wd .= '</tr></table>';
@@ -189,8 +187,8 @@ function checkFooter(){
 				$doctypepop .= '</select>';
 				$checknname = md5(uniqid(__FUNCTION__, true));
 				$extracont = '<table class="default"><tr><td>' . $doctypepop . '</td><td class="defaultfont">&nbsp;&nbsp;</td><td>' . we_html_forms::checkbox(1, $this->doctypeAll, $checknname, g_l('modules_schedule', '[doctypeAll]')
-								, false, "defaultfont", "this.form.elements['we_schedule_doctypeAll_" . $this->nr . "'].value=this.checked?1:0;") .
-						'<input type="hidden" name="we_schedule_doctypeAll_' . $this->nr . '" value="' . $this->doctypeAll . '" /></td></tr></table>';
+						, false, "defaultfont", "this.form.elements['we_schedule_doctypeAll_" . $this->nr . "'].value=this.checked?1:0;") .
+					'<input type="hidden" name="we_schedule_doctypeAll_' . $this->nr . '" value="' . $this->doctypeAll . '" /></td></tr></table>';
 				$extraheadl = g_l('modules_schedule', '[doctype]');
 				break;
 			case self::CATEGORY:
@@ -255,8 +253,8 @@ function checkFooter(){
 	<tr style="vertical-align:top">
 		<td class="defaultgray" style="margin-bottom:10px;">' . g_l('modules_schedule', '[task][headline]') . ':</td>
 		<td class="defaultfont"><table class="default"><tr><td>' . $taskpopup . '</td><td class="defaultfont">&nbsp;&nbsp;</td><td>' . we_html_forms::checkbox(1, $this->active, $checknname, g_l('modules_schedule', '[active]')
-						, false, "defaultfont", "this.form.elements['we_schedule_active_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true);checkFooter();") .
-				'<input type="hidden" class="we_schedule_active" name="we_schedule_active_' . $this->nr . '" value="' . $this->active . '" /></td></tr></table></td>
+				, false, "defaultfont", "this.form.elements['we_schedule_active_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true);checkFooter();") .
+			'<input type="hidden" class="we_schedule_active" name="we_schedule_active_' . $this->nr . '" value="' . $this->active . '" /></td></tr></table></td>
 		<td>' . we_html_button::create_button(we_html_button::TRASH, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('schedule_del','" . $this->nr . "')") . '</td>
 	</tr>';
 		if($extracont){
@@ -278,75 +276,75 @@ function checkFooter(){
 		switch($this->type){
 			case self::TYPE_ONCE:
 				$table .= '
-	<tr style="vertical-align:top">
-		<td class="defaultgray">' . g_l('modules_schedule', '[datetime]') . ':</td>
-		<td class="defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true) . '</td>
+		<tr style = "vertical-align:top">
+		<td class = "defaultgray">' . g_l('modules_schedule', '[datetime]') . ':</td>
+		<td class = "defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true) . '</td>
 		<td></td>
-	</tr>';
+		</tr>';
 				break;
 			case self::TYPE_HOUR:
 				$table .= '
-	<tr style="vertical-align:top">
-		<td class="defaultgray">' . g_l('modules_schedule', '[minutes]') . ':</td>
-		<td class="defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "i") . '</td>
+		<tr style = "vertical-align:top">
+		<td class = "defaultgray">' . g_l('modules_schedule', '[minutes]') . ':</td>
+		<td class = "defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "i") . '</td>
 		<td></td>
-	</tr>';
+		</tr>';
 				break;
 			case self::TYPE_DAY:
 				$table .= '
-	<tr style="vertical-align:top">
-		<td class="defaultgray">' . g_l('modules_schedule', '[time]') . ':</td>
-		<td class="defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "h:i") . '</td>
+		<tr style = "vertical-align:top">
+		<td class = "defaultgray">' . g_l('modules_schedule', '[time]') . ':</td>
+		<td class = "defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "h:i") . '</td>
 		<td></td>
-	</tr>';
+		</tr>';
 				break;
 			case self::TYPE_WEEK:
 				$table .= '
-	<tr style="vertical-align:top">
-		<td class="defaultgray" style="margin-bottom:10px;">' . g_l('modules_schedule', '[time]') . ':</td>
-		<td class="defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "h:i") . '</td>
+		<tr style = "vertical-align:top">
+		<td class = "defaultgray" style = "margin-bottom:10px;">' . g_l('modules_schedule', '[time]') . ':</td>
+		<td class = "defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "h:i") . '</td>
 		<td></td>
-	</tr>
-	<tr style="vertical-align:top">
-		<td class="defaultgray">' . g_l('modules_schedule', '[weekdays]') . ':</td>
-		<td class="defaultfont">' . $this->getWeekdaysHTML() . '</td>
+		</tr>
+		<tr style = "vertical-align:top">
+		<td class = "defaultgray">' . g_l('modules_schedule', '[weekdays]') . ':</td>
+		<td class = "defaultfont">' . $this->getWeekdaysHTML() . '</td>
 		<td></td>
-	</tr>';
+		</tr>';
 				break;
 			case self::TYPE_MONTH:
 				$table .= '
-	<tr style="vertical-align:top">
-		<td class="defaultgray" style="margin-bottom:10px;">' . g_l('modules_schedule', '[time]') . ':</td>
-		<td class="defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "h:i") . '</td>
+		<tr style = "vertical-align:top">
+		<td class = "defaultgray" style = "margin-bottom:10px;">' . g_l('modules_schedule', '[time]') . ':</td>
+		<td class = "defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "h:i") . '</td>
 		<td></td>
-	</tr>
-	<tr style="vertical-align:top">
-		<td class="defaultgray">' . g_l('modules_schedule', '[days]') . ':</td>
-		<td class="defaultfont">' . $this->getDaysHTML() . '</td>
+		</tr>
+		<tr style = "vertical-align:top">
+		<td class = "defaultgray">' . g_l('modules_schedule', '[days]') . ':</td>
+		<td class = "defaultfont">' . $this->getDaysHTML() . '</td>
 		<td></td>
-	</tr>';
+		</tr>';
 				break;
 			case self::TYPE_YEAR:
 				$table .= '
-	<tr style="vertical-align:top">
-		<td class="defaultgray" style="margin-bottom:10px;">' . g_l('modules_schedule', '[time]') . ':</td>
-		<td class="defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "h:i") . '</td>
+		<tr style = "vertical-align:top">
+		<td class = "defaultgray" style = "margin-bottom:10px;">' . g_l('modules_schedule', '[time]') . ':</td>
+		<td class = "defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "h:i") . '</td>
 		<td></td>
-	</tr>
-	<tr style="vertical-align:top">
-		<td class="defaultgray" style="margin-bottom:10px;">' . g_l('modules_schedule', '[months]') . ':</td>
-		<td class="defaultfont">' . $this->getMonthsHTML() . '</td>
+		</tr>
+		<tr style = "vertical-align:top">
+		<td class = "defaultgray" style = "margin-bottom:10px;">' . g_l('modules_schedule', '[months]') . ':</td>
+		<td class = "defaultfont">' . $this->getMonthsHTML() . '</td>
 		<td></td>
-	</tr>
-	<tr style="vertical-align:top">
-		<td class="defaultgray">' . g_l('modules_schedule', '[days]') . ':</td>
-		<td class="defaultfont">' . $this->getDaysHTML() . '</td>
+		</tr>
+		<tr style = "vertical-align:top">
+		<td class = "defaultgray">' . g_l('modules_schedule', '[days]') . ':</td>
+		<td class = "defaultfont">' . $this->getDaysHTML() . '</td>
 		<td></td>
-	</tr>';
+		</tr>';
 				break;
 		}
 		$table .= '</table>';
-		return we_html_element::jsElement('var we_hasExtraRow_' . intval($this->nr) . '=' . ($extracont ? 'true' : 'false')) . $table;
+		return we_html_element::jsElement('var we_hasExtraRow_' . intval($this->nr) . ' = ' . ($extracont ? 'true' : 'false')) . $table;
 	}
 
 	function processSchedule($id, $schedFile, $now, we_database_base $DB_WE){
@@ -412,21 +410,21 @@ function checkFooter(){
 					require_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
 					$callPublish = (count($schedFile['value']) > 1); //only if other operations pending
 					//don't show any output
-					ob_start();
-					//we can't use include-tag since we don't have a document & many warnings will occur.
-					$path = id_to_path($id, FILE_TABLE, $DB_WE);
-					if($path){
-						include(WEBEDITION_PATH . '../' . $path);
-					}
-					ob_end_clean();
-					break;
-			}
+		ob_start();
+		//we can't use include-tag since we don't have a document & many warnings will occur.
+		$path = id_to_path($id, FILE_TABLE, $DB_WE);
+		if($path){
+			include(WEBEDITION_PATH . '../' . $path);
+		}
+		ob_end_clean();
+		break;
+		}
 
-			if($s['type'] != self::TYPE_ONCE && ($nextWann = self::getNextTimestamp($s, $now))){
-				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET `expire`=FROM_UNIXTIME(' . intval($nextWann) . ') WHERE Active=1 AND DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '" AND Type="' . $s['type'] . '" AND Was="' . $s['task'] . '" AND `expire`=' . $schedFile['Wann']);
-			} else {
-				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0,SerializedData="" WHERE Active=1 AND DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '" AND Type="' . $s['type'] . '" AND Was="' . $s['task'] . '" AND `expire`=' . $schedFile['Wann']);
-			}
+		if($s['type'] != self::TYPE_ONCE && ($nextWann = self::getNextTimestamp($s, $now))){
+			$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET `expire`=FROM_UNIXTIME(' . intval($nextWann) . ') WHERE Active=1 AND DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '" AND Type="' . $s['type'] . '" AND Was="' . $s['task'] . '" AND `expire`=' . $schedFile['Wann']);
+		} else {
+			$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0,SerializedData="" WHERE Active=1 AND DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '" AND Type="' . $s['type'] . '" AND Was="' . $s['task'] . '" AND `expire`=' . $schedFile['Wann']);
+		}
 		}
 
 		if($changeTmpDoc){
@@ -437,8 +435,8 @@ function checkFooter(){
 
 		if($callPublish){
 			$pub = ($GLOBALS['we_doc']->Published ?
-							$GLOBALS['we_doc']->we_publish() :
-							$GLOBALS['we_doc']->we_unpublish());
+					$GLOBALS['we_doc']->we_publish() :
+					$GLOBALS['we_doc']->we_unpublish());
 
 			if(!$pub){
 				t_e('Error while scheduled publish/unpublish of document', $GLOBALS['we_doc']->getErrMsg(), $GLOBALS['we_doc']);
@@ -564,8 +562,8 @@ function checkFooter(){
 					$trys++;
 				}
 				return ($trys <= 365) ?
-						mktime(date('G', $s['time']), date('i', $s['time']), 0, intval(date('m', $tomorrow)), date('j', $tomorrow), date('Y', $tomorrow)) :
-						0;
+					mktime(date('G', $s['time']), date('i', $s['time']), 0, intval(date('m', $tomorrow)), date('j', $tomorrow), date('Y', $tomorrow)) :
+					0;
 			case self::TYPE_YEAR:
 				$dayNow = date('j', $now);
 				$monthNow = intval(date('m', $now));
@@ -586,8 +584,8 @@ function checkFooter(){
 					$trys++;
 				}
 				return ($trys <= 365) ?
-						mktime(date('G', $s['time']), date('i', $s['time']), 0, intval(date('m', $tomorrow)), date('j', $tomorrow), date('Y', $tomorrow)) :
-						0;
+					mktime(date('G', $s['time']), date('i', $s['time']), 0, intval(date('m', $tomorrow)), date('j', $tomorrow), date('Y', $tomorrow)) :
+					0;
 		}
 	}
 
@@ -669,8 +667,8 @@ function checkFooter(){
 					$trys++;
 				}
 				return ($trys <= 365) ?
-						mktime(date('G', $s['time']), date('i', $s['time']), 0, intval(date('m', $yesterday)), date('j', $yesterday), date('Y', $yesterday)) :
-						0;
+					mktime(date('G', $s['time']), date('i', $s['time']), 0, intval(date('m', $yesterday)), date('j', $yesterday), date('Y', $yesterday)) :
+					0;
 
 			case self::TYPE_YEAR:
 				$dayNow = date('j', $now);
@@ -692,8 +690,8 @@ function checkFooter(){
 					$trys++;
 				}
 				return ($trys <= 365) ?
-						mktime(date('G', $s['time']), date('i', $s['time']), 0, intval(date('m', $yesterday)), date('j', $yesterday), date('Y', $yesterday)) :
-						0;
+					mktime(date('G', $s['time']), date('i', $s['time']), 0, intval(date('m', $yesterday)), date('j', $yesterday), date('Y', $yesterday)) :
+					0;
 		}
 	}
 
@@ -714,13 +712,12 @@ function checkFooter(){
 		$db->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($object->ID) . ' AND ClassName="' . $db->escape($object->ClassName) . '"');
 		$makeSched = array();
 		foreach($object->schedArr as $s){
-			if($s['task'] == self::SCHEDULE_FROM && $s['active']){
-				$serializedDoc = serialize(we_temporaryDocument::load($object->ID, $object->Table, $db));
-			} else {
-				$serializedDoc = '';
-			}
+			$serializedDoc = ($s['task'] == self::SCHEDULE_FROM && $s['active'] ?
+					we_temporaryDocument::load($object->ID, $object->Table, $db) : // nicht noch mal unten beim Speichern serialisieren, ist bereits serialisiert #5743
+					false);
+
 			$Wann = self::getNextTimestamp($s, time());
-			if($serializedDoc){
+			if($serializedDoc !== false){
 				$makeSched[] = $Wann;
 			}
 

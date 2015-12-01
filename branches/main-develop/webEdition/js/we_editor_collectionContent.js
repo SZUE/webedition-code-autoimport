@@ -1,3 +1,5 @@
+/* global top, WE */
+
 /**
  * webEdition CMS
  *

@@ -1194,8 +1194,8 @@ function we_cmd_base(args, url) {
 				if (confirm(WE().consts.g_l.main.cockpit_reset_settings)) {
 					//FIXME: currently this doesn't work
 					WE().layout.weEditorFrameController.getActiveDocumentReference().location = WE().consts.dirs.WE_INCLUDES_DIR + 'we_widgets/cmd.php?we_cmd[0]=' + args[0];
-					if ((window.treeData !== undefined) && treeData) {
-						treeData.unselectNode();
+					if ((window.treeData !== undefined) && window.treeData) {
+						window.treeData.unselectNode();
 					}
 				}
 			} else {
@@ -1213,7 +1213,7 @@ function we_cmd_base(args, url) {
 		case "new_widget_pad":
 		case "new_widget_shp":
 		case "new_widget_fdl":
-			if (topWE().layout.weEditorFrameController.getActiveDocumentReference() && WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart) {
+			if (WE().layout.weEditorFrameController.getActiveDocumentReference() && WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart) {
 				WE().layout.weEditorFrameController.getActiveDocumentReference().createWidget(args[0].substr(args[0].length - 3), 1, 1);
 			} else {
 				top.we_showMessage(WE().consts.g_l.main.cockpit_not_activated, WE().consts.message.WE_MESSAGE_ERROR, this);
@@ -1306,8 +1306,13 @@ function we_cmd_base(args, url) {
 			// if visible frame equals to editpage content and there is already content loaded
 			if (_isEditpageContent && _visibleEditorFrame.weIsTextEditor !== undefined && _currentEditorRootFrame.frames[2].location !== "about:blank") {
 				// tell the backend the right edit page nr and break (don't send the form)
-				//YAHOO.util.Connect.setForm(_sendFromFrame.document.we_form);
-				YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc/rpc.php", setPageNrCallback, 'protocol=json&cmd=SetPageNr&transaction=' + _we_activeTransaction + "&editPageNr=" + args[1]);
+				YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc/rpc.php", {
+					success: function (o) {
+					},
+					failure: function (o) {
+						alert(WE().consts.g_l.main.unable_to_call_setpagenr);
+					}
+				}, "protocol=json&cmd=SetPageNr&transaction=" + _we_activeTransaction + "&editPageNr=" + args[1]);
 				if (_visibleEditorFrame.reloadContent === false) {
 					break;
 				}
