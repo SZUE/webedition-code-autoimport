@@ -74,7 +74,7 @@ abstract class we_temporaryDocument{
 	 * @return object mixed document object. if return value is flase, document doesn't exists in temporary table
 	 */
 	static function load($documentID, $table, we_database_base $db){
-		return f('SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($documentID) . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"', '', $db);
+		return f('SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($documentID) . ' AND Active=1 AND DocTable="' . $db->escape(stripTblPrefix($table)) . '"', '', $db);
 	}
 
 	/**
