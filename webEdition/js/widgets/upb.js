@@ -31,7 +31,7 @@ var _sLastPrevCsv = '';
 
 function init() {
 	_fo = document.forms[0];
-	_oCsv_ = opener.gel(_sObjId + '_csv');
+	_oCsv_ = opener.document.getElementById(_sObjId + '_csv');
 	var sCsv = _oCsv_.value;
 	_sInitCsv_ = sCsv;
 	var oChbxType = _fo.elements.chbx_type;

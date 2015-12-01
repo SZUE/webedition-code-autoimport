@@ -24,8 +24,7 @@
  */
 $jsPrefs = "
 var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . "';
-var _sCls_=opener.gel(_sObjId+'_cls').value;
-";
+var _sCls_=opener.document.getElementById(_sObjId+'_cls').value;";
 $jsFile = we_html_element::jsScript(JS_DIR . 'widgets/dlg_prefs.js');
 
 $oSctCls = new we_html_select(array(

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -29,6 +30,10 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		we_base_preferences::setUserPref('cockpit_dat', $cmd1);
 		we_base_preferences::setUserPref('cockpit_rss', we_base_request::_(we_base_request::SERIALIZED_KEEP, 'we_cmd', '', 2));
 		break;
+	case 'reload':
+		$mod = we_base_request::_(we_base_request::STRING, 'mod');
+		include_once (WE_INCLUDES_PATH . 'we_widgets/mod/' . $mod . '.inc.php');
+		break;
 	case 'add' :
 		include_once(WE_INCLUDES_PATH . 'we_widgets/cfg.inc.php');
 		$cmd2 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2);
@@ -58,22 +63,12 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		}
 		include_once (WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php');
 
-		$js = "
-function transmit(){
-	if(WE().layout.weEditorFrameController.getActiveDocumentReference() && WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart){
-		WE().layout.weEditorFrameController.getActiveDocumentReference().pushContent('" . $aProps[0] . "','m_" . $iCurrId . "',gel('content').innerHTML,gel('prefix').innerHTML,gel('postfix').innerHTML,gel('csv').innerHTML);
-	}
-}
-
-var widgetFrame = WE().layout.weEditorFrameController.getActiveDocumentReference();
-";
-		echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssElement('div,span{display:none;}') .
-			we_html_element::jsElement($js), we_html_element::htmlBody(
-				array('onload' => 'transmit();'
-				), we_html_element::htmlDiv(array('id' => 'content'), $oTblDiv) .
-				we_html_element::htmlSpan(array('id' => 'prefix'), $aLang[0]) .
-				we_html_element::htmlSpan(array('id' => 'postfix'), $aLang[1]) .
-				we_html_element::htmlSpan(array('id' => 'csv'), (isset($aProps[3]) ? $aProps[3] : '')))
+		echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssElement('div,span{display:none;}'), we_html_element::htmlBody(
+						array('onload' => 'WE().layout.cockpitFrame.transmit(this,\'' . $aProps[0] . '\',\'m_' . $iCurrId . '\');'
+						), we_html_element::htmlDiv(array('id' => 'content'), $oTblDiv) .
+						we_html_element::htmlSpan(array('id' => 'prefix'), $aLang[0]) .
+						we_html_element::htmlSpan(array('id' => 'postfix'), $aLang[1]) .
+						we_html_element::htmlSpan(array('id' => 'csv'), (isset($aProps[3]) ? $aProps[3] : '')))
 		);
 		break;
 

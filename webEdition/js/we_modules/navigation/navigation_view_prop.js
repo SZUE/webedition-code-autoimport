@@ -129,26 +129,25 @@ function copyNaviFolder(folderPath, folderID) {
 	var parentPos = selfNaviPath.indexOf(folderPath);
 	if (parentPos === -1 || selfNaviPath.indexOf(folderPath) > 0) {
 		cnfUrl = copyNaviFolderUrl + "?protocol=text&cmd=CopyNavigationFolder&cns=navigation&we_cmd[0]=" + selfNaviPath + "&we_cmd[1]=" + selfNaviId + "&we_cmd[2]=" + folderPath + "&we_cmd[3]=" + folderID;
-		YAHOO.util.Connect.asyncRequest("GET", cnfUrl, copyNaviFolderAjaxCallback);
+		YAHOO.util.Connect.asyncRequest("GET", cnfUrl, {
+			success: function (o) {
+				if (o.responseText !== "") {
+					WE().util.showMessage(WE().consts.g_l.main.folder_copy_success, WE().consts.message.WE_MESSAGE_NOTICE, window);
+					//FIXME: add code for Tree reload!
+					top.content.cmd.location.reload();
+				} else {
+					WE().util.showMessage(WE().consts.g_l.main.copy_folder_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+				}
+			},
+			failure: function (o) {
+				WE().util.showMessage(WE().consts.g_l.main.copy_folder_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+			}
+		});
 	} else {
 		WE().util.showMessage(WE().consts.g_l.main.copy_folder_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
 }
 
-var copyNaviFolderAjaxCallback = {
-	success: function (o) {
-		if (o.responseText !== "") {
-			WE().util.showMessage(WE().consts.g_l.main.folder_copy_success, WE().consts.message.WE_MESSAGE_NOTICE, window);
-			//FIXME: add code for Tree reload!
-			top.content.cmd.location.reload();
-		} else {
-			WE().util.showMessage(WE().consts.g_l.main.copy_folder_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
-		}
-	},
-	failure: function (o) {
-		WE().util.showMessage(WE().consts.g_l.main.copy_folder_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
-	}
-};
 
 function closeAllSelection() {
 	setVisible(WE().consts.navigation.SELECTION_DYNAMIC, false);

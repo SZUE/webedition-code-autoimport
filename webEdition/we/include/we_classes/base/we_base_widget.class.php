@@ -57,7 +57,7 @@ abstract class we_base_widget{
 		$oDrag->setCol(0, 0, array('style' => 'width:' . self::w_icon . 'px;height:16px;'));
 
 		$oIco_prc = new we_html_table(array(), 1, 3);
-		$oIco_prc->setCol(0, 0, array(), '<span class="fa-stack" title="' . g_l('cockpit', '[properties]') . '" onclick="propsWidget(\'' . $sType . '\',\'' . $iId . '\',gel(\'' . $iId . '_csv\').value);this.blur();">
+		$oIco_prc->setCol(0, 0, array(), '<span class="fa-stack" title="' . g_l('cockpit', '[properties]') . '" onclick="propsWidget(\'' . $sType . '\',\'' . $iId . '\',document.getElementById(\'' . $iId . '_csv\').value);this.blur();">
 		  <i class="fa fa-square-o fa-stack-2x"></i>
 		  <i class="fa fa-align-justify fa-stack-1x"></i>
 		  </span>'
@@ -72,7 +72,7 @@ abstract class we_base_widget{
 		  <i class="fa fa-close fa-stack-1x"></i>
 		  </span>');
 		$oIco_pc = new we_html_table(array(), 1, 2);
-		$oIco_pc->setCol(0, 0, array(), '<span class="fa-stack" title="' . g_l('cockpit', '[properties]') . '" onclick="propsWidget(\'' . $sType . '\',\'' . $iId . '\',gel(\'' . $iId . '_csv\').value);this.blur();">
+		$oIco_pc->setCol(0, 0, array(), '<span class="fa-stack" title="' . g_l('cockpit', '[properties]') . '" onclick="propsWidget(\'' . $sType . '\',\'' . $iId . '\',document.getElementById(\'' . $iId . '_csv\').value);this.blur();">
 		  <i class="fa fa-square-o fa-stack-2x"></i>
 		  <i class="fa fa-align-justify fa-stack-1x"></i>
 		  </span>');

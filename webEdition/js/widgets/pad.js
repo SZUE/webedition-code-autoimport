@@ -31,10 +31,6 @@ var _oSctDate;
 var _aRdo = ['sort', 'display', 'date', 'prio'];
 var _lastPreviewCsv = '';
 
-function gel(id_) {
-	return document.getElementById ? document.getElementById(id_) : null;
-}
-
 function weEntity2char(weString) {
 	weString = weString.replace('&lt;', '<');
 	weString = weString.replace('&gt;', '>');
@@ -53,36 +49,36 @@ function calendarSetup() {
 }
 
 function getCls() {
-	return parent.gel(_sObjId + '_cls').value;
+	return parent.document.getElementById(_sObjId + '_cls').value;
 }
 // displays the note dialog on click on a note
 function selectNote(id) {
 	var fo = document.forms[0];
 	if (!isHotNote()) {
 		cancelNote();
-		setColor(gel(id + '_tr'), id, '#EDEDED');
+		setColor(document.getElementById(id + '_tr'), id, '#EDEDED');
 		fo.elements.mark.value = id;
 		populate(id);
 	}
 }
 // displays the note dialog on click the add note button
 function displayNote() {
-	gel('view').style.display = 'none';
-	gel('notices').style.height = '90px';
-	gel('props').style.display = 'block';
+	document.getElementById('view').style.display = 'none';
+	document.getElementById('notices').style.height = '90px';
+	document.getElementById('props').style.display = 'block';
 	toggleTblValidity();
 }
 //close a open note
 function cancelNote() {
 	fo = document.forms[0];
-	gel('props').style.display = 'none';
-	gel('notices').style.height = '250px';
-	gel('view').style.display = 'block';
+	document.getElementById('props').style.display = 'none';
+	document.getElementById('notices').style.height = '250px';
+	document.getElementById('view').style.display = 'block';
 	var oMark = fo.elements.mark;
 	var mark = oMark.value;
 	if (mark !== '') {
 		oMark.value = '';
-		setColor(gel(mark + '_tr'), mark, '#FFFFFF');
+		setColor(document.getElementById(mark + '_tr'), mark, '#FFFFFF');
 	}
 	unpopulate();
 	WE().layout.button.switch_button_state(document, 'delete', 'disabled');
@@ -91,7 +87,7 @@ function cancelNote() {
 function deleteNote() {
 	var fo = document.forms[0];
 	var mark = fo.elements.mark.value;
-	var q_ID = gel(mark + '_ID').value;
+	var q_ID = document.getElementById(mark + '_ID').value;
 	parent.rpc(_ttlB64Esc.concat(',' + _sInitProps), q_ID, 'delete', '', _ttlB64Esc, _sObjId, 'pad/pad');
 }
 
@@ -116,12 +112,12 @@ function isHotNote() {
 
 function getInitialQueryById(id) {
 	return (asoc = {
-		'Validity': gel(id + '_Valid').value,
-		'ValidFrom': gel(id + '_ValidFrom').value,
-		'ValidUntil': gel(id + '_ValidUntil').value,
-		'Priority': gel(id + '_Priority').value,
-		'Title': gel(id + '_Title').value,
-		'Text': gel(id + '_Text').value
+		'Validity': document.getElementById(id + '_Valid').value,
+		'ValidFrom': document.getElementById(id + '_ValidFrom').value,
+		'ValidUntil': document.getElementById(id + '_ValidUntil').value,
+		'Priority': document.getElementById(id + '_Priority').value,
+		'Title': document.getElementById(id + '_Title').value,
+		'Text': document.getElementById(id + '_Text').value
 	});
 }
 
@@ -144,7 +140,7 @@ function getCurrentQuery() {
 
 function populate(r) {
 	fo = document.forms[0];
-	var sValidity = gel(r + '_Valid').value;
+	var sValidity = document.getElementById(r + '_Valid').value;
 	var sValidityIndex = sValidity == 'always' ? 0 : (sValidity == 'date' ? 1 : 2);
 	var oSctValid = fo.elements.sct_valid;
 	var iSctValidLen = oSctValid.length;
@@ -155,12 +151,12 @@ function populate(r) {
 		}
 	}
 	toggleTblValidity();
-	fo.elements.f_ValidFrom.value = convertDate(gel(r + '_ValidFrom').value, '%d.%m.%Y');
-	fo.elements.f_ValidUntil.value = convertDate(gel(r + '_ValidUntil').value, '%d.%m.%Y');
-	var prio = gel(r + '_Priority').value;
+	fo.elements.f_ValidFrom.value = convertDate(document.getElementById(r + '_ValidFrom').value, '%d.%m.%Y');
+	fo.elements.f_ValidUntil.value = convertDate(document.getElementById(r + '_ValidUntil').value, '%d.%m.%Y');
+	var prio = document.getElementById(r + '_Priority').value;
 	fo.elements.rdo_prio[prio == 'high' ? 0 : prio == 'medium' ? 1 : 2].checked = true;
-	fo.elements.props_title.value = gel(r + '_Title').value;
-	fo.elements.props_text.value = gel(r + '_Text').value;
+	fo.elements.props_title.value = document.getElementById(r + '_Title').value;
+	fo.elements.props_text.value = document.getElementById(r + '_Text').value;
 	WE().layout.button.switch_button_state(document, 'delete', 'enabled');
 	displayNote();
 }
@@ -273,7 +269,7 @@ function saveNote() {
 				top.we_showMessage(WE.consts.g_l.cockpit.pad.title_empty, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				return false;
 			}
-			var q_ID = gel(_id + '_ID').value;
+			var q_ID = document.getElementById(_id + '_ID').value;
 			parent.rpc(_ttlB64Esc.concat(',' + _sInitProps), (q_ID + ';' + encodeURI(csv)), 'update', '', _ttlB64Esc, _sObjId, 'pad/pad', escape(q_curr.Title), escape(q_curr.Text));
 		} else {
 			top.we_showMessage(WE.consts.g_l.cockpit.pad.note_not_modified, WE().consts.message.WE_MESSAGE_NOTICE, window);
@@ -308,7 +304,7 @@ function saveNote() {
 
 function initDlg() {
 	_fo = document.forms[0];
-	_oCsv_ = opener.gel(_sObjId + '_csv');
+	_oCsv_ = opener.document.getElementById(_sObjId + '_csv');
 	_sInitCsv_ = _oCsv_.value;
 	var aCsv = _sInitCsv_.split(',');
 	_sInitTitle = opener.Base64.decode(aCsv[0]);
@@ -352,7 +348,7 @@ function getTitle() {
 }
 
 function save() {
-	var oCsv_ = opener.gel(_sObjId + '_csv');
+	var oCsv_ = opener.document.getElementById(_sObjId + '_csv');
 	var sTitleEnc = opener.Base64.encode(getTitle());
 	var sBit = getBitString();
 	oCsv_.value = sTitleEnc.concat(',' + sBit);

@@ -80,8 +80,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 			pre_remove: '<?php echo g_l('cockpit', '[pre_remove]'); ?>"',
 			post_remove: '" <?php echo g_l('cockpit', '[post_remove]'); ?>'
 		};
-		var has_messaging =<?php echo intval(defined('WE_MESSAGING_MODULE_DIR')); ?>;
-		var transact = "<?php echo md5(uniqid(__FILE__, true)); ?>";
+		WE().layout.cockpitFrame.transact = "<?php echo md5(uniqid(__FILE__, true)); ?>";
 
 	<?php
 	echo $jsPrefs;
@@ -222,7 +221,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 	echo
 	we_html_element::htmlBody(
 			array(
-		'onload' => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});oTblWidgets=gel('le_tblWidgets');initDragWidgets();",
+		'onload' => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});oTblWidgets=document.getElementById('le_tblWidgets');initDragWidgets();",
 			), we_html_element::htmlForm(
 					array("name" => "we_form"
 					), we_html_element::htmlHiddens(array(

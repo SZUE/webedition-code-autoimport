@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_exim_refTable{
-	public $Storage = array();
+	private $Storage = array();
 	var $current = 0;
 	var $Users = array(); // username => id
 

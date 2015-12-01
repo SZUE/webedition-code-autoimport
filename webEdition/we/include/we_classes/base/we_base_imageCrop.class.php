@@ -37,12 +37,8 @@ abstract class we_base_imageCrop{
 			$GLOBALS['we_doc']->setElement("origheight", $GLOBALS['we_doc']->getElement("height"), 'attrib');
 		}
 
-		return we_html_element::jsElement('
-var size={
-	origW:' . $GLOBALS['we_doc']->getElement("origwidth", "dat", 'document.getElementById("weImage") ? document.getElementById("weImage").width : 0') . ',
-	origH:' . $GLOBALS['we_doc']->getElement("origheight", "dat", 'document.getElementById("weImage") ? document.getElementById("weImage").height : 0') . '
-};') .
-			we_html_element::jsScript(JS_DIR . 'imageEditTools.js');
+		$js='{origW:' . $GLOBALS['we_doc']->getElement("origwidth", "dat", 'document.getElementById("weImage") ? document.getElementById("weImage").width : 0') . ',origH:' . $GLOBALS['we_doc']->getElement("origheight", "dat", 'document.getElementById("weImage") ? document.getElementById("weImage").height : 0') . '};';
+		return 	we_html_element::jsScript(JS_DIR . 'imageEditTools.js','ImageEditTools.size='.$js);
 	}
 
 	static function getCSS(){

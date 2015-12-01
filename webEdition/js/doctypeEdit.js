@@ -27,7 +27,7 @@
  */
 
 function we_save_docType(doc, url) {
-	acStatus = '';
+	var acStatus = '';
 	invalidAcFields = false;
 	if (YAHOO && YAHOO.autocoml) {
 		acStatus = YAHOO.autocoml.checkACFields();
@@ -39,7 +39,7 @@ function we_save_docType(doc, url) {
 	if (countSaveLoop > 10) {
 		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 		countSaveLoop = 0;
-	} else if (acStatusType.toLowerCase() == 'object') {
+	} else if (acStatusType.toLowerCase() === 'object') {
 		if (acStatus.running) {
 			countSaveLoop++;
 			setTimeout(function () {

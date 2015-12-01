@@ -23,13 +23,18 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
+var _oCsv_, _fo, _sCsv, _sInitCsv_, table, categories_edit, SelectedItems, _sInitTitle_;
+var _sMdcInc = 'mdc/mdc';
+
 function toggle(id) {
 	var elem = document.getElementById(id);
 	if (elem) {
-		if (elem.style.display == 'none')
+		if (elem.style.display == 'none') {
 			elem.style.display = 'block';
-		else
+		} else {
 			elem.style.display = 'none';
+		}
 	}
 }
 
@@ -146,4 +151,57 @@ function save() {
 	_oCsv_.value = opener.Base64.encode(sTitle) + ';' + sSel + sSwitch + ';' + sCsv;
 	WE().util.showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, top.window);
 	self.close();
+}
+
+
+
+function we_cmd() {
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
+
+	switch (args[0]) {
+		case 'we_selector_directory':
+			new (WE().util.jsWindow)(this, url, 'we_fileselector', -1, -1, WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
+			break;
+		case 'we_selector_category':
+			new (WE().util.jsWindow)(this, url, 'we_catselector', -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
+			break;
+		default:
+			parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+
+	}
+}
+
+function init(tab, title, sBinary, _sCsv) {
+	table = tab;
+	_sInitTitle_ = title;
+	_fo = document.forms[0];
+	initPrefs();
+	_oCsv_ = opener.document.getElementById(_sObjId + '_csv');
+	_sInitCsv_ = _oCsv_.value;
+	_sInitTitle_ = opener.document.getElementById(_sObjId + '_prefix').value;
+	_fo.elements.title.value = _sInitTitle_;
+	var aInitCsv = _sInitCsv_.split(';');
+	var dir = aInitCsv[2].split(',');
+	if (parseInt(sBinary.substr(0, 1)) == parseInt(aInitCsv[1].substr(0, 1))) {
+		if (parseInt(sBinary.substr(1)) == parseInt(aInitCsv[1].substr(1))) {
+			_fo.FolderID.value = dir[0];
+			_fo.FolderPath.value = dir[1];
+			if (aInitCsv[3] != 0) {
+				var obj = parseInt(sBinary.substr(1)) ? _fo.classID : _fo.DocTypeID;
+				obj.value = aInitCsv[3];
+			}
+			if (aInitCsv[4] !== undefined && aInitCsv[4] != '') {
+				addCat(opener.Base64.decode(aInitCsv[4]));
+			}
+		}
+	}
+	startTree();
+	var aCsv = _sCsv.split(',');
+	var aCsvLen = aCsv.length;
+	for (var i = 0; i < aCsvLen; i++) {
+		SelectedItems[tab][i] = aCsv[i];
+	}
+
+
 }
