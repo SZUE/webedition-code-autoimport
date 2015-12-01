@@ -23,7 +23,7 @@
  */
 if(isset($GLOBALS['we_doc'])){
 	if($GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT && $GLOBALS['we_doc']->ContentType == we_base_ContentTypes::TEMPLATE){
-		//no wyswyg
+		//no wysiwyg
 	} else {
 		echo we_wysiwyg_editor::getHeaderHTML();
 	}
@@ -34,8 +34,8 @@ echo we_html_element::cssLink(CSS_DIR . 'editor.css') .
 	font-size: ' . ((we_base_browserDetect::isMAC()) ? '11' : ((we_base_browserDetect::isUNIX()) ? '13' : '12')) . 'px;
 	font-family: ' . g_l('css', '[font_family]') . ';
 }
-');
-we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();');
+') .
+ we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();');
 ?>
 <script><!--
 	var we_transaction = "<?php echo we_base_request::_(we_base_request::TRANSACTION, "we_transaction", 0); ?>";
@@ -46,40 +46,16 @@ we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();');
 	var hasCustomerFilter =<?php echo intval(isset($GLOBALS['we_doc']) && defined('CUSTOMER_TABLE') && in_array(we_base_constants::WE_EDITPAGE_WEBUSER, $GLOBALS['we_doc']->EditPageNrs) && isset($GLOBALS['we_doc']->documentCustomerFilter)); ?>;
 	var hasGlossary =<?php echo intval(defined('GLOSSARY_TABLE') && isset($GLOBALS['we_doc']) && ($GLOBALS['we_doc']->ContentType == we_base_ContentTypes::WEDOCUMENT || $GLOBALS['we_doc']->ContentType === we_base_ContentTypes::OBJECT_FILE)); ?>;
 
-	var hasGD =<?php echo intval($hasGD); ?>;
 	var gdType = "<?php echo $hasGD && isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->getGDType() : ''; ?>";
-	var canRotate =<?php echo intval(function_exists("ImageRotate")); ?>;
 	var gdSupport =<?php echo intval($hasGD ? $we_doc->gd_support() : 0); ?>;
-	var winSelectSize = {
-		'docSelect': {
-			'width': <?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH; ?>,
-			'height': <?php echo we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>
-		},
-		'catSelect': {
-			'width': <?php echo we_selector_file::WINDOW_CATSELECTOR_WIDTH; ?>,
-			'height': <?php echo we_selector_file::WINDOW_CATSELECTOR_HEIGHT; ?>
-		}
-	};
 
 	var g_l = {
 		'confirm_applyFilter': "<?php echo g_l('alert', ($GLOBALS['we_doc']->IsFolder ? '[confirm][applyWeDocumentCustomerFiltersFolder]' : '[confirm][applyWeDocumentCustomerFiltersDocument]')) ?>",
-		'confirm_navDel': "<?php echo g_l('navigation', '[del_question]'); ?>",
-		'gdTypeNotSupported': "<?php echo $hasGD ? we_message_reporting::prepareMsgForJS(sprintf(g_l('weClass', '[type_not_supported_hint]'), g_l('weClass', '[convert_' . $we_doc->getGDType() . ']'))) : ''; ?>",
-		'noRotate': "<?php $hasGD && function_exists("ImageRotate") ? we_message_reporting::prepareMsgForJS(g_l('weClass', '[rotate_hint]')) : ''; ?>",
-		'field_int_value_to_height': "<?php echo g_l('alert', '[field_int_value_to_height]'); ?>",
-		'field_contains_incorrect_chars': '<?php echo g_l('alert', '[field_contains_incorrect_chars]'); ?>',
-		'field_input_contains_incorrect_length': '<?php echo g_l('alert', '[field_input_contains_incorrect_length]'); ?>',
-		'field_int_contains_incorrect_length': '<?php echo g_l('alert', '[field_int_contains_incorrect_length]'); ?>',
-		'fieldNameNotValid': '<?php echo g_l('modules_object', '[fieldNameNotValid]'); ?>',
-		'fieldNameNotTitleDesc': '<?php echo g_l('modules_object', '[fieldNameNotTitleDesc]'); ?>',
-		'fieldNameEmpty': '<?php echo g_l('modules_object', '[fieldNameEmpty]'); ?>'
 	};
 
 	var isWEObject =<?php echo intval(isset($GLOBALS['we_doc']) && ($GLOBALS['we_doc']->ContentType === we_base_ContentTypes::OBJECT/* FIXME: only supported for type object || $GLOBALS['we_doc']->ContentType === we_base_ContentTypes::OBJECT_FILE */)); ?>;
 	var WE_EDIT_IMAGE =<?php echo intval(defined('WE_EDIT_IMAGE')); ?>;
 	var WE_SPELLCHECKER_MODULE_DIR = "<?php echo defined('SPELLCHECKER') ? WE_SPELLCHECKER_MODULE_DIR : ''; ?>";
-	var TEMPLATES_TABLE = "<?php echo TEMPLATES_TABLE ?>";
-	var CTYPE_TEMPLATE = "<?php echo we_base_ContentTypes::TEMPLATE; ?>";
 	//-->
 </script><?php
 $js = '';

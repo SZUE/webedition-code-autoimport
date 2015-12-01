@@ -1194,8 +1194,8 @@ function we_cmd_base(args, url) {
 				if (confirm(WE().consts.g_l.main.cockpit_reset_settings)) {
 					//FIXME: currently this doesn't work
 					WE().layout.weEditorFrameController.getActiveDocumentReference().location = WE().consts.dirs.WE_INCLUDES_DIR + 'we_widgets/cmd.php?we_cmd[0]=' + args[0];
-					if ((window.treeData !== undefined) && treeData) {
-						treeData.unselectNode();
+					if ((window.treeData !== undefined) && window.treeData) {
+						window.treeData.unselectNode();
 					}
 				}
 			} else {

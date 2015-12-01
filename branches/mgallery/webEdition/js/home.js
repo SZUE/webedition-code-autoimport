@@ -703,30 +703,29 @@ function executeAjaxRequest(param_1, initCfg, param_3, param_4, titel, widgetId)
 	var url = WE().util.getWe_cmdArgsUrl(Array.prototype.slice.call(arguments), WE().consts.dirs.WEBEDITION_DIR + 'rpc/rpc.php?cmd=' + _cmdName + '&cns=widgets&');
 
 	if (_cmdName) {
-		top.YAHOO.util.Connect.asyncRequest('GET', url, ajaxCallback);
+		top.YAHOO.util.Connect.asyncRequest('GET', url, {
+			success: function (o) {
+				if (o.responseText !== undefined && o.responseText !== '') {
+					var weResponse = false;
+					try {
+						eval(o.responseText);
+						if (weResponse) {
+							updateWidgetContent(weResponse.widgetType, weResponse.widgetId, weResponse.data, weResponse.titel);
+
+						}
+					} catch (exc) {
+						alert("Could not complete the ajax request");
+					}
+				}
+			},
+			failure: function (o) {
+				alert("Could not complete the ajax request");
+
+			}
+		});
 	}
 }
 
-var ajaxCallback = {
-	success: function (o) {
-		if (o.responseText !== undefined && o.responseText !== '') {
-			var weResponse = false;
-			try {
-				eval(o.responseText);
-				if (weResponse) {
-					updateWidgetContent(weResponse.widgetType, weResponse.widgetId, weResponse.data, weResponse.titel);
-
-				}
-			} catch (exc) {
-				alert("Could not complete the ajax request");
-			}
-		}
-	},
-	failure: function (o) {
-		alert("Could not complete the ajax request");
-
-	}
-};
 
 /**
  * Old ajax functions using an iframe
@@ -892,8 +891,8 @@ function removeWidget(wizId) {
 }
 
 function newMessage(username) {
-	if (has_messaging) {
-		new (WE().util.jsWindow)(window, 'webEdition/we/include/we_modules/messaging/messaging_newmessage.php?we_transaction=' + transact + '&mode=u_' + encodeURI(username), 'messaging_new_message', -1, -1, 670, 530, true, false, true, false);
+	if (WE().consts.tables.MESSAGES_TABLE) {
+		new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR + 'messaging_newmessage.php?we_transaction=' + WE().layout.cockpitFrame.transact + '&mode=u_' + encodeURI(username), 'messaging_new_message', -1, -1, 670, 530, true, false, true, false);
 	}
 }
 
@@ -914,15 +913,9 @@ function getDimension(theString, styleClassElement) {
 		dim.width = span.offsetWidth;
 		document.body.removeChild(span);
 	} else if (document.all && document.body.insertAdjacentHTML) {
-		var html = '';
-		html += '<span id="newSpan" ';
-		html += 'style="position: absolute; visibility: hidden;"';
-		if (styleClassElement) {
-			html += ' class="' + styleClassElement + '"';
-		}
-		html += '>';
-		html += theString;
-		html += '<\/span>';
+		var html = '<span id="newSpan" style="position: absolute; visibility: hidden;"' +
+						(styleClassElement ? ' class="' + styleClassElement + '"' : '') + '>' +
+						theString + '<\/span>';
 		document.body.insertAdjacentHTML('beforeEnd', html);
 		dim.height = document.all.newSpan.offsetHeight;
 		dim.width = document.all.newSpan.offsetWidth;
@@ -931,8 +924,7 @@ function getDimension(theString, styleClassElement) {
 		var lr = new Layer(window.innerWidth);
 		lr.document.open();
 		if (styleClassElement) {
-			lr.document.write('<span class="' + styleClassElement + '">' +
-							theString + '<\/span>');
+			lr.document.write('<span class="' + styleClassElement + '">' + theString + '<\/span>');
 		} else {
 			lr.document.write(theString);
 		}
