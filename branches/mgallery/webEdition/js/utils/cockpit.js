@@ -204,7 +204,7 @@ var oWidget = {
 	removeMasks: function () {
 		var aShields = [oWidget.oModShieldId, oWidget.oShieldId];
 		for (var i = 0; i < aShields.length; i++) {
-			var oRemove = gel(aShields[i]);
+			var oRemove = document.getElementById(aShields[i]);
 			if (oRemove) {
 				oRemove.parentNode.removeChild(oRemove);
 				oRemove = null;
@@ -234,7 +234,7 @@ function setHandler(oDiv) {
 	this.fUnset = unset;
 	this.bSet = false;
 	this.node = oDiv;
-	this.oDragTb = gel(oDiv.id + '_h');
+	this.oDragTb = document.getElementById(oDiv.id + '_h');
 	if (this.oDragTb) {
 		this.oDragTb.style.cursor = 'move';
 		oEvt.init(this.oDragTb, this.node);
@@ -268,7 +268,7 @@ function onInsertNode() {
 	if (oWidget.Gecko) {
 		iOffsetH -= parseInt(oNodeInsert.style.borderTopWidth) * 2;
 	}
-	var iOffsetW = (gel(this.node.id + '_res').value === 0 ? 225 : 452);
+	var iOffsetW = (document.getElementById(this.node.id + '_res').value === 0 ? 225 : 452);
 	//var iOffsetW=this.node.offsetWidth;
 	var iOffsetTrue = oWidget.setOffsetLeftTop(this.node, true);
 	var iOffsetFalse = oWidget.setOffsetLeftTop(this.node, false);

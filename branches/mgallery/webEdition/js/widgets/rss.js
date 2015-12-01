@@ -32,10 +32,6 @@ var _sInitTbCfg = '';
 var _iInitTbTitlePers = 0;
 
 
-function gel(id_) {
-	return document.getElementById ? document.getElementById(id_) : null;
-}
-
 function isUrl(s) {
 	var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
 	return regexp.test(s);
@@ -68,7 +64,7 @@ function toggleRssTopFeed() {
 
 function init() {
 	_fo = document.forms[0];
-	var sCsv_ = opener.gel(_sObjId + '_csv').value;
+	var sCsv_ = opener.document.getElementById(_sObjId + '_csv').value;
 	var aCsv = sCsv_.split(',');
 	var sUri = opener.Base64.decode(aCsv[0]);
 	_sInitUri = sUri;
@@ -184,7 +180,7 @@ function save() {
 		//return;
 	}
 	var oSctConf = _fo.elements.sct_conf;
-	var oCsv_ = opener.gel(_sObjId + '_csv');
+	var oCsv_ = opener.document.getElementById(_sObjId + '_csv');
 	var oRdoTitle = _fo.elements.rdo_title;
 	oCsv_.value = opener.Base64.encode(sUri) + ',' + getBinary('conf') + ',' + oSctConf.selectedIndex +
 					',' + getBinary('tb') + ',' + ((oRdoTitle[0].checked) ? 0 : 1);

@@ -222,7 +222,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 	echo
 	we_html_element::htmlBody(
 			array(
-		'onload' => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});oTblWidgets=gel('le_tblWidgets');initDragWidgets();",
+		'onload' => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});oTblWidgets=document.getElementById('le_tblWidgets');initDragWidgets();",
 			), we_html_element::htmlForm(
 					array("name" => "we_form"
 					), we_html_element::htmlHiddens(array(

@@ -285,7 +285,7 @@ echo we_html_tools::getHtmlTop(g_l('cockpit', '[notepad]'), '', '', STYLESHEET .
 	we_html_element::jsElement(
 		(($type === "pad/pad") ? "
 var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 5) . "';
-var _sCls_=parent.gel(_sObjId+'_cls').value;
+var _sCls_=parent.document.getElementById(_sObjId+'_cls').value;
 var _sType='pad';
 var _sTb='" . g_l('cockpit', '[notes]') . " - " . $title . "';
 " : "

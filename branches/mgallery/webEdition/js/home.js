@@ -151,10 +151,6 @@ var Base64 = {
 
 };
 
-function gel(id_) {
-	return document.getElementById ? document.getElementById(id_) : null;
-}
-
 function addCss() {
 	jsCss = '<style type="text/css">';
 	for (i = 1; i <= 10; i++) {
@@ -166,7 +162,7 @@ function addCss() {
 }
 
 function getColumnAsoc(id) {
-	var oNode = gel(id);
+	var oNode = document.getElementById(id);
 	var iNodeLen = oNode.childNodes.length;
 	var aNodeSet = [];
 	var k = 0;
@@ -175,10 +171,10 @@ function getColumnAsoc(id) {
 		if (oChild.className === 'le_widget') {
 			var sAttrId = oChild.getAttribute('id');
 			aNodeSet[k] = {
-				'type': gel(sAttrId + '_type').value,
-				'cls': gel(sAttrId + '_cls').value,
-				'res': gel(sAttrId + '_res').value,
-				'csv': gel(sAttrId + '_csv').value,
+				'type': document.getElementById(sAttrId + '_type').value,
+				'cls': document.getElementById(sAttrId + '_cls').value,
+				'res': document.getElementById(sAttrId + '_res').value,
+				'csv': document.getElementById(sAttrId + '_csv').value,
 				'id': sAttrId
 			};
 			k++;
@@ -188,20 +184,21 @@ function getColumnAsoc(id) {
 }
 
 function getWidgetProps(p) {
-	var oProps = {};
+	var attr_id, node, child, i, j, oProps = {};
 	for (i = 1; i <= _iLayoutCols; i++) {
-		var node = gel('c_' + i);
+		node = document.getElementById('c_' + i);
 		if (node === null) {
 			continue;
 		}
-		for (var j = 0; j < node.childNodes.length; j++) {
-			var child = node.childNodes[j];
+		for (j = 0; j < node.childNodes.length; j++) {
+			child = node.childNodes[j];
 			if (child.className === 'le_widget') {
-				var attr_id = child.getAttribute('id');
-				oProps[attr_id] = gel(attr_id + '_' + p).value;
+				attr_id = child.getAttribute('id');
+				oProps[attr_id] = document.getElementById(attr_id + '_' + p).value;
 			}
 		}
 	}
+	oProps.length = node.childNodes.length;
 	return oProps;
 }
 
@@ -209,8 +206,8 @@ function modifyLayoutCols(iCols) {
 	var i;
 	if (iCols > _iLayoutCols) {
 		var iAppendCols = iCols - _iLayoutCols;
-		var oTbl = gel('le_tblWidgets');
-		var oRow = gel('rowWidgets');
+		var oTbl = document.getElementById('le_tblWidgets');
+		var oRow = document.getElementById('rowWidgets');
 		for (i = 1; i <= iAppendCols; i++) {
 			var oCell = document.createElement('TD');
 			oCell.setAttribute('id', 'c_' + (_iLayoutCols + i));
@@ -237,13 +234,13 @@ function modifyLayoutCols(iCols) {
 		for (i = _iLayoutCols; i > iCols; i--) {
 			var asoc = getColumnAsoc('c_' + i);
 			for (var j = 0; j < asoc.length; j++) {
-				gel(asoc[j].id).parentNode.removeChild(gel(asoc[j].id));
+				document.getElementById(asoc[j].id).parentNode.removeChild(document.getElementById(asoc[j].id));
 			}
-			var oRemoveCol = gel('c_' + i);
+			var oRemoveCol = document.getElementById('c_' + i);
 			oRemoveCol.parentNode.removeChild(oRemoveCol);
 		}
 		_iLayoutCols -= iRemoveCols;
-		le_dragInit(gel('le_tblWidgets'));
+		le_dragInit(document.getElementById('le_tblWidgets'));
 	}
 }
 
@@ -325,7 +322,7 @@ function hasExpandedWidget(node) {
 	for (var i = 0; i < node.childNodes.length; i++) {
 		var currentChild = node.childNodes[i];
 		if (currentChild.className === 'le_widget') {
-			if (gel(currentChild.getAttribute('id') + '_res').value === "1") {
+			if (document.getElementById(currentChild.getAttribute('id') + '_res').value === "1") {
 				return true;
 			}
 		}
@@ -345,7 +342,7 @@ function jsStyleCls(evt, obj, cls1, cls2) {
 
 function updateJsStyleCls() {
 	for (var i = 1; i <= _iLayoutCols; i++) {
-		var oCol = gel('c_' + i);
+		var oCol = document.getElementById('c_' + i);
 		if (hasExpandedWidget(oCol)) {
 			cls1 = 'cls_' + i + '_expand';
 			cls2 = 'cls_' + i + '_collapse';
@@ -364,11 +361,11 @@ function updateJsStyleCls() {
 }
 
 function getLabel(id) {
-	return gel(id + '_prefix').value + gel(id + '_postfix').value;
+	return document.getElementById(id + '_prefix').value + document.getElementById(id + '_postfix').value;
 }
 
 function setLabel(id, prefix, postfix) {
-	var el_label = gel(id + '_lbl');
+	var el_label = document.getElementById(id + '_lbl');
 	var w = parseInt(el_label.style.width);
 	var suspensionPts = '';
 	if (prefix === undefined || postfix === undefined) {
@@ -388,7 +385,7 @@ function setLabel(id, prefix, postfix) {
 }
 
 function setWidth(id, w) {
-	gel(id).style.width = w + 'px';
+	document.getElementById(id).style.width = w + 'px';
 }
 
 function setWidgetWidth(id, w) {
@@ -397,11 +394,11 @@ function setWidgetWidth(id, w) {
 
 
 function resizeWidget(id) {
-	var _type = gel(id + '_type').value;
+	var _type = document.getElementById(id + '_type').value;
 	var w = (resizeIdx('get', id) === "0") ? oCfg.general_.w_expand : oCfg.general_.w_collapse;
 	resizeIdx('swap', id);
 	setWidgetWidth(id, w);
-	gel(id + '_lbl').innerHTML = '';
+	document.getElementById(id + '_lbl').innerHTML = '';
 	setLabel(id);
 	updateJsStyleCls();
 	initWidget(id); // resize widget, etc.
@@ -409,14 +406,14 @@ function resizeWidget(id) {
 }
 
 function initWidget(_id) {
-	var oNode = gel(_id + '_type');
+	var oNode = document.getElementById(_id + '_type');
 	if (oNode && oNode.value === "sct") {
 		var _width = "100%";
 		if (resizeIdx('get', _id) === "1") {
 			_width = "48%";
 		}
 
-		var _elem = gel(_id);
+		var _elem = document.getElementById(_id);
 		var _inlineDivs = _elem.getElementsByTagName('div');
 		for (i = 0; i < _inlineDivs.length; i++) {
 			if (_inlineDivs[i].className === "sct_row") {
@@ -427,8 +424,8 @@ function initWidget(_id) {
 }
 
 function setTheme(wizId, wizTheme) {
-	var objs = [gel(wizId + '_bx')];
-	var clsElement = gel(wizId + '_cls');
+	var objs = [document.getElementById(wizId + '_bx')];
+	var clsElement = document.getElementById(wizId + '_cls');
 	var replaceClsName = clsElement.value;
 	var o;
 	clsElement.value = wizTheme;
@@ -438,7 +435,7 @@ function setTheme(wizId, wizTheme) {
 			objs[o].classList.add('bgc_' + wizTheme);
 		}
 	}
-	var _bgObjs = [gel(wizId + '_lbl')];
+	var _bgObjs = [document.getElementById(wizId + '_lbl')];
 	for (o in _bgObjs) {
 		_bgObjs[o].classList.remove(_bgObjs[o].classList[_bgObjs[o].classList.length - 1]);
 		_bgObjs[o].classList.add("widgetTitle_" + wizTheme);
@@ -446,7 +443,7 @@ function setTheme(wizId, wizTheme) {
 }
 
 function setOpacity(sId, degree) {
-	var obj = gel(sId);
+	var obj = document.getElementById(sId);
 	obj.style.opacity = (degree / 100);
 	obj.style.MozOpacity = (degree / 100);
 	obj.style.KhtmlOpacity = (degree / 100);
@@ -458,7 +455,7 @@ function fadeTrans(wizId, start, end, ms) {
 	var t = 0;
 	if (start > end) {
 		for (i = start; i >= end; i--) {
-			var obj = gel(wizId);
+			var obj = document.getElementById(wizId);
 			setTimeout('setOpacity("' + wizId + '",' + i + ')', (t * v));
 			t++;
 		}
@@ -484,28 +481,28 @@ function toggle(wizId, wizType, prefix, postfix) {
 	};
 	for (var att_name in asoc) {
 		for (var v in asoc[att_name]) {
-			gel(wizId + v).style[att_name] = asoc[att_name][v] + "px";
+			document.getElementById(wizId + v).style[att_name] = asoc[att_name][v] + "px";
 		}
 	}
 	for (var p in props) {
-		gel(wizId + '_' + p).value = props[p];
+		document.getElementById(wizId + '_' + p).value = props[p];
 	}
-	if (defRes === "1" && !gel('c_1').classList.contains('cls_1_expand')) {
+	if (defRes === "1" && !document.getElementById('c_1').classList.contains('cls_1_expand')) {
 		updateJsStyleCls();
 	}
 }
 
 function pushContent(wizType, wizId, cNode, prefix, postfix, sCsv) {
-	var cNodeReceptor = gel(wizId + '_content');
+	var cNodeReceptor = document.getElementById(wizId + '_content');
 	var wizTheme = oCfg[wizType + "_props_"].cls;
 	cNodeReceptor.innerHTML = cNode;
-	gel(wizId + '_csv').value = sCsv;
+	document.getElementById(wizId + '_csv').value = sCsv;
 	toggle(wizId, wizType, prefix, postfix);
 	setLabel(wizId);
 	if (wizTheme !== 'white') {
 		setTheme(wizId, wizTheme);
 	}
-	gel(wizId).style.display = 'block';
+	document.getElementById(wizId).style.display = 'block';
 	if (oCfg.blend_.fadeIn !== undefined) {
 		fadeTrans(wizId, 0, 100, oCfg.blend_.v);
 	}
@@ -517,11 +514,11 @@ function createWidget(typ, row, col) {
 		document.getElementById('c_' + col).className = 'cls_' + col + '_expand';
 	}
 //EOF for IE
-	var domNode = gel('c_' + col);
+	var domNode = document.getElementById('c_' + col);
 	var asoc = getColumnAsoc('c_' + col);
 	var properties = getWidgetProps('type');
 	var idx = properties.length /*+ 1*/;
-	while (gel('m_' + idx) !== null) {
+	while (document.getElementById('m_' + idx) !== null) {
 		idx++;
 	}
 	var new_id = 'm_' + idx;
@@ -532,7 +529,7 @@ function createWidget(typ, row, col) {
 			break;
 		}
 	}
-	var nodeToClone = gel(cloneSampleId);
+	var nodeToClone = document.getElementById(cloneSampleId);
 	var regex = cloneSampleId;
 	var re = new RegExp(((cloneSampleId === 'divClone') ? new_id + '|clone' : cloneSampleId), 'g');
 	var sClonedNode = nodeToClone.innerHTML.replace(re, new_id);
@@ -548,17 +545,17 @@ function createWidget(typ, row, col) {
 		divClone.style.display = 'none';
 	}
 	if (asoc.length && row) {
-		domNode.insertBefore(divClone, gel(asoc[row - 1].id));
+		domNode.insertBefore(divClone, document.getElementById(asoc[row - 1].id));
 	} else { // add to empty col - before wildcard!
-		var _td = gel("c_" + col);
+		var _td = document.getElementById("c_" + col);
 		_td.insertBefore(
 						divClone,
 						_td.childNodes[0]
 						);
 	}
 	if (findInArray(_noResizeTypes, typ) > -1) {
-		var oPrc = gel(new_id + '_ico_prc');
-		var oPc = gel(new_id + '_ico_pc');
+		var oPrc = document.getElementById(new_id + '_ico_prc');
+		var oPc = document.getElementById(new_id + '_ico_pc');
 		if (oPrc) {
 			oPrc.parentNode.removeChild(oPrc);
 		}
@@ -577,7 +574,7 @@ function createWidget(typ, row, col) {
 	} else {
 		top.we_cmd('edit_home', 'add', typ, new_id);
 	}
-	tableNode = gel('le_tblWidgets');
+	tableNode = document.getElementById('le_tblWidgets');
 	le_dragInit(tableNode);
 	saveSettings();
 }
@@ -616,11 +613,11 @@ function composeUri(args) {
  * show the spinning wheel for a widget
  */
 function showLoadingSymbol(elementId) {
-	if (!gel("rpcBusyClone_" + elementId)) { // only show ONE loading symbol per widget
+	if (!document.getElementById("rpcBusyClone_" + elementId)) { // only show ONE loading symbol per widget
 
-		var clone = gel("rpcBusy").cloneNode(true);
-		var wpNode = gel(elementId + "_wrapper");
-		var ctNode = gel(elementId + "_content");
+		var clone = document.getElementById("rpcBusy").cloneNode(true);
+		var wpNode = document.getElementById(elementId + "_wrapper");
+		var ctNode = document.getElementById(elementId + "_content");
 		ctNode.style.display = "none";
 		wpNode.style.textAlign = "center";
 		wpNode.style.verticalAlign = "middle";
@@ -635,11 +632,11 @@ function showLoadingSymbol(elementId) {
  * hide the spinning wheel for a widget
  */
 function hideLoadingSymbol(elementId) {
-	if (gel('rpcBusyClone_' + elementId)) {
-		var oWrapper = gel(elementId + '_wrapper');
+	if (document.getElementById('rpcBusyClone_' + elementId)) {
+		var oWrapper = document.getElementById(elementId + '_wrapper');
 		oWrapper.style.textAlign = 'left';
 		oWrapper.style.verticalAlign = 'top';
-		gel('rpcBusyClone_' + elementId).parentNode.removeChild(gel('rpcBusyClone_' + elementId));
+		document.getElementById('rpcBusyClone_' + elementId).parentNode.removeChild(document.getElementById('rpcBusyClone_' + elementId));
 	}
 }
 
@@ -648,7 +645,7 @@ function hideLoadingSymbol(elementId) {
 function updateWidgetContent(widgetType, widgetId, contentData, titel) {
 
 	var docIFrm, iFrmScr;
-	var oInline = gel(widgetId + '_inline'); // object-inline
+	var oInline = document.getElementById(widgetId + '_inline'); // object-inline
 
 	oInline.style.display = "block";
 	if (widgetType === 'pad') {
@@ -666,7 +663,7 @@ function updateWidgetContent(widgetType, widgetId, contentData, titel) {
 		}
 	}
 
-	var oContent = gel(widgetId + '_content');
+	var oContent = document.getElementById(widgetId + '_content');
 	oContent.style.display = 'block';
 	hideLoadingSymbol(widgetId);
 	var doc = (widgetType === 'pad' ? docIFrm.getElementById(widgetType) : oInline);
@@ -692,7 +689,7 @@ function updateWidgetContent(widgetType, widgetId, contentData, titel) {
 function executeAjaxRequest(param_1, initCfg, param_3, param_4, titel, widgetId) {
 
 	// determine type of the widget
-	var widgetType = gel(widgetId + '_type').value;
+	var widgetType = document.getElementById(widgetId + '_type').value;
 
 	showLoadingSymbol(widgetId);
 	var _cmdName = null;
@@ -739,7 +736,7 @@ function rpc(a, b, c, d, e, wid, path) {
 	if (!document.createElement) {
 		return true;
 	}
-	var sType = gel(wid + '_type').value;
+	var sType = document.getElementById(wid + '_type').value;
 	showLoadingSymbol(wid);
 
 	// temporaryliy add a form submit the form and save all !
@@ -780,7 +777,7 @@ function rpc(a, b, c, d, e, wid, path) {
 
 function rpcHandleResponse(sType, sObjId, oDoc, sCsvLabel) {
 	var docIFrm, iFrmScr, doc;
-	var oInline = gel(sObjId + '_inline');
+	var oInline = document.getElementById(sObjId + '_inline');
 
 	oInline.style.display = "block";
 
@@ -800,7 +797,7 @@ function rpcHandleResponse(sType, sObjId, oDoc, sCsvLabel) {
 				return true;
 			}
 	}
-	var oContent = gel(sObjId + '_content');
+	var oContent = document.getElementById(sObjId + '_content');
 	oContent.style.display = 'block';
 
 	hideLoadingSymbol(sObjId);
@@ -838,31 +835,31 @@ function closeAllModalWindows() {
 }
 
 function setMsgCount(num) {
-	if (gel('msg_count')) {
-		gel('msg_count').innerHTML = '<b>' + num + '</b>';
+	if (document.getElementById('msg_count')) {
+		document.getElementById('msg_count').innerHTML = '<b>' + num + '</b>';
 	}
 }
 
 function setTaskCount(num) {
-	if (gel('task_count')) {
-		gel('task_count').innerHTML = '<b>' + num + '</b>';
+	if (document.getElementById('task_count')) {
+		document.getElementById('task_count').innerHTML = '<b>' + num + '</b>';
 	}
 }
 
 function setUsersOnline(num) {
-	if (gel('num_users')) {
-		gel('num_users').innerHTML = num;
+	if (document.getElementById('num_users')) {
+		document.getElementById('num_users').innerHTML = num;
 	}
 }
 
 function setUsersListOnline(users) {
-	if (gel('users_online')) {
-		gel('users_online').innerHTML = users;
+	if (document.getElementById('users_online')) {
+		document.getElementById('users_online').innerHTML = users;
 	}
 }
 function setMfdData(data) {
-	if (gel('mfd_data')) {
-		gel('mfd_data').innerHTML = data;
+	if (document.getElementById('mfd_data')) {
+		document.getElementById('mfd_data').innerHTML = data;
 		WE().util.setIconOfDocClass(document, "mfdIcon");
 	}
 }
@@ -874,11 +871,11 @@ function getUser() {
 }
 
 function resizeIdx(a, id) {
-	var res = gel(id + '_res').value;
+	var res = document.getElementById(id + '_res').value;
 	switch (a) {
 		case 'swap':
-			gel(id + '_res').value = (res === "0") ? "1" : "0";
-			gel(id + '_icon_resize').title = (res === "0") ? WE().consts.g_l.cockpit.reduce_size : WE().consts.g_l.cockpit.increase_size;
+			document.getElementById(id + '_res').value = (res === "0") ? "1" : "0";
+			document.getElementById(id + '_icon_resize').title = (res === "0") ? WE().consts.g_l.cockpit.reduce_size : WE().consts.g_l.cockpit.increase_size;
 			break;
 		case 'get':
 			return res;
@@ -888,7 +885,7 @@ function resizeIdx(a, id) {
 function removeWidget(wizId) {
 	var remove = confirm(WE().consts.g_l.cockpit.pre_remove + getLabel(wizId) + WE().consts.g_l.cockpit.post_remove);
 	if (remove === true) {
-		gel(wizId).parentNode.removeChild(gel(wizId));
+		document.getElementById(wizId).parentNode.removeChild(document.getElementById(wizId));
 		updateJsStyleCls();
 	}
 	saveSettings();
@@ -945,6 +942,12 @@ function getDimension(theString, styleClassElement) {
 	}
 
 	return dim;
+}
+
+function transmit(doc, type, id) {
+	if (WE().layout.cockpitFrame) {
+		WE().layout.cockpitFrame.pushContent(type, id, doc.document.getElementById('content').innerHTML, doc.document.getElementById('prefix').innerHTML, doc.document.getElementById('postfix').innerHTML, doc.document.getElementById('csv').innerHTML);
+	}
 }
 
 //dont move this as on load event, since adding css will fire load event again.

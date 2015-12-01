@@ -34,9 +34,9 @@ var state_' . $unique . '=0;
 function clip_' . $unique . '(){
 	var text_' . $unique . '="' . addslashes($text) . '";
 	var textsmall_' . $unique . ' = "' . addslashes($smalltext) . '";
-	var oText=gel("' . $unique . '");
-	var oDiv=gel("div_' . $unique . '");
-	var oBtn=gel("btn_' . $unique . '");
+	var oText=document.getElementById("' . $unique . '");
+	var oDiv=document.getElementById("div_' . $unique . '");
+	var oBtn=document.getElementById("btn_' . $unique . '");
 
 	if(state_' . $unique . '==0){
 		oText.innerHTML=text_' . $unique . ';

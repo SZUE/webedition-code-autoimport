@@ -26,7 +26,7 @@
 
 function init() {
 	_fo = document.forms[0];
-	_oCsv_ = opener.gel(_sObjId + '_csv');
+	_oCsv_ = opener.document.getElementById(_sObjId + '_csv');
 	_sInitCsv_ = _oCsv_.value;
 	_oSctDate = _fo.elements.sct_date;
 	_fo.elements.revenueTarget.value = _sInitNum;
