@@ -22,29 +22,24 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_wizard_code{
-
+abstract class we_wizard_code{
 	/**
 	 * Directory where the snippets are located
 	 *
 	 * @var string
 	 */
-	var $SnippetPath = "";
-
-	function __construct(){
-		$this->SnippetPath = WE_INCLUDES_PATH . 'weCodeWizard/data/';
-	}
+	const SnippetPath = 'weCodeWizard/data/';
 
 	/**
 	 * get all custom specific snippets
 	 *
 	 * @return array
 	 */
-	function _getCustomSnippets(){
-		$SnippetDir = $this->SnippetPath . 'custom';
+	private static function getCustomSnippets(){
+		$SnippetDir = WE_INCLUDES_PATH . self::SnippetPath . 'custom';
 		return (!is_dir($SnippetDir) ?
 				array() :
-				$this->_getSnippetsByDir('custom'));
+				self::getSnippetsByDir('custom'));
 	}
 
 	/**
@@ -52,13 +47,12 @@ class we_wizard_code{
 	 *
 	 * @return array
 	 */
-	function _getStandardSnippets(){
-
-		$SnippetDir = $this->SnippetPath . 'default';
+	private static function getStandardSnippets(){
+		$SnippetDir = WE_INCLUDES_PATH . self::SnippetPath . 'default';
 
 		return (!is_dir($SnippetDir) ?
 				array() :
-				$this->_getSnippetsByDir('default'));
+				self::getSnippetsByDir('default'));
 	}
 
 	/**
@@ -66,21 +60,21 @@ class we_wizard_code{
 	 *
 	 * @return array
 	 */
-	function _getSnippetsByDir($SnippetDir, $Depth = 0){
+	private static function getSnippetsByDir($SnippetDir, $Depth = 0){
 
 		$Snippets = array();
 
 		$Depth++;
-		$_dir = dir($this->SnippetPath . $SnippetDir);
+		$_dir = dir(WE_INCLUDES_PATH . self::SnippetPath . $SnippetDir);
 		while(false !== ($_entry = $_dir->read())){
 
 			// ignore files . and ..
 			if($_entry === '.' || $_entry === '..'){
 				// ignore these
 				// get the snippets by file if extension is xml
-			} elseif(!is_dir($this->SnippetPath . $SnippetDir . '/' . $_entry) && substr_compare($_entry, '.xml', -4, 4, true) == 0){
+			} elseif(!is_dir(WE_INCLUDES_PATH . self::SnippetPath . $SnippetDir . '/' . $_entry) && substr_compare($_entry, '.xml', -4, 4, true) == 0){
 				// get the snippet
-				$_snippet = new we_wizard_codeSnippet($this->SnippetPath . $SnippetDir . '/' . $_entry);
+				$_snippet = new we_wizard_codeSnippet(WE_INCLUDES_PATH . self::SnippetPath . $SnippetDir . '/' . $_entry);
 				$_item = array(
 					'type' => 'option',
 					'name' => $_snippet->getName(),
@@ -89,10 +83,10 @@ class we_wizard_code{
 				$Snippets[] = $_item;
 
 				// enter subdirectory only if depth is smaller than 2
-			} elseif(is_dir($this->SnippetPath . $SnippetDir . '/' . $_entry) && $Depth < 2){
+			} elseif(is_dir(WE_INCLUDES_PATH . self::SnippetPath . $SnippetDir . '/' . $_entry) && $Depth < 2){
 
 				$information = array();
-				$_infoFile = $this->SnippetPath . $SnippetDir . '/' . $_entry . '/_information.inc.php';
+				$_infoFile = WE_INCLUDES_PATH . self::SnippetPath . $SnippetDir . '/' . $_entry . '/_information.inc.php';
 				if(file_exists($_infoFile) && is_file($_infoFile)){
 					include ($_infoFile);
 				}
@@ -105,7 +99,7 @@ class we_wizard_code{
 				$_folder = array(
 					'type' => 'optgroup',
 					'name' => $_foldername,
-					'value' => $this->_getSnippetsByDir($SnippetDir . '/' . $_entry, $Depth)
+					'value' => self::getSnippetsByDir($SnippetDir . '/' . $_entry, $Depth)
 				);
 				$Snippets[] = $_folder;
 			}
@@ -123,17 +117,16 @@ class we_wizard_code{
 	 * @param string $type
 	 * @return string
 	 */
-	function getSelect($type = 'standard'){
-
+	public static function getSelect($type = 'standard'){
 		$_options = array();
 
 		switch($type){
 			case 'custom' :
-				$_options = $this->_getCustomSnippets();
+				$_options = self::getCustomSnippets();
 				break;
 
 			default :
-				$_options = $this->_getStandardSnippets();
+				$_options = self::getStandardSnippets();
 				break;
 		}
 
@@ -163,7 +156,7 @@ class we_wizard_code{
 	 *
 	 * @return string
 	 */
-	function getJavascript(){
+	public static function getJavascript(){
 		return we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
