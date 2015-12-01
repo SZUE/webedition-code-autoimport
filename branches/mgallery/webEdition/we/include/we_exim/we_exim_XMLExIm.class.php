@@ -262,8 +262,7 @@ class we_exim_XMLExIm{
 
 	function queryForAllowed($table){
 		$db = new DB_WE();
-		$parentpaths = array();
-		$wsQuery = array();
+		$parentpaths = $wsQuery = array();
 		if(($ws = get_ws($table))){
 			$wsPathArray = id_to_path($ws, $table, $db, false, true);
 			foreach($wsPathArray as $path){

@@ -623,7 +623,7 @@ we_templateInit();?>';
 	}
 
 	function _updateCompleteCode(){
-		if(!$this->doUpdateCode){
+		if(!$this->doUpdateCode || defined('IMPORT_RUNNING')){
 			return true;
 		}
 		static $cnt = 0;

@@ -63,7 +63,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 		foreach($this->PatternSearch->obj_patterns["id"] as $pattern){
 			if(preg_match_all($pattern, $text, $match)){
 				foreach($match[2] as $include){
-					$this->addToDepArray($level, $include, we_base_ContentTypes::OBJECT_FILE);
+					$this->addToDepArray($level, $include, we_base_ContentTypes::OBJECT_FILE, OBJECT_FILES_TABLE);
 				}
 			}
 		}
@@ -172,7 +172,8 @@ class we_export_preparer extends we_exim_XMLExIm{
 			foreach($patterns as $pattern){
 				if(preg_match_all($pattern, $text, $match)){
 					foreach($match[2] as $k => $include){
-						$this->addToDepArray($level, $include, (strpos($match[1][$k], we_base_link::TYPE_OBJ_PREFIX) !== false ? 'objectFile' : ''));
+						$isobj = (strpos($match[1][$k], we_base_link::TYPE_OBJ_PREFIX) !== false);
+						$this->addToDepArray($level, $include, ($isobj ? 'objectFile' : ''), ($isobj ? OBJECT_FILES_TABLE : ''));
 					}
 				}
 			}
@@ -281,7 +282,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 
 		if($object instanceof we_template){
 			if($this->options["handle_def_templates"] && $object->MasterTemplateID){
-				$this->addToDepArray($level, $object->MasterTemplateID, we_base_ContentTypes::TEMPLATE);
+				$this->addToDepArray($level, $object->MasterTemplateID, we_base_ContentTypes::TEMPLATE, TEMPLATES_TABLE);
 			}
 			$_data = $object->getElement("data");
 			if($this->options["handle_document_includes"]){
@@ -305,7 +306,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 				foreach($this->PatternSearch->tmpl_patterns as $_include_pattern){
 					if(preg_match_all($_include_pattern, $_data, $match)){
 						foreach($match[2] as $key => $value){
-							$this->addToDepArray($level, $value, we_base_ContentTypes::TEMPLATE);
+							$this->addToDepArray($level, $value, we_base_ContentTypes::TEMPLATE, TEMPLATES_TABLE);
 						}
 					}
 				}
@@ -313,21 +314,21 @@ class we_export_preparer extends we_exim_XMLExIm{
 		}
 
 		if(!empty($object->TemplateID) && $this->options["handle_def_templates"]){
-			$this->addToDepArray($level, $object->TemplateID, we_base_ContentTypes::TEMPLATE);
+			$this->addToDepArray($level, $object->TemplateID, we_base_ContentTypes::TEMPLATE, TEMPLATES_TABLE);
 		}
 
 		if(isset($object->TableID) && $this->options["handle_def_classes"]){
-			$this->addToDepArray($level, $object->TableID, we_base_ContentTypes::OBJECT);
+			$this->addToDepArray($level, $object->TableID, we_base_ContentTypes::OBJECT, OBJECT_TABLE);
 		}
 
 		if(!empty($object->DocType) && $object->ClassName != "we_docTypes" && $this->options["handle_doctypes"]){
-			$this->addToDepArray($level, $object->DocType, 'doctype');
+			$this->addToDepArray($level, $object->DocType, 'doctype', DOC_TYPES_TABLE);
 		}
 
 		if(!empty($object->Category) && $object->ClassName != "we_category" && $this->options["handle_categorys"]){
 			$cats = makeArrayFromCSV($object->Category);
 			foreach($cats as $cat){
-				$this->addToDepArray($level, $cat, 'category');
+				$this->addToDepArray($level, $cat, 'category', CATEGORY_TABLE);
 			}
 		}
 
@@ -335,12 +336,12 @@ class we_export_preparer extends we_exim_XMLExIm{
 			foreach($object->elements as $key => $value){
 				if(preg_match('|we_object_[0-9]+|', $key)){
 					if(isset($value['dat'])){
-						$this->addToDepArray($level, $value['dat'], we_base_ContentTypes::OBJECT_FILE);
+						$this->addToDepArray($level, $value['dat'], we_base_ContentTypes::OBJECT_FILE, OBJECT_FILES_TABLE);
 					}
 				}
 				if(preg_match('|we_object_[0-9]+_path|', $key)){
 					if(isset($value['dat'])){
-						$this->addToDepArray($level, path_to_id($value['dat'], OBJECT_FILES_TABLE, $GLOBALS['DB_WE']), we_base_ContentTypes::OBJECT_FILE);
+						$this->addToDepArray($level, path_to_id($value['dat'], OBJECT_FILES_TABLE, $GLOBALS['DB_WE']), we_base_ContentTypes::OBJECT_FILE, OBJECT_FILES_TABLE);
 					}
 				}
 				switch((empty($value['type']) ? '' : $value['type'])){

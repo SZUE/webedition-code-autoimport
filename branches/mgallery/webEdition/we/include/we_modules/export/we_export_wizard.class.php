@@ -1226,7 +1226,7 @@ if (top.footer.setProgress){
 				} else {
 					$xmlExIm->RefTable = $this->exportVars["RefTable"];
 					$xmlExIm->RefTable->current = $this->exportVars["CurrentRef"];
-					$all = count($xmlExIm->RefTable->Storage);
+					$all = $xmlExIm->RefTable->getCount();
 					$ref = $xmlExIm->RefTable->getNext();
 					if($ref->ID && $ref->ContentType){
 						$xmlExIm->exportChunk($ref->ID, $ref->ContentType, $filename);

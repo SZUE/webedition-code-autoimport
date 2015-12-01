@@ -349,8 +349,8 @@ if (top.wizbody.addLog){
 								if($ref){
 									$xmlExIm->savePerserves();
 
-									$JScript = "top.wizbusy.setProgressText('pb1','" . g_l('import', '[update_links]') . $xmlExIm->RefTable->current . '/' . count($xmlExIm->RefTable->Storage) . "');
-										top.wizbusy.setProgress(Math.floor(((" . (int) ($v['cid'] + $xmlExIm->RefTable->current) . "+1)/" . (int) ($xmlExIm->RefTable->getLastCount() + $v["numFiles"]) . ")*100));";
+									$JScript = "top.wizbusy.setProgressText('pb1','" . g_l('import', '[update_links]') . $xmlExIm->RefTable->current . '/' . $xmlExIm->RefTable->getCount() . "');
+										top.wizbusy.setProgress(Math.floor(((" . (int) ($v['cid'] + $xmlExIm->RefTable->current) . "+1)/" . (int) ($xmlExIm->RefTable->getCount() + $v["numFiles"]) . ")*100));";
 
 
 									$out .= we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
@@ -395,9 +395,9 @@ setTimeout(function(){we_import(1," . $v['numFiles'] . ");},15);";
 									));
 									$imported = $xmlExIm->import($chunk);
 									$xmlExIm->savePerserves();
-									$ref = $xmlExIm->RefTable->getLast();
 									if($imported){
 										$_status = g_l('import', '[import]');
+										$ref = $xmlExIm->RefTable->getLast();
 
 										switch($ref->ContentType){
 											case 'weBinary':
@@ -435,7 +435,7 @@ setTimeout(function(){we_import(1," . $v['numFiles'] . ");},15);";
 										$_status = g_l('import', '[skip]');
 										echo we_html_element::jsElement(
 											'if (top.wizbody.addLog){
-												top.wizbody.addLog("' . addslashes(g_l('import', '[skip]') . we_html_tools::getPixel(50, 5) . $ref->Path) . '<br/>");
+												top.wizbody.addLog("' . addslashes(g_l('import', '[skip]')) . '<br/>");
 											}');
 									}
 

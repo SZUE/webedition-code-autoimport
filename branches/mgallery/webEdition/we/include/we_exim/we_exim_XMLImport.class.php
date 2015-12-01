@@ -61,27 +61,27 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 		foreach($objects as $object){
 			$save = true;
 			$extra = array(
-				"OldID" => isset($object->ID) ? $object->ID : 0,
-				"OldParentID" => isset($object->ParentID) ? $object->ParentID : 0,
-				"OldPath" => isset($object->Path) ? $object->Path : "",
-				"OldTemplatePath" => isset($object->TemplatePath) ? $object->TemplatePath : "",
-				'OldDocTypeName' => isset($object->DocTypeName) ? $object->DocTypeName : "",
-				"Examined" => 1,
+				'OldID' => isset($object->ID) ? $object->ID : 0,
+				'OldParentID' => isset($object->ParentID) ? $object->ParentID : 0,
+				'OldPath' => isset($object->Path) ? $object->Path : '',
+				'OldTemplatePath' => isset($object->TemplatePath) ? $object->TemplatePath : '',
+				'OldDocTypeName' => isset($object->DocTypeName) ? $object->DocTypeName : '',
+				'Examined' => 1,
 			);
 
 			if(isset($object->elements)){
-				$extra["elements"] = $object->elements;
+				$extra['elements'] = $object->elements;
 			}
 
 			$object->ID = 0;
 			$object->Table = $this->getTable($object->ClassName);
 
 			switch($object->ClassName){
-				case "weModelBase":
-					$extra["ContentType"] = "category";
+				case 'weModelBase':
+					$extra['ContentType'] = 'category';
 					break;
-				case "we_docTypes":
-					$extra["ContentType"] = "doctype";
+				case 'we_docTypes':
+					$extra['ContentType'] = 'doctype';
 					$dtid = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType="' . $db->escape($object->DocType) . '"', '', $db);
 					if($dtid){
 						switch($this->options["handle_collision"]){
@@ -97,7 +97,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 						}
 					}
 					break;
-				case "weNavigationRule":
+				case 'weNavigationRule':
 					$nid = f('SELECT ID FROM ' . NAVIGATION_RULE_TABLE . ' WHERE NavigationName="' . $db->escape($object->NavigationName) . '"', '', $db);
 					if($nid){
 						switch($this->options["handle_collision"]){
@@ -117,12 +117,12 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 				case 'we_thumbnailEx':
 					$nid = f('SELECT ID FROM ' . THUMBNAILS_TABLE . ' WHERE Name="' . $db->escape($object->Name) . '"', "", $db);
 					if($nid){
-						switch($this->options["handle_collision"]){
-							case "replace":
+						switch($this->options['handle_collision']){
+							case 'replace':
 								$object->ID = $nid;
 								break;
-							case "rename":
-								$this->getNewName($object, $nid, "Name");
+							case 'rename':
+								$this->getNewName($object, $nid, 'Name');
 								break;
 							default:
 								$save = false;
@@ -142,15 +142,15 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 							}
 							$object->Path = $prefix . ($this->options["restore_doc_path"] ?
 											$object->Path :
-											"/" . $object->Text);
+											'/' . $object->Text);
 							break;
 						case TEMPLATES_TABLE:
 							if($this->options["template_path"]){
 								$prefix = id_to_path($this->options["template_path"], TEMPLATES_TABLE, $db);
 							}
 							$object->Path = $prefix . ($this->options["restore_tpl_path"] ?
-											$object->Path :
-											"/" . $object->Text);
+									$object->Path :
+									'/' . $object->Text);
 							break;
 						case NAVIGATION_TABLE:
 							if($this->options["navigation_path"]){
@@ -159,7 +159,6 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 							$object->Path = $prefix . $object->Path;
 							break;
 					}
-
 
 					$object->Path = we_base_file::clearPath($object->Path);
 
@@ -197,7 +196,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 						//dont create Path in objects if the class doesn't exist
 						$match = array();
 						preg_match('|(/+[a-zA-Z0-9_+-\.]*)|', $object->Path, $match);
-						if(isset($match[0]) && !f('SELECT 1 FROM ' . OBJECT_TABLE . ' WHERE Path="' . $db->escape($match[0]) . '"  LIMIT 1', '', $db)){
+						if(isset($match[0]) && !f('SELECT 1 FROM ' . OBJECT_TABLE . ' WHERE Path="' . $db->escape($match[0]) . '" LIMIT 1', '', $db)){
 							return false;
 						}
 					}
@@ -209,38 +208,43 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					foreach($pathids as $pid){
 
 						$h = getHash('SELECT ParentID,Path FROM ' . $db->escape($object->Table) . ' WHERE ID=' . intval($pid), $db);
-						if(!$this->RefTable->exists(array("ID" => $pid, "ContentType" => "folder"))){
-							$this->RefTable->add2(array(
-								"ID" => $pid,
-								"ParentID" => $h["ParentID"],
-								"Path" => $h["Path"],
-								"Table" => $object->Table,
-								"ContentType" => "folder",
-								"OldID" => ($pid == $object->ParentID) ? $_old_pid : null,
-								"OldParentID" => null,
-								"OldPath" => null,
-								"OldTemplatePath" => null,
-								"Examined" => 0,
-							));
+						if(!$this->RefTable->exists(array('ID' => $pid, 'ContentType' => 'folder'))){
+							$this->RefTable->add2(
+								array(
+									'ID' => $pid,
+									'ParentID' => $h['ParentID'],
+									'Path' => $h['Path'],
+									'Table' => $object->Table,
+									'ContentType' => 'folder',
+									'OldID' => ($pid == $object->ParentID) ? $_old_pid : null,
+									'OldParentID' => null,
+									'OldPath' => null,
+									'OldTemplatePath' => null,
+									'Examined' => 0,
+								)
+							);
 						}
 					}
 				}
 
 				if($object->ClassName === 'weBinary'){
 					if(is_file($_SERVER['DOCUMENT_ROOT'] . $object->Path)){
-						if($this->options['handle_collision'] === 'replace'){
-							$save = true;
-						} else if($this->options['handle_collision'] === 'rename'){
-							$_c = 1;
-							do{
-								$_path = $object->Path . '_' . $_c;
-								$_c++;
-							}while(is_file($_SERVER['DOCUMENT_ROOT'] . $_path));
-							$object->Path = $_path;
-							unset($_path);
-							unset($_c);
-						} else {
-							$save = false;
+						switch($this->options['handle_collision']){
+							case 'replace':
+								$save = true;
+								break;
+							case 'rename':
+								$_c = 1;
+								do{
+									$_path = $object->Path . '_' . $_c;
+									$_c++;
+								} while(is_file($_SERVER['DOCUMENT_ROOT'] . $_path));
+								$object->Path = $_path;
+								unset($_path);
+								unset($_c);
+								break;
+							default:
+								$save = false;
 						}
 					}
 

@@ -464,7 +464,7 @@ function closeAllType(){
 			$xmlExIm->RefTable->reset();
 			$xmlExIm->savePerserves();
 
-			$all = $xmlExIm->RefTable->getLastCount();
+			$all = $xmlExIm->RefTable->getCount();
 			$hiddens = we_html_element::htmlHiddens(array(
 					"pnt" => "cmd",
 					"all" => $all,
@@ -479,7 +479,7 @@ function closeAllType(){
 
 			$xmlExIm->loadPerserves();
 			$xmlExIm->prepareExport();
-			$all = count($xmlExIm->RefTable->Storage) - 1;
+			$all = $xmlExIm->RefTable->getCount() - 1;
 			$xmlExIm->prepare = ($all > $xmlExIm->RefTable->current) && ($xmlExIm->RefTable->current != 0);
 
 
@@ -528,7 +528,7 @@ if(top.content.editor.edbody.addLog){
 		$xmlExIm->loadPerserves();
 		$exports = 0;
 
-		$all = count($xmlExIm->RefTable->Storage);
+		$all = $xmlExIm->RefTable->getCount();
 
 		$ref = $xmlExIm->RefTable->getNext();
 
