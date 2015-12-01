@@ -25,51 +25,53 @@
 class we_exim_searchPatterns{
 	public $doc_patterns = array(
 		'id' => array(
-			'/<(we:include\s[^>]*\s+type\s*=\s*[\"\'\\\\]+document[\"|\']+\s[^>]*\s+id\s\=\s[\"\'\\\\]*\s)([^\'\"> ? \\\]*)(\s[^>]*)>/sie',
-			'/<(we:include\s[^>]*\s+id\s*=\s*[\"\'\\\\]*\s)([^\'\"> ? \\\]*)(\s[^>]+\stype\s\=\s[\"\'\\\\]+document[\"|\']+\s[^>]*)>/sie',
-			'/<(we:include\s[^>]*\s+id\s*=\s*[\"\'\\\\]*\s)([^\'\"> ? \\\]*)[^>]*>/sie',
+			'/<(we:include\s*[^>]*\stype\s*=\s*[\"\']document[\"\'][^>]*\sid\s*=\s*[\"\'])(\d+)([\"\'][^>]*)>/si',
+			'/<(we:include\s*[^>]*\sid\s*=\s*[\"\'])(\d+)([\"\']\stype\s*=\s*["\']document["\'][^>]*)>/si',
 			//replace #WE:1223#
 			'/(#WE:)(\d+)(#)/se'
 		),
 		'path' => array(
-			// serach for documents after path
-			"/<(we:include\s[^>]*\s+path" . '\s*=\s*[\"\'\\\\]*\s)([^\'\"> ? \\\]*)(\s[^>]*)>/sie',
+			// search for documents after path
+			'/<(we:include\s*[^>]*\spath\s*=\s*[\"\'])([^\'\"> ? \\\]+)([\"\'][^>]*)>/si',
 		)
 	);
-	public $obj_patterns = array('id' => array(
+	public $obj_patterns = array(
+		'id' => array(
 			//search for objects
-			'/<(we:object\s[^>]*\s+id\s*=\s*[\"\'\\\\]*\s)([^\'\"> ? \\\]*)(\s[^>]*)>/sie',
-			'/<(we:form\s[^>]*\s+type\s*=\s*[\"\'\\\\]+object[\"|\']+\s[^>]*\s+id\s\=\s[\"\'\\\\]*\s)([^\'\"> ? \\\]*)(\s[^>]*)>/sie',
-			'/<(we:form\s[^>]*\s+id\s*=\s*[\"\'\\\\]*\s)([^\'\"> ? \\\]*)(\s[^>]*\s+type\s\=\s[\"\'\\\\]+object[\"|\']+\s[^>]*)>/sie',
-		), 'path' => array());
+			'/<(we:object\s*[^>]*\sid\s*=\s*[\"\'])(\d+)([\"\'][^>]*)>/si',
+			'/<(we:form\s*[^>]*\stype\s*=\s*[\"\']object[\"\'][^>]*\sid\s*=\s*[\"\'])(\d+)([\"\'][^>]*)>/si',
+			'/<(we:form\s*[^>]*\sid\s*=\s*[\"\'])(\d+)([\"\'][^>]*\stype\s*=\s*[\"\']object[\"\'][^>]*)>/si',
+		),
+		'path' => array());
 	public $class_patterns = array();
 	public $ext_patterns = array();
 	public $wysiwyg_patterns = array(
 		'doc' => array(
 			// search wysiwyg textareas
-			"/([src|href]+\s\=\s\"" . we_base_link::TYPE_INT_PREFIX . ')([0-9]+)(\")/sie',
+			'/(href\s*=\s*[\'\"]' . we_base_link::TYPE_INT_PREFIX . ')(\d+)([^\"\']*[\"\'])/si',
+			'/(src\s*=\s*[\'\"]' . we_base_link::TYPE_INT_PREFIX . ')(\d+)([^\"\']*[\"\'])/si',
 		),
-		"obj" => array(
-			"/(href\s\=\s\"" . we_base_link::TYPE_OBJ_PREFIX . ')([0-9]+)(\")/sie'
+		'obj' => array(
+			'/(href\s*=\s*[\"\']' . we_base_link::TYPE_OBJ_PREFIX . ')(\d+)([^\"\']*[\"\'])/si'
 		)
 	);
 	public $navigation_patterns = array(
-		'/<(we:navigation[^>]*\s+id\s*=["\'\\\\]+\s*)([^\'"> ? \\\]*)(\s[^>]*)>/sie',
-		'/<(we:navigation[^>]*\s+parentid\s*=["\'\\\\]+\s*)([^\'\"> ? \\\]*)(\s*[^>]*)>/sie'
+		'/<(we:navigation\s*[^>]*\sid\s*=["\'])(\d+)(["\'][^>]*)>/si',
+		'/<(we:navigation\s*[^>]*\sparentid\s*=["\'])(\d+)(["\'][^>]*)>/si'
 	);
 	public $thumbnail_patterns = array(
 		// search for thumbnails
-		'/<(we:img[^>]*\s+thumbnail\s*=["\'\\\\]+\s*)([^\'\"> ? \\\]*)(\s*[^>]*)>/sie',
-		'/<(we:field[^>]*\s+thumbnail\s*=["\'\\\\]+\s*)([^\'\"> ? \\\]*)(\s*[^>]*)>/sie',
+		'/<(we:img\s*[^>]*\sthumbnail\s*=["\'])([^\'\"> ? \\\]+)(["\'][^>]*)>/si',
+		'/<(we:field\s*[^>]*\sthumbnail\s*=["\'])([^\'\"> ? \\\]+)(["\'][^>]*)>/si',
 	);
 	public $tmpl_patterns = array(
-		'/<(we:include\s[^>]*\s+type\s*=\s*[\"\'\\\\]+template[\"|\']+\s[^>]*\s+id\s\=\s[\"\'\\\\]*\s)([^\'\"> ? \\\]*)(\s[^>]*)>/sie',
-		'/<(we:include\s[^>]*\s+id\s*=\s*[\"\'\\\\]*\s)([^\'\"> ? \\\]*)(\s[^>]+\stype\s\=\s[\"\'\\\\]+template[\"|\']+\s[^>]*)>/sie',
-		'/<(we:field\s[^>]*\s+tid\s*=\s*[\"\'\\\\]*\s)([^\'\"> ? \\\]*)(\s[^>]*)>/sie',
+		'/<(we:include\s*[^>]*\stype\s*=\s*["\']template["\'][^>]*\sid\s*=\s*["\'])(\d+)([\"\'][^>]*)>/si',
+		'/<(we:include\s*[^>]*\sid\s*=\s*["\'])(\d+)([\"\']\s+type\s*=\s*["\']template["\'][^>]*)>/si',
+		'/<(we:field\s*[^>]*\stid\s*=\s*[\"\'])(\d+)(["\'][^>]*)>/si',
 	);
 	public $special_patterns = array(
 		// some special patterns
-		'/<(we:include\s*[^>]*\s+id\s*=\s*[\"\'\\\\]*\s*)([^\'\"> ? \\\]*)(\s*[^>]*)>/sie'
+		'/<(we:include\s*[^>]*\sid\s*=\s*[\"\'])(\d+)(["\'][^>]*)>/si'
 	);
 
 	public function __construct(){
@@ -77,12 +79,12 @@ class we_exim_searchPatterns{
 			'a' => 'id',
 			'addDelNewsletterEmail' => array('id', 'mailid'),
 			'css' => 'id',
-			'a' => 'id',
 			'form' => array('id', 'onsuccess', 'onerror', 'onmailerror', 'onrecipienterror'),
 			'icon' => 'id',
 			'img' => array('id', 'startid', 'parentid'),
 			'flashmovie' => array('startid', 'parentid'),
 			'quicktime' => array('startid', 'parentid'),
+			'video' => array('id', 'startid', 'parentid'),
 			'js' => 'id',
 			'linkToSeeMode' => 'id',
 			'url' => 'id',
@@ -96,10 +98,10 @@ class we_exim_searchPatterns{
 		foreach($_pats as $tag => $attribut){
 			if(is_array($attribut)){
 				foreach($attribut as $attrib){
-					$this->doc_patterns['id'][] = '/<(we:' . $tag . '\s[^>]*\s+' . $attrib . '\s*=\s*[\"\'\\\\]*\s)([^\'\"> ? \\\]*)(\s[^>]*)>/sie';
+					$this->doc_patterns['id'][] = '/<(we:' . $tag . '\s*[^>]*\s' . $attrib . '\s*=\s*[\"\'])(\d+)(["\'][^>]*)>/si';
 				}
 			} else {
-				$this->doc_patterns['id'][] = '/<(we:' . $tag . '\s[^>]*\s+' . $attribut . '\s*=\s*[\"\'\\\\]*\s)([^\'\"> ? \\\]*)(\s[^>]*)>/sie';
+				$this->doc_patterns['id'][] = '/<(we:' . $tag . '\s*[^>]*\s' . $attribut . '\s*=\s*[\"\'])(\d+)(["\'][^>]*)>/si';
 			}
 		}
 
@@ -110,7 +112,7 @@ class we_exim_searchPatterns{
 			'listview' => 'classid'
 		);
 		foreach($_pats as $tag => $attribut){
-			$this->class_patterns[] = '/<(we:' . $tag . '\s[^>]*\s+' . $attribut . '\s*=\s*[\"\'\\\\]*\s)([^\'\"> ? \\\]*)(\s[^>]*)>/sie';
+			$this->class_patterns[] = '/<(we:' . $tag . '\s*[^>]*\s' . $attribut . '\s*=\s*[\"\'])(\d+)(["\'][^>]*)>/si';
 		}
 
 		// search for external files
@@ -122,7 +124,7 @@ class we_exim_searchPatterns{
 			'td' => 'background'
 		);
 		foreach($_pats as $tag => $attribut){
-			$this->ext_patterns[] = '/<(' . $tag . '\s*[^>]*\s+' . $tag . '\s*=\s*[\"\'\\\\]*\s)([^\'\"> ? \\\]*)(\s[^>]*)>/sie';
+			$this->ext_patterns[] = '/<(' . $tag . '\s*[^>]*' . $tag . '\s*=\s*[\"\'])([^\'\"> ? \\\]+)(["\'][^>]*)>/si';
 		}
 
 
@@ -133,7 +135,7 @@ class we_exim_searchPatterns{
 		);
 
 		foreach($_tmpl_pats as $tag => $attribut){
-			$this->tmpl_patterns[] = '/<(we:' . $tag . '\s[^>]*\s+' . $attribut . '\s*=\s*[\"\'\\\\]*\s)([^\'\"> ? \\\]*)(\s[^>]*)>/sie';
+			$this->tmpl_patterns[] = '/<(we:' . $tag . '\s*[^>]*\s' . $attribut . '\s*=\s*[\"\'])(\d+)(["\'][^>]*)>/si';
 		}
 	}
 

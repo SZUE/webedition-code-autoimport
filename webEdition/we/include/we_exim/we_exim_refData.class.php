@@ -38,7 +38,7 @@ class we_exim_refData{
 	public $OldDocTypeName;
 	var $Examined = 0;
 	var $elements = 0;
-	var $slots = array('ID', 'ParentID', 'Path', 'Table', 'ContentType', 'TemplateID', 'DocType', 'Category');
+	private $slots = array('ID', 'ParentID', 'Path', 'Table', 'ContentType', 'TemplateID', 'DocType', 'Category');
 
 	function init($object, $extra = array()){
 		foreach($this->slots as $slot){
@@ -65,5 +65,13 @@ class we_exim_refData{
 		unset($tmp['elements']);
 		return array_keys($tmp);
 	}
-
+/*
+	public function __debugInfo(){
+		$ret = array();
+		foreach($this->slots as $slot){
+			$ret[$slot] = $this->$slot;
+		}
+		return $ret;
+	}
+*/
 }
