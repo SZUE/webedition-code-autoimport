@@ -138,21 +138,21 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 		$tree_count = 0;
 		while($DB_WE->next_record()){
 			$tree_count++;
-			$ID = $DB_WE->f('ID');
+			$ID = intval($DB_WE->f('ID'));
 			$Path = $DB_WE->f('Path');
 
 			$tmpItems[$ID] = array(
 				"id" => $ID,
 				"we_id" => $collectionIDs ? $ID : 0,
-				"parentid" => $DB_WE->f("ParentID"),
+				"parentid" => intval($DB_WE->f("ParentID")),
 				"text" => $DB_WE->f("Text"),
 				"contenttype" => $DB_WE->f("ContentType"),
-				"isclassfolder" => $DB_WE->f("IsClassFolder"),
+				"isclassfolder" => intval($DB_WE->f("IsClassFolder")),
 				"table" => $table,
 				"checked" => 0,
 				"typ" => $DB_WE->f("IsFolder") ? "group" : "item",
 				"open" => (in_array($ID, $openFolders) ? 1 : 0),
-				"published" => $DB_WE->f("isPublished"),
+				"published" => intval($DB_WE->f("isPublished")),
 				"disabled" => (in_array($Path, $parentpaths) ? 1 : 0),
 				"tooltip" => $ID,
 				'inSchedule' => intval($DB_WE->f("inSchedule")),
