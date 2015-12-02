@@ -94,10 +94,10 @@ div.filedrag_content_right{
 	width: 120px;
 	vertical-align: middle;
 	text-align: center;
-}
-.filedrag_content_right img{
-	max-height: 100px;
-	max-width: 100px;
+	img{
+		max-height: 100px;
+		max-width: 100px;
+	}
 }
 div.filedrag_preview_left{
 	display: table-cell;
@@ -116,8 +116,8 @@ div.filedrag_preview_right{
 	width: 120px;
 	vertical-align: middle;
 	text-align: center;
-}
-.filedrag_preview_right img{
-	max-height: 100px;
-	max-width: 100px;
+	img{
+		max-height: 100px;
+		max-width: 100px;
+	}
 }

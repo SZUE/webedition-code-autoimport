@@ -22,22 +22,24 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-div.yui-ac-bd li{
-	margin:0px;
-	padding:0px;
-	list-style:none;
-	font-family: Verdana, Arial, sans-serif;
-	font-size: 10px;
-}
-div.yui-ac-bd ul{
-	margin:0px;
-	list-style:none;
-	font-family: Verdana, Arial, sans-serif;
-	font-size: 10px;
-	line-height:11px;
-	background-color: #FFFFFF;
-	padding:0px 0px;
-	margin-left:0px;
+div.yui-ac-bd{
+	li{
+		margin:0px;
+		padding:0px;
+		list-style:none;
+		font-family: Verdana, Arial, sans-serif;
+		font-size: 10px;
+	}
+	ul{
+		margin:0px;
+		list-style:none;
+		font-family: Verdana, Arial, sans-serif;
+		font-size: 10px;
+		line-height:11px;
+		background-color: #FFFFFF;
+		padding:0px 0px;
+		margin-left:0px;
+	}
 }
 
 div.yuiAcLayer{
@@ -83,12 +85,12 @@ li.yui-ac-highlight{
 	position:absolute;
 	top:30px !important;
 	width:100%;
-}
 
-.yui-ac-container li{
-	padding:0 5px;
-	cursor:default;
-	white-space:nowrap;
+	li{
+		padding:0 5px;
+		cursor:default;
+		white-space:nowrap;
+	}
 }
 
 .yui-ac-input {

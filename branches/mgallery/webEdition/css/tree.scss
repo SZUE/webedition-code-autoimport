@@ -27,47 +27,115 @@
 #treetable{
 	margin: 0px;
 	background-color: #F3F7FF;
-	padding: 0px;
-	/*padding-left:1ex;*/
-}
-
-#treetable {
 	color: black;
 	border-width: 0px;
 	border-collapse: collapse;
 	padding: 0px;
 	padding-left:1ex;
+	table{
+		border: none;
+		width: 100%;
+		border-spacing: 0px;
+		border-collapse: collapse;
+	}
+
+	label{
+		padding-left:.5ex;
+	}
+
+	span{
+		&.treeKreuz{
+			width: 16px;
+			height: 1.8em;
+			vertical-align: middle;
+			position: relative;
+			display:inline-block;
+			/*for lines*/
+			border: 0px solid darkgray;
+			i.fa-square{
+				color:white;
+			}
+		}
+		&.threedots{
+			display:inline-block;
+			background-color:lightgrey;
+			width:80%;
+			text-align:center;
+		}
+		&.strich{
+			width:1ex;
+			margin-left:1ex;
+			border-left-width: 1px;
+		}
+
+
+		&.kreuzung{
+			width: 1ex;
+			margin-left:1ex;
+			border-left-width: 1px;
+		}
+
+		&.kreuzungend{
+			width:1ex;
+			margin-left:1ex;
+			border-left: 1px solid darkgrey;
+			height:.8em;
+			margin-bottom: 1em;
+		}
+	}
+
+	span.kreuzung,
+	span.kreuzungend{
+		&::before{
+			content:" ";
+			display:inline-block;
+			position: absolute;
+			top: 1.4ex;
+			width:1em;
+			border-bottom:1px solid darkgrey;
+		}
+		i::before,
+		i::before{
+			position: absolute;
+			top:0px;
+			left:-5px;
+		}
+	}
+	.loginDenied,
+	.notpublished,
+	.checked_notpublished,
+	.selected_notpublished_item,
+	.red{
+		color:red;
+	}
+	.bold{
+		font-weight: bold;
+	}
+
+	.blue{
+		color:blue;
+	}
+
+	.disabled {
+		color: grey;
+		cursor: pointer;
+	}
+
+	.item,
+	.group,
+	a,
+	.selected_item,
+	.selected_group{
+		color: black;
+		cursor: pointer;
+	}
+	i.fa-folder-open,
+	i.fa-folder{
+		color: #ADC5E3;
+	}
+
 }
 
-#treetable table{
-	border: none;
-	width: 100%;
-	border-spacing: 0px;
-	border-collapse: collapse;
-}
-
-#treetable label{
-	padding-left:.5ex;
-}
-
-#treetable span.treeKreuz{
-	width: 16px;
-	height: 1.8em;
-	vertical-align: middle;
-	position: relative;
-	display:inline-block;
-	/*for lines*/
-	border: 0px solid darkgray;
-}
-
-#treetable .item,
-#treetable .group,
-#treetable a,
-#treetable .selected_item,
-#treetable .selected_group{
-	color: black;
-	cursor: pointer;
-}
 
 #treetable .disabled a,
 #treetable a,
@@ -100,10 +168,6 @@
 	background-color: #6070B6;
 }
 
-#treetable .loginDenied {
-	color:red;
-}
-
 #treetable .selected_notpublished_item,
 #treetable .selected_changed_item,
 #treetable .selected_open_group,
@@ -122,93 +186,21 @@
 	font-weight: bold;
 }
 
-#treetable .disabled {
-	color: grey;
-	cursor: pointer;
-}
-
 #treetable .checked_item,
 #treetable .checked_group{
 	color: black;
 }
 
-#treetable .notpublished,
-#treetable .checked_notpublished,
-#treetable .selected_notpublished_item {
-	color: red;
-}
 
-#treetable .bold{
-	font-weight: bold;
-}
-
-#treetable .blue{
-	color:blue;
-}
-
-#treetable .red{
-	color:red;
-}
 /*change fa sizes in tree*/
 #treetable fa-stack{
 	height: 1em;
 	line-height: 1em;
 	width: 1em;
 }
-#treetable i.fa-folder-open,
-#treetable i.fa-folder{
-	color: #ADC5E3;
-}
 
-#treetable span.threedots{
-	display:inline-block;
-	background-color:lightgrey;
-	width:80%;
-	text-align:center;
-}
-
-#treetable span.strich{
-	width:1ex;
-	margin-left:1ex;
-	border-left-width: 1px;
-}
-
-
-#treetable span.kreuzung{
-	width: 1ex;
-	margin-left:1ex;
-	border-left-width: 1px;
-}
-
-#treetable span.kreuzung::before,
-#treetable span.kreuzungend::before{
-	content:" ";
-	display:inline-block;
-	position: absolute;
-	top: 1.4ex;
-	width:1em;
-	border-bottom:1px solid darkgrey;
-}
-
-#treetable span.kreuzungend{
-	width:1ex;
-	margin-left:1ex;
-	border-left: 1px solid darkgrey;
-	height:.8em;
-	margin-bottom: 1em;
-}
-
-#treetable span.kreuzung i::before,
-#treetable span.kreuzungend i::before{
-	position: absolute;
-	top:0px;
-	left:-5px;
-}
 
 #treetable .selected_group,
 #treetable .selected_item {
 	background-color: #D4DBFA;
-}
-#treetable .selected_open_group {
-	color: black;
 }

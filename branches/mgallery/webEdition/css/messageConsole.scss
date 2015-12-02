@@ -27,23 +27,24 @@
 	background			: #fff;
 	margin:0px;
 	padding:0px;
-}
 
-#jsMessageUl li {
-	border-bottom		: 1px solid black;
-	margin				: 0px 0px 0px 0px;
-	padding				: 1ex 0px 1ex 3em;
-}
-#jsMessageUl li .fa-li.fa-lg{
-	left:0px;
-	top: auto;
+	li {
+		border-bottom		: 1px solid black;
+		margin				: 0px 0px 0px 0px;
+		padding				: 1ex 0px 1ex 3em;
+
+		.fa-li.fa-lg{
+			left:0px;
+			top: auto;
+		}
+	}
 }
 
 #headlineDiv {
 	height				: 40px;
-}
-#headlineDiv div {
-	padding				: 10px 0px 0px 10px;
+	div {
+		padding				: 10px 0px 0px 10px;
+	}
 }
 
 #messageDiv {
@@ -70,12 +71,14 @@
 	width				: 100%;
 }
 
-li.imgNoticeActive {
-	color				: darkgray;
-}
-li.imgWarningActive {
-	color				: blue;
-}
-li.imgErrorActive {
-	color				: red;
+li{
+	&.imgNoticeActive {
+		color				: darkgray;
+	}
+	&.imgWarningActive {
+		color				: blue;
+	}
+	&.imgErrorActive {
+		color				: red;
+	}
 }
