@@ -52,7 +52,6 @@ header('Pragma: ', true);
 .pshopContentfontR,
 .selector,
 .tableHeader,
-.defaultfontred,
 .weMultiIconBoxHeadlineThin,
 .weMultiIconBoxHeadline,
 .weDefaultStyle,
