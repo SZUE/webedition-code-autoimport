@@ -1068,7 +1068,7 @@ self.close();');
 						$objectStr.='<tr>
 	<td>' . we_html_button::create_button(we_html_button::EDIT, "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','" . OBJECT_FILES_TABLE . "'); }") . '</td>
 	<td>' . $DB_WE->f('ID') . '</td>
-	<td title="' . $DB_WE->f('Path') . '">' . $DB_WE->f('Text') . '</td>
+	<td title="' . $DB_WE->f('Path') . '"><div class="cutText">' . $DB_WE->f('Text') . '</div></td>
 	<td class="' . ($DB_WE->f('Published') ? ($DB_WE->f('ModDate') > $DB_WE->f('Published') ? 'changed defaultfont' : 'defaultfont') : 'npdefaultfont') . '">' . date('d.m.Y H:i', $DB_WE->f('ModDate')) . '</td>
 </tr>';
 					}
@@ -1103,7 +1103,7 @@ self.close();');
 						$documentStr.='<tr>' .
 							'<td>' . we_html_button::create_button(we_html_button::EDIT, "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','" . FILE_TABLE . "'); }") . '</td>' .
 							'<td>' . $DB_WE->f('ID') . '</td>' .
-							'<td title="' . $DB_WE->f('Path') . '">' . $DB_WE->f('Text') . '</td>' .
+							'<td title="' . $DB_WE->f('Path') . '"><div class="cutText">' . $DB_WE->f('Text') . '</div></td>' .
 							'<td class="' .
 							($DB_WE->f('Published') ? ($DB_WE->f('ModDate') > $DB_WE->f('Published') ? 'changeddefaultfont' : 'defaultfont') : 'npdefaultfont')
 							. '">' . date('d.m.Y H:i', $DB_WE->f('ModDate')) . '</td>' .

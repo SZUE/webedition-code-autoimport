@@ -989,7 +989,7 @@ span.treeKreuz i.fa-square{
 	display: inline-block;
 	font-size:14px;
 	font-family: FontAwesome;
-	content: "\f256"; 
+	content: "\f256";
 	color: red;
 }
 
@@ -1104,6 +1104,15 @@ table.footertable button.weBtn{
 
 #anchorlistcontainer{
 	padding-left: 10px;
+}
+
+div.cutText,
+span.cutText{
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	display:inline-block;
+	max-width:10em;
 }
 
 /* we_collection.class */
