@@ -366,15 +366,10 @@ top.makeNewDocument = true;' .
 	function openToEdit(tab,id,contentType){
 		WE().layout.weEditorFrameController.openDocument(tab,id,contentType);
 	}
-	var weCountWriteBC = 0;
 	function weWriteBreadCrumb(BreadCrumb){
-		//FIXME: this function should not need a timeout - check
 		if(top.document.getElementById("fspath")){
 			top.document.getElementById("fspath").innerHTML = BreadCrumb;
-		}else if(weCountWriteBC<10){
-			setTimeout(function(){weWriteBreadCrumb("' . $path . '")},100);
 		}
-		weCountWriteBC++;
 	}') . '
 </head>
 <body class="defaultfont" onresize="setInfoSize()" onload="setInfoSize();weWriteBreadCrumb(\'' . $path . '\');">';

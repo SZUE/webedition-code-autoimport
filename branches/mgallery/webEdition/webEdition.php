@@ -41,15 +41,14 @@ we_base_file::cleanTempFiles();
  * @return void
  * @desc prints the functions needed for the tree.
  */
-function pWebEdition_Tree(){
+function getWebEdition_Tree(){
 	switch($_SESSION['weS']['we_mode']){
 		default:
 		case we_base_constants::MODE_NORMAL:
 			$Tree = new weMainTree("webEdition.php", "top", "self.Tree", "top.load");
-			echo $Tree->getJSTreeCode();
-			break;
+			return $Tree->getJSTreeCode();
 		case we_base_constants::MODE_SEE:
-			echo we_html_element::jsElement('
+			return we_html_element::jsElement('
 var treeData={
 	makeNewEntry:function(){
 	}
@@ -59,7 +58,6 @@ function drawTree(){
 
 function info(text){
 }');
-			break;
 	}
 }
 
@@ -430,8 +428,17 @@ foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do
 </head>
 <body id="weMainBody" onload="initWE();top.start('<?php echo $_table_to_load;?>');" onbeforeunload="doUnload()">
 	<div id="headerDiv"><?php
-	$SEEM_edit_include = we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include');
-		we_main_header::pbody($SEEM_edit_include); ?>
+		$SEEM_edit_include = we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include');
+		$msg = (defined('MESSAGING_SYSTEM') && !$SEEM_edit_include);
+		?>
+		<div id="weMainHeader" <?php echo ($msg ? 'style="right:60px"' : ''); ?>><?php
+			we_main_headermenu::pbody();
+			?>
+		</div>
+		<?php if($msg){ ?>
+			<div id="msgheadertable"><?php we_messaging_headerMsg::pbody(); ?></div><?php
+		}
+		?>
 	</div>
 	<div id="resizeFrame"><?php
 		$_sidebarwidth = getSidebarWidth();
@@ -476,9 +483,11 @@ foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do
 	</div>
 	<?php
 //	get the frameset for the actual mode.
-	we_main_header::pJS($SEEM_edit_include);
+	echo we_base_menu::getJS() .
+	((defined('MESSAGING_SYSTEM') && !$SEEM_edit_include) ?
+		we_messaging_headerMsg::getJS() : '') .
 //	get the Treefunctions for docselector
-	pWebEdition_Tree();
+	getWebEdition_Tree();
 	?>
 </body>
 </html>

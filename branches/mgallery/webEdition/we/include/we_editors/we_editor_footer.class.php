@@ -35,7 +35,7 @@ abstract class we_editor_footer{
 		$_messageTbl->setCol(0, 1, array("class" => "defaultfont"), sprintf(g_l('alert', '[file_locked_footer]'), $_username));
 		$_messageTbl->setColContent(0, 2, (we_base_request::_(we_base_request::BOOL, "SEEM_edit_include") ? '' : we_html_button::create_button(we_html_button::RELOAD, "javascript:top.weNavigationHistory.navigateReload();")));
 
-		echo we_html_tools::getHtmlTop('', '', '',  STYLESHEET, we_html_element::htmlBody(array('id' => 'footerBody'), $_messageTbl->getHtml()));
+		echo we_html_tools::getHtmlTop('', '', '', STYLESHEET, we_html_element::htmlBody(array('id' => 'footerBody'), $_messageTbl->getHtml()));
 	}
 
 	static function fileInWorkspace(){
@@ -350,17 +350,8 @@ abstract class we_editor_footer{
 			$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');
 
 			$showPubl_makeSamNew = ($_ctrlElem && $_ctrlElem['hide'] ? '<div style="display: hidden;">' : '') .
-				we_html_element::jsElement('
-								if(!top.opener || !top.opener.win){
-									document.writeln("<!--");
-								}') .
 				we_html_forms::checkbox("makeSameDoc", ( $_ctrlElem ? $_ctrlElem['checked'] : false), "makeSameDoc", g_l('global', '[we_make_same][' . $we_doc->ContentType . ']'), false, "defaultfont", " _EditorFrame.setEditorMakeSameDoc( (this.checked) ? true : false );", ( $_ctrlElem ? $_ctrlElem['readonly'] : false)) .
-				we_html_element::jsElement('
-								if(!top.opener || !top.opener.win){
-									document.writeln(\'-\' + \'-\' + \'>\');
-								}') .
 				($_ctrlElem && $_ctrlElem['hide'] ? '</div>' : '');
-
 
 			$_seeModeTable->addCol(2);
 			$_seeModeTable->setCol(0, $_pos++, array('style' => 'vertical-align:top;'), $showPubl_makeSamNew);

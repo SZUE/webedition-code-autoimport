@@ -23,11 +23,9 @@
  */
 we_html_tools::protect();
 
-echo we_html_tools::getHtmlTop(g_l('alert', '[noResourceTitle]'), '', '', STYLESHEET .
-	we_html_element::jsElement('
-	WE().layout.weEditorFrameController.getEditorFrame(window.name).setEditorIsLoading(false);'));
+echo we_html_tools::getHtmlTop(g_l('alert', '[noResourceTitle]'), '', '', STYLESHEET);
 ?>
-<body class="weDialogBody"><?php
+<body class="weDialogBody" onload="WE().layout.weEditorFrameController.getEditorFrame(window.name).setEditorIsLoading(false);"><?php
 	echo we_html_tools::htmlDialogLayout('<p class="defaultfont">' . g_l('alert', '[noResource]') . '</p>', g_l('alert', '[noResourceTitle]'));
 	?>
 </body>

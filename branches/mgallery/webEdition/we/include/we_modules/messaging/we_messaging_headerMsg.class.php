@@ -24,7 +24,7 @@
  */
 class we_messaging_headerMsg{
 
-	static function pJS(){
+	static function getJS(){
 		if(defined('MESSAGING_SYSTEM')){
 			$messaging = new we_messaging_messaging($_SESSION['weS']['we_data']['we_transaction']);
 			$messaging->set_login_data($_SESSION['user']['ID'], $_SESSION['user']['Username']);
@@ -38,7 +38,7 @@ class we_messaging_headerMsg{
 			$load = '';
 		}
 
-		echo we_html_element::jsScript(JS_DIR . 'header_msg.js', $load, array('defer' => 'defer'));
+		return we_html_element::jsScript(JS_DIR . 'header_msg.js', $load, array('defer' => 'defer'));
 	}
 
 	static function pbody(){

@@ -23,8 +23,6 @@
  */
 
 function weOrderContainer(id) {
-
-
 	this.container = id;
 	this.elements = [];
 	this.position = [];
@@ -217,14 +215,8 @@ function weOrderContainer(id) {
 
 	// Bug in IE -> loses the selected attribute in option tags
 	this.fixIESelectBug = function (doc, id) {
-
 		if (!document.importNode) {
-
-			if (doc == document) {
-				node = document;
-			} else {
-				node = document.getElementById(id);
-			}
+			node = (doc == document ? document : document.getElementById(id));
 
 			for (j = 0; j < doc.getElementsByTagName("select").length; j++) {
 
