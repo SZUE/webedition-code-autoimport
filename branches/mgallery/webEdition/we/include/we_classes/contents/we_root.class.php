@@ -229,7 +229,7 @@ abstract class we_root extends we_class{
 
 	function formDirChooser($width = 0, $rootDirID = 0, $table = '', $Pathname = 'ParentPath', $IDName = 'ParentID', $cmd = '', $lable = true, $disabled = false){
 		$yuiSuggest = &weSuggest::getInstance();
-		$lable === true ? g_l('weClass', '[dir]') : $lable;
+		$lable = ($lable === true ? g_l('weClass', '[dir]') : $lable);
 
 		if(!$table){
 			$table = $this->Table;
@@ -243,7 +243,7 @@ abstract class we_root extends we_class{
 			return we_html_tools::htmlFormElementTable(array(
 						"text" => we_html_tools::hidden($idname, $myid, array('id' => $idname)) .
 						we_html_tools::hidden($textname, $path, array('id' => $textname)) .
-						we_html_element::htmlInput(array('name' => 'disabled', 'value' => $path, 'type' => 'text', 'width' => intval($width - 6), 'disabled' => '1')),
+						we_html_element::htmlInput(array('name' => 'disabled', 'value' => $path, 'type' => 'text', 'width' => intval($width - 6), 'disabled' => 1)),
 						'style' => 'vertical-align:top;height:10px;'), g_l('weClass', '[dir]')
 			);
 		}

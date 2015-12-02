@@ -533,7 +533,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 		<td>' . we_html_button::create_button("fa:iconview,fa-lg fa-th", "javascript:setview('" . we_search_view::VIEW_ICONS . "');", true, 40, "", "", "", false) . '</td>
 		<td>' . we_html_button::create_button("fa:listview,fa-lg fa-align-justify", "javascript:setview('" . we_search_view::VIEW_LIST . "');", true, 40, "", "", "", false) . '</td>' .
 			($id && $table === FILE_TABLE ? we_html_baseElement::getHtmlCode(new we_html_baseElement('td', true, array('style' => 'width:50px;'), we_fileupload_ui_importer::getBtnImportFiles($id))) : '') .
-			'<td style="width:50px;">' . we_html_button::create_button("fa:btn_new_dir,fa-plus,fa-lg fa-folder", "javascript:top.we_cmd('new_document','" . FILE_TABLE . "','','" . we_base_ContentTypes::FOLDER . "','','" . $id . "')", true, 50, "", "", "", false) . '</td>
+			'<td style="width:50px;">' . we_html_button::create_button("fa:btn_new_dir,fa-plus,fa-lg fa-folder", "javascript:top.we_cmd('new_document','" . $table . "','','" . we_base_ContentTypes::FOLDER . "','','" . $id . "')", true, 50, "", "", "", false) . '</td>
 	</tr>
 </table>';
 	}
