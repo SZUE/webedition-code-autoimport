@@ -84,7 +84,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 		if($offset && $segment){
 			$treeItems[] = array(
 				'id' => 'prev_' . $ParentID,
-				'parentid' => $ParentID,
+				'parentid' => intval($ParentID),
 				'text' => 'display (' . $prevoffset . '-' . $offset . ')',
 				'contenttype' => 'arrowup',
 				'isclassfolder' => 0,
