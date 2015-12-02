@@ -2283,7 +2283,6 @@ we/include/we_classes/html/we_baseCollection.inc.php
 we/include/we_classes/helpers/we_xhtmlConverter.inc.php
 we/include/we_classes/helpers/we_helpers_lessc.class.php
 we/include/we_classes/helpers/we_errorHandling.inc.php
-we/include/we_classes/helpers
 we/include/we_classes/fileupload/we_fileupload_uploader_include.class.php
 we/include/we_classes/fileupload/we_fileupload_uploader_importfile.class.php
 we/include/we_classes/fileupload/we_fileupload_uploader_base.class.php
