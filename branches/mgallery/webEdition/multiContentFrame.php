@@ -36,7 +36,7 @@ if(we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include')){
 
 echo we_html_tools::getHtmlTop() .
  STYLESHEET .
- we_html_element::cssLink(CSS_DIR . 'multiEditor/multiEditor.css');
+ we_html_element::cssLink(CSS_DIR . 'multiEditor.css');
 
 ?>
 <script><!--
