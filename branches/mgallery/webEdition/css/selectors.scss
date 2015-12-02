@@ -41,6 +41,9 @@ body.selectorBody a:active
 
 table.selector{
 	border-spacing: 0px;
+	tr{
+		cursor:pointer;
+	}
 }
 
 img.icon{

@@ -109,8 +109,8 @@ ob_start();
 													'</tr>':
 													'');
 									for (i = 0; i < entries.length; i++){
-					var onclick = ' onclick="weonclick(event);tout=setTimeout(function(){if(!top.wasdblclick){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=false;}},300);return true"';
-									var ondblclick = ' onDblClick="top.wasdblclick=true;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
+					var onclick = ' onclick="return selectorOnClick(event,' + entries[i].ID + ');"';
+									var ondblclick = ' onDblClick="return selectorOnDblClick(' + entries[i].ID + ');"';
 									body += '<tr id="line_' + entries[i].ID + '" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder))  ? 'background-color:#DFE9F5;' : '') + 'cursor:pointer;' + ((we_editDirID != entries[i].ID) ? '' : '') + '"' + ((we_editDirID || makeNewFolder) ? '' : onclick) + (entries[i].isFolder ? ondblclick : '') + ' >' +
 									'<td class="selector" width="25" style="text-align:center">' +
 									'<img class="treeIcon" src="<?php echo '<?php echo WE_APPS_DIR;?>' . $TOOLNAME; ?>/ui/themes/default/shared/icons/small/' + entries[i].icon + '">' +

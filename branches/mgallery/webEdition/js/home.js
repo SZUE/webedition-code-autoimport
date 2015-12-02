@@ -435,11 +435,6 @@ function setTheme(wizId, wizTheme) {
 			objs[o].classList.add('bgc_' + wizTheme);
 		}
 	}
-	var _bgObjs = [document.getElementById(wizId + '_lbl')];
-	for (o in _bgObjs) {
-		_bgObjs[o].classList.remove(_bgObjs[o].classList[_bgObjs[o].classList.length - 1]);
-		_bgObjs[o].classList.add("widgetTitle_" + wizTheme);
-	}
 }
 
 function setOpacity(sId, degree) {

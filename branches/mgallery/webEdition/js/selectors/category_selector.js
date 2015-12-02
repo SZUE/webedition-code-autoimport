@@ -69,17 +69,6 @@ function getPositionByID(id) {
 	}
 	return -1;
 }
-function isFileSelected(id) {
-	return (top.fsbody.document.getElementById("line_" + id).style.backgroundColor && (top.fsbody.document.getElementById("line_" + id).style.backgroundColor != "white"));
-}
-
-function unselectAllFiles() {
-	for (var i = 0; i < entries.length; i++) {
-		top.fsbody.document.getElementById("line_" + entries[i].ID).style.backgroundColor = "white";
-	}
-	top.document.getElementsByName("fname")[0].value = "";
-	top.disableDelBut();
-}
 
 function selectFile(id) {
 	if (id) {
@@ -261,9 +250,9 @@ function writeBody(d) {
 													'')
 									/*)*/;
 					for (i = 0; i < entries.length; i++) {
-						var onclick = ' onclick="weonclick(event);tout=setTimeout(function(){if(!top.wasdblclick){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=false;}},300);return true;"';
-						var ondblclick = ' onDblClick="top.wasdblclick=true;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
-						body += '<tr id="line_' + entries[i].ID + '" style="cursor:pointer;' + ((we_editCatID != entries[i].ID) ? '' : '') + '"' + ((we_editCatID || makeNewFolder || makeNewCat) ? '' : onclick) + /*(entries[i].isFolder ? */ondblclick /*: '')*/ + ' >' +
+						var onclick = ' onclick="return selectorOnClick(event,' + entries[i].ID + ');"';
+						var ondblclick = ' onDblClick="return selectorOnDblClick(' + entries[i].ID + ');"';
+						body += '<tr id="line_' + entries[i].ID + '" style="' + ((we_editCatID != entries[i].ID) ? '' : '') + '"' + ((we_editCatID || makeNewFolder || makeNewCat) ? '' : onclick) + /*(entries[i].isFolder ? */ondblclick /*: '')*/ + ' >' +
 										'<td class="selector selectoricon">' + WE().util.getTreeIcon('we/category') + '</td>' +
 										/*'<td class="selectoricon">' + WE().util.getTreeIcon(entries[i].isFolder ? 'folder' : 'we/category') + '</td>'*/
 														((we_editCatID !== undefined && we_editCatID == entries[i].ID) ?
