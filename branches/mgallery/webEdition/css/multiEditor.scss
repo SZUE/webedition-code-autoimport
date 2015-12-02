@@ -46,15 +46,15 @@ div.tab{
 	background: linear-gradient(#dbdbdb, #cccccc 50%,#999999);
 	line-height:21px;
 	cursor:pointer;
-}
-div.tab:hover{
-	margin: 0px; padding: 0px;
-	border-bottom: 1px solid #888888;
-	border-right: 1px solid #888888;
-	display:inline-block;
-	background: linear-gradient(#cbd3dc, #bfc6cf 50%,#999999);
-	line-height:21px;
-	cursor:pointer;
+	&:hover{
+		margin: 0px; padding: 0px;
+		border-bottom: 1px solid #888888;
+		border-right: 1px solid #888888;
+		display:inline-block;
+		background: linear-gradient(#cbd3dc, #bfc6cf 50%,#999999);
+		line-height:21px;
+		cursor:pointer;
+	}
 }
 div.tabActive{
 	margin: 0px; padding: 0px;
@@ -67,36 +67,39 @@ div.tabActive{
 		border-top-right-radius:10px;
 	*/
 }
-span.text{
-	margin:0px; padding:0px;
-	font-size: 10px;
-	vertical-align:top;
-}
-span.spacer{
-	font-size: 9px;
-}
-span.close{
-	color:#a9a9a9;
-	margin:2px;
-}
-span.close:hover i.fa-close{
-	color:black;
-}
-img.close{
-	vertical-align:top;
-	cursor:pointer;
-	margin:2px;
-}
-span.status{
-	vertical-align:middle;
-	padding: 0px 1ex;
-	display:inline-block;
+span{
+	&.text{
+		margin:0px; padding:0px;
+		font-size: 10px;
+		vertical-align:top;
+	}
+	&.spacer{
+		font-size: 9px;
+	}
+	&.close{
+		color:#a9a9a9;
+		margin:2px;
+		&:hover i.fa-close{
+			color:black;
+		}
+	}
+	&.status{
+		vertical-align:middle;
+		padding: 0px 1ex;
+		display:inline-block;
+	}
 }
 i.modified{
 	vertical-align:super;
 	font-size:xx-small;
 	visibility:hidden;
 	color:red;
+}
+
+img.close{
+	vertical-align:top;
+	cursor:pointer;
+	margin:2px;
 }
 .hidden{
 	display: none;
@@ -122,12 +125,14 @@ i.modified{
 	right:0px;
 	overflow: hidden;
 	background-color: white;
-}
-#multiEditorEditorFramesetsDiv iframe{
-	margin:0px;
-	border:0px;
-	width:100%;
-	height:100%;
-	position:absolute;
-	top:0px;
+
+	iframe{
+		margin:0px;
+		border:0px;
+		width:100%;
+		height:100%;
+		position:absolute;
+		top:0px;
+	}
+
 }
