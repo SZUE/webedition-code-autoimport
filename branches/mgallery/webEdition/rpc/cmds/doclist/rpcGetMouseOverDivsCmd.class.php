@@ -27,7 +27,7 @@ class rpcGetMouseOverDivsCmd extends rpcCmd{
 	function execute(){
 
 		$resp = new rpcResponse();
-
+return $resp;
 		we_html_tools::protect();
 
 		$whichsearch = we_base_request::_(we_base_request::STRING, 'whichsearch', '');

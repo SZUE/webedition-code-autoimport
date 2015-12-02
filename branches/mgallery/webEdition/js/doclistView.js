@@ -26,7 +26,7 @@ var elem = null;
 var ajaxCallbackResultList = {
 	success: function (o) {
 		if (o.responseText !== undefined && o.responseText !== "") {
-			document.getElementById("scrollContent_doclist").innerHTML = o.responseText;
+			document.getElementById('scrollContent_DoclistSearch').innerHTML = o.responseText;
 			WE().util.setIconOfDocClass(document, 'resultIcon');
 			makeAjaxRequestParametersTop();
 			makeAjaxRequestParametersBottom();
@@ -62,7 +62,7 @@ var ajaxCallbackParametersBottom = {
 var ajaxCallbackgetMouseOverDivs = {
 	success: function (o) {
 		if (o.responseText !== undefined && o.responseText !== "") {
-			document.getElementById("mouseOverDivs_doclist").innerHTML = o.responseText;
+			document.getElementById("mouseOverDivs_DoclistSearch").innerHTML = o.responseText;
 		}
 	},
 	failure: function (o) {
@@ -79,7 +79,7 @@ function calendarSetup(x) {
 }
 
 function delRow(id) {
-	var scrollContent = document.getElementById("scrollContent_doclist");
+	var scrollContent = document.getElementById('scrollContent_DoclistSearch');
 	scrollContent.style.height = scrollContent.offsetHeight + 26 + "px";
 
 	var elem = document.getElementById("filterTable");
@@ -180,13 +180,13 @@ function switchSearch(mode) {
 	document.we_form.mode.value = mode;
 	var defSearch = document.getElementById("defSearch");
 	var advSearch = document.getElementById("advSearch");
-	var advSearch2 = document.getElementById("advSearch2");
+	var filterTable = document.getElementById("filterTableDoclistSearch");
 	var advSearch3 = document.getElementById("advSearch3");
-	var scrollContent = document.getElementById("scrollContent_doclist");
+	var scrollContent = document.getElementById('scrollContent_DoclistSearch');
 
 	scrollheight = 30;
 
-	var elem = document.getElementById("filterTable");
+	var elem = document.getElementById("filterTableDoclistSearch");
 	newID = elem.rows.length - 1;
 
 	for (i = 0; i < newID; i++) {
@@ -197,16 +197,15 @@ function switchSearch(mode) {
 		scrollContent.style.height = (scrollContent.offsetHeight - scrollheight) + "px";
 		defSearch.style.display = "none";
 		advSearch.style.display = "block";
-		advSearch2.style.display = "block";
+		filterTable.style.display = "block";
 		advSearch3.style.display = "block";
 	} else {
 		scrollContent.style.height = (scrollContent.offsetHeight + scrollheight) + "px";
 		defSearch.style.display = "block";
 		advSearch.style.display = "none";
-		advSearch2.style.display = "none";
+		filterTable.style.display = "none";
 		advSearch3.style.display = "none";
 	}
-
 }
 
 function makeAjaxRequestDoclist() {
@@ -217,7 +216,7 @@ function makeAjaxRequestDoclist() {
 		newString = document.we_form.elements[i].name;
 		args += "&we_cmd[" + encodeURI(newString) + "]=" + encodeURI(document.we_form.elements[i].value);
 	}
-	var scroll = document.getElementById("scrollContent_doclist");
+	var scroll = document.getElementById('scrollContent_DoclistSearch');
 	scroll.innerHTML = '<table border="0" width="100%" height="100%"><tr><td align="center"><i class="fa fa-2x fa-spinner fa-pulse"></i><div id="scrollActive"></div></td></tr></table>';
 	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResultList, "protocol=json&cns=doclist&cmd=GetSearchResult&classname=we_folder&id=" + docID + "&table=" + docTable + "&we_transaction=" + transaction + args + "");
 }
@@ -313,7 +312,7 @@ function publishDocsAjax() {
 
 
 function sizeScrollContent() {
-	var elem = document.getElementById("filterTable");
+	var elem = document.getElementById("filterTableDoclistSearch");
 	newID = elem.rows.length - 1;
 
 	scrollheight = (searchclassFolderMode ? 30 : 0);
@@ -324,7 +323,7 @@ function sizeScrollContent() {
 	}
 
 	var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
-	var scrollContent = document.getElementById("scrollContent_doclist");
+	var scrollContent = document.getElementById('scrollContent_DoclistSearch');
 
 	var height = 180; // maybe IE needs 200?
 	if ((h - height) > 0) {
@@ -401,13 +400,13 @@ function search(newSearch) {
 		makeAjaxRequestDoclist();
 	}
 }
-
+/*
 function newinput() {
 	var elem = document.getElementById("filterTable");
 	newID = elem.rows.length - 1;
 	rows++;
 
-	var scrollContent = document.getElementById("scrollContent_doclist");
+	var scrollContent = document.getElementById('scrollContent_DoclistSearch');
 	scrollContent.style.height = scrollContent.offsetHeight - 26 + "px";
 
 
@@ -437,8 +436,12 @@ function newinput() {
 		elem.appendChild(newRow);
 	}
 }
-
+*/
+/*
 function changeit(value, rowNr) {
+	weSearch.changeit(value, rowNr);
+	return true;
+
 	var setValue = document.getElementsByName("search[" + rowNr + "]")[0].value;
 	var from = document.getElementsByName("hidden_searchFields[" + rowNr + "]")[0].value;
 	var row = document.getElementById("filterRow_" + rowNr);
@@ -649,321 +652,5 @@ function changeit(value, rowNr) {
 	document.getElementById("search[" + rowNr + "]").value = setValue;
 	document.getElementsByName("hidden_searchFields[" + rowNr + "]")[0].value = value;
 }
-
-document.onmousemove = updateElem;
-
-/*
-weSearch = {
-	whichsearch: '',
-
-	changeit: function (value, rowNr) {
-		setTimeout(function () {
-			// just wait 1 ms!
-		}, 1);
-
-		var setValue = document.getElementsByName('search' + this.conf.whichsearch + '[' + rowNr + ']')[0].value;
-		var from = document.getElementsByName('hidden_searchFields' + this.conf.whichsearch + '[' + rowNr + ']')[0].value;
-		var row = document.getElementById('filterRow_' + rowNr);
-		var locationTD = document.getElementById('td_location' + this.conf.whichsearch + '[' + rowNr + ']');
-		var searchTD = document.getElementById('td_search' + this.conf.whichsearch + '[' + rowNr + ']');
-		var delButtonTD = document.getElementById('td_delButton[' + rowNr + ']');
-		var location = document.getElementById('location' + this.conf.whichsearch + '[' + rowNr + ']');
-		var locationType = '';
-		var innerhtml;
-		var cell;
-		switch (value) {
-			case 'Content':
-				if (locationTD !== null) {
-					location.value = 'CONTAIN';
-					location.disabled = true;
-				}
-				row.removeChild(searchTD);
-
-				if (delButtonTD !== null) {
-					row.removeChild(delButtonTD);
-				}
-
-				row.appendChild(this.getCell('search' + this.conf.whichsearch, this.conf.rows));
-				row.appendChild(this.getCell('delButton', rowNr));
-				document.getElementById("search" + this.conf.whichsearch + "[" + rowNr + "]").value = setValue;
-				break;
-			case 'temp_category':
-				if (locationTD !== null) {
-					location.value = 'IS';
-					location.disabled = true;
-				}
-				row.removeChild(searchTD);
-
-				innerhtml = '<table class="default"><tbody><tr>' +
-								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
-								'<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td></td>' +
-								'<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, WE().consts.tables.CATEGORY_TABLE).replace(/__we_selector__/, 'we_selector_category') + '</td>' +
-								'</tr></tbody></table>';
-
-				cell = document.createElement('TD');
-				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
-				cell.innerHTML = innerhtml;
-				row.appendChild(cell);
-
-				if (delButtonTD !== null) {
-					row.removeChild(delButtonTD);
-				}
-				row.appendChild(this.getCell('delButton', rowNr));
-				break;
-			case 'temp_template_id':
-			case 'MasterTemplateID':
-				if (locationTD !== null) {
-					location.value = 'IS';
-					location.disabled = true;
-				}
-				row.removeChild(searchTD);
-
-				innerhtml = '<table class="default"><tbody><tr>' +
-								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
-								'<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td></td>' +
-								'<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, WE().consts.tables.TEMPLATES_TABLE).replace(/__we_selector__/, 'we_selector_document') + '</td>' +
-								'</tr></tbody></table>';
-
-				cell = document.createElement('TD');
-				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
-				cell.innerHTML = innerhtml;
-				row.appendChild(cell);
-
-				if (delButtonTD !== null) {
-					row.removeChild(delButtonTD);
-				}
-				row.appendChild(this.getCell('delButton', rowNr));
-				break;
-			case 'ParentIDDoc':
-			case 'ParentIDObj':
-			case 'ParentIDTmpl':
-				if (locationTD !== null) {
-					location.value = 'IS';
-					location.disabled = true;
-				}
-				row.removeChild(searchTD);
-
-				var table = value === 'ParentIDDoc' ? WE().consts.tables.FILE_TABLE : (value === 'ParentIDObj' ? WE().consts.tables.OBJECT_FILES_TABLE : WE().consts.tables.TEMPLATES_TABLE);
-
-				innerhtml = '<table class="default"><tbody><tr>' +
-								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
-								'<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td></td>' +
-								'<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, table).replace(/__we_selector__/, 'we_selector_directory') + '</td>' +
-								'</tr></tbody></table>';
-
-				cell = document.createElement('TD');
-				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
-				cell.innerHTML = innerhtml;
-				row.appendChild(cell);
-
-				if (delButtonTD !== null) {
-					row.removeChild(delButtonTD);
-				}
-				row.appendChild(this.getCell('delButton', rowNr));
-				break;
-			case 'Status':
-				if (locationTD !== null) {
-					location.value = 'IS';
-					location.disabled = true;
-				}
-				row.removeChild(searchTD);
-				if (delButtonTD !== null) {
-					row.removeChild(delButtonTD);
-				}
-
-				cell = document.createElement('TD');
-				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
-				cell.innerHTML = this.elems.selStatus.replace(/__we_new_id__/g, rowNr);
-				row.appendChild(cell);
-
-				row.appendChild(this.getCell('delButton', rowNr));
-				break;
-			case 'Speicherart':
-				if (locationTD !== null) {
-					location.value = 'IS';
-					location.disabled = true;
-				}
-				row.removeChild(searchTD);
-				if (delButtonTD !== null) {
-					row.removeChild(delButtonTD);
-				}
-
-				cell = document.createElement('TD');
-				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
-				cell.innerHTML = this.elems.selSpeicherart.replace(/__we_new_id__/g, rowNr);
-				row.appendChild(cell);
-
-				row.appendChild(this.getCell('delButton', rowNr));
-				break;
-			case 'Published':
-			case 'CreationDate':
-			case 'ModDate':
-				row.removeChild(locationTD);
-				row.appendChild(this.getCell('locationDate' + this.conf.whichsearch, rowNr));
-				row.removeChild(searchTD);
-
-				// FIXME: move datepicker-button to search_view
-				innerhtml = '<table id="search' + this.conf.whichsearch + '[' + rowNr + ']_cell" class="default"><tbody><tr>' +
-								'<td></td>' +
-								'<td></td>' +
-								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
-								'<td></td>' +
-								'<td><a href="#"><button id="date_picker_from' + rowNr + '" class="weBtn multiicon"><i class="fa fa-lg fa-calendar"></i></button></a></td>' +
-								'</tr></tbody></table>';
-
-
-				cell = document.createElement('TD');
-				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
-				cell.innerHTML = innerhtml;
-				row.appendChild(cell);
-
-				Calendar.setup({inputField: 'search' + this.conf.whichsearch + '[' + rowNr + ']', ifFormat: '%d.%m.%Y', button: 'date_picker_from' + rowNr + '', align: 'Tl', singleClick: true});
-
-				if (delButtonTD !== null) {
-					row.removeChild(delButtonTD);
-				}
-
-				row.appendChild(this.getCell('delButton', rowNr));
-
-				break;
-			case 'allModsIn':// FIXME: does nit work yet
-				if (locationTD !== null) {
-					location.disabled = true;
-				}
-				row.removeChild(searchTD);
-				if (delButtonTD !== null) {
-					row.removeChild(delButtonTD);
-				}
-
-				cell = document.createElement('TD');
-				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
-				cell.innerHTML = this.elems.selModFields.replace(/__we_new_id__/g, rowNr);
-				row.appendChild(cell);
-
-				row.appendChild(this.getCell('delButton', rowNr));
-				break;
-			case 'modifierID':
-			//case 'Creator':
-				if (locationTD !== null) {
-					location.value = 'IS';
-					location.disabled = true;
-				}
-				row.removeChild(searchTD);
-				if (delButtonTD !== null) {
-					row.removeChild(delButtonTD);
-				}
-
-				cell = document.createElement('TD');
-				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
-				cell.innerHTML = this.elems.selUsers.replace(/__we_new_id__/g, rowNr);
-				row.appendChild(cell);
-
-				row.appendChild(this.getCell('delButton', rowNr));
-				break;
-			default:
-				switch(value){
-					case 'meta__Title':
-					case 'meta__Description':
-					case 'meta__Keywords':
-					case 'meta__Autor':
-					case 'meta__MIME':
-					case 'Path':
-					case 'CreatorName': // FIXME: reduce CreatorID and CreatorName to Creator analogue to modifierID
-					case 'Text':
-					case 'ContentType': // FIXME: make select
-					case 'WebUserName':
-						locationType = 'Text';
-						break;
-					case 'ID':
-					case 'CreatorID':
-					case 'WebUserID':
-						locationType = 'Date';
-						break;
-				}
-
-				row.removeChild(searchTD);
-				if (locationTD !== null) {
-					row.removeChild(locationTD);
-				}
-				if (delButtonTD !== null) {
-					row.removeChild(delButtonTD);
-				}
-
-				row.appendChild(this.getCell('location' + locationType + this.conf.whichsearch, rowNr));
-				row.appendChild(this.getCell('search' + this.conf.whichsearch, rowNr));
-				row.appendChild(this.getCell('delButton', rowNr));
-
-				document.getElementById('search' + this.conf.whichsearch + '[' + rowNr + ']').value = setValue;
-		}
-
-		switch (from) {// FIXME: this is nonsens! move this to the above cases
-			//switch (value) {
-			case 'allModsIn':
-			case 'MasterTemplateID':
-			case 'ParentIDTmpl':
-			case 'ParentIDObj':
-			case 'ParentIDDoc':
-			case 'temp_template_id':
-			case 'ContentType':
-			case 'temp_category':
-			case 'Status':
-			case 'Speicherart':
-			case 'Published':
-			case 'CreationDate':
-			case 'ModDate':
-				document.getElementById('search' + this.conf.whichsearch + '[' + rowNr + ']').value = '';
-				break;
-				//|| value =="allModsIn" || value =="MasterTemplateID" || value=="ParentIDTmpl" || value=="ParentIDObj" || value=="ParentIDDoc" || value=="temp_template_id" || value=="ContentType" || value=="temp_category" || value=="Status" || value=="Speicherart" || value=="Published" || value=="CreationDate" || value=="ModDate") {
-			default:
-				document.getElementById('search' + this.conf.whichsearch + '[' + rowNr + ']').value = setValue;
-		}
-
-		document.getElementsByName('hidden_searchFields' + this.conf.whichsearch + '[' + rowNr + ']')[0].value = value;
-	},
-
-	getCell: function (type, rowID, replacement) {
-		var cell = document.createElement('TD'),
-			locationType,
-			html;
-		switch (type) {
-			case 'delButton':
-				cell.setAttribute('id', 'td_delButton[' + rowID + ']');
-				cell.innerHTML = this.elems.btnTrash.replace(/__we_new_id__/g, rowID);
-				break;
-			case 'search':
-				//
-				break;
-			case 'searchAdvSearch':
-				cell.setAttribute('id', 'td_searchAdvSearch[' + rowID + ']');
-				cell.innerHTML = this.elems.fieldSearch.replace(/__we_new_id__/g, rowID).replace(/__we_read_only__/g, replacement ? 'readonly="1" ' : '');
-				break;
-			case 'searchMediaSearch':
-				cell.setAttribute('id', 'td_searchMediaSearch[' + rowID + ']');
-				cell.innerHTML = this.elems.fieldSearch.replace(/__we_new_id__/g, rowID).replace(/__we_read_only__/g, replacement ? 'readonly="1" ' : '');
-				break;
-			case 'location':
-			case 'locationDate':
-			case 'locationText':
-				locationType = (type === 'locationText' ? 'selLocationText' : (type === 'locationDate' ? 'selLocationDate' : 'selLocation'));
-				cell.setAttribute("id", "td_locationAdvSearch[" + rowID + "]");
-				cell.innerHTML = this.elems[locationType].replace(/__we_new_id__/g, rowID);
-				break;
-			case 'locationAdvSearch':
-			case 'locationDateAdvSearch':
-			case 'locationTextAdvSearch':
-				locationType = (type === 'locationTextAdvSearch' ? 'selLocationText' : (type === 'locationDateAdvSearch' ? 'selLocationDate' : 'selLocation'));
-				cell.setAttribute("id", "td_locationAdvSearch[" + rowID + "]");
-				cell.innerHTML = this.elems[locationType].replace(/__we_new_id__/g, rowID);
-				break;
-			case 'locationMediaSearch':
-			case 'locationDateMediaSearch':
-			case 'locationTextMediaSearch':
-				locationType = (type === 'locationTextMediaSearch' ? 'selLocationText' : (type === 'locationDateMediaSearch' ? 'selLocationDate' : 'selLocation'));
-				cell.setAttribute("id", "td_locationMediaSearch[" + rowID + "]");
-				cell.innerHTML = this.elems[locationType].replace(/__we_new_id__/g, rowID);
-				break;
-		}
-		return cell;
-	},
-}
 */
+document.onmousemove = updateElem;

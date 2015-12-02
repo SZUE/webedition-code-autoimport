@@ -30,25 +30,31 @@ echo we_html_tools::getHtmlTop() .
 
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
+$doclistSearch = new $GLOBALS['we_doc']->doclistSearchClass($GLOBALS['we_doc']->doclistModel);
+$doclistView = new $GLOBALS['we_doc']->doclistViewClass($doclistSearch);
+
 echo we_html_tools::getCalendarFiles() .
- doclistView::getSearchJS() .
- STYLESHEET
+	$doclistView->getSearchJS() .
+	STYLESHEET
 ?>
 </head>
 
 <body class="weEditorBody" onunload="doUnload()" onkeypress="javascript:if (event.keyCode == 13 || event.keyCode == 3) {
 			search(true);
 		}" onload="setTimeout(init, 200)" onresize="sizeScrollContent();">
-	<div id="mouseOverDivs_doclist"></div>
+	<div id="mouseOverDivs_<?php echo we_search_view::SEARCH_DOCLIST; ?>"></div>
 	<form name="we_form" action="" onsubmit="return false;" style="padding:0px;margin:0px;"><?php
 		$view = new we_search_view();
-		$content = doclistView::searchProperties($GLOBALS['we_doc']->Table);
-		$headline = doclistView::makeHeadLines($GLOBALS['we_doc']->Table);
+
+		$results = $doclistSearch->searchProperties();
+		$content = $doclistView->makeContent($results);
+
+		$headline = $doclistView->makeHeadLines($GLOBALS['we_doc']->Table);
 		$foundItems = (isset($_SESSION['weS']['weSearch']['foundItems'])) ? $_SESSION['weS']['weSearch']['foundItems'] : 0;
 
-		echo doclistView::getHTMLforDoclist(array(
-			array("html" => doclistView::getSearchDialog()),
-			array("html" => "<div id='parametersTop'>" . doclistView::getSearchParameterTop($foundItems) . '</div>' . $view->tblList($content, $headline, "doclist") . "<div id='parametersBottom'>" . doclistView::getSearchParameterBottom($GLOBALS['we_doc']->Table, $foundItems) . "</div>"),
+		echo $doclistView->getHTMLforDoclist(array(
+			array("html" => $doclistView->getSearchDialog()),
+			array("html" => "<div id='parametersTop'>" . $doclistView->getSearchParameterTop($foundItems) . '</div>' . $view->tblList($content, $headline, "doclist") . "<div id='parametersBottom'>" . $doclistView->getSearchParameterBottom($GLOBALS['we_doc']->Table, $foundItems) . "</div>"),
 		)) .
 		we_html_element::htmlHiddens(array(
 			"obj" => 1,

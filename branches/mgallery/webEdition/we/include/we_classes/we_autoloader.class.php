@@ -42,6 +42,7 @@ abstract class we_autoloader{
 		'chooser' => 'we_classes/chooser',
 		'customer' => 'we_modules/customer',
 		'dialog' => 'we_classes/dialog',
+		'doclist' => 'we_classes/doclist',
 		'document' => 'we_classes/contents',
 		'editor' => 'we_editors',
 		'exim' => 'we_exim',

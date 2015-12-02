@@ -30,68 +30,68 @@ class we_search_model extends we_tool_model{
 	/**
 	 * @var integer: default ParentId in which own searches are saved
 	 */
-	var $ParentID = 8;
+	public $ParentID = 8;
 
 	/**
 	 * @var string: classname
 	 */
-	var $ModelClassName = __CLASS__;
+	public $ModelClassName = __CLASS__;
 
 	/**
 	 * @var string: toolname
 	 */
-	var $toolName = 'weSearch';
+	public $toolName = 'weSearch';
 
 	/**
 	 * @var tinyint: flag if the search ist predefined or not
 	 */
-	var $predefined;
+	public $predefined;
 
 	/**
 	 * for each search there are seperate variables
 	 *
 	 * @var integer: position to start the search
 	 */
-	var $searchstartDocSearch = 0;
-	var $searchstartTmplSearch = 0;
-	var $searchstartMediaSearch = 0;
-	var $searchstartAdvSearch = 0;
+	public $searchstartDocSearch = 0;
+	public $searchstartTmplSearch = 0;
+	public $searchstartMediaSearch = 0;
+	public $searchstartAdvSearch = 0;
 
 	/**
 	 * @var array: includes the text to search for
 	 */
-	var $searchDocSearch = array();
-	var $searchTmplSearch = array();
-	var $searchMediaSearch = array();
-	var $searchAdvSearch = array();
+	public $searchDocSearch = array();
+	public $searchTmplSearch = array();
+	public $searchMediaSearch = array();
+	public $searchAdvSearch = array();
 
 	/**
 	 * @var array: includes the operators
 	 */
-	var $locationDocSearch = array();
-	var $locationTmplSearch = array();
-	var $locationMediaSearch = array();
-	var $locationAdvSearch = array();
+	public $locationDocSearch = array();
+	public $locationTmplSearch = array();
+	public $locationMediaSearch = array();
+	public $locationAdvSearch = array();
 
 	/**
 	 * @var tinyint: flag that shows what you are searching for in the docsearch
 	 */
-	var $searchForTextDocSearch = 1;
-	var $searchForTitleDocSearch = 0;
-	var $searchForContentDocSearch = 0;
+	public $searchForTextDocSearch = 1;
+	public $searchForTitleDocSearch = 0;
+	public $searchForContentDocSearch = 0;
 
 	/**
 	 * @var tinyint: flag that shows what you are searching for in the tmplsearch
 	 */
-	var $searchForTextTmplSearch = 1;
-	var $searchForContentTmplSearch = 0;
+	public $searchForTextTmplSearch = 1;
+	public $searchForContentTmplSearch = 0;
 
 	/**
 	 * @var tinyint: flag that shows what you are searching for in the mediaearch
 	 */
-	var $searchForTextMediaSearch = 1;
-	var $searchForTitleMediaSearch = 0;
-	var $searchForMetaMediaSearch = 0;
+	public $searchForTextMediaSearch = 1;
+	public $searchForTitleMediaSearch = 0;
+	public $searchForMetaMediaSearch = 0;
 	public $searchForImageMediaSearch = 1;
 	public $searchForVideoMediaSearch = 0;
 	public $searchForAudioMediaSearch = 0;
@@ -101,47 +101,47 @@ class we_search_model extends we_tool_model{
 	/**
 	 * @var array: shows which tables you have to search in in the advsearch
 	 */
-	var $search_tables_advSearch = array();
+	public $search_tables_advSearch = array();
 
 	/**
 	 * @var integer: folder-ids of the docsearch and the tmplsearch
 	 */
-	var $folderIDDoc;
-	var $folderIDTmpl;
-	var $folderIDMedia;
+	public $folderIDDoc;
+	public $folderIDTmpl;
+	public $folderIDMedia;
 
 	/**
 	 * @var tinyint: flag that shows what view is set in each search
 	 */
-	var $setViewDocSearch = 0;
-	var $setViewTmplSearch = 0;
-	var $setViewMediaSearch = 0;
-	var $setViewAdvSearch = 0;
+	public $setViewDocSearch = 0;
+	public $setViewTmplSearch = 0;
+	public $setViewMediaSearch = 0;
+	public $setViewAdvSearch = 0;
 
 	/**
 	 * @var int: gives the number of entries in each search for one page
 	 */
-	var $anzahlDocSearch = 10;
-	var $anzahlTmplSearch = 10;
-	var $anzahlMediaSearch = 10;
-	var $anzahlAdvSearch = 10;
+	public $anzahlDocSearch = 10;
+	public $anzahlTmplSearch = 10;
+	public $anzahlMediaSearch = 10;
+	public $anzahlAdvSearch = 10;
 
 	/**
 	 * @var string: gives the order
 	 */
-	var $OrderDocSearch = "Text";
-	var $OrderTmplSearch = "Text";
-	var $OrderMediaSearch = "Text";
-	var $OrderAdvSearch = "Text";
+	public $OrderDocSearch = "Text";
+	public $OrderTmplSearch = "Text";
+	public $OrderMediaSearch = "Text";
+	public $OrderAdvSearch = "Text";
 
 	/**
 	 * @var array: includes the searchfiels which you are searching in
 	 */
-	var $searchFieldsDocSearch = array();
-	var $searchFieldsTmplSearch = array();
-	var $searchFieldsMediaSearch = array();
-	var $searchFieldsAdvSearch = array();
-	var $activTab = 1;
+	public $searchFieldsDocSearch = array();
+	public $searchFieldsTmplSearch = array();
+	public $searchFieldsMediaSearch = array();
+	public $searchFieldsAdvSearch = array();
+	public $activTab = 1;
 
 	/**
 	 * Default Constructor

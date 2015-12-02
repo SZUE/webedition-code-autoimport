@@ -29,6 +29,7 @@ class we_search_view extends we_modules_view{
 	const SEARCH_MEDIA = 'MediaSearch';
 	const SEARCH_TMPL = 'TmplSearch';
 	const SEARCH_ADV = 'AdvSearch';
+	const SEARCH_DOCLIST = 'DoclistSearch';
 
 	var $Model;
 	var $toolName;
@@ -2058,7 +2059,7 @@ WE().consts.g_l.weSearch = {
 		$out .= '</tbody></table>' .
 			'<table>
 <tr>
-<td>' . we_html_button::create_button(we_html_button::ADD, "javascript:weSearch.newinputAdvSearch();") . '</td>
+<td>' . we_html_button::create_button(we_html_button::ADD, "javascript:weSearch.newinput();") . '</td>
 <td colspan="8" style="text-align:right"></td>
 </tr>
 </table></div>' .
@@ -2244,7 +2245,7 @@ WE().consts.g_l.weSearch = {
     </tr>';
 		}
 
-		$out .= '</tbody></table>' . we_html_button::create_button(we_html_button::ADD, "javascript:weSearch.newinputAdvSearch();") .
+		$out .= '</tbody></table>' . we_html_button::create_button(we_html_button::ADD, "javascript:weSearch.newinput();") .
 			'</div>' .
 			we_html_element::jsElement("weSearch.calendarSetup(" . $this->searchclass->height . ");");
 
@@ -2252,6 +2253,7 @@ WE().consts.g_l.weSearch = {
 	}
 
 	function tblList($content, $headline, $whichSearch){
+		$whichSearch = $whichSearch === 'doclist' ? self::SEARCH_DOCLIST : $whichSearch;
 		$class = "middlefont";
 		$view = self::VIEW_LIST;
 
@@ -2269,7 +2271,7 @@ WE().consts.g_l.weSearch = {
 				$view = $this->Model->setViewAdvSearch;
 				break;
 			// for doclistsearch
-			case "doclist" :
+			case self::SEARCH_DOCLIST :
 				$view = $GLOBALS['we_doc']->searchclassFolder->setView;
 		}
 
@@ -2335,8 +2337,7 @@ WE().consts.g_l.weSearch = {
 ';
 
 				for($m = 0; $m < $x; $m++){
-					$out .= '<tr>' . ($whichSearch === 'doclist' ? self::tblListRow($content[$m]) :
-							($whichSearch === self::SEARCH_MEDIA ? self::tblListRowMedia($content[$m]) : self::tblListRow($content[$m]))) . '</tr>';
+					$out .= '<tr>' . ($whichSearch === self::SEARCH_MEDIA ? self::tblListRowMedia($content[$m]) : self::tblListRow($content[$m])) . '</tr>';
 				}
 				return $out . '</tbody></table>';
 			case self::VIEW_ICONS:
@@ -2493,7 +2494,7 @@ WE().consts.g_l.weSearch = {
 	}
 
 	private static function tblListRowIconView($content, $class, $i, $whichSearch){
-		$jsNamespace = $whichSearch === 'doclist' ? '' : 'weSearch.';
+		$jsNamespace = $whichSearch === 'doclist' ? 'weSearch' : 'weSearch.';
 
 		return '<table width="100%" class="default ' . $class . '">
 <tr>

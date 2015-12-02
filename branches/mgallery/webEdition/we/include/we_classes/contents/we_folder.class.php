@@ -33,6 +33,12 @@ class we_folder extends we_root{
 	var $Language = '';
 	var $GreenOnly = 0;
 	var $searchclassFolder;
+
+	protected $viewType = 'list';
+	public $doclistModel;
+	public $doclistViewClass = 'we_doclist_view';
+	public $doclistSearchClass = 'we_doclist_search';
+
 		//folders are always published
 	public $Published = PHP_INT_MAX;
 	protected $urlMap;
@@ -46,7 +52,7 @@ class we_folder extends we_root{
 
 	function __construct(){
 		parent::__construct();
-		array_push($this->persistent_slots, 'SearchStart', 'SearchField', 'Search', 'Order', 'GreenOnly', 'IsClassFolder', 'WorkspacePath', 'WorkspaceID', 'Language', 'TriggerID', 'searchclassFolder', 'urlMap');
+		array_push($this->persistent_slots, 'SearchStart', 'SearchField', 'Search', 'Order', 'GreenOnly', 'IsClassFolder', 'WorkspacePath', 'WorkspaceID', 'Language', 'TriggerID', 'searchclassFolder', 'urlMap', 'doclistModel', 'viewType');
 		if(isWE()){
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO);
 		}
@@ -92,10 +98,14 @@ class we_folder extends we_root{
 		}
 		$this->adjustEditPageNr();
 
-		if(!is_object($this->searchclassFolder)){
-			$this->searchclassFolder = new we_search_search();
+		if(!is_object($this->doclistModel)){
+			$this->doclistModel = new we_doclist_model($this->Table, $this->ID, $this->viewType);
 		}
-		$this->searchclassFolder->initSearchData();
+		$this->doclistModel->processRequest();
+	}
+
+	public function getDoclistModel(){
+		return $this->doclistModel ? : new we_doclist_model(0, $this->ID, $this->viewType);
 	}
 
 	/**

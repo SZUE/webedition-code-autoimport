@@ -71,6 +71,7 @@ class we_search_search extends we_search_base{
 	 * @abstract get data from fields, used in the doclistsearch
 	 */
 	function initSearchData(){
+		// IMPORTANT: most of this init-stuff is done by we_search_view::searchProperties()
 		$view = we_base_request::_(we_base_request::STRING, 'setView');
 		if(isset($GLOBALS['we_doc'])){
 			$obj = $GLOBALS['we_doc'];
@@ -157,7 +158,6 @@ class we_search_search extends we_search_base{
 
 		if($whichSearch === we_search_view::SEARCH_MEDIA){
 			$tableFields = array_merge($this->getFieldsMeta(true), $tableFields);
-
 			unset($tableFields['Text']);
 			unset($tableFields['ParentIDObj']);
 			unset($tableFields['ParentIDTmpl']);
@@ -170,9 +170,7 @@ class we_search_search extends we_search_base{
 			unset($tableFields['Status']);
 			unset($tableFields['Speicherart']);
 			unset($tableFields['Published']);
-		}
-
-		if($whichSearch === 'doclist'){
+		} elseif($whichSearch === we_search_view::SEARCH_DOCLIST){
 			unset($tableFields['Path']);
 			unset($tableFields['ParentIDDoc']);
 			unset($tableFields['ParentIDObj']);

@@ -340,10 +340,10 @@ weSearch = {
 			}
 
 			var elem = document.getElementById('filterTable' + this.conf.whichsearch),
-							//newID = elem.rows.length - 1,
-							h = window.innerHeight ? window.innerHeight : document.body.offsetHeight,
-							scrollContent = document.getElementById("scrollContent_' + whichSearch + '"),
-							heightDiv = 180;
+				//newID = elem.rows.length - 1,
+				h = window.innerHeight ? window.innerHeight : document.body.offsetHeight,
+				scrollContent = document.getElementById("scrollContent_' + whichSearch + '"),
+				heightDiv = 180;
 
 			if ((h - heightDiv) > 0) {
 				scrollContent.style.height = (h - heightDiv) + 'px';
@@ -356,11 +356,11 @@ weSearch = {
 			setTimeout(this.sizeScrollContent, 1000);
 		}
 	},
-	newinputAdvSearch: function () {
+	newinput: function () {
 		var elem = document.getElementById('filterTable' + this.conf.whichsearch),
-						newID = elem.rows.length - 1,
-						scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch),
-						newRow, cell;
+			newID = elem.rows.length - 1,
+			scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch),
+			newRow, cell;
 
 		this.conf.rows++;
 
@@ -385,8 +385,8 @@ weSearch = {
 	},
 	getCell: function (type, rowID, replacement) { // FIXME: use this-whichsearch to reduce cases
 		var cell = document.createElement('TD'),
-			locationType,
-			html;
+			locationType;
+
 		switch (type) {
 			case 'delButton':
 				cell.setAttribute('id', 'td_delButton[' + rowID + ']');
@@ -414,13 +414,52 @@ weSearch = {
 				cell.setAttribute("id", "td_locationMediaSearch[" + rowID + "]");
 				cell.innerHTML = this.elems[locationType].replace(/__we_new_id__/g, rowID);
 				break;
+			case 'searchDoclistSearch':
+				cell.setAttribute('id', 'td_searchDoclistSearch[' + rowID + ']');
+				cell.innerHTML = this.elems.fieldSearch.replace(/__we_new_id__/g, rowID).replace(/__we_read_only__/g, replacement ? 'readonly="1" ' : '');
+				break;
+			case 'locationDoclistSearch':
+			case 'locationDateDoclistSearch':
+			case 'locationTextDoclistSearch':
+				locationType = (type === 'locationTextDoclistSearch' ? 'selLocationText' : (type === 'locationDateDoclistSearch' ? 'selLocationDate' : 'selLocation'));
+				cell.setAttribute("id", "td_locationDoclistSearch[" + rowID + "]");
+				cell.innerHTML = this.elems[locationType].replace(/__we_new_id__/g, rowID);
+				break;
 		}
 		return cell;
 
 	},
+	switchSearch: function(mode) {
+		document.we_form.mode.value = mode;
+		var defSearch = document.getElementById('defSearch');
+		var advSearch = document.getElementById('advSearch');
+		var filterTable = document.getElementById('filterTable' + this.conf.whichsearch);
+		var advSearch3 = document.getElementById('advSearch3');
+		var scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch);
+		var scrollheight = 30;
+		var newID = filterTable.rows.length - 1;
+
+		for (i = 0; i < newID; i++) {
+			scrollheight = scrollheight + 26;
+		}
+
+		if (mode == 1) {
+			scrollContent.style.height = (scrollContent.offsetHeight - scrollheight) + "px";
+			defSearch.style.display = "none";
+			advSearch.style.display = "block";
+			filterTable.style.display = "block";
+			advSearch3.style.display = "block";
+		} else {
+			scrollContent.style.height = (scrollContent.offsetHeight + scrollheight) + "px";
+			defSearch.style.display = "block";
+			advSearch.style.display = "none";
+			filterTable.style.display = "none";
+			advSearch3.style.display = "none";
+		}
+	},
 	delRow: function (id) {
 		var scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch),
-						elem = document.getElementById("filterTable" + this.conf.whichsearch);
+						elem = document.getElementById('filterTable' + this.conf.whichsearch);
 
 		if (elem) {
 			var trows = elem.rows,

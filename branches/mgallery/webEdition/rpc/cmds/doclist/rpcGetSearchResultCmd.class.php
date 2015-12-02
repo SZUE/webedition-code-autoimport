@@ -39,11 +39,12 @@ class rpcGetSearchResultCmd extends rpcCmd{
 		$_document = new $doc;
 		$_document->we_initSessDat($we_dt);
 
-		$GLOBALS['we_cmd_obj'] = $_document;
+		$doclistSearch = new $_document->doclistSearchClass($_document->doclistModel);
+		$doclistView = new $_document->doclistViewClass($doclistSearch);
+		$results = $doclistSearch->searchProperties();
 
-		$content = doclistView::searchProperties();
-		$sview = new we_search_view();
-		$code = $sview->tabListContent($setView, $content, $class = 'middlefont', 'doclist');
+		// tabListContent() should know view!!
+		$code = $doclistView->tabListContent($setView, $doclistView->makeContent($results), 'middlefont', 'doclist');
 
 		$resp->setData('data', $code);
 
