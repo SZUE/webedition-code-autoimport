@@ -18,11 +18,10 @@
 */
 
 /* CSS for weDialogs */
-.weDialogBody input[type="radio"] {
-	border: none;
-	background:transparent;
-}
-.weDialogBody input[type="checkbox"] {
-	border: none;
-	background:transparent;
+.weDialogBody input{
+	&[type="radio"],
+	&[type="checkbox"] {
+		border: none;
+		background:transparent;
+	}
 }

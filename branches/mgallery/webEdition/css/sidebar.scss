@@ -84,7 +84,8 @@ body{
 span.close{
 	color:#a9a9a9;
 	margin:2px;
-}
-span.close:hover i.fa-close{
-	color:black;
+
+	&:hover i.fa-close{
+		color:black;
+	}
 }

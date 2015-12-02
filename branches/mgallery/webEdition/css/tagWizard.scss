@@ -94,21 +94,23 @@ table.attribute td {
 	margin: 0;
 }
 
-td.attributeName {
-	width: 150px ! important;
-	text-align: right;
-	padding-right: 10px ! important;
-	vertical-align: top;
-}
+td{
+	&.attributeName {
+		width: 150px ! important;
+		text-align: right;
+		padding-right: 10px ! important;
+		vertical-align: top;
+	}
 
-td.attributeField {
-	width: 160px;
-	vertical-align: top;
-}
+	&.attributeField {
+		width: 160px;
+		vertical-align: top;
+	}
 
-td.attributeButton {
-	width: 100px ! important;
-	vertical-align: top;
+	&.attributeButton {
+		width: 100px ! important;
+		vertical-align: top;
+	}
 }
 /* add some additional stuff to wetextinput */
 .wetextinput {

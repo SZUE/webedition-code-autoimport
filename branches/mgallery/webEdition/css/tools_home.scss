@@ -33,20 +33,20 @@
 	width: 251px;
 	box-shadow: 5px 5px 5px #555555;
 	z-index: 3;
-}
-#tabelle table{
-	width:100%;
-}
-#tabelle td.titleline{
-	border: 1px solid #f0eff0;
-	border-top-right-radius: 10px;
-	border-top-left-radius:10px;
-	border-bottom:none;
-	font-weight: bold;
-	text-align: center;
-	background-color:grey;/*for old browsers*/
-	background: linear-gradient(#f0eff0,#D4D4D4);
 
+	table{
+		width:100%;
+	}
+	td.titleline{
+		border: 1px solid #f0eff0;
+		border-top-right-radius: 10px;
+		border-top-left-radius:10px;
+		border-bottom:none;
+		font-weight: bold;
+		text-align: center;
+		background-color:grey;/*for old browsers*/
+		background: linear-gradient(#f0eff0,#D4D4D4);
+	}
 }
 #modimage{
 	position: absolute;

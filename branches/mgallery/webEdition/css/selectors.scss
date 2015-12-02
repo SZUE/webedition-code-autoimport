@@ -43,15 +43,6 @@ table.selector{
 	border-spacing: 0px;
 }
 
-div.imgDiv{
-	float: left;
-	width: 4em;
-	height:4em;
-	margin: 5px;
-	text-align: center;
-	cursor: pointer;
-	position: relative;
-}
 img.icon{
 	max-width:4em;
 	max-height:3em;
@@ -60,6 +51,15 @@ img.icon{
 }
 
 div{
+	.imgDiv{
+		float: left;
+		width: 4em;
+		height:4em;
+		margin: 5px;
+		text-align: center;
+		cursor: pointer;
+		position: relative;
+	}
 	&.imgText{
 		text-overflow: ellipsis;
 		overflow: hidden;
@@ -163,12 +163,11 @@ tr.WEFile td{
 		right:65%;
 		bottom: 108px;
 	}
+	&.object{
+		top:16px;
+	}
 }
 
-#fsbodyDiv.object,
-#fspreviewDiv.object{
-	top:16px;
-}
 #fspreviewDiv{
 	position: fixed;
 	top:67px;
@@ -187,6 +186,9 @@ tr.WEFile td{
 
 	&.catproperties{
 		bottom: 108px;
+	}
+	.object{
+		top:16px;
 	}
 }
 

@@ -31,13 +31,14 @@ td {
 	font-size: 10px;
 	padding: 3px 6px;
 	vertical-align:top;
-}
-td.image {
-	vertical-align:middle;
-	padding: 0px;
-}
-td.info {
-	padding: 0px;
+
+	&.image {
+		vertical-align:middle;
+		padding: 0px;
+	}
+	&.info {
+		padding: 0px;
+	}
 }
 .headline {
 	padding:3px 6px;

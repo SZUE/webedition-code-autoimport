@@ -30,10 +30,7 @@ body{ /* [role=application]? */
 	font-family: Verdana,Arial,Helvetica,sans-serif;
 	font-size: 11px;
 	margin:0px;
-}
 
-body form table{
-	display:block;
 }
 
 .tabs{
@@ -43,48 +40,49 @@ body form table{
 	display:block;
 	height: 21px;
 	padding-left:0px;
+	li {
+		height: 21px;
+		border-bottom: 1px solid #888888;
+		background-color: #D3D3D3;
+		background: linear-gradient(#dbdbdb, #cccccc 50%,#999999);
+		border-right: 1px solid gray;
+		cursor: pointer;
+		display: inline-block;
+		float: left;
+		font-size: 17px;
+		line-height: 16px;
+		margin: 0px;
+		padding: 0px 6px 0px 6px;
+		&.current {
+			background-image: none;
+			background-color:#F0F0EE;
+			margin:0px;
+		}
+		span{
+			background-image: none;
+			background-color: transparent;
+			border: none;
+			margin: 0px;
+			padding: 0px;
+			vertical-align: top;
+		}
+	}
+	.current span {
+		background-image: none;
+		background-color: transparent;
+		border: none;
+		margin: 0px;
+		padding: 0px;
+	}
 }
 
-.tabs li span{
-	background-image: none;
-	background-color: transparent;
-	border: none;
-	margin: 0px;
-	padding: 0px;
-	vertical-align: top;
-}
-
-.tabs li {
-	height: 21px;
-	border-bottom: 1px solid #888888;
-	background-color: #D3D3D3;
-	background: linear-gradient(#dbdbdb, #cccccc 50%,#999999);
-	border-right: 1px solid gray;
-	cursor: pointer;
-	display: inline-block;
-	float: left;
-	font-size: 17px;
-	line-height: 16px;
-	margin: 0px;
-	padding: 0px 6px 0px 6px;
-}
-
-.tabs li.current {
-	background-image: none;
-	background-color:#F0F0EE;
-	margin:0px;
-}
-
-.tabs .current span {
-	background-image: none;
-	background-color: transparent;
-	border: none;
-	margin: 0px;
-	padding: 0px;
-}
-
-form div{
-	color:black;
+form{
+	table{
+		display:block;
+	}
+	div{
+		color:black;
+	}
 }
 
 .title{
@@ -122,11 +120,6 @@ body select,
 	width:110px;
 }
 
-body[role=application] div#iframecontainer{
-	margin-top:6px;
-	margin-right:0px;
-}
-
 .panel_wrapper #class{
 	width:110px;
 }
@@ -135,7 +128,7 @@ textarea{
 	margin-left:0px;
 }
 
-body input[type="text"]{
+input[type="text"]{
 	border: 1px solid #AAAAAA;
 	color: black;
 	font-family: Verdana,Arial,Helvetica,Liberation Sans,sans-serif;
@@ -213,36 +206,42 @@ body .mceActionPanel #replaceBtn,
 }
 
 /* Some dialogs do not work not with webEDition-Footer in IE: they do not have attribute role="application" in body tag */
-body[role=application] fieldset{
-	border:none;
-}
+body[role=application]{
+	div#iframecontainer{
+		margin-top:6px;
+		margin-right:0px;
+	}
+	fieldset{
+		border:none;
+	}
 
-body[role=application] label{
-	margin-left:6px;
-	margin-right:6px;
-}
+	label{
+		margin-left:6px;
+		margin-right:6px;
+	}
 
-body[role=application] textarea{
-	margin-left:6px;
-}
+	textarea{
+		margin-left:6px;
+	}
 
-body[role=application] .mceActionPanel{
-	background-color:grey;/*for old browsers*/
-	background: linear-gradient(#B4B3B3, #C6C5C5);
-	height: 30px;
-	position:absolute;
-	bottom: 0px;
-	width: 100%;
-	padding: 10px 10px 0px 0px;
-	margin-left: 0px;
-}
+	.mceActionPanel{
+		background-color:grey;/*for old browsers*/
+		background: linear-gradient(#B4B3B3, #C6C5C5);
+		height: 30px;
+		position:absolute;
+		bottom: 0px;
+		width: 100%;
+		padding: 10px 10px 0px 0px;
+		margin-left: 0px;
 
-body[role=application] .mceActionPanel #insert,
-body[role=application] .mceActionPanel #cancel,
-body[role=application] .mceActionPanel #apply,
-body[role=application] .mceActionPanel #replaceBtn,
-body[role=application] .mceActionPanel #replaceAllBtn {
-	margin: 0px 10px 0px 0px;
+		#insert,
+		#cancel,
+		#apply,
+		#replaceBtn,
+		#replaceAllBtn {
+			margin: 0px 10px 0px 0px;
+		}
+	}
 }
 
 /* Dialogs which work not with webEDition-Footer in IE get body-class weFooter when initialized by tinyMce_popup.
@@ -252,40 +251,40 @@ body.useWeFooter{
 	font-family: Verdana,Arial,Helvetica,sans-serif;
 	font-size: 11px;
 	margin:0px;
-}
 
-body.useWeFooter div{
-	padding-left:6px;
-}
+	div{
+		padding-left:6px;
+	}
 
-body.useWeFooter label{
-	margin-left:4px;
-	margin-right:12px;
-}
+	label{
+		margin-left:4px;
+		margin-right:12px;
+	}
 
-body.useWeFooter div.title{
-	padding-top:6px;
-}
+	div.title{
+		padding-top:6px;
+	}
 
-body.useWeFooter textarea{
-	margin-left:10px;
-}
+	textarea{
+		margin-left:10px;
+	}
 
-body.useWeFooter .mceActionPanel{
-	background-color:grey;/*for old browsers*/
-	background: linear-gradient(#B4B3B3, #C6C5C5);
-	height: 30px;
-	position:absolute;
-	bottom: 0px;
-	width: 100%;
-	padding: 10px 10px 0px 0px;
-	margin-left: 0px;
-}
+	.mceActionPanel{
+		background-color:grey;/*for old browsers*/
+		background: linear-gradient(#B4B3B3, #C6C5C5);
+		height: 30px;
+		position:absolute;
+		bottom: 0px;
+		width: 100%;
+		padding: 10px 10px 0px 0px;
+		margin-left: 0px;
 
-body.useWeFooter .mceActionPanel #insert,
-body.useWeFooter .mceActionPanel #cancel,
-body.useWeFooter .mceActionPanel #apply,
-body.useWeFooter .mceActionPanel #replaceBtn,
-body.useWeFooter .mceActionPanel #replaceAllBtn {
-	margin: 0px 10px 0px 0px;
+		#insert,
+		#cancel,
+		#apply,
+		#replaceBtn,
+		#replaceAllBtn {
+			margin: 0px 10px 0px 0px;
+		}
+	}
 }

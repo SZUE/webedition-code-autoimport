@@ -134,73 +134,70 @@
 		color: #ADC5E3;
 	}
 
-}
+	.disabled a,
+	a,
+	a:active,
+		a:visited,
+		.item a,
+		.group a,
+		.selected_item a,
+		.selected_group a,
+		.notpublished a,.selected_open_group a,
+		.selected_notpublished_item a ,
+		.selected_changed_item a,
+		.checked_item a,
+		.checked_group a,
+		.checked_notpublished a,
+		.checked_changed a,
+		.selected_notpublished_item a,
+		.selected_changed_item a,
+		.selected_open_group a {
+		text-decoration:none;
+	}
 
+	.group,
+	.selected_group {
+		font-weight: bold;
+	}
 
-#treetable .disabled a,
-#treetable a,
-#treetable a:active,
-#treetable a:visited,
-#treetable .item a,
-#treetable .group a,
-#treetable .selected_item a,
-#treetable .selected_group a,
-#treetable .notpublished a,.selected_open_group a,
-#treetable .selected_notpublished_item a ,
-#treetable .selected_changed_item a,
-#treetable .checked_item a,
-#treetable .checked_group a,
-#treetable .checked_notpublished a,
-#treetable .checked_changed a,
-#treetable .selected_notpublished_item a,
-#treetable .selected_changed_item a,
-#treetable .selected_open_group a {
-	text-decoration:none;
-}
+	.selected_item,
+	.selected_group{
+		background-color: #6070B6;
+	}
 
-#treetable .group,
-#treetable .selected_group {
-	font-weight: bold;
-}
+	.selected_notpublished_item,
+	.selected_changed_item,
+	.selected_open_group,
+	.checked_changed,
+	.checked_item,
+	.checked_group,
+	.checked_notpublished{
+		color: #3366CC;
+		background-color: #D4DBFA;
+		cursor: pointer;
+	}
 
-#treetable .selected_item,
-#treetable .selected_group{
-	background-color: #6070B6;
-}
+	.selected_open_group,
+	.checked_group{
+		color: black;
+		font-weight: bold;
+	}
 
-#treetable .selected_notpublished_item,
-#treetable .selected_changed_item,
-#treetable .selected_open_group,
-#treetable .checked_changed,
-#treetable .checked_item,
-#treetable .checked_group,
-#treetable .checked_notpublished{
-	color: #3366CC;
-	background-color: #D4DBFA;
-	cursor: pointer;
-}
+	.checked_item,
+	.checked_group{
+		color: black;
+	}
 
-#treetable .selected_open_group,
-#treetable .checked_group{
-	color: black;
-	font-weight: bold;
-}
+	/*change fa sizes in tree*/
+	fa-stack{
+		height: 1em;
+		line-height: 1em;
+		width: 1em;
+	}
 
-#treetable .checked_item,
-#treetable .checked_group{
-	color: black;
-}
+	.selected_group,
+	.selected_item {
+		background-color: #D4DBFA;
+	}
 
-
-/*change fa sizes in tree*/
-#treetable fa-stack{
-	height: 1em;
-	line-height: 1em;
-	width: 1em;
-}
-
-
-#treetable .selected_group,
-#treetable .selected_item {
-	background-color: #D4DBFA;
 }

@@ -51,7 +51,9 @@ input:invalid {
 	border-style: none;
 }
 
-div.we_blockControls button,
-div.we_blockControls select{
-	margin-right:1em;
+div.we_blockControls{
+	button,
+	select{
+		margin-right:1em;
+	}
 }

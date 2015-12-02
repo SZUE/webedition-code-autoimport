@@ -27,14 +27,13 @@
 body{
 	background-color: #F5F5F5;
 	margin:10px;
-}
-
-body.noHome {
-	background: #DDE7F1 url("/webEdition/images/backgrounds/blank_editor.gif") no-repeat fixed bottom right;
-	height:100%;
-	margin: 0px;
-	padding: 0px;
-	text-align: center;
+	&.noHome {
+		background: #DDE7F1 url("/webEdition/images/backgrounds/blank_editor.gif") no-repeat fixed bottom right;
+		height:100%;
+		margin: 0px;
+		padding: 0px;
+		text-align: center;
+	}
 }
 
 .errorMessage {
@@ -62,19 +61,11 @@ div.le_widget{
 	position:relative;
 	top:0px;
 	left:0px;
+	&:first-child{
+		margin-top:0px;
+	}
 }
 
-div.le_widget:first-child{
-	margin-top:0px;
-}
-
-.rpcBusy img{
-	width:32px;
-	height:32px;
-	border:0px;
-	margin-left:10px;
-
-}
 #divClone{
 	position:relative;
 	display:none;
@@ -91,17 +82,15 @@ div.le_widget:first-child{
 	top:27px;
 	left:45px;
 	z-index:3;
-}
-#widgets > table{
-	height:98%;
-}
-
-#widgets > table > tr >td{
-	vertical-align:top;
-	width:100%;
-	text-align:left
-}
-
+	> table{
+		height:98%;
+		> tr >td{
+			vertical-align:top;
+			width:100%;
+			text-align:left
+		}
+	}
+}l
 #le_tblWidgets{
 	table-layout:fixed;
 }
@@ -109,19 +98,21 @@ div.le_widget:first-child{
 	border-bottom: 2px solid white;
 	height:32px;
 	line-height: 32px;
+	padding-left:11px;
+	padding-right:11px;
 }
-.bgc_white{
-	background-color:#FFFFFF;
-}
-.widgetTitle_white{
-	background-color: #CCCCCC;
-}
-
 .label{
 	font-family:Arial,Helvetica,sans-serif;
 	font-size:15px;
 	color:white;
 	font-weight:bold;
+}
+
+.bgc_white{
+	background-color:#FFFFFF;
+}
+.widgetTitle_white{
+	background-color: #CCCCCC;
 }
 
 .bgc_lightCyan{
@@ -170,16 +161,12 @@ div.le_widget:first-child{
 	border-radius: 10px;
 	width:100%;
 	border: 1px solid #B7B7B7;
+	td{
+		padding: 0px;
+		vertical-align: top;
+	}
 }
 
-.widget td{
-	padding: 0px;
-	vertical-align: top;
-}
-
-.widget_controls table{
-	border-spacing: 0px;
-}
 .widget_controls{
 	border-spacing: 0px;
 	border-top-left-radius: 10px;
@@ -192,20 +179,21 @@ div.le_widget:first-child{
 	font-size: 10px;
 	color: #ababab;
 	padding-right: 3px;
+	table{
+		border-spacing: 0px;
+	}
+
+	i.fa-stack-1x:hover{
+		color:black;
+	}
 }
-.widget_controls i.fa-stack-1x:hover{
-	color:black;
-}
+
 
 div.content{
 	text-align:left;
 	vertical-align:top;
 	padding-top:10px;
 	padding-bottom:11px;
-}
-
-div.widgetTitle,
-div.content{
 	padding-left:11px;
 	padding-right:11px;
 }
@@ -220,10 +208,9 @@ td.mdcIcon{
 
 #users_online td{
 	vertical-align:middle;
-}
-
-#users_online td.we-user{
-	font-weight:bold;
+	&.we-user{
+		font-weight:bold;
+	}
 }
 
 td.sctFileIcon{
