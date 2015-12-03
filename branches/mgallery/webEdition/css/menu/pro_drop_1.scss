@@ -26,76 +26,72 @@ way to fit your requirements.
 	font-family: arial, verdana, sans-serif;
 	font-size: 10pt;
 
-	li.top {
+	li.top{
 		display: block;
 		float: left;
 		height: 32px;
 
-		div {
+		div{
 			position: relative;
 			top: 5px;
 			border: none;
+			a.top_link {
+				display: block;
+				float: left;
+				height: 20px;
+				line-height: 22px;
+				color: #000000;
+				text-decoration: none;
+				font-weight: bold;
+				cursor: pointer;
+				background: none;
+				span {
+					float: left;
+					display: block;
+					padding: 0px 18px 0px 18px;
+					height: 16px;
+				}
+			}
+		}
+		div.click{
+			&:hover {
+				border-top: solid 1px #808080;
+				border-left: solid 1px #808080;
+				border-right: solid 1px #ffffff;
+			}
+			position: relative;
+			z-index: 200;
 		}
 	}
+
 	li.top:hover {
 		position: relative;
 		z-index: 200;
+		div {
+			border-top: solid 1px #ffffff;
+			border-right: solid 1px #808080;
+			border-bottom: solid 1px #808080;
+			border-left: solid 1px #ffffff;
+			height: 22px;
+			top: 4px;
+			background: #3399ff;
+			color: #ffffff;
+			a.top_link {
+				color: #ffffff;
+				span {
+					float: left;
+					display: block;
+					padding: 0px 17px 0px 17px;
+					height: 16px;
+					color: #ffffff;
+				}
+			}
+		}
 	}
 
-	li.top:hover div {
-		border-top: solid 1px #ffffff;
-		border-right: solid 1px #808080;
-		border-bottom: solid 1px #808080;
-		border-left: solid 1px #ffffff;
-		height: 22px;
-		top: 4px;
-		background: #3399ff;
-		color: #ffffff;
-	}
 
-	li.top div.click:hover {
-		border-top: solid 1px #808080;
-		border-left: solid 1px #808080;
-		border-right: solid 1px #ffffff;
-	}
-
-	li.top div a.top_link {
-		display: block;
-		float: left;
-		height: 20px;
-		line-height: 22px;
-		color: #000000;
-		text-decoration: none;
-		font-weight: bold;
-		cursor: pointer;
-		background: none;
-	}
-
-	li.top:hover div a.top_link {
-		color: #ffffff;
-	}
-
-	li.top div a.top_link span {
-		float: left;
-		display: block;
-		padding: 0px 18px 0px 18px;
-		height: 16px;
-	}
-
-	li.top:hover div a.top_link span {
-		float: left;
-		display: block;
-		padding: 0px 17px 0px 17px;
-		height: 16px;
-		color: #ffffff;
-	}
 
 	/* Default list styling */
-
-	li.top div.click {
-		position: relative;
-		z-index: 200;
-	}
 
 	/* keep the 'next' level invisible by placing it off screen. */
 	ul,
@@ -115,90 +111,89 @@ way to fit your requirements.
 		z-index: 300;
 	}
 
-	li div.click:hover ul{
-		left: -1px;
-		top: 22px;
-		background: #f0f0f0;
-		border: 1px solid #a0a0a0;
-		word-wrap: break-word;
-		width: 16em;
-		height: auto;
-		z-index: 300;
-		margin-top: 0;
-		padding: 0 2px 4px 2px;
-		border-radius: 5px;
-		border-top-left-radius: 0;
-		box-shadow: 3px 3px 10px #bbbbbb;
-	}
+	li{
+		div.click:hover{
+			ul{
+				left: -1px;
+				top: 22px;
+				background: #f0f0f0;
+				border: 1px solid #a0a0a0;
+				word-wrap: break-word;
+				width: 16em;
+				height: auto;
+				z-index: 300;
+				margin-top: 0;
+				padding: 0 2px 4px 2px;
+				border-radius: 5px;
+				border-top-left-radius: 0;
+				box-shadow: 3px 3px 10px #bbbbbb;
+				li:hover ul,
+					li:hover ul li:hover ul,
+					li:hover ul li:hover ul li:hover ul,
+					li:hover ul li:hover ul li:hover ul li:hover ul{
+					left: 14.2em;
+					top: -1px;
+					background: #f0f0f0;
+					border: 1px solid #a0a0a0;
+					word-wrap: break-word;
+					width: 14.5em;
+					z-index: 400;
+					height: auto;
+					padding: 0px 2px 5px 2px;
+					border-radius: 5px;
+					box-shadow: 3px 3px 10px #bbbbbb;
+				}
+				li:hover ul{
+					left: 15.7em;
+				}
+			}
 
-	li div.click:hover ul.sub li{
-		display: block;
-		position: relative;
-		float: left;
-		width: 16em;
-		font-weight: normal;
-		color:black;
-	}
+			ul.sub li{
+				display: block;
+				position: relative;
+				float: left;
+				width: 16em;
+				font-weight: normal;
+				color:black;
+				&:hover {
+					background: #3399ff;
+					color: #ffffff;
+				}
+				a{
+					display: block;
+					padding: 1px 0px 1px 1.5em;
+					line-height: 2.5ex;
+					text-indent: -1em;
+					margin: 2px 10px 0px 0px;
+					color: inherit;
+					text-decoration: none;
+				}
+				ul li{
+					display: block;
+					position: relative;
+					float: left;
+					width: 14.5em;
+					font-weight: normal;
+				}
+			}
+		}
 
-	li div.click:hover ul.sub li ul li{
-		display: block;
-		position: relative;
-		float: left;
-		width: 14.5em;
-		font-weight: normal;
-	}
+		ul.sub li a.fly {
+			background: #f0f0f0;
+		}
+		div.click ul li:hover > a.fly {
+			background: #3399ff;
+			color: #ffffff;
+		}
 
-	li div.click:hover ul.sub li a{
-		display: block;
-		padding: 1px 0px 1px 1.5em;
-		line-height: 2.5ex;
-		text-indent: -1em;
-		margin: 2px 10px 0px 0px;
-		color: inherit;
-		text-decoration: none;
-	}
-
-	li ul.sub li a.fly {
-		background: #f0f0f0;
-	}
-	li div.click:hover ul.sub li:hover {
-		background: #3399ff;
-		color: #ffffff;
-	}
-
-	li div.click ul li:hover > a.fly {
-		background: #3399ff;
-		color: #ffffff;
-	}
-
-	li div.click:hover ul li:hover ul,
-		li div.click:hover ul li:hover ul li:hover ul,
-		li div.click:hover ul li:hover ul li:hover ul li:hover ul,
-		li div.click:hover ul li:hover ul li:hover ul li:hover ul li:hover ul{
-		left: 14.2em;
-		top: -1px;
-		background: #f0f0f0;
-		border: 1px solid #a0a0a0;
-		word-wrap: break-word;
-		width: 14.5em;
-		z-index: 400;
-		height: auto;
-		padding: 0px 2px 5px 2px;
-		border-radius: 5px;
-		box-shadow: 3px 3px 10px #bbbbbb;
-	}
-
-	li div.click:hover ul li:hover ul{
-		left: 15.7em;
-	}
-
-	li.disabled{
-		height: 0px;
-		line-height: 0px;
-		padding: 0;
-		border-top: 1px solid #a0a0a0;
-		border-bottom: 1px solid #ffffff;
-		margin: 2px 0px 0px 0px;
+		&.disabled{
+			height: 0px;
+			line-height: 0px;
+			padding: 0;
+			border-top: 1px solid #a0a0a0;
+			border-bottom: 1px solid #ffffff;
+			margin: 2px 0px 0px 0px;
+		}
 	}
 
 	ul ul ul {
@@ -206,18 +201,16 @@ way to fit your requirements.
 		max-height: 400px;
 		overflow: auto !important;
 		font-size: 12px;
-	}
-
-	ul ul ul li {
-		white-space: nowrap;
-		clear: both;
-		width: 100% !important;
-	}
-
-	ul ul ul li:hover,
-		ul ul ul li a:hover {
-		display: block;
-		white-space: nowrap;
+		li {
+			white-space: nowrap;
+			clear: both;
+			width: 100% !important;
+			&:hover,
+				li a:hover {
+				display: block;
+				white-space: nowrap;
+			}
+		}
 	}
 
 	i.fa{

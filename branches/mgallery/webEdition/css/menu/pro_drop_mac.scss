@@ -24,131 +24,140 @@
 #nav {
 	font-size: 11pt;
 
-	li.top:hover div {
-		background-color: transparent;
-		color: #000000; /* #8191 */
+	li.top{
+		a.top_link {
+			font-size: 10pt;
+		}
+		div{
+			&.click:hover {
+				color: #000000;
+			}
+		}
+		&:hover div {
+			background-color: transparent;
+			color: #000000; /* #8191 */
+			a.top_link {
+				color: #000000;
+			}
+
+			/* #8191 */
+			a.top_link span {
+				color: #000000;
+			}
+		}
 	}
 
+	li{
+		div.click{
+			&:hover{
+				ul{
+					background-color: white;
+					opacity: 0.98;
+					border: 1px solid #cccccc;
+					width: 16.6em;
+					padding: 4px 0 4px 0;
+					li:hover{
+						ul,
+						ul li:hover ul,
+							ul li:hover ul li:hover ul,
+							ul li:hover ul li:hover ul li:hover ul{
+							left: 14.8em;
+							top: -6px;
+							background: #ffffff;
+							border: 1px solid #cccccc;
+							width: 15em;
+							padding: 4px 0px 5px 0px;
+							color: #000000;
+						}
 
-	li.top div.click:hover {
-		color: #000000;
+						ul{
+							left: 16.3em;
+							li:hover a,
+								li ul li:hover a{
+								color: #ffffff;
+							}
+						}
+					}
+
+					li.disabled,
+					li.disabled:hover,
+						li ul li.disabled,
+						li ul li.disabled:hover{
+						background-image: none;
+						background-color: #cccccc;
+						border-top: solid 1px #cccccc;
+						border-bottom: none;
+						margin: 4px 0px 6px 0px;
+					}
+
+				}
+
+				ul.sub{
+					a{
+						width: 12.8em;
+						&:hover {
+							background-color: transparent;
+						}
+						&.fly:hover {
+							background-color: transparent;
+						}
+					}
+					li{
+						width: 16.6em;
+						color: #000000;
+						border-top: solid 1px transparent;
+						border-bottom: solid 1px transparent;
+						ul li{
+							width: 15em;
+							color: #000000;
+							border-top: solid 1px transparent;
+							border-bottom: solid 1px transparent;
+							a{
+								width: 11.2em;
+							}
+						}
+						a,
+						ul li a{
+							line-height: 1.9ex;
+							padding: 1px 1em 1px 2.4em;
+							text-indent: -1em;
+							margin: 0px 10px 0px 0px;
+						}
+
+
+					}
+
+					li:hover{
+						background-color: #225ff5;
+						opacity: 1.0;
+						border-top: solid 1px #3366ff;
+						border-bottom: solid 1px #0066ff;
+						color: #ffffff;
+
+						a{
+							color: #ffffff;
+							display: block;
+						}
+
+						li{
+							a,
+							ul li a{
+								color: #000000;
+							}
+						}
+					}
+				}
+			}
+			ul li:hover > a.fly {
+				background-color: transparent;
+			}
+		}
+
+		ul.sub li a.fly {
+			background-color: transparent;
+		}
 	}
 
-	li.top div a.top_link {
-		font-size: 10pt;
-	}
-
-	li.top:hover div a.top_link {
-		color: #000000;
-	}
-
-	/* #8191 */
-	li.top:hover div a.top_link span {
-		color: #000000;
-	}
-
-	li div.click:hover ul{
-		background-color: white;
-		opacity: 0.98;
-		border: 1px solid #cccccc;
-		width: 16.6em;
-		padding: 4px 0 4px 0;
-	}
-
-	li div.click:hover ul.sub li{
-		width: 16.6em;
-		color: #000000;
-		border-top: solid 1px transparent;
-		border-bottom: solid 1px transparent;
-	}
-
-	li div.click:hover ul.sub li ul li{
-		width: 15em;
-		color: #000000;
-		border-top: solid 1px transparent;
-		border-bottom: solid 1px transparent;
-	}
-
-	li div.click:hover ul.sub li:hover{
-		background-color: #225ff5;
-		opacity: 1.0;
-		border-top: solid 1px #3366ff;
-		border-bottom: solid 1px #0066ff;
-		color: #ffffff;
-	}
-
-	li div.click:hover ul.sub li:hover a{
-		color: #ffffff;
-		display: block;
-	}
-
-
-	li div.click:hover ul.sub li:hover li a,
-		li div.click:hover ul.sub li:hover li ul li a{
-		color: #000000;
-	}
-
-
-	li div.click:hover ul.sub li a,
-		li div.click:hover ul.sub li ul li a{
-		width: 12.8em;
-		line-height: 1.9ex;
-		padding: 1px 1em 1px 2.4em;
-		text-indent: -1em;
-		margin: 0px 10px 0px 0px;
-	}
-
-	li div.click:hover ul.sub li ul li a{
-		width: 11.2em;
-	}
-
-	li ul.sub li a.fly {
-		background-color: transparent;
-	}
-
-	li div.click:hover ul.sub li a:hover {
-		background-color: transparent;
-	}
-	li div.click:hover ul.sub li a.fly:hover {
-		background-color: transparent;
-	}
-
-	li div.click ul li:hover > a.fly {
-		background-color: transparent;
-	}
-
-	li div.click:hover ul li:hover ul,
-		li div.click:hover ul li:hover ul li:hover ul,
-		li div.click:hover ul li:hover ul li:hover ul li:hover ul,
-		li div.click:hover ul li:hover ul li:hover ul li:hover ul li:hover ul{
-		left: 14.8em;
-		top: -6px;
-		background: #ffffff;
-		border: 1px solid #cccccc;
-		width: 15em;
-		padding: 4px 0px 5px 0px;
-		color: #000000;
-	}
-
-	li div.click:hover ul li:hover ul{
-		left: 16.3em;
-	}
-
-	li div.click:hover ul li:hover ul li:hover a,
-		li div.click:hover ul li:hover ul li ul li:hover a{
-		color: #ffffff;
-	}
-
-	li div.click:hover ul li.disabled,
-		li div.click:hover ul li.disabled:hover,
-		li div.click:hover ul li ul li.disabled,
-		li div.click:hover ul li ul li.disabled:hover{
-		background-image: none;
-		background-color: #cccccc;
-		border-top: solid 1px #cccccc;
-		border-bottom: none;
-		margin: 4px 0px 6px 0px;
-	}
 	i.fa{
 		position:absolute;
 		right:0px;
