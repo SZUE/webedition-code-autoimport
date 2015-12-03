@@ -118,6 +118,14 @@ abstract class we_html_element{
 	}
 
 	public static function cssLink($url, array $attribs = array()){
+		if(!is_file($_SERVER['DOCUMENT_ROOT'] . $url)
+				&& substr($url, -4) === '.css' 
+				&& is_file(($scssUrl = $_SERVER['DOCUMENT_ROOT'] . substr($url, 0, -4) . '.scss'))){
+			$scss = new we_helpers_scss();
+			$doc = $scss->compile(file_get_contents($scssUrl));
+			file_put_contents($_SERVER['DOCUMENT_ROOT'] . $url, $doc);
+		}
+
 		$attribs['href'] = self::getUnCache($url);
 		$attribs['rel'] = 'styleSheet';
 		$attribs['type'] = 'text/css';
