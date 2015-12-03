@@ -167,7 +167,7 @@ class we_tool_frames extends we_modules_frame{
 		include($this->toolDir . 'conf/we_menu_' . $this->toolName . '.conf.php');
 
 		$lang_arr = 'we_menu_' . $this->toolName;
-		$jmenu = new we_base_menu($$lang_arr, $this->topFrame . '.cmd');
+		$jmenu = new we_base_menu(${$lang_arr}, $this->topFrame . '.cmd');
 		$menu = $jmenu->getCode();
 
 		$table = new we_html_table(array("width" => "100%", "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 2);

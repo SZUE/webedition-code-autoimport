@@ -141,7 +141,7 @@ class we_modules_frame{
 		include($_menuFile);
 
 		$lang_arr = "we_menu_" . $_module;
-		$jmenu = new we_base_menu($$lang_arr, 'top.opener.top.load', '');
+		$jmenu = new we_base_menu(${$lang_arr}, 'top.opener.top.load', '');
 
 		$menu = $jmenu->getCode(false) . $jmenu->getJS();
 

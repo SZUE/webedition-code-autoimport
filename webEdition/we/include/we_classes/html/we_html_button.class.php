@@ -303,8 +303,8 @@ function switch_button_state(element, button, state, type) {
 
 		//	Existing buttons are added to array
 		for($_i = 0; $_i < count($_order); $_i++){
-			if(isset($$_order[$_i]) && $$_order[$_i] != ''){
-				$_buttons[] = $$_order[$_i];
+			if(isset(${$_order[$_i]}) && ${$_order[$_i]} != ''){
+				$_buttons[] = ${$_order[$_i]};
 			}
 		}
 

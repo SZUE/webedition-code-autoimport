@@ -76,7 +76,7 @@ abstract class we_base_widget{
 		$oIco_pc->setCol(0, 3, array("width" => $w_i0, "height" => $h_tb, "valign" => "middle"), we_html_element::htmlA(array("id" => $iId . "_remove", "href" => "#", "onclick" => "removeWidget('" . $iId . "');this.blur();"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "pd/tb_close.gif", "width" => $w_i0, "height" => $h_i0, "border" => 0, "title" => g_l('cockpit', '[close]')))));
 
 		$ico_obj = ($resize) ? 'oIco_prc' : 'oIco_pc';
-		$sIco = ($sType != "_reCloneType_") ? $$ico_obj->getHtml() :
+		$sIco = ($sType != "_reCloneType_") ? ${$ico_obj}->getHtml() :
 				we_html_element::htmlDiv(array("id" => $iId . "_ico_prc", "style" => "display:block;"), $oIco_prc->getHtml()) .
 				we_html_element::htmlDiv(array("id" => $iId . "_ico_pc", "style" => "display:none;"), $oIco_pc->getHtml());
 
