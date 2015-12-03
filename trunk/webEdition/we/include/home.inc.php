@@ -1019,11 +1019,11 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 			}
 			if(file_exists(WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php')){
 				include(WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php');
-				$$aProps[0] = we_base_widget::create('m_' . $iCurrId, $aProps[0], $oTblCont, $aLang, $aProps[1], $aProps[2], $aProps[3], $iWidth, $aPrefs[$aProps[0]]["height"], $aPrefs[$aProps[0]]["isResizable"]);
+				${$aProps[0]} = we_base_widget::create('m_' . $iCurrId, $aProps[0], $oTblCont, $aLang, $aProps[1], $aProps[2], $aProps[3], $iWidth, $aPrefs[$aProps[0]]["height"], $aPrefs[$aProps[0]]["isResizable"]);
 				$s2 .= we_html_element::htmlDiv(
 						array(
 						"id" => "m_" . $iCurrId, "class" => "le_widget", "style" => "position:relative;top:0px;left:0px;"
-						), $$aProps[0]->getHtml()) .
+						), ${$aProps[0]}->getHtml()) .
 					we_html_element::jsElement("initWidget('" . 'm_' . $iCurrId . "');");
 			}
 		}

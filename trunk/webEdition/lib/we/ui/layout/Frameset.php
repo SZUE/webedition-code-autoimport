@@ -250,7 +250,7 @@ class we_ui_layout_Frameset extends we_ui_abstract_AbstractElement{
 	protected function getHTMLCssMenu($appName = ''){
 		include ($appName . '/conf/we_menu_' . $appName . '.conf.php');
 		$lang_arr = 'we_menu_' . $appName;
-		$jmenu = new we_ui_controls_CssMenu($$lang_arr, 'cmd_' . $appName, '');
+		$jmenu = new we_ui_controls_CssMenu(${$lang_arr}, 'cmd_' . $appName, '');
 
 		$messageConsole = new we_ui_controls_MessageConsole(array('consoleName' => 'toolFrame'));
 

@@ -40,7 +40,7 @@ function we_tag_author($attribs){
 					$objID = $GLOBALS['lv']->id;
 					break;
 				case 'we_listview_search'://listview type=search
-					if($$GLOBALS['lv']->getDBf('ClassID')){//object
+					if($GLOBALS['lv']->getDBf('ClassID')){//object
 						$objID = $GLOBALS['lv']->getDBf('WE_ID');
 					} else {//document
 						$docID = $GLOBALS['lv']->getDBf('WE_ID');
