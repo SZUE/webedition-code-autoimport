@@ -356,7 +356,7 @@ YAHOO.util.Event.addListener(this, "load", YAHOO.autocoml.init);' .
 						break;
 					case "onchange":
 						$_onchange = 1;
-						$this->inputAttribs .= $key . '="' . ($markHot ? 'if(_EditorFrame){_EditorFrame.setEditorIsHot(true);
+						$this->inputAttribs .= $key . '="' . ($markHot ? 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
 						hot = 1}' : '') . $val . '" ';
 						break;
 					case "class":
@@ -372,12 +372,12 @@ YAHOO.util.Event.addListener(this, "load", YAHOO.autocoml.init);' .
 				$this->inputAttribs .= 'class="wetextinput" ';
 			}
 			if(!isset($_onchange)){
-				$this->inputAttribs .= ' onchange="' . ($markHot ? 'if(_EditorFrame){_EditorFrame.setEditorIsHot(true);
+				$this->inputAttribs .= ' onchange="' . ($markHot ? 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
 						hot = 1};
 						' : '') . '" ';
 			}
 		} else {
-			$this->inputAttribs = 'class="wetextinput" onchange="' . ($markHot ? 'if(_EditorFrame){_EditorFrame.setEditorIsHot(true);
+			$this->inputAttribs = 'class="wetextinput" onchange="' . ($markHot ? 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
 						hot = 1;
 						}' : '') . '" ';
 		}

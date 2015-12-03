@@ -59,7 +59,7 @@ class we_chooser_multiDirAndTemplate extends we_chooser_multiDir{
 	<td class="chooserFileIcon" data-contenttype="folder"></td>
 	<td class="' . $this->css . '">/</td>
 	<td>' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
-						we_html_button::create_button(we_html_button::TRASH, "javascript:_EditorFrame.setEditorIsHot(true);" . ($this->extraDelFn ? : "") . ";we_cmd('" . $this->cmd_del . "','0');") :
+						we_html_button::create_button(we_html_button::TRASH, "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);" . ($this->extraDelFn ? : "") . ";we_cmd('" . $this->cmd_del . "','0');") :
 						"") . '</td>
 </tr>';
 			case 1:
@@ -79,7 +79,7 @@ class we_chooser_multiDirAndTemplate extends we_chooser_multiDir{
 				}
 				$path = id_to_path(isset($this->tmplArr[$this->nr]) ? $this->tmplArr[$this->nr] : "", TEMPLATES_TABLE, $this->db);
 				if($this->isEditable()){
-					$tmplSelect = we_html_tools::htmlSelect($this->tmplSelectName . "_" . $this->nr, $this->tmplValsArr, 1, isset($this->tmplArr[$this->nr]) ? $this->tmplArr[$this->nr] : "", false, array("onchange" => 'if(_EditorFrame) {_EditorFrame.setEditorIsHot(true);}'));
+					$tmplSelect = we_html_tools::htmlSelect($this->tmplSelectName . "_" . $this->nr, $this->tmplValsArr, 1, isset($this->tmplArr[$this->nr]) ? $this->tmplArr[$this->nr] : "", false, array("onchange" => 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);'));
 					return '<tr><td></td><td><span class="small"><b>' . g_l('weClass', '[template]') . ':</b></span><br/>' . $tmplSelect . '</td><td style="vertical-align:bottom">' . $but . '</td></tr>';
 				}
 				return '<tr><td></td><td class="' . $this->css . '"><span class="small"><b>' . g_l('weClass', '[template]') . ':</b></span><br/>' . $path . we_html_element::htmlHidden($this->tmplSelectName . "_" . $this->nr, (isset($this->tmplArr[$this->nr]) ? $this->tmplArr[$this->nr] : "")) . '" /></td><td style="vertical-align:bottom">' . $but . '</td></tr>';

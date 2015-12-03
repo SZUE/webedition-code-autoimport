@@ -281,17 +281,17 @@ class we_binaryDocument extends we_document{
 
 				switch($_type){
 					case 'textarea':
-						$_inp = $this->formTextArea('txt', $_tagName, $_tagName, 10, 30, array('onchange' => '_EditorFrame.setEditorIsHot(true);', 'style' => 'width:508px;height:150px;border: #AAAAAA solid 1px'));
+						$_inp = $this->formTextArea('txt', $_tagName, $_tagName, 10, 30, array('onchange' => 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);', 'style' => 'width:508px;height:150px;border: #AAAAAA solid 1px'));
 						break;
 					case 'wysiwyg':
-						$_inp = $this->formTextArea('txt', $_tagName, $_tagName, 10, 30, array('onchange' => '_EditorFrame.setEditorIsHot(true);', 'style' => 'width:508px;height:150px;border: #AAAAAA solid 1px'));
+						$_inp = $this->formTextArea('txt', $_tagName, $_tagName, 10, 30, array('onchange' => 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);', 'style' => 'width:508px;height:150px;border: #AAAAAA solid 1px'));
 						break;
 					case 'date':
 						$_inp = we_html_tools::htmlFormElementTable(we_html_tools::getDateInput2('we_' . $this->Name . '_date[' . $_tagName . ']', abs($this->getElement($_tagName)), true), $_tagName);
 						break;
 					default:
 						$_inp = $_mode === 'none' || !isset($_defined_values[$_tagName]) || !is_array($_defined_values[$_tagName]) ?
-								$this->formInput2(508, $_tagName, 23, "txt", ' onchange="_EditorFrame.setEditorIsHot(true);"') :
+								$this->formInput2(508, $_tagName, 23, "txt", ' onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"') :
 								$this->formInput2WithSelect(308, $_tagName, 23, 'txt', $attribs = '', $_defined_values[$_tagName], 200, false, true);
 				}
 

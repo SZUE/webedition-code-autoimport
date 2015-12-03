@@ -35,7 +35,7 @@ echo we_html_tools::getHtmlTop() .
 		switch(cmnd){
 			case "doImage_convertPNG":
 			case "doImage_convertGIF":
-				_EditorFrame.setEditorIsHot(true);
+				WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
 		}
 		we_cmd(cmnd,"' . $we_transaction . '");
 	}

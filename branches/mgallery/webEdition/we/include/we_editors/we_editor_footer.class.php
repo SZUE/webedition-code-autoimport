@@ -107,11 +107,11 @@ abstract class we_editor_footer{
 			switch($we_doc->ContentType){
 				case we_base_ContentTypes::TEMPLATE:
 					$_normalTable->addCol(2);
-					$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("fat:make_new_document,fa-lg fa-file", "javascript:top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "','','" . $we_doc->ID . "');_EditorFrame.setEditorMakeNewDoc(false);"));
+					$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("fat:make_new_document,fa-lg fa-file", "javascript:top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "','','" . $we_doc->ID . "');WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorMakeNewDoc(false);"));
 					break;
 				case we_base_ContentTypes::OBJECT:
 					$_normalTable->addCol(2);
-					$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("make_new_object", "javascript:top.we_cmd('new','" . OBJECT_FILES_TABLE . "','','objectFile','" . $we_doc->ID . "');_EditorFrame.setEditorMakeNewDoc(false);"));
+					$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("make_new_object", "javascript:top.we_cmd('new','" . OBJECT_FILES_TABLE . "','','objectFile','" . $we_doc->ID . "');WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorMakeNewDoc(false);"));
 					break;
 			}
 		}
@@ -158,7 +158,7 @@ abstract class we_editor_footer{
 		$_ctrlElem = getControlElement('button', 'save'); //	look tag we:controlElement for details
 		if(!$_ctrlElem || !$_ctrlElem['hide']){
 			$_normalTable->addCol(2);
-			$_normalTable->setColContent(0, $_pos++, we_html_button::create_button(we_html_button::SAVE, "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
+			$_normalTable->setColContent(0, $_pos++, we_html_button::create_button(we_html_button::SAVE, "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(false);we_save_document();"));
 		}
 
 		switch($we_doc->Table){
@@ -189,14 +189,14 @@ abstract class we_editor_footer{
 			case we_base_ContentTypes::TEMPLATE:
 				if(defined('VERSIONING_TEXT_WETMPL') && defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL){
 					$_normalTable->addCol(2);
-					$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("fat:saveversion,fa-lg fa-save", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
+					$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("fat:saveversion,fa-lg fa-save", "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(true);we_save_document();"));
 				}
 				if($hasPerm){
 					self::addDelButton($_normalTable, $we_doc, $_pos);
 				}
 
 				$_normalTable->addCol(2);
-				$_normalTable->setColContent(0, $_pos++, we_html_forms::checkbox("autoRebuild", false, "autoRebuild", g_l('global', '[we_rebuild_at_save]'), false, "defaultfont", " _EditorFrame.setEditorAutoRebuild( (this.checked) ? true : false );"));
+				$_normalTable->setColContent(0, $_pos++, we_html_forms::checkbox("autoRebuild", false, "autoRebuild", g_l('global', '[we_rebuild_at_save]'), false, "defaultfont", " WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorAutoRebuild( (this.checked) ? true : false );"));
 				break;
 			default:
 				if($showPubl){
@@ -205,7 +205,7 @@ abstract class we_editor_footer{
 						$text = we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && we_schedpro::saveInScheduler($GLOBALS['we_doc']) ? 'fat:saveInScheduler,fa-lg fa-clock-o' : we_html_button::PUBLISH;
 						$_normalTable->addCol(2);
 						$_normalTable->setColAttributes(0, $_pos, array('id' => 'publish_' . $GLOBALS['we_doc']->ID));
-						$_normalTable->setColContent(0, $_pos++, we_html_button::create_button($text, "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
+						$_normalTable->setColContent(0, $_pos++, we_html_button::create_button($text, "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(true);we_save_document();"));
 					}
 				}
 				if($hasPerm){
@@ -217,7 +217,7 @@ abstract class we_editor_footer{
 			$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');
 			if(!$_ctrlElem || !$_ctrlElem['hide']){
 				$_normalTable->addCol(2);
-				$_normalTable->setCol(0, $_pos++, ( ($_ctrlElem && $_ctrlElem['hide'] ) ? ( array('style' => 'display:none') ) : array('style' => 'display:block')), we_html_forms::checkbox("makeSameDoc", ( $_ctrlElem ? $_ctrlElem['checked'] : false), "makeSameDoc", g_l('global', '[we_make_same][' . $we_doc->ContentType . ']'), false, "defaultfont", " _EditorFrame.setEditorMakeSameDoc( (this.checked) ? true : false );", ( $_ctrlElem ? $_ctrlElem['readonly'] : false)));
+				$_normalTable->setCol(0, $_pos++, ( ($_ctrlElem && $_ctrlElem['hide'] ) ? ( array('style' => 'display:none') ) : array('style' => 'display:block')), we_html_forms::checkbox("makeSameDoc", ( $_ctrlElem ? $_ctrlElem['checked'] : false), "makeSameDoc", g_l('global', '[we_make_same][' . $we_doc->ContentType . ']'), false, "defaultfont", " WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorMakeSameDoc( (this.checked) ? true : false );", ( $_ctrlElem ? $_ctrlElem['readonly'] : false)));
 			}
 		}
 
@@ -225,13 +225,13 @@ abstract class we_editor_footer{
 			case we_base_ContentTypes::TEMPLATE:
 				if(permissionhandler::hasPerm("NEW_WEBEDITIONSITE") || permissionhandler::hasPerm("ADMINISTRATOR")){
 					$_normalTable->addCol(2);
-					$_normalTable->setColContent(0, $_pos++, we_html_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('global', '[we_new_doc_after_save]'), false, "defaultfont", "_EditorFrame.setEditorMakeNewDoc( (this.checked) ? true : false );"));
+					$_normalTable->setColContent(0, $_pos++, we_html_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('global', '[we_new_doc_after_save]'), false, "defaultfont", "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorMakeNewDoc( (this.checked) ? true : false );"));
 				}
 				break;
 			case we_base_ContentTypes::OBJECT:
 				if(permissionhandler::hasPerm("NEW_OBJECTFILE") || permissionhandler::hasPerm("ADMINISTRATOR")){
 					$_normalTable->addCol(2);
-					$_normalTable->setColContent(0, $_pos++, we_html_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('modules_object', '[we_new_doc_after_save]'), false, "defaultfont", "_EditorFrame.setEditorMakeNewDoc( (this.checked) ? true : false );"));
+					$_normalTable->setColContent(0, $_pos++, we_html_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('modules_object', '[we_new_doc_after_save]'), false, "defaultfont", "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorMakeNewDoc( (this.checked) ? true : false );"));
 				}
 				break;
 		}
@@ -327,7 +327,7 @@ abstract class we_editor_footer{
 		$_ctrlElem = getControlElement('button', 'save'); //	look tag we:controlElement for details
 		if(!$_ctrlElem || !$_ctrlElem['hide']){
 			$_seeModeTable->addCol(2);
-			$_seeModeTable->setCol(0, $_pos++, array('style' => 'vertical-align:top;'), we_html_button::create_button('fat:save,fa-lg fa-save', "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
+			$_seeModeTable->setCol(0, $_pos++, array('style' => 'vertical-align:top;'), we_html_button::create_button('fat:save,fa-lg fa-save', "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(false);we_save_document();"));
 		}
 
 
@@ -340,7 +340,7 @@ abstract class we_editor_footer{
 			if(!($_ctrlElem && $_ctrlElem['hide'])){
 
 				$_seeModeTable->addCol(2);
-				$_seeModeTable->setCol(0, $_pos++, array('style' => 'vertical-align:top;'), we_html_button::create_button(we_html_button::PUBLISH, "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
+				$_seeModeTable->setCol(0, $_pos++, array('style' => 'vertical-align:top;'), we_html_button::create_button(we_html_button::PUBLISH, "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(true);we_save_document();"));
 			}
 		}
 
@@ -350,7 +350,7 @@ abstract class we_editor_footer{
 			$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');
 
 			$showPubl_makeSamNew = ($_ctrlElem && $_ctrlElem['hide'] ? '<div style="display: hidden;">' : '') .
-				we_html_forms::checkbox("makeSameDoc", ( $_ctrlElem ? $_ctrlElem['checked'] : false), "makeSameDoc", g_l('global', '[we_make_same][' . $we_doc->ContentType . ']'), false, "defaultfont", " _EditorFrame.setEditorMakeSameDoc( (this.checked) ? true : false );", ( $_ctrlElem ? $_ctrlElem['readonly'] : false)) .
+				we_html_forms::checkbox("makeSameDoc", ( $_ctrlElem ? $_ctrlElem['checked'] : false), "makeSameDoc", g_l('global', '[we_make_same][' . $we_doc->ContentType . ']'), false, "defaultfont", " WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorMakeSameDoc( (this.checked) ? true : false );", ( $_ctrlElem ? $_ctrlElem['readonly'] : false)) .
 				($_ctrlElem && $_ctrlElem['hide'] ? '</div>' : '');
 
 			$_seeModeTable->addCol(2);
