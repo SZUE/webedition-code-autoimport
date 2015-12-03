@@ -31,7 +31,7 @@ include ($appName . '/conf/we_menu_' . $appName . '.conf.php');
 $lang_arr = 'we_menu_' . $appName;
 
 $menu = new we_ui_controls_CssMenu(array(
-	'entries' => $$lang_arr,
+	'entries' => ${$lang_arr},
 	'width' => 350,
 	'height' => 30,
 	'cmdURL' => $appDir . '/index.php/cmd/menu/name/',

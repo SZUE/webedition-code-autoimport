@@ -82,7 +82,7 @@ abstract class we_base_widget{
 		  </span>');
 
 		$ico_obj = ($resize ? 'oIco_prc' : 'oIco_pc');
-		$sIco = ($sType != "_reCloneType_") ? $$ico_obj->getHtml() :
+		$sIco = ($sType != "_reCloneType_") ? ${$ico_obj}->getHtml() :
 				we_html_element::htmlDiv(array("id" => $iId . "_ico_prc", "style" => "display:block;"), $oIco_prc->getHtml()) .
 				we_html_element::htmlDiv(array("id" => $iId . "_ico_pc", "style" => "display:none;"), $oIco_pc->getHtml());
 
