@@ -210,6 +210,7 @@ var WebEdition={
 					prefs_saved_successfully: "<?php echo we_message_reporting::prepareMsgForJS(g_l('cockpit', '[prefs_saved_successfully]')); ?>",
 					copy_folder_not_valid: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[copy_folder_not_valid]')); ?>",
 					folder_copy_success: "<?php echo we_message_reporting::prepareMsgForJS(g_l('copyFolder', '[copy_success]')); ?>",
+					exit_multi_doc_question: "<?php echo g_l('alert', '[exit_multi_doc_question]'); ?>",
 				},
 				message_reporting:{
 					notice:"<?php echo g_l('alert', '[notice]');?>",
@@ -426,7 +427,7 @@ foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do
 //-->
 </script>
 </head>
-<body id="weMainBody" onload="initWE();top.start('<?php echo $_table_to_load;?>');" onbeforeunload="doUnload()">
+<body id="weMainBody" onload="initWE();top.start('<?php echo $_table_to_load;?>');" onbeforeunload="return doUnload();">
 	<div id="headerDiv"><?php
 		$SEEM_edit_include = we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include');
 		$msg = (defined('MESSAGING_SYSTEM') && !$SEEM_edit_include);

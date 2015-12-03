@@ -468,6 +468,9 @@ function doUnloadNormal(whichWindow) {
 }
 
 function doUnload(whichWindow) { // triggered when webEdition-window is closed
+	if(!WE().layout.weEditorFrameController.closeAllDocuments()){
+		return WE().consts.g_l.main.exit_multi_doc_question;
+	}
 	if (WE().session.seemode) {
 		doUnloadSEEM(whichWindow);
 	} else {
