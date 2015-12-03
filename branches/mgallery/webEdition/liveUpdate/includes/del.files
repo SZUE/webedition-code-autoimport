@@ -4256,7 +4256,6 @@ editors/content/tinymce/jscripts/tiny_mce
 editors/content/tinymce/jscripts
 editors/content/tinymce/changelog.txt
 editors/content/tinymce
-editors/content/eplugin/initPlugin.html
 editors/content/eplugin/gal
 editor/setHot.html
 editor/initEditor.html
