@@ -717,7 +717,7 @@ if(defined('OBJECT_TABLE')){
 	if($ac){
 		$GLOBALS['DB_WE']->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' ' . ($ac ? ' WHERE ID IN(' . implode(',', $ac) . ') ' : '') . 'ORDER BY Text LIMIT 95');
 		if($GLOBALS['DB_WE']->num_rows()){
-			$we_menu['file_new_weobj']['hide'] = 1;
+
 			while($GLOBALS['DB_WE']->next_record()){
 				$we_menu[] = array(
 					'text' => str_replace(array('"', '\''), '', $GLOBALS['DB_WE']->f('Text')),
@@ -726,6 +726,8 @@ if(defined('OBJECT_TABLE')){
 					'perm' => 'NEW_OBJECTFILE || ADMINISTRATOR',
 				);
 			}
+		} else {
+			$we_menu['file_new_weobj']['hide'] = 1;
 		}
 	}
 }
