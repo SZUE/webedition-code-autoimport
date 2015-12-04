@@ -43,7 +43,7 @@ if(!in_array(strtolower($extension), $whiteList)){
 }
 
 $imageExt = substr($extension, 1);
-$file = we_base_imageEdit::createPreviewThumb($imagePath, $imageId, $imageSizeW, $imageSizeH, $imageExt);
+$file = $_SERVER['DOCUMENT_ROOT'] .we_base_imageEdit::createPreviewThumb($imagePath, $imageId, $imageSizeW, $imageSizeH, $imageExt);
 if(file_exists($file) && is_readable($file)){
 	$stat = stat($file);
 	$etag = md5($imageId . $stat['size'] . $stat['ctime'] . $stat['mtime']);
@@ -53,6 +53,7 @@ if(file_exists($file) && is_readable($file)){
 	header_remove('Pragma');
 	if(isset($_SERVER['HTTP_IF_NONE_MATCH']) && $_SERVER['HTTP_IF_NONE_MATCH'] == $etag){
 		header('HTTP/1.1 304 Not Modified');
+
 	} else {
 		header('Content-type: image/' . $imageExt);
 		header('Content-Length: ' . filesize($file));
