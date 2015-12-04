@@ -43,7 +43,7 @@ if(!in_array(strtolower($extension), $whiteList)){
 }
 
 $imageExt = substr($extension, 1);
-$file = $_SERVER['DOCUMENT_ROOT'] . we_base_imageEdit::createPreviewThumb($imagePath, $imageId, $imageSizeW, $imageSizeH, $imageExt);
+$file = we_base_imageEdit::createPreviewThumb($imagePath, $imageId, $imageSizeW, $imageSizeH, $imageExt);
 if(file_exists($file) && is_readable($file)){
 	$stat = stat($file);
 	$etag = md5($imageId . $stat['size'] . $stat['ctime'] . $stat['mtime']);
