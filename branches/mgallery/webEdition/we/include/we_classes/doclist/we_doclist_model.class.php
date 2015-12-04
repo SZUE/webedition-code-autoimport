@@ -34,7 +34,7 @@ class we_doclist_model{// extends weModelBase{
 
 	public $searchTable;
 
-	protected $whichSearch;
+	public $whichSearch;
 
 	/**
 	 * @var tinyint: flag if the search ist predefined or not
@@ -64,7 +64,7 @@ class we_doclist_model{// extends weModelBase{
 	/**
 	 * @var tinyint: flag that shows what view is set in each search
 	 */
-	public $setView = 0;
+	public $setView = 'list';
 
 	/**
 	 * @var int: gives the number of entries in each search for one page
@@ -80,15 +80,20 @@ class we_doclist_model{// extends weModelBase{
 	 * @var array: includes the searchfiels which you are searching in
 	 */
 	public $searchFields = array();
+	
+	public $mode = 0;
+	public $height = 0;
+	public $transaction = '';
 
 	/**
 	 * Default Constructor
 	 * Can load or create new searchtool object depends of parameter
 	 */
-	function __construct($searchTable, $folderID = 0, $setView = 'list'){
+	function __construct($transaction, $searchTable, $folderID = 0, $setView = 'list'){
 		//as we do actually not save this model to db nor session we do call parent
 		//parent::__construct(SUCHE_TABLE);
 
+		$this->transaction = $transaction;
 		$this->searchTable = $searchTable;
 		$this->folderID = $folderID;
 		$this->setView = $setView;
@@ -106,11 +111,12 @@ class we_doclist_model{// extends weModelBase{
 	}
 
 	public function processRequest(){
+		// IMPORTANT: this is the ONLY place where model vars are set!
 		$DB_WE = new DB_WE();
 		$request = we_base_request::_(we_base_request::STRING, 'we_cmd');
 
-		if(isset($_REQUEST['searchstart']) || isset($request['searchstart'])){
-			if(isset($_REQUEST['searchstart'])){
+		if(isset($_REQUEST['searchstart' . $this->whichSearch]) || isset($request['searchstart' . $this->whichSearch])){
+			if(isset($_REQUEST['searchFields' . $this->whichSearch])){
 				$_REQUEST['we_cmd']['searchFields' . $this->whichSearch] = $_REQUEST['searchFields' . $this->whichSearch];
 				$_REQUEST['we_cmd']['location' . $this->whichSearch] =  $_REQUEST['location' . $this->whichSearch];
 				$_REQUEST['we_cmd']['search' . $this->whichSearch] = $_REQUEST['search' . $this->whichSearch];
@@ -131,25 +137,34 @@ class we_doclist_model{// extends weModelBase{
 				
 			}
 
-			$this->searchFields = we_base_request::_(we_base_request::STRING, 'we_cmd', $this->searchFields, 'searchFields' . $this->whichSearch);
-			$this->search = array_map('trim', we_base_request::_(we_base_request::STRING, 'we_cmd', $this->search, 'search' . $this->whichSearch));
-			$this->location = we_base_request::_(we_base_request::STRING, 'we_cmd', $this->location, 'location' . $this->whichSearch);
-			$this->order = we_base_request::_(we_base_request::STRING, 'we_cmd', $this->order, 'order' . $this->whichSearch);
-			$this->setView = we_base_request::_(we_base_request::INT, 'we_cmd', $this->setView, 'setView' . $this->whichSearch);
+			// FIXME: unify the different ways these params are committed
+			if(isset($_REQUEST['searchstart' . $this->whichSearch])){
+				$_REQUEST['we_cmd']['Order' . $this->whichSearch] = $_REQUEST['Order' . $this->whichSearch];
+				$_REQUEST['we_cmd']['setView' . $this->whichSearch] = $_REQUEST['setView' . $this->whichSearch];
+				$_REQUEST['we_cmd']['searchstart' . $this->whichSearch] = $_REQUEST['searchstart' . $this->whichSearch];
+				$_REQUEST['we_cmd']['anzahl' . $this->whichSearch] = $_REQUEST['anzahl' . $this->whichSearch];
+				$_REQUEST['we_cmd']['mode'] = $_REQUEST['mode'];
+			}
+
+			$this->mode = we_base_request::_(we_base_request::INT, 'we_cmd', $this->mode, 'mode');
+
+			// searchfield's default is an empty 'Content' dearch (not having any impact on the result)
+			$this->searchFields = !$this->mode ? array('Content') : we_base_request::_(we_base_request::STRING, 'we_cmd', array('Content'), 'searchFields' . $this->whichSearch);
+			$this->search = !$this->mode ? array('') : array_map('trim', we_base_request::_(we_base_request::STRING, 'we_cmd', array(''), 'search' . $this->whichSearch));
+			$this->location = !$this->mode ? array('') : we_base_request::_(we_base_request::STRING, 'we_cmd', array(''), 'location' . $this->whichSearch);
+
+			$this->order = we_base_request::_(we_base_request::STRING, 'we_cmd', $this->order, 'Order' . $this->whichSearch);
+			$this->setView = we_base_request::_(we_base_request::STRING, 'we_cmd', $this->setView, 'setView' . $this->whichSearch);
 			$this->searchstart = we_base_request::_(we_base_request::INT, 'we_cmd', $this->searchstart, 'searchstart' . $this->whichSearch);
 			$this->anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', $this->anzahl, 'anzahl' . $this->whichSearch);
-			$this->mode = we_base_request::_(we_base_request::BOOL, 'we_cmd', $this->mode, 'mode');
-			$this->mode = true;
 			$this->height = count($this->searchFields);
-			
+
 			// reindex search arrays
 			$this->search = array_merge($this->search);
 			$this->searchFields = array_merge($this->searchFields);
 			$this->location = array_merge($this->location);
+			//t_e('model updatet', $this);
 		}
-
-		
-
 	}
 
 	public function getWhichSearch(){

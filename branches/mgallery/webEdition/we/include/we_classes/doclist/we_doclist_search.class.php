@@ -23,17 +23,17 @@
  */
 
 class we_doclist_search extends we_search_search{
-	protected $model;
+	protected $Model;
 	protected $whichSearch;
 
-	public function __construct($model) {
+	public function __construct($Model) {
 		parent::__construct();
-		$this->model = $model;
+		$this->Model = $Model;
 		$this->whichSearch = we_search_view::SEARCH_DOCLIST;
 	}
 
 	public function getModel(){
-		return $this->model;
+		return $this->Model;
 	}
 	
 	public function searchProperties($table = FILE_TABLE){
@@ -43,13 +43,13 @@ class we_doclist_search extends we_search_search{
 		$_result = $saveArrayIds = $searchText = array();
 		$_SESSION['weS']['weSearch']['foundItems'] = 0;
 
-		$searchFields = $this->model->searchFields;
-		$searchText = $this->model->search;
-		$location = $this->model->location;
-		$_order = $this->model->order;
-		$_view = $this->model->setView;
-		$_searchstart = $this->model->searchstart;
-		$_anzahl= $this->model->anzahl;
+		$searchFields = $this->Model->searchFields;
+		$searchText = $this->Model->search;
+		$location = $this->Model->location;
+		$_order = $this->Model->order;
+		//$_view = $this->Model->setView;
+		$_searchstart = $this->Model->searchstart;
+		$_anzahl= $this->Model->anzahl;
 
 		$where = array();
 		$this->settable($table);
@@ -59,7 +59,7 @@ class we_doclist_search extends we_search_search{
 			echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('searchtool', '[noTempTableRightsDoclist]'), we_message_reporting::WE_MESSAGE_NOTICE));
 			return '';
 		}
-		if($this->model->folderID){
+		if($this->Model->folderID){
 			$this->createTempTable();
 
 			foreach($searchFields as $i => $searchField){
@@ -120,23 +120,23 @@ class we_doclist_search extends we_search_search{
 				}
 			}
 
-			$where[] = 'ParentID=' . intval($this->model->folderID);
+			$where[] = 'AND ParentID=' . intval($this->Model->folderID);
 
 			switch($table){
 				case FILE_TABLE:
-					$where[] = '(RestrictOwners IN (0,' . intval($_SESSION['user']['ID']) . ') OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Owners))';
+					$where[] = 'AND (RestrictOwners IN (0,' . intval($_SESSION['user']['ID']) . ') OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Owners))';
 					break;
 				case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-					$where[] = '(RestrictOwners IN (0,' . intval($_SESSION['user']['ID']) . ') OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Owners))';
+					$where[] = 'AND (RestrictOwners IN (0,' . intval($_SESSION['user']['ID']) . ') OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Owners))';
 					break;
 				case (defined('OBJECT_TABLE') ? OBJECT_TABLE : OBJECT_TABLE):
-					$where[] = '(RestrictUsers IN (0,' . intval($_SESSION['user']['ID']) . ') OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Users))';
+					$where[] = 'AND (RestrictUsers IN (0,' . intval($_SESSION['user']['ID']) . ') OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Users))';
 					break;
 			}
-			$whereQuery = '1 ' . implode(' AND ', $where);
-
+			$whereQuery = '1 ' . implode(' ', $where);
+			//we_database_base::t_e_query(5);
 			$this->setwhere($whereQuery);
-			$this->insertInTempTable($whereQuery, $table, id_to_path($this->model->folderID) . '/');
+			$this->insertInTempTable($whereQuery, $table, id_to_path($this->Model->folderID) . '/');
 
 			$foundItems = $this->countitems($whereQuery, $table);
 			$_SESSION['weS']['weSearch']['foundItems'] = $foundItems;

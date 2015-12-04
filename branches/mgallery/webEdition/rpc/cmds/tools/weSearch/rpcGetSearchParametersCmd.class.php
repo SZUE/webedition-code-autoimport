@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class rpcGetSearchParametersCmd extends rpcCmd{
-
 	function execute(){
 
 		$resp = new rpcResponse();

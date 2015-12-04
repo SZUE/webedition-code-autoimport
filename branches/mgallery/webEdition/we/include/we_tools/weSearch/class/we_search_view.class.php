@@ -495,7 +495,7 @@ WE().consts.g_l.weSearch = {
 
 		$out = '<table class="default"><tr><td>' .
 			($searchstart ?
-				we_html_button::create_button(we_html_button::BACK, "javascript:weSearch.back(" . $anzahl . ");") :
+				we_html_button::create_button(we_html_button::BACK, "javascript:weSearch.back();") :
 				we_html_button::create_button(we_html_button::BACK, "", true, 100, 22, "", "", true)
 			) .
 			'</td><td width="10"></td><td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
@@ -506,7 +506,7 @@ WE().consts.g_l.weSearch = {
 			' ' . g_l('global', '[from]') . ' ' . $we_search_anzahl . '</b></td><td width="10"></td><td>' .
 			(($searchstart + $anzahl) < $we_search_anzahl ?
 				//bt_back
-				we_html_button::create_button(we_html_button::NEXT, "javascript:weSearch.next(" . $anzahl . ");") :
+				we_html_button::create_button(we_html_button::NEXT, "javascript:weSearch.next();") :
 				we_html_button::create_button(we_html_button::NEXT, "", true, 100, 22, "", "", true)
 			) .
 			'</td><td width="10"></td><td>';
@@ -1779,7 +1779,7 @@ WE().consts.g_l.weSearch = {
 				$imageViewPopup = '<img src="' . $urlPopup . '" border="0" /></a>';
 			} else {
 				$imagesize = array(0, 0);
-				$imageView = $imageViewPopup = we_html_element::jsElement('document.write(WE().util.getTreeIcon("' . we_base_ContentTypes::IMAGE . '"))');
+				$imageView = $imageViewPopup = '<span class="resultIcon" data-contenttype="' . $file["ContentType"] . '" data-extension="' . $file['Extension'] . '"></span>';
 			}
 		} else {
 			$imagesize = array(0, 0);
@@ -1851,7 +1851,7 @@ WE().consts.g_l.weSearch = {
  <td style="width:30px;"></td>
  <td style="font-size:12px;width:125px;">' . g_l('searchtool', '[eintraege_pro_seite]') . ':</td>
  <td class="defaultgray" style="width:60px;">
- ' . we_html_tools::htmlSelect($anzahl, $values, 1, $_anzahl, "", array('onchange' => 'this.form.elements["' . $searchstart . '"].value=0;search(false);')) . '</td>
+ ' . we_html_tools::htmlSelect($anzahl, $values, 1, $_anzahl, "", array('onchange' => "this.form.elements['" . $searchstart . "'].value=0;weSearch.search(false);")) . '</td>
  <td style="width:400px;">' . $this->getNextPrev($foundItems, $whichSearch) . '</td>
  <td style="width:35px;">' . we_html_button::create_button("fa:iconview,fa-lg fa-th", "javascript:weSearch.setView('" . self::VIEW_ICONS . "');", true, "", "", "", "", false) . '</td>
  <td>' . we_html_button::create_button("fa:listview,fa-lg fa-align-justify", "javascript:weSearch.setView('" . self::VIEW_LIST . "');", true, "", "", "", "", false) . '</td>
@@ -2272,7 +2272,7 @@ WE().consts.g_l.weSearch = {
 				break;
 			// for doclistsearch
 			case self::SEARCH_DOCLIST :
-				$view = $GLOBALS['we_doc']->searchclassFolder->setView;
+				$view = $this->Model->setView;
 		}
 
 		$anz = count($headline);
@@ -2352,8 +2352,8 @@ WE().consts.g_l.weSearch = {
 						. '</div>');
 				}
 
-				$out .= '</td></tr></table>' .
-					we_html_element::jsElement("document.getElementById('mouseOverDivs_" . $whichSearch . "').innerHTML = '" . addslashes(self::makeMouseOverDivs($x, $content, $whichSearch)) . "';");
+				$out .= '</td></tr></table>' . '<div id="movethemaway" style="display:block">' . self::makeMouseOverDivs($x, $content, $whichSearch) . '</div>';
+					//we_html_element::jsElement("document.getElementById('mouseOverDivs_" . $whichSearch . "').innerHTML = '" . addslashes(self::makeMouseOverDivs($x, $content, $whichSearch)) . "';");
 
 				return $out;
 		}
@@ -2425,7 +2425,6 @@ WE().consts.g_l.weSearch = {
 			}
 
 			$outDivs .= '
-				</div>
 				</div>';
 			$allDivs .= $outDivs;
 		}
@@ -2494,11 +2493,9 @@ WE().consts.g_l.weSearch = {
 	}
 
 	private static function tblListRowIconView($content, $class, $i, $whichSearch){
-		$jsNamespace = $whichSearch === 'doclist' ? 'weSearch' : 'weSearch.';
-
 		return '<table width="100%" class="default ' . $class . '">
 <tr>
-	<td width="75" style="vertical-align:top;text-align:center" onmouseover="' . $jsNamespace . 'showImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\',1)" onmouseout="' . $jsNamespace . 'hideImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\')">' .
+	<td width="75" style="vertical-align:top;text-align:center" onmouseover="weSearch.showImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\',1)" onmouseout="weSearch.hideImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\')">' .
 			((!empty($content[0]["dat"])) ? $content[0]["dat"] : "&nbsp;") . '</td>
 		<td width="105" style="vertical-align:top;line-height:20px;">
 		<div style="padding-bottom:2em;">' . ((!empty($content[2]["dat"])) ? $content[2]["dat"] : "&nbsp;") . '</div>
@@ -2507,11 +2504,9 @@ WE().consts.g_l.weSearch = {
 	}
 
 	private static function tblListRowMediaIconView($content, $class, $i, $whichSearch){
-		$jsNamespace = $whichSearch === 'doclist' ? '' : 'weSearch.';
-
 		return '<table width="100%" class="default ' . $class . '">
 <tr>
-	<td width="100%" style="vertical-align:top;text-align:center" onmouseover="' . $jsNamespace . 'showImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\',1)" onmouseout="' . $jsNamespace . 'hideImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\')">' .
+	<td width="100%" style="vertical-align:top;text-align:center" onmouseover="weSearch.showImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\',1)" onmouseout="weSearch.hideImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\')">' .
 			((!empty($content[5]["dat"])) ? $content[5]["dat"] : "&nbsp;") .
 			'</td>
 </tr>

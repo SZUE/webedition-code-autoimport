@@ -26,7 +26,7 @@ var elem = null;
 var ajaxCallbackResultList = {
 	success: function (o) {
 		if (o.responseText !== undefined && o.responseText !== "") {
-			document.getElementById('scrollContent_DoclistSearch').innerHTML = o.responseText;
+			document.getElementById("scrollContent_doclist").innerHTML = o.responseText;
 			WE().util.setIconOfDocClass(document, 'resultIcon');
 			makeAjaxRequestParametersTop();
 			makeAjaxRequestParametersBottom();
@@ -62,7 +62,7 @@ var ajaxCallbackParametersBottom = {
 var ajaxCallbackgetMouseOverDivs = {
 	success: function (o) {
 		if (o.responseText !== undefined && o.responseText !== "") {
-			document.getElementById("mouseOverDivs_DoclistSearch").innerHTML = o.responseText;
+			document.getElementById("mouseOverDivs_doclist").innerHTML = o.responseText;
 		}
 	},
 	failure: function (o) {
@@ -79,7 +79,7 @@ function calendarSetup(x) {
 }
 
 function delRow(id) {
-	var scrollContent = document.getElementById('scrollContent_DoclistSearch');
+	var scrollContent = document.getElementById("scrollContent_doclist");
 	scrollContent.style.height = scrollContent.offsetHeight + 26 + "px";
 
 	var elem = document.getElementById("filterTable");
@@ -124,27 +124,24 @@ function back(anzahl) {
 
 function showImageDetails(picID) {
 	elem = document.getElementById(picID);
-	if(elem){
-		elem.style.visibility = "visible";
-	}
+	elem.style.visibility = "visible";
 
 }
 
 function hideImageDetails(picID) {
 	elem = document.getElementById(picID);
-	if(elem){
-		elem.style.visibility = "hidden";
-		elem.style.left = "-9999px";
-	}
+	elem.style.visibility = "hidden";
+	elem.style.left = "-9999px";
 }
 
-// FIXME: take the same fn from search_view.js
 function updateElem(e) {
+	var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
+	var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;
+
+	var x = (document.all) ? window.event.x + document.body.scrollLeft : e.pageX;
+	var y = (document.all) ? window.event.y + document.body.scrollTop : e.pageY;
+
 	if (elem !== null && elem.style.visibility == "visible") {
-		var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
-		var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;
-		var x = (document.all) ? window.event.x + document.body.scrollLeft : e.pageX;
-		var y = (document.all) ? window.event.y + document.body.scrollTop : e.pageY;
 
 		elemWidth = elem.offsetWidth;
 		elemHeight = elem.offsetHeight;
@@ -159,6 +156,7 @@ function updateElem(e) {
 		} else if ((h - y) < 250) {
 			elem.style.top = (y - elemHeight - 10) + "px";
 		}
+
 	}
 }
 
@@ -180,13 +178,13 @@ function switchSearch(mode) {
 	document.we_form.mode.value = mode;
 	var defSearch = document.getElementById("defSearch");
 	var advSearch = document.getElementById("advSearch");
-	var filterTable = document.getElementById("filterTableDoclistSearch");
+	var advSearch2 = document.getElementById("advSearch2");
 	var advSearch3 = document.getElementById("advSearch3");
-	var scrollContent = document.getElementById('scrollContent_DoclistSearch');
+	var scrollContent = document.getElementById("scrollContent_doclist");
 
 	scrollheight = 30;
 
-	var elem = document.getElementById("filterTableDoclistSearch");
+	var elem = document.getElementById("filterTable");
 	newID = elem.rows.length - 1;
 
 	for (i = 0; i < newID; i++) {
@@ -197,15 +195,16 @@ function switchSearch(mode) {
 		scrollContent.style.height = (scrollContent.offsetHeight - scrollheight) + "px";
 		defSearch.style.display = "none";
 		advSearch.style.display = "block";
-		filterTable.style.display = "block";
+		advSearch2.style.display = "block";
 		advSearch3.style.display = "block";
 	} else {
 		scrollContent.style.height = (scrollContent.offsetHeight + scrollheight) + "px";
 		defSearch.style.display = "block";
 		advSearch.style.display = "none";
-		filterTable.style.display = "none";
+		advSearch2.style.display = "none";
 		advSearch3.style.display = "none";
 	}
+
 }
 
 function makeAjaxRequestDoclist() {
@@ -216,7 +215,7 @@ function makeAjaxRequestDoclist() {
 		newString = document.we_form.elements[i].name;
 		args += "&we_cmd[" + encodeURI(newString) + "]=" + encodeURI(document.we_form.elements[i].value);
 	}
-	var scroll = document.getElementById('scrollContent_DoclistSearch');
+	var scroll = document.getElementById("scrollContent_doclist");
 	scroll.innerHTML = '<table border="0" width="100%" height="100%"><tr><td align="center"><i class="fa fa-2x fa-spinner fa-pulse"></i><div id="scrollActive"></div></td></tr></table>';
 	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResultList, "protocol=json&cns=doclist&cmd=GetSearchResult&classname=we_folder&id=" + docID + "&table=" + docTable + "&we_transaction=" + transaction + args + "");
 }
@@ -312,7 +311,7 @@ function publishDocsAjax() {
 
 
 function sizeScrollContent() {
-	var elem = document.getElementById("filterTableDoclistSearch");
+	var elem = document.getElementById("filterTable");
 	newID = elem.rows.length - 1;
 
 	scrollheight = (searchclassFolderMode ? 30 : 0);
@@ -323,7 +322,7 @@ function sizeScrollContent() {
 	}
 
 	var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
-	var scrollContent = document.getElementById('scrollContent_DoclistSearch');
+	var scrollContent = document.getElementById("scrollContent_doclist");
 
 	var height = 180; // maybe IE needs 200?
 	if ((h - height) > 0) {
@@ -400,13 +399,13 @@ function search(newSearch) {
 		makeAjaxRequestDoclist();
 	}
 }
-/*
+
 function newinput() {
 	var elem = document.getElementById("filterTable");
 	newID = elem.rows.length - 1;
 	rows++;
 
-	var scrollContent = document.getElementById('scrollContent_DoclistSearch');
+	var scrollContent = document.getElementById("scrollContent_doclist");
 	scrollContent.style.height = scrollContent.offsetHeight - 26 + "px";
 
 
@@ -436,12 +435,8 @@ function newinput() {
 		elem.appendChild(newRow);
 	}
 }
-*/
-/*
-function changeit(value, rowNr) {
-	weSearch.changeit(value, rowNr);
-	return true;
 
+function changeit(value, rowNr) {
 	var setValue = document.getElementsByName("search[" + rowNr + "]")[0].value;
 	var from = document.getElementsByName("hidden_searchFields[" + rowNr + "]")[0].value;
 	var row = document.getElementById("filterRow_" + rowNr);
@@ -454,7 +449,6 @@ function changeit(value, rowNr) {
 	switch (value) {
 		case "Content":
 			if (locationTD !== null) {
-				location.value = 'CONTAIN';
 				location.disabled = true;
 			}
 			row.removeChild(searchTD);
@@ -613,7 +607,7 @@ function changeit(value, rowNr) {
 
 			cell = document.createElement("TD");
 			cell.setAttribute("id", "td_location[" + rowNr + "]");
-			cell.innerHTML = locationFields.replace(/__we_new_id__/g, rowNr);
+			cell.innerHTML = locationDateFields.replace(/__we_new_id__/g, rowNr);
 			row.appendChild(cell);
 
 			cell = document.createElement("TD");
@@ -652,5 +646,5 @@ function changeit(value, rowNr) {
 	document.getElementById("search[" + rowNr + "]").value = setValue;
 	document.getElementsByName("hidden_searchFields[" + rowNr + "]")[0].value = value;
 }
-*/
+
 document.onmousemove = updateElem;

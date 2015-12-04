@@ -41,11 +41,9 @@ echo we_html_tools::getCalendarFiles() .
 
 <body class="weEditorBody" onunload="doUnload()" onkeypress="javascript:if (event.keyCode == 13 || event.keyCode == 3) {
 			search(true);
-		}" onload="setTimeout(init, 200)" onresize="sizeScrollContent();">
+		}" onload="setTimeout(weSearch.init, 200)" onresize="weSearch.sizeScrollContent();">
 	<div id="mouseOverDivs_<?php echo we_search_view::SEARCH_DOCLIST; ?>"></div>
 	<form name="we_form" action="" onsubmit="return false;" style="padding:0px;margin:0px;"><?php
-		$view = new we_search_view();
-
 		$results = $doclistSearch->searchProperties();
 		$content = $doclistView->makeContent($results);
 
@@ -53,12 +51,12 @@ echo we_html_tools::getCalendarFiles() .
 		$foundItems = (isset($_SESSION['weS']['weSearch']['foundItems'])) ? $_SESSION['weS']['weSearch']['foundItems'] : 0;
 
 		echo $doclistView->getHTMLforDoclist(array(
-			array("html" => $doclistView->getSearchDialog()),
-			array("html" => "<div id='parametersTop'>" . $doclistView->getSearchParameterTop($foundItems) . '</div>' . $view->tblList($content, $headline, "doclist") . "<div id='parametersBottom'>" . $doclistView->getSearchParameterBottom($GLOBALS['we_doc']->Table, $foundItems) . "</div>"),
+			array('html' => $doclistView->getSearchDialog()),
+			array('html' => '<div id="parametersTop_DoclistSearch">' . $doclistView->getSearchParameterTop($foundItems) . '</div>' . $doclistView->tblList($content, $headline, "doclist") . "<div id='parametersBottom_DoclistSearch'>" . $doclistView->getSearchParameterBottom($GLOBALS['we_doc']->Table, $foundItems) . "</div>"),
 		)) .
 		we_html_element::htmlHiddens(array(
-			"obj" => 1,
-			"we_complete_request" => 1
+			'obj' => 1,
+			'we_complete_request' => 1
 		));
 		?>
 	</form>

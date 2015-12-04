@@ -39,7 +39,8 @@ WE().consts.weSearch = {
 	SEARCH_DOCS: '',
 	SEARCH_TMPL: '',
 	SEARCH_MEDIA: '',
-	SEARCH_ADV: ''
+	SEARCH_ADV: '',
+	SEARCH_DOCLIST: ''
 };
 
 weSearch = {
@@ -73,14 +74,14 @@ weSearch = {
 	},
 	elem: null,
 	rolloverElem: null,
-	init: function (we_const, conf, g_l) {
-		if (weSearch.conf.editorBodyFrame.loaded) {
-			//weSearch.sizeScrollContent();
+	init: function () {
+		if (weSearch.conf.editorBodyFrame.document.readyState === "complete") {
+			weSearch.sizeScrollContent();
 			document.addEventListener('mousemove', weSearch.updateElem, false);
 			WE().util.setIconOfDocClass(document, 'resultIcon');
 		} else {
 			setTimeout(function(){
-				this.init();
+				weSearch.init();
 			}, 10);
 		}
 	},
@@ -89,6 +90,8 @@ weSearch = {
 			if (o.responseText !== undefined && o.responseText !== '') {
 				weSearch.conf.editorBodyFrame.document.getElementById('scrollContent_' + weSearch.conf.whichsearch).innerHTML = o.responseText;
 				WE().util.setIconOfDocClass(document, 'resultIcon');
+				//weSearch.conf.editorBodyFrame.document.getElementById('mouseOverDivs_' + weSearch.conf.whichsearch).innerHTML = weSearch.conf.editorBodyFrame.document.getElementById('movethemaway').innerHTML;
+				//weSearch.conf.editorBodyFrame.document.getElementById('movethemaway').innerHTML = '';
 				weSearch.makeAjaxRequestParametersTop();
 				weSearch.makeAjaxRequestParametersBottom();
 			}
@@ -128,7 +131,7 @@ weSearch = {
 		}
 	},
 	search: function (newSearch) {
-		if (!this.conf.checkRightTempTable && !this.conf.heckRightDropTable) {
+		if (!this.conf.checkRightTempTable && !this.conf.checkRightDropTable) {
 			top.we_showMessage(WE().consts.g_l.weSearch.noTempTableRightsSearch, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			return;
 		}
@@ -136,6 +139,9 @@ weSearch = {
 		var Checks = [], m = 0, i, table;
 
 		switch (this.conf.whichsearch) {
+			case WE().consts.weSearch.SEARCH_DOCLIST:
+				Checks[0] = ''; // no search options needed at all!
+				break;
 			case WE().consts.weSearch.SEARCH_ADV:
 				for (i = 0; i < this.conf.editorBodyFrame.document.we_form.elements.length; i++) {
 					table = this.conf.editorBodyFrame.document.we_form.elements[i].name;
@@ -152,7 +158,6 @@ weSearch = {
 				break;
 			case WE().consts.weSearch.SEARCH_DOCS:
 			case WE().consts.weSearch.SEARCH_MEDIA:
-				//top.console.debug(this.conf.editorBodyFrame.document.we_form.elements);
 				var thirdName = this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCS ? 'searchForContent' : 'searchForMeta';
 				for (i = 0; i < this.conf.editorBodyFrame.document.we_form.elements.length; i++) {
 					table = this.conf.editorBodyFrame.document.we_form.elements[i].name;
@@ -164,7 +169,6 @@ weSearch = {
 					}
 				}
 
-				//top.console.debug('cl', Checks.length);
 				if (Checks.length === 0) {
 					//FIXME: dirty fix => allow to search without searchForXX when no searchFieldsMediaSearch[0] is empty
 					if (this.conf.editorBodyFrame.document.we_form.elements['searchMediaSearch[0]'].value) {
@@ -192,13 +196,13 @@ weSearch = {
 
 		if (Checks.length !== 0) {
 			if (newSearch) {
-				this.conf.editorBodyFrame.document.we_form.elements['searchstart' + this.conf.whichsearch].value = 0;
+				window.document.we_form.elements['searchstart' + this.conf.whichsearch].value = 0;
 			}
 			this.makeAjaxRequestDoclist();
 		}
 	},
 	makeAjaxRequestDoclist: function () {
-		this.getMouseOverDivs();
+		//this.getMouseOverDivs();
 		var args = '', newString = '';
 
 		for (var i = 0, elem; i < this.conf.editorBodyFrame.document.we_form.elements.length; i++) {
@@ -210,7 +214,7 @@ weSearch = {
 			args += '&we_cmd[' + encodeURI(newString) + ']=' + encodeURI(elem.value);
 		}
 		this.conf.editorBodyFrame.document.getElementById('scrollContent_' + this.conf.whichsearch).innerHTML = '<table border="0" width="100%" height="100%"><tr><td align="center"><i class="fa fa-2x fa-spinner fa-pulse"></i><div id="scrollActive"></div></td></tr></table>';
-		top.YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackResultList, 'protocol=json&cns=tools/weSearch&tab=' + this.conf.tab + '&cmd=GetSearchResult&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
+		top.YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackResultList, 'protocol=json&cns=' + (this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST ? 'doclist' : 'tools/weSearch') + '&tab=' + this.conf.tab + '&cmd=GetSearchResult&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
 	},
 	makeAjaxRequestParametersTop: function () {
 		var args = '', newString = "";
@@ -219,7 +223,7 @@ weSearch = {
 			newString = this.conf.editorBodyFrame.document.we_form.elements[i].name;
 			args += '&we_cmd[' + encodeURI(newString) + ']=' + encodeURI(this.conf.editorBodyFrame.document.we_form.elements[i].value);
 		}
-		top.YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackParametersTop, 'protocol=json&cns=tools/weSearch&tab=' + this.conf.tab + '&cmd=GetSearchParameters&position=top&whichsearch=' + this.conf.whichsearch + '&classname' + this.conf.modelClassName + '=&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
+		top.YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackParametersTop, 'protocol=json&cns=' + (this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST ? 'doclist' : 'tools/weSearch') + '&tab=' + this.conf.tab + '&cmd=GetSearchParameters&position=top&whichsearch=' + this.conf.whichsearch + '&classname' + this.conf.modelClassName + '=&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
 	},
 	makeAjaxRequestParametersBottom: function () {
 		var args = '', newString = '';
@@ -227,7 +231,7 @@ weSearch = {
 			newString = this.conf.editorBodyFrame.document.we_form.elements[i].name;
 			args += '&we_cmd[' + encodeURI(newString) + ']=' + encodeURI(this.conf.editorBodyFrame.document.we_form.elements[i].value);
 		}
-		top.YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackParametersBottom, 'protocol=json&cns=tools/weSearch&tab=' + this.conf.tab + '&cmd=GetSearchParameters&position=bottom&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
+		top.YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackParametersBottom, 'protocol=json&cns=' + (this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST ? 'doclist' : 'tools/weSearch') + '&tab=' + this.conf.tab + '&cmd=GetSearchParameters&position=bottom&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
 	},
 	getMouseOverDivs: function () {
 		var args = '', newString = '';
@@ -235,9 +239,9 @@ weSearch = {
 			newString = this.conf.editorBodyFrame.document.we_form.elements[i].name;
 			args += '&we_cmd[' + encodeURI(newString) + ']=' + encodeURI(this.conf.editorBodyFrame.document.we_form.elements[i].value);
 		}
-		top.YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackgetMouseOverDivs, 'protocol=json&cns=tools/weSearch&tab=' + this.conf.tab + '&cmd=GetMouseOverDivs&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
+		top.YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackgetMouseOverDivs, 'protocol=json&cns=' + (this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST ? 'doclist' : 'tools/weSearch') + '&tab=' + this.conf.tab + '&cmd=GetMouseOverDivs&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
 	},
-	setView: function (value) {
+	setView: function(value) {
 		this.conf.editorBodyFrame.document.we_form.elements['setView' + this.conf.whichsearch].value = value;
 		this.search(false);
 	},
@@ -280,17 +284,19 @@ weSearch = {
 			this.search(false);
 		}
 	},
-	next: function (anzahl) {
+	next: function () {
 		var scrollActive = document.getElementById('scrollActive');
+		var doc = this.conf.editorBodyFrame.document; //this.conf.editorBodyFrame ? this.conf.editorBodyFrame.document : document;
 		if (scrollActive === null) {
-			this.conf.editorBodyFrame.document.we_form.elements['searchstart' + this.conf.whichsearch].value = parseInt(this.conf.editorBodyFrame.document.we_form.elements['searchstart' + this.conf.whichsearch].value) + anzahl;
+			doc.we_form.elements['searchstart' + this.conf.whichsearch].value = parseInt(doc.we_form.elements['searchstart' + this.conf.whichsearch].value) + parseInt(doc.we_form.elements['anzahl' + this.conf.whichsearch].value);
 			this.search(false);
 		}
 	},
 	back: function (anzahl) {
 		var scrollActive = document.getElementById('scrollActive');
+		var doc = this.conf.editorBodyFrame.document; //this.conf.editorBodyFrame ? this.conf.editorBodyFrame.document : document;
 		if (scrollActive === null) {
-			this.conf.editorBodyFrame.document.we_form.elements['searchstart' + this.conf.whichsearch].value = parseInt(this.conf.editorBodyFrame.document.we_form.elements['searchstart' + this.conf.whichsearch].value) - anzahl;
+			doc.we_form.elements['searchstart' + this.conf.whichsearch].value = parseInt(doc.we_form.elements['searchstart' + this.conf.whichsearch].value) - parseInt(doc.we_form.elements['anzahl' + this.conf.whichsearch].value);
 			this.search(false);
 		}
 	},
@@ -327,6 +333,25 @@ weSearch = {
 		this.search(false);
 	},
 	sizeScrollContent: function () {
+		if (this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST) {
+			var elem = document.getElementById("filterTableDoclistSearch");
+			var c = Math.max((elem.rows.length - 1), 0);
+searchclassFolderMode = 1;//take this dynamically
+			var scrollheight = (searchclassFolderMode ? (30 + (c*26)) : 0);
+
+			var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
+			var scrollContent = document.getElementById('scrollContent_DoclistSearch');
+
+			var height = 180; // maybe IE needs 200?
+			if ((h - height) > 0) {
+				scrollContent.style.height = (h - height) + "px";
+			}
+			if ((scrollContent.offsetHeight - scrollheight) > 0) {
+				scrollContent.style.height = (scrollContent.offsetHeight - scrollheight) + "px";
+			}
+			return;
+		}
+
 		if (!this.conf.modelIsFolder) {
 			return;
 		}
@@ -338,7 +363,20 @@ weSearch = {
 			} else {
 				scrollheight = 170;
 			}
+/*
 
+#####
+var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
+var scrollContent = document.getElementById('scrollContent_DoclistSearch');
+
+var height = 180; // maybe IE needs 200?
+if ((h - height) > 0) {
+	scrollContent.style.height = (h - height) + "px";
+}
+if ((scrollContent.offsetHeight - scrollheight) > 0) {
+	scrollContent.style.height = (scrollContent.offsetHeight - scrollheight) + "px";
+}
+*/
 			var elem = document.getElementById('filterTable' + this.conf.whichsearch),
 				//newID = elem.rows.length - 1,
 				h = window.innerHeight ? window.innerHeight : document.body.offsetHeight,
@@ -358,10 +396,11 @@ weSearch = {
 	},
 	newinput: function () {
 		var elem = document.getElementById('filterTable' + this.conf.whichsearch),
-			newID = elem.rows.length - 1,
+			//c = elem.rows.length - 1,
 			scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch),
 			newRow, cell;
-
+	
+		scrollContent.style.height = scrollContent.offsetHeight - 26 + "px";
 		this.conf.rows++;
 
 		if (elem) {
@@ -429,6 +468,11 @@ weSearch = {
 		return cell;
 
 	},
+	reload: function() {
+		if(this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST){
+			top.we_cmd("reload_editpage");
+		}
+	},
 	switchSearch: function(mode) {
 		document.we_form.mode.value = mode;
 		var defSearch = document.getElementById('defSearch');
@@ -455,11 +499,18 @@ weSearch = {
 			advSearch.style.display = "none";
 			filterTable.style.display = "none";
 			advSearch3.style.display = "none";
+			if(this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST){
+				this.search(false);
+			}
 		}
 	},
 	delRow: function (id) {
 		var scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch),
-						elem = document.getElementById('filterTable' + this.conf.whichsearch);
+			elem = document.getElementById('filterTable' + this.conf.whichsearch);
+	
+		if(this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST){
+			scrollContent.style.height = scrollContent.offsetHeight + 26 + "px";
+		}
 
 		if (elem) {
 			var trows = elem.rows,
@@ -807,15 +858,9 @@ weSearch = {
 			}
 		}
 	},
-	setview: function (setView) {
-		/*
-		 document.we_form.setView.value = setView;
-		 this.search(false);
-		 */
-	},
 	checkAllActionChecks: function () {
 		var checkAll = document.getElementsByName("action_all_" + this.conf.whichsearch);
-		var checkboxes = document.getElementsByName((this.conf.whichsearch == WE().consts.weSearch.SEARCH_MEDIA ? 'delete_docs_MediaSearch' : 'publish_docs_DocSearch'));
+		var checkboxes = document.getElementsByName((this.conf.whichsearch == WE().consts.weSearch.SEARCH_MEDIA ? 'delete_docs_MediaSearch' : 'publish_docs_' + this.conf.whichsearch));
 		var check = false;
 
 		if (checkAll[0].checked) {
@@ -826,7 +871,7 @@ weSearch = {
 		}
 	},
 	publishDocs: function (whichSearch) {
-		var checkAll = document.getElementsByName("publish_all_" + whichSearch);
+		var checkAll = document.getElementsByName("action_all_" + whichSearch);
 		var checkboxes = document.getElementsByName("publish_docs_" + whichSearch);
 		var check = false;
 
@@ -876,22 +921,26 @@ weSearch = {
 			_multiEditorreload = true;
 
 			//reload tree
-			if (top.opener.treeData) {
-				top.opener.we_cmd("load", top.opener.treeData.table, 0);
+			if(weSearch.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST){
+				top.we_cmd("load", top.treeData.table, 0);
+			} else {
+				if (top.opener.treeData) {
+					top.opener.we_cmd("load", top.opener.treeData.table, 0);
+				}
 			}
-			document.getElementById("resetBusy" + weSearch.conf.whichsearch).innerHTML = "";
-			document.getElementById("resetBusyDocSearch").innerHTML = "";
-			top.we_showMessage(WE().consts.g_l.weSearch.searchtool__publishOK, WE().consts.message.WE_MESSAGE_NOTICE, window);
 
+			document.getElementById("resetBusy" + weSearch.conf.whichsearch).innerHTML = "";
+			//document.getElementById("resetBusyDocSearch").innerHTML = "";
+			top.we_showMessage(WE().consts.g_l.weSearch.searchtool__publishOK, WE().consts.message.WE_MESSAGE_NOTICE, window);
 		},
 		failure: function (o) {
 			//alert("Failure");
 		}
 	},
 	publishDocsAjax: function (whichSearch) {
-		var args = "";
-		var check = "";
-		var checkboxes = document.getElementsByName("publish_docs_" + whichSearch);
+		var args = '';
+		var check = '';
+		var checkboxes = document.getElementsByName('publish_docs_' + whichSearch);
 		for (var i = 0; i < checkboxes.length; i++) {
 			if (checkboxes[i].checked) {
 				if (check !== "") {
@@ -907,6 +956,26 @@ weSearch = {
 		top.YAHOO.util.Connect.asyncRequest("POST", this.conf.ajaxURL, this.ajaxCallbackPublishDocs, "protocol=json&cns=tools/weSearch&cmd=PublishDocs&" + args + "");
 
 	},
+/*
+function publishDocsAjax() {
+	var args = "";
+	var check = "";
+	var checkboxes = document.getElementsByName("publish_docs_doclist");
+	for (var i = 0; i < checkboxes.length; i++) {
+		if (checkboxes[i].checked) {
+			if (check !== "") {
+				check += ",";
+			}
+			check += checkboxes[i].value;
+		}
+	}
+	args += "&we_cmd[0]=" + encodeURI(check);
+	var scroll = document.getElementById("resetBusy");
+	scroll.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><i class=\"fa fa-2x fa-spinner fa-pulse\"></i></td></tr></table>";
+
+	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackPublishDocs, "protocol=json&cns=tools/weSearch&cmd=PublishDocs&" + args + "");
+}
+*/
 	previewVersion: function (ID) {
 		top.we_cmd("versions_preview", ID, 0);
 		//new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR+"we/include/we_versions/weVersionsPreview.php?ID="+ID+"", "version_preview",-1,-1,1000,750,true,true,true,true);
@@ -958,7 +1027,7 @@ weSearch = {
 	ajaxCallbackDeleteMediaDocs: {
 		success: function (o) {
 			var response = JSON.parse(o.responseText);
-			top.console.log(response.deletedItems.join());
+
 			top.we_showMessage(response.message, WE().consts.message.WE_MESSAGE_NOTICE, window);
 
 			// close all Editors with deleted documents
@@ -968,7 +1037,6 @@ weSearch = {
 							frameId;
 
 			for (frameId in _usedEditors) {
-				top.console.log('do!', frameId);
 				if (_delete_table == _usedEditors[frameId].getEditorEditorTable() && (_delete_Ids.indexOf(',' + _usedEditors[frameId].getEditorDocumentId() + ',') != -1)) {
 					_usedEditors[frameId].setEditorIsHot(false);
 					WE().layout.weEditorFrameController.closeDocument(frameId);
@@ -989,7 +1057,6 @@ weSearch = {
 		},
 		failure: function (o) {
 			top.console.log("callback failure");
-			//alert("Failure");
 		}
 	}
 };

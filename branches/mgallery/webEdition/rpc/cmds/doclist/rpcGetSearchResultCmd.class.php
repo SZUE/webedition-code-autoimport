@@ -30,13 +30,13 @@ class rpcGetSearchResultCmd extends rpcCmd{
 
 		we_html_tools::protect();
 
-		$setView = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'setView');
 
 		if(($trans = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0))){
 			$we_dt = isset($_SESSION['weS']['we_data'][$trans]) ? $_SESSION['weS']['we_data'][$trans] : '';
 		}
-		$doc = we_base_request::_(we_base_request::STRING, 'classname');
-		$_document = new $doc;
+
+		$class = $we_dt[0]['ClassName']; //we_base_request::_(we_base_request::STRING, 'classname');
+		$_document = new $class;
 		$_document->we_initSessDat($we_dt);
 
 		$doclistSearch = new $_document->doclistSearchClass($_document->doclistModel);
@@ -44,7 +44,7 @@ class rpcGetSearchResultCmd extends rpcCmd{
 		$results = $doclistSearch->searchProperties();
 
 		// tabListContent() should know view!!
-		$code = $doclistView->tabListContent($setView, $doclistView->makeContent($results), 'middlefont', 'doclist');
+		$code = $doclistView->tabListContent($_document->doclistModel->setView, $doclistView->makeContent($results), 'middlefont', 'doclist');
 
 		$resp->setData('data', $code);
 

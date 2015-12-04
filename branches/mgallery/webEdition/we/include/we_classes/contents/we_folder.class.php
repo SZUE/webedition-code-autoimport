@@ -49,10 +49,9 @@ class we_folder extends we_root{
 	var $documentCustomerFilter = ''; // DON'T SET TO NULL !
 
 	/* Constructor */
-
 	function __construct(){
 		parent::__construct();
-		array_push($this->persistent_slots, 'SearchStart', 'SearchField', 'Search', 'Order', 'GreenOnly', 'IsClassFolder', 'WorkspacePath', 'WorkspaceID', 'Language', 'TriggerID', 'searchclassFolder', 'urlMap', 'doclistModel', 'viewType');
+		array_push($this->persistent_slots, 'SearchStart', 'SearchField', 'Search', 'Order', 'GreenOnly', 'IsClassFolder', 'WorkspacePath', 'WorkspaceID', 'Language', 'TriggerID', 'urlMap', 'doclistModel', 'viewType');
 		if(isWE()){
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO);
 		}
@@ -99,7 +98,7 @@ class we_folder extends we_root{
 		$this->adjustEditPageNr();
 
 		if(!is_object($this->doclistModel)){
-			$this->doclistModel = new we_doclist_model($this->Table, $this->ID, $this->viewType);
+			$this->doclistModel = new we_doclist_model($GLOBALS["we_transaction"], $this->Table, $this->ID, $this->viewType);
 		}
 		$this->doclistModel->processRequest();
 	}
