@@ -62,9 +62,8 @@ echo we_html_element::jsScript(JS_DIR . 'multiEditor/EditorFrameController.js') 
 					<span id="###tabTextId###" class="text"></span>
 					<span class="spacer">
 						<i class="fa fa-asterisk modified" id="###modId###"></i>
-						<span class="fa-stack close" id="###closeId###" onclick="WE().layout.multiTabs.onCloseTab(this)">
-							<i class="fa fa-circle-o fa-stack-2x"></i>
-							<i class="fa fa-close fa-stack-1x "></i>
+						<span class="close" id="###closeId###" onclick="WE().layout.multiTabs.onCloseTab(this)">
+							<i class="fa fa-close fa-lg "></i>
 						</span>
 				</nobr>
 			</div>

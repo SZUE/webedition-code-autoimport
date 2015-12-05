@@ -415,14 +415,14 @@ this.selectedIndex = 0;' .
 	 */
 	static function getPixel($w, $h, $border = 0){
 		//FIXME: remove this
-		return '';/*
-		if($w == ''){
-			$w = 0;
-		}
-		if($h == ''){
-			$h = 0;
-		}
-		return '<span style="display:inline-block;width:' . $w . (is_numeric($w) ? 'px' : '') . ';height:' . $h . (is_numeric($h) ? 'px' : '') . ';' . ($border ? 'border:' . $border . 'px solid black;' : '') . '"></span>';*/
+		return ''; /*
+		  if($w == ''){
+		  $w = 0;
+		  }
+		  if($h == ''){
+		  $h = 0;
+		  }
+		  return '<span style="display:inline-block;width:' . $w . (is_numeric($w) ? 'px' : '') . ';height:' . $h . (is_numeric($h) ? 'px' : '') . ';' . ($border ? 'border:' . $border . 'px solid black;' : '') . '"></span>'; */
 	}
 
 	static function hidden($name, $value, $attribs = null){
@@ -812,6 +812,9 @@ function clip_' . $unique . '(){
 				header('HTTP/1.1 ' . $status . ' See Other', true, $status);
 				header('Status: ' . $status . ' See Other', true, $status);
 				break;
+			case 304:
+				header('HTTP/1.1 ' . $status . ' Not Modified', true, $status);
+				header('Status: ' . $status . ' Not Modified', true, $status);
 			case 307:
 				header('HTTP/1.1 ' . $status . ' Temporary Redirect', true, $status);
 				header('Status: ' . $status . ' Temporary Redirect', true, $status);

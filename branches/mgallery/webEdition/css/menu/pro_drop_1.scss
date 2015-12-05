@@ -15,12 +15,13 @@ way to fit your requirements.
 	margin: 0px;
 	border-bottom: 1px solid black;
 }
+$navHeight:32px;
 
 #nav {
 	padding: 0px 0px 0px 6px;
 	margin: 0px;
 	list-style: none;
-	height: 32px;
+	height: $navHeight;
 	position: relative;
 	z-index: 500;
 	font-family: arial, verdana, sans-serif;
@@ -29,35 +30,36 @@ way to fit your requirements.
 	li.top{
 		display: block;
 		float: left;
-		height: 32px;
+		height: $navHeight;
 
 		div{
 			position: relative;
-			top: 5px;
+			//top: 5px;
 			border: none;
 			a.top_link {
 				display: block;
 				float: left;
-				height: 20px;
-				line-height: 22px;
+				//height: $navHeight;
+				//line-height: 22px;
 				color: #000000;
 				text-decoration: none;
 				font-weight: bold;
 				cursor: pointer;
 				background: none;
-				span {
-					float: left;
-					display: block;
-					padding: 0px 18px 0px 18px;
+				padding: (($navHeight - 16px)/2) 18px;
 					height: 16px;
+				span {
+					/*float: left;
+					display: block;*/
+					color:inherit;
 				}
 			}
 		}
 		div.click{
 			&:hover {
-				border-top: solid 1px #808080;
+				/*border-top: solid 1px #808080;
 				border-left: solid 1px #808080;
-				border-right: solid 1px #ffffff;
+				border-right: solid 1px #ffffff;*/
 			}
 			position: relative;
 			z-index: 200;
@@ -68,23 +70,17 @@ way to fit your requirements.
 		position: relative;
 		z-index: 200;
 		div {
-			border-top: solid 1px #ffffff;
+			/*border-top: solid 1px #ffffff;
 			border-right: solid 1px #808080;
 			border-bottom: solid 1px #808080;
 			border-left: solid 1px #ffffff;
-			height: 22px;
-			top: 4px;
+	 */
+			height: $navHeight;
+			//top: 4px;
 			background: #3399ff;
 			color: #ffffff;
 			a.top_link {
 				color: #ffffff;
-				span {
-					float: left;
-					display: block;
-					padding: 0px 17px 0px 17px;
-					height: 16px;
-					color: #ffffff;
-				}
 			}
 		}
 	}

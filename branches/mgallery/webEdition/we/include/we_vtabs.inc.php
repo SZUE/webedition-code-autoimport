@@ -26,23 +26,23 @@ $_treewidth = isset($_COOKIE["treewidth_main"]) && ($_COOKIE["treewidth_main"] >
 $vtab = array(
 	'FILE_TABLE' => array(
 		'show' => permissionhandler::hasPerm('CAN_SEE_DOCUMENTS') || permissionhandler::hasPerm('ADMINISTRATOR'),
-		'desc' => g_l('global', '[documents]'),
+		'desc' => '<i class="fa fa-file-o"></i> ' .g_l('global', '[documents]'),
 	),
 	'TEMPLATES_TABLE' => array(
 		'show' => permissionhandler::hasPerm('CAN_SEE_TEMPLATES'),
-		'desc' => g_l('global', '[templates]'),
+		'desc' =>  '<i class="fa fa-file-code-o"></i> ' .g_l('global', '[templates]'),
 	),
 	'OBJECT_FILES_TABLE' => array(
 		'show' => defined('OBJECT_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES'),
-		'desc' => g_l('global', '[objects]'),
+		'desc' =>'<i class="fa fa-archive"></i> '. g_l('global', '[objects]'),
 	),
 	'OBJECT_TABLE' => array(
 		'show' => defined('OBJECT_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTS"),
-		'desc' => g_l('javaMenu_object', '[classes]'),
+		'desc' =>  '<i class="fa fa-chevron-left"></i><i class="fa fa-chevron-right"></i> ' .g_l('javaMenu_object', '[classes]'),
 	),
 	'VFILE_TABLE' => array(
 		'show' => we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION) && permissionhandler::hasPerm("CAN_SEE_COLLECTIONS"),
-		'desc' => g_l('global', '[vfile]'),
+		'desc' => '<i class="fa fa-archive"></i> '.g_l('global', '[vfile]'),
 	)
 );
 ?>
