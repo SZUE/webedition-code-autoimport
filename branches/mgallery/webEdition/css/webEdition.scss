@@ -727,34 +727,12 @@ optgroup{
 	color: #006699;
 }
 
-#msgheadertable{
-	position:absolute;
-	top:0px;
-	bottom:0px;
-	right:5px;
-	width:60px;
-	font-size: 10pt;
-
-	table{
-		margin:2px 0px 2px auto;
-		border-spacing:0px;
-		border: none;
-		tr {
-			height: 12px;
-		}
-		td {
-			padding:0px;
-		}
-	}
-	i{
-		background-color:white;
-	}
-}
 
 #toolMenu,
 #headerDiv{
 	background-color:#f0f0f0;
 	background: linear-gradient(#F7F7F7, #E8E8E8);
+	line-height: 32px;
 }
 
 #headerDiv{
@@ -765,6 +743,29 @@ optgroup{
 	height:32px;
 	line-height: 32px;
 	border-bottom: 1px solid black;
+	#msgheadertable{
+		position:absolute;
+		top:0px;
+		bottom:0px;
+		right:5px;
+		width:60px;
+		font-size: 10pt;
+		line-height: normal;
+		table{
+			margin:2px 0px 2px auto;
+			border-spacing:0px;
+			border: none;
+			tr {
+				height: 12px;
+			}
+			td {
+				padding:0px;
+			}
+		}
+		i{
+			background-color:white;
+		}
+	}
 }
 
 /*Error log*/
@@ -824,15 +825,12 @@ table.error{
 .navigation{
 	float:left;
 	width:22px;
-	height:18px;
 	border:0px;
-	margin-top:5px;
 	margin-left: 1px;
 	margin-right: 1px;
 	text-align: center;
 
 	&:hover{
-		margin-top:4px;
 		margin-left: 0px;
 		margin-right: 0px;
 		border-bottom: black solid 1px;
