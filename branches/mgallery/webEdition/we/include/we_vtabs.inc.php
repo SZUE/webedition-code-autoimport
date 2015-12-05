@@ -34,7 +34,7 @@ $vtab = array(
 	),
 	'OBJECT_FILES_TABLE' => array(
 		'show' => defined('OBJECT_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES'),
-		'desc' =>'<i class="fa fa-archive"></i> '. g_l('global', '[objects]'),
+		'desc' =>'<i class="fa fa-file"></i> '. g_l('global', '[objects]'),
 	),
 	'OBJECT_TABLE' => array(
 		'show' => defined('OBJECT_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTS"),

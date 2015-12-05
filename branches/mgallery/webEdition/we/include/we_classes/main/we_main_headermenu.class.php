@@ -121,7 +121,7 @@ function() {
 				);
 			}
 			$navigationButtons = array_merge($navigationButtons, array(
-				array("onclick" => "top.we_cmd('start_multi_editor');", 'i' => 'home', "text" => g_l('javaMenu_global', '[home]')),
+				//array("onclick" => "top.we_cmd('start_multi_editor');", 'i' => 'home', "text" => g_l('javaMenu_global', '[home]')),
 				array("onclick" => "top.weNavigationHistory.navigateReload();", "i" => "refresh", "text" => g_l('javaMenu_global', '[reload]')),
 				array("onclick" => "top.weNavigationHistory.navigateBack();", "i" => "caret-left", "text" => g_l('javaMenu_global', '[back]')),
 				array("onclick" => "top.weNavigationHistory.navigateNext();", "i" => "caret-right", "text" => g_l('javaMenu_global', '[next]')),
@@ -131,6 +131,7 @@ function() {
 		?>
 		<div>
 			<div id="weMainMenu">
+				<div id="home" class="" onclick="top.we_cmd('start_multi_editor');"><i class="fa fa-home" title="<?php echo g_l('javaMenu_global', '[home]'); ?>"></i></div>
 				<?php
 				if($jmenu){
 					echo $jmenu->getCode();

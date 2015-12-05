@@ -18,7 +18,7 @@ way to fit your requirements.
 $navHeight:32px;
 
 #nav {
-	padding: 0px 0px 0px 6px;
+	padding: 0px;
 	margin: 0px;
 	list-style: none;
 	height: $navHeight;
@@ -47,7 +47,7 @@ $navHeight:32px;
 				font-weight: bold;
 				cursor: pointer;
 				background: none;
-				padding: (($navHeight - 16px)/2) 18px;
+				padding: 0px 18px;
 				height: 16px;
 				span {
 					/*float: left;
