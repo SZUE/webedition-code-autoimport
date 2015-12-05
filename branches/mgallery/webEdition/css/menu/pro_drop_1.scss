@@ -31,6 +31,7 @@ $navHeight:32px;
 		display: block;
 		float: left;
 		height: $navHeight;
+		border-right: 1px solid rgba(161, 1, 0, 0);
 
 		div{
 			position: relative;
@@ -47,7 +48,7 @@ $navHeight:32px;
 				cursor: pointer;
 				background: none;
 				padding: (($navHeight - 16px)/2) 18px;
-					height: 16px;
+				height: 16px;
 				span {
 					/*float: left;
 					display: block;*/
@@ -74,7 +75,7 @@ $navHeight:32px;
 			border-right: solid 1px #808080;
 			border-bottom: solid 1px #808080;
 			border-left: solid 1px #ffffff;
-	 */
+			*/
 			height: $navHeight;
 			//top: 4px;
 			background: #3399ff;
