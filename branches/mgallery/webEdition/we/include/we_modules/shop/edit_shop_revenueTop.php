@@ -305,9 +305,9 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 				<td>' . $selectedYear . '</td>
 				<td>' . ($selectedMonth > 0 ? $selectedMonth : '' ) . '</td>
 				<td>' . $amountOrders . '</td>
-				<td class="npshopContentfontR">' . ($amountOrders - $editedOrders) . '</td>
+				<td class="defaultfont shopNotPayed">' . ($amountOrders - $editedOrders) . '</td>
 				<td>' . we_base_util::formatNumber($payed) . $waehr . '</td>
-				<td class="npshopContentfontR">' . we_base_util::formatNumber($unpayed) . $waehr . '</td>
+				<td class="defaultfont shopNotPayed">' . we_base_util::formatNumber($unpayed) . $waehr . '</td>
 				<td class="shopContentfontR">' . we_base_util::formatNumber($total) . $waehr . '</td>
 			</tr>' . "\n" .
 		$vatTable . '</table>' . "\n",
@@ -358,7 +358,7 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 			array('dat' => we_base_util::formatNumber($orderRow['articleSum']) . $waehr),
 			array('dat' => $orderRow['formatDateOrder']),
 			array('dat' => $orderRow['IntArticleID']),
-			array('dat' => ($orderRow['DatePayment'] ? $orderRow['formatDatePayment'] : ( $orderRow['DateCancellation'] ? '<span class="npshopContentfontR">' . g_l('modules_shop', '[artCanceled]') . '</span>' : '<span class="npshopContentfontR">' . g_l('modules_shop', '[artNPay]') . '</span>'))),
+			array('dat' => ($orderRow['DatePayment'] ? $orderRow['formatDatePayment'] : ( $orderRow['DateCancellation'] ? '<span class="defaultfont shopNotPayed">' . g_l('modules_shop', '[artCanceled]') . '</span>' : '<span class="defaultfont shopNotPayed">' . g_l('modules_shop', '[artNPay]') . '</span>'))),
 		);
 	}
 

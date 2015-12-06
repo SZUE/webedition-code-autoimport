@@ -86,7 +86,7 @@ function startTree(){
 				}
 				$js.= strtolower($k) . ':' . ($v === 1 || $v === 0 || is_bool($v) || $v === 'true' || $v === 'false' || is_int($v) ?
 						intval($v) :
-						'\'' . str_replace(array('"', '\'', '\\'), '',$v) . '\'') .
+						'\'' . str_replace(array('"', '\'', '\\'), '', $v) . '\'') .
 					',';
 			}
 
@@ -137,17 +137,17 @@ function startTree(){
 
 		while($db->next_record(MYSQL_ASSOC)){
 			$typ = array(
-				'typ' => ($db->f("IsFolder") == 1 ? "group" : "item"),
-				'contenttype' => ($db->f("IsFolder") == 1 ? "folder" : "we/costumer"),
+				'typ' => ($db->f("IsFolder") == 1 ? 'group' : 'item'),
+				'contenttype' => ($db->f("IsFolder") == 1 ? 'folder' : 'we/costumer'),
 				'disabled' => 0,
-				'published' => $db->f('LoginDenied'),
-				'tooltip' => $db->f("ID"),
+				'published' => intval($db->f('LoginDenied')),
+				'tooltip' => intval($db->f("ID")),
 				'offset' => $offset,
+				'ID' => intval($db->f("ID")),
 			);
 
 			$tt = $db->f('treeFormat');
 			$fileds = array();
-
 			foreach($db->Record as $k => $v){
 				$fileds[strtolower($k)] = $v;
 			}

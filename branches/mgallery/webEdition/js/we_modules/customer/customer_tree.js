@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-container.prototype.openClose = function(id) {
+container.prototype.openClose = function (id) {
 	var sort = "";
 	if (id === "") {
 		return;
@@ -66,7 +66,7 @@ node.prototype.getLayout = function () {
 	}
 	var layout_key = (this.typ === "group" ? "group" : "item");
 
-	return treeData.node_layouts[layout_key] + (this.typ === "item" && this.published ? " loginDenied" : "");
+	return treeData.node_layouts[layout_key] + (this.typ === "item" && this.published ? "" : " loginDenied");
 };
 
 function doClick(id, typ) {

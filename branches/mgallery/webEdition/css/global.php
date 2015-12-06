@@ -39,13 +39,11 @@ header('Pragma: ', true);
 .wetextinput,
 .wetextarea,
 .defaultfont,
-.npdefaultfont,
 .changeddefaultfont,
 .shopContentfont,
 .shopContentfontAlert,
 .shopContentfontR
 .shopContentfontGR,
-.npshopContentfont,
 .pshopContentfont,
 .pdefaultfont,
 .pshopContentfontR,

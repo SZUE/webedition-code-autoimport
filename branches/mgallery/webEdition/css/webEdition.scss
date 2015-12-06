@@ -492,10 +492,8 @@ a.notpublished {
 }
 
 .notpublished,
-.npdefaultfont,
 .highlightElementChanged,
-.npshopContentfontR,
-.npshopContentfont
+.shopNotPayed
 {
 	color: red !important;
 	a,a:visited{
@@ -519,9 +517,8 @@ a.notpublished {
 .pshopContentfont a:active,
 .pdefaultfont a:active,
 .middlefont a:active,
-.npdefaultfont a:active,
 .lowContrast a:active,
-.npshopContentfont a:active,
+.shopNotPayed a:active,
 .defaultfont a:active,
 .todo_hist_hdr{
 	color: #006DB8;
@@ -558,7 +555,7 @@ a.notpublished {
 	text-align:right;
 }
 
-.npshopContentfont {
+.shopNotPayed {
 	text-align:center;
 }
 
