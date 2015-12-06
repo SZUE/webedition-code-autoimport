@@ -209,7 +209,7 @@ function we_cmd() {
 	 treeData.unselectNode();
 	}
 	break;
-	
+
  case "tool_weSearch_new_forMedia":
 	if (' . $this->editorBodyFrame . '.loaded) {
 	 ' . $this->topFrame . '.hot = 0;
@@ -841,11 +841,11 @@ WE().consts.g_l.weSearch = {
 
 			case self::SEARCH_MEDIA :
 				// destroys location array when switching between saves searches! what is it good for in the other searches?
-				/* 
+				/*
 				$this->Model->locationMediaSearch = (($op = we_base_request::_(we_base_request::STRING, 'locationMediaSearch')) ?
 						$op :
 						array('CONTAIN'));
-				 * 
+				 *
 				 */
 
 				//$this->Model->searchFieldsMediaSearch = array(); // IMI_TMP
@@ -854,7 +854,7 @@ WE().consts.g_l.weSearch = {
 				$searchFieldName = "searchFieldsMediaSearch[0]";
 
 				$searchTables = "search_tables_MediaSearch[" . FILE_TABLE . "]";
-				
+
 				// preserve keyword when switching from docsearch
 				if((!empty($_SESSION['weS']['weSearch']["keyword"])) && we_base_request::_(we_base_request::INT, "tab") == 1){
 					$this->Model->searchMediaSearch[0] = ($_SESSION['weS']['weSearch']["keyword"]);
@@ -954,7 +954,7 @@ WE().consts.g_l.weSearch = {
 					$_tables[0] = FILE_TABLE;
 					$folderID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'folderIDMedia');
 					//$searchForContentTypesMediaSearch = '';
-					
+
 					$searchForField = array(
 						'text' => 0,
 						'title' => 0,
@@ -1850,7 +1850,7 @@ WE().consts.g_l.weSearch = {
 <tr>
  <td style="width:30px;"></td>
  <td style="font-size:12px;width:125px;">' . g_l('searchtool', '[eintraege_pro_seite]') . ':</td>
- <td class="defaultgray" style="width:60px;">
+ <td class="defaultfont lowContrast" style="width:60px;">
  ' . we_html_tools::htmlSelect($anzahl, $values, 1, $_anzahl, "", array('onchange' => "this.form.elements['" . $searchstart . "'].value=0;weSearch.search(false);")) . '</td>
  <td style="width:400px;">' . $this->getNextPrev($foundItems, $whichSearch) . '</td>
  <td style="width:35px;">' . we_html_button::create_button("fa:iconview,fa-lg fa-th", "javascript:weSearch.setView('" . self::VIEW_ICONS . "');", true, "", "", "", "", false) . '</td>

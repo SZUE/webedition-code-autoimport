@@ -359,7 +359,7 @@ class we_workflow_view extends we_modules_view{
 		if($headline){
 			return '<table class="default" style="margin:15px 0px 15px 24px;">
 			<tr>
-				<td style="vertical-align:top" class="defaultgray">' . $headline . '</td>
+				<td style="vertical-align:top" class="defaultfont lowContrast">' . $headline . '</td>
 				<td>' . $content . '</td>
 			</tr>
 </table>';
@@ -980,14 +980,14 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 			if($remained['hour'] < 0){
 				if($sk > $current){
 					$finished_font = 'middlefont';
-					$notfinished_font = 'middlefontgray';
+					$notfinished_font = 'middlefont lowContrast';
 				} else {
 					$finished_font = 'middlefont highlightElementChanged';
 					$notfinished_font = 'middlefont highlightElementChanged';
 				}
 			} else {
 				$finished_font = 'middlefont';
-				$notfinished_font = 'middlefontgray';
+				$notfinished_font = 'middlefont lowContrast';
 			}
 
 			$end = date(g_l('weEditorInfo', '[date_format]'), $sv->startDate + round($workflowStep->Worktime * 3600));
@@ -1133,7 +1133,7 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 
 		return ($logs ?
 				we_html_tools::htmlDialogLayout(we_html_tools::htmlDialogBorder3(580, 300, $content, $headlines), '', $buttonsTable) :
-				we_html_tools::htmlDialogLayout('<div style="width:500px;text-align:center" class="middlefontgray">-- ' . g_l('modules_workflow', '[log_is_empty]') . ' --</div>', '', we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();")));
+				we_html_tools::htmlDialogLayout('<div style="width:500px;text-align:center" class="middlefont">-- ' . g_l('modules_workflow', '[log_is_empty]') . ' --</div>', '', we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();")));
 	}
 
 	function getLogQuestion(){

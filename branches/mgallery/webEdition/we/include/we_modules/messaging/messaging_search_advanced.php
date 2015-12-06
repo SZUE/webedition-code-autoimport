@@ -61,13 +61,13 @@ if(we_base_request::_(we_base_request::BOOL, 'save')){
 
 			$table = '<table cellpadding="10">
 <tr>
-    <td style="vertical-align:top" class="defaultgray">' . g_l('modules_messaging', '[to_search_fields]') . '</td>
+    <td style="vertical-align:top" class="defaultfont lowContrast">' . g_l('modules_messaging', '[to_search_fields]') . '</td>
     <td><select name="search_fields[]" size="3" multiple>
     ' . $messaging->print_select_search_fields() . '
         </select></td>
 </tr>
 <tr>
-    <td style="vertical-align:top" class="defaultgray">' . g_l('modules_messaging', '[to_search_folders]') . '</td>
+    <td style="vertical-align:top" class="defaultfont lowContrast">' . g_l('modules_messaging', '[to_search_folders]') . '</td>
     <td><select name="search_folders[]" size="5" multiple>
     ' . $messaging->print_select_search_folders() . '
         </select>

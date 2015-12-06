@@ -111,7 +111,7 @@ function print_error($errortext){
 	$content = g_l('global', '[formmailerror]') . getHtmlTag('br') . '&#8226; ' . $errortext;
 
 	echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, getHtmlTag('body', array('class' => 'weEditorBody'), '', false, true) .
-		we_html_tools::htmlDialogLayout(getHtmlTag('div', array('class' => 'defaultgray'), $content), $headline) .
+		we_html_tools::htmlDialogLayout(getHtmlTag('div', array('class' => 'defaultfont lowContrast'), $content), $headline) .
 		'</body>');
 
 	exit();

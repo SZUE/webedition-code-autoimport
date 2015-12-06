@@ -310,14 +310,14 @@ abstract class we_base_variants{
 				$downbut = ($i == ($count - 1) ? we_html_button::create_button(we_html_button::DIRDOWN, "", true, 21, 22, "", "", true) : we_html_button::create_button(we_html_button::DIRDOWN, "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('shop_move_variant_down','" . ($i) . "');"));
 				$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('shop_remove_variant','" . ($i) . "');", true, 30);
 
-				$content = '<table border="0" class="defaultgray" width="700">
+				$content = '<table border="0" class="defaultfont lowContrast" width="700">
 <tr>
 		<td width="200"><span class="defaultfont"><b>Name</b></span></td>
 </tr>
 <tr>
 		<td>' . $model->getFieldHTML(we_base_constants::WE_VARIANTS_PREFIX . $i, 'input', array(), true, true) . '</td>
 		<td>
-			<table class="defaultgray" style="text-align:right;width:120px">
+			<table class="defaultfont lowContrast" style="text-align:right;width:120px">
 				<tr>
 					<td>' . $plusBut . '</td>
 					<td>' . $upbut . '</td>
@@ -379,14 +379,14 @@ abstract class we_base_variants{
 				$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('shop_remove_variant','" . ($i) . "');", true, 30);
 				$previewBut = we_html_button::create_button(we_html_button::VIEW, "javascript:we_cmd('shop_preview_variant','" . $GLOBALS['we_transaction'] . "','" . ($model->getElement(we_base_constants::WE_VARIANTS_PREFIX . $i)) . "');", true, 30);
 
-				$content = '<table border="0" class="defaultgray" width="700">
+				$content = '<table border="0" class="defaultfont lowContrast" width="700">
 <tr>
 	<td width="200" class="defaultfont"><b>Name</b></td>
 </tr>
 <tr>
 	<td>' . $model->formTextInput('input', we_base_constants::WE_VARIANTS_PREFIX . $i, '') . '</td>
 		<td>
-			<table class="defaultgray" style="text-align:right">
+			<table class="defaultfont lowContrast" style="text-align:right">
 				<tr>
 					<td>' . $previewBut . '</td>
 					<td>&nbsp;&nbsp;</td>

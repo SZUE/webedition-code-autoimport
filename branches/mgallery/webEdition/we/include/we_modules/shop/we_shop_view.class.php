@@ -417,13 +417,13 @@ function submitForm(target,action,method) {
 			// headline here - these fields are fix.
 			$orderTable = '
 		<table width="99%" class="default defaultfont">
-			<tr>
-				<th class="defaultgray" style="height:25px;padding-right:15px;">' . g_l('modules_shop', '[anzahl]') . '</th>
-				<th class="defaultgray" style="height:25px;padding-right:15px;">' . g_l('modules_shop', '[Titel]') . '</th>
-				<th class="defaultgray" style="height:25px;padding-right:15px;">' . g_l('modules_shop', '[Beschreibung]') . '</th>
-				<th class="defaultgray" style="height:25px;padding-right:15px;">' . g_l('modules_shop', '[Preis]') . '</th>
-				<th class="defaultgray" style="height:25px;padding-right:15px;">' . g_l('modules_shop', '[Gesamt]') . '</th>' .
-				($calcVat ? '<th class="defaultgray" height="25">' . g_l('modules_shop', '[mwst]') . '</th>' : '' ) . '
+			<tr class="defaultfont lowContrast">
+				<th style="height:25px;padding-right:15px;">' . g_l('modules_shop', '[anzahl]') . '</th>
+				<th style="height:25px;padding-right:15px;">' . g_l('modules_shop', '[Titel]') . '</th>
+				<th style="height:25px;padding-right:15px;">' . g_l('modules_shop', '[Beschreibung]') . '</th>
+				<th style="height:25px;padding-right:15px;">' . g_l('modules_shop', '[Preis]') . '</th>
+				<th style="height:25px;padding-right:15px;">' . g_l('modules_shop', '[Gesamt]') . '</th>' .
+				($calcVat ? '<th height="25">' . g_l('modules_shop', '[mwst]') . '</th>' : '' ) . '
 			</tr>';
 
 
@@ -678,7 +678,7 @@ function submitForm(target,action,method) {
 
 			$customCartFieldsTable = '<table class="default" width="99%">
 					<tr>
-						<th colspan="3" class="defaultgray" height="30">' . g_l('modules_shop', '[order_comments]') . '</th>
+						<th colspan="3" class="defaultfont lowContrast" height="30">' . g_l('modules_shop', '[order_comments]') . '</th>
 					</tr>
 					<tr>
 						<td height="10"></td>

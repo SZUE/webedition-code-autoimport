@@ -963,7 +963,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 			include($path);
 		} else {
 			echo STYLESHEET .
-			'<div class="defaultgray" style="text-align:center">' . g_l('modules_newsletter', '[cannot_preview]') . '</div>';
+			'<div class="defaultfont lowContrast" style="text-align:center">' . g_l('modules_newsletter', '[cannot_preview]') . '</div>';
 		}
 	}
 

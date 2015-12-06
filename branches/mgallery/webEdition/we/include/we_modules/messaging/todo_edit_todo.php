@@ -94,19 +94,19 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]')) .
 			$tbl = '
 <table cellpadding="6">
 		<tr>
-		<td class="defaultgray">
+		<td class="defaultfont lowContrast">
 			' . g_l('modules_messaging', '[from]') . ':</td>
 		<td class="defaultfont">
 			' . $compose->get_from() . '</td>
 	</tr>
 	<tr>
-		<td class="defaultgray">
+		<td class="defaultfont lowContrast">
 			' . g_l('modules_messaging', '[reject_to]') . ':</a></td>
 		<td class="defaultfont">
 			' . $compose->get_recipient_line() . '</td>
 	</tr>
 	<tr>
-		<td class="defaultgray">
+		<td class="defaultfont lowContrast">
 			' . g_l('modules_messaging', '[subject]') . ':</td>
 		<td class="defaultfont">
 			' . oldHtmlspecialchars($compose->get_subject()) . '</td>
@@ -117,31 +117,31 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]')) .
 			$tbl = '
 <table cellpadding="6">
 	<tr>
-		<td class="defaultgray">
+		<td class="defaultfont lowContrast">
 			' . g_l('modules_messaging', '[assigner]') . ':</td>
 		<td class="defaultfont">
 			' . $compose->get_from() . '</td>
 	</tr>
 	<tr>
-		<td class="defaultgray">
+		<td class="defaultfont lowContrast">
 			<a href="javascript:selectRecipient()">' . g_l('modules_messaging', '[recipient]') . ':</a></td>
 		<td>
 			' . we_html_tools::htmlTextInput('mn_recipients', 40, ($mode === 'forward' ? '' : $_SESSION["user"]["Username"])) . '</td>
 	</tr>
 	<tr>
-		<td class="defaultgray">
+		<td class="defaultfont lowContrast">
 			' . g_l('modules_messaging', '[subject]') . ':</td>
 		<td>
 			' . we_html_tools::htmlTextInput('mn_subject', 40, $compose->get_subject()) . '</td>
 	</tr>
 	<tr>
-		<td class="defaultgray">
+		<td class="defaultfont lowContrast">
 			' . g_l('modules_messaging', '[deadline]') . ':</td>
 		<td>
 			' . we_html_tools::getDateInput2('td_deadline%s', $compose->get_deadline()) . '</td>
 	</tr>
 	<tr>
-		<td class="defaultgray">' . g_l('modules_messaging', '[priority]') . ':</td>
+		<td class="defaultfont lowContrast">' . g_l('modules_messaging', '[priority]') . ':</td>
 		<td>' . we_html_tools::html_select('mn_priority', 1, array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10)) . '</td>
 	</tr>
 </table>

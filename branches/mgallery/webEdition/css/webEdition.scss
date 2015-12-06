@@ -507,12 +507,9 @@ a.notpublished {
 	color: blue;
 }
 
-.defaultgray,
-.defaultgray a,
-.defaultgray a:visited,
-.middlefontgray,
-.middlefontgray a,
-.middlefontgray a:visited,
+.lowContrast,
+.lowContrast a,
+ lowContrast a:visited,
 .shopContentfontGR,
 .shop_fontView,
 .shopContentfontGreySmall{
@@ -523,8 +520,7 @@ a.notpublished {
 .pdefaultfont a:active,
 .middlefont a:active,
 .npdefaultfont a:active,
-.defaultgray a:active,
-.middlefontgray a:active,
+.lowContrast a:active,
 .npshopContentfont a:active,
 .defaultfont a:active,
 .todo_hist_hdr{

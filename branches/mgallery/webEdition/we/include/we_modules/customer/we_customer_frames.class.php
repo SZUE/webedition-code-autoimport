@@ -222,19 +222,19 @@ function setTab(tab) {
 			we_html_button::create_button(we_html_button::DELETE, "javascript:we_cmd('delete_field')") .
 			we_html_button::create_button(we_html_button::DIRUP, "javascript:we_cmd('move_field_up')") .
 			we_html_button::create_button(we_html_button::DIRDOWN, "javascript:we_cmd('move_field_down')") .
-			we_html_element::htmlSpan(array("class" => "defaultgray"), g_l('modules_customer', '[sort_edit_fields_explain]')) .
+			we_html_element::htmlSpan(array("class" => "defaultfont lowContrast"), g_l('modules_customer', '[sort_edit_fields_explain]')) .
 			we_html_button::create_button("reset", "javascript:we_cmd('reset_edit_order')");
 
 		$table = new we_html_table(array('class' => 'default', "width" => 500), 4, 5);
 
-		$table->setCol(0, 0, array("class" => "defaultgray", 'style' => 'padding-right:10px;'), g_l('modules_customer', '[branch]'));
-		$table->setCol(0, 2, array("class" => "defaultgray"), g_l('modules_customer', '[branch_select]'));
+		$table->setCol(0, 0, array("class" => "defaultfont lowContrast", 'style' => 'padding-right:10px;'), g_l('modules_customer', '[branch]'));
+		$table->setCol(0, 2, array("class" => "defaultfont lowContrast"), g_l('modules_customer', '[branch_select]'));
 		$table->setCol(1, 0, array('style' => 'padding-right:10px;'), we_html_tools::htmlTextInput("branch", 48, $branch, '', 'style="width:350px;"'));
 		$table->setCol(1, 2, array('style' => 'padding-right:10px;'), $select->getHtml());
 		$table->setCol(1, 4, array('style' => 'padding-bottom:10px;'), we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('open_edit_branch')"));
 
 
-		$table->setCol(2, 0, array("class" => "defaultgray", 'style' => 'vertical-align:top;'), g_l('modules_customer', '[fields]'));
+		$table->setCol(2, 0, array("class" => "defaultfont lowContrast", 'style' => 'vertical-align:top;'), g_l('modules_customer', '[fields]'));
 		$table->setCol(3, 0, array('style' => 'vertical-align:top;padding-right:10px;'), $fields->getHtml());
 		$table->setCol(3, 2, array('style' => 'vertical-align:top;'), $buttons_table);
 
@@ -266,7 +266,7 @@ function setTab(tab) {
 			case "branch":
 				$hiddens.=we_html_element::htmlHidden("pnt", "branch_editor");
 				$edit = new we_html_table(array("width" => 300), 1, 2);
-				$edit->setCol(0, 0, array('style' => 'vertical-align:middle;', "class" => "defaultgray"), g_l('modules_customer', '[field_name]'));
+				$edit->setCol(0, 0, array('style' => 'vertical-align:middle;', "class" => "defaultfont lowContrast"), g_l('modules_customer', '[field_name]'));
 				$edit->setCol(0, 1, array('style' => 'vertical-align:middle;', "class" => "defaultfont"), we_html_tools::htmlTextInput("name", 26, $branch, '', ''));
 
 				$save = we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save_branch')");
@@ -293,20 +293,20 @@ function setTab(tab) {
 
 				$edit = new we_html_table(array("width" => 300), 5, 2);
 
-				$edit->setCol(0, 0, array('style' => 'vertical-align:middle;', "class" => "defaultgray"), g_l('modules_customer', '[branch]'));
+				$edit->setCol(0, 0, array('style' => 'vertical-align:middle;', "class" => "defaultfont lowContrast"), g_l('modules_customer', '[branch]'));
 				$edit->setCol(0, 1, array('style' => 'vertical-align:middle;', "class" => "defaultfont"), $branch);
 
-				$edit->setCol(1, 0, array('style' => 'vertical-align:middle;', "class" => "defaultgray"), g_l('modules_customer', '[field_name]'));
+				$edit->setCol(1, 0, array('style' => 'vertical-align:middle;', "class" => "defaultfont lowContrast"), g_l('modules_customer', '[field_name]'));
 				$edit->setCol(1, 1, array('style' => 'vertical-align:middle;', "class" => "defaultfont"), we_html_tools::htmlTextInput("name", 26, (isset($field_props['name']) ? $field_props['name'] : ''), '', ''));
 
-				$edit->setCol(2, 0, array('style' => 'vertical-align:middle;', "class" => "defaultgray"), g_l('modules_customer', '[field_type]'));
+				$edit->setCol(2, 0, array('style' => 'vertical-align:middle;', "class" => "defaultfont lowContrast"), g_l('modules_customer', '[field_type]'));
 
 				$edit->setCol(2, 1, array('style' => 'vertical-align:middle;', "class" => "defaultfont"), $types->getHtml());
 
-				$edit->setCol(3, 0, array('style' => 'vertical-align:middle;', "class" => "defaultgray"), g_l('modules_customer', '[field_default]'));
+				$edit->setCol(3, 0, array('style' => 'vertical-align:middle;', "class" => "defaultfont lowContrast"), g_l('modules_customer', '[field_default]'));
 				$edit->setCol(3, 1, array('style' => 'vertical-align:middle;', "class" => "defaultfont"), we_html_tools::htmlTextInput("field_default", 26, (isset($field_props['default']) ? $field_props['default'] : ''), '', ''));
 
-				$edit->setCol(4, 0, array('style' => 'vertical-align:middle;', "class" => "defaultgray"), g_l('modules_customer', '[encryptField]'));
+				$edit->setCol(4, 0, array('style' => 'vertical-align:middle;', "class" => "defaultfont lowContrast"), g_l('modules_customer', '[encryptField]'));
 				$edit->setCol(4, 1, array('style' => 'vertical-align:middle;', "class" => "defaultfont"), $enc->getHtml());
 
 				$save = we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save_field')");

@@ -251,7 +251,7 @@ function checkFooter(){
 		$checknname = md5(uniqid(__FUNCTION__, true));
 		$table = '<table class="default">
 	<tr style="vertical-align:top">
-		<td class="defaultgray" style="margin-bottom:10px;">' . g_l('modules_schedule', '[task][headline]') . ':</td>
+		<td class="defaultfont lowContrast" style="margin-bottom:10px;">' . g_l('modules_schedule', '[task][headline]') . ':</td>
 		<td class="defaultfont"><table class="default"><tr><td>' . $taskpopup . '</td><td class="defaultfont">&nbsp;&nbsp;</td><td>' . we_html_forms::checkbox(1, $this->active, $checknname, g_l('modules_schedule', '[active]')
 				, false, "defaultfont", "this.form.elements['we_schedule_active_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true);checkFooter();") .
 			'<input type="hidden" class="we_schedule_active" name="we_schedule_active_' . $this->nr . '" value="' . $this->active . '" /></td></tr></table></td>
@@ -260,7 +260,7 @@ function checkFooter(){
 		if($extracont){
 			$table .= '
 	<tr style="vertical-align:top">
-		<td class="defaultgray" style="margin-bottom:10px;">' . $extraheadl . ':</td>
+		<td class="defaultfont lowContrast" style="margin-bottom:10px;">' . $extraheadl . ':</td>
 		<td class="defaultfont">' . $extracont . '</td>
 		<td></td>
 	</tr>';
@@ -268,7 +268,7 @@ function checkFooter(){
 
 		$table .= '
 	<tr style="vertical-align:top">
-		<td class="defaultgray" style="margin-bottom:10px;">' . g_l('modules_schedule', '[type][headline]') . ':</td>
+		<td class="defaultfont lowContrast" style="margin-bottom:10px;">' . g_l('modules_schedule', '[type][headline]') . ':</td>
 		<td class="defaultfont">' . $typepopup . '</td>
 		<td></td>
 	</tr>';
@@ -277,7 +277,7 @@ function checkFooter(){
 			case self::TYPE_ONCE:
 				$table .= '
 		<tr style = "vertical-align:top">
-		<td class = "defaultgray">' . g_l('modules_schedule', '[datetime]') . ':</td>
+		<td class = "defaultfont lowContrast">' . g_l('modules_schedule', '[datetime]') . ':</td>
 		<td class = "defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true) . '</td>
 		<td></td>
 		</tr>';
@@ -285,7 +285,7 @@ function checkFooter(){
 			case self::TYPE_HOUR:
 				$table .= '
 		<tr style = "vertical-align:top">
-		<td class = "defaultgray">' . g_l('modules_schedule', '[minutes]') . ':</td>
+		<td class = "defaultfont lowContrast">' . g_l('modules_schedule', '[minutes]') . ':</td>
 		<td class = "defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "i") . '</td>
 		<td></td>
 		</tr>';
@@ -293,7 +293,7 @@ function checkFooter(){
 			case self::TYPE_DAY:
 				$table .= '
 		<tr style = "vertical-align:top">
-		<td class = "defaultgray">' . g_l('modules_schedule', '[time]') . ':</td>
+		<td class = "defaultfont lowContrast">' . g_l('modules_schedule', '[time]') . ':</td>
 		<td class = "defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "h:i") . '</td>
 		<td></td>
 		</tr>';
@@ -301,12 +301,12 @@ function checkFooter(){
 			case self::TYPE_WEEK:
 				$table .= '
 		<tr style = "vertical-align:top">
-		<td class = "defaultgray" style = "margin-bottom:10px;">' . g_l('modules_schedule', '[time]') . ':</td>
+		<td class = "defaultfont lowContrast" style = "margin-bottom:10px;">' . g_l('modules_schedule', '[time]') . ':</td>
 		<td class = "defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "h:i") . '</td>
 		<td></td>
 		</tr>
 		<tr style = "vertical-align:top">
-		<td class = "defaultgray">' . g_l('modules_schedule', '[weekdays]') . ':</td>
+		<td class = "defaultfont lowContrast">' . g_l('modules_schedule', '[weekdays]') . ':</td>
 		<td class = "defaultfont">' . $this->getWeekdaysHTML() . '</td>
 		<td></td>
 		</tr>';
@@ -314,12 +314,12 @@ function checkFooter(){
 			case self::TYPE_MONTH:
 				$table .= '
 		<tr style = "vertical-align:top">
-		<td class = "defaultgray" style = "margin-bottom:10px;">' . g_l('modules_schedule', '[time]') . ':</td>
+		<td class = "defaultfont lowContrast" style = "margin-bottom:10px;">' . g_l('modules_schedule', '[time]') . ':</td>
 		<td class = "defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "h:i") . '</td>
 		<td></td>
 		</tr>
 		<tr style = "vertical-align:top">
-		<td class = "defaultgray">' . g_l('modules_schedule', '[days]') . ':</td>
+		<td class = "defaultfont lowContrast">' . g_l('modules_schedule', '[days]') . ':</td>
 		<td class = "defaultfont">' . $this->getDaysHTML() . '</td>
 		<td></td>
 		</tr>';
@@ -327,17 +327,17 @@ function checkFooter(){
 			case self::TYPE_YEAR:
 				$table .= '
 		<tr style = "vertical-align:top">
-		<td class = "defaultgray" style = "margin-bottom:10px;">' . g_l('modules_schedule', '[time]') . ':</td>
+		<td class = "defaultfont lowContrast" style = "margin-bottom:10px;">' . g_l('modules_schedule', '[time]') . ':</td>
 		<td class = "defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "h:i") . '</td>
 		<td></td>
 		</tr>
 		<tr style = "vertical-align:top">
-		<td class = "defaultgray" style = "margin-bottom:10px;">' . g_l('modules_schedule', '[months]') . ':</td>
+		<td class = "defaultfont lowContrast" style = "margin-bottom:10px;">' . g_l('modules_schedule', '[months]') . ':</td>
 		<td class = "defaultfont">' . $this->getMonthsHTML() . '</td>
 		<td></td>
 		</tr>
 		<tr style = "vertical-align:top">
-		<td class = "defaultgray">' . g_l('modules_schedule', '[days]') . ':</td>
+		<td class = "defaultfont lowContrast">' . g_l('modules_schedule', '[days]') . ':</td>
 		<td class = "defaultfont">' . $this->getDaysHTML() . '</td>
 		<td></td>
 		</tr>';

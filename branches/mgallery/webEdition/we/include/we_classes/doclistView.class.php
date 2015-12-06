@@ -528,7 +528,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 			'<table class="default" style="margin:12px 0px 12px 19px;">
 	<tr>
 		<td style="font-size:12px;width:125px;">' . g_l('searchtool', '[eintraege_pro_seite]') . ':</td>
-		<td class="defaultgray" style="width:60px;">' . we_html_tools::htmlSelect("anzahl", $anzahl, 1, $_anzahl, "", array('onchange' => 'this.form.elements.searchstart.value=0;search(false);')) . '</td>
+		<td class="defaultfont lowContrast" style="width:60px;">' . we_html_tools::htmlSelect("anzahl", $anzahl, 1, $_anzahl, "", array('onchange' => 'this.form.elements.searchstart.value=0;search(false);')) . '</td>
 		<td>' . self::getNextPrev($foundItems) . '</td>
 		<td>' . we_html_button::create_button("fa:iconview,fa-lg fa-th", "javascript:setview('" . we_search_view::VIEW_ICONS . "');", true, 40, "", "", "", false) . '</td>
 		<td>' . we_html_button::create_button("fa:listview,fa-lg fa-align-justify", "javascript:setview('" . we_search_view::VIEW_LIST . "');", true, 40, "", "", "", false) . '</td>' .
@@ -557,7 +557,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 	<tr>
 	 <td>' . $publishButtonCheckboxAll . '</td>
 	 <td style="font-size:12px;width:125px;">' . $publishButton . '</td>
-	 <td class="defaultgray" style="width:60px;height:30px;" id="resetBusy"></td>
+	 <td class="defaultfont lowContrast" style="width:60px;height:30px;" id="resetBusy"></td>
 	 <td style="width:370px;">' . self::getNextPrev($foundItems, false) . '</td>
 	</tr>
 </table>';

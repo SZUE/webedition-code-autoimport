@@ -234,7 +234,7 @@ function we_save() {
 	function getHTMLBox($content, $headline = "", $width = 100, $height = 50, $w = 25, $vh = 0, $ident = 0, $space = 5, $headline_align = "left", $content_align = "left"){
 		$table = new we_html_table(array("width" => $width, "height" => $height, "class" => 'default', 'style' => 'margin-left:' . intval($ident) . 'px;margin-top:' . intval($vh) . 'px;margin-bottom:' . ($w && $headline ? $vh : 0) . 'px;'), 1, 2);
 
-		$table->setCol(0, 0, array("style" => 'vertical-align:middle;text-align:' . $headline_align . ';padding-right:' . $space . 'px;', "class" => "defaultgray"), str_replace(" ", "&nbsp;", $headline));
+		$table->setCol(0, 0, array("style" => 'vertical-align:middle;text-align:' . $headline_align . ';padding-right:' . $space . 'px;', "class" => "defaultfont lowContrast"), str_replace(" ", "&nbsp;", $headline));
 		$table->setCol(0, 1, array("style" => 'vertical-align:middle;text-align:' . $content_align), $content);
 		return $table->getHtml();
 	}

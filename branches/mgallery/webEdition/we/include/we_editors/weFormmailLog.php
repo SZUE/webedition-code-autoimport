@@ -88,7 +88,7 @@ if(permissionhandler::hasPerm('administrator')){
 		$parts = array(
 			array(
 				'headline' => '',
-				'html' => we_html_element::htmlSpan(array('class' => 'middlefontgray'), g_l('prefs', '[log_is_empty]')) .
+				'html' => we_html_element::htmlSpan(array('class' => 'middlefont lowContrast'), g_l('prefs', '[log_is_empty]')) .
 				we_html_element::htmlBr() .
 				we_html_element::htmlBr(),
 				'space' => 0,

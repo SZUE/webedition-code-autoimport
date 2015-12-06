@@ -30,13 +30,13 @@ class we_doclist_view extends we_search_view{
 	public function __construct($search){
 		$this->search = $search;
 		$this->Model = $search->getModel();
-		
+
 		/*
 		$this->docID = $docID;
 		$this->Model = new we_search_model();
 		$this->searchclass = new we_search_search();
 		$this->db = new DB_WE();
-		 * 
+		 *
 		 */
 	}
 
@@ -48,7 +48,7 @@ class we_doclist_view extends we_search_view{
 	public function getSearchJS(){
 		$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0);
 
-		return we_html_element::jsScript(JS_DIR . 'we_modules/search/search_view.js') . 
+		return we_html_element::jsScript(JS_DIR . 'we_modules/search/search_view.js') .
 				we_html_element::jsElement('
 WE().consts.dirs.IMAGE_DIR="' . IMAGE_DIR . '";
 weSearch.conf = {
@@ -121,7 +121,7 @@ WE().consts.g_l.weSearch = {
 			we_class::hiddenTrans() .
 			'<table class="default"  id="filterTable' . we_search_view::SEARCH_DOCLIST . '" border="0" style="margin-left:20px;display:' . ($this->Model->mode ? 'block' : 'none') . ';">
 <tbody id="filterTable' . we_search_view::SEARCH_DOCLIST . '">';
-		
+
 		$searchfields = $this->Model->searchFields;
 		$location = $this->Model->location;
 		$search = $this->Model->search;
@@ -295,7 +295,7 @@ WE().consts.g_l.weSearch = {
 						$imageView = '<img src="' . $url . '" border="0" /></a>';
 						$urlPopup = WEBEDITION_DIR . "thumbnail.php?id=" . $_result[$f]["docID"] . "&size=" . $bigSize . "&path=" . $_result[$f]["Path"] . "&extension=" . $_result[$f]["Extension"];
 						$imageViewPopup = '<img src="' . $urlPopup . '" border="0" /></a>';
-						
+
 						//$imageView = '<img src="' . WEBEDITION_DIR . 'thumbnail.php?id=' . $_result[$f]["docID"] . "&size=" . $smallSize . "&path=" . urlencode($_result[$f]["Path"]) . "&extension=" . $_result[$f]['Extension'] . "' border='0' /></a>";
 						//$imageViewPopup = '<img src="' . WEBEDITION_DIR . 'thumbnail.php?id=' . $_result[$f]['docID'] . '&size=' . $bigSize . '&path=' . urlencode($_result[$f]['Path']) . '&extension=' . $_result[$f]['Extension'] . '" border="0" /></a>';
 					} else {
@@ -382,7 +382,7 @@ WE().consts.g_l.weSearch = {
 			'<table class="default" style="margin:12px 0px 12px 19px;">
 	<tr>
 		<td style="font-size:12px;width:125px;">' . g_l('searchtool', '[eintraege_pro_seite]') . ':</td>
-		<td class="defaultgray" style="width:60px;">' . we_html_tools::htmlSelect("anzahlDoclistSearch", $options, 1, $this->Model->anzahl, "", array('onchange' => "this.form.elements['searchstartDoclistSearch'].value=0;weSearch.search(false);")) . '</td>
+		<td class="defaultfont lowContrast" style="width:60px;">' . we_html_tools::htmlSelect("anzahlDoclistSearch", $options, 1, $this->Model->anzahl, "", array('onchange' => "this.form.elements['searchstartDoclistSearch'].value=0;weSearch.search(false);")) . '</td>
 		<td>' . self::getNextPrev($foundItems) . '</td>
 		<td>' . we_html_button::create_button("fa:iconview,fa-lg fa-th", "javascript:weSearch.setView('" . we_search_view::VIEW_ICONS . "');", true, 40, "", "", "", false) . '</td>
 		<td>' . we_html_button::create_button("fa:listview,fa-lg fa-align-justify", "javascript:weSearch.setView('" . we_search_view::VIEW_LIST . "');", true, 40, "", "", "", false) . '</td>' .
@@ -411,7 +411,7 @@ WE().consts.g_l.weSearch = {
 	<tr>
 	 <td>' . $publishButtonCheckboxAll . '</td>
 	 <td style="font-size:12px;width:125px;">' . $publishButton . '</td>
-	 <td class="defaultgray" style="width:60px;height:30px;" id="resetBusyDoclistSearch"></td>
+	 <td class="defaultfont lowContrast" style="width:60px;height:30px;" id="resetBusyDoclistSearch"></td>
 	 <td style="width:370px;">' . self::getNextPrev($foundItems, false) . '</td>
 	</tr>
 </table>';
@@ -426,7 +426,7 @@ WE().consts.g_l.weSearch = {
 		if(($obj = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 'obj'))){ // TODO: do we need session data other than from model?
 			//$anzahl = $_SESSION['weS']['weSearch']['anzahl'];
 			//$searchstart = $_SESSION['weS']['weSearch']['searchstart'];
-			
+
 			$anzahl = $this->Model->anzahl;
 			$searchstart = $this->Model->searchstart;
 		} else {

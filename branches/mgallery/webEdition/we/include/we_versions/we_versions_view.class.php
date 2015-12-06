@@ -222,7 +222,7 @@ var searchClass={
  <tr>
 	<td></td>
 	<td id="eintraege_pro_seite" style="font-size:12px;width:130px;">' . g_l('versions', '[eintraege_pro_seite]') . ':</td>
-	<td class="defaultgray" style="width:70px;">' .
+	<td class="defaultfont lowContrast" style="width:70px;">' .
 				we_html_tools::htmlSelect('anzahl', $anzahl_all, 1, $_anzahl, "", array('id' => "anzahl", 'onchange' => 'this.form.elements.searchstart.value=0;search(false);')) . '
 	</td>
 	<td class="defaultfont" id="eintraege">' . g_l('versions', '[eintraege]') . '</td>

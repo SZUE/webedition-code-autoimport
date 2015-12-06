@@ -1031,7 +1031,7 @@ HTS;
 
 		$docCategories = $this->formCategory2('doc', isset($v['docCategories']) ? $v['docCategories'] : '');
 		$docCats = new we_html_table(array('class' => 'default'), 2, 2);
-		$docCats->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', 'class' => 'defaultgray'), g_l('import', '[categories]'));
+		$docCats->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', 'class' => 'defaultfont lowContrast'), g_l('import', '[categories]'));
 		$docCats->setCol(0, 1, array('style' => 'width:150px;'), $docCategories);
 		$cmd1 = "self.wizbody.document.we_form.elements['v[store_to_id]'].value";
 		$storeToButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("self.wizbody.document.we_form.elements['v[store_to_path]'].value") . "','','','0')"
@@ -1077,12 +1077,12 @@ HTS;
 		}
 
 		$objClass = new we_html_table(array('class' => 'default'), 2, 2);
-		$objClass->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', 'class' => 'defaultgray'), g_l('import', '[class]'));
+		$objClass->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', 'class' => 'defaultfont lowContrast'), g_l('import', '[class]'));
 		$objClass->setCol(0, 1, array('style' => 'width:150px;'), $CLselect->getHTML());
 
 		$objCategories = $this->formCategory2('obj', isset($v['objCategories']) ? $v['objCategories'] : '');
 		$objCats = new we_html_table(array('class' => 'default'), 2, 2);
-		$objCats->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', 'class' => 'defaultgray'), g_l('import', '[categories]'));
+		$objCats->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', 'class' => 'defaultfont lowContrast'), g_l('import', '[categories]'));
 		$objCats->setCol(0, 1, array('style' => 'width:150px;'), $objCategories);
 
 		$objects = new we_html_table(array('class' => 'default'), 3, 2);
@@ -1976,7 +1976,7 @@ HTS;
 
 		$docCategories = $this->formCategory2("doc", isset($v["docCategories"]) ? $v["docCategories"] : "");
 		$docCats = new we_html_table(array('class' => 'default'), 1, 2);
-		$docCats->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', "class" => "defaultgray"), g_l('import', '[categories]'));
+		$docCats->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', "class" => "defaultfont lowContrast"), g_l('import', '[categories]'));
 		$docCats->setCol(0, 1, array('style'=>'width:150px;'), $docCategories);
 
 		$radioDocs = we_html_forms::radiobutton('documents', ($v["import_type"] === 'documents'), "v[import_type]", g_l('import', '[documents]'));
@@ -2014,7 +2014,7 @@ HTS;
 			}
 
 			$objClass = new we_html_table(array('class' => 'default'), 1, 2);
-			$objClass->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', "class" => "defaultgray"), g_l('import', '[class]'));
+			$objClass->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', "class" => "defaultfont lowContrast"), g_l('import', '[class]'));
 			$objClass->setCol(0, 1, array('style'=>'width:150px;'), $CLselect->getHTML());
 
 			$wecmdenc1 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[obj_path_id]'].value");
@@ -2042,7 +2042,7 @@ HTS;
 			$objSeaPu->setCol(0, 0, array(), we_html_forms::checkboxWithHidden(isset($v["obj_publish"]) ? $v["obj_publish"] : true, 'v[obj_publish]', g_l('buttons_global', '[publish][value]'), false, 'defaultfont'));
 			$objCategories = $this->formCategory2("obj", isset($v["objCategories"]) ? $v["objCategories"] : "");
 			$objCats = new we_html_table(array('class' => 'default'), 1, 2);
-			$objCats->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', "class" => "defaultgray"), g_l('import', '[categories]'));
+			$objCats->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', "class" => "defaultfont lowContrast"), g_l('import', '[categories]'));
 			$objCats->setCol(0, 1, array('style'=>'width:150px;'), $objCategories);
 
 			$objects = new we_html_table(array('class' => 'default withBigSpace'), 3, 2);

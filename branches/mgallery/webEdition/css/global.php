@@ -41,7 +41,6 @@ header('Pragma: ', true);
 .defaultfont,
 .npdefaultfont,
 .changeddefaultfont,
-.defaultgray,
 .shopContentfont,
 .shopContentfontAlert,
 .shopContentfontR
@@ -74,8 +73,7 @@ font-size: <?php echo (we_base_browserDetect::isMAC()) ? 9 : (we_base_browserDet
 font-family: <?php echo g_l('css', '[font_family]'); ?>;
 }
 
-.middlefont,
-.middlefontgray{
+.middlefont{
 font-size: <?php echo (we_base_browserDetect::isMAC()) ? 10 : (we_base_browserDetect::isUNIX() ? 12 : 11); ?>px;
 }
 
@@ -95,8 +93,7 @@ font-size: <?php echo (we_base_browserDetect::isGecko() && we_base_browserDetect
 .header_small,
 .tree,
 .small,
-.middlefont,
-.middlefontgray
+.middlefont
 {
 font-family: <?php echo g_l('css', '[font_family]'); ?>;
 }

@@ -949,7 +949,7 @@ function setVisible(id,visible){
 			$parts = array(
 				array(
 					'headline' => '',
-					'html' => we_html_element::htmlSpan(array('class' => 'middlefontgray'), g_l('modules_voting', '[log_is_empty]')) .
+					'html' => we_html_element::htmlSpan(array('class' => 'middlefont lowContrast'), g_l('modules_voting', '[log_is_empty]')) .
 					we_html_element::htmlBr() .
 					we_html_element::htmlBr(),
 					'space' => 0,
@@ -1077,7 +1077,7 @@ function setVisible(id,visible){
 			$parts = array(
 				array(
 					'headline' => '',
-					'html' => we_html_element::htmlSpan(array('class' => 'middlefontgray'), g_l('modules_voting', '[log_is_empty]')) .
+					'html' => we_html_element::htmlSpan(array('class' => 'middlefont lowContrast'), g_l('modules_voting', '[log_is_empty]')) .
 					we_html_element::htmlBr() .
 					we_html_element::htmlBr(),
 					'space' => 0,
@@ -1189,7 +1189,7 @@ function setVisible(id,visible){
 			$parts = array(
 				array(
 					'headline' => '',
-					'html' => we_html_element::htmlSpan(array('class' => 'middlefontgray'), g_l('modules_voting', '[log_is_empty]')) .
+					'html' => we_html_element::htmlSpan(array('class' => 'middlefont lowContrast'), g_l('modules_voting', '[log_is_empty]')) .
 					we_html_element::htmlBr() .
 					we_html_element::htmlBr(),
 					'space' => 0,

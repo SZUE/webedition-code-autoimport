@@ -703,7 +703,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 		$headline = str_replace(" ", "&nbsp;", $headline);
 
 		return '<table class="default" style="margin:' . $height . 'px 0 ' . $height . 'px 24px;">' . ($headline ? '<tr>
-		<td style="vertical-align:top" class="defaultgray">' . $headline . '</td>
+		<td style="vertical-align:top" class="defaultfont lowContrast">' . $headline . '</td>
 		<td>' . $content . '</td>
 	</tr>
 </table>' : '
@@ -891,19 +891,19 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 			$import_options->setCol(1, 1, array(), we_html_tools::htmlTextInput("csv_col" . $group, 2, 1));
 			$import_options->setCol(2, 0, array("class" => "defaultfont"), g_l('modules_newsletter', '[csv_hmcol]') . ":&nbsp;");
 			$import_options->setCol(2, 1, array(), we_html_tools::htmlTextInput("csv_hmcol" . $group, 2, 2));
-			$import_options->setCol(2, 2, array("class" => "defaultgray"), "&nbsp;" . g_l('modules_newsletter', '[csv_html_explain]'));
+			$import_options->setCol(2, 2, array("class" => "defaultfont lowContrast"), "&nbsp;" . g_l('modules_newsletter', '[csv_html_explain]'));
 			$import_options->setCol(3, 0, array("class" => "defaultfont"), g_l('modules_newsletter', '[csv_salutationcol]') . ":&nbsp;");
 			$import_options->setCol(3, 1, array(), we_html_tools::htmlTextInput("csv_salutationcol" . $group, 2, 3));
-			$import_options->setCol(3, 2, array("class" => "defaultgray"), "&nbsp;" . g_l('modules_newsletter', '[csv_salutation_explain]'));
+			$import_options->setCol(3, 2, array("class" => "defaultfont lowContrast"), "&nbsp;" . g_l('modules_newsletter', '[csv_salutation_explain]'));
 			$import_options->setCol(4, 0, array("class" => "defaultfont"), g_l('modules_newsletter', '[csv_titlecol]') . ":&nbsp;");
 			$import_options->setCol(4, 1, array(), we_html_tools::htmlTextInput("csv_titlecol" . $group, 2, 4));
-			$import_options->setCol(4, 2, array("class" => "defaultgray"), "&nbsp;" . g_l('modules_newsletter', '[csv_title_explain]'));
+			$import_options->setCol(4, 2, array("class" => "defaultfont lowContrastdefaultfont lowContrast"), "&nbsp;" . g_l('modules_newsletter', '[csv_title_explain]'));
 			$import_options->setCol(5, 0, array("class" => "defaultfont"), g_l('modules_newsletter', '[csv_firstnamecol]') . ":&nbsp;");
 			$import_options->setCol(5, 1, array(), we_html_tools::htmlTextInput("csv_firstnamecol" . $group, 2, 5));
-			$import_options->setCol(5, 2, array("class" => "defaultgray"), "&nbsp;" . g_l('modules_newsletter', '[csv_firstname_explain]'));
+			$import_options->setCol(5, 2, array("class" => "defaultfont lowContrast"), "&nbsp;" . g_l('modules_newsletter', '[csv_firstname_explain]'));
 			$import_options->setCol(6, 0, array("class" => "defaultfont"), g_l('modules_newsletter', '[csv_lastnamecol]') . ":&nbsp;");
 			$import_options->setCol(6, 1, array(), we_html_tools::htmlTextInput("csv_lastnamecol" . $group, 2, 6));
-			$import_options->setCol(6, 2, array("class" => "defaultgray"), "&nbsp;" . g_l('modules_newsletter', '[csv_lastname_explain]'));
+			$import_options->setCol(6, 2, array("class" => "defaultfont lowContrast"), "&nbsp;" . g_l('modules_newsletter', '[csv_lastname_explain]'));
 
 
 			$import_box = new we_html_table(array('class' => 'default withSpace', 'style' => 'margin-top:10px;'), 4, 1);
@@ -1018,7 +1018,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 
 						$content.=(!empty($values) ?
 								we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect("block" . $counter . "_Field", $values, 1, $block->Field, "", array("style" => 'width:440px;', "onkeyup" => 'top.content.hot=1;')), g_l('modules_newsletter', '[block_document_field]')) :
-								we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array("class" => "defaultgray"), g_l('modules_newsletter', '[none]')), g_l('modules_newsletter', '[block_document_field]'))
+								we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array("class" => "defaultfont lowContrast"), g_l('modules_newsletter', '[none]')), g_l('modules_newsletter', '[block_document_field]'))
 							);
 					}
 					break;
@@ -1036,7 +1036,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 
 						$content.=(!empty($values) ?
 								we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect("block" . $counter . "_Field", $values, 1, $block->Field, false, array('OnChange' => "top.content.hot=1;")), g_l('modules_newsletter', '[block_object_field]')) :
-								we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array("class" => "defaultgray"), g_l('modules_newsletter', '[none]')), g_l('modules_newsletter', '[block_document_field]'))
+								we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array("class" => "defaultfont lowContrast"), g_l('modules_newsletter', '[none]')), g_l('modules_newsletter', '[block_document_field]'))
 							);
 					}
 					break;
@@ -1294,7 +1294,7 @@ window.onload=extraInit;');
 		$row = 0;
 		$table = new we_html_table(array('class' => 'default'), 12, 3);
 
-		$table->setCol($row, 0, array("class" => "defaultgray"), g_l('modules_newsletter', '[email]'));
+		$table->setCol($row, 0, array("class" => "defaultfont lowContrast"), g_l('modules_newsletter', '[email]'));
 		$table->setCol($row++, 1, array('style' => "padding-left:15px;padding-bottom:2px;"), we_html_tools::htmlTextInput("emailfield", 32, $email, "", "", "text", 310));
 
 
@@ -1310,19 +1310,19 @@ window.onload=extraInit;');
 		}
 		$salut_select->selectOption($salutation);
 
-		$table->setCol($row, 0, array("class" => "defaultgray", 'style' => "padding-bottom:2px;"), g_l('modules_newsletter', '[salutation]'));
+		$table->setCol($row, 0, array("class" => "defaultfont lowContrast", 'style' => "padding-bottom:2px;"), g_l('modules_newsletter', '[salutation]'));
 		$table->setCol($row++, 1, array('style' => 'padding-left:15px;'), $salut_select->getHtml());
 
 
-		$table->setCol($row, 0, array("class" => "defaultgray", 'style' => "padding-bottom:2px;"), g_l('modules_newsletter', '[title]'));
+		$table->setCol($row, 0, array("class" => "defaultfont lowContrastdefaultfont lowContrast", 'style' => "padding-bottom:2px;"), g_l('modules_newsletter', '[title]'));
 		$table->setCol($row++, 1, array('style' => 'padding-left:15px;'), we_html_tools::htmlTextInput("title", 32, ($GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8' ? utf8_decode($title) : $title), "", "", "text", 310));
 
 
-		$table->setCol($row, 0, array("class" => "defaultgray", 'style' => "padding-bottom:2px;"), g_l('modules_newsletter', '[firstname]'));
+		$table->setCol($row, 0, array("class" => "defaultfont lowContrast", 'style' => "padding-bottom:2px;"), g_l('modules_newsletter', '[firstname]'));
 		$table->setCol($row++, 1, array('style' => 'padding-left:15px;'), we_html_tools::htmlTextInput("firstname", 32, ($GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8' ? utf8_decode($firstname) : $firstname), "", "", "text", 310));
 
 
-		$table->setCol($row, 0, array("class" => "defaultgray", 'style' => "padding-bottom:2px;"), g_l('modules_newsletter', '[lastname]'));
+		$table->setCol($row, 0, array("class" => "defaultfont lowContrast", 'style' => "padding-bottom:2px;"), g_l('modules_newsletter', '[lastname]'));
 		$table->setCol($row++, 1, array('style' => 'padding-left:15px;'), we_html_tools::htmlTextInput("lastname", 32, ($GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8' ? utf8_decode($lastname) : $lastname), "", "", "text", 310));
 
 
@@ -1925,7 +1925,7 @@ function postSelectorSelect(wePssCmd) {
 				}
 			}
 
-			$out = we_html_element::htmlDiv(array("class" => "middlefontgray", 'style' => "text-align:center;padding-bottom:2em;"), "--&nbsp;" . $_nlMessage . "&nbsp;--" . $selectStatus2) .
+			$out = we_html_element::htmlDiv(array("class" => "middlefont lowContrast", 'style' => "text-align:center;padding-bottom:2em;"), "--&nbsp;" . $_nlMessage . "&nbsp;--" . $selectStatus2) .
 				we_html_button::create_button(we_html_button::PLUS, "javascript:editEmailFile(" . count($emails) . ",'','','','','','')");
 		}
 
