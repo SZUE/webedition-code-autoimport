@@ -21,6 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+@import "config.css";
 
 body{
 	margin:0px;
@@ -117,7 +118,7 @@ body{
 #multiEditorDocumentTabsFrameDiv{
 	position:absolute;
 	top:0px;
-	height:22px;
+	height:$defaultEditorTabHeight;
 	width:100%;
 	background-color: Silver;
 	border-top: 1px solid #000000;
@@ -125,7 +126,7 @@ body{
 
 #multiEditorEditorFramesetsDiv{
 	position:absolute;
-	top:22px;
+	top:$defaultEditorTabHeight;
 	bottom:0px;
 	left:0px;
 	right:0px;

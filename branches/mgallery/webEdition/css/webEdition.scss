@@ -267,8 +267,8 @@ td.boxHeader{
 }
 
 #treeControl{
-	line-height: 3ex;
-	height:3ex;
+	line-height: $defaultEditorTabHeight;
+	height:$defaultEditorTabHeight;
 	background-color: #B7BBBF;
 	#treeName{
 		padding:0px 1ex;
@@ -277,13 +277,12 @@ td.boxHeader{
 	#toggleTree{
 		position:absolute;
 		right:1ex;
-
 	}
 }
 
 #treeContent{
 	position: absolute;
-	top: 3ex;
+	top: $defaultEditorTabHeight;
 	bottom: 0px;
 	left: 0px;
 	right: 0px;
