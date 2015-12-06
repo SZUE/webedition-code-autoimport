@@ -57,7 +57,6 @@ echo we_html_element::jsScript(JS_DIR . 'multiEditor/EditorFrameController.js') 
 		<div id="weMultiTabs">
 			<div id="tabContainer" name="tabContainer"></div>
 			<div class="hidden" id="tabDummy" title="" name="" onclick="WE().layout.multiTabs.selectFrame(this)">
-				<nobr>
 					<span class="spacer status" id="###loadId###" title="" ></span>
 					<span id="###tabTextId###" class="text"></span>
 					<span class="spacer">
@@ -65,7 +64,6 @@ echo we_html_element::jsScript(JS_DIR . 'multiEditor/EditorFrameController.js') 
 						<span class="close" id="###closeId###" onclick="WE().layout.multiTabs.onCloseTab(this)">
 							<i class="fa fa-close fa-lg "></i>
 						</span>
-				</nobr>
 			</div>
 		</div>
 	</div>

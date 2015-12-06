@@ -68,9 +68,9 @@ class we_export_tree extends weTree{
 	function getJSDrawTree(){
 		return '
 function drawTree(){
-	var out=\'<div class="treetable \'+treeData.getLayout()+\'"><nobr>\'+
+	var out=\'<div class="treetable \'+treeData.getLayout()+\'">\'+
 		treeData.draw(treeData.startloc,"")+
-		"</nobr></div>";
+		"</div>";
 	frames.tree.document.getElementById("treetable").innerHTML=out;
 	}';
 	}

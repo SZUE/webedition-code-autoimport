@@ -28,7 +28,7 @@ body{
 }
 
 #tabContainer{
-	font-family: Verdana, Arial, sans-serif;
+	font-family: sans-serif;
 	font-size: 10px;
 	color: #000000;
 	width: 100%;
@@ -36,70 +36,76 @@ body{
 	border: 0px;
 	overflow:hidden;
 	line-height:21px;
-}
-div.tab{
-	margin: 0px; padding: 0px;
-	border-bottom: 1px solid #888888;
-	border-right: 1px solid #888888;
-	display:inline-block;
-	background-color: #D3D3D3;
-	background: linear-gradient(#dbdbdb, #cccccc 50%,#999999);
-	line-height:21px;
-	cursor:pointer;
-	&:hover{
-		margin: 0px; padding: 0px;
+
+	div.tab{
+		margin: 0px;
+		padding: 0px;
 		border-bottom: 1px solid #888888;
 		border-right: 1px solid #888888;
 		display:inline-block;
-		background: linear-gradient(#cbd3dc, #bfc6cf 50%,#999999);
+		background-color: #D3D3D3;
+		background: linear-gradient(#dbdbdb, #cccccc 50%,#999999);
 		line-height:21px;
 		cursor:pointer;
-	}
-}
-div.tabActive{
-	margin: 0px; padding: 0px;
-	border-right: 1px solid #888888;
-	display: inline-block;
-	background-color:#ededed;
-	line-height:21px;
-	cursor:pointer;
-	/*	border-top-left-radius:10px;
-		border-top-right-radius:10px;
-	*/
-}
-span{
-	&.text{
-		margin:0px; padding:0px;
-		font-size: 10px;
-		vertical-align:top;
-	}
-	&.spacer{
-		font-size: 9px;
-	}
-	&.close{
-		color:#a9a9a9;
-		padding: 0 .5ex;
-		&:hover i.fa-close{
-			color:black;
+		white-space: nowrap;
+		&:hover{
+			margin: 0px; padding: 0px;
+			border-bottom: 1px solid #888888;
+			border-right: 1px solid #888888;
+			display:inline-block;
+			background: linear-gradient(#cbd3dc, #bfc6cf 50%,#999999);
+			line-height:21px;
+			cursor:pointer;
 		}
 	}
-	&.status{
-		vertical-align:middle;
-		padding: 0px 1ex;
-		display:inline-block;
+	div.tabActive{
+		margin: 0px;
+		padding: 0px;
+		border-right: 1px solid #888888;
+		display: inline-block;
+		background-color:#ededed;
+		line-height:21px;
+		cursor:pointer;
+		white-space: nowrap;
+		/*	border-top-left-radius:10px;
+			border-top-right-radius:10px;
+		*/
 	}
-}
-i.modified{
-	vertical-align:super;
-	font-size:xx-small;
-	visibility:hidden;
-	color:red;
-}
 
-img.close{
-	vertical-align:top;
-	cursor:pointer;
-	margin:2px;
+	span{
+		&.text{
+			margin:0px; padding:0px;
+			font-size: 10px;
+			vertical-align:top;
+		}
+		&.spacer{
+			font-size: 9px;
+		}
+		&.close{
+			color:#a9a9a9;
+			padding: 0 .5ex;
+			&:hover i.fa-close{
+				color:black;
+			}
+		}
+		&.status{
+			vertical-align:middle;
+			padding: 0px 1ex;
+			display:inline-block;
+		}
+	}
+	i.modified{
+		vertical-align:super;
+		font-size:xx-small;
+		visibility:hidden;
+		color:red;
+	}
+
+	img.close{
+		vertical-align:top;
+		cursor:pointer;
+		margin:2px;
+	}
 }
 .hidden{
 	display: none;

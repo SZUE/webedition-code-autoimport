@@ -2254,7 +2254,7 @@ function resetTabs(){
 		top.content.editor.edheader.tabCtrl.weTabs.setActiveTab(' . self::TAB_DATA . ');
 }') .
 			$tab_header .
-			'<div id="main"><div id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", ($this->Path ? : $this->getPath($this->ParentID))) . '</b></span></nobr></div>' . $we_tabs->getHTML() . '</div>';
+			'<div id="main"><div id="headrow"><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", ($this->Path ? : $this->getPath($this->ParentID))) . '</b></span></div>' . $we_tabs->getHTML() . '</div>';
 	}
 
 	public static function getUsername($id, we_database_base $db = null){

@@ -180,9 +180,9 @@ function drawTree(){
 		return;
 	}
 
-	var out="<div class=\""+treeData.getLayout()+"\"><nobr>"+
+	var out="<div class=\""+treeData.getLayout()+"\">"+
 		treeData.draw(treeData.startloc,"")+
-		"</nobr></div>";' .
+		"</div>";' .
 			$this->treeFrame . '.document.getElementById("treetable").innerHTML=out;
 }';
 	}

@@ -28,7 +28,8 @@ $table = isset($table) ? $table : FILE_TABLE;
 </div>
 <div id="treeFrameDiv">
 	<div id="treeControl">
-
+		<span id="treeName" class="middlefont"></span>
+		<span id="toggleTree" onclick="toggleTree();"><i id="arrowImg" class="fa fa-lg fa-caret-<?php echo ($_treewidth <= 100) ? "right" : "left"; ?>" ></i></span>
 	</div>
 	<div id="treeContent">
 		<div id="bm_treeheaderDiv">

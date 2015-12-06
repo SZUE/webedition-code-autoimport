@@ -24,6 +24,9 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
+.tree{
+	white-space: nowrap;
+}
 #treetable{
 	margin: 0px;
 //	background-color: #C9CDD0;
@@ -32,6 +35,7 @@
 	border-collapse: collapse;
 	padding: 0px;
 	padding-left:1ex;
+	white-space: nowrap;
 	table{
 		border: none;
 		width: 100%;

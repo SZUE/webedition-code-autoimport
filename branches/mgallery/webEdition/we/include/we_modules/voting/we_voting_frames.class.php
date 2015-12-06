@@ -106,7 +106,7 @@ class we_voting_frames extends we_modules_frame{
 		  ); */
 
 		$extraJS = 'document.getElementById("tab_"+top.content.activ_tab).className="tabActive";';
-		$body = we_html_element::htmlBody(array("onresize" => "weTabs.setFrameSize()", "onload" => "weTabs.setFrameSize()", "id" => "eHeaderBody"), '<div id="main"><div id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", g_l('modules_voting', ($this->View->voting->IsFolder ? '[group]' : '[voting]'))) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", $this->View->voting->Path) . '</b></span></nobr></div>' .
+		$body = we_html_element::htmlBody(array("onresize" => "weTabs.setFrameSize()", "onload" => "weTabs.setFrameSize()", "id" => "eHeaderBody"), '<div id="main"><div id="headrow"><b>' . str_replace(" ", "&nbsp;", g_l('modules_voting', ($this->View->voting->IsFolder ? '[group]' : '[voting]'))) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", $this->View->voting->Path) . '</b></span></div>' .
 				$we_tabs->getHTML() .
 				'</div>' . we_html_element::jsElement($extraJS)
 		);

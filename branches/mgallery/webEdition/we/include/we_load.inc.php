@@ -244,7 +244,28 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 		$treeItems = array();
 		getItems($table, $parentFolder, $offset, $Tree->default_segment);
 
+		switch($table){
+			case FILE_TABLE:
+				$name = g_l('global', '[documents]');
+				break;
+			case TEMPLATES_TABLE:
+				$name = g_l('global', '[templates]');
+				break;
+			case OBJECT_FILES_TABLE:
+				$name = g_l('global', '[objects]');
+				break;
+			case OBJECT_TABLE:
+				$name = g_l('javaMenu_object', '[classes]');
+				break;
+			case VFILE_TABLE:
+				$name = g_l('global', '[vfile]');
+				break;
+			default:
+				$name = '';
+		}
+
 		$js = we_html_element::jsElement('
+top.document.getElementById("treeName").innerHTML="' . $name . '";
 function loadTreeData(){
 	if(!' . $Tree->topFrame . '.treeData) {
 		window.setTimeout(loadTreeData,500);

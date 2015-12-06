@@ -462,13 +462,13 @@ foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do
 		<div style="width:<?php echo $treewidth; ?>px;<?php echo $treeStyle; ?>" id="bframeDiv">
 			<?php include(WE_INCLUDES_PATH . 'baumFrame.inc.php'); ?>
 		</div>
-		<div style="position:absolute;top:0px;bottom:0px;right:<?php echo $_sidebarwidth; ?>px;left:<?php echo $treewidth; ?>px;border-left:1px solid black;overflow: hidden;" id="bm_content_frameDiv">
-			<iframe src="<?php echo WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
+		<div style="right:<?php echo $_sidebarwidth; ?>px;left:<?php echo $treewidth; ?>px;" id="bm_content_frameDiv">
+			<iframe src="<?php echo WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame"></iframe>
 		</div>
 		<?php
 		if(!(SIDEBAR_DISABLED == 1)){
 			?>
-			<div style="position:absolute;top:0px;bottom:0px;right:0px;width:<?php echo $_sidebarwidth; ?>px;border-left:1px solid black;" id="sidebarDiv">
+			<div style="width:<?php echo $_sidebarwidth; ?>px;" id="sidebarDiv">
 				<?php
 				$weFrame = new we_sidebar_frames();
 				$weFrame->getHTML('');

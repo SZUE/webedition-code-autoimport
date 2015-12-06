@@ -98,7 +98,7 @@ function doClickDirect(id, ct, table, fenster) {
 	}
 }
 
-function setTreeArrow(direction) {
+/*function setTreeArrow(direction) {
 	try {
 		var arrImg = self.document.getElementById("arrowImg");
 		if (direction === "right") {
@@ -115,6 +115,7 @@ function setTreeArrow(direction) {
 		// Nothing
 	}
 }
+*/
 
 function doClickWithParameters(id, ct, table, parameters) {
 	WE().layout.weEditorFrameController.openDocument(table, id, ct, '', '', '', '', '', parameters);
@@ -159,9 +160,9 @@ WE().util.weGetCookie = function (doc, name) {
 function treeResized() {
 	var treeWidth = getTreeWidth();
 	if (treeWidth <= WE().consts.size.tree.hidden) {
-		setTreeArrow("right");
+		//setTreeArrow("right");
 	} else {
-		setTreeArrow("left");
+		//setTreeArrow("left");
 		storeTreeWidth(treeWidth);
 	}
 }
@@ -175,13 +176,13 @@ function toggleTree() {
 		oldTreeWidth = (oldTreeWidth < WE().consts.size.tree.min ? WE().consts.size.tree.defaultWidth : oldTreeWidth);
 		setTreeWidth(oldTreeWidth);
 		tfd.style.display = "block";
-		setTreeArrow("left");
+		//setTreeArrow("left");
 		storeTreeWidth(oldTreeWidth);
 	} else {
 		tfd.style.display = "none";
 		oldTreeWidth = w;
 		setTreeWidth(WE().consts.size.tree.hidden);
-		setTreeArrow("right");
+		//setTreeArrow("right");
 	}
 }
 

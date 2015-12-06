@@ -60,9 +60,9 @@ function() {
 
 	static function getCssForCssMenu(){
 		$arr = array(WEBEDITION_DIR . 'css/menu/pro_drop_1.css');
-		if(we_base_browserDetect::inst()->isMAC()){
+		/*if(we_base_browserDetect::inst()->isMAC()){
 			$arr[] = WEBEDITION_DIR . 'css/menu/pro_drop_mac.css';
-		}
+		}*/
 
 		return $arr;
 	}

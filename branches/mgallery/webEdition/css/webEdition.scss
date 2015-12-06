@@ -21,6 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+@import "config.scss";
 
 html{
 	height:100%;
@@ -40,6 +41,10 @@ img{
 	}
 }
 
+iframe{
+	border:0px;
+}
+
 i{
 	&.fa-ban{
 		color:red;
@@ -56,7 +61,6 @@ i{
 		color:grey;
 	}
 }
-
 
 div{
 	&.multiIcon{
@@ -118,7 +122,7 @@ body.radient{
 
 #weMainMenu{
 	float:left;
-	line-height:32px;
+	line-height:$menuHeight;
 }
 
 
@@ -126,15 +130,33 @@ body.radient{
 	margin:0px;
 	border:0px none;
 	position:fixed;
-	top:32px;
+	top:$menuHeight;
 	bottom:0px;
 	left:0px;
 	right:0px;
 	overflow:hidden;
+	#bm_content_frameDiv{
+		position:absolute;
+		top:0px;
+		bottom:0px;
+		border-left:1px solid black;
+		overflow: hidden;
+		iframe{
+			border:0px;
+			width:100%;
+			height:100%;
+			overflow: hidden;
+		}
+	}
+	#sidebarDiv{
+		border-left:1px solid black;
+		position:absolute;
+		top:0px;
+		bottom:0px;
+		right:0px;
+	}
 }
 
-$vtabWidth:24px;
-$vtabHeight:90px;
 
 #vtabs{
 	position:absolute;
@@ -212,22 +234,6 @@ td.boxHeader{
 	height:21px;
 }
 
-#bm_searchField{
-	position:absolute;
-	bottom:0px;
-	height:40px;
-	left:0px;
-	right:0px;
-	overflow: hidden;
-	background-repeat:repeat;
-	margin:0px;
-	background-color:grey;/*for old browsers*/
-	background: linear-gradient(#B4B3B3, #C6C5C5);
-	#search{
-		margin: 10px 0 0 10px;
-	}
-}
-
 #bframeDiv{
 	position:absolute;
 	top:0px;
@@ -255,13 +261,24 @@ td.boxHeader{
 		height:2ex;
 		border:1px solid grey;
 		padding:1px;
+		color:white;
 		cursor: pointer;
 	}
 }
 
 #treeControl{
+	line-height: 3ex;
 	height:3ex;
 	background-color: #B7BBBF;
+	#treeName{
+		padding:0px 1ex;
+		font-weight: bold;
+	}
+	#toggleTree{
+		position:absolute;
+		right:1ex;
+
+	}
 }
 
 #treeContent{
@@ -270,9 +287,21 @@ td.boxHeader{
 	bottom: 0px;
 	left: 0px;
 	right: 0px;
-}
-iframe{
-	border:0px;
+	#bm_searchField{
+		position:absolute;
+		bottom:0px;
+		height:40px;
+		left:0px;
+		right:0px;
+		overflow: hidden;
+		background-repeat:repeat;
+		margin:0px;
+		background-color:grey;/*for old browsers*/
+		background: linear-gradient(#B4B3B3, #C6C5C5);
+		#search{
+			margin: 10px 0 0 10px;
+		}
+	}
 }
 
 #bm_treeheaderDiv{
@@ -328,6 +357,7 @@ iframe{
 
 #headrow{
 	margin:3px 0px 3px 5px;
+	white-space: nowrap;
 }
 
 #cmdDiv{
@@ -340,7 +370,7 @@ iframe{
 
 #resize{
 	position:absolute;
-	top:32px;
+	top:$menuHeight;
 	left:0px;
 	right:0px;
 	bottom:0px;
@@ -726,7 +756,6 @@ optgroup{
 	background-color:grey;/*for old browsers*/
 	background: linear-gradient(#B4B3B3, #C6C5C5);
 }
-
 
 .weSidebarBody {
 	margin		: 5px;
