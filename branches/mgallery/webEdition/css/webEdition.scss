@@ -291,14 +291,18 @@ background-color: #B7BBBF;
 	display: none;
 }
 
+#tree,
 #bm_mainDiv{
-	position:absolute;
-	top:1px;
-	bottom:40px;
+	background-color:#C9CDD0;
 	left:0px;
 	right:0px;
+	position:absolute;
 	overflow: auto;
-	background-color:#C9CDD0;
+}
+
+#bm_mainDiv{
+	top:1px;
+	bottom:40px;
 }
 
 #eHeaderBody,

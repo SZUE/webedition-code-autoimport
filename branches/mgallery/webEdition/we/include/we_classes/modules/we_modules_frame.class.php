@@ -168,7 +168,7 @@ abstract class we_modules_frame{
 	protected function getHTMLTree($extraHead = ''){
 		return we_html_element::htmlDiv(array(
 				'id' => 'tree',
-				'style' => 'overflow:scroll;position: absolute; top: ' . $this->treeHeaderHeight . 'px; bottom: ' . $this->treeFooterHeight . 'px; left: 0px; width: 100%; background: #C9CDD0',
+				'style' => 'top: ' . $this->treeHeaderHeight . 'px; bottom: ' . $this->treeFooterHeight . 'px;',
 				'link' => '#000000',
 				'alink' => '#000000',
 				'vlink' => '#000000',
