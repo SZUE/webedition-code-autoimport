@@ -133,6 +133,12 @@ $l_global=array(
 	'top'=>'oben',
 	'topleft'=>'oben links',
 	'topright'=>'oben rechts',
+	
+	'tree'=>array(
+		'grow'=>'Baum vergrößern',
+		'minimize'=>'Baum einklappen',
+		'reduce'=>'Baum verkleinern',
+	),
 	'true'=>'ja',
 	'type'=>'Typ',
 	'unable_to_call_ping'=>'Verbindung zum Server verloren - es ist möglich das sich Ihre Dokumente nicht mehr speichern lassen. Bitte kopieren Sie den Inhalt zur Sicherheit in eine andere Anwendung und starten Sie webEdition neu!',

@@ -133,6 +133,12 @@ $l_global=array(
 	'top'=>'Cima',
 	'topleft'=>'Izquierda superior',
 	'topright'=>'Derecha superior',
+	
+	'tree'=>array(
+		'grow'=>'Increase tree width',
+		'minimize'=>'Toggle tree',
+		'reduce'=>'Reduce tree width',
+	),
 	'true'=>'Si',
 	'type'=>'Tipo',
 	'unable_to_call_ping'=>'Connection to server lost! Maybe your open documents cannot be saved. Please copy & paste the contents to another application and restart webEdition!',
