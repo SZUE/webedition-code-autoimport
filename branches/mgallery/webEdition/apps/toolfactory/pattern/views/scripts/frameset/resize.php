@@ -34,14 +34,12 @@ if ($client->getBrowser() === we_ui_Client::kBrowserIE) {
 	$frameset->addFrame(array(
 		'src' => $appDir . '/index.php/frameset/left' . $param,
 		'name' => 'left',
-		'scrolling' => 'no',
 		'frameborder' => 'no'
 	));
 } else {
 	$frameset->addFrame(array(
 		'src' => $appDir . '/index.php/frameset/left' . $param,
 		'name' => 'left',
-		'scrolling' => 'no'
 	));
 }
 

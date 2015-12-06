@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -39,13 +38,10 @@ function init(){
 }";
 
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[shop_dashboard][headline]') . '&nbsp;' . $interval, '', '', STYLESHEET . we_html_element::jsElement($sJsCode), we_html_element::htmlBody(array(
-			"marginwidth" => 15,
-			"marginheight" => 10,
-			"leftmargin" => 15,
-			"topmargin" => 10,
-			"onload" => "if(parent!=self){init();}"
-				), we_html_element::htmlDiv(array(
-					"id" => "shp"
-						), we_html_element::htmlDiv(array('id' => 'shp_data'), $shopDashboard)
+		'style' => 'margin:10px 15px;',
+		"onload" => "if(parent!=self){init();}"
+		), we_html_element::htmlDiv(array(
+			"id" => "shp"
+			), we_html_element::htmlDiv(array('id' => 'shp_data'), $shopDashboard)
 )));
 

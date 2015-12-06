@@ -1151,11 +1151,7 @@ if (top.footer.setProgress){
 				}
 				return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', STYLESHEET, we_html_element::htmlBody(
 							array(
-								"bgcolor" => "#ffffff",
-								"marginwidth" => 5,
-								"marginheight" => 5,
-								"leftmargin" => 5,
-								"topmargin" => 5,
+								'style'=>'margin:5px;background-color:white;',
 								"onload" => oldHtmlspecialchars($export_local ? ($this->bodyFrame . ".location='" . $this->frameset . "&pnt=body&step=10&file_name=" . urlencode($filename) . "';" . $this->footerFrame . ".location='" . $this->frameset . "&pnt=footer&step=10';") : (we_message_reporting::getShowMessageCall(g_l('export', '[server_finished]'), we_message_reporting::WE_MESSAGE_NOTICE) . "top.close();")))), null
 				);
 
@@ -1254,11 +1250,7 @@ if (top.footer.setProgress){
 
 				return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', STYLESHEET . we_html_element::jsElement('if (top.footer.setProgress) top.footer.setProgress(100);'), we_html_element::htmlBody(
 							array(
-								"bgcolor" => "#ffffff",
-								"marginwidth" => 5,
-								"marginheight" => 5,
-								"leftmargin" => 5,
-								"topmargin" => 5,
+								'style'=>'margin:5px;background-color:white;',
 								"onload" => oldHtmlspecialchars($export_local ? ($this->bodyFrame . ".location='" . $this->frameset . "&pnt=body&step=10&file_name=" . urlencode($filename) . "';" . $this->footerFrame . ".location='" . $this->frameset . "&pnt=footer&step=10';") : ( we_message_reporting::getShowMessageCall(g_l('export', '[server_finished]'), we_message_reporting::WE_MESSAGE_NOTICE) . ";top.close();")))), null
 				);
 		}

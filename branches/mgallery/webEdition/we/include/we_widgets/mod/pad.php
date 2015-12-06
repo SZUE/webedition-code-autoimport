@@ -305,10 +305,6 @@ _ttlB64Esc=escape(parent.Base64.encode(_sTb));
 
 ") . we_html_element::jsScript(JS_DIR . 'widgets/pad.js'), we_html_element::htmlBody(
 		array(
-		"marginwidth" => 0,
-		"marginheight" => 0,
-		"leftmargin" => 0,
-		"topmargin" => 0,
 		"onload" => (($type === "pad/pad") ? "if(parent!=self)init();" : "") . 'calendarSetup();toggleTblValidity();'
 		), we_html_element::htmlForm(array("style" => "display:inline;"), we_html_element::htmlDiv(
 				array("id" => "pad"), $_notepad .

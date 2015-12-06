@@ -24,6 +24,7 @@
 
 body{
 	background-color:transparent;
+	overflow:hidden;
 }
 .cl_notes{
 	background-color:#FFFFFF;
@@ -44,7 +45,7 @@ body{
 	position:absolute;
 	bottom:0px;
 	display:block;
-	height:22px;
+	//height:22px;
 }
 
 .wetextinput{

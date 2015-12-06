@@ -2138,7 +2138,7 @@ function initControl(){
 self.focus();');
 
 
-		echo $this->getHTMLDocument(we_html_element::htmlBody(array("marginwidth" => 10, "marginheight" => 10, "leftmargin" => 10, "topmargin" => 10, "onload" => "initControl()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHiddens(array(
+		echo $this->getHTMLDocument(we_html_element::htmlBody(array('style'=>'margin:10px;',"onload" => "initControl()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHiddens(array(
 						"nid" => $nid,
 						"pnt" => "send_cmd",
 						"test" => $test,

@@ -168,14 +168,11 @@ abstract class we_modules_frame{
 	protected function getHTMLTree($extraHead = ''){
 		return we_html_element::htmlDiv(array(
 				'id' => 'tree',
-				'style' => 'top: ' . $this->treeHeaderHeight . 'px; bottom: ' . $this->treeFooterHeight . 'px;',
+				'style' => 'top: ' . $this->treeHeaderHeight . 'px; bottom: ' . $this->treeFooterHeight . 'px;margin:4px 0px;',
 				'link' => '#000000',
 				'alink' => '#000000',
 				'vlink' => '#000000',
-				'marginwidth' => 0,
-				'marginheight' => 4,
-				'leftmargin' => 0,
-				'topmargin' => 4), $extraHead . $this->Tree->getHTMLContruct('if(top.treeResized){top.treeResized();}')
+				), $extraHead . $this->Tree->getHTMLContruct('if(top.treeResized){top.treeResized();}')
 		);
 	}
 

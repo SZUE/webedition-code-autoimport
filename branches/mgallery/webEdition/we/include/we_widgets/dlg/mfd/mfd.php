@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -41,14 +40,11 @@ function init(){
 }";
 
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[last_modified]'), '', '', STYLESHEET .
-		we_html_element::jsElement($sJsCode), we_html_element::htmlBody(
-				array(
-			"marginwidth" => 15,
-			"marginheight" => 10,
-			"leftmargin" => 15,
-			"topmargin" => 10,
-			"onload" => 'init();'
-				), we_html_element::htmlDiv(array(
-					'id' => 'mfd'
-						), we_html_element::htmlDiv(array('id' => 'mfd_data'), $lastModified)
+	we_html_element::jsElement($sJsCode), we_html_element::htmlBody(
+		array(
+		'style' => 'margin:10px 15px;',
+		"onload" => 'init();'
+		), we_html_element::htmlDiv(array(
+			'id' => 'mfd'
+			), we_html_element::htmlDiv(array('id' => 'mfd_data'), $lastModified)
 )));

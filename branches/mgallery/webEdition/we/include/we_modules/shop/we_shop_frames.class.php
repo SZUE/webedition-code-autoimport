@@ -229,7 +229,7 @@ function we_cmd() {
 			$iconBarTable->setCol(0, $c++, array('style' => 'text-align:right', 'class' => 'header_shop'), '<span style="margin-left:15px">' . $headline . '</span>');
 		}
 
-		$body = we_html_element::htmlBody(array('id' => 'iconBar', 'marginwidth' => 0, 'topmargin' => 5, 'marginheight' => 5, 'leftmargin' => 0), $iconBarTable->getHTML());
+		$body = we_html_element::htmlBody(array('id' => 'iconBar', 'style'=>'margin:5px 0px;'), $iconBarTable->getHTML());
 
 		return $this->getHTMLDocument($body, $extraHead);
 	}

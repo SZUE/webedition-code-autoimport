@@ -53,7 +53,7 @@ echo we_html_element::htmlDocType();
 		?>
 	</head>
 	<?php if(!empty($GLOBALS['we_editmode'])){ ?>
-		<body bgcolor="white" marginwidth="15" marginheight="15" leftmargin="15" topmargin="15">
+		<body bgcolor="white" style="margin:15px;">
 			<form name="we_form" method="post"><?php
 				echo we_class::hiddenTrans();
 				$foo = '<html><head>' .

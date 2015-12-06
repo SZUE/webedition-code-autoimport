@@ -167,7 +167,7 @@ function hideProgress() {
 		$table2->setCol(0, 4, array("id" => "progress", "style" => "display: none", "nowrap" => null), $progressbar->getHtml());
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array("bgcolor" => "white", "class" => "editfooter", "marginwidth" => 15, "marginheight" => 0, "leftmargin" => 15, "topmargin" => 0), we_html_element::htmlForm(array(), $table2->getHtml())
+				we_html_element::htmlBody(array("bgcolor" => "white", "class" => "editfooter", "style" => 'margin:0px 15px;'), we_html_element::htmlForm(array(), $table2->getHtml())
 				), (isset($progressbar) ? $progressbar->getJSCode() : "") . $js
 		);
 	}
@@ -620,11 +620,7 @@ if (top.content.editor.edfooter.doProgress){
 		$out = we_html_tools::getHtmlTop('', '', '', $_progress_update .
 				we_html_element::jsElement('function showEndStatus(){' . we_message_reporting::getShowMessageCall(g_l('export', '[server_finished]'), we_message_reporting::WE_MESSAGE_NOTICE) . ';}'), we_html_element::htmlBody(
 					array(
-						"bgcolor" => "#ffffff",
-						"marginwidth" => 5,
-						"marginheight" => 5,
-						"leftmargin" => 5,
-						"topmargin" => 5,
+						'style'=>'margin:5px;background-color:white;',
 						"onload" => ($this->View->export->ExportTo === 'local' ?
 							($this->cmdFrame . ".location='" . $this->frameset . "&pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename) . "';") :
 							'showEndStatus();') .

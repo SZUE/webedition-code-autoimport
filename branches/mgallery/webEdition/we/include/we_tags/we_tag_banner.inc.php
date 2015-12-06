@@ -135,10 +135,10 @@ function we_tag_banner($attribs, $content){
 		$content = $noscript;
 
 		//    some more attribs for the iframe
-		$newAttribs['marginwidth'] = 0;
+/*		$newAttribs['marginwidth'] = 0;
 		$newAttribs['marginheight'] = 0;
+		$newAttribs['scrolling'] = 'no';*/
 		$newAttribs['frameborder'] = 0;
-		$newAttribs['scrolling'] = 'no';
 
 		return getHtmlTag('iframe', $newAttribs, $content);
 	}

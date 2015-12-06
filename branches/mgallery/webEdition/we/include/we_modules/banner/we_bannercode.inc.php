@@ -53,7 +53,6 @@ document.write ("<" + "script src=\"' . $getscript . '?r="+r+"&amp;bannername=' 
 	height="' . $height . '"
 	vspace=0
 	frameborder=0
-	scrolling=no
 	align=center
 ><ilayer
 	src="' . $getscript . '?bannername=' . rawurlencode($tagname) . '&amp;type=iframe&amp;target=' . rawurlencode($target) . '&amp;bannerclick=' . rawurlencode($clickscript) . '&amp;width=' . rawurlencode($width) . '&amp;height=' . rawurlencode($height) . '&amp;page=' . rawurlencode($page) . '"
