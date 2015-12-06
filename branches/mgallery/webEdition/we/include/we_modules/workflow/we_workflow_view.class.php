@@ -149,9 +149,7 @@ class we_workflow_view extends we_modules_view{
 			$content .=$this->workflowHiddens();
 		}
 		$content .='</form>';
-		$body = we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'), $content);
-
-		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET . $this->getPropertyJS(), $body);
+		return we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'), $content);
 	}
 
 	/**
@@ -338,7 +336,7 @@ class we_workflow_view extends we_modules_view{
 			</table></td>
 	</tr>
 	<tr style="vertical-align:top">
-		<td colspan="2" nowrap>' . we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();addStep()", true, 30) . we_html_button::create_button(we_html_button::TRASH, "javascript:top.content.setHot();delStep()", true, 30) . '</td></tr>
+		<td colspan="2">' . we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();addStep()", true, 30) . we_html_button::create_button(we_html_button::TRASH, "javascript:top.content.setHot();delStep()", true, 30) . '</td></tr>
 </table>' .
 			$yuiSuggest->getYuiJs() .
 			we_html_element::htmlHiddens(array(
@@ -426,7 +424,7 @@ function submitForm(){
 ');
 	}
 
-	function getPropertyJS(){
+	function getJSProperty(){
 		return we_html_element::jsElement('
 var loaded;
 var uid="' . $this->uid . '";
@@ -1297,7 +1295,7 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 	}
 
 	public function getHomeScreen(){
-		$GLOBALS['we_head_insert'] = $this->getPropertyJS();
+		$GLOBALS['we_head_insert'] = $this->getJSProperty();
 		$GLOBALS['we_body_insert'] = '<form name="we_form">' . $this->getHiddens() . '</form>';
 		$content = we_html_button::create_button("fat:new_workflow,fa-lg fa-gears", "javascript:top.opener.top.we_cmd('new_workflow');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_WORKFLOW"));
 

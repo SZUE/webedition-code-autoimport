@@ -45,49 +45,45 @@ $vtab = array(
 		'desc' => '<i class="fa fa-archive"></i> ' . g_l('global', '[vfile]'),
 	)
 );
-?>
-<div id="vtab">
-	<?php
-	$i = 0;
-	$jsTabs = array();
-	$defTab = we_base_request::_(we_base_request::STRING, "table", '');
-	foreach($vtab as $tab => $val){
-		if(defined($tab)){
-			$jsTabs[] = 'case "' . constant($tab) . '":
+$i = 0;
+$jsTabs = array();
+$defTab = we_base_request::_(we_base_request::STRING, "table", '');
+foreach($vtab as $tab => $val){
+	if(defined($tab)){
+		$jsTabs[] = 'case "' . constant($tab) . '":
 		setActiveVTab(' . $i . ');
 		break;';
-		}
-		if($val['show']){
-			echo '<div class="tabNorm" onclick="setActiveVTab(' . $i . ');if(top.deleteMode){we_cmd(\'exit_delete\', \'' . constant($tab) . '\');};treeOut();we_cmd(\'loadVTab\', \'' . constant($tab) . '\' ,0);"><span class="middlefont">' . $val['desc'] . '</span></div>';
-		}
-		if(!$defTab && $val['show']){
-			$defTab = constant($tab);
-		}
-		++$i;
 	}
-	?>
-	<script><!--
-		function setActiveVTab(no) {
-			var allTabs = document.getElementById("vtab").getElementsByTagName("div");
-			for (var i = 0; i < allTabs.length; i++) {
-				allTabs[i].className = (i == no ? "tabActive" : "tabNorm");
-			}
+	if($val['show']){
+		echo '<div class="tab tabNorm" onclick="setActiveVTab(' . $i . ');if(top.deleteMode){we_cmd(\'exit_delete\', \'' . constant($tab) . '\');};treeOut();we_cmd(\'loadVTab\', \'' . constant($tab) . '\' ,0);"><span class="middlefont">' . $val['desc'] . '</span></div>';
+	}
+	if(!$defTab && $val['show']){
+		$defTab = constant($tab);
+	}
+	++$i;
+}
+?>
+<script><!--
+	function setActiveVTab(no) {
+		var allTabs = document.getElementById("vtabs").getElementsByClassName("tab");
+		for (var i = 0; i < allTabs.length; i++) {
+			allTabs[i].className = "tab " + (i == no ? "tabActive" : "tabNorm");
 		}
-		function setTab(table) {
-			switch (table) {
-				default:
-					break;
+	}
+	function setTab(table) {
+		switch (table) {
+			default:
+				break;
 <?php
 echo implode("\n", $jsTabs);
 ?>
-			}
 		}
+	}
 
-		setTab('<?php echo $defTab; ?>');
+	setTab('<?php echo $defTab; ?>');
 //-->
-	</script>
-</div>
+</script>
 <div id="baumArrows">
-	<div class="baumArrow" id="incBaum" <?php echo ($_treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="incTree();"><i class="fa fa-plus"></i></div>
-	<div class="baumArrow" id="decBaum" <?php echo ($_treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="decTree();"><i class="fa fa-minus"></i></div>
+	<div class="baumArrow" id="incBaum" title="<?php echo g_l('global', '[tree][grow]'); ?>" <?php echo ($_treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="incTree();"><i class="fa fa-plus"></i></div>
+	<div class="baumArrow" id="decBaum" title="<?php echo g_l('global', '[tree][reduce]'); ?>" <?php echo ($_treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="decTree();"><i class="fa fa-minus"></i></div>
 </div>

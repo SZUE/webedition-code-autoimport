@@ -1084,7 +1084,7 @@ function we_cmd_base(args, url) {
 				drawTree();
 
 				self.document.getElementById("bm_treeheaderDiv").style.height = "1px";
-				self.document.getElementById("bm_mainDiv").style.top = "1px";
+				self.document.getElementById("treetable").style.top = "1px";
 				top.setTreeWidth(widthBeforeDeleteMode);
 				top.setSidebarWidth(widthBeforeDeleteModeSidebar);
 			}
@@ -1106,7 +1106,7 @@ function we_cmd_base(args, url) {
 					drawTree();
 				}
 				self.document.getElementById("bm_treeheaderDiv").style.height = "150px";
-				self.document.getElementById("bm_mainDiv").style.top = "150px";
+				self.document.getElementById("treetable").style.top = "150px";
 
 				var width = top.getTreeWidth();
 
@@ -1143,7 +1143,7 @@ function we_cmd_base(args, url) {
 					drawTree();
 				}
 				self.document.getElementById("bm_treeheaderDiv").style.height = "160px";
-				self.document.getElementById("bm_mainDiv").style.top = "160px";
+				self.document.getElementById("treetable").style.top = "160px";
 
 				var width = top.getTreeWidth();
 
@@ -1175,7 +1175,7 @@ function we_cmd_base(args, url) {
 					drawTree();
 				}
 				self.document.getElementById("bm_treeheaderDiv").style.height = "205px";
-				self.document.getElementById("bm_mainDiv").style.top = "205px";
+				self.document.getElementById("treetable").style.top = "205px";
 
 				var width = top.getTreeWidth();
 				widthBeforeDeleteMode = width;

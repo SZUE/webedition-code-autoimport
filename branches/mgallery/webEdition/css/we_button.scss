@@ -21,7 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
 */
-
+@import "config.scss";
 button{
 	&.weBtn{
 		height:22px ! important;
@@ -34,7 +34,7 @@ button{
 		color:black;
 		border-radius: 4px;
 		background: linear-gradient(to bottom, #F3F7FC, #E9F0FB 50%, #DCE8F8 50%,#D8E4F9);
-		font-family: verdana, arial, helvetica;
+		font-family: sans-serif;
 		font-size: 10px ! important;
 		text-align: center;
 		padding-left: 0.5em !important;

@@ -340,7 +340,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 			$export_box->setCol(5, 0, array("class" => "defaultfont", 'style' => 'padding-bottom:5px;'), we_html_tools::htmlFormElementTable($import_Charset, g_l('modules_voting', '[csv_charset]')));
 			$export_box->setCol(7, 0, array('style' => 'padding-bottom:5px;'), we_html_tools::htmlFormElementTable($delimiter->getHtml(), g_l('export', '[csv_delimiter]')));
 			$export_box->setCol(9, 0, array('style' => 'padding-bottom:5px;'), we_html_tools::htmlFormElementTable($enclose->getHtml(), g_l('export', '[csv_enclose]')));
-			$export_box->setCol(11, 0, array("nowrap" => null), $ok);
+			$export_box->setCol(11, 0, array(), $ok);
 
 			$parts[] = array(
 				"headline" => g_l('modules_voting', '[export]'),
@@ -681,7 +681,7 @@ function refreshTexts(){
 		$export_box->setCol(3, 0, array("class" => "defaultfont"), we_html_tools::htmlFormElementTable($lineend->getHtml(), g_l('export', '[csv_lineend]')));
 		$export_box->setCol(5, 0, array('padding-top:5px;'), we_html_tools::htmlFormElementTable($delimiter->getHtml(), g_l('export', '[csv_delimiter]')));
 		$export_box->setCol(7, 0, array('padding-top:5px;'), we_html_tools::htmlFormElementTable($enclose->getHtml(), g_l('export', '[csv_enclose]')));
-		$export_box->setCol(9, 0, array("nowrap" => null, 'padding-top:5px;'), $ok);
+		$export_box->setCol(9, 0, array('padding-top:5px;'), $ok);
 
 
 

@@ -284,17 +284,17 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 		if($mode == 0){
 			$table2->setRow(0, array('style' => 'vertical-align:middle;'));
 
-			$table2->setCol(0, 0, array("nowrap" => null), ((permissionhandler::hasPerm("NEW_NEWSLETTER") || permissionhandler::hasPerm("EDIT_NEWSLETTER")) ?
+			$table2->setCol(0, 0, array(), ((permissionhandler::hasPerm("NEW_NEWSLETTER") || permissionhandler::hasPerm("EDIT_NEWSLETTER")) ?
 					we_html_button::create_button(we_html_button::SAVE, "javascript:we_save()") :
 					""
 				)
 			);
 
 			if(!$group){
-				$table2->setCol(0, 1, array("nowrap" => null, 'style' => 'padding-left:70px;'), $select->getHtml());
-				$table2->setCol(0, 2, array("nowrap" => null, 'style' => 'padding-left:5px;'), we_html_forms::checkbox(0, false, "htmlmail_check", g_l('modules_newsletter', '[html_preview]'), false, "defaultfont", "if(document.we_form.htmlmail_check.checked) { document.we_form.hm.value=1;top.opener.top.nlHTMLMail=1; } else { document.we_form.hm.value=0;top.opener.top.nlHTMLMail=0; }"));
-				$table2->setCol(0, 3, array("nowrap" => null), we_html_button::create_button(we_html_button::PREVIEW, "javascript:we_cmd('popPreview')"));
-				$table2->setCol(0, 4, array("nowrap" => null), (permissionhandler::hasPerm("SEND_NEWSLETTER") ? we_html_button::create_button("send", "javascript:we_cmd('popSend')") : ""));
+				$table2->setCol(0, 1, array('style' => 'padding-left:70px;'), $select->getHtml());
+				$table2->setCol(0, 2, array('style' => 'padding-left:5px;'), we_html_forms::checkbox(0, false, "htmlmail_check", g_l('modules_newsletter', '[html_preview]'), false, "defaultfont", "if(document.we_form.htmlmail_check.checked) { document.we_form.hm.value=1;top.opener.top.nlHTMLMail=1; } else { document.we_form.hm.value=0;top.opener.top.nlHTMLMail=0; }"));
+				$table2->setCol(0, 3, array(), we_html_button::create_button(we_html_button::PREVIEW, "javascript:we_cmd('popPreview')"));
+				$table2->setCol(0, 4, array(), (permissionhandler::hasPerm("SEND_NEWSLETTER") ? we_html_button::create_button("send", "javascript:we_cmd('popSend')") : ""));
 			}
 		}
 
@@ -910,7 +910,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 			$import_box->setCol(0, 0, array(), $this->formFileChooser(200, "csv_file" . $group, "/", ""));
 			$import_box->setCol(1, 0, array(), we_html_button::create_button(we_html_button::UPLOAD, "javascript:we_cmd('upload_csv',$group)"));
 			$import_box->setCol(2, 0, array(), $import_options->getHtml());
-			$import_box->setCol(3, 0, array("nowrap" => null), $ok . $cancel);
+			$import_box->setCol(3, 0, array(), $ok . $cancel);
 
 			$table->setCol(5, 0, array("colspan" => 3), we_html_element::htmlHiddens(array("csv_import" => $group)) . $import_box->getHtml());
 		}
@@ -923,7 +923,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 			$export_box = new we_html_table(array('class' => 'default withSpace', 'style' => 'margin-top:10px;'), 2, 1);
 
 			$export_box->setCol(1, 0, array(), $this->formFileChooser(200, "csv_dir" . $group, "/", "", "folder"));
-			$export_box->setCol(2, 0, array("nowrap" => null), $ok . $cancel);
+			$export_box->setCol(2, 0, array(), $ok . $cancel);
 
 			$table->setCol(5, 0, array("colspan" => 3), we_html_element::htmlHiddens(array("csv_export" => $group)) . $export_box->getHtml());
 		}
@@ -1551,7 +1551,7 @@ self.focus();
 			$import_box->setCol(0, 0, array(), $this->formFileChooser(200, "csv_file", "/", ""));
 			$import_box->setCol(1, 0, array(), we_html_button::create_button(we_html_button::UPLOAD, "javascript:we_cmd('upload_black')"));
 			$import_box->setCol(2, 0, array(), $import_options->getHtml());
-			$import_box->setCol(3, 0, array("nowrap" => null), $ok . $cancel);
+			$import_box->setCol(3, 0, array(), $ok . $cancel);
 
 			$table->setCol(3, 0, array("colspan" => 3), we_html_element::htmlHiddens(array("csv_import" => 1)) .
 				$import_box->getHtml()
@@ -1562,7 +1562,7 @@ self.focus();
 
 			$export_box = new we_html_table(array('class' => 'default withSpace', 'style' => 'padding-top:10px;'), 2, 1);
 			$export_box->setCol(0, 0, array(), $this->formFileChooser(200, "csv_dir", "/", "", "folder"));
-			$export_box->setCol(1, 0, array("nowrap" => null), $ok . $cancel);
+			$export_box->setCol(1, 0, array(), $ok . $cancel);
 
 			$table->setCol(3, 0, array("colspan" => 3), we_html_element::htmlHiddens(array("csv_export" => 1)) .
 				$export_box->getHtml()

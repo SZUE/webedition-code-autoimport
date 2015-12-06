@@ -131,14 +131,14 @@ function setTab(tab) {
 		$col = 0;
 		$table2 = new we_html_table(array('style' => 'margin-top:10px;', 'class' => 'default', "width" => 210), 1, 5);
 		$table2->setRow(0, array('style' => 'vertical-align:middle;'));
-		$table2->setCol(0, $col++, array("nowrap" => null), we_html_button::create_button(we_html_button::SAVE, "javascript:we_save()"));
+		$table2->setCol(0, $col++, array(), we_html_button::create_button(we_html_button::SAVE, "javascript:we_save()"));
 
 		if($this->View->export->IsFolder == 0){
-			$table2->setCol(0, $col++, array("nowrap" => null), we_html_button::create_button("export", "javascript:top.content.we_cmd('start_export')", true, 100, 22, '', '', !permissionhandler::hasPerm("MAKE_EXPORT"))
+			$table2->setCol(0, $col++, array(), we_html_button::create_button("export", "javascript:top.content.we_cmd('start_export')", true, 100, 22, '', '', !permissionhandler::hasPerm("MAKE_EXPORT"))
 			);
 		}
 
-		$table2->setCol(0, $col++, array("nowrap" => null,'style'=>'width:290px;'));
+		$table2->setCol(0, $col++, array('style' => 'width:290px;'));
 
 		$js = we_html_element::jsElement('
 function we_save() {
@@ -164,7 +164,7 @@ function hideProgress() {
 		$progressbar->setStudLen(200);
 		$progressbar->addText($text, 0, "current_description");
 
-		$table2->setCol(0, 4, array("id" => "progress", "style" => "display: none", "nowrap" => null), $progressbar->getHtml());
+		$table2->setCol(0, 4, array("id" => "progress", "style" => "display: none"), $progressbar->getHtml());
 
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(array("bgcolor" => "white", "class" => "editfooter", "style" => 'margin:0px 15px;'), we_html_element::htmlForm(array(), $table2->getHtml())
@@ -609,7 +609,7 @@ if (top.content.editor.edfooter.doProgress){
 			($this->View->export->ExportTo === 'local' ?
 				we_html_element::jsElement('top.content.editor.edbody.addLog(\'' .
 					we_html_element::htmlSpan(array("class" => "defaultfont"), addslashes(g_l('export', '[backup_finished]')) . "<br/>" .
-						 g_l('export', '[download_starting2]') . "<br/><br/>" .
+						g_l('export', '[download_starting2]') . "<br/><br/>" .
 						g_l('export', '[download_starting3]') . "<br/>" .
 						we_html_element::htmlB(we_html_element::htmlA(array("href" => $this->frameset . "&pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename), 'download' => $this->View->export->ExportFilename), g_l('export', '[download]'))) . "<br/><br/>"
 					) .
@@ -620,7 +620,7 @@ if (top.content.editor.edfooter.doProgress){
 		$out = we_html_tools::getHtmlTop('', '', '', $_progress_update .
 				we_html_element::jsElement('function showEndStatus(){' . we_message_reporting::getShowMessageCall(g_l('export', '[server_finished]'), we_message_reporting::WE_MESSAGE_NOTICE) . ';}'), we_html_element::htmlBody(
 					array(
-						'style'=>'margin:5px;background-color:white;',
+						'style' => 'margin:5px;background-color:white;',
 						"onload" => ($this->View->export->ExportTo === 'local' ?
 							($this->cmdFrame . ".location='" . $this->frameset . "&pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename) . "';") :
 							'showEndStatus();') .

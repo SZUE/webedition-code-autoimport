@@ -53,7 +53,7 @@ function clip_' . $unique . '(){
 
 	$oClip = new we_html_table(array('class' => 'default'), 1, 3);
 	$oClip->setCol(0, 0, array("width" => 21, 'style' => 'vertical-align:top;text-align:right', "id" => "btn_" . $unique), we_html_button::create_button(we_html_button::DIRRIGHT, 'javascript:clip_' . $unique . '();'));
-	$oClip->setCol(0, 1, array("width" => 10, "nowrap" => "nowrap"));
+	$oClip->setCol(0, 1, array("width" => 10));
 	$oClip->setCol(0, 2, null, we_html_element::htmlSpan(array(
 				"id" => $unique,
 				"class" => "defaultfont",

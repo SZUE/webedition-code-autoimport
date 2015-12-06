@@ -218,7 +218,7 @@ function we_save() {
 
 		$table2 = new we_html_table(array('class' => 'default', 'style' => 'width:300px;'), 1, 2);
 		$table2->setRow(0, array('style' => 'vertical-align:middle'));
-		$table2->setCol(0, 1, array('nowrap' => null), we_html_button::create_button(we_html_button::SAVE, 'javascript:we_save()'));
+		$table2->setCol(0, 1, array(), we_html_button::create_button(we_html_button::SAVE, 'javascript:we_save()'));
 
 		return $this->getHTMLDocument(we_html_element::htmlBody(array('id' => 'footerBody'), $table2->getHtml()), $extraHead);
 	}

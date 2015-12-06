@@ -93,6 +93,7 @@ function we_cmd() {
 
 function submitForm() {
 	var f = self.document.we_form;
+	f.action = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=workflow";
 	f.target = "edbody";
 	f.method = "post";
 	f.submit();

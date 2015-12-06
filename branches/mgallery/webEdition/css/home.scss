@@ -23,7 +23,7 @@
 */
 
 /* CSS for home screen*/
-
+@import "config.scss";
 body{
 	background-color: #F5F5F5;
 	margin:10px;
@@ -94,104 +94,100 @@ div.le_widget{
 
 #le_tblWidgets{
 	table-layout:fixed;
-}
-.widgetTitle{
-	border-bottom: 2px solid white;
-	height:32px;
-	line-height: 32px;
-	padding-left:11px;
-	padding-right:11px;
-}
-.label{
-	font-family:Arial,Helvetica,sans-serif;
-	font-size:15px;
-	color:white;
-	font-weight:bold;
-}
 
-div.widget{
-	border-radius: 10px;
-	width:100%;
-	border: 1px solid #B7B7B7;
-	&.bgc_white{
-		background-color:#FFFFFF;
+	.widgetTitle{
+		border-bottom: 2px solid white;
+		height:32px;
+		line-height: 32px;
+		padding-left:11px;
+		padding-right:11px;
+	}
+	.label{
+		font-family:sans-serif;
+		font-size:15px;
+		color:white;
+		font-weight:bold;
+	}
 
-		.widgetTitle{
-			background-color: #CCCCCC;
+	div.widget{
+		border-radius: 10px;
+		width:100%;
+		border: 1px solid #B7B7B7;
+		&.bgc_white{
+			background-color:#FFFFFF;
+			.widgetTitle{
+				background-color: #CCCCCC;
+			}
+		}
+
+		&.bgc_lightCyan{
+			background-color:#F1F5FF;
+			.widgetTitle{
+				background-color: #7FA5CA;
+			}
+		}
+
+		&.bgc_blue{
+			background-color:#CCE4FC;
+			.widgetTitle{
+				background-color: #7FA5CA;
+			}
+		}
+
+		&.bgc_green{
+			background-color:#E2FDC7;
+			.widgetTitle{
+				background-color: #A4CB63;
+			}
+		}
+
+		&.bgc_orange{
+			background-color:#FBF2C9;
+			.widgetTitle{
+				background-color: #FFA343;
+			}
+		}
+
+		&.bgc_red{
+			background-color:#FDE4CB;
+			.widgetTitle{
+				background-color: #CC6633;
+			}
+		}
+		&.bgc_yellow{
+			background-color:#FDFDBA;
+
+			.widgetTitle{
+				background-color: #CBCB5D;
+			}
+		}
+		td{
+			padding: 0px;
+			vertical-align: top;
 		}
 	}
 
-	&.bgc_lightCyan{
-		background-color:#F1F5FF;
-		.widgetTitle{
-			background-color: #7FA5CA;
-		}
-	}
-
-	&.bgc_blue{
-		background-color:#CCE4FC;
-
-		.widgetTitle{
-			background-color: #7FA5CA;
-		}
-	}
-
-	&.bgc_green{
-		background-color:#E2FDC7;
-
-		.widgetTitle{
-			background-color: #A4CB63;
-		}
-	}
-
-	&.bgc_orange{
-		background-color:#FBF2C9;
-		.widgetTitle{
-			background-color: #FFA343;
-		}
-	}
-
-	&.bgc_red{
-		background-color:#FDE4CB;
-		.widgetTitle{
-			background-color: #CC6633;
-		}
-	}
-	&.bgc_yellow{
-		background-color:#FDFDBA;
-
-		.widgetTitle{
-			background-color: #CBCB5D;
-		}
-	}
-	td{
-		padding: 0px;
-		vertical-align: top;
-	}
-}
-
-.widget_controls{
-	border-spacing: 0px;
-	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
-	width:100%;
-	background-color:lightgrey;/*for old browsers*/
-	background: linear-gradient(white, #E1E1E1 50%);/*edit/editfooterback.gif*/
-	height: 16px;
-	border-bottom: 1px solid #B7B7B7;
-	font-size: 10px;
-	color: #ababab;
-	padding-right: 3px;
-	table{
+	.widget_controls{
 		border-spacing: 0px;
-	}
+		border-top-left-radius: 10px;
+		border-top-right-radius: 10px;
+		width:100%;
+		background-color:lightgrey;/*for old browsers*/
+		background: linear-gradient(white, #E1E1E1 50%);/*edit/editfooterback.gif*/
+		height: 16px;
+		border-bottom: 1px solid #B7B7B7;
+		font-size: 10px;
+		color: #ababab;
+		padding-right: 3px;
+		table{
+			border-spacing: 0px;
+		}
 
-	i.fa-stack-1x:hover{
-		color:black;
+		i.fa-stack-1x:hover{
+			color:black;
+		}
 	}
 }
-
-
 div.content{
 	text-align:left;
 	vertical-align:top;
@@ -216,16 +212,18 @@ td.mdcIcon{
 	}
 }
 
-td.sctFileIcon{
-	width:34px;
-	height:34px;
-	padding-right:5px;
-	padding-bottom:3px;
-	cursor:pointer;
-}
+td{
+	&.sctFileIcon{
+		width:34px;
+		height:34px;
+		padding-right:5px;
+		padding-bottom:3px;
+		cursor:pointer;
+	}
 
-td.sctText{
-	vertical-align:middle;
-	font-weight:bold;
-	cursor:pointer;
+	&.sctText{
+		vertical-align:middle;
+		font-weight:bold;
+		cursor:pointer;
+	}
 }

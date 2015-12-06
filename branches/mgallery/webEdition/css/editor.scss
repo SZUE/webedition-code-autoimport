@@ -20,7 +20,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
+@import "config.scss";
 .weMarkInputError,
 input:invalid {
 	background-color: #ff8888 ! important;

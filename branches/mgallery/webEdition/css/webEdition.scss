@@ -166,51 +166,46 @@ body.radient{
 	width:$vtabWidth;
 	overflow: hidden;
 	background-color:#192C3A;
+	color:white;
 	//background: linear-gradient(to right,#EAEAEA, #CFCFCF);
-	border-top:1px solid black;
+	//border-top:1px solid black;
 
-	#vtab{
-		position:absolute;
-		/*top:8px;
-		left:5px;*/
-		border-left:1px solid #909090;
-		/*border-top:1px solid #909090;*/
-		text-decoration:none;
-		div{
-			border-bottom:1px solid #909090;
-			border-right:1px solid #909090;
-			width:$vtabWidth;
-			height:$vtabHeight;
-			position:relative;
-			cursor: pointer;
-			span{
-				position: absolute;
-				display:block;
-				bottom: -12px;
-				left:4px;
-				width:$vtabHeight;
-				-webkit-transform:rotate(-90deg); /* Chrome, Opera 15+, Safari 3.1+ */
-				-webkit-transform-origin: 0 0;
-				-ms-transform:rotate(-90deg); /* IE 9 */
-				-ms-transform-origin: 0 0;
-				transform: rotate(-90deg); /* Firefox 16+, IE 10+, Opera*/
-				transform-origin: 0 0;
-				text-align: center;
-			}
-		}
-
-		.tabNorm{
-			//background: linear-gradient(to right,white, #cacaca);
-			span{
-				color:white;
-			}
-		}
-		.tabActive{
-			background-color:#C9CDD0;
-			border-right-color: #f3f7ff;
+	div.tab	{
+		border-bottom:1px solid #909090;
+		border-right:1px solid #909090;
+		width:$vtabWidth;
+		height:$vtabHeight;
+		position:relative;
+		cursor: pointer;
+		span{
+			position: absolute;
+			display:block;
+			bottom: -12px;
+			left:4px;
+			width:$vtabHeight;
+			-webkit-transform:rotate(-90deg); /* Chrome, Opera 15+, Safari 3.1+ */
+			-webkit-transform-origin: 0 0;
+			-ms-transform:rotate(-90deg); /* IE 9 */
+			-ms-transform-origin: 0 0;
+			transform: rotate(-90deg); /* Firefox 16+, IE 10+, Opera*/
+			transform-origin: 0 0;
+			text-align: center;
+			color:inherit;
 		}
 	}
+
+	div.tabNorm:hover{
+		background: linear-gradient(to right, #CBD3DC, #BFC6CF 50%, #999999) transparent;
+		color:black;
+	}
+
+	div.tabActive{
+		color:black;
+		background-color:#C9CDD0;
+		border-right-color: #f3f7ff;
+	}
 }
+
 
 #treeFrameDiv{
 	position:absolute;
@@ -323,15 +318,12 @@ td.boxHeader{
 }
 
 #tree,
-#bm_mainDiv{
-	background-color:#C9CDD0;
+#treetable{
+	background-color:#f5f5f5;
 	left:0px;
 	right:0px;
 	position:absolute;
 	overflow: auto;
-}
-
-#bm_mainDiv{
 	top:1px;
 	bottom:40px;
 }

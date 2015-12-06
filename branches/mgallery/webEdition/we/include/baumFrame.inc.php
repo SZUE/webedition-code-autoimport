@@ -29,18 +29,16 @@ $table = isset($table) ? $table : FILE_TABLE;
 <div id="treeFrameDiv">
 	<div id="treeControl">
 		<span id="treeName" class="middlefont"></span>
-		<span id="toggleTree" onclick="toggleTree();"><i id="arrowImg" class="fa fa-lg fa-caret-<?php echo ($_treewidth <= 100) ? "right" : "left"; ?>" ></i></span>
+		<span id="toggleTree" onclick="toggleTree();" title="<?php echo g_l('global', '[tree][minimize]'); ?>"><i id="arrowImg" class="fa fa-lg fa-caret-<?php echo ($_treewidth <= 100) ? "right" : "left"; ?>" ></i></span>
 	</div>
 	<div id="treeContent">
 		<div id="bm_treeheaderDiv">
 			<iframe src="about:blank" name="treeheader"></iframe>
 		</div>
-		<div id="bm_mainDiv">
 			<?php
 			$Tree = new weMainTree('webEdition.php', 'top', 'top.resize.left.tree', 'top.load');
 			echo $Tree->getHTMLContruct('if(top.treeResized){top.treeResized();}');
 			?>
-		</div>
 		<div id="bm_searchField">
 			<div id="infoField" class="defaultfont"></div>
 			<form name="we_form" onsubmit="top.we_cmd('tool_weSearch_edit', document.we_form.keyword.value, top.treeData.table);
