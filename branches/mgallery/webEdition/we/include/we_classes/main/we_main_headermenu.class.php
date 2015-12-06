@@ -60,9 +60,9 @@ function() {
 
 	static function getCssForCssMenu(){
 		$arr = array(WEBEDITION_DIR . 'css/menu/pro_drop_1.css');
-		/*if(we_base_browserDetect::inst()->isMAC()){
-			$arr[] = WEBEDITION_DIR . 'css/menu/pro_drop_mac.css';
-		}*/
+		/* if(we_base_browserDetect::inst()->isMAC()){
+		  $arr[] = WEBEDITION_DIR . 'css/menu/pro_drop_mac.css';
+		  } */
 
 		return $arr;
 	}
@@ -101,7 +101,7 @@ function() {
 		return $jmenu;
 	}
 
-	static function pbody(){
+	static function pbody($msg){
 
 // all available elements
 		$jmenu = self::getMenu();
@@ -146,12 +146,16 @@ function() {
 					}
 				}
 				?></div>
-			<div id="weMsgHeaderLogo"><?php
+			<div id="weMsgHeaderLogo"><?php if($msg){ ?>
+					<div id="msgheadertable"><?php we_messaging_headerMsg::pbody(); ?></div><?php
+				}
+
 				echo self::createMessageConsole('mainWindow');
 				//<!--span name="busy" width="20" height="19"-->
 				?>
 				<img src="<?php echo IMAGE_DIR ?>/webedition.svg" alt="" id="weHeaderLogo"/>
 			</div>
+			<div id="logout" class="navigation"><i class="fa fa-power-off fa-lg" onclick="top.we_cmd('dologout');"></i></div>
 		</div>
 		<?php
 	}

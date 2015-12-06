@@ -432,14 +432,10 @@ foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do
 		$SEEM_edit_include = we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include');
 		$msg = (defined('MESSAGING_SYSTEM') && !$SEEM_edit_include);
 		?>
-		<div id="weMainHeader" <?php echo ($msg ? 'style="right:60px"' : ''); ?>><?php
-			we_main_headermenu::pbody();
+		<div id="weMainHeader"><?php
+			we_main_headermenu::pbody($msg);
 			?>
 		</div>
-		<?php if($msg){ ?>
-			<div id="msgheadertable"><?php we_messaging_headerMsg::pbody(); ?></div><?php
-		}
-		?>
 	</div>
 	<div id="resizeFrame"><?php
 		$_sidebarwidth = getSidebarWidth();
