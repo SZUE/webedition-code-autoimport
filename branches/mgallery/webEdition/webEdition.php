@@ -463,7 +463,7 @@ foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do
 			<?php include(WE_INCLUDES_PATH . 'baumFrame.inc.php'); ?>
 		</div>
 		<div style="position:absolute;top:0px;bottom:0px;right:<?php echo $_sidebarwidth; ?>px;left:<?php echo $treewidth; ?>px;border-left:1px solid black;overflow: hidden;" id="bm_content_frameDiv">
-			<iframe frameBorder="0" src="<?php echo WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
+			<iframe src="<?php echo WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
 		</div>
 		<?php
 		if(!(SIDEBAR_DISABLED == 1)){

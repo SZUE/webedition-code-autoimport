@@ -260,8 +260,8 @@ td.boxHeader{
 }
 
 #treeControl{
-height:3ex;
-background-color: #B7BBBF;
+	height:3ex;
+	background-color: #B7BBBF;
 }
 
 #treeContent{
@@ -271,6 +271,10 @@ background-color: #B7BBBF;
 	left: 0px;
 	right: 0px;
 }
+iframe{
+	border:0px;
+}
+
 #bm_treeheaderDiv{
 	position:absolute;
 	top:0px;
@@ -280,7 +284,6 @@ background-color: #B7BBBF;
 	overflow: hidden;
 
 	iframe{
-		border:0px;
 		width:100%;
 		height:100%;
 		overflow: hidden;

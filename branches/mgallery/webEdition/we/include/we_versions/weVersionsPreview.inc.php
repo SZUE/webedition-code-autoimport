@@ -137,7 +137,7 @@ $tabsBody = $we_tabs->getHTML() . we_html_element::jsElement('
 $contentNew = $contentOld = $contentDiff = '';
 
 if(!($isObj || $isTempl)){
-	$contentNew = '<iframe frameBorder="0" name="previewNew" src="' . WEBEDITION_DIR . 'showTempFile.php?file=' . str_replace(WEBEDITION_DIR, '', VERSION_DIR . $fileNew) . '" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>';
+	$contentNew = '<iframe name="previewNew" src="' . WEBEDITION_DIR . 'showTempFile.php?file=' . str_replace(WEBEDITION_DIR, '', VERSION_DIR . $fileNew) . '" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>';
 }
 if($isTempl){
 	if($newDoc['documentElements']){
@@ -151,7 +151,7 @@ if($isTempl){
 	$contentNew = '<textarea style="width:99%;height:99%">' . $nDocElements['data']['dat'] . '</textarea>';
 }
 if(!empty($oldDoc) && !($isObj || $isTempl)){
-	$contentOld = '<iframe frameBorder="0" name="previewOld" src="' . WEBEDITION_DIR . 'showTempFile.php?file=' . str_replace(WEBEDITION_DIR, '', VERSION_DIR . $fileOld) . '" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>';
+	$contentOld = '<iframe name="previewOld" src="' . WEBEDITION_DIR . 'showTempFile.php?file=' . str_replace(WEBEDITION_DIR, '', VERSION_DIR . $fileOld) . '" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>';
 }
 if(!empty($oldDoc) && $isTempl){
 	if($oldDoc['documentElements']){

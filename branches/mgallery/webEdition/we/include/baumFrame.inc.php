@@ -32,7 +32,7 @@ $table = isset($table) ? $table : FILE_TABLE;
 	</div>
 	<div id="treeContent">
 		<div id="bm_treeheaderDiv">
-			<iframe frameBorder="0" src="about:blank" name="treeheader"></iframe>
+			<iframe src="about:blank" name="treeheader"></iframe>
 		</div>
 		<div id="bm_mainDiv">
 			<?php

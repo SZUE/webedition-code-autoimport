@@ -18,8 +18,6 @@ if ($client->getBrowser() === we_ui_Client::kBrowserGecko) {
 		'cols' => '200,*',
 		'border' => 1,
 		'id' => 'resizeframeid',
-		'frameborder' =>'',
-		'framespacing'=>''
 	);
 } else {
 	$frameAttribs = array(
@@ -34,7 +32,6 @@ if ($client->getBrowser() === we_ui_Client::kBrowserIE) {
 	$frameset->addFrame(array(
 		'src' => $appDir . '/index.php/frameset/left' . $param,
 		'name' => 'left',
-		'frameborder' => 'no'
 	));
 } else {
 	$frameset->addFrame(array(

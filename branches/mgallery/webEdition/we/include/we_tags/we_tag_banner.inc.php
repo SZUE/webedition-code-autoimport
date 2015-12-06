@@ -134,11 +134,6 @@ function we_tag_banner($attribs, $content){
 		//$content = getHtmlTag('nolayer', array(),$noscript);    //  nolayer does not exist
 		$content = $noscript;
 
-		//    some more attribs for the iframe
-/*		$newAttribs['marginwidth'] = 0;
-		$newAttribs['marginheight'] = 0;
-		$newAttribs['scrolling'] = 'no';*/
-		$newAttribs['frameborder'] = 0;
 
 		return getHtmlTag('iframe', $newAttribs, $content);
 	}
