@@ -21,7 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$we_menu_banner = array(
+return array(
 	'banner' => array(
 		'text' => g_l('modules_banner', '[banner]'),
 	),

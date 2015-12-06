@@ -119,14 +119,8 @@ body.radient{
 #weMainMenu{
 	float:left;
 	line-height:32px;
-	#home{
-		height:32px;
-		float: left;
-		width:30px;
-		cursor: pointer;
-		text-align: center;
-	}
 }
+
 
 #resizeFrame{
 	margin:0px;
@@ -149,8 +143,8 @@ $vtabHeight:90px;
 	left:0px;
 	width:$vtabWidth;
 	overflow: hidden;
-	background-color:#dddddd;
-	background: linear-gradient(to right,#EAEAEA, #CFCFCF);
+	background-color:#192C3A;
+	//background: linear-gradient(to right,#EAEAEA, #CFCFCF);
 	border-top:1px solid black;
 
 	#vtab{
@@ -184,10 +178,13 @@ $vtabHeight:90px;
 		}
 
 		.tabNorm{
-			background: linear-gradient(to right,white, #cacaca);
+			//background: linear-gradient(to right,white, #cacaca);
+			span{
+				color:white;
+			}
 		}
 		.tabActive{
-			background-color:#f3f7ff;
+			background-color:#C9CDD0;
 			border-right-color: #f3f7ff;
 		}
 	}
@@ -262,6 +259,18 @@ td.boxHeader{
 	}
 }
 
+#treeControl{
+height:3ex;
+background-color: #B7BBBF;
+}
+
+#treeContent{
+	position: absolute;
+	top: 3ex;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+}
 #bm_treeheaderDiv{
 	position:absolute;
 	top:0px;
@@ -289,7 +298,7 @@ td.boxHeader{
 	left:0px;
 	right:0px;
 	overflow: auto;
-	background-color:#F3F7FF;
+	background-color:#C9CDD0;
 }
 
 #eHeaderBody,
@@ -455,19 +464,15 @@ a.notpublished {
 }
 
 .notpublished,
-a.notpublished,
 .npdefaultfont,
-.npdefaultfont a,
-.npdefaultfont a:visited,
+.highlightElementChanged,
 .npshopContentfontR,
-.middlefontred,
-.middlefontred a,
-.middlefontred a:visited,
-.npshopContentfont,
-.npshopContentfont a,
-.npshopContentfont a:visited
+.npshopContentfont
 {
-	color: red;
+	color: red !important;
+	a,a:visited{
+		color:inherit;
+	}
 }
 
 .changeddefaultfont {
@@ -490,7 +495,6 @@ a.notpublished,
 .pdefaultfont a:active,
 .middlefont a:active,
 .npdefaultfont a:active,
-.middlefontred a:active,
 .defaultgray a:active,
 .middlefontgray a:active,
 .npshopContentfont a:active,
@@ -731,8 +735,9 @@ optgroup{
 #toolMenu,
 #headerDiv{
 	background-color:#f0f0f0;
-	background: linear-gradient(#F7F7F7, #E8E8E8);
+	background: linear-gradient(#4675B1, #325E95);
 	line-height: 32px;
+	color:white;
 }
 
 #headerDiv{
@@ -743,6 +748,13 @@ optgroup{
 	height:32px;
 	line-height: 32px;
 	border-bottom: 1px solid black;
+	#home{
+		height:32px;
+		float: left;
+		width:30px;
+		cursor: pointer;
+		text-align: center;
+	}
 	#msgheadertable{
 		position:absolute;
 		top:0px;
@@ -758,12 +770,17 @@ optgroup{
 			tr {
 				height: 12px;
 			}
+			tr:first-child td{
+				text-align:right;
+			}
 			td {
+				font-weight: bold;
+				color: inherit;
 				padding:0px;
 			}
 		}
 		i{
-			background-color:white;
+			//background-color:white;
 		}
 	}
 }
@@ -831,12 +848,13 @@ table.error{
 	text-align: center;
 
 	&:hover{
-		margin-left: 0px;
-		margin-right: 0px;
-		border-bottom: black solid 1px;
-		border-right:	black solid 1px;
-		border-left:	#CCCCCC solid 1px;
-		border-top:		#CCCCCC solid 1px;
+		background: linear-gradient(to bottom, #345881, #284A70) transparent !important;
+		/*		margin-left: 0px;
+				margin-right: 0px;
+				border-bottom: black solid 1px;
+				border-right:	black solid 1px;
+				border-left:	#CCCCCC solid 1px;
+				border-top:		#CCCCCC solid 1px;*/
 		cursor:pointer;
 	}
 }

@@ -984,8 +984,8 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 					$finished_font = 'middlefont';
 					$notfinished_font = 'middlefontgray';
 				} else {
-					$finished_font = 'middlefontred';
-					$notfinished_font = 'middlefontred';
+					$finished_font = 'middlefont highlightElementChanged';
+					$notfinished_font = 'middlefont highlightElementChanged';
 				}
 			} else {
 				$finished_font = 'middlefont';

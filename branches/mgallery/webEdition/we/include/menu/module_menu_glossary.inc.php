@@ -125,3 +125,5 @@ foreach($langs as $key => $language){
 		'perm' => 'NEW_GLOSSARY || ADMINISTRATOR',
 	);
 }
+
+return $we_menu_glossary;

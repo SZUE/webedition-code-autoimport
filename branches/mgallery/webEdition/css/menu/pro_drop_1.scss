@@ -10,8 +10,8 @@ way to fit your requirements.
 =================================================================== */
 
 .menuDiv {
-	background-color: #efefef;
-	background: linear-gradient(#f7f7f6,#e6e6e6);
+/*	background-color: #efefef;
+	background: linear-gradient(#f7f7f6,#e6e6e6);*/
 	margin: 0px;
 	border-bottom: 1px solid black;
 }
@@ -31,7 +31,7 @@ $navHeight:32px;
 		display: block;
 		float: left;
 		height: $navHeight;
-		border-right: 1px solid rgba(161, 1, 0, 0);
+		border-right: 1px solid #3B6598;
 
 		div{
 			position: relative;
@@ -42,7 +42,7 @@ $navHeight:32px;
 				float: left;
 				//height: $navHeight;
 				//line-height: 22px;
-				color: #000000;
+				color: inherit;
 				text-decoration: none;
 				font-weight: bold;
 				cursor: pointer;
@@ -78,7 +78,8 @@ $navHeight:32px;
 			*/
 			height: $navHeight;
 			//top: 4px;
-			background: #3399ff;
+			/*background: #3399ff;*/
+			background: linear-gradient(#345881, #284A70);
 			color: #ffffff;
 			a.top_link {
 				color: #ffffff;

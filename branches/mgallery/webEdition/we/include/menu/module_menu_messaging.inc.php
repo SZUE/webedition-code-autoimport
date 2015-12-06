@@ -21,7 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$we_menu_messaging = array(
+return array(
 	'file' => array(
 		'text' => g_l('javaMenu_messaging', '[file]'),
 	),
@@ -86,17 +86,17 @@ $we_menu_messaging = array(
 		'cmd' => 'messaging_paste',
 		'parent' => 'edit',
 	),
-	'000300' => array(
+	'help' => array(
 		'text' => g_l('javaMenu_messaging', '[help]'),
 	),
 	array(
 		'text' => g_l('javaMenu_messaging', '[help]') . '&hellip;',
-		'parent' => '000300',
+		'parent' => 'help',
 		'cmd' => 'help_modules',
 	),
 	array(
 		'text' => g_l('javaMenu_messaging', '[info]') . '&hellip;',
-		'parent' => '000300',
+		'parent' => 'help',
 		'cmd' => 'info_modules',
 	)
 );

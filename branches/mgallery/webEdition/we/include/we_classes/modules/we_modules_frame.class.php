@@ -118,10 +118,9 @@ abstract class we_modules_frame{
 	}
 
 	protected function getHTMLHeader($_menuFile, $_module){
-		include($_menuFile);
+		$menu = include($_menuFile);
 
-		$lang_arr = "we_menu_" . $_module;
-		$jmenu = new we_base_menu(${$lang_arr}, 'top.opener.top.load', '');
+		$jmenu = new we_base_menu($menu, 'top.opener.top.load', '');
 
 		$menu = $jmenu->getCode(false) . $jmenu->getJS();
 
@@ -169,7 +168,7 @@ abstract class we_modules_frame{
 	protected function getHTMLTree($extraHead = ''){
 		return we_html_element::htmlDiv(array(
 				'id' => 'tree',
-				'style' => 'overflow:scroll;position: absolute; top: ' . $this->treeHeaderHeight . 'px; bottom: ' . $this->treeFooterHeight . 'px; left: 0px; width: 100%; background: #F3F7FF',
+				'style' => 'overflow:scroll;position: absolute; top: ' . $this->treeHeaderHeight . 'px; bottom: ' . $this->treeFooterHeight . 'px; left: 0px; width: 100%; background: #C9CDD0',
 				'link' => '#000000',
 				'alink' => '#000000',
 				'vlink' => '#000000',

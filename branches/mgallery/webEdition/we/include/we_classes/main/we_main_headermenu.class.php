@@ -130,8 +130,8 @@ function() {
 		}
 		?>
 		<div>
+			<div id="home" class="navigation" onclick="top.we_cmd('start_multi_editor');"><i class="fa fa-home" title="<?php echo g_l('javaMenu_global', '[home]'); ?>"></i></div>
 			<div id="weMainMenu">
-				<div id="home" class="" onclick="top.we_cmd('start_multi_editor');"><i class="fa fa-home" title="<?php echo g_l('javaMenu_global', '[home]'); ?>"></i></div>
 				<?php
 				if($jmenu){
 					echo $jmenu->getCode();

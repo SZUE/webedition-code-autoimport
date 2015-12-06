@@ -27,25 +27,30 @@ $table = isset($table) ? $table : FILE_TABLE;
 	<?php include(WE_INCLUDES_PATH . 'we_vtabs.inc.php'); ?>
 </div>
 <div id="treeFrameDiv">
-	<div id="bm_treeheaderDiv">
-		<iframe frameBorder="0" src="about:blank" name="treeheader"></iframe>
+	<div id="treeControl">
+
 	</div>
-	<div id="bm_mainDiv">
-		<?php
-		$Tree = new weMainTree('webEdition.php', 'top', 'top.resize.left.tree', 'top.load');
-		echo $Tree->getHTMLContruct('if(top.treeResized){top.treeResized();}');
-		?>
-	</div>
-	<div id="bm_searchField">
-		<div id="infoField" class="defaultfont"></div>
-		<form name="we_form" onsubmit="top.we_cmd('tool_weSearch_edit', document.we_form.keyword.value, top.treeData.table);
-				return false;">
-			<div id="search">
-				<?php
-				echo we_html_tools::htmlTextInput('keyword', 10, we_base_request::_(we_base_request::STRING, 'keyword', ''), '', '', 'search', '120px') .
-				we_html_button::create_button(we_html_button::SEARCH, "javascript:top.we_cmd('tool_weSearch_edit',document.we_form.keyword.value, top.treeData.table);", true);
-				?>
-			</div>
-		</form>
+	<div id="treeContent">
+		<div id="bm_treeheaderDiv">
+			<iframe frameBorder="0" src="about:blank" name="treeheader"></iframe>
+		</div>
+		<div id="bm_mainDiv">
+			<?php
+			$Tree = new weMainTree('webEdition.php', 'top', 'top.resize.left.tree', 'top.load');
+			echo $Tree->getHTMLContruct('if(top.treeResized){top.treeResized();}');
+			?>
+		</div>
+		<div id="bm_searchField">
+			<div id="infoField" class="defaultfont"></div>
+			<form name="we_form" onsubmit="top.we_cmd('tool_weSearch_edit', document.we_form.keyword.value, top.treeData.table);
+					return false;">
+				<div id="search">
+					<?php
+					echo we_html_tools::htmlTextInput('keyword', 10, we_base_request::_(we_base_request::STRING, 'keyword', ''), '', '', 'search', '120px') .
+					we_html_button::create_button(we_html_button::SEARCH, "javascript:top.we_cmd('tool_weSearch_edit',document.we_form.keyword.value, top.treeData.table);", true);
+					?>
+				</div>
+			</form>
+		</div>
 	</div>
 </div>

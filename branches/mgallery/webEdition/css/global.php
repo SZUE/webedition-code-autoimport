@@ -59,7 +59,7 @@ header('Pragma: ', true);
 .weObjectPreviewHeadline,
 .weEditTable
 {
-font-size: <?php echo (we_base_browserDetect::isMAC()) ? 11 : ((we_base_browserDetect::isUNIX()) ? 13 : 12); ?>px;
+font-size: <?php echo (we_base_browserDetect::isMAC()) ? 11 : (we_base_browserDetect::isUNIX() ? 13 : 12); ?>px;
 font-family: <?php echo g_l('css', '[font_family]'); ?>;
 }
 
@@ -70,23 +70,22 @@ font-family: <?php echo g_l('css', '[font_family]'); ?>;
 
 .shopContentfontGreySmall,
 .shopContentfontSmall {
-font-size: <?php echo (we_base_browserDetect::isMAC()) ? 9 : ((we_base_browserDetect::isUNIX()) ? 11 : 10); ?>px;
+font-size: <?php echo (we_base_browserDetect::isMAC()) ? 9 : (we_base_browserDetect::isUNIX() ? 11 : 10); ?>px;
 font-family: <?php echo g_l('css', '[font_family]'); ?>;
 }
 
 .middlefont,
-.middlefontgray,
-.middlefontred{
-font-size: <?php echo (we_base_browserDetect::isMAC()) ? 10 : ((we_base_browserDetect::isUNIX()) ? 12 : 11); ?>px;
+.middlefontgray{
+font-size: <?php echo (we_base_browserDetect::isMAC()) ? 10 : (we_base_browserDetect::isUNIX() ? 12 : 11); ?>px;
 }
 
 .tree,
 .small {
-font-size: <?php echo (we_base_browserDetect::isGecko() && we_base_browserDetect::isWin() ? 10 : ((we_base_browserDetect::isUNIX()) ? 11 : 9)); ?>px;
+font-size: <?php echo (we_base_browserDetect::isGecko() && we_base_browserDetect::isWin() ? 10 : (we_base_browserDetect::isUNIX() ? 11 : 9)); ?>px;
 }
 
 .header_small {
-font-size: <?php echo (we_base_browserDetect::isGecko() && we_base_browserDetect::isWin() ? 11 : ((we_base_browserDetect::isUNIX()) ? 10 : 10)); ?>px;
+font-size: <?php echo (we_base_browserDetect::isGecko() && we_base_browserDetect::isWin() ? 11 : (we_base_browserDetect::isUNIX() ? 10 : 10)); ?>px;
 }
 
 .header_shop,
@@ -97,8 +96,7 @@ font-size: <?php echo (we_base_browserDetect::isGecko() && we_base_browserDetect
 .tree,
 .small,
 .middlefont,
-.middlefontgray,
-.middlefontred
+.middlefontgray
 {
 font-family: <?php echo g_l('css', '[font_family]'); ?>;
 }
@@ -106,7 +104,7 @@ font-family: <?php echo g_l('css', '[font_family]'); ?>;
 .big,
 .weDocListSearchHeadline,
 .weDocListSearchHeadlineDivs{
-font-size: <?php echo (we_base_browserDetect::isGecko() && we_base_browserDetect::isWin() ? 14 : ((we_base_browserDetect::isUNIX()) ? 15 : 13)); ?>px;
+font-size: <?php echo (we_base_browserDetect::isGecko() && we_base_browserDetect::isWin() ? 14 : (we_base_browserDetect::isUNIX() ? 15 : 13)); ?>px;
 font-family: <?php echo g_l('css', '[font_family]'); ?>;
 }
 

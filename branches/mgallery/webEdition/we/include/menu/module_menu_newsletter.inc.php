@@ -21,7 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$we_menu_newsletter = array(
+return array(
 	'newsletter' => array(
 		'text' => g_l('modules_newsletter', '[newsletter][text]'),
 	),

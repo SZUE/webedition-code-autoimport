@@ -138,3 +138,5 @@ foreach($years as $cur){
 		'cmd' => 'year' . $cur,
 	);
 }
+
+return $we_menu_shop;
