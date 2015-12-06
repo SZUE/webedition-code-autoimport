@@ -99,23 +99,23 @@ function doClickDirect(id, ct, table, fenster) {
 }
 
 /*function setTreeArrow(direction) {
-	try {
-		var arrImg = self.document.getElementById("arrowImg");
-		if (direction === "right") {
-			arrImg.classList.remove("fa-caret-left");
-			self.document.getElementById("incBaum").style.backgroundColor = "gray";
-			self.document.getElementById("decBaum").style.backgroundColor = "gray";
-		} else {
-			arrImg.classList.remove("fa-caret-right");
-			self.document.getElementById("incBaum").style.backgroundColor = "";
-			self.document.getElementById("decBaum").style.backgroundColor = "";
-		}
-		arrImg.classList.add("fa-caret-" + direction);
-	} catch (e) {
-		// Nothing
-	}
-}
-*/
+ try {
+ var arrImg = self.document.getElementById("arrowImg");
+ if (direction === "right") {
+ arrImg.classList.remove("fa-caret-left");
+ self.document.getElementById("incBaum").style.backgroundColor = "gray";
+ self.document.getElementById("decBaum").style.backgroundColor = "gray";
+ } else {
+ arrImg.classList.remove("fa-caret-right");
+ self.document.getElementById("incBaum").style.backgroundColor = "";
+ self.document.getElementById("decBaum").style.backgroundColor = "";
+ }
+ arrImg.classList.add("fa-caret-" + direction);
+ } catch (e) {
+ // Nothing
+ }
+ }
+ */
 
 function doClickWithParameters(id, ct, table, parameters) {
 	WE().layout.weEditorFrameController.openDocument(table, id, ct, '', '', '', '', '', parameters);
@@ -178,12 +178,13 @@ function toggleTree() {
 		tfd.style.display = "block";
 		//setTreeArrow("left");
 		storeTreeWidth(oldTreeWidth);
-	} else {
-		tfd.style.display = "none";
-		oldTreeWidth = w;
-		setTreeWidth(WE().consts.size.tree.hidden);
-		//setTreeArrow("right");
+		return true;
 	}
+	tfd.style.display = "none";
+	oldTreeWidth = w;
+	setTreeWidth(WE().consts.size.tree.hidden);
+	//setTreeArrow("right");
+	return false;
 }
 
 function treeOut() {
@@ -469,7 +470,7 @@ function doUnloadNormal(whichWindow) {
 }
 
 function doUnload(whichWindow) { // triggered when webEdition-window is closed
-	if(!WE().layout.weEditorFrameController.closeAllDocuments()){
+	if (!WE().layout.weEditorFrameController.closeAllDocuments()) {
 		return WE().consts.g_l.main.exit_multi_doc_question;
 	}
 	if (WE().session.seemode) {
@@ -1063,14 +1064,12 @@ function we_cmd_base(args, url) {
 		case "load":
 			if (WE().session.seemode) {
 			} else {
-				if (self.Tree) {
-					if (self.Tree.setScrollY) {
-						self.Tree.setScrollY();
-					}
+				if (self.Tree && self.Tree.setScrollY) {
+					self.Tree.setScrollY();
 				}
-				var tbl_prefix = WE().consts.tables.TBL_PREFIX,
-								table = (args[1] !== undefined && args[1]) ? args[1] : 'tblFile';
-				we_cmd("setTab", (tbl_prefix !== '' && table.indexOf(tbl_prefix) !== 0 ? tbl_prefix + table : table));
+
+				var table = (args[1] !== undefined && args[1]) ? args[1] : WE().consts.tables.FILE_TABLE;
+				we_cmd("setTab", table);
 				we_repl(self.load, url, args[0]);
 			}
 			break;

@@ -46,12 +46,12 @@ switch($_SESSION['weS']['we_mode']){
 				$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-cog"></i> ' . g_l('weClass', '[tab_properties]'), (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES) ? we_tab::ACTIVE : we_tab::NORMAL), ($we_doc->isBinary() ? we_fileupload_ui_preview::getJsOnLeave($jscmd) : $jscmd), array("id" => "tab_" . we_base_constants::WE_EDITPAGE_PROPERTIES)));
 			}
 			if(in_array(we_base_constants::WE_EDITPAGE_CONTENT, $we_doc->EditPageNrs)){
-				$we_tabs->addTab(new we_tab(($we_doc->isBinary() ? '<i class="fa fa-lg fa-upload"></i> ' : '<i class="fa fa-lg fa-edit"></i> ') . g_l('weClass', '[edit]'), (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_CONTENT . ",'" . $we_transaction . "');", array("id" => "tab_" . we_base_constants::WE_EDITPAGE_CONTENT)));
+				$we_tabs->addTab(new we_tab(($we_doc->isBinary() ? '<i class="fa fa-lg fa-upload"></i> ' : '<i class="fa fa-lg fa-edit"></i> '), (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_CONTENT . ",'" . $we_transaction . "');", array("id" => "tab_" . we_base_constants::WE_EDITPAGE_CONTENT, 'title' => g_l('weClass', '[edit]'))));
 			}
 
 			if(in_array(we_base_constants::WE_EDITPAGE_IMAGEEDIT, $we_doc->EditPageNrs)){
 				$jscmd = "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_IMAGEEDIT . ",'" . $we_transaction . "');";
-				$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-edit"></i> ' . g_l('weClass', '[edit_image]'), (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_IMAGEEDIT) ? we_tab::ACTIVE : we_tab::NORMAL), ($we_doc->isBinary() ? we_fileupload_ui_preview::getJsOnLeave($jscmd) : $jscmd), array("id" => "tab_" . we_base_constants::WE_EDITPAGE_IMAGEEDIT)));
+				$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-edit"></i> ', (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_IMAGEEDIT) ? we_tab::ACTIVE : we_tab::NORMAL), ($we_doc->isBinary() ? we_fileupload_ui_preview::getJsOnLeave($jscmd) : $jscmd), array("id" => "tab_" . we_base_constants::WE_EDITPAGE_IMAGEEDIT, 'title' => g_l('weClass', '[edit_image]'))));
 			}
 
 			if(in_array(we_base_constants::WE_EDITPAGE_THUMBNAILS, $we_doc->EditPageNrs)){
@@ -70,7 +70,7 @@ switch($_SESSION['weS']['we_mode']){
 
 			if(in_array(we_base_constants::WE_EDITPAGE_INFO, $we_doc->EditPageNrs) && permissionhandler::hasPerm("CAN_SEE_INFO")){
 				$jscmd = "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_INFO . ",'" . $we_transaction . "');";
-				$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-info-circle"></i> ' . g_l('weClass', '[information]'), (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_INFO) ? we_tab::ACTIVE : we_tab::NORMAL), ($we_doc->isBinary() ? we_fileupload_ui_preview::getJsOnLeave($jscmd) : $jscmd), array("id" => "tab_" . we_base_constants::WE_EDITPAGE_INFO)));
+				$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-info-circle"></i> ', (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_INFO) ? we_tab::ACTIVE : we_tab::NORMAL), ($we_doc->isBinary() ? we_fileupload_ui_preview::getJsOnLeave($jscmd) : $jscmd), array("id" => "tab_" . we_base_constants::WE_EDITPAGE_INFO, 'title' => g_l('weClass', '[information]'))));
 			}
 
 			if(in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $we_doc->EditPageNrs)){
@@ -87,7 +87,7 @@ switch($_SESSION['weS']['we_mode']){
 			}
 
 			if(in_array(we_base_constants::WE_EDITPAGE_FIELDS, $we_doc->EditPageNrs)){
-				$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-list"></i> ' .g_l('weClass', '[fields]'), (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_FIELDS) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_FIELDS . ",'" . $we_transaction . "');", array("id" => "tab_" . we_base_constants::WE_EDITPAGE_FIELDS)));
+				$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-list"></i> ' . g_l('weClass', '[fields]'), (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_FIELDS) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_FIELDS . ",'" . $we_transaction . "');", array("id" => "tab_" . we_base_constants::WE_EDITPAGE_FIELDS)));
 			}
 
 			if(in_array(we_base_constants::WE_EDITPAGE_SEARCH, $we_doc->EditPageNrs)){
@@ -116,7 +116,7 @@ switch($_SESSION['weS']['we_mode']){
 
 			if(permissionhandler::hasPerm("SEE_VERSIONS") && in_array(we_base_constants::WE_EDITPAGE_VERSIONS, $we_doc->EditPageNrs)){
 				$jscmd = "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_VERSIONS . ",'" . $we_transaction . "');";
-				$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-history"></i> ' . g_l('weClass', '[version]'), (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_VERSIONS) ? we_tab::ACTIVE : we_tab::NORMAL), ($we_doc->isBinary() ? we_fileupload_ui_preview::getJsOnLeave($jscmd) : $jscmd), array("id" => "tab_" . we_base_constants::WE_EDITPAGE_VERSIONS)));
+				$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-history"></i>', (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_VERSIONS) ? we_tab::ACTIVE : we_tab::NORMAL), ($we_doc->isBinary() ? we_fileupload_ui_preview::getJsOnLeave($jscmd) : $jscmd), array("id" => "tab_" . we_base_constants::WE_EDITPAGE_VERSIONS, 'title' => g_l('weClass', '[version]'))));
 			}
 
 			$we_doc->we_initSessDat($we_dt);
@@ -126,7 +126,7 @@ switch($_SESSION['weS']['we_mode']){
 			}
 
 			if(in_array(we_base_constants::WE_EDITPAGE_DOCLIST, $we_doc->EditPageNrs)){
-				$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-search"></i> ' .g_l('weClass', '[docList]'), (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_DOCLIST) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_DOCLIST . ",'" . $we_transaction . "');", array("id" => "tab_" . we_base_constants::WE_EDITPAGE_DOCLIST)));
+				$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-search"></i> ' . g_l('weClass', '[docList]'), (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_DOCLIST) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_DOCLIST . ",'" . $we_transaction . "');", array("id" => "tab_" . we_base_constants::WE_EDITPAGE_DOCLIST)));
 			}
 		}
 		echo we_tabs::getHeader();

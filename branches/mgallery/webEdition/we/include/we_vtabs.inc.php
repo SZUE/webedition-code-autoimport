@@ -55,7 +55,7 @@ foreach($vtab as $tab => $val){
 		break;';
 	}
 	if($val['show']){
-		echo '<div class="tab tabNorm" onclick="setActiveVTab(' . $i . ');if(top.deleteMode){we_cmd(\'exit_delete\', \'' . constant($tab) . '\');};treeOut();we_cmd(\'loadVTab\', \'' . constant($tab) . '\' ,0);"><span class="middlefont">' . $val['desc'] . '</span></div>';
+		echo '<div class="tab tabNorm" onclick="clickVTab(this,' . $i . ',\'' . constant($tab) . '\');"><span class="middlefont">' . $val['desc'] . '</span></div>';
 	}
 	if(!$defTab && $val['show']){
 		$defTab = constant($tab);
@@ -64,12 +64,28 @@ foreach($vtab as $tab => $val){
 }
 ?>
 <script><!--
+	function clickVTab(tab, no, table) {
+		if (top.deleteMode) {
+			we_cmd('exit_delete', table);
+		}
+		if (tab.classList.contains("tabActive")) {
+			if (toggleTree()) {
+				we_cmd('loadVTab', table, 0);
+			}
+		} else {
+			setActiveVTab(no);
+			treeOut();
+			we_cmd('loadVTab', table, 0);
+		}
+	}
+
 	function setActiveVTab(no) {
 		var allTabs = document.getElementById("vtabs").getElementsByClassName("tab");
 		for (var i = 0; i < allTabs.length; i++) {
 			allTabs[i].className = "tab " + (i == no ? "tabActive" : "tabNorm");
 		}
 	}
+
 	function setTab(table) {
 		switch (table) {
 			default:

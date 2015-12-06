@@ -21,7 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-@import "config.css";
+@import "config.scss";
 
 body{
 	margin:0px;
@@ -121,7 +121,6 @@ body{
 	height:$defaultEditorTabHeight;
 	width:100%;
 	background-color: Silver;
-	border-top: 1px solid #000000;
 }
 
 #multiEditorEditorFramesetsDiv{

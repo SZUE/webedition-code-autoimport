@@ -60,7 +60,7 @@ body{
 	bottom:0px;
 	left:0px;
 	right:0px;
-	height:40px;
+	height:$editorFooterHeight;
 	background-color:#f0f0f0;
 	background-color:grey;/*for old browsers*/
 	background: linear-gradient(#B4B3B3, #C6C5C5);
@@ -71,7 +71,7 @@ body{
 	top:22px;
 	left:0px;
 	right:0px;
-	bottom:40px;
+	bottom:$editorFooterHeight;
 	border-bottom: 1px solid black;
 	border-top: 1px solid black;
 }

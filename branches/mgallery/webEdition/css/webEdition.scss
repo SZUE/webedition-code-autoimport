@@ -130,7 +130,7 @@ body.radient{
 	margin:0px;
 	border:0px none;
 	position:fixed;
-	top:$menuHeight;
+	top:$menuHeight+1px;
 	bottom:0px;
 	left:0px;
 	right:0px;
@@ -139,7 +139,7 @@ body.radient{
 		position:absolute;
 		top:0px;
 		bottom:0px;
-		border-left:1px solid black;
+		border-left:1px solid #192C3A;
 		overflow: hidden;
 		iframe{
 			border:0px;
@@ -149,7 +149,7 @@ body.radient{
 		}
 	}
 	#sidebarDiv{
-		border-left:1px solid black;
+		border-left:1px solid #192C3A;
 		position:absolute;
 		top:0px;
 		bottom:0px;
@@ -235,7 +235,7 @@ td.boxHeader{
 	bottom:0px;
 	left:0px;
 	display:none;
-	border-right:1px solid black;
+	//border-right:1px solid #192C3A;
 }
 #rframe{
 	border:0px;
@@ -284,7 +284,7 @@ td.boxHeader{
 	#bm_searchField{
 		position:absolute;
 		bottom:0px;
-		height:40px;
+		height:$editorFooterHeight;
 		left:0px;
 		right:0px;
 		overflow: hidden;
@@ -331,6 +331,10 @@ td.boxHeader{
 #eHeaderBody,
 #footerBody{
 	overflow: hidden;
+}
+#eHeaderBody #tabContainer div{
+	min-width:5em;
+	text-align: center;
 }
 
 #treeheader,
@@ -767,7 +771,7 @@ optgroup{
 	right:0px;
 	height:32px;
 	line-height: 32px;
-	border-bottom: 1px solid black;
+	border-bottom: 1px solid #192C3A;
 	#logout,#home{
 		height:32px;
 		float: left;
@@ -779,6 +783,7 @@ optgroup{
 		position:absolute;
 		right:5px;
 		float:none;
+		border-left: 2px solid #2F5889;
 	}
 	#msgheadertable{
 		position:relative;
@@ -870,6 +875,7 @@ table.error{
 	margin-left: 1px;
 	margin-right: 1px;
 	text-align: center;
+	border-right: 1px solid #2F5889;
 
 	&:hover{
 		background: linear-gradient(to bottom, #345881, #284A70) transparent !important;
@@ -1473,4 +1479,34 @@ span.msgRead{
 }
 span.msgUnRead{
 	color:#006db8;
+}
+
+body.editFrameset{
+	/*editor frameset*/
+	overflow:hidden;
+	iframe{
+		border:0px;
+		width:100%;
+		height:100%;
+		overflow:hidden;
+	}
+	div{
+		position:absolute;
+		left:0px;
+		right:0px;
+	}
+	div.editHeader{
+		top:0px;
+	}
+	div.mainEditor,
+	div.contenteditor{
+		bottom:$editorFooterHeight;
+	}
+	div.editorButtonFrame{
+		position:absolute;
+		bottom:0px;
+		left:0px;
+		right:0px;
+		height:$editorFooterHeight;
+	}
 }
