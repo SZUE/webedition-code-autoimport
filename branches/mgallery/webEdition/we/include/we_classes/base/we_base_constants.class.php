@@ -42,7 +42,7 @@ abstract class we_base_constants{
 	const WE_EDITPAGE_INFO = 2;
 	const WE_EDITPAGE_PREVIEW = 3;
 	const WE_EDITPAGE_WORKSPACE = 4;
-	const WE_EDITPAGE_METAINFO = 5;
+	//const WE_EDITPAGE_METAINFO = 5; unused!
 	const WE_EDITPAGE_FIELDS = 6;
 	const WE_EDITPAGE_SEARCH = 7;
 	const WE_EDITPAGE_SCHEDULER = 8;
