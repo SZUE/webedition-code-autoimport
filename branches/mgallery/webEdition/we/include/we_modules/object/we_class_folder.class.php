@@ -40,7 +40,7 @@ class we_class_folder extends we_folder{
 		$this->IsClassFolder = 1;
 		array_push($this->persistent_slots, 'searchclass', 'TriggerID', 'TableID');
 		if(isWE()){
-			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_CFWORKSPACE, we_base_constants::WE_EDITPAGE_FIELDS, we_base_constants::WE_EDITPAGE_INFO);
+			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_FIELDS, we_base_constants::WE_EDITPAGE_INFO);
 		}
 		$this->ContentType = we_base_ContentTypes::FOLDER;
 	}
@@ -157,8 +157,8 @@ class we_class_folder extends we_folder{
 				return 'we_editors/we_editor_properties.inc.php';
 			case we_base_constants::WE_EDITPAGE_INFO:
 				return 'we_editors/we_editor_info.inc.php';
-			case we_base_constants::WE_EDITPAGE_CFWORKSPACE:
-				return 'we_modules/object/we_classFolder_properties.inc.php';
+/*			case we_base_constants::WE_EDITPAGE_CFWORKSPACE:
+				return 'we_modules/object/we_classFolder_properties.inc.php';*/
 			case we_base_constants::WE_EDITPAGE_FIELDS:
 				return 'we_modules/object/we_classFolder_fields.inc.php';
 			case we_base_constants::WE_EDITPAGE_WEBUSER:

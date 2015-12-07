@@ -68,9 +68,9 @@ switch($_SESSION['weS']['we_mode']){
 			}
 
 			// Bug Fix #6062
-			if(in_array(we_base_constants::WE_EDITPAGE_CFWORKSPACE, $we_doc->EditPageNrs)){
+			/*if(in_array(we_base_constants::WE_EDITPAGE_CFWORKSPACE, $we_doc->EditPageNrs)){
 				$we_tabs->addTab(new we_tab('y<i class="fa fa-lg fa-desktop"></i>' . g_l('weClass', '[workspace]'), (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_CFWORKSPACE) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_CFWORKSPACE . ",'" . $we_transaction . "');", array("id" => "tab_" . we_base_constants::WE_EDITPAGE_CFWORKSPACE)));
-			}
+			}*/
 
 			if(in_array(we_base_constants::WE_EDITPAGE_INFO, $we_doc->EditPageNrs) && permissionhandler::hasPerm("CAN_SEE_INFO")){
 				$jscmd = "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_INFO . ",'" . $we_transaction . "');";
