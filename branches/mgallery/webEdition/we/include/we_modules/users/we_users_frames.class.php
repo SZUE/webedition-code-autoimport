@@ -112,15 +112,6 @@ var cgroup=' . ($_SESSION['user']['ID'] ? intval(f('SELECT ParentID FROM ' . USE
 		return we_html_element::htmlForm(array("name" => "we_form_treefooter"), $table->getHtml());
 	}
 
-	protected function getHTMLEditor(){//TODO: Throw out the the exeption for properties/edbody and use parent
-		$body = we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;'), we_html_element::htmlIFrame('edheader', $this->frameset . '&pnt=edheader&home=1', 'position: absolute; top: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;', '', '', false) .
-				we_html_element::htmlIFrame('edbody', $this->frameset . '&pnt=edbody&home=1', 'position: absolute; top: 40px; bottom: 40px; left: 0px; right: 0px;', 'border:0px;width:100%;height:100%;') .
-				we_html_element::htmlIFrame('edfooter', $this->frameset . '&pnt=edfooter&home=1' . (($sid = we_base_request::_(we_base_request::INT, 'sid')) !== false ? '&sid=' . $sid : '&home=1'), 'position: absolute; bottom: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;', '', '', false)
-		);
-
-		return $this->getHTMLDocument($body);
-	}
-
 	protected function getHTMLEditorHeader(){
 		if(we_base_request::_(we_base_request::BOOL, 'home')){//FIXME: find one working condition
 			return $this->getHTMLDocument(we_html_element::htmlBody(array('style' => 'background-color:#F0EFF0;'), ''));

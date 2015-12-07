@@ -188,9 +188,9 @@ abstract class we_modules_frame{
 
 	protected function getHTMLEditor($extraUrlParams = '', $extraHead = ''){
 		$sid = we_base_request::_(we_base_request::STRING, 'sid');
-		$body = we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;'), we_html_element::htmlIFrame('edheader', $this->frameset . '&pnt=edheader' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, 'position: absolute; top: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;', 'width: 100%; overflow: hidden', '', '', false) .
-				we_html_element::htmlIFrame('edbody', $this->frameset . '&pnt=edbody' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, 'position: absolute; top: 40px; bottom: 40px; left: 0px; right: 0px;', 'border:0px;width:100%;height:100%;') .
-				we_html_element::htmlIFrame('edfooter', $this->frameset . '&pnt=edfooter' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, 'position: absolute; bottom: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;', 'width: 100%; overflow: hidden', '', '', false)
+		$body = we_html_element::htmlBody(array('class' => 'moduleEditor'), we_html_element::htmlIFrame('edheader', $this->frameset . '&pnt=edheader' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, '', 'width: 100%; overflow: hidden',  '', false, 'editorHeader') .
+				we_html_element::htmlIFrame('edbody', $this->frameset . '&pnt=edbody' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, '', 'border:0px;width:100%;height:100%;', '', true, 'editorBody') .
+				we_html_element::htmlIFrame('edfooter', $this->frameset . '&pnt=edfooter' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, '', 'width: 100%; overflow: hidden', '', false,'editorButtonFrame')
 		);
 
 		return $this->getHTMLDocument($body, $extraHead);

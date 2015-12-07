@@ -63,8 +63,9 @@ body{
 		margin: 0px;
 		padding: 0px;
 		border-right: 1px solid #888888;
+		border-bottom:1px solid #9AA2A9;
 		display: inline-block;
-		background-color:#ededed;
+		background-color:#9AA2A9;
 		line-height:21px;
 		cursor:pointer;
 		white-space: nowrap;
@@ -83,7 +84,7 @@ body{
 			font-size: 9px;
 		}
 		&.close{
-			color:#a9a9a9;
+			color:#767B81;
 			padding: 0 .5ex;
 			&:hover i.fa-close{
 				color:black;
@@ -120,7 +121,7 @@ body{
 	top:0px;
 	height:$defaultEditorTabHeight;
 	width:100%;
-	background-color: Silver;
+	background-color: #CED1D3;
 }
 
 #multiEditorEditorFramesetsDiv{

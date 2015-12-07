@@ -61,9 +61,9 @@ body{
 	left:0px;
 	right:0px;
 	height:$editorFooterHeight;
-	background-color:#f0f0f0;
-	background-color:grey;/*for old browsers*/
-	background: linear-gradient(#B4B3B3, #C6C5C5);
+		background: linear-gradient(to bottom, #B4B3B3, #C6C5C5) transparent;
+		border-top: 2px groove white;
+
 }
 
 #weSidebarContentDiv{
@@ -72,7 +72,6 @@ body{
 	left:0px;
 	right:0px;
 	bottom:$editorFooterHeight;
-	border-bottom: 1px solid black;
 	border-top: 1px solid black;
 }
 
