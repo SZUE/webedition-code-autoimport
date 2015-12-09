@@ -37,6 +37,7 @@ class rpcGetMouseOverDivsCmd extends rpcCmd{
 
 		$GLOBALS['we_cmd_obj'] = $_SESSION['weS']['weSearch'];
 		$sview = new we_search_view();
+		$sview->Model->initByHttp($whichsearch); // FIXME: when moving searchProperties to search_search we init model there!
 
 		switch($setView){
 			case we_search_view::VIEW_ICONS:

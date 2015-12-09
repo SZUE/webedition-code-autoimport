@@ -29,7 +29,6 @@ class rpcGetSearchParametersCmd extends rpcCmd{
 
 		we_html_tools::protect();
 
-
 		$pos = we_base_request::_(we_base_request::STRING, 'position', '');
 		$whichsearch = we_base_request::_(we_base_request::STRING, 'whichsearch', '');
 		$foundItems = $_SESSION['weS']['weSearch']['foundItems' . $whichsearch];
@@ -41,6 +40,7 @@ class rpcGetSearchParametersCmd extends rpcCmd{
 
 		$GLOBALS['we_cmd_obj'] = true;
 		$sview = new we_search_view();
+		$sview->Model->initByHttp($whichsearch); // FIXME: when moving searchProperties to search_search we init model there!
 
 		switch($pos){
 			case 'top':

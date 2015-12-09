@@ -626,7 +626,7 @@ weCollectionEdit = {
 	enterDrag: function (type, view, evt, elem) {
 		var el = this.getItem(elem);
 		var data = evt.dataTransfer.getData("text") ? evt.dataTransfer.getData("text").split(',') : top.dd.dataTransfer.text.split(',');
-		var c, i;
+		var c, i, newPos;
 
 		if (this.view === 'grid' && type === 'item') {
 			this.outMouse(type, this.view, elem);
@@ -635,8 +635,7 @@ weCollectionEdit = {
 		switch (data[0]) {
 			case 'moveItem':
 				if (type === 'item') {
-					c = this.ct[this.view],
-									newPos;
+					c = this.ct[this.view];
 
 					if (!this.dd.moveItem.removed) {
 						newPos = [].indexOf.call(c.children, el);

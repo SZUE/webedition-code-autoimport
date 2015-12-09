@@ -25,8 +25,8 @@ we_html_tools::protect();
 
 echo we_html_tools::getHtmlTop() .
 	we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
- we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
- we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js');
+	we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
+	we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js');
 
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
@@ -52,7 +52,7 @@ echo we_html_tools::getCalendarFiles() .
 
 		echo $doclistView->getHTMLforDoclist(array(
 			array('html' => $doclistView->getSearchDialog()),
-			array('html' => '<div id="parametersTop_DoclistSearch">' . $doclistView->getSearchParameterTop($foundItems) . '</div>' . $doclistView->tblList($content, $headline, "doclist") . "<div id='parametersBottom_DoclistSearch'>" . $doclistView->getSearchParameterBottom($GLOBALS['we_doc']->Table, $foundItems) . "</div>"),
+			array('html' => '<div id="parametersTop_DoclistSearch">' . $doclistView->getSearchParameterTop($foundItems, we_search_view::SEARCH_DOCLIST) . '</div>' . $doclistView->tblList($content, $headline, "doclist") . "<div id='parametersBottom_DoclistSearch'>" . $doclistView->getSearchParameterBottom($foundItems, we_search_view::SEARCH_DOCLIST, $GLOBALS['we_doc']->Table) . "</div>"),
 		)) .
 		we_html_element::htmlHiddens(array(
 			'obj' => 1,

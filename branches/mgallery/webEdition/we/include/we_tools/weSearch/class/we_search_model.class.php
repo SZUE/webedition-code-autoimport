@@ -143,6 +143,8 @@ class we_search_model extends we_tool_model{
 	public $searchFieldsAdvSearch = array();
 	public $activTab = 1;
 
+	public $mode = 0;
+
 	/**
 	 * Default Constructor
 	 * Can load or create new searchtool object depends of parameter
@@ -166,6 +168,35 @@ class we_search_model extends we_tool_model{
 			if(is_string($cur) && substr($cur, 0, 2) === 'a:'){
 				$this->{$key} = we_unserialize($cur);
 			}
+		}
+	}
+
+	function initByHttp($whichSearch){
+		// IMPORTANT: we actually make a pratial init only: serach fields are initialized in we_search_view::searchProperties()
+		switch($whichSearch){
+			case we_search_view::SEARCH_DOCS:
+				$this->OrderDocSearch = we_base_request::_(we_base_request::STRING, 'we_cmd', $this->OrderDocSearch, 'Order' . $whichSearch);
+				$this->setViewDocSearch = we_base_request::_(we_base_request::STRING, 'we_cmd', $this->setViewDocSearch, 'setView' . $whichSearch);
+				$this->searchstartDocSearch = we_base_request::_(we_base_request::INT, 'we_cmd', $this->searchstartDocSearch, 'searchstart' . $whichSearch);
+				$this->anzahlDocSearch = we_base_request::_(we_base_request::INT, 'we_cmd', $this->anzahlDocSearch, 'anzahl' . $whichSearch);
+				break;
+			case we_search_view::SEARCH_TMPL:
+				$this->OrderTmplSearch = we_base_request::_(we_base_request::STRING, 'we_cmd', $this->OrderTmplSearch, 'Order' . $whichSearch);
+				$this->setViewTmplSearch = we_base_request::_(we_base_request::STRING, 'we_cmd', $this->setViewTmplSearch, 'setView' . $whichSearch);
+				$this->searchstartTmplSearch = we_base_request::_(we_base_request::INT, 'we_cmd', $this->searchstartTmplSearch, 'searchstart' . $whichSearch);
+				$this->anzahlTmplSearch = we_base_request::_(we_base_request::INT, 'we_cmd', $this->anzahlTmplSearch, 'anzahl' . $whichSearch);
+				break;
+			case we_search_view::SEARCH_MEDIA:
+				$this->OrderMediaSearch = we_base_request::_(we_base_request::STRING, 'we_cmd', $this->OrderMediaSearch, 'Order' . $whichSearch);
+				$this->setViewMediaSearch = we_base_request::_(we_base_request::STRING, 'we_cmd', $this->setViewMediaSearch, 'setView' . $whichSearch);
+				$this->searchstartMediaSearch = we_base_request::_(we_base_request::INT, 'we_cmd', $this->searchstartMediaSearch, 'searchstart' . $whichSearch);
+				$this->anzahlMediaSearch = we_base_request::_(we_base_request::INT, 'we_cmd', $this->anzahlMediaSearch, 'anzahl' . $whichSearch);
+				break;
+			case we_search_view::SEARCH_ADV:
+				$this->OrderAdvSearch = we_base_request::_(we_base_request::STRING, 'we_cmd', $this->OrderAdvSearch, 'Order' . $whichSearch);
+				$this->setViewAdvSearch = we_base_request::_(we_base_request::STRING, 'we_cmd', $this->setViewAdvSearch, 'setView' . $whichSearch);
+				$this->searchstartAdvSearch = we_base_request::_(we_base_request::INT, 'we_cmd', $this->searchstartAdvSearch, 'searchstart' . $whichSearch);
+				$this->anzahlAdvSearch = we_base_request::_(we_base_request::INT, 'we_cmd', $this->anzahlAdvSearch, 'anzahl' . $whichSearch);
 		}
 	}
 

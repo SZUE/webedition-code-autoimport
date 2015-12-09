@@ -179,7 +179,7 @@ body.radient{
 		span{
 			position: absolute;
 			display:block;
-			bottom: -12px;
+			bottom: -15px;
 			left:4px;
 			width:$vtabHeight;
 			-webkit-transform:rotate(-90deg); /* Chrome, Opera 15+, Safari 3.1+ */
@@ -1314,104 +1314,94 @@ div.collection-content{
 			color: inherit;
 			background: inherit;
 		}
-		div{
-			&.divContent{
+		div.divToolbar{
+			position: absolute;
+			bottom: 0px;
+			width: 100%;
+			height: auto;
+			min-height: 30px;
+			text-align: right;
+			padding-bottom: 6px;
+			background-color: #f5f5f5;
+			opacity: 0.6;
+			display: none;
+			padding: 6px 0 0 0;
+			cursor: default;
+		}
+		div.toolbarLeft{
+			float: left;
+			width: 26px;
+			padding: 4px 0 0 10px;
+			text-align: left;
+			font-size: 14px;
+		}
+		div.toolbarRight{
+			float: right;
+			width: auto;
+		}
+		div.toolbarAttribs{
+			float: left;
+			width: auto;
+			padding: 6px 0 4px 0;
+		}
+
+		.toolbarAttr{
+			width: 24px;
+			float: left;
+			text-align: right;
+			font-size: 12px
+		}
+		.toolbarBtns{
+			width: auto;
+			float: right;
+		}
+		div.divContent{
+			position: absolute;
+			left: 0;
+			top: 0;
+			bottom: 14px;
+			right: 14px;
+			border: 1px solid #006db8;
+			float: left;
+			display: block;
+			background-color: white;
+			background-repeat: no-repeat;
+			background-position: center center;
+			background-size: contain;
+			vertical-align: middle;
+			cursor: default;
+
+			.divInner{
 				position: absolute;
-				left: 0;
-				top: 0;
-				bottom: 14px;
-				right: 14px;
-				border: 1px solid #006db8;
-				float: left;
-				display: block;
-				background-color: white;
-				background-repeat: no-repeat;
-				background-position: center center;
-				background-size: contain;
-				vertical-align: middle;
-				cursor: default;
-
-				&.divInner{
-					position: absolute;
-					top: 0px;
-					bottom: 30px;
-					width: 100%;
-					padding: 40% 0 0 0;
-					text-align: center;
-					span{
-						font-size: 24px;
-						&:first-child{
-							color: #aaaaaa;
-						}
+				top: 0px;
+				bottom: 30px;
+				width: 100%;
+				padding: 40% 0 0 0;
+				text-align: center;
+				span{
+					font-size: 24px;
+					&:first-child{
+						color: #aaaaaa;
 					}
-
 				}
-
-				&.divTitle{
-					padding: 7% 0 0 0;
-					width: 80%;
-					white-space: nowrap;
-					overflow: hidden;
-					text-overflow: ellipsis;
-				}
-				&.divToolbar{
-					position: absolute;
-					bottom: 0;
-					width: 100%;
-					height: auto;
-					min-height: 30px;
-					text-align: right;
-					padding-bottom: 6px;
-					background-color: #f5f5f5;
-					opacity: 0.6;
-					display: none;
-					padding: 6px 0 0 0;
-					cursor: default;
-				}
-
-				&.toolbarLeft{
-					float: left;
-					width: 26px;
-					padding: 4px 0 0 10px;
-					text-align: left;
-					font-size: 14px;
-				}
-
-				&.toolbarRight{
-					float: right;
-					width: auto;
-				}
-
-				&.toolbarAttribs{
-					float: left;
-					width: auto;
-					padding: 6px 0 4px 0;
-				}
-
-				&.toolbarAttr{
-					width: 24px;
-					float: left;
-					text-align: right;
-					font-size: 12px
-				}
-
-				&.toolbarBtns{
-					width: auto;
-					float: right;
-				}
-
-				&.divSpace{
-					position: absolute;
-					top: 0;
-					right: 0;
-					bottom: 14px;
-					width: 12px;
-					border: 1px solid white;
-					float: left;
-					display: block;
-				}
-
 			}
+		}
+		.divTitle{
+			padding: 7% 0 0 0;
+			width: 80%;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+		.divSpace{
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 14px;
+			width: 12px;
+			border: 1px solid white;
+			float: left;
+			display: block;
 		}
 	}
 }

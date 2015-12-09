@@ -37,18 +37,18 @@ class rpcGetSearchParametersCmd extends rpcCmd{
 		if(($trans = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0))){
 			$we_dt = isset($_SESSION['weS']['we_data'][$trans]) ? $_SESSION['weS']['we_data'][$trans] : '';
 		}
-		$doc = 'we_folder'; //we_base_request::_(we_base_request::STRING, 'classname', 'we_folder');
+		$doc = $we_dt[0]['ClassName']; //we_base_request::_(we_base_request::STRING, 'classname');
 		$_document = new $doc;
 		$_document->we_initSessDat($we_dt);
 		$doclistView = new $_document->doclistViewClass(new $_document->doclistSearchClass($_document->doclistModel));
 
 		switch($pos){
 			case "top":
-				$code = $doclistView->getSearchParameterTop($foundItems);
+				$code = $doclistView->getSearchParameterTop($foundItems, we_search_view::SEARCH_DOCLIST);
 				break;
 			case "bottom":
 				$GLOBALS['setInputSearchstart'] = 1;
-				$code = $doclistView->getSearchParameterBottom(FILE_TABLE, $foundItems);
+				$code = $doclistView->getSearchParameterBottom($foundItems, we_search_view::SEARCH_DOCLIST, $_document->Table);
 		}
 
 		$resp->setData("data", $code);

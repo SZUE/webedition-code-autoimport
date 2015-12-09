@@ -44,7 +44,7 @@ class we_doclist_model{// extends weModelBase{
 	/**
 	 * @var integer: position to start the search
 	 */
-	public $searchstart = 0;
+	public $searchstartDoclistSearch = 0;
 
 	/**
 	 * @var array: includes the text to search for
@@ -64,17 +64,17 @@ class we_doclist_model{// extends weModelBase{
 	/**
 	 * @var tinyint: flag that shows what view is set in each search
 	 */
-	public $setView = 'list';
+	public $setViewDoclistSearch = 'list';
 
 	/**
 	 * @var int: gives the number of entries in each search for one page
 	 */
-	public $anzahl = 10;
+	public $anzahlDoclistSearch = 10;
 
 	/**
 	 * @var string: gives the order
 	 */
-	public $order = 'Text';
+	public $OrderDoclistSearch = 'Text';
 
 	/**
 	 * @var array: includes the searchfiels which you are searching in
@@ -84,6 +84,7 @@ class we_doclist_model{// extends weModelBase{
 	public $mode = 0;
 	public $height = 0;
 	public $transaction = '';
+	public $isFolder = false;
 
 	/**
 	 * Default Constructor
@@ -96,7 +97,7 @@ class we_doclist_model{// extends weModelBase{
 		$this->transaction = $transaction;
 		$this->searchTable = $searchTable;
 		$this->folderID = $folderID;
-		$this->setView = $setView;
+		$this->setViewDoclistSearch = $setView;
 		$this->whichSearch = we_search_view::SEARCH_DOCLIST;
 
 		/*
@@ -118,7 +119,7 @@ class we_doclist_model{// extends weModelBase{
 		if(isset($_REQUEST['searchstart' . $this->whichSearch]) || isset($request['searchstart' . $this->whichSearch])){
 			if(isset($_REQUEST['searchFields' . $this->whichSearch])){
 				$_REQUEST['we_cmd']['searchFields' . $this->whichSearch] = $_REQUEST['searchFields' . $this->whichSearch];
-				$_REQUEST['we_cmd']['location' . $this->whichSearch] =  $_REQUEST['location' . $this->whichSearch];
+				$_REQUEST['we_cmd']['location' . $this->whichSearch] = isset($_REQUEST['location' . $this->whichSearch]) ? $_REQUEST['location' . $this->whichSearch] : array();
 				$_REQUEST['we_cmd']['search' . $this->whichSearch] = $_REQUEST['search' . $this->whichSearch];
 			} else {
 				foreach($request as $k => $v){
@@ -153,10 +154,10 @@ class we_doclist_model{// extends weModelBase{
 			$this->search = !$this->mode ? array('') : array_map('trim', we_base_request::_(we_base_request::STRING, 'we_cmd', array(''), 'search' . $this->whichSearch));
 			$this->location = !$this->mode ? array('') : we_base_request::_(we_base_request::STRING, 'we_cmd', array(''), 'location' . $this->whichSearch);
 
-			$this->order = we_base_request::_(we_base_request::STRING, 'we_cmd', $this->order, 'Order' . $this->whichSearch);
-			$this->setView = we_base_request::_(we_base_request::STRING, 'we_cmd', $this->setView, 'setView' . $this->whichSearch);
-			$this->searchstart = we_base_request::_(we_base_request::INT, 'we_cmd', $this->searchstart, 'searchstart' . $this->whichSearch);
-			$this->anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', $this->anzahl, 'anzahl' . $this->whichSearch);
+			$this->OrderDoclistSearch = we_base_request::_(we_base_request::STRING, 'we_cmd', $this->OrderDoclistSearch, 'Order' . $this->whichSearch);
+			$this->setViewDoclistSearch = we_base_request::_(we_base_request::STRING, 'we_cmd', $this->setViewDoclistSearch, 'setView' . $this->whichSearch);
+			$this->searchstartDoclistSearch = we_base_request::_(we_base_request::INT, 'we_cmd', $this->searchstartDoclistSearch, 'searchstart' . $this->whichSearch);
+			$this->anzahlDoclistSearch = we_base_request::_(we_base_request::INT, 'we_cmd', $this->anzahlDoclistSearch, 'anzahl' . $this->whichSearch);
 			$this->height = count($this->searchFields);
 
 			// reindex search arrays

@@ -200,6 +200,8 @@ class we_collection extends we_root{
 	}
 
 	function formContent($fixedRemTable = false){
+		$fixedRemTable = true; $this->remCT = 'tblFiles'; // FIXME: remove this line when object collections are implemented
+
 		$valsRemTable = array(
 			'tblFile' => g_l('navigation', '[documents]')
 		);

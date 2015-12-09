@@ -36,7 +36,7 @@ class we_doclist_search extends we_search_search{
 		return $this->Model;
 	}
 	
-	public function searchProperties($table = FILE_TABLE){
+	public function searchProperties($table = ''){
 
 		$DB_WE = new DB_WE();
 		$foundItems = 0;
@@ -45,11 +45,12 @@ class we_doclist_search extends we_search_search{
 
 		$searchFields = $this->Model->searchFields;
 		$searchText = $this->Model->search;
+		$table = $table ? : ($this->Model->searchTable ? : FILE_TABLE);
 		$location = $this->Model->location;
-		$_order = $this->Model->order;
-		//$_view = $this->Model->setView;
-		$_searchstart = $this->Model->searchstart;
-		$_anzahl= $this->Model->anzahl;
+		$_order = $this->Model->OrderDoclistSearch;
+		//$_view = $this->Model->setViewDoclistSearch;
+		$_searchstart = $this->Model->searchstartDoclistSearch;
+		$_anzahl= $this->Model->anzahlDoclistSearch;
 
 		$where = array();
 		$this->settable($table);
@@ -121,10 +122,12 @@ class we_doclist_search extends we_search_search{
 			}
 
 			$where[] = 'AND ParentID=' . intval($this->Model->folderID);
-
 			switch($table){
 				case FILE_TABLE:
 					$where[] = 'AND (RestrictOwners IN (0,' . intval($_SESSION['user']['ID']) . ') OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Owners))';
+					break;
+				case TEMPLATES_TABLE:
+					//$where[] = 'AND (RestrictUsers IN (0,' . intval($_SESSION['user']['ID']) . ') OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Users))';
 					break;
 				case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 					$where[] = 'AND (RestrictOwners IN (0,' . intval($_SESSION['user']['ID']) . ') OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Owners))';
@@ -139,7 +142,7 @@ class we_doclist_search extends we_search_search{
 			$this->insertInTempTable($whereQuery, $table, id_to_path($this->Model->folderID) . '/');
 
 			$foundItems = $this->countitems($whereQuery, $table);
-			$_SESSION['weS']['weSearch']['foundItems'] = $foundItems;
+			$_SESSION['weS']['weSearch']['foundItems'] = $this->founditems = $foundItems;
 
 			$this->selectFromTempTable($_searchstart, $_anzahl, $_order);
 

@@ -66,6 +66,7 @@ class we_search_search extends we_search_base{
 	private $collectionMetaSearches = array();
 	private $usedMedia = array();
 	private $usedMediaLinks = array();
+	public $founditems = 0;
 
 	/**
 	 * @abstract get data from fields, used in the doclistsearch
@@ -905,7 +906,7 @@ class we_search_search extends we_search_base{
 		}
 
 		$this->where = '1 ' . ($where ? (((substr(trim($where), 0, 4) !== 'AND ') ? 'AND ' : ' ') . trim($where)) : ($this->where ? 'AND ' . $this->where : ''));
-
+		//we_database_base::t_e_query(3);
 		switch($this->table){
 			case FILE_TABLE:
 				$tmpTableWhere = '';
@@ -913,7 +914,7 @@ class we_search_search extends we_search_base{
 					$this->where .= ' AND Path LIKE "%' . $this->db->escape($path) . '%" ';
 					$tmpTableWhere = ' AND DocumentID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE Path LIKE "' . $this->db->escape($path) . '%" )';
 				}
-				//we_database_base::t_e_query(1);
+
 				$this->db->query('INSERT INTO SEARCH_TEMP_TABLE (docID,docTable,Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,CreationDate,CreatorID,ModDate,Published,Extension) SELECT ID,"' . FILE_TABLE . '",Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,CreationDate,CreatorID,ModDate,Published,Extension FROM `' . FILE_TABLE . '` WHERE ' . $this->where);
 
 				//first check published documents
@@ -957,6 +958,10 @@ class we_search_search extends we_search_base{
 
 			case TEMPLATES_TABLE:
 				$this->db->query("INSERT INTO SEARCH_TEMP_TABLE (docID,docTable,Text,Path,ParentID,IsFolder,ContentType,SiteTitle,CreationDate,CreatorID,ModDate,Extension) SELECT ID,'" . TEMPLATES_TABLE . "',Text,Path,ParentID,IsFolder,ContentType,Path,CreationDate,CreatorID,ModDate,Extension FROM `" . TEMPLATES_TABLE . "` WHERE " . $this->where);
+				break;
+
+			case VFILE_TABLE:
+				$this->db->query("INSERT INTO SEARCH_TEMP_TABLE (docID,docTable,Text,Path,ParentID,IsFolder,ContentType,CreationDate,CreatorID,ModDate,remTable,remCT,remClass) SELECT ID,'" . VFILE_TABLE . "',Text,Path,ParentID,IsFolder,ContentType,CreationDate,CreatorID,ModDate,remTable,remCT,remClass FROM `" . VFILE_TABLE . "` WHERE " . $this->where);
 				break;
 
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
@@ -1016,7 +1021,7 @@ class we_search_search extends we_search_base{
 		if(is_array($docs) && $docs){
 			foreach($docs as $v){
 				if($v['Path']){
-					$this->db->query('UPDATE SEARCH_TEMP_TABLE SET `media_filesize`="' . intval(filesize($_SERVER['DOCUMENT_ROOT'] . $v['Path'])) . '" WHERE docID=' . intval($v['docID']) . ' AND DocTable="' . FILE_TABLE . '" LIMIT 1');
+					$this->db->query('UPDATE SEARCH_TEMP_TABLE SET `media_filesize`="' . (is_file($_SERVER['DOCUMENT_ROOT'] . $v['Path']) ? intval(filesize($_SERVER['DOCUMENT_ROOT'] . $v['Path'])) : 0) . '" WHERE docID=' . intval($v['docID']) . ' AND DocTable="' . FILE_TABLE . '" LIMIT 1');
 				}
 			}
 		}
@@ -1060,6 +1065,9 @@ class we_search_search extends we_search_base{
 	media_title VARCHAR(255) NOT NULL ,
 	media_filesize BIGINT NOT NULL ,
 	IsUsed TINYINT NOT NULL ,
+	remTable VARCHAR(32) NOT NULL ,
+	remCT VARCHAR(32) NOT NULL ,
+	remClass BIGINT NOT NULL ,
 	UNIQUE KEY k (docID,docTable)
 ) ENGINE = MEMORY' . we_database_base::getCharsetCollation());
 		}

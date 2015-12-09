@@ -462,54 +462,49 @@ WE().consts.g_l.weSearch = {
 ');
 	}
 
-	function getNextPrev($we_search_anzahl, $whichSearch, $isTop = true){
+	function getNextPrev($we_search_anzahl, $whichSearch, $isTop = true, $dataOnly = false){
 		$anzahl = 1;
 		$searchstart = 0;
 
-		if(isset($GLOBALS['we_cmd_obj'])){
-			$anzahl = $_SESSION['weS']['weSearch']['anzahl' . $whichSearch];
-			$searchstart = $_SESSION['weS']['weSearch']['searchstart' . $whichSearch];
-		} else {
-			switch($whichSearch){
-				case self::SEARCH_DOCS :
-					$anzahl = $this->Model->anzahlDocSearch;
-					$searchstart = $this->Model->searchstartDocSearch;
-					break;
-				case self::SEARCH_TMPL :
-					$anzahl = $this->Model->anzahlTmplSearch;
-					$searchstart = $this->Model->searchstartTmplSearch;
-					break;
-				case self::SEARCH_MEDIA :
-					$anzahl = $this->Model->anzahlMediaSearch;
-					$searchstart = $this->Model->searchstartMediaSearch;
-					break;
-				case self::SEARCH_ADV :
-					$anzahl = $this->Model->anzahlAdvSearch;
-					$searchstart = $this->Model->searchstartAdvSearch;
-					break;
-			}
-			if($this->Model->IsFolder){
-				$anzahl = 1;
-			}
+		switch($whichSearch){
+			case we_search_view::SEARCH_DOCS:
+				$order = $this->Model->OrderDocSearch;
+				$view = $this->Model->setViewDocSearch;
+				$searchstart = $this->Model->searchstartDocSearch;
+				$anzahl = $this->Model->anzahlDocSearch;
+				break;
+			case we_search_view::SEARCH_TMPL:
+				$order = $this->Model->OrderTmplSearch;
+				$view = $this->Model->setViewTmplSearch;
+				$searchstart = $this->Model->searchstartTmplSearch;
+				$anzahl = $this->Model->anzahlTmplSearch;
+				break;
+			case we_search_view::SEARCH_MEDIA:
+				$order = $this->Model->OrderMediaSearch;
+				$view = $this->Model->setViewMediaSearch;
+				$searchstart = $this->Model->searchstartMediaSearch;
+				$anzahl = $this->Model->anzahlMediaSearch;
+				break;
+			case we_search_view::SEARCH_ADV:
+				$order = $this->Model->OrderAdvSearch;
+				$view = $this->Model->setViewAdvSearch;
+				$searchstart = $this->Model->searchstartAdvSearch;
+				$anzahl = $this->Model->anzahlAdvSearch;
+				break;
+			case we_search_view::SEARCH_DOCLIST:
+				$order = $this->Model->OrderDoclistSearch;
+				$view = $this->Model->setViewDoclistSearch;
+				$searchstart = $this->Model->searchstartDoclistSearch;
+				$anzahl = $this->Model->anzahlDoclistSearch;
+				break;
 		}
 
-		$out = '<table class="default"><tr><td>' .
-			($searchstart ?
-				we_html_button::create_button(we_html_button::BACK, "javascript:weSearch.back();") :
-				we_html_button::create_button(we_html_button::BACK, "", true, 100, 22, "", "", true)
-			) .
-			'</td><td width="10"></td><td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
-			(($we_search_anzahl - $searchstart) < $anzahl ?
-				$we_search_anzahl :
-				$searchstart + $anzahl
-			) .
-			' ' . g_l('global', '[from]') . ' ' . $we_search_anzahl . '</b></td><td width="10"></td><td>' .
-			(($searchstart + $anzahl) < $we_search_anzahl ?
-				//bt_back
-				we_html_button::create_button(we_html_button::NEXT, "javascript:weSearch.next();") :
-				we_html_button::create_button(we_html_button::NEXT, "", true, 100, 22, "", "", true)
-			) .
-			'</td><td width="10"></td><td>';
+		$disableBack = $searchstart ? false : true;
+		$disableNext = ($searchstart + $anzahl) >= $we_search_anzahl;
+
+		$text = (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
+			(($we_search_anzahl - $searchstart) < $anzahl ? $we_search_anzahl : $searchstart + $anzahl) .
+			' ' . g_l('global', '[from]') . ' ' . $we_search_anzahl;
 
 		$pages = array();
 		if($anzahl){
@@ -517,17 +512,37 @@ WE().consts.g_l.weSearch = {
 				$pages[($i * $anzahl)] = ($i + 1);
 			}
 		}
+		$page = ($anzahl ? ceil($searchstart / $anzahl) * $anzahl : 0);
 
-		$page = $anzahl ? ceil($searchstart / $anzahl) * $anzahl : 0;
-
-		$select = we_html_tools::htmlSelect("page", $pages, 1, $page, false, array("onchange" => "this.form.elements['searchstart" . $whichSearch . "'].value = this.value;search(false);"));
-		if(!isset($GLOBALS['setInputSearchstart']) && !defined('searchstart' . $whichSearch) && $isTop){
-			define('searchstart' . $whichSearch, true);
-			$out .= we_html_tools::hidden("searchstart" . $whichSearch, $searchstart);
+		if($dataOnly){
+			return we_html_element::htmlSpan(array(
+				'class' => 'nextPrevData',
+				'style' => "display:none",
+				'data-setView' => $view,
+				'data-mode' => $this->Model->mode,
+				'data-order' => $order,
+				'data-searchstart' => $searchstart,
+				'data-number' => $anzahl,
+				'data-disableBack' => $disableBack ? 'true' : 'false',
+				'data-disableNext' => $disableNext ? 'true' : 'false',
+				'data-text' => $text,
+				'data-pageValue' => implode(',', array_keys($pages)),
+				'data-pageText' => implode(',', array_values($pages)),
+				'data-page' => $page
+			));
 		}
-		$out .= $select .
-			'</td></tr></table>';
-		return $out;
+
+		$btnBack = we_html_button::create_button(we_html_button::BACK, 'javascript:weSearch.back();', true, 100, 22, '', '', $disableBack, true, '', false, '', 'btnSearchBack');
+		$btnNext = we_html_button::create_button(we_html_button::NEXT, 'javascript:weSearch.next();', true, 100, 22, '', '', $disableNext, true, '', false, '', 'btnSearchNext');
+		$select = we_html_tools::htmlSelect('page', $pages, 1, $page, false, array('onchange' => "this.form.elements.searchstartDoclistSearch.value = this.value; weSearch.search(false);"), 'value', 0, 'selectSearchPages');
+
+		$tbl = new we_html_table(array(), 1, 4);
+		$tbl->setCol(0, 0, array(), $btnBack);
+		$tbl->setCol(0, 1, array('class' => 'defaultfont'), we_html_element::htmlSpan(array('class' => 'spanSearchText', 'style' => 'font-weight:bold;'), $text));
+		$tbl->setCol(0, 2, array(), $btnNext);
+		$tbl->setCol(0, 3, array(), $select);
+
+		return $tbl->getHtml();
 	}
 
 	function getSortImage($for, $whichSearch){
@@ -894,6 +909,7 @@ WE().consts.g_l.weSearch = {
 </tbody></table>';
 	}
 
+	// FIXME: move to we_search_search
 	function searchProperties($whichSearch){
 		$DB_WE = new DB_WE();
 		$workspaces = $_result = $versionsFound = $saveArrayIds = $_tables = $searchText = array();
@@ -1023,10 +1039,31 @@ WE().consts.g_l.weSearch = {
 			$searchFields = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'searchFields' . $whichSearch);
 			$location = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'location' . $whichSearch);
 			$searchText = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 'search' . $whichSearch); //allow to search for tags
-			$_order = we_base_request::_(we_base_request::STRING, 'we_cmd', 'Text', 'Order' . $whichSearch); // IMI_TMP: default = 'Text'
+			$_order = we_base_request::_(we_base_request::STRING, 'we_cmd', 'Text', 'Order' . $whichSearch);
 			$_view = we_base_request::_(we_base_request::STRING, 'we_cmd', self::VIEW_LIST, 'setView' . $whichSearch);
 			$_searchstart = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'searchstart' . $whichSearch);
 			$_anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'anzahl' . $whichSearch);
+
+			// FIXME: initialize/update model at start in some initByHttp/bySession() and use model only
+			// => temporarily we init model here to use when creating view
+			switch($whichSearch){
+				case self::SEARCH_DOCS:
+					$this->Model->searchFieldsDocSearch = $searchFields;
+					$this->Model->locationDocSearch = $location;
+					$this->Model->searchDocSearch = $searchText;
+				case self::SEARCH_TMPL:
+					$this->Model->searchFieldsTmplSearch = $searchFields;
+					$this->Model->locationTmplSearch = $location;
+					$this->Model->searchTmplSearch = $searchText;
+				case self::SEARCH_MEDIA:
+					$this->Model->searchFieldsMediaSearch = $searchFields;
+					$this->Model->locationMediaSearch = $location;
+					$this->Model->searchMediaSearch = $searchText;
+				case self::SEARCH_ADV:
+					$this->Model->searchFieldsAdvSearch = $searchFields;
+					$this->Model->locationAdvSearch = $location;
+					$this->Model->searchAdvSearch = $searchText;
+			}
 		} else {
 			$obj = $this->Model;
 			switch($whichSearch){
@@ -1434,7 +1471,8 @@ WE().consts.g_l.weSearch = {
 					}
 				}
 			}
-			$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = $this->searchclass->getResultCount();
+
+			$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = $this->searchclass->founditems = $this->searchclass->getResultCount();
 		}
 
 		if($_SESSION['weS']['weSearch']['foundItems' . $whichSearch] == 0){
@@ -1790,114 +1828,110 @@ WE().consts.g_l.weSearch = {
 	}
 
 	function getSearchParameterTop($foundItems, $whichSearch){
-		switch(isset($GLOBALS['we_cmd_obj']) ? 'we_cmd_obj' : $whichSearch){
-			case 'we_cmd_obj':
-				$_view = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'setView' . $whichSearch);
-				$view = "setView" . $whichSearch;
-				$_order = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'Order' . $whichSearch);
-				$order = "Order" . $whichSearch;
-				$_anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', '', 'anzahl' . $whichSearch);
-				$anzahl = "anzahl" . $whichSearch;
-				$searchstart = "searchstart" . $whichSearch;
-				break;
-			case self::SEARCH_DOCS :
-				$_view = $this->Model->setViewDocSearch;
-				$view = "setViewDocSearch";
+		switch($whichSearch){
+			case we_search_view::SEARCH_DOCS:
 				$_order = $this->Model->OrderDocSearch;
-				$order = "OrderDocSearch";
+				$_view = $this->Model->setViewDocSearch;
+				$_searchstart = $this->Model->searchstartDocSearch;
 				$_anzahl = $this->Model->anzahlDocSearch;
-				$anzahl = "anzahlDocSearch";
-				$searchstart = "searchstartDocSearch";
 				break;
-			case self::SEARCH_TMPL :
-				$_view = $this->Model->setViewTmplSearch;
-				$view = "setViewTmplSearch";
+			case we_search_view::SEARCH_TMPL:
 				$_order = $this->Model->OrderTmplSearch;
-				$order = "OrderTmplSearch";
+				$_view = $this->Model->setViewTmplSearch;
+				$_searchstart = $this->Model->searchstartTmplSearch;
 				$_anzahl = $this->Model->anzahlTmplSearch;
-				$anzahl = "anzahlTmplSearch";
-				$searchstart = "searchstartTmplSearch";
 				break;
-			case self::SEARCH_MEDIA :
-				$_view = $this->Model->setViewMediaSearch;
-				$view = "setViewMediaSearch";
+			case we_search_view::SEARCH_MEDIA:
 				$_order = $this->Model->OrderMediaSearch;
-				$order = "OrderMediaSearch";
+				$_view = $this->Model->setViewMediaSearch;
+				$_searchstart = $this->Model->searchstartMediaSearch;
 				$_anzahl = $this->Model->anzahlMediaSearch;
-				$anzahl = "anzahlMediaSearch";
-				$searchstart = "searchstartMediaSearch";
 				break;
-			case self::SEARCH_ADV :
-				$_view = $this->Model->setViewAdvSearch;
-				$view = "setViewAdvSearch";
+			case we_search_view::SEARCH_ADV:
 				$_order = $this->Model->OrderAdvSearch;
-				$order = "OrderAdvSearch";
+				$_view = $this->Model->setViewAdvSearch;
+				$_searchstart = $this->Model->searchstartAdvSearch;
 				$_anzahl = $this->Model->anzahlAdvSearch;
-				$anzahl = "anzahlAdvSearch";
-				$searchstart = "searchstartAdvSearch";
+				break;
+			case we_search_view::SEARCH_DOCLIST:
+				$_order = $this->Model->OrderDoclistSearch;
+				$_view = $this->Model->setViewDoclistSearch;
+				$_searchstart = $this->Model->searchstartDoclistSearch;
+				$_anzahl = $this->Model->anzahlDoclistSearch;
 				break;
 		}
 
-		$values = array(10 => 10, 25 => 25, 50 => 50, 100 => 100);
+		$select = we_html_tools::htmlSelect('anzahl' . $whichSearch, array(10 => 10, 25 => 25, 50 => 50, 100 => 100), 1, $_anzahl, false, array('onchange' => "this.form.elements['searchstart" . $whichSearch . "'].value=0;weSearch.search(false);"), 'value', 0, 'selectSearchNumber');
+
+		$tbl = new we_html_table(array('class' => 'default', 'style' => 'margin:12px 0px 12px 19px;'), 1, 7);
+		$tbl->setCol(0, ($c = 0), array('style' => 'font-size:12px; width:125px;'), g_l('searchtool', '[eintraege_pro_seite]') . ':');
+		$tbl->setCol(0, ++$c, array('class' => 'defaultfont lowContrast', 'style' => 'width:60px;'), $select);
+		$tbl->setCol(0, ++$c, array(), $this->getNextPrev($foundItems, $whichSearch));
+		$tbl->setCol(0, ++$c, array(), we_html_button::create_button('fa:iconview,fa-lg fa-th', "javascript:weSearch.setView('" . we_search_view::VIEW_ICONS . "');", true, 40, '', '', '', false));
+		$tbl->setCol(0, ++$c, array(), we_html_button::create_button('fa:listview,fa-lg fa-align-justify', "javascript:weSearch.setView('" . we_search_view::VIEW_LIST . "');", true, 40, '', '', '', false));
+
+		$moreHiddens = '';
+		if($whichSearch === self::SEARCH_DOCLIST){
+			if($this->Model->folderID && $this->Model->searchTable === FILE_TABLE){
+				$tbl->setCol(0, ++$c, array('style' => 'width:50px;'), we_fileupload_ui_importer::getBtnImportFiles($this->Model->folderID));
+			}
+			$btnNewdir = we_html_button::create_button('fa:btn_new_dir,fa-plus,fa-lg fa-folder', "javascript:top.we_cmd('new_document','" . FILE_TABLE . "','','" . we_base_ContentTypes::FOLDER . "','','" . $this->Model->folderID . "')", true, 50, '', '', '', false);
+			$tbl->setCol(0, ++$c, array('style' => 'width:50px;'), $btnNewdir);
+
+			$moreHiddens = we_html_element::htmlHiddens(array(
+				'we_transaction' => $this->Model->transaction,
+			));
+		}
 
 		return we_html_element::htmlHiddens(array(
-				$view => $_view,
-				"position" => '',
-				$order => $_order,
-				"do" => ''
-			)) . '
-<table class="default" style="margin-bottom:12px;">
-<tr>
- <td style="width:30px;"></td>
- <td style="font-size:12px;width:125px;">' . g_l('searchtool', '[eintraege_pro_seite]') . ':</td>
- <td class="defaultfont lowContrast" style="width:60px;">
- ' . we_html_tools::htmlSelect($anzahl, $values, 1, $_anzahl, "", array('onchange' => "this.form.elements['" . $searchstart . "'].value=0;weSearch.search(false);")) . '</td>
- <td style="width:400px;">' . $this->getNextPrev($foundItems, $whichSearch) . '</td>
- <td style="width:35px;">' . we_html_button::create_button("fa:iconview,fa-lg fa-th", "javascript:weSearch.setView('" . self::VIEW_ICONS . "');", true, "", "", "", "", false) . '</td>
- <td>' . we_html_button::create_button("fa:listview,fa-lg fa-align-justify", "javascript:weSearch.setView('" . self::VIEW_LIST . "');", true, "", "", "", "", false) . '</td>
-</tr>
-</table>';
+				'setView' . $whichSearch => $_view,
+				'Order' . $whichSearch => $_order,
+				'mode' => $_mode = $this->Model->mode,
+				'searchstart' . $whichSearch => $_searchstart,
+				'position' => '',
+				'do' => '',
+			)) . $moreHiddens . $tbl->getHtml();
 	}
 
-	function getSearchParameterBottom($foundItems, $whichSearch){
-		$resetButton = (permissionhandler::hasPerm('RESET_VERSIONS') && $whichSearch === "AdvSearch" ?
+	function getSearchParameterBottom($foundItems, $whichSearch, $table = FILE_TABLE){
+		$resetButton = (permissionhandler::hasPerm('RESET_VERSIONS') && $whichSearch === self::SEARCH_ADV ?
 				we_html_button::create_button("reset", "javascript:.weSearch.resetVersions();", true, 100, 22, "", "") :
 				'');
 
+		$actionButton = $actionButtonCheckboxAll = '';
 		switch($whichSearch){
 			case self::SEARCH_ADV:
 			case self::SEARCH_DOCS:
-				if(permissionhandler::hasPerm('PUBLISH')){
+			case self::SEARCH_DOCLIST:
+				if(permissionhandler::hasPerm('PUBLISH') && !($whichSearch === self::SEARCH_DOCLIST && $table === TEMPLATES_TABLE)){
 					$actionButtonCheckboxAll = we_html_forms::checkbox(1, 0, "action_all_" . $whichSearch, "", false, "middlefont", "weSearch.checkAllActionChecks('" . $whichSearch . "')");
 					$actionButton = we_html_button::create_button(we_html_button::PUBLISH, "javascript:weSearch.publishDocs('" . $whichSearch . "');", true, 100, 22, "", "");
-					$publishButtonCheckboxAll = we_html_forms::checkbox(1, 0, "publish_all_" . $whichSearch, "", false, "middlefont", "weSearch.checkAllPubChecks('" . $whichSearch . "')");
-					$publishButton = we_html_button::create_button(we_html_button::PUBLISH, "javascript:weSearch.publishDocs('" . $whichSearch . "');", true, 100, 22, "", "");
 					break;
 				}
-				$actionButton = $actionButtonCheckboxAll = $publishButton = $publishButtonCheckboxAll = "";
+				$actionButton = $actionButtonCheckboxAll = '';
 				break;
 			case self::SEARCH_MEDIA:
 				$actionButtonCheckboxAll = we_html_forms::checkbox(1, 0, "action_all_" . $whichSearch, "", false, "middlefont", "weSearch.checkAllActionChecks('" . $whichSearch . "')");
 				$actionButton = we_html_button::create_button(we_html_button::DELETE, "javascript:weSearch.deleteMediaDocs('" . $whichSearch . "');", true, 100, 22, "", "");
-				$publishButton = $publishButtonCheckboxAll = "";
 				break;
-			default:
-				$actionButton = $actionButtonCheckboxAll = $publishButton = $publishButtonCheckboxAll = "";
 		}
 
+		$tbl = new we_html_table(array('class' => 'default', 'style' => 'margin-top:10px;'), 2, 4);
+		$tbl->setCol(($k = 0), ($c = 0), array('style' => 'font-size:12px;width:12px;'), $actionButtonCheckboxAll);
+		$tbl->setCol($k, ++$c, array('style' => 'font-size:12px;width:125px;'), $actionButton);
+		$tbl->setCol($k, ++$c, array('class' => 'defaultfont lowContrast', 'style' => 'width:48px;height:30px;', 'id' => 'resetBusy' . $whichSearch), '');
+		if($resetButton){
+			$tbl->setCol($k++, ++$c, array('style' => 'font-size:12px;'), $resetButton);
+			$c = 0;
+		}
+		if($whichSearch !== self::SEARCH_DOCLIST){
+			$tbl->setCol(++$k, ($c = 0));
+			$tbl->setCol($k, ++$c);
+			$tbl->setCol($k, ++$c);
+		} 
+		$tbl->setCol($k, ++$c, array(), $this::getNextPrev($foundItems, $whichSearch, false));
 
-		return '<table class="default" style="margin-top:10px;">
-<tr>
-	 <td style="padding-bottom:10px;width:19px;">' . $actionButtonCheckboxAll . '</td>
-	 <td style="font-size:12px;width:140px;">' . $actionButton . '</td>
-	 <td style="width:60px;" id="resetBusy' . $whichSearch . '"></td>
-	 <td style="width:400px;">' . $resetButton . '</td>
-</tr>
-<tr>
-	<td colspan="3"></td>
-	<td style="width:400px;">' . $this->getNextPrev($foundItems, $whichSearch, false) . '</td>
-</tr>
-</table>';
+		return $tbl->getHtml();
 	}
 
 	// FIXME: is obsolete as soon as getSearchDialogOptionalFields() works properly
@@ -2272,7 +2306,7 @@ WE().consts.g_l.weSearch = {
 				break;
 			// for doclistsearch
 			case self::SEARCH_DOCLIST :
-				$view = $this->Model->setView;
+				$view = $this->Model->setViewDoclistSearch;
 		}
 
 		$anz = count($headline);
@@ -2339,7 +2373,8 @@ WE().consts.g_l.weSearch = {
 				for($m = 0; $m < $x; $m++){
 					$out .= '<tr>' . ($whichSearch === self::SEARCH_MEDIA ? self::tblListRowMedia($content[$m]) : self::tblListRow($content[$m])) . '</tr>';
 				}
-				return $out . '</tbody></table>';
+				$out .= '</tbody></table>';
+				break;
 			case self::VIEW_ICONS:
 				$out = '<table class="default" width="100%"><tr><td style="text-align:center">';
 
@@ -2354,9 +2389,9 @@ WE().consts.g_l.weSearch = {
 
 				$out .= '</td></tr></table>' . '<div id="movethemaway" style="display:block">' . self::makeMouseOverDivs($x, $content, $whichSearch) . '</div>';
 					//we_html_element::jsElement("document.getElementById('mouseOverDivs_" . $whichSearch . "').innerHTML = '" . addslashes(self::makeMouseOverDivs($x, $content, $whichSearch)) . "';");
-
-				return $out;
 		}
+
+		return $out .= $this->getNextPrev($this->searchclass->founditems, $whichSearch, true, true);
 	}
 
 	static function makeMouseOverDivs($x, $content, $whichSearch){

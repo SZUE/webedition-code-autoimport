@@ -120,7 +120,7 @@ class we_folder extends we_root{
 			}
 		}
 
-		if($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE){
+		if($this->Table === FILE_TABLE || $this->Table === TEMPLATES_TABLE || $this->Table === VFILE_TABLE){
 			$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_DOCLIST;
 		}
 	}

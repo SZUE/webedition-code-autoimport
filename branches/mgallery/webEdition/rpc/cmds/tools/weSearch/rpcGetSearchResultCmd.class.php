@@ -34,6 +34,7 @@ class rpcGetSearchResultCmd extends rpcCmd{
 		$GLOBALS['we_cmd_obj'] = $_SESSION['weS']['weSearch'];
 
 		$sview = new we_search_view();
+		$sview->Model->initByHttp($whichsearch); // FIXME: when moving searchProperties to search_search we init model there!
 		$sview->rpcCmd = 'GetSearchResult';
 		$content = $sview->searchProperties($whichsearch);
 		$code = $sview->tabListContent($setView, $content, $class = 'middlefont', $whichsearch);

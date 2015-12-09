@@ -85,15 +85,55 @@ weSearch = {
 			}, 10);
 		}
 	},
+	setNextPrevData: function(){
+		var dataElem = this.conf.editorBodyFrame.document.getElementsByClassName('nextPrevData')[0],
+			spanText = this.conf.editorBodyFrame.document.getElementsByClassName('spanSearchText'),
+			btnBack = this.conf.editorBodyFrame.document.getElementsByClassName('btnSearchBack'),
+			btnNext = this.conf.editorBodyFrame.document.getElementsByClassName('btnSearchNext'),
+			selPages = this.conf.editorBodyFrame.document.getElementsByClassName('selectSearchPages'),
+			selPagesVals = dataElem.getAttribute('data-pagevalue').split(','),
+			selPagesTexts = dataElem.getAttribute('data-pagetext').split(','),
+			selPagesPage = dataElem.getAttribute('data-page'),
+			opt, i, j;
+
+		spanText[0].innerHTML = spanText[1].innerHTML = dataElem.getAttribute('data-text');
+		btnBack[0].disabled = btnBack[1].disabled = dataElem.getAttribute('data-disableback') === 'true' ? true: false;
+		btnNext[0].disabled = btnNext[1].disabled = dataElem.getAttribute('data-disablenext') === 'true' ? true: false;
+
+		for(i = 0; i < 2; i++){
+			selPages[i].innerHTML = ''
+			for(j = 0; j < selPagesVals.length; j++){
+				opt = document.createElement("option");
+				opt.text = selPagesTexts[j];
+				opt.value = selPagesVals[j];
+				selPages[i].add(opt);
+			}
+			selPages[i].value = selPagesPage;
+		}
+
+		// FIXME: check if we need to set the following params when html is not overwritten
+		this.conf.editorBodyFrame.document.getElementsByClassName('selectSearchNumber').value = dataElem.getAttribute('data-number');
+		this.conf.editorBodyFrame.document.we_form.elements['setView' + this.conf.whichsearch].value = dataElem.getAttribute('data-setView');
+		this.conf.editorBodyFrame.document.we_form.elements['Order' + this.conf.whichsearch].value = dataElem.getAttribute('data-order');
+		this.conf.editorBodyFrame.document.we_form.elements['mode'].value = dataElem.getAttribute('data-mode');
+	},
 	ajaxCallbackResultList: {
 		success: function (o) {
 			if (o.responseText !== undefined && o.responseText !== '') {
 				weSearch.conf.editorBodyFrame.document.getElementById('scrollContent_' + weSearch.conf.whichsearch).innerHTML = o.responseText;
 				WE().util.setIconOfDocClass(document, 'resultIcon');
+
+				if(weSearch.conf.editorBodyFrame.document.getElementsByClassName('nextPrevData') && weSearch.conf.editorBodyFrame.document.getElementsByClassName('nextPrevData')[0]){
+					weSearch.setNextPrevData();
+				} else {
+					//weSearch.makeAjaxRequestParametersTop();
+					//weSearch.makeAjaxRequestParametersBottom();
+				}
+
+				// FIXME: any need to move mouseover divs to another place?
 				//weSearch.conf.editorBodyFrame.document.getElementById('mouseOverDivs_' + weSearch.conf.whichsearch).innerHTML = weSearch.conf.editorBodyFrame.document.getElementById('movethemaway').innerHTML;
 				//weSearch.conf.editorBodyFrame.document.getElementById('movethemaway').innerHTML = '';
-				weSearch.makeAjaxRequestParametersTop();
-				weSearch.makeAjaxRequestParametersBottom();
+
 			}
 		},
 		failure: function (o) {
@@ -956,26 +996,6 @@ if ((scrollContent.offsetHeight - scrollheight) > 0) {
 		top.YAHOO.util.Connect.asyncRequest("POST", this.conf.ajaxURL, this.ajaxCallbackPublishDocs, "protocol=json&cns=tools/weSearch&cmd=PublishDocs&" + args + "");
 
 	},
-/*
-function publishDocsAjax() {
-	var args = "";
-	var check = "";
-	var checkboxes = document.getElementsByName("publish_docs_doclist");
-	for (var i = 0; i < checkboxes.length; i++) {
-		if (checkboxes[i].checked) {
-			if (check !== "") {
-				check += ",";
-			}
-			check += checkboxes[i].value;
-		}
-	}
-	args += "&we_cmd[0]=" + encodeURI(check);
-	var scroll = document.getElementById("resetBusy");
-	scroll.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><i class=\"fa fa-2x fa-spinner fa-pulse\"></i></td></tr></table>";
-
-	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackPublishDocs, "protocol=json&cns=tools/weSearch&cmd=PublishDocs&" + args + "");
-}
-*/
 	previewVersion: function (ID) {
 		top.we_cmd("versions_preview", ID, 0);
 		//new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR+"we/include/we_versions/weVersionsPreview.php?ID="+ID+"", "version_preview",-1,-1,1000,750,true,true,true,true);

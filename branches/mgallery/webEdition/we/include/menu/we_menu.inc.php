@@ -165,9 +165,9 @@ $we_menu = array(
 		'perm' => 'NEW_OBJECTFILE_FOLDER',
 		'hide' => !defined('OBJECT_TABLE') || ($_SESSION['weS']['we_mode'] != we_base_constants::MODE_NORMAL)
 	),
-	array(// File > New > Directory > Template
+	array(// File > New > Directory > Collection
 		'text' => g_l('javaMenu_global', '[collection_directory]'),
-		'parent' => 1011000,
+		'parent' => 'file_new_dir',
 		'cmd' => 'new_collection_folder',
 		'perm' => 'NEW_COLLECTION_FOLDER',
 		'hide' => $seeMode || !we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION)
