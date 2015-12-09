@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_banner_frames extends we_modules_frame{
-
 	var $edit_cmd = "banner_edit";
 	protected $treeDefaultWidth = 224;
 
@@ -75,10 +74,8 @@ class we_banner_frames extends we_modules_frame{
 			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][statistics]'), ($page == 2 ? we_tab::ACTIVE : we_tab::NORMAL), "setTab(2);"));
 		}
 
-		$tab_head = we_tabs::getHeader();
-
-		$extraHead = $tab_head .
-				we_html_element::jsElement('
+		$extraHead = we_tabs::getHeader() .
+			we_html_element::jsElement('
 function setTab(tab){
 	switch(tab){
 		case ' . we_banner_banner::PAGE_PROPERTY . ':
@@ -91,13 +88,13 @@ function setTab(tab){
 
 		//TODO: we have the following body in several modules!
 		$body = we_html_element::htmlBody(array('onresize' => 'weTabs.setFrameSize()', 'onload' => 'weTabs.setFrameSize()', 'id' => 'eHeaderBody'), we_html_element::htmlDiv(array('id' => 'main'), we_html_element::htmlDiv(array('id' => 'headrow'), we_html_element::htmlNobr(
-												we_html_element::htmlB(str_replace(" ", "&nbsp;", $headline1) . ':&nbsp;') .
-												we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'), '<b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b>'
-												)
-										)
-								) .
-								$we_tabs->getHTML()
+							we_html_element::htmlB(str_replace(" ", "&nbsp;", $headline1) . ':&nbsp;') .
+							we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'), '<b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b>'
+							)
 						)
+					) .
+					$we_tabs->getHTML()
+				)
 		);
 
 		return $this->getHTMLDocument($body, $extraHead);
@@ -124,27 +121,25 @@ function setTab(tab){
 		$rootjs = "";
 		if(!$pid){
 			$rootjs.=
-					$this->Tree->topFrame . '.treeData.clear();' .
-					$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));';
+				$this->Tree->topFrame . '.treeData.clear();' .
+				$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));';
 		}
 		$hiddens = we_html_element::htmlHiddens(array(
-					"pnt" => "cmd",
-					"cmd" => "no_cmd"));
+				"pnt" => "cmd",
+				"cmd" => "no_cmd"));
 
 		return $this->getHTMLDocument(
-						we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-										we_html_element::jsElement($rootjs .
-												$this->Tree->getJSLoadTree(!$pid, we_banner_tree::getItems($pid, $offset, $this->Tree->default_segment))
-										)
-								)
+				we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
+						we_html_element::jsElement($rootjs .
+							$this->Tree->getJSLoadTree(!$pid, we_banner_tree::getItems($pid, $offset, $this->Tree->default_segment))
 						)
+					)
+				)
 		);
 	}
 
 	function getHTMLDCheck(){
 		return $this->getHTMLDocument(we_html_element::htmlBody(array('onload' => 'self.focus();'), $this->View->getHTMLDCheck()));
 	}
-
-
 
 }

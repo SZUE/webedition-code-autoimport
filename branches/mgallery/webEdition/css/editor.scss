@@ -27,11 +27,13 @@ input:invalid {
 }
 .weEditmodeStyle {
 	border: 0px ! important;
+	font-family: $weFont;
 }
 .weEditTable{
 	background-color: #F5F5F5;
 	border: solid #006DB8 1px;
 	color: black;
+	font-family: $weFont;
 }
 
 .spacing0{

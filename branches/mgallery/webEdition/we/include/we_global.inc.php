@@ -974,7 +974,7 @@ function we_templateHead($fullHeader = false){
 	}
 	echo ($fullHeader ? we_html_element::htmlDocType() . '<html><head><title>WE</title>' . we_html_tools::htmlMetaCtCharset($GLOBALS['CHARSET']) : '') .
 	we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();parent.openedWithWE=true;') .
-	STYLESHEET_BUTTONS_ONLY .
+	STYLESHEET_MINIMAL .
 	weSuggest::getYuiFiles() .
 	require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 	if($fullHeader){

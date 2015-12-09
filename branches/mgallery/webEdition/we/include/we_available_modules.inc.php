@@ -25,7 +25,7 @@
 //Notices direkt nach Update
 $GLOBALS['WE_LANGUAGE'] = str_replace('_UTF-8', '', $GLOBALS['WE_LANGUAGE']);
 
-$_we_available_modules = array(
+return array(
 	'users' => array(
 		'name' => 'users',
 		'perm' => 'NEW_USER || NEW_GROUP || SAVE_USER || SAVE_GROUP || DELETE_USER || DELETE_GROUP || ADMINISTRATOR',
@@ -213,4 +213,3 @@ $_we_available_modules = array(
 		'childmodule' => ''
 	),
 );
-return $_we_available_modules;

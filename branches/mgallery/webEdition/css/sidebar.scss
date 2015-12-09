@@ -50,7 +50,6 @@ body{
 	height:$defaultEditorTabHeight;
 	line-height:$defaultEditorTabHeight;
 	background-color: silver;
-	font-family: sans-serif;
 	font-size: 10px;
 }
 
@@ -61,8 +60,8 @@ body{
 	left:0px;
 	right:0px;
 	height:$editorFooterHeight;
-		background: linear-gradient(to bottom, #B4B3B3, #C6C5C5) transparent;
-		border-top: 2px groove white;
+	background: linear-gradient(to bottom, #B4B3B3, #C6C5C5) transparent;
+	border-top: 2px groove white;
 
 }
 

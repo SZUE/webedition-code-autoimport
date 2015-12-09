@@ -32,7 +32,6 @@ $hasGD = isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ContentType == we_base
 echo we_html_element::cssLink(CSS_DIR . 'editor.css') .
  we_html_element::cssElement('.weEditTable{
 	font-size: ' . ((we_base_browserDetect::isMAC()) ? '11' : ((we_base_browserDetect::isUNIX()) ? '13' : '12')) . 'px;
-	font-family: ' . g_l('css', '[font_family]') . ';
 }
 ') .
  we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();');

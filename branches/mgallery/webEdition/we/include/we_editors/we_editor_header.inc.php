@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-echo we_html_tools::getHtmlTop();
+echo we_html_tools::getHtmlTop() . STYLESHEET;
 
 // init document
 $we_dt = $_SESSION['weS']['we_data'][$GLOBALS['we_transaction']];
@@ -68,9 +68,9 @@ switch($_SESSION['weS']['we_mode']){
 			}
 
 			// Bug Fix #6062
-			/*if(in_array(we_base_constants::WE_EDITPAGE_CFWORKSPACE, $we_doc->EditPageNrs)){
-				$we_tabs->addTab(new we_tab('y<i class="fa fa-lg fa-desktop"></i>' . g_l('weClass', '[workspace]'), (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_CFWORKSPACE) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_CFWORKSPACE . ",'" . $we_transaction . "');", array("id" => "tab_" . we_base_constants::WE_EDITPAGE_CFWORKSPACE)));
-			}*/
+			/* if(in_array(we_base_constants::WE_EDITPAGE_CFWORKSPACE, $we_doc->EditPageNrs)){
+			  $we_tabs->addTab(new we_tab('y<i class="fa fa-lg fa-desktop"></i>' . g_l('weClass', '[workspace]'), (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_CFWORKSPACE) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_CFWORKSPACE . ",'" . $we_transaction . "');", array("id" => "tab_" . we_base_constants::WE_EDITPAGE_CFWORKSPACE)));
+			  } */
 
 			if(in_array(we_base_constants::WE_EDITPAGE_INFO, $we_doc->EditPageNrs) && permissionhandler::hasPerm("CAN_SEE_INFO")){
 				$jscmd = "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_INFO . ",'" . $we_transaction . "');";
@@ -93,7 +93,7 @@ switch($_SESSION['weS']['we_mode']){
 			  }
 			 */
 			if(in_array(we_base_constants::WE_EDITPAGE_FIELDS, $we_doc->EditPageNrs)){
-				$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-search"></i>', (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_FIELDS) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_FIELDS . ",'" . $we_transaction . "');", array("id" => "tab_" . we_base_constants::WE_EDITPAGE_FIELDS,'title' => g_l('weClass', '[fields]'))));
+				$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-search"></i>', (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_FIELDS) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_FIELDS . ",'" . $we_transaction . "');", array("id" => "tab_" . we_base_constants::WE_EDITPAGE_FIELDS, 'title' => g_l('weClass', '[fields]'))));
 			}
 
 			if(in_array(we_base_constants::WE_EDITPAGE_SEARCH, $we_doc->EditPageNrs)){
@@ -141,8 +141,7 @@ switch($_SESSION['weS']['we_mode']){
 		echo we_html_element::jsElement('var weTabs; function setFrameSize(){}');
 }
 
-echo STYLESHEET .
- we_html_element::jsScript(JS_DIR . 'we_editor_header.js', '
+echo we_html_element::jsScript(JS_DIR . 'we_editor_header.js', '
 var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(parent.name);
 _EditorFrame.setEditorEditPageNr(' . $we_doc->EditPageNr . ');' .
 	($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE ? 'parent.openedWithWE=true;' : ''));

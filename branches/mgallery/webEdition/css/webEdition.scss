@@ -30,6 +30,8 @@ html{
 body{
 	margin: 0px;
 	letter-spacing: normal ! important;
+	font-family: $weFont;
+	font-size: 16px;
 }
 
 img{
@@ -43,6 +45,13 @@ img{
 
 iframe{
 	border:0px;
+}
+
+select.defaultfont{
+	border: #AAAAAA solid 1px;
+	&:focus{
+		border: #888888 solid 1px;
+	}
 }
 
 i{
@@ -445,6 +454,52 @@ input.wetextinput:focus{
 	background-color: #dce6f2;
 }
 
+.tree,
+.small,
+shopContentfontGreySmall,
+.shopContentfontSmall{
+	font-size:10px;
+}
+
+.middlefont{
+	font-size:  11px;
+}
+.big,
+.weDocListSearchHeadline,
+.weDocListSearchHeadlineDivs{
+	font-size: 14px;
+}
+
+.weSelect,
+.wetextinput,
+.wetextarea,
+.defaultfont,
+.changeddefaultfont,
+.shopContentfont,
+.shopContentfontAlert,
+.shopContentfontR
+.shopContentfontGR,
+.pshopContentfont,
+.pdefaultfont,
+.pshopContentfontR,
+.selector,
+.tableHeader,
+.weMultiIconBoxHeadlineThin,
+.weMultiIconBoxHeadline,
+.weDefaultStyle,
+.weDialogHeadline,
+.weObjectPreviewHeadline,
+.weEditTable
+{
+	font-size:12px;
+}
+
+.wetextinput,
+.wetextarea{
+line-height: 150%;
+}
+
+
 .small,
 .big,
 .defaultfont,
@@ -746,6 +801,10 @@ optgroup{
 .weSidebarBody {
 	margin		: 5px;
 	padding		: 0px;
+}
+
+.header_small {
+	font-size: 11px;
 }
 
 .header_small,
