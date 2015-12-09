@@ -4274,6 +4274,7 @@ css/menu/pro_drop_safari.css
 css/menu/pro_drop_mac.css
 css/menu/clickMenu_IE8.js
 css/menu/clickMenu.js
+css/global.php
 css/first_steps_wizard.css.php
 cms/views/scripts/index/index.phtml
 cms/views/scripts/index/index.php

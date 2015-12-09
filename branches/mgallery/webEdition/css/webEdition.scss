@@ -454,22 +454,6 @@ input.wetextinput:focus{
 	background-color: #dce6f2;
 }
 
-.tree,
-.small,
-shopContentfontGreySmall,
-.shopContentfontSmall{
-	font-size:10px;
-}
-
-.middlefont{
-	font-size:  11px;
-}
-.big,
-.weDocListSearchHeadline,
-.weDocListSearchHeadlineDivs{
-	font-size: 14px;
-}
-
 .weSelect,
 .wetextinput,
 .wetextarea,
@@ -492,6 +476,22 @@ shopContentfontGreySmall,
 .weEditTable
 {
 	font-size:12px;
+}
+
+.tree,
+.small,
+shopContentfontGreySmall,
+.shopContentfontSmall{
+	font-size:10px;
+}
+
+.middlefont{
+	font-size: 11px;
+}
+.big,
+.weDocListSearchHeadline,
+.weDocListSearchHeadlineDivs{
+	font-size: 14px;
 }
 
 .wetextinput,
