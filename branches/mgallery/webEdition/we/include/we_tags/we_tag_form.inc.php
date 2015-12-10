@@ -30,9 +30,6 @@ function we_tag_form($attribs){
 	}
 	if(weTag_getAttribute('_type', $attribs, '', we_base_request::STRING) === 'stop'){
 		unset($GLOBALS['WE_FORM']);
-		if(isset($GLOBALS['we_form_action'])){
-			unset($GLOBALS['we_form_action']);
-		}
 		return '</form>';
 	}
 	$ret = '';
@@ -67,7 +64,7 @@ function we_tag_form($attribs){
 	$formAttribs['xml'] = $xml;
 	$formAttribs['method'] = $method;
 
-	$GLOBALS['we_form_action'] = ($id ?
+	$we_form_action = ($id ?
 			($id === 'self' || ($id == 0 && defined('WE_REDIRECTED_SEO')) ? (defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : $_SERVER['SCRIPT_NAME']) : f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id))) :
 			($action ? : $_SERVER['SCRIPT_NAME']));
 
@@ -81,7 +78,7 @@ function we_tag_form($attribs){
 	}
 	switch($type){
 		case 'shopliste' :
-			$formAttribs['action'] = $GLOBALS['we_form_action'];
+			$formAttribs['action'] = $we_form_action;
 			$myID = ((isset($GLOBALS['lv']) && isset($GLOBALS['lv']->IDs) && ($last = end($GLOBALS['lv']->IDs))) ? $last : $GLOBALS['we_doc']->ID);
 			$formAttribs['name'] = 'form' . $myID;
 			if(!isset($GLOBALS['we_editmode']) || !$GLOBALS['we_editmode']){
@@ -135,7 +132,7 @@ function we_tag_form($attribs){
 
 			$formAttribs['onsubmit'] = $onsubmit;
 			$formAttribs['name'] = $formname;
-			$formAttribs['action'] = $GLOBALS['we_form_action'];
+			$formAttribs['action'] = $we_form_action;
 
 			if($enctype){
 				$formAttribs['enctype'] = $enctype;
@@ -246,7 +243,7 @@ function we_tag_form($attribs){
 			}
 			$formAttribs['name'] = $formname;
 			$formAttribs['onsubmit'] = $onsubmit;
-			$formAttribs['action'] = $GLOBALS['we_form_action'];
+			$formAttribs['action'] = $we_form_action;
 
 
 			if(!isset($GLOBALS['we_editmode']) || !$GLOBALS['we_editmode']){

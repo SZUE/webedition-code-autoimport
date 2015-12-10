@@ -218,7 +218,7 @@ container.prototype.drawGroup = function (nf, ai, zweigEintrag) {
 					"<br/>";
 	if (nf[ai].open) {
 		if (ai == nf.len) {
-			newAst += "<span class=\"treeKreuz\"></span>";
+			newAst += '<span class="treeKreuz"></span>';
 		} else {
 			newAst += '<span class="strich treeKreuz "></span>';
 		}

@@ -29,7 +29,7 @@
 }
 #treetable{
 	margin: 0px;
-//	background-color: #C9CDD0;
+	//	background-color: #C9CDD0;
 	color: black;
 	border-width: 0px;
 	border-collapse: collapse;
@@ -49,6 +49,7 @@
 
 	span{
 		&.treeKreuz{
+			font-size: 11px;
 			width: 16px;
 			height: 1.8em;
 			vertical-align: middle;
@@ -72,7 +73,6 @@
 			border-left-width: 1px;
 		}
 
-
 		&.kreuzung{
 			width: 1ex;
 			margin-left:1ex;
@@ -86,25 +86,25 @@
 			height:.8em;
 			margin-bottom: 1em;
 		}
+		&.kreuzung,
+		&.kreuzungend{
+			&::before{
+				content:" ";
+				display:inline-block;
+				position: absolute;
+				top: 1.4ex;
+				width:1em;
+				border-bottom:1px solid darkgrey;
+			}
+			i::before,
+			i::before{
+				position: absolute;
+				top:0px;
+				left:-5px;
+			}
+		}
 	}
 
-	span.kreuzung,
-	span.kreuzungend{
-		&::before{
-			content:" ";
-			display:inline-block;
-			position: absolute;
-			top: 1.4ex;
-			width:1em;
-			border-bottom:1px solid darkgrey;
-		}
-		i::before,
-		i::before{
-			position: absolute;
-			top:0px;
-			left:-5px;
-		}
-	}
 	.loginDenied,
 	.notpublished,
 	.checked_notpublished,
