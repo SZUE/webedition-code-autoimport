@@ -215,15 +215,15 @@ function back(id) {
 
 
 			for($i = 0; $i < $anz; $i++){
-				$out .= '<tr><td style="font-weight:bold;width:100px;padding:5px 15px 5px 15px;">' .
+				$out .= '<tr><td class="bold" style="width:100px;padding:5px 15px 5px 15px;">' .
 					g_l('logging', '[date]') . ':</td><td width="200">' .
 					date("d.m.y - H:i:s", $content[$i]['timestamp']) . '</td>' .
 					'<td width="auto"></td></tr>' .
-					'<tr><td style="font-weight:bold;width:100px;padding:5px 15px 5px 15px;">' .
+					'<tr><td class="bold" style="width:100px;padding:5px 15px 5px 15px;">' .
 					g_l('logging', '[user]') . ':</td><td width="auto">' .
 					f('SELECT Text FROM `' . USER_TABLE . "` WHERE ID=" . intval($content[$i]['userID']), "Text", new DB_WE()) .
 					'</td></tr>' .
-					'<tr><td style="font-weight:bold;width:100px;padding:5px 15px 5px 15px;">' .
+					'<tr><td class="bold" style="width:100px;padding:5px 15px 5px 15px;">' .
 					g_l('logging', '[logEntry]') . ':</td><td width="auto">' .
 					$this->showLog($content[$i]['typ'], $content[$i]['ID']) . '</td></tr>' .
 					'<tr><td colspan="3" style="padding:5px 15px 5px 15px;"><div id="dataContent_' . $content[$i]['ID'] . '" name="dataContent">' .
@@ -267,7 +267,7 @@ function back(id) {
 			case we_versions_log::VERSIONS_RESET:
 
 				$out = '<table style="width:100%;border:1px solid #BBBAB9;" class="middlefont">' .
-					'<thead><tr style="background-color:#dddddd;font-weight:bold;"><td></td><td>' .
+					'<thead><tr class="bold" style="background-color:#dddddd;"><td></td><td>' .
 					g_l('logging', '[ID]') . '</td><td>' .
 					g_l('logging', '[name]') . '</td><td>' .
 					g_l('logging', '[path]') . '</td><td>' .

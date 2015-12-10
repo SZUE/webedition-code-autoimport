@@ -2137,7 +2137,7 @@ var weFileUpload = (function () {
 						this.elems.dragInnerRight.innerHTML = '<div class="largeicons" style="margin:0 0 0 30px;height:62px;width:54px;">' + this.icon + '</div>';
 						this.setGuiState(this.STATE_PREVIEW_OK);
 					} else {
-						this.elems.dragInnerRight.innerHTML = '<div style="margin:0px 0 0 30px;height:62px;width:54px;border:dotted 1px gray;padding-top:14px;text-align:center;background-color:#f9f9f9;color:#ddd;font-size:32px;font-weight:bold">!?</div>';
+						this.elems.dragInnerRight.innerHTML = '<div class="bold" style="margin:0px 0 0 30px;height:62px;width:54px;border:dotted 1px gray;padding-top:14px;text-align:center;background-color:#f9f9f9;color:#ddd;font-size:32px;">!?</div>';
 						this.setGuiState(this.STATE_PREVIEW_NOK);
 					}
 				}

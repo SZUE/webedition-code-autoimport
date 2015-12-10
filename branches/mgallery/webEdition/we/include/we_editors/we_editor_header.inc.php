@@ -157,12 +157,12 @@ $_text = ($we_doc->Filename ? $we_doc->Filename . (isset($we_doc->Extension) ? $
 		switch($we_doc->ContentType){
 			case we_base_ContentTypes::WEDOCUMENT:
 				if($we_doc->TemplateID && permissionhandler::hasPerm('CAN_SEE_TEMPLATES')){
-					echo ' - <a style="font-weight:bold;color:#006699" href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . TEMPLATES_TABLE . '\',' . $we_doc->TemplateID . ',\'' . we_base_ContentTypes::TEMPLATE . '\');">' . g_l('weClass', '[openTemplate]') . '</a>';
+					echo ' - <a class="bold" style="color:#006699" href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . TEMPLATES_TABLE . '\',' . $we_doc->TemplateID . ',\'' . we_base_ContentTypes::TEMPLATE . '\');">' . g_l('weClass', '[openTemplate]') . '</a>';
 				}
 				break;
 			case we_base_ContentTypes::TEMPLATE:
 				if($we_doc->MasterTemplateID){
-					echo ' - <a style="font-weight:bold;color:#006699" href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . TEMPLATES_TABLE . '\',' . $we_doc->MasterTemplateID . ',\'' . we_base_ContentTypes::TEMPLATE . '\');">' . g_l('weClass', '[openMasterTemplate]') . '</a>';
+					echo ' - <a class="bold" style="color:#006699" href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . TEMPLATES_TABLE . '\',' . $we_doc->MasterTemplateID . ',\'' . we_base_ContentTypes::TEMPLATE . '\');">' . g_l('weClass', '[openMasterTemplate]') . '</a>';
 				}
 			default:
 		}

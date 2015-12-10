@@ -134,7 +134,7 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base{
 				<div style="display: none" id="div_rowProgress_WEFORMNUM">
 					<table class="default"><tbody><tr>
 						<td style="vertical-align:middle"><div class="progress_image" style="width:0px;height:10px;" id="' . $this->name . '_progress_image_WEFORMNUM" style="vertical-align:top"></div><div class="progress_image_bg" style="width:90px;height:10px;" id="' . $this->name . '_progress_image_bg_WEFORMNUM" style="vertical-align:top"></div></td>
-						<td class="small" style="width:3em;color:#006699;font-weight:bold;margin-left:8px;" id="span_' . $this->name . '_progress_text_WEFORMNUM">0%</td>
+						<td class="small bold" style="width:3em;color:#006699;margin-left:8px;" id="span_' . $this->name . '_progress_text_WEFORMNUM">0%</td>
 						<td><img style="visibility:hidden;" width="14" height="18" src="/webEdition/images/alert_tiny.gif" id="alert_img_WEFORMNUM" title=""></td>
 					</tr></tbody></table>
 				</div>

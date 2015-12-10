@@ -333,7 +333,7 @@ if($newDocElements){
 			$renderer = new Horde_Text_Diff_Renderer_Inline(array('ins_prefix' => '###INS_START###', 'ins_suffix' => '###INS_END###',
 				'del_prefix' => '###DEL_START###', 'del_suffix' => '###DEL_END###',));
 
-			$text = str_replace('###INS_START###', '<span style="color:blue;">+<span style="font-weight:bold;text-decoration:underline;">', str_replace('###INS_END###', '</span>+</span>', str_replace('###DEL_END###', '</span>-</span>', str_replace('###DEL_START###', '<span style="color:red;">-<span style="font-weight:bold;text-decoration: line-through;">-', $renderer->render($diff)))));
+			$text = str_replace('###INS_START###', '<span style="color:blue;">+<span class="bold" style="text-decoration:underline;">', str_replace('###INS_END###', '</span>+</span>', str_replace('###DEL_END###', '</span>-</span>', str_replace('###DEL_START###', '<span style="color:red;">-<span class="bold" style="text-decoration: line-through;">-', $renderer->render($diff)))));
 
 			$contentDiff .= '<td colspan="2" style="' . $mark . '">' . $pre . $text . '</pre></td>';
 		} else {

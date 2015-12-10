@@ -40,7 +40,7 @@ function we_setPath(path, text, id, classname) {
 
 	path = path.replace(/</g, '&lt;');
 	path = path.replace(/>/g, '&gt;');
-	path = '<span style="font-weight:bold;color:#006699">' + path + '</span>';
+	path = '<strong style="color:#006699">' + path + '</strong>';
 	var div;
 	if (document.getElementById) {
 		div = document.getElementById('h_path');

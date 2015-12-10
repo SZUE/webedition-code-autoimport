@@ -1046,10 +1046,10 @@ function build_dialog($selected_setting = 'ui'){
 			$countries_shown = explode(',', get_value('WE_COUNTRIES_SHOWN'));
 			$tabC = new we_html_table(array('style' => 'border:1px solid black'), 1, 4);
 			$i = 0;
-			$tabC->setCol($i, 0, array('class' => 'defaultfont', 'style' => 'font-weight:bold'), g_l('prefs', '[countries_country]'));
-			$tabC->setCol($i, 1, array('class' => 'defaultfont', 'style' => 'font-weight:bold'), g_l('prefs', '[countries_top]'));
-			$tabC->setCol($i, 2, array('class' => 'defaultfont', 'style' => 'font-weight:bold'), g_l('prefs', '[countries_show]'));
-			$tabC->setCol($i, 3, array('class' => 'defaultfont', 'style' => 'font-weight:bold'), g_l('prefs', '[countries_noshow]'));
+			$tabC->setCol($i, 0, array('class' => 'defaultfont bold'), g_l('prefs', '[countries_country]'));
+			$tabC->setCol($i, 1, array('class' => 'defaultfont bold'), g_l('prefs', '[countries_top]'));
+			$tabC->setCol($i, 2, array('class' => 'defaultfont bold'), g_l('prefs', '[countries_show]'));
+			$tabC->setCol($i, 3, array('class' => 'defaultfont bold'), g_l('prefs', '[countries_noshow]'));
 			foreach($supported as $countrycode => $country){
 				$i++;
 				$tabC->addRow();

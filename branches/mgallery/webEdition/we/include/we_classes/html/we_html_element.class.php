@@ -180,7 +180,7 @@ abstract class we_html_element{
 	 * @return		string
 	 */
 	public static function htmlB($content){
-		return we_html_baseElement::getHtmlCode(new we_html_baseElement('span', true, array('style' => 'font-weight:bold'), $content));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('strong', true, array(), $content));
 	}
 
 	/**

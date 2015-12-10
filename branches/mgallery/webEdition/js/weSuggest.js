@@ -236,9 +236,9 @@ YAHOO.autocoml = {
 			YAHOO.autocoml.oAutoCompRes[i][sKeyQuery] = oResultItem[2];
 			var aMarkup = ['<div id=\"ysearchresult\"><div class=\"ysearchquery\">',
 				//nQuantity,
-				'</div><span style=\"font-weight:bold\">',
+				'</div><strong>',
 				sKeyQuery,
-				'</span>',
+				'</strong>',
 				sKeyRemainder,
 				'</div>'];
 			return (aMarkup.join(''));

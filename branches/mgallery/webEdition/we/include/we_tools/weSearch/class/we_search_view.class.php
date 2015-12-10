@@ -538,7 +538,7 @@ WE().consts.g_l.weSearch = {
 
 		$tbl = new we_html_table(array(), 1, 4);
 		$tbl->setCol(0, 0, array(), $btnBack);
-		$tbl->setCol(0, 1, array('class' => 'defaultfont'), we_html_element::htmlSpan(array('class' => 'spanSearchText', 'style' => 'font-weight:bold;'), $text));
+		$tbl->setCol(0, 1, array('class' => 'defaultfont'), we_html_element::htmlSpan(array('class' => 'spanSearchText bold'), $text));
 		$tbl->setCol(0, 2, array(), $btnNext);
 		$tbl->setCol(0, 3, array(), $select);
 
@@ -1670,7 +1670,7 @@ WE().consts.g_l.weSearch = {
 						array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'vertical-align:top;"', 'dat' => array(
 							array('elem' => 'table', '' => '', 'dat' => array(
 									array('elem' => 'row', 'dat' => array(
-											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'font-weight:bold;"', 'dat' => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . ' (ID: ' . $_result[$f]['docID'] . ')"><u>' . $_result[$f]["Text"] . '</u></a>'),
+											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . '" class="bold"', 'dat' => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . ' (ID: ' . $_result[$f]['docID'] . ')"><u>' . $_result[$f]["Text"] . '</u></a>'),
 											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'width:75px;text-align:left"', 'dat' => ($_result[$f]['IsUsed'] ? we_html_button::create_button(we_html_button::DIRRIGHT, "javascript:weSearch.toggleAdditionalContent(this, " . $_result[$f]['docID'] . ")", true, 21, 22, "", "", false, false, '__' . $_result[$f]['docID'], false, 'Verwendet in:') : '')),
 											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'width:70px;text-align:left"', 'dat' => $_result[$f]['fileSize']),
 											array('elem' => 'td', 'attribs' => ($_result[$f]['IsUsed'] ? 'title="Dokument wird benutzt." onclick="weSearch.showAdditional(' . $_result[$f]['docID'] . ')" style="cursor:pointer;width:45px;text-align:left;' . $standardStyle . 'height:auto;"' : 'title="Dokument wird nicht benutzt!" style="width:45px;text-align:left;' . $standardStyle . '"'), 'dat' => '<i class="fa fa-lg fa-circle" style="color:' . ($_result[$f]['IsUsed'] ? 'green' : 'yellow') . ';"></i>'),
@@ -1928,7 +1928,7 @@ WE().consts.g_l.weSearch = {
 			$tbl->setCol(++$k, ($c = 0));
 			$tbl->setCol($k, ++$c);
 			$tbl->setCol($k, ++$c);
-		} 
+		}
 		$tbl->setCol($k, ++$c, array(), $this::getNextPrev($foundItems, $whichSearch, false));
 
 		return $tbl->getHtml();
@@ -2475,21 +2475,21 @@ WE().consts.g_l.weSearch = {
 
 		$out = '';
 		for($f = 0; $f < $anz; $f++){
-			$out .= '<td ' . ($f < 2 ? '' : 'style="font-weight:bold;height:30px;font-size:11px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;"') . '>' . ((!empty($content[$f]["dat"])) ? $content[$f]["dat"] : "&nbsp;") . '</td>';
+			$out .= '<td ' . ($f < 2 ? '' : ' class="middlefont bold" style="height:30px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;"') . '>' . ((!empty($content[$f]["dat"])) ? $content[$f]["dat"] : "&nbsp;") . '</td>';
 		}
 
 		if(isset($content[0]["version"])){
 			foreach(array_keys($content[0]["version"]) as $k){
 				$out .= '</tr><tr><td style="width:20px;"></td>';
 				for($y = 0; $y < $anz; $y++){
-					$out .= '<td style="font-weight:bold;font-size:11px;' . ($f == 0 ? "width:30px;" : '') . '">' .
+					$out .= '<td class="middlefont bold" style="' . ($f == 0 ? "width:30px;" : '') . '">' .
 						$content[$y]["version"][$k] .
 						'</td>';
 				}
 
 				$out .= '</tr><tr><td style="width:20px;"></td>';
 				for($y = 0; $y < $anz; $y++){
-					$out .= '<td style="font-weight:bold;font-size:11px;' . ($f == 0 ? "width:30px;" : '') . '">' . ($y == 2 ?
+					$out .= '<td class="middlefont bold" style="' . ($f == 0 ? "width:30px;" : '') . '">' . ($y == 2 ?
 							$content[5]["version"][$k] . '<br/>' :
 							''
 						) . '</td>';
