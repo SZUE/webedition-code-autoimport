@@ -32,9 +32,9 @@ abstract class we_base_moduleInfo{
 	 * @param hash $array
 	 */
 	static function orderModuleArray(&$array){
-		uasort($array, array('we_base_moduleInfo', function ($a, $b){
-				return (strcmp($a['text'], $b['text']));
-			}));
+		uasort($array, function ($a, $b){
+			return (strcmp($a['text'], $b['text']));
+		});
 	}
 
 	/**
