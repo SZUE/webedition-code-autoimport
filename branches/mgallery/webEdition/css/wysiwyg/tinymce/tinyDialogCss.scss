@@ -25,10 +25,11 @@
 /*FIXME: if we have STYLESHEETS applied, we don't need special handling of body (font) */
 
 /* CSS for all tiny Dialogs */
+@import "../../config.scss";
 body{ /* [role=application]? */
 	letter-spacing: normal !important;
-	font-family: sans-serif;
-	font-size: 11px;
+	font-family: $weFont;
+	font-size: $smallfont;
 	margin:0px;
 
 }
@@ -49,8 +50,8 @@ body{ /* [role=application]? */
 		cursor: pointer;
 		display: inline-block;
 		float: left;
-		font-size: 17px;
-		line-height: 16px;
+		font-size: $bigfont;
+		line-height: $bigfont;
 		margin: 0px;
 		padding: 0px 6px 0px 6px;
 		&.current {
@@ -132,7 +133,7 @@ input[type="text"]{
 	border: 1px solid #AAAAAA;
 	color: black;
 	font-family: sans-serif;
-	font-size: 11px;
+	font-size: $medfont;
 	height: 18px;
 	line-height: 18px;
 }
@@ -164,7 +165,7 @@ body .mceActionPanel #replaceBtn,
 	border-radius: 4px;
 	box-shadow: 2px 2px 2px #555555;
 	font-family: verdana,arial,helvetica;
-	font-size: 10px !important;
+	font-size: $smallfont !important;
 	margin-bottom: 1ex;
 	margin-left: 0.5em;
 	margin-right: 0.5em;
@@ -249,7 +250,7 @@ body[role=application]{
 body.useWeFooter{
 	letter-spacing: normal !important;
 	font-family: sans-serif;
-	font-size: 11px;
+	font-size: $medfont;
 	margin:0px;
 
 	div{

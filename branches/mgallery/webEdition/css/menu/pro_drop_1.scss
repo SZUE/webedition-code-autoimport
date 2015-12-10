@@ -24,7 +24,7 @@ way to fit your requirements.
 	height: $menuHeight;
 	position: relative;
 	z-index: 500;
-	font-size: 10pt;
+	font-size: $bigfont;
 
 	li.top{
 		display: block;
@@ -43,7 +43,7 @@ way to fit your requirements.
 				//line-height: 22px;
 				color: inherit;
 				text-decoration: none;
-				font-weight: bold;
+				font-family: $weFontBold;
 				cursor: pointer;
 				background: none;
 				padding: 0px 18px;
@@ -150,7 +150,7 @@ way to fit your requirements.
 				position: relative;
 				float: left;
 				width: 16em;
-				font-weight: normal;
+				font-family: $weFont;
 				color:black;
 				&:hover {
 					background: #3399ff;
@@ -170,7 +170,7 @@ way to fit your requirements.
 					position: relative;
 					float: left;
 					width: 14.5em;
-					font-weight: normal;
+					font-family: $weFont;
 				}
 			}
 		}
@@ -197,7 +197,7 @@ way to fit your requirements.
 		width: 350px !important;
 		max-height: 400px;
 		overflow: auto !important;
-		font-size: 12px;
+		font-size: $medfont;
 		li {
 			white-space: nowrap;
 			clear: both;

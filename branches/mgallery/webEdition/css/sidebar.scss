@@ -28,7 +28,7 @@
 	vertical-align	: middle;
 	float			: left;
 	width			: 80%;
-	font-weight: bold;
+	font-family: $weFontBold;
 }
 #CloseButton {
 	float			: right;
@@ -50,7 +50,7 @@ body{
 	height:$defaultEditorTabHeight;
 	line-height:$defaultEditorTabHeight;
 	background-color: silver;
-	font-size: 10px;
+	font-size: $smallfont;
 }
 
 #weSidebarFooter{

@@ -31,7 +31,7 @@ body{
 	margin: 0px;
 	letter-spacing: normal ! important;
 	font-family: $weFont;
-	font-size: 16px;
+	font-size: $bigfont;
 }
 
 img{
@@ -45,6 +45,10 @@ img{
 
 iframe{
 	border:0px;
+}
+
+b,strong{
+	font-family: $weFontBold;
 }
 
 select.defaultfont{
@@ -275,7 +279,7 @@ td.boxHeader{
 	background-color: #B7BBBF;
 	#treeName{
 		padding:0px 1ex;
-		font-weight: bold;
+		font-family: $weFontBold;
 	}
 	#toggleTree{
 		position:absolute;
@@ -473,30 +477,32 @@ input.wetextinput:focus{
 .weDefaultStyle,
 .weDialogHeadline,
 .weObjectPreviewHeadline,
-.weEditTable
+.weEditTable,
+.middlefont
 {
-	font-size:12px;
+	font-size:$medfont;
 }
 
 .tree,
 .small,
 shopContentfontGreySmall,
-.shopContentfontSmall{
-	font-size:10px;
+.shopContentfontSmall,
+.header_shop,
+.header_small,
+#msgheadertable
+{
+	font-size:$smallfont;
 }
 
-.middlefont{
-	font-size: 12px;
-}
 .big,
 .weDocListSearchHeadline,
 .weDocListSearchHeadlineDivs{
-	font-size: 14px;
+	font-size: $bigfont;
 }
 
 .wetextinput,
 .wetextarea{
-line-height: 150%;
+	line-height: 150%;
 }
 
 
@@ -619,7 +625,7 @@ lowContrast a:visited,
 .tableHeader,
 .shop_th,
 .header {
-	font-weight: bold;
+	font-family: $weFontBold;
 }
 
 .tableHeader,
@@ -639,16 +645,16 @@ lowContrast a:visited,
 
 .shop_th {
 	color: black;
-	font-size: 12px;
 	padding-bottom:5px;
 }
 
+.shop_th,
 .shop_fontView {
-	font-size: 12px;
+	font-size: $medfont;
 }
 
 optgroup{
-	font-weight: bold;
+	font-family: $weFontBold;
 	font-style: normal;
 	&.lvl1{
 		color: darkblue;
@@ -702,7 +708,7 @@ optgroup{
 	border: 0px;
 	color: black;
 	cursor: default;
-	font-weight: normal;
+	font-family: $weFont;
 	margin: 0px;
 	padding:0px;
 	text-align: left;
@@ -711,7 +717,7 @@ optgroup{
 
 .weDialogHeadline {
 	color: black;
-	font-weight: bold;
+	font-family: $weFontBold;
 }
 
 .weMultiIconBoxHeadline,
@@ -725,11 +731,11 @@ optgroup{
 
 .weMultiIconBoxHeadline,
 .weObjectPreviewHeadline{
-	font-weight: bold;
+	font-family: $weFontBold;
 }
 
 .weMultiIconBoxHeadlineThin {
-	font-weight: normal;
+	font-family: $weFont;
 }
 
 .weObjectPreviewHeadline {
@@ -745,12 +751,12 @@ optgroup{
 }
 
 .weDocListSearchHeadline {
-	font-weight: bold;
+	font-family: $weFontBold;
 	margin-top:6px;
 }
 
 .weDocListSearchHeadlineDivs {
-	font-weight: bold;
+	font-family: $weFontBold;
 }
 
 .big {
@@ -774,7 +780,6 @@ optgroup{
 }
 
 .header_shop {
-	font-size: 11px;
 	background-position: bottom left;
 	background-repeat: no-repeat;
 }
@@ -801,10 +806,6 @@ optgroup{
 .weSidebarBody {
 	margin		: 5px;
 	padding		: 0px;
-}
-
-.header_small {
-	font-size: 11px;
 }
 
 .header_small,
@@ -847,7 +848,7 @@ optgroup{
 		float: left;
 		padding-left: 10px;
 		width:60px;
-		font-size: 10pt;
+		font-size: $medfont;
 		line-height: normal;
 		table{
 			margin:2px 0px 2px auto;
@@ -860,7 +861,7 @@ optgroup{
 				text-align:right;
 			}
 			td {
-				font-weight: bold;
+				font-family: $weFontBold;
 				color: inherit;
 				padding:0px;
 			}
@@ -888,7 +889,7 @@ table.error{
 		&.left{
 			white-space:nowrap;
 			border-right: 1px solid #265da6;
-			font-weight: bold;
+			font-family: $weFontBold;
 		}
 		&.right{
 			font-style:italic;
@@ -1074,7 +1075,7 @@ span.fileicon{
 		color:#164F94;
 		margin-left:.2em;
 		vertical-align: bottom;
-		font-family: Sans;
+		font-family: $weFont;
 		line-height:1;
 	}
 	.we-classification i{
@@ -1082,8 +1083,7 @@ span.fileicon{
 		vertical-align:top;
 		left: -.2em;
 		color:red;
-		font-weight:bolder;
-		font-family: Sans;
+		font-family: $weFontBold;
 	}
 
 	i.fa-folder-open,
@@ -1093,13 +1093,13 @@ span.fileicon{
 }
 
 .wecheckIcon{
-	font-size:14px;
+	font-size:$fafontBig;
 	width: .8em;
 }
 
 .wealertIcon:before{
 	display: inline-block;
-	font-size:14px;
+	font-size:$fafontBig;
 	font-family: FontAwesome;
 	content: "\f256";
 	color: red;
@@ -1356,12 +1356,10 @@ div.collection-content{
 				text-overflow: ellipsis;
 
 				i{
-					font-size: 14px;
+					font-size: $fafontBig;
 				}
 			}
 		}
-
-
 	}
 
 	div.gridItem{
@@ -1392,7 +1390,7 @@ div.collection-content{
 			width: 26px;
 			padding: 4px 0 0 10px;
 			text-align: left;
-			font-size: 14px;
+			font-size: $bigfont;
 		}
 		div.toolbarRight{
 			float: right;
@@ -1408,7 +1406,7 @@ div.collection-content{
 			width: 24px;
 			float: left;
 			text-align: right;
-			font-size: 12px
+			font-size: $medfont;
 		}
 		.toolbarBtns{
 			width: auto;

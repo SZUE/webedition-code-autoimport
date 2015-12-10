@@ -30,7 +30,7 @@ body{
 
 #tabContainer{
 	//font-family: sans-serif;
-	font-size: 10px;
+	font-size: $smallfont;
 	color: #000000;
 	width: 100%;
 	margin: 0px; padding: 0px;
@@ -77,11 +77,11 @@ body{
 	span{
 		&.text{
 			margin:0px; padding:0px;
-			font-size: 10px;
+			font-size: $smallfont;
 			vertical-align:top;
 		}
 		&.spacer{
-			font-size: 9px;
+			font-size: $fafontMed;
 		}
 		&.close{
 			color:#767B81;

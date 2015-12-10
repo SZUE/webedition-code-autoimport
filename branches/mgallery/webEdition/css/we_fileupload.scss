@@ -27,7 +27,7 @@ div.we_file_drag{
 	height: 116px;
 	display: block;
 	font-weight: normal;
-	font-size: 12px;
+	font-size: $medfont;
 	text-align: center;
 	color: #555;
 	cursor: default;
@@ -86,7 +86,7 @@ div.filedrag_content_left{
 	vertical-align: middle;
 	color: #cccccc;
 	font-weight: normal;
-	font-size: 16px;
+	font-size: $bigfont;
 }
 div.filedrag_content_right{
 	display: table-cell;
@@ -108,7 +108,7 @@ div.filedrag_preview_left{
 	text-align: left;
 	color: #333;
 	font-weight: normal;
-	font-size: 12px
+	font-size: $medfont;
 }
 div.filedrag_preview_right{
 	display: table-cell;

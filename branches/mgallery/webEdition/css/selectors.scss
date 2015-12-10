@@ -94,7 +94,7 @@ div{
 
 th.selector{
 	text-align: left;
-	font-weight: bold;
+	font-family: $weFontBold;
 }
 
 .treeIcon{
@@ -248,7 +248,7 @@ table.headerLines{
 		&.description{
 			width: 70px;
 			margin-right:10px;
-			font-weight: bold;
+			font-family: $weFontBold;
 		}
 	}
 }
@@ -270,7 +270,7 @@ table.selectorHeaderTable{
 		width:40px;
 		&.lookinText{
 			width:70px;
-			font-weight: bold;
+			font-family: $weFontBold;
 		}
 		&.lookin{
 			width:auto;

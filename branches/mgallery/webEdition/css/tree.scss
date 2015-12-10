@@ -113,7 +113,8 @@
 		color:red !important;
 	}
 	.bold{
-		font-weight: bold;
+		//font-weight: bold;
+		font-family: $weFontBold;
 	}
 
 	.blue{
@@ -161,7 +162,8 @@
 
 	.group,
 	.selected_group {
-		font-weight: bold;
+		//font-weight: bold;
+		font-family: $weFontBold;
 	}
 
 	.selected_item,
@@ -184,7 +186,7 @@
 	.selected_open_group,
 	.checked_group{
 		color: black;
-		font-weight: bold;
+		font-family: $weFontBold;
 	}
 
 	.checked_item,

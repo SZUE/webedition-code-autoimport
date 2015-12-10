@@ -106,7 +106,7 @@ div.le_widget{
 		//font-family:sans-serif;
 		font-size:15px;
 		color:white;
-		font-weight:bold;
+		font-family: $weFontBold;
 	}
 
 	div.widget{
@@ -208,7 +208,7 @@ td.mdcIcon{
 #users_online td{
 	vertical-align:middle;
 	&.we-user{
-		font-weight:bold;
+		font-family: $weFontBold;
 	}
 }
 
@@ -223,7 +223,7 @@ td{
 
 	&.sctText{
 		vertical-align:middle;
-		font-weight:bold;
+		font-family: $weFontBold;
 		cursor:pointer;
 	}
 }

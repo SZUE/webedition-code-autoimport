@@ -28,7 +28,7 @@ body {
 	background-color:#FFFFFF;
 }
 td {
-	font-size: 10px;
+	font-size: $smallfont;
 	padding: 3px 6px;
 	vertical-align:top;
 
@@ -43,7 +43,7 @@ td {
 .headline {
 	padding:3px 6px;
 	background-color:#BABBBA;
-	font-weight:bold;
+	font-family: $weFontBold;
 	border-top:0px solid black;
 	border-bottom:0px solid black;
 }
