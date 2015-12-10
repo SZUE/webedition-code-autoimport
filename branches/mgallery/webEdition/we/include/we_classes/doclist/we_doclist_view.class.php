@@ -23,13 +23,9 @@
  */
 
 class we_doclist_view extends we_search_view{
-	public $searchclass;
-	public $Model;
-
-
-	public function __construct($searchclass){
-		$this->searchclass = $searchclass;
-		$this->Model = $searchclass->getModel();
+	public function __construct($model = null){
+		$this->Model = $model ? : new we_doclist_model();
+		$this->searchclass = new we_doclist_search($this);
 
 		/*
 		$this->docID = $docID;

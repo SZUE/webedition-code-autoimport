@@ -33,9 +33,7 @@ class we_search_frames extends we_tool_frames{
 		$_frameset = $this->toolUrl . 'edit_' . $this->module . '_frameset.php?mod=' . $this->module;
 		parent::__construct($_frameset);
 		$this->Table = SUCHE_TABLE;
-
 		$this->TreeSource = 'table:' . $this->Table;
-
 		$this->Tree = new we_search_tree($this->frameset, 'top.content', 'top.content', 'top.content.cmd');
 
 		$this->View = new we_search_view($_frameset, 'top.content');

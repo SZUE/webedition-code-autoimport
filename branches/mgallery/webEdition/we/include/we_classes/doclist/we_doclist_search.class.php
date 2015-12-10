@@ -23,21 +23,22 @@
  */
 
 class we_doclist_search extends we_search_search{
-	protected $Model;
+	public $Model;
+	public $View;
 	protected $whichSearch;
 
-	public function __construct($Model) {
-		parent::__construct();
-		$this->Model = $Model;
+	public function __construct($view = null) {
+		parent::__construct($view ? : new we_doclist_view());
+		//$this->Model = &$this->View->Model;
+		$this->Model = $this->View->Model;
 		$this->whichSearch = we_search_view::SEARCH_DOCLIST;
 	}
 
 	public function getModel(){
 		return $this->Model;
 	}
-	
-	public function searchProperties($table = ''){
 
+	public function searchProperties($table = ''){
 		$DB_WE = new DB_WE();
 		$foundItems = 0;
 		$_result = $saveArrayIds = $searchText = array();

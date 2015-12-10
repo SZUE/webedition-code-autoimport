@@ -41,7 +41,7 @@ class we_search_view extends we_modules_view{
 	var $editorFooterFrame;
 	var $icon_pattern = '';
 	var $page = 1;
-	var $searchclass;
+	public $searchclass;
 	var $searchclassExp;
 	private $searchMediaOptFieldIndex = 0;
 	public $rpcCmd = ''; // make setter and set private
@@ -57,7 +57,7 @@ class we_search_view extends we_modules_view{
 		$this->toolName = 'weSearch';
 		$this->Model = new we_search_model();
 		$this->yuiSuggest = & weSuggest::getInstance();
-		$this->searchclass = new we_search_search();
+		$this->searchclass = new we_search_search($this);
 		$this->searchclassExp = new we_search_exp();
 	}
 

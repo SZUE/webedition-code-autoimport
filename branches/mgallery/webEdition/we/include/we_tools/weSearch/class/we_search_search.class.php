@@ -67,7 +67,15 @@ class we_search_search extends we_search_base{
 	private $usedMedia = array();
 	private $usedMediaLinks = array();
 	public $founditems = 0;
+	public $View;
 
+	public function __construct($view = null) {
+		parent::__construct();
+		$this->View = $view ? : new we_search_view();
+		//$this->Model = &$this->View->Model;
+		$this->Model = $this->View->Model;
+	}
+	
 	/**
 	 * @abstract get data from fields, used in the doclistsearch
 	 */
