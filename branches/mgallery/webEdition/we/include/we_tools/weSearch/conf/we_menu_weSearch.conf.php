@@ -23,7 +23,7 @@
  */
 require (WE_INCLUDES_PATH . 'we_tools/weSearch/conf/meta.conf.php');
 
-$we_menu_weSearch = array(
+return array(
 	'search' => array(
 		'text' => g_l('searchtool', '[menu_suche]'),
 	),

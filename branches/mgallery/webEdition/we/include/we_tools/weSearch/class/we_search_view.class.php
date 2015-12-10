@@ -534,7 +534,7 @@ WE().consts.g_l.weSearch = {
 
 		$btnBack = we_html_button::create_button(we_html_button::BACK, 'javascript:weSearch.back();', true, 100, 22, '', '', $disableBack, true, '', false, '', 'btnSearchBack');
 		$btnNext = we_html_button::create_button(we_html_button::NEXT, 'javascript:weSearch.next();', true, 100, 22, '', '', $disableNext, true, '', false, '', 'btnSearchNext');
-		$select = we_html_tools::htmlSelect('page', $pages, 1, $page, false, array('onchange' => "this.form.elements.searchstartDoclistSearch.value = this.value; weSearch.search(false);"), 'value', 0, 'selectSearchPages');
+		$select = we_html_tools::htmlSelect('page', $pages, 1, $page, false, array('onchange' => "this.form.elements.searchstart" . $whichSearch . ".value = this.value; weSearch.search(false);"), 'value', 0, 'selectSearchPages');
 
 		$tbl = new we_html_table(array(), 1, 4);
 		$tbl->setCol(0, 0, array(), $btnBack);

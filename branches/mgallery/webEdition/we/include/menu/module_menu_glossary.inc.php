@@ -24,7 +24,7 @@
 //
 // ---> Menu File / Glossary
 //
-$we_menu_glossary = array(
+return array(
 	'glossary' => array(
 		'text' => g_l('modules_glossary', '[glossary]'),
 	),
