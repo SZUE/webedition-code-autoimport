@@ -1556,8 +1556,9 @@ class we_objectFile extends we_document{
 
 		$arr = makeArrayFromCSV($this->Workspaces);
 		foreach($arr as $nr => $id){
-			if(isset($values[$id]))
+			if(isset($values[$id])){
 				unset($values[$id]);
+			}
 		}
 		if(count($values) < 1){
 			$addbut = '';

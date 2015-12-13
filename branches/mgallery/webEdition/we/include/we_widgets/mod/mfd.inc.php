@@ -195,3 +195,4 @@ while($db->next_record(MYSQL_ASSOC) /* && $j < $iMaxItems */){
 }
 
 $lastModified .= '</table>';
+return $lastModified;
