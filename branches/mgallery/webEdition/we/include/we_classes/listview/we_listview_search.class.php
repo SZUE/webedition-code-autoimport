@@ -179,14 +179,15 @@ class we_listview_search extends we_listview_base{
 		$this->DB_WE->query(
 			'SELECT Category,ID,ID AS DID,ID AS OID,ClassID,Text,Workspace,WorkspaceID,Title,Description,Path,Language, ' . ($random ? 'RAND() ' : $ranking) . ' AS ranking ' .
 			'FROM ' . INDEX_TABLE .
-			$where . ' ORDER BY ranking DESC ' . ($this->order ? (',' . $this->order) : '') . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . intval($this->start) . ',' . intval($this->maxItemsPerPage)) : ''));
+			$where .
+			' ORDER BY ranking DESC ' . ($this->order ? (',' . $this->order) : '') . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . intval($this->start) . ',' . intval($this->maxItemsPerPage)) : ''));
 		$this->anz = $this->DB_WE->num_rows();
 	}
 
 	public function next_record(){
 		if($this->DB_WE->next_record()){
+				$objectdaten = getHash('SELECT Url,TriggerID,Text FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->DB_WE->Record['ID']) . ' LIMIT 1');
 			if($this->DB_WE->Record['ClassID'] && $this->objectseourls && show_SeoLinks()){
-				$objectdaten = getHash('SELECT Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->DB_WE->Record['ID']) . ' LIMIT 1');
 				$objecttriggerid = ($this->triggerID ? : ($objectdaten ? $objectdaten['TriggerID'] : 0));
 
 				$path_parts = ($objecttriggerid ?
@@ -214,7 +215,7 @@ class we_listview_search extends we_listview_base{
 				$this->DB_WE->Record['WE_PATH'] = $this->DB_WE->Record['Path'];
 			}
 			$this->DB_WE->Record['WE_LANGUAGE'] = $this->DB_WE->Record['Language'];
-			$this->DB_WE->Record['WE_TEXT'] = $this->DB_WE->Record['Text'];
+			$this->DB_WE->Record['WE_TEXT'] = $objectdaten['Text'];
 			$this->DB_WE->Record['wedoc_Category'] = $this->DB_WE->Record['Category'];
 			$this->DB_WE->Record['WE_ID'] = $this->DB_WE->Record['ID'];
 			$this->count++;

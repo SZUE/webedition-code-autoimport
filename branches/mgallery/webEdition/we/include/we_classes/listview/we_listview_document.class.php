@@ -331,11 +331,37 @@ class we_listview_document extends we_listview_base{
 			if(!$this->calendar_struct['calendar'] || $fetch){
 				$id = $this->IDs[$count];
 				$this->DB_WE->query('SELECT l.Name,IF(c.BDID!=0,c.BDID,c.Dat) AS data FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.DID=' . intval($id) . ' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
-				$this->Record = $this->DB_WE->getAllFirst(false);
-				$tmp = getHash('SELECT ID,ParentID,Text,IsFolder,ContentType,CreationDate,ModDate,Path,TemplateID,Filename,Extension,IsDynamic,IsSearchable,DocType,ClassName,Category,Published,CreatorID,ModifierID,RestrictOwners,Owners,OwnersReadOnly,Language,WebUserID,InGlossar FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->DB_WE, MYSQL_ASSOC);
-				foreach($tmp as $key => $val){
-					$this->Record['wedoc_' . $key] = $val;
-				}
+				$this->Record = array_merge($this->DB_WE->getAllFirst(false), getHash('SELECT
+	ID AS wedoc_ID,
+	ID AS WE_ID,
+	ParentID AS wedoc_ParentID,
+	Text AS wedoc_Text,
+	Text AS WE_TEXT,
+	IsFolder AS wedoc_IsFolder,
+	ContentType AS wedoc_ContentType,
+	CreationDate AS wedoc_CreationDate,
+	ModDate AS wedoc_ModDate,
+	Path AS wedoc_Path,
+	Path AS WE_PATH,
+	TemplateID AS wedoc_TemplateID,
+	Filename AS wedoc_Filename,
+	Extension AS wedoc_Extension,
+	IsDynamic AS wedoc_IsDynamic,
+	IsSearchable AS wedoc_IsSearchable,
+	DocType AS wedoc_DocType,
+	ClassName AS wedoc_ClassName,
+	Category AS wedoc_Category,
+	Published AS wedoc_Published,
+	CreatorID AS wedoc_CreatorID,
+	ModifierID AS wedoc_ModifierID,
+	RestrictOwners AS wedoc_RestrictOwners,
+	Owners AS wedoc_Owners,
+	OwnersReadOnly AS wedoc_OwnersReadOnly,
+	Language AS wedoc_Language,
+	WebUserID AS wedoc_WebUserID,
+	InGlossar AS wedoc_InGlossar
+FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->DB_WE, MYSQL_ASSOC)
+				);
 
 				$this->Record['WE_SHOPVARIANTS'] = 0; //check this for global variants
 				if(!empty($this->Record[we_base_constants::WE_VARIANTS_ELEMENT_NAME])){
@@ -344,10 +370,6 @@ class we_listview_document extends we_listview_base{
 						$this->Record['WE_SHOPVARIANTS'] = count($variants);
 					}
 				}
-
-				$this->Record['WE_PATH'] = $this->Record['wedoc_Path'];
-				$this->Record['WE_TEXT'] = f('SELECT Text FROM ' . INDEX_TABLE . ' WHERE ClassID=0 AND ID=' . intval($id), '', $this->DB_WE);
-				$this->Record['WE_ID'] = intval($id);
 
 				if($this->customers && $this->Record['wedoc_WebUserID']){
 					if(isset($this->customerArray['cid_' . $this->Record['wedoc_WebUserID']])){
