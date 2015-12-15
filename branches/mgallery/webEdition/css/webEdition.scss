@@ -818,6 +818,7 @@ optgroup{
 	background-color:#f0f0f0;
 	background: linear-gradient(#4675B1, #325E95);
 	line-height: 32px;
+	height:32px;
 	color:white;
 }
 
@@ -826,8 +827,6 @@ optgroup{
 	top:0px;
 	left:0px;
 	right:0px;
-	height:32px;
-	line-height: 32px;
 	border-bottom: 1px solid #192C3A;
 	#logout,#home{
 		height:32px;

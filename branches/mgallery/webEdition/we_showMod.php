@@ -49,6 +49,8 @@ $step = we_base_request::_(we_base_request::INT, 'step', 0);
 
 if($what === 'show_frameset'){ //old call to show_frameset.php
 	echo we_html_tools::getHtmlTop() .
+	STYLESHEET .
+	we_tabs::getHeader() .
 	we_html_element::jsElement('
 var makeNewEntryCheck = 0;
 var publishWhenSave = 0;
