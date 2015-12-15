@@ -1459,8 +1459,9 @@ WE().util.getTreeIcon = function (contentType, open, extension) {
 		case 'we/user':
 			return pre + '<i class="fa fa-user fa-stack-2x we-color"></i>' + post;
 		case 'we/export':
+			return pre + '<i class="fa fa-download fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
 		case 'we/glossar':
-			return pre + '<i class="fa fa-file-text-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
+			return pre + '<i class="fa fa-commenting fa-stack-1x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
 		case 'we/newsletter':
 			return pre + '<i class="fa fa-newspaper-o fa-stack-2x we-color"></i>' + post;
 		case 'we/voting':
