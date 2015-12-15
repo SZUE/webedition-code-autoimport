@@ -194,12 +194,11 @@ class we_binaryDocument extends we_document{
 			'ID' => intval($this->ID),
 			'DID' => intval($this->ID),
 			'Text' => $text,
-			'Workspace' => $this->ParentPath,
 			'WorkspaceID' => intval($this->ParentID),
 			'Category' => $this->Category,
 			'Doctype' => '',
 			'Title' => $this->getElement('Title'),
-			'Description' => $this->getElement("Description"),
+			'Description' => $this->getElement('Description'),
 			'Path' => $this->Path);
 		return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter($set));
 	}

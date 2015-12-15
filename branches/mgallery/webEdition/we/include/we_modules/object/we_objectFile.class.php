@@ -857,7 +857,7 @@ class we_objectFile extends we_document{
 
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . $table . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $pid . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ')') .
 			$editObjectButton .
-			($myid ? $openCloseButton : $openCloseButtonDis) .
+			($myid ? $openCloseButton : '') .
 			we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value=0;document.we_form.elements['" . $textname . "'].value='';_EditorFrame.setEditorIsHot(true);top.we_cmd('object_reload_entry_at_object','" . $GLOBALS['we_transaction'] . "','" . we_object::QUERY_PREFIX . $ObjectID . "')");
 
 		$yuiSuggest = &weSuggest::getInstance();
@@ -900,7 +900,6 @@ class we_objectFile extends we_document{
 
 			$inputWidth = (true || $isSEEM ? 346 : 411);
 			$editObjectButtonDis = we_html_button::create_button(we_html_button::VIEW, "", true, 0, 0, "", "", true);
-			$openCloseButtonDis = '';
 
 			$openCloseButton = $reloadEntry = '';
 
@@ -946,7 +945,7 @@ class we_objectFile extends we_document{
 
 				$buttontable = $selectObject .
 					($myid ? $editObjectButton : $editObjectButtonDis) .
-					($myid ? $openCloseButton : $openCloseButtonDis) .
+					($myid ? $openCloseButton : '') .
 					(empty($max) || (count($objects) < $max) ? $plusbut : $plusbutDis) .
 					($f > 0 ? $upbut : $upbutDis ) .
 					($f < count($objects) - 1 ? $downbut : $downbutDis) .
@@ -1996,7 +1995,6 @@ class we_objectFile extends we_document{
 						'ID' => $this->ID,
 						'OID' => $this->ID,
 						'Text' => $text,
-						'Workspace' => '',
 						'WorkspaceID' => 0,
 						'Category' => $this->Category,
 						'ClassID' => $this->TableID,
@@ -2007,14 +2005,13 @@ class we_objectFile extends we_document{
 			)));
 		}
 
-		$ws = id_to_path($ws, FILE_TABLE, $this->DB_WE);
+		//$ws = id_to_path($ws, FILE_TABLE, $this->DB_WE);
 
-		foreach($ws as $w => $wsPath){
+		foreach($ws as $w){
 			if(!$this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
 						'ID' => $this->ID,
 						'OID' => $this->ID,
 						'Text' => $text,
-						'Workspace' => $wsPath,
 						'WorkspaceID' => $w,
 						'Category' => $this->Category,
 						'ClassID' => $this->TableID,

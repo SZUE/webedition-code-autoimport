@@ -166,8 +166,8 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 		if(!self::customerIsLogedIn()){ //we don't show any documents with an customerfilter
 			if($obj instanceof we_listview_search){ // search
 				//FIXME: changed tblINDEX!
-				return ' AND ( (ClassID=0 AND ID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(FILE_TABLE) . '"))' .
-					' OR ( ClassID>0 AND ID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(OBJECT_FILES_TABLE) . '")) )';
+				return ' AND ( (i.ClassID=0 AND i.ID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(FILE_TABLE) . '"))' .
+					' OR ( i.ClassID>0 AND i.ID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(OBJECT_FILES_TABLE) . '")) )';
 			}
 			return ($classID ?
 					' AND ' . OBJECT_X_TABLE . $classID . '.OF_ID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(OBJECT_FILES_TABLE) . '")' :

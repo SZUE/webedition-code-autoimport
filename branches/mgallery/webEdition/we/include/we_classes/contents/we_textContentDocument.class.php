@@ -101,7 +101,6 @@ abstract class we_textContentDocument extends we_textDocument{
 					'ID' => intval($this->ID),
 					'DID' => intval($this->ID),
 					'Text' => substr(preg_replace(array('/(&#160;|&nbsp;)/', "/ *[\r\n]+/", '/  +/'), ' ', trim(strip_tags($text))), 0, $maxDB),
-					'Workspace' => $this->ParentPath,
 					'WorkspaceID' => intval($this->ParentID),
 					'Category' => $this->Category,
 					'Doctype' => $this->DocType,

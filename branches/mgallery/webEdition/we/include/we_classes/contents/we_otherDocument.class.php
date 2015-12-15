@@ -137,13 +137,11 @@ class we_otherDocument extends we_binaryDocument{
 		$text.= ' ' . trim($content);
 
 		$maxDB = 65535;
-		$text = substr(preg_replace(array("/\n+/", '/  +/'), ' ', $text), 0, $maxDB);
 
 		$set = array(
 			'ID' => intval($this->ID),
 			'DID' => intval($this->ID),
-			'Text' => $text,
-			'Workspace' => $this->ParentPath,
+			'Text' => substr(preg_replace(array("/\n+/", '/  +/'), ' ', $text), 0, $maxDB),
 			'WorkspaceID' => intval($this->ParentID),
 			'Category' => $this->Category,
 			'Doctype' => '',

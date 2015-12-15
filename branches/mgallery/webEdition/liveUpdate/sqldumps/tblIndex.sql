@@ -14,13 +14,17 @@
 /* query separator */
 ###UPDATEDROPKEY(UDID,###TBLPREFIX###tblIndex)###
 /* query separator */
-###ONKEYFAILED(search,###TBLPREFIX###tblIndex)ALTER TABLE ###TBLPREFIX###tblIndex DROP PRIMARY KEY;###
+###UPDATEDROPKEY(search,###TBLPREFIX###tblIndex)###
 /* query separator */
-###ONKEYFAILED(search,###TBLPREFIX###tblIndex)ALTER TABLE ###TBLPREFIX###tblIndex DROP COLUMN ID;###
+###ONCOL(Workspace,###TBLPREFIX###tblIndex)ALTER TABLE ###TBLPREFIX###tblIndex DROP PRIMARY KEY;###
 /* query separator */
-###ONKEYFAILED(search,###TBLPREFIX###tblIndex)ALTER TABLE ###TBLPREFIX###tblIndex ADD ID int unsigned NOT NULL default '0' FIRST;###
+###ONCOL(Workspace,###TBLPREFIX###tblIndex)ALTER TABLE ###TBLPREFIX###tblIndex DROP COLUMN ID;###
 /* query separator */
-###ONKEYFAILED(search,###TBLPREFIX###tblIndex)UPDATE ###TBLPREFIX###tblIndex SET ID=IF(OID>0,OID,DID);###
+###ONCOL(Workspace,###TBLPREFIX###tblIndex)ALTER TABLE ###TBLPREFIX###tblIndex ADD ID int unsigned NOT NULL default '0' FIRST;###
+/* query separator */
+###ONCOL(Workspace,###TBLPREFIX###tblIndex)UPDATE ###TBLPREFIX###tblIndex SET ID=IF(OID>0,OID,DID);###
+/* query separator */
+###UPDATEDROPCOL(Workspace,###TBLPREFIX###tblIndex)###
 /* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblIndex (
@@ -29,7 +33,6 @@ CREATE TABLE ###TBLPREFIX###tblIndex (
 	OID int(11) unsigned NOT NULL default '0',
   WorkspaceID int(11) unsigned NOT NULL default '0',
   `Text` text NOT NULL,
-  Workspace varchar(1000) NOT NULL default '',
   Category varchar(255) NOT NULL default '',
   ClassID int(11) unsigned NOT NULL default '0',
   Doctype smallint(6) unsigned NOT NULL default '0',
@@ -38,16 +41,11 @@ CREATE TABLE ###TBLPREFIX###tblIndex (
   Path varchar(255) NOT NULL default '',
   Language varchar(5) default NULL,
   PRIMARY KEY (ID,WorkspaceID,ClassID),
-	UNIQUE search (ID,ClassID,Doctype),
-	KEY wsp (Workspace),
 	FULLTEXT Text (Text)
 ) ENGINE=MyISAM;
 
 /* query separator */
 ###ONKEYFAILED(PRIMARY,###TBLPREFIX###tblIndex)ALTER IGNORE TABLE ###TBLPREFIX###tblIndex ADD PRIMARY KEY (ID,WorkspaceID,ClassID);###
-
-/* query separator */
-###ONKEYFAILED(search,###TBLPREFIX###tblIndex)ALTER IGNORE TABLE ###TBLPREFIX###tblIndex ADD UNIQUE search (ID,ClassID,Doctype);###
 
 /* query separator */
 ###UPDATEONLY###DROP TABLE IF EXISTS ###TBLPREFIX###tblIndex_Backup;
