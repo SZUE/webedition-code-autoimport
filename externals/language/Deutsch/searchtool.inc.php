@@ -67,6 +67,7 @@ $l_searchtool=array(
 	'image_protected'=>'Geschützte Dokumente können nicht gelöscht werden',
 	'import_tool_weSearch_data'=>'Die Daten des Tools Suche wiederherstellen',
 	'jeder'=>'alle anzeigen',
+	'media'=>'Medien',
 	'menu_advSearch'=>'Erweiterte Suche',
 	'menu_delete'=>'Löschen',
 	'menu_exit'=>'Schließen',

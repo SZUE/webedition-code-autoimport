@@ -67,6 +67,7 @@ $l_searchtool=array(
 	'image_protected'=>'You cannot delete protected documents',
 	'import_tool_weSearch_data'=>'Restaurer les donnés de l`util recherche',
 	'jeder'=>'afficher tout',
+	'media'=>'Media',
 	'menu_advSearch'=>'Recherche avancé',
 	'menu_delete'=>'Supprimer',
 	'menu_exit'=>'Fermer',

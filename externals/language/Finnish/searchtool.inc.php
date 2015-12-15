@@ -67,6 +67,7 @@ $l_searchtool=array(
 	'image_protected'=>'You cannot delete protected documents',
 	'import_tool_weSearch_data'=>'Palauta Haku tieto',
 	'jeder'=>'näytä kaikkia',
+	'media'=>'Media',
 	'menu_advSearch'=>'Kehittynyt Haku',
 	'menu_delete'=>'Poista',
 	'menu_exit'=>'Sulje',
