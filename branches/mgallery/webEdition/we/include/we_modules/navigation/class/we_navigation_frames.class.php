@@ -705,34 +705,34 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 		switch($this->Model->SelectionType){
 			case we_navigation_navigation::STYPE_DOCTYPE:
 
-				$_table->setCol(0, 0, array('style' => 'font-weight: bold;'), g_l('navigation', '[documents]'));
+				$_table->setCol(0, 0, array('class'=>'bold'), g_l('navigation', '[documents]'));
 
 				if(!empty($this->Model->DocTypeID)){
 					$_dt = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' dt WHERE dt.ID=' . intval($this->Model->DocTypeID), 'DocType', new DB_WE());
-					$_table->setCol(1, 0, array('style' => 'font-weight: bold;'), g_l('navigation', '[doctype]') . ':');
+					$_table->setCol(1, 0, array('class'=>'bold'), g_l('navigation', '[doctype]') . ':');
 					$_table->setColContent(1, 1, $_dt);
 				}
 				break;
 			case we_navigation_navigation::STYPE_CATEGORY:
-				$_table->setCol(0, 0, array('style' => 'font-weight: bold;'), g_l('navigation', '[categories]'));
+				$_table->setCol(0, 0, array('class'=>'bold'), g_l('navigation', '[categories]'));
 				break;
 			default:
-				$_table->setCol(0, 0, array('style' => 'font-weight: bold;'), g_l('navigation', '[objects]'));
+				$_table->setCol(0, 0, array('class'=>'bold'), g_l('navigation', '[objects]'));
 				$_cn = f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->Model->ClassID), 'Text', new DB_WE());
-				$_table->setCol(1, 0, array('style' => 'font-weight: bold;'), g_l('navigation', '[class]') . ':');
+				$_table->setCol(1, 0, array('class'=>'bold'), g_l('navigation', '[class]') . ':');
 				$_table->setColContent(1, 1, $_cn);
 
 
-				$_table->setCol(2, 0, array('style' => 'font-weight: bold;'), g_l('navigation', '[workspace]') . ':');
+				$_table->setCol(2, 0, array('class'=>'bold'), g_l('navigation', '[workspace]') . ':');
 				$_table->setColContent(2, 1, id_to_path($this->Model->WorkspaceID));
 		}
 
 		if($this->Model->SelectionType != we_navigation_navigation::STYPE_CATEGORY && !empty($this->Model->TitleField)){
-			$_table->setCol(3, 0, array('style' => 'font-weight: bold;'), g_l('navigation', '[title_field]') . ':');
+			$_table->setCol(3, 0, array('class'=>'bold'), g_l('navigation', '[title_field]') . ':');
 			$_table->setColContent(3, 1, $this->Model->TitleField);
 		}
 
-		$_table->setCol(4, 0, array('style' => 'font-weight: bold;'), g_l('navigation', '[dir]') . ':');
+		$_table->setCol(4, 0, array('class'=>'bold'), g_l('navigation', '[dir]') . ':');
 		switch($this->Model->SelectionType){
 			case we_navigation_navigation::STYPE_DOCTYPE:
 				$_table->setColContent(4, 1, id_to_path($this->Model->FolderID, FILE_TABLE));
@@ -747,27 +747,27 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 		}
 		if($this->Model->SelectionType != we_navigation_navigation::STYPE_CATEGORY){
 			if($this->Model->Categories){
-				$_table->setCol(5, 0, array('style' => 'font-weight: bold;'), g_l('navigation', '[categories]') . ':');
+				$_table->setCol(5, 0, array('class'=>'bold'), g_l('navigation', '[categories]') . ':');
 				$_table->setColContent(5, 1, implode('<br />', $this->Model->Categories));
 			}
 
 			if($_sort){
-				$_table->setCol(6, 0, array('style' => 'font-weight: bold;'), g_l('navigation', '[sort]') . ':');
+				$_table->setCol(6, 0, array('class'=>'bold'), g_l('navigation', '[sort]') . ':');
 				$_table->setColContent(6, 1, implode('<br />', $_sort));
 			}
 		}
 
 		if($this->Model->Url && $this->Model->Url != 'http://'){
-			$_table->setCol(7, 0, array('style' => 'font-weight: bold;'), g_l('navigation', '[urlLink]') . ':');
+			$_table->setCol(7, 0, array('class'=>'bold'), g_l('navigation', '[urlLink]') . ':');
 			$_table->setColContent(7, 1, $this->Model->Url);
 		}
 
 		if($this->Model->Paramter){
-			$_table->setCol(8, 0, array('style' => 'font-weight: bold;'), g_l('navigation', '[parameter]') . ':');
+			$_table->setCol(8, 0, array('class'=>'bold'), g_l('navigation', '[parameter]') . ':');
 			$_table->setColContent(8, 1, $this->Model->Parameter);
 		}
 
-		$_table->setCol(8, 0, array('style' => 'font-weight: bold;'), g_l('navigation', '[show_count]') . ':');
+		$_table->setCol(8, 0, array('class'=>'bold'), g_l('navigation', '[show_count]') . ':');
 		$_table->setColContent(8, 1, $this->Model->ShowCount);
 
 		return array(
@@ -1263,7 +1263,8 @@ function selectItem() {
 			if($_item['field']){
 				$_opt = we_html_select::getNewOptionGroup(
 								array(
-									'style' => 'font-weight: bold; font-style: normal; color: darkblue;',
+									'class'=>'bold',
+									'style' => 'font-style: normal; color: darkblue;',
 									'label' => $_item['field']
 				));
 				$_opt->addChild(we_html_select::getNewOption($_k, $_txt));

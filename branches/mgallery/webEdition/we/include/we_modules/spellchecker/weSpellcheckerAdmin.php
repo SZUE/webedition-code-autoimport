@@ -6,8 +6,8 @@ we_html_tools::protect($protect);
 
 if(!permissionhandler::hasPerm('SPELLCHECKER_ADMIN')){
 	echo we_html_element::jsElement(
-		we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR) .
-		'self.close();
+			we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR) .
+			'self.close();
 		');
 	exit();
 }
@@ -44,20 +44,20 @@ $l_param = array(
 );
 
 // ----------------------
-/*if(we_base_browserDetect::isMAC() && we_base_browserDetect::isGecko()){
-	$l_param['scid'] = session_id();
-	$_tmp_dir = WE_SPELLCHECKER_MODULE_PATH . '/tmp';
-	if(!is_dir($_tmp_dir)){
-		we_base_file::createLocalFolder($_tmp_dir);
-	}
-	$_scid_file = $_tmp_dir . '/' . md5($l_param['scid']);
-	if(!file_exists($_scid_file)){
-		we_base_file::save($_scid_file, '');
-		we_base_file::insertIntoCleanUp($_scid_file, (24 * 3600));
-	}
-} else {
-	$l_param['scid'] = '';
-}*/
+/* if(we_base_browserDetect::isMAC() && we_base_browserDetect::isGecko()){
+  $l_param['scid'] = session_id();
+  $_tmp_dir = WE_SPELLCHECKER_MODULE_PATH . '/tmp';
+  if(!is_dir($_tmp_dir)){
+  we_base_file::createLocalFolder($_tmp_dir);
+  }
+  $_scid_file = $_tmp_dir . '/' . md5($l_param['scid']);
+  if(!file_exists($_scid_file)){
+  we_base_file::save($_scid_file, '');
+  we_base_file::insertIntoCleanUp($_scid_file, (24 * 3600));
+  }
+  } else {
+  $l_param['scid'] = '';
+  } */
 // -------------------------------
 
 $l_params = '';
@@ -78,7 +78,7 @@ $js = we_tabs::getHeader();
 
 $table = new we_html_table(array('width' => 380, 'style' => 'margin: 5px;'), 3, 5);
 
-$table->setRow(0, array('style' => 'background-color: silver;font-weight: bold;'), 5);
+$table->setRow(0, array('class' => 'bold', 'style' => 'background-color: silver;'), 5);
 $table->setCol(0, 0, array('class' => 'small', 'style' => 'vertical-align:top;color: white;'), g_l('modules_spellchecker', '[default]'));
 $table->setCol(0, 1, array('style' => 'vertical-align:top', 'class' => 'small'), g_l('modules_spellchecker', '[dictionary]'));
 $table->setCol(0, 2, array('style' => 'vertical-align:top', 'class' => 'small'), g_l('modules_spellchecker', '[active]'));
@@ -135,13 +135,13 @@ for($_i = 0; $_i < count($_replacement); $_i++){
 }
 
 $_applet_code = we_html_element::htmlApplet(array(
-		'name' => 'spellchecker',
-		'code' => 'com/livinge/spellchecker/swing/DictEditor.class',
-		'archive' => 'lespellchecker.jar',
-		'codebase' => getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR,
-		'width' => 400,
-		'height' => 220,
-		), '
+			'name' => 'spellchecker',
+			'code' => 'com/livinge/spellchecker/swing/DictEditor.class',
+			'archive' => 'lespellchecker.jar',
+			'codebase' => getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR,
+			'width' => 400,
+			'height' => 220,
+				), '
 <param name="code" value="com/livinge/spellchecker/swing/DictEditor.class"/>
 <param name="archive" value="lespellchecker.jar"/>
 <param name="type" value="application/x-java-applet;version=1.1"/>
@@ -149,14 +149,14 @@ $_applet_code = we_html_element::htmlApplet(array(
 <param name="dictionary" value="' . (isset($_SESSION['weS']['dictLang']) ? $_SESSION['weS']['dictLang'] : 'Deutsch') . '"/>
 <param name="debug" value="off"><param name="user" value="' . $_username . '@' . $_SERVER['SERVER_NAME'] . '"/>
 <param name="udSize" value="' . (is_file(WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '.dict') ? filesize(WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '.dict') : '0') . '"/>' .
-		$l_params);
+				$l_params);
 $_applet_code2 = we_html_element::htmlApplet(array(
-		'name' => "spellcheckerCmd",
-		'code' => "LeSpellchecker.class",
-		'archive' => "lespellchecker.jar",
-		'codebase' => getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR,
-		'width' => 20,
-		'height' => 20,), '
+			'name' => "spellcheckerCmd",
+			'code' => "LeSpellchecker.class",
+			'archive' => "lespellchecker.jar",
+			'codebase' => getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR,
+			'width' => 20,
+			'height' => 20,), '
 <param name="scriptable" value="true"/>
 <param name="mayscript" value="true"/>
 <param name="CODE" value="LeSpellchecker.class"/>

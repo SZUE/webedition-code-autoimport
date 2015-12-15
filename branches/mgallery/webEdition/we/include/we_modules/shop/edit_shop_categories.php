@@ -174,7 +174,7 @@ if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
 					$selAttribs = array('id' => 'weShopCatRels[' . $cat['ID'] . '][' . $k . ']');
 					$sel = we_html_tools::htmlSelect('weShopCatRels[' . $cat['ID'] . '][' . $k . ']', $v['selOptions'], 1, $value, false, $selAttribs, 'value', 220);
 
-					$innerTable->setCol($num, 0, array('class' => 'defaultfont', 'width' => 184, 'style' => ($isDefCountry ? 'font-weight: bold;' : 'padding-bottom: 8px;')), ($v['textTerritory'] ? : 'N.N.'));
+					$innerTable->setCol($num, 0, array('class' => 'defaultfont'.($isDefCountry ?' bold':''), 'width' => 184, 'style' => ($isDefCountry ? '' : 'padding-bottom: 8px;')), ($v['textTerritory'] ? : 'N.N.'));
 					$innerTable->setCol($num, 1, array('class' => 'defaultfont', 'width' => 220), $sel);
 				}
 			}

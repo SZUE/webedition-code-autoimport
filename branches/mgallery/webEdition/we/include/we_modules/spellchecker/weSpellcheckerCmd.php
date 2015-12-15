@@ -124,7 +124,7 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd', '', 0)){
 		we_base_file::save(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php', we_base_request::_(we_base_request::STRING, 'defaultDict'));
 
 		echo we_html_element::jsElement(
-			we_message_reporting::getShowMessageCall(g_l('modules_spellchecker', '[save_settings]'), we_message_reporting::WE_MESSAGE_NOTICE)
+				we_message_reporting::getShowMessageCall(g_l('modules_spellchecker', '[save_settings]'), we_message_reporting::WE_MESSAGE_NOTICE)
 		);
 
 		break;
@@ -153,15 +153,15 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd', '', 0)){
 		}
 
 		echo we_html_element::jsElement(
-			we_message_reporting::getShowMessageCall($_mess, $_messType) .
-			'parent.loadTable();
+				we_message_reporting::getShowMessageCall($_mess, $_messType) .
+				'parent.loadTable();
 				');
 		break;
 
 	case 'refresh':
 		$table = new we_html_table(array('width' => 380, 'style' => 'margin: 5px;'), 1, 6);
 
-		$table->setRow(0, array('style' => 'background-color: silver;font-weight: bold;'), 6);
+		$table->setRow(0, array('class' => 'bold', 'style' => 'background-color: silver;'), 6);
 		$table->setCol(0, 0, array('class' => 'small', 'style' => 'vertical-align:top;color: white;'), g_l('modules_spellchecker', '[default]'));
 		$table->setCol(0, 1, array('class' => 'small', 'style' => 'vertical-align:top;color: white;'), g_l('modules_spellchecker', '[dictionary]'));
 		$table->setCol(0, 2, array('class' => 'small', 'style' => 'vertical-align:top;color: white;'), g_l('modules_spellchecker', '[language]'));

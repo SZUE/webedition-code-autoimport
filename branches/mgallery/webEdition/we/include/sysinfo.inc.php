@@ -28,7 +28,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == 'phpinfo'){
 
 function getInfoTable($_infoArr, $name){
 
-	$_table = new we_html_table(array("style" => "width: 500px;", "spellspacing" => 2), 1, 2);
+	$_table = new we_html_table(array("style" => "width: 500px;"), 1, 2);
 	$_i = 0;
 
 	foreach($_infoArr as $_k => $_v){
@@ -37,7 +37,7 @@ function getInfoTable($_infoArr, $name){
 
 		$_table->addRow(1);
 		$_table->setRow($_i, array("class" => "defaultfont", "style" => $_style . "height:20px;"));
-		$_table->setCol($_i, 0, array("style" => "width: 200px; height: 20px;font-weight: bold; padding-left: 10px;"), $_k);
+		$_table->setCol($_i, 0, array("style" => "width: 200px; height: 20px; padding-left: 10px;", 'class' => 'bold'), $_k);
 		$_table->setCol($_i, 1, array("style" => "width: 250px; height: 20px; padding-left: 10px;"), parseValue($_k, $_v));
 		$_i++;
 
@@ -222,7 +222,8 @@ $_info = array(
 		g_l('sysinfo', '[port]') => $_SERVER['SERVER_PORT'] ? : 80,
 		g_l('sysinfo', '[protocol]') => getServerProtocol(),
 		g_l('sysinfo', '[installation_folder]') => $_install_dir,
-		g_l('sysinfo', '[we_max_upload_size]') => getUploadMaxFilesize()
+		g_l('sysinfo', '[we_max_upload_size]') => getUploadMaxFilesize(),
+		g_l('import', '[pfx]') => TBL_PREFIX
 	),
 	'<a href="javascript:showPhpInfo();">PHP</a>' => array(
 		g_l('sysinfo', '[php_version]') => /* version_compare(PHP_VERSION, '5.3.8', '<') ? getWarning('>5.3.8', PHP_VERSION) : */ PHP_VERSION,

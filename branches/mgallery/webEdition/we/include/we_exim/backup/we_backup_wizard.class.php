@@ -279,8 +279,8 @@ extra_files_desc=[];';
 
 			/* foreach($files as $fk=>$fv)	$select->addOption($fk,$fv); */
 
-			$default = we_html_select::getNewOptionGroup(array('style' => 'font-weight: bold; font-style: normal; color: darkblue;', 'label' => g_l('backup', '[we_backups]')));
-			$other = we_html_select::getNewOptionGroup(array('style' => 'font-weight: bold; font-style: normal; color: darkblue;', 'label' => g_l('backup', '[other_files]')));
+			$default = we_html_select::getNewOptionGroup(array('class'=>'bold','style' => 'font-style: normal; color: darkblue;', 'label' => g_l('backup', '[we_backups]')));
+			$other = we_html_select::getNewOptionGroup(array('class'=>'bold','style' => 'font-style: normal; color: darkblue;', 'label' => g_l('backup', '[other_files]')));
 
 			foreach($files as $fk => $fv){
 				if(strlen($fv) > 75){
