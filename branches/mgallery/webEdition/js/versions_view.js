@@ -1,3 +1,5 @@
+/* global WE */
+
 /**
  * webEdition CMS
  *
@@ -301,10 +303,14 @@ var ajaxCallbackResetVersion = {
 			}, 500);
 			// reload current document => reload all open Editors on demand
 
+			//reset content of editor
+			WE().layout.weEditorFrameController.getActiveDocumentReference().frames[2].location = "about:blank";
+
 			var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
 			for (var frameId in _usedEditors) {
 
 				if (_usedEditors[frameId].getEditorIsActive()) { // reload active editor
+
 					_usedEditors[frameId].setEditorReloadAllNeeded(true);
 					_usedEditors[frameId].setEditorIsActive(true);
 				} else {

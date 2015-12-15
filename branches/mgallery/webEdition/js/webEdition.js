@@ -1263,7 +1263,7 @@ function we_cmd_base(args, url) {
 			// frame where the form should be sent from
 			var _sendFromFrame = _visibleEditorFrame;
 			// set flag to true if active frame is frame nr 2 (frame for displaying editor page 1 with content editor)
-			var _isEditpageContent = _visibleEditorFrame === _currentEditorRootFrame.frames[2];
+			var _isEditpageContent = (_visibleEditorFrame === _currentEditorRootFrame.frames[2]);
 			//var _isEditpageContent = _visibleEditorFrame == _currentEditorRootFrame.document.getElementsByTagName("div")[2].getElementsByTagName("iframe")[0];
 
 			// if we switch from we_base_constants::WE_EDITPAGE_CONTENT to another page
