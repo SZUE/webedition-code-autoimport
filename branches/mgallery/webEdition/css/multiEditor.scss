@@ -114,7 +114,12 @@ body{
 	top:0px;
 	height:$defaultEditorTabHeight;
 	width:100%;
-	background-color: #CED1D3;
+			@if($useOldStyle){
+background-color: Silver;
+	border-top: 1px solid #000000;
+}@else{
+	background-color: #cde1d3;
+}
 }
 
 #multiEditorEditorFramesetsDiv{

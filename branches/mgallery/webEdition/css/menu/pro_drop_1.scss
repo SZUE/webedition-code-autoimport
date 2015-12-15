@@ -11,8 +11,10 @@ way to fit your requirements.
 
 @import "../config.scss";
 .menuDiv {
-/*	background-color: #efefef;
-	background: linear-gradient(#f7f7f6,#e6e6e6);*/
+	@if($useOldStyle){
+		background-color: #efefef;
+		background: linear-gradient(#f7f7f6,#e6e6e6);
+	}
 	margin: 0px;
 	border-bottom: 1px solid black;
 }
@@ -30,7 +32,10 @@ way to fit your requirements.
 		display: block;
 		float: left;
 		height: $menuHeight;
-		border-right: 1px solid #3B6598;
+		@if($useOldStyle){
+		}@else{
+			border-right: 1px solid #3B6598;
+		}
 
 		div{
 			position: relative;
@@ -57,9 +62,11 @@ way to fit your requirements.
 		}
 		div.click{
 			&:hover {
-				/*border-top: solid 1px #808080;
-				border-left: solid 1px #808080;
-				border-right: solid 1px #ffffff;*/
+				@if($useOldStyle){
+					border-top: solid 1px #808080;
+					border-left: solid 1px #808080;
+					border-right: solid 1px #ffffff;
+				}
 			}
 			position: relative;
 			z-index: 200;
@@ -70,15 +77,17 @@ way to fit your requirements.
 		position: relative;
 		z-index: 200;
 		div {
-			/*border-top: solid 1px #ffffff;
-			border-right: solid 1px #808080;
-			border-bottom: solid 1px #808080;
-			border-left: solid 1px #ffffff;
-			*/
+			@if($useOldStyle){
+				border-top: solid 1px #ffffff;
+				border-right: solid 1px #808080;
+				border-bottom: solid 1px #808080;
+				border-left: solid 1px #ffffff;
+				background: #3399ff;
+			}@else{
+				background: linear-gradient(#345881, #284A70);
+			}
 			height: $menuHeight;
 			//top: 4px;
-			/*background: #3399ff;*/
-			background: linear-gradient(#345881, #284A70);
 			color: #ffffff;
 			a.top_link {
 				color: #ffffff;

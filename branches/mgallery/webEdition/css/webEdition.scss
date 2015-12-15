@@ -111,7 +111,9 @@ body.radient{
 #footerBody{
 	//border-top: 2px groove white;
 	padding:8px 0px 10px 0px;
-	//	background: linear-gradient(#B4B3B3, #C6C5C5);
+	@if($useOldStyle){
+		background: linear-gradient(#B4B3B3, #C6C5C5);
+	}
 	height:100%;
 }
 
@@ -178,10 +180,14 @@ body.radient{
 	left:0px;
 	width:$vtabWidth;
 	overflow: hidden;
-	background-color:#192C3A;
-	color:white;
-	//background: linear-gradient(to right,#EAEAEA, #CFCFCF);
-	//border-top:1px solid black;
+	@if($useOldStyle){
+		background: linear-gradient(to right,#EAEAEA, #CFCFCF);
+		border-top:1px solid black;
+	}@else{
+		background-color:#192C3A;
+		color:white;
+
+	}
 
 	div.tab	{
 		border-bottom:1px solid #909090;
@@ -269,7 +275,10 @@ td.boxHeader{
 		height:2ex;
 		border:1px solid grey;
 		padding:1px;
-		color:white;
+		@if($useOldStyle){
+		}@else{
+			color:white;
+		}
 		cursor: pointer;
 	}
 }
@@ -353,7 +362,13 @@ td.boxHeader{
 #treeheader,
 #naviDiv,
 #eHeaderBody{
-	background: #9AA2A9;
+	@if($useOldStyle){
+		background-color: #C8D8EC;
+		background: linear-gradient(#c9d9ed, #afc3de);
+
+	}@else{
+		background: #9AA2A9;
+	}
 	margin: 0px;
 }
 
@@ -815,11 +830,15 @@ optgroup{
 
 #toolMenu,
 #headerDiv{
-	background-color:#f0f0f0;
-	background: linear-gradient(#4675B1, #325E95);
+	@if($useOldStyle){
+		background: linear-gradient(#F7F7F7, #E8E8E8);
+	}@else{
+		background: linear-gradient(#4675B1, #325E95);
+		color:white;
+
+	}
 	line-height: 32px;
 	height:32px;
-	color:white;
 }
 
 #headerDiv{
@@ -839,7 +858,10 @@ optgroup{
 		position:absolute;
 		right:0px;
 		float:none;
-		border-left: 2px solid #2F5889;
+		@if($useOldStyle){
+		}@else{
+			border-left: 2px solid #2F5889;
+		}
 	}
 	#msgheadertable{
 		position:relative;
@@ -931,17 +953,22 @@ table.error{
 	margin-left: 1px;
 	margin-right: 1px;
 	text-align: center;
-	border-right: 1px solid #2F5889;
-
+	cursor:pointer;
+	@if($useOldStyle){
+	}@else{
+		border-right: 1px solid #2F5889;
+	}
 	&:hover{
-		background: linear-gradient(to bottom, #345881, #284A70) transparent !important;
-		/*		margin-left: 0px;
-				margin-right: 0px;
-				border-bottom: black solid 1px;
-				border-right:	black solid 1px;
-				border-left:	#CCCCCC solid 1px;
-				border-top:		#CCCCCC solid 1px;*/
-		cursor:pointer;
+		@if($useOldStyle){
+			margin-left: 0px;
+			margin-right: 0px;
+			border-bottom: black solid 1px;
+			border-right:	black solid 1px;
+			border-left:	#CCCCCC solid 1px;
+			border-top:		#CCCCCC solid 1px;
+		}@else{
+			background: linear-gradient(to bottom, #345881, #284A70) transparent !important;
+		}
 	}
 }
 
