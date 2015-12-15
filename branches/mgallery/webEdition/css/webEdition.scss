@@ -105,7 +105,6 @@ body.radient{
 #fsfooter,
 .radient,
 #fsheader{
-	background-color:lightgrey;/*for old browsers*/
 	background: linear-gradient(white, #E7E7E7);
 }
 
@@ -791,7 +790,6 @@ optgroup{
 	position:absolute;
 	bottom:0px;
 	width:100%;
-	background-color:grey;/*for old browsers*/
 	background: linear-gradient(#B4B3B3, #C6C5C5);
 	border-top: 2px groove white;
 }
@@ -801,7 +799,6 @@ optgroup{
 	border-top: 2px groove white;
 	/*padding left for rebuild*/
 	padding:5px 10px 10px 0px;
-	background-color:grey;/*for old browsers*/
 	background: linear-gradient(#B4B3B3, #C6C5C5);
 }
 
