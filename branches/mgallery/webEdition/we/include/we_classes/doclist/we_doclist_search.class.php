@@ -23,35 +23,29 @@
  */
 
 class we_doclist_search extends we_search_search{
-	public $Model;
 	public $View;
 	protected $whichSearch;
 
 	public function __construct($view = null) {
 		parent::__construct($view ? : new we_doclist_view());
-		//$this->Model = &$this->View->Model;
-		$this->Model = $this->View->Model;
 		$this->whichSearch = we_search_view::SEARCH_DOCLIST;
 	}
 
-	public function getModel(){
-		return $this->Model;
-	}
-
-	public function searchProperties($table = ''){
+	public function searchProperties($model, $table = ''){ // FIXME: handle model in like in other searches
 		$DB_WE = new DB_WE();
 		$foundItems = 0;
-		$_result = $saveArrayIds = $searchText = array();
+		$_result = $saveArrayIds = $currentSearch = array();
 		$_SESSION['weS']['weSearch']['foundItems'] = 0;
 
-		$searchFields = $this->Model->searchFields;
-		$searchText = $this->Model->search;
-		$table = $table ? : ($this->Model->searchTable ? : FILE_TABLE);
-		$location = $this->Model->location;
-		$_order = $this->Model->OrderDoclistSearch;
-		//$_view = $this->Model->setViewDoclistSearch;
-		$_searchstart = $this->Model->searchstartDoclistSearch;
-		$_anzahl= $this->Model->anzahlDoclistSearch;
+		$currentSearchFields = $model->getProperty('currentSearchFields');
+		$currentSearch = $model->getProperty('currentSearch');
+		$table = $table ? : (($t = $model->getProperty('currentSearchTables')) ? $t[0]: FILE_TABLE);
+		$currentLocation = $model->getProperty('currentLocation');
+		$currentOrder = $model->getProperty('currentOrder');
+		//$_view = $model->getProperty('currentSetView');
+		$currentSearchstart = $model->getProperty('currentSearchstart');
+		$currentAnzahl= $model->getProperty('currentAnzahl');
+		$currentFolderID = $model->getProperty('currentFolderID');
 
 		$where = array();
 		$this->settable($table);
@@ -61,24 +55,26 @@ class we_doclist_search extends we_search_search{
 			echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('searchtool', '[noTempTableRightsDoclist]'), we_message_reporting::WE_MESSAGE_NOTICE));
 			return '';
 		}
-		if($this->Model->folderID){
+		if($currentFolderID){
 			$this->createTempTable();
 
-			foreach($searchFields as $i => $searchField){
+			foreach($currentSearchFields as $i => $searchField){
 
 				$w = "";
-				if(isset($searchText[0])){
-					$searchString = (isset($searchText[$i]) ? $searchText[$i] : $searchText[0]);
+				if(isset($currentSearch[0])){
+					$searchString = (isset($currentSearch[$i]) ? $currentSearch[$i] : $currentSearch[0]);
 				}
 				if(!empty($searchString)){
 
 					switch($searchField){
 						default:
 						case 'Text':
-							if(isset($searchField) && isset($location[$i])){
-								$where[] = $this->searchfor($searchString, $searchField, $location[$i], $table);
+							if(isset($searchField) && isset($currentLocation[$i])){
+								$w = $this->searchfor($searchString, $searchField, $currentLocation[$i], $table);
+								$where[] = ($w ? $w : 'AND 0');
 							}
 						case 'Content':
+						case 'Title':
 						case 'Status':
 						case 'Speicherart':
 						case 'CreatorName':
@@ -90,14 +86,16 @@ class we_doclist_search extends we_search_search{
 					switch($searchField){
 						case 'Content':
 							$w = $this->searchContent($searchString, $table);
-							$where[] = ($w ? $w : '0');
+							$where[] = 'AND' . ($w ? $w : '0');
 							break;
-
+						
 						case 'Title':
+							break;
+							/*
 							$w = $this->searchInTitle($searchString, $table);
 							$where[] = ($w ? $w : '0');
-
-							break;
+							 * 
+							 */
 						case "Status":
 						case "Speicherart":
 							if($searchString != ""){
@@ -110,7 +108,7 @@ class we_doclist_search extends we_search_search{
 						case 'CreatorName':
 						case 'WebUserName':
 							if($searchString != ""){
-								$w = $this->searchSpecial($searchString, $searchField, $location[$i]);
+								$w = $this->searchSpecial($searchString, $searchField, $currentLocation[$i]);
 								$where[] = $w;
 							}
 							break;
@@ -122,7 +120,7 @@ class we_doclist_search extends we_search_search{
 				}
 			}
 
-			$where[] = 'AND ParentID=' . intval($this->Model->folderID);
+			$where[] = 'AND ParentID=' . intval($currentFolderID);
 			switch($table){
 				case FILE_TABLE:
 					$where[] = 'AND (RestrictOwners IN (0,' . intval($_SESSION['user']['ID']) . ') OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Owners))';
@@ -137,33 +135,33 @@ class we_doclist_search extends we_search_search{
 					$where[] = 'AND (RestrictUsers IN (0,' . intval($_SESSION['user']['ID']) . ') OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Users))';
 					break;
 			}
-			$whereQuery = '1 ' . implode(' ', $where);
+			$whereQuery = '1 ' . implode(' ', $where);t_e('where arr', $where);
 			//we_database_base::t_e_query(5);
 			$this->setwhere($whereQuery);
-			$this->insertInTempTable($whereQuery, $table, id_to_path($this->Model->folderID) . '/');
+			$this->insertInTempTable($whereQuery, $table, id_to_path($currentFolderID) . '/');
 
 			$foundItems = $this->countitems($whereQuery, $table);
 			$_SESSION['weS']['weSearch']['foundItems'] = $this->founditems = $foundItems;
 
-			$this->selectFromTempTable($_searchstart, $_anzahl, $_order);
+			$this->selectFromTempTable($currentSearchstart, $currentAnzahl, $currentOrder);
 
 			while($this->next_record()){
-				if(!isset($saveArrayIds[$this->Record ['ContentType']][$this->Record ['ID']])){
-					$saveArrayIds[$this->Record ['ContentType']][$this->Record ['ID']] = $this->Record ['ID'];
+				if(!isset($saveArrayIds[$this->Record['ContentType']][$this->Record['ID']])){
+					$saveArrayIds[$this->Record['ContentType']][$this->Record['ID']] = $this->Record['ID'];
 					$_result[] = array_merge(array('Table' => $table), $this->Record);
 				}
 			}
 		}
 
-		if(!$_SESSION['weS']['weSearch']['foundItems']){
+		if(!$this->founditems){
 			return array();
 		}
-		$DB_WE->query('DROP TABLE IF EXISTS SEARCH_TEMP_TABLE');
+		$this->db->query('DROP TABLE IF EXISTS SEARCH_TEMP_TABLE');
 
 		foreach($_result as $k => $v){
-			$_result[$k]["Description"] = "";
-			if($_result[$k]["Table"] == FILE_TABLE && $_result[$k]['Published'] >= $_result[$k]['ModDate'] && $_result[$k]['Published'] != 0){
-				$_result[$k]["Description"] = f('SELECT c.Dat FROM (' . FILE_TABLE . ' f LEFT JOIN ' . LINK_TABLE . ' l ON (f.ID=l.DID)) LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE f.ID=' . intval($_result[$k]["ID"]) . ' AND l.nHash=x\'' . md5("Description") . '\' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"', '', $DB_WE);
+			$_result[$k]['Description'] = '';
+			if($_result[$k]['Table'] == FILE_TABLE && $_result[$k]['Published'] >= $_result[$k]['ModDate'] && $_result[$k]['Published'] != 0){
+				$_result[$k]['Description'] = f('SELECT c.Dat FROM (' . FILE_TABLE . ' f LEFT JOIN ' . LINK_TABLE . ' l ON (f.ID=l.DID)) LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE f.ID=' . intval($_result[$k]["ID"]) . ' AND l.nHash=x\'' . md5("Description") . '\' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"', '', $DB_WE);
 			} else {
 				if(($obj = f('SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($_result[$k]["ID"]) . ' AND DocTable="tblFile" AND Active=1', '', $DB_WE))){
 					$tempDoc = we_unserialize($obj);
@@ -173,7 +171,7 @@ class we_doclist_search extends we_search_search{
 				}
 			}
 		}
+
 		return $_result;
-		//return self::makeContent($DB_WE, $_result, $_view);
 	}
 }

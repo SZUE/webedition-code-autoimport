@@ -100,7 +100,7 @@ class we_folder extends we_root{
 		if(!is_object($this->doclistModel)){
 			$this->doclistModel = new we_doclist_model($GLOBALS["we_transaction"], $this->Table, $this->ID, $this->viewType);
 		}
-		$this->doclistModel->processRequest();
+		$this->doclistModel->initByHttp();
 	}
 
 	public function getDoclistModel(){

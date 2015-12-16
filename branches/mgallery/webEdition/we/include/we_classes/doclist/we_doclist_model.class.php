@@ -26,65 +26,54 @@
  */
 require_once (WE_INCLUDES_PATH . 'we_tools/weSearch/conf/define.conf.php');
 
-class we_doclist_model{// extends weModelBase{
-	/**
-	 * @var string: classname
-	 */
+class we_doclist_model extends we_search_model{
 	public $ModelClassName = __CLASS__;
-
-	public $searchTable;
-
 	public $whichSearch;
-
-	/**
-	 * @var tinyint: flag if the search ist predefined or not
-	 */
+	public $height = 0;
+	public $transaction = '';
 	public $predefined;
 
 	/**
 	 * @var integer: position to start the search
 	 */
-	public $searchstartDoclistSearch = 0;
+	protected $searchstartDoclistSearch = 0;
 
 	/**
 	 * @var array: includes the text to search for
 	 */
-	public $search = array();
+	protected $searchDoclistSearch = array();
 
 	/**
 	 * @var array: includes the operators
 	 */
-	public $location = array();
+	protected $locationDoclistSearch = array();
 
 	/**
 	 * @var integer: folder-ids of the docsearch and the tmplsearch
 	 */
-	public $folderID;
+	protected $folderIDDoclist;
 
 	/**
 	 * @var tinyint: flag that shows what view is set in each search
 	 */
-	public $setViewDoclistSearch = 'list';
+	protected $setViewDoclistSearch = 'list';
 
 	/**
 	 * @var int: gives the number of entries in each search for one page
 	 */
-	public $anzahlDoclistSearch = 10;
+	protected $anzahlDoclistSearch = 10;
 
 	/**
 	 * @var string: gives the order
 	 */
-	public $OrderDoclistSearch = 'Text';
+	protected $OrderDoclistSearch = 'Text';
+
+	protected $searchTablesDoclistSearch = array();
 
 	/**
 	 * @var array: includes the searchfiels which you are searching in
 	 */
-	public $searchFields = array();
-	
-	public $mode = 0;
-	public $height = 0;
-	public $transaction = '';
-	public $isFolder = false;
+	protected $searchFieldsDoclistSearch = array();
 
 	/**
 	 * Default Constructor
@@ -95,8 +84,8 @@ class we_doclist_model{// extends weModelBase{
 		//parent::__construct(SUCHE_TABLE);
 
 		$this->transaction = $transaction;
-		$this->searchTable = $searchTable;
-		$this->folderID = $folderID;
+		$this->searchTablesDoclistSearch = array($searchTable);
+		$this->folderIDDoclist = $folderID;
 		$this->setViewDoclistSearch = $setView;
 		$this->whichSearch = we_search_view::SEARCH_DOCLIST;
 
@@ -111,7 +100,7 @@ class we_doclist_model{// extends weModelBase{
 
 	}
 
-	public function processRequest(){
+	public function initByHttp(){
 		// IMPORTANT: this is the ONLY place where model vars are set!
 		$DB_WE = new DB_WE();
 		$request = we_base_request::_(we_base_request::STRING, 'we_cmd');
@@ -150,22 +139,35 @@ class we_doclist_model{// extends weModelBase{
 			$this->mode = we_base_request::_(we_base_request::INT, 'we_cmd', $this->mode, 'mode');
 
 			// searchfield's default is an empty 'Content' dearch (not having any impact on the result)
-			$this->searchFields = !$this->mode ? array('Content') : we_base_request::_(we_base_request::STRING, 'we_cmd', array('Content'), 'searchFields' . $this->whichSearch);
-			$this->search = !$this->mode ? array('') : array_map('trim', we_base_request::_(we_base_request::STRING, 'we_cmd', array(''), 'search' . $this->whichSearch));
-			$this->location = !$this->mode ? array('') : we_base_request::_(we_base_request::STRING, 'we_cmd', array(''), 'location' . $this->whichSearch);
+			$this->searchFieldsDoclistSearch = !$this->mode ? array('Content') : we_base_request::_(we_base_request::STRING, 'we_cmd', array('Content'), 'searchFields' . $this->whichSearch);
+			$this->searchDoclistSearch = !$this->mode ? array('') : array_map('trim', we_base_request::_(we_base_request::STRING, 'we_cmd', array(''), 'search' . $this->whichSearch));
+			$this->locationDoclistSearch = !$this->mode ? array('') : we_base_request::_(we_base_request::STRING, 'we_cmd', array(''), 'location' . $this->whichSearch);
 
 			$this->OrderDoclistSearch = we_base_request::_(we_base_request::STRING, 'we_cmd', $this->OrderDoclistSearch, 'Order' . $this->whichSearch);
 			$this->setViewDoclistSearch = we_base_request::_(we_base_request::STRING, 'we_cmd', $this->setViewDoclistSearch, 'setView' . $this->whichSearch);
 			$this->searchstartDoclistSearch = we_base_request::_(we_base_request::INT, 'we_cmd', $this->searchstartDoclistSearch, 'searchstart' . $this->whichSearch);
 			$this->anzahlDoclistSearch = we_base_request::_(we_base_request::INT, 'we_cmd', $this->anzahlDoclistSearch, 'anzahl' . $this->whichSearch);
-			$this->height = count($this->searchFields);
+			$this->height = count($this->searchFieldsDoclistSearch);
 
 			// reindex search arrays
-			$this->search = array_merge($this->search);
-			$this->searchFields = array_merge($this->searchFields);
-			$this->location = array_merge($this->location);
-			//t_e('model updatet', $this);
+			$this->searchDoclistSearch = array_merge($this->searchDoclistSearch);
+			$this->searchFieldsDoclistSearch = array_merge($this->searchFieldsDoclistSearch);
+			$this->locationDoclistSearch = array_merge($this->locationDoclistSearch);
 		}
+
+		$this->prepareModelForSearch();
+	}
+
+	public function prepareModelForSearch(){// FIXME: label all props width DocliostSearch (like in other searches)
+		$this->currentSearchTables = $this->searchTablesDoclistSearch;
+		$this->currentSearchFields = $this->searchFieldsDoclistSearch;
+		$this->currentLocation = $this->locationDoclistSearch;
+		$this->currentSearch = $this->searchDoclistSearch;
+		$this->currentFolderID = $this->folderIDDoclist;
+		$this->currentOrder = $this->OrderDoclistSearch;
+		$this->currentSetView = $this->setViewDoclistSearch;
+		$this->currentSearchstart = $this->searchstartDoclistSearch;
+		$this->currentAnzahl = $this->anzahlDoclistSearch;
 	}
 
 	public function getWhichSearch(){

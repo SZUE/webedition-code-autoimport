@@ -59,10 +59,11 @@ abstract class we_tool_frames extends we_modules_frame{
 	function getHTMLFrameset($extraUrlParams = ''){
 		$this->setTreeWidthFromCookie();
 
-		$this->Model->clearSessionVars();
+		$_class = we_tool_lookup::getModelClassName($this->toolName);
+		$this->Model = $this->Model ? : new $_class();
+		//$this->Model->clearSessionVars(); // why should we clear here?
 
 		if(($modelid = we_base_request::_(we_base_request::INT, 'modelid'))){
-			$_class = we_tool_lookup::getModelClassName($this->toolName);
 			$this->Model = new $_class();
 			$this->Model->load($modelid);
 			$this->Model->saveInSession();

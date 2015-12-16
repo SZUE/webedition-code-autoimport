@@ -454,6 +454,7 @@ if ((scrollContent.offsetHeight - scrollheight) > 0) {
 			newRow.appendChild(this.getCell('location' + this.conf.whichsearch, this.conf.rows));
 			newRow.appendChild(this.getCell('search' + this.conf.whichsearch, this.conf.rows));
 			newRow.appendChild(this.getCell('delButton', this.conf.rows));
+			newRow.appendChild(this.getCell('hiddenLocation_empty', this.conf.rows));
 
 			elem.appendChild(newRow);
 		}
@@ -462,7 +463,7 @@ if ((scrollContent.offsetHeight - scrollheight) > 0) {
 		//top.console.debug('is fn');
 
 	},
-	getCell: function (type, rowID, replacement) { // FIXME: use this-whichsearch to reduce cases
+	getCell: function (type, rowID, replacement, value) { // FIXME: use this-whichsearch to reduce cases
 		var cell = document.createElement('TD'),
 			locationType;
 
@@ -504,6 +505,20 @@ if ((scrollContent.offsetHeight - scrollheight) > 0) {
 				cell.setAttribute("id", "td_locationDoclistSearch[" + rowID + "]");
 				cell.innerHTML = this.elems[locationType].replace(/__we_new_id__/g, rowID);
 				break;
+			case 'hiddenLocationAdvSearch':
+			case 'hiddenLocationMediaSearch':
+			case 'hiddenLocationDoclistSearch':
+				var namepart = type === 'hiddenLocationAdvSearch' ? 'locationAdvSearch' : (type === 'hiddenLocationMediaSearch' ? 'locationMediaSearch' : 'locationDoclistSearch');
+				var hidden = document.createElement("input");
+
+				cell.setAttribute('id', 'td_hiddenLocation[' + rowID + ']');
+				hidden.setAttribute('type', 'hidden');
+				hidden.setAttribute('name', namepart + '[' + rowID + ']');
+				hidden.setAttribute('value', (value ? value : 'IS'));
+				cell.appendChild(hidden);
+				break;
+			case 'hiddenLocation_empty':
+				cell.setAttribute('id', 'td_hiddenLocation[' + rowID + ']');
 		}
 		return cell;
 
@@ -572,34 +587,44 @@ if ((scrollContent.offsetHeight - scrollheight) > 0) {
 		var from = document.getElementsByName('hidden_searchFields' + this.conf.whichsearch + '[' + rowNr + ']')[0].value;
 		var row = document.getElementById('filterRow_' + rowNr);
 		var locationTD = document.getElementById('td_location' + this.conf.whichsearch + '[' + rowNr + ']');
+		var hiddenLocationTD = document.getElementById('td_hiddenLocation[' + rowNr + ']');
 		var searchTD = document.getElementById('td_search' + this.conf.whichsearch + '[' + rowNr + ']');
 		var delButtonTD = document.getElementById('td_delButton[' + rowNr + ']');
-		var location = document.getElementById('location' + this.conf.whichsearch + '[' + rowNr + ']');
+		var location;
 		var locationType = '';
 		var innerhtml;
 		var cell;
+
+		if(hiddenLocationTD){
+			row.removeChild(hiddenLocationTD);
+		}
+		if (delButtonTD) {
+			row.removeChild(delButtonTD);
+		}
+		if (searchTD) {
+			row.removeChild(searchTD);
+		}
+		if(locationTD){
+			row.removeChild(locationTD);
+		}
+
 		switch (value) {
 			case 'Content':
-				if (locationTD !== null) {
-					location.value = 'CONTAIN';
-					location.disabled = true;
-				}
-				row.removeChild(searchTD);
-
-				if (delButtonTD !== null) {
-					row.removeChild(delButtonTD);
-				}
+				row.appendChild(this.getCell('location' + this.conf.whichsearch, rowNr, '', 'CONTAIN', true));
+				location = document.getElementById('location' + this.conf.whichsearch + '[' + rowNr + ']');
+				location.value = 'CONTAIN';
+				location.disabled = true;
 
 				row.appendChild(this.getCell('search' + this.conf.whichsearch, this.conf.rows));
 				row.appendChild(this.getCell('delButton', rowNr));
+				row.appendChild(this.getCell('hiddenLocation' + this.conf.whichsearch, rowNr, '', 'CONTAIN'));
 				document.getElementById("search" + this.conf.whichsearch + "[" + rowNr + "]").value = setValue;
 				break;
 			case 'temp_category':
-				if (locationTD !== null) {
-					location.value = 'IS';
-					location.disabled = true;
-				}
-				row.removeChild(searchTD);
+				row.appendChild(this.getCell('location' + this.conf.whichsearch, rowNr, '', 'CONTAIN', true));
+				location = document.getElementById('location' + this.conf.whichsearch + '[' + rowNr + ']');
+				location.value = 'IS';
+				location.disabled = true;
 
 				innerhtml = '<table class="default"><tbody><tr>' +
 								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
@@ -612,18 +637,15 @@ if ((scrollContent.offsetHeight - scrollheight) > 0) {
 				cell.innerHTML = innerhtml;
 				row.appendChild(cell);
 
-				if (delButtonTD !== null) {
-					row.removeChild(delButtonTD);
-				}
 				row.appendChild(this.getCell('delButton', rowNr));
+				row.appendChild(this.getCell('hiddenLocation' + this.conf.whichsearch, rowNr, '', 'IS'));
 				break;
 			case 'temp_template_id':
 			case 'MasterTemplateID':
-				if (locationTD !== null) {
-					location.value = 'IS';
-					location.disabled = true;
-				}
-				row.removeChild(searchTD);
+				row.appendChild(this.getCell('location' + this.conf.whichsearch, rowNr, '', 'CONTAIN', true));
+				location = document.getElementById('location' + this.conf.whichsearch + '[' + rowNr + ']');
+				location.value = 'IS';
+				location.disabled = true;
 
 				innerhtml = '<table class="default"><tbody><tr>' +
 								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
@@ -636,22 +658,18 @@ if ((scrollContent.offsetHeight - scrollheight) > 0) {
 				cell.innerHTML = innerhtml;
 				row.appendChild(cell);
 
-				if (delButtonTD !== null) {
-					row.removeChild(delButtonTD);
-				}
 				row.appendChild(this.getCell('delButton', rowNr));
+				row.appendChild(this.getCell('hiddenLocation' + this.conf.whichsearch, rowNr, '', 'IS'));
 				break;
 			case 'ParentIDDoc':
 			case 'ParentIDObj':
 			case 'ParentIDTmpl':
-				if (locationTD !== null) {
-					location.value = 'IS';
-					location.disabled = true;
-				}
-				row.removeChild(searchTD);
+				row.appendChild(this.getCell('location' + this.conf.whichsearch, rowNr, '', 'CONTAIN', true));
+				location = document.getElementById('location' + this.conf.whichsearch + '[' + rowNr + ']');
+				location.value = 'IS';
+				location.disabled = true;
 
 				var table = value === 'ParentIDDoc' ? WE().consts.tables.FILE_TABLE : (value === 'ParentIDObj' ? WE().consts.tables.OBJECT_FILES_TABLE : WE().consts.tables.TEMPLATES_TABLE);
-
 				innerhtml = '<table class="default"><tbody><tr>' +
 								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
 								'<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td></td>' +
@@ -663,20 +681,14 @@ if ((scrollContent.offsetHeight - scrollheight) > 0) {
 				cell.innerHTML = innerhtml;
 				row.appendChild(cell);
 
-				if (delButtonTD !== null) {
-					row.removeChild(delButtonTD);
-				}
 				row.appendChild(this.getCell('delButton', rowNr));
+				row.appendChild(this.getCell('hiddenLocation' + this.conf.whichsearch, rowNr, '', 'IS'));
 				break;
 			case 'Status':
-				if (locationTD !== null) {
-					location.value = 'IS';
-					location.disabled = true;
-				}
-				row.removeChild(searchTD);
-				if (delButtonTD !== null) {
-					row.removeChild(delButtonTD);
-				}
+				row.appendChild(this.getCell('location' + this.conf.whichsearch, rowNr, '', 'CONTAIN', true));
+				location = document.getElementById('location' + this.conf.whichsearch + '[' + rowNr + ']');
+				location.value = 'IS';
+				location.disabled = true;
 
 				cell = document.createElement('TD');
 				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
@@ -684,16 +696,13 @@ if ((scrollContent.offsetHeight - scrollheight) > 0) {
 				row.appendChild(cell);
 
 				row.appendChild(this.getCell('delButton', rowNr));
+				row.appendChild(this.getCell('hiddenLocation' + this.conf.whichsearch, rowNr, '', 'IS'));
 				break;
 			case 'Speicherart':
-				if (locationTD !== null) {
-					location.value = 'IS';
-					location.disabled = true;
-				}
-				row.removeChild(searchTD);
-				if (delButtonTD !== null) {
-					row.removeChild(delButtonTD);
-				}
+				row.appendChild(this.getCell('location' + this.conf.whichsearch, rowNr, '', 'CONTAIN', true));
+				location = document.getElementById('location' + this.conf.whichsearch + '[' + rowNr + ']');
+				location.value = 'IS';
+				location.disabled = true;
 
 				cell = document.createElement('TD');
 				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
@@ -701,13 +710,12 @@ if ((scrollContent.offsetHeight - scrollheight) > 0) {
 				row.appendChild(cell);
 
 				row.appendChild(this.getCell('delButton', rowNr));
+				row.appendChild(this.getCell('hiddenLocation' + this.conf.whichsearch, rowNr, '', 'IS'));
 				break;
 			case 'Published':
 			case 'CreationDate':
 			case 'ModDate':
-				row.removeChild(locationTD);
 				row.appendChild(this.getCell('locationDate' + this.conf.whichsearch, rowNr));
-				row.removeChild(searchTD);
 
 				// FIXME: move datepicker-button to search_view
 				innerhtml = '<table id="search' + this.conf.whichsearch + '[' + rowNr + ']_cell" class="default"><tbody><tr>' +
@@ -726,21 +734,14 @@ if ((scrollContent.offsetHeight - scrollheight) > 0) {
 
 				Calendar.setup({inputField: 'search' + this.conf.whichsearch + '[' + rowNr + ']', ifFormat: '%d.%m.%Y', button: 'date_picker_from' + rowNr + '', align: 'Tl', singleClick: true});
 
-				if (delButtonTD !== null) {
-					row.removeChild(delButtonTD);
-				}
-
 				row.appendChild(this.getCell('delButton', rowNr));
-
+				row.appendChild(this.getCell('hiddenLocation_empty', rowNr));
 				break;
-			case 'allModsIn':// FIXME: does nit work yet
-				if (locationTD !== null) {
-					location.disabled = true;
-				}
-				row.removeChild(searchTD);
-				if (delButtonTD !== null) {
-					row.removeChild(delButtonTD);
-				}
+			case 'allModsIn':// FIXME: does not work yet
+				row.appendChild(this.getCell('location' + this.conf.whichsearch, rowNr, '', 'CONTAIN', true));
+				location = document.getElementById('location' + this.conf.whichsearch + '[' + rowNr + ']');
+				location.value = 'IN';
+				location.disabled = true;
 
 				cell = document.createElement('TD');
 				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
@@ -748,17 +749,14 @@ if ((scrollContent.offsetHeight - scrollheight) > 0) {
 				row.appendChild(cell);
 
 				row.appendChild(this.getCell('delButton', rowNr));
+				row.appendChild(this.getCell('hiddenLocation_empty', rowNr));
 				break;
 			case 'modifierID':
 			//case 'Creator':
-				if (locationTD !== null) {
-					location.value = 'IS';
-					location.disabled = true;
-				}
-				row.removeChild(searchTD);
-				if (delButtonTD !== null) {
-					row.removeChild(delButtonTD);
-				}
+				row.appendChild(this.getCell('location' + this.conf.whichsearch, rowNr, '', 'CONTAIN', true));
+				location = document.getElementById('location' + this.conf.whichsearch + '[' + rowNr + ']');
+				location.value = 'IS';
+				location.disabled = true;
 
 				cell = document.createElement('TD');
 				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
@@ -766,6 +764,7 @@ if ((scrollContent.offsetHeight - scrollheight) > 0) {
 				row.appendChild(cell);
 
 				row.appendChild(this.getCell('delButton', rowNr));
+				row.appendChild(this.getCell('hiddenLocation' + this.conf.whichsearch, rowNr, '', 'IS'));
 				break;
 			default:
 				switch(value){
@@ -788,17 +787,10 @@ if ((scrollContent.offsetHeight - scrollheight) > 0) {
 						break;
 				}
 
-				row.removeChild(searchTD);
-				if (locationTD !== null) {
-					row.removeChild(locationTD);
-				}
-				if (delButtonTD !== null) {
-					row.removeChild(delButtonTD);
-				}
-
 				row.appendChild(this.getCell('location' + locationType + this.conf.whichsearch, rowNr));
 				row.appendChild(this.getCell('search' + this.conf.whichsearch, rowNr));
 				row.appendChild(this.getCell('delButton', rowNr));
+				row.appendChild(this.getCell('hiddenLocation_empty', rowNr));
 
 				document.getElementById('search' + this.conf.whichsearch + '[' + rowNr + ']').value = setValue;
 		}

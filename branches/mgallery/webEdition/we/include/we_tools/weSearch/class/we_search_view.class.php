@@ -31,7 +31,6 @@ class we_search_view extends we_modules_view{
 	const SEARCH_ADV = 'AdvSearch';
 	const SEARCH_DOCLIST = 'DoclistSearch';
 
-	var $Model;
 	var $toolName;
 	var $db;
 	var $frameset;
@@ -53,12 +52,12 @@ class we_search_view extends we_modules_view{
 		$this->editorBodyFrame = $this->topFrame . '.editor.edbody';
 		$this->editorHeaderFrame = $this->topFrame . '.editor.edheader';
 		$this->editorFooterFrame = $this->topFrame . '.editor.edfooter';
-
-		$this->toolName = 'weSearch';
-		$this->Model = new we_search_model();
+		$this->Model = !isset($_SESSION['weS'][$this->toolName . '_session']) ? new we_search_model() :
+			$_SESSION['weS'][$this->toolName . '_session'];
+		//$this->Model = new we_search_model();
 		$this->yuiSuggest = & weSuggest::getInstance();
-		$this->searchclass = new we_search_search($this);
 		$this->searchclassExp = new we_search_exp();
+		$this->searchclass = new we_search_search($this);
 	}
 
 	function getJSTop(){
@@ -260,22 +259,52 @@ function mark() {
 			case 'tool_weSearch_new_forDocuments' :
 			case 'tool_weSearch_new_forTemplates' :
 			case 'tool_weSearch_new_forObjects' :
+			case 'tool_weSearch_new_forClasses' :
 			case 'tool_weSearch_new_forMedia' :
 			case 'tool_weSearch_new_advSearch' :
 				//case 'tool_weSearch_new_group' :
-				$this->Model = new we_search_model();
+				$this->Model = new we_search_model($cmdid);
+				switch($cmd){
+					case 'tool_weSearch_new_forDocuments' :
+					case 'tool_weSearch_new_forMedia' :
+						$tables = 1;// TODO: use constants
+						break;
+					case 'tool_weSearch_new_forTemplates' :
+						$tables = 2;
+						break;
+					case 'tool_weSearch_new_forObjects' :
+						$tables = 3;
+						break;
+					case 'tool_weSearch_new_forClasses' :
+						$tables = 4;
+						break;
+					case 'tool_weSearch_new_forVersions' :
+						$tables = 5;
+						break;
+					case 'tool_weSearch_new_forMedia' :
+						$tables = 1;
+						break;
+					case 'tool_weSearch_new_advSearch' :
+					case 'tool_weSearch_new' :
+						$tables = 0;
+				}
+
+				$tab = we_base_request::_(we_base_request::INT, 'tab', we_base_request::_(we_base_request::INT, 'tabnr', 1));
+				$keyword = we_base_request::_(we_base_request::STRING, 'keyword');
+				$this->Model->setPredefinedSearch($tab, $keyword, $tables);
+				$this->Model->prepareModelForSearch();
 				$this->Model->setIsFolder(/* $cmd == 'tool_weSearch_new_group' ? 1 : */ 0);
-				$tab = we_base_request::_(we_base_request::INT, 'tabnr');
 
 				echo we_html_element::jsElement(
 					$this->editorHeaderFrame . '.location="' . $this->frameset . '&pnt=edheader' .
-					($tab !== false ? '&tab=' . $tab : '') .
+					($tab !== 0 ? '&tab=' . $tab : '') .
 					'&text=' . urlencode($this->Model->Text) . '";' .
 					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');
 				break;
 
-			case 'tool_weSearch_edit' :
+			case 'tool_weSearch_edit' : // get model from db
 				$this->Model = new we_search_model($cmdid);
+				$this->Model->prepareModelForSearch();t_e('fertiges model', $this->Model);
 				if(!$this->Model->isAllowedForUser()){
 					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('tools', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 					$this->Model = new we_search_model();
@@ -310,7 +339,7 @@ function mark() {
 					break;
 				}
 
-				$this->Model->activTab = we_base_request::_(we_base_request::INT, 'tabnr', 1);
+				$this->Model->activTab = we_base_request::_(we_base_request::INT, 'tabnr', 1);// TODO: have activeTab always active (initByHttp)!!
 
 				if(!trim($this->Model->Text)){
 					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('tools', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR));
@@ -391,24 +420,7 @@ function mark() {
 				$h = 170;
 				$addinputRows = "";
 		}
-
-		switch($whichSearch){
-			case self::SEARCH_DOCS :
-				$anzahl = $this->Model->anzahlDocSearch;
-				break;
-			case self::SEARCH_TMPL :
-				$anzahl = $this->Model->anzahlTmplSearch;
-				break;
-			case self::SEARCH_MEDIA :
-				$anzahl = $this->Model->anzahlMediaSearch;
-				break;
-			case self::SEARCH_ADV :
-				$anzahl = $this->Model->anzahlAdvSearch;
-				break;
-			default:
-				$anzahl = 0;
-		}
-
+		// FIXME: take actualTab from model
 		$tab = we_base_request::_(we_base_request::INT, 'tab', we_base_request::_(we_base_request::INT, 'tabnr', 1));
 
 		$showSelects = '';
@@ -424,20 +436,21 @@ weSearch.conf = {
 	modelID: "' . $this->Model->ID . '",
 	modelIsFolder: ' . ($this->Model->IsFolder ? 1 : 0) . ',
 	showSelects: ' . ($showSelects ? 1 : 0) . ',
-	rows: ' . ((isset($_REQUEST["searchFields" . $whichSearch]) ? count($_REQUEST["searchFields" . $whichSearch]) - ($whichSearch == self::SEARCH_ADV ? 1 : 0) : ($whichSearch == self::SEARCH_MEDIA ? $this->searchMediaOptFieldIndex : 0))) . ',
+	rows: ' . ($whichSearch == self::SEARCH_MEDIA ? $this->searchMediaOptFieldIndex : (count($this->Model->getProperty('currentSearchFields')) - ($whichSearch == self::SEARCH_ADV ? 1 : 0))) . ',
+	//rows: ' . (count($this->Model->getProperty('currentSearchFields')) - ($whichSearch == self::SEARCH_ADV ? 1 : 0) /*: ($whichSearch == self::SEARCH_MEDIA ? $this->searchMediaOptFieldIndex : (count($this->Model->getProperty('currentSearchFields')) - ($whichSearch == self::SEARCH_ADV ? 1 : 0)))*/) . ',
 	we_transaction: "' . $GLOBALS["we_transaction"] . '",
 	checkRightTempTable: ' . (we_search_search::checkRightTempTable() ? 1 : 0) . ',
 	checkRightDropTable: ' . (we_search_search::checkRightDropTable() ? 1 : 0) . '
 };
 weSearch.elems = {
 	btnTrash: \'' . str_replace("'", "\'", we_html_button::create_button(we_html_button::TRASH, "javascript:weSearch.delRow(__we_new_id__)")) . '\',
-	btnSelector: \'' . str_replace("'", "\'", we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('__we_selector__', document.we_form.elements['search" . $whichSearch . "ParentID[__we_new_id__]'].value, '__we_sel_table__', 'document.we_form.elements[\\\'search" . $whichSearch . "ParentID[__we_new_id__]\\\'].value', 'document.we_form.elements[\\\'search" . $whichSearch . "[__we_new_id__]\\\'].value');")) . '\',
+	btnSelector: \'' . str_replace("'", "\'", we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('__we_selector__', document.we_form.elements['search" . $whichSearch . "ParentID[__we_new_id__]'].value, '__we_sel_table__', 'document.we_form.elements[\\\'search" . $whichSearch . "ParentID[__we_new_id__]\\\'].value', 'document.we_form.elements[\\\'search" . $whichSearch . "[__we_new_id__]\\\'].value');", true, 60, 22)) . '\',
 	fieldSearch: \'' . str_replace("'", "\'", we_html_tools::htmlTextInput('search' . $whichSearch . '[__we_new_id__]', 58, '', '', ' __we_read_only__class="wetextinput" id="search' . $whichSearch . '[__we_new_id__]"', 'text', 170)) . '\',
 	selStatus: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('search' . $whichSearch . '[__we_new_id__]', $this->searchclass->getFieldsStatus(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . $whichSearch . "[__we_new_id__]"))) . '\',
 	selSpeicherart: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('search' . $whichSearch . '[__we_new_id__]', $this->searchclass->getFieldsSpeicherart(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . $whichSearch . "[__we_new_id__]"))) . '\',
-	selLocation: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('location' . $whichSearch . '[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "location" . $whichSearch . "[__we_new_id__]"))) . '\',
-	selLocationDate: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('location' . $whichSearch . '[__we_new_id__]', we_search_search::getLocation('date'), 1, "", false, array('class' => "defaultfont", 'id' => "location" . $whichSearch . "[__we_new_id__]"))) . '\',
-	selLocationText: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('location' . $whichSearch . '[__we_new_id__]', we_search_search::getLocation('text'), 1, "", false, array('class' => "defaultfont", 'id' => "location" . $whichSearch . "[__we_new_id__]"))) . '\',
+	selLocation: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('location' . $whichSearch . '[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'style' => 'width:150px', 'id' => "location" . $whichSearch . "[__we_new_id__]"))) . '\',
+	selLocationDate: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('location' . $whichSearch . '[__we_new_id__]', we_search_search::getLocation('date'), 1, "", false, array('class' => "defaultfont", 'style' => 'width:150px', 'id' => "location" . $whichSearch . "[__we_new_id__]"))) . '\',
+	selLocationText: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('location' . $whichSearch . '[__we_new_id__]', we_search_search::getLocation('text'), 1, "", false, array('class' => "defaultfont", 'style' => 'width:150px', 'id' => "location" . $whichSearch . "[__we_new_id__]"))) . '\',
 	selModFields: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('search' . $whichSearch . '[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . $whichSearch . "[__we_new_id__]"))) . '\',
 	selUsers: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('search' . $whichSearch . '[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . $whichSearch . "[__we_new_id__]"))) . '\',
 	searchFields: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('searchFields' . $whichSearch . '[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", $whichSearch), 1, "", false, array('class' => "defaultfont", 'id' => "searchFields" . $whichSearch . "[__we_new_id__]", 'onchange' => "weSearch.changeit(this.value, __we_new_id__);"))) . '\'
@@ -463,66 +476,35 @@ WE().consts.g_l.weSearch = {
 	}
 
 	function getNextPrev($we_search_anzahl, $whichSearch, $isTop = true, $dataOnly = false){
-		$anzahl = 1;
-		$searchstart = 0;
+		$currentOrder = $this->Model->getProperty('currentOrder');
+		$currentSetView = $this->Model->getProperty('currentSetView');
+		$currentSearchstart = $this->Model->getProperty('currentSearchstart');
+		$currentAnzahl = $this->Model->getProperty('currentAnzahl') ? : 1;
 
-		switch($whichSearch){
-			case we_search_view::SEARCH_DOCS:
-				$order = $this->Model->OrderDocSearch;
-				$view = $this->Model->setViewDocSearch;
-				$searchstart = $this->Model->searchstartDocSearch;
-				$anzahl = $this->Model->anzahlDocSearch;
-				break;
-			case we_search_view::SEARCH_TMPL:
-				$order = $this->Model->OrderTmplSearch;
-				$view = $this->Model->setViewTmplSearch;
-				$searchstart = $this->Model->searchstartTmplSearch;
-				$anzahl = $this->Model->anzahlTmplSearch;
-				break;
-			case we_search_view::SEARCH_MEDIA:
-				$order = $this->Model->OrderMediaSearch;
-				$view = $this->Model->setViewMediaSearch;
-				$searchstart = $this->Model->searchstartMediaSearch;
-				$anzahl = $this->Model->anzahlMediaSearch;
-				break;
-			case we_search_view::SEARCH_ADV:
-				$order = $this->Model->OrderAdvSearch;
-				$view = $this->Model->setViewAdvSearch;
-				$searchstart = $this->Model->searchstartAdvSearch;
-				$anzahl = $this->Model->anzahlAdvSearch;
-				break;
-			case we_search_view::SEARCH_DOCLIST:
-				$order = $this->Model->OrderDoclistSearch;
-				$view = $this->Model->setViewDoclistSearch;
-				$searchstart = $this->Model->searchstartDoclistSearch;
-				$anzahl = $this->Model->anzahlDoclistSearch;
-				break;
-		}
+		$disableBack = $currentSearchstart ? false : true;
+		$disableNext = ($currentSearchstart + $currentAnzahl) >= $we_search_anzahl;
 
-		$disableBack = $searchstart ? false : true;
-		$disableNext = ($searchstart + $anzahl) >= $we_search_anzahl;
-
-		$text = (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
-			(($we_search_anzahl - $searchstart) < $anzahl ? $we_search_anzahl : $searchstart + $anzahl) .
+		$text = (($we_search_anzahl) ? $currentSearchstart + 1 : 0) . '-' .
+			(($we_search_anzahl - $currentSearchstart) < $currentAnzahl ? $we_search_anzahl : $currentSearchstart + $currentAnzahl) .
 			' ' . g_l('global', '[from]') . ' ' . $we_search_anzahl;
 
 		$pages = array();
-		if($anzahl){
-			for($i = 0; $i < ceil($we_search_anzahl / $anzahl); $i++){
-				$pages[($i * $anzahl)] = ($i + 1);
+		if($currentAnzahl){
+			for($i = 0; $i < ceil($we_search_anzahl / $currentAnzahl); $i++){
+				$pages[($i * $currentAnzahl)] = ($i + 1);
 			}
 		}
-		$page = ($anzahl ? ceil($searchstart / $anzahl) * $anzahl : 0);
+		$page = ($currentAnzahl ? ceil($currentSearchstart / $currentAnzahl) * $currentAnzahl : 0);
 
 		if($dataOnly){
 			return we_html_element::htmlSpan(array(
 				'class' => 'nextPrevData',
 				'style' => "display:none",
-				'data-setView' => $view,
-				'data-mode' => $this->Model->mode,
-				'data-order' => $order,
-				'data-searchstart' => $searchstart,
-				'data-number' => $anzahl,
+				'data-setView' => $currentSetView,
+				'data-mode' => $this->Model->mode, // IMI DO: set mode to curr
+				'data-order' => $currentOrder,
+				'data-searchstart' => $currentSearchstart,
+				'data-number' => $currentAnzahl,
 				'data-disableBack' => $disableBack ? 'true' : 'false',
 				'data-disableNext' => $disableNext ? 'true' : 'false',
 				'data-text' => $text,
@@ -546,11 +528,10 @@ WE().consts.g_l.weSearch = {
 	}
 
 	function getSortImage($for, $whichSearch){
-		$field = 'Order' . $whichSearch;
-		$ord = $this->Model->$field;
-		if($ord){
-			if(strpos($ord, $for) === 0){
-				if(strpos($ord, 'DESC')){
+		$currentOrder = $this->Model->getProperty('currentOrder');
+		if($currentOrder){
+			if(strpos($currentOrder, $for) === 0){
+				if(strpos($currentOrder, 'DESC')){
 					return '<i class="fa fa-sort-desc fa-lg"></i>';
 				}
 				return '<i class="fa fa-sort-asc fa-lg"></i>';
@@ -563,21 +544,23 @@ WE().consts.g_l.weSearch = {
 	function getSearchDialogOptions($whichSearch){
 		$_table = new we_html_table(array('style' => 'width:500px',), 3, 2);
 		$row = 0;
+		$currentSearchForField = $this->Model->getProperty('currentSearchForField');
+		
 		switch($whichSearch){
 			case self::SEARCH_DOCS :
-				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTextDocSearch ? true : false, "searchForTextDocSearch", g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
-				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTitleDocSearch ? true : false, "searchForTitleDocSearch", g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
-				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForContentDocSearch ? true : false, "searchForContentDocSearch", g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
+				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($currentSearchForField['text'] ? true : false, 'searchForText' . $whichSearch, g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
+				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($currentSearchForField['title'] ? true : false, 'searchForTitle' . $whichSearch, g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
+				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($currentSearchForField['content'] ? true : false, 'searchForContent' . $whichSearch, g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
 				break;
 			case self::SEARCH_TMPL :
-				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTextTmplSearch ? true : false, "searchForTextTmplSearch", g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
-				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForContentTmplSearch ? true : false, "searchForContentTmplSearch", g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
+				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($currentSearchForField['text'] ? true : false, 'searchForText' . $whichSearch, g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
+				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($currentSearchForField['content'] ? true : false, 'searchForContent' . $whichSearch, g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
 				break;
 			case self::SEARCH_MEDIA :
 				//$_table->setCol($row++, 0, array('style' => 'padding-top: 10px'), we_html_tools::htmlAlertAttentionBox('Ohne Suchbegriff werden alle Medien-Dokumente ausgegeben.', we_html_tools::TYPE_INFO, 440));
-				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTextMediaSearch ? true : false, "searchForTextMediaSearch", g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
-				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTitleMediaSearch ? true : false, "searchForTitleMediaSearch", g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
-				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForMetaMediaSearch ? true : false, "searchForMetaMediaSearch", g_l('searchtool', '[onlyMetadata]'), false, 'defaultfont', ''));
+				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($currentSearchForField['text'] ? true : false, 'searchForText' . $whichSearch, g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
+				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($currentSearchForField['title'] ? true : false, 'searchForTitle' . $whichSearch, g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
+				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($currentSearchForField['meta'] ? true : false, 'searchForMeta' . $whichSearch, g_l('searchtool', '[onlyMetadata]'), false, 'defaultfont', ''));
 				//$_table->setCol($row++, 1, array('style' => 'text-align:right'), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
 
 				return $_table->getHtml();
@@ -589,17 +572,19 @@ WE().consts.g_l.weSearch = {
 
 	function getSearchDialogMediaType($whichSearch){
 		$_table = new we_html_table(array('style' => 'width:400px',), 7, 2);
+		$currentSearchForContentType = $this->Model->getProperty('currentSearchForContentType');
+		
 		switch($whichSearch){
 			case self::SEARCH_MEDIA :
 				$n = 1;
 				$_table->setCol(0, 0, array(), we_html_element::htmlHiddens(array(
-						'searchFieldsMediaSearch[' . $n . ']' => 'ContentType',
-						'searchMediaSearch[' . $n . ']' => 1,
-						'locationMediaSearch[' . $n++ . ']' => 'IN')) .
-					we_html_forms::checkboxWithHidden($this->Model->searchForImageMediaSearch ? true : false, "searchForImageMediaSearch", 'Bilder', false, 'defaultfont withSpace', ''));
-				$_table->setCol(0, 1, array(), we_html_forms::checkboxWithHidden($this->Model->searchForAudioMediaSearch ? true : false, "searchForAudioMediaSearch", 'Audio', false, 'defaultfont', ''));
-				$_table->setCol(1, 1, array(), we_html_forms::checkboxWithHidden($this->Model->searchForVideoMediaSearch ? true : false, "searchForVideoMediaSearch", 'Video', false, 'defaultfont', ''));
-				$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForOtherMediaSearch ? true : false, "searchForOtherMediaSearch", 'Sonstige Medien-Dateien', false, 'defaultfont', '', false));
+						'searchFields' . $whichSearch . '[' . $n . ']' => 'ContentType',
+						'search' . $whichSearch . '[' . $n . ']' => 1,
+						'location' . $whichSearch . '[' . $n++ . ']' => 'IN')) .
+					we_html_forms::checkboxWithHidden($currentSearchForContentType['image'] ? true : false, 'searchForImage' . $whichSearch, 'Bilder', false, 'defaultfont withSpace', ''));
+				$_table->setCol(0, 1, array(), we_html_forms::checkboxWithHidden($currentSearchForContentType['audio'] ? true : false, 'searchForAudio' . $whichSearch, 'Audio', false, 'defaultfont', ''));
+				$_table->setCol(1, 1, array(), we_html_forms::checkboxWithHidden($currentSearchForContentType['video'] ? true : false, 'searchForVideo' . $whichSearch, 'Video', false, 'defaultfont', ''));
+				$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($currentSearchForContentType['other'] ? true : false, 'searchForOther' . $whichSearch, 'Sonstige Medien-Dateien', false, 'defaultfont', '', false));// FIXME: G_L()
 				break;
 			default:
 				return;
@@ -613,178 +598,71 @@ WE().consts.g_l.weSearch = {
 			'width' => 400,
 			), 4, 4);
 
+		$currentSearch = $this->Model->getProperty('currentSearch');
+
 		switch($whichSearch){
 			case self::SEARCH_MEDIA :
 				$n = 2;
-
 				$_table->setCol(0, 0, array(), g_l('searchtool', '[usage_state]') . ': ');
 				$_table->setCol(0, 1, array('colspan' => 2), we_html_element::htmlHiddens(array(
-						'searchFieldsMediaSearch[' . $n . ']' => 'IsUsed',
-						'locationMediaSearch[' . $n . ']' => 'IS')) .
-					we_html_tools::htmlSelect('searchMediaSearch[' . $n . ']', array(
+						'searchFields' . $whichSearch . '[' . $n . ']' => 'IsUsed',
+						'location' . $whichSearch . '[' . $n . ']' => 'IS')) .
+					we_html_tools::htmlSelect('search' . $whichSearch . '[' . $n . ']', array(
 						0 => g_l('searchtool', '[all]'),
 						1 => g_l('searchtool', '[only_unsed]'),
-						2 => g_l('searchtool', '[only_unused]')), 1, isset($this->Model->searchMediaSearch[$n]) ? $this->Model->searchMediaSearch[$n] : '', false, array(), 'value', 220));
+						2 => g_l('searchtool', '[only_unused]')), 1, isset($currentSearch[$n]) ? $currentSearch[$n] : '', false, array(), 'value', 220));
 
 				$_table->setCol(1, 0, array(), g_l('searchtool', '[protection]') . ': ');
 				$_table->setCol(1, 1, array('colspan' => 2), we_html_element::htmlHiddens(array(
-						'searchFieldsMediaSearch[' . ++$n . ']' => 'IsProtected',
-						'locationMediaSearch[' . $n . ']' => 'IS')) .
-					we_html_tools::htmlSelect('searchMediaSearch[' . $n . ']', array(
+						'searchFields' . $whichSearch . '[' . ++$n . ']' => 'IsProtected',
+						'location' . $whichSearch . '[' . $n . ']' => 'IS')) .
+					we_html_tools::htmlSelect('search' . $whichSearch . '[' . $n . ']', array(
 						0 => g_l('searchtool', '[all]'),
 						1 => g_l('searchtool', '[only_protected]'),
-						2 => g_l('searchtool', '[only_unprotected]')), 1, isset($this->Model->searchMediaSearch[$n]) ? $this->Model->searchMediaSearch[$n] : '', false, array(), 'value', 220));
+						2 => g_l('searchtool', '[only_unprotected]')), 1, isset($currentSearch[$n]) ? $currentSearch[$n] : '', false, array(), 'value', 220));
 
-				$this->searchMediaOptFieldIndex = ++$n;
+				$this->searchMediaOptFieldIndex = ++$n;// FIXME: do we need this (or can we handle it as simple param?)
 				break;
 			default:
 				return;
 		}
-		$_table->setCol(2, 0, array('colspan' => 4), $this->getSearchDialogOptFields($whichSearch));
+		$_table->setCol(2, 0, array('colspan' => 4), $this->getSearchDialogOptionalFields($whichSearch));
 		$_table->setCol(3, 3, array(), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
 
 		return $_table->getHtml();
 	}
 
 	function getSearchDialogCheckboxesAdvSearch(){
-		if(!is_array($this->Model->search_tables_advSearch)){
-			$this->Model->search_tables_advSearch = we_unserialize($this->Model->search_tables_advSearch);
-			if(is_array($this->Model->search_tables_advSearch)){
-				//tablenames are hardcoded in the tblsearchtool, get the real tablenames if they have a prefix
-				foreach($this->Model->search_tables_advSearch as $k => $v){
-					switch($k){
-						case "tblFile":
-							unset($this->Model->search_tables_advSearch[$k]);
-							$this->Model->search_tables_advSearch[FILE_TABLE] = $v;
-							break;
-						case "tblTemplates":
-							unset($this->Model->search_tables_advSearch[$k]);
-							$this->Model->search_tables_advSearch[TEMPLATES_TABLE] = $v;
-							break;
-						case "tblObjectFiles":
-							if(defined('OBJECT_FILES_TABLE')){
-								unset($this->Model->search_tables_advSearch[$k]);
-								$this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] = $v;
-							}
-							break;
-						case "tblObject":
-							if(defined('OBJECT_TABLE')){
-								unset($this->Model->search_tables_advSearch[$k]);
-								$this->Model->search_tables_advSearch[OBJECT_TABLE] = $v;
-							}
-							break;
-						case "tblversions":
-							unset($this->Model->search_tables_advSearch[$k]);
-							$this->Model->search_tables_advSearch[VERSIONS_TABLE] = $v;
-					}
-				}
-			}
-		}
-
+		/* => if we need this move it to model init
 		if(($table = we_base_request::_(we_base_request::TABLE, 'table'))){
 			$search_tables_advSearch = $table;
 			$this->Model->search_tables_advSearch[$search_tables_advSearch] = 1;
 		}
-
-		if(!isset($this->Model->search_tables_advSearch[FILE_TABLE])){
-			$this->Model->search_tables_advSearch[FILE_TABLE] = 1;
-		}
-
-		if(!isset($this->Model->search_tables_advSearch[VERSIONS_TABLE])){
-			$this->Model->search_tables_advSearch[VERSIONS_TABLE] = 0;
-		}
-
-		if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
-			$this->Model->search_tables_advSearch[TEMPLATES_TABLE] = 0;
-		} elseif(!isset($this->Model->search_tables_advSearch[TEMPLATES_TABLE])){
-			$this->Model->search_tables_advSearch[TEMPLATES_TABLE] = 0;
-		}
-
-		if(defined('OBJECT_FILES_TABLE') && !isset($this->Model->search_tables_advSearch[OBJECT_FILES_TABLE])){
-			$this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] = 1;
-		}
-
-		if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
-			$this->Model->search_tables_advSearch[OBJECT_TABLE] = 0;
-		} elseif(defined('OBJECT_TABLE') && !isset($this->Model->search_tables_advSearch[OBJECT_TABLE])){
-			$this->Model->search_tables_advSearch[OBJECT_TABLE] = 0;
-		}
-
-		if(!permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
-			$this->Model->search_tables_advSearch[FILE_TABLE] = 0;
-		}
-
-		if(!permissionhandler::hasPerm('SEE_VERSIONS')){
-			$this->Model->search_tables_advSearch[VERSIONS_TABLE] = 0;
-		}
-
-		if(!permissionhandler::hasPerm('CAN_SEE_TEMPLATES')){
-			$this->Model->search_tables_advSearch[TEMPLATES_TABLE] = 0;
-		}
-
-		if(!permissionhandler::hasPerm('CAN_SEE_OBJECTFILES') && defined('OBJECT_FILES_TABLE')){
-			$this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] = 0;
-		}
-
-		if(!permissionhandler::hasPerm('CAN_SEE_OBJECTS') && defined('OBJECT_TABLE')){
-			$this->Model->search_tables_advSearch[OBJECT_TABLE] = 0;
-		}
-
-		if(we_base_request::_(we_base_request::STRING, 'cmd') === "tool_weSearch_new_forObjects"){
-			$this->Model->search_tables_advSearch[FILE_TABLE] = 0;
-			$this->Model->search_tables_advSearch[VERSIONS_TABLE] = 0;
-		}
-
-		if(isset($_SESSION['weS']['weSearch']["checkWhich"])){
-			switch($_SESSION['weS']['weSearch']["checkWhich"]){
-				case 1:
-					$this->Model->search_tables_advSearch[FILE_TABLE] = 1;
-					$this->Model->search_tables_advSearch[VERSIONS_TABLE] = 0;
-					$this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] = 0;
-					break;
-				case 2:
-					$this->Model->search_tables_advSearch[FILE_TABLE] = 0;
-					$this->Model->search_tables_advSearch[VERSIONS_TABLE] = 0;
-					$this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] = 0;
-					$this->Model->search_tables_advSearch[TEMPLATES_TABLE] = 1;
-					$this->Model->search_tables_advSearch[OBJECT_TABLE] = 0;
-					break;
-				case 3:
-					$this->Model->search_tables_advSearch[FILE_TABLE] = 0;
-					$this->Model->search_tables_advSearch[VERSIONS_TABLE] = 0;
-					$this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] = 1;
-					break;
-				case 4:
-					$this->Model->search_tables_advSearch[FILE_TABLE] = 0;
-					$this->Model->search_tables_advSearch[VERSIONS_TABLE] = 0;
-					$this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] = 0;
-					$this->Model->search_tables_advSearch[TEMPLATES_TABLE] = 0;
-					$this->Model->search_tables_advSearch[OBJECT_TABLE] = 1;
-			}
-			unset($_SESSION['weS']['weSearch']["checkWhich"]);
-		}
+		 * 
+		 */
 
 		$_table = new we_html_table(array('style' => 'width:550px',), 4, 3);
+		$currentSearchTables = $this->Model->getProperty('currentSearchTables');
 
 		if(permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
-			$_table->setCol(0, 0, array(), we_html_forms::checkboxWithHidden($this->Model->search_tables_advSearch[FILE_TABLE] ? true : false, 'search_tables_advSearch[' . FILE_TABLE . ']', g_l('searchtool', '[documents]'), false, 'defaultfont', ''));
+			$_table->setCol(0, 0, array(), we_html_forms::checkboxWithHidden(in_array(FILE_TABLE, $currentSearchTables), 'search_tables_advSearch[' . FILE_TABLE . ']', g_l('searchtool', '[documents]'), false, 'defaultfont', ''));
 		}
 
 		if(permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
-			$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($this->Model->search_tables_advSearch[TEMPLATES_TABLE] ? true : false, 'search_tables_advSearch[' . TEMPLATES_TABLE . ']', g_l('searchtool', '[templates]'), false, 'defaultfont', ''));
+			$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden(in_array(TEMPLATES_TABLE, $currentSearchTables), 'search_tables_advSearch[' . TEMPLATES_TABLE . ']', g_l('searchtool', '[templates]'), false, 'defaultfont', ''));
 		}
 
 		if(defined('OBJECT_TABLE')){
 			if(permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
-				$_table->setCol(0, 1, array(), we_html_forms::checkboxWithHidden($this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] ? true : false, 'search_tables_advSearch[' . OBJECT_FILES_TABLE . ']', g_l('searchtool', '[objects]'), false, 'defaultfont', ''));
+				$_table->setCol(0, 1, array(), we_html_forms::checkboxWithHidden(in_array(OBJECT_FILES_TABLE, $currentSearchTables), 'search_tables_advSearch[' . OBJECT_FILES_TABLE . ']', g_l('searchtool', '[objects]'), false, 'defaultfont', ''));
 			}
 			if(permissionhandler::hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
-				$_table->setCol(1, 1, array(), we_html_forms::checkboxWithHidden($this->Model->search_tables_advSearch[OBJECT_TABLE] ? true : false, 'search_tables_advSearch[' . OBJECT_TABLE . ']', g_l('searchtool', '[classes]'), false, 'defaultfont', ''));
+				$_table->setCol(1, 1, array(), we_html_forms::checkboxWithHidden(in_array(OBJECT_TABLE, $currentSearchTables), 'search_tables_advSearch[' . OBJECT_TABLE . ']', g_l('searchtool', '[classes]'), false, 'defaultfont', ''));
 			}
 		}
 
 		if(permissionhandler::hasPerm('SEE_VERSIONS')){
-			$_table->setCol(0, 2, array(), we_html_forms::checkboxWithHidden($this->Model->search_tables_advSearch[VERSIONS_TABLE] ? true : false, 'search_tables_advSearch[' . VERSIONS_TABLE . ']', g_l('versions', '[versions]'), false, 'defaultfont', ''));
+			$_table->setCol(0, 2, array(), we_html_forms::checkboxWithHidden(in_array(VERSIONS_TABLE, $currentSearchTables), 'search_tables_advSearch[' . VERSIONS_TABLE . ']', g_l('versions', '[versions]'), false, 'defaultfont', ''));
 		}
 
 		$_table->setCol(2, 2, array('style' => 'text-align:right'), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
@@ -793,100 +671,21 @@ WE().consts.g_l.weSearch = {
 	}
 
 	function getSearchDialog($whichSearch){
+		$searchInput = '';
+		$currentSearch = $this->Model->getProperty('currentSearch');
+
 		switch($whichSearch){
-			case self::SEARCH_DOCS :
-				$this->Model->locationDocSearch = (($op = we_base_request::_(we_base_request::STRING, "locationDocSearch")) ?
-						$op :
-						array("CONTAIN"));
-
-				$this->Model->searchFieldsDocSearch = array();
-				$locationName = "locationDocSearch[0]";
-				$searchTextName = "searchDocSearch[0]";
-				$searchTables = "search_tables_docSearch[" . FILE_TABLE . "]";
-
-				if($this->Model->searchForTextDocSearch){
-					$this->Model->searchFieldsDocSearch[] = "Text";
-				}
-				if($this->Model->searchForTitleDocSearch){
-					$this->Model->searchFieldsDocSearch[] = "Title";
-				}
-				if($this->Model->searchForContentDocSearch){
-					$this->Model->searchFieldsDocSearch[] = "Content";
-				}
-				if(!empty($_SESSION['weS']['weSearch']['keyword']) && we_base_request::_(we_base_request::INT, 'tab') == 1){
-					$this->Model->searchDocSearch[0] = ($_SESSION['weS']['weSearch']['keyword']);
-					if($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8"){
-						$this->Model->searchDocSearch[0] = utf8_encode($this->Model->searchDocSearch[0]);
-					}
-					unset($_SESSION['weS']['weSearch']['keyword']);
-				}
-				if(!is_array($this->Model->searchDocSearch)){
-					$this->Model->searchDocSearch = we_unserialize($this->Model->searchDocSearch);
-				}
-				$searchInput = we_html_tools::htmlTextInput($searchTextName, 30, (isset($this->Model->searchDocSearch) && is_array($this->Model->searchDocSearch) && isset($this->Model->searchDocSearch[0]) ? $this->Model->searchDocSearch[0] : ''), "", "", "search", 380);
-				break;
 			case self::SEARCH_TMPL :
-				$this->Model->locationTmplSearch = (($op = we_base_request::_(we_base_request::STRING, "locationTmplSearch")) ?
-						$op :
-						array("CONTAIN"));
-
-				$this->Model->searchFieldsTmplSearch = array();
-				$locationName = "locationTmplSearch[0]";
-				$searchTextName = "searchTmplSearch[0]";
-				$searchTables = "search_tables_TmplSearch[" . TEMPLATES_TABLE . "]";
-
-				if($this->Model->searchForTextTmplSearch){
-					$this->Model->searchFieldsTmplSearch[] = "Text";
-				}
-				if($this->Model->searchForContentTmplSearch){
-					$this->Model->searchFieldsTmplSearch[] = "Content";
-				}
-				if((!empty($_SESSION['weS']['weSearch']['keyword'])) && we_base_request::_(we_base_request::INT, "tab") == 2){
-					$this->Model->searchTmplSearch[0] = $_SESSION['weS']['weSearch']["keyword"];
-					if($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8"){
-						$this->Model->searchTmplSearch[0] = utf8_encode($this->Model->searchTmplSearch[0]);
-					}
-					unset($_SESSION['weS']['weSearch']["keyword"]);
-				}
-				if(!is_array($this->Model->searchTmplSearch)){
-					$this->Model->searchTmplSearch = we_unserialize($this->Model->searchTmplSearch);
-				}
-				$searchInput = we_html_tools::htmlTextInput($searchTextName, 30, (isset($this->Model->searchTmplSearch) && is_array($this->Model->searchTmplSearch) && isset($this->Model->searchTmplSearch[0]) ? $this->Model->searchTmplSearch[0] : ''), "", "", "search", 380);
+				$searchTables = 'search_tables_' . $whichSearch . '[' . TEMPLATES_TABLE . ']';
 				break;
-
 			case self::SEARCH_MEDIA :
-				// destroys location array when switching between saves searches! what is it good for in the other searches?
-				/*
-				$this->Model->locationMediaSearch = (($op = we_base_request::_(we_base_request::STRING, 'locationMediaSearch')) ?
-						$op :
-						array('CONTAIN'));
-				 *
-				 */
-
-				//$this->Model->searchFieldsMediaSearch = array(); // IMI_TMP
-				$locationName = "locationMediaSearch[0]";
-				$searchTextName = "searchMediaSearch[0]";
-				$searchFieldName = "searchFieldsMediaSearch[0]";
-
-				$searchTables = "search_tables_MediaSearch[" . FILE_TABLE . "]";
-
-				// preserve keyword when switching from docsearch
-				if((!empty($_SESSION['weS']['weSearch']["keyword"])) && we_base_request::_(we_base_request::INT, "tab") == 1){
-					$this->Model->searchMediaSearch[0] = ($_SESSION['weS']['weSearch']["keyword"]);
-					if($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8"){
-						$this->Model->searchMediaSearch[0] = utf8_encode($this->Model->searchMediaSearch[0]);
-					}
-					unset($_SESSION['weS']['weSearch']["keyword"]);
-				}
-
-				if(!is_array($this->Model->searchMediaSearch)){
-					$this->Model->searchMediaSearch = we_unserialize($this->Model->searchMediaSearch);
-				}
-
-				$searchInput = we_html_element::htmlHidden($searchFieldName, 'keyword') .
-					we_html_tools::htmlTextInput($searchTextName, 30, (isset($this->Model->searchMediaSearch) && is_array($this->Model->searchMediaSearch) && isset($this->Model->searchMediaSearch[0]) ? $this->Model->searchMediaSearch[0] : ''), "", "", "search", 380);
+				$searchInput .= we_html_element::htmlHidden('searchFields' . $whichSearch . '[0]', 'keyword');
+				// no break
+			case self::SEARCH_DOCS :
+				$searchTables = 'search_tables_' . $whichSearch . '[' . FILE_TABLE . ']';
 				break;
 		}
+		$searchInput .= we_html_tools::htmlTextInput('search' . $whichSearch . '[0]', 30, (isset($currentSearch[0]) ? $currentSearch[0] : ''), '', '', 'search', 380);
 
 		return '<div id="mouseOverDivs_' . $whichSearch . '"></div><table class="default">
 <tbody>
@@ -900,606 +699,13 @@ WE().consts.g_l.weSearch = {
 <tr>
  <td style="padding-right:20px;">' . $searchInput . '</td>
  <td>' . we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);") . '</td>
- <td>' . we_html_tools::hidden($locationName, 'CONTAIN') . '</td>
+ <td>' . we_html_tools::hidden('location' . $whichSearch . '[0]', 'CONTAIN') . '</td>
  <td>' . we_html_tools::hidden($searchTables, 1) . '</td>
  <td></td>
 </tr>' . ( $whichSearch == self::SEARCH_MEDIA ?
 				'<tr><td colspan="5">' . we_html_tools::htmlAlertAttentionBox("Ohne Suchbegriff werden alle Medien-Dokumente ausgegeben.", we_html_tools::TYPE_INFO, 380) . '</td></tr>' :
 				'') . '
 </tbody></table>';
-	}
-
-	// FIXME: move to we_search_search
-	function searchProperties($whichSearch){
-		$DB_WE = new DB_WE();
-		$workspaces = $_result = $versionsFound = $saveArrayIds = $_tables = $searchText = array();
-		$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = 0;
-		$request = we_base_request::_(we_base_request::STRING, 'we_cmd');
-		if(isset($GLOBALS['we_cmd_obj'])){
-			$obj = $GLOBALS['we_cmd_obj'];
-
-			foreach($request as $k => $v){
-				if(stristr($k, 'searchFields' . $whichSearch . '[') && !stristr($k, 'hidden_')){
-					$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = $v;
-				}
-				if(stristr($k, 'location' . $whichSearch . '[')){
-					$_REQUEST['we_cmd']['location' . $whichSearch][] = $v;
-				}
-				if(stristr($k, 'search' . $whichSearch . '[')){
-					$_REQUEST['we_cmd']['search' . $whichSearch][] = $v;
-				}
-			}
-
-			switch($whichSearch){
-				case self::SEARCH_DOCS:
-					$_tables[0] = FILE_TABLE;
-					$folderID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'folderIDDoc');
-					foreach(we_base_request::_(we_base_request::RAW, 'we_cmd') as $k => $v){
-						if(is_string($v) && $v == 1){
-							switch($k){
-								case 'searchForTextDocSearch':
-									$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Text';
-									break;
-								case 'searchForTitleDocSearch':
-									$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Title';
-									break;
-								case 'searchForContentDocSearch':
-									$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Content';
-									break;
-							}
-						}
-					}
-					break;
-				case self::SEARCH_TMPL:
-					$_tables[0] = TEMPLATES_TABLE;
-					$folderID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'folderIDTmpl');
-					foreach(we_base_request::_(we_base_request::RAW, 'we_cmd') as $k => $v){
-						if(is_string($v) && $v == 1){
-							switch($k){
-								case 'searchForTextTmplSearch':
-									$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Text';
-									break;
-								case 'searchForContentTmplSearch':
-									$_REQUEST['we_cmd']['searchFields' . $whichSearch][] = 'Content';
-									break;
-							}
-						}
-					}
-					break;
-				case self::SEARCH_MEDIA:
-					$_tables[0] = FILE_TABLE;
-					$folderID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'folderIDMedia');
-					//$searchForContentTypesMediaSearch = '';
-
-					$searchForField = array(
-						'text' => 0,
-						'title' => 0,
-						'meta' => 0
-					);
-					$searchForContentType = array(
-						'image' => 0,
-						'audio' => 0,
-						'video' => 0,
-						'other' => 0
-					);
-
-					foreach(we_base_request::_(we_base_request::INT, 'we_cmd') as $k => $v){
-						if($v === 1){
-							switch($k){
-								case 'searchForTextMediaSearch':
-									$searchForField['text'] = 1;
-									break;
-								case 'searchForTitleMediaSearch':
-									$searchForField['title'] = 1;
-									break;
-								case 'searchForMetaMediaSearch':
-									$searchForField['meta'] = 1;
-									break;
-								case 'searchForImageMediaSearch':
-									$searchForContentType['image'] = 1;
-									break;
-								case 'searchForVideoMediaSearch':
-									$searchForContentType['video'] = 1;
-									break;
-								case 'searchForAudioMediaSearch':
-									$searchForContentType['audio'] = 1;
-									break;
-								case 'searchForOtherMediaSearch':
-									$searchForContentType['other'] = 1;
-									break;
-							}
-						}
-					}
-					break;
-				default:
-					foreach(we_base_request::_(we_base_request::INT, 'we_cmd') as $k => $v){
-						if($v === 1){
-							switch($k){
-								case 'search_tables_advSearch[' . FILE_TABLE:
-									$_tables[] = FILE_TABLE;
-									break;
-								case 'search_tables_advSearch[' . (defined('TEMPLATES_TABLE') ? TEMPLATES_TABLE : 'TEMPLATES_TABLE'):
-									$_tables[] = TEMPLATES_TABLE;
-									break;
-								case 'search_tables_advSearch[' . (defined('VERSIONS_TABLE') ? VERSIONS_TABLE : 'VERSIONS_TABLE'):
-									$_tables[] = VERSIONS_TABLE;
-									break;
-								case 'search_tables_advSearch[' . (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-									$_tables[] = OBJECT_FILES_TABLE;
-									break;
-								case 'search_tables_advSearch[' . (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
-									$_tables[] = OBJECT_TABLE;
-									break;
-							}
-						}
-					}
-					break;
-			}
-
-			$searchFields = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'searchFields' . $whichSearch);
-			$location = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'location' . $whichSearch);
-			$searchText = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 'search' . $whichSearch); //allow to search for tags
-			$_order = we_base_request::_(we_base_request::STRING, 'we_cmd', 'Text', 'Order' . $whichSearch);
-			$_view = we_base_request::_(we_base_request::STRING, 'we_cmd', self::VIEW_LIST, 'setView' . $whichSearch);
-			$_searchstart = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'searchstart' . $whichSearch);
-			$_anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'anzahl' . $whichSearch);
-
-			// FIXME: initialize/update model at start in some initByHttp/bySession() and use model only
-			// => temporarily we init model here to use when creating view
-			switch($whichSearch){
-				case self::SEARCH_DOCS:
-					$this->Model->searchFieldsDocSearch = $searchFields;
-					$this->Model->locationDocSearch = $location;
-					$this->Model->searchDocSearch = $searchText;
-				case self::SEARCH_TMPL:
-					$this->Model->searchFieldsTmplSearch = $searchFields;
-					$this->Model->locationTmplSearch = $location;
-					$this->Model->searchTmplSearch = $searchText;
-				case self::SEARCH_MEDIA:
-					$this->Model->searchFieldsMediaSearch = $searchFields;
-					$this->Model->locationMediaSearch = $location;
-					$this->Model->searchMediaSearch = $searchText;
-				case self::SEARCH_ADV:
-					$this->Model->searchFieldsAdvSearch = $searchFields;
-					$this->Model->locationAdvSearch = $location;
-					$this->Model->searchAdvSearch = $searchText;
-			}
-		} else {
-			$obj = $this->Model;
-			switch($whichSearch){
-				case self::SEARCH_DOCS:
-					$obj->searchstartDocSearch = we_base_request::_(we_base_request::STRING, "searchstartDocSearch", $obj->searchstartDocSearch);
-					$_table = FILE_TABLE;
-					$_tables[0] = $_table;
-					$searchFields = $obj->searchFieldsDocSearch;
-					$searchText = $obj->searchDocSearch;
-					$location = $obj->locationDocSearch;
-					$folderID = $obj->folderIDDoc;
-					$_order = $obj->OrderDocSearch;
-					$_view = $obj->setViewDocSearch;
-					$_searchstart = $obj->searchstartDocSearch;
-					$_anzahl = $obj->anzahlDocSearch;
-					break;
-				case self::SEARCH_TMPL:
-					$obj->searchstartTmplSearch = we_base_request::_(we_base_request::INT, "searchstartTmplSearch", $obj->searchstartTmplSearch);
-					$_table = TEMPLATES_TABLE;
-					$_tables[0] = $_table;
-					$searchFields = $obj->searchFieldsTmplSearch;
-					$searchText = $obj->searchTmplSearch;
-					$location = $obj->locationTmplSearch;
-					$folderID = $obj->folderIDTmpl;
-					$_order = $obj->OrderTmplSearch;
-					$_view = $obj->setViewTmplSearch;
-					$_searchstart = $obj->searchstartTmplSearch;
-					$_anzahl = $obj->anzahlTmplSearch;
-					break;
-				case self::SEARCH_MEDIA:
-					$obj->searchstartMediaSearch = we_base_request::_(we_base_request::STRING, "searchstartMediaSearch", $obj->searchstartMediaSearch);
-					$_table = FILE_TABLE;
-					$_tables[0] = $_table;
-					$searchFields = $obj->searchFieldsMediaSearch;
-					$searchText = $obj->searchMediaSearch;
-					$location = $obj->locationMediaSearch;
-					$folderID = $obj->folderIDMedia;
-					$_order = $obj->OrderMediaSearch;
-					$_view = $obj->setViewMediaSearch;
-					$_searchstart = $obj->searchstartMediaSearch;
-					$_anzahl = $obj->anzahlMediaSearch;
-					$searchForField = array(
-						'text' => $obj->searchForTextMediaSearch,
-						'title' => $obj->searchForTitleMediaSearch,
-						'meta' => $obj->searchForMetaMediaSearch
-					);
-					$searchForContentType = array(
-						'image' => $obj->searchForImageMediaSearch,
-						'audio' => $obj->searchForAudioMediaSearch,
-						'video' => $obj->searchForVideoMediaSearch,
-						'other' => $obj->searchForOtherMediaSearch
-					);
-					break;
-				case self::SEARCH_ADV:
-					$obj->searchstartAdvSearch = we_base_request::_(we_base_request::INT, "searchstartAdvSearch", $obj->searchstartAdvSearch);
-					if(!($obj->searchFieldsAdvSearch)){
-						$obj->searchFieldsAdvSearch = array("ID");
-					}
-					if(!($obj->locationAdvSearch)){
-						$obj->locationAdvSearch = array("CONTAIN");
-					}
-					$searchFields = $obj->searchFieldsAdvSearch;
-					$searchText = $obj->searchAdvSearch;
-					$location = $obj->locationAdvSearch;
-					$folderID = 0;
-					$_order = $obj->OrderAdvSearch;
-					$_view = $obj->setViewAdvSearch;
-					$_searchstart = $obj->searchstartAdvSearch;
-					$_anzahl = $obj->anzahlAdvSearch;
-
-					$_tables = array_keys(array_filter($obj->search_tables_advSearch));
-					break;
-			}
-			if(stripos($GLOBALS['WE_LANGUAGE'], '_UTF-8') !== false){ //was #3849
-				foreach($searchText as &$cur){
-					$cur = utf8_decode($cur);
-				}
-			}
-		}
-
-		if(isset($searchText) && is_array($searchText)){
-			array_map('trim', $searchText);
-		} else {
-			$searchText = array();
-		}
-
-		$tab = we_base_request::_(we_base_request::INT, 'tab', we_base_request::_(we_base_request::INT, 'tabnr', 1));
-
-		if(isset($searchText[0]) && substr($searchText[0], 0, 4) === 'exp:'){
-
-			$_result = $this->searchclassExp->getSearchResults($searchText[0], $_tables);
-			if($_result){
-				foreach($_result as $k => $v){
-					foreach($v as $key => $val){
-						switch($key){
-							case "Table":
-							case 'ID':
-								unset($_result[$k][$key]);
-								$_result[$k]['doc' . $key] = $val;
-						}
-					}
-					$_result[$k]['SiteTitle'] = "";
-				}
-				$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = count($_result);
-			}
-		} elseif(
-			((!is_object($obj) || $obj->IsFolder != 1) && ( ($whichSearch === self::SEARCH_DOCS && $tab === 1) || ($whichSearch === self::SEARCH_TMPL && $tab === 2) || ($whichSearch === self::SEARCH_ADV && $tab === 3)) || ($whichSearch === self::SEARCH_MEDIA && $tab === 5) ) ||
-				(we_base_request::_(we_base_request::INT, 'cmdid')) ||
-				(($view = we_base_request::_(we_base_request::STRING, 'view')) === "GetSearchResult" || $view === "GetMouseOverDivs")
-		){
-
-			if(!we_search_search::checkRightTempTable() && !we_search_search::checkRightDropTable()){
-				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('searchtool', '[noTempTableRightsSearch]'), we_message_reporting::WE_MESSAGE_NOTICE));
-				return;
-			}
-			$this->searchclass->createTempTable();
-			$op = ($whichSearch === self::SEARCH_ADV || $whichSearch === self::SEARCH_MEDIA ? ' AND ' : ' OR ');
-
-			foreach($_tables as $_table){
-				$where = '';
-				$where_OR = '';
-				$this->searchclass->settable($_table);
-
-				if(!defined('OBJECT_TABLE') || (defined('OBJECT_TABLE') && $_table != OBJECT_TABLE)){
-					$workspaces = get_ws($_table, true);
-				}
-
-				for($i = 0; $i < count($searchFields); $i++){
-					$w = '';
-					$done = false;
-					if(isset($searchText[0])){
-						$searchString = (($whichSearch === self::SEARCH_ADV || $whichSearch === self::SEARCH_MEDIA) && isset($searchText[$i]) ?
-								($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8" ? utf8_encode($searchText[$i]) : $searchText[$i]) :
-								($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8" ? utf8_encode($searchText[0]) : $searchText[0]));
-					}
-					$searchString = ($whichSearch === self::SEARCH_MEDIA && substr($searchFields[$i], 0, 6) === 'meta__' && $searchString === '' && $location[$i] === 'IS') ? '##EMPTY##' : $searchString;
-
-					if(!empty($searchString)){
-						if($searchFields[$i] != "Status" && $searchFields[$i] != "Speicherart"){
-							$searchString = str_replace(array('\\', '_', '%'), array('\\\\', '\_', '\%'), $searchString);
-						}
-
-						if($_table === FILE_TABLE && $whichSearch === self::SEARCH_MEDIA){
-							$done = true;
-							switch($searchFields[$i]){
-								case 'keyword':
-									foreach((array_filter($searchForField, function($var){return ($var == 1);})) as $field => $v){
-										switch($field){
-											case "title": // IMPORTANT: in media search options are generally AND-linked, but not "search in Title, Text, Meta!
-												$where_OR .= ($where_OR ? 'OR ' : ' ') . (($term = $this->searchclass->searchInTitle($searchString, $_table)) ? $term : '0 ');
-												break;
-											case "text":
-												$where_OR .= ($where_OR ? 'OR ' : ' ') . $_table . '.`Text` LIKE "%' . $DB_WE->escape(trim($searchString)) . '%" ';
-												break;
-											case "meta":
-												//$where_OR .= ($where_OR && ($term = $this->searchclass->searchInAllMetas($searchString)) ? 'OR ' : ' ') . $term;
-												$where_OR .= ($where_OR ? 'OR ' : ' ') . (($term = $this->searchclass->searchInAllMetas($searchString, $_table)) ? $term : '0 ');
-												break;
-										}
-									}
-									break;
-								case 'ContentType':
-									$contentTypes = '';
-									foreach($searchForContentType as $type => $v){
-										if($v){
-											switch($type){
-												case 'image':
-													$contentTypes .= "'" . we_base_ContentTypes::IMAGE . "',";
-													break;
-												case 'video':
-													$contentTypes .= "'" . we_base_ContentTypes::VIDEO . "','" . we_base_ContentTypes::QUICKTIME . "','" . we_base_ContentTypes::FLASH . "',";
-													break;
-												case 'audio':
-													$contentTypes .= "'" . we_base_ContentTypes::AUDIO . "',";
-													break;
-												case 'other':
-													$contentTypes .= "'" . we_base_ContentTypes::APPLICATION . "',";
-													break;
-											}
-										}
-									}
-									$contentTypes = $contentTypes ? trim($contentTypes, ',') :
-											"'" . we_base_ContentTypes::IMAGE . "','" . we_base_ContentTypes::VIDEO . "','" . we_base_ContentTypes::QUICKTIME . "','" . we_base_ContentTypes::FLASH . "','" . we_base_ContentTypes::AUDIO . "','" . we_base_ContentTypes::APPLICATION . "'";
-									$where .= ' AND ' . $_table . '.ContentType IN (' . $contentTypes . ')';
-									break;
-								case 'IsUsed':
-									$where .= $this->searchclass->searchMediaLinks($searchString, $_view !== self::VIEW_ICONS);
-									break;
-								case 'IsProtected':
-									switch($searchString){
-										case 1:
-											$where .= ' AND ' . $_table . '.IsProtected=1 ';
-											break;
-										case 2:
-											$where .= ' AND ' . $_table . '.IsProtected=0 ';
-											break;
-									}
-									break;
-								default:
-									$done = false;
-									if(substr($searchFields[$i], 0, 6) === 'meta__'){
-										$where .= $this->searchclass->searchInMeta($searchString, substr($searchFields[$i], 6), $location[$i], $_table);
-										$done = true;
-									}
-							}
-
-						}
-
-						if(!$done){
-							switch($searchFields[$i]){
-								case 'Content':
-									$objectTable = defined('OBJECT_TABLE') ? OBJECT_TABLE : '';
-									if($objectTable == '' || $_table != $objectTable){
-										$w = $this->searchclass->searchContent($searchString, $_table);
-										if($where == '' && $w == ''){
-											$where .= ' AND 0 ';
-										} elseif($where == '' && $w != ''){
-											$where .= ' AND ' . $w;
-										} elseif($w != ''){
-											$where .= $op . ' ' . $w;
-										}
-									}
-									break;
-								case 'modifierID':
-									if($_table == VERSIONS_TABLE){
-										$w .= $this->searchclass->searchModifier($searchString, $_table);
-										$where .= $w;
-									}
-									break;
-								case 'allModsIn':
-									if($_table == VERSIONS_TABLE){
-										$w .= $this->searchclass->searchModFields($searchString, $_table);
-										$where .= $w;
-									}
-									break;
-								case 'Title':
-									$w = $this->searchclass->searchInTitle($searchString, $_table);
-
-									if($where == '' && $w == ''){
-										$where .= ' AND 0 ';
-									} elseif($where == '' && $w != ''){
-										$where .= ' AND ' . $w;
-									} elseif($w != ''){
-										$where .= $op . ' ' . $w;
-									}
-									break;
-								case 'Status':
-								case 'Speicherart':
-									switch($_table){
-										case VERSIONS_TABLE:
-											$w = $this->searchclass->getStatusFiles($searchString, $_table);
-
-											$docTableChecked = (in_array(FILE_TABLE, $_tables)) ? true : false;
-											$objTableChecked = (defined('OBJECT_FILES_TABLE') && (in_array(OBJECT_FILES_TABLE, $_tables))) ? true : false;
-											if($objTableChecked && $docTableChecked){
-												$w .= ' AND (v.documentTable="' . FILE_TABLE . '" OR documentTable="' . OBJECT_FILES_TABLE . '") ';
-											} elseif($docTableChecked){
-												$w .= ' AND v.documentTable="' . FILE_TABLE . '" ';
-											} elseif($objTableChecked){
-												$w .= ' AND v.documentTable="' . OBJECT_FILES_TABLE . '" ';
-											}
-											break;
-										case FILE_TABLE:
-										case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-											$w = $this->searchclass->getStatusFiles($searchString, $_table);
-									}
-									$where .= $w;
-									break;
-								case 'CreatorName':
-								case 'WebUserName':
-									if(isset($searchFields[$i]) && isset($location[$i])){
-										$w = $this->searchclass->searchSpecial($searchString, $searchFields[$i], $location[$i]);
-										$where .= $w;
-									}
-									break;
-								case 'temp_category':
-									$w = $this->searchclass->searchCategory($searchString, $_table, $searchFields[$i]);
-									$where .= $w;
-									break;
-								default:
-									//if($whichSearch != "AdvSearch"){
-										$where .= $this->searchclass->searchfor($searchString, $searchFields[$i], $location[$i], $_table);
-									//}
-							}
-						}
-					}
-				}
-
-				if($where || $where_OR){
-
-					if(isset($folderID) && ($folderID != '' && $folderID != 0)){
-						$where = ' AND (' . $where . ')' . we_search_search::ofFolderAndChildsOnly($folderID, $_table);
-					}
-
-					if($_table === VERSIONS_TABLE){
-						$workspacesTblFile = get_ws(FILE_TABLE, true);
-						if(defined('OBJECT_FILES_TABLE')){
-							$workspacesObjFile = get_ws(OBJECT_FILES_TABLE, true);
-						}
-					}
-
-					if($workspaces){
-						$where = ' (' . $where . ')' . we_search_search::ofFolderAndChildsOnly($workspaces, $_table);
-					}
-
-					$whereQuery = $where;
-
-					//query for restrict users for FILE_TABLE, VERSIONS_TABLE AND OBJECT_FILES_TABLE
-					$restrictUserQuery = ' AND ((' . escape_sql_query($_table) . '.RestrictOwners=0 OR ' . escape_sql_query($_table) . '.RestrictOwners= ' . intval($_SESSION["user"]["ID"]) . ') OR (FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',' . escape_sql_query($_table) . '.Owners)))';
-
-					switch($_table){
-						case FILE_TABLE:
-							if($where_OR){
-								$whereQuery .= ' AND (' . $where_OR . ') ';
-							}
-							$whereQuery .= $restrictUserQuery;
-							break;
-
-						case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-							$whereQuery .= $restrictUserQuery;
-							break;
-
-						case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
-							$whereQuery .= ' AND ((' . $this->db->escape($_table) . '.RestrictUsers=0 OR ' . $this->db->escape($_table) . '.RestrictUsers=' . intval($_SESSION["user"]["ID"]) . ') OR (FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',' . $this->db->escape($_table) . '.Users))) ';
-							break;
-						case VERSIONS_TABLE:
-							if(isset($GLOBALS['we_cmd_obj'])){
-								$isCheckedFileTable = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'search_tables_advSearch', FILE_TABLE);
-								$isCheckedObjFileTable = (defined('OBJECT_FILES_TABLE')) ? we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'search_tables_advSearch', OBJECT_FILES_TABLE) : 1;
-							} else {
-								$isCheckedFileTable = $this->Model->search_tables_advSearch[FILE_TABLE];
-								$isCheckedObjFileTable = (defined('OBJECT_FILES_TABLE')) ? $this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] : 1;
-							}
-							$_SESSION['weS']['weSearch']['onlyObjects'] = true;
-							$_SESSION['weS']['weSearch']['onlyDocs'] = true;
-							$_SESSION['weS']['weSearch']['ObjectsAndDocs'] = true;
-							$_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'] = ' AND ((' . OBJECT_FILES_TABLE . '.RestrictOwners=0 OR ' . OBJECT_FILES_TABLE . '.RestrictOwners= ' . intval($_SESSION["user"]["ID"]) . ') OR (FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',' . OBJECT_FILES_TABLE . '.Owners)))';
-							$_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere'] = ' AND ((' . FILE_TABLE . '.RestrictOwners=0 OR ' . FILE_TABLE . '.RestrictOwners= ' . intval($_SESSION["user"]["ID"]) . ') OR (FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',' . FILE_TABLE . '.Owners)))';
-							if(!empty($workspacesTblFile)){
-								$_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere'] .= $where = ' ' . we_search_search::ofFolderAndChildsOnly($workspacesTblFile[0], $_table);
-							}
-							if(isset($workspacesObjFile) && !empty($workspacesObjFile)){
-								$_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'] .= $where = " " . we_search_search::ofFolderAndChildsOnly($workspacesObjFile[0], $_table);
-							}
-
-							if(!$isCheckedFileTable && $isCheckedObjFileTable){
-								$_SESSION['weS']['weSearch']['onlyDocs'] = false;
-								$whereQuery .= ' AND ' . escape_sql_query($_table) . '.documentTable="' . OBJECT_FILES_TABLE . '" ';
-								$_SESSION['weS']['weSearch']['ObjectsAndDocs'] = false;
-							}
-							if($isCheckedFileTable && !$isCheckedObjFileTable){
-								$_SESSION['weS']['weSearch']['onlyObjects'] = false;
-								$whereQuery .= ' AND ' . escape_sql_query($_table) . '.documentTable="' . FILE_TABLE . '" ';
-								$_SESSION['weS']['weSearch']['ObjectsAndDocs'] = false;
-							}
-							break;
-					}
-
-					$this->searchclass->setwhere($whereQuery);
-					$this->searchclass->insertInTempTable($whereQuery, $_table);
-
-					// when MediaSearch add attrib_alt, attrib_title, IsUsed to SEARCH_TEMP_TABLE
-					if($whichSearch === self::SEARCH_MEDIA){
-						$this->searchclass->insertMediaAttribsToTempTable();
-						//SELECT id,alt,title FROM SEARCH_TEMP_TABLE JOIN tblLink JOIN tblContent ON bla WHERE alt  OR title...
-					}
-				}
-			}
-
-			$this->searchclass->selectFromTempTable($_searchstart, $_anzahl, $_order);
-
-			while($this->searchclass->next_record()){
-				if(!empty($this->searchclass->Record['VersionID'])){
-
-					$versionsFound[] = array(
-						$this->searchclass->Record['ContentType'],
-						$this->searchclass->Record['docID'],
-						$this->searchclass->Record['VersionID']
-					);
-				}
-				if(!isset($saveArrayIds[$this->searchclass->Record['ContentType']][$this->searchclass->Record['docID']])){
-					$saveArrayIds[$this->searchclass->Record['ContentType']][$this->searchclass->Record['docID']] = $this->searchclass->Record['docID'];
-
-					$_result[] = array_merge(array('Table' => $_table), array('foundInVersions' => ""), $this->searchclass->Record);
-				}
-			}
-
-			foreach($versionsFound as $k => $v){
-				foreach($_result as $key => $val){
-					if(isset($_result[$key]['foundInVersions']) && isset($_result[$key]['docID']) && $_result[$key]['docID'] == $v[1] && isset($_result[$key]['ContentType']) && $_result[$key]['ContentType'] == $v[0]){
-						if($_result[$key]['foundInVersions'] != ""){
-							$_result[$key]['foundInVersions'] .= ",";
-						}
-						$_result[$key]['foundInVersions'] .= $v[2];
-					}
-				}
-
-				$this->searchclass->selectFromTempTable($_searchstart, $_anzahl, $_order);
-				while($this->searchclass->next_record()){
-					if(!isset($saveArrayIds[$this->searchclass->Record['ContentType']][$this->searchclass->Record['docID']])){
-						$saveArrayIds[$this->searchclass->Record['ContentType']][$this->searchclass->Record['docID']] = $this->searchclass->Record['docID'];
-						$_result[] = array_merge(array(
-							'Table' => $_table
-							), $this->searchclass->Record);
-					}
-				}
-			}
-
-			$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = $this->searchclass->founditems = $this->searchclass->getResultCount();
-		}
-
-		if($_SESSION['weS']['weSearch']['foundItems' . $whichSearch] == 0){
-			return array();
-		}
-
-		foreach($_result as $k => $v){
-			$_result[$k]["Description"] = '';
-			if($_result[$k]['docTable'] === FILE_TABLE && $_result[$k]['Published'] >= $_result[$k]['ModDate'] && $_result[$k]['Published'] != 0){
-				$DB_WE->query('SELECT l.DID, c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DID=' . intval($_result[$k]["docID"]) . ' AND l.Name="Description" AND l.DocumentTable="' . FILE_TABLE . '"');
-				while($DB_WE->next_record()){
-					$_result[$k]["Description"] = $DB_WE->f('Dat');
-				}
-			} elseif($_result[$k]['docTable'] === FILE_TABLE){
-				$tempDoc = f('SELECT DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID =' . intval($_result[$k]["docID"]) . ' AND DocTable = "tblFile" AND Active = 1', 'DocumentObject', $DB_WE);
-				if(!empty($tempDoc)){
-					$tempDoc = we_unserialize($tempDoc);
-					if(isset($tempDoc[0]['elements']['Description']) && $tempDoc[0]['elements']['Description']['dat'] != ''){
-						$_result[$k]["Description"] = $tempDoc[0]['elements']['Description']['dat'];
-					}
-				}
-			} else {
-				$_result[$k]['Description'] = '';
-			}
-		}
-
-		return $this->makeContent($_result, $_view, $whichSearch);
 	}
 
 	function makeHeadLines($whichSearch){
@@ -1522,7 +728,7 @@ WE().consts.g_l.weSearch = {
 			);
 	}
 
-	private function makeContent($_result = array(), $view = self::VIEW_LIST, $whichSearch = self::SEARCH_DOCS){
+	public function makeContent($_result = array(), $view = self::VIEW_LIST, $whichSearch = self::SEARCH_DOCS){
 		$DB_WE = new DB_WE();
 
 		$content = array();
@@ -1828,40 +1034,14 @@ WE().consts.g_l.weSearch = {
 	}
 
 	function getSearchParameterTop($foundItems, $whichSearch){
-		switch($whichSearch){
-			case we_search_view::SEARCH_DOCS:
-				$_order = $this->Model->OrderDocSearch;
-				$_view = $this->Model->setViewDocSearch;
-				$_searchstart = $this->Model->searchstartDocSearch;
-				$_anzahl = $this->Model->anzahlDocSearch;
-				break;
-			case we_search_view::SEARCH_TMPL:
-				$_order = $this->Model->OrderTmplSearch;
-				$_view = $this->Model->setViewTmplSearch;
-				$_searchstart = $this->Model->searchstartTmplSearch;
-				$_anzahl = $this->Model->anzahlTmplSearch;
-				break;
-			case we_search_view::SEARCH_MEDIA:
-				$_order = $this->Model->OrderMediaSearch;
-				$_view = $this->Model->setViewMediaSearch;
-				$_searchstart = $this->Model->searchstartMediaSearch;
-				$_anzahl = $this->Model->anzahlMediaSearch;
-				break;
-			case we_search_view::SEARCH_ADV:
-				$_order = $this->Model->OrderAdvSearch;
-				$_view = $this->Model->setViewAdvSearch;
-				$_searchstart = $this->Model->searchstartAdvSearch;
-				$_anzahl = $this->Model->anzahlAdvSearch;
-				break;
-			case we_search_view::SEARCH_DOCLIST:
-				$_order = $this->Model->OrderDoclistSearch;
-				$_view = $this->Model->setViewDoclistSearch;
-				$_searchstart = $this->Model->searchstartDoclistSearch;
-				$_anzahl = $this->Model->anzahlDoclistSearch;
-				break;
-		}
+		$currentOrder = $this->Model->getProperty('currentOrder');
+		$currentSetView = $this->Model->getProperty('currentSetView');
+		$currentSearchstart = $this->Model->getProperty('currentSearchstart');
+		$currentAnzahl = $this->Model->getProperty('currentAnzahl');
+		$currentFolderID = $this->Model->getProperty('currentFolderID');
+		$currentSearchTables = $this->Model->getProperty('currentSearchTables');
 
-		$select = we_html_tools::htmlSelect('anzahl' . $whichSearch, array(10 => 10, 25 => 25, 50 => 50, 100 => 100), 1, $_anzahl, false, array('onchange' => "this.form.elements['searchstart" . $whichSearch . "'].value=0;weSearch.search(false);"), 'value', 0, 'selectSearchNumber');
+		$select = we_html_tools::htmlSelect('anzahl' . $whichSearch, array(10 => 10, 25 => 25, 50 => 50, 100 => 100), 1, $currentAnzahl, false, array('onchange' => "this.form.elements['searchstart" . $whichSearch . "'].value=0;weSearch.search(false);"), 'value', 0, 'selectSearchNumber');
 
 		$tbl = new we_html_table(array('class' => 'default', 'style' => 'margin:12px 0px 12px 19px;'), 1, 7);
 		$tbl->setCol(0, ($c = 0), array('style' => 'font-size:12px; width:125px;'), g_l('searchtool', '[eintraege_pro_seite]') . ':');
@@ -1872,10 +1052,10 @@ WE().consts.g_l.weSearch = {
 
 		$moreHiddens = '';
 		if($whichSearch === self::SEARCH_DOCLIST){
-			if($this->Model->folderID && $this->Model->searchTable === FILE_TABLE){
-				$tbl->setCol(0, ++$c, array('style' => 'width:50px;'), we_fileupload_ui_importer::getBtnImportFiles($this->Model->folderID));
+			if($currentFolderID && $currentSearchTables[0] === FILE_TABLE){
+				$tbl->setCol(0, ++$c, array('style' => 'width:50px;'), we_fileupload_ui_importer::getBtnImportFiles($currentFolderID));
 			}
-			$btnNewdir = we_html_button::create_button('fa:btn_new_dir,fa-plus,fa-lg fa-folder', "javascript:top.we_cmd('new_document','" . FILE_TABLE . "','','" . we_base_ContentTypes::FOLDER . "','','" . $this->Model->folderID . "')", true, 50, '', '', '', false);
+			$btnNewdir = we_html_button::create_button('fa:btn_new_dir,fa-plus,fa-lg fa-folder', "javascript:top.we_cmd('new_document','" . FILE_TABLE . "','','" . we_base_ContentTypes::FOLDER . "','','" . $currentFolderID . "')", true, 50, '', '', '', false);
 			$tbl->setCol(0, ++$c, array('style' => 'width:50px;'), $btnNewdir);
 
 			$moreHiddens = we_html_element::htmlHiddens(array(
@@ -1884,10 +1064,10 @@ WE().consts.g_l.weSearch = {
 		}
 
 		return we_html_element::htmlHiddens(array(
-				'setView' . $whichSearch => $_view,
-				'Order' . $whichSearch => $_order,
+				'setView' . $whichSearch => $currentSetView,
+				'Order' . $whichSearch => $currentOrder,
 				'mode' => $_mode = $this->Model->mode,
-				'searchstart' . $whichSearch => $_searchstart,
+				'searchstart' . $whichSearch => $currentSearchstart,
 				'position' => '',
 				'do' => '',
 			)) . $moreHiddens . $tbl->getHtml();
@@ -1934,52 +1114,20 @@ WE().consts.g_l.weSearch = {
 		return $tbl->getHtml();
 	}
 
-	// FIXME: is obsolete as soon as getSearchDialogOptionalFields() works properly
-	function getSearchDialogAdvSearch(){
-		if((!empty($_SESSION['weS']['weSearch']["keyword"])) && (we_base_request::_(we_base_request::INT, "tab") == 3)){
-			$this->Model->searchAdvSearch[0] = $_SESSION['weS']['weSearch']["keyword"];
-			if($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8"){
-				$this->Model->searchAdvSearch[0] = utf8_encode($this->Model->searchAdvSearch[0]);
-			}
-			unset($_SESSION['weS']['weSearch']["keyword"]);
+	// FIXME: will be  obsolete as soon as getSearchDialogOptionalFields() works properly
+	function getSearchDialogOptionalFields($whichSearch){
+		if($whichSearch !== self::SEARCH_ADV && $whichSearch !== self::SEARCH_MEDIA){
+			return;
 		}
 
-		$this->searchclass->height = count($this->Model->searchFieldsAdvSearch);
+		$currentSearchFields = $this->Model->getProperty('currentSearchFields');
+		$currentSearch = $this->Model->getProperty('currentSearch');
+		$currentLocation = $this->Model->getProperty('currentLocation');
+		$this->searchclass->height = count($currentSearchFields);
 
-		$cmd = we_base_request::_(we_base_request::STRING, 'cmd');
-		$cmdid = we_base_request::_(we_base_request::INT, 'cmdid');
-
-		if(isset($_REQUEST["searchFieldsAdvSearch"])){
-			if($cmdid !== false){
-				if($cmdid != ""){
-					$this->searchclass->height = count($this->Model->searchFieldsAdvSearch);
-				} elseif($cmd != "" && $cmd != "tool_weSearch_save"){
-					$this->searchclass->height = 1;
-				}
-			} else {
-				$this->searchclass->height = count($_REQUEST["searchFieldsAdvSearch"]);
-			}
-		} else {
-			if($cmdid !== false){
-				if($cmdid){
-					$this->searchclass->height = count($this->Model->searchFieldsAdvSearch);
-				} elseif(!$cmd){
-					$this->searchclass->height = 0;
-				} elseif($cmd != "tool_weSearch_save"){
-					$this->searchclass->height = 1;
-				}
-			} else {
-				$this->searchclass->height = (isset($this->Model->searchFieldsAdvSearch[0]) ?
-						count($this->Model->searchFieldsAdvSearch) : 1);
-			}
-		}
-		//if own search was saved without fields
-		if(!$this->Model->searchFieldsAdvSearch && !$this->Model->predefined){
-			$this->searchclass->height = 0;
-		}
-
-		$out = '<div style="margin-left:123px;"><div id="mouseOverDivs_AdvSearch"></div><table>
-<tbody id="filterTableAdvSearch">
+		$out = '<div ' . ($whichSearch === self::SEARCH_MEDIA ? '' : 'style="margin-left:123px;"') . '>
+	<div id="mouseOverDivs_' . $whichSearch . '"></div><table>
+<tbody id="filterTable' . $whichSearch . '">
 <tr>
  <td></td>
  <td></td>
@@ -1988,105 +1136,101 @@ WE().consts.g_l.weSearch = {
  <td></td>
 </tr>';
 
-		$locationAdvSearch = we_base_request::_(we_base_request::STRING, 'locationAdvSearch');
-		$this->Model->locationAdvSearch = ($locationAdvSearch && is_array($locationAdvSearch) ?
-				$locationAdvSearch :
-				is_array($this->Model->locationAdvSearch) ? array_values($this->Model->locationAdvSearch) :
-					array());
-
-		$this->Model->searchAdvSearch = is_array($this->Model->searchAdvSearch) ?
-			array_values($this->Model->searchAdvSearch) :
-			array();
-
-		$this->Model->searchFieldsAdvSearch = is_array($this->Model->searchFieldsAdvSearch) ?
-			array_values($this->Model->searchFieldsAdvSearch) :
-			array();
-
-		for($i = 0; $i < $this->searchclass->height; $i++){
+		for($i = ($whichSearch === self::SEARCH_MEDIA ? $this->searchMediaOptFieldIndex : 0); $i < $this->searchclass->height; $i++){
 			$button = we_html_button::create_button(we_html_button::TRASH, 'javascript:weSearch.delRow(' . $i . ');', true, '', '', '', '', false);
-
 			$locationDisabled = $handle = '';
+			$searchInput = we_html_tools::htmlTextInput('search' . $whichSearch . '[' . $i . ']', 30, (isset($currentSearch[$i]) ? $currentSearch[$i] : ''), "", " class=\"wetextinput\"  id=\"search" . $whichSearch . "[" . $i . "]\" ", "search", 170);
 
-			$searchInput = we_html_tools::htmlTextInput('searchAdvSearch[' . $i . ']', 30, ( isset($this->Model->searchAdvSearch) && is_array($this->Model->searchAdvSearch) && isset($this->Model->searchAdvSearch[$i]) ? $this->Model->searchAdvSearch[$i] : ''), "", " class=\"wetextinput\"  id=\"searchAdvSearch[" . $i . "]\" ", "search", 170);
-
-			if(isset($this->Model->searchFieldsAdvSearch[$i])){
-				switch($this->Model->searchFieldsAdvSearch[$i]){
-					case "ParentIDDoc":
-					case "ParentIDObj":
-					case "ParentIDTmpl":
-					case "Content":
-					case "Status":
-					case "Speicherart":
-					case "MasterTemplateID":
-					case "temp_template_id":
-					case "temp_category":
-						$locationDisabled = "disabled";
+			if(isset($currentSearchFields[$i])){
+				switch($currentSearchFields[$i]){
+					case 'ParentIDDoc':
+					case 'ParentIDObj':
+					case 'ParentIDTmpl':
+					case 'Content':
+					case 'Status':
+					case 'Speicherart':
+					case 'MasterTemplateID':
+					case 'temp_template_id':
+					case 'temp_category':
+						$locationDisabled = 'disabled';
 				}
 
-				switch($this->Model->searchFieldsAdvSearch[$i]){
-					case "allModsIn":
-						$searchInput = we_html_tools::htmlSelect("searchAdvSearch[" . $i . "]", $this->searchclass->getModFields(), 1, ( isset($this->Model->searchAdvSearch) && is_array($this->Model->searchAdvSearch) && isset($this->Model->searchAdvSearch[$i]) ? $this->Model->searchAdvSearch[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => 'searchAdvSearch[' . $i . ']'));
+				switch($currentSearchFields[$i]){
+					case 'meta__Title':
+					case 'meta__Description':
+					case 'meta__Keywords':
+					case 'meta__Autor':
+					case 'meta__MIME':
+					case 'ID':
+					case 'Path':
+					case 'CreatorName':
 						break;
 
-					case "Status":
-						$searchInput = we_html_tools::htmlSelect("searchAdvSearch[" . $i . "]", $this->searchclass->getFieldsStatus(), 1, (isset($this->Model->searchAdvSearch) && is_array($this->Model->searchAdvSearch) && isset($this->Model->searchAdvSearch[$i]) ? $this->Model->searchAdvSearch[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => 'searchAdvSearch[' . $i . ']'));
+					case 'allModsIn':
+						$searchInput = we_html_tools::htmlSelect('search' . $whichSearch . '[' . $i . ']', $this->searchclass->getModFields(), 1, (isset($currentSearch[$i]) ? $currentSearch[$i] : ''), false, array('class' => 'defaultfont', 'style' => 'width:170px;', 'id' => 'search' . $whichSearch . '[' . $i . ']'));
 						break;
 
-					case "Speicherart":
-						$searchInput = we_html_tools::htmlSelect("searchAdvSearch[" . $i . "]", $this->searchclass->getFieldsSpeicherart(), 1, (isset($this->Model->searchAdvSearch) && is_array($this->Model->searchAdvSearch) && isset($this->Model->searchAdvSearch[$i]) ? $this->Model->searchAdvSearch[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => 'searchAdvSearch[' . $i . ']'));
+					case 'Status':
+						$searchInput = we_html_tools::htmlSelect('search' . $whichSearch . '[' . $i . ']', $this->searchclass->getFieldsStatus(), 1, (isset($currentSearch[$i]) ? $currentSearch[$i] : ''), false, array('class' => 'defaultfont', 'style' => 'width:170px;', 'id' => 'search' . $whichSearch . '[' . $i . ']'));
 						break;
 
-					case "Published":
-					case "CreationDate":
-					case "ModDate":
-						$handle = "date";
-						$searchInput = we_html_tools::getDateSelector("searchAdvSearch[" . $i . "]", "_from" . $i, $this->Model->searchAdvSearch[$i], 170, 'multiicon');
+					case 'Speicherart':
+						$searchInput = we_html_tools::htmlSelect('search' . $whichSearch . '[' . $i . ']', $this->searchclass->getFieldsSpeicherart(), 1, (isset($currentSearch[$i]) ? $currentSearch[$i] : ''), false, array('class' => 'defaultfont', 'style' => 'width:170px;', 'id' => 'search' . $whichSearch . '[' . $i . ']'));
 						break;
 
-					case "ParentIDDoc":
-					case "ParentIDObj":
-					case "ParentIDTmpl":
-						$_linkPath = $this->Model->searchAdvSearch[$i];
+					case 'Published':
+					case 'CreationDate':
+					case 'ModDate':
+						$handle = 'date';
+						$searchInput = we_html_tools::getDateSelector('search' . $whichSearch . '[' . $i . ']', '_from' . $i, (isset($currentSearch[$i]) ? $currentSearch[$i] : ''), 170, 'multiicon');
+						break;
+
+					case 'ParentIDDoc':
+					case 'ParentIDObj':
+					case 'ParentIDTmpl':
+						$_linkPath = (isset($currentSearch[$i]) ? $currentSearch[$i] : '');
 
 						$_rootDirID = 0;
-						$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value");
-						$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['searchAdvSearch[" . $i . "]'].value");
-						$_cmd = "javascript:we_cmd('we_selector_directory',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','')";
-						$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 0, 22, '', '', false);
-						$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('searchAdvSearch[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('searchAdvSearchParentID[' . $i . ']', ""), $_button);
+						$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value");
+						$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['search" . $whichSearch . "[" . $i . "]'].value");
+						$_cmd = "javascript:we_cmd('we_selector_directory',document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','')";
+						$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 60, 22, '', '', false);
+						$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search' . $whichSearch . '[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('search' . $whichSearch . 'ParentID[' . $i . ']', ""), $_button);
 
 						$searchInput = $selector;
 						break;
-					case "MasterTemplateID":
-					case "temp_template_id":
-						$_linkPath = $this->Model->searchAdvSearch[$i];
+					case 'MasterTemplateID':
+					case 'temp_template_id':
+						$_linkPath = (isset($currentSearch[$i]) ? $currentSearch[$i] : '');
 
 						$_rootDirID = 0;
-						$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value");
-						$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['searchAdvSearch[" . $i . "]'].value");
+						$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value");
+						$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['search" . $whichSearch . "[" . $i . "]'].value");
 
-						$_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')", true, 0, 22, '', '', false);
-						$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('searchAdvSearch[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('searchAdvSearchParentID[' . $i . ']', ''), $_button);
+						$_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')", true, 60, 22, '', '', false);
+						$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search' . $whichSearch . '[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('search' . $whichSearch . 'ParentID[' . $i . ']', ''), $_button);
 
 						$searchInput = $selector;
 						break;
-					case "temp_category":
-						$_linkPath = $this->Model->searchAdvSearch[$i];
+					case 'temp_category':
+						$_linkPath = (isset($currentSearch[$i]) ? $currentSearch[$i] : '');
 						$_rootDirID = 0;
-						$_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_category',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'searchAdvSearchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'searchAdvSearch[" . $i . "]\\'].value','','','" . $_rootDirID . "','','')", true, 0, 22, '', '', false);
-						$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('searchAdvSearch[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('searchAdvSearchParentID[' . $i . ']', ''), $_button);
+						$_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_category',document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'search" . $whichSearch . "ParentID[" . $i . "]\\'].value','document.we_form.elements[\\'search" . $whichSearch . "[" . $i . "]\\'].value','','','" . $_rootDirID . "','','')", true, 60, 22, '', '', false);
+						$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search' . $whichSearch . '[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('search' . $whichSearch . 'ParentID[' . $i . ']', ''), $_button);
 
 						$searchInput = $selector;
 				}
 			}
 
+			$locationValue = (isset($currentLocation[$i]) ? $currentLocation[$i] : '');
 			$out .= '<tr id="filterRow_' . $i . '">
-	<td>' . we_html_tools::hidden("hidden_searchFieldsAdvSearch[" . $i . "]", isset($this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : "") .
-				we_html_tools::htmlSelect("searchFieldsAdvSearch[" . $i . "]", $this->searchclass->getFields($i, 'AdvSearch'), 1, (isset($this->Model->searchFieldsAdvSearch) && is_array($this->Model->searchFieldsAdvSearch) && isset($this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : ""), false, array('class' => "defaultfont", 'id' => 'searchFieldsAdvSearch[' . $i . ']', 'onchange' => 'weSearch.changeit(this.value, ' . $i . ');')) .
+	<td>' . we_html_tools::hidden('hidden_searchFields' . $whichSearch . '[' . $i . ']', isset($currentSearchFields[$i]) ? $currentSearchFields[$i] : '') .
+				we_html_tools::htmlSelect('searchFields' . $whichSearch . '[' . $i . ']', $this->searchclass->getFields($i, $whichSearch), 1, (isset($currentSearchFields[$i]) ? $currentSearchFields[$i] : ''), false, array('class' => "defaultfont", 'id' => 'searchFields' . $whichSearch . '[' . $i . ']', 'onchange' => 'weSearch.changeit(this.value, ' . $i . ');')) .
 				'</td>
-	<td id="td_locationAdvSearch[' . $i . ']">' . we_html_tools::htmlSelect("locationAdvSearch[" . $i . "]", we_search_search::getLocation($handle), 1, (isset($this->Model->locationAdvSearch) && is_array($this->Model->locationAdvSearch) && isset($this->Model->locationAdvSearch[$i]) ? $this->Model->locationAdvSearch[$i] : ""), false, array('class' => "defaultfont", $locationDisabled => $locationDisabled, 'id' => 'locationAdvSearch[' . $i . ']')) . '</td>
-	<td id="td_searchAdvSearch[' . $i . ']">' . $searchInput . '</td>
+	<td id="td_location' . $whichSearch . '[' . $i . ']">' . we_html_tools::htmlSelect('location' . $whichSearch . '[' . $i . ']', we_search_search::getLocation($handle), 1, $locationValue, false, array('class' => "defaultfont", 'style' => 'width:150px', $locationDisabled => $locationDisabled, 'id' => 'location' . $whichSearch . '[' . $i . ']')) . '</td>
+	<td id="td_search' . $whichSearch . '[' . $i . ']">' . $searchInput . '</td>
 	<td id="td_delButton[' . $i . ']">' . $button . '</td>
+	<td id="td_hiddenLocation[' . $i . ']">' . (!$locationDisabled ? '' : we_html_element::htmlHidden('location' . $whichSearch . '[' . $i . ']', $locationValue)) . '</td>
 	</tr>';
 		}
 
@@ -2102,212 +1246,10 @@ WE().consts.g_l.weSearch = {
 		return $out;
 	}
 
-	function getSearchDialogOptFields($whichSearch){
-		if($whichSearch !== self::SEARCH_ADV && $whichSearch !== self::SEARCH_MEDIA){
-			return;
-		}
-
-		$searchWhichSearch = $whichSearch === self::SEARCH_ADV ? "searchAdvSearch" : "searchMediaSearch";
-		$searchFieldsWhichSearch = $whichSearch === self::SEARCH_ADV ? "searchFieldsAdvSearch" : "searchFieldsMediaSearch";
-		$locationWhichSearch = $whichSearch === self::SEARCH_ADV ? "locationAdvSearch" : "locationMediaSearch";
-
-		if((!empty($_SESSION['weS']['weSearch']['keyword'])) && (we_base_request::_(we_base_request::INT, 'tab') === ($whichSearch === self::SEARCH_ADV ? 3 : (self::SEARCH_MEDIA ? 5 : -1)))){
-			$this->Model->{$searchWhichSearch}[0] = $_SESSION['weS']['weSearch']['keyword'];
-			if($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8"){
-				$this->Model->{$searchWhichSearch}[0] = utf8_encode($this->Model->{$searchWhichSearch}[0]);
-			}
-			unset($_SESSION['weS']['weSearch']["keyword"]);
-		}
-
-		$this->searchclass->height = count($this->Model->$searchFieldsWhichSearch);
-
-		$cmd = we_base_request::_(we_base_request::STRING, 'cmd');
-		$cmdid = we_base_request::_(we_base_request::INT, 'cmdid');
-
-		if(isset($_REQUEST[$searchFieldsWhichSearch])){
-			if($cmdid !== false){
-				if($cmdid != ""){
-					$this->searchclass->height = count($this->Model->$searchFieldsWhichSearch);
-				} elseif($cmd != "" && $cmd != "tool_weSearch_save"){
-					$this->searchclass->height = 1;
-				}
-			} else {
-				$this->searchclass->height = count($_REQUEST[$searchFieldsWhichSearch]); // REQUEST
-			}
-		} else {
-			if($cmdid !== false){
-				if($cmdid){
-					$this->searchclass->height = count($this->Model->$searchFieldsWhichSearch);
-				} elseif(!$cmd){
-					$this->searchclass->height = 0;
-				} elseif($cmd != "tool_weSearch_save"){
-					$this->searchclass->height = 1;
-				}
-			} else {
-				$this->searchclass->height = (isset($this->Model->{$searchFieldsWhichSearch}[0]) ?
-						count($this->Model->$searchFieldsWhichSearch) : 1);
-			}
-		}
-		//if own search was saved without fields
-		if(!$this->Model->$searchFieldsWhichSearch && !$this->Model->predefined){
-			$this->searchclass->height = 0;
-		}
-
-		$out = '<div ' . ($whichSearch === self::SEARCH_MEDIA ? '' : 'style="margin-left:123px;"') . '><div id="mouseOverDivs_' . $whichSearch . '"></div><table>
-<tbody id="filterTable' . $whichSearch . '">
-<tr>
- <td></td>
- <td></td>
- <td></td>
- <td></td>
- <td></td>
-</tr>';
-
-		$this->Model->$searchWhichSearch = is_array($this->Model->$searchWhichSearch) ?
-			array_values($this->Model->$searchWhichSearch) :
-			array();
-
-		$this->Model->$searchFieldsWhichSearch = is_array($this->Model->$searchFieldsWhichSearch) ?
-			array_values($this->Model->$searchFieldsWhichSearch) :
-			array();
-
-		for($i = ($whichSearch === self::SEARCH_MEDIA ? $this->searchMediaOptFieldIndex : 0); $i < $this->searchclass->height; $i++){
-			$button = we_html_button::create_button(we_html_button::TRASH, 'javascript:weSearch.delRow(' . $i . ');', true, '', '', '', '', false);
-
-			$locationDisabled = $handle = '';
-			$searchInput = we_html_tools::htmlTextInput($searchWhichSearch . '[' . $i . ']', 30, ( isset($this->Model->$searchWhichSearch) && is_array($this->Model->$searchWhichSearch) && isset($this->Model->{$searchWhichSearch}[$i]) ? $this->Model->{$searchWhichSearch}[$i] : ''), "", " class=\"wetextinput\" id=\"" . $searchWhichSearch . "[" . $i . "]\" ", "search", 170);
-
-			$found = true;
-			if(isset($this->Model->{$searchFieldsWhichSearch}[$i])){
-				switch($this->Model->{$searchFieldsWhichSearch}[$i]){
-					case "ParentIDDoc":
-					case "ParentIDObj":
-					case "ParentIDTmpl":
-					case "Content":
-					case "Status":
-					case "Speicherart":
-					case "MasterTemplateID":
-					case "temp_template_id":
-					case "temp_category":
-						$locationDisabled = "disabled";
-				}
-
-				switch($this->Model->{$searchFieldsWhichSearch}[$i]){
-					case 'meta__Title':
-					case 'meta__Description':
-					case 'meta__Keywords':
-					case 'meta__Autor':
-					case 'meta__MIME':
-					case 'ID':
-					case 'Path':
-					case 'CreatorName':
-						break;
-
-					case "allModsIn":
-						$searchInput = we_html_tools::htmlSelect($searchWhichSearch . "[" . $i . "]", $this->searchclass->getModFields(), 1, ( isset($this->Model->$searchWhichSearch) && is_array($this->Model->$searchWhichSearch) && isset($this->Model->{$searchWhichSearch}[$i]) ? $this->Model->{$searchWhichSearch}[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => $searchWhichSearch . '[' . $i . ']'));
-						break;
-
-					case "Status":
-						$searchInput = we_html_tools::htmlSelect($searchWhichSearch . "[" . $i . "]", $this->searchclass->getFieldsStatus(), 1, (isset($this->Model->$searchWhichSearch) && is_array($this->Model->$searchWhichSearch) && isset($this->Model->{$searchWhichSearch}[$i]) ? $this->Model->{$searchWhichSearch}[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => $searchWhichSearch . '[' . $i . ']'));
-						break;
-
-					case "Speicherart":
-						$searchInput = we_html_tools::htmlSelect($searchWhichSearch . "[" . $i . "]", $this->searchclass->getFieldsSpeicherart(), 1, (isset($this->Model->$searchWhichSearch) && is_array($this->Model->$searchWhichSearch) && isset($this->Model->{$searchWhichSearch}[$i]) ? $this->Model->{$searchWhichSearch}[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => $searchWhichSearch . '[' . $i . ']'));
-						break;
-
-					case "Published":
-					case "CreationDate":
-					case "ModDate":
-						$handle = "date";
-						$searchInput = we_html_tools::getDateSelector($searchWhichSearch . "[" . $i . "]", "_from" . $i, $this->Model->$searchWhichSearch[$i]);
-						break;
-
-					case "ParentIDDoc":
-					case "ParentIDObj":
-					case "ParentIDTmpl":
-						$_linkPath = $this->Model->{$searchWhichSearch}[$i];
-
-						$_rootDirID = 0;
-						$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $searchWhichSearch . "ParentID[" . $i . "]'].value");
-						$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $searchWhichSearch . "[" . $i . "]'].value");
-						$_cmd = "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $searchWhichSearch . "ParentID[" . $i . "]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','')";
-						$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 70, 22, '', '', false);
-						$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($searchWhichSearch . '[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden($searchWhichSearch . 'ParentID[' . $i . ']', ""), $_button);
-
-						$searchInput = $selector;
-						break;
-					case "MasterTemplateID":
-					case "temp_template_id":
-						$_linkPath = $this->Model->{$searchWhichSearch}[$i];
-
-						$_rootDirID = 0;
-						$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $searchWhichSearch . "ParentID[" . $i . "]'].value");
-						$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $searchWhichSearch . "[" . $i . "]'].value");
-
-						$_cmd = "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $searchWhichSearch . "ParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')";
-						$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 70, 22, '', '', false);
-						$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($searchWhichSearch . '[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(array(
-									'name' => $searchWhichSearch . 'ParentID[' . $i . ']', "value" => ""
-								)), $_button);
-
-						$searchInput = $selector;
-						break;
-					case "temp_category":
-						$_linkPath = $this->Model->{$searchWhichSearch}[$i];
-						$_rootDirID = 0;
-
-						$_cmd = "javascript:we_cmd('we_selector_category',document.we_form.elements['" . $searchWhichSearch . "ParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'" . $searchWhichSearch . "ParentID[" . $i . "]\\'].value','document.we_form.elements[\\'" . $searchWhichSearch . "[" . $i . "]\\'].value','','','" . $_rootDirID . "','','')";
-						$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 70, 22, '', '', false);
-						$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($searchWhichSearch . '[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(array(
-									'name' => $searchWhichSearch . 'ParentID[' . $i . ']', "value" => ""
-								)), $_button);
-
-						$searchInput = $selector;
-						break;
-					default:
-						$found = false;
-				}
-			}
-
-			$out .= !$found ? '' : '<tr id="filterRow_' . $i . '">
-	 <td>' . we_html_tools::hidden("hidden_" . $searchFieldsWhichSearch . "[" . $i . "]", isset($this->Model->{$searchFieldsWhichSearch}[$i]) ? $this->Model->{$searchFieldsWhichSearch}[$i] : "") .
-				we_html_tools::htmlSelect($searchFieldsWhichSearch . "[" . $i . "]", $this->searchclass->getFields($i, $whichSearch), 1, (isset($this->Model->$searchFieldsWhichSearch) && is_array($this->Model->$searchFieldsWhichSearch) && isset($this->Model->{$searchFieldsWhichSearch}[$i]) ? $this->Model->{$searchFieldsWhichSearch}[$i] : ""), false, array('class' => "defaultfont", 'id' => $searchFieldsWhichSearch . '[' . $i . ']', 'onchange' => 'weSearch.changeit(this.value, ' . $i . ');')) .
-				'</td>
-	 <td id="td_' . $locationWhichSearch . '[' . $i . ']">' . we_html_tools::htmlSelect($locationWhichSearch . "[" . $i . "]", we_search_search::getLocation($handle), 1, (isset($this->Model->$locationWhichSearch) && is_array($this->Model->$locationWhichSearch) && isset($this->Model->{$locationWhichSearch}[$i]) ? $this->Model->{$locationWhichSearch}[$i] : ""), false, array('class' => "defaultfont", $locationDisabled => $locationDisabled, 'id' => $locationWhichSearch . '[' . $i . ']')) . '</td>
-     <td id="td_' . $searchWhichSearch . '[' . $i . ']">' . $searchInput . '</td>
-     <td id="td_delButton[' . $i . ']">' . $button . '</td>
-    </tr>';
-		}
-
-		$out .= '</tbody></table>' . we_html_button::create_button(we_html_button::ADD, "javascript:weSearch.newinput();") .
-			'</div>' .
-			we_html_element::jsElement("weSearch.calendarSetup(" . $this->searchclass->height . ");");
-
-		return $out;
-	}
-
 	function tblList($content, $headline, $whichSearch){
 		$whichSearch = $whichSearch === 'doclist' ? self::SEARCH_DOCLIST : $whichSearch;
 		$class = "middlefont";
-		$view = self::VIEW_LIST;
-
-		switch($whichSearch){
-			case self::SEARCH_DOCS :
-				$view = $this->Model->setViewDocSearch;
-				break;
-			case self::SEARCH_TMPL :
-				$view = $this->Model->setViewTmplSearch;
-				break;
-			case self::SEARCH_MEDIA:
-				$view = $this->Model->setViewMediaSearch;
-				break;
-			case self::SEARCH_ADV :
-				$view = $this->Model->setViewAdvSearch;
-				break;
-			// for doclistsearch
-			case self::SEARCH_DOCLIST :
-				$view = $this->Model->setViewDoclistSearch;
-		}
+		$currentSetView = $this->Model->getProperty('currentSetView');
 
 		$anz = count($headline);
 		$out = '<table style="table-layout:fixed;white-space:nowrap;width:100%;padding:0 0 0 0;margin:0 0 0 0;background-color:#fff;border-bottom:1px solid #D1D1D1;" >' .
@@ -2342,7 +1284,7 @@ WE().consts.g_l.weSearch = {
 		$out .= '</tr></table>' .
 			//FIXME: realize with tbody?
 			'<div class="largeicons" id="scrollContent_' . $whichSearch . '" style="overflow-y:auto;background-color:#fff;width:100%;height:100%;">' .
-			$this->tabListContent($view, $content, $class, $whichSearch) .
+			$this->tabListContent($currentSetView, $content, $class, $whichSearch) .
 			'</div>';
 
 		return $out;
@@ -2555,46 +1497,41 @@ WE().consts.g_l.weSearch = {
 		$yuiSuggest = & weSuggest::getInstance();
 		switch($whichSearch){
 			case self::SEARCH_DOCS :
-				$folderID = "folderIDDoc";
-				$folderPath = "folderPathDoc";
+				$nameFolderID = "folderIDDoc";
+				$nameFolderPath = "folderPathDoc";
 				$table = FILE_TABLE;
-				$pathID = $this->Model->folderIDDoc;
 				$ACname = "docu";
-				$yuiSuggest->setWidth(380);
 				break;
 			case self::SEARCH_MEDIA :
-				$folderID = "folderIDMedia";
-				$folderPath = "folderPathMedia";
+				$nameFolderID = "folderIDMedia";
+				$nameFolderPath = "folderPathMedia";
 				$table = FILE_TABLE;
-				$pathID = $this->Model->folderIDMedia;
 				$ACname = "docu";
-				$yuiSuggest->setWidth(380);
 				break;
 			case self::SEARCH_TMPL :
-				$folderID = "folderIDTmpl";
-				$folderPath = "folderPathTmpl";
+				$nameFolderID = "folderIDTmpl";
+				$nameFolderPath = "folderPathTmpl";
 				$table = TEMPLATES_TABLE;
-				$pathID = $this->Model->folderIDTmpl;
 				$ACname = "Tmpl";
-				$yuiSuggest->setWidth(380);
 				break;
 		}
-
-		$_path = id_to_path($pathID, $table, $this->db);
+		$yuiSuggest->setWidth(380);
+		$currentFolderID = $this->Model->getProperty('currentFolderID');
+		$_path = id_to_path($currentFolderID, $table, $this->db);
 
 
 		$yuiSuggest->setAcId($ACname);
 		$yuiSuggest->setContentType("folder");
-		$yuiSuggest->setInput($folderPath, $_path);
+		$yuiSuggest->setInput($nameFolderPath, $_path);
 		$yuiSuggest->setLabel("");
 		$yuiSuggest->setMaxResults(20);
 		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult($folderID, $pathID);
+		$yuiSuggest->setResult($nameFolderID, $nameFolderPath);
 		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setTable($table);
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $folderID . "'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $folderPath . "'].value");
-		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $folderID . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "')"));
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $nameFolderID . "'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $nameFolderPath . "'].value");
+		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $nameFolderID . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "')"));
 
 		return
 			weSuggest::getYuiFiles() .
@@ -2665,7 +1602,7 @@ function submitForm(target,action,method) {
 
 	function processVariables(){
 		if(isset($_SESSION['weS'][$this->toolName . '_session'])){
-			$this->Model = $_SESSION['weS'][$this->toolName . '_session'];
+				$this->Model = $_SESSION['weS'][$this->toolName . '_session'];
 		}
 
 		$tmp = '';
@@ -2675,10 +1612,33 @@ function submitForm(target,action,method) {
 			'searchstartMediaSearch',
 			'searchstartAdvSearch'), (is_array($this->Model->persistent_slots) ? $this->Model->persistent_slots : array()));
 
+		$doInitModelByHttp = false;
 		foreach($modelVars as $val){
-			if(($tmp = we_base_request::_(we_base_request::STRING, $val, we_base_request::NOT_VALID)) !== we_base_request::NOT_VALID){
-				$this->Model->$val = $tmp;
+			if(we_base_request::_(we_base_request::RAW, $val, we_base_request::NOT_VALID) !== we_base_request::NOT_VALID){
+				$doInitModelByHttp = true;
+				break;
 			}
+		}
+
+		if($doInitModelByHttp && ($tab = we_base_request::_(we_base_request::INT, 'tab', we_base_request::_(we_base_request::INT, 'tabnr', 1)))){
+			switch($tab){
+				case 1:
+					$whichSearch = self::SEARCH_DOCS;
+					break;
+				case 2:
+					$whichSearch = self::SEARCH_TMPL;
+					break;
+				case 3:
+					$whichSearch = self::SEARCH_ADV;
+					break;
+				case 5:
+					$whichSearch = self::SEARCH_MEDIA;
+					break;
+				default: 
+					$whichSearch = false;
+			}
+
+			$this->Model->initByHttp($whichSearch, false);
 		}
 	}
 

@@ -44,7 +44,7 @@ echo we_html_tools::getCalendarFiles() .
 		}" onload="setTimeout(weSearch.init, 200)" onresize="weSearch.sizeScrollContent();">
 	<div id="mouseOverDivs_<?php echo we_search_view::SEARCH_DOCLIST; ?>"></div>
 	<form name="we_form" action="" onsubmit="return false;" style="padding:0px;margin:0px;"><?php
-		$results = $doclistSearch->searchProperties();
+		$results = $doclistSearch->searchProperties($doclistView->Model);
 		$content = $doclistView->makeContent($results);
 
 		$headline = $doclistView->makeHeadLines($GLOBALS['we_doc']->Table);
