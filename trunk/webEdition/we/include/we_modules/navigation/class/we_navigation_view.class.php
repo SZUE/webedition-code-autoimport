@@ -951,13 +951,12 @@ function submitForm() {
 				break;
 			case 'depopulate':
 				$_items = $this->Model->depopulateGroup();
-				$_js = '';
-				foreach($_items as $_id){
-					$_js .= $this->topFrame . '.deleteEntry(' . $_id . ');
-						';
+				$js = '';
+				foreach($_items as $id){
+					$js .= $this->topFrame . '.deleteEntry(' . $id['ID'] . ');';
 				}
-				$_js .= we_message_reporting::getShowMessageCall(g_l('navigation', '[depopulate_msg]'), we_message_reporting::WE_MESSAGE_NOTICE);
-				echo we_html_element::jsElement($_js);
+				$js .= we_message_reporting::getShowMessageCall(g_l('navigation', '[depopulate_msg]'), we_message_reporting::WE_MESSAGE_NOTICE);
+				echo we_html_element::jsElement($js);
 				$this->Model->Selection = we_navigation_navigation::SELECTION_NODYNAMIC;
 				$this->Model->saveField('Selection');
 				break;
