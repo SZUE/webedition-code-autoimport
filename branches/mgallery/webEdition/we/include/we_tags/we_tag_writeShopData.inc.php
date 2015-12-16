@@ -21,7 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-we_base_moduleInfo::isActive('shop');
+we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP);
 
 /**
  * This function writes the shop data (order) to the database

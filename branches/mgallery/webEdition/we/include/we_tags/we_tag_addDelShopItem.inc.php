@@ -34,7 +34,7 @@ function we_tag_addDelShopItem($attribs){
 	$shopname = weTag_getAttribute('shopname', $attribs, '', we_base_request::STRING);
 	$floatquantities = weTag_getAttribute('floatquantities', $attribs, false, we_base_request::BOOL);
 
-	we_base_moduleInfo::isActive('shop');
+	we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP);
 
 	$rShopname = we_base_request::_(we_base_request::STRING, 'shopname');
 	if($rShopname == $shopname || !$rShopname){

@@ -130,7 +130,7 @@ class we_document extends we_root{
 	 */
 
 	function formInGlossar(){
-		return (we_base_moduleInfo::isActive('glossary') ?
+		return (we_base_moduleInfo::isActive(we_base_moduleInfo::GLOSSARY) ?
 				we_html_forms::checkboxWithHidden((bool) $this->InGlossar, 'we_' . $this->Name . '_InGlossar', g_l('weClass', '[InGlossar]'), false, 'defaultfont', 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);') :
 				'');
 	}

@@ -365,19 +365,20 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 
 		$listQuery = ' (mode=' . we_customer_abstractFilter::FILTER . ' AND !FIND_IN_SET(' . $_cid . ',whiteList) ) '; //FIND_IN_SET($_cid,blackList) AND
 		$_specificCustomersQuery = ' (mode=' . we_customer_abstractFilter::SPECIFIC . " AND !FIND_IN_SET($_cid,specificCustomers)) ";
+$mfilter='mode IN(' . we_customer_abstractFilter::FILTER . ',' . we_customer_abstractFilter::SPECIFIC.')';
 
 		// detect all files/objects with restrictions
 		switch(get_class($obj)){
 			case 'we_listview_search':
-				$_queryForIds = 'FROM ' . CUSTOMER_FILTER_TABLE . ' f WHERE modelType!="folder" AND (' . $listQuery . ' OR ' . $_specificCustomersQuery . ')';
+				$_queryForIds = 'FROM ' . CUSTOMER_FILTER_TABLE . ' f WHERE modelType!="folder" AND '.$mfilter.' AND (' . $listQuery . ' OR ' . $_specificCustomersQuery . ')';
 				break;
 			case 'we_listview_document': // type="document"
-				$_queryForIds = 'FROM ' . CUSTOMER_FILTER_TABLE . ' f WHERE modelTable="' . stripTblPrefix(FILE_TABLE) . '" AND (' . $listQuery . ' OR ' . $_specificCustomersQuery . ')';
+				$_queryForIds = 'FROM ' . CUSTOMER_FILTER_TABLE . ' f WHERE modelTable="' . stripTblPrefix(FILE_TABLE) . '" AND '.$mfilter.' AND (' . $listQuery . ' OR ' . $_specificCustomersQuery . ')';
 				break;
 			case 'we_object_listview':
 			case 'we_object_listviewMultiobject': // type="object"
 				//at least check only documents of the specified class
-				$_queryForIds = 'FROM ' . CUSTOMER_FILTER_TABLE . ' f JOIN ' . OBJECT_X_TABLE . $classID . ' ON (modelId=OF_ID AND modelTable="' . stripTblPrefix(OBJECT_FILES_TABLE) . '") WHERE (' . $listQuery . ' OR ' . $_specificCustomersQuery . ')';
+				$_queryForIds = 'FROM ' . CUSTOMER_FILTER_TABLE . ' f JOIN ' . OBJECT_X_TABLE . $classID . ' ON (modelId=OF_ID AND modelTable="' . stripTblPrefix(OBJECT_FILES_TABLE) . '") WHERE '.$mfilter.' AND (' . $listQuery . ' OR ' . $_specificCustomersQuery . ')';
 				break;
 		}
 		// if customer is not logged in=> return NO_LOGIN

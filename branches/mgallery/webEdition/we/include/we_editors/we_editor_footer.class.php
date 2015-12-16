@@ -146,7 +146,7 @@ abstract class we_editor_footer{
 				break;
 			default:
 				$_normalTable->addCol(2);
-				if(we_base_moduleInfo::isActive('editor')){
+				if(we_base_moduleInfo::isActive(we_base_moduleInfo::EDITOR)){
 					$_normalTable->setColContent(0, $_pos++, (stripos($we_doc->ContentType, 'text/') !== false ?
 							we_html_button::create_button("fat:startEditor,fa-lg fa-external-link", "javascript:editSource();") :
 							we_html_button::create_button("fat:startEditor,fa-lg fa-external-link", "javascript:editFile();"))

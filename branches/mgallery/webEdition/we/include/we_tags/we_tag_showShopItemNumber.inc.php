@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-we_base_moduleInfo::isActive('shop');
+we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP);
 
 function we_tag_showShopItemNumber($attribs){
 	if(($foo = attributFehltError($attribs, 'shopname', __FUNCTION__))){

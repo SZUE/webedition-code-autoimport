@@ -46,7 +46,7 @@ function we_tag_repeatShopItem($attribs){
 				echo $foo;
 				return;
 			}
-			we_base_moduleInfo::isActive('shop');
+			we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP);
 
 			$_SESSION["we_shopname"] = $shopname;
 

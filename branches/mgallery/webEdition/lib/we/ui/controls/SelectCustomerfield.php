@@ -51,7 +51,7 @@ class we_ui_controls_SelectCustomerfield extends we_ui_controls_Select{
 	 */
 	public function __construct($properties = null){
 		parent::__construct($properties);
-		if(we_base_moduleInfo::isActive('customer')){
+		if(we_base_moduleInfo::isActive(we_base_moduleInfo::CUSTOMER)){
 				$db = new DB_WE();
 				$db->query('SHOW FIELDS FROM ' . CUSTOMER_TABLE);
 				$this->addOption(0, '-');

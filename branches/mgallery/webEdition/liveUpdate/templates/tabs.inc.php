@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -37,12 +38,12 @@ foreach($this->Data['allTabs'] as $tabname){
 // get output
 
 $bodyContent = '<div id="main"><div id="headrow"></div>' .
-	$tabs->getHTML() .
-	'</div>';
+		$tabs->getHTML() .
+		'</div>';
 
 $_body = we_html_element::htmlBody(array(
-		'id' => 'eHeaderBody',
-		'onload' => 'weTabs.setFrameSize();',
-		'onresize' => 'weTabs.setFrameSize()'), $bodyContent);
+			'id' => 'eHeaderBody',
+			'onload' => 'weTabs.setFrameSize();',
+			'onresize' => 'weTabs.setFrameSize()'), $bodyContent);
 
-echo we_html_tools::getHtmlTop('', '', '', we_tabs::getHeader(), $_body);
+echo we_html_tools::getHtmlTop('', '', '', STYLESHEET . we_tabs::getHeader(), $_body);

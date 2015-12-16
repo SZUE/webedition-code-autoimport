@@ -276,7 +276,7 @@ var openFolders= {
 				"noline" => 1)
 		);
 
-		if(we_base_moduleInfo::isActive("object")){
+		if(we_base_moduleInfo::isActive(we_base_moduleInfo::OBJECT)){
 			$parts[] = array(
 				"html" => we_html_forms::radiobutton("csv", ($extype === "csv" && permissionhandler::hasPerm("CSV_EXPORT")), "extype", g_l('export', '[csv_export]'), true, "defaultfont", "", !permissionhandler::hasPerm("CSV_EXPORT"), g_l('export', '[txt_csv_export]'), 0, 500),
 				"space" => 0,
