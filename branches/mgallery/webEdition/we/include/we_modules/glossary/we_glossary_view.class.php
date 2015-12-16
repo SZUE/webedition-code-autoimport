@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_glossary_view extends we_modules_view{
+
 	/**
 	 * Glossary Instance
 	 * @var object
@@ -43,29 +44,30 @@ class we_glossary_view extends we_modules_view{
 
 	function getCommonHiddens($cmds = array()){
 		return
-			parent::getCommonHiddens($cmds) .
-			we_html_element::htmlHidden("IsFolder", (isset($this->Glossary->IsFolder) ? $this->Glossary->IsFolder : '0'));
+				parent::getCommonHiddens($cmds) .
+				we_html_element::htmlHidden("IsFolder", (isset($this->Glossary->IsFolder) ? $this->Glossary->IsFolder : '0'));
 	}
 
 	function getJSTop(){
 		$modData = we_base_moduleInfo::getModuleData(we_base_request::_(we_base_request::STRING, 'mod', ''));
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 		return
-			parent::getJSTop() .
-			we_html_element::jsElement('
+				parent::getJSTop() .
+				we_html_element::jsElement('
 WE().consts.g_l.glossary.view={
 	save_changed_glossary:"' . g_l('modules_glossary', '[save_changed_glossary]') . '",
 	delete_alert:	"' . g_l('modules_glossary', '[delete_alert]') . '",
 	nothing_to_delete:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[nothing_to_delete]')) . '",
 	no_perms:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[no_perms]')) . '",
 	nothing_to_save:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[nothing_to_save]')) . '",
+	no_workspace:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[no_workspace]')) . '",
 };
 var data={
 	frameset:"' . $this->frameset . '",
 };
 parent.document.title = "' . $title . '";
 ') .
-			we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/glossary_view.js');
+				we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/glossary_view.js');
 	}
 
 	function getJSProperty(){
@@ -73,7 +75,7 @@ parent.document.title = "' . $title . '";
 var data={
 	frameset:"' . $this->frameset . '"
 };
-').we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/glossary_view_prop.js');
+') . we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/glossary_view_prop.js');
 	}
 
 	function getJSSubmitFunction(){
@@ -91,7 +93,7 @@ var data={
 			case "new_glossary_textreplacement":
 				if(!permissionhandler::hasPerm("NEW_GLOSSARY")){
 					echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
+							we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					break;
 				}
@@ -118,41 +120,26 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 				$this->Glossary = new we_glossary_glossary($cmdid);
 
 				echo we_html_element::jsElement(
-					'top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->Glossary->Text) . '";' .
-					'top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');
+						'top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->Glossary->Text) . '";' .
+						'top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');
 				break;
 
 			case 'populateWorkspaces':
 				$objectLinkID = we_base_request::_(we_base_request::INT, 'link', 0, 'Attributes', 'ObjectLinkID');
 				$_values = we_navigation_dynList::getWorkspacesForObject($objectLinkID);
-				$_js = '';
 
 				if($_values){
+					$_js = '';
 
 					foreach($_values as $_id => $_path){
 						$_js .= 'top.content.editor.edbody.document.we_form.elements[\'link[Attributes][ObjectWorkspaceID]\'].options[top.content.editor.edbody.document.we_form.elements[\'link[Attributes][ObjectWorkspaceID]\'].options.length] = new Option("' . $_path . '",' . $_id . ');
 							';
 					}
-					echo we_html_element::jsElement(
-						'top.content.editor.edbody.document.we_form.elements[\'link[Attributes][ObjectWorkspaceID]\'].options.length = 0;
-							' . $_js . '
-							top.content.editor.edbody.setDisplay("ObjectWorkspaceID","block");
-						');
+					echo we_html_element::jsElement('top.content.populateWorkspaces("values");' . $_js);
 				} elseif(we_navigation_dynList::getWorkspaceFlag($objectLinkID)){
-					echo we_html_element::jsElement('
-top.content.editor.edbody.setDisplay("ObjectWorkspaceID","block");
-top.content.editor.edbody.document.we_form.elements[\'link[Attributes][ObjectWorkspaceID]\'].options.length = 0;
-top.content.editor.edbody.document.we_form.elements[\'link[Attributes][ObjectWorkspaceID]\'].options[top.content.editor.edbody.document.we_form.elements[\'link[Attributes][ObjectWorkspaceID]\'].options.length] = new Option("/",0);
-top.content.editor.edbody.document.we_form.elements[\'link[Attributes][ObjectWorkspaceID]\'].selectedIndex = 0;'
-					);
+					echo we_html_element::jsElement('top.content.populateWorkspaces("workspace");');
 				} else {
-					echo we_html_element::jsElement('
-top.content.editor.edbody.setDisplay("ObjectWorkspaceID","none");
-top.content.editor.edbody.document.we_form.elements[\'link[Attributes][ObjectWorkspaceID]\'].options.length = 0;
-top.content.editor.edbody.document.we_form.elements[\'link[Attributes][ObjectWorkspaceID]\'].options[top.content.editor.edbody.document.we_form.elements[\'link[Attributes][ObjectWorkspaceID]\'].options.length] = new Option("-1",-1);
-top.content.editor.edbody.document.we_form.elements[\'link[Attributes][ObjectLinkID]\'].value = "";
-top.content.editor.edbody.document.we_form.elements[\'link[Attributes][ObjectLinkPath]\'].value = "";
-' . we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[no_workspace]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_html_element::jsElement('top.content.populateWorkspaces("noWorkspace");');
 				}
 				break;
 
@@ -166,7 +153,7 @@ top.content.editor.edbody.document.we_form.elements[\'link[Attributes][ObjectLin
 				we_glossary_glossary::editException($language, $exception);
 
 				echo we_html_element::jsElement(
-					we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[save_ok]'), we_message_reporting::WE_MESSAGE_NOTICE)
+						we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[save_ok]'), we_message_reporting::WE_MESSAGE_NOTICE)
 				);
 
 				break;
@@ -187,7 +174,7 @@ top.content.editor.edbody.document.we_form.elements[\'link[Attributes][ObjectLin
 
 				if(!permissionhandler::hasPerm("NEW_GLOSSARY") && !permissionhandler::hasPerm("EDIT_GLOSSARY")){
 					echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
+							we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					break;
 				}
@@ -213,22 +200,22 @@ top.content.editor.edbody.document.we_form.elements[\'link[Attributes][ObjectLin
 
 				if($this->Glossary->pathExists($this->Glossary->Path)){
 					echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR)
+							we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					break;
 				}
 
 				if($this->Glossary->isSelf()){
 					echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
+							we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					break;
 				}
 
 
 				$StateBefore = ($this->Glossary->ID ?
-						f('SELECT Published FROM ' . GLOSSARY_TABLE . " WHERE ID = " . intval($this->Glossary->ID)) :
-						0);
+								f('SELECT Published FROM ' . GLOSSARY_TABLE . " WHERE ID = " . intval($this->Glossary->ID)) :
+								0);
 
 				$isNew = $this->Glossary->ID == 0;
 
@@ -259,8 +246,8 @@ top.content.editor.edbody.document.we_form.elements[\'link[Attributes][ObjectLin
 					$message .= sprintf(g_l('modules_glossary', '[item_saved]'), $this->Glossary->Text);
 
 					echo we_html_element::jsElement(
-						$js .
-						we_message_reporting::getShowMessageCall($message, we_message_reporting::WE_MESSAGE_NOTICE) . '
+							$js .
+							we_message_reporting::getShowMessageCall($message, we_message_reporting::WE_MESSAGE_NOTICE) . '
 if(top.makeNewEntryCheck==1) {
 	top.content.we_cmd("new_glossary_' . $this->Glossary->Type . '", "' . $this->Glossary->Language . '");
 } else {
@@ -283,7 +270,7 @@ top.content.hot=0;
 
 				if(!permissionhandler::hasPerm("DELETE_GLOSSARY")){
 					echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
+							we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					return;
 				}
@@ -362,10 +349,10 @@ setTimeout(function(){' . we_message_reporting::getShowMessageCall(g_l('modules_
 		$createTextReplacement = we_html_button::create_button("new_glossary_textreplacement", "javascript:top.opener.top.we_cmd('new_glossary_textreplacement');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));
 
 		$content = $createAbbreviation . '<br/>' .
-			$createAcronym . '<br/>' .
-			$createForeignWord . '<br/>' .
-			$createLink . '<br/>' .
-			$createTextReplacement;
+				$createAcronym . '<br/>' .
+				$createForeignWord . '<br/>' .
+				$createLink . '<br/>' .
+				$createTextReplacement;
 
 		return parent::getHomeScreen("glossary", "glossary.gif", $content);
 	}

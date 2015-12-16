@@ -117,14 +117,6 @@ if(!empty($oldDoc) && !$isObj){
 	$we_tabs->addTab(new we_tab(g_l('versions', '[previewVersionOld]'), '((activ_tab==3) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('3');", array("id" => "tab_3")));
 }
 
-$js = we_tabs::getHeader() .
-		we_html_element::jsElement('
-function setTab(tab) {
-	toggle("tab"+activ_tab);
-	toggle("tab"+tab);
-	activ_tab=tab;
-}');
-
 $pathLength = 40;
 
 $tabsBody = $we_tabs->getHTML() . we_html_element::jsElement('
@@ -138,29 +130,25 @@ if(!($isObj || $isTempl)){
 	$contentNew = '<iframe name="previewNew" src="' . WEBEDITION_DIR . 'showTempFile.php?file=' . str_replace(WEBEDITION_DIR, '', VERSION_DIR . $fileNew) . '" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>';
 }
 if($isTempl){
-	if($newDoc['documentElements']){
-		$nDocElements = we_unserialize((substr_compare($newDoc['documentElements'], 'a%3A', 0, 4) == 0 ?
-						html_entity_decode(urldecode($newDoc['documentElements']), ENT_QUOTES) :
-						$newDoc['documentElements'])
-		);
-	} else {
-		$nDocElements = array();
-	}
-	$contentNew = '<textarea style="width:99%;height:99%">' . $nDocElements['data']['dat'] . '</textarea>';
+	$nDocElements = ($newDoc['documentElements'] ?
+					we_unserialize((substr_compare($newDoc['documentElements'], 'a%3A', 0, 4) == 0 ?
+									html_entity_decode(urldecode($newDoc['documentElements']), ENT_QUOTES) :
+									$newDoc['documentElements'])
+					) :
+					array());
+	$contentNew = '<textarea style="width:99%;height:99%">' . ($nDocElements ? $nDocElements['data']['dat'] : '') . '</textarea>';
 }
 if(!empty($oldDoc) && !($isObj || $isTempl)){
 	$contentOld = '<iframe name="previewOld" src="' . WEBEDITION_DIR . 'showTempFile.php?file=' . str_replace(WEBEDITION_DIR, '', VERSION_DIR . $fileOld) . '" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>';
 }
 if(!empty($oldDoc) && $isTempl){
-	if($oldDoc['documentElements']){
-		$oDocElements = we_unserialize((substr_compare($oldDoc['documentElements'], 'a%3A', 0, 4) == 0 ?
-						html_entity_decode(urldecode($oldDoc['documentElements']), ENT_QUOTES) :
-						$oldDoc['documentElements'])
-		);
-	} else {
-		$oDocElements = array();
-	}
-	$contentOld = '<textarea style="width:99%;height:99%">' . $oDocElements['data']['dat'] . '</textarea>';
+	$oDocElements = ($oldDoc['documentElements'] ?
+					we_unserialize((substr_compare($oldDoc['documentElements'], 'a%3A', 0, 4) == 0 ?
+									html_entity_decode(urldecode($oldDoc['documentElements']), ENT_QUOTES) :
+									$oldDoc['documentElements'])
+					) :
+					array());
+	$contentOld = '<textarea style="width:99%;height:99%">' . ($oDocElements ? $oDocElements['data']['dat'] : '') . '</textarea>';
 }
 $_versions_time_days = new we_html_select(array(
 	'name' => 'versions_time_days',
@@ -202,43 +190,44 @@ $contentDiff = '<div style="margin-left:25px;" id="top">' . g_l('versions', '[Ve
 		'</tr>';
 
 foreach($newDoc as $k => $v){
-	if(doNotShowFields($k)){
-		$name = g_l('versions', '[' . $k . ']');
+	if(!doNotShowFields($k)){
+		continue;
+	}
+	$name = g_l('versions', '[' . $k . ']');
 
-		$oldVersion = true;
-		$newVal = ($k === "ParentID" ?
-						$newDoc['Path'] :
-						we_versions_version::showValue($k, $newDoc[$k], $newDoc['documentTable'])
-				);
+	$oldVersion = true;
+	$newVal = ($k === "ParentID" ?
+					$newDoc['Path'] :
+					we_versions_version::showValue($k, $newDoc[$k], $newDoc['documentTable'])
+			);
 
-		if($k === "Owners" && $newDoc[$k] == ""){
-			$newVal = g_l('versions', '[CreatorID]');
+	if($k === "Owners" && $newDoc[$k] == ""){
+		$newVal = g_l('versions', '[CreatorID]');
+	}
+
+	$mark = "border-bottom:1px solid #B8B8B7; ";
+	if(!empty($oldDoc)){
+		$oldVal = ($k === "ParentID" ?
+						$oldDoc['Path'] :
+						we_versions_version::showValue($k, $oldDoc[$k], $oldDoc['documentTable']));
+
+		if($k === "Owners" && $oldDoc[$k] == ""){
+			$oldVal = g_l('versions', '[CreatorID]');
 		}
-
-		$mark = "border-bottom:1px solid #B8B8B7; ";
-		if(!empty($oldDoc)){
-			$oldVal = ($k === "ParentID" ?
-							$oldDoc['Path'] :
-							we_versions_version::showValue($k, $oldDoc[$k], $oldDoc['documentTable']));
-
-			if($k === "Owners" && $oldDoc[$k] == ""){
-				$oldVal = g_l('versions', '[CreatorID]');
+		if(doNotMarkFields($k)){
+			if($newVal != $oldVal){
+				$mark .= "background-color:#BFD5FF;";
 			}
-			if(doNotMarkFields($k)){
-				if($newVal != $oldVal){
-					$mark .= "background-color:#BFD5FF;";
-				}
-			}
-		} else {
-			$oldVersion = false;
 		}
+	} else {
+		$oldVersion = false;
+	}
 
-		$contentDiff .= '<tr>
+	$contentDiff .= '<tr>
 <td width="33%" style="' . $mark . '"><strong>' . $name . '</strong></td>
 <td width="33%" style="' . $mark . '">' . $newVal . '</td>' .
-				($oldVersion ? '<td width="33%" style="' . $mark . 'border-left:1px solid #B8B8B7;">' . $oldVal . '</td>' : '') .
-				'</tr>';
-	}
+			($oldVersion ? '<td width="33%" style="' . $mark . 'border-left:1px solid #B8B8B7;">' . $oldVal . '</td>' : '') .
+			'</tr>';
 }
 
 $contentDiff .= '</table>';
@@ -282,7 +271,7 @@ if($newDocElements){
 						(!empty($v['dat']) ? $v['dat'] : '')
 				);
 
-		$mark = "border-bottom:1px solid #B8B8B7; ";
+		$mark = 'border-bottom:1px solid #B8B8B7; ';
 		if($oldDoc){
 
 			if($k === 'weInternVariantElement' && isset($oldDocElements[$k]['dat'])){
@@ -559,25 +548,23 @@ if(empty($newCustomFilter) && empty($oldCustomFilter)){
 }
 
 $contentDiff .= '</table>';
+$_tab_1 = $contentDiff;
 
 if(!$isObj){
-	$_tab_1 = $contentDiff;
 	$_tab_2 = $contentNew;
 	$_tab_3 = $contentOld;
-	$activTab = 1;
 } else {
-	$_tab_1 = $contentDiff;
 	$_tab_2 = "";
 	$_tab_3 = "";
-	$activTab = 1;
 }
 
-echo we_html_tools::getHtmlTop("webEdition - " . g_l('versions', '[versioning]'), ($newDoc['Charset'] ? : DEFAULT_CHARSET)) .
- STYLESHEET;
+echo we_html_tools::getHtmlTop('webEdition - ' . g_l('versions', '[versioning]'), ($newDoc['Charset'] ? : DEFAULT_CHARSET)) .
+ STYLESHEET .
+ we_tabs::getHeader();
 ?>
 
 <script><!--
-	var activ_tab = <?php echo $activTab; ?>;
+	var activ_tab = 1;
 
 	function toggle(id) {
 		var elem = document.getElementById(id);
@@ -587,10 +574,13 @@ echo we_html_tools::getHtmlTop("webEdition - " . g_l('versions', '[versioning]')
 	function previewVersion(ID, newID) {
 		top.opener.top.we_cmd("versions_preview", ID, newID);
 	}
-//-->
+	function setTab(tab) {
+		toggle("tab" + activ_tab);
+		toggle("tab" + tab);
+		activ_tab = tab;
+	}//-->
 </script>
-<?php echo $js; ?>
-<style type="text/css" media="screen">
+<style>
 	td {
 		font-size:11px;
 		vertical-align:top;
@@ -603,27 +593,26 @@ echo we_html_tools::getHtmlTop("webEdition - " . g_l('versions', '[versioning]')
 	#topPrint {
 		display: none;
 	}
-</style>
-
-<style type="text/css" media="print">
-	td {
-		font-size:9px;
-		vertical-align:top;
-		padding: 5px;
-	}
-	#tab1 {
-		position:relative;
-		overflow: visible;
-		font-size:12px;
-	}
-	#tab2,
-	#tab3,
-	#mytabs,
-	#top {
-		display: none
-	}
-	#topPrint {
-		display: block
+	@media print{
+		td {
+			font-size:9px;
+			vertical-align:top;
+			padding: 5px;
+		}
+		#tab1 {
+			position:relative;
+			overflow: visible;
+			font-size:12px;
+		}
+		#tab2,
+		#tab3,
+		#mytabs,
+		#top {
+			display: none
+		}
+		#topPrint {
+			display: block
+		}
 	}
 </style>
 </head>

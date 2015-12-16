@@ -37,7 +37,7 @@ function we_cmd() {
 	//var url = WE().util.getWe_cmdArgsUrl(args);
 
 	if (hot === 1 && args[0] !== "save_workflow") {
-		var hotConfirmMsg = confirm(g_l.save_changed_workflow);
+		var hotConfirmMsg = confirm(WE().consts.g_l.workflow.view.save_changed_workflow);
 		if (hotConfirmMsg === true) {
 			args[0] = "save_workflow";
 			top.content.usetHot();
@@ -61,10 +61,10 @@ function we_cmd() {
 				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else {
 				if (top.content.editor.edbody.loaded) {
-					if (!confirm(g_l.delete_question))
+					if (!confirm(WE().consts.g_l.workflow.view.delete_question))
 						return;
 				} else {
-					top.we_showMessage(g_l.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
+					top.we_showMessage(WE().consts.g_l.workflow.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
 				}
 
 				top.content.editor.edbody.document.we_form.wcmd.value = args[0];
@@ -83,12 +83,12 @@ function we_cmd() {
 					}
 					num = top.content.editor.edbody.getNumOfDocs();
 					if (num > 0) {
-						if (!confirm(g_l.save_question)) {
+						if (!confirm(WE().consts.g_l.workflow.view.save_question)) {
 							return;
 						}
 					}
 				} else {
-					top.we_showMessage(g_l.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, this);
+					top.we_showMessage(WE().consts.g_l.workflow.view.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, this);
 				}
 				top.content.editor.edbody.document.we_form.wcmd.value = args[0];
 				top.content.editor.edbody.submitForm();

@@ -205,7 +205,7 @@ class we_banner_view extends we_modules_view{
 		return '';
 	}
 
-	function getJSTopCode(){
+	function getJSTop(){
 		$mod = we_base_request::_(we_base_request::STRING, 'mod', '');
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
@@ -239,17 +239,15 @@ WE().consts.g_l.banner.view = {
 				$this->page = 0;
 				$this->banner = new we_banner_banner();
 				echo we_html_element::jsElement('
-					top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&page=' . $this->page . '&txt=' . $this->banner->Path . '&isFolder=' . $this->banner->IsFolder . '";
-					top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
-					');
+top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&page=' . $this->page . '&txt=' . $this->banner->Path . '&isFolder=' . $this->banner->IsFolder . '";
+top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');
 				break;
 			case "new_bannergroup":
 				$this->page = 0;
 				$this->banner = new we_banner_banner(0, 1);
 				echo we_html_element::jsElement('
-					top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&page=' . $this->page . '&txt=' . $this->banner->Path . '&isFolder=' . $this->banner->IsFolder . '";
-					top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
-					');
+top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&page=' . $this->page . '&txt=' . $this->banner->Path . '&isFolder=' . $this->banner->IsFolder . '";
+top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');
 				break;
 			case "reload":
 				echo we_html_element::jsElement('

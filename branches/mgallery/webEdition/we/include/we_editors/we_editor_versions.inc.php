@@ -46,8 +46,8 @@ echo we_html_tools::getCalendarFiles() .
 	<form name="we_form" action="" onsubmit="return false;" style="padding:0px;margin:0px;">
 		<?php
 		echo $_view->getHTMLforVersions(array(
-			array("html" => "<div id='searchTable'>" . $_view->getBodyTop() . "</div>"),
-			array("html" => "<div id='parametersTop'>" . $_view->getParameterTop($foundItems) . "</div>" . $_view->tblList($content, $_view->makeHeadLines()) . "<div id='parametersBottom'>" . $_view->getParameterBottom($foundItems) . "</div>")
+			array("html" => "<div id='searchTable'>" . $_view->getBodyTop() . '</div>'),
+			array("html" => "<div id='parametersTop'>" . $_view->getParameterTop($foundItems) . '</div>' . $_view->tblList($content, $_view->makeHeadLines()) . "<div id='parametersBottom'>" . $_view->getParameterBottom($foundItems) . "</div>")
 		)) .
 		we_html_element::htmlHidden("we_complete_request", 1);
 		?>

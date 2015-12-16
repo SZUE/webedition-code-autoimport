@@ -152,7 +152,7 @@ var Base64 = {
 };
 
 function addCss() {
-	jsCss = '<style type="text/css">';
+	jsCss = '<style>';
 	for (i = 1; i <= 10; i++) {
 		jsCss += '.cls_' + i + '_collapse{width:' + oCfg.general_.cls_collapse + 'px;vertical-align:top;}' +
 						'.cls_' + i + '_expand{width:' + oCfg.general_.cls_expand + 'px;vertical-align:top;}';

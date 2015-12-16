@@ -53,7 +53,7 @@ class we_workflow_frames extends we_modules_frame{
 	}
 
 	function getJSCmdCode(){
-		return $this->View->getJSTopCode();
+		return $this->View->getJSTop();
 	}
 
 	protected function getHTMLEditorHeader($mode = 0){

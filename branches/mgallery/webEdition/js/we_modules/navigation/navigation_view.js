@@ -199,3 +199,90 @@ function we_cmd() {
 
 	}
 }
+
+function moveAbs(pos, parent, selector) {
+	top.content.editor.edbody.document.we_form.Ordn.value = pos;
+	top.content.reloadGroup(parent);
+	WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_down", "enabled");
+	WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "enabled");
+
+	if (top.content.editor.edbody.document.we_form.Ordn.value == 0) {
+		WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "disabled");
+	} else {
+		WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "enabled");
+	}
+	top.content.editor.edbody.document.we_form.Position.innerHTML = selector;
+}
+
+function moveUp(pos, parent, selector) {
+	top.content.editor.edbody.document.we_form.Ordn.value = pos;
+	top.content.reloadGroup(parent);
+	WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_down", "enabled");
+	WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "enabled");
+
+	if (top.content.editor.edbody.document.we_form.Ordn.value == 1) {
+		WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "disabled");
+	} else {
+		WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "enabled");
+	}
+	top.content.editor.edbody.document.we_form.Position.innerHTML = selector;
+}
+
+function moveDown(pos, parent, selector, max) {
+	top.content.editor.edbody.document.we_form.Ordn.value = pos;
+	top.content.reloadGroup(parent);
+	WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_down", "enabled");
+	WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "enabled");
+	if (top.content.editor.edbody.document.we_form.Ordn.value >= max) {
+		WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_down", "disabled");
+	} else {
+		WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_down", "enabled");
+	}
+	top.content.editor.edbody.document.we_form.Position.innerHTML = selector;
+}
+
+function populateFolderWs(type, prefix) {
+	switch (type) {
+		case 'values':
+			top.content.editor.edbody.setVisible("objLinkFolderWorkspace", true);
+			top.content.editor.edbody.document.we_form.FolderWsID.options.length = 0;
+			return;
+		case 'workspace':
+			top.content.editor.edbody.document.we_form.FolderWsID.options.length = 0;
+			top.content.editor.edbody.document.we_form.FolderWsID.options[top.content.editor.edbody.document.we_form.FolderWsID.options.length] = new Option("/", 0);
+			top.content.editor.edbody.document.we_form.FolderWsID.selectedIndex = 0;
+			top.content.editor.edbody.setVisible("objLinkFolderWorkspace", true);
+			return;
+		case 'noWorkspace':
+			top.content.editor.edbody.setVisible("objLinkFolderWorkspace" + prefix, false);
+			top.content.editor.edbody.document.we_form.FolderWsID.options.length = 0;
+			top.content.editor.edbody.document.we_form.FolderWsID.options[top.content.editor.edbody.document.we_form.FolderWsID.options.length] = new Option("-1", -1);
+			top.content.editor.edbody.document.we_form.LinkID.value = "";
+			top.content.editor.edbody.document.we_form.LinkPath.value = "";
+			WE().util.showMessage(WE().consts.g_l.navigation.view.no_workspace, WE().consts.message.WE_MESSAGE_ERROR, this);
+			return;
+	}
+}
+
+function populateWorkspaces(type, prefix) {
+	switch (type) {
+		case 'values':
+			top.content.editor.edbody.setVisible("objLinkWorkspace" + prefix, true);
+			top.content.editor.edbody.document.we_form["WorkspaceID" + prefix].options.length = 0;
+			return;
+		case 'workspace':
+			top.content.editor.edbody.document.we_form["WorkspaceID" + prefix].options.length = 0;
+			top.content.editor.edbody.document.we_form["WorkspaceID" + prefix ].options[top.content.editor.edbody.document.we_form["WorkspaceID" + prefix].options.length] = new Option("/", 0);
+			top.content.editor.edbody.document.we_form["WorkspaceID" + prefix ].selectedIndex = 0;
+			//top.content.editor.edbody.setVisible("objLinkWorkspace"+prefix ,false);
+			return;
+		case 'noWorkspace':
+			top.content.editor.edbody.setVisible("objLinkWorkspace" + prefix, false);
+			top.content.editor.edbody.document.we_form["WorkspaceID" + prefix].options.length = 0;
+			top.content.editor.edbody.document.we_form["WorkspaceID" + prefix].options[top.content.editor.edbody.document.we_form["WorkspaceID" + prefix].options.length] = new Option("-1", -1);
+			top.content.editor.edbody.document.we_form.LinkID.value = "";
+			top.content.editor.edbody.document.we_form.LinkPath.value = "";
+			WE().util.showMessage(WE().consts.g_l.navigation.view.no_workspace, WE().consts.message.WE_MESSAGE_ERROR, this);
+			return;
+	}
+}

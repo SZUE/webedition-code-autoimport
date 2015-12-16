@@ -153,3 +153,27 @@ function we_cmd() {
 			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }
+
+function populateWorkspaces(type) {
+	switch (type) {
+		case 'values':
+			top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectWorkspaceID]'].options.length = 0;
+			top.content.editor.edbody.setDisplay("ObjectWorkspaceID", "block");
+			return;
+		case 'workspace':
+			top.content.editor.edbody.setDisplay("ObjectWorkspaceID", "block");
+			top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectWorkspaceID]'].options.length = 0;
+			top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectWorkspaceID]'].options[top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectWorkspaceID]'].options.length] = new Option("/", 0);
+			top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectWorkspaceID]'].selectedIndex = 0;
+			return;
+		case 'noWorkspace':
+			top.content.editor.edbody.setDisplay("ObjectWorkspaceID", "none");
+			top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectWorkspaceID]'].options.length = 0;
+			top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectWorkspaceID]'].options[top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectWorkspaceID]'].options.length] = new Option("-1", -1);
+			top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectLinkID]'].value = "";
+			top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectLinkPath]'].value = "";
+			WE().util.showMessage(WE().consts.g_l.glossary.view.no_workspace, WE().consts.message.WE_MESSAGE_ERROR, this);
+			return;
+	}
+
+}

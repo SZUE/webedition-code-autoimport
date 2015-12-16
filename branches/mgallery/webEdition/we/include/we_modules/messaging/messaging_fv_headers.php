@@ -37,7 +37,7 @@ echo we_html_tools::getHtmlTop() .
 $si = we_base_request::_(we_base_request::STRING, "si");
 $so = we_base_request::_(we_base_request::STRING, 'so');
 ?>
-<style type="text/css">
+<style>
 	.defaultfont a {
 		color:black;
 		text-decoration:none

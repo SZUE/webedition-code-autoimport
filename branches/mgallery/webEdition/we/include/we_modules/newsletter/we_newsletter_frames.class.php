@@ -118,7 +118,7 @@ class we_newsletter_frames extends we_modules_frame{
 	}
 
 	function getJSCmdCode(){
-		echo $this->View->getJSTopCode();
+		echo $this->View->getJSTop();
 	}
 
 	/**
