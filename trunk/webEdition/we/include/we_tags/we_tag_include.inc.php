@@ -159,8 +159,16 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 		$tmp = getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND Published>0', null);
 		$realPath = $tmp ? $tmp['Path'] : '';
 		$ct = $tmp ? $tmp['ContentType'] : '';
-		if($ct !== we_base_ContentTypes::WEDOCUMENT){
-			return '';
+		switch($ct){
+			case we_base_ContentTypes::WEDOCUMENT:
+			case we_base_ContentTypes::JS:
+			case we_base_ContentTypes::CSS:
+			case we_base_ContentTypes::HTML:
+			case we_base_ContentTypes::TEXT:
+			case we_base_ContentTypes::XML:
+				break;
+			default:
+				return '';
 		}
 	} else {
 		$realPath = $path;
