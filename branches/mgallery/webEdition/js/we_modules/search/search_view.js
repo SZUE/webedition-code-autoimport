@@ -1,3 +1,5 @@
+/* global WE, top */
+
 /**
  * webEdition SDK
  *
@@ -101,7 +103,7 @@ weSearch = {
 		btnNext[0].disabled = btnNext[1].disabled = dataElem.getAttribute('data-disablenext') === 'true' ? true: false;
 
 		for(i = 0; i < 2; i++){
-			selPages[i].innerHTML = ''
+			selPages[i].innerHTML = '';
 			for(j = 0; j < selPagesVals.length; j++){
 				opt = document.createElement("option");
 				opt.text = selPagesTexts[j];
@@ -221,7 +223,7 @@ weSearch = {
 			case WE().consts.weSearch.SEARCH_TMPL:
 				for (i = 0; i < this.conf.editorBodyFrame.document.we_form.elements.length; i++) {
 					table = this.conf.editorBodyFrame.document.we_form.elements[i].name;
-					if (table == 'searchForText' + this.conf.whichsearch || table === 'searchForContent' + this.conf.whichsearch) {
+					if (table === 'searchForText' + this.conf.whichsearch || table === 'searchForContent' + this.conf.whichsearch) {
 						if (encodeURI(this.conf.editorBodyFrame.document.we_form.elements[i].value) == 1) {
 							Checks[m] = encodeURI(this.conf.editorBodyFrame.document.we_form.elements[i].value);
 							m++;
@@ -439,7 +441,7 @@ if ((scrollContent.offsetHeight - scrollheight) > 0) {
 			//c = elem.rows.length - 1,
 			scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch),
 			newRow, cell;
-	
+
 		scrollContent.style.height = scrollContent.offsetHeight - 26 + "px";
 		this.conf.rows++;
 
@@ -562,7 +564,7 @@ if ((scrollContent.offsetHeight - scrollheight) > 0) {
 	delRow: function (id) {
 		var scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch),
 			elem = document.getElementById('filterTable' + this.conf.whichsearch);
-	
+
 		if(this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST){
 			scrollContent.style.height = scrollContent.offsetHeight + 26 + "px";
 		}

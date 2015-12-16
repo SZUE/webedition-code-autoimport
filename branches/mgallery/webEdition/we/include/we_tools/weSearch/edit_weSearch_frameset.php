@@ -32,3 +32,5 @@ $what = we_base_request::_(we_base_request::STRING, "pnt", "frameset");
 $weFrame = new we_search_frames();
 $weFrame->process();
 echo $weFrame->getHTML($what);
+
+//FIXME: check to replace this by we_showMod.php
