@@ -73,17 +73,14 @@ class we_search_frames extends we_tool_frames{
 	}
 
 	function getHTMLFrameset($extraUrlParams = ''){
-
 		return parent::getHTMLFrameset(($tab = we_base_request::_(we_base_request::INT, 'tab')) ? '&tab=' . $tab : '');
 	}
 
 	protected function getHTMLEditor($extraUrlParams = '', $extraHead = ''){
-
 		return parent::getHTMLEditor(($tab = we_base_request::_(we_base_request::INT, 'tab')) ? '&tab=' . $tab : '');
 	}
 
 	protected function getHTMLEditorHeader(){
-
 		$we_tabs = new we_tabs();
 
 		//folders and entries have different tabs to display
