@@ -34,8 +34,8 @@ class rpcGetSearchResultCmd extends rpcCmd{
 		$GLOBALS['we_cmd_obj'] = 1;
 		$view = new we_versions_view();
 		$content = $view->getVersionsOfDoc();
-		$sview = new we_search_view();
-		$code = $sview->tabListContent($searchstart, $anzahl, $content);
+		//$sview = new we_search_view();
+		$code = $view->tabListContent($searchstart, $anzahl, $content);
 
 		$resp->setData("data", $code);
 

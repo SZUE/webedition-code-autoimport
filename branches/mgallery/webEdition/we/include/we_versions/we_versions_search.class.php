@@ -48,17 +48,50 @@ class we_versions_search{
 	 * @abstract initialize data from $REQUEST
 	 */
 	function initData(){
-		$this->mode = we_base_request::_(we_base_request::INT, "mode", $this->mode);
-		$this->order = we_base_request::_(we_base_request::STRING, "order", $this->order);
-		$this->anzahl = we_base_request::_(we_base_request::INT, "anzahl", $this->anzahl);
-		if(($sf = we_base_request::_(we_base_request::STRING, "searchFields"))){
-			$this->searchFields = $sf;
-			$this->height = count($this->searchFields);
-		} elseif(we_base_request::_(we_base_request::INT, "searchstart") !== false){
-			$this->height = 0;
+		if(isset($_REQUEST['searchstart'])){
+			$this->mode = we_base_request::_(we_base_request::INT, "mode", $this->mode);
+			$this->order = we_base_request::_(we_base_request::STRING, "order", $this->order);
+			$this->anzahl = we_base_request::_(we_base_request::INT, "anzahl", $this->anzahl);
+			if(($sf = we_base_request::_(we_base_request::STRING, "searchFields"))){
+				$this->searchFields = $sf;
+				$this->height = count($this->searchFields);
+			} elseif(we_base_request::_(we_base_request::INT, "searchstart") !== false){
+				$this->height = 0;
+			}
+			$this->location = we_base_request::_(we_base_request::STRING, "location", $this->location);
+			$this->search = we_base_request::_(we_base_request::STRING, "search", $this->search);
+		} else {
+			if(isset($_REQUEST['we_cmd']['searchstart'])){
+				$request = we_base_request::_(we_base_request::STRING, 'we_cmd');
+				foreach($request as $k => $v){
+					if(stristr($k, 'searchFields[') && !stristr($k, 'hidden_')){
+						$_REQUEST['we_cmd']['searchFields'][] = $v;
+						continue;
+					}
+					if(stristr($k, 'location[')){
+						$_REQUEST['we_cmd']['location'][] = $v;
+						continue;
+					}
+					if(stristr($k, 'search[')){
+						$_REQUEST['we_cmd']['search'][] = $v;
+					}
+				}
+
+				//$this->mode = we_base_request::_(we_base_request::STRING, 'we_cmd', $this->mode, 'mode');
+				$this->Order = we_base_request::_(we_base_request::STRING, 'we_cmd', $this->order, 'Order');
+				$this->searchstart = we_base_request::_(we_base_request::INT, 'we_cmd', $this->searchstart, 'searchstart');
+				$this->anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', $this->anzahl, 'anzahl');
+				if(($sf = we_base_request::_(we_base_request::STRING, 'we_cmd', array(), 'searchFields'))){
+					$this->searchFields = $sf;
+					$this->height = count($this->searchFields);
+				} elseif(we_base_request::_(we_base_request::INT, 'we_cmd', false, 'searchstart') !== false){
+					$this->height = 0;
+				}
+				$this->searchFields = we_base_request::_(we_base_request::STRING, 'we_cmd', array(), 'searchFields');
+				$this->search = array_map('trim', we_base_request::_(we_base_request::STRING, 'we_cmd', $this->location, 'search'));
+				$this->location = we_base_request::_(we_base_request::STRING, 'we_cmd', $this->location, 'location');
+			}
 		}
-		$this->location = we_base_request::_(we_base_request::STRING, "location", $this->location);
-		$this->search = we_base_request::_(we_base_request::STRING, "search", $this->search);
 	}
 
 	/**
@@ -70,6 +103,7 @@ class we_versions_search{
 		$modConst = array();
 
 		if(($this->mode) || we_base_request::_(we_base_request::INT, 'we_cmd', 0, "mode")){
+			/*
 			$_REQUEST['searchFields'] = array();
 			foreach(we_base_request::_(we_base_request::STRING, 'we_cmd') as $k => $v){//FIXME: this must be rewritten to real arrays
 				if(stristr($k, 'searchFields[')){
@@ -82,21 +116,23 @@ class we_versions_search{
 					$_REQUEST['search'][] = $v;
 				}
 			}
+			 * 
+			 */
 			if(isset($_REQUEST['searchFields'])){
 				foreach($_REQUEST['searchFields'] as $k => $v){
 					switch($v){
 						case "modifierID":
-							if(isset($_REQUEST['search'][$k])){
-								$where .= ' AND ' . $v . '="' . escape_sql_query($_REQUEST['search'][$k]) . '"';
+							if(isset($this->search[$k])){
+								$where .= ' AND ' . $v . '="' . escape_sql_query($this->search[$k]) . '"';
 							}
 							break;
 						case "status":
-							if(isset($_REQUEST['search'][$k])){
-								$where .= ' AND ' . $v . '="' . escape_sql_query($_REQUEST['search'][$k]) . '"';
+							if(isset($this->search[$k])){
+								$where .= ' AND ' . $v . '="' . escape_sql_query($this->search[$k]) . '"';
 							}
 							break;
 						case "timestamp":
-							if(($loc = we_base_request::_(we_base_request::STRING, 'location', '', $k)) && ($search = we_base_request::_(we_base_request::STRING, 'search', '', $k))){
+							if(($loc = $this->location) && ($search = $this->search)){
 
 								$date = explode('.', $search);
 								$day = $date[0];
@@ -125,7 +161,7 @@ class we_versions_search{
 							}
 							break;
 						case 'allModsIn':
-							if(($search = we_base_request::_(we_base_request::STRING, 'search', false, $k)) !== false){
+							if(($search = $this->search)){
 								$modConst[] = $this->version->modFields[$search]['const'];
 							}
 							break;
