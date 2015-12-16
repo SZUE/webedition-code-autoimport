@@ -489,7 +489,7 @@ class we_navigation_navigation extends weModelBase{
 		return $_items;
 	}
 
-	function getDynamicChilds(){
+	private function getDynamicChilds(){
 		$this->db->query('SELECT ID,Ordn FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND IsFolder=0 AND Depended=1 ORDER BY Ordn;');
 		return $this->db->getAll();
 	}
@@ -535,8 +535,8 @@ class we_navigation_navigation extends weModelBase{
 
 	function depopulateGroup(){
 		$_items = $this->getDynamicChilds();
-		foreach($_items as $_id){
-			$_navigation = new we_navigation_navigation($_id['ID']);
+		foreach($_items as $id){
+			$_navigation = new we_navigation_navigation($id['ID']);
 			if($_navigation->delete()){
 
 			}
@@ -545,24 +545,21 @@ class we_navigation_navigation extends weModelBase{
 	}
 
 	function hasDynChilds(){
-		if(!$this->ID){
-			return false;
-		}
-		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=1 LIMIT 1', '', $this->db);
+		return ($this->ID ?
+						f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=1 LIMIT 1', '', $this->db) :
+						false);
 	}
 
 	function hasAnyChilds(){
-		if(!$this->ID){
-			return false;
-		}
-		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' LIMIT 1', '', $this->db);
+		return ($this->ID ?
+						f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' LIMIT 1', '', $this->db) :
+						false);
 	}
 
 	function hasIndependentChilds(){
-		if(!$this->ID){
-			return false;
-		}
-		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=0 LIMIT 1', '', $this->db);
+		return ($this->ID ?
+						f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=0 LIMIT 1', '', $this->db) :
+						false);
 	}
 
 	function getDynamicPreview(array &$storage, $rules = false){
@@ -809,7 +806,7 @@ class we_navigation_navigation extends weModelBase{
 
 					$_path = isset($storage[$_id]) ? $storage[$_id] : id_to_path($_id, FILE_TABLE);
 					$_path = ($_path === '/' ? '' : $_path);
-					if(NAVIGATION_OBJECTSEOURLS && isset($objecturl) && $objecturl != ''){
+					if(NAVIGATION_OBJECTSEOURLS && !empty($objecturl)){
 						$path_parts = pathinfo($_path);
 						$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . (
 							(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))) ?
