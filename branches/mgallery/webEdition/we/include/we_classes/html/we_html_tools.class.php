@@ -754,18 +754,27 @@ this.selectedIndex = 0;' .
 	 */
 
 	static function htmlAlertAttentionBox($text, $type = self::TYPE_NONE, $width = 0, $useHtmlSpecialChars = true, $clip = 0){
+		if($width === false){
+			$class = 'infobox';
+			$title = 'title="' . $text . '"';
+		} else {
+			$title = $class = '';
+		}
 		switch($type){
 			case self::TYPE_ALERT:
-				$icon = '<img src="' . IMAGE_DIR . 'alert_small.gif" width="20" height="22" />';
+				$icon = '<span class="' . $class . '" ' . $title . '><img src="' . IMAGE_DIR . 'alert_small.gif" width="20" height="22" /></span>';
 				break;
 			case self::TYPE_INFO:
-				$icon = '<span class="fa-stack fa-lg" style="font-size: 14px;color:#007de3;"><i class="fa fa-circle fa-stack-2x" ></i><i class="fa fa-info fa-stack-1x fa-inverse"></i></span>';
+				$icon = '<span class="fa-stack fa-lg ' . $class . '" ' . $title . ' style="font-size: 14px;color:#007de3;"><i class="fa fa-circle fa-stack-2x" ></i><i class="fa fa-info fa-stack-1x fa-inverse"></i></span>';
 				break;
 			case self::TYPE_QUESTION:
-				$icon = '<span class="fa-stack fa-lg" style="font-size: 14px;color:yellow;"><i class="fa fa-circle fa-stack-2x" ></i><i style="color:black" class="fa fa-question fa-stack-1x"></i></span>';
+				$icon = '<span class="fa-stack fa-lg ' . $class . '" ' . $title . ' style="font-size: 14px;color:yellow;"><i class="fa fa-circle fa-stack-2x" ></i><i style="color:black" class="fa fa-question fa-stack-1x"></i></span>';
 				break;
 			default :
 				$icon = '';
+		}
+		if($width === false){
+			return $icon;
 		}
 
 		$text = ($useHtmlSpecialChars) ? oldHtmlspecialchars($text, ENT_COMPAT, 'ISO-8859-1', false) : $text;
