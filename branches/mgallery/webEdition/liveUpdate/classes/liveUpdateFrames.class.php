@@ -242,7 +242,6 @@ class liveUpdateFrames{
 	 * @return string
 	 */
 	function htmlFrameset(){
-
 		$activeTab = liveUpdateFrames::getValidTab($this->Data['activeTab']);
 
 		$show = "?section=$activeTab";
