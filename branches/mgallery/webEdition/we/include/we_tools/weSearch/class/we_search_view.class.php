@@ -524,7 +524,7 @@ WE().consts.weSearch= {
  <td>' . we_html_tools::hidden($searchTables, 1) . '</td>
  <td></td>
 </tr>' . ( $whichSearch == self::SEARCH_MEDIA ?
-						'<tr><td colspan="5">' . we_html_tools::htmlAlertAttentionBox("Ohne Suchbegriff werden alle Medien-Dokumente ausgegeben.", we_html_tools::TYPE_INFO, 380) . '</td></tr>' :
+						'<tr><td colspan="5">' . we_html_tools::htmlAlertAttentionBox("Ohne Suchbegriff werden alle Medien-Dokumente ausgegeben.", we_html_tools::TYPE_INFO, false) . '</td></tr>' :
 						'') . '
 </tbody></table>';
 	}

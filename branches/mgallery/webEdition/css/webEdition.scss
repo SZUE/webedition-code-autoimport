@@ -51,7 +51,7 @@ select,
 input,
 textarea{
 	//Fix fonts in these fields
-font:inherit;
+	font:inherit;
 }
 
 b,
@@ -67,6 +67,28 @@ select.defaultfont{
 	}
 }
 
+span.infobox{
+	span {
+		visibility:hidden;
+		position:absolute;
+		left:-99em;
+		margin-top:0px;
+		padding: 0.4em;
+		text-decoration:none;
+		width: 20em;
+		z-index: 100;
+		background: black;
+		border: 1px solid #CC3300;
+		color: white;
+		font-size: $medfont;
+		line-height: 1em;
+	}
+	&:hover span {
+		display: block;
+		left: 3em;
+		visibility: visible;
+	}
+}
 i{
 	&.fa-ban{
 		color:red;
