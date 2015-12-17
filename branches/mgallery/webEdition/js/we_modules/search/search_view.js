@@ -78,6 +78,9 @@ weSearch = {
 	rolloverElem: null,
 	init: function () {
 		if (weSearch.conf.editorBodyFrame.document.readyState === "complete") {
+			weSearch.conf.editorBodyFrame.document.getElementById('mouseOverDivs_' + weSearch.conf.whichsearch).innerHTML = weSearch.conf.editorBodyFrame.document.getElementById('movethemaway').innerHTML;
+			weSearch.conf.editorBodyFrame.document.getElementById('movethemaway').innerHTML = '';
+
 			weSearch.sizeScrollContent();
 			document.addEventListener('mousemove', weSearch.updateElem, false);
 			WE().util.setIconOfDocClass(document, 'resultIcon');
@@ -132,9 +135,9 @@ weSearch = {
 					//weSearch.makeAjaxRequestParametersBottom();
 				}
 
-				// FIXME: any need to move mouseover divs to another place?
-				//weSearch.conf.editorBodyFrame.document.getElementById('mouseOverDivs_' + weSearch.conf.whichsearch).innerHTML = weSearch.conf.editorBodyFrame.document.getElementById('movethemaway').innerHTML;
-				//weSearch.conf.editorBodyFrame.document.getElementById('movethemaway').innerHTML = '';
+				// IMPORTANT: we must move mouseoverdivs because of scrolling. FIXME: use display:none to avoid this
+				weSearch.conf.editorBodyFrame.document.getElementById('mouseOverDivs_' + weSearch.conf.whichsearch).innerHTML = weSearch.conf.editorBodyFrame.document.getElementById('movethemaway').innerHTML;
+				weSearch.conf.editorBodyFrame.document.getElementById('movethemaway').innerHTML = '';
 
 			}
 		},
@@ -392,57 +395,29 @@ weSearch = {
 				scrollContent.style.height = (scrollContent.offsetHeight - scrollheight) + "px";
 			}
 		} else {
+			var frameH = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
+			var scrollheight;
+			var h = 0;
+			var scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch);
 
-			// FIXME: make sizeScrollContent for search
-			//scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch),
+			switch (this.conf.whichsearch) {
+				case WE().consts.weSearch.SEARCH_DOCS:
+				case WE().consts.weSearch.SEARCH_TMPL:
+					top.console.log('found');
+					h = frameH - 324;
+					break;
+				case WE().consts.weSearch.SEARCH_MEDIA:
+					var rows = (document.getElementById('filterTableMediaSearch').rows.length - 1);
+					h = Math.max(300, (frameH - (534 + (rows*32)))); 
+					break;
+				case WE().consts.weSearch.SEARCH_ADV:
+					var rows = (document.getElementById('filterTableAdvSearch').rows.length - 1);
+					h = frameH - (290 + (rows*32)); 
+					break;
 
-/*
-			if (!this.conf.modelIsFolder) {
-				return;
 			}
-
-			if (this.conf.editorBodyFrame.loaded) {
-				var scrollheight;
-				if (this.conf.whichsearch === WE().consts.weSearch.SEARCH_ADV) {
-					scrollheight = 140;
-				} else {
-					scrollheight = 170;
-				}
-*/
-	/*
-
-	#####
-	var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
-	var scrollContent = document.getElementById('scrollContent_DoclistSearch');
-
-	var height = 180; // maybe IE needs 200?
-	if ((h - height) > 0) {
-		scrollContent.style.height = (h - height) + "px";
-	}
-	if ((scrollContent.offsetHeight - scrollheight) > 0) {
-		scrollContent.style.height = (scrollContent.offsetHeight - scrollheight) + "px";
-	}
-	*/
-/*
-				var elem = document.getElementById('filterTable' + this.conf.whichsearch),
-					//newID = elem.rows.length - 1,
-					h = window.innerHeight ? window.innerHeight : document.body.offsetHeight,
-					scrollContent = document.getElementById("scrollContent_' + whichSearch + '"),
-					heightDiv = 180;
-
-				if ((h - heightDiv) > 0) {
-					scrollContent.style.height = (h - heightDiv) + 'px';
-				}
-
-				if ((scrollContent.offsetHeight - scrollheight) > 0) {
-					scrollContent.style.height = (scrollContent.offsetHeight - scrollheight) + 'px';
-				}
-			} else {
-				setTimeout(this.sizeScrollContent, 1000);
-			}
-*/
+			scrollContent.style.height = h + 'px';
 		}
-
 	},
 	newinput: function () {
 		var elem = document.getElementById('filterTable' + this.conf.whichsearch),
@@ -450,7 +425,6 @@ weSearch = {
 			scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch),
 			newRow, cell;
 
-		scrollContent.style.height = scrollContent.offsetHeight - 26 + "px";
 		this.conf.rows++;
 
 		if (elem) {
@@ -467,6 +441,7 @@ weSearch = {
 			newRow.appendChild(this.getCell('hiddenLocation_empty', this.conf.rows));
 
 			elem.appendChild(newRow);
+			this.sizeScrollContent();
 		}
 	},
 	newinpuMediaSearch: function () {
@@ -573,10 +548,6 @@ weSearch = {
 		var scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch),
 			elem = document.getElementById('filterTable' + this.conf.whichsearch);
 
-		if(this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST){
-			scrollContent.style.height = scrollContent.offsetHeight + 26 + "px";
-		}
-
 		if (elem) {
 			var trows = elem.rows,
 							rowID = 'filterRow_' + id;
@@ -587,6 +558,7 @@ weSearch = {
 				}
 			}
 		}
+		this.sizeScrollContent();
 	},
 	changeit: function (value, rowNr) {
 		setTimeout(function () {
