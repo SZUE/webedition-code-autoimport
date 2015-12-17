@@ -56,7 +56,7 @@ abstract class we_versions_wizard{
 		$WE_PB->addText("", 0, "pb1");
 		$pb = $WE_PB->getHTML();
 		$js = $WE_PB->getJSCode() .
-				we_html_element::jsElement('function showRefreshButton() {  prevBut = document.getElementById(\'prev\');  nextBut = document.getElementById(\'nextCell\');  refrBut = document.getElementById(\'refresh\');  prevBut.style.display = \'none\';  nextBut.style.display = \'none\';  refrBut.style.display = \'\';} function showPrevNextButton() {  prevBut = document.getElementById(\'prev\');  nextBut = document.getElementById(\'next\');  refrBut = document.getElementById(\'refresh\');  refrBut.style.display = \'none\';  prevBut.style.display = \'\';  nextBut.style.display = \'\';}');
+				we_html_element::jsScript(JS_DIR.'nextButtons.js');
 
 		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
 		$refreshButton = we_html_button::create_button(we_html_button::REFRESH, "javascript:parent.wizcmd.location.reload();", true, 0, 0, "", "", false, false);
@@ -76,7 +76,7 @@ abstract class we_versions_wizard{
 			$nextButton = we_html_button::create_button(we_html_button::NEXT, "javascript:parent.wizbody.handle_event('next');", true, 0, 0, "", "", $nextbutdisabled, false);
 
 			$content2 = we_html_element::htmlSpan(array("id" => "prev", "style" => "padding-left:10px;text-align:right"), $prevButton) .
-					we_html_element::htmlSpan(array("id" => "nextCell", "style" => "padding-left:10px;text-align:right"), $nextButton) .
+					we_html_element::htmlSpan(array("id" => "next", "style" => "padding-left:10px;text-align:right"), $nextButton) .
 					we_html_element::htmlSpan(array("id" => "refresh", "style" => "display:none; padding-left:10px;text-align:right"), $refreshButton) .
 					we_html_element::htmlSpan(array("id" => "cancel", "style" => "padding-left:10px;text-align:right"), $cancelButton);
 
@@ -421,7 +421,7 @@ function set_button_state(alldis) {
 							top.wizbusy.showRefreshButton();
 		}else{
 							top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "next", "enabled");
-							var nextBut = top.wizbusy.document.getElementById(\'nextCell\');
+							var nextBut = top.wizbusy.document.getElementById(\'next\');
 				nextBut.innerHTML = \'' . $nextButton . '\';
 		}
 	}else{
@@ -662,7 +662,7 @@ set_button_state(false);';
 							top.wizbusy.showRefreshButton();
 						}else{
 							top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "next", "enabled");
-							var nextBut = top.wizbusy.document.getElementById("nextCell");
+							var nextBut = top.wizbusy.document.getElementById("next");
 				  			nextBut.innerHTML = \'' . $nextButton . '\';
 						}
 					}else{
@@ -1179,7 +1179,7 @@ function set_button_state(alldis) {
 							top.wizbusy.showRefreshButton();
 		}else{
 							top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "next", "enabled");
-							var nextBut = top.wizbusy.document.getElementById(\'nextCell\');
+							var nextBut = top.wizbusy.document.getElementById(\'next\');
 				nextBut.innerHTML = \'' . $nextButton . '\';
 		}
 	}else{

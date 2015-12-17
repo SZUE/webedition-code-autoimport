@@ -107,7 +107,7 @@ class we_fragment_base{
 		} else {
 			$this->taskPerFragment = $taskPerFragment;
 			$this->init();
-			if(!we_base_file::save($filename, we_serialize($this->alldata,'json'))){
+			if(!we_base_file::save($filename, we_serialize($this->alldata, 'json'))){
 				exit('Could not write: ' . $filename);
 			}
 		}
@@ -212,7 +212,7 @@ class we_fragment_base{
 	 *
 	 */
 	static function printHeader(){
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '',' ');
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', ' ');
 	}
 
 	/**
