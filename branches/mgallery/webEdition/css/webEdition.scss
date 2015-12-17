@@ -68,6 +68,8 @@ select.defaultfont{
 }
 
 span.infobox{
+	padding: 0px 1ex;
+	cursor:help;
 	span {
 		visibility:hidden;
 		position:absolute;
@@ -75,13 +77,14 @@ span.infobox{
 		margin-top:0px;
 		padding: 0.4em;
 		text-decoration:none;
-		width: 20em;
+		min-width: 20em;
+		max-width: 30em;
 		z-index: 100;
 		background: black;
 		border: 1px solid #CC3300;
 		color: white;
 		font-size: $medfont;
-		line-height: 1em;
+		line-height: 1.2em;
 	}
 	&:hover span {
 		display: block;
