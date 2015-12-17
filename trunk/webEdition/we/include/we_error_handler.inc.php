@@ -411,7 +411,7 @@ function error_showDevice($type, $message, $file, $line, $skip = false){
 	}
 
 	// Mail error?
-	if(isset($GLOBALS['we']['errorhandler']) && isset($GLOBALS['we']['errorhandler']['send']) && $GLOBALS['we']['errorhandler']['send']){
+	if(isset($GLOBALS['we']['errorhandler']) && !empty($GLOBALS['we']['errorhandler']['send'])){
 		mail_error_message($type, $message, $file, $line, $skip, isset($insertID) ? $insertID : false);
 	}
 }
@@ -459,8 +459,7 @@ function error_handler($type, $message, $file, $line, $context){
 			}
 
 			// Stop execution
-			die();
-			break;
+			return false;
 		case (defined('E_DEPRECATED') ? E_DEPRECATED : 8192):
 		case (defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : 16384):
 			if(defined('WE_ERROR_DEPRECATED') && (WE_ERROR_DEPRECATED == 1)){
