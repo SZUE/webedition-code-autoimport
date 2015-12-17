@@ -662,12 +662,12 @@ WE().consts.weSearch= {
 
 				$_result[$f]['size'] = file_exists($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) : 0;
 				$_result[$f]['fileSize'] = we_base_file::getHumanFileSize($_result[$f]['size']);
-				$iconHTML = $this->getHtmlIconThmubnail($_result[$f], 64, 140, ($this->rpcCmd === 'GetSearchResult'));
+				$iconHTML = $this->getHtmlIconThmubnail($_result[$f], 64, 140, $view, $whichSearch);
 				$standardStyle = 'height:12px;padding-top:6px;font-size:11px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;';
 				$content[] = $whichSearch !== self::SEARCH_MEDIA ?
 						array(
 					array("dat" => $actionCheckbox),
-					array("dat" => $iconHTML['imageView']),
+					array("dat" => '<span class="iconListview">' . $iconHTML['imageView'] . '</span>'),
 					array("dat" => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . ' (ID: ' . $_result[$f]['docID'] . ')"><u>' . $_result[$f]["Text"]),
 					array("dat" => ($whichSearch === 'TmplSearch' ? str_replace('/' . $_result[$f]["Text"], '', $_result[$f]["Path"]) : $_result[$f]["SiteTitle"])),
 					array("dat" => isset($_result[$f]["VersionID"]) && $_result[$f]['VersionID'] ?
@@ -693,7 +693,7 @@ WE().consts.weSearch= {
 								)
 							)
 						)),
-					array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'vertical-align:top;"', 'dat' => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . '">' . $iconHTML['imageView']),
+					array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'vertical-align:top;"', 'dat' => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . '"><span class="iconListview">' . $iconHTML['imageView'] . '</span>'),
 					array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'vertical-align:top;"', 'dat' => array(
 							array('elem' => 'table', '' => '', 'dat' => array(
 									array('elem' => 'row', 'dat' => array(
@@ -727,7 +727,7 @@ WE().consts.weSearch= {
 			} else {
 				$_result[$f]['size'] = file_exists($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]) : 0;
 				$_result[$f]['fileSize'] = we_base_file::getHumanFileSize($_result[$f]['size']);
-				$iconHTML = $this->getHtmlIconThmubnail($_result[$f], 64, $whichSearch === self::SEARCH_MEDIA ? 180 : 140, ($this->rpcCmd === 'GetSearchResult' && $whichSearch !== self::SEARCH_MEDIA));
+				$iconHTML = $this->getHtmlIconThmubnail($_result[$f], 64, $whichSearch === self::SEARCH_MEDIA ? 180 : 140, $view, $whichSearch);
 				$creator = $_result[$f]["CreatorID"] ? id_to_path($_result[$f]["CreatorID"], USER_TABLE, $DB_WE) : g_l('searchtool', '[nobody]');
 
 				if($_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT && $_result[$f]["Table"] != VERSIONS_TABLE){
@@ -762,12 +762,12 @@ WE().consts.weSearch= {
 				}
 
 				$content[] = array(
-					array("dat" => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $_result[$f]["Text"] . '">' . $iconHTML['imageView'] . '</a>'),
+					array("dat" => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $_result[$f]["Text"] . '"><span class="iconGridview">' . $iconHTML['imageViewPopup'] . '<span></a>'),
 					array("dat" => we_base_util::shortenPath($_result[$f]["SiteTitle"], 17)),
 					array("dat" => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . ' middlefont" title="' . ($whichSearch === self::SEARCH_MEDIA ? $_result[$f]["Path"] : $_result[$f]["Text"]) . '"><u>' . we_base_util::shortenPath($_result[$f]["Text"], 20) . '</u></a>'),
 					array("dat" => '<nobr>' . ($_result[$f]["CreationDate"] ? date(g_l('searchtool', '[date_format]'), $_result[$f]["CreationDate"]) : "-") . '</nobr>'),
 					array("dat" => '<nobr>' . ($_result[$f]["ModDate"] ? date(g_l('searchtool', '[date_format]'), $_result[$f]["ModDate"]) : "-") . '</nobr>'),
-					array("dat" => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $_result[$f]["Text"] . '">' . $iconHTML['imageViewPopup'] . '</a>'),
+					array("dat" => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $_result[$f]["Text"] . '"><span class="iconGridview">' . $iconHTML['imageViewPopup'] . '</span></a>'),
 					array("dat" => $_result[$f]['fileSize']),
 					array("dat" => $iconHTML['sizeX'] . " x " . $iconHTML['sizeY']),
 					array("dat" => we_base_util::shortenPath(g_l('contentTypes', '[' . $_result[$f]['ContentType'] . ']'), 22)),
@@ -832,9 +832,9 @@ WE().consts.weSearch= {
 		}
 	}
 
-	function getHtmlIconThmubnail($file, $smallSize = 64, $bigSize = 140){
+	function getHtmlIconThmubnail($file, $smallSize = 64, $bigSize = 140, $view = 'list', $whichsearch = ''){t_e('hier?', $view, $whichsearch);
 		$urlPopup = $url = '';
-		if($file["ContentType"] == we_base_ContentTypes::IMAGE){
+		if(!($view !== self::VIEW_ICONS && $whichsearch !== self::SEARCH_MEDIA) && $file["ContentType"] == we_base_ContentTypes::IMAGE){
 			if($file["size"] > 0){
 				$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $file["Path"]);
 				$url = WEBEDITION_DIR . 'thumbnail.php?id=' . $file["docID"] . "&size=" . $smallSize . "&path=" . urlencode($file["Path"]) . "&extension=" . $file["Extension"];
@@ -1143,11 +1143,11 @@ WE().consts.weSearch= {
 
 				for($m = 0; $m < $x; $m++){
 					$out .= $whichSearch !== self::SEARCH_MEDIA ? ('<div style="float:left;width:180px;height:100px;margin:20px 0px 0px 20px;z-index:1;">' .
-							self::tblListRowIconView($content[$m], $class, $m, $whichSearch)
-							. '</div>') :
+							self::tblListRowMediaIconView($content[$m], $class, $m, $whichSearch) .// FIXME: take this or tblListRowIconView()?
+							'</div>') :
 							('<div style="float:left;width:200px;height:200px;margin:20px 0px 0px 20px;z-index:1;">' .
-							self::tblListRowMediaIconView($content[$m], $class, $m, $whichSearch)
-							. '</div>');
+							self::tblListRowMediaIconView($content[$m], $class, $m, $whichSearch) .
+							'</div>');
 				}
 
 				$out .= '</td></tr></table>' . '<div id="movethemaway" style="display:block">' . self::makeMouseOverDivs($x, $content, $whichSearch) . '</div>';

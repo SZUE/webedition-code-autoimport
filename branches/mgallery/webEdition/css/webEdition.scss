@@ -1612,3 +1612,32 @@ body.moduleEditor{
 		border-top: 2px groove white;
 	}
 }
+
+#scrollContent_DocSearch,
+#scrollContent_TmplSearch,
+#scrollContent_DoclistSearch,
+#scrollContent_AdvSearch {
+	.iconListview{
+		.fileicon{
+			font-size: 14px;
+		}
+	}
+	.iconGridview{
+		.fileicon{
+			font-size: 42px;
+		}
+	}
+}
+
+#scrollContent_MediaSearch {
+	.iconListview{
+		.fileicon{
+			font-size: 24px;
+		}
+	}
+	.iconGridview{
+		.fileicon{
+			font-size: 42px;
+		}
+	}
+}

@@ -378,7 +378,7 @@ weSearch = {
 		if (this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST) {
 			var elem = document.getElementById("filterTableDoclistSearch");
 			var c = Math.max((elem.rows.length - 1), 0);
-searchclassFolderMode = 1;//take this dynamically
+			searchclassFolderMode = 1;//take this dynamically
 			var scrollheight = (searchclassFolderMode ? (30 + (c*26)) : 0);
 
 			var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
@@ -391,50 +391,58 @@ searchclassFolderMode = 1;//take this dynamically
 			if ((scrollContent.offsetHeight - scrollheight) > 0) {
 				scrollContent.style.height = (scrollContent.offsetHeight - scrollheight) + "px";
 			}
-			return;
-		}
-
-		if (!this.conf.modelIsFolder) {
-			return;
-		}
-
-		if (this.conf.editorBodyFrame.loaded) {
-			var scrollheight;
-			if (this.conf.whichsearch === WE().consts.weSearch.SEARCH_ADV) {
-				scrollheight = 140;
-			} else {
-				scrollheight = 170;
-			}
-/*
-
-#####
-var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
-var scrollContent = document.getElementById('scrollContent_DoclistSearch');
-
-var height = 180; // maybe IE needs 200?
-if ((h - height) > 0) {
-	scrollContent.style.height = (h - height) + "px";
-}
-if ((scrollContent.offsetHeight - scrollheight) > 0) {
-	scrollContent.style.height = (scrollContent.offsetHeight - scrollheight) + "px";
-}
-*/
-			var elem = document.getElementById('filterTable' + this.conf.whichsearch),
-				//newID = elem.rows.length - 1,
-				h = window.innerHeight ? window.innerHeight : document.body.offsetHeight,
-				scrollContent = document.getElementById("scrollContent_' + whichSearch + '"),
-				heightDiv = 180;
-
-			if ((h - heightDiv) > 0) {
-				scrollContent.style.height = (h - heightDiv) + 'px';
-			}
-
-			if ((scrollContent.offsetHeight - scrollheight) > 0) {
-				scrollContent.style.height = (scrollContent.offsetHeight - scrollheight) + 'px';
-			}
 		} else {
-			setTimeout(this.sizeScrollContent, 1000);
+
+			// FIXME: make sizeScrollContent for search
+			//scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch),
+
+/*
+			if (!this.conf.modelIsFolder) {
+				return;
+			}
+
+			if (this.conf.editorBodyFrame.loaded) {
+				var scrollheight;
+				if (this.conf.whichsearch === WE().consts.weSearch.SEARCH_ADV) {
+					scrollheight = 140;
+				} else {
+					scrollheight = 170;
+				}
+*/
+	/*
+
+	#####
+	var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
+	var scrollContent = document.getElementById('scrollContent_DoclistSearch');
+
+	var height = 180; // maybe IE needs 200?
+	if ((h - height) > 0) {
+		scrollContent.style.height = (h - height) + "px";
+	}
+	if ((scrollContent.offsetHeight - scrollheight) > 0) {
+		scrollContent.style.height = (scrollContent.offsetHeight - scrollheight) + "px";
+	}
+	*/
+/*
+				var elem = document.getElementById('filterTable' + this.conf.whichsearch),
+					//newID = elem.rows.length - 1,
+					h = window.innerHeight ? window.innerHeight : document.body.offsetHeight,
+					scrollContent = document.getElementById("scrollContent_' + whichSearch + '"),
+					heightDiv = 180;
+
+				if ((h - heightDiv) > 0) {
+					scrollContent.style.height = (h - heightDiv) + 'px';
+				}
+
+				if ((scrollContent.offsetHeight - scrollheight) > 0) {
+					scrollContent.style.height = (scrollContent.offsetHeight - scrollheight) + 'px';
+				}
+			} else {
+				setTimeout(this.sizeScrollContent, 1000);
+			}
+*/
 		}
+
 	},
 	newinput: function () {
 		var elem = document.getElementById('filterTable' + this.conf.whichsearch),
