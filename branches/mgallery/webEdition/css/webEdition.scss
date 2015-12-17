@@ -47,6 +47,13 @@ iframe{
 	border:0px;
 }
 
+select,
+input,
+textarea{
+	//Fix fonts in these fields
+font:inherit;
+}
+
 b,
 strong,
 .bold{
