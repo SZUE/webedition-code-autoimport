@@ -190,16 +190,6 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="href"
 		//FIXME: clean inconsistent objects
 	}
 
-	/* 	public static function updateGlossar(){//from 6340/update6340.php
-	  //FIXME: remove after 7.0
-	  if(defined('GLOSSARY_TABLE')){
-	  foreach($GLOBALS['weFrontendLanguages'] as $lang){
-	  $cache = new we_glossary_cache($lang);
-	  $cache->write();
-	  }
-	  }
-	  }
-	 */
 
 	private static function updateCats(we_database_base $db = null){
 		$db = $db? : $GLOBALS['DB_WE'];

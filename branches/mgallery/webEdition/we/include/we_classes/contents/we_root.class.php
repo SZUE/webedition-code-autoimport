@@ -24,7 +24,6 @@
  */
 /* the parent class for tree-objects */
 abstract class we_root extends we_class{
-
 	const USER_HASACCESS = 1;
 	const FILE_LOCKED = -3;
 	const USER_NO_PERM = -2;
@@ -34,7 +33,6 @@ abstract class we_root extends we_class{
 	const EDITOR_FOOTER = 2;
 
 	/* ParentID of the object (ID of the Parent-Folder of the Object) */
-
 	var $ParentID = 0;
 
 	/* Parent Path of the object (Path of the Parent-Folder of the Object) */
@@ -241,10 +239,10 @@ abstract class we_root extends we_class{
 
 		if($disabled){
 			return we_html_tools::htmlFormElementTable(array(
-						"text" => we_html_tools::hidden($idname, $myid, array('id' => $idname)) .
-						we_html_tools::hidden($textname, $path, array('id' => $textname)) .
-						we_html_element::htmlInput(array('name' => 'disabled', 'value' => $path, 'type' => 'text', 'width' => intval($width - 6), 'disabled' => 1)),
-						'style' => 'vertical-align:top;height:10px;'), g_l('weClass', '[dir]')
+					"text" => we_html_tools::hidden($idname, $myid, array('id' => $idname)) .
+					we_html_tools::hidden($textname, $path, array('id' => $textname)) .
+					we_html_element::htmlInput(array('name' => 'disabled', 'value' => $path, 'type' => 'text', 'width' => intval($width - 6), 'disabled' => 1)),
+					'style' => 'vertical-align:top;height:10px;'), g_l('weClass', '[dir]')
 			);
 		}
 
@@ -338,8 +336,8 @@ abstract class we_root extends we_class{
 			while($this->DB_WE->next_record(MYSQL_ASSOC)){
 				$owner = $this->DB_WE->f('ID');
 				$content .= '<tr><td class="userIcon" data-contenttype="' . $this->DB_WE->f('ContentType') . '"></td><td class="defaultfont">' . $this->DB_WE->f('Path') . '</td><td>' .
-						we_html_forms::checkboxWithHidden(isset($ownersReadOnly[$owner]) ? $ownersReadOnly[$owner] : '', 'we_owners_read_only[' . $owner . ']', g_l('weClass', '[readOnly]'), false, 'defaultfont', 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);', !$canChange) .
-						'</td><td>' . ($canChange ? we_html_button::create_button(we_html_button::TRASH, "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('users_del_owner','" . $owner . "');") : '') . '</td></tr>';
+					we_html_forms::checkboxWithHidden(isset($ownersReadOnly[$owner]) ? $ownersReadOnly[$owner] : '', 'we_owners_read_only[' . $owner . ']', g_l('weClass', '[readOnly]'), false, 'defaultfont', 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);', !$canChange) .
+					'</td><td>' . ($canChange ? we_html_button::create_button(we_html_button::TRASH, "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('users_del_owner','" . $owner . "');") : '') . '</td></tr>';
 			}
 		} else {
 			$content .= '<tr><td class="userIcon" data-contenttype="we/user"></td><td class="defaultfont">' . g_l('weClass', '[onlyOwner]') . '</td><td></td><td></td></tr>';
@@ -352,7 +350,7 @@ abstract class we_root extends we_class{
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
 		$wecmdenc5 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();fillIDs();opener.we_cmd('users_add_owner',top.allIDs);");
 		$addbut = $canChange ?
-				we_html_element::htmlHiddens(array($idname => '', $textname => '')) . we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_users_selector','document.we_form.elements[\'" . $idname . "\'].value','" . $wecmdenc2 . "','',document.we_form.elements['" . $idname . "'].value,'" . $wecmdenc5 . "','','',1);") : "";
+			we_html_element::htmlHiddens(array($idname => '', $textname => '')) . we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_users_selector','document.we_form.elements[\'" . $idname . "\'].value','" . $wecmdenc2 . "','',document.we_form.elements['" . $idname . "'].value,'" . $wecmdenc5 . "','','',1);") : "";
 
 		$content = '<table class="default" style="width:500px;">
 <tr><td><div class="multichooser">' . $content . '</div></td></tr>
@@ -367,9 +365,9 @@ abstract class we_root extends we_class{
 		return '<table class="default">
 <tr><td class="defaultfont" style="padding-bottom:2px;">' . $this->formCreator($canChange && permissionhandler::hasPerm('CHANGE_DOCUMENT_OWNER')) . '</td></tr>
 <tr><td>' . $this->formRestrictOwners($canChange && permissionhandler::hasPerm('CHANGE_DOCUMENT_PERMISSION')) . '</td></tr>' .
-				($this->RestrictOwners ?
-						'<tr><td style="padding-top:2px;">' . $this->formOwners($canChange && permissionhandler::hasPerm('CHANGE_DOCUMENT_PERMISSION')) . '</td></tr>' : '') .
-				'</table>';
+			($this->RestrictOwners ?
+				'<tr><td style="padding-top:2px;">' . $this->formOwners($canChange && permissionhandler::hasPerm('CHANGE_DOCUMENT_PERMISSION')) . '</td></tr>' : '') .
+			'</table>';
 	}
 
 	function del_all_owners(){
@@ -622,7 +620,7 @@ abstract class we_root extends we_class{
 			}
 			return '
 <table class="default" style="margin-top:2px;">' .
-					$_headline . '
+				$_headline . '
 	<tr><td style="padding-bottom:2px;">' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);", 'onchange' => "dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"), "value") . '</td></tr>
 	<tr><td class="defaultfont" style="text-align:left">' . g_l('weClass', '[languageLinks]') . '</td></tr>
 </table>
@@ -630,7 +628,7 @@ abstract class we_root extends we_class{
 		} else {
 			return '
 <table class="default" style="margin-top:2px;">' .
-					$_headline . '
+				$_headline . '
 	<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);", 'onchange' => "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"), "value") . '</td></tr>
 </table>';
 		}
@@ -677,10 +675,10 @@ abstract class we_root extends we_class{
 			case 'dat':
 				//check bdid first
 				return (!empty($this->elements[$name]['bdid']) ?
-								$this->elements[$name]['bdid'] :
-								(isset($this->elements[$name]['dat']) && (!$defaultOnEmpty || $this->elements[$name]['dat']) ?
-										$this->elements[$name]['dat'] :
-										$default));
+						$this->elements[$name]['bdid'] :
+						(isset($this->elements[$name]['dat']) && (!$defaultOnEmpty || $this->elements[$name]['dat']) ?
+							$this->elements[$name]['dat'] :
+							$default));
 			default:
 				return (isset($this->elements[$name][$key]) ? $this->elements[$name][$key] : $default);
 		}
@@ -765,7 +763,7 @@ abstract class we_root extends we_class{
 
 	public function getRealPath($old = false){
 		return (($this->Table == FILE_TABLE) ? $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '..' : TEMPLATES_PATH) .
-				($old ? $this->OldPath : $this->getPath());
+			($old ? $this->OldPath : $this->getPath());
 	}
 
 	/* get the Site-Path of the Object */
@@ -1058,7 +1056,7 @@ abstract class we_root extends we_class{
 			$tmpPaths = id_to_path($tmpIDs, $this->Table, null, false, true);
 			foreach($langkeys as $langkey){
 				$this->LangLinks[$langkey] = isset($tmpIDs[$langkey]) ? array('id' => $tmpIDs[$langkey], 'path' => $tmpPaths[$tmpIDs[$langkey]]) :
-						array('id' => 0, 'path' => '');
+					array('id' => 0, 'path' => '');
 			}
 			return;
 		}
@@ -1083,12 +1081,12 @@ abstract class we_root extends we_class{
 		$replace = $this->getLinkReplaceArray();
 		foreach($this->elements as $k => $v){
 			if(!$this->i_isElement($k) ||
-					//ignore fields which result in empty entry
-					(empty($v['dat']) && empty($v['bdid']) && empty($v['ffname'])) ||
-					//don't set "vars" type
-					(isset($v['type']) && $v['type'] == 'vars') ||
-					//ignore binary data
-					($k === 'data' && $this->isBinary())
+				//ignore fields which result in empty entry
+				(empty($v['dat']) && empty($v['bdid']) && empty($v['ffname'])) ||
+				//don't set "vars" type
+				(isset($v['type']) && $v['type'] == 'vars') ||
+				//ignore binary data
+				($k === 'data' && $this->isBinary())
 			){
 				continue;
 			}
@@ -1126,14 +1124,14 @@ abstract class we_root extends we_class{
 				$cid = $cid ? : $this->DB_WE->getInsertId();
 				$this->elements[$k]['id'] = $cid; // update Object itself
 				if(!$cid || !$this->DB_WE->query('REPLACE INTO ' . LINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
-									'DID' => $this->ID,
-									'CID' => $cid,
-									'Name' => $k,
-									'Type' => $v['type'],
-									'nHash' => sql_function('x\'' . md5($k) . '\''),
-									'DocumentTable' => stripTblPrefix($this->Table)
-								))
-						)){
+							'DID' => $this->ID,
+							'CID' => $cid,
+							'Name' => $k,
+							'Type' => $v['type'],
+							'nHash' => sql_function('x\'' . md5($k) . '\''),
+							'DocumentTable' => stripTblPrefix($this->Table)
+						))
+					)){
 					//this should never happen
 					return false;
 				}
@@ -1142,8 +1140,8 @@ abstract class we_root extends we_class{
 
 		if($replace){
 			$replace = implode(',', $replace);
-			$this->DB_WE->query('DELETE FROM ' . LINK_TABLE . ' WHERE DocumentTable="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '" AND CID IN(' . $replace . ')');
-			$this->DB_WE->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID IN (' . $replace . ')');
+
+			$this->DB_WE->query('DELETE l,c FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DID=' . $this->ID . ' AND l.DocumentTable="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '" AND l.CID IN(' . $replace . ')');
 		}
 		return true;
 	}
@@ -1333,13 +1331,13 @@ abstract class we_root extends we_class{
 		$ret = true;
 		foreach(array_unique($this->MediaLinks) as $remObj){
 			$ret &= $this->DB_WE->query('REPLACE INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
-						'ID' => $this->ID,
-						'DocumentTable' => stripTblPrefix($this->Table),
-						'type' => 'media', // FIXME: change to "media"
-						'remObj' => $remObj,
-						'remTable' => stripTblPrefix(FILE_TABLE),
-						'position' => 0,
-						'isTemp' => $temp ? 1 : 0
+					'ID' => $this->ID,
+					'DocumentTable' => stripTblPrefix($this->Table),
+					'type' => 'media', // FIXME: change to "media"
+					'remObj' => $remObj,
+					'remTable' => stripTblPrefix(FILE_TABLE),
+					'position' => 0,
+					'isTemp' => $temp ? 1 : 0
 			)));
 		}
 
@@ -1493,8 +1491,8 @@ abstract class we_root extends we_class{
 	public function showLockedWarning($userID){
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, we_html_element::htmlBody(array('class' => 'weDialogBody'), we_html_tools::htmlDialogLayout('<p class="defaultfont">' . sprintf(g_l('alert', '[temporaere_no_access_text]'), $this->Text, f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($userID))) . '</p>', g_l('alert', '[temporaere_no_access]')) .
 //	For SEEM-Mode
-						($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE ?
-								'<a href="javascript://" style="text-decoration:none" onclick="top.weNavigationHistory.navigateReload()" >' . g_l('SEEM', '[try_doc_again]') . '</a>' : '')
+				($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE ?
+					'<a href="javascript://" style="text-decoration:none" onclick="top.weNavigationHistory.navigateReload()" >' . g_l('SEEM', '[try_doc_again]') . '</a>' : '')
 		));
 		exit();
 	}
