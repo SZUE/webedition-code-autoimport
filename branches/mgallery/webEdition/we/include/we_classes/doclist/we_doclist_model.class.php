@@ -26,8 +26,8 @@
  */
 require_once (WE_INCLUDES_PATH . 'we_tools/weSearch/conf/define.conf.php');
 
-class we_doclist_model extends we_search_model{
-	public $ModelClassName = __CLASS__;
+class we_doclist_model extends we_search_modelBase{
+	//public $ModelClassName = __CLASS__;
 	public $whichSearch;
 	public $height = 0;
 	public $transaction = '';
@@ -102,7 +102,6 @@ class we_doclist_model extends we_search_model{
 
 	public function initByHttp(){
 		// IMPORTANT: this is the ONLY place where model vars are set!
-		$DB_WE = new DB_WE();
 		$request = we_base_request::_(we_base_request::STRING, 'we_cmd');
 
 		if(isset($_REQUEST['searchstart' . $this->whichSearch]) || isset($request['searchstart' . $this->whichSearch])){
@@ -158,7 +157,7 @@ class we_doclist_model extends we_search_model{
 		$this->prepareModelForSearch();
 	}
 
-	public function prepareModelForSearch(){// FIXME: label all props width DocliostSearch (like in other searches)
+	public function prepareModelForSearch(){
 		$this->currentSearchTables = $this->searchTablesDoclistSearch;
 		$this->currentSearchFields = $this->searchFieldsDoclistSearch;
 		$this->currentLocation = $this->locationDoclistSearch;

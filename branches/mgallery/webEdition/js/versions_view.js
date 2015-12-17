@@ -198,6 +198,7 @@ function delRow(id) {
 			}
 		}
 	}
+	search(false);
 }
 
 function resetVersion(id, documentID, version, table) {
@@ -244,6 +245,8 @@ function switchSearch(mode) {
 		advSearch2.style.display = "none";
 		advSearch3.style.display = "none";
 	}
+
+	search(false);
 }
 
 function checkAll() {
@@ -434,6 +437,11 @@ function newinput() {
 		cell.innerHTML = searchClass.trash.replace(/__we_row__/g, rows);
 		newRow.appendChild(cell);
 
+		cell = document.createElement("TD");
+		cell.setAttribute("id", "td_hiddenLocation[" + rows + "]");
+		cell.innerHTML = '<input type="hidden" name="location[' + rows + ']" value="IS">';
+		newRow.appendChild(cell);
+
 		elem.appendChild(newRow);
 	}
 }
@@ -444,15 +452,20 @@ function changeit(value, rowNr) {
 	var searchTD = document.getElementById("td_search[" + rowNr + "]");
 	var delButtonTD = document.getElementById("td_delButton[" + rowNr + "]");
 	var location = document.getElementById("location[" + rowNr + "]");
+	var hiddenLocTD = document.getElementById("td_hiddenLocation[" + rowNr + "]");
 	var cell;
 	switch (value) {
 		case "allModsIn":
 			if (locationTD !== null) {
+				location.value = 'IS';
 				location.disabled = true;
 			}
 			row.removeChild(searchTD);
 			if (delButtonTD !== null) {
 				row.removeChild(delButtonTD);
+			}
+			if (hiddenLocTD !== null) {
+				row.removeChild(hiddenLocTD);
 			}
 
 			cell = document.createElement("TD");
@@ -464,23 +477,34 @@ function changeit(value, rowNr) {
 			cell.setAttribute("id", "td_delButton[" + rowNr + "]");
 			cell.innerHTML = searchClass.trash.replace(/__we_row__/g, rowNr);
 			row.appendChild(cell);
+
+			cell = document.createElement("TD");
+			cell.setAttribute("id", "td_hiddenLocation[" + rowNr + "]");
+			cell.innerHTML = '<input type="hidden" name="location[' + rowNr + ']" value="IS">';
+			row.appendChild(cell);
 			break;
 		case "timestamp":
 			row.removeChild(locationTD);
+			row.removeChild(searchTD);
+			if (delButtonTD !== null) {
+				row.removeChild(delButtonTD);
+			}
+			if (hiddenLocTD !== null) {
+				row.removeChild(hiddenLocTD);
+			}
 
 			cell = document.createElement("TD");
 			cell.setAttribute("id", "td_location[" + rowNr + "]");
-			cell.innerHTML = searchClass.locationFields.replace(/__we_new_id__/g, rowNr);
+			cell.innerHTML = searchClass.locationFieldsDate.replace(/__we_new_id__/g, rowNr);
 			row.appendChild(cell);
-
-			row.removeChild(searchTD);
+			location = document.getElementById("location[" + rowNr + "]");
+			location.disabled = false;
 
 			var innerhtml = "<table id=\"search[" + rowNr + "]_cell\" class=\"default\"><tbody><tr><td></td><td></td><td>" +
 							"<input class=\"wetextinput\" name=\"search[" + rowNr + "]\" size=\"55\" value=\"\" maxlength=\"10\" id=\"search[" + rowNr + "]\" readonly=\"1\" style=\"width: 100px;\" type=\"text\" />" +
 							"</td><td>&nbsp;</td><td><a href=\"#\">" +
 							"<button id=\"date_picker_from" + rowNr + "\" class=\"weBtn\"><i class=\"fa fa-lg fa-calendar\"></i>" +
 							"</button></a></td></tr></tbody></table>";
-
 
 			cell = document.createElement("TD");
 			cell.setAttribute("id", "td_search[" + rowNr + "]");
@@ -489,22 +513,26 @@ function changeit(value, rowNr) {
 
 			Calendar.setup({inputField: "search[" + rowNr + "]", ifFormat: "%d.%m.%Y", button: "date_picker_from" + rowNr + "", align: "Tl", singleClick: true});
 
-			if (delButtonTD !== null) {
-				row.removeChild(delButtonTD);
-			}
-
 			cell = document.createElement("TD");
 			cell.setAttribute("id", "td_delButton[" + rowNr + "]");
 			cell.innerHTML = searchClass.trash.replace(/__we_row__/g, rowNr);
 			row.appendChild(cell);
+
+			cell = document.createElement("TD");
+			cell.setAttribute("id", "td_hiddenLocation[" + rowNr + "]");
+			row.appendChild(cell);
 			break;
 		case "modifierID":
 			if (locationTD !== null) {
+				location.valaue = 'IS';
 				location.disabled = true;
 			}
 			row.removeChild(searchTD);
 			if (delButtonTD !== null) {
 				row.removeChild(delButtonTD);
+			}
+			if (hiddenLocTD !== null) {
+				row.removeChild(hiddenLocTD);
 			}
 
 			cell = document.createElement("TD");
@@ -516,14 +544,23 @@ function changeit(value, rowNr) {
 			cell.setAttribute("id", "td_delButton[" + rowNr + "]");
 			cell.innerHTML = searchClass.trash.replace(/__we_row__/g, rowNr);
 			row.appendChild(cell);
+
+			cell = document.createElement("TD");
+			cell.setAttribute("id", "td_hiddenLocation[" + rowNr + "]");
+			cell.innerHTML = '<input type="hidden" name="location[' + rowNr + ']" value="IS">';
+			row.appendChild(cell);
 			break;
 		case "status":
 			if (locationTD !== null) {
+				location.value = 'IS';
 				location.disabled = true;
 			}
 			row.removeChild(searchTD);
 			if (delButtonTD !== null) {
 				row.removeChild(delButtonTD);
+			}
+			if (hiddenLocTD !== null) {
+				row.removeChild(hiddenLocTD);
 			}
 
 			cell = document.createElement("TD");
@@ -534,6 +571,11 @@ function changeit(value, rowNr) {
 			cell = document.createElement("TD");
 			cell.setAttribute("id", "td_delButton[" + rowNr + "]");
 			cell.innerHTML = searchClass.trash.replace(/__we_row__/g, rowNr);
+			row.appendChild(cell);
+
+			cell = document.createElement("TD");
+			cell.setAttribute("id", "td_hiddenLocation[" + rowNr + "]");
+			cell.innerHTML = '<input type="hidden" name="location[' + rowNr + ']" value="IS">';
 			row.appendChild(cell);
 	}
 }

@@ -35,7 +35,7 @@ class we_folder extends we_root{
 	var $searchclassFolder;
 
 	protected $viewType = 'list';
-	public $doclistModel;
+	public $doclistModel; // FIXME: set protected and make getter
 	public $doclistViewClass = 'we_doclist_view';
 	public $doclistSearchClass = 'we_doclist_search';
 

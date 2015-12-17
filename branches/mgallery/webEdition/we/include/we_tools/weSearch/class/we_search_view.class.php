@@ -31,6 +31,7 @@ class we_search_view extends we_modules_view{
 	const SEARCH_TMPL = 'TmplSearch';
 	const SEARCH_ADV = 'AdvSearch';
 	const SEARCH_DOCLIST = 'DoclistSearch';
+	const SEARCH_VERSION = 'VersionSearch';
 
 	var $toolName;
 	var $db;
@@ -135,7 +136,7 @@ WE().consts.g_l.weSearch = {
 			case 'tool_weSearch_edit' : // get model from db
 				$this->Model = new we_search_model($cmdid);
 				$this->Model->prepareModelForSearch();
-				t_e('fertiges model', $this->Model);
+
 				if(!$this->Model->isAllowedForUser()){
 					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('tools', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 					$this->Model = new we_search_model();

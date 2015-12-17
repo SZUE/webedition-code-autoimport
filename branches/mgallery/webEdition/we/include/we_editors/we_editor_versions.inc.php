@@ -22,7 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-$_view = new we_versions_view();
+
+$versionsView = new we_versions_view($GLOBALS['we_doc']->versionsModel);
 
 echo we_html_tools::getHtmlTop() .
 	we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
@@ -31,11 +32,11 @@ echo we_html_tools::getHtmlTop() .
 
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
-$content = $_view->getVersionsOfDoc();
+$content = $versionsView->getVersionsOfDoc();
 $foundItems = count($content);
 
 echo we_html_tools::getCalendarFiles() .
- $_view->getJS() .
+ $versionsView->getJS() .
  STYLESHEET .
  we_html_element::cssLink(CSS_DIR . 'we_versions.css', array('media' => 'screen')) .
  we_html_element::cssLink(CSS_DIR . 'we_versions_print.css', array('media' => 'print'));
@@ -45,9 +46,9 @@ echo we_html_tools::getCalendarFiles() .
 			search(true);" onload="init();" onresize="sizeScrollContent();">
 	<form name="we_form" action="" onsubmit="return false;" style="padding:0px;margin:0px;">
 		<?php
-		echo $_view->getHTMLforVersions(array(
-			array("html" => "<div id='searchTable'>" . $_view->getBodyTop() . '</div>'),
-			array("html" => "<div id='parametersTop'>" . $_view->getParameterTop($foundItems) . '</div>' . $_view->tblList($content, $_view->makeHeadLines()) . "<div id='parametersBottom'>" . $_view->getParameterBottom($foundItems) . "</div>")
+		echo $versionsView->getHTMLforVersions(array(
+			array("html" => "<div id='searchTable'>" . $versionsView->getBodyTop() . '</div>'),
+			array("html" => "<div id='parametersTop'>" . $versionsView->getParameterTop($foundItems) . '</div>' . $versionsView->tblList($content, $versionsView->makeHeadLines()) . "<div id='parametersBottom'>" . $versionsView->getParameterBottom($foundItems) . "</div>")
 		)) .
 		we_html_element::htmlHidden("we_complete_request", 1);
 		?>

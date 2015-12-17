@@ -48,10 +48,11 @@ class we_document extends we_root{
 	var $CSS = array();
 	/* this array is used, to store document specific data for a page */
 	protected $editorSaves = array();
+	public $versionsModel; // FIXME: set protected and make getter
 
 	function __construct(){
 		parent::__construct();
-		array_push($this->persistent_slots, 'Extension', 'IsDynamic', 'Published', 'Category', 'IsSearchable', 'InGlossar', 'Language', 'schedArr', 'parseFile', 'editorSaves');
+		array_push($this->persistent_slots, 'Extension', 'IsDynamic', 'Published', 'Category', 'IsSearchable', 'InGlossar', 'Language', 'schedArr', 'parseFile', 'editorSaves', 'versionsModel');
 		$this->Table = FILE_TABLE;
 		if(defined('WE_SIDEBAR')){
 			$this->InWebEdition = true;
@@ -676,6 +677,11 @@ class we_document extends we_root{
 		if(!($this->Language) && $this->Table != TEMPLATES_TABLE){
 			$this->initLanguageFromParent();
 		}
+
+		if(!is_object($this->versionsModel)){
+			$this->versionsModel = new we_versions_model($GLOBALS["we_transaction"]);
+		}
+		$this->versionsModel->initByHttp();
 	}
 
 	function we_rewrite(){
