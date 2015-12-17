@@ -200,7 +200,7 @@ class liveUpdateFunctions{
 	 * @return boolean
 	 */
 	function filePutContent($filePath, $newContent){
-		if($this->checkMakeDir(dirname($filePath)) && checkMakeFileWritable($filePath)){
+		if($this->checkMakeDir(dirname($filePath)) && $this->checkMakeFileWritable($filePath)){
 			$fh = fopen($filePath, 'wb');
 			if($fh){
 				fwrite($fh, $newContent, strlen($newContent));
