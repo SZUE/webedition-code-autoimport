@@ -13,6 +13,9 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 
 	function __construct(){
 		if(defined('SYSTEM_WE_SESSION') && SYSTEM_WE_SESSION && !$this->id){
+			register_shutdown_function(function(){
+				session_write_close();
+			});
 			ini_set('session.gc_probability', 1);
 			ini_set('session.gc_divisor', 100);
 			ini_set('session.hash_function', 1); //set sha-1 which will generate 40 bytes of session_id
@@ -20,7 +23,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 			session_set_save_handler(array($this, 'open'), array($this, 'close'), array($this, 'read'), array($this, 'write'), array($this, 'destroy'), array($this, 'gc'));
 			$this->DB = new DB_WE();
 			$this->execTime = get_cfg_var('max_execution_time');
-			$this->execTime = ($this->execTime > 60 ? 60 : $this->execTime); //time might be wrong (1&1)
+			$this->execTime = min(60, $this->execTime); //time might be wrong (1&1)
 			$this->id = uniqid('', true);
 			if(!(extension_loaded('suhosin') && ini_get('suhosin.session.encrypt')) && defined('SYSTEM_WE_SESSION_CRYPT') && SYSTEM_WE_SESSION_CRYPT){
 				$key = $_SERVER['DOCUMENT_ROOT'] . (!empty($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'HTTP_USER_AGENT');
@@ -39,8 +42,8 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 		}
 		session_start();
 		if($this->releaseError){
+			t_e('session was not releases properly, emergency release done, see restored (old) session below', session_id(), $this->sessionName, $this->releaseError);
 			$this->releaseError=false;
-			t_e('session was not releases properly, emergency release done, see restored (old) session below', session_id(), $this->sessionName);
 		}
 	}
 
@@ -79,18 +82,17 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 				}
 			}
 			if(!$max){
+				$this->releaseError = getHash('SELECT sessionName,session_id,lockTime,lockid,touch,NOW() FROM ' . SESSION_TABLE . ' WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '"');
 				//set this session our session
 				$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET lockid="' . $this->id . '",lockTime=NOW() WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '"');
 				//we need this construct, since the session is not restored now, so we don't have mich debug data
-				$this->releaseError=true;
-				t_e('session was not releases properly, emergency release done', $sessID, $this->sessionName);
 			}
 			if($data){
 				$data = ($data[0] === '$' && $this->crypt ? we_customer_customer::decryptData($data, $this->crypt) : $data);
 				if($data && $data[0] === 'x'){
 					//valid gzip
 					$data = gzuncompress($data);
-					$this->hash = md5($sessID . $data);
+					$this->hash = md5($sessID . $data, true);
 					return $data;
 				}//else we need a new sessionid; if decrypt failed we might else destroy an existing valid session
 			}
@@ -107,7 +109,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 			return $this->destroy($sessID);
 		}
 		$sessID = self::getSessionID($sessID);
-		if(md5($sessID . $sessData) == $this->hash){//if nothing changed,we don't have to bother the db
+		if(md5($sessID . $sessData, true) == $this->hash){//if nothing changed,we don't have to bother the db
 			$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET ' .
 					we_database_base::arraySetter(array(
 						'lockid' => $lock ? $this->id : '',
