@@ -24,7 +24,7 @@
 //NOTE: there is no need to add any variables to we_conf_global.inc.php.default anymore.
 $GLOBALS['tabs'] = array(
 	'ui' => '',
-	'extensions' => 'EDIT_SETTINGS_DEF_EXT',
+//	'extensions' => 'EDIT_SETTINGS_DEF_EXT',
 	'editor' => '',
 	'proxy' => 'ADMINISTRATOR',
 	'defaultAttribs' => 'ADMINISTRATOR',
@@ -39,7 +39,7 @@ $GLOBALS['tabs'] = array(
 //	'backup' => 'ADMINISTRATOR',
 	'validation' => 'ADMINISTRATOR',
 	'email' => 'ADMINISTRATOR',
-	'message_reporting' => '',
+	//'message_reporting' => '',
 	'recipients' => 'FORMMAIL',
 	'versions' => 'ADMINISTRATOR',
 );
@@ -66,7 +66,7 @@ $GLOBALS['configs'] = array(
 		'WE_ERROR_MAIL' => array('Mail errors', we_base_request::BOOL, false),
 		'WE_ERROR_MAIL_ADDRESS' => array('E-Mail address to which to mail errors', we_base_request::EMAIL, ''),
 		'ERROR_DOCUMENT_NO_OBJECTFILE' => array('Document to open when trying to open non-existing object', we_base_request::INT, 0),
-		'DISABLE_TEMPLATE_CODE_CHECK' => array('Disable the check for php-errors in templates', we_base_request::BOOL, false),
+		//'DISABLE_TEMPLATE_CODE_CHECK' => array('Disable the check for php-errors in templates', we_base_request::BOOL, false),
 		'INLINEEDIT_DEFAULT' => array('Default setting for inlineedit attribute', we_base_request::BOOL, true),
 		'IMAGESTARTID_DEFAULT' => array('Default setting for attribute imagestartdir in wetextarea', we_base_request::INT, 0),
 		'WE_PHP_DEFAULT' => array('Default setting for php attribute', we_base_request::BOOL, false),

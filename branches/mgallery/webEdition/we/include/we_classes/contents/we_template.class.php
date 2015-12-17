@@ -243,7 +243,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 			return $foo;
 		}
 
-		if(!DISABLE_TEMPLATE_CODE_CHECK && $this->doUpdateCode){
+		if($this->doUpdateCode){
 			$GLOBALS['we']['errorhandler']['shutdown'] = 'template';
 			register_shutdown_function(array($this, 'handleShutdown'), $code);
 
