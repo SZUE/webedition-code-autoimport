@@ -65,8 +65,8 @@ class we_search_modelBase extends we_tool_model{
 	 * Default Constructor
 	 * Can load or create new searchtool object depends of parameter
 	 */
-	public function __construct(){
-		// may be obsolete
+	public function __construct($table = ''){
+		parent::__construct($table);
 	}
 
 	public function load($id = 0, $isAdvanced = false){

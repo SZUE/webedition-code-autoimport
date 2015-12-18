@@ -378,46 +378,32 @@ weSearch = {
 		this.search(false);
 	},
 	sizeScrollContent: function () {
-		if (this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST) {
-			var elem = document.getElementById("filterTableDoclistSearch");
-			var c = Math.max((elem.rows.length - 1), 0);
-			searchclassFolderMode = 1;//take this dynamically
-			var scrollheight = (searchclassFolderMode ? (30 + (c*26)) : 0);
+		var frameH = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
+		var h = 0, hMin = 120, rows, mode;
+		var scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch);
 
-			var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
-			var scrollContent = document.getElementById('scrollContent_DoclistSearch');
-
-			var height = 180; // maybe IE needs 200?
-			if ((h - height) > 0) {
-				scrollContent.style.height = (h - height) + "px";
-			}
-			if ((scrollContent.offsetHeight - scrollheight) > 0) {
-				scrollContent.style.height = (scrollContent.offsetHeight - scrollheight) + "px";
-			}
-		} else {
-			var frameH = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
-			var scrollheight;
-			var h = 0;
-			var scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch);
-
-			switch (this.conf.whichsearch) {
-				case WE().consts.weSearch.SEARCH_DOCS:
-				case WE().consts.weSearch.SEARCH_TMPL:
-					top.console.log('found');
-					h = frameH - 324;
-					break;
-				case WE().consts.weSearch.SEARCH_MEDIA:
-					var rows = (document.getElementById('filterTableMediaSearch').rows.length - 1);
-					h = Math.max(300, (frameH - (534 + (rows*32)))); 
-					break;
-				case WE().consts.weSearch.SEARCH_ADV:
-					var rows = (document.getElementById('filterTableAdvSearch').rows.length - 1);
-					h = frameH - (290 + (rows*32)); 
-					break;
-
-			}
-			scrollContent.style.height = h + 'px';
+		switch (this.conf.whichsearch) {
+			case WE().consts.weSearch.SEARCH_DOCS:
+			case WE().consts.weSearch.SEARCH_TMPL:
+				top.console.log('found');
+				h = frameH - 324;
+				break;
+			case WE().consts.weSearch.SEARCH_MEDIA:
+				rows = (document.getElementById('filterTableMediaSearch').rows.length - 1);
+				h = frameH - (534 + (rows*32));
+				hMin = 300;
+				break;
+			case WE().consts.weSearch.SEARCH_ADV:
+				rows = (document.getElementById('filterTableAdvSearch').rows.length - 1);
+				h = frameH - (290 + (rows*32)); 
+				break;
+			case WE().consts.weSearch.SEARCH_DOCLIST:top.console.log('hier');
+				rows = (document.getElementById('filterTableDoclistSearch').rows.length);
+				mode = document.we_form.mode.value;top.console.log('hier', mode);
+				h = parseInt(mode) === 1 ? (frameH - (220 + (rows*28))) : (frameH - 183);
+				break;
 		}
+		scrollContent.style.height = (Math.max(h, hMin)) + 'px';
 	},
 	newinput: function () {
 		var elem = document.getElementById('filterTable' + this.conf.whichsearch),
@@ -519,22 +505,13 @@ weSearch = {
 		var advSearch = document.getElementById('advSearch');
 		var filterTable = document.getElementById('filterTable' + this.conf.whichsearch);
 		var advSearch3 = document.getElementById('advSearch3');
-		var scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch);
-		var scrollheight = 30;
-		var newID = filterTable.rows.length - 1;
 
-		for (i = 0; i < newID; i++) {
-			scrollheight = scrollheight + 26;
-		}
-
-		if (mode == 1) {
-			scrollContent.style.height = (scrollContent.offsetHeight - scrollheight) + "px";
+		if (parseInt(mode) === 1) {
 			defSearch.style.display = "none";
 			advSearch.style.display = "block";
 			filterTable.style.display = "block";
 			advSearch3.style.display = "block";
 		} else {
-			scrollContent.style.height = (scrollContent.offsetHeight + scrollheight) + "px";
 			defSearch.style.display = "block";
 			advSearch.style.display = "none";
 			filterTable.style.display = "none";
@@ -543,6 +520,7 @@ weSearch = {
 				this.search(false);
 			}
 		}
+		this.sizeScrollContent()
 	},
 	delRow: function (id) {
 		var scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch),

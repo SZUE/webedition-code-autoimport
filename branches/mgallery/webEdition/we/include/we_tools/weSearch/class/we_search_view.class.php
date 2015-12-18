@@ -833,7 +833,7 @@ WE().consts.weSearch= {
 		}
 	}
 
-	function getHtmlIconThmubnail($file, $smallSize = 64, $bigSize = 140, $view = 'list', $whichsearch = ''){t_e('hier?', $view, $whichsearch);
+	function getHtmlIconThmubnail($file, $smallSize = 64, $bigSize = 140, $view = 'list', $whichsearch = ''){
 		$urlPopup = $url = '';
 		if(!($view !== self::VIEW_ICONS && $whichsearch !== self::SEARCH_MEDIA) && $file["ContentType"] == we_base_ContentTypes::IMAGE){
 			if($file["size"] > 0){

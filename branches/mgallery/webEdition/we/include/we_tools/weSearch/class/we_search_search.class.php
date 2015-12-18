@@ -74,7 +74,7 @@ class we_search_search extends we_search_base{
 		$this->View = $view ? : new we_search_view();
 	}
 
-	function searchProperties($whichSearch, $model){t_e('search props', $model);
+	function searchProperties($whichSearch, $model){
 		$DB_WE = new DB_WE();
 		$workspaces = $_result = $versionsFound = $saveArrayIds = $_tables = $searchText = array();
 		$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = 0;// will be obsolete
@@ -1249,7 +1249,7 @@ class we_search_search extends we_search_base{
 		}
 
 		$this->where = '1 ' . ($where ? (((substr(trim($where), 0, 4) !== 'AND ') ? 'AND ' : ' ') . trim($where)) : ($this->where ? 'AND ' . $this->where : ''));
-		we_database_base::t_e_query(1);
+		//we_database_base::t_e_query(1);
 		switch($this->table){
 			case FILE_TABLE:
 				$tmpTableWhere = '';

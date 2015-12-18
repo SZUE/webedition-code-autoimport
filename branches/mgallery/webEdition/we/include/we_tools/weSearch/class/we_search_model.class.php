@@ -241,7 +241,7 @@ class we_search_model extends we_search_modelBase{
 			 */
 
 			foreach($modelVars as $v){
-				if(we_base_request::_(we_base_request::STRING, $v, we_base_request::NOT_VALID) !== we_base_request::NOT_VALID){
+				if(isset($_REQUEST[$v])){
 					$_REQUEST['we_cmd'][$v] = $_REQUEST[$v];
 				}
 			}
@@ -302,6 +302,7 @@ class we_search_model extends we_search_modelBase{
 			$this->locationAdvSearch = array_merge(is_array($this->locationAdvSearch) ? $this->locationAdvSearch : array());
 			$this->searchFieldsAdvSearch = array_merge(is_array($this->searchFieldsAdvSearch) ? $this->searchFieldsAdvSearch : array());
 		}
+
 		$this->prepareModelForSearch($whichSearch);
 	}
 
@@ -400,7 +401,7 @@ class we_search_model extends we_search_modelBase{
 				);
 
 				// write current set
-				$this->currentSearchTables[0] = $this->searchTablesMediaSearch[0] = FILE_TABLE;
+				$this->currentSearchTables = $this->searchTablesMediaSearch = array(FILE_TABLE);
 				$this->currentSearchFields = $this->searchFieldsMediaSearch;
 				$this->currentLocation = $this->locationMediaSearch;
 				$this->currentSearch = $this->searchMediaSearch;
@@ -421,7 +422,8 @@ class we_search_model extends we_search_modelBase{
 					addTblPrefix('tblObject') => 0,
 					addTblPrefix('tblversions') => 0,
 				);
-
+				
+				$this->searchTablesAdvSearch = array();
 				foreach($this->search_tables_advSearch as $k => $v){
 					switch($k){
 						case FILE_TABLE:
