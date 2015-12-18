@@ -131,7 +131,9 @@ weCollectionEdit = {
 		name: '',
 		remTable: '',
 		remCT: '',
-		remClass: ''
+		remClass: '',
+		realRemCT: '',
+		defaultDir: 0
 	},
 	dd: {
 		fillEmptyRows: true,
@@ -837,24 +839,6 @@ weCollectionEdit = {
 		}
 	},
 
-	dragFromExternal: function(files,elem){
-		// check ct
-		// check elem
-		// make callback
-		document.presetFileupload = files;
-		//top.we_cmd("we_fileupload_editor", "' . $contentType . '", 1, "", "", "' . $callback['external'] . '", 0, 0, "", true);
-		var parentID = 76; 
-		var ct = 'image/*';//enter files ct when alloud!
-
-		//var callback = function(){opener.weCollectionEdit.callForValidItemsAndInsert(index, data[2], false, type !== 'item', el);};
-		var callback = "top.opener.WE().layout.weEditorFrameController.getVisibleEditorFrame().weCollectionEdit.doAlert(importedDocument.id);"
-		
-		//"WE().layout.weEditorFrameController.getVisibleEditorFrame().document.we_form.elements['" . $fname . "'].value = importedDocument.id;";
-		
-		top.we_cmd("we_fileupload_editor", ct, 1, "", "", callback, parentID, 0, "", true);
-
-	},
-
 	dropOnItem: function (type, view, evt, elem) {
 		evt.preventDefault();
 
@@ -922,7 +906,7 @@ weCollectionEdit = {
 					return;
 				}
 
-				var parentID = 76,
+				var parentID = weCollectionEdit.we_doc.defaultDir,
 					ct = files[0].type,
 					callback;
 

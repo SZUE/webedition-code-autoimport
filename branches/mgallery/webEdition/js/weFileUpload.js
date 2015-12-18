@@ -874,7 +874,6 @@ var weFileUpload = (function () {
 			//TODO: adapt these progress fns to standard progressbars
 			this.setInternalProgressText = function (name, text, index) {
 				var p = typeof index === 'undefined' || index === false ? '' : '_' + index;
-
 				document.getElementById('span_' + _.fieldName + '_' + name + p).innerHTML = text;
 			};
 
@@ -891,8 +890,8 @@ var weFileUpload = (function () {
 
 			this.setInternalProgressCompleted = function (success, index, txt) {
 				var s = success || false,
-								i = index || false,
-								p = !i ? '' : '_' + i;
+					i = index || false,
+					p = !i ? '' : '_' + i;
 
 				if (s) {
 					this.setInternalProgress(100, i);
@@ -1325,7 +1324,7 @@ var weFileUpload = (function () {
 						return;
 					case 'chunkOK' :
 						var prog = (100 / _.sender.currentFile.size) * _.sender.currentFile.currentWeightFile,
-										digits = _.sender.currentFile.totalParts > 1000 ? 2 : (_.sender.currentFile.totalParts > 100 ? 1 : 0);
+							digits = _.sender.currentFile.totalParts > 1000 ? 2 : (_.sender.currentFile.totalParts > 100 ? 1 : 0);
 
 						if (this.elems.progress) {
 							this.setInternalProgress(prog.toFixed(digits), false);

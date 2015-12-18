@@ -33,7 +33,7 @@ class we_collection extends we_root{
 	public $remTable = 'fileTable'; //TODO: set getters for all public props
 	public $remCT;
 	public $remClass;
-	protected $DefaultDir = IMAGESTARTID_DEFAULT;
+	public $DefaultDir = IMAGESTARTID_DEFAULT;
 	protected $DefaultPath = '';
 	public $IsDuplicates;
 	public $InsertRecursive;
@@ -345,6 +345,7 @@ class we_collection extends we_root{
 				$file = array('docID' => $item['id'], 'Path' => $item['path'], 'ContentType' => isset($item['ct']) ? $item['ct'] : 'text/*', 'Extension' => $item['ext']);
 				$file['size'] = file_exists($_SERVER['DOCUMENT_ROOT'] . $file["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $file["Path"]) : 0;
 				$file['fileSize'] = we_base_file::getHumanFileSize($file['size']);
+				// FIXME: look for biggest icon size in grid view dynamically
 				$item['icon'] = self::getHtmlIconThmubnail($file, 400, 400);
 			}
 
@@ -876,7 +877,8 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 					$file = array('docID' => $data['ID'], 'Path' => $data['Path'], 'ContentType' => isset($data[$typeField]) ? $data[$typeField] : 'text/*', 'Extension' => $data['Extension']);
 					$file['size'] = file_exists($_SERVER['DOCUMENT_ROOT'] . $file["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $file["Path"]) : 0;
 					$file['fileSize'] = we_base_file::getHumanFileSize($file['size']);
-					$iconHTML = self::getHtmlIconThmubnail($file, 200, 200);
+					// FIXME: look for biggest icon size in grid view dynamically
+					$iconHTML = self::getHtmlIconThmubnail($file, 400, 400);
 				}
 				//END
 				$resultIDsCsv .= $data['ID'] . ',';
