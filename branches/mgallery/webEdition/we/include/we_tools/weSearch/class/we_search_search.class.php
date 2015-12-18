@@ -231,10 +231,10 @@ class we_search_search extends we_search_base{
 									}
 									break;
 								case 'modifierID':
-									if($_table == VERSIONS_TABLE){
+									//if($_table == VERSIONS_TABLE){
 										$w .= $this->searchModifier($searchString, $_table);
 										$where .= $w;
-									}
+									//}
 									break;
 								case 'allModsIn':
 									if($_table == VERSIONS_TABLE){
@@ -489,7 +489,7 @@ class we_search_search extends we_search_base{
 			'Published' => g_l('searchtool', '[Published]'),
 			'CreationDate' => g_l('searchtool', '[CreationDate]'),
 			'ModDate' => g_l('searchtool', '[ModDate]'),
-			'allModsIn' => g_l('versions', '[allModsIn]'),
+			//'allModsIn' => g_l('versions', '[allModsIn]'),
 			'modifierID' => g_l('versions', '[modUser]')
 		);
 
@@ -500,7 +500,7 @@ class we_search_search extends we_search_base{
 			unset($tableFields['ParentIDTmpl']);
 			unset($tableFields['temp_template_id']);
 			unset($tableFields['MasterTemplateID']);
-			unset($tableFields['ContentType']);
+			//unset($tableFields['ContentType']);
 			unset($tableFields['WebUserID']);
 			unset($tableFields['WebUserName']);
 			unset($tableFields['Content']);

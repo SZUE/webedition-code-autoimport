@@ -30,7 +30,7 @@ class we_collection extends we_root{
 	 * we have both collections for not immediately deleting existing collections when changing remTable without saving collection:
 	 * they exist in collection objects only: the remObjects of the matching one are written to tblFileLink when saving
 	 */
-	public $remTable; //TODO: set getters for all public props
+	public $remTable = 'fileTable'; //TODO: set getters for all public props
 	public $remCT;
 	public $remClass;
 	protected $DefaultDir = IMAGESTARTID_DEFAULT;
@@ -72,15 +72,26 @@ class we_collection extends we_root{
 				$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_WEBUSER;
 			}
 		}
+
+		$this->remTable = 'tblFile'; // FIXME: remove when objects are implemented
 	}
 
 	public function getRemTable(){
-		return $this->remTable;
+		return 'tblFile'; // FIXME: make dynamic when objects are implemented
 	}
 
 	public function getRemCT(){
 		//FIXME: do not alloud to write ',' to db!
-		return $this->remCT === ',' ? '' : $this->remCT;
+		return !$this->remCT || $this->remCT === ',' ? ',' . implode(',', we_base_ContentTypes::inst()->getContentTypes(FILE_TABLE, true)) . ',' : $this->remCT;
+	}
+
+	public function getRealRemCT(){
+		$remCT = !$this->remCT || $this->remCT === ',' ? we_base_ContentTypes::inst()->getContentTypes(FILE_TABLE, true) : explode(',', trim($this->remCT, ' ,'));
+		foreach($remCT as $ct){
+			$remCT = array_merge($remCT, we_base_ContentTypes::inst()->getRealContentTypes($ct));
+		}
+
+		return ',' . implode(',', $remCT) . ',';
 	}
 
 	public function getRemClass(){
@@ -88,14 +99,14 @@ class we_collection extends we_root{
 	}
 
 	public function getCollection($asArray = false){
-		$coll = $this->remTable === stripTblPrefix(FILE_TABLE) ? $this->fileCollection : $this->objectCollection;
+		$coll = $this->getRemTable() === stripTblPrefix(FILE_TABLE) ? $this->fileCollection : $this->objectCollection;
 
 		return $asArray ? explode(',', trim($coll, ',')) : $coll;
 	}
 
 	// verify collection against remTable, remCT, remClass and ID
 	public function getValidCollection($skipEmpty = true, $full = false, $updateCollection = false){
-		if($this->remTable == stripTblPrefix(FILE_TABLE)){
+		if($this->getRemTable() === stripTblPrefix(FILE_TABLE)){
 			$activeCollectionName = 'fileCollection';
 			$fields = 'ID,Path,ContentType,Extension,Filename';
 			$table = FILE_TABLE;
@@ -122,7 +133,7 @@ class we_collection extends we_root{
 			}
 		}
 
-		if($full && $this->remTable == stripTblPrefix(FILE_TABLE)){
+		if($full && $this->getRemTable() === stripTblPrefix(FILE_TABLE)){
 			$verifiedItems = $this->setItemElements($verifiedItems);
 		}
 
@@ -151,7 +162,7 @@ class we_collection extends we_root{
 	}
 
 	public function setCollection($coll){
-		$collectionName = $this->remTable === stripTblPrefix(FILE_TABLE) ? 'fileCollection' : 'objectCollection';
+		$collectionName = $this->getRemTable() === stripTblPrefix(FILE_TABLE) ? 'fileCollection' : 'objectCollection';
 		$this->$collectionName = ',' . implode(',', $coll) . ',';
 	}
 
@@ -200,7 +211,8 @@ class we_collection extends we_root{
 	}
 
 	function formContent($fixedRemTable = false){
-		$fixedRemTable = true; $this->remCT = 'tblFiles'; // FIXME: remove this line when object collections are implemented
+		$fixedRemTable = true; 
+		$this->remTable = stripTblPrefix(FILE_TABLE); // FIXME: remove this line when object collections are implemented
 
 		$valsRemTable = array(
 			'tblFile' => g_l('navigation', '[documents]')
@@ -270,8 +282,8 @@ class we_collection extends we_root{
 				), '<i class="fa fa-lg fa-caret-left"></i>'));
 		$classTable->setCol(0, 2, null, $classListTo);
 
-		$selRemTable = $fixedRemTable && $this->remTable ? we_html_element::htmlHidden('we_' . $this->Name . '_remTable', $this->remTable) . we_html_element::htmlInput(array('disabled' => 1, 'name' => 'disabledField', 'value' => $valsRemTable[$this->remTable], 'width' => 382)) :
-			we_html_tools::htmlSelect('we_' . $this->Name . '_remTable', $valsRemTable, 1, $this->remTable, false, array('onchange' => 'document.getElementById(\'mimetype\').style.display=(this.value===\'tblFile\'?\'block\':\'none\');document.getElementById(\'classname\').style.display=(this.value===\'tblFile\'?\'none\':\'block\');', 'style' => 'margin-top: 5px;'), 'value');
+		$selRemTable = $fixedRemTable && $this->getRemTable() ? we_html_element::htmlHidden('we_' . $this->Name . '_remTable', $this->getRemTable()) . we_html_element::htmlInput(array('disabled' => 1, 'name' => 'disabledField', 'value' => $valsRemTable[$this->getRemTable()], 'width' => 382)) :
+			we_html_tools::htmlSelect('we_' . $this->Name . '_remTable', $valsRemTable, 1, $this->getRemTable(), false, array('onchange' => 'document.getElementById(\'mimetype\').style.display=(this.value===\'tblFile\'?\'block\':\'none\');document.getElementById(\'classname\').style.display=(this.value===\'tblFile\'?\'none\':\'block\');', 'style' => 'margin-top: 5px;'), 'value');
 
 
 		$dublettes = we_html_forms::checkboxWithHidden($this->IsDuplicates, 'we_' . $this->Name . '_IsDuplicates', g_l('weClass', '[collection][allowDuplicates]'));
@@ -281,12 +293,12 @@ class we_collection extends we_root{
 		$defDir = $this->formDirChooser(330, 0, FILE_TABLE, 'DefaultPath', 'DefaultDir', '', g_l('weClass', '[collection][label_defaultDir]'), false);
 
 		$html = $selRemTable .
-			'<div id="mimetype" class="collection_props-mime" style="' . ($this->remTable === 'tblObjectFiles' ? 'display:none' : 'display:block') . ';">' .
+			'<div id="mimetype" class="collection_props-mime" style="' . ($this->getRemTable() === 'tblObjectFiles' ? 'display:none' : 'display:block') . ';">' .
 			'<br/>' . g_l('weClass', '[collection][filter_contenttype]') . ':<br/>' .
 			we_html_element::htmlHidden('we_' . $this->Name . '_remCT', $this->remCT, 'we_remCT') .
 			$mimeTable->getHTML() .
 			'</div>
-		<div id="classname" class="collection_props-classes" style="' . ($this->remTable === 'tblObjectFiles' ? 'display:block' : 'display:none') . ';">' .
+		<div id="classname" class="collection_props-classes" style="' . ($this->getRemTable() === 'tblObjectFiles' ? 'display:block' : 'display:none') . ';">' .
 			(defined('OBJECT_TABLE') ? '<br/>' . g_l('weClass', '[collection][filter_class]') . ':<br/>' .
 				we_html_element::htmlHidden('we_' . $this->Name . '_remClass', $this->remClass, 'we_remClass') .
 				$classTable->getHTML() : '') .
@@ -307,7 +319,7 @@ class we_collection extends we_root{
 		//$callback = we_base_request::encCmd("if(WE().layout.weEditorFrameController.getEditorIfOpen('" . VFILE_TABLE . "', " . $this->ID . ", 1)){WE().layout.weEditorFrameController.getEditorIfOpen('" . VFILE_TABLE . "', " . $this->ID . ", 1).weCollectionEdit.insertImportedDocuments(scope.sender.resp.success)} top.close();");
 		$callback = we_base_request::encCmd("var fc, editorID, frame, ce; if((fc = WE().layout.weEditorFrameController) && (editorID = fc.getEditorIdOfOpenDocument('" . VFILE_TABLE . "', " . $this->ID . ")) && (fc.getEditorEditPageNr(editorID) == 1) && (frame = fc.getEditorFrame(editorID)) && (ce = frame.getContentEditor().weCollectionEdit)){ce.insertImportedDocuments(scope.sender.resp.success);} else {top.opener.top.console.debug('error: collection closed or changed tab');} top.close()");
 		$btnImport = we_fileupload_ui_importer::getBtnImportFiles($this->DefaultDir, $callback, 'btn_import_files_and_insert');
-		$addFromTreeButton = we_html_button::create_button("fa:btn_select_files, fa-lg fa-sitemap, fa-lg fa-angle-right, fa-lg fa-copy", "javascript:weCollectionEdit.doClickAddItems();", true, 58, 22, '', '', false, false, '', false, '', 'btn_addFromTree');
+		$addFromTreeButton = we_html_button::create_button("fa:btn_select_files, fa-lg fa-sitemap, fa-lg fa-angle-right, fa-lg fa-copy", "javascript:weCollectionEdit.doClickAddItems();", true, 62, 22, '', '', false, false, '', false, '', 'btn_addFromTree');
 
 		//TODO: use tables and some padding
 		$toolbar = new we_html_table(array(), 1, 7);
@@ -333,7 +345,7 @@ class we_collection extends we_root{
 				$file = array('docID' => $item['id'], 'Path' => $item['path'], 'ContentType' => isset($item['ct']) ? $item['ct'] : 'text/*', 'Extension' => $item['ext']);
 				$file['size'] = file_exists($_SERVER['DOCUMENT_ROOT'] . $file["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $file["Path"]) : 0;
 				$file['fileSize'] = we_base_file::getHumanFileSize($file['size']);
-				$item['icon'] = we_search_view::getHtmlIconThmubnail($file, 400, 400);
+				$item['icon'] = self::getHtmlIconThmubnail($file, 400, 400);
 			}
 
 			/*
@@ -415,11 +427,11 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 			$wecmdenc3 = we_base_request::encCmd($wecmd3);
 		}
 
-		$selectButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',(document.we_form.elements['" . $idname . "'].value != -1 ? document.we_form.elements['" . $idname . "'].value : " . $this->DefaultDir . "),'" . addTblPrefix($this->remTable) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "'," . (permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_OBJECTS') ? 0 : 1) . ")", true, 52, 0, '', '', false, false, '_' . $index);
-		$addFromTreeButton = we_html_button::create_button("fa:btn_select_files, fa-lg fa-sitemap, fa-lg fa-angle-right, fa-lg fa-copy", "javascript:weCollectionEdit.doClickAddItems(this);", true, 58, 22, '', '', false, false, '', false, '');
+		$selectButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',(document.we_form.elements['" . $idname . "'].value != -1 ? document.we_form.elements['" . $idname . "'].value : " . $this->DefaultDir . "),'" . addTblPrefix($this->getRemTable()) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "'," . (permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_OBJECTS') ? 0 : 1) . ")", true, 52, 0, '', '', false, false, '_' . $index);
+		$addFromTreeButton = we_html_button::create_button("fa:btn_select_files, fa-lg fa-sitemap, fa-lg fa-angle-right, fa-lg fa-copy", "javascript:weCollectionEdit.doClickAddItems(this);", true, 62, 22, '', '', false, false, '', false, '');
 		$editButton = we_html_button::create_button(we_html_button::EDIT, "javascript:weCollectionEdit.doClickOpenToEdit(" . $item['id'] . ", '" . $item['type'] . "');", true, 27, 22, '', '', ($item['id'] === -1), false, '', false, '', 'btn_edit');
 
-		$yuiSuggest->setTable(addTblPrefix($this->remTable));
+		$yuiSuggest->setTable(addTblPrefix($this->getRemTable()));
 		$yuiSuggest->setContentType('folder,' . trim($this->remCT, ','));
 		$yuiSuggest->setCheckFieldValue(false);
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
@@ -502,7 +514,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 
 		$trashButton = we_html_button::create_button('fa:btn_remove_from_collection,fa-lg fa-trash-o', "javascript:weCollectionEdit.doClickDelete(this);", true, 27, 22);
 		$editButton = we_html_button::create_button(we_html_button::EDIT, "javascript:weCollectionEdit.doClickOpenToEdit(" . $item['id'] . ", '" . $item['type'] . "');", true, 27, 22);
-		$selectButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',(document.we_form.elements['" . $idname . "'].value != -1 ? document.we_form.elements['" . $idname . "'].value : " . $this->DefaultDir . "),'" . addTblPrefix($this->remTable) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "',1)", true, 52, 0, '', '', false, false, '_' . $index);
+		$selectButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',(document.we_form.elements['" . $idname . "'].value != -1 ? document.we_form.elements['" . $idname . "'].value : " . $this->DefaultDir . "),'" . addTblPrefix($this->getRemTable()) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "',1)", true, 52, 0, '', '', false, false, '_' . $index);
 
 		// TODO: make fn for attribs: same structure as in list
 		$toolbar = we_html_element::htmlDiv(array('class' => 'toolbarLeft weMultiIconBoxHeadline'), '<span class="grid_label" id="label_' . $index . '">' . $index . '</span>') .
@@ -613,7 +625,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 
 		$itemsCsv = implode(',', array_keys($items));
 		$orCustomElement = ' OR (l.Name = "elemIMG" AND c.Dat != "") OR (l.Name = "elemIMG" AND c.BDID != 0)';
-		if($this->remTable == stripTblPrefix(FILE_TABLE)){
+		if($this->getRemTable() === stripTblPrefix(FILE_TABLE)){
 			$this->DB_WE->query('SELECT l.DID, l.Name, l.type, c.Dat, c.BDID FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID = c.ID
 				WHERE l.DocumentTable="tblFile" AND l.DID IN (' . rtrim($itemsCsv, ',') . ') AND ((l.type="attrib" AND l.Name IN ("title", "alt")) OR (l.type="txt" AND l.Name IN ("Title", "Description")) ' . $orCustomElement . ')'
 			);
@@ -747,7 +759,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 					'DocumentTable' => stripTblPrefix(VFILE_TABLE),
 					'type' => 'collection',
 					'remObj' => $remObj,
-					'remTable' => $this->remTable,
+					'remTable' => $this->getRemTable(),
 					'position' => $i++,
 			)));
 		}
@@ -803,15 +815,15 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		if(empty($IDs)){
 			return -1;
 		}
-		if($table && $table !== stripTblPrefix($this->remTable)){
+		if($table && $table !== stripTblPrefix($this->getRemTable())){
 			return -2;
 		}
 
 		$recursive = $recursive === -1 ? $this->InsertRecursive : $recursive;
 
 		if($checkWs && (empty($wspaces))){
-			if(($ws = get_ws($this->remTable))){
-				$wsPathArray = id_to_path($ws, $this->remTable, $this->DB_WE, false, true);
+			if(($ws = get_ws($this->getRemTable()))){
+				$wsPathArray = id_to_path($ws, $this->getRemTable(), $this->DB_WE, false, true);
 				foreach($wsPathArray as $path){
 					$wspaces[] = ' Path LIKE "' . $this->DB_WE->escape($path) . '/%" OR ' . getQueryParents($path);
 					while($path != '/' && $path != '\\' && $path){
@@ -819,7 +831,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 						$path = dirname($path);
 					}
 				}
-			} elseif(defined('OBJECT_FILES_TABLE') && $this->remTable == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
+			} elseif(defined('OBJECT_FILES_TABLE') && $this->getRemTable() === stripTblPrefix(OBJECT_FILES_TABLE) && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
 				$ac = we_users_util::getAllowedClasses($this->DB_WE);
 				foreach($ac as $cid){
 					$path = id_to_path($cid, OBJECT_TABLE);
@@ -832,7 +844,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 
 		$result = $resultRoot = $todo = array();
 
-		if($this->remTable === stripTblPrefix(OBJECT_FILES_TABLE)){
+		if($this->getRemTable() === stripTblPrefix(OBJECT_FILES_TABLE)){
 			$typeField = 'TableID';
 			$typeProp = 'remClass';
 			$whereType = $this->remClass ? 'AND TableID IN (' . trim($this->remClass, ',') . ',0) ' : '';
@@ -848,7 +860,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 
 		$resultIDsCsv = '';
 
-		$this->DB_WE->query('SELECT ID,ParentID,Path,ContentType,Extension' . $classField . ',' . $nameField . ' FROM ' . addTblPrefix($this->remTable) . ' WHERE ' . ($recursion === 0 ? 'ID' : 'ParentID') . ' IN (' . implode(',', $IDs) . ') ' . $whereType . 'AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ') ORDER BY Path ASC');
+		$this->DB_WE->query('SELECT ID,ParentID,Path,ContentType,Extension' . $classField . ',' . $nameField . ' FROM ' . addTblPrefix($this->getRemTable()) . ' WHERE ' . ($recursion === 0 ? 'ID' : 'ParentID') . ' IN (' . implode(',', $IDs) . ') ' . $whereType . 'AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ') ORDER BY Path ASC');
 		while($this->DB_WE->next_record()){
 			$data = $this->DB_WE->getRecord();
 			if(($recursive || $recursion === 0) && $data['ContentType'] === 'folder' && !isset($foldersDone[$data['ID']])){
@@ -864,7 +876,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 					$file = array('docID' => $data['ID'], 'Path' => $data['Path'], 'ContentType' => isset($data[$typeField]) ? $data[$typeField] : 'text/*', 'Extension' => $data['Extension']);
 					$file['size'] = file_exists($_SERVER['DOCUMENT_ROOT'] . $file["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $file["Path"]) : 0;
 					$file['fileSize'] = we_base_file::getHumanFileSize($file['size']);
-					$iconHTML = we_search_view::getHtmlIconThmubnail($file, 200, 200);
+					$iconHTML = self::getHtmlIconThmubnail($file, 200, 200);
 				}
 				//END
 				$resultIDsCsv .= $data['ID'] . ',';
@@ -901,6 +913,28 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		}
 
 		return $result;
+	}
+
+	public static function getHtmlIconThmubnail($file, $smallSize = 64, $bigSize = 140){ // FIXME: move this as static fn to some image utilities class (from we_search_view too)
+		$urlPopup = $url = '';
+		if($file["ContentType"] == we_base_ContentTypes::IMAGE){
+			if($file["size"] > 0){
+				$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $file["Path"]);
+				$url = WEBEDITION_DIR . 'thumbnail.php?id=' . $file["docID"] . "&size=" . $smallSize . "&path=" . urlencode($file["Path"]) . "&extension=" . $file["Extension"];
+				$imageView = '<img src="' . $url . '" border="0" /></a>';
+
+				$urlPopup = WEBEDITION_DIR . "thumbnail.php?id=" . $file["docID"] . "&size=" . $bigSize . "&path=" . $file["Path"] . "&extension=" . $file["Extension"];
+				$imageViewPopup = '<img src="' . $urlPopup . '" border="0" /></a>';
+			} else {
+				$imagesize = array(0, 0);
+				$imageView = $imageViewPopup = '<span class="resultIcon" data-contenttype="' . $file["ContentType"] . '" data-extension="' . $file['Extension'] . '"></span>';
+			}
+		} else {
+			$imagesize = array(0, 0);
+			$imageView = $imageViewPopup = '<span class="resultIcon" data-contenttype="' . $file["ContentType"] . '" data-extension="' . $file['Extension'] . '"></span>';
+		}
+
+		return array('imageView' => $imageView, 'imageViewPopup' => $imageViewPopup, 'sizeX' => $imagesize[0], 'sizeY' => $imagesize[1], 'url' => $url, 'urlPopup' => $urlPopup);
 	}
 
 	private static function isDragAndDrop(){

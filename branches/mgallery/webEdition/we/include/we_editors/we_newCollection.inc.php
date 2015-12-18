@@ -30,10 +30,10 @@ $name = we_base_request::_(we_base_request::STRING, 'we_name', '');
 $fixedPID = we_base_request::_(we_base_request::INT, 'fixedpid', -1);
 $fixedRemTable = we_base_request::_(we_base_request::STRING, 'fixedremtable', '');
 
-
 $collection->ParentID = $fixedPID !== -1 ? $fixedPID : we_base_request::_(we_base_request::INT, 'we_' . $name . '_ParentID', 0);
 $collection->ParentPath = id_to_path($collection->ParentID, $collection->Table);
-$collection->remTable = $fixedRemTable ? : we_base_request::_(we_base_request::STRING, 'we_' . $name . '_remTable');
+$collection->remTable = stripTblPrefix(FILE_TABLE); // FIXME: make dynamic when implementing object collections
+//$collection->remTable = $fixedRemTable ? : we_base_request::_(we_base_request::STRING, 'we_' . $name . '_remTable');
 
 $caller = we_base_request::_(we_base_request::STRING, 'caller');
 

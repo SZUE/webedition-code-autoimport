@@ -35,6 +35,7 @@ weCollectionEdit.we_doc = {
 	name: "' . $GLOBALS['we_doc']->Name. '",
 	remTable: "' . $GLOBALS['we_doc']->getRemTable() . '",
 	remCT: "' . $GLOBALS['we_doc']->getRemCT() . '",
+	realRemCT: "' . $GLOBALS['we_doc']->getRealRemCT() . '",
 	remClass: "' . $GLOBALS['we_doc']->getRemClass() . '"
 };
 
