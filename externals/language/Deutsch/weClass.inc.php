@@ -35,6 +35,8 @@ $l_weClass=array(
 		'collectionTitle'=>'Inhalt der Sammlung',
 		'contentDoesntMatch'=>'keines der ausgewählten Elemente entspricht dem Typ der Sammlung',
 		'dblClick_to_insert'=>'Doppelklick zum Einfügen eines leeren Eintrags',
+		'dd_nok'=>'<p><strong>Hinweis:</strong> Drag &amp; Drop wird von diesem Browser leider nicht unterstützt</p>',
+		'dd_ok'=>'<p><strong>Hinweis:</strong> Drag &amp; Drop ist in diesem Browser aktiviert</p>',
 		'filter_class'=>'Erlaubte Objekte auf folgende Klassen einschränken',
 		'filter_contenttype'=>'Erlaubte Dokumente auf folgende Typen einschränken',
 		'infoAddFiles'=>'Eingefügt: ##INS##\nAls Dubletten abgewiesen: ##REJ##\n\nWeitere Elemente können aufgrund unpassender Klassen bzw. MIME-Typen abgewiesen worden sein.',
@@ -44,6 +46,7 @@ Als Duplikate verworfen: %s
 
 Nicht aufgeführt: Elemente die nicht zu Sammlung passen.',
 		'label_defaultDir'=>'Standardverzeichnis der Sammlungselemente',
+		'long_description'=>'<strong>Sammlungen bearbeiten:</strong><p>Dokumente können mit den Dateiwählern auf leeren Elementen oder per Drag &amp; Drop ausgewählt werden. Beim D&amp;D vom Tree auf das Element können einzelne Dokumente wie auch ganze Verzeichnisse (optional auch rekursiv) gezogen werden. In der Icon-Ansicht lassen sich per D&amp;D auch Dokumente zwischen die bestenden Elemente eingefügen.<br/>Einzelne Dokumente können ebenfalls direkt von der Festplatte gezogen werden: Dabei öffnet sich der passende Upload-Dialog und das neu angelegte Dokument wird automatisch in die Sammlung gesetzt.</p><p>Im Kopfbereich der Sammlung befindet sich ein Upload-Button zum Öffnen des Datei-Imports: Importierte Dokumente werden ans Ende der Sammlung angehängt. Nutzen sie den Button &quot;Dateien aus dem Tree einfügen&quot;, um mehrere Dateien im Tree auszuwählen und ans Ende der Sammlung anzuhängen.<p></p>Das Sortieren geschieht in der Icon-Ansicht per D&amp;D, in der Listen-Ansicht per D&amp;D oder mittels der Sortierbuttons.</p>',
 		'notSet'=>'nicht gesetzt',
 		'not_set'=>'delete!',
 		'number'=>'Anzahl',

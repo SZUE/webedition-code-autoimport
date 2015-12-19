@@ -35,6 +35,8 @@ $l_weClass=array(
 		'collectionTitle'=>'Content of the collection',
 		'contentDoesntMatch'=>'none of the items selected does matche the collection`s content types',
 		'dblClick_to_insert'=>'Doubleclick to insert new entry',
+		'dd_nok'=>'',
+		'dd_ok'=>'',
 		'filter_class'=>'Permit objects of the following classes only',
 		'filter_contenttype'=>'Permit documents of the following content types only',
 		'infoAddFiles'=>'Inserted: ##INS##\nAs duplicates rejected: ##REJ##\n\nOther items may have been rejecected because of inapropriate class/mime type.',
@@ -44,6 +46,7 @@ Rejected as duplicate: %s
 
 Not shown: elements not matching the content type of the collection.',
 		'label_defaultDir'=>'Default directory for this collection`s elements',
+		'long_description'=>'',
 		'notSet'=>'not set',
 		'not_set'=>'delete!',
 		'number'=>'Number',
