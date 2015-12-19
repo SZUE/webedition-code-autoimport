@@ -67,7 +67,7 @@ function submitForm(target,action,method) {
 		$weShopStatusMails = we_shop_statusMails::getShopStatusMails();
 
 		// Get Country and Langfield Data
-		$this->CLFields = we_unserialize(f('SELECT strFelder FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_CountryLanguage"', '', $this->db), array(
+		$this->CLFields = we_unserialize(f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_CountryLanguage"', '', $this->db), array(
 			'stateField' => '-',
 			'stateFieldIsISO' => 0,
 			'languageField' => '-',
