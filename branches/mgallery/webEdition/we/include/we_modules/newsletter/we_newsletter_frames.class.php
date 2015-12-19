@@ -325,7 +325,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 							, g_l('modules_newsletter', '[show_log]'), we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();")
 						)
 					)
-				));
+		));
 	}
 
 	/*
@@ -1885,7 +1885,7 @@ function postSelectorSelect(wePssCmd) {
 			g_l('global', '[from]') .
 			$anz;
 
-		$nextprev->setCol(0, 2, array("class" => "defaultfont", 'style' => 'padding-right:10px;'), we_html_element::htmlB($colcontent));
+		$nextprev->setCol(0, 1, array("class" => "defaultfont", 'style' => 'padding-right:10px;'), we_html_element::htmlB($colcontent));
 
 
 		$colcontent = (($offset + $numRows) < $anz ?
@@ -1893,7 +1893,7 @@ function postSelectorSelect(wePssCmd) {
 				we_html_button::create_button(we_html_button::NEXT, "#", false, 100, 22, "", "", true)
 			);
 
-		$nextprev->setCol(0, 3, array(), $colcontent);
+		$nextprev->setCol(0, 2, array(), $colcontent);
 
 		if(!empty($emails)){
 			$add = we_html_button::create_button(we_html_button::PLUS, "javascript:editEmailFile(" . count($emails) . ",'','','','','','')");
@@ -1901,12 +1901,11 @@ function postSelectorSelect(wePssCmd) {
 
 			$nextprev->addCol(3);
 
-			$nextprev->setCol(0, 5, array("class" => "defaultfont", 'style' => 'padding-left:20px;'), we_html_element::htmlB(g_l('modules_newsletter', '[show]')) . " " . we_html_tools::htmlTextInput("numRows", 5, $numRows)
+			$nextprev->setCol(0, 3, array("class" => "defaultfont", 'style' => 'padding-left:20px;'), we_html_element::htmlB(g_l('modules_newsletter', '[show]')) . " " . we_html_tools::htmlTextInput("numRows", 5, $numRows)
 			);
 			$selectStatus = we_html_element::htmlB(g_l('modules_newsletter', '[status]')) . " " . we_html_tools::htmlSelect("weEmailStatus", array(g_l('modules_newsletter', '[statusAll]'), g_l('modules_newsletter', '[statusInvalid]')), "", we_base_request::_(we_base_request::RAW, 'weEmailStatus', 0), "", array("onchange" => 'listFile();'), "value", 150);
-			$nextprev->setCol(0, 6, array("class" => "defaultfont", 'style' => 'padding-left:20px;'), $selectStatus);
-			$nextprev->setCol(0, 7, array("class" => "defaultfont", 'style' => 'padding-left:20px;'), $add
-			);
+			$nextprev->setCol(0, 4, array("class" => "defaultfont", 'style' => 'padding-left:20px;'), $selectStatus);
+			$nextprev->setCol(0, 5, array("class" => "defaultfont", 'style' => 'padding-left:20px;'), $add);
 
 			$out = $nextprev->getHtml() .
 				we_html_tools::htmlDialogBorder3(850, 300, $content, $headlines) .
@@ -2138,7 +2137,7 @@ function initControl(){
 self.focus();');
 
 
-		echo $this->getHTMLDocument(we_html_element::htmlBody(array('style'=>'margin:10px;',"onload" => "initControl()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHiddens(array(
+		echo $this->getHTMLDocument(we_html_element::htmlBody(array('style' => 'margin:10px;', "onload" => "initControl()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHiddens(array(
 						"nid" => $nid,
 						"pnt" => "send_cmd",
 						"test" => $test,

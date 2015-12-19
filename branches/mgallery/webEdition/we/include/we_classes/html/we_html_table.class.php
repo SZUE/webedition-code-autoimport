@@ -138,6 +138,13 @@ class we_html_table extends we_html_baseCollection{
 			$this->addRow();
 		}
 		$col = $this->getChild($rowid)->getChild($colid);
+		if(!$col){
+			t_e('not enough cols defined');
+			while(!$col){
+				$this->addCol(1);
+				$col = $this->getChild($rowid)->getChild($colid);
+			}
+		}
 		$col->setAttributes($attribs);
 		$col->setContent($content);
 	}
@@ -210,7 +217,7 @@ class we_html_table extends we_html_baseCollection{
 				} else {
 					$col = $row->getChild($j);
 					if(!is_object($col)){
-						t_e($col,$j,$row);
+						t_e($col, $j, $row);
 						continue;
 					}
 					if(in_array('colspan', array_keys($col->attribs))){
