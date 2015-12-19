@@ -234,8 +234,8 @@ class we_collection extends we_root{
 			}
 		}
 		$this->remCT = $tmpRemCT;
-		$mimeListFrom = we_html_tools::htmlSelect('mimeListFrom', $unselectedMime, 13, '', true, array("id" => "mimeListFrom", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['mimeListFrom'],this.form['mimeListTo'],true, 'document');"), 'value', 184);
-		$mimeListTo = we_html_tools::htmlSelect('mimeListTo', $selectedMime, 13, '', true, array("id" => "mimeListTo", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['mimeListTo'],this.form['mimeListFrom'],true, 'document');"), 'value', 184);
+		$mimeListFrom = we_html_tools::htmlSelect('mimeListFrom', $unselectedMime, 13, '', true, array("id" => "mimeListFrom", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['mimeListFrom'],this.form['mimeListTo'],true, 'document');"), 'value', 175);
+		$mimeListTo = we_html_tools::htmlSelect('mimeListTo', $selectedMime, 13, '', true, array("id" => "mimeListTo", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['mimeListTo'],this.form['mimeListFrom'],true, 'document');"), 'value', 175);
 		$mimeTable = new we_html_table(array('class' => 'collection_props-mime default'), 1, 3);
 		$mimeTable->setCol(0, 0, array(), $mimeListFrom);
 		$mimeTable->setCol(0, 1, array('style' => 'text-align:center;vertical-align:middle'), we_html_element::htmlA(array(
@@ -282,15 +282,16 @@ class we_collection extends we_root{
 				), '<i class="fa fa-lg fa-caret-left"></i>'));
 		$classTable->setCol(0, 2, null, $classListTo);
 
-		$selRemTable = $fixedRemTable && $this->getRemTable() ? we_html_element::htmlHidden('we_' . $this->Name . '_remTable', $this->getRemTable()) . we_html_element::htmlInput(array('disabled' => 1, 'name' => 'disabledField', 'value' => $valsRemTable[$this->getRemTable()], 'width' => 382)) :
-			we_html_tools::htmlSelect('we_' . $this->Name . '_remTable', $valsRemTable, 1, $this->getRemTable(), false, array('onchange' => 'document.getElementById(\'mimetype\').style.display=(this.value===\'tblFile\'?\'block\':\'none\');document.getElementById(\'classname\').style.display=(this.value===\'tblFile\'?\'none\':\'block\');', 'style' => 'margin-top: 5px;'), 'value');
+		$selRemTable = ($fixedRemTable && $this->getRemTable() ? we_html_element::htmlHidden('we_' . $this->Name . '_remTable', $this->getRemTable()) . we_html_element::htmlInput(array('disabled' => 1, 'name' => 'disabledField', 'value' => $valsRemTable[$this->getRemTable()], 'width' => 356)) :
+			we_html_tools::htmlSelect('we_' . $this->Name . '_remTable', $valsRemTable, 1, $this->getRemTable(), false, array('onchange' => 'document.getElementById(\'mimetype\').style.display=(this.value===\'tblFile\'?\'block\':\'none\');document.getElementById(\'classname\').style.display=(this.value===\'tblFile\'?\'none\':\'block\');', 'style' => 'margin-top: 5px;'), 'value')) .
+				we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[collection][selector_remTable]'), we_html_tools::TYPE_INFO, false, false);
 
 
 		$dublettes = we_html_forms::checkboxWithHidden($this->IsDuplicates, 'we_' . $this->Name . '_IsDuplicates', g_l('weClass', '[collection][allowDuplicates]'));
 
 		$this->DefaultDir = $this->DefaultDir ? : (IMAGESTARTID_DEFAULT ? : 0);
 		$this->DefaultPath = $this->DefaultDir ? id_to_path($this->DefaultDir, FILE_TABLE) : '';
-		$defDir = $this->formDirChooser(330, 0, FILE_TABLE, 'DefaultPath', 'DefaultDir', '', g_l('weClass', '[collection][label_defaultDir]'), false);
+		$defDir = $this->formDirChooser(360, 0, FILE_TABLE, 'DefaultPath', 'DefaultDir', '', g_l('weClass', '[collection][label_defaultDir]'), false);
 
 		$html = $selRemTable .
 			'<div id="mimetype" class="collection_props-mime" style="' . ($this->getRemTable() === 'tblObjectFiles' ? 'display:none' : 'display:block') . ';">' .
@@ -391,8 +392,9 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 " .
 			$jsStorageItems;
 
-		//TODO: make reasonable texts here...
-		$attentionText = self::isDragAndDrop() ? 'Drag n\' drop enabled in this browser' : (we_base_browserDetect::isOpera() ? 'Drag n\' drop is not yet optimized for Opera 12: temporarily disabled!' : 'sorry, no drag n\' drop in your browse');
+		$longtext = g_l('weClass', '[collection][long_description]');
+		$ddtext = self::isDragAndDrop() ? g_l('weClass', '[collection][dd_ok]') : (we_base_browserDetect::isOpera() ? 'Drag n\' drop is not yet optimized for Opera 12: temporarily disabled!' : g_l('weClass', '[collection][dd_nok]'));
+
 
 		return we_html_element::jsElement($this->jsFormCollection) .
 			we_html_element::htmlHiddens(array(
@@ -402,7 +404,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 				'we_' . $this->Name . '_objectCollection' => $this->objectCollection)) .
 			we_html_element::htmlDiv(array('class' => 'weMultiIconBoxHeadline collection-head'), g_l('weClass', '[collection][collectionTitle]')) .
 			//we_html_element::htmlDiv(array('class' => 'collection-head'), we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[collection][attentionBox]'), we_html_tools::TYPE_INFO, 680)) .
-			we_html_element::htmlDiv(array('class' => 'collection-head'), we_html_tools::htmlAlertAttentionBox($attentionText, we_html_tools::TYPE_INFO, 680)) .
+			we_html_element::htmlDiv(array('class' => 'collection-head'), we_html_tools::htmlAlertAttentionBox($longtext . $ddtext, we_html_tools::TYPE_INFO, 850, false, 29)) .
 			we_html_element::htmlDiv(array('class' => 'collection-toolbar'), $toolbar->getHtml()) .
 			we_html_element::htmlDiv(array('id' => 'content_div_list', 'class' => 'collection-content', 'style' => 'display:' . ($this->view === 'grid' ? 'none' : 'block')), $rows) .
 			we_html_element::htmlDiv(array('id' => 'content_div_grid', 'class' => 'collection-content', 'style' => 'display:' . ($this->view === 'grid' ? 'inline-block' : 'none')));
