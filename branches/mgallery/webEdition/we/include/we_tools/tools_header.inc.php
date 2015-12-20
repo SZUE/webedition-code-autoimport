@@ -84,6 +84,6 @@ echo we_tabs::getHeader();
 		}
 
 	}
-	weTabs.setFrameSize();
+
 	//-->
 </script>
