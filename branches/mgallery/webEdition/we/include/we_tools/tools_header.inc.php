@@ -82,7 +82,6 @@ echo we_tabs::getHeader();
 			current = tool;
 			top.content.location.replace(WE().consts.dirs.WE_INCLUDES_DIR + "we_tools/tools_content.php?tool=" + tool);
 		}
-
 	}
 
 	//-->
