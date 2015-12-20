@@ -188,7 +188,7 @@ abstract class we_rebuild_wizard{
 
 		$parts[] = array(
 			'headline' => '',
-			'html' => we_html_forms::radiobutton('rebuild_medialinks', ($type === 'rebuild_medialinks' && true), 'type', 'Media-Links neu schreiben', true, 'defaultfont', '', false, 'langer Text', 0, 495),
+			'html' => we_html_forms::radiobutton('rebuild_medialinks', ($type === 'rebuild_medialinks' && true), 'type', g_l('rebuild', '[media_links]'), true, 'defaultfont', '', false, g_l('rebuild', '[txt_media_links]'), 0, 495),
 			'space' => 0
 		);
 

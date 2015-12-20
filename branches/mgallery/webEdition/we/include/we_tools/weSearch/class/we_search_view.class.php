@@ -433,6 +433,7 @@ WE().consts.weSearch= {
 							0 => g_l('searchtool', '[all]'),
 							1 => g_l('searchtool', '[only_unsed]'),
 							2 => g_l('searchtool', '[only_unused]')), 1, isset($currentSearch[$n]) ? $currentSearch[$n] : '', false, array(), 'value', 220));
+				$_table->setCol(0, 3,array(), we_html_tools::htmlAlertAttentionBox(g_l('searchtool', '[media_do_rebuild]'), we_html_tools::TYPE_INFO, false, false));
 
 				$_table->setCol(1, 0, array(), g_l('searchtool', '[protection]') . ': ');
 				$_table->setCol(1, 1, array('colspan' => 2), we_html_element::htmlHiddens(array(
