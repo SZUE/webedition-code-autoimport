@@ -263,7 +263,7 @@ function we_cmd() {
 		}
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;'), we_html_element::htmlIFrame('edheader', $this->frameset . '&pnt=edheader&home=' . $home . '&mid=' . $mid . $yearView . '&bid=' . $bid, '', '', '', false, 'editorHeader') .
+				we_html_element::htmlBody(array('class' => 'moduleEditor'), we_html_element::htmlIFrame('edheader', $this->frameset . '&pnt=edheader&home=' . $home . '&mid=' . $mid . $yearView . '&bid=' . $bid, '', '', '', false, 'editorHeader') .
 					we_html_element::htmlIFrame('edbody', $bodyURL . '&pnt=edbody', 'bottom: 0px;', 'border:0px;width:100%;height:100%;', '', true, 'editorBody')
 				)
 		);
