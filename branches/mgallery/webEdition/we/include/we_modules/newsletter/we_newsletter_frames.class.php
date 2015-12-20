@@ -52,7 +52,7 @@ class we_newsletter_frames extends we_modules_frame{
 			case 'qsave1':
 				return;
 			default:
-				echo parent::getHTMLDocumentHeader();
+				return parent::getHTMLDocumentHeader();
 		}
 	}
 
