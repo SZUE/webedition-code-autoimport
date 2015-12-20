@@ -1818,82 +1818,24 @@ self.focus();
 			}
 		}
 
-		$js = $this->View->getJSProperty() .
-			we_html_element::jsElement('
-self.focus();
-function editEmailFile(eid,email,htmlmail,salutation,title,firstname,lastname){
-	new (WE().util.jsWindow)(window, "' . $this->frameset . '&pnt=eemail&eid="+eid+"&etyp=2&email="+email+"&htmlmail="+htmlmail+"&salutation="+salutation+"&title="+title+"&firstname="+firstname+"&lastname="+lastname,"edit_email",-1,-1,430,270,true,true,true,true);
-}
-
-function setAndSave(eid,email,htmlmail,salutation,title,firstname,lastname){
-	var fr=document.we_form;
-	fr.nrid.value=eid;
-	fr.email.value=email;
-	fr.htmlmail.value=htmlmail;
-	fr.salutation.value=salutation;
-	fr.title.value=title;
-	fr.firstname.value=firstname;
-	fr.lastname.value=lastname;
-	fr.ncmd.value="save_email_file";
-	submitForm("edit_file");
-}
-
-function listFile(){
-	var fr=document.we_form;
-	fr.nrid.value="";
-	fr.email.value="";
-	fr.htmlmail.value="";
-	fr.salutation.value="";
-	fr.title.value="";
-	fr.firstname.value="";
-	fr.lastname.value="";
-	fr.offset.value=0;
-	submitForm("edit_file");
-}
-
-function delEmailFile(eid,email){
-	var fr=document.we_form;
-	if(confirm(sprintf("' . g_l('modules_newsletter', '[del_email_file]') . '",email))){
-		fr.nrid.value=eid;
-		fr.ncmd.value="delete_email_file";
-		submitForm("edit_file");
-	}
-}
-
-function postSelectorSelect(wePssCmd) {
-	switch(wePssCmd) {
-		case "selectFile":
-			listFile();
-			break;
-	}
-}
-');
-
+		$js = $this->View->getJSProperty('self.focus();');
 
 		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close()");
 		$edit = we_html_button::create_button(we_html_button::SAVE, "javascript:listFile()");
 		$nextprev = new we_html_table(array('class' => 'default'), 1, 4);
 
-		$colcontent = ($offset ?
+		$nextprev->setCol(0, 0, array('style' => 'padding-right:10px;'), ($offset ?
 				we_html_button::create_button(we_html_button::BACK, "javascript:document.we_form.offset.value=" . ($offset - $numRows) . ";submitForm('edit_file');") :
-				we_html_button::create_button(we_html_button::BACK, "#", false, 100, 22, "", "", true));
+				we_html_button::create_button(we_html_button::BACK, "#", false, 100, 22, "", "", true)));
 
-		$nextprev->setCol(0, 0, array('style' => 'padding-right:10px;'), $colcontent);
+		$nextprev->setCol(0, 1, array("class" => "defaultfont", 'style' => 'padding-right:10px;'), we_html_element::htmlB(( $anz ? $offset + 1 : 0 ) . "-" . (($anz - $offset) < $numRows ? $anz : $offset + $numRows) .
+				g_l('global', '[from]') .
+				$anz));
 
-
-		$colcontent = ( $anz ? $offset + 1 : 0 ) . "-" . (($anz - $offset) < $numRows ? $anz : $offset + $numRows) .
-			g_l('global', '[from]') .
-			$anz;
-
-		$nextprev->setCol(0, 1, array("class" => "defaultfont", 'style' => 'padding-right:10px;'), we_html_element::htmlB($colcontent));
-
-
-		$colcontent = (($offset + $numRows) < $anz ?
+		$nextprev->setCol(0, 2, array(), (($offset + $numRows) < $anz ?
 				we_html_button::create_button(we_html_button::NEXT, "javascript:document.we_form.offset.value=" . ($offset + $numRows) . ";submitForm('edit_file');") :
 				we_html_button::create_button(we_html_button::NEXT, "#", false, 100, 22, "", "", true)
-			);
-
-		$nextprev->setCol(0, 2, array(), $colcontent);
+		));
 
 		if(!empty($emails)){
 			$add = we_html_button::create_button(we_html_button::PLUS, "javascript:editEmailFile(" . count($emails) . ",'','','','','','')");

@@ -668,3 +668,50 @@ function setFocus() {
 function setScrollTo() {
 	parent.scrollToVal = pageYOffset;
 }
+
+function editEmailFile(eid, email, htmlmail, salutation, title, firstname, lastname) {
+	new (WE().util.jsWindow)(window, "' . $this->frameset . '&pnt=eemail&eid=" + eid + "&etyp=2&email=" + email + "&htmlmail=" + htmlmail + "&salutation=" + salutation + "&title=" + title + "&firstname=" + firstname + "&lastname=" + lastname, "edit_email", -1, -1, 430, 270, true, true, true, true);
+}
+
+function setAndSave(eid, email, htmlmail, salutation, title, firstname, lastname) {
+	var fr = document.we_form;
+	fr.nrid.value = eid;
+	fr.email.value = email;
+	fr.htmlmail.value = htmlmail;
+	fr.salutation.value = salutation;
+	fr.title.value = title;
+	fr.firstname.value = firstname;
+	fr.lastname.value = lastname;
+	fr.ncmd.value = "save_email_file";
+	submitForm("edit_file");
+}
+
+function listFile() {
+	var fr = document.we_form;
+	fr.nrid.value = "";
+	fr.email.value = "";
+	fr.htmlmail.value = "";
+	fr.salutation.value = "";
+	fr.title.value = "";
+	fr.firstname.value = "";
+	fr.lastname.value = "";
+	fr.offset.value = 0;
+	submitForm("edit_file");
+}
+
+function postSelectorSelect(wePssCmd) {
+	switch (wePssCmd) {
+		case "selectFile":
+			listFile();
+			break;
+	}
+}
+
+function delEmailFile(eid, email) {
+	var fr = document.we_form;
+	if (confirm(WE().util.sprintf(WE().consts.g_l.newsletter.del_email_file, email))) {
+		fr.nrid.value = eid;
+		fr.ncmd.value = "delete_email_file";
+		submitForm("edit_file");
+	}
+}
