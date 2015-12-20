@@ -143,11 +143,16 @@ abstract class we_tool_lookup{
 
 	static function getJsCmdInclude(array &$includes){
 		$_tools = self::getAllTools(true, true);
-		ob_start();
+		$cmd = '';
+		//ob_start();
 		foreach($_tools as $_tool){
+			$cmd.='	 case "tool_' . $_tool['name'] . '_edit":
+ 			new new (WE().util.jsWindow)(window,url,"tool_window",-1,-1,970,760,true,true,true,true);
+		break;
+';
+
 			switch($_tool['name']){
 				case 'weSearch':
-				case 'navigation':
 					$path = WE_INCLUDES_DIR . 'we_tools/';
 					break;
 				default:
@@ -156,13 +161,12 @@ abstract class we_tool_lookup{
 			$path.=$_tool['name'] . '/hook/we_jsCmdHook_' . $_tool['name'];
 			if(file_exists($_SERVER['DOCUMENT_ROOT'] . $path . '.js')){
 				$includes['tool_' . $_tool['name']] = $path . '.js';
-			} elseif(file_exists($_SERVER['DOCUMENT_ROOT'] . $path . '.inc.php')){
-				include( $_SERVER['DOCUMENT_ROOT'] . $path . '.inc.php');
 			}
 		}
+
 		return 'function we_cmd_tools(args,url) {
 	switch (args[0]) {
-		' . ob_get_clean() . '
+		' . $cmd . '
 		default:
 			return false;
 	}
