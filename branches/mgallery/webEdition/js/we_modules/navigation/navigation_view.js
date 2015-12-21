@@ -110,7 +110,7 @@ function we_cmd() {
 			if (top.content.editor.edbody.loaded) {
 				q = (args[0] === "populate" ?
 								WE().consts.g_l.navigation.view.populate_question :
-								WE().consts.g_l.navigation.viewdepopulate_question);
+								WE().consts.g_l.navigation.view.depopulate_question);
 
 				if (confirm(q)) {
 					top.content.editor.edbody.document.we_form.pnt.value = "edbody";
