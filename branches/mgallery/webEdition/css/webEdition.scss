@@ -93,7 +93,8 @@ span.infobox{
 	}
 }
 i{
-	&.fa-ban{
+	&.fa-ban,
+	&.fa-cancel{
 		color:red;
 	}
 
@@ -101,9 +102,6 @@ i{
 		color:green;
 	}
 
-	&.fa-cancel{
-		color:red;
-	}
 	&.disabled{
 		color:grey;
 	}
