@@ -55,9 +55,11 @@ function do_confirm() {
 	?>
 	<form action="<?php echo WE_MESSAGING_MODULE_DIR; ?>todo_update.php" name="update_todo_form" method="post">
 		<?php
-		echo we_html_tools::hidden('we_transaction', $transaction) .
-		we_html_tools::hidden('rcpts_string', '') .
-		we_html_tools::hidden('mode', we_base_request::_(we_base_request::STRING,'mode'));
+		echo we_html_element::htmlHiddens(array(
+			'we_transaction' => $transaction,
+			'rcpts_string' => '',
+			'mode' => we_base_request::_(we_base_request::STRING, 'mode')
+		));
 
 		$prio = $compose->get_priority();
 		$parts = array(

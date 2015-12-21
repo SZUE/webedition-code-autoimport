@@ -55,7 +55,7 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 				$we_response_type = we_message_reporting::WE_MESSAGE_NOTICE;
 				$we_show_response = 1;
 				$we_JavaScript = 'opener.top.makefocus = self;' .
-					we_main_headermenu::getMenuReloadCode();
+						we_main_headermenu::getMenuReloadCode();
 			} else {
 				echo "ERROR";
 			}
@@ -152,9 +152,17 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 $yuiSuggest = & weSuggest::getInstance();
 echo we_html_tools::getHtmlTop(g_l('weClass', '[doctypes]')) .
  weSuggest::getYuiFiles() .
- we_html_element::jsScript(JS_DIR . 'doctypeEdit.js');
+ we_html_element::jsScript(JS_DIR . 'doctypeEdit.js') .
+ STYLESHEET;
 ?>
 <script><!--
+	var countSaveLoop = 0;
+	WE().consts.g_l.doctypeEdit = {
+		newDocTypeName: "<?php echo g_l('weClass', '[newDocTypeName]'); ?>",
+		doctype_hochkomma: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[doctype_hochkomma]')); ?>",
+		doctype_empty: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[doctype_empty]')); ?>",
+		doctype_exists: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[doctype_exists]')); ?>",
+	};
 <?php
 if(isset($we_JavaScript)){
 	echo $we_JavaScript . ';';
@@ -171,9 +179,9 @@ switch($wecmd0){
 			break;
 		}
 		?>
-		if (confirm("<?php printf(g_l('weClass', '[doctype_delete_prompt]'), $we_doc->DocType); ?>")) {
-			we_cmd("deleteDocTypeok", "<?php echo we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1); ?>");
-		}
+			if (confirm("<?php printf(g_l('weClass', '[doctype_delete_prompt]'), $we_doc->DocType); ?>")) {
+				we_cmd("deleteDocTypeok", "<?php echo we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1); ?>");
+			}
 		<?php
 		break;
 	case "deleteDocTypeok":
@@ -184,17 +192,8 @@ switch($wecmd0){
 $GLOBALS['DB_WE']->query('SELECT CONCAT("\'",REPLACE(dt.DocType,"\'","\\\\\'"),"\'") FROM ' . DOC_TYPES_TABLE . ' dt ORDER BY dt.DocType');
 echo 'var docTypeNames = [' . implode(',', $GLOBALS['DB_WE']->getAll(true)) . '];';
 ?>
-
-var countSaveLoop = 0;
-WE().consts.g_l.doctypeEdit = {
-	newDocTypeName: "<?php echo g_l('weClass', '[newDocTypeName]'); ?>",
-	doctype_hochkomma: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[doctype_hochkomma]')); ?>",
-	doctype_empty: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[doctype_empty]')); ?>",
-	doctype_exists: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[doctype_exists]')); ?>",
-};
 //-->
 </script>
-<?php echo STYLESHEET; ?>
 </head>
 
 <body class="weDialogBody" onunload="doUnload()" onload="self.focus();">
@@ -233,8 +232,8 @@ WE().consts.g_l.doctypeEdit = {
 		$cancelbut = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();if(top.opener.we_cmd){top.opener.we_cmd('switch_edit_page',0);}");
 
 		$buttons = ($we_doc->ID ?
-				we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save_docType', '" . $we_transaction . "')"), "", $cancelbut) :
-				'<div style="text-align:right">' . $cancelbut . '</div>');
+						we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save_docType', '" . $we_transaction . "')"), "", $cancelbut) :
+						'<div style="text-align:right">' . $cancelbut . '</div>');
 
 
 		echo we_html_multiIconBox::getJS() .

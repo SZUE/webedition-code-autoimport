@@ -293,7 +293,7 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
 
-	function printNewDocumentHTML(){
+	/*function printNewDocumentHTML(){
 		echo '<script><!--
 top.clearEntries();
 top.makeNewDocument = true;' .
@@ -301,7 +301,7 @@ top.makeNewDocument = true;' .
 		$this->printCMDWriteAndFillSelectorHTML() . '
 //-->
 </script>';
-	}
+	}*/
 
 	protected function printFooterTable($more = null){
 		$ret = '

@@ -52,7 +52,7 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]')) .
 
 	function selectRecipient() {
 		var rs = encodeURI(document.compose_form.mn_recipients.value);
-		new (WE().util.jsWindow)(window, "<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_usel.php?we_transaction=<?php echo $transaction; ?>&maxsel=1&rs=" + rs, "messaging_usel", -1, -1, 530, 420, true, false, true, false);
+		new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "messaging_usel.php?we_transaction=<?php echo $transaction; ?>&maxsel=1&rs=" + rs, "messaging_usel", -1, -1, 530, 420, true, false, true, false);
 	}
 
 	function do_send() {
@@ -72,15 +72,18 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]')) .
 
 <body class="weDialogBody" <?php echo ($mode === 'reject' ? '' : 'onload="document.compose_form.mn_subject.focus()"') ?> onunload="doUnload();">
 	<?php
-	if($mode === 'forward'){
-		$compose = new we_messaging_format('forward', $messaging->selected_message);
-		$heading = g_l('modules_messaging', '[forward_todo]');
-	} else if($mode === 'reject'){
-		$compose = new we_messaging_format('reject', $messaging->selected_message);
-		$heading = g_l('modules_messaging', '[reject_todo]');
-	} else {
-		$compose = new we_messaging_format('new');
-		$heading = g_l('modules_messaging', '[new_todo]');
+	switch($mode){
+		case 'forward':
+			$compose = new we_messaging_format('forward', $messaging->selected_message);
+			$heading = g_l('modules_messaging', '[forward_todo]');
+			break;
+		case 'reject':
+			$compose = new we_messaging_format('reject', $messaging->selected_message);
+			$heading = g_l('modules_messaging', '[reject_todo]');
+			break;
+		default:
+			$compose = new we_messaging_format('new');
+			$heading = g_l('modules_messaging', '[new_todo]');
 	}
 	$compose->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 	?>

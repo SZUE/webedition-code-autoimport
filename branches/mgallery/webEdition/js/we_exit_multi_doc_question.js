@@ -47,7 +47,7 @@ function setHotDocuments() {
 			if (_hotDocumentsOfCt[ct][i].getEditorDocumentText()) {
 				liPathElem.innerHTML = _hotDocumentsOfCt[ct][i].getEditorDocumentPath();
 			} else {
-				liPathElem.innerHTML = "<em>" + g_l.untitled + "</em>";
+				liPathElem.innerHTML = "<em>" + WE().consts.g_l.main.untitled + "</em>";
 			}
 
 			ulCtElem.appendChild(liPathElem);

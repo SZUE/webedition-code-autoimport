@@ -31,6 +31,13 @@ function we_cmd() {
 	}
 }
 
+function startMultiEditor() {
+	WE().layout.multiTabs = new TabView(this.document);
+	var args = ['start_multi_editor'];
+	we_cmd.apply(this, args.concat(Array.prototype.slice.call(arguments)));
+}
+
+
 //--------------------------------------------------------------------
 // CLASS:
 //   EditorFrameController

@@ -43,23 +43,24 @@ if(we_base_request::_(we_base_request::BOOL, 'save')){
 	</body>
 	</html>
 	<?php
-} else {
-	?>
-	<script><!--
-		function save_settings() {
-			document.search_adv.submit();
-		}
-		//-->
-	</script>
-	</head>
-	<body class="weDialogBody">
-		<form action="<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_search_advanced.php" name="search_adv" >
-			<?php
-			echo we_html_element::htmlHiddens(array(
-				"we_transaction"=>we_base_request::_(we_base_request::TRANSACTION, 'we_transaction'),
-				"save"=>1));
+	exit();
+}
+?>
+<script><!--
+	function save_settings() {
+		document.search_adv.submit();
+	}
+	//-->
+</script>
+</head>
+<body class="weDialogBody">
+	<form action="<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_search_advanced.php" name="search_adv" >
+		<?php
+		echo we_html_element::htmlHiddens(array(
+			"we_transaction" => we_base_request::_(we_base_request::TRANSACTION, 'we_transaction'),
+			"save" => 1));
 
-			$table = '<table cellpadding="10">
+		$table = '<table cellpadding="10">
 <tr>
     <td style="vertical-align:top" class="defaultfont lowContrast">' . g_l('modules_messaging', '[to_search_fields]') . '</td>
     <td><select name="search_fields[]" size="3" multiple>
@@ -74,14 +75,11 @@ if(we_base_request::_(we_base_request::BOOL, 'save')){
     </td>
 </table>';
 
-			$_buttontable = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:save_settings();"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close()"));
+		$_buttontable = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:save_settings();"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close()"));
 
-			echo we_html_tools::htmlDialogLayout($table, "", $_buttontable, "90%");
-			?>
+		echo we_html_tools::htmlDialogLayout($table, "", $_buttontable, "90%");
+		?>
 
-		</form>
-	</body>
-	</html>
-
-	<?php
-}
+	</form>
+</body>
+</html>

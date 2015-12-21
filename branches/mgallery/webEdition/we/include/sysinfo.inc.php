@@ -293,32 +293,10 @@ $_parts[] = array(
 	'html' => '<a href="javascript:showPhpInfo();">' . g_l('sysinfo', '[more_info]') . '&hellip;</a>',
 	'space' => 10
 );
-echo we_html_tools::getHtmlTop(g_l('sysinfo', '[sysinfo]'));
+echo we_html_tools::getHtmlTop(g_l('sysinfo', '[sysinfo]'), '', '', STYLESHEET .
+		we_html_element::jsScript(JS_DIR . 'sysinfo.js')
+);
 ?>
-<script><!--
-	function closeOnEscape() {
-		return true;
-	}
-
-	function showPhpInfo() {
-		document.getElementById("info").style.display = "none";
-		document.getElementById("more").style.display = "block";
-		document.getElementById("phpinfo").src = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=phpinfo";
-	}
-
-	function showInfoTable() {
-		document.getElementById("info").style.display = "block";
-		document.getElementById("more").style.display = "none";
-	}
-//-->
-</script>
-
-<?php
-echo STYLESHEET;
-?>
-
-</head>
-
 <body class="weDialogBody" style="overflow:hidden;" onload="self.focus();">
 	<div id="info" style="display: block;">
 		<?php
