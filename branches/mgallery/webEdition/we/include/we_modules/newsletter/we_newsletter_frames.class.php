@@ -1809,7 +1809,7 @@ self.focus();
 						"align" => "left",
 					),
 					array(
-						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "icons/" . (we_check_email($cols[0]) ? "valid.gif" : "invalid.gif")))),
+						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), '<i class="fa fa-lg ' . (we_check_email($cols[0]) ? 'fa-ok fa-check' : 'fa-cancel fa-close' ) . '"></i>'),
 						"height" => "",
 						"align" => "center",
 					)
