@@ -510,6 +510,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 					);
 
 			switch($showAttrOnly){
+				default:
 				case 'src':
 				case 'alt':
 				case 'width':
@@ -523,8 +524,6 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 					return $this->Extension;
 				case 'parentpath':
 					return $this->getParentPath();
-				default:
-					break;
 			}
 
 			if((!empty($href)) && $inc_href){ //  use link with rollover
