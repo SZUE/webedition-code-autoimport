@@ -100,12 +100,7 @@ if($object && $object['ID']){
 
 	if($triggerDocPath){// now we hav an object and an trigger document
 		//remove all cookies from Request String if set (if not, cookies are exposed on listviews etc & max interfer with given Cookies)
-		if(stristr('C', ini_get('request_order') ? : ini_get('variables_order'))){
-			//unset all cookies from request
-			foreach(array_keys($_COOKIE) as $name){
-				unset($_REQUEST[$name]);
-			}
-		}
+		$_REQUEST = array_merge($_GET, $_POST);
 
 		//get query string if there
 		$urlQueryString = array();
