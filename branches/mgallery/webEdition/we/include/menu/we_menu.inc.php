@@ -362,6 +362,7 @@ $we_menu = array(
 		'perm' => 'SAVE_COLLECTION',
 		'hide' => $seeMode || !we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION)
 	),
+
 	array(// File > add to collection > documents
 		'text' => g_l('javaMenu_global', '[documents]'),
 		'parent' => 'file_addcoll',
@@ -374,7 +375,7 @@ $we_menu = array(
 		'parent' => 'file_addcoll',
 		'cmd' => 'add_objectfiles_to_collection',
 		'perm' => 'SAVE_COLLECTION',
-		'hide' => !defined('OBJECT_TABLE') || ($_SESSION['weS']['we_mode'] != we_base_constants::MODE_NORMAL) || !we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION)
+		'hide' => true, //!defined('OBJECT_TABLE') || ($_SESSION['weS']['we_mode'] != we_base_constants::MODE_NORMAL) || !we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION)
 	),
 	array(// separator
 		'parent' => 'file'

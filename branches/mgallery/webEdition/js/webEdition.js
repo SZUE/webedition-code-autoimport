@@ -168,11 +168,11 @@ function treeResized() {
 }
 
 var oldTreeWidth = WE().consts.size.tree.defaultWidth;
-function toggleTree() {
+function toggleTree(setVisible) {
 	var tfd = self.document.getElementById("treeFrameDiv");
 	var w = top.getTreeWidth();
 
-	if (tfd.style.display === "none") {
+	if (setVisible || (tfd.style.display === "none" && setVisible !== false)) {
 		oldTreeWidth = (oldTreeWidth < WE().consts.size.tree.min ? WE().consts.size.tree.defaultWidth : oldTreeWidth);
 		setTreeWidth(oldTreeWidth);
 		tfd.style.display = "block";
@@ -722,7 +722,7 @@ function we_cmd_base(args, url) {
 			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
 			break;
 		case "we_selector_image":
-		case "we_selector_document":
+		case "we_selector_document":top.console.log('yep', args);
 			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "we_fileupload_editor":
@@ -1106,7 +1106,7 @@ function we_cmd_base(args, url) {
 				}
 				self.document.getElementById("bm_treeheaderDiv").style.height = "150px";
 				self.document.getElementById("treetable").style.top = "150px";
-
+				top.toggleTree(true);
 				var width = top.getTreeWidth();
 
 				widthBeforeDeleteMode = width;
@@ -1143,7 +1143,7 @@ function we_cmd_base(args, url) {
 				}
 				self.document.getElementById("bm_treeheaderDiv").style.height = "160px";
 				self.document.getElementById("treetable").style.top = "160px";
-
+				top.toggleTree(true);
 				var width = top.getTreeWidth();
 
 				widthBeforeDeleteMode = width;
@@ -1175,7 +1175,7 @@ function we_cmd_base(args, url) {
 				}
 				self.document.getElementById("bm_treeheaderDiv").style.height = "205px";
 				self.document.getElementById("treetable").style.top = "205px";
-
+				top.toggleTree(true);
 				var width = top.getTreeWidth();
 				widthBeforeDeleteMode = width;
 				if (width < WE().consts.size.tree.moveWidth) {
