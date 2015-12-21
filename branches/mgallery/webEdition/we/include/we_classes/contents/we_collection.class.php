@@ -871,7 +871,6 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 				$foldersDone[] = $data['ID'];
 			}
 
-
 			if($data['ContentType'] !== 'folder'){
 				//if((!$this->$typeProp || in_array($data[$typeField], explode(',', $this->$typeProp))) && $data['ContentType'] !== 'folder'){
 				//IMI:TEST ==> get icon from some fn!
@@ -884,13 +883,12 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 				}
 				//END
 				$resultIDsCsv .= $data['ID'] . ',';
-
 				if($data['ParentID'] == 0){
 					if($returnFull){
 						$resultRoot[$data['ID']] = array_merge($this->getEmptyItem(), array('id' => $data['ID'], 'path' => $data['Path'], 'ext' => $data['Extension'], 'ct' => $data[$typeField], 'name' => $data[$nameField]));
 						$resultRoot[$data['ID']]['icon'] = $iconHTML;
 					} else {
-						$data['ID'];
+						$resultRoot[] = $data['ID'];
 					}
 				} else {
 					$result[$data['Path']] = array_merge($this->getEmptyItem(), array('id' => $data['ID'], 'path' => $data['Path'], 'ext' => $data['Extension'], 'ct' => $data[$typeField], 'name' => $data[$nameField]));
@@ -913,7 +911,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 			foreach($result as $res){
 				$tmpResult[$res['id']] = $returnFull ? $res : $res['id'];
 			}
-			$result = array_merge($this->setItemElements(($tmpResult + $resultRoot)));
+			$result = $returnFull ? array_merge($this->setItemElements(($tmpResult + $resultRoot))) : $tmpResult + $resultRoot;
 		}
 
 		return $result;

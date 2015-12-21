@@ -434,14 +434,14 @@ abstract class we_root extends we_class{
 		return !we_users_util::isUserInUsers($_SESSION['user']['ID'], $readers);
 	}
 
-	public function formPath($disablePath = false){
+	public function formPath($disablePath = false, $notSetHot = false){
 		$disable = ( ($this->ContentType == we_base_ContentTypes::HTML || $this->ContentType == we_base_ContentTypes::WEDOCUMENT) && $this->Published);
 		if($this->ContentType === we_base_ContentTypes::HTACESS){
 			$vals = we_base_ContentTypes::inst()->getExtension($this->ContentType, true);
 			$this->Filename = $this->Filename ? : current($vals);
 			$filenameinput = $this->formSelectFromArray('', 'Filename', array_combine($vals, $vals), g_l('weClass', '[filename]'));
 		} else {
-			$filenameinput = $this->formInputField('', 'Filename', g_l('weClass', '[filename]'), 30, 0, 255, 'onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);if(self.pathOfDocumentChanged){pathOfDocumentChanged();}"');
+			$filenameinput = $this->formInputField('', 'Filename', g_l('weClass', '[filename]'), 30, 0, 255, 'onchange="' . ($notSetHot ? '' : 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true); ') . 'if(self.pathOfDocumentChanged){pathOfDocumentChanged();}"');
 		}
 		return $disable ? ($this->Path) : '
 <table class="default">

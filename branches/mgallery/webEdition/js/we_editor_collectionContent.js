@@ -421,7 +421,7 @@ weCollectionEdit = {
 
 		div = document.createElement("div");
 		blank = t.blankItem[t.view].replace(/##INDEX##/g, t.maxIndex).replace(/##ID##/g, item.id).replace(/##PATH##/g, item.path).
-						replace(/##CT##/g, item.ct).replace(/##ICONURL##/g, item.icon.url.replace('%2F', '/')).
+						replace(/##CT##/g, item.ct).replace(/##ICONURL##/g, (item.icon ? item.icon.url.replace('%2F', '/') : '')).
 						replace(/##ATTRIB_TITLE##/g, item.elements.attrib_title.Dat).replace(/##S_ATTRIB_TITLE##/g, item.elements.attrib_title.state).
 						replace(/##ATTRIB_ALT##/g, item.elements.attrib_alt.Dat).replace(/##S_ATTRIB_ALT##/g, item.elements.attrib_alt.state).
 						replace(/##META_TITLE##/g, item.elements.meta_title.Dat).replace(/##S_META_TITLE##/g, item.elements.meta_title.state).
@@ -466,7 +466,9 @@ weCollectionEdit = {
 				blank = blank.replace(/##SHOWBTN##/g, 'none');
 			}
 			div.innerHTML = blank;
-			div.getElementsByClassName('divContent')[0].style.backgroundSize = Math.max(item.icon.sizeX, item.icon.sizeY) < this.gridItemDimension.item ? 'auto' : 'contain';
+			if(item.icon){
+				div.getElementsByClassName('divContent')[0].style.backgroundSize = Math.max(item.icon.sizeX, item.icon.sizeY) < this.gridItemDimension.item ? 'auto' : 'contain';
+			}
 
 			if (item.ct !== 'image/*' && item.id !== -1) {
 				elPreview = div.getElementsByClassName('divInner')[0];
