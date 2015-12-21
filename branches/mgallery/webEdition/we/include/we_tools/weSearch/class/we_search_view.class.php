@@ -126,11 +126,11 @@ WE().consts.g_l.weSearch = {
 				$this->Model->prepareModelForSearch();
 				$this->Model->setIsFolder(/* $cmd == 'tool_weSearch_new_group' ? 1 : */ 0);
 
-				/*echo we_html_element::jsElement(
+				echo we_html_element::jsElement(
 						$this->editorHeaderFrame . '.location="' . $this->frameset . '&pnt=edheader' .
 						($tab !== 0 ? '&tab=' . $tab : '') .
 						'&text=' . urlencode($this->Model->Text) . '";' .
-						$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');*/
+						$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');
 				break;
 
 			case 'tool_weSearch_edit' : // get model from db

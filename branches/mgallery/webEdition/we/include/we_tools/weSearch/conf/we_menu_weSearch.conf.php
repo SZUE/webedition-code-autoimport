@@ -54,7 +54,7 @@ return array(
 	),
 	array(
 		'text' => g_l('searchtool', '[forMedia]'),
-		'parent' => 200,
+		'parent' => 'new',
 		'cmd' => 'tool_' . $metaInfo['name'] . '_new_forMedia',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
 		'enabled' => 1,
