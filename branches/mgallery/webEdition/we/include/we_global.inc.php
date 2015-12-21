@@ -975,7 +975,7 @@ function we_templateHead($fullHeader = false){
 	echo ($fullHeader ? we_html_element::htmlDocType() . '<html><head><title>WE</title>' . we_html_tools::htmlMetaCtCharset($GLOBALS['CHARSET']) : '') .
 	we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();parent.openedWithWE=true;') .
 	STYLESHEET_MINIMAL .
-	weSuggest::getYuiFiles() .
+	weSuggest::getYuiFiles();
 	require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 	if($fullHeader){
 		echo '</head><body onload="doScrollTo();" onunload="doUnload()">';
@@ -1147,6 +1147,10 @@ function we_unserialize($string, $default = array(), $quiet = false){
 	//std-serialized data by php
 	if(preg_match('|^[asO]:\d+:|', $string)){
 		$ret = @unserialize($string);
+		//unserialize failed, we try to eliminate \r which seems to be a cause for this
+		if(!$ret && strlen($string) > 6){
+			$ret = @unserialize(str_replace("\r", '', $string));
+		}
 		return ($ret === false ? $default : $ret);
 	}
 	//json data

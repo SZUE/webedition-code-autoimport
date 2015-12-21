@@ -25,7 +25,6 @@
 /* the parent class of storagable webEdition classes */
 
 class we_shop_view extends we_modules_view{
-
 	var $db;
 	var $frameset;
 	var $topFrame;
@@ -35,19 +34,19 @@ class we_shop_view extends we_modules_view{
 
 	function getJSTop(){//TODO: is this shop-code or a copy paste from another module?
 		return parent::getJSTop() .
-				we_html_element::jsElement('
+			we_html_element::jsElement('
 WE().consts.g_l.shop={
 	no_perms:"' . we_message_reporting::prepareMsgForJS(g_l('modules_shop', '[no_perms]')) . '",
 	nothing_to_save:"' . we_message_reporting::prepareMsgForJS(g_l('modules_shop', '[nothing_to_save]')) . '",
 	nothing_to_delete:"' . we_message_reporting::prepareMsgForJS(g_l('modules_shop', '[nothing_to_delete]')) . '",
-	delete_alert:"'.g_l('modules_shop', '[delete_alert]') .'",
+	delete_alert:"' . g_l('modules_shop', '[delete_alert]') . '",
 };') .
-				we_html_element::jsScript(JS_DIR . 'we_modules/shop/we_shop_view.js');
+			we_html_element::jsScript(JS_DIR . 'we_modules/shop/we_shop_view.js');
 	}
 
 	function getJSProperty(){
 		return parent::getJSProperty() .
-				we_html_element::jsElement('
+			we_html_element::jsElement('
 function submitForm(target,action,method) {
 	var f = self.document.we_form;
 	f.target =  (target?target:"edbody");
@@ -55,7 +54,7 @@ function submitForm(target,action,method) {
 	f.method = (method?method:"post");
 	f.submit();
 }') .
-				we_html_element::jsScript(JS_DIR . 'we_modules/shop/we_shop_property.js');
+			we_html_element::jsScript(JS_DIR . 'we_modules/shop/we_shop_property.js');
 	}
 
 	function getProperties(){
@@ -145,7 +144,7 @@ function submitForm(target,action,method) {
 				$tmpDoc = we_unserialize(f('SELECT strSerial FROM ' . SHOP_TABLE . ' WHERE IntID=' . $article, '', $this->db));
 				if($tmpDoc){
 					$tmpDoc[WE_SHOP_VAT_FIELD_NAME] = $_REQUEST['vat'];
-					$this->db->query('UPDATE ' . SHOP_TABLE . ' SET strSerial="' . $this->db->escape(we_serialize($tmpDoc)) . '" WHERE IntID=' . $article);
+					$this->db->query('UPDATE ' . SHOP_TABLE . ' SET strSerial="' . $this->db->escape(we_serialize($tmpDoc, 'json')) . '" WHERE IntID=' . $article);
 				}
 			}
 		}
@@ -342,7 +341,7 @@ function submitForm(target,action,method) {
 				<th style="height:25px;padding-right:15px;">' . g_l('modules_shop', '[Beschreibung]') . '</th>
 				<th style="height:25px;padding-right:15px;">' . g_l('modules_shop', '[Preis]') . '</th>
 				<th style="height:25px;padding-right:15px;">' . g_l('modules_shop', '[Gesamt]') . '</th>' .
-					($calcVat ? '<th height="25">' . g_l('modules_shop', '[mwst]') . '</th>' : '' ) . '
+				($calcVat ? '<th height="25">' . g_l('modules_shop', '[mwst]') . '</th>' : '' ) . '
 			</tr>';
 
 
@@ -353,10 +352,10 @@ function submitForm(target,action,method) {
 
 				// now init each article
 				$shopArticleObject = (empty($Serial[$i]) ? // output 'document-articles' if $Serial[$d] is empty. This is when an order has been extended
-								// this should not happen any more
-								we_shop_Basket::getserial($currentArticle, we_shop_shop::DOCUMENT) :
-								// output if $Serial[$i] is not empty. This is when a user ordered an article online
-								we_unserialize($Serial[$i]));
+						// this should not happen any more
+						we_shop_Basket::getserial($currentArticle, we_shop_shop::DOCUMENT) :
+						// output if $Serial[$i] is not empty. This is when a user ordered an article online
+						we_unserialize($Serial[$i]));
 
 				if($shopArticleObject === false){
 					t_e('Error in DB-data', $currentArticle, $Serial[$i]);
@@ -365,10 +364,10 @@ function submitForm(target,action,method) {
 
 				// now determine VAT
 				$articleVat = (isset($shopArticleObject[WE_SHOP_VAT_FIELD_NAME]) ?
-								$shopArticleObject[WE_SHOP_VAT_FIELD_NAME] :
-								((isset($mwst)) ?
-										$mwst :
-										0));
+						$shopArticleObject[WE_SHOP_VAT_FIELD_NAME] :
+						((isset($mwst)) ?
+							$mwst :
+							0));
 
 				// determine taxes - correct price, etc.
 				$Price[$i]/=($pricesAreNet || $calcVat ? 1 : (100 + $articleVat) / 100);
@@ -399,7 +398,7 @@ function submitForm(target,action,method) {
 			<td class="shopContentfontR">' . "<a href=\"javascript:var preis = prompt('" . g_l('modules_shop', '[jsbetrag]') . "','" . $Price[$i] . "'); if(preis != null ){if(preis.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . "}else{document.location='" . $this->frameset . "&pnt=edbody&bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&preis=' + preis; } }\">" . we_base_util::formatNumber($Price[$i]) . "</a>" . $waehr . '</td>
 			<td></td>
 			<td class="shopContentfontR">' . we_base_util::formatNumber($articlePrice) . $waehr . '</td>' .
-						($calcVat ? '<td></td><td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = prompt('" . g_l('modules_shop', '[keinezahl]') . "','" . $articleVat . "'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location='" . $this->frameset . "&pnt=edbody&bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&vat=' + vat; } }\">" . we_base_util::formatNumber($articleVat) . "</a>" . '%)</td>' : '') . '
+					($calcVat ? '<td></td><td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = prompt('" . g_l('modules_shop', '[keinezahl]') . "','" . $articleVat . "'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location='" . $this->frameset . "&pnt=edbody&bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&vat=' + vat; } }\">" . we_base_util::formatNumber($articleVat) . "</a>" . '%)</td>' : '') . '
 			<td>' . we_html_button::create_button(we_html_button::TRASH, "javascript:check=confirm('" . g_l('modules_shop', '[jsloeschen]') . "'); if (check){document.location.href='" . $this->frameset . "&pnt=edbody&bid=" . $_REQUEST["bid"] . "&deleteaarticle=" . $tblOrdersId[$i] . "';}", true, 100, 22, "", "", !permissionhandler::hasPerm("DELETE_SHOP_ARTICLE")) . '</td>
 		</tr>';
 				// if this article has custom fields or is a variant - we show them in a extra rows
@@ -638,7 +637,7 @@ var bid =' . we_base_request::_(we_base_request::INT, 'bid', 0) . ';
 var cid =' . we_base_request::_(we_base_request::INT, 'cid', 0) . ';
 
 ' . (isset($alertMessage) ?
-							we_message_reporting::getShowMessageCall($alertMessage, $alertType) : '')
+					we_message_reporting::getShowMessageCall($alertMessage, $alertType) : '')
 			) .
 			we_html_element::jsScript(JS_DIR . 'we_modules/shop/we_shop_view2.js');
 			?>
@@ -751,7 +750,7 @@ function CalendarChanged(calObject) {
 						$wedocCategory = ((isset($serialDoc['we_wedoc_Category'])) ? $serialDoc['we_wedoc_Category'] : $serialDoc['wedoc_Category']);
 						$stateField = we_shop_vatRule::getStateField();
 						$billingCountry = !empty($orderArray[WE_SHOP_CART_CUSTOMER_FIELD][$stateField]) ?
-								$orderArray[WE_SHOP_CART_CUSTOMER_FIELD][$stateField] : we_shop_category::getDefaultCountry();
+							$orderArray[WE_SHOP_CART_CUSTOMER_FIELD][$stateField] : we_shop_category::getDefaultCountry();
 
 						$shopVat = we_shop_category::getShopVatByIdAndCountry((!empty($serialDoc[WE_SHOP_CATEGORY_FIELD_NAME]) ? $serialDoc[WE_SHOP_CATEGORY_FIELD_NAME] : 0), $wedocCategory, $billingCountry);
 					} elseif(isset($serialDoc[WE_SHOP_VAT_FIELD_NAME])){
@@ -769,18 +768,18 @@ function CalendarChanged(calObject) {
 					// now insert article to order:
 					$row = getHash('SELECT IntOrderID, IntCustomerID, DateOrder, DateShipping, Datepayment, IntPayment_Type FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . we_base_request::_(we_base_request::INT, 'bid'), $this->db);
 					$this->db->query('INSERT INTO ' . SHOP_TABLE . ' SET ' .
-							we_database_base::arraySetter((array(
-								'IntArticleID' => $id,
-								'IntQuantity' => we_base_request::_(we_base_request::FLOAT, 'anzahl', 0),
-								'Price' => we_base_util::std_numberformat(self::getFieldFromShoparticle($serialDoc, $pricename)),
-								'IntOrderID' => $row['IntOrderID'],
-								'IntCustomerID' => $row['IntCustomerID'],
-								'DateOrder' => $row['DateOrder'],
-								'DateShipping' => $row['DateShipping'],
-								'Datepayment' => $row['Datepayment'],
-								'IntPayment_Type' => $row['IntPayment_Type'],
-								'strSerial' => we_serialize($serialDoc),
-								'strSerialOrder' => $_strSerialOrder
+						we_database_base::arraySetter((array(
+							'IntArticleID' => $id,
+							'IntQuantity' => we_base_request::_(we_base_request::FLOAT, 'anzahl', 0),
+							'Price' => we_base_util::std_numberformat(self::getFieldFromShoparticle($serialDoc, $pricename)),
+							'IntOrderID' => $row['IntOrderID'],
+							'IntCustomerID' => $row['IntCustomerID'],
+							'DateOrder' => $row['DateOrder'],
+							'DateShipping' => $row['DateShipping'],
+							'Datepayment' => $row['Datepayment'],
+							'IntPayment_Type' => $row['IntPayment_Type'],
+							'strSerial' => we_serialize($serialDoc, 'json'),
+							'strSerialOrder' => $_strSerialOrder
 					))));
 				} else {
 					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true));
@@ -797,9 +796,9 @@ function CalendarChanged(calObject) {
 
 				// first get all shop documents
 				$this->db->query('SELECT c.dat AS shopTitle, l.DID AS documentId FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID JOIN ' . FILE_TABLE . ' f ON f.ID=l.DID WHERE l.Name="' . WE_SHOP_TITLE_FIELD_NAME . '" AND l.DocumentTable!="tblTemplates" ' .
-						(we_base_request::_(we_base_request::BOOL, 'searchArticle') ?
-								' AND c.Dat LIKE "%' . $this->db->escape($_REQUEST['searchArticle']) . '%"' :
-								'')
+					(we_base_request::_(we_base_request::BOOL, 'searchArticle') ?
+						' AND c.Dat LIKE "%' . $this->db->escape($_REQUEST['searchArticle']) . '%"' :
+						'')
 				);
 
 				while($this->db->next_record()){
@@ -811,9 +810,9 @@ function CalendarChanged(calObject) {
 					foreach($this->classIds as $_classId){
 						$_classId = intval($_classId);
 						$this->db->query('SELECT o.input_' . WE_SHOP_TITLE_FIELD_NAME . ' AS shopTitle, o.OF_ID as objectId FROM ' . OBJECT_X_TABLE . $_classId . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON o.OF_ID=of.ID ' .
-								(we_base_request::_(we_base_request::BOOL, 'searchArticle') ?
-										' WHERE ' . OBJECT_X_TABLE . $_classId . '.input_' . WE_SHOP_TITLE_FIELD_NAME . '  LIKE "%' . $this->db->escape($searchArticle) . '%"' :
-										'')
+							(we_base_request::_(we_base_request::BOOL, 'searchArticle') ?
+								' WHERE ' . OBJECT_X_TABLE . $_classId . '.input_' . WE_SHOP_TITLE_FIELD_NAME . '  LIKE "%' . $this->db->escape($searchArticle) . '%"' :
+								'')
 						);
 
 						while($this->db->next_record()){
@@ -836,12 +835,12 @@ function CalendarChanged(calObject) {
 				$end_entry = (($page * $MAX_PER_PAGE + $MAX_PER_PAGE < $AMOUNT_ARTICLES) ? ($page * $MAX_PER_PAGE + $MAX_PER_PAGE) : $AMOUNT_ARTICLES );
 
 				$backBut = ($start_entry - $MAX_PER_PAGE > 0 ?
-								we_html_button::create_button(we_html_button::BACK, 'javascript:switchEntriesPage(' . ($page - 1) . ');') :
-								we_html_button::create_button(we_html_button::BACK, '#', true, 100, 22, '', '', true));
+						we_html_button::create_button(we_html_button::BACK, 'javascript:switchEntriesPage(' . ($page - 1) . ');') :
+						we_html_button::create_button(we_html_button::BACK, '#', true, 100, 22, '', '', true));
 
 				$nextBut = (($end_entry) < $AMOUNT_ARTICLES ?
-								we_html_button::create_button(we_html_button::NEXT, 'javascript:switchEntriesPage(' . ($page + 1) . ');') :
-								we_html_button::create_button(we_html_button::NEXT, '#', true, 100, 22, '', '', true));
+						we_html_button::create_button(we_html_button::NEXT, 'javascript:switchEntriesPage(' . ($page + 1) . ');') :
+						we_html_button::create_button(we_html_button::NEXT, '#', true, 100, 22, '', '', true));
 
 
 				$shopArticlesSelect = $shopArticlesParts[$page];
@@ -870,7 +869,7 @@ function CalendarChanged(calObject) {
 
 				$parts = array(
 					($AMOUNT_ARTICLES > 0 ?
-							array(
+						array(
 						'headline' => g_l('modules_shop', '[Artikel]'),
 						'space' => 100,
 						'html' => '
@@ -886,12 +885,12 @@ function CalendarChanged(calObject) {
 			</tr>
 			</table>',
 						'noline' => 1
-							) :
-							array(
+						) :
+						array(
 						'headline' => g_l('modules_shop', '[Artikel]'),
 						'space' => 100,
 						'html' => g_l('modules_shop', '[add_article][empty_articles]')
-							)
+						)
 					)
 				);
 
@@ -1064,7 +1063,7 @@ function CalendarChanged(calObject) {
 					if($this->updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', we_serialize($serialOrder))){
 						//TODO: check JS-adress!!
 						$jsCmd = 'top.opener.top.content.tree.doClick(' . $_REQUEST['bid'] . ',"shop","' . SHOP_TABLE . '");' .
-								we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_success]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_NOTICE);
+							we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_success]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_NOTICE);
 					} else {
 						$jsCmd = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_error]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_ERROR);
 					}
@@ -1289,21 +1288,21 @@ function CalendarChanged(calObject) {
 			case 'new_raw':
 				$this->raw = new weShop();
 				echo we_html_element::jsElement(
-						'top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
-						'top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";'
+					'top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
+					'top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";'
 				);
 				break;
 			case 'edit_raw':
 				$this->raw = new weShop($_REQUEST['cmdid']);
 				echo we_html_element::jsElement(
-						'top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
-						'top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";'
+					'top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
+					'top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";'
 				);
 				break;
 			case 'save_raw':
 				if($this->raw->filenameNotValid()){
 					echo we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('modules_shop', '[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR)
+						we_message_reporting::getShowMessageCall(g_l('modules_shop', '[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					break;
 				}
@@ -1315,7 +1314,7 @@ function CalendarChanged(calObject) {
 				//$ttrow = getHash('SELECT * FROM ' . RAW_TABLE . ' WHERE ID=' . intval($this->raw->ID), $this->db);
 				$tt = addslashes($tt ? : $this->raw->Text);
 				$js = ($newone ?
-								'
+						'
 var attribs = {
  id:"' . $this->raw->ID . '",
  typ:"item",
@@ -1326,11 +1325,11 @@ var attribs = {
 };
 top.content.treeData.addSort(new top.content.node(attribs));
 top.content.drawTree();' :
-								'top.content.treeData.updateEntry({id:' . $this->raw->ID . ',text:"' . $tt . '"});'
-						);
+						'top.content.treeData.updateEntry({id:' . $this->raw->ID . ',text:"' . $tt . '"});'
+					);
 				echo we_html_element::jsElement(
-						$js .
-						we_message_reporting::getShowMessageCall(g_l('modules_shop', '[raw_saved_ok]'), we_message_reporting::WE_MESSAGE_NOTICE)
+					$js .
+					we_message_reporting::getShowMessageCall(g_l('modules_shop', '[raw_saved_ok]'), we_message_reporting::WE_MESSAGE_NOTICE)
 				);
 				break;
 			case 'delete_raw':
@@ -1340,8 +1339,8 @@ top.content.drawTree();' :
 				$this->raw = new weShop();
 
 				echo we_html_element::jsElement(
-						$js .
-						we_message_reporting::getShowMessageCall(g_l('modules_shop', '[raw_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE)
+					$js .
+					we_message_reporting::getShowMessageCall(g_l('modules_shop', '[raw_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE)
 				);
 				break;
 			case 'switchPage':
@@ -1378,8 +1377,8 @@ top.content.drawTree();' :
 		$val = ( isset($array['we_' . $name]) ? $array['we_' . $name] : (isset($array[$name]) ? $array[$name] : '' ) );
 
 		return ($length && ($length < strlen($val)) ?
-						substr($val, 0, $length) . '...' :
-						$val);
+				substr($val, 0, $length) . '...' :
+				$val);
 	}
 
 	private function getOrderCustomerData($orderId, array $strFelder = array()){
@@ -1432,7 +1431,7 @@ top.content.drawTree();' :
 
 
 		$content = we_html_button::create_button("pref_shop", "javascript:top.opener.top.we_cmd('pref_shop');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")) . '<br/>' .
-				we_html_button::create_button("payment_val", "javascript:top.opener.top.we_cmd('payment_val');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")) . '<br/>';
+			we_html_button::create_button("payment_val", "javascript:top.opener.top.we_cmd('payment_val');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")) . '<br/>';
 		if(($resultD) && $resultO){ //docs and objects
 			$content.= we_html_button::create_button("quick_rev", "javascript:top.content.editor.location='" . $this->frameset . "&pnt=editor&top=1&typ=document '", true) . '<br/>';
 		} elseif((!$resultD) && $resultO){ // no docs but objects

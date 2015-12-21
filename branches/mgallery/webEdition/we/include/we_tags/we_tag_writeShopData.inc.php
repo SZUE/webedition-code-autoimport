@@ -121,7 +121,7 @@ function we_tag_writeShopData($attribs){
 					'DateOrder' => sql_function('NOW()'),
 					'DateShipping' => 0,
 					'Datepayment' => 0,
-					'strSerial' => we_serialize($shoppingItem['serial']),
+					'strSerial' => we_serialize($shoppingItem['serial'], 'json'),
 					'shopname' => $shopname
 			)))){
 
