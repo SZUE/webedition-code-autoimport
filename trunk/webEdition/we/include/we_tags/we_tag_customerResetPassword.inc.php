@@ -38,6 +38,7 @@ function checkPwds($pwRegex){
 
 function checkRequired(array $required, array $loadFields, $emailfield = '', $internal = false){
 	if(!$required){
+		$GLOBALS['ERROR']['customerResetPassword'] = we_customer_customer::PWD_FIELD_NOT_SET;
 		return false;
 	}
 	$where = array();
