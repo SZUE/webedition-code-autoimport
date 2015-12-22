@@ -131,7 +131,7 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart), we_html_tools::getPixel(5, 5));
 	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart, "class" => "small"), we_html_baseElement::getHtmlCode(new we_html_baseElement("label", true, array("for" => 'password'), g_l('global', '[password]'))));
 	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart), we_html_tools::htmlTextInput('WE_LOGIN_password', 25, '', 255, 'id="password" style="width: 250px;" ', 'password', 0, 0));
-	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart + $_logoPart, 'colspan' => 2), we_html_tools::getPixel(5, 5));
+	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart + $_logoPart, 'colspan' => 2), '<a href="'.WEBEDITION_DIR.'resetpwd.php">Forgotten password</a>');
 
 
 	$_table->addRow(4);

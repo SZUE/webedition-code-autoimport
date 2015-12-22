@@ -76,7 +76,7 @@ function we_profiler($start = true){
 	}
 }
 
-function we_tag($name, $attribs = array(), $content = ''){
+function we_tag($name, $attribs = array(), $content = '',  $internal = false){
 	//keep track of editmode
 	$edMerk = isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : '';
 	//FIXME: do we support this????
@@ -133,11 +133,11 @@ function we_tag($name, $attribs = array(), $content = ''){
 	$fn = 'we_tag_' . $name;
 	switch($fn){
 		case 'we_tag_setVar':
-			$fn($attribs, $content);
+			$fn($attribs, $content, $internal);
 			//nothing more to do don't waste time
 			return;
 		default:
-			$foo = $fn($attribs, $content);
+			$foo = $fn($attribs, $content, $internal);
 			$GLOBALS['we_editmode'] = $edMerk;
 			return we_redirect_tagoutput($foo, $nameTo, $to);
 	}
