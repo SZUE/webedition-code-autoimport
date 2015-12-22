@@ -31,13 +31,15 @@ switch(we_base_request::_(we_base_request::STRING, 'type', '')){
 			echo 'Token ungültig';
 			break;
 		}
-		echo we_tag('customerResetPassword', array('type' => "resetFromMail"), '', true);
+		echo we_tag('customerResetPassword', array('type' => "resetFromMail",'passwordRule'=>'(.{6,})'), '', true);
 
 		if(we_tag('ifNotCustomerResetPassword')){
 			echo 'Passwortänderung fehlgeschlagen';
 			if(we_tag('ifNotCustomerResetPassword', array('type' => "passwordMismatch"))){
 				echo 'Die eingegebenen Passwörter stimmen nicht überein';
-			} elseif(we_tag('ifNotCustomerResetPassword', array('type' => "token"))){
+			} elseif(we_tag('ifNotCustomerResetPassword', array('type' => "passwordRule"))){
+				echo 'Das eingegebene Passwort muß mindestens 6 Zeichen lang sein';
+			}else if(we_tag('ifNotCustomerResetPassword', array('type' => "token"))){
 				echo 'Der Rücksetz-Link war fehlerhaft. Stellen Sie bitte sicher das der Link vollständig ist und der Link nur einmal verwendet wurde. Bitte fordern Sie erneut ein Passwort an - der Link ist bereits ungültig!';
 				unset($_REQUEST['user']);
 			}
