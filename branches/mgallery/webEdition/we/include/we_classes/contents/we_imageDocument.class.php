@@ -524,6 +524,8 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 					return $this->Extension;
 				case 'parentpath':
 					return $this->getParentPath();
+				case '':
+					break;
 			}
 
 			if((!empty($href)) && $inc_href){ //  use link with rollover
