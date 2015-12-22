@@ -28,7 +28,7 @@ function checkPwds($pwRegex){
 		$GLOBALS['ERROR']['customerResetPassword'] = we_customer_customer::PWD_NOT_MATCH;
 		return false;
 	}
-	if($pwRegex && !preg_match('/' . preg_quote($pwRegex, '/') . '/', $pwd)){
+	if($pwRegex && !preg_match('/' . addcslashes($pwRegex, '/') . '/', $pwd)){
 		$GLOBALS['ERROR']['customerResetPassword'] = we_customer_customer::PWD_NOT_SUFFICIENT;
 		return false;
 	}

@@ -31,10 +31,10 @@ switch(we_base_request::_(we_base_request::STRING, 'type', '')){
 			echo 'Token ungültig';
 			break;
 		}
-		echo we_tag('customerResetPassword', array('type' => "resetFromMail",'passwordRule'=>'(.{6,})'), '', true);
+		echo we_tag('customerResetPassword', array('type' => "resetFromMail",'passwordRule'=>'(.{6,20})'), '', true);
 
 		if(we_tag('ifNotCustomerResetPassword')){
-			echo 'Passwortänderung fehlgeschlagen';
+			echo 'Passwortänderung fehlgeschlagen<br/>';
 			if(we_tag('ifNotCustomerResetPassword', array('type' => "passwordMismatch"))){
 				echo 'Die eingegebenen Passwörter stimmen nicht überein';
 			} elseif(we_tag('ifNotCustomerResetPassword', array('type' => "passwordRule"))){
