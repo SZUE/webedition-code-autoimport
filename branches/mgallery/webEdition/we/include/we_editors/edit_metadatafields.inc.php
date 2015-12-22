@@ -201,11 +201,11 @@ function build_dialog($selected_setting = 'ui'){
 			foreach($_defined_fields as $key => $value){
 				$value['mode'] = $value['mode'] ? : 'none';
 				$_adv_row .= '
-<tr>
+<tr=id="metadataRow0_' . $key . '">
 	<td class="defaultfont" style="width:210px;"><strong>' . g_l('metadata', '[tagname]') . '</strong></td>
 	<td class="defaultfont" style="width:110px;" colspan="2"><strong>' . g_l('metadata', '[type]') . '</strong></td>
 </tr>
-<tr id="metadataRow_' . $key . '">
+<tr id="metadataRow1_' . $key . '">
 	<td width="210" style="padding-right:5px;">' . we_html_tools::htmlTextInput('metadataTag[' . $key . ']', 24, $value['tag'], 255, "", "text", 205) . '</td>
 	<td width="200">' . we_html_tools::htmlSelect('metadataType[' . $key . ']', $_metadata_types, 1, $value['type'], false, array('class' => "defaultfont", "onchange" => "toggleType(this, " . $key . ")")) . '</td>
 	<td style="text-align:right" width="30">' . we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(" . $_i . ")") . '</td>
