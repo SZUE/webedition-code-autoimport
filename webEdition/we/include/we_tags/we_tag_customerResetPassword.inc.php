@@ -121,7 +121,7 @@ function we_tag_customerResetPassword(array $attribs){
 			break;
 		case 'resetFromMail':
 			//if optional required field is given, check them
-			if($required[0] !== '' && !checkRequired($required, $loadFields)){
+			if(!empty($required) && !checkRequired($required, $loadFields)){
 				return;
 			}
 			$user = we_base_request::_(we_base_request::INT, 'user');
