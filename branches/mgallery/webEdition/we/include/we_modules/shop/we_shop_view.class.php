@@ -389,17 +389,17 @@ function submitForm(target,action,method) {
 				$orderTable .= '
 		<tr><td height="1" colspan="11"><hr style="color: black" noshade /></td></tr>
 		<tr>
-			<td class="shopContentfontR">' . "<a href=\"javascript:var anzahl=prompt('" . g_l('modules_shop', '[jsanz]') . "','" . $Quantity[$i] . "'); if(anzahl != null){if(anzahl.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location='" . $this->frameset . '&pnt=edbody&bid=' . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&anzahl='+anzahl;}}\">" . $Quantity[$i] . "</a>" . '</td>
+			<td class="shopContentfontR">' . "<a href=\"javascript:var anzahl=prompt('" . g_l('modules_shop', '[jsanz]') . "','" . $Quantity[$i] . "'); if(anzahl != null){if(anzahl.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&anzahl='+anzahl;}}\">" . $Quantity[$i] . "</a>" . '</td>
 			<td></td>
 			<td>' . self::getFieldFromShoparticle($shopArticleObject, WE_SHOP_TITLE_FIELD_NAME, 35) . '</td>
 			<td></td>
 			<td>' . self::getFieldFromShoparticle($shopArticleObject, WE_SHOP_DESCRIPTION_FIELD_NAME, 45) . '</td>
 			<td></td>
-			<td class="shopContentfontR">' . "<a href=\"javascript:var preis = prompt('" . g_l('modules_shop', '[jsbetrag]') . "','" . $Price[$i] . "'); if(preis != null ){if(preis.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . "}else{document.location='" . $this->frameset . '&pnt=edbody&bid=' . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&preis=' + preis; } }\">" . we_base_util::formatNumber($Price[$i]) . "</a>" . $waehr . '</td>
+			<td class="shopContentfontR">' . "<a href=\"javascript:var preis = prompt('" . g_l('modules_shop', '[jsbetrag]') . "','" . $Price[$i] . "'); if(preis != null ){if(preis.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . "}else{document.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&preis=' + preis; } }\">" . we_base_util::formatNumber($Price[$i]) . "</a>" . $waehr . '</td>
 			<td></td>
 			<td class="shopContentfontR">' . we_base_util::formatNumber($articlePrice) . $waehr . '</td>' .
-					($calcVat ? '<td></td><td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = prompt('" . g_l('modules_shop', '[keinezahl]') . "','" . $articleVat . "'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location='" . $this->frameset . '&pnt=edbody&bid=' . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&vat=' + vat; } }\">" . we_base_util::formatNumber($articleVat) . "</a>" . '%)</td>' : '') . '
-			<td>' . we_html_button::create_button(we_html_button::TRASH, "javascript:check=confirm('" . g_l('modules_shop', '[jsloeschen]') . "'); if (check){document.location.href='" . $this->frameset . '&pnt=edbody&bid=' . $_REQUEST["bid"] . "&deleteaarticle=" . $tblOrdersId[$i] . "';}", true, 100, 22, "", "", !permissionhandler::hasPerm("DELETE_SHOP_ARTICLE")) . '</td>
+					($calcVat ? '<td></td><td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = prompt('" . g_l('modules_shop', '[keinezahl]') . "','" . $articleVat . "'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&vat=' + vat; } }\">" . we_base_util::formatNumber($articleVat) . "</a>" . '%)</td>' : '') . '
+			<td>' . we_html_button::create_button(we_html_button::TRASH, "javascript:check=confirm('" . g_l('modules_shop', '[jsloeschen]') . "'); if (check){document.location.href=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&bid=" . $_REQUEST["bid"] . "&deleteaarticle=" . $tblOrdersId[$i] . "';}", true, 100, 22, "", "", !permissionhandler::hasPerm("DELETE_SHOP_ARTICLE")) . '</td>
 		</tr>';
 				// if this article has custom fields or is a variant - we show them in a extra rows
 				// add variant.
@@ -482,7 +482,7 @@ function submitForm(target,action,method) {
 		<tr>
 			<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop', '[plusVat]') . '</label>:</td>
 			<td colspan="7"></td>
-			<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . $this->frameset . '&pnt=edbody&bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=0\';" type="checkbox" name="calculateVat" value="1" checked="checked" /></td>
+			<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . WEBEDITION_DIR.'we_showMod.php?mod=shop&pnt=edbody&bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=0\';" type="checkbox" name="calculateVat" value="1" checked="checked" /></td>
 		</tr>';
 					foreach($articleVatArray as $vatRate => $sum){
 						if($vatRate){
@@ -530,7 +530,7 @@ function submitForm(target,action,method) {
 		<tr>
 			<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop', '[includedVat]') . '</label>:</td>
 			<td colspan="7"></td>
-			<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . $this->frameset . '&pnt=edbody&bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=0\';" type="checkbox" name="calculateVat" value="1" checked="checked" /></td>
+			<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . WEBEDITION_DIR.'we_showMod.php?mod=shop&pnt=edbody&bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=0\';" type="checkbox" name="calculateVat" value="1" checked="checked" /></td>
 		</tr>';
 					foreach($articleVatArray as $vatRate => $sum){
 						if($vatRate){
@@ -561,7 +561,7 @@ function submitForm(target,action,method) {
 		<tr>
 			<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop', '[edit_order][calculate_vat]') . '</label></td>
 			<td colspan="7"></td>
-			<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . $this->frameset . '&pnt=edbody&bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=1\';" type="checkbox" name="calculateVat" value="1" /></td>
+			<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . WEBEDITION_DIR.'we_showMod.php?mod=shop&pnt=edbody&bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=1\';" type="checkbox" name="calculateVat" value="1" /></td>
 		</tr>
 		<tr>
 			<td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td>
@@ -579,7 +579,7 @@ function submitForm(target,action,method) {
 		<tr>
 			<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop', '[edit_order][calculate_vat]') . '</label></td>
 			<td colspan="7"></td>
-			<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . $this->frameset . '&pnt=edbody&bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=1\';" type="checkbox" name="calculateVat" value="1" /></td>
+			<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . WEBEDITION_DIR.'we_showMod.php?mod=shop&pnt=edbody&bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=1\';" type="checkbox" name="calculateVat" value="1" /></td>
 		</tr>';
 				}
 			}
@@ -607,7 +607,7 @@ function submitForm(target,action,method) {
 						<td class="defaultfont" style="padding-right:15px;vertical-align:top"><b>' . $key . ':</b></td>
 						<td class="defaultfont" style="padding-right:15px;vertical-align:top">' . nl2br($value) . '</td>
 						<td style="padding-right:15px;vertical-align:top;">' . we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('edit_shop_cart_custom_field','" . $key . "');") . '</td>
-						<td style="vertical-align:top">' . we_html_button::create_button(we_html_button::TRASH, "javascript:check=confirm('" . sprintf(g_l('modules_shop', '[edit_order][js_delete_cart_field]'), $key) . "'); if (check) { document.location.href='" . $this->frameset . '&pnt=edbody&we_cmd[0]=delete_shop_cart_custom_field&bid=' . $_REQUEST["bid"] . "&cartfieldname=" . $key . "'; }") . '</td>
+						<td style="vertical-align:top">' . we_html_button::create_button(we_html_button::TRASH, "javascript:check=confirm('" . sprintf(g_l('modules_shop', '[edit_order][js_delete_cart_field]'), $key) . "'); if (check) { document.location.href=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&we_cmd[0]=delete_shop_cart_custom_field&bid=" . $_REQUEST["bid"] . "&cartfieldname=" . $key . "'; }") . '</td>
 					</tr>
 					<tr>
 						<td height="10"></td>
