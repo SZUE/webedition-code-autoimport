@@ -28,7 +28,7 @@ node.prototype.showSegment = function () {
 	top.reloadGroup(this.parentid, this.offset);
 };
 
-function reloadGroup(pid,offset) {
+function reloadGroup(pid, offset) {
 	var it = treeData.get(pid);
 	if (it) {
 		it.clear();
@@ -47,7 +47,7 @@ function info(text) {
 	}
 }
 
-container.prototype.openClose = function(id) {
+container.prototype.openClose = function (id) {
 	if (id === "") {
 		return;
 	}

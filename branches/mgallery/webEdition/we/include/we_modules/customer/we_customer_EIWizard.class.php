@@ -279,10 +279,10 @@ switch (args[0]){
 		if($export_to == self::EXPORT_LOCAL){
 			$message = we_html_element::htmlSpan(array("class" => "defaultfont"), g_l('modules_customer', '[export_finished]') . "<br/><br/>" .
 					g_l('modules_customer', '[download_starting]') .
-					we_html_element::htmlA(array("href" => WEBEDITION_DIR.'we_showMod.php?mod=customer&pnt=eibody&art=' . self::ART_EXPORT . '&step=5&exportfile=' . $filename, 'download' => $filename), g_l('modules_customer', '[download]'))
+					we_html_element::htmlA(array("href" => WEBEDITION_DIR . 'we_showMod.php?mod=customer&pnt=eibody&art=' . self::ART_EXPORT . '&step=5&exportfile=' . $filename, 'download' => $filename), g_l('modules_customer', '[download]'))
 			);
 			return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', STYLESHEET . $js .
-					we_html_element::htmlMeta(array("http-equiv" => "refresh", "content" => "2; url=" . WEBEDITION_DIR.'we_showMod.php?mod=customer&pnt=eibody&art=' . self::ART_EXPORT . '&step=5&exportfile=' . $filename)), we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
+					we_html_element::htmlMeta(array("http-equiv" => "refresh", "content" => "2; url=" . WEBEDITION_DIR . 'we_showMod.php?mod=customer&pnt=eibody&art=' . self::ART_EXPORT . '&step=5&exportfile=' . $filename)), we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
 							we_html_tools::htmlDialogLayout($message, g_l('modules_customer', '[export_step4]'))
 						)
 					)
@@ -323,7 +323,7 @@ switch (args[0]){
 				exit;
 			}
 		}
-		header("Location: " . WEBEDITION_DIR.'we_showMod.php?mod=customer&pnt=cmd&step=99&error=download_failed');
+		header("Location: " . WEBEDITION_DIR . 'we_showMod.php?mod=customer&pnt=cmd&step=99&error=download_failed');
 		exit;
 	}
 

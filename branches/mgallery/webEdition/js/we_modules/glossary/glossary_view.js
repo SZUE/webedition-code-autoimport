@@ -95,8 +95,8 @@ function we_cmd() {
 				if (confirm(WE().consts.g_l.glossary.view.delete_alert)) {
 					top.content.editor.edbody.document.we_form.cmd.value = args[0];
 					top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;
-					top.content.editor.edheader.location = data.frameset + "?home=1&pnt=edheader";
-					top.content.editor.edfooter.location = data.frameset + "?home=1&pnt=edfooter";
+					top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&home=1&pnt=edheader";
+					top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&home=1&pnt=edfooter";
 					top.content.editor.edbody.submitForm();
 				}
 			} else {
@@ -144,11 +144,10 @@ function we_cmd() {
 			top.content.editor.edbody.submitForm();
 			break;
 		case "load":
-			top.content.cmd.location = data.frameset + "&pnt=cmd&pid=" + args[1] + "&offset=" + args[2] + "&sort=" + args[3];
+			top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=cmd&pid=" + args[1] + "&offset=" + args[2] + "&sort=" + args[3];
 			break;
 		case "home":
-			top.content.editor.edbody.parent.location = data.frameset + "&pnt=editor";
-			break;
+			top.content.editor.edbody.parent.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=editor";
 		default:
 			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}

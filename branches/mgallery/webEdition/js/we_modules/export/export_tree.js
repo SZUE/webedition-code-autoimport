@@ -36,7 +36,7 @@ container.prototype.openClose = function (id) {
 
 	this[eintragsIndex].open = openstatus;
 	if (openstatus && !this[eintragsIndex].loaded) {
-		frames.cmd.location = this.frameset + "&pnt=load&tab=" + frames.top.table + "&cmd=load&pid=" + id;
+		frames.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=load&tab=" + frames.top.table + "&cmd=load&pid=" + id;
 		frames.top.openFolders[frames.top.table] += "," + id;
 	} else {
 		var arr = frames.top.openFolders[frames.top.table].split(",");

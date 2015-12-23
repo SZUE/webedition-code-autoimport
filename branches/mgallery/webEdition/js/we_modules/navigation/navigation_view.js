@@ -143,8 +143,8 @@ function we_cmd() {
 				if (confirm(WE().consts.g_l.navigation.view.delete_alert)) {
 					top.content.editor.edbody.document.we_form.cmd.value = args[0];
 					top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;
-					top.content.editor.edheader.location = data.frameset + "?home=1&pnt=edheader";
-					top.content.editor.edfooter.location = data.frameset + "?home=1&pnt=edfooter";
+					top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&home=1&pnt=edheader";
+					top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&home=1&pnt=edfooter";
 					top.content.editor.edbody.submitForm();
 				}
 			} else {
@@ -153,11 +153,11 @@ function we_cmd() {
 
 			break;
 		case "move_abs":
-			top.content.cmd.location = data.frameset + "&pnt=cmd&cmd=" + args[0] + "&pos=" + args[1];
+			top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=cmd&cmd=" + args[0] + "&pos=" + args[1];
 			break;
 		case "move_up":
 		case "move_down":
-			top.content.cmd.location = data.frameset + "&pnt=cmd&cmd=" + args[0];
+			top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=cmd&cmd=" + args[0];
 			break;
 		case "dyn_preview":
 		case "create_template":
@@ -185,7 +185,7 @@ function we_cmd() {
 			}
 			break;
 		case "exit_doc_question":
-			url = data.frameset + "&pnt=exit_doc_question&delayCmd=" + top.content.editor.edbody.document.getElementsByName("delayCmd")[0].value + "&delayParam=" + top.content.editor.edbody.document.getElementsByName("delayParam")[0].value;
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=exit_doc_question&delayCmd=" + top.content.editor.edbody.document.getElementsByName("delayCmd")[0].value + "&delayParam=" + top.content.editor.edbody.document.getElementsByName("delayParam")[0].value;
 			new (WE().util.jsWindow)(this, url, "we_exit_doc_question", -1, -1, 380, 130, true, false, true);
 			break;
 

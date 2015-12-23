@@ -352,18 +352,18 @@ function we_cmd() {
 				popAndSubmit(args[0], args[0], 650, 650);
 			break;
 		case "newsletter_settings":
-			new (WE().util.jsWindow)(this, modFrameSet + "&pnt=" + args[0], args[0], -1, -1, 600, 750, true, true, true, true);
+			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0], args[0], -1, -1, 600, 750, true, true, true, true);
 			break;
 
 		case "black_list":
-			new (WE().util.jsWindow)(this, modFrameSet + "&pnt=" + args[0], args[0], -1, -1, 560, 460, true, true, true, true);
+			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0], args[0], -1, -1, 560, 460, true, true, true, true);
 			break;
 
 		case "edit_file":
 			if (args[1]) {
-				new (WE().util.jsWindow)(this, modFrameSet + "&pnt=" + args[0] + "&art=" + args[1], args[0], -1, -1, 950, 640, true, true, true, true);
+				new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0] + "&art=" + args[1], args[0], -1, -1, 950, 640, true, true, true, true);
 			} else {
-				new (WE().util.jsWindow)(this, modFrameSet + "&pnt=" + args[0], args[0], -1, -1, 950, 640, true, true, true, true);
+				new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0], args[0], -1, -1, 950, 640, true, true, true, true);
 			}
 			break;
 
@@ -413,12 +413,12 @@ function we_cmd() {
 
 		case "upload_csv":
 		case "upload_black":
-			new (WE().util.jsWindow)(this, modFrameSet + "&pnt=" + args[0] + "&grp=" + args[1], args[0], -1, -1, 450, 270, true, true, true, true);
+			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0] + "&grp=" + args[1], args[0], -1, -1, 450, 270, true, true, true, true);
 			break;
 
 		case "add_email":
 			var email = document.we_form.group = args[1];
-			new (WE().util.jsWindow)(this, modFrameSet + "&pnt=eemail&grp=" + args[1], "edit_email", -1, -1, 450, 270, true, true, true, true);
+			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=eemail&grp=" + args[1], "edit_email", -1, -1, 450, 270, true, true, true, true);
 			break;
 
 		case "edit_email":
@@ -450,7 +450,7 @@ function we_cmd() {
 			firstname = encodeURIComponent(firstname.replace("+", "[:plus:]"));
 			lastname = encodeURIComponent(lastname.replace("+", "[:plus:]"));
 			emailx = encodeURIComponent(emailx);
-			new (WE().util.jsWindow)(this, modFrameSet + "&pnt=eemail&grp=" + args[1] + "&etyp=1&eid=" + eid + "&email=" + emailx + "&htmlmail=" + htmlmail + "&salutation=" + salutation + "&title=" + title + "&firstname=" + firstname + "&lastname=" + lastname, "edit_email", -1, -1, 450, 270, true, true, true, true);
+			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=eemail&grp=" + args[1] + "&etyp=1&eid=" + eid + "&email=" + emailx + "&htmlmail=" + htmlmail + "&salutation=" + salutation + "&title=" + title + "&firstname=" + firstname + "&lastname=" + lastname, "edit_email", -1, -1, 450, 270, true, true, true, true);
 			break;
 
 		case "save_black":
@@ -472,7 +472,7 @@ function we_cmd() {
 
 			break;
 		case "clear_log":
-			new (WE().util.jsWindow)(this, modFrameSet + "&pnt=" + args[0], args[0], -1, -1, 450, 300, true, true, true, true);
+			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0], args[0], -1, -1, 450, 300, true, true, true, true);
 			break;
 
 		default:
@@ -487,7 +487,7 @@ function submitForm(target, action, method) {
 	}
 	var f = self.document.we_form;
 	f.target = (target ? target : "edbody");
-	f.action = (action ? action : modFrameSet);
+	f.action = (action ? action : WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter");
 	f.method = (method ? method : "post");
 	f.submit();
 }

@@ -99,8 +99,8 @@ function we_cmd() {
 			} else {
 				top.we_showMessage(WE().consts.g_l.newsletter.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
 			}
-			topFrame.editor.edheader.location = frameSet + "?home=1&pnt=edheader";
-			topFrame.editor.edfooter.location = frameSet + "?home=1&pnt=edfooter";
+			topFrame.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&home=1&pnt=edheader";
+			topFrame.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&home=1&pnt=edfooter";
 			top.content.editor.edbody.document.we_form.ncmd.value = args[0];
 			top.content.editor.edbody.submitForm();
 
@@ -151,7 +151,7 @@ function we_cmd() {
 			} else if (top.content.editor.edbody.document.we_form.IsFolder.value == 1) {
 				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else {
-				new (WE().util.jsWindow)(this, frameSet + "&pnt=qlog", "log_question", -1, -1, 330, 230, true, false, true);
+				new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=qlog", "log_question", -1, -1, 330, 230, true, false, true);
 			}
 			break;
 
@@ -206,7 +206,7 @@ function we_cmd() {
 			break;
 
 		case "home":
-			top.content.editor.location = frameSet + "&pnt=editor";
+			top.content.editor.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=editor";
 			break;
 
 		default:

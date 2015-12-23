@@ -35,7 +35,7 @@ class we_messaging_tree extends weTree{
 	}
 
 	function getJSStartTree(){
-		return  '
+		return '
 var table="' . MESSAGES_TABLE . '";
 
 function startTree(){
@@ -128,7 +128,6 @@ function startTree(){
 			we_html_element::jsElement('
 parent.document.title = "' . $title . '";
 var we_transaction = "' . $this->transaction . '";
-var we_frameset="' . $this->frameset . '";
 var table="' . MESSAGES_TABLE . '";
 ') .
 			we_html_element::jsScript(JS_DIR . 'messaging_tree.js') .

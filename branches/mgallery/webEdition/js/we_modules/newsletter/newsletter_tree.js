@@ -29,7 +29,7 @@ function doClick(id, typ) {
 function info(text) {
 }
 
-container.prototype.openClose = function(id) {
+container.prototype.openClose = function (id) {
 	var sort = "";
 	if (id === "") {
 		return;
@@ -40,7 +40,7 @@ container.prototype.openClose = function(id) {
 	treeData[eintragsIndex].open = openstatus;
 
 	if (openstatus && !treeData[eintragsIndex].loaded) {
-		frames.cmd.location = treeData.frameset + "&pnt=cmd&pid=" + id + (sort !== "" ? "&sort=" + sort : "");
+		frames.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=cmd&pid=" + id + (sort !== "" ? "&sort=" + sort : "");
 	} else {
 		drawTree();
 	}

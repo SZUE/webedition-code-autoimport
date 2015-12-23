@@ -652,10 +652,10 @@ if (top.content.editor.edfooter.doProgress){
 
 				readfile(TEMP_PATH . $_filename);
 			} else {
-				header("Location: " . WEBEDITION_DIR.'we_showMod.php?mod=export&pnt=cmd&cmd=upload_failed');
+				header("Location: " . WEBEDITION_DIR . 'we_showMod.php?mod=export&pnt=cmd&cmd=upload_failed');
 			}
 		} else {
-			header("Location: " . WEBEDITION_DIR.'we_showMod.php?mod=export&pnt=cmd&cmd=error=upload_failed');
+			header("Location: " . WEBEDITION_DIR . 'we_showMod.php?mod=export&pnt=cmd&cmd=error=upload_failed');
 		}
 		exit();
 	}

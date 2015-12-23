@@ -215,10 +215,10 @@ var openFolders= {
 
 		$body = we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => $this->bodyFrame . ".location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=export&pnt=body" . $args . "&step=' + step;")
 				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-					, we_html_element::htmlIFrame('header', WEBEDITION_DIR.'we_showMod.php?mod=export&pnt=header', 'position:absolute;top:0px;height:1px;left:0px;right:0px;overflow: hidden', '', '', false) .
-					we_html_element::htmlIFrame('body', WEBEDITION_DIR.'we_showMod.php?mod=export&pnt=body', 'position:absolute;top:1px;bottom:45px;left:0px;right:0px;', 'border:0px;width:100%;height:100%;') .
-					we_html_element::htmlIFrame('footer', WEBEDITION_DIR.'we_showMod.php?mod=export&pnt=footer', 'position:absolute;height:45px;bottom:0px;left:0px;right:0px;overflow: hidden', '', '', false) .
-					we_html_element::htmlIFrame('load', WEBEDITION_DIR.'we_showMod.php?mod=export&pnt=load', 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
+					, we_html_element::htmlIFrame('header', WEBEDITION_DIR . 'we_showMod.php?mod=export&pnt=header', 'position:absolute;top:0px;height:1px;left:0px;right:0px;overflow: hidden', '', '', false) .
+					we_html_element::htmlIFrame('body', WEBEDITION_DIR . 'we_showMod.php?mod=export&pnt=body', 'position:absolute;top:1px;bottom:45px;left:0px;right:0px;', 'border:0px;width:100%;height:100%;') .
+					we_html_element::htmlIFrame('footer', WEBEDITION_DIR . 'we_showMod.php?mod=export&pnt=footer', 'position:absolute;height:45px;bottom:0px;left:0px;right:0px;overflow: hidden', '', '', false) .
+					we_html_element::htmlIFrame('load', WEBEDITION_DIR . 'we_showMod.php?mod=export&pnt=load', 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 		));
 
 		return we_html_tools::getHtmlTop(g_l('export', '[title]'), '', '', STYLESHEET . $js, $body
@@ -736,12 +736,12 @@ function setState(a) {
 
 		$message = we_html_element::htmlSpan(array("class" => "defaultfont"), g_l('export', '[backup_finished]') . "<br/><br/>" .
 				g_l('export', '[download_starting]') .
-				we_html_element::htmlA(array("href" => WEBEDITION_DIR.'we_showMod.php?mod=export&pnt=body&step=50&exportfile=' . $filename, 'download' => basename($filename)), g_l('export', '[download]')));
+				we_html_element::htmlA(array("href" => WEBEDITION_DIR . 'we_showMod.php?mod=export&pnt=body&step=50&exportfile=' . $filename, 'download' => basename($filename)), g_l('export', '[download]')));
 
 		unset($_SESSION['weS']['exportVars_session']);
 
 		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', STYLESHEET .
-				we_html_element::htmlMeta(array("http-equiv" => "refresh", "content" => "2; url=" . WEBEDITION_DIR.'we_showMod.php?mod=export&pnt=body&step=50&exportfile=' . $filename)), we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_tools::htmlDialogLayout($message, g_l('export', '[step10]'))
+				we_html_element::htmlMeta(array("http-equiv" => "refresh", "content" => "2; url=" . WEBEDITION_DIR . 'we_showMod.php?mod=export&pnt=body&step=50&exportfile=' . $filename)), we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_tools::htmlDialogLayout($message, g_l('export', '[step10]'))
 				)
 		);
 	}
@@ -767,11 +767,11 @@ function setState(a) {
 
 				exit;
 			} else {
-				header("Location: " . WEBEDITION_DIR.'we_showMod.php?mod=export&pnt=body&step=99&error=download_failed');
+				header("Location: " . WEBEDITION_DIR . 'we_showMod.php?mod=export&pnt=body&step=99&error=download_failed');
 				exit;
 			}
 		} else {
-			header("Location: " . WEBEDITION_DIR.'we_showMod.php?mod=export&pnt=body&step=99&error=download_failed');
+			header("Location: " . WEBEDITION_DIR . 'we_showMod.php?mod=export&pnt=body&step=99&error=download_failed');
 			exit;
 		}
 	}
