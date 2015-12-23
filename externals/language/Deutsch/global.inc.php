@@ -1,6 +1,9 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_global=array(
+	'CSRF'=>array(
+		'tokenInvalid'=>'Das Formular wurde schon an den Server übermittelt. Eine erneute Übermittlung ist nicht möglich.',
+	),
 	'add_workspace'=>'Arbeitsbereich hinzufügen',
 	'align'=>'Ausrichtung',
 	'all'=>'Alle',
@@ -83,7 +86,7 @@ $l_global=array(
 	'pass_changed'=>'Das Kennwort wurde erfolgreich geändert!',
 	'pass_not_confirmed'=>'Die Wiederholung des neuen Kennworts stimmt nicht mit dem neuen Kennwort überein!',
 	'pass_not_match'=>'Das alte Kennwort stimmt nicht!',
-	'pass_to_short'=>'Das Kennwort muss mindestens 4 Zeichen lang sein!',
+	'pass_to_short'=>'Das Kennwort muss mindestens 6 Zeichen lang sein!',
 	'pass_wrong_chars'=>'Das Kennwort darf nur Buchstaben (a-z und A-Z) und Zahlen (0-9) enthalten!',
 	'passwd_not_match'=>'Das Kennwort stimmt nicht!',
 	'password'=>'Kennwort',
@@ -91,6 +94,19 @@ $l_global=array(
 	'posy'=>'y Position',
 	'preview'=>'Vorschau',
 	'published'=>'Veröffentlicht',
+	
+	'pwd'=>array(
+		'changeFailed'=>'Passwortänderung fehlgeschlagen',
+		'forgotten'=>'Passwort vergessen?',
+		'invalidToken'=>'Der Rücksetz-Link war fehlerhaft. Stellen Sie bitte sicher das der Link vollständig ist und der Link nur einmal verwendet wurde. Bitte fordern Sie erneut ein Passwort an - der Link ist bereits ungültig!',
+		'mailSent'=>'Eine Mail wurde an die Mailadresse %s versandt.',
+		'mailSubject'=>'webEdition Passwort zurücksetzen',
+		'noSuchUser'=>'Der Benutzer existiert nicht mit dieser Email-Adresse.',
+		'resetMail'=>'Sie haben soeben ein neues Passwort für %s angefordert.
+Sollte dies nicht der Fall sein, ignorieren Sie diese Mail.
+
+Sie können Ihr Passwort über den folgenden Link zurücksetzen:',
+	),
 	'question'=>'Frage',
 	'rc'=>'RC',
 	'rebuild'=>'Rebuild',

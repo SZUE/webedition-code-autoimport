@@ -1,6 +1,9 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_global=array(
+	'CSRF'=>array(
+		'tokenInvalid'=>'',
+	),
 	'add_workspace'=>'Voeg werkgebied toe',
 	'align'=>'Uitlijning',
 	'all'=>'Alle',
@@ -83,7 +86,7 @@ $l_global=array(
 	'pass_changed'=>'Wachtwoord succesvol gewijzigd!',
 	'pass_not_confirmed'=>'De invoeren komen niet overeen!',
 	'pass_not_match'=>'Oude wachtwoord niet correct!',
-	'pass_to_short'=>'Wachtwoorden moeten minimaal 4 karakters bevatten!',
+	'pass_to_short'=>'Wachtwoorden moeten minimaal 6 karakters bevatten!',
 	'pass_wrong_chars'=>'Wachtwoorden mogen alleen alfa-numerieke karakters bevatten (a-z, A-Z and 0-9)!',
 	'passwd_not_match'=>'De wachtwoorden komen niet overeen!',
 	'password'=>'Wachtwoord',
@@ -91,6 +94,16 @@ $l_global=array(
 	'posy'=>'y positie',
 	'preview'=>'preview',
 	'published'=>'Gepubliceerd',
+	
+	'pwd'=>array(
+		'changeFailed'=>'',
+		'forgotten'=>'Forgotten password?',
+		'invalidToken'=>'',
+		'mailSent'=>'',
+		'mailSubject'=>'',
+		'noSuchUser'=>'',
+		'resetMail'=>'',
+	),
 	'question'=>'Vraag',
 	'rc'=>'RC',
 	'rebuild'=>'Heropbouwen',

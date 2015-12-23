@@ -1,6 +1,9 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_global=array(
+	'CSRF'=>array(
+		'tokenInvalid'=>'',
+	),
 	'add_workspace'=>'Lisää työtila',
 	'align'=>'Paikka',
 	'all'=>'Kaikki',
@@ -83,7 +86,7 @@ $l_global=array(
 	'pass_changed'=>'Salasana vaihdettu!',
 	'pass_not_confirmed'=>'Salasanat eivät täsmää!',
 	'pass_not_match'=>'Vanha salasana on väärä!',
-	'pass_to_short'=>'Salasanan pituus on oltava vähintaa 4 merkkiä!',
+	'pass_to_short'=>'Salasanan pituus on oltava vähintaa 6 merkkiä!',
 	'pass_wrong_chars'=>'Salasana voi sisältää vain alfa-numeerisia merkkejä (a-z, A-Z ja 0-9)!',
 	'passwd_not_match'=>'Salasanat eivät täsmää!',
 	'password'=>'Salasana',
@@ -91,6 +94,16 @@ $l_global=array(
 	'posy'=>'y kohdistus',
 	'preview'=>'preview',
 	'published'=>'Julkaistu',
+	
+	'pwd'=>array(
+		'changeFailed'=>'',
+		'forgotten'=>'Forgotten password?',
+		'invalidToken'=>'',
+		'mailSent'=>'',
+		'mailSubject'=>'',
+		'noSuchUser'=>'',
+		'resetMail'=>'',
+	),
 	'question'=>'Kysymys',
 	'rc'=>'RC',
 	'rebuild'=>'Rakenna uudelleen',

@@ -1,6 +1,9 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_global=array(
+	'CSRF'=>array(
+		'tokenInvalid'=>'',
+	),
 	'add_workspace'=>'Dodaj obszar roboczy',
 	'align'=>'Wyrównanie',
 	'all'=>'Wszystkie',
@@ -83,7 +86,7 @@ $l_global=array(
 	'pass_changed'=>'Hasło zostało zmienione!',
 	'pass_not_confirmed'=>'Powtórzenie nowego hasła nie zgadza się z nowym hasłem!',
 	'pass_not_match'=>'Stare hasło nie zgadza się!',
-	'pass_to_short'=>'Hasło musi się składać z przynajmniej 4 znaków!',
+	'pass_to_short'=>'Hasło musi się składać z przynajmniej 6 znaków!',
 	'pass_wrong_chars'=>'Hasło może zawierać tylko litery (a-z oraz A-Z) i cyfry (0-9)!',
 	'passwd_not_match'=>'Hasło nie zgadza się!',
 	'password'=>'Hasło',
@@ -91,6 +94,16 @@ $l_global=array(
 	'posy'=>'Pozycja y',
 	'preview'=>'preview',
 	'published'=>'Opublikowany',
+	
+	'pwd'=>array(
+		'changeFailed'=>'',
+		'forgotten'=>'Forgotten password?',
+		'invalidToken'=>'',
+		'mailSent'=>'',
+		'mailSubject'=>'',
+		'noSuchUser'=>'',
+		'resetMail'=>'',
+	),
 	'question'=>'Pytanie',
 	'rc'=>'RC',
 	'rebuild'=>'Rebuild',

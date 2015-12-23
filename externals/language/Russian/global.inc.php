@@ -1,6 +1,9 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_global=array(
+	'CSRF'=>array(
+		'tokenInvalid'=>'',
+	),
 	'add_workspace'=>'Добавить рабочее пространство',
 	'align'=>'Центровка',
 	'all'=>'Все',
@@ -83,7 +86,7 @@ $l_global=array(
 	'pass_changed'=>'Пароль успешно изменен!',
 	'pass_not_confirmed'=>'Повторно введенный пароль не соответствует новому паролю, веденному ранее!',
 	'pass_not_match'=>'Старый пароль введен неверно!',
-	'pass_to_short'=>'Пароль должен содержать не менее 4 символов!',
+	'pass_to_short'=>'Пароль должен содержать не менее 6 символов!',
 	'pass_wrong_chars'=>'Пароли должны содержать только буквы латинского алфавита и цифры (a-z, A-Z и 0-9)!',
 	'passwd_not_match'=>'Пароль введен неверно!',
 	'password'=>'Пароль',
@@ -91,6 +94,16 @@ $l_global=array(
 	'posy'=>'Положение y',
 	'preview'=>'preview',
 	'published'=>'Опубликовано',
+	
+	'pwd'=>array(
+		'changeFailed'=>'',
+		'forgotten'=>'Forgotten password?',
+		'invalidToken'=>'',
+		'mailSent'=>'',
+		'mailSubject'=>'',
+		'noSuchUser'=>'',
+		'resetMail'=>'',
+	),
 	'question'=>'Вопрос',
 	'rc'=>'RC',
 	'rebuild'=>'Перестроить',

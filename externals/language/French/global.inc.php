@@ -1,6 +1,9 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_global=array(
+	'CSRF'=>array(
+		'tokenInvalid'=>'',
+	),
 	'add_workspace'=>'Ajouter un éspace de travail',
 	'align'=>'alignement',
 	'all'=>'Tous',
@@ -83,7 +86,7 @@ $l_global=array(
 	'pass_changed'=>'Le mot de passe a été changé avec succès!',
 	'pass_not_confirmed'=>'La répétition du nouveau mot de passe ne correspond pas au nouveau mot de passe!',
 	'pass_not_match'=>'L`ancien mot de passe n`est pas correcte!',
-	'pass_to_short'=>'Le mot de passe doit au moins avoir une longeur de 4 chiffres!',
+	'pass_to_short'=>'Le mot de passe doit au moins avoir une longeur de 6 chiffres!',
 	'pass_wrong_chars'=>'Le mot de passe doit seulement contenir des lettres (a-z et A-Z) et des chiffres (0 à 9)',
 	'passwd_not_match'=>'Le mot de passe n`est pas correcte!',
 	'password'=>'Mot de Passe',
@@ -91,6 +94,16 @@ $l_global=array(
 	'posy'=>'Position y',
 	'preview'=>'preview',
 	'published'=>'Publié',
+	
+	'pwd'=>array(
+		'changeFailed'=>'',
+		'forgotten'=>'Forgotten password?',
+		'invalidToken'=>'',
+		'mailSent'=>'',
+		'mailSubject'=>'',
+		'noSuchUser'=>'',
+		'resetMail'=>'',
+	),
 	'question'=>'Question',
 	'rc'=>'RC',
 	'rebuild'=>'Rebuild',
