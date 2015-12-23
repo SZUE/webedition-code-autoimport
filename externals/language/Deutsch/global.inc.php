@@ -86,7 +86,7 @@ $l_global=array(
 	'pass_changed'=>'Das Kennwort wurde erfolgreich geändert!',
 	'pass_not_confirmed'=>'Die Wiederholung des neuen Kennworts stimmt nicht mit dem neuen Kennwort überein!',
 	'pass_not_match'=>'Das alte Kennwort stimmt nicht!',
-	'pass_to_short'=>'Das Kennwort muss mindestens 6 Zeichen lang sein!',
+	'pass_to_short'=>'Das Kennwort entspricht nicht der eingestellten Passwortrichtlinie!',
 	'pass_wrong_chars'=>'Das Kennwort darf nur Buchstaben (a-z und A-Z) und Zahlen (0-9) enthalten!',
 	'passwd_not_match'=>'Das Kennwort stimmt nicht!',
 	'password'=>'Kennwort',
@@ -106,6 +106,7 @@ $l_global=array(
 Sollte dies nicht der Fall sein, ignorieren Sie diese Mail.
 
 Sie können Ihr Passwort über den folgenden Link zurücksetzen:',
+		'startupRegExFailed'=>'Ihr Kennwort entspricht nicht den eingestellten Kennwortrichtlinien (bspw. zu kurz, keine Sonderzeichen). Bitte vergeben Sie umgehend ein neues Kennwort!',
 	),
 	'question'=>'Frage',
 	'rc'=>'RC',

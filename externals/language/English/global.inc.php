@@ -86,7 +86,7 @@ $l_global=array(
 	'pass_changed'=>'Password successfully changed!',
 	'pass_not_confirmed'=>'The entries do not match!',
 	'pass_not_match'=>'Old password incorrect!',
-	'pass_to_short'=>'Passwords must have at least 6 characters!',
+	'pass_to_short'=>'The password does not match the password restriction setting!',
 	'pass_wrong_chars'=>'Passwords may only contain alpha-numeric characters (a-z, A-Z and 0-9)!',
 	'passwd_not_match'=>'The passwords do not match!',
 	'password'=>'Password',
@@ -106,6 +106,7 @@ $l_global=array(
 If you don`t requested the password, ignore this mail.
 
 You can change your password using the following link:',
+		'startupRegExFailed'=>'Your current password does not match the password restrictions (e.g. too short, no special characters). Please change your password.',
 	),
 	'question'=>'Question',
 	'rc'=>'RC',

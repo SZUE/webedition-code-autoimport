@@ -106,6 +106,7 @@ $l_global=array(
 If you don`t requested the password, ignore this mail.
 
 You can change your password using the following link:',
+		'startupRegExFailed'=>'Your current password does not match the password restrictions (e.g. too short, no special characters). Please change your password.',
 	),
 	'question'=>'Pytanie',
 	'rc'=>'RC',
