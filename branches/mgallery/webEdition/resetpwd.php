@@ -61,29 +61,33 @@ function resetPwd(){
 '));
 }
 
+function showError($txt){
+	echo '<div style="background-color: #EBEBEB; color:red">' . $txt . '</div>';
+}
+
 switch(we_base_request::_(we_base_request::STRING, 'type', '')){
 	case 'mailreset':
 		if(empty($_REQUEST['resetTok']) || empty($_SESSION['resetTok']) || $_REQUEST['resetTok'] != $_SESSION['resetTok']){
-			echo g_l('global', '[CSRF][tokenInvalid]');
+			showError(g_l('global', '[CSRF][tokenInvalid]'));
 			break;
 		}
 		echo we_tag('customerResetPassword', array('type' => "resetFromMail", 'passwordRule' => '(.{6,20})'), '', true);
 
 		if(we_tag('ifNotCustomerResetPassword')){
-			echo g_l('global', '[pwd][changeFailed]') . '<br/>';
+			showError(g_l('global', '[pwd][changeFailed]') . '<br/>');
 			if(we_tag('ifNotCustomerResetPassword', array('type' => "passwordMismatch"))){
-				echo g_l('global', '[pass_not_confirmed]');
+				showError(g_l('global', '[pass_not_confirmed]'));
 			} elseif(we_tag('ifNotCustomerResetPassword', array('type' => "passwordRule"))){
-				echo g_l('global', '[pass_to_short]');
+				showError(g_l('global', '[pass_to_short]'));
 			} else if(we_tag('ifNotCustomerResetPassword', array('type' => 'token'))){
-				echo g_l('global', '[pwd][invalidToken]');
+				showError(g_l('global', '[pwd][invalidToken]'));
 				unset($_REQUEST['user']);
 				defaultReset();
 				break;
 			}
 			resetPwd();
 		} else {
-			echo g_l('global', '[pass_changed]') . '<a href="' . WEBEDITION_DIR . '">Zur Login-Seite</a>';
+			showError(g_l('global', '[pass_changed]') . '<a href="' . WEBEDITION_DIR . '">Zur Login-Seite</a>');
 		}
 		break;
 
@@ -96,19 +100,19 @@ switch(we_base_request::_(we_base_request::STRING, 'type', '')){
 		break;
 	case 'mail':
 		if(empty($_REQUEST['resetTok']) || empty($_SESSION['resetTok']) || $_REQUEST['resetTok'] != $_SESSION['resetTok']){
-			echo g_l('global', '[CSRF][tokenInvalid]');
+			showError(g_l('global', '[CSRF][tokenInvalid]'));
 			break;
 		}
 		echo we_tag('customerResetPassword', array('type' => "email", 'required' => "username,Email", 'customerEmailField' => "Email", 'loadFields' => "First,Second,username"), '', true);
 
 		if(we_tag('ifNotCustomerResetPassword')){
-			echo g_l('global', '[pwd][changeFailed]') . '<br/>';
+			showError(g_l('global', '[pwd][changeFailed]') . '<br/>');
 			if(we_tag('ifNotCustomerResetPassword', array('type' => "userNotExists"))){
-				echo g_l('global', '[pwd][noSuchUser]');
+				showError(g_l('global', '[pwd][noSuchUser]'));
 			}
 			defaultReset();
 		} else {
-			printf(g_l('global', '[pwd][noSuchUser]'), $_SESSION['webuser']['Email']);
+			showError(sprintf(g_l('global', '[pwd][noSuchUser]'), $_SESSION['webuser']['Email']));
 
 			we_mail($_SESSION['webuser']['Email'], g_l('global', '[pwd][mailSubject]'), $_SESSION['webuser']['First'] . ' ' . $_SESSION['webuser']['Second'] . ' (' . $_SESSION['webuser']['username'] . '),
 ' . sprintf(g_l('global', '[pwd][resetMail]')), getServerUrl() . "\n" .
