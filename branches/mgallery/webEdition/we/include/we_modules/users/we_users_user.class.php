@@ -36,6 +36,7 @@ class we_users_user{
 	const TAB_PERMISSION = 1;
 	const TAB_WORKSPACES = 2;
 	const TAB_SETTINGS = 3;
+	const DEFAULT_PASS_REGEX = '(.{6,20})';
 
 	// Name of the class => important for reconstructing the class from outside the class
 	var $ClassName = __CLASS__;
@@ -1213,6 +1214,22 @@ _multiEditorreload = true;';
 		switch($tab){
 			case self::TAB_DATA:
 				return weSuggest::getYuiFiles() .
+					we_html_element::jsElement('
+function comparePwd(f1,f2){
+	var pwd1=document.getElementsByName(f1)[0];
+	var pwd2=document.getElementsByName(f2)[0];
+	if(!(new RegExp("' . SECURITY_USER_PASS_REGEX . '").test(pwd1.value))){
+		pwd1.classList.add("weMarkInputError");
+	}else{
+		pwd1.classList.remove("weMarkInputError");
+	if(pwd1.value!=pwd2.value){
+		pwd2.classList.add("weMarkInputError");
+	}else{
+		pwd2.classList.remove("weMarkInputError");
+	}
+	}
+}
+') .
 					$this->formGeneralData();
 			case self::TAB_PERMISSION:
 				return $this->formPermissions($perm_branch);
@@ -1351,7 +1368,7 @@ _multiEditorreload = true;';
 
 		$_password = (!empty($_SESSION['user']['ID']) && $_SESSION['user']['ID'] == $this->ID && !permissionhandler::hasPerm('EDIT_PASSWD') ?
 				'****************' :
-				'<input type="hidden" name="' . $this->Name . '_clearpasswd" value="' . $this->clearpasswd . '" />' . we_html_tools::htmlTextInput('input_pass', 20, "", 255, 'onchange="top.content.setHot()" autocomplete="off"', 'password', 240));
+				'<input type="hidden" name="' . $this->Name . '_clearpasswd" value="' . $this->clearpasswd . '" />' . we_html_tools::htmlTextInput('input_pass', 20, "", 255, 'onchange="comparePwd(\'input_pass\',\'input_pass\');top.content.setHot();" autocomplete="off"', 'password', 240));
 
 		$parent_name = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ParentID), '', $this->DB_WE)? : '/';
 

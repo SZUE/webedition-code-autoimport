@@ -307,7 +307,7 @@ function saveSettings() {
 			}
 		}
 // interne Meldung - debug
-		alert(sDg);
+		console.log(sDg);
 	}
 
 	fo = self.document.forms.we_form;

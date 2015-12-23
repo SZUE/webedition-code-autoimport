@@ -120,6 +120,11 @@ $jsmods = array_keys($jsCmd);
 $jsmods[] = 'base';
 $jsmods[] = 'tools';
 $hasGD = isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ContentType == we_base_ContentTypes::IMAGE && $GLOBALS['we_doc']->gd_support();
+
+if(!empty($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT'])){
+	echo 'alert("' . g_l('global', '[pwd][startupRegExFailed]') . '");';
+	unset($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT']);
+}
 ?>
 
 if (self.location !== top.location) {

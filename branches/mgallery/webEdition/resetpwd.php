@@ -26,6 +26,22 @@ require_once (WE_INCLUDES_PATH . 'we_tag.inc.php');
 echo we_html_tools::getHtmlTop('webEdition') .
  STYLESHEET .
  we_html_element::cssLink(CSS_DIR . 'loginScreen.css') .
+ we_html_element::jsElement('
+function comparePwd(f1,f2){
+	var pwd1=document.getElementsByName(f1)[0];
+	var pwd2=document.getElementsByName(f2)[0];
+	if(!(new RegExp("' . SECURITY_USER_PASS_REGEX . '").test(pwd1.value))){
+		pwd1.classList.add("weMarkInputError");
+	}else{
+		pwd1.classList.remove("weMarkInputError");
+	if(pwd1.value!=pwd2.value){
+		pwd2.classList.add("weMarkInputError");
+	}else{
+		pwd2.classList.remove("weMarkInputError");
+	}
+	}
+}
+') .
  '</head><body id="loginScreen">';
 
 function defaultReset(){
@@ -50,8 +66,8 @@ function resetPwd(){
 	echo we_html_element::htmlDiv(array('style' => 'float: left;height: 50%;width: 1px;')) . we_html_element::htmlDiv(array('style' => 'clear:left;position:relative;top:-25%;'), we_html_element::htmlForm(array("action" => WEBEDITION_DIR . 'resetpwd.php', 'method' => 'post'), '
 	<table id="mainTable">
 		<tr><td colspan="2"><h2>' . g_l('global', '[changePass]') . '</h2></td></tr>
-		<tr><td>' . g_l('global', '[newPass]') . '</td><td><input type="password" name="s[Password]"/></td></tr>
-		<tr><td>' . g_l('global', '[newPass2]') . '</td><td><input type="password" name="s[Password2]"/></td></tr>
+		<tr><td>' . g_l('global', '[newPass]') . '</td><td><input type="password" name="s[Password]" onchange="comparePwd(\'s[Password]\',\'s[Password2]\')"/></td></tr>
+		<tr><td>' . g_l('global', '[newPass2]') . '</td><td><input type="password" name="s[Password2]" onchange="comparePwd(\'s[Password]\',\'s[Password2]\')"/></td></tr>
 		<tr><td></td><td></td><td>' . we_html_button::create_button(we_html_button::SAVE, 'javascript:submit();') . '</td></tr>
 	</table>
 	<input type="hidden" name="type" value="mailreset"/>
@@ -71,7 +87,7 @@ switch(we_base_request::_(we_base_request::STRING, 'type', '')){
 			showError(g_l('global', '[CSRF][tokenInvalid]'));
 			break;
 		}
-		echo we_tag('customerResetPassword', array('type' => "resetFromMail", 'passwordRule' => '(.{6,20})'), '', true);
+		echo we_tag('customerResetPassword', array('type' => "resetFromMail", 'passwordRule' => SECURITY_USER_PASS_REGEX), '', true);
 
 		if(we_tag('ifNotCustomerResetPassword')){
 			showError(g_l('global', '[pwd][changeFailed]') . '<br/>');
