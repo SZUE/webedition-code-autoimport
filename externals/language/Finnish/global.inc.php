@@ -2,7 +2,7 @@
 /** Generated language file of webEdition CMS */
 $l_global=array(
 	'CSRF'=>array(
-		'tokenInvalid'=>'',
+		'tokenInvalid'=>'The form was already sent to the server. You cannot retransmit the form.',
 	),
 	'add_workspace'=>'Lisää työtila',
 	'align'=>'Paikka',
@@ -96,13 +96,16 @@ $l_global=array(
 	'published'=>'Julkaistu',
 	
 	'pwd'=>array(
-		'changeFailed'=>'',
+		'changeFailed'=>'Password change failed',
 		'forgotten'=>'Forgotten password?',
-		'invalidToken'=>'',
-		'mailSent'=>'',
-		'mailSubject'=>'',
-		'noSuchUser'=>'',
-		'resetMail'=>'',
+		'invalidToken'=>'The link you entered is wrong. Make sure the link is not broken into parts in your mail. It is also possible you already used the link to reset the password. Since the link is now invalid, you have to request a new link.',
+		'mailSent'=>'An email is sent to your account %s.',
+		'mailSubject'=>'Reset webEdition password',
+		'noSuchUser'=>'No such user with this email-address',
+		'resetMail'=>'You requested a new password for %s.
+If you don`t requested the password, ignore this mail.
+
+You can change your password using the following link:',
 	),
 	'question'=>'Kysymys',
 	'rc'=>'RC',

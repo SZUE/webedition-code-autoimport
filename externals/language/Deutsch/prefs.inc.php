@@ -279,7 +279,10 @@ Zur Umstellung auf den Standard "nein" ersetzen Sie in allen Vorlagen einfach in
 				'1'=>'Passwort aus Anmeldedialog speichern (_Password)',
 				'2'=>'Passwort aus Datenbank speichern (Password)',
 				'3'=>'Passwort aus Datenbank und Anmeldedialog speichern (Password, _Password)',
-	),),),
+		),),
+		'userPassRegex'=>array(
+			'title'=>'RegEx zur Überprüfung des Benutzerpasswortes',
+	),),
 	'seem'=>'SEE-Mode',
 	'seem_deactivate'=>'deaktivieren',
 	'seem_start_type_cockpit'=>'Cockpit',
