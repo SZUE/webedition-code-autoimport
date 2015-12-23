@@ -184,7 +184,7 @@ function clearSearch() {
 	}
 
 	protected function getHTMLEditorBody(){
-		$content = we_html_element::htmlIFrame('messaging_fv_headers', $this->frameset . '?we_transaction=' . $this->transaction . '&pnt=msg_fv_headers', 'position:absolute;top:0px;height:26px;left:0px;right:0px;', '', '', false) .
+		$content = we_html_element::htmlIFrame('messaging_fv_headers', $this->frameset . '&we_transaction=' . $this->transaction . '&pnt=msg_fv_headers', 'position:absolute;top:0px;height:26px;left:0px;right:0px;', '', '', false) .
 			we_html_element::htmlIFrame('x', 'about:blank', 'display:none', '', '', false) . //FIXME: is this command window??
 			we_html_element::htmlDiv(array('style' => 'position:absolute;top:26px;bottom:26px;left:0px;right:0px;'), we_html_element::htmlIFrame('messaging_messages_overview', 'about:blank', 'position:absolute;top:0px;height:160px;left:0px;right:0px;border-bottom:1px solid black;', '', '', true) .
 				we_html_element::htmlIFrame('messaging_msg_view', 'about:blank', 'position:absolute;top:160px;bottom:0px;left:0px;right:0px;', '', '', true)

@@ -441,6 +441,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 
 
 		$hiddens = we_html_element::htmlHiddens(array(
+				'mod' => 'newsletter',
 				"pnt" => "cmd",
 				"ncmd" => "",
 				"nopt" => ""));
@@ -565,7 +566,8 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 
 	private function formFileChooser($width = '', $IDName = 'ParentID', $IDValue = '/', $cmd = '', $filter = '', $acObject = null, $contentType = ''){
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','" . $filter . "',document.we_form.elements['" . $IDName . "'].value);");
+
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','" . $filter . "',document.we_form.elements['" . $IDName . "'].value,'" . we_base_request::encCmd($cmd) . "');");
 
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, '', 'readonly', 'text', $width, 0), '', 'left', 'defaultfont', '', permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? $button : '');
 	}
@@ -647,14 +649,14 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 				$settings = we_newsletter_view::getSettings();
 			}
 			if(in_array($radio, $extra_radio_text)){
-				$radios_code.= we_html_forms::checkbox($settings[$radio], (($settings[$radio] > 0) ? true : false), $radio . "_check", g_l('modules_newsletter', '[' . $radio . "_check]"), false, "defaultfont", "if(document.we_form." . $radio . "_check.checked) document.we_form." . $radio . ".value=" . (isset($defaults[$radio . "_check"]) ? $defaults[$radio . "_check"] : 0) . "; else document.we_form." . $radio . ".value=0;");
+				$radios_code.= we_html_forms::checkbox($settings[$radio], (($settings[$radio] > 0) ? true : false), $radio . "_check", g_l('modules_newsletter', '[' . $radio . "_check]"), false, "defaultfont", "if(document.we_form." . $radio . "_check.checked){document.we_form." . $radio . ".value=" . (isset($defaults[$radio . "_check"]) ? $defaults[$radio . "_check"] : 0) . ";}else{document.we_form." . $radio . ".value=0;}");
 
 				$radio_table = new we_html_table(array('class' => 'default', 'style' => 'margin-left:25px;'), 1, 2);
 				$radio_table->setCol(0, 0, array("class" => "defaultfont"), oldHtmlspecialchars(g_l('modules_newsletter', '[' . $radio . ']')) . ":&nbsp;");
-				$radio_table->setCol(0, 1, array("class" => "defaultfont", 'style' => 'padding-left:5px;'), we_html_tools::htmlTextInput($radio, 5, $settings[$radio], "", "OnChange='if(document.we_form." . $radio . ".value!=0) document.we_form." . $radio . "_check.checked=true; else document.we_form." . $radio . "_check.checked=false;'"));
+				$radio_table->setCol(0, 1, array("class" => "defaultfont", 'style' => 'padding-left:5px;'), we_html_tools::htmlTextInput($radio, 5, $settings[$radio], "", "OnChange='if(document.we_form." . $radio . ".value!=0){document.we_form." . $radio . "_check.checked=true;}else{document.we_form." . $radio . "_check.checked=false;}'"));
 				$radios_code.=$radio_table->getHtml();
 			} else {
-				$radios_code.=we_html_forms::checkbox($settings[$radio], (($settings[$radio] == 1) ? true : false), $radio, oldHtmlspecialchars(g_l('modules_newsletter', '[' . $radio . ']')), false, "defaultfont", "if(document.we_form." . $radio . ".checked) document.we_form." . $radio . ".value=1; else document.we_form." . $radio . ".value=0;");
+				$radios_code.=we_html_forms::checkbox($settings[$radio], (($settings[$radio] == 1) ? true : false), $radio, oldHtmlspecialchars(g_l('modules_newsletter', '[' . $radio . ']')), false, "defaultfont", "if(document.we_form." . $radio . ".checked){document.we_form." . $radio . ".value=1;}else{document.we_form." . $radio . ".value=0;}");
 			}
 		}
 
@@ -1886,7 +1888,7 @@ self.focus();
 						"etyp" => "",
 						"eid" => "")) .
 					we_html_tools::htmlDialogLayout(
-						we_html_element::htmlDiv(array('style' => 'margin-top:10px;'), $this->formFileChooser(420, "csv_file", ($open_file ? : ($csv_file ? : "/")), "", "", 'readonly="readonly" onchange="alert(100)"'))
+						we_html_element::htmlDiv(array('style' => 'margin-top:10px;'), $this->formFileChooser(420, "csv_file", ($open_file ? : ($csv_file ? : "/")), "opener.postSelectorSelect('selectFile')", "", 'readonly="readonly" onchange="alert(100)"'))
 						. '<br/>' . $out, g_l('modules_newsletter', '[select_file]'), $close . $edit, "100%", 30, 597)
 				)
 		);
@@ -1937,7 +1939,8 @@ function clearLog(){
 
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array("class" => 'weDialogBody', 'onload' => "self.focus();setTimeout(document.we_form.submit,200)"), we_html_element::htmlForm(array('name' => 'we_form'), we_html_element::htmlHiddens(array(
+				we_html_element::htmlBody(array("class" => 'weDialogBody', 'onload' => "self.focus();setTimeout(function(){document.we_form.submit();},200)"), we_html_element::htmlForm(array('name' => 'we_form'), we_html_element::htmlHiddens(array(
+							'mod' => 'newsletter',
 							"pnt" => "send_frameset",
 							'nid' => $nid,
 							'test' => $test)) .
@@ -1992,7 +1995,7 @@ function doSend(start,group){
 self.focus();
 ');
 
-		$body = we_html_element::htmlIFrame('send_body', $this->frameset . '?we_transaction=' . $this->transaction . '&pnt=msg_fv_headers', 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;', '', '', false) .
+		$body = we_html_element::htmlIFrame('send_body', $this->frameset . '&we_transaction=' . $this->transaction . '&pnt=send_body', 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;', '', '', false) .
 			we_html_element::htmlIFrame('send_cmd', $this->frameset . "&pnt=send_cmd", 'position:absolute;width:0px;height:0px;', '', '', false) .
 			we_html_element::htmlIFrame('send_control', $this->frameset . "&pnt=send_control&nid=$nid&test=$test&blockcache=" . $ret["blockcache"] . "&emailcache=" . $ret["emailcache"] . "&ecount=" . $ret["ecount"] . "&gcount=" . $ret["gcount"], 'position:absolute;width:0px;height:0px;', '', '', false)
 		;
@@ -2080,6 +2083,7 @@ self.focus();');
 
 
 		echo $this->getHTMLDocument(we_html_element::htmlBody(array('style' => 'margin:10px;', "onload" => "initControl()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHiddens(array(
+						'mod' => 'newsletter',
 						"nid" => $nid,
 						"pnt" => "send_cmd",
 						"test" => $test,
@@ -2364,7 +2368,7 @@ top.send_control.document.we_form.ecs.value=' . $ecs . ';');
 		we_base_file::delete(WE_NEWSLETTER_CACHE_DIR . $emailcache . "_" . $egc);
 		//$laststep = ceil(we_base_request::_(we_base_request::INT, "ecount", 0) / $this->View->settings["send_step"]);
 		echo we_html_element::jsElement((!empty($this->View->settings["send_wait"]) && is_numeric($this->View->settings["send_wait"]) && $egc > 0 && isset($this->View->settings["send_step"]) && is_numeric($this->View->settings["send_step"]) && $egc < ceil($ecount / $this->View->settings["send_step"]) ?
-				'setTimeout(document.we_form.submit,' . $this->View->settings["send_wait"] . ');' :
+				'setTimeout(function(){document.we_form.submit();},' . $this->View->settings["send_wait"] . ');' :
 				'document.we_form.submit();'
 		));
 		flush();
@@ -2419,6 +2423,7 @@ function reload(){
 self.focus();');
 
 		$body = we_html_element::htmlBody(array("style" => 'margin:10px', "onload" => "startTimeout()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "send_cmd", "action" => $this->frameset), we_html_element::htmlHiddens(array(
+						'mod' => 'newsletter',
 						"nid" => $nid,
 						"pnt" => "send_cmd",
 						"retry" => 1,

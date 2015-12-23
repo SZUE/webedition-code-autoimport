@@ -186,7 +186,6 @@ switch($mod){
 				break;
 			default:
 				echo $weFrame->getHTMLDocumentHeader($what, $mode);
-				return;
 		}
 
 		if(($id = we_base_request::_(we_base_request::INT, 'inid')) !== false){

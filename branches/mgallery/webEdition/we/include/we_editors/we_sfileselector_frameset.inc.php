@@ -136,9 +136,9 @@ function printFrameSet(){
 				var foo = (!currentID || (currentID === sitepath) ? "/" : currentID.substring(sitepath.length));
 
 				opener.<?php echo $cmd1? : 'x'; ?> = foo;
-				if (opener.postSelectorSelect !== undefined) {
+				/*if (opener.postSelectorSelect !== undefined) {
 					opener.postSelectorSelect('selectFile');
-				}
+				}*/
 			}
 	<?php
 	if(($cmd4 = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4))){

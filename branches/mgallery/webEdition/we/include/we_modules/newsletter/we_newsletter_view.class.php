@@ -75,6 +75,7 @@ class we_newsletter_view extends we_modules_view{
 
 	function getHiddens($predefs = array()){
 		return we_html_element::htmlHiddens(array(
+				'mod' => 'newsletter',
 				'ncmd' => (isset($predefs['ncmd']) ? $predefs['ncmd'] : 'new_newsletter'),
 				'we_cmd[0]' => 'show_newsletter',
 				'nid' => (isset($predefs['nid']) ? $predefs['nid'] : $this->newsletter->ID),
