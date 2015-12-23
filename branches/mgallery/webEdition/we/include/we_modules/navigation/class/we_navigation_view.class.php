@@ -140,8 +140,8 @@ var weNavTitleField = [' . implode(',', $_objFields) . '];'
 				$this->Model->IsFolder = we_base_request::_(we_base_request::STRING, 'cmd') === 'module_navigation_new_group' ? 1 : 0;
 				$this->Model->ParentID = we_base_request::_(we_base_request::INT, 'ParentID', 0);
 				echo we_html_element::jsElement('
-top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->Model->Text) . '";
-top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');
+top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=edheader&text=' . urlencode($this->Model->Text) . '";
+top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=edfooter";');
 				break;
 			case 'module_navigation_edit':
 				if(!permissionhandler::hasPerm('EDIT_NAVIGATION')){
@@ -158,8 +158,8 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');
 					break;
 				}
 				echo we_html_element::jsElement('
-top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->Model->Text) . '";
-top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
+top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=edheader&text=' . urlencode($this->Model->Text) . '";
+top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=edfooter";
 if(top.content.treeData){
 	top.content.treeData.unselectNode();
 	top.content.treeData.selectNode(' . $this->Model->ID . ');

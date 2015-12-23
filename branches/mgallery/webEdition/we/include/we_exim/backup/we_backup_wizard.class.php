@@ -110,9 +110,9 @@ function doClick(opt) {
 	function getHTMLFrameset(){
 		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_' . ($this->mode == self::BACKUP ? 'backup' : 'recover') . '_title]'), '', '', STYLESHEET, we_html_element::htmlBody(array('id' => 'weMainBody')
 								, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-										, we_html_element::htmlIFrame('body', $this->frameset . "&pnt=body", 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;', 'border:0px;width:100%;height:100%;') .
+										, we_html_element::htmlIFrame('body', $this->frameset . '&pnt=body', 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;', 'border:0px;width:100%;height:100%;') .
 										we_html_element::htmlIFrame('busy', $this->frameset, 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden', '', '', false) .
-										we_html_element::htmlIFrame('cmd', $this->frameset . "&pnt=cmd")
+										we_html_element::htmlIFrame('cmd', $this->frameset . '&pnt=cmd')
 						))
 		);
 	}
@@ -884,7 +884,7 @@ function press_yes() {
 	if (_unsavedChanges) {
 		' . we_message_reporting::getShowMessageCall(g_l('backup', '[recover_backup_unsaved_changes]'), we_message_reporting::WE_MESSAGE_WARNING) . "
 	} else {
-		top.body.location='" . $this->frameset . "?pnt=body&do_import_after_backup=1';
+		top.body.location='" . $this->frameset . "&pnt=body&do_import_after_backup=1';
 		top.busy.location='" . $this->frameset . "&pnt=busy';
 		top.cmd.location='" . $this->frameset . "&pnt=cmd';
 	}

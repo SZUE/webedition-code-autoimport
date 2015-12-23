@@ -101,8 +101,8 @@ var data={
 				$this->Glossary->Type = array_pop(explode('_', $cmd, 4));
 
 				echo we_html_element::jsElement('
-top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->Glossary->Text) . '";
-top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
+top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edheader&text=' . urlencode($this->Glossary->Text) . '";
+top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edfooter";
 					');
 				break;
 
@@ -120,8 +120,8 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 				$this->Glossary = new we_glossary_glossary($cmdid);
 
 				echo we_html_element::jsElement(
-						'top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->Glossary->Text) . '";' .
-						'top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');
+						'top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edheader&text=' . urlencode($this->Glossary->Text) . '";' .
+						'top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edfooter";');
 				break;
 
 			case 'populateWorkspaces':

@@ -611,7 +611,7 @@ if (top.content.editor.edfooter.doProgress){
 					we_html_element::htmlSpan(array("class" => "defaultfont"), addslashes(g_l('export', '[backup_finished]')) . "<br/>" .
 						g_l('export', '[download_starting2]') . "<br/><br/>" .
 						g_l('export', '[download_starting3]') . "<br/>" .
-						we_html_element::htmlB(we_html_element::htmlA(array("href" => $this->frameset . "&pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename), 'download' => $this->View->export->ExportFilename), g_l('export', '[download]'))) . "<br/><br/>"
+						we_html_element::htmlB(we_html_element::htmlA(array("href" => $this->frameset . '&pnt=cmd&cmd=upload&exportfile=' . urlencode($this->View->export->ExportFilename), 'download' => $this->View->export->ExportFilename), g_l('export', '[download]'))) . "<br/><br/>"
 					) .
 					'\');') :
 				''
@@ -622,7 +622,7 @@ if (top.content.editor.edfooter.doProgress){
 					array(
 						'style' => 'margin:5px;background-color:white;',
 						"onload" => ($this->View->export->ExportTo === 'local' ?
-							($this->cmdFrame . ".location='" . $this->frameset . "&pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename) . "';") :
+							($this->cmdFrame . ".location='" . $this->frameset . '&pnt=cmd&cmd=upload&exportfile=' . urlencode($this->View->export->ExportFilename) . "';") :
 							'showEndStatus();') .
 						"top.content.editor.edfooter.hideProgress();"
 					)
@@ -652,10 +652,10 @@ if (top.content.editor.edfooter.doProgress){
 
 				readfile(TEMP_PATH . $_filename);
 			} else {
-				header("Location: " . $this->frameset . "&pnt=cmd&cmd=upload_failed");
+				header("Location: " . $this->frameset . '&pnt=cmd&cmd=upload_failed');
 			}
 		} else {
-			header("Location: " . $this->frameset . "&pnt=cmd&cmd=error=upload_failed");
+			header("Location: " . $this->frameset . '&pnt=cmd&cmd=error=upload_failed');
 		}
 		exit();
 	}

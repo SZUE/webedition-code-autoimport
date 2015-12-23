@@ -670,7 +670,7 @@ function setScrollTo() {
 }
 
 function editEmailFile(eid, email, htmlmail, salutation, title, firstname, lastname) {
-	new (WE().util.jsWindow)(window, "' . $this->frameset . '&pnt=eemail&eid=" + eid + "&etyp=2&email=" + email + "&htmlmail=" + htmlmail + "&salutation=" + salutation + "&title=" + title + "&firstname=" + firstname + "&lastname=" + lastname, "edit_email", -1, -1, 430, 270, true, true, true, true);
+	new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=eemail&eid=" + eid + "&etyp=2&email=" + email + "&htmlmail=" + htmlmail + "&salutation=" + salutation + "&title=" + title + "&firstname=" + firstname + "&lastname=" + lastname, "edit_email", -1, -1, 430, 270, true, true, true, true);
 }
 
 function setAndSave(eid, email, htmlmail, salutation, title, firstname, lastname) {

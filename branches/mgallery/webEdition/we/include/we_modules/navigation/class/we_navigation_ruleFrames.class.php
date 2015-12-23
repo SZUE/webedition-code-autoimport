@@ -216,7 +216,7 @@ var dependencies = {;
 			we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigationRule.js') . '
 </head>
 <body onload="switchType(document.we_form[\'SelectionType\'].value)" class="weDialogBody">
-	<form name="we_form" target="cmdFrame" action="' . $this->Frameset . '&pnt=ruleCmd">' .
+	<form name="we_form" target="cmdFrame" action=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=ruleCmd">' .
 			we_html_tools::hidden('cmd', '') .
 			we_html_tools::hidden('ID', '0') .
 			we_html_multiIconBox::getHTML('navigationRules', $parts, 30, we_html_button::position_yes_no_cancel($saveButton, null, $closeButton), -1, '', '', false, g_l('navigation', '[rules][navigation_rules]')) . '

@@ -926,13 +926,13 @@ function setVisible(id,visible){
 
 			$nextprev = '<table style="margin-top: 10px;" class="default"><tr><td>' .
 				($start < $size ?
-					we_html_button::create_button(we_html_button::BACK, $this->frameset . "&pnt=show_log&start=" . $back) : //bt_back
+					we_html_button::create_button(we_html_button::BACK, $this->frameset . '&pnt=show_log&start=' . $back) : //bt_back
 					we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true)
 				) . '</td><td style="text-align:center;width:120px;" class="defaultfont"><b>' . ($size - $start + 1) . "&nbsp;-&nbsp;" .
 				($size - $next) .
 				"&nbsp;" . g_l('global', '[from]') . " " . ($size + 1) . '</b></td><td>' .
 				($next > 0 ?
-					we_html_button::create_button(we_html_button::NEXT, $this->frameset . "&pnt=show_log&start=" . $next) : //bt_next
+					we_html_button::create_button(we_html_button::NEXT, $this->frameset . '&pnt=show_log&start=' . $next) : //bt_next
 					we_html_button::create_button(we_html_button::NEXT, "", "", 100, 22, "", "", true)
 				) .
 				"</td></tr></table>";
@@ -1054,13 +1054,13 @@ function setVisible(id,visible){
 
 			$nextprev = '<table style="margin-top: 10px;" class="default"><tr><td>' .
 				($start < $size ?
-					we_html_button::create_button(we_html_button::BACK, $this->frameset . "&pnt=show_log&start=" . $back) : //bt_back
+					we_html_button::create_button(we_html_button::BACK, $this->frameset . '&pnt=show_log&start=' . $back) : //bt_back
 					we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true)
 				) . "</td><td style='text-align:center' class='defaultfont' width='120'><b>" . ($size - $start + 1) . "&nbsp;-&nbsp;" .
 				($size - $next) .
 				"&nbsp;" . g_l('global', '[from]') . " " . ($size + 1) . '</b></td><td>' .
 				($next > 0 ?
-					we_html_button::create_button(we_html_button::NEXT, $this->frameset . "&pnt=show_log&start=" . $next) : //bt_next
+					we_html_button::create_button(we_html_button::NEXT, $this->frameset . '&pnt=show_log&start=' . $next) : //bt_next
 					we_html_button::create_button(we_html_button::NEXT, "", "", 100, 22, "", "", true)
 				) .
 				"</td></tr></table>";
@@ -1166,13 +1166,13 @@ function setVisible(id,visible){
 
 			$nextprev = '<table style="margin-top: 10px;" class="default"><tr><td>' .
 				($start < $size ?
-					we_html_button::create_button(we_html_button::BACK, $this->frameset . "&pnt=show_log&start=" . $back) : //bt_back
+					we_html_button::create_button(we_html_button::BACK, $this->frameset . '&pnt=show_log&start=' . $back) : //bt_back
 					we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true)
 				) . "</td><td style='text-align:center' class='defaultfont' width='120'><b>" . ($size - $start + 1) . "&nbsp;-&nbsp;" .
 				($size - $next) .
 				"&nbsp;" . g_l('global', '[from]') . ' ' . ($size + 1) . '</b></td><td>' .
 				($next > 0 ?
-					we_html_button::create_button(we_html_button::NEXT, $this->frameset . "&pnt=show_log&start=" . $next) : //bt_next
+					we_html_button::create_button(we_html_button::NEXT, $this->frameset . '&pnt=show_log&start=' . $next) : //bt_next
 					we_html_button::create_button(we_html_button::NEXT, "", "", 100, 22, "", "", true)
 				) .
 				'</td></tr></table>';

@@ -151,7 +151,7 @@ WE().consts.g_l.messaging={
 };
 
 function doSearch() {
-	top.content.cmd.location = "' . $this->frameset . '&we_transaction=' . $this->transaction . '&pnt=cmd&mcmd=search_messages&searchterm=" + document.we_messaging_search.messaging_search_keyword.value;
+	top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&we_transaction=' . $this->transaction . '&pnt=cmd&mcmd=search_messages&searchterm=" + document.we_messaging_search.messaging_search_keyword.value;
 }
 
 function launchAdvanced() {
@@ -200,7 +200,7 @@ function clearSearch() {
 		$extraHead = we_html_element::jsElement('
 			function doSort(sortitem) {
 				entrstr = "";
-				top.content.cmd.location = "' . $this->frameset . '&pnt=cmd&mcmd=show_folder_content&sort=" + sortitem + entrstr + "&we_transaction=' . $this->transaction . '";
+				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&mcmd=show_folder_content&sort=" + sortitem + entrstr + "&we_transaction=' . $this->transaction . '";
 			}');
 
 		$colsArray = we_base_request::_(we_base_request::STRING, "viewclass") != "todo" ? array(

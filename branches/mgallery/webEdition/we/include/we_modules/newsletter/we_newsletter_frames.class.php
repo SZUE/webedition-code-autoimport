@@ -1512,7 +1512,7 @@ self.focus();
 				$fname = rtrim(we_base_request::_(we_base_request::FILE, "csv_dir", ''), '/') . '/blacklist_export_' . time() . '.csv';
 				we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $fname, str_replace(",", "\n", $this->View->settings["black_list"]));
 
-				$js.= we_html_element::jsElement('new (WE().util.jsWindow)(window, "' . $this->frameset . '&pnt=export_csv_mes&lnk=' . $fname . '","edit_email",-1,-1,440,250,true,true,true,true);');
+				$js.= we_html_element::jsElement('new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=export_csv_mes&lnk=' . $fname . '","edit_email",-1,-1,440,250,true,true,true,true);');
 				break;
 		}
 
@@ -1990,14 +1990,14 @@ function ask(start,group){
 
 function doSend(start,group){
 	self.focus();
-	top.send_cmd.location="' . $this->frameset . '&pnt=send_cmd&nid=' . $nid . '&test=' . $test . '&blockcache=' . $ret["blockcache"] . '&emailcache=' . $ret["emailcache"] . '&ecount=' . $ret["ecount"] . '&gcount=' . $ret["gcount"] . '&start="+start+"&egc="+group;
+	top.send_cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=send_cmd&nid=' . $nid . '&test=' . $test . '&blockcache=' . $ret["blockcache"] . '&emailcache=' . $ret["emailcache"] . '&ecount=' . $ret["ecount"] . '&gcount=' . $ret["gcount"] . '&start="+start+"&egc="+group;
 }
 self.focus();
 ');
 
 		$body = we_html_element::htmlIFrame('send_body', $this->frameset . '&we_transaction=' . $this->transaction . '&pnt=send_body', 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;', '', '', false) .
-			we_html_element::htmlIFrame('send_cmd', $this->frameset . "&pnt=send_cmd", 'position:absolute;width:0px;height:0px;', '', '', false) .
-			we_html_element::htmlIFrame('send_control', $this->frameset . "&pnt=send_control&nid=$nid&test=$test&blockcache=" . $ret["blockcache"] . "&emailcache=" . $ret["emailcache"] . "&ecount=" . $ret["ecount"] . "&gcount=" . $ret["gcount"], 'position:absolute;width:0px;height:0px;', '', '', false)
+			we_html_element::htmlIFrame('send_cmd', $this->frameset . '&pnt=send_cmd', 'position:absolute;width:0px;height:0px;', '', '', false) .
+			we_html_element::htmlIFrame('send_control', $this->frameset . '&pnt=send_control&nid=' . $nid . '&test=' . $test . '&blockcache=' . $ret["blockcache"] . '&emailcache=' . $ret["emailcache"] . '&ecount=' . $ret["ecount"] . '&gcount=' . $ret["gcount"], 'position:absolute;width:0px;height:0px;', '', '', false)
 		;
 		return $this->getHTMLDocument(we_html_element::htmlBody(array("onload" => (($this->View->newsletter->Step != 0 || $this->View->newsletter->Offset != 0) ? "ask(" . $this->View->newsletter->Step . "," . $this->View->newsletter->Offset . ");" : "no();")), $body), $head);
 	}

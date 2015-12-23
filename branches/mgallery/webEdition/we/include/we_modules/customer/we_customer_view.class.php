@@ -92,7 +92,7 @@ var loaded=0;
 function refreshForm(){
 	if(document.we_form.cmd.value!="home"){
 		we_cmd("switchPage",top.content.activ_tab);
-		top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->customer->Username) . '";
+		top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=edheader&text=' . urlencode($this->customer->Username) . '";
 	}
 }' . $this->getJSSubmitFunction()) .
 			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_property.js');
@@ -130,7 +130,7 @@ function doUnload() {
 
 function we_cmd(){
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args, "' . $this->frameset . '&");
+	var url = WE().util.getWe_cmdArgsUrl(args, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customers&");
 
 	switch (args[0]) {
 		case "save_settings":
@@ -149,15 +149,15 @@ function we_cmd(){
 				$this->customer = new we_customer_customer();
 				$this->settings->initCustomerWithDefaults($this->customer);
 				echo we_html_element::jsElement(
-					'top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->customer->Username) . '";' .
-					'top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";'
+					'top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=edheader&text=' . urlencode($this->customer->Username) . '";' .
+					'top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=edfooter";'
 				);
 				break;
 			case 'customer_edit':
 				$this->customer = new we_customer_customer(we_base_request::_(we_base_request::INT, "cmdid"));
 				echo we_html_element::jsElement(
-					'top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->customer->Username) . '";' .
-					'top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";'
+					'top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=edheader&text=' . urlencode($this->customer->Username) . '";' .
+					'top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=edfooter";'
 				);
 				break;
 			case 'save_customer':
@@ -224,9 +224,9 @@ top.content.applySort();' :
 				echo we_html_element::jsElement(
 					we_message_reporting::getShowMessageCall(g_l('modules_customer', '[customer_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE) .
 					'top.content.treeData.deleteEntry("' . $oldid . '");
-top.content.editor.edheader.location="' . $this->frameset . '&home=1&pnt=edheader";
-top.content.editor.edbody.location="' . $this->frameset . '&home=1&pnt=edbody"
-top.content.editor.edfooter.location="' . $this->frameset . '&home=1&pnt=edfooter";'
+top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&home=1&pnt=edheader";
+top.content.editor.edbody.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&home=1&pnt=edbody"
+top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&home=1&pnt=edfooter";'
 				);
 
 				break;

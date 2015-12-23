@@ -450,8 +450,8 @@ function getNumOfDocs(){
 				$this->workflowDef = new we_workflow_workflow();
 				$this->page = self::PAGE_PROPERTIES;
 				echo we_html_element::jsElement('
-top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader";
-top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
+top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=workflow&pnt=edheader";
+top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=workflow&pnt=edfooter";
 					');
 				break;
 			case 'add_cat':
@@ -572,8 +572,8 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 				break;
 			case 'reload':
 				echo we_html_element::jsElement('
-					top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&page=' . $this->page . '&txt=' . $this->workflowDef->Text . '";
-					top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
+					top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=workflow&pnt=edheader&page=' . $this->page . '&txt=' . $this->workflowDef->Text . '";
+					top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=workflow&pnt=edfooter";
 					');
 				break;
 			case 'workflow_edit':
@@ -633,8 +633,8 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 					$this->page = self::PAGE_PROPERTIES;
 					$this->documentDef->load($id);
 					echo we_html_element::jsElement('
-					top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&art=1&txt=' . $this->documentDef->document->Text . '";
-					top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter&art=1";
+					top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=workflow&pnt=edheader&art=1&txt=' . $this->documentDef->document->Text . '";
+					top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=workflow&pnt=edfooter&art=1";
 					');
 				}
 				break;
@@ -1048,7 +1048,7 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 		$wfType = f('SELECT ' . WORKFLOW_TABLE . '.Type as Type FROM ' . WORKFLOW_TABLE . ',' . WORKFLOW_DOC_TABLE . ' WHERE ' . WORKFLOW_DOC_TABLE . '.workflowID=' . WORKFLOW_TABLE . '.ID AND ' . WORKFLOW_DOC_TABLE . '.ID=' . intval($workflowDocument->ID), 'Type', $db);
 		return '<table class="default" style="margin-right:15px;">
 		<tr><td>' . we_html_tools::htmlDialogBorder3(730, 300, $content, $headline) . '</td></tr>
-		<tr><td style="padding-top:10px;">' . we_html_button::create_button('logbook', "javascript:new (WE().util.jsWindow)(window, '" . $this->frameset . "&pnt=log&art=" . $workflowDocument->document->ID . "&type=" . $wfType . "','workflow_history',-1,-1,640,480,true,false,true);") . '</td></tr>		</table>';
+		<tr><td style="padding-top:10px;">' . we_html_button::create_button('logbook', "javascript:new (WE().util.jsWindow)(window, '" . $this->frameset . '&pnt=log&art=' . $workflowDocument->document->ID . "&type=" . $wfType . "','workflow_history',-1,-1,640,480,true,false,true);") . '</td></tr>		</table>';
 	}
 
 	static function getLogForDocument($docID, $type = 0){//type is an string-array
@@ -1097,13 +1097,13 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 
 		$nextprev = '<table class="default"><tr><td>' .
 			($offset ?
-				we_html_button::create_button(we_html_button::BACK, $this->frameset . "&pnt=log&art=$art&type=$type&offset=" . ($offset - $numRows)) :
+				we_html_button::create_button(we_html_button::BACK, $this->frameset . '&pnt=log&art=' . $art . '&type=' . $type . '&offset=' . ($offset - $numRows)) :
 				we_html_button::create_button(we_html_button::BACK, '', false, 100, 22, '', '', true)
 			) .
 			'</td><td class="defaultfont" style="padding: 0 10px 0 10px;"><b>' . (($anz) ? $offset + 1 : 0) . '-' .
 			(($anz - $offset) < $numRows ? $anz : $offset + $numRows) . ' ' . g_l('global', '[from]') . ' ' . $anz . '</b></td><td>' .
 			((($offset + $numRows) < $anz) ?
-				we_html_button::create_button(we_html_button::NEXT, $this->frameset . "&pnt=log&art=$art&type=$type&offset=" . ($offset + $numRows)/* . "&order=$order" */) :
+				we_html_button::create_button(we_html_button::NEXT, $this->frameset . '&pnt=log&art=' . $art . '&type=' . $type . '&offset=' . ($offset + $numRows)/* . "&order=$order" */) :
 				we_html_button::create_button(we_html_button::NEXT, '', '', 100, 22, '', '', true)
 			) .
 			'</td><td></tr></table>';

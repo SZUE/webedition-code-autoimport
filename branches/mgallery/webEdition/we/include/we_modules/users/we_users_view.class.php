@@ -79,9 +79,9 @@ var cgroup=' . ($_SESSION['user']['ID'] ? intval(f('SELECT ParentID FROM ' . USE
 		$_SESSION["user_session_data"] = $user_object;
 
 		echo we_html_element::jsElement('
-top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader";
-top.content.editor.edbody.location="' . $this->frameset . '&pnt=edbody";
-top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');
+top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edheader";
+top.content.editor.edbody.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edbody";
+top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edfooter";');
 	}
 
 	private function new_alias(){
@@ -103,9 +103,9 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');
 
 		$_SESSION["user_session_data"] = $user_object;
 		echo we_html_element::jsElement('
-		top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader";
-		top.content.editor.edbody.location="' . $this->frameset . '&pnt=edbody";
-		top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');
+		top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edheader";
+		top.content.editor.edbody.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edbody";
+		top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edfooter";');
 	}
 
 	private function new_user(){
@@ -125,9 +125,9 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');
 
 		$_SESSION["user_session_data"] = $user_object;
 		echo we_html_element::jsElement('
-top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader";
-top.content.editor.edbody.location="' . $this->frameset . '&pnt=edbody&oldtab=0";
-top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');
+top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edheader";
+top.content.editor.edbody.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edbody&oldtab=0";
+top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edfooter";');
 	}
 
 	private function display_user(){
@@ -146,9 +146,9 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');
 					($user_object->Type == 1 ?
 							'top.content.cgroup=' . $user_object->ID . ';' :
 							'') .					'
-top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader";
-top.content.editor.edbody.location="' . $this->frameset . '&pnt=edbody&oldtab=0";
-top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');
+top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edheader";
+top.content.editor.edbody.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edbody&oldtab=0";
+top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edfooter";');
 		}
 	}
 
@@ -397,7 +397,7 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');
 			}
 			echo we_html_element::jsElement('
 		if(confirm("' . $question . '")){
-			top.content.cmd.location="' . $this->frameset . '&pnt=cmd&ucmd=do_delete";
+			top.content.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&ucmd=do_delete";
 		}');
 		}
 	}
@@ -416,9 +416,9 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');
 			if($user_object->deleteMe()){
 				echo we_html_element::jsElement('
 		top.content.treeData.deleteEntry(' . $user_object->ID . ');
-		top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&home=1";
-		top.content.editor.edbody.location="' . $this->frameset . '&pnt=edbody&home=1";
-		top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter&home=1";');
+		top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edheader&home=1";
+		top.content.editor.edbody.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edbody&home=1";
+		top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edfooter&home=1";');
 				unset($_SESSION["user_session_data"]);
 			}
 		}

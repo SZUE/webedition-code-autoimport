@@ -281,8 +281,8 @@ function getStatusContol() {
 				$this->newsletter->isEmbedImages = $this->settings['isEmbedImages'];
 
 				echo we_html_element::jsElement('
-							top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader' . (($page = we_base_request::_(we_base_request::INT, "page")) !== false ? "&page=" . $page : "") . '";
-							top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
+							top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=edheader' . (($page = we_base_request::_(we_base_request::INT, "page")) !== false ? "&page=" . $page : "") . '";
+							top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=edfooter";
 					');
 				break;
 			case "new_newsletter_group":
@@ -291,8 +291,8 @@ function getStatusContol() {
 				$this->newsletter->IsFolder = "1";
 				$this->newsletter->Text = g_l('modules_newsletter', '[new_newsletter_group]');
 				echo we_html_element::jsElement('
-top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&group=1";
-top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter&group=1";
+top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=edheader&group=1";
+top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=edfooter&group=1";
 ');
 				break;
 			case "add_customer":
@@ -367,8 +367,8 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter&group
 
 			case "reload":
 				echo we_html_element::jsElement('
-top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&page=' . $this->page . '&txt=' . urlencode($this->newsletter->Text) . ($this->newsletter->IsFolder ? '&group=1' : '') . '";
-top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter' . ($this->newsletter->IsFolder ? '&group=1' : '') . '";
+top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=edheader&page=' . $this->page . '&txt=' . urlencode($this->newsletter->Text) . ($this->newsletter->IsFolder ? '&group=1' : '') . '";
+top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=edfooter' . ($this->newsletter->IsFolder ? '&group=1' : '') . '";
 ');
 				break;
 
@@ -455,7 +455,7 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter' . ($
 						we_html_element::jsElement('
 										self.focus();
 										top.content.get_focus=0;
-										new (WE().util.jsWindow)(window, "' . $this->frameset . '&pnt=qsave1","save_question",-1,-1,350,200,true,true,true,false);
+										new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=qsave1","save_question",-1,-1,350,200,true,true,true,false);
 									');
 						break;
 					}
@@ -716,7 +716,7 @@ edf.populateGroups();');
 
 					we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $fname, $this->newsletter->groups[$exportno]->Emails);
 					echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-					we_html_element::jsElement('new (WE().util.jsWindow)(window, "' . $this->frameset . '&pnt=export_csv_mes&lnk=' . $fname . '","edit_email",-1,-1,440,250,true,true,true,true);');
+					we_html_element::jsElement('new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=export_csv_mes&lnk=' . $fname . '","edit_email",-1,-1,440,250,true,true,true,true);');
 				}
 				break;
 
@@ -792,7 +792,7 @@ self.close();');
 				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 				we_html_element::jsElement(
 					((!trim($this->newsletter->Subject)) ? 'if(confirm("' . g_l('modules_newsletter', '[no_subject]') . '")){' : '') . '
-url ="' . $this->frameset . '&pnt=send&nid=' . $this->newsletter->ID . (we_base_request::_(we_base_request::BOOL, "test") ? '&test=1' : '') . '";
+url =WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=send&nid=' . $this->newsletter->ID . (we_base_request::_(we_base_request::BOOL, "test") ? '&test=1' : '') . '";
 new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,true,false);
 						' . (!(trim($this->newsletter->Subject)) ? '}' : '')
 				);
