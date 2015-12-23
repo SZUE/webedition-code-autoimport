@@ -217,7 +217,8 @@ var WebEdition={
 					folder_copy_success: "<?php echo we_message_reporting::prepareMsgForJS(g_l('copyFolder', '[copy_success]')); ?>",
 					exit_multi_doc_question: "<?php echo g_l('alert', '[exit_multi_doc_question]'); ?>",
 					close_include:"<?php echo we_message_reporting::prepareMsgForJS(g_l('SEEM', '[alert][close_include]')); ?>",
-					confirm_applyFilter: "<?php echo g_l('alert', ($GLOBALS['we_doc']->IsFolder ? '[confirm][applyWeDocumentCustomerFiltersFolder]' : '[confirm][applyWeDocumentCustomerFiltersDocument]')) ?>",
+					confirm_applyFilterFolder: "<?php echo g_l('alert', '[confirm][applyWeDocumentCustomerFiltersFolder]'); ?>",
+					confirm_applyFilterDocument: "<?php echo g_l('alert', '[confirm][applyWeDocumentCustomerFiltersDocument]'); ?>",
 					untitled:"<?php echo g_l('global', '[untitled]'); ?>",
 				},
 				message_reporting:{
