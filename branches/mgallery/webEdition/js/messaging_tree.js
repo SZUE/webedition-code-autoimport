@@ -100,7 +100,7 @@ function set_frames(vc) {
 	if (vc == "message" || vc == "todo") {
 		top.content.iconbar.location = we_frameset + "?we_transaction=" + we_transaction + "&pnt=iconbar&viewclass=" + vc;
 		top.content.editor.edheader.location = we_frameset + "?we_transaction=" + we_transaction + "&pnt=edheader&viewclass=" + vc;
-		top.content.editor.edbody.messaging_fv_headers.location = we_frameset + "?we_transaction=" + we_transaction + "&pnt=msg_fv_headers&viewclass=" + vc;
+		top.content.editor.edbody.messaging_fv_headers.location = we_frameset + "&we_transaction=" + we_transaction + "&pnt=msg_fv_headers&viewclass=" + vc;
 	}
 	viewclass = vc;
 }
