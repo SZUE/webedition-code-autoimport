@@ -119,13 +119,10 @@ class weSuggest{
 	static function getYuiFiles(){ //FIXME: make sure all pages include this in head-element
 		return
 			we_html_element::cssLink(CSS_DIR . 'weSuggest.css') .
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
+			YAHOO_FILES .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/dom-min.js') .
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/datasource-min.js') .
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/animation-min.js') .
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/json-min.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/autocomplete-min.js') .
 			we_html_element::jsScript(JS_DIR . 'utils/we_cmd_encode.js') .
 			we_html_element::jsScript(JS_DIR . 'weSuggest.js');

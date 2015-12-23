@@ -349,9 +349,7 @@ foreach(we_base_request::getAllTables() as $k => $v){
 <?php
 echo we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') .
  we_html_element::jsScript(JS_DIR . 'weNavigationHistory.js') .
- we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
- we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
- we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
+ YAHOO_FILES .
  we_html_element::jsScript(JS_DIR . 'keyListener.js', 'WE().handler.dealWithKeyboardShortCut = dealWithKeyboardShortCut;') .
  we_html_element::jsScript(JS_DIR . 'windows.js', 'WE().util.jsWindow = jsWindow;WE().util.jsWindow;').
 		we_html_element::jsScript(JS_DIR . 'we_tabs/we_tabs.js') .

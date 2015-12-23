@@ -1195,10 +1195,7 @@ set_button_state(false);';
 		if(!count($contents)){
 			return '';
 		}
-		$headCal = we_html_tools::getCalendarFiles() .
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js');
+		$headCal = we_html_tools::getCalendarFiles() . YAHOO_FILES;
 
 		return we_html_tools::getHtmlTop('', '', '', $headCal . STYLESHEET .
 				($contents[0] ? we_html_element::jsElement($contents[0]) : ""), we_html_element::htmlBody(

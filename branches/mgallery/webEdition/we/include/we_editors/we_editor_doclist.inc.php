@@ -24,9 +24,8 @@
 we_html_tools::protect();
 
 echo we_html_tools::getHtmlTop() .
-	we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
-	we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
-	we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js');
+ STYLESHEET .
+ YAHOO_FILES;
 
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
@@ -34,8 +33,7 @@ $doclistView = new $GLOBALS['we_doc']->doclistViewClass($GLOBALS['we_doc']->docl
 $doclistSearch = $doclistView->searchclass;
 
 echo we_html_tools::getCalendarFiles() .
-	$doclistView->getSearchJS() .
-	STYLESHEET
+ $doclistView->getSearchJS();
 ?>
 </head>
 

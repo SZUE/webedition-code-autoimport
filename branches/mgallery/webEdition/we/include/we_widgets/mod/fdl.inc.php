@@ -64,9 +64,7 @@ if(($maxRows = f('SELECT COUNT(DISTINCT f.Username) ' . $queryFailedLogins, '', 
 	$failedLoginsTable->setCol(1, 0, array("class" => "middlefont", "colspan" => "4", "style" => "text-align:left;color:green;"), we_html_element::htmlB(g_l("cockpit", "[kv_failedLogins][noFailedLogins]")));
 }
 
-$failedLoginHTML = we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
-	we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
-	we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
+$failedLoginHTML = YAHOO_FILES .
 	we_html_element::jsElement('var ajaxCallbackResetLogins = {
 success: function(o) {
 	if(typeof(o.responseText) != undefined && o.responseText != "") {

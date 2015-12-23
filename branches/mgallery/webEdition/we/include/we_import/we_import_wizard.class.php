@@ -1086,8 +1086,8 @@ HTS;
 		$objCats->setCol(0, 1, array('style' => 'width:150px;'), $objCategories);
 
 		$objects = new we_html_table(array('class' => 'default'), 3, 2);
-		$objects->setCol(0, 0, array('colspan' => 3,'class'=>'withBigSpace'), $radioObjs);
-		$objects->setCol(1, 0, array('style'=>'width:50px;'));
+		$objects->setCol(0, 0, array('colspan' => 3, 'class' => 'withBigSpace'), $radioObjs);
+		$objects->setCol(1, 0, array('style' => 'width:50px;'));
 		$objects->setCol(1, 1, array(), $objClass->getHTML());
 		$objects->setCol(2, 1, array(), $objCats->getHTML());
 
@@ -1121,9 +1121,7 @@ HTS;
 		$wepos = weGetCookieVariable('but_xml');
 		$znr = -1;
 
-		$content = we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
+		$content = YAHOO_FILES .
 			$hdns .
 			we_html_multiIconBox::getJS() .
 			we_html_multiIconBox::getHTML('xml', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos === 'down'), g_l('import', '[gxml_import]'));
@@ -1977,7 +1975,7 @@ HTS;
 		$docCategories = $this->formCategory2("doc", isset($v["docCategories"]) ? $v["docCategories"] : "");
 		$docCats = new we_html_table(array('class' => 'default'), 1, 2);
 		$docCats->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', "class" => "defaultfont lowContrast"), g_l('import', '[categories]'));
-		$docCats->setCol(0, 1, array('style'=>'width:150px;'), $docCategories);
+		$docCats->setCol(0, 1, array('style' => 'width:150px;'), $docCategories);
 
 		$radioDocs = we_html_forms::radiobutton('documents', ($v["import_type"] === 'documents'), "v[import_type]", g_l('import', '[documents]'));
 		$radioObjs = we_html_forms::radiobutton('objects', ($v["import_type"] === 'objects'), "v[import_type]", g_l('import', '[objects]'), true, "defaultfont", "self.document.we_form.elements['v[store_to_path]'].value='/'; YAHOO.autocoml.setValidById(self.document.we_form.elements['v[store_to_path]'].id); if(self.document.we_form.elements['v[we_TemplateName]']!==undefined) { self.document.we_form.elements['v[we_TemplateName]'].value=''; YAHOO.autocoml.setValidById(self.document.we_form.elements['v[we_TemplateName]'].id); }", (defined('OBJECT_TABLE') ? false : true));
@@ -2015,7 +2013,7 @@ HTS;
 
 			$objClass = new we_html_table(array('class' => 'default'), 1, 2);
 			$objClass->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', "class" => "defaultfont lowContrast"), g_l('import', '[class]'));
-			$objClass->setCol(0, 1, array('style'=>'width:150px;'), $CLselect->getHTML());
+			$objClass->setCol(0, 1, array('style' => 'width:150px;'), $CLselect->getHTML());
 
 			$wecmdenc1 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[obj_path_id]'].value");
 			$wecmdenc2 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[obj_path]'].value");
@@ -2043,10 +2041,10 @@ HTS;
 			$objCategories = $this->formCategory2("obj", isset($v["objCategories"]) ? $v["objCategories"] : "");
 			$objCats = new we_html_table(array('class' => 'default'), 1, 2);
 			$objCats->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', "class" => "defaultfont lowContrast"), g_l('import', '[categories]'));
-			$objCats->setCol(0, 1, array('style'=>'width:150px;'), $objCategories);
+			$objCats->setCol(0, 1, array('style' => 'width:150px;'), $objCategories);
 
 			$objects = new we_html_table(array('class' => 'default withBigSpace'), 3, 2);
-			$objects->setCol(0, 0, array("colspan" => 3,'style'=>'width:50px;'), $radioObjs);
+			$objects->setCol(0, 0, array("colspan" => 3, 'style' => 'width:50px;'), $radioObjs);
 			$objects->setCol(1, 1, array(), $objClass->getHTML());
 			$objects->setCol(2, 1, array(), $objCats->getHTML());
 		}
@@ -2104,9 +2102,7 @@ HTS;
 		}
 
 
-		$content = we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
+		$content = YAHOO_FILES .
 			$hdns .
 			we_html_multiIconBox::getHTML('csv', $parts, 30, "", -1, "", "", false, g_l('import', '[csv_import]'));
 

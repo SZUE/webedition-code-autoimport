@@ -148,6 +148,11 @@ define('STYLESHEET', //we_html_element::cssLink(CSS_DIR . 'global.php') .
 	we_html_element::cssLink(CSS_DIR . 'webEdition.css')
 );
 
+define('YAHOO_FILES', we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
+	we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
+	we_html_element::jsScript(LIB_DIR . 'additional/yui/json-min.js') .
+	we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js'));
+
 if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 	$GLOBALS['WE_BACKENDCHARSET'] = (!empty($_SESSION['prefs']['BackendCharset']) ?
 			$_SESSION['prefs']['BackendCharset'] : 'UTF-8');
