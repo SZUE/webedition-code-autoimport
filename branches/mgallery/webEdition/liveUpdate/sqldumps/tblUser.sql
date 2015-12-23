@@ -57,6 +57,6 @@ CREATE TABLE ###TBLPREFIX###tblUser (
   UNIQUE username (username)
 ) ENGINE=MyISAM;
 /* query separator */
-###INSTALLONLY###INSERT INTO ###TBLPREFIX###tblUser SET ID=1,Text='admin',Path='/admin',username='admin',passwd='c0e024d9200b5705bc4804722636378a',Permissions='a:1:{s:13:"ADMINISTRATOR";i:1;}',CreateDate=UNIX_TIMESTAMP(),UseSalt=1;
+###INSTALLONLY###INSERT INTO ###TBLPREFIX###tblUser SET ID=1,Text='admin',Path='/admin',username='admin',passwd='c0e024d9200b5705bc4804722636378a',Permissions='a:1:{s:13:"ADMINISTRATOR";i:1;}',CreateDate=UNIX_TIMESTAMP();
 /* query separator */
 ###UPDATEONLY### UPDATE ###TBLPREFIX###tblUser SET IsFolder=1 WHERE Type=1;

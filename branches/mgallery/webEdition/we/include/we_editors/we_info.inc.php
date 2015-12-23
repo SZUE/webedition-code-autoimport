@@ -99,7 +99,7 @@ if(!empty($GLOBALS["loginpage"])){
 	$_loginTable->setCol($loginRow++, 0, array(), we_html_tools::htmlTextInput('WE_LOGIN_username', 25, '', 255, 'id="username" ', 'text', 0, 0));
 	$_loginTable->setCol($loginRow++, 0, array("class" => "small row5"), we_html_baseElement::getHtmlCode(new we_html_baseElement("label", true, array("for" => 'password'), g_l('global', '[password]'))));
 	$_loginTable->setCol($loginRow++, 0, array(), we_html_tools::htmlTextInput('WE_LOGIN_password', 25, '', 255, 'id="password" ', 'password', 0, 0));
-
+	$_loginTable->setCol($loginRow++, 0, array(), '<a href="' . WEBEDITION_DIR . 'resetpwd.php">' . g_l('global', '[pwd][forgotten]') . '</a>');
 
 	$_table->addRow(2);
 	$_table->setCol($_actRow++, 0, array('class' => 'spaceTable'), $_loginTable->getHtml());

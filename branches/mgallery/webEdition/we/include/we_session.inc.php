@@ -75,7 +75,7 @@ if($userdata['LoginDenied']){ // userlogin is denied
 }
 
 if(!preg_match('|^\$([^$]{2,4})\$([^$]+)\$(.+)$|', $userdata['passwd'])){ //will cause update on old php-versions every time. since md5 doesn't cost much, ignore this.
-	$salted = we_users_user::makeSaltedPassword($userdata['UseSalt'], $_POST['WE_LOGIN_username'], $_POST['WE_LOGIN_password']);
+	$salted = we_users_user::makeSaltedPassword($_POST['WE_LOGIN_password']);
 	// UPDATE Password with SALT
 	$DB_WE->query('UPDATE ' . USER_TABLE . ' SET passwd="' . $DB_WE->escape($salted) . '" WHERE IsFolder=0 AND username="' . $DB_WE->escape($_POST["WE_LOGIN_username"]) . '" AND ID=' . $userdata['ID']);
 }

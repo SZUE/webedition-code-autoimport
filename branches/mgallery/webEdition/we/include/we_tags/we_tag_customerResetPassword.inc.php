@@ -28,7 +28,7 @@ function checkPwds($pwRegex){
 		$GLOBALS['ERROR']['customerResetPassword'] = we_customer_customer::PWD_NOT_MATCH;
 		return false;
 	}
-	if($pwRegex && !preg_match('/' . preg_quote($pwRegex, '/') . '/', $pwd)){
+	if($pwRegex && !preg_match('/' . addcslashes($pwRegex, '/') . '/', $pwd)){
 		$GLOBALS['ERROR']['customerResetPassword'] = we_customer_customer::PWD_NOT_SUFFICIENT;
 		return false;
 	}
@@ -36,8 +36,9 @@ function checkPwds($pwRegex){
 	return true;
 }
 
-function checkRequired(array $required, array $loadFields, $emailfield = ''){
+function checkRequired(array $required, array $loadFields, $emailfield = '', $internal = false){
 	if(!$required){
+		$GLOBALS['ERROR']['customerResetPassword'] = we_customer_customer::PWD_FIELD_NOT_SET;
 		return false;
 	}
 	$where = array();
@@ -49,14 +50,17 @@ function checkRequired(array $required, array $loadFields, $emailfield = ''){
 			return;
 		}
 	}
-	if(($uid = f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE LoginDenied=0 AND ' . implode(' AND ', $where)))){
-		array_push($loadFields, 'ID', 'Username');
-		if($emailfield){
-			$loadFields[] = $emailfield;
-		}
-		$loadFields = array_unique($loadFields);
+	$table = ($internal ? USER_TABLE : CUSTOMER_TABLE);
+	$loadFields[] = 'ID';
+	if(!$internal){
+		$loadFields[] = 'Username';
+	}
+	if($emailfield){
+		$loadFields[] = $emailfield;
+	}
 
-		$_SESSION['webuser'] = getHash('SELECT `' . implode('`,`', $loadFields) . '` FROM ' . CUSTOMER_TABLE . ' WHERE LoginDenied=0 AND ID=' . $uid);
+	if(($uid = f('SELECT ID FROM ' . $table . ' WHERE LoginDenied=0 AND ' . implode(' AND ', $where)))){
+		$_SESSION['webuser'] = getHash('SELECT `' . implode('`,`', array_unique($loadFields)) . '` FROM ' . $table . ' WHERE LoginDenied=0 AND ID=' . $uid);
 		return $uid;
 	}
 
@@ -64,7 +68,7 @@ function checkRequired(array $required, array $loadFields, $emailfield = ''){
 	return false;
 }
 
-function we_tag_customerResetPassword(array $attribs){
+function we_tag_customerResetPassword(array $attribs, $content = '', $internal = false){
 	if(($foo = attributFehltError($attribs, 'type', __FUNCTION__))){
 		return $foo;
 	}
@@ -104,14 +108,14 @@ function we_tag_customerResetPassword(array $attribs){
 				return parseError('For security reasons: in email mode, attribute <b>required</b> needs at least one field!');
 			}
 			$customerEmailField = weTag_getAttribute('customerEmailField', $attribs, '', we_base_request::STRING);
-			if(($type === 'emailPassword' && !checkPwds($pwdRegex)) || !($uid = checkRequired($required, $loadFields, $customerEmailField))){
+			if(($type === 'emailPassword' && !checkPwds($pwdRegex)) || !($uid = checkRequired($required, $loadFields, $customerEmailField, $internal))){
 				return;
 			}
 			$pwd = we_base_request::_(we_base_request::STRING, 's', '', 'Password');
 			$_SESSION['webuser']['WE_token'] = substr(md5(uniqid('', true)), 0, 25);
 			$GLOBALS['DB_WE']->query('REPLACE INTO ' . PWDRESET_TABLE . ' SET ' . we_database_base::arraySetter(array(
 					'ID' => $uid,
-					'UserTable' => 'tblWebUser',
+					'UserTable' => ($internal ? 'tblUser' : 'tblWebUser'),
 					'password' => $pwd ? we_customer_customer::cryptPassword($pwd) : '',
 					'expires' => sql_function('NOW()+ INTERVAL ' . intval(weTag_getAttribute('expireToken', $attribs, 3600, we_base_request::INT)) . ' SECOND'),
 					'token' => $_SESSION['webuser']['WE_token']
@@ -121,16 +125,16 @@ function we_tag_customerResetPassword(array $attribs){
 			break;
 		case 'resetFromMail':
 			//if optional required field is given, check them
-			if($required[0] !== '' && !checkRequired($required, $loadFields)){
+			if(!empty($required) && !checkRequired($required, $loadFields)){
 				return;
 			}
 			$user = we_base_request::_(we_base_request::INT, 'user');
 			//check token && if password present; expired logins are already deleted
-			$data = getHash('SELECT ID,password FROM ' . PWDRESET_TABLE . ' WHERE UserTable="tblWebUser" AND ID=' . $user . ' AND token="' . $GLOBALS['DB_WE']->escape(we_base_request::_(we_base_request::STRING, 'token')) . '"');
+			$data = getHash('SELECT ID,password FROM ' . PWDRESET_TABLE . ' WHERE UserTable="' . ($internal ? 'tblUser' : 'tblWebUser') . '" AND ID=' . $user . ' AND token="' . $GLOBALS['DB_WE']->escape(we_base_request::_(we_base_request::STRING, 'token')) . '"');
 
 			if(!$data){
 				$GLOBALS['ERROR']['customerResetPassword'] = we_customer_customer::PWD_TOKEN_INVALID;
-				$GLOBALS['DB_WE']->query('DELETE FROM ' . PWDRESET_TABLE . ' WHERE UserTable="tblWebUser" AND ID=' . $user);
+				$GLOBALS['DB_WE']->query('DELETE FROM ' . PWDRESET_TABLE . ' WHERE UserTable="' . ($internal ? 'tblUser' : 'tblWebUser') . '" AND ID=' . $user);
 				return;
 			}
 			//if no pwd is set, check if passwords are given by request
@@ -139,12 +143,21 @@ function we_tag_customerResetPassword(array $attribs){
 					return;
 				}
 				//set password from request, pwd in db was empty
-				$data['password'] = we_customer_customer::cryptPassword(we_base_request::_(we_base_request::STRING, 's', '', 'Password'));
+				$data['password'] = ($internal ?
+						we_users_user::makeSaltedPassword(we_base_request::_(we_base_request::STRING, 's', '', 'Password')) :
+						we_customer_customer::cryptPassword(we_base_request::_(we_base_request::STRING, 's', '', 'Password'))
+					);
 			}
-			//ok, we have a password, all (optional requirements are met) & token was valid
-			$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET Password="' . $GLOBALS['DB_WE']->escape($data['password']) . '" WHERE LoginDenied=0 AND ID=' . $data['ID']);
-			$GLOBALS['DB_WE']->query('DELETE FROM ' . PWDRESET_TABLE . ' WHERE UserTable="tblWebUser" AND ID=' . $data['ID']);
+			if($internal){
+				$GLOBALS['DB_WE']->query('UPDATE ' . USER_TABLE . ' SET passwd="' . $GLOBALS['DB_WE']->escape($data['password']) . '" WHERE LoginDenied=0 AND ID=' . $data['ID']);
+				$GLOBALS['DB_WE']->query('UPDATE ' . FAILED_LOGINS_TABLE . ' SET isValid="false" WHERE UserTable="tblUser" AND Username=(SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . $data['ID'] . ')');
+			} else {
+				//ok, we have a password, all (optional requirements are met) & token was valid
+				$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET Password="' . $GLOBALS['DB_WE']->escape($data['password']) . '" WHERE LoginDenied=0 AND ID=' . $data['ID']);
+				$GLOBALS['DB_WE']->query('UPDATE ' . FAILED_LOGINS_TABLE . ' SET isValid="false" WHERE UserTable="tblWebUser" AND Username=(SELECT Username FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $data['ID'] . ')');
+			}
 
+			$GLOBALS['DB_WE']->query('DELETE FROM ' . PWDRESET_TABLE . ' WHERE UserTable="' . ($internal ? 'tblUser' : 'tblWebUser') . '" AND ID=' . $data['ID']);
 			$GLOBALS['ERROR']['customerResetPassword'] = we_customer_customer::PWD_ALL_OK;
 			break;
 	}

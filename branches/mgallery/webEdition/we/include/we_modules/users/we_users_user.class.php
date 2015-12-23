@@ -89,7 +89,6 @@ class we_users_user{
 		'ParentWsCust' => we_base_request::BOOL,
 		'altID' => we_base_request::INT,
 		'LoginDenied' => we_base_request::BOOL,
-		'UseSalt' => we_base_request::INT
 	);
 	// Name of the Object that was createt from this class
 	var $Name = '';
@@ -271,17 +270,14 @@ class we_users_user{
 		$this->ModDate = time();
 		$tableInfo = $this->DB_WE->metadata($this->Table);
 		if($this->clearpasswd !== ''){
-			$this->passwd = self::makeSaltedPassword($this->username, $this->clearpasswd);
+			$this->passwd = self::makeSaltedPassword($this->clearpasswd);
 		}
 
 		$updt = array();
 
 		foreach($tableInfo as $t){
 			$fieldName = $t['name'];
-			$val = ($fieldName === 'UseSalt' && $useSalt > 0 ?
-					$useSalt :
-					(isset($this->$fieldName) ? $this->$fieldName : 0)
-				);
+			$val = (isset($this->$fieldName) ? $this->$fieldName : 0 );
 			if($fieldName != 'ID'){
 				if($fieldName === 'editorFontname' && $this->Preferences['editorFont'] == '0'){
 					$val = 'none';
@@ -2408,9 +2404,8 @@ function resetTabs(){
 		return $salt;
 	}
 
-	public static function makeSaltedPassword($username, $passwd, $strength = 15){
-		$passwd = substr($passwd, 0, 64);
-		return crypt($passwd, '$2y$' . sprintf('%02d', $strength) . '$' . self::getHashIV(22));
+	public static function makeSaltedPassword($passwd, $strength = 15){
+		return crypt(substr($passwd, 0, 64), '$2y$' . sprintf('%02d', $strength) . '$' . self::getHashIV(22));
 	}
 
 	static function readPrefs($id, $db, $login = false){

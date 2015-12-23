@@ -52,7 +52,7 @@ function getLoad(){
 			$js = we_message_reporting::getShowMessageCall(g_l('global', '[pass_not_match]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 top.document.forms[0].elements.oldpasswd.focus();
 top.document.forms[0].elements.oldpasswd.select();';
-		} else if(strlen($newpasswd) < 4){
+		} else if(strlen($newpasswd) < 6){
 			$js = we_message_reporting::getShowMessageCall(g_l('global', '[pass_to_short]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 top.document.forms[0].elements.newpasswd.focus();
 top.document.forms[0].elements.newpasswd.select();';
@@ -62,7 +62,7 @@ top.document.forms[0].elements.newpasswd2.focus();
 top.document.forms[0].elements.newpasswd2.select();';
 		} else {
 			//essential leave this line
-			$pwd = $DB_WE->escape(we_users_user::makeSaltedPassword($_SESSION['user']['Username'], $newpasswd));
+			$pwd = $DB_WE->escape(we_users_user::makeSaltedPassword($newpasswd));
 			$DB_WE->query('UPDATE ' . USER_TABLE . ' SET passwd="' . $pwd . '" WHERE ID=' . $_SESSION["user"]['ID'] . ' AND username="' . $DB_WE->escape($_SESSION["user"]["Username"]) . '"');
 			$js = we_message_reporting::getShowMessageCall(g_l('global', '[pass_changed]'), we_message_reporting::WE_MESSAGE_NOTICE) .
 					'top.close();';

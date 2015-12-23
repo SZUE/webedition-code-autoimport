@@ -19,13 +19,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifNotCustomerResetPassword(array $attribs){
-	if(empty($GLOBALS['ERROR']['customerResetPassword'])){
-		return false;
-	}
 	switch(weTag_getAttribute('type', $attribs, 'all', we_base_request::STRING)){
 		default:
 		case 'all':
-			return true;
+			return $GLOBALS['ERROR']['customerResetPassword'] !== we_customer_customer::PWD_ALL_OK;
 		case 'passwordMismatch':
 			return $GLOBALS['ERROR']['customerResetPassword'] === we_customer_customer::PWD_NOT_MATCH;
 		case 'passwordRule':
