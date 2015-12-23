@@ -130,7 +130,7 @@ function doUnload() {
 
 function we_cmd(){
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args, "' . $this->frameset . '?");
+	var url = WE().util.getWe_cmdArgsUrl(args, "' . $this->frameset . '&");
 
 	switch (args[0]) {
 		case "save_settings":
@@ -224,9 +224,9 @@ top.content.applySort();' :
 				echo we_html_element::jsElement(
 					we_message_reporting::getShowMessageCall(g_l('modules_customer', '[customer_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE) .
 					'top.content.treeData.deleteEntry("' . $oldid . '");
-top.content.editor.edheader.location="' . $this->frameset . '?home=1&pnt=edheader";
-top.content.editor.edbody.location="' . $this->frameset . '?home=1&pnt=edbody"
-top.content.editor.edfooter.location="' . $this->frameset . '?home=1&pnt=edfooter";'
+top.content.editor.edheader.location="' . $this->frameset . '&home=1&pnt=edheader";
+top.content.editor.edbody.location="' . $this->frameset . '&home=1&pnt=edbody"
+top.content.editor.edfooter.location="' . $this->frameset . '&home=1&pnt=edfooter";'
 				);
 
 				break;

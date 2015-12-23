@@ -151,7 +151,7 @@ WE().consts.g_l.messaging={
 };
 
 function doSearch() {
-	top.content.cmd.location = "' . $this->frameset . '?we_transaction=' . $this->transaction . '&pnt=cmd&mcmd=search_messages&searchterm=" + document.we_messaging_search.messaging_search_keyword.value;
+	top.content.cmd.location = "' . $this->frameset . '&we_transaction=' . $this->transaction . '&pnt=cmd&mcmd=search_messages&searchterm=" + document.we_messaging_search.messaging_search_keyword.value;
 }
 
 function launchAdvanced() {
@@ -177,7 +177,7 @@ function clearSearch() {
 
 		$table->setCol(0, 1, array('class' => 'defaultfont'), $buttons);
 		$form = we_html_element::htmlForm(
-				array('name' => 'we_messaging_search', 'action' => $this->frameset . '?we_transaction=' . $this->transaction . '&pnt=edheader&viewclass=' . $this->viewclass, 'onSubmit' => 'return doSearch()'), $hidden . $table->getHtml()
+				array('name' => 'we_messaging_search', 'action' => $this->frameset . '&we_transaction=' . $this->transaction . '&pnt=edheader&viewclass=' . $this->viewclass, 'onSubmit' => 'return doSearch()'), $hidden . $table->getHtml()
 		);
 
 		return $this->getHTMLDocument(we_html_element::htmlBody(array('style' => 'background-color: white;border-top:1px solid black;'), we_html_element::htmlNobr($form)), $extraHead);

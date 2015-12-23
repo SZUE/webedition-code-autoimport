@@ -251,7 +251,7 @@ function we_cmd() {
 		$home = we_base_request::_(we_base_request::BOOL, 'home');
 
 		if($home){
-			$bodyURL = $this->frameset . '?home=1';
+			$bodyURL = $this->frameset . '&home=1';
 		} elseif($mid){
 			$year = substr($mid, (strlen($mid) - 4));
 			$month = str_replace($year, '', $mid);
@@ -292,7 +292,7 @@ function we_cmd() {
 		$resultD = f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE Name="' . $DB_WE->escape(WE_SHOP_TITLE_FIELD_NAME) . '" LIMIT 1', '', $DB_WE);
 
 		if($home){
-			$bodyURL = $this->frameset . '?home=1&pnt=edbody'; //same as in getHTMLRight()
+			$bodyURL = $this->frameset . '&home=1&pnt=edbody'; //same as in getHTMLRight()
 		} elseif($mid){
 // TODO::WANN UND VON WEM WIRD DAS AUFGERUFEN ????
 			$bodyURL = WE_SHOP_MODULE_DIR . 'edit_shop_overviewTop.php?mid=' . $mid;
