@@ -98,25 +98,6 @@ function doClickDirect(id, ct, table, fenster) {
 	}
 }
 
-/*function setTreeArrow(direction) {
- try {
- var arrImg = self.document.getElementById("arrowImg");
- if (direction === "right") {
- arrImg.classList.remove("fa-caret-left");
- self.document.getElementById("incBaum").style.backgroundColor = "gray";
- self.document.getElementById("decBaum").style.backgroundColor = "gray";
- } else {
- arrImg.classList.remove("fa-caret-right");
- self.document.getElementById("incBaum").style.backgroundColor = "";
- self.document.getElementById("decBaum").style.backgroundColor = "";
- }
- arrImg.classList.add("fa-caret-" + direction);
- } catch (e) {
- // Nothing
- }
- }
- */
-
 function doClickWithParameters(id, ct, table, parameters) {
 	WE().layout.weEditorFrameController.openDocument(table, id, ct, '', '', '', '', '', parameters);
 

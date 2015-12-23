@@ -27,7 +27,7 @@ function addEntry(id, txt, folder, pth) {
 		text: txt,
 		isFolder: folder,
 		path: pth,
-		contentType: ct,
+		contentType: (folder ? "folder" : "we/banner"),
 	});
 }
 
