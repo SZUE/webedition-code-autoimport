@@ -180,13 +180,13 @@ switch($mod){
 				break;
 		}
 
-		/*switch($ncmd){
-			case 'do_upload_csv':
-			case 'do_upload_black':
-				break;
-			default:
-				echo $weFrame->getHTMLDocumentHeader($what, $mode);
-		}*/
+		/* switch($ncmd){
+		  case 'do_upload_csv':
+		  case 'do_upload_black':
+		  break;
+		  default:
+		  echo $weFrame->getHTMLDocumentHeader($what, $mode);
+		  } */
 
 		if(($id = we_base_request::_(we_base_request::INT, 'inid')) !== false){
 			$weFrame->View->newsletter = new we_newsletter_newsletter($id);
@@ -217,10 +217,15 @@ switch($mod){
 				break;
 			default:
 				$mode = isset($mode) ? $mode : we_base_request::_(we_base_request::INT, 'art', 0);
+				ob_start();
 				$weFrame->View->processCommands();
+				$GLOBALS['extraJS'] = ob_get_clean();
 		}
 
 		if($weFrame->View->isJsonOnly()){
+			if(!empty($GLOBALS['extraJS'])){
+				echo $GLOBALS['extraJS'];
+			}
 			return;
 		}
 		break;

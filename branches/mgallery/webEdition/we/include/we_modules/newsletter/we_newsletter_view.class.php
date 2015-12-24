@@ -1178,7 +1178,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 			}
 		} else {
 			foreach($this->newsletter->blocks as $kblock => $block){
-				if(strpos($block->Groups, "," . $group . ",") !== false){
+				if(in_array($group, $block->GroupsA)){
 					$content[] = $kblock;
 				}
 			}
@@ -1192,7 +1192,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 		if(is_array($this->newsletter->groups)){
 			$keys = array_keys($this->newsletter->groups);
 			foreach($keys as $gk){
-				$emails = $this->getEmails($gk + 1, 0, 1);
+				$emails = $this->getEmails($gk + 1, self::MAILS_ALL, 1);
 
 				if(in_array($email, $emails)){
 					$ret[] = $gk + 1;
@@ -1330,7 +1330,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 		}
 	}
 
-	function getEmails($group, $select = 0, $emails_only = 0){
+	function getEmails($group, $select = self::MAILS_ALL, $emails_only = 0){
 
 		update_time_limit(0);
 		update_mem_limit(128);
@@ -1342,7 +1342,6 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 		}
 
 		$list = ($select == self::MAILS_ALL || $select == self::MAILS_EMAILS) ? we_newsletter_base::getEmailsFromList($this->newsletter->groups[$group - 1]->Emails, $emails_only, $group, $this->getGroupBlocks($group)) : array();
-
 		if($select == self::MAILS_EMAILS){
 			return $list;
 		}
@@ -1404,7 +1403,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 		$out = 0;
 		$count = count($this->newsletter->groups);
 		for($i = 0; $i < $count; $i++){
-			$out+=count($this->getEmails($i + 1, 0, 1));
+			$out+=count($this->getEmails($i + 1, self::MAILS_ALL, 1));
 		}
 		return $out;
 	}
@@ -1511,17 +1510,16 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 
 			for($groupid = 1; $groupid < $groupcount; $groupid++){
 				$tmp = $this->getEmails($groupid);
-				$tcount = count($tmp);
-				for($t = 0; $t < $tcount; $t++){
-					if(isset($tmp[$t][0]) && isset($tmp[$t][7]) && count($tmp[$t][7])){
-						$index = strtolower($tmp[$t][0]);
+				foreach($tmp as $curEntry){
+					if(isset($curEntry[0]) && !empty($curEntry[7])){
+						$index = strtolower($curEntry[0]);
 						if(isset($buffer[$index])){
-							if(!in_array($tmp[$t][6], explode(",", $buffer[$index][6]))){
-								$buffer[$index][6].="," . $tmp[$t][6];
+							if(!in_array($curEntry[6], explode(",", $buffer[$index][6]))){
+								$buffer[$index][6].="," . $curEntry[6];
 							}
-							$buffer[$index][7] = array_merge($buffer[$index][7], $tmp[$t][7]);
+							$buffer[$index][7] = array_merge($buffer[$index][7], $curEntry[7]);
 						} else {
-							$buffer[$index] = $tmp[$t];
+							$buffer[$index] = $curEntry;
 						}
 					}
 				}
