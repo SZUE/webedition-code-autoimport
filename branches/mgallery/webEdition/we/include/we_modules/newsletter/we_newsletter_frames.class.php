@@ -1995,7 +1995,7 @@ function doSend(start,group){
 self.focus();
 ');
 
-		$body = we_html_element::htmlIFrame('send_body', WEBEDITION_DIR . 'we_showMod.php?mod=newsletter&we_transaction=' . $this->transaction . '&pnt=send_body', 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;', '', '', false) .
+		$body = we_html_element::htmlIFrame('send_body', WEBEDITION_DIR . 'we_showMod.php?mod=newsletter&pnt=send_body', 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;', '', '', false) .
 			we_html_element::htmlIFrame('send_cmd', WEBEDITION_DIR . 'we_showMod.php?mod=newsletter&pnt=send_cmd', 'position:absolute;width:0px;height:0px;', '', '', false) .
 			we_html_element::htmlIFrame('send_control', WEBEDITION_DIR . 'we_showMod.php?mod=newsletter&pnt=send_control&nid=' . $nid . '&test=' . $test . '&blockcache=' . $ret["blockcache"] . '&emailcache=' . $ret["emailcache"] . '&ecount=' . $ret["ecount"] . '&gcount=' . $ret["gcount"], 'position:absolute;width:0px;height:0px;', '', '', false)
 		;
