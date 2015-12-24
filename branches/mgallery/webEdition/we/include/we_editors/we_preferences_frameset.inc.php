@@ -35,9 +35,10 @@ $tabname = we_base_request::_(we_base_request::STRING, "tabname", "setting_ui");
 
 $we_tabs = new we_tabs();
 
-foreach($GLOBALS['tabs'] as $name => $perm){
+foreach($GLOBALS['tabs'] as $name => $list){
+	list($icon, $perm) = $list;
 	if(empty($perm) || permissionhandler::hasPerm($perm)){
-		$we_tabs->addTab(new we_tab(g_l('prefs', '[tab][' . $name . ']'), ($tabname === 'setting_' . $name ? we_tab::ACTIVE : we_tab::NORMAL), "top.we_cmd('" . $name . "');"));
+		$we_tabs->addTab(new we_tab(($icon ? '<i class="fa fa-lg ' . $icon . '"></i> ' : '') . g_l('prefs', '[tab][' . $name . ']'), ($tabname === 'setting_' . $name ? we_tab::ACTIVE : we_tab::NORMAL), "top.we_cmd('" . $name . "');"));
 	}
 }
 
@@ -60,12 +61,12 @@ function we_cmd() {
 
 	switch (args[0]) {
 END_OF_SCRIPT;
-foreach($GLOBALS['tabs'] as $name => $perm){
+foreach(array_keys($GLOBALS['tabs']) as $name){
 	if(empty($perm) || permissionhandler::hasPerm($perm)){
 		$_javascript.='case "' . $name . '":';
 	}
 }
-foreach($GLOBALS['tabs'] as $name => $perm){
+foreach(array_keys($GLOBALS['tabs']) as $name){
 	$_javascript.="try{content.document.getElementById('setting_" . $name . "').style.display = 'none';}catch(e){}";
 }
 

@@ -111,9 +111,16 @@ include_once(WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php');
 // we_available_modules - modules and informations about integrated and none integrated modules
 // we_active_integrated_modules - all active integrated modules
 //if file corrupted try to load defaults
-if(empty($GLOBALS['_we_active_integrated_modules']) || !in_array('users', $GLOBALS['_we_active_integrated_modules'])){
+if(empty($GLOBALS['_we_active_integrated_modules'])){
 	include_once(WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php.default');
 }
+$GLOBALS['_we_active_integrated_modules'] = array_unique(array_merge($GLOBALS['_we_active_integrated_modules'], array(
+	we_base_moduleInfo::USERS,
+	we_base_moduleInfo::EDITOR,
+	we_base_moduleInfo::NAVIGATION,
+	we_base_moduleInfo::EXPORT
+	)));
+
 //FIXME: don't include all confs!
 foreach($GLOBALS['_we_active_integrated_modules'] as $active){
 	we_base_moduleInfo::isActive($active);
