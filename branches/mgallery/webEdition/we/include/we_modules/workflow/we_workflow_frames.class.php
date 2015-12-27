@@ -52,10 +52,6 @@ class we_workflow_frames extends we_modules_frame{
 		return parent::getHTMLFrameset($this->Tree->getJSTreeCode() . $this->getJSCmdCode());
 	}
 
-	function getJSCmdCode(){
-		return $this->View->getJSTop();
-	}
-
 	protected function getHTMLEditorHeader($mode = 0){
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#F0EFF0"), ""));

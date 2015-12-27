@@ -45,10 +45,6 @@ class we_messaging_view extends we_modules_view{
 		));
 	}
 
-	function getJSTop(){
-		//
-	}
-
 	function getJSSubmitFunction($def_target = "edbody"){
 		return '
 function submitForm(target,action,method) {

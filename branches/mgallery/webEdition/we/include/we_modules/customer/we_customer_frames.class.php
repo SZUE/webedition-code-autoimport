@@ -77,10 +77,6 @@ class we_customer_frames extends we_modules_frame{
 		return parent::getHTMLFrameset($extraHead, $extraUrlParams);
 	}
 
-	function getJSCmdCode(){
-		return $this->View->getJSTop();
-	}
-
 	//TODO: move editor-body relatetd stuff to weCustomerView! => note dependencies on jsOut_fieldTypesByName
 	function getHTMLFieldsSelect($branch){
 		$select = new we_html_select(array('name' => 'branch'));

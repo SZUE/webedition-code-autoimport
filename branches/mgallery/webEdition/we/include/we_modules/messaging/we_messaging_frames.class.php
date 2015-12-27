@@ -59,10 +59,6 @@ class we_messaging_frames extends we_modules_frame{
 		exit();
 	}
 
-	function getJSCmdCode(){
-		return '';
-	}
-
 	protected function getHTMLTree($extraHead = ''){
 		return parent::getHTMLTree(
 				we_html_element::jsScript(JS_DIR . 'tree.js') .

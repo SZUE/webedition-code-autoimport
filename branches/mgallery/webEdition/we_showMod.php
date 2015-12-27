@@ -222,12 +222,6 @@ switch($mod){
 				$GLOBALS['extraJS'] = ob_get_clean();
 		}
 
-		if($weFrame->View->isJsonOnly()){
-			if(!empty($GLOBALS['extraJS'])){
-				echo $GLOBALS['extraJS'];
-			}
-			return;
-		}
 		break;
 	default:
 		echo 'no module';

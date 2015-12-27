@@ -64,7 +64,7 @@ abstract class we_modules_frame{
 	}
 
 	function getJSCmdCode(){
-		return we_html_element::jsElement('function we_cmd(){}');
+		return $this->View->getJSTop();
 	}
 
 	function getHTML($what = ''){

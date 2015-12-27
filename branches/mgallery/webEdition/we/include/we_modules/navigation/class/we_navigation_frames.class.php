@@ -94,10 +94,6 @@ class we_navigation_frames extends we_modules_frame{
 		));
 	}
 
-	function getJSCmdCode(){
-		return $this->View->getJSTop();
-	}
-
 	public function getHTMLDocumentHeader(){
 		return parent::getHTMLDocumentHeader($this->Model->Charset);
 	}

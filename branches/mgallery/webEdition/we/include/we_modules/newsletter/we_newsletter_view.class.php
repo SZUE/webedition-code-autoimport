@@ -44,7 +44,6 @@ class we_newsletter_view extends we_modules_view{
 	var $topFrame;
 	var $treeFrame;
 	var $cmdFrame;
-	protected $jsonOnly = false;
 	protected $show_import_box = -1;
 	protected $show_export_box = -1;
 
@@ -898,15 +897,10 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 		return $ret;
 	}
 
-	public function isJsonOnly(){
-		return $this->jsonOnly;
-	}
-
 	/**
 	 * Newsletter printing functions
 	 */
 	private function initDocByObject($we_objectID){
-
 		$we_obj = new we_objectFile();
 		$we_obj->initByID($we_objectID, OBJECT_FILES_TABLE);
 

@@ -83,10 +83,6 @@ abstract class we_tool_frames extends we_modules_frame{
 		return $this->getHTMLDocument($body, $js);
 	}
 
-	function getJSCmdCode(){
-		return $this->View->getJSTop();
-	}
-
 	/**
 	 * Top frame with menu
 	 *

@@ -32,16 +32,46 @@ class we_shop_view extends we_modules_view{
 	private $CLFields = array(); //
 	private $classIds = array();
 
-	function getJSTop(){//TODO: is this shop-code or a copy paste from another module?
-		return parent::getJSTop() .
-			we_html_element::jsElement('
+	function getJSTop(){
+		$mod = we_base_request::_(we_base_request::STRING, 'mod', '');
+		$modData = we_base_moduleInfo::getModuleData($mod);
+		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
+
+
+		/* 		$years = we_shop_shop::getAllOrderYears();
+		  foreach($years as $cur){
+		  }
+		 */
+		/// config
+		$feldnamen = explode('|', f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_pref"', '', $this->db));
+		for($i = 0; $i <= 3; $i++){
+			$feldnamen[$i] = isset($feldnamen[$i]) ? $feldnamen[$i] : '';
+		}
+
+		$fe = explode(',', $feldnamen[3]);
+		$classid = $fe[0];
+		//$resultO = count ($fe);
+		$resultO = array_shift($fe);
+
+		// whether the resultset is empty?
+		$resultD = f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE Name="' . WE_SHOP_TITLE_FIELD_NAME . '" LIMIT 1', '', $this->db);
+
+
+		return we_html_element::jsElement('
 WE().consts.g_l.shop={
 	no_perms:"' . we_message_reporting::prepareMsgForJS(g_l('modules_shop', '[no_perms]')) . '",
 	nothing_to_save:"' . we_message_reporting::prepareMsgForJS(g_l('modules_shop', '[nothing_to_save]')) . '",
 	nothing_to_delete:"' . we_message_reporting::prepareMsgForJS(g_l('modules_shop', '[nothing_to_delete]')) . '",
+	no_order_there:"' . we_message_reporting::prepareMsgForJS(g_l('modules_shop', '[no_order_there]')) . '",
 	delete_alert:"' . g_l('modules_shop', '[delete_alert]') . '",
-};') .
-			we_html_element::jsScript(JS_DIR . 'we_modules/shop/we_shop_view.js');
+	del_shop:"' . g_l('modules_shop', '[del_shop]') . '",
+};
+WE().consts.dirs.WE_SHOP_MODULE_DIR="' . WE_SHOP_MODULE_DIR . '";
+var isDocument=' . intval($resultD) . ';
+var isObject=' . intval((!empty($resultO))) . ';
+var classID=' . $classid . ';
+') .
+			we_html_element::jsScript(JS_DIR . 'we_modules/shop/we_shop_view.js', 'parent.document.title = "' . $title . '";');
 	}
 
 	function getJSProperty(){
@@ -1283,73 +1313,73 @@ function CalendarChanged(calObject) {
 		}
 	}
 
-	function processCommands_back(){
-		switch(we_base_request::_(we_base_request::STRING, 'cmd')){
-			case 'new_raw':
-				$this->raw = new weShop();
-				echo we_html_element::jsElement(
-					'top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
-					'top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edfooter";'
-				);
-				break;
-			case 'edit_raw':
-				$this->raw = new weShop($_REQUEST['cmdid']);
-				echo we_html_element::jsElement(
-					'top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
-					'top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edfooter";'
-				);
-				break;
-			case 'save_raw':
-				if($this->raw->filenameNotValid()){
-					echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('modules_shop', '[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR)
-					);
-					break;
-				}
+	/* 	function processCommands_back(){
+	  switch(we_base_request::_(we_base_request::STRING, 'cmd')){
+	  case 'new_raw':
+	  $this->raw = new weShop();
+	  echo we_html_element::jsElement(
+	  'top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
+	  'top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edfooter";'
+	  );
+	  break;
+	  case 'edit_raw':
+	  $this->raw = new weShop($_REQUEST['cmdid']);
+	  echo we_html_element::jsElement(
+	  'top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
+	  'top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edfooter";'
+	  );
+	  break;
+	  case 'save_raw':
+	  if($this->raw->filenameNotValid()){
+	  echo we_html_element::jsElement(
+	  we_message_reporting::getShowMessageCall(g_l('modules_shop', '[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR)
+	  );
+	  break;
+	  }
 
-				$newone = ($this->raw->ID ? false : true);
+	  $newone = ($this->raw->ID ? false : true);
 
-				$this->raw->save();
+	  $this->raw->save();
 
-				//$ttrow = getHash('SELECT * FROM ' . RAW_TABLE . ' WHERE ID=' . intval($this->raw->ID), $this->db);
-				$tt = addslashes($tt ? : $this->raw->Text);
-				$js = ($newone ?
-						'
-var attribs = {
- id:"' . $this->raw->ID . '",
- typ:"item",
- parentid:"0",
- text:"' . $tt . '",
- disable:0,
- tooltip:""
-};
-top.content.treeData.addSort(new top.content.node(attribs));
-top.content.drawTree();' :
-						'top.content.treeData.updateEntry({id:' . $this->raw->ID . ',text:"' . $tt . '"});'
-					);
-				echo we_html_element::jsElement(
-					$js .
-					we_message_reporting::getShowMessageCall(g_l('modules_shop', '[raw_saved_ok]'), we_message_reporting::WE_MESSAGE_NOTICE)
-				);
-				break;
-			case 'delete_raw':
-				$js = 'top.content.treeData.deleteEntry(' . $this->raw->ID . ');';
+	  //$ttrow = getHash('SELECT * FROM ' . RAW_TABLE . ' WHERE ID=' . intval($this->raw->ID), $this->db);
+	  $tt = addslashes($tt ? : $this->raw->Text);
+	  $js = ($newone ?
+	  '
+	  var attribs = {
+	  id:"' . $this->raw->ID . '",
+	  typ:"item",
+	  parentid:"0",
+	  text:"' . $tt . '",
+	  disable:0,
+	  tooltip:""
+	  };
+	  top.content.treeData.addSort(new top.content.node(attribs));
+	  top.content.drawTree();' :
+	  'top.content.treeData.updateEntry({id:' . $this->raw->ID . ',text:"' . $tt . '"});'
+	  );
+	  echo we_html_element::jsElement(
+	  $js .
+	  we_message_reporting::getShowMessageCall(g_l('modules_shop', '[raw_saved_ok]'), we_message_reporting::WE_MESSAGE_NOTICE)
+	  );
+	  break;
+	  case 'delete_raw':
+	  $js = 'top.content.treeData.deleteEntry(' . $this->raw->ID . ');';
 
-				$this->raw->delete();
-				$this->raw = new weShop();
+	  $this->raw->delete();
+	  $this->raw = new weShop();
 
-				echo we_html_element::jsElement(
-					$js .
-					we_message_reporting::getShowMessageCall(g_l('modules_shop', '[raw_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE)
-				);
-				break;
-			case 'switchPage':
-				break;
-			default:
-		}
+	  echo we_html_element::jsElement(
+	  $js .
+	  we_message_reporting::getShowMessageCall(g_l('modules_shop', '[raw_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE)
+	  );
+	  break;
+	  case 'switchPage':
+	  break;
+	  default:
+	  }
 
-		$_SESSION['weS']['raw_session'] = we_serialize($this->raw);
-	}
+	  $_SESSION['weS']['raw_session'] = we_serialize($this->raw);
+	  } */
 
 	function processVariables(){
 		if(isset($_SESSION['weS']['raw_session'])){

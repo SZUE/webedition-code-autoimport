@@ -40,7 +40,6 @@ class we_newsletter_frames extends we_modules_frame{
 			case 'send':
 			case 'send_body':
 			case 'send_cmd':
-			//case 'edbody':
 			case 'preview':
 			case 'black_list':
 			case 'newsletter_settings':
@@ -58,10 +57,6 @@ class we_newsletter_frames extends we_modules_frame{
 
 	function getHTML($what = '', $mode = 0){
 		switch($what){
-			case 'edheader':
-				return $this->getHTMLEditorHeader($mode);
-			case 'edfooter':
-				return $this->getHTMLEditorFooter($mode);
 			case 'qlog':
 				return $this->getHTMLLogQuestion();
 			case 'domain_check':
@@ -115,10 +110,6 @@ class we_newsletter_frames extends we_modules_frame{
 			$this->Tree->getJSTreeCode();
 
 		return parent::getHTMLFrameset($extraHead);
-	}
-
-	function getJSCmdCode(){
-		echo $this->View->getJSTop();
 	}
 
 	/**
