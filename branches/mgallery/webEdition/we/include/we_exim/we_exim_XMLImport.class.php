@@ -97,6 +97,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 						}
 					}
 					break;
+				case 'we_navigation_rule':
 				case 'weNavigationRule':
 					$nid = f('SELECT ID FROM ' . NAVIGATION_RULE_TABLE . ' WHERE NavigationName="' . $db->escape($object->NavigationName) . '"', '', $db);
 					if($nid){
@@ -301,6 +302,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 
 			switch($object->ClassName){
 				case "we_docTypes" :
+				case 'we_navigation_rule':
 				case "weNavigationRule":
 				case "we_thumbnail":
 				case "we_thumbnailEx":
@@ -317,6 +319,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 				case "we_docTypes":
 					$newid = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' dt WHERE dt.DocType="' . escape_sql_query($newname) . '"', '', new DB_WE());
 					break;
+				case 'we_navigation_rule':
 				case 'weNavigationRule':
 					$newid = f('SELECT ID FROM ' . NAVIGATION_RULE_TABLE . ' nr WHERE nr.NavigationName="' . escape_sql_query($newname) . '"', '', new DB_WE());
 					break;
@@ -336,6 +339,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 			case "we_docTypes":
 				$object->DocType = $new_name;
 				return;
+			case 'we_navigation_rule':
 			case "weNavigationRule":
 				$object->NavigationName = $new_name;
 				return;

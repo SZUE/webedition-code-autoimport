@@ -133,7 +133,7 @@ class we_exim_contentProvider{
 	}
 
 	static function getTagName($object){
-		switch((isset($object->ClassName) ? $object->ClassName : get_class($object))){//FIXME can we savely use get_class?
+		switch(get_class($object)){
 			case 'we_template':
 				return 'we:template';
 			case 'we_element':
@@ -146,11 +146,12 @@ class we_exim_contentProvider{
 				return 'we:doctype';
 			case 'we_category':
 				return 'we:category';
-			case 'we_backup_table':
+
+			case 'we_backup_table'://old:unused
 				return 'we:table';
-			case 'we_backup_tableAdv':
+			case 'we_backup_tableAdv'://for backup
 				return 'we:tableadv';
-			case 'we_backup_tableItem':
+			case 'we_backup_tableItem'://for backup
 				return 'we:tableitem';
 			case 'weBinary':
 				return 'we:binary';
@@ -341,13 +342,13 @@ class we_exim_contentProvider{
 	}
 
 	static function object2xml($object, $file, array $attribs = array(), $fwrite = 'fwrite'){
-		$classname = (isset($object->Pseudo) ? $object->Pseudo : (isset($object->ClassName) ? $object->ClassName : get_class($object)));
+		$classname = get_class($object);
 
 		switch($classname){
 			case 'we_navigation_navigation':
 			case 'weNavigation':
 				t_e($object);
-				$object->persistent_slots['ClassName']=  we_base_request::STRING;
+				$object->persistent_slots['ClassName'] = we_base_request::STRING;
 				break;
 			case 'we_navigation_rule':
 			case 'weNavigationRule':
@@ -360,8 +361,10 @@ class we_exim_contentProvider{
 				break;
 		}
 
+		$tagName = self::getTagName($object);
+
 		//write tag name
-		$write = '<' . self::getTagName($object) . ($attribs ? we_xml_composer::buildAttributesFromArray($attribs) : '') . '>';
+		$write = '<' . $tagName . ($attribs ? we_xml_composer::buildAttributesFromArray($attribs) : '') . '>';
 
 		// fix for classes; insert missing field length into default values ---
 		switch($classname){
@@ -463,7 +466,7 @@ class we_exim_contentProvider{
 		}
 
 		//return $out;
-		$fwrite($file, '</' . self::getTagName($object) . '>');
+		$fwrite($file, '</' . $tagName . '>');
 	}
 
 	static function file2xml($file, $fh){//FIXME: unused?
