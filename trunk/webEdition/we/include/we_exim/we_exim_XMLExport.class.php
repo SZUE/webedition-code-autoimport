@@ -64,27 +64,26 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 
 		$classname = $doc->ClassName;
 
-		if($classname === "weBinary" && !is_numeric($id)){
-			$doc->Path = $doc->ID;
-			$doc->ID = 0;
-		}
-
 		$attribute = (isset($doc->attribute_slots) ? $doc->attribute_slots : array());
 
 		switch($classname){
-			case "we_backup_table":
+			case 'we_backup_table':
 				if((defined('OBJECT_X_TABLE') && strtolower(substr($doc->table, 0, 10)) == strtolower(stripTblPrefix(OBJECT_X_TABLE))) ||
 					defined('CUSTOMER_TABLE')){
 					$doc->getColumns();
 				}
+			//no break;
+			default :
+				we_exim_contentProvider::object2xml($doc, $fh, $attribute);
 				break;
-			case "weBinary":
+			case 'weBinary':
+				if(!is_numeric($id)){
+					$doc->Path = $doc->ID;
+					$doc->ID = 0;
+				}
+
 				we_exim_contentProvider::binary2file($doc, $fh);
 				break;
-		}
-
-		if($classname != 'weBinary'){
-			we_exim_contentProvider::object2xml($doc, $fh, $attribute);
 		}
 
 		fwrite($fh, we_backup_backup::backupMarker . "\n");

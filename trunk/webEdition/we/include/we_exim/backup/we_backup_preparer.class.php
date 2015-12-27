@@ -372,6 +372,7 @@ abstract class we_backup_preparer{
 		$DB_WE->query('TRUNCATE TABLE ' . NAVIGATION_TABLE);
 		$DB_WE->query('TRUNCATE TABLE ' . NAVIGATION_RULE_TABLE);
 		$DB_WE->query('TRUNCATE TABLE ' . HISTORY_TABLE);
+		$DB_WE->query('TRUNCATE TABLE ' . INDEX_TABLE);
 	}
 
 	static function clearVersionData(){
