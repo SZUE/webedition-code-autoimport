@@ -103,13 +103,7 @@ class we_newsletter_frames extends we_modules_frame{
 	}
 
 	function getHTMLFrameset(){
-		$extraHead = we_html_element::jsElement('
-				var hot = 0;
-				var scrollToVal = 0;
-			') .
-			$this->Tree->getJSTreeCode();
-
-		return parent::getHTMLFrameset($extraHead);
+		return parent::getHTMLFrameset($this->Tree->getJSTreeCode());
 	}
 
 	/**

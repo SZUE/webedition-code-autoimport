@@ -37,15 +37,11 @@ class we_shop_frames extends we_modules_frame{
 	}
 
 	function getHTMLFrameset(){
-		$extraHead = $this->Tree->getJSTreeCode();
-
 		if(($bid = we_base_request::_(we_base_request::INT, 'bid')) === -1){
 			$bid = intval(f('SELECT MAX(IntOrderID) FROM ' . SHOP_TABLE, '', $this->db));
 		}
 
-		$extraUrlParams = $bid > 0 ? '&bid=' . $bid : '&top=1&home=1';
-
-		return parent::getHTMLFrameset($extraHead, $extraUrlParams);
+		return parent::getHTMLFrameset($this->Tree->getJSTreeCode(), ($bid > 0 ? '&bid=' . $bid : '&top=1&home=1'));
 	}
 
 	function getHTMLIconbar(){ //TODO: move this to weShopView::getHTMLIconbar();

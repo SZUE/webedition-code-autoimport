@@ -58,9 +58,7 @@ class we_voting_frames extends we_modules_frame{
 
 	function getHTMLFrameset(){
 		$this->View->voting->clearSessionVars();
-		$extraHead = $this->Tree->getJSTreeCode();
-
-		return parent::getHTMLFrameset($extraHead);
+		return parent::getHTMLFrameset($this->Tree->getJSTreeCode());
 	}
 
 	protected function getHTMLEditorHeader(){

@@ -35,9 +35,7 @@ class we_glossary_frames extends we_modules_frame{
 	}
 
 	function getHTMLFrameset(){
-		return parent::getHTMLFrameset(
-				$this->Tree->getJSTreeCode()
-		);
+		return parent::getHTMLFrameset($this->Tree->getJSTreeCode());
 	}
 
 	protected function getHTMLEditorHeader(){

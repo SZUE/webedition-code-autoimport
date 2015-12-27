@@ -41,10 +41,6 @@ abstract class we_tool_frames extends we_modules_frame{
 
 	function getHTML($what){
 		switch($what){
-			/* case 'header':
-			  return $this->getHTMLHeader(); */
-			case 'resize':
-				return $this->getHTMLResize();
 			case 'treeheader':
 				return $this->getHTMLTreeHeader();
 			case 'treefooter':
@@ -54,10 +50,7 @@ abstract class we_tool_frames extends we_modules_frame{
 		}
 	}
 
-	//TODO: call parent after if(){}
 	function getHTMLFrameset($extraUrlParams = ''){
-		$this->setTreeWidthFromCookie();
-
 		$_class = we_tool_lookup::getModelClassName($this->toolName);
 		$this->Model = $this->Model ? : new $_class();
 		//$this->Model->clearSessionVars(); // why should we clear here?
@@ -69,41 +62,8 @@ abstract class we_tool_frames extends we_modules_frame{
 			$_SESSION['weS'][$this->toolName]["modelidForTree"] = $modelid;
 		}
 
-		$js = $this->getJSCmdCode() .
-			$this->Tree->getJSTreeCode() .
-			self::getJSToggleTreeCode($this->toolName) .
-			we_main_headermenu::css();
-
-		$body = we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => 'startTree();')
-				, we_html_element::htmlExIFrame('header', parent::getHTMLHeader($this->toolDir . 'conf/we_menu_' . $this->toolName . '.conf.php', $this->toolName)) .
-				$this->getHTMLResize($extraUrlParams . ($modelid ? '&modelid=' . $modelid : '')) .
-				we_html_element::htmlIFrame('cmd', $this->frameset . '&pnt=cmd' . ($modelid ? '&modelid=' . $modelid : ''))
-		);
-
-		return $this->getHTMLDocument($body, $js);
+		return parent::getHTMLFrameset($this->Tree->getJSTreeCode(), ($modelid ? '&modelid=' . $modelid : ''));
 	}
-
-	/**
-	 * Top frame with menu
-	 *
-	 * @return string
-	 */
-	/* function getHTMLHeader(){
-	  //	Include the menu.
-	  include($this->toolDir . 'conf/we_menu_' . $this->toolName . '.conf.php');
-
-	  $lang_arr = 'we_menu_' . $this->toolName;
-	  $jmenu = new we_base_menu(${$lang_arr}, $this->topFrame . '.cmd');
-	  $menu = $jmenu->getCode();
-
-	  $table = new we_html_table(array("width" => "100%", "class" => 'default'), 1, 2);
-	  $table->setCol(0, 0, array('style' => 'text-align:left;vertical-align:top'), $menu);
-	  $table->setCol(0, 1, array('style' => 'text-align:right;vertical-align:top;'), we_main_headermenu::createMessageConsole('toolFrame'));
-
-	  $body = we_html_element::htmlBody(array('id' => 'toolMenu'), $table->getHtml());
-
-	  return $this->getHTMLDocument($body);
-	  } */
 
 	/**
 	 * Frame for tubs

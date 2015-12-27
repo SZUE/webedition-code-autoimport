@@ -106,7 +106,10 @@ abstract class we_modules_frame{
 			we_main_headermenu::css() .
 			$extraHead;
 
-		$body = we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => 'startTree();'), we_html_element::htmlExIFrame('header', self::getHTMLHeader(WE_INCLUDES_PATH . 'menu/module_menu_' . $this->module . '.inc.php', $this->module)) .
+		$body = we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => 'startTree();'), we_html_element::htmlExIFrame('header', self::getHTMLHeader(
+						(isset($this->toolDir) ?
+							$this->toolDir . 'conf/we_menu_' . $this->toolName . '.conf.php' :
+							WE_INCLUDES_PATH . 'menu/module_menu_' . $this->module . '.inc.php'))) .
 				($this->hasIconbar ? we_html_element::htmlIFrame('iconbar', $this->frameset . '&pnt=iconbar' . $extraUrlParams, 'position: absolute; top: 32px; left: 0px; right: 0px; height: 40px; overflow: hidden;', '', '', false) : '') .
 				$this->getHTMLResize($extraUrlParams) .
 				we_html_element::htmlIFrame('cmd', $this->frameset . '&pnt=cmd' . $extraUrlParams)
@@ -115,11 +118,9 @@ abstract class we_modules_frame{
 		return $this->getHTMLDocument($body, $extraHead);
 	}
 
-	protected function getHTMLHeader($_menuFile, $_module){
+	protected function getHTMLHeader($_menuFile){
 		$menu = include($_menuFile);
-
 		$jmenu = new we_base_menu($menu, 'top.opener.top.load', '');
-
 		$menu = $jmenu->getCode(false) . $jmenu->getJS();
 
 		return
@@ -127,7 +128,7 @@ abstract class we_modules_frame{
 			we_html_element::htmlDiv(array('style' => 'width:5em;position: absolute;top: 0px;right: 0px;'), we_main_headermenu::createMessageConsole('moduleFrame'));
 	}
 
-	function getHTMLResize($extraUrlParams = ''){//TODO: only customer uses param sid: handle sid with extraUrlParams
+	private function getHTMLResize($extraUrlParams = ''){
 		$_incDecTree = '<div id="baumArrows">
 	<div class="baumArrow" id="incBaum" ' . ($this->treeWidth <= 30 ? 'style="background-color: grey"' : '') . ' onclick="top.content.incTree();"><i class="fa fa-plus"></i></div>
 	<div class="baumArrow" id="decBaum" ' . ($this->treeWidth <= 30 ? 'style="background-color: grey"' : '') . ' onclick="top.content.decTree();"><i class="fa fa-minus"></i></div>
@@ -142,9 +143,7 @@ abstract class we_modules_frame{
 				)
 		);
 
-		$attribs = array('id' => 'resize', 'name' => 'resize', 'class' => ($this->hasIconbar ? 'withIconBar' : ''), 'style' => 'overflow:hidden');
-
-		return we_html_element::htmlDiv($attribs, $content);
+		return we_html_element::htmlDiv(array('id' => 'resize', 'name' => 'resize', 'class' => ($this->hasIconbar ? 'withIconBar' : ''), 'style' => 'overflow:hidden'), $content);
 	}
 
 	function getHTMLLeft(){
