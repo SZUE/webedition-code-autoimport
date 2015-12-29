@@ -137,7 +137,7 @@ function we_tag_banner($attribs, $content){
 
 		return getHtmlTag('iframe', $newAttribs, $content);
 	}
-	return ($GLOBALS["WE_MAIN_DOC"]->IsDynamic ?
+	return ($GLOBALS['WE_MAIN_DOC']->IsDynamic ?
 					we_banner_banner::getBannerCode($GLOBALS["WE_MAIN_DOC"]->ID, $paths, $target, $width, $height, $GLOBALS["WE_MAIN_DOC"]->DocType, $GLOBALS["WE_MAIN_DOC"]->Category, $bannername, $link, "", $bannerclick, $getbanner, "", $page, $GLOBALS["WE_MAIN_DOC"]->InWebEdition, $xml) :
 					($type === "cookie" ?
 							$noscript :
