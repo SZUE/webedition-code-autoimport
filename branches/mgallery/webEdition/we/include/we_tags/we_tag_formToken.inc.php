@@ -20,18 +20,22 @@
  */
 function we_tag_formToken($attribs){
 	// No token needen in editmode
-	if(!empty($GLOBALS['we_editmode']) || empty($GLOBALS['WE_MAIN_DOC']->IsDynamic)){
+	if(!empty($GLOBALS['we_doc']->InWebEdition) || empty($GLOBALS['WE_MAIN_DOC']->IsDynamic)){
 		return;
 	}
+	//generate one token per page
+	static $token = '';
 
-	//generate a unique token - it will be invalidated if the session is stopped or started
-	$token = md5(uniqid($_SERVER['DOCUMENT_ROOT'] . $GLOBALS['we_doc']->Published . session_id(), true));
+	if(!$token){
+		//generate a unique token - it will be invalidated if the session is stopped or started
+		$token = md5(uniqid($_SERVER['DOCUMENT_ROOT'] . $GLOBALS['we_doc']->Published . session_id(), true));
 
-	// Default lifetime of the token is set to 1/2 hour
-	$lifetime = max(30, weTag_getAttribute('lifetime', $attribs, 1800, we_base_request::INT));
+		// Default lifetime of the token is set to 1/2 hour
+		$lifetime = max(30, weTag_getAttribute('lifetime', $attribs, 1800, we_base_request::INT));
 
-	// Set the current token and it's creation timestamp + lifetime
-	we_captcha_captcha::save($token, 'token', $lifetime);
+		// Set the current token and it's creation timestamp + lifetime
+		we_captcha_captcha::save($token, 'token', $lifetime);
+	}
 
 	// Return the hidden input element
 	return we_html_element::htmlHidden('securityToken', $token);

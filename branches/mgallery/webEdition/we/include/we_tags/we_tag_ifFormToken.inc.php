@@ -20,7 +20,7 @@
  */
 function we_tag_ifFormToken(){
 	// Tokens in edit are always valid
-	if(!empty($GLOBALS['we_editmode'])){
+	if(!empty($GLOBALS['we_doc']->InWebEdition)){
 		return true;
 	}
 
