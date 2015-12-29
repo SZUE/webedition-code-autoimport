@@ -118,7 +118,7 @@ function we_tag_object($attribs){
 	}
 
 	if($GLOBALS['lv']->avail){
-		if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
+		if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] === we_base_constants::MODE_SEE){
 			echo we_SEEM::getSeemAnchors($we_oid, 'object');
 		}
 	}
