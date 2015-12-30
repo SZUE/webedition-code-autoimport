@@ -1912,7 +1912,8 @@ class we_object extends we_document{
 	}
 
 	function add_workspace(array $ids){
-		$this->Workspaces = implode(',', array_unique(array_merge(explode(',', trim($this->Workspaces, ',')), $ids), SORT_NUMERIC));
+		$wsp = trim($this->Workspaces, ',');
+		$this->Workspaces = implode(',', ($wsp ? array_unique(array_merge(explode(',', $wsp), $ids), SORT_NUMERIC) : $ids));
 	}
 
 	function del_workspace($id){

@@ -2257,7 +2257,7 @@ class we_objectFile extends we_document{
 	}
 
 	function hasWorkspaces(){
-		return f('SELECT Workspaces FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE);
+		return f('SELECT Workspaces FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE) !== '';
 	}
 
 	function setTypeAndLength(){

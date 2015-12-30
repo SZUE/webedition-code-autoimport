@@ -40,7 +40,7 @@ echo we_html_element::cssLink(CSS_DIR . 'editor.css') .
 	var we_transaction = "<?php echo we_base_request::_(we_base_request::TRANSACTION, "we_transaction", 0); ?>";
 	var _oldparentid = <?php echo isset($GLOBALS['we_doc']) ? intval($GLOBALS['we_doc']->ParentID) : 0; ?>;
 	var docName = "<?php echo isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Name : ''; ?>";
-	var isFolder = <?php echo intval($GLOBALS['we_doc']->IsFolder);?>;
+	var isFolder = <?php echo isset($GLOBALS['we_doc']) ? intval($GLOBALS['we_doc']->IsFolder) : 0; ?>;
 	var docTable = "<?php echo isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Table : ''; ?>";
 	var docClass = "<?php echo isset($GLOBALS['we_doc']) ? get_class($GLOBALS['we_doc']) : ''; ?>";
 	var hasCustomerFilter =<?php echo intval(isset($GLOBALS['we_doc']) && defined('CUSTOMER_TABLE') && in_array(we_base_constants::WE_EDITPAGE_WEBUSER, $GLOBALS['we_doc']->EditPageNrs) && isset($GLOBALS['we_doc']->documentCustomerFilter)); ?>;
