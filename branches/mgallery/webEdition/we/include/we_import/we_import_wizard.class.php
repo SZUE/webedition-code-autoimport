@@ -813,7 +813,7 @@ function handle_event(evt) {
 	switch(evt) {
 		case 'previous':
 			f.step.value = 0;
-			top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import&we_cmd[1]=" . we_import_functions::TYPE_GENERIC_XML . "';
+			top.location.href=WE().consts.dirs.WEBEDITION_DIR+ 'we_cmd.php?we_cmd[0]=import&we_cmd[1]=" . we_import_functions::TYPE_GENERIC_XML . "';
 			break;
 		case 'next':
 			" . ($this->fileUploader ? "if(f.elements['v[rdofloc]'][1].checked===true){
@@ -884,7 +884,7 @@ var ajaxUrl = "/webEdition/rpc/rpc.php";
 
 var handleSuccess = function(o){
 	if(o.responseText !== undefined){
-		var json = eval('('+o.responseText+')');
+		var json = JSON.parse(o.responseText);
 
 		for(var elemNr in json.elems){
 			for(var propNr in json.elems[elemNr].props){
@@ -976,10 +976,8 @@ HTS;
 		$myid = (isset($v['we_TemplateID'])) ? $v['we_TemplateID'] : 0;
 		//$path = f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($myid), 'Path', $DB_WE);
 
-		$wecmdenc1 = we_base_request::encCmd("self.wizbody.document.we_form.elements['noDocTypeTemplateId'].value");
-		$wecmdenc2 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[we_TemplateName]'].value");
-		$wecmdenc3 = we_base_request::encCmd("opener.top.we_cmd('reload_editpage');");
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements.noDocTypeTemplateId.value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
+		$cmd1 = "self.wizbody.document.we_form.elements['noDocTypeTemplateId'].value";
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . TEMPLATES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("self.wizbody.document.we_form.elements['v[we_TemplateName]'].value") . "','" . we_base_request::encCmd("opener.top.we_cmd('reload_editpage');") . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
 		/*		 * ******************************************************************** */
 		$yuiSuggest = & weSuggest::getInstance();
 
@@ -1256,7 +1254,8 @@ function handle_event(evt) {
 		iEnd = isNaN(parseInt(f.elements['v[to_iElem]'].value))? 0 : f.elements['v[to_iElem]'].value;
 		iElements = parseInt(f.elements.we_select.options[f.elements.we_select.selectedIndex].value);
 		if ((iStart < 1) || (iStart > iElements) || (iEnd < 1) || (iEnd > iElements)) {
-			msg = \"" . g_l('import', '[num_elements]') . "\" +iElements;" . we_message_reporting::getShowMessageCall("msg", we_message_reporting::WE_MESSAGE_ERROR, true) . "
+			msg = \"" . g_l('import', '[num_elements]') . "\" +iElements;" .
+			we_message_reporting::getShowMessageCall("msg", we_message_reporting::WE_MESSAGE_ERROR, true) . "
 		} else {
 			f.elements['v[rcd]'].value = f.we_select.options[f.we_select.selectedIndex].text;
 			f.step.value = 3;
@@ -1834,7 +1833,7 @@ var ajaxUrl = "/webEdition/rpc/rpc.php";
 
 var handleSuccess = function(o){
 	if(o.responseText !== undefined){
-		var json = eval('('+o.responseText+')');
+		var json = JSON.parse(o.responseText);
 		for(var elemNr in json.elems){
 			for(var propNr in json.elems[elemNr].props){
 				var propval = json.elems[elemNr].props[propNr].val;

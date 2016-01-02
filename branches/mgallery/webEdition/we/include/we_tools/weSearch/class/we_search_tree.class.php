@@ -33,8 +33,8 @@ class we_search_tree extends weTree{
 		return '
 function startTree(pid,offset){
 frames={
-	"top":' . $this->topFrame . ',
-	"cmd":' . $this->cmdFrame . '
+	top:' . $this->topFrame . ',
+	cmd:' . $this->cmdFrame . '
 };
 treeData.frames=frames;
 	pid = pid? pid : 0;

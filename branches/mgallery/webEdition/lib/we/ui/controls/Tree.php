@@ -408,7 +408,7 @@ var tree_' . $this->_id . '_activEl = 0;
 					//of the returned data and create child nodes.
 					success: function(oResponse) {
 							YAHOO.log("XHR transaction was successful.", "info", "example");
-							var oResults = eval("(" + oResponse.responseText + ")");
+							var oResults = JSON.parse(oResponse.responseText);
 							if((oResults.ResultSet.Result) && (oResults.ResultSet.Result.length)) {
 									//Result is an array if more than one result, string otherwise
 									if(YAHOO.lang.isArray(oResults.ResultSet.Result)) {

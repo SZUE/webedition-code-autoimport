@@ -2642,6 +2642,8 @@ js/libs/yui/animation-min.js
 js/libs/yui
 js/libs/we/weValidate.js
 js/libs/we
+js/leWizard/leWizardForm.js
+js/leWizard
 js/layers/layersNS6.js
 js/layers/layersNS.js
 js/layers/layersIE.js

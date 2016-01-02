@@ -79,7 +79,6 @@ WE().consts.g_l.customer.admin={
 	we_fieldname_notValid:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[we_fieldname_notValid]')) . '"
 };
 
-var topFrame=top.content;
 var frameUrl="' . $this->frameset . '";
 ') .
 			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_top.js');

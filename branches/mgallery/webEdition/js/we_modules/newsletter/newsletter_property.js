@@ -386,7 +386,11 @@ function we_cmd() {
 		case "switch_sendall":
 			document.we_form.ncmd.value = args[0];
 			top.content.hot = 1;
-			eval("if(document.we_form.sendallcheck_" + args[1] + ".checked) document.we_form.group" + args[1] + "_SendAll.value=1; else document.we_form.group" + args[1] + "_SendAll.value=0;");
+			if (document.we_form["sendallcheck_" + args[1]].checked) {
+				document.we_form["group" + args[1] + "_SendAll"].value = 1;
+			} else {
+				document.we_form["group" + args[1] + "_SendAll"].value = 0;
+			}
 			submitForm();
 			break;
 
@@ -422,17 +426,15 @@ function we_cmd() {
 			break;
 
 		case "edit_email":
-			eval("var p=document.we_form.we_recipient" + args[1] + ";");
-
+			var p = document.we_form["we_recipient" + args[1]];
 			if (p.selectedIndex < 0) {
 				top.we_showMessage(WE().consts.g_l.newsletter.no_email, WE().consts.message.WE_MESSAGE_ERROR, this);
 				return;
 			}
 
-			eval("var dest=document.we_form.group" + args[1] + "_Emails;");
+			var dest = document.we_form["group" + args[1] + "_Emails"];
 
 			var str = dest.value;
-
 			var arr = str.split("\n");
 
 			var str2 = arr[p.selectedIndex];

@@ -242,7 +242,8 @@ abstract class we_html_button{
 					($target === '_blank' ? // The link will be opened in a new window
 						"new (WE().util.jsWindow)(window, '" . $href . "','" . $target . "', -1, -1, 500, 550, true, true, true);" :
 						// The link will be opened in a different frame
-						"target_frame = eval('parent.' + " . $target . ");target_frame.location.href='" . $href . "';") :
+						"target_frame = eval('parent.' + " . $target . ");" .
+						"target_frame.location.href='" . $href . "';") :
 					// The link will be opened in the current frame or window
 					"window.location.href='" . $href . "';");
 		}

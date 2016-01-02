@@ -234,7 +234,6 @@ WE().consts.g_l.newsletter = {
 	search_finished:"' . g_l('modules_newsletter', '[search_finished]') . '",
 	del_email_file:"' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[del_email_file]')) . '"
 };
-var topFrame=top.content;
 var frameSet="' . $this->frameset . '";
 ') . we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_top.js');
 	}

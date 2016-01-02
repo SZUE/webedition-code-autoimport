@@ -32,8 +32,8 @@ class we_customer_tree extends weTree{
 		return '
 function startTree(){
 	frames={
-	"top":' . $this->topFrame . ',
-	"cmd":' . $this->cmdFrame . '
+	top:' . $this->topFrame . ',
+	cmd:' . $this->cmdFrame . '
 };
 	treeData.frames=frames;
 	frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=cmd&pid=0";

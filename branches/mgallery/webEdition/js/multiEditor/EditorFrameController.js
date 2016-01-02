@@ -204,13 +204,11 @@ function EditorFrameController() {
 		} else { // open new frame if possible
 
 			if (this.getNumberOfFreeWindows() > 0) { // if there is a free frame, use it
-
 				if (editcmd || url || id) {	// add to navigationHistory
 					top.weNavigationHistory.addDocToHistory(table, id, ct, editcmd, url, parameters);
 				}
 
 				if (editcmd) { // open cockpit !
-
 					// deactivate tree
 					if (top.treeData) {
 						top.treeData.unselectNode();
@@ -221,30 +219,23 @@ function EditorFrameController() {
 					we_cmd('open_extern_document', url, parameters);
 
 				} else if (id) { // edit_document
-
 					if (parameters) {
 						we_cmd('edit_document_with_parameters', table, id, ct, parameters);
 
 					} else {
 						// instead calling the command we could also build the url and call it from here
 						we_cmd('edit_document', table, id, ct);
-
 					}
-
 				} else if (code !== undefined && code) { // open new document with standard code
 					we_cmd('new_document', table, id, ct, "", "", "", "", dt, "", code);
-
 				} else {
 					we_cmd('new_document', table, id, ct, "", "", "", "", dt);
 				}
-
 			} else {
-
 				if (this.EditorWindowsAmount === 1) { // only one active document here, for example SeeMode
 					// build nextCmd
 					// table,id,ct,editcmd,dt,url,code,mode
 					this.closeDocument(this.ActiveEditorFrameId, "WE().layout.weEditorFrameController.openDocument(\"" + table + "\" ,\"" + id + "\",\"" + ct + "\",\"" + editcmd + "\",\"" + dt + "\",\"" + url + "\",\"" + code + "\",\"" + mode + "\",\"" + parameters + "\");");
-
 				} else {
 					top.we_showMessage(WE().consts.g_l.main.no_editor_left, WE().consts.message.WE_MESSAGE_ERROR, window);
 				}
@@ -270,7 +261,6 @@ function EditorFrameController() {
 	this.closeDocument = function (editorId, nextCommand) {
 		if (this.EditorFrames === null) {
 			this.init();
-
 		}
 
 		nextCommand = (nextCommand ? nextCommand : "");
@@ -290,9 +280,7 @@ function EditorFrameController() {
 					} else {
 						this.getEditorFrame(editorId).EditorExitDocQuestionDialog.open();
 					}
-
 				} else {
-
 					// free frame select next active frame
 					this.closeEditorFrame(editorId);
 					WE().layout.multiTabs.closeTab(editorId);
@@ -304,14 +292,11 @@ function EditorFrameController() {
 					if (nextCommand) {
 						eval(nextCommand);
 					}
-
 				}
-
 			} else {
 				WE().layout.multiTabs.closeTab(editorId);
 			}
 		}
-
 	};
 
 	/**
@@ -328,17 +313,12 @@ function EditorFrameController() {
 	 *   boolean
 	 */
 	this.doLogoutMultiEditor = function () {
-
 		// close all none Hot Editors
 		if (this.FreeEditorFrames.length !== this.EditorWindowsAmount) {
-
 			_UsedEditors = this.getEditorsInUse();
-
 			for (var frameId in _UsedEditors) {
-
 				// remove all from editor-plugin
 				top.we_cmd("remove_from_editor_plugin", _UsedEditors[frameId].getEditorTransaction());
-
 				if (!_UsedEditors[frameId].getEditorIsHot()) {
 					this.closeDocument(frameId);
 				}
@@ -372,33 +352,25 @@ function EditorFrameController() {
 	 *   nothing
 	 */
 	this.closeAllDocuments = function () {
-
 		if (top.we_cmd("editor_plugin_doc_count") === 0 || confirm(WE().consts.g_l.main.eplugin_exit_doc)) {
-
 			// close all none Hot Editors
 			if (this.FreeEditorFrames.length !== this.EditorWindowsAmount) {
-
 				_UsedEditors = this.getEditorsInUse();
-
 				for (var frameId in _UsedEditors) {
 					// remove from editor plugin
 					top.we_cmd("remove_from_editor_plugin", _UsedEditors[frameId].getEditorTransaction());
 					if (!_UsedEditors[frameId].getEditorIsHot()) {
 						this.closeDocument(frameId);
-
 					}
 				}
 			}
 
 			// if all Editors are closed,
 			if (this.FreeEditorFrames.length !== this.EditorWindowsAmount) {
-
 				if ((this.EditorWindowsAmount - this.FreeEditorFrames.length) === 1) { // only one document open
 					this.closeDocument(this.ActiveEditorFrameId, 'top.we_cmd("close_all_documents");');
-
 				} else {
 					top.we_cmd("exit_multi_doc_question", 'close_all_documents');
-
 				}
 			} else {
 				return true;
@@ -425,12 +397,10 @@ function EditorFrameController() {
 				for (frameId in _UsedEditors) {
 					if (frameId !== activeId) {
 						top.we_cmd("remove_from_editor_plugin", _UsedEditors[frameId].getEditorTransaction());
-
 					}
 				}
 
 				_UsedEditors = this.getEditorsInUse();
-
 				// close all none Hot editors
 				for (frameId in _UsedEditors) {
 					if (frameId !== activeId) {
@@ -464,7 +434,6 @@ function EditorFrameController() {
 	this.closeEditorFrame = function (frameId) {
 		var docRef;
 		if (this.EditorFrames[frameId]) {
-
 			switch (this.EditorFrames[frameId].EditorType) {
 				case "cockpit":
 					docRef = this.EditorFrames[frameId].getDocumentReference();

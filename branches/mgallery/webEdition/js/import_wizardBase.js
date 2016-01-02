@@ -25,7 +25,7 @@ var ajaxUrl = WE().consts.dirs.WEBEDITION_DIR + "rpc/rpc.php";
 
 var weGetCategoriesHandleSuccess = function (o) {
 	if (o.responseText !== undefined) {
-		var json = eval('(' + o.responseText + ')');
+		var json = JSON.parse(o.responseText);
 
 		for (var elemNr in json.elemsById) {
 			for (var propNr in json.elemsById[elemNr].props) {

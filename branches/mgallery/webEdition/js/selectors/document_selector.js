@@ -184,7 +184,7 @@ function writeBodyDocument(d) {
 										'<div class="cutText">' + entries[i].text + '</div><div class="extension">' + entries[i].extension + '</div>'
 										) +
 						'</td>' +
-						'<td class="selector title" title="' + eval(options.col2js) + '"><div class="cutText">' + eval(options.col2js) + '</div></td>' +
+						'<td class="selector title" title="' + (options.useID ? entries[i].ID : entries[i].title) + '"><div class="cutText">' + (options.useID ? entries[i].ID : entries[i].title) + '</div></td>' +
 						'<td class="selector moddate">' + entries[i].modDate + '</td>' +
 						'</tr>';
 	}

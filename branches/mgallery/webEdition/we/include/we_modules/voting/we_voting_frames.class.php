@@ -621,12 +621,9 @@ function refreshTotal(){
 	t.innerHTML = total;
 
 	for(var i=0;i<' . ($i - 1) . ';i++){
-		if(total!=0){
-			percent = Math.round((parseInt(document.we_form.elements["scores_"+i].value)/total) * 100);
-		}
-		else percent = 0;
-		//FIXME: where is this function declared?
-		eval("setProgressitem"+i+"("+percent+");");
+		percent = (total!=0?
+			Math.round((parseInt(document.we_form.elements["scores_"+i].value)/total) * 100):
+			0);
 	}
 
 }

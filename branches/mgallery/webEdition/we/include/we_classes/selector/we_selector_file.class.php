@@ -68,7 +68,7 @@ class we_selector_file{
 	protected $canSelectDir = true;
 	var $rootDirID = 0;
 	protected $filter = '';
-	protected $col2js;
+	protected $useID;
 	protected $title = '';
 	protected $startID = 0;
 	protected $multiple = true;
@@ -412,7 +412,7 @@ top.selectIt();';
 		switch($this->table){
 			case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
 			case TEMPLATES_TABLE:
-				$this->col2js = "entries[i].ID";
+				$this->col2js = 1;
 				$this->tableHeadlines = "
 <th class='selector treeIcon'></th>
 <th class='selector filename'><a href='#' onclick='javascript:top.orderIt(\"Text\");'>" . g_l('fileselector', '[filename]') . "</a></th>
@@ -421,7 +421,7 @@ top.selectIt();';
 <th class='selector remain'></th>";
 				break;
 			default:
-				$this->col2js = "entries[i].title";
+				$this->col2js = 0;
 				$this->tableHeadlines = "
 <th class='selector treeIcon'></th>
 <th class='selector filename'><a href='#' onclick='javascript:top.orderIt(\"Text\");'>" . g_l('fileselector', '[filename]') . "</a></th>

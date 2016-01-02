@@ -44,8 +44,8 @@ class we_users_tree extends weTree{
 		return '
 function startTree(){
 	frames={
-		"top":' . $this->topFrame . ',
-		"cmd":' . $this->cmdFrame . '
+		top:' . $this->topFrame . ',
+		cmd:' . $this->cmdFrame . '
 	};
 	var table="' . USER_TABLE . '";
 	treeData.frames=frames;

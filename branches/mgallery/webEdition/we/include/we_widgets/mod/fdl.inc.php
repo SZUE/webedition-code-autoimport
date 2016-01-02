@@ -68,11 +68,10 @@ $failedLoginHTML = YAHOO_FILES .
 	we_html_element::jsElement('var ajaxCallbackResetLogins = {
 success: function(o) {
 	if(typeof(o.responseText) != undefined && o.responseText != "") {
-		var weResponse = false;
 		try {
-			eval( "var weResponse = "+o.responseText );
+			var weResponse =JSON.parse(o.responseText);
 			if ( weResponse ) {
-				if (weResponse["DataArray"]["data"] == "true") {
+				if (weResponse.DataArray.data == "true") {
 					' . ( isset($newSCurrId) ? 'rpc("","","","","","' . $newSCurrId . '","fdl/fdl");' : '' ) .
 		we_message_reporting::getShowMessageCall(g_l('cockpit', '[kv_failedLogins][deleted]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
 					self.setTheme(_sObjId,_oSctCls[_oSctCls.selectedIndex].value);

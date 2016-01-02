@@ -37,8 +37,8 @@ class we_navigation_tree extends weTree{
 		return '
 function startTree(pid,offset){
 frames={
-	"top":' . $this->topFrame . ',
-	"cmd":' . $this->cmdFrame . '
+	top:' . $this->topFrame . ',
+	cmd:' . $this->cmdFrame . '
 };
 	pid = pid ? pid : 0;
 	offset = offset ? offset : 0;
