@@ -29,8 +29,7 @@ class we_voting_view extends we_modules_view{
 	var $icon_pattern = "";
 
 	function __construct($frameset){
-		$topframe = "top.content";
-		parent::__construct($frameset, $topframe);
+		parent::__construct($frameset);
 		$this->voting = new we_voting_voting();
 	}
 

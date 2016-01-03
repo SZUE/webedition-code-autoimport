@@ -273,7 +273,6 @@ function confirmDel(){' .
 					}
 
 					if(!empty($deletedItems)){
-
 						$class_condition = '';
 						$deleted_objects = array();
 

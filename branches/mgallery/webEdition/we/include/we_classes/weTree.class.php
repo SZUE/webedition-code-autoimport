@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weTree{
+abstract class weTree{
 	const DefaultWidth = 300;
 	const MinWidth = 200;
 	const MaxWidth = 1000;
@@ -105,9 +105,7 @@ container.prototype.frames={
 		);
 	}
 
-	function customJSFile(){
-		return '';
-	}
+	abstract function customJSFile();
 
 	function getHTMLContruct($onresize = ''){
 		return
@@ -138,7 +136,7 @@ container.prototype.frames={
 		return $js;
 	}
 
-	static function deleteTreeEntries($dontDeleteClassFolders = false){
+	public static function deleteTreeEntries($dontDeleteClassFolders = false){
 		return '
 var obj = top.treeData;
 var cont = new top.container();
@@ -154,8 +152,7 @@ for(var i=1;i<=obj.len;i++){
 	}
 }
 top.treeData = cont;
-top.drawTree();
-';
+top.drawTree();';
 	}
 
 }

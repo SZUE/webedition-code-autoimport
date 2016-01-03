@@ -23,15 +23,15 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_customer_frames extends we_modules_frame{
-	var $View;
 	var $jsOut_fieldTypesByName;
-	public $module = 'customer';
-	protected $treeHeaderHeight = 40;
-	protected $treeFooterHeight = 40;
-	protected $treeDefaultWidth = 244;
 
 	public function __construct($frameset){
 		parent::__construct($frameset);
+		$this->treeDefaultWidth = 244;
+		$this->module = 'customer';
+		$this->treeHeaderHeight = 40;
+		$this->treeFooterHeight = 40;
+
 		$this->Tree = new we_customer_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
 		$this->View = new we_customer_view($frameset);
 	}

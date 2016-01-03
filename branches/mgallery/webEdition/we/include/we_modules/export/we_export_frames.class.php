@@ -28,11 +28,12 @@ class we_export_frames extends we_modules_frame{
 	var $SelectionTree;
 	var $_space_size = 130;
 	var $_width_size = 535;
-	protected $treeDefaultWidth = 220;
-	public $module = "export";
 
-	function __construct($frameset){
+	public function __construct($frameset){
 		parent::__construct($frameset);
+		$this->treeDefaultWidth = 220;
+		$this->module = "export";
+
 		$this->Tree = new we_export_treeMain($this->frameset, "top.content", "top.content", "top.content.cmd");
 		$this->SelectionTree = new we_export_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
 		$this->View = new we_export_view($frameset);

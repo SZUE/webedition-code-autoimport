@@ -25,7 +25,6 @@
 /* the parent class of storagable webEdition classes */
 
 class we_shop_view extends we_modules_view{
-	var $db;
 	var $frameset;
 	var $topFrame;
 	var $raw;

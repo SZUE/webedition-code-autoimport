@@ -581,7 +581,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 		$doctypesArr = makeArrayFromCSV($this->banner->DoctypeIDs);
 		while($this->db->next_record()){
-			$dt .= '<option value="' . $this->db->f("ID") . '"' . (in_array($this->db->f("ID"), $doctypesArr) ? ' selected' : '') . '>' . $this->db->f("DocType") . '</option>' . "\n";
+			$dt .= '<option value="' . $this->db->f("ID") . '"' . (in_array($this->db->f("ID"), $doctypesArr) ? ' selected' : '') . '>' . $this->db->f("DocType") . '</option>';
 		}
 		$dt .= '</select>';
 
@@ -752,7 +752,16 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		$activeCheckbox = we_html_forms::checkboxWithHidden($this->banner->IsActive, $this->uid . '_IsActive', g_l('modules_banner', '[active]'), false, "defaultfont", "top.content.setHot();");
 		$maxShow = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($this->uid . "_maxShow", 10, $this->banner->maxShow, "", "onchange=\"top.content.setHot();\"", "text", 100, 0), g_l('modules_banner', '[max_show]'), "left", "defaultfont");
 		$maxClicks = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($this->uid . "_maxClicks", 10, $this->banner->maxClicks, "", "onchange=\"top.content.setHot();\"", "text", 100, 0), g_l('modules_banner', '[max_clicks]'), "left", "defaultfont");
-		$weight = we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect($this->uid . "_weight", array("8" => "1 (" . g_l('modules_banner', '[infrequent]') . ")", "7" => 2, "6" => 3, "5" => 4, "4" => "5 (" . g_l('modules_banner', '[normal]') . ")", "3" => 6, "2" => 7, "1" => 8, "0" => "9 (" . g_l('modules_banner', '[frequent]') . ")"), 1, $this->banner->weight), g_l('modules_banner', '[weight]'), "left", "defaultfont");
+		$weight = we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect($this->uid . "_weight", array(
+			8 => '1 (' . g_l('modules_banner', '[infrequent]') . ")",
+			7 => 2,
+			6 => 3,
+			5 => 4,
+			4 => '5 (' . g_l('modules_banner', '[normal]') . ")",
+			3 => 6,
+			2 => 7,
+			1 => 8,
+			0 => '9 (' . g_l('modules_banner', '[frequent]') . ")"), 1, $this->banner->weight), g_l('modules_banner', '[weight]'), "left", "defaultfont");
 
 		return '<table class="default">
 	<tr>

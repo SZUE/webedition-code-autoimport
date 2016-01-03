@@ -29,8 +29,8 @@ class we_messaging_view extends we_modules_view{
 	private $transaction;
 	private $weTransaction;
 
-	function __construct($frameset, $reqTransaction = 0, &$weTransaction = 0){
-		parent::__construct($frameset, "top.content");
+	public function __construct($frameset, $reqTransaction = 0, &$weTransaction = 0){
+		parent::__construct($frameset);
 
 		$this->transaction = $reqTransaction;
 		$this->weTransaction = &$weTransaction;

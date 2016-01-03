@@ -23,10 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_workflow_frames extends we_modules_frame{
-	public $module = "workflow";
 
-	function __construct($frameset){
+	public function __construct($frameset){
 		parent::__construct($frameset);
+		$this->module = "workflow";
 		$this->Tree = new we_workflow_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
 		$this->View = new we_workflow_view($frameset);
 	}

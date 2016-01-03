@@ -412,8 +412,8 @@ abstract class we_customer_abstractFilter{
 	 *
 	 * @param array $specificCustomers
 	 */
-	public function setSpecificCustomers($specificCustomers){
-		$this->_specificCustomers = $specificCustomers;
+	public function setSpecificCustomers($list){
+		$this->_specificCustomers = is_array($list) ? $list : array_filter(explode(',', $list));
 	}
 
 	/**
@@ -422,16 +422,16 @@ abstract class we_customer_abstractFilter{
 	 * @return array
 	 */
 	public function getSpecificCustomers(){
-		return $this->_specificCustomers;
+		return array_filter($this->_specificCustomers);
 	}
 
 	/**
 	 * mutator method for $this->_blackList
 	 *
-	 * @param array $blackList
+	 * @param array $list
 	 */
-	public function setBlackList($blackList){
-		$this->_blackList = $blackList;
+	public function setBlackList($list){
+		$this->_blackList = is_array($list) ? $list : array_filter(explode(',', $list));
 	}
 
 	/**
@@ -440,16 +440,16 @@ abstract class we_customer_abstractFilter{
 	 * @return array
 	 */
 	public function getBlackList(){
-		return $this->_blackList;
+		return array_filter($this->_blackList);
 	}
 
 	/**
 	 * mutator method for $this->_whiteList
 	 *
-	 * @param array $whiteList
+	 * @param array $list
 	 */
-	public function setWhiteList($whiteList){
-		$this->_whiteList = $whiteList;
+	public function setWhiteList($list){
+		$this->_whiteList = is_array($list) ? $list : array_filter(explode(',', $list));
 	}
 
 	/**
@@ -458,7 +458,7 @@ abstract class we_customer_abstractFilter{
 	 * @return array
 	 */
 	public function getWhiteList(){
-		return $this->_whiteList;
+		return array_filter($this->_whiteList);
 	}
 
 	/**

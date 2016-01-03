@@ -33,7 +33,7 @@ abstract class we_tool_frames extends we_modules_frame{
 	var $_width_size = 520;
 	var $Model;
 
-	function __construct($frameset){
+	public function __construct($frameset){
 		parent::__construct($frameset);
 		$this->treeFooterHeight = 40;
 		$this->treeWidth = 200;
@@ -162,14 +162,6 @@ function we_save() {
 	function getPercent($total, $value, $precision = 0){
 		$result = ($total ? round(($value * 100) / $total, $precision) : 0);
 		return we_base_util::formatNumber($result, strtolower($GLOBALS['WE_LANGUAGE']), 2);
-	}
-
-	function getHTMLPropertiesItem(){
-		return array();
-	}
-
-	function getHTMLPropertiesGroup(){
-		return array();
 	}
 
 	function getHTMLGeneral(){

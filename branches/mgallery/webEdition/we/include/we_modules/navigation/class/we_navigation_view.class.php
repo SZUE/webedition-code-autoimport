@@ -23,15 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_navigation_view extends we_modules_view{
-
-	var $navigation;
 	var $icon_pattern = '';
 	var $page = 1;
-	var $Model;
 
 	public function __construct($frameset){
-		$topframe = 'top.content';
-		parent::__construct($frameset, $topframe);
+		parent::__construct($frameset);
 		$this->Model = new we_navigation_navigation();
 	}
 
@@ -47,7 +43,6 @@ class we_navigation_view extends we_modules_view{
 
 	function getJSTop(){
 		return
-				parent::getJSTop() .
 				we_html_element::jsElement('
 WE().consts.g_l.navigation.view={
 	documents:"' . g_l('navigation', '[documents]') . '",
@@ -92,7 +87,6 @@ var data={
 	}
 
 	function getJSProperty(){
-		$out = parent::getJSProperty();
 		$_objFields = array();
 		if($this->Model->SelectionType == we_navigation_navigation::STYPE_CLASS){
 			if(defined('OBJECT_TABLE')){
@@ -107,7 +101,7 @@ var data={
 			}
 		}
 
-		return $out . we_html_element::jsElement('
+		return we_html_element::jsElement('
 var data={
 	frameset:"' . $this->frameset . '",
 	IsFolder:' . intval($this->Model->IsFolder) . ',

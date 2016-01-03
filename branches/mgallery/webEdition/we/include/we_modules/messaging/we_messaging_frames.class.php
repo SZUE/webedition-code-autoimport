@@ -23,21 +23,19 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_messaging_frames extends we_modules_frame{
-	var $db;
-	var $View;
 	var $frameset;
 	public $transaction;
 	public $weTransaction;
 	protected $messaging;
 	public $viewclass;
-	public $module = "messaging";
-	protected $treeDefaultWidth = 204;
 
 	const TYPE_MESSAGE = 1;
 	const TYPE_TODO = 2;
 
 	public function __construct($framset, $viewclass, $reqTransaction, $weTransaction){
 		parent::__construct($framset);
+		$this->module = "messaging";
+		$this->treeDefaultWidth = 204;
 
 		$this->hasIconbar = true;
 		$this->transaction = $reqTransaction;

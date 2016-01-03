@@ -23,14 +23,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_banner_frames extends we_modules_frame{
-	var $edit_cmd = "banner_edit";
-	protected $treeDefaultWidth = 224;
 
-	function __construct($frameset){
+	public function __construct($frameset){
 		parent::__construct($frameset);
-		$this->View = new we_banner_view($frameset);
-		$this->Tree = new we_banner_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
 		$this->module = 'banner';
+		$this->treeDefaultWidth = 224;
+
+		$this->View = new we_banner_view($frameset);
+		$this->Tree = new we_banner_tree($this->frameset, $this->topFrame, $this->treeFrame, $this->cmdFrame);
 	}
 
 	function getHTML($what = '', $mode = ''){

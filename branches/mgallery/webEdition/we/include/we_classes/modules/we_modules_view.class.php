@@ -29,6 +29,7 @@ class we_modules_view implements we_modules_viewIF{
 	var $db;
 	var $frameset;
 	var $topFrame;
+	var $Model;
 
 	public function __construct($frameset = '', $topframe = 'top.content'){
 		$this->db = new DB_WE();
@@ -97,7 +98,7 @@ function submitForm(target,action,method,form) {
 		</head>
 
 		<body bgcolor="#F0EFF0" onload="loaded = true;
-						var we_is_home = 1;">
+				var we_is_home = 1;">
 			<div id="tabelle"><?php echo $_starttable->getHtml(); ?></div>
 			<div id="modimage"><img src="<?php echo IMAGE_DIR . "startscreen/" . $icon; ?>" width="335" height="329" /></div>
 				<?php echo (isset($GLOBALS["we_body_insert"]) ? $GLOBALS["we_body_insert"] : ""); ?>

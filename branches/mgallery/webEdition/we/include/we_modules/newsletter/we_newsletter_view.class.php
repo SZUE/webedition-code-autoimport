@@ -30,7 +30,6 @@ class we_newsletter_view extends we_modules_view{
 	const MAILS_EMAILS = 2;
 	const MAILS_FILE = 3;
 
-	var $db;
 	// settings array; format settings[setting_name]=settings_value
 	var $settings = array();
 	//default newsletter

@@ -23,13 +23,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_voting_frames extends we_modules_frame{
-	var $View;
 	var $_space_size = 150;
 	var $_width_size = 535;
-	public $module = "voting";
 
 	public function __construct($frameset){
 		parent::__construct($frameset);
+		$this->module = "voting";
 		$this->Tree = new we_voting_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
 		$this->View = new we_voting_view($frameset);
 	}
@@ -109,12 +108,11 @@ class we_voting_frames extends we_modules_frame{
 	}
 
 	protected function getHTMLEditorBody(){
-
-		$hiddens = array('cmd' => 'voting_edit', 'pnt' => 'edbody', 'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0));
-
 		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return $this->View->getHomeScreen();
 		}
+
+		$hiddens = array('cmd' => 'voting_edit', 'pnt' => 'edbody', 'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0));
 
 		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onload" => "loaded=1;setMultiEdits();", "onunload" => "doUnload()"), we_html_element::htmlForm(array("name" => "we_form", "onsubmit" => "return false"), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties()));
 
@@ -374,9 +372,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 	}
 
 	function getHTMLTab2(){
-
 		$successor_box = new we_html_table(array('class' => 'default', 'style' => 'margin-top:10px;'), 2, 1);
-
 		$successor_box->setCol(1, 0, array(), we_html_tools::htmlFormElementTable($this->formFileChooser($this->_width_size - 130, 'Successor', '/', '', ''), g_l('modules_voting', '[voting-successor]')));
 
 
@@ -397,7 +393,6 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 				'space' => $this->_space_size
 			)
 		);
-
 
 		$select = new we_html_select(array('name' => 'selectVar', 'class' => 'weSelect', 'onchange' => 'top.content.setHot();question_edit.showVariant(this.value);answers_edit.showVariant(this.value);document.we_form.vernr.value=this.value;refreshTexts();', 'style' => 'width:' . ($this->_width_size - 64) . 'px;'));
 		foreach(array_keys($this->View->voting->QASet) as $variant){
@@ -428,8 +423,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 				'iptable_name' => '',
 				'iptable_count' => 0)) .
 			$table->getHtml() .
-			we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();answers_edit.addItem()")
-			,
+			we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();answers_edit.addItem()"),
 			'space' => $this->_space_size
 		);
 
@@ -552,8 +546,7 @@ function newIp(){
 	} else {
 		' . we_message_reporting::getShowMessageCall(g_l('modules_voting', '[not_valid_ip]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 	}
-}
-					') . $table->getHtml(),
+}') . $table->getHtml(),
 			'space' => $this->_space_size
 		);
 
@@ -625,7 +618,6 @@ function refreshTotal(){
 			Math.round((parseInt(document.we_form.elements["scores_"+i].value)/total) * 100):
 			0);
 	}
-
 }
 
 function refreshTexts(){
