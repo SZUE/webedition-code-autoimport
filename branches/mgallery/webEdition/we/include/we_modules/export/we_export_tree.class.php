@@ -55,24 +55,13 @@ class we_export_tree extends weTree{
 
 	function getJSStartTree(){
 		return 'function startTree(){
-	frames={
+	treeData.frames={
 		top:' . $this->topFrame . ',
 		cmd:' . $this->cmdFrame . ',
 		tree:' . $this->treeFrame . '
 	};
-	treeData.frames=frames;
-	frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=load&cmd=load&tab="+frames.top.table+"&pid=0&openFolders="+frames.top.openFolders[frames.top.table];
+	treeData.frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=load&cmd=load&tab="+treeData.frames.top.table+"&pid=0&openFolders="+treeData.frames.top.openFolders[treeData.frames.top.table];
 }';
-	}
-
-	function getJSDrawTree(){
-		return '
-function drawTree(){
-	var out=\'<div class="treetable \'+treeData.getLayout()+\'">\'+
-		treeData.draw(treeData.startloc,"")+
-		"</div>";
-	frames.tree.document.getElementById("treetable").innerHTML=out;
-	}';
 	}
 
 	function getHTMLMultiExplorer($width = 500, $height = 250, $useSelector = true){
@@ -119,7 +108,7 @@ var openFolders= {
 		} else {
 			$header = '';
 		}
-		return $js . $header . we_html_element::htmlDiv(array('id' => 'treetable', 'class' => 'blockWrapper', 'style' => 'width: ' . $width . 'px; height: ' . $height . 'px; border:1px #dce6f2 solid;'), '');
+		return $js . $header . we_html_element::htmlDiv(array('id' => 'treetable', 'class' => 'blockWrapper', 'style' => 'position: static;width: ' . $width . 'px; height: ' . $height . 'px; border:1px #dce6f2 solid;'), '');
 	}
 
 	private static function getQueryParents($path){

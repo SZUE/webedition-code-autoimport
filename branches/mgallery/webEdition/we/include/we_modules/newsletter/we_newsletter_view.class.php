@@ -42,7 +42,6 @@ class we_newsletter_view extends we_modules_view{
 	var $customers_fields;
 	var $frameset;
 	var $topFrame;
-	var $treeFrame;
 	var $cmdFrame;
 	protected $show_import_box = -1;
 	protected $show_export_box = -1;
@@ -68,7 +67,6 @@ class we_newsletter_view extends we_modules_view{
 		$this->newsletter->Test = $this->settings['test_account'];
 		$this->newsletter->isEmbedImages = $this->settings['isEmbedImages'];
 		$this->topFrame = 'top.content';
-		$this->treeFrame = 'top.content.tree';
 		$this->cmdFrame = 'top.content.cmd';
 	}
 

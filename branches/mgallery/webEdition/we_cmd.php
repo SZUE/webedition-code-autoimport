@@ -193,8 +193,6 @@ function findInclude($cmd){
 		case 'loadFolder':
 		case 'closeFolder':
 			return 'we_load.inc.php';
-		case 'showLoadInfo':
-			return 'we_loadInfo.inc.php';
 		case 'delete':
 			return (we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 1) ? 'we_delete.inc.php' : 'home.inc.php');
 		case 'move':

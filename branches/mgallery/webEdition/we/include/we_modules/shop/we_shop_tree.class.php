@@ -28,18 +28,6 @@ class we_shop_tree extends weTree{
 		return we_html_element::jsScript(JS_DIR . 'shop_tree.js');
 	}
 
-	function getJSStartTree(){
-		return '
-function startTree(){
-			frames={
-	top:' . $this->topFrame . ',
-	cmd:' . $this->cmdFrame . '
-	};
-	treeData.frames=frames;
-	frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=cmd&pid=0";
-}';
-	}
-
 	function getJSTreeCode(){
 		$ret = we_html_element::cssLink(CSS_DIR . 'tree.css') .
 				we_html_element::jsElement('

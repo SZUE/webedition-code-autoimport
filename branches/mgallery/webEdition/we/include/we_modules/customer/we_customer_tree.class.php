@@ -28,19 +28,6 @@ class we_customer_tree extends weTree{
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_tree.js');
 	}
 
-	function getJSStartTree(){
-		return '
-function startTree(){
-	frames={
-	top:' . $this->topFrame . ',
-	cmd:' . $this->cmdFrame . '
-};
-	treeData.frames=frames;
-	frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=cmd&pid=0";
-	drawTree();
-}';
-	}
-
 	function getJSLoadTree($rootID, array $treeItems){
 		$days = array(
 			'Sunday' => 0,

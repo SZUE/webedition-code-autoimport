@@ -1,3 +1,5 @@
+/* global top */
+
 /**
  * webEdition SDK
  *
@@ -37,7 +39,7 @@ function reloadGroup(pid, offset) {
 }
 
 function info(text) {
-	t = frames.top.document.getElementById("infoField");
+	t = treeData.frames.top.document.getElementById("infoField");
 	if (text != " ") {
 		t.style.display = "block";
 		t.innerHTML = text;
@@ -59,7 +61,7 @@ container.prototype.openClose = function (id) {
 	treeData[eintragsIndex].open = openstatus;
 
 	if (openstatus && !treeData[eintragsIndex].loaded) {
-		frames.cmd.location = treeData.frameset + "&pnt=cmd&pid=" + id + (sort ? "&sort=" + sort : "");
+		treeData.frames.cmd.location = treeData.frameset + "&pnt=cmd&pid=" + id + (sort ? "&sort=" + sort : "");
 	} else {
 		drawTree();
 	}

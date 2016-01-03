@@ -45,7 +45,7 @@ function getWebEdition_Tree(){
 	switch($_SESSION['weS']['we_mode']){
 		default:
 		case we_base_constants::MODE_NORMAL:
-			$Tree = new weMainTree("webEdition.php", "top", "self.Tree", "top.load");
+			$Tree = new weMainTree("webEdition.php", "top", "top", "top.load");
 			return $Tree->getJSTreeCode();
 		case we_base_constants::MODE_SEE:
 			return we_html_element::jsElement('

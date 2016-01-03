@@ -468,16 +468,10 @@ function populate(id,table){
 }
 
 function setHead(tab){
-	var c0="#DDDDDD";
-	var c1="#DDDDDD";
-	var c2="#DDDDDD";
-	var c3="#DDDDDD";
-	eval("c"+tab+"=\"#DFE9F5\"");
-	var fw0="normal";
-	var fw1="normal";
-	var fw2="normal";
-	var fw3="normal";
-	eval("fw"+tab+"=\"bold\"");
+	var c=["#DDDDDD","#DDDDDD","#DDDDDD","#DDDDDD"];
+	var fw=["normal","normal","normal","normal"];
+	c[tab]="#DFE9F5";
+	fw[tab]="bold";
 
 
 	switch (tab){
@@ -500,15 +494,15 @@ function setHead(tab){
 	}
 
 	setTimeout(' . $this->topFrame . '.startTree,100);
-	document.getElementById("' . FILE_TABLE . '").style.backgroundColor=c0;
-	document.getElementById("' . TEMPLATES_TABLE . '").style.backgroundColor=c1;' .
-				(defined('OBJECT_FILES_TABLE') ? 'document.getElementById("' . OBJECT_FILES_TABLE . '").style.backgroundColor=c2;' : '' ) .
-				(defined('OBJECT_TABLE') ? 'document.getElementById("' . OBJECT_TABLE . '").style.backgroundColor=c3;' : '') . '
+	document.getElementById("' . FILE_TABLE . '").style.backgroundColor=c[0];
+	document.getElementById("' . TEMPLATES_TABLE . '").style.backgroundColor=c[1];' .
+				(defined('OBJECT_FILES_TABLE') ? 'document.getElementById("' . OBJECT_FILES_TABLE . '").style.backgroundColor=c[2];' : '' ) .
+				(defined('OBJECT_TABLE') ? 'document.getElementById("' . OBJECT_TABLE . '").style.backgroundColor=c[3];' : '') . '
 
-	document.getElementById("' . FILE_TABLE . '").style.fontWeight=fw0;
-	document.getElementById("' . TEMPLATES_TABLE . '").style.fontWeight=fw1;' .
-				(defined('OBJECT_FILES_TABLE') ? 'document.getElementById("' . OBJECT_FILES_TABLE . '").style.fontWeight=fw2;' : '' ) .
-				(defined('OBJECT_TABLE') ? 'document.getElementById("' . OBJECT_TABLE . '").style.fontWeight=fw3;' : '') . '
+	document.getElementById("' . FILE_TABLE . '").style.fontWeight=fw[0];
+	document.getElementById("' . TEMPLATES_TABLE . '").style.fontWeight=fw[1];' .
+				(defined('OBJECT_FILES_TABLE') ? 'document.getElementById("' . OBJECT_FILES_TABLE . '").style.fontWeight=fw[2];' : '' ) .
+				(defined('OBJECT_TABLE') ? 'document.getElementById("' . OBJECT_TABLE . '").style.fontWeight=fw[3];' : '') . '
 }
 
 function we_submit(){

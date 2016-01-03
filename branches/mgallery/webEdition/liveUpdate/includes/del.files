@@ -543,6 +543,7 @@ we/include/we_logging/versions/versionsLog.class.php
 we/include/we_logging/versions
 we/include/we_logging/logging.class.php
 we/include/we_logging
+we/include/we_loadInfo.inc.php
 we/include/we_live_tools.inc.php
 we/include/we_linklist.inc.php
 we/include/we_language/Spanish_UTF-8/wysiwyg_js.inc.php

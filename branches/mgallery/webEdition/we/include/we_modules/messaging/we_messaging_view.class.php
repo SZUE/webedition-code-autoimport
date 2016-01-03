@@ -236,7 +236,7 @@ top.content.treeData.add({
 	}"));' .
 										we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[folder_created]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
 top.content.drawTree();
-						');
+');
 					} else {
 						$js_out = '
 top.content.treeData.clear();

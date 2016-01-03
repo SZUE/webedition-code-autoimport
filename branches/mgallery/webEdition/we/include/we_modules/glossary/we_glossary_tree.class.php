@@ -28,19 +28,6 @@ class we_glossary_tree extends weTree{
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/glossary_tree.js');
 	}
 
-	function getJSStartTree(){
-		return '
-function startTree(){
-			frames={
-	top:' . $this->topFrame . ',
-	cmd:' . $this->cmdFrame . '
-};
-treeData.frames=frames;
-	frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=cmd&pid=0";
-	drawTree();
-}';
-	}
-
 	public static function getItems($ParentId, $Offset = 0, $Segment = 500){
 		$Types = array(
 			we_glossary_glossary::TYPE_ABBREVATION,

@@ -163,7 +163,7 @@ function hideProgress() {
 		$table2->setCol(0, 4, array("id" => "progress", "style" => "display: none"), $progressbar->getHtml());
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array("bgcolor" => "white", "class" => "editfooter", "style" => 'margin:0px 15px;'), we_html_element::htmlForm(array(), $table2->getHtml())
+				we_html_element::htmlBody(array('id' => 'footerBody'), we_html_element::htmlForm(array(), $table2->getHtml())
 				), (isset($progressbar) ? $progressbar->getJSCode() : "") . $js
 		);
 	}

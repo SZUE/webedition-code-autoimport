@@ -30,7 +30,6 @@ var treeHTML;
 var wasdblclick = false;
 var tout = null;
 var hot = 0;
-
 function container() {
 	this.len = 0;
 	this.state = 0;
@@ -42,6 +41,39 @@ function container() {
 }
 
 container.prototype = {
+	node_layouts: {
+		item: 'item',
+		group: 'group',
+		threedots: 'changed',
+		itemDisabled: 'disabled',
+		groupDisabled: 'disabled',
+		groupDisabledOpen: 'disabled',
+		itemChecked: 'checked_item',
+		groupChecked: 'checked_group',
+		groupOpen: 'group',
+		groupCheckedOpen: 'checked_group',
+		itemNotpublished: 'notpublished',
+		itemCheckedNotpublished: 'checked_notpublished',
+		itemChanged: 'changed',
+		itemCheckedChanged: 'checked_changed',
+		itemSelected: 'selected_item',
+		itemSelectedNotpublished: 'selected_notpublished_item',
+		itemSelectedChanged: 'selected_changed_item',
+		groupSelected: 'selected_group',
+		groupSelectedOpen: 'selected_open_group'
+	},
+	tree_layouts: {
+		0: 'tree',
+		1: 'tree',
+		2: 'tree',
+		3: 'tree'
+	},
+	tree_states: {
+		edit: 0,
+		select: 1,
+		selectitem: 2,
+		selectgroup: 3,
+	},
 	getLayout: function () {
 		return this.tree_layouts[this.state];
 	},
@@ -131,7 +163,7 @@ container.prototype = {
 		}
 	},
 	setSegment: function (id) {
-		var node = frames.top.treeData.get(id);
+		var node = this.get(id);
 		node.showsegment();
 	},
 	drawThreeDots: function (nf, ai) {
@@ -319,7 +351,11 @@ container.prototype = {
 				this[i].checked = 0;
 				this[i].applylayout();
 				try {
-					eval("if(" + this.treeFrame + ".document.getElementsByName(imgName)){var tmp=" + this.treeFrame + ".document.getElementsByName(imgName)[0];tmp.classList.remove('fa-check-square-o');tmp.classList.add('fa-square-o');}");
+					if (treeData.frames.tree.document.getElementsByName(imgName)) {
+						var tmp = treeData.frames.tree.document.getElementsByName(imgName)[0];
+						tmp.classList.remove('fa-check-square-o');
+						tmp.classList.add('fa-square-o');
+					}
 				} catch (e) {
 
 				}
@@ -328,7 +364,11 @@ container.prototype = {
 			this[i].checked = 1;
 			this[i].applylayout();
 			try {
-				eval("if(" + this.treeFrame + ".document.getElementsByName(imgName)){var tmp=" + this.treeFrame + ".document.getElementsByName(imgName)[0];tmp.classList.remove('fa-square-o');tmp.classList.add('fa-check-square-o');}");
+				if (treeData.frames.tree.document.getElementsByName(imgName)) {
+					var tmp = treeData.frames.tree.document.getElementsByName(imgName)[0];
+					tmp.classList.remove('fa-square-o');
+					tmp.classList.add('fa-check-square-o');
+				}
 			} catch (e) {
 
 			}
@@ -356,7 +396,6 @@ container.prototype = {
 	}
 
 };
-
 function treeStartDrag(evt, type, table, id, ct) { // TODO: throw out setData
 	top.dd.dataTransfer.text = type + ',' + table + ',' + id + ',' + ct;
 	evt.dataTransfer.setData('text', type + ',' + table + ',' + id + ',' + ct);
@@ -389,14 +428,14 @@ node.prototype = {
 		return treeData.node_layouts[layout_key];
 	},
 	showSegment: function () {
-		parentnode = frames.top.treeData.get(this.parentid);
+		parentnode = this.get(this.parentid);
 		parentnode.clear();
 		we_cmd("loadFolder", treeData.table, parentnode.id, "", "", "", this.offset);
 	},
 	applylayout: function (layout) {
-		eval('if(' + treeData.treeFrame + '.document.getElementById("lab_' + this.id + '"))' + treeData.treeFrame + '.document.getElementById("lab_' + this.id + '").className ="' +
-						(layout ? layout : this.getLayout()) +
-						'";');
+		if (treeData.frames.tree.document.getElementById("lab_" + this.id)) {
+			treeData.frames.tree.document.getElementById("lab_" + this.id).className = (layout ? layout : this.getLayout());
+		}
 	},
 	clear: function () {
 		var deleted = 0;
@@ -422,15 +461,18 @@ node.prototype = {
 		return deleted;
 	}
 };
-
 function info(text) {
 }
 
 function setScrollY() {
-	if (frames.top) {
-		if (frames.top.we_scrollY) {
-			frames.top.we_scrollY[treeData.table] = pageYOffset;
-		}
+	if (top.we_scrollY) {
+		top.we_scrollY[treeData.table] = top.document.getElementById("treetable").scrollTop;
+	}
+}
+
+function scrollToY() {
+	if (top.we_scrollY) {
+		top.document.getElementById("treetable").scrollTop = (top.we_scrollY[treeData.table] ? top.we_scrollY[treeData.table] : 0);
 	}
 }
 
@@ -439,4 +481,11 @@ function setHot() {
 }
 function usetHot() {
 	hot = 0;
+}
+
+function drawTree() {
+	var tree = (top.content ? top.content : top);
+	tree.document.getElementById("treetable").innerHTML = "<div class=\"" + treeData.getLayout() + "\">" +
+					treeData.draw(treeData.startloc, "") +
+					"</div>";
 }

@@ -33,18 +33,4 @@ class we_navigation_tree extends weTree{
 			we_html_element::jsElement('drawTree.selection_table="' . NAVIGATION_TABLE . '";');
 	}
 
-	function getJSStartTree(){
-		return '
-function startTree(pid,offset){
-frames={
-	top:' . $this->topFrame . ',
-	cmd:' . $this->cmdFrame . '
-};
-	pid = pid ? pid : 0;
-	offset = offset ? offset : 0;
-	frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=cmd&pid="+pid+"&offset="+offset;
-	drawTree();
-}';
-	}
-
 }

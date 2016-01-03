@@ -240,7 +240,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 	if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 		$js = '';
 	} else {
-		$Tree = new weMainTree("webEdition.php", "top", "top.left.tree", "top.load");
+		$Tree = new weMainTree("webEdition.php", "top", "top", "top.load");
 		$treeItems = array();
 		getItems($table, $parentFolder, $offset, $Tree->default_segment);
 
@@ -277,7 +277,8 @@ function loadTreeData(){
 				) .
 				$Tree->getJSLoadTree(!$parentFolder, $treeItems) . '
 }
-loadTreeData();');
+loadTreeData();
+top.scrollToY();');
 	}
 
 	echo we_html_tools::getHtmlTop('File-Tree', '', '', $js, we_html_element::htmlBody());

@@ -57,46 +57,22 @@ foreach($vtab as $tab => $val){
 	if($val['show']){
 		echo '<div class="tab tabNorm" onclick="clickVTab(this,' . $i . ',\'' . constant($tab) . '\');"><span class="middlefont">' . $val['desc'] . '</span></div>';
 	}
-	if(!$defTab && $val['show']){
+/*	if(!$defTab && $val['show']){
 		$defTab = constant($tab);
-	}
+	}*/
 	++$i;
 }
 ?>
 <script><!--
-	function clickVTab(tab, no, table) {
-		if (top.deleteMode) {
-			we_cmd('exit_delete', table);
-		}
-		if (tab.classList.contains("tabActive")) {
-			if (toggleTree()) {
-				we_cmd('loadVTab', table, 0);
-			}
-		} else {
-			setActiveVTab(no);
-			treeOut();
-			we_cmd('loadVTab', table, 0);
-		}
-	}
-
-	function setActiveVTab(no) {
-		var allTabs = document.getElementById("vtabs").getElementsByClassName("tab");
-		for (var i = 0; i < allTabs.length; i++) {
-			allTabs[i].className = "tab " + (i == no ? "tabActive" : "tabNorm");
-		}
-	}
-
 	function setTab(table) {
 		switch (table) {
-			default:
-				break;
 <?php
 echo implode("\n", $jsTabs);
 ?>
 		}
 	}
 
-	setTab('<?php echo $defTab; ?>');
+//	setTab('<?php echo $defTab; ?>');
 //-->
 </script>
 <div id="baumArrows">

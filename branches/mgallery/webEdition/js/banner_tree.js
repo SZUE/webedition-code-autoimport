@@ -28,7 +28,5 @@
 
 function doClick(id) {
 	var item = top.content.treeData.get(id);
-	ct = item.contenttype;
-	table = item.table;
-	top.content.we_cmd('banner_edit', id, ct, table);
+	top.content.we_cmd('banner_edit', id, item.contenttype, item.table);
 }

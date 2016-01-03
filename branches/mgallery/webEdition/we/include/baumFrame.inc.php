@@ -36,7 +36,7 @@ $table = isset($table) ? $table : FILE_TABLE;
 			<iframe src="about:blank" name="treeheader"></iframe>
 		</div>
 			<?php
-			$Tree = new weMainTree('webEdition.php', 'top', 'top.resize.left.tree', 'top.load');
+			$Tree = new weMainTree('webEdition.php', 'top', 'top', 'top.load');
 			echo $Tree->getHTMLContruct('if(top.treeResized){top.treeResized();}');
 			?>
 		<div id="bm_searchField">

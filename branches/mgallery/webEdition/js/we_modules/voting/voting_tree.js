@@ -34,7 +34,7 @@ container.prototype.openClose = function(id) {
 	treeData[eintragsIndex].open = openstatus;
 
 	if (openstatus && !treeData[eintragsIndex].loaded) {
-		frames.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=cmd&pid=" + id + (sort !== "" ? "&sort=" + sort : "");
+		treeData.frames.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=cmd&pid=" + id + (sort !== "" ? "&sort=" + sort : "");
 	} else {
 		drawTree();
 	}
@@ -53,13 +53,13 @@ function doClick(id, typ) {
 		} else {
 			top.content.usetHot();
 			cmd = "voting_edit";
-			node = frames.top.treeData.get(id);
-			frames.top.editor.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=edbody&cmd=" + cmd + "&cmdid=" + node.id + "&tabnr=" + frames.top.activ_tab;
+			node = treeData.get(id);
+			treeData.frames.top.editor.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=edbody&cmd=" + cmd + "&cmdid=" + node.id + "&tabnr=" + treeData.frames.top.activ_tab;
 		}
 	} else {
 		cmd = "voting_edit";
-		node = frames.top.treeData.get(id);
-		frames.top.editor.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=edbody&cmd=" + cmd + "&cmdid=" + node.id + "&tabnr=" + frames.top.activ_tab;
+		node = treeData.get(id);
+		treeData.frames.top.editor.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=edbody&cmd=" + cmd + "&cmdid=" + node.id + "&tabnr=" + treeData.frames.top.activ_tab;
 	}
 }
 
@@ -67,8 +67,8 @@ function info(text) {
 }
 
 node.prototype.showSegment = function () {
-	parentnode = frames.top.treeData.get(this.parentid);
+	parentnode = this.get(this.parentid);
 	parentnode.clear();
-	frames.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=cmd&pid=" + this.parentid + "&offset=" + this.offset;
+	treeData.frames.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=cmd&pid=" + this.parentid + "&offset=" + this.offset;
 	drawTree();
 };

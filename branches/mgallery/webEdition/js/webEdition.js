@@ -237,6 +237,28 @@ function storeTreeWidth(w) {
 	WE().util.weSetCookie(self.document, "treewidth_main", w, ablauf, "/");
 }
 
+function clickVTab(tab, no, table) {
+	if (top.deleteMode) {
+		we_cmd('exit_delete', table);
+	}
+	if (tab.classList.contains("tabActive")) {
+		if (toggleTree()) {
+			we_cmd('loadVTab', table, 0);
+		}
+	} else {
+		setActiveVTab(no);
+		treeOut();
+		we_cmd('loadVTab', table, 0);
+	}
+}
+
+function setActiveVTab(no) {
+	var allTabs = document.getElementById("vtabs").getElementsByClassName("tab");
+	for (var i = 0; i < allTabs.length; i++) {
+		allTabs[i].className = "tab " + (i == no ? "tabActive" : "tabNorm");
+	}
+}
+
 function focusise() {
 	setTimeout(function () {
 		self.makefocus.focus();
@@ -326,9 +348,6 @@ function openBrowser(url) {
 }
 
 function start(table_to_load) {
-	self.Tree = self;
-	self.Vtabs = self;
-	self.TreeInfo = self;
 	if (table_to_load) {
 		we_cmd("load", table_to_load);
 	}
@@ -703,22 +722,20 @@ function we_cmd_base(args, url) {
 			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
 			break;
 		case "we_selector_image":
-		case "we_selector_document":top.console.log('yep', args);
+		case "we_selector_document":
+			top.console.log('yep', args);
 			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "we_fileupload_editor":
 			new (WE().util.jsWindow)(this, url, "we_fileupload_editor", -1, -1, 500, top.WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "setTab":
-			if (self.Vtabs && self.Vtabs.setTab && (self.treeData !== undefined)) {
-				self.Vtabs.setTab(args[1]);
-				self.treeData.table = args[1];
+			if (treeData !== undefined) {
+				setTab(args[1]);
+				treeData.table = args[1];
 			} else {
 				setTimeout('we_cmd("setTab","' + args[1] + '")', 500);
 			}
-			break;
-		case "showLoadInfo":
-			we_repl(self.Tree, url, args[0]);
 			break;
 		case "update_image":
 		case "update_file":
@@ -1032,22 +1049,18 @@ function we_cmd_base(args, url) {
 		case "new":
 			if (WE().session.seemode) {
 				WE().layout.weEditorFrameController.openDocument(args[1], args[2], args[3], "", args[4], "", args[5]);
-
+				break;
+			}
+			treeData.unselectNode();
+			if (args[5] !== undefined) {
+				WE().layout.weEditorFrameController.openDocument(args[1], args[2], args[3], "", args[4], "", args[5]);
 			} else {
-				treeData.unselectNode();
-				if (args[5] !== undefined) {
-					WE().layout.weEditorFrameController.openDocument(args[1], args[2], args[3], "", args[4], "", args[5]);
-				} else {
-					WE().layout.weEditorFrameController.openDocument(args[1], args[2], args[3], "", args[4]);
-				}
+				WE().layout.weEditorFrameController.openDocument(args[1], args[2], args[3], "", args[4]);
 			}
 			break;
 		case "load":
-			if (WE().session.seemode) {
-			} else {
-				if (self.Tree && self.Tree.setScrollY) {
-					self.Tree.setScrollY();
-				}
+			if (!WE().session.seemode) {
+				top.setScrollY();
 
 				var table = (args[1] !== undefined && args[1]) ? args[1] : WE().consts.tables.FILE_TABLE;
 				we_cmd("setTab", table);
@@ -1058,8 +1071,7 @@ function we_cmd_base(args, url) {
 		case "exit_move":
 		case "exit_addToCollection":
 			deleteMode = false;
-			if (WE().session.seemode) {
-			} else {
+			if (!WE().session.seemode) {
 				treeData.setState(treeData.tree_states.edit);
 				drawTree();
 
@@ -1077,33 +1089,33 @@ function we_cmd_base(args, url) {
 				if (args[2] != 1) {
 					we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference(), url, args[0]);
 				}
-			} else {
-				if (top.deleteMode != args[1]) {
-					top.deleteMode = args[1];
-				}
-				if (!top.deleteMode && treeData.state == treeData.tree_states.select) {
-					treeData.setState(treeData.tree_states.edit);
-					drawTree();
-				}
-				self.document.getElementById("bm_treeheaderDiv").style.height = "150px";
-				self.document.getElementById("treetable").style.top = "150px";
-				top.toggleTree(true);
-				var width = top.getTreeWidth();
+				break;
+			}
+			if (top.deleteMode != args[1]) {
+				top.deleteMode = args[1];
+			}
+			if (!top.deleteMode && treeData.state == treeData.tree_states.select) {
+				treeData.setState(treeData.tree_states.edit);
+				drawTree();
+			}
+			self.document.getElementById("bm_treeheaderDiv").style.height = "150px";
+			self.document.getElementById("treetable").style.top = "150px";
+			top.toggleTree(true);
+			var width = top.getTreeWidth();
 
-				widthBeforeDeleteMode = width;
+			widthBeforeDeleteMode = width;
 
-				if (width < WE().consts.size.tree.deleteWidth) {
-					top.setTreeWidth(WE().consts.size.tree.deleteWidth);
-				}
-				top.storeTreeWidth(widthBeforeDeleteMode);
+			if (width < WE().consts.size.tree.deleteWidth) {
+				top.setTreeWidth(WE().consts.size.tree.deleteWidth);
+			}
+			top.storeTreeWidth(widthBeforeDeleteMode);
 
-				var widthSidebar = top.getSidebarWidth();
+			var widthSidebar = top.getSidebarWidth();
 
-				widthBeforeDeleteModeSidebar = widthSidebar;
+			widthBeforeDeleteModeSidebar = widthSidebar;
 
-				if (args[2] != 1) {
-					we_repl(self.treeheader, url, args[0]);
-				}
+			if (args[2] != 1) {
+				we_repl(self.treeheader, url, args[0]);
 			}
 			break;
 		case "move":

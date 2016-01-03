@@ -29,12 +29,12 @@ node.prototype.getLayout = function () {
 		return treeData.node_layouts.threedots;
 	}
 	var layout_key = (this.typ === "group" && this.contenttype !== "text/weCollection" ? "group" : "item") +
-					(this.selected ? "-selected" : "") +
-					(this.disabled ? "-disabled" : "") +
-					(this.checked ? "-checked" : "") +
-					(this.open ? "-open" : "") +
-					(this.typ === "item" && this.published === 0 ? "-notpublished" : "") +
-					(this.typ === "item" && this.published === -1 ? "-changed" : "");
+					(this.selected ? "Selected" : "") +
+					(this.disabled ? "Disabled" : "") +
+					(this.checked ? "Checked" : "") +
+					(this.open ? "Open" : "") +
+					(this.typ === "item" && this.published === 0 ? "Notpublished" : "") +
+					(this.typ === "item" && this.published === -1 ? "Changed" : "");
 
 	return treeData.node_layouts[layout_key];
 };
@@ -58,21 +58,21 @@ container.prototype.openClose = function (id) {
 };
 
 function info(text) {
-	t = TreeInfo.window.document.getElementById("infoField");
-	s = TreeInfo.window.document.getElementById("search");
-	if (text != " ") {
+	t = document.getElementById("infoField");
+	s = document.getElementById("search");
+	if (text !== " ") {
 		s.style.display = "none";
-		t.style.display = "block";
 		t.innerHTML = text;
+		t.style.display = "block";
 	} else {
 		s.style.display = "block";
-		t.innerHTML = text;
 		t.style.display = "none";
+		t.innerHTML = text;
 	}
 }
 
 function doClick(id) {
-	var node = frames.top.treeData.get(id);
+	var node = treeData.get(id);
 	var ct = node.contenttype;
 	var table = node.table;
 	id = node.we_id ? node.we_id : id;
@@ -80,7 +80,7 @@ function doClick(id) {
 
 	switch (table) {
 		case WE().consts.tables.FILE_TABLE:
-			if (frames.top.wasdblclick && ct !== "folder") {
+			if (wasdblclick && ct !== "folder") {
 				top.openBrowser(id);
 				setTimeout(function () {
 					wasdblclick = false;

@@ -36,14 +36,14 @@ container.prototype.openClose = function (id) {
 
 	this[eintragsIndex].open = openstatus;
 	if (openstatus && !this[eintragsIndex].loaded) {
-		frames.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=load&tab=" + frames.top.table + "&cmd=load&pid=" + id;
-		frames.top.openFolders[frames.top.table] += "," + id;
+		treeData.frames.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=load&tab=" + treeData.frames.top.table + "&cmd=load&pid=" + id;
+		treeData.frames.top.openFolders[treeData.frames.top.table] += "," + id;
 	} else {
-		var arr = frames.top.openFolders[frames.top.table].split(",");
-		frames.top.openFolders[frames.top.table] = "";
+		var arr = treeData.frames.top.openFolders[treeData.frames.top.table].split(",");
+		treeData.frames.top.openFolders[treeData.frames.top.table] = "";
 		for (var t = 0; t < arr.length; t++) {
 			if (arr[t] !== "" && arr[t] != id) {
-				frames.top.openFolders[frames.top.table] += "," + arr[t];
+				treeData.frames.top.openFolders[treeData.frames.top.table] += "," + arr[t];
 			}
 		}
 		drawTree();
@@ -57,35 +57,43 @@ container.prototype.checkNode = function (imgName) {
 	var object_name = imgName.substring(4, imgName.length);
 	for (i = 1; i <= this.len; i++) {
 		if (this[i].id == object_name) {
-			frames.tree.populate(this[i].id, this.table);
+			treeData.frames.tree.populate(this[i].id, this.table);
 			if (this[i].checked == 1) {
 				if (document.images) {
-					eval("if(" + this.treeFrame + ".document.getElementsByName(imgName)){var tmp=" + this.treeFrame + ".document.getElementsByName(imgName)[0];tmp.classList.remove('fa-check-square-o');tmp.classList.add('fa-square-o');}");
+					if (treeData.frames.tree.document.getElementsByName(imgName)) {
+						var tmp = treeData.frames.tree.document.getElementsByName(imgName)[0];
+						tmp.classList.remove('fa-check-square-o');
+						tmp.classList.add('fa-square-o');
+					}
 				}
 				this[i].checked = 0;
-				if (frames.top.SelectedItems[frames.top.table].length > 1) {
+				if (treeData.frames.top.SelectedItems[treeData.frames.top.table].length > 1) {
 					found = false;
-					frames.top.SelectedItems[frames.top.table].length = frames.top.SelectedItems[frames.top.table].length + 1;
-					for (z = 0; z < frames.top.SelectedItems[frames.top.table].length; z++) {
-						if (frames.top.SelectedItems[frames.top.table][z] == this[i].id)
+					treeData.frames.top.SelectedItems[treeData.frames.top.table].length = treeData.frames.top.SelectedItems[treeData.frames.top.table].length + 1;
+					for (z = 0; z < treeData.frames.top.SelectedItems[treeData.frames.top.table].length; z++) {
+						if (treeData.frames.top.SelectedItems[treeData.frames.top.table][z] == this[i].id)
 							found = true;
 						if (found) {
-							frames.top.SelectedItems[frames.top.table][z] = frames.top.SelectedItems[frames.top.table][z + 1];
+							treeData.frames.top.SelectedItems[treeData.frames.top.table][z] = treeData.frames.top.SelectedItems[treeData.frames.top.table][z + 1];
 						}
 					}
-					frames.top.SelectedItems[frames.top.table].length = frames.top.SelectedItems[frames.top.table].length - 2;
+					treeData.frames.top.SelectedItems[treeData.frames.top.table].length = treeData.frames.top.SelectedItems[treeData.frames.top.table].length - 2;
 				} else {
-					frames.top.SelectedItems[frames.top.table] = [];
+					treeData.frames.top.SelectedItems[treeData.frames.top.table] = [];
 				}
 
 				this[i].applylayout();
 				break;
 			} else {
 				if (document.images) {
-					eval("if(" + this.treeFrame + ".document.getElementsByName(imgName)){ var tmp=" + this.treeFrame + ".document.getElementsByName(imgName)[0]; tmp.classList.remove('fa-square-o');tmp.classList.add('fa-check-square-o');}");
+					if (treeData.frames.tree.document.getElementsByName(imgName)) {
+						var tmp = treeData.frames.tree.document.getElementsByName(imgName)[0];
+						tmp.classList.remove('fa-square-o');
+						tmp.classList.add('fa-check-square-o');
+					}
 				}
 				this[i].checked = 1;
-				frames.top.SelectedItems[frames.top.table].push(this[i].id);
+				treeData.frames.top.SelectedItems[treeData.frames.top.table].push(this[i].id);
 				this[i].applylayout();
 				break;
 			}
@@ -128,7 +136,14 @@ function populate(id, table) {
 }
 
 function setHead(tab) {
-	frames.top.table = tab;
-	frames.top.document.we_form.table.value = tab;
-	setTimeout(frames.top.startTree, 100);
+	treeData.frames.top.table = tab;
+	treeData.frames.top.document.we_form.table.value = tab;
+	setTimeout(treeData.frames.top.startTree, 100);
+}
+
+
+function drawTree() {
+	treeData.frames.tree.document.getElementById("treetable").innerHTML = '<div class="treetable \'+treeData.getLayout()+\'">' +
+					treeData.draw(treeData.startloc, "") +
+					"</div>";
 }

@@ -267,7 +267,7 @@ echo we_html_tools::getHtmlTop('', '', 'frameset') .
 	}
 
 if(!_EditorFrame.EditorDocumentId){
-		if (top.Tree && top.Tree.treeData && top.Tree.treeData.table != _EditorFrame.EditorEditorTable) {
+		if (top.treeData && top.treeData.table != _EditorFrame.EditorEditorTable) {
 			top.we_cmd('load', _EditorFrame.EditorEditorTable);
 		}
 }

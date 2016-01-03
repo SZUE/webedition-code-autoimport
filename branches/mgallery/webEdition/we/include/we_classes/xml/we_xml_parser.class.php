@@ -2450,29 +2450,19 @@ class we_xml_parser{
 		$this->cdataSection = 0;
 	}
 
-	function error_handler($errtxt){
+	/*function error_handler($errtxt){
 		// check if more than one argument is given
 		if(func_num_args() > 1){
 			// read all arguments
 			$args = func_get_args();
-
-			// format string
-			$str = "\$errtxt = sprintf(\$errtxt";
-
-			// run through the array of arguments
-			for($i = 1; $i < count($args); $i++){
-				// add arguments to the format string
-				$str .= ", \$args[" . $i . "]";
-			}
-
-			eval($str); //FIXME: remove eval
+			call_user_func_array('sprintf',$args);
 		}
 
 		// show error message
 		//echo "<pre><br/><b>XML error</b>: ".$errtxt."</pre>";
 		// exit the script
 		exit;
-	}
+	}*/
 
 	/**
 	 * The method gets defined encoding from file or from data

@@ -35,22 +35,6 @@ abstract class we_SEEM{
 	 */
 	static function getClassVars($name){
 		return '';
-		//	here are all variables.
-		/* if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
-		  $vtabSrcDocs = "top.Vtabs.we_cmd('loadVTab','" . FILE_TABLE . "',0);top.we_cmd('exit_delete');";
-		  if(defined('OBJECT_FILES_TABLE')){
-		  $vtabSrcObjs = (permissionhandler::hasPerm("CAN_SEE_OBJECTFILES") ?
-		  "top.Vtabs.we_cmd('loadVTab','" . OBJECT_FILES_TABLE . "',0);top.we_cmd('exit_delete');" :
-		  "top.we_cmd('exit_delete');");
-		  }
-		  } else {
-		  $vtabSrcDocs = "";
-		  $vtabSrcObjs = "";
-		  }
-
-
-		  return (isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ? (isset($$name) ? $$name : '') : '');
-		 */
 	}
 
 	/**
