@@ -21,12 +21,9 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 if(!defined('NO_SESS')){
 	define('NO_SESS', 1);
 }
-
-
 //leave this
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 

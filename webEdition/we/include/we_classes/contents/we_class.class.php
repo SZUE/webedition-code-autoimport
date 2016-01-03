@@ -151,7 +151,7 @@ abstract class we_class{
 		$doReload = $reload ? "top.we_cmd('reload_editpage');" : '';
 		$doReset = $resetSel ? "this.selectedIndex=0;" : '';
 		$inputName = $type ? ('we_' . $this->Name . '_' . $type . '[' . $name . ']') : ('we_' . $this->Name . '_' . $name);
-		$sel = $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $selValues, 1, '', false, array("onchange" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;" . $doReset . $doReload), "value", $selWidth);
+		$sel = $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $selValues, 1, '', false, array("onchange" => "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;" . $doReset . $doReload), "value", $selWidth);
 
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($inputName, $size, ($type && ($elVal = $this->getElement($name)) ? $elVal : (isset($GLOBALS['meta'][$name]) ? $GLOBALS['meta'][$name]['default'] : (isset($ps) ? $ps : '') )), '', $attribs, $type, $width), (g_l('weClass', '[' . $name . ']', true)? : $name), '', '', $sel);
 	}

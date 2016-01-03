@@ -1,0 +1,91 @@
+/**
+ * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
+ * This source is part of webEdition CMS. webEdition CMS is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionCMS/License.txt
+ *
+ * @category   webEdition
+ * @package none
+ * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ */
+@import "config.scss";
+
+#Headline {
+	padding-left	: 5px;
+	line-height		: 20px;
+	vertical-align	: middle;
+	float			: left;
+	width			: 80%;
+	font-family: $weFontBold;
+}
+#CloseButton {
+	float			: right;
+}
+
+body{
+	background-color:#bfbfbf;
+	background-repeat:repeat;
+	margin:0px 0px 0px 0px;
+	overflow:hidden;
+}
+
+#weSidebarHeader{
+	overflow: hidden;
+	position:absolute;
+	top:0px;
+	left:0px;
+	right:0px;
+	height:$defaultEditorTabHeight;
+	line-height:$defaultEditorTabHeight;
+	background-color: silver;
+	font-size: $smallfont;
+}
+
+#weSidebarFooter{
+	overflow: hidden;
+	position:absolute;
+	bottom:0px;
+	left:0px;
+	right:0px;
+	height:$editorFooterHeight;
+	background: linear-gradient(to bottom, #B4B3B3, #C6C5C5) transparent;
+	border-top: 2px groove white;
+
+}
+
+#weSidebarContentDiv{
+	position:absolute;
+	top:22px;
+	left:0px;
+	right:0px;
+	bottom:$editorFooterHeight;
+	border-top: 1px solid black;
+}
+
+#weSidebarContent{
+	border: 0px;
+	background-color:white;
+	width:100%;
+	height:100%;
+	overflow: auto;
+}
+span.close{
+	color:#a9a9a9;
+	margin:.5em;
+
+	&:hover i.fa-close{
+		color:black;
+	}
+}

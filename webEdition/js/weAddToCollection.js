@@ -162,8 +162,16 @@ weAddToCollection = {
 	},
 	we_cmd: function () {
 		var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-		if (parent.we_cmd) {
-			parent.we_cmd.apply(this, args);
+		var url = WE().util.getWe_cmdArgsUrl(args);
+
+		switch(args[0]){
+			case "we_selector_document":
+				new (WE().util.jsWindow)(document, url, "we_fileselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+				break;
+			default:
+				if (parent.we_cmd) {
+					parent.we_cmd.apply(this, args);
+				}
 		}
 	}
 };

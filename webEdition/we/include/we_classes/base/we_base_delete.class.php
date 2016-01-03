@@ -29,8 +29,8 @@ abstract class we_base_delete{
 			return true;
 		}
 		return (f('SELECT IsFolder FROM ' . $GLOBALS['DB_WE']->escape($table) . ' WHERE ID=' . intval($id)) ?
-						self::checkDeleteFolder($id, $table) :
-						self::checkDeleteFile($id, $table));
+				self::checkDeleteFolder($id, $table) :
+				self::checkDeleteFile($id, $table));
 	}
 
 	private static function checkDeleteFolder($id, $table){
@@ -287,11 +287,7 @@ abstract class we_base_delete{
 			return true;
 		}
 
-		$DB_WE->query('SELECT CID FROM ' . LINK_TABLE . ' WHERE DID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '"');
-		$all = implode(',', $DB_WE->getAll(true));
-
-		$DB_WE->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID IN ('.$all.')');
-		return $DB_WE->query('DELETE FROM ' . LINK_TABLE . ' WHERE CID IN(' . $all . ')');
+		return $DB_WE->query('DELETE l,c FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DID=' . intval($id) . ' AND l.DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '"');
 	}
 
 }

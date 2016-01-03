@@ -53,10 +53,7 @@ function init(){
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[my_documents]'), '', '', STYLESHEET .
 	we_html_element::jsElement($js), we_html_element::htmlBody(
 		array(
-		"marginwidth" => 15,
-		"marginheight" => 10,
-		"leftmargin" => 15,
-		"topmargin" => 10,
+			'style'=>'margin:10px 15px;',
 		"onload" => 'if(parent!=self){init();}WE().util.setIconOfDocClass(document,"mdcIcon");'
 		), we_html_element::htmlDiv(array(
 			"id" => "mdc"

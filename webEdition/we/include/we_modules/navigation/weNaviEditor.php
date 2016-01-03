@@ -151,7 +151,5 @@ $_body = we_html_element::htmlBody(
 			), we_html_multiIconBox::getHTML('', $_parts, 30, $buttonsBottom, -1, '', '', false, g_l('navigation', '[add_navigation]'), "", 311)));
 
 echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
-	we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
-	we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
-	we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
+	YAHOO_FILES .
 	we_html_element::jsElement($_js), $_body);

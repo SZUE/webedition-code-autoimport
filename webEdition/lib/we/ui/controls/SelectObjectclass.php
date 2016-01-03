@@ -51,7 +51,7 @@ class we_ui_controls_SelectObjectclass extends we_ui_controls_Select{
 	 */
 	public function __construct($properties = null){
 		parent::__construct($properties);
-		if(we_base_moduleInfo::isActive('object')){
+		if(we_base_moduleInfo::isActive(we_base_moduleInfo::OBJECT)){
 			$db = new DB_WE();
 			$db->query("SELECT ID,Text FROM " . OBJECT_TABLE);
 			$this->addOption(0, '-');

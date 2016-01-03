@@ -32,7 +32,7 @@ echo we_html_tools::getHtmlTop() .
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 ?>
 </head>
-<body bgcolor="white" marginwidth="15" marginheight="15" leftmargin="15" topmargin="15" onunload="doUnload()">
+<body bgcolor="white" style="margin: 15px;" onunload="doUnload()">
 	<form name="we_form" method="post" onsubmit="return false;"><?php
 		echo we_class::hiddenTrans();
 

@@ -118,6 +118,14 @@ abstract class we_html_element{
 	}
 
 	public static function cssLink($url, array $attribs = array()){
+		if(!is_file($_SERVER['DOCUMENT_ROOT'] . $url)
+				&& substr($url, -4) === '.css'
+				&& is_file(($scssUrl = $_SERVER['DOCUMENT_ROOT'] . substr($url, 0, -4) . '.scss'))){
+			$scss = new we_helpers_scss();
+			$doc = $scss->compile(file_get_contents($scssUrl));
+			file_put_contents($_SERVER['DOCUMENT_ROOT'] . $url, $doc);
+		}
+
 		$attribs['href'] = self::getUnCache($url);
 		$attribs['rel'] = 'styleSheet';
 		$attribs['type'] = 'text/css';
@@ -172,7 +180,7 @@ abstract class we_html_element{
 	 * @return		string
 	 */
 	public static function htmlB($content){
-		return we_html_baseElement::getHtmlCode(new we_html_baseElement('span', true, array('style' => 'font-weight:bold'), $content));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('strong', true, array(), $content));
 	}
 
 	/**
@@ -433,7 +441,7 @@ abstract class we_html_element{
 		$iframestyle = $iframestyle ? : 'border:0px;width:100%;height:100%;overflow: ' . (false && we_base_browserDetect::isFF() ? 'auto' : 'hidden') . ';';
 
 		return self::htmlDiv(array('style' => $style, 'name' => $name . 'Div', 'id' => $name . 'Div', 'class' => $class)
-						, we_html_baseElement::getHtmlCode(new we_html_baseElement('iframe', true, array('name' => $name, 'id' => $name, 'frameBorder' => 0, 'src' => $src, 'style' => $iframestyle, 'onload' => 'try{' . ($scroll ? 'this.contentDocument.body.style.overflow=\'' . ($isApple ? 'scroll !important' : 'auto') . '\';' . ($isApple ? 'this.contentDocument.body.style[\'-webkit-overflow-scrolling\']=\'touch !important\';' : '') : 'this.contentDocument.body.style.overflow=\'hidden\';') . '}catch(e){}' . $onload))
+						, we_html_baseElement::getHtmlCode(new we_html_baseElement('iframe', true, array('name' => $name, 'id' => $name, 'src' => $src, 'style' => $iframestyle, 'onload' => 'try{' . ($scroll ? 'this.contentDocument.body.style.overflow=\'' . ($isApple ? 'scroll !important' : 'auto') . '\';' . ($isApple ? 'this.contentDocument.body.style[\'-webkit-overflow-scrolling\']=\'touch !important\';' : '') : 'this.contentDocument.body.style.overflow=\'hidden\';') . '}catch(e){}' . $onload))
 		));
 	}
 

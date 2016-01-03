@@ -290,7 +290,7 @@ EOS;
 			// add title tag if not empty
 			($this->getTitle() !== '' ? '<title>' . $this->getTitle() . '</title>' . "\n" : '');
 
-
+		$html.=STYLESHEET;
 		// add link tags for external CSS files
 		foreach($this->_CSSFiles as $file){
 			$html .= '<link rel="stylesheet" type="text/css" href="' . $file['path'] . '" media="' . $file['media'] . '" />' . "\n";

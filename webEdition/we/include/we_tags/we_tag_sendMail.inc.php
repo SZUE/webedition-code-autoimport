@@ -89,7 +89,7 @@ function we_tag_sendMail($attribs, $content){
 		// insert into log
 		$GLOBALS['DB_WE']->query('INSERT INTO ' . FORMMAIL_LOG_TABLE . ' SET IP="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '"');
 		if(FORMMAIL_EMPTYLOG > -1){
-			$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime<(NOW() - INTERVAL ' . intval(FORMMAIL_EMPTYLOG) . ' SECOND)');
+			$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime<(NOW()-INTERVAL ' . intval(FORMMAIL_EMPTYLOG) . ' SECOND)');
 		}
 
 		if($useFormmailBlock){
@@ -115,7 +115,7 @@ function we_tag_sendMail($attribs, $content){
 		$headline = "Fehler / Error";
 		$content = g_l('global', '[formmailerror]') . getHtmlTag("br") . "&#8226; " . "Email dispatch blocked / Email Versand blockiert!";
 
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, getHtmlTag('body', array('class' => 'weEditorBody'), we_html_tools::htmlDialogLayout(getHtmlTag('div', array('class' => 'defaultgray'), $content), $headline)));
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, getHtmlTag('body', array('class' => 'weEditorBody'), we_html_tools::htmlDialogLayout(getHtmlTag('div', array('class' => 'defaultfont lowContrast'), $content), $headline)));
 
 		exit;
 	}

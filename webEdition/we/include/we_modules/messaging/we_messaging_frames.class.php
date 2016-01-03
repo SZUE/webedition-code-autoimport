@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_messaging_frames extends we_modules_frame{
-
 	var $db;
 	var $View;
 	var $frameset;
@@ -60,14 +59,10 @@ class we_messaging_frames extends we_modules_frame{
 		exit();
 	}
 
-	function getJSCmdCode(){
-		return '';
-	}
-
 	protected function getHTMLTree($extraHead = ''){
 		return parent::getHTMLTree(
-						we_html_element::jsScript(JS_DIR . 'tree.js') .
-						we_html_element::jsScript(JS_DIR . 'messaging_tree.js')
+				we_html_element::jsScript(JS_DIR . 'tree.js') .
+				we_html_element::jsScript(JS_DIR . 'messaging_tree.js')
 		);
 	}
 
@@ -94,10 +89,9 @@ class we_messaging_frames extends we_modules_frame{
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
-		$extraHead = $this->getJSCmdCode() .
-				we_html_element::jsScript(JS_DIR . 'we_modules/messaging/messaging_std.js') .
-				$this->Tree->getJSTreeCode($this->messaging) .
-				we_html_element::jsElement('startTree();');
+		$extraHead = we_html_element::jsScript(JS_DIR . 'we_modules/messaging/messaging_std.js') .
+			$this->Tree->getJSTreeCode($this->messaging) .
+			we_html_element::jsElement('startTree();');
 
 		return parent::getHTMLFrameset($extraHead, '&we_transaction=' . $this->transaction);
 	}
@@ -116,22 +110,22 @@ class we_messaging_frames extends we_modules_frame{
 			$offset = we_base_request::_(we_base_request::INT, "offset", 0);
 
 			$rootjs = ($pid ? '' :
-							$this->Tree->topFrame . '.treeData.clear();' .
-							$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.node.prototype.rootEntry(' . $pid . ',\'root\',\'root\'));'
-					);
+					$this->Tree->topFrame . '.treeData.clear();' .
+					$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.node.prototype.rootEntry(' . $pid . ',\'root\',\'root\'));'
+				);
 
 
 			$tree = we_html_element::jsElement(
-							$rootjs .
-							$this->Tree->getJSLoadTree(!$pid, we_messaging_tree::getItems($pid, 0, $this->Tree->default_segment, $this->View->getMessaging()))
+					$rootjs .
+					$this->Tree->getJSLoadTree(!$pid, we_messaging_tree::getItems($pid, 0, $this->Tree->default_segment, $this->View->getMessaging()))
 			);
 		}
 		return $this->getHTMLDocument(we_html_element::htmlBody(array(), $tree), $head);
 	}
 
 	protected function getHTMLEditor(){
-		$body = we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;'), we_html_element::htmlIFrame('edheader', $this->frameset . '&pnt=edheader&we_transaction=' . $this->transaction, 'position: absolute; top: 0px; left: 0px; right: 0px; height: 35px; overflow: hidden;', 'width: 100%; overflow: hidden', '', '', false) .
-						we_html_element::htmlIFrame('edbody', $this->frameset . '&pnt=edbody&we_transaction=' . $this->transaction, 'position: absolute; top: 35px; bottom: 0px; left: 0px; right: 0px;', 'border:0px;width:100%;height:100%;')
+		$body = we_html_element::htmlBody(array('class' => 'moduleEditor'), we_html_element::htmlIFrame('edheader', WEBEDITION_DIR . 'we_showMod.php?mod=messaging&pnt=edheader&we_transaction=' . $this->transaction, 'position: absolute; top: 0px; left: 0px; right: 0px; height: 35px; overflow: hidden;', 'width: 100%; overflow: hidden', '', '', false) .
+				we_html_element::htmlIFrame('edbody', WEBEDITION_DIR . 'we_showMod.php?mod=messaging&pnt=edbody&we_transaction=' . $this->transaction, 'position: absolute; top: 35px; bottom: 0px; left: 0px; right: 0px;', 'border:0px;width:100%;height:100%;')
 		);
 
 		return $this->getHTMLDocument($body);
@@ -152,7 +146,7 @@ WE().consts.g_l.messaging={
 };
 
 function doSearch() {
-	top.content.cmd.location = "' . $this->frameset . '?we_transaction=' . $this->transaction . '&pnt=cmd&mcmd=search_messages&searchterm=" + document.we_messaging_search.messaging_search_keyword.value;
+	top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&we_transaction=' . $this->transaction . '&pnt=cmd&mcmd=search_messages&searchterm=" + document.we_messaging_search.messaging_search_keyword.value;
 }
 
 function launchAdvanced() {
@@ -170,25 +164,25 @@ function clearSearch() {
 		$table = new we_html_table(array('style' => 'margin: 4px 0px 0px 7px;', 'border' => 0), 1, 2);
 
 		$table->setCol(0, 0, array('class' => 'defaultfont', 'style' => 'padding-left:10px;'), g_l('modules_messaging', $searchlabel) .
-				we_html_tools::htmlTextInput('messaging_search_keyword', 15, we_base_request::_(we_base_request::STRING, 'messaging_search_keyword', ''), 15));
+			we_html_tools::htmlTextInput('messaging_search_keyword', 15, we_base_request::_(we_base_request::STRING, 'messaging_search_keyword', ''), 15));
 
 		$buttons = we_html_button::create_button(we_html_button::SEARCH, "javascript:doSearch();") .
-				we_html_button::create_button("advanced", "javascript:launchAdvanced()", true) .
-				we_html_button::create_button("reset_search", "javascript:clearSearch();");
+			we_html_button::create_button("advanced", "javascript:launchAdvanced()", true) .
+			we_html_button::create_button("reset_search", "javascript:clearSearch();");
 
 		$table->setCol(0, 1, array('class' => 'defaultfont'), $buttons);
 		$form = we_html_element::htmlForm(
-						array('name' => 'we_messaging_search', 'action' => $this->frameset . '?we_transaction=' . $this->transaction . '&pnt=edheader&viewclass=' . $this->viewclass, 'onSubmit' => 'return doSearch()'), $hidden . $table->getHtml()
+				array('name' => 'we_messaging_search', 'action' => WEBEDITION_DIR . 'we_showMod.php?mod=messaging&we_transaction=' . $this->transaction . '&pnt=edheader&viewclass=' . $this->viewclass, 'onSubmit' => 'return doSearch()'), $hidden . $table->getHtml()
 		);
 
 		return $this->getHTMLDocument(we_html_element::htmlBody(array('style' => 'background-color: white;border-top:1px solid black;'), we_html_element::htmlNobr($form)), $extraHead);
 	}
 
 	protected function getHTMLEditorBody(){
-		$content = we_html_element::htmlIFrame('messaging_fv_headers', $this->frameset . '?we_transaction=' . $this->transaction . '&pnt=msg_fv_headers', 'position:absolute;top:0px;height:26px;left:0px;right:0px;', '', '', false) .
-				we_html_element::htmlIFrame('x', 'about:blank', 'display:none', '', '', false) . //FIXME: is this command window??
-				we_html_element::htmlDiv(array('style' => 'position:absolute;top:26px;bottom:26px;left:0px;right:0px;'), we_html_element::htmlIFrame('messaging_messages_overview', 'about:blank', 'position:absolute;top:0px;height:160px;left:0px;right:0px;border-bottom:1px solid black;', '', '', true) .
-						we_html_element::htmlIFrame('messaging_msg_view', 'about:blank', 'position:absolute;top:160px;bottom:0px;left:0px;right:0px;', '', '', true)
+		$content = we_html_element::htmlIFrame('messaging_fv_headers', WEBEDITION_DIR . 'we_showMod.php?mod=messaging&we_transaction=' . $this->transaction . '&pnt=msg_fv_headers', 'position:absolute;top:0px;height:26px;left:0px;right:0px;', '', '', false) .
+			we_html_element::htmlIFrame('x', 'about:blank', 'display:none', '', '', false) . //FIXME: is this command window??
+			we_html_element::htmlDiv(array('style' => 'position:absolute;top:26px;bottom:26px;left:0px;right:0px;'), we_html_element::htmlIFrame('messaging_messages_overview', 'about:blank', 'position:absolute;top:0px;height:160px;left:0px;right:0px;border-bottom:1px solid black;', '', '', true) .
+				we_html_element::htmlIFrame('messaging_msg_view', 'about:blank', 'position:absolute;top:160px;bottom:0px;left:0px;right:0px;', '', '', true)
 		);
 
 		return $this->getHTMLDocument(we_html_element::htmlBody(array('onload' => "top.content.cb_incstate();"), $content));
@@ -201,7 +195,7 @@ function clearSearch() {
 		$extraHead = we_html_element::jsElement('
 			function doSort(sortitem) {
 				entrstr = "";
-				top.content.cmd.location = "' . $this->frameset . '&pnt=cmd&mcmd=show_folder_content&sort=" + sortitem + entrstr + "&we_transaction=' . $this->transaction . '";
+				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&mcmd=show_folder_content&sort=" + sortitem + entrstr + "&we_transaction=' . $this->transaction . '";
 			}');
 
 		$colsArray = we_base_request::_(we_base_request::STRING, "viewclass") != "todo" ? array(
@@ -209,7 +203,7 @@ function clearSearch() {
 			array(170, 'date', '[date]'),
 			array(120, 'sender', '[from]'),
 			array(70, 'isread', '[is_read]'),
-				) : array(
+			) : array(
 			array(200, 'subject', '[subject]'),
 			array(170, 'deadline', '[deadline]'),
 			array(120, 'priority', '[priority]'),
@@ -224,7 +218,7 @@ function clearSearch() {
 		$table->setCol(0, 0, array('width' => 18), '');
 		for($i = 0; $i < count($colsArray); $i++){
 			$table->setCol(0, $i + 1, array('class' => 'tableHeader defaultfont', 'width' => $colsArray[$i][0]), '<a href="javascript:doSort(\'' . $colsArray[$i][1] . '\');">' . g_l('modules_messaging', $colsArray[$i][2]) .
-					'&nbsp;' . (we_base_request::_(we_base_request::STRING, "si") == $colsArray[$i][1] ? self::sort_arrow(we_base_request::_(we_base_request::STRING, 'so'), "") : '') . '</a>'
+				'&nbsp;' . (we_base_request::_(we_base_request::STRING, "si") == $colsArray[$i][1] ? self::sort_arrow(we_base_request::_(we_base_request::STRING, 'so'), "") : '') . '</a>'
 			);
 		}
 
@@ -241,7 +235,7 @@ function clearSearch() {
 
 		// Check if we have to create a form or href
 		return $href ? '<a href="' . $href . '"><i class="fa fa-lg fa-' . $dir . '"></i></a>' :
-				'<i class="fa fa-lg fa-' . $dir . '"></i>';
+			'<i class="fa fa-lg fa-' . $dir . '"></i>';
 	}
 
 }

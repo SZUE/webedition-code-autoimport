@@ -176,9 +176,9 @@ function search(eintrag) {
 }
 
 function drawTree() {//FIXME: we don't have an existing document to write on, change this, as is changed in tree
-	window.document.body.innerHTML = "<table class=\"default\" style=\"width:100%\"><tr><td class=\"tree\"><nobr>" +
+	window.document.body.innerHTML = "<table class=\"default\" style=\"width:100%\"><tr><td class=\"tree\">" +
 					draw(treeData.startloc, "") +
-					"</nobr></td></tr></table>";
+					"</td></tr></table>";
 
 	for (var k = 0; k < parent.entries_selected.length; k++) {
 		parent.highlight_Elem(parent.entries_selected[k], parent.sel_color, parent);

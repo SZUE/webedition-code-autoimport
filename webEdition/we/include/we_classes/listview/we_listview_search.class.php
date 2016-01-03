@@ -65,7 +65,7 @@ class we_listview_search extends we_listview_base{
 		$this->hidedirindex = $hidedirindex;
 		$this->languages = $languages ? : (isset($GLOBALS['we_lv_languages']) ? $GLOBALS['we_lv_languages'] : '');
 
-		$where_lang = ($this->languages ? ' AND Language IN ("' . implode('","', array_map('escape_sql_query', array_filter(array_map('trim', explode(',', $this->languages))))) . '") ' : '');
+		$where_lang = ($this->languages ? ' AND i.Language IN ("' . implode('","', array_map('escape_sql_query', array_filter(array_map('trim', explode(',', $this->languages))))) . '") ' : '');
 
 		// correct order
 		$orderArr = array();
@@ -99,6 +99,9 @@ class we_listview_search extends we_listview_base{
 				$this->order = '';
 				foreach($orderArr as $o){
 					switch($o['oname']){
+						case 'Workspace':
+							$this->order .= 'wsp.Path' . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
+							break;
 						case 'OID':
 						case 'DID':
 						case 'ID':
@@ -107,7 +110,6 @@ class we_listview_search extends we_listview_base{
 						case 'Title':
 						case 'Path':
 						case 'Text':
-						case 'Workspace':
 						case 'Description':
 							$this->order .= $o['oname'] . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
 					}
@@ -125,22 +127,22 @@ class we_listview_search extends we_listview_base{
 		$this->casesensitive = $casesensitive;
 		$this->search = $this->DB_WE->escape($this->search);
 
-		$cat_tail = ($this->cats ? we_category::getCatSQLTail($this->cats, INDEX_TABLE, $this->catOr, $this->DB_WE) : '');
+		$cat_tail = ($this->cats ? we_category::getCatSQLTail($this->cats, 'i', $this->catOr, $this->DB_WE) : '');
 		$dt = ($this->docType ? f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType LIKE "' . $this->DB_WE->escape($this->docType) . '"', '', $this->DB_WE) : 0);
 
 		if($dt && $this->class){
-			$dtcl_query = ' AND (Doctype="' . $this->DB_WE->escape($dt) . '" OR ClassID=' . $this->class . ') ';
+			$dtcl_query = ' AND (i.Doctype="' . $this->DB_WE->escape($dt) . '" OR i.ClassID=' . $this->class . ') ';
 		} else if($dt){
-			$dtcl_query = ' AND Doctype="' . $this->DB_WE->escape($dt) . '" ';
+			$dtcl_query = ' AND i.Doctype="' . $this->DB_WE->escape($dt) . '" ';
 		} else if($this->class){
-			$dtcl_query = ' AND ClassID=' . $this->class . ' ';
+			$dtcl_query = ' AND i.ClassID=' . $this->class . ' ';
 		} else {
 			$dtcl_query = '';
 		}
 
 		//FIXME: use fulltext index: MATCH(Text) AGAINST([+-]words* IN BINARY MODE)
 
-		$spalte = ($this->casesensitive ? 'BINARY ' : '') . 'Text';
+		$spalte = ($this->casesensitive ? 'BINARY ' : '') . 'i.Text';
 		$bOR = $bAND = array();
 		foreach(preg_split('/ +/', $this->search) as $v1){
 			if(preg_match('|^[-\+]|', $v1)){
@@ -156,37 +158,39 @@ class we_listview_search extends we_listview_base{
 		}
 
 		$bedingung_sql = '(' . implode(' AND ', $bAND) . ')';
-		$ranking = '(ROUND(MATCH(Text) AGAINST("' . str_replace(array('+', '-'), '', $this->search) . '"),3))';
-
+		$ranking = '(ROUND(MATCH(i.Text) AGAINST("' . str_replace(array('+', '-'), '', $this->search) . '"),3))';
+		$ws_where = '';
 		if($this->workspaceID){
-			$workspaces = id_to_path(explode(',', $this->workspaceID), FILE_TABLE, $this->DB_WE, false, true);
-			$cond = array();
-			foreach($workspaces as $workspace){
-				$cond[] = '(Workspace LIKE "' . $this->DB_WE->escape($workspace) . '/%" OR Workspace="' . $this->DB_WE->escape($workspace) . '")';
+			$ids = array_filter(explode(',', $this->workspaceID));
+			if($ids){
+				$workspaces = id_to_path($ids, FILE_TABLE, $this->DB_WE, false, true);
+				$cond = array('i.WorkspaceID IN (' . implode(',', $ids) . ')');
+				foreach($workspaces as $workspace){
+					$cond[] = 'wsp.Path LIKE "' . $this->DB_WE->escape($workspace) . '/%"';
+				}
+				$ws_where = ' AND (' . implode(' OR ', $cond) . ')';
 			}
-			$ws_where = ' AND (' . implode(' OR ', $cond) . ')';
-		} else {
-			$ws_where = '';
 		}
-
 		$weDocumentCustomerFilter_tail = (defined('CUSTOMER_FILTER_TABLE') ?
 				we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this) :
 				'');
 
 		$where = ' WHERE ' . $bedingung_sql . ' ' . $dtcl_query . ' ' . $cat_tail . ' ' . $ws_where . ' ' . $where_lang . ' ' . $weDocumentCustomerFilter_tail;
-		$this->anz_all = f('SELECT COUNT(1) FROM ' . INDEX_TABLE . $where, '', $this->DB_WE);
+		$this->anz_all = f('SELECT COUNT(1) FROM ' . INDEX_TABLE . ' i LEFT JOIN ' . FILE_TABLE . ' wsp ON wsp.ID=i.WorkspaceID ' . $where, '', $this->DB_WE);
 
 		$this->DB_WE->query(
-			'SELECT Category,ID,ID AS DID,ID AS OID,ClassID,Text,Workspace,WorkspaceID,Title,Description,Path,Language, ' . ($random ? 'RAND() ' : $ranking) . ' AS ranking ' .
-			'FROM ' . INDEX_TABLE .
-			$where . ' ORDER BY ranking DESC ' . ($this->order ? (',' . $this->order) : '') . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . intval($this->start) . ',' . intval($this->maxItemsPerPage)) : ''));
+			'SELECT i.Category,i.ID,i.ID AS DID,i.ID AS OID,i.ClassID,i.Text,COALESCE(wsp.Path,"/") AS Workspace,i.WorkspaceID,i.Title,i.Description,COALESCE(f.Path' . (defined('OBJECT_FILES_TABLE') ? ',of.Path' : '') . ') AS Path,i.Language, ' . ($random ? 'RAND() ' : $ranking) . ' AS ranking ' .
+			'FROM ' . INDEX_TABLE . ' i LEFT JOIN ' . FILE_TABLE . ' wsp ON wsp.ID=i.WorkspaceID LEFT JOIN ' . FILE_TABLE . ' f ON (i.ID=f.ID AND i.ClassID=0) ' .
+			(defined('OBJECT_FILES_TABLE') ? 'LEFT JOIN ' . OBJECT_FILES_TABLE . ' of ON (i.ID=of.ID AND i.ClassID>0) ' : '') .
+			$where .
+			' ORDER BY ranking DESC ' . ($this->order ? (',' . $this->order) : '') . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . intval($this->start) . ',' . intval($this->maxItemsPerPage)) : ''));
 		$this->anz = $this->DB_WE->num_rows();
 	}
 
 	public function next_record(){
 		if($this->DB_WE->next_record()){
+			$objectdaten = getHash('SELECT Url,TriggerID,Text FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->DB_WE->Record['ID']) . ' LIMIT 1');
 			if($this->DB_WE->Record['ClassID'] && $this->objectseourls && show_SeoLinks()){
-				$objectdaten = getHash('SELECT Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->DB_WE->Record['ID']) . ' LIMIT 1');
 				$objecttriggerid = ($this->triggerID ? : ($objectdaten ? $objectdaten['TriggerID'] : 0));
 
 				$path_parts = ($objecttriggerid ?
@@ -214,7 +218,7 @@ class we_listview_search extends we_listview_base{
 				$this->DB_WE->Record['WE_PATH'] = $this->DB_WE->Record['Path'];
 			}
 			$this->DB_WE->Record['WE_LANGUAGE'] = $this->DB_WE->Record['Language'];
-			$this->DB_WE->Record['WE_TEXT'] = $this->DB_WE->Record['Text'];
+			$this->DB_WE->Record['WE_TEXT'] = $objectdaten['Text'];
 			$this->DB_WE->Record['wedoc_Category'] = $this->DB_WE->Record['Category'];
 			$this->DB_WE->Record['WE_ID'] = $this->DB_WE->Record['ID'];
 			$this->count++;

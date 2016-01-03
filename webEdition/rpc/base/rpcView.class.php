@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  *
  */
 class rpcView{
-
 	var $CmdShell;
 
 	function getResponse($response){

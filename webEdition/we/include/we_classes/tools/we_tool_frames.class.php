@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_tool_frames extends we_modules_frame{
-
 	var $Table;
 	var $TreeSource = 'table:';
 	var $toolName;
@@ -42,10 +41,6 @@ abstract class we_tool_frames extends we_modules_frame{
 
 	function getHTML($what){
 		switch($what){
-			/*case 'header':
-				return $this->getHTMLHeader();*/
-			case 'resize':
-				return $this->getHTMLResize();
 			case 'treeheader':
 				return $this->getHTMLTreeHeader();
 			case 'treefooter':
@@ -55,60 +50,20 @@ abstract class we_tool_frames extends we_modules_frame{
 		}
 	}
 
-	//TODO: call parent after if(){}
 	function getHTMLFrameset($extraUrlParams = ''){
-		$this->setTreeWidthFromCookie();
-
-		$this->Model->clearSessionVars();
+		$_class = we_tool_lookup::getModelClassName($this->toolName);
+		$this->Model = $this->Model ? : new $_class();
+		//$this->Model->clearSessionVars(); // why should we clear here?
 
 		if(($modelid = we_base_request::_(we_base_request::INT, 'modelid'))){
-			$_class = we_tool_lookup::getModelClassName($this->toolName);
 			$this->Model = new $_class();
 			$this->Model->load($modelid);
 			$this->Model->saveInSession();
 			$_SESSION['weS'][$this->toolName]["modelidForTree"] = $modelid;
 		}
 
-		$js = $this->getJSCmdCode() .
-				$this->Tree->getJSTreeCode() .
-				self::getJSToggleTreeCode($this->toolName) .
-				we_main_headermenu::css();
-
-		$body = we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => 'startTree();')
-						, we_html_element::htmlExIFrame('header', parent::getHTMLHeader($this->toolDir . 'conf/we_menu_' . $this->toolName . '.conf.php', $this->toolName)) .
-						$this->getHTMLResize($extraUrlParams . ($modelid ? '&modelid=' . $modelid : '')) .
-						/* we_html_element::htmlIFrame('resize', $this->frameset . '?pnt=resize' . (($tab = we_base_request::_(we_base_request::INT, 'tab')) ? '&tab=' . $tab : '') . ($modelid ? '&modelid=' . $modelid : '') . (($sid = we_base_request::_(we_base_request::INT, 'sid')) ? '&sid=' . $sid : ''), 'overflow: hidden;', '', '', false) . */
-						we_html_element::htmlIFrame('cmd', $this->frameset . '&pnt=cmd' . ($modelid ? '&modelid=' . $modelid : ''))
-		);
-
-		return $this->getHTMLDocument($body, $js);
+		return parent::getHTMLFrameset($this->Tree->getJSTreeCode(), ($modelid ? '&modelid=' . $modelid : ''));
 	}
-
-	function getJSCmdCode(){
-		return $this->View->getJSTop();
-	}
-
-	/**
-	 * Top frame with menu
-	 *
-	 * @return string
-	 */
-	/*function getHTMLHeader(){
-		//	Include the menu.
-		include($this->toolDir . 'conf/we_menu_' . $this->toolName . '.conf.php');
-
-		$lang_arr = 'we_menu_' . $this->toolName;
-		$jmenu = new we_base_menu($$lang_arr, $this->topFrame . '.cmd');
-		$menu = $jmenu->getCode();
-
-		$table = new we_html_table(array("width" => "100%", "class" => 'default'), 1, 2);
-		$table->setCol(0, 0, array('style' => 'text-align:left;vertical-align:top'), $menu);
-		$table->setCol(0, 1, array('style' => 'text-align:right;vertical-align:top;'), we_main_headermenu::createMessageConsole('toolFrame'));
-
-		$body = we_html_element::htmlBody(array('id' => 'toolMenu'), $table->getHtml());
-
-		return $this->getHTMLDocument($body);
-	}*/
 
 	/**
 	 * Frame for tubs
@@ -124,7 +79,7 @@ abstract class we_tool_frames extends we_modules_frame{
 		$we_tabs->addTab(new we_tab(g_l('tools', '[properties]'), '((' . $this->topFrame . '.activ_tab==1) ? ' . we_tab::ACTIVE . ': ' . we_tab::NORMAL . ')', "setTab('1');", array("id" => "tab_1")));
 
 		$tabsHead = we_tabs::getHeader() .
-				we_html_element::jsElement('
+			we_html_element::jsElement('
 function mark() {
 	var elem = document.getElementById("mark");
 	elem.style.display = "inline";
@@ -159,8 +114,8 @@ function setTab(tab) {
 
 		$extraJS = 'document.getElementById("tab_"+' . $this->topFrame . '.activ_tab).className="tabActive";';
 		$body = we_html_element::htmlBody(array("id" => "eHeaderBody", "onload" => "setFrameSize()", "onresize" => "setFrameSize()"), '<div id="main" ><div id="headrow">&nbsp;' . we_html_element::htmlB(g_l('tools', ($this->Model->IsFolder ? '[group]' : '[entry]')) . ':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) . '<div id="mark" style="display: none;">*</div>') . '</div>' .
-						$we_tabs->getHTML() .
-						'</div>' . we_html_element::jsElement($extraJS)
+				$we_tabs->getHTML() .
+				'</div>' . we_html_element::jsElement($extraJS)
 		);
 
 		return $this->getHTMLDocument($body, $tabsHead);
@@ -180,8 +135,8 @@ function setTab(tab) {
 		}
 
 		$body = we_html_element::htmlBody(array("class" => "weEditorBody", 'onload' => 'loaded=1;'), we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js?' . WE_VERSION) .
-						we_html_element::htmlForm(array('name' => 'we_form', 'onsubmit' => 'return false'), $this->getHTMLProperties()
-						)
+				we_html_element::htmlForm(array('name' => 'we_form', 'onsubmit' => 'return false'), $this->getHTMLProperties()
+				)
 		);
 
 		return $this->getHTMLDocument($body, $this->View->getJSProperty());
@@ -199,8 +154,8 @@ function setTab(tab) {
 function we_save() {
 	' . $this->topFrame . '.we_cmd("tool_' . $this->toolName . '_save");
 }') .
-						we_html_element::htmlBody(array("id" => "footerBody"), we_html_element::htmlForm(array(), $_but_table)
-						)
+				we_html_element::htmlBody(array("id" => "footerBody"), we_html_element::htmlForm(array(), $_but_table)
+				)
 		);
 	}
 
@@ -240,7 +195,7 @@ function we_save() {
 		);
 
 		return $this->View->getCommonHiddens($hiddens) .
-				we_html_multiIconBox::getHTML('', $this->getHTMLGeneral(), 30);
+			we_html_multiIconBox::getHTML('', $this->getHTMLGeneral(), 30);
 	}
 
 	protected function getHTMLTreeFooter(){
@@ -259,17 +214,17 @@ function we_save() {
 		$_loader = new $_class($this->TreeSource);
 
 		$rootjs = ($pid ?
-						'' :
-						$this->Tree->topFrame . '.treeData.clear();' .
-						$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));');
+				'' :
+				$this->Tree->topFrame . '.treeData.clear();' .
+				$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));');
 
 		$hiddens = we_html_element::htmlHiddens(array(
-					'pnt' => 'cmd',
-					'cmd' => 'no_cmd'));
+				'pnt' => 'cmd',
+				'cmd' => 'no_cmd'));
 
 		return $this->getHTMLDocument(we_html_element::htmlBody(array(), we_html_element::htmlForm(array('name' => 'we_form'), $hiddens .
-										we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(!$pid, $_loader->getItems($pid, $offset, $this->Tree->default_segment, '')))
-								)
+						we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(!$pid, $_loader->getItems($pid, $offset, $this->Tree->default_segment, '')))
+					)
 		));
 	}
 
@@ -291,8 +246,8 @@ function we_save() {
 			$_cancel = 'self.close();';
 
 			return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, '<body class="weEditorBody" onBlur="self.focus()" onload="self.focus()">' .
-							we_html_tools::htmlYesNoCancelDialog(g_l('tools', '[exit_doc_question]'), IMAGE_DIR . "alert.gif", "ja", "nein", "abbrechen", $_yes, $_no, $_cancel) .
-							'</body>');
+					we_html_tools::htmlYesNoCancelDialog(g_l('tools', '[exit_doc_question]'), IMAGE_DIR . "alert.gif", "ja", "nein", "abbrechen", $_yes, $_no, $_cancel) .
+					'</body>');
 		}
 	}
 
@@ -306,7 +261,7 @@ function we_save() {
 
 		if($showtrash){
 			$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 100, 22, '', '', $disabled) .
-					we_html_button::create_button(we_html_button::TRASH, 'javascript:document.we_form.elements["' . $IDName . '"].value=0;document.we_form.elements["' . $PathName . '"].value="/";', true, 27, 22);
+				we_html_button::create_button(we_html_button::TRASH, 'javascript:document.we_form.elements["' . $IDName . '"].value=0;document.we_form.elements["' . $PathName . '"].value="/";', true, 27, 22);
 			$_width = 157;
 		} else {
 			$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 100, 22, '', '', $disabled);

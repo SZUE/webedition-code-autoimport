@@ -42,19 +42,19 @@ weCheckFormEvent.stopEvent = function (ev) {
 };
 
 
-function initWeCheckForm_by_name(name) {
+function initWeCheckForm_by_name(func, name) {
 	forms = document.getElementsByTagName("form");
 	for (i = 0; i < forms.length; i++) {
 		if (forms[i].name == name) {
-			weCheckFormEvent.addEvent(forms[i], "submit", eval("weCheckForm_n_" + name));
+			weCheckFormEvent.addEvent(forms[i], "submit", func);
 			break;
 		}
 	}
 }
 
-function initWeCheckForm_by_id(id) {
+function initWeCheckForm_by_id(func, id) {
 	formular = document.getElementById(id);
-	weCheckFormEvent.addEvent(formular, "submit", eval("weCheckForm_id_" + id));
+	weCheckFormEvent.addEvent(formular, "submit", func);
 }
 
 function weCheckFormMandatory(form, reqFields) { //  return name of not set mandatory fields

@@ -134,3 +134,11 @@ function we_lcmd(par) {
 
 	}
 }
+
+function menuaction(cmd, cmd1) {
+	if (cmd1 === undefined) {
+		we_lcmd(cmd);
+	} else {
+		we_lcmd(cmd, cmd1);
+	}
+}

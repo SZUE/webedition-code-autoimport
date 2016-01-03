@@ -91,7 +91,7 @@ class we_ui_controls_SelectObjectfield extends we_ui_controls_Select{
 	 * @return string
 	 */
 	public function getOptionsHTML(){
-		if(we_base_moduleInfo::isActive('object')){
+		if(we_base_moduleInfo::isActive(we_base_moduleInfo::OBJECT)){
 			$db = new DB_WE();
 			$db->query('SHOW FIELDS FROM ' . OBJECT_X_TABLE . $this->getObjectclassid());
 			$this->addOption(0, '-');

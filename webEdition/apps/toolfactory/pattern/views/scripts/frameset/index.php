@@ -21,7 +21,6 @@ $param = 	($this->tab ?
 $frameset->addFrame(array(
 	'src' => $appDir . '/index.php/header/index',
 	'name' => 'header',
-	'scrolling' => 'no',
 
 	'noresize' => 'noresize'
 ));
@@ -29,13 +28,11 @@ $frameset->addFrame(array(
 $frameset->addFrame(array(
 	'src' => $appDir . '/index.php/frameset/resize' . $param,
 	'name' => 'resize',
-	'scrolling' => 'no'
 ));
 
 $frameset->addFrame(array(
 	'src' => 'about:blank',
 	'name' => 'cmd_' . $appName,
-	'scrolling' => 'no',
 	'noresize' => 'noresize'
 ));
 

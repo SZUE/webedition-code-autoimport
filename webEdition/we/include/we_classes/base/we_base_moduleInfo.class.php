@@ -1,7 +1,6 @@
 <?php
 
 abstract class we_base_moduleInfo{
-
 	const BANNER = 'banner';
 	const COLLECTION = 'collection';
 	const CUSTOMER = 'customer';
@@ -27,26 +26,15 @@ abstract class we_base_moduleInfo{
 		}
 	}
 
-	static function we_getModuleNameByContentType($ctype){
-		foreach($GLOBALS['_we_active_integrated_modules'] as $mod){
-			if(strstr($ctype, $mod)){
-				return $mod;
-			}
-		}
-		return '';
-	}
-
-	static function _orderModules($a, $b){
-		return (strcmp($a['text'], $b['text']));
-	}
-
 	/**
 	 * Orders a hash array of the scheme of we_available_modules
 	 *
 	 * @param hash $array
 	 */
 	static function orderModuleArray(&$array){
-		uasort($array, array('we_base_moduleInfo', '_orderModules'));
+		uasort($array, function ($a, $b){
+			return (strcmp($a['text'], $b['text']));
+		});
 	}
 
 	/**
@@ -57,25 +45,6 @@ abstract class we_base_moduleInfo{
 	static function getAllModules(){
 		self::init();
 		return self::$we_available_modules;
-	}
-
-	/**
-	 * returns hash with all buyable modules
-	 *
-	 * @return hash
-	 */
-	static function getNoneIntegratedModules(){
-		self::init();
-
-		$retArr = array();
-
-		foreach(self::$we_available_modules as $key => $modInfo){
-			if($modInfo['integrated'] == false){
-				$retArr[$key] = $modInfo;
-			}
-		}
-
-		return $retArr;
 	}
 
 	/**
@@ -121,13 +90,7 @@ abstract class we_base_moduleInfo{
 		// - it is active
 		// - if it is in module window
 
-		if(self::$we_available_modules[$modulekey]["inModuleMenu"] && self::isActive($modulekey)){
-			return true;
-		}
-
-		//}
-
-		return false;
+		return (self::$we_available_modules[$modulekey]['inModuleMenu'] && self::isActive($modulekey));
 	}
 
 	static function isActive($modul){

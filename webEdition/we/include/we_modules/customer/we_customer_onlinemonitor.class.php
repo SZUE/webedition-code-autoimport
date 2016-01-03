@@ -72,10 +72,10 @@ class we_customer_onlinemonitor extends we_listview_base{
 		$orderstring = ($this->order ? ' ORDER BY ' . $this->order . ' ' : '');
 		$laStr = $llStr = '';
 		if($this->lastloginlimit != ''){
-			$llStr = 'LastLogin > DATE_SUB(NOW(), INTERVAL ' . $this->lastloginlimit . ' SECOND) ';
+			$llStr = 'LastLogin>(NOW() - INTERVAL ' . $this->lastloginlimit . ' SECOND) ';
 		}
 		if($this->lastaccesslimit != ''){
-			$laStr = 'LastAccess > DATE_SUB(NOW(), INTERVAL ' . $this->lastaccesslimit . ' SECOND) ';
+			$laStr = 'LastAccess>(NOW() - INTERVAL ' . $this->lastaccesslimit . ' SECOND) ';
 		}
 		if($this->lastloginlimit != ''){
 			$this->condition = ($this->condition ? $this->condition . ' AND ' : '') . $llStr;

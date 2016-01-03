@@ -26,7 +26,9 @@
 /* * this is the abstract super class for DB connections */
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf.inc.php');
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.inc.php');
+if(!defined('DB_DATABASE')){
+	require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.inc.php');
+}
 
 abstract class we_database_base{
 

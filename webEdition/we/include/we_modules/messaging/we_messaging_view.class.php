@@ -45,10 +45,6 @@ class we_messaging_view extends we_modules_view{
 		));
 	}
 
-	function getJSTop(){
-		//
-	}
-
 	function getJSSubmitFunction($def_target = "edbody"){
 		return '
 function submitForm(target,action,method) {
@@ -240,7 +236,7 @@ top.content.treeData.add({
 	}"));' .
 										we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[folder_created]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
 top.content.drawTree();
-						');
+');
 					} else {
 						$js_out = '
 top.content.treeData.clear();

@@ -28,8 +28,9 @@
 
 container.prototype.openClose = function (id) {
 	var sort = "";
-	if (id === "")
+	if (id === ""){
 		return;
+	}
 	var eintragsIndex = treeData.indexOfEntry(id);
 	var openstatus;
 
@@ -37,7 +38,7 @@ container.prototype.openClose = function (id) {
 	treeData[eintragsIndex].open = openstatus;
 
 	if (openstatus && !treeData[eintragsIndex].loaded) {
-		frames.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=cmd&pid=" + id + (sort !== "" ? "&sort=" + sort : "");
+		treeData.frames.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=cmd&pid=" + id + (sort !== "" ? "&sort=" + sort : "");
 	} else {
 		drawTree();
 	}
@@ -59,7 +60,7 @@ function reloadGroup(pid, offset) {
 }
 
 function info(text) {
-	t = frames.top.document.getElementById("infoField");
+	t = treeData.frames.top.document.getElementById("infoField");
 	if (text != " ") {
 		t.style.display = "block";
 		t.innerHTML = text;
@@ -89,6 +90,6 @@ container.prototype.addSort = function (object) {
 };
 
 function doClick(id, typ) {
-	var node = frames.top.treeData.get(id);
+	var node = treeData.get(id);
 	top.content.editor.edbody.we_cmd("module_navigation_edit", node.id);
 }

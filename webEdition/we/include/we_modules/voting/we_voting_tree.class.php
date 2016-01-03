@@ -28,19 +28,6 @@ class we_voting_tree extends weTree{
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'voting/voting_tree.js');
 	}
 
-	function getJSStartTree(){
-		return '
-function startTree(){
-			frames={
-	"top":' . $this->topFrame . ',
-	"cmd":' . $this->cmdFrame . '
-};
-treeData.frames=frames;
-				frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=cmd&pid=0";
-				drawTree();
-			}';
-	}
-
 	static function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = "ID,ParentID,Path,Text,IsFolder,RestrictOwners,Owners,Active,ActiveTime,Valid", $addWhere = "", $addOrderBy = ""){
 		$db = new DB_WE();
 		$table = VOTING_TABLE;

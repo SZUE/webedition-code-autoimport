@@ -21,7 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$we_menu_export = array(
+return array(
 	'export' => array(
 		'text' => g_l('export', '[export]'),
 	),

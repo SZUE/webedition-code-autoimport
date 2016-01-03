@@ -32,7 +32,7 @@ container.prototype.openClose = function(id) {
 	treeData[eintragsIndex].open = openstatus;
 
 	if (openstatus && !treeData[eintragsIndex].loaded) {
-		frames.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=cmd&cmd=mainload&pid=" + id + (sort !== "" ? "&sort=" + sort : "");
+		treeData.frames.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=cmd&cmd=mainload&pid=" + id + (sort !== "" ? "&sort=" + sort : "");
 	} else {
 		drawTree();
 	}
@@ -51,12 +51,12 @@ function doClick(id, typ) {
 		} else {
 			top.content.usetHot();
 			cmd = "export_edit";
-			node = frames.top.treeData.get(id);
-			frames.top.editor.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=edbody&cmd=" + cmd + "&cmdid=" + node.id + "&tabnr=" + frames.top.activ_tab;
+			node = treeData.get(id);
+			treeData.frames.top.editor.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=edbody&cmd=" + cmd + "&cmdid=" + node.id + "&tabnr=" + treeData.frames.top.activ_tab;
 		}
 	} else {
 		cmd = "export_edit";
-		node = frames.top.treeData.get(id);
-		frames.top.editor.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=edbody&cmd=" + cmd + "&cmdid=" + node.id + "&tabnr=" + frames.top.activ_tab;
+		node = treeData.get(id);
+		treeData.frames.top.editor.edbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=edbody&cmd=" + cmd + "&cmdid=" + node.id + "&tabnr=" + treeData.frames.top.activ_tab;
 	}
 }

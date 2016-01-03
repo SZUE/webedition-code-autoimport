@@ -24,7 +24,7 @@
 // file
 $years = we_shop_shop::getAllOrderYears();
 
-$we_menu_shop = array(
+return array(
 	'shop' => array(
 		'text' => g_l('javaMenu_shop', '[menu_user]'),
 	),
@@ -135,6 +135,8 @@ foreach($years as $cur){
 	$we_menu_shop[] = array(
 		'text' => $cur,
 		'parent' => 'jahr',
-		'cmd' => 'year' . $cur,
+		'cmd' => array('year', $cur),
 	);
 }
+
+return $we_menu_shop;

@@ -200,13 +200,13 @@ function submitForm(target,action,method) {
 		$table2 = new we_html_table(array('class' => 'default'), 1, 6);
 		$table2->setRow(0, array('style' => 'vertical-align:middle;'));
 		if($ShowUnpublish){
-			$table2->setCol(0, $col++, array("nowrap" => null), $UnpublishButton);
+			$table2->setCol(0, $col++, array(), $UnpublishButton);
 		}
-		$table2->setCol(0, $col++, array("nowrap" => null), $SaveButton);
+		$table2->setCol(0, $col++, array(), $SaveButton);
 		if(!$ShowUnpublish){
-			$table2->setCol(0, $col++, array("nowrap" => null), $PublishWhenSaved);
+			$table2->setCol(0, $col++, array(), $PublishWhenSaved);
 		}
-		$table2->setCol(0, $col++, array("nowrap" => null), $NewEntry);
+		$table2->setCol(0, $col++, array(), $NewEntry);
 
 		$js = we_html_element::jsElement('
 if(top.makeNewEntryCheck==1) {

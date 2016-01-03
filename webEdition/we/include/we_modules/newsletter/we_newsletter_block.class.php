@@ -54,6 +54,7 @@ class we_newsletter_block extends we_newsletter_base{
 	var $Field = '';
 	var $Source = '';
 	var $Html = '';
+	public $GroupsA = array();
 	public $Pack = '';
 
 	/*	 * *****************************************************
@@ -78,6 +79,7 @@ class we_newsletter_block extends we_newsletter_base{
 		if($newsletterID){
 			$this->ID = $newsletterID;
 			$this->load($newsletterID);
+			$this->GroupsA = explode(',', $this->Groups);
 		}
 	}
 

@@ -36,6 +36,7 @@ class we_users_user{
 	const TAB_PERMISSION = 1;
 	const TAB_WORKSPACES = 2;
 	const TAB_SETTINGS = 3;
+	const DEFAULT_PASS_REGEX = '(.{6,20})';
 
 	// Name of the class => important for reconstructing the class from outside the class
 	var $ClassName = __CLASS__;
@@ -89,7 +90,6 @@ class we_users_user{
 		'ParentWsCust' => we_base_request::BOOL,
 		'altID' => we_base_request::INT,
 		'LoginDenied' => we_base_request::BOOL,
-		'UseSalt' => we_base_request::INT
 	);
 	// Name of the Object that was createt from this class
 	var $Name = '';
@@ -271,17 +271,14 @@ class we_users_user{
 		$this->ModDate = time();
 		$tableInfo = $this->DB_WE->metadata($this->Table);
 		if($this->clearpasswd !== ''){
-			$this->passwd = self::makeSaltedPassword($this->username, $this->clearpasswd);
+			$this->passwd = self::makeSaltedPassword($this->clearpasswd);
 		}
 
 		$updt = array();
 
 		foreach($tableInfo as $t){
 			$fieldName = $t['name'];
-			$val = ($fieldName === 'UseSalt' && $useSalt > 0 ?
-					$useSalt :
-					(isset($this->$fieldName) ? $this->$fieldName : 0)
-				);
+			$val = (isset($this->$fieldName) ? $this->$fieldName : 0 );
 			if($fieldName != 'ID'){
 				if($fieldName === 'editorFontname' && $this->Preferences['editorFont'] == '0'){
 					$val = 'none';
@@ -1217,6 +1214,22 @@ _multiEditorreload = true;';
 		switch($tab){
 			case self::TAB_DATA:
 				return weSuggest::getYuiFiles() .
+					we_html_element::jsElement('
+function comparePwd(f1,f2){
+	var pwd1=document.getElementsByName(f1)[0];
+	var pwd2=document.getElementsByName(f2)[0];
+	if(!(new RegExp("' . SECURITY_USER_PASS_REGEX . '").test(pwd1.value))){
+		pwd1.classList.add("weMarkInputError");
+	}else{
+		pwd1.classList.remove("weMarkInputError");
+	if(pwd1.value!=pwd2.value){
+		pwd2.classList.add("weMarkInputError");
+	}else{
+		pwd2.classList.remove("weMarkInputError");
+	}
+	}
+}
+') .
 					$this->formGeneralData();
 			case self::TAB_PERMISSION:
 				return $this->formPermissions($perm_branch);
@@ -1355,7 +1368,7 @@ _multiEditorreload = true;';
 
 		$_password = (!empty($_SESSION['user']['ID']) && $_SESSION['user']['ID'] == $this->ID && !permissionhandler::hasPerm('EDIT_PASSWD') ?
 				'****************' :
-				'<input type="hidden" name="' . $this->Name . '_clearpasswd" value="' . $this->clearpasswd . '" />' . we_html_tools::htmlTextInput('input_pass', 20, "", 255, 'onchange="top.content.setHot()" autocomplete="off"', 'password', 240));
+				'<input type="hidden" name="' . $this->Name . '_clearpasswd" value="' . $this->clearpasswd . '" />' . we_html_tools::htmlTextInput('input_pass', 20, "", 255, 'onchange="comparePwd(\'input_pass\',\'input_pass\');top.content.setHot();" autocomplete="off"', 'password', 240));
 
 		$parent_name = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ParentID), '', $this->DB_WE)? : '/';
 
@@ -2254,7 +2267,7 @@ function resetTabs(){
 		top.content.editor.edheader.tabCtrl.weTabs.setActiveTab(' . self::TAB_DATA . ');
 }') .
 			$tab_header .
-			'<div id="main"><div id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", ($this->Path ? : $this->getPath($this->ParentID))) . '</b></span></nobr></div>' . $we_tabs->getHTML() . '</div>';
+			'<div id="main"><div id="headrow"><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", ($this->Path ? : $this->getPath($this->ParentID))) . '</b></span></div>' . $we_tabs->getHTML() . '</div>';
 	}
 
 	public static function getUsername($id, we_database_base $db = null){
@@ -2408,9 +2421,8 @@ function resetTabs(){
 		return $salt;
 	}
 
-	public static function makeSaltedPassword($username, $passwd, $strength = 15){
-		$passwd = substr($passwd, 0, 64);
-		return crypt($passwd, '$2y$' . sprintf('%02d', $strength) . '$' . self::getHashIV(22));
+	public static function makeSaltedPassword($passwd, $strength = 15){
+		return crypt(substr($passwd, 0, 64), '$2y$' . sprintf('%02d', $strength) . '$' . self::getHashIV(22));
 	}
 
 	static function readPrefs($id, $db, $login = false){

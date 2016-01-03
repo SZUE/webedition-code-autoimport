@@ -30,7 +30,7 @@ class rpcGetRssView extends rpcJsonView{
 	 */
 	function getResponse($response){
 		return
-			'weResponse = {
+			'var weResponse = {
 			"type":"' . ($response->Success ? "response" : "error") . '",
 			"data":"' . addslashes(str_replace(array("\n", "\r"), " ", $response->getData("data"))) . '",
 			"titel":"' . addslashes($response->getData("titel")) . '",

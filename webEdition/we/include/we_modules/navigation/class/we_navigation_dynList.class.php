@@ -35,18 +35,18 @@ abstract class we_navigation_dynList{
 		$_fieldset = self::getDocData($_select, $doctypeid, id_to_path($dirid), $categories, $catlogic, array(), array(), 0);
 		$_docs = $_txt = $_fields = $_ids = array();
 
-		while($_fieldset->next_record()){
-			if(!isset($_docs[$_fieldset->Record['ID']])){
-				$_docs[$_fieldset->Record['ID']] = array();
+		foreach($_fieldset as $data){
+			if(!isset($_docs[$data['ID']])){
+				$_docs[$data['ID']] = array();
 			}
-			$_docs[$_fieldset->Record['ID']][$_fieldset->Record['FieldName']] = $_fieldset->Record['FieldData'];
+			$_docs[$data['ID']][$data['FieldName']] = $data['FieldData'];
 
-			$_txt[$_fieldset->Record['ID']] = $_fieldset->Record['Text'];
+			$_txt[$data['ID']] = $data['Text'];
 
-			if($_fieldset->Record['FieldName'] == $field){
-				$_fields[$_fieldset->Record['ID']] = $_fieldset->Record['FieldData'];
-			} elseif(!isset($_fields[$_fieldset->Record['ID']])){
-				$_fields[$_fieldset->Record['ID']] = $_fieldset->Record['Text'];
+			if($data['FieldName'] == $field){
+				$_fields[$data['ID']] = $data['FieldData'];
+			} elseif(!isset($_fields[$data['ID']])){
+				$_fields[$data['ID']] = $data['Text'];
 			}
 		}
 
@@ -106,7 +106,7 @@ abstract class we_navigation_dynList{
 		return $_ids;
 	}
 
-	private static function getDocData(array $select, $doctype, $dirpath = '/', $categories = array(), $catlogic = 'AND', $condition = array(), $order = array(), $offset = 0, $count = 999999999){
+	private static function getDocData(array $select, $doctype, $dirpath = '/', $categories = array(), $catlogic = 'AND', $condition = array(), $order = array(), $offset = 0, $count = 100){
 
 		$_db = new DB_WE();
 		$categories = is_array($categories) ? $categories : makeArrayFromCSV($categories);
@@ -128,7 +128,7 @@ abstract class we_navigation_dynList{
 			'  LIMIT ' . $offset . ',' . $count);
 
 
-		return $_db;
+		return $_db->getAll();
 	}
 
 	public static function getObjects($classid, $dirid, $categories, $catlogic, &$sort, $count, $field){
@@ -148,18 +148,18 @@ abstract class we_navigation_dynList{
 		$_fieldset = self::getObjData($select, $classid, id_to_path($dirid, OBJECT_FILES_TABLE), $categories, $catlogic, array(), $_order, 0, $count);
 		$_ids = array();
 
-		while($_fieldset->next_record()){
+		foreach($_fieldset as $data){
 			$_ids[] = array(
-				'id' => $_fieldset->Record['OF_ID'],
-				'text' => $_fieldset->Record['OF_Text'],
-				'field' => $field && $_fieldset->Record[$field] ? we_navigation_navigation::encodeSpecChars($_fieldset->Record[$field]) : ''
+				'id' => $data['OF_ID'],
+				'text' => $data['OF_Text'],
+				'field' => $field && $data[$field] ? we_navigation_navigation::encodeSpecChars($data[$field]) : ''
 			);
 		}
 
 		return $_ids;
 	}
 
-	private static function getObjData(array $select, $classid, $dirpath = '/', array $categories = array(), $catlogic = 'AND', array $condition = array(), array $order = array(), $offset = 0, $count = 999999999){
+	private static function getObjData(array $select, $classid, $dirpath = '/', array $categories = array(), $catlogic = 'AND', array $condition = array(), array $order = array(), $offset = 0, $count = 100){
 		$_db = new DB_WE();
 		$categories = is_array($categories) ? $categories : makeArrayFromCSV($categories);
 		$_cats = array();
@@ -184,7 +184,7 @@ abstract class we_navigation_dynList{
 			($_where ? ('AND ' . implode(' AND ', $_where)) : '') .
 			($order ? (' ORDER BY ' . implode(',', $order)) : '') . ' LIMIT ' . $offset . ',' . $count);
 
-		return $_db;
+		return $_db->getAll();
 	}
 
 	public static function getCatgories($dirid, $count){

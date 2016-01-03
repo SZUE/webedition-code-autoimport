@@ -441,24 +441,24 @@ if(this.value === \'\' || this.value === consts.EMPTY_EXT){
 				// Create table output
 				'<div style="position:relative; top:15px"><table class="default" height="65">
 	<tr>
-		<td class="defaultgray" style="vertical-align:top" width="100" height="20">' . g_l('weClass', '[linkType]') . '</td>
+		<td class="defaultfont lowContrast" style="vertical-align:top" width="100" height="20">' . g_l('weClass', '[linkType]') . '</td>
 		<td style="vertical-align:top"><select name="we_dialog_args[type]" class="defaultfont" id="weDialogType" size="1" style="margin-bottom:5px;width:300px;" onchange="changeTypeSelect(this);">' . $_select_type . '</select></td>
 	</tr>
 	<tr class="we_change ' . we_base_link::TYPE_EXT . '" style="display:' . (($this->args["type"] == we_base_link::TYPE_EXT) ? "table-row" : "none") . ';">
-		<td class="defaultgray" style="vertical-align:top" width="100">' . g_l('linklistEdit', '[external_link]') . '</td><td style="vertical-align:top" >' . $_external_link . '</td>
+		<td class="defaultfont lowContrast" style="vertical-align:top" width="100">' . g_l('linklistEdit', '[external_link]') . '</td><td style="vertical-align:top" >' . $_external_link . '</td>
 	</tr>' .
 				(isset($_internal_link) ? '
 	<tr class="we_change ' . we_base_link::TYPE_INT . '" style="display:' . (($this->args["type"] == we_base_link::TYPE_INT) ? "table-row" : "none") . ';">
-		<td class="defaultgray" style="vertical-align:top" width="100"> ' . g_l('weClass', '[document]') . '</td>
+		<td class="defaultfont lowContrast" style="vertical-align:top" width="100"> ' . g_l('weClass', '[document]') . '</td>
 		<td style="vertical-align:top"> ' . $_internal_link . we_html_element::jsElement('document.we_form.onsubmit = function() {return false;}') . '</td>
 	</tr>' : '') . '
 	<tr class="we_change ' . we_base_link::TYPE_MAIL . '" style="display:' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
-		<td class="defaultgray" style="vertical-align:top" width="100">' . g_l('wysiwyg', '[emaillink]') . '</td>
+		<td class="defaultfont lowContrast" style="vertical-align:top" width="100">' . g_l('wysiwyg', '[emaillink]') . '</td>
 		<td style="vertical-align:top">' . $_email_link . '</td>
 	</tr>' .
 				(defined('OBJECT_TABLE') && isset($_object_link) ? '
 	<tr class="we_change ' . we_base_link::TYPE_OBJ . '" style="display:' . (($this->args["type"] == we_base_link::TYPE_OBJ) ? "table-row" : "none") . ';">
-		<td class="defaultgray" style="vertical-align:top" width="100" height="0">' . g_l('contentTypes', '[objectFile]') . '</td>
+		<td class="defaultfont lowContrast" style="vertical-align:top" width="100" height="0">' . g_l('contentTypes', '[objectFile]') . '</td>
 		<td style="vertical-align:top">' . $_object_link . '</td>
 	</tr>' : '') . '
 </table></div>' .
@@ -467,49 +467,49 @@ if(this.value === \'\' || this.value === consts.EMPTY_EXT){
 			),
 			array('html' => '<table class="default">
 	<tr class="we_change ' . we_base_link::TYPE_INT . ' ' . we_base_link::TYPE_EXT . ' ' . we_base_link::TYPE_OBJ . '" style="display:' . (($this->args["type"] != we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
-		<td class="defaultgray" style="vertical-align:top" width="100">' . g_l('wysiwyg', '[anchor]') . '</td>
+		<td class="defaultfont lowContrast" style="vertical-align:top" width="100">' . g_l('wysiwyg', '[anchor]') . '</td>
 		<td>' . $_anchor . '</td>
 	</tr>
 	<tr class="we_change ' . we_base_link::TYPE_MAIL . '" style="display:' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
-		<td class="defaultgray" style="vertical-align:top" width="100">' . g_l('modules_messaging', '[subject]') . '</td>
+		<td class="defaultfont lowContrast" style="vertical-align:top" width="100">' . g_l('modules_messaging', '[subject]') . '</td>
 		<td>' . we_html_tools::htmlTextInput('we_dialog_args[mail_subject]', 30, $this->args["mailsubject"], "", "", "text", 300) . '</td>
 	</tr>
 	<tr class="we_change ' . we_base_link::TYPE_INT . ' ' . we_base_link::TYPE_EXT . ' ' . we_base_link::TYPE_OBJ . '" style="display:' . (($this->args["type"] != we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
-		<td class="defaultgray" style="vertical-align:top;width:100px;padding-top:10px;">' . g_l('linklistEdit', '[link_params]') . '</td>
+		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px;padding-top:10px;">' . g_l('linklistEdit', '[link_params]') . '</td>
 		<td>' . $_param . '</td>
 	</tr>
 	<tr class="we_change ' . we_base_link::TYPE_MAIL . '" style="display:' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
-		<td class="defaultgray" style="vertical-align:top" width="100">CC</td>
+		<td class="defaultfont lowContrast" style="vertical-align:top" width="100">CC</td>
 		<td>' . we_html_tools::htmlTextInput("we_dialog_args[mail_cc]", 30, $this->args["mailcc"], "", "", "text", 300) . '</td>
 	</tr>
 	<tr class="we_change ' . we_base_link::TYPE_INT . ' ' . we_base_link::TYPE_EXT . ' ' . we_base_link::TYPE_OBJ . '" style="display:' . (($this->args["type"] != we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
-		<td class="defaultgray" style="vertical-align:top;width:100px;padding-top:10px;">' . g_l('linklistEdit', '[link_target]') . '</td>
+		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px;padding-top:10px;">' . g_l('linklistEdit', '[link_target]') . '</td>
 		<td>' . we_html_tools::targetBox('we_dialog_args[target]', 29, 300, 'we_dialog_args[target]', $this->args['target'], '', 10, 100) . '</td>
 	</tr>
 	<tr class="we_change ' . we_base_link::TYPE_MAIL . '" style="display:' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
-		<td class="defaultgray" style="vertical-align:top" width="100">BCC</td>
+		<td class="defaultfont lowContrast" style="vertical-align:top" width="100">BCC</td>
 		<td>' . we_html_tools::htmlTextInput("we_dialog_args[mail_bcc]", 30, $this->args['mailbcc'], '', '', 'text', 300) . '</td>
 	</tr>
 	<tr>
-		<td class="defaultgray" style="vertical-align:top;width:100px;padding-top:10px;">' . g_l('wysiwyg', '[css_style]') . '</td>
+		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px;padding-top:10px;">' . g_l('wysiwyg', '[css_style]') . '</td>
 		<td>' . $classSelect . '</td>
 	</tr>
 </table>'),
 			array('html' => '<table class="default">
 	<tr' . $show_accessible_class . '>
-		<td class="defaultgray" style="vertical-align:top" width="100">' . g_l('wysiwyg', '[language]') . '</td>
+		<td class="defaultfont lowContrast" style="vertical-align:top" width="100">' . g_l('wysiwyg', '[language]') . '</td>
 		<td><table class="default"><tr><td style="padding-left:2px;">' . $_lang . '</td><td>' . $_hreflang . '</td></tr></table></td>
 	</tr>
 	<tr>
-		<td class="defaultgray" style="vertical-align:top;width:100px;padding-top:10px;">' . g_l('wysiwyg', '[title]') . '</td>
+		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px;padding-top:10px;">' . g_l('wysiwyg', '[title]') . '</td>
 		<td>' . $_title . '</td>
 	</tr>
 	<tr' . $show_accessible_class . '>
-		<td class="defaultgray" style="vertical-align:top;padding-top:10px;">' . g_l('wysiwyg', '[keyboard]') . '</td>
+		<td class="defaultfont lowContrast" style="vertical-align:top;padding-top:10px;">' . g_l('wysiwyg', '[keyboard]') . '</td>
 		<td><table class="default"><tr><td style="padding-left:2px;">' . $_accesskey . '</td><td>' . $_tabindex . '</td></tr></table></td>
 	</tr>
 	<tr' . $show_accessible_class . '>
-		<td class="defaultgray" style="vertical-align:top;padding:10px 0px;">' . g_l('wysiwyg', '[relation]') . '</td>
+		<td class="defaultfont lowContrast" style="vertical-align:top;padding:10px 0px;">' . g_l('wysiwyg', '[relation]') . '</td>
 		<td><table class="default"><tr><td style="padding-left:2px;">' . $_rel . '</td><td>' . $_rev . '</td></tr></table></td>
 	</tr>
 </table>'

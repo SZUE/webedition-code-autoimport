@@ -63,10 +63,9 @@ foreach($_menuItems as $_menuItem){
 	}
 }
 
-$tab_header = we_tabs::getHeader();
-
-echo $tab_header;
+echo we_tabs::getHeader();
 ?>
+<div id="main" ><?php echo $we_tabs->getHTML(); ?></div>
 <script><!--
 	var current = "<?php echo $tool; ?>";
 	function openTool(tool) {
@@ -83,12 +82,7 @@ echo $tab_header;
 			current = tool;
 			top.content.location.replace(WE().consts.dirs.WE_INCLUDES_DIR + "we_tools/tools_content.php?tool=" + tool);
 		}
-
 	}
+
 	//-->
 </script>
-</head>
-<body id="eHeaderBody" link="black" alink="#1559b0" vlink="black" onload="weTabs.setFrameSize()" onresize="weTabs.setFrameSize()">
-	<div id="main" ><?php echo $we_tabs->getHTML(); ?></div>
-</body>
-</html>

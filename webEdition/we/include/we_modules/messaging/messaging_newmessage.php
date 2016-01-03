@@ -57,7 +57,7 @@ echo we_html_tools::getHtmlTop('Messaging System - ' . g_l('modules_messaging', 
 	function selectRecipient() {
 		var rs = encodeURI(document.compose_form.mn_recipients.value);
 
-		new (WE().util.jsWindow)(window, "<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_usel.php?we_transaction=<?php echo $transaction; ?>&rs=" + rs, "messaging_usel", -1, -1, 530, 420, true, false, true, false);
+		new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "messaging_usel.php?we_transaction=<?php echo $transaction; ?>&rs=" + rs, "messaging_usel", -1, -1, 530, 420, true, false, true, false);
 		//	    opener.top.add_win(msg_usel);
 	}
 
@@ -94,9 +94,9 @@ echo we_html_tools::getHtmlTop('Messaging System - ' . g_l('modules_messaging', 
 		we_html_tools::hidden('mode', $mode);
 
 		$tbl = '<table style="text-align:center" cellpadding="6" width="100%">
-      <tr><td class="defaultgray">' . g_l('modules_messaging', '[from]') . ':</td><td class="defaultfont">' . $compose->get_from() . '</td></tr>
-      <tr><td class="defaultgray"><a href="javascript:selectRecipient()">' . g_l('modules_messaging', '[recipients]') . ':</a></td><td>' . we_html_tools::htmlTextInput('mn_recipients', 40, (!isset($_u) ? $compose->get_recipient_line() : $_u)) . '</td></tr>
-      <tr><td class="defaultgray">' . g_l('modules_messaging', '[subject]') . ':</td><td>' . we_html_tools::htmlTextInput('mn_subject', 40, $compose->get_subject()) . '</td></tr>
+      <tr><td class="defaultfont lowContrast">' . g_l('modules_messaging', '[from]') . ':</td><td class="defaultfont">' . $compose->get_from() . '</td></tr>
+      <tr><td class="defaultfont lowContrast"><a href="javascript:selectRecipient()">' . g_l('modules_messaging', '[recipients]') . ':</a></td><td>' . we_html_tools::htmlTextInput('mn_recipients', 40, (!isset($_u) ? $compose->get_recipient_line() : $_u)) . '</td></tr>
+      <tr><td class="defaultfont lowContrast">' . g_l('modules_messaging', '[subject]') . ':</td><td>' . we_html_tools::htmlTextInput('mn_subject', 40, $compose->get_subject()) . '</td></tr>
       <tr><td colspan="2"><textarea cols="68" rows="15" name="mn_body" style="width:605px">' . $compose->get_msg_text() . '</textarea></td></tr>
     </table>';
 

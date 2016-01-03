@@ -195,7 +195,7 @@ function toggle_all() {
 				// Continue building header of group
 				$_contentTable[$main_titles[$_groups_key]] .= '
 <tr style="vertical-align:middle;background-color:' . $bgcolor . ';line-height:24px;">
-	<td width="30" nowrap style="padding-left:5px;">
+	<td width="30" style="padding-left:5px;">
 		<a href="javascript:toggle(\'' . $_groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');" name="arrow_link' . $_groups_key . '">';
 
 				// If a group is open display it unfolded
@@ -337,7 +337,7 @@ function toggle_all() {
 				// Continue building header of group
 				$_contentTable[$main_titles[$_groups_key]] .= '
 					<tr style="vertical-align:middle;background-color:' . $bgcolor . ';line-height:24px;">
-						<td width="30" nowrap style="padding-left:5px;">
+						<td width="30" style="padding-left:5px;">
 							<a href="javascript:toggle(\'' . $_groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');" name="arrow_link' . $_groups_key . '">';
 
 				// If a group is open display it unfolded

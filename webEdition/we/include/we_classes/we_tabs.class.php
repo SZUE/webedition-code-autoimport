@@ -32,7 +32,6 @@ class we_tabs{
 
 	static function getHeader(){
 		return we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
-				STYLESHEET .
 				we_html_element::jsElement('weTabs = new (WE().layout.we_tabs)(document);');
 	}
 

@@ -280,7 +280,7 @@ function selectTagGroup(groupname) {
 }
 
 function openTagWizWithReturn(Ereignis) {
-	if (!Ereignis){
+	if (!Ereignis) {
 		Ereignis = window.event;
 	}
 	if (Ereignis.which) {
@@ -288,7 +288,7 @@ function openTagWizWithReturn(Ereignis) {
 	} else if (Ereignis.keyCode) {
 		Tastencode = Ereignis.keyCode;
 	}
-	if (Tastencode == 13){
+	if (Tastencode == 13) {
 		edit_wetag(document.getElementById("tagSelection").value);
 	}
 	//return false;
@@ -353,8 +353,8 @@ function addCursorPosition(tagText) {
 		weForm.value = (weForm.value).substring(0, intStart) + tagText + (weForm.value).substring(intEnd, weForm.value.length);
 		window.setTimeout(scrollToPosition, 50);
 		weForm.focus();
-		weForm.selectionStart = eval(intStart + tagText.length);
-		weForm.selectionEnd = eval(intStart + tagText.length);
+		weForm.selectionStart = parseInt(intStart) + tagText.length;
+		weForm.selectionEnd = parseInt(intStart) + tagText.length;
 	} else {
 		weForm.value += tagText;
 	}

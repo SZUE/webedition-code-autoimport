@@ -213,7 +213,7 @@ function disableButtons() {
 function spellcheck() {
 	retry = 0;
 	if (document.spellchecker.isReady()) {
-		document.getElementById("statusText").innerHTML = g_l.checking;
+		document.getElementById("statusText").innerHTML = WE().consts.g_l.glossary.checking;
 		var text = getTextOnly(orginal);
 		document.spellchecker.check(text);
 		setTimeout(findNext, 2000);
@@ -221,7 +221,7 @@ function spellcheck() {
 		setTimeout(spellcheck, 1000);
 		retryjava++;
 	} else {
-		top.we_showMessage(g_l.no_java, WE().consts.message.WE_MESSAGE_ERROR, window);
+		top.we_showMessage(WE().consts.g_l.glossary.no_java, WE().consts.message.WE_MESSAGE_ERROR, window);
 		self.close();
 	}
 }

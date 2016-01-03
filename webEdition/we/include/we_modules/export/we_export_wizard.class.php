@@ -213,12 +213,12 @@ var openFolders= {
 				'};'
 		);
 
-		$body = we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => $this->bodyFrame . ".location='" . $this->frameset . "&pnt=body" . $args . "&step=' + step;")
+		$body = we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => $this->bodyFrame . ".location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=export&pnt=body" . $args . "&step=' + step;")
 				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-					, we_html_element::htmlIFrame('header', $this->frameset . "&pnt=header", 'position:absolute;top:0px;height:1px;left:0px;right:0px;overflow: hidden', '', '', false) .
-					we_html_element::htmlIFrame('body', $this->frameset . "&pnt=body", 'position:absolute;top:1px;bottom:45px;left:0px;right:0px;', 'border:0px;width:100%;height:100%;') .
-					we_html_element::htmlIFrame('footer', $this->frameset . "&pnt=footer", 'position:absolute;height:45px;bottom:0px;left:0px;right:0px;overflow: hidden', '', '', false) .
-					we_html_element::htmlIFrame('load', $this->frameset . "&pnt=load", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
+					, we_html_element::htmlIFrame('header', WEBEDITION_DIR . 'we_showMod.php?mod=export&pnt=header', 'position:absolute;top:0px;height:1px;left:0px;right:0px;overflow: hidden', '', '', false) .
+					we_html_element::htmlIFrame('body', WEBEDITION_DIR . 'we_showMod.php?mod=export&pnt=body', 'position:absolute;top:1px;bottom:45px;left:0px;right:0px;', 'border:0px;width:100%;height:100%;') .
+					we_html_element::htmlIFrame('footer', WEBEDITION_DIR . 'we_showMod.php?mod=export&pnt=footer', 'position:absolute;height:45px;bottom:0px;left:0px;right:0px;overflow: hidden', '', '', false) .
+					we_html_element::htmlIFrame('load', WEBEDITION_DIR . 'we_showMod.php?mod=export&pnt=load', 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 		));
 
 		return we_html_tools::getHtmlTop(g_l('export', '[title]'), '', '', STYLESHEET . $js, $body
@@ -253,8 +253,8 @@ var openFolders= {
 
 
 		$js = we_html_element::jsElement(
-				$this->footerFrame . '.location="' . $this->frameset . '&pnt=footer&step=0";
-					' . $this->headerFrame . '.location="' . $this->frameset . '&pnt=header&step=0";
+				$this->footerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=footer&step=0";
+					' . $this->headerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=header&step=0";
 					self.focus();');
 
 		$parts = array(
@@ -276,7 +276,7 @@ var openFolders= {
 				"noline" => 1)
 		);
 
-		if(we_base_moduleInfo::isActive("object")){
+		if(we_base_moduleInfo::isActive(we_base_moduleInfo::OBJECT)){
 			$parts[] = array(
 				"html" => we_html_forms::radiobutton("csv", ($extype === "csv" && permissionhandler::hasPerm("CSV_EXPORT")), "extype", g_l('export', '[csv_export]'), true, "defaultfont", "", !permissionhandler::hasPerm("CSV_EXPORT"), g_l('export', '[txt_csv_export]'), 0, 500),
 				"space" => 0,
@@ -304,8 +304,8 @@ top.close();');
 
 
 		$js = we_html_element::jsElement(
-				$this->footerFrame . '.location="' . $this->frameset . '&pnt=footer&step=1";
-' . $this->headerFrame . '.location="' . $this->frameset . '&pnt=header&step=1";
+				$this->footerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=footer&step=1";
+' . $this->headerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=header&step=1";
 self.focus();
 
 function we_submit(){
@@ -382,7 +382,7 @@ function we_cmd(){
 	}
 }');
 		$js.=we_html_element::jsElement(
-				$this->footerFrame . '.location="' . $this->frameset . '&pnt=footer&step=2";');
+				$this->footerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=footer&step=2";');
 
 		$parts = array();
 		$showdocs = false;
@@ -424,8 +424,8 @@ function we_cmd(){
 		$_space = 10;
 		$art = $this->exportVars["art"];
 		$js = we_html_element::jsElement(
-				$this->headerFrame . '.location="' . $this->frameset . '&pnt=header&step=2";' .
-				$this->footerFrame . '.location="' . $this->frameset . '&pnt=footer&step=2";');
+				$this->headerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=header&step=2";' .
+				$this->footerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=footer&step=2";');
 
 		$parts = array(
 			array("headline" => "", "html" => we_html_forms::radiobutton("docs", ($art === "docs" ? true : ($art != 'objects')), "art", g_l('export', '[documents]'), true, "defaultfont", $this->topFrame . ".art='docs'"), "space" => $_space, "noline" => 1)
@@ -459,7 +459,7 @@ function we_cmd(){
 
 
 		$js.=we_html_element::jsElement(
-				$this->footerFrame . '.location="' . $this->frameset . '&pnt=footer&step=3";
+				$this->footerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=footer&step=3";
 	setTimeout(' . $this->topFrame . '.startTree,100);
 
 function populate(id,table){
@@ -468,16 +468,10 @@ function populate(id,table){
 }
 
 function setHead(tab){
-	var c0="#DDDDDD";
-	var c1="#DDDDDD";
-	var c2="#DDDDDD";
-	var c3="#DDDDDD";
-	eval("c"+tab+"=\"#DFE9F5\"");
-	var fw0="normal";
-	var fw1="normal";
-	var fw2="normal";
-	var fw3="normal";
-	eval("fw"+tab+"=\"bold\"");
+	var c=["#DDDDDD","#DDDDDD","#DDDDDD","#DDDDDD"];
+	var fw=["normal","normal","normal","normal"];
+	c[tab]="#DFE9F5";
+	fw[tab]="bold";
 
 
 	switch (tab){
@@ -500,15 +494,15 @@ function setHead(tab){
 	}
 
 	setTimeout(' . $this->topFrame . '.startTree,100);
-	document.getElementById("' . FILE_TABLE . '").style.backgroundColor=c0;
-	document.getElementById("' . TEMPLATES_TABLE . '").style.backgroundColor=c1;' .
-				(defined('OBJECT_FILES_TABLE') ? 'document.getElementById("' . OBJECT_FILES_TABLE . '").style.backgroundColor=c2;' : '' ) .
-				(defined('OBJECT_TABLE') ? 'document.getElementById("' . OBJECT_TABLE . '").style.backgroundColor=c3;' : '') . '
+	document.getElementById("' . FILE_TABLE . '").style.backgroundColor=c[0];
+	document.getElementById("' . TEMPLATES_TABLE . '").style.backgroundColor=c[1];' .
+				(defined('OBJECT_FILES_TABLE') ? 'document.getElementById("' . OBJECT_FILES_TABLE . '").style.backgroundColor=c[2];' : '' ) .
+				(defined('OBJECT_TABLE') ? 'document.getElementById("' . OBJECT_TABLE . '").style.backgroundColor=c[3];' : '') . '
 
-	document.getElementById("' . FILE_TABLE . '").style.fontWeight=fw0;
-	document.getElementById("' . TEMPLATES_TABLE . '").style.fontWeight=fw1;' .
-				(defined('OBJECT_FILES_TABLE') ? 'document.getElementById("' . OBJECT_FILES_TABLE . '").style.fontWeight=fw2;' : '' ) .
-				(defined('OBJECT_TABLE') ? 'document.getElementById("' . OBJECT_TABLE . '").style.fontWeight=fw3;' : '') . '
+	document.getElementById("' . FILE_TABLE . '").style.fontWeight=fw[0];
+	document.getElementById("' . TEMPLATES_TABLE . '").style.fontWeight=fw[1];' .
+				(defined('OBJECT_FILES_TABLE') ? 'document.getElementById("' . OBJECT_FILES_TABLE . '").style.fontWeight=fw[2];' : '' ) .
+				(defined('OBJECT_TABLE') ? 'document.getElementById("' . OBJECT_TABLE . '").style.fontWeight=fw[3];' : '') . '
 }
 
 function we_submit(){
@@ -619,8 +613,8 @@ function setState(a) {
 			setLabelState("label_link_object_depth",_new_state);
 		}
 }
-' . $this->headerFrame . '.location="' . $this->frameset . '&pnt=header&step=4";
-' . $this->footerFrame . '.location="' . $this->frameset . '&pnt=footer&step=4";');
+' . $this->headerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=header&step=4";
+' . $this->footerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=footer&step=4";');
 
 
 
@@ -675,8 +669,8 @@ function setState(a) {
 
 //set variables in top frame
 		$js = we_html_element::jsElement(
-				$this->headerFrame . '.location="' . $this->frameset . '&pnt=header&step=7";' .
-				$this->footerFrame . '.location="' . $this->frameset . '&pnt=footer&step=7";');
+				$this->headerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=header&step=7";' .
+				$this->footerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=footer&step=7";');
 
 		$parts = array(
 			array("headline" => g_l('export', '[filename]'), "html" => we_html_tools::htmlTextInput("filename", $_input_size, $filename, "", "", "text", 260), "space" => $_space)
@@ -736,12 +730,12 @@ function setState(a) {
 
 		$message = we_html_element::htmlSpan(array("class" => "defaultfont"), g_l('export', '[backup_finished]') . "<br/><br/>" .
 				g_l('export', '[download_starting]') .
-				we_html_element::htmlA(array("href" => $this->frameset . "&pnt=body&step=50&exportfile=" . $filename, 'download' => basename($filename)), g_l('export', '[download]')));
+				we_html_element::htmlA(array("href" => WEBEDITION_DIR . 'we_showMod.php?mod=export&pnt=body&step=50&exportfile=' . $filename, 'download' => basename($filename)), g_l('export', '[download]')));
 
 		unset($_SESSION['weS']['exportVars_session']);
 
 		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', STYLESHEET .
-				we_html_element::htmlMeta(array("http-equiv" => "refresh", "content" => "2; url=" . $this->frameset . "&pnt=body&step=50&exportfile=" . $filename)), we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_tools::htmlDialogLayout($message, g_l('export', '[step10]'))
+				we_html_element::htmlMeta(array("http-equiv" => "refresh", "content" => "2; url=" . WEBEDITION_DIR . 'we_showMod.php?mod=export&pnt=body&step=50&exportfile=' . $filename)), we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_tools::htmlDialogLayout($message, g_l('export', '[step10]'))
 				)
 		);
 	}
@@ -767,11 +761,11 @@ function setState(a) {
 
 				exit;
 			} else {
-				header("Location: " . $this->frameset . "&pnt=body&step=99&error=download_failed");
+				header("Location: " . WEBEDITION_DIR . 'we_showMod.php?mod=export&pnt=body&step=99&error=download_failed');
 				exit;
 			}
 		} else {
-			header("Location: " . $this->frameset . "&pnt=body&step=99&error=download_failed");
+			header("Location: " . WEBEDITION_DIR . 'we_showMod.php?mod=export&pnt=body&step=99&error=download_failed');
 			exit;
 		}
 	}
@@ -882,7 +876,7 @@ function setState(a) {
 
 
 				  $table->setCol(0, 0, array("class" => "header_small"), we_html_element::htmlB(g_l('export', '[step2]')));
-				  $table->setCol(2, 0, array("nowrap" => "nowrap"), we_html_element::jsElement('setTimeout(we_tabInit,500);')
+				  $table->setCol(2, 0, array(), we_html_element::jsElement('setTimeout(we_tabInit,500);')
 				  ); */
 				break;
 
@@ -970,8 +964,8 @@ function setState(a) {
 				break;
 			default:
 				$buttons = we_html_button::position_yes_no_cancel(
-						we_html_button::create_button(we_html_button::BACK, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "&pnt=load&cmd=back&step=" . $step . "';") .
-						we_html_button::create_button(we_html_button::NEXT, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "&pnt=load&cmd=next&step=" . $step . "';"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
+						we_html_button::create_button(we_html_button::BACK, "javascript:" . $this->loadFrame . ".location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=export&pnt=load&cmd=back&step=" . $step . "';") .
+						we_html_button::create_button(we_html_button::NEXT, "javascript:" . $this->loadFrame . ".location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=export&pnt=load&cmd=next&step=" . $step . "';"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 				);
 		}
 
@@ -1151,11 +1145,7 @@ if (top.footer.setProgress){
 				}
 				return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', STYLESHEET, we_html_element::htmlBody(
 							array(
-								"bgcolor" => "#ffffff",
-								"marginwidth" => 5,
-								"marginheight" => 5,
-								"leftmargin" => 5,
-								"topmargin" => 5,
+								'style' => 'margin:5px;background-color:white;',
 								"onload" => oldHtmlspecialchars($export_local ? ($this->bodyFrame . ".location='" . $this->frameset . "&pnt=body&step=10&file_name=" . urlencode($filename) . "';" . $this->footerFrame . ".location='" . $this->frameset . "&pnt=footer&step=10';") : (we_message_reporting::getShowMessageCall(g_l('export', '[server_finished]'), we_message_reporting::WE_MESSAGE_NOTICE) . "top.close();")))), null
 				);
 
@@ -1254,11 +1244,7 @@ if (top.footer.setProgress){
 
 				return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', STYLESHEET . we_html_element::jsElement('if (top.footer.setProgress) top.footer.setProgress(100);'), we_html_element::htmlBody(
 							array(
-								"bgcolor" => "#ffffff",
-								"marginwidth" => 5,
-								"marginheight" => 5,
-								"leftmargin" => 5,
-								"topmargin" => 5,
+								'style' => 'margin:5px;background-color:white;',
 								"onload" => oldHtmlspecialchars($export_local ? ($this->bodyFrame . ".location='" . $this->frameset . "&pnt=body&step=10&file_name=" . urlencode($filename) . "';" . $this->footerFrame . ".location='" . $this->frameset . "&pnt=footer&step=10';") : ( we_message_reporting::getShowMessageCall(g_l('export', '[server_finished]'), we_message_reporting::WE_MESSAGE_NOTICE) . ";top.close();")))), null
 				);
 		}

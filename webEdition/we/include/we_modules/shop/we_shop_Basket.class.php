@@ -195,7 +195,7 @@ class we_shop_Basket{
 				$Record = $DB_WE->getAllFirst(false);
 
 				if($variant){
-					we_ariants::useVariantForShop($Record, $variant);
+					we_base_variants::useVariantForShop($Record, $variant);
 				}
 
 				if(($hash = getHash('SELECT * FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $DB_WE, MYSQL_ASSOC))){
@@ -205,7 +205,7 @@ class we_shop_Basket{
 				}
 
 				$Record['WE_PATH'] = $Record['wedoc_Path'] . ($variant ? '?' . we_base_constants::WE_VARIANT_REQUEST . '=' . $variant : '');
-				$Record['WE_TEXT'] = f('SELECT Text FROM ' . INDEX_TABLE . ' WHERE ClassID=0 AND ID=' . intval($id) . ' LIMIT 1', '', $DB_WE);
+				$Record['WE_TEXT'] = $Record['wedoc_Text'];
 				$Record['WE_VARIANT'] = $variant;
 				$Record['WE_ID'] = intval($id);
 

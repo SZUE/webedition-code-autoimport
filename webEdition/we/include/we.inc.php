@@ -21,7 +21,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 // remove trailing slash
 if(isset($_SERVER['DOCUMENT' . '_ROOT'])){ //so zerlegt stehen lassen: Bug #6318
 	$_SERVER['DOCUMENT' . '_ROOT'] = rtrim($_SERVER['DOCUMENT' . '_ROOT'], '/');
@@ -56,10 +55,8 @@ if(!isset($GLOBALS['we'])){
 	$GLOBALS['we'] = array();
 }
 
-if(!(defined('SYSTEM_WE_SESSION') && SYSTEM_WE_SESSION) && ini_get('session.gc_probability') != '0' /* && !@opendir(session_save_path()) */){
-//	$GLOBALS['FOUND_SESSION_PROBLEM'] = ini_get('session.gc_probability');
+if(!(defined('SYSTEM_WE_SESSION') && SYSTEM_WE_SESSION) && ini_get('session.gc_probability') != '0'){
 	ini_set('session.gc_probability', '0');
-	//won't work with apps like phpmyadmin session_save_path($_SERVER['DOCUMENT_ROOT'] . TEMP_DIR);
 }
 
 //start autoloader!
@@ -114,17 +111,22 @@ include_once(WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php');
 // we_available_modules - modules and informations about integrated and none integrated modules
 // we_active_integrated_modules - all active integrated modules
 //if file corrupted try to load defaults
-if(empty($GLOBALS['_we_active_integrated_modules']) || !in_array('users', $GLOBALS['_we_active_integrated_modules'])){
+if(empty($GLOBALS['_we_active_integrated_modules'])){
 	include_once(WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php.default');
 }
+$GLOBALS['_we_active_integrated_modules'] = array_unique(array_merge($GLOBALS['_we_active_integrated_modules'], array(
+	we_base_moduleInfo::USERS,
+	we_base_moduleInfo::EDITOR,
+	we_base_moduleInfo::NAVIGATION,
+	we_base_moduleInfo::EXPORT
+	)));
+
 //FIXME: don't include all confs!
 foreach($GLOBALS['_we_active_integrated_modules'] as $active){
 	we_base_moduleInfo::isActive($active);
 }
 
-if(!isset($GLOBALS['DB_WE'])){
-	$GLOBALS['DB_WE'] = new DB_WE();
-}
+$GLOBALS['DB_WE'] = new DB_WE();
 
 if(!(defined('NO_SESS') || isset($GLOBALS['FROM_WE_SHOW_DOC']))){
 	$GLOBALS['WE_BACKENDCHARSET'] = 'UTF-8'; //Bug 5771 schon in der Session wird ein vorläufiges Backendcharset benötigt
@@ -137,13 +139,6 @@ if(!(defined('NO_SESS') || isset($GLOBALS['FROM_WE_SHOW_DOC']))){
 	}
 }
 
-if(defined('WE_WEBUSER_LANGUAGE')){
-	$GLOBALS['WE_LANGUAGE'] = WE_WEBUSER_LANGUAGE;
-} else {
-	$sid = '';
-}
-
-
 if(!empty($_SESSION['prefs']['Language'])){
 	$GLOBALS['WE_LANGUAGE'] = (is_dir(WE_INCLUDES_PATH . 'we_language/' . $_SESSION['prefs']['Language']) ?
 			$_SESSION['prefs']['Language'] :
@@ -153,11 +148,17 @@ if(!empty($_SESSION['prefs']['Language'])){
 	$GLOBALS['WE_LANGUAGE'] = WE_LANGUAGE;
 }
 
-define('STYLESHEET_BUTTONS_ONLY', we_html_element::cssLink(CSS_DIR . 'we_button.css') . we_html_element::cssLink(LIB_DIR . 'additional/fontawesome/css/font-awesome.min.css'));
-define('STYLESHEET', we_html_element::cssLink(CSS_DIR . 'global.php') .
-	STYLESHEET_BUTTONS_ONLY .
+define('STYLESHEET_MINIMAL', we_html_element::cssLink(LIB_DIR . 'additional/fontLiberation/stylesheet.css') .
+	we_html_element::cssLink(CSS_DIR . 'we_button.css') . we_html_element::cssLink(LIB_DIR . 'additional/fontawesome/css/font-awesome.min.css'));
+define('STYLESHEET', //we_html_element::cssLink(CSS_DIR . 'global.php') .
+	STYLESHEET_MINIMAL .
 	we_html_element::cssLink(CSS_DIR . 'webEdition.css')
 );
+
+define('YAHOO_FILES', we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
+	we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
+	we_html_element::jsScript(LIB_DIR . 'additional/yui/json-min.js') .
+	we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js'));
 
 if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 	$GLOBALS['WE_BACKENDCHARSET'] = (!empty($_SESSION['prefs']['BackendCharset']) ?

@@ -75,6 +75,7 @@ $only = new weTagData_selectAttribute('only', array(new weTagDataOption('name'),
 	new weTagDataOption('filename'),
 	new weTagDataOption('extension'),
 	new weTagDataOption('filesize'),
+	new weTagDataOption('id'),
 	), false, '');
 $onlyImg = new weTagData_selectAttribute('only', array(new weTagDataOption('name'),
 	new weTagDataOption('src'),
@@ -142,6 +143,6 @@ $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 	), false, '');
 
 $this->Attributes = array($name, $classid, $hyperlink, $tid, $href, $target, $class, $style, $format, $num_format, $thumbnail, $id, $parentidname, $winprops, $alt, $max, $src,
-	$width, $height, $border, $hspace, $vspace, $align, $only, $onlyImg, $htmlspecialchars, $seeMode, $xml, $win2iso, $listviewname, $striphtml, $outputlanguage, $doc, $triggerid, 
+	$width, $height, $border, $hspace, $vspace, $align, $only, $onlyImg, $htmlspecialchars, $seeMode, $xml, $win2iso, $listviewname, $striphtml, $outputlanguage, $doc, $triggerid,
 	$usekey, $vatfield, $catfield, $showpath, $rootdir);
 

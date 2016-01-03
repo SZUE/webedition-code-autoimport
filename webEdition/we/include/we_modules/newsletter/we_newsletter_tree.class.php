@@ -28,18 +28,6 @@ class we_newsletter_tree extends weTree{
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_tree.js');
 	}
 
-	function getJSStartTree(){
-		return 'function startTree(){
-			frames={
-	"top":' . $this->topFrame . ',
-	"cmd":' . $this->cmdFrame . '
-};
-treeData.frames=frames;
-				frames.cmd.location=treeData.frameset+"&pnt=cmd&pid=0";
-				drawTree();
-			}';
-	}
-
 	private static function getQueryParents($path){
 		$out = '';
 		while($path != '/' && $path != '\\' && $path){

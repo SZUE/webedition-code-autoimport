@@ -1,3 +1,5 @@
+/* global WE */
+
 /**
  * webEdition SDK
  *
@@ -25,7 +27,7 @@
  */
 
 function we_setPath(path, text, id, classname) {
-
+	var _EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
 	// update document-tab
 	_EditorFrame.initEditorFrameData({
 		EditorDocumentText: text,
@@ -38,7 +40,7 @@ function we_setPath(path, text, id, classname) {
 
 	path = path.replace(/</g, '&lt;');
 	path = path.replace(/>/g, '&gt;');
-	path = '<span style="font-weight:bold;color:#006699">' + path + '</span>';
+	path = '<strong style="color:#006699">' + path + '</strong>';
 	var div;
 	if (document.getElementById) {
 		div = document.getElementById('h_path');
@@ -60,6 +62,7 @@ function we_setPath(path, text, id, classname) {
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	//var url = WE().util.getWe_cmdArgsUrl(args);
+	var _EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
 
 	switch (args[0]) {
 		case 'switch_edit_page':
@@ -87,6 +90,7 @@ var we_editor_header = {
 		}
 	},
 	scrollUpEditorContent: function () {
+		var _EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
 		_EditorFrame.getContentEditor().scrollBy(0, -10);
 		if (this.evtCounter) {
 			this.timeout = setTimeout(function () {

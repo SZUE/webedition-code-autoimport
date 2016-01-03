@@ -1,3 +1,5 @@
+/* global WE */
+
 /**
  * webEdition CMS
  *
@@ -38,16 +40,8 @@ function isUrl(s) {
 }
 
 function handleButtonState(enable) {
-	var iArgsLen = arguments.length;
-	var aDisable;
-	var sImplodeArgs = '';
-	for (var i = 1; i < iArgsLen; i++) {
-		sImplodeArgs += '\'' + arguments[i] + '\'' + ((i < iArgsLen - 1) ? ',' : '');
-	}
-	//FIXME:remove eval
-	eval('aDisable=[' + sImplodeArgs + ']');
-	for (i = 0; i < iArgsLen - 1; i++) {
-		WE().layout.button.switch_button_state(document, aDisable[i], (enable ? 'enabled' : 'disabled'));
+	for (var i = 1; i < arguments.length; i++) {
+		WE().layout.button.switch_button_state(document, arguments[i], (enable ? 'enabled' : 'disabled'));
 	}
 }
 

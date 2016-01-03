@@ -144,7 +144,7 @@ this.selectedIndex = 0;' .
 	static function htmlTextInput($name, $size = 24, $value = '', $maxlength = '', $attribs = '', $type = 'text', $width = 0, $height = 0, $markHot = '', $disabled = false){
 		$style = ($width || $height) ? (' style="' . ($width ? ('width: ' . $width . (is_numeric($width) ? 'px' : '') . ';') : '') .
 			($height ? ('height: ' . $height . (is_numeric($height) ? 'px' : '') . ';') : '') . '"') : '';
-		return '<input' . ($markHot ? ' onchange="if(typeof(_EditorFrame) != \'undefined\'){_EditorFrame.setEditorIsHot(true);}' . $markHot . '.hot=1;"' : '') .
+		return '<input' . ($markHot ? ' onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);' . $markHot . '.hot=1;"' : '') .
 			(strstr($attribs, "class=") ? "" : ' class="wetextinput"') . ' type="' . trim($type) . '" name="' . trim($name) .
 			'" value="' . oldHtmlspecialchars($value) . '"' . ($maxlength ? (' maxlength="' . intval($maxlength) . '"') : '') . ($attribs ? ' ' . $attribs : '') . $style . ($disabled ? (' disabled="true"') : '') . ' />';
 	}
@@ -390,7 +390,7 @@ this.selectedIndex = 0;' .
 			}
 			$out = '<table class="default"><tr><td>' .
 				self::htmlTextInput($name, 5, $selected, "", $attribs, "text", $width / 2, 0, "top") .
-				'</td><td><select class="weSelect" name="wetmp_' . $name . '" size=1' . $disabled . ($width ? ' style="width: ' . ($width / 2) . 'px"' : '') . ' onchange="if(typeof(_EditorFrame) != \'undefined\'){_EditorFrame.setEditorIsHot(true);}if(this.options[this.selectedIndex].text){this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].text;};this.selectedIndex=0"><option>';
+				'</td><td><select class="weSelect" name="wetmp_' . $name . '" size=1' . $disabled . ($width ? ' style="width: ' . ($width / 2) . 'px"' : '') . ' onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);if(this.options[this.selectedIndex].text){this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].text;};this.selectedIndex=0"><option>';
 			foreach($extensions as $extension){
 				$out .= '<option>' . $extension . '</option>';
 			}
@@ -415,14 +415,14 @@ this.selectedIndex = 0;' .
 	 */
 	static function getPixel($w, $h, $border = 0){
 		//FIXME: remove this
-		return '';/*
-		if($w == ''){
-			$w = 0;
-		}
-		if($h == ''){
-			$h = 0;
-		}
-		return '<span style="display:inline-block;width:' . $w . (is_numeric($w) ? 'px' : '') . ';height:' . $h . (is_numeric($h) ? 'px' : '') . ';' . ($border ? 'border:' . $border . 'px solid black;' : '') . '"></span>';*/
+		return ''; /*
+		  if($w == ''){
+		  $w = 0;
+		  }
+		  if($h == ''){
+		  $h = 0;
+		  }
+		  return '<span style="display:inline-block;width:' . $w . (is_numeric($w) ? 'px' : '') . ';height:' . $h . (is_numeric($h) ? 'px' : '') . ';' . ($border ? 'border:' . $border . 'px solid black;' : '') . '"></span>'; */
 	}
 
 	static function hidden($name, $value, $attribs = null){
@@ -475,7 +475,7 @@ this.selectedIndex = 0;' .
 		$_attsSelect['size'] = 1;
 
 		if($onchange || $setHot){
-			$_attsSelect['onchange'] = (($setHot ? '_EditorFrame.setEditorIsHot(true);' : '') . $onchange);
+			$_attsSelect['onchange'] = (($setHot ? 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);' : '') . $onchange);
 		}
 
 		if(is_object($time)){
@@ -754,18 +754,27 @@ this.selectedIndex = 0;' .
 	 */
 
 	static function htmlAlertAttentionBox($text, $type = self::TYPE_NONE, $width = 0, $useHtmlSpecialChars = true, $clip = 0){
+		if($width === false){
+			$class = 'infobox';
+			$title = '<span>' . $text . '</span>';
+		} else {
+			$title = $class = '';
+		}
 		switch($type){
 			case self::TYPE_ALERT:
-				$icon = '<img src="' . IMAGE_DIR . 'alert_small.gif" width="20" height="22" />';
+				$icon = '<span class="' . $class . '"><img src="' . IMAGE_DIR . 'alert_small.gif" width="20" height="22" />' . $title . '</span>';
 				break;
 			case self::TYPE_INFO:
-				$icon = '<span class="fa-stack fa-lg" style="font-size: 14px;color:#007de3;"><i class="fa fa-circle fa-stack-2x" ></i><i class="fa fa-info fa-stack-1x fa-inverse"></i></span>';
+				$icon = '<span class="fa-stack fa-lg ' . $class . '" style="font-size: 14px;color:#007de3;"><i class="fa fa-circle fa-stack-2x" ></i><i class="fa fa-info fa-stack-1x fa-inverse"></i>' . $title . '</span>';
 				break;
 			case self::TYPE_QUESTION:
-				$icon = '<span class="fa-stack fa-lg" style="font-size: 14px;color:yellow;"><i class="fa fa-circle fa-stack-2x" ></i><i style="color:black" class="fa fa-question fa-stack-1x"></i></span>';
+				$icon = '<span class="fa-stack fa-lg ' . $class . '" style="font-size: 14px;color:yellow;"><i class="fa fa-circle fa-stack-2x" ></i><i style="color:black" class="fa fa-question fa-stack-1x"></i>' . $title . '</span>';
 				break;
 			default :
 				$icon = '';
+		}
+		if($width === false){
+			return $icon;
 		}
 
 		$text = ($useHtmlSpecialChars) ? oldHtmlspecialchars($text, ENT_COMPAT, 'ISO-8859-1', false) : $text;
@@ -812,6 +821,9 @@ function clip_' . $unique . '(){
 				header('HTTP/1.1 ' . $status . ' See Other', true, $status);
 				header('Status: ' . $status . ' See Other', true, $status);
 				break;
+			case 304:
+				header('HTTP/1.1 ' . $status . ' Not Modified', true, $status);
+				header('Status: ' . $status . ' Not Modified', true, $status);
 			case 307:
 				header('HTTP/1.1 ' . $status . ' Temporary Redirect', true, $status);
 				header('Status: ' . $status . ' Temporary Redirect', true, $status);

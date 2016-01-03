@@ -32,7 +32,6 @@ $hasGD = isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ContentType == we_base
 echo we_html_element::cssLink(CSS_DIR . 'editor.css') .
  we_html_element::cssElement('.weEditTable{
 	font-size: ' . ((we_base_browserDetect::isMAC()) ? '11' : ((we_base_browserDetect::isUNIX()) ? '13' : '12')) . 'px;
-	font-family: ' . g_l('css', '[font_family]') . ';
 }
 ') .
  we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();');
@@ -41,6 +40,7 @@ echo we_html_element::cssLink(CSS_DIR . 'editor.css') .
 	var we_transaction = "<?php echo we_base_request::_(we_base_request::TRANSACTION, "we_transaction", 0); ?>";
 	var _oldparentid = <?php echo isset($GLOBALS['we_doc']) ? intval($GLOBALS['we_doc']->ParentID) : 0; ?>;
 	var docName = "<?php echo isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Name : ''; ?>";
+	var isFolder = <?php echo isset($GLOBALS['we_doc']) ? intval($GLOBALS['we_doc']->IsFolder) : 0; ?>;
 	var docTable = "<?php echo isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Table : ''; ?>";
 	var docClass = "<?php echo isset($GLOBALS['we_doc']) ? get_class($GLOBALS['we_doc']) : ''; ?>";
 	var hasCustomerFilter =<?php echo intval(isset($GLOBALS['we_doc']) && defined('CUSTOMER_TABLE') && in_array(we_base_constants::WE_EDITPAGE_WEBUSER, $GLOBALS['we_doc']->EditPageNrs) && isset($GLOBALS['we_doc']->documentCustomerFilter)); ?>;
@@ -48,10 +48,6 @@ echo we_html_element::cssLink(CSS_DIR . 'editor.css') .
 
 	var gdType = "<?php echo $hasGD && isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->getGDType() : ''; ?>";
 	var gdSupport =<?php echo intval($hasGD ? $we_doc->gd_support() : 0); ?>;
-
-	var g_l = {
-		'confirm_applyFilter': "<?php echo g_l('alert', ($GLOBALS['we_doc']->IsFolder ? '[confirm][applyWeDocumentCustomerFiltersFolder]' : '[confirm][applyWeDocumentCustomerFiltersDocument]')) ?>",
-	};
 
 	var isWEObject =<?php echo intval(isset($GLOBALS['we_doc']) && ($GLOBALS['we_doc']->ContentType === we_base_ContentTypes::OBJECT/* FIXME: only supported for type object || $GLOBALS['we_doc']->ContentType === we_base_ContentTypes::OBJECT_FILE */)); ?>;
 	var WE_EDIT_IMAGE =<?php echo intval(defined('WE_EDIT_IMAGE')); ?>;

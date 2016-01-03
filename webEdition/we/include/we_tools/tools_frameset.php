@@ -27,6 +27,8 @@ we_html_tools::protect();
 
 $title = 'webEdition ';
 $tool = we_base_request::_(we_base_request::STRING, 'tool');
+$cmd = '';
+
 $showHeader = true;
 switch($tool){
 	case '':
@@ -42,32 +44,44 @@ switch($tool){
 		break;
 }
 
-
 if($tool === "weSearch"){
+	unset($_SESSION['weS'][$tool . '_session']);
+
+	$keyword = '';
 	if(($cmd1 = we_base_request::_(we_base_request::STRING, 'we_cmd', false, 1))){
 		$_SESSION['weS']['weSearch']['keyword'] = $cmd1;
+		$keyword = $cmd1;
 	}
-	//look which search is active
+
 	switch(($cmd2 = we_base_request::_(we_base_request::TABLE, 'we_cmd', "", 2))){//FIXME: bad to have different types at one query
 		case FILE_TABLE:
 			$tab = 1;
+			$table = 1;
 			$_SESSION['weS']['weSearch']["checkWhich"] = 1;
+			$cmd = 'tool_weSearch_new_forDocuments';
 			break;
 		case TEMPLATES_TABLE:
 			$tab = 2;
+			$table = 2;
 			$_SESSION['weS']['weSearch']["checkWhich"] = 2;
+			$cmd = 'tool_weSearch_new_forTemplates';
 			break;
 		case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 			$tab = 3;
+			$table = 3;
 			$_SESSION['weS']['weSearch']["checkWhich"] = 3;
+			$cmd = 'tool_weSearch_new_forObjects';
 			break;
 		case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
 			$tab = 3;
+			$table = 4;
 			$_SESSION['weS']['weSearch']["checkWhich"] = 4;
+			$cmd = 'tool_weSearch_new_forClasses';
 			break;
-
 		default:
-			$tab = we_base_request::_(we_base_request::INT, 'we_cmd', 1, 4);
+			$table = we_base_request::_(we_base_request::INT, 'we_cmd', 1, 4);
+			$table = 5;
+			$cmd = 'tool_weSearch_new';
 	}
 
 	$modelid = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3);
@@ -76,17 +90,17 @@ if($tool === "weSearch"){
 }
 
 echo we_html_tools::getHtmlTop($title, '', 'frameset') .
+ STYLESHEET .
  we_html_element::jsScript(JS_DIR . 'toolframe.js') .
- we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
- we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
- we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js');
+ YAHOO_FILES .
+ we_tabs::getHeader();
 ?>
 </head>
-<body style="overflow:hidden;"><?php
+<body style="overflow:hidden;" <?php echo ($showHeader ? 'onload="weTabs.setFrameSize();"' : ''); ?>><?php
 	$_REQUEST['tool'] = $tool;
 	echo ($showHeader ?
-			we_html_element::htmlExIFrame('navi', WE_INCLUDES_PATH . 'we_tools/tools_header.inc.php', 'background-color:white;position:absolute;top:0px;height:21px;left:0px;right:0px;overflow: hidden;') : '') .
-	we_html_element::htmlIFrame('content', WE_INCLUDES_DIR . 'we_tools/tools_content.php?tool=' . $tool . ($modelid ? ('&modelid=' . $modelid) : '') . ($tab ? ('&tab=' . $tab) : ''), 'position:absolute;top:' . ($showHeader ? 21 : 0) . 'px;left:0px;right:0px;bottom:0px;border-top:1px solid #999999;', '', '', false);
+		we_html_element::htmlExIFrame('navi', WE_INCLUDES_PATH . 'we_tools/tools_header.inc.php', 'background-color:white;position:absolute;top:0px;height:21px;left:0px;right:0px;overflow: hidden;') : '') .
+	we_html_element::htmlIFrame('content', WE_INCLUDES_DIR . 'we_tools/tools_content.php?tool=' . $tool . ($modelid ? ('&modelid=' . $modelid) : '') . ($tab ? ('&tab=' . $tab) : '') . ($tool === 'weSearch' ? '&cmd=' . $cmd . '&keyword=' . $keyword : ''), 'position:absolute;top:' . ($showHeader ? 21 : 0) . 'px;left:0px;right:0px;bottom:0px;border-top:1px solid #999999;', '', '', false);
 	?>
 </body>
 </html>

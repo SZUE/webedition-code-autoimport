@@ -36,10 +36,6 @@ $_iFrmPadAtts['src'] = WE_INCLUDES_DIR . 'we_widgets/mod/pad.php?' . http_build_
 				7 => 'home')));
 $_iFrmPadAtts['id'] = 'm_' . $iCurrId . '_inline';
 $_iFrmPadAtts['style'] = 'width:100%;height:287px';
-$_iFrmPadAtts['scrolling'] = 'no';
-$_iFrmPadAtts['marginheight'] = 0;
-$_iFrmPadAtts['marginwidth'] = 0;
-$_iFrmPadAtts['frameborder'] = 0;
 
 $oTblDiv = str_replace('>', ' allowtransparency="true">', getHtmlTag('iframe', $_iFrmPadAtts, '', true));
 

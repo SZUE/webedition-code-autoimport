@@ -35,20 +35,18 @@ class we_messaging_tree extends weTree{
 	}
 
 	function getJSStartTree(){
-		return  '
-var table="' . MESSAGES_TABLE . '";
-
+		return '
 function startTree(){
-	frames={
+	treeData.frames={
 		top:' . $this->topFrame . ',
-		cmd:' . $this->cmdFrame . '
+		cmd:' . $this->cmdFrame . ',
+		tree:' . $this->treeFrame . '
 	};
-	treeData.frames=frames;
-	if(frames.cmd===undefined){
+	if(treeData.frames.cmd===undefined){
 	//FIXME: we have too much frames, this module is not separated well
 		setTimeout("startTree()",500);
 	}else{
-		frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&pid=0&we_transaction="+we_transaction;
+		treeData.frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&pid=0&we_transaction="+we_transaction;
 	}
 }';
 	}
@@ -124,16 +122,9 @@ function startTree(){
 		}
 
 		return we_html_element::cssLink(CSS_DIR . 'tree.css') .
-			parent::getJSTreeCode() .
 			we_html_element::jsElement('
 parent.document.title = "' . $title . '";
 var we_transaction = "' . $this->transaction . '";
-var we_frameset="' . $this->frameset . '";
-var table="' . MESSAGES_TABLE . '";
-') .
-			we_html_element::jsScript(JS_DIR . 'messaging_tree.js') .
-			we_html_element::jsElement('
-var treeData = new container();
 function cb_incstate() {
 		loaded = true;
 		loadData();
@@ -142,7 +133,8 @@ function cb_incstate() {
 we_cmd("show_folder_content", ' . $f['ID'] . ');' :
 					'drawTree();'
 				) . '
-}');
+}') .
+			parent::getJSTreeCode();
 	}
 
 }

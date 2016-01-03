@@ -48,11 +48,15 @@ function delRow(id) {
 	var elem = document.getElementById("metadataTable");
 	if (elem) {
 		var trows = elem.rows;
+		var rowID0 = "metadataRow0_" + id;
 		var rowID = "metadataRow_" + id;
+		var rowID1 = "metadataRow1_" + id;
 		var rowID2 = "metadataRow2_" + id;
+		var rowID3 = "metadataRow3_" + id;
+		var rowID4 = "metadataRow4_" + id;
 
 		for (i = trows.length - 1; i >= 0; i--) {
-			if (rowID == trows[i].id || rowID2 == trows[i].id) {
+			if (rowID == trows[i].id || rowID0 == trows[i].id || rowID1 == trows[i].id || rowID2 == trows[i].id || rowID3 == trows[i].id || rowID4 == trows[i].id) {
 				elem.deleteRow(i);
 			}
 		}
@@ -90,6 +94,7 @@ function addRow() {
 	var newID = (elem.rows.length) / 5;
 	if (elem) {
 		var newRow = document.createElement("TR");
+		newRow.setAttribute("id", "metadataRow0_" + newID);
 		cell = document.createElement("TD");
 		cell.innerHTML = "<strong>" + g_l.tagname + "</strong>";
 		cell.width = "210";
@@ -104,7 +109,7 @@ function addRow() {
 		elem.appendChild(newRow);
 
 		newRow = document.createElement("TR");
-		newRow.setAttribute("id", "metadataRow_" + newID);
+		newRow.setAttribute("id", "metadataRow1_" + newID);
 		cell = document.createElement("TD");
 		cell.innerHTML = phpdata.tagInp.replace(/__we_new_id__/g, newID);
 		cell.width = "210";
@@ -116,7 +121,7 @@ function addRow() {
 		cell = document.createElement("TD");
 		cell.width = "30";
 		cell.align = "right";
-		cell.innerHTML = phpdata.trashButton;
+		cell.innerHTML = phpdata.trashButton.replace(/__we_new_id__/, newID);
 		newRow.appendChild(cell);
 		elem.appendChild(newRow);
 

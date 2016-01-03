@@ -114,9 +114,9 @@ function selectFile(id) {
 		showPreview(id);
 		e = getEntry(id);
 		if (a.value != e.text &&
-						a.value.indexOf(e.text + ",") == -1 &&
-						a.value.indexOf("," + e.text + ",") == -1 &&
-						a.value.indexOf("," + e.text + ",") == -1) {
+						a.value.indexOf(e.text + ",") === -1 &&
+						a.value.indexOf("," + e.text + ",") === -1 &&
+						a.value.indexOf("," + e.text + ",") === -1) {
 
 			a.value = a.value ?
 							(a.value + "," + e.text) :
@@ -168,9 +168,9 @@ function writeBody(d) {
 									'');
 
 	for (i = 0; i < entries.length; i++) {
-		var onclick = ' onclick="weonclick(event);tout=setTimeout(function(){if(!wasdblclick){doClick(' + entries[i].ID + ',0);}else{wasdblclick=false;}},300);return true"';
-		var ondblclick = ' onDblClick="wasdblclick=true;clearTimeout(tout);doClick(' + entries[i].ID + ',1);return true;"';
-		body += '<tr id="line_' + entries[i].ID + '" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder)) ? "background-color:#DFE9F5;" : "") + 'cursor:pointer;" ' + ((we_editDirID || makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
+		var onclick = ' onclick="return selectorOnClick(event,' + entries[i].ID + ');"';
+		var ondblclick = ' onDblClick="return selectorOnDblClick(' + entries[i].ID + ');"';
+		body += '<tr id="line_' + entries[i].ID + '" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder)) ? "background-color:#DFE9F5;" : "") + '" ' + ((we_editDirID || makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
 						'<td class="treeIcon">' + WE().util.getTreeIcon(entries[i].contentType, false) + '</td>' +
 						(we_editDirID == entries[i].ID ?
 										'<td class="selector"><input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :

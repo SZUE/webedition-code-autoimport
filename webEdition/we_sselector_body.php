@@ -120,7 +120,7 @@ echo we_html_element::jsScript(JS_DIR . 'selectors/we_sselector_body.js') .
 				}
 				$dir_obj->close();
 			} else {
-				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR)) . '<div class="middlefontgray"  style="padding-top:2em;text-align:center">-- ' . g_l('alert', '[access_denied]') . ' --</div>';
+				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR)) . '<div class="middlefont" style="padding-top:2em;text-align:center">-- ' . g_l('alert', '[access_denied]') . ' --</div>';
 			}
 
 			switch($ord){

@@ -151,9 +151,8 @@ class we_shop_listviewOrder extends we_listview_base{
 			//$this->DB_WE->Record['CustomerID'] = $this->DB_WE->Record['IntCustomerID'];
 			$this->DB_WE->Record['we_cid'] = $this->DB_WE->Record['CustomerID'];
 			$this->DB_WE->Record['we_orderid'] = $this->DB_WE->Record['OrderID'];
-			$this->DB_WE->Record['wedoc_Path'] = $this->Path . '?we_orderid=' . $this->DB_WE->Record['OrderID'];
-			$this->DB_WE->Record['WE_PATH'] = $this->Path . '?we_orderid=' . $this->DB_WE->Record['OrderID'];
-			$this->DB_WE->Record['WE_TEXT'] = $this->DB_WE->Record['OrderID'];
+			$this->DB_WE->Record['WE_PATH'] = $this->DB_WE->Record['wedoc_Path'] = $this->Path . '?we_orderid=' . $this->DB_WE->Record['OrderID'];
+			$this->DB_WE->Record['WE_TEXT'] = ''; //$this->DB_WE->Record['OrderID'];
 			$this->DB_WE->Record['WE_ID'] = $this->DB_WE->Record['OrderID'];
 			$this->DB_WE->Record['we_wedoc_lastPath'] = $this->LastDocPath . '?we_orderid=' . $this->DB_WE->Record['OrderID'];
 			$this->count++;

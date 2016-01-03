@@ -25,11 +25,9 @@ $versionsLogView = new we_versions_logView();
 
 echo we_html_tools::getHtmlTop(g_l('versions', '[versions_log]')) .
  STYLESHEET .
- we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
- we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
- we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
- $versionsLogView->getJS().
- we_html_element::cssLink(CSS_DIR.'messageConsole.css');
+ YAHOO_FILES .
+ $versionsLogView->getJS() .
+ we_html_element::cssLink(CSS_DIR . 'messageConsole.css');
 ?>
 </head>
 

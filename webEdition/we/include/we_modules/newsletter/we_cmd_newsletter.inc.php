@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,4 +27,6 @@ switch($cmd){
 		$_REQUEST['mod'] = 'newsletter';
 		$_REQUEST['pnt'] = 'show_frameset';
 		return '../../we_showMod.php';
+	case 'we_newsletter_dirSelector':
+		return 'selectors.inc.php';
 }

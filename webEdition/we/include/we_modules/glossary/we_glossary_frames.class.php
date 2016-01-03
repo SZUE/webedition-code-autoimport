@@ -34,14 +34,8 @@ class we_glossary_frames extends we_modules_frame{
 		$this->View = new we_glossary_view($frameset);
 	}
 
-	function getJSCmdCode(){
-		return $this->View->getJSTop();
-	}
-
 	function getHTMLFrameset(){
-		return parent::getHTMLFrameset(
-				$this->Tree->getJSTreeCode()
-		);
+		return parent::getHTMLFrameset($this->Tree->getJSTreeCode());
 	}
 
 	protected function getHTMLEditorHeader(){

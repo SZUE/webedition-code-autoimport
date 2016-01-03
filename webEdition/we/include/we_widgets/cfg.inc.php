@@ -21,7 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-include_once (WE_INCLUDES_PATH . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . '/topFeeds.inc.php');
+include_once (WE_INCLUDES_PATH . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/topFeeds.inc.php');
 
 $iDefCols = 2;
 $small = 202;

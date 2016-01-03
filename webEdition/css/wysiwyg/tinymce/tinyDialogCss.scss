@@ -1,0 +1,289 @@
+/**
+ * webEdition CMS
+ *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
+ * This source is part of webEdition CMS. webEdition CMS is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionCMS/License.txt
+ *
+ * @category   webEdition
+ * @package    webEdition_base
+ * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ */
+
+/* TODO: clean up this messy css! */
+/*FIXME: if we have STYLESHEETS applied, we don't need special handling of body (font) */
+
+/* CSS for all tiny Dialogs */
+@import "../../config.scss";
+body{ /* [role=application]? */
+	letter-spacing: normal !important;
+	font-family: $weFont;
+	font-size: $smallfont;
+	margin:0px;
+
+}
+
+.tabs{
+	background: rgba(0, 0, 0, 0) linear-gradient(#c9d9ed, #afc3de) repeat scroll 0 0;
+	border: none;
+	border-bottom: 1px solid #888888;
+	display:block;
+	height: 21px;
+	padding-left:0px;
+	li {
+		height: 21px;
+		border-bottom: 1px solid #888888;
+		background-color: #D3D3D3;
+		background: linear-gradient(#dbdbdb, #cccccc 50%,#999999);
+		border-right: 1px solid gray;
+		cursor: pointer;
+		display: inline-block;
+		float: left;
+		font-size: $bigfont;
+		line-height: $bigfont;
+		margin: 0px;
+		padding: 0px 6px 0px 6px;
+		&.current {
+			background-image: none;
+			background-color:#F0F0EE;
+			margin:0px;
+		}
+		span{
+			background-image: none;
+			background-color: transparent;
+			border: none;
+			margin: 0px;
+			padding: 0px;
+			vertical-align: top;
+		}
+	}
+	.current span {
+		background-image: none;
+		background-color: transparent;
+		border: none;
+		margin: 0px;
+		padding: 0px;
+	}
+}
+
+form{
+	table{
+		display:block;
+	}
+	div{
+		color:black;
+	}
+}
+
+.title{
+	color:black;
+}
+
+.panel_wrapper{
+	background-color: transparent;
+	border: none;
+	overflow: auto;
+}
+
+label{
+	color:black;
+	margin-right:6px;
+}
+
+legend{
+	color:black;
+	margin-top:16px;
+}
+
+body select,
+#block_text_indent,
+#box_width,
+#box_height,
+#box_padding_top,
+#box_padding_right,
+#box_padding_bottom,
+#box_padding_left {
+	height: 18px;
+}
+
+#styleSelectRow select{
+	width:110px;
+}
+
+.panel_wrapper #class{
+	width:110px;
+}
+
+textarea{
+	margin-left:0px;
+}
+
+input[type="text"]{
+	border: 1px solid #AAAAAA;
+	color: black;
+	font-family: sans-serif;
+	font-size: $medfont;
+	height: 18px;
+	line-height: 18px;
+}
+/*
+#colorpicker #preview{
+margin-right:10px;
+height:19px;
+}
+*/
+.mceActionPanel{
+	display:block;
+	background-color:transparent;
+	text-align:right;
+	padding:0px;
+	padding-bottom:10px;
+	border-top: 2px groove white;
+}
+
+.mceActionPanel #insert,
+.mceActionPanel #cancel,
+.mceActionPanel #apply,
+body .mceActionPanel #replaceBtn,
+.mceActionPanel #replaceAllBtn {
+	height: 22px !important;
+	color: black !important;
+	float: none;
+	font-weight:normal;
+	background: rgba(0, 0, 0, 0) linear-gradient(to bottom, #f3f7fc, #e9f0fb 50%, #dce8f8 50%, #d8e4f9) repeat scroll 0 0;
+	border-radius: 4px;
+	box-shadow: 2px 2px 2px #555555;
+	font-family: verdana,arial,helvetica;
+	font-size: $smallfont !important;
+	margin-bottom: 1ex;
+	margin-left: 0.5em;
+	margin-right: 0.5em;
+	min-width: 2.5em;
+	padding-left: 0.5em !important;
+	padding-right: 0.5em !important;
+	text-align: center;
+}
+
+.mceActionPanel #preview{
+	/* padding-right:0px; */
+}
+
+#colorpicker #previewblock{
+	margin-right:0px;
+}
+
+#colorpicker #preview_wrapper{
+	display:block;
+	position:absolute;
+	bottom:6px;
+	left:0px;
+}
+
+#colorpicker #preview_wrapper span{
+	margin-top:3px;
+	margin-bottom:-2px;
+	height:18px;
+	width:20px;
+}
+
+.mceActionPanel div {
+	display: inline;
+	margin-right:20px;
+}
+
+.panel_toggle_insert_span{
+	margin: 20px 0px 0px 14px;
+}
+
+/* Some dialogs do not work not with webEDition-Footer in IE: they do not have attribute role="application" in body tag */
+body[role=application]{
+	div#iframecontainer{
+		margin-top:6px;
+		margin-right:0px;
+	}
+	fieldset{
+		border:none;
+	}
+
+	label{
+		margin-left:6px;
+		margin-right:6px;
+	}
+
+	textarea{
+		margin-left:6px;
+	}
+
+	.mceActionPanel{
+		background: linear-gradient(#B4B3B3, #C6C5C5);
+		height: 30px;
+		position:absolute;
+		bottom: 0px;
+		width: 100%;
+		padding: 10px 10px 0px 0px;
+		margin-left: 0px;
+
+		#insert,
+		#cancel,
+		#apply,
+		#replaceBtn,
+		#replaceAllBtn {
+			margin: 0px 10px 0px 0px;
+		}
+	}
+}
+
+/* Dialogs which work not with webEDition-Footer in IE get body-class weFooter when initialized by tinyMce_popup.
+	=> This specially added class is not recognized by IE */
+body.useWeFooter{
+	letter-spacing: normal !important;
+	font-family: sans-serif;
+	font-size: $medfont;
+	margin:0px;
+
+	div{
+		padding-left:6px;
+	}
+
+	label{
+		margin-left:4px;
+		margin-right:12px;
+	}
+
+	div.title{
+		padding-top:6px;
+	}
+
+	textarea{
+		margin-left:10px;
+	}
+
+	.mceActionPanel{
+		background: linear-gradient(#B4B3B3, #C6C5C5);
+		height: 30px;
+		position:absolute;
+		bottom: 0px;
+		width: 100%;
+		padding: 10px 10px 0px 0px;
+		margin-left: 0px;
+
+		#insert,
+		#cancel,
+		#apply,
+		#replaceBtn,
+		#replaceAllBtn {
+			margin: 0px 10px 0px 0px;
+		}
+	}
+}

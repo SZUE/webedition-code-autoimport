@@ -72,9 +72,9 @@ class we_customer_EIWizard{
 	function getHTMLFrameset($mode){
 		$body = we_html_element::htmlBody(array('id' => 'weMainBody')
 				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-					, we_html_element::htmlIFrame('body', $this->frameset . "&pnt=eibody&art=" . $mode . "&step=1", 'position:absolute;top:0px;bottom:45px;left:0px;right:0px;', 'border:0px;width:100%;height:100%;') .
-					we_html_element::htmlIFrame('footer', $this->frameset . "&pnt=eifooter&art=" . $mode . "&step=1", 'position:absolute;height:45px;bottom:0px;left:0px;right:0px;overflow: hidden', '', '', false) .
-					we_html_element::htmlIFrame('load', $this->frameset . "&pnt=eiload&step=1", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
+					, we_html_element::htmlIFrame('body', WEBEDITION_DIR . 'we_showMod.php?mod=customer&pnt=eibody&art=' . $mode . "&step=1", 'position:absolute;top:0px;bottom:45px;left:0px;right:0px;', 'border:0px;width:100%;height:100%;') .
+					we_html_element::htmlIFrame('footer', WEBEDITION_DIR . 'we_showMod.php?mod=customer&pnt=eifooter&art=' . $mode . "&step=1", 'position:absolute;height:45px;bottom:0px;left:0px;right:0px;overflow: hidden', '', '', false) .
+					we_html_element::htmlIFrame('load', WEBEDITION_DIR . 'we_showMod.php?mod=customer&pnt=eiload&step=1', 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 		));
 
 
@@ -168,7 +168,7 @@ switch (args[0]){
 				}
 			}
 
-			//' . $this->footerFrame . '.location="' . $this->frameset . '&pnt=eifooter&step="+top.step;
+			//' . $this->footerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&step="+top.step;
 
 		');
 		return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', STYLESHEET . $js, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body"), $this->getHiddens(array("art" => self::ART_EXPORT, "step" => 2)) .
@@ -255,7 +255,7 @@ switch (args[0]){
 			);
 			$js = we_html_element::jsElement(
 					$this->bodyFrame . '.document.we_form.step.value--;
-	' . $this->footerFrame . '.location="' . $this->frameset . '&pnt=eifooter&art=' . self::ART_EXPORT . '&step="+' . $this->bodyFrame . '.document.we_form.step.value;
+	' . $this->footerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&art=' . self::ART_EXPORT . '&step="+' . $this->bodyFrame . '.document.we_form.step.value;
 	' . $this->bodyFrame . '.document.we_form.submit();'
 			); //FIXME: disable next button
 		}
@@ -274,15 +274,15 @@ switch (args[0]){
 		$export_to = we_base_request::_(we_base_request::STRING, 'export_to', self::EXPORT_SERVER);
 		$path = urldecode(we_base_request::_(we_base_request::FILE, "path", ''));
 		$filename = urldecode(we_base_request::_(we_base_request::FILE, "filename", ''));
-		$js = we_html_element::jsElement($this->footerFrame . '.location="' . $this->frameset . '&pnt=eifooter&art=' . self::ART_EXPORT . '&step=5";');
+		$js = we_html_element::jsElement($this->footerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&art=' . self::ART_EXPORT . '&step=5";');
 
 		if($export_to == self::EXPORT_LOCAL){
 			$message = we_html_element::htmlSpan(array("class" => "defaultfont"), g_l('modules_customer', '[export_finished]') . "<br/><br/>" .
 					g_l('modules_customer', '[download_starting]') .
-					we_html_element::htmlA(array("href" => $this->frameset . "&pnt=eibody&art=" . self::ART_EXPORT . "&step=5&exportfile=" . $filename, 'download' => $filename), g_l('modules_customer', '[download]'))
+					we_html_element::htmlA(array("href" => WEBEDITION_DIR . 'we_showMod.php?mod=customer&pnt=eibody&art=' . self::ART_EXPORT . '&step=5&exportfile=' . $filename, 'download' => $filename), g_l('modules_customer', '[download]'))
 			);
 			return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', STYLESHEET . $js .
-					we_html_element::htmlMeta(array("http-equiv" => "refresh", "content" => "2; url=" . $this->frameset . "&pnt=eibody&art=" . self::ART_EXPORT . "&step=5&exportfile=" . $filename)), we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
+					we_html_element::htmlMeta(array("http-equiv" => "refresh", "content" => "2; url=" . WEBEDITION_DIR . 'we_showMod.php?mod=customer&pnt=eibody&art=' . self::ART_EXPORT . '&step=5&exportfile=' . $filename)), we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
 							we_html_tools::htmlDialogLayout($message, g_l('modules_customer', '[export_step4]'))
 						)
 					)
@@ -323,7 +323,7 @@ switch (args[0]){
 				exit;
 			}
 		}
-		header("Location: " . $this->frameset . "&pnt=cmd&step=99&error=download_failed");
+		header("Location: " . WEBEDITION_DIR . 'we_showMod.php?mod=customer&pnt=cmd&step=99&error=download_failed');
 		exit;
 	}
 
@@ -547,7 +547,7 @@ switch (args[0]){
 		$fileUploader = new we_fileupload_ui_base('upload');
 		$fileUploader->setExternalUiElements(array('btnUploadName' => 'next_footer'));
 		$fileUploader->setCallback('top.load.doNextAction()');
-		//$fileUploader->setForm(array('action' => $this->frameset . '&pnt=eibody&art=import&step=3&import_from=' . self::EXPORT_LOCAL . '&type=' . $type));
+		//$fileUploader->setForm(array('action' => WEBEDITION_DIR.'we_showMod.php?mod=customer&pnt=eibody&art=import&step=3&import_from=' . self::EXPORT_LOCAL . '&type=' . $type));
 		$fileUploader->setInternalProgress(array('isInternalProgress' => true, 'width' => 200));
 		$fileUploader->setFileSelectOnclick('document.we_form.import_from[1].checked = true;');
 		$fileUploader->setGenericFileName(TEMP_DIR . we_fileupload::REPLACE_BY_UNIQUEID . ($type == self::TYPE_CSV ? ".csv" : ".xml"));
@@ -760,12 +760,12 @@ function callBack(){
 						$parts = array(array("html" => $tblFrame->getHtml(), "space" => 0, "noline" => 1));
 					}else {
 						$parts = array(array("html" => we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', (!$xmlWellFormed) ? '[not_well_formed]' : '[missing_child_node]'), we_html_tools::TYPE_ALERT, 570), "space" => 0, "noline" => 1));
-						$js = we_html_element::jsElement($this->footerFrame . '.location="' . $this->frameset . '&pnt=eifooter&art=' . self::ART_IMPORT . '&step=99";');
+						$js = we_html_element::jsElement($this->footerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&art=' . self::ART_IMPORT . '&step=99";');
 					}
 					break;
 			}
 		} else {
-			$js = we_html_element::jsElement($this->footerFrame . '.location="' . $this->frameset . '&pnt=eifooter&art=' . self::ART_IMPORT . '&step=99";');
+			$js = we_html_element::jsElement($this->footerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&art=' . self::ART_IMPORT . '&step=99";');
 			$parts[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[missing_filesource]'), we_html_tools::TYPE_ALERT, 570), "space" => 0, "noline" => 1);
 		}
 
@@ -926,7 +926,7 @@ function callBack(){
 
 		if($step == 1){
 			$buttons = we_html_button::position_yes_no_cancel(
-					we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true) . we_html_button::create_button(we_html_button::NEXT, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "&pnt=eiload&cmd=export_next&step=" . $step . "';"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
+					we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true) . we_html_button::create_button(we_html_button::NEXT, "javascript:" . $this->loadFrame . ".location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=customer&pnt=eiload&cmd=export_next&step=" . $step . "';"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 			);
 		} else if($step == 4){
 			$buttons = we_html_button::position_yes_no_cancel(
@@ -947,8 +947,8 @@ function callBack(){
 			);
 		} else {
 			$buttons = we_html_button::position_yes_no_cancel(
-					we_html_button::create_button(we_html_button::BACK, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "&pnt=eiload&cmd=export_back&step=" . $step . "';") .
-					we_html_button::create_button(we_html_button::NEXT, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "&pnt=eiload&cmd=export_next&step=" . $step . "';"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
+					we_html_button::create_button(we_html_button::BACK, "javascript:" . $this->loadFrame . ".location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=customer&pnt=eiload&cmd=export_back&step=" . $step . "';") .
+					we_html_button::create_button(we_html_button::NEXT, "javascript:" . $this->loadFrame . ".location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=customer&pnt=eiload&cmd=export_next&step=" . $step . "';"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 			);
 		}
 		$content->setCol(0, 1, array("style" => "text-align:right"), $buttons);
@@ -971,13 +971,13 @@ function callBack(){
 			case "1":
 				$buttons = we_html_button::position_yes_no_cancel(
 						we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true) .
-						we_html_button::create_button(we_html_button::NEXT, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "&pnt=eiload&cmd=import_next&step=" . $step . "';"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
+						we_html_button::create_button(we_html_button::NEXT, "javascript:" . $this->loadFrame . ".location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=customer&pnt=eiload&cmd=import_next&step=" . $step . "';"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 				);
 				break;
 			case "2":
 				$buttons = we_html_button::position_yes_no_cancel(
-						we_html_button::create_button(we_html_button::BACK, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "&pnt=eiload&cmd=import_back&step=" . $step . "';") .
-						we_html_button::create_button(we_html_button::NEXT, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "&pnt=eiload&cmd=import_next&step=" . $step . "';", true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_footer'), we_html_button::create_button(we_html_button::CANCEL, "javascript:" . we_fileupload_ui_base::getJsBtnCmdStatic('cancel', 'body'))
+						we_html_button::create_button(we_html_button::BACK, "javascript:" . $this->loadFrame . ".location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=customer&pnt=eiload&cmd=import_back&step=" . $step . "';") .
+						we_html_button::create_button(we_html_button::NEXT, "javascript:" . $this->loadFrame . ".location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=customer&pnt=eiload&cmd=import_next&step=" . $step . "';", true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_footer'), we_html_button::create_button(we_html_button::CANCEL, "javascript:" . we_fileupload_ui_base::getJsBtnCmdStatic('cancel', 'body'))
 				);
 				break;
 			case "5":
@@ -1039,7 +1039,7 @@ function callBack(){
 				$head = we_html_element::jsElement('
 function doNext(){
 	' . $this->bodyFrame . '.document.we_form.step.value++;
-	' . $this->footerFrame . '.location="' . $this->frameset . '&pnt=eifooter&art=' . self::ART_EXPORT . '&step="+' . $this->bodyFrame . '.document.we_form.step.value;
+	' . $this->footerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&art=' . self::ART_EXPORT . '&step="+' . $this->bodyFrame . '.document.we_form.step.value;
 	if(' . $this->bodyFrame . '.document.we_form.step.value>3){
 		' . $this->bodyFrame . '.document.we_form.target="load";
 		' . $this->bodyFrame . '.document.we_form.pnt.value="eiload";
@@ -1061,7 +1061,7 @@ function doNext(){
 		$head = we_html_element::jsElement('
 function doNext(){
 	' . $this->bodyFrame . '.document.we_form.step.value--;
-	' . $this->footerFrame . '.location="' . $this->frameset . '&pnt=eifooter&art=' . self::ART_EXPORT . '&step="+' . $this->bodyFrame . '.document.we_form.step.value;
+	' . $this->footerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&art=' . self::ART_EXPORT . '&step="+' . $this->bodyFrame . '.document.we_form.step.value;
 	' . $this->bodyFrame . '.document.we_form.submit();
 }');
 
@@ -1244,7 +1244,7 @@ function doNext(){
 
 function doNextAction(){
 	' . $this->bodyFrame . '.document.we_form.step.value++;
-	' . $this->footerFrame . '.location="' . $this->frameset . '&pnt=eifooter&art=' . self::ART_IMPORT . '&step="+' . $this->bodyFrame . '.document.we_form.step.value;
+	' . $this->footerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&art=' . self::ART_IMPORT . '&step="+' . $this->bodyFrame . '.document.we_form.step.value;
 	if(' . $this->bodyFrame . '.document.we_form.step.value>4){
 		' . $this->bodyFrame . '.document.we_form.target="load";
 		' . $this->bodyFrame . '.document.we_form.pnt.value="eiload";
@@ -1263,7 +1263,7 @@ function doNextAction(){
 		$head = we_html_element::jsElement('
 function doNext(){
 	' . $this->bodyFrame . '.document.we_form.step.value--;
-	' . $this->footerFrame . '.location="' . $this->frameset . '&pnt=eifooter&art=' . self::ART_IMPORT . '&step="+' . $this->bodyFrame . '.document.we_form.step.value;
+	' . $this->footerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&art=' . self::ART_IMPORT . '&step="+' . $this->bodyFrame . '.document.we_form.step.value;
 	' . $this->bodyFrame . '.document.we_form.submit();
 }');
 
@@ -1397,7 +1397,7 @@ function doNext(){
 		$head = we_html_element::jsElement('
 function doNext(){
 		top.opener.top.content.treeheader.applySort();//TODO: check this adress
-		' . $this->footerFrame . '.location="' . $this->frameset . '&pnt=eifooter&art=' . self::ART_IMPORT . '&step=6";
+		' . $this->footerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&art=' . self::ART_IMPORT . '&step=6";
 		document.we_form.submit();
 }');
 

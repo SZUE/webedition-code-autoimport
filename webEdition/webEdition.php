@@ -41,15 +41,14 @@ we_base_file::cleanTempFiles();
  * @return void
  * @desc prints the functions needed for the tree.
  */
-function pWebEdition_Tree(){
+function getWebEdition_Tree(){
 	switch($_SESSION['weS']['we_mode']){
 		default:
 		case we_base_constants::MODE_NORMAL:
-			$Tree = new weMainTree("webEdition.php", "top", "self.Tree", "top.load");
-			echo $Tree->getJSTreeCode();
-			break;
+			$Tree = new weMainTree("webEdition.php", "top", "top", "top.load");
+			return $Tree->getJSTreeCode();
 		case we_base_constants::MODE_SEE:
-			echo we_html_element::jsElement('
+			return we_html_element::jsElement('
 var treeData={
 	makeNewEntry:function(){
 	}
@@ -59,7 +58,6 @@ function drawTree(){
 
 function info(text){
 }');
-			break;
 	}
 }
 
@@ -122,6 +120,11 @@ $jsmods = array_keys($jsCmd);
 $jsmods[] = 'base';
 $jsmods[] = 'tools';
 $hasGD = isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ContentType == we_base_ContentTypes::IMAGE && $GLOBALS['we_doc']->gd_support();
+
+if(!empty($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT'])){
+	echo 'alert("' . g_l('global', '[pwd][startupRegExFailed]') . '");';
+	unset($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT']);
+}
 ?>
 
 if (self.location !== top.location) {
@@ -212,6 +215,11 @@ var WebEdition={
 					prefs_saved_successfully: "<?php echo we_message_reporting::prepareMsgForJS(g_l('cockpit', '[prefs_saved_successfully]')); ?>",
 					copy_folder_not_valid: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[copy_folder_not_valid]')); ?>",
 					folder_copy_success: "<?php echo we_message_reporting::prepareMsgForJS(g_l('copyFolder', '[copy_success]')); ?>",
+					exit_multi_doc_question: "<?php echo g_l('alert', '[exit_multi_doc_question]'); ?>",
+					close_include:"<?php echo we_message_reporting::prepareMsgForJS(g_l('SEEM', '[alert][close_include]')); ?>",
+					confirm_applyFilterFolder: "<?php echo g_l('alert', '[confirm][applyWeDocumentCustomerFiltersFolder]'); ?>",
+					confirm_applyFilterDocument: "<?php echo g_l('alert', '[confirm][applyWeDocumentCustomerFiltersDocument]'); ?>",
+					untitled:"<?php echo g_l('global', '[untitled]'); ?>",
 				},
 				message_reporting:{
 					notice:"<?php echo g_l('alert', '[notice]');?>",
@@ -347,9 +355,7 @@ foreach(we_base_request::getAllTables() as $k => $v){
 <?php
 echo we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') .
  we_html_element::jsScript(JS_DIR . 'weNavigationHistory.js') .
- we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
- we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
- we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
+ YAHOO_FILES .
  we_html_element::jsScript(JS_DIR . 'keyListener.js', 'WE().handler.dealWithKeyboardShortCut = dealWithKeyboardShortCut;') .
  we_html_element::jsScript(JS_DIR . 'windows.js', 'WE().util.jsWindow = jsWindow;WE().util.jsWindow;').
 		we_html_element::jsScript(JS_DIR . 'we_tabs/we_tabs.js') .
@@ -428,10 +434,15 @@ foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do
 //-->
 </script>
 </head>
-<body id="weMainBody" onload="initWE();top.start('<?php echo $_table_to_load;?>');" onbeforeunload="doUnload()">
+<body id="weMainBody" onload="initWE();top.start('<?php echo $_table_to_load;?>');" onbeforeunload="return doUnload();">
 	<div id="headerDiv"><?php
-	$SEEM_edit_include = we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include');
-		we_main_header::pbody($SEEM_edit_include); ?>
+		$SEEM_edit_include = we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include');
+		$msg = (defined('MESSAGING_SYSTEM') && !$SEEM_edit_include);
+		?>
+		<div id="weMainHeader"><?php
+			we_main_headermenu::pbody($msg);
+			?>
+		</div>
 	</div>
 	<div id="resizeFrame"><?php
 		$_sidebarwidth = getSidebarWidth();
@@ -454,13 +465,13 @@ foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do
 		<div style="width:<?php echo $treewidth; ?>px;<?php echo $treeStyle; ?>" id="bframeDiv">
 			<?php include(WE_INCLUDES_PATH . 'baumFrame.inc.php'); ?>
 		</div>
-		<div style="position:absolute;top:0px;bottom:0px;right:<?php echo $_sidebarwidth; ?>px;left:<?php echo $treewidth; ?>px;border-left:1px solid black;overflow: hidden;" id="bm_content_frameDiv">
-			<iframe frameBorder="0" src="<?php echo WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
+		<div style="right:<?php echo $_sidebarwidth; ?>px;left:<?php echo $treewidth; ?>px;" id="bm_content_frameDiv">
+			<iframe src="<?php echo WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame"></iframe>
 		</div>
 		<?php
 		if(!(SIDEBAR_DISABLED == 1)){
 			?>
-			<div style="position:absolute;top:0px;bottom:0px;right:0px;width:<?php echo $_sidebarwidth; ?>px;border-left:1px solid black;" id="sidebarDiv">
+			<div style="width:<?php echo $_sidebarwidth; ?>px;" id="sidebarDiv">
 				<?php
 				$weFrame = new we_sidebar_frames();
 				$weFrame->getHTML('');
@@ -475,9 +486,11 @@ foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do
 	</div>
 	<?php
 //	get the frameset for the actual mode.
-	we_main_header::pJS($SEEM_edit_include);
+	echo we_base_menu::getJS() .
+	((defined('MESSAGING_SYSTEM') && !$SEEM_edit_include) ?
+		we_messaging_headerMsg::getJS() : '') .
 //	get the Treefunctions for docselector
-	pWebEdition_Tree();
+	getWebEdition_Tree();
 	?>
 </body>
 </html>

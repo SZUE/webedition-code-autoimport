@@ -149,9 +149,7 @@ class we_workflow_view extends we_modules_view{
 			$content .=$this->workflowHiddens();
 		}
 		$content .='</form>';
-		$body = we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'), $content);
-
-		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET . $this->getPropertyJS(), $body);
+		return we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'), $content);
 	}
 
 	/**
@@ -320,13 +318,10 @@ class we_workflow_view extends we_modules_view{
 			++$counter;
 		}
 		return $ids .
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
+			YAHOO_FILES .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/dom-min.js') .
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/datasource-min.js') .
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/animation-min.js') .
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/json-min.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/autocomplete-min.js') .
 			weSuggest::getYuiFiles() . '
 <table style="margin-right:30px;">
@@ -338,7 +333,7 @@ class we_workflow_view extends we_modules_view{
 			</table></td>
 	</tr>
 	<tr style="vertical-align:top">
-		<td colspan="2" nowrap>' . we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();addStep()", true, 30) . we_html_button::create_button(we_html_button::TRASH, "javascript:top.content.setHot();delStep()", true, 30) . '</td></tr>
+		<td colspan="2">' . we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();addStep()", true, 30) . we_html_button::create_button(we_html_button::TRASH, "javascript:top.content.setHot();delStep()", true, 30) . '</td></tr>
 </table>' .
 			$yuiSuggest->getYuiJs() .
 			we_html_element::htmlHiddens(array(
@@ -361,7 +356,7 @@ class we_workflow_view extends we_modules_view{
 		if($headline){
 			return '<table class="default" style="margin:15px 0px 15px 24px;">
 			<tr>
-				<td style="vertical-align:top" class="defaultgray">' . $headline . '</td>
+				<td style="vertical-align:top" class="defaultfont lowContrast">' . $headline . '</td>
 				<td>' . $content . '</td>
 			</tr>
 </table>';
@@ -398,18 +393,28 @@ class we_workflow_view extends we_modules_view{
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', 'onchange="top.content.setHot();" readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden($IDName, $IDValue), $button);
 	}
 
-	function getJSTopCode(){
+	function getJSTop(){
 		$mod = we_base_request::_(we_base_request::STRING, 'mod', '');
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 		return we_html_element::jsElement('
 parent.document.title="' . $title . '";
-var g_l = {
+WE().consts.g_l.workflow.view={
 	save_changed_workflow:"' . g_l('modules_workflow', '[save_changed_workflow]') . '",
 	save_question:"' . g_l('modules_workflow', '[save_question]') . '",
 	delete_question:"' . g_l('modules_workflow', '[delete_question]') . '",
 	nothing_to_delete: "' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[nothing_to_delete]')) . '",
 	nothing_to_save: "' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[nothing_to_save]')) . '"
+};
+WE().consts.g_l.workflow.prop={
+	worktime_empty: "' . addslashes(g_l('modules_workflow', '[worktime_empty]')) . '",
+	user_empty:"' . addslashes(g_l('modules_workflow', '[user_empty]')) . '",
+	del_last_step:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[del_last_step]')) . '",
+	del_last_task:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[del_last_task]')) . '",
+	name_empty:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[name_empty]')) . '",
+	folders_empty:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[folders_empty]')) . '",
+	doctype_empty:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[doctype_empty]')) . '",
+	objects_empty:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[objects_empty]')) . '"
 };
 ') .
 			we_html_element::jsScript(WE_JS_MODULES_DIR . 'workflow/workflow_top.js');
@@ -426,20 +431,10 @@ function submitForm(){
 ');
 	}
 
-	function getPropertyJS(){
+	function getJSProperty(){
 		return we_html_element::jsElement('
 var loaded;
 var uid="' . $this->uid . '";
-var g_l={
-	worktime_empty: "' . addslashes(g_l('modules_workflow', '[worktime_empty]')) . '",
-	user_empty:"' . addslashes(g_l('modules_workflow', '[user_empty]')) . '",
-	del_last_step:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[del_last_step]')) . '",
-	del_last_task:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[del_last_task]')) . '",
-	name_empty:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[name_empty]')) . '",
-	folders_empty:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[folders_empty]')) . '",
-	doctype_empty:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[doctype_empty]')) . '",
-	objects_empty:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[objects_empty]')) . '"
-};
 ' . (!$this->show ? '
 
 function getNumOfDocs(){
@@ -450,14 +445,13 @@ function getNumOfDocs(){
 	}
 
 	function processCommands(){
-
 		switch(we_base_request::_(we_base_request::STRING, 'wcmd', '')){
 			case 'new_workflow':
 				$this->workflowDef = new we_workflow_workflow();
 				$this->page = self::PAGE_PROPERTIES;
 				echo we_html_element::jsElement('
-top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader";
-top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
+top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=workflow&pnt=edheader";
+top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=workflow&pnt=edfooter";
 					');
 				break;
 			case 'add_cat':
@@ -578,8 +572,8 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 				break;
 			case 'reload':
 				echo we_html_element::jsElement('
-					top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&page=' . $this->page . '&txt=' . $this->workflowDef->Text . '";
-					top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
+					top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=workflow&pnt=edheader&page=' . $this->page . '&txt=' . $this->workflowDef->Text . '";
+					top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=workflow&pnt=edfooter";
 					');
 				break;
 			case 'workflow_edit':
@@ -639,8 +633,8 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 					$this->page = self::PAGE_PROPERTIES;
 					$this->documentDef->load($id);
 					echo we_html_element::jsElement('
-					top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&art=1&txt=' . $this->documentDef->document->Text . '";
-					top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter&art=1";
+					top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=workflow&pnt=edheader&art=1&txt=' . $this->documentDef->document->Text . '";
+					top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=workflow&pnt=edfooter&art=1";
 					');
 				}
 				break;
@@ -649,16 +643,15 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 					if(!permissionhandler::hasPerm('DELETE_WORKFLOW')){
 						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 						return;
-					} else {
+					}
 
-						$this->workflowDef = new we_workflow_workflow($id);
-						if($this->workflowDef->delete()){
-							$this->workflowDef = new we_workflow_workflow();
-							echo we_html_element::jsElement('top.content.treeData.deleteEntry(' . $id . ',"folder");' .
-								we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[delete_ok]'), we_message_reporting::WE_MESSAGE_NOTICE));
-						} else {
-							echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[delete_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
-						}
+					$this->workflowDef = new we_workflow_workflow($id);
+					if($this->workflowDef->delete()){
+						$this->workflowDef = new we_workflow_workflow();
+						echo we_html_element::jsElement('top.content.treeData.deleteEntry(' . $id . ',"folder");' .
+							we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[delete_ok]'), we_message_reporting::WE_MESSAGE_NOTICE));
+					} else {
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[delete_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
 					}
 				}
 				break;
@@ -704,33 +697,27 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 			$this->workflowDef->addNewTask();
 		}
 
-		foreach(array_keys($this->workflowDef->steps) as $skey){
-			$this->workflowDef->steps[$skey]->workflowID = $this->workflowDef->ID;
+		foreach($this->workflowDef->steps as $skey => &$step){
+			$step->workflowID = $this->workflowDef->ID;
 
 			if(($tmp = we_base_request::_(we_base_request::INT, $this->uid . '_step' . $skey . '_sid'))){
-				$this->workflowDef->steps[$skey]->ID = $tmp;
+				$step->ID = $tmp;
 			}
 
-			$this->workflowDef->steps[$skey]->stepCondition = we_base_request::_(we_base_request::BOOL, $this->uid . '_step' . $skey . '_and', $this->workflowDef->steps[$skey]->stepCondition);
+			$step->stepCondition = we_base_request::_(we_base_request::BOOL, $this->uid . '_step' . $skey . '_and', $step->stepCondition);
+			$step->Worktime = we_base_request::_(we_base_request::FLOAT, $this->uid . '_step' . $skey . '_Worktime', $step->Worktime);
+			$step->timeAction = we_base_request::_(we_base_request::BOOL, $this->uid . '_step' . $skey . '_timeAction', $step->timeAction);
 
-			$this->workflowDef->steps[$skey]->Worktime = we_base_request::_(we_base_request::FLOAT, $this->uid . '_step' . $skey . '_Worktime', $this->workflowDef->steps[$skey]->Worktime);
-
-
-			$this->workflowDef->steps[$skey]->timeAction = we_base_request::_(we_base_request::BOOL, $this->uid . '_step' . $skey . '_timeAction', $this->workflowDef->steps[$skey]->timeAction);
-
-			foreach(array_keys($this->workflowDef->steps[$skey]->tasks) as $tkey){
-				$this->workflowDef->steps[$skey]->tasks[$tkey]->stepID = $this->workflowDef->steps[$skey]->ID;
+			foreach($step->tasks as $tkey => &$task){
+				$task->stepID = $this->workflowDef->steps[$skey]->ID;
 				if(($id = we_base_request::_(we_base_request::INT, $this->uid . '_task_' . $skey . '_' . $tkey . '_tid'))){
-					$this->workflowDef->steps[$skey]->tasks[$tkey]->ID = $id;
+					$task->ID = $id;
 				}
 
-				$this->workflowDef->steps[$skey]->tasks[$tkey]->userID = we_base_request::_(we_base_request::INT, $this->uid . '_task_' . $skey . '_' . $tkey . '_userid', $this->workflowDef->steps[$skey]->tasks[$tkey]->userID);
-
-				$this->workflowDef->steps[$skey]->tasks[$tkey]->username = we_base_request::_(we_base_request::STRING, $this->uid . '_task_' . $skey . '_' . $tkey . '_usertext', $this->workflowDef->steps[$skey]->tasks[$tkey]->username); //FIXME: this is a path to a user
-
-				$this->workflowDef->steps[$skey]->tasks[$tkey]->Edit = we_base_request::_(we_base_request::BOOL, $this->uid . '_task_' . $skey . '_' . $tkey . '_Edit', $this->workflowDef->steps[$skey]->tasks[$tkey]->Edit);
-
-				$this->workflowDef->steps[$skey]->tasks[$tkey]->Mail = we_base_request::_(we_base_request::BOOL, $this->uid . '_task_' . $skey . '_' . $tkey . '_Mail', $this->workflowDef->steps[$skey]->tasks[$tkey]->Mail);
+				$task->userID = we_base_request::_(we_base_request::INT, $this->uid . '_task_' . $skey . '_' . $tkey . '_userid', $task->userID);
+				$task->username = we_base_request::_(we_base_request::STRING, $this->uid . '_task_' . $skey . '_' . $tkey . '_usertext', $task->username); //FIXME: this is a path to a user
+				$task->Edit = we_base_request::_(we_base_request::BOOL, $this->uid . '_task_' . $skey . '_' . $tkey . '_Edit', $task->Edit);
+				$task->Mail = we_base_request::_(we_base_request::BOOL, $this->uid . '_task_' . $skey . '_' . $tkey . '_Mail', $task->Mail);
 			}
 		}
 	}
@@ -740,15 +727,12 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 			return $this->getObjectInfo();
 		}
 
-		$_space = 100;
-
-
 		//	Part - file-information
 		$_parts = array(
 			array(
 				'headline' => g_l('weEditorInfo', '[content_type]'),
 				'html' => g_l('weEditorInfo', '[' . $this->documentDef->document->ContentType . ']'),
-				'space' => $_space,
+				'space' => 100,
 				'noline' => (($this->documentDef->document->ContentType != we_base_ContentTypes::FOLDER && $this->documentDef->workflow->Type != we_workflow_workflow::OBJECT) ? 1 : 0)
 			)
 		);
@@ -758,7 +742,7 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 			$_parts[] = array(
 				'headline' => g_l('weEditorInfo', '[file_size]'),
 				'html' => we_base_file::getHumanFileSize($fs) . '&nbsp;KB&nbsp;(' . we_base_file::getHumanFileSize($fs, we_base_file::SZ_BYTE) . ')',
-				'space' => $_space
+				'space' => 100
 			);
 		}
 
@@ -766,7 +750,7 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 		$_parts[] = array(
 			'headline' => g_l('weEditorInfo', '[creation_date]'),
 			'html' => date(g_l('weEditorInfo', '[date_format]'), $this->documentDef->document->CreationDate),
-			'space' => $_space,
+			'space' => 100,
 			'noline' => 1
 		);
 
@@ -776,7 +760,7 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 				$_parts[] = array(
 					'headline' => g_l('modules_users', '[created_by]'),
 					'html' => $this->db->f('First') . ' ' . $this->db->f('Second') . ' (' . $this->db->f('username') . ')',
-					'space' => $_space,
+					'space' => 100,
 					'noline' => 1
 				);
 			}
@@ -785,7 +769,7 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 		$_parts[] = array(
 			'headline' => g_l('weEditorInfo', '[changed_date]'),
 			'html' => date(g_l('weEditorInfo', '[date_format]'), $this->documentDef->document->ModDate),
-			'space' => $_space,
+			'space' => 100,
 			'noline' => 1
 		);
 
@@ -795,7 +779,7 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 				$_parts[] = array(
 					'headline' => g_l('modules_users', '[changed_by]'),
 					'html' => $this->db->f('First') . ' ' . $this->db->f('Second') . ' (' . $this->db->f('username') . ')',
-					'space' => $_space,
+					'space' => 100,
 					'noline' => 1
 				);
 			}
@@ -805,7 +789,7 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 			$_parts[] = array(
 				'headline' => g_l('weEditorInfo', '[lastLive]'),
 				'html' => ($this->documentDef->document->Published ? date(g_l('weEditorInfo', '[date_format]'), $this->documentDef->document->Published) : '-'),
-				'space' => $_space
+				'space' => 100
 			);
 		}
 
@@ -831,19 +815,19 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 			$_parts[] = array(
 				'headline' => g_l('weEditorInfo', '[local_path]'),
 				'html' => '<a href="#" style="text-decoration:none;cursor:text" class="defaultfont" onMouseOver="showtip(this,event,\'' . $rp . '\')" onMouseOut="hidetip()"  onclick="openToEdit(\'' . $this->documentDef->document->Table . '\',\'' . $this->documentDef->document->ID . '\',\'' . $this->documentDef->document->ContentType . '\')" >' . we_base_util::shortenPath($rp, 74) . '</a>',
-				'space' => $_space,
+				'space' => 100,
 				'noline' => 1
 			);
 
 			$_parts[] = array(
 				'headline' => g_l('weEditorInfo', '[http_path]'),
 				'html' => ($showlink ? '<a href="' . $http . '" target="_blank" onMouseOver="showtip(this,event,\'' . $http . '\')" onMouseOut="hidetip()">' : '') . we_base_util::shortenPath($http, 74) . ($showlink ? '</a>' : ''),
-				'space' => $_space
+				'space' => 100
 			);
 			$_parts[] = array(
 				'headline' => '',
 				'html' => '<a href="#" onclick="openToEdit(\'' . $this->documentDef->document->Table . '\',\'' . $this->documentDef->document->ID . '\',\'' . $this->documentDef->document->ContentType . '\')" >' . g_l('weEditorInfo', '[openDocument]') . '</a>',
-				'space' => $_space
+				'space' => 100
 			);
 		}
 
@@ -862,26 +846,24 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 	}
 
 	function getObjectInfo(){
-		$_space = 150;
-
 		//	Dokument properties
 		$_parts = array(
 			array(
 				'headline' => 'ID',
 				'html' => $this->documentDef->document->ID,
-				'space' => $_space,
+				'space' => 150,
 				'noline' => 1
 			),
 			array(
 				'headline' => g_l('weEditorInfo', '[content_type]'),
 				'html' => g_l('weEditorInfo', '[' . $this->documentDef->document->ContentType . ']'),
-				'space' => $_space,
+				'space' => 150,
 			),
 			// publish information
 			array(
 				'headline' => g_l('weEditorInfo', '[creation_date]'),
 				'html' => date(g_l('weEditorInfo', '[date_format]'), $this->documentDef->document->CreationDate),
-				'space' => $_space,
+				'space' => 150,
 				'noline' => 1
 			)
 		);
@@ -891,7 +873,7 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 			$_parts[] = array(
 				'headline' => g_l('modules_users', '[created_by]'),
 				'html' => $this->db->f('First') . ' ' . $this->db->f('Second') . ' (' . $this->db->f('username') . ')',
-				'space' => $_space,
+				'space' => 150,
 				'noline' => 1
 			);
 		}
@@ -899,7 +881,7 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 		$_parts[] = array(
 			'headline' => g_l('weEditorInfo', '[changed_date]'),
 			'html' => date(g_l('weEditorInfo', '[date_format]'), $this->documentDef->document->ModDate),
-			'space' => $_space,
+			'space' => 150,
 			'noline' => 1
 		);
 
@@ -908,7 +890,7 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 			$_parts[] = array(
 				'headline' => g_l('modules_users', '[changed_by]'),
 				'html' => $this->db->f('First') . ' ' . $this->db->f('Second') . ' (' . $this->db->f('username') . ')',
-				'space' => $_space,
+				'space' => 150,
 				'noline' => 1
 			);
 		}
@@ -916,13 +898,13 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 		$_parts[] = array(
 			'headline' => g_l('weEditorInfo', '[lastLive]'),
 			'html' => ($this->documentDef->document->Published ? date(g_l('weEditorInfo', '[date_format]'), $this->documentDef->document->Published) : '-'),
-			'space' => $_space,
+			'space' => 150,
 		);
 
 		$_parts[] = array(
 			'headline' => '',
 			'html' => '<a href="#" onclick="openToEdit(\'' . $this->documentDef->document->Table . '\',\'' . $this->documentDef->document->ID . '\',\'' . $this->documentDef->document->ContentType . '\')" >' . g_l('weEditorInfo', '[openDocument]') . '</a>',
-			'space' => $_space
+			'space' => 150
 		);
 
 		$_parts[] = array(
@@ -982,14 +964,14 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 			if($remained['hour'] < 0){
 				if($sk > $current){
 					$finished_font = 'middlefont';
-					$notfinished_font = 'middlefontgray';
+					$notfinished_font = 'middlefont lowContrast';
 				} else {
-					$finished_font = 'middlefontred';
-					$notfinished_font = 'middlefontred';
+					$finished_font = 'middlefont highlightElementChanged';
+					$notfinished_font = 'middlefont highlightElementChanged';
 				}
 			} else {
 				$finished_font = 'middlefont';
-				$notfinished_font = 'middlefontgray';
+				$notfinished_font = 'middlefont lowContrast';
 			}
 
 			$end = date(g_l('weEditorInfo', '[date_format]'), $sv->startDate + round($workflowStep->Worktime * 3600));
@@ -1066,7 +1048,7 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 		$wfType = f('SELECT ' . WORKFLOW_TABLE . '.Type as Type FROM ' . WORKFLOW_TABLE . ',' . WORKFLOW_DOC_TABLE . ' WHERE ' . WORKFLOW_DOC_TABLE . '.workflowID=' . WORKFLOW_TABLE . '.ID AND ' . WORKFLOW_DOC_TABLE . '.ID=' . intval($workflowDocument->ID), 'Type', $db);
 		return '<table class="default" style="margin-right:15px;">
 		<tr><td>' . we_html_tools::htmlDialogBorder3(730, 300, $content, $headline) . '</td></tr>
-		<tr><td style="padding-top:10px;">' . we_html_button::create_button('logbook', "javascript:new (WE().util.jsWindow)(window, '" . $this->frameset . "&pnt=log&art=" . $workflowDocument->document->ID . "&type=" . $wfType . "','workflow_history',-1,-1,640,480,true,false,true);") . '</td></tr>		</table>';
+		<tr><td style="padding-top:10px;">' . we_html_button::create_button('logbook', "javascript:new (WE().util.jsWindow)(window, '" . WEBEDITION_DIR . 'we_showMod.php?mod=wrokflow&pnt=log&art=' . $workflowDocument->document->ID . "&type=" . $wfType . "','workflow_history',-1,-1,640,480,true,false,true);") . '</td></tr>		</table>';
 	}
 
 	static function getLogForDocument($docID, $type = 0){//type is an string-array
@@ -1082,8 +1064,6 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 		);
 
 		$logs = we_workflow_log::getLogForDocument($docID, 'DESC', $type);
-		$counter = 0;
-
 		$offset = we_base_request::_(we_base_request::INT, 'offset', 0);
 		$art = we_base_request::_(we_base_request::INT, 'art', '');
 		$numRows = we_workflow_log::NUMBER_LOGS;
@@ -1091,7 +1071,7 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 
 		foreach($logs as $v){
 			$foo = getHash('SELECT First,Second,username FROM ' . USER_TABLE . ' WHERE ID=' . intval($v['userID']), $db);
-			$content[$counter] = array(
+			$content[] = array(
 				array(
 					'dat' => '<div class="middlefont">' . $v['Type'] . '</div>',
 					'height' => '',
@@ -1113,19 +1093,17 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 					'align' => 'left',
 				),
 			);
-
-			++$counter;
 		}
 
 		$nextprev = '<table class="default"><tr><td>' .
 			($offset ?
-				we_html_button::create_button(we_html_button::BACK, $this->frameset . "&pnt=log&art=$art&type=$type&offset=" . ($offset - $numRows)) :
+				we_html_button::create_button(we_html_button::BACK, WEBEDITION_DIR . 'we_showMod.php?mod=workflow&pnt=log&art=' . $art . '&type=' . $type . '&offset=' . ($offset - $numRows)) :
 				we_html_button::create_button(we_html_button::BACK, '', false, 100, 22, '', '', true)
 			) .
 			'</td><td class="defaultfont" style="padding: 0 10px 0 10px;"><b>' . (($anz) ? $offset + 1 : 0) . '-' .
 			(($anz - $offset) < $numRows ? $anz : $offset + $numRows) . ' ' . g_l('global', '[from]') . ' ' . $anz . '</b></td><td>' .
 			((($offset + $numRows) < $anz) ?
-				we_html_button::create_button(we_html_button::NEXT, $this->frameset . "&pnt=log&art=$art&type=$type&offset=" . ($offset + $numRows)/* . "&order=$order" */) :
+				we_html_button::create_button(we_html_button::NEXT, WEBEDITION_DIR . 'we_showMod.php?mod=workflow&pnt=log&art=' . $art . '&type=' . $type . '&offset=' . ($offset + $numRows)/* . "&order=$order" */) :
 				we_html_button::create_button(we_html_button::NEXT, '', '', 100, 22, '', '', true)
 			) .
 			'</td><td></tr></table>';
@@ -1135,7 +1113,7 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 
 		return ($logs ?
 				we_html_tools::htmlDialogLayout(we_html_tools::htmlDialogBorder3(580, 300, $content, $headlines), '', $buttonsTable) :
-				we_html_tools::htmlDialogLayout('<div style="width:500px;text-align:center" class="middlefontgray">-- ' . g_l('modules_workflow', '[log_is_empty]') . ' --</div>', '', we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();")));
+				we_html_tools::htmlDialogLayout('<div style="width:500px;text-align:center" class="middlefont">-- ' . g_l('modules_workflow', '[log_is_empty]') . ' --</div>', '', we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();")));
 	}
 
 	function getLogQuestion(){
@@ -1297,7 +1275,7 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 	}
 
 	public function getHomeScreen(){
-		$GLOBALS['we_head_insert'] = $this->getPropertyJS();
+		$GLOBALS['we_head_insert'] = $this->getJSProperty();
 		$GLOBALS['we_body_insert'] = '<form name="we_form">' . $this->getHiddens() . '</form>';
 		$content = we_html_button::create_button("fat:new_workflow,fa-lg fa-gears", "javascript:top.opener.top.we_cmd('new_workflow');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_WORKFLOW"));
 

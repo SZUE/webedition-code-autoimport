@@ -321,13 +321,13 @@ function jump(val) {
 			<td width="100"></td>
 		</tr>
 		<tr>
-			<td class="defaultgray">' . g_l('modules_glossary', '[search]') . '</td>
+			<td class="defaultfont lowContrast">' . g_l('modules_glossary', '[search]') . '</td>
 			<td colspan="2">' . we_html_tools::htmlTextInput('Keyword', 24, we_base_request::_(we_base_request::STRING, 'Keyword', ''), "", "style=\"width: 430px\"") . '</td>
 			<td></td>
 			<td>' . $button . '</td>
 		</tr>
 		<tr>
-			<td class="defaultgray" style="padding-top:12px;">' . g_l('modules_glossary', '[view]') . '</td>
+			<td class="defaultfont lowContrast" style="padding-top:12px;">' . g_l('modules_glossary', '[view]') . '</td>
 			<td>' . we_html_tools::htmlSelect("Rows", $_rows, 1, $Search->Rows, "", array('onchange' => "SubmitForm();")) . '</td>
 			<td>' . we_html_forms::checkboxWithHidden(we_base_request::_(we_base_request::BOOL, 'GreenOnly'), "GreenOnly", g_l('modules_glossary', '[show_only_visible_items]'), false, "defaultfont", "jump(0);") . '</td>
 			<td></td>

@@ -134,15 +134,10 @@ function we_tag_banner($attribs, $content){
 		//$content = getHtmlTag('nolayer', array(),$noscript);    //  nolayer does not exist
 		$content = $noscript;
 
-		//    some more attribs for the iframe
-		$newAttribs['marginwidth'] = 0;
-		$newAttribs['marginheight'] = 0;
-		$newAttribs['frameborder'] = 0;
-		$newAttribs['scrolling'] = 'no';
 
 		return getHtmlTag('iframe', $newAttribs, $content);
 	}
-	return ($GLOBALS["WE_MAIN_DOC"]->IsDynamic ?
+	return ($GLOBALS['WE_MAIN_DOC']->IsDynamic ?
 					we_banner_banner::getBannerCode($GLOBALS["WE_MAIN_DOC"]->ID, $paths, $target, $width, $height, $GLOBALS["WE_MAIN_DOC"]->DocType, $GLOBALS["WE_MAIN_DOC"]->Category, $bannername, $link, "", $bannerclick, $getbanner, "", $page, $GLOBALS["WE_MAIN_DOC"]->InWebEdition, $xml) :
 					($type === "cookie" ?
 							$noscript :

@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_exim_searchPatterns{
+
 	public $doc_patterns = array(
 		'id' => array(
 			'/<(we:include\s*[^>]*\stype\s*=\s*[\"\']document[\"\'][^>]*\sid\s*=\s*[\"\'])(\d+)([\"\'][^>]*)>/si',
@@ -45,16 +46,7 @@ class we_exim_searchPatterns{
 		'path' => array());
 	public $class_patterns = array();
 	public $ext_patterns = array();
-	public $wysiwyg_patterns = array(
-		'doc' => array(
-			// search wysiwyg textareas
-			'/(href\s*=\s*[\'\"]' . we_base_link::TYPE_INT_PREFIX . ')(\d+)([^\"\']*[\"\'])/si',
-			'/(src\s*=\s*[\'\"]' . we_base_link::TYPE_INT_PREFIX . ')(\d+)([^\"\']*[\"\'])/si',
-		),
-		'obj' => array(
-			'/(href\s*=\s*[\"\']' . we_base_link::TYPE_OBJ_PREFIX . ')(\d+)([^\"\']*[\"\'])/si'
-		)
-	);
+	public $wysiwyg_patterns;
 	public $navigation_patterns = array(
 		'/<(we:navigation\s*[^>]*\sid\s*=["\'])(\d+)(["\'][^>]*)>/si',
 		'/<(we:navigation\s*[^>]*\sparentid\s*=["\'])(\d+)(["\'][^>]*)>/si'
@@ -75,6 +67,16 @@ class we_exim_searchPatterns{
 	);
 
 	public function __construct(){
+		$this->wysiwyg_patterns = array(
+			'doc' => array(
+				// search wysiwyg textareas
+				'/(href\s*=\s*[\'\"]' . we_base_link::TYPE_INT_PREFIX . ')(\d+)([^\"\']*[\"\'])/si',
+				'/(src\s*=\s*[\'\"]' . we_base_link::TYPE_INT_PREFIX . ')(\d+)([^\"\']*[\"\'])/si',
+			),
+			'obj' => array(
+				'/(href\s*=\s*[\"\']' . we_base_link::TYPE_OBJ_PREFIX . ')(\d+)([^\"\']*[\"\'])/si'
+			)
+		);
 		$_pats = array(
 			'a' => 'id',
 			'addDelNewsletterEmail' => array('id', 'mailid'),

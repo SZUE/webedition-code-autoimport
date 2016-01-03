@@ -81,8 +81,8 @@ if($we_version){
 
 //	5th credits
 $_table->setCol($_actRow++, 0, array("class" => "defaultfont small row5"), '<div id="credits">' .
-	g_l('global', '[developed_further_by]') . ': <a href="http://www.webedition.org/" target="_blank" ><strong>webEdition e.V.</strong></a><br/>' .
-	g_l('global', '[with]') . ' <b><a href="http://credits.webedition.org/?language=' . $GLOBALS["WE_LANGUAGE"] . '" target="_blank" >' . g_l('global', '[credits_team]') . '</a></b></span>');
+	g_l('global', '[developed_further_by]') . ': <a href="http://www.webedition.org/" target="_blank" ><strong>webEdition e.V.</strong></a>' /*.
+	g_l('global', '[with]') . ' <b><a href="http://credits.webedition.org/?language=' . $GLOBALS["WE_LANGUAGE"] . '" target="_blank" >' . g_l('global', '[credits_team]') . '</a></b>'*/);
 
 //	7th agency
 if(is_readable(WEBEDITION_PATH . 'agency.php')){
@@ -99,7 +99,7 @@ if(!empty($GLOBALS["loginpage"])){
 	$_loginTable->setCol($loginRow++, 0, array(), we_html_tools::htmlTextInput('WE_LOGIN_username', 25, '', 255, 'id="username" ', 'text', 0, 0));
 	$_loginTable->setCol($loginRow++, 0, array("class" => "small row5"), we_html_baseElement::getHtmlCode(new we_html_baseElement("label", true, array("for" => 'password'), g_l('global', '[password]'))));
 	$_loginTable->setCol($loginRow++, 0, array(), we_html_tools::htmlTextInput('WE_LOGIN_password', 25, '', 255, 'id="password" ', 'password', 0, 0));
-
+	$_loginTable->setCol($loginRow++, 0, array(), '<a href="' . WEBEDITION_DIR . 'resetpwd.php">' . g_l('global', '[pwd][forgotten]') . '</a>');
 
 	$_table->addRow(2);
 	$_table->setCol($_actRow++, 0, array('class' => 'spaceTable'), $_loginTable->getHtml());

@@ -45,9 +45,8 @@ class we_sidebar_frames{
 			<div id="weSidebarHeader" name="weSidebarHeader">
 				<div id="Headline"><?php echo g_l('sidebar', '[headline]'); ?></div>
 				<div id="CloseButton">
-					<span class="fa-stack close" id="###closeId###" onclick="WE().layout.sidebar.close();">
-						<i class="fa fa-circle-o fa-stack-2x"></i>
-						<i class="fa fa-close fa-stack-1x "></i>
+					<span class="close" id="###closeId###" onclick="WE().layout.sidebar.close();">
+						<i class="fa fa-close fa-lg "></i>
 					</span>
 
 				</div>

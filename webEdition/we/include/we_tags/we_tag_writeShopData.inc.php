@@ -21,7 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-we_base_moduleInfo::isActive('shop');
+we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP);
 
 /**
  * This function writes the shop data (order) to the database
@@ -121,7 +121,7 @@ function we_tag_writeShopData($attribs){
 					'DateOrder' => sql_function('NOW()'),
 					'DateShipping' => 0,
 					'Datepayment' => 0,
-					'strSerial' => we_serialize($shoppingItem['serial']),
+					'strSerial' => we_serialize($shoppingItem['serial'], 'json'),
 					'shopname' => $shopname
 			)))){
 

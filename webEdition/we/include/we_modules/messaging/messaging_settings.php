@@ -30,14 +30,13 @@ we_html_tools::protect();
 $messaging = new we_messaging_messaging($_SESSION['weS']['we_data']['we_messagin_setting']);
 $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 $messaging->init($_SESSION['weS']['we_data']['we_messagin_setting']);
-echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[settings]'));
-?>
-<?php
+echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[settings]')) .
+ STYLESHEET;
+
 if(we_base_request::_(we_base_request::STRING, 'mcmd') === 'save_settings' && ($cstep = we_base_request::_(we_base_request::STRING, 'check_step'))){
 	if($messaging->save_settings(array('check_step' => $cstep))){
-		echo we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE);
+		echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE));
 		?>
-		</script>
 		</head>
 		<body onload="window.close();"></body>
 		</html>
@@ -52,11 +51,6 @@ function save() {
 	}
 //-->
 </script>
-<?php
-we_html_tools::protect();
-
-echo STYLESHEET;
-?>
 
 <body class="weDialogBody">
 	<form name="settings" action="<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_settings.php" method="post">
@@ -79,7 +73,7 @@ echo STYLESHEET;
 </table>';
 
 		$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, "javascript:save()"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:window.close();")
-			)
+				)
 		;
 
 		echo we_html_tools::htmlDialogLayout($input_tbl, $heading, $_buttons);

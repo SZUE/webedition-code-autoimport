@@ -294,7 +294,6 @@ function we_tag_saveRegisteredUser_processRequest(array $protected, array $allow
 			case 'Username': ### QUICKFIX !!!
 				$set['Username'] = we_base_util::rmPhp($val);
 				$set['Path'] = '/' . we_base_util::rmPhp($val);
-				$set['Text'] = we_base_util::rmPhp($val);
 				break;
 			case 'Text':
 			case 'Path':

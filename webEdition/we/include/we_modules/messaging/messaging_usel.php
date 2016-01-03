@@ -58,8 +58,8 @@ if(we_base_request::_(we_base_request::STRING, 'mode') === 'save_addrbook'){
 
 	echo 'function doOnLoad() {' .
 	($messaging->save_addresses($addrbook) ?
-		we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[addr_book_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) :
-		we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[error_occured]'), we_message_reporting::WE_MESSAGE_ERROR)
+			we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[addr_book_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) :
+			we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[error_occured]'), we_message_reporting::WE_MESSAGE_ERROR)
 	) . '}';
 } else {
 
@@ -72,14 +72,11 @@ if(we_base_request::_(we_base_request::STRING, 'mode') === 'save_addrbook'){
 
 $t_arr = $messaging->get_addresses();
 
+$addrbook_str = array();
 if($t_arr){
-	$addrbook_str = array();
 	foreach($t_arr as $elem){
 		$addrbook_str[] = '["' . $elem[0] . '","' . $elem[1] . '","' . $elem[2] . '"]';
 	}
-	$addrbook_str = implode(',', $addrbook_str);
-} else {
-	$addrbook_str = '';
 }
 
 $rcpts_str = array();
@@ -93,7 +90,7 @@ foreach($rcpts as $rcpt){
 ?>
 
 delta_sel = [];
-addrbook_sel = [<?php echo $addrbook_str ?>];
+addrbook_sel = [<?php echo implode(',', $addrbook_str); ?>];
 current_sel = [<?php echo implode(',', $rcpts_str); ?>];
 
 function init() {
@@ -111,50 +108,50 @@ function init() {
 }
 
 function browse_users_window() {
-	new (WE().util.jsWindow)(window, "<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_usel_browse_frameset.php?we_transaction=<?php echo $transaction; ?>", "messaging_usel_browse", -1, -1, 350, 330, true, false, true, false);
-		}
+	new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "messaging_usel_browse_frameset.php?we_transaction=<?php echo $transaction; ?>", "messaging_usel_browse", -1, -1, 350, 330, true, false, true, false);
+}
 
-		function save_addrbook() {
-			var submit_str = "";
-			var i, j;
+function save_addrbook() {
+	var submit_str = "";
+	var i, j;
 
-			if (addrbook_sel.length > 0) {
-				for (i = 0; i < addrbook_sel.length; i++) {
-					for (j = 0; j < addrbook_sel[i].length; j++) {
-						submit_str += encodeURI(addrbook_sel[i][j]) + ',';
-					}
-					submit_str = submit_str.substr(0, submit_str.length - 1);
-
-					submit_str += "\t";
-				}
-
-				submit_str = submit_str.substr(0, submit_str.length - 1);
+	if (addrbook_sel.length > 0) {
+		for (i = 0; i < addrbook_sel.length; i++) {
+			for (j = 0; j < addrbook_sel[i].length; j++) {
+				submit_str += encodeURI(addrbook_sel[i][j]) + ',';
 			}
-			document.addrbook_data.addrbook_arr.value = submit_str;
-			document.addrbook_data.submit();
+			submit_str = submit_str.substr(0, submit_str.length - 1);
+
+			submit_str += "\t";
 		}
 
-		function dump_entries(u_type) {
-			var i;
-			var new_arr = current_sel;
-			var pos;
+		submit_str = submit_str.substr(0, submit_str.length - 1);
+	}
+	document.addrbook_data.addrbook_arr.value = submit_str;
+	document.addrbook_data.submit();
+}
 
-			for (i = 0; i < current_sel.length; i++) {
-				if (current_sel[i][0] == u_type) {
-					pos = array_two_dim_search(current_sel[i][1], new_arr, 1);
-					val = document.usel.usel_currentsel.options[pos].value;
-					document.usel.usel_currentsel.options[pos] = null;
-					new_arr = array_rm_elem(new_arr, val, 1);
-				}
-			}
+function dump_entries(u_type) {
+	var i;
+	var new_arr = current_sel;
+	var pos;
 
-			current_sel = new_arr;
+	for (i = 0; i < current_sel.length; i++) {
+		if (current_sel[i][0] == u_type) {
+			pos = array_two_dim_search(current_sel[i][1], new_arr, 1);
+			val = document.usel.usel_currentsel.options[pos].value;
+			document.usel.usel_currentsel.options[pos] = null;
+			new_arr = array_rm_elem(new_arr, val, 1);
 		}
+	}
 
-		function delta_sel_add(user_type, delim) {
-			var i;
-			var opt;
-			var tarr;
+	current_sel = new_arr;
+}
+
+function delta_sel_add(user_type, delim) {
+	var i;
+	var opt;
+	var tarr;
 <?php
 $maxsel = we_base_request::_(we_base_request::INT, 'maxsel');
 if($maxsel){
@@ -167,69 +164,69 @@ if($maxsel){
 	echo "var len=delta_sel.length;";
 }
 ?>
-			var len = delta_sel.length;
+	var len = delta_sel.length;
 
-			dump_entries(user_type);
+	dump_entries(user_type);
 
-			for (i = 0; i < len; i++) {
-				tarr = delta_sel[i].split(delim);
+	for (i = 0; i < len; i++) {
+		tarr = delta_sel[i].split(delim);
 
-				if (WE().util.in_array(String(tarr[0]), current_sel) != -1) {
-					continue;
-				}
-
-				current_sel = current_sel.concat([[user_type, String(tarr[0]), String(tarr[1])]]);
-				opt = new Option(tarr[1], tarr[0], false, false);
-				document.usel.usel_currentsel.options[document.usel.usel_currentsel.length] = opt;
-			}
+		if (WE().util.in_array(String(tarr[0]), current_sel) != -1) {
+			continue;
 		}
 
-		function rm_sel_user() {
-			var sel_elems = get_sel_elems(document.usel.usel_currentsel);
-			var i;
-			var pos = -1;
-			var val;
+		current_sel = current_sel.concat([[user_type, String(tarr[0]), String(tarr[1])]]);
+		opt = new Option(tarr[1], tarr[0], false, false);
+		document.usel.usel_currentsel.options[document.usel.usel_currentsel.length] = opt;
+	}
+}
 
-			for (i = 0; i < sel_elems.length; i++) {
-				pos = array_two_dim_search(sel_elems[i], current_sel, 1);
-				val = document.usel.usel_currentsel.options[pos].value;
-				document.usel.usel_currentsel.options[pos] = null;
-				current_sel = array_rm_elem(current_sel, val, 1);
-			}
+function rm_sel_user() {
+	var sel_elems = get_sel_elems(document.usel.usel_currentsel);
+	var i;
+	var pos = -1;
+	var val;
+
+	for (i = 0; i < sel_elems.length; i++) {
+		pos = array_two_dim_search(sel_elems[i], current_sel, 1);
+		val = document.usel.usel_currentsel.options[pos].value;
+		document.usel.usel_currentsel.options[pos] = null;
+		current_sel = array_rm_elem(current_sel, val, 1);
+	}
+}
+
+function rm_addrbook_entry() {
+	var sel_elems = get_sel_elems(document.usel.usel_addrbook);
+	var i;
+	var pos = -1;
+	var val;
+	for (i = 0; i < sel_elems.length; i++) {
+		pos = array_two_dim_search(sel_elems[i], addrbook_sel, 1);
+		val = document.usel.usel_addrbook.options[pos].value;
+		document.usel.usel_addrbook.options[pos] = null;
+		addrbook_sel = array_rm_elem(addrbook_sel, val, 1);
+	}
+}
+
+function add_toaddr() {
+	var sel_elems = get_sel_elems(document.usel.usel_currentsel);
+	var i;
+
+	for (i = 0; i < sel_elems.length; i++) {
+		curr_offset = array_two_dim_search(String(sel_elems[i]), current_sel, 1);
+		if (array_two_dim_search(String(sel_elems[i]), addrbook_sel, 1) != -1) {
+			continue;
 		}
 
-		function rm_addrbook_entry() {
-			var sel_elems = get_sel_elems(document.usel.usel_addrbook);
-			var i;
-			var pos = -1;
-			var val;
-			for (i = 0; i < sel_elems.length; i++) {
-				pos = array_two_dim_search(sel_elems[i], addrbook_sel, 1);
-				val = document.usel.usel_addrbook.options[pos].value;
-				document.usel.usel_addrbook.options[pos] = null;
-				addrbook_sel = array_rm_elem(addrbook_sel, val, 1);
-			}
-		}
+		addrbook_sel = addrbook_sel.concat([current_sel[curr_offset]]);
+		opt = new Option(current_sel[curr_offset][2], current_sel[curr_offset][1], false, false);
+		document.usel.usel_addrbook.options[document.usel.usel_addrbook.length] = opt;
+	}
+}
 
-		function add_toaddr() {
-			var sel_elems = get_sel_elems(document.usel.usel_currentsel);
-			var i;
-
-			for (i = 0; i < sel_elems.length; i++) {
-				curr_offset = array_two_dim_search(String(sel_elems[i]), current_sel, 1);
-				if (array_two_dim_search(String(sel_elems[i]), addrbook_sel, 1) != -1) {
-					continue;
-				}
-
-				addrbook_sel = addrbook_sel.concat([current_sel[curr_offset]]);
-				opt = new Option(current_sel[curr_offset][2], current_sel[curr_offset][1], false, false);
-				document.usel.usel_addrbook.options[document.usel.usel_addrbook.length] = opt;
-			}
-		}
-
-		function add_addr2sel() {
-			var sel_elems = get_sel_elems(document.usel.usel_addrbook);
-			var i;
+function add_addr2sel() {
+	var sel_elems = get_sel_elems(document.usel.usel_addrbook);
+	var i;
 <?php
 if($maxsel){
 	echo "if (current_sel.length < " . $maxsel . ") {
@@ -242,27 +239,27 @@ if($maxsel){
 }
 ?>
 
-			for (i = 0; i < len; i++) {
-				addr_offset = array_two_dim_search(String(sel_elems[i]), addrbook_sel, 1);
-				if (array_two_dim_search(String(sel_elems[i]), current_sel, 1) != -1) {
-					continue;
-				}
-
-				current_sel = current_sel.concat([addrbook_sel[addr_offset]]);
-				opt = new Option(addrbook_sel[addr_offset][2], addrbook_sel[addr_offset][1], false, false);
-				document.usel.usel_currentsel.options[document.usel.usel_currentsel.length] = opt;
-			}
+	for (i = 0; i < len; i++) {
+		addr_offset = array_two_dim_search(String(sel_elems[i]), addrbook_sel, 1);
+		if (array_two_dim_search(String(sel_elems[i]), current_sel, 1) != -1) {
+			continue;
 		}
 
-		function ok() {
-			opener.rcpt_sel = current_sel;
-			opener.update_rcpts();
-			window.close();
-		}
+		current_sel = current_sel.concat([addrbook_sel[addr_offset]]);
+		opt = new Option(addrbook_sel[addr_offset][2], addrbook_sel[addr_offset][1], false, false);
+		document.usel.usel_currentsel.options[document.usel.usel_currentsel.length] = opt;
+	}
+}
 
-		function doUnload() {
-			WE().util.jsWindow.prototype.closeAll(window);
-		}
+function ok() {
+	opener.rcpt_sel = current_sel;
+	opener.update_rcpts();
+	window.close();
+}
+
+function doUnload() {
+	WE().util.jsWindow.prototype.closeAll(window);
+}
 //-->
 </script>
 <?php echo STYLESHEET; ?>

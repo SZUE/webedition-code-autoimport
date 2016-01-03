@@ -48,7 +48,7 @@ class rpcPingCmd extends rpcCmd{
 		foreach($aDat as $d){
 			foreach($d as $aProps){
 				if($aProps[0] === 'mfd'){
-					include(WE_INCLUDES_PATH . 'we_widgets/mod/mfd.inc.php');
+					$lastModified = include(WE_INCLUDES_PATH . 'we_widgets/mod/mfd.inc.php');
 					$resp->setData('mfd_data', $lastModified);
 				}
 			}
