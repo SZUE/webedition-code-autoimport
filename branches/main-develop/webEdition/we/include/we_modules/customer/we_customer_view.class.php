@@ -79,7 +79,6 @@ WE().consts.g_l.customer.admin={
 	we_fieldname_notValid:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[we_fieldname_notValid]')) . '"
 };
 
-var topFrame=top.content;
 var frameUrl="' . $this->frameset . '";
 ') .
 			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_top.js');
@@ -92,7 +91,7 @@ var loaded=0;
 function refreshForm(){
 	if(document.we_form.cmd.value!="home"){
 		we_cmd("switchPage",top.content.activ_tab);
-		top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->customer->Username) . '";
+		top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=edheader&text=' . urlencode($this->customer->Username) . '";
 	}
 }' . $this->getJSSubmitFunction()) .
 			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_property.js');
@@ -130,7 +129,7 @@ function doUnload() {
 
 function we_cmd(){
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args, "' . $this->frameset . '?");
+	var url = WE().util.getWe_cmdArgsUrl(args, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customers&");
 
 	switch (args[0]) {
 		case "save_settings":
@@ -149,15 +148,15 @@ function we_cmd(){
 				$this->customer = new we_customer_customer();
 				$this->settings->initCustomerWithDefaults($this->customer);
 				echo we_html_element::jsElement(
-					'top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->customer->Username) . '";' .
-					'top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";'
+					'top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=edheader&text=' . urlencode($this->customer->Username) . '";' .
+					'top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=edfooter";'
 				);
 				break;
 			case 'customer_edit':
 				$this->customer = new we_customer_customer(we_base_request::_(we_base_request::INT, "cmdid"));
 				echo we_html_element::jsElement(
-					'top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->customer->Username) . '";' .
-					'top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";'
+					'top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=edheader&text=' . urlencode($this->customer->Username) . '";' .
+					'top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=edfooter";'
 				);
 				break;
 			case 'save_customer':
@@ -224,9 +223,9 @@ top.content.applySort();' :
 				echo we_html_element::jsElement(
 					we_message_reporting::getShowMessageCall(g_l('modules_customer', '[customer_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE) .
 					'top.content.treeData.deleteEntry("' . $oldid . '");
-top.content.editor.edheader.location="' . $this->frameset . '?home=1&pnt=edheader";
-top.content.editor.edbody.location="' . $this->frameset . '?home=1&pnt=edbody"
-top.content.editor.edfooter.location="' . $this->frameset . '?home=1&pnt=edfooter";'
+top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&home=1&pnt=edheader";
+top.content.editor.edbody.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&home=1&pnt=edbody"
+top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&home=1&pnt=edfooter";'
 				);
 
 				break;
@@ -956,22 +955,22 @@ self.close();');
 		foreach($common as $pk => $pv){
 			if($this->customer->isInfoDate($pk)){
 				$pv = ($pv == '' || !is_numeric($pv)) ? 0 : $pv;
-				$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(($pv ? we_html_element::htmlDiv(array('class' => 'defaultgray'), date(g_l('weEditorInfo', '[date_format]'), $pv)) : '-'), $this->settings->getPropertyTitle($pk)));
+				$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(($pv ? we_html_element::htmlDiv(array('class' => 'defaultfont lowContrast'), date(g_l('weEditorInfo', '[date_format]'), $pv)) : '-'), $this->settings->getPropertyTitle($pk)));
 			} else {
 				switch($pk){
 					case 'ID':
-						$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(($pv ? we_html_element::htmlDiv(array('class' => 'defaultgray'), $pv) : '-'), $this->settings->getPropertyTitle($pk)));
+						$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(($pv ? we_html_element::htmlDiv(array('class' => 'defaultfont lowContrast'), $pv) : '-'), $this->settings->getPropertyTitle($pk)));
 						++$c;
 						$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), '');
 						break;
 					case 'LoginDenied':
-						$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray'), we_html_forms::checkbox(1, $pv, 'LoginDenied', g_l('modules_customer', '[login_denied]'), false, 'defaultfont', 'top.content.setHot();')), $this->settings->getPropertyTitle($pk)));
+						$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultfont lowContrast'), we_html_forms::checkbox(1, $pv, 'LoginDenied', g_l('modules_customer', '[login_denied]'), false, 'defaultfont', 'top.content.setHot();')), $this->settings->getPropertyTitle($pk)));
 						break;
 					case 'AutoLoginDenied':
-						$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray'), we_html_forms::checkbox(1, $pv, 'AutoLoginDenied', g_l('modules_customer', '[login_denied]'), false, 'defaultfont', 'top.content.setHot();')), $this->settings->getPropertyTitle($pk)));
+						$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultfont lowContrast'), we_html_forms::checkbox(1, $pv, 'AutoLoginDenied', g_l('modules_customer', '[login_denied]'), false, 'defaultfont', 'top.content.setHot();')), $this->settings->getPropertyTitle($pk)));
 						break;
 					case 'AutoLogin':
-						$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray'), we_html_forms::checkbox(1, $pv, 'AutoLogin', g_l('modules_customer', '[autologin_request]'), false, 'defaultfont', 'top.content.setHot();')), $this->settings->getPropertyTitle($pk)));
+						$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultfont lowContrast'), we_html_forms::checkbox(1, $pv, 'AutoLogin', g_l('modules_customer', '[autologin_request]'), false, 'defaultfont', 'top.content.setHot();')), $this->settings->getPropertyTitle($pk)));
 						break;
 					case 'Password':
 						$table->setCol($c / 2, $c % 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, ($this->customer->ID ? we_customer_customer::NOPWD_CHANGE : ''), '', 'onchange="top.content.setHot();" autocomplete="off" ', 'password', "240px"), $this->settings->getPropertyTitle($pk)));
@@ -981,11 +980,11 @@ self.close();');
 						$table->setCol($c / 2, $c % 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, $pv, '', 'onchange="top.content.setHot();" ' . $inputattribs, "text", "240px"), $this->settings->getPropertyTitle($pk)));
 						break;
 					case 'failedLogins':
-						$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray', 'id' => 'FailedCustomerLogins'), intval($common['failedLogins']) . ' / ' . SECURITY_LIMIT_CUSTOMER_NAME), sprintf(g_l('modules_customer', '[failedLogins]'), SECURITY_LIMIT_CUSTOMER_NAME_HOURS)));
+						$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultfont lowContrast', 'id' => 'FailedCustomerLogins'), intval($common['failedLogins']) . ' / ' . SECURITY_LIMIT_CUSTOMER_NAME), sprintf(g_l('modules_customer', '[failedLogins]'), SECURITY_LIMIT_CUSTOMER_NAME_HOURS)));
 						break;
 					case 'resetFailed':
 						$but = we_html_button::create_button('reset', 'javascript:resetLogins(' . $this->customer->ID . ')');
-						$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultgray'), $but), ''));
+						$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultfont lowContrast'), $but), ''));
 						break;
 					default:
 						$inputattribs = '';
@@ -1038,7 +1037,7 @@ self.close();');
 
 		$this->customer->getBranches($branches, $common, $other, $this->settings->getEditSort());
 
-		$common['failedLogins'] = f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($this->customer->Username) . '" AND isValid="true" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour)');
+		$common['failedLogins'] = f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($this->customer->Username) . '" AND isValid="true" AND LoginDate>(NOW() - INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour)');
 		if($common['failedLogins'] >= intval(SECURITY_LIMIT_CUSTOMER_NAME)){
 			$common['resetFailed'] = '';
 		}
@@ -1068,8 +1067,8 @@ self.close();');
 						$objectStr.='<tr>
 	<td>' . we_html_button::create_button(we_html_button::EDIT, "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','" . OBJECT_FILES_TABLE . "'); }") . '</td>
 	<td>' . $DB_WE->f('ID') . '</td>
-	<td title="' . $DB_WE->f('Path') . '">' . $DB_WE->f('Text') . '</td>
-	<td class="' . ($DB_WE->f('Published') ? ($DB_WE->f('ModDate') > $DB_WE->f('Published') ? 'changed defaultfont' : 'defaultfont') : 'npdefaultfont') . '">' . date('d.m.Y H:i', $DB_WE->f('ModDate')) . '</td>
+	<td title="' . $DB_WE->f('Path') . '"><div class="cutText">' . $DB_WE->f('Text') . '</div></td>
+	<td class="defaultfont ' . ($DB_WE->f('Published') ? ($DB_WE->f('ModDate') > $DB_WE->f('Published') ? 'changed' : '') : 'notpublished') . '">' . date('d.m.Y H:i', $DB_WE->f('ModDate')) . '</td>
 </tr>';
 					}
 					$objectStr.='</table>';
@@ -1103,9 +1102,9 @@ self.close();');
 						$documentStr.='<tr>' .
 							'<td>' . we_html_button::create_button(we_html_button::EDIT, "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','" . FILE_TABLE . "'); }") . '</td>' .
 							'<td>' . $DB_WE->f('ID') . '</td>' .
-							'<td title="' . $DB_WE->f('Path') . '">' . $DB_WE->f('Text') . '</td>' .
-							'<td class="' .
-							($DB_WE->f('Published') ? ($DB_WE->f('ModDate') > $DB_WE->f('Published') ? 'changeddefaultfont' : 'defaultfont') : 'npdefaultfont')
+							'<td title="' . $DB_WE->f('Path') . '"><div class="cutText">' . $DB_WE->f('Text') . '</div></td>' .
+							'<td class="defaultfont ' .
+							($DB_WE->f('Published') ? ($DB_WE->f('ModDate') > $DB_WE->f('Published') ? 'changeddefaultfont' : '') : '')
 							. '">' . date('d.m.Y H:i', $DB_WE->f('ModDate')) . '</td>' .
 							'<td title="' . $DB_WE->f('description') . '">' . $DB_WE->f('title') . '</td>' .
 							'</tr>';

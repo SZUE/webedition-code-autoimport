@@ -28,18 +28,6 @@ class we_workflow_tree extends weTree{
 		return we_html_element::jsScript(JS_DIR . 'workflow_tree.js');
 	}
 
-	function getJSStartTree(){
-		return '
-function startTree(){
-			frames={
-	"top":' . $this->topFrame . ',
-	"cmd":' . $this->cmdFrame . '
-	};
-	treeData.frames=frames;
-	frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=workflow&pnt=cmd&pid=0";
-}';
-	}
-
 	public static function getItems($ParentId, $Offset = 0, $Segment = 500){
 		$items = array();
 		$db = new DB_WE();

@@ -174,9 +174,9 @@ function writeBodyDocument(d) {
 									'</tr>' :
 									'');
 	for (i = 0; i < entries.length; i++) {
-		var onclick = ' onclick="weonclick(event);tout=setTimeout(function(){if(!top.wasdblclick){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=false;}},300);return true"';
-		var ondblclick = ' onDblClick="top.wasdblclick=true;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
-		body += '<tr' + ((entries[i].ID == top.currentID) ? ' style="background-color:#DFE9F5;cursor:pointer;"' : "") + ' id="line_' + entries[i].ID + '" style="cursor:pointer;" ' + ((we_editDirID || makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
+		var onclick = ' onclick="return selectorOnClick(event,' + entries[i].ID + ');"';
+		var ondblclick = ' onDblClick="return selectorOnDblClick(' + entries[i].ID + ');"';
+		body += '<tr id="line_' + entries[i].ID + '" style="' + ((entries[i].ID == top.currentID) ? 'background-color:#DFE9F5;' : "") + '" ' + ((we_editDirID || makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
 						'<td class="selector treeIcon selectoricon">' + WE().util.getTreeIcon(entries[i].contentType, false) + '</td>' +
 						'<td class="selector filename"' + (entries[i].published === 0 && entries[i].isFolder === 0 ? ' style="color: red;"' : "") + ' title="' + entries[i].text + '">' +
 						(we_editDirID == entries[i].ID ?
@@ -184,7 +184,7 @@ function writeBodyDocument(d) {
 										'<div class="cutText">' + entries[i].text + '</div><div class="extension">' + entries[i].extension + '</div>'
 										) +
 						'</td>' +
-						'<td class="selector title" title="' + eval(options.col2js) + '"><div class="cutText">' + eval(options.col2js) + '</div></td>' +
+						'<td class="selector title" title="' + (options.useID ? entries[i].ID : entries[i].title) + '"><div class="cutText">' + (options.useID ? entries[i].ID : entries[i].title) + '</div></td>' +
 						'<td class="selector moddate">' + entries[i].modDate + '</td>' +
 						'</tr>';
 	}

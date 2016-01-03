@@ -66,8 +66,13 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 
 	protected function postprocess(){
 		$we_doc = $this->getWebeditionDocument();
-		//TODO: make concise mime and extension test here, taking uploader's typecondition from session
-		$response = $this->writeWebeditionDocument($we_doc);
+
+		//TODO: make concise mime and extension test here, taking uploader's typecondition from session...
+		if(is_array($we_doc) && isset($we_doc['error'])){
+			$response = $we_doc; // this is absurde...
+		} else {
+			$response = $this->writeWebeditionDocument($we_doc);
+		}
 
 		if($response['success']){
 			return array_merge($this->response, array('status' => 'success', 'completed' => 1, 'weDoc' => $response['weDoc']));

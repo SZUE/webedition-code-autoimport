@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -32,7 +31,6 @@ class we_app_Common{
 	/*
 	 * some class variables:
 	 */
-
 	/**
 	 * @var configuration for application management
 	 * 		read from webEdition/lib/we/app/defaults/config.xml
@@ -156,7 +154,7 @@ class we_app_Common{
 		try{
 			self::$tocZC = new Zend_Config_Xml($filename, null, true);
 		} catch (Exception $e){
-			//error_log("Could not read application toc file from ".$filename.". Please check your installation.");
+			t_e("Could not read application toc file from " . $filename . ". Please check your installation.");
 			return null;
 		}
 		return self::$tocZC;
@@ -370,7 +368,6 @@ class we_app_Common{
 		//error_log("checking if $appname is installed.");
 		$config = self::readConfig();
 		$apps = self::readAppTOC(true);
-
 		$path = $config->applicationpath . $appname . '/';
 		if(is_dir($path)){
 			//error_log("directory $path found.");
@@ -382,8 +379,8 @@ class we_app_Common{
 				}
 			}
 		}
-		error_log(get_class() . ' - application ' . $appname . ' does not seem to be installed.');
-		return false;
+		//error_log(get_class() . ' - application ' . $appname . ' does not seem to be installed.');
+		return true;
 	}
 
 	/**

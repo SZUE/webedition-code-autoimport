@@ -24,7 +24,7 @@
 //TODO: make read, save and process relations-data more concise
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-$protect = we_base_moduleInfo::isActive('shop') && we_users_util::canEditModule('shop') ? null : array(false);
+$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP) && we_users_util::canEditModule(we_base_moduleInfo::SHOP) ? null : array(false);
 we_html_tools::protect($protect);
 
 //FIXME: mak sowme view class for this editor and use processVariables() and processCommands()?
@@ -134,12 +134,12 @@ if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
 			}
 
 			$j = 0;
-			$table->setCol($i, 1, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap", "width" => 140), '<abbr title="ShopCatID: ' . $cat['ID'] . '">' . $cat['Category'] . '</abbr>');
-			$table->setCol($i, 2, array("class" => "defaultfont", "nowrap" => "nowrap", "width" => 20));
-			$table->setCol($i++, 3, array('class' => 'defaultfont', 'style' => 'font-weight:bold', 'colspan' => 2, 'nowrap' => 'nowrap', 'width' => 174), $cat['Path']);
+			$table->setCol($i, 1, array("class" => "defaultfont bold", "width" => 140), '<abbr title="ShopCatID: ' . $cat['ID'] . '">' . $cat['Category'] . '</abbr>');
+			$table->setCol($i, 2, array("class" => "defaultfont", "width" => 20));
+			$table->setCol($i++, 3, array('class' => 'defaultfont bold', 'colspan' => 2, 'width' => 174), $cat['Path']);
 			if($cat['ID'] != $shopCategoriesDir){
-				$table->setCol($i, 3, array('class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 174), g_l('modules_shop', '[shopcats][active_shopCat]'));
-				$table->setCol($i++, 4, array('class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 240), we_html_forms::checkboxWithHidden(($cat['IsInactive'] == 0), 'weShopCatIsActive[' . $cat['ID'] . ']', '', false, '', 'we_switch_active_by_id(' . $cat['ID'] . ')'));
+				$table->setCol($i, 3, array('class' => 'defaultfont', 'width' => 174), g_l('modules_shop', '[shopcats][active_shopCat]'));
+				$table->setCol($i++, 4, array('class' => 'defaultfont', 'width' => 240), we_html_forms::checkboxWithHidden(($cat['IsInactive'] == 0), 'weShopCatIsActive[' . $cat['ID'] . ']', '', false, '', 'we_switch_active_by_id(' . $cat['ID'] . ')'));
 			}
 
 			//set attribute $unique for radio button to 'true' for corret labels
@@ -148,11 +148,11 @@ if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
 				we_html_element::htmlHidden('taxPrinciple_tmp[' . $cat['ID'] . ']', $cat['DestPrinciple'], 'taxPrinciple_tmp[' . $cat['ID'] . ']');
 
 			$table->setRow($i, array('id' => 'destPrincipleRow_' . $cat['ID'], 'style' => ($cat['IsInactive'] == 1 ? 'display: none;' : '')));
-			$table->setCol($i, 3, array('class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 174, 'style' => 'padding-bottom: 10px'), g_l('modules_shop', '[shopcats][title_taxationMode]'));
-			$table->setCol($i++, 4, array('class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 240, 'style' => 'padding-bottom: 10px'), $taxPrinciple);
+			$table->setCol($i, 3, array('class' => 'defaultfont', 'width' => 174, 'style' => 'padding-bottom: 10px'), g_l('modules_shop', '[shopcats][title_taxationMode]'));
+			$table->setCol($i++, 4, array('class' => 'defaultfont', 'width' => 240, 'style' => 'padding-bottom: 10px'), $taxPrinciple);
 
 			if(!count($allVats)){
-				$table->setCol($i, 3, array('class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 140), g_l('modules_shop', '[shopcats][warning_noVatsDefined]'));
+				$table->setCol($i, 3, array('class' => 'defaultfont', 'width' => 140), g_l('modules_shop', '[shopcats][warning_noVatsDefined]'));
 			} else {
 				$holderCountryTable = new we_html_table(array('class' => 'default'), 1, 2);
 				$countriesTable = new we_html_table(array('class' => 'default'), max((count($allVats) - 1), 1), 2);
@@ -174,17 +174,17 @@ if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
 					$selAttribs = array('id' => 'weShopCatRels[' . $cat['ID'] . '][' . $k . ']');
 					$sel = we_html_tools::htmlSelect('weShopCatRels[' . $cat['ID'] . '][' . $k . ']', $v['selOptions'], 1, $value, false, $selAttribs, 'value', 220);
 
-					$innerTable->setCol($num, 0, array('class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 184, 'style' => ($isDefCountry ? 'font-weight: bold;' : 'padding-bottom: 8px;')), ($v['textTerritory'] ? : 'N.N.'));
-					$innerTable->setCol($num, 1, array('class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 220), $sel);
+					$innerTable->setCol($num, 0, array('class' => 'defaultfont'.($isDefCountry ?' bold':''), 'width' => 184, 'style' => ($isDefCountry ? '' : 'padding-bottom: 8px;')), ($v['textTerritory'] ? : 'N.N.'));
+					$innerTable->setCol($num, 1, array('class' => 'defaultfont', 'width' => 220), $sel);
 				}
 			}
 			$table->setRow($i, array('id' => 'defCountryRow_' . $cat['ID'], 'style' => ($cat['IsInactive'] == 0 ? '' : 'display: none;')));
-			$table->setCol($i++, 3, array('class' => 'defaultfont', 'colspan' => 2, 'nowrap' => 'nowrap', 'width' => 424), $holderCountryTable->getHtml());
+			$table->setCol($i++, 3, array('class' => 'defaultfont', 'colspan' => 2, 'width' => 424), $holderCountryTable->getHtml());
 			$table->setRow($i, array('id' => 'countriesRow_' . $cat['ID'], 'style' => ($cat['IsInactive'] == 1 || $cat['DestPrinciple'] == 0 ? 'display: none;' : '')));
-			$table->setCol($i++, 3, array('class' => 'defaultfont', 'colspan' => 2, 'nowrap' => 'nowrap', 'width' => 424), $countriesTable->getHtml());
+			$table->setCol($i++, 3, array('class' => 'defaultfont', 'colspan' => 2, 'width' => 424), $countriesTable->getHtml());
 
-			$table->setCol($i, 1, array('class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 20), '');
-			$table->setCol($i++, 2, array('style' => 'padding-bottom: 20px', 'class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 140), '');
+			$table->setCol($i, 1, array('class' => 'defaultfont', 'width' => 20), '');
+			$table->setCol($i++, 2, array('style' => 'padding-bottom: 20px', 'class' => 'defaultfont', 'width' => 140), '');
 
 			$i = $cat['ID'] == $shopCategoriesDir ? $iTmp : $i;
 		}

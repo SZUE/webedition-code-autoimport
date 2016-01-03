@@ -1,0 +1,73 @@
+/**
+ * webEdition CMS
+ *
+ * webEdition CMS
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
+ * This source is part of webEdition CMS. webEdition CMS is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionCMS/License.txt
+ *
+ * @category   webEdition
+ * @package    webEdition_base
+ * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ */
+@import "config.scss";
+body {
+	margin:0px; padding:0px;
+	border: 0px;
+	//font-family: sans-serif;
+	font-size: $smallfont;
+	color: #000000;
+}
+#tabContainer{
+	width:100%;
+	margin: 0px; padding: 0;
+	border: 0px;
+	overflow:hidden;
+}
+
+div.tabActive,
+div.tabNormal {
+	margin: 0px;
+	padding: 0px 1em 0px 0px;
+	border:0px;
+	float:left;
+	display: inline-block;
+	line-height:21px;
+	cursor:pointer;
+	border-right:1px solid #888888;
+	white-space: nowrap;
+	&:after {
+		content: attr(title);
+	}
+}
+
+div.tabNormal {
+	background-color: #D3D3D3;
+	background: linear-gradient(#dbdbdb, #cccccc 50%,#999999);
+}
+
+div.tabActive {
+	background: #ededed;
+}
+
+span.text{
+	margin:0px 1em;
+	padding:0px;
+	font-size: $smallfont;
+	vertical-align:top;
+}
+span.spacer{
+	font-size: $fafontMed;
+	vertical-align:top;
+}

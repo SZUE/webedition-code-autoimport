@@ -27,8 +27,8 @@ function header_msg_update(newmsg_count, newtodo_count) {
 	var changed = (newmsg_count > msgTD.firstChild.innerHTML) || (newtodo_count > todoTD.firstChild.innerHTML);
 	var oldMsg = msgTD.firstChild.innerHTML;
 	var oldTodo = todoTD.firstChild.innerHTML;
-	msgTD.className = "middlefont" + ((newmsg_count > 0) ? "red" : "");
-	todoTD.className = "middlefont" + ((newtodo_count > 0) ? "red" : "");
+	msgTD.className = "middlefont " + ((newmsg_count > 0) ? "highlightElementChanged" : "");
+	todoTD.className = "middlefont " + ((newtodo_count > 0) ? "highlightElementChanged" : "");
 	msgTD.firstChild.innerHTML = newmsg_count;
 	todoTD.firstChild.innerHTML = newtodo_count;
 	var control = WE().layout.weEditorFrameController;

@@ -30,7 +30,7 @@ $db = $GLOBALS['DB_WE'];
 
 $failedLoginsTable = new we_html_table(array('class' => 'default',), 1, 4);
 
-$queryFailedLogins = ' FROM ' . FAILED_LOGINS_TABLE . ' f LEFT JOIN ' . CUSTOMER_TABLE . ' c ON f.Username=c.Username	WHERE f.UserTable="tblWebUser" AND f.isValid="true" AND f.LoginDate>DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour) ' .
+$queryFailedLogins = ' FROM ' . FAILED_LOGINS_TABLE . ' f LEFT JOIN ' . CUSTOMER_TABLE . ' c ON f.Username=c.Username	WHERE f.UserTable="tblWebUser" AND f.isValid="true" AND f.LoginDate>(NOW() - INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour) ' .
 	(!permissionhandler::hasPerm("ADMINISTRATOR") && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? ' AND ' . $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '');
 
 
@@ -64,17 +64,14 @@ if(($maxRows = f('SELECT COUNT(DISTINCT f.Username) ' . $queryFailedLogins, '', 
 	$failedLoginsTable->setCol(1, 0, array("class" => "middlefont", "colspan" => "4", "style" => "text-align:left;color:green;"), we_html_element::htmlB(g_l("cockpit", "[kv_failedLogins][noFailedLogins]")));
 }
 
-$failedLoginHTML = we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
-	we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
-	we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
+$failedLoginHTML = YAHOO_FILES .
 	we_html_element::jsElement('var ajaxCallbackResetLogins = {
 success: function(o) {
 	if(typeof(o.responseText) != undefined && o.responseText != "") {
-		var weResponse = false;
 		try {
-			eval( "var weResponse = "+o.responseText );
+			var weResponse =JSON.parse(o.responseText);
 			if ( weResponse ) {
-				if (weResponse["DataArray"]["data"] == "true") {
+				if (weResponse.DataArray.data == "true") {
 					' . ( isset($newSCurrId) ? 'rpc("","","","","","' . $newSCurrId . '","fdl/fdl");' : '' ) .
 		we_message_reporting::getShowMessageCall(g_l('cockpit', '[kv_failedLogins][deleted]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
 					self.setTheme(_sObjId,_oSctCls[_oSctCls.selectedIndex].value);

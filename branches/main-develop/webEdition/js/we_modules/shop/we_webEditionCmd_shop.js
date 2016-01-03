@@ -34,12 +34,12 @@ function shopCloseWindow(args) {
 }
 
 function we_cmd_shop(args, url) {
-	var swcmd = args[0];
+	/*var swcmd = args[0];
 	if (swcmd.match(/^year\d+$/)) {
 		swcmd = 'yearCmd';
-	}
-	
-	switch (swcmd) {
+	}*/
+
+	switch (args[0]) {
 		case "shop_edit_ifthere":
 		case "shop_edit":
 			new (WE().util.jsWindow)(this, url, "edit_module", -1, -1, 970, 760, true, true, true, true);
@@ -85,7 +85,7 @@ function we_cmd_shop(args, url) {
 		case "delete_shop":
 			var wind = WE().util.jsWindow.prototype.find('edit_module');
 			if (wind) {
-				wind.content.we_cmd(args[0]);
+				wind.content.we_cmd.apply(this, arguments)
 				wind.focus();
 			}
 			break;

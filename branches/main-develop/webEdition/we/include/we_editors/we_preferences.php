@@ -851,6 +851,14 @@ function build_dialog($selected_setting = 'ui'){
 
 				// Build dialog if user has permission
 			}
+			$_val = get_value('message_reporting');
+
+			$_html = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[message_reporting][information]'), we_html_tools::TYPE_INFO, 450, false) .
+				"<br/><input type=\"hidden\" id=\"message_reporting\" name=\"newconf[message_reporting]\" value=\"$_val\" />" . we_html_forms::checkbox(we_message_reporting::WE_MESSAGE_ERROR, 1, "message_reporting_errors", g_l('prefs', '[message_reporting][show_errors]'), false, "defaultfont", "handle_message_reporting_click();", true) . "<br />" .
+				we_html_forms::checkbox(we_message_reporting::WE_MESSAGE_WARNING, $_val & we_message_reporting::WE_MESSAGE_WARNING, "message_reporting_warnings", g_l('prefs', '[message_reporting][show_warnings]'), false, "defaultfont", "handle_message_reporting_click();") . "<br />" .
+				we_html_forms::checkbox(we_message_reporting::WE_MESSAGE_NOTICE, $_val & we_message_reporting::WE_MESSAGE_NOTICE, "message_reporting_notices", g_l('prefs', '[message_reporting][show_notices]'), false, "defaultfont", "handle_message_reporting_click();");
+
+			$_settings[] = array('headline' => g_l('prefs', '[message_reporting][headline]'), 'html' => $_html, 'space' => 200);
 
 			/*			 * *******************************************************
 			 * Sidebar
@@ -935,7 +943,7 @@ function build_dialog($selected_setting = 'ui'){
 				$_file_tree_count->selectOption($_tree_count);
 			}
 
-			$_settings[] = array('headline' => g_l('prefs', '[tree_title]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[tree_count_description]'), we_html_tools::TYPE_INFO, 450) . '<br/>' . $_file_tree_count->getHtml(), 'space' => 200);
+			$_settings[] = array('headline' => g_l('prefs', '[tree_title]'), 'html' => $_file_tree_count->getHtml() . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[tree_count_description]'), we_html_tools::TYPE_INFO, false), 'space' => 200);
 
 
 			//WINDOW DIMENSIONS
@@ -1046,10 +1054,10 @@ function build_dialog($selected_setting = 'ui'){
 			$countries_shown = explode(',', get_value('WE_COUNTRIES_SHOWN'));
 			$tabC = new we_html_table(array('style' => 'border:1px solid black'), 1, 4);
 			$i = 0;
-			$tabC->setCol($i, 0, array('class' => 'defaultfont', 'style' => 'font-weight:bold', 'nowrap' => 'nowrap'), g_l('prefs', '[countries_country]'));
-			$tabC->setCol($i, 1, array('class' => 'defaultfont', 'style' => 'font-weight:bold', 'nowrap' => 'nowrap'), g_l('prefs', '[countries_top]'));
-			$tabC->setCol($i, 2, array('class' => 'defaultfont', 'style' => 'font-weight:bold', 'nowrap' => 'nowrap'), g_l('prefs', '[countries_show]'));
-			$tabC->setCol($i, 3, array('class' => 'defaultfont', 'style' => 'font-weight:bold', 'nowrap' => 'nowrap'), g_l('prefs', '[countries_noshow]'));
+			$tabC->setCol($i, 0, array('class' => 'defaultfont bold'), g_l('prefs', '[countries_country]'));
+			$tabC->setCol($i, 1, array('class' => 'defaultfont bold'), g_l('prefs', '[countries_top]'));
+			$tabC->setCol($i, 2, array('class' => 'defaultfont bold'), g_l('prefs', '[countries_show]'));
+			$tabC->setCol($i, 3, array('class' => 'defaultfont bold'), g_l('prefs', '[countries_noshow]'));
 			foreach($supported as $countrycode => $country){
 				$i++;
 				$tabC->addRow();
@@ -1142,7 +1150,7 @@ function build_dialog($selected_setting = 'ui'){
 			$_countries->addOptions($Countries);
 
 			// Button
-			$_add_button = we_html_button::create_button(we_html_button::ADD, 'javascript:addLocale()', true, 139);
+			$_add_button = we_html_button::create_button(we_html_button::ADD, 'javascript:addLocale()');
 
 			// Build final HTML code
 			$_add_html = g_l('prefs', '[locale_languages]') . '<br />' .
@@ -1161,48 +1169,45 @@ function build_dialog($selected_setting = 'ui'){
 			);
 
 			return create_dialog('', /* g_l('prefs', '[tab][language]'), */ $_settings) . $postJs;
+		/*
+		  case 'extensions':
+		  //FILE EXTENSIONS
 
-		case 'extensions':
-			//FILE EXTENSIONS
-			if(!we_base_preferences::userIsAllowed('DEFAULT_HTML_EXT')){
-				break;
-			}
+		  // Get webEdition extensions
+		  $_we_extensions = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::WEDOCUMENT);
 
-			// Get webEdition extensions
-			$_we_extensions = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::WEDOCUMENT);
+		  // Build static webEdition extensions select box
+		  $_static_we_extensions = new we_html_select(array('name' => 'newconf[DEFAULT_STATIC_EXT]', 'class' => 'weSelect'));
+		  $_dynamic_we_extensions = new we_html_select(array('name' => 'newconf[DEFAULT_DYNAMIC_EXT]', 'class' => 'weSelect'));
+		  foreach($_we_extensions as $value){
+		  $_static_we_extensions->addOption($value, $value);
+		  $_dynamic_we_extensions->addOption($value, $value);
+		  }
+		  $_static_we_extensions->selectOption(get_value('DEFAULT_STATIC_EXT'));
+		  $_dynamic_we_extensions->selectOption(get_value('DEFAULT_DYNAMIC_EXT'));
 
-			// Build static webEdition extensions select box
-			$_static_we_extensions = new we_html_select(array('name' => 'newconf[DEFAULT_STATIC_EXT]', 'class' => 'weSelect'));
-			$_dynamic_we_extensions = new we_html_select(array('name' => 'newconf[DEFAULT_DYNAMIC_EXT]', 'class' => 'weSelect'));
-			foreach($_we_extensions as $value){
-				$_static_we_extensions->addOption($value, $value);
-				$_dynamic_we_extensions->addOption($value, $value);
-			}
-			$_static_we_extensions->selectOption(get_value('DEFAULT_STATIC_EXT'));
-			$_dynamic_we_extensions->selectOption(get_value('DEFAULT_DYNAMIC_EXT'));
+		  $_we_extensions_html = g_l('prefs', '[static]') . we_html_element::htmlBr() . $_static_we_extensions->getHtml() . we_html_element::htmlBr() . we_html_element::htmlBr() . g_l('prefs', '[dynamic]') . we_html_element::htmlBr() . $_dynamic_we_extensions->getHtml();
 
-			$_we_extensions_html = g_l('prefs', '[static]') . we_html_element::htmlBr() . $_static_we_extensions->getHtml() . we_html_element::htmlBr() . we_html_element::htmlBr() . g_l('prefs', '[dynamic]') . we_html_element::htmlBr() . $_dynamic_we_extensions->getHtml();
+		  // HTML extensions
+		  $_html_extensions = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::HTML);
 
-			// HTML extensions
-			$_html_extensions = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::HTML);
+		  // Build static webEdition extensions select box
+		  $_static_html_extensions = new we_html_select(array('name' => 'newconf[DEFAULT_HTML_EXT]', 'class' => 'weSelect'));
+		  foreach($_html_extensions as $value){
+		  $_static_html_extensions->addOption($value, $value);
+		  }
+		  $_static_html_extensions->selectOption(get_value('DEFAULT_HTML_EXT'));
 
-			// Build static webEdition extensions select box
-			$_static_html_extensions = new we_html_select(array('name' => 'newconf[DEFAULT_HTML_EXT]', 'class' => 'weSelect'));
-			foreach($_html_extensions as $value){
-				$_static_html_extensions->addOption($value, $value);
-			}
-			$_static_html_extensions->selectOption(get_value('DEFAULT_HTML_EXT'));
+		  $_html_extensions_html = g_l('prefs', '[html]') . '<br/>' . $_static_html_extensions->getHtml();
 
-			$_html_extensions_html = g_l('prefs', '[html]') . '<br/>' . $_static_html_extensions->getHtml();
+		  $_settings = array(
+		  array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[extensions_information]'), we_html_tools::TYPE_INFO, 450, false), 'space' => 0),
+		  array('headline' => g_l('prefs', '[we_extensions]'), 'html' => $_we_extensions_html, 'space' => 200),
+		  array('headline' => g_l('prefs', '[html_extensions]'), 'html' => $_html_extensions_html, 'space' => 200, 'noline' => 1)
+		  );
 
-			$_settings = array(
-				array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[extensions_information]'), we_html_tools::TYPE_INFO, 450, false), 'space' => 0),
-				array('headline' => g_l('prefs', '[we_extensions]'), 'html' => $_we_extensions_html, 'space' => 200),
-				array('headline' => g_l('prefs', '[html_extensions]'), 'html' => $_html_extensions_html, 'space' => 200, 'noline' => 1)
-			);
-
-			return create_dialog('', /* g_l('prefs', '[tab][extensions]'), */ $_settings);
-
+		  return create_dialog('', $_settings);
+		 */
 		case 'editor':
 			//EDITOR PLUGIN
 
@@ -1564,7 +1569,7 @@ for(i=0;i<elements.length; ++i){
 
 			return create_dialog("", /* g_l('prefs', '[formmail_recipients]'), */ $_settings, -1);
 
-		case "modules":
+		case 'modules':
 			if(!we_base_preferences::userIsAllowed('active_integrated_modules')){
 				break;
 			}
@@ -1583,7 +1588,9 @@ for(i=0;i<elements.length; ++i){
 				if(!empty($_modInfo["dependson"])){
 					$onclick = "if(this.checked){document.getElementById('newconf[active_integrated_modules][" . $_modInfo["dependson"] . "]').checked=true;}";
 				}
-				$_html .= we_html_forms::checkbox($_modKey, $_modInfo["alwaysActive"] || we_base_moduleInfo::isActive($_modKey), "newconf[active_integrated_modules][$_modKey]", $_modInfo["text"], false, "defaultfont", $onclick, $_modInfo["alwaysActive"]) . ($_modInfo["alwaysActive"] ? "<input type=\"hidden\" name=\"newconf[active_integrated_modules][$_modKey]\" value=\"$_modKey\" />" : "" ) . "<br />";
+				if(!$_modInfo["alwaysActive"]){
+					$_html .= we_html_forms::checkbox($_modKey, $_modInfo["alwaysActive"] || we_base_moduleInfo::isActive($_modKey), "newconf[active_integrated_modules][$_modKey]", $_modInfo["text"], false, "defaultfont", $onclick, $_modInfo["alwaysActive"]) . ($_modInfo["alwaysActive"] ? "<input type=\"hidden\" name=\"newconf[active_integrated_modules][$_modKey]\" value=\"$_modKey\" />" : "" ) . "<br />";
+				}
 			}
 
 			$_settings = array(
@@ -1678,7 +1685,7 @@ for(i=0;i<elements.length; ++i){
 				$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_POSTDOC, g_l('prefs', '[we_scheduler_trigger][postDoc]')); //post
 				$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_CRON, g_l('prefs', '[we_scheduler_trigger][cron]')); //cron
 				$_Schedtrigger_setting->selectOption(get_value("SCHEDULER_TRIGGER"));
-				$tmp = $_Schedtrigger_setting->getHtml() . '<br style="clear:both;"/>' . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[we_scheduler_trigger][description]'), we_html_tools::TYPE_INFO, 450, false);
+				$tmp = $_Schedtrigger_setting->getHtml() . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[we_scheduler_trigger][description]'), we_html_tools::TYPE_INFO, false);
 				$_settings[] = array("headline" => g_l('prefs', '[we_scheduler_trigger][head]'), "html" => $tmp, "space" => 200);
 			}
 			// Build select box
@@ -1702,6 +1709,37 @@ for(i=0;i<elements.length; ++i){
 			if(!permissionhandler::hasPerm("ADMINISTRATOR")){
 				break;
 			}
+			//FILE EXTENSIONS
+			// Get webEdition extensions
+			$_we_extensions = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::WEDOCUMENT);
+
+			// Build static webEdition extensions select box
+			$_static_we_extensions = new we_html_select(array('name' => 'newconf[DEFAULT_STATIC_EXT]', 'class' => 'weSelect'));
+			$_dynamic_we_extensions = new we_html_select(array('name' => 'newconf[DEFAULT_DYNAMIC_EXT]', 'class' => 'weSelect'));
+			foreach($_we_extensions as $value){
+				$_static_we_extensions->addOption($value, $value);
+				$_dynamic_we_extensions->addOption($value, $value);
+			}
+			$_static_we_extensions->selectOption(get_value('DEFAULT_STATIC_EXT'));
+			$_dynamic_we_extensions->selectOption(get_value('DEFAULT_DYNAMIC_EXT'));
+
+			$_we_extensions_html = g_l('prefs', '[static]') . we_html_element::htmlBr() . $_static_we_extensions->getHtml() . we_html_element::htmlBr() . we_html_element::htmlBr() . g_l('prefs', '[dynamic]') . we_html_element::htmlBr() . $_dynamic_we_extensions->getHtml();
+
+			// HTML extensions
+			$_html_extensions = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::HTML);
+
+			// Build static webEdition extensions select box
+			$_static_html_extensions = new we_html_select(array('name' => 'newconf[DEFAULT_HTML_EXT]', 'class' => 'weSelect'));
+			foreach($_html_extensions as $value){
+				$_static_html_extensions->addOption($value, $value);
+			}
+			$_static_html_extensions->selectOption(get_value('DEFAULT_HTML_EXT'));
+
+			$_html_extensions_html = g_l('prefs', '[html]') . '<br/>' . $_static_html_extensions->getHtml();
+
+
+			//	array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[extensions_information]'), we_html_tools::TYPE_INFO, 450, false), 'space' => 0),
+
 
 			$_we_max_upload_size = '<table class="default"><tr><td>' .
 				we_html_tools::htmlTextInput("newconf[FILE_UPLOAD_MAX_UPLOAD_SIZE]", 22, get_value("FILE_UPLOAD_MAX_UPLOAD_SIZE"), "", ' onkeypress="return WE().util.IsDigit(event);"', "number", 60) . ' MB</td><td style="padding-left:20px;" class="small">' .
@@ -1726,8 +1764,8 @@ for(i=0;i<elements.length; ++i){
 			$_db_connect->selectOption(DB_CONNECT);
 
 			// Build db charset select box
-			$html_db_charset_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[db_set_charset_information]'), we_html_tools::TYPE_INFO, 450, false, 60) . "<br/>";
-			$html_db_charset_warning = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[db_set_charset_warning]'), we_html_tools::TYPE_ALERT, 450, false, 60) . "<br/>";
+			$html_db_charset_information = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[db_set_charset_information]'), we_html_tools::TYPE_INFO, false);
+			$html_db_charset_warning = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[db_set_charset_warning]'), we_html_tools::TYPE_ALERT, false);
 
 			$_db_set_charset = new we_html_select(array('name' => 'newconf[DB_SET_CHARSET]', 'class' => 'weSelect'));
 
@@ -1787,8 +1825,7 @@ for(i=0;i<elements.length; ++i){
 
 			$EXECUTE_HOOKS->selectOption(get_value("EXECUTE_HOOKS") ? 1 : 0);
 
-			$hooksHtml = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[hooks_information]'), we_html_tools::TYPE_INFO, 450, false) . '<br/>' .
-				$EXECUTE_HOOKS->getHtml();
+			$hooksHtml = $EXECUTE_HOOKS->getHtml() . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[hooks_information]'), we_html_tools::TYPE_INFO, false);
 
 			$useSession = new we_html_select(array("name" => "newconf[SYSTEM_WE_SESSION]", "class" => "weSelect", 'onchange' => 'alert(\'' . g_l('prefs', '[session][crypt][alert]') . '\');'));
 			$useSession->addOption(0, g_l('prefs', '[no]'));
@@ -1804,15 +1841,16 @@ for(i=0;i<elements.length; ++i){
 			$cryptSession->addOption(2, 'Cookie');
 			$cryptSession->selectOption(get_value('SYSTEM_WE_SESSION_CRYPT'));
 
-			$sessionHtml = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[session][information]'), we_html_tools::TYPE_INFO, 450, false) . '<br/>' .
-				$useSession->getHtml();
+			$sessionHtml = $useSession->getHtml() . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[session][information]'), we_html_tools::TYPE_INFO, false);
 
 
 			$_settings = array(
+				array('headline' => g_l('prefs', '[we_extensions]'), 'html' => $_we_extensions_html, 'space' => 200),
+				array('headline' => g_l('prefs', '[html_extensions]'), 'html' => $_html_extensions_html, 'space' => 200),
 				array("headline" => g_l('prefs', '[upload][we_max_size]'), "html" => $_we_max_upload_size, "space" => 200),
 				array("headline" => g_l('prefs', '[we_new_folder_mod]'), "html" => $_we_new_folder_mod, "space" => 200),
 				array("headline" => g_l('prefs', '[db_connect]'), "html" => $_db_connect->getHtml(), "space" => 200, "noline" => 1),
-				array("headline" => g_l('prefs', '[db_set_charset]'), "html" => $html_db_charset_information . $_db_set_charset->getHtml() . $html_db_charset_warning, "space" => 200),
+				array("headline" => g_l('prefs', '[db_set_charset]'), "html" => $_db_set_charset->getHtml() . $html_db_charset_information . $html_db_charset_warning, "space" => 200),
 				array("headline" => g_l('prefs', '[auth]'), "html" => $_use_auth, "space" => 200, "noline" => 1),
 				array("headline" => g_l('prefs', '[authuser]'), "html" => $_authuser, "space" => 200, "noline" => 1),
 				array("headline" => g_l('prefs', '[authpass]'), "html" => $_authpass, "space" => 200),
@@ -1859,22 +1897,19 @@ for(i=0;i<elements.length; ++i){
 				array("headline" => g_l('prefs', '[navigation_directoryindex_names]'), "html" => $_navigation_directoryindex_names, "space" => 200, "noline" => 1),
 				array("html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[general_directoryindex_hide_description]'), we_html_tools::TYPE_INFO, 480), "noline" => 1),
 				array("headline" => g_l('prefs', '[taglinks_directoryindex_hide]'), "html" => getTrueFalseSelect('TAGLINKS_DIRECTORYINDEX_HIDE'), "space" => 200),
-				array("headline" => g_l('prefs', '[general_objectseourls]'), "html" => "", "space" => 480, "noline" => 1),
-				array("html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[objectseourls_lowercase_description]'), we_html_tools::TYPE_INFO, 480), "noline" => 1),
+				array("headline" => g_l('prefs', '[general_objectseourls]'), "html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[objectseourls_lowercase_description]'), we_html_tools::TYPE_INFO, false), "space" => 200, "noline" => 1),
 				array("headline" => g_l('prefs', '[objectseourls_lowercase]'), "html" => getTrueFalseSelect('OBJECTSEOURLS_LOWERCASE'), "space" => 200, "noline" => 1),
 				array("headline" => g_l('prefs', '[navigation_objectseourls]'), "html" => getTrueFalseSelect('NAVIGATION_OBJECTSEOURLS'), "space" => 200, "noline" => 1),
 				array("headline" => g_l('prefs', '[wysiwyglinks_objectseourls]'), "html" => getTrueFalseSelect('WYSIWYGLINKS_OBJECTSEOURLS'), "space" => 200, "noline" => 1),
 				array("html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[general_objectseourls_description]'), we_html_tools::TYPE_INFO, 480), "noline" => 1),
 				array("headline" => g_l('prefs', '[taglinks_objectseourls]'), "html" => getTrueFalseSelect('TAGLINKS_OBJECTSEOURLS'), "space" => 200, "noline" => 1),
 				array("headline" => g_l('prefs', '[urlencode_objectseourls]'), "html" => getTrueFalseSelect('URLENCODE_OBJECTSEOURLS'), "space" => 200),
-				array("headline" => g_l('prefs', '[general_seoinside]'), "noline" => 1),
-				array("html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[general_seoinside_description]'), we_html_tools::TYPE_INFO, 480), "noline" => 1),
+				array("headline" => g_l('prefs', '[general_seoinside]'), "html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[general_seoinside_description]'), we_html_tools::TYPE_INFO, false), "space" => 200, "noline" => 1),
 				array("headline" => g_l('prefs', '[seoinside_hideineditmode]'), "html" => getTrueFalseSelect('SEOINSIDE_HIDEINEDITMODE'), "space" => 200, "noline" => 1),
 				array("headline" => g_l('prefs', '[seoinside_hideinwebedition]'), "html" => getTrueFalseSelect('SEOINSIDE_HIDEINWEBEDITION'), "space" => 200),
 				array('headline' => g_l('prefs', '[error_no_object_found]'), 'html' => $yuiSuggest->getHTML(), 'space' => 200, "noline" => 1),
 				array('headline' => g_l('prefs', '[suppress404code]'), 'html' => getTrueFalseSelect('SUPPRESS404CODE'), 'space' => 200, 'noline' => 0),
-				array("html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[force404redirect_description]'), we_html_tools::TYPE_INFO, 480), "noline" => 1),
-				array('headline' => g_l('prefs', '[force404redirect]'), 'html' => getTrueFalseSelect('FORCE404REDIRECT'), 'space' => 200, 'noline' => 0),
+				array('headline' => g_l('prefs', '[force404redirect]'), 'html' => getTrueFalseSelect('FORCE404REDIRECT') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[force404redirect_description]'), we_html_tools::TYPE_INFO, false), 'space' => 200, 'noline' => 0),
 			);
 			return create_dialog('', /* g_l('prefs', '[tab][seolinks]'), */ $_settings, -1, '', '', null);
 
@@ -1889,10 +1924,10 @@ for(i=0;i<elements.length; ++i){
 			$_foldAt = 4;
 
 			// Create checkboxes
-			$_template_error_handling_table = new we_html_table(array('class' => 'default'), 8, 1);
-			$_template_error_handling_table->setCol(0, 0, null, we_html_forms::checkbox(1, get_value('DISABLE_TEMPLATE_CODE_CHECK'), 'DISABLE_TEMPLATE_CODE_CHECK', g_l('prefs', '[disable_template_code_check]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[DISABLE_TEMPLATE_CODE_CHECK]\');') .
-				we_html_tools::hidden('newconf[DISABLE_TEMPLATE_CODE_CHECK]', get_value('DISABLE_TEMPLATE_CODE_CHECK')));
-
+			/* $_template_error_handling_table = new we_html_table(array('class' => 'default'), 8, 1);
+			  $_template_error_handling_table->setCol(0, 0, null, we_html_forms::checkbox(1, get_value('DISABLE_TEMPLATE_CODE_CHECK'), 'DISABLE_TEMPLATE_CODE_CHECK', g_l('prefs', '[disable_template_code_check]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[DISABLE_TEMPLATE_CODE_CHECK]\');') .
+			  we_html_tools::hidden('newconf[DISABLE_TEMPLATE_CODE_CHECK]', get_value('DISABLE_TEMPLATE_CODE_CHECK')));
+			 */
 			// Create checkboxes
 			$_we_error_handler = we_html_forms::checkbox(1, get_value('WE_ERROR_HANDLER'), 'newconf[WE_ERROR_HANDLER]', g_l('prefs', '[error_use_handler]'), false, 'defaultfont', 'set_state_error_handler();');
 
@@ -1922,7 +1957,7 @@ for(i=0;i<elements.length; ++i){
 			$_error_display_table->setCol(7, 0, null, $_error_mail_specify_table->getHtml());
 
 			$_settings = array(
-				array('headline' => g_l('prefs', '[templates]'), 'html' => $_template_error_handling_table->getHtml(), 'space' => 200),
+				//array('headline' => g_l('prefs', '[templates]'), 'html' => $_template_error_handling_table->getHtml(), 'space' => 200),
 				array('headline' => g_l('prefs', '[tab][error_handling]'), 'html' => $_we_error_handler, 'space' => 200),
 				array('headline' => g_l('prefs', '[error_types]'), 'html' => $_error_handling_table->getHtml(), 'space' => 200),
 				array('headline' => g_l('prefs', '[error_displaying]'), 'html' => $_error_display_table->getHtml(), 'space' => 200),
@@ -1930,24 +1965,22 @@ for(i=0;i<elements.length; ++i){
 
 			return create_dialog('settings_error_expert', /* g_l('prefs', '[tab][error_handling]'), */ $_settings, $_foldAt, g_l('prefs', '[show_expert]'), g_l('prefs', '[hide_expert]'));
 
-		/*		 * *******************************************************************
-		 * Validation (XHTML)
-		 * ******************************************************************* */
-		case 'message_reporting':
+		/*
+		  case 'message_reporting':
 
-			$_val = get_value('message_reporting');
+		  $_val = get_value('message_reporting');
 
-			$_html = "<input type=\"hidden\" id=\"message_reporting\" name=\"newconf[message_reporting]\" value=\"$_val\" />" . we_html_forms::checkbox(we_message_reporting::WE_MESSAGE_ERROR, 1, "message_reporting_errors", g_l('prefs', '[message_reporting][show_errors]'), false, "defaultfont", "handle_message_reporting_click();", true) . "<br />" .
-				we_html_forms::checkbox(we_message_reporting::WE_MESSAGE_WARNING, $_val & we_message_reporting::WE_MESSAGE_WARNING, "message_reporting_warnings", g_l('prefs', '[message_reporting][show_warnings]'), false, "defaultfont", "handle_message_reporting_click();") . "<br />" .
-				we_html_forms::checkbox(we_message_reporting::WE_MESSAGE_NOTICE, $_val & we_message_reporting::WE_MESSAGE_NOTICE, "message_reporting_notices", g_l('prefs', '[message_reporting][show_notices]'), false, "defaultfont", "handle_message_reporting_click();");
+		  $_html = "<input type=\"hidden\" id=\"message_reporting\" name=\"newconf[message_reporting]\" value=\"$_val\" />" . we_html_forms::checkbox(we_message_reporting::WE_MESSAGE_ERROR, 1, "message_reporting_errors", g_l('prefs', '[message_reporting][show_errors]'), false, "defaultfont", "handle_message_reporting_click();", true) . "<br />" .
+		  we_html_forms::checkbox(we_message_reporting::WE_MESSAGE_WARNING, $_val & we_message_reporting::WE_MESSAGE_WARNING, "message_reporting_warnings", g_l('prefs', '[message_reporting][show_warnings]'), false, "defaultfont", "handle_message_reporting_click();") . "<br />" .
+		  we_html_forms::checkbox(we_message_reporting::WE_MESSAGE_NOTICE, $_val & we_message_reporting::WE_MESSAGE_NOTICE, "message_reporting_notices", g_l('prefs', '[message_reporting][show_notices]'), false, "defaultfont", "handle_message_reporting_click();");
 
-			$_settings = array(
-				array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[message_reporting][information]'), we_html_tools::TYPE_INFO, 450, false), 'space' => 0),
-				array('headline' => g_l('prefs', '[message_reporting][headline]'), 'html' => $_html, 'space' => 200),
-			);
+		  $_settings = array(
+		  array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[message_reporting][information]'), we_html_tools::TYPE_INFO, 450, false), 'space' => 0),
+		  array('headline' => g_l('prefs', '[message_reporting][headline]'), 'html' => $_html, 'space' => 200),
+		  );
 
-			return create_dialog('settings_message_reporting', /* g_l('prefs', '[tab][message_reporting]'), */ $_settings, -1);
-
+		  return create_dialog('settings_message_reporting', /* g_l('prefs', '[tab][message_reporting]'),  $_settings, -1);
+		 */
 		/*		 * *******************************************************************
 		 * Validation (XHTML)
 		 * ******************************************************************* */
@@ -2052,9 +2085,9 @@ for(i=0;i<elements.length; ++i){
 			$encryption->selectOption(get_value('SECURITY_ENCRYPTION_TYPE_PASSWORD'));
 
 
-			$encryptinfo = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[security][encryption][hint]'), we_html_tools::TYPE_ALERT, 450, false, 60) . '<br/>';
+			$encryptinfo = we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[security][encryption][hint]'), we_html_tools::TYPE_ALERT, false);
 			$cryptkey = get_value('SECURITY_ENCRYPTION_KEY');
-			$encryptionKey = we_html_tools::htmlTextInput('newconf[SECURITY_ENCRYPTION_KEY]', 30, ($cryptkey ? : bin2hex(we_customer_customer::cryptGetIV(56))), 112) . ' (hex)'; //+Button vorhandene Passwörter convertieren
+			$encryptionKey = we_html_tools::htmlTextInput('newconf[SECURITY_ENCRYPTION_KEY]', 0, ($cryptkey ? : bin2hex(we_customer_customer::cryptGetIV(56))), 112, '', 'text', '20em') . ' (hex)'; //+Button vorhandene Passwörter convertieren
 
 			$storeSessionPassword = new we_html_select(array('name' => 'newconf[SECURITY_SESSION_PASSWORD]', 'class' => 'weSelect'));
 			$storeSessionPassword->addOption(we_customer_customer::REMOVE_PASSWORD, g_l('prefs', '[security][storeSessionPassword][type][0]'));
@@ -2065,9 +2098,10 @@ for(i=0;i<elements.length; ++i){
 
 			$settings = array(
 				array('headline' => g_l('perms_customer', '[perm_group_title]'), 'html' => $customer_table->getHtml(), 'space' => 120),
-				array('headline' => g_l('prefs', '[security][encryption][title]'), 'html' => $encryptinfo . $encryption->getHtml(), 'space' => 120, 'noline' => 1),
+				array('headline' => g_l('prefs', '[security][encryption][title]'), 'html' => $encryption->getHtml() . $encryptinfo, 'space' => 120, 'noline' => 1),
 				array('headline' => g_l('prefs', '[security][encryption][symmetricKey]'), 'html' => $encryptionKey, 'space' => 120),
 				array('headline' => g_l('prefs', '[security][storeSessionPassword][title]'), 'html' => $storeSessionPassword->getHtml(), 'space' => 120),
+				array('headline' => g_l('prefs', '[security][userPassRegex][title]'), 'html' => we_html_tools::htmlTextInput('newconf[SECURITY_USER_PASS_REGEX]', 0, get_value('SECURITY_USER_PASS_REGEX'), 100, '', 'text', '20em'), 'space' => 120),
 			);
 			return create_dialog('settings_security', /* g_l('prefs', '[tab][security]'), */ $settings);
 
@@ -2465,7 +2499,7 @@ if(we_base_request::_(we_base_request::BOOL, 'save_settings')){
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 //--></</script><?php
 echo STYLESHEET .
-	weSuggest::getYuiFiles() .
+ weSuggest::getYuiFiles() .
  we_html_element::jsScript(JS_DIR . 'preferences.js');
 if($doSave && !$acError){
 	save_all_values();

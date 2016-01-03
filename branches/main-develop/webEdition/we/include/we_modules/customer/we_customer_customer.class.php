@@ -335,7 +335,7 @@ class we_customer_customer extends weModelBase{
 			case self::ENCRYPT_SYMMETRIC:
 				return self::cryptData($pass);
 			case self::ENCRYPT_HASH:
-				return we_users_user::makeSaltedPassword('', $pass, 10);
+				return we_users_user::makeSaltedPassword($pass, 10);
 		}
 	}
 

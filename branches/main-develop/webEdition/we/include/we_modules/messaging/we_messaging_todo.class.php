@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-we_base_moduleInfo::isActive('messaging');
+we_base_moduleInfo::isActive(we_base_moduleInfo::MESSAGING);
 /* todo object class */
 
 class we_messaging_todo extends we_messaging_proto{

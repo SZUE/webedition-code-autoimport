@@ -352,18 +352,18 @@ function we_cmd() {
 				popAndSubmit(args[0], args[0], 650, 650);
 			break;
 		case "newsletter_settings":
-			new (WE().util.jsWindow)(this, modFrameSet + "&pnt=" + args[0], args[0], -1, -1, 600, 750, true, true, true, true);
+			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0], args[0], -1, -1, 600, 750, true, true, true, true);
 			break;
 
 		case "black_list":
-			new (WE().util.jsWindow)(this, modFrameSet + "&pnt=" + args[0], args[0], -1, -1, 560, 460, true, true, true, true);
+			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0], args[0], -1, -1, 560, 460, true, true, true, true);
 			break;
 
 		case "edit_file":
 			if (args[1]) {
-				new (WE().util.jsWindow)(this, modFrameSet + "&pnt=" + args[0] + "&art=" + args[1], args[0], -1, -1, 950, 640, true, true, true, true);
+				new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0] + "&art=" + args[1], args[0], -1, -1, 950, 640, true, true, true, true);
 			} else {
-				new (WE().util.jsWindow)(this, modFrameSet + "&pnt=" + args[0], args[0], -1, -1, 950, 640, true, true, true, true);
+				new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0], args[0], -1, -1, 950, 640, true, true, true, true);
 			}
 			break;
 
@@ -386,7 +386,11 @@ function we_cmd() {
 		case "switch_sendall":
 			document.we_form.ncmd.value = args[0];
 			top.content.hot = 1;
-			eval("if(document.we_form.sendallcheck_" + args[1] + ".checked) document.we_form.group" + args[1] + "_SendAll.value=1; else document.we_form.group" + args[1] + "_SendAll.value=0;");
+			if (document.we_form["sendallcheck_" + args[1]].checked) {
+				document.we_form["group" + args[1] + "_SendAll"].value = 1;
+			} else {
+				document.we_form["group" + args[1] + "_SendAll"].value = 0;
+			}
 			submitForm();
 			break;
 
@@ -413,26 +417,24 @@ function we_cmd() {
 
 		case "upload_csv":
 		case "upload_black":
-			new (WE().util.jsWindow)(this, modFrameSet + "&pnt=" + args[0] + "&grp=" + args[1], args[0], -1, -1, 450, 270, true, true, true, true);
+			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0] + "&grp=" + args[1], args[0], -1, -1, 450, 270, true, true, true, true);
 			break;
 
 		case "add_email":
 			var email = document.we_form.group = args[1];
-			new (WE().util.jsWindow)(this, modFrameSet + "&pnt=eemail&grp=" + args[1], "edit_email", -1, -1, 450, 270, true, true, true, true);
+			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=eemail&grp=" + args[1], "edit_email", -1, -1, 450, 270, true, true, true, true);
 			break;
 
 		case "edit_email":
-			eval("var p=document.we_form.we_recipient" + args[1] + ";");
-
+			var p = document.we_form["we_recipient" + args[1]];
 			if (p.selectedIndex < 0) {
 				top.we_showMessage(WE().consts.g_l.newsletter.no_email, WE().consts.message.WE_MESSAGE_ERROR, this);
 				return;
 			}
 
-			eval("var dest=document.we_form.group" + args[1] + "_Emails;");
+			var dest = document.we_form["group" + args[1] + "_Emails"];
 
 			var str = dest.value;
-
 			var arr = str.split("\n");
 
 			var str2 = arr[p.selectedIndex];
@@ -450,7 +452,7 @@ function we_cmd() {
 			firstname = encodeURIComponent(firstname.replace("+", "[:plus:]"));
 			lastname = encodeURIComponent(lastname.replace("+", "[:plus:]"));
 			emailx = encodeURIComponent(emailx);
-			new (WE().util.jsWindow)(this, modFrameSet + "&pnt=eemail&grp=" + args[1] + "&etyp=1&eid=" + eid + "&email=" + emailx + "&htmlmail=" + htmlmail + "&salutation=" + salutation + "&title=" + title + "&firstname=" + firstname + "&lastname=" + lastname, "edit_email", -1, -1, 450, 270, true, true, true, true);
+			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=eemail&grp=" + args[1] + "&etyp=1&eid=" + eid + "&email=" + emailx + "&htmlmail=" + htmlmail + "&salutation=" + salutation + "&title=" + title + "&firstname=" + firstname + "&lastname=" + lastname, "edit_email", -1, -1, 450, 270, true, true, true, true);
 			break;
 
 		case "save_black":
@@ -472,7 +474,7 @@ function we_cmd() {
 
 			break;
 		case "clear_log":
-			new (WE().util.jsWindow)(this, modFrameSet + "&pnt=" + args[0], args[0], -1, -1, 450, 300, true, true, true, true);
+			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=" + args[0], args[0], -1, -1, 450, 300, true, true, true, true);
 			break;
 
 		default:
@@ -487,7 +489,7 @@ function submitForm(target, action, method) {
 	}
 	var f = self.document.we_form;
 	f.target = (target ? target : "edbody");
-	f.action = (action ? action : modFrameSet);
+	f.action = (action ? action : WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter");
 	f.method = (method ? method : "post");
 	f.submit();
 }
@@ -667,4 +669,51 @@ function setFocus() {
 
 function setScrollTo() {
 	parent.scrollToVal = pageYOffset;
+}
+
+function editEmailFile(eid, email, htmlmail, salutation, title, firstname, lastname) {
+	new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=eemail&eid=" + eid + "&etyp=2&email=" + email + "&htmlmail=" + htmlmail + "&salutation=" + salutation + "&title=" + title + "&firstname=" + firstname + "&lastname=" + lastname, "edit_email", -1, -1, 430, 270, true, true, true, true);
+}
+
+function setAndSave(eid, email, htmlmail, salutation, title, firstname, lastname) {
+	var fr = document.we_form;
+	fr.nrid.value = eid;
+	fr.email.value = email;
+	fr.htmlmail.value = htmlmail;
+	fr.salutation.value = salutation;
+	fr.title.value = title;
+	fr.firstname.value = firstname;
+	fr.lastname.value = lastname;
+	fr.ncmd.value = "save_email_file";
+	submitForm("edit_file");
+}
+
+function listFile() {
+	var fr = document.we_form;
+	fr.nrid.value = "";
+	fr.email.value = "";
+	fr.htmlmail.value = "";
+	fr.salutation.value = "";
+	fr.title.value = "";
+	fr.firstname.value = "";
+	fr.lastname.value = "";
+	fr.offset.value = 0;
+	submitForm("edit_file");
+}
+
+function postSelectorSelect(wePssCmd) {
+	switch (wePssCmd) {
+		case "selectFile":
+			listFile();
+			break;
+	}
+}
+
+function delEmailFile(eid, email) {
+	var fr = document.we_form;
+	if (confirm(WE().util.sprintf(WE().consts.g_l.newsletter.del_email_file, email))) {
+		fr.nrid.value = eid;
+		fr.ncmd.value = "delete_email_file";
+		submitForm("edit_file");
+	}
 }

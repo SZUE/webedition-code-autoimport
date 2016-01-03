@@ -30,10 +30,11 @@ window.setInterval(function () {
 	YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc/rpc.php", {
 		success: function (o) {
 			if (o.responseText !== undefined && o.responseText !== '') {
+				var result;
 				try {
-					eval("var result=" + o.responseText);
+					result = JSON.parse(o.responseText);
 				} catch (exp) {
-					var result = '';
+					
 				}
 				if (result && result.Success) {
 					var num_users = result.DataArray.num_users;

@@ -42,14 +42,10 @@ foreach(g_l('contentTypes', '') as $key => $lng){
 }
 
 $ctLngs = implode(',', $ctLngs);
-$untitled = g_l('global', '[untitled]');
 
 print <<< EOFEOF
 <script><!--
 var ctLngs = {$ctLngs};
-var g_l={
-	untitled:"$untitled"
-};
 var nextCmd="$nextCmd";
 	//-->
 </script>

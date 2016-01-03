@@ -86,9 +86,7 @@ parent.document.title = "' . $title . '";
 			case "new_voting":
 			case "new_voting_group":
 				if(!permissionhandler::hasPerm("NEW_VOTING")){
-					echo we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
-					);
+					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 					break;
 				}
 				$this->voting = new we_voting_voting();
@@ -99,9 +97,7 @@ parent.document.title = "' . $title . '";
 				break;
 			case "voting_edit":
 				if(!permissionhandler::hasPerm("EDIT_VOTING")){
-					echo we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
-					);
+					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 					$_REQUEST['home'] = '1';
 					$_REQUEST['pnt'] = 'edbody';
 					break;
@@ -110,9 +106,7 @@ parent.document.title = "' . $title . '";
 				$this->voting = new we_voting_voting(we_base_request::_(we_base_request::INT, "cmdid"));
 
 				if(!$this->voting->isAllowedForUser()){
-					echo we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
-					);
+					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 					$this->voting = new we_voting_voting();
 					$_REQUEST["home"] = true;
 					break;
@@ -182,15 +176,11 @@ parent.document.title = "' . $title . '";
 
 					if($q_empty){
 						$error = true;
-						echo we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(g_l('modules_voting', '[question_empty]'), we_message_reporting::WE_MESSAGE_ERROR)
-						);
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_voting', '[question_empty]'), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					} else if($a_empty){
 						$error = true;
-						echo we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(g_l('modules_voting', '[answer_empty]'), we_message_reporting::WE_MESSAGE_ERROR)
-						);
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_voting', '[answer_empty]'), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 				}
@@ -199,9 +189,7 @@ parent.document.title = "' . $title . '";
 					$weAcQuery = new we_selector_query();
 					$weAcResult = $weAcQuery->getItemById($this->voting->ParentID, VOTING_TABLE, array("IsFolder"));
 					if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
-						echo we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(g_l('modules_voting', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
-						);
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_voting', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 				}
@@ -243,9 +231,7 @@ setTimeout(function(){' . we_message_reporting::getShowMessageCall(g_l('modules_
 					$_REQUEST['home'] = '1';
 					$_REQUEST['pnt'] = 'edbody';
 				} else {
-					echo we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('modules_voting', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR)
-					);
+					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_voting', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR));
 				}
 
 				break;

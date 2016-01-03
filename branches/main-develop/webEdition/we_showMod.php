@@ -49,15 +49,14 @@ $step = we_base_request::_(we_base_request::INT, 'step', 0);
 
 if($what === 'show_frameset'){ //old call to show_frameset.php
 	echo we_html_tools::getHtmlTop() .
+	STYLESHEET .
+	we_tabs::getHeader() .
 	we_html_element::jsElement('
 var makeNewEntryCheck = 0;
 var publishWhenSave = 0;
 var weModuleWindow = true;
 
 function we_cmd() {
-	//var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-//	var url = WE().util.getWe_cmdArgsUrl(args);
-
 	top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 }
 ');
@@ -181,13 +180,13 @@ switch($mod){
 				break;
 		}
 
-		switch($ncmd){
-			case 'do_upload_csv':
-			case 'do_upload_black':
-				break;
-			default:
-				echo $weFrame->getHTMLDocumentHeader($what, $mode);
-		}
+		/* switch($ncmd){
+		  case 'do_upload_csv':
+		  case 'do_upload_black':
+		  break;
+		  default:
+		  echo $weFrame->getHTMLDocumentHeader($what, $mode);
+		  } */
 
 		if(($id = we_base_request::_(we_base_request::INT, 'inid')) !== false){
 			$weFrame->View->newsletter = new we_newsletter_newsletter($id);
@@ -218,12 +217,11 @@ switch($mod){
 				break;
 			default:
 				$mode = isset($mode) ? $mode : we_base_request::_(we_base_request::INT, 'art', 0);
+				ob_start();
 				$weFrame->View->processCommands();
+				$GLOBALS['extraJS'] = ob_get_clean();
 		}
 
-		if($weFrame->View->isJsonOnly()){
-			return;
-		}
 		break;
 	default:
 		echo 'no module';

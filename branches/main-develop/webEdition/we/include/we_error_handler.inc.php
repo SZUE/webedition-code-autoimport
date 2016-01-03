@@ -464,8 +464,7 @@ function error_handler($type, $message, $file, $line, $context){
 			}
 
 			// Stop execution
-			die();
-			break;
+			return false;
 		case E_DEPRECATED:
 		case E_USER_DEPRECATED:
 			if($GLOBALS['we']['errorhandler']['deprecated']){

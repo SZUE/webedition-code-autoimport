@@ -98,8 +98,8 @@ class we_xml_browser extends we_xml_parser{
 	}
 
 	function getFile($file, $timeout = 0){
-		if(file_exists(WEBEDITION_PATH . 'updateinclude/proxysettings.php')){
-			require_once(WEBEDITION_PATH . 'updateinclude/proxysettings.php');
+		if(file_exists(WEBEDITION_PATH . 'liveUpdate/includes/proxysettings.php')){
+			require_once(WEBEDITION_PATH . 'liveUpdate/includes/proxysettings.php');
 		}
 		$url = (we_base_file::hasURL($file) ? getHttpOption() : 'local');
 		$this->fileName = $file;

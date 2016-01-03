@@ -57,7 +57,7 @@ class we_otherDocument extends we_binaryDocument{
 	}
 
 	protected function formExtension2(){
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('we_' . $this->Name . '_Extension', 5, $this->Extension, '', 'onchange="_EditorFrame.setEditorIsHot(true);" style="width:92px"'), g_l('weClass', '[extension]'));
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('we_' . $this->Name . '_Extension', 5, $this->Extension, '', 'onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);" style="width:92px"'), g_l('weClass', '[extension]'));
 	}
 
 	public function we_save($resave = false, $skipHook = false){
@@ -137,13 +137,11 @@ class we_otherDocument extends we_binaryDocument{
 		$text.= ' ' . trim($content);
 
 		$maxDB = 65535;
-		$text = substr(preg_replace(array("/\n+/", '/  +/'), ' ', $text), 0, $maxDB);
 
 		$set = array(
 			'ID' => intval($this->ID),
 			'DID' => intval($this->ID),
-			'Text' => $text,
-			'Workspace' => $this->ParentPath,
+			'Text' => substr(preg_replace(array("/\n+/", '/  +/'), ' ', $text), 0, $maxDB),
 			'WorkspaceID' => intval($this->ParentID),
 			'Category' => $this->Category,
 			'Doctype' => '',

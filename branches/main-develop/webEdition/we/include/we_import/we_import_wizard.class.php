@@ -813,7 +813,7 @@ function handle_event(evt) {
 	switch(evt) {
 		case 'previous':
 			f.step.value = 0;
-			top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import&we_cmd[1]=" . we_import_functions::TYPE_GENERIC_XML . "';
+			top.location.href=WE().consts.dirs.WEBEDITION_DIR+ 'we_cmd.php?we_cmd[0]=import&we_cmd[1]=" . we_import_functions::TYPE_GENERIC_XML . "';
 			break;
 		case 'next':
 			" . ($this->fileUploader ? "if(f.elements['v[rdofloc]'][1].checked===true){
@@ -884,7 +884,7 @@ var ajaxUrl = "/webEdition/rpc/rpc.php";
 
 var handleSuccess = function(o){
 	if(o.responseText !== undefined){
-		var json = eval('('+o.responseText+')');
+		var json = JSON.parse(o.responseText);
 
 		for(var elemNr in json.elems){
 			for(var propNr in json.elems[elemNr].props){
@@ -976,10 +976,8 @@ HTS;
 		$myid = (isset($v['we_TemplateID'])) ? $v['we_TemplateID'] : 0;
 		//$path = f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($myid), 'Path', $DB_WE);
 
-		$wecmdenc1 = we_base_request::encCmd("self.wizbody.document.we_form.elements['noDocTypeTemplateId'].value");
-		$wecmdenc2 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[we_TemplateName]'].value");
-		$wecmdenc3 = we_base_request::encCmd("opener.top.we_cmd('reload_editpage');");
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements.noDocTypeTemplateId.value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
+		$cmd1 = "self.wizbody.document.we_form.elements['noDocTypeTemplateId'].value";
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . TEMPLATES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("self.wizbody.document.we_form.elements['v[we_TemplateName]'].value") . "','" . we_base_request::encCmd("opener.top.we_cmd('reload_editpage');") . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
 		/*		 * ******************************************************************** */
 		$yuiSuggest = & weSuggest::getInstance();
 
@@ -1031,7 +1029,7 @@ HTS;
 
 		$docCategories = $this->formCategory2('doc', isset($v['docCategories']) ? $v['docCategories'] : '');
 		$docCats = new we_html_table(array('class' => 'default'), 2, 2);
-		$docCats->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', 'class' => 'defaultgray'), g_l('import', '[categories]'));
+		$docCats->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', 'class' => 'defaultfont lowContrast'), g_l('import', '[categories]'));
 		$docCats->setCol(0, 1, array('style' => 'width:150px;'), $docCategories);
 		$cmd1 = "self.wizbody.document.we_form.elements['v[store_to_id]'].value";
 		$storeToButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("self.wizbody.document.we_form.elements['v[store_to_path]'].value") . "','','','0')"
@@ -1077,17 +1075,17 @@ HTS;
 		}
 
 		$objClass = new we_html_table(array('class' => 'default'), 2, 2);
-		$objClass->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', 'class' => 'defaultgray'), g_l('import', '[class]'));
+		$objClass->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', 'class' => 'defaultfont lowContrast'), g_l('import', '[class]'));
 		$objClass->setCol(0, 1, array('style' => 'width:150px;'), $CLselect->getHTML());
 
 		$objCategories = $this->formCategory2('obj', isset($v['objCategories']) ? $v['objCategories'] : '');
 		$objCats = new we_html_table(array('class' => 'default'), 2, 2);
-		$objCats->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', 'class' => 'defaultgray'), g_l('import', '[categories]'));
+		$objCats->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', 'class' => 'defaultfont lowContrast'), g_l('import', '[categories]'));
 		$objCats->setCol(0, 1, array('style' => 'width:150px;'), $objCategories);
 
 		$objects = new we_html_table(array('class' => 'default'), 3, 2);
-		$objects->setCol(0, 0, array('colspan' => 3,'class'=>'withBigSpace'), $radioObjs);
-		$objects->setCol(1, 0, array('style'=>'width:50px;'));
+		$objects->setCol(0, 0, array('colspan' => 3, 'class' => 'withBigSpace'), $radioObjs);
+		$objects->setCol(1, 0, array('style' => 'width:50px;'));
 		$objects->setCol(1, 1, array(), $objClass->getHTML());
 		$objects->setCol(2, 1, array(), $objCats->getHTML());
 
@@ -1121,9 +1119,7 @@ HTS;
 		$wepos = weGetCookieVariable('but_xml');
 		$znr = -1;
 
-		$content = we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
+		$content = YAHOO_FILES .
 			$hdns .
 			we_html_multiIconBox::getJS() .
 			we_html_multiIconBox::getHTML('xml', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos === 'down'), g_l('import', '[gxml_import]'));
@@ -1258,7 +1254,8 @@ function handle_event(evt) {
 		iEnd = isNaN(parseInt(f.elements['v[to_iElem]'].value))? 0 : f.elements['v[to_iElem]'].value;
 		iElements = parseInt(f.elements.we_select.options[f.elements.we_select.selectedIndex].value);
 		if ((iStart < 1) || (iStart > iElements) || (iEnd < 1) || (iEnd > iElements)) {
-			msg = \"" . g_l('import', '[num_elements]') . "\" +iElements;" . we_message_reporting::getShowMessageCall("msg", we_message_reporting::WE_MESSAGE_ERROR, true) . "
+			msg = \"" . g_l('import', '[num_elements]') . "\" +iElements;" .
+			we_message_reporting::getShowMessageCall("msg", we_message_reporting::WE_MESSAGE_ERROR, true) . "
 		} else {
 			f.elements['v[rcd]'].value = f.we_select.options[f.we_select.selectedIndex].text;
 			f.step.value = 3;
@@ -1836,7 +1833,7 @@ var ajaxUrl = "/webEdition/rpc/rpc.php";
 
 var handleSuccess = function(o){
 	if(o.responseText !== undefined){
-		var json = eval('('+o.responseText+')');
+		var json = JSON.parse(o.responseText);
 		for(var elemNr in json.elems){
 			for(var propNr in json.elems[elemNr].props){
 				var propval = json.elems[elemNr].props[propNr].val;
@@ -1976,8 +1973,8 @@ HTS;
 
 		$docCategories = $this->formCategory2("doc", isset($v["docCategories"]) ? $v["docCategories"] : "");
 		$docCats = new we_html_table(array('class' => 'default'), 1, 2);
-		$docCats->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', "class" => "defaultgray"), g_l('import', '[categories]'));
-		$docCats->setCol(0, 1, array('style'=>'width:150px;'), $docCategories);
+		$docCats->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', "class" => "defaultfont lowContrast"), g_l('import', '[categories]'));
+		$docCats->setCol(0, 1, array('style' => 'width:150px;'), $docCategories);
 
 		$radioDocs = we_html_forms::radiobutton('documents', ($v["import_type"] === 'documents'), "v[import_type]", g_l('import', '[documents]'));
 		$radioObjs = we_html_forms::radiobutton('objects', ($v["import_type"] === 'objects'), "v[import_type]", g_l('import', '[objects]'), true, "defaultfont", "self.document.we_form.elements['v[store_to_path]'].value='/'; YAHOO.autocoml.setValidById(self.document.we_form.elements['v[store_to_path]'].id); if(self.document.we_form.elements['v[we_TemplateName]']!==undefined) { self.document.we_form.elements['v[we_TemplateName]'].value=''; YAHOO.autocoml.setValidById(self.document.we_form.elements['v[we_TemplateName]'].id); }", (defined('OBJECT_TABLE') ? false : true));
@@ -2014,8 +2011,8 @@ HTS;
 			}
 
 			$objClass = new we_html_table(array('class' => 'default'), 1, 2);
-			$objClass->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', "class" => "defaultgray"), g_l('import', '[class]'));
-			$objClass->setCol(0, 1, array('style'=>'width:150px;'), $CLselect->getHTML());
+			$objClass->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', "class" => "defaultfont lowContrast"), g_l('import', '[class]'));
+			$objClass->setCol(0, 1, array('style' => 'width:150px;'), $CLselect->getHTML());
 
 			$wecmdenc1 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[obj_path_id]'].value");
 			$wecmdenc2 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[obj_path]'].value");
@@ -2042,11 +2039,11 @@ HTS;
 			$objSeaPu->setCol(0, 0, array(), we_html_forms::checkboxWithHidden(isset($v["obj_publish"]) ? $v["obj_publish"] : true, 'v[obj_publish]', g_l('buttons_global', '[publish][value]'), false, 'defaultfont'));
 			$objCategories = $this->formCategory2("obj", isset($v["objCategories"]) ? $v["objCategories"] : "");
 			$objCats = new we_html_table(array('class' => 'default'), 1, 2);
-			$objCats->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', "class" => "defaultgray"), g_l('import', '[categories]'));
-			$objCats->setCol(0, 1, array('style'=>'width:150px;'), $objCategories);
+			$objCats->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', "class" => "defaultfont lowContrast"), g_l('import', '[categories]'));
+			$objCats->setCol(0, 1, array('style' => 'width:150px;'), $objCategories);
 
 			$objects = new we_html_table(array('class' => 'default withBigSpace'), 3, 2);
-			$objects->setCol(0, 0, array("colspan" => 3,'style'=>'width:50px;'), $radioObjs);
+			$objects->setCol(0, 0, array("colspan" => 3, 'style' => 'width:50px;'), $radioObjs);
 			$objects->setCol(1, 1, array(), $objClass->getHTML());
 			$objects->setCol(2, 1, array(), $objCats->getHTML());
 		}
@@ -2104,9 +2101,7 @@ HTS;
 		}
 
 
-		$content = we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
+		$content = YAHOO_FILES .
 			$hdns .
 			we_html_multiIconBox::getHTML('csv', $parts, 30, "", -1, "", "", false, g_l('import', '[csv_import]'));
 

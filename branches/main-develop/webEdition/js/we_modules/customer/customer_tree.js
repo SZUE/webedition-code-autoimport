@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-container.prototype.openClose = function(id) {
+container.prototype.openClose = function (id) {
 	var sort = "";
 	if (id === "") {
 		return;
@@ -31,7 +31,7 @@ container.prototype.openClose = function(id) {
 	var eintragsIndex = treeData.indexOfEntry(id);
 
 	if (treeData[eintragsIndex].typ === "group") {
-		sort = frames.top.document.we_form_treeheader.sort.value;
+		sort = top.document.we_form_treeheader.sort.value;
 	}
 
 	var openstatus = !treeData[eintragsIndex].open;
@@ -43,7 +43,7 @@ container.prototype.openClose = function(id) {
 		sort = encodeURI(sort);
 		id = id.replace(/\+/g, "%2B");
 		sort = sort.replace(/\+/g, "%2B");
-		frames.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=cmd&pid=" + id + (sort !== "" ? "&sort=" + sort : "");
+		treeData.frames.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=cmd&pid=" + id + (sort !== "" ? "&sort=" + sort : "");
 	} else {
 		drawTree();
 	}
@@ -54,9 +54,9 @@ container.prototype.openClose = function(id) {
 
 node.prototype.showSegment = function () {
 	var sort = "";
-	parentnode = frames.top.treeData.get(this.parentid);
+	parentnode = this.get(this.parentid);
 	parentnode.clear();
-	sort = frames.top.document.we_form_treheader.sort.value;
+	sort = top.document.we_form_treheader.sort.value;
 	we_cmd("load", parentnode.id, this.offset, sort);
 };
 
@@ -66,20 +66,20 @@ node.prototype.getLayout = function () {
 	}
 	var layout_key = (this.typ === "group" ? "group" : "item");
 
-	return treeData.node_layouts[layout_key] + (this.typ === "item" && this.published ? " loginDenied" : "");
+	return treeData.node_layouts[layout_key] + (this.typ === "item" && this.published ? "" : " loginDenied");
 };
 
 function doClick(id, typ) {
-	var node = frames.top.treeData.get(id);
+	var node = treeData.get(id);
 	if (node.typ === "item") {
-		frames.top.we_cmd('customer_edit', node.id, node.typ, node.table);
+		we_cmd('customer_edit', node.id, node.typ, node.table);
 	}
 }
 
 container.prototype.drawGroup = function (nf, ai, zweigEintrag) {
 	var cur = nf[ai];
 	var newAst = zweigEintrag;
-	var oc_js = this.topFrame + ".setScrollY();" + this.topFrame + ".treeData.openClose('" + cur.id + "')\"";
+	var oc_js = this.topFrame + ".treeData.openClose('" + cur.id + "')\"";
 	row = "<a href=\"javascript:" + oc_js + " border=0><span class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open ? "minus" : "plus") + "-square-o fa-stack-1x'></i></span></a>";
 
 	row += (cur.disabled ?

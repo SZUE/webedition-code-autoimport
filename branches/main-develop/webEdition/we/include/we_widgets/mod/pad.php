@@ -115,7 +115,7 @@ function getNoteList($_sql, $bDate, $bDisplay){
 				break;
 		}
 		$_notes .= '<tr style="cursor:pointer;" id="' . $_rcd . '_tr" onmouseover="fo=document.forms[0];if(fo.elements.mark.value==\'\'){setColor(this,' . $_rcd . ',\'#EDEDED\');}" onmouseout="fo=document.forms[0];if(fo.elements.mark.value==\'\'){setColor(this,' . $_rcd . ',\'#FFFFFF\');}" onmousedown="selectNote(' . $_rcd . ');">
-		<td style="width:15px;height:20px;vertical-align:middle" nowrap><i class="fa fa-dot-circle-o" style="color:' . $color . '"></i></td>
+		<td style="width:15px;height:20px;vertical-align:middle"><i class="fa fa-dot-circle-o" style="color:' . $color . '"></i></td>
 		<td style="width:60px;padding-left:5px;vertical-align:middle;text-align:center" class="middlefont">' . $showDate . '</td>
 		<td style="padding-left:5px;vertical-align:middle" class="middlefont">' . CheckAndConvertISObackend($showTitle) . '</td>
 		</tr>';
@@ -305,10 +305,6 @@ _ttlB64Esc=escape(parent.Base64.encode(_sTb));
 
 ") . we_html_element::jsScript(JS_DIR . 'widgets/pad.js'), we_html_element::htmlBody(
 		array(
-		"marginwidth" => 0,
-		"marginheight" => 0,
-		"leftmargin" => 0,
-		"topmargin" => 0,
 		"onload" => (($type === "pad/pad") ? "if(parent!=self)init();" : "") . 'calendarSetup();toggleTblValidity();'
 		), we_html_element::htmlForm(array("style" => "display:inline;"), we_html_element::htmlDiv(
 				array("id" => "pad"), $_notepad .

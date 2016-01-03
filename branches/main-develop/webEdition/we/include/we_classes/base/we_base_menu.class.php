@@ -36,19 +36,11 @@ class we_base_menu{
 	}
 
 	public function getCode(){
-		return $this->getJS() . $this->getHTML();
+		return self::getJS() . $this->getHTML();
 	}
 
-	public function getJS(){
-		return we_html_element::jsScript(JS_DIR . 'we_lcmd.js') .
-			we_html_element::jsElement('
-function menuaction(cmd,cmd1) {
-if(cmd1===undefined){
-we_lcmd(cmd);
-}else{
-we_lcmd(cmd,cmd1);
-}
-}');
+	public static function getJS(){
+		return we_html_element::jsScript(JS_DIR . 'we_lcmd.js');
 	}
 
 	public function getHTML(){

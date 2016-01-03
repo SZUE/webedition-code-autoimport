@@ -27,113 +27,36 @@
 
 class we_users_view extends we_modules_view{
 
-	function getJSTop(){//TODO: is this shop-code or a copy paste from another module?
-		return
-			parent::getJSTop() .
-			we_html_element::jsElement('
-var get_focus = 1;
-var activ_tab = 1;
-var hot= 0;
-var scrollToVal=0;
+	function getJSTop(){
+		$mod = we_base_request::_(we_base_request::STRING, 'mod', '');
+		$modData = we_base_moduleInfo::getModuleData($mod);
+		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
-function doUnload() {
-	WE().util.jsWindow.prototype.closeAll(window);
-}
+		if(isset($_SESSION['user_session_data'])){
+			unset($_SESSION['user_session_data']);
+		}
 
-function we_cmd() {
-	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
+		return we_html_element::jsElement('
+var loaded=0;
+var hot=0;
+var frameset="' . $this->frameset . '";
+WE().consts.g_l.users.view={
+	save_changed_user:"' . g_l('modules_users', '[save_changed_user]') . '",
+	give_org_name:"' . g_l('modules_users', '[give_org_name]') . '",
+	password_alert:"' . we_message_reporting::prepareMsgForJS(g_l('modules_users', '[password_alert]')) . '"
+};
+WE().consts.dirs.WE_USERS_MODULE_DIR="' . WE_USERS_MODULE_DIR . '";
 
-	switch (args[0]) {
-		case "load":
-			' . $this->topFrame . '.cmd.location="' . $this->frameset . '&pnt=cmd&pid="+args[1]+"&offset="+args[2]+"&sort="+args[3];
-			break;
-		default:
-			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
-	}
-}');
+parent.document.title = "' . $title . '";
+var cgroup=' . ($_SESSION['user']['ID'] ? intval(f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . $_SESSION["user"]["ID"])) : 0) . ';
+') .
+				we_html_element::jsScript(JS_DIR . 'we_modules/users/users_view.js');
 	}
 
 	function getJSProperty(){
 		return
-			parent::getJSProperty() .
-			weSuggest::getYuiFiles() .
-			we_html_element::jsElement('
-var loaded = false;
-function we_submitForm(target, url) {
-	var f = self.document.we_form;
-
-	ok = true;
-
-	if (f.input_pass) {
-		if (f.oldtab.value == 0) {
-			if (f.input_pass.value.length < 4 && f.input_pass.value.length != 0) {
-				' . we_message_reporting::getShowMessageCall(g_l('modules_users', '[password_alert]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-				return false;
-			} else {
-				if (f.input_pass.value != "") {
-					var clearPass = f.input_pass.value;
-					f.input_pass.value = "";
-					f[f.obj_name.value + "_clearpasswd"].value = clearPass;
-				}
-			}
-		}
-	}
-
-	if (ok) {
-		f.target = target;
-		f.action = url;
-		f.method = "post";
-		f.submit();
-	}
-	return true;
-}
-
-function switchPage(page) {
-	document.we_form.tab.value = page;
-	return we_submitForm(self.name, "' . $this->frameset . '&pnt=edbody");
-}
-
-function doUnload() {
-	WE().util.jsWindow.prototype.closeAll(window);
-}
-
-function we_cmd() {
-	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
-
-	switch (args[0]) {
-		case "we_users_selector":
-			new (WE().util.jsWindow)(this, url, "browse_users", -1, -1, 500, 300, true, false, true);
-			break;
-		case "we_selector_directory":
-			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height, true, true, true, true);
-			break;
-		case "select_seem_start":
-			myWindStr="WE().util.jsWindow.prototype.find(\'preferences\').wind";
-			top.opener.top.we_cmd("we_selector_document", myWind.document.forms[0].elements.seem_start_file.value, "' . FILE_TABLE . '", myWindStr + ".document.forms[0].elements.seem_start_file.value", myWindStr + ".document.forms[0].elements.seem_start_file_name.value", "", "", "", "' . we_base_ContentTypes::WEDOCUMENT . '", 1);
-			break;
-		case "openNavigationDirselector":
-		case "openNewsletterDirselector":
-			url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
-			if (args[0] == "openNewsletterDirselector") {
-				args[0]="we_newsletter_dirSelector";//FIXME
-			}else {
-				args[0]="we_navigation_dirSelector";
-			}
-			for (var i = 0; i < args.length; i++) {
-				url += "we_cmd[]=" +encodeURI(args[i]);
-				if (i < (args.length - 1)) {
-					url += "&";
-				}
-			}
-			new (WE().util.jsWindow)(this, url, "we_navigation_dirselector", -1, -1, 600, 400, true, true, true);
-			break;
-		default:
-			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
-	}
-}
-		');
+				weSuggest::getYuiFiles() .
+				we_html_element::jsScript(JS_DIR . 'we_modules/users/users_property.js');
 	}
 
 	private function new_group(){
@@ -156,9 +79,9 @@ function we_cmd() {
 		$_SESSION["user_session_data"] = $user_object;
 
 		echo we_html_element::jsElement('
-		top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader";
-		top.content.editor.edbody.location="' . $this->frameset . '&pnt=edbody";
-		top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');
+top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edheader";
+top.content.editor.edbody.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edbody";
+top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edfooter";');
 	}
 
 	private function new_alias(){
@@ -180,9 +103,9 @@ function we_cmd() {
 
 		$_SESSION["user_session_data"] = $user_object;
 		echo we_html_element::jsElement('
-		top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader";
-		top.content.editor.edbody.location="' . $this->frameset . '&pnt=edbody";
-		top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');
+		top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edheader";
+		top.content.editor.edbody.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edbody";
+		top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edfooter";');
 	}
 
 	private function new_user(){
@@ -202,9 +125,9 @@ function we_cmd() {
 
 		$_SESSION["user_session_data"] = $user_object;
 		echo we_html_element::jsElement('
-		top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader";
-		top.content.editor.edbody.location="' . $this->frameset . '&pnt=edbody&oldtab=0";
-		top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');
+top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edheader";
+top.content.editor.edbody.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edbody&oldtab=0";
+top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edfooter";');
 	}
 
 	private function display_user(){
@@ -220,12 +143,12 @@ function we_cmd() {
 			$_SESSION["user_session_data"] = $user_object;
 
 			echo we_html_element::jsElement('top.content.usetHot();' .
-				($user_object->Type == 1 ?
-					'top.content.cgroup=' . $user_object->ID . ';' :
-					'') .
-				'top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader";
-		top.content.editor.edbody.location="' . $this->frameset . '&pnt=edbody&oldtab=0";
-		top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');
+					($user_object->Type == 1 ?
+							'top.content.cgroup=' . $user_object->ID . ';' :
+							'') .					'
+top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edheader";
+top.content.editor.edbody.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edbody&oldtab=0";
+top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edfooter";');
 		}
 	}
 
@@ -358,8 +281,8 @@ function we_cmd() {
 				return;
 			}
 			$foo = ($user_object->ID ?
-					getHash('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($user_object->ID), $user_object->DB_WE) :
-					array('ParentID' => 0));
+							getHash('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($user_object->ID), $user_object->DB_WE) :
+							array('ParentID' => 0));
 
 			$ret = $user_object->saveToDB();
 			$_SESSION['user_session_data'] = $user_object;
@@ -394,9 +317,9 @@ function we_cmd() {
 				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', '[user_path_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
 			} else {
 				$tree_code = ($id ?
-						'top.content.treeData.updateEntry({id:' . $user_object->ID . ',parentid:' . $user_object->ParentID . ',text:"' . $user_object->Text . '",class:"' . ($user_object->checkPermission('ADMINISTRATOR') ? 'bold ' : '') . ($user_object->LoginDenied ? 'red' : '') . '"});' :
-						'top.content.treeData.makeNewEntry({id:' . $user_object->ID . ',parentid:' . $user_object->ParentID . ',text:"' . $user_object->Text . '",open:false,contenttype:"' . (($user_object->Type == we_users_user::TYPE_USER_GROUP) ? "folder" : (($user_object->Type == we_users_user::TYPE_ALIAS) ? "we/alias" : "we/user")) . '",table:"' . USER_TABLE . '",class:"' . ($user_object->checkPermission('ADMINISTRATOR') ? 'bold ' : '') . ($user_object->LoginDenied ? 'red' : '') . '"});') .
-					'top.content.editor.edheader.document.getElementById("titlePath").innerText="' . $user_object->Path . '";';
+								'top.content.treeData.updateEntry({id:' . $user_object->ID . ',parentid:' . $user_object->ParentID . ',text:"' . $user_object->Text . '",class:"' . ($user_object->checkPermission('ADMINISTRATOR') ? 'bold ' : '') . ($user_object->LoginDenied ? 'red' : '') . '"});' :
+								'top.content.treeData.makeNewEntry({id:' . $user_object->ID . ',parentid:' . $user_object->ParentID . ',text:"' . $user_object->Text . '",open:false,contenttype:"' . (($user_object->Type == we_users_user::TYPE_USER_GROUP) ? "folder" : (($user_object->Type == we_users_user::TYPE_ALIAS) ? "we/alias" : "we/user")) . '",table:"' . USER_TABLE . '",class:"' . ($user_object->checkPermission('ADMINISTRATOR') ? 'bold ' : '') . ($user_object->LoginDenied ? 'red' : '') . '"});') .
+						'top.content.editor.edheader.document.getElementById("titlePath").innerText="' . $user_object->Path . '";';
 
 				switch($user_object->Type){
 					case we_users_user::TYPE_ALIAS:
@@ -474,7 +397,7 @@ function we_cmd() {
 			}
 			echo we_html_element::jsElement('
 		if(confirm("' . $question . '")){
-			top.content.cmd.location="' . $this->frameset . '&pnt=cmd&ucmd=do_delete";
+			top.content.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&ucmd=do_delete";
 		}');
 		}
 	}
@@ -493,9 +416,9 @@ function we_cmd() {
 			if($user_object->deleteMe()){
 				echo we_html_element::jsElement('
 		top.content.treeData.deleteEntry(' . $user_object->ID . ');
-		top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&home=1";
-		top.content.editor.edbody.location="' . $this->frameset . '&pnt=edbody&home=1";
-		top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter&home=1";');
+		top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edheader&home=1";
+		top.content.editor.edbody.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edbody&home=1";
+		top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edfooter&home=1";');
 				unset($_SESSION["user_session_data"]);
 			}
 		}
@@ -525,9 +448,9 @@ function we_cmd() {
 			}
 
 			echo we_html_element::jsElement(
-				($found || permissionhandler::hasPerm('ADMINISTRATOR') ?
-					'top.content.we_cmd(\'display_user\',' . $uid . ')' :
-					we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR)
+					($found || permissionhandler::hasPerm('ADMINISTRATOR') ?
+							'top.content.we_cmd(\'display_user\',' . $uid . ')' :
+							we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR)
 			));
 		}
 	}
@@ -570,8 +493,8 @@ function we_cmd() {
 button.weBtn{
 	padding-bottom:1em;
 }') . we_html_button::create_button("fat:create_user,fa-lg fa-user-plus", "javascript:top.opener.top.we_cmd('new_user');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")) .
-			we_html_button::create_button("fat:create_group,fa-lg fa-users,fa-plus", "javascript:top.opener.top.we_cmd('new_group');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_GROUP")) .
-			we_html_button::create_button("fat:create_alias,alias fa-lg fa-user-plus", "javascript:top.opener.top.we_cmd('new_alias');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_ALIAS"));
+				we_html_button::create_button("fat:create_group,fa-lg fa-users,fa-plus", "javascript:top.opener.top.we_cmd('new_group');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_GROUP")) .
+				we_html_button::create_button("fat:create_alias,alias fa-lg fa-user-plus", "javascript:top.opener.top.we_cmd('new_alias');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_ALIAS"));
 
 		return parent::getHomeScreen('users', "user.gif", $content);
 	}

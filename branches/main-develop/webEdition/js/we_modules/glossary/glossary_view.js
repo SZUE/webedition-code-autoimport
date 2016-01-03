@@ -95,8 +95,8 @@ function we_cmd() {
 				if (confirm(WE().consts.g_l.glossary.view.delete_alert)) {
 					top.content.editor.edbody.document.we_form.cmd.value = args[0];
 					top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;
-					top.content.editor.edheader.location = data.frameset + "?home=1&pnt=edheader";
-					top.content.editor.edfooter.location = data.frameset + "?home=1&pnt=edfooter";
+					top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&home=1&pnt=edheader";
+					top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&home=1&pnt=edfooter";
 					top.content.editor.edbody.submitForm();
 				}
 			} else {
@@ -144,12 +144,35 @@ function we_cmd() {
 			top.content.editor.edbody.submitForm();
 			break;
 		case "load":
-			top.content.cmd.location = data.frameset + "&pnt=cmd&pid=" + args[1] + "&offset=" + args[2] + "&sort=" + args[3];
+			top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=cmd&pid=" + args[1] + "&offset=" + args[2] + "&sort=" + args[3];
 			break;
 		case "home":
-			top.content.editor.edbody.parent.location = data.frameset + "&pnt=editor";
-			break;
+			top.content.editor.edbody.parent.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=editor";
 		default:
 			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
+}
+
+function populateWorkspaces(type) {
+	switch (type) {
+		case 'values':
+			top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectWorkspaceID]'].options.length = 0;
+			top.content.editor.edbody.setDisplay("ObjectWorkspaceID", "block");
+			return;
+		case 'workspace':
+			top.content.editor.edbody.setDisplay("ObjectWorkspaceID", "block");
+			top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectWorkspaceID]'].options.length = 0;
+			top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectWorkspaceID]'].options[top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectWorkspaceID]'].options.length] = new Option("/", 0);
+			top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectWorkspaceID]'].selectedIndex = 0;
+			return;
+		case 'noWorkspace':
+			top.content.editor.edbody.setDisplay("ObjectWorkspaceID", "none");
+			top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectWorkspaceID]'].options.length = 0;
+			top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectWorkspaceID]'].options[top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectWorkspaceID]'].options.length] = new Option("-1", -1);
+			top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectLinkID]'].value = "";
+			top.content.editor.edbody.document.we_form.elements['link[Attributes][ObjectLinkPath]'].value = "";
+			WE().util.showMessage(WE().consts.g_l.glossary.view.no_workspace, WE().consts.message.WE_MESSAGE_ERROR, this);
+			return;
+	}
+
 }

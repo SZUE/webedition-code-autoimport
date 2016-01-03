@@ -31,7 +31,7 @@ echo we_html_tools::getHtmlTop() .
 
 if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 	$iLayoutCols = isset($_SESSION["prefs"]["cockpit_amount_columns"]) ? $_SESSION["prefs"]["cockpit_amount_columns"] : 3;
-	$bResetProps = (we_base_request::_(we_base_request::STRING, 'we_cmd') === 'reset_home') ? true : false;
+	$bResetProps = (we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'reset_home') ? true : false;
 	if(!$bResetProps && $iLayoutCols){
 		$aDat = we_unserialize(we_base_preferences::getUserPref('cockpit_dat'))? : $aCfgProps;
 		$aTrf = we_unserialize(we_base_preferences::getUserPref('cockpit_rss'))? : $aTopRssFeeds;
@@ -197,19 +197,19 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 			}
 			if(file_exists(WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php')){
 				include(WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php');
-				$$aProps[0] = we_base_widget::create('m_' . $iCurrId, $aProps[0], $oTblDiv, $aLang, $aProps[1], $aProps[2], $aProps[3], $iWidth, $aPrefs[$aProps[0]]["height"], $aPrefs[$aProps[0]]["isResizable"]);
-				$s2 .= we_html_element::htmlDiv(array("id" => "m_" . $iCurrId, "class" => "le_widget"), $$aProps[0]);
+				$widget = we_base_widget::create('m_' . $iCurrId, $aProps[0], $oTblDiv, $aLang, $aProps[1], $aProps[2], $aProps[3], $iWidth, $aPrefs[$aProps[0]]["height"], $aPrefs[$aProps[0]]["isResizable"]);
+				$s2 .= we_html_element::htmlDiv(array("id" => "m_" . $iCurrId, "class" => "le_widget"), $widget);
 			}
 		}
 		$s1 .= '<td id="c_' . $iCurrCol . '" class="cls_' . $iCurrCol . (($bExtendedCol) ? '_expand' : '_collapse') . '">' .
-				$s2 .
-				we_html_element::htmlDiv(array("class" => "wildcard", 'style' => ($iDatLen > $iCurrCol ? 'margin-right:5px' : '')), '') . '</td>';
+			$s2 .
+			we_html_element::htmlDiv(array("class" => "wildcard", 'style' => ($iDatLen > $iCurrCol ? 'margin-right:5px' : '')), '') . '</td>';
 	}
 	while($iCurrCol < $iLayoutCols){
 		$iCurrCol++;
 		$s1 .= '<td id="c_' . $iCurrCol . '" class="cls_' . $iCurrCol . '_collapse">' .
-				we_html_element::htmlDiv(array("class" => "wildcard"), "") . '</td>' .
-				($iLayoutCols > $iCurrCol ? '<td>&nbsp;&nbsp;</td>' : '');
+			we_html_element::htmlDiv(array("class" => "wildcard"), "") . '</td>' .
+			($iLayoutCols > $iCurrCol ? '<td>&nbsp;&nbsp;</td>' : '');
 	}
 
 	$oTblWidgets = new we_html_table(array("class" => 'default'), 1, 1);
@@ -220,20 +220,20 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 
 	echo
 	we_html_element::htmlBody(
-			array(
+		array(
 		'onload' => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});oTblWidgets=document.getElementById('le_tblWidgets');initDragWidgets();",
-			), we_html_element::htmlForm(
-					array("name" => "we_form"
-					), we_html_element::htmlHiddens(array(
-						"we_cmd[0]" => "save",
-						"we_cmd[1]" => "",
-						"we_cmd[2]" => ""))
-			) .
-			we_html_element::htmlDiv(array("id" => "rpcBusy", "style" => "display:none;"), '<i class="fa fa-2x fa-spinner fa-pulse"></i>'
-			) . we_html_element::htmlDiv(array("id" => "widgets"), "") .
-			$oTblWidgets->getHtml() .
-			we_base_widget::getJs() .
-			we_html_element::htmlDiv(array("id" => "divClone"), $oClone)
+		), we_html_element::htmlForm(
+			array("name" => "we_form"
+			), we_html_element::htmlHiddens(array(
+				"we_cmd[0]" => "save",
+				"we_cmd[1]" => "",
+				"we_cmd[2]" => ""))
+		) .
+		we_html_element::htmlDiv(array("id" => "rpcBusy", "style" => "display:none;"), '<i class="fa fa-2x fa-spinner fa-pulse"></i>'
+		) . we_html_element::htmlDiv(array("id" => "widgets"), "") .
+		$oTblWidgets->getHtml() .
+		we_base_widget::getJs() .
+		we_html_element::htmlDiv(array("id" => "divClone"), $oClone)
 	);
 } else { // no right to see cockpit!
 	echo
@@ -255,14 +255,14 @@ _EditorFrame.initEditorFrameData({
 });') .
 	'</head>' .
 	we_html_element::htmlBody(
-			array(
+		array(
 		'class' => 'noHome',
 		"onload" => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});"
-			), we_html_element::htmlDiv(
-					array("class" => "defaultfont errorMessage", "style" => "width: 400px;"), (permissionhandler::hasPerm("CHANGE_START_DOCUMENT") && permissionhandler::hasPerm("EDIT_SETTINGS") ?
-							we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[question_change_startdocument]') . '</strong><br/><br/>' .
-									we_html_button::create_button("preferences", "javascript:top.we_cmd('openPreferences');"), we_html_tools::TYPE_ALERT, 0, false) :
-							we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[start_with_SEEM_no_startdocument]') . "</strong>", we_html_tools::TYPE_ALERT, 0, false))));
+		), we_html_element::htmlDiv(
+			array("class" => "defaultfont errorMessage", "style" => "width: 400px;"), (permissionhandler::hasPerm("CHANGE_START_DOCUMENT") && permissionhandler::hasPerm("EDIT_SETTINGS") ?
+				we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[question_change_startdocument]') . '</strong><br/><br/>' .
+					we_html_button::create_button("preferences", "javascript:top.we_cmd('openPreferences');"), we_html_tools::TYPE_ALERT, 0, false) :
+				we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[start_with_SEEM_no_startdocument]') . "</strong>", we_html_tools::TYPE_ALERT, 0, false))));
 }
 //FIXME: remove iframe
 ?>

@@ -36,49 +36,27 @@ if(!($we_doc instanceof we_imageDocument)){
 	exit("ERROR: Couldn't initialize we_imageDocument object");
 }
 
-echo we_html_tools::getHtmlTop() .
- we_html_element::jsElement('
-document.onkeyup = function(e) {
-	var e = (event != undefined) ? event : e;
-	if (e.keyCode == 13) {
-		doOK();
-	} else if(e.keyCode == 27) {
-		top.close();
-	}
-}
-
-self.focus();');
-
 switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case "image_resize":
-		echo we_html_element::jsElement(we_getImageResizeDialogJS());
-		break;
-	case "image_convertJPEG":
-		echo we_html_element::jsElement(we_getImageConvertDialogJS());
-		break;
-	case "image_rotate":
-		echo we_html_element::jsElement(we_getImageRotateDialogJS());
-		break;
-}
-
-echo STYLESHEET . "</head>";
-
-
-switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
-	case "image_resize":
+		$js = we_getImageResizeDialogJS();
 		$_dialog = we_getImageResizeDialog();
 		break;
 	case "image_convertJPEG":
+		$js = we_getImageConvertDialogJS();
 		$_dialog = we_getImageConvertDialog();
 		break;
 	case "image_rotate":
+		$js = we_getImageRotateDialogJS();
 		$_dialog = we_getImageRotateDialog();
 		break;
 	default:
-		$_dialog = '';
+		$_dialog = $js = '';
 }
-
-echo we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form"), $_dialog)) . "</html>";
+echo we_html_tools::getHtmlTop() .
+ we_html_element::jsScript(JS_DIR . 'image_edit.js') .
+ we_html_element::jsElement($js) .
+ STYLESHEET . '</head>' .
+ we_html_element::htmlBody(array("class" => "weDialogBody", 'onload' => 'self.focus()'), we_html_element::htmlForm(array("name" => "we_form"), $_dialog)) . "</html>";
 
 function we_getImageResizeDialogJS(){
 	list($width, $height) = $GLOBALS['we_doc']->getOrigSize();
@@ -87,78 +65,6 @@ function we_getImageResizeDialogJS(){
 var height = ' . $height . ';
 var ratio_wh = width / height;
 var ratio_hw = height / width;
-
-function isSpecialKey(key) {
-	return (key >= 63232 && key <= 63235) || key == 8 || key == 63272 || key == 0 || key == 13;
-}
-
-function we_switchPixelPercent(inp,sel){
-
-	if(sel.options[sel.selectedIndex].value == "pixel"){
-		if(inp.name=="width"){
-			inp.value = Math.round((width / 100) * inp.value);
-		}else{
-			inp.value = Math.round((height / 100) * inp.value);
-		}
-	}else{
-		if(inp.name=="width"){
-			inp.value = Math.round(100 * (100/width) * inp.value) / 100.0;
-		}else{
-			inp.value = Math.round(100 * (100/height) * inp.value) / 100.0;
-		}
-	}
-
-}
-
-function we_keep_ratio(inp,sel){
-	var _newVal;
-
-	if(inp.value){
-		if(sel.options[sel.selectedIndex].value == "pixel"){
-			_newVal = Math.round(inp.value);
-		}else{
-			_newVal = Math.round(100 * inp.value) / 100.0;
-		}
-		if (_newVal != inp.value) {
-			inp.value = _newVal;
-		}
-	}
-
-	if(inp.form.ratio.checked){
-		var inp_change = null;
-		var sel_change = null;
-		var ratio = null;
-		var org = null
-
-		if(inp.name=="width"){
-			ratio = ratio_hw;
-			inp_change = inp.form.height;
-			sel_change = inp.form.heightSelect;
-			org = width;
-		}else{
-			ratio = ratio_wh;
-			inp_change = inp.form.width;
-			sel_change = inp.form.widthSelect;
-			org = height;
-		}
-		if(sel_change.options[sel_change.selectedIndex].value == "pixel"){
-			if(sel.options[sel.selectedIndex].value == "pixel"){
-				_newVal = Math.round(inp.value * ratio);
-			}else{
-				_newVal = Math.round((org/100) * inp.value * ratio);
-			}
-		}else{
-			if(sel.options[sel.selectedIndex].value == "percent"){
-				_newVal = inp.value;
-			}else{
-				_newVal = Math.round(100 * (100/org) * inp.value * ratio) / 100.0;
-			}
-		}
-		if (inp_change.value != _newVal) {
-			inp_change.value = _newVal;
-		}
-	}
-}
 
 function doOK(){
 	var f = document.we_form;
@@ -200,7 +106,6 @@ function we_getImageRotateDialogJS(){
 	var degrees = 0;
 	var w = "' . $imageSize[0] . '";
 	var h= "' . $imageSize[1] . '";
-
 
 	for(var i=0; i<f.degrees.length;i++){
 		if(f.degrees[i].checked){

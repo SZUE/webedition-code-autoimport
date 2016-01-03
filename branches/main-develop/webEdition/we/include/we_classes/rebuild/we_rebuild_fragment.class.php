@@ -25,6 +25,10 @@
 class we_rebuild_fragment extends we_fragment_base{
 
 	function doTask(){
+		switch($this->data['cn']){
+			case 'we_folder':
+				$this->taskPerFragment = max(20, $this->taskPerFragment);
+		}
 		$this->updateProgressBar();
 		we_rebuild_base::rebuild($this->data);
 	}
@@ -47,7 +51,7 @@ class we_rebuild_fragment extends we_fragment_base{
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', ' ');
 	}
 
-	function printBodyTag($attributes = ""){
+	function printBodyTag(){
 
 	}
 

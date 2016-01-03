@@ -31,12 +31,12 @@ class we_export_treeMain extends weTree{
 	function getJSStartTree(){
 		return '
 function startTree(){
-	frames={
-	top:' . $this->topFrame . ',
-	cmd:' . $this->cmdFrame . '
-};
-treeData.frames=frames;
-	frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=cmd&cmd=mainload&pid=0";
+	treeData.frames={
+		top:' . $this->topFrame . ',
+		cmd:' . $this->cmdFrame . ',
+		tree:' . $this->treeFrame . '
+	};
+	treeData.frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=cmd&cmd=mainload&pid=0";
 	drawTree();
 			}';
 	}

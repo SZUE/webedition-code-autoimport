@@ -21,7 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-we_base_moduleInfo::isActive('workflow');
+we_base_moduleInfo::isActive(we_base_moduleInfo::WORKFLOW);
 
 abstract class we_workflow_utility{
 

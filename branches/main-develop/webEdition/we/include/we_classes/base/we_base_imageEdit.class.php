@@ -492,7 +492,7 @@ abstract class we_base_imageEdit{
 		if($output_format === 'jpeg'){
 			$output_format = 'jpg';
 		}
-		$options=  array_filter($options);
+		$options = array_filter($options);
 		$_fromFile = (strlen($imagedata) < 255 && @file_exists($imagedata));
 
 		// Output format is available
@@ -726,7 +726,7 @@ abstract class we_base_imageEdit{
 			return $_thumbSrc;
 		}
 
-		return $imgSrc;
+		return$_SERVER['DOCUMENT_ROOT'] . $imgSrc;
 	}
 
 	/**

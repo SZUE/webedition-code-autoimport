@@ -24,35 +24,37 @@
 we_html_tools::protect();
 
 echo we_html_tools::getHtmlTop() .
-	we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
- we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
- we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js');
+ STYLESHEET .
+ YAHOO_FILES;
 
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
+$doclistView = new $GLOBALS['we_doc']->doclistViewClass($GLOBALS['we_doc']->doclistModel);
+$doclistSearch = $doclistView->searchclass;
+
 echo we_html_tools::getCalendarFiles() .
- doclistView::getSearchJS() .
- STYLESHEET
+ $doclistView->getSearchJS();
 ?>
 </head>
 
 <body class="weEditorBody" onunload="doUnload()" onkeypress="javascript:if (event.keyCode == 13 || event.keyCode == 3) {
 			search(true);
-		}" onload="setTimeout(init, 200)" onresize="sizeScrollContent();">
-	<div id="mouseOverDivs_doclist"></div>
+		}" onload="setTimeout(weSearch.init, 200)" onresize="weSearch.sizeScrollContent();">
+	<div id="mouseOverDivs_<?php echo we_search_view::SEARCH_DOCLIST; ?>"></div>
 	<form name="we_form" action="" onsubmit="return false;" style="padding:0px;margin:0px;"><?php
-		$view = new we_search_view();
-		$content = doclistView::searchProperties($GLOBALS['we_doc']->Table);
-		$headline = doclistView::makeHeadLines($GLOBALS['we_doc']->Table);
+		$results = $doclistSearch->searchProperties($doclistView->Model);
+		$content = $doclistView->makeContent($results);
+
+		$headline = $doclistView->makeHeadLines($GLOBALS['we_doc']->Table);
 		$foundItems = (isset($_SESSION['weS']['weSearch']['foundItems'])) ? $_SESSION['weS']['weSearch']['foundItems'] : 0;
 
-		echo doclistView::getHTMLforDoclist(array(
-			array("html" => doclistView::getSearchDialog()),
-			array("html" => "<div id='parametersTop'>" . doclistView::getSearchParameterTop($foundItems) . '</div>' . $view->tblList($content, $headline, "doclist") . "<div id='parametersBottom'>" . doclistView::getSearchParameterBottom($GLOBALS['we_doc']->Table, $foundItems) . "</div>"),
+		echo $doclistView->getHTMLforDoclist(array(
+			array('html' => $doclistView->getSearchDialog()),
+			array('html' => '<div id="parametersTop_DoclistSearch">' . $doclistView->getSearchParameterTop($foundItems, we_search_view::SEARCH_DOCLIST) . '</div>' . $doclistView->tblList($content, $headline, "doclist") . "<div id='parametersBottom_DoclistSearch'>" . $doclistView->getSearchParameterBottom($foundItems, we_search_view::SEARCH_DOCLIST, $GLOBALS['we_doc']->Table) . "</div>"),
 		)) .
 		we_html_element::htmlHiddens(array(
-			"obj" => 1,
-			"we_complete_request" => 1
+			'obj' => 1,
+			'we_complete_request' => 1
 		));
 		?>
 	</form>

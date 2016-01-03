@@ -251,7 +251,7 @@ function checkFooter(){
 		$checknname = md5(uniqid(__FUNCTION__, true));
 		$table = '<table class="default">
 	<tr style="vertical-align:top">
-		<td class="defaultgray" style="margin-bottom:10px;">' . g_l('modules_schedule', '[task][headline]') . ':</td>
+		<td class="defaultfont lowContrast" style="margin-bottom:10px;">' . g_l('modules_schedule', '[task][headline]') . ':</td>
 		<td class="defaultfont"><table class="default"><tr><td>' . $taskpopup . '</td><td class="defaultfont">&nbsp;&nbsp;</td><td>' . we_html_forms::checkbox(1, $this->active, $checknname, g_l('modules_schedule', '[active]')
 				, false, "defaultfont", "this.form.elements['we_schedule_active_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true);checkFooter();") .
 			'<input type="hidden" class="we_schedule_active" name="we_schedule_active_' . $this->nr . '" value="' . $this->active . '" /></td></tr></table></td>
@@ -260,7 +260,7 @@ function checkFooter(){
 		if($extracont){
 			$table .= '
 	<tr style="vertical-align:top">
-		<td class="defaultgray" style="margin-bottom:10px;">' . $extraheadl . ':</td>
+		<td class="defaultfont lowContrast" style="margin-bottom:10px;">' . $extraheadl . ':</td>
 		<td class="defaultfont">' . $extracont . '</td>
 		<td></td>
 	</tr>';
@@ -268,7 +268,7 @@ function checkFooter(){
 
 		$table .= '
 	<tr style="vertical-align:top">
-		<td class="defaultgray" style="margin-bottom:10px;">' . g_l('modules_schedule', '[type][headline]') . ':</td>
+		<td class="defaultfont lowContrast" style="margin-bottom:10px;">' . g_l('modules_schedule', '[type][headline]') . ':</td>
 		<td class="defaultfont">' . $typepopup . '</td>
 		<td></td>
 	</tr>';
@@ -277,7 +277,7 @@ function checkFooter(){
 			case self::TYPE_ONCE:
 				$table .= '
 		<tr style = "vertical-align:top">
-		<td class = "defaultgray">' . g_l('modules_schedule', '[datetime]') . ':</td>
+		<td class = "defaultfont lowContrast">' . g_l('modules_schedule', '[datetime]') . ':</td>
 		<td class = "defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true) . '</td>
 		<td></td>
 		</tr>';
@@ -285,7 +285,7 @@ function checkFooter(){
 			case self::TYPE_HOUR:
 				$table .= '
 		<tr style = "vertical-align:top">
-		<td class = "defaultgray">' . g_l('modules_schedule', '[minutes]') . ':</td>
+		<td class = "defaultfont lowContrast">' . g_l('modules_schedule', '[minutes]') . ':</td>
 		<td class = "defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "i") . '</td>
 		<td></td>
 		</tr>';
@@ -293,7 +293,7 @@ function checkFooter(){
 			case self::TYPE_DAY:
 				$table .= '
 		<tr style = "vertical-align:top">
-		<td class = "defaultgray">' . g_l('modules_schedule', '[time]') . ':</td>
+		<td class = "defaultfont lowContrast">' . g_l('modules_schedule', '[time]') . ':</td>
 		<td class = "defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "h:i") . '</td>
 		<td></td>
 		</tr>';
@@ -301,12 +301,12 @@ function checkFooter(){
 			case self::TYPE_WEEK:
 				$table .= '
 		<tr style = "vertical-align:top">
-		<td class = "defaultgray" style = "margin-bottom:10px;">' . g_l('modules_schedule', '[time]') . ':</td>
+		<td class = "defaultfont lowContrast" style = "margin-bottom:10px;">' . g_l('modules_schedule', '[time]') . ':</td>
 		<td class = "defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "h:i") . '</td>
 		<td></td>
 		</tr>
 		<tr style = "vertical-align:top">
-		<td class = "defaultgray">' . g_l('modules_schedule', '[weekdays]') . ':</td>
+		<td class = "defaultfont lowContrast">' . g_l('modules_schedule', '[weekdays]') . ':</td>
 		<td class = "defaultfont">' . $this->getWeekdaysHTML() . '</td>
 		<td></td>
 		</tr>';
@@ -314,12 +314,12 @@ function checkFooter(){
 			case self::TYPE_MONTH:
 				$table .= '
 		<tr style = "vertical-align:top">
-		<td class = "defaultgray" style = "margin-bottom:10px;">' . g_l('modules_schedule', '[time]') . ':</td>
+		<td class = "defaultfont lowContrast" style = "margin-bottom:10px;">' . g_l('modules_schedule', '[time]') . ':</td>
 		<td class = "defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "h:i") . '</td>
 		<td></td>
 		</tr>
 		<tr style = "vertical-align:top">
-		<td class = "defaultgray">' . g_l('modules_schedule', '[days]') . ':</td>
+		<td class = "defaultfont lowContrast">' . g_l('modules_schedule', '[days]') . ':</td>
 		<td class = "defaultfont">' . $this->getDaysHTML() . '</td>
 		<td></td>
 		</tr>';
@@ -327,17 +327,17 @@ function checkFooter(){
 			case self::TYPE_YEAR:
 				$table .= '
 		<tr style = "vertical-align:top">
-		<td class = "defaultgray" style = "margin-bottom:10px;">' . g_l('modules_schedule', '[time]') . ':</td>
+		<td class = "defaultfont lowContrast" style = "margin-bottom:10px;">' . g_l('modules_schedule', '[time]') . ':</td>
 		<td class = "defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "h:i") . '</td>
 		<td></td>
 		</tr>
 		<tr style = "vertical-align:top">
-		<td class = "defaultgray" style = "margin-bottom:10px;">' . g_l('modules_schedule', '[months]') . ':</td>
+		<td class = "defaultfont lowContrast" style = "margin-bottom:10px;">' . g_l('modules_schedule', '[months]') . ':</td>
 		<td class = "defaultfont">' . $this->getMonthsHTML() . '</td>
 		<td></td>
 		</tr>
 		<tr style = "vertical-align:top">
-		<td class = "defaultgray">' . g_l('modules_schedule', '[days]') . ':</td>
+		<td class = "defaultfont lowContrast">' . g_l('modules_schedule', '[days]') . ':</td>
 		<td class = "defaultfont">' . $this->getDaysHTML() . '</td>
 		<td></td>
 		</tr>';
@@ -410,21 +410,21 @@ function checkFooter(){
 					require_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
 					$callPublish = (count($schedFile['value']) > 1); //only if other operations pending
 					//don't show any output
-		ob_start();
-		//we can't use include-tag since we don't have a document & many warnings will occur.
-		$path = id_to_path($id, FILE_TABLE, $DB_WE);
-		if($path){
-			include(WEBEDITION_PATH . '../' . $path);
-		}
-		ob_end_clean();
-		break;
-		}
+					ob_start();
+					//we can't use include-tag since we don't have a document & many warnings will occur.
+					$path = id_to_path($id, FILE_TABLE, $DB_WE);
+					if($path){
+						include(WEBEDITION_PATH . '../' . $path);
+					}
+					ob_end_clean();
+					break;
+			}
 
-		if($s['type'] != self::TYPE_ONCE && ($nextWann = self::getNextTimestamp($s, $now))){
-			$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET `expire`=FROM_UNIXTIME(' . intval($nextWann) . ') WHERE Active=1 AND DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '" AND Type="' . $s['type'] . '" AND Was="' . $s['task'] . '" AND `expire`=' . $schedFile['Wann']);
-		} else {
-			$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0,SerializedData="" WHERE Active=1 AND DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '" AND Type="' . $s['type'] . '" AND Was="' . $s['task'] . '" AND `expire`=' . $schedFile['Wann']);
-		}
+			if($s['type'] != self::TYPE_ONCE && ($nextWann = self::getNextTimestamp($s, $now))){
+				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET `expire`=FROM_UNIXTIME(' . intval($nextWann) . ') WHERE Active=1 AND DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '" AND Type="' . $s['type'] . '" AND Was="' . $s['task'] . '" AND `expire`="' . $schedFile['Wann'].'"');
+			} else {
+				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0,SerializedData="" WHERE Active=1 AND DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '" AND Type="' . $s['type'] . '" AND Was="' . $s['task'] . '" AND `expire`="' . $schedFile['Wann'].'"');
+			}
 		}
 
 		if($changeTmpDoc){
@@ -471,7 +471,7 @@ function checkFooter(){
 		}
 
 		while((!$hasLock || $DB_WE->lock(array(SCHEDULE_TABLE, ERROR_LOG_TABLE))) && ( --$maxSched != 0) && ($rec = getHash('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE `expire`<=NOW() AND lockedUntil<NOW() AND Active=1 ORDER BY `expire` LIMIT 1', $DB_WE))){
-			$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET lockedUntil=NOW()+INTERVAL 1 minute WHERE DID=' . $rec['DID'] . ' AND Active=1 AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec['Type'] . '" AND Was="' . $rec['Was'] . '" AND `expire`=' . $rec['expire']);
+			$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET lockedUntil=NOW()+INTERVAL 1 minute WHERE DID=' . $rec['DID'] . ' AND Active=1 AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec['Type'] . '" AND Was="' . $rec['Was'] . '" AND `expire`="' . $rec['expire'] . '"');
 			if($hasLock){
 				$DB_WE->unlock();
 			}
@@ -487,7 +487,7 @@ function checkFooter(){
 				self::processSchedule($rec['DID'], $tmp, $now, $DB_WE);
 			} else {
 				//data invalid, reset & make sure this is not processed the next time
-				$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . $rec['DID'] . ' AND Active=1 AND `expire`=' . $rec['expire'] . ' AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec['Type'] . '" AND Was="' . $rec['Was'] . '"');
+				$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . $rec['DID'] . ' AND Active=1 AND `expire`="' . $rec['expire'] . '" AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec['Type'] . '" AND Was="' . $rec['Was'] . '"');
 			}
 		}
 		//cleanup old single shots

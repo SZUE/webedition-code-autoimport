@@ -48,10 +48,11 @@ class we_document extends we_root{
 	var $CSS = array();
 	/* this array is used, to store document specific data for a page */
 	protected $editorSaves = array();
+	public $versionsModel; // FIXME: set protected and make getter
 
 	function __construct(){
 		parent::__construct();
-		array_push($this->persistent_slots, 'Extension', 'IsDynamic', 'Published', 'Category', 'IsSearchable', 'InGlossar', 'Language', 'schedArr', 'parseFile', 'editorSaves');
+		array_push($this->persistent_slots, 'Extension', 'IsDynamic', 'Published', 'Category', 'IsSearchable', 'InGlossar', 'Language', 'schedArr', 'parseFile', 'editorSaves', 'versionsModel');
 		$this->Table = FILE_TABLE;
 		if(defined('WE_SIDEBAR')){
 			$this->InWebEdition = true;
@@ -130,13 +131,13 @@ class we_document extends we_root{
 	 */
 
 	function formInGlossar(){
-		return (we_base_moduleInfo::we_getModuleNameByContentType('glossary') === 'glossary' ?
-				we_html_forms::checkboxWithHidden((bool) $this->InGlossar, 'we_' . $this->Name . '_InGlossar', g_l('weClass', '[InGlossar]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);') :
+		return (we_base_moduleInfo::isActive(we_base_moduleInfo::GLOSSARY) ?
+				we_html_forms::checkboxWithHidden((bool) $this->InGlossar, 'we_' . $this->Name . '_InGlossar', g_l('weClass', '[InGlossar]'), false, 'defaultfont', 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);') :
 				'');
 	}
 
 	function formIsSearchable(){
-		return we_html_forms::checkboxWithHidden((bool) $this->IsSearchable, 'we_' . $this->Name . '_IsSearchable', g_l('weClass', '[IsSearchable]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
+		return we_html_forms::checkboxWithHidden((bool) $this->IsSearchable, 'we_' . $this->Name . '_IsSearchable', g_l('weClass', '[IsSearchable]'), false, 'defaultfont', 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);');
 	}
 
 	protected function formExtension2(){
@@ -158,16 +159,16 @@ class we_document extends we_root{
 			$selected = $this->Extension;
 		}
 		return $this->Extensions ?
-			we_html_tools::htmlFormElementTable(we_html_tools::getExtensionPopup('we_' . $this->Name . '_Extension', $selected, $this->Extensions, 100, 'onselect="_EditorFrame.setEditorIsHot(true);"', permissionhandler::hasPerm('EDIT_DOCEXTENSION')), g_l('weClass', '[extension]')) :
+			we_html_tools::htmlFormElementTable(we_html_tools::getExtensionPopup('we_' . $this->Name . '_Extension', $selected, $this->Extensions, 100, 'onselect="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"', permissionhandler::hasPerm('EDIT_DOCEXTENSION')), g_l('weClass', '[extension]')) :
 			we_html_element::htmlHidden('we_' . $this->Name . '_Extension', $selected);
 	}
 
 	function formMetaInfos(){
 		return '
 <table class="default">
-	<tr><td style="padding-bottom:2px;">' . $this->formInputField("txt", "Title", g_l('weClass', '[Title]'), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
-	<tr><td style="padding-bottom:2px;">' . $this->formInputField("txt", "Description", g_l('weClass', '[Description]'), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
-	<tr><td style="padding-bottom:2px;">' . $this->formInputField("txt", "Keywords", g_l('weClass', '[Keywords]'), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
+	<tr><td style="padding-bottom:2px;">' . $this->formInputField("txt", "Title", g_l('weClass', '[Title]'), 40, 508, "", "onchange=\"WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);\"") . '</td></tr>
+	<tr><td style="padding-bottom:2px;">' . $this->formInputField("txt", "Description", g_l('weClass', '[Description]'), 40, 508, "", "onchange=\"WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);\"") . '</td></tr>
+	<tr><td style="padding-bottom:2px;">' . $this->formInputField("txt", "Keywords", g_l('weClass', '[Keywords]'), 40, 508, "", "onchange=\"WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);\"") . '</td></tr>
 </table>' .
 			($this->ContentType == we_base_ContentTypes::IMAGE ? $this->formCharset(true) : '');
 	}
@@ -676,6 +677,11 @@ class we_document extends we_root{
 		if(!($this->Language) && $this->Table != TEMPLATES_TABLE){
 			$this->initLanguageFromParent();
 		}
+
+		if(!is_object($this->versionsModel)){
+			$this->versionsModel = new we_versions_model($GLOBALS["we_transaction"]);
+		}
+		$this->versionsModel->initByHttp();
 	}
 
 	function we_rewrite(){
@@ -1423,7 +1429,7 @@ class we_document extends we_root{
 
 		return '<table class="default">' .
 			($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[Charset]') . '</td></tr>' : '') .
-			'<tr><td>' . we_html_tools::htmlTextInput($inputName, 24, $value, '', '', 'text', '14em') . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $_charsets, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');", "onchange" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');"), "value", 330) . '</td></tr>' .
+			'<tr><td>' . we_html_tools::htmlTextInput($inputName, 24, $value, '', '', 'text', '14em') . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $_charsets, 1, $value, false, array("onblur" => "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');", "onchange" => "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');"), "value", 330) . '</td></tr>' .
 			'</table>';
 	}
 

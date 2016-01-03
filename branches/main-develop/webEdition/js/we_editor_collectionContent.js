@@ -131,7 +131,9 @@ weCollectionEdit = {
 		name: '',
 		remTable: '',
 		remCT: '',
-		remClass: ''
+		remClass: '',
+		realRemCT: '',
+		defaultDir: 0
 	},
 	dd: {
 		fillEmptyRows: true,
@@ -165,6 +167,7 @@ weCollectionEdit = {
 		 */
 
 		/* use this to render fron storage */
+		//this.addListenersToContainer();
 		this.renderView(true);
 
 	},
@@ -186,6 +189,36 @@ weCollectionEdit = {
 			this.insertItem(null, false, this.storage['item_' + this.collectionArr[i]], this);
 		}
 		this.reindexAndRetrieveCollection(notSetHot);
+	},
+
+	addListenersToContainer: function () {
+		// TODO: drop on container to add at the end of collection
+		/* 
+		if (this.isDragAndDrop) {
+			var containers = document.getElementsByClassName('collection-content'),
+				container;
+
+			for (var i = 0; i < containers.length; i++){
+				container = containers[i];
+				container.addEventListener('dragleave', function (e) {
+					//this.leaveDrag('item', view, e, container);
+					container.style.backgroundColor = 'white';
+				}, false);
+				container.addEventListener('drop', function (e) {
+					//this.dropOnItem('item', view, e, container);
+					top.console.log('do drop');
+				}, false);
+				container.addEventListener('dragenter', function (e) {
+					//this.enterDrag('item', view, e, container);
+					container.style.backgroundColor = 'green';
+				}, false);
+				container.addEventListener('dragover', function (e) {
+					container.style.backgroundColor = 'green';
+					e.preventDefault();
+				}, false);
+			}
+		}
+		*/
 	},
 
 	addListenersToItem: function (view, elem, isItemEmpty) {
@@ -388,7 +421,7 @@ weCollectionEdit = {
 
 		div = document.createElement("div");
 		blank = t.blankItem[t.view].replace(/##INDEX##/g, t.maxIndex).replace(/##ID##/g, item.id).replace(/##PATH##/g, item.path).
-						replace(/##CT##/g, item.ct).replace(/##ICONURL##/g, item.icon.url.replace('%2F', '/')).
+						replace(/##CT##/g, item.ct).replace(/##ICONURL##/g, (item.icon ? item.icon.url.replace('%2F', '/') : '')).
 						replace(/##ATTRIB_TITLE##/g, item.elements.attrib_title.Dat).replace(/##S_ATTRIB_TITLE##/g, item.elements.attrib_title.state).
 						replace(/##ATTRIB_ALT##/g, item.elements.attrib_alt.Dat).replace(/##S_ATTRIB_ALT##/g, item.elements.attrib_alt.state).
 						replace(/##META_TITLE##/g, item.elements.meta_title.Dat).replace(/##S_META_TITLE##/g, item.elements.meta_title.state).
@@ -433,7 +466,9 @@ weCollectionEdit = {
 				blank = blank.replace(/##SHOWBTN##/g, 'none');
 			}
 			div.innerHTML = blank;
-			div.getElementsByClassName('divContent')[0].style.backgroundSize = Math.max(item.icon.sizeX, item.icon.sizeY) < this.gridItemDimension.item ? 'auto' : 'contain';
+			if(item.icon){
+				div.getElementsByClassName('divContent')[0].style.backgroundSize = Math.max(item.icon.sizeX, item.icon.sizeY) < this.gridItemDimension.item ? 'auto' : 'contain';
+			}
 
 			if (item.ct !== 'image/*' && item.id !== -1) {
 				elPreview = div.getElementsByClassName('divInner')[0];
@@ -589,7 +624,9 @@ weCollectionEdit = {
 		elem.style.backgroundColor = 'white';
 		elem.style.margin = '0';
 		elem.previousSibling.style.right = '14px';
-		elem.parentNode.nextSibling.firstChild.style.left = '0px';
+		if(elem.parentNode.nextSibling){
+			elem.parentNode.nextSibling.firstChild.style.left = '0px';
+		}
 	},
 	resetColors: function () {
 		for (var i = 0; i < this.ct[this.view].childNodes.length; i++) {
@@ -626,7 +663,7 @@ weCollectionEdit = {
 	enterDrag: function (type, view, evt, elem) {
 		var el = this.getItem(elem);
 		var data = evt.dataTransfer.getData("text") ? evt.dataTransfer.getData("text").split(',') : top.dd.dataTransfer.text.split(',');
-		var c, i;
+		var c, i, newPos;
 
 		if (this.view === 'grid' && type === 'item') {
 			this.outMouse(type, this.view, elem);
@@ -635,8 +672,7 @@ weCollectionEdit = {
 		switch (data[0]) {
 			case 'moveItem':
 				if (type === 'item') {
-					c = this.ct[this.view],
-									newPos;
+					c = this.ct[this.view];
 
 					if (!this.dd.moveItem.removed) {
 						newPos = [].indexOf.call(c.children, el);
@@ -674,7 +710,9 @@ weCollectionEdit = {
 								elem.style.right = '-22px';
 								elem.style.margin = '0 4px 0 4px';
 								elem.previousSibling.style.right = '37px';
-								elem.parentNode.nextSibling.firstChild.style.left = '22px';
+								if(elem.parentNode.nextSibling){
+									elem.parentNode.nextSibling.firstChild.style.left = '22px';
+								}
 							}
 							break;
 					}
@@ -802,11 +840,17 @@ weCollectionEdit = {
 			this.outMouse('item', this.view, el.firstChild);
 		}
 	},
+
 	dropOnItem: function (type, view, evt, elem) {
 		evt.preventDefault();
 
-		var data = evt.dataTransfer.getData("text") ? evt.dataTransfer.getData("text").split(',') : top.dd.dataTransfer.text.split(','),
-						el, index;
+		var data = [], el, index;
+
+		if(!evt.dataTransfer.getData("text") && evt.dataTransfer.files.length === 1){
+			data[0] = 'dragItemFromExtern';
+		} else {
+			data = evt.dataTransfer.getData("text") ? evt.dataTransfer.getData("text").split(',') : top.dd.dataTransfer.text.split(',');
+		}
 
 		switch (data[0]) {
 			case 'moveItem':
@@ -841,20 +885,39 @@ weCollectionEdit = {
 					this.hideSpace(elem);
 				}
 
-				if (WE().consts.tables.TBL_PREFIX + this.we_doc.remTable === data[1]) {
+				if (WE().consts.tables.TBL_PREFIX + this.we_doc.remTable == data[1]) {
 					if (!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) != -1) {
 						this.callForValidItemsAndInsert(index, data[2], false, type !== 'item', el);
 						return;
 					} else {
 
-						//alert("the item you try to drag from doesn't match your collection's content types");
+						alert("the item you try to drag doesn't match your collection's contenttypes");
 					}
 				} else {
-					alert("the tree you try to drag from doesn't match your collection's table property");
+					alert("the tree you try to drag from doesn't match your collection's table property"); // FIXME: GL()
 				}
 				setTimeout(function () {
 					weCollectionEdit.resetItemColors(el);
 				}, 100);
+				break;
+			case 'dragItemFromExtern':
+				var files = evt.dataTransfer.files;
+				//weCollectionEdit.we_doc.realRemCT
+				if(this.we_doc.realRemCT.search(',' + files[0].type + ',') === -1){
+					alert('wrong type');
+					return;
+				}
+
+				var parentID = weCollectionEdit.we_doc.defaultDir,
+					ct = files[0].type,
+					callback;
+
+				el = this.getItem(elem);
+				index = el.id.substr(10);
+				callback = "top.opener.WE().layout.weEditorFrameController.getVisibleEditorFrame().weCollectionEdit.callForValidItemsAndInsert(" + index + ", importedDocument.id, 'dummy');self.close();";
+
+				document.presetFileupload = files;
+				top.we_cmd("we_fileupload_editor", ct, 1, "", "", callback, parentID, 0, "", true);
 				break;
 			default:
 				return;

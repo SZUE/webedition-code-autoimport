@@ -88,10 +88,20 @@ function getHttpOption(){
 function getHTTP($server, $url, $port = '', $username = '', $password = ''){
 //FIXME: add code for proxy, see weXMLBrowser
 	if(strpos($server, '://') === FALSE){
-		$server = 'http' . ($port == 443 ? 's' : '') . '://' . (($username && $password) ? "$username:$password@" : '') . $server . ':' . $port;
+		$server = 'http' . ($port == 443 ? 's' : '') . '://' . (($username && $password) ? "$username:$password@" : '') . $server . ( $port !== '' ? ':' . $port : '');
 	}
 	switch(getHttpOption()){
 		case 'fopen':
+			/* not yet tested
+			if(defined('WE_PROXYHOST')){
+				$proxyhost = defined('WE_PROXYHOST') ? WE_PROXYHOST : "";
+				$proxyport = (defined('WE_PROXYPORT') && WE_PROXYPORT) ? WE_PROXYPORT : "80";
+				$proxy_user = defined('WE_PROXYUSER') ? WE_PROXYUSER : "";
+				$proxy_pass = defined('WE_PROXYPASSWORD') ? WE_PROXYPASSWORD : "";
+
+				return getHttpThroughProxy(($server . $url), $proxyhost, $proxyport, $proxy_user, $proxy_pass);
+			}
+			*/
 			$page = 'Server Error: Failed opening URL: ' . $server . $url;
 			$fh = @fopen($server . $url, 'rb');
 			if(!$fh){
@@ -111,6 +121,37 @@ function getHTTP($server, $url, $port = '', $username = '', $password = ''){
 		default:
 			return 'Server error: Unable to open URL (php configuration directive allow_url_fopen=Off)';
 	}
+}
+
+function getHttpThroughProxy($url, $proxyhost, $proxyport, $proxy_user, $proxy_pass){
+	global $error;
+
+	$file = fsockopen($proxyhost, $proxyport, $errno, $errstr, 30);
+
+	if(!$file){
+		return '';
+	}
+	$ret = '';
+	$realm = base64_encode($proxy_user . ':' . $proxy_pass);
+
+	// send headers
+	fputs($file, "GET $url HTTP/1.0\r\n");
+	fputs($file, "Proxy-Connection: Keep-Alive\r\n");
+	fputs($file, "User-Agent: PHP " . phpversion() . "\r\n");
+	fputs($file, "Pragma: no-cache\r\n");
+	if($proxy_user != ''){
+		fputs($file, "Proxy-authorization: Basic $realm\r\n");
+	}
+	fputs($file, "\r\n");
+
+	// write comoplete file and cut http header before returning
+	while(!feof($file)){
+		$data = fread($file, 8192);
+		$ret .= $data;
+	}
+	fclose($file);
+
+	return substr($ret, 0, 5) === 'HTTP/' ? substr($ret, strpos($ret, "\r\n\r\n") + 4) : $ret;
 }
 
 /**
@@ -973,10 +1014,9 @@ function we_templateHead($fullHeader = false){
 		return;
 	}
 	echo ($fullHeader ? we_html_element::htmlDocType() . '<html><head><title>WE</title>' . we_html_tools::htmlMetaCtCharset($GLOBALS['CHARSET']) : '') .
-	we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-	STYLESHEET_BUTTONS_ONLY .
-	weSuggest::getYuiFiles() .
-	we_html_element::jsElement('parent.openedWithWE=true;');
+	we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();parent.openedWithWE=true;') .
+	STYLESHEET_MINIMAL .
+	weSuggest::getYuiFiles();
 	require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 	if($fullHeader){
 		echo '</head><body onload="doScrollTo();" onunload="doUnload()">';
@@ -1148,6 +1188,10 @@ function we_unserialize($string, $default = array(), $quiet = false){
 	//std-serialized data by php
 	if(preg_match('|^[asO]:\d+:|', $string)){
 		$ret = @unserialize($string);
+		//unserialize failed, we try to eliminate \r which seems to be a cause for this
+		if(!$ret && strlen($string) > 6){
+			$ret = @unserialize(str_replace("\r", '', $string));
+		}
 		return ($ret === false ? $default : $ret);
 	}
 	//json data

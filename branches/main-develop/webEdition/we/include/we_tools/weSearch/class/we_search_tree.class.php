@@ -29,21 +29,6 @@ class we_search_tree extends weTree{
 			we_html_element::jsElement('drawTree.selection_table="' . SUCHE_TABLE . '";');
 	}
 
-	function getJSStartTree(){
-		return '
-function startTree(pid,offset){
-frames={
-	"top":' . $this->topFrame . ',
-	"cmd":' . $this->cmdFrame . '
-};
-treeData.frames=frames;
-	pid = pid? pid : 0;
-	offset = offset ? offset : 0;
-	frames.cmd.location=treeData.frameset+"&pnt=cmd&pid="+pid+"&offset="+offset;
-	drawTree();
-}';
-	}
-
 	function customJSFile(){
 		return we_html_element::jsScript(JS_DIR . 'search_tree.js');
 	}

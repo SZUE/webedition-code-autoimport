@@ -100,8 +100,8 @@ class we_listview_document extends we_listview_base{
 		$this->languages = $languages ? : (isset($GLOBALS['we_lv_languages']) ? $GLOBALS['we_lv_languages'] : '');
 		$langArray = $this->languages ? array_filter(array_map('trim', explode(',', $this->languages))) : '';
 
-		$where_lang = ($this->languages ?
-				' AND ' . FILE_TABLE . '.Language IN("","' . implode('","', array_map('escape_sql_query', $this->languages)) . '") ' :
+		$where_lang = ($langArray ?
+				' AND ' . FILE_TABLE . '.Language IN("","' . implode('","', array_map('escape_sql_query', $langArray)) . '") ' :
 				'');
 
 		if(stripos($this->order, ' desc') !== false){//was #3849
@@ -162,7 +162,7 @@ class we_listview_document extends we_listview_base{
 
 		$sql_tail = ($this->cats || $this->categoryids ? we_category::getCatSQLTail($this->cats, FILE_TABLE, $this->catOr, $this->DB_WE, 'Category', $this->categoryids) : '');
 
-		$dt = ($this->docType) ? f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType LIKE "' . $this->DB_WE->escape($this->docType) . '"', '', $this->DB_WE) : '#NODOCTYPE#';
+		$dt = ($this->docType ? f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType LIKE "' . $this->DB_WE->escape($this->docType) . '"', '', $this->DB_WE) : -1);
 
 		$ws_where = '';
 
@@ -190,19 +190,20 @@ class we_listview_document extends we_listview_base{
 
 		if($this->search){
 			if($this->workspaceID){
-				$cond = array();
+				$cond = array(
+					'i.WorkspaceID IN(' . implode(',', $this->workspaceID) . ')'
+				);
 				$workspaces = array_map('escape_sql_query', id_to_path(explode(',', $this->workspaceID), FILE_TABLE, $this->DB_WE));
-				$cond[] = INDEX_TABLE . '.Workspace IN("' . implode('","', $workspaces) . '")';
 
 				foreach($workspaces as $workspace){
-					$cond[] = INDEX_TABLE . '.Workspace LIKE "' . $workspace . '/%"';
+					$cond[] = 'wsp.Path LIKE "' . $workspace . '/%"';
 				}
 				$ws_where = ' AND (' . implode(' OR ', $cond) . ')';
 			}
 			$bedingungen = preg_split('/ +/', $this->search);
 
 			$ranking = '0';
-			$spalten = array(($this->casesensitive ? 'BINARY ' : '') . INDEX_TABLE . '.Text');
+			$spalten = array(($this->casesensitive ? 'BINARY ' : '') . 'i.Text');
 
 			foreach($bedingungen as $v1){
 				if(preg_match('|^[-\+]|', $v1)){
@@ -248,7 +249,7 @@ class we_listview_document extends we_listview_base{
 						$cond[] = 'Path LIKE "' . $this->DB_WE->escape($workspace) . '/%"';
 					}
 					$this->DB_WE->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE IsFolder=1 AND (' . implode(' OR ', $cond) . ')');
-					$workspaces = array_unique($workspaces + $this->DB_WE->getAll(true));
+					$workspaces = array_unique(array_merge($workspaces, $this->DB_WE->getAll(true)));
 				}
 				$ws_where = ' AND (ParentID IN (' . implode(', ', $workspaces) . '))';
 			}
@@ -257,8 +258,8 @@ class we_listview_document extends we_listview_base{
 		}
 		$this->DB_WE->query(
 			'SELECT ' . FILE_TABLE . '.ID, ' . FILE_TABLE . '.WebUserID' . $extraSelect .
-			' FROM ' . FILE_TABLE . ' LEFT JOIN ' . LINK_TABLE . ' ON (' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '") LEFT JOIN ' . CONTENT_TABLE . ' ON ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID ' . $joinstring .
-			($this->search ? ' LEFT JOIN ' . INDEX_TABLE . ' ON (' . INDEX_TABLE . '.ID=' . FILE_TABLE . '.ID AND ' . INDEX_TABLE . '.ClassID=0)' : '') .
+			' FROM ' . FILE_TABLE . ' LEFT JOIN ' . LINK_TABLE . ' l ON (' . FILE_TABLE . '.ID=l.DID AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '") LEFT JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID ' . $joinstring .
+			($this->search ? ' LEFT JOIN ' . INDEX_TABLE . ' i ON (i.ID=' . FILE_TABLE . '.ID AND i.ClassID=0) LEFT JOIN ' . FILE_TABLE . ' wsp ON wsp.ID=i.WorkspaceID ' : '') .
 			' WHERE ' . $orderwhereString .
 			($this->searchable ? ' ' . FILE_TABLE . '.IsSearchable=1' : 1) . ' ' .
 			$where_lang . ' ' .
@@ -266,7 +267,7 @@ class we_listview_document extends we_listview_base{
 			$ws_where . ' AND ' .
 			FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0 ' .
 			(isset($bedingung_sql) ? ' AND ' . $bedingung_sql : '') .
-			(($dt != "#NODOCTYPE#") ? (' AND ' . FILE_TABLE . '.DocType=' . intval($dt)) : '') .
+			($dt > 0 ? (' AND ' . FILE_TABLE . '.DocType=' . intval($dt)) : '') .
 			' ' . $sql_tail . $calendar_where . ' GROUP BY ' . $this->group . ' ' . $orderstring .
 			$limit
 		);
@@ -296,8 +297,8 @@ class we_listview_document extends we_listview_base{
 		$this->DB_WE->query(
 			'SELECT ' . FILE_TABLE . '.ID as ID, ' . FILE_TABLE . '.WebUserID as WebUserID' .
 			($random ? ',RAND() as RANDOM' : ($this->search ? ',' . $ranking . ' AS ranking' : '')) .
-			' FROM ' . FILE_TABLE . ' JOIN ' . LINK_TABLE . ' ON ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID JOIN ' . CONTENT_TABLE . ' ON ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID' .
-			($this->search ? ' LEFT JOIN ' . INDEX_TABLE . ' ON (' . INDEX_TABLE . '.ID=' . FILE_TABLE . '.ID AND ' . INDEX_TABLE . '.ClassID=0)' : '') .
+			' FROM ' . FILE_TABLE . ' JOIN ' . LINK_TABLE . ' l ON ' . FILE_TABLE . '.ID=l.DID JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID' .
+			($this->search ? ' LEFT JOIN ' . INDEX_TABLE . ' i ON (i.ID=' . FILE_TABLE . '.ID AND i.ClassID=0)' : '') .
 			$joinstring .
 			' WHERE ' .
 			$orderwhereString .
@@ -305,9 +306,9 @@ class we_listview_document extends we_listview_base{
 			$where_lang . ' ' .
 			$cond_where . ' ' .
 			$ws_where .
-			' AND ' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0 AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"' .
+			' AND ' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0 AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"' .
 			($this->search ? ' AND ' . $bedingung_sql : '') .
-			(($dt != '#NODOCTYPE#') ? (' AND ' . FILE_TABLE . '.DocType=' . intval($dt)) : '') . ' ' .
+			($dt > 0 ? (' AND ' . FILE_TABLE . '.DocType=' . intval($dt)) : '') . ' ' .
 			$sql_tail .
 			$calendar_where .
 			' GROUP BY ' . $this->group . ' ' . $orderstring);
@@ -331,11 +332,37 @@ class we_listview_document extends we_listview_base{
 			if(!$this->calendar_struct['calendar'] || $fetch){
 				$id = $this->IDs[$count];
 				$this->DB_WE->query('SELECT l.Name,IF(c.BDID!=0,c.BDID,c.Dat) AS data FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.DID=' . intval($id) . ' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
-				$this->Record = $this->DB_WE->getAllFirst(false);
-				$tmp = getHash('SELECT ID,ParentID,Text,IsFolder,ContentType,CreationDate,ModDate,Path,TemplateID,Filename,Extension,IsDynamic,IsSearchable,DocType,ClassName,Category,Published,CreatorID,ModifierID,RestrictOwners,Owners,OwnersReadOnly,Language,WebUserID,InGlossar FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->DB_WE, MYSQL_ASSOC);
-				foreach($tmp as $key => $val){
-					$this->Record['wedoc_' . $key] = $val;
-				}
+				$this->Record = array_merge($this->DB_WE->getAllFirst(false), getHash('SELECT
+	ID AS wedoc_ID,
+	ID AS WE_ID,
+	ParentID AS wedoc_ParentID,
+	Text AS wedoc_Text,
+	Text AS WE_TEXT,
+	IsFolder AS wedoc_IsFolder,
+	ContentType AS wedoc_ContentType,
+	CreationDate AS wedoc_CreationDate,
+	ModDate AS wedoc_ModDate,
+	Path AS wedoc_Path,
+	Path AS WE_PATH,
+	TemplateID AS wedoc_TemplateID,
+	Filename AS wedoc_Filename,
+	Extension AS wedoc_Extension,
+	IsDynamic AS wedoc_IsDynamic,
+	IsSearchable AS wedoc_IsSearchable,
+	DocType AS wedoc_DocType,
+	ClassName AS wedoc_ClassName,
+	Category AS wedoc_Category,
+	Published AS wedoc_Published,
+	CreatorID AS wedoc_CreatorID,
+	ModifierID AS wedoc_ModifierID,
+	RestrictOwners AS wedoc_RestrictOwners,
+	Owners AS wedoc_Owners,
+	OwnersReadOnly AS wedoc_OwnersReadOnly,
+	Language AS wedoc_Language,
+	WebUserID AS wedoc_WebUserID,
+	InGlossar AS wedoc_InGlossar
+FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->DB_WE, MYSQL_ASSOC)
+				);
 
 				$this->Record['WE_SHOPVARIANTS'] = 0; //check this for global variants
 				if(!empty($this->Record[we_base_constants::WE_VARIANTS_ELEMENT_NAME])){
@@ -344,10 +371,6 @@ class we_listview_document extends we_listview_base{
 						$this->Record['WE_SHOPVARIANTS'] = count($variants);
 					}
 				}
-
-				$this->Record['WE_PATH'] = $this->Record['wedoc_Path'];
-				$this->Record['WE_TEXT'] = f('SELECT Text FROM ' . INDEX_TABLE . ' WHERE ClassID=0 AND ID=' . intval($id), '', $this->DB_WE);
-				$this->Record['WE_ID'] = intval($id);
 
 				if($this->customers && $this->Record['wedoc_WebUserID']){
 					if(isset($this->customerArray['cid_' . $this->Record['wedoc_WebUserID']])){
@@ -421,7 +444,7 @@ class we_listview_document extends we_listview_base{
 	}
 
 	function makeFieldCondition($name, $operation, $value){
-		return '(' . LINK_TABLE . '.nHash=x\'' . md5($name) . '\' AND ' . CONTENT_TABLE . '.Dat ' . $operation . ' ' . $value . ')';
+		return '(l.nHash=x\'' . md5($name) . '\' AND c.Dat ' . $operation . ' ' . $value . ')';
 	}
 
 }

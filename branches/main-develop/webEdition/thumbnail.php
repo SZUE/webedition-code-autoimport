@@ -52,10 +52,12 @@ if(file_exists($file) && is_readable($file)){
 	header('Cache-Control: max-age=60'); //they stay in cache for 60 seconds, before reasking the server for a new version!
 	header_remove('Pragma');
 	if(isset($_SERVER['HTTP_IF_NONE_MATCH']) && $_SERVER['HTTP_IF_NONE_MATCH'] == $etag){
-		header('HTTP/1.1 304 Not Modified');
+		we_html_tools::setHttpCode(304);
 	} else {
 		header('Content-type: image/' . $imageExt);
 		header('Content-Length: ' . filesize($file));
 		readfile($file);
 	}
+}else{
+	we_html_tools::setHttpCode(404);
 }

@@ -358,12 +358,12 @@ if(
 				//sth very bad must have happend to have 2 we forms in one page
 				$warn = $no . ' ' . g_l('parser', '[form][we]');
 				t_e($warn, str_replace('.html', '.tmpl', $we_doc->Path));
-				$contents = preg_replace('|<form|', '<p style="background-color:red;color:white;font-weight:bold;">' . htmlentities($warn) . '</p><form', $contents, 1);
+				$contents = preg_replace('|<form|', '<p class="bold" style="background-color:red;color:white;">' . htmlentities($warn) . '</p><form', $contents, 1);
 			}
 			if($all - $no){
 				$warn = $no . ' ' . g_l('parser', '[form][duplicate]');
 				t_e($warn, str_replace('.html', '.tmpl', $we_doc->Path));
-				$contents = preg_replace('|<form|', '<p style="background-color:red;color:white;font-weight:bold;">' . htmlentities($warn) . '</p><form', $contents, 1);
+				$contents = preg_replace('|<form|', '<p class="bold" style="background-color:red;color:white;">' . htmlentities($warn) . '</p><form', $contents, 1);
 			}
 		}
 	}

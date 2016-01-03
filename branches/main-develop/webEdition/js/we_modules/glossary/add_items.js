@@ -45,7 +45,7 @@ function customAdapter() {
 function spellcheck() {
 	retry = 0;
 	if (document.spellchecker.isReady()) {
-		top.frames.glossarycheck.document.getElementById("statusText").innerHTML = g_l.checking + "...";
+		top.frames.glossarycheck.document.getElementById("statusText").innerHTML = WE().consts.g_l.glossary.checking + "...";
 		var text = getTextOnly(orginal);
 		document.spellchecker.check(text);
 		window.setTimeout(findNext, 2000);
@@ -146,7 +146,7 @@ function getTextColumn(text, colspan) {
 		td.setAttribute("valign", "middle");
 		td.setAttribute("height", "220");
 	}
-	if (text !== g_l.all_words_identified && text !== g_l.no_java) {
+	if (text !== WE().consts.g_l.glossary.all_words_identified && text !== WE().consts.g_l.glossary.no_java) {
 		text = shortenWord(text, 20);
 	}
 
@@ -198,11 +198,11 @@ function getTitleColumn(word, suggestions, title) {
 	html = '<input class="wetextinput" type="text" name="item[' + word + '][title]" size="24" value="' + title + '" maxlength="100" id="title_' + counter + '" style="display: inline; width: 200px;" disabled=\"disabled\" " />' +
 					'<select class="defaultfont" name="suggest_' + counter + '" id="suggest_' + counter + '" size="1" onchange="document.getElementById(\'title_' + counter + '\').value=this.value;this.value=\'\';" disabled=\"disabled\" style="width: 200px; display: none;">' +
 					'<option value="' + word + '">' + word + '</option>' +
-					'<optgroup label="' + g_l.change_to + '">' +
-					'<option value="">-- ' + g_l.input + ' --</option>' +
+					'<optgroup label="' + WE().consts.g_l.glossary.change_to + '">' +
+					'<option value="">-- ' + WE().consts.g_l.glossary.input + ' --</option>' +
 					'</optgroup>';
 	if (suggestions.length > 1) {
-		html += '<optgroup label="' + g_l.suggestions + '">';
+		html += '<optgroup label="' + WE().consts.g_l.glossary.suggestions + '">';
 		for (i = 0; i < suggestions.length; i++) {
 			if (suggestions[i] !== '') {
 				html += '<option value="' + suggestions[i] + '">' + suggestions[i] + '</option>';

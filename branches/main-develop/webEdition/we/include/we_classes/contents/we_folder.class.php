@@ -33,6 +33,12 @@ class we_folder extends we_root{
 	var $Language = '';
 	var $GreenOnly = 0;
 	var $searchclassFolder;
+
+	protected $viewType = 'list';
+	public $doclistModel; // FIXME: set protected and make getter
+	public $doclistViewClass = 'we_doclist_view';
+	public $doclistSearchClass = 'we_doclist_search';
+
 		//folders are always published
 	public $Published = PHP_INT_MAX;
 	protected $urlMap;
@@ -43,10 +49,9 @@ class we_folder extends we_root{
 	var $documentCustomerFilter = ''; // DON'T SET TO NULL !
 
 	/* Constructor */
-
 	function __construct(){
 		parent::__construct();
-		array_push($this->persistent_slots, 'SearchStart', 'SearchField', 'Search', 'Order', 'GreenOnly', 'IsClassFolder', 'WorkspacePath', 'WorkspaceID', 'Language', 'TriggerID', 'searchclassFolder', 'urlMap');
+		array_push($this->persistent_slots, 'SearchStart', 'SearchField', 'Search', 'Order', 'GreenOnly', 'IsClassFolder', 'WorkspacePath', 'WorkspaceID', 'Language', 'TriggerID', 'urlMap', 'doclistModel', 'viewType');
 		if(isWE()){
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO);
 		}
@@ -92,10 +97,14 @@ class we_folder extends we_root{
 		}
 		$this->adjustEditPageNr();
 
-		if(!is_object($this->searchclassFolder)){
-			$this->searchclassFolder = new we_search_search();
+		if(!is_object($this->doclistModel)){
+			$this->doclistModel = new we_doclist_model($GLOBALS["we_transaction"], $this->Table, $this->ID, $this->viewType);
 		}
-		$this->searchclassFolder->initSearchData();
+		$this->doclistModel->initByHttp();
+	}
+
+	public function getDoclistModel(){
+		return $this->doclistModel ? : new we_doclist_model(0, $this->ID, $this->viewType);
 	}
 
 	/**
@@ -111,7 +120,7 @@ class we_folder extends we_root{
 			}
 		}
 
-		if($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE){
+		if($this->Table === FILE_TABLE || $this->Table === TEMPLATES_TABLE || $this->Table === VFILE_TABLE){
 			$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_DOCLIST;
 		}
 	}
@@ -387,17 +396,17 @@ class we_folder extends we_root{
 		return (!$userCanChange ? '<table class="default"><tr><td><span class="defaultfont">' . $this->Path . '</span></td></tr>' :
 						'<table class="default">
 <colgroup><col style="width:20px;"/><col style="width:20px;"/><col style="width:100px;"/></colgroup>
-	<tr><td class="defaultfont" style="padding-bottom:10px;">' . $this->formInputField('', ($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE) ? 'Filename' : 'Text', g_l('weClass', '[foldername]'), 50, 0, 255, 'onchange=_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();') . '</td><td></td><td></td></tr>
+	<tr><td class="defaultfont" style="padding-bottom:10px;">' . $this->formInputField('', ($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE) ? 'Filename' : 'Text', g_l('weClass', '[foldername]'), 50, 0, 255, 'onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);pathOfDocumentChanged();"') . '</td><td></td><td></td></tr>
 	<tr><td colspan="3" class="defaultfont">' . $this->formDirChooser(0) . '</td></tr>' .
 						(defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE ? '
 	<tr><td colspan="3" class="defaultfont" style="padding-top:4px;">' . $this->formTriggerDocument() . '</td></tr>
 	<tr><td colspan="3">
 		<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[grant_tid_expl]') . ($this->ID ? '' : g_l('weClass', '[availableAfterSave]')), we_html_tools::TYPE_INFO, 0, false) . '</td><td>' .
-								we_html_button::create_button(we_html_button::OK, 'javascript:if(_EditorFrame.getEditorIsHot()) { ' . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('changeTriggerIDRecursive','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, '', '', ($this->ID ? false : true)) . '</td></tr>
+								we_html_button::create_button(we_html_button::OK, 'javascript:if(WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorIsHot()) { ' . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('changeTriggerIDRecursive','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, '', '', ($this->ID ? false : true)) . '</td></tr>
 					</table></td></tr>' :
 								'') .
 						($this->Table == FILE_TABLE && $this->ID && permissionhandler::hasPerm('ADMINISTRATOR') ? '
-	<tr><td class="defaultfont" style="padding-top:10px;">' . $this->formInputField('', 'urlMap', g_l('weClass', '[urlMap]'), 50, 0, 255, 'onchange=_EditorFrame.setEditorIsHot(true); ') . '</td><td></td><td></td></tr>
+	<tr><td class="defaultfont" style="padding-top:10px;">' . $this->formInputField('', 'urlMap', g_l('weClass', '[urlMap]'), 50, 0, 255, 'onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);" ') . '</td><td></td><td></td></tr>
 ' : '')) .
 				'</table>';
 	}
@@ -406,7 +415,7 @@ class we_folder extends we_root{
 		$_disabledNote = ($this->ID ? '' : ' ' . g_l('weClass', '[availableAfterSave]'));
 
 		return '<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('modules_users', '[grant_owners_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, 390, false) . '</td><td>' .
-				we_html_button::create_button(we_html_button::OK, 'javascript:if(_EditorFrame.getEditorIsHot()) { ' . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('users_changeR','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, '', '', !empty($_disabledNote)) . '</td></tr>
+				we_html_button::create_button(we_html_button::OK, 'javascript:if(WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorIsHot()) { ' . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('users_changeR','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, '', '', !empty($_disabledNote)) . '</td></tr>
 					</table>';
 	}
 
@@ -414,7 +423,7 @@ class we_folder extends we_root{
 		$_disabledNote = ($this->ID ? '' : ' ' . g_l('weClass', '[availableAfterSave]'));
 
 		return '<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[grant_language_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, 390, false) . '</td><td>' .
-				we_html_button::create_button(we_html_button::OK, "javascript:if(_EditorFrame.getEditorIsHot()) { " . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('changeLanguageRecursive','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, '', '', !empty($_disabledNote)) . '</td></tr>
+				we_html_button::create_button(we_html_button::OK, "javascript:if(WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorIsHot()) { " . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('changeLanguageRecursive','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, '', '', !empty($_disabledNote)) . '</td></tr>
 					</table>';
 	}
 
@@ -459,7 +468,6 @@ class we_folder extends we_root{
 
 	function modifyIndexPath(){
 		//FIXME: tablescan!
-		$this->DB_WE->query('UPDATE ' . INDEX_TABLE . ' SET Workspace="' . $this->DB_WE->escape($this->Path . substr($this->DB_WE->f('Workspace'), strlen($this->OldPath))) . '" WHERE Workspace LIKE "' . $this->DB_WE->escape($this->OldPath) . '%"');
 		$this->DB_WE->query('UPDATE ' . INDEX_TABLE . ' SET Path=CONCAT("' . $this->DB_WE->escape($this->Path) . '",SUBSTRING(Path,' . (strlen($this->OldPath) + 1) . ')) WHERE Path LIKE "' . $this->DB_WE->escape($this->OldPath) . '%"');
 	}
 

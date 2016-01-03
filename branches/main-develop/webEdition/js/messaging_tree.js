@@ -84,7 +84,7 @@ function update_messaging() {
 		} else {
 			ent_str = "";
 		}
-		cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=update_msgs" + ent_str;
+		cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=update_msgs" + ent_str;
 	}
 }
 
@@ -98,9 +98,9 @@ function update_icon(fid) {
 
 function set_frames(vc) {
 	if (vc == "message" || vc == "todo") {
-		top.content.iconbar.location = we_frameset + "?we_transaction=" + we_transaction + "&pnt=iconbar&viewclass=" + vc;
-		top.content.editor.edheader.location = we_frameset + "?we_transaction=" + we_transaction + "&pnt=edheader&viewclass=" + vc;
-		top.content.editor.edbody.messaging_fv_headers.location = we_frameset + "?we_transaction=" + we_transaction + "&pnt=msg_fv_headers&viewclass=" + vc;
+		top.content.iconbar.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&we_transaction=" + we_transaction + "&pnt=iconbar&viewclass=" + vc;
+		top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&we_transaction=" + we_transaction + "&pnt=edheader&viewclass=" + vc;
+		top.content.editor.edbody.messaging_fv_headers.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&we_transaction=" + we_transaction + "&pnt=msg_fv_headers&viewclass=" + vc;
 	}
 	viewclass = vc;
 }
@@ -135,19 +135,19 @@ function we_cmd() {
 				}
 				top.content.viewclass = treeData[ind].viewclass;
 			}
-			cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=show_folder_content&id=" + args[1];
+			cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=show_folder_content&id=" + args[1];
 			break;
 		case "edit_folder":
 			update_icon(args[1]);
-			top.content.cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=edit_folder&mode=edit&fid=" + args[1];
+			top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=edit_folder&mode=edit&fid=" + args[1];
 			break;
 		case "folder_new":
 			break;
 		case "messaging_new_message":
-			cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=new_message&mode=new";
+			cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=new_message&mode=new";
 			break;
 		case "messaging_new_todo":
-			cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=new_todo";
+			cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=new_todo";
 			break;
 		case "messaging_start_view":
 			deleteMode = false;
@@ -159,7 +159,7 @@ function we_cmd() {
 			break;
 		case "messaging_new_folder":
 			mode = "folder_new";
-			cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=edit_folder&mode=new";
+			cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=edit_folder&mode=new";
 			break;
 		case "messaging_delete_mode_on":
 			deleteMode = true;
@@ -167,27 +167,27 @@ function we_cmd() {
 			top.content.editor.edbody.location = WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "messaging_delete_folders.php?we_transaction=" + we_transaction;
 			break;
 		case "messaging_delete_folders":
-			cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=delete_folders&folders=" + entries_selected.join(",");
+			cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=delete_folders&folders=" + entries_selected.join(",");
 			break;
 		case "messaging_edit_folder":
 			mode = "edit_folder";
-			cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=edit_folder&mode=edit&fid=" + open_folder;
+			cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=edit_folder&mode=edit&fid=" + open_folder;
 			break;
 		case "messaging_settings":
-			cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=edit_settings&mode=new";
+			cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=edit_settings&mode=new";
 			break;
 		case "messaging_copy":
 			if (editor && editor.edbody && editor.edbody.entries_selected && editor.edbody.entries_selected.length > 0) {
-				cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=copy_msg&entrsel=" + editor.edbody.entries_selected.join(",");
+				cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=copy_msg&entrsel=" + editor.edbody.entries_selected.join(",");
 			}
 			break;
 		case "messaging_cut":
 			if (editor && editor.edbody && editor.edbody.entries_selected && editor.edbody.entries_selected.length > 0) {
-				cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=cut_msg&entrsel=" + editor.edbody.entries_selected.join(",");
+				cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=cut_msg&entrsel=" + editor.edbody.entries_selected.join(",");
 			}
 			break;
 		case "messaging_paste":
-			top.content.cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=paste_msg";
+			top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=paste_msg";
 			break;
 		default:
 			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
@@ -218,7 +218,7 @@ container.prototype.drawGroup = function (nf, ai, zweigEintrag) {
 					"<br/>";
 	if (nf[ai].open) {
 		if (ai == nf.len) {
-			newAst += "<span class=\"treeKreuz\"></span>";
+			newAst += '<span class="treeKreuz"></span>';
 		} else {
 			newAst += '<span class="strich treeKreuz "></span>';
 		}

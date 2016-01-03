@@ -30,10 +30,10 @@ $name = we_base_request::_(we_base_request::STRING, 'we_name', '');
 $fixedPID = we_base_request::_(we_base_request::INT, 'fixedpid', -1);
 $fixedRemTable = we_base_request::_(we_base_request::STRING, 'fixedremtable', '');
 
-
 $collection->ParentID = $fixedPID !== -1 ? $fixedPID : we_base_request::_(we_base_request::INT, 'we_' . $name . '_ParentID', 0);
 $collection->ParentPath = id_to_path($collection->ParentID, $collection->Table);
-$collection->remTable = $fixedRemTable ? : we_base_request::_(we_base_request::STRING, 'we_' . $name . '_remTable');
+$collection->remTable = stripTblPrefix(FILE_TABLE); // FIXME: make dynamic when implementing object collections
+//$collection->remTable = $fixedRemTable ? : we_base_request::_(we_base_request::STRING, 'we_' . $name . '_remTable');
 
 $caller = we_base_request::_(we_base_request::STRING, 'caller');
 
@@ -50,6 +50,7 @@ if(we_base_request::_(we_base_request::BOOL, 'dosave')){
 	$collection->remClass = we_base_request::_(we_base_request::STRING, 'we_' . $name . '_remClass');
 	$collection->IsDuplicates = we_base_request::_(we_base_request::INT, 'we_' . $name . 'IsDuplicates', 1);
 	$collection->InsertRecursive = 1;
+	$writeBack = array();
 
 	if(($jsMessage = $collection->checkFieldsOnSave())){
 		$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
@@ -112,7 +113,7 @@ var cmd = "' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . '"
 			opener.top.unselectAllFiles();
 			opener.top.doClick(' . $id . ', 0);
 			setTimeout(function(){opener.top.selectFile(' . $id . ');}, 200);' :
-			($writeBack[0] ? 'opener.' . $writeBack[0] . ' = ' . $id . ';opener.' . $writeBack[1] . ' = "' . $collection->Path . '";' : '')) . '
+			((isset($writeBack[0]) && $writeBack[0] && isset($writeBack[1])) ? 'opener.' . $writeBack[0] . ' = ' . $id . ';opener.' . $writeBack[1] . ' = "' . $collection->Path . '";' : '')) . '
 			window.close();
 			break;
 		default:
@@ -121,7 +122,7 @@ var cmd = "' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . '"
 }
 ' . (!empty($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) : '') . ($saveSuccess ? 'we_cmd("do_onSuccess");' : '')));
 
-$parts[] = array('headline' => g_l('weClass', '[path]'), 'html' => $collection->formPath($fixedPID !== -1), 'space' => 0, 'noline' => 1);
+$parts[] = array('headline' => g_l('weClass', '[path]'), 'html' => $collection->formPath($fixedPID !== -1, true), 'space' => 0, 'noline' => 1);
 $parts[] = array('headline' => 'Inhalt', 'html' => $collection->formContent(true), 'space' => 0, 'noline' => 1);
 
 $content = we_html_element::htmlHidden('dosave', 0) .

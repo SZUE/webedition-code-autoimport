@@ -104,7 +104,7 @@ function we_cmd() {
 			break;
 		case "we_selector_image":
 		case "we_selector_document":
-			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1,WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "switchPage":
 			document.we_form.cmd.value = args[0];
@@ -129,26 +129,23 @@ function we_cmd() {
 	}
 }
 
-var ajaxCallbackResetLogins = {
-	success: function (o) {
-		if (o.responseText !== undefined && o.responseText !== "") {
-			var weResponse = false;
-			try {
-				eval("var weResponse = " + o.responseText);
-				if (weResponse) {
-					if (weResponse.DataArray.data == "true") {
-
-						document.getElementById("FailedCustomerLogins").innerText = weResponse.DataArray.value;
-					}
-				}
-			} catch (exc) {
-			}
-		}
-	},
-	failure: function (o) {
-	}
-};
-
 function resetLogins(id) {
-	YAHOO.util.Connect.asyncRequest("GET", WE().consts.dirs.WEBEDITION_DIR + "rpc/rpc.php?cmd=ResetFailedCustomerLogins&cns=customer&custid=" + id, ajaxCallbackResetLogins);
+	YAHOO.util.Connect.asyncRequest("GET", WE().consts.dirs.WEBEDITION_DIR + "rpc/rpc.php?cmd=ResetFailedCustomerLogins&cns=customer&custid=" + id, {
+		success: function (o) {
+			if (o.responseText !== undefined && o.responseText !== "") {
+				var weResponse = false;
+				try {
+					var weResponse = JSON.parse(o.responseText);
+					if (weResponse) {
+						if (weResponse.DataArray.data === "true") {
+							document.getElementById("FailedCustomerLogins").innerText = weResponse.DataArray.value;
+						}
+					}
+				} catch (exc) {
+				}
+			}
+		},
+		failure: function (o) {
+		}
+	});
 }

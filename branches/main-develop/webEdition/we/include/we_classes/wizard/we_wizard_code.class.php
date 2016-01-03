@@ -157,9 +157,7 @@ abstract class we_wizard_code{
 	 * @return string
 	 */
 	public static function getJavascript(){
-		return we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
+		return YAHOO_FILES .
 			we_html_element::jsScript(JS_DIR . 'wizard_code.js');
 	}
 

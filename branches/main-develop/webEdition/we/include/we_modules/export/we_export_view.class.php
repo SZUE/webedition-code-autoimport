@@ -130,8 +130,8 @@ function start() {
 				} else {
 					$this->export = new we_export_export();
 					echo we_html_element::jsElement('
-top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->export->Text) . '";
-top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
+top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=edheader&text=' . urlencode($this->export->Text) . '";
+top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=edfooter";
 						');
 				}
 
@@ -147,8 +147,8 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 					$this->export->Text = g_l('export', '[newFolder]');
 					$this->export->IsFolder = 1;
 					echo we_html_element::jsElement('
-top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->export->Text) . '";
-top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
+top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=edheader&text=' . urlencode($this->export->Text) . '";
+top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=edfooter";
 						');
 				}
 				break;
@@ -162,8 +162,8 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 				$this->export = new we_export_export(we_base_request::_(we_base_request::INT, "cmdid"));
 				echo we_html_element::jsElement('
 top.content.hot=0;
-top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->export->Text) . '";
-top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
+top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=edheader&text=' . urlencode($this->export->Text) . '";
+top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=edfooter";
 						');
 
 				break;

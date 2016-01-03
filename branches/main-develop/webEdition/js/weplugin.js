@@ -67,6 +67,7 @@ function editFile() {
 	document.we_form.submit();
 }
 
+//called by java
 function setSource(trans) {
 	var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction(trans);
 	if (_EditorFrame) {
@@ -91,8 +92,7 @@ function setFile(source, trans) {
 	document.we_form.submit();
 }
 
-
-
+//called by java
 function reloadContentFrame(trans) {
 	document.we_form.elements['we_cmd[0]'].value = "reloadContentFrame";
 	document.we_form.elements['we_cmd[1]'].value = trans;
@@ -100,7 +100,7 @@ function reloadContentFrame(trans) {
 }
 
 function remove(transaction) {
-	if (self.isLoaded && (typeof document.WePlugin.removeDocument == "function")) {
+	if (self.isLoaded && (document.WePlugin.removeDocument)) {
 		document.WePlugin.removeDocument(transaction);
 	} else {
 		self.isLoaded = false;
@@ -108,7 +108,7 @@ function remove(transaction) {
 }
 
 function isInEditor(transaction) {
-	if (self.isLoaded && transaction !== null && (typeof document.WePlugin.inEditor == "function")) {
+	if (self.isLoaded && transaction !== null && (document.WePlugin.inEditor)) {
 		return document.WePlugin.inEditor(transaction);
 	}
 	return false;
@@ -138,7 +138,6 @@ function pingPlugin() {
 
 function initPlugin() {
 	top.opener.top.plugin.location = "/webEdition/editors/content/eplugin/weplugin.php";
-	self.focus();
 	checkPlugin();
 }
 
@@ -146,7 +145,6 @@ function nojava() {
 	alert(g_l.no_java);
 	top.opener.top.plugin.location = "about:blank";
 	wait_count = 0;
-	self.close();
 }
 
 function checkPlugin() {

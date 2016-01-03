@@ -27,7 +27,7 @@
 //FIXME: compare & unite all _tree.js files
 
 function drawTree() {
-	top.content.document.getElementById("treetable").innerHTML = "<nobr><a href=javascript:// onclick=\"doYearClick(" + top.yearshop + ");return true;\" title=\"" + WE().consts.g_l.shop.tree.treeYearClick + "\" >" + WE().consts.g_l.shop.tree.treeYear + ": <strong>" + top.yearshop + " </strong></a><br/>" + treeData.draw(0, "");
+	top.content.document.getElementById("treetable").innerHTML = "<a href=javascript:// onclick=\"doYearClick(" + top.yearshop + ");return true;\" title=\"" + WE().consts.g_l.shop.tree.treeYearClick + "\" >" + WE().consts.g_l.shop.tree.treeYear + ": <strong>" + top.yearshop + " </strong></a><br/>" + treeData.draw(0, "");
 }
 
 container.prototype.drawShop=function (nf, ai, zweigEintrag){

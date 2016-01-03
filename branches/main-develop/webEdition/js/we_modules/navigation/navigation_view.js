@@ -110,7 +110,7 @@ function we_cmd() {
 			if (top.content.editor.edbody.loaded) {
 				q = (args[0] === "populate" ?
 								WE().consts.g_l.navigation.view.populate_question :
-								WE().consts.g_l.navigation.viewdepopulate_question);
+								WE().consts.g_l.navigation.view.depopulate_question);
 
 				if (confirm(q)) {
 					top.content.editor.edbody.document.we_form.pnt.value = "edbody";
@@ -143,8 +143,8 @@ function we_cmd() {
 				if (confirm(WE().consts.g_l.navigation.view.delete_alert)) {
 					top.content.editor.edbody.document.we_form.cmd.value = args[0];
 					top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;
-					top.content.editor.edheader.location = data.frameset + "?home=1&pnt=edheader";
-					top.content.editor.edfooter.location = data.frameset + "?home=1&pnt=edfooter";
+					top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&home=1&pnt=edheader";
+					top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&home=1&pnt=edfooter";
 					top.content.editor.edbody.submitForm();
 				}
 			} else {
@@ -153,11 +153,11 @@ function we_cmd() {
 
 			break;
 		case "move_abs":
-			top.content.cmd.location = data.frameset + "&pnt=cmd&cmd=" + args[0] + "&pos=" + args[1];
+			top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=cmd&cmd=" + args[0] + "&pos=" + args[1];
 			break;
 		case "move_up":
 		case "move_down":
-			top.content.cmd.location = data.frameset + "&pnt=cmd&cmd=" + args[0];
+			top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=cmd&cmd=" + args[0];
 			break;
 		case "dyn_preview":
 		case "create_template":
@@ -185,7 +185,7 @@ function we_cmd() {
 			}
 			break;
 		case "exit_doc_question":
-			url = data.frameset + "&pnt=exit_doc_question&delayCmd=" + top.content.editor.edbody.document.getElementsByName("delayCmd")[0].value + "&delayParam=" + top.content.editor.edbody.document.getElementsByName("delayParam")[0].value;
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=exit_doc_question&delayCmd=" + top.content.editor.edbody.document.getElementsByName("delayCmd")[0].value + "&delayParam=" + top.content.editor.edbody.document.getElementsByName("delayParam")[0].value;
 			new (WE().util.jsWindow)(this, url, "we_exit_doc_question", -1, -1, 380, 130, true, false, true);
 			break;
 
@@ -197,5 +197,92 @@ function we_cmd() {
 		default:
 			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 
+	}
+}
+
+function moveAbs(pos, parent, selector) {
+	top.content.editor.edbody.document.we_form.Ordn.value = pos;
+	top.content.reloadGroup(parent);
+	WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_down", "enabled");
+	WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "enabled");
+
+	if (top.content.editor.edbody.document.we_form.Ordn.value == 0) {
+		WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "disabled");
+	} else {
+		WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "enabled");
+	}
+	top.content.editor.edbody.document.we_form.Position.innerHTML = selector;
+}
+
+function moveUp(pos, parent, selector) {
+	top.content.editor.edbody.document.we_form.Ordn.value = pos;
+	top.content.reloadGroup(parent);
+	WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_down", "enabled");
+	WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "enabled");
+
+	if (top.content.editor.edbody.document.we_form.Ordn.value == 1) {
+		WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "disabled");
+	} else {
+		WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "enabled");
+	}
+	top.content.editor.edbody.document.we_form.Position.innerHTML = selector;
+}
+
+function moveDown(pos, parent, selector, max) {
+	top.content.editor.edbody.document.we_form.Ordn.value = pos;
+	top.content.reloadGroup(parent);
+	WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_down", "enabled");
+	WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "enabled");
+	if (top.content.editor.edbody.document.we_form.Ordn.value >= max) {
+		WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_down", "disabled");
+	} else {
+		WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_down", "enabled");
+	}
+	top.content.editor.edbody.document.we_form.Position.innerHTML = selector;
+}
+
+function populateFolderWs(type, prefix) {
+	switch (type) {
+		case 'values':
+			top.content.editor.edbody.setVisible("objLinkFolderWorkspace", true);
+			top.content.editor.edbody.document.we_form.FolderWsID.options.length = 0;
+			return;
+		case 'workspace':
+			top.content.editor.edbody.document.we_form.FolderWsID.options.length = 0;
+			top.content.editor.edbody.document.we_form.FolderWsID.options[top.content.editor.edbody.document.we_form.FolderWsID.options.length] = new Option("/", 0);
+			top.content.editor.edbody.document.we_form.FolderWsID.selectedIndex = 0;
+			top.content.editor.edbody.setVisible("objLinkFolderWorkspace", true);
+			return;
+		case 'noWorkspace':
+			top.content.editor.edbody.setVisible("objLinkFolderWorkspace" + prefix, false);
+			top.content.editor.edbody.document.we_form.FolderWsID.options.length = 0;
+			top.content.editor.edbody.document.we_form.FolderWsID.options[top.content.editor.edbody.document.we_form.FolderWsID.options.length] = new Option("-1", -1);
+			top.content.editor.edbody.document.we_form.LinkID.value = "";
+			top.content.editor.edbody.document.we_form.LinkPath.value = "";
+			WE().util.showMessage(WE().consts.g_l.navigation.view.no_workspace, WE().consts.message.WE_MESSAGE_ERROR, this);
+			return;
+	}
+}
+
+function populateWorkspaces(type, prefix) {
+	switch (type) {
+		case 'values':
+			top.content.editor.edbody.setVisible("objLinkWorkspace" + prefix, true);
+			top.content.editor.edbody.document.we_form["WorkspaceID" + prefix].options.length = 0;
+			return;
+		case 'workspace':
+			top.content.editor.edbody.document.we_form["WorkspaceID" + prefix].options.length = 0;
+			top.content.editor.edbody.document.we_form["WorkspaceID" + prefix ].options[top.content.editor.edbody.document.we_form["WorkspaceID" + prefix].options.length] = new Option("/", 0);
+			top.content.editor.edbody.document.we_form["WorkspaceID" + prefix ].selectedIndex = 0;
+			//top.content.editor.edbody.setVisible("objLinkWorkspace"+prefix ,false);
+			return;
+		case 'noWorkspace':
+			top.content.editor.edbody.setVisible("objLinkWorkspace" + prefix, false);
+			top.content.editor.edbody.document.we_form["WorkspaceID" + prefix].options.length = 0;
+			top.content.editor.edbody.document.we_form["WorkspaceID" + prefix].options[top.content.editor.edbody.document.we_form["WorkspaceID" + prefix].options.length] = new Option("-1", -1);
+			top.content.editor.edbody.document.we_form.LinkID.value = "";
+			top.content.editor.edbody.document.we_form.LinkPath.value = "";
+			WE().util.showMessage(WE().consts.g_l.navigation.view.no_workspace, WE().consts.message.WE_MESSAGE_ERROR, this);
+			return;
 	}
 }

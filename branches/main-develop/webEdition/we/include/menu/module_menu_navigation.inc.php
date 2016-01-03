@@ -21,7 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$we_menu_navigation = array(
+return array(
 	'navigation' => array(
 		'text' => g_l('navigation', '[navigation]'),
 

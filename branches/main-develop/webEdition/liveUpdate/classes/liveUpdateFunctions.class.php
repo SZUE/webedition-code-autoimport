@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -27,6 +28,7 @@
  * TBD if we divide this class in several classes
  */
 class liveUpdateFunctions{
+
 	var $QueryLog = array(
 		'success' => array(),
 		'tableChanged' => array(),
@@ -41,9 +43,9 @@ class liveUpdateFunctions{
 
 	function insertUpdateLogEntry($action, $version, $errorCode){
 		$GLOBALS['DB_WE']->query('INSERT INTO ' . UPDATE_LOG_TABLE . ' SET ' . we_database_base::arraySetter(array(
-				'aktion' => $action,
-				'versionsnummer' => $version,
-				'error' => $errorCode
+					'aktion' => $action,
+					'versionsnummer' => $version,
+					'error' => $errorCode
 		)));
 	}
 
@@ -113,8 +115,8 @@ class liveUpdateFunctions{
 	function checkReplaceDocRoot($content){
 		//replaces any count of escaped docroot-strings
 		return ($this->replaceDocRootNeeded() ?
-				preg_replace('-\$(_SERVER|GLOBALS)\[([\\\"\']+)DOCUMENT' . '_ROOT([\\\"\']+)\]-', '\2' . LIVEUPDATE_SOFTWARE_DIR . '\3', $content) :
-				$content);
+						preg_replace('-\$(_SERVER|GLOBALS)\[([\\\"\']+)DOCUMENT' . '_ROOT([\\\"\']+)\]-', '\2' . LIVEUPDATE_SOFTWARE_DIR . '\3', $content) :
+						$content);
 	}
 
 	/**
@@ -198,7 +200,7 @@ class liveUpdateFunctions{
 	 * @return boolean
 	 */
 	function filePutContent($filePath, $newContent){
-		if($this->checkMakeDir(dirname($filePath))){
+		if($this->checkMakeDir(dirname($filePath)) && $this->checkMakeFileWritable($filePath)){
 			$fh = fopen($filePath, 'wb');
 			if($fh){
 				fwrite($fh, $newContent, strlen($newContent));
@@ -207,7 +209,7 @@ class liveUpdateFunctions{
 				if(substr($filePath, -4) === '.php' && function_exists('opcache_invalidate')){
 					opcache_invalidate($filePath, true);
 				}
-				if(!chmod($filePath, 0755)){
+				if(!chmod($filePath, 0444)){
 					return false;
 				}
 				return true;
@@ -258,7 +260,7 @@ class liveUpdateFunctions{
 
 		foreach($pathArray as $subPath){
 			$path .= $subPath;
-			if($subPath != "" && !is_dir($path)){
+			if($subPath && !is_dir($path)){
 				if(!(file_exists($path) || mkdir($path, $mod))){
 					return false;
 				}
@@ -308,6 +310,9 @@ class liveUpdateFunctions{
 					$this->deleteFile($destination . 'x');
 					$this->deleteFile($source . 'x');
 					$this->insertUpdateLogEntry('Using ' . ($_SESSION['weS']['moveOk'] ? 'move' : 'copy') . ' for installation', WE_VERSION, 0);
+				}
+				if(substr($destination, -4) === '.php' && function_exists('opcache_invalidate')){
+					opcache_invalidate($destination, true);
 				}
 
 				if($_SESSION['weS']['moveOk']){

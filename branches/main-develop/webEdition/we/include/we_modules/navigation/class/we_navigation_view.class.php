@@ -66,6 +66,7 @@ WE().consts.g_l.navigation.view={
 	nothing_selected:"' . we_message_reporting::prepareMsgForJS(g_l('navigation', '[nothing_selected]')) . '",
 	nothing_to_delete:"' . we_message_reporting::prepareMsgForJS(g_l('navigation', '[nothing_to_delete]')) . '",
 	no_perms:"' . we_message_reporting::prepareMsgForJS(g_l('navigation', '[no_perms]')) . '",
+	no_workspace:"' . we_message_reporting::prepareMsgForJS(g_l('navigation', '[no_workspace]')) . '",
 };
 WE().consts.g_l.navigation.rule={
 	save_error_fields_value_not_valid:"' . we_message_reporting::prepareMsgForJS(g_l('alert', '[save_error_fields_value_not_valid]')) . '",
@@ -139,8 +140,8 @@ var weNavTitleField = [' . implode(',', $_objFields) . '];'
 				$this->Model->IsFolder = we_base_request::_(we_base_request::STRING, 'cmd') === 'module_navigation_new_group' ? 1 : 0;
 				$this->Model->ParentID = we_base_request::_(we_base_request::INT, 'ParentID', 0);
 				echo we_html_element::jsElement('
-top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->Model->Text) . '";
-top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');
+top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=edheader&text=' . urlencode($this->Model->Text) . '";
+top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=edfooter";');
 				break;
 			case 'module_navigation_edit':
 				if(!permissionhandler::hasPerm('EDIT_NAVIGATION')){
@@ -157,8 +158,8 @@ top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');
 					break;
 				}
 				echo we_html_element::jsElement('
-top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->Model->Text) . '";
-top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
+top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=edheader&text=' . urlencode($this->Model->Text) . '";
+top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=edfooter";
 if(top.content.treeData){
 	top.content.treeData.unselectNode();
 	top.content.treeData.selectNode(' . $this->Model->ID . ');
@@ -237,21 +238,21 @@ if(top.content.treeData){
 					$_old_items = array();
 					if($this->Model->hasDynChilds()){
 						$_old_items = $this->Model->depopulateGroup();
-						foreach($_old_items as $_id){
-							$js .= 'top.content.treeData.deleteEntry(' . $_id['ID'] . ');';
+						foreach($_old_items as $id){
+							$js .= 'top.content.treeData.deleteEntry(' . $id['ID'] . ');';
 						}
 					}
 					$_items = $this->Model->populateGroup($_old_items);
-					foreach($_items as $_k => $_item){
-						$js .= 'top.content.treeData.makeNewEntry({id:\'' . $_item['id'] . '\',parentid:\'' . $this->Model->ID . '\',text:\'' . addslashes($_item['text']) . '\',open:0,contenttype:\'we/navigation\',table:\'' . NAVIGATION_TABLE . '\',published:1,order:' . $_k . '});';
+					foreach($_items as $_k => $item){
+						$js .= 'top.content.treeData.makeNewEntry({id:\'' . $item['id'] . '\',parentid:\'' . $this->Model->ID . '\',text:\'' . addslashes($item['text']) . '\',open:0,contenttype:\'we/navigation\',table:\'' . NAVIGATION_TABLE . '\',published:1,order:' . $_k . '});';
 					}
 				}
 				if($this->Model->IsFolder && $this->Model->Selection == we_navigation_navigation::SELECTION_NODYNAMIC){
 					$_old_items = array();
 					if($this->Model->hasDynChilds()){
 						$_old_items = $this->Model->depopulateGroup();
-						foreach($_old_items as $_id){
-							$js .= 'top.content.treeData.deleteEntry(' . $_id['ID'] . ');';
+						foreach($_old_items as $id){
+							$js .= 'top.content.treeData.deleteEntry(' . $id['ID'] . ');';
 						}
 					}
 				}
@@ -308,19 +309,7 @@ setTimeout(function(){' . we_message_reporting::getShowMessageCall(g_l('navigati
 						$posText.='<option value="' . $val . '"' . ($val == $this->Model->Ordn ? ' selected="selected"' : '') . '>' . $text . '</option>';
 					}
 
-					echo we_html_element::jsElement('
-top.content.editor.edbody.document.we_form.Ordn.value=' . $this->Model->Ordn . ';
-top.content.reloadGroup(' . $this->Model->ParentID . ');
-WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_down", "enabled");
-WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "enabled");
-
-if(top.content.editor.edbody.document.we_form.Ordn.value==0){
-	WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "disabled");
-} else {
-	WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "enabled");
-}
-top.content.editor.edbody.document.we_form.Position.innerHTML=\'' . addcslashes($posText, '\'') . '\';'
-					);
+					echo we_html_element::jsElement('top.content.moveAbs(' . $this->Model->Ordn . ',' . $this->Model->ParentID . ',\'' . addcslashes($posText, '\'') . '\');');
 				}
 				break;
 			case 'move_up' :
@@ -330,19 +319,7 @@ top.content.editor.edbody.document.we_form.Position.innerHTML=\'' . addcslashes(
 					foreach($posVals as $val => $text){
 						$posText.='<option value="' . $val . '"' . ($val == $this->Model->Ordn ? ' selected="selected"' : '') . '>' . $text . '</option>';
 					}
-					echo we_html_element::jsElement('
-top.content.editor.edbody.document.we_form.Ordn.value=' . $this->Model->Ordn . ';
-top.content.reloadGroup(' . $this->Model->ParentID . ');
-WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_down", "enabled");
-WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "enabled");
-
-if(top.content.editor.edbody.document.we_form.Ordn.value==1){
-	WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "disabled");
-} else {
-	WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "enabled");
-}
-top.content.editor.edbody.document.we_form.Position.innerHTML=\'' . addcslashes($posText, '\'') . '\';'
-					);
+					echo we_html_element::jsElement('top.content.moveUp(' . $this->Model->Ordn . ',' . $this->Model->ParentID . ',\'' . addcslashes($posText, '\'') . '\');');
 				}
 				break;
 			case 'move_down' :
@@ -354,41 +331,26 @@ top.content.editor.edbody.document.we_form.Position.innerHTML=\'' . addcslashes(
 					foreach($posVals as $val => $text){
 						$posText.='<option value="' . $val . '"' . ($val == $this->Model->Ordn ? ' selected="selected"' : '') . '>' . $text . '</option>';
 					}
-					echo we_html_element::jsElement('
-top.content.editor.edbody.document.we_form.Ordn.value=' . $this->Model->Ordn . ';
-top.content.reloadGroup(' . $this->Model->ParentID . ');
-WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_down", "enabled");
-WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "enabled");
-if(top.content.editor.edbody.document.we_form.Ordn.value>=' . $_num . '){
-	WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_down", "disabled");
-} else {
-	WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_down", "enabled");
-}
-top.content.editor.edbody.document.we_form.Position.innerHTML=\'' . addcslashes($posText, '\'') . '\';'
-					);
+					echo we_html_element::jsElement('top.content.moveDown(' . $this->Model->Ordn . ',' . $this->Model->ParentID . ',\'' . addcslashes($posText, '\'') . '\',' . $_num . ');');
 				}
 				break;
 			case 'populate':
 				$_items = $this->Model->populateGroup();
-				$_js = '';
+				$js = '';
 				foreach($_items as $_k => $_item){
-					$_js .= 'top.content.treeData.deleteEntry(' . $_item['id'] . ');
+					$js .= 'top.content.treeData.deleteEntry(' . $_item['id'] . ');
 						top.content.treeData.makeNewEntry({id:\'' . $_item['id'] . '\',parentid:\'' . $this->Model->ID . '\',text:\'' . addslashes($_item['text']) . '\',open:0,contenttype:\'we/navigation\',table:\'' . NAVIGATION_TABLE . '\',published:1,order:' . $_k . '});';
 				}
-				echo we_html_element::jsElement(
-						$_js .
-						we_message_reporting::getShowMessageCall(g_l('navigation', '[populate_msg]'), we_message_reporting::WE_MESSAGE_NOTICE)
+				echo we_html_element::jsElement($js . we_message_reporting::getShowMessageCall(g_l('navigation', '[populate_msg]'), we_message_reporting::WE_MESSAGE_NOTICE)
 				);
 				break;
 			case 'depopulate':
 				$_items = $this->Model->depopulateGroup();
-				$_js = '';
-				foreach($_items as $_id){
-					$_js .= 'top.content.treeData.deleteEntry(' . $_id . ');
-						';
+				$js = '';
+				foreach($_items as $id){
+					$js .= 'top.content.treeData.deleteEntry(' . $id['ID'] . ');';
 				}
-				$_js .= we_message_reporting::getShowMessageCall(g_l('navigation', '[depopulate_msg]'), we_message_reporting::WE_MESSAGE_NOTICE);
-				echo we_html_element::jsElement($_js);
+				echo we_html_element::jsElement($js . we_message_reporting::getShowMessageCall(g_l('navigation', '[depopulate_msg]'), we_message_reporting::WE_MESSAGE_NOTICE));
 				$this->Model->Selection = we_navigation_navigation::SELECTION_NODYNAMIC;
 				$this->Model->saveField('Selection');
 				break;
@@ -410,92 +372,51 @@ top.content.editor.edbody.document.we_form.Position.innerHTML=\'' . addcslashes(
 				$_js = '';
 
 				if($_values){
-
 					foreach($_values as $_id => $_path){
 						$_js .= 'top.content.editor.edbody.document.we_form.FolderWsID.options[top.content.editor.edbody.document.we_form.FolderWsID.options.length] = new Option("' . $_path . '",' . $_id . ');';
 					}
-					echo we_html_element::jsElement(
-							'top.content.editor.edbody.setVisible("objLinkFolderWorkspace",true);
-							top.content.editor.edbody.document.we_form.FolderWsID.options.length = 0;
-							' . $_js . '
-						');
+					echo we_html_element::jsElement('top.content.populateFolderWs("values");' . $_js);
 				} elseif(we_navigation_dynList::getWorkspaceFlag($this->Model->LinkID)){
-					echo we_html_element::jsElement(
-							'top.content.editor.edbody.document.we_form.FolderWsID.options.length = 0;
-								top.content.editor.edbody.document.we_form.FolderWsID.options[top.content.editor.edbody.document.we_form.FolderWsID.options.length] = new Option("/",0);
-								top.content.editor.edbody.document.we_form.FolderWsID.selectedIndex = 0;
-								top.content.editor.edbody.setVisible("objLinkFolderWorkspace",true);'
-					);
+					echo we_html_element::jsElement('top.content.populateFolderWs("workspace");');
 				} else {
-					echo we_html_element::jsElement(
-							'top.content.editor.edbody.setVisible("objLinkFolderWorkspace' . $_prefix . '",false);
-								top.content.editor.edbody.document.we_form.FolderWsID.options.length = 0;
-								top.content.editor.edbody.document.we_form.FolderWsID.options[top.content.editor.edbody.document.we_form.FolderWsID.options.length] = new Option("-1",-1);
-								top.content.editor.edbody.document.we_form.LinkID.value = "";
-								top.content.editor.edbody.document.we_form.LinkPath.value = "";
-								' . we_message_reporting::getShowMessageCall(g_l('navigation', '[no_workspace]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-							');
+					echo we_html_element::jsElement('top.content.populateFolderWs("noWorkspace","' . $_prefix . '");');
 				}
 
 				break;
 			case 'populateWorkspaces':
 
-				$_objFields = "\n";
+				$_objFields = '';
 				if($this->Model->SelectionType == we_navigation_navigation::STYPE_CLASS){
-					$__fields = array();
 					if(defined('OBJECT_TABLE')){
 
 						$_class = new we_object();
 						$_class->initByID($this->Model->ClassID, OBJECT_TABLE);
 						$_fields = $_class->getAllVariantFields();
-						$_objFields = "\n";
 						foreach($_fields as $_key => $val){
-							$_objFields .= 'top.content.editor.edbody.weNavTitleField["' . substr($_key, strpos($_key, "_") + 1) . '"] = "' . $_key . '";' . "\n";
+							$_objFields .= 'top.content.editor.edbody.weNavTitleField["' . substr($_key, strpos($_key, "_") + 1) . '"] = "' . $_key . '";';
 						}
 					}
 				}
-
-				$_prefix = '';
 
 				if($this->Model->Selection == we_navigation_navigation::SELECTION_DYNAMIC){
 					$_values = we_navigation_dynList::getWorkspacesForClass($this->Model->ClassID);
 					$_prefix = 'Class';
 				} else {
 					$_values = we_navigation_dynList::getWorkspacesForObject($this->Model->LinkID);
+					$_prefix = '';
 				}
 
-				$_js = '';
-
 				if($_values){ // if the class has workspaces
+					$js = '';
 					foreach($_values as $_id => $_path){
-						$_js .= 'top.content.editor.edbody.document.we_form.WorkspaceID' . $_prefix . '.options[top.content.editor.edbody.document.we_form.WorkspaceID' . $_prefix . '.options.length] = new Option("' . $_path . '",' . $_id . ');';
+						$js .= 'top.content.editor.edbody.document.we_form.WorkspaceID' . $_prefix . '.options[top.content.editor.edbody.document.we_form.WorkspaceID' . $_prefix . '.options.length] = new Option("' . $_path . '",' . $_id . ');';
 					}
-					echo we_html_element::jsElement(
-							$_objFields .
-							'top.content.editor.edbody.setVisible("objLinkWorkspace' . $_prefix . '",true);
-							top.content.editor.edbody.document.we_form.WorkspaceID' . $_prefix . '.options.length = 0;
-							' . $_js . '
-						');
-				} else { // if the class has no workspaces
-					if(we_navigation_dynList::getWorkspaceFlag($this->Model->LinkID)){
-						echo we_html_element::jsElement(
-								$_objFields .
-								'top.content.editor.edbody.document.we_form.WorkspaceID' . $_prefix . '.options.length = 0;
-								top.content.editor.edbody.document.we_form.WorkspaceID' . $_prefix . '.options[top.content.editor.edbody.document.we_form.WorkspaceID' . $_prefix . '.options.length] = new Option("/",0);
-								top.content.editor.edbody.document.we_form.WorkspaceID' . $_prefix . '.selectedIndex = 0;
-								//top.content.editor.edbody.setVisible("objLinkWorkspace' . $_prefix . '",false);'
-						);
-					} else {
-						echo we_html_element::jsElement(
-								$_objFields .
-								'top.content.editor.edbody.setVisible("objLinkWorkspace' . $_prefix . '",false);
-								top.content.editor.edbody.document.we_form.WorkspaceID' . $_prefix . '.options.length = 0;
-								top.content.editor.edbody.document.we_form.WorkspaceID' . $_prefix . '.options[top.content.editor.edbody.document.we_form.WorkspaceID' . $_prefix . '.options.length] = new Option("-1",-1);
-								top.content.editor.edbody.document.we_form.LinkID.value = "";
-								top.content.editor.edbody.document.we_form.LinkPath.value = "";
-								' . we_message_reporting::getShowMessageCall(g_l('navigation', '[no_workspace]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-							');
-					}
+					echo we_html_element::jsElement($_objFields . 'top.content.populateWorkspaces("values","' . $_prefix . '");' . $js);
+				} else // if the class has no workspaces
+				if(we_navigation_dynList::getWorkspaceFlag($this->Model->LinkID)){
+					echo we_html_element::jsElement($_objFields . 'top.content.populateWorkspaces("workspace","' . $_prefix . '");');
+				} else {
+					echo we_html_element::jsElement($_objFields . 'top.content.populateWorkspaces("noWorkspace","' . $_prefix . '");');
 				}
 				break;
 			case 'populateText':

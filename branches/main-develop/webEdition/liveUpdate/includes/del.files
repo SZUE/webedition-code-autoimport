@@ -377,6 +377,7 @@ we/include/we_modules/object/we_editor_info_objectFile.inc.php
 we/include/we_modules/object/we_editor_info_object.inc.php
 we/include/we_modules/object/we_editor_contentobjectFile.inc.php
 we/include/we_modules/object/we_class_folder.inc.php
+we/include/we_modules/object/we_classFolder_properties.inc.php
 we/include/we_modules/newsletter/we_webEditionCmd_newsletter.inc.php
 we/include/we_modules/newsletter/we_newsletter_treeLoader.class.php
 we/include/we_modules/newsletter/we_newsletterDirSelector.php
@@ -542,6 +543,7 @@ we/include/we_logging/versions/versionsLog.class.php
 we/include/we_logging/versions
 we/include/we_logging/logging.class.php
 we/include/we_logging
+we/include/we_loadInfo.inc.php
 we/include/we_live_tools.inc.php
 we/include/we_linklist.inc.php
 we/include/we_language/Spanish_UTF-8/wysiwyg_js.inc.php
@@ -2244,6 +2246,7 @@ we/include/we_classes/modules/weModuleView.class.php
 we/include/we_classes/modules/weModuleTree.class.php
 we/include/we_classes/modules/weModuleFrames.php
 we/include/we_classes/modules/weModelBase.php
+we/include/we_classes/main/we_main_header.class.php
 we/include/we_classes/listview/we_search_listview.class.php
 we/include/we_classes/listview/we_listview.class.php
 we/include/we_classes/listview/we_catListview.class.php
@@ -2283,7 +2286,6 @@ we/include/we_classes/html/we_baseCollection.inc.php
 we/include/we_classes/helpers/we_xhtmlConverter.inc.php
 we/include/we_classes/helpers/we_helpers_lessc.class.php
 we/include/we_classes/helpers/we_errorHandling.inc.php
-we/include/we_classes/helpers
 we/include/we_classes/fileupload/we_fileupload_uploader_include.class.php
 we/include/we_classes/fileupload/we_fileupload_uploader_importfile.class.php
 we/include/we_classes/fileupload/we_fileupload_uploader_base.class.php
@@ -2641,6 +2643,8 @@ js/libs/yui/animation-min.js
 js/libs/yui
 js/libs/we/weValidate.js
 js/libs/we
+js/leWizard/leWizardForm.js
+js/leWizard
 js/layers/layersNS6.js
 js/layers/layersNS.js
 js/layers/layersIE.js
@@ -3272,6 +3276,7 @@ images/balken_u.gif
 images/balken_bg_v.gif
 images/balken_bg.gif
 images/balken.gif
+images/backgrounds/sidebarBackground.gif
 images/backgrounds/radient.gif
 images/backgrounds/multitabBG.gif
 images/backgrounds/iconbarBack.gif
@@ -4256,7 +4261,6 @@ editors/content/tinymce/jscripts/tiny_mce
 editors/content/tinymce/jscripts
 editors/content/tinymce/changelog.txt
 editors/content/tinymce
-editors/content/eplugin/initPlugin.html
 editors/content/eplugin/gal
 editor/setHot.html
 editor/initEditor.html
@@ -4266,10 +4270,14 @@ editor/editor.jar
 editor
 css/wysiwyg/tinymce/contentCssLast.php
 css/we_tab_modules.css
+css/multiEditor/multiEditor.css
+css/multiEditor
 css/mozillamenu.php
 css/menu/pro_drop_safari.css
+css/menu/pro_drop_mac.css
 css/menu/clickMenu_IE8.js
 css/menu/clickMenu.js
+css/global.php
 css/first_steps_wizard.css.php
 cms/views/scripts/index/index.phtml
 cms/views/scripts/index/index.php

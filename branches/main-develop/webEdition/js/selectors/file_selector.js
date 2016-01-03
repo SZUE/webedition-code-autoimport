@@ -173,11 +173,11 @@ function addEntry(id, txt, folder, pth, ct) {
 }
 
 function writeBody(d) {
-	var body = '<table>';
+	var body = '<table class="selector">';
 	for (i = 0; i < entries.length; i++) {
-		var onclick = ' onclick="weonclick(event);tout=setTimeout(function(){if(!top.wasdblclick){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=false;}},300);return true;"';
-		var ondblclick = ' onDblClick="top.wasdblclick=true;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
-		body += '<tr' + ((entries[i].ID == top.currentID) ? ' style="background-color:#DFE9F5;cursor:pointer;"' : '') + ' id="line_' + entries[i].ID + '" style="cursor:pointer;"' + onclick + (entries[i].isFolder ? ondblclick : '') + ' >' +
+		var onclick = ' onclick="return selectorOnClick(event,' + entries[i].ID + ');"';
+		var ondblclick = ' onDblClick="return selectorOnDblClick(' + entries[i].ID + ');"';
+		body += '<tr' + ((entries[i].ID == top.currentID) ? ' style="background-color:#DFE9F5;"' : '') + ' id="line_' + entries[i].ID + '"' + onclick + (entries[i].isFolder ? ondblclick : '') + ' >' +
 						'<td class="selector selectoricon">' + WE().util.getTreeIcon(entries[i].contentType, false) + '</td>' +
 						'<td class="selector filename"  title="' + entries[i].text + '"><div class="cutText">' + entries[i].text + '</div></td>' +
 						'</tr>';
@@ -245,8 +245,8 @@ function unselectAllFiles() {
 		}
 	}
 	top.document.getElementsByName("fname")[0].value = "";
+	top.disableDelBut();
 }
-
 
 function queryString(what, id, o) {
 	if (!o) {
@@ -431,4 +431,23 @@ function we_cmd() {
 //	var url = WE().util.getWe_cmdArgsUrl(args);
 
 	opener.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+}
+
+function selectorOnClick(event, id) {
+	weonclick(event);
+	tout = setTimeout(function () {
+		if (!top.wasdblclick) {
+			top.doClick(id, 0);
+		} else {
+			top.wasdblclick = false;
+		}
+	}, 300);
+	return true;
+}
+
+function selectorOnDblClick(id) {
+	top.wasdblclick = true;
+	clearTimeout(tout);
+	top.doClick(id, 1);
+	return true;
 }

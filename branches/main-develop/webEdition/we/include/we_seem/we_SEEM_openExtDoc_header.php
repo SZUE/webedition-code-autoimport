@@ -35,7 +35,7 @@ $_errormsg = (strpos($url, $_webEditionSiteUrl) === 0 ?
 
 $_table = new we_html_table(array('class' => 'default withSpace', 'style' => 'margin:5px 0 20px 0'), 1, 2);
 $_table->setColContent(0, 1, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif", "width" => 25, "height" => 27)));
-$_table->setCol(0, 1, array("class" => "middlefontred", 'style' => 'padding-left:9px;'), $_errormsg);
+$_table->setCol(0, 1, array("class" => "middlefont highlightElementChanged", 'style' => 'padding-left:9px;'), $_errormsg);
 
 
 echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, we_html_element::htmlBody(array("id" => 'eHeaderBody',), $_table->getHtml())

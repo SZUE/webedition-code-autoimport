@@ -24,7 +24,7 @@
 //
 // ---> Menu File / Glossary
 //
-$we_menu_glossary = array(
+return array(
 	'glossary' => array(
 		'text' => g_l('modules_glossary', '[glossary]'),
 	),
@@ -32,11 +32,11 @@ $we_menu_glossary = array(
 		'text' => g_l('modules_glossary', '[menu_new]'),
 		'parent' => 'glossary',
 	),
-	$we_menu_glossary['005000'] = array(
-	'text' => g_l('modules_glossary', '[menu_save]'),
-	'parent' => 'glossary',
-	'cmd' => 'save_glossary',
-	'perm' => 'EDIT_GLOSSARY || NEW_GLOSSARY || ADMINISTRATOR',
+	array(
+		'text' => g_l('modules_glossary', '[menu_save]'),
+		'parent' => 'glossary',
+		'cmd' => 'save_glossary',
+		'perm' => 'EDIT_GLOSSARY || NEW_GLOSSARY || ADMINISTRATOR',
 	),
 	array(
 		'text' => g_l('modules_glossary', '[menu_delete]'),
@@ -81,12 +81,10 @@ $we_menu_glossary = array(
 		'cmd' => 'info_modules',
 	)
 );
-$nr = 3000;
+
 $langs = getWeFrontendLanguagesForBackend();
 foreach($langs as $key => $language){
-	$parent = $nr;
-
-	$we_menu_glossary[$nr] = array(
+	$we_menu_glossary[$language] = array(
 		'text' => $language,
 		'parent' => 'new',
 		'perm' => 'NEW_GLOSSARY || ADMINISTRATOR',
@@ -94,37 +92,38 @@ foreach($langs as $key => $language){
 
 	$we_menu_glossary[] = array(
 		'text' => g_l('modules_glossary', '[abbreviation]'),
-		'parent' => $parent,
+		'parent' => $language,
 		'cmd' => 'GlossaryXYZnew_glossary_abbreviationXYZ$key',
 		'perm' => 'NEW_GLOSSARY || ADMINISTRATOR',
 	);
 
 	$we_menu_glossary[] = array(
 		'text' => g_l('modules_glossary', '[acronym]'),
-		'parent' => $parent,
+		'parent' => $language,
 		'cmd' => 'GlossaryXYZnew_glossary_acronymXYZ$key',
 		'perm' => 'NEW_GLOSSARY || ADMINISTRATOR',
 	);
 
 	$we_menu_glossary[] = array(
 		'text' => g_l('modules_glossary', '[foreignword]'),
-		'parent' => $parent,
+		'parent' => $language,
 		'cmd' => 'GlossaryXYZnew_glossary_foreignwordXYZ$key',
 		'perm' => 'NEW_GLOSSARY || ADMINISTRATOR',
 	);
 
 	$we_menu_glossary[] = array(
 		'text' => g_l('modules_glossary', '[link]'),
-		'parent' => $parent,
+		'parent' => $language,
 		'cmd' => 'GlossaryXYZnew_glossary_linkXYZ$key',
 		'perm' => 'NEW_GLOSSARY || ADMINISTRATOR',
 	);
 
 	$we_menu_glossary[] = array(
 		'text' => g_l('modules_glossary', '[textreplacement]'),
-		'parent' => $parent,
+		'parent' => $language,
 		'cmd' => 'GlossaryXYZnew_glossary_textreplacementXYZ$key',
 		'perm' => 'NEW_GLOSSARY || ADMINISTRATOR',
 	);
-	$nr = $parent + 10;
 }
+
+return $we_menu_glossary;

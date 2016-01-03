@@ -1,0 +1,226 @@
+/* ================================================================
+This copyright notice must be kept untouched in the stylesheet at
+all times.
+
+The original version of this stylesheet and the associated (x)html
+is available at http://www.stunicholls.com/menu/pro_drop_1.html
+Copyright (c) 2005-2007 Stu Nicholls. All rights reserved.
+This stylesheet and the associated (x)html may be modified in any
+way to fit your requirements.
+=================================================================== */
+
+@import "../config.scss";
+.menuDiv {
+	@if($useOldStyle){
+		background-color: #efefef;
+		background: linear-gradient(#f7f7f6,#e6e6e6);
+	}
+	margin: 0px;
+	border-bottom: 1px solid black;
+}
+
+#nav {
+	padding: 0px;
+	margin: 0px;
+	list-style: none;
+	height: $menuHeight;
+	position: relative;
+	z-index: 500;
+	font-size: $medfont;
+
+	li.top{
+		display: block;
+		float: left;
+		height: $menuHeight;
+		@if($useOldStyle){
+		}@else{
+			border-right: 1px solid #3B6598;
+		}
+
+		div{
+			position: relative;
+			//top: 5px;
+			border: none;
+			a.top_link {
+				display: block;
+				float: left;
+				//height: $menuHeight;
+				//line-height: 22px;
+				color: inherit;
+				text-decoration: none;
+				font-family: $weFontBold;
+				cursor: pointer;
+				background: none;
+				padding: 0px 18px;
+				height: 16px;
+				span {
+					/*float: left;
+					display: block;*/
+					color:inherit;
+				}
+			}
+		}
+		div.click{
+			&:hover {
+				@if($useOldStyle){
+					border-top: solid 1px #808080;
+					border-left: solid 1px #808080;
+					border-right: solid 1px #ffffff;
+				}
+			}
+			position: relative;
+			z-index: 200;
+		}
+	}
+
+	li.top:hover {
+		position: relative;
+		z-index: 200;
+		div {
+			@if($useOldStyle){
+				border-top: solid 1px #ffffff;
+				border-right: solid 1px #808080;
+				border-bottom: solid 1px #808080;
+				border-left: solid 1px #ffffff;
+				background: #3399ff;
+			}@else{
+				background: linear-gradient(#345881, #284A70);
+			}
+			height: $menuHeight;
+			//top: 4px;
+			color: #ffffff;
+			a.top_link {
+				color: #ffffff;
+			}
+		}
+	}
+
+
+
+	/* Default list styling */
+
+	/* keep the 'next' level invisible by placing it off screen. */
+	ul,
+	li div.click ul,
+	li div.click:hover ul ul,
+		li div.click:hover ul li:hover ul ul,
+		li div.click:hover ul li:hover ul li:hover ul ul,
+		li div.click:hover ul li:hover ul li:hover ul li:hover ul ul{
+		position: absolute;
+		left: -9999px;
+		top: -9999px;
+		width: 0px;
+		height: 0px;
+		margin: 0px;
+		padding: 0px;
+		list-style: none;
+		z-index: 300;
+	}
+
+	li{
+		div.click:hover{
+			ul{
+				left: -1px;
+				top: 22px;
+				background: #f0f0f0;
+				border: 1px solid #a0a0a0;
+				word-wrap: break-word;
+				width: 16em;
+				height: auto;
+				z-index: 300;
+				margin-top: 0;
+				padding: 0 2px 4px 2px;
+				border-radius: 5px;
+				border-top-left-radius: 0;
+				box-shadow: 3px 3px 10px #bbbbbb;
+				li:hover ul,
+					li:hover ul li:hover ul,
+					li:hover ul li:hover ul li:hover ul,
+					li:hover ul li:hover ul li:hover ul li:hover ul{
+					left: 14.2em;
+					top: -1px;
+					background: #f0f0f0;
+					border: 1px solid #a0a0a0;
+					word-wrap: break-word;
+					width: 14.5em;
+					z-index: 400;
+					height: auto;
+					padding: 0px 2px 5px 2px;
+					border-radius: 5px;
+					box-shadow: 3px 3px 10px #bbbbbb;
+				}
+				li:hover ul{
+					left: 15.7em;
+				}
+			}
+
+			ul.sub li{
+				display: block;
+				position: relative;
+				float: left;
+				width: 16em;
+				font-family: $weFont;
+				color:black;
+				&:hover {
+					background: #3399ff;
+					color: #ffffff;
+				}
+				a{
+					display: block;
+					padding: 1px 0px 1px 1.5em;
+					line-height: 2.5ex;
+					text-indent: -1em;
+					margin: 2px 10px 0px 0px;
+					color: inherit;
+					text-decoration: none;
+				}
+				ul li{
+					display: block;
+					position: relative;
+					float: left;
+					width: 14.5em;
+					font-family: $weFont;
+				}
+			}
+		}
+
+		ul.sub li a.fly {
+			background: #f0f0f0;
+		}
+		div.click ul li:hover > a.fly {
+			background: #3399ff;
+			color: #ffffff;
+		}
+
+		&.disabled{
+			height: 0px;
+			line-height: 0px;
+			padding: 0;
+			border-top: 1px solid #a0a0a0;
+			border-bottom: 1px solid #ffffff;
+			margin: 2px 0px 0px 0px;
+		}
+	}
+
+	ul ul ul {
+		width: 350px !important;
+		max-height: 400px;
+		overflow: auto !important;
+		font-size: $medfont;
+		li {
+			white-space: nowrap;
+			clear: both;
+			width: 100% !important;
+			&:hover,
+				li a:hover {
+				display: block;
+				white-space: nowrap;
+			}
+		}
+	}
+
+	i.fa{
+		position:absolute;
+		right:0px;
+	}
+}

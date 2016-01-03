@@ -28,39 +28,27 @@ class we_shop_tree extends weTree{
 		return we_html_element::jsScript(JS_DIR . 'shop_tree.js');
 	}
 
-	function getJSStartTree(){
-		return '
-function startTree(){
-			frames={
-	"top":' . $this->topFrame . ',
-	"cmd":' . $this->cmdFrame . '
-	};
-	treeData.frames=frames;
-	frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=cmd&pid=0";
-}';
-	}
-
 	function getJSTreeCode(){
 		$ret = we_html_element::cssLink(CSS_DIR . 'tree.css') .
-			we_html_element::jsElement('
+				we_html_element::jsElement('
 var table="' . SHOP_TABLE . '";
 WE().consts.g_l.shop.tree={
 	treeYearClick:"' . g_l('modules_shop', '[treeYearClick]') . '",
 	treeYear:"' . g_l('modules_shop', '[treeYear]') . '"
 };
 ') .
-			we_html_element::jsScript(JS_DIR . 'tree.js', 'self.focus();') .
-			we_html_element::jsScript(JS_DIR . 'shop_tree.js');
+				we_html_element::jsScript(JS_DIR . 'tree.js', 'self.focus();') .
+				we_html_element::jsScript(JS_DIR . 'shop_tree.js');
 		$menu = '
 function loadData() {
 	treeData.clear();
 	treeData.add(node.prototype.rootEntry(0, "root", "root"));';
 
 
-		$this->db->query("SELECT IntOrderID,DateShipping,DateConfirmation,DateCustomA,DateCustomB,DateCustomC,DateCustomD,DateCustomE,DatePayment,DateCustomF,DateCustomG,DateCancellation,DateCustomH,DateCustomI,DatecustomJ,DateFinished, DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') as orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM " . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC');
+		$this->db->query("SELECT IntOrderID,DateShipping,DateConfirmation,DateCustomA,DateCustomB,DateCustomC,DateCustomD,DateCustomE,DatePayment,DateCustomF,DateCustomG,DateCancellation,DateCustomH,DateCustomI,DatecustomJ,DateFinished, DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysql]') . "') AS orddate, DATE_FORMAT(DateOrder,'%c%Y') AS mdate FROM " . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC');
 		while($this->db->next_record()){
 //added for #6786
-			$style = 'color:black;font-weight:bold;';
+			$style = 'color:black;font:liberation_sansbold;';
 
 			if($this->db->f('DateCustomA') != '' || $this->db->f('DateCustomB') != '' || $this->db->f('DateCustomC') != '' || $this->db->f('DateCustomD') != '' || $this->db->f('DateCustomE') != '' || $this->db->f('DateCustomF') != '' || $this->db->f('DateCustomG') != '' || $this->db->f('DateCustomH') != '' || $this->db->f('DateCustomI') != '' || $this->db->f('DateCustomJ') != '' || $this->db->f('DateConfirmation') != '' || ($this->db->f('DateShipping') != '0000-00-00 00:00:00' && $this->db->f('DateShipping') != '')){
 				$style = 'color:red;';
@@ -74,9 +62,9 @@ function loadData() {
 				$style = 'color:black;';
 			}
 			$menu.= "  treeData.add({
-	id:'" . $this->db->f("IntOrderID") . "',
-	parentid:" . $this->db->f("mdate") . ",
-	text:'" . $this->db->f("IntOrderID") . ". " . g_l('modules_shop', '[bestellung]') . " " . $this->db->f("orddate") . "',
+	id:'" . $this->db->f('IntOrderID') . "',
+	parentid:" . $this->db->f('mdate') . ",
+	text:'" . $this->db->f('IntOrderID') . ', ' . ' ' . $this->db->f('orddate') . "',
 	typ:'shop',
 	checked:false,
 	contentType:'shop',
@@ -122,7 +110,7 @@ function loadData() {
 		}
 		$menu.='top.yearshop = ' . $year . ';
 			}';
-		return parent::getJSTreeCode().$ret . we_html_element::jsElement($menu);
+		return parent::getJSTreeCode() . $ret . we_html_element::jsElement($menu);
 	}
 
 }

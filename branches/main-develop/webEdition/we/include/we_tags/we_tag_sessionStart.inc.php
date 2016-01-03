@@ -64,7 +64,7 @@ function we_tag_sessionStart($attribs){
 		$persistentlogins = weTag_getAttribute('persistentlogins', $attribs, false, we_base_request::BOOL);
 		if(!$_SESSION['webuser']['registered'] && isset($_REQUEST['s']['Username']) && isset($_REQUEST['s']['Password']) && !(isset($_REQUEST['s']['ID'])) && !isset($_REQUEST['s']['Password2'])//if set, we assume it is a password reset or use of an forgotten password routine, so we don't try to do an login
 		){
-			$GLOBALS['DB_WE']->query('DELETE FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND LoginDate < DATE_SUB(NOW(), INTERVAL ' . we_base_constants::LOGIN_FAILED_HOLDTIME . ' DAY)');
+			$GLOBALS['DB_WE']->query('DELETE FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND LoginDate<(NOW() - INTERVAL ' . we_base_constants::LOGIN_FAILED_HOLDTIME . ' DAY)');
 			$hook = new weHook('customer_preLogin', '', array('customer' => &$_REQUEST['s'], 'type' => 'normal', 'tagname' => 'sessionStart'));
 			$hook->executeHook();
 
@@ -96,7 +96,7 @@ function we_tag_sessionStart($attribs){
 	}
 
 	if(!empty($_SESSION['webuser']['registered']) && weTag_getAttribute('onlinemonitor', $attribs, false, we_base_request::BOOL)){
-		$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_SESSION_TABLE . ' WHERE LastAccess<DATE_SUB(NOW(), INTERVAL 1 HOUR)');
+		$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_SESSION_TABLE . ' WHERE LastAccess<(NOW() - INTERVAL 1 HOUR)');
 		$monitorgroupfield = weTag_getAttribute('monitorgroupfield', $attribs, '', we_base_request::STRING);
 		$doc = we_getDocForTag(weTag_getAttribute('monitordoc', $attribs, '', we_base_request::STRING), false);
 
@@ -142,8 +142,8 @@ function wetagsessionHandleFailedLogin(){
 
 
 	if(
-			intval(f('SELECT COUNT(1)  FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '" AND isValid="true" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour)')) >= intval(SECURITY_LIMIT_CUSTOMER_NAME) ||
-			intval(f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND IP="' . $_SERVER['REMOTE_ADDR'] . '" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_IP_HOURS) . ' hour)')) >= intval(SECURITY_LIMIT_CUSTOMER_IP)
+			intval(f('SELECT COUNT(1)  FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '" AND isValid="true" AND LoginDate >(NOW() - INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour)')) >= intval(SECURITY_LIMIT_CUSTOMER_NAME) ||
+			intval(f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND IP="' . $_SERVER['REMOTE_ADDR'] . '" AND LoginDate >(NOW() - INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_IP_HOURS) . ' hour)')) >= intval(SECURITY_LIMIT_CUSTOMER_IP)
 	){
 		//don't serve user
 		if(SECURITY_LIMIT_CUSTOMER_REDIRECT){
@@ -165,8 +165,8 @@ function wetagsessionHandleFailedLogin(){
 
 function wetagsessionStartCheckDenied(){
 	if(
-			intval(f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '" AND isValid="true" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour)')) >= intval(SECURITY_LIMIT_CUSTOMER_NAME) ||
-			intval(f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND IP="' . $_SERVER['REMOTE_ADDR'] . '" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_IP_HOURS) . ' hour)')) >= intval(SECURITY_LIMIT_CUSTOMER_IP)
+			intval(f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '" AND isValid="true" AND LoginDate>(NOW() - INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour)')) >= intval(SECURITY_LIMIT_CUSTOMER_NAME) ||
+			intval(f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND IP="' . $_SERVER['REMOTE_ADDR'] . '" AND LoginDate>(NOW() - INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_IP_HOURS) . ' hour)')) >= intval(SECURITY_LIMIT_CUSTOMER_IP)
 	){
 		$GLOBALS['WE_LOGIN_DENIED'] = true;
 		return true;

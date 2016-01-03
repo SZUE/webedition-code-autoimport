@@ -40,7 +40,7 @@ class we_class_folder extends we_folder{
 		$this->IsClassFolder = 1;
 		array_push($this->persistent_slots, 'searchclass', 'TriggerID', 'TableID');
 		if(isWE()){
-			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_CFWORKSPACE, we_base_constants::WE_EDITPAGE_FIELDS, we_base_constants::WE_EDITPAGE_INFO);
+			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_FIELDS, we_base_constants::WE_EDITPAGE_INFO);
 		}
 		$this->ContentType = we_base_ContentTypes::FOLDER;
 	}
@@ -157,8 +157,8 @@ class we_class_folder extends we_folder{
 				return 'we_editors/we_editor_properties.inc.php';
 			case we_base_constants::WE_EDITPAGE_INFO:
 				return 'we_editors/we_editor_info.inc.php';
-			case we_base_constants::WE_EDITPAGE_CFWORKSPACE:
-				return 'we_modules/object/we_classFolder_properties.inc.php';
+/*			case we_base_constants::WE_EDITPAGE_CFWORKSPACE:
+				return 'we_modules/object/we_classFolder_properties.inc.php';*/
 			case we_base_constants::WE_EDITPAGE_FIELDS:
 				return 'we_modules/object/we_classFolder_fields.inc.php';
 			case we_base_constants::WE_EDITPAGE_WEBUSER:
@@ -617,11 +617,11 @@ class we_class_folder extends we_folder{
 ' . we_class::hiddenTrans() . '
 <table class="default" style="margin-bottom:20px;">
 	<tr>
-		<td class="defaultgray" style="margin-bottom:12px;">' . g_l('modules_objectClassfoldersearch', '[Verzeichnis]') . '</td>
+		<td class="defaultfont lowContrast" style="margin-bottom:12px;">' . g_l('modules_objectClassfoldersearch', '[Verzeichnis]') . '</td>
 		<td colspan="3">' . $this->formDirChooser(388, 0, FILE_TABLE, "WorkspacePath", "WorkspaceID", "opener.we_cmd('reload_editpage');", false) . '</td>
 	</tr>
 	<tr>
-		<td class="defaultgray" style="width:128px;">' . g_l('modules_objectClassfoldersearch', '[Ansicht]') . '</td>
+		<td class="defaultfont lowContrast" style="width:128px;">' . g_l('modules_objectClassfoldersearch', '[Ansicht]') . '</td>
 		<td style="width:40px;">' . we_html_tools::htmlSelect("Anzahl", $values, 1, $this->searchclass->anzahl, "", array('onchange' => 'this.form.elements.SearchStart.value=0;we_cmd(\'reload_editpage\');')) .
 				we_html_tools::hidden("Order", $this->searchclass->Order) .
 				we_html_tools::hidden("do", "") .
@@ -632,7 +632,7 @@ class we_class_folder extends we_folder{
 	</table>
 	<table class="default" style="margin-bottom:12px;">
 	<tr>
-		<td class="defaultgray" style="width:200px">' . (isset($this->searchclass->searchname) ? g_l('modules_objectClassfoldersearch', '[teilsuche]') : '') . '</td>
+		<td class="defaultfont lowContrast" style="width:200px">' . (isset($this->searchclass->searchname) ? g_l('modules_objectClassfoldersearch', '[teilsuche]') : '') . '</td>
 		<td style="text-align:right">' . $this->searchclass->getNextPrev($foundItems) . '</td>
 	</tr>
 	</table>' .

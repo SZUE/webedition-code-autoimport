@@ -71,7 +71,7 @@ if($_csv){
 	if($_query && $DB_WE->query($_query)){
 		$mdc .= '<table class="default">';
 		while($DB_WE->next_record()){
-			$mdc .= '<tr><td class="mdcIcon" nowrap data-contenttype="' . $DB_WE->f('ContentType') . '"></td><td style="vertical-align:middle" class="middlefont">' . we_html_element::htmlA(
+			$mdc .= '<tr><td class="mdcIcon" data-contenttype="' . $DB_WE->f('ContentType') . '"></td><td style="vertical-align:middle" class="middlefont">' . we_html_element::htmlA(
 					array(
 					"href" => 'javascript:WE().layout.weEditorFrameController.openDocument(\'' . $_table . '\',\'' . $DB_WE->f('ID') . '\',\'' . $DB_WE->f('ContentType') . '\');',
 					"title" => $DB_WE->f("Path"),

@@ -54,10 +54,7 @@ abstract class we_import_wizardBase{
 					we_html_element::htmlIFrame('wizcmd', $this->path . "&pnt=wizcmd", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 		));
 
-		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
-				we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
-				we_html_element::jsScript(LIB_DIR . 'additional/yui/json-min.js') .
-				we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
+		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', YAHOO_FILES .
 				we_html_element::jsElement("
 var tables = {
 	OBJECT_TABLE: '" . (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE') . "'
@@ -88,10 +85,9 @@ var path='" . $this->path . "';") .
 			$_step = 'get' . $type . 'Step' . $step;
 			list($js, $content) = $this->$_step();
 			$doOnLoad = !we_base_request::_(we_base_request::BOOL, 'noload');
-			return we_html_tools::getHtmlTop('', '', '',
-						STYLESHEET .
-						($this->fileUploader ? $this->fileUploader->getCss() . $this->fileUploader->getJs() : '') .
-						we_html_element::jsElement($js), we_html_element::htmlBody(array(
+			return we_html_tools::getHtmlTop('', '', '', STYLESHEET .
+					($this->fileUploader ? $this->fileUploader->getCss() . $this->fileUploader->getJs() : '') .
+					we_html_element::jsElement($js), we_html_element::htmlBody(array(
 						"class" => "weDialogBody",
 						"onload" => $doOnLoad ? "parent.wiz_next('wizbusy', '" . $this->path . "&pnt=wizbusy&mode=" . $mode . "&type=" . (we_base_request::_(we_base_request::RAW, 'type', '')) . "'); self.focus();" : "if(set_button_state) set_button_state();"
 						), we_html_element::htmlForm($a, we_html_element::htmlHiddens(array(
@@ -656,7 +652,7 @@ if(progress!==undefined){
 		progress.style.display = 'none';
 	}
 }" .
-					($v['type'] == we_import_functions::TYPE_WE_XML ?						"
+					($v['type'] == we_import_functions::TYPE_WE_XML ? "
 if (top.wizbody && top.wizbody.addLog) {
 	top.wizbody.addLog(\"" . addslashes(we_html_element::htmlB(g_l('import', '[end_import]') . " - " . date("d.m.Y H:i:s"))) . "\");
 }" :

@@ -50,7 +50,7 @@ class we_users_online{
 			'seagreen'
 		); //FIXME:add usefull colors
 		$i = -1;
-		$DB_WE->query('SELECT ID,username,TRIM(CONCAT(First," ",Second)) AS User FROM ' . USER_TABLE . ' WHERE Ping>(DATE_SUB(NOW(),INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND )) ORDER BY Ping DESC');
+		$DB_WE->query('SELECT ID,username,TRIM(CONCAT(First," ",Second)) AS User FROM ' . USER_TABLE . ' WHERE Ping>((NOW()-INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND )) ORDER BY Ping DESC');
 		$colorCount = count($colors);
 		while($DB_WE->next_record()){
 			$this->num_uo++;

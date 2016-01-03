@@ -92,7 +92,7 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 		$progress = new we_progressBar(0, true);
 		$progress->setStudLen(200);
 		$progress->setName('_fileupload');
-		$divProgressbar = we_html_element::htmlDiv(array('id' => 'div_fileupload_progressBar', 'style' => 'display:none;'), $progress->getHTML());
+		$divProgressbar = we_html_element::htmlDiv(array('id' => 'div_fileupload_progressBar', 'style' => 'display:none;'), $progress->getHTML('', 'font-size:11px;'));
 		$divButtons = we_html_element::htmlDiv(array('id' => 'div_fileupload_buttons', 'style' => 'width:400px'),
 			$this->getDivBtnInputReset($this->dimensions['inputWidth'] - 4)
 		);

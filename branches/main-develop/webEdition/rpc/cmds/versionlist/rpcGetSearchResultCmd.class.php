@@ -28,14 +28,18 @@ class rpcGetSearchResultCmd extends rpcCmd{
 
 		$resp = new rpcResponse();
 
-		$anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'anzahl');
-		$searchstart = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'searchstart');
+		if(($trans = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0))){
+			$we_dt = isset($_SESSION['weS']['we_data'][$trans]) ? $_SESSION['weS']['we_data'][$trans] : '';
+		}
+		$class = $we_dt[0]['ClassName']; //we_base_request::_(we_base_request::STRING, 'classname');
+		$_document = new $class;
+		$_document->we_initSessDat($we_dt);
+
+		$versionsView = new we_versions_view($_document->versionsModel);
 
 		$GLOBALS['we_cmd_obj'] = 1;
-		$view = new we_versions_view();
-		$content = $view->getVersionsOfDoc();
-		$sview = new we_search_view();
-		$code = $sview->tabListContent($searchstart, $anzahl, $content);
+		$content = $versionsView->getVersionsOfDoc();
+		$code = $versionsView->tabListContent($content);
 
 		$resp->setData("data", $code);
 

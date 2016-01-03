@@ -26,12 +26,7 @@ class weMainTree extends weTree{
 
 	function getJSStartTree(){
 		return '
-we_scrollY["' . FILE_TABLE . '"] = 0;
-we_scrollY["' . TEMPLATES_TABLE . '"] = 0;' .
-			(defined('OBJECT_TABLE') ? '
-we_scrollY["' . OBJECT_TABLE . '"] = 0;
-we_scrollY["' . OBJECT_FILES_TABLE . '"] = 0;' :
-				'') . '
+var we_scrollY={};
 treeData.table="' . FILE_TABLE . '";';
 	}
 

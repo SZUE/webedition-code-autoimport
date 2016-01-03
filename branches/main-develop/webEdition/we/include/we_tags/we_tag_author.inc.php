@@ -31,7 +31,7 @@ function we_tag_author($attribs){
 
 	switch($docAttr){
 		case 'listview' :
-			$authorID = '';
+			$authorID = 0;
 			switch(get_class($GLOBALS['lv'])){
 				case 'we_object_tag'://we:object
 				case 'we_object_listview'://listview type=object
@@ -63,7 +63,7 @@ function we_tag_author($attribs){
 			break;
 	}
 
-	$foo = getHash('SELECT Username,First,Second,Address,HouseNo,City,PLZ,State,Country,Tel_preselection,Telephone,Fax_preselection,Fax,Handy,Email,Description,Salutation FROM ' . USER_TABLE . ' WHERE ID=' . intval($authorID));
+	$foo = $authorID ? getHash('SELECT Username,First,Second,Address,HouseNo,City,PLZ,State,Country,Tel_preselection,Telephone,Fax_preselection,Fax,Handy,Email,Description,Salutation FROM ' . USER_TABLE . ' WHERE ID=' . intval($authorID)) : 0;
 	if(!$foo){
 		return '';
 	}

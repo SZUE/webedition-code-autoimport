@@ -1,0 +1,283 @@
+/**
+ * webEdition CMS
+ *
+ * webEdition CMS
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
+ * This source is part of webEdition CMS. webEdition CMS is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionCMS/License.txt
+ *
+ * @category   webEdition
+ * @package    webEdition_base
+ * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ */
+@import "config.scss";
+body.selectorBody{
+	background-color: white;
+	margin: 0px;
+	height:100%;
+	width:100%;
+}
+
+body.selector a,
+body.selector a:visited,
+body.selector a:active
+body.selectorBody a,
+body.selectorBody a:visited,
+body.selectorBody a:active
+{
+	color: #000000;
+}
+
+table.selector{
+	border-spacing: 0px;
+	tr{
+		cursor:pointer;
+	}
+}
+
+img.icon{
+	max-width:4em;
+	max-height:3em;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+div{
+	.imgDiv{
+		float: left;
+		width: 4em;
+		height:4em;
+		margin: 5px;
+		text-align: center;
+		cursor: pointer;
+		position: relative;
+	}
+	&.imgText{
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+		width:100%;
+		text-align:center;
+		position: absolute;
+		bottom: 0px;
+	}
+	&.selected{
+		background-color:#DFE9F5;
+		border: 1px solid grey;
+	}
+
+	&.cutText{
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+		display:inline-block;
+		max-width:150px;
+	}
+
+	&.extension{
+		display:inline-block;
+		width:50px;
+		overflow:hidden;
+	}
+}
+
+th.selector{
+	text-align: left;
+	font-family: $weFontBold;
+}
+
+.treeIcon{
+	padding-right: 3px;
+	padding-left: 3px;
+}
+
+.selectoricon{
+	width:25px;
+	text-align: center;
+}
+
+.filename,
+.filesize{
+	min-width:200px;
+}
+
+.filetype{
+	min-width:150px;
+}
+
+.directory{
+	min-width:300px;
+}
+
+.title{
+	min-width:220px;
+}
+
+td.title div.cutText{
+	max-width:220px;
+}
+
+.moddate{
+	min-width:150px;
+}
+/*fill the rest*/
+.remain{
+	width:100%;
+}
+
+tr.WEFile td{
+	color:#006699 !important;
+}
+
+#fsheader{
+	position: fixed;
+	top:0px;
+	left: 0px;
+	right:0px;
+	height:67px;
+
+	&.object{
+		height:16px;
+	}
+}
+
+#fsbodyDiv{
+	position: fixed;
+	top:67px;
+	bottom:110px;
+	left:0px;
+	right:0px;
+
+	&.preview{
+		right:250px;
+	}
+	&.catproperties{
+		right:65%;
+		bottom: 108px;
+	}
+	&.object{
+		top:16px;
+	}
+}
+
+#fspreviewDiv{
+	position: fixed;
+	top:67px;
+	bottom:110px;
+	width:249px;
+	right:0px;
+	border-left:1px solid grey;
+}
+#fsvaluesDiv{
+	position: fixed;
+	top:67px;
+	bottom:65px;
+	left:35%;
+	right:0px;
+	border-left:1px solid grey;
+
+	&.catproperties{
+		bottom: 108px;
+	}
+	.object{
+		top:16px;
+	}
+}
+
+#fsfooter{
+	position: fixed;
+	height:90px;
+	left: 0px;
+	right:0px;
+	bottom:20px;
+
+	&.path{
+		bottom:20px;
+	}
+	&.filter{
+		height:90px;
+	}
+}
+
+#fspath{
+	position: fixed;
+	bottom:0px;
+	left: 0px;
+	right:0px;
+	height:20px;
+	padding-left: 1em;
+	padding-right: 1em;
+	padding-top: 0.5ex;
+}
+
+#fscmdDiv{
+	display:none;
+}
+
+table.headerLines{
+	border-top: 1px solid #808080;
+	border-bottom: 1px solid #808080;
+	border-spacing: 0px;
+	width:100%;
+	td{
+		padding:0px;
+	}
+}
+
+
+#footer{
+	border-top: 1px solid #808080;
+	border-spacing: 0px;
+	width:100%;
+	padding: 5px 10px 0px;
+
+	td{
+		padding:0px;
+		padding-bottom:5px;
+		&.description{
+			width: 70px;
+			margin-right:10px;
+			font-family: $weFontBold;
+		}
+	}
+}
+
+#footerButtons{
+	padding-right:10px;
+	position: absolute;
+	right: 0px;
+	bottom:5px;
+}
+
+table.selectorHeaderTable{
+	width:100%;
+	border-spacing: 0px;
+	padding:10px;
+	td{
+		padding:0px;
+		padding-right:10px;
+		width:40px;
+		&.lookinText{
+			width:70px;
+			font-family: $weFontBold;
+		}
+		&.lookin{
+			width:auto;
+		}
+	}
+}
+
+td.trash{
+	width:27px;
+}

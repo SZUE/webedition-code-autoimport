@@ -28,7 +28,5 @@
 
 function doClick(id) {
 	var item = top.content.treeData.get(id);
-	ct = item.contenttype;
-	table = item.table;
-	top.content.we_cmd('display_user', id, ct, table);
+	top.content.we_cmd('display_user', id, item.contenttype, item.table);
 }

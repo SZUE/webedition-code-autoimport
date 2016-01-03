@@ -25,16 +25,16 @@ $oTblCont = new we_html_table(array("id" => "m_" . $iCurrId . "_inline", "style"
 $oTblCont->setCol(0, 0, array("width" => 34, 'style' => 'vertical-align:middle;', "class" => "middlefont"), $msg_button);
 $oTblCont->setCol(0, 1, array('style' => 'vertical-align:middle;'), we_html_element::htmlA(array(
 		"href" => $msg_cmd,
-		"class" => "middlefont",
-		"style" => "font-weight:bold;text-decoration:none;"
+		"class" => "middlefont bold",
+		"style" => "text-decoration:none;"
 		), $new_messages . " (" . we_html_element::htmlSpan(array(
 			"id" => "msg_count"
 			), $newmsg_count) . ")"));
 $oTblCont->setCol(1, 0, array("width" => 34, 'style' => 'vertical-align:middle;', "class" => "middlefont"), $todo_button);
 $oTblCont->setCol(1, 1, array('style' => 'vertical-align:middle;'), we_html_element::htmlA(array(
 		"href" => $msg_cmd,
-		"class" => "middlefont",
-		"style" => "font-weight:bold;text-decoration:none;"
+		"class" => "middlefont bold",
+		"style" => "text-decoration:none;"
 		), $new_tasks . " (" . we_html_element::htmlSpan(array(
 			"id" => "task_count"
 			), $newtodo_count) . ")"));

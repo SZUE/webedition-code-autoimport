@@ -52,7 +52,7 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]')) .
 
 	function selectRecipient() {
 		var rs = encodeURI(document.compose_form.mn_recipients.value);
-		new (WE().util.jsWindow)(window, "<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_usel.php?we_transaction=<?php echo $transaction; ?>&maxsel=1&rs=" + rs, "messaging_usel", -1, -1, 530, 420, true, false, true, false);
+		new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "messaging_usel.php?we_transaction=<?php echo $transaction; ?>&maxsel=1&rs=" + rs, "messaging_usel", -1, -1, 530, 420, true, false, true, false);
 	}
 
 	function do_send() {
@@ -72,15 +72,18 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]')) .
 
 <body class="weDialogBody" <?php echo ($mode === 'reject' ? '' : 'onload="document.compose_form.mn_subject.focus()"') ?> onunload="doUnload();">
 	<?php
-	if($mode === 'forward'){
-		$compose = new we_messaging_format('forward', $messaging->selected_message);
-		$heading = g_l('modules_messaging', '[forward_todo]');
-	} else if($mode === 'reject'){
-		$compose = new we_messaging_format('reject', $messaging->selected_message);
-		$heading = g_l('modules_messaging', '[reject_todo]');
-	} else {
-		$compose = new we_messaging_format('new');
-		$heading = g_l('modules_messaging', '[new_todo]');
+	switch($mode){
+		case 'forward':
+			$compose = new we_messaging_format('forward', $messaging->selected_message);
+			$heading = g_l('modules_messaging', '[forward_todo]');
+			break;
+		case 'reject':
+			$compose = new we_messaging_format('reject', $messaging->selected_message);
+			$heading = g_l('modules_messaging', '[reject_todo]');
+			break;
+		default:
+			$compose = new we_messaging_format('new');
+			$heading = g_l('modules_messaging', '[new_todo]');
 	}
 	$compose->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 	?>
@@ -94,19 +97,19 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]')) .
 			$tbl = '
 <table cellpadding="6">
 		<tr>
-		<td class="defaultgray">
+		<td class="defaultfont lowContrast">
 			' . g_l('modules_messaging', '[from]') . ':</td>
 		<td class="defaultfont">
 			' . $compose->get_from() . '</td>
 	</tr>
 	<tr>
-		<td class="defaultgray">
+		<td class="defaultfont lowContrast">
 			' . g_l('modules_messaging', '[reject_to]') . ':</a></td>
 		<td class="defaultfont">
 			' . $compose->get_recipient_line() . '</td>
 	</tr>
 	<tr>
-		<td class="defaultgray">
+		<td class="defaultfont lowContrast">
 			' . g_l('modules_messaging', '[subject]') . ':</td>
 		<td class="defaultfont">
 			' . oldHtmlspecialchars($compose->get_subject()) . '</td>
@@ -117,31 +120,31 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]')) .
 			$tbl = '
 <table cellpadding="6">
 	<tr>
-		<td class="defaultgray">
+		<td class="defaultfont lowContrast">
 			' . g_l('modules_messaging', '[assigner]') . ':</td>
 		<td class="defaultfont">
 			' . $compose->get_from() . '</td>
 	</tr>
 	<tr>
-		<td class="defaultgray">
+		<td class="defaultfont lowContrast">
 			<a href="javascript:selectRecipient()">' . g_l('modules_messaging', '[recipient]') . ':</a></td>
 		<td>
 			' . we_html_tools::htmlTextInput('mn_recipients', 40, ($mode === 'forward' ? '' : $_SESSION["user"]["Username"])) . '</td>
 	</tr>
 	<tr>
-		<td class="defaultgray">
+		<td class="defaultfont lowContrast">
 			' . g_l('modules_messaging', '[subject]') . ':</td>
 		<td>
 			' . we_html_tools::htmlTextInput('mn_subject', 40, $compose->get_subject()) . '</td>
 	</tr>
 	<tr>
-		<td class="defaultgray">
+		<td class="defaultfont lowContrast">
 			' . g_l('modules_messaging', '[deadline]') . ':</td>
 		<td>
 			' . we_html_tools::getDateInput2('td_deadline%s', $compose->get_deadline()) . '</td>
 	</tr>
 	<tr>
-		<td class="defaultgray">' . g_l('modules_messaging', '[priority]') . ':</td>
+		<td class="defaultfont lowContrast">' . g_l('modules_messaging', '[priority]') . ':</td>
 		<td>' . we_html_tools::html_select('mn_priority', 1, array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10)) . '</td>
 	</tr>
 </table>

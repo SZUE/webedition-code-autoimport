@@ -119,13 +119,10 @@ class weSuggest{
 	static function getYuiFiles(){ //FIXME: make sure all pages include this in head-element
 		return
 			we_html_element::cssLink(CSS_DIR . 'weSuggest.css') .
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
+			YAHOO_FILES .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/dom-min.js') .
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/datasource-min.js') .
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/animation-min.js') .
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/json-min.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/autocomplete-min.js') .
 			we_html_element::jsScript(JS_DIR . 'utils/we_cmd_encode.js') .
 			we_html_element::jsScript(JS_DIR . 'weSuggest.js');
@@ -356,7 +353,7 @@ YAHOO.util.Event.addListener(this, "load", YAHOO.autocoml.init);' .
 						break;
 					case "onchange":
 						$_onchange = 1;
-						$this->inputAttribs .= $key . '="' . ($markHot ? 'if(_EditorFrame){_EditorFrame.setEditorIsHot(true);
+						$this->inputAttribs .= $key . '="' . ($markHot ? 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
 						hot = 1}' : '') . $val . '" ';
 						break;
 					case "class":
@@ -372,12 +369,12 @@ YAHOO.util.Event.addListener(this, "load", YAHOO.autocoml.init);' .
 				$this->inputAttribs .= 'class="wetextinput" ';
 			}
 			if(!isset($_onchange)){
-				$this->inputAttribs .= ' onchange="' . ($markHot ? 'if(_EditorFrame){_EditorFrame.setEditorIsHot(true);
+				$this->inputAttribs .= ' onchange="' . ($markHot ? 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
 						hot = 1};
 						' : '') . '" ';
 			}
 		} else {
-			$this->inputAttribs = 'class="wetextinput" onchange="' . ($markHot ? 'if(_EditorFrame){_EditorFrame.setEditorIsHot(true);
+			$this->inputAttribs = 'class="wetextinput" onchange="' . ($markHot ? 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
 						hot = 1;
 						}' : '') . '" ';
 		}

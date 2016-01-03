@@ -29,29 +29,15 @@ class we_users_tree extends weTree{
 	}
 
 	function getJSStartTree(){
-		$db = new DB_WE();
 		if(permissionhandler::hasPerm("NEW_USER") || permissionhandler::hasPerm("NEW_GROUP") || permissionhandler::hasPerm("SAVE_USER") || permissionhandler::hasPerm("SAVE_GROUP") || permissionhandler::hasPerm("DELETE_USER") || permissionhandler::hasPerm("DELETE_GROUP")){
-			if(permissionhandler::hasPerm("ADMINISTRATOR")){
-				$parent_path = '/';
-				$startloc = 0;
-			} else {
-				$foo = getHash('SELECT Path,ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION["user"]["ID"]), $db);
-				$parent_path = str_replace("\\", "/", dirname($foo["Path"]));
-				$startloc = $foo['ParentID'];
-			}
+			$startloc = (permissionhandler::hasPerm("ADMINISTRATOR") ?
+					0 :
+					f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION["user"]["ID"]))
+				);
 		}
 
-		return '
-function startTree(){
-	frames={
-		"top":' . $this->topFrame . ',
-		"cmd":' . $this->cmdFrame . '
-	};
-	var table="' . USER_TABLE . '";
-	treeData.frames=frames;
-	treeData.startloc=' . $startloc . ';
-	frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&pid=0";
-}';
+		return 'treeData.startloc=' . $startloc . ';' .
+			parent::getJSStartTree();
 	}
 
 	public static function getItems($ParentId, $Offset = 0, $Segment = 500){

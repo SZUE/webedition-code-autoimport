@@ -33,35 +33,8 @@ class we_users_frames extends we_modules_frame{
 		$this->View = new we_users_view($frameset, 'top.content');
 	}
 
-	function getJSCmdCode(){
-		$mod = we_base_request::_(we_base_request::STRING, 'mod', '');
-		$modData = we_base_moduleInfo::getModuleData($mod);
-		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
-
-		if(isset($_SESSION['user_session_data'])){
-			unset($_SESSION['user_session_data']);
-		}
-
-		return we_html_element::jsElement('
-var loaded=0;
-var hot=0;
-var frameset="' . $this->frameset . '";
-var g_l={
-	save_changed_user:"' . g_l('modules_users', '[save_changed_user]') . '",
-	give_org_name:"' . g_l('modules_users', '[give_org_name]') . '"
-};
-WE().consts.dirs.WE_USERS_MODULE_DIR="' . WE_USERS_MODULE_DIR . '";
-
-parent.document.title = "' . $title . '";
-var cgroup=' . ($_SESSION['user']['ID'] ? intval(f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . $_SESSION["user"]["ID"])) : 0) . ';
-') .
-			we_html_element::jsScript(JS_DIR . 'we_modules/users/users_view.js');
-	}
-
 	function getHTMLFrameset(){
-		return parent::getHTMLFrameset(
-				$this->Tree->getJSTreeCode()
-		);
+		return parent::getHTMLFrameset($this->Tree->getJSTreeCode());
 	}
 
 	protected function getHTMLCmd(){
@@ -103,22 +76,13 @@ var cgroup=' . ($_SESSION['user']['ID'] ? intval(f('SELECT ParentID FROM ' . USE
 				"cmd" => "show_search"));
 
 		$table = new we_html_table(array('class' => 'default', "style" => 'width:100%;margin-top:10px;'), 1, 1);
-		$table->setCol(0, 0, array("nowrap" => null, "class" => "small"), we_html_element::jsElement($this->View->getJSSubmitFunction("cmd")) .
+		$table->setCol(0, 0, array("class" => "small"), we_html_element::jsElement($this->View->getJSSubmitFunction("cmd")) .
 			$hiddens .
 			we_html_tools::htmlTextInput("keyword", 10, "", "", "", "text", "150px") .
 			we_html_button::create_button(we_html_button::SEARCH, "javascript:top.content.we_cmd('search',document.we_form_treefooter.keyword.value);")
 		);
 
 		return we_html_element::htmlForm(array("name" => "we_form_treefooter"), $table->getHtml());
-	}
-
-	protected function getHTMLEditor(){//TODO: Throw out the the exeption for properties/edbody and use parent
-		$body = we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;'), we_html_element::htmlIFrame('edheader', $this->frameset . '&pnt=edheader&home=1', 'position: absolute; top: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;', '', '', false) .
-				we_html_element::htmlIFrame('edbody', $this->frameset . '&pnt=edbody&home=1', 'position: absolute; top: 40px; bottom: 40px; left: 0px; right: 0px;', 'border:0px;width:100%;height:100%;') .
-				we_html_element::htmlIFrame('edfooter', $this->frameset . '&pnt=edfooter&home=1' . (($sid = we_base_request::_(we_base_request::INT, 'sid')) !== false ? '&sid=' . $sid : '&home=1'), 'position: absolute; bottom: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;', '', '', false)
-		);
-
-		return $this->getHTMLDocument($body);
 	}
 
 	protected function getHTMLEditorHeader(){
@@ -139,7 +103,7 @@ var cgroup=' . ($_SESSION['user']['ID'] ? intval(f('SELECT ParentID FROM ' . USE
 				$_SESSION["user_session_data"] :
 				new we_users_user());
 
-		$js= $this->View->getJSProperty();
+		$js = $this->View->getJSProperty();
 		$tab = we_base_request::_(we_base_request::INT, 'tab', 0);
 		$permBranch = oldHtmlspecialchars(we_base_request::_(we_base_request::STRING, "perm_branch", 0));
 		$_content = we_html_element::htmlHiddens(array(
@@ -174,7 +138,7 @@ var cgroup=' . ($_SESSION['user']['ID'] ? intval(f('SELECT ParentID FROM ' . USE
 				'autocomplete' => 'off',
 				'onsubmit' => 'return false'
 				), $_content);
-		return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'), $_form),$js);
+		return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'), $_form), $js);
 	}
 
 	protected function getHTMLEditorFooter(){

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -58,46 +59,57 @@ $we_menu = array(
 		'perm' => 'NO_DOCTYPE && ADMINISTRATOR',
 		'hide' => !$seeMode,
 	),
+	'file_new_media' => array(
+		'text' => g_l('javaMenu_global', '[media]'),
+		'parent' => 'file_new',
+		'perm' => 'ADMINISTRATOR || NEW_GRAFIK || NEW_FLASH || NEW_QUICKTIME || NEW_SONSTIGE',
+	),
 	array(// File > Image
 		'text' => g_l('javaMenu_global', '[image]'),
-		'parent' => 'file_new',
+		'parent' => 'file_new_media',
 		'cmd' => 'new_image',
 		'perm' => 'NEW_GRAFIK',
+	),
+	array(// File > New > Other > Other (Binary)
+		'text' => g_l('javaMenu_global', '[pdf]'),
+		'parent' => 'file_new_media',
+		'cmd' => 'new_binary_document',
+		'perm' => 'NEW_SONSTIGE',
+	),
+	array(// File > New > Other > Flash
+		'text' => g_l('javaMenu_global', '[flash_movie]'),
+		'parent' => 'file_new_media',
+		'cmd' => 'new_flash_movie',
+		'perm' => 'NEW_FLASH',
+	),
+	array(// File > New Other > quicktime
+		'text' => g_l('javaMenu_global', '[quicktime_movie]'),
+		'parent' => 'file_new_media',
+		'cmd' => 'new_quicktime_movie',
+		'perm' => 'NEW_QUICKTIME',
+	),
+	array(// File > New Other > video
+		'text' => g_l('contentTypes', '[' . we_base_ContentTypes::VIDEO . ']'),
+		'parent' => 'file_new_media',
+		'cmd' => 'new_video_movie',
+		'perm' => 'NEW_FLASH',
+	),
+	array(// File > New Other > audio
+		'text' => g_l('contentTypes', '[' . we_base_ContentTypes::AUDIO . ']'),
+		'parent' => 'file_new_media',
+		'cmd' => 'new_audio_audio',
+		'perm' => 'NEW_SONSTIGE',
 	),
 	'file_new_other' => array(// File > New > Other
 		'text' => g_l('javaMenu_global', '[other]'),
 		'parent' => 'file_new',
-		'perm' => 'ADMINISTRATOR || NEW_HTML || NEW_FLASH || NEW_QUICKTIME || NEW_JS || NEW_CSS || NEW_TEXT || NEW_HTACCESS || NEW_SONSTIGE',
+		'perm' => 'ADMINISTRATOR || NEW_HTML || NEW_JS || NEW_CSS || NEW_TEXT || NEW_HTACCESS || NEW_SONSTIGE',
 	),
 	array(// File > New > Other > html
 		'text' => g_l('javaMenu_global', '[html_page]'),
 		'parent' => 'file_new_other',
 		'cmd' => 'new_html_page',
 		'perm' => 'NEW_HTML',
-	),
-	array(// File > New > Other > Flash
-		'text' => g_l('javaMenu_global', '[flash_movie]'),
-		'parent' => 'file_new_other',
-		'cmd' => 'new_flash_movie',
-		'perm' => 'NEW_FLASH',
-	),
-	array(// File > New Other > quicktime
-		'text' => g_l('javaMenu_global', '[quicktime_movie]'),
-		'parent' => 'file_new_other',
-		'cmd' => 'new_quicktime_movie',
-		'perm' => 'NEW_QUICKTIME',
-	),
-	array(// File > New Other > video
-		'text' => g_l('contentTypes', '[' . we_base_ContentTypes::VIDEO . ']'),
-		'parent' => 'file_new_other',
-		'cmd' => 'new_video_movie',
-		'perm' => 'NEW_FLASH',
-	),
-	array(// File > New Other > audio
-		'text' => g_l('contentTypes', '[' . we_base_ContentTypes::AUDIO . ']'),
-		'parent' => 'file_new_other',
-		'cmd' => 'new_audio_audio',
-		'perm' => 'NEW_SONSTIGE',
 	),
 	array(// File > New > Other > Javascript
 		'text' => g_l('javaMenu_global', '[javascript]'),
@@ -165,9 +177,9 @@ $we_menu = array(
 		'perm' => 'NEW_OBJECTFILE_FOLDER',
 		'hide' => !defined('OBJECT_TABLE') || ($_SESSION['weS']['we_mode'] != we_base_constants::MODE_NORMAL)
 	),
-	array(// File > New > Directory > Template
+	array(// File > New > Directory > Collection
 		'text' => g_l('javaMenu_global', '[collection_directory]'),
-		'parent' => 1011000,
+		'parent' => 'file_new_dir',
 		'cmd' => 'new_collection_folder',
 		'perm' => 'NEW_COLLECTION_FOLDER',
 		'hide' => $seeMode || !we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION)
@@ -350,6 +362,7 @@ $we_menu = array(
 		'perm' => 'SAVE_COLLECTION',
 		'hide' => $seeMode || !we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION)
 	),
+
 	array(// File > add to collection > documents
 		'text' => g_l('javaMenu_global', '[documents]'),
 		'parent' => 'file_addcoll',
@@ -362,7 +375,7 @@ $we_menu = array(
 		'parent' => 'file_addcoll',
 		'cmd' => 'add_objectfiles_to_collection',
 		'perm' => 'SAVE_COLLECTION',
-		'hide' => !defined('OBJECT_TABLE') || ($_SESSION['weS']['we_mode'] != we_base_constants::MODE_NORMAL) || !we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION)
+		'hide' => true, //!defined('OBJECT_TABLE') || ($_SESSION['weS']['we_mode'] != we_base_constants::MODE_NORMAL) || !we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION)
 	),
 	array(// separator
 		'parent' => 'file'

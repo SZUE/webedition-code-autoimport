@@ -59,14 +59,12 @@ abstract class we_modules_frame{
 		return $this->getHTMLDocumentHeader() .
 			$extraHead .
 			(empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']) .
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
+			YAHOO_FILES .
 			'</head>' . $body . '</html>';
 	}
 
 	function getJSCmdCode(){
-		return we_html_element::jsElement('function we_cmd(){}');
+		return $this->View->getJSTop();
 	}
 
 	function getHTML($what = ''){
@@ -108,7 +106,10 @@ abstract class we_modules_frame{
 			we_main_headermenu::css() .
 			$extraHead;
 
-		$body = we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => 'startTree();'), we_html_element::htmlExIFrame('header', self::getHTMLHeader(WE_INCLUDES_PATH . 'menu/module_menu_' . $this->module . '.inc.php', $this->module)) .
+		$body = we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => 'startTree();'), we_html_element::htmlExIFrame('header', self::getHTMLHeader(
+						(isset($this->toolDir) ?
+							$this->toolDir . 'conf/we_menu_' . $this->toolName . '.conf.php' :
+							WE_INCLUDES_PATH . 'menu/module_menu_' . $this->module . '.inc.php'))) .
 				($this->hasIconbar ? we_html_element::htmlIFrame('iconbar', $this->frameset . '&pnt=iconbar' . $extraUrlParams, 'position: absolute; top: 32px; left: 0px; right: 0px; height: 40px; overflow: hidden;', '', '', false) : '') .
 				$this->getHTMLResize($extraUrlParams) .
 				we_html_element::htmlIFrame('cmd', $this->frameset . '&pnt=cmd' . $extraUrlParams)
@@ -117,12 +118,9 @@ abstract class we_modules_frame{
 		return $this->getHTMLDocument($body, $extraHead);
 	}
 
-	protected function getHTMLHeader($_menuFile, $_module){
-		include($_menuFile);
-
-		$lang_arr = "we_menu_" . $_module;
-		$jmenu = new we_base_menu($$lang_arr, 'top.opener.top.load', '');
-
+	protected function getHTMLHeader($_menuFile){
+		$menu = include($_menuFile);
+		$jmenu = new we_base_menu($menu, 'top.opener.top.load', '');
 		$menu = $jmenu->getCode(false) . $jmenu->getJS();
 
 		return
@@ -130,7 +128,7 @@ abstract class we_modules_frame{
 			we_html_element::htmlDiv(array('style' => 'width:5em;position: absolute;top: 0px;right: 0px;'), we_main_headermenu::createMessageConsole('moduleFrame'));
 	}
 
-	function getHTMLResize($extraUrlParams = ''){//TODO: only customer uses param sid: handle sid with extraUrlParams
+	private function getHTMLResize($extraUrlParams = ''){
 		$_incDecTree = '<div id="baumArrows">
 	<div class="baumArrow" id="incBaum" ' . ($this->treeWidth <= 30 ? 'style="background-color: grey"' : '') . ' onclick="top.content.incTree();"><i class="fa fa-plus"></i></div>
 	<div class="baumArrow" id="decBaum" ' . ($this->treeWidth <= 30 ? 'style="background-color: grey"' : '') . ' onclick="top.content.decTree();"><i class="fa fa-minus"></i></div>
@@ -145,9 +143,7 @@ abstract class we_modules_frame{
 				)
 		);
 
-		$attribs = array('id' => 'resize', 'name' => 'resize', 'class' => ($this->hasIconbar ? 'withIconBar' : ''), 'style' => 'overflow:hidden');
-
-		return we_html_element::htmlDiv($attribs, $content);
+		return we_html_element::htmlDiv(array('id' => 'resize', 'name' => 'resize', 'class' => ($this->hasIconbar ? 'withIconBar' : ''), 'style' => 'overflow:hidden'), $content);
 	}
 
 	function getHTMLLeft(){
@@ -169,14 +165,11 @@ abstract class we_modules_frame{
 	protected function getHTMLTree($extraHead = ''){
 		return we_html_element::htmlDiv(array(
 				'id' => 'tree',
-				'style' => 'overflow:scroll;position: absolute; top: ' . $this->treeHeaderHeight . 'px; bottom: ' . $this->treeFooterHeight . 'px; left: 0px; width: 100%; background: #F3F7FF',
+				'style' => 'top: ' . $this->treeHeaderHeight . 'px; bottom: ' . $this->treeFooterHeight . 'px;margin:4px 0px;',
 				'link' => '#000000',
 				'alink' => '#000000',
 				'vlink' => '#000000',
-				'marginwidth' => 0,
-				'marginheight' => 4,
-				'leftmargin' => 0,
-				'topmargin' => 4), $extraHead . $this->Tree->getHTMLContruct('if(top.treeResized){top.treeResized();}')
+				), $extraHead . $this->Tree->getHTMLContruct('if(top.treeResized){top.treeResized();}')
 		);
 	}
 
@@ -192,9 +185,9 @@ abstract class we_modules_frame{
 
 	protected function getHTMLEditor($extraUrlParams = '', $extraHead = ''){
 		$sid = we_base_request::_(we_base_request::STRING, 'sid');
-		$body = we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;'), we_html_element::htmlIFrame('edheader', $this->frameset . '&pnt=edheader' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, 'position: absolute; top: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;', 'width: 100%; overflow: hidden', '', '', false) .
-				we_html_element::htmlIFrame('edbody', $this->frameset . '&pnt=edbody' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, 'position: absolute; top: 40px; bottom: 40px; left: 0px; right: 0px;', 'border:0px;width:100%;height:100%;') .
-				we_html_element::htmlIFrame('edfooter', $this->frameset . '&pnt=edfooter' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, 'position: absolute; bottom: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;', 'width: 100%; overflow: hidden', '', '', false)
+		$body = we_html_element::htmlBody(array('class' => 'moduleEditor'), we_html_element::htmlIFrame('edheader', $this->frameset . '&pnt=edheader' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, '', 'width: 100%; overflow: hidden', '', false, 'editorHeader') .
+				we_html_element::htmlIFrame('edbody', $this->frameset . '&pnt=edbody' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, '', 'border:0px;width:100%;height:100%;', '', true, 'editorBody') .
+				we_html_element::htmlIFrame('edfooter', $this->frameset . '&pnt=edfooter' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, '', 'width: 100%; overflow: hidden', '', false, 'editorButtonFrame')
 		);
 
 		return $this->getHTMLDocument($body, $extraHead);
@@ -222,7 +215,7 @@ function we_save() {
 
 		$table2 = new we_html_table(array('class' => 'default', 'style' => 'width:300px;'), 1, 2);
 		$table2->setRow(0, array('style' => 'vertical-align:middle'));
-		$table2->setCol(0, 1, array('nowrap' => null), we_html_button::create_button(we_html_button::SAVE, 'javascript:we_save()'));
+		$table2->setCol(0, 1, array(), we_html_button::create_button(we_html_button::SAVE, 'javascript:we_save()'));
 
 		return $this->getHTMLDocument(we_html_element::htmlBody(array('id' => 'footerBody'), $table2->getHtml()), $extraHead);
 	}
@@ -238,7 +231,7 @@ function we_save() {
 	function getHTMLBox($content, $headline = "", $width = 100, $height = 50, $w = 25, $vh = 0, $ident = 0, $space = 5, $headline_align = "left", $content_align = "left"){
 		$table = new we_html_table(array("width" => $width, "height" => $height, "class" => 'default', 'style' => 'margin-left:' . intval($ident) . 'px;margin-top:' . intval($vh) . 'px;margin-bottom:' . ($w && $headline ? $vh : 0) . 'px;'), 1, 2);
 
-		$table->setCol(0, 0, array("style" => 'vertical-align:middle;text-align:' . $headline_align . ';padding-right:' . $space . 'px;', "class" => "defaultgray"), str_replace(" ", "&nbsp;", $headline));
+		$table->setCol(0, 0, array("style" => 'vertical-align:middle;text-align:' . $headline_align . ';padding-right:' . $space . 'px;', "class" => "defaultfont lowContrast"), str_replace(" ", "&nbsp;", $headline));
 		$table->setCol(0, 1, array("style" => 'vertical-align:middle;text-align:' . $content_align), $content);
 		return $table->getHtml();
 	}

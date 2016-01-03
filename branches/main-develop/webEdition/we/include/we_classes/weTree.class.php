@@ -46,40 +46,13 @@ class weTree{
 		'selectitem' => 2,
 		'selectgroup' => 3,
 	);
-	var $tree_layouts = array(
-		0 => 'tree',
-		1 => 'tree',
-		2 => 'tree',
-		3 => 'tree'
-	);
-	var $node_layouts = array(
-		'item' => 'item',
-		'group' => 'group',
-		'threedots' => 'changed',
-		'item-disabled' => 'disabled',
-		'group-disabled' => 'disabled',
-		'group-disabled-open' => 'disabled',
-		'item-checked' => 'checked_item',
-		'group-checked' => 'checked_group',
-		'group-open' => 'group',
-		'group-checked-open' => 'checked_group',
-		'item-notpublished' => 'notpublished',
-		'item-checked-notpublished' => 'checked_notpublished',
-		'item-changed' => 'changed',
-		'item-checked-changed' => 'checked_changed',
-		'item-selected' => 'selected_item',
-		'item-selected-notpublished' => 'selected_notpublished_item',
-		'item-selected-changed' => 'selected_changed_item',
-		'group-selected' => 'selected_group',
-		'group-selected-open' => 'selected_open_group'
-	);
 	var $default_segment = 30;
 
 //Initialization
 
 	public function __construct($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
 		$this->db = new DB_WE();
-		if($frameset != '' && $topFrame != '' && $treeFrame != '' && $cmdFrame != ''){
+		if($frameset && $topFrame && $treeFrame && $cmdFrame){
 			$this->init($frameset, $topFrame, $treeFrame, $cmdFrame);
 		}
 
@@ -96,11 +69,14 @@ class weTree{
 	function getJSStartTree(){
 		return '
 function startTree(pid,offset){
-frames={
-};
-	pid = pid ? pid : 0;
+	treeData.frames={
+		top:' . $this->topFrame . ',
+		cmd:' . $this->cmdFrame . ',
+		tree:' . $this->treeFrame . '
+	};
+	pid = pid ? pid :
 	offset = offset ? offset : 0;
-	frames.cmd.location=treeData.frameset+"?pnt=cmd&pid="+pid+"&offset="+offset;
+	treeData.frames.cmd.location=treeData.frameset+"?pnt=cmd&pid="+pid+"&offset="+offset;
 	drawTree();
 }';
 	}
@@ -115,50 +91,22 @@ frames={
 		return we_html_element::jsScript(JS_DIR . 'tree.js', 'self.focus();') .
 			$this->customJSFile() .
 			we_html_element::jsElement('
-var frames={
-	top:' . $this->topFrame . ',
-	cmd:' . $this->cmdFrame . '
-};
 var treeData = new container();
-var we_scrollY = [];
-' .
-				$this->getJSDrawTree() .
-				$this->getJSContainer() .
-				$this->getJSStartTree()
+var we_scrollY = {};
+container.prototype.topFrame="' . $this->topFrame . '";
+container.prototype.treeFrame="' . $this->treeFrame . '";
+container.prototype.frameset="' . $this->frameset . '";
+container.prototype.frames={
+	top:' . $this->topFrame . ',
+	cmd:' . $this->cmdFrame . ',
+	tree:' . $this->treeFrame . '
+};
+' . $this->getJSStartTree()
 		);
 	}
 
 	function customJSFile(){
 		return '';
-	}
-
-	private function getJSContainer(){
-		$ts = array();
-		foreach($this->tree_states as $k => $v){
-			$ts[] = '"' . $k . '":"' . $v . '"';
-		}
-
-		$tl = array();
-		foreach($this->tree_layouts as $k => $v){
-			$tl[] = '"' . $k . '":"' . $v . '"';
-		}
-
-		$nl = array();
-		foreach($this->node_layouts as $k => $v){
-			$nl[] = '"' . $k . '":"' . $v . '"';
-		}
-
-		return '
-	container.prototype.topFrame="' . $this->topFrame . '";
-	container.prototype.treeFrame="' . $this->treeFrame . '";
-	container.prototype.frameset="' . $this->frameset . '";
-	container.prototype.frames={};
-
-	container.prototype.tree_states={' . implode(',', $ts) . '};
-	container.prototype.tree_layouts={' . implode(',', $tl) . '};
-	container.prototype.node_layouts={' . implode(',', $nl) . '};
-
-';
 	}
 
 	function getHTMLContruct($onresize = ''){
@@ -172,21 +120,6 @@ var we_scrollY = [];
 		);
 	}
 
-	protected function getJSDrawTree(){
-		return '
-function drawTree(){
-	if(' . $this->treeFrame . '==undefined){
-		window.setTimeout(drawTree, 500);
-		return;
-	}
-
-	var out="<div class=\""+treeData.getLayout()+"\"><nobr>"+
-		treeData.draw(treeData.startloc,"")+
-		"</nobr></div>";' .
-			$this->treeFrame . '.document.getElementById("treetable").innerHTML=out;
-}';
-	}
-
 	function getJSLoadTree($clear, array $treeItems){
 		$js = '';
 		foreach($treeItems as $item){
@@ -196,7 +129,7 @@ function drawTree(){
 			foreach($item as $k => $v){
 				$js.= strtolower($k) . ':' . ($v === 1 || $v === 0 || is_bool($v) || $v === 'true' || $v === 'false' || is_int($v) ?
 						intval($v) :
-						'\'' . str_replace(array('"', '\'', '\\'), '',$v) . '\'') . ',';
+						'\'' . str_replace(array('"', '\'', '\\'), '', $v) . '\'') . ',';
 			}
 			$js.='}));' . ($clear ? '' : '}');
 		}
