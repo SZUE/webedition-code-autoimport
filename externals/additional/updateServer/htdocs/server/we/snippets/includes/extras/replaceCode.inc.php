@@ -279,15 +279,6 @@ $replaceCode['webEdition_demo']['path']['3900'] = '/webEdition/webEdition%s';
 $replaceCode['webEdition_demo']['needle']['3900'] = 'var we_demo = false;';
 $replaceCode['webEdition_demo']['replace']['3900'] = 'var we_demo = true;';
 
-// change menu entries
-$replaceCode['menu1_demo']['path']['3900'] = '/webEdition/we/include/java_menu/we_menu.inc%s';
-$replaceCode['menu1_demo']['needle']['3900'] = '\$we_menu\["004400"\]\["text"\] = \$l_javaMenu\["update"\]';
-$replaceCode['menu1_demo']['replace']['3900'] = '$we_menu["004400"]["text"] = $l_javaMenu["register"]';
-
-$replaceCode['menu2_demo']['path']['3900'] = '/webEdition/we/include/java_menu/we_menu.inc%s';
-$replaceCode['menu2_demo']['needle']['3900'] = '\$we_menu\["004399"\]\["text"\] = \$l_javaMenu\["module_installation"\]';
-$replaceCode['menu2_demo']['replace']['3900'] = '$we_menu["004399"]["text"] = $l_javaMenu["register"]';
-
 // template savecode
 $replaceCode['templateSaveCode_demo']['path']['3900'] = '/webEdition/we/include/we_editors/we_editor.inc%s';
 $replaceCode['templateSaveCode_demo']['needle']['3900'] = '####TEMPLATE_SAVE_CODE2_START###.*####TEMPLATE_SAVE_CODE2_END###'; // ! IMPORTANT

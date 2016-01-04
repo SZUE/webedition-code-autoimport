@@ -10,9 +10,7 @@
 // database for version information
 $DSN_versioning = array(
 	'phptype'  => 'mysql',
-    'username' => 'db343047_3',
-    'password' => 'WdcAqcd2aq',
-    'hostspec' => '46.252.31.184:3304',
+    'hostspec' => 'mysql5.webedition.info',
     'database' => 'db343047_3', // webedition_versioning - versioning
 );
 
@@ -23,9 +21,7 @@ $OPTIONS_versioning = array(
 // database for registration information
 $DSN_customer = array(
 	'phptype'  => 'mysql',
-    'username' => 'db343047_3',
-    'password' => 'WdcAqcd2aq',
-    'hostspec' => '46.252.31.184:3304',
+    'hostspec' => 'mysql5.webedition.info',
     'database' => 'licensing', // webedition_licensing - licensing
 );
 
@@ -57,17 +53,3 @@ $GLOBALS['MODULES_FREE_OF_CHARGE_INCLUDED'] = array(
 	'voting',
 	'glossary',
 );
-
-// 
-$GLOBALS['MODULES_FREE_OF_CHARGE_DOMAINFIELDS'] = array(
-	'users' => 'intUsers',
-	'banner' => 'intbanner',
-	'schedpro' => 'intschedpro',
-	'schedule' => 'intSchedule',
-	'spellchecker' => 'intSpellchecker',
-	'export' => 'intExport',
-	'voting' => 'intVoting',
-	'glossary' => 'intGlossary',
-);
-
-?>

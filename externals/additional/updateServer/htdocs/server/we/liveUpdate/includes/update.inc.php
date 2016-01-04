@@ -109,10 +109,13 @@ if( $_SESSION['clientInstalledTableId'] ) {
 			
 			$_SESSION['clientTargetVersionNumber'] = $_REQUEST['clientTargetVersionNumber'];
 			$_SESSION['clientTargetVersion'] = updateUtil::number2version($_REQUEST['clientTargetVersionNumber']);
+			$_SESSION['clientTargetVersionName'] = update::getVersionName($_SESSION['clientTargetVersionNumber']);
 			$_SESSION['clientTargetSubVersionNumber'] = update::getSubVersion($_SESSION['clientTargetVersionNumber']);
 			$_SESSION['clientTargetVersionType'] = update::getVersionType($_SESSION['clientTargetVersionNumber']);
 			$_SESSION['clientTargetVersionOnlyType'] = update::getOnlyVersionType($_SESSION['clientTargetVersionNumber']);
 			$_SESSION['clientTargetVersionOnlyTypeVersion'] = update::getOnlyVersionTypeVersion($_SESSION['clientTargetVersionNumber']);
+			
+			$_SESSION['clientTargetFormattedVersionString'] = update::getFormattedVersionString($_SESSION['clientTargetVersionNumber'], true, false);
 
 			$Request = unserialize(base64_decode($_REQUEST['reqArray']));
 			

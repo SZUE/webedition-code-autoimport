@@ -216,4 +216,3 @@ $luSystemLanguage['modules']['start'] = 'Starte Modulinstallation';
 $luSystemLanguage['modules']['finished'] = 'Modulinstallation abgeschlossen';
 $luSystemLanguage['languages']['start'] = 'Starte Sprachinstallation';
 $luSystemLanguage['languages']['finished'] = 'Sprachinstallation abgeschlossen';
-?>

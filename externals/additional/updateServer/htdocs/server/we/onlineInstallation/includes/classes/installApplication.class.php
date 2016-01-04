@@ -120,7 +120,7 @@ class installApplication extends installer{
 			// value of the part -> must be base64_encoded
 			$Value = updateUtil::encodeCode(substr($Content, $Start, $Length));
 
-			$fileArray[$Paths[$Position] . ".'part" . $Part."'"] = $Value;
+			$fileArray[$Paths[$Position] . ".'part" . $Part . "'"] = $Value;
 
 			if($Start + $Length >= $FileSize){
 				if($Position >= sizeof($_SESSION['clientChanges']['allChanges'])){
@@ -602,8 +602,6 @@ class installApplication extends installer{
 
 		// 2nd overwrite some stuff
 		$webEdition_demo = updateUtil::getReplaceCode('webEdition_demo');
-		$menu1_demo = updateUtil::getReplaceCode('menu1_demo');
-		$menu2_demo = updateUtil::getReplaceCode('menu2_demo');
 		$editor_demo = updateUtil::getReplaceCode('templateSaveCode_demo');
 
 
@@ -711,25 +709,16 @@ class installApplication extends installer{
 		}
 		$retArray['Code'] .= '
 		if (!$leDB->query($query)) {
-			$query = "INSERT INTO " . $_SESSION[\'le_db_prefix\'] . "tblPrefs (userID,`key`,value) VALUES (\'1\',\'Language\',\'' . $_SESSION['clientSyslngNEW'] . '\');";
-			if (!$leDB->query($query)) {
+			if (!$leDB->query("INSERT INTO " . $_SESSION[\'le_db_prefix\'] . "tblPrefs (userID,`key`,value) VALUES (\'1\',\'Language\',\'' . $_SESSION['clientSyslngNEW'] . '\');")) {
 				' . $this->getErrorMessageResponsePart('', $GLOBALS['lang'][$this->LanguageIndex]['dbNotInsertPrefs']) . '
 				exit;
 			}
-			$query = "INSERT INTO " . $_SESSION[\'le_db_prefix\'] . "tblPrefs (userID,`key`,value) VALUES (\'1\',\'BackendCharset\',\'' . $backendCH . '\');";
-			if (!$leDB->query($query)) {
+			if (!$leDB->query("INSERT INTO " . $_SESSION[\'le_db_prefix\'] . "tblPrefs (userID,`key`,value) VALUES (\'1\',\'BackendCharset\',\'' . $backendCH . '\')")) {
 				' . $this->getErrorMessageResponsePart('', $GLOBALS['lang'][$this->LanguageIndex]['dbNotInsertPrefs']) . '
 				exit;
 			}
 		}' .
 			/*
-			  if("' . $_SESSION['clientSyslng'] . '" == "Deutsch" || "' . $_SESSION['clientSyslng'] . '" == "Deutsch_UTF-8") {
-			  $query = "INSERT INTO " . $_SESSION[\'le_db_prefix\'] . "tblwidgetnotepad VALUES (1, \'Sonstiges\', 1, \'2007-06-04\', \'Willkommen bei webEdition 5\', ' . htmlentities('\'Das Cockpit ist eine der Neuerungen in Version 5. Sie können im Cockpit-Menü verschiedene Widgets auswählen. Jedes Widget ist über die obere Leiste \"Eigenschaften\" konfigurierbar und kann frei positioniert werden.\'') . ', \'low\', \'always\', \'2007-06-04\', \'2007-06-04\');";
-
-			  } else {
-			  $query = "INSERT INTO " . $_SESSION[\'le_db_prefix\'] . "tblwidgetnotepad VALUES (1, \'Miscellaneous\', 1, \'2007-06-04\', \'Welcome to webEdition 5\', ' . htmlentities('\'One of the new features in version 5 is the cockpit. You can select several widgets in the cockpit menu. Each widget can be adjusted and positioned in the title bar.\'') . ', \'low\', \'always\', \'2007-06-04\', \'2007-06-04\');";
-
-			  }
 
 			  if (!$leDB->query($query)) {
 			  ' . $this->getErrorMessageResponsePart('', $GLOBALS['lang'][$this->LanguageIndex]['dbNotInsertPrefs']) . '

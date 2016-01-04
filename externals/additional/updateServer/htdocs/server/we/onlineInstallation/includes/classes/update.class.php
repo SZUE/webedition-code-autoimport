@@ -23,7 +23,9 @@ function installLogStart(){
 		if(isset($_SESSION['MatchingVersions']) ) {
 			$matVer = array_keys($_SESSION['MatchingVersions']);
 			$version = max($matVer);
+			
 			$svnrevision = self::getSubVersion($version);
+			//$versionname = self::getVersionName($version);//imi
 			$versiontype = self::getVersionType($version);
 			$versionbranch = self::getOnlyVersionBranch($version);
 			
@@ -32,7 +34,7 @@ function installLogStart(){
 		
 		}
 		if(isset($_SESSION['clientTargetVersionNumber']) ) {$setvalues .= ", installedVersion = '".$_SESSION['clientTargetVersionNumber']."'"; }
-		if(isset($_SESSION['clientTargetVersionName']) ) {$setvalues .= ", installedVersionName = '".$_SESSION['clientTargetVersionName']."'"; }
+                //if(isset($_SESSION['clientTargetVersionName']) ) {$setvalues .= ", installedVersionName = '".$_SESSION['clientTargetVersionName']."'"; }//imi
 		if(isset($_SESSION['clientTargetVersionType']) ) {$setvalues .= ", installedVersionStatus = '".$_SESSION['clientTargetVersionType']."'"; }
 		if(isset($_SESSION['clientTargetSubVersionNumber']) ) {$setvalues .= ", installedSvnRevision = '".$_SESSION['clientTargetSubVersionNumber']."'"; }
 		if(isset($_SESSION['clientTargetVersionBranch']) ) {$setvalues .= ", installedVersionBranch = '".$_SESSION['clientTargetVersionBranch']."'"; }
@@ -43,5 +45,3 @@ function installLogStart(){
 	}
 
 }
-
-?>

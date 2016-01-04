@@ -44,5 +44,3 @@ if($authenticated === true) {
 
 print liveUpdateTemplates::getHtml("' . addslashes($GLOBALS['lang']['community']['headline']) . '", $content);
 ?>';
-
-?>

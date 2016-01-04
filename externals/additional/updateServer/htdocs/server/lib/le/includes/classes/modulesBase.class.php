@@ -121,22 +121,22 @@ class modulesBase {
 			if( !in_array($moduleKey, $GLOBALS['MODULES_FREE_OF_CHARGE_INCLUDED'])
 				&& $moduleKey != 'customerpro'
 				) {
-				
+
 				if ($existingModules[$moduleKey]['grade'] == 'pro') {
 					$installedProModules[] = $moduleKey;
-					
+
 				// user management is integrated module now!
 				// intern it is still handled as module
 				// busers is now treated like a normal grade module
 				// in module selection dialog it must be located in normal modules
 				} else if ($moduleKey == "busers") {
 					$installedProModules[] = $moduleKey;
-					
+
 				} else {
 					$installedModules[] = $moduleKey;
-	
+
 				}
-				
+
 			}
 
 		}
@@ -191,4 +191,3 @@ $_pro_modules = array();
 	}
 
 }
-?>

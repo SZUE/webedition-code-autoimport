@@ -665,8 +665,8 @@ class installer extends installerBase {
 			}
 		}
 
-		if(method_exists($liveUpdateFnc, "updaterDoUpdate")){
-			$liveUpdateFnc::updaterDoUpdate();
+		if(method_exists($liveUpdateFnc, "weUpdaterDoUpdate")){
+			$liveUpdateFnc::weUpdaterDoUpdate();
 		}
 
 		if ($success) {

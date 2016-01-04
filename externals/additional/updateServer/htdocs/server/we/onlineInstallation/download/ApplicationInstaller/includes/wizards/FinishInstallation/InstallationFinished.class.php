@@ -103,6 +103,9 @@ EOF;
 			$this->setContent($Content);
 
 			$Javascript = <<<EOF
+//automatically go on to last step (delete installer): very dirty...
+window.setTimeout(top.document.forms[0].submit(), 2000);
+
 {$JSString}
 top.openWebEdition_mouse_event = "";
 top.openWebEdition_enabled = true;

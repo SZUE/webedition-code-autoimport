@@ -669,15 +669,6 @@ $replaceCode['webEdition_demo']['path'][4900] = '/webEdition/webEdition%s';
 $replaceCode['webEdition_demo']['needle'][4900] = 'var we_demo = false;';
 $replaceCode['webEdition_demo']['replace'][4900] = 'var we_demo = true;';
 
-// change menu entries
-$replaceCode['menu1_demo']['path'][4900] = '/webEdition/we/include/java_menu/we_menu.inc%s';
-$replaceCode['menu1_demo']['needle'][4900] = '\$we_menu\["5050000"\]\["text"\] = \$l_javaMenu\["update"\]';
-$replaceCode['menu1_demo']['replace'][4900] = '$we_menu["5050000"]["text"] = $l_javaMenu["register"]';
-
-$replaceCode['menu2_demo']['path'][4900] = '/webEdition/we/include/java_menu/we_menu.inc%s';
-$replaceCode['menu2_demo']['needle'][4900] = '\$we_menu\["3060000"\]\["text"\] = \$l_javaMenu\["module_installation"\]';
-$replaceCode['menu2_demo']['replace'][4900] = '$we_menu["3060000"]["text"] = $l_javaMenu["register"]';
-
 // template savecode
 $replaceCode['templateSaveCode_demo']['path'][4900] = '/webEdition/we/include/we_editors/we_editor.inc%s';
 $replaceCode['templateSaveCode_demo']['needle'][4900] = '####TEMPLATE_SAVE_CODE2_START###.*####TEMPLATE_SAVE_CODE2_END###'; // ! IMPORTANT
@@ -692,4 +683,5 @@ $replaceCode['insert_tblPrefs']['replace'][LANGUAGELIMIT] = 'UPDATE %s'.'tblPref
 
 // insert tblUser
 $replaceCode['insert_tblUser']['path'][4900] = '';
-$replaceCode['insert_tblUser']['replace'][4900] = 'UPDATE %s'.'tblUser set Text = \'%s\', username = \'%s\', passwd = MD5(\'%s\'), UseSalt = \'0\' where ID=\'1\';';
+$replaceCode['insert_tblUser']['replace'][4900] = 'UPDATE %s'.'tblUser set Text=\'%s\', username=\'%s\', passwd=MD5(\'%s\'), UseSalt=0 where ID=1';
+$replaceCode['insert_tblUser']['replace'][6000] = 'UPDATE %s'.'tblUser set Text=\'%s\', username=\'%s\', passwd=CONCAT(MD5(\'%s\'),MD5(username)), UseSalt=1 where ID=1';

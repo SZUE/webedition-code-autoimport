@@ -99,8 +99,7 @@ class updateUtil extends updateUtilBase{
 
 	function getLastSnapShot($targetVersionNumber){
 		global $DB_Versioning;
-		$query = "SELECT version FROM " . VERSION_TABLE . " WHERE isSnapshot='1' AND version <= '" . $targetVersionNumber . "' ORDER BY version DESC ";
-		$res = & $DB_Versioning->query($query);
+		$res = & $DB_Versioning->query('SELECT version FROM ' . VERSION_TABLE . " WHERE isSnapshot='1' AND version <= '" . $targetVersionNumber . "' ORDER BY version DESC ");
 		$anzahl = & $DB_Versioning->numCols();
 		if($anzahl > 0){
 			$row = $res->fetchRow();

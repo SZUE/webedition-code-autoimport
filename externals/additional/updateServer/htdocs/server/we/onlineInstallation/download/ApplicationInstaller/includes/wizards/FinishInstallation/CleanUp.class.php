@@ -45,6 +45,11 @@ EOF;
 			$this->setContent($Content);
 			
 			$Javascript = <<<EOF
+//change form.action for paypal-button to work
+var form = top.document.forms[0];
+form.action = "https://www.paypal.com/cgi-bin/webscr";
+form.target = "_blank";
+
 top.openWebEdition_mouse_event = "";
 top.openWebEdition_enabled = true;
 EOF;

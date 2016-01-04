@@ -378,18 +378,7 @@ class update extends updateBase{
 
 		// query for all selected modules
 		$modulesQuery = '';
-		/*
-		  $modulesQuery = ' AND ( module = "" OR ';
-		  foreach ($GLOBALS['MODULES_FREE_OF_CHARGE_INCLUDED'] as $module) {
-		  $modulesQuery .= 'module="' . $module . '" OR ';
-
-		  }
-		  foreach ($installedModules as $module) {
-		  $modulesQuery .= 'module = "' . $module . '" OR ';
-
-		  }
-		  $modulesQuery .= '0 )';
-		 */
+		
 		// get systemlanguage only
 		if($_SESSION['clientTargetVersionNumber'] >= LANGUAGELIMIT){
 			$clientSyslng = str_replace('_UTF-8', '', $_SESSION['clientSyslng']);

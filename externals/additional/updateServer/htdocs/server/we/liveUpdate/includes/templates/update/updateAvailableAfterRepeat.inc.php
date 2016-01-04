@@ -52,7 +52,6 @@ function checkfreequota(&$AnzMB){
 	return $allesOK;
 }
 
-
 $testdiskquota = 100;
 if (!checkfreequota($testdiskquota)){
 	$diskquotawarning = "'.$GLOBALS['lang']['upgrade']['repeatUpdateDiskquotaWarning1'].'".$testdiskquota."'.$GLOBALS['lang']['upgrade']['repeatUpdateDiskquotaWarning2'].'";
