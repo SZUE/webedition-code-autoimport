@@ -101,11 +101,11 @@ container.prototype.frames={
 	cmd:' . $this->cmdFrame . ',
 	tree:' . $this->treeFrame . '
 };
-' . $this->getJSStartTree()
+' 				. $this->getJSStartTree()
 		);
 	}
 
-	abstract function customJSFile();
+	abstract protected function customJSFile();
 
 	function getHTMLContruct($onresize = ''){
 		return

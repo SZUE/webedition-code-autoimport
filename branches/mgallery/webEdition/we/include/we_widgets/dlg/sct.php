@@ -154,7 +154,7 @@ echo we_html_tools::getHtmlTop(g_l('cockpit', '[shortcuts]'), '', '', STYLESHEET
 		we_html_element::jsElement($jsPrefs . "
 _aLang={" . implode(',', $jsLang) . "};
 var g_l={
-all_selected:'" . g_l('cockpit', '[all_selected]') . "',
+	all_selected:'" . g_l('cockpit', '[all_selected]') . "',
 };
 ") .
 		we_html_element::jsScript(JS_DIR . 'widgets/sct.js'), we_html_element::htmlBody(

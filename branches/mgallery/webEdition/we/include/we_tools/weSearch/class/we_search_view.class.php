@@ -1418,10 +1418,6 @@ function submitForm(target,action,method) {
 }');
 	}
 
-	function getJSSubmitFunction(){
-		return '';
-	}
-
 	function processVariables(){
 		if(isset($_SESSION['weS'][$this->toolName . '_session'])){
 			$this->Model = $_SESSION['weS'][$this->toolName . '_session'];

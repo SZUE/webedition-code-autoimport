@@ -72,6 +72,7 @@ abstract class we_html_tools{
 		$elemOut = '';
 
 		for($i = 1; $i < 7; ++$i){
+//FIXME:remove eval
 			$var = ${'col' . $i};
 			if($var){
 				$tmp = '<td';

@@ -76,7 +76,6 @@ class we_navigation_frames extends we_modules_frame{
 		}
 
 		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
-		$_loader = new we_navigation_treeDataSource('table:' . $this->Table);
 
 		$rootjs = (!$pid ?
 				'top.content.treeData.clear();
@@ -87,7 +86,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 				'cmd' => 'no_cmd'));
 
 		return $this->getHTMLDocument(we_html_element::htmlBody(array(), we_html_element::htmlForm(array('name' => 'we_form'), $hiddens .
-						we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(!$pid, $_loader->getItems($pid, $offset, $this->Tree->default_segment, '')))
+						we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(!$pid, we_navigation_tree::getItems($pid, $offset, $this->Tree->default_segment)))
 					)
 		));
 	}
@@ -125,8 +124,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 			$we_tabs->addTab(new we_tab(g_l('navigation', '[preview]'), '((top.content.activ_tab=="preview") ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('preview');", array("id" => "tab_preview")));
 		}
 
-		$tabsHead = we_tabs::getHeader() .
-			we_html_element::jsElement(
+		$tabsHead = we_tabs::getHeader(
 				($this->Model->IsFolder == 0 ? '
 if(' . $this->View->topFrame . '.activ_tab!=1 && ' . $this->View->topFrame . '.activ_tab!=3) {
 	' . $this->View->topFrame . '.activ_tab=1;

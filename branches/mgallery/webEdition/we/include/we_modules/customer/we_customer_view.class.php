@@ -1164,11 +1164,9 @@ self.close();');
 
 	public function getHomeScreen(){
 		$hiddens['cmd'] = 'home';
-		$GLOBALS['we_head_insert'] = $this->getJSProperty();
-		$GLOBALS['we_body_insert'] = we_html_element::htmlForm(array('name' => 'we_form'), $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden('home', 0));
 		$content = we_html_button::create_button("fat:new_customer,fa-lg fa-user-plus", "javascript:top.opener.top.we_cmd('new_customer');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_CUSTOMER"));
 
-		return parent::getHomeScreen('customer', "customer.gif", $content);
+		return parent::getHomeScreen('customer', "customer.gif", $content, we_html_element::htmlForm(array('name' => 'we_form'), $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden('home', 0)));
 	}
 
 }

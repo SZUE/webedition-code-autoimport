@@ -337,7 +337,7 @@ function folders_removed() {
 }
 
 function delete_menu_entries(ids) {
-	var i, done = 0;
+	var i = 0;
 	var t = treeData;
 	var cont = new container();
 	del_parents = [];

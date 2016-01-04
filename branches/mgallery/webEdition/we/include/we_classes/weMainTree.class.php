@@ -99,7 +99,7 @@ if(weWindow.treeData){
 		return $s;
 	}
 
-	function customJSFile(){
+	protected function customJSFile(){
 		return we_html_element::jsScript(JS_DIR . 'main_tree.js');
 	}
 

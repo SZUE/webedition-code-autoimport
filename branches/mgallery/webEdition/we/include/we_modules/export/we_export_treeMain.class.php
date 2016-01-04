@@ -24,7 +24,7 @@
  */
 class we_export_treeMain extends weTree{
 
-	function customJSFile(){
+	protected function customJSFile(){
 		return parent::customJSFile() . we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_treeMain.js');
 	}
 

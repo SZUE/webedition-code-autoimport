@@ -89,8 +89,7 @@ function submitForm(target, action, method) {
 	f.method = (method ? method : "post");
 	f.submit();
 }
+
 function checkData() {
 	return true;
 }
-
-self.focus();

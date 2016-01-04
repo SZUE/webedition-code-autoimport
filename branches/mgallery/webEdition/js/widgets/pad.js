@@ -205,7 +205,7 @@ function convertDate(sDate, sFormat) {
 	var arr = sDate.split((sFormat == '%Y-%m-%d') ? '.' : '-');
 	separator = (sFormat == '%Y-%m-%d') ? '-' : '.';
 	for (var x = arr.length - 1; x >= 0; x--) {
-		fixedImplode += (separator + String(arr[x]));
+		fixedImplode += (separator + arr[x].toString());
 	}
 	fixedImplode = fixedImplode.substring(separator.length, fixedImplode.length);
 	return fixedImplode;

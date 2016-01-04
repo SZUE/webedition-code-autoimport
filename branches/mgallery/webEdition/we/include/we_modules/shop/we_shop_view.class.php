@@ -70,7 +70,7 @@ var isDocument=' . intval($resultD) . ';
 var isObject=' . intval((!empty($resultO))) . ';
 var classID=' . $classid . ';
 ') .
-			we_html_element::jsScript(JS_DIR . 'we_modules/shop/we_shop_view.js', 'parent.document.title = "' . $title . '";');
+			we_html_element::jsScript(JS_DIR . 'we_modules/shop/we_shop_view.js', 'parent.document.title=\'' . $title . '\';');
 	}
 
 	function getJSProperty(){
@@ -733,10 +733,6 @@ function CalendarChanged(calObject) {
 		</body>
 		</html>
 		<?php
-	}
-
-	function getJSSubmitFunction(){
-		return '';
 	}
 
 	function processCommands(){

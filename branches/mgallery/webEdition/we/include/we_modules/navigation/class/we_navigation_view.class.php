@@ -33,38 +33,40 @@ class we_navigation_view extends we_modules_view{
 
 	function getCommonHiddens($cmds = array()){
 		return
-				parent::getCommonHiddens($cmds) .
-				we_html_element::htmlHiddens(array(
-					'vernr' => (isset($cmds['vernr']) ? $cmds['vernr'] : 0),
-					'delayCmd' => (isset($cmds['delayCmd']) ? $cmds['delayCmd'] : ''),
-					'delayParam' => (isset($cmds['delayParam']) ? $cmds['delayParam'] : '')
+			parent::getCommonHiddens($cmds) .
+			we_html_element::htmlHiddens(array(
+				'vernr' => (isset($cmds['vernr']) ? $cmds['vernr'] : 0),
+				'delayCmd' => (isset($cmds['delayCmd']) ? $cmds['delayCmd'] : ''),
+				'delayParam' => (isset($cmds['delayParam']) ? $cmds['delayParam'] : '')
 		));
 	}
 
 	function getJSTop(){
 		return
-				we_html_element::jsElement('
-WE().consts.g_l.navigation.view={
-	documents:"' . g_l('navigation', '[documents]') . '",
-	objects:"' . g_l('navigation', '[objects]') . '",
-	categories:"' . g_l('navigation', '[categories]') . '",
-	docLink:"' . g_l('navigation', '[docLink]') . '",
-	urlLink:"' . g_l('navigation', '[urlLink]') . '",
-	objLink:"' . g_l('navigation', '[objLink]') . '",
-	catLink:"' . g_l('navigation', '[catLink]') . '",
-	populate_question:"' . g_l('navigation', '[populate_question]') . '",
-	depopulate_question:"' . g_l('navigation', '[depopulate_question]') . '",
-	save_populate_question:"' . g_l('navigation', '[save_populate_question]') . '",
-	delete_alert:"' . g_l('navigation', '[delete_alert]') . '",
-	reset_customerfilter_question:"' . g_l('navigation', '[reset_customerfilter_question]') . '",
-	nothing_to_save:"' . we_message_reporting::prepareMsgForJS(g_l('navigation', '[nothing_to_save]')) . '",
-	nothing_selected:"' . we_message_reporting::prepareMsgForJS(g_l('navigation', '[nothing_selected]')) . '",
-	nothing_to_delete:"' . we_message_reporting::prepareMsgForJS(g_l('navigation', '[nothing_to_delete]')) . '",
-	no_perms:"' . we_message_reporting::prepareMsgForJS(g_l('navigation', '[no_perms]')) . '",
-	no_workspace:"' . we_message_reporting::prepareMsgForJS(g_l('navigation', '[no_workspace]')) . '",
-};
-WE().consts.g_l.navigation.rule={
-	save_error_fields_value_not_valid:"' . we_message_reporting::prepareMsgForJS(g_l('alert', '[save_error_fields_value_not_valid]')) . '",
+			we_html_element::jsElement('
+WE().consts.g_l.navigation={
+	view:{
+		documents:"' . g_l('navigation', '[documents]') . '",
+		objects:"' . g_l('navigation', '[objects]') . '",
+		categories:"' . g_l('navigation', '[categories]') . '",
+		docLink:"' . g_l('navigation', '[docLink]') . '",
+		urlLink:"' . g_l('navigation', '[urlLink]') . '",
+		objLink:"' . g_l('navigation', '[objLink]') . '",
+		catLink:"' . g_l('navigation', '[catLink]') . '",
+		populate_question:"' . g_l('navigation', '[populate_question]') . '",
+		depopulate_question:"' . g_l('navigation', '[depopulate_question]') . '",
+		save_populate_question:"' . g_l('navigation', '[save_populate_question]') . '",
+		delete_alert:"' . g_l('navigation', '[delete_alert]') . '",
+		reset_customerfilter_question:"' . g_l('navigation', '[reset_customerfilter_question]') . '",
+		nothing_to_save:"' . we_message_reporting::prepareMsgForJS(g_l('navigation', '[nothing_to_save]')) . '",
+		nothing_selected:"' . we_message_reporting::prepareMsgForJS(g_l('navigation', '[nothing_selected]')) . '",
+		nothing_to_delete:"' . we_message_reporting::prepareMsgForJS(g_l('navigation', '[nothing_to_delete]')) . '",
+		no_perms:"' . we_message_reporting::prepareMsgForJS(g_l('navigation', '[no_perms]')) . '",
+		no_workspace:"' . we_message_reporting::prepareMsgForJS(g_l('navigation', '[no_workspace]')) . '",
+	},
+	rule:{
+		save_error_fields_value_not_valid:"' . we_message_reporting::prepareMsgForJS(g_l('alert', '[save_error_fields_value_not_valid]')) . '",
+	}
 };
 
 WE().consts.navigation={
@@ -83,7 +85,7 @@ WE().consts.navigation={
 var data={
 	frameset:"' . $this->frameset . '",
 };') .
-				we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigation_view.js');
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigation_view.js');
 	}
 
 	function getJSProperty(){
@@ -108,11 +110,7 @@ var data={
 };
 
 var weNavTitleField = [' . implode(',', $_objFields) . '];'
-				) . we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigation_view_prop.js');
-	}
-
-	function getJSSubmitFunction(){
-		return '';
+			) . we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigation_view_prop.js');
 	}
 
 	function getEditNaviPosition(){
@@ -225,8 +223,8 @@ if(top.content.treeData){
 				}
 
 				$js = ($newone ?
-								'top.content.treeData.makeNewEntry({id:\'' . $this->Model->ID . '\',parentid:\'' . $this->Model->ParentID . '\',text:\'' . addslashes($this->Model->Text) . '\',open:0,contenttype:\'' . ($this->Model->IsFolder ? 'folder' : 'we/navigation') . '\',table:\'' . NAVIGATION_TABLE . '\',published:0,order:' . $this->Model->Ordn . '});' :
-								'top.content.treeData.updateEntry({id:' . $this->Model->ID . ',text:\'' . addslashes($this->Model->Text) . '\',parentid:' . $this->Model->ParentID . ',order:\'' . $this->Model->Depended . '\',tooltip:' . $this->Model->ID . '});');
+						'top.content.treeData.makeNewEntry({id:\'' . $this->Model->ID . '\',parentid:\'' . $this->Model->ParentID . '\',text:\'' . addslashes($this->Model->Text) . '\',open:0,contenttype:\'' . ($this->Model->IsFolder ? 'folder' : 'we/navigation') . '\',table:\'' . NAVIGATION_TABLE . '\',published:0,order:' . $this->Model->Ordn . '});' :
+						'top.content.treeData.updateEntry({id:' . $this->Model->ID . ',text:\'' . addslashes($this->Model->Text) . '\',parentid:' . $this->Model->ParentID . ',order:\'' . $this->Model->Depended . '\',tooltip:' . $this->Model->ID . '});');
 
 				if($this->Model->IsFolder && $this->Model->Selection == we_navigation_navigation::SELECTION_DYNAMIC){
 					$_old_items = array();
@@ -253,15 +251,15 @@ if(top.content.treeData){
 				$delaycmd = we_base_request::_(we_base_request::JS, 'delayCmd');
 
 				echo we_html_element::jsElement($js . 'top.content.editor.edheader.location.reload();' .
-						we_message_reporting::getShowMessageCall(g_l('navigation', ($this->Model->IsFolder == 1 ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) . '
+					we_message_reporting::getShowMessageCall(g_l('navigation', ($this->Model->IsFolder == 1 ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) . '
 top.content.hot=0;
 if(top.content.makeNewDoc) {
 	setTimeout("top.content.we_cmd(\"module_navigation_' . (($this->Model->IsFolder == 1) ? 'new_group' : 'new') . '\",100)");
 }' .
-						($delaycmd ?
-								'top.content.we_cmd("' . $delaycmd . '"' . (($dp = we_base_request::_(we_base_request::INT, 'delayParam')) ? ',"' . $dp . '"' : '' ) . ');' :
-								''
-						)
+					($delaycmd ?
+						'top.content.we_cmd("' . $delaycmd . '"' . (($dp = we_base_request::_(we_base_request::INT, 'delayParam')) ? ',"' . $dp . '"' : '' ) . ');' :
+						''
+					)
 				);
 
 				if($delaycmd){
@@ -288,7 +286,7 @@ setTimeout(function(){' . we_message_reporting::getShowMessageCall(g_l('navigati
 					$_REQUEST['pnt'] = 'edbody';
 				} else {
 					echo we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('navigation', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR)
+						we_message_reporting::getShowMessageCall(g_l('navigation', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 				}
 				break;
@@ -357,7 +355,7 @@ setTimeout(function(){' . we_message_reporting::getShowMessageCall(g_l('navigati
 				break;
 			case 'create_template':
 				echo we_html_element::jsElement(
-						'top.content.opener.top.we_cmd("new","' . TEMPLATES_TABLE . '","","' . we_base_ContentTypes::TEMPLATE . '","","' . base64_encode($this->Model->previewCode) . '");
+					'top.content.opener.top.we_cmd("new","' . TEMPLATES_TABLE . '","","' . we_base_ContentTypes::TEMPLATE . '","","' . base64_encode($this->Model->previewCode) . '");
 					');
 				break;
 			case 'populateFolderWs':
@@ -517,14 +515,12 @@ setTimeout(function(){' . we_message_reporting::getShowMessageCall(g_l('navigati
 
 	public function getHomeScreen(){
 		$hiddens['cmd'] = 'home';
-		$GLOBALS['we_head_insert'] = $this->getJSProperty();
-		$GLOBALS['we_body_insert'] = we_html_element::htmlForm(array('name' => 'we_form'), $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden('home', '0'));
 
 		$createNavigation = we_html_button::create_button('new_item', "javascript:we_cmd('module_navigation_new');", true, 0, 0, "", "", !permissionhandler::hasPerm('EDIT_NAVIGATION'));
 		$createNavigationGroup = we_html_button::create_button('new_folder', "javascript:we_cmd('module_navigation_new_group');", true, 0, 0, "", "", !permissionhandler::hasPerm('EDIT_NAVIGATION'));
 		$content = $createNavigation . '<br/>' . $createNavigationGroup;
 
-		return parent::getHomeScreen('navigation', 'navigation.gif', $content);
+		return parent::getHomeScreen('navigation', 'navigation.gif', $content, we_html_element::htmlForm(array('name' => 'we_form'), $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden('home', '0')));
 	}
 
 }

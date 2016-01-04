@@ -77,8 +77,7 @@ class we_voting_frames extends we_modules_frame{
 			}
 		}
 
-		$tabsHead = we_tabs::getHeader() .
-			we_html_element::jsElement('
+		$tabsHead = we_tabs::getHeader('
 				function setTab(tab) {
 					parent.edbody.toggle("tab"+' . $this->topFrame . '.activ_tab);
 					parent.edbody.toggle("tab"+tab);

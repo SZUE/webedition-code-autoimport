@@ -235,16 +235,6 @@ var frameSet="' . $this->frameset . '";
 ') . we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_top.js');
 	}
 
-	function getJSSubmitFunction(){
-		return we_html_element::jsElement('
-function submitForm() {
-	var f = self.document.we_form;
-	f.target = "cmd";
-	f.method = "post";
-	f.submit();
-}');
-	}
-
 	function getJSProperty($load = ''){
 		$_mailCheck = (!empty($this->settings['reject_save_malformed']) ?
 				"we.validate.email(email);" :
@@ -1663,13 +1653,11 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 	}
 
 	public function getHomeScreen(){
-		$GLOBALS['we_head_insert'] = $this->getJSProperty();
-		$GLOBALS['we_body_insert'] = we_html_element::htmlForm(array('name' => 'we_form'), $this->getHiddens(array('ncmd' => 'home')) . we_html_element::htmlHidden('home', 0));
 		$content = we_html_button::create_button("new_newsletter", "javascript:top.opener.top.we_cmd('new_newsletter');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_NEWSLETTER")) .
 			'<br/>' .
 			we_html_button::create_button("new_newsletter_group", "javascript:top.opener.top.we_cmd('new_newsletter_group');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_NEWSLETTER"));
 
-		return parent::getHomeScreen('newsletter', "newsletter.gif", $content);
+		return parent::getHomeScreen('newsletter', "newsletter.gif", $content, we_html_element::htmlForm(array('name' => 'we_form'), $this->getHiddens(array('ncmd' => 'home')) . we_html_element::htmlHidden('home', 0)));
 	}
 
 	private static function we_getObjectFileByID($id, $includepath = ''){

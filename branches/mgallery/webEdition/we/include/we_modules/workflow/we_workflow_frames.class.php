@@ -69,11 +69,10 @@ class we_workflow_frames extends we_modules_frame{
 			$we_tabs->addTab(new we_tab(g_l('tabs', '[editor][information]'), we_tab::ACTIVE, "//", array("id" => "tab_0")));
 		}
 
-		$tab_header = we_tabs::getHeader();
 		$textPre = g_l('modules_workflow', ($mode == 1 ? '[document]' : '[workflow]'));
 		$textPost = '/' . $text;
 
-		$extraHead = we_html_element::jsElement('
+		$extraHead = we_tabs::getHeader('
 function setTab(tab){
 	switch(tab){
 		case 0:

@@ -202,7 +202,7 @@ function delRow(id) {
 }
 
 function resetVersion(id, documentID, version, table) {
-	Check = confirm(g_l.resetVersions);
+	Check = confirm(WE().consts.g_l.versions.resetVersions);
 	if (Check === true) {
 		if (document.getElementById("publishVersion_" + id) !== null) {
 			if (document.getElementById("publishVersion_" + id).checked) {
@@ -254,10 +254,10 @@ function checkAll() {
 	var checkboxes = document.getElementsByName("deleteVersion");
 	var check = false;
 	var label = document.getElementById("label_deleteAllVersions");
-	label.innerHTML = g_l.mark;
+	label.innerHTML = WE().consts.g_l.versions.mark;
 	if (checkAllDoc[0].checked) {
 		check = true;
-		label.innerHTML = g_l.notMark;
+		label.innerHTML = WE().consts.g_l.versions.notMark;
 	}
 	for (var i = 0; i < checkboxes.length; i++) {
 		checkboxes[i].checked = check;
@@ -372,15 +372,15 @@ function deleteVers() {
 	}
 
 	if (check === false) {
-		top.we_showMessage(g_l.notChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
+		top.we_showMessage(WE().consts.g_l.versions.notChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
 		return;
 	}
-	Check = confirm(g_l.deleteVersions);
+	Check = confirm(WE().consts.g_l.versions.deleteVersions);
 	if (Check === true) {
 		var label = document.getElementById("label_deleteAllVersions");
 		if (checkAllDoc[0].checked) {
 			checkAllDoc[0].checked = false;
-			label.innerHTML = g_l.mark;
+			label.innerHTML = WE().consts.g_l.versions.mark;
 			if (document.we_form.searchstart.value !== 0) {
 				document.we_form.searchstart.value = document.we_form.searchstart.value - searchClass.anzahl;
 			}

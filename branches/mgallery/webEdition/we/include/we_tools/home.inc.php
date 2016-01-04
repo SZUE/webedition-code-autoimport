@@ -30,8 +30,7 @@ $_starttable->setCol($_row++, 0, array("class" => "defaultfont titleline", "cols
 $_starttable->setCol($_row++, 0, array("class" => "defaultfont", "colspan" => 3), "");
 $_starttable->setCol($_row++, 0, array("style" => "text-align:center"), $content);
 
-echo we_html_element::cssLink(CSS_DIR . 'tools_home.css') .
- (!empty($GLOBALS["we_head_insert"]) ? $GLOBALS["we_head_insert"] : "");
+echo we_html_element::cssLink(CSS_DIR . 'tools_home.css') . $GLOBALS["we_head_insert"];
 ?>
 
 </head>
@@ -45,7 +44,7 @@ $tooldir = ($tool === 'weSearch' ? WE_INCLUDES_DIR . 'we_tools/' : WE_APPS_DIR);
 	<div id="tabelle"><?php echo $_starttable->getHtml(); ?></div>
 	<div id="modimage"><img src="<?php echo $tooldir . $tool . '/layout/home.gif'; ?>" width="335" height="329" /></div>
 
-<?php echo (isset($GLOBALS["we_body_insert"]) ? $GLOBALS["we_body_insert"] : ""); ?>
+	<?php echo $GLOBALS["we_body_insert"]; ?>
 </body>
 
 </html>

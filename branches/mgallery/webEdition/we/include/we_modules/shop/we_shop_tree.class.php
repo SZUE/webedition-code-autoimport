@@ -24,21 +24,32 @@
  */
 class we_shop_tree extends weTree{
 
-	function customJSFile(){
+	protected function customJSFile(){
 		return we_html_element::jsScript(JS_DIR . 'shop_tree.js');
+	}
+
+	function getJSStartTree(){
+		return '
+function startTree(){
+	treeData.frames={
+		top:' . $this->topFrame . ',
+		cmd:' . $this->cmdFrame . ',
+		tree:' . $this->treeFrame . '
+	};
+	loadData();
+	drawTree();
+}';
 	}
 
 	function getJSTreeCode(){
 		$ret = we_html_element::cssLink(CSS_DIR . 'tree.css') .
-				we_html_element::jsElement('
+			we_html_element::jsElement('
 var table="' . SHOP_TABLE . '";
 WE().consts.g_l.shop.tree={
 	treeYearClick:"' . g_l('modules_shop', '[treeYearClick]') . '",
 	treeYear:"' . g_l('modules_shop', '[treeYear]') . '"
 };
-') .
-				we_html_element::jsScript(JS_DIR . 'tree.js', 'self.focus();') .
-				we_html_element::jsScript(JS_DIR . 'shop_tree.js');
+');
 		$menu = '
 function loadData() {
 	treeData.clear();
@@ -74,29 +85,27 @@ function loadData() {
 });";
 
 			if($this->db->f('DateShipping') <= 0){
-				if(isset(${'l' . $this->db->f('mdate')})){
-					${'l' . $this->db->f('mdate')} ++;
+				if(isset($l[  $this->db->f('mdate')])){
+					$l[  $this->db->f('mdate')]++;
 				} else {
-					${'l' . $this->db->f('mdate')} = 1;
+					$l[  $this->db->f('mdate')] = 1;
 				}
 			}
 
-
-//FIXME: remove eval
-			if(isset(${'v' . $this->db->f('mdate')})){
-				${'v' . $this->db->f('mdate')} ++;
+			if(isset($v[ $this->db->f('mdate')])){
+				$v[ $this->db->f('mdate')] ++;
 			} else {
-				${'v' . $this->db->f('mdate')} = 1;
+				$v[ $this->db->f('mdate')] = 1;
 			}
 		}
 
 		$year = we_base_request::_(we_base_request::INT, 'year', date('Y'));
 //unset($_SESSION['year']);
 		for($f = 12; $f > 0; $f--){
-			$r = (isset(${'v' . $f . $year}) ? ${'v' . $f . $year} : '');
-			$k = (isset(${'l' . $f . $year}) ? ${'l' . $f . $year} : '');
+			$r = (isset($v[$f . $year]) ? $v[$f . $year] : '');
+			$k = (isset($l[$f . $year]) ? $l[$f . $year] : '');
 			$menu.= "treeData.add({
-	id:'" . $f . $year . "',
+	id:" . $f . $year . ",
 	parentid:0,
 	text:'" . (($f < 10) ? "0" . $f : $f) . ' ' . g_l('modules_shop', '[sl]') . " " . g_l('date', '[month][long][' . ($f - 1) . ']') . " (" . (($k > 0) ? "<b>" . $k . "</b>" : 0) . "/" . (($r > 0) ? $r : 0) . ")',
 	typ:'folder',
@@ -108,9 +117,9 @@ function loadData() {
 	published:" . (($k > 0) ? 1 : 0) . "
 });";
 		}
-		$menu.='top.yearshop = ' . $year . ';
+		$menu.='treeData.yearshop = ' . $year . ';
 			}';
-		return parent::getJSTreeCode() . $ret . we_html_element::jsElement($menu);
+		return $ret . we_html_element::jsElement($menu) . parent::getJSTreeCode();
 	}
 
 }

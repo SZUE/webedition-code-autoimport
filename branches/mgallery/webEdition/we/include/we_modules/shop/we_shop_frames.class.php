@@ -221,7 +221,7 @@ function we_cmd() {
 		$textPre = g_l('modules_shop', $bid > 0 ? '[orderList][order]' : '[order_view]');
 		$textPost = !empty($_REQUEST['mid']) && $_REQUEST['mid'] > 0 ? (strlen($_REQUEST['mid']) > 5 ? g_l('modules_shop', '[month][' . substr($_REQUEST['mid'], 0, -5) . ']') . " " . substr($_REQUEST['mid'], -5, 4) : substr($_REQUEST['mid'], 1)) : ($bid ? sprintf(g_l('modules_shop', '[orderNo]'), $bid, $cdat) : '');
 
-		$tab_head = we_tabs::getHeader() . we_html_element::jsElement('
+		$tab_head = we_tabs::getHeader('
 function setTab(tab) {
 	switch (tab) {
 		case 0:
@@ -278,7 +278,7 @@ function setTab(tab) {
 			}
 		}
 
-		$tab_head = we_tabs::getHeader() . we_html_element::jsElement('
+		$tab_head = we_tabs::getHeader('
 function setTab(tab) {
 	switch (tab) {
 		case 0:
@@ -289,7 +289,7 @@ function setTab(tab) {
 			break;
 		' . (isset($yearTrans) ? '
 		case 2:
-			parent.edbody.document.location = "edit_shop_revenueTop.php?ViewYear=' . $yearTrans . '" // " + top.yearshop
+			parent.edbody.document.location = "edit_shop_revenueTop.php?ViewYear=' . $yearTrans . '" // " + treeData.yearshop
 			break;
 		' : '') . '
 	}

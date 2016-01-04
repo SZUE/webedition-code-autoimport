@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -26,7 +25,6 @@
 we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT);
 
 class we_export_view extends we_modules_view{
-
 	var $export;
 	var $editorBodyDoc;
 	private $page;
@@ -39,19 +37,19 @@ class we_export_view extends we_modules_view{
 
 	function getCommonHiddens($cmds = array()){
 		return
-				parent::getCommonHiddens($cmds) .
-				we_html_element::htmlHiddens(array(
-					"table" => we_base_request::_(we_base_request::TABLE, "table", FILE_TABLE),
-					"ID" => $this->export->ID,
-					"IsFolder" => $this->export->IsFolder,
-					"selDocs" => $this->export->selDocs,
-					"selTempl" => $this->export->selTempl,
-					"selObjs" => $this->export->selObjs,
-					"selClasses" => $this->export->selClasses,
-					"selDocs_open" => we_base_request::_(we_base_request::INTLIST, "selDocs_open", ''),
-					"selTempl_open" => we_base_request::_(we_base_request::INTLIST, "selTempl_open", ''),
-					"selObjs_open" => we_base_request::_(we_base_request::INTLIST, "selObjs_open", ''),
-					"selClasses_open" => we_base_request::_(we_base_request::INTLIST, "selClasses_open", '')
+			parent::getCommonHiddens($cmds) .
+			we_html_element::htmlHiddens(array(
+				"table" => we_base_request::_(we_base_request::TABLE, "table", FILE_TABLE),
+				"ID" => $this->export->ID,
+				"IsFolder" => $this->export->IsFolder,
+				"selDocs" => $this->export->selDocs,
+				"selTempl" => $this->export->selTempl,
+				"selObjs" => $this->export->selObjs,
+				"selClasses" => $this->export->selClasses,
+				"selDocs_open" => we_base_request::_(we_base_request::INTLIST, "selDocs_open", ''),
+				"selTempl_open" => we_base_request::_(we_base_request::INTLIST, "selTempl_open", ''),
+				"selObjs_open" => we_base_request::_(we_base_request::INTLIST, "selObjs_open", ''),
+				"selClasses_open" => we_base_request::_(we_base_request::INTLIST, "selClasses_open", '')
 		));
 	}
 
@@ -115,16 +113,12 @@ function start() {
 }') . we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_prop.js');
 	}
 
-	function getJSSubmitFunction(){
-		return '';
-	}
-
 	function processCommands(){
 		switch(we_base_request::_(we_base_request::STRING, "cmd")){
 			case "new_export":
 				if(!permissionhandler::hasPerm("NEW_EXPORT")){
 					echo we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
+						we_message_reporting::getShowMessageCall(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					break;
 				} else {
@@ -139,7 +133,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			case "new_export_group":
 				if(!permissionhandler::hasPerm("NEW_EXPORT")){
 					echo we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
+						we_message_reporting::getShowMessageCall(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					break;
 				} else {
@@ -155,7 +149,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			case "export_edit":
 				if(!permissionhandler::hasPerm("EDIT_EXPORT")){
 					echo we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
+						we_message_reporting::getShowMessageCall(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					break;
 				}
@@ -170,21 +164,21 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			case "save_export":
 				if(!permissionhandler::hasPerm("NEW_EXPORT")){
 					echo we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
+						we_message_reporting::getShowMessageCall(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					break;
 				}
 				$js = "";
 				if($this->export->filenameNotValid($this->export->Text)){
 					echo we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('export', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR)
+						we_message_reporting::getShowMessageCall(g_l('export', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					break;
 				}
 				// check if filename is valid.
 				if($this->export->exportToFilenameValid($this->export->Filename)){
 					echo we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('export', '[wrongfilename]'), we_message_reporting::WE_MESSAGE_ERROR)
+						we_message_reporting::getShowMessageCall(g_l('export', '[wrongfilename]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					break;
 				}
@@ -218,7 +212,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 					$weAcResult = $weAcQuery->getItemById($this->export->Folder, FILE_TABLE, array("IsFolder"));
 					if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
 						echo we_html_element::jsElement(
-								we_message_reporting::getShowMessageCall(g_l('export', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
+							we_message_reporting::getShowMessageCall(g_l('export', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
 						);
 						break;
 					}
@@ -240,15 +234,15 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				}
 
 				$js = ($newone ?
-								'top.content.treeData.makeNewEntry({id:\'' . $this->export->ID . '\',parentid:\'' . $this->export->ParentID . '\',text:\'' . $this->export->Text . '\',open:0,contenttype:\'' . ($this->export->IsFolder ? 'folder' : 'we/export') . '\',table:\'' . EXPORT_TABLE . '\'});' .
-								'top.content.drawTree();' :
-								'top.content.treeData.updateEntry({id:' . $this->export->ID . ',text:"' . $this->export->Text . '",parentid:"' . $this->export->ParentID . '"});'
-						);
+						'top.content.treeData.makeNewEntry({id:\'' . $this->export->ID . '\',parentid:\'' . $this->export->ParentID . '\',text:\'' . $this->export->Text . '\',open:0,contenttype:\'' . ($this->export->IsFolder ? 'folder' : 'we/export') . '\',table:\'' . EXPORT_TABLE . '\'});' .
+						'top.content.drawTree();' :
+						'top.content.treeData.updateEntry({id:' . $this->export->ID . ',text:"' . $this->export->Text . '",parentid:"' . $this->export->ParentID . '"});'
+					);
 				echo we_html_element::jsElement(
-						$js .
-						'top.content.editor.edheader.location.reload();' .
-						we_message_reporting::getShowMessageCall(g_l('export', ($this->export->IsFolder == 1 ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) .
-						'top.content.hot=0;'
+					$js .
+					'top.content.editor.edheader.location.reload();' .
+					we_message_reporting::getShowMessageCall(g_l('export', ($this->export->IsFolder == 1 ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) .
+					'top.content.hot=0;'
 				);
 
 				break;
@@ -267,7 +261,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 					$this->export = new we_export_export();
 				} else {
 					echo we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('export', ($this->export->IsFolder == 1 ? '[delete_group_nok]' : '[delete_nok]')), we_message_reporting::WE_MESSAGE_ERROR)
+						we_message_reporting::getShowMessageCall(g_l('export', ($this->export->IsFolder == 1 ? '[delete_group_nok]' : '[delete_nok]')), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 				}
 
@@ -305,12 +299,10 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 	public function getHomeScreen(){
 		$hiddens["cmd"] = "home";
-		$GLOBALS["we_head_insert"] = $this->getJSProperty();
-		$GLOBALS["we_body_insert"] = we_html_element::htmlForm(array("name" => "we_form"), $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden("home", 0)
-		);
 		$content = we_html_button::create_button("new_export", "javascript:top.opener.top.we_cmd('new_export');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_EXPORT")) . '<br/>' .
-				we_html_button::create_button("new_export_group", "javascript:top.opener.top.we_cmd('new_export_group');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_EXPORT"));
-		return parent::getHomeScreen("export", "export.gif", $content);
+			we_html_button::create_button("new_export_group", "javascript:top.opener.top.we_cmd('new_export_group');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_EXPORT"));
+		return parent::getHomeScreen("export", "export.gif", $content, we_html_element::htmlForm(array("name" => "we_form"), $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden("home", 0)
+		));
 	}
 
 }

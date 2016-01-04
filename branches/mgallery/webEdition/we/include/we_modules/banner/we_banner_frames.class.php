@@ -70,8 +70,7 @@ class we_banner_frames extends we_modules_frame{
 			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][statistics]'), ($page == 2 ? we_tab::ACTIVE : we_tab::NORMAL), "setTab(2);"));
 		}
 
-		$extraHead = we_tabs::getHeader() .
-			we_html_element::jsElement('
+		$extraHead = we_tabs::getHeader('
 function setTab(tab){
 	switch(tab){
 		case ' . we_banner_banner::PAGE_PROPERTY . ':

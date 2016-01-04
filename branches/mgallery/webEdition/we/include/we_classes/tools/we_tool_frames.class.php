@@ -78,8 +78,7 @@ abstract class we_tool_frames extends we_modules_frame{
 		$we_tabs = new we_tabs();
 		$we_tabs->addTab(new we_tab(g_l('tools', '[properties]'), '((' . $this->topFrame . '.activ_tab==1) ? ' . we_tab::ACTIVE . ': ' . we_tab::NORMAL . ')', "setTab('1');", array("id" => "tab_1")));
 
-		$tabsHead = we_tabs::getHeader() .
-			we_html_element::jsElement('
+		$tabsHead = we_tabs::getHeader('
 function mark() {
 	var elem = document.getElementById("mark");
 	elem.style.display = "inline";

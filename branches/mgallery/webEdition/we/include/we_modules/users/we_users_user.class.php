@@ -2231,9 +2231,8 @@ function show_seem_chooser(val) {
 			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][' . $val . ']'), ($tab == $key ? we_tab::ACTIVE : we_tab::NORMAL), 'self.setTab(' . $key . ');'));
 		}
 
-		$tab_header = we_tabs::getHeader();
 
-		return we_html_element::jsElement('
+		return we_tabs::getHeader('
 var activeTab = ' . self::TAB_DATA . ';
 function setTab(tab) {
 	switch(tab) {
@@ -2266,7 +2265,7 @@ function resetTabs(){
 		top.content.editor.edbody.document.we_form.tab.value = ' . self::TAB_DATA . ';
 		top.content.editor.edheader.tabCtrl.weTabs.setActiveTab(' . self::TAB_DATA . ');
 }') .
-			$tab_header .
+
 			'<div id="main"><div id="headrow"><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", ($this->Path ? : $this->getPath($this->ParentID))) . '</b></span></div>' . $we_tabs->getHTML() . '</div>';
 	}
 

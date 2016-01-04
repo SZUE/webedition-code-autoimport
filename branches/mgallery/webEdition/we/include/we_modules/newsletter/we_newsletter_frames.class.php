@@ -128,7 +128,7 @@ class we_newsletter_frames extends we_modules_frame{
 
 		$textPost = we_base_request::_(we_base_request::STRING, "txt", g_l('modules_newsletter', ($group ? '[new_newsletter_group]' : '[new_newsletter]')));
 
-		$js = we_html_element::jsElement('
+		$js = '
 function setTab(tab) {
 	switch (tab) {
 		case 0:
@@ -147,7 +147,7 @@ function setTab(tab) {
 			top.content.editor.edbody.we_cmd("switchPage",3);
 			break;
 	}
-}');
+}';
 
 		$we_tabs = new we_tabs();
 
@@ -161,7 +161,7 @@ function setTab(tab) {
 			//}
 		}
 
-		$tabHead = we_tabs::getHeader() . $js;
+		$tabHead = we_tabs::getHeader($js);
 
 		$body = we_html_element::htmlBody(array("onresize" => "weTabs.setFrameSize()", "onload" => "weTabs.setFrameSize()", "id" => "eHeaderBody"), '<div id="main"><div id="headrow"><b>' . oldHtmlspecialchars($textPre) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . oldHtmlspecialchars($textPost) . '</b></span></div>' .
 				$we_tabs->getHTML() .

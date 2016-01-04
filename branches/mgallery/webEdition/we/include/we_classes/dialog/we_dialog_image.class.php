@@ -514,14 +514,13 @@ class we_dialog_image extends we_dialog_base{
 		$yuiSuggest = & weSuggest::getInstance();
 		$css = !empty($this->args["cssClasses"]) ? explode(',', $this->args["cssClasses"]) : array();
 		return parent::getJs() . we_html_element::jsElement('
-			var classNames=' . ($css ? '["' . implode('","', $css) . '"]' : 'top.opener.weclassNames_tinyMce') . ' ;
-			var g_l={
-				"wysiwyg_none":"' . g_l('wysiwyg', '[none]') . '"
-			};
-			var ratioh = ' . (intval($this->args["width"] * $this->args["height"]) ? ($this->args["width"] / $this->args["height"]) : 0) . ';
-			var ratiow = ' . (intval($this->args["width"] * $this->args["height"]) ? ($this->args["height"] / $this->args["width"]) : 0) . ';
-
-		') .
+var classNames=' . ($css ? '["' . implode('","', $css) . '"]' : 'top.opener.weclassNames_tinyMce') . ' ;
+var g_l={
+	wysiwyg_none:"' . g_l('wysiwyg', '[none]') . '"
+};
+var ratioh = ' . (intval($this->args["width"] * $this->args["height"]) ? ($this->args["width"] / $this->args["height"]) : 0) . ';
+var ratiow = ' . (intval($this->args["width"] * $this->args["height"]) ? ($this->args["height"] / $this->args["width"]) : 0) . ';
+') .
 			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_image.js') .
 			weSuggest::getYuiFiles();
 	}

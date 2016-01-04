@@ -71,13 +71,11 @@ class we_banner_view extends we_modules_view{
 	}
 
 	public function getHomeScreen(){
-		$GLOBALS['we_head_insert'] = $this->getJSProperty();
-		$GLOBALS['we_body_insert'] = '<form name="we_form">' . $this->getHiddens() . '</form>';
 		$content = we_html_button::create_button("new_banner", "javascript:top.opener.top.we_cmd('new_banner');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_BANNER")) .
 			'<br/>' .
 			we_html_button::create_button("new_bannergroup", "javascript:top.opener.top.we_cmd('new_bannergroup');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_BANNER"));
 
-		return parent::getHomeScreen('banner', "banner.gif", $content);
+		return parent::getHomeScreen('banner', "banner.gif", $content, '<form name="we_form">' . $this->getHiddens() . '</form>');
 	}
 
 	function getProperties(){
@@ -223,7 +221,7 @@ WE().consts.g_l.banner.view = {
 	}
 
 	function getJSProperty(){
-		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'banner/banner_property.js');
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'banner/banner_property.js', 'self.focus();');
 	}
 
 	function processCommands(){
@@ -753,15 +751,15 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		$maxShow = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($this->uid . "_maxShow", 10, $this->banner->maxShow, "", "onchange=\"top.content.setHot();\"", "text", 100, 0), g_l('modules_banner', '[max_show]'), "left", "defaultfont");
 		$maxClicks = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($this->uid . "_maxClicks", 10, $this->banner->maxClicks, "", "onchange=\"top.content.setHot();\"", "text", 100, 0), g_l('modules_banner', '[max_clicks]'), "left", "defaultfont");
 		$weight = we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect($this->uid . "_weight", array(
-			8 => '1 (' . g_l('modules_banner', '[infrequent]') . ")",
-			7 => 2,
-			6 => 3,
-			5 => 4,
-			4 => '5 (' . g_l('modules_banner', '[normal]') . ")",
-			3 => 6,
-			2 => 7,
-			1 => 8,
-			0 => '9 (' . g_l('modules_banner', '[frequent]') . ")"), 1, $this->banner->weight), g_l('modules_banner', '[weight]'), "left", "defaultfont");
+					8 => '1 (' . g_l('modules_banner', '[infrequent]') . ")",
+					7 => 2,
+					6 => 3,
+					5 => 4,
+					4 => '5 (' . g_l('modules_banner', '[normal]') . ")",
+					3 => 6,
+					2 => 7,
+					1 => 8,
+					0 => '9 (' . g_l('modules_banner', '[frequent]') . ")"), 1, $this->banner->weight), g_l('modules_banner', '[weight]'), "left", "defaultfont");
 
 		return '<table class="default">
 	<tr>

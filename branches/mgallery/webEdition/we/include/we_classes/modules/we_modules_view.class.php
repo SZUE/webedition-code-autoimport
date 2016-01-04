@@ -55,6 +55,7 @@ class we_modules_view implements we_modules_viewIF{
 	}
 
 	function getJSSubmitFunction($def_target = "edbody"){
+		//only by customer + user
 		return '
 function submitForm(target,action,method,form) {
 	var f = form ? self.document.forms[form] : self.document.we_form;
@@ -78,11 +79,7 @@ function submitForm(target,action,method,form) {
 		$this->page = we_base_request::_(we_base_request::INT, 'page', $this->page);
 	}
 
-	public function getHomeScreen($mod, $icon, $content){
-		ob_start();
-		echo we_html_tools::getHtmlTop() .
-		STYLESHEET;
-
+	public function getHomeScreen($mod, $icon, $content, $body = ''){
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? $modData['text'] : '';
 
@@ -92,16 +89,14 @@ function submitForm(target,action,method,form) {
 		$_starttable->setCol($_row++, 0, array("class" => "defaultfont", "colspan" => 3), "");
 		$_starttable->setCol($_row++, 0, array("style" => "text-align:center"), $content);
 
-		echo we_html_element::cssLink(CSS_DIR . 'tools_home.css') .
-		(isset($GLOBALS['we_head_insert']) ? $GLOBALS['we_head_insert'] : "");
+		ob_start();
+		echo we_html_tools::getHtmlTop('', '', '', STYLESHEET . we_html_element::cssLink(CSS_DIR . 'tools_home.css') . $this->getJSProperty());
 		?>
-		</head>
-
 		<body bgcolor="#F0EFF0" onload="loaded = true;
 				var we_is_home = 1;">
 			<div id="tabelle"><?php echo $_starttable->getHtml(); ?></div>
 			<div id="modimage"><img src="<?php echo IMAGE_DIR . "startscreen/" . $icon; ?>" width="335" height="329" /></div>
-				<?php echo (isset($GLOBALS["we_body_insert"]) ? $GLOBALS["we_body_insert"] : ""); ?>
+				<?php echo $body; ?>
 		</body>
 		</html>
 		<?php

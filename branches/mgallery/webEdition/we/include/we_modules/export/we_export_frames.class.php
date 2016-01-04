@@ -76,8 +76,7 @@ class we_export_frames extends we_modules_frame{
 			$we_tabs->addTab(new we_tab(g_l('export', '[log]'), '((top.content.activ_tab==3) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('3');", array("id" => "tab_3")));
 		}
 
-		$tabsHead = we_tabs::getHeader() .
-			we_html_element::jsElement('
+		$tabsHead = we_tabs::getHeader('
 function setTab(tab) {
 	parent.edbody.toggle("tab"+top.content.activ_tab);
 	parent.edbody.toggle("tab"+tab);
