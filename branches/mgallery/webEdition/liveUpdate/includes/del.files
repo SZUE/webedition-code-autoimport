@@ -2468,7 +2468,6 @@ liveUpdate/templates/modules.inc.php
 liveUpdate/sqldumps/tblbannerprefs.sql
 liveUpdate/sqldumps/tblWebAdmin.sql
 liveUpdate/sqldumps/tblNewsletterPrefs.sql
-liveUpdate/sqldumps/tblMessages.sql
 liveUpdate/sqldumps/tblIcons.sql
 liveUpdate/sqldumps/tblContentTypes.sql
 liveUpdate/sqldumps/tblAnzeigePrefs.sql
