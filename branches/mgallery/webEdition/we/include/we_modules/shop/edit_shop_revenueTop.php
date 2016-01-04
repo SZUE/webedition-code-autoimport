@@ -44,21 +44,21 @@ function orderBy($a, $b){
 function getTitleLink($text, $orderKey){
 	$desc = we_base_request::_(we_base_request::BOOL, "orderDesc");
 	$_href = $_SERVER['SCRIPT_NAME'] .
-			'?ViewYear=' . $GLOBALS['selectedYear'] .
-			'&ViewMonth=' . $GLOBALS['selectedMonth'] .
-			'&orderBy=' . $orderKey .
-			'&actPage=' . $GLOBALS['actPage'] .
-			( ($GLOBALS['orderBy'] == $orderKey && !$desc) ? '&orderDesc=true' : '' );
+		'?ViewYear=' . $GLOBALS['selectedYear'] .
+		'&ViewMonth=' . $GLOBALS['selectedMonth'] .
+		'&orderBy=' . $orderKey .
+		'&actPage=' . $GLOBALS['actPage'] .
+		( ($GLOBALS['orderBy'] == $orderKey && !$desc) ? '&orderDesc=true' : '' );
 
 	return '<a href="' . $_href . '">' . $text . '</a>' . ($GLOBALS['orderBy'] == $orderKey ? ' <i class="fa fa-sort-' . ($desc ? 'desc' : 'asc') . ' fa-lg"></i>' : '<i class="fa fa-sort fa-lg"></i>');
 }
 
 function getPagerLink(){
 	return $_SERVER['SCRIPT_NAME'] .
-			'?ViewYear=' . $GLOBALS['selectedYear'] .
-			'&ViewMonth=' . $GLOBALS['selectedMonth'] .
-			'&orderBy=' . $GLOBALS['orderBy'] .
-			(we_base_request::_(we_base_request::BOOL, "orderDesc") ? '&orderDesc=true' : '' );
+		'?ViewYear=' . $GLOBALS['selectedYear'] .
+		'&ViewMonth=' . $GLOBALS['selectedMonth'] .
+		'&orderBy=' . $GLOBALS['orderBy'] .
+		(we_base_request::_(we_base_request::BOOL, "orderDesc") ? '&orderDesc=true' : '' );
 }
 
 function yearSelect($select_name){
@@ -82,7 +82,7 @@ function monthSelect($select_name, $selectedMonth){
 
 $mon = we_base_request::_(we_base_request::INT, 'ViewMonth');
 echo we_html_tools::getHtmlTop('', '', '', STYLESHEET .
-		we_html_element::jsElement('
+	we_html_element::jsElement('
 	function we_submitDateform() {
 		elem = document.forms[0];
 		elem.submit();
@@ -116,7 +116,7 @@ function we_cmd() {
 <form>';
 
 // get some preferences!
-$feldnamen = explode('|', f('SELECT pref_value from ' . SETTINGS_TABLE. ' WHERE tool="shop" AND pref_name="shop_pref"'));
+$feldnamen = explode('|', f('SELECT pref_value from ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_pref"'));
 $waehr = "&nbsp;" . oldHtmlspecialchars($feldnamen[0]);
 $numberformat = $feldnamen[2];
 $classid = (isset($feldnamen[3]) ? $feldnamen[3] : '');
@@ -236,9 +236,9 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 			if($calcVat){ // vat must be payed for this order
 				// now determine VAT
 				$articleVat = (isset($shopArticleObject[WE_SHOP_VAT_FIELD_NAME]) ?
-								$shopArticleObject[WE_SHOP_VAT_FIELD_NAME] :
-								(isset($defaultVat) ? $defaultVat : 0)
-						);
+						$shopArticleObject[WE_SHOP_VAT_FIELD_NAME] :
+						(isset($defaultVat) ? $defaultVat : 0)
+					);
 
 				if($articleVat > 0){
 					if(!isset($articleVatArray[$articleVat])){ // avoid notices
@@ -311,7 +311,6 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 				<td class="shopContentfontR">' . we_base_util::formatNumber($total) . $waehr . '</td>
 			</tr>' . "\n" .
 		$vatTable . '</table>' . "\n",
-		'space' => 0
 	);
 
 	$headline = array(
@@ -364,18 +363,15 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 
 	$parts[] = array(
 		'html' => we_html_tools::htmlDialogBorder3(670, 100, $content, $headline),
-		'space' => 0,
 		'noline' => true
 	);
 
 	$parts[] = array(
 		'html' => we_shop_pager::getStandardPagerHTML(getPagerLink(), $actPage, $nrOfPage, $maxRows),
-		'space' => 0
 	);
 } else {
 	$parts[] = array(
 		'html' => g_l('modules_shop', '[NoRevenue]') . ' (' . ($selectedMonth > 0 ? g_l('modules_shop', '[month][' . $selectedMonth . ']') . ' ' : '') . $selectedYear . ')',
-		'space' => 0
 	);
 }
 

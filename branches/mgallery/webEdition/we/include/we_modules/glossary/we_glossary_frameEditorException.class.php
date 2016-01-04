@@ -57,7 +57,7 @@ class we_glossary_frameEditorException extends we_glossary_frameEditor{
 		$item = array(
 			"headline" => g_l('modules_glossary', '[exception]'),
 			"html" => $content,
-			"space" => 120
+			'space' => 120
 		);
 		$parts[] = $item;
 

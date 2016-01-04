@@ -24,17 +24,17 @@
  */
 class we_fileupload_ui_preview extends we_fileupload_ui_base{
 	protected $formElements = array(
-		'uploader' => array('set' => false, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => true),
-		'importMeta' => array('set' => false, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => true),
-		'isSearchable' => array('set' => false, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => true),
-		'categories' => array('set' => false, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => true),
-		'parentId' => array('set' => false, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => true),
-		'sameName' => array('set' => false, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => true),
-		'attributes' => array('set' => false, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => true),
-		'thumbnails' => array('set' => false, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => true),
-		'imageResize' => array('set' => false, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => true),
-		'imageRotate' => array('set' => false, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => true),
-		'imageQuality' => array('set' => false, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => true),
+		'uploader' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
+		'importMeta' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
+		'isSearchable' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
+		'categories' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
+		'parentId' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
+		'sameName' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
+		'attributes' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
+		'thumbnails' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
+		'imageResize' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
+		'imageRotate' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
+		'imageQuality' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
 		'tableProperties' => array('foldAtNr' => -1, 'foldAtOpen' => '', 'foldAtClose' => '')
 	);
 	protected $isExternalBtnUpload = false;
@@ -98,27 +98,24 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 	}
 
 	protected function getHtmlDropZone($type = 'preview', $thumbnailSmall = ''){
-			$dropText = g_l('newFile', $this->isDragAndDrop ? '[drop_text_ok]' : '[drop_text_nok]');
+		$dropText = g_l('newFile', $this->isDragAndDrop ? '[drop_text_ok]' : '[drop_text_nok]');
 
-			return we_html_element::htmlDiv(array('id' => 'div_fileupload_fileDrag_state_0', 'class' => 'we_file_drag we_file_drag_content', 'style' => (!$this->isDragAndDrop ? 'border-color:white;' : ''), 'ondragenter' => "alert('wrong div')"),
-					we_html_element::htmlDiv(array('class' => 'filedrag_content_left', 'style' => (!$this->isDragAndDrop ? 'font-size:14px' : '')), $dropText) .
-					we_html_element::htmlDiv(array('class' => 'filedrag_content_right'), ($thumbnailSmall ? : we_html_element::jsElement('document.write(getTreeIcon("' . $this->contentType . '"));')))
+		return we_html_element::htmlDiv(array('id' => 'div_fileupload_fileDrag_state_0', 'class' => 'we_file_drag we_file_drag_content', 'style' => (!$this->isDragAndDrop ? 'border-color:white;' : ''), 'ondragenter' => "alert('wrong div')"), we_html_element::htmlDiv(array('class' => 'filedrag_content_left', 'style' => (!$this->isDragAndDrop ? 'font-size:14px' : '')), $dropText) .
+				we_html_element::htmlDiv(array('class' => 'filedrag_content_right'), ($thumbnailSmall ? : we_html_element::jsElement('document.write(getTreeIcon("' . $this->contentType . '"));')))
+			) .
+			we_html_element::htmlDiv(array('id' => 'div_fileupload_fileDrag_state_1', 'class' => 'we_file_drag we_file_drag_preview', 'style' => (!$this->isDragAndDrop ? 'border-color:rgb(243, 247, 255);' : '')), we_html_element::htmlDiv(array('id' => 'div_upload_fileDrag_innerLeft', 'class' => 'filedrag_preview_left'), we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_filename')) . we_html_element::htmlBr() .
+					we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_size')) . we_html_element::htmlBr() .
+					we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_type'))
 				) .
-				we_html_element::htmlDiv(array('id' => 'div_fileupload_fileDrag_state_1', 'class' => 'we_file_drag we_file_drag_preview', 'style' => (!$this->isDragAndDrop ? 'border-color:rgb(243, 247, 255);' : '')),
-					we_html_element::htmlDiv(array('id' => 'div_upload_fileDrag_innerLeft', 'class' => 'filedrag_preview_left'),
-						we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_filename')) . we_html_element::htmlBr() .
-						we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_size')) . we_html_element::htmlBr() .
-						we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_type'))
-					) .
-					we_html_element::htmlDiv(array('id' => 'div_upload_fileDrag_innerRight', 'class' => 'filedrag_preview_right'), '')
-				) .
-				($this->isDragAndDrop ? we_html_element::htmlDiv(array('id' => 'div_we_File_fileDrag', 'class' => 'we_file_drag we_file_drag_mask'), '') : '');
+				we_html_element::htmlDiv(array('id' => 'div_upload_fileDrag_innerRight', 'class' => 'filedrag_preview_right'), '')
+			) .
+			($this->isDragAndDrop ? we_html_element::htmlDiv(array('id' => 'div_we_File_fileDrag', 'class' => 'we_file_drag we_file_drag_mask'), '') : '');
 	}
 
 	protected function getHiddens(){
 		return $hiddens = parent::getHiddens() . we_html_element::htmlHiddens(array(
-			'we_doc_ct' => $this->contentType,
-			'we_doc_ext' => $this->extension,
+				'we_doc_ct' => $this->contentType,
+				'we_doc_ext' => $this->extension,
 		));
 	}
 
@@ -130,7 +127,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 
 		$html = we_html_forms::checkboxWithHidden(true, 'fu_doc_importMetadata', g_l('importFiles', '[import_metadata]'), false, 'defaultfont', '');
 		$headline = 'Metadaten';
-		
+
 		return $this->formElements[$name]['multiIconBox'] ? $this->makeMultiIconRow($name, $headline, $html) : $html;
 	}
 
@@ -233,13 +230,13 @@ function selectCategories() {
 		}
 
 		$html = we_html_element::htmlDiv(array('style' => 'margin:10px 0 0 0;'),
-			//we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[sameName_expl]'), we_html_tools::TYPE_INFO, 380) .
-			we_html_element::htmlDiv(array('style' => 'margin-top:10px'), //g_l('newFile', '[caseFileExists]') . '<br/>' .
-				we_html_forms::radiobutton('overwrite', false, "sameName", g_l('importFiles', '[sameName_overwrite]'), false, "defaultfont", 'document.we_form.fu_file_sameName.value=this.value;') .
-				we_html_forms::radiobutton('rename', true, "sameName", g_l('importFiles', '[sameName_rename]'), false, "defaultfont", 'document.we_form.fu_file_sameName.value=this.value;') .
-				we_html_forms::radiobutton('nothing', false, "sameName", g_l('importFiles', '[sameName_nothing]'), false, "defaultfont", 'document.we_form.fu_file_sameName.value=this.value;')
-			) .
-			we_html_tools::hidden('fu_file_sameName', 'rename')
+				//we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[sameName_expl]'), we_html_tools::TYPE_INFO, 380) .
+				we_html_element::htmlDiv(array('style' => 'margin-top:10px'), //g_l('newFile', '[caseFileExists]') . '<br/>' .
+					we_html_forms::radiobutton('overwrite', false, "sameName", g_l('importFiles', '[sameName_overwrite]'), false, "defaultfont", 'document.we_form.fu_file_sameName.value=this.value;') .
+					we_html_forms::radiobutton('rename', true, "sameName", g_l('importFiles', '[sameName_rename]'), false, "defaultfont", 'document.we_form.fu_file_sameName.value=this.value;') .
+					we_html_forms::radiobutton('nothing', false, "sameName", g_l('importFiles', '[sameName_nothing]'), false, "defaultfont", 'document.we_form.fu_file_sameName.value=this.value;')
+				) .
+				we_html_tools::hidden('fu_file_sameName', 'rename')
 		);
 
 		$headline = g_l('importFiles', '[sameName_headline]');
@@ -261,19 +258,19 @@ function selectCategories() {
 			$parentID = $parentID ? : ($this->parentID['preset'] ? : (IMAGESTARTID_DEFAULT ? : 0));
 			$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',$parentID,'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::FOLDER . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 			/*
-			$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd({
-				'we_cmd[0]': 'we_selector_directory',
-				'we_cmd[1]': " . $parentID . ",
-				'we_cmd[2]': '" . FILE_TABLE . "',
-				'we_cmd[3]': '" . we_base_request::encCmd($cmd1) . "',
-				'we_cmd[4]': '" . $wecmdenc2 . "',
-				'we_cmd[5]': '" . $wecmdenc3 . "',
-				'we_cmd[6]': '',
-				'we_cmd[7]': 0,
-				'we_cmd[8]': '" . we_base_ContentTypes::FOLDER . "',
-				'we_cmd[9]': " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . "
-			});");
-			 * 
+			  $but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd({
+			  'we_cmd[0]': 'we_selector_directory',
+			  'we_cmd[1]': " . $parentID . ",
+			  'we_cmd[2]': '" . FILE_TABLE . "',
+			  'we_cmd[3]': '" . we_base_request::encCmd($cmd1) . "',
+			  'we_cmd[4]': '" . $wecmdenc2 . "',
+			  'we_cmd[5]': '" . $wecmdenc3 . "',
+			  'we_cmd[6]': '',
+			  'we_cmd[7]': 0,
+			  'we_cmd[8]': '" . we_base_ContentTypes::FOLDER . "',
+			  'we_cmd[9]': " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . "
+			  });");
+			 *
 			 */
 			$yuiSuggest->setAcId("fu_file_parentID");
 			$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
@@ -299,7 +296,7 @@ function selectCategories() {
 				we_html_button::create_button(we_html_button::SELECT, '', '', '', '', '', '', true) .
 				we_html_element::htmlHiddens(array(
 					'fu_file_parentID' => $id,
-				));
+			));
 		}
 
 		$headline = g_l('importFiles', '[destination_dir]');
@@ -362,7 +359,7 @@ function selectCategories() {
 		$widthInput = we_html_tools::htmlTextInput("fu_doc_width", 10, $width, '', '', "text", 60);
 		$heightInput = we_html_tools::htmlTextInput("fu_doc_height", 10, $height, '', '', "text", 60);
 		$widthSelect = '<select size="1" class="weSelect" name="fu_doc_widthSelect"><option value="pixel"' . ($unitWidth === 'pixel' ? ' selected="selected"' : '') . '>' . g_l('weClass', '[pixel]') . '</option><option value="percent"' . ($unitWidth !== 'pixel' ? ' selected="selected"' : '') . '>' . g_l('weClass', '[percent]') . '</option></select>';
-		$heightSelect = '<select size="1" class="weSelect" name="fu_doc_heightSelect"><option value="pixel"' .  ($unitHeight === 'pixel' ? ' selected="selected"' : '') . '>' . g_l('weClass', '[pixel]') . '</option><option value="percent"' . ($unitHeight !== 'pixel' ? ' selected="selected"' : '') . '>' . g_l('weClass', '[percent]') . '</option></select>';
+		$heightSelect = '<select size="1" class="weSelect" name="fu_doc_heightSelect"><option value="pixel"' . ($unitHeight === 'pixel' ? ' selected="selected"' : '') . '>' . g_l('weClass', '[pixel]') . '</option><option value="percent"' . ($unitHeight !== 'pixel' ? ' selected="selected"' : '') . '>' . g_l('weClass', '[percent]') . '</option></select>';
 		$ratio_checkbox = we_html_forms::checkboxWithHidden($ratio, 'fu_doc_keepRatio', g_l('thumbnails', '[ratio]'), false, 'defaultfont', '');
 
 		$html = '<table>
@@ -405,7 +402,7 @@ function selectCategories() {
 
 	public function getFormImageQuality($quality = 8){
 		$name = 'imageQuality';
-		if(!isset($this->formElements[$name]) || !$this->formElements[$name]['set']  || !permissionhandler::hasPerm("NEW_GRAFIK")){
+		if(!isset($this->formElements[$name]) || !$this->formElements[$name]['set'] || !permissionhandler::hasPerm("NEW_GRAFIK")){
 			return;
 		}
 
@@ -427,7 +424,6 @@ function selectCategories() {
 
 		return $this->formElements[$formname]['noline'] ? array_merge($row, array('noline' => true)) : $row;
 	}
-
 
 	public function getJsBtnCmd($btn = 'upload'){
 		$call = 'window.we_FileUpload.' . ($btn === 'upload' ? 'startUpload()' : 'cancelUpload()');
@@ -458,4 +454,5 @@ function selectCategories() {
 	public function setFormElements($formElements = array()){
 		$this->formElements = array_merge($this->formElements, $formElements);
 	}
+
 }

@@ -37,7 +37,6 @@ abstract class weTree{
 	var $topFrame;
 	var $treeFrame;
 	var $cmdFrame;
-	var $treeItems = array();
 	var $frameset = '';
 	var $styles = array();
 	var $tree_states = array(
@@ -76,7 +75,7 @@ function startTree(pid,offset){
 	};
 	pid = pid ? pid :
 	offset = offset ? offset : 0;
-	treeData.frames.cmd.location=treeData.frameset+"?pnt=cmd&pid="+pid+"&offset="+offset;
+	treeData.frames.cmd.location=treeData.frameset+"&pnt=cmd&pid="+pid+"&offset="+offset;
 	drawTree();
 }';
 	}

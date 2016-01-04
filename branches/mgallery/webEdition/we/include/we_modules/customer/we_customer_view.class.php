@@ -1051,7 +1051,6 @@ self.close();');
 			case g_l('modules_customer', '[orderTab]'):
 				$parts = array(array(
 						'html' => we_shop_functions::getCustomersOrderList($this->customer->ID, false),
-						'space' => 0
 					)
 				);
 				break;
@@ -1078,7 +1077,6 @@ self.close();');
 				$parts = array(
 					array(
 						"html" => $objectStr,
-						"space" => 0
 					)
 				);
 				break;
@@ -1116,7 +1114,6 @@ self.close();');
 				$parts = array(
 					array(
 						"html" => $documentStr,
-						"space" => 0
 					)
 				);
 				break;
@@ -1154,7 +1151,7 @@ self.close();');
 					$parts[] = array(
 						"headline" => (isset($isAll) ? $bk : g_l('modules_customer', '[data]')),
 						"html" => $table->getHtml(),
-						"space" => 120
+						'space' => 120
 					);
 				}
 		}

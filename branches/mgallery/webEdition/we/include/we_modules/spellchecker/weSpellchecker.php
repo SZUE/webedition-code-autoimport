@@ -130,12 +130,10 @@ echo we_html_element::cssLink(CSS_DIR . 'weSpellchecker.css') .
 		array(
 			'headline' => '',
 			'html' => $_preview,
-			'space' => 0
 		),
 		array(
 			'headline' => '',
 			'html' => $_leftPanel . implode('<div style="margin:5px;"></div>', $_buttonsleft),
-			'space' => 0
 		),
 		array(
 			'headline' => g_l('modules_spellchecker', '[dictionary]'),

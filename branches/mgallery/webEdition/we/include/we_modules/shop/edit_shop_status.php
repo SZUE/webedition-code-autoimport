@@ -117,7 +117,6 @@ $parts = array(
 	),
 	array(
 		'headline' => '',
-		'space' => 0,
 		'html' => $tabStatus->getHtml()
 	),
 );
@@ -147,7 +146,6 @@ $parts[] = array(
 );
 $parts[] = array(
 	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[statusmails][hintEMailDaten]'), we_html_tools::TYPE_INFO, 650, false),
-	'space' => 0,
 	'noline' => 1
 );
 $parts[] = array(
@@ -166,7 +164,6 @@ $parts[] = array(
 	'noline' => 1
 );
 $parts[] = array(
-	'space' => 0,
 	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[statusmails][hintSprache]'), we_html_tools::TYPE_INFO, 650, false),
 	'noline' => 1
 );
@@ -177,7 +174,6 @@ $parts[] = array(
 );
 $parts[] = array(
 	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[statusmails][hintISO]'), we_html_tools::TYPE_INFO, 650, false),
-	'space' => 0
 );
 $tabDokumente = new we_html_table(array("cellpadding" => 2, "cellspacing" => 4), $rows_num = 2, $cols_num = 17);
 $i = 0;
@@ -214,13 +210,11 @@ $parts[] = array(
 	'noline' => 1
 );
 $parts[] = array(
-	'space' => 0,
 	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[statusmails][hintDokumente]'), we_html_tools::TYPE_INFO, 650, false),
 	'noline' => 1
 );
 $parts[] = array(
 	'headline' => '',
-	'space' => 0,
 	'html' => $tabDokumente->getHtml()
 );
 
@@ -230,12 +224,12 @@ echo we_html_element::jsElement($jsFunction);
 <body class="weDialogBody" onload="window.focus();">
 	<form name="we_form" method="post" >
 		<input type="hidden" name="we_cmd[0]" value="saveShopStatusMails" />
-		<?php
-		echo we_html_multiIconBox::getHTML('weShopStatusMails', $parts, 30, we_html_button::position_yes_no_cancel(
-				we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button(we_html_button::CANCEL, 'javascript:we_cmd(\'close\');')
-			), -1, '', '', false, g_l('modules_shop', '[statusmails][box_headline]'), '', '', 'scroll'
-		);
-		?>
+<?php
+echo we_html_multiIconBox::getHTML('weShopStatusMails', $parts, 30, we_html_button::position_yes_no_cancel(
+		we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button(we_html_button::CANCEL, 'javascript:we_cmd(\'close\');')
+	), -1, '', '', false, g_l('modules_shop', '[statusmails][box_headline]'), '', '', 'scroll'
+);
+?>
 	</form>
 </body>
 </html>

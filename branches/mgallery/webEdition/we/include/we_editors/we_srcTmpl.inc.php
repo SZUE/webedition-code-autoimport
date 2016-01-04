@@ -31,7 +31,7 @@ if(isset($we_doc->elements["Charset"]["dat"])){ //	send charset which might be d
 }
 
 echo we_html_tools::getHtmlTop('', isset($we_doc->elements["Charset"]["dat"]) ? $we_doc->elements["Charset"]["dat"] : '') .
-	STYLESHEET;
+ STYLESHEET;
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 if(!isset($_SESSION['weS']['we_wrapcheck'])){
@@ -349,11 +349,11 @@ if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){
 	// buttons
 	$editTagbut = we_html_button::create_button(we_html_button::DIRRIGHT, "javascript:executeEditButton();", true, 100, 22, "", "", false, false, "_applyCode");
 	/*
-	$selectallbut = we_html_button::create_button("selectAll", "javascript:document.getElementById(\"tag_edit_area\").focus(); document.getElementById(\"tag_edit_area\").select();");
-	$prependbut = we_html_button::create_button("prepend", 'javascript:insertAtStart(document.getElementById("tag_edit_area").value);');
-	$appendbut = we_html_button::create_button("append", 'javascript:insertAtEnd(document.getElementById("tag_edit_area").value);');
-	$addCursorPositionbut = we_html_button::create_button("addCursorPosition", 'javascript:addCursorPosition(document.getElementById("tag_edit_area").value);_EditorFrame.setEditorIsHot(true);');
-*/
+	  $selectallbut = we_html_button::create_button("selectAll", "javascript:document.getElementById(\"tag_edit_area\").focus(); document.getElementById(\"tag_edit_area\").select();");
+	  $prependbut = we_html_button::create_button("prepend", 'javascript:insertAtStart(document.getElementById("tag_edit_area").value);');
+	  $appendbut = we_html_button::create_button("append", 'javascript:insertAtEnd(document.getElementById("tag_edit_area").value);');
+	  $addCursorPositionbut = we_html_button::create_button("addCursorPosition", 'javascript:addCursorPosition(document.getElementById("tag_edit_area").value);_EditorFrame.setEditorIsHot(true);');
+	 */
 	$tagWizardHtml = we_wizard_code::getJavascript() . '
 <table id="wizardTable" style="width:700px;" class="default defaultfont">
 	<tr><td style="padding-bottom:5px;">' . $groupselect . '</td></tr>
@@ -369,24 +369,24 @@ if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){
 	</tr>
 </table>
 ';
-	/*<table id="wizardTableButtons" class="default defaultfont">
-	<tr>
-		<td id="tagSelectColButtons" style="width: 250px;"></td>
-		<td id="spacerColButtons" style="width: 50px;"></td>
-		<td id="tagAreaColButtons" style="width: 100%;text-align:right">
-			<table class="default">
-			<tr>
-			<td style="padding-right:10px;">' . $selectallbut . '</td>
-				<td style="padding-right:10px;">' . $prependbut . '</td>
-				<td style="padding-right:10px;">' . $appendbut . '</td>
-				<td>' . $addCursorPositionbut . '</td>
-			</table>
-		</td>
-	</tr>
-</table>*/
+	/* <table id="wizardTableButtons" class="default defaultfont">
+	  <tr>
+	  <td id="tagSelectColButtons" style="width: 250px;"></td>
+	  <td id="spacerColButtons" style="width: 50px;"></td>
+	  <td id="tagAreaColButtons" style="width: 100%;text-align:right">
+	  <table class="default">
+	  <tr>
+	  <td style="padding-right:10px;">' . $selectallbut . '</td>
+	  <td style="padding-right:10px;">' . $prependbut . '</td>
+	  <td style="padding-right:10px;">' . $appendbut . '</td>
+	  <td>' . $addCursorPositionbut . '</td>
+	  </table>
+	  </td>
+	  </tr>
+	  </table> */
 	$parts = array(
 		array(),
-		array("headline" => "", "html" => $tagWizardHtml, "space" => 0)
+		array("headline" => "", "html" => $tagWizardHtml,)
 	);
 	$wepos = weGetCookieVariable("but_weTMPLDocEdit");
 	$znr = 1;

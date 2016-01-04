@@ -37,12 +37,12 @@ $parts = array(
 	array(
 		"headline" => we_html_tools::htmlAlertAttentionBox(str_replace("\\n", '', sprintf(g_l('alert', '[move_of_files_failed]'), "")), we_html_tools::TYPE_ALERT, 500),
 		"html" => "",
-		"space" => 10,
-		"noline" => 1),
+		'space' => 10,
+		'noline' => 1),
 	array(
 		"headline" => "",
 		"html" => we_html_element::htmlDiv(array("class" => "blockWrapper", "style" => "width: 475px; height: 350px; border:1px #dce6f2 solid;"), $table->getHtml()),
-		"space" => 10),
+		'space' => 10),
 );
 
 $buttons = new we_html_table(array("style" => "text-align:right", "class" => "default defaultfont"), 1, 1);

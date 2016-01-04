@@ -28,7 +28,7 @@ we_html_tools::protect();
 
 $parts = array(
 	array(
-		"headline" => "", "html" => $oSelCls->getHTML(), "space" => 0
+		"headline" => "", "html" => $oSelCls->getHTML(),
 	)
 );
 
@@ -40,8 +40,8 @@ $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button,
 $sTblWidget = we_html_multiIconBox::getHTML("rssProps", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[messaging]'));
 
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[messaging]'), '', '', STYLESHEET .
-	$jsFile.
-		we_html_element::jsElement($jsPrefs) .
+	$jsFile .
+	we_html_element::jsElement($jsPrefs) .
 	we_html_element::jsScript(JS_DIR . 'widgets/msg.js'), we_html_element::htmlBody(
 		array(
 		"class" => "weDialogBody", "onload" => "init();"

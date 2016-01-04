@@ -114,8 +114,8 @@ class we_customer_EIWizard{
 			array(
 				"headline" => g_l('modules_customer', '[generic_export]'),
 				"html" => $generic->getHTML(),
-				"space" => 120,
-				"noline" => 1)
+				'space' => 120,
+				'noline' => 1)
 		);
 
 		return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', STYLESHEET, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body"),
@@ -145,8 +145,8 @@ class we_customer_EIWizard{
 		$parts = array(array(
 				"headline" => "",
 				"html" => $generic->getHTML(),
-				"space" => 30,
-				"noline" => 1)
+				'space' => 30,
+				'noline' => 1)
 		);
 
 		$js = we_html_element::jsElement('
@@ -216,7 +216,7 @@ switch (args[0]){
 					$table->setColContent(0, 0, we_html_forms::radiobutton(1, $cdata, "cdata", g_l('modules_customer', '[export_xml_cdata]'), true, "defaultfont", ""));
 					$table->setColContent(1, 0, we_html_forms::radiobutton(0, !$cdata, "cdata", g_l('modules_customer', '[export_xml_entities]'), true, "defaultfont", ""));
 
-					$parts[] = array("headline" => g_l('modules_customer', '[cdata]'), "html" => $table->getHtml(), "space" => $_space);
+					$parts[] = array("headline" => g_l('modules_customer', '[cdata]'), "html" => $table->getHtml(), 'space' => $_space);
 
 					break;
 				case self::TYPE_CSV:
@@ -234,13 +234,13 @@ switch (args[0]){
 
 					$fileformattable->setColContent(3, 0, we_html_forms::checkbox(1, $csv_fieldnames, "csv_fieldnames", g_l('modules_customer', '[csv_fieldnames]')));
 
-					$parts[] = array("headline" => g_l('modules_customer', '[csv_params]'), "html" => $fileformattable->getHtml(), "space" => $_space);
+					$parts[] = array("headline" => g_l('modules_customer', '[csv_params]'), "html" => $fileformattable->getHtml(), 'space' => $_space);
 			}
 
-			$parts[] = array("headline" => g_l('modules_customer', '[export_to]'), "html" => "", "space" => 0, "noline" => 1);
+			$parts[] = array("headline" => g_l('modules_customer', '[export_to]'), "html" => "", 'noline' => 1);
 
 			$table = we_html_element::htmlDiv(array('class' => 'default', 'style' => 'margin-left:20px;'), we_html_forms::radiobutton(self::EXPORT_SERVER, ($export_to == self::EXPORT_SERVER), "export_to", g_l('modules_customer', '[export_to_server]'), true, "defaultfont", "top.export_to='" . self::EXPORT_SERVER . "'"));
-			$parts[] = array("space" => $_space, "noline" => 1,
+			$parts[] = array('space' => $_space, 'noline' => 1,
 				"headline" => $table,
 				"html" =>
 				we_html_element::htmlBr() .
@@ -248,10 +248,10 @@ switch (args[0]){
 			);
 
 			$table->setColContent(0, 1, we_html_forms::radiobutton(self::EXPORT_LOCAL, ($export_to == self::EXPORT_LOCAL), "export_to", g_l('modules_customer', '[export_to_local]'), true, "defaultfont", "top.export_to='" . self::EXPORT_LOCAL . "'"));
-			$parts[] = array("headline" => $table->getHtml(), "space" => $_space, "noline" => 1, "html" => "");
+			$parts[] = array("headline" => $table->getHtml(), 'space' => $_space, 'noline' => 1, "html" => "");
 		} else {
 			$parts = array(
-				array('headline' => 'Fehler', "html" => '<b>Die Auswahl ist leer</b>', "space" => $_space)
+				array('headline' => 'Fehler', "html" => '<b>Die Auswahl ist leer</b>', 'space' => $_space)
 			);
 			$js = we_html_element::jsElement(
 					$this->bodyFrame . '.document.we_form.step.value--;
@@ -528,8 +528,8 @@ switch (args[0]){
 			array(
 				"headline" => g_l('modules_customer', '[generic_import]'),
 				"html" => $generic->getHTML(),
-				"space" => 120,
-				"noline" => 1)
+				'space' => 120,
+				'noline' => 1)
 		);
 
 		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', STYLESHEET, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), $this->getHiddens(array("art" => self::ART_IMPORT, "step" => 1)) .
@@ -577,8 +577,8 @@ function callBack(){
 		$parts[] = array(
 			"headline" => g_l('modules_customer', '[source_file]'),
 			"html" => $table->getHtml(),
-			"space" => 120,
-			"noline" => 1
+			'space' => 120,
+			'noline' => 1
 		);
 
 		//upload table
@@ -596,8 +596,8 @@ function callBack(){
 		$parts[] = array(
 			"headline" => "",
 			"html" => $table->getHTML(),
-			"space" => 120,
-			"noline" => 1
+			'space' => 120,
+			'noline' => 1
 		);
 
 		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', $css . $js, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "enctype" => "multipart/form-data"), $this->getHiddens(array("art" => self::ART_IMPORT, "step" => 2)) .
@@ -693,7 +693,7 @@ function callBack(){
 
 					$fileformattable->setColContent(4, 0, we_html_forms::checkbox(1, $csv_fieldnames, "csv_fieldnames", g_l('modules_customer', '[csv_fieldnames]')));
 
-					$parts = array(array("headline" => g_l('modules_customer', '[csv_params]'), "html" => $fileformattable->getHtml(), "space" => 150));
+					$parts = array(array("headline" => g_l('modules_customer', '[csv_params]'), "html" => $fileformattable->getHtml(), 'space' => 150));
 					break;
 				case we_import_functions::TYPE_GENERIC_XML:
 					//invoke parser
@@ -757,16 +757,16 @@ function callBack(){
 						$tblFrame->setCol(2, 1, array(), $tblSelect->getHtml());
 
 						$_REQUEST["dataset"] = $firstItem;
-						$parts = array(array("html" => $tblFrame->getHtml(), "space" => 0, "noline" => 1));
+						$parts = array(array("html" => $tblFrame->getHtml(), 'noline' => 1));
 					}else {
-						$parts = array(array("html" => we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', (!$xmlWellFormed) ? '[not_well_formed]' : '[missing_child_node]'), we_html_tools::TYPE_ALERT, 570), "space" => 0, "noline" => 1));
+						$parts = array(array("html" => we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', (!$xmlWellFormed) ? '[not_well_formed]' : '[missing_child_node]'), we_html_tools::TYPE_ALERT, 570), 'noline' => 1));
 						$js = we_html_element::jsElement($this->footerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&art=' . self::ART_IMPORT . '&step=99";');
 					}
 					break;
 			}
 		} else {
 			$js = we_html_element::jsElement($this->footerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&art=' . self::ART_IMPORT . '&step=99";');
-			$parts[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[missing_filesource]'), we_html_tools::TYPE_ALERT, 570), "space" => 0, "noline" => 1);
+			$parts[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[missing_filesource]'), we_html_tools::TYPE_ALERT, 570), 'noline' => 1);
 		}
 
 		$_REQUEST["filename"] = $filename;
@@ -862,12 +862,11 @@ function callBack(){
 			array(
 				"headline" => g_l('modules_customer', '[same_names]'),
 				"html" => $table->getHtml(),
-				"space" => 0
 			),
 			array(
 				"headline" => g_l('modules_customer', '[import_step4]'),
 				"html" => "<br/>" . we_html_tools::htmlDialogBorder3(510, 255, $rows, $tableheader, "defaultfont"),
-				"space" => 150),
+				'space' => 150),
 		);
 
 
@@ -898,7 +897,7 @@ function callBack(){
 			array(
 				"headline" => "",
 				"html" => $table->getHtml(),
-				"space" => 20
+				'space' => 20
 			)
 		);
 

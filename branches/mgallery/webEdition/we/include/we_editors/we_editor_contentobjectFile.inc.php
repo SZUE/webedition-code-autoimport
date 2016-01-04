@@ -40,7 +40,6 @@ if(is_array($GLOBALS['we_doc']->DefArray)){
 				$parts[] = array(
 					"headline" => "",
 					"html" => '*' . g_l('global', '[required_fields]'),
-					"space" => 0,
 					"name" => str_replace('.', '', uniqid('', true)),
 				);
 				break;

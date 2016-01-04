@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -30,16 +29,16 @@ $oChbxDocs = we_html_forms::checkbox(0, true, "chbx_type", g_l('cockpit', '[docu
 $oChbxObjs = we_html_forms::checkbox(0, true, "chbx_type", g_l('cockpit', '[objects]'), true, "defaultfont", "", false, "", 0, 0);
 
 $dbTableType = '<table><tr>' .
-		(defined('FILE_TABLE') ? '<td>' . $oChbxDocs . ' </td>' : '') .
-		(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES") ? "<td>" . $oChbxObjs . "</td>" : '') .
-		"</tr></table>";
+	(defined('FILE_TABLE') ? '<td>' . $oChbxDocs . ' </td>' : '') .
+	(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES") ? "<td>" . $oChbxObjs . "</td>" : '') .
+	"</tr></table>";
 
 $parts = array(
 	array(
-		"headline" => g_l('cockpit', '[type]'), "html" => $dbTableType, "space" => 80
+		"headline" => g_l('cockpit', '[type]'), "html" => $dbTableType, 'space' => 80
 	),
 	array(
-		"headline" => "", "html" => $oSelCls->getHTML(), "space" => 0
+		"headline" => "", "html" => $oSelCls->getHTML(),
 	),
 );
 
@@ -51,8 +50,8 @@ $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button,
 $sTblWidget = we_html_multiIconBox::getHTML("mfdProps", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[unpublished]'));
 
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[unpublished]'), '', '', STYLESHEET .
-		$jsFile .
-		we_html_element::jsElement($jsPrefs) .
-		we_html_element::jsScript(JS_DIR . 'widgets/upb.js')
-		, we_html_element::htmlBody(
-				array("class" => "weDialogBody", "onload" => "init();"), we_html_element::htmlForm("", $sTblWidget)));
+	$jsFile .
+	we_html_element::jsElement($jsPrefs) .
+	we_html_element::jsScript(JS_DIR . 'widgets/upb.js')
+	, we_html_element::htmlBody(
+		array("class" => "weDialogBody", "onload" => "init();"), we_html_element::htmlForm("", $sTblWidget)));

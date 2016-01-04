@@ -835,7 +835,6 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		$_parts[] = array(
 			'headline' => '',
 			'html' => self::getDocumentStatus($this->documentDef->ID),
-			'space' => 0
 		);
 
 		return we_html_element::jsScript(JS_DIR . 'tooltip.js') .
@@ -910,7 +909,6 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		$_parts[] = array(
 			'headline' => '',
 			'html' => self::getDocumentStatus($this->documentDef->ID),
-			'space' => 0,
 		);
 
 		ob_start();

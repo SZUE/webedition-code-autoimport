@@ -1490,7 +1490,6 @@ function toggleRebuildPerm(disabledOnly) {';
 			array(
 				'headline' => '',
 				'html' => $content,
-				'space' => 0,
 				'noline' => 1
 			)
 		);
@@ -1513,7 +1512,6 @@ function toggleRebuildPerm(disabledOnly) {';
 		$parts[] = array(
 			'headline' => '',
 			'html' => $button_default . $button_uncheckall . $button_checkall,
-			'space' => 0
 		);
 
 		// Check if user has right to decide to give administrative rights
@@ -1527,7 +1525,6 @@ function toggleRebuildPerm(disabledOnly) {';
 			$parts[] = array(
 				'headline' => '',
 				'html' => $content,
-				'space' => 0
 			);
 		}
 		if($this->ParentID){
@@ -1542,7 +1539,6 @@ function showParentPerms(show) {
 }
 showParentPerms(' . ($this->ParentPerms ? 1 : 0) . ');') .
 				$this->formInherits('_ParentPerms', $this->ParentPerms, g_l('modules_users', '[inherit]'), 'showParentPerms(this.checked);'),
-				'space' => 0
 			);
 		}
 
@@ -1719,7 +1715,6 @@ function delElement(elvalues,elem) {
 				array(
 					'headline' => '',
 					'html' => $dynamic_controls->fold_multibox_groups($groups, $titles, $multiboxes, $branch),
-					'space' => 0
 				)
 				), 30);
 	}
@@ -2039,7 +2034,7 @@ function show_seem_chooser(val) {
 		$_window_html->setCol(2, 0, null, $_window_current_dimension_table);
 
 		// Build dialog
-		$_settings[] = array("headline" => g_l('prefs', '[dimension]'), "html" => $_window_html->getHtml(), "space" => 200);
+		$_settings[] = array("headline" => g_l('prefs', '[dimension]'), "html" => $_window_html->getHtml(), 'space' => 200);
 
 		// Create predefined window dimension buttons
 		$_window_predefined_table = new we_html_table(array('class' => 'withBigSpace', 'style' => 'text-align:right'), 2, 1);
@@ -2049,7 +2044,7 @@ function show_seem_chooser(val) {
 		$_window_predefined_table->setCol(1, 0, null, we_html_button::create_button("res_1280", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1280';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '960';", true) . we_html_button::create_button("res_1600", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1600';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '1200';", true));
 
 		// Build dialog
-		$_settings[] = array("headline" => g_l('prefs', '[predefined]'), "html" => $_window_predefined_table->getHtml(), "space" => 200);
+		$_settings[] = array("headline" => g_l('prefs', '[predefined]'), "html" => $_window_predefined_table->getHtml(), 'space' => 200);
 
 		return $_settings;
 	}
@@ -2063,7 +2058,7 @@ function show_seem_chooser(val) {
 		$_template_editor_mode->addOption('codemirror2', g_l('prefs', '[editor_javascript2]'));
 		$_template_editor_mode->selectOption($this->Preferences['editorMode']);
 		$_settings = array(
-			array("headline" => g_l('prefs', '[editor_mode]'), "html" => $_template_editor_mode->getHtml(), "space" => 150)
+			array("headline" => g_l('prefs', '[editor_mode]'), "html" => $_template_editor_mode->getHtml(), 'space' => 150)
 		);
 //FIXME: use code from preferences for font-selection
 		$_template_fonts = array('Arial', 'Courier', 'Courier New', 'Helvetica', 'Monaco', 'Mono', 'Tahoma', 'Verdana', 'serif', 'sans-serif', 'none');
@@ -2186,14 +2181,14 @@ function show_seem_chooser(val) {
 			array(
 				"headline" => g_l('modules_users', '[alias_data]'),
 				"html" => $content,
-				"space" => 120
+				'space' => 120
 			), array(
 				"headline" => g_l('modules_users', '[rights_and_workspaces]'),
 				"html" =>
 				$this->formInherits("_ParentPerms", $this->ParentPerms, g_l('modules_users', '[inherit]')) .
 				$this->formInherits("_ParentWs", $this->ParentWs, g_l('modules_users', '[inherit_ws]')) .
 				$this->formInherits("_ParentWst", $this->ParentWst, g_l('modules_users', '[inherit_wst]')),
-				"space" => 120
+				'space' => 120
 			)
 		);
 
@@ -2265,7 +2260,6 @@ function resetTabs(){
 		top.content.editor.edbody.document.we_form.tab.value = ' . self::TAB_DATA . ';
 		top.content.editor.edheader.tabCtrl.weTabs.setActiveTab(' . self::TAB_DATA . ');
 }') .
-
 			'<div id="main"><div id="headrow"><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", ($this->Path ? : $this->getPath($this->ParentID))) . '</b></span></div>' . $we_tabs->getHTML() . '</div>';
 	}
 

@@ -122,8 +122,8 @@ var cmd = "' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . '"
 }
 ' . (!empty($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) : '') . ($saveSuccess ? 'we_cmd("do_onSuccess");' : '')));
 
-$parts[] = array('headline' => g_l('weClass', '[path]'), 'html' => $collection->formPath($fixedPID !== -1, true), 'space' => 0, 'noline' => 1);
-$parts[] = array('headline' => 'Inhalt', 'html' => $collection->formContent(true), 'space' => 0, 'noline' => 1);
+$parts[] = array('headline' => g_l('weClass', '[path]'), 'html' => $collection->formPath($fixedPID !== -1, true), 'noline' => 1);
+$parts[] = array('headline' => 'Inhalt', 'html' => $collection->formContent(true), 'noline' => 1);
 
 $content = we_html_element::htmlHidden('dosave', 0) .
 	we_html_element::htmlHiddens(array(

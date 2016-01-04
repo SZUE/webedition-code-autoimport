@@ -750,7 +750,6 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 				'headline' => g_l('navigation', '[entries]'),
 				'html' => we_html_tools::htmlSelect('dynContent', $this->View->getItems($this->Model->ID), 20, '', false, array('style' => 'width: ' . $this->_width_size . 'px; height: 200px;  margin: 0px 0px 5px 0px;')),
 				'space' => $this->_space_size,
-				'noline' => 0
 			),
 			array(
 				'headline' => '',
@@ -1008,7 +1007,7 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");';
 		$table->setCol(2, 0, array('style' => 'text-align:left'), we_html_forms::checkboxWithHidden($this->Model->CatAnd, "CatAnd", g_l('navigation', '[catAnd]')));
 		$table->setCol(2, 1, array('style' => 'text-align:right'), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut);
 
-		return $table->getHtml() . we_html_element::jsElement(				$variant_js);
+		return $table->getHtml() . we_html_element::jsElement($variant_js);
 	}
 
 	function getHTMLFieldSelector(){
@@ -1053,7 +1052,6 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");';
 				'headline' => '',
 				'html' => we_html_tools::htmlSelect(
 					'fields', $__fields, 20, '', ($_multi ? true : false), array('style' => "width: 300px; height: 200px; margin: 5px 0px 5px 0px;", 'onclick' => "setTimeout(selectItem,100);")),
-				'space' => 0
 			)
 		);
 		$button = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, 'javascript:setFields();', true, 100, 22, '', '', true, false), null, we_html_button::create_button(we_html_button::CLOSE, 'javascript:self.close();'));
@@ -1172,7 +1170,6 @@ function selectItem() {
 				'headline' => '',
 				'html' => we_html_tools::htmlFormElementTable(
 					$_select->getHtml(), g_l('navigation', ($this->Model->SelectionType == we_navigation_navigation::STYPE_CATEGORY ? '[categories]' : ($this->Model->SelectionType == we_navigation_navigation::STYPE_CLASS ? '[objects]' : '[documents]')))),
-				'space' => 0
 		));
 
 		$_body = we_html_element::htmlBody(

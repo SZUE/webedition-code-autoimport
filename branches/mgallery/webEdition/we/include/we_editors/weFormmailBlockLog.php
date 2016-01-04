@@ -86,7 +86,6 @@ if(permissionhandler::hasPerm("administrator")){
 			array(
 				'headline' => '',
 				'html' => we_html_tools::htmlDialogBorder3(730, 300, $content, $headline) . $nextprev,
-				'space' => 0,
 				'noline' => 1
 			)
 		);
@@ -96,7 +95,6 @@ if(permissionhandler::hasPerm("administrator")){
 			'html' => we_html_element::htmlSpan(array('class' => 'middlefont lowContrast'), g_l('prefs', '[log_is_empty]')) .
 			we_html_element::htmlBr() .
 			we_html_element::htmlBr(),
-			'space' => 0,
 			'noline' => 1
 		);
 	}

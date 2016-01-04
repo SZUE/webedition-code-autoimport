@@ -173,7 +173,7 @@ class we_banner_view extends we_modules_view{
 					array(
 						'headline' => '',
 						'html' => $this->formStat(),
-						'space' => 0)
+					)
 				);
 				break;
 			default:

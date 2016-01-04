@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -46,32 +45,32 @@ if(we_base_request::_(we_base_request::BOOL, "ok")){
 	$we_doc->setElement($name . 'width', we_base_request::_(we_base_request::INT, 'width', 200));
 	$we_doc->setElement($name . 'bgcolor', we_base_request::_(we_base_request::STRING, 'bgcolor', ''));
 	$we_doc->setElement($name . 'class', we_base_request::_(we_base_request::STRING, 'class', ''));
-	$we_doc->setElement($name . 'cssClasses', implode(',',we_base_request::_(we_base_request::STRING_LIST, 'cssClasses', array())));
-	$we_doc->setElement($name . 'fontnames', implode(',',we_base_request::_(we_base_request::STRING_LIST, 'fontnames', array())));
-	$we_doc->setElement($name . 'fontsizes', implode(',',we_base_request::_(we_base_request::STRING_LIST, 'fontsizes', array())));
-	$we_doc->setElement($name . 'formats', implode(',',we_base_request::_(we_base_request::STRING_LIST, 'formats', array())));
+	$we_doc->setElement($name . 'cssClasses', implode(',', we_base_request::_(we_base_request::STRING_LIST, 'cssClasses', array())));
+	$we_doc->setElement($name . 'fontnames', implode(',', we_base_request::_(we_base_request::STRING_LIST, 'fontnames', array())));
+	$we_doc->setElement($name . 'fontsizes', implode(',', we_base_request::_(we_base_request::STRING_LIST, 'fontsizes', array())));
+	$we_doc->setElement($name . 'formats', implode(',', we_base_request::_(we_base_request::STRING_LIST, 'formats', array())));
 	$we_doc->setElement($name . 'tinyparams', we_base_request::_(we_base_request::RAW_CHECKED, 'tinyparams', ''));
 	$we_doc->setElement($name . 'templates', we_base_request::_(we_base_request::INTLIST, 'templates', ''));
 	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 
 	$js = 'opener._EditorFrame.setEditorIsHot(true);'
-			. ((we_base_browserDetect::isIE() || we_base_browserDetect::isOpera()) &&
-			$we_doc->getElement($name . 'dhtmledit') === 'on' &&
-			$we_doc->getElement($name . 'inlineedit') === 'on' ? 'opener.setScrollTo();opener.we_cmd("switch_edit_page",1,"' . $we_transaction . '");' :
-					'opener.we_cmd("object_reload_entry_at_class","' . $we_transaction . '", "' . $nr . '");')
-			. 'top.close();';
+		. ((we_base_browserDetect::isIE() || we_base_browserDetect::isOpera()) &&
+		$we_doc->getElement($name . 'dhtmledit') === 'on' &&
+		$we_doc->getElement($name . 'inlineedit') === 'on' ? 'opener.setScrollTo();opener.we_cmd("switch_edit_page",1,"' . $we_transaction . '");' :
+			'opener.we_cmd("object_reload_entry_at_class","' . $we_transaction . '", "' . $nr . '");')
+		. 'top.close();';
 } else {
 	$js = 'function okFn(){'
-			. 'document.forms[0].submit();'
-			. '}';
+		. 'document.forms[0].submit();'
+		. '}';
 }
 
-echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '',we_html_element::jsElement($js) . STYLESHEET);
+echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement($js) . STYLESHEET);
 
 $out = '<body onload="top.focus();" class="weDialogBody"><form name="we_form" method="post" action="' . $_SERVER['SCRIPT_NAME'] . '">' . we_html_tools::hidden('ok', 1);
 
 foreach($_REQUEST['we_cmd'] as $k => $v){
-	$out .= we_html_element::htmlHidden('we_cmd[' . $k . ']' , $v);
+	$out .= we_html_element::htmlHidden('we_cmd[' . $k . ']', $v);
 }
 
 // WYSIWYG && FORBIDHTML && FORBIDPHP
@@ -97,7 +96,6 @@ $parts = array(
 	array(
 		"headline" => "",
 		"html" => $table,
-		"space" => 0,
 	)
 );
 
@@ -120,7 +118,6 @@ $table = '<table class="default">
 $parts[] = array(
 	"headline" => "",
 	"html" => $table,
-	"space" => 0,
 );
 
 
@@ -143,7 +140,6 @@ $table = '<table class="default">
 $parts[] = array(
 	"headline" => "",
 	"html" => $table,
-	"space" => 0,
 );
 
 
@@ -166,7 +162,6 @@ $table = '<table class="default">
 $parts[] = array(
 	"headline" => "",
 	"html" => $table,
-	"space" => 0,
 );
 
 // COMMANDS && CONTEXTMENU
@@ -184,7 +179,6 @@ $table = '<table class="default">
 $parts[] = array(
 	"headline" => "",
 	"html" => $table,
-	"space" => 0,
 );
 
 // FONTNAMES
@@ -198,7 +192,6 @@ $table = '<table border="0" cellpadding="0" cellspacing="0">
 $parts[] = array(
 	"headline" => "",
 	"html" => $table,
-	"space" => 0,
 );
 
 // FONTNAMES
@@ -212,7 +205,6 @@ $table = '<table border="0" cellpadding="0" cellspacing="0">
 $parts[] = array(
 	"headline" => "",
 	"html" => $table,
-	"space" => 0,
 );
 
 // FORMATS
@@ -226,7 +218,6 @@ $table = '<table border="0" cellpadding="0" cellspacing="0">
 $parts[] = array(
 	"headline" => "",
 	"html" => $table,
-	"space" => 0,
 );
 
 // CLASSES
@@ -239,7 +230,6 @@ $table = '<table border="0" cellpadding="0" cellspacing="0">
 $parts[] = array(
 	'headline' => '',
 	'html' => $table,
-	'space' => 0,
 );
 
 // TINYPARAMS
@@ -254,7 +244,6 @@ $table = '<table class="default">
 $parts[] = array(
 	"headline" => "",
 	"html" => $table,
-	"space" => 0,
 );
 
 // TINY-TEMPLATES
@@ -269,13 +258,12 @@ $table = '<table class="default">
 $parts[] = array(
 	"headline" => "",
 	"html" => $table,
-	"space" => 0,
 );
 
 $cancel_button = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close()");
 $okbut = we_html_button::create_button(we_html_button::OK, "javascript:okFn();");
 $buttons = we_html_button::position_yes_no_cancel($okbut, null, $cancel_button);
 $out .= we_html_multiIconBox::getHTML("", $parts, 30, $buttons, -1, "", "", "", g_l('modules_object', '[textarea_field]') . ' "' . $we_doc->getElement($name) . '" - ' . g_l('modules_object', '[attributes]')) .
-		'</form></body></html>';
+	'</form></body></html>';
 
 echo $out;

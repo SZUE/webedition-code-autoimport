@@ -132,12 +132,10 @@ abstract class we_versions_wizard{
 			array(
 				"headline" => "",
 				"html" => we_html_forms::radiobutton("delete_versions", ($type == self::DELETE_VERSIONS), "type", g_l('versions', '[delete_versions]'), true, "defaultfont", "", false, g_l('versions', '[txt_delete_versions]'), 0, 495),
-				"space" => 0
 			),
 			array(
 				"headline" => "",
 				"html" => we_html_forms::radiobutton("reset_versions", ($type == self::RESET_VERSIONS), "type", g_l('versions', '[reset_versions]'), true, "defaultfont", "", false, g_l('versions', '[txt_reset_versions]'), 0, 495),
-				"space" => 0
 		));
 
 
@@ -249,7 +247,6 @@ set_button_state(false);';
 			array(
 				'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[ct_delete_text]'), we_html_tools::TYPE_INFO, 520),
 				'noline' => 1,
-				'space' => 0
 			),
 			array(
 				'headline' => g_l('versions', '[ContentType]'),
@@ -319,7 +316,6 @@ set_button_state(false);';
 		$parts[] = array(
 			'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[date_delete_text]'), we_html_tools::TYPE_INFO, 520),
 			'noline' => 1,
-			'space' => 0
 		);
 
 		$clearDate = we_html_button::create_button('reset', "javascript:document.getElementById('delete_date').value='';", true, 0, 0, "", "", "", false);
@@ -431,7 +427,7 @@ set_button_state(false);';
 
 		$calendar = we_html_element::jsElement("calendarSetup();");
 
-		$parts[] = array('html' => $calendar, 'noline' => 0, 'space' => 0);
+		$parts[] = array('html' => $calendar);
 
 		return array(
 			$js,
@@ -478,7 +474,6 @@ set_button_state(false);';
 			array(
 				'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[ct_reset_text]'), we_html_tools::TYPE_INFO, 520),
 				'noline' => 1,
-				'space' => 0
 			),
 			array(
 				'headline' => g_l('versions', '[ContentType]'),
@@ -489,7 +484,6 @@ set_button_state(false);';
 			array(
 				'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[doPublish_text]'), we_html_tools::TYPE_INFO, 520),
 				'noline' => 1,
-				'space' => 0
 			),
 			array(
 				'headline' => "", 'html' => $doPublish, 'noline' => 1, 'space' => 1
@@ -553,7 +547,6 @@ set_button_state(false);';
 		$parts[] = array(
 			'html' => we_html_tools::htmlAlertAttentionBox(g_l('versions', '[date_reset_text]'), we_html_tools::TYPE_INFO, 520),
 			'noline' => 1,
-			'space' => 0
 		);
 
 		$clearDate = we_html_button::create_button("reset", "javascript:document.getElementById('reset_date').value='';", true, -1, -1, "", "", "", false);
@@ -673,8 +666,6 @@ set_button_state(false);';
 
 		$parts[] = array(
 			'html' => $calendar,
-			'noline' => 0,
-			'space' => 0
 		);
 
 		return array(
@@ -869,7 +860,6 @@ set_button_state(false);';
 		$parts[] = array(
 			"headline" => "",
 			"html" => $out,
-			"space" => 0
 		);
 
 		$hiddenFields = we_html_element::htmlHiddens($version_delete);
@@ -993,7 +983,6 @@ set_button_state(false);';
 		$parts[] = array(
 			"headline" => "",
 			"html" => $out,
-			"space" => 0
 		);
 
 		$hiddenFields = we_html_element::htmlHiddens($version_reset);

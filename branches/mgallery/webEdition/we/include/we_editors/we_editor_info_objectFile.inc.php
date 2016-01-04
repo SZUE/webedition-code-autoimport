@@ -33,8 +33,8 @@ $_html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">ID</div
 $parts = array(
 	array("headline" => "",
 		"html" => $_html,
-		"space" => 140,
-		"icon" => "meta.gif"
+		'space' => 140,
+		'icon' =>"meta.gif"
 	)
 );
 
@@ -70,8 +70,8 @@ $_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g
 
 $parts[] = array("headline" => "",
 	"html" => $_html,
-	"space" => 140,
-	"icon" => "cal.gif"
+	'space' => 140,
+	'icon' =>"cal.gif"
 );
 
 
@@ -82,9 +82,9 @@ if(defined('WORKFLOW_TABLE')){
 
 	$parts[] = array("headline" => g_l('modules_workflow', '[workflow]'),
 		"html" => $anzeige,
-		"space" => 140,
+		'space' => 140,
 		"forceRightHeadline" => 1,
-		"icon" => "workflow.gif"
+		'icon' =>"workflow.gif"
 	);
 }
 

@@ -48,34 +48,25 @@ abstract class we_html_multiIconBox{
 			if($c === null){
 				continue;
 			}
-			$_forceRightHeadline = (!empty($c["forceRightHeadline"]));
-
+			$_forceRightHeadline = (!empty($c['forceRightHeadline']));
 			$icon = (empty($c["icon"]) ? '' : we_html_element::htmlImg(array('src' => ICON_DIR . $c['icon'], 'class' => 'multiIcon')) )? : (empty($c['iconX']) ? '' : $c['iconX']);
-			$headline = (empty($c["headline"]) ?
-					'' :
-					'<div id="headline_' . $uniqname . '_' . $i . '" class="weMultiIconBoxHeadline" style="margin-bottom:10px;">' . $c["headline"] . '</div>' );
-
-			$mainContent = !empty($c["html"]) ? $c["html"] : '';
+			$headline = (empty($c["headline"]) ? '' : '<div id="headline_' . $uniqname . '_' . $i . '" class="weMultiIconBoxHeadline">' . $c["headline"] . '</div>' );
 			$leftWidth = (!empty($c["space"]) ? abs($c["space"]) : 0);
 			$leftContent = $icon ? : (($leftWidth && (!$_forceRightHeadline)) ? $headline : '');
-
-			$rightContent = '<div class="multiIconRight">' . ($icon || !$leftContent || $_forceRightHeadline ? $headline : '') . '<div>' . $mainContent . '</div></div>';
 
 			$out.=(isset($c['class']) ? '<div class="' . $c['class'] . '">' : '') .
 				($i == $foldAtNr && $foldAtNr < count($content) ? // only if the folded items contain stuff.
 					we_html_element::htmlSpan(array('style' => 'margin-left:' . $marginLeft . 'px;', 'class' => 'btn_direction_weMultibox_table'), self::_getButton($uniqname, "weToggleBox('" . $uniqname . "','" . addslashes($foldDown) . "','" . addslashes($foldRight) . "');" . ($delegate ? : "" ), ($displayAtStartup ? 'down' : 'right'), g_l('global', '[openCloseBox]')) .
-						'<span style="cursor: pointer;" id="text_' . $uniqname . '" onclick="weToggleBox(\'' . $uniqname . '\',\'' . addslashes($foldDown) . '\',\'' . addslashes($foldRight) . '\');' . ($delegate ? : "" ) . '">' . ($displayAtStartup ? $foldDown : $foldRight) . '</span>'
+						'<span class="toggleBox" id="text_' . $uniqname . '" onclick="weToggleBox(\'' . $uniqname . '\',\'' . addslashes($foldDown) . '\',\'' . addslashes($foldRight) . '\');' . ($delegate ? : "" ) . '">' . ($displayAtStartup ? $foldDown : $foldRight) . '</span>'
 					) .
 					'<br/><table id="table_' . $uniqname . '" width="100%" class="default" style="' . ($displayAtStartup ? '' : 'display:none') . '"><tr><td>' : '') .
-				'<div style="padding-left:' . $marginLeft . 'px;padding-bottom:10px;margin-bottom:10px;'.
-					($i < (count($content) - 1) && (!isset($c['noline'])) ?
-					'border-bottom: 1px solid #AFB0AF;' :
-					'').'" id="div_' . $uniqname . '_' . $i . '">' .
+				'<div class="weMultiIconBoxContent ' . ($i < (count($content) - 1) && (empty($c['noline'])) ? 'weMultiIconBoxLine' : '' ) . '" style="padding-left:' . $marginLeft . 'px;" id="div_' . $uniqname . '_' . $i . '">' .
 				($leftContent || $leftWidth ?
 					'<div style="' . ($leftWidth ? ' width:' . $leftWidth . 'px' : '') . '" class="multiiconleft largeicons">' . ((!$leftContent) && $leftWidth ? "&nbsp;" : $leftContent) . '</div>' :
 					'') .
-				$rightContent .
-					'</div>' .
+				//right
+				'<div class="multiIconRight">' . ($icon || !$leftContent || $_forceRightHeadline ? $headline : '') . '<div>' . (!empty($c["html"]) ? $c["html"] : '') . '</div></div>' .
+				'</div>' .
 				(isset($c['class']) ? '</div>' : '');
 		}
 
@@ -87,8 +78,8 @@ abstract class we_html_multiIconBox{
 
 		return ($buttons ?
 				//ignore height, replace by bottom:
-				'<div style="overflow:' . $overflow . ';position:absolute;width:100%;' . ($height ? 'height:' . $height . 'px;' : 'bottom:40px;') . 'top:0px;left:0px;">' . $out . '</div>
-				<div class="editfooter"><div style="padding: 10px;">' . $buttons . '</div></div>' :
+				'<div class="weMultiIconBoxWithFooter" style="overflow:' . $overflow . ';' . ($height ? 'height:' . $height . 'px;' : 'bottom:40px;') . '">' . $out . '</div>
+				<div class="editfooter" style="padding: 10px;">' . $buttons . '</div>' :
 				$out);
 	}
 
