@@ -250,7 +250,7 @@ class installer extends installerBase {
 		$errorMessage = ' . $this->getErrorMessage($headline, $message) . ';
 
 		print \'
-			<script type="text/javascript">
+			<script>
 				top.leWizardContent.appendErrorText("\' . $errorMessage . \'");
 				alert("\' . strip_tags($errorMessage) . \'");
 			</script>\';

@@ -801,10 +801,11 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 						$db->query('DROP TABLE IF EXISTS ' . $db->escape($tmpName));
 					}
 					break;
-				case '1062':
+				case 1062:
 					$this->QueryLog['entryExists'][] = $db->Errno . ' ' . $db->Error . "\n<!-- $query -->";
 					return false;
 				case 1065:
+				case 0:
 					return true;
 				default:
 					$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $query --";

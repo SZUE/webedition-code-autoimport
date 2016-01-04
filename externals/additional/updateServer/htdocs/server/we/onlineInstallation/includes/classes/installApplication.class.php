@@ -36,8 +36,6 @@ class installApplication extends installer{
 			return 1;
 		}
 
-		$installationStepsTotal = 0;
-
 		// each step
 		$installationSteps = $this->getInstallationStepNames();
 		$installationStepsTotal = sizeof($installationSteps);
@@ -66,13 +64,11 @@ class installApplication extends installer{
 				break;
 
 			case 'updateApplicationDatabase':
-				$currentStep = 4 + $dlSteps;
-				$currentStep += ($_REQUEST['position'] / EXECUTE_QUERIES_PER_STEP);
+				$currentStep = 4 + $dlSteps + ($_REQUEST['position'] / EXECUTE_QUERIES_PER_STEP);
 				break;
 
 			case 'prepareApplicationFiles':
-				$currentStep = 5 + $dlSteps + $querySteps;
-				$currentStep += ($_REQUEST['position'] / PREPARE_FILES_PER_STEP);
+				$currentStep = 5 + $dlSteps + $querySteps + ($_REQUEST['position'] / PREPARE_FILES_PER_STEP);
 				break;
 
 			case 'copyApplicationFiles':
@@ -81,7 +77,6 @@ class installApplication extends installer{
 
 			case 'writeApplicationConfiguration':
 				return 100;
-				break;
 		}
 
 		return number_format(($currentStep / $installationStepsTotal * 100), 0);
@@ -408,10 +403,10 @@ class installApplication extends installer{
 				}
 
 				if ($msg["error"]) {
-					$message .= "<h1 class=\'notice\'>' . $GLOBALS['lang']['installer']['updateDatabaseNotice'] . '<br />$fileName: ' . $GLOBALS['lang']['installer']['errorExecutingQuery'] . ' </h1>";
+					$message .= "<h1 class=\'error\'>' . $GLOBALS['lang']['installer']['updateDatabaseNotice'] . '<br />$fileName: ' . $GLOBALS['lang']['installer']['errorExecutingQuery'] . ' </h1>";
 				}
-				if(isset($msg)) {
-					//error_log(print_r($msg,true));
+				if(isset($msg["error"])) {
+					error_log(print_r($msg["error"],true));
 				}
 			}
 
@@ -538,8 +533,8 @@ class installApplication extends installer{
 
 		}
 		$message .= "</ul>";
-
-		$success = rename($filesDir."webEdition", $_SESSION["le_installationDirectory"]."/webEdition");
+		$docRoot = isset($_SESSION["le_documentRoot"]) ? $_SESSION["le_documentRoot"] : $_SERVER["DOCUMENT_ROOT"];
+		$success = rename($filesDir."webEdition", $docRoot ."/webEdition");
 
 		if ($success) {
 			$endFile = sizeof($allFiles);
@@ -550,7 +545,6 @@ class installApplication extends installer{
 			?>' . $this->getProceedNextCommandResponsePart($nextUrl, $this->getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
 
 		} else {
-
 			' . $this->getErrorMessageResponsePart('', $GLOBALS['lang']['installer']['errorMoveFile']) . '
 		}
 		?>';
@@ -688,6 +682,11 @@ class installApplication extends installer{
 		$userText = strip_tags($_SESSION["le_login_user"]);
 		$userText = str_replace("\'","",$userText);
 		$userText = str_replace(\'"\',"",$userText);
+		if("' . $tblUserQuery['path'] . '"){
+			$docRoot = isset($_SESSION["le_documentRoot"]) ? $_SESSION["le_documentRoot"] : $_SERVER["DOCUMENT_ROOT"];
+			include_once($docRoot."' . $tblUserQuery['path'] . '");
+			' . $tblUserQuery['needle'] . ';
+		}
 		$query = sprintf("' . $tblUserQuery['replace'] . '", $_SESSION[\'le_db_prefix\'], $userText, $_SESSION["le_login_user"], $_SESSION["le_login_pass"]);
 
 		if (!$leDB->query($query)) {

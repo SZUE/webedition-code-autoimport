@@ -467,7 +467,7 @@ class installer extends installerBase {
 				}
 
 				if ($msg["error"]) {
-					$message .= "<div class=\'errorDiv\'>' . $GLOBALS['lang']['installer']['updateDatabaseNotice'] . '<br />$fileName: ' . $GLOBALS['luSystemLanguage']['installer']['errorExecutingQuery'] . '</div>";
+					$message .= "<div class=\'errorDiv\'>Y' . $GLOBALS['lang']['installer']['updateDatabaseNotice'] . '<br />$fileName: ' . $GLOBALS['luSystemLanguage']['installer']['errorExecutingQuery'] . '</div>";
 					$liveUpdateFnc->insertQueryLogEntries("error", $fileName . ": ' . $GLOBALS['luSystemLanguage']['installer']['errorExecutingQuery'] . '", 1, "' . $_SESSION['clientVersion'] . '");
 				}
 

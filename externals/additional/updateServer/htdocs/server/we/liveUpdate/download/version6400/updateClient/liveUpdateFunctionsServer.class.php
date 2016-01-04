@@ -772,6 +772,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 			case 1062:
 				$this->QueryLog['entryExists'][] = $db->Errno . ' ' . $db->Error . "\n<!-- $query -->";
 				return false;
+			case 0:
 			case 1065:
 				return true;
 			default:
