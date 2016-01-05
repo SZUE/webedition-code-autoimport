@@ -167,16 +167,16 @@ abstract class we_customer_add{
 	public static function getJSSortAdmin(we_customer_view $pob){
 		return we_html_element::jsElement('
 var frames={
-	"set":"' . $pob->frameset . '"
+	set:"' . $pob->frameset . '"
 };
 
 var g_l={
-	"default_soting_no_del": "' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[default_soting_no_del]')) . '",
-	"sortname_empty": "' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[sortname_empty]')) . '",
+	default_soting_no_del: "' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[default_soting_no_del]')) . '",
+	sortname_empty: "' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[sortname_empty]')) . '",
 };
 
 var settings={
-	"default_sort_view":"' . $pob->settings->getSettings('default_sort_view') . '"
+	default_sort_view:"' . $pob->settings->getSettings('default_sort_view') . '"
 };
 
 function doScrollTo(){

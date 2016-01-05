@@ -768,7 +768,7 @@ class we_objectFile extends we_document{
 				$parts[] = array(
 					'headline' => '',
 					'html' => $c2,
-					'space' => 0,
+					
 					'name' => $realName);
 			}
 
@@ -3120,8 +3120,8 @@ class we_objectFile extends we_document{
 				array(
 					"headline" => g_l('weClass', '[path]'),
 					"html" => $this->formPath(),
-					"space" => 140,
-					"icon" => "path.gif"
+					'space' => 140,
+					'icon' =>"path.gif"
 				)
 			);
 
@@ -3129,9 +3129,9 @@ class we_objectFile extends we_document{
 				$parts[] = array(
 					"headline" => g_l('modules_object', '[class]'),
 					"html" => $this->formClass(),
-					"space" => 140,
+					'space' => 140,
 					'noline' => true,
-					"icon" => "class.gif"
+					'icon' =>"class.gif"
 				);
 			} elseif($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){ //	Link to class in normal mode
 				$_html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;"><a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . OBJECT_TABLE . '\',' . $this->TableID . ',\'object\');">' . g_l('modules_object', '[class]') . '</a></div>' .
@@ -3143,63 +3143,63 @@ class we_objectFile extends we_document{
 				$parts[] = array(
 					"headline" => "",
 					"html" => $_html,
-					"space" => 140,
+					'space' => 140,
 					"forceRightHeadline" => 1,
-					"icon" => "class.gif"
+					'icon' =>"class.gif"
 				);
 			}
 
 			$parts[] = array(
 				"headline" => g_l('weClass', '[language]'),
 				"html" => $this->formLangLinks(),
-				"space" => 140,
-				"icon" => "lang.gif"
+				'space' => 140,
+				'icon' =>"lang.gif"
 			);
 
 
 			$parts[] = array(
 				"headline" => g_l('global', '[categorys]'),
 				"html" => $this->formCategory(),
-				"space" => 140,
-				"icon" => "cat.gif"
+				'space' => 140,
+				'icon' =>"cat.gif"
 			);
 
 
 			$parts[] = array(
 				"headline" => g_l('modules_object', '[copyObject]'),
 				"html" => $this->formCopyDocument(),
-				"space" => 140,
-				"icon" => "copy.gif"
+				'space' => 140,
+				'icon' =>"copy.gif"
 			);
 
 
 			$parts[] = array(
 				"headline" => g_l('weClass', '[owners]'),
 				"html" => $this->formCreatorOwners(),
-				"space" => 140,
-				"icon" => "user.gif"
+				'space' => 140,
+				'icon' =>"user.gif"
 			);
 
 
 			$parts[] = array(
 				"headline" => g_l('weClass', '[Charset]'),
 				"html" => $this->formCharset(),
-				"space" => 140,
-				"icon" => "charset.gif"
+				'space' => 140,
+				'icon' =>"charset.gif"
 			);
 		} elseif($this->hasWorkspaces()){ //	Show workspaces
 			$parts = array(
 				array(
 					"headline" => g_l('weClass', '[workspaces]'),
 					"html" => $this->formWorkspaces(),
-					"space" => 140,
-					"noline" => 1,
-					"icon" => "workspace.gif"
+					'space' => 140,
+					'noline' => 1,
+					'icon' =>"workspace.gif"
 				),
 				array(
 					"headline" => g_l('weClass', '[extraWorkspaces]'),
 					"html" => $this->formExtraWorkspaces(),
-					"space" => 140,
+					'space' => 140,
 					"forceRightHeadline" => 1
 				)
 			);
@@ -3209,14 +3209,13 @@ class we_objectFile extends we_document{
 			$parts[] = array(
 				"headline" => "",
 				"html" => $button,
-				"space" => 140
+				'space' => 140
 			);
 		} else { //	No workspaces defined
 			$parts = array(
 				array(
 					"headline" => "",
 					"html" => g_l('modules_object', '[no_workspace_defined]'),
-					"space" => 0
 				)
 			);
 		}

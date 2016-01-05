@@ -87,12 +87,19 @@ function we_tag_userInput($attribs, $content){
 	}
 
 
-	if(!$editable && !$hidden && $type !== 'img' && $type !== 'binary' && $type !== 'flashmovie' && $type !== 'quicktime'){
-		$_hidden = getHtmlTag(
-			'input', array(
-			'type' => 'hidden', 'name' => $fieldname, 'value' => oldHtmlspecialchars($orgVal), 'xml' => $xml
-		));
-		return (($type != 'hidden') ? $content : '') . $_hidden;
+	if(!$editable && !$hidden){
+		switch($type){
+			case 'img':
+			case 'binary':
+			case 'flashmovie':
+			case 'quicktime':
+				break;
+			default:
+				$_hidden = getHtmlTag('input', array(
+					'type' => 'hidden', 'name' => $fieldname, 'value' => oldHtmlspecialchars($orgVal), 'xml' => $xml
+				));
+				return (($type != 'hidden') ? $content : '') . $_hidden;
+		}
 	}
 	switch($type){
 		case 'img' :
@@ -120,7 +127,7 @@ function we_tag_userInput($attribs, $content){
 				$inputstyle = weTag_getAttribute('inputstyle', $attribs, '', we_base_request::STRING);
 				$checkboxclass = weTag_getAttribute('checkboxclass', $attribs, '', we_base_request::STRING);
 				$inputclass = weTag_getAttribute('inputclass', $attribs, '', we_base_request::STRING);
-				$checkboxtext = weTag_getAttribute('checkboxtext', $attribs, g_l('parser', '[delete]'), we_base_request::RAW);
+				$checkboxtext = weTag_getAttribute('checkboxtext', $attribs, g_l('parser', '[delete]'), we_base_request::STRING);
 
 				if($_SESSION[$_imgDataId]['id']){
 					$attribs['id'] = $_SESSION[$_imgDataId]['id'];
@@ -166,7 +173,11 @@ function we_tag_userInput($attribs, $content){
 			if(isset($_SESSION[$_imgDataId]['serverPath'])){
 				$src = '/' . ltrim(substr($_SESSION[$_imgDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
 
-				return '<img src="' . $src . '" alt="" width="' . $_SESSION[$_imgDataId]["imgwidth"] . '" height="' . $_SESSION[$_imgDataId]["imgheight"] . '" />' . $hidden;
+				return getHtmlTag('img', array(
+						'src' => $src,
+						'alt' => "",
+						'style' => 'width:' . $_SESSION[$_imgDataId]["imgwidth"] . 'px;height:' . $_SESSION[$_imgDataId]["imgheight"] . 'px',
+					)) . $hidden;
 			}
 
 			if(!empty($_SESSION[$_imgDataId]['doDelete'])){
@@ -214,9 +225,7 @@ function we_tag_userInput($attribs, $content){
 					$src = '/' . ltrim(substr($_SESSION[$_flashmovieDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
 					$flashmovieTag = '';
 				} else {
-					unset($attribs['width']);
-					unset($attribs['height']);
-
+					$attribs = removeAttribs($attribs, array('width', 'height'));
 					// Include Flash class
 					$flashmovieTag = (!empty($attribs['id']) ?
 							$GLOBALS['we_doc']->getField($attribs, 'flashmovie') :
@@ -256,9 +265,7 @@ function we_tag_userInput($attribs, $content){
 				if(!empty($_SESSION[$_flashmovieDataId]['doDelete'])){
 					return $hidden;
 				}
-
-				unset($attribs['width']);
-				unset($attribs['height']);
+				$attribs = removeAttribs($attribs, array('width', 'height'));
 				$attribs['id'] = $_SESSION[$_flashmovieDataId]['id'];
 				return $GLOBALS['we_doc']->getField($attribs, 'flashmovie') . $hidden;
 			}
@@ -338,18 +345,18 @@ function we_tag_userInput($attribs, $content){
 				$src = '/' . ltrim(substr($_SESSION[$_quicktimeDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
 				return $hidden;
 			}
-			if(!empty($_SESSION[$_quicktimeDataId]['id'])){
-
-				if(!empty($_SESSION[$_quicktimeDataId]['doDelete'])){
-					return $hidden;
-				}
-
-				unset($attribs['width']);
-				unset($attribs['height']);
-				$attribs['id'] = $_SESSION[$_quicktimeDataId]['id'];
-				return $GLOBALS['we_doc']->getField($attribs, 'quicktime') . $hidden;
+			if(empty($_SESSION[$_quicktimeDataId]['id'])){
+				return '';
 			}
-			return '';
+
+			if(!empty($_SESSION[$_quicktimeDataId]['doDelete'])){
+				return $hidden;
+			}
+
+			unset($attribs['width']);
+			unset($attribs['height']);
+			$attribs['id'] = $_SESSION[$_quicktimeDataId]['id'];
+			return $GLOBALS['we_doc']->getField($attribs, 'quicktime') . $hidden;
 
 		case 'binary' :
 			$_binaryDataId = we_base_request::_(we_base_request::HTML, 'WE_UI_BINARY_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
@@ -427,23 +434,21 @@ function we_tag_userInput($attribs, $content){
 				$src = '/' . ltrim(substr($_SESSION[$_binaryDataId]["serverPath"], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
 				return $hidden;
 			}
-			if(!empty($_SESSION[$_binaryDataId]["id"])){
-				if(!empty($_SESSION[$_binaryDataId]["doDelete"])){
-					return $hidden;
-				}
-
-
-				$attribs["id"] = $_SESSION[$_binaryDataId]["id"];
-				$binaryTag = $GLOBALS['we_doc']->getField($attribs, "binary");
-				$t = explode('_', $binaryTag[0]);
-				unset($t[1]);
-				unset($t[0]);
-				$fn = implode('_', $t);
-				$imgTag = '<a href="' . $binaryTag[1] . '" target="_blank">' . $fn . '</a>';
-				return $imgTag . $hidden;
+			if(empty($_SESSION[$_binaryDataId]["id"])){
+				return '';
+			}
+			if(!empty($_SESSION[$_binaryDataId]["doDelete"])){
+				return $hidden;
 			}
 
-			return '';
+			$attribs["id"] = $_SESSION[$_binaryDataId]["id"];
+			$binaryTag = $GLOBALS['we_doc']->getField($attribs, "binary");
+			$t = explode('_', $binaryTag[0]);
+			unset($t[1]);
+			unset($t[0]);
+			$fn = implode('_', $t);
+			$imgTag = '<a href="' . $binaryTag[1] . '" target="_blank">' . $fn . '</a>';
+			return $imgTag . $hidden;
 
 		case 'textarea' :
 			//$attribs['inlineedit'] = "true"; // bugfix: 7276
@@ -751,7 +756,7 @@ function we_tag_userInput($attribs, $content){
 			$mode = weTag_getAttribute('mode', $attribs, '', we_base_request::STRING);
 			return we_html_tools::htmlInputChoiceField($fieldname, $orgVal, $values, $atts, $mode);
 		case 'password':
-			$atts = removeAttribs($attribs, array(
+			$atts = array_merge(removeAttribs($attribs, array(
 				'wysiwyg',
 				'commands',
 				'pure',
@@ -771,10 +776,11 @@ function we_tag_userInput($attribs, $content){
 				'height',
 				'bgcolor',
 				'fontnames'
-			));
-			$atts['type'] = 'password';
-			$atts['name'] = $fieldname;
-			$atts['value'] = oldHtmlspecialchars($orgVal);
+				)), array(
+				'type' => 'password',
+				'name' => $fieldname,
+				'value' => oldHtmlspecialchars($orgVal))
+			);
 
 			return getHtmlTag('input', $atts);
 		case 'textinput':

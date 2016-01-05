@@ -33,7 +33,7 @@ function we_submitForm(target, url) {
 
 function put_in_workflow() {
 	if (_EditorFrame.getEditorIsHot()) {
-		if (confirm(g_l.in_wf_warning)) {
+		if (confirm(WE().consts.g_l.main.in_wf_warning)) {
 			we_cmd('save_document', '', '', '', '', 0, 0, 1);
 		}
 	} else {

@@ -72,6 +72,7 @@ abstract class we_html_tools{
 		$elemOut = '';
 
 		for($i = 1; $i < 7; ++$i){
+//FIXME:remove eval
 			$var = ${'col' . $i};
 			if($var){
 				$tmp = '<td';
@@ -158,7 +159,8 @@ this.selectedIndex = 0;' .
 	static function htmlDialogLayout($content, $headline, $buttons = '', $width = "100%", $marginLeft = 30, $height = "", $overflow = "auto"){
 		return we_html_multiIconBox::getHTML('', array(
 				array(
-					"html" => $content, "headline" => "", "space" => 0
+					"html" => $content,
+					"headline" => ""
 				)
 				), $marginLeft, ($buttons ? '<div style="text-align:right;margin-left:10px;">' . $buttons . '</div>' : ''), -1, "", "", false, $headline, "", $height, $overflow);
 	}

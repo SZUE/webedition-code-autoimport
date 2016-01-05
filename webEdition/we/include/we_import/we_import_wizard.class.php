@@ -571,7 +571,7 @@ handle_event("previous");');
 			$parts[] = array(
 				"headline" => g_l('import', '[handle_document_options]') . '<br/>' . g_l('import', '[handle_template_options]'),
 				"html" => $tbl_extra->getHTML(),
-				"space" => 120
+				'space' => 120
 			);
 
 
@@ -583,7 +583,7 @@ handle_event("previous");');
 				$parts[] = array(
 					"headline" => g_l('import', '[handle_object_options]') . '<br/>' . g_l('import', '[handle_class_options]'),
 					"html" => $tbl_extra->getHTML(),
-					"space" => 120
+					'space' => 120
 				);
 			}
 
@@ -626,7 +626,7 @@ handle_event("previous");');
 			$parts[] = array(
 				"headline" => g_l('import', '[handle_doctype_options]') . '<br/>' . g_l('import', '[handle_category_options]'),
 				"html" => '<input type="hidden" name="v[import_XMLencoding]" value="' . $xml_encoding . '" />' . $tbl_extra->getHTML(),
-				"space" => 120
+				'space' => 120
 			);
 
 
@@ -671,7 +671,7 @@ handle_event("previous");');
 					array(
 						'headline' => '',
 						'html' => we_html_tools::htmlAlertAttentionBox(g_l('import', '[invalid_path]'), we_html_tools::TYPE_ALERT, 530),
-						'space' => 0)
+					)
 				);
 				$content = $hdns . we_html_multiIconBox::getHTML(we_import_functions::TYPE_WE_XML, $parts, 30, '', -1, '', '', false, g_l('import', '[warning]'));
 				return array($functions, $content);
@@ -735,7 +735,7 @@ function handle_event(evt) {
 			array(
 				'headline' => '',
 				'html' => we_html_element::htmlDiv(array('class' => 'blockWrapper', 'style' => 'width: 520px; height: 400px; border:1px #dce6f2 solid;', 'id' => 'log'), ''),
-				'space' => 0)
+			)
 		);
 		$content = $hdns . we_html_multiIconBox::getHTML(we_import_functions::TYPE_WE_XML, $parts, 30, '', -1, '', '', false, g_l('import', '[log]'));
 
@@ -1216,16 +1216,16 @@ HTS;
 				$tblFrame->setCol(1, 0, array('colspan' => 2));
 				$tblFrame->setCol(2, 1, array(), $tblSelect->getHtml());
 
-				$parts[] = array('html' => $tblFrame->getHtml(), 'space' => 0, 'noline' => 1);
+				$parts[] = array('html' => $tblFrame->getHtml(), 'noline' => 1);
 			} else {
-				$parts[] = array('html' => we_html_tools::htmlAlertAttentionBox(g_l('import', (!$xmlWellFormed ? '[not_well_formed]' : '[missing_child_node]')), we_html_tools::TYPE_ALERT, 530), 'space' => 0, 'noline' => 1);
+				$parts[] = array('html' => we_html_tools::htmlAlertAttentionBox(g_l('import', (!$xmlWellFormed ? '[not_well_formed]' : '[missing_child_node]')), we_html_tools::TYPE_ALERT, 530), 'noline' => 1);
 			}
 		} else {
 			$xmlWellFormed = $hasChildNode = false;
 			if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $v['import_from'])){
-				$parts[] = array('html' => we_html_tools::htmlAlertAttentionBox(g_l('import', '[file_exists]') . $_SERVER['DOCUMENT_ROOT'] . $v['import_from'], we_html_tools::TYPE_ALERT, 530), 'space' => 0, 'noline' => 1);
+				$parts[] = array('html' => we_html_tools::htmlAlertAttentionBox(g_l('import', '[file_exists]') . $_SERVER['DOCUMENT_ROOT'] . $v['import_from'], we_html_tools::TYPE_ALERT, 530), 'noline' => 1);
 			} elseif(!is_readable($_SERVER['DOCUMENT_ROOT'] . $v['import_from'])){
-				$parts[] = array('html' => we_html_tools::htmlAlertAttentionBox(g_l('import', '[file_readable]'), we_html_tools::TYPE_ALERT, 530), 'space' => 0, 'noline' => 1);
+				$parts[] = array('html' => we_html_tools::htmlAlertAttentionBox(g_l('import', '[file_readable]'), we_html_tools::TYPE_ALERT, 530), 'noline' => 1);
 			}
 		}
 
@@ -1486,7 +1486,7 @@ function handle_event(evt) {
 		$parts = array(
 			array(
 				'html' => '<br/>' . we_html_tools::htmlDialogBorder3(510, 255, $rows, $th, 'defaultfont'),
-				'space' => 0)
+			)
 		);
 		if(!empty($dateFields)){
 			// Timestamp
@@ -2064,8 +2064,8 @@ HTS;
 					$seaPu->getHtml() .
 					we_html_tools::htmlFormElementTable($docCategories, g_l('import', '[categories]'), "left", "defaultfont") .
 					(defined('OBJECT_TABLE') ? '' : $yuiSuggest->getYuiJs()),
-					"space" => 120,
-					"noline" => 1
+					'space' => 120,
+					'noline' => 1
 				)
 			);
 			if(defined('OBJECT_TABLE')){
@@ -2076,8 +2076,8 @@ HTS;
 					$objSeaPu->getHtml() .
 					we_html_tools::htmlFormElementTable($objCategories, g_l('import', '[categories]'), "left", "defaultfont")
 					. $yuiSuggest->getYuiJs(),
-					"space" => 120,
-					"noline" => 1
+					'space' => 120,
+					'noline' => 1
 				);
 			}
 		} else {
@@ -2085,15 +2085,13 @@ HTS;
 				$parts = array(
 					array(
 						"html" => we_html_tools::htmlAlertAttentionBox(g_l('import', '[file_exists]') . $_SERVER['DOCUMENT_ROOT'] . $v["import_from"], we_html_tools::TYPE_ALERT, 530),
-						"space" => 0,
-						"noline" => 1));
+						'noline' => 1));
 				$functions.='top.WE().layout.button.switch_button_state(top.wizbusy.document, "next","disabled");';
 			} else if(!is_readable($_SERVER['DOCUMENT_ROOT'] . $v["import_from"])){
 				$parts = array(
 					array(
 						"html" => we_html_tools::htmlAlertAttentionBox(g_l('import', '[file_readable]'), we_html_tools::TYPE_ALERT, 530),
-						"space" => 0,
-						"noline" => 1));
+						'noline' => 1));
 				$functions.='top.WE().layout.button.switch_button_state(top.wizbusy.document, "next","disabled");';
 			} else {
 				$parts = array();
@@ -2337,7 +2335,7 @@ function handle_event(evt) {
 		$parts = array(
 			array(
 				"html" => "<br/>" . we_html_tools::htmlDialogBorder3(510, 255, $rows, $th, "defaultfont"),
-				"space" => 0)
+			)
 		);
 
 
@@ -2352,7 +2350,7 @@ function handle_event(evt) {
 			$parts[] = array(
 				"headline" => g_l('import', '[format_date]'),
 				"html" => $tStamp->getHTML(),
-				"space" => 140
+				'space' => 140
 			);
 			if(!isset($v["dateFields"])){
 				$hdns .= we_html_element::htmlHidden("v[dateFields]", implode(',', $dateFields));

@@ -26,29 +26,29 @@
   data of variations have the following format in document
 
   we_doc->elements[WE_VARIANTS_ELEMENT_NAME] = array(
-      [0] => array(
-        'VARIATIONNAME1' => array(
-        'fieldName1' => array(
-            'type' = 'txt',
-            'dat' = 'Text'
-        ),
-        'fieldName2' => array(
-            'type' = 'img',
-            'dat' = 152
-        )
-      ),
-      [1] => array(
-        'VARIATIONNAME2' => array(
-            'fieldName1' => array(
-                'type' = 'txt',
-                'dat' = 'CU'
-            ),
-            'fieldName2' => array(
-                'type' = 'img',
-                'dat' = 155
-            )
-        )
-      )
+  [0] => array(
+  'VARIATIONNAME1' => array(
+  'fieldName1' => array(
+  'type' = 'txt',
+  'dat' = 'Text'
+  ),
+  'fieldName2' => array(
+  'type' = 'img',
+  'dat' = 152
+  )
+  ),
+  [1] => array(
+  'VARIATIONNAME2' => array(
+  'fieldName1' => array(
+  'type' = 'txt',
+  'dat' = 'CU'
+  ),
+  'fieldName2' => array(
+  'type' = 'img',
+  'dat' = 155
+  )
+  )
+  )
   )
   =====>>
 
@@ -347,7 +347,6 @@ abstract class we_base_variants{
 				$parts[] = array(
 					'headline' => '',
 					'html' => $content,
-					'space' => 0
 				);
 			}
 		} else {
@@ -357,7 +356,6 @@ abstract class we_base_variants{
 		$parts[] = array(
 			'headline' => '',
 			'html' => we_html_button::create_button("fa:btn_add_field,fa-plus,fa-lg fa-square-o", "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('shop_insert_variant','" . ($i) . "');"),
-			'space' => 0
 		);
 		return $parts;
 	}
@@ -415,7 +413,6 @@ abstract class we_base_variants{
 				$parts[] = array(
 					'headline' => '',
 					'html' => $content,
-					'space' => 0
 				);
 			}
 		}
@@ -425,7 +422,6 @@ abstract class we_base_variants{
 		$parts[] = array(
 			'headline' => '',
 			'html' => $content,
-			'space' => 0
 		);
 		return $parts;
 	}

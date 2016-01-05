@@ -62,9 +62,9 @@ function doSelectMessage(id) {
 	showContent(id);
 
 	if (parent.entries_selected.length > 0) {
-		parent.entries_selected.push(String(id));
+		parent.entries_selected.push(id);
 	} else {
-		parent.entries_selected = [String(id)];
+		parent.entries_selected = [id];
 	}
 
 	parent.parent.last_entry_selected = id;

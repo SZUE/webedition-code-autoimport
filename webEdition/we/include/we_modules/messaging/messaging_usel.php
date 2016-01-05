@@ -175,7 +175,7 @@ if($maxsel){
 			continue;
 		}
 
-		current_sel = current_sel.concat([[user_type, String(tarr[0]), String(tarr[1])]]);
+		current_sel = current_sel.concat([[user_type, tarr[0].toString(), tarr[1].toString()]]);
 		opt = new Option(tarr[1], tarr[0], false, false);
 		document.usel.usel_currentsel.options[document.usel.usel_currentsel.length] = opt;
 	}

@@ -164,16 +164,13 @@ $formVat = '
 
 $parts = array(
 	array(
-		'space' => 0,
 		'html' => $vatTable
 	),
 	array(
-		'space' => 0,
 		'html' => $plusBut
 	),
 	array(
 		'html' => $formVat,
-		'space' => 0
 	),
 );
 

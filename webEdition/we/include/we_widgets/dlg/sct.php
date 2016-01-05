@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -64,7 +63,7 @@ $shortcuts = array_filter(array(
 	'new_class' => (defined('OBJECT_TABLE') && permissionhandler::hasPerm('NEW_OBJECT') ? g_l('button', '[new_class][value]') : ''),
 	'preferences' => (permissionhandler::hasPerm('EDIT_SETTINGS') ? g_l('button', '[preferences][value]') : ''),
 	'btn_add_image' => (permissionhandler::hasPerm('NEW_GRAFIK') ? g_l('button', '[btn_add_image][alt]') : '')
-		));
+	));
 
 $jsLang = array();
 foreach($shortcuts as $k => $v){
@@ -76,7 +75,7 @@ $oSctPool = new we_html_select(array(
 	"size" => 1,
 	"class" => "defaultfont",
 	"onchange" => "addBtn(_fo['list11'],this.options[this.selectedIndex].text,this.options[this.selectedIndex].value,true);this.options[0].selected=true;"
-		)
+	)
 );
 $oSctPool->insertOption(0, " ", "", true);
 $iCurrOpt = 1;
@@ -92,7 +91,7 @@ $oSctList11 = new we_html_select(array(
 	"style" => "width:200px;",
 	"class" => "defaultfont",
 	"onDblClick" => "moveSelectedOptions(this.form['list11'],this.form['list21'],false);"
-		));
+	));
 $oSctList21 = new we_html_select(array(
 	"multiple" => "multiple",
 	"name" => "list21",
@@ -100,7 +99,7 @@ $oSctList21 = new we_html_select(array(
 	"style" => "width:200px;",
 	"class" => "defaultfont",
 	"onDblClick" => "moveSelectedOptions(this.form['list21'],this.form['list11'],false);"
-		));
+	));
 
 $oBtnDelete = we_html_button::create_button(we_html_button::DELETE, "javascript:removeOption(document.forms[0]['list11']);removeOption(document.forms[0]['list21']);", false, -1, -1, "", "", false, false);
 $oShortcutsRem = we_html_tools::htmlAlertAttentionBox(g_l('cockpit', '[sct_rem]'), we_html_tools::TYPE_INFO, 420);
@@ -108,37 +107,37 @@ $oShortcutsRem = we_html_tools::htmlAlertAttentionBox(g_l('cockpit', '[sct_rem]'
 $oPool = new we_html_table(array("width" => 420, 'class' => 'default'), 3, 3);
 $oPool->setCol(0, 0, null, $oSctList11->getHTML());
 $oPool->setCol(0, 1, array('style' => 'text-align:center;vertical-align:middle;'), we_html_element::htmlA(array(
-			"href" => "#",
-			"onclick" => "moveOptionUp(document.forms[0]['list11']);moveOptionUp(document.forms[0]['list21']);return false;"
-				), '<i class="fa fa-lg fa-caret-up"></i>') .
-		we_html_element::htmlBr() . we_html_element::htmlBr() .
-		we_html_element::htmlA(array(
-			"href" => "#",
-			"onclick" => "moveSelectedOptions(document.forms[0]['list11'],document.forms[0]['list21'],false);return false;"
-				), '<i class="fa fa-lg fa-caret-right"></i>') .
-		we_html_element::htmlBr() . we_html_element::htmlBr() .
-		we_html_element::htmlA(array(
-			"href" => "#",
-			"onclick" => "moveSelectedOptions(document.forms[0]['list21'],document.forms[0]['list11'],false);return false;"
-				), '<i class="fa fa-lg fa-caret-left"></i>') .
-		we_html_element::htmlBr() . we_html_element::htmlBr() .
-		we_html_element::htmlA(array(
-			"href" => "#",
-			"onclick" => "moveOptionDown(document.forms[0]['list11']);moveOptionDown(document.forms[0]['list21']);return false;"
-				), '<i class="fa fa-lg fa-caret-down"></i>'
+		"href" => "#",
+		"onclick" => "moveOptionUp(document.forms[0]['list11']);moveOptionUp(document.forms[0]['list21']);return false;"
+		), '<i class="fa fa-lg fa-caret-up"></i>') .
+	we_html_element::htmlBr() . we_html_element::htmlBr() .
+	we_html_element::htmlA(array(
+		"href" => "#",
+		"onclick" => "moveSelectedOptions(document.forms[0]['list11'],document.forms[0]['list21'],false);return false;"
+		), '<i class="fa fa-lg fa-caret-right"></i>') .
+	we_html_element::htmlBr() . we_html_element::htmlBr() .
+	we_html_element::htmlA(array(
+		"href" => "#",
+		"onclick" => "moveSelectedOptions(document.forms[0]['list21'],document.forms[0]['list11'],false);return false;"
+		), '<i class="fa fa-lg fa-caret-left"></i>') .
+	we_html_element::htmlBr() . we_html_element::htmlBr() .
+	we_html_element::htmlA(array(
+		"href" => "#",
+		"onclick" => "moveOptionDown(document.forms[0]['list11']);moveOptionDown(document.forms[0]['list21']);return false;"
+		), '<i class="fa fa-lg fa-caret-down"></i>'
 ));
 $oPool->setCol(0, 2, null, $oSctList21->getHTML());
 $oPool->setCol(1, 0, array("colspan" => 3, 'style' => 'text-align:center;padding-top:5px;'), $oBtnDelete);
 
 $content = $oShortcutsRem . we_html_element::htmlBr() . we_html_tools::htmlFormElementTable(
-				$oSctPool->getHTML(), g_l('cockpit', '[select_buttons]'), "left", "defaultfont") . we_html_element::htmlBr() . $oPool->getHTML();
+		$oSctPool->getHTML(), g_l('cockpit', '[select_buttons]'), "left", "defaultfont") . we_html_element::htmlBr() . $oPool->getHTML();
 
 $parts = array(
 	array(
-		"headline" => "", "html" => $content, "space" => 0
+		"headline" => "", "html" => $content,
 	),
 	array(
-		"headline" => "", "html" => $oSelCls->getHTML(), "space" => 0
+		"headline" => "", "html" => $oSelCls->getHTML(),
 	)
 );
 
@@ -150,14 +149,14 @@ $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button,
 $sTblWidget = we_html_multiIconBox::getJS() . we_html_multiIconBox::getHTML("sctProps", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[shortcuts]'));
 
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[shortcuts]'), '', '', STYLESHEET .
-		$jsFile .
-		we_html_element::jsElement($jsPrefs . "
+	$jsFile .
+	we_html_element::jsElement($jsPrefs . "
 _aLang={" . implode(',', $jsLang) . "};
 var g_l={
-all_selected:'" . g_l('cockpit', '[all_selected]') . "',
+	all_selected:'" . g_l('cockpit', '[all_selected]') . "',
 };
 ") .
-		we_html_element::jsScript(JS_DIR . 'widgets/sct.js'), we_html_element::htmlBody(
-				array(
-			"class" => "weDialogBody", "onload" => "init();"
-				), we_html_element::htmlForm("", $sTblWidget)));
+	we_html_element::jsScript(JS_DIR . 'widgets/sct.js'), we_html_element::htmlBody(
+		array(
+		"class" => "weDialogBody", "onload" => "init();"
+		), we_html_element::htmlForm("", $sTblWidget)));

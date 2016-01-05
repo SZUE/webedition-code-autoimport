@@ -24,7 +24,7 @@
  */
 class we_customer_tree extends weTree{
 
-	function customJSFile(){
+	protected function customJSFile(){
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_tree.js');
 	}
 

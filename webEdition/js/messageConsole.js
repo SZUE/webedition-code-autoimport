@@ -33,6 +33,7 @@
  * - the consoleViews in the different windows are observers
  */
 WE().layout.messageConsole = {
+	calls: [],
 	observers: [],
 	maxAmount: 35,
 	messages: [],
@@ -121,7 +122,9 @@ WE().layout.messageConsoleView.prototype = {
 					this.switchImage(_lastMessage.prio, true);
 					this.calls.push(null);
 
-					this.win.setTimeout(this.hideMessage, 5000);
+					this.win.setTimeout(function (context) {
+						context.hideMessage();
+					}, 5000, this);
 				}
 			}
 		} catch (e) {

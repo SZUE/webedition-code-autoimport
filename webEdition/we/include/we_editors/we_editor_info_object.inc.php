@@ -33,8 +33,8 @@ $_html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">ID</div
 $parts = array(
 	array("headline" => "",
 		"html" => $_html,
-		"space" => 140,
-		"icon" => "meta.gif"
+		'space' => 140,
+		'icon' =>"meta.gif"
 	)
 );
 
@@ -65,8 +65,8 @@ if($GLOBALS['we_doc']->ModifierID){
 
 $parts[] = array("headline" => "",
 	"html" => $_html,
-	"space" => 140,
-	"icon" => "cal.gif"
+	'space' => 140,
+	'icon' =>"cal.gif"
 );
 
 

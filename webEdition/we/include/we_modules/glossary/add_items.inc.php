@@ -89,15 +89,15 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 		$UserDict = WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_SESSION['user']['Username'] . '@' . $_SERVER['SERVER_NAME'] . '.dict';
 
 		$AppletCode = we_html_element::htmlApplet(array(
-					'name' => "spellchecker",
-					'code' => "LeSpellchecker.class",
-					'archive' => "lespellchecker.jar",
-					'codebase' => getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR,
-					'width' => 2,
-					'height' => 2,
-					'id' => "applet",
-					'style' => "visibility: hidden",
-						), '
+				'name' => "spellchecker",
+				'code' => "LeSpellchecker.class",
+				'archive' => "lespellchecker.jar",
+				'codebase' => getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR,
+				'width' => 2,
+				'height' => 2,
+				'id' => "applet",
+				'style' => "visibility: hidden",
+				), '
 <param name="code" value="LeSpellchecker.class"/>
 <param name="archive" value="lespellchecker.jar"/>
 <param name="type" value="application/x-java-applet;version=1.1"/>
@@ -122,8 +122,8 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 				case 'Charset':
 				default:
 					if(isset($we_doc->elements[$key]['type']) && (
-							$we_doc->elements[$key]['type'] === "txt" || $we_doc->elements[$key]['type'] === "input"
-							)
+						$we_doc->elements[$key]['type'] === "txt" || $we_doc->elements[$key]['type'] === "input"
+						)
 					){
 						$SrcBody .= $we_doc->elements[$key]['dat'] . " ";
 					}
@@ -229,8 +229,8 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 
 				$Modes = array();
 				if((
-						isset($_SESSION['prefs']['force_glossary_action']) && $_SESSION['prefs']['force_glossary_action'] == 0
-						) && $cmd3 != "checkOnly"
+					isset($_SESSION['prefs']['force_glossary_action']) && $_SESSION['prefs']['force_glossary_action'] == 0
+					) && $cmd3 != "checkOnly"
 				){
 					$Modes[''] = g_l('modules_glossary', '[please_choose]');
 				}
@@ -374,7 +374,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 									break;
 								default:
 									document.getElementById('type_' + i).focus();
-										WE().util.showMessage(WE().consts.g_l.glossary.please_choose_action, WE().consts.message.WE_MESSAGE_ERROR, window);
+									WE().util.showMessage(WE().consts.g_l.glossary.please_choose_action, WE().consts.message.WE_MESSAGE_ERROR, window);
 									return false;
 									break;
 							}
@@ -444,7 +444,6 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 					$Part = array(
 						"headline" => "",
 						"html" => $Content,
-						"space" => 0
 					);
 					$Parts[] = $Part;
 
@@ -481,8 +480,8 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 								case 'correct':
 									foreach($we_doc->elements as &$val){
 										if(isset($val['type']) && (
-												$val['type'] === 'txt' || $val['type'] === 'input'
-												)
+											$val['type'] === 'txt' || $val['type'] === 'input'
+											)
 										){
 											$val['dat'] = preg_replace('-(^|\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~])(' . preg_quote($Key, '-') . ')(\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~]|$)-', '${1}' . $Entry['title'] . '${3}', $temp);
 										}
@@ -529,19 +528,19 @@ top.we_reloadEditPage();
 var AddWords = "";
 ' . $AddJs . '
 top.add();' .
-							($cmd3 != 'checkOnly' ? "top.we_save_document();" : '') .
-							we_message_reporting::getShowMessageCall(
-									g_l('modules_glossary', ($cmd4 === 'checkOnly' ?
-													'[check_successful]' :
-													// glossary check with publishing
-													'[check_successful_and_publish]')), we_message_reporting::WE_MESSAGE_NOTICE, false, true) .
-							"top.close();");
+						($cmd3 != 'checkOnly' ? "top.we_save_document();" : '') .
+						we_message_reporting::getShowMessageCall(
+							g_l('modules_glossary', ($cmd4 === 'checkOnly' ?
+									'[check_successful]' :
+									// glossary check with publishing
+									'[check_successful_and_publish]')), we_message_reporting::WE_MESSAGE_NOTICE, false, true) .
+						"top.close();");
 					?>
 					</head>
 					<body class="weDialogBody">
 						<form name="we_form" action="<?php echo WEBEDITION_DIR; ?>we_cmd.php" method="post"><?php
-					}
-					?>
+	}
+			?>
 				</form>
 			</body>
 

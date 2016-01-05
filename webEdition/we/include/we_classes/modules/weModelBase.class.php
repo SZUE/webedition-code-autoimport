@@ -95,6 +95,14 @@ class weModelBase{
 		}
 		foreach($this->persistent_slots as $key => $val){
 			$val = ($isAdvanced ? $key : $val);
+			switch($val){
+				case 'nHash':
+					if(!isset($this->$val)){
+						$this->$val = md5($this->Name);
+					}
+					break;
+			}
+
 			if(isset($this->{$val})){
 				$sets[$val] = is_array($this->{$val}) ? we_serialize($this->{$val}, ($jsonSer ? 'json' : 'serialize')) : $this->{$val};
 			}

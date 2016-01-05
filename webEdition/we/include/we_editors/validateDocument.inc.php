@@ -110,7 +110,7 @@ if($services){
 
 //  generate Body of page
 $parts = array(
-	array('html' => g_l('validation', '[description]'), 'space' => 0),
+	array('html' => g_l('validation', '[description]'),),
 	array('headline' => g_l('validation', '[service]'),
 		'html' =>
 		'<table class="default">
@@ -123,7 +123,7 @@ $parts = array(
 		we_html_button::create_button(we_html_button::OK, 'javascript:we_cmd(\'checkDocument\')', true, 100, 22, '', '', (empty($services)))
 		. '</td></tr></table>'
 		, 'space' => 95),
-	array('html' => g_l('validation', '[result]'), 'noline' => 1, 'space' => 0),
+	array('html' => g_l('validation', '[result]'), 'noline' => 1,),
 	array('html' => '<iframe name="validation" id="validation" src="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=checkDocument" width="680" height="400"></iframe>', 'space' => 5),
 );
 

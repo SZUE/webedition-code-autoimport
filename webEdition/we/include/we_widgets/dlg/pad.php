@@ -45,7 +45,7 @@ $parts = array(
 	array(
 		"headline" => g_l('cockpit', '[sorting]'),
 		"html" => $sort->getHTML(),
-		"space" => 100
+		'space' => 100
 	)
 );
 
@@ -61,7 +61,7 @@ $display->setCol(0, 2, array("width" => 145), $oRdoDisplay[1]);
 $parts[] = array(
 	"headline" => g_l('cockpit', '[display]'),
 	"html" => $display->getHTML(),
-	"space" => 100
+	'space' => 100
 );
 
 $oRdoDate = array(
@@ -80,7 +80,7 @@ $date->setCol(2, 0, null, $oRdoDate[2]);
 $parts[] = array(
 	"headline" => g_l('cockpit', '[display_date]'),
 	"html" => $date->getHTML(),
-	"space" => 100
+	'space' => 100
 );
 
 $oRdoPrio = array(
@@ -99,7 +99,7 @@ $prio->setCol(2, 0, null, $oRdoPrio[2]);
 $prio->setCol(2, 2, null, '<i class="fa fa-dot-circle-o" style="color:green"></i>');
 
 $parts[] = array(
-	"headline" => g_l('cockpit', '[default_priority]'), "html" => $prio->getHTML(), "space" => 100
+	"headline" => g_l('cockpit', '[default_priority]'), "html" => $prio->getHTML(), 'space' => 100
 );
 
 $oSctValid = we_html_tools::htmlSelect("sct_valid", array(
@@ -107,7 +107,7 @@ $oSctValid = we_html_tools::htmlSelect("sct_valid", array(
 				), 1, g_l('cockpit', '[always]'), false, array('style' => "width:120px;", 'onchange' => ""), 'value', 120);
 
 $parts[] = array(
-	"headline" => g_l('cockpit', '[default_validity]'), "html" => $oSctValid, "space" => 100
+	"headline" => g_l('cockpit', '[default_validity]'), "html" => $oSctValid, 'space' => 100
 );
 
 list($pad_header_enc, ) = explode(',', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1));
@@ -122,10 +122,10 @@ while($DB_WE->next_record()){
 }
 $oSctTitle = we_html_tools::htmlSelect("sct_title", array_unique($_options), 1, "", false, array('id' => "title", 'onchange' => ""), 'value');
 $parts[] = array(
-	"headline" => g_l('cockpit', '[title]'), "html" => $oSctTitle, "space" => 100
+	"headline" => g_l('cockpit', '[title]'), "html" => $oSctTitle, 'space' => 100
 );
 $parts[] = array(
-	"headline" => g_l('cockpit', '[bg_color]'), "html" => $oSctCls->getHTML(), "space" => 100
+	"headline" => g_l('cockpit', '[bg_color]'), "html" => $oSctCls->getHTML(), 'space' => 100
 );
 
 $save_button = we_html_button::create_button(we_html_button::SAVE, "javascript:save();", false, 0, 0);

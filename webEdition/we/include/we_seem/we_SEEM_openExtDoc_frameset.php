@@ -61,7 +61,7 @@ echo we_html_tools::getHtmlTop('', '', 'frameset');
 		loc = null;
 
 		try {
-			loc = String(extDocContent.location);
+			loc = extDocContent.location;
 		} catch (e) {
 
 		}

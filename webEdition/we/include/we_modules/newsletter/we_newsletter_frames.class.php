@@ -128,7 +128,7 @@ class we_newsletter_frames extends we_modules_frame{
 
 		$textPost = we_base_request::_(we_base_request::STRING, "txt", g_l('modules_newsletter', ($group ? '[new_newsletter_group]' : '[new_newsletter]')));
 
-		$js = we_html_element::jsElement('
+		$js = '
 function setTab(tab) {
 	switch (tab) {
 		case 0:
@@ -147,7 +147,7 @@ function setTab(tab) {
 			top.content.editor.edbody.we_cmd("switchPage",3);
 			break;
 	}
-}');
+}';
 
 		$we_tabs = new we_tabs();
 
@@ -161,7 +161,7 @@ function setTab(tab) {
 			//}
 		}
 
-		$tabHead = we_tabs::getHeader() . $js;
+		$tabHead = we_tabs::getHeader($js);
 
 		$body = we_html_element::htmlBody(array("onresize" => "weTabs.setFrameSize()", "onload" => "weTabs.setFrameSize()", "id" => "eHeaderBody"), '<div id="main"><div id="headrow"><b>' . oldHtmlspecialchars($textPre) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . oldHtmlspecialchars($textPost) . '</b></span></div>' .
 				$we_tabs->getHTML() .
@@ -972,7 +972,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 		$counter = 0;
 
 		$parts = array(
-			array("headline" => "", "html" => we_html_element::htmlHiddens(array("blocks" => count($this->View->newsletter->blocks))), "space" => 140, "noline" => 1)
+			array("headline" => "", "html" => we_html_element::htmlHiddens(array("blocks" => count($this->View->newsletter->blocks))), 'space' => 140, 'noline' => 1)
 		);
 
 		foreach($this->View->newsletter->blocks as $block){
@@ -1081,8 +1081,8 @@ window.onload=extraInit;');
 					''
 				) . '</div>';
 
-			$parts[] = array("headline" => sprintf(g_l('modules_newsletter', '[block]'), ($counter + 1)), "html" => $content, "space" => 140);
-			$parts[] = array("headline" => "", "html" => $buttons, "space" => 140);
+			$parts[] = array("headline" => sprintf(g_l('modules_newsletter', '[block]'), ($counter + 1)), "html" => $content, 'space' => 140);
+			$parts[] = array("headline" => "", "html" => $buttons, 'space' => 140);
 
 			$counter++;
 		}
@@ -1099,11 +1099,11 @@ window.onload=extraInit;');
 			$parts = array();
 
 			if(defined('CUSTOMER_TABLE')){
-				$parts[] = array("headline" => g_l('modules_newsletter', '[customers]'), "html" => $this->getHTMLCustomer($i), "space" => 140);
+				$parts[] = array("headline" => g_l('modules_newsletter', '[customers]'), "html" => $this->getHTMLCustomer($i), 'space' => 140);
 			}
 
-			$parts[] = array("headline" => g_l('modules_newsletter', '[file_email]'), "html" => $this->getHTMLExtern($i), "space" => 140);
-			$parts[] = array("headline" => g_l('modules_newsletter', '[emails]'), "html" => $this->getHTMLEmails($i), "space" => 140);
+			$parts[] = array("headline" => g_l('modules_newsletter', '[file_email]'), "html" => $this->getHTMLExtern($i), 'space' => 140);
+			$parts[] = array("headline" => g_l('modules_newsletter', '[emails]'), "html" => $this->getHTMLEmails($i), 'space' => 140);
 
 
 			$plus = ($i == $count - 1 ? we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('addGroup')") : null);
@@ -1154,8 +1154,8 @@ window.onload=extraInit;');
 
 		//$table->setCol(2,0,array(),we_html_tools::htmlFormElementTable($this->formWeDocChooser(NEWSLETTER_TABLE,320,0,"ParentID",$this->View->newsletter->ParentID,"Path",dirname($this->View->newsletter->Path),"opener.top.content.hot=1;","folder"),g_l('modules_newsletter','[dir]')));
 		$parts = array(
-			array("headline" => "", "html" => "", "space" => 140, "noline" => 1),
-			array("headline" => g_l('modules_newsletter', '[path]'), "html" => $table->getHtml(), "space" => 140),
+			array("headline" => "", "html" => "", 'space' => 140, 'noline' => 1),
+			array("headline" => g_l('modules_newsletter', '[path]'), "html" => $table->getHtml(), 'space' => 140),
 		);
 
 		if(!$this->View->newsletter->IsFolder){
@@ -1179,9 +1179,9 @@ window.onload=extraInit;');
 
 			$table->setCol(4, 0, array(), we_html_tools::htmlFormElementTable($_embedImagesHid . $_embedImagesChk . "&nbsp;" . $_embedImagesLab, ""));
 
-			$parts[] = array("headline" => g_l('modules_newsletter', '[newsletter][text]'), "html" => $table->getHtml(), "space" => 140);
-			$parts[] = array("headline" => g_l('modules_newsletter', '[charset]'), "html" => $this->getHTMLCharsetTable(), "space" => 140);
-			$parts[] = array("headline" => g_l('modules_newsletter', '[copy_newsletter]'), "html" => $this->getHTMLCopy(), "space" => 140, "noline" => 1);
+			$parts[] = array("headline" => g_l('modules_newsletter', '[newsletter][text]'), "html" => $table->getHtml(), 'space' => 140);
+			$parts[] = array("headline" => g_l('modules_newsletter', '[charset]'), "html" => $this->getHTMLCharsetTable(), 'space' => 140);
+			$parts[] = array("headline" => g_l('modules_newsletter', '[copy_newsletter]'), "html" => $this->getHTMLCopy(), 'space' => 140, 'noline' => 1);
 		}
 
 		return we_html_multiIconBox::getHTML("newsletter_header", $parts, 30, "", -1, "", "", false) .

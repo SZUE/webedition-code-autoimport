@@ -110,17 +110,45 @@ i{
 div{
 	&.multiIcon{
 		padding-top:10px;
-	}
-	&.multiIconRight{
-		display: inline-block;
-	}
-	&.multiiconleft{
-		display: inline-block;
-		vertical-align: top;
-		span.fileicon{
-			margin-left:20px;
+
+		div.weMultiIconBoxHeadline{
+			margin-bottom:10px;
 		}
+
+		div.weMultiIconBoxContent{
+			padding-bottom:10px;
+			margin-bottom:10px;
+		}
+
+		div.weMultiIconBoxLine{
+			border-bottom: 1px solid #AFB0AF;
+		}
+
+		div.weMultiIconBoxWithFooter{
+			position:absolute;
+			width:100%;
+			top:0px;
+			left:0px;
+		}
+
+		div.multiIconRight{
+			display: inline-block;
+		}
+
+		div.multiiconleft{
+			display: inline-block;
+			vertical-align: top;
+			span.fileicon{
+				margin-left:20px;
+			}
+		}
+
+		span.toggleBox{
+			cursor: pointer;
+		}
+
 	}
+
 }
 
 select,

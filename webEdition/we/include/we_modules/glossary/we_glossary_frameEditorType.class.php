@@ -147,7 +147,7 @@ function jump(val) {
 			0 => array(
 				'headline' => '',
 				'html' => $content,
-				'space' => 0,
+				
 			),
 		);
 

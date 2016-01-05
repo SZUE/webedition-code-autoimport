@@ -118,3 +118,12 @@ function we_cmd() {
 			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }
+
+function submitForm(target, action, method, form) {
+	var f = form ? self.document.forms[form] : self.document.we_form;
+	f.target = (target ? target : "edbody");
+	f.action = (action ? action : WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting");
+	f.method = (method ? method : "post");
+
+	f.submit();
+}

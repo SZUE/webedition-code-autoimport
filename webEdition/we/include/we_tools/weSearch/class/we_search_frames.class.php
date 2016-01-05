@@ -46,7 +46,6 @@ class we_search_frames extends we_tool_frames{
 		}
 
 		$offset = we_base_request::_(we_base_request::INT, 'offset', 0);
-		$_loader = new we_search_treeDataSource($this->TreeSource);
 
 		$rootjs = (!$pid ?
 				$this->Tree->topFrame . '.treeData.clear();' .
@@ -62,7 +61,7 @@ class we_search_frames extends we_tool_frames{
 					'name' => 'we_form'
 					), $hiddens .
 					we_html_element::jsElement($rootjs .
-						$this->Tree->getJSLoadTree(!$pid, $_loader->getItems($pid, $offset, $this->Tree->default_segment, '')))));
+						$this->Tree->getJSLoadTree(!$pid, we_search_tree::getItemsFromDB($pid, $offset, $this->Tree->default_segment)))));
 
 		if(isset($_SESSION['weS']['weSearch']['modelidForTree'])){
 			$out .= we_html_element::jsElement($this->topFrame . '.treeData.selectNode("' . ($_SESSION['weS']['weSearch']["modelidForTree"]) . '");');
@@ -117,10 +116,9 @@ class we_search_frames extends we_tool_frames{
 			'id' => 'tab_4', 'style' => "display:$displayFolder"
 		)));
 
-		$tabsHead = we_tabs::getHeader();
 		$tabNr = $this->getTab();
 		$activeTabJS = $this->topFrame . '.activ_tab = ' . $tabNr . ';';
-		$tabsHead .= we_html_element::jsElement($activeTabJS . '
+		$tabsHead = we_tabs::getHeader($activeTabJS . '
 function setTab(tab) {
 	switch (tab) {
 		// Add new tab handlers here

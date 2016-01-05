@@ -27,7 +27,7 @@
 //FIXME: compare & unite all _tree.js files
 
 function drawTree() {
-	top.content.document.getElementById("treetable").innerHTML = "<a href=javascript:// onclick=\"doYearClick(" + top.yearshop + ");return true;\" title=\"" + WE().consts.g_l.shop.tree.treeYearClick + "\" >" + WE().consts.g_l.shop.tree.treeYear + ": <strong>" + top.yearshop + " </strong></a><br/>" + treeData.draw(0, "");
+	top.content.document.getElementById("treetable").innerHTML = "<a href=javascript:// onclick=\"doYearClick(" + treeData.yearshop + ");return true;\" title=\"" + WE().consts.g_l.shop.tree.treeYearClick + "\" >" + WE().consts.g_l.shop.tree.treeYear + ": <strong>" + treeData.yearshop + " </strong></a><br/>" + treeData.draw(0, "");
 }
 
 container.prototype.drawShop=function (nf, ai, zweigEintrag){
@@ -108,11 +108,6 @@ container.prototype.search = function (eintrag) {
 	}
 	return nf;
 };
-
-function startTree() {
-	loadData();
-	drawTree();
-}
 
 function doClick(id, ct, table) {
 	top.content.editor.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=shop&pnt=editor&bid=' + id;

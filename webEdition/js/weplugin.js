@@ -1,4 +1,4 @@
-/* global top */
+/* global top, WE */
 
 /**
  * webEdition SDK
@@ -137,7 +137,7 @@ function pingPlugin() {
 }
 
 function initPlugin() {
-	top.opener.top.plugin.location = "/webEdition/editors/content/eplugin/weplugin.php";
+	top.opener.top.plugin.location = WE().consts.dirs.WEBEDITION_DIR + "editors/content/eplugin/weplugin.php";
 	checkPlugin();
 }
 

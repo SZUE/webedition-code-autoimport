@@ -70,7 +70,7 @@ class we_glossary_frameEditorFolder extends we_glossary_frameEditor{
 						<tr><td style="padding-bottom:2px;">' . g_l('modules_glossary', '[number_of_entries]') . ': ' . $items . '</td></tr>
 						<tr><td style="text-align:right">' . $button . '</td></tr>
 						</table>',
-				"space" => 120);
+				'space' => 120);
 		}
 
 		return $parts;

@@ -128,7 +128,7 @@ class we_html_baseElement{
 					$val = trim($val);
 					if($val){
 						list($k, $v) = explode(':', $val);
-						$this->setStyle($k, $v);
+						$this->setStyle(trim($k), trim($v));
 					}
 				}
 				break;

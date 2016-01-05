@@ -59,7 +59,7 @@ class we_glossary_frameEditorDictionary extends we_glossary_frameEditor{
 			array(
 				"headline" => g_l('modules_glossary', '[dictionary]'),
 				"html" => $content,
-				"space" => 120
+				'space' => 120
 			)
 		);
 	}

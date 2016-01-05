@@ -46,10 +46,12 @@ class rpcPingCmd extends rpcCmd{
 
 		$aDat = we_unserialize(we_base_preferences::getUserPref('cockpit_dat')); // array as saved in the prefs
 		foreach($aDat as $d){
-			foreach($d as $aProps){
-				if($aProps[0] === 'mfd'){
-					$lastModified = include(WE_INCLUDES_PATH . 'we_widgets/mod/mfd.inc.php');
-					$resp->setData('mfd_data', $lastModified);
+			if($d){
+				foreach($d as $aProps){
+					if($aProps[0] === 'mfd'){
+						$lastModified = include(WE_INCLUDES_PATH . 'we_widgets/mod/mfd.inc.php');
+						$resp->setData('mfd_data', $lastModified);
+					}
 				}
 			}
 		}
