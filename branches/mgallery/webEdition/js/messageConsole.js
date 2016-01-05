@@ -33,6 +33,7 @@
  * - the consoleViews in the different windows are observers
  */
 WE().layout.messageConsole = {
+	calls: [],
 	observers: [],
 	maxAmount: 35,
 	messages: [],
