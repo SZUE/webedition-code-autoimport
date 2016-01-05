@@ -123,7 +123,7 @@ WE().layout.messageConsoleView.prototype = {
 					this.calls.push(null);
 
 					this.win.setTimeout(function (context) {
-						context.hideMessage.call(context);
+						context.hideMessage();
 					}, 5000, this);
 				}
 			}
