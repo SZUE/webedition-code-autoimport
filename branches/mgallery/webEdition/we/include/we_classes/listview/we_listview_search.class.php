@@ -189,9 +189,15 @@ class we_listview_search extends we_listview_base{
 
 	public function next_record(){
 		if($this->DB_WE->next_record()){
-			$objectdaten = getHash('SELECT Url,TriggerID,Text FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->DB_WE->Record['ID']) . ' LIMIT 1');
+			$fileData = ($this->DB_WE->Record['ClassID'] ?
+					getHash('SELECT * FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->DB_WE->Record['ID']) . ' LIMIT 1') :
+					getHash('SELECT * FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->DB_WE->Record['ID']) . ' LIMIT 1')
+				);
+			foreach($fileData as $key => $val){
+				$this->DB_WE->Record['wedoc_' . $key] = $val;
+			}
 			if($this->DB_WE->Record['ClassID'] && $this->objectseourls && show_SeoLinks()){
-				$objecttriggerid = ($this->triggerID ? : ($objectdaten ? $objectdaten['TriggerID'] : 0));
+				$objecttriggerid = ($this->triggerID ? : ($fileData ? $fileData['TriggerID'] : 0));
 
 				$path_parts = ($objecttriggerid ?
 						pathinfo(id_to_path($objecttriggerid)) :
@@ -202,23 +208,23 @@ class we_listview_search extends we_listview_base{
 
 				if($this->hidedirindex && seoIndexHide($path_parts['basename'])){
 					$this->DB_WE->Record['WE_PATH'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') .
-						($objectdaten['Url'] ?
-							'/' . $objectdaten['Url'] . $pidstr :
+						($fileData['Url'] ?
+							'/' . $fileData['Url'] . $pidstr :
 							'/?we_objectID=' . $this->DB_WE->Record['ID'] . str_replace('?', '&amp;', $pidstr));
 				} else {
-					$this->DB_WE->Record['WE_PATH'] = ($objectdaten && $objectdaten['Url'] ?
-							($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $objectdaten['Url'] . $pidstr :
+					$this->DB_WE->Record['WE_PATH'] = ($fileData && $fileData['Url'] ?
+							($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $fileData['Url'] . $pidstr :
 							$_SERVER['SCRIPT_NAME'] . '?we_objectID=' . $this->DB_WE->Record['ID'] . str_replace('?', '&amp;', $pidstr));
 				}
 				$this->DB_WE->Record['wedoc_Path'] = $this->DB_WE->Record['WE_PATH'];
-				$this->DB_WE->Record['we_WE_URL'] = $objectdaten ? $objectdaten['Url'] : '';
+				$this->DB_WE->Record['we_WE_URL'] = $fileData ? $fileData['Url'] : '';
 				$this->DB_WE->Record['we_WE_TRIGGERID'] = $objecttriggerid;
 			} else {
 				$this->DB_WE->Record['wedoc_Path'] = $this->DB_WE->Record['Path'];
 				$this->DB_WE->Record['WE_PATH'] = $this->DB_WE->Record['Path'];
 			}
 			$this->DB_WE->Record['WE_LANGUAGE'] = $this->DB_WE->Record['Language'];
-			$this->DB_WE->Record['WE_TEXT'] = $objectdaten['Text'];
+			$this->DB_WE->Record['WE_TEXT'] = $this->DB_WE->Record['Text'];
 			$this->DB_WE->Record['wedoc_Category'] = $this->DB_WE->Record['Category'];
 			$this->DB_WE->Record['WE_ID'] = $this->DB_WE->Record['ID'];
 			$this->count++;
