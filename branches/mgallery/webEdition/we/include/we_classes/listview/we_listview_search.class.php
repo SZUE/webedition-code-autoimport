@@ -220,8 +220,8 @@ class we_listview_search extends we_listview_base{
 				$this->DB_WE->Record['we_WE_URL'] = $fileData ? $fileData['Url'] : '';
 				$this->DB_WE->Record['we_WE_TRIGGERID'] = $objecttriggerid;
 			} else {
-				$this->DB_WE->Record['wedoc_Path'] = $this->DB_WE->Record['Path'];
-				$this->DB_WE->Record['WE_PATH'] = $this->DB_WE->Record['Path'];
+				//$this->DB_WE->Record['wedoc_Path'] = $this->DB_WE->Record['Path'];
+				$this->DB_WE->Record['WE_PATH'] = $this->DB_WE->Record['wedoc_Path'];
 			}
 			$this->DB_WE->Record['WE_LANGUAGE'] = $this->DB_WE->Record['Language'];
 			$this->DB_WE->Record['WE_TEXT'] = $this->DB_WE->Record['Text'];

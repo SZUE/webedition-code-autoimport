@@ -18,9 +18,8 @@ CREATE TABLE ###TBLPREFIX###tblLink (
   Name varchar(255) NOT NULL default '',
   DocumentTable enum('tblFile','tblTemplates','tblWebUser') NOT NULL,
 	nHash binary(16) NOT NULL,
+	PRIMARY KEY (DID,DocumentTable,CID),
+	KEY(nHash),
  	KEY CID (CID),
   KEY Name (Name(4))
 ) ENGINE=MyISAM;
-
-/* query separator */
-###INSTALLONLY###ALTER TABLE ###TBLPREFIX###tblLink ADD PRIMARY KEY (DID,DocumentTable,nHash)
