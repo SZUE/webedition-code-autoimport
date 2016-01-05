@@ -38,7 +38,7 @@ class weModelBase{
 	 * Default Constructor
 	 */
 	public function __construct($table, we_database_base $db = null, $load = true){
-		$this->db = ($db ? : new DB_WE()); //FIXME: => ?:
+		$this->db = ($db ? : new DB_WE());
 		$this->table = $table;
 		if($load){
 			$this->loadPresistents();
@@ -95,17 +95,13 @@ class weModelBase{
 		}
 		foreach($this->persistent_slots as $key => $val){
 			$val = ($isAdvanced ? $key : $val);
-			switch($val){
-				case 'nHash':
-					if(!isset($this->$val)){
-						$this->$val = md5($this->Name);
-					}
-					break;
-			}
 
 			if(isset($this->{$val})){
 				$sets[$val] = is_array($this->{$val}) ? we_serialize($this->{$val}, ($jsonSer ? 'json' : 'serialize')) : $this->{$val};
 			}
+		}
+		if($this->table == LINK_TABLE && empty($this->nHash)){
+			$this->nHash = md5($this->Name);
 		}
 		$where = $this->getKeyWhere();
 		$set = we_database_base::arraySetter($sets);
@@ -191,6 +187,10 @@ class weModelBase{
 
 	function setKeys($keys){
 		$this->keys = $keys;
+	}
+
+	public function getLogString($prefix = ''){
+		return $prefix . $this->table;
 	}
 
 	public function __sleep(){
