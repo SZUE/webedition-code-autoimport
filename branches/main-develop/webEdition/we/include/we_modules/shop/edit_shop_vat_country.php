@@ -109,7 +109,6 @@ $parts = array(
 	),
 	array(
 		'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[vat_country][defaultReturn_desc]'), we_html_tools::TYPE_INFO, 600),
-		'space' => 0
 	),
 	array(
 		'headline' => g_l('modules_shop', '[vat_country][stateField]') . ':',
@@ -119,7 +118,6 @@ $parts = array(
 	),
 	array(
 		'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[vat_country][stateField_desc]'), we_html_tools::TYPE_INFO, 600),
-		'space' => 0
 	),
 	array(
 		'headline' => g_l('modules_shop', '[vat_country][statesLiableToVat]') . ':',
@@ -129,7 +127,6 @@ $parts = array(
 	),
 	array(
 		'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[vat_country][statesLiableToVat_desc]'), we_html_tools::TYPE_INFO, 600),
-		'space' => 0
 	),
 	array(
 		'headline' => g_l('modules_shop', '[vat_country][statesNotLiableToVat]') . ':',
@@ -139,7 +136,6 @@ $parts = array(
 	),
 	array(
 		'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[vat_country][statesNotLiableToVat_desc]'), we_html_tools::TYPE_INFO, 600),
-		'space' => 0
 	),
 	array(
 		'headline' => g_l('modules_shop', '[vat_country][statesSpecialRules]') . ':',
@@ -149,7 +145,6 @@ $parts = array(
 	),
 	array(
 		'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[vat_country][statesSpecialRules_desc]'), we_html_tools::TYPE_INFO, 600),
-		'space' => 0,
 		'noline' => 1
 	),
 	array(
@@ -170,12 +165,12 @@ echo we_html_element::jsElement($jsFunction);
 <body class="weDialogBody" onload="window.focus();">
 	<form name="we_form" method="post">
 		<input type="hidden" name="we_cmd[0]" value="saveVatRule" />
-		<?php
-		echo we_html_multiIconBox::getHTML('weShopCountryVat', $parts, 30, we_html_button::position_yes_no_cancel(
-				we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button(we_html_button::CANCEL, 'javascript:we_cmd(\'close\');')
-			), -1, '', '', false, g_l('modules_shop', '[vat_country][box_headline]'), '', 741
-		);
-		?>
+<?php
+echo we_html_multiIconBox::getHTML('weShopCountryVat', $parts, 30, we_html_button::position_yes_no_cancel(
+		we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button(we_html_button::CANCEL, 'javascript:we_cmd(\'close\');')
+	), -1, '', '', false, g_l('modules_shop', '[vat_country][box_headline]'), '', 741
+);
+?>
 	</form>
 </body>
 </html>

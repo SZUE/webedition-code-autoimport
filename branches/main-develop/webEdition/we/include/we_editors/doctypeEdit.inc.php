@@ -55,7 +55,7 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 				$we_response_type = we_message_reporting::WE_MESSAGE_NOTICE;
 				$we_show_response = 1;
 				$we_JavaScript = 'opener.top.makefocus = self;' .
-						we_main_headermenu::getMenuReloadCode();
+					we_main_headermenu::getMenuReloadCode();
 			} else {
 				echo "ERROR";
 			}
@@ -205,26 +205,25 @@ echo 'var docTypeNames = [' . implode(',', $GLOBALS['DB_WE']->getAll(true)) . ']
 			$parts = array(
 				array("headline" => g_l('weClass', '[doctypes]'),
 					"html" => $we_doc->formDocTypeHeader(),
-					"space" => 120
+					'space' => 120
 				),
 				array("headline" => g_l('weClass', '[name]'),
 					"html" => $we_doc->formName(),
-					"space" => 120
+					'space' => 120
 				),
 				array("headline" => g_l('global', '[templates]'),
 					"html" => $we_doc->formDocTypeTemplates(),
-					"space" => 120
+					'space' => 120
 				),
 				array("headline" => g_l('weClass', '[defaults]'),
 					"html" => $we_doc->formDocTypeDefaults(),
-					"space" => 120
+					'space' => 120
 				)
 			);
 		} else {
 			$parts = array(
 				array("headline" => "",
 					"html" => we_html_button::create_button('new_doctype', "javascript:we_cmd('newDocType')"),
-					"space" => 0
 				)
 			);
 		}
@@ -232,8 +231,8 @@ echo 'var docTypeNames = [' . implode(',', $GLOBALS['DB_WE']->getAll(true)) . ']
 		$cancelbut = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();if(top.opener.we_cmd){top.opener.we_cmd('switch_edit_page',0);}");
 
 		$buttons = ($we_doc->ID ?
-						we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save_docType', '" . $we_transaction . "')"), "", $cancelbut) :
-						'<div style="text-align:right">' . $cancelbut . '</div>');
+				we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save_docType', '" . $we_transaction . "')"), "", $cancelbut) :
+				'<div style="text-align:right">' . $cancelbut . '</div>');
 
 
 		echo we_html_multiIconBox::getJS() .

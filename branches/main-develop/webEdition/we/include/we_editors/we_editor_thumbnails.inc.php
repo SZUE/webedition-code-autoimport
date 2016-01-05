@@ -21,7 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-echo we_html_tools::getHtmlTop().STYLESHEET;
+echo we_html_tools::getHtmlTop() . STYLESHEET;
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 ?>
 
@@ -40,7 +40,6 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 				if(!$_doc){
 					$parts[] = array("headline" => "",
 						"html" => we_html_tools::htmlAlertAttentionBox(g_l('thumbnails', '[no_image_uploaded]'), we_html_tools::TYPE_INFO, 700),
-						"space" => 0
 					);
 				} else if(we_base_imageEdit::is_imagetype_read_supported($imgType)){
 
@@ -75,27 +74,24 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 						$delbut = we_html_button::create_button(we_html_button::TRASH, "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('del_thumb','" . $thumbid . "');", true, 30);
 
-						$thumbnail = '<table class="default" style="width:570px;"><tr><td width="538"><img src="' . $src . '" width="' . $thumbObj->getOutputWidth() .							'" height="' . $thumbObj->getOutputHeight() . '" border="0" /></td><td>' . $delbut . '</td></tr></table>';
+						$thumbnail = '<table class="default" style="width:570px;"><tr><td width="538"><img src="' . $src . '" width="' . $thumbObj->getOutputWidth() . '" height="' . $thumbObj->getOutputHeight() . '" border="0" /></td><td>' . $delbut . '</td></tr></table>';
 
 						$parts[] = array("headline" => $thumbObj->getThumbName(),
 							"html" => $thumbnail,
-							"space" => 120
+							'space' => 120
 						);
 					}
 					$parts[] = array("headline" => "",
 						"html" => we_html_tools::htmlAlertAttentionBox(g_l('thumbnails', '[add_descriptiontext]'), we_html_tools::TYPE_INFO, 700) . '<br/><br/>' . we_html_button::create_button("fa:btn_add_thumbnail,fa-plus,fa-lg fa-picture-o", "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('add_thumbnail','" . $we_transaction . "');"),
-						"space" => 0
 					);
 				} else {
 					$parts[] = array("headline" => "",
 						"html" => we_html_tools::htmlAlertAttentionBox(g_l('thumbnails', '[format_not_supported]'), we_html_tools::TYPE_INFO, 700),
-						"space" => 0
 					);
 				}
 			} else {
 				$parts[] = array("headline" => "",
 					"html" => we_html_tools::htmlAlertAttentionBox(g_l('thumbnails', '[add_description_nogdlib]'), we_html_tools::TYPE_INFO, 700),
-					"space" => 0
 				);
 			}
 			echo we_html_multiIconBox::getJS() . we_html_multiIconBox::getHTML('', $parts, 20) .

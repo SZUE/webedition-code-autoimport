@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -50,8 +49,8 @@ if($sType === "0000"){
 }
 
 $oChbxCustomer = (defined('CUSTOMER_TABLE') && permissionhandler::hasPerm("CAN_SEE_CUSTOMER") ?
-				we_html_forms::checkbox(0, $sType{1}, "chbx_type", g_l('cockpit', '[shop_dashboard][cnt_new_customer]'), true, "defaultfont", "", !(defined('CUSTOMER_TABLE') && permissionhandler::hasPerm('CAN_SEE_CUSTOMER')), "", 0, 0) :
-				'');
+		we_html_forms::checkbox(0, $sType{1}, "chbx_type", g_l('cockpit', '[shop_dashboard][cnt_new_customer]'), true, "defaultfont", "", !(defined('CUSTOMER_TABLE') && permissionhandler::hasPerm('CAN_SEE_CUSTOMER')), "", 0, 0) :
+		'');
 
 if(defined('WE_SHOP_MODULE_DIR') && (permissionhandler::hasPerm("NEW_SHOP_ARTICLE") || permissionhandler::hasPerm("DELETE_SHOP_ARTICLE") || permissionhandler::hasPerm("EDIT_SHOP_ORDER") || permissionhandler::hasPerm("DELETE_SHOP_ORDER") || permissionhandler::hasPerm("EDIT_SHOP_PREFS"))){
 	$oChbxOrders = we_html_forms::checkbox(0, $sType{0}, "chbx_type", g_l('cockpit', '[shop_dashboard][cnt_order]'), true, "defaultfont", "", !(defined('WE_SHOP_MODULE_DIR') && permissionhandler::hasPerm("CAN_SEE_SHOP")), "", 0, 0);
@@ -88,22 +87,21 @@ $parts = array(
 	array(
 		"headline" => g_l('cockpit', '[shop_dashboard][kpi]'),
 		"html" => $oDbTableType->getHTML(),
-		"space" => 80
+		'space' => 80
 	),
 	array(
 		"headline" => g_l('cockpit', '[shop_dashboard][revenue_target]'),
 		"html" => we_html_element::htmlDiv(array("style" => "display:block;"), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($name = "revenueTarget", $size = 55, $value = $sRevenueTarget, $maxlength = 255, $attribs = "", $type = "text", $width = 100, $height = 0) . "&nbsp;&euro;", '', "left", "defaultfont")),
-		"space" => 80
+		'space' => 80
 	),
 	array(
 		"headline" => g_l('cockpit', '[date]'),
 		"html" => $oSctDate->getHTML(),
-		"space" => 80
+		'space' => 80
 	),
 	array(
 		"headline" => g_l('cockpit', '[display]'),
 		"html" => $oSelCls->getHTML(),
-		"space" => 0
 	)
 );
 
@@ -115,10 +113,10 @@ $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button,
 $sTblWidget = we_html_multiIconBox::getHTML("shpProps", $parts, 30, $buttons, -1, "", "", "", "Shop", "", 390);
 
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[shop_dashboard][headline]'), '', '', STYLESHEET .
-		$jsFile .
-		we_html_element::jsElement($jsPrefs) .
-		we_html_element::jsElement($jsCode) .
-		we_html_element::jsScript(JS_DIR . 'widgets/shop.js'), we_html_element::htmlBody(
-				array(
-			"class" => "weDialogBody", "onload" => "init();"
-				), we_html_element::htmlForm("", $sTblWidget)));
+	$jsFile .
+	we_html_element::jsElement($jsPrefs) .
+	we_html_element::jsElement($jsCode) .
+	we_html_element::jsScript(JS_DIR . 'widgets/shop.js'), we_html_element::htmlBody(
+		array(
+		"class" => "weDialogBody", "onload" => "init();"
+		), we_html_element::htmlForm("", $sTblWidget)));

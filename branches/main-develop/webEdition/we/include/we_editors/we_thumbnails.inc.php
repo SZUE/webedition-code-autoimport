@@ -138,13 +138,13 @@ function build_dialog($selected_setting = 'ui'){
 		case 'save':
 			//SAVE DIALOG
 			return create_dialog('', g_l('thumbnails', '[save_wait]'), array(
-				array('headline' => '', 'html' => g_l('thumbnails', '[save]'), 'space' => 0)
+				array('headline' => '', 'html' => g_l('thumbnails', '[save]'),)
 			));
 
 		case 'saved':
 			// SAVED SUCCESSFULLY DIALOG
 			return create_dialog('', g_l('thumbnails', '[saved_successfully]'), array(
-				array('headline' => '', 'html' => g_l('thumbnails', '[saved]'), 'space' => 0)
+				array('headline' => '', 'html' => g_l('thumbnails', '[saved]'),)
 			));
 
 		case 'dialog':
@@ -200,7 +200,7 @@ function delete_thumbnail() {" .
 			$_thumbnails_table->setCol(0, 1, array('style' => 'vertical-align:top'), we_html_button::create_button(we_html_button::ADD, 'javascript:add_thumbnail();') . '<br/>' . we_html_button::create_button(we_html_button::DELETE, 'javascript:delete_thumbnail();', true, 100, 22, '', '', !$_enabled_buttons, false));
 
 			// Build dialog
-			$_thumbs[] = array('headline' => '', 'html' => $_thumbnails_table->getHtml(), 'space' => 0);
+			$_thumbs[] = array('headline' => '', 'html' => $_thumbnails_table->getHtml(),);
 
 			$allData = (getHash('SELECT Name,Width,Height,Quality,Format,Options,description FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . $id)? :
 					array(
@@ -286,7 +286,7 @@ function delete_thumbnail() {" .
 
 			// Build dialog
 			return create_dialog('settings_predefined', g_l('thumbnails', '[thumbnails]'), array(
-				array('html' => $_thumbnails_table->getHtml(), 'space' => 0),
+				array('html' => $_thumbnails_table->getHtml(),),
 				array('headline' => g_l('thumbnails', '[name]'), 'html' => $_thumbnail_name_input, 'space' => 100),
 				array('headline' => g_l('thumbnails', '[description]'), 'html' => $_thumbnail_description_input, 'space' => 100),
 				array('headline' => g_l('thumbnails', '[properties]'), 'noline' => true),
@@ -364,6 +364,5 @@ echo '<body class="weDialogBody">' .
 	array(
 		'headline' => '',
 		'html' => we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[add_description_nogdlib]'), we_html_tools::TYPE_INFO, 440),
-		'space' => 0
 	)
 	), 30, '', -1, '', '', false, g_l('thumbnails', '[thumbnails]'));

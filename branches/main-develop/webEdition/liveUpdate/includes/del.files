@@ -127,6 +127,7 @@ we/include/we_tools/weSearch/layout/icons/folder.gif
 we/include/we_tools/weSearch/layout/icons/Suche.gif
 we/include/we_tools/weSearch/layout/icons
 we/include/we_tools/weSearch/hook/we_jsCmdHook_weSearch.inc.php
+we/include/we_tools/weSearch/class/we_search_treeDataSource.class.php
 we/include/we_tools/weSearch/class/searchtoolView.class.php
 we/include/we_tools/weSearch/class/searchtoolTreeDataSource.class.php
 we/include/we_tools/weSearch/class/searchtoolTree.class.php
@@ -405,6 +406,7 @@ we/include/we_modules/navigation/edit_navigation_rules_frameset.php
 we/include/we_modules/navigation/edit_navigation_frameset.php
 we/include/we_modules/navigation/conf/we_navigationSettings.inc.php
 we/include/we_modules/navigation/conf/we_conf_navigation.inc.php
+we/include/we_modules/navigation/class/we_navigation_treeDataSource.class.php
 we/include/we_modules/navigation/class/we_navigation_settingControl.class.php
 we/include/we_modules/navigation/class/we_navigationDirSelector.php
 we/include/we_modules/navigation/class/weNavigationView.class.php
@@ -2466,7 +2468,6 @@ liveUpdate/templates/modules.inc.php
 liveUpdate/sqldumps/tblbannerprefs.sql
 liveUpdate/sqldumps/tblWebAdmin.sql
 liveUpdate/sqldumps/tblNewsletterPrefs.sql
-liveUpdate/sqldumps/tblMessages.sql
 liveUpdate/sqldumps/tblIcons.sql
 liveUpdate/sqldumps/tblContentTypes.sql
 liveUpdate/sqldumps/tblAnzeigePrefs.sql

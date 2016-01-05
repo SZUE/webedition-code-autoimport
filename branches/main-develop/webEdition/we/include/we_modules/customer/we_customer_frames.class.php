@@ -23,15 +23,15 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_customer_frames extends we_modules_frame{
-	var $View;
 	var $jsOut_fieldTypesByName;
-	public $module = 'customer';
-	protected $treeHeaderHeight = 40;
-	protected $treeFooterHeight = 40;
-	protected $treeDefaultWidth = 244;
 
 	public function __construct($frameset){
 		parent::__construct($frameset);
+		$this->treeDefaultWidth = 244;
+		$this->module = 'customer';
+		$this->treeHeaderHeight = 40;
+		$this->treeFooterHeight = 40;
+
 		$this->Tree = new we_customer_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
 		$this->View = new we_customer_view($frameset);
 	}
@@ -143,28 +143,34 @@ class we_customer_frames extends we_modules_frame{
 		  )
 		  );
 		 */
-		$extraJS .= 'if(top.content.activ_tab) document.getElementById(aTabs[top.content.activ_tab]).className="tabActive"; else document.getElementById("common").className="tabActive"';
+		$extraJS .= 'function loaded(){
+	weTabs.setFrameSize()
+	if(top.content.activ_tab){
+		document.getElementById(aTabs[top.content.activ_tab]).className="tabActive";
+	}else{
+		document.getElementById("common").className="tabActive";
+	}
+}';
 
 		$text = $this->View->customer->Username;
 
 		//TODO: we have the following body in several modules!
-		$body = we_html_element::htmlBody(array('onresize' => 'weTabs.setFrameSize()', 'onload' => 'weTabs.setFrameSize()', 'id' => 'eHeaderBody',), we_html_element::htmlDiv(array('id' => 'main'), we_html_element::htmlDiv(array('id' => 'headrow'), we_html_element::htmlNobr(
+		$body = we_html_element::htmlBody(array('onresize' => 'weTabs.setFrameSize()', 'onload' => 'loaded();', 'id' => 'eHeaderBody',), we_html_element::htmlDiv(array('id' => 'main'), we_html_element::htmlDiv(array('id' => 'headrow'), we_html_element::htmlNobr(
 							we_html_element::htmlB(str_replace(' ', '&nbsp;', g_l('modules_customer', '[customer]')) . ':&nbsp;') .
 							we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'), '<b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b>'
 							)
 						)
 					) .
 					$tabs->getHTML()
-				) .
-				we_html_element::jsElement($extraJS)
+				)
 		);
 
-		return $this->getHTMLDocument($body, we_tabs::getHeader() .
-				we_html_element::jsElement('
+		return $this->getHTMLDocument($body, we_tabs::getHeader('
 function setTab(tab) {
 	top.content.activ_tab=tab;
 	parent.edbody.we_cmd(\'switchPage\',tab);
-}'));
+}' .
+					$extraJS));
 	}
 
 	protected function getHTMLEditorBody(){
@@ -449,10 +455,10 @@ var fieldDate = new weDate(date_format_dateonly);
 		$table->setCol($cur, 0, array("class" => "defaultfont", 'style' => 'padding-right:30px;'), g_l('modules_customer', '[default_sort_view]') . ":&nbsp;");
 		$table->setCol($cur, 2, array("class" => "defaultfont"), $default_sort_view_select->getHtml());
 
-		$table->setCol( ++$cur, 0, array("class" => "defaultfont", 'style' => 'padding-right:30px;'), g_l('modules_customer', '[start_year]') . ":&nbsp;");
+		$table->setCol(++$cur, 0, array("class" => "defaultfont", 'style' => 'padding-right:30px;'), g_l('modules_customer', '[start_year]') . ":&nbsp;");
 		$table->setCol($cur, 2, array("class" => "defaultfont"), we_html_tools::htmlTextInput("start_year", 32, $this->View->settings->getSettings('start_year'), ''));
 
-		$table->setCol( ++$cur, 0, array("class" => "defaultfont", 'style' => 'padding-right:30px;'), g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
+		$table->setCol(++$cur, 0, array("class" => "defaultfont", 'style' => 'padding-right:30px;'), g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
 		$table->setCol($cur, 2, array("class" => "defaultfont"), we_html_tools::htmlTextInput("treetext_format", 32, $this->View->settings->getSettings('treetext_format'), ''));
 
 
@@ -464,7 +470,7 @@ var fieldDate = new weDate(date_format_dateonly);
 		}
 		$default_order->selectOption($this->View->settings->getSettings('default_order'));
 
-		$table->setCol( ++$cur, 0, array('class' => 'defaultfont', 'style' => 'padding-right:30px;'), g_l('modules_customer', '[default_order]') . ':&nbsp;');
+		$table->setCol(++$cur, 0, array('class' => 'defaultfont', 'style' => 'padding-right:30px;'), g_l('modules_customer', '[default_order]') . ':&nbsp;');
 		$table->setCol($cur, 2, array('class' => 'defaultfont'), $default_order->getHtml());
 
 		$default_saveRegisteredUser_register = new we_html_select(array('name' => 'default_saveRegisteredUser_register', 'style' => 'width:250px;', 'class' => 'weSelect'));
@@ -472,7 +478,7 @@ var fieldDate = new weDate(date_format_dateonly);
 		$default_saveRegisteredUser_register->addOption('true', 'true');
 		$default_saveRegisteredUser_register->selectOption($this->View->settings->getPref('default_saveRegisteredUser_register'));
 
-		$table->setCol( ++$cur, 0, array('class' => 'defaultfont', 'style' => 'padding-right:30px;'), '&lt;we:saveRegisteredUser register=&quot;');
+		$table->setCol(++$cur, 0, array('class' => 'defaultfont', 'style' => 'padding-right:30px;'), '&lt;we:saveRegisteredUser register=&quot;');
 		$table->setCol($cur, 2, array('class' => 'defaultfont'), $default_saveRegisteredUser_register->getHtml() . '&quot;/>');
 
 		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");

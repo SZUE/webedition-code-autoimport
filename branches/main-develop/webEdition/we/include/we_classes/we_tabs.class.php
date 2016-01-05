@@ -23,16 +23,15 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_tabs{
-
 	private $container = '';
 
 	public function addTab(we_tab $tab){
 		$this->container .= $tab->getHTML();
 	}
 
-	static function getHeader(){
+	static function getHeader($js = ''){
 		return we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
-				we_html_element::jsElement('weTabs = new (WE().layout.we_tabs)(document);');
+			we_html_element::jsElement('weTabs = new (WE().layout.we_tabs)(document);' . $js);
 	}
 
 	function getHTML(){

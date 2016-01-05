@@ -58,13 +58,13 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			array(
 				'headline' => '',
 				'html' => we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[variant_info]'), we_html_tools::TYPE_INFO, 620, false),
-				'space' => 0,
+				
 				'noline' => 1
 			),
 			array(
 				'headline' => '',
 				'html' => we_html_tools::htmlDialogBorder3(600, 0, $content, $headline),
-				'space' => 0,
+				
 				'noline' => 1
 			)
 		);

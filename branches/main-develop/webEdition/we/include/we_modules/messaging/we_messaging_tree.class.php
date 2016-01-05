@@ -30,7 +30,7 @@ class we_messaging_tree extends weTree{
 		$this->transaction = $transaction;
 	}
 
-	function customJSFile(){
+	protected function customJSFile(){
 		return we_html_element::jsScript(JS_DIR . 'messaging_tree.js');
 	}
 

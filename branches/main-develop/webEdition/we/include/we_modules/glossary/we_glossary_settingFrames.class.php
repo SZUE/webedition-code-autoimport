@@ -60,7 +60,7 @@ class we_glossary_settingFrames{
 		$parts = array(
 			array(
 				'headline' => "",
-				'space' => 0,
+				
 				'html' => $content,
 				'noline' => 1)
 		);

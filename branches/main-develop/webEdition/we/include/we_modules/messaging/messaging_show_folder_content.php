@@ -85,7 +85,7 @@ echo we_html_element::jsElement('
 			showContent(parent.entries_selected[parent.entries_selected.length - 1]);
 
 <?php
-echo 'passed_dls = [String(' . implode('), String(', $passed_dls) . ')];';
+echo 'passed_dls = [' . implode(',', $passed_dls) . '];';
 ?>
 //-->
 	</script>

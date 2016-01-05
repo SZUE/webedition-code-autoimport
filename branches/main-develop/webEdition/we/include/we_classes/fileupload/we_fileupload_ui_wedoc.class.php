@@ -23,10 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
+
 	public function __construct($contentType = array(), $extensions = '', $doImport = true){
 		parent::__construct($contentType, $extensions);
 		$this->formElements = array_merge($this->formElements, array(
-			'importMeta' => array('set' => true, 'multiIconBox' => false, 'space' => 0, 'rightHeadline' => true, 'noline' => true),
+			'importMeta' => array('set' => true, 'multiIconBox' => false, 'rightHeadline' => true, 'noline' => true),
 		));
 		$this->dimensions['dragWidth'] = 300;
 		$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, array(
@@ -45,8 +46,7 @@ class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
 		$progress->setName('_fileupload');
 		$divProgressbar = we_html_element::htmlDiv(array('id' => 'div_fileupload_progressBar', 'style' => 'margin: 13px 0 10px 0;display:none;'), $progress->getHTML('', 'font-size:11px;'));
 		$divFileInfo = we_html_element::htmlDiv(array(), $fs . '<br />' . $ft . '<br />' . $md);
-		$divButtons = we_html_element::htmlDiv(array('id' => 'div_fileupload_buttons', 'style' => 'width:204px'),
-				$this->getDivBtnInputReset($isIE10 ? 84 : 170) .
+		$divButtons = we_html_element::htmlDiv(array('id' => 'div_fileupload_buttons', 'style' => 'width:204px'), $this->getDivBtnInputReset($isIE10 ? 84 : 170) .
 				$divProgressbar .
 				$this->getDivBtnUploadCancel($isIE10 ? 84 : 170)
 		);
@@ -55,22 +55,21 @@ class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
 			<table id="table_form_upload" class="default" width="500">
 				<tr style="vertical-align:top;">
 					<td class="defaultfont" width="200px">' .
-						$divFileInfo . $divButtons . '
+			$divFileInfo . $divButtons . '
 					</td>
 					<td width="300px">' .
-						we_html_element::htmlDiv(array('id' => 'div_fileupload_right', 'style'=>"position:relative;"),
-							$this->getHtmlDropZone('preview', $thumbnailSmall) .
-							($this->contentType === we_base_ContentTypes::IMAGE ? '<br />' . $this->getFormImportMeta() : '')
-						) . '
+			we_html_element::htmlDiv(array('id' => 'div_fileupload_right', 'style' => "position:relative;"), $this->getHtmlDropZone('preview', $thumbnailSmall) .
+				($this->contentType === we_base_ContentTypes::IMAGE ? '<br />' . $this->getFormImportMeta() : '')
+			) . '
 					</td>
 				</tr>
 				<tr><td colspan="2" class="defaultfont" style="padding-top:20px;">' . $this->getHtmlAlertBoxes() . '</td></tr>
 				<tr>
-					<td colspan="2" class="defaultfont" style="padding-top:20px;">' . 
-						we_html_tools::htmlAlertAttentionBox(g_l('weClass', (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->getFilesize() ? "[upload_will_replace]" : "[upload_single_files]")), we_html_tools::TYPE_ALERT, 508) . '
+					<td colspan="2" class="defaultfont" style="padding-top:20px;">' .
+			we_html_tools::htmlAlertAttentionBox(g_l('weClass', (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->getFilesize() ? "[upload_will_replace]" : "[upload_single_files]")), we_html_tools::TYPE_ALERT, 508) . '
 					</td>
 				</tr>
 			</table>';
 	}
-}
 
+}

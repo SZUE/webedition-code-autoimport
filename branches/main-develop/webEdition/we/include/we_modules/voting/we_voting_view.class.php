@@ -24,22 +24,20 @@
  */
 /* the parent class of storagable webEdition classes */
 class we_voting_view extends we_modules_view{
-
 	var $voting;
 	var $icon_pattern = "";
 
 	function __construct($frameset){
-		$topframe = "top.content";
-		parent::__construct($frameset, $topframe);
+		parent::__construct($frameset);
 		$this->voting = new we_voting_voting();
 	}
 
 	function getCommonHiddens($cmds = array()){
 		return
-				parent::getCommonHiddens($cmds) .
-				we_html_element::htmlHiddens(array(
-					"vernr" => (isset($cmds["vernr"]) ? $cmds["vernr"] : 0),
-					"IsFolder" => (isset($this->voting->IsFolder) ? $this->voting->IsFolder : '0')
+			parent::getCommonHiddens($cmds) .
+			we_html_element::htmlHiddens(array(
+				"vernr" => (isset($cmds["vernr"]) ? $cmds["vernr"] : 0),
+				"IsFolder" => (isset($this->voting->IsFolder) ? $this->voting->IsFolder : '0')
 		));
 	}
 
@@ -49,8 +47,8 @@ class we_voting_view extends we_modules_view{
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
 		return
-				parent::getJSTop() .
-				we_html_element::jsElement('
+			parent::getJSTop() .
+			we_html_element::jsElement('
 var get_focus = 1;
 var activ_tab = 1;
 var hot = 0;
@@ -71,9 +69,7 @@ parent.document.title = "' . $title . '";
 	}
 
 	function getJSProperty(){
-		return
-				we_html_element::jsElement($this->getJSSubmitFunction()) .
-				we_html_element::jsScript(WE_JS_MODULES_DIR . '/voting/voting_prop.js');
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . '/voting/voting_prop.js');
 	}
 
 	function processCommands(){
@@ -92,7 +88,7 @@ parent.document.title = "' . $title . '";
 				$this->voting = new we_voting_voting();
 				$this->voting->IsFolder = we_base_request::_(we_base_request::STRING, "cmd") === 'new_voting_group' ? 1 : 0;
 				echo we_html_element::jsElement(
-						'top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=edheader&text=' . urlencode($this->voting->Text) . '";
+					'top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=edheader&text=' . urlencode($this->voting->Text) . '";
 						top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=edfooter";');
 				break;
 			case "voting_edit":
@@ -112,7 +108,7 @@ parent.document.title = "' . $title . '";
 					break;
 				}
 				echo we_html_element::jsElement(
-						'top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=edheader&text=' . urlencode($this->voting->Text) . '";
+					'top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=edheader&text=' . urlencode($this->voting->Text) . '";
 						top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=edfooter";');
 				break;
 			case "save_voting":
@@ -207,25 +203,25 @@ parent.document.title = "' . $title . '";
 					}
 
 					$js = ($newone ?
-									'top.content.treeData.makeNewEntry(id:' . $this->voting->ID . ',parentid:' . $this->voting->ParentID . ',text:\'' . $this->voting->Text . '\',open:0,contenttype:\'' . ($this->voting->IsFolder ? 'folder' : 'we/voting') . '\',table:\'' . VOTING_TABLE . '\',published:' . ($this->voting->isActive() ? 1 : 0) . '});top.content.drawTree();' :
-									'top.content.treeData.updateEntry({id:' . $this->voting->ID . ',text:"' . $this->voting->Text . '",parentid:"' . $this->voting->ParentID . '",published:' . ($this->voting->isActive() ? 1 : 0) . '});'
-							);
+							'top.content.treeData.makeNewEntry(id:' . $this->voting->ID . ',parentid:' . $this->voting->ParentID . ',text:\'' . $this->voting->Text . '\',open:0,contenttype:\'' . ($this->voting->IsFolder ? 'folder' : 'we/voting') . '\',table:\'' . VOTING_TABLE . '\',published:' . ($this->voting->isActive() ? 1 : 0) . '});top.content.drawTree();' :
+							'top.content.treeData.updateEntry({id:' . $this->voting->ID . ',text:"' . $this->voting->Text . '",parentid:"' . $this->voting->ParentID . '",published:' . ($this->voting->isActive() ? 1 : 0) . '});'
+						);
 					echo we_html_element::jsElement($js .
-							'top.content.editor.edheader.location.reload();' .
-							we_message_reporting::getShowMessageCall(g_l('modules_voting', ($this->voting->IsFolder ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE));
+						'top.content.editor.edheader.location.reload();' .
+						we_message_reporting::getShowMessageCall(g_l('modules_voting', ($this->voting->IsFolder ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE));
 				}
 				break;
 			case "delete_voting":
 
 				if(!permissionhandler::hasPerm("DELETE_VOTING")){
 					echo we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
+						we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					return;
 				}
 				if($this->voting->delete()){
 					echo we_html_element::jsElement(
-							'top.content.treeData.deleteEntry(' . $this->voting->ID . ');
+						'top.content.treeData.deleteEntry(' . $this->voting->ID . ');
 setTimeout(function(){' . we_message_reporting::getShowMessageCall(g_l('modules_voting', ($this->voting->IsFolder ? '[group_deleted]' : '[voting_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE) . '},500);');
 					$this->voting = new we_voting_voting();
 					$_REQUEST['home'] = '1';
@@ -337,16 +333,16 @@ setTimeout(function(){' . we_message_reporting::getShowMessageCall(g_l('modules_
 					}
 
 					$myline = $enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['votingsession'])) . $enclose . $delimiter .
-							$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['voting'])) . $enclose . $delimiter .
-							$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(date(g_l('weEditorInfo', '[date_format]'), $data['time']))) . $enclose . $delimiter .
-							$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['ip'])) . $enclose . $delimiter .
-							$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['agent'])) . $enclose . $delimiter .
-							$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($cookie)) . $enclose . $delimiter .
-							$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($fallback)) . $enclose . $delimiter .
-							$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($mess)) . $enclose . $delimiter .
-							$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['answer'])) . $enclose . $delimiter .
-							$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['answertext'])) . $enclose . $delimiter .
-							$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['successor'])) . $enclose . $delimiter;
+						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['voting'])) . $enclose . $delimiter .
+						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(date(g_l('weEditorInfo', '[date_format]'), $data['time']))) . $enclose . $delimiter .
+						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['ip'])) . $enclose . $delimiter .
+						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['agent'])) . $enclose . $delimiter .
+						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($cookie)) . $enclose . $delimiter .
+						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($fallback)) . $enclose . $delimiter .
+						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($mess)) . $enclose . $delimiter .
+						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['answer'])) . $enclose . $delimiter .
+						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['answertext'])) . $enclose . $delimiter .
+						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['successor'])) . $enclose . $delimiter;
 
 					if($data['additionalfields'] != ''){
 						$addData = we_unserialize($data['additionalfields']);
@@ -479,13 +475,11 @@ setTimeout(function(){' . we_message_reporting::getShowMessageCall(g_l('modules_
 
 	public function getHomeScreen(){
 		$hiddens["cmd"] = "home";
-		$GLOBALS["we_head_insert"] = $this->getJSProperty();
-		$GLOBALS["we_body_insert"] = we_html_element::htmlForm(array("name" => "we_form"), $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden("home", 0));
 		$content = we_html_button::create_button("new_voting", "javascript:top.opener.top.we_cmd('new_voting');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_VOTING")) .
-				'<br/>' .
-				we_html_button::create_button("new_voting_group", "javascript:top.opener.top.we_cmd('new_voting_group');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_VOTING"));
+			'<br/>' .
+			we_html_button::create_button("new_voting_group", "javascript:top.opener.top.we_cmd('new_voting_group');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_VOTING"));
 
-		return parent::getHomeScreen("voting", "voting.gif", $content);
+		return parent::getHomeScreen("voting", "voting.gif", $content, we_html_element::htmlForm(array("name" => "we_form"), $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden("home", 0)));
 	}
 
 }

@@ -24,7 +24,7 @@
  */
 class we_workflow_tree extends weTree{
 
-	function customJSFile(){
+	protected function customJSFile(){
 		return we_html_element::jsScript(JS_DIR . 'workflow_tree.js');
 	}
 

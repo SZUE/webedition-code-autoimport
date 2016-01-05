@@ -287,7 +287,7 @@ if($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE){
 		function checkDocument() {
 			loc = null;
 			try {
-				loc = String(editor.location);
+				loc = editor.location;
 			} catch (e) {
 			}
 

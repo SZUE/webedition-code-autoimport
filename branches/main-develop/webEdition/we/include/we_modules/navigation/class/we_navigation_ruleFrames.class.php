@@ -200,7 +200,6 @@ class we_navigation_ruleFrames{
 
 		$parts[] = array(
 			'html' => $formTable,
-			'space' => 0
 		);
 
 		$saveButton = we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd("save_navigation_rule");');

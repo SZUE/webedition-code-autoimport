@@ -219,7 +219,6 @@ if(isset($daten)){
 </table>';
 				$parts[] = array(
 					'html' => $classSelectTable,
-					'space' => 0
 				);
 
 				// :: then do the query for objects
@@ -261,7 +260,6 @@ ORDER BY o.OF_ID'); // get the shop-objects from DB;
 
 				$parts[] = array(
 					'html' => we_html_tools::htmlDialogBorder3(670, 100, $content, $headline),
-					'space' => 0,
 					'noline' => true
 				);
 
@@ -269,7 +267,6 @@ ORDER BY o.OF_ID'); // get the shop-objects from DB;
 				// Pager: Zweite Linkliste zeigen
 				$parts[] = array(
 					'html' => we_shop_pager::getStandardPagerHTML(getPagerLinkObj(), $actPage, $nrOfPage, count($orderRows)),
-					'space' => 0
 				);
 
 				echo we_html_multiIconBox::getHTML("revenues", $parts, 30, "", -1, "", "", false, sprintf(g_l('tabs', '[module][artList]'), $topInfo));
@@ -280,7 +277,6 @@ ORDER BY o.OF_ID'); // get the shop-objects from DB;
 						'<tr><td class="defaultfont">' . g_l('modules_shop', '[noRecordAlert]') . '</td></tr>' .
 						'<tr><td class="defaultfont">' . we_html_button::create_button("fa:btn_shop_pref,fa-lg fa-pencil,fa-lg fa-list-alt", "javascript:top.opener.top.we_cmd('pref_shop')", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")) . '</td></tr>' .
 						'</table>',
-						'space' => 0
 					)
 				);
 
@@ -332,13 +328,11 @@ ORDER BY o.OF_ID'); // get the shop-objects from DB;
 				}
 				$parts[] = array(
 					'html' => we_html_tools::htmlDialogBorder3(670, 100, $content, $headline),
-					'space' => 0,
 					'noline' => true
 				);
 
 				$parts[] = array(
 					'html' => we_shop_pager::getStandardPagerHTML(getPagerLinkDoc(), $actPage, $nrOfPage, count($orderRows)),
-					'space' => 0
 				);
 
 				echo we_html_multiIconBox::getHTML("revenues", $parts, 30, "", -1, "", "", false, sprintf(g_l('tabs', '[module][artList]'), $topInfo));

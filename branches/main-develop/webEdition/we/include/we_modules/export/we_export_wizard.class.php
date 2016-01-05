@@ -267,20 +267,17 @@ var openFolders= {
 
 			array(
 				"html" => we_html_forms::radiobutton(we_import_functions::TYPE_WE_XML, ($extype == we_import_functions::TYPE_WE_XML && $wexpotEnabled), "extype", g_l('export', '[wxml_export]'), true, "defaultfont", "", !$wexpotEnabled, g_l('export', '[txt_wxml_export]'), 0, 500),
-				"space" => 0,
-				"noline" => 1
+				'noline' => 1
 			),
 			array(
 				"html" => we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($extype == we_import_functions::TYPE_GENERIC_XML && permissionhandler::hasPerm("GENERICXML_EXPORT")), "extype", g_l('export', '[gxml_export]'), true, "defaultfont", "", !permissionhandler::hasPerm("GENERICXML_EXPORT"), g_l('export', '[txt_gxml_export]'), 0, 500),
-				"space" => 0,
-				"noline" => 1)
+				'noline' => 1)
 		);
 
 		if(we_base_moduleInfo::isActive(we_base_moduleInfo::OBJECT)){
 			$parts[] = array(
 				"html" => we_html_forms::radiobutton("csv", ($extype === "csv" && permissionhandler::hasPerm("CSV_EXPORT")), "extype", g_l('export', '[csv_export]'), true, "defaultfont", "", !permissionhandler::hasPerm("CSV_EXPORT"), g_l('export', '[txt_csv_export]'), 0, 500),
-				"space" => 0,
-				"noline" => 1
+				'noline' => 1
 			);
 		}
 
@@ -322,12 +319,10 @@ function we_submit(){
 		$parts = array(
 			array(
 				"html" => we_html_forms::radiobutton("auto", ($selection === "auto" ? true : false), "selection", g_l('export', '[auto_selection]'), true, "defaultfont", "", false, g_l('export', (($this->exportVars['extype'] === 'csv') ? '[txt_auto_selection_csv]' : '[txt_auto_selection]')), 0, 500),
-				"space" => 0,
-				"noline" => 1),
+				'noline' => 1),
 			array(
 				"html" => we_html_forms::radiobutton("manual", ($selection === "manual" ? true : false), "selection", g_l('export', '[manual_selection]'), true, "defaultfont", "", false, g_l('export', (($this->exportVars['extype'] === 'csv') ? '[txt_manual_selection_csv]' : '[txt_manual_selection]')), 0, 500),
-				"space" => 0,
-				"noline" => 1)
+				'noline' => 1)
 		);
 
 		return we_html_tools::getHtmlTop(g_l('export', '[wizard_title]'), '', '', STYLESHEET . $js, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHiddens(array(
@@ -389,7 +384,7 @@ function we_cmd(){
 		if(!isset($this->exportVars["extype"]) || (isset($this->exportVars["extype"]) && $this->exportVars["extype"] != "csv")){
 			$doc_type = $this->getHTMLDocType();
 			$showdocs = true;
-			$_tmp = array("headline" => "", "html" => $doc_type, "space" => $_space);
+			$_tmp = array("headline" => "", "html" => $doc_type, 'space' => $_space);
 			if(defined('OBJECT_FILES_TABLE')){
 				$_tmp["noline"] = 1;
 			}
@@ -406,11 +401,11 @@ function we_cmd(){
 		if(defined('OBJECT_FILES_TABLE')){
 			$classname = $this->getHTMLObjectType(350, $showdocs);
 
-			$parts[] = array("headline" => "", "html" => $classname, "space" => $_space);
+			$parts[] = array("headline" => "", "html" => $classname, 'space' => $_space);
 		}
 
 		$category = $this->getHTMLCategory();
-		$parts[] = array("headline" => "", "html" => $category, "space" => $_space, "noline" => 1);
+		$parts[] = array("headline" => "", "html" => $category, 'space' => $_space, 'noline' => 1);
 
 
 		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', STYLESHEET . $js . weSuggest::getYuiFiles(), we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
@@ -428,10 +423,10 @@ function we_cmd(){
 				$this->footerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=footer&step=2";');
 
 		$parts = array(
-			array("headline" => "", "html" => we_html_forms::radiobutton("docs", ($art === "docs" ? true : ($art != 'objects')), "art", g_l('export', '[documents]'), true, "defaultfont", $this->topFrame . ".art='docs'"), "space" => $_space, "noline" => 1)
+			array("headline" => "", "html" => we_html_forms::radiobutton("docs", ($art === "docs" ? true : ($art != 'objects')), "art", g_l('export', '[documents]'), true, "defaultfont", $this->topFrame . ".art='docs'"), 'space' => $_space, 'noline' => 1)
 		);
 		if(defined('OBJECT_FILES_TABLE')){
-			$parts[] = array("headline" => "", "html" => we_html_forms::radiobutton("objects", ($art === 'objects' ? true : ($art != 'docs')), "art", g_l('export', '[objects]'), true, "defaultfont", $this->topFrame . ".art='objects'"), "space" => $_space, "noline" => 1);
+			$parts[] = array("headline" => "", "html" => we_html_forms::radiobutton("objects", ($art === 'objects' ? true : ($art != 'docs')), "art", g_l('export', '[objects]'), true, "defaultfont", $this->topFrame . ".art='objects'"), 'space' => $_space, 'noline' => 1);
 		}
 
 		$hiddens = we_html_element::htmlHiddens(array(
@@ -518,13 +513,11 @@ function we_submit(){
 			array(
 				"headline" => "",
 				"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[select_export]'), we_html_tools::TYPE_INFO, 540),
-				"space" => 0,
-				"noline" => 1
+				'noline' => 1
 			),
 			array(
 				"headline" => "",
 				"html" => $header->getHtml() . we_html_element::htmlDiv(array("id" => "treetable", "class" => "blockWrapper", "style" => "width: 540px; height: 250px; border:1px #dce6f2 solid;"), ""),
-				"space" => 0
 			)
 		);
 
@@ -634,10 +627,10 @@ function setState(a) {
 		$formattable3->setCol(1, 0, null, we_html_forms::checkboxWithHidden(($handle_categorys ? true : false), "handle_categorys", g_l('export', '[handle_categorys]')));
 
 		$parts = array(
-			array("headline" => g_l('export', '[handle_document_options]') . we_html_element::htmlBr() . g_l('export', '[handle_template_options]'), "html" => $formattable->getHtml(), "space" => $_space),
-			array("headline" => g_l('export', '[handle_object_options]') . we_html_element::htmlBr() . g_l('export', '[handle_classes_options]'), "html" => $formattable2->getHtml(), "space" => $_space),
-			array("headline" => g_l('export', '[handle_doctype_options]'), "html" => $formattable3->getHtml(), "space" => $_space),
-			array("headline" => g_l('export', '[export_depth]'), "html" => we_html_element::htmlLabel(array('style' => 'padding-right:5px;'), g_l('export', '[to_level]')) . we_html_tools::htmlTextInput("export_depth", 10, $export_depth, "", "", "text", 50), "space" => $_space)
+			array("headline" => g_l('export', '[handle_document_options]') . we_html_element::htmlBr() . g_l('export', '[handle_template_options]'), "html" => $formattable->getHtml(), 'space' => $_space),
+			array("headline" => g_l('export', '[handle_object_options]') . we_html_element::htmlBr() . g_l('export', '[handle_classes_options]'), "html" => $formattable2->getHtml(), 'space' => $_space),
+			array("headline" => g_l('export', '[handle_doctype_options]'), "html" => $formattable3->getHtml(), 'space' => $_space),
+			array("headline" => g_l('export', '[export_depth]'), "html" => we_html_element::htmlLabel(array('style' => 'padding-right:5px;'), g_l('export', '[to_level]')) . we_html_tools::htmlTextInput("export_depth", 10, $export_depth, "", "", "text", 50), 'space' => $_space)
 		);
 
 		return we_html_tools::getHtmlTop('', '', '', STYLESHEET . $js, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHiddens(array(
@@ -673,7 +666,7 @@ function setState(a) {
 				$this->footerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=footer&step=7";');
 
 		$parts = array(
-			array("headline" => g_l('export', '[filename]'), "html" => we_html_tools::htmlTextInput("filename", $_input_size, $filename, "", "", "text", 260), "space" => $_space)
+			array("headline" => g_l('export', '[filename]'), "html" => we_html_tools::htmlTextInput("filename", $_input_size, $filename, "", "", "text", 260), 'space' => $_space)
 		);
 
 //	Filetype
@@ -695,7 +688,7 @@ function setState(a) {
 
 				$fileformattable->setColContent(3, 0, we_html_forms::checkbox(1, true, "csv_fieldnames", g_l('export', '[csv_fieldnames]')));
 
-				$parts[] = array("headline" => g_l('export', '[csv_params]'), "html" => $fileformattable->getHtml(), "space" => $_space);
+				$parts[] = array("headline" => g_l('export', '[csv_params]'), "html" => $fileformattable->getHtml(), 'space' => $_space);
 				break;
 
 			case we_import_functions::TYPE_GENERIC_XML:
@@ -704,7 +697,7 @@ function setState(a) {
 				$table->setColContent(0, 0, we_html_forms::radiobutton("true", ($cdata === "true"), "cdata", g_l('export', '[export_xml_cdata]'), true, "defaultfont", $this->topFrame . ".cdata='true'"));
 				$table->setColContent(1, 0, we_html_forms::radiobutton("false", ($cdata === "false"), "cdata", g_l('export', '[export_xml_entities]'), true, "defaultfont", $this->topFrame . ".cdata='false'"));
 
-				$parts[] = array("headline" => g_l('export', '[cdata]'), "html" => $table->getHtml(), "space" => $_space);
+				$parts[] = array("headline" => g_l('export', '[cdata]'), "html" => $table->getHtml(), 'space' => $_space);
 				break;
 		}
 
@@ -713,7 +706,7 @@ function setState(a) {
 		$table->setColContent(0, 0, we_html_forms::radiobutton("local", ($export_to === "local" ? true : false), "export_to", g_l('export', '[export_to_local]'), true, "defaultfont", $this->topFrame . ".export_to='local'"));
 		$table->setCol(1, 0, array('style' => 'padding-top:20px;'), we_html_tools::htmlFormElementTable($this->formFileChooser(260, "path", $path, "", "folder"), we_html_forms::radiobutton("server", ($export_to === "server" ? true : false), "export_to", g_l('export', '[export_to_server]'), true, "defaultfont", $this->topFrame . ".export_to='server'")));
 
-		$parts[] = array("headline" => g_l('export', '[export_to]'), "html" => $table->getHtml(), "space" => $_space);
+		$parts[] = array("headline" => g_l('export', '[export_to]'), "html" => $table->getHtml(), 'space' => $_space);
 
 		return we_html_tools::getHtmlTop('', '', '', STYLESHEET . $js, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHiddens(array(
 							"pnt" => "load",

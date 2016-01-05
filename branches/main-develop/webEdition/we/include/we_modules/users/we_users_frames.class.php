@@ -24,7 +24,7 @@
  */
 class we_users_frames extends we_modules_frame{
 
-	function __construct($frameset){
+	public function __construct($frameset){
 		parent::__construct($frameset);
 		$this->module = 'users';
 		$this->Tree = new we_users_tree($this->frameset, "top.content", "top.content", "top.content.cmd");

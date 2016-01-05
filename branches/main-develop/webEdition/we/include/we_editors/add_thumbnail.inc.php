@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -39,7 +38,7 @@ if(!($we_doc instanceof we_imageDocument)){
 
 echo we_html_tools::getHtmlTop(g_l('weClass', '[thumbnails]')) .
  we_html_element::jsElement('
-var transaction="'.$we_transaction.'";
+var transaction="' . $we_transaction . '";
 ');
 
 echo STYLESHEET .
@@ -74,12 +73,12 @@ while($DB_WE->next_record()){
 
 $editbut = we_html_button::create_button("edit_all_thumbs", "javascript:we_cmd('editThumbs','top.opener.location = top.opener.location;');", false);
 
-$_thumbs[] = array("headline" => "", "html" => $_thumbnails->getHtml() . '<p style="text-align:right">' . $editbut . '</p>', "space" => 0);
+$_thumbs[] = array("headline" => "", "html" => $_thumbnails->getHtml() . '<p style="text-align:right">' . $editbut . '</p>');
 
 
 $iframe = '<iframe name="showthumbs" id="showthumbs" src="' . WEBEDITION_DIR . 'showThumb.php?u=' . $uniqid . '&t=' . $we_transaction . '&id=' . $selectedID . '" width="340" height="130"></iframe>';
 
-$_thumbs[] = array("headline" => "", "html" => $iframe, "space" => 0);
+$_thumbs[] = array("headline" => "", "html" => $iframe);
 
 $addbut = we_html_button::create_button(we_html_button::ADD, "javascript:add_thumbnails();", false, 0, 0, "", "", !$_enabled_buttons, false);
 $cancelbut = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");

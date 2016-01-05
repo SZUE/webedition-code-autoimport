@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weTree{
+abstract class weTree{
 	const DefaultWidth = 300;
 	const MinWidth = 200;
 	const MaxWidth = 1000;
@@ -37,7 +37,6 @@ class weTree{
 	var $topFrame;
 	var $treeFrame;
 	var $cmdFrame;
-	var $treeItems = array();
 	var $frameset = '';
 	var $styles = array();
 	var $tree_states = array(
@@ -76,7 +75,7 @@ function startTree(pid,offset){
 	};
 	pid = pid ? pid :
 	offset = offset ? offset : 0;
-	treeData.frames.cmd.location=treeData.frameset+"?pnt=cmd&pid="+pid+"&offset="+offset;
+	treeData.frames.cmd.location=treeData.frameset+"&pnt=cmd&pid="+pid+"&offset="+offset;
 	drawTree();
 }';
 	}
@@ -101,13 +100,11 @@ container.prototype.frames={
 	cmd:' . $this->cmdFrame . ',
 	tree:' . $this->treeFrame . '
 };
-' . $this->getJSStartTree()
+' 				. $this->getJSStartTree()
 		);
 	}
 
-	function customJSFile(){
-		return '';
-	}
+	abstract protected function customJSFile();
 
 	function getHTMLContruct($onresize = ''){
 		return
@@ -138,7 +135,7 @@ container.prototype.frames={
 		return $js;
 	}
 
-	static function deleteTreeEntries($dontDeleteClassFolders = false){
+	public static function deleteTreeEntries($dontDeleteClassFolders = false){
 		return '
 var obj = top.treeData;
 var cont = new top.container();
@@ -154,8 +151,7 @@ for(var i=1;i<=obj.len;i++){
 	}
 }
 top.treeData = cont;
-top.drawTree();
-';
+top.drawTree();';
 	}
 
 }

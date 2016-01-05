@@ -23,13 +23,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_voting_frames extends we_modules_frame{
-	var $View;
 	var $_space_size = 150;
 	var $_width_size = 535;
-	public $module = "voting";
 
 	public function __construct($frameset){
 		parent::__construct($frameset);
+		$this->module = "voting";
 		$this->Tree = new we_voting_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
 		$this->View = new we_voting_view($frameset);
 	}
@@ -78,8 +77,7 @@ class we_voting_frames extends we_modules_frame{
 			}
 		}
 
-		$tabsHead = we_tabs::getHeader() .
-			we_html_element::jsElement('
+		$tabsHead = we_tabs::getHeader('
 				function setTab(tab) {
 					parent.edbody.toggle("tab"+' . $this->topFrame . '.activ_tab);
 					parent.edbody.toggle("tab"+tab);
@@ -109,12 +107,11 @@ class we_voting_frames extends we_modules_frame{
 	}
 
 	protected function getHTMLEditorBody(){
-
-		$hiddens = array('cmd' => 'voting_edit', 'pnt' => 'edbody', 'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0));
-
 		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return $this->View->getHomeScreen();
 		}
+
+		$hiddens = array('cmd' => 'voting_edit', 'pnt' => 'edbody', 'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0));
 
 		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onload" => "loaded=1;setMultiEdits();", "onunload" => "doUnload()"), we_html_element::htmlForm(array("name" => "we_form", "onsubmit" => "return false"), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties()));
 
@@ -340,7 +337,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 				"headline" => g_l('modules_voting', '[export]'),
 				"html" => we_html_tools::htmlAlertAttentionBox(g_l('modules_voting', '[export_txt]'), we_html_tools::TYPE_INFO, $this->_width_size) .
 				$export_box->getHtml(),
-				"space" => $this->_space_size
+				'space' => $this->_space_size
 			);
 
 			return $parts;
@@ -374,9 +371,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 	}
 
 	function getHTMLTab2(){
-
 		$successor_box = new we_html_table(array('class' => 'default', 'style' => 'margin-top:10px;'), 2, 1);
-
 		$successor_box->setCol(1, 0, array(), we_html_tools::htmlFormElementTable($this->formFileChooser($this->_width_size - 130, 'Successor', '/', '', ''), g_l('modules_voting', '[voting-successor]')));
 
 
@@ -397,7 +392,6 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 				'space' => $this->_space_size
 			)
 		);
-
 
 		$select = new we_html_select(array('name' => 'selectVar', 'class' => 'weSelect', 'onchange' => 'top.content.setHot();question_edit.showVariant(this.value);answers_edit.showVariant(this.value);document.we_form.vernr.value=this.value;refreshTexts();', 'style' => 'width:' . ($this->_width_size - 64) . 'px;'));
 		foreach(array_keys($this->View->voting->QASet) as $variant){
@@ -428,8 +422,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 				'iptable_name' => '',
 				'iptable_count' => 0)) .
 			$table->getHtml() .
-			we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();answers_edit.addItem()")
-			,
+			we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();answers_edit.addItem()"),
 			'space' => $this->_space_size
 		);
 
@@ -552,8 +545,7 @@ function newIp(){
 	} else {
 		' . we_message_reporting::getShowMessageCall(g_l('modules_voting', '[not_valid_ip]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 	}
-}
-					') . $table->getHtml(),
+}') . $table->getHtml(),
 			'space' => $this->_space_size
 		);
 
@@ -625,7 +617,6 @@ function refreshTotal(){
 			Math.round((parseInt(document.we_form.elements["scores_"+i].value)/total) * 100):
 			0);
 	}
-
 }
 
 function refreshTexts(){
@@ -643,7 +634,7 @@ function refreshTexts(){
 			we_html_element::htmlHidden('scores_changed', 0) .
 			$table->getHTML() .
 			we_html_element::htmlBr() . $butt,
-			"space" => $this->_space_size
+			'space' => $this->_space_size
 		);
 
 
@@ -680,7 +671,7 @@ function refreshTexts(){
 			"headline" => g_l('modules_voting', '[export]'),
 			"html" => we_html_tools::htmlAlertAttentionBox(g_l('modules_voting', '[export_txt]'), we_html_tools::TYPE_INFO, $this->_width_size) .
 			$export_box->getHtml(),
-			"space" => $this->_space_size
+			'space' => $this->_space_size
 		);
 
 		return $parts;
@@ -932,7 +923,7 @@ function setVisible(id,visible){
 				array(
 					'headline' => '',
 					'html' => we_html_tools::htmlDialogBorder3(730, 300, $content, $headline) . $nextprev,
-					'space' => 0,
+					
 					'noline' => 1
 				)
 			);
@@ -943,7 +934,7 @@ function setVisible(id,visible){
 					'html' => we_html_element::htmlSpan(array('class' => 'middlefont lowContrast'), g_l('modules_voting', '[log_is_empty]')) .
 					we_html_element::htmlBr() .
 					we_html_element::htmlBr(),
-					'space' => 0,
+					
 					'noline' => 1
 				)
 			);
@@ -1060,7 +1051,7 @@ function setVisible(id,visible){
 				array(
 					'headline' => '',
 					'html' => we_html_tools::htmlDialogBorder4(1000, 300, $content, $headline) . $nextprev,
-					'space' => 0,
+					
 					'noline' => 1
 				)
 			);
@@ -1071,7 +1062,7 @@ function setVisible(id,visible){
 					'html' => we_html_element::htmlSpan(array('class' => 'middlefont lowContrast'), g_l('modules_voting', '[log_is_empty]')) .
 					we_html_element::htmlBr() .
 					we_html_element::htmlBr(),
-					'space' => 0,
+					
 					'noline' => 1
 				)
 			);
@@ -1172,7 +1163,7 @@ function setVisible(id,visible){
 				array(
 					'headline' => '',
 					'html' => we_html_tools::htmlDialogBorder3(730, 300, $content, $headline) . $nextprev,
-					'space' => 0,
+					
 					'noline' => 1
 				)
 			);
@@ -1183,7 +1174,7 @@ function setVisible(id,visible){
 					'html' => we_html_element::htmlSpan(array('class' => 'middlefont lowContrast'), g_l('modules_voting', '[log_is_empty]')) .
 					we_html_element::htmlBr() .
 					we_html_element::htmlBr(),
-					'space' => 0,
+					
 					'noline' => 1
 				)
 			);

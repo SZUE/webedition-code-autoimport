@@ -65,40 +65,38 @@ function do_confirm() {
 		$parts = array(
 			array("headline" => g_l('modules_messaging', '[assigner]'),
 				"html" => $compose->get_from(),
-				"space" => 120,
-				"noline" => 1
+				'space' => 120,
+				'noline' => 1
 			),
 			array("headline" => g_l('modules_messaging', '[subject]'),
 				"html" => $compose->get_subject(),
-				"space" => 120,
-				"noline" => 1
+				'space' => 120,
+				'noline' => 1
 			),
 			array("headline" => g_l('modules_messaging', '[deadline]'),
 				"html" => we_html_tools::getDateInput2('td_deadline%s', $compose->get_deadline()),
-				"space" => 120,
-				"noline" => 1
+				'space' => 120,
+				'noline' => 1
 			),
 			array("headline" => g_l('modules_messaging', '[status]'),
 				"html" => we_html_tools::htmlTextInput('todo_status', 4, $messaging->selected_message['hdrs']['status']) . ' %',
-				"space" => 120,
-				"noline" => 1
+				'space' => 120,
+				'noline' => 1
 			),
 			array("headline" => g_l('modules_messaging', '[priority]'),
 				"html" => we_html_tools::html_select('todo_priority', 1, array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10), $compose->get_priority()),
-				"space" => 120,
+				'space' => 120,
 			),
 			array("headline" => "",
 				"html" => $compose->get_msg_text(),
-				"space" => 0,
-				"noline" => 1
+				'noline' => 1
 			),
 			array("headline" => "",
 				"html" => $compose->get_todo_history(),
-				"space" => 0,
 			),
 			array("headline" => g_l('modules_messaging', '[comment]'),
 				"html" => '<textarea cols="40" rows="8" name="todo_comment"></textarea>',
-				"space" => 120,
+				'space' => 120,
 			)
 		);
 

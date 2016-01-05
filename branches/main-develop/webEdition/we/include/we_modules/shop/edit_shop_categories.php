@@ -289,14 +289,14 @@ $parts[] = array(
 
 $parts[] = array(
 	'headline' => '',
-	'space' => 0,
+	
 	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[shopcats][info_edit_shopCatDir]'), we_html_tools::TYPE_INFO, '614', false, 100),
 	'noline' => 1
 );
 
 $parts[] = array(
 	'headline' => '',
-	'space' => 0,
+	
 	'html' => $catsDirTableHtml,
 );
 
@@ -309,21 +309,21 @@ $parts[] = array(
 
 $parts[] = array(
 	'headline' => '',
-	'space' => 0,
+	
 	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[shopcats][info_editShopCats]'), we_html_tools::TYPE_INFO, "614", false, 101),
 	'noline' => 1
 );
 
 $parts[] = array(
 	'headline' => '',
-	'space' => 0,
+	
 	'html' => $catsTableHtml,
 	'noline' => 1
 );
 
 $parts[] = array(
 	'headline' => '',
-	'space' => 0,
+	
 	//'html' => $debug_output
 );
 

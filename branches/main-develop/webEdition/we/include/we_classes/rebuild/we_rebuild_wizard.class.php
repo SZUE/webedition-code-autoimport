@@ -133,7 +133,6 @@ abstract class we_rebuild_wizard{
 			array(
 				'headline' => '',
 				'html' => we_html_forms::radiobutton('rebuild_documents', ($type === 'rebuild_documents' && (permissionhandler::hasPerm('REBUILD_ALL') || permissionhandler::hasPerm('REBUILD_FILTERD'))), 'type', g_l('rebuild', '[documents]'), true, 'defaultfont', 'setNavStatDocDisabled()', (!(permissionhandler::hasPerm('REBUILD_ALL') || permissionhandler::hasPerm('REBUILD_FILTERD'))), g_l('rebuild', '[txt_rebuild_documents]'), 0, 495),
-				'space' => 0
 			)
 		);
 
@@ -142,20 +141,17 @@ abstract class we_rebuild_wizard{
 			$parts[] = array(
 				'headline' => '',
 				'html' => we_html_forms::radiobutton('rebuild_objects', ($type === 'rebuild_objects' && permissionhandler::hasPerm('REBUILD_OBJECTS')), 'type', g_l('rebuild', '[rebuild_objects]'), true, 'defaultfont', 'setNavStatDocDisabled()', (!permissionhandler::hasPerm('REBUILD_OBJECTS')), g_l('rebuild', '[txt_rebuild_objects]'), 0, 495),
-				'space' => 0
 			);
 		}
 
 		$parts[] = array(
 			'headline' => '',
 			'html' => we_html_forms::radiobutton('rebuild_index', ($type === 'rebuild_index' && permissionhandler::hasPerm('REBUILD_INDEX')), 'type', g_l('rebuild', '[rebuild_index]'), true, 'defaultfont', 'setNavStatDocDisabled()', (!permissionhandler::hasPerm('REBUILD_INDEX')), g_l('rebuild', '[txt_rebuild_index]'), 0, 495),
-			'space' => 0
 		);
 
 		$parts[] = array(
 			'headline' => '',
 			'html' => we_html_forms::radiobutton('rebuild_thumbnails', ($type === 'rebuild_thumbnails' && permissionhandler::hasPerm('REBUILD_THUMBS')), 'type', g_l('rebuild', '[thumbnails]'), true, 'defaultfont', 'setNavStatDocDisabled()', (we_base_imageEdit::gd_version() == 0 || (!permissionhandler::hasPerm('REBUILD_THUMBS'))), g_l('rebuild', '[txt_rebuild_thumbnails]'), 0, 495),
-			'space' => 0
 		);
 
 		$_navRebuildHTML = '<div>' .
@@ -167,7 +163,6 @@ abstract class we_rebuild_wizard{
 		$parts[] = array(
 			'headline' => '',
 			'html' => $_navRebuildHTML,
-			'space' => 0
 		);
 
 		$metaDataFields = we_metadata_metaData::getDefinedMetaDataFields();
@@ -183,13 +178,11 @@ abstract class we_rebuild_wizard{
 		$parts[] = array(
 			'headline' => '',
 			'html' => we_html_forms::radiobutton('rebuild_metadata', ($type === 'rebuild_metadata' && permissionhandler::hasPerm('REBUILD_META')), 'type', g_l('rebuild', '[metadata]'), true, 'defaultfont', 'setNavStatDocDisabled()', (!permissionhandler::hasPerm('REBUILD_META')) || $_rebuildMetaDisabled, g_l('rebuild', '[txt_rebuild_metadata]'), 0, 495),
-			'space' => 0
 		);
 
 		$parts[] = array(
 			'headline' => '',
 			'html' => we_html_forms::radiobutton('rebuild_medialinks', ($type === 'rebuild_medialinks' && true), 'type', g_l('rebuild', '[media_links]'), true, 'defaultfont', '', false, g_l('rebuild', '[txt_media_links]'), 0, 495),
-			'space' => 0
 		);
 
 		$allbutdisabled = !(permissionhandler::hasPerm('REBUILD_ALL') || permissionhandler::hasPerm('REBUILD_FILTERD') || permissionhandler::hasPerm('REBUILD_OBJECTS') || permissionhandler::hasPerm('REBUILD_INDEX') || permissionhandler::hasPerm('REBUILD_THUMBS') || permissionhandler::hasPerm('REBUILD_META'));
@@ -497,17 +490,14 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 			array(
 				'headline' => '',
 				'html' => we_html_forms::radiobutton('rebuild_all', ($btype === 'rebuild_all' && permissionhandler::hasPerm('REBUILD_ALL')), 'btype', g_l('rebuild', '[rebuild_all]'), true, 'defaultfont', '', (!permissionhandler::hasPerm('REBUILD_ALL')), g_l('rebuild', '[txt_rebuild_all]'), 0, 495, '', $all_content),
-				'space' => 0
 			),
 			array(
 				'headline' => '',
 				'html' => we_html_forms::radiobutton('rebuild_templates', ($btype === 'rebuild_templates' && permissionhandler::hasPerm('REBUILD_TEMPLATES')), 'btype', g_l('rebuild', '[rebuild_templates]'), true, 'defaultfont', '', (!permissionhandler::hasPerm('REBUILD_TEMPLATES')), g_l('rebuild', '[txt_rebuild_templates]'), 0, 495),
-				'space' => 0
 			),
 			array(
 				'headline' => '',
 				'html' => $filter_content,
-				'space' => 0
 			)
 		);
 
@@ -587,7 +577,6 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 		$parts[] = array(
 			'headline' => '',
 			'html' => $content,
-			'space' => 0
 		);
 
 		$dthidden = '';
@@ -658,7 +647,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 			array(
 				'headline' => '',
 				'html' => $content,
-				'space' => 0)
+			)
 		);
 
 		$dthidden = '';

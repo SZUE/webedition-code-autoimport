@@ -173,7 +173,7 @@ class we_base_ContentTypes{
 				'DefaultCode' => '',
 				'IsRealFile' => false,
 				'IsWebEditionFile' => false,
-				'Table' => array(FILE_TABLE, TEMPLATES_TABLE, OBJECT_TABLE, OBJECT_FILES_TABLE, VFILE_TABLE),
+				'Table' => array_filter(array(FILE_TABLE, TEMPLATES_TABLE, defined('OBJECT_TABLE') ? OBJECT_TABLE : '', defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : '', defined('VFILE_TABLE') ? VFILE_TABLE : '')),
 				'Class' => 'we_folder'
 			),
 			self::CLASS_FOLDER => array(
@@ -183,7 +183,7 @@ class we_base_ContentTypes{
 				'DefaultCode' => '',
 				'IsRealFile' => false,
 				'IsWebEditionFile' => false,
-				'Table' => array(OBJECT_FILES_TABLE),
+				'Table' => array(defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : ''),
 				'Class' => 'we_class_folder'
 			),
 			self::FLASH => array(
@@ -245,7 +245,7 @@ class we_base_ContentTypes{
 				'DefaultCode' => '',
 				'IsRealFile' => false,
 				'IsWebEditionFile' => false,
-				'Table' => array(OBJECT_TABLE),
+				'Table' => array(defined('OBJECT_TABLE') ? OBJECT_TABLE : ''),
 				'Class' => 'we_object'
 			),
 			self::OBJECT_FILE => array(
@@ -255,7 +255,7 @@ class we_base_ContentTypes{
 				'DefaultCode' => '',
 				'IsRealFile' => false,
 				'IsWebEditionFile' => false,
-				'Table' => array(OBJECT_FILES_TABLE),
+				'Table' => array(defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : ''),
 				'Class' => 'we_objectFile'
 			),
 			self::COLLECTION => array(
@@ -265,7 +265,7 @@ class we_base_ContentTypes{
 				'DefaultCode' => '',
 				'IsRealFile' => false, //TODO: use this when saving
 				'IsWebEditionFile' => false,
-				'Table' => array(VFILE_TABLE),
+				'Table' => array(defined('VFILE_TABLE') ? VFILE_TABLE : ''),
 				'Class' => 'we_collection'
 			)
 		);

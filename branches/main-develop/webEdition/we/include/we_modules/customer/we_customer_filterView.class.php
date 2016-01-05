@@ -70,140 +70,64 @@ class we_customer_filterView{
 	 * @return string
 	 */
 	function getFilterHTML($ShowModeNone = false){
-		$_script = <<<EO_SCRIPT
-function $(id) {
-	return document.getElementById(id);
+		$_script = '
+function wecf_hot() {' .
+			$this->_hotScript . '
 }
 
-function updateView() {
-
-EO_SCRIPT;
-
-		$_script .= $this->createUpdateViewScript() . <<<EO_SCRIPT
-
-}
-
-function wecf_hot() {
-	$this->_hotScript;
-}
-
-function wecf_logic_changed(s) {
-	wecf_hot();
-	var val = s.options[s.selectedIndex].value;
-	var cell = s.parentNode;
-	var row = cell.parentNode;
-	var prev = row.previousSibling;
-	while (prev.nodeName.toLowerCase() != "tr") {
-		prev = prev.previousSibling;
-	}
-
-	var l = row.childNodes.length;
-	var l2 = prev.childNodes.length;
-
-	for (var i=0; i<l2; i++) {
-		if (prev.childNodes[i].nodeName.toLowerCase() == "td") {
-			prev.childNodes[i].style.paddingBottom = (val=="OR") ? "10px" : "0";
-		}
-	}
-	for (var i=0; i<l; i++) {
-		if (row.childNodes[i].nodeName.toLowerCase() == "td") {
-			row.childNodes[i].style.paddingTop = (val=="OR") ? "10px" : "0";
-			row.childNodes[i].style.borderTop = (val=="OR") ? "1px solid grey" : "0";
-		}
-	}
-}
-
-function removeFromMultiEdit(_multEdit){
-	wecf_hot();
-	if(_multEdit.itemCount>0){
-		while(_multEdit.itemCount>0){
-			_multEdit.delItem(_multEdit.itemCount);
-		}
-	}
-}
-
-function addToMultiEdit(_multEdit, paths){
-	wecf_hot();
-	var path = paths.split(",");
-	var found = false;
-	var j = 0;
-	for (var i = 0; i < path.length; i++) {
-		if(path[i]!="") {
-			found = false;
-			for(j=0;j<_multEdit.itemCount;j++){
-				if(_multEdit.form.elements[_multEdit.name+"_variant0_"+_multEdit.name+"_item"+j].value == path[i]) {
-					found = true;
-				}
-			}
-			if(!found) {
-				_multEdit.addItem();
-				_multEdit.setItem(0,(_multEdit.itemCount-1),path[i]);
-			}
-		}
-	}
-	_multEdit.showVariant(0);
-}
-EO_SCRIPT;
+function updateView() {' .
+			$this->createUpdateViewScript() . '
+}';
+		$mode = $this->_filter->getMode();
 
 		// ################# Radio buttons ###############
-		$_modeRadioOff = we_html_forms::radiobutton(we_customer_abstractFilter::OFF, $this->_filter->getMode() === we_customer_abstractFilter::OFF, 'wecf_mode', g_l('modules_customerFilter', '[mode_off]'), true, "defaultfont", "wecf_hot();updateView();");
+		$_modeRadioOff = we_html_forms::radiobutton(we_customer_abstractFilter::OFF, $mode === we_customer_abstractFilter::OFF, 'wecf_mode', g_l('modules_customerFilter', '[mode_off]'), true, "defaultfont", "wecf_hot();updateView();");
 		$_modeRadioNone = ($ShowModeNone ?
-				we_html_forms::radiobutton(we_customer_abstractFilter::NOT_LOGGED_IN_USERS, $this->_filter->getMode() === we_customer_abstractFilter::NOT_LOGGED_IN_USERS, 'wecf_mode', g_l('modules_customerFilter', '[mode_none]'), true, "defaultfont", "wecf_hot();updateView();") :
+				we_html_forms::radiobutton(we_customer_abstractFilter::NOT_LOGGED_IN_USERS, $mode === we_customer_abstractFilter::NOT_LOGGED_IN_USERS, 'wecf_mode', g_l('modules_customerFilter', '[mode_none]'), true, "defaultfont", "wecf_hot();updateView();") :
 				'');
 
-		$_modeRadioAll = we_html_forms::radiobutton(we_customer_abstractFilter::ALL, $this->_filter->getMode() === we_customer_abstractFilter::ALL, 'wecf_mode', g_l('modules_customerFilter', '[mode_all]'), true, "defaultfont", "wecf_hot();updateView();");
-		$_modeRadioSpecific = we_html_forms::radiobutton(we_customer_abstractFilter::SPECIFIC, $this->_filter->getMode() === we_customer_abstractFilter::SPECIFIC, 'wecf_mode', g_l('modules_customerFilter', '[mode_specific]'), true, "defaultfont", "wecf_hot();updateView();");
-		$_modeRadioFilter = we_html_forms::radiobutton(we_customer_abstractFilter::FILTER, $this->_filter->getMode() === we_customer_abstractFilter::FILTER, 'wecf_mode', g_l('modules_customerFilter', '[mode_filter]'), true, "defaultfont", "wecf_hot();updateView();");
-
+		$_modeRadioAll = we_html_forms::radiobutton(we_customer_abstractFilter::ALL, $mode === we_customer_abstractFilter::ALL, 'wecf_mode', g_l('modules_customerFilter', '[mode_all]'), true, "defaultfont", "wecf_hot();updateView();");
+		$_modeRadioSpecific = we_html_forms::radiobutton(we_customer_abstractFilter::SPECIFIC, $mode === we_customer_abstractFilter::SPECIFIC, 'wecf_mode', g_l('modules_customerFilter', '[mode_specific]'), true, "defaultfont", "wecf_hot();updateView();");
+		$_modeRadioFilter = we_html_forms::radiobutton(we_customer_abstractFilter::FILTER, $mode === we_customer_abstractFilter::FILTER, 'wecf_mode', g_l('modules_customerFilter', '[mode_filter]'), true, "defaultfont", "wecf_hot();updateView();");
 
 		// ################# Selector for specific customers ###############
-
-		$_customers = id_to_path($this->_filter->getSpecificCustomers(), CUSTOMER_TABLE, null, false, true);
-		$_specificCustomersSelect = $this->getMultiEdit('specificCustomersEdit', $_customers, "", $this->_filter->getMode() === we_customer_abstractFilter::SPECIFIC);
-
+		list($_specificCustomersSelect, $script) = $this->getMultiEdit('specificCustomersEdit', id_to_path($this->_filter->getSpecificCustomers(), CUSTOMER_TABLE, null, false, true), "", $mode === we_customer_abstractFilter::SPECIFIC);
+		$_script.=$script;
 		// ################# Selector blacklist ###############
 
-		$_blackList = id_to_path($this->_filter->getBlackList(), CUSTOMER_TABLE, null, false, true);
-		$_blackListSelect = $this->getMultiEdit('blackListEdit', $_blackList, g_l('modules_customerFilter', '[black_list]'), $this->_filter->getMode() === we_customer_abstractFilter::FILTER);
-
+		list($_blackListSelect, $script) = $this->getMultiEdit('blackListEdit', id_to_path($this->_filter->getBlackList(), CUSTOMER_TABLE, null, false, true), g_l('modules_customerFilter', '[black_list]'), $mode === we_customer_abstractFilter::FILTER);
+		$_script.=$script;
 		// ################# Selector for whitelist ###############
 
-		$_whiteList = id_to_path($this->_filter->getWhiteList(), CUSTOMER_TABLE, null, false, true);
-		$_whiteListSelect = $this->getMultiEdit('whiteListEdit', $_whiteList, g_l('modules_customerFilter', '[white_list]'), $this->_filter->getMode() === we_customer_abstractFilter::FILTER);
-
+		list($_whiteListSelect, $script) = $this->getMultiEdit('whiteListEdit', id_to_path($this->_filter->getWhiteList(), CUSTOMER_TABLE, null, false, true), g_l('modules_customerFilter', '[white_list]'), $mode === we_customer_abstractFilter::FILTER);
+		$_script.=$script;
 		// ################# customer filter ###############
 
-		$_filterCustomers = we_customer_filterView::getDiv($this->getHTMLCustomerFilter(), 'filterCustomerDiv', $this->_filter->getMode() === we_customer_abstractFilter::FILTER, 25);
+		$_filterCustomers = we_customer_filterView::getDiv($this->getHTMLCustomerFilter(), 'filterCustomerDiv', $mode === we_customer_abstractFilter::FILTER, 25);
 
 
 		// ################# concate and output #################
 
 		$_space = '<div style="height:4px;"></div>';
 
-		return we_html_element::jsElement($_script) . $_modeRadioOff . $_space . $_modeRadioAll . $_space . $_modeRadioSpecific . $_space . $_specificCustomersSelect . $_space . $_modeRadioFilter . $_filterCustomers . $_blackListSelect . $_whiteListSelect . $_space . $_modeRadioNone;
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_filterLogic.js') . $_modeRadioOff . $_space . $_modeRadioAll . $_space . $_modeRadioSpecific . $_space . $_specificCustomersSelect . $_space . $_modeRadioFilter . $_filterCustomers . $_blackListSelect . $_whiteListSelect . $_space . $_modeRadioNone . we_html_element::jsElement($_script);
 	}
 
 	public function getFilterCustomers(){
 		$this->_filter->setMode(we_customer_abstractFilter::FILTER);
-		$_script = <<<EO_SCRIPT
+
+		return we_html_element::jsElement('
 function $(id) {
 	return document.getElementById(id);
 }
 
-function updateView() {
-
-EO_SCRIPT;
-
-		$_script .= $this->createUpdateViewScript() . <<<EO_SCRIPT
-
+function updateView() {' .
+				$this->createUpdateViewScript() . '
 }
 
-function wecf_hot() {
-	$this->_hotScript;
-}
-EO_SCRIPT;
-
-		return we_html_element::jsElement($_script) .
+function wecf_hot() {' .
+				$this->_hotScript . '
+}') .
 			we_customer_filterView::getDiv($this->getHTMLCustomerFilter(true), 'filterCustomerDiv', true, 25);
 	}
 
@@ -255,7 +179,7 @@ EOS;
 	 * @param boolean $isVisible
 	 * @return string
 	 */
-	function getMultiEdit($name, $data, $headline = "", $isVisible = true){
+	private function getMultiEdit($name, $data, $headline = "", $isVisible = true){
 		$_delBut = addslashes(we_html_button::create_button(we_html_button::TRASH, "javascript:#####placeHolder#####;wecf_hot();"));
 		$_script = <<<EO_SCRIPT
 
@@ -283,8 +207,8 @@ EO_SCRIPT;
 			we_html_tools::hidden($name . 'Count', (isset($data) ? count($data) : '0')) .
 			($headline ? '<div class="defaultfont">' . $headline . '</div>' : '') .
 			'<div id="' . $name . 'MultiEdit" style="overflow:auto;background-color:white;padding:5px;width:' . $this->_width . 'px; height: 120px; border: #AAAAAA solid 1px;margin-bottom:5px;"></div>' .
-			'<div style="width:' . ($this->_width + 13) . 'px;text-align:right">' . $_buttonTable . '</div>' . we_html_element::jsElement($_script);
-		return self::getDiv($_select, $name . 'Div', $isVisible, 22);
+			'<div style="width:' . ($this->_width + 13) . 'px;text-align:right">' . $_buttonTable . '</div>';
+		return array(self::getDiv($_select, $name . 'Div', $isVisible, 22), $_script);
 	}
 
 	function getHTMLCustomerFilter($startEmpty = false){
@@ -311,8 +235,8 @@ EO_SCRIPT;
 		);
 
 		$_filter_logic = array(
-			'AND' => g_l('modules_customerFilter', '[AND]')
-			, 'OR' => g_l('modules_customerFilter', '[OR]')
+			'AND' => g_l('modules_customerFilter', '[AND]'),
+			'OR' => g_l('modules_customerFilter', '[OR]')
 		);
 
 		$_filter = $this->_filter->getFilter();

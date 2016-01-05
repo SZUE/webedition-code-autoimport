@@ -237,13 +237,13 @@ class we_dialog_image extends we_dialog_base{
 		//$this->weFileupload->setIsInternalBtnUpload(true);
 		$this->weFileupload->setDimensions(array('dragWidth' => 374, 'inputWidth' => 378));
 		$this->weFileupload->setFormElements(array(
-			'parentId' => array('set' => true, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => true),
-			'sameName' => array('set' => true, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => false),
-			'importMeta' => array('set' => true, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => true),
-			'categories' => array('set' => true, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => false),
-			'isSearchable' => array('set' => true, 'multiIconBox' => true, 'space' => 130, 'rightHeadline' => false, 'noline' => false),
-			'attributes' => array('set' => true, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => false),
-			'thumbnails' => array('set' => true, 'multiIconBox' => true, 'space' => 0, 'rightHeadline' => true, 'noline' => false),
+			'parentId' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
+			'sameName' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true,),
+			'importMeta' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
+			'categories' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true,),
+			'isSearchable' => array('set' => true, 'multiIconBox' => true, 'space' => 130, 'rightHeadline' => false,),
+			'attributes' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true,),
+			'thumbnails' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true,),
 			'imageResize' => array('set' => true, 'multiIconBox' => true, 'space' => 130, 'rightHeadline' => false, 'noline' => true),
 			'imageRotate' => array('set' => true, 'multiIconBox' => true, 'space' => 130, 'rightHeadline' => false, 'noline' => true),
 			'imageQuality' => array('set' => true, 'multiIconBox' => true, 'space' => 130, 'rightHeadline' => false, 'noline' => true),
@@ -409,7 +409,7 @@ class we_dialog_image extends we_dialog_base{
 		//$parts = array_merge($parts, array(array('html' => '<div id="imageUpload">' . $this->weFileupload->getHTML() . '</div>')));
 
 		return array_merge($parts, [array('headline' => g_l('wysiwyg', '[image][formatting]'),
-				'html' => '<table class="default" width="560">
+			'html' => '<table class="default" width="560">
 					<tr>
 						<td>' . we_html_tools::htmlFormElementTable($thumbnails, g_l('wysiwyg', '[thumbnail]'), 'left', 'defaultfont', '', '', '', '', '', '', 0) . '</td>
 						<td>' . $classSelect . '</td>
@@ -514,14 +514,13 @@ class we_dialog_image extends we_dialog_base{
 		$yuiSuggest = & weSuggest::getInstance();
 		$css = !empty($this->args["cssClasses"]) ? explode(',', $this->args["cssClasses"]) : array();
 		return parent::getJs() . we_html_element::jsElement('
-			var classNames=' . ($css ? '["' . implode('","', $css) . '"]' : 'top.opener.weclassNames_tinyMce') . ' ;
-			var g_l={
-				"wysiwyg_none":"' . g_l('wysiwyg', '[none]') . '"
-			};
-			var ratioh = ' . (intval($this->args["width"] * $this->args["height"]) ? ($this->args["width"] / $this->args["height"]) : 0) . ';
-			var ratiow = ' . (intval($this->args["width"] * $this->args["height"]) ? ($this->args["height"] / $this->args["width"]) : 0) . ';
-
-		') .
+var classNames=' . ($css ? '["' . implode('","', $css) . '"]' : 'top.opener.weclassNames_tinyMce') . ' ;
+var g_l={
+	wysiwyg_none:"' . g_l('wysiwyg', '[none]') . '"
+};
+var ratioh = ' . (intval($this->args["width"] * $this->args["height"]) ? ($this->args["width"] / $this->args["height"]) : 0) . ';
+var ratiow = ' . (intval($this->args["width"] * $this->args["height"]) ? ($this->args["height"] / $this->args["width"]) : 0) . ';
+') .
 			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_image.js') .
 			weSuggest::getYuiFiles();
 	}

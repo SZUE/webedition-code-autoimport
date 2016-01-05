@@ -23,10 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_workflow_frames extends we_modules_frame{
-	public $module = "workflow";
 
-	function __construct($frameset){
+	public function __construct($frameset){
 		parent::__construct($frameset);
+		$this->module = "workflow";
 		$this->Tree = new we_workflow_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
 		$this->View = new we_workflow_view($frameset);
 	}
@@ -69,11 +69,10 @@ class we_workflow_frames extends we_modules_frame{
 			$we_tabs->addTab(new we_tab(g_l('tabs', '[editor][information]'), we_tab::ACTIVE, "//", array("id" => "tab_0")));
 		}
 
-		$tab_header = we_tabs::getHeader();
 		$textPre = g_l('modules_workflow', ($mode == 1 ? '[document]' : '[workflow]'));
 		$textPost = '/' . $text;
 
-		$extraHead = we_html_element::jsElement('
+		$extraHead = we_tabs::getHeader('
 function setTab(tab){
 	switch(tab){
 		case 0:

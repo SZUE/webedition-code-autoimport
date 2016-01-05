@@ -636,19 +636,19 @@ top.makeNewDocument = true;' .
 	}
 
 	protected function getFramesetJavaScriptDef(){
-		$ctypes = array();
+		/*$ctypes = array();
 		$ct = we_base_ContentTypes::inst();
 		foreach($ct->getContentTypes() as $ctype){
 			if(g_l('contentTypes', '[' . $ctype . ']') !== false){
 				$ctypes[] = '"' . $ctype . '" : "' . g_l('contentTypes', '[' . $ctype . ']') . '"';
 			}
-		}
+		}*/
 
 		return parent::getFramesetJavaScriptDef() . we_html_element::jsElement('
 options.canSelectDir=' . intval($this->canSelectDir) . ';
 options.useID=' . $this->useID . ';
-var contentTypes = {' . implode(',', $ctypes) . '};
 ');
+		//var contentTypes = {' . implode(',', $ctypes) . '};
 	}
 
 }

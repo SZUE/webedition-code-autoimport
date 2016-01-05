@@ -30,9 +30,9 @@ abstract class we_modules_frame{
 	var $frameset;
 	var $View;
 	var $Tree = null;
-	var $topFrame;
-	var $treeFrame;
-	var $cmdFrame;
+	var $topFrame = "top.content";
+	var $treeFrame = "top.content";
+	var $cmdFrame = "top.content.cmd";
 	protected $treeHeaderHeight = 1;
 	protected $treeFooterHeight = 0;
 	protected $treeDefaultWidth = 200;
@@ -43,10 +43,6 @@ abstract class we_modules_frame{
 	function __construct($frameset){
 		$this->db = new DB_WE();
 		$this->frameset = $frameset;
-		$this->Tree = new weTree();
-		$this->topFrame = "top.content";
-		$this->treeFrame = "top.content";
-		$this->cmdFrame = "top.content.cmd";
 	}
 
 	public function getHTMLDocumentHeader($charset = ''){
@@ -155,9 +151,10 @@ abstract class we_modules_frame{
 					'id' => 'treeheader', 'style' => 'overflow:hidden; position: absolute; top: 0px; left: 0px; height: ' . ($this->treeHeaderHeight > 1 ? $this->treeHeaderHeight - 6/* padding+border */ : 1) . 'px; width: 100%; ' . ($this->treeHeaderHeight != 1 ? 'padding: 5px 0px 0px 0px; ' : 'background: #ffffff')
 					), $this->getHTMLTreeheader()) .
 				$this->getHTMLTree() .
-				($this->treeFooterHeight == 0 ? '' : we_html_element::htmlDiv(array(
+				($this->treeFooterHeight ? we_html_element::htmlDiv(array(
 						'id' => 'treefooter', 'class' => 'editfooter', 'style' => 'position: absolute; bottom: 0px; left: 0px; padding-left: 2px; height: ' . $this->treeFooterHeight . 'px; width: 100%; overflow:hidden;'
-						), $this->getHTMLTreefooter())
+						), $this->getHTMLTreefooter()) :
+					''
 				)
 		);
 	}

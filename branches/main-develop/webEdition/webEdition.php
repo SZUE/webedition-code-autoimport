@@ -220,6 +220,7 @@ var WebEdition={
 					confirm_applyFilterFolder: "<?php echo g_l('alert', '[confirm][applyWeDocumentCustomerFiltersFolder]'); ?>",
 					confirm_applyFilterDocument: "<?php echo g_l('alert', '[confirm][applyWeDocumentCustomerFiltersDocument]'); ?>",
 					untitled:"<?php echo g_l('global', '[untitled]'); ?>",
+					in_wf_warning:"<?php echo (defined('WORKFLOW_TABLE') ? g_l('alert', '[' . stripTblPrefix($we_doc->Table) . '][in_wf_warning]') : ''); ?>",
 				},
 				message_reporting:{
 					notice:"<?php echo g_l('alert', '[notice]');?>",

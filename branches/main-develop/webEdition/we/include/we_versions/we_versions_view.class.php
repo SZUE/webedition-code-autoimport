@@ -58,7 +58,7 @@ class we_versions_view{
 		}
 
 		return we_html_element::jsElement('
-var g_l={
+WE().consts.g_l.versions={
 	resetVersions:"' . g_l('versions', '[resetVersions]') . '",
 	mark:"' . g_l('versions', '[mark]') . '",
 	notMark:"' . g_l('versions', '[notMark]') . '",

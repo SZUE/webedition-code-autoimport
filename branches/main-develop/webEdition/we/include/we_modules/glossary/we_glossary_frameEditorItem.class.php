@@ -250,7 +250,7 @@ function we_save() {
 			array(
 				"headline" => g_l('modules_glossary', '[path]'),
 				"html" => $content,
-				"space" => 120
+				'space' => 120
 			),
 			array(
 				"headline" => g_l('modules_glossary', '[selection]'),
@@ -259,7 +259,7 @@ function we_save() {
 				self::getHTMLForeignWord($glossary) .
 				self::getHTMLLink($glossary) .
 				self::getHTMLTextReplacement($glossary),
-				"space" => 120,
+				'space' => 120,
 				'noline' => 1,
 			)
 		);

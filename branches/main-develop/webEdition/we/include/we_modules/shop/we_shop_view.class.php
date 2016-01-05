@@ -25,7 +25,6 @@
 /* the parent class of storagable webEdition classes */
 
 class we_shop_view extends we_modules_view{
-	var $db;
 	var $frameset;
 	var $topFrame;
 	var $raw;
@@ -71,7 +70,7 @@ var isDocument=' . intval($resultD) . ';
 var isObject=' . intval((!empty($resultO))) . ';
 var classID=' . $classid . ';
 ') .
-			we_html_element::jsScript(JS_DIR . 'we_modules/shop/we_shop_view.js', 'parent.document.title = "' . $title . '";');
+			we_html_element::jsScript(JS_DIR . 'we_modules/shop/we_shop_view.js', 'parent.document.title=\'' . $title . '\';');
 	}
 
 	function getJSProperty(){
@@ -678,18 +677,15 @@ var cid =' . we_base_request::_(we_base_request::INT, 'cid', 0) . ';
 				<?php
 				$parts = array(array(
 						'html' => $orderDataTable,
-						'space' => 0
 					),
 					array(
 						'html' => $orderTable,
-						'space' => 0
 					)
 				);
 				if($customCartFieldsTable){
 
 					$parts[] = array(
 						'html' => $customCartFieldsTable,
-						'space' => 0
 					);
 				}
 
@@ -734,10 +730,6 @@ function CalendarChanged(calObject) {
 		</body>
 		</html>
 		<?php
-	}
-
-	function getJSSubmitFunction(){
-		return '';
 	}
 
 	function processCommands(){
@@ -1091,14 +1083,13 @@ function CalendarChanged(calObject) {
 
 					// update all orders with this orderId
 					if($this->updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', we_serialize($serialOrder))){
-						//TODO: check JS-adress!!
-						$jsCmd = 'top.opener.top.content.tree.doClick(' . $_REQUEST['bid'] . ',"shop","' . SHOP_TABLE . '");' .
+						$jsCmd = 'top.opener.top.content.doClick(' . $_REQUEST['bid'] . ',"shop","' . SHOP_TABLE . '");top.opener.' .
 							we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_success]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_NOTICE);
 					} else {
 						$jsCmd = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_error]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_ERROR);
 					}
 				} else {
-					$jsCmd = we_message_reporting::getShowMessageCall(g_l('modules_shop', '[field_empty_js_alert]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$jsCmd = 'top.opener.' . we_message_reporting::getShowMessageCall(g_l('modules_shop', '[field_empty_js_alert]'), we_message_reporting::WE_MESSAGE_ERROR);
 				}
 
 				echo we_html_element::jsElement($jsCmd . 'window.close();') .
@@ -1193,7 +1184,6 @@ function CalendarChanged(calObject) {
 				$parts = array(
 					array(
 						'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[preferences][explanation_customer_odercustomer]'), we_html_tools::TYPE_INFO, 470),
-						'space' => 0
 					),
 					array(
 						'headline' => g_l('modules_customer', '[Forname]') . ': ',
@@ -1216,7 +1206,7 @@ function CalendarChanged(calObject) {
 							$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 							$langcode = array_search($lang[0], getWELangs());
 							$countrycode = array_search($langcode, getWECountries());
-							$countryselect = new we_html_select(array('name' => "weCustomerOrder[$k]", 'size' => 1, 'style' => '{width:280;}', 'class' => 'wetextinput'));
+							$countryselect = new we_html_select(array('name' => 'weCustomerOrder[' . $k . ']', 'size' => 1, 'style' => 'width:280px;', 'class' => 'wetextinput'));
 
 							$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
 							foreach($topCountries as $countrykey => &$countryvalue){
@@ -1260,7 +1250,7 @@ function CalendarChanged(calObject) {
 								list($lcvalue) = explode('_', $lcvalue);
 							}
 							unset($countryvalue);
-							$languageselect = new we_html_select(array('name' => "weCustomerOrder[$k]", 'size' => 1, 'style' => '{width:280;}', 'class' => 'wetextinput'));
+							$languageselect = new we_html_select(array('name' => 'weCustomerOrder[' . $k . ']', 'size' => 1, 'style' => 'width:280px;', 'class' => 'wetextinput'));
 							foreach(g_l('languages', '') as $languagekey => $languagevalue){
 								if(in_array($languagekey, $frontendL)){
 									$languageselect->addOption($languagekey, $languagevalue);
