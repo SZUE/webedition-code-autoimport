@@ -122,7 +122,9 @@ WE().layout.messageConsoleView.prototype = {
 					this.switchImage(_lastMessage.prio, true);
 					this.calls.push(null);
 
-					this.win.setTimeout(this.hideMessage, 5000);
+					this.win.setTimeout(function (context) {
+						context.hideMessage.call(context);
+					}, 5000, this);
 				}
 			}
 		} catch (e) {

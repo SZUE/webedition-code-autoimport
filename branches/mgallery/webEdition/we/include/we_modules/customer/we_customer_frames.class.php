@@ -143,16 +143,19 @@ class we_customer_frames extends we_modules_frame{
 		  )
 		  );
 		 */
-		$extraJS .= 'if(top.content.activ_tab){
-	document.getElementById(aTabs[top.content.activ_tab]).className="tabActive";
-}else{
-	document.getElementById("common").className="tabActive";
+		$extraJS .= 'function loaded(){
+	weTabs.setFrameSize()
+	if(top.content.activ_tab){
+		document.getElementById(aTabs[top.content.activ_tab]).className="tabActive";
+	}else{
+		document.getElementById("common").className="tabActive";
+	}
 }';
 
 		$text = $this->View->customer->Username;
 
 		//TODO: we have the following body in several modules!
-		$body = we_html_element::htmlBody(array('onresize' => 'weTabs.setFrameSize()', 'onload' => 'weTabs.setFrameSize()', 'id' => 'eHeaderBody',), we_html_element::htmlDiv(array('id' => 'main'), we_html_element::htmlDiv(array('id' => 'headrow'), we_html_element::htmlNobr(
+		$body = we_html_element::htmlBody(array('onresize' => 'weTabs.setFrameSize()', 'onload' => 'loaded();', 'id' => 'eHeaderBody',), we_html_element::htmlDiv(array('id' => 'main'), we_html_element::htmlDiv(array('id' => 'headrow'), we_html_element::htmlNobr(
 							we_html_element::htmlB(str_replace(' ', '&nbsp;', g_l('modules_customer', '[customer]')) . ':&nbsp;') .
 							we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'), '<b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b>'
 							)
