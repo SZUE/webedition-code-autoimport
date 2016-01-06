@@ -65,7 +65,7 @@ $urlLookingFor = (URLENCODE_OBJECTSEOURLS ?
 	);
 
 while($urlLookingFor){// first we try to get the object
-	if(($object = getHash('SELECT ID,TriggerID,Url FROM ' . OBJECT_FILES_TABLE . ' WHERE Published>0 AND Url LIKE "' . $GLOBALS['DB_WE']->escape($urlLookingFor) . '" LIMIT 1'))){
+	if(($object = getHash('SELECT ID,ParentID,TriggerID,Url,Workspaces,ExtraWorkspacesSelected FROM ' . OBJECT_FILES_TABLE . ' WHERE Published>0 AND Url LIKE "' . $GLOBALS['DB_WE']->escape($urlLookingFor) . '" LIMIT 1'))){
 		/**
 		 * we check if the given URL and DB Url are identical
 		 * if not we redirect to the DB url to avoid dublicate content
@@ -84,11 +84,12 @@ while($urlLookingFor){// first we try to get the object
  * now we try to get the trigger document
  */
 if($object && $object['ID']){
-	$triggerDocPath = false;
-	if($object['TriggerID'] && ($isDynamic = f('SELECT IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($object['TriggerID'])))){
-		$triggerDocPath = id_to_path($object['TriggerID'], FILE_TABLE);
-	} elseif(NAVIGATION_DIRECTORYINDEX_NAMES){//fallback: now we try to get trigger doc by the given SEO-URL and NAVIGATION_DIRECTORYINDEX_NAMES from preferences
-		$docPathOfUrl = str_replace($urlLookingFor, '', WE_REDIRECTED_SEO); //cut the known seo-url from object of the whole URL
+	$docPathOfUrl = str_replace($urlLookingFor, '', WE_REDIRECTED_SEO); //cut the known seo-url from object of the whole URL
+	$triggerDocPath = ($object['TriggerID'] && ($isDynamic = f('SELECT IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($object['TriggerID'])))) ? 
+		id_to_path($object['TriggerID'], FILE_TABLE) : //yes, we have a dynamic trigger document
+		we_objectFile::getNextDynDoc(($path = rtrim($docPathOfUrl, "/") . '.php'), $object['ParentID'], $object['Workspaces'], $object['ExtraWorkspacesSelected'], $GLOBALS['DB_WE']); //no trigger id given, search for another dynamic trigger document
+	
+	if(!$triggerDocPath && NAVIGATION_DIRECTORYINDEX_NAMES){//fallback: now we try to get trigger doc by the given SEO-URL and NAVIGATION_DIRECTORYINDEX_NAMES from preferences
 		$dirIndexArray = array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES));
 		foreach($dirIndexArray as $dirIndex){
 			if(($triggerID = intval(f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Published>0 AND IsDynamic=1 AND Path="' . $GLOBALS['DB_WE']->escape($docPathOfUrl . $dirIndex) . '" LIMIT 1')))){
@@ -98,7 +99,7 @@ if($object && $object['ID']){
 		}
 	}
 
-	if($triggerDocPath){// now we hav an object and an trigger document
+	if($triggerDocPath){// now we have an object and a trigger document
 		//remove all cookies from Request String if set (if not, cookies are exposed on listviews etc & max interfer with given Cookies)
 		$_REQUEST = array_merge($_GET, $_POST);
 

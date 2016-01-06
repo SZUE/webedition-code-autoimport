@@ -3082,7 +3082,7 @@ class we_objectFile extends we_document{
 		return '';
 	}
 
-	private static function getNextDynDoc($path, $pid, $ws1, $ws2, we_database_base $DB_WE){
+	public function getNextDynDoc($path, $pid, $ws1, $ws2, we_database_base $DB_WE){
 		if($path && f('SELECT IsDynamic FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape($path) . '" LIMIT 1', '', $DB_WE)){
 			return $path;
 		}
