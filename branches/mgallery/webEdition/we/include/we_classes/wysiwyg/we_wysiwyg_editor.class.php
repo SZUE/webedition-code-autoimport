@@ -25,7 +25,6 @@
 //make sure we know which browser is used
 
 class we_wysiwyg_editor{
-
 	var $name = '';
 	private $origName = '';
 	private $fieldName = '';
@@ -242,7 +241,7 @@ class we_wysiwyg_editor{
 		$ret = array_merge(array(
 			'',
 			g_l('wysiwyg', '[groups]') => we_html_tools::OPTGROUP
-				), $tmp);
+			), $tmp);
 		foreach($commands as $key => $values){
 			$ret = array_merge($ret, array($key => we_html_tools::OPTGROUP), $values);
 		}
@@ -520,8 +519,9 @@ class we_wysiwyg_editor{
 	}
 
 	function getHTML(){
-		return we_html_element::jsElement('
-function getDocumentCss(){
+		static $printed = false;
+		$js = $printed ? '' :
+			'function getDocumentCss(){
 	var doc=document;
 	var styles=[];
 	for(var i=0;i<doc.styleSheets.length;i++){
@@ -530,9 +530,10 @@ function getDocumentCss(){
 		}
 	}
 	return styles;
-}
-') .
-			($this->inlineedit ? $this->getInlineHTML() : $this->getEditButtonHTML());
+}';
+		$printed = true;
+		return
+			($this->inlineedit ? $this->getInlineHTML($js) : we_html_element::jsElement($js) . $this->getEditButtonHTML());
 	}
 
 	private function getEditButtonHTML(){
@@ -568,7 +569,7 @@ function getDocumentCss(){
 			foreach($regs as $reg){
 				$path = empty($lookup[intval($reg[3])]) ? '' : $lookup[intval($reg[3])];
 				$value = $path ? str_ireplace($reg[1], 'src="' . $path . '?id=' . $reg[3] . '&time=' . $t . '"', $value) :
-						str_ireplace($reg[0], '<img src="' . ICON_DIR . 'no_image.gif?id=0">', $value);
+					str_ireplace($reg[0], '<img src="' . ICON_DIR . 'no_image.gif?id=0">', $value);
 			}
 		}
 
@@ -578,7 +579,7 @@ function getDocumentCss(){
 				$thumbObj = new we_thumbnail();
 				$imageExists = $thumbObj->initByImageIDAndThumbID($imgID, $thumbID);
 				$value = $imageExists ? str_ireplace($reg[1], 'src="' . $thumbObj->getOutputPath() . "?thumb=" . $reg[3] . '&time=' . $t . '"', $value) :
-						str_ireplace($reg[0], '<img src="' . ICON_DIR . 'no_image.gif?id=0">', $value);
+					str_ireplace($reg[0], '<img src="' . ICON_DIR . 'no_image.gif?id=0">', $value);
 				unset($thumbObj);
 			}
 		}
@@ -767,7 +768,7 @@ function getDocumentCss(){
 		return 'template_templates : [' . implode(',', $templates) . '],';
 	}
 
-	private function getInlineHTML(){
+	private function getInlineHTML($js = ''){
 		$rows = $this->getToolbarRows();
 		$editValue = self::parseInternalImageSrc($this->value);
 
@@ -822,7 +823,8 @@ function getDocumentCss(){
 		$width = (is_numeric($width) ? round(max($width, self::MIN_WIDTH_INLINE) / 96, 3) . 'in' : $width);
 		$height = (is_numeric($height) ? round(max($height, self::MIN_HEIGHT_INLINE) / 96, 3) . 'in' : $height);
 
-		return we_html_element::jsElement(($this->fieldName ? '
+		return we_html_element::jsElement($js .
+				($this->fieldName ? '
 /* -- tinyMCE -- */
 
 /*
@@ -1372,12 +1374,12 @@ tinyMCE.weResizeEditor = function(render){
 
 tinyMCE.init(tinyMceConfObject__' . $this->fieldName_clean . ');
 ') . getHtmlTag('textarea', array(
-					'wrap' => "off",
-					'style' => 'color:#eeeeee; background-color:#eeeeee;  width:' . $width . '; height:' . $height . ';',
-					'id' => $this->name,
-					'name' => $this->name,
-					'class' => 'wetextarea'
-						), strtr($editValue, array('\n' => '', '&' => '&amp;')), true);
+				'wrap' => "off",
+				'style' => 'color:#eeeeee; background-color:#eeeeee;  width:' . $width . '; height:' . $height . ';',
+				'id' => $this->name,
+				'name' => $this->name,
+				'class' => 'wetextarea'
+				), strtr($editValue, array('\n' => '', '&' => '&amp;')), true);
 	}
 
 }
