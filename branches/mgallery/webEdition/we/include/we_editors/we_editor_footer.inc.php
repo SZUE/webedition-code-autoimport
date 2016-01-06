@@ -190,7 +190,7 @@ if(inWorkflow($we_doc)){
 
 						$_noPermTable = new we_html_table(array("class" => 'default footertable'), 1, 2);
 
-						$_noPermTable->setColContent(0, 0, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif", 'style' => 'margin-right:10px;')));
+						$_noPermTable->setColContent(0, 0, '<span class="fa-stack fa-lg" style="color:yellow;margin-right:10px;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>');
 						$_noPermTable->setColContent(0, 1, g_l('SEEM', '[no_permission_to_edit_document]'));
 
 

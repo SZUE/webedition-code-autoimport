@@ -803,7 +803,7 @@ function startStep(){
 		$yesCmd = "self.close();";
 		$noCmd = "top.opener.top.body.clearExtern();" . $yesCmd;
 
-		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', STYLESHEET, we_html_element::htmlBody(array("class" => "weEditorBody", "onblur" => "self.focus()", "onload" => "self.focus();"), we_html_element::htmlForm(array("name" => "we_form"), we_html_tools::htmlYesNoCancelDialog($txt, IMAGE_DIR . "alert.gif", "ja", "nein", "", $yesCmd, $noCmd))
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', STYLESHEET, we_html_element::htmlBody(array("class" => "weEditorBody", "onblur" => "self.focus()", "onload" => "self.focus();"), we_html_element::htmlForm(array("name" => "we_form"), we_html_tools::htmlYesNoCancelDialog($txt, '<span class="fa-stack fa-lg" style="color:yellow;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', "ja", "nein", "", $yesCmd, $noCmd))
 				)
 		);
 	}

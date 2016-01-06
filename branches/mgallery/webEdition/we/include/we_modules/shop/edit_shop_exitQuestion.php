@@ -30,5 +30,5 @@ $_cancel = 'self.close();';
 
 echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, '
 <body class="weEditorBody" onBlur="self.focus()" onload="self.focus()">' .
-	we_html_tools::htmlYesNoCancelDialog(g_l('modules_shop', '[exit_question]'), IMAGE_DIR . "alert.gif", "ja", "nein", "abbrechen", $_yes, $_no, $_cancel) . //GL
+	we_html_tools::htmlYesNoCancelDialog(g_l('modules_shop', '[exit_question]'), '<span class="fa-stack fa-lg" style="color:yellow;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', "ja", "nein", "abbrechen", $_yes, $_no, $_cancel) . //GL
 	'</body>');

@@ -716,9 +716,8 @@ this.selectedIndex = 0;' .
 
 		$content = new we_html_table(array('class' => 'default'), 1, ($img ? 2 : 1));
 
-		if($img && file_exists($_SERVER['DOCUMENT_ROOT'] . $img)){
-			$size = getimagesize($_SERVER['DOCUMENT_ROOT'] . $img);
-			$content->setCol(0, 0, array('style' => 'vertical-align:top;padding:10px;'), we_html_element::htmlImg(array('src' => $img, 'border' => 0, 'width' => $size[0], 'height' => $size[1])));
+		if($img){
+			$content->setCol(0, 0, array('style' => 'vertical-align:top;padding:10px;'), $img);
 		}
 
 		$content->setCol(0, ($img ? 1 : 0), array('class' => 'defaultfont', 'style' => 'padding:10px;'), $text);
