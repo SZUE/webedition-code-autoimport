@@ -122,7 +122,7 @@ abstract class we_editor_footer{
 
 			if(!$_ctrlElem || !$_ctrlElem['hide']){
 				$_normalTable->addCol(2);
-				$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("fat:in_workflow,fa-lg fa-gears", "javascript:put_in_workflow();"));
+				$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("fat:in_workflow,fa-lg fa-gears", "javascript:put_in_workflow('".stripTblPrefix($we_doc->Table) ."');"));
 			}
 		}
 
@@ -303,7 +303,7 @@ abstract class we_editor_footer{
 
 			if(!$_ctrlElem || !$_ctrlElem['hide']){
 				$_seeModeTable->addCol(2);
-				$_seeModeTable->setCol(0, $_pos++, array('style' => 'vertical-align:top;'), we_html_button::create_button("fat:in_workflow,fa-lg fa-gears", "javascript:put_in_workflow();"));
+				$_seeModeTable->setCol(0, $_pos++, array('style' => 'vertical-align:top;'), we_html_button::create_button("fat:in_workflow,fa-lg fa-gears", "javascript:put_in_workflow('".stripTblPrefix($we_doc->Table) ."');"));
 			}
 		}
 
