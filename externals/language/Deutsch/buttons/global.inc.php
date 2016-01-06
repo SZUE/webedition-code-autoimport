@@ -312,6 +312,9 @@ $l_buttons_global=array(
 		'value'=>'Dokument-Typ löschen',
 		'width'=>174,
 	),
+	'delold'=>array(
+		'value'=>'Dateien vom Server löschen',
+	),
 	'demoversion'=>array(
 		'alt'=>'Demoversion',
 		'value'=>'Demoversion',

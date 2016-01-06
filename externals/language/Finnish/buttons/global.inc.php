@@ -312,6 +312,9 @@ $l_buttons_global=array(
 		'value'=>'Poista dokumenttityyppi',
 		'width'=>174,
 	),
+	'delold'=>array(
+		'value'=>'Delete files on server',
+	),
 	'demoversion'=>array(
 		'alt'=>'Demoversio',
 		'value'=>'Demoversio',
