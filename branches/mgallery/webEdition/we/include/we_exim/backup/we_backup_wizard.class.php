@@ -602,7 +602,7 @@ self.focus();');
 
 		$parts = array(
 			array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', ($compression ? '[filename_compression]' : '[filename_info]')), we_html_tools::TYPE_INFO, 600, false), 'noline' => 1),
-			array("headline" => g_l('backup', '[filename]') . ":&nbsp;&nbsp;", "html" => we_html_tools::htmlTextInput("filename", 60, 'weBackup_' . str_replace('.', '-', $_SERVER['SERVER_NAME']) . '_' . date("Y_m_d__H_i", time()) . '_' . str_replace('.', '-', WE_VERSION) . ".xml", "", "", "text"), 'space' => 100, 'noline' => 1)
+			array("headline" => g_l('backup', '[filename]') . ":&nbsp;&nbsp;", "html" => we_html_tools::htmlTextInput("filename", 0, 'weBackup_' . str_replace('.', '-', $_SERVER['SERVER_NAME']) . '_' . date("Y_m_d__H_i", time()) . '_' . str_replace('.', '-', WE_VERSION) . ".xml", "", "", "text",'30em'), 'space' => 100, 'noline' => 1)
 		);
 
 		if($compression){
