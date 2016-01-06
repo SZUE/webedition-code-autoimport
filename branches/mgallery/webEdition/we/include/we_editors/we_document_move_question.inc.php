@@ -32,7 +32,7 @@ echo we_html_tools::getHtmlTop(g_l('global', '[question]')) .
 	$noCmd = "self.close();";
 	$cancelCmd = "self.close();";
 
-	echo we_html_tools::htmlYesNoCancelDialog(g_l('alert', '[document_move_warning]'), '<span class="fa-stack fa-lg" style="color:yellow;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', true, true, true, $yesCmd, $noCmd, $cancelCmd);
+	echo we_html_tools::htmlYesNoCancelDialog(g_l('alert', '[document_move_warning]'), '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', true, true, true, $yesCmd, $noCmd, $cancelCmd);
 	?>
 </body>
 </html>

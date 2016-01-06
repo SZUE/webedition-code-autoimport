@@ -140,7 +140,7 @@ function getConnectionTypes(){
 }
 
 function getWarning($message, $value){
-	return '<div style="min-height:2.5ex; min-width: 2ex;cursor:pointer; padding-right:2ex; padding-left:0px;position:relative;" title="' . $message . '">' . $value . '<span class="fa-stack fa-lg" style="font-size: 10px;color:yellow;position: absolute;right:.5ex;">
+	return '<div style="min-height:2.5ex; min-width: 2ex;cursor:pointer; padding-right:2ex; padding-left:0px;position:relative;" title="' . $message . '">' . $value . '<span class="fa-stack fa-lg" style="font-size: 10px;color:#F2F200;position: absolute;right:.5ex;">
   <i class="fa fa-exclamation-triangle fa-stack-2x" ></i>
   <i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i>
 </span></div>';
