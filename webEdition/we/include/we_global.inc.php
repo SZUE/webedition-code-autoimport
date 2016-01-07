@@ -1124,7 +1124,7 @@ function we_templateHead($fullHeader = false){
 }
 
 function we_templatePreContent($force = false){//force is used by templates with a full html/body.
-	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
+	if(!empty($GLOBALS['we_editmode'])){
 		if($force || (!isset($GLOBALS['WE_HTML_HEAD_BODY']) && !isset($GLOBALS['we_templatePreContent']))){
 			echo '<form name="we_form" action="" method="post" onsubmit="return false;">' .
 			we_class::hiddenTrans();
@@ -1134,7 +1134,7 @@ function we_templatePreContent($force = false){//force is used by templates with
 }
 
 function we_templatePostContent($force = false, $fullPoster = false){//force on </body tag
-	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'] && ($force || ( --$GLOBALS['we_templatePreContent']) == 0)){
+	if(!empty($GLOBALS['we_editmode']) && ($force || ( --$GLOBALS['we_templatePreContent']) == 0)){
 		if($force){//never do this again
 			$GLOBALS['we_templatePreContent'] = -10000;
 		}
@@ -1177,11 +1177,12 @@ function we_templatePost(){
 			(SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_POSTDOC) &&
 			(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0))//not inside an included Doc
 		){ //is set to Post or not set (new default)
+			session_write_close();
 			flush();
 			if(function_exists('fastcgi_finish_request')){
 				fastcgi_finish_request();
 			}
-			session_write_close();
+			ignore_user_abort(true);
 			we_schedpro::trigger_schedule();
 		}
 	}
@@ -1195,7 +1196,7 @@ function show_SeoLinks(){
 }
 
 function we_TemplateExit($param = 0){
-	if(isset($GLOBALS['FROM_WE_SHOW_DOC']) && $GLOBALS['FROM_WE_SHOW_DOC']){
+	if(!empty($GLOBALS['FROM_WE_SHOW_DOC'])){
 		exit($param);
 	}
 //we are inside we, we don't terminate here
