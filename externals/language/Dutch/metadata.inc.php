@@ -2,6 +2,7 @@
 /** Generated language file of webEdition CMS */
 $l_metadata=array(
 	'add'=>'voeg toe',
+	'customfield'=>'Custom field',
 	'dummy'=>'dummy',
 	'error_meta_field_empty_msg'=>'De veldnaam op regel %s1 mag niet leeg zijn!',
 	'fields'=>'Velden',
@@ -27,6 +28,7 @@ $l_metadata=array(
 	'save_wait'=>'Instellingen bewaren',
 	'saved'=>'De meta gegevens velden zijn succesvol bewaard.',
 	'saved_successfully'=>'Meta gegevens velden bewaard',
+	'standardfield'=>'Standard field',
 	'supported_types'=>'Meta gegevens formaten',
 	'tagname'=>'Veld naam',
 	'type'=>'Type',

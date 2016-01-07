@@ -2,6 +2,7 @@
 /** Generated language file of webEdition CMS */
 $l_metadata=array(
 	'add'=>'ajouter',
+	'customfield'=>'Custom field',
 	'dummy'=>'dummy',
 	'error_meta_field_empty_msg'=>'The fieldname at line %s1 can not be empty!',
 	'fields'=>'Champs',
@@ -27,6 +28,7 @@ $l_metadata=array(
 	'save_wait'=>'Saving settings',
 	'saved'=>'Meta data fields have been saved successfully.',
 	'saved_successfully'=>'Meta data fields saved',
+	'standardfield'=>'Standard field',
 	'supported_types'=>'Formats de meta data',
 	'tagname'=>'Nom du champ',
 	'type'=>'Type',

@@ -2,6 +2,7 @@
 /** Generated language file of webEdition CMS */
 $l_metadata=array(
 	'add'=>'hinzufügen',
+	'customfield'=>'Zusatzfeld',
 	'dummy'=>'Platzhalter',
 	'error_meta_field_empty_msg'=>'Der Feldname der %s1. Zeile darf nicht leer sein!',
 	'fields'=>'Felder',
@@ -27,6 +28,7 @@ $l_metadata=array(
 	'save_wait'=>'Speichere Einstellungen',
 	'saved'=>'Die Einstellungen wurden erfolgreich gespeichert.',
 	'saved_successfully'=>'Einstellungen gespeichert',
+	'standardfield'=>'Standardfeld',
 	'supported_types'=>'Metadatenformate',
 	'tagname'=>'Feldname',
 	'type'=>'Typ',

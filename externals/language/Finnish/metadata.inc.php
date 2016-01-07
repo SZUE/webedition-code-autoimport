@@ -2,6 +2,7 @@
 /** Generated language file of webEdition CMS */
 $l_metadata=array(
 	'add'=>'lisää',
+	'customfield'=>'Custom field',
 	'dummy'=>'esimerkki',
 	'error_meta_field_empty_msg'=>'Kentän nimi rivillä %s1 ei voi olla tyhjä!',
 	'fields'=>'Kentät',
@@ -27,6 +28,7 @@ $l_metadata=array(
 	'save_wait'=>'Tallennetaan asetuksia',
 	'saved'=>'Metatietokentät tallennettu.',
 	'saved_successfully'=>'Metatietokentät tallennettu',
+	'standardfield'=>'Standard field',
 	'supported_types'=>'Metatieto formaatit',
 	'tagname'=>'Kentän nimi',
 	'type'=>'Tyyppi',
