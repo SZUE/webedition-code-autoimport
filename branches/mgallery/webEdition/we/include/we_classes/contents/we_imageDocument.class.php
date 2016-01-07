@@ -915,15 +915,6 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		return false;
 	}
 
-	function formMetaInfos(){
-		return '<table class="default">
-	<tr><td style="padding-bottom:2px;">' . $this->formInputField('txt', 'Title', g_l('weClass', '[Title]'), 40, 508, '', "onchange=\"WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);\"") . '</td></tr>
-	<tr><td style="padding-bottom:2px;">' . $this->formInputField('txt', 'Description', g_l('weClass', '[Description]'), 40, 508, '', "onchange=\"WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);\"") . '</td></tr>
-	<tr><td style="padding-bottom:2px;">' . $this->formInputField('txt', 'Keywords', g_l('weClass', '[Keywords]'), 40, 508, '', "onchange=\"WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);\"") . '</td></tr>
-</table>' .
-				($this->ContentType == we_base_ContentTypes::IMAGE ? $this->formCharset(true) : '');
-	}
-
 	static function checkAndPrepare($formname, $key = 'we_document'){
 		// check to see if there is an image to create or to change
 		if(isset($_FILES['we_ui_' . $formname]) && is_array($_FILES['we_ui_' . $formname])){

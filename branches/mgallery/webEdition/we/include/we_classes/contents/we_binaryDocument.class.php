@@ -112,17 +112,6 @@ class we_binaryDocument extends we_document{
 		return false;
 	}
 
-	private function i_writeMetaValues(){
-		foreach($this->DB_WE->getAllq('SELECT tag,type,importFrom,mode FROM ' . METADATA_TABLE) as $meta){
-			if($meta['mode'] === 'auto' && $meta['type'] === 'textfield' && $this->getElement($meta['tag'])){
-				$this->DB_WE->query('INSERT INTO ' . METAVALUES_TABLE . ' SET ' . we_database_base::arraySetter(array(
-							'tag' => $meta['tag'],
-							'value' => $this->getElement($meta['tag'])
-				)));
-			}
-		}
-	}
-
 	public function we_publish(){
 		return $this->we_save();
 	}
@@ -251,13 +240,6 @@ class we_binaryDocument extends we_document{
 	 * returns HTML code for embedded metadata of current image with custom form fields
 	 */
 	function formMetaData(){
-		/*
-		 * the following steps are to be implemented in this method:
-		 * 1. fetch all metadata fields from db
-		 * 2. fetch metadata for this image from db (is already done via $this->elements)
-		 * 3. render form fields with metadata from db
-		 * 4. show button to copy metadata from image into the form fields
-		 */
 		// first we fetch all defined metadata fields from tblMetadata:
 		$_defined_fields = we_metadata_metaData::getDefinedMetaDataFields();
 		$_defined_values = we_metadata_metaData::getDefinedMetaValues(true, true);
@@ -277,6 +259,7 @@ class we_binaryDocument extends we_document{
 			if($_tagName != 'Title' && $_tagName != 'Description' && $_tagName != 'Keywords'){
 				$_type = $_defined_fields[$i]['type'];
 				$_mode = $_defined_fields[$i]['mode'];
+				$_csv = boolval($_defined_fields[$i]['csv']);
 
 				switch($_type){
 					case 'textarea':
@@ -290,8 +273,8 @@ class we_binaryDocument extends we_document{
 						break;
 					default:
 						$_inp = $_mode === 'none' || !isset($_defined_values[$_tagName]) || !is_array($_defined_values[$_tagName]) ?
-								$this->formInput2(508, $_tagName, 23, "txt", ' onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"') :
-								$this->formInput2WithSelect(308, $_tagName, 23, 'txt', $attribs = '', $_defined_values[$_tagName], 200, false, true);
+							$this->formInput2(508, $_tagName, 23, "txt", ' onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"') :
+								$this->formInput2WithSelect(308, $_tagName, 23, 'txt', $attribs = '', $_defined_values[$_tagName], 200, false, true, $_csv);
 				}
 
 				$_content->setCol($i, 0, array("colspan" => 5, 'style' => 'padding-bottom:5px;'), $_inp);

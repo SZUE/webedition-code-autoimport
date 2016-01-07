@@ -166,9 +166,9 @@ class we_document extends we_root{
 	function formMetaInfos(){
 		return '
 <table class="default">
-	<tr><td style="padding-bottom:2px;">' . $this->formInputField("txt", "Title", g_l('weClass', '[Title]'), 40, 508, "", "onchange=\"WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);\"") . '</td></tr>
-	<tr><td style="padding-bottom:2px;">' . $this->formInputField("txt", "Description", g_l('weClass', '[Description]'), 40, 508, "", "onchange=\"WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);\"") . '</td></tr>
-	<tr><td style="padding-bottom:2px;">' . $this->formInputField("txt", "Keywords", g_l('weClass', '[Keywords]'), 40, 508, "", "onchange=\"WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);\"") . '</td></tr>
+	<tr><td style="padding-bottom:2px;">' . $this->formMetaField('Title') . '</td></tr>
+	<tr><td style="padding-bottom:2px;">' . $this->formMetaField('Description') . '</td></tr>
+	<tr><td style="padding-bottom:2px;">' . $this->formMetaField('Keywords') . '</td></tr>
 </table>' .
 			($this->ContentType == we_base_ContentTypes::IMAGE ? $this->formCharset(true) : '');
 	}
@@ -567,7 +567,22 @@ class we_document extends we_root{
 				return false;
 			}
 		}
+
 		return $ret;
+	}
+
+	protected function i_writeMetaValues(){
+		foreach($this->DB_WE->getAllq('SELECT tag,type,importFrom,mode,csv FROM ' . METADATA_TABLE) as $meta){
+			if($meta['mode'] === 'auto' && $meta['type'] === 'textfield' && ($value = $this->getElement($meta['tag']))){
+				$values = $meta['csv'] ? array_map('trim', explode(',', $value)) : array($value);
+				foreach($values as $v){
+					$this->DB_WE->query('INSERT INTO ' . METAVALUES_TABLE . ' SET ' . we_database_base::arraySetter(array(
+								'tag' => $meta['tag'],
+								'value' => $v
+					)));
+				}
+			}
+		}
 	}
 
 	function resaveWeDocumentCustomerFilter(){
@@ -1404,6 +1419,14 @@ class we_document extends we_root{
 				}
 			}
 		}
+	}
+
+	protected function formMetaField($field = ''){
+		$props = we_metadata_metaData::getMetaDataField($field);
+		$values = we_metadata_metaData::getDefinedMetaValues(true, true, $field);
+
+		return (empty($props) || $props['mode'] === 'none' || !$values || $props['type'] !== 'textfield') ? $this->formInputField('txt', $field, g_l('weClass', '[' . $field . ']'), 40, 508, '', 'onchange=\"WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);\"') :
+			$this->formInput2WithSelect(308, $field, 23, 'txt', $attribs = '', $values, 200, false, true, $props['csv']);
 	}
 
 	/**

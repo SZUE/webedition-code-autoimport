@@ -144,14 +144,22 @@ abstract class we_class{
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . '[' . $name . ']') : ('we_' . $this->Name . '_' . $name)), $size, ($elementtype ? $this->getElement($name) : $ps), $maxlength, $attribs), $text, $textalign, $textclass);
 	}
 
-	function formInput2WithSelect($width, $name, $size = 25, $type = 'txt', $attribs = '', array $selValues = array(), $selWidth = 200, $reload = false, $resetSel = false){
+	function formInput2WithSelect($width, $name, $size = 25, $type = 'txt', $attribs = '', array $selValues = array(), $selWidth = 200, $reload = false, $resetSel = false, $multiple = false){
 		if(!$type){
 			$ps = $this->$name;
 		}
 		$doReload = $reload ? "top.we_cmd('reload_editpage');" : '';
 		$doReset = $resetSel ? "this.selectedIndex=0;" : '';
 		$inputName = $type ? ('we_' . $this->Name . '_' . $type . '[' . $name . ']') : ('we_' . $this->Name . '_' . $name);
-		$sel = $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $selValues, 1, '', false, array("onchange" => "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;" . $doReset . $doReload), "value", $selWidth);
+
+		//FIXME: move onchange to external js
+		$onchange = 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);' . ($multiple ? 'var valSel = this.options[this.selectedIndex].value; '
+				. 'var valInput = document.forms[0].elements[\'' . $inputName . '\'].value; '
+				. 'var valInputCsv = \',\'+valInput+\',\';'
+				. 'document.forms[0].elements[\'' . $inputName . '\'].value=((valInput==\'\' || (valSel==\'\')) ? valSel : (valInputCsv.search(\'\'+valSel+\',\') === -1 ? (valInput+\',\'+valSel) : valInput));' :
+				'document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;');
+
+		$sel = $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $selValues, 1, '', false, array("onchange" => $onchange . $doReset . $doReload), "value", $selWidth);
 
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($inputName, $size, ($type && ($elVal = $this->getElement($name)) ? $elVal : (isset($GLOBALS['meta'][$name]) ? $GLOBALS['meta'][$name]['default'] : (isset($ps) ? $ps : '') )), '', $attribs, $type, $width), (g_l('weClass', '[' . $name . ']', true)? : $name), '', '', $sel);
 	}

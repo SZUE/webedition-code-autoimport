@@ -146,6 +146,7 @@ function addRow() {
 		newRow.appendChild(cell);
 		cell = document.createElement("TD");
 		cell.setAttribute("colspan", 2);
+		cell.innerHTML = '<div class="small">&nbsp;</div>' + phpdata.csvCheck.replace(/__we_new_id__/g, newID) + '<div></div>';
 		newRow.appendChild(cell);
 		elem.appendChild(newRow);
 
