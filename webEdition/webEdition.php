@@ -220,7 +220,13 @@ var WebEdition={
 					confirm_applyFilterFolder: "<?php echo g_l('alert', '[confirm][applyWeDocumentCustomerFiltersFolder]'); ?>",
 					confirm_applyFilterDocument: "<?php echo g_l('alert', '[confirm][applyWeDocumentCustomerFiltersDocument]'); ?>",
 					untitled:"<?php echo g_l('global', '[untitled]'); ?>",
-					in_wf_warning:"<?php echo (defined('WORKFLOW_TABLE') ? g_l('alert', '[' . stripTblPrefix($we_doc->Table) . '][in_wf_warning]') : ''); ?>",
+					in_wf_warning:{
+						tblFile:"<?php echo (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblFile][in_wf_warning]') : ''); ?>",
+						tblObjectFiles:"<?php echo (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblObjectFiles][in_wf_warning]') : ''); ?>",
+						tblObject:"<?php echo (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblObject][in_wf_warning]') : ''); ?>",
+						tblTemplates:"<?php echo (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblTemplates][in_wf_warning]') : ''); ?>",
+						tblVFiles:"<?php echo (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblVFiles][in_wf_warning]') : ''); ?>",
+					},
 				},
 				message_reporting:{
 					notice:"<?php echo g_l('alert', '[notice]');?>",

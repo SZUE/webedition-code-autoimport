@@ -108,6 +108,12 @@ i{
 }
 
 div{
+	&.weMultiIconBoxWithFooter{
+		position:absolute;
+		width:100%;
+		top:0px;
+		left:0px;
+	}
 	&.multiIcon{
 		padding-top:10px;
 
@@ -122,13 +128,6 @@ div{
 
 		div.weMultiIconBoxLine{
 			border-bottom: 1px solid #AFB0AF;
-		}
-
-		div.weMultiIconBoxWithFooter{
-			position:absolute;
-			width:100%;
-			top:0px;
-			left:0px;
 		}
 
 		div.multiIconRight{

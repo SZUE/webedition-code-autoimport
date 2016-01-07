@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,6 @@
  * Provides functions for exporting and importing table rows.
  */
 class we_backup_tableItem extends weModelBase{
-
 	var $ClassName = __CLASS__;
 	var $attribute_slots = array();
 
@@ -227,8 +225,20 @@ class we_backup_tableItem extends weModelBase{
 
 //FIXME: remove
 	static function correctSerDataISOtoUTF($serial_str){
-		return preg_replace_callback('|s:\d+:"(.*?)";|s', function($match){return 's:' . strlen($match[1]) . ':"' . $match[1] . '";';}, $serial_str);
+		return preg_replace_callback('|s:\d+:"(.*?)";|s', function($match){
+			return 's:' . strlen($match[1]) . ':"' . $match[1] . '";';
+		}, $serial_str);
+	}
+
+	public function getLogString($prefix = ''){
+		if($this->table == LINK_TABLE && empty($this->nHash)){
+			$this->nHash = md5($this->Name);
+		}
+		$_id_val = '';
+		foreach($this->keys as $_key){
+			$_id_val .= ':' . $this->$_key;
+		}
+		return $prefix . $this->table . $_id_val;
 	}
 
 }
-

@@ -716,9 +716,8 @@ this.selectedIndex = 0;' .
 
 		$content = new we_html_table(array('class' => 'default'), 1, ($img ? 2 : 1));
 
-		if($img && file_exists($_SERVER['DOCUMENT_ROOT'] . $img)){
-			$size = getimagesize($_SERVER['DOCUMENT_ROOT'] . $img);
-			$content->setCol(0, 0, array('style' => 'vertical-align:top;padding:10px;'), we_html_element::htmlImg(array('src' => $img, 'border' => 0, 'width' => $size[0], 'height' => $size[1])));
+		if($img){
+			$content->setCol(0, 0, array('style' => 'vertical-align:top;padding:10px;'), $img);
 		}
 
 		$content->setCol(0, ($img ? 1 : 0), array('class' => 'defaultfont', 'style' => 'padding:10px;'), $text);
@@ -764,13 +763,13 @@ this.selectedIndex = 0;' .
 		}
 		switch($type){
 			case self::TYPE_ALERT:
-				$icon = '<span class="' . $class . '"><img src="' . IMAGE_DIR . 'alert_small.gif" width="20" height="22" />' . $title . '</span>';
+				$icon = '<span class="fa-stack fa-lg ' . $class . '" style="font-size: 14px;color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i>' . $title . '</span>';
 				break;
 			case self::TYPE_INFO:
 				$icon = '<span class="fa-stack fa-lg ' . $class . '" style="font-size: 14px;color:#007de3;"><i class="fa fa-circle fa-stack-2x" ></i><i class="fa fa-info fa-stack-1x fa-inverse"></i>' . $title . '</span>';
 				break;
 			case self::TYPE_QUESTION:
-				$icon = '<span class="fa-stack fa-lg ' . $class . '" style="font-size: 14px;color:yellow;"><i class="fa fa-circle fa-stack-2x" ></i><i style="color:black" class="fa fa-question fa-stack-1x"></i>' . $title . '</span>';
+				$icon = '<span class="fa-stack fa-lg ' . $class . '" style="font-size: 14px;color:#F2F200;"><i class="fa fa-circle fa-stack-2x" ></i><i style="color:black" class="fa fa-question fa-stack-1x"></i>' . $title . '</span>';
 				break;
 			default :
 				$icon = '';

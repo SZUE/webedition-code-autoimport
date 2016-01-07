@@ -130,7 +130,7 @@ echo STYLESHEET;
 </head>
 
 <body onunload="window_closed();" class="weEditorBody" onload="self.focus();" onblur="self.focus();">
-	<?php echo we_html_tools::htmlYesNoCancelDialog(g_l('alert', '[' . stripTblPrefix($_documentTable) . '][exit_doc_question]'), IMAGE_DIR . 'alert.gif', true, true, true, "pressed_yes();", "pressed_no();", "pressed_cancel();"); ?>
+	<?php echo we_html_tools::htmlYesNoCancelDialog(g_l('alert', '[' . stripTblPrefix($_documentTable) . '][exit_doc_question]'), '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', true, true, true, "pressed_yes();", "pressed_no();", "pressed_cancel();"); ?>
 </body>
 
 </html>

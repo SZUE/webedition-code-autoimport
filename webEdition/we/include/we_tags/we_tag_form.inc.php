@@ -30,7 +30,7 @@ function we_tag_form($attribs){
 	}
 	if(weTag_getAttribute('_type', $attribs, '', we_base_request::STRING) === 'stop'){
 		unset($GLOBALS['WE_FORM']);
-		return '</form>';
+		return we_tag('formToken') . '</form>';
 	}
 	$ret = '';
 	$method = weTag_getAttribute('method', $attribs, 'post', we_base_request::STRING);

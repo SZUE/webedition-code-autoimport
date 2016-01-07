@@ -94,7 +94,7 @@ $prio->setCol(0, 0, array("width" => 70, 'style' => 'padding-right:10px;'), $oRd
 
 $prio->setCol(0, 2, array("width" => 20), '<i class="fa fa-dot-circle-o" style="color:red"></i>');
 $prio->setCol(1, 0, null, $oRdoPrio[1]);
-$prio->setCol(1, 2, null, '<i class="fa fa-dot-circle-o" style="color:yellow"></i>');
+$prio->setCol(1, 2, null, '<i class="fa fa-dot-circle-o" style="color:#F2F200"></i>');
 $prio->setCol(2, 0, null, $oRdoPrio[2]);
 $prio->setCol(2, 2, null, '<i class="fa fa-dot-circle-o" style="color:green"></i>');
 

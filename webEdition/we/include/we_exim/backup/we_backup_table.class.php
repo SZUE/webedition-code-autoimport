@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,6 @@
  * Provides functions for loading and saving db tables.
  */
 class we_backup_table{
-
 	var $ClassName = __CLASS__;
 	var $db;
 	var $table = "";
@@ -135,6 +133,10 @@ class we_backup_table{
 				);
 			}
 		}
+	}
+
+	public function getLogString($prefix = ''){
+		return $prefix . $this->table;
 	}
 
 }

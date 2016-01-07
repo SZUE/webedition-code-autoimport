@@ -138,6 +138,7 @@ abstract class we_object_listviewBase extends we_listview_base{
 			}
 		}
 		$f = '`' . OBJECT_X_TABLE . $classID . '`.OF_ID AS ID,`' . OBJECT_X_TABLE . $classID . '`.OF_Templates,`' . OBJECT_X_TABLE . $classID . '`.OF_ID,`' . OBJECT_X_TABLE . $classID . '`.OF_Category,`' . OBJECT_X_TABLE . $classID . '`.OF_Text,`' . OBJECT_X_TABLE . $classID . '`.OF_Url,`' . OBJECT_X_TABLE . $classID . '`.OF_TriggerID,`' . OBJECT_X_TABLE . $classID . '`.OF_WebUserID,`' . OBJECT_X_TABLE . $classID . '`.OF_Language,`' . OBJECT_X_TABLE . $classID . '`.`OF_Published`' . ' AS we_wedoc_Published,' . $_selFields;
+		$charclass='[\!\=%&\(\)\*\+\.\/<>|~, ]';
 		foreach($matrix as $n => $p){
 			$n2 = $n;
 			if(strpos($n, 'we_object_') === 0){
@@ -151,9 +152,8 @@ abstract class we_object_listviewBase extends we_listview_base{
 			if(($pos = array_search($n, $orderArr)) !== false){
 				$ordertmp[$pos] = '`' . $p['table'] . '`.`' . $p['type'] . '_' . $n . '`' . ($descArr[$pos] ? ' DESC' : '');
 			}
-			$cond = preg_replace("/([\!\=%&\(\*\+\.\/<>|~ ])$n([\!\=%&\)\*\+\.\/<>|~ ])/", '$1' . $p['table'] . '.`' . $p['type'] . '_' . $n . '`$2', $cond);
+			$cond = preg_replace("/($charclass)$n($charclass)/", '$1' . $p['table'] . '.`' . $p['type'] . '_' . $n . '`$2', $cond);
 		}
-
 		$cond = preg_replace_callback("/'([^']*)'/", function (array $match){
 			return "'" . preg_replace_callback("/&([^;]+);/", function (array $match){
 					return chr($match[1]);

@@ -1340,7 +1340,7 @@ function build_dialog($selected_setting = 'ui'){
 				we_html_tools::hidden('newconf[editorAutoIndent]', get_value('editorAutoIndent'));
 
 			$_template_editor_tooltips_code = we_html_forms::checkbox(1, get_value('editorTooltips'), 'newconf[editorTooltips]', g_l('prefs', '[editorTooltips]'), true, 'defaultfont', '') .
-				'<br/>'.
+				'<br/>' .
 				we_html_forms::checkbox(1, get_value('editorTooltipsIDs'), 'newconf[editorTooltipsIDs]', g_l('prefs', '[editorTooltipsIDs]'), true, 'defaultfont', '');
 
 			$_template_editor_tooltip_font_specify = (get_value('editorTooltipFontname') != '' && get_value('editorTooltipFontname') != 'none');
@@ -1691,8 +1691,8 @@ for(i=0;i<elements.length; ++i){
 				$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_POSTDOC, g_l('prefs', '[we_scheduler_trigger][postDoc]')); //post
 				$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_CRON, g_l('prefs', '[we_scheduler_trigger][cron]')); //cron
 				$_Schedtrigger_setting->selectOption(get_value("SCHEDULER_TRIGGER"));
-				$tmp = $_Schedtrigger_setting->getHtml() . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[we_scheduler_trigger][description]'), we_html_tools::TYPE_INFO, false);
-				$_settings[] = array("headline" => g_l('prefs', '[we_scheduler_trigger][head]'), "html" => $tmp, 'space' => 200);
+				$tmp = $_Schedtrigger_setting->getHtml();
+				$_settings[] = array("headline" => g_l('prefs', '[we_scheduler_trigger][head]') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[we_scheduler_trigger][description]'), we_html_tools::TYPE_INFO, false), "html" => $tmp, 'space' => 200);
 			}
 			// Build select box
 			$NAVIGATION_ENTRIES_FROM_DOCUMENT = new we_html_select(array("name" => "newconf[NAVIGATION_ENTRIES_FROM_DOCUMENT]", "class" => "weSelect"));
@@ -2042,20 +2042,20 @@ for(i=0;i<elements.length; ++i){
 			$customer_table->setCol($row, 0, array('class' => 'defaultfont', 'width' => '20px'), '');
 			$customer_table->setCol($row, 1, array('class' => 'defaultfont', 'colspan' => 5), g_l('prefs', '[security][customer][disableLogins]') . ':');
 			$customer_table->setCol($row, 6, array('width' => 300));
-			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameIP]'));
+			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameIP]'));
 			$customer_table->setCol($row, 2, array('width' => '20px'));
 			$customer_table->setCol($row, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, array('class' => 'defaultfont', 'style' => 'width:2em;text-align:center'), '/');
 			$customer_table->setCol($row, 5, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP_HOURS'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 6, array('class' => 'defaultfont'), 'h');
 
-			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameUser]'));
+			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameUser]'));
 			$customer_table->setCol($row, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, array('class' => 'defaultfont', 'style' => 'text-align:center;'), '/');
 			$customer_table->setCol($row, 5, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME_HOURS'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 6, array('class' => 'defaultfont'), 'h');
 
-			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][errorPage]'));
+			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][errorPage]'));
 
 			$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value");
 			$wecmdenc2 = we_base_request::encCmd("document.forms[0].elements.SECURITY_LIMIT_CUSTOMER_REDIRECT_text.value");
@@ -2073,11 +2073,11 @@ for(i=0;i<elements.length; ++i){
 
 			$customer_table->setCol($row, 3, array('class' => 'defaultfont', 'colspan' => 5), $yuiSuggest->getHTML());
 
-			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][slowDownLogin]'));
+			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][slowDownLogin]'));
 			$customer_table->setCol($row, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_DELAY_FAILED_LOGIN]', 3, get_value('SECURITY_DELAY_FAILED_LOGIN'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, array(), 's');
 
-			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][deleteSession]'));
+			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][deleteSession]'));
 
 			$customer_table->setCol($row, 3, array(), we_html_tools::htmlSelect('newconf[SECURITY_DELETE_SESSION]', array(g_l('prefs', '[no]'), g_l('prefs', '[yes]')), 1, get_value('SECURITY_DELETE_SESSION')));
 

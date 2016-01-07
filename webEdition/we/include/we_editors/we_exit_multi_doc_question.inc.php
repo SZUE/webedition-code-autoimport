@@ -66,6 +66,6 @@ echo STYLESHEET .
 
 		</ul>
 	</div>
-</div>', IMAGE_DIR . "alert.gif", true, false, true, $yesCmd, "", $cancelCmd); ?>
+</div>', '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', true, false, true, $yesCmd, "", $cancelCmd); ?>
 </body>
 </html>

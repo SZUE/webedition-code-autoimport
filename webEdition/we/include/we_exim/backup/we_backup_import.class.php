@@ -136,17 +136,9 @@ abstract class we_backup_import{
 				switch($classname){
 					case 'we_backup_table':
 					case 'we_backup_tableAdv':
-						we_backup_util::addLog($_prefix . $classname . ':' . $object->table . $addtext);
-						break;
 					case 'we_backup_tableItem':
-						$_id_val = '';
-						foreach($object->keys as $_key){
-							$_id_val .= ':' . $object->$_key;
-						}
-						we_backup_util::addLog($_prefix . $classname . ':' . $object->table . $_id_val . $addtext);
-						break;
 					case 'weBinary':
-						we_backup_util::addLog($_prefix . $classname . ':' . $object->ID . ':' . $object->Path . $addtext);
+						we_backup_util::addLog($object->getLogString($_prefix . $classname . ':') . $addtext);
 						break;
 				}
 				if(!empty($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && method_exists($object, 'convertCharsetEncoding')){

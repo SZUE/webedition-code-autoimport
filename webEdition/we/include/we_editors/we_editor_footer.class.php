@@ -31,7 +31,7 @@ abstract class we_editor_footer{
 		$_messageTbl = new we_html_table(array("class" => 'default footertable'), 1, 3);
 
 		//	spaceholder
-		$_messageTbl->setColContent(0, 0, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif", 'style' => 'margin-right:5px;')));
+		$_messageTbl->setColContent(0, 0, '<span class="fa-stack fa-lg" style="color:#F2F200;margin-right:5px;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>');
 		$_messageTbl->setCol(0, 1, array("class" => "defaultfont"), sprintf(g_l('alert', '[file_locked_footer]'), $_username));
 		$_messageTbl->setColContent(0, 2, (we_base_request::_(we_base_request::BOOL, "SEEM_edit_include") ? '' : we_html_button::create_button(we_html_button::RELOAD, "javascript:top.weNavigationHistory.navigateReload();")));
 
@@ -41,7 +41,7 @@ abstract class we_editor_footer{
 	static function fileInWorkspace(){
 		$_messageTbl = new we_html_table(array("class" => 'default footertable'), 1, 3);
 //	spaceholder
-		$_messageTbl->setColContent(0, 0, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif", 'style' => 'margin-right:5px;')));
+		$_messageTbl->setColContent(0, 0, '<span class="fa-stack fa-lg" style="color:#F2F200;margin-right:5px;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>');
 		$_messageTbl->setCol(0, 1, array("class" => "defaultfont"), g_l('alert', '[' . FILE_TABLE . '][not_im_ws]'));
 
 		echo we_html_tools::getHtmlTop('', '', '', STYLESHEET, we_html_element::htmlBody(array('id' => 'footerBody'), $_messageTbl->getHtml()));
@@ -50,7 +50,7 @@ abstract class we_editor_footer{
 	static function fileNoSave(){
 		$_messageTbl = new we_html_table(array("class" => 'default footertable'), 1, 2);
 //	spaceholder
-		$_messageTbl->setColContent(0, 0, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif", 'style' => 'margin-right:5px;')));
+		$_messageTbl->setColContent(0, 0, '<span class="fa-stack fa-lg" style="color:#F2F200;margin-right:5px;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>');
 		$_messageTbl->setCol(0, 1, array("class" => "defaultfont"), g_l('alert', '[file_no_save_footer]'));
 
 		echo we_html_tools::getHtmlTop('', '', '', STYLESHEET, we_html_element::htmlBody(array('id' => 'footerBody'), $_messageTbl->getHtml()));
@@ -59,7 +59,7 @@ abstract class we_editor_footer{
 	static function fileIsRestricted($we_doc){
 		$_messageTbl = new we_html_table(array("class" => 'default footertable'), 1, 2);
 //	spaceholder
-		$_messageTbl->setColContent(0, 0, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif", 'style' => 'margin-right:5px;')));
+		$_messageTbl->setColContent(0, 0, '<span class="fa-stack fa-lg" style="color:#F2F200;margin-right:5px;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>');
 		$_messageTbl->setCol(0, 1, array("class" => "defaultfont"), str_replace("<br/>", " ", sprintf(g_l('alert', '[no_perms]'), f('SELECT Username FROM ' . USER_TABLE . ' WHERE ID=' . intval($we_doc->CreatorID)))));
 
 		echo we_html_tools::getHtmlTop('', '', '', STYLESHEET, we_html_element::htmlBody(array('id' => 'footerBody'), $_messageTbl->getHtml()));
@@ -79,7 +79,7 @@ abstract class we_editor_footer{
 		} else {
 
 			$_table = new we_html_table(array("class" => 'default footertable'), 1, 2);
-			$_table->setColContent(0, 0, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif", 'style' => 'margin-right:16px;')));
+			$_table->setColContent(0, 0, '<span class="fa-stack fa-lg" style="color:#F2F200;margin-right:16px;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>');
 			$_table->setCol(0, 1, array("class" => "defaultfont"), g_l('modules_workflow', '[doc_in_wf_warning]'));
 
 			echo we_html_element::htmlBody(array('id' => 'footerBody'), $_table->getHtml());
@@ -122,7 +122,7 @@ abstract class we_editor_footer{
 
 			if(!$_ctrlElem || !$_ctrlElem['hide']){
 				$_normalTable->addCol(2);
-				$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("fat:in_workflow,fa-lg fa-gears", "javascript:put_in_workflow();"));
+				$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("fat:in_workflow,fa-lg fa-gears", "javascript:put_in_workflow('".stripTblPrefix($we_doc->Table) ."');"));
 			}
 		}
 
@@ -303,7 +303,7 @@ abstract class we_editor_footer{
 
 			if(!$_ctrlElem || !$_ctrlElem['hide']){
 				$_seeModeTable->addCol(2);
-				$_seeModeTable->setCol(0, $_pos++, array('style' => 'vertical-align:top;'), we_html_button::create_button("fat:in_workflow,fa-lg fa-gears", "javascript:put_in_workflow();"));
+				$_seeModeTable->setCol(0, $_pos++, array('style' => 'vertical-align:top;'), we_html_button::create_button("fat:in_workflow,fa-lg fa-gears", "javascript:put_in_workflow('".stripTblPrefix($we_doc->Table) ."');"));
 			}
 		}
 
