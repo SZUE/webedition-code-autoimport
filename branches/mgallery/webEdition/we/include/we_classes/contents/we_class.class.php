@@ -371,12 +371,6 @@ abstract class we_class{
 		}
 	}
 
-	protected function i_fixCSVPrePost($in){
-		return ($in ?
-				',' . trim($in, ',') . ',' :
-				$in);
-	}
-
 	protected function i_savePersistentSlotsToDB($felder = ''){
 		$tableInfo = $this->DB_WE->metadata($this->Table);
 		$feldArr = $felder ? makeArrayFromCSV($felder) : $this->persistent_slots;
@@ -385,14 +379,10 @@ abstract class we_class{
 			return false;
 		}
 		foreach($tableInfo as $info){
-
 			$fieldName = $info['name'];
 			if(in_array($fieldName, $feldArr)){
 				$val = isset($this->$fieldName) ? $this->$fieldName : '';
 
-				if($fieldName === 'Category'){ // Category-Fix!
-					$val = $this->i_fixCSVPrePost($val);
-				}
 				if($fieldName != 'ID'){
 					$fields[$fieldName] = $val;
 				}

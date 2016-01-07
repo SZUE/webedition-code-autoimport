@@ -493,11 +493,6 @@ $tabNr = we_base_request::_(we_base_request::INT, 'tabnr', 1);
 
 $htmlPage = we_ui_layout_HTMLPage::getInstance();
 
-//$htmlPage->addJSFile(JS_DIR . 'windows.js');
-$htmlPage->addJSFile(LIB_DIR . 'additional/yui/yahoo-min.js');
-$htmlPage->addJSFile(LIB_DIR . 'additional/yui/event-min.js');
-$htmlPage->addJSFile(LIB_DIR . 'additional/yui/connection-min.js');
-$htmlPage->addJSFile(LIB_DIR . 'additional/yui/json-min.js');
 $htmlPage->addJSFile(LIB_DIR . 'we/core/JsonRpc.js');
 
 
