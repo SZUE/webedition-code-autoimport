@@ -45,6 +45,11 @@ function toggleType(sel, index) {
 
 
 function delRow(id) {
+	var el = document.getElementById("row_" + id);
+	if(el){
+		el.parentNode.removeChild(el);
+	}
+	/*
 	var elem = document.getElementById("metadataTable");
 	if (elem) {
 		var trows = elem.rows;
@@ -61,6 +66,7 @@ function delRow(id) {
 			}
 		}
 	}
+	*/
 }
 
 function addProposition(btn, index) {
@@ -88,12 +94,17 @@ function addFieldToInput(sel, inpNr) {
 	sel.selectedIndex = 0;
 }
 
-
 function addRow() {
-	var elem = document.getElementById("metadataTable");
-	var newID = (elem.rows.length) / 5;
-	if (elem) {
-		var newRow = document.createElement("TR");
+	var container = document.getElementById("metadataTable");
+	var newID = (container.rows.length);
+	var elem, elemTR, elemTD, cell, newRow, nestedTable, nestedRow, nestedCell;
+	if (container) {
+		elem = document.createElement("TABLE");
+		elem.style.backgroundColor = '#f5f5f5';//margin-bottom:10px
+		elem.style.marginBottom ='10px';
+		elem.setAttribute("id", "elem_" + newID);
+
+		newRow = document.createElement("TR");
 		newRow.setAttribute("id", "metadataRow0_" + newID);
 		cell = document.createElement("TD");
 		cell.innerHTML = "<strong>" + g_l.tagname + "</strong>";
@@ -142,7 +153,7 @@ function addRow() {
 		newRow.setAttribute("id", "metadataRow3_" + newID);
 		cell = document.createElement("TD");
 		cell.style.paddingBottom = "1px";
-		cell.innerHTML = '<div class="small">Vorschlagsliste</div>' + phpdata.modeSel.replace(/__we_new_id__/g, newID);
+		cell.innerHTML = '<div class="small">' + g_l.proposals + '</div>' + phpdata.modeSel.replace(/__we_new_id__/g, newID);
 		newRow.appendChild(cell);
 		cell = document.createElement("TD");
 		cell.setAttribute("colspan", 2);
@@ -156,7 +167,7 @@ function addRow() {
 		cell.colSpan = "3";
 		cell.style.paddingBottom = "16px";
 		cell.paddingRight = "5px";
-		var nestedTable = document.createElement("TABLE");
+		nestedTable = document.createElement("TABLE");
 		nestedTable.setAttribute("id", "proposalTable_" + newID);
 		nestedTable.style.width = "100%";
 		nestedTable.style.display = "none";
@@ -178,6 +189,13 @@ function addRow() {
 		cell.appendChild(nestedTable);
 		newRow.appendChild(cell);
 		elem.appendChild(newRow);
+
+		elemTR = document.createElement("TR");
+		elemTR.setAttribute("id", "row_" + newID);
+		elemTD = document.createElement("TD");
+		elemTD.appendChild(elem);
+		elemTR.appendChild(elemTD);
+		container.appendChild(elemTR);
 	}
 }
 
