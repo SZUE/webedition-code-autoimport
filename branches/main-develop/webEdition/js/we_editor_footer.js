@@ -31,9 +31,9 @@ function we_submitForm(target, url) {
 	f.submit();
 }
 
-function put_in_workflow() {
+function put_in_workflow(table) {
 	if (_EditorFrame.getEditorIsHot()) {
-		if (confirm(WE().consts.g_l.main.in_wf_warning)) {
+		if (confirm(WE().consts.g_l.main.in_wf_warning[table])) {
 			we_cmd('save_document', '', '', '', '', 0, 0, 1);
 		}
 	} else {

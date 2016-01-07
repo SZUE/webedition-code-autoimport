@@ -66,7 +66,7 @@ abstract class we_html_button{
 	const UPLOAD = 'fat:upload,fa-lg fa-upload';
 	const PREVIEW = 'fat:preview,fa-lg fa-eye';
 	const CALENDAR = 'fa:date_picker,fa-lg fa-calendar';
-	const PUBLISH = 'fat:publish,fa-lg fa-sun-o';
+	const PUBLISH = 'fat:publish,fa-lg fa-globe';
 	const NOT_FOUND = '.fa-lg fa-bullseye';
 
 	/**

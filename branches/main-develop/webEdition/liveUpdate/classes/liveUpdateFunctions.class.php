@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  * TBD if we divide this class in several classes
  */
 class liveUpdateFunctions{
-
 	var $QueryLog = array(
 		'success' => array(),
 		'tableChanged' => array(),
@@ -43,9 +41,9 @@ class liveUpdateFunctions{
 
 	function insertUpdateLogEntry($action, $version, $errorCode){
 		$GLOBALS['DB_WE']->query('INSERT INTO ' . UPDATE_LOG_TABLE . ' SET ' . we_database_base::arraySetter(array(
-					'aktion' => $action,
-					'versionsnummer' => $version,
-					'error' => $errorCode
+				'aktion' => $action,
+				'versionsnummer' => $version,
+				'error' => $errorCode
 		)));
 	}
 
@@ -115,8 +113,8 @@ class liveUpdateFunctions{
 	function checkReplaceDocRoot($content){
 		//replaces any count of escaped docroot-strings
 		return ($this->replaceDocRootNeeded() ?
-						preg_replace('-\$(_SERVER|GLOBALS)\[([\\\"\']+)DOCUMENT' . '_ROOT([\\\"\']+)\]-', '\2' . LIVEUPDATE_SOFTWARE_DIR . '\3', $content) :
-						$content);
+				preg_replace('-\$(_SERVER|GLOBALS)\[([\\\"\']+)DOCUMENT' . '_ROOT([\\\"\']+)\]-', '\2' . LIVEUPDATE_SOFTWARE_DIR . '\3', $content) :
+				$content);
 	}
 
 	/**
@@ -843,16 +841,20 @@ class liveUpdateFunctions{
 	function removeObsoleteFiles($path){
 		if(is_file($path . 'del.files')){
 			$all = array();
-			if($all = file($path . 'del.files', FILE_IGNORE_NEW_LINES)){
+			if(($all = file($path . 'del.files', FILE_IGNORE_NEW_LINES))){
 				$delFiles = array();
 				foreach($all as $cur){
+					$recursive = false;
+					if($cur{0} === '!'){
+						$cur = substr($cur, 1);
+					}
 					if(file_exists(WEBEDITION_PATH . $cur)){
 						if(is_file(WEBEDITION_PATH . $cur)){
 							$delFiles[] = $cur;
 							unlink(WEBEDITION_PATH . $cur);
 						} elseif(is_dir(WEBEDITION_PATH . $cur)){
 							$delFiles[] = 'Folder: ' . $cur;
-							we_base_file::deleteLocalFolder(WEBEDITION_PATH . $cur, false);
+							we_base_file::deleteLocalFolder(WEBEDITION_PATH . $cur, $recursive);
 						}
 					}
 				}

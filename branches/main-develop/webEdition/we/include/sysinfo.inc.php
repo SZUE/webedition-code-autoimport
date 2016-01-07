@@ -140,7 +140,10 @@ function getConnectionTypes(){
 }
 
 function getWarning($message, $value){
-	return '<div style="min-height:2.5ex; min-width: 2ex;cursor:pointer; padding-right:2ex; padding-left:0px;position:relative; background:url(' . IMAGE_DIR . 'alert_tiny.gif) center right no-repeat;" title="' . $message . '">' . $value . '</div>';
+	return '<div style="min-height:2.5ex; min-width: 2ex;cursor:pointer; padding-right:2ex; padding-left:0px;position:relative;" title="' . $message . '">' . $value . '<span class="fa-stack fa-lg" style="font-size: 10px;color:#F2F200;position: absolute;right:.5ex;">
+  <i class="fa fa-exclamation-triangle fa-stack-2x" ></i>
+  <i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i>
+</span></div>';
 }
 
 function getInfo($message, $value){
@@ -154,7 +157,7 @@ function getOK($message = '', $value = ''){
 	return '<div style="min-height:2.5ex; min-width: 2ex;cursor:pointer; padding-right:2ex; padding-left:0px; position:relative;" title="' . $message . '">' . $value . '<i class="fa fa-lg fa-check fa-ok" style="position:absolute;right:0px;"></i></div>';
 }
 
-$_install_dir = '<abbr title="' . $_install_dir . '">' . we_base_util::shortenPath(WEBEDITION_PATH, 35) . '</abbr>';
+$_install_dir = '<abbr title="' . $_SERVER['DOCUMENT_ROOT'] . '">' . we_base_util::shortenPath(WEBEDITION_PATH, 35) . '</abbr>';
 
 $weVersion = WE_VERSION .
 	(defined('WE_SVNREV') && WE_SVNREV != '0000' ? ' (SVN-Revision: ' . WE_SVNREV . ((defined('WE_VERSION_BRANCH') && WE_VERSION_BRANCH != 'trunk') ? '|' . WE_VERSION_BRANCH : '') . ')' : '') .

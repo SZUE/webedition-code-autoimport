@@ -30,17 +30,17 @@ $GLOBALS['tabs'] = array(
 	'language' => array('fa-language', 'ADMINISTRATOR'),
 	'countries' => array('fa-flag-checkered', 'ADMINISTRATOR'),
 	'error_handling' => array('fa-bug', 'ADMINISTRATOR'),
-	'validation' => array('fa-bug', 'ADMINISTRATOR'),
+	'validation' => array('fa-check', 'ADMINISTRATOR'),
 	'email' => array('fa-envelope-o', 'ADMINISTRATOR'),
 	//'message_reporting' => '',
 	'recipients' => array('fa-envelope-o', 'FORMMAIL'),
 	'versions' => array('fa-history', 'ADMINISTRATOR'),
 	'defaultAttribs' => array('fa-tags', 'ADMINISTRATOR'),
-	'advanced' => array('', 'ADMINISTRATOR'),
-	'system' => array('', 'ADMINISTRATOR'),
-	'security' => array('fa-bolt', 'ADMINISTRATOR'),
-	'proxy' => array('', 'ADMINISTRATOR'),
-	'modules' => array('', 'ADMINISTRATOR'),
+	'advanced' => array('fa-wrench', 'ADMINISTRATOR'),
+	'system' => array('fa-cogs', 'ADMINISTRATOR'),
+	'security' => array('fa-key', 'ADMINISTRATOR'),
+	'proxy' => array('fa-bomb', 'ADMINISTRATOR'),
+	'modules' => array('fa-cubes', 'ADMINISTRATOR'),
 );
 
 $GLOBALS['configs'] = array(

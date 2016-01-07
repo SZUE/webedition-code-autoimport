@@ -88,4 +88,8 @@ class weBinary{
 		return file_exists($path) ? filesize($path) : 0;
 	}
 
+	public function getLogString($prefix = ''){
+		return $prefix . $this->table . $this->ID . ':' . $this->Path;
+	}
+
 }

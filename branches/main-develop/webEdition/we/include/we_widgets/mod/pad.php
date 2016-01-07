@@ -233,7 +233,7 @@ $oTblPrio = new we_html_table(array('class' => 'default'), 1, 6);
 $oTblPrio->setCol(0, 0, null, $rdoPrio[0]);
 $oTblPrio->setCol(0, 1, null, '<i class="fa fa-dot-circle-o" style="color:red;margin-left:5px;"></i>  ');
 $oTblPrio->setCol(0, 2, null, $rdoPrio[1]);
-$oTblPrio->setCol(0, 3, null, '<i class="fa fa-dot-circle-o" style="color:yellow;margin-left:5px;"></i>  ');
+$oTblPrio->setCol(0, 3, null, '<i class="fa fa-dot-circle-o" style="color:#F2F200;margin-left:5px;"></i>  ');
 $oTblPrio->setCol(0, 4, null, $rdoPrio[2]);
 $oTblPrio->setCol(0, 5, null, '<i class="fa fa-dot-circle-o" style="color:green;margin-left:5px;"></i>');
 

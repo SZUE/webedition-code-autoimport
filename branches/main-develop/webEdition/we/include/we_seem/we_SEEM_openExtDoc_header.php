@@ -34,7 +34,7 @@ $_errormsg = (strpos($url, $_webEditionSiteUrl) === 0 ?
 
 
 $_table = new we_html_table(array('class' => 'default withSpace', 'style' => 'margin:5px 0 20px 0'), 1, 2);
-$_table->setColContent(0, 1, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif", "width" => 25, "height" => 27)));
+$_table->setColContent(0, 1, '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>');
 $_table->setCol(0, 1, array("class" => "middlefont highlightElementChanged", 'style' => 'padding-left:9px;'), $_errormsg);
 
 

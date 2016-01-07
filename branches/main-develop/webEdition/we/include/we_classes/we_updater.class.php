@@ -190,7 +190,6 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="href"
 		//FIXME: clean inconsistent objects
 	}
 
-
 	private static function updateCats(we_database_base $db = null){
 		$db = $db? : $GLOBALS['DB_WE'];
 
@@ -263,13 +262,17 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="href"
 		if(($all = file($path . 'del.files', FILE_IGNORE_NEW_LINES))){
 			$delFiles = array();
 			foreach($all as $cur){
+				$recursive = false;
+				if($cur{0} === '!'){
+					$cur = substr($cur, 1);
+				}
 				if(file_exists(WEBEDITION_PATH . $cur)){
 					if(is_file(WEBEDITION_PATH . $cur)){
 						$delFiles[] = $cur;
 						unlink(WEBEDITION_PATH . $cur);
 					} elseif(is_dir(WEBEDITION_PATH . $cur)){
 						$delFiles[] = 'Folder: ' . $cur;
-						we_base_file::deleteLocalFolder(WEBEDITION_PATH . $cur, false);
+						we_base_file::deleteLocalFolder(WEBEDITION_PATH . $cur, $recursive);
 					}
 				}
 			}
@@ -294,7 +297,6 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="href"
 		}
 		return;
 //the latter will be enabled in future releases
-
 		//FIXME: change tabledefinition of content table
 		define('CONTENT_TABLEx', CONTENT_TABLE . 'XX');
 		define('LINK_TABLEx', LINK_TABLE . 'xx');
