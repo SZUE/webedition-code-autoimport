@@ -41,7 +41,7 @@ function we_tag_ifField($attribs){
 	}
 
 	if(($foo = attributFehltError($attribs, array('name' => false, 'match' => true), __FUNCTION__))){
-		print($foo);
+		echo $foo;
 		return false;
 	}
 	$attribs['name'] = $attribs['_name_orig'];

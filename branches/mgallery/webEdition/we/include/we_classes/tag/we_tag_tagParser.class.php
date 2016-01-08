@@ -352,7 +352,7 @@ class we_tag_tagParser{
 
 	//FIXME: GLOBALS as "\$xx" should be set here directly? using isset??
 	public static function printTag($name, $attribs = '', $content = '', $cslash = false){
-		$attr = (is_array($attribs) ? self::printArray($attribs, false) : ($attribs === 'array()' ? '' : $attribs));
+		$attr = (is_array($attribs) ? self::printArray($attribs, false) : ($attribs === 'array()' || $attribs === '[]' ? '' : $attribs));
 		return 'we_tag(\'' . $name . '\'' .
 				($attr ? ',' . $attr : ($content ? ',array()' : '')) .
 				($content ? ',"' . ($cslash ? addcslashes($content, '"') : $content) . '"' : '') . ')';
@@ -370,7 +370,8 @@ class we_tag_tagParser{
 					$ret[] = '\'' . $key . '\'=>' . ((is_numeric($val) && $val{0} != '+') || $val == 'true' || $val == 'false' ? $val : $quotes . $val . $quotes);
 			}
 		}
-		return ($ret || (!$ret && $printEmpty) ? 'array(' . implode(',', $ret) . ')' : '');
+		$newTag = PHP_VERSION_ID >= 50400;
+		return ($ret || (!$ret && $printEmpty) ? ($newTag ? '[' : 'array(') . implode(',', $ret) . ($newTag ? ']' : ')') : '');
 	}
 
 }

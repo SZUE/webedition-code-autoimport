@@ -24,7 +24,7 @@
  */
 function we_tag_ifIsDomain($attribs){
 	if(($foo = attributFehltError($attribs, 'domain', __FUNCTION__))){
-		print($foo);
+		echo $foo;
 		return false;
 	}
 	if((!empty($GLOBALS['we_editmode']))){

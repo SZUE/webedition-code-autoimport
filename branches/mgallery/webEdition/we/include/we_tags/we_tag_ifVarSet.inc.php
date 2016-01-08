@@ -24,7 +24,7 @@
  */
 function we_tag_ifVarSet($attribs){
 	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
-		print($foo);
+		echo $foo;
 		return false;
 	}
 

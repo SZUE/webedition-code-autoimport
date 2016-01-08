@@ -37,7 +37,7 @@ class we_util_Sys_Php{
 	 */
 	public static function version(){
 	t_e('deprecated',__FUNCTION__);
-	return preg_replace('/[a-z-]/', '', phpversion());
+		return preg_replace('/[a-z-]/', '', PHP_VERSION);
 	}
 
 	/**

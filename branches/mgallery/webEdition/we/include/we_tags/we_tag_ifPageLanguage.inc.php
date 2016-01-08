@@ -24,7 +24,7 @@
  */
 function we_tag_ifPageLanguage($attribs){
 	if(($foo = attributFehltError($attribs, 'match', __FUNCTION__, true))){
-		print($foo);
+		echo $foo;
 		return false;
 	}
 
