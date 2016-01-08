@@ -1461,7 +1461,7 @@ class we_document extends we_root{
 		$iconCsv = '<span title="' . $csvText . '" style="background-color:#cccccc;border:1px solid black;line-height:1.8em;border-radius:1em;font-weight:normal">&nbsp;c,s,v&nbsp;</span>&nbsp;';
 		$iconClosed = '<span title="' . $closedText . '" style="background-color:#cccccc;border:1px solid black;line-height:2em;border-radius:1em;font-weight:normal">&nbsp;<i class="fa fa-key"></i>&nbsp;</span>&nbsp;';
 		$iconAuto = '<span title="' . $autoText . '" style="background-color:#cccccc;border:1px solid black;line-height:2em;border-radius:1em;font-weight:normal">&nbsp;&nbsp;<i class="fa fa-sign-in"></i>&nbsp;&nbsp;</span>&nbsp;';
-		$icons = '<div style="display:inline-block;" class="meta_icons">' . ($noManualInput ? $iconClosed : '') . ($multiple ? $iconCsv : '') . ($autofill ? $iconAuto : '') . '</div>';
+		$icons = '<div style="display:inline-block;" class="meta_icons">' . ($noManualInput ? $iconClosed : '') . ($multiple ? $iconCsv : '') . ($autofill && !$noManualInput ? $iconAuto : '') . '</div>';
 
 		return we_html_element::htmlDiv(array(
 				//'onmouseover' => "this.getElementsByClassName('meta_icons')[0].style.display='inline-block';",
