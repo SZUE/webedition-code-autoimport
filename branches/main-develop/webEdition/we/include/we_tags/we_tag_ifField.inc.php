@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_ifField($attribs){
+function we_tag_ifField(array $attribs){
 	$type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING);
 
 	switch($type){
