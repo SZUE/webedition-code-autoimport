@@ -364,13 +364,30 @@ class we_metadata_metaData{
 		return isset($fields[$field]) ? $fields[$field] : array();
 	}
 
-	public static function getDefinedMetaValues($getAssoc = false, $leadingEmpty = false, $field = ''){
+	public static function getDefinedMetaValues($getAssoc = false, $leading = false, $field = '', $getDelete = false, $getDeleteLast = false){
 		// defined_values change more often than defined_fields, so we do not cache them!
 		$_defined_values = array();
 		$GLOBALS['DB_WE']->query('SELECT * FROM ' . METAVALUES_TABLE . ($field ? ' WHERE tag = "' . $GLOBALS['DB_WE']->escape($field) . '"' : '') . ' ORDER BY value');
+		$isDel = false;
+
 		while($GLOBALS['DB_WE']->next_record()){
-			if($leadingEmpty && !isset($_defined_values[$GLOBALS['DB_WE']->f('tag')])){
-				$_defined_values[$GLOBALS['DB_WE']->f('tag')][] = '--';
+			if(!isset($_defined_values[$GLOBALS['DB_WE']->f('tag')])){
+				if($leading){
+					$_defined_values[$GLOBALS['DB_WE']->f('tag')][] = $leading;
+				}
+				if($getAssoc){
+					if($getDelete){
+						$_defined_values[$GLOBALS['DB_WE']->f('tag')]['__del__'] = '-- löschen --';
+						$isDel = true;
+					}
+					if($getDeleteLast){
+						$_defined_values[$GLOBALS['DB_WE']->f('tag')]['__del_last__'] = '-- letztes löschen --';
+						$isDel = true;
+					}
+					if($isDel){
+						$_defined_values[$GLOBALS['DB_WE']->f('tag')]['__empty__'] = '';
+					}
+				}
 			}
 			if($getAssoc){
 				$_defined_values[$GLOBALS['DB_WE']->f('tag')][$GLOBALS['DB_WE']->f('value')] = $GLOBALS['DB_WE']->f('value');

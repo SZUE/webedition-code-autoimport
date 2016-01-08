@@ -131,7 +131,8 @@ function save_all_values(){
 						'type' => ($type = we_base_request::_(we_base_request::STRING, 'metadataType', '', $key) ? : 'textfield'),
 						'importFrom' => we_base_request::_(we_base_request::RAW, 'metadataImportFrom', '', $key),
 						'mode' => we_base_request::_(we_base_request::STRING, 'metadataMode', '', $key),
-						'csv' => we_base_request::_(we_base_request::INT, 'metadataCsv', '', $key)
+						'csv' => we_base_request::_(we_base_request::INT, 'metadataCsv', '', $key),
+						'closed' => we_base_request::_(we_base_request::INT, 'metadataClosed', '', $key)
 				)));
 			}
 
@@ -209,6 +210,7 @@ function build_dialog($selected_setting = 'ui'){
 						'importFrom' => '',
 						'mode' => 'none',
 						'csv' => ($name === 'Keywords' ? 1 : 0),
+						'closed' => 0,
 					);
 				$field['tagname'] = g_l('weClass', '[' . $name . ']');
 				$field['isStandard'] = true;
@@ -223,7 +225,7 @@ function build_dialog($selected_setting = 'ui'){
 
 				if(empty($value['isStandard'])){
 					$row0 = '<td class="defaultfont" style="width:210px;"><strong>' . g_l('metadata', '[customfield]') . '</strong></td>
-<td class="defaultfont" style="width:110px;" colspan="2"><strong>Zusatzfeld' . g_l('metadata', '[type]') . '</strong></td>';
+<td class="defaultfont" style="width:110px;" colspan="2"><strong>' . g_l('metadata', '[type]') . '</strong></td>';
 					$row1 = '<td width="210" style="padding-right:5px;">' . we_html_tools::htmlTextInput('metadataTag[' . $key . ']', 24, $value['tag'], 255, "", "text", 205) . '</td>
 <td width="200">' . we_html_tools::htmlSelect('metadataType[' . $key . ']', $_metadata_types, 1, $value['type'], false, array('class' => "defaultfont", "onchange" => "toggleType(this, " . $key . ")")) . '</td>
 <td style="text-align:right" width="30">' . we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(" . $_i . ")") . '</td>';
@@ -258,11 +260,11 @@ function build_dialog($selected_setting = 'ui'){
 			</tr>
 			<tr id="metadataRow3_' . $key . '">
 				<td style="padding-bottom:1px;padding-right:5px;">
-					<div class="small">Vorschlagsliste</div>' . we_html_tools::htmlSelect('metadataMode[' . $key . ']', $_metadata_modes, 1, $value['mode'], false, array(($value['type'] === 'textfield' ? '' : 'disabled') => ($value['type'] === 'textfield' ? '' : '1'), 'class' => "defaultfont", 'style' => "width:98%", 'onchange' => "togglePropositionTable(this, " . $key . ");")) . '
+					<div class="small" id="metadataModeDiv0_' . $key . '">Vorschlagsliste</div><div id="metadataModeDiv1_' . $key . '">' . we_html_tools::htmlSelect('metadataMode[' . $key . ']', $_metadata_modes, 1, $value['mode'], false, array(($value['type'] === 'textfield' ? '' : 'disabled') => ($value['type'] === 'textfield' ? '' : '1'), 'class' => "defaultfont", 'style' => "width:98%", 'onchange' => "togglePropositionTable(this, " . $key . ");")) . '</div>
 				</td>
 				<td colspan="2" style="padding-bottom:1px;">
-					<div class="small">&nbsp;</div>
-					<div>' . we_html_forms::checkboxWithHidden($value['csv'], 'metadataCsv[' . $key . ']', 'CSV-Modus') . '</div>
+					<div class="small" id="metadataProposalChecks0_' . $key . '">&nbsp;</div>
+					<div id="metadataProposalChecks1_' . $key . '">' . we_html_forms::checkboxWithHidden($value['csv'], 'metadataCsv[' . $key . ']', 'CSV') . we_html_forms::checkboxWithHidden($value['closed'], 'metadataClosed[' . $key . ']', 'abgeschlossen') . '</div>
 				</td>
 			</tr>
 			<tr id="metadataRow4_' . $key . '">
@@ -319,7 +321,8 @@ var phpdata={
 	typeSel:"' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataType[__we_new_id__]', $_metadata_types, 1, 'textfield', false, array('class' => 'defaultfont', 'onchange' => 'toggleType(this, __we_new_id__)')))) . '",
 	fieldSel:"' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataType[__we_new_id__]', $_metadata_fields, 1, '', false, array('class' => 'defaultfont', 'style' => 'width:100%', 'onchange' => 'addFieldToInput(this,__we_new_id__)')))) . '",
 	modeSel:"' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataMode[__we_new_id__]', $_metadata_modes, 1, 'none', false, array('class' => "defaultfont", 'style' => 'width:100%', 'onchange' => 'togglePropositionTable(this, __we_new_id__)')))) . '",
-	csvCheck:"' . str_replace("\n", "\\n", addslashes(we_html_forms::checkboxWithHidden(0, 'metadataCsv[__we_new_id__]', 'CSV-Modus'))) . '",
+	csvCheck:"' . str_replace("\n", "\\n", addslashes(we_html_forms::checkboxWithHidden(0, 'metadataCsv[__we_new_id__]', 'CSV'))) . '",
+	closedCheck:"' . str_replace("\n", "\\n", addslashes(we_html_forms::checkboxWithHidden(0, 'metadataClosed[__we_new_id__]', 'abgeschlossen'))) . '",
 	addPropositionBtn:"' . str_replace("\n", "\\n", addslashes(we_html_button::create_button(we_html_button::PLUS, 'javascript:addProposition(this, __we_new_id__)'))) . '",
 	trashButton:\'' . we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(__we_new_id__)") . '\',
 	proposalInp:"' . addslashes(we_html_tools::htmlTextInput('metadataProposal[__we_meta_id__][__we_prop_id__]', 24, "", 255, "", "text", 310)) . '",

@@ -36,11 +36,16 @@ function togglePropositionTable(sel, index) {
 }
 
 function toggleType(sel, index) {
-	var row = document.getElementById("proposalTable_" + index);
-	var selMode = document.forms[0].elements["metadataMode[" + index + "]"];
+	var row = document.getElementById("proposalTable_" + index),
+		selMode = document.forms[0].elements["metadataMode[" + index + "]"],
+		checksDiv0 = document.getElementById('metadataProposalChecks0_' + index),
+		checksDiv1 = document.getElementById('metadataProposalChecks1_' + index),
+		modeDiv0 = document.getElementById('metadataModeDiv0_' + index),
+		modeDiv1 = document.getElementById('metadataModeDiv1_' + index);
 
-	row.style.display = sel.value !== "textfield" ? "none" : (selMode.options[selMode.selectedIndex].value === "none" ? "none" : "block");
-	selMode.disabled = sel.value === "textfield" ? false : true;
+	row.style.display = (sel.value !== "textfield" ? "none" : (selMode.options[selMode.selectedIndex].value === "none" ? "none" : "block"));
+	//selMode.disabled = sel.value === "textfield" ? false : true;
+	checksDiv0.style.display = checksDiv1.style.display = modeDiv0.style.display = modeDiv1.style.display = sel.value === "textfield" ? 'block' : 'none';
 }
 
 
@@ -153,11 +158,11 @@ function addRow() {
 		newRow.setAttribute("id", "metadataRow3_" + newID);
 		cell = document.createElement("TD");
 		cell.style.paddingBottom = "1px";
-		cell.innerHTML = '<div class="small">' + g_l.proposals + '</div>' + phpdata.modeSel.replace(/__we_new_id__/g, newID);
+		cell.innerHTML = '<div class="small" id="metadataModeDiv0_' + newID + '">' + g_l.proposals + '</div><div id="metadataModeDiv1_' + newID + '">' + phpdata.modeSel.replace(/__we_new_id__/g, newID) + '</div>';
 		newRow.appendChild(cell);
 		cell = document.createElement("TD");
 		cell.setAttribute("colspan", 2);
-		cell.innerHTML = '<div class="small">&nbsp;</div>' + phpdata.csvCheck.replace(/__we_new_id__/g, newID) + '<div></div>';
+		cell.innerHTML = '<div class="small" id="metadataProposalChecks0_' + newID + '">&nbsp;</div><div id="metadataProposalChecks1_' + newID + '">' + phpdata.csvCheck.replace(/__we_new_id__/g, newID) + phpdata.closedCheck.replace(/__we_new_id__/g, newID) + '</div>';
 		newRow.appendChild(cell);
 		elem.appendChild(newRow);
 

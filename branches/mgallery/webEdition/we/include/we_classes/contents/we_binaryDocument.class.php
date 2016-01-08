@@ -242,7 +242,6 @@ class we_binaryDocument extends we_document{
 	function formMetaData(){
 		// first we fetch all defined metadata fields from tblMetadata:
 		$_defined_fields = we_metadata_metaData::getDefinedMetaDataFields();
-		$_defined_values = we_metadata_metaData::getDefinedMetaValues(true, true);
 
 		// show an alert if there are none
 		if(empty($_defined_fields)){
@@ -260,6 +259,7 @@ class we_binaryDocument extends we_document{
 				$_type = $_defined_fields[$i]['type'];
 				$_mode = $_defined_fields[$i]['mode'];
 				$_csv = boolval($_defined_fields[$i]['csv']);
+				$_closed = boolval($_defined_fields[$i]['closed']);
 
 				switch($_type){
 					case 'textarea':
@@ -271,10 +271,9 @@ class we_binaryDocument extends we_document{
 					case 'date':
 						$_inp = we_html_tools::htmlFormElementTable(we_html_tools::getDateInput2('we_' . $this->Name . '_date[' . $_tagName . ']', abs($this->getElement($_tagName)), true), $_tagName);
 						break;
+					case 'textfield':
 					default:
-						$_inp = $_mode === 'none' || !isset($_defined_values[$_tagName]) || !is_array($_defined_values[$_tagName]) ?
-							$this->formInput2(508, $_tagName, 23, "txt", ' onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"') :
-								$this->formInput2WithSelect(308, $_tagName, 23, 'txt', $attribs = '', $_defined_values[$_tagName], 200, false, true, $_csv);
+						$_inp = $this->formMetaField($_tagName);
 				}
 
 				$_content->setCol($i, 0, array("colspan" => 5, 'style' => 'padding-bottom:5px;'), $_inp);
