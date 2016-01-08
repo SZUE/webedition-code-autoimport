@@ -68,13 +68,13 @@ class we_navigation_cache{
 				false);
 	}
 
-	static function getCachedRule(){//FIXME: this file is never written!
+	static function getCachedRule(){
 		return (file_exists(($_cache = WE_CACHE_PATH . 'navigation_rules.php')) ?
 				we_unserialize(we_base_file::load($_cache)) :
 				false);
 	}
 
-	static function saveRules($rules){//FIXME: this file is never written!
+	static function saveRules($rules){
 		return we_base_file::save(WE_CACHE_PATH . 'navigation_rules.php', we_serialize($rules, 'serialize', false, 9));
 	}
 
