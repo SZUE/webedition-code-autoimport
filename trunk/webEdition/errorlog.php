@@ -166,7 +166,7 @@ switch(we_base_request::_(we_base_request::STRING, 'function', 'last')){
 Version: ' . WE_VERSION . '
 SVN: ' . WE_SVNREV . ' ' . WE_VERSION_BRANCH . ' ' . WE_VERSION_SUPP . $sep .
 			'System:
-PHP: ' . phpversion() . '
+PHP: ' . PHP_VERSION . '
 max_execution_time: ' . ini_get('max_execution_time') . '
 memory_limit: ' . ini_get('memory_limit') . '
 short_open_tag: ' . ini_get('short_open_tag') . '
