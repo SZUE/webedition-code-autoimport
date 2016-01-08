@@ -34,7 +34,7 @@ class we_util_Sys_Php{
 	 * @return String phpversion string without any manufacturer-part (i.e. set on ubuntu)
 	 */
 	public static function version(){
-		return preg_replace('/[a-z-]/', '', phpversion());
+		return preg_replace('/[a-z-]/', '', PHP_VERSION);
 	}
 
 	/**

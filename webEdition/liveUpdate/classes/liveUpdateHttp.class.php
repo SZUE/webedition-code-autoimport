@@ -58,7 +58,7 @@ class liveUpdateHttp{
 		// send headers
 		fputs($response, "GET $address HTTP/1.0\r\n");
 		//fputs($response, "Proxy-Connection: Keep-Alive\r\n");
-		fputs($response, 'User-Agent: PHP ' . phpversion() . "\r\n");
+		fputs($response, 'User-Agent: PHP ' . PHP_VERSION . "\r\n");
 		fputs($response, "Pragma: no-cache\r\n");
 		if($proxy_user != ""){
 			fputs($response, "Proxy-authorization: Basic $realm\r\n");
