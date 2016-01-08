@@ -137,7 +137,7 @@ function getHttpThroughProxy($url, $proxyhost, $proxyport, $proxy_user, $proxy_p
 	// send headers
 	fputs($file, "GET $url HTTP/1.0\r\n");
 	fputs($file, "Proxy-Connection: Keep-Alive\r\n");
-	fputs($file, "User-Agent: PHP " . phpversion() . "\r\n");
+	fputs($file, "User-Agent: PHP " . PHP_VERSION . "\r\n");
 	fputs($file, "Pragma: no-cache\r\n");
 	if($proxy_user != ''){
 		fputs($file, "Proxy-authorization: Basic $realm\r\n");
@@ -1080,11 +1080,12 @@ function we_templatePost(){
 			(SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_POSTDOC) &&
 			(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0))//not inside an included Doc
 		){ //is set to Post or not set (new default)
+			session_write_close();
 			flush();
 			if(function_exists('fastcgi_finish_request')){
 				fastcgi_finish_request();
 			}
-			session_write_close();
+			ignore_user_abort(true);
 			we_schedpro::trigger_schedule();
 		}
 	}
