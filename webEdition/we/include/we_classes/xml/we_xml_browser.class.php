@@ -166,7 +166,7 @@ class we_xml_browser extends we_xml_parser{
 		// send headers
 		fputs($file, "GET $url HTTP/1.0\r\n");
 		fputs($file, "Proxy-Connection: Keep-Alive\r\n");
-		fputs($file, "User-Agent: PHP " . phpversion() . "\r\n");
+		fputs($file, "User-Agent: PHP " . PHP_VERSION . "\r\n");
 		fputs($file, "Pragma: no-cache\r\n");
 		if($proxy_user != ''){
 			fputs($file, "Proxy-authorization: Basic $realm\r\n");

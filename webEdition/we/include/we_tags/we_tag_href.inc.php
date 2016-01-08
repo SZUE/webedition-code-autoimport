@@ -91,8 +91,14 @@ function we_tag_href($attribs){
 				return preg_replace($urlReplace, array_keys($urlReplace), $href);
 			}
 		}
+		if($include){
+			if($include_path && file_exists($include_path)){
+				include($include_path);
+			}
+			return '';
+		}
 
-		return ($include ? ($include_path && file_exists($include_path) ? '<?php include("' . $include_path . '"); ?>' : '') : $href);
+		return $href;
 	}
 
 	if($rootdir[0] != '/'){
@@ -145,6 +151,11 @@ function we_tag_href($attribs){
 			$yuiSuggest->setWidth($size);
 	}
 
+	ob_start();
+	if($include && $include_path && file_exists($include_path)){
+		include($include_path);
+	}
+
 	return
 		'<table class="weEditTable padding0 spacing2">' .
 		($type == we_base_link::TYPE_ALL || $type == we_base_link::TYPE_INT ? '
@@ -171,6 +182,5 @@ function we_tag_href($attribs){
 	<td class="weEditmodeStyle">' . $but2 . '</td>
 	<td class="weEditmodeStyle">' . $trashbut2 . '</td>
 </tr>' : '') . '
-</table>' .
-		($include && $include_path && file_exists($include_path) ? '<?php include("' . $include_path . '"); ?>' : '');
+</table>' . ob_get_clean();
 }
