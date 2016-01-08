@@ -76,7 +76,7 @@ function we_profiler($start = true){
 	}
 }
 
-function we_tag($name, $attribs = array(), $content = '',  $internal = false){
+function we_tag($name, $attribs = array(), $content = '', $internal = false){
 	//keep track of editmode
 	$edMerk = isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : '';
 	//FIXME: do we support this????
@@ -227,6 +227,7 @@ function printElement($code){
 		echo $code;
 		return;
 	}
+	t_e('deprecated', 'we-tag contained php code which needs evaluation, this is deprecated, use parseTag instead', $code);
 	//FIXME:eval????
 	eval('?>' . str_replace(array('<?php', '?>'), array('<?php ', ' ?>'), $code));
 }
@@ -273,8 +274,8 @@ function weTag_getAttribute($name, $attribs, $default = '', $type = we_base_requ
 	$regs = array();
 	if($useGlobal && !is_array($value) && preg_match('|^\\\\?\$([^\[]+)(\[.*\])?|', $value, $regs)){
 		$value = (isset($regs[2]) ?
-				getArrayValue($GLOBALS, $regs[1], $regs[2]) :
-				(isset($GLOBALS[$regs[1]]) ? $GLOBALS[$regs[1]] : ''));
+						getArrayValue($GLOBALS, $regs[1], $regs[2]) :
+						(isset($GLOBALS[$regs[1]]) ? $GLOBALS[$regs[1]] : ''));
 	}
 
 	$value = we_base_request::filterVar($value, (is_bool($type) ? we_base_request::BOOL : $type), $default);
@@ -298,12 +299,12 @@ function cutSimpleText($text, $len){
 	$text = substr($text, 0, $len);
 	//cut to last whitespace, if any.
 	return substr($text, 0, max(array(
-			strrpos($text, ' '),
-			strrpos($text, '.'),
-			strrpos($text, ','),
-			strrpos($text, "\n"),
-			strrpos($text, "\t"),
-		))? : $len
+				strrpos($text, ' '),
+				strrpos($text, '.'),
+				strrpos($text, ','),
+				strrpos($text, "\n"),
+				strrpos($text, "\t"),
+			))? : $len
 	);
 }
 
@@ -371,8 +372,8 @@ function we_getDocForTag($docAttr, $maindefault = false){
 			return $GLOBALS['WE_MAIN_DOC'];
 		default :
 			return ($maindefault ?
-					$GLOBALS['WE_MAIN_DOC'] :
-					$GLOBALS['we_doc']);
+							$GLOBALS['WE_MAIN_DOC'] :
+							$GLOBALS['we_doc']);
 	}
 }
 
@@ -499,7 +500,7 @@ function we_getSelectField($name, $value, $values, $attribs = array(), $addMissi
 	if((!$isin) && $addMissing && $value != ''){
 		$content .= getHtmlTag('option', array(
 			'value' => oldHtmlspecialchars($value), 'selected' => 'selected'
-			), oldHtmlspecialchars($value), true);
+				), oldHtmlspecialchars($value), true);
 	}
 	return getHtmlTag('select', $attribs, $content, true);
 }
