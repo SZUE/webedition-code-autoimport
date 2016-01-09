@@ -120,7 +120,7 @@ weSearch = {
 		this.conf.editorBodyFrame.document.getElementsByClassName('selectSearchNumber').value = dataElem.getAttribute('data-number');
 		this.conf.editorBodyFrame.document.we_form.elements['setView' + this.conf.whichsearch].value = dataElem.getAttribute('data-setView');
 		this.conf.editorBodyFrame.document.we_form.elements['Order' + this.conf.whichsearch].value = dataElem.getAttribute('data-order');
-		this.conf.editorBodyFrame.document.we_form.elements['mode'].value = dataElem.getAttribute('data-mode');
+		this.conf.editorBodyFrame.document.we_form.elements.mode.value = dataElem.getAttribute('data-mode');
 	},
 	ajaxCallbackResultList: {
 		success: function (o) {
@@ -395,7 +395,7 @@ weSearch = {
 				break;
 			case WE().consts.weSearch.SEARCH_ADV:
 				rows = (document.getElementById('filterTableAdvSearch').rows.length - 1);
-				h = frameH - (290 + (rows*32)); 
+				h = frameH - (290 + (rows*32));
 				break;
 			case WE().consts.weSearch.SEARCH_DOCLIST:top.console.log('hier');
 				rows = (document.getElementById('filterTableDoclistSearch').rows.length);
@@ -520,7 +520,7 @@ weSearch = {
 				this.search(false);
 			}
 		}
-		this.sizeScrollContent()
+		this.sizeScrollContent();
 	},
 	delRow: function (id) {
 		var scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch),

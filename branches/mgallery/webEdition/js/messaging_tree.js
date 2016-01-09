@@ -200,28 +200,24 @@ function drawTree() {
 
 container.prototype.drawGroup = function (nf, ai, zweigEintrag) {
 	var newAst = zweigEintrag;
-	var ret = "<a href=\"javascript:top.content.treeData.openClose('" + nf[ai].id + "',1)\"><span class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open ? "minus" : "plus") + "-square-o fa-stack-1x'></i></span></a>";
+	var ret = "<span onclick=\"top.content.treeData.openClose('" + nf[ai].id + "',1)\" class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open ? "minus" : "plus") + "-square-o fa-stack-1x'></i></span>";
 	if (deleteMode) {
 		if (nf[ai].id != -1) {
-			trg = "javascript:top.content.check('img_" + nf[ai].id + "');";
-			ret += "<a href=\"" + trg + "\"><i class=\"fa fa-" + (nf[ai].checked ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + nf[ai].id + '"></i></a>';
+			trg = "top.content.check('img_" + nf[ai].id + "');";
+			ret += "<i onclick=\"" + trg + "\" class=\"fa fa-" + (nf[ai].checked ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + nf[ai].id + '"></i>';
 		}
 	} else {
 		trg = "doClick(" + nf[ai].id + ");return true;";
 	}
 
-	ret += "<a id='_" + nf[ai].id + "' href=\"javascript://\" onclick=\"" + trg + "\">" +
+	ret += "<span id='_" + nf[ai].id + "' onclick=\"" + trg + "\">" +
 					WE().util.getTreeIcon(nf[ai].contenttype, nf[ai].open) +
-					"</a>" +
-					"<a id=\"_" + nf[ai].id + "\" href=\"javascript://\" onclick=\"" + trg + "\">" +
-					"" + translate(nf[ai].text) + "</a>" +
+					"</span>" +
+					"<span id=\"_" + nf[ai].id + "\" onclick=\"" + trg + "\">" +
+					 translate(nf[ai].text) + "</span>" +
 					"<br/>";
 	if (nf[ai].open) {
-		if (ai == nf.len) {
-			newAst += '<span class="treeKreuz"></span>';
-		} else {
-			newAst += '<span class="strich treeKreuz "></span>';
-		}
+		newAst += '<span class="' + (ai === nf.len ? 'strich ' : '') + 'treeKreuz"></span>';
 		ret += this.draw(nf[ai].id, newAst);
 	}
 	return ret;
@@ -230,21 +226,18 @@ container.prototype.drawGroup = function (nf, ai, zweigEintrag) {
 container.prototype.drawItem = function (nf, ai) {
 	var ret = '<span class="treeKreuz ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + '"></span>';
 
-	if (nf[ai].id != -1) {
-		ret += '<a id="_' + nf[ai].id + '" href="javascript://" onclick="doClick(' + nf[ai].id + ');return true;">';
-	}
 	if (deleteMode) {
 		if (nf[ai].id != -1) {
-			trg = "javascript:top.content.check('img_" + nf[ai].id + "');";
-			ret += '<a href="' + trg + '"><i class="fa fa-' + (nf[ai].checked ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + nf[ai].id + '"></i>';
+			trg = "top.content.check('img_" + nf[ai].id + "');";
+			ret += '<i onclick="' + trg + '" class="fa fa-' + (nf[ai].checked ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + nf[ai].id + '"></i>';
 		}
 	} else {
-		ret += '<a id="_' + nf[ai].id + "\" href=\"javascript://\" onclick=\"doClick(" + nf[ai].id + ");return true;\">" +
+		ret += '<span id="_' + nf[ai].id + "\" onclick=\"doClick(" + nf[ai].id + ");\">" +
 						WE().util.getTreeIcon(nf[ai].contenttype, nf[ai].open) +
-						"</a>";
-		trg = "doClick(" + nf[ai].id + ");return true;";
+						"</span>";
+		trg = "doClick(" + nf[ai].id + ");";
 	}
-	ret += "<a id=\"_" + nf[ai].id + "\" href=\"javascript://\" onclick=\"" + trg + "\" style=\"color:black\">" + (parseInt(nf[ai].published) ? " <b>" : "") + translate(nf[ai].text) + (parseInt(nf[ai].published) ? " </b>" : "") + "</a><br/>";
+	ret += "<span id=\"_" + nf[ai].id + "\" onclick=\"" + trg + "\" style=\"color:black\">" + (parseInt(nf[ai].published) ? " <b>" : "") + translate(nf[ai].text) + (parseInt(nf[ai].published) ? " </b>" : "") + "</span><br/>";
 	return ret;
 };
 
@@ -279,7 +272,7 @@ container.prototype.openClose = function (id, status) {
 container.prototype.search = function (eintrag) {
 	var nf = new container();
 	for (var ai = 1; ai <= this.len; ai++) {
-		if ((this[ai].typ == "group") || (this[ai].typ == "item")) {
+		if ((this[ai].typ === "group") || (this[ai].typ === "item")) {
 			if (this[ai].parentid == eintrag) {
 				nf.add(this[ai]);
 			}
@@ -312,7 +305,7 @@ function get_index(id) {
 function folder_added(parent_id) {
 	var ind = get_index(parent_id);
 	if (ind > -1) {
-		if (treeData[ind].typ == "item") {
+		if (treeData[ind].typ === "item") {
 			treeData[ind].typ = "group";
 			treeData[ind].open = 0;
 			treeData[ind].leaf_count = 1;

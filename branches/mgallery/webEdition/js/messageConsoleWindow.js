@@ -92,5 +92,5 @@ function messageConsoleWindow(win) {
 	};
 }
 
-messageConsoleWindow = new messageConsoleWindow(window);
-messageConsoleWindow.register();
+var messageConsoleWin = new messageConsoleWindow(window);
+messageConsoleWin.register();

@@ -168,24 +168,17 @@ container.prototype = {
 	},
 	drawThreeDots: function (nf, ai) {
 		return '<span class="treeKreuz kreuzungend"></span>' +
-						'<a name="_' + nf[ai].id + '" href="javascript://"  onclick="' + this.topFrame + ".treeData.setSegment('" + nf[ai].id + '\');return true;">' +
-						'<span class="threedots"><i class="fa fa-' + (nf[ai].contenttype == 'arrowup' ? 'caret-up' : 'caret-down') + '"></i></span></a><br/>';
+						'<span name="_' + nf[ai].id + '" onclick="' + this.topFrame + ".treeData.setSegment('" + nf[ai].id + '\');" class="threedots"><i class="fa fa-' + (nf[ai].contenttype == 'arrowup' ? 'caret-up' : 'caret-down') + '"></i></span><br/>';
 	},
 	drawItem: function (nf, ai) {
 		return '<span class="treeKreuz ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + '"></span>' + this.clickHandler(nf[ai]);
 	},
 	drawGroup: function (nf, ai, zweigEintrag) {
-		var newAst = zweigEintrag;
-		row = "<a href=\"javascript:" + this.topFrame + ".setScrollY();" + this.topFrame + ".treeData.openClose('" + nf[ai].id + "')\"><span class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open ? "minus" : "plus") + "-square-o fa-stack-1x'></i></span></a>";
-		row += this.clickHandler(nf[ai]);
-		if (nf[ai].open) {
-			newAst += (ai == nf.len ?
-							"<span class=\"treeKreuz\"></span>" :
-							'<span class="strich treeKreuz "></span>'
-							);
-			row += this.draw(nf[ai].id, newAst);
-		}
-		return row;
+		return  "<span onclick=\"" + this.topFrame + ".setScrollY();" + this.topFrame + ".treeData.openClose('" + nf[ai].id + "')\" class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open ? "minus" : "plus") + "-square-o fa-stack-1x'></i></span>" +
+						this.clickHandler(nf[ai]) +
+						(nf[ai].open ?
+										this.draw(nf[ai].id, zweigEintrag + '<span class="' + (ai == nf.len ? "" : "strich ") + 'treeKreuz "></span>') :
+										"");
 	},
 	drawSort: function (nf, ai, zweigEintrag) {
 		//overwritten
@@ -247,7 +240,7 @@ container.prototype = {
 		}
 	},
 	clickHandler: function (cur) {
-		var row = "<span>";
+		var row = "<span ";
 		var href = false;
 		var select = false;
 		if (this.selection_table == this.table && cur.id == this.selection) {
@@ -271,14 +264,15 @@ container.prototype = {
 				break;
 			default:
 				href = true;
-				row += "<a ondragstart=\"treeStartDrag(event,'" + (cur.contenttype === 'folder' ? 'dragFolder' : 'dragItem') + "','" + cur.table + "'," + parseInt(cur.id) + ", '" + cur.contenttype + "')\" name=\"_" + cur.id + "\" href=\"javascript://\"  ondblclick=\"" + this.topFrame + ".wasdblclick=true;clearTimeout(" + this.topFrame + ".tout);" + this.topFrame + ".doClick('" + cur.id + "');return true;\" onclick=\"" + this.topFrame + ".tout=setTimeout('if(!" + this.topFrame + ".wasdblclick){" + this.topFrame + ".doClick(\\'" + cur.id + "\\'); }else{ " + this.topFrame + ".wasdblclick=false;}',300);return true;\" onmouseover=\"" + this.topFrame + ".info('ID:" + cur.id + "')\" onmouseout=\"" + this.topFrame + ".info(' ');\">";
+				row += "ondragstart=\"treeStartDrag(event,'" + (cur.contenttype === 'folder' ? 'dragFolder' : 'dragItem') + "','" + cur.table + "'," + parseInt(cur.id) + ", '" + cur.contenttype + "')\" name=\"_" + cur.id + "\" ondblclick=\"" + this.topFrame + ".wasdblclick=true;clearTimeout(" + this.topFrame + ".tout);" + this.topFrame + ".doClick('" + cur.id + "');return true;\" onclick=\"" + this.topFrame + ".tout=setTimeout('if(!" + this.topFrame + ".wasdblclick){" + this.topFrame + ".doClick(\\'" + cur.id + "\\'); }else{ " + this.topFrame + ".wasdblclick=false;}',300);return true;\" onmouseover=\"" + this.topFrame + ".info('ID:" + cur.id + "')\" onmouseout=\"" + this.topFrame + ".info(' ');\"";
 		}
-		row += (select && href ? '<a href="javascript:' + this.topFrame + ".treeData.checkNode('img_" + cur.id + "')\">" : '') +
+		row += (select && href ? 'onclick="' + this.topFrame + ".treeData.checkNode('img_" + cur.id + "')\"" : '') +
+						//close open span tag
+						">" +
 						WE().util.getTreeIcon(cur.contenttype, cur.open, cur.text.replace(/^.*\./, ".")) +
 						(cur.inschedule > 0 ? '<i class="fa fa-clock-o"></i> ' : '') +
 						(select && href ? '<i class="fa fa-' + (cur.checked ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + cur.id + '"></i>' : '') +
 						'<label id="lab_' + cur.id + '"' + (cur.tooltip !== "" ? ' title="' + (cur.tooltip ? cur.tooltip : cur.id) + '"' : "") + ' class="' + cur.getLayout() + (cur.class ? ' ' + cur.class : '') + '">' + cur.text + "</label>" +
-						(href ? "</a>" : "") +
 						"</span><br/>";
 		return row;
 	},

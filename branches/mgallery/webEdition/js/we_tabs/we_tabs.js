@@ -41,7 +41,6 @@ WE().layout.we_tabs.prototype = {
 		this.doc.getElementById(tab).className = "tabActive";
 	},
 	setTabClass: function (elem) {
-		var arr = [];
 		var els = this.doc.getElementsByTagName("*");
 		for (var i = 0; i < els.length; i++) {
 			if (els[i].className === "tabActive") {

@@ -89,7 +89,7 @@ function we_cmd() {
 			} else if (top.content.editor.edbody.loaded) {
 				if (top.content.editor.edbody.document.we_form.newone.value == 1) {
 					var name = prompt(WE().consts.g_l.weSearch.nameForSearch, "");
-					if (name == null) {
+					if (name === null) {
 						break;
 					} else {
 						top.content.editor.edbody.document.we_form.savedSearchName.value = name;

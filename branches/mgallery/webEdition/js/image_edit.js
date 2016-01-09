@@ -22,13 +22,13 @@
  */
 
 document.onkeyup = function(e) {
-	var e = (event != undefined) ? event : e;
+	e = (event !== undefined) ? event : e;
 	if (e.keyCode == 13) {
 		doOK();
 	} else if(e.keyCode == 27) {
 		top.close();
 	}
-}
+};
 
 function isSpecialKey(key) {
 	return (key >= 63232 && key <= 63235) || key == 8 || key == 63272 || key == 0 || key == 13;
@@ -70,7 +70,7 @@ function we_keep_ratio(inp, sel) {
 		var inp_change = null;
 		var sel_change = null;
 		var ratio = null;
-		var org = null
+		var org = null;
 
 		if (inp.name == "width") {
 			ratio = ratio_hw;
