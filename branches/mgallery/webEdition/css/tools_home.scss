@@ -21,38 +21,42 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 @import "config.scss";
-#tabelle{
-	background-color: #f4f4f4;
-	border-radius: 10px;
-	height: 220px;
-	left: 40px;
-	margin-top: 3px;
-	position: absolute;
-	top: 0px;
-	visibility: visible;
-	width: 251px;
-	box-shadow: 5px 5px 5px #555555;
-	z-index: 3;
+body.home{
+	background-color: #F0EFF0;
 
-	table{
-		width:100%;
+	#tabelle{
+		background-color: #f4f4f4;
+		border-radius: 10px;
+		height: 220px;
+		left: 40px;
+		margin-top: 3px;
+		position: absolute;
+		top: 0px;
+		visibility: visible;
+		width: 251px;
+		box-shadow: 5px 5px 5px #555555;
+		z-index: 3;
+
+		table{
+			width:100%;
+		}
+		td.titleline{
+			border: 1px solid #f0eff0;
+			border-top-right-radius: 10px;
+			border-top-left-radius:10px;
+			border-bottom:none;
+			font-family: $weFontBold;
+			text-align: center;
+			background: linear-gradient(#f0eff0,#D4D4D4);
+		}
 	}
-	td.titleline{
-		border: 1px solid #f0eff0;
-		border-top-right-radius: 10px;
-		border-top-left-radius:10px;
-		border-bottom:none;
-		font-family: $weFontBold;
-		text-align: center;
-		background: linear-gradient(#f0eff0,#D4D4D4);
+	#modimage{
+		position: absolute;
+		top: 131px;
+		left: 286px;
+		width: 335px;
+		height: 329px;
+		visibility: visible;
+		z-index: 1;
 	}
-}
-#modimage{
-	position: absolute;
-	top: 131px;
-	left: 286px;
-	width: 335px;
-	height: 329px;
-	visibility: visible;
-	z-index: 1;
 }

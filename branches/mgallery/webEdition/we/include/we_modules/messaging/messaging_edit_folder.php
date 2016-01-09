@@ -111,7 +111,7 @@ document.edit_folder.submit();
 			$specialfolder = false;
 		}
 
-		$input_tbl = '<table border="0" cellpadding="5" >
+		$input_tbl = '<table cellpadding="5" >
 	<tr>
 	  <td class="defaultfont">' . g_l('modules_messaging', '[folder_name]') . '</td>
 	  <td class="defaultfont">' . ($specialfolder ? ($n . we_html_tools::hidden("folder_name", $orgn)) : we_html_tools::htmlTextInput('folder_name', 24, $n, 24, 'onchange="top.content.setHot();"')) . '</td>

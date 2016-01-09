@@ -724,7 +724,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 					'size' => $size,
 					'path' => str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->getElement('data')),
 					'extension' => $this->Extension,
-					'size2' => $size2)) . '" border="0" />';
+					'size2' => $size2)) . '" />';
 	}
 
 	protected function getMetaDataReader($force = false){

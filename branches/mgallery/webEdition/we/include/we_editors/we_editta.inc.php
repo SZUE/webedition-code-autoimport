@@ -183,7 +183,7 @@ $parts[] = array(
 
 // FONTNAMES
 $select = we_html_tools::htmlSelect('tmp_fontnames', we_wysiwyg_editor::getAttributeOptions('fontnames'), 1, "", false, array('onchange' => "var elem=document.we_form.fontnames; var txt = this.options[this.selectedIndex].text; if(elem.value.split(',').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + ',' + txt) : txt;}this.selectedIndex=-1"));
-$table = '<table border="0" cellpadding="0" cellspacing="0">
+$table = '<table cellpadding="0" cellspacing="0">
 	<tr>
 		<td class="defaultfont" valign="top" align="right" style="width:90px;">fontnames&nbsp;</td><td colspan="5">' . $select . '<br/>' . we_html_tools::htmlTextInput('fontnames', 24, $we_doc->getElement($name . 'fontnames'), 1024, '', 'text', 396, 0) . '</td>
 	</tr>
@@ -196,7 +196,7 @@ $parts[] = array(
 
 // FONTNAMES
 $select = we_html_tools::htmlSelect('tmp_fontsizes', we_wysiwyg_editor::getAttributeOptions('fontsizes'), 1, "", false, array('onchange' => "var elem=document.we_form.fontsizes; var txt = this.options[this.selectedIndex].text; if(elem.value.split(',').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + ',' + txt) : txt;}this.selectedIndex=-1"));
-$table = '<table border="0" cellpadding="0" cellspacing="0">
+$table = '<table cellpadding="0" cellspacing="0">
 	<tr>
 		<td class="defaultfont" valign="top" align="right" style="width:90px">fontsizes&nbsp;</td><td colspan="5">' . $select . '<br/>' . we_html_tools::htmlTextInput('fontsizes', 24, $we_doc->getElement($name . 'fontsizes'), 1024, '', 'text', 396, 0) . '</td>
 	</tr>
@@ -209,7 +209,7 @@ $parts[] = array(
 
 // FORMATS
 $select = we_html_tools::htmlSelect('tmp_formats', we_wysiwyg_editor::getAttributeOptions('formats'), 1, "", false, array('onchange' => "var elem=document.we_form.formats; var txt = this.options[this.selectedIndex].text; if(elem.value.split(',').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + ',' + txt) : txt;}this.selectedIndex=-1"));
-$table = '<table border="0" cellpadding="0" cellspacing="0">
+$table = '<table cellpadding="0" cellspacing="0">
 	<tr>
 		<td class="defaultfont" valign="top" align="right" style="width:90px;">formats&nbsp;</td><td colspan="5">' . $select . '<br/>' . we_html_tools::htmlTextInput('formats', 24, $we_doc->getElement($name . 'formats'), 1024, '', 'text', 396, 0) . '</td>
 	</tr>
@@ -221,7 +221,7 @@ $parts[] = array(
 );
 
 // CLASSES
-$table = '<table border="0" cellpadding="0" cellspacing="0">
+$table = '<table cellpadding="0" cellspacing="0">
 	<tr>
 		<td class="defaultfont" valign="top" align="right" style="width:90px;">classes&nbsp;</td><td colspan="5">' . we_html_tools::htmlTextInput('cssClasses', 24, oldHtmlspecialchars($we_doc->getElement($name . "cssClasses")), 1024, '', 'text', 396, 0) . '</td>
 	</tr>

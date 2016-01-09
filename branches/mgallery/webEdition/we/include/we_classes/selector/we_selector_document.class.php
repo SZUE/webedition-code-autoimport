@@ -444,7 +444,7 @@ top.makeNewDocument = true;' .
 							'path' => str_replace($_SERVER['DOCUMENT_ROOT'], '', $result['Path']),
 							'extension' => $result['Extension'],
 							'size2' => 200));
-					$_imagepreview = "<a href='" . $result['Path'] . "' target='_blank' style='text-align:center'><img src='" . $_thumbpath . "' border='0' id='previewpic'></a>";
+					$_imagepreview = "<a href='" . $result['Path'] . "' target='_blank'><img src='" . $_thumbpath . "' border='0' id='previewpic'></a>";
 				}
 			}
 
@@ -617,7 +617,7 @@ top.makeNewDocument = true;' .
 
 			$out .= '<table class="default" width="100%">';
 			if(!empty($_imagepreview)){
-				$out .= "<tr><td colspan='2' style='vertical-align:middle;text-align:center;' class='image' height='160' bgcolor='#EDEEED'>" . $_imagepreview . "</td></tr>";
+				$out .= "<tr><td colspan='2' class='image'>" . $_imagepreview . "</td></tr>";
 			}
 
 			foreach($_previewFields as $_part){

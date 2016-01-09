@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -25,6 +26,7 @@
 we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT);
 
 class we_export_frames extends we_modules_frame{
+
 	var $SelectionTree;
 	var $_space_size = 130;
 	var $_width_size = 535;
@@ -82,8 +84,8 @@ function setTab(tab) {
 	parent.edbody.toggle("tab"+tab);
 	top.content.activ_tab=tab;
 }' .
-				($this->View->export->ID ? '' : 'top.content.activ_tab=1;') .
-				($this->View->export->IsFolder == 1 ? 'top.content.activ_tab=1;' : ''));
+						($this->View->export->ID ? '' : 'top.content.activ_tab=1;') .
+						($this->View->export->IsFolder == 1 ? 'top.content.activ_tab=1;' : ''));
 
 		$table = new we_html_table(array("style" => 'width:100%;margin-top:3px', 'class' => 'default'), 1, 1);
 
@@ -93,14 +95,14 @@ function setTab(tab) {
 
 		//TODO: we have the following body in several modules!
 		$body = we_html_element::htmlBody(array('onresize' => 'weTabs.setFrameSize()', 'onload' => 'weTabs.setFrameSize()', 'id' => 'eHeaderBody'), we_html_element::htmlDiv(array('id' => 'main'), we_html_element::htmlDiv(array('id' => 'headrow'), we_html_element::htmlNobr(
-							we_html_element::htmlB(str_replace(" ", "&nbsp;", g_l('export', '[export]')) . ':&nbsp;') .
-							we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'), '<b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b>'
-							)
-						)
-					) .
-					$we_tabs->getHTML()
-				) .
-				we_html_element::jsElement($extraJS)
+												we_html_element::htmlB(str_replace(" ", "&nbsp;", g_l('export', '[export]')) . ':&nbsp;') .
+												we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'), '<b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b>'
+												)
+										)
+								) .
+								$we_tabs->getHTML()
+						) .
+						we_html_element::jsElement($extraJS)
 		);
 
 		return $this->getHTMLDocument($body, $tabsHead);
@@ -163,8 +165,8 @@ function hideProgress() {
 		$table2->setCol(0, 4, array("id" => "progress", "style" => "display: none"), $progressbar->getHtml());
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array('id' => 'footerBody'), we_html_element::htmlForm(array(), $table2->getHtml())
-				), (isset($progressbar) ? $progressbar->getJSCode() : "") . $js
+						we_html_element::htmlBody(array('id' => 'footerBody'), we_html_element::htmlForm(array(), $table2->getHtml())
+						), (isset($progressbar) ? $progressbar->getJSCode() : "") . $js
 		);
 	}
 
@@ -189,9 +191,9 @@ function addLog(text){
 	top.content.editor.edbody.document.getElementById("log").scrollTop = 50000;
 }
 ') .
-			we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('', $this->getHTMLTab1(), 30, '', -1, '', '', false, $preselect)) .
-			we_html_element::htmlDiv(array('id' => 'tab2', 'style' => ($tabNr == 2 ? '' : 'display: none')), we_html_multiIconBox::getHTML('', $this->getHTMLTab2(), 30, '', -1, '', '', false, $preselect)) .
-			we_html_element::htmlDiv(array('id' => 'tab3', 'style' => ($tabNr == 3 ? '' : 'display: none')), we_html_multiIconBox::getHTML('', $this->getHTMLTab3(), 30, '', -1, '', '', false, $preselect));
+				we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('', $this->getHTMLTab1(), 30, '', -1, '', '', false, $preselect)) .
+				we_html_element::htmlDiv(array('id' => 'tab2', 'style' => ($tabNr == 2 ? '' : 'display: none')), we_html_multiIconBox::getHTML('', $this->getHTMLTab2(), 30, '', -1, '', '', false, $preselect)) .
+				we_html_element::htmlDiv(array('id' => 'tab3', 'style' => ($tabNr == 3 ? '' : 'display: none')), we_html_multiIconBox::getHTML('', $this->getHTMLTab3(), 30, '', -1, '', '', false, $preselect));
 	}
 
 	function getHTMLTab1(){
@@ -271,7 +273,7 @@ function closeAllType(){
 
 		$table->setCol(0, 0, array('style' => 'padding-bottom:5px;'), we_html_tools::htmlSelect('SelectionType', $seltype, 1, $this->View->export->SelectionType, false, array('onchange' => "closeAllType();toggle(this.value);top.content.hot=1;"), 'value', $this->_width_size));
 		$table->setCol(1, 0, array("id" => "doctype", "style" => ($this->View->export->SelectionType === 'doctype' ? 'display:block' : 'display: none')), we_html_tools::htmlSelect('DocType', $docTypes, 1, $this->View->export->DocType, false, array('onchange' => 'top.content.hot=1;'), 'value', $this->_width_size) .
-			we_html_tools::htmlFormElementTable($this->formWeChooser(FILE_TABLE, ($this->_width_size - 120), 0, 'Folder', $this->View->export->Folder, 'FolderPath', $FolderPath), g_l('export', '[dir]'))
+				we_html_tools::htmlFormElementTable($this->formWeChooser(FILE_TABLE, ($this->_width_size - 120), 0, 'Folder', $this->View->export->Folder, 'FolderPath', $FolderPath), g_l('export', '[dir]'))
 		);
 		if(defined('OBJECT_TABLE')){
 			$table->setCol(2, 0, array("id" => "classname", "style" => ($this->View->export->SelectionType === "classname" ? "display:block" : "display: none")), we_html_tools::htmlSelect('ClassName', $classNames, 1, $this->View->export->ClassName, false, array('onchange' => 'top.content.hot=1;'), 'value', $this->_width_size)
@@ -285,11 +287,11 @@ function closeAllType(){
 		$table = new we_html_table(array('class' => 'default'), 3, 1);
 		$table->setCol(0, 0, array('style' => 'padding-bottom:5px;'), we_html_tools::htmlSelect('Selection', array('auto' => g_l('export', '[auto_selection]'), "manual" => g_l('export', '[manual_selection]')), 1, $this->View->export->Selection, false, array('onchange' => 'closeAllSelection();toggle(this.value);closeAllType();toggle(\'doctype\');top.content.hot=1;'), 'value', $this->_width_size));
 		$table->setCol(1, 0, array('id' => 'auto', 'style' => ($this->View->export->Selection === 'auto' ? 'display:block' : 'display: none')), we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_auto_selection]'), we_html_tools::TYPE_INFO, $this->_width_size) .
-			$selectionTypeHtml
+				$selectionTypeHtml
 		);
 
 		$table->setCol(2, 0, array('id' => 'manual', "style" => ($this->View->export->Selection === 'manual' ? "display:block" : "display: none")), we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_manual_selection]') . " " . g_l('export', '[select_export]'), we_html_tools::TYPE_INFO, $this->_width_size) .
-			$this->SelectionTree->getHTMLMultiExplorer($this->_width_size, 200)
+				$this->SelectionTree->getHTMLMultiExplorer($this->_width_size, 200)
 		);
 
 		$parts[] = array(
@@ -401,8 +403,8 @@ function closeAllType(){
 		if(($pid = we_base_request::_(we_base_request::INT, "pid")) !== false){
 
 			$js = ($pid ? '' :
-					$this->Tree->topFrame . '.treeData.clear();' .
-					$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.node.prototype.rootEntry(\'' . we_base_request::_(we_base_request::STRING, "pid") . '\',\'root\',\'root\'));');
+							$this->Tree->topFrame . '.treeData.clear();' .
+							$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.node.prototype.rootEntry(\'' . we_base_request::_(we_base_request::STRING, "pid") . '\',\'root\',\'root\'));');
 
 			return we_html_element::jsElement($js . $this->Tree->getJSLoadTree($pid, we_export_treeMain::getItemsFromDB($pid)));
 		}
@@ -412,7 +414,7 @@ function closeAllType(){
 	private function getDoExportCode(){
 		if(!permissionhandler::hasPerm("MAKE_EXPORT")){
 			return we_html_element::jsElement(
-					we_message_reporting::getShowMessageCall(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
+							we_message_reporting::getShowMessageCall(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 			);
 		}
 
@@ -462,12 +464,12 @@ function closeAllType(){
 
 			$all = $xmlExIm->RefTable->getCount();
 			$hiddens = we_html_element::htmlHiddens(array(
-					"pnt" => "cmd",
-					"all" => $all,
-					"cmd" => "do_export"));
+						"pnt" => "cmd",
+						"all" => $all,
+						"cmd" => "do_export"));
 
 			return we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => $this->frameset), $hiddens)
-					)
+							)
 			);
 		}
 		if($_SESSION['weS']['ExImPrepare']){
@@ -512,12 +514,12 @@ if(top.content.editor.edbody.addLog){
 			$xmlExIm->savePerserves();
 
 			$hiddens = we_html_element::htmlHiddens(array(
-					"pnt" => "cmd",
-					"all" => $all,
-					"cmd" => "do_export"));
+						"pnt" => "cmd",
+						"all" => $all,
+						"cmd" => "do_export"));
 
 			return we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => $this->frameset), $hiddens) . $_progress_update
-					)
+							)
 			);
 		}
 		$xmlExIm = new we_exim_XMLExport();
@@ -539,7 +541,7 @@ if(top.content.editor.edbody.addLog){
 				switch($ref->ContentType){
 					case 'weBinary':
 						$_progress_update .= "\n" .
-							we_html_element::jsElement('
+								we_html_element::jsElement('
 											if (top.content.editor.edbody.addLog) top.content.editor.edbody.addLog("' . addslashes(we_html_element::htmlB(g_l('export', '[weBinary]'))) . '&nbsp;&nbsp;' . $ref->ID . '");
 										') . "\n";
 						$proceed = false;
@@ -585,44 +587,50 @@ if (top.content.editor.edfooter.doProgress){
 		$_SESSION['weS']['ExImCurrentRef'] = $xmlExIm->RefTable->current;
 
 		$hiddens = we_html_element::htmlHiddens(array(
-				"pnt" => "cmd",
-				"all" => $all,
-				"cmd" => "do_export"));
+					"pnt" => "cmd",
+					"all" => $all,
+					"cmd" => "do_export"));
 
 		if($all > $exports){
 			return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => $this->frameset), $hiddens) . $_progress_update
-					)
+							)
 			);
 		}
 		if(is_writable($this->View->export->ExportFilename)){
 			we_base_file::save($this->View->export->ExportFilename, we_exim_XMLExIm::getFooter(), "ab");
 		}
-		$_progress_update .= "\n" .
-			we_html_element::jsElement('
-									if (top.content.editor.edfooter.doProgress) top.content.editor.edfooter.doProgress(100);
-									if (top.content.editor.edbody.addLog) top.content.editor.edbody.addLog("' . addslashes(we_html_element::htmlB(g_l('export', '[end_export]') . ' - ' . date("d.m.Y H:i:s"))) . '");
-							') . "\n" .
-			($this->View->export->ExportTo === 'local' ?
-				we_html_element::jsElement('top.content.editor.edbody.addLog(\'' .
-					we_html_element::htmlSpan(array("class" => "defaultfont"), addslashes(g_l('export', '[backup_finished]')) . "<br/>" .
-						g_l('export', '[download_starting2]') . "<br/><br/>" .
-						g_l('export', '[download_starting3]') . "<br/>" .
-						we_html_element::htmlB(we_html_element::htmlA(array("href" => WEBEDITION_DIR . 'we_showMod.php?mod=export&pnt=cmd&cmd=upload&exportfile=' . urlencode($this->View->export->ExportFilename), 'download' => $this->View->export->ExportFilename), g_l('export', '[download]'))) . "<br/><br/>"
-					) .
-					'\');') :
-				''
-			);
+		$_progress_update .= we_html_element::jsElement('
+function showEndStatus(){
+	' . we_message_reporting::getShowMessageCall(g_l('export', '[server_finished]'), we_message_reporting::WE_MESSAGE_NOTICE) . ';
+}
 
-		$out = we_html_tools::getHtmlTop('', '', '', $_progress_update .
-				we_html_element::jsElement('function showEndStatus(){' . we_message_reporting::getShowMessageCall(g_l('export', '[server_finished]'), we_message_reporting::WE_MESSAGE_NOTICE) . ';}'), we_html_element::htmlBody(
-					array(
-						'style' => 'margin:5px;background-color:white;',
-						"onload" => ($this->View->export->ExportTo === 'local' ?
-							($this->cmdFrame . ".location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=export&pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename) . "';") :
-							'showEndStatus();') .
-						"top.content.editor.edfooter.hideProgress();"
-					)
-				), null
+if (top.content.editor.edfooter.doProgress){
+	top.content.editor.edfooter.doProgress(100);
+}
+if (top.content.editor.edbody.addLog){
+	top.content.editor.edbody.addLog("' . addslashes(we_html_element::htmlB(g_l('export', '[end_export]') . ' - ' . date("d.m.Y H:i:s"))) . '");
+}' .
+						($this->View->export->ExportTo === 'local' ?
+								'top.content.editor.edbody.addLog(\'' .
+								we_html_element::htmlSpan(array("class" => "defaultfont"), addslashes(g_l('export', '[backup_finished]')) . "<br/>" .
+										g_l('export', '[download_starting2]') . "<br/><br/>" .
+										g_l('export', '[download_starting3]') . "<br/>" .
+										we_html_element::htmlB(we_html_element::htmlA(array("href" => WEBEDITION_DIR . 'we_showMod.php?mod=export&pnt=cmd&cmd=upload&exportfile=' . urlencode($this->View->export->ExportFilename), 'download' => $this->View->export->ExportFilename), g_l('export', '[download]'))) . "<br/><br/>"
+								) .
+								'\');' :
+								''
+						)
+		);
+
+		$out = we_html_tools::getHtmlTop('', '', '', $_progress_update, we_html_element::htmlBody(
+								array(
+									'style' => 'margin:5px;background-color:white;',
+									"onload" => ($this->View->export->ExportTo === 'local' ?
+											($this->cmdFrame . ".location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=export&pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename) . "';") :
+											'showEndStatus();') .
+									"top.content.editor.edfooter.hideProgress();"
+								)
+						), null
 		);
 		$xmlExIm->unsetPerserves();
 		return $out;
@@ -633,7 +641,7 @@ if (top.content.editor.edfooter.doProgress){
 			$_filename = basename(urldecode($_filename));
 
 			if(file_exists(TEMP_PATH . $_filename) // Does file exist?
-				&& !preg_match('%p?html?%i', $_filename) && stripos($_filename, "inc") === false && !preg_match('%php3?%i', $_filename)){ // Security check
+					&& !preg_match('%p?html?%i', $_filename) && stripos($_filename, "inc") === false && !preg_match('%php3?%i', $_filename)){ // Security check
 				session_write_close();
 				$_size = filesize(TEMP_PATH . $_filename);
 
@@ -670,7 +678,7 @@ if (top.content.editor.edfooter.doProgress){
 
 			case 'upload_failed':
 				return we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('export', '[error_download_failed]'), we_message_reporting::WE_MESSAGE_ERROR)
+								we_message_reporting::getShowMessageCall(g_l('export', '[error_download_failed]'), we_message_reporting::WE_MESSAGE_ERROR)
 				);
 			default:
 				return '';
@@ -741,8 +749,8 @@ if (top.content.editor.edfooter.doProgress){
 
 
 		$hiddens = we_html_element::htmlHiddens(array(
-				"Categorys" => $this->View->export->Categorys,
-				"cat" => we_base_request::_(we_base_request::RAW, 'cat', "")));
+					"Categorys" => $this->View->export->Categorys,
+					"cat" => we_base_request::_(we_base_request::RAW, 'cat', "")));
 
 
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot(); we_cmd('del_all_cats')", true, 0, 0, "", "", (isset($this->View->export->Categorys) ? false : true));

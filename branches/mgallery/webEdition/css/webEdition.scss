@@ -34,17 +34,18 @@ body{
 	font-size: $bigfont;
 }
 
+table,
+img,
+iframe{
+	border:none;
+}
+
 img{
-	border: none;
 	&.multiIcon{
 		height:64px;
 		width:64px;
 		margin:0px 20px;
 	}
-}
-
-iframe{
-	border:0px;
 }
 
 select,
@@ -145,9 +146,22 @@ div{
 		span.toggleBox{
 			cursor: pointer;
 		}
-
 	}
+}
 
+
+#multiEditorDocumentTabsFrameDiv,
+#naviDiv{
+	position:absolute;
+	top:0px;
+	height:$defaultEditorTabHeight;
+	width:100%;
+	@if($useOldStyle){
+		background-color: Silver;
+		border-top: 1px solid #000000;
+	}@else{
+		background-color: #cde1d3;
+	}
 }
 
 select,
@@ -417,7 +431,6 @@ td.boxHeader{
 }
 
 #treeheader,
-#naviDiv,
 #eHeaderBody{
 	@if($useOldStyle){
 		background-color: #C8D8EC;

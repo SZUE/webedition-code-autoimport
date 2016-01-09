@@ -23,7 +23,7 @@
  */
 
 
-//FIXME: check workflow where this is used & if we need this anymore
+//FIXME: check workflow where this is used & if we need this anymore => used in workflow
 function showtip(current, e, text) {
 	if (!document.layers) {
 		thetitle = text.split('<br>');

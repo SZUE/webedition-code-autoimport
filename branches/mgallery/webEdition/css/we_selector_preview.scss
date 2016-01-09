@@ -35,6 +35,12 @@ td {
 	&.image {
 		vertical-align:middle;
 		padding: 0px;
+		height:160px;
+		background-color: #EDEEED;
+		text-align:center;
+		a{
+			text-align:center;
+		}
 	}
 	&.info {
 		padding: 0px;

@@ -92,7 +92,7 @@ function submitForm(target,action,method,form) {
 		ob_start();
 		echo we_html_tools::getHtmlTop('', '', '', STYLESHEET . we_html_element::cssLink(CSS_DIR . 'tools_home.css') . $this->getJSProperty());
 		?>
-		<body bgcolor="#F0EFF0" onload="loaded = true;
+		<body class="home" onload="loaded = true;
 				var we_is_home = 1;">
 			<div id="tabelle"><?php echo $_starttable->getHtml(); ?></div>
 			<div id="modimage"><img src="<?php echo IMAGE_DIR . "startscreen/" . $icon; ?>" width="335" height="329" /></div>

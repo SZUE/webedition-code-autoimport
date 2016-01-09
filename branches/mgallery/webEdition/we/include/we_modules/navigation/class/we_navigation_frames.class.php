@@ -769,7 +769,7 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 
 	function getHTMLEditorPreview(){
 		// build the page
-		$out = '<table border="0" class="defaultfont" class="default">
+		$out = '<table class="defaultfont" class="default">
 		<tr>
 			<td><iframe name="preview" style="background: white; border: 1px solid black; width: 640px; height: 150px" src="' . WEBEDITION_DIR . 'we_showMod.php?mod=navigation&pnt=previewIframe"></iframe></td>
 		</tr>
