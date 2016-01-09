@@ -32,7 +32,7 @@ echo we_html_tools::getHtmlTop() .
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 ?>
 </head>
-<body bgcolor="white" style="margin: 15px;" onunload="doUnload()">
+<body style="margin: 15px;" onunload="doUnload()">
 	<form name="we_form" method="post" onsubmit="return false;"><?php
 		echo we_class::hiddenTrans();
 
@@ -58,13 +58,13 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			array(
 				'headline' => '',
 				'html' => we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[variant_info]'), we_html_tools::TYPE_INFO, 620, false),
-				
+
 				'noline' => 1
 			),
 			array(
 				'headline' => '',
 				'html' => we_html_tools::htmlDialogBorder3(600, 0, $content, $headline),
-				
+
 				'noline' => 1
 			)
 		);

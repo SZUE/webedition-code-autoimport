@@ -68,7 +68,7 @@ class we_export_frames extends we_modules_frame{
 
 	protected function getHTMLEditorHeader(){
 		if(we_base_request::_(we_base_request::BOOL, "home")){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#F0EFF0"), ""));
+			return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'home'), ''), we_html_element::cssLink(CSS_DIR . 'tools_home.css'));
 		}
 
 		$we_tabs = new we_tabs();
@@ -624,7 +624,7 @@ if (top.content.editor.edbody.addLog){
 
 		$out = we_html_tools::getHtmlTop('', '', '', $_progress_update, we_html_element::htmlBody(
 								array(
-									'style' => 'margin:5px;background-color:white;',
+									'style' => 'margin:5px;',
 									"onload" => ($this->View->export->ExportTo === 'local' ?
 											($this->cmdFrame . ".location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=export&pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename) . "';") :
 											'showEndStatus();') .

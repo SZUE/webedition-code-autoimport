@@ -62,7 +62,7 @@ class we_voting_frames extends we_modules_frame{
 
 	protected function getHTMLEditorHeader(){
 		if(we_base_request::_(we_base_request::BOOL, "home")){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#F0EFF0"), ""));
+			return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'home'), ''), we_html_element::cssLink(CSS_DIR . 'tools_home.css'));
 		}
 
 		$we_tabs = new we_tabs();
@@ -923,7 +923,7 @@ function setVisible(id,visible){
 				array(
 					'headline' => '',
 					'html' => we_html_tools::htmlDialogBorder3(730, 300, $content, $headline) . $nextprev,
-					
+
 					'noline' => 1
 				)
 			);
@@ -934,7 +934,7 @@ function setVisible(id,visible){
 					'html' => we_html_element::htmlSpan(array('class' => 'middlefont lowContrast'), g_l('modules_voting', '[log_is_empty]')) .
 					we_html_element::htmlBr() .
 					we_html_element::htmlBr(),
-					
+
 					'noline' => 1
 				)
 			);
@@ -1051,7 +1051,7 @@ function setVisible(id,visible){
 				array(
 					'headline' => '',
 					'html' => we_html_tools::htmlDialogBorder4(1000, 300, $content, $headline) . $nextprev,
-					
+
 					'noline' => 1
 				)
 			);
@@ -1062,7 +1062,7 @@ function setVisible(id,visible){
 					'html' => we_html_element::htmlSpan(array('class' => 'middlefont lowContrast'), g_l('modules_voting', '[log_is_empty]')) .
 					we_html_element::htmlBr() .
 					we_html_element::htmlBr(),
-					
+
 					'noline' => 1
 				)
 			);
@@ -1163,7 +1163,7 @@ function setVisible(id,visible){
 				array(
 					'headline' => '',
 					'html' => we_html_tools::htmlDialogBorder3(730, 300, $content, $headline) . $nextprev,
-					
+
 					'noline' => 1
 				)
 			);
@@ -1174,7 +1174,7 @@ function setVisible(id,visible){
 					'html' => we_html_element::htmlSpan(array('class' => 'middlefont lowContrast'), g_l('modules_voting', '[log_is_empty]')) .
 					we_html_element::htmlBr() .
 					we_html_element::htmlBr(),
-					
+
 					'noline' => 1
 				)
 			);

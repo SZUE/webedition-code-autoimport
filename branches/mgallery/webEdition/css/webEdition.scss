@@ -32,6 +32,7 @@ body{
 	letter-spacing: normal ! important;
 	font-family: $weFont;
 	font-size: $bigfont;
+	background-color:white;
 }
 
 table,
@@ -1709,5 +1710,45 @@ body.moduleEditor{
 		.fileicon{
 			font-size: 42px;
 		}
+	}
+}
+
+#moduleMessageConsole{
+	width:5em;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+}
+#moduleContent{
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+
+	#lframeDiv{
+		position: absolute;
+		top: 0px;
+		bottom: 0px;
+		left: 0px;
+		right: 0px;
+	}
+}
+#right{
+	background-color: #F0EFF0;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	right: 0px;
+	width: auto;
+	border-left: 1px solid black;
+	overflow: auto;
+	iframe {
+		position: absolute;
+		top: 0px;
+		bottom: 0px;
+		left: 0px;
+		right: 0px;
+		overflow: hidden;
 	}
 }

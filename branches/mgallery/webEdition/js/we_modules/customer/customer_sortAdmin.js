@@ -34,7 +34,7 @@ function we_cmd() {
 	switch (args[0]) {
 		case "add_sort_field":
 			if (args[1] === "") {
-				top.we_showMessage(g_l.sortname_empty, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.customer.sortAdmin.sortname_empty, WE().consts.message.WE_MESSAGE_ERROR, this);
 				break;
 			}
 			document.we_form.sortindex.value = args[1];
@@ -48,7 +48,7 @@ function we_cmd() {
 			/* falls through */
 		case "del_sort":
 			if (args[1] === settings.default_sort_view) {
-				top.we_showMessage(g_l.default_soting_no_del, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.customer.sortAdmin.default_soting_no_del, WE().consts.message.WE_MESSAGE_ERROR, this);
 			}
 			else {
 				document.we_form.cmd.value = args[0];

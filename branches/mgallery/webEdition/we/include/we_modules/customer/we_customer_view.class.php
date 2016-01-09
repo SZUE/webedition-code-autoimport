@@ -77,6 +77,10 @@ WE().consts.g_l.customer.admin={
 	branch_no_edit:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[branch_no_edit]')) . '",
 	we_fieldname_notValid:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[we_fieldname_notValid]')) . '"
 };
+WE().consts.g_l.customer.sortAdmin={
+	default_soting_no_del: "' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[default_soting_no_del]')) . '",
+	sortname_empty: "' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[sortname_empty]')) . '",
+};
 
 var frameUrl="' . $this->frameset . '";
 ') .

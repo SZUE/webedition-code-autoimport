@@ -121,7 +121,7 @@ abstract class we_modules_frame{
 
 		return
 			we_html_element::htmlDiv(array('class' => 'menuDiv'), $menu) .
-			we_html_element::htmlDiv(array('style' => 'width:5em;position: absolute;top: 0px;right: 0px;'), we_main_headermenu::createMessageConsole('moduleFrame'));
+			we_html_element::htmlDiv(array('id'=>'moduleMessageConsole'), we_main_headermenu::createMessageConsole('moduleFrame'));
 	}
 
 	private function getHTMLResize($extraUrlParams = ''){
@@ -132,10 +132,10 @@ abstract class we_modules_frame{
 </div>
 </div>';
 
-		$content = we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;'), we_html_element::htmlDiv(array('id' => 'lframeDiv', 'style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;width: ' . $this->treeWidth . 'px;'), we_html_element::htmlDiv(array('style' => 'width: ' . (weTree::HiddenWidth - 1) . 'px;border-right:1px solid #767676;', 'id' => 'vtabs'), $_incDecTree) .
+		$content = we_html_element::htmlDiv(array('id'=>'moduleContent'), we_html_element::htmlDiv(array('id' => 'lframeDiv', 'style' => 'width: ' . $this->treeWidth . 'px;'), we_html_element::htmlDiv(array('id' => 'vtabs'), $_incDecTree) .
 					$this->getHTMLLeft()
 				) .
-				we_html_element::htmlDiv(array('id' => 'right', 'style' => 'background-color: #F0EFF0; position: absolute; top: 0px; bottom: 0px; left: ' . $this->treeWidth . 'px; right: 0px; width: auto; border-left: 1px solid black; overflow: auto;'), we_html_element::htmlIFrame('editor', $this->frameset . '&pnt=editor' . $extraUrlParams, 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; overflow: hidden;', '', '', false)
+				we_html_element::htmlDiv(array('id' => 'right', 'style' => 'left: ' . $this->treeWidth . 'px;'), we_html_element::htmlIFrame('editor', $this->frameset . '&pnt=editor' . $extraUrlParams, ' ', '', '', false)
 				)
 		);
 
