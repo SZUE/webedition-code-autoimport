@@ -56,11 +56,11 @@ foreach($vtab as $tab => $val){
 	}
 	if($val['show']){
 		echo '<div class="tab tabNorm" onclick="clickVTab(this,' . $i . ',\'' . constant($tab) . '\');"><span class="middlefont">' . $val['desc'] . '</span></div>';
+	++$i;
 	}
 /*	if(!$defTab && $val['show']){
 		$defTab = constant($tab);
 	}*/
-	++$i;
 }
 ?>
 <script><!--
