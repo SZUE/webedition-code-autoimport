@@ -50,17 +50,14 @@ $jsTabs = array();
 $defTab = we_base_request::_(we_base_request::STRING, "table", '');
 foreach($vtab as $tab => $val){
 	if(defined($tab)){
-		$jsTabs[] = 'case "' . constant($tab) . '":
+		$jsTabs[] = 'case WE().consts.tables.' . $tab . ':
 		setActiveVTab(' . $i . ');
 		break;';
 	}
 	if($val['show']){
 		echo '<div class="tab tabNorm" onclick="clickVTab(this,' . $i . ',\'' . constant($tab) . '\');"><span class="middlefont">' . $val['desc'] . '</span></div>';
-	}
-/*	if(!$defTab && $val['show']){
-		$defTab = constant($tab);
-	}*/
 	++$i;
+	}
 }
 ?>
 <script><!--

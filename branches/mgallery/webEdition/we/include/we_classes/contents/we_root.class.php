@@ -970,53 +970,56 @@ abstract class we_root extends we_class{
 		}
 
 		if($_REQUEST){
-			$regs = array();
-			$dates = array();
-			foreach($_REQUEST as $n => $v){
-				if(preg_match('/^we_' . preg_quote($this->Name) . '_([^\[]+)$/', $n, $regs)){
-					if(is_array($v)){
-						$type = $regs[1];
-						foreach($v as $name => $v2){
-							$v2 = we_base_util::cleanNewLine($v2);
-							switch($type){
-								case 'LanguageDocName':
-								case 'LanguageDocID':
-									$this->LangLinks[$name][$type === 'LanguageDocName' ? 'path' : 'id'] = $v2;
-									break;
-								case 'date':
-									preg_match('|(.*)_(.*)|', $name, $regs);
-									list(, $name, $what) = $regs;
-									$dates[$name][$what] = $v2;
-									break;
-								case 'category'://from we:category
-									$this->setElement($name, (is_array($v2) ? implode(',', $v2) : $v2));
-									break;
-								default:
-									if(preg_match('/(.+)#(.+)/', $name, $regs)){
-										$this->setElement($regs[1], $v2, $type, $regs[2]);
-									} else {
-										//FIXME: check if we can apply the correct type
-										$this->i_convertElemFromRequest('internal', $v2, $name);
-										$this->setElement($name, $v2, $type);
-									}
-									break;
-							}
-						}
-					} else {
-						$this->i_set_PersistentSlot($regs[1], $v);
-					}
-				} else if($n === 'we_owners_read_only'){
-					$this->OwnersReadOnly = we_serialize($v, 'json');
-				}
-			}
-			$year = date('Y');
-			foreach($dates as $k => $v){
-				$this->setElement($k, mktime(empty($dates[$k]['hour']) ? 0 : $dates[$k]['hour'], empty($dates[$k]['minute']) ? 0 : $dates[$k]['minute'], 0, empty($dates[$k]['month']) ? 1 : $dates[$k]['month'], empty($dates[$k]['day']) ? 1 : $dates[$k]['day'], empty($dates[$k]['year']) ? $year : $dates[$k]['year']), 'date');
-			}
+			$this->setRequestData();
 		}
 		$this->Text = $this->getText();
 		$this->ParentPath = $this->getParentPath();
 		$this->Path = $this->getPath();
+	}
+
+	private function setRequestData(){
+		$regs = $dates = array();
+		foreach($_REQUEST as $n => $v){
+			if(preg_match('/^we_' . preg_quote($this->Name) . '_([^\[]+)$/', $n, $regs)){
+				if(is_array($v)){
+					$type = $regs[1];
+					foreach($v as $name => $v2){
+						$v2 = we_base_util::cleanNewLine($v2);
+						switch($type){
+							case 'LanguageDocName':
+							case 'LanguageDocID':
+								$this->LangLinks[$name][$type === 'LanguageDocName' ? 'path' : 'id'] = $v2;
+								break;
+							case 'date':
+								preg_match('|(.*)_(.*)|', $name, $regs);
+								list(, $name, $what) = $regs;
+								$dates[$name][$what] = $v2;
+								break;
+							case 'category'://from we:category
+								$this->setElement($name, (is_array($v2) ? implode(',', $v2) : $v2));
+								break;
+							default:
+								if(preg_match('/(.+)#(.+)/', $name, $regs)){
+									$this->setElement($regs[1], $v2, $type, $regs[2]);
+								} else {
+									//FIXME: check if we can apply the correct type
+									$this->i_convertElemFromRequest('internal', $v2, $name);
+									$this->setElement($name, $v2, $type);
+								}
+								break;
+						}
+					}
+				} else {
+					$this->i_set_PersistentSlot($regs[1], $v);
+				}
+			} else if($n === 'we_owners_read_only'){
+				$this->OwnersReadOnly = we_serialize($v, 'json');
+			}
+		}
+		$year = date('Y');
+		foreach($dates as $k => $v){
+			$this->setElement($k, mktime(empty($dates[$k]['hour']) ? 0 : $dates[$k]['hour'], empty($dates[$k]['minute']) ? 0 : $dates[$k]['minute'], 0, empty($dates[$k]['month']) ? 1 : $dates[$k]['month'], empty($dates[$k]['day']) ? 1 : $dates[$k]['day'], empty($dates[$k]['year']) ? $year : $dates[$k]['year']), 'date');
+		}
 	}
 
 	protected function i_isElement(/* $Name */){
