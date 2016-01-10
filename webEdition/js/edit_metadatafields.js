@@ -36,15 +36,25 @@ function togglePropositionTable(sel, index) {
 }
 
 function toggleType(sel, index) {
-	var row = document.getElementById("proposalTable_" + index);
-	var selMode = document.forms[0].elements["metadataMode[" + index + "]"];
+	var row = document.getElementById("proposalTable_" + index),
+		selMode = document.forms[0].elements["metadataMode[" + index + "]"],
+		checksDiv0 = document.getElementById('metadataProposalChecks0_' + index),
+		checksDiv1 = document.getElementById('metadataProposalChecks1_' + index),
+		modeDiv0 = document.getElementById('metadataModeDiv0_' + index),
+		modeDiv1 = document.getElementById('metadataModeDiv1_' + index);
 
-	row.style.display = sel.value !== "textfield" ? "none" : (selMode.options[selMode.selectedIndex].value === "none" ? "none" : "block");
-	selMode.disabled = sel.value === "textfield" ? false : true;
+	row.style.display = (sel.value !== "textfield" ? "none" : (selMode.options[selMode.selectedIndex].value === "none" ? "none" : "block"));
+	//selMode.disabled = sel.value === "textfield" ? false : true;
+	checksDiv0.style.display = checksDiv1.style.display = modeDiv0.style.display = modeDiv1.style.display = sel.value === "textfield" ? 'block' : 'none';
 }
 
 
 function delRow(id) {
+	var el = document.getElementById("row_" + id);
+	if(el){
+		el.parentNode.removeChild(el);
+	}
+	/*
 	var elem = document.getElementById("metadataTable");
 	if (elem) {
 		var trows = elem.rows;
@@ -61,6 +71,7 @@ function delRow(id) {
 			}
 		}
 	}
+	*/
 }
 
 function addProposition(btn, index) {
@@ -88,12 +99,17 @@ function addFieldToInput(sel, inpNr) {
 	sel.selectedIndex = 0;
 }
 
-
 function addRow() {
-	var elem = document.getElementById("metadataTable");
-	var newID = (elem.rows.length) / 5;
-	if (elem) {
-		var newRow = document.createElement("TR");
+	var container = document.getElementById("metadataTable");
+	var newID = (container.rows.length);
+	var elem, elemTR, elemTD, cell, newRow, nestedTable, nestedRow, nestedCell;
+	if (container) {
+		elem = document.createElement("TABLE");
+		elem.style.backgroundColor = '#f5f5f5';//margin-bottom:10px
+		elem.style.marginBottom ='10px';
+		elem.setAttribute("id", "elem_" + newID);
+
+		newRow = document.createElement("TR");
 		newRow.setAttribute("id", "metadataRow0_" + newID);
 		cell = document.createElement("TD");
 		cell.innerHTML = "<strong>" + g_l.tagname + "</strong>";
@@ -142,10 +158,11 @@ function addRow() {
 		newRow.setAttribute("id", "metadataRow3_" + newID);
 		cell = document.createElement("TD");
 		cell.style.paddingBottom = "1px";
-		cell.innerHTML = '<div class="small">Vorschlagsliste</div>' + phpdata.modeSel.replace(/__we_new_id__/g, newID);
+		cell.innerHTML = '<div class="small" id="metadataModeDiv0_' + newID + '">' + g_l.proposals + '</div><div id="metadataModeDiv1_' + newID + '">' + phpdata.modeSel.replace(/__we_new_id__/g, newID) + '</div>';
 		newRow.appendChild(cell);
 		cell = document.createElement("TD");
 		cell.setAttribute("colspan", 2);
+		cell.innerHTML = '<div class="small" id="metadataProposalChecks0_' + newID + '">&nbsp;</div><div id="metadataProposalChecks1_' + newID + '">' + phpdata.csvCheck.replace(/__we_new_id__/g, newID) + phpdata.closedCheck.replace(/__we_new_id__/g, newID) + '</div>';
 		newRow.appendChild(cell);
 		elem.appendChild(newRow);
 
@@ -155,7 +172,7 @@ function addRow() {
 		cell.colSpan = "3";
 		cell.style.paddingBottom = "16px";
 		cell.paddingRight = "5px";
-		var nestedTable = document.createElement("TABLE");
+		nestedTable = document.createElement("TABLE");
 		nestedTable.setAttribute("id", "proposalTable_" + newID);
 		nestedTable.style.width = "100%";
 		nestedTable.style.display = "none";
@@ -177,6 +194,13 @@ function addRow() {
 		cell.appendChild(nestedTable);
 		newRow.appendChild(cell);
 		elem.appendChild(newRow);
+
+		elemTR = document.createElement("TR");
+		elemTR.setAttribute("id", "row_" + newID);
+		elemTD = document.createElement("TD");
+		elemTD.appendChild(elem);
+		elemTR.appendChild(elemTD);
+		container.appendChild(elemTR);
 	}
 }
 

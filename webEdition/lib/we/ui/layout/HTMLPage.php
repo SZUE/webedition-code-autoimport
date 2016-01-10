@@ -304,7 +304,8 @@ EOS;
 			}
 			$html .= "\t</style>\n";
 		}
-		$html.=we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();');
+		$html.=STYLESHEET .
+			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') . YAHOO_FILES;
 		// add javascript tags for external JavaScript files
 		foreach($this->_JSFiles as $file){
 			$html .= we_html_element::jsScript($file);

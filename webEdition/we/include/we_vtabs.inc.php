@@ -45,36 +45,13 @@ $vtab = array(
 		'desc' => '<i class="fa fa-archive"></i> ' . g_l('global', '[vfile]'),
 	)
 );
-$i = 0;
-$jsTabs = array();
-$defTab = we_base_request::_(we_base_request::STRING, "table", '');
+//$defTab = we_base_request::_(we_base_request::STRING, "table", '');
 foreach($vtab as $tab => $val){
-	if(defined($tab)){
-		$jsTabs[] = 'case "' . constant($tab) . '":
-		setActiveVTab(' . $i . ');
-		break;';
-	}
 	if($val['show']){
-		echo '<div class="tab tabNorm" onclick="clickVTab(this,' . $i . ',\'' . constant($tab) . '\');"><span class="middlefont">' . $val['desc'] . '</span></div>';
-	++$i;
+		echo '<div class="tab tabNorm" onclick="clickVTab(this,\'' . constant($tab) . '\');" data-table="' . constant($tab) . '"><span class="middlefont">' . $val['desc'] . '</span></div>';
 	}
-/*	if(!$defTab && $val['show']){
-		$defTab = constant($tab);
-	}*/
 }
 ?>
-<script><!--
-	function setTab(table) {
-		switch (table) {
-<?php
-echo implode("\n", $jsTabs);
-?>
-		}
-	}
-
-//	setTab('<?php echo $defTab; ?>');
-//-->
-</script>
 <div id="baumArrows">
 	<div class="baumArrow" id="incBaum" title="<?php echo g_l('global', '[tree][grow]'); ?>" <?php echo ($_treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="incTree();"><i class="fa fa-plus"></i></div>
 	<div class="baumArrow" id="decBaum" title="<?php echo g_l('global', '[tree][reduce]'); ?>" <?php echo ($_treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="decTree();"><i class="fa fa-minus"></i></div>

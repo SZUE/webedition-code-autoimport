@@ -225,9 +225,9 @@ abstract class we_root extends we_class{
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 
-	function formDirChooser($width = 0, $rootDirID = 0, $table = '', $Pathname = 'ParentPath', $IDName = 'ParentID', $cmd = '', $lable = true, $disabled = false){
+	function formDirChooser($width = 0, $rootDirID = 0, $table = '', $Pathname = 'ParentPath', $IDName = 'ParentID', $cmd = '', $label = true, $disabled = false){
 		$yuiSuggest = &weSuggest::getInstance();
-		$lable = ($lable === true ? g_l('weClass', '[dir]') : $lable);
+		$label = ($label === true ? g_l('weClass', '[dir]') : $label);
 
 		if(!$table){
 			$table = $this->Table;
@@ -259,7 +259,7 @@ abstract class we_root extends we_class{
 		$yuiSuggest->setAcId('Path', id_to_path(array($rootDirID), $table));
 		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER . ',' . we_base_ContentTypes::CLASS_FOLDER);
 		$yuiSuggest->setInput($textname, $path, array('onblur' => $_parentPathChangedBlur));
-		$yuiSuggest->setLabel($lable ? : '');
+		$yuiSuggest->setLabel($label ? : '');
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(0);
 		$yuiSuggest->setResult($idname, $myid);
@@ -970,53 +970,56 @@ abstract class we_root extends we_class{
 		}
 
 		if($_REQUEST){
-			$regs = array();
-			$dates = array();
-			foreach($_REQUEST as $n => $v){
-				if(preg_match('/^we_' . preg_quote($this->Name) . '_([^\[]+)$/', $n, $regs)){
-					if(is_array($v)){
-						$type = $regs[1];
-						foreach($v as $name => $v2){
-							$v2 = we_base_util::cleanNewLine($v2);
-							switch($type){
-								case 'LanguageDocName':
-								case 'LanguageDocID':
-									$this->LangLinks[$name][$type === 'LanguageDocName' ? 'path' : 'id'] = $v2;
-									break;
-								case 'date':
-									preg_match('|(.*)_(.*)|', $name, $regs);
-									list(, $name, $what) = $regs;
-									$dates[$name][$what] = $v2;
-									break;
-								case 'category'://from we:category
-									$this->setElement($name, (is_array($v2) ? implode(',', $v2) : $v2));
-									break;
-								default:
-									if(preg_match('/(.+)#(.+)/', $name, $regs)){
-										$this->setElement($regs[1], $v2, $type, $regs[2]);
-									} else {
-										//FIXME: check if we can apply the correct type
-										$this->i_convertElemFromRequest('internal', $v2, $name);
-										$this->setElement($name, $v2, $type);
-									}
-									break;
-							}
-						}
-					} else {
-						$this->i_set_PersistentSlot($regs[1], $v);
-					}
-				} else if($n === 'we_owners_read_only'){
-					$this->OwnersReadOnly = we_serialize($v, 'json');
-				}
-			}
-			$year = date('Y');
-			foreach($dates as $k => $v){
-				$this->setElement($k, mktime(empty($dates[$k]['hour']) ? 0 : $dates[$k]['hour'], empty($dates[$k]['minute']) ? 0 : $dates[$k]['minute'], 0, empty($dates[$k]['month']) ? 1 : $dates[$k]['month'], empty($dates[$k]['day']) ? 1 : $dates[$k]['day'], empty($dates[$k]['year']) ? $year : $dates[$k]['year']), 'date');
-			}
+			$this->setRequestData();
 		}
 		$this->Text = $this->getText();
 		$this->ParentPath = $this->getParentPath();
 		$this->Path = $this->getPath();
+	}
+
+	private function setRequestData(){
+		$regs = $dates = array();
+		foreach($_REQUEST as $n => $v){
+			if(preg_match('/^we_' . preg_quote($this->Name) . '_([^\[]+)$/', $n, $regs)){
+				if(is_array($v)){
+					$type = $regs[1];
+					foreach($v as $name => $v2){
+						$v2 = we_base_util::cleanNewLine($v2);
+						switch($type){
+							case 'LanguageDocName':
+							case 'LanguageDocID':
+								$this->LangLinks[$name][$type === 'LanguageDocName' ? 'path' : 'id'] = $v2;
+								break;
+							case 'date':
+								preg_match('|(.*)_(.*)|', $name, $regs);
+								list(, $name, $what) = $regs;
+								$dates[$name][$what] = $v2;
+								break;
+							case 'category'://from we:category
+								$this->setElement($name, (is_array($v2) ? implode(',', $v2) : $v2));
+								break;
+							default:
+								if(preg_match('/(.+)#(.+)/', $name, $regs)){
+									$this->setElement($regs[1], $v2, $type, $regs[2]);
+								} else {
+									//FIXME: check if we can apply the correct type
+									$this->i_convertElemFromRequest('internal', $v2, $name);
+									$this->setElement($name, $v2, $type);
+								}
+								break;
+						}
+					}
+				} else {
+					$this->i_set_PersistentSlot($regs[1], $v);
+				}
+			} else if($n === 'we_owners_read_only'){
+				$this->OwnersReadOnly = we_serialize($v, 'json');
+			}
+		}
+		$year = date('Y');
+		foreach($dates as $k => $v){
+			$this->setElement($k, mktime(empty($dates[$k]['hour']) ? 0 : $dates[$k]['hour'], empty($dates[$k]['minute']) ? 0 : $dates[$k]['minute'], 0, empty($dates[$k]['month']) ? 1 : $dates[$k]['month'], empty($dates[$k]['day']) ? 1 : $dates[$k]['day'], empty($dates[$k]['year']) ? $year : $dates[$k]['year']), 'date');
+		}
 	}
 
 	protected function i_isElement(/* $Name */){
@@ -1492,7 +1495,7 @@ abstract class we_root extends we_class{
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, we_html_element::htmlBody(array('class' => 'weDialogBody'), we_html_tools::htmlDialogLayout('<p class="defaultfont">' . sprintf(g_l('alert', '[temporaere_no_access_text]'), $this->Text, f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($userID))) . '</p>', g_l('alert', '[temporaere_no_access]')) .
 //	For SEEM-Mode
 				($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE ?
-					'<a href="javascript://" style="text-decoration:none" onclick="top.weNavigationHistory.navigateReload()" >' . g_l('SEEM', '[try_doc_again]') . '</a>' : '')
+					'<span style="text-decoration:none" onclick="top.weNavigationHistory.navigateReload()" >' . g_l('SEEM', '[try_doc_again]') . '</span>' : '')
 		));
 		exit();
 	}

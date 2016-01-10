@@ -50,7 +50,7 @@ class we_banner_frames extends we_modules_frame{
 
 	protected function getHTMLEditorHeader($mode = 0){
 		if(we_base_request::_(we_base_request::BOOL, "home")){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array('bgcolor' => '#F0EFF0'), ''));
+			return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'home'), ''), we_html_element::cssLink(CSS_DIR . 'tools_home.css'));
 		}
 
 		$isFolder = we_base_request::_(we_base_request::BOOL, "isFolder");

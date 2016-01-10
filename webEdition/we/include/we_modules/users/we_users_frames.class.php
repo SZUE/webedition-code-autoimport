@@ -87,7 +87,7 @@ class we_users_frames extends we_modules_frame{
 
 	protected function getHTMLEditorHeader(){
 		if(we_base_request::_(we_base_request::BOOL, 'home')){//FIXME: find one working condition
-			return $this->getHTMLDocument(we_html_element::htmlBody(array('style' => 'background-color:#F0EFF0;'), ''));
+			return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'home'), ''), we_html_element::cssLink(CSS_DIR . 'tools_home.css'));
 		}
 		$user_object = $_SESSION["user_session_data"];
 		return $this->getHTMLDocument(we_html_element::htmlBody(array('onresize' => 'weTabs.setFrameSize()', 'onload' => 'weTabs.setFrameSize()', 'id' => 'eHeaderBody')), $user_object->formHeader(we_base_request::_(we_base_request::INT, "tab", 0)));

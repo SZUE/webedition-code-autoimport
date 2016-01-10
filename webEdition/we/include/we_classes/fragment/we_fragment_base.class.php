@@ -145,6 +145,7 @@ class we_fragment_base{
 			}
 		}
 		$tail = ""; //FIXME: make this a post request
+//Fixme: use http_build_query
 		foreach($_REQUEST as $i => $v){
 			if(is_array($v)){
 				foreach($v as $k => $av){
@@ -176,6 +177,7 @@ class we_fragment_base{
 	function printJSReload(){
 		$nextTask = $this->currentTask + $this->taskPerFragment;
 		$tail = ""; //FIXME: make this a post request
+		//Fixme: use http_build_query
 		foreach($_REQUEST as $i => $v){
 			if(is_array($v)){
 				foreach($v as $k => $av){

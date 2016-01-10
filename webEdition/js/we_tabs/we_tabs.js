@@ -24,8 +24,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-WE().layout.we_tabs = function (doc) {
+WE().layout.we_tabs = function (doc, win) {
 	this.doc = doc;
+	this.win = win;
 	this.titlePathName = "";
 	this.titlePathGroup = "";
 };
@@ -40,7 +41,6 @@ WE().layout.we_tabs.prototype = {
 		this.doc.getElementById(tab).className = "tabActive";
 	},
 	setTabClass: function (elem) {
-		var arr = [];
 		var els = this.doc.getElementsByTagName("*");
 		for (var i = 0; i < els.length; i++) {
 			if (els[i].className === "tabActive") {
@@ -55,8 +55,7 @@ WE().layout.we_tabs.prototype = {
 			if (contentEditor && contentEditor.contentWindow.fields_are_valid) {
 				return contentEditor.contentWindow.fields_are_valid();
 			}
-		}
-		catch (e) {
+		} catch (e) {
 			// Nothing
 		}
 		return true;
@@ -82,25 +81,25 @@ WE().layout.we_tabs.prototype = {
 				tabsHeight = this.doc.getElementById('main').offsetHeight;
 				this.doc.getElementById('naviDiv').style.height = tabsHeight + "px";
 				this.doc.getElementById('contentDiv').style.top = tabsHeight + "px";
-			} else if(this.doc.parent){
-				if (this.doc.parent.document.getElementById("edheaderDiv")) {
-				tabsHeight = this.doc.getElementById('main').offsetHeight;
-				this.doc.parent.document.getElementById('edheaderDiv').style.height = tabsHeight + "px";
-				this.doc.parent.document.getElementById('edbodyDiv').style.top = tabsHeight + "px";
-			} else if (this.doc.parent.document.getElementsByName('editHeaderDiv').length > 0) {
-				tabsHeight = this.doc.getElementById('main').offsetHeight;
-				var tmp = this.doc.parent.document.getElementsByName("editHeaderDiv");
-				var nList = tmp[0].parentNode.getElementsByTagName("div");
-				nList[0].style.height = tabsHeight + "px";
-				nList[1].style.top = tabsHeight + "px";
-				nList[2].style.top = tabsHeight + "px";
-			} else if (this.doc.parent.document.getElementById('updatetabsDiv')) {
-				//no need to resize
+			} else if (this.win.parent) {
+				if (this.win.parent.document.getElementById("edheaderDiv")) {
+					tabsHeight = this.doc.getElementById('main').offsetHeight;
+					this.win.parent.document.getElementById('edheaderDiv').style.height = tabsHeight + "px";
+					this.win.parent.document.getElementById('edbodyDiv').style.top = tabsHeight + "px";
+				} else if (this.win.parent.document.getElementsByName('editHeaderDiv').length > 0) {
+					tabsHeight = this.doc.getElementById('main').offsetHeight;
+					var tmp = this.win.parent.document.getElementsByName("editHeaderDiv");
+					var nList = tmp[0].parentNode.getElementsByTagName("div");
+					nList[0].style.height = tabsHeight + "px";
+					nList[1].style.top = tabsHeight + "px";
+					nList[2].style.top = tabsHeight + "px";
+				} else if (this.win.parent.document.getElementById('updatetabsDiv')) {
+					//no need to resize
+				}
+			} else {
+				console.log('no parent');
+				console.log(this.doc);
 			}
-		}else{
-			console.log('no parent');
-			console.log(this.doc);
-		}
 		}
 	}
 };

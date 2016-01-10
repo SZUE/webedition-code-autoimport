@@ -111,7 +111,7 @@ WE().consts.g_l.weSearch = {
 </tr>
 </table>' .
 			we_class::hiddenTrans() .
-			'<table class="default"  id="filterTable' . we_search_view::SEARCH_DOCLIST . '" border="0" style="margin-left:20px;display:' . ($this->Model->mode ? 'block' : 'none') . ';">
+			'<table class="default"  id="filterTable' . we_search_view::SEARCH_DOCLIST . '" style="margin-left:20px;display:' . ($this->Model->mode ? 'block' : 'none') . ';">
 <tbody id="filterTable' . we_search_view::SEARCH_DOCLIST . '">';
 
 		// we always have at least an empty 'Content' search: it's set in model initialisation
@@ -127,7 +127,7 @@ WE().consts.g_l.weSearch = {
 				case 'temp_template_id':
 				case 'temp_category':
 					$locationDisabled = 'disabled';
-					
+
 			}
 
 			if(isset($currentSearchFields[$i])){
@@ -270,12 +270,12 @@ WE().consts.g_l.weSearch = {
 						$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $_result[$f]['Path']);
 
 						$url = WEBEDITION_DIR . 'thumbnail.php?id=' . $_result[$f]['docID'] . "&size=" . $smallSize . "&path=" . urlencode($_result[$f]["Path"]) . "&extension=" . $_result[$f]["Extension"];
-						$imageView = '<img src="' . $url . '" border="0" /></a>';
+						$imageView = '<img src="' . $url . '" /></a>';
 						$urlPopup = WEBEDITION_DIR . "thumbnail.php?id=" . $_result[$f]["docID"] . "&size=" . $bigSize . "&path=" . $_result[$f]["Path"] . "&extension=" . $_result[$f]["Extension"];
-						$imageViewPopup = '<img src="' . $urlPopup . '" border="0" /></a>';
+						$imageViewPopup = '<img src="' . $urlPopup . '"/></a>';
 
 						//$imageView = '<img src="' . WEBEDITION_DIR . 'thumbnail.php?id=' . $_result[$f]["docID"] . "&size=" . $smallSize . "&path=" . urlencode($_result[$f]["Path"]) . "&extension=" . $_result[$f]['Extension'] . "' border='0' /></a>";
-						//$imageViewPopup = '<img src="' . WEBEDITION_DIR . 'thumbnail.php?id=' . $_result[$f]['docID'] . '&size=' . $bigSize . '&path=' . urlencode($_result[$f]['Path']) . '&extension=' . $_result[$f]['Extension'] . '" border="0" /></a>';
+						//$imageViewPopup = '<img src="' . WEBEDITION_DIR . 'thumbnail.php?id=' . $_result[$f]['docID'] . '&size=' . $bigSize . '&path=' . urlencode($_result[$f]['Path']) . '&extension=' . $_result[$f]['Extension'] . '" /></a>';
 					} else {
 						$imagesize = array(0, 0);
 						$imageView = $imageViewPopup = '<span class="resultIcon" data-contenttype="' . $_result[$f]['ContentType'] . '" data-extension="' . $_result[$f]['Extension'] . '"></span>';

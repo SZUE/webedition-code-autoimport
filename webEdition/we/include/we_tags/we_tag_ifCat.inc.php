@@ -27,7 +27,7 @@ function we_tag_ifCat($attribs){
 	$catids = weTag_getAttribute('categoryids', $attribs, array(), we_base_request::INTLISTA);
 	if(!$categories && !$catids){
 		if(($foo = attributFehltError($attribs, 'categories', __FUNCTION__))){
-			print($foo);
+			echo $foo;
 			return false;
 		}
 	}

@@ -32,19 +32,21 @@ body{
 	letter-spacing: normal ! important;
 	font-family: $weFont;
 	font-size: $bigfont;
+	background-color:white;
+}
+
+table,
+img,
+iframe{
+	border:none;
 }
 
 img{
-	border: none;
 	&.multiIcon{
 		height:64px;
 		width:64px;
 		margin:0px 20px;
 	}
-}
-
-iframe{
-	border:0px;
 }
 
 select,
@@ -145,9 +147,22 @@ div{
 		span.toggleBox{
 			cursor: pointer;
 		}
-
 	}
+}
 
+
+#multiEditorDocumentTabsFrameDiv,
+#naviDiv{
+	position:absolute;
+	top:0px;
+	height:$defaultEditorTabHeight;
+	width:100%;
+	@if($useOldStyle){
+		background-color: Silver;
+		border-top: 1px solid #000000;
+	}@else{
+		background-color: #cde1d3;
+	}
 }
 
 select,
@@ -417,7 +432,6 @@ td.boxHeader{
 }
 
 #treeheader,
-#naviDiv,
 #eHeaderBody{
 	@if($useOldStyle){
 		background-color: #C8D8EC;
@@ -1696,5 +1710,45 @@ body.moduleEditor{
 		.fileicon{
 			font-size: 42px;
 		}
+	}
+}
+
+#moduleMessageConsole{
+	width:5em;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+}
+#moduleContent{
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+
+	#lframeDiv{
+		position: absolute;
+		top: 0px;
+		bottom: 0px;
+		left: 0px;
+		right: 0px;
+	}
+}
+#right{
+	background-color: #F0EFF0;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	right: 0px;
+	width: auto;
+	border-left: 1px solid black;
+	overflow: auto;
+	iframe {
+		position: absolute;
+		top: 0px;
+		bottom: 0px;
+		left: 0px;
+		right: 0px;
+		overflow: hidden;
 	}
 }

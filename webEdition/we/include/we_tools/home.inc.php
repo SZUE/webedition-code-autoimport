@@ -22,7 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 echo we_html_tools::getHtmlTop() .
- STYLESHEET;
+ STYLESHEET .
+ we_html_element::cssLink(CSS_DIR . 'tools_home.css');
 
 $_row = 0;
 $_starttable = new we_html_table(array("cellpadding" => 7), 3, 1);
@@ -39,7 +40,7 @@ echo we_html_element::cssLink(CSS_DIR . 'tools_home.css') . $GLOBALS["we_head_in
 $tooldir = ($tool === 'weSearch' ? WE_INCLUDES_DIR . 'we_tools/' : WE_APPS_DIR);
 ?>
 
-<body bgcolor="#F0EFF0" onload="loaded = true;
+<body class="home" onload="loaded = true;
 		var we_is_home = 1;">
 	<div id="tabelle"><?php echo $_starttable->getHtml(); ?></div>
 	<div id="modimage"><img src="<?php echo $tooldir . $tool . '/layout/home.gif'; ?>" width="335" height="329" /></div>

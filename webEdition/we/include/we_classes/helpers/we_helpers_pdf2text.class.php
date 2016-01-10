@@ -906,7 +906,7 @@ class we_helpers_pdf2text{
 			}
 		}
 		if($last){
-			print('Mem usage ' . round((($max / 1024) / 1024), 3) . ' MiB' . "\n");
+			echo 'Mem usage ' . round((($max / 1024) / 1024), 3) . ' MiB' . "\n";
 		}
 	}
 

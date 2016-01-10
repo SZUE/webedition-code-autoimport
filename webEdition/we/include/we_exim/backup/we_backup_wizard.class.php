@@ -761,7 +761,7 @@ function startStep(){
 
 				if(($_filehandler = fopen($_filename, 'rb'))){
 					while(!feof($_filehandler)){
-						print(fread($_filehandler, 8192));
+						echo fread($_filehandler, 8192);
 						flush();
 					}
 					fclose($_filehandler);

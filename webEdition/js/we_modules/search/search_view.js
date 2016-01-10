@@ -120,7 +120,7 @@ weSearch = {
 		this.conf.editorBodyFrame.document.getElementsByClassName('selectSearchNumber').value = dataElem.getAttribute('data-number');
 		this.conf.editorBodyFrame.document.we_form.elements['setView' + this.conf.whichsearch].value = dataElem.getAttribute('data-setView');
 		this.conf.editorBodyFrame.document.we_form.elements['Order' + this.conf.whichsearch].value = dataElem.getAttribute('data-order');
-		this.conf.editorBodyFrame.document.we_form.elements['mode'].value = dataElem.getAttribute('data-mode');
+		this.conf.editorBodyFrame.document.we_form.elements.mode.value = dataElem.getAttribute('data-mode');
 	},
 	ajaxCallbackResultList: {
 		success: function (o) {
@@ -258,7 +258,7 @@ weSearch = {
 			newString = elem.name;
 			args += '&we_cmd[' + encodeURI(newString) + ']=' + encodeURI(elem.value);
 		}
-		this.conf.editorBodyFrame.document.getElementById('scrollContent_' + this.conf.whichsearch).innerHTML = '<table border="0" width="100%" height="100%"><tr><td align="center"><i class="fa fa-2x fa-spinner fa-pulse"></i><div id="scrollActive"></div></td></tr></table>';
+		this.conf.editorBodyFrame.document.getElementById('scrollContent_' + this.conf.whichsearch).innerHTML = '<table width="100%" height="100%"><tr><td align="center"><i class="fa fa-2x fa-spinner fa-pulse"></i><div id="scrollActive"></div></td></tr></table>';
 		top.YAHOO.util.Connect.asyncRequest('POST', this.conf.ajaxURL, this.ajaxCallbackResultList, 'protocol=json&cns=' + (this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST ? 'doclist' : 'tools/weSearch') + '&tab=' + this.conf.tab + '&cmd=GetSearchResult&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
 	},
 	makeAjaxRequestParametersTop: function () {
@@ -395,7 +395,7 @@ weSearch = {
 				break;
 			case WE().consts.weSearch.SEARCH_ADV:
 				rows = (document.getElementById('filterTableAdvSearch').rows.length - 1);
-				h = frameH - (290 + (rows*32)); 
+				h = frameH - (290 + (rows*32));
 				break;
 			case WE().consts.weSearch.SEARCH_DOCLIST:top.console.log('hier');
 				rows = (document.getElementById('filterTableDoclistSearch').rows.length);
@@ -520,7 +520,7 @@ weSearch = {
 				this.search(false);
 			}
 		}
-		this.sizeScrollContent()
+		this.sizeScrollContent();
 	},
 	delRow: function (id) {
 		var scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch),

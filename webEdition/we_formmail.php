@@ -159,9 +159,17 @@ function check_recipient($email){
 }
 
 function check_captcha(){
-	return ($name = we_base_request::_(we_base_request::STRING, we_base_request::_(we_base_request::STRING, 'captchaname', '__NOT_SET__')) ?
+	return ($name = we_base_request::_(we_base_request::STRING, we_base_request::_(we_base_request::STRING, 'captchaname')) ?
 		we_captcha_captcha::check($name) :
 		false);
+}
+
+if(!check_captcha()){
+	if(($errorpage = we_base_request::_(we_base_request::URL, 'captcha_error_page'))){
+		redirect($errorpage);
+	} else {
+		print_error(g_l('global', '[captcha_invalid]'));
+	}
 }
 
 $_req = we_base_request::_(we_base_request::RAW, 'required', '');

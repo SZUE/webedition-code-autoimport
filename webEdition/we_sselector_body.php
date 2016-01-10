@@ -49,9 +49,8 @@ $sid = we_base_request::_(we_base_request::RAW, "sid");
 echo we_html_element::jsScript(JS_DIR . 'selectors/we_sselector_body.js') .
  we_html_element::cssLink(CSS_DIR . 'selectors.css');
 ?>
-
 </head>
-<body style="background-color:white" LINK="#000000" ALINK="#000000" VLINK="#000000" onload="doScrollTo();">
+<body onload="WE().util.setIconOfDocClass(document, 'treeIcon');doScrollTo();">
 	<form name="we_form" target="fscmd" action="we_sselector_cmd.php" method="post" onsubmit="return false;">
 		<table class="default"><?php
 
@@ -158,7 +157,7 @@ var i = 0;';
 			if($nf === 'new_folder'){
 				?>
 				<tr style="background-color:#DFE9F5;">
-					<td class="selector treeIcon"><?php echo we_html_element::jsElement('document.write(WE().util.getTreeIcon("folder"));') ?></td>
+					<td class="selector treeIcon" data-contenttype="folder" data-extension=""></td>
 					<td class="selector filename"><?php echo we_html_tools::htmlTextInput("txt", 20, g_l('fileselector', '[new_folder_name]'), "", 'id="txt" onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%"); ?></td>
 					<td class="selector filetype"><?php echo g_l('fileselector', '[folder]') ?></td>
 					<td class="selector moddate"><?php echo date("d.m.Y H:i:s") ?></td>
@@ -170,14 +169,13 @@ var i = 0;';
 			$selectOwn = we_base_request::_(we_base_request::BOOL, 'selectOwn', false);
 			foreach($final as $key => $entry){
 				$name = str_replace('//', '/', $org . '/' . $entry);
-
-
 				$islink = is_link($dir . '/' . $entry);
 				$isfolder = is_dir($dir . '/' . $entry) && !$islink;
 
 				$type = $isfolder ? g_l('contentTypes', '[folder]') : getDataType($dir . '/' . $entry);
 
 				$indb = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape($name) . '"');
+				$ext = strrchr($name, '.');
 				switch($entry){
 					case 'webEdition':
 					case WE_THUMBNAIL_DIRECTORY:
@@ -250,7 +248,7 @@ var i = 0;';
 
 				if($show){
 					echo '<tr ' . ($indb ? 'class="WEFile"' : '') . ' id="' . oldHtmlspecialchars($entry) . '"' . $ondblclick . $onclick . ' style="background-color:' . $bgcol . ';' . $_cursor . ($set_rename ? "" : "") . '"' . ($set_rename ? '' : '') . '>
-	<td class="selector treeIcon">' . we_html_element::jsElement('document.write(WE().util.getTreeIcon("' . ($indb? : ($islink ? 'symlink' : ($isfolder ? 'folder' : 'application/*'))) . '"));') . '</td>
+	<td class="selector treeIcon" data-contenttype="' . ($indb? : ($islink ? 'symlink' : ($isfolder ? 'folder' : 'application/*'))) . '" data-extension="' . $ext . '"></td>
 	<td class="selector filename">' . $_text_to_show . '</td>
 	<td class="selector filetype">' . $_type . '</td>
 	<td class="selector moddate">' . $_date . '</td>

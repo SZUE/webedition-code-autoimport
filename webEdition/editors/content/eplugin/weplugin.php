@@ -28,7 +28,7 @@ we_html_tools::protect();
 $charset = '';
 
 //FIXME: charset
-echo we_html_tools::getHtmlTop('start wePlugin', '', '', we_html_element::jsScript(JS_DIR . 'weplugin.js'), we_html_element::htmlBody(array('style' => 'background-color:white', 'onload' => "to=window.setInterval(pingPlugin,5000);"), we_html_element::htmlHidden('hm', 0) .
+echo we_html_tools::getHtmlTop('start wePlugin', '', '', we_html_element::jsScript(JS_DIR . 'weplugin.js'), we_html_element::htmlBody(array('onload' => "to=window.setInterval(pingPlugin,5000);"), we_html_element::htmlHidden('hm', 0) .
 				we_html_element::htmlApplet(array(
 					'name' => 'WePlugin',
 					'code' => 'EPlugin',

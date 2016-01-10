@@ -109,19 +109,6 @@ body{
 	display: inline;
 }
 
-#multiEditorDocumentTabsFrameDiv{
-	position:absolute;
-	top:0px;
-	height:$defaultEditorTabHeight;
-	width:100%;
-			@if($useOldStyle){
-background-color: Silver;
-	border-top: 1px solid #000000;
-}@else{
-	background-color: #cde1d3;
-}
-}
-
 #multiEditorEditorFramesetsDiv{
 	position:absolute;
 	top:$defaultEditorTabHeight;

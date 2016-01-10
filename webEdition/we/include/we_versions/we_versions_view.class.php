@@ -111,7 +111,7 @@ var searchClass={
 	<td width="100%"></td>
 </tr>
 </table>
-<table id="advSearch2" border="0" style="margin-left:20px;display:' . ($this->Model->mode ? 'block' : 'none') . ';">
+<table id="advSearch2" style="margin-left:20px;display:' . ($this->Model->mode ? 'block' : 'none') . ';">
 <tbody id="filterTable">
 <tr>
 	<td>' . we_class::hiddenTrans() . '</td>
@@ -439,7 +439,7 @@ var searchClass={
 	public function tblList($content, $headline){
 		//$anz = count($headline) - 1;
 		return '
-<table border="0" style="background-color:#fff;" width="100%" cellpadding="5">
+<table style="background-color:#fff;" width="100%" cellpadding="5">
 <tr>
 	<td style="vertical-align:top;width:15px;border-bottom:1px solid #AFB0AF;"></td>
 	<td style="vertical-align:top;width:110px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[0]["dat"] . '</td>

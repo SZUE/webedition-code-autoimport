@@ -24,7 +24,7 @@
  */
 function we_tag_ifVotingField($attribs){
 	if(($foo = attributFehltError($attribs, 'match', __FUNCTION__))){
-		print($foo);
+		echo $foo;
 		return false;
 	}
 

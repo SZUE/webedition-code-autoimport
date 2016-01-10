@@ -258,7 +258,7 @@ var WebEdition={
 			},
 			global:{
 				WE_EDITPAGE_CONTENT:<?php echo we_base_constants::WE_EDITPAGE_CONTENT; ?>,
-				PING_TIME:<?php echo we_base_constants::PING_TIME * 1000; ?>
+				PING_TIME:<?php echo (we_base_constants::PING_TIME * 1000); ?>,
 			},
 			message:{
 				WE_MESSAGE_INFO: <?php echo we_message_reporting::WE_MESSAGE_INFO; ?>,

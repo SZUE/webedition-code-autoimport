@@ -5,9 +5,6 @@ $appName = $controller->getParam('appName');
 
 $page = we_ui_layout_HTMLPage::getInstance();
 
-//$page->addJSFile(JS_DIR.'windows.js');
-
-
 $nodes = array();
 $table = <?php echo (!empty($TABLECONSTANT) && $TABLEEXISTS) ? $TABLECONSTANT : "''"; ?>;
 

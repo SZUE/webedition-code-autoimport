@@ -50,7 +50,7 @@ var weGetCategoriesCallback = {
 	timeout: 1500
 };
 
-function weGetCategories(obj, cats, part, target) {
+function weGetCategories(obj, cats, part) {
 	ajaxData = 'protocol=json&cmd=GetCategory&obj=' + obj + '&cats=' + cats + '&part=' + part + '&targetId=docCatTable&catfield=v[' + obj + 'Categories]';
 	_executeAjaxRequest('POST', ajaxUrl, weGetCategoriesCallback, ajaxData);
 }
@@ -95,12 +95,11 @@ function we_cmd() {
 						} else {
 							this.wizbody.document.we_form.elements['v[docCategories]'].value = ',' + cats[i] + ',';
 						}
-						//FIXME: bad code due to multi function create in loop
-						setTimeout(function () {
-							weGetCategories('doc', this.wizbody.document.we_form.elements['v[docCategories]'].value, 'rows');
-						}, 100);
 					}
 				}
+				setTimeout(function () {
+					weGetCategories('doc', this.wizbody.document.we_form.elements['v[docCategories]'].value, 'rows');
+				}, 100);
 			}
 			break;
 		case 'delete_docCat':
@@ -126,12 +125,11 @@ function we_cmd() {
 						} else {
 							this.wizbody.document.we_form.elements['v[objCategories]'].value = ',' + cats[i] + ',';
 						}
-						//FIXME: bad code due to function creation in loop
-						setTimeout(function () {
-							weGetCategories('obj', this.wizbody.document.we_form.elements['v[objCategories]'].value, 'rows');
-						}, 100);
 					}
 				}
+				setTimeout(function () {
+					weGetCategories('obj', this.wizbody.document.we_form.elements['v[objCategories]'].value, 'rows');
+				}, 100);
 			}
 			break;
 		case 'delete_objCat':

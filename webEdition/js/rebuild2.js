@@ -62,9 +62,7 @@ function we_cmd() {
 				if (!WE().util.in_array(catsToAdd[i], cats)) {
 					cats.push(catsToAdd[i]);
 				}
-				;
 			}
-			;
 			f.categories.value = cats.join(",");
 			f.step.value = 1;
 			f.submit();
@@ -95,9 +93,7 @@ function we_cmd() {
 				if (!WE().util.in_array(foldersToAdd[i], folders)) {
 					folders.push(foldersToAdd[i]);
 				}
-				;
 			}
-			;
 			f[WE().session.rebuild.folders].value = folders.join(",");
 			f.step.value = 1;
 			f.submit();

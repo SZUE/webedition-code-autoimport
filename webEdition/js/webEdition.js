@@ -237,7 +237,7 @@ function storeTreeWidth(w) {
 	WE().util.weSetCookie(self.document, "treewidth_main", w, ablauf, "/");
 }
 
-function clickVTab(tab, no, table) {
+function clickVTab(tab, table) {
 	if (top.deleteMode) {
 		we_cmd('exit_delete', table);
 	}
@@ -246,16 +246,16 @@ function clickVTab(tab, no, table) {
 			we_cmd('loadVTab', table, 0);
 		}
 	} else {
-		setActiveVTab(no);
+		setActiveVTab(table);
 		treeOut();
 		we_cmd('loadVTab', table, 0);
 	}
 }
 
-function setActiveVTab(no) {
+function setActiveVTab(table) {
 	var allTabs = document.getElementById("vtabs").getElementsByClassName("tab");
 	for (var i = 0; i < allTabs.length; i++) {
-		allTabs[i].className = "tab " + (i == no ? "tabActive" : "tabNorm");
+		allTabs[i].className = "tab " + (allTabs[i].getAttribute("data-table") === table ? "tabActive" : "tabNorm");
 	}
 }
 
@@ -731,7 +731,7 @@ function we_cmd_base(args, url) {
 			break;
 		case "setTab":
 			if (treeData !== undefined) {
-				setTab(args[1]);
+				setActiveVTab(args[1]);
 				treeData.table = args[1];
 			} else {
 				setTimeout('we_cmd("setTab","' + args[1] + '")', 500);

@@ -192,7 +192,7 @@ function we_cmd() {
 	protected function getHTMLEditorHeader(){
 		$DB_WE = $this->db;
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
-			return $this->getHTMLDocument('<body bgcolor="#F0EFF0"></body></html>');
+			return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'home'), ''), we_html_element::cssLink(CSS_DIR . 'tools_home.css'));
 		}
 
 		if(we_base_request::_(we_base_request::BOOL, 'top')){

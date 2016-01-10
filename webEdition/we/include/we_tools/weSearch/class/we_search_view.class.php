@@ -839,10 +839,10 @@ WE().consts.weSearch= {
 			if($file["size"] > 0){
 				$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $file["Path"]);
 				$url = WEBEDITION_DIR . 'thumbnail.php?id=' . $file["docID"] . "&size=" . $smallSize . "&path=" . urlencode($file["Path"]) . "&extension=" . $file["Extension"];
-				$imageView = '<img src="' . $url . '" border="0" /></a>';
+				$imageView = '<img src="' . $url . '" /></a>';
 
 				$urlPopup = WEBEDITION_DIR . "thumbnail.php?id=" . $file["docID"] . "&size=" . $bigSize . "&path=" . $file["Path"] . "&extension=" . $file["Extension"];
-				$imageViewPopup = '<img src="' . $urlPopup . '" border="0" /></a>';
+				$imageViewPopup = '<img src="' . $urlPopup . '" /></a>';
 			} else {
 				$imagesize = array(0, 0);
 				$imageView = $imageViewPopup = '<span class="resultIcon" data-contenttype="' . $file["ContentType"] . '" data-extension="' . $file['Extension'] . '"></span>';

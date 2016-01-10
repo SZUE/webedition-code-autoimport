@@ -520,7 +520,7 @@ top.selectFile(top.currentID);
 							$thumbpath = $result['Path'];
 						}
 
-						$out .= "<tr><td style='vertical-align:middle;text-align:center;' class='image' height='160' bgcolor='#EDEEED'><a href='" . $result['Path'] . "' target='_blank' style='text-align:center'><img src='" . $thumbpath . "' border='0' id='previewpic'></a></td></tr>" .
+						$out .= "<tr><td class='image'><a href='" . $result['Path'] . "' target='_blank'><img src='" . $thumbpath . "' id='previewpic'></a></td></tr>" .
 							$previewDefauts . "
 <tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', '[width]') . " x " . g_l('weClass', '[height]') . ": </td><td>" . $imagesize[0] . " x " . $imagesize[1] . " px </td></tr>
 <tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('fileselector', '[filesize]') . ": </td><td>" . $filesize . "</td></tr>";
