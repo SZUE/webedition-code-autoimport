@@ -162,13 +162,9 @@ class we_ui_controls_ACFileSelector extends we_ui_abstract_AbstractFormElement{
 		$this->addJSFile(we_ui_abstract_AbstractElement::computeJSURL('we_ui_controls_TextField'));
 		$this->addJSFiles($this->_buttonObj->getJSFiles());
 
-		$this->addJSFile(LIB_DIR . 'additional/yui/yahoo-min.js');
-		$this->addJSFile(LIB_DIR . 'additional/yui/event-min.js');
 		$this->addJSFile(LIB_DIR . 'additional/yui/dom-min.js');
 		$this->addJSFile(LIB_DIR . 'additional/yui/datasource-min.js');
-		$this->addJSFile(LIB_DIR . 'additional/yui/connection-min.js');
 		$this->addJSFile(LIB_DIR . 'additional/yui/animation-min.js');
-		$this->addJSFile(LIB_DIR . 'additional/yui/json-min.js');
 		$this->addJSFile(LIB_DIR . 'additional/yui/autocomplete-min.js');
 		$this->addJSFile(LIB_DIR . 'we/core/JsonRpc.js');
 		$this->addJSFile(JS_DIR . 'utils/we_cmd_encode.js');

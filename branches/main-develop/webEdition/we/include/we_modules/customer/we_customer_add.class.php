@@ -170,11 +170,6 @@ var frames={
 	set:"' . $pob->frameset . '"
 };
 
-var g_l={
-	default_soting_no_del: "' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[default_soting_no_del]')) . '",
-	sortname_empty: "' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[sortname_empty]')) . '",
-};
-
 var settings={
 	default_sort_view:"' . $pob->settings->getSettings('default_sort_view') . '"
 };

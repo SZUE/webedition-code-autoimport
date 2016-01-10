@@ -39,7 +39,7 @@ echo we_html_element::jsElement('
  we_html_element::jsScript(JS_DIR . 'we_modules/messaging/showFolder.js');
 ?>
 </head>
-<body style="margin:5px 7px;background-color:white;">
+<body style="margin:5px 7px;">
 	<?php
 	$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$transaction]);
 	$messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);

@@ -234,10 +234,10 @@ class we_ui_controls_Tabs extends we_ui_abstract_AbstractElement{
 				}
 				$out .= '<div ' . $hiddenStyle . ' title="' . $this->getTabAttribute($v, 'title') . '" id="Tabs_' . $id . '" onclick="' . $onClick . '" ' . $this->_getComputedClassAttrib($class) . '>' .
 					'<table class="default" height="100%"><tr><td>' .
-					($this->getTabAttribute($v, 'icon') ? '<img style="width:16px;height:16px;padding-right:5px;" src="' . $this->getTabAttribute($v, 'icon') . '" border="0" /></td><td>' : '') .
+					($this->getTabAttribute($v, 'icon') ? '<img style="width:16px;height:16px;padding-right:5px;" src="' . $this->getTabAttribute($v, 'icon') . '" /></td><td>' : '') .
 					$this->getTabAttribute($v, 'text') .
 					'</td>' .
-					($this->getTabAttribute($v, 'close') ? '<td><img style="width:16px;height:16px;padding-left:5px;" src="' . self::kTabCloseIconPath . '" border="0" onMouseOut="this.src=\'' . self::kTabCloseIconPath . '\'" onClick="' . htmlentities($this->getTabAttribute($v, 'onCloseClick')) . 'we_ui_controls_Tabs.close(\'' . $this->getId() . '\',\'' . $id . '\');" onMouseOver="this.src=\'' . self::kTabCloseIconMouseOverPath . '\'" /></td>' : '') .
+					($this->getTabAttribute($v, 'close') ? '<td><img style="width:16px;height:16px;padding-left:5px;" src="' . self::kTabCloseIconPath . '" onMouseOut="this.src=\'' . self::kTabCloseIconPath . '\'" onClick="' . htmlentities($this->getTabAttribute($v, 'onCloseClick')) . 'we_ui_controls_Tabs.close(\'' . $this->getId() . '\',\'' . $id . '\');" onMouseOver="this.src=\'' . self::kTabCloseIconMouseOverPath . '\'" /></td>' : '') .
 					'</tr></table>' .
 					'</div>';
 			}

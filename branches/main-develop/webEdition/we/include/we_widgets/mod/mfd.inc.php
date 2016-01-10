@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -90,8 +91,8 @@ $bDateLastMfd = $sDisplayOpt{1};
 $db = $GLOBALS['DB_WE'];
 
 $aUsers = array_filter(array_map('intval', (permissionhandler::hasPerm('EDIT_MFD_USER') ?
-			makeArrayFromCSV($aCols[4]) :
-			array($uid))));
+						makeArrayFromCSV($aCols[4]) :
+						array($uid))));
 
 if($aUsers){
 	$aUsers = implode(',', $aUsers);
@@ -115,8 +116,8 @@ if($bTypeDoc){
 		$paths[] = 'f.Path LIKE ("' . $db->escape(id_to_path($id, FILE_TABLE)) . '%")';
 	}
 	$join[] = FILE_TABLE . ' f ON (h.DocumentTable="' . $t . '" AND f.ID=h.DID ' . ($paths ? ' AND (' . implode(' OR ', $paths) . ')' : '') .
-		($admin ? '' : ' AND (f.RestrictOwners=0 OR(f.RestrictOwners=1 AND (f.CreatorID=' . $_SESSION['user']['ID'] . ' OR FIND_IN_SET(' . $_SESSION['user']['ID'] . ',f.Owners))))') .
-		')';
+			($admin ? '' : ' AND (f.RestrictOwners=0 OR(f.RestrictOwners=1 AND (f.CreatorID=' . $_SESSION['user']['ID'] . ' OR FIND_IN_SET(' . $_SESSION['user']['ID'] . ',f.Owners))))') .
+			')';
 	$tables[] = 'f';
 }
 if($bTypeObj){
@@ -127,22 +128,22 @@ if($bTypeObj){
 		$paths[] = 'of.Path LIKE ("' . $db->escape(id_to_path($id, OBJECT_FILES_TABLE)) . '%")';
 	}
 	$join[] = OBJECT_FILES_TABLE . ' of ON (h.DocumentTable="' . $t . '" AND of.ID=h.DID ' . ($paths ? ' AND (' . implode(' OR ', $paths) . ')' : '') .
-		($admin ? '' : ' AND (of.RestrictOwners=0 OR(of.RestrictOwners=1 AND (of.CreatorID=' . $_SESSION['user']['ID'] . ' OR FIND_IN_SET(' . $_SESSION['user']['ID'] . ',of.Owners))))') .
-		')';
+			($admin ? '' : ' AND (of.RestrictOwners=0 OR(of.RestrictOwners=1 AND (of.CreatorID=' . $_SESSION['user']['ID'] . ' OR FIND_IN_SET(' . $_SESSION['user']['ID'] . ',of.Owners))))') .
+			')';
 	$tables[] = 'of';
 }
 if($bTypeTpl && $mode != we_base_constants::MODE_SEE){
 	$doctable[] = '"' . stripTblPrefix(TEMPLATES_TABLE) . '"';
 	$join[] = TEMPLATES_TABLE . ' t ON (h.DocumentTable="tblTemplates" AND t.ID=h.DID' .
-		($admin ? '' : ' AND (t.RestrictOwners=0 OR(t.RestrictOwners=1 AND (t.CreatorID=' . $_SESSION['user']['ID'] . ' OR FIND_IN_SET(' . $_SESSION['user']['ID'] . ',t.Owners))))') .
-		')';
+			($admin ? '' : ' AND (t.RestrictOwners=0 OR(t.RestrictOwners=1 AND (t.CreatorID=' . $_SESSION['user']['ID'] . ' OR FIND_IN_SET(' . $_SESSION['user']['ID'] . ',t.Owners))))') .
+			')';
 	$tables[] = 't';
 }
 if($bTypeCls && $mode != we_base_constants::MODE_SEE){
 	$doctable[] = '"' . stripTblPrefix(OBJECT_TABLE) . '"';
 	$join[] = OBJECT_TABLE . ' o ON (h.DocumentTable="tblObject" AND o.ID=h.DID' .
-		($admin ? '' : ' AND (o.RestrictOwners=0 OR(o.RestrictOwners=1 AND (o.CreatorID=' . $_SESSION['user']['ID'] . ' OR FIND_IN_SET(' . $_SESSION['user']['ID'] . ',o.Owners))))') .
-		')';
+			($admin ? '' : ' AND (o.RestrictOwners=0 OR(o.RestrictOwners=1 AND (o.CreatorID=' . $_SESSION['user']['ID'] . ' OR FIND_IN_SET(' . $_SESSION['user']['ID'] . ',o.Owners))))') .
+			')';
 	$tables[] = 'o';
 }
 
@@ -173,7 +174,7 @@ COALESCE(' . implode('.ContentType,', $tables) . '.ContentType) AS ContentType,
 COALESCE(' . implode('.ModDate,', $tables) . '.ModDate) AS ModDate
 FROM ' . HISTORY_TABLE . ' h
 LEFT JOIN ' .
-	LOCK_TABLE . ' l ON l.ID=DID AND l.tbl=h.DocumentTable AND l.UserID!=' . $uid . ($join ? ' LEFT JOIN ' . implode(' LEFT JOIN ', $join) : '') . '
+		LOCK_TABLE . ' l ON l.ID=DID AND l.tbl=h.DocumentTable AND l.UserID!=' . $uid . ($join ? ' LEFT JOIN ' . implode(' LEFT JOIN ', $join) : '') . '
 ' . $where . '
 GROUP BY h.DID,h.DocumentTable
 ORDER BY ModDate DESC LIMIT 0,' . ($iMaxItems));
@@ -185,13 +186,13 @@ while($db->next_record(MYSQL_ASSOC) /* && $j < $iMaxItems */){
 
 	$isOpen = $file['isOpen'];
 	$lastModified .= '<tr><td class="mfdIcon" data-contenttype="' . $file['ContentType'] . '"></td>' .
-		'<td style="vertical-align: middle;' . ($isOpen ? 'color:red;' : '') . '" class="middlefont">' .
-		($isOpen ? '' : '<a style="color:#000000;text-decoration:none;" href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . addTblPrefix($file['ctable']) . '\',' . $file['ID'] . ',\'' . $file['ContentType'] . '\');" title="' . $file['Path'] . '" >') .
-		$file['Path'] . ($isOpen ? '' : '</a>') .
-		'</td>' .
-		($bMfdBy ? '<td style="padding-left:.5em;" class="middlefont">' . $file['UserName'] . (($bDateLastMfd) ? ',' : '') . '</td>' : '') .
-		($bDateLastMfd ? '<td style="padding-left:.5em;" class="middlefont">' . $file['MDate'] . '</td>' : '') .
-		'</tr>';
+			'<td style="vertical-align: middle;' . ($isOpen ? 'color:red;' : '') . '" class="middlefont"><span ' .
+			($isOpen ? '' : 'style="color:#000000;" onclick="WE().layout.weEditorFrameController.openDocument(\'' . addTblPrefix($file['ctable']) . '\',' . $file['ID'] . ',\'' . $file['ContentType'] . '\');" title="' . $file['Path'] . '"') . '>' .
+			$file['Path'] .
+			'</span></td>' .
+			($bMfdBy ? '<td style="padding-left:.5em;" class="middlefont">' . $file['UserName'] . (($bDateLastMfd) ? ',' : '') . '</td>' : '') .
+			($bDateLastMfd ? '<td style="padding-left:.5em;" class="middlefont">' . $file['MDate'] . '</td>' : '') .
+			'</tr>';
 }
 
 $lastModified .= '</table>';

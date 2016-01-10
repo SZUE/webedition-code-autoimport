@@ -1,4 +1,4 @@
-/* global container, treeData */
+/* global container, treeData, WE */
 
 /**
  * webEdition SDK
@@ -65,7 +65,7 @@ function check(entry) {
 	var tarr = entry.split('&');
 	var id = tarr[0];
 	var img = "img_" + id;
-var tmp;
+	var tmp;
 	for (i = 1; i <= treeData.len; i++) {
 		if (treeData[i].id == id) {
 			if (treeData[i].checked) {
@@ -93,35 +93,32 @@ var tmp;
 	}
 }
 
-function draw (startEntry, zweigEintrag) {
+function draw(startEntry, zweigEintrag) {
 	var nf = search(startEntry);
-	ret = "";
+	var ret = "";
 	for (var ai = 1; ai <= nf.len; ai++) {
 		ret += zweigEintrag;
-		if (nf[ai].typ == 'user') {
-			ret = '<span class="treeKreuz ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + '"></span>';
-			if (nf[ai].id != -1) {
-				ret += "<a name='_" + nf[ai].id + "' href=\"javascript:doClick(" + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" border=\"0\">";
-			}
-			ret += WE().util.getTreeIcon(nf[ai].contentType) + "</a>" +
-							"<a href=\"javascript:top.check('" + nf[ai].id + '&' + nf[ai].text + "')\"><i class=\"fa fa-" + (nf[ai].checked ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + nf[ai].id + '"></i></a>' +
-							"&nbsp;<a name='_" + nf[ai].id + "' href=\"javascript:top.check('" + nf[ai].id + '&' + nf[ai].text + "')\"><span id=\"" + nf[ai].id + '&' + nf[ai].text + "\" class=\"u_tree_entry\">" + (parseInt(nf[ai].published) ? " <b>" : "") + nf[ai].text + (parseInt(nf[ai].published) ? " </b>" : "") + "</span></A><br/>";
-		} else {
-			var newAst = zweigEintrag;
-
-			ret += '<a href="javascript:top.treeData.openClose(\'' + nf[ai].id + '\',1)"><span class="treeKreuz fa-stack ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open === 0 ? "plus" : "minus") + "-square-o fa-stack-1x'></i></span>";
-			ret += "<a name='_" + nf[ai].id + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" + WE().util.getTreeIcon('we/userGroup') + "</a>" +
-							"<a name='_" + nf[ai].id + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" +
-							"&nbsp;<b>" + nf[ai].text + "</b></a>" +
-							"<br/>";
-			if (nf[ai].open) {
-				if (ai == nf.len) {
-					newAst += '<span class="treeKreuz"></span>';
-				} else {
-					newAst += '<span class="strich treeKreuz "></span>';
-				}
-				ret += draw(nf[ai].id, newAst);
-			}
+		switch (nf[ai].typ) {
+			case 'user':
+				ret = '<span class="treeKreuz ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + '"></span>' +
+								'<span ' +
+								(nf[ai].id != -1 ?
+												"name='_" + nf[ai].id + "' onclick=\"doClick(" + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "')\" border=\"0\"" :
+												'') +
+								'>' +
+								WE().util.getTreeIcon(nf[ai].contentType) +
+								"</span>" +
+								"<span onclick=\"top.check('" + nf[ai].id + '&' + nf[ai].text + "')\"><i class=\"fa fa-" + (nf[ai].checked ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + nf[ai].id + '"></i>' +
+								"&nbsp;<span id=\"" + nf[ai].id + '&' + nf[ai].text + "\" class=\"u_tree_entry\">" + (parseInt(nf[ai].published) ? " <b>" : "") + nf[ai].text + (parseInt(nf[ai].published) ? " </b>" : "") +
+								"</span></span><br/>";
+				break;
+			default:
+				ret += '<a href="javascript:top.treeData.openClose(\'' + nf[ai].id + '\',1)"><span class="treeKreuz fa-stack ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open === 0 ? "plus" : "minus") + "-square-o fa-stack-1x'></i></span>" +
+								"<span name='_" + nf[ai].id + "' onclick=\"doClick(" + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');\">" +
+								WE().util.getTreeIcon('we/userGroup') +
+								"&nbsp;<b>" + nf[ai].text + "</b></span>" +
+								"<br/>" +
+								(nf[ai].open ? draw(nf[ai].id, zweigEintrag + '<span class="' + (ai == nf.len ? "" : "strich ") + 'treeKreuz"></span>') : "");
 		}
 	}
 	return ret;
@@ -146,7 +143,7 @@ function deleteEntry(id) {
 }
 
 
-openClose = function(id, status) {
+openClose = function (id, status) {
 	var eintragsIndex = treeData.indexOfEntry(id);
 	treeData[eintragsIndex].open = status;
 	drawTree();

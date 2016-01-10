@@ -359,9 +359,9 @@ class we_webEditionDocument extends we_textContentDocument{
 		//	if a meta-tag is set all information are in array $GLOBALS["meta"]
 		return '
 <table class="default">
-	<tr><td style="padding-bottom:2px;">' . $this->formInputField("txt", "Title", g_l('weClass', '[Title]'), 40, 508, "", "onchange=\"WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);\"") . '</td></tr>
-	<tr><td  style="padding-bottom:2px;">' . $this->formInputField("txt", "Description", g_l('weClass', '[Description]'), 40, 508, "", "onchange=\"WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);\"") . '</td></tr>
-	<tr><td colspan="2">' . $this->formInputField("txt", "Keywords", g_l('weClass', '[Keywords]'), 40, 508, "", "onchange=\"WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);\"") . '</td>	</tr>' .
+	<tr><td style="padding-bottom:2px;">' . $this->formMetaField('Title') . '</td></tr>
+	<tr><td style="padding-bottom:2px;">' . $this->formMetaField('Description') . '</td></tr>
+	<tr><td style="padding-bottom:2px;">' . $this->formMetaField('Keywords') . '</td></tr>' .
 				$this->getCharsetSelect() .
 				$this->formLangLinks(true) .
 				'</table>';
@@ -660,6 +660,8 @@ class we_webEditionDocument extends we_textContentDocument{
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!
 			$this->checkRemoteLanguage($this->Table, false);
 		}
+
+		$this->i_writeMetaValues();
 
 		if(!$resave){
 			$hy = we_unserialize(we_base_preferences::getUserPref('History'));

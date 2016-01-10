@@ -133,7 +133,7 @@ abstract class we_class{
 		}
 		$formname = 'we_' . $this->Name . '_' . $type . '[' . $name . ']';
 		$out = we_html_element::htmlHidden($formname, $this->getElement($name)) .
-			'<table class="default" style="border:1px solid black"><tr><td' . ($value ? (' bgcolor="' . $value . '"') : '') . '><a href="javascript:setScrollTo();we_cmd(\'openColorChooser\',\'' . $formname . '\',document.we_form.elements[\'' . $formname . '\'].value);"><span style="width:' . $width . 'px;height:' . $height . 'px"/></a></td></tr></table>';
+			'<table class="default" style="border:1px solid black"><tr><td style="background-color: ' . ($value ? : 'inherit') . ';"><a href="javascript:setScrollTo();we_cmd(\'openColorChooser\',\'' . $formname . '\',document.we_form.elements[\'' . $formname . '\'].value);"><span style="width:' . $width . 'px;height:' . $height . 'px"/></a></td></tr></table>';
 		return g_l('weClass', '[' . $name . ']', true) !== false ? we_html_tools::htmlFormElementTable($out, g_l('weClass', '[' . $name . ']')) : $out;
 	}
 
@@ -142,18 +142,6 @@ abstract class we_class{
 			$ps = $this->$name;
 		}
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . '[' . $name . ']') : ('we_' . $this->Name . '_' . $name)), $size, ($elementtype ? $this->getElement($name) : $ps), $maxlength, $attribs), $text, $textalign, $textclass);
-	}
-
-	function formInput2WithSelect($width, $name, $size = 25, $type = 'txt', $attribs = '', array $selValues = array(), $selWidth = 200, $reload = false, $resetSel = false){
-		if(!$type){
-			$ps = $this->$name;
-		}
-		$doReload = $reload ? "top.we_cmd('reload_editpage');" : '';
-		$doReset = $resetSel ? "this.selectedIndex=0;" : '';
-		$inputName = $type ? ('we_' . $this->Name . '_' . $type . '[' . $name . ']') : ('we_' . $this->Name . '_' . $name);
-		$sel = $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $selValues, 1, '', false, array("onchange" => "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;" . $doReset . $doReload), "value", $selWidth);
-
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($inputName, $size, ($type && ($elVal = $this->getElement($name)) ? $elVal : (isset($GLOBALS['meta'][$name]) ? $GLOBALS['meta'][$name]['default'] : (isset($ps) ? $ps : '') )), '', $attribs, $type, $width), (g_l('weClass', '[' . $name . ']', true)? : $name), '', '', $sel);
 	}
 
 	function formInputField($elementtype, $name, $text, $size, $width, $maxlength = '', $attribs = '', $textalign = 'left', $textclass = 'defaultfont'){
@@ -363,12 +351,6 @@ abstract class we_class{
 		}
 	}
 
-	protected function i_fixCSVPrePost($in){
-		return ($in ?
-				',' . trim($in, ',') . ',' :
-				$in);
-	}
-
 	protected function i_savePersistentSlotsToDB($felder = ''){
 		$tableInfo = $this->DB_WE->metadata($this->Table);
 		$feldArr = $felder ? makeArrayFromCSV($felder) : $this->persistent_slots;
@@ -377,14 +359,10 @@ abstract class we_class{
 			return false;
 		}
 		foreach($tableInfo as $info){
-
 			$fieldName = $info['name'];
 			if(in_array($fieldName, $feldArr)){
 				$val = isset($this->$fieldName) ? $this->$fieldName : '';
 
-				if($fieldName === 'Category'){ // Category-Fix!
-					$val = $this->i_fixCSVPrePost($val);
-				}
 				if($fieldName != 'ID'){
 					$fields[$fieldName] = $val;
 				}

@@ -370,7 +370,8 @@ class we_tag_tagParser{
 					$ret[] = '\'' . $key . '\'=>' . ((is_numeric($val) && $val{0} != '+') || $val == 'true' || $val == 'false' ? $val : $quotes . $val . $quotes);
 			}
 		}
-		return ($ret || (!$ret && $printEmpty) ? 'array(' . implode(',', $ret) . ')' : '');
+		$newTag = PHP_VERSION_ID >= 50400;
+		return ($ret || (!$ret && $printEmpty) ? ($newTag ? '[' : 'array(') . implode(',', $ret) . ($newTag ? ']' : ')') : '');
 	}
 
 }

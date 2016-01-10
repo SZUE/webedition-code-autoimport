@@ -53,7 +53,7 @@ echo we_html_tools::getHtmlTop('sideBar') .
 					}
 
 					$icon = (!empty($text['icon']) ?
-							sprintf($link, '<img src="' . IMAGE_DIR . 'sidebar/' . $text['icon'] . '" width="42" height="42" border="0" />') :
+							sprintf($link, '<img src="' . IMAGE_DIR . 'sidebar/' . $text['icon'] . '" width="42" height="42" />') :
 							'');
 
 					$headline = "";

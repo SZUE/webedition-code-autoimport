@@ -131,7 +131,7 @@ function we_tag_formfield($attribs){
 					if((!isset($m['value'])) && count($default) == 1){
 						$val = $default[0];
 					}
-					$tbl .= '<input type="text" name="' . $nameprefix . 'ff_' . $type_sel . '_' . $f . ']" size="7" border="0"' . ($val ? ' value="' . $val . '"' : '') . ' />' . $valselect;
+					$tbl .= '<input type="text" name="' . $nameprefix . 'ff_' . $type_sel . '_' . $f . ']" size="7"' . ($val ? ' value="' . $val . '"' : '') . ' />' . $valselect;
 				} else {
 					if(count($default) > 1){
 						$val = $GLOBALS['we_doc']->getElement($name, 'ff_' . $type_sel . '_' . $f);

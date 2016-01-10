@@ -24,7 +24,7 @@
  */
 function we_tag_ifDoctype($attribs){
 	if(($foo = attributFehltError($attribs, 'doctypes', __FUNCTION__))){
-		print($foo);
+		echo $foo;
 		return false;
 	}
 	$matchArr = explode(',', weTag_getAttribute('doctypes', $attribs, '', we_base_request::STRING));

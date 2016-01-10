@@ -325,6 +325,7 @@ abstract class we_listview_base{
 		}
 		$url_tail = '';
 		if(isset($_REQUEST)){
+			//Fixme: use http_build_query
 			foreach($_REQUEST as $key => $val){
 				if((!in_array($key, $usedKeys)) && (!in_array($key, $filterArr)) && (strpos($key, 'we_ui_') !== 0)){
 					if(is_array($val)){

@@ -31,7 +31,7 @@ class we_tabs{
 
 	static function getHeader($js = ''){
 		return we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
-			we_html_element::jsElement('weTabs = new (WE().layout.we_tabs)(document);' . $js);
+			we_html_element::jsElement('weTabs = new (WE().layout.we_tabs)(document,window);' . $js);
 	}
 
 	function getHTML(){

@@ -25,8 +25,7 @@ require_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
 echo we_html_element::htmlDocType();
 ?><html>
 
-	<head>
-		<?php
+	<head><?php
 		if(!empty($GLOBALS['we_editmode'])){
 			echo STYLESHEET;
 		}
@@ -53,7 +52,7 @@ echo we_html_element::htmlDocType();
 		?>
 	</head>
 	<?php if(!empty($GLOBALS['we_editmode'])){ ?>
-		<body bgcolor="white" style="margin:15px;">
+		<body style="margin:15px;">
 			<form name="we_form" method="post"><?php
 				echo we_class::hiddenTrans();
 				$foo = '<html><head>' .

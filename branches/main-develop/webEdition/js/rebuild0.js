@@ -34,7 +34,7 @@ function handle_event(what) {
 					selectedValue = f.type[i].value;
 				}
 			}
-			goTo(selectedValue)
+			goTo(selectedValue);
 			break;
 	}
 }

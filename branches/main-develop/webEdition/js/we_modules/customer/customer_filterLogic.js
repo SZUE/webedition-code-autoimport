@@ -47,7 +47,7 @@ function wecf_logic_changed(s) {
 			prev.childNodes[i].style.paddingBottom = (val == "OR") ? "10px" : "0";
 		}
 	}
-	for (var i = 0; i < l; i++) {
+	for (i = 0; i < l; i++) {
 		if (row.childNodes[i].nodeName.toLowerCase() == "td") {
 			row.childNodes[i].style.paddingTop = (val == "OR") ? "10px" : "0";
 			row.childNodes[i].style.borderTop = (val == "OR") ? "1px solid grey" : "0";
@@ -70,7 +70,7 @@ function addToMultiEdit(_multEdit, paths) {
 	var found = false;
 	var j = 0;
 	for (var i = 0; i < path.length; i++) {
-		if (path[i] != "") {
+		if (path[i] !== "") {
 			found = false;
 			for (j = 0; j < _multEdit.itemCount; j++) {
 				if (_multEdit.form.elements[_multEdit.name + "_variant0_" + _multEdit.name + "_item" + j].value == path[i]) {

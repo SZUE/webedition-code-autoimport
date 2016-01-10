@@ -122,11 +122,7 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 		$this->addJSFile(we_ui_controls_Tree::computeJSURL(__CLASS__));
 
 		// add needed JS Files
-		$this->addJSFile(LIB_DIR . 'additional/yui/yahoo-min.js');
 		$this->addJSFile(LIB_DIR . 'additional/yui/dom-min.js');
-		$this->addJSFile(LIB_DIR . 'additional/yui/event-min.js');
-		$this->addJSFile(LIB_DIR . 'additional/yui/connection-min.js');
-		$this->addJSFile(LIB_DIR . 'additional/yui/json-min.js');
 		$this->addJSFile(LIB_DIR . '/we/core/JsonRpc.js');
 		$this->addJSFile(LIB_DIR . 'additional/yui/treeview/treeview-min.js');
 	}

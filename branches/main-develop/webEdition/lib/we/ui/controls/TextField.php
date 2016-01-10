@@ -102,7 +102,6 @@ class we_ui_controls_TextField extends we_ui_abstract_AbstractInputElement{
 
 		// add needed JS Files
 		$this->addJSFile(we_ui_abstract_AbstractElement::computeJSURL(__CLASS__));
-		$this->addJSFile(LIB_DIR . 'additional/yui/yahoo-min.js');
 		$this->addJSFile(LIB_DIR . 'additional/yui/dom-min.js');
 	}
 

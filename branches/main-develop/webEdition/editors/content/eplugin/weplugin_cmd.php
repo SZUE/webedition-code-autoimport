@@ -154,4 +154,4 @@ if(isset($_we_transaction)){
 	}
 }
 
-echo we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(array('style' => 'background-color:white'), $out));
+echo we_html_tools::getHtmlTop('', '', '', STYLESHEET, we_html_element::htmlBody(array(), $out));

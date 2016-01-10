@@ -31,7 +31,7 @@ container.prototype.openClose = function (id) {
 	var eintragsIndex = treeData.indexOfEntry(id);
 
 	if (treeData[eintragsIndex].typ === "group") {
-		sort = top.document.we_form_treeheader.sort.value;
+		sort = top.content.document.we_form_treeheader.sort.value;
 	}
 
 	var openstatus = !treeData[eintragsIndex].open;
@@ -80,47 +80,30 @@ container.prototype.drawGroup = function (nf, ai, zweigEintrag) {
 	var cur = nf[ai];
 	var newAst = zweigEintrag;
 	var oc_js = this.topFrame + ".treeData.openClose('" + cur.id + "')\"";
-	row = "<a href=\"javascript:" + oc_js + " border=0><span class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open ? "minus" : "plus") + "-square-o fa-stack-1x'></i></span></a>";
-
-	row += (cur.disabled ?
-					"" :
-					"<a name=\"_" + cur.id + "\" href=\"javascript:" + oc_js + "\">") +
+	var row = "<span onclick=\"" + oc_js + " class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open ? "minus" : "plus") + "-square-o fa-stack-1x'></i></span>" +
+					'<span ' +
+					(cur.disabled ? "" : "name=\"_" + cur.id + "\" onclick=\"" + oc_js + "\"") +
+					">" +
 					WE().util.getTreeIcon(cur.contenttype, cur.open) +
-					(cur.disabled ?
-									"" :
-									"</a><a name=\"_" + cur.id + "\" href=\"javascript:" + oc_js + "\">") +
 					"<label id=\"lab_" + cur.id + "\" class=\"" + cur.getLayout() + "\">" + cur.text + "</label>" +
-					(cur.disabled ?
-									"" :
-									"</a>") +
-					"<br/>";
+					"</span><br/>";
 	if (cur.open) {
-		newAst += (ai == nf.len ?
-						'<span class="treeKreuz"></span>' :
-						'<span class="strich treeKreuz"></span>');
-
+		newAst += '<span class="' + (ai == nf.len ? "" : "strich ") + 'treeKreuz"></span>';
 		row += this.draw(cur.id, newAst);
 	}
 	return row;
 };
 
 container.prototype.drawSort = function (nf, ai, zweigEintrag) {
-	var newAst = zweigEintrag;
 	var oc_js = this.topFrame + ".treeData.openClose('" + nf[ai].id + "')\"";
 
-	row += "<a href=\"javascript:" + oc_js + "><span class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open ? "minus" : "plus") + "-square-o fa-stack-1x'></i></span></a>" +
-					"<a name=\"_" + nf[ai].id + "\" href=\"javascript://\" onclick=\"" + oc_js + ";return true;\" border=0>" +
+	return "<span onclick=\"" + oc_js + " class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open ? "minus" : "plus") + "-square-o fa-stack-1x'></i></span>" +
+					"<span name=\"_" + nf[ai].id + "\" onclick=\"" + oc_js + ";\">" +
 					WE().util.getTreeIcon(nf[ai].contenttype, nf[ai].open) +
-					"</a>" +
-					"<a name=\"_" + nf[ai].id + "\" href=\"javascript://\" onclick=\"" + oc_js + ";return true;\">" +
 					"<label id=\"lab_" + nf[ai].id + "\" class=\"" + this.node_layout[nf[ai].state] + "\">" + nf[ai].text + "</label>" +
-					"</a>" +
-					"<br/>";
-
-	if (nf[ai].open) {
-		newAst += (ai == nf.len ?
-						"<span class=\"treeKreuz\"></span>" :
-						'<span class="strich treeKreuz "></span>');
-		row += this.draw(nf[ai].id, newAst);
-	}
+					"</span>" +
+					"<br/>" +
+					(nf[ai].open ?
+									this.draw(nf[ai].id, zweigEintrag + '<span class="' + (ai == nf.len ? "" : "strich ") + 'treeKreuz"></span>') :
+									"");
 };

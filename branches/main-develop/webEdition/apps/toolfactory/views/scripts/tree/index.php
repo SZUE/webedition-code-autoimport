@@ -27,8 +27,6 @@ $appName = $controller->getParam('appName');
 
 $page = we_ui_layout_HTMLPage::getInstance();
 
-//$page->addJSFile(JS_DIR . 'windows.js');
-
 $nodes = array();
 
 $TreeDiv = new we_ui_layout_Div();

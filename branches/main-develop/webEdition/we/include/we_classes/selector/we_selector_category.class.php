@@ -499,7 +499,7 @@ function we_cmd(){
 
 	switch (args[0]){
 		case "we_selector_file":
-			new (WE().util.jsWindow)(this, url,"we_selector",-1,-1,' . self::WINDOW_SELECTOR_WIDTH . ',' . self::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
+			new (WE().util.jsWindow)(this, url,"we_selector",-1,-1,WE().consts.size.windowSelect.width,WE().consts.size.windowSelect.height,true,true,true,true);
 			break;
 		default:
 			parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));

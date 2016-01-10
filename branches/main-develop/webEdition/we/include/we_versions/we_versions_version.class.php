@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_versions_version{
+
 	protected $ID;
 	protected $documentID;
 	protected $documentTable;
@@ -884,8 +885,8 @@ class we_versions_version{
 			$this->saveVersion($docObj);
 		} else {
 			if((!empty($_SESSION['weS']['versions']['fromScheduler'])) ||
-				((we_base_request::_(we_base_request::STRING, "type") === "reset_versions") ||
-				(!empty($_SESSION['weS']['versions']['initialVersions'])))){
+					((we_base_request::_(we_base_request::STRING, "type") === "reset_versions") ||
+					(!empty($_SESSION['weS']['versions']['initialVersions'])))){
 				$cmd0 = "save_document";
 				if(isset($_SESSION['weS']['versions']['initialVersions'])){
 					unset($_SESSION['weS']['versions']['initialVersions']);
@@ -1020,7 +1021,7 @@ class we_versions_version{
 		}
 
 		if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "save_document" &&
-			we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 5)){
+				we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 5)){
 			$status = "published";
 		}
 
@@ -1071,8 +1072,8 @@ class we_versions_version{
 		if(isset($_SESSION['weS']['versions']['versionToCompare'][$document["Table"]][$document["ID"]]) && ($lastEntry = $_SESSION['weS']['versions']['versionToCompare'][$document['Table']][$document['ID']]) != ''){
 
 			$diffExists = (is_array($document) && $lastEntry ?
-					($docHash != $lastEntry) :
-					false);
+							($docHash != $lastEntry) :
+							false);
 
 			$lastEntry = self::getLastEntry($document['ID'], $document['Table'], $db);
 
@@ -1093,9 +1094,9 @@ class we_versions_version{
 		foreach($tblversionsFields as $fieldName){
 			if($fieldName != 'ID'){
 				$set[$fieldName] = (isset($document[$fieldName]) ?
-						$document[$fieldName] :
-						$this->makePersistentEntry($fieldName, $status, $document, $documentObj)
-					);
+								$document[$fieldName] :
+								$this->makePersistentEntry($fieldName, $status, $document, $documentObj)
+						);
 			}
 		}
 
@@ -1128,22 +1129,22 @@ class we_versions_version{
 				break;
 			case 'documentElements':
 				if(isset($document['elements']) && is_array($document['elements'])){
-					$entry = sql_function('x\'' . bin2hex(we_serialize($document["elements"], false, 9)) . '\'');
+					$entry = sql_function('x\'' . bin2hex(we_serialize($document['elements'], 'serialize', false, 9)) . '\'');
 				}
 				break;
 			case 'documentScheduler':
 				if(!empty($document['schedArr']) && is_array($document['schedArr'])){
-					$entry = sql_function('x\'' . bin2hex(we_serialize($document["schedArr"], false, 9)) . '\'');
+					$entry = sql_function('x\'' . bin2hex(we_serialize($document['schedArr'], 'json', false, 9)) . '\'');
 				}
 				break;
 			case 'documentCustomFilter':
-				if(!empty($document["documentCustomerFilter"]) && is_array($document["documentCustomerFilter"])){
-					$entry = sql_function('x\'' . bin2hex(we_serialize($document["documentCustomerFilter"], false, 9)) . '\'');
+				if(!empty($document['documentCustomerFilter']) && is_array($document['documentCustomerFilter'])){
+					$entry = sql_function('x\'' . bin2hex(we_serialize($document['documentCustomerFilter'], 'serialize', false, 9)) . '\'');
 				}
 				break;
 			case 'timestamp':
-				$lastEntryVersion = f('SELECT ID FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($document["ID"]) . ' AND documentTable="' . $db->escape($document["Table"]) . '" LIMIT 1', 'ID', $db);
-				$entry = ($lastEntryVersion ? time() : $document['CreationDate']);
+				$lastEntryVersion = f('SELECT ID FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($document["ID"]) . ' AND documentTable="' . $db->escape($document['Table']) . '" ORDER BY ID Desc LIMIT 1', '', $db);
+				$entry = ($lastEntryVersion ? sql_function('UNIX_TIMESTAMP()') : $document['CreationDate']);
 				break;
 			case 'status':
 				$this->setStatus($status);
@@ -1239,9 +1240,9 @@ class we_versions_version{
 										$lastEntryField = array();
 									} else {
 										$lastEntryField = we_unserialize(
-											(substr_compare($lastEntryField, 'a%3A', 0, 4) == 0 ?
-												html_entity_decode(urldecode($lastEntryField), ENT_QUOTES) :
-												$lastEntryField)
+												(substr_compare($lastEntryField, 'a%3A', 0, 4) == 0 ?
+														html_entity_decode(urldecode($lastEntryField), ENT_QUOTES) :
+														$lastEntryField)
 										);
 									}
 									switch($val){
@@ -1480,7 +1481,7 @@ class we_versions_version{
 	 */
 	function setVersionOnDelete($docID, $docTable, $ct, we_database_base $db){
 		$lastEntry = array_merge(self::getLastEntry($docID, $docTable, $db), array(
-			'timestamp' => time(),
+			'timestamp' => sql_function('UNIX_TIMESTAMP()'),
 			'status' => "deleted",
 			'modifications' => 1,
 			'modifierID' => isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : '',
@@ -1641,7 +1642,7 @@ class we_versions_version{
 
 							$parentID = (isset($_SESSION['weS']['versions']['lastPathID'])) ? $_SESSION['weS']['versions']['lastPathID'] : 0;
 							$folder = (defined('OBJECT_FILES_TABLE') && $resetArray['documentTable'] == OBJECT_FILES_TABLE ?
-									new we_class_folder() : new we_folder());
+											new we_class_folder() : new we_folder());
 
 							$folder->we_new($resetArray['documentTable'], $parentID, $v);
 							$existsFolderPathID = f('SELECT ID FROM ' . $db->escape($resetArray['documentTable']) . ' WHERE Path="' . $db->escape($folder->Path) . '" AND IsFolder=1', '', $db);
@@ -1687,7 +1688,7 @@ class we_versions_version{
 			we_temporaryDocument::delete($resetDoc->ID, $resetDoc->Table, $db);
 //$resetDoc->initByID($resetDoc->ID);
 			$resetDoc->ModDate = time();
-			$resetDoc->Published = $resetArray["timestamp"];
+			$resetDoc->Published = $resetArray['timestamp'];
 
 			$wasPublished = f('SELECT status FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($resetArray["documentID"]) . ' AND documentTable="' . $db->escape($resetArray['documentTable']) . '" AND status="published" ORDER BY version DESC LIMIT 1', '', $db);
 			$publishedDoc = $_SERVER['DOCUMENT_ROOT'] . $resetDoc->Path;
@@ -2104,8 +2105,8 @@ class we_versions_version{
 		$fields = self::getLastEntry($docID, $docTable, $db);
 		if($fields){
 			$db->query('UPDATE ' . VERSIONS_TABLE . ' SET ' . we_database_base::arraySetter(array(
-					'ParentID' => $parentId,
-					'Path' => $path
+						'ParentID' => $parentId,
+						'Path' => $path
 			)));
 		}
 	}

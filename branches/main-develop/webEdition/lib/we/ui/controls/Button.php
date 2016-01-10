@@ -399,7 +399,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 			$onClick = ($this->getDisabled() ? "return false;" : "return true;");
 
 			return '<div style="width:' . $this->getWidth() . 'px;
-			height:' . $this->getHeight() . 'px;"><a onclick="' . $onClick . '" id="a_' . $this->getId() . '" border="0" style="text-decoration:none;display:block;"  ' . $this->_getNonBooleanAttribs('href,target,title') . '>';
+			height:' . $this->getHeight() . 'px;"><a onclick="' . $onClick . '" id="a_' . $this->getId() . '" style="text-decoration:none;display:block;"  ' . $this->_getNonBooleanAttribs('href,target,title') . '>';
 		}
 		if($this->getType() === 'submit'){
 			return '<div style="position:relative;z-index:1;width:' . $this->getWidth() . 'px;
@@ -462,7 +462,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 			}
 			$imagePath = $_SERVER['DOCUMENT_ROOT'] . $image;
 			if(file_exists($_SERVER['DOCUMENT_ROOT'] . $image) && is_readable($imagePath)){
-				$button = '<img src="' . $image . '" border="0" style="-khtml-user-select: none;padding:0px 5px 0px 5px;" />';
+				$button = '<img src="' . $image . '" style="-khtml-user-select: none;padding:0px 5px 0px 5px;" />';
 				if($this->getText() !== ""){
 					$text = $this->getText();
 					switch($this->getTextPosition()){
