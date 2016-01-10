@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -90,10 +91,10 @@ function we_error_handler($in_webEdition = true){
 
 	if((defined('WE_ERROR_HANDLER') && WE_ERROR_HANDLER)){
 		$_error_level = 0 +
-			($GLOBALS['we']['errorhandler']['deprecated'] ? E_DEPRECATED | E_USER_DEPRECATED | E_STRICT : 0) +
-			($GLOBALS['we']['errorhandler']['notice'] ? E_NOTICE | E_USER_NOTICE | E_STRICT : 0) +
-			($GLOBALS['we']['errorhandler']['warning'] ? E_WARNING | E_CORE_WARNING | E_COMPILE_WARNING | E_USER_WARNING : 0) +
-			($GLOBALS['we']['errorhandler']['error'] ? E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR : 0);
+				($GLOBALS['we']['errorhandler']['deprecated'] ? E_DEPRECATED | E_USER_DEPRECATED | E_STRICT : 0) +
+				($GLOBALS['we']['errorhandler']['notice'] ? E_NOTICE | E_USER_NOTICE | E_STRICT : 0) +
+				($GLOBALS['we']['errorhandler']['warning'] ? E_WARNING | E_CORE_WARNING | E_COMPILE_WARNING | E_USER_WARNING : 0) +
+				($GLOBALS['we']['errorhandler']['error'] ? E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR : 0);
 		error_reporting($_error_level);
 		ini_set('error_reporting', $_error_level);
 
@@ -149,7 +150,7 @@ function translate_error_type($type){
 	}
 }
 
-function getBacktrace($skip){
+function getBacktrace(array $skip = array()){
 	$_detailedError = $_caller = $_file = $_line = '';
 
 	$_backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
@@ -226,11 +227,15 @@ function display_error_message($type, $message, $file, $line, $skipBT = false){
 	</table><br />';
 }
 
+function we_NiceArray($var, $unindent = ''){
+	return preg_replace(array('|Array\n\(|', '|\n\)$|', '|\n(    )' . ($unindent ?  '{' . $unindent . '}':'+' ) . '|','|\n(    )|'), array('', '', "\n","\n\t"), $var);
+}
+
 function getVariableMax($var){
 	static $max = 65500; //max lenght of text-col in mysql - this is enough debug-data, leave some space...
 	switch($var){
 		case 'Request':
-			$ret = (isset($_REQUEST) ? print_r(array_diff_key($_REQUEST, array('user' => '', 'username' => '', 'pass' => '', 'password' => '', 's' => '', 'WE_LOGIN_password', 'WE_LOGIN_username', 'Password', 'Password2')), true) : ' - ');
+			$ret = (isset($_REQUEST) ? we_NiceArray(print_r(array_diff_key($_REQUEST, array('user' => '', 'username' => '', 'pass' => '', 'password' => '', 's' => '', 'WE_LOGIN_password', 'WE_LOGIN_username', 'Password', 'Password2')), true), 1) : ' - ');
 			break;
 		case 'Session':
 			if(!isset($_SESSION)){
@@ -240,20 +245,27 @@ function getVariableMax($var){
 			$ret = '';
 			//FIXME: clone will be reduced to unsetting weS+webuser if all vars have moved
 			if(isset($_SESSION['webuser']) && isset($_SESSION['webuser']['ID']) && $_SESSION['webuser']['registered']){
-				$ret.= 'webUser: ' . print_r(array('ID' => $_SESSION['webuser']['ID'], 'Username' => $_SESSION['webuser']['Username'] . '(' . $_SESSION['webuser']['Forename'] . ' ' . $_SESSION['webuser']['Surname'] . ')'), true);
+				$ret.= 'webUser: ' .
+						we_NiceArray(print_r(array('ID' => $_SESSION['webuser']['ID'], 'Username' => $_SESSION['webuser']['Username'] . '(' . $_SESSION['webuser']['Forename'] . ' ' . $_SESSION['webuser']['Surname'] . ')'), true)).
+						"----------------------------------------\n";
 			}
 			if(isset($_SESSION['user']) && isset($_SESSION['user']['ID'])){
-				$ret.= 'webEdition-User: ' . print_r(array('ID' => $_SESSION['user']['ID'], 'Username' => $_SESSION['user']['Username']), true);
+				$ret.= 'webEdition-User: ' .
+						we_NiceArray(print_r(array('ID' => $_SESSION['user']['ID'], 'Username' => $_SESSION['user']['Username']), true)).
+						"----------------------------------------\n";
 			}
 
 			if(isset($_SESSION['weS'])){
-				$ret.= ($ret ? "----------------------------------------\n" : '') . "Internal data:\n" . print_r(array_diff_key($_SESSION['weS'], array('versions' => '', 'prefs' => '', 'we_data' => '', 'perms' => '', 'webuser' => '')), true);
+				$ret.=  "Internal data:\n" .
+						we_NiceArray(print_r(array_diff_key($_SESSION['weS'], array('versions' => '', 'prefs' => '', 'we_data' => '', 'perms' => '', 'webuser' => '')), true), 1).
+						"----------------------------------------\n";
 			}
 
 			if(isset($_SESSION['perms'])){
-				$ret.= "----------------------------------------\nEffective Permissions:\n" . print_r(array_filter($_SESSION['perms']), true) . "\n------------------------------------\n";
+				$ret.="Effective Permissions:\n" . we_NiceArray(print_r(array_filter($_SESSION['perms']), true)) .
+						"\n------------------------------------\n";
 			}
-			$ret.= print_r(array_diff_key($_SESSION, array('prefs' => '', 'perms' => '', 'webuser' => '', 'weS' => '')), true);
+			$ret.= we_NiceArray(print_r(array_diff_key($_SESSION, array('prefs' => '', 'perms' => '', 'webuser' => '', 'weS' => '')), true), 1);
 
 			break;
 		case 'Global':
@@ -273,7 +285,7 @@ function getVariableMax($var){
 
 			break;
 		case 'Server':
-			$ret = (isset($_SERVER) ? print_r($_SERVER, true) : ' - ');
+			$ret = (isset($_SERVER) ? we_NiceArray(print_r($_SERVER, true)) : ' - ');
 			break;
 		default:
 			$ret = '';
@@ -374,25 +386,25 @@ function mail_error_message($type, $message, $file, $line, $skipBT = false, $ins
 
 	// Build the error table
 	$_detailedError = "An error occurred while executing a script in webEdition.\n\n\n" .
-		($insertID && function_exists('getServerUrl') ?
-			getServerUrl() . WEBEDITION_DIR . 'errorlog.php?function=pos&ID=' . $insertID . "\n\n" : '') .
+			($insertID && function_exists('getServerUrl') ?
+					getServerUrl() . WEBEDITION_DIR . 'errorlog.php?function=pos&ID=' . $insertID . "\n\n" : '') .
 // Domain
-		'webEdition address: ' . $_SERVER['SERVER_NAME'] . ",\n\n" .
-		'URI: ' . $_SERVER['REQUEST_URI'] . "\n" .
-		// Error type
-		'Error type: ' . $ttype . "\n" .
-		// Error message
-		'Error message: ' . str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $message) . "\n" .
-		// Script name
-		'Script name: ' . str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $file) . "\n" .
-		// Line
-		'Line number: ' . $line . "\n" .
-		'Caller: ' . $_caller . "\n" .
-		'Backtrace: ' . $detailedError;
+			'webEdition address: ' . $_SERVER['SERVER_NAME'] . ",\n\n" .
+			'URI: ' . $_SERVER['REQUEST_URI'] . "\n" .
+			// Error type
+			'Error type: ' . $ttype . "\n" .
+			// Error message
+			'Error message: ' . str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $message) . "\n" .
+			// Script name
+			'Script name: ' . str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $file) . "\n" .
+			// Line
+			'Line number: ' . $line . "\n" .
+			'Caller: ' . $_caller . "\n" .
+			'Backtrace: ' . $detailedError;
 
 	// Log the error
 	if(defined('WE_ERROR_MAIL_ADDRESS')){
-		if(!mail(WE_ERROR_MAIL_ADDRESS, $ttype .': '.$_SERVER['SERVER_NAME']. '(webEdition)', $_detailedError)){
+		if(!mail(WE_ERROR_MAIL_ADDRESS, $ttype . ': ' . $_SERVER['SERVER_NAME'] . '(webEdition)', $_detailedError)){
 			if(in_array($type, array('E_ERROR', 'E_CORE_ERROR', 'E_COMPILE_ERROR', 'E_USER_ERROR'))){
 				echo 'Cannot log error! Could not send e-mail: <pre>' . $_detailedError . '</pre>';
 			}
