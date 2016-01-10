@@ -10,6 +10,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 	private $crypt = false;
 	private $hash = '';
 	private $releaseError=false;
+	public static $acquireLock = 0;
 
 	function __construct(){
 		if(defined('SYSTEM_WE_SESSION') && SYSTEM_WE_SESSION && !$this->id){
@@ -68,6 +69,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 
 	function read($sessID){
 		$sessID = $this->DB->escape(self::getSessionID($sessID));
+		$lock = microtime(true);
 		if(f('SELECT 1 FROM ' . SESSION_TABLE . ' WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '"')){//session exists
 			$max = $this->execTime * 10;
 			while(!(($data = f('SELECT session_data FROM ' . SESSION_TABLE . ' WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '" ' . ( --$max ? 'AND touch+INTERVAL ' . SYSTEM_WE_SESSION_TIME . ' second>NOW()' : ''), '', $this->DB)) &&
@@ -87,6 +89,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 				$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET lockid="' . $this->id . '",lockTime=NOW() WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '"');
 				//we need this construct, since the session is not restored now, so we don't have mich debug data
 			}
+			self::$acquireLock = microtime(true) - $lock;
 			if($data){
 				$data = ($data[0] === '$' && $this->crypt ? we_customer_customer::decryptData($data, $this->crypt) : $data);
 				if($data && $data[0] === 'x'){
@@ -99,6 +102,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 		} else {
 			$data = '';
 		}
+		self::$acquireLock = microtime(true) - $lock;
 		//if we don't find valid data, generate a new ID because of session stealing
 		$this->write(self::getSessionID(0), $data, true); //we need a new locked session
 		return '';
