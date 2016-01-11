@@ -691,7 +691,7 @@ abstract class we_base_file{
 	}
 
 	public static function we_filenameNotValid($filename, $isIso = false){
-		return (substr($filename, 0, 2) === '..') || preg_match('![<>?":|\\/*' . ($isIso ? '\x00-\x20\x7F-\xFF' : '') . ']!', $filename);
+		return (substr($filename, 0, 2) === '..') || preg_match('![\'<>?":|\\/*' . ($isIso ? '\x00-\x20\x7F-\xFF' : '') . ']!', $filename);
 	}
 
 	public static function clearPath($path){
