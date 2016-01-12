@@ -28,7 +28,7 @@ if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3)){
 	$cmd1 = we_base_request::_(we_base_request::INT, 'we_cmd', '', 1);
 	$cmd4 = we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 4);
 
-	$yes_button = we_html_button::create_button(we_html_button::OK, "form:we_form");
+	$yes_button = we_html_button::create_button(we_html_button::OK, we_html_button::WE_FORM . ":we_form");
 	$cancel_button = we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();");
 
 	$pb = new we_progressBar(0);

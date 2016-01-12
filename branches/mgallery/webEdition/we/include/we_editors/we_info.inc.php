@@ -107,7 +107,7 @@ if(!empty($GLOBALS["loginpage"])){
 	//	mode-table
 	$_modetable = new we_html_table(array('class' => 'plainTable modeTable'), 1, 3);
 
-	$loginButton = we_html_button::create_button("fat:login,fa-lg fa-sign-in", "form:loginForm");
+	$loginButton = we_html_button::create_button("fat:login,fa-lg fa-sign-in", we_html_button::WE_FORM . ':loginForm', true, 0, 0, 'this.style.display=\'none\';');
 	if(!WE_SEEM){ //	deactivate See-Mode
 		if(WE_LOGIN_WEWINDOW){
 			$_modetable->setCol(0, 0, array(), '');

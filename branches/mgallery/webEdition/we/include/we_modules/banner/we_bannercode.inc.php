@@ -144,7 +144,7 @@ document.write ("<" + "script src=\"' . $getscript . '?r="+r+"&amp;bannername=' 
 		}
 		$content .= '</table>' . (($ok) ? "" : '<p class="defaultfont">*' . g_l('modules_banner', '[required]')) . '</p>';
 		$cancel_button = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
-		$ok_button = we_html_button::create_button(we_html_button::OK, "form:submit:we_form");
+		$ok_button = we_html_button::create_button(we_html_button::OK, we_html_button::WE_FORM . ":we_form");
 		$back_button = we_html_button::create_button(we_html_button::BACK, "javascript:history.back();");
 		$close_button = we_html_button::create_button(we_html_button::CLOSE, "javascript:top.close();");
 
