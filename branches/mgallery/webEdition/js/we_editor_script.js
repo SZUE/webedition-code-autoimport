@@ -124,10 +124,11 @@ function we_submitForm(target, url) {
 	var f = self.document.we_form;
 
 	parent.openedWithWe = true;
-
+	if (url) {
+		f.action = url;
+	}
 	if (target && url) {
 		f.target = target;
-		f.action = url;
 		f.method = "post";
 		if (self.weWysiwygSetHiddenText && _EditorFrame.getEditorDidSetHiddenText() === false) {
 			weWysiwygSetHiddenText();
