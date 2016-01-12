@@ -122,7 +122,7 @@ WE().layout.messageConsoleView.prototype = {
 					this.switchImage(_lastMessage.prio, true);
 					this.calls.push(null);
 
-					this.win.setTimeout(this.hideMessage, 5000);
+					this.win.setTimeout(this.hideMessage, 5000, this);
 				}
 			}
 		} catch (e) {
@@ -153,12 +153,12 @@ WE().layout.messageConsoleView.prototype = {
 	/**
 	 * Disabled the message after a certain time
 	 */
-	hideMessage: function () {
-		this.calls.pop();
+	hideMessage: function (context) {
+		context.calls.pop();
 
-		if (this.calls.length === 0) {
-			this.win.document.getElementById("messageConsoleMessage" + this.name).style.display = "none";
-			this.switchImage(this.currentPrio);
+		if (context.calls.length === 0) {
+			context.win.document.getElementById("messageConsoleMessage" + context.name).style.display = "none";
+			context.switchImage(context.currentPrio);
 		}
 	},
 	/**

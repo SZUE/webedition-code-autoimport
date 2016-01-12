@@ -646,7 +646,7 @@ top.makeNewDocument = true;' .
 
 		return parent::getFramesetJavaScriptDef() . we_html_element::jsElement('
 options.canSelectDir=' . intval($this->canSelectDir) . ';
-options.useID=' . $this->useID . ';
+options.useID=' . intval($this->useID) . ';
 ');
 		//var contentTypes = {' . implode(',', $ctypes) . '};
 	}
