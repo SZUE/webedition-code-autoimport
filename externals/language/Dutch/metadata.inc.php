@@ -2,6 +2,7 @@
 /** Generated language file of webEdition CMS */
 $l_metadata=array(
 	'add'=>'voeg toe',
+	'closedList'=>'closed list',
 	'customfield'=>'Custom field',
 	'dummy'=>'dummy',
 	'error_meta_field_empty_msg'=>'De veldnaam op regel %s1 mag niet leeg zijn!',

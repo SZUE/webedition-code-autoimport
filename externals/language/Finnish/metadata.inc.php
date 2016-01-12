@@ -2,6 +2,7 @@
 /** Generated language file of webEdition CMS */
 $l_metadata=array(
 	'add'=>'lisää',
+	'closedList'=>'closed list',
 	'customfield'=>'Custom field',
 	'dummy'=>'esimerkki',
 	'error_meta_field_empty_msg'=>'Kentän nimi rivillä %s1 ei voi olla tyhjä!',

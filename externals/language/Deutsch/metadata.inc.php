@@ -2,6 +2,7 @@
 /** Generated language file of webEdition CMS */
 $l_metadata=array(
 	'add'=>'hinzufügen',
+	'closedList'=>'abgeschlossen',
 	'customfield'=>'Zusatzfeld',
 	'dummy'=>'Platzhalter',
 	'error_meta_field_empty_msg'=>'Der Feldname der %s1. Zeile darf nicht leer sein!',
