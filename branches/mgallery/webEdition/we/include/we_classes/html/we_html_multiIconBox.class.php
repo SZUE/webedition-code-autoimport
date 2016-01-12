@@ -79,7 +79,7 @@ abstract class we_html_multiIconBox{
 		return ($buttons ?
 				//ignore height, replace by bottom:
 				'<div class="weMultiIconBoxWithFooter" style="overflow:' . $overflow . ';' . ($height ? 'height:' . $height . 'px;' : 'bottom:40px;') . '">' . $out . '</div>
-				<div class="editfooter" style="padding: 10px;">' . $buttons . '</div>' :
+				<div class="editfooter">' . $buttons . '</div>' :
 				$out);
 	}
 

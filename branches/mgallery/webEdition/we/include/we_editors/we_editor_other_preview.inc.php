@@ -39,22 +39,17 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3) === 'download'){
 	}
 }
 
-
-echo we_html_tools::getHtmlTop() .
- (substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), 0, 15) === 'doImage_convert' ?
-	we_html_element::jsElement('parent.frames.editHeader.we_setPath("' . $we_doc->Path . '","' . $we_doc->Text . '", ' . intval($we_doc->ID) . ',"published");') : ''
-);
+$onload = (substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), 0, 15) === 'doImage_convert' ?
+				' onload="parent.frames.editHeader.we_setPath(\'' . $we_doc->Path . '\',\'' . $we_doc->Text . '\', ' . intval($we_doc->ID) . ',\'published\');"' : ''
+		);
+echo we_html_tools::getHtmlTop();
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
-echo STYLESHEET . we_html_element::cssElement('
-	form,#previewDiv,iframe{
-	height:100%;
-	}
-	');
+echo STYLESHEET;
 ?>
 </head>
 
-<body class="weEditorBody">
+<body class="weEditorBody previewOther" <?php echo $onload; ?>>
 	<form name="we_form" method="post">
 		<?php
 		echo we_class::hiddenTrans();

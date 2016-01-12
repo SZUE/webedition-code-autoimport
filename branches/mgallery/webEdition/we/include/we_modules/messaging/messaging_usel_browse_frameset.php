@@ -89,7 +89,7 @@ checked : checked
 <?php
 echo we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'start();')
 		, we_html_element::htmlDiv(array('name' => 'messaging_usel_main', 'style' => 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;padding-bottom:20px;')) .
-		we_html_element::htmlDiv(array('style' => 'position:absolute;height:20px;bottom:0px;left:0px;right:0px;overflow: hidden;padding:10px;', 'class' => 'editfooter'), we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:do_selupdate();"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:close();")
+		we_html_element::htmlDiv(array('style' => 'height:20px;', 'class' => 'editfooter'), we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:do_selupdate();"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:close();")
 				)
 ));
 ?>

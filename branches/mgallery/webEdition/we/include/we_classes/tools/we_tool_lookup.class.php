@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_tool_lookup{
+
 	const REGISTRY_NAME = 'weToolsRegistry';
 
 	static function getAllTools($force = false, $addInternTools = false, $includeDisabled = false){
@@ -57,10 +58,11 @@ abstract class we_tool_lookup{
 				if(isset($metaInfo)){
 					$langStr = '';
 					if(isset($metaInfo['name'])){
-						/*$translate = we_core_Local::addTranslation('default.xml', $metaInfo['name']);
-						if(is_object($translate)){
-							$langStr = $translate->_($metaInfo['name']);
-						}*/
+						/* $translate = we_core_Local::addTranslation('default.xml', $metaInfo['name']);
+						  if(is_object($translate)){
+						  $langStr = $translate->_($metaInfo['name']);
+						  } */
+						$langStr = $metaInfo['name'];
 					}
 					$metaInfo['text'] = oldHtmlspecialchars($langStr);
 					if(!$includeDisabled && !empty($metaInfo['appdisabled'])){
@@ -133,8 +135,8 @@ abstract class we_tool_lookup{
 			if(stripos($cmd0, 'tool_' . $_tool['name'] . '_') === 0){
 				$_REQUEST['tool'] = $_tool['name'];
 				return ($_tool['name'] === 'weSearch' || $_tool['name'] === 'navigation' ?
-						'we_tools/' : 'apps/' ) .
-					$_tool['name'] . '/hook/we_phpCmdHook_' . $_tool['name'] . '.inc.php';
+								'we_tools/' : 'apps/' ) .
+						$_tool['name'] . '/hook/we_phpCmdHook_' . $_tool['name'] . '.inc.php';
 			}
 		}
 
@@ -386,8 +388,8 @@ abstract class we_tool_lookup{
 
 	static function getBackupTables($name){
 		$toolFolder = (($name === 'weSearch' || $name === 'navigation') ?
-				WE_INCLUDES_PATH . 'we_tools/' :
-				WE_APPS_PATH);
+						WE_INCLUDES_PATH . 'we_tools/' :
+						WE_APPS_PATH);
 		if(file_exists($toolFolder . $name . '/conf/backup.conf.php')){
 			include($toolFolder . $name . '/conf/backup.conf.php');
 			if(!empty($toolTables)){
@@ -468,6 +470,6 @@ abstract class we_tool_lookup{
 }
 
 abstract
-	class weToolLookup extends we_tool_lookup{
+		class weToolLookup extends we_tool_lookup{
 
 }

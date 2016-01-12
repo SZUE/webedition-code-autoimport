@@ -51,6 +51,8 @@ function getWebEdition_Tree(){
 			return we_html_element::jsElement('
 var treeData={
 	makeNewEntry:function(){
+	},
+	unselectNode:fucntion(){
 	}
 }
 function drawTree(){

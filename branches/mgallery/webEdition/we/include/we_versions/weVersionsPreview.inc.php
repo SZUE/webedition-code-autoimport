@@ -633,6 +633,6 @@ echo we_html_tools::getHtmlTop('webEdition - ' . g_l('versions', '[versioning]')
 		</div>
 	</div>
 
-	<div class="editfooter" style="text-align:right;padding: 10px 10px 0 0;"><?php echo $_button; ?></div>
+	<div class="editfooter"><?php echo $_button; ?></div>
 </body>
 </html>

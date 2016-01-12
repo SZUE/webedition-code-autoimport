@@ -33,6 +33,26 @@ body{
 	font-family: $weFont;
 	font-size: $bigfont;
 	background-color:white;
+
+	&.weDialogBody,
+	&.weEditorBody{
+		margin: 0px;
+		padding: 0px;
+		background-color: #EDEDED;
+		overflow: hidden;
+	}
+
+	&.weEditorBody {
+		padding: 10px 0px;
+	}
+
+	&.previewOther{
+		form,
+		#previewDiv,
+		iframe{
+			height:100%;
+		}
+	}
 }
 
 table,
@@ -433,6 +453,19 @@ td.boxHeader{
 	text-align: center;
 }
 
+#treeheader/*used in modules*/{
+	overflow:hidden;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	padding: 10px;
+	overflow:hidden;
+	height: 40px;
+	box-sizing: border-box;
+	display:none;
+}
+
 #treeheader,
 #eHeaderBody{
 	@if($useOldStyle){
@@ -758,18 +791,6 @@ optgroup{
 	display:none;
 }
 
-.weDialogBody,
-.weEditorBody{
-	margin: 0px;
-	padding: 0px;
-	background-color: #EDEDED;
-	overflow: hidden;
-}
-
-.weEditorBody {
-	padding: 10px 0px;
-}
-
 .weTreeHeader,
 .weTreeHeaderMove,
 .weTreeHeaderAddToCollection{
@@ -877,7 +898,10 @@ optgroup{
 	height:$editorFooterHeight;
 	position:absolute;
 	bottom:0px;
-	width:100%;
+	right:0px;
+	padding: 7px 10px;
+	box-sizing: border-box;
+	overflow:hidden;
 	background: linear-gradient(#B4B3B3, #C6C5C5);
 	border-top: 2px groove white;
 }
