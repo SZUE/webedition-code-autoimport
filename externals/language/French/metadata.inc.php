@@ -38,5 +38,8 @@ $l_metadata=array(
 	'standardfield'=>'Standard field',
 	'supported_types'=>'Formats de meta data',
 	'tagname'=>'Nom du champ',
+	'txtIconAuto'=>'Automatic Proposals: Manually entered content is automatically added to the proposals. In CSV-Mode csv-content will be splittet and added as seperate entries.',
+	'txtIconClosed'=>'Closed Proposals: Input field is set readonly, so content can be added from proposals only.',
+	'txtIconCsv'=>'CSV-Mode: Multiple entries from proposals can be added comma-separated.',
 	'type'=>'Type',
 );

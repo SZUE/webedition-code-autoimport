@@ -38,5 +38,8 @@ $l_metadata=array(
 	'standardfield'=>'Standardfeld',
 	'supported_types'=>'Metadatenformate',
 	'tagname'=>'Feldname',
+	'txtIconAuto'=>'Automatischer Modus: Manuelle Einträge werden automatisch in die Vorschlagsliste eingefügt. Im CSV-Modus werden kommaseparierte Einträge gesplittet und einzeln eingefügt.',
+	'txtIconClosed'=>'Abgeschlossene Vorschlagsliste: Es können nur Einträge aus der Liste eingefügt werden. Zum Löschen Befehle in der Vorschlagsliste benutzen.',
+	'txtIconCsv'=>'CSV-Modus: Einträge aus der Vorschlagsliste werden kommasepariert zugefügt.',
 	'type'=>'Typ',
 );
