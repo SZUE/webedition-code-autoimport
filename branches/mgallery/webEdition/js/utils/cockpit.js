@@ -64,9 +64,8 @@ var oEvt = {
 		if (oWidget.Safari) {
 			obj.lastMouseY -= document.body.scrollTop;
 		}
-		obj.H = window.setInterval(setPosition(obj,
-						(document.body.scrollHeight > document.documentElement.clientHeight) ?
-						document.body.scrollHeight : document.documentElement.clientHeight), 10);
+		obj.H = window.setInterval(setPosition, 10, obj, (document.body.scrollHeight > document.documentElement.clientHeight ?
+						document.body.scrollHeight : document.documentElement.clientHeight));
 		document.onmouseup = oEvt.end;
 		document.onmousemove = oEvt.drag;
 		return false;
@@ -315,7 +314,7 @@ function onDragNode(iPosX, iPosY) {
 		}
 	}
 	obj = oWidget.p();
-	if (oBuff !== null && obj.nextSibling != oBuff.node && oBuff.node.parentNode!==undefined && oBuff.node.parentNode.nodeType == 1) {
+	if (oBuff !== null && obj.nextSibling != oBuff.node && oBuff.node.parentNode !== undefined && oBuff.node.parentNode.nodeType == 1) {
 		oBuff.node.parentNode.insertBefore(obj, oBuff.node);
 	}
 }
