@@ -61,9 +61,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.ncmd.value = args[0];
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(function () {
-					we_cmd("new_banner");
-				}, 10);
+				setTimeout(we_cmd, 10, "new_banner");
 			}
 			break;
 		case "new_bannergroup":
@@ -71,9 +69,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.ncmd.value = args[0];
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(function () {
-					we_cmd("new_bannergroup");
-				}, 10);
+				setTimeout(we_cmd, 10, "new_bannergroup");
 			}
 			break;
 		case "delete_banner":

@@ -96,7 +96,7 @@ function fadeout(id, from, step, speed) {
 	if (from === 0) {
 		document.getElementById(id).style.display = "none";
 	} else {
-		setTimeout("fadeout(\"" + id + "\"," + (from - step) + "," + step + "," + speed + ")", speed);
+		setTimeout(fadeout, speed, id, (from - step), step, speed);
 	}
 }
 

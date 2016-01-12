@@ -56,9 +56,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.pnt.value = "edbody";
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(function () {
-					top.content.we_cmd("module_navigation_edit", args[1]);
-				}, 10, window);
+				setTimeout(top.content.we_cmd, 10, "module_navigation_edit", args[1]);
 			}
 			break;
 		case "module_navigation_new":
@@ -73,9 +71,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.tabnr.value = 1;
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(function () {
-					top.content.we_cmd("\' + args[0] + \'");
-				}, 10, window);
+				setTimeout(top.content.we_cmd, 10, args[0]);
 			}
 			if ((this.treeData !== undefined) && treeData) {
 				treeData.unselectNode();

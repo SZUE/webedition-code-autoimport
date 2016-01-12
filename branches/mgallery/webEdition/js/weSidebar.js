@@ -37,7 +37,7 @@ WE().layout.sidebar = {
 //
 // ----> Functions to open, close and resize sidebar
 //
-	open: function (what,width) {
+	open: function (what, width) {
 // load document if needed
 		if (what !== undefined) {
 			this.load(what);
@@ -55,9 +55,7 @@ WE().layout.sidebar = {
 			width = 100;
 		}
 
-		window.setTimeout(function () {
-			WE().layout.sidebar.resize(width);
-		}, 200);
+		window.setTimeout(WE().layout.sidebar.resize, 200, width);
 	},
 	close: function () {
 		top.document.getElementById("bm_content_frameDiv").style.right = "0px";
@@ -82,7 +80,7 @@ WE().layout.sidebar = {
 		obj.ct = (obj.ct === undefined ? WE().consts.contentTypes.WEDOCUMENT : obj.ct);
 		this._open(obj);
 	},
-	openDocumentById: function (id,ct) {
+	openDocumentById: function (id, ct) {
 		obj.id = (id === undefined ? 0 : id);
 		obj.ct = (ct === undefined ? WE().consts.contentTypes.WEDOCUMENT : ct);
 		this._open(obj);

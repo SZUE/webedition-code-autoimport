@@ -112,7 +112,7 @@ var cmd = "' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . '"
 			' . ($caller === 'selector' ? 'opener.top.reloadDir();
 			opener.top.unselectAllFiles();
 			opener.top.doClick(' . $id . ', 0);
-			setTimeout(function(){opener.top.selectFile(' . $id . ');}, 200);' :
+			setTimeout(opener.top.selectFile, 200,' . $id . ');' :
 			((isset($writeBack[0]) && $writeBack[0] && isset($writeBack[1])) ? 'opener.' . $writeBack[0] . ' = ' . $id . ';opener.' . $writeBack[1] . ' = "' . $collection->Path . '";' : '')) . '
 			window.close();
 			break;

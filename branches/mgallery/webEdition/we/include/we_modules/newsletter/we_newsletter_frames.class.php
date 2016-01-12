@@ -248,7 +248,7 @@ function populateGroups() {
 }
 
 function we_save() {
-		setTimeout(function(){top.content.we_cmd("save_newsletter")},100);
+		setTimeout(top.content.we_cmd,100,"save_newsletter");
 }
 
 function afterLoad(){
@@ -1924,7 +1924,7 @@ function clearLog(){
 
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array("class" => 'weDialogBody', 'onload' => "self.focus();setTimeout(function(){document.we_form.submit();},200)"), we_html_element::htmlForm(array('name' => 'we_form'), we_html_element::htmlHiddens(array(
+				we_html_element::htmlBody(array("class" => 'weDialogBody', 'onload' => "self.focus();setTimeout(document.we_form.submit,200)"), we_html_element::htmlForm(array('name' => 'we_form'), we_html_element::htmlHiddens(array(
 							'mod' => 'newsletter',
 							"pnt" => "send_frameset",
 							'nid' => $nid,
@@ -2353,7 +2353,7 @@ top.send_control.document.we_form.ecs.value=' . $ecs . ';');
 		we_base_file::delete(WE_NEWSLETTER_CACHE_DIR . $emailcache . "_" . $egc);
 		//$laststep = ceil(we_base_request::_(we_base_request::INT, "ecount", 0) / $this->View->settings["send_step"]);
 		echo we_html_element::jsElement((!empty($this->View->settings["send_wait"]) && is_numeric($this->View->settings["send_wait"]) && $egc > 0 && isset($this->View->settings["send_step"]) && is_numeric($this->View->settings["send_step"]) && $egc < ceil($ecount / $this->View->settings["send_step"]) ?
-				'setTimeout(function(){document.we_form.submit();},' . $this->View->settings["send_wait"] . ');' :
+				'setTimeout(document.we_form.submit,' . $this->View->settings["send_wait"] . ');' :
 				'document.we_form.submit();'
 		));
 		flush();

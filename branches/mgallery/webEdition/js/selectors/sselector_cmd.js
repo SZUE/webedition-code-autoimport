@@ -67,7 +67,9 @@ function selectFile(fid) {
 
 
 function reorderDir(dir, order) {
-	setTimeout('top.fsbody.location="we_sselector_body.php?dir=' + dir + '&ord=' + order + '&file=' + top.currentFilter + '&curID=' + encodeURI(top.currentID) + '"', 100);
+	setTimeout(function (url) {
+		top.fsbody.location = url;
+	}, 100, 'we_sselector_body.php?dir=' + dir + '&ord=' + order + '&file=' + top.currentFilter + '&curID=' + encodeURI(top.currentID));
 }
 
 function selectDir(path) {

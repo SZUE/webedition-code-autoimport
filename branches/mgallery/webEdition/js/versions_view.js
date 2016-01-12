@@ -42,9 +42,7 @@ function printScreen() {
 	scrollContent.style.height = hContentTable + "px";
 	window.print();
 
-	setTimeout(function () {
-		setCrollContent(hScrollContent);
-	}, 2000);
+	setTimeout(setCrollContent, 2000, hScrollContent);
 }
 
 function setCrollContent(hScrollContent) {
@@ -301,9 +299,7 @@ var ajaxCallbackResetVersion = {
 	success: function (o) {
 		if (o.responseText !== undefined) {
 			//top.we_cmd("save_document",transaction,"0","1","0", "","");
-			setTimeout(function () {
-				search(false);
-			}, 500);
+			setTimeout(search, 500, false);
 			// reload current document => reload all open Editors on demand
 
 			//reset content of editor
@@ -400,9 +396,7 @@ function deleteVers() {
 		}
 
 		deleteVersionAjax();
-		setTimeout(function () {
-			search(false);
-		}, 800);
+		setTimeout(search, 800, false);
 	}
 }
 

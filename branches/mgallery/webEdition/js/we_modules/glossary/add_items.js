@@ -122,7 +122,7 @@ function fadeout(id, from, step, speed) {
 	if (from === 0) {
 		top.frames.glossarycheck.document.getElementById(id).style.display = "none";
 	} else {
-		window.setTimeout("fadeout(\"" + id + "\"," + (from - step) + "," + step + "," + speed + ")", speed);
+		window.setTimeout(fadeout, speed, id, (from - step), step, speed);
 	}
 }
 function we_save_document() {

@@ -53,9 +53,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.pnt.value = "edbody";
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(function () {
-					we_cmd("tool_weSearch_edit", args[1]);
-				}, 10);
+				setTimeout(we_cmd, 10, "tool_weSearch_edit", args[1]);
 			}
 			break;
 		case "tool_weSearch_new":
@@ -67,9 +65,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.tabnr.value = 1;
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(function () {
-					we_cmd("tool_weSearch_new");
-				}, 10);
+				setTimeout(we_cmd, 10, "tool_weSearch_new");
 			}
 			if (treeData) {
 				treeData.unselectNode();
@@ -140,9 +136,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.pnt.value = "edbody";
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(function () {
-					we_cmd("tool_weSearch_new_forDocuments");
-				}, 10);
+				setTimeout(we_cmd, 10, "tool_weSearch_new_forDocuments");
 			}
 			if (treeData) {
 				treeData.unselectNode();
@@ -158,9 +152,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.pnt.value = "edbody";
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(function () {
-					we_cmd("tool_weSearch_new_forTemplates");
-				}, 10);
+				setTimeout(we_cmd, 10, "tool_weSearch_new_forTemplates");
 			}
 			if (treeData) {
 				treeData.unselectNode();
@@ -176,9 +168,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.pnt.value = "edbody";
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(function () {
-					we_cmd("tool_weSearch_new_forObjects");
-				}, 10);
+				setTimeout(we_cmd, 10, "tool_weSearch_new_forObjects");
 			}
 			if (treeData) {
 				treeData.unselectNode();
@@ -194,9 +184,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.pnt.value = "edbody";
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(function () {
-					we_cmd("tool_weSearch_new_forMedia");
-				}, 10);
+				setTimeout(we_cmd, 10, "tool_weSearch_new_forMedia");
 			}
 			if (treeData) {
 				treeData.unselectNode();
@@ -212,9 +200,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.pnt.value = "edbody";
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(function () {
-					we_cmd("tool_weSearch_new_advSearch");
-				}, 10);
+				setTimeout(we_cmd, 10, "tool_weSearch_new_advSearch");
 			}
 			if (treeData) {
 				treeData.unselectNode();

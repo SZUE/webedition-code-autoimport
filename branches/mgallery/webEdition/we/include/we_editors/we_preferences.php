@@ -2499,9 +2499,7 @@ for(i=1;i<childs.length;++i){
 	}
 
 	this.location = "' . WE_INCLUDES_DIR . 'we_editors/we_preferences.php";
-	setTimeout(function(){
-	top.document.getElementById("tabContainer").children[0].click();
-	}, 1000);
+	setTimeout(top.document.getElementById("tabContainer").children[0].click, 1000);
 
 
 	}

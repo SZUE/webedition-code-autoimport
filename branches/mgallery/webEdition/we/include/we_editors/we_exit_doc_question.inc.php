@@ -96,7 +96,7 @@ echo we_html_element::jsElement("
 	}
 
 	function pressed_yes() {
-		_EditorFrame.getDocumentReference().frames.editFooter.we_save_document('" . str_replace("'", "\\'", "WE().layout.weEditorFrameController.closeDocument('" . $editorFrameId . "');" . ($nextCmd ? "top.setTimeout('" . $nextCmd . "', 1000);" : "" )) . "');
+		_EditorFrame.getDocumentReference().frames.editFooter.we_save_document('" . str_replace("'", "\\'", "WE().layout.weEditorFrameController.closeDocument('" . $editorFrameId . "');" . ($nextCmd ? "top.setTimeout(function(){" . $nextCmd . "}, 1000);" : "" )) . "');
 		window_closed();
 		self.close();
 	}
@@ -104,7 +104,7 @@ echo we_html_element::jsElement("
 	function pressed_no() {
 		_EditorFrame.setEditorIsHot(false);
 		WE().layout.weEditorFrameController.closeDocument('" . $editorFrameId . "');
-		" . ($nextCmd ? "opener.top.setTimeout('" . $nextCmd . "', 1000);" : "" ) . "
+		" . ($nextCmd ? "opener.top.setTimeout(function(){" . $nextCmd . "}, 1000);" : "" ) . "
 		window_closed();
 		self.close();
 

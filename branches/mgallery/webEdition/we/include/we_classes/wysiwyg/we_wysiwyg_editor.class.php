@@ -1360,7 +1360,7 @@ tinyMCE.weResizeLoops = 100;
 tinyMCE.weResizeEditor = function(render){
 	var h = tinyMCE.DOM.get("' . $this->name . '_toolbargroup").parentNode.offsetHeight;
 	if(render && --tinyMCE.weResizeLoops && h < 24){
-		setTimeout(function(){weResizeEditor (true)}, 10);
+		setTimeout(weResizeEditor, 10,true);
 	}
 
 	tinyMCE.DOM.setStyle(

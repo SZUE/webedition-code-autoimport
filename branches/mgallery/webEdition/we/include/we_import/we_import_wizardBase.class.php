@@ -186,7 +186,7 @@ top.wizcmd.we_import(1,-2' . ((we_base_request::_(we_base_request::STRING, 'type
 
 
 					$out .= we_html_element::htmlForm(array("name" => "we_form"), $h) .
-						we_html_element::jsElement($JScript . 'setTimeout(function(){we_import(1,-1);},15);');
+						we_html_element::jsElement($JScript . 'setTimeout(we_import,15,1,-1);');
 					break;
 
 				case -1:
@@ -279,7 +279,7 @@ if (top.wizbody && top.wizbody.addLog){
 							"v[uniquePath]" => ($v["type"] != we_import_functions::TYPE_GENERIC_XML) ? $path : $parse->path));
 
 					$out .= we_html_element::htmlForm(array("name" => "we_form"), $h) . we_html_element::jsElement(
-							"setTimeout(function(){we_import(1,0);},15);");
+							"setTimeout(we_import,15,1,0);");
 					break;
 
 				case $v['numFiles']:
@@ -350,12 +350,12 @@ if (top.wizbody.addLog){
 
 
 									$out .= we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-											we_html_element::jsElement($JScript . "setTimeout(function(){we_import(1," . $v['cid'] . ");},15);"));
+											we_html_element::jsElement($JScript . "setTimeout(we_import,15,1," . $v['cid'] . ");"));
 								} else {
 
 									$JScript = "
 top.wizbusy.finish(" . $xmlExIm->options['rebuild'] . ");
-setTimeout(function(){we_import(1," . $v['numFiles'] . ");},15);";
+setTimeout(we_import,15,1," . $v['numFiles'] . ");";
 								}
 								$out .= we_html_element::htmlForm(array("name" => "we_form"), $hiddens . we_html_element::jsElement($JScript));
 
@@ -443,7 +443,7 @@ top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["num
 
 
 									$out .= we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-											we_html_element::jsElement($JScript . "setTimeout(function(){we_import(1," . ($v["cid"] + 1) . ");},15);"));
+											we_html_element::jsElement($JScript . "setTimeout(we_import,15,1," . ($v["cid"] + 1) . ");"));
 								}
 							}
 							break 2;
@@ -558,7 +558,7 @@ top.wizbusy.setProgress(Math.floor(((" . $v["cid"] . "+1)/" . $v["numFiles"] . "
 
 
 					$out .= we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-							we_html_element::jsElement($JScript . "setTimeout(function(){we_import(1," . ($v["cid"] + 1) . ");},15);"));
+							we_html_element::jsElement($JScript . "setTimeout(we_import,15,1," . ($v["cid"] + 1) . ");"));
 					break;
 			} // end switch
 		} else if($mode != 1){

@@ -126,7 +126,7 @@ weCmdController.register("save_body", "app_'.$appName.'_save", null, self, funct
 	var checkACFields = function() {
 		if(YAHOO && YAHOO.autocoml && YAHOO.autocoml.checkACFields()) {
 			if(YAHOO.autocoml.checkACFields().running) {
-				setTimeout(function(){checkACFields()}, 100);
+				setTimeout(checkACFields, 100);
 				return false;
 			}
 			else {

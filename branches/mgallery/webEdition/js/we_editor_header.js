@@ -93,9 +93,7 @@ var we_editor_header = {
 		var _EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
 		_EditorFrame.getContentEditor().scrollBy(0, -10);
 		if (this.evtCounter) {
-			this.timeout = setTimeout(function () {
-				we_editor_header.scrollUpEditorContent();
-			}, 66);
+			this.timeout = setTimeout(we_editor_header.scrollUpEditorContent, 66);
 		}
 	}
 };

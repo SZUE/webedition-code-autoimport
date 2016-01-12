@@ -159,7 +159,9 @@ class we_fragment_base{
 		$onload = "document.location='" . $_SERVER['SCRIPT_NAME'] . '?fr_' . rawurlencode($this->name) . '_ct=' . ($nextTask) . $tail . "';";
 
 		if($this->pause){
-			$onload = "setTimeout('" . addslashes($onload) . "'," . $this->pause . ");";
+			$onload = 'setTimeout(function(){
+' . $onload . '
+},' . $this->pause . ");";
 		}
 		echo "<body" .
 		$attr .

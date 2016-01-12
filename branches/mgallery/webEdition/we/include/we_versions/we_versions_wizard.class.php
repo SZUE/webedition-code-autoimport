@@ -186,7 +186,7 @@ function set_button_state(alldis) {
 			top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "next", "enabled");
 		}
 	}else{
-		setTimeout(function(){set_button_state((alldis ? 1 : 0));},300);
+		setTimeout(set_button_state,300,(alldis ? 1 : 0));
 	}
 }
 set_button_state(false);';
@@ -419,7 +419,7 @@ function set_button_state(alldis) {
 				nextBut.innerHTML = \'' . $nextButton . '\';
 		}
 	}else{
-		setTimeout(function(){set_button_state((alldis ? 1 : 0));},300);
+		setTimeout(set_button_state,300,(alldis ? 1 : 0));
 	}
 }
 set_button_state(false);';
@@ -657,7 +657,7 @@ set_button_state(false);';
 				  			nextBut.innerHTML = \'' . $nextButton . '\';
 						}
 					}else{
-						setTimeout(function(){set_button_state((alldis ? 1 : 0));},300);
+						setTimeout(set_button_state,300,(alldis ? 1 : 0));
 					}
 				}
 				set_button_state(false);';
@@ -1168,7 +1168,7 @@ function set_button_state(alldis) {
 				nextBut.innerHTML = \'' . $nextButton . '\';
 		}
 	}else{
-		setTimeout(function(){set_button_state((alldis ? 1 : 0));},300);
+		setTimeout(set_button_state,300,(alldis ? 1 : 0));
 	}
 }
 set_button_state(false);';

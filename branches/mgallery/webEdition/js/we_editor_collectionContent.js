@@ -38,7 +38,7 @@ wePropertiesEdit = {
 		if (!this.hasOptions(from)) {
 			return;
 		}
-		var index,i,o;
+		var index, i, o;
 		for (i = 0; i < from.options.length; i++) {
 			o = from.options[i];
 			if (o.selected) {
@@ -180,7 +180,6 @@ weCollectionEdit = {
 		this.dd.counter = 0;
 		this.renderView(true);
 	},
-
 	renderView: function (notSetHot) {
 		this.ct[this.view].innerHTML = '';
 		this.maxIndex = 0;
@@ -190,37 +189,35 @@ weCollectionEdit = {
 		}
 		this.reindexAndRetrieveCollection(notSetHot);
 	},
-
 	addListenersToContainer: function () {
 		// TODO: drop on container to add at the end of collection
-		/* 
-		if (this.isDragAndDrop) {
-			var containers = document.getElementsByClassName('collection-content'),
-				container;
+		/*
+		 if (this.isDragAndDrop) {
+		 var containers = document.getElementsByClassName('collection-content'),
+		 container;
 
-			for (var i = 0; i < containers.length; i++){
-				container = containers[i];
-				container.addEventListener('dragleave', function (e) {
-					//this.leaveDrag('item', view, e, container);
-					container.style.backgroundColor = 'white';
-				}, false);
-				container.addEventListener('drop', function (e) {
-					//this.dropOnItem('item', view, e, container);
-					top.console.log('do drop');
-				}, false);
-				container.addEventListener('dragenter', function (e) {
-					//this.enterDrag('item', view, e, container);
-					container.style.backgroundColor = 'green';
-				}, false);
-				container.addEventListener('dragover', function (e) {
-					container.style.backgroundColor = 'green';
-					e.preventDefault();
-				}, false);
-			}
-		}
-		*/
+		 for (var i = 0; i < containers.length; i++){
+		 container = containers[i];
+		 container.addEventListener('dragleave', function (e) {
+		 //this.leaveDrag('item', view, e, container);
+		 container.style.backgroundColor = 'white';
+		 }, false);
+		 container.addEventListener('drop', function (e) {
+		 //this.dropOnItem('item', view, e, container);
+		 top.console.log('do drop');
+		 }, false);
+		 container.addEventListener('dragenter', function (e) {
+		 //this.enterDrag('item', view, e, container);
+		 container.style.backgroundColor = 'green';
+		 }, false);
+		 container.addEventListener('dragover', function (e) {
+		 container.style.backgroundColor = 'green';
+		 e.preventDefault();
+		 }, false);
+		 }
+		 }
+		 */
 	},
-
 	addListenersToItem: function (view, elem, isItemEmpty) {
 		var t = this, item, input, ctrls, space;
 
@@ -466,7 +463,7 @@ weCollectionEdit = {
 				blank = blank.replace(/##SHOWBTN##/g, 'none');
 			}
 			div.innerHTML = blank;
-			if(item.icon){
+			if (item.icon) {
 				div.getElementsByClassName('divContent')[0].style.backgroundSize = Math.max(item.icon.sizeX, item.icon.sizeY) < this.gridItemDimension.item ? 'auto' : 'contain';
 			}
 
@@ -624,7 +621,7 @@ weCollectionEdit = {
 		elem.style.backgroundColor = 'white';
 		elem.style.margin = '0';
 		elem.previousSibling.style.right = '14px';
-		if(elem.parentNode.nextSibling){
+		if (elem.parentNode.nextSibling) {
 			elem.parentNode.nextSibling.firstChild.style.left = '0px';
 		}
 	},
@@ -710,7 +707,7 @@ weCollectionEdit = {
 								elem.style.right = '-22px';
 								elem.style.margin = '0 4px 0 4px';
 								elem.previousSibling.style.right = '37px';
-								if(elem.parentNode.nextSibling){
+								if (elem.parentNode.nextSibling) {
 									elem.parentNode.nextSibling.firstChild.style.left = '22px';
 								}
 							}
@@ -840,13 +837,12 @@ weCollectionEdit = {
 			this.outMouse('item', this.view, el.firstChild);
 		}
 	},
-
 	dropOnItem: function (type, view, evt, elem) {
 		evt.preventDefault();
 
 		var data = [], el, index;
 
-		if(!evt.dataTransfer.getData("text") && evt.dataTransfer.files.length === 1){
+		if (!evt.dataTransfer.getData("text") && evt.dataTransfer.files.length === 1) {
 			data[0] = 'dragItemFromExtern';
 		} else {
 			data = evt.dataTransfer.getData("text") ? evt.dataTransfer.getData("text").split(',') : top.dd.dataTransfer.text.split(',');
@@ -896,21 +892,19 @@ weCollectionEdit = {
 				} else {
 					alert("the tree you try to drag from doesn't match your collection's table property"); // FIXME: GL()
 				}
-				setTimeout(function () {
-					weCollectionEdit.resetItemColors(el);
-				}, 100);
+				setTimeout(weCollectionEdit.resetItemColors, 100, el);
 				break;
 			case 'dragItemFromExtern':
 				var files = evt.dataTransfer.files;
 				//weCollectionEdit.we_doc.realRemCT
-				if(this.we_doc.realRemCT.search(',' + files[0].type + ',') === -1){
+				if (this.we_doc.realRemCT.search(',' + files[0].type + ',') === -1) {
 					alert('wrong type');
 					return;
 				}
 
 				var parentID = weCollectionEdit.we_doc.defaultDir,
-					ct = files[0].type,
-					callback;
+								ct = files[0].type,
+								callback;
 
 				el = this.getItem(elem);
 				index = el.id.substr(10);
@@ -981,9 +975,7 @@ weCollectionEdit = {
 									top.we_showMessage(weCollectionEdit.g_l.info_insertion.replace(/##INS##/, resp[0]).replace(/##REJ##/, resp[1]), 1, window);
 								}
 							}
-							setTimeout(function () {
-								weCollectionEdit.resetColors();
-							}, 300);
+							setTimeout(weCollectionEdit.resetColors, 300);
 
 						} else {
 							top.console.debug('http request failed');

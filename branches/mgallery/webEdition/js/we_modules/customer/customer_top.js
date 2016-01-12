@@ -62,9 +62,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.cmdid.value = args[1];
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(function () {
-					we_cmd("new_customer");
-				}, 10);
+				setTimeout(we_cmd, 10, "new_customer");
 			}
 			break;
 		case "delete_customer":

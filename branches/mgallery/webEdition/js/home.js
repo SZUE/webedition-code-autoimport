@@ -451,12 +451,12 @@ function fadeTrans(wizId, start, end, ms) {
 	if (start > end) {
 		for (i = start; i >= end; i--) {
 			var obj = document.getElementById(wizId);
-			setTimeout('setOpacity("' + wizId + '",' + i + ')', (t * v));
+			setTimeout(setOpacity, (t * v), wizId, i);
 			t++;
 		}
 	} else if (start < end) {
 		for (i = start; i <= end; i++) {
-			setTimeout('setOpacity("' + wizId + '",' + i + ')', (t * v));
+			setTimeout(setOpacity, (t * v), wizId, i);
 			t++;
 		}
 	}
