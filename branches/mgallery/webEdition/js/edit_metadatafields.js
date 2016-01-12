@@ -54,24 +54,6 @@ function delRow(id) {
 	if(el){
 		el.parentNode.removeChild(el);
 	}
-	/*
-	var elem = document.getElementById("metadataTable");
-	if (elem) {
-		var trows = elem.rows;
-		var rowID0 = "metadataRow0_" + id;
-		var rowID = "metadataRow_" + id;
-		var rowID1 = "metadataRow1_" + id;
-		var rowID2 = "metadataRow2_" + id;
-		var rowID3 = "metadataRow3_" + id;
-		var rowID4 = "metadataRow4_" + id;
-
-		for (i = trows.length - 1; i >= 0; i--) {
-			if (rowID == trows[i].id || rowID0 == trows[i].id || rowID1 == trows[i].id || rowID2 == trows[i].id || rowID3 == trows[i].id || rowID4 == trows[i].id) {
-				elem.deleteRow(i);
-			}
-		}
-	}
-	*/
 }
 
 function addProposition(btn, index) {

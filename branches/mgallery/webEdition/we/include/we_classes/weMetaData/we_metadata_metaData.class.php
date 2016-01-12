@@ -377,11 +377,11 @@ class we_metadata_metaData{
 				}
 				if($getAssoc){
 					if($getDelete){
-						$_defined_values[$GLOBALS['DB_WE']->f('tag')]['__del__'] = '-- löschen --';
+						$_defined_values[$GLOBALS['DB_WE']->f('tag')]['__del__'] = '-- ' . g_l('metadata', '[deleteEntry]') . ' --';
 						$isDel = true;
 					}
 					if($getDeleteLast){
-						$_defined_values[$GLOBALS['DB_WE']->f('tag')]['__del_last__'] = '-- letztes löschen --';
+						$_defined_values[$GLOBALS['DB_WE']->f('tag')]['__del_last__'] = '-- ' . g_l('metadata', '[deleteLastEntry]') . ' --';
 						$isDel = true;
 					}
 					if($isDel){

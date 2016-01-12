@@ -1429,47 +1429,32 @@ class we_document extends we_root{
 			return $this->formInputField('txt', $field, $name, 40, 508, '', 'onchange=\"WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);\"');
 		}
 
-		$leading = $props['csv'] ? '-- zufügen -- ' : '-- auswählen --';
+		$leading = $props['csv'] ? '-- ' . g_l('buttons_global', '[add][value]') . ' -- ' : '-- ' . g_l('buttons_global', '[select][value]') . ' --';
 		$values = we_metadata_metaData::getDefinedMetaValues(true, $leading, $field, $props['closed'], ($props['closed'] && $props['csv']));
+		$inputName = 'we_' . $this->Name . '_txt[' . $field . ']';
 
-		return $this->formInputWithSelectMeta(308, $field, 23, 'txt', $attribs = '', $values, 200, false, true, $props['csv'], $props['closed'], $props['mode'] === 'auto');
-	}
-
-	function formInputWithSelectMeta($width, $name, $size = 25, $type = 'txt', $attribs = '', array $selValues = array(), $selWidth = 200, $reload = false, $resetSel = false, $multiple = false, $noManualInput = false, $autofill = false){
-		if(!$type){
-			$ps = $this->$name;
-		}
-		$doReload = $reload ? "top.we_cmd('reload_editpage');" : '';
-		$doReset = $resetSel ? "this.selectedIndex=0;" : '';
-		$inputName = $type ? ('we_' . $this->Name . '_' . $type . '[' . $name . ']') : ('we_' . $this->Name . '_' . $name);
-
-		//FIXME: move onchange to external js
-		$onchange = 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);'
-				. 'var valInput = document.forms[0].elements[\'' . $inputName . '\'].value; var valSel = this.options[this.selectedIndex].value;' .
-				($multiple ? 'var valInputCsv = \',\'+valInput+\',\';'
-				. 'if(valSel === \'__del_last__\'){var arr=valInput.split(\',\');arr.pop();document.forms[0].elements[\'' . $inputName . '\'].value=arr.join();}else if(valSel === \'__del__\'){document.forms[0].elements[\'' . $inputName . '\'].value=\'\';} else if(valSel !== \'__empty__\'){'
-				. 'document.forms[0].elements[\'' . $inputName . '\'].value=((valInput==\'\' || (valSel==\'\')) ? valSel : (valInputCsv.search(\'\'+valSel+\',\') === -1 ? (valInput+\', \'+valSel) : valInput));}' :
-				'document.forms[0].elements[\'' . $inputName . '\'].value=(valSel === \'__del__\' || valSel === \'__del_last__\') ? \'\' : ((valSel === \'__empty__\') ? valInput : this.options[this.selectedIndex].value);');
-
+		$onchange = "metaFieldSelectProposal(this, '" . $inputName . "', " . ($props['csv'] ? "true" : "false") . ");";
 		$mouseover = array(
 			'onmouseover' => "this.parentNode.getElementsByClassName('meta_icons')[0].style.display='inline-block';",
 			'onmouseout' => "this.parentNode.getElementsByClassName('meta_icons')[0].style.display='none';",
 			//'onclick' => "this.parentNode.getElementsByClassName('meta_icons')[0].style.display='none';",
 		);
 
-		$input = we_html_tools::htmlTextInput($inputName, $size, ($type && ($elVal = $this->getElement($name)) ? $elVal : (isset($GLOBALS['meta'][$name]) ? $GLOBALS['meta'][$name]['default'] : (isset($ps) ? $ps : '') )), '', $attribs, $type, $width, 0, '', false, $noManualInput);
-		$sel = $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $selValues, 1, '', false, array("onchange" => $onchange . $doReset . $doReload), "value", $selWidth);
+		$input = we_html_tools::htmlTextInput($inputName, 23, (($elVal = $this->getElement($field)) ? $elVal : (isset($GLOBALS['meta'][$field]) ? $GLOBALS['meta'][$field]['default'] : '')), '', '', 'txt', 308, 0, '', false, $props['closed']);
+		$sel = $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $field . ']', $values, 1, '', false, array("onchange" => $onchange), "value", 200);
 
-		// FIXME: if we want the icons make g_l(), icon-css and better js
-		$csvText = 'CSV-Modus: Einträge aus der Vorschlagsliste werden kommasepariert zugefügt.';
-		$closedText = 'Abgeschlossene Vorschlagsliste: Es können nur Einträge aus der Liste eingefügt werden.';
-		$autoText = 'Automatischer Modus: Manuelle Einträge werden automatisch' . ($multiple ? ' (im CSV-Modus)' : '') . ' in die Vorschlagsliste eingefügt.';
-		$iconCsv = '<div title="' . $csvText . '" style="display:inline-block;background-color:#cccccc;border:1px solid black;height:1.2em;border-radius:1em;font-weight:normal">&nbsp;c,s,v&nbsp;</div>&nbsp;';
-		$iconClosed = '<div title="' . $closedText . '" style="display:inline-block;background-color:#cccccc;border:1px solid black;height:1.2em;border-radius:1em;font-weight:normal">&nbsp;<i class="fa fa-key"></i>&nbsp;</div>&nbsp;';
-		$iconAuto = '<div title="' . $autoText . '" style="display:inline-block;background-color:#cccccc;border:1px solid black;height:1.2em;border-radius:1em;font-weight:normal">&nbsp;&nbsp;<i class="fa fa-sign-in"></i>&nbsp;&nbsp;</div>&nbsp;';
-		$icons = we_html_element::htmlDiv(array('style' => 'display:none;', 'class' => 'meta_icons'), ($noManualInput ? $iconClosed : '') . ($multiple ? $iconCsv : '') . ($autofill && !$noManualInput ? $iconAuto : ''));
+		// FIXME: if we want the icons make icon-css and better js
+		$csvText = g_l('metadata', '[txtIconCsv]');
+		$closedText = g_l('metadata', '[txtIconClosed]');
+		$autoText = g_l('metadata', '[txtIconAuto]');
 
-		return we_html_element::htmlDiv($mouseover, we_html_tools::htmlFormElementTable($input, (g_l('weClass', '[' . $name . ']', true)? : $name), '', '', $sel . $icons));
+		$inlineCss = 'display:inline-block;background-color:#cccccc;border:1px solid black;height:1.2em;border-radius:1em;font-weight:normal;'; // FIXME: add class
+		$iconCsv = we_html_element::htmlDiv(array('title' => $csvText, 'style' => $inlineCss), '&nbsp;c,s,v&nbsp;');
+		$iconClosed = we_html_element::htmlDiv(array('title' => $closedText, 'style' => $inlineCss), '&nbsp;<i class="fa fa-key"></i>&nbsp;');
+		$iconAuto = we_html_element::htmlDiv(array('title' => $autoText, 'style' => $inlineCss), '&nbsp;&nbsp;<i class="fa fa-sign-in"></i>&nbsp;&nbsp;');
+		$icons = we_html_element::htmlDiv(array('style' => 'display:none;', 'class' => 'meta_icons'), ($props['closed'] ? $iconClosed . '&nbsp;' : '') . ($props['csv'] ? $iconCsv . '&nbsp;' : '') . (($props['mode'] === 'auto') && !$props['closed'] ? $iconAuto : ''));
+
+		return we_html_element::htmlDiv($mouseover, we_html_tools::htmlFormElementTable($input, (g_l('weClass', '[' . $field . ']', true)? : $field), '', '', $sel . $icons));
 	}
 
 	/**

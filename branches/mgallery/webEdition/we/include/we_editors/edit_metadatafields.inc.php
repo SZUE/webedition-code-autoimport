@@ -179,10 +179,10 @@ function build_dialog($selected_setting = 'ui'){
 				'date' => 'date'
 			);
 
-			$_metadata_modes = array(//FIXME: G_L()
-				'none' => 'keine',
-				'manual' => 'manuell',
-				'auto' => 'automatisch'
+			$_metadata_modes = array(
+				'none' => g_l('metadata', '[mode_none]'),
+				'manual' => g_l('metadata', '[mode_manually]'),
+				'auto' => g_l('metadata', '[mode_auto]')
 			);
 
 			$_metadata_fields = array('' => '-- ' . g_l('metadata', '[add]') . ' --', 'Exif' => we_html_tools::OPTGROUP);
@@ -260,11 +260,11 @@ function build_dialog($selected_setting = 'ui'){
 			</tr>
 			<tr id="metadataRow3_' . $key . '">
 				<td style="padding-bottom:1px;padding-right:5px;">
-					<div class="small" id="metadataModeDiv0_' . $key . '">Vorschlagsliste</div><div id="metadataModeDiv1_' . $key . '">' . we_html_tools::htmlSelect('metadataMode[' . $key . ']', $_metadata_modes, 1, $value['mode'], false, array(($value['type'] === 'textfield' ? '' : 'disabled') => ($value['type'] === 'textfield' ? '' : '1'), 'class' => "defaultfont", 'style' => "width:98%", 'onchange' => "togglePropositionTable(this, " . $key . ");")) . '</div>
+					<div class="small" id="metadataModeDiv0_' . $key . '">' . g_l('metadata', '[proposals]') . '</div><div id="metadataModeDiv1_' . $key . '">' . we_html_tools::htmlSelect('metadataMode[' . $key . ']', $_metadata_modes, 1, $value['mode'], false, array(($value['type'] === 'textfield' ? '' : 'disabled') => ($value['type'] === 'textfield' ? '' : '1'), 'class' => "defaultfont", 'style' => "width:98%", 'onchange' => "togglePropositionTable(this, " . $key . ");")) . '</div>
 				</td>
 				<td colspan="2" style="padding-bottom:1px;">
 					<div class="small" id="metadataProposalChecks0_' . $key . '">&nbsp;</div>
-					<div id="metadataProposalChecks1_' . $key . '">' . we_html_forms::checkboxWithHidden($value['csv'], 'metadataCsv[' . $key . ']', 'CSV') . we_html_forms::checkboxWithHidden($value['closed'], 'metadataClosed[' . $key . ']', 'abgeschlossen') . '</div>
+					<div id="metadataProposalChecks1_' . $key . '">' . we_html_forms::checkboxWithHidden($value['csv'], 'metadataCsv[' . $key . ']', 'CSV') . we_html_forms::checkboxWithHidden($value['closed'], 'metadataClosed[' . $key . ']', g_l('metadata', '[closedList]')) . '</div>
 				</td>
 			</tr>
 			<tr id="metadataRow4_' . $key . '">
