@@ -142,7 +142,6 @@ var last = 0;
 var lastUsedLoadFrame = null;
 var nlHTMLMail = 0;
 var browserwind = null;
-var makefocus = null;
 var weplugin_wait = null;
 // is set in headermenu.php
 //var weSidebar = null;

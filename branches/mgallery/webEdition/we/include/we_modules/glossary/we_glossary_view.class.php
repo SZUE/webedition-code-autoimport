@@ -270,8 +270,7 @@ top.content.hot=0;
 				if($this->Glossary->delete()){
 					echo we_html_element::jsElement('
 top.content.treeData.deleteEntry(' . $this->Glossary->ID . ');
-setTimeout(function(){' . we_message_reporting::getShowMessageCall(g_l('modules_glossary', ($this->Glossary->IsFolder == 1 ? '[group_deleted]' : '[item_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE) . '},500);
-');
+setTimeout(top.we_showMessage,500,"' . g_l('modules_glossary', ($this->Glossary->IsFolder == 1 ? '[group_deleted]' : '[item_deleted]')) . '", WE().consts.message.WE_MESSAGE_NOTICE, window);');
 
 					// --> Save to Cache
 

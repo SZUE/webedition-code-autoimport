@@ -259,13 +259,6 @@ function setActiveVTab(no) {
 	}
 }
 
-function focusise() {
-	setTimeout(function () {
-		self.makefocus.focus();
-		self.makefocus = null;
-	}, 200);
-}
-
 function we_repl(target, url) {
 	if (target) {
 		try {

@@ -279,8 +279,7 @@ if(top.content.makeNewDoc) {
 				if($this->Model->delete()){
 					echo we_html_element::jsElement('
 top.content.treeData.deleteEntry(' . $this->Model->ID . ');
-setTimeout(function(){' . we_message_reporting::getShowMessageCall(g_l('navigation', ($this->Model->IsFolder == 1 ? '[group_deleted]' : '[navigation_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE) . '},500);
-');
+setTimeout(top.we_showMessage,500,"' . g_l('navigation', ($this->Model->IsFolder == 1 ? '[group_deleted]' : '[navigation_deleted]')).'", WE().consts.message.WE_MESSAGE_NOTICE, window);');
 					$this->Model = new we_navigation_navigation();
 					$_REQUEST['home'] = 1;
 					$_REQUEST['pnt'] = 'edbody';

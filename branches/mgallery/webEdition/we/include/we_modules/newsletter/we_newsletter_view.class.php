@@ -530,7 +530,7 @@ new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.p
 							$this->newsletter = new we_newsletter_newsletter();
 							echo we_html_element::jsElement('
 top.content.treeData.deleteEntry(' . $nid . ',"file");
-setTimeout(function(){' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', (we_base_request::_(we_base_request::BOOL, "IsFolder") ? '[delete_group_ok]' : '[delete_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) . '},500);
+setTimeout(top.we_showMessage,500,"' . g_l('modules_newsletter', (we_base_request::_(we_base_request::BOOL, "IsFolder") ? '[delete_group_ok]' : '[delete_ok]')). '", WE().consts.message.WE_MESSAGE_NOTICE, window);
 								');
 							$_REQUEST['home'] = 1;
 							$_REQUEST['pnt'] = 'edbody';

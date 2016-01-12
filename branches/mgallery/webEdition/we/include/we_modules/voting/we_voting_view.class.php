@@ -222,7 +222,7 @@ parent.document.title = "' . $title . '";
 				if($this->voting->delete()){
 					echo we_html_element::jsElement(
 						'top.content.treeData.deleteEntry(' . $this->voting->ID . ');
-setTimeout(function(){' . we_message_reporting::getShowMessageCall(g_l('modules_voting', ($this->voting->IsFolder ? '[group_deleted]' : '[voting_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE) . '},500);');
+setTimeout(top.we_showMessage,500,"' . g_l('modules_voting', ($this->Model->IsFolder == 1 ? '[group_deleted]' : '[voting_deleted]')).'", WE().consts.message.WE_MESSAGE_NOTICE, window);');
 					$this->voting = new we_voting_voting();
 					$_REQUEST['home'] = '1';
 					$_REQUEST['pnt'] = 'edbody';

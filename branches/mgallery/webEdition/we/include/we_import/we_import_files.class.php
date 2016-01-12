@@ -256,7 +256,7 @@ function weCheckAC(j){
 		feld = top.imgimportcontent.YAHOO.autocoml.checkACFields();
 		if(j<30){
 			if(feld.running) {
-				setTimeout(function(){weCheckAC(j++)},100);
+				setTimeout(weCheckAC,100,j++);
 			} else {
 				return feld.valid;
 			}
