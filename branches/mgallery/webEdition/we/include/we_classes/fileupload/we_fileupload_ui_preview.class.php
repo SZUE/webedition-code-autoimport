@@ -142,8 +142,8 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;if(typeof \'selectCategories\' !== \'undefined\'){selectCategories()};'));
 		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js');
 		$variant_js = '
-			var categories_edit = new multi_edit("categoriesDiv",document.forms[0],0,"' . $del_but . '",' . ($_width_size - 10) . ',false);
-			categories_edit.addVariant();';
+var categories_edit = new multi_edit("categoriesDiv",document.forms[0],0,"' . $del_but . '",' . ($_width_size - 10) . ',false);
+categories_edit.addVariant();';
 
 		$_cats = makeArrayFromCSV($categories);
 		if(is_array($_cats)){

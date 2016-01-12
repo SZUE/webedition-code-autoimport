@@ -218,15 +218,13 @@ $_parts = array(
 	)
 );
 
-echo we_html_tools::getHtmlTop(g_l('javaMenu_global', '[showerrorlog]')) .
+echo we_html_tools::getHtmlTop(g_l('javaMenu_global', '[showerrorlog]'),'','',
  we_html_element::jsElement('function closeOnEscape() {
 		return true;
 	}
 ') .
- STYLESHEET;
+ STYLESHEET);
 ?>
-</head>
-
 <body class="weDialogBody" style="overflow:hidden;" onload="self.focus();">
 	<div id="info" style="display: block;">
 		<?php

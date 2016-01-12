@@ -48,7 +48,7 @@ weSearch.conf = {
 	tab: 0,
 	modelClassName: "placeholder",
 	modelID: "placeholder",
-modelIsFolder: true,
+	modelIsFolder: true,
 	//showSelects: "placeholder",
 	rows: 0,
 	checkRightTempTable: ' . (we_search_search::checkRightTempTable() ? 1 : 0) . ',

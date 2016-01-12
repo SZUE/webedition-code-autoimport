@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -67,7 +66,6 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_net_Http{
-
 	/**
 	 * @var Zend_Uri_Http object Uri for this request, with (GET) or without parameters
 	 */
@@ -142,9 +140,8 @@ class we_net_Http{
 		$attribute = "_" . $attribute;
 		if(isset($this->$attribute)){
 			return $this->$attribute;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	/**
@@ -234,9 +231,8 @@ class we_net_Http{
 	public function head($param = array()){
 		if(!$this->_doRequest("HEAD", $param)){
 			return false;
-		} else {
-			return $this->_response;
 		}
+		return $this->_response;
 	}
 
 	/**
@@ -248,9 +244,8 @@ class we_net_Http{
 	public function get($param = array()){
 		if(!$this->_doRequest("GET", $param)){
 			throw new we_net_Exception();
-		} else {
-			return $this->_response;
 		}
+		return $this->_response;
 	}
 
 	/**
@@ -262,9 +257,8 @@ class we_net_Http{
 	public function post($param = array()){
 		if(!$this->_doRequest("POST", $param)){
 			return false;
-		} else {
-			return $this->_response;
 		}
+		return $this->_response;
 	}
 
 	/**
@@ -325,7 +319,6 @@ class we_net_Http{
 		} catch (Exception $e){
 			//we_util_Log::errorLog(get_class($this).": could send request to ".$this->_uri);
 			throw new we_net_Exception(get_class($this) . ": could send request to " . $this->_uri);
-			return false;
 		}
 		return true;
 	}
