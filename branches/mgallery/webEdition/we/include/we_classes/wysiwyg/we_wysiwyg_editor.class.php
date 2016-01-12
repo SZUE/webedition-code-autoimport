@@ -525,7 +525,7 @@ class we_wysiwyg_editor{
 	var doc=document;
 	var styles=[];
 	for(var i=0;i<doc.styleSheets.length;i++){
-		if(doc.styleSheets[i].href && !doc.styleSheets[i].href.match(/webEdition\//) && (doc.styleSheets[i].media.length==0||doc.styleSheets[i].media.indexOf("all")>=0 || doc.styleSheets[i].media.indexOf("screen")>=0)){
+		if(doc.styleSheets[i].href && !doc.styleSheets[i].href.match(/webEdition\//) && (doc.styleSheets[i].media.length==0||doc.styleSheets[i].media.mediaText.indexOf("all")>=0 || doc.styleSheets[i].media.mediaText.indexOf("screen")>=0)){
 			styles.push(doc.styleSheets[i].href);
 		}
 	}
