@@ -185,6 +185,8 @@ body.radient{
 	padding:8px 0px 10px 0px;
 	@if($useOldStyle){
 		background: linear-gradient(#B4B3B3, #C6C5C5);
+	}@else{
+		background: linear-gradient(#B4B3B3, #C6C5C5);
 	}
 	height:100%;
 }

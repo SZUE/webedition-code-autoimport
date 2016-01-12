@@ -254,7 +254,9 @@ if(top.content.treeData){
 					we_message_reporting::getShowMessageCall(g_l('navigation', ($this->Model->IsFolder == 1 ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) . '
 top.content.hot=0;
 if(top.content.makeNewDoc) {
-	setTimeout("top.content.we_cmd(\"module_navigation_' . (($this->Model->IsFolder == 1) ? 'new_group' : 'new') . '\",100)");
+	setTimeout(function(){
+	top.content.we_cmd("module_navigation_' . (($this->Model->IsFolder == 1) ? 'new_group' : 'new') . '");
+},100);
 }' .
 					($delaycmd ?
 						'top.content.we_cmd("' . $delaycmd . '"' . (($dp = we_base_request::_(we_base_request::INT, 'delayParam')) ? ',"' . $dp . '"' : '' ) . ');' :

@@ -220,24 +220,24 @@ abstract class we_html_button{
 			if(strpos($href, self::WE_SUBMIT_BUTTON_IDENTIFY) !== false){ // Button must call the onSubmit event
 				$_form_name = substr($href, strlen(self::WE_SUBMIT_BUTTON_IDENTIFY));
 				// Render link
-				$cmd .= 'if (document.' . $_form_name . '.onsubmit()) { document.' . $_form_name . '.submit(); } return false;';
+				$cmd = 'if (document.' . $_form_name . '.onsubmit()) { document.' . $_form_name . '.submit(); } return false;';
 			} else {
 				// Render link
-				$cmd .= 'document.' . substr($href, strlen(self::WE_FORM_BUTTON_IDENTIFY)) . '.submit();return false;';
+				$cmd = 'document.' . substr($href, strlen(self::WE_FORM_BUTTON_IDENTIFY)) . '.submit();return false;';
 			}
 		} elseif(strpos($href, self::WE_JS_BUTTON_IDENTIFY) !== false){ // Buttons target will be a JavaScript
 			// Get content of JavaScript
 			$_javascript_content = substr($href, strlen(self::WE_JS_BUTTON_IDENTIFY));
 
 			// Render link
-			$cmd .= $_javascript_content;
+			$cmd = $_javascript_content;
 		} else {
 			//FIXME: is this really used???
 			if($target){
 				t_e('new window by button', $target, $href);
 			}
 			// Check if the link has to be opened in a different frame or in a new window
-			$cmd .= ($target ? // The link will be opened in a different frame or in a new window
+			$cmd = ($target ? // The link will be opened in a different frame or in a new window
 					// Check if the link has to be opend in a frame or a window
 					($target === '_blank' ? // The link will be opened in a new window
 						"new (WE().util.jsWindow)(window, '" . $href . "','" . $target . "', -1, -1, 500, 550, true, true, true);" :

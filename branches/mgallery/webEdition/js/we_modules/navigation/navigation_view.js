@@ -57,8 +57,8 @@ function we_cmd() {
 				top.content.editor.edbody.submitForm();
 			} else {
 				setTimeout(function () {
-					we_cmd("module_navigation_edit", args[1]);
-				}, 10);
+					top.content.we_cmd("module_navigation_edit", args[1]);
+				}, 10, window);
 			}
 			break;
 		case "module_navigation_new":
@@ -74,8 +74,8 @@ function we_cmd() {
 				top.content.editor.edbody.submitForm();
 			} else {
 				setTimeout(function () {
-					we_cmd("\' + args[0] + \'");
-				}, 10);
+					top.content.we_cmd("\' + args[0] + \'");
+				}, 10, window);
 			}
 			if ((this.treeData !== undefined) && treeData) {
 				treeData.unselectNode();
