@@ -52,7 +52,7 @@ function getWebEdition_Tree(){
 var treeData={
 	makeNewEntry:function(){
 	},
-	unselectNode:fucntion(){
+	unselectNode:function(){
 	}
 }
 function drawTree(){
