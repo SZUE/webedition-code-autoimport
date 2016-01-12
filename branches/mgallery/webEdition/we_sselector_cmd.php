@@ -78,7 +78,7 @@ if(!$cmd || $cmd != "save_last"){
 				default:
 					setTimeout(function (url) {
 						top.fsbody.location = url;
-					}, 100, "we_sselector_body.php?dir=' + encodeURI(top.rootDir + dir) + '&file=' + top.currentFilter + '&curID=' + encodeURI(top.currentID) + '&selectOwn=<?php echo $selectOwn; ?>");
+					}, 100, 'we_sselector_body.php?dir=' + encodeURI(top.rootDir + dir) + '&file=' + top.currentFilter + '&curID=' + encodeURI(top.currentID) + '&selectOwn=<?php echo $selectOwn; ?>');
 			}
 		}
 	<?php

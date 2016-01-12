@@ -734,7 +734,7 @@ function we_cmd_base(args, url) {
 				setTab(args[1]);
 				treeData.table = args[1];
 			} else {
-				setTimeout('we_cmd("setTab","' + args[1] + '")', 500);
+				setTimeout(we_cmd, 500, "setTab", args[1]);
 			}
 			break;
 		case "update_image":

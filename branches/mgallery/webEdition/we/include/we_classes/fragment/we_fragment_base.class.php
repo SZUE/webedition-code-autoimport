@@ -161,7 +161,7 @@ class we_fragment_base{
 		if($this->pause){
 			$onload = 'setTimeout(function(){
 ' . $onload . '
-},' . $this->pause . ");";
+},' . $this->pause . ');';
 		}
 		echo "<body" .
 		$attr .
@@ -193,7 +193,9 @@ class we_fragment_base{
 		$onload = "document.location='" . $_SERVER["SCRIPT_NAME"] . "?fr_" . rawurlencode($this->name) . "_ct=" . ($nextTask) . $tail . "';";
 
 		if($this->pause){
-			$onload = "setTimeout('" . addslashes($onload) . "'," . $this->pause . ");";
+			$onload = 'setTimeout(function(){
+' . $onload . '
+},' . $this->pause . ');';
 		}
 		if(($nextTask <= $this->numberOfTasks)){
 			echo we_html_element::jsElement($onload);
