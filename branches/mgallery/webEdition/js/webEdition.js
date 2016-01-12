@@ -72,6 +72,22 @@ WE().util.showMessage = function (message, prio, win) {
 	}
 };
 
+WE().util.clip = function (doc, unique) {
+	var text = doc.getElementById("td_" + unique);
+	var btn = doc.getElementById("btn_" + unique).firstChild;
+
+	if (text.classList.contains("cutText")) {
+		text.classList.remove("cutText");
+		btn.classList.remove("fa-caret-right");
+		btn.classList.add("fa-caret-down");
+	} else {
+		text.classList.add("cutText");
+		btn.classList.remove("fa-caret-down");
+		btn.classList.add("fa-caret-right");
+	}
+
+};
+
 // new functions
 function doClickDirect(id, ct, table, fenster) {
 	if (!fenster) {
@@ -307,7 +323,7 @@ function we_sbmtFrm(target, url, source) {
 function doSave(url, trans, cmd) {
 	_EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction(trans);
 	// _EditorFrame.setEditorIsHot(false);
-	if (_EditorFrame.getEditorAutoRebuild()){
+	if (_EditorFrame.getEditorAutoRebuild()) {
 		url += "&we_cmd[8]=1";
 	}
 	if (!we_sbmtFrm(self.load, url)) {

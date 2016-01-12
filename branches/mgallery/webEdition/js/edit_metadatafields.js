@@ -1,3 +1,5 @@
+/* global WE */
+
 /**
  * webEdition SDK
  *
@@ -94,12 +96,12 @@ function addRow() {
 		newRow = document.createElement("TR");
 		newRow.setAttribute("id", "metadataRow0_" + newID);
 		cell = document.createElement("TD");
-		cell.innerHTML = "<strong>" + g_l.tagname + "</strong>";
+		cell.innerHTML = "<strong>" + WE().consts.g_l.metadatafields.tagname + "</strong>";
 		cell.width = "210";
 		cell.style.paddingTop = "12px";
 		newRow.appendChild(cell);
 		cell = document.createElement("TD");
-		cell.innerHTML = "<strong>" + g_l.type + "</strong>";
+		cell.innerHTML = "<strong>" + WE().consts.g_l.metadatafields.type + "</strong>";
 		cell.width = "110";
 		cell.style.paddingTop = "12px";
 		cell.colspan = "2";
@@ -127,12 +129,12 @@ function addRow() {
 		newRow.setAttribute("id", "metadataRow2_" + newID);
 		cell = document.createElement("TD");
 		cell.style.paddingBottom = "6px";
-		cell.innerHTML = '<div class="small">' + g_l.import_from + '</div>' + phpdata.importInp.replace(/__we_new_id__/, newID);
+		cell.innerHTML = '<div class="small">' + WE().consts.g_l.metadatafields.import_from + '</div>' + phpdata.importInp.replace(/__we_new_id__/, newID);
 		newRow.appendChild(cell);
 		cell = document.createElement("TD");
 		cell.setAttribute("colspan", 2);
 		cell.style.paddingBottom = "6px";
-		cell.innerHTML = '<div class="small">' + g_l.fields + '</div>' + phpdata.fieldSel.replace(/__we_new_id__/g, newID);
+		cell.innerHTML = '<div class="small">' + WE().consts.g_l.metadatafields.fields + '</div>' + phpdata.fieldSel.replace(/__we_new_id__/g, newID);
 		newRow.appendChild(cell);
 		elem.appendChild(newRow);
 
@@ -140,7 +142,7 @@ function addRow() {
 		newRow.setAttribute("id", "metadataRow3_" + newID);
 		cell = document.createElement("TD");
 		cell.style.paddingBottom = "1px";
-		cell.innerHTML = '<div class="small" id="metadataModeDiv0_' + newID + '">' + g_l.proposals + '</div><div id="metadataModeDiv1_' + newID + '">' + phpdata.modeSel.replace(/__we_new_id__/g, newID) + '</div>';
+		cell.innerHTML = '<div class="small" id="metadataModeDiv0_' + newID + '">' + WE().consts.g_l.metadatafields.proposals + '</div><div id="metadataModeDiv1_' + newID + '">' + phpdata.modeSel.replace(/__we_new_id__/g, newID) + '</div>';
 		newRow.appendChild(cell);
 		cell = document.createElement("TD");
 		cell.setAttribute("colspan", 2);

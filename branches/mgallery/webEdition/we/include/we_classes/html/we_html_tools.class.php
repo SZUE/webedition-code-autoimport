@@ -760,34 +760,13 @@ this.selectedIndex = 0;' .
 
 		if($clip){
 			$unique = md5(uniqid(__FUNCTION__, true)); // #6590, changed from: uniqid(microtime())
-			$smalltext = substr($text, 0, $clip) . ' ... ';
-			$js = we_html_element::jsElement('
-var state_' . $unique . '=0;
-function clip_' . $unique . '(){
-		var text = document.getElementById("td_' . $unique . '");
-		var btn = document.getElementById("btn_' . $unique . '");
-
-		if(state_' . $unique . '==0){
-			text.innerHTML = "' . addslashes($text) . '";
-			btn.innerHTML = \'<button class="weBtn" onclick="clip_' . $unique . '();"><i class="fa fa-lg fa-caret-down"></i></button>\';
-			state_' . $unique . '=1;
-		}else {
-			text.innerHTML = "' . addslashes($smalltext) . '";
-			btn.innerHTML = \'<button class="weBtn" onclick="clip_' . $unique . '();"><i class="fa fa-lg fa-caret-right"></i></button>\';
-			state_' . $unique . '=0;
-		}
-}');
-			$text = $smalltext;
-		} else {
-			$js = '';
 		}
 
-		if(strpos($width, '%') === false){
-			$width = intval($width);
-			$width -= ($width > 10 ? 10 : 0);
-		}
-
-		return $js . '<div style="background-color:#dddddd;padding:5px;white-space:normal;' . ($width ? ' width:' . $width . (is_numeric($width) ? 'px' : '') . ';' : '') . '"><table width="100%"><tr>' . ($icon ? '<td width="30" style="padding-right:10px;vertical-align:top">' . $icon . '</td>' : '') . '<td class="middlefont" ' . ($clip ? 'id="td_' . $unique . '"' : '') . '>' . $text . '</td>' . ($clip > 0 ? '<td style="vertical-align:top;text-align:right" id="btn_' . $unique . '"><button class="weBtn" onclick="clip_' . $unique . '();"><i class="fa fa-lg fa-caret-right"></i></button><td>' : '') . '</tr></table></div>';
+		return '<div class="alertAttentionBox' . ($icon ? ' alertIcon' : '').($cut ? ' alertCut' : '') . '" style="' . ($width ? ' width:' . $width . (is_numeric($width) ? 'px' : '') . ';' : '') . '">' .
+				($icon ? '<div class="icon">' . $icon . '</div>' : '') .
+				'<div class="middlefont ' . ($clip > 0 ? 'cutText" id="td_' . $unique . '" style="max-width:' . $clip . 'ex;"' : '"') . '>' . $text . '</div>' .
+				($clip > 0 ? '<button type="button" class="weBtn clipbutton" id="btn_' . $unique . '" onclick="WE().util.clip(document,\'' . $unique . '\')"><i class="fa fa-lg fa-caret-right"></i></button>' : '') .
+				'</div>';
 	}
 
 	public static function setHttpCode($status){

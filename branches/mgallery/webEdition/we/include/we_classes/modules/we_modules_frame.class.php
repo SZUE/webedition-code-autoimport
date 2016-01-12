@@ -107,7 +107,7 @@ abstract class we_modules_frame{
 										(isset($this->toolDir) ?
 												$this->toolDir . 'conf/we_menu_' . $this->toolName . '.conf.php' :
 												WE_INCLUDES_PATH . 'menu/module_menu_' . $this->module . '.inc.php'))) .
-						($this->hasIconbar ? we_html_element::htmlIFrame('iconbar', $this->frameset . '&pnt=iconbar' . $extraUrlParams, 'position: absolute; top: 32px; left: 0px; right: 0px; height: 40px; overflow: hidden;', '', '', false) : '') .
+						($this->hasIconbar ? we_html_element::htmlIFrame('iconbar', $this->frameset . '&pnt=iconbar' . $extraUrlParams, '', '', '', false) : '') .
 						$this->getHTMLResize($extraUrlParams) .
 						we_html_element::htmlIFrame('cmd', $this->frameset . '&pnt=cmd' . $extraUrlParams)
 		);
@@ -118,7 +118,7 @@ abstract class we_modules_frame{
 	protected function getHTMLHeader($_menuFile){
 		$menu = include($_menuFile);
 		$jmenu = new we_base_menu($menu, 'top.opener.top.load', '');
-		$menu = $jmenu->getCode(false) . $jmenu->getJS();
+		$menu = $jmenu->getCode(false);
 
 		return
 				we_html_element::htmlDiv(array('class' => 'menuDiv'), $menu) .
@@ -146,8 +146,7 @@ abstract class we_modules_frame{
 		//we load tree in iFrame, because the complete tree JS is based on document.open() and document.write()
 		//it makes not much sense, to rewrite trees before abandoning them anyway
 		return we_html_element::htmlDiv(array(
-					'id' => 'left', 'name' => 'left', 'style' => 'position: absolute; top: 0px; bottom: 0px; left: ' . weTree::HiddenWidth . 'px; right: 0px;'
-						), we_html_element::htmlDiv(array('id' => 'treeheader', 'style' => ($this->showTreeHeader ? 'display:block;' : '')), $this->getHTMLTreeheader()) .
+					'id' => 'left', 'name' => 'left'), we_html_element::htmlDiv(array('id' => 'treeheader', 'style' => ($this->showTreeHeader ? 'display:block;' : '')), $this->getHTMLTreeheader()) .
 						$this->getHTMLTree() .
 						($this->showTreeFooter ? we_html_element::htmlDiv(array('id' => 'treefooter', 'class' => 'editfooter'), $this->getHTMLTreefooter()) :
 								''
@@ -158,7 +157,7 @@ abstract class we_modules_frame{
 	protected function getHTMLTree($extraHead = ''){
 		return we_html_element::htmlDiv(array(
 					'id' => 'tree',
-					'style' => 'top: ' . ($this->showTreeHeader ? 40 : 0) . 'px; bottom: ' . ($this->showTreeFooter ? 40 : 0) . 'px;'), $extraHead . $this->Tree->getHTMLContruct('if(top.treeResized){top.treeResized();}')
+					'style' => ($this->showTreeHeader ? 'top: 40px;' : '') . ($this->showTreeFooter ? 'bottom: 40px;' : '')), $extraHead . $this->Tree->getHTMLContruct()
 		);
 	}
 

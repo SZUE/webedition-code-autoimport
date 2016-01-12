@@ -106,13 +106,12 @@ container.prototype.frames={
 
 	abstract protected function customJSFile();
 
-	function getHTMLContruct($onresize = ''){
+	function getHTMLContruct(){
 		return
 			we_html_element::cssLink(CSS_DIR . 'tree.css') .
 			we_html_element::htmlDiv(array(
 				'id' => 'treetable',
 				'class' => 'tree',
-				'onresize' => $onresize
 				), ''
 		);
 	}

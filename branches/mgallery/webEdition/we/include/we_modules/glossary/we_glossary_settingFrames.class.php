@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_glossary_settingFrames{
+
 	private $Frameset;
 	var $Controller;
 	var $db;
@@ -45,12 +46,11 @@ class we_glossary_settingFrames{
 
 	function getHTMLFrameset(){
 		return
-			we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
-				we_html_element::jsScript(JS_DIR . 'formFunctions.js'), we_html_element::htmlBody(array('class' => 'weDialogBody')
-					, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-						, we_html_element::htmlExIFrame('content', $this->getHTMLContent(), 'position:absolute;top:0px;bottom:1px;left:0px;right:0px;overflow: hidden;', '', '', false) .
-						we_html_element::htmlIFrame('cmdFrame', 'about:blank', 'position:absolute;height:1px;bottom:0px;left:0px;right:0px;overflow: hidden;')
-		)));
+				we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
+						we_html_element::jsScript(JS_DIR . 'formFunctions.js'), we_html_element::htmlBody(array('class' => 'weDialogBody')
+								, we_html_element::htmlExIFrame('content', $this->getHTMLContent(), 'position:absolute;top:0px;bottom:1px;left:0px;right:0px;overflow: hidden;', '', '', false) .
+								we_html_element::htmlIFrame('cmdFrame', 'about:blank', 'position:absolute;height:1px;bottom:0px;left:0px;right:0px;overflow: hidden;')
+		));
 	}
 
 	function getHTMLContent(){
@@ -60,16 +60,15 @@ class we_glossary_settingFrames{
 		$parts = array(
 			array(
 				'headline' => "",
-				
 				'html' => $content,
 				'noline' => 1)
 		);
 
 		return
-			'<form name="we_form" target="cmdFrame" action="' . $this->Frameset . '">
+				'<form name="we_form" target="cmdFrame" action="' . $this->Frameset . '">
 	' . we_html_tools::hidden('cmd', 'save_glossary_setting') . '
 	' . we_html_multiIconBox::getHTML('GlossaryPreferences', $parts, 30, we_html_button::position_yes_no_cancel(
-					we_html_button::create_button(we_html_button::SAVE, 'javascript:document.we_form.submit();'), null, we_html_button::create_button(we_html_button::CLOSE, 'javascript:top.window.close();')), -1, '', '', false, g_l('modules_glossary', '[menu_settings]')) . '
+								we_html_button::create_button(we_html_button::SAVE, 'javascript:document.we_form.submit();'), null, we_html_button::create_button(we_html_button::CLOSE, 'javascript:top.window.close();')), -1, '', '', false, g_l('modules_glossary', '[menu_settings]')) . '
 	</form>';
 	}
 

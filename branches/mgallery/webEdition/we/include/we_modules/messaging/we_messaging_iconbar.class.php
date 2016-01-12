@@ -72,7 +72,7 @@ var transaction="' . $this->weTransaction . '";
 		$buttons = $this->viewclass === 'todo' ? $this->buttonsTodo : $this->buttonsMsg;
 
 		$j = 0;
-		$table = new we_html_table(array('cellpadding' => 8), 1, count($buttons));
+		$table = new we_html_table(array('class' => 'iconBar'), 1, count($buttons));
 		foreach($buttons as $button){
 			$table->setCol(0, $j++, array(), we_html_button::create_button($button[0], $button[1], true));
 			if($button[2]){

@@ -40,6 +40,7 @@ body{
 		padding: 0px;
 		background-color: #EDEDED;
 		overflow: hidden;
+		height: 100%;
 	}
 
 	&.weEditorBody {
@@ -107,6 +108,7 @@ span.infobox{
 		color: white;
 		font-size: $medfont;
 		line-height: 1.2em;
+		white-space: normal;
 	}
 	&:hover span {
 		display: block;
@@ -478,9 +480,23 @@ td.boxHeader{
 	margin: 0px;
 }
 
+/*div for iconbar frame*/
+#iconbarDiv{
+	position: absolute;
+	top: 32px;
+	left: 0px;
+	right: 0px;
+	height: 40px;
+	overflow: hidden;
+}
+
 #iconBar{
 	border-top: 1px solid #a5a4a4;
 	background: linear-gradient(white, #e6e7e6);
+
+	table.iconBar td{
+		padding:6px;
+	}
 }
 
 #headrow{
@@ -1745,6 +1761,7 @@ body.moduleEditor{
 	top: 0px;
 	right: 0px;
 }
+
 #moduleContent{
 	position: absolute;
 	top: 0px;
@@ -1758,6 +1775,13 @@ body.moduleEditor{
 		bottom: 0px;
 		left: 0px;
 		right: 0px;
+		#left{
+			left:$vtabWidth;
+			position: absolute;
+			top: 0px;
+			bottom: 0px;
+			right: 0px;
+		}
 	}
 }
 #right{
@@ -1776,5 +1800,59 @@ body.moduleEditor{
 		left: 0px;
 		right: 0px;
 		overflow: hidden;
+	}
+}
+
+div.alertAttentionBox{
+	background-color:#dddddd;
+	padding: 5px;
+	white-space:normal;
+	box-sizing:border-box;
+	position: relative;
+	&.alertIcon{
+		padding-left: 40px;
+	}
+	&.alertCut{
+		padding-right:40px;
+	}
+	div.icon{
+		padding-right:1em;
+		position: absolute;
+		top:2px;
+		left:5px;
+	}
+	div.middlefont{
+		display:inline-block;
+	}
+	button.clipbutton{
+		position:absolute;
+		right:2px;
+		top:2px;
+	}
+}
+
+div.sysinfoMsg{
+	min-height:2.5ex;
+	min-width: 2ex;
+	cursor:pointer;
+	padding-right:2ex;
+	padding-left:0px;
+	position:relative;
+	span.warn{
+		font-size: 10px;
+		color:#F2F200;
+		position: absolute;
+		right:.5ex;
+	}
+	span.info{
+		font-size: 10px;
+		color:#007de3;
+		position: absolute;
+		right:.5ex;
+	}
+	span.ok{
+		position:absolute;
+		right:0px;
+		color:green;
 	}
 }
