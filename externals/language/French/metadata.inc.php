@@ -27,6 +27,7 @@ $l_metadata=array(
 	'no_metadata_supported'=>'webEdition does not support metadata formats for this kind of document.',
 	'none'=>'rien',
 	'properties'=>'Properties',
+	'proposals'=>'Proposals',
 	'save'=>'Saving meta data fields, one moment ...',
 	'save_wait'=>'Saving settings',
 	'saved'=>'Meta data fields have been saved successfully.',

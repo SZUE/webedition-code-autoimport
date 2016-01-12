@@ -27,6 +27,7 @@ $l_metadata=array(
 	'no_metadata_supported'=>'webEdition ondersteunt geen metagegevens formaten voor dit type document.',
 	'none'=>'geen',
 	'properties'=>'Eigenschappen',
+	'proposals'=>'Proposals',
 	'save'=>'Bezig met bewaren van meta gegevens velden, een ogenblik geduld ...',
 	'save_wait'=>'Instellingen bewaren',
 	'saved'=>'De meta gegevens velden zijn succesvol bewaard.',

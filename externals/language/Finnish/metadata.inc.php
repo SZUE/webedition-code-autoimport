@@ -27,6 +27,7 @@ $l_metadata=array(
 	'no_metadata_supported'=>'webEdition ei tue metadata formaatteja tämänkaltaisissa dokumenteissa.',
 	'none'=>'ei mitään',
 	'properties'=>'Ominaisuudet',
+	'proposals'=>'Proposals',
 	'save'=>'Metatietoja tallennetaan, odota pieni hetki...',
 	'save_wait'=>'Tallennetaan asetuksia',
 	'saved'=>'Metatietokentät tallennettu.',

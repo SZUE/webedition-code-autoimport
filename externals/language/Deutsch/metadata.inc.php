@@ -27,6 +27,7 @@ $l_metadata=array(
 	'no_metadata_supported'=>'webEdition unterstützt für diesen Dateityp keine Metadatenformate.',
 	'none'=>'keine',
 	'properties'=>'Eigenschaften',
+	'proposals'=>'Vorschlagsliste',
 	'save'=>'Einstellungen werden gespeichert, einen Moment ...',
 	'save_wait'=>'Speichere Einstellungen',
 	'saved'=>'Die Einstellungen wurden erfolgreich gespeichert.',
