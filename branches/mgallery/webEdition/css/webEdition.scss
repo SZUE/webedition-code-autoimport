@@ -1811,7 +1811,7 @@ div.alertAttentionBox{
 	white-space:normal;
 	box-sizing:border-box;
 	position: relative;
-	min-height: 3em;
+	min-height: 2.5em;
 	&.alertIcon{
 		padding-left: 40px;
 	}
@@ -1833,7 +1833,7 @@ div.alertAttentionBox{
 	button.clipbutton{
 		position:absolute;
 		right:2px;
-		top:2px;
+		top:5px;
 	}
 }
 
