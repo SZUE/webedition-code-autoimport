@@ -94,7 +94,7 @@ class we_ui_dialog_YesNoCancelDialog extends we_ui_layout_Dialog{
 		$buttonTable->setCancelButton($buttonCancel);
 		$buttonTable->setStyle('margin-top:10px;margin-right:10px;margin-left:auto;');
 
-		$buttonsHTML = '<div clas="editfooter">' . $buttonTable->getHTML() . '</div>';
+		$buttonsHTML = '<div class="editfooter">' . $buttonTable->getHTML() . '</div>';
 		$this->addCSSFiles($buttonTable->getCSSFiles());
 		$this->addJSFiles($buttonTable->getJSFiles());
 		$this->addHTML($buttonsHTML);

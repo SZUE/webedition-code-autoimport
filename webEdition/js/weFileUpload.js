@@ -707,15 +707,15 @@ var weFileUpload = (function () {
 						blob = new Blob([cur.dataArray.subarray(oldPos, cur.currentPos)]);
 
 						this.sendChunk(
-							blob,
-							cur.file.name,
-							(cur.mimePHP !== 'none' ? cur.mimePHP : cur.file.type),
-							(cur.partNum === cur.totalParts ? cur.lastChunkSize : this.chunkSize),
-							cur.partNum,
-							cur.totalParts,
-							cur.fileNameTemp,
-							cur.size
-						);
+										blob,
+										cur.file.name,
+										(cur.mimePHP !== 'none' ? cur.mimePHP : cur.file.type),
+										(cur.partNum === cur.totalParts ? cur.lastChunkSize : this.chunkSize),
+										cur.partNum,
+										cur.totalParts,
+										cur.fileNameTemp,
+										cur.size
+										);
 					}
 				} else {
 					this.sendChunk(cur.file, cur.file.name, cur.file.type, cur.size, 1, 1, '', cur.size);
@@ -890,8 +890,8 @@ var weFileUpload = (function () {
 
 			this.setInternalProgressCompleted = function (success, index, txt) {
 				var s = success || false,
-					i = index || false,
-					p = !i ? '' : '_' + i;
+								i = index || false,
+								p = !i ? '' : '_' + i;
 
 				if (s) {
 					this.setInternalProgress(100, i);
@@ -951,23 +951,23 @@ var weFileUpload = (function () {
 
 			this.checkFileType = function (type, name) {
 				var n = name || '',
-					ext = n.split('.').pop().toLowerCase(),
-					tc = _.sender.typeCondition,
-					typeGroup = type.split('/').shift() + '/*';
+								ext = n.split('.').pop().toLowerCase(),
+								tc = _.sender.typeCondition,
+								typeGroup = type.split('/').shift() + '/*';
 
 				if (tc.accepted.mime && tc.accepted.mime.length > 0 && type === '') {
 					return false;
 				}
 				if (tc.accepted.all && tc.accepted.all.length > 0 &&
-						!WE().util.in_array(type, tc.accepted.all) &&
-						!WE().util.in_array(typeGroup, tc.accepted.all) &&
-						!WE().util.in_array(ext, tc.accepted.all)) {
+								!WE().util.in_array(type, tc.accepted.all) &&
+								!WE().util.in_array(typeGroup, tc.accepted.all) &&
+								!WE().util.in_array(ext, tc.accepted.all)) {
 					return false;
 				}
 				if (tc.forbidden.all && tc.forbidden.all.length > 0 &&
-						(WE().util.in_array(type, tc.forbidden.all) ||
-						WE().util.in_array(typeGroup, tc.forbidden.all) ||
-						WE().util.in_array(ext, tc.forbidden.all))) {
+								(WE().util.in_array(type, tc.forbidden.all) ||
+												WE().util.in_array(typeGroup, tc.forbidden.all) ||
+												WE().util.in_array(ext, tc.forbidden.all))) {
 					return false;
 				}
 
@@ -982,7 +982,7 @@ var weFileUpload = (function () {
 			/* GameAlchemist @ http://stackoverflow.com/questions/18922880/html5-canvas-resize-downscale-image-high-quality */
 			//TODO: try to scale width and height by different ratio
 			this.downScaleCanvas = function (cv, scale) {
-				if (scale <= 0 || scale >= 1){
+				if (scale <= 0 || scale >= 1) {
 					throw ('scale must be a positive number <1 ');
 				}
 				var sqScale = scale * scale; // square scale = area of source pixel within target
@@ -1144,9 +1144,7 @@ var weFileUpload = (function () {
 		//public functions
 		this.startUpload = function () {
 			if (_.sender.prepareUpload()) {
-				setTimeout(function () {
-					_.sender.sendNextFile();
-				}, 100);
+				setTimeout(_.sender.sendNextFile, 100);
 			} else {
 				_.sender.processError({from: 'gui', msg: _.utils.gl.errorNoFileSelected});
 			}
@@ -1241,9 +1239,7 @@ var weFileUpload = (function () {
 				this.form.form.elements.weFileCt.value = cur.mimePHP;
 				this.form.form.elements.weFileName.value = cur.file.name;
 				//this.form.form.elements.weIsUploadComplete.value = 1;
-				setTimeout(function () {
-					that.callback(resp);
-				}, 100);
+				setTimeout(that.callback, 100, resp);
 			};
 
 			this.processError = function (arg) {
@@ -1324,7 +1320,7 @@ var weFileUpload = (function () {
 						return;
 					case 'chunkOK' :
 						var prog = (100 / _.sender.currentFile.size) * _.sender.currentFile.currentWeightFile,
-							digits = _.sender.currentFile.totalParts > 1000 ? 2 : (_.sender.currentFile.totalParts > 100 ? 1 : 0);
+										digits = _.sender.currentFile.totalParts > 1000 ? 2 : (_.sender.currentFile.totalParts > 100 ? 1 : 0);
 
 						if (this.elems.progress) {
 							this.setInternalProgress(prog.toFixed(digits), false);
@@ -1559,7 +1555,7 @@ var weFileUpload = (function () {
 
 			this.appendMoreData = function (fd) { // TODO: set additional fields oninit
 				var sf = document.we_startform,
-					cur = this.currentFile;
+								cur = this.currentFile;
 
 				fd.append('weFormNum', cur.fileNum + 1);
 				fd.append('weFormCount', this.totalFiles);
@@ -1600,9 +1596,7 @@ var weFileUpload = (function () {
 					_.view.elems.footer.setProgressText('progress_title', '');
 					eval(resp.completed);
 
-					setTimeout(function () {
-						that.callback(_);
-					}, 100);
+					setTimeout(that.callback, 100, _);
 				}
 				_.view.reloadOpener();
 
@@ -1695,10 +1689,10 @@ var weFileUpload = (function () {
 
 			this.appendRow = function (f, index) {
 				var div,
-					row = this.htmlFileRow.replace(/WEFORMNUM/g, index).
-					replace(/WE_FORM_NUM/g, (this.nextTitleNr++)).
-					replace(/FILENAME/g, (f.file.name)).
-					replace(/FILESIZE/g, (f.isSizeOk ? _.utils.computeSize(f.size) : '<span style="color:red">> ' + ((_.sender.maxUploadSize / 1024) / 1024) + ' MB</span>'));
+								row = this.htmlFileRow.replace(/WEFORMNUM/g, index).
+								replace(/WE_FORM_NUM/g, (this.nextTitleNr++)).
+								replace(/FILENAME/g, (f.file.name)).
+								replace(/FILESIZE/g, (f.isSizeOk ? _.utils.computeSize(f.size) : '<span style="color:red">> ' + ((_.sender.maxUploadSize / 1024) / 1024) + ' MB</span>'));
 
 				weAppendMultiboxRow(row, '', 0, 0, 0, -1);
 				f.entry = document.getElementById('div_uploadFiles_' + index);
@@ -1956,19 +1950,16 @@ var weFileUpload = (function () {
 					this.form.form.elements.weFileCt.value = cur.mimePHP;
 					this.form.form.elements.weFileName.value = cur.file.name;
 					_.sender.currentFile = null;
-					setTimeout(function () {
-						_.sender.dialogCallback(resp);
-					}, 100);
-				} else {
-					if (resp.status === 'success') {
-						_.sender.currentFile = null;
-						if (WE()) {
-							window.we_cmd('update_file');
-							WE().layout.weEditorFrameController.getActiveEditorFrame().getDocumentReference().frames.editHeader.we_setPath(resp.weDoc.path, resp.weDoc.text, 0, "published");
-						}
-
-						this.fireCallback();
+					setTimeout(_.sender.dialogCallback, 100, resp);
+				} else if (resp.status === 'success') {
+					_.sender.currentFile = null;
+					if (WE()) {
+						window.we_cmd('update_file');
+						WE().layout.we_setPath(resp.weDoc.path, resp.weDoc.text, 0, "published");
 					}
+
+					this.fireCallback();
+
 				}
 
 			};
@@ -2222,7 +2213,7 @@ var weFileUpload = (function () {
 					case 'fileNOK' :
 					case 'cancelUpload' :
 					case 'resetGui' :
-					/* falls through */
+						/* falls through */
 					default:
 						_.sender.preparedFiles = [];
 						_.sender.currentFile = -1;

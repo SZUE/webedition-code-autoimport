@@ -29,50 +29,6 @@ var widthBeforeDeleteMode = 0;
 var widthBeforeDeleteModeSidebar = 0;
 var we_mediaReferences = {};
 
-
-/**
- * setting is built like the unix file system privileges with the 3 options
- * see notices, see warnings, see errors
- *
- * 1 => see Notices
- * 2 => see Warnings
- * 4 => see Errors
- *
- * @param message string
- * @param prio integer one of the values 1,2,4
- * @param win object reference to the calling window
- */
-WE().util.showMessage = function (message, prio, win) {
-	win = (win ? win : this.window);
-	// default is error, to avoid missing messages
-	prio = prio ? prio : WE().consts.message.WE_MESSAGE_ERROR;
-
-	// always show in console !
-	WE().layout.messageConsole.addMessage(prio, message);
-
-	if (prio & WE().session.messageSettings) { // show it, if you should
-
-		// the used vars are in file JS_DIR . "weJsStrings.php";
-		switch (prio) {
-			// Notice
-			case WE().consts.message.WE_MESSAGE_NOTICE:
-				win.alert(WE().consts.g_l.message_reporting.notice + ":\n" + message);
-				break;
-
-				// Warning
-			case WE().consts.message.WE_MESSAGE_WARNING:
-				win.alert(WE().consts.g_l.message_reporting.warning + ":\n" + message);
-				break;
-
-				// Error
-			case WE().consts.message.WE_MESSAGE_ERROR:
-				win.alert(WE().consts.g_l.message_reporting.error + ":\n" + message);
-				break;
-		}
-	}
-};
-
-// new functions
 function doClickDirect(id, ct, table, fenster) {
 	if (!fenster) {
 		fenster = window;
@@ -259,13 +215,6 @@ function setActiveVTab(table) {
 	}
 }
 
-function focusise() {
-	setTimeout(function () {
-		self.makefocus.focus();
-		self.makefocus = null;
-	}, 200);
-}
-
 function we_repl(target, url) {
 	if (target) {
 		try {
@@ -289,36 +238,34 @@ function we_repl(target, url) {
 	}
 }
 
-function submit_we_form(formlocation, target, url) {
+function we_sbmtFrm(target, url, source) {
+	if (source === undefined) {
+		source = WE().layout.weEditorFrameController.getVisibleEditorFrame();
+	}
+
 	try {
-		if (formlocation) {
-			if (formlocation.we_submitForm) {
-				formlocation.we_submitForm(target.name, url);
+		if (source) {
+			if (source.we_submitForm) {
+				source.we_submitForm(target.name, url);
 				return true;
 			}
-			if (formlocation.contentWindow.we_submitForm) {
-				formlocation.contentWindow.we_submitForm(target.name, url);
+			if (source.contentWindow.we_submitForm) {
+				source.contentWindow.we_submitForm(target.name, url);
 				return true;
 			}
 		}
 	} catch (e) {
 	}
 	return false;
-}
-
-function we_sbmtFrm(target, url, source) {
-	if (source === undefined) {
-		source = WE().layout.weEditorFrameController.getVisibleEditorFrame();
-	}
-	return submit_we_form(source, target, url);
 
 }
 
 function doSave(url, trans, cmd) {
 	_EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction(trans);
 	// _EditorFrame.setEditorIsHot(false);
-	if (_EditorFrame.getEditorAutoRebuild())
+	if (_EditorFrame.getEditorAutoRebuild()) {
 		url += "&we_cmd[8]=1";
+	}
 	if (!we_sbmtFrm(self.load, url)) {
 		url += "&we_transaction=" + trans;
 		we_repl(self.load, url, cmd);
@@ -564,7 +511,7 @@ function we_cmd_base(args, url) {
 					top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, this);
 				} else if (this.confirm(WE().consts.g_l.main.delete_single_confirm_delete + "\n" + path)) {
 					url2 = url.replace(/we_cmd\[0\]=delete_single_document_question/g, "we_cmd[0]=delete_single_document");
-					submit_we_form(WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter, self.load, url2 + "&we_cmd[2]=" + WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorEditorTable());
+					we_sbmtFrm(self.load, url2 + "&we_cmd[2]=" + WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorEditorTable(), WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter);
 				}
 			} else {
 				top.we_showMessage(WE().consts.g_l.main.no_document_opened, WE().consts.message.WE_MESSAGE_ERROR, this);
@@ -578,23 +525,23 @@ function we_cmd_base(args, url) {
 				if (!hasPermDelete(eTable, (cType === "folder"))) {
 					top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, this);
 				} else {
-					submit_we_form(WE().layout.weEditorFrameController.getActiveDocumentReference().editFooter, self.load, url + "&we_cmd[2]=" + WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorEditorTable());
+					we_sbmtFrm(self.load, url + "&we_cmd[2]=" + WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorEditorTable(), WE().layout.weEditorFrameController.getActiveDocumentReference().editFooter);
 				}
 			} else {
 				top.we_showMessage(WE().consts.g_l.main.no_document_opened, WE().consts.message.WE_MESSAGE_ERROR, this);
 			}
 			break;
 		case "do_delete":
-			submit_we_form(self.treeheader, self.load, url);
+			we_sbmtFrm(self.load, url, self.treeheader);
 			break;
 		case "move_single_document":
-			submit_we_form(WE().layout.weEditorFrameController.getActiveDocumentReference().editFooter, self.load, url);
+			we_sbmtFrm(self.load, url, WE().layout.weEditorFrameController.getActiveDocumentReference().editFooter);
 			break;
 		case "do_move":
-			submit_we_form(self.treeheader, self.load, url);
+			we_sbmtFrm(self.load, url, self.treeheader);
 			break;
 		case "do_addToCollection":
-			submit_we_form(self.treeheader, self.load, url);
+			we_sbmtFrm(self.load, url, self.treeheader);
 			break;
 		case "change_passwd":
 			new (WE().util.jsWindow)(this, url, "we_change_passwd", -1, -1, 250, 220, true, false, true, false);
@@ -734,7 +681,7 @@ function we_cmd_base(args, url) {
 				setActiveVTab(args[1]);
 				treeData.table = args[1];
 			} else {
-				setTimeout('we_cmd("setTab","' + args[1] + '")', 500);
+				setTimeout(we_cmd, 500, "setTab", args[1]);
 			}
 			break;
 		case "update_image":
@@ -1547,4 +1494,87 @@ WE().util.getWe_cmdArgsUrl = function (args, base) {
 	}
 
 	return url;
+};
+
+
+/**
+ * setting is built like the unix file system privileges with the 3 options
+ * see notices, see warnings, see errors
+ *
+ * 1 => see Notices
+ * 2 => see Warnings
+ * 4 => see Errors
+ *
+ * @param message string
+ * @param prio integer one of the values 1,2,4
+ * @param win object reference to the calling window
+ */
+WE().util.showMessage = function (message, prio, win) {
+	win = (win ? win : this.window);
+	// default is error, to avoid missing messages
+	prio = prio ? prio : WE().consts.message.WE_MESSAGE_ERROR;
+
+	// always show in console !
+	WE().layout.messageConsole.addMessage(prio, message);
+
+	if (prio & WE().session.messageSettings) { // show it, if you should
+
+		// the used vars are in file JS_DIR . "weJsStrings.php";
+		switch (prio) {
+			// Notice
+			case WE().consts.message.WE_MESSAGE_NOTICE:
+				win.alert(WE().consts.g_l.message_reporting.notice + ":\n" + message);
+				break;
+
+				// Warning
+			case WE().consts.message.WE_MESSAGE_WARNING:
+				win.alert(WE().consts.g_l.message_reporting.warning + ":\n" + message);
+				break;
+
+				// Error
+			case WE().consts.message.WE_MESSAGE_ERROR:
+				win.alert(WE().consts.g_l.message_reporting.error + ":\n" + message);
+				break;
+		}
+	}
+};
+
+WE().util.clip = function (doc, unique, width) {
+	var text = doc.getElementById("td_" + unique);
+	var btn = doc.getElementById("btn_" + unique).firstChild;
+
+	if (text.classList.contains("cutText")) {
+		text.classList.remove("cutText");
+		text.style.maxWidth = "";
+		btn.classList.remove("fa-caret-right");
+		btn.classList.add("fa-caret-down");
+	} else {
+		text.classList.add("cutText");
+		text.style.maxWidth = width + "ex";
+		btn.classList.remove("fa-caret-down");
+		btn.classList.add("fa-caret-right");
+	}
+
+};
+
+WE().layout.we_setPath = function (path, text, id, classname) {
+	var _EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
+	// update document-tab
+	_EditorFrame.initEditorFrameData({
+		EditorDocumentText: text,
+		EditorDocumentPath: path
+	});
+
+	if (classname) {
+		WE().layout.multiTabs.setTextClass(_EditorFrame.FrameId, classname);
+	}
+
+	var doc = _EditorFrame.getDocumentReference().frames.editHeader.document;
+	var div = doc.getElementById('h_path');
+	div.innerHTML = path.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+	if (id > 0) {
+		div = doc.getElementById('h_id');
+		div.innerHTML = id;
+	}
+
 };

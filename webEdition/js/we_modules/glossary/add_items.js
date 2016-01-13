@@ -122,7 +122,7 @@ function fadeout(id, from, step, speed) {
 	if (from === 0) {
 		top.frames.glossarycheck.document.getElementById(id).style.display = "none";
 	} else {
-		window.setTimeout("fadeout(\"" + id + "\"," + (from - step) + "," + step + "," + speed + ")", speed);
+		window.setTimeout(fadeout, speed, id, (from - step), step, speed);
 	}
 }
 function we_save_document() {
@@ -142,9 +142,7 @@ function getTextColumn(text, colspan) {
 	td.setAttribute('title', text);
 	if (colspan > 1) {
 		td.setAttribute("colspan", colspan);
-		td.setAttribute("align", "center");
-		td.setAttribute("valign", "middle");
-		td.setAttribute("height", "220");
+		td.setAttribute('style', 'text-align:center;vertical-align:middle;height:220px;');
 	}
 	if (text !== WE().consts.g_l.glossary.all_words_identified && text !== WE().consts.g_l.glossary.no_java) {
 		text = shortenWord(text, 20);
@@ -187,7 +185,7 @@ function getInnerColumn(html) {
 
 function getImageColumn(src, width, height) {
 	var td = document.createElement('td');
-	td.innerHTML = '<img src="' + src + '" width="' + width + '" height="' + height + '" />';
+	td.innerHTML = '<img src="' + src + '" style="width:' + width + 'px;height:' + height + 'px" />';
 	return td;
 }
 

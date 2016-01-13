@@ -76,7 +76,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.tabnr.value = 1;
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout("we_cmd(" + args[0] + ");", 10);
+				setTimeout(we_cmd, 10, args[0]);
 			}
 			break;
 		case "delete_export":

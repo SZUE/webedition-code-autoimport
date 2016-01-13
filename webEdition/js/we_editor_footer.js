@@ -98,10 +98,7 @@ function setTextDocument(hasCtrl, value) {
 }
 
 function setPath() {
-	try {
-		_EditorFrame.getDocumentReference().frames.editHeader.we_setPath(doc.Path, doc.Text, doc.ID, doc.classname);
-	} catch (e) {
-	}
+		WE().layout.we_setPath(doc.Path, doc.Text, doc.ID, doc.classname);
 }
 
 function saveReload() {
@@ -146,8 +143,7 @@ function we_save_document() {
 			return;
 
 		}
-	}
-	catch (e) {
+	} catch (e) {
 		// Nothing
 	}
 
@@ -160,8 +156,7 @@ function we_save_document() {
 			if (parent && parent.frames[1] && parent.frames[1].YAHOO && parent.frames[1].YAHOO.autocoml) {
 				acStatus = parent.frames[1].YAHOO.autocoml.checkACFields();
 			}
-		}
-		catch (e) {
+		} catch (e) {
 			// Nothing
 		}
 		acStatusType = typeof acStatus;
@@ -204,9 +199,7 @@ var we_editor_footer = {
 	scrollDownEditorContent: function () {
 		_EditorFrame.getContentEditor().scrollBy(0, 10);
 		if (this.evtCounter) {
-			this.timeout = setTimeout(function () {
-				we_editor_footer.scrollDownEditorContent();
-			}, 66);
+			this.timeout = setTimeout(we_editor_footer.scrollDownEditorContent, 66);
 		}
 	}
 };

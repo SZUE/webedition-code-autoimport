@@ -309,7 +309,7 @@ function handle_eventNext(){
 	}
 	f.step.value = 2;
 	// timing Problem with Safari
-	setTimeout(function(){we_submit_form(self.document.forms.we_form, \"wizbody\", \"" . $this->path . "\");},50);
+	setTimeout(we_submit_form,50,self.document.forms.we_form,'wizbody', '" . $this->path . "');
 }
 ";
 

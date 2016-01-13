@@ -48,7 +48,7 @@ weSearch.conf = {
 	tab: 0,
 	modelClassName: "placeholder",
 	modelID: "placeholder",
-modelIsFolder: true,
+	modelIsFolder: true,
 	//showSelects: "placeholder",
 	rows: 0,
 	checkRightTempTable: ' . (we_search_search::checkRightTempTable() ? 1 : 0) . ',
@@ -98,13 +98,13 @@ WE().consts.g_l.weSearch = {
 		$currentSearch = $this->Model->getProperty('currentSearch');
 		$currentLocation = $this->Model->getProperty('currentLocation');
 
-		$out = '<table class="default" id="defSearch" width="550" style="margin-left:20px;display:' . ($this->Model->mode ? 'none' : 'block') . ';">
+		$out = '<table class="default" id="defSearch" style="width:550px;margin-left:20px;display:' . ($this->Model->mode ? 'none' : 'block') . ';">
 <tr>
 	<td class="weDocListSearchHeadline">' . g_l('searchtool', '[suchen]') . '</td>
 	<td>' . we_html_button::create_button(we_html_button::DIRRIGHT, "javascript:weSearch.switchSearch(1)", false) . '</td>
 </tr>
 </table>
-<table class="default" id="advSearch" width="550" style="margin-left:20px;display:' . ($this->Model->mode ? 'block' : 'none') . ';">
+<table class="default" id="advSearch" style="width:550px;margin-left:20px;display:' . ($this->Model->mode ? 'block' : 'none') . ';">
 <tr>
 	<td class="weDocListSearchHeadline">' . g_l('searchtool', '[suchen]') . '</td>
 	<td>' . we_html_button::create_button(we_html_button::DIRDOWN, "javascript:weSearch.switchSearch(0)", false) . '</td>
@@ -183,9 +183,9 @@ WE().consts.g_l.weSearch = {
 		$out .= '</tbody></table>
 <table class="default" id="advSearch3" style="margin-left:20px;margin-top:10px;display:' . ($this->Model->mode ? 'block' : 'none') . ';">
 	<tr>
-		<td width="215">' . we_html_button::create_button(we_html_button::ADD, "javascript:weSearch.newinput();") . '</td>
-		<td width="155"></td>
-		<td width="188" style="text-align:right">' . we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);") . '</td>
+		<td style="width:215px;">' . we_html_button::create_button(we_html_button::ADD, "javascript:weSearch.newinput();") . '</td>
+		<td style="width:155px;"></td>
+		<td style="width:188px;text-align:right">' . we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);") . '</td>
 		<td></td>
 	</tr>
 </table>' .

@@ -768,7 +768,7 @@ class we_objectFile extends we_document{
 				$parts[] = array(
 					'headline' => '',
 					'html' => $c2,
-					
+
 					'name' => $realName);
 			}
 
@@ -1382,7 +1382,7 @@ class we_objectFile extends we_document{
 			'<input type=hidden name="' . $fname . '" value="' . $this->getElement($name) . '" />' .
 // show thumbnail of image if there exists one:
 			(!empty($thumbID) ?
-				'<img src="' . $_imgSrc . '" height="' . $_imgHeight . '" width="' . $_imgWight . '" />' :
+				'<img src="' . $_imgSrc . '" style="height:' . $_imgHeight . 'px;width:' . $_imgWight . 'px" />' :
 				$img->getHtml()) .
 			we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('we_selector_image','" . ($id ? : (isset($this->DefArray["img_$name"]['defaultdir']) ? $this->DefArray["img_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','', " . (!empty($this->DefArray["img_$name"]['rootdir']) ? $this->DefArray["img_$name"]['rootdir'] : 0) . ",'" . we_base_ContentTypes::IMAGE . "')") .
 			we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('object_remove_image_at_object','" . $GLOBALS['we_transaction'] . "','img_" . $name . "');setScrollTo();");
@@ -3081,7 +3081,7 @@ class we_objectFile extends we_document{
 
 		return '';
 	}
-	
+
 	//Fix: #10219 leave this public while using in redirectSEOurls.php!
 	public function getNextDynDoc($path, $pid, $ws1, $ws2, we_database_base $DB_WE){
 		if($path && f('SELECT IsDynamic FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape($path) . '" LIMIT 1', '', $DB_WE)){

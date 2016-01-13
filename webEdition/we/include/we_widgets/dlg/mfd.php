@@ -42,7 +42,7 @@ $cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 $wecmdenc2 = we_base_request::encCmd("WE().layout.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $cmd0 . "'].document.forms[0].elements.UserNameTmp.value");
 $wecmdenc5 = we_base_request::encCmd("WE().layout.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $cmd0 . "'].addUserToField();");
 
-$content = '<table class="default" width="300" style="margin-bottom:2px;">
+$content = '<table class="default" style="width:300px;margin-bottom:2px;">
 <colgroup><col style="width:20px;"/><col style="width:254px;"/><col style="width:26px;"/></colgroup>';
 
 if(permissionhandler::hasPerm('EDIT_MFD_USER') && $users){
@@ -56,7 +56,7 @@ if(permissionhandler::hasPerm('EDIT_MFD_USER') && $users){
 }
 $content .= '</table>';
 
-$sUsrContent = '<table class="default" width="300"><tr><td>' . we_html_element::htmlDiv(array("class" => "multichooser"), $content) .
+$sUsrContent = '<table class="default" style="width:300px"><tr><td>' . we_html_element::htmlDiv(array("class" => "multichooser"), $content) .
 	we_html_element::htmlHiddens(array(
 		"UserNameTmp" => "",
 		"UserIDTmp" => ""

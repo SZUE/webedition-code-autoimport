@@ -53,13 +53,13 @@ abstract class we_base_imageCrop{
 			we_html_element::htmlHidden("cropCoordY", "", "cropCoordY") . '
       <div id="weImgDiv">
         <div id="weImagePanelBorder"><div id="weImagePanel">
-          <img id="weImage" src="' . $attribs["src"] . '"' . (isset($attribs["width"]) ? ' width="' . $attribs["width"] . '"' : '' ) . (isset($attribs["height"]) ? ' height="' . $attribs["height"] . '"' : '') . (isset($attribs["alt"]) ? ' alt="' . $attribs["alt"] . '"' : '') . ' />
+          <img id="weImage" src="' . $attribs["src"] . '" style="' . (isset($attribs["width"]) ? 'width:' . $attribs["width"] . 'px;' : '' ) . (isset($attribs["height"]) ? 'height:' . $attribs["height"] . 'px;' : '') .'"'. (isset($attribs["alt"]) ? ' alt="' . $attribs["alt"] . '"' : '') . ' />
 <div id="imgfocus_point" style="display:none;" draggable="false"></div>
 </div>
 </div>
       </div>
       <div id="weControl" style="display:none;height:24px;background:#CECECE;border-top:solid 1px #fff;padding:3px;">
-        <table width="100%" class="default">
+        <table style="width:100%" class="default">
           <tr>
         	  <td style="width:100px;padding-top:4px;">
         	  	<div id="console" style="display:none;">

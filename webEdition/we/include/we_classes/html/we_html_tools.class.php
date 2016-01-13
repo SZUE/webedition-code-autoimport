@@ -29,6 +29,7 @@ abstract class we_html_tools{
 	const TYPE_ALERT = 1;
 	const TYPE_INFO = 2;
 	const TYPE_QUESTION = 3;
+	const TYPE_HELP = 4;
 
 	/** we_html_tools::protect()
 	  protects a page. Guests can not see this page */
@@ -152,9 +153,9 @@ this.selectedIndex = 0;' .
 	}
 
 	static function htmlMessageBox($w, $h, $content, $headline = '', $buttons = ''){
-		return '<div style="width:' . $w . 'px;height:' . $h . 'px;background-color:#F7F5F5;border: 2px solid #D7D7D7;padding:20px;">' .
+		return '<div class="htmlMessageBox" style="width:' . $w . 'px;height:' . $h . 'px;">' .
 				($headline ? '<h1 class="header">' . $headline . '</h1>' : '') .
-				'<div>' . $content . '</div><div style="margin-top:20px;">' . $buttons . '</div></div>';
+				'<div>' . $content . '</div><div class="buttons">' . $buttons . '</div></div>';
 	}
 
 	static function htmlDialogLayout($content, $headline, $buttons = '', $width = "100%", $marginLeft = 30, $height = "", $overflow = "auto"){
@@ -652,7 +653,7 @@ this.selectedIndex = 0;' .
 				we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 				self::htmlMetaCtCharset(($charset ? : $GLOBALS['WE_BACKENDCHARSET'])) .
 				we_html_element::htmlTitle($_SERVER['SERVER_NAME'] . ' ' . $title) .
-				we_html_element::htmlMeta(array('name' => 'viewport', 'content' => 'width=device-width; height=device-height; maximum-scale=1.0; initial-scale=1.0; user-scalable=yes')) .
+				we_html_element::htmlMeta(array('name' => 'viewport', 'content' => 'width=device-width, height=device-height, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes')) .
 				we_html_element::htmlMeta(array('http-equiv' => 'expires', 'content' => 0)) .
 				we_html_element::htmlMeta(array('http-equiv' => 'Cache-Control', 'content' => 'no-cache')) .
 				we_html_element::htmlMeta(array('http-equiv' => 'pragma', 'content' => 'no-cache')) .
@@ -733,7 +734,7 @@ this.selectedIndex = 0;' .
 	 */
 
 	static function htmlAlertAttentionBox($text, $type = self::TYPE_NONE, $width = 0, $useHtmlSpecialChars = true, $clip = 0){
-		if($width === false){
+		if($width === false || $type === self::TYPE_HELP){
 			$class = 'infobox';
 			$title = '<span>' . $text . '</span>';
 		} else {
@@ -741,14 +742,16 @@ this.selectedIndex = 0;' .
 		}
 		switch($type){
 			case self::TYPE_ALERT:
-				$icon = '<span class="fa-stack fa-lg ' . $class . '" style="font-size: 14px;color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i>' . $title . '</span>';
+				$icon = '<span class="fa-stack fa-lg alertIcon ' . $class . '"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i>' . $title . '</span>';
 				break;
 			case self::TYPE_INFO:
-				$icon = '<span class="fa-stack fa-lg ' . $class . '" style="font-size: 14px;color:#007de3;"><i class="fa fa-circle fa-stack-2x" ></i><i class="fa fa-info fa-stack-1x fa-inverse"></i>' . $title . '</span>';
+				$icon = '<span class="fa-stack fa-lg alertIcon ' . $class . '" style="color:#007de3;"><i class="fa fa-circle fa-stack-2x" ></i><i class="fa fa-info fa-stack-1x fa-inverse"></i>' . $title . '</span>';
 				break;
 			case self::TYPE_QUESTION:
-				$icon = '<span class="fa-stack fa-lg ' . $class . '" style="font-size: 14px;color:#F2F200;"><i class="fa fa-circle fa-stack-2x" ></i><i style="color:black" class="fa fa-question fa-stack-1x"></i>' . $title . '</span>';
+				$icon = '<span class="fa-stack fa-lg alertIcon ' . $class . '"><i class="fa fa-circle fa-stack-2x" ></i><i style="color:black" class="fa fa-question fa-stack-1x"></i>' . $title . '</span>';
 				break;
+			case self::TYPE_HELP:
+				return '<span class="fa-stack alertIcon ' . $class . '" style="color:inherit;"><i class="fa fa-question-circle" ></i>' . $title . '</span>';
 			default :
 				$icon = '';
 		}
@@ -760,34 +763,13 @@ this.selectedIndex = 0;' .
 
 		if($clip){
 			$unique = md5(uniqid(__FUNCTION__, true)); // #6590, changed from: uniqid(microtime())
-			$smalltext = substr($text, 0, $clip) . ' ... ';
-			$js = we_html_element::jsElement('
-var state_' . $unique . '=0;
-function clip_' . $unique . '(){
-		var text = document.getElementById("td_' . $unique . '");
-		var btn = document.getElementById("btn_' . $unique . '");
-
-		if(state_' . $unique . '==0){
-			text.innerHTML = "' . addslashes($text) . '";
-			btn.innerHTML = \'<button class="weBtn" onclick="clip_' . $unique . '();"><i class="fa fa-lg fa-caret-down"></i></button>\';
-			state_' . $unique . '=1;
-		}else {
-			text.innerHTML = "' . addslashes($smalltext) . '";
-			btn.innerHTML = \'<button class="weBtn" onclick="clip_' . $unique . '();"><i class="fa fa-lg fa-caret-right"></i></button>\';
-			state_' . $unique . '=0;
-		}
-}');
-			$text = $smalltext;
-		} else {
-			$js = '';
 		}
 
-		if(strpos($width, '%') === false){
-			$width = intval($width);
-			$width -= ($width > 10 ? 10 : 0);
-		}
-
-		return $js . '<div style="background-color:#dddddd;padding:5px;white-space:normal;' . ($width ? ' width:' . $width . (is_numeric($width) ? 'px' : '') . ';' : '') . '"><table width="100%"><tr>' . ($icon ? '<td width="30" style="padding-right:10px;vertical-align:top">' . $icon . '</td>' : '') . '<td class="middlefont" ' . ($clip ? 'id="td_' . $unique . '"' : '') . '>' . $text . '</td>' . ($clip > 0 ? '<td style="vertical-align:top;text-align:right" id="btn_' . $unique . '"><button class="weBtn" onclick="clip_' . $unique . '();"><i class="fa fa-lg fa-caret-right"></i></button><td>' : '') . '</tr></table></div>';
+		return '<div class="alertAttentionBox' . ($icon ? ' alertIcon' : '') . ($clip ? ' alertCut' : '') . '" style="' . ($width ? ' width:' . $width . (is_numeric($width) ? 'px' : '') . ';' : '') . '">' .
+				($icon ? '<div class="icon">' . $icon . '</div>' : '') .
+				'<div class="middlefont ' . ($clip > 0 ? 'cutText" id="td_' . $unique . '" style="max-width:' . $clip . 'ex;"' : '"') . '>' . $text . '</div>' .
+				($clip > 0 ? '<button type="button" class="weBtn clipbutton" id="btn_' . $unique . '" onclick="WE().util.clip(document,\'' . $unique . '\',' . $clip . ')"><i class="fa fa-lg fa-caret-right"></i></button>' : '') .
+				'</div>';
 	}
 
 	public static function setHttpCode($status){

@@ -61,8 +61,7 @@ function getHTMLDirSelector($_selType){
 	return we_html_element::htmlDiv(array(
 			"style" => "margin-top:10px;"
 			), we_html_tools::htmlFormElementTable(
-				"<div id=\"yuiAcLayerDoc\" class=\"yuiAcLayer\">" . $yuiSuggest->getErrorMarkPlaceHolder(
-					"yuiAcErrorMarkDoc") . we_html_tools::htmlTextInput("FolderPath", 58, $_path, "", 'onchange="" id="yuiAcInputDoc"', "text", (420 - 120), 0) .
+				"<div id=\"yuiAcLayerDoc\" class=\"yuiAcLayer\">" . we_html_tools::htmlTextInput("FolderPath", 58, $_path, "", 'onchange="" id="yuiAcInputDoc"', "text", (420 - 120), 0) .
 				"<div id=\"yuiAcContainerDoc\"></div></div>", g_l('cockpit', '[dir]'), "left", "defaultfont", we_html_element::htmlHidden("FolderID", $folderID, "yuiAcIdDoc"
 				), $_buttons));
 }

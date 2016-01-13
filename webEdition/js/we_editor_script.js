@@ -124,10 +124,11 @@ function we_submitForm(target, url) {
 	var f = self.document.we_form;
 
 	parent.openedWithWe = true;
-
+	if (url) {
+		f.action = url;
+	}
 	if (target && url) {
 		f.target = target;
-		f.action = url;
 		f.method = "post";
 		if (self.weWysiwygSetHiddenText && _EditorFrame.getEditorDidSetHiddenText() === false) {
 			weWysiwygSetHiddenText();
@@ -198,12 +199,12 @@ function pathOfDocumentChanged() {
 		if ((_elem = document.we_form["we_" + docName + "_ParentPath"])) {
 			_filepath = _elem.value;
 		}
-		if (_filepath != "/") {
+		if (_filepath !== "/") {
 			_filepath += "/";
 		}
 
 		_filepath += _filetext;
-		parent.frames.editHeader.we_setPath(_filepath, _filetext, -1, "");
+		WE().layout.we_setPath(_filepath, _filetext, -1, "");
 		if (hasCustomerFilter) {
 			updateCustomerFilterIfNeeded();
 		}
@@ -415,4 +416,44 @@ function we_checkObjFieldname(i) {
 	} else {
 		i.setAttribute("oldValue", i.value);
 	}
+}
+
+function metaFieldSelectProposal(sel, inputName, isCsv){
+	WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
+
+	var valInput = document.forms[0].elements[inputName].value,
+		newVal = valInput,
+		valSel = sel.options[sel.selectedIndex].value;
+
+	if(isCsv){
+		switch(valSel){
+			case '__del_last__':
+				var arr=valInput.split(',');
+				arr.pop();
+				newVal = arr.join();
+				break;
+			case '__del__':
+				newVal = '';
+				break;
+			case '__empty__':
+				break;
+			default:
+				var valSelCsv = ', ' + valInput + ',';
+				newVal = ((valInput == '' || (valSel== '')) ? valSel : (valSelCsv.search(' *, *' + valSel + ' *, *') === -1 ? (valInput + ', ' + valSel) : valInput));
+		}
+	} else {
+		switch(valSel){
+			case '__del_last__':
+			case '__del__':
+				newVal = '';
+				break;
+			case '__empty__':
+				break;
+			default:
+				newVal = sel.options[sel.selectedIndex].value;
+		}
+	}
+
+	document.forms[0].elements[inputName].value = newVal;
+	sel.selectedIndex=0;
 }

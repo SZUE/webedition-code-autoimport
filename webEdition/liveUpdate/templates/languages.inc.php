@@ -74,7 +74,7 @@ $content = '
 <br />
 ' . $languagesStr . '
 <br />
-<table class="defaultfont" width="100%">
+<table class="defaultfont" style="width:100%">
 <tr>
 	<td>' . g_l('liveUpdate', '[languages][showLanguages]') . '</td>
 	<td>' . $nextButton . '</td>

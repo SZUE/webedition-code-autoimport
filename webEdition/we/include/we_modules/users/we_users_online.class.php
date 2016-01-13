@@ -54,7 +54,7 @@ class we_users_online{
 		$colorCount = count($colors);
 		while($DB_WE->next_record()){
 			$this->num_uo++;
-			$_row .= '<tr><td width="30" style="margin-top:8px;color:' . $colors[( ++$i) % $colorCount] . '"><i class="fa fa-user fa-2x"></i></td>' .
+			$_row .= '<tr><td style="width:30px;margin-top:8px;color:' . $colors[( ++$i) % $colorCount] . '"><i class="fa fa-user fa-2x"></i></td>' .
 				'<td class="middlefont we-user">' . ($DB_WE->f('User')? : $DB_WE->f('username')) . '</td>' .
 				(defined('MESSAGES_TABLE') ?
 					'<td><a href="javascript:newMessage(\'' . $DB_WE->f('username') . '\');">' .
@@ -63,7 +63,7 @@ class we_users_online{
 				) . '</tr>';
 		}
 
-		$this->users = '<div style="height:187px;overflow:auto;"><table width="100%" class="default">' . $_row . '</table></div>';
+		$this->users = '<div style="height:187px;overflow:auto;"><table style="width:100%" class="default">' . $_row . '</table></div>';
 	}
 
 	function getNumUsers(){

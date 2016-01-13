@@ -1434,7 +1434,8 @@ class we_search_search extends we_search_base{
 			case 'CreatorID':
 			case 'WebUserID':
 				if(!is_numeric($searchname)){
-					if(empty(($arr = array_filter(explode(',', $searchname), function($var){return is_numeric($var);})))){
+					$arr = array_filter(explode(',', $searchname), function($var){return is_numeric($var);});
+					if(empty($arr)){
 						return '0';
 					} else {
 						$searchname = implode(',', $arr);

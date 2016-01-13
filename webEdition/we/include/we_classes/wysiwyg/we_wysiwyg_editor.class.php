@@ -525,7 +525,7 @@ class we_wysiwyg_editor{
 	var doc=document;
 	var styles=[];
 	for(var i=0;i<doc.styleSheets.length;i++){
-		if(doc.styleSheets[i].href && !doc.styleSheets[i].href.match(/webEdition\//) && (doc.styleSheets[i].media.length==0||doc.styleSheets[i].media.indexOf("all")>=0 || doc.styleSheets[i].media.indexOf("screen")>=0)){
+		if(doc.styleSheets[i].href && !doc.styleSheets[i].href.match(/webEdition\//) && (doc.styleSheets[i].media.length==0||doc.styleSheets[i].media.mediaText.indexOf("all")>=0 || doc.styleSheets[i].media.mediaText.indexOf("screen")>=0)){
 			styles.push(doc.styleSheets[i].href);
 		}
 	}
@@ -543,7 +543,7 @@ class we_wysiwyg_editor{
 		$width = is_numeric($width) ? max($width, self::MIN_WIDTH_POPUP) : '(' . intval($width) . '/100*screen.availWidth)';
 		$height = we_base_util::convertUnits($this->height);
 		$height = is_numeric($height) ? max($height, self::MIN_HEIGHT_POPUP) : '(' . intval($height) . '/100*screen.availHeight)';
-t_e("min", $height, $this->fieldName);
+//t_e("min", $height, $this->fieldName);
 		return we_html_button::create_button(we_html_button::EDIT, "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "', " . $width . ", " . $height . ",'" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($this->fontnamesCSV, ',') . "','" . $this->outsideWE . "'," . $width . "," . $height . ",'" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . urlencode($this->baseHref) . "','" . $this->charset . "','" . $this->cssClasses . "','" . $this->Language . "','" . $this->contentCss . ",'+getDocumentCss().join(','),'" . $this->origName . "','" . we_base_request::encCmd($this->tinyParams) . "','" . we_base_request::encCmd($this->restrictContextmenu) . "', 'true', '" . $this->isFrontendEdit . "','" . $this->templates . "','" . $this->formats . "','" . $this->imageStartID . "','" . $this->galleryTemplates . "','" . $this->fontsizes . "');", true, 25);
 	}
 
@@ -1360,7 +1360,7 @@ tinyMCE.weResizeLoops = 100;
 tinyMCE.weResizeEditor = function(render){
 	var h = tinyMCE.DOM.get("' . $this->name . '_toolbargroup").parentNode.offsetHeight;
 	if(render && --tinyMCE.weResizeLoops && h < 24){
-		setTimeout(function(){weResizeEditor (true)}, 10);
+		setTimeout(weResizeEditor, 10,true);
 	}
 
 	tinyMCE.DOM.setStyle(

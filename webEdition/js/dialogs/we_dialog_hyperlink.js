@@ -27,9 +27,7 @@
 function checkAnchor(el) {
 	if (el.value && !new RegExp('#?[a-z]+[a-z0-9_:.-=]*$', 'i').test(el.value)) {
 		alert(g_l.anchor_invalid);
-		setTimeout(function () {
-			el.focus();
-		}, 10);
+		setTimeout(el.focus, 10);
 		return false;
 	}
 }
@@ -86,25 +84,11 @@ function showanchors(name, val, onCh) {
 		document.writeln('<option value="">');
 
 		for (i = 0; i < allAnchors.length; i++) {
-			document.writeln('<option value="' + allAnchors[i] + '"' + ((val == allAnchors[i]) ? ' selected' : '') + '>' + allAnchors[i]);
+			document.writeln('<option value="' + allAnchors[i] + '"' + ((val === allAnchors[i]) ? ' selected' : '') + '>' + allAnchors[i]);
 		}
 
 		document.writeln('</select>');
 	}
-}
-
-function showclasss(name, val, onCh) {
-	document.writeln('<select class="defaultfont" style="width:300px" name="' + name + '" id="' + name + '" size="1"' + (onCh ? ' onchange="' + onCh + '"' : '') + '>');
-	document.writeln('<option value="">' + g_l.wysiwyg_none);
-	if (classNames !== undefined) {
-		for (var i = 0; i < classNames.length; i++) {
-			var foo = classNames[i].substring(0, 1) === "." ?
-							classNames[i].substring(1, classNames[i].length) :
-							classNames[i];
-			document.writeln('<option value="' + foo + '"' + ((val == foo) ? ' selected' : '') + '>.' + foo);
-		}
-	}
-	document.writeln('</select>');
 }
 
 function checkMakeEmptyHrefExt() {

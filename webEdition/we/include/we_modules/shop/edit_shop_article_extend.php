@@ -210,7 +210,7 @@ if(isset($daten)){
 				$topInfo = ($entries > 0 ? $entries : g_l('modules_shop', '[noRecord]'));
 				$classid = abs(we_base_request::_(we_base_request::INT, 'ViewClass')); // gets the value from the selectbox;
 
-				$classSelectTable .= '<table width="600">
+				$classSelectTable .= '<table style="width:600px;">
     <tr>
         <td colspan="2" class="defaultfont">' .
 					// displays a selectbox for the purpose of selecting a class..
@@ -273,7 +273,7 @@ ORDER BY o.OF_ID'); // get the shop-objects from DB;
 			} else { // if there is an empty result form the object table
 				$parts = array(
 					array(
-						'html' => '<table width="100%">' .
+						'html' => '<table style="width:100%">' .
 						'<tr><td class="defaultfont">' . g_l('modules_shop', '[noRecordAlert]') . '</td></tr>' .
 						'<tr><td class="defaultfont">' . we_html_button::create_button("fa:btn_shop_pref,fa-lg fa-pencil,fa-lg fa-list-alt", "javascript:top.opener.top.we_cmd('pref_shop')", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")) . '</td></tr>' .
 						'</table>',

@@ -190,12 +190,12 @@ function toggle_all() {
 				//	the different permission-groups shall be sorted alphabetically
 				//	therefore the content is first saved in an array.
 				// Build header of group
-				$_contentTable[$main_titles[$_groups_key]] = '<table class="default" width="' . $width . '" style="border-top:5px solid ' . $seperator_color . '">';
+				$_contentTable[$main_titles[$_groups_key]] = '<table class="default" style="width:' . $width . 'px;border-top:5px solid ' . $seperator_color . '">';
 
 				// Continue building header of group
 				$_contentTable[$main_titles[$_groups_key]] .= '
 <tr style="vertical-align:middle;background-color:' . $bgcolor . ';line-height:24px;">
-	<td width="30" style="padding-left:5px;">
+	<td style="width:30px;padding-left:5px;">
 		<a href="javascript:toggle(\'' . $_groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');" name="arrow_link' . $_groups_key . '">';
 
 				// If a group is open display it unfolded
@@ -226,7 +226,7 @@ function toggle_all() {
 </table>';
 
 				// Now fill the group with content
-				$_contentTable[$main_titles[$_groups_key]] .= '<table class="default" width="' . $width . '" style="display: ' . $_style_display . '" id="group_' . $_groups_key . '">';
+				$_contentTable[$main_titles[$_groups_key]] .= '<table class="default" style="width:' . $width . 'px;display: ' . $_style_display . '" id="group_' . $_groups_key . '">';
 
 				// first of all order all the entries
 				$_groups = array();
@@ -326,7 +326,7 @@ function toggle_all() {
 				//	therefore the content is first saved in an array.
 				// Build header of group
 				$_contentTable[$main_titles[$_groups_key]] = '
-					<table class="default" width="' . $width . '">';
+					<table class="default" style="width:' . $width . 'px;">';
 
 				$_seperator_color = $seperator_color;
 
@@ -337,7 +337,7 @@ function toggle_all() {
 				// Continue building header of group
 				$_contentTable[$main_titles[$_groups_key]] .= '
 					<tr style="vertical-align:middle;background-color:' . $bgcolor . ';line-height:24px;">
-						<td width="30" style="padding-left:5px;">
+						<td style="width:30px;padding-left:5px;">
 							<a href="javascript:toggle(\'' . $_groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');" name="arrow_link' . $_groups_key . '">';
 
 				// If a group is open display it unfolded
@@ -372,7 +372,7 @@ function toggle_all() {
 </table>';
 
 				// Now fill the group with content
-				$_contentTable[$main_titles[$_groups_key]] .= '<table class="default" width="' . $width . '" style="margin:10px 30px 0 0;display: ' . $_style_display . '" id="group_' . $_groups_key . '">';
+				$_contentTable[$main_titles[$_groups_key]] .= '<table class="default" style="width:' . $width . 'px;margin:10px 30px 0 0;display: ' . $_style_display . '" id="group_' . $_groups_key . '">';
 
 				// Go through all items of the group
 				foreach($multiboxes[$_groups_key] as $i => $c){

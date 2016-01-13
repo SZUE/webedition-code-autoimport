@@ -272,10 +272,9 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 	 * *********************************************************************** */
 
 	$GLOBALS['loginpage'] = ($login == LOGIN_OK) ? false : true;
-	include(WE_INCLUDES_PATH . 'we_editors/we_info.inc.php');
 
 	$dialogtable = '<noscript style="color:#fff;">Please activate Javascript!' . we_html_element::htmlBr() . we_html_element::htmlBr() . '</noscript>
-' . $_loginTable;
+' . include(WE_INCLUDES_PATH . 'we_editors/we_info.inc.php');
 
 	/*	 * ***********************************************************************
 	 * GENERATE NEEDED JAVASCRIPTS
@@ -310,9 +309,9 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 				}
 			} else {
 				$headerjs = 'function open_we() {
-			var aw=' . (!empty($_SESSION['prefs']['weWidth']) ? $_SESSION['prefs']['weWidth'] : 8000) . ';
-			var ah=' . (!empty($_SESSION['prefs']['weHeight']) ? $_SESSION['prefs']['weHeight'] : 6000) . ';
-			win = new jsWindow(top.window, "' . WEBEDITION_DIR . "webEdition.php?h='+ah+'&w='+aw+'&browser='+((document.all) ? 'ie' : 'nn'), '" . md5(uniqid(__FILE__, true)) . '", -1, -1, aw, ah, true, true, true, true, "' . g_l('alert', '[popupLoginError]') . '", "' . WEBEDITION_DIR . 'index.php"); }';
+var aw=' . (!empty($_SESSION['prefs']['weWidth']) ? $_SESSION['prefs']['weWidth'] : 8000) . ';
+var ah=' . (!empty($_SESSION['prefs']['weHeight']) ? $_SESSION['prefs']['weHeight'] : 6000) . ';
+win = new jsWindow(top.window, "' . WEBEDITION_DIR . "webEdition.php?h='+ah+'&w='+aw+'&browser='+((document.all) ? 'ie' : 'nn'), '" . md5(uniqid(__FILE__, true)) . '", -1, -1, aw, ah, true, true, true, true, "' . g_l('alert', '[popupLoginError]') . '", "' . WEBEDITION_DIR . 'index.php"); }';
 			}
 			break;
 		case LOGIN_CREDENTIALS_INVALID:

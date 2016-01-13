@@ -31,7 +31,7 @@ class we_voting_dirSelector extends we_selector_directory{
 
 	function printHeaderHeadlines(){
 		return '
-<table class="headerLines" width="550">
+<table class="headerLines" style="width:550px;">
 <colgroup><col style="width:25px;"/><col style="width:200px;"/><col style="width:300px;"/></colgroup>
 	<tr>
 		<th class="selector treeIcon"></th>

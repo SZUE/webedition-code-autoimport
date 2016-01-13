@@ -207,7 +207,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 						echo we_html_element::htmlHidden('we_cmd[' . ($i - 3) . ']', we_base_request::_(we_base_request::RAW, 'we_cmd', '', $i));
 					}
 				}
-				echo '<iframe id="glossarycheck" name="glossarycheck" src="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 0) . '&we_cmd[1]=prepare&we_cmd[2]=' . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 2) . (($cmd3 = we_base_request::_(we_base_request::RAW, 'we_cmd', false, 3)) !== false ? '&we_cmd[3]=' . $cmd3 : '' ) . '" width="730px" height="400px" style="overflow: hidden;"></iframe>' .
+				echo '<iframe id="glossarycheck" name="glossarycheck" src="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 0) . '&we_cmd[1]=prepare&we_cmd[2]=' . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 2) . (($cmd3 = we_base_request::_(we_base_request::RAW, 'we_cmd', false, 3)) !== false ? '&we_cmd[3]=' . $cmd3 : '' ) . '"  style="width:730px;height:400px;overflow: hidden;"></iframe>' .
 				$AppletCode;
 
 //
@@ -402,7 +402,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 					));
 
 					$Content = '
-	<table width="650" class="default defaultfont">
+	<table style="width:650px;" class="default defaultfont">
 	<colgroup><col style="width:150px;"/><col style="width:140px;"/><col style="width:200px;"/><col style="width:100px;"/></colgroup>
 	<tr>
 		<td colspan="7" style="padding-bottom:5px;">' . g_l('modules_glossary', '[not_identified_words]') . '</td>
@@ -415,7 +415,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 	<tr>
 	</table>
 	<div style="height: 248px; width: 675px; overflow: auto;">
-	<table width="650" class="default defaultfont">
+	<table style="width:650px;" class="default defaultfont">
 	<tbody id="unknown">
 	<colgroup><col style="width:150px;"/><col style="width:140px;"/><col style="width:200px;"/><col style="width:100px;"/></colgroup>
 	</tbody>

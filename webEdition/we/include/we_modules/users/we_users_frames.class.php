@@ -28,7 +28,7 @@ class we_users_frames extends we_modules_frame{
 		parent::__construct($frameset);
 		$this->module = 'users';
 		$this->Tree = new we_users_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
-		$this->treeFooterHeight = 40;
+		$this->showTreeFooter = true;
 		$this->treeDefaultWidth = 224;
 		$this->View = new we_users_view($frameset, 'top.content');
 	}
@@ -75,10 +75,10 @@ class we_users_frames extends we_modules_frame{
 				"pnt" => "cmd",
 				"cmd" => "show_search"));
 
-		$table = new we_html_table(array('class' => 'default', "style" => 'width:100%;margin-top:10px;'), 1, 1);
+		$table = new we_html_table(array('class' => 'default'), 1, 1);
 		$table->setCol(0, 0, array("class" => "small"), we_html_element::jsElement($this->View->getJSSubmitFunction("cmd")) .
 			$hiddens .
-			we_html_tools::htmlTextInput("keyword", 10, "", "", "", "text", "150px") .
+			we_html_tools::htmlTextInput("keyword", 10, "", "", "", "text", "120px") .
 			we_html_button::create_button(we_html_button::SEARCH, "javascript:top.content.we_cmd('search',document.we_form_treefooter.keyword.value);")
 		);
 

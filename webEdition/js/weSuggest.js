@@ -91,7 +91,7 @@ YAHOO.autocoml = {
 					break;
 				case (YAHOO.autocoml.yuiAcFields[i].run):                        // ERROR: Request is running
 					YAHOO.autocoml.ajaxResponseCT += YAHOO.autocoml.ajaxResponseStep;
-					setTimeout('YAHOO.autocoml.doOnTextfieldBlur(0,0,' + i + ')', YAHOO.autocoml.ajaxResponseStep);
+					setTimeout(YAHOO.autocoml.doOnTextfieldBlur, YAHOO.autocoml.ajaxResponseStep, 0, 0, i);
 					break;
 				case (YAHOO.autocoml.yuiAcFields[i].found === 2):                 // ERROR: No result found
 					YAHOO.autocoml.markNotValid(i);
@@ -111,7 +111,7 @@ YAHOO.autocoml = {
 						if (x === y && y === 0) {
 							//call from timeout
 						} else {
-							setTimeout("YAHOO.autocoml.doOnTextfieldBlur(0, 0, " + i + ")", YAHOO.autocoml.ajaxResponseStep);
+							setTimeout(YAHOO.autocoml.doOnTextfieldBlur, YAHOO.autocoml.ajaxResponseStep, 0, 0, i);
 						}
 					}
 					break;
@@ -285,7 +285,7 @@ YAHOO.autocoml = {
 			}
 		}
 		//	YAHOO.autocoml.unmarkNotValid(i);
-		if (parent && parent.weAutoCompetionFields){
+		if (parent && parent.weAutoCompetionFields) {
 			parent.weAutoCompetionFields[YAHOO.autocoml.yuiAcFields[i].id] = false;
 		}
 		YAHOO.autocoml.yuiAcFields[i].sel = '';
@@ -385,7 +385,7 @@ YAHOO.autocoml = {
 		if (fId) {
 			if (YAHOO.autocoml.counter < 10 && YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById[fId]].run) {
 				YAHOO.autocoml.counter++;
-				setTimeout('YAHOO.autocoml.isValidById(\"' + fId + '\")', 100);
+				setTimeout(YAHOO.autocoml.isValidById, 100, fId);
 			} else {
 				YAHOO.autocoml.counter = 0;
 				return YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById[fId]].valid;

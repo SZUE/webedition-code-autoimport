@@ -28,7 +28,7 @@ function we_tag_formToken($attribs){
 
 	if(!$token){
 		//generate a unique token - it will be invalidated if the session is stopped or started
-		$token = md5(uniqid($_SERVER['DOCUMENT_ROOT'] . $GLOBALS['we_doc']->Published . session_id(), true));
+		$token = md5(uniqid($_SERVER['DOCUMENT_ROOT'] . $GLOBALS['we_doc']->Published . session_id(), false));
 
 		// Default lifetime of the token is set to 1/2 hour
 		$lifetime = max(30, weTag_getAttribute('lifetime', $attribs, 1800, we_base_request::INT));

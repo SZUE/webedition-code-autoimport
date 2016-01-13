@@ -266,9 +266,9 @@ function getStatusContol() {
 				$this->newsletter->isEmbedImages = $this->settings['isEmbedImages'];
 
 				echo we_html_element::jsElement('
-							top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=edheader' . (($page = we_base_request::_(we_base_request::INT, "page")) !== false ? "&page=" . $page : "") . '";
-							top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=edfooter";
-					');
+top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=edheader' . (($page = we_base_request::_(we_base_request::INT, "page")) !== false ? "&page=" . $page : "") . '";
+top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=edfooter";
+');
 				break;
 			case "new_newsletter_group":
 				$this->page = 0;
@@ -438,10 +438,10 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 					if($h['Step'] != 0 || $h['Offset'] != 0){
 						echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 						we_html_element::jsElement('
-										self.focus();
-										top.content.get_focus=0;
-										new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=qsave1","save_question",-1,-1,350,200,true,true,true,false);
-									');
+self.focus();
+top.content.get_focus=0;
+new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=qsave1","save_question",-1,-1,350,200,true,true,true,false);
+');
 						break;
 					}
 				}
@@ -530,7 +530,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 							$this->newsletter = new we_newsletter_newsletter();
 							echo we_html_element::jsElement('
 top.content.treeData.deleteEntry(' . $nid . ',"file");
-setTimeout(function(){' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', (we_base_request::_(we_base_request::BOOL, "IsFolder") ? '[delete_group_ok]' : '[delete_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) . '},500);
+setTimeout(top.we_showMessage,500,"' . g_l('modules_newsletter', (we_base_request::_(we_base_request::BOOL, "IsFolder") ? '[delete_group_ok]' : '[delete_ok]')). '", WE().consts.message.WE_MESSAGE_NOTICE, window);
 								');
 							$_REQUEST['home'] = 1;
 							$_REQUEST['pnt'] = 'edbody';

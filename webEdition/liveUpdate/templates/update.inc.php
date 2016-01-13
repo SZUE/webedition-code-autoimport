@@ -38,7 +38,7 @@ $clientVersionName = (!empty($GLOBALS['LU_Variables']['clientVersionName'])) ?
 
 
 $content = '
-<table class="defaultfont" width="100%">
+<table class="defaultfont" style="width:100%">
 <tr>
 	<td>' . g_l('liveUpdate', '[update][actualVersion]') . '</td>
 	<td>' . $clientVersionName . ' (' . $GLOBALS['LU_Variables']['clientVersion'] . $clientSubVersion . ')</td>

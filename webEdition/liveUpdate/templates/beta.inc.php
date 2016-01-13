@@ -31,7 +31,7 @@
 $_SESSION['weS']['testUpdate'] = we_base_request::_(we_base_request::BOOL, "setTestUpdate", isset($_SESSION['weS']['testUpdate']) ? $_SESSION['weS']['testUpdate'] : false);
 
 $content = '
-<table class="defaultfont" width="100%">
+<table class="defaultfont" style="width:100%">
 <tr>
 	<td>' . g_l('liveUpdate', '[update][actualVersion]') . '</td>
 	<td>' . $GLOBALS['LU_Variables']['clientVersion'] . '</td>

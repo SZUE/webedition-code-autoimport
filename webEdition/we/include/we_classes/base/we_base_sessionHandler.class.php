@@ -11,7 +11,6 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 	private $hash = '';
 	private $releaseError = false;
 	public static $acquireLock = 0;
-	public static $acquireLock = 0;
 
 	function __construct(){
 		if(defined('SYSTEM_WE_SESSION') && SYSTEM_WE_SESSION && !$this->id){

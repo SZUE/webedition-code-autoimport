@@ -110,7 +110,7 @@ class we_html_table extends we_html_baseCollection{
 	 *
 	 * @return     void
 	 */
-	function setRow($rowid, $attribs = array(), $cols_num = 0){
+	function setRow($rowid, array $attribs = array(), $cols_num = 0){
 		$row = & $this->getChild($rowid);
 		$row->setAttributes($attribs);
 
@@ -158,7 +158,7 @@ class we_html_table extends we_html_baseCollection{
 	 *
 	 * @return     void
 	 */
-	function setRowAttributes($rowid, $attribs = array()){
+	function setRowAttributes($rowid, array $attribs = array()){
 		$row = & $this->getChild($rowid);
 		$row->setAttributes($attribs);
 	}

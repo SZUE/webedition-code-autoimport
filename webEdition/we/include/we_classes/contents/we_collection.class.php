@@ -284,7 +284,7 @@ class we_collection extends we_root{
 
 		$selRemTable = ($fixedRemTable && $this->getRemTable() ? we_html_element::htmlHidden('we_' . $this->Name . '_remTable', $this->getRemTable()) . we_html_element::htmlInput(array('disabled' => 1, 'name' => 'disabledField', 'value' => $valsRemTable[$this->getRemTable()], 'width' => 356)) :
 			we_html_tools::htmlSelect('we_' . $this->Name . '_remTable', $valsRemTable, 1, $this->getRemTable(), false, array('onchange' => 'document.getElementById(\'mimetype\').style.display=(this.value===\'tblFile\'?\'block\':\'none\');document.getElementById(\'classname\').style.display=(this.value===\'tblFile\'?\'none\':\'block\');', 'style' => 'margin-top: 5px;'), 'value')) .
-				we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[collection][selector_remTable]'), we_html_tools::TYPE_INFO, false, false);
+				we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[collection][selector_remTable]'), we_html_tools::TYPE_HELP, false);
 
 
 		$dublettes = we_html_forms::checkboxWithHidden($this->IsDuplicates, 'we_' . $this->Name . '_IsDuplicates', g_l('weClass', '[collection][allowDuplicates]'));

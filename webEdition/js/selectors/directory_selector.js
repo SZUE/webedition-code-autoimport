@@ -160,9 +160,9 @@ function writeBody(d) {
 					'<input type="hidden" name="id" value="' + currentDir + '" />' +
 					'<table class="selector">' +
 					(makeNewFolder ?
-									'<tr style="background-color:#DFE9F5;">' +
+									'<tr class="newEntry">' +
 									'<td class="selectoricon">' + WE().util.getTreeIcon('folder', false) + '</td>' +
-									'<td><input type="hidden" name="we_FolderText" value="' + g_l.new_folder_name + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + g_l.new_folder_name + '" class="wetextinput" style="width:100%" /></td>' +
+									'<td><input type="hidden" name="we_FolderText" value="' + g_l.new_folder_name + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + g_l.new_folder_name + '" class="wetextinput" /></td>' +
 									'<td class="selector moddate">' + g_l.date_format + '</td>' +
 									'</tr>' :
 									'');
@@ -174,7 +174,7 @@ function writeBody(d) {
 						'<td class="treeIcon">' + WE().util.getTreeIcon(entries[i].contentType, false) + '</td>' +
 						(we_editDirID == entries[i].ID ?
 										'<td class="selector"><input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
-										'<td class="selector cutText directory" style="" title="' + entries[i].text + '">' + entries[i].text
+										'<td class="selector cutText directory" title="' + entries[i].text + '">' + entries[i].text
 										) +
 						'</td><td class="selector moddate">' + entries[i].modDate + '</td>' +
 						'</tr>';

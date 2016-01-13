@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -32,8 +31,8 @@ we_html_tools::protect();
 function checkIfValidStartdocument($id, $type = 'document'){
 
 	return ($type === 'object' ?
-					(f('SELECT ContentType FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id)) === we_base_ContentTypes::OBJECT_FILE) :
-					(f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id)) === we_base_ContentTypes::WEDOCUMENT));
+			(f('SELECT ContentType FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id)) === we_base_ContentTypes::OBJECT_FILE) :
+			(f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id)) === we_base_ContentTypes::WEDOCUMENT));
 }
 
 //	Here begins the code for showing the correct frameset.
@@ -125,10 +124,10 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4) === 'SEEM_edit_i
 			case 'weapp':
 				if($_SESSION['prefs']['seem_start_weapp'] != ''){ //	if a we-app is choosen
 					$jsCommand = _buildJsCommand() .
-							_buildJsCommand(array('', '', '', 'tool_' . $_SESSION['prefs']['seem_start_weapp'] . '_edit'));
+						_buildJsCommand(array('', '', '', 'tool_' . $_SESSION['prefs']['seem_start_weapp'] . '_edit'));
 				}
 				break;
 		}
 	}
 }
-echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') . we_html_element::jsElement($jsCommand);
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') . we_html_element::jsElement($jsCommand), we_html_element::htmlBody());

@@ -103,15 +103,15 @@
 				return;
 			}
 			b.block = 1;
-			setTimeout(function () {
+			setTimeout(function (a, b) {
 				if (!a.destroyed) {
 					var c = b._getCount(a);
 					tinymce.DOM.setHTML(b.id, c.toString());
-					setTimeout(function () {
+					setTimeout(function (b) {
 						b.block = 0;
-					}, b.update_rate);
+					}, b.update_rate, b);
 				}
-			}, 1);
+			}, 1, a, b);
 		},
 		getInfo: function () {
 			return {

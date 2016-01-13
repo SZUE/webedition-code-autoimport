@@ -223,8 +223,7 @@ WE().consts.g_l.weSearch = {
 				if($this->Model->delete()){
 					echo we_html_element::jsElement(
 						$this->topFrame . '.treeData.deleteEntry("' . $this->Model->ID . '");
-        setTimeout(function(){' .
-						we_message_reporting::getShowMessageCall(g_l('tools', ($this->Model->IsFolder == 1 ? '[group_deleted]' : '[item_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE) . '},500);' .
+setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1 ? '[group_deleted]' : '[item_deleted]')).'", WE().consts.message.WE_MESSAGE_NOTICE, window);' .
 						$this->topFrame . '.we_cmd("tool_weSearch_edit");'
 					);
 					$this->Model = new we_search_model();
@@ -431,8 +430,8 @@ WE().consts.weSearch= {
 					we_html_tools::htmlSelect('search' . $whichSearch . '[' . $n . ']', array(
 						0 => g_l('searchtool', '[all]'),
 						1 => g_l('searchtool', '[only_unsed]'),
-						2 => g_l('searchtool', '[only_unused]')), 1, isset($currentSearch[$n]) ? $currentSearch[$n] : '', false, array(), 'value', 220));
-				$_table->setCol(0, 3, array(), we_html_tools::htmlAlertAttentionBox(g_l('searchtool', '[media_do_rebuild]'), we_html_tools::TYPE_INFO, false, false));
+						2 => g_l('searchtool', '[only_unused]')), 1, isset($currentSearch[$n]) ? $currentSearch[$n] : '', false, array(), 'value', 228));
+				$_table->setCol(0, 3, array(), we_html_tools::htmlAlertAttentionBox(g_l('searchtool', '[media_do_rebuild]'), we_html_tools::TYPE_HELP, false));
 
 				$_table->setCol(1, 0, array(), g_l('searchtool', '[protection]') . ': ');
 				$_table->setCol(1, 1, array('colspan' => 2), we_html_element::htmlHiddens(array(
@@ -441,7 +440,7 @@ WE().consts.weSearch= {
 					we_html_tools::htmlSelect('search' . $whichSearch . '[' . $n . ']', array(
 						0 => g_l('searchtool', '[all]'),
 						1 => g_l('searchtool', '[only_protected]'),
-						2 => g_l('searchtool', '[only_unprotected]')), 1, isset($currentSearch[$n]) ? $currentSearch[$n] : '', false, array(), 'value', 220));
+						2 => g_l('searchtool', '[only_unprotected]')), 1, isset($currentSearch[$n]) ? $currentSearch[$n] : '', false, array(), 'value', 228));
 
 				$this->searchMediaOptFieldIndex = ++$n; // FIXME: do we need this (or can we handle it as simple param?)
 				break;
@@ -519,7 +518,7 @@ WE().consts.weSearch= {
  <td></td>
 </tr>
 <tr>
- <td style="padding-right:20px;">' . $searchInput . ($whichSearch == self::SEARCH_MEDIA ? ' ' . we_html_tools::htmlAlertAttentionBox("Ohne Suchbegriff werden alle Medien-Dokumente ausgegeben.", we_html_tools::TYPE_INFO, false) : '') . '</td>
+ <td style="padding-right:20px;">' . $searchInput . ($whichSearch == self::SEARCH_MEDIA ? ' ' . we_html_tools::htmlAlertAttentionBox("Ohne Suchbegriff werden alle Medien-Dokumente ausgegeben.", we_html_tools::TYPE_HELP, false) : '') . '</td>
  <td>' . we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);") . '</td>
  <td>' . we_html_tools::hidden('location' . $whichSearch . '[0]', 'CONTAIN') . '</td>
  <td>' . we_html_tools::hidden($searchTables, 1) . '</td>
@@ -1140,7 +1139,7 @@ WE().consts.weSearch= {
 				$out .= '</tbody></table>' . '<div id="movethemaway" style="display:block"></div>';
 				break;
 			case self::VIEW_ICONS:
-				$out = '<table class="default" width="100%"><tr><td style="text-align:center">';
+				$out = '<table class="default" style="width:100%"><tr><td style="text-align:center">';
 
 				for($m = 0; $m < $x; $m++){
 					$out .= $whichSearch !== self::SEARCH_MEDIA ? ('<div style="float:left;width:180px;height:100px;margin:20px 0px 0px 20px;z-index:1;">' .
@@ -1292,25 +1291,25 @@ WE().consts.weSearch= {
 	}
 
 	private static function tblListRowIconView($content, $class, $i, $whichSearch){
-		return '<table width="100%" class="default ' . $class . '">
+		return '<table style="width:100%" class="default ' . $class . '">
 <tr>
-	<td width="75" style="vertical-align:top;text-align:center" onmouseover="weSearch.showImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\',1)" onmouseout="weSearch.hideImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\')">' .
+	<td style="width:75px;vertical-align:top;text-align:center" onmouseover="weSearch.showImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\',1)" onmouseout="weSearch.hideImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\')">' .
 			((!empty($content[0]["dat"])) ? $content[0]["dat"] : "&nbsp;") . '</td>
-		<td width="105" style="vertical-align:top;line-height:20px;">
+		<td style="width:105px;vertical-align:top;line-height:20px;">
 		<div style="padding-bottom:2em;">' . ((!empty($content[2]["dat"])) ? $content[2]["dat"] : "&nbsp;") . '</div>
 		<span>' . ((!empty($content[1]["dat"])) ? $content[1]["dat"] : "&nbsp;") . '</span></td>
 </tr></table>';
 	}
 
 	private static function tblListRowMediaIconView($content, $class, $i, $whichSearch){
-		return '<table width="100%" class="default ' . $class . '">
+		return '<table style="width:100%" class="default ' . $class . '">
 <tr>
-	<td width="100%" style="vertical-align:top;text-align:center" onmouseover="weSearch.showImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\',1)" onmouseout="weSearch.hideImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\')">' .
+	<td style="width:100%;vertical-align:top;text-align:center" onmouseover="weSearch.showImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\',1)" onmouseout="weSearch.hideImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\')">' .
 			((!empty($content[5]["dat"])) ? $content[5]["dat"] : "&nbsp;") .
 			'</td>
 </tr>
 <tr>
-		<td width="100%" style="vertical-align:top;line-height:20px;text-align:center">
+		<td style="width:100%;vertical-align:top;line-height:20px;text-align:center">
 		<span>' . ((!empty($content[2]["dat"])) ? $content[2]["dat"] : "&nbsp;") . '</span>
 </tr></table>';
 	}

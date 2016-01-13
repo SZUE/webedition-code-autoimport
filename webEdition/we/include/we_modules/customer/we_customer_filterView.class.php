@@ -299,12 +299,11 @@ EO_SCRIPT;
 		$_filter_op_str = we_html_tools::htmlSelect('', $_filter_op);
 
 		$_filterTable = '
-		<table class="default" width="' . $this->_width . ' height="50">
+		<table class="default" style="width:' . $this->_width . 'px;height:50px;">
 			<tbody id="filterTable">
 				' . $_adv_row . '
 			</tbody>
-		</table>
-		';
+		</table>';
 
 
 		return

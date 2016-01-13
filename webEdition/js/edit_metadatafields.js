@@ -1,3 +1,5 @@
+/* global WE */
+
 /**
  * webEdition SDK
  *
@@ -54,24 +56,6 @@ function delRow(id) {
 	if(el){
 		el.parentNode.removeChild(el);
 	}
-	/*
-	var elem = document.getElementById("metadataTable");
-	if (elem) {
-		var trows = elem.rows;
-		var rowID0 = "metadataRow0_" + id;
-		var rowID = "metadataRow_" + id;
-		var rowID1 = "metadataRow1_" + id;
-		var rowID2 = "metadataRow2_" + id;
-		var rowID3 = "metadataRow3_" + id;
-		var rowID4 = "metadataRow4_" + id;
-
-		for (i = trows.length - 1; i >= 0; i--) {
-			if (rowID == trows[i].id || rowID0 == trows[i].id || rowID1 == trows[i].id || rowID2 == trows[i].id || rowID3 == trows[i].id || rowID4 == trows[i].id) {
-				elem.deleteRow(i);
-			}
-		}
-	}
-	*/
 }
 
 function addProposition(btn, index) {
@@ -112,12 +96,12 @@ function addRow() {
 		newRow = document.createElement("TR");
 		newRow.setAttribute("id", "metadataRow0_" + newID);
 		cell = document.createElement("TD");
-		cell.innerHTML = "<strong>" + g_l.tagname + "</strong>";
+		cell.innerHTML = "<strong>" + WE().consts.g_l.metadatafields.tagname + "</strong>";
 		cell.width = "210";
 		cell.style.paddingTop = "12px";
 		newRow.appendChild(cell);
 		cell = document.createElement("TD");
-		cell.innerHTML = "<strong>" + g_l.type + "</strong>";
+		cell.innerHTML = "<strong>" + WE().consts.g_l.metadatafields.type + "</strong>";
 		cell.width = "110";
 		cell.style.paddingTop = "12px";
 		cell.colspan = "2";
@@ -145,12 +129,12 @@ function addRow() {
 		newRow.setAttribute("id", "metadataRow2_" + newID);
 		cell = document.createElement("TD");
 		cell.style.paddingBottom = "6px";
-		cell.innerHTML = '<div class="small">' + g_l.import_from + '</div>' + phpdata.importInp.replace(/__we_new_id__/, newID);
+		cell.innerHTML = '<div class="small">' + WE().consts.g_l.metadatafields.import_from + '</div>' + phpdata.importInp.replace(/__we_new_id__/, newID);
 		newRow.appendChild(cell);
 		cell = document.createElement("TD");
 		cell.setAttribute("colspan", 2);
 		cell.style.paddingBottom = "6px";
-		cell.innerHTML = '<div class="small">' + g_l.fields + '</div>' + phpdata.fieldSel.replace(/__we_new_id__/g, newID);
+		cell.innerHTML = '<div class="small">' + WE().consts.g_l.metadatafields.fields + '</div>' + phpdata.fieldSel.replace(/__we_new_id__/g, newID);
 		newRow.appendChild(cell);
 		elem.appendChild(newRow);
 
@@ -158,7 +142,7 @@ function addRow() {
 		newRow.setAttribute("id", "metadataRow3_" + newID);
 		cell = document.createElement("TD");
 		cell.style.paddingBottom = "1px";
-		cell.innerHTML = '<div class="small" id="metadataModeDiv0_' + newID + '">' + g_l.proposals + '</div><div id="metadataModeDiv1_' + newID + '">' + phpdata.modeSel.replace(/__we_new_id__/g, newID) + '</div>';
+		cell.innerHTML = '<div class="small" id="metadataModeDiv0_' + newID + '">' + WE().consts.g_l.metadatafields.proposals + '</div><div id="metadataModeDiv1_' + newID + '">' + phpdata.modeSel.replace(/__we_new_id__/g, newID) + '</div>';
 		newRow.appendChild(cell);
 		cell = document.createElement("TD");
 		cell.setAttribute("colspan", 2);

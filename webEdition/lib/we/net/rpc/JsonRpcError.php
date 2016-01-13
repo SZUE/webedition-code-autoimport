@@ -28,7 +28,6 @@
  */
 
 class we_net_rpc_JsonRpcError{
-
 	private $json;
 	private $data;
 	private $id;
@@ -73,7 +72,7 @@ class we_net_rpc_JsonRpcError{
 		$ret = array('error' => $this->data,
 			'id' => $this->id,
 			'result' => NULL);
-		return Zend_Json::encode($ret);
+		return we_serialize($ret, 'json');
 	}
 
 }

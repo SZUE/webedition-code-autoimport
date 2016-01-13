@@ -644,9 +644,8 @@ we_templateInit();?>';
 
 		foreach($regs as $reg){
 			$attribs = we_tag_tagParser::parseAttribs(isset($reg[2]) ? $reg[2] : '', true);
-			$name = isset($attribs['name']) ? $attribs['name'] : '';
-			if($name){
-				$masterTags[$name] = array(
+			if(!empty($attribs['name'])){
+				$masterTags[$attribs['name']] = array(
 					//'all' => $reg[0],
 					//'startTag' => $reg[1],
 					'content' => isset($reg[3]) ? $reg[3] : '',

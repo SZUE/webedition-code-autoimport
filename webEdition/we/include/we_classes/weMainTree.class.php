@@ -68,7 +68,7 @@ if(weWindow.treeData){
 			var attribs={
 			"id":' . $doc->ID . ',
 			"parentid":' . $doc->ParentID . ',
-			"text":\'' . $doc->Text . '\',
+			"text":\'' . addcslashes($doc->Text,'\'') . '\',
 			"published":' . $published . ',
 			"table":\'' . $doc->Table . '\',
 			"inschedule":\'' . intval($hasSched) . '\'
