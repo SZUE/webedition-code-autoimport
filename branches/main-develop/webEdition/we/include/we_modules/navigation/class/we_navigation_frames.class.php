@@ -33,7 +33,7 @@ class we_navigation_frames extends we_modules_frame{
 		parent::__construct($_frameset);
 		$this->module = 'navigation';
 		$this->treeDefaultWidth = 220;
-		$this->treeFooterHeight = 40;
+		$this->showTreeFooter= true;
 
 		$this->Tree = new we_navigation_tree($this->frameset, 'top.content', 'top.content', 'top.content.cmd');
 		$this->View = new we_navigation_view($_frameset);

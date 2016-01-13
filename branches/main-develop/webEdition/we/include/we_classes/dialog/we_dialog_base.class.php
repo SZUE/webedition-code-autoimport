@@ -129,11 +129,10 @@ function doKeyDown() {
 			break;
 	}
 }') .
-				we_html_element::htmlBody(array('class' => 'weDialogBody', 'style' => 'position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', 'onunload' => 'doUnload()')
-						, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-								, we_html_element::htmlExIFrame('main', $this->getDialogHTML(), 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden;') .
-								we_html_element::htmlIFrame('we_' . $this->ClassName . '_cmd_frame', 'about:blank', 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
-		));
+				we_html_element::htmlBody(array('class' => 'weDialogBody', 'onunload' => 'doUnload()')
+						, we_html_element::htmlExIFrame('main', $this->getDialogHTML(), 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden;') .
+						we_html_element::htmlIFrame('we_' . $this->ClassName . '_cmd_frame', 'about:blank', 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
+		);
 	}
 
 	protected function getNextBut(){
@@ -166,7 +165,7 @@ function doKeyDown() {
 	function getDialogButtons(){
 		if($this->pageNr == $this->numPages && $this->JsOnly == false){
 			$back = $this->getBackBut();
-			$ok = we_html_button::create_button(we_html_button::OK, 'form:we_form');
+			$ok = we_html_button::create_button(we_html_button::OK, we_html_button::WE_FORM . ':we_form');
 			$okBut = $back ? $back . $ok : $ok;
 		} else if($this->pageNr < $this->numPages){
 			$back = $this->getBackBut();

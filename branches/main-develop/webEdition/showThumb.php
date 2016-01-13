@@ -61,7 +61,7 @@ if(($uniqid = we_base_request::_(we_base_request::RAW, 'u')) &&
 			));
 		}
 
-		$table .= '<td><image src="' . $src . '" width="' . $thumbObj->getOutputWidth() . '" height="' . $thumbObj->getOutputHeight() . '"/></td>';
+		$table .= '<td><image src="' . $src . '" style="width:' . $thumbObj->getOutputWidth() . 'px;height:' . $thumbObj->getOutputHeight() . 'px"/></td>';
 	}
 
 	$table .= '</tr></table>';

@@ -36,8 +36,6 @@ if(we_base_request::_(we_base_request::BOOL, 'isopener')){
 }
 
 echo we_html_tools::getHtmlTop('', '', '', '', '
-	<body onload="self.setTimeout(function(){
-		self.close();
-	}, 1000);" style="background-color:#386AAB;color:white">
+	<body onload="self.setTimeout(self.close, 1000);" style="background-color:#386AAB;color:white">
 		' . g_l('global', '[irregular_logout]') . '
 	</body>');

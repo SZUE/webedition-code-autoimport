@@ -60,6 +60,7 @@ $perm_defaults[$perm_group_name] = array(
 	'EDIT_DOCTYPE' => 0,
 	'EDIT_DOCEXTENSION' => 0,
 	'EDIT_KATEGORIE' => 1,
+	'EDIT_METADATAFIELD' => 0,
 	'FORMMAIL' => 0,
 	'CAN_SEE_PROPERTIES' => 1,
 	'CAN_SEE_INFO' => 1,

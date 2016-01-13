@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,9 +22,9 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /* THIS IS TO BE THE ONE AND ONLY FU-EDITOR!! use we_rpc for legacy-mode and let some js collect all formfields to rpc! */
 /* => EDITOR PARAMS: FU-UI-CLASS (+ EVT. EXTRAPARAM), FU-RESP-CLASS, 2 ENCCOMMANDS FOR CALLBACK */
+//FIXME: is this file obsolete?
 
 we_html_tools::protect();
 
@@ -51,17 +52,12 @@ $fileUpload->setEditorJS(array(
 ));
 $yuiSuggest = &weSuggest::getInstance();
 
-echo we_html_tools::getHtmlTop('fileupload') . 
-	STYLESHEET . $fileUpload->getEditorJS() .
-	we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-	we_html_element::jsScript(JS_DIR . 'keyListener.js') .
-	we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js');
-
-echo we_html_element::htmlBody(array('style' => 'position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', 'onload' => ''),
-	we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;'),
-		we_html_element::htmlForm(array(),
-			we_html_element::htmlDiv(array('id' => 'we_fileupload', 'class' => 'weDialogBody', 'style' => 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto;'), $fileUpload->getHtml()) .
-			we_html_element::htmlDiv(array('id' => 'we_fileupload_footer', 'class' => '', 'style' => 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;'), $fileUpload->getHtmlFooter())
+echo we_html_tools::getHtmlTop('fileupload', '', '', STYLESHEET . $fileUpload->getEditorJS() .
+		we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
+		we_html_element::jsScript(JS_DIR . 'keyListener.js') .
+		we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js'), we_html_element::htmlBody(array('class' => 'weDialogBody'), we_html_element::htmlForm(array(), we_html_element::htmlDiv(array('id' => 'we_fileupload', 'class' => 'weDialogBody', 'style' => 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto;'), $fileUpload->getHtml()) .
+						we_html_element::htmlDiv(array('id' => 'we_fileupload_footer', 'class' => '', 'style' => 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;'), $fileUpload->getHtmlFooter())
+				)
+				. weSuggest::getYuiFiles() . $yuiSuggest->getYuiJs()
 		)
-	) . weSuggest::getYuiFiles() . $yuiSuggest->getYuiJs()
-) . '</html>';
+);

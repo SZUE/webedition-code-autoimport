@@ -76,7 +76,7 @@ $editbut = we_html_button::create_button("edit_all_thumbs", "javascript:we_cmd('
 $_thumbs[] = array("headline" => "", "html" => $_thumbnails->getHtml() . '<p style="text-align:right">' . $editbut . '</p>');
 
 
-$iframe = '<iframe name="showthumbs" id="showthumbs" src="' . WEBEDITION_DIR . 'showThumb.php?u=' . $uniqid . '&t=' . $we_transaction . '&id=' . $selectedID . '" width="340" height="130"></iframe>';
+$iframe = '<iframe name="showthumbs" id="showthumbs" src="' . WEBEDITION_DIR . 'showThumb.php?u=' . $uniqid . '&t=' . $we_transaction . '&id=' . $selectedID . '" style="width:340px;height:130px;"></iframe>';
 
 $_thumbs[] = array("headline" => "", "html" => $iframe);
 

@@ -62,44 +62,37 @@ if($res['ok']){
 
 <body class="weDialogBody">
 	<?php
-	$tbl = '<table style="text-align:center" cellpadding="7" cellspacing="3" width="100%">';
+	$tbl = '<table style="text-align:center;width:100%" cellpadding="7" cellspacing="3">';
 	if($res['ok']){
 		$tbl .= '<tr>
-                    <td class="defaultfont" style="vertical-align:top">' . g_l('modules_messaging', '[s_sent_to]') . ':</td>
-                    <td class="defaultfont">
-                        <ul>';
+<td class="defaultfont" style="vertical-align:top">' . g_l('modules_messaging', '[s_sent_to]') . ':</td>
+<td class="defaultfont"><ul>';
 
 		foreach($res['ok'] as $ok){
 			$tbl .= '<li>' . oldHtmlspecialchars($ok) . '</li>';
 		}
 
-		$tbl .= '</ul>
-                    </td>
-                </tr>';
+		$tbl .= '</ul></td></tr>';
 	}
 
 	if($res['failed']){
 		$tbl .= '<tr>
-                    <td class="defaultfont" style="vertical-align:top">' . g_l('modules_messaging', '[n_sent_to]') . ':</td>
-                    <td class="defaultfont">
-                        <ul>';
+<td class="defaultfont" style="vertical-align:top">' . g_l('modules_messaging', '[n_sent_to]') . ':</td>
+<td class="defaultfont"><ul>';
 
 		foreach($res['failed'] as $failed){
 			$tbl .= '<li>' . oldHtmlspecialchars($failed) . '</li>';
 		}
 
 		$tbl .= '</ul>
-                    </td>
-                </tr>';
+</td></tr>';
 	}
 
 	if($res['err']){
 		$tbl .= '<tr>
-                    <td class="defaultfont" style="vertical-align:top">' . g_l('modules_messaging', '[occured_errs]') . ':</td>
-                    <td class="defaultfont">
-                        <ul><li>' . implode('</li><li>', $res['err']) . '</li></ul>
-                    </td>
-                </tr>';
+<td class="defaultfont" style="vertical-align:top">' . g_l('modules_messaging', '[occured_errs]') . ':</td>
+<td class="defaultfont"><ul><li>' . implode('</li><li>', $res['err']) . '</li></ul></td>
+</tr>';
 	}
 
 	$tbl .= '</table>';

@@ -140,21 +140,21 @@ function getConnectionTypes(){
 }
 
 function getWarning($message, $value){
-	return '<div style="min-height:2.5ex; min-width: 2ex;cursor:pointer; padding-right:2ex; padding-left:0px;position:relative;" title="' . $message . '">' . $value . '<span class="fa-stack fa-lg" style="font-size: 10px;color:#F2F200;position: absolute;right:.5ex;">
+	return '<div class="sysinfoMsg" title="' . $message . '">' . $value . '<span class="warn fa-stack fa-lg">
   <i class="fa fa-exclamation-triangle fa-stack-2x" ></i>
   <i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i>
 </span></div>';
 }
 
 function getInfo($message, $value){
-	return '<div style="min-height:2.5ex; min-width: 2ex;cursor:pointer; padding-right:2ex; padding-left:0px;position:relative;" title="' . $message . '">' . $value . '<span class="fa-stack fa-lg" style="font-size: 10px;color:#007de3;position: absolute;right:.5ex;">
+	return '<div class="sysinfoMsg" title="' . $message . '">' . $value . '<span class="info fa-stack fa-lg">
   <i class="fa fa-circle fa-stack-2x" ></i>
   <i class="fa fa-info fa-stack-1x fa-inverse"></i>
 </span></div>';
 }
 
 function getOK($message = '', $value = ''){
-	return '<div style="min-height:2.5ex; min-width: 2ex;cursor:pointer; padding-right:2ex; padding-left:0px; position:relative;" title="' . $message . '">' . $value . '<i class="fa fa-lg fa-check fa-ok" style="position:absolute;right:0px;"></i></div>';
+	return '<div class="sysinfoMsg" title="' . $message . '">' . $value . '<span class="ok fa fa-lg fa-check fa-ok"></span></div>';
 }
 
 $_install_dir = '<abbr title="' . $_SERVER['DOCUMENT_ROOT'] . '">' . we_base_util::shortenPath(WEBEDITION_PATH, 35) . '</abbr>';

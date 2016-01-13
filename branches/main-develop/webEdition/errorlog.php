@@ -43,8 +43,8 @@ function getInfoTable($infoArr){
 
 	$ret = '<table class="error">
   <colgroup>
-  <col width="10%"/>
-  <col width="90%" />
+  <col style="width:10%"/>
+  <col style="width:90%" />
   </colgroup>
   <tr class="first">
   	<td class="left">#' . $infoArr['ID'] . '</td>
@@ -81,8 +81,7 @@ function getNavButtons($size, $pos, $id){
 			we_html_button::create_button(we_html_button::NEXT, $url . '?function=next&ID=' . $id, true, 0, 0, "", "", ($pos == $size)) .
 			we_html_button::getButton("+" . $div, 'btn2', "window.location.href='" . $url . '?function=nextX&ID=' . $id . '&step=' . $div . "';", -1, '', ($pos + $div > $size)) .
 			we_html_button::create_button("fa:last,fa-lg fa-fast-forward", $url . '?function=last', true) .
-			'</td></tr><tr><td colspan="3" style="text-align:center" class="defaultfont" width="120"><b>' . $pos . "&nbsp;" . g_l('global', '[from]') . ' ' . $size . '</b>' .
-			'</td></table>';
+			'</td></tr><tr><td colspan="3" style="text-align:center;width:120px;" class="defaultfont bold" >' . $pos . "&nbsp;" . g_l('global', '[from]') . ' ' . $size . '</td></table>';
 }
 
 /* function formatLine(&$val, $key){
@@ -218,15 +217,12 @@ $_parts = array(
 	)
 );
 
-echo we_html_tools::getHtmlTop(g_l('javaMenu_global', '[showerrorlog]')) .
- we_html_element::jsElement('function closeOnEscape() {
+echo we_html_tools::getHtmlTop(g_l('javaMenu_global', '[showerrorlog]'), '', '', we_html_element::jsElement('function closeOnEscape() {
 		return true;
 	}
 ') .
- STYLESHEET;
+		STYLESHEET);
 ?>
-</head>
-
 <body class="weDialogBody" style="overflow:hidden;" onload="self.focus();">
 	<div id="info" style="display: block;">
 		<?php

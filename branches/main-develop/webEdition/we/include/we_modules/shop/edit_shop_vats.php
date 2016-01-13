@@ -129,7 +129,7 @@ $formVat = '
 	<td colspan="2"><strong>' . g_l('modules_shop', '[vat][vat_edit_form_headline]') . '</strong></td>
 </tr>
 <tr>
-	<td width="100">' . g_l('modules_shop', '[vat][vat_form_name]') . ':</td>
+	<td style="width:100px">' . g_l('modules_shop', '[vat][vat_form_name]') . ':</td>
 	<td><input class="wetextinput" type="text" id="weShopVatText" name="weShopVatText" value="' . $weShopVat->text . '" />' . $selPredefinedNames . '</td>
 </tr>
 <tr>

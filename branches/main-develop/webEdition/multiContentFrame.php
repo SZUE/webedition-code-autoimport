@@ -46,7 +46,7 @@ echo we_html_tools::getHtmlTop('', '', '', STYLESHEET .
 			<div class="hidden" id="tabDummy" title="" name="" onclick="WE().layout.multiTabs.selectFrame(this)">
 				<span class="spacer status" id="###loadId###" title="" ></span>
 				<span id="###tabTextId###" class="text"></span>
-				<span class="spacer">
+				<span class="spacer trailing">
 					<i class="fa fa-asterisk modified" id="###modId###"></i>
 					<span class="close" id="###closeId###" onclick="WE().layout.multiTabs.onCloseTab(this)">
 						<i class="fa fa-close fa-lg "></i>

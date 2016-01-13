@@ -97,9 +97,7 @@ function we_cmd() {
 						}
 					}
 				}
-				setTimeout(function () {
-					weGetCategories('doc', this.wizbody.document.we_form.elements['v[docCategories]'].value, 'rows');
-				}, 100);
+				setTimeout(weGetCategories, 100, 'doc', this.wizbody.document.we_form.elements['v[docCategories]'].value, 'rows');
 			}
 			break;
 		case 'delete_docCat':
@@ -127,9 +125,7 @@ function we_cmd() {
 						}
 					}
 				}
-				setTimeout(function () {
-					weGetCategories('obj', this.wizbody.document.we_form.elements['v[objCategories]'].value, 'rows');
-				}, 100);
+				setTimeout(weGetCategories, 100, 'obj', this.wizbody.document.we_form.elements['v[objCategories]'].value, 'rows');
 			}
 			break;
 		case 'delete_objCat':

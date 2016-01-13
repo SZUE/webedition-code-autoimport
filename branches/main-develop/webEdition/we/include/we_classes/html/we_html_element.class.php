@@ -69,7 +69,7 @@ abstract class we_html_element{
 	 * @param		$attribs								array			(optional)
 	 *
 	 * @return		string
-	 */
+
 	public static function htmlRadioCheckbox(array $attribs = array()){
 		$attribs['type'] = 'checkbox';
 
@@ -78,7 +78,7 @@ abstract class we_html_element{
 		$table->setColContent(0, 1, self::htmlLabel(array('for' => $name, 'title' => sprintf(g_l('htmlForms', '[click_here]'), $attribs['title']), $attribs['title'])));
 
 		return $table->getHtml();
-	}
+	}*/
 
 	/**
 	 * Function generates css code

@@ -65,7 +65,7 @@ class we_glossary_frameEditorFolder extends we_glossary_frameEditor{
 
 			$parts[] = array(
 				"headline" => '<a href="javascript://" onclick="' . $this->topFrame . '.editor.edbody.location=\'' . $weGlossaryFrames->frameset . '&pnt=edbody&cmd=glossary_view_type&cmdid=' . $cmdid . '_' . $key . '&tabnr=\'+' . $weGlossaryFrames->topFrame . '.activ_tab;">' . g_l('modules_glossary', '[' . $key . ']') . '</a>',
-				"html" => '<table width="550" class="default defaultfont">
+				"html" => '<table style="width:550px;" class="default defaultfont">
 						<tr><td style="padding-bottom:2px;">' . g_l('modules_glossary', '[' . $key . '_description]') . '</td></tr>
 						<tr><td style="padding-bottom:2px;">' . g_l('modules_glossary', '[number_of_entries]') . ': ' . $items . '</td></tr>
 						<tr><td style="text-align:right">' . $button . '</td></tr>

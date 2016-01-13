@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -28,6 +29,7 @@
  * @static
  */
 abstract class we_versions_wizard{
+
 	const DELETE_VERSIONS = 'delete_versions';
 	const RESET_VERSIONS = 'reset_versions';
 
@@ -54,17 +56,17 @@ abstract class we_versions_wizard{
 		$WE_PB->addText("", 0, "pb1");
 		$pb = $WE_PB->getHTML();
 		$js = $WE_PB->getJSCode() .
-			we_html_element::jsScript(JS_DIR . 'nextButtons.js');
+				we_html_element::jsScript(JS_DIR . 'nextButtons.js');
 
 		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
 		$refreshButton = we_html_button::create_button(we_html_button::REFRESH, "javascript:parent.wizcmd.location.reload();", true, 0, 0, "", "", false, false);
 
 		$nextbutdisabled = !(permissionhandler::hasPerm("REBUILD_ALL") ||
-			permissionhandler::hasPerm("REBUILD_FILTERD") ||
-			permissionhandler::hasPerm("REBUILD_OBJECTS") ||
-			permissionhandler::hasPerm("REBUILD_INDEX") ||
-			permissionhandler::hasPerm("REBUILD_THUMBS") ||
-			permissionhandler::hasPerm("REBUILD_META"));
+				permissionhandler::hasPerm("REBUILD_FILTERD") ||
+				permissionhandler::hasPerm("REBUILD_OBJECTS") ||
+				permissionhandler::hasPerm("REBUILD_INDEX") ||
+				permissionhandler::hasPerm("REBUILD_THUMBS") ||
+				permissionhandler::hasPerm("REBUILD_META"));
 
 		if($dc){
 			$buttons = $refreshButton . $cancelButton;
@@ -74,18 +76,18 @@ abstract class we_versions_wizard{
 			$nextButton = we_html_button::create_button(we_html_button::NEXT, "javascript:parent.wizbody.handle_event('next');", true, 0, 0, "", "", $nextbutdisabled, false);
 
 			$content2 = we_html_element::htmlSpan(array("id" => "prev", "style" => "padding-left:10px;text-align:right"), $prevButton) .
-				we_html_element::htmlSpan(array("id" => "next", "style" => "padding-left:10px;text-align:right"), $nextButton) .
-				we_html_element::htmlSpan(array("id" => "refresh", "style" => "display:none; padding-left:10px;text-align:right"), $refreshButton) .
-				we_html_element::htmlSpan(array("id" => "cancel", "style" => "padding-left:10px;text-align:right"), $cancelButton);
+					we_html_element::htmlSpan(array("id" => "next", "style" => "padding-left:10px;text-align:right"), $nextButton) .
+					we_html_element::htmlSpan(array("id" => "refresh", "style" => "display:none; padding-left:10px;text-align:right"), $refreshButton) .
+					we_html_element::htmlSpan(array("id" => "cancel", "style" => "padding-left:10px;text-align:right"), $cancelButton);
 
 			$content = new we_html_table(array('class' => 'default', "width" => "100%"), 1, 2);
 			$content->setCol(0, 0, array("id" => "progr", "style" => "display:none;text-align:left"), $pb);
-			$content->setCol(0, 1, array("style" => "text-align:right"), $content2->getHtml());
+			$content->setCol(0, 1, array("style" => "text-align:right"), $content2);
 		}
 
 		return we_html_tools::getHtmlTop('', '', '', STYLESHEET . $js, we_html_element::htmlBody(
-					array("class" => ($dc ? "weDialogBody" : "weDialogButtonsBody"), 'style' => 'overflow:hidden'
-					), ($dc ? $pb : $content->getHtml()))
+								array("class" => ($dc ? "weDialogBody" : "weDialogButtonsBody"), 'style' => 'overflow:hidden'
+								), ($dc ? $pb : $content->getHtml()))
 		);
 	}
 
@@ -186,13 +188,13 @@ function set_button_state(alldis) {
 			top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "next", "enabled");
 		}
 	}else{
-		setTimeout(function(){set_button_state((alldis ? 1 : 0));},300);
+		setTimeout(set_button_state,300,(alldis ? 1 : 0));
 	}
 }
 set_button_state(false);';
 
 		$hiddenFields = we_html_element::htmlHiddens($version_delete) .
-			we_html_element::htmlHiddens($version_reset);
+				we_html_element::htmlHiddens($version_reset);
 
 		return array(
 			$js,
@@ -419,7 +421,7 @@ function set_button_state(alldis) {
 				nextBut.innerHTML = \'' . $nextButton . '\';
 		}
 	}else{
-		setTimeout(function(){set_button_state((alldis ? 1 : 0));},300);
+		setTimeout(set_button_state,300,(alldis ? 1 : 0));
 	}
 }
 set_button_state(false);';
@@ -657,7 +659,7 @@ set_button_state(false);';
 				  			nextBut.innerHTML = \'' . $nextButton . '\';
 						}
 					}else{
-						setTimeout(function(){set_button_state((alldis ? 1 : 0));},300);
+						setTimeout(set_button_state,300,(alldis ? 1 : 0));
 					}
 				}
 				set_button_state(false);';
@@ -830,16 +832,16 @@ set_button_state(false);';
 		}
 
 		$out = '<div style="width:520px;">' .
-			g_l('versions', '[step2_txt1]');
+				g_l('versions', '[step2_txt1]');
 
 		if($timestamp){
 			$date = date('d.m.y - H:i:s', $timestamp);
 			$out .= sprintf(g_l('versions', '[step2_txt2_delete]'), $date);
 		}
 		$out .= g_l('versions', '[step2_txt3]') .
-			'</div>
+				'</div>
 <div style="background-color:#fff;width:520px;margin-top:20px;">
-	<table width="100%">
+	<table style="width:100%">
 		<tr class="defaultfont" style="height:30px;">
 		<th style="border-bottom:1px solid #B7B5B6;">' . g_l('versions', '[_id]') . '</th>
 		<th style="border-bottom:1px solid #B7B5B6;">' . g_l('versions', '[path]') . '</th>
@@ -962,7 +964,7 @@ set_button_state(false);';
 		$out = '
 <div style="width:520px;">' . sprintf(g_l('versions', '[step2_txt_reset]'), date("d.m.y - H:i:s", $timestamp)) . '</div>
 <div style="background-color:#fff;width:520px;margin-top:20px;">
-	<table width="100%">
+	<table style="width:100%">
 	<tr class="defaultfont" style="height:30px;">
 		<th style="border-bottom:1px solid #B7B5B6;">' . g_l('versions', '[_id]') . '</th>
 		<th style="border-bottom:1px solid #B7B5B6;">' . g_l('versions', '[path]') . '</th>
@@ -1032,20 +1034,16 @@ set_button_state(false);';
 			$query['we_cmd'][0] = 'versions_wizard';
 			$query['fr'] = 'body';
 			//maybe restore of a given version?
-			$body = we_html_element::htmlBody(array(
-					'style' => 'margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;text-align:center;',
-					'onload' => "wizcmd.location='" . WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(query) . "';")
-					, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-						, we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd' => array(0 => 'versions_wizard'), 'fr' => 'busy', 'dc' => 1)), 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden;', '', '', false) .
-						we_html_element::htmlIFrame('wizcmd', "about:blank", 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
-			));
+			$body = we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => "wizcmd.location='" . WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(query) . "';")
+							, we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd' => array(0 => 'versions_wizard'), 'fr' => 'busy', 'dc' => 1)), 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden;', '', '', false) .
+							we_html_element::htmlIFrame('wizcmd', "about:blank", 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
+			);
 		} else {
-			$body = we_html_element::htmlBody(array('style' => 'position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;text-align:center;')
-					, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-						, we_html_element::htmlIFrame('wizbody', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd' => array(0 => 'versions_wizard'), 'fr' => 'body')), 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;') .
-						we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd' => array(0 => 'versions_wizard'), 'fr' => 'busy')), 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;', '', '', false) .
-						we_html_element::htmlIFrame('wizcmd', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd' => array(0 => 'versions_wizard'), 'fr' => 'cmd')), 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
-			));
+			$body = we_html_element::htmlBody(array('class' => 'weDialogBody')
+							, we_html_element::htmlIFrame('wizbody', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd' => array(0 => 'versions_wizard'), 'fr' => 'body')), 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;') .
+							we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd' => array(0 => 'versions_wizard'), 'fr' => 'busy')), 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;', '', '', false) .
+							we_html_element::htmlIFrame('wizcmd', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd' => array(0 => 'versions_wizard'), 'fr' => 'cmd')), 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
+			);
 		}
 
 		return we_html_tools::getHtmlTop(g_l('versions', '[versions_wizard]'), '', '', STYLESHEET, $body);
@@ -1168,7 +1166,7 @@ function set_button_state(alldis) {
 				nextBut.innerHTML = \'' . $nextButton . '\';
 		}
 	}else{
-		setTimeout(function(){set_button_state((alldis ? 1 : 0));},300);
+		setTimeout(set_button_state,300,(alldis ? 1 : 0));
 	}
 }
 set_button_state(false);';
@@ -1187,13 +1185,13 @@ set_button_state(false);';
 		$headCal = we_html_tools::getCalendarFiles() . YAHOO_FILES;
 
 		return we_html_tools::getHtmlTop('', '', '', $headCal . STYLESHEET .
-				($contents[0] ? we_html_element::jsElement($contents[0]) : ""), we_html_element::htmlBody(
-					array("class" => "weDialogBody")
-					, we_html_element::htmlForm(array(
-						"name" => "we_form",
-						"method" => "post",
-						"action" => WEBEDITION_DIR . "we_cmd.php"
-						), $contents[1]))
+						($contents[0] ? we_html_element::jsElement($contents[0]) : ""), we_html_element::htmlBody(
+								array("class" => "weDialogBody")
+								, we_html_element::htmlForm(array(
+									"name" => "we_form",
+									"method" => "post",
+									"action" => WEBEDITION_DIR . "we_cmd.php"
+										), $contents[1]))
 		);
 	}
 

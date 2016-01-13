@@ -95,8 +95,8 @@ function getTmplTableRow($type, $name, $isField = false){
 		}
 		return '
 <tr>
-	<td width="100"><b>' . $name . '</b></td>
-	<td width="300">
+	<td style="width:100px;"><b>' . $name . '</b></td>
+	<td style="width:300px">
 		' . $open . '
 		<we:listview type="multiobject" name="' . $name . '">
 			<we:repeat>' . getTemplTag($type, $name) . '</we:repeat>
@@ -109,8 +109,8 @@ function getTmplTableRow($type, $name, $isField = false){
 	} else {
 		return '
 <tr>
-	<td width="100"><b>' . (($type != "object") ? $name : "") . '</b></td>
-	<td width="300">' . getTemplTag($type, $name, $isField) . '</td>
+	<td style="width:100px;"><b>' . (($type != "object") ? $name : "") . '</b></td>
+	<td style="width:300px;">' . getTemplTag($type, $name, $isField) . '</td>
 </tr>';
 	}
 }
@@ -179,7 +179,7 @@ if($_SESSION['weS']['we_data'][$cmd3][0]["ID"]){
 	$content .= '</table></p>
 			</we:repeat>
 			<we:ifFound>
-				<p><table class="default" width="400">
+				<p><table class="default" style="width:400px;">
 					<tr>
 						<we:ifBack>
 							<td><we:back>back</we:back></td>

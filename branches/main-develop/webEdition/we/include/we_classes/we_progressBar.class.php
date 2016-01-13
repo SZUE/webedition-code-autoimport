@@ -95,10 +95,9 @@ function setProgress' . $this->name . '(progress){
 	}
 
 	public function setCallback($code, $timeout){
+		t_e('callback for pb set');
 		$this->callback_code = $code;
-		$this->callback_timeout = $code;
-
-		$this->callback = 'var to=setTimeout("' . $code . '",' . $timeout . ');';
+		$this->callback_timeout = $timeout;
 	}
 
 	public function setStudWidth($stud_width = 10){
@@ -135,16 +134,16 @@ function setProgress' . $this->name . '(progress){
 		foreach($this->texts as $text){
 			switch($text["place"]){
 				case 0:
-					$top.='<td ' . ($text["name"] ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] .($text["bold"] ? " bold" : "" ). '" style="line-height:12px;color:' . $text["color"] . ';margin-right:5px;">' . $text["text"] . '</td>';
+					$top.='<td ' . ($text["name"] ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . ($text["bold"] ? " bold" : "" ) . '" style="line-height:12px;color:' . $text["color"] . ';margin-right:5px;">' . $text["text"] . '</td>';
 					break;
 				case 1:
-					$right.='<td ' . ($text["name"] ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . $text["class"] .($text["bold"] ? " bold" : "" ).'" style="line-height:12px;color:' . $text["color"] . ';padding-left:5px;">' . $text["text"] . '</td>';
+					$right.='<td ' . ($text["name"] ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . $text["class"] . ($text["bold"] ? " bold" : "" ) . '" style="line-height:12px;color:' . $text["color"] . ';padding-left:5px;">' . $text["text"] . '</td>';
 					break;
 				case 2:
-					$bottom.='<td ' . ($text["name"] ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . $text["class"] .($text["bold"] ? " bold" : "" ).'" style="line-height:12px;color:' . $text["color"] . ';margin-right:5px;">' . $text["text"] . '</td>';
+					$bottom.='<td ' . ($text["name"] ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . $text["class"] . ($text["bold"] ? " bold" : "" ) . '" style="line-height:12px;color:' . $text["color"] . ';margin-right:5px;">' . $text["text"] . '</td>';
 					break;
 				case 3:
-					$left.='<td ' . ($text["name"] ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . $text["class"] .($text["bold"] ? " bold" : "" ).'" style="line-height:12px;color:' . $text["color"] . ';margin-right:5px;">' . $text["text"] . '</td>';
+					$left.='<td ' . ($text["name"] ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . $text["class"] . ($text["bold"] ? " bold" : "" ) . '" style="line-height:12px;color:' . $text["color"] . ';margin-right:5px;">' . $text["text"] . '</td>';
 					break;
 			}
 		}

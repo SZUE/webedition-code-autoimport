@@ -122,7 +122,7 @@ function submitForm(target,action,method) {
 			echo we_html_element::jsElement('top.content.treeData.deleteEntry(' . $bid . ')') .
 			'</head>
 			<body class="weEditorBody" onunload="doUnload()">
-			<table width="300">
+			<table style="width:300px">
 			  <tr>
 				<td colspan="2" class="defaultfont">' . we_html_tools::htmlDialogLayout('<span class="defaultfont">' . g_l('modules_shop', '[geloscht]') . '</span>', g_l('modules_shop', '[loscht]')) . '</td>
 			  </tr>
@@ -217,7 +217,7 @@ function submitForm(target,action,method) {
 				echo we_html_element::jsElement('parent.parent.document.getElementById("iconbar").location.reload();') . '
 </head>
 <body class="weEditorBody" onunload="doUnload()">
-<table width="300">
+<table style="width:300px">
 	<tr>
 		<td colspan="2" class="defaultfont">' . we_html_tools::htmlDialogLayout("<span class='defaultfont'>" . g_l('modules_shop', '[orderDoesNotExist]') . '</span>', g_l('modules_shop', '[loscht]')) . '</td>
 	</tr>
@@ -258,20 +258,20 @@ function submitForm(target,action,method) {
 			// first show fields Forename and surname
 			if(isset($_customer['Forename'])){
 				$customerFieldTable .='
-		<tr height="25">
-			<td class="defaultfont" width="86" style="vertical-align:top" height="25">' . g_l('modules_customer', '[Forname]') . ':</td>
-			<td class="defaultfont" style="vertical-align:top" width="40" height="25"></td>
-			<td width="20" height="25"></td>
+		<tr style="height:25px">
+			<td class="defaultfont" style="width:86px;vertical-align:top;height:25px">' . g_l('modules_customer', '[Forname]') . ':</td>
+			<td class="defaultfont" style="vertical-align:top;width:40px;height:25px"></td>
+			<td style="width:20px;height:25px;"></td>
 			<td class="defaultfont" style="vertical-align:top" colspan="6" height="25">' . $_customer['Forename'] . '</td>
 		</tr>';
 			}
 			if(isset($_customer['Surname'])){
 				$customerFieldTable .='
-		<tr height="25">
-			<td class="defaultfont" width="86" style="vertical-align:top" height="25">' . g_l('modules_customer', '[Surname]') . ':</td>
-			<td class="defaultfont" style="vertical-align:top" width="40" height="25"></td>
-			<td width="20" height="25"></td>
-			<td class="defaultfont" style="vertical-align:top" colspan="6" height="25">' . $_customer['Surname'] . '</td>
+		<tr style="height:25px">
+			<td class="defaultfont" style="width:86px;vertical-align:top;height:25px;">' . g_l('modules_customer', '[Surname]') . ':</td>
+			<td class="defaultfont" style="vertical-align:top;width:40px;height:25px"></td>
+			<td style="width:20px;height:25px;"></td>
+			<td class="defaultfont" style="vertical-align:top;height:25px;" colspan="6">' . $_customer['Surname'] . '</td>
 		</tr>';
 			}
 
@@ -291,39 +291,39 @@ function submitForm(target,action,method) {
 					}
 					$customerFieldTable .='
 		<tr height="25">
-			<td class="defaultfont" width="86" style="vertical-align:top" height="25">' . $key . ':</td>
-			<td class="defaultfont" style="vertical-align:top" width="40" height="25"></td>
-			<td width="20" height="25"></td>
-			<td class="defaultfont" style="vertical-align:top" colspan="6" height="25">' . $value . '</td>
+			<td class="defaultfont" style="width:86px;vertical-align:top;height:25px;">' . $key . ':</td>
+			<td class="defaultfont" style="vertical-align:top;width:40px;height:25px;"></td>
+			<td style="width:20px;height:25px;"></td>
+			<td class="defaultfont" style="vertical-align:top;height:25px;" colspan="6">' . $value . '</td>
 		</tr>';
 				}
 			}
 
 			$orderDataTable = '
-		<table width="99%" class="default defaultfont">';
+		<table style="width:99%" class="default defaultfont">';
 			foreach(we_shop_statusMails::$StatusFields as $field){
 				if(!$weShopStatusMails->FieldsHidden[$field]){
 					$EMailhandler = $weShopStatusMails->getEMailHandlerCode(substr($field, 4), $_REQUEST[$field]);
 					$orderDataTable .= '
 			<tr height="25">
-				<td class="defaultfont" width="86" style="vertical-align:top" height="25">' . ($field === 'DateOrder' ? g_l('modules_shop', '[bestellnr]') : '') . '</td>
-				<td class="defaultfont" style="vertical-align:top" width="40" height="25"><b>' . ($field === 'DateOrder' ? $_REQUEST['bid'] : '') . '</b></td>
-				<td width="20" height="25"></td>
-				<td width="98" class="defaultfont" height="25">' . $weShopStatusMails->FieldsText[$field] . '</td>
-				<td height="25" width="14"></td>
-				<td width="14" class="defaultfont" style="text-align:right" height="25">
+				<td class="defaultfont" style="width:86px;vertical-align:top" height="25">' . ($field === 'DateOrder' ? g_l('modules_shop', '[bestellnr]') : '') . '</td>
+				<td class="defaultfont" style="vertical-align:top;width:40px;height:25px"><b>' . ($field === 'DateOrder' ? $_REQUEST['bid'] : '') . '</b></td>
+				<td style="width:20px;height:25px;"></td>
+				<td style="width:98px;height:25px;" class="defaultfont">' . $weShopStatusMails->FieldsText[$field] . '</td>
+				<td style="height:25px;width:14px"></td>
+				<td class="defaultfont" style="width:14px;text-align:right;height:25px;">
 					<div id="div_Calendar_' . $field . '">' . (($_REQUEST[$field] == $dateform) ? '-' : $_REQUEST[$field]) . '</div>
 					<input type="hidden" name="' . $field . '" id="hidden_Calendar_' . $field . '" value="' . (($_REQUEST[$field] == $dateform) ? '-' : $_REQUEST[$field]) . '" />
 				</td>
-				<td height="25" width="10"></td>
-				<td width="102" style="vertical-align:top" height="25">' . we_html_button::create_button(we_html_button::CALENDAR, "javascript:", null, null, null, null, null, null, false, 'button_Calendar_' . $field) . '</td>
-				<td width="300" height="25"  class="defaultfont">' . $EMailhandler . '</td>
+				<td style="height:25px;width:10px"></td>
+				<td style="width:102px;vertical-align:top;height:25px">' . we_html_button::create_button(we_html_button::CALENDAR, "javascript:", null, null, null, null, null, null, false, 'button_Calendar_' . $field) . '</td>
+				<td style="width:300px;height:25px"  class="defaultfont">' . $EMailhandler . '</td>
 			</tr>';
 				}
 			}
 			$orderDataTable .= '
 			<tr height="5">
-				<td class="defaultfont" width="86" style="vertical-align:top" height="5"></td>
+				<td class="defaultfont" style="width:86px;vertical-align:top;height:5px"></td>
 				<td class="defaultfont" style="vertical-align:top" height="5" width="40"></td>
 				<td height="5" width="20"></td>
 				<td width="98" class="defaultfont" style="vertical-align:top" height="5"></td>

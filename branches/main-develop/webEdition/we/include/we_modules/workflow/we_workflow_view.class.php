@@ -1106,7 +1106,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			) .
 			'</td><td></tr></table>';
 
-		$buttonsTable = '<table width="100%" class="default"><tr><td>' . $nextprev . '</td><td style="text-align:right">' . we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();") . '</td></tr></table>';
+		$buttonsTable = '<table style="width:100%" class="default"><tr><td>' . $nextprev . '</td><td style="text-align:right">' . we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();") . '</td></tr></table>';
 
 
 		return ($logs ?

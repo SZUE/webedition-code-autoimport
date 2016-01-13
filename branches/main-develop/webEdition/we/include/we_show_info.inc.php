@@ -27,7 +27,7 @@ echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET 
 ?>
 <body id="infoScreen" onblur="self.close()" onclick="self.close()" onload="self.focus();">
 	<?php
-	include (WE_INCLUDES_PATH . 'we_editors/we_info.inc.php');
+	echo include (WE_INCLUDES_PATH . 'we_editors/we_info.inc.php');
 	?>
 </body>
 </html>

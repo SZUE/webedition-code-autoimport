@@ -88,13 +88,13 @@ class we_doclist_search extends we_search_search{
 							$w = $this->searchContent($searchString, $table);
 							$where[] = 'AND' . ($w ? $w : '0');
 							break;
-						
+
 						case 'Title':
 							break;
 							/*
 							$w = $this->searchInTitle($searchString, $table);
 							$where[] = ($w ? $w : '0');
-							 * 
+							 *
 							 */
 						case "Status":
 						case "Speicherart":
@@ -135,7 +135,8 @@ class we_doclist_search extends we_search_search{
 					$where[] = 'AND (RestrictUsers IN (0,' . intval($_SESSION['user']['ID']) . ') OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Users))';
 					break;
 			}
-			$whereQuery = '1 ' . implode(' ', $where);t_e('where arr', $where);
+			$whereQuery = '1 ' . implode(' ', $where);
+			//t_e('where arr', $where);
 			//we_database_base::t_e_query(5);
 			$this->setwhere($whereQuery);
 			$this->insertInTempTable($whereQuery, $table, id_to_path($currentFolderID) . '/');

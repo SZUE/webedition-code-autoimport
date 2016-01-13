@@ -38,9 +38,8 @@ abstract class we_html_button{
 	const WE_FASTACK_BUTTON_IDENTIFY = 'fas';
 	//button with icon & text
 	const WE_FATEXT_BUTTON_IDENTIFY = 'fat';
-	const WE_FORM_BUTTON_IDENTIFY = 'form:';
-	const WE_SUBMIT_BUTTON_IDENTIFY = 'submit:';
-	const WE_JS_BUTTON_IDENTIFY = 'javascript:';
+	const WE_FORM = 'form';
+	const WE_JS_BUTTON_IDENTIFY = 'javascript';
 	const DELETE_ALL = 'fa:delete_all,fa-lg fa-database,fa-lg fa-trash-o';
 	const DELETE = 'fa:delete,fa-lg fa-trash-o';
 	const ADD = 'fa:add,fa-lg fa-plus';
@@ -154,10 +153,10 @@ abstract class we_html_button{
 		// Check if the button is a text button or an image button
 		$value = '';
 		if($on_click){
-			if($href){
-				t_e('onclick on button is not supported');
-			} else {
-				$href = self::WE_JS_BUTTON_IDENTIFY . $on_click;
+			$on_click = ltrim($on_click, ';') . ';';
+			if(!$href){
+				$href = self::WE_JS_BUTTON_IDENTIFY . ':' . $on_click;
+				$on_click = '';
 			}
 		}
 
@@ -213,73 +212,35 @@ abstract class we_html_button{
 				$text = g_l('button', '[' . $name . '][value]') . ($opensDialog ? '&hellip;' : '');
 				$value = ($name == 'next' ? $text . ' ' . $value : $value . $text);
 		}
+		$hrefData = explode(':', $href, 2);
 
-		// Check if the button will be used in a form or not
-		if(strpos($href, self::WE_FORM_BUTTON_IDENTIFY) !== false){ // Button will be used in a form
-			// Check if the button shall call the onSubmit event
-			if(strpos($href, self::WE_SUBMIT_BUTTON_IDENTIFY) !== false){ // Button must call the onSubmit event
-				$_form_name = substr($href, strlen(self::WE_SUBMIT_BUTTON_IDENTIFY));
-				// Render link
-				$cmd .= 'if (document.' . $_form_name . '.onsubmit()) { document.' . $_form_name . '.submit(); } return false;';
-			} else {
-				// Render link
-				$cmd .= 'document.' . substr($href, strlen(self::WE_FORM_BUTTON_IDENTIFY)) . '.submit();return false;';
-			}
-		} elseif(strpos($href, self::WE_JS_BUTTON_IDENTIFY) !== false){ // Buttons target will be a JavaScript
-			// Get content of JavaScript
-			$_javascript_content = substr($href, strlen(self::WE_JS_BUTTON_IDENTIFY));
-
-			// Render link
-			$cmd .= $_javascript_content;
-		} else {
-			//FIXME: is this really used???
-			if($target){
-				t_e('new window by button', $target, $href);
-			}
-			// Check if the link has to be opened in a different frame or in a new window
-			$cmd .= ($target ? // The link will be opened in a different frame or in a new window
-					// Check if the link has to be opend in a frame or a window
-					($target === '_blank' ? // The link will be opened in a new window
-						"new (WE().util.jsWindow)(window, '" . $href . "','" . $target . "', -1, -1, 500, 550, true, true, true);" :
-						// The link will be opened in a different frame
-						"target_frame = eval('parent.' + " . $target . ");" .
-						"target_frame.location.href='" . $href . "';") :
-					// The link will be opened in the current frame or window
-					"window.location.href='" . $href . "';");
+		switch($hrefData[0]){
+			case self::WE_FORM:
+				$_form_name = $hrefData[1];
+				$cmd = 'if (document.' . $_form_name . '.onsubmit===undefined||document.' . $_form_name . '.onsubmit()) {' . $on_click . ' document.' . $_form_name . '.submit(); } return false;';
+				break;
+			case self::WE_JS_BUTTON_IDENTIFY:
+				// Get content of JavaScript
+				$cmd = $on_click . $hrefData[1];
+				break;
+			default:
+				//FIXME: is this really used???
+				if($target){
+					t_e('new window by button', $target, $href);
+				}
+				// Check if the link has to be opened in a different frame or in a new window
+				$cmd = $on_click . ($target ? // The link will be opened in a different frame or in a new window
+						// Check if the link has to be opend in a frame or a window
+						($target === '_blank' ? // The link will be opened in a new window
+							"new (WE().util.jsWindow)(window, '" . $href . "','" . $target . "', -1, -1, 500, 550, true, true, true);" :
+							// The link will be opened in a different frame
+							"target_frame = eval('parent.' + " . $target . ");" .
+							"target_frame.location.href='" . $href . "';") :
+						// The link will be opened in the current frame or window
+						"window.location.href='" . $href . "';");
 		}
 
-		return self::getButton($value, ($uniqid ? 'we' . $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name) . $suffix, $cmd, $width, ($alt ? ($title ? : (($tmp = g_l('button', '[' . $name . '][alt]', true)) ? $tmp : '')) : ''), $disabled, '', '', '', '', '', true, (strpos($href, self::WE_FORM_BUTTON_IDENTIFY) !== false), $class);
-	}
-
-	/**
-	 * This function creates a table with a bunch of buttons.
-	 *
-	 * @param      $buttons                                array
-	 * @param      $gap                                    int                 (optional)
-	 * @param      $attribs                                array               (optional)
-	 *
-	 * @see        create_button()
-	 * @see        we_html_table::we_html_table()
-	 * @see        we_html_table::setCol()
-	 * @see        we_html_table::getHtml()
-	 *
-	 * @return     string
-	 */
-	static function create_button_table($buttons, $attribs = ''){
-		//FIXME: remove this
-		return ''; /*
-		  if(is_array($attribs)){
-		  $attr = '';
-		  foreach($attribs as $k => $v){
-		  $attr .= ' ' . $k . '="' . $v . '"';
-		  }
-		  } else {
-		  $attr = $attribs;
-		  }
-
-		  //FIMXE: change all calls to this function => remove
-		  return ($attribs ? '<span ' . $attr . '>' : '') . implode('', $buttons) . ($attribs ? '</span>' : '');
-		 */
+		return self::getButton($value, ($uniqid ? 'we' . $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name) . $suffix, $cmd, $width, ($alt ? ($title ? : (($tmp = g_l('button', '[' . $name . '][alt]', true)) ? $tmp : '')) : ''), $disabled, '', '', '', '', '', true, $hrefData[0] === self::WE_FORM, $class);
 	}
 
 	static function formatButtons($buttons){
@@ -312,7 +273,7 @@ abstract class we_html_button{
 		//	Create default attributes for table
 		$align = /* $align ? 'right' : */ 'right';
 		$attr = array(
-			'style' => 'border-style:none; padding:0 ' . ($align === 'right' ? $aligngap : 0) . ' 0 ' . ($align === 'left' ? $aligngap : 0) . ';border-spacing:0px;float:' . $align . ';'
+			'style' => 'padding:0 ' . ($align === 'right' ? $aligngap : 0) . ' 0 ' . ($align === 'left' ? $aligngap : 0) . ';border-spacing:0px;float:' . $align . ';'
 		);
 
 		if(is_array($attribs) && count($attribs) > 0){

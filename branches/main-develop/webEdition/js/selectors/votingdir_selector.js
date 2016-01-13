@@ -43,9 +43,9 @@ function writeBody(d) {
 					'<input type="hidden" name="id" value="' + top.currentDir + '" />' +
 					'<table class="selector">' +
 					(makeNewFolder ?
-									'<tr style="background-color:#DFE9F5;">' +
+									'<tr class="newEntry">' +
 									'<td class="selectoricon">' + WE().util.getTreeIcon('folder', false) + '</td>' +
-									'<td><input type="hidden" name="we_FolderText" value="' + g_l.newFolder + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + g_l.newFolder + '"  class="wetextinput" style="width:100%" /></td>' +
+									'<td><input type="hidden" name="we_FolderText" value="' + g_l.newFolder + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + g_l.newFolder + '"  class="wetextinput" /></td>' +
 									'</tr>' :
 									'');
 

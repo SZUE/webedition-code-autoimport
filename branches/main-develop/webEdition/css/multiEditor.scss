@@ -68,25 +68,31 @@ body{
 
 	span{
 		&.text{
-			margin:0px; padding:0px;
+			margin:0px;
+			padding:0px;
 			font-size: $smallfont;
-			vertical-align:top;
+			vertical-align:middle;
 		}
 		&.spacer{
-			font-size: $fafontMed;
-			height: 1em;
+			font-size: $fafontBig;
+			vertical-align:middle;
 		}
 		&.close{
 			color:#767B81;
-			padding: 0 .5ex;
+			padding: 0px .5ex;
 			&:hover i.fa-close{
 				color:black;
 			}
 		}
 		&.status{
-			vertical-align:middle;
-			padding: 0px 1ex;
+			padding: 0px .5ex;
 			display:inline-block;
+			span.fileicon{
+				height: 14px;
+			}
+		}
+		&.trailing{
+			font-size: $fafontMed;
 		}
 	}
 	i.modified{

@@ -52,12 +52,12 @@ class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
 		);
 
 		return $this->getJs() . $this->getCss() . $this->getHiddens() . '
-			<table id="table_form_upload" class="default" width="500">
+			<table id="table_form_upload" class="default" style="width:500px;">
 				<tr style="vertical-align:top;">
-					<td class="defaultfont" width="200px">' .
+					<td class="defaultfont" style="width:200px">' .
 			$divFileInfo . $divButtons . '
 					</td>
-					<td width="300px">' .
+					<td style="width:300px">' .
 			we_html_element::htmlDiv(array('id' => 'div_fileupload_right', 'style' => "position:relative;"), $this->getHtmlDropZone('preview', $thumbnailSmall) .
 				($this->contentType === we_base_ContentTypes::IMAGE ? '<br />' . $this->getFormImportMeta() : '')
 			) . '

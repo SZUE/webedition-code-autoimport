@@ -37,7 +37,7 @@ $table = isset($table) ? $table : FILE_TABLE;
 		</div>
 			<?php
 			$Tree = new weMainTree('webEdition.php', 'top', 'top', 'top.load');
-			echo $Tree->getHTMLContruct('if(top.treeResized){top.treeResized();}');
+			echo $Tree->getHTMLContruct();
 			?>
 		<div id="bm_searchField">
 			<div id="infoField" class="defaultfont"></div>

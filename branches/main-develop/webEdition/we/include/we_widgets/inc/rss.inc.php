@@ -51,13 +51,11 @@ $aLang = array(
 );
 
 $_iFrmRss = we_html_element::jsElement("
-	window.addEventListener('load',
-		function() {
-			WE().layout.cockpitFrame.executeAjaxRequest('" . base64_decode($_rssUri) . "', '" . $_rssCont . "', '" . $_rssNumItems . "', '" . $_rssTb . "', '" . $sTbPrefix . "', '" . 'm_' . $iCurrId . "');
-		},
-		true
-	);
-
-") . '<div class="rssDiv middlefont" id="m_' . $iCurrId . '_inline" style="width:100%;height:287px ! important; overflow: auto;"></div>';
+window.addEventListener('load',
+	function() {
+		WE().layout.cockpitFrame.executeAjaxRequest('" . base64_decode($_rssUri) . "', '" . $_rssCont . "', '" . $_rssNumItems . "', '" . $_rssTb . "', '" . $sTbPrefix . "', '" . 'm_' . $iCurrId . "');
+	},
+	true
+);") . '<div class="rssDiv middlefont" id="m_' . $iCurrId . '_inline" style="width:100%;height:287px ! important; overflow: auto;"></div>';
 
 $oTblDiv = $_iFrmRss;

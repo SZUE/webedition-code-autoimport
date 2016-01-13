@@ -124,7 +124,7 @@ $parts = array(
 		. '</td></tr></table>'
 		, 'space' => 95),
 	array('html' => g_l('validation', '[result]'), 'noline' => 1,),
-	array('html' => '<iframe name="validation" id="validation" src="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=checkDocument" width="680" height="400"></iframe>', 'space' => 5),
+	array('html' => '<iframe name="validation" id="validation" src="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=checkDocument" style="width:680px;height:400px;"></iframe>', 'space' => 5),
 );
 
 //  css for webSite

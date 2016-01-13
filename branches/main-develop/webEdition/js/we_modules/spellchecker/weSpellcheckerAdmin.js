@@ -44,7 +44,7 @@ function selectDict(dict) {
 	if (document.spellcheckerCmd.isReady) {
 		if (document.spellcheckerCmd.isReady()) {
 			document.spellcheckerCmd.setDict(dict);
-			setTimeout("setStatusDone(\"" + dict + "\")", 3000);
+			setTimeout(setStatusDone, 3000, dict);
 		}
 	}
 }

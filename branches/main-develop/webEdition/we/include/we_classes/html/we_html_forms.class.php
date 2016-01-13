@@ -48,9 +48,9 @@ abstract class we_html_forms{
 
 		// Create HTML tags
 		return '
-			<span class="default" style="white-space:nowrap;' . $style . '">
-						<input type="checkbox" name="' . $name . '" id="' . $_id . '" value="' . $value . '" style="vertical-align: top;outline: 0px;" ' . ($checked ? ' checked="checked"' : '') . ($onClick ? ' onclick="' . $onClick . '"' : '') . ($disabled ? ' disabled="disabled"' : "") . ' />
-					<div class="' . $class . '" style="display:inline-block;padding-left:4px;white-space:nowrap;"><label id="label_' . $_id . '" for="' . $_id . '" class="' . ($disabled ? 'disabled ' : '') . ($title ? ' showhelp' : '') . '"' . ($title ? ' title="' . $title . '"' : '') . '>' . $text . '</label>' . ($description ? "<br/><br/>" . we_html_tools::htmlAlertAttentionBox($description, $type, $width) : "") . ($html ? : "") . '</div>
+			<span class="default checkbox" style="' . $style . '">
+						<input type="checkbox" name="' . $name . '" id="' . $_id . '" value="' . $value . '" ' . ($checked ? ' checked="checked"' : '') . ($onClick ? ' onclick="' . $onClick . '"' : '') . ($disabled ? ' disabled="disabled"' : "") . ' />
+					<div class="elementText ' . $class . '"><label id="label_' . $_id . '" for="' . $_id . '" class="' . ($disabled ? 'disabled ' : '') . ($title ? ' showhelp' : '') . '"' . ($title ? ' title="' . $title . '"' : '') . '>' . $text . '</label>' . ($description ? '<div class="extra">' . we_html_tools::htmlAlertAttentionBox($description, $type, $width).'</div>' : "") . ($html ? : "") . '</div>
 				</span>';
 	}
 
@@ -88,13 +88,11 @@ abstract class we_html_forms{
 
 		// Create HTML tags
 		return '
-			<table class="default">
-				<tr>
-					<td class="weEditmodeStyle" style="' . ($description ? 'vertical-align:top;' : '') . 'padding-right:4px;"><input type="radio" name="' . $name . '" id="' . $_id . '" value="' . $value . '" style="cursor: pointer;outline: 0px;" ' . ($checked ? ' checked="checked"' : '') . ($onMouseUp ? ' onmouseup="' . $onMouseUp . '"' : '') . ($onClick ? ' onclick="' . $onClick . '"' : "") . ($disabled ? ' disabled="disabled"' : '') . ' /></td>
-					<td class="weEditmodeStyle ' . $class . '" style="white-space:nowrap;"><label id="label_' . $_id . '" for="' . $_id . '" style="' . ($disabled ? 'color: grey; ' : 'cursor: pointer;') . 'outline: 0px;" ' . ($onMouseUp ? ' onmouseup="' . str_replace('this.', "document.getElementById('" . $_id . "').", $onMouseUp) . '"' : '') . '>' . $text . '</label>' . ($description ? we_html_element::htmlBr() . we_html_element::htmlBr() . we_html_tools::htmlAlertAttentionBox($description, $type, $width) : "") .
-			($extra_content ? (we_html_element::htmlBr() . we_html_element::htmlBr() . $extra_content) : "") . '</td>
-				</tr>
-			</table>';
+<div class="radiobutton"><input type="radio" name="' . $name . '" id="' . $_id . '" value="' . $value . '" ' . ($checked ? ' checked="checked"' : '') . ($onMouseUp ? ' onmouseup="' . $onMouseUp . '"' : '') . ($onClick ? ' onclick="' . $onClick . '"' : "") . ($disabled ? ' disabled="disabled"' : '') . ' />
+<label id="label_' . $_id . '" for="' . $_id . '" class="elementText weEditmodeStyle ' . ($disabled ? 'disabled ' : '') . $class . '" ' . ($onMouseUp ? ' onmouseup="' . str_replace('this.', "document.getElementById('" . $_id . "').", $onMouseUp) . '"' : '') . '>' . $text . '</label>' .
+			($description ? '<div class="extra">' . we_html_tools::htmlAlertAttentionBox($description, $type, $width) . '</div>' : "") .
+			($extra_content ? '<div class="extra">' . $extra_content . '</div>' : "") . '
+</div>';
 	}
 
 	/**
@@ -235,7 +233,7 @@ abstract class we_html_forms{
 			$style[] = 'width:' . $width . (is_numeric($width) ? 'px' : '');
 		}
 		if($height){
-			$style[] = 'height:' . $height  . (is_numeric($height) ? 'px' : '');
+			$style[] = 'height:' . $height . (is_numeric($height) ? 'px' : '');
 		}
 
 		if($showAutobr || $showSpell){

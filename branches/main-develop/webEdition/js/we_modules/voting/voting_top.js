@@ -72,9 +72,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.vernr.value = 0;
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(function () {
-					we_cmd("new_voting");
-				}, 10);
+				setTimeout(we_cmd, 10, "new_voting");
 			}
 			break;
 		case "delete_voting":

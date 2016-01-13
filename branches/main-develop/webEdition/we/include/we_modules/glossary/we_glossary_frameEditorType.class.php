@@ -147,7 +147,7 @@ function jump(val) {
 			0 => array(
 				'headline' => '',
 				'html' => $content,
-				
+
 			),
 		);
 
@@ -312,13 +312,13 @@ function jump(val) {
 				"selectAll" => 0,
 				"do" => ""
 			)) . '
-		<table width="637" class="default" style="margin-bottom:12px;">
+		<table class="default" style="width:637px;margin-bottom:12px;">
 		<tr>
-			<td width="80"></td>
-			<td width="157"></td>
-			<td width="280"></td>
-			<td width="20"></td>
-			<td width="100"></td>
+			<td style="width:80px;"></td>
+			<td style="width:157px;"></td>
+			<td style="width:280px;"></td>
+			<td style="width:20px;"></td>
+			<td style="width:100px"></td>
 		</tr>
 		<tr>
 			<td class="defaultfont lowContrast">' . g_l('modules_glossary', '[search]') . '</td>

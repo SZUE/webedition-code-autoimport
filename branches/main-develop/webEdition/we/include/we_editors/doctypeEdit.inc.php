@@ -54,8 +54,7 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 				$we_responseText = sprintf(g_l('weClass', '[doctype_save_ok]'), $we_doc->DocType);
 				$we_response_type = we_message_reporting::WE_MESSAGE_NOTICE;
 				$we_show_response = 1;
-				$we_JavaScript = 'opener.top.makefocus = self;' .
-					we_main_headermenu::getMenuReloadCode();
+				$we_JavaScript = we_main_headermenu::getMenuReloadCode();
 			} else {
 				echo "ERROR";
 			}
@@ -185,8 +184,7 @@ switch($wecmd0){
 		<?php
 		break;
 	case "deleteDocTypeok":
-		echo 'opener.top.makefocus = self;' .
-		we_main_headermenu::getMenuReloadCode() .
+		echo we_main_headermenu::getMenuReloadCode() .
 		we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_NOTICE);
 }
 $GLOBALS['DB_WE']->query('SELECT CONCAT("\'",REPLACE(dt.DocType,"\'","\\\\\'"),"\'") FROM ' . DOC_TYPES_TABLE . ' dt ORDER BY dt.DocType');

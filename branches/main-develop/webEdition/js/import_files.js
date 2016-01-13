@@ -48,18 +48,14 @@ function checkButtons() {
 	try {
 		if (document.JUpload === undefined || (typeof (document.JUpload.isActive) !== "function") || document.JUpload.isActive() === false) {
 			checkFileinput();
-			window.setTimeout(function () {
-				checkButtons();
-			}, 1000);
+			window.setTimeout(checkButtons, 1000);
 			//recheck
 		} else {
 			setApplet();
 		}
 	} catch (e) {
 		checkFileinput();
-		window.setTimeout(function () {
-			checkButtons();
-		}, 1000);
+		window.setTimeout(checkButtons, 1000);
 	}
 }
 

@@ -128,15 +128,6 @@ class we_core_Local{
 				if(!isset($_SERVER['TMP'])){
 					$_SERVER['TMP'] = WEBEDITION_PATH . 'we/cache';
 				}
-				/* 				try{
-				  Zend_Session::setOptions(array('name' => SESSION_NAME));
-				  Zend_Session::start();
-				  } catch (Zend_Session_Exception $e){
-				  t_e('Zend_Session start failed', $e);
-				  }
-				  if(!isset($_SESSION)){
-				  t_e('Zend_Session start failed');
-				  } */
 			}
 
 			if(!empty($_SESSION['prefs']['Language'])){

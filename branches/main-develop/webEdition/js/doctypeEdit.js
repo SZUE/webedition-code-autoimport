@@ -42,9 +42,7 @@ function we_save_docType(doc, url) {
 	} else if (acStatusType.toLowerCase() === 'object') {
 		if (acStatus.running) {
 			countSaveLoop++;
-			setTimeout(function () {
-				we_save_docType(doc, url);
-			}, 100);
+			setTimeout(we_save_docType, 100, doc, url);
 		} else if (!acStatus.valid) {
 			top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 			countSaveLoop = 0;

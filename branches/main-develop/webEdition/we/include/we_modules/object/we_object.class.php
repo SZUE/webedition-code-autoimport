@@ -829,8 +829,8 @@ class we_object extends we_document{
 	function getFieldHTML($name, $identifier){
 		$type = $this->getElement($name . self::ELEMENT_TYPE, "dat") ? : we_objectFile::TYPE_INPUT;
 		$content = '<tr>
-			<td  width="100" class="weMultiIconBoxHeadline" style="vertical-align:top" >' . g_l('weClass', '[name]') . '</td>
-			<td  width="170" class="defaultfont" style="vertical-align:top">';
+			<td  class="weMultiIconBoxHeadline" style="width:100px;vertical-align:top" >' . g_l('weClass', '[name]') . '</td>
+			<td  class="defaultfont" style="width:170px;vertical-align:top">';
 
 		switch($type){
 			case we_objectFile::TYPE_OBJECT:
@@ -869,8 +869,8 @@ class we_object extends we_document{
 			$this->htmlTextArea("we_" . $this->Name . "_input[" . $name . "editdescription]", 3, 40, $this->getElement($name . "editdescription"), array('onchange' => '_EditorFrame.setEditorIsHot(true)', 'style' => 'width: 388px;')) .
 			'</td></tr>' .
 //type
-			'<tr><td  width="100" class="weMultiIconBoxHeadlineThin"  style="vertical-align:top">' . g_l('modules_object', '[type]') . '</td>
-		<td width="170" class="defaultfont"  style="vertical-align:top">';
+			'<tr><td class="weMultiIconBoxHeadlineThin"  style="width:100px;vertical-align:top">' . g_l('modules_object', '[type]') . '</td>
+		<td class="defaultfont"  style="width:170px;vertical-align:top">';
 
 		$val = array(
 			we_objectFile::TYPE_INPUT => g_l('modules_object', '[input_field]'),
@@ -933,23 +933,23 @@ class we_object extends we_document{
 					'BIGINT_U' => '[0 .. 18446744073709551615] (big)',
 				);
 				$sel = $this->getElement($name . "typeLen", "dat");
-				$content .= '<tr style="vertical-align:top"><td  width="100" class="weMultiIconBoxHeadlineThin"></td>' .
-					'<td width="170" class="defaultfont">' .
+				$content .= '<tr style="vertical-align:top"><td style="width:100px;" class="weMultiIconBoxHeadlineThin"></td>' .
+					'<td style="width:170px;" class="defaultfont">' .
 					we_class::htmlSelect('we_' . $this->Name . '_input[' . $name . 'typeLen]', $values, 1, $sel ? $sel : 'INT', false, array('onchange' => "_EditorFrame.setEditorIsHot(true);", 'width' => '388px')) .
 					'</td></tr>';
 //nobreak;
 			default:
 // Length
 				$maxLengthVal = $type == we_objectFile::TYPE_INT ? 9 : 255;
-				$content .= '<tr style="vertical-align:top"><td  width="100" class="weMultiIconBoxHeadlineThin" style="vertical-align:top">' . g_l('modules_object', '[length]') . '</td>' .
-					'<td width="170" class="defaultfont">' .
+				$content .= '<tr style="vertical-align:top"><td class="weMultiIconBoxHeadlineThin" style="width:100px;vertical-align:top">' . g_l('modules_object', '[length]') . '</td>' .
+					'<td style="width:170px;" class="defaultfont">' .
 					we_html_tools::htmlTextInput('we_' . $this->Name . "_input[" . $name . self::ELEMENT_LENGHT . ']', 10, ($this->getElement($name . "length", "dat") > 0 && ($this->getElement($name . "length", "dat") < ($maxLengthVal + 1)) ? $this->getElement($name . "length", "dat") : $maxLengthVal), ($type == we_objectFile::TYPE_INT ? 2 : 4), 'onchange="_EditorFrame.setEditorIsHot(true);" weType="weObject_' . $type . '_length"', "text", 388) .
 					'</td></tr>';
 		}
 
 		switch($type){
 			case we_objectFile::TYPE_MULTIOBJECT:
-				$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin" style="vertical-align:top" >' . g_l('contentTypes', '[object]') . '</td><td  width="170" class="defaultfont" style="vertical-align:top">';
+				$content .= '<tr><td class="weMultiIconBoxHeadlineThin" style="width:100px;vertical-align:top" >' . g_l('contentTypes', '[object]') . '</td><td class="defaultfont" style="width:170px;vertical-align:top">';
 				$vals = array();
 				$all = $this->DB_WE->table_names(OBJECT_X_TABLE . "%");
 				$count = 0;
@@ -970,7 +970,7 @@ class we_object extends we_document{
 				$content .= $this->htmlSelect("we_" . $this->Name . '_' . we_objectFile::TYPE_MULTIOBJECT . '[' . $name . "class]", $vals, 1, $this->getElement($name . 'class', "dat"), "", array('onchange' => 'if(this.form.elements[\'we_' . $this->Name . '_input[' . $name . 'default]' . '\']){this.form.elements[\'we_' . $this->Name . '_input[' . $name . 'default]' . '\'].value=\'\' };_EditorFrame.setEditorIsHot(true);we_cmd(\'object_change_multiobject_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . $identifier . '\',\'' . $name . '\')'), "value", 388) .
 					'</td></tr>
 <tr style="vertical-align:top">
-	<td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[max_objects]') . '</td>
+	<td style="width:100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[max_objects]') . '</td>
 	<td class="defaultfont"><nobr>' . we_html_tools::htmlTextInput("we_" . $this->Name . '_' . we_objectFile::TYPE_MULTIOBJECT . '[' . $name . "max]", 5, $this->getElement($name . "max", "dat"), 3, 'onchange="_EditorFrame.setEditorIsHot(true);we_cmd(\'object_reload_entry_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . ($identifier) . '\');"', "text", 50) . ' (' . g_l('modules_object', '[no_maximum]') . ')</nobr></td>
 </tr>
 <tr style="vertical-align:top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td><td width="170" class="defaultfont"><table>';

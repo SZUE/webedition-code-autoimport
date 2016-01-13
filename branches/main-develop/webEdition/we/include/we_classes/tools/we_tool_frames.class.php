@@ -36,7 +36,7 @@ abstract class we_tool_frames extends we_modules_frame{
 
 	public function __construct($frameset){
 		parent::__construct($frameset);
-		$this->treeFooterHeight = 40;
+		$this->showTreeFooter =true;
 		$this->treeWidth = 200;
 	}
 

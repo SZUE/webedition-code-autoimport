@@ -163,9 +163,7 @@ doOnImportSuccess = function(importedDocument){
 			opener.top.unselectAllFiles();
 			opener.top.addEntry(importedDocument.id, "noch nichts", false, "importedDocument.path");
 			opener.top.doClick(importedDocument, 0);
-			setTimeout(function () {
-					opener.top.selectFile(importedDocument);
-				}, 200);
+			setTimeout(opener.top.selectFile, 200,importedDocument);
 			reloadMainTree();
 			setTimeout(self.close, 250);
 			break;

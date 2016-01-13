@@ -412,7 +412,7 @@ function setTab(tab) {
 		foreach($content as $i => $c){
 			$_forceRightHeadline = (!empty($c['forceRightHeadline']));
 			$icon = (!empty($c['icon']) ?
-					'<img src="' . ICON_DIR . $c["icon"] . '" width="64" height="64" alt="" style="margin-left:20px;" />' :
+					'<img src="' . ICON_DIR . $c["icon"] . '" alt="" style="width:64px;height:64px;margin-left:20px;" />' :
 					"");
 			$headline = (!empty($c['headline'])) ? ('<div  class="weMultiIconBoxHeadline" style="margin-bottom:10px;margin-left:30px;">' . $c["headline"] . '</div>') : "";
 			$mainContent = (!empty($c['html'])) ? $c['html'] : '';

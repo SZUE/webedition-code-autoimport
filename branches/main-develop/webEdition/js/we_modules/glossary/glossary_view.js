@@ -64,9 +64,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.tabnr.value = 1;
 				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(function () {
-					we_cmd.apply(this, args);
-				}, 10);
+				setTimeout(we_cmd.apply, 10, args);
 			}
 			break;
 		case "delete_glossary":
