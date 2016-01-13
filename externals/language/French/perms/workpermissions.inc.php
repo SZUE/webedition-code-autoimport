@@ -24,6 +24,7 @@ $l_perms_workpermissions=array(
 	'EDIT_DOCEXTENSION'=>'L`utilisateur a le droit de modifier l`extension de fichier d`un document',
 	'EDIT_DOCTYPE'=>'L`utilisateur a le droit de modifier des Type-de-Document',
 	'EDIT_KATEGORIE'=>'L`utilisateur a le droit de 	administrer des Catégories',
+	'EDIT_METADATAFIELD'=>'The user is allowed to edit metadata fields',
 	'FORMMAIL'=>'L`utilisateur a le droit de modifier les destinataire-Formmail',
 	'MOVE_COLLECTION'=>'The user is allowed to move collections.',
 	'MOVE_DOCUMENT'=>'L`utilisateur a le droit de déplacer des documents',

@@ -31,6 +31,7 @@ $l_metadata=array(
 	'none'=>'geen',
 	'properties'=>'Eigenschappen',
 	'proposals'=>'Proposals',
+	'proposals_hint'=>'For information about the newly introduced proposal lists, see <a target="_blank" href="http://documentation.webedition.org/wiki/webedition/we7/metadata">webEdition Doku-Wiki</a>.',
 	'save'=>'Bezig met bewaren van meta gegevens velden, een ogenblik geduld ...',
 	'save_wait'=>'Instellingen bewaren',
 	'saved'=>'De meta gegevens velden zijn succesvol bewaard.',

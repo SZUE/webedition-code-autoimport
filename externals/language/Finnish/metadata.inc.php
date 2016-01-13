@@ -31,6 +31,7 @@ $l_metadata=array(
 	'none'=>'ei mitään',
 	'properties'=>'Ominaisuudet',
 	'proposals'=>'Proposals',
+	'proposals_hint'=>'For information about the newly introduced proposal lists, see <a target="_blank" href="http://documentation.webedition.org/wiki/webedition/we7/metadata">webEdition Doku-Wiki</a>.',
 	'save'=>'Metatietoja tallennetaan, odota pieni hetki...',
 	'save_wait'=>'Tallennetaan asetuksia',
 	'saved'=>'Metatietokentät tallennettu.',

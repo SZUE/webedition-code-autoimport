@@ -31,6 +31,7 @@ $l_metadata=array(
 	'none'=>'rien',
 	'properties'=>'Properties',
 	'proposals'=>'Proposals',
+	'proposals_hint'=>'For information about the newly introduced proposal lists, see <a target="_blank" href="http://documentation.webedition.org/wiki/webedition/we7/metadata">webEdition Doku-Wiki</a>.',
 	'save'=>'Saving meta data fields, one moment ...',
 	'save_wait'=>'Saving settings',
 	'saved'=>'Meta data fields have been saved successfully.',
