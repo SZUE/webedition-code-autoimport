@@ -121,7 +121,7 @@ function create_dialog($name, $title, $content, $expand = -1, $show_text = '', $
  */
 function save_all_values(){
 	//SAVE METADATA FIELDS TO DB
-	if(permissionhandler::hasPerm('ADMINISTRATOR')){
+	if(permissionhandler::hasPerm('ADMINISTRATOR') || permissionhandler::hasPerm('EDIT_METADATAFIELD')){
 		$GLOBALS['DB_WE']->query('TRUNCATE TABLE ' . METADATA_TABLE);
 		$GLOBALS['DB_WE']->query('TRUNCATE TABLE ' . METAVALUES_TABLE);
 
@@ -333,10 +333,11 @@ var phpdata={
 					we_html_element::jsScript(JS_DIR . 'edit_metadatafields.js');
 
 			$_hint = we_html_tools::htmlAlertAttentionBox(g_l('metadata', '[fields_hint]'), we_html_tools::TYPE_ALERT, 440, false, 50);
-
+			$_hint2 = we_html_tools::htmlAlertAttentionBox(g_l('metadata', '[proposals_hint]'), we_html_tools::TYPE_INFO, 440, false);
+			
 			//$_metadata = new we_html_table(array('style' => 'border:1px solid black', 'width' => 440, 'height' => 50), 4, 3);
 
-			$_content = $_hint . '<div style="height:20px"></div>' . $_metadataTable . we_html_button::create_button(we_html_button::PLUS, 'javascript:addRow()');
+			$_content = $_hint . '<div>&nbsp;</div>' . $_hint2 . '<div style="height:20px"></div>' . $_metadataTable . we_html_button::create_button(we_html_button::PLUS, 'javascript:addRow()');
 
 			$_contentFinal = array(
 				array('headline' => '', 'html' => $_content,)
