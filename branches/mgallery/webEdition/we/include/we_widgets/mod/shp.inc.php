@@ -254,23 +254,7 @@ if($bTarget){
 	$shopDashboard .= we_html_element::jsScript(LIB_DIR . 'additional/canvas/excanvas.js') .
 		we_html_element::jsScript(LIB_DIR . 'additional/gauge/gauge.min.js') .
 		we_html_element::jsElement("
-// Helper to execute a function after the window is loaded
-// see http://www.google.com/search?q=addLoadEvent
-function addLoadEvent(func) {
-	var oldonload = window.onload;
-	if (typeof window.onload != 'function') {
-		window.onload = func;
-	} else {
-		window.onload = function() {
-			if (oldonload) {
-				oldonload();
-			}
-			func();
-		}
-	}
-}
-
-addLoadEvent( function() {
+window.addEventListener('load',function() {
 	// Draw the gauge using custom settings
 	var options = {
 		value: " . we_base_util::formatNumber(($total - $canceled)) . ",

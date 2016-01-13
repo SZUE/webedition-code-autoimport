@@ -24,14 +24,10 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 var textareaFocus = false;
-if (document.addEventListener) {
-	document.addEventListener("keyup",doKeyDown,true);
-}else{
-	document.onkeydown = doKeyDown;
-}
+document.addEventListener("keyup", doKeyDown, true);
 
 function doKeyDown(e) {
-	var key = (e.charCode === undefined ?event.keyCode:e.charCode);
+	var key = (e.charCode === undefined ? event.keyCode : e.charCode);
 	switch (key) {
 		case 27:
 			top.close();
@@ -40,7 +36,7 @@ function doKeyDown(e) {
 }
 
 function weDoOk() {
-	top.opener.tinyMCECallRegisterDialog({},"unregisterDialog");
+	top.opener.tinyMCECallRegisterDialog({}, "unregisterDialog");
 	WefullscreenDialog.writeback();
 	top.close();
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -29,6 +30,7 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
+
 	/**
 	 * title tag
 	 *
@@ -267,10 +269,8 @@ EOS;
 						unset($this->_CSSFiles[$i]);
 					}
 				}
-				foreach(we_main_headermenu::getCssForCssMenu() as $link){
-					$this->addCSSFile($link);
-				}
-				$this->addJSFile(we_main_headermenu::getJsForCssMenu());
+				$this->addCSSFile(WEBEDITION_DIR . 'css/menu/pro_drop_1.css');
+				$this->addJSFile(JS_DIR . 'menu/clickMenu.js');
 				$this->addCSSFile(LIB_DIR . 'we/ui/themes/default/we_ui_controls_MessageConsole/style.css');
 			}
 			$js = <<<EOS
@@ -280,15 +280,15 @@ var weEventController = new we_core_EventController();
 EOS;
 		}
 		$html = // add doctype tag if not empty
-			($this->getDoctype() !== '' ? $this->getDoctype() . "\n" : '') .
-			// add <html> tag
-			'<html' . ($this->getLang() !== '' ? ' lang="' . $this->getLang() . '"' : '') . '>' .
-			// add <header> tag
-			'<head>' .
-			// add meta tag for charset if not empty
-			($this->getCharset() !== '' ? we_html_tools::htmlMetaCtCharset($this->getCharset()) . "\n" : '') .
-			// add title tag if not empty
-			($this->getTitle() !== '' ? '<title>' . $this->getTitle() . '</title>' . "\n" : '');
+				($this->getDoctype() !== '' ? $this->getDoctype() . "\n" : '') .
+				// add <html> tag
+				'<html' . ($this->getLang() !== '' ? ' lang="' . $this->getLang() . '"' : '') . '>' .
+				// add <header> tag
+				'<head>' .
+				// add meta tag for charset if not empty
+				($this->getCharset() !== '' ? we_html_tools::htmlMetaCtCharset($this->getCharset()) . "\n" : '') .
+				// add title tag if not empty
+				($this->getTitle() !== '' ? '<title>' . $this->getTitle() . '</title>' . "\n" : '');
 
 		$html.=STYLESHEET;
 		// add link tags for external CSS files
@@ -305,18 +305,18 @@ EOS;
 			$html .= "\t</style>\n";
 		}
 		$html.=STYLESHEET .
-			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') . YAHOO_FILES;
+				we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') . YAHOO_FILES;
 		// add javascript tags for external JavaScript files
 		foreach($this->_JSFiles as $file){
 			$html .= we_html_element::jsScript($file);
 		}
 
 		$html .= we_html_element::jsElement($js . implode('', $this->_inlineJS)) .
-			// add head end tag
-			'</head>';
+				// add head end tag
+				'</head>';
 		return ($this->_framesetHTML !== '' ?
-				$html . $this->_framesetHTML . '</html>' :
-				$html . getHtmlTag('body', $this->_bodyAttributes, $this->getBodyHTML()) . '</html>');
+						$html . $this->_framesetHTML . '</html>' :
+						$html . getHtmlTag('body', $this->_bodyAttributes, $this->getBodyHTML()) . '</html>');
 	}
 
 	/**

@@ -970,13 +970,24 @@ optgroup{
 		text-align: center;
 	}
 	#logout{
-		position:absolute;
-		right:0px;
-		float:none;
 		@if($useOldStyle){
 		}@else{
 			border-left: 2px solid #2F5889;
 		}
+	}
+	#weHeaderRight{
+		position:absolute;
+		top:0px;
+		bottom:0px;
+		right:0px;
+		border:0px;
+	}
+	#navigationHistory{
+		position:relative;
+		bottom:0px;
+		border:0px;
+		padding-left: 10px;
+		float:left;
 	}
 	#msgheadertable{
 		position:relative;
@@ -1037,29 +1048,13 @@ table.error{
 		}
 	}
 }
-#weHeaderLogo{
+/*#weHeaderLogo{
 	width:78px;
 	height:25px;
 	padding-left: 10px;
 	padding-right: 5px;
 	padding-top:3px;
-}
-
-#weMsgHeaderLogo{
-	position:absolute;
-	top:0px;
-	bottom:0px;
-	right:60px;
-	border:0px;
-}
-
-#navigationHistory{
-	position:relative;
-	bottom:0px;
-	border:0px;
-	padding-left: 10px;
-	float:left;
-}
+}*/
 
 .navigation{
 	float:left;

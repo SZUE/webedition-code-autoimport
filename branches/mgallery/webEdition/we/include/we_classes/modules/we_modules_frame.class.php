@@ -120,9 +120,9 @@ abstract class we_modules_frame{
 		$jmenu = new we_base_menu($menu, 'top.opener.top.load', '');
 		$menu = $jmenu->getCode(false);
 
-		return
+		return we_html_element::jsElement(we_main_headermenu::createMessageConsole('moduleFrame', true)) .
 				we_html_element::htmlDiv(array('class' => 'menuDiv'), $menu) .
-				we_html_element::htmlDiv(array('id' => 'moduleMessageConsole'), we_main_headermenu::createMessageConsole('moduleFrame'));
+				we_html_element::htmlDiv(array('id' => 'moduleMessageConsole'), we_main_headermenu::createMessageConsole('moduleFrame', false));
 	}
 
 	private function getHTMLResize($extraUrlParams = ''){
