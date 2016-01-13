@@ -167,7 +167,7 @@ TabView.prototype = {
 	 */
 	setLoading: function (frameId, loading) {
 		if (loading) {
-			this.myDoc.getElementById('load_' + frameId).innerHTML = '<i class="fa fa-2x fa-spinner fa-pulse"></i>';
+			this.myDoc.getElementById('load_' + frameId).innerHTML = '<span class="fa-stack fa-lg fileicon"><i class="fa fa-2x fa-spinner fa-pulse"></i></span>';
 		} else {
 			var _text = this.myDoc.getElementById('text_' + frameId).innerHTML;
 			var _ext = _text ? _text.replace(/^.*\./, ".") : "";
