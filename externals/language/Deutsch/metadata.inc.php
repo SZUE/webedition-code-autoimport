@@ -31,7 +31,7 @@ $l_metadata=array(
 	'none'=>'keine',
 	'properties'=>'Eigenschaften',
 	'proposals'=>'Vorschlagsliste',
-	'proposals_hint'=>'Erklärungen zu den Vorschlagslisten finden Sie im webEdition Doku-Wiki <a target="_blank" href="http://documentation.webedition.org/wiki/webedition/we7/metadata">webEdition Doku-Wiki</a>.',
+	'proposals_hint'=>'Erklärungen zu den neu eingeführten Vorschlagslisten finden Sie im <a target="_blank" href="http://documentation.webedition.org/wiki/webedition/we7/metadata">webEdition Doku-Wiki</a>.',
 	'save'=>'Einstellungen werden gespeichert, einen Moment ...',
 	'save_wait'=>'Speichere Einstellungen',
 	'saved'=>'Die Einstellungen wurden erfolgreich gespeichert.',
