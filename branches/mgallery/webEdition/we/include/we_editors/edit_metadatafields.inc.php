@@ -330,7 +330,7 @@ var phpdata={
 	delPropositionBtn:"' . str_replace("\n", "\\n", addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:delProposition(this)'))) . '"
 
 };') .
-					we_html_element::jsScript(JS_DIR . 'edit_metadatafields.js');
+			we_html_element::jsScript(JS_DIR . 'edit_metadatafields.js');
 
 			$_hint = we_html_tools::htmlAlertAttentionBox(g_l('metadata', '[fields_hint]'), we_html_tools::TYPE_ALERT, 440, false, 50);
 			$_hint2 = we_html_tools::htmlAlertAttentionBox(g_l('metadata', '[proposals_hint]'), we_html_tools::TYPE_INFO, 440, false);
