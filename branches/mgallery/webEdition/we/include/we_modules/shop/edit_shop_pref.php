@@ -141,7 +141,7 @@ $_htmlTable->setColContent($_row++, 2, we_html_tools::htmlTextInput('waehr', 6, 
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), g_l('modules_shop', '[mwst]'));
 $_htmlTable->setCol($_row++, 2, array('class' => 'defaultfont', 'style' => 'padding-bottom:5px;'), we_html_tools::htmlTextInput('mwst', 6, $feldnamen[1]) . '&nbsp;%');
-$_htmlTable->setCol($_row++, 0, array('colspan' => 3, 'class' => 'small'), we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[mwst_expl]'), we_html_tools::TYPE_INFO, "100%", false, 100));
+$_htmlTable->setCol($_row++, 0, array('colspan' => 3, 'class' => 'small'), we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[mwst_expl]'), we_html_tools::TYPE_INFO, "400", false, 45));
 
 $list = array('german' => 'german', 'english' => 'english', 'french' => 'french', 'swiss' => 'swiss');
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[format]'));

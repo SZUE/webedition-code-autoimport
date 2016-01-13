@@ -844,6 +844,7 @@ optgroup{
 .weDialogHeadline {
 	color: black;
 	font-family: $weFontBold;
+	padding-bottom:10px;
 }
 
 .weMultiIconBoxHeadline,
@@ -923,11 +924,12 @@ optgroup{
 }
 
 .weDialogButtonsBody {
-	margin: 0;
+	margin: 0px;
 	border-top: 2px groove white;
 	/*padding left for rebuild*/
 	padding:5px 10px 10px 0px;
 	background: linear-gradient(#B4B3B3, #C6C5C5);
+	overflow:hidden;
 }
 
 .weSidebarBody {
@@ -1854,5 +1856,48 @@ div.sysinfoMsg{
 		position:absolute;
 		right:0px;
 		color:green;
+	}
+}
+
+div.radiobutton{
+	position:relative;
+	padding-left:25px;
+	input[type=radio]{
+		position: absolute;
+		left:0px;
+		cursor: pointer;
+	}
+	label.elementText{
+		white-space:nowrap;
+		display:block;
+	}
+
+}
+
+span.checkbox{
+	white-space:nowrap;
+	input{
+		outline: 0px;
+	}
+	div.elementText{
+		display:inline-block;
+		padding-left:4px;
+		white-space:nowrap;
+	}
+}
+
+span.checkbox,
+div.radiobutton{
+	div.extra{
+		margin-top:1ex;
+	}
+}
+
+div.htmlMessageBox{
+	background-color:#F7F5F5;
+	border: 2px solid #D7D7D7;
+	padding:20px;
+	div.buttons{
+		margin-top:20px;
 	}
 }

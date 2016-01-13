@@ -239,7 +239,7 @@ var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action=
 	}
 
 	function _getButtons(){
-		$bodyAttribs = array("class" => "weDialogButtonsBody", 'style' => 'overflow:hidden;');
+		$bodyAttribs = array("class" => "weDialogButtonsBody");
 		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:cancel()", true, 0, 0, '', '', false, false);
 		$closeButton = we_html_button::create_button(we_html_button::CLOSE, "javascript:cancel()");
 

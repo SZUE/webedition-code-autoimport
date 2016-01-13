@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -40,7 +39,7 @@ class we_html_select extends we_html_baseCollection{
 	 *
 	 * @return		we_html_select
 	 */
-	function __construct($attribs = array(), $opt_num = 0){
+	function __construct(array $attribs = array(), $opt_num = 0){
 		parent::__construct('select', true, $attribs);
 		for($i = 0; $i < $opt_num; $i++){
 			$this->addOption();
@@ -73,7 +72,7 @@ class we_html_select extends we_html_baseCollection{
 	 *
 	 * @return		void
 	 */
-	function addOption($value, $text, $attribs = array()){
+	function addOption($value, $text, array $attribs = array()){
 		$attribs["value"] = $value;
 		$this->childs[] = new we_html_baseElement("option", true, $attribs, $text);
 	}
@@ -87,7 +86,7 @@ class we_html_select extends we_html_baseCollection{
 	 *
 	 * @return		void
 	 */
-	function addOptions($entries = array()){
+	function addOptions(array $entries = array()){
 		foreach($entries as $value => $text){
 			$this->childs[] = new we_html_baseElement("option", true, array("value" => $value), $text);
 		}
@@ -162,7 +161,7 @@ class we_html_select extends we_html_baseCollection{
 	 *
 	 * @return		void
 	 */
-	function setOption($optid, $attribs = array(), $content = null){
+	function setOption($optid, array $attribs = array(), $content = null){
 		$opt = & $this->getChild($optid);
 		$opt->setAttributes($attribs);
 		if($content != null){
@@ -184,7 +183,7 @@ class we_html_select extends we_html_baseCollection{
 		foreach($this->childs as $k => $v){
 			//fix #7912
 			$equal = (is_bool($v->attribs["value"]) || is_bool($value)) ? $v->attribs["value"] == $value :
-					(string) $v->attribs["value"] == (string) $value;
+				(string) $v->attribs["value"] == (string) $value;
 
 			if($equal){
 				$this->setOption($k, array("selected" => 'selected'));
@@ -230,7 +229,7 @@ class we_html_select extends we_html_baseCollection{
 	 *
 	 * @return  void
 	 */
-	function addOptionGroup($attribs = array()){
+	function addOptionGroup(array $attribs = array()){
 		$this->childs[] = new we_html_baseCollection("optgroup", true, $attribs);
 	}
 
@@ -253,7 +252,7 @@ class we_html_select extends we_html_baseCollection{
 	 *
 	 * @return  we_html_baseElement
 	 */
-	function getNewOptionGroup($attribs = array()){
+	function getNewOptionGroup(array $attribs = array()){
 		return new we_html_baseCollection("optgroup", true, $attribs);
 	}
 

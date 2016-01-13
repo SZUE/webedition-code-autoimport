@@ -122,13 +122,12 @@ function weDelMultiboxRow(nr){
 function weAppendMultiboxRow(content,headline,icon,space,insertRuleBefore,insertDivAfter){
 	var lastNum = weGetLastMultiboxNr();
 	var i = (lastNum + 1);
-	icon = icon  ? (\'<img src="' . ICON_DIR . '\' + icon + \'" width="64" height="64" alt="" style="margin-left:20px;" />\') : "";
-	headline = headline ? (\'<div  id="headline_' . $uniqname . '_\'+ i + \'" class="weMultiIconBoxHeadline" style="margin-bottom:10px;">\' + headline + \'</div>\') : "";
+	headline = headline ? (\'<div  id="headline_' . $uniqname . '_\'+ i + \'" class="weMultiIconBoxHeadline">\' + headline + \'</div>\') : "";
 
 	var mainContent = content ? content : "";
 	var leftWidth = space ? space : 0;
-	var leftContent = icon ? icon : (leftWidth ? headline : "");
-	var rightContent = \'<div style="float:left;">\' + (((icon && headline) || (leftContent == "")) ? (headline + \'<div>\' + mainContent + \'</div>\') : mainContent)  + \'</div>\';
+	var leftContent = (leftWidth ? headline : "");
+	var rightContent = \'<div style="float:left;">\' + (( (leftContent == "")) ? (headline + \'<div>\' + mainContent + \'</div>\') : mainContent)  + \'</div>\';
 
 	var mainDiv = document.createElement("DIV");
 	mainDiv.style.cssText = \'margin-left:' . $marginLeft . 'px\';
@@ -141,9 +140,7 @@ function weAppendMultiboxRow(content,headline,icon,space,insertRuleBefore,insert
 		}
 		innerHTML += \'<div style="float:left;width:\' + leftWidth + \'px">\' + leftContent + \'</div>\';
 	}
-	innerHTML += rightContent;
-	innerHTML += \'<br style="clear:both;">\';
-	mainDiv.innerHTML = innerHTML;
+	mainDiv.innerHTML = rightContent+\'<br style="clear:both;">\';
 
 	var mainTD = document.getElementById("td_' . $uniqname . '");
 	mainTD.appendChild(mainDiv);
@@ -166,7 +163,7 @@ function weAppendMultiboxRow(content,headline,icon,space,insertRuleBefore,insert
 
 	private static function _getBoxStartHeadline($name, $headline, $uniqname, $marginLeft = 0, $overflow = 'auto'){
 		return '<div class="default multiIcon defaultfont" style="overflow:' . $overflow . '" id="' . $name . '">
-	<div style="padding-left:' . $marginLeft . 'px;padding-bottom:10px;" class="weDialogHeadline">' . $headline . '</div>
+	<div style="padding-left:' . $marginLeft . 'px;" class="weDialogHeadline">' . $headline . '</div>
 	<div id="td_' . $uniqname . '">';
 	}
 

@@ -35,7 +35,7 @@ we_html_element::cssLink(CSS_DIR . 'messageConsole.css') .
 ?>
 </head>
 
-<body onload="messageConsoleWindow.init();" onunload="messageConsoleWindow.remove();" class="weDialogBody">
+<body onload="(new messageConsoleWindow(window)).init();" onunload="messageConsoleWindow.remove();" class="weDialogBody">
 	<div id="headlineDiv">
 		<div class="weDialogHeadline">
 			<?php echo g_l('messageConsole', '[headline]') ?>
@@ -45,9 +45,7 @@ we_html_element::cssLink(CSS_DIR . 'messageConsole.css') .
 		<ul id="jsMessageUl" class="fa-ul"></ul>
 	</div>
 	<div class="dialogButtonDiv">
-		<div style="padding: 10px 10px 0px 0px;">
 			<?php echo $_buttons; ?>
-		</div>
 	</div>
 </body>
 </html>

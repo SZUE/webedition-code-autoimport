@@ -152,9 +152,9 @@ this.selectedIndex = 0;' .
 	}
 
 	static function htmlMessageBox($w, $h, $content, $headline = '', $buttons = ''){
-		return '<div style="width:' . $w . 'px;height:' . $h . 'px;background-color:#F7F5F5;border: 2px solid #D7D7D7;padding:20px;">' .
+		return '<div class="htmlMessageBox" style="width:' . $w . 'px;height:' . $h . 'px;">' .
 				($headline ? '<h1 class="header">' . $headline . '</h1>' : '') .
-				'<div>' . $content . '</div><div style="margin-top:20px;">' . $buttons . '</div></div>';
+				'<div>' . $content . '</div><div class="buttons">' . $buttons . '</div></div>';
 	}
 
 	static function htmlDialogLayout($content, $headline, $buttons = '', $width = "100%", $marginLeft = 30, $height = "", $overflow = "auto"){
@@ -762,7 +762,7 @@ this.selectedIndex = 0;' .
 			$unique = md5(uniqid(__FUNCTION__, true)); // #6590, changed from: uniqid(microtime())
 		}
 
-		return '<div class="alertAttentionBox' . ($icon ? ' alertIcon' : '').($cut ? ' alertCut' : '') . '" style="' . ($width ? ' width:' . $width . (is_numeric($width) ? 'px' : '') . ';' : '') . '">' .
+		return '<div class="alertAttentionBox' . ($icon ? ' alertIcon' : '').($clip ? ' alertCut' : '') . '" style="' . ($width ? ' width:' . $width . (is_numeric($width) ? 'px' : '') . ';' : '') . '">' .
 				($icon ? '<div class="icon">' . $icon . '</div>' : '') .
 				'<div class="middlefont ' . ($clip > 0 ? 'cutText" id="td_' . $unique . '" style="max-width:' . $clip . 'ex;"' : '"') . '>' . $text . '</div>' .
 				($clip > 0 ? '<button type="button" class="weBtn clipbutton" id="btn_' . $unique . '" onclick="WE().util.clip(document,\'' . $unique . '\')"><i class="fa fa-lg fa-caret-right"></i></button>' : '') .

@@ -243,37 +243,6 @@ abstract class we_html_button{
 		return self::getButton($value, ($uniqid ? 'we' . $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name) . $suffix, $cmd, $width, ($alt ? ($title ? : (($tmp = g_l('button', '[' . $name . '][alt]', true)) ? $tmp : '')) : ''), $disabled, '', '', '', '', '', true, $hrefData[0] === self::WE_FORM, $class);
 	}
 
-	/**
-	 * This function creates a table with a bunch of buttons.
-	 *
-	 * @param      $buttons                                array
-	 * @param      $gap                                    int                 (optional)
-	 * @param      $attribs                                array               (optional)
-	 *
-	 * @see        create_button()
-	 * @see        we_html_table::we_html_table()
-	 * @see        we_html_table::setCol()
-	 * @see        we_html_table::getHtml()
-	 *
-	 * @return     string
-	 */
-	static function create_button_table($buttons, $attribs = ''){
-		//FIXME: remove this
-		return ''; /*
-		  if(is_array($attribs)){
-		  $attr = '';
-		  foreach($attribs as $k => $v){
-		  $attr .= ' ' . $k . '="' . $v . '"';
-		  }
-		  } else {
-		  $attr = $attribs;
-		  }
-
-		  //FIMXE: change all calls to this function => remove
-		  return ($attribs ? '<span ' . $attr . '>' : '') . implode('', $buttons) . ($attribs ? '</span>' : '');
-		 */
-	}
-
 	static function formatButtons($buttons){
 		return '<div style="float:right">' . $buttons . '</div>';
 	}
@@ -304,7 +273,7 @@ abstract class we_html_button{
 		//	Create default attributes for table
 		$align = /* $align ? 'right' : */ 'right';
 		$attr = array(
-			'style' => 'border-style:none; padding:0 ' . ($align === 'right' ? $aligngap : 0) . ' 0 ' . ($align === 'left' ? $aligngap : 0) . ';border-spacing:0px;float:' . $align . ';'
+			'style' => 'padding:0 ' . ($align === 'right' ? $aligngap : 0) . ' 0 ' . ($align === 'left' ? $aligngap : 0) . ';border-spacing:0px;float:' . $align . ';'
 		);
 
 		if(is_array($attribs) && count($attribs) > 0){

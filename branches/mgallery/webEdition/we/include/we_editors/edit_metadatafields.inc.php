@@ -168,7 +168,7 @@ function build_dialog($selected_setting = 'ui'){
 			return create_dialog('', g_l('metadata', '[saved_successfully]'), $_content);
 		// THUMBNAILS
 		case 'dialog':
-			$_headline = we_html_element::htmlDiv(array('class' => 'weDialogHeadline', 'style' => 'padding:10px 25px 5px 25px;'), g_l('metadata', '[headline]'));
+			$_headline = we_html_element::htmlDiv(array('class' => 'weDialogHeadline'), g_l('metadata', '[headline]'));
 
 			$_defined_fields = we_metadata_metaData::getDefinedMetaDataFields(we_metadata_metaData::ALL_BUT_STANDARD_FIELDS);
 			$_defined_values = we_metadata_metaData::getDefinedMetaValues();

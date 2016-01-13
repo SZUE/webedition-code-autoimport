@@ -744,6 +744,7 @@ we/include/we_classes/java_menu
 we/include/we_classes/http/HttpResponse.class.php
 we/include/we_classes/http/HttpRequest.class.php
 we/include/we_classes/html/we_multibox.inc.php
+we/include/we_classes/html/we_html_frameset.class.php
 we/include/we_classes/html/we_htmlTable.inc.php
 we/include/we_classes/html/we_htmlSelect.inc.php
 we/include/we_classes/html/we_htmlFrameset.inc.php
@@ -842,7 +843,6 @@ we/include/treeInfo.inc.php
 we/include/notInstalledModules.inc.php
 we/include/messageModuleNotActivated.inc.php
 we/include/jsMessageConsole/messageConsole.php
-we/include/jsMessageConsole/messageConsole.inc.php
 we/include/java_menu/we_menu_seem.inc.php
 we/include/java_menu/we_menu_navigation.inc.php
 we/include/java_menu/we_menu.inc.php

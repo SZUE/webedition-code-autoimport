@@ -142,9 +142,7 @@ function getTextColumn(text, colspan) {
 	td.setAttribute('title', text);
 	if (colspan > 1) {
 		td.setAttribute("colspan", colspan);
-		td.setAttribute("align", "center");
-		td.setAttribute("valign", "middle");
-		td.setAttribute("height", "220");
+		td.setAttribute('style', 'text-align:center;vertical-align:middle;height:220px;');
 	}
 	if (text !== WE().consts.g_l.glossary.all_words_identified && text !== WE().consts.g_l.glossary.no_java) {
 		text = shortenWord(text, 20);
