@@ -43,7 +43,7 @@ function() {
 <div id="messageConsole">
 <table><tr>
 	<td style="vertical-align:middle"><div class="small messageConsoleMessage" id="messageConsoleMessage' . $consoleName . '">--</div></td>
-	<td><div onclick="_console_' . $consoleName . '.openMessageConsole();" class="navigation" id="messageConsoleImageDiv"><i id="messageConsoleImage' . $consoleName . '" class="fa fa-lg fa-info"></i></div></td>
+	<td><div onclick="_console_' . $consoleName . '.openMessageConsole();" class="navigation" id="messageConsoleImageDiv"><i id="messageConsoleImage' . $consoleName . '" class="fa fa-lg fa-bell"></i></div></td>
 	</tr></table>
 </div>';
 	}

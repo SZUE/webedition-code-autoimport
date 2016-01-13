@@ -191,7 +191,7 @@ TabView.prototype = {
 	},
 	setFrameSize: function () {
 		tabsHeight = (this.myDoc.getElementById('tabContainer').clientHeight ? (this.myDoc.getElementById('tabContainer').clientHeight) : (this.myDoc.body.clientHeight));
-		tabsHeight = tabsHeight < 24 ? 24 : tabsHeight;
+		tabsHeight = Math.max(tabsHeight, 21);
 		this.myDoc.getElementById('multiEditorDocumentTabsFrameDiv').style.height = tabsHeight + "px";
 		this.myDoc.getElementById('multiEditorEditorFramesetsDiv').style.top = tabsHeight + "px";
 	},
