@@ -144,7 +144,7 @@ $l_modules_shop=array(
 		'9'=>'September',
 	),
 	'mwst'=>'Sales tax',
-	'mwst_expl'=>'Since version 3.5 it is possible to use several vat rates, which are saved directly with the article whithin the order. The value stored here is used only for older orders. Changes on this value affect all orders made without default vat rate or directly on article stored vat rate.',
+	'mwst_expl'=>'It is possible to use several vat rates, which are saved directly with the article whithin the order. The value stored here is used only for older orders. Changes on this value affect all orders made without default vat rate or directly on article stored vat rate.',
 	'new_entry'=>'New entry',
 	'noRecordAlert'=>'No record has been found for this <strong>Class-ID</strong>.<br/> Please switch to Preferences for modifying or reentry !',
 	'noRecord'=>'No record found!',

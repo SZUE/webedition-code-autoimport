@@ -144,7 +144,7 @@ $l_modules_shop=array(
 		'9'=>'September',
 	),
 	'mwst'=>'MwSt.',
-	'mwst_expl'=>'Seit Version 3.5 haben sie die Möglichkeit mehrere Steuersätze zu verwenden, die mit dem Artikel innerhalb der Bestellung gespeichert werden. Der hier eingesetzte Wert gilt dann nur noch für alle ehemaligen Bestellungen. Änderungen die sie hier machen, wirken sich auf alle Bestellungen aus, die ohne Standard-Mehrwertsteuersatz, bzw. direkt beim Artikel eingestellten Mehrwertsteuersatz durchgeführt werden.',
+	'mwst_expl'=>'Sie haben die Möglichkeit mehrere Steuersätze zu verwenden, die mit dem Artikel innerhalb der Bestellung gespeichert werden. Der hier eingesetzte Wert gilt dann nur noch für alle ehemaligen Bestellungen. Änderungen die sie hier machen, wirken sich auf alle Bestellungen aus, die ohne Standard-Mehrwertsteuersatz, bzw. direkt beim Artikel eingestellten Mehrwertsteuersatz durchgeführt werden.',
 	'new_entry'=>'Neuer Eintrag',
 	'noRecordAlert'=>'In der Datenbank konnte zu der von Ihnen eingegebenen <strong>Klassen-ID</strong> kein Datensatz ermittelt werden.<br/>Bitte wechseln Sie zu den Shop Einstellungen und korrigieren Sie Ihre Eingabe!',
 	'noRecord'=>'Kein Eintrag gefunden!',
