@@ -768,7 +768,7 @@ this.selectedIndex = 0;' .
 		return '<div class="alertAttentionBox' . ($icon ? ' alertIcon' : '') . ($clip ? ' alertCut' : '') . '" style="' . ($width ? ' width:' . $width . (is_numeric($width) ? 'px' : '') . ';' : '') . '">' .
 				($icon ? '<div class="icon">' . $icon . '</div>' : '') .
 				'<div class="middlefont ' . ($clip > 0 ? 'cutText" id="td_' . $unique . '" style="max-width:' . $clip . 'ex;"' : '"') . '>' . $text . '</div>' .
-				($clip > 0 ? '<button type="button" class="weBtn clipbutton" id="btn_' . $unique . '" onclick="WE().util.clip(document,\'' . $unique . '\')"><i class="fa fa-lg fa-caret-right"></i></button>' : '') .
+				($clip > 0 ? '<button type="button" class="weBtn clipbutton" id="btn_' . $unique . '" onclick="WE().util.clip(document,\'' . $unique . '\',' . $clip . ')"><i class="fa fa-lg fa-caret-right"></i></button>' : '') .
 				'</div>';
 	}
 

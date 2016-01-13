@@ -72,16 +72,18 @@ WE().util.showMessage = function (message, prio, win) {
 	}
 };
 
-WE().util.clip = function (doc, unique) {
+WE().util.clip = function (doc, unique, width) {
 	var text = doc.getElementById("td_" + unique);
 	var btn = doc.getElementById("btn_" + unique).firstChild;
 
 	if (text.classList.contains("cutText")) {
 		text.classList.remove("cutText");
+		text.style.maxWidth = "";
 		btn.classList.remove("fa-caret-right");
 		btn.classList.add("fa-caret-down");
 	} else {
 		text.classList.add("cutText");
+		text.style.maxWidth = width + "ex";
 		btn.classList.remove("fa-caret-down");
 		btn.classList.add("fa-caret-right");
 	}
