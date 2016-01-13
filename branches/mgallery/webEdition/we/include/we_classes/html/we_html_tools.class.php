@@ -29,6 +29,7 @@ abstract class we_html_tools{
 	const TYPE_ALERT = 1;
 	const TYPE_INFO = 2;
 	const TYPE_QUESTION = 3;
+	const TYPE_HELP = 4;
 
 	/** we_html_tools::protect()
 	  protects a page. Guests can not see this page */
@@ -733,7 +734,7 @@ this.selectedIndex = 0;' .
 	 */
 
 	static function htmlAlertAttentionBox($text, $type = self::TYPE_NONE, $width = 0, $useHtmlSpecialChars = true, $clip = 0){
-		if($width === false){
+		if($width === false || $type === self::TYPE_HELP){
 			$class = 'infobox';
 			$title = '<span>' . $text . '</span>';
 		} else {
@@ -741,14 +742,16 @@ this.selectedIndex = 0;' .
 		}
 		switch($type){
 			case self::TYPE_ALERT:
-				$icon = '<span class="fa-stack fa-lg ' . $class . '" style="font-size: 14px;color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i>' . $title . '</span>';
+				$icon = '<span class="fa-stack fa-lg alertIcon ' . $class . '"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i>' . $title . '</span>';
 				break;
 			case self::TYPE_INFO:
-				$icon = '<span class="fa-stack fa-lg ' . $class . '" style="font-size: 14px;color:#007de3;"><i class="fa fa-circle fa-stack-2x" ></i><i class="fa fa-info fa-stack-1x fa-inverse"></i>' . $title . '</span>';
+				$icon = '<span class="fa-stack fa-lg alertIcon ' . $class . '" style="color:#007de3;"><i class="fa fa-circle fa-stack-2x" ></i><i class="fa fa-info fa-stack-1x fa-inverse"></i>' . $title . '</span>';
 				break;
 			case self::TYPE_QUESTION:
-				$icon = '<span class="fa-stack fa-lg ' . $class . '" style="font-size: 14px;color:#F2F200;"><i class="fa fa-circle fa-stack-2x" ></i><i style="color:black" class="fa fa-question fa-stack-1x"></i>' . $title . '</span>';
+				$icon = '<span class="fa-stack fa-lg alertIcon ' . $class . '"><i class="fa fa-circle fa-stack-2x" ></i><i style="color:black" class="fa fa-question fa-stack-1x"></i>' . $title . '</span>';
 				break;
+			case self::TYPE_HELP:
+				return '<span class="fa-stack alertIcon ' . $class . '" style="color:inherit;"><i class="fa fa-question-circle" ></i>' . $title . '</span>';
 			default :
 				$icon = '';
 		}
@@ -762,7 +765,7 @@ this.selectedIndex = 0;' .
 			$unique = md5(uniqid(__FUNCTION__, true)); // #6590, changed from: uniqid(microtime())
 		}
 
-		return '<div class="alertAttentionBox' . ($icon ? ' alertIcon' : '').($clip ? ' alertCut' : '') . '" style="' . ($width ? ' width:' . $width . (is_numeric($width) ? 'px' : '') . ';' : '') . '">' .
+		return '<div class="alertAttentionBox' . ($icon ? ' alertIcon' : '') . ($clip ? ' alertCut' : '') . '" style="' . ($width ? ' width:' . $width . (is_numeric($width) ? 'px' : '') . ';' : '') . '">' .
 				($icon ? '<div class="icon">' . $icon . '</div>' : '') .
 				'<div class="middlefont ' . ($clip > 0 ? 'cutText" id="td_' . $unique . '" style="max-width:' . $clip . 'ex;"' : '"') . '>' . $text . '</div>' .
 				($clip > 0 ? '<button type="button" class="weBtn clipbutton" id="btn_' . $unique . '" onclick="WE().util.clip(document,\'' . $unique . '\')"><i class="fa fa-lg fa-caret-right"></i></button>' : '') .
