@@ -647,7 +647,7 @@ function build_dialog($selected_setting = 'ui'){
 				$_languages->selectOption(get_value('Language'));
 				// Lang notice
 				$langNote = '<div id="langnote" style="padding: 5px; background-color: rgb(221, 221, 221); width: 190px; display:none">
-<table width="100%">
+<table style="width:100%">
 <tbody>
 <tr>
 <td style="padding-right: 10px;vertical-align:top">

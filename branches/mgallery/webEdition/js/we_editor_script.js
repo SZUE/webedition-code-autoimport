@@ -199,12 +199,12 @@ function pathOfDocumentChanged() {
 		if ((_elem = document.we_form["we_" + docName + "_ParentPath"])) {
 			_filepath = _elem.value;
 		}
-		if (_filepath != "/") {
+		if (_filepath !== "/") {
 			_filepath += "/";
 		}
 
 		_filepath += _filetext;
-		parent.frames.editHeader.we_setPath(_filepath, _filetext, -1, "");
+		WE().layout.we_setPath(_filepath, _filetext, -1, "");
 		if (hasCustomerFilter) {
 			updateCustomerFilterIfNeeded();
 		}
@@ -435,7 +435,7 @@ function metaFieldSelectProposal(sel, inputName, isCsv){
 			case '__del__':
 				newVal = '';
 				break;
-			case '__empty__': 
+			case '__empty__':
 				break;
 			default:
 				var valSelCsv = ', ' + valInput + ',';
@@ -447,7 +447,7 @@ function metaFieldSelectProposal(sel, inputName, isCsv){
 			case '__del__':
 				newVal = '';
 				break;
-			case '__empty__': 
+			case '__empty__':
 				break;
 			default:
 				newVal = sel.options[sel.selectedIndex].value;

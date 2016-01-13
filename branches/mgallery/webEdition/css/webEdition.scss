@@ -502,6 +502,11 @@ td.boxHeader{
 #headrow{
 	margin:3px 0px 3px 5px;
 	white-space: nowrap;
+	a{
+		#h_path{
+			color:#006699;
+		}
+	}
 }
 
 #cmdDiv{

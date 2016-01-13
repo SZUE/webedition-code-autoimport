@@ -26,39 +26,6 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-function we_setPath(path, text, id, classname) {
-	var _EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
-	// update document-tab
-	_EditorFrame.initEditorFrameData({
-		EditorDocumentText: text,
-		EditorDocumentPath: path
-	});
-
-	if (classname) {
-		WE().layout.multiTabs.setTextClass(_EditorFrame.FrameId, classname);
-	}
-
-	path = path.replace(/</g, '&lt;');
-	path = path.replace(/>/g, '&gt;');
-	path = '<strong style="color:#006699">' + path + '</strong>';
-	var div;
-	if (document.getElementById) {
-		div = document.getElementById('h_path');
-		div.innerHTML = path;
-		if (id > 0) {
-			div = document.getElementById('h_id');
-			div.innerHTML = id;
-		}
-	} else if (document.all) {
-		div = document.all.h_path;
-		div.innerHTML = path;
-		if (id > 0) {
-			div = document.all.h_id;
-			div.innerHTML = id;
-		}
-	}
-}
-
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	//var url = WE().util.getWe_cmdArgsUrl(args);

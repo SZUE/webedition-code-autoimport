@@ -43,7 +43,7 @@ $tooldir = ($tool === 'weSearch' ? WE_INCLUDES_DIR . 'we_tools/' : WE_APPS_DIR);
 <body class="home" onload="loaded = true;
 		var we_is_home = 1;">
 	<div id="tabelle"><?php echo $_starttable->getHtml(); ?></div>
-	<div id="modimage"><img src="<?php echo $tooldir . $tool . '/layout/home.gif'; ?>" width="335" height="329" /></div>
+	<div id="modimage"><img src="<?php echo $tooldir . $tool . '/layout/home.gif'; ?>" style="width:335px;height:329px" /></div>
 
 	<?php echo $GLOBALS["we_body_insert"]; ?>
 </body>

@@ -37,7 +37,7 @@ class we_shop_functions{
 
 		$GLOBALS['DB_WE']->query('SELECT IntOrderID, ' . implode(',', we_shop_statusMails::$StatusFields) . ', ' . implode(',', $format) . ' FROM ' . SHOP_TABLE . ' WHERE IntCustomerID=' . intval($customerId) . ' GROUP BY IntOrderId ORDER BY IntID DESC');
 
-		$orderStr = '<table class="defaultfont" width="1200">';
+		$orderStr = '<table class="defaultfont" style="width:1200px">';
 		if($GLOBALS['DB_WE']->num_rows()){
 			$orderStr .='<tr>
 			<td></td><td><b>' . g_l('modules_shop', '[orderList][order]') . '</b></td>';

@@ -227,9 +227,9 @@ function build_dialog($selected_setting = 'ui'){
 				if(empty($value['isStandard'])){
 					$row0 = '<td class="defaultfont" style="width:210px;"><strong>' . g_l('metadata', '[customfield]') . '</strong></td>
 <td class="defaultfont" style="width:110px;" colspan="2"><strong>' . g_l('metadata', '[type]') . '</strong></td>';
-					$row1 = '<td width="210" style="padding-right:5px;">' . we_html_tools::htmlTextInput('metadataTag[' . $key . ']', 24, $value['tag'], 255, "", "text", 205) . '</td>
-<td width="200">' . we_html_tools::htmlSelect('metadataType[' . $key . ']', $_metadata_types, 1, $value['type'], false, array('class' => "defaultfont", "onchange" => "toggleType(this, " . $key . ")")) . '</td>
-<td style="text-align:right" width="30">' . we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(" . $_i . ")") . '</td>';
+					$row1 = '<td style="width:210px;padding-right:5px;">' . we_html_tools::htmlTextInput('metadataTag[' . $key . ']', 24, $value['tag'], 255, "", "text", 205) . '</td>
+<td style="width:200px;">' . we_html_tools::htmlSelect('metadataType[' . $key . ']', $_metadata_types, 1, $value['type'], false, array('class' => "defaultfont", "onchange" => "toggleType(this, " . $key . ")")) . '</td>
+<td style="text-align:right;width:30px;">' . we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(" . $_i . ")") . '</td>';
 					$row2 = '<td style="padding-bottom:6px;padding-right:5px;">
 	<div class="small">' . oldHtmlspecialchars(g_l('metadata', '[import_from]')) . '</div>' . we_html_tools::htmlTextInput('metadataImportFrom[' . $key . ']', 24, $value['importFrom'], 255, "", "text", 205) . '
 </td>
@@ -240,9 +240,9 @@ function build_dialog($selected_setting = 'ui'){
 				} else {
 					$row0 = '<td class="defaultfont" style="width:210px;"><strong>' . g_l('metadata', '[standardfield]') . '</strong></td>
 <td class="defaultfont" style="width:110px;" colspan="2"><strong>' . g_l('metadata', '[type]') . '</strong></td>';
-					$row1 = '<td width="210" style="padding-right:5px;">' . we_html_tools::htmlTextInput('tag[' . $key . ']', 24, $value['tagname'], 255, "", "text", 205, 0, '', true) . '</td>
-<td width="200">' . we_html_tools::htmlSelect('type[' . $key . ']', $_metadata_types, 1, $value['type'], false, array('class' => "defaultfont", "disabled" => "disabled")) . '</td>
-<td style="text-align:right" width="30">' . we_html_element::htmlHiddens(array('metadataTag[' . $key . ']' => $value['tag'], 'metadataType[' . $key . ']' => $value['type'])) . we_html_button::create_button(we_html_button::TRASH, '', true, 0, 0, '', '', true) . '</td>';
+					$row1 = '<td style="width:210px;padding-right:5px;">' . we_html_tools::htmlTextInput('tag[' . $key . ']', 24, $value['tagname'], 255, "", "text", 205, 0, '', true) . '</td>
+<td style="width:200px;">' . we_html_tools::htmlSelect('type[' . $key . ']', $_metadata_types, 1, $value['type'], false, array('class' => "defaultfont", "disabled" => "disabled")) . '</td>
+<td style="text-align:right;width:30px;">' . we_html_element::htmlHiddens(array('metadataTag[' . $key . ']' => $value['tag'], 'metadataType[' . $key . ']' => $value['type'])) . we_html_button::create_button(we_html_button::TRASH, '', true, 0, 0, '', '', true) . '</td>';
 					$row2 = '<td colspan="3" style="padding-bottom:6px;">' . we_html_element::htmlHidden('metadataImportFrom[' . $key . ']', '') . '</td>';
 				}
 
@@ -275,22 +275,22 @@ function build_dialog($selected_setting = 'ui'){
 					$i = 0;
 					foreach($_defined_values[$value['tag']] as $proposal){
 						$_adv_row .= '<tr>
-									<td width="15%"></td>
+									<td style="width:15%"></td>
 									<td style="text-align:left">' . we_html_tools::htmlTextInput('metadataProposal[' . $key . '][' . $i++ . ']', 24, $proposal, 255, ($value['mode'] === 'auto' ? 'disabled="1"' : ''), "text", 310) . '</td>
-									<td width="25">' . we_html_button::create_button(we_html_button::TRASH, "javascript:delProposition(this)") . '</td>
+									<td style="width:25px;">' . we_html_button::create_button(we_html_button::TRASH, "javascript:delProposition(this)") . '</td>
 								</tr>';
 					}
 				} else {
 					$_adv_row .= '<tr>
-								<td width="15%"></td>
+								<td style="width:15%"></td>
 								<td style="text-align:left">' . we_html_tools::htmlTextInput('metadataProposal[' . $key . '][0]', 24, '', 255, ($value['mode'] === 'auto' ? 'disabled="1"' : ''), "text", 310) . '</td>
-								<td width="25">' . we_html_button::create_button(we_html_button::TRASH, "javascript:delProposition(this)") . '</td>
+								<td style="width:25px;">' . we_html_button::create_button(we_html_button::TRASH, "javascript:delProposition(this)") . '</td>
 							</tr>';
 				}
 				$_adv_row .= '<tr>
-							<td style="text-align:right" width="15%"></td>
+							<td style="text-align:right;width:15%"></td>
 							<td style="text-align:left">' . we_html_button::create_button(we_html_button::PLUS, 'javascript:addProposition(this, ' . $key . ')') . '</td>
-							<td width="25"></td>
+							<td style="width:25px;"></td>
 						</tr>
 					</table>
 				</td>
@@ -302,7 +302,7 @@ function build_dialog($selected_setting = 'ui'){
 			}
 
 			$_metadataTable = '
-<table class="default" width="440">
+<table class="default" style="width:440px;">
 	<tbody id="metadataTable">' .
 					$_adv_row . '
 	</tbody>
@@ -334,7 +334,7 @@ var phpdata={
 
 			$_hint = we_html_tools::htmlAlertAttentionBox(g_l('metadata', '[fields_hint]'), we_html_tools::TYPE_ALERT, 440, false, 50);
 			$_hint2 = we_html_tools::htmlAlertAttentionBox(g_l('metadata', '[proposals_hint]'), we_html_tools::TYPE_INFO, 440, false);
-			
+
 			//$_metadata = new we_html_table(array('style' => 'border:1px solid black', 'width' => 440, 'height' => 50), 4, 3);
 
 			$_content = $_hint . '<div>&nbsp;</div>' . $_hint2 . '<div style="height:20px"></div>' . $_metadataTable . we_html_button::create_button(we_html_button::PLUS, 'javascript:addRow()');

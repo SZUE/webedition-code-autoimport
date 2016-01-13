@@ -310,9 +310,9 @@ abstract class we_base_variants{
 				$downbut = ($i == ($count - 1) ? we_html_button::create_button(we_html_button::DIRDOWN, "", true, 21, 22, "", "", true) : we_html_button::create_button(we_html_button::DIRDOWN, "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('shop_move_variant_down','" . ($i) . "');"));
 				$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('shop_remove_variant','" . ($i) . "');", true, 30);
 
-				$content = '<table class="defaultfont lowContrast" width="700">
+				$content = '<table class="defaultfont lowContrast" style="width:700px">
 <tr>
-		<td width="200"><span class="defaultfont"><b>Name</b></span></td>
+		<td style="width:200px"><span class="defaultfont"><b>Name</b></span></td>
 </tr>
 <tr>
 		<td>' . $model->getFieldHTML(we_base_constants::WE_VARIANTS_PREFIX . $i, 'input', array(), true, true) . '</td>
@@ -377,9 +377,9 @@ abstract class we_base_variants{
 				$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('shop_remove_variant','" . ($i) . "');", true, 30);
 				$previewBut = we_html_button::create_button(we_html_button::VIEW, "javascript:we_cmd('shop_preview_variant','" . $GLOBALS['we_transaction'] . "','" . ($model->getElement(we_base_constants::WE_VARIANTS_PREFIX . $i)) . "');", true, 30);
 
-				$content = '<table class="defaultfont lowContrast" width="700">
+				$content = '<table class="defaultfont lowContrast" style="width:700px;">
 <tr>
-	<td width="200" class="defaultfont"><b>Name</b></td>
+	<td style="width:200px" class="defaultfont bold">Name</td>
 </tr>
 <tr>
 	<td>' . $model->formTextInput('input', we_base_constants::WE_VARIANTS_PREFIX . $i, '') . '</td>

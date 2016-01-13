@@ -1063,7 +1063,7 @@ self.close();');
 				$DB_WE->query('SELECT ID,TableID,ContentType,Path,Text,ModDate,Published FROM ' . OBJECT_FILES_TABLE . ' WHERE ' . OBJECT_FILES_TABLE . '.WebUserID = ' . $this->customer->ID . ' ORDER BY ' . OBJECT_FILES_TABLE . '.Path');
 				$objectStr = '';
 				if($DB_WE->num_rows()){
-					$objectStr.='<table class="defaultfont" width="600">' .
+					$objectStr.='<table class="defaultfont" style="width:600px;">' .
 						'<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer', '[ID]') . '</b></td><td><b>' . g_l('modules_object', '[class]') . '</b></td><td><b>' . g_l('modules_customer', '[filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td>';
 					while($DB_WE->next_record()){
 						$objectStr.='<tr>
@@ -1096,7 +1096,7 @@ self.close();');
 					' WHERE f.WebUserID=' . intval($this->customer->ID) . ' ORDER BY f.Path');
 
 				if($DB_WE->num_rows()){
-					$documentStr = '<table class="defaultfont" width="600">' .
+					$documentStr = '<table class="defaultfont" style="width:600px;">' .
 						'<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer', '[ID]') . '</b></td><td><b>' . g_l('modules_customer', '[filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td><td><b>' . g_l('modules_customer', '[Titel]') . '</b></td>' .
 						'</tr>';
 					while($DB_WE->next_record()){

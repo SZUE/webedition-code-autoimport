@@ -60,7 +60,7 @@ if($this->Data['allEntries']){ // entries exist
 			"log_cmd" => "dummy",
 			"start" => $start
 		)) . '
-<table class="defaultfont" width="100%">
+<table class="defaultfont" style="width:100%">
 <tr>
 	<td>' . g_l('liveUpdate', '[updatelog][entriesTotal]') . ': ' . $this->Data['amountEntries'] . '</td>
 	<td class="alignRight">' . g_l('liveUpdate', '[updatelog][page]') . ' ' . (($start / $this->Data['amountPerPage']) + 1) . '/ ' . ((ceil($this->Data['amountEntries'] / $this->Data['amountPerPage'])) ? ceil($this->Data['amountEntries'] / $this->Data['amountPerPage']) : 1) . '</td>
@@ -75,7 +75,7 @@ if($this->Data['allEntries']){ // entries exist
 
 	if(($this->Data['logEntries'])){ // entries match filter
 		$content .= '
-<table width="100%" class="defaultfont updateContent" id="updateLogTable">
+<table style="width:100%" class="defaultfont updateContent" id="updateLogTable">
 <tr>
 	<th>' . g_l('liveUpdate', '[updatelog][date]') . '</th>
 	<th>' . g_l('liveUpdate', '[updatelog][action]') . '</th>

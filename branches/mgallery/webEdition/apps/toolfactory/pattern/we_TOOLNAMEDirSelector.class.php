@@ -101,7 +101,7 @@ ob_start();
 									'<input type="hidden" name="rootDirID" value="' + top.options.rootDirID + '" />' +
 									'<input type="hidden" name="table" value="' + top.options.table + '" />' +
 									'<input type="hidden" name="id" value="' + top.currentDir + '" />' +
-									'<table class="default" width="100%">' +
+									'<table class="default" style="width:100%">' +
 									(makeNewFolder?
 													'<tr style="background-color:#DFE9F5;">' +
 													'<td style="text-align:center"><img class="treeIcon" src="<?php echo '<?php echo WE_APPS_DIR;?>' . $TOOLNAME; ?>/ui/themes/default/shared/icons/small/folder.gif" ></td>' +
@@ -112,7 +112,7 @@ ob_start();
 					var onclick = ' onclick="return selectorOnClick(event,' + entries[i].ID + ');"';
 									var ondblclick = ' onDblClick="return selectorOnDblClick(' + entries[i].ID + ');"';
 									body += '<tr id="line_' + entries[i].ID + '" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder))  ? 'background-color:#DFE9F5;' : '') + 'cursor:pointer;' + ((we_editDirID != entries[i].ID) ? '' : '') + '"' + ((we_editDirID || makeNewFolder) ? '' : onclick) + (entries[i].isFolder ? ondblclick : '') + ' >' +
-									'<td class="selector" width="25" style="text-align:center">' +
+									'<td class="selector" style="width:25px;text-align:center">' +
 									'<img class="treeIcon" src="<?php echo '<?php echo WE_APPS_DIR;?>' . $TOOLNAME; ?>/ui/themes/default/shared/icons/small/' + entries[i].icon + '">' +
 									'</td>' +
 									(we_editDirID == entries[i].ID?

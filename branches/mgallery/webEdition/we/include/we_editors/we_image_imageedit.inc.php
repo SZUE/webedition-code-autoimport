@@ -27,7 +27,7 @@ define("WE_EDIT_IMAGE", true);
 echo we_html_tools::getHtmlTop() .
  we_html_element::jsElement(
 	(substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), 0, 15) === 'doImage_convert' ?
-		'parent.frames.editHeader.we_setPath("' . $we_doc->Path . '","' . $we_doc->Text . '", ' . intval($we_doc->ID) . ',"published");' :
+		'WE().layout.we_setPath("' . $we_doc->Path . '","' . $we_doc->Text . '", ' . intval($we_doc->ID) . ',"published");' :
 		'') .
 	'function changeOption(elem){
 	var cmnd = elem.options[elem.selectedIndex].value;

@@ -101,7 +101,7 @@ class we_chooser_multiDir{
 	}
 
 	function get(){
-		$out = '<table class="default" width="' . abs($this->width - 20) . '">';
+		$out = '<table class="default" style="width:' . abs($this->width - 20) . 'px">';
 
 		$this->nr = 0;
 		$idArr = is_array($this->ids) ? $this->ids : ($this->ids === '' ? array() : explode(',', trim($this->ids, ',')));
@@ -123,7 +123,7 @@ class we_chooser_multiDir{
 </table>' . we_html_element::jsElement('WE().util.setIconOfDocClass(document, "chooserFileIcon");');
 
 
-		return '<table class="default" width="' . $this->width . '">
+		return '<table class="default" style="width:' . $this->width . 'px">
 <tr><td><div class="multichooser">' . $out . '</div></td></tr>
 ' . ($this->addbut ? '<tr><td style="text-align:right;padding-top:5px;">' . $this->addbut . '</td></tr>' : '') . '</table>' . we_html_element::jsElement('WE().util.setIconOfDocClass(document,"chooserFileIcon");');
 	}

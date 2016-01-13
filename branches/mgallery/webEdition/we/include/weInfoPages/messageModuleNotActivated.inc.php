@@ -26,7 +26,7 @@ echo we_html_tools::getHtmlTop($title, '', '', STYLESHEET);
 ?>
 <body class="weDialogBody" onload="self.focus();" onblur="self.close();"><?php
 	echo '
-<table width="100%" class="default defaultfont">
+<table style="width:100%" class="default defaultfont">
 <tr><td colspan="2"><strong>' . $title . '</strong></td></tr>
 <tr><td style="vertical-align:top"><span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span></td><td class="defaultfont">' . g_l('moduleActivation', '[content]') . '</td></tr>
 </table>';

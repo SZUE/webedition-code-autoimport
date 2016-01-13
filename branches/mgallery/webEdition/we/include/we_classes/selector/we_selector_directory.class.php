@@ -497,7 +497,7 @@ top.selectFile(top.currentID);
 			}
 			$previewDefauts .= "<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('fileselector', '[type]') . ": </td><td>" . (g_l('contentTypes', '[' . $result['ContentType'] . ']', true) !== false ? g_l('contentTypes', '[' . $result['ContentType'] . ']') : $result['ContentType']) . "</td></tr>";
 
-			$out .= '<table class="default" height="100%" width="100%">';
+			$out .= '<table class="default" style="height:100%;width:100%">';
 			switch($result['ContentType']){
 				case we_base_ContentTypes::IMAGE:
 					if(file_exists($_SERVER['DOCUMENT_ROOT'] . $result['Path'])){

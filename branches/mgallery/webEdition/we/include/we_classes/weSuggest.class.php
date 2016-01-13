@@ -111,11 +111,6 @@ class weSuggest{
 		return $void;
 	}
 
-	function getErrorMarkPlaceHolder($id = "errormark", $space = 3, $w = 4, $h = 20){
-		$s = $w + $space;
-		return '<img id="' . $id . '" src="' . ICON_DIR . 'errormark.gif" width="' . $w . '" height="' . $h . '" style="position:relative; left:-' . $s . 'px; visibility: hidden;' . (we_base_browserDetect::isIE() ? 'top:4px; z-index:1000000' : '') . '" />';
-	}
-
 	static function getYuiFiles(){ //FIXME: make sure all pages include this in head-element
 		return
 			we_html_element::cssLink(CSS_DIR . 'weSuggest.css') .

@@ -97,18 +97,18 @@ var searchClass={
 		$currentSearchFields = $this->Model->getProperty('currentSearchFields');
 		$currentLocation = $this->Model->getProperty('currentLocation');
 
-		$out = '<table class="default" id="defSearch" width="550" style="margin-left:20px;display:' . ($this->Model->mode ? 'none' : 'block') . ';">
+		$out = '<table class="default" id="defSearch" style="width:550px;margin-left:20px;display:' . ($this->Model->mode ? 'none' : 'block') . ';">
 <tr>
 	<td class="weDocListSearchHeadline">' . g_l('versions', '[weSearch]') . '</td>
 	<td>' . we_html_button::create_button(we_html_button::DIRRIGHT, "javascript:switchSearch(1)", false) . '</td>
-	<td width="100%"></td>
+	<td style="width:100%"></td>
 </tr>
 </table>
-<table class="default" id="advSearch" width="550" style="margin-left:20px;display:' . ($this->Model->mode ? 'block' : 'none') . ';">
+<table class="default" id="advSearch" style="width:550px;margin-left:20px;display:' . ($this->Model->mode ? 'block' : 'none') . ';">
 <tr>
 	<td class="weDocListSearchHeadline">' . g_l('versions', '[weSearch]') . '</td>
 	<td>' . we_html_button::create_button(we_html_button::DIRDOWN, "javascript:switchSearch(0)", false) . '</td>
-	<td width="100%"></td>
+	<td style="width:100%"></td>
 </tr>
 </table>
 <table id="advSearch2" style="margin-left:20px;display:' . ($this->Model->mode ? 'block' : 'none') . ';">
@@ -163,9 +163,9 @@ var searchClass={
 		$out .= '</tbody></table>
 <table class="default" id="advSearch3" style="margin:10px 0px 20px 20px;display:' . ($this->Model->mode ? 'block' : 'none') . ';">
 	<tr>
-		<td width="215">' . we_html_button::create_button(we_html_button::ADD, "javascript:newinput();") . '</td>
-		<td width="155"></td>
-		<td width="188" style="text-align:right">' . we_html_button::create_button(we_html_button::SEARCH, "javascript:search(true);") . '</td>
+		<td style="width:215px;">' . we_html_button::create_button(we_html_button::ADD, "javascript:newinput();") . '</td>
+		<td style="width:155px"></td>
+		<td style="width:188px;text-align:right">' . we_html_button::create_button(we_html_button::SEARCH, "javascript:search(true);") . '</td>
 		<td></td>
 	</tr>
 	</table>
@@ -439,7 +439,7 @@ var searchClass={
 	public function tblList($content, $headline){
 		//$anz = count($headline) - 1;
 		return '
-<table style="background-color:#fff;" width="100%" cellpadding="5">
+<table style="background-color:#fff;width:100%" cellpadding="5">
 <tr>
 	<td style="vertical-align:top;width:15px;border-bottom:1px solid #AFB0AF;"></td>
 	<td style="vertical-align:top;width:110px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[0]["dat"] . '</td>
@@ -458,7 +458,7 @@ var searchClass={
 		$searchstart = $this->Model->getProperty('currentSearchstart');
 		$anzahl = $this->Model->getProperty('currentAnzahl');
 
-		$out = '<table cellpadding="5" width="100%" id="contentTable">';
+		$out = '<table cellpadding="5" style="width:100%" id="contentTable">';
 
 		$anz = count($content);
 		$x = $searchstart + $anzahl;
@@ -495,7 +495,7 @@ var searchClass={
 	public function getHTMLforVersions($content){
 		$uniqname = md5(uniqid(__FUNCTION__, true));
 
-		$out = '<table width="100%" class="default">
+		$out = '<table style="width:100%" class="default">
 				<tr>
 				<td class="defaultfont">';
 

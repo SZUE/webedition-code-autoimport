@@ -84,7 +84,7 @@ class we_selector_category extends we_selector_file{
 		<td>' . we_html_button::create_button('fa:btn_fs_back,fa-lg fa-level-up,fa-lg fa-tag', "javascript:top.goBackDir();", true, 0, 0, '', '', $this->dir == intval($this->rootDirID), false) . '</td>' .
 			($this->userCanEditCat() ?
 				/* '<td>' . we_html_button::create_button("fa:btn_new_dir,fa-plus,fa-lg fa-folder", 'javascript:top.drawNewFolder();', true, 0, 0, '', '', false, false) . '</td>' */
-				'<td width="38">' . we_html_button::create_button("fa:btn_add_cat,fa-plus,fa-lg fa-tag", 'javascript:top.drawNewCat();', true, 0, 0, '', '', false, false) . '</td>' : '') .
+				'<td style="width:38px;">' . we_html_button::create_button("fa:btn_add_cat,fa-plus,fa-lg fa-tag", 'javascript:top.drawNewCat();', true, 0, 0, '', '', false, false) . '</td>' : '') .
 			($this->userCanEditCat() ?
 				'<td class="trash">' . we_html_button::create_button(we_html_button::TRASH, 'javascript:if(changeCatState==1){top.deleteEntry();}', true, 27, 22, '', '', false, false) . '</td>' : '') .
 			'</tr>
@@ -161,14 +161,10 @@ top.selectFile(top.currentID);'), we_html_element::htmlBody());
 
 	function printHeaderHeadlines(){
 		return '
-<table class="headerLines" width="100%">
+<table class="headerLines" style="width:100%">
 	<tr>
-		<td width="35%" class="selector" style="padding-left:10px;"><b><a href="#" onclick="javascript:top.orderIt(\'Text\');">' . g_l('fileselector', '[catname]') . '</a></b></td>
-		<td width="65%" class="selector" style="padding-left:10px;"><b>' . g_l('button', '[properties][value]') . '</b></td>
-	</tr>
-	<tr>
-		<td width="35%"></td>
-		<td width="65%"></td>
+		<td class="selector bold" style="width:35%;padding-left:10px;"><a href="#" onclick="javascript:top.orderIt(\'Text\');">' . g_l('fileselector', '[catname]') . '</a></td>
+		<td class="selector bold" style="width:65%;padding-left:10px;">' . g_l('button', '[properties][value]') . '</td>
 	</tr>
 </table>';
 	}

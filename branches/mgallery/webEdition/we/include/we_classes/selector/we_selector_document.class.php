@@ -615,7 +615,7 @@ top.makeNewDocument = true;' .
 					break;
 			}
 
-			$out .= '<table class="default" width="100%">';
+			$out .= '<table class="default" style="width:100%">';
 			if(!empty($_imagepreview)){
 				$out .= "<tr><td colspan='2' class='image'>" . $_imagepreview . "</td></tr>";
 			}

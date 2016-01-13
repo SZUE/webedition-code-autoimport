@@ -185,7 +185,7 @@ function getInnerColumn(html) {
 
 function getImageColumn(src, width, height) {
 	var td = document.createElement('td');
-	td.innerHTML = '<img src="' + src + '" width="' + width + '" height="' + height + '" />';
+	td.innerHTML = '<img src="' + src + '" style="width:' + width + 'px;height:' + height + 'px" />';
 	return td;
 }
 

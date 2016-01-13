@@ -1518,7 +1518,7 @@ function toggleRebuildPerm(disabledOnly) {';
 		if(permissionhandler::hasPerm('ADMINISTRATOR') && $this->Type == self::TYPE_USER && is_array($this->permissions_slots['administrator'])){
 			foreach($this->permissions_slots['administrator'] as $k => $v){
 				$content = '
-<table class="default" width="500" style="margin-top:5px;">
+<table class="default" style="width:500px;margin-top:5px;">
 	<tr><td>' . we_html_forms::checkbox(1, $v, $this->Name . "_Permission_" . $k, $this->permissions_titles['administrator'][$k], false, 'defaultfont', ($k === 'REBUILD' ? 'setRebuidPerms();top.content.setHot();' : 'top.content.setHot();')) . '</td></tr>
 </table>';
 			}
@@ -1601,7 +1601,7 @@ function delElement(elvalues,elem) {
 			//$obj_def_names = $this->Name . '_defWorkspace_' . $k;
 			//$content .= '<p>';
 
-			$content1.='<input type="hidden" name="' . $obj_values . '" value="" /><table width="520">';
+			$content1.='<input type="hidden" name="' . $obj_values . '" value="" /><table style="width:520px">';
 			foreach($v as $key => $val){
 				$value = $val;
 				$path = f('SELECT Path FROM ' . $k . ' WHERE ' . $k . '.ID=' . $value, '', $this->DB_WE);
@@ -2159,7 +2159,7 @@ function show_seem_chooser(val) {
 		$weAcSelectorGroup = $yuiSuggest->getHTML();
 
 		$content = '
-<table class="default" width="530">
+<table class="default" style="width:530px;">
 <colgroup><col style="width:170px;"/><col style="width:330px;"/></colgroup>
 	<tr>
 		<td class="defaultfont">' . g_l('modules_users', '[user]') . ':</td>
@@ -2197,7 +2197,7 @@ function show_seem_chooser(val) {
 
 	function formInherits($name, $value, $title, $onClick = ''){
 		return '
-<table class="default" width="500">
+<table class="default" style="width:500px;">
 	<tr>
 		<td class="defaultfont">' .
 			we_html_forms::checkbox(1, ($value ? true : false), $this->Name . $name, $title, '', 'defaultfont', 'top.content.setHot();' . $onClick) . '

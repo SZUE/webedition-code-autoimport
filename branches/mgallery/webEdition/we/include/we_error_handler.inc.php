@@ -200,7 +200,7 @@ function display_error_message($type, $message, $file, $line, $skipBT = false){
 	}
 
 	// Build the error table
-	echo '<br /><table bgcolor="#FFFFFF" cellpadding="4" style="text-align:center;border: 1px solid #265da6;" width="95%"><colgroup><col width="10%"/><col width="90%" /></colgroup>
+	echo '<br /><table bgcolor="#FFFFFF" cellpadding="4" style="text-align:center;border: 1px solid #265da6;width:95%"><colgroup><col sytle="width:10%"/><col style="width:90%" /></colgroup>
 		<tr bgcolor="#f7f7f7" style="vertical-align:top">
 			<td colspan="2" style="border-bottom: 1px solid #265da6;">An error occurred while executing this script.</td>
 		</tr>

@@ -1992,7 +1992,7 @@ self.focus();
 		$pb->setStudLen(400);
 		$pb->addText(g_l('modules_newsletter', '[sending]'), 0, "title");
 
-		$_footer = '<table width="580" class="default"><tr><td style="text-align:left">' .
+		$_footer = '<table style="width:580px;" class="default"><tr><td style="text-align:left">' .
 			$pb->getHTML() . '</td><td style="text-align:right">' .
 			we_html_button::create_button(we_html_button::CLOSE, "javascript:top.close();") .
 			'</td></tr></table>';

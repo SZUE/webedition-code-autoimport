@@ -247,7 +247,7 @@ $shopDashboard = '<div style="width:60%;float:left;">' .
 	$shopDashboardTable->getHtml() .
 	'</div>'
 	. '<div style="width:40%;float:right;">' . ($bTarget ? '<b>' . g_l('cockpit', '[shop_dashboard][revenue_target]') . '&nbsp;' . we_base_util::formatNumber($sRevenueTarget, $numberformat) . '&nbsp;' . $currency . '</b><br/>' : '') .
-	'<canvas id="' . $newSCurrId . '_chart_div" width="160" height="160"></canvas>' .
+	'<canvas id="' . $newSCurrId . '_chart_div" style="width:160px;height:160px"></canvas>' .
 	'</div><br style="clear:both;"/>';
 
 if($bTarget){

@@ -1951,16 +1951,15 @@ var weFileUpload = (function () {
 					this.form.form.elements.weFileName.value = cur.file.name;
 					_.sender.currentFile = null;
 					setTimeout(_.sender.dialogCallback, 100, resp);
-				} else {
-					if (resp.status === 'success') {
-						_.sender.currentFile = null;
-						if (WE()) {
-							window.we_cmd('update_file');
-							WE().layout.weEditorFrameController.getActiveEditorFrame().getDocumentReference().frames.editHeader.we_setPath(resp.weDoc.path, resp.weDoc.text, 0, "published");
-						}
-
-						this.fireCallback();
+				} else if (resp.status === 'success') {
+					_.sender.currentFile = null;
+					if (WE()) {
+						window.we_cmd('update_file');
+						WE().layout.we_setPath(resp.weDoc.path, resp.weDoc.text, 0, "published");
 					}
+
+					this.fireCallback();
+
 				}
 
 			};

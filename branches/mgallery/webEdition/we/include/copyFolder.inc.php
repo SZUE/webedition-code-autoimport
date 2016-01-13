@@ -35,7 +35,7 @@ if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3)){
 	$pb->setStudLen(270);
 	$pb->addText("&nbsp;", 0, "pbar1");
 
-	$buttons = '<table class="default" width="300"><tr><td id="pbTd" style="text-align:left;display:none;">' . $pb->getHTML() . $pb->getJSCode() . '</td><td style="text-align:right">' .
+	$buttons = '<table class="default" style="width:300px"><tr><td id="pbTd" style="text-align:left;display:none;">' . $pb->getHTML() . $pb->getJSCode() . '</td><td style="text-align:right">' .
 			we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button) .
 			'</td></tr></table>';
 
@@ -56,7 +56,7 @@ if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3)){
 				) .
 				$hidden;
 	} else {
-		$content = '<table class="default" width="500"><tr><td>' . we_html_forms::checkbox(1, 0, 'CreateTemplate', g_l('copyFolder', '[create_new_templates]'), false, "defaultfont", "toggleButton(); incTemp(this.checked)") .
+		$content = '<table class="default" style="width:500px;"><tr><td>' . we_html_forms::checkbox(1, 0, 'CreateTemplate', g_l('copyFolder', '[create_new_templates]'), false, "defaultfont", "toggleButton(); incTemp(this.checked)") .
 				'<div id="imTemp" style="display:block">' .
 				we_html_forms::checkbox(1, 0, 'CreateMasterTemplate', g_l('copyFolder', '[create_new_masterTemplates]'), false, "defaultfont", "", 1) .
 				we_html_forms::checkbox(1, 0, 'CreateIncludedTemplate', g_l('copyFolder', '[create_new_includedTemplates]'), false, "defaultfont", "", 1) .

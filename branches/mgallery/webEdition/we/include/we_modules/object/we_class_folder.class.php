@@ -525,7 +525,7 @@ class we_class_folder extends we_folder{
 				$out .= '
 <tr>
 	<td class="defaultfont">' . g_l('global', '[search]') . '</td>
-	<td width="50"></td>'
+	<td style="width:50px;"></td>'
 						//<td>'.$this->searchclass->getFields("objsearchField[".$i."]",1,$this->searchclass->objsearchField[$i],$this->Path).'</td> #4076 orig
 						. '<td>' . $this->searchclass->getFields("objsearchField[" . $i . "]", 1, $this->searchclass->objsearchField[$i], $this->ClassPath) . '</td>
 	<td style="width:10px;"></td>

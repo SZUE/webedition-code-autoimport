@@ -83,7 +83,7 @@ function we_textarea(name, value, cols, rows, width, height, autobr, autobrName,
 
 	if (showSpell) {
 		out += '<td unselectable="on"><div unselectable="on">' +
-						'<img  style="border: 0px; margin: 1px;" unselectable="on" width="23" height="22" src="/webEdition/images/wysiwyg/spellcheck.gif"' +
+						'<img style="margin: 1px;width:23px;height:22px;" unselectable="on" src="/webEdition/images/wysiwyg/spellcheck.gif"' +
 						'onmouseover="if(self.' + this.name + 'Object){' + this.name + 'Object.ButtonOverUp(this);}"' +
 						'onmouseout="if(self.' + this.name + 'Object){' + this.name + 'Object.ButtonNormal(this);}"' +
 						'onmousedown="if(self.' + this.name + 'Object){' + this.name + 'Object.ButtonOverDown(this);}"' +

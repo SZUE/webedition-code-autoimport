@@ -29,68 +29,6 @@ var widthBeforeDeleteMode = 0;
 var widthBeforeDeleteModeSidebar = 0;
 var we_mediaReferences = {};
 
-
-/**
- * setting is built like the unix file system privileges with the 3 options
- * see notices, see warnings, see errors
- *
- * 1 => see Notices
- * 2 => see Warnings
- * 4 => see Errors
- *
- * @param message string
- * @param prio integer one of the values 1,2,4
- * @param win object reference to the calling window
- */
-WE().util.showMessage = function (message, prio, win) {
-	win = (win ? win : this.window);
-	// default is error, to avoid missing messages
-	prio = prio ? prio : WE().consts.message.WE_MESSAGE_ERROR;
-
-	// always show in console !
-	WE().layout.messageConsole.addMessage(prio, message);
-
-	if (prio & WE().session.messageSettings) { // show it, if you should
-
-		// the used vars are in file JS_DIR . "weJsStrings.php";
-		switch (prio) {
-			// Notice
-			case WE().consts.message.WE_MESSAGE_NOTICE:
-				win.alert(WE().consts.g_l.message_reporting.notice + ":\n" + message);
-				break;
-
-				// Warning
-			case WE().consts.message.WE_MESSAGE_WARNING:
-				win.alert(WE().consts.g_l.message_reporting.warning + ":\n" + message);
-				break;
-
-				// Error
-			case WE().consts.message.WE_MESSAGE_ERROR:
-				win.alert(WE().consts.g_l.message_reporting.error + ":\n" + message);
-				break;
-		}
-	}
-};
-
-WE().util.clip = function (doc, unique, width) {
-	var text = doc.getElementById("td_" + unique);
-	var btn = doc.getElementById("btn_" + unique).firstChild;
-
-	if (text.classList.contains("cutText")) {
-		text.classList.remove("cutText");
-		text.style.maxWidth = "";
-		btn.classList.remove("fa-caret-right");
-		btn.classList.add("fa-caret-down");
-	} else {
-		text.classList.add("cutText");
-		text.style.maxWidth = width + "ex";
-		btn.classList.remove("fa-caret-down");
-		btn.classList.add("fa-caret-right");
-	}
-
-};
-
-// new functions
 function doClickDirect(id, ct, table, fenster) {
 	if (!fenster) {
 		fenster = window;
@@ -1556,4 +1494,87 @@ WE().util.getWe_cmdArgsUrl = function (args, base) {
 	}
 
 	return url;
+};
+
+
+/**
+ * setting is built like the unix file system privileges with the 3 options
+ * see notices, see warnings, see errors
+ *
+ * 1 => see Notices
+ * 2 => see Warnings
+ * 4 => see Errors
+ *
+ * @param message string
+ * @param prio integer one of the values 1,2,4
+ * @param win object reference to the calling window
+ */
+WE().util.showMessage = function (message, prio, win) {
+	win = (win ? win : this.window);
+	// default is error, to avoid missing messages
+	prio = prio ? prio : WE().consts.message.WE_MESSAGE_ERROR;
+
+	// always show in console !
+	WE().layout.messageConsole.addMessage(prio, message);
+
+	if (prio & WE().session.messageSettings) { // show it, if you should
+
+		// the used vars are in file JS_DIR . "weJsStrings.php";
+		switch (prio) {
+			// Notice
+			case WE().consts.message.WE_MESSAGE_NOTICE:
+				win.alert(WE().consts.g_l.message_reporting.notice + ":\n" + message);
+				break;
+
+				// Warning
+			case WE().consts.message.WE_MESSAGE_WARNING:
+				win.alert(WE().consts.g_l.message_reporting.warning + ":\n" + message);
+				break;
+
+				// Error
+			case WE().consts.message.WE_MESSAGE_ERROR:
+				win.alert(WE().consts.g_l.message_reporting.error + ":\n" + message);
+				break;
+		}
+	}
+};
+
+WE().util.clip = function (doc, unique, width) {
+	var text = doc.getElementById("td_" + unique);
+	var btn = doc.getElementById("btn_" + unique).firstChild;
+
+	if (text.classList.contains("cutText")) {
+		text.classList.remove("cutText");
+		text.style.maxWidth = "";
+		btn.classList.remove("fa-caret-right");
+		btn.classList.add("fa-caret-down");
+	} else {
+		text.classList.add("cutText");
+		text.style.maxWidth = width + "ex";
+		btn.classList.remove("fa-caret-down");
+		btn.classList.add("fa-caret-right");
+	}
+
+};
+
+WE().layout.we_setPath = function (path, text, id, classname) {
+	var _EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
+	// update document-tab
+	_EditorFrame.initEditorFrameData({
+		EditorDocumentText: text,
+		EditorDocumentPath: path
+	});
+
+	if (classname) {
+		WE().layout.multiTabs.setTextClass(_EditorFrame.FrameId, classname);
+	}
+
+	var doc = _EditorFrame.getDocumentReference().frames.editHeader.document;
+	var div = doc.getElementById('h_path');
+	div.innerHTML = path.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+	if (id > 0) {
+		div = doc.getElementById('h_id');
+		div.innerHTML = id;
+	}
+
 };

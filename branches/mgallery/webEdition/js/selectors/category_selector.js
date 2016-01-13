@@ -237,25 +237,18 @@ function writeBody(d) {
 					'<input type="hidden" name="table" value="' + options.table + '" />' +
 					'<input type="hidden" name="id" value="' + top.currentDir + '" />' +
 					'<table class="selector">' +
-					/*(makeNewFolder ?
-					 '<tr style="background-color:#DFE9F5;">' +
-					 '<td align="center">' + WE().util.getTreeIcon('folder', false) + '</td>' +
-					 '<td><input type="hidden" name="we_EntryText" value="' + g_l.new_folder_name + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + g_l.new_folder_name + '" class="wetextinput" style="width:100%" /></td>' +
-					 '</tr>' :*/
 									(makeNewCat ?
-													'<tr style="background-color:#DFE9F5;">' +
+													'<tr class="newEntry">' +
 													'<td class="selectoricon">' + WE().util.getTreeIcon('we/category') + '</td>' +
-													'<td><input type="hidden" name="we_EntryText" value="' + g_l.new_cat_name + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + g_l.new_cat_name + '" class="wetextinput" style="width:35%" /></td>' +
+													'<td><input type="hidden" name="we_EntryText" value="' + g_l.new_cat_name + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + g_l.new_cat_name + '" class="wetextinput" /></td>' +
 													'</tr>' :
-													'')
-									/*)*/;
+													'');
 					for (i = 0; i < entries.length; i++) {
 						var onclick = ' onclick="return selectorOnClick(event,' + entries[i].ID + ');"';
 						var ondblclick = ' onDblClick="return selectorOnDblClick(' + entries[i].ID + ');"';
 						body += '<tr id="line_' + entries[i].ID + '" style="' + ((we_editCatID != entries[i].ID) ? '' : '') + '"' + ((we_editCatID || makeNewFolder || makeNewCat) ? '' : onclick) + /*(entries[i].isFolder ? */ondblclick /*: '')*/ + ' >' +
 										'<td class="selector selectoricon">' + WE().util.getTreeIcon('we/category') + '</td>' +
-										/*'<td class="selectoricon">' + WE().util.getTreeIcon(entries[i].isFolder ? 'folder' : 'we/category') + '</td>'*/
-														((we_editCatID !== undefined && we_editCatID == entries[i].ID) ?
+														((we_editCatID !== undefined && we_editCatID === entries[i].ID) ?
 																		'<td class="selector"><input type="hidden" name="we_EntryText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
 																		'<td class="selector filename" title="' + entries[i].text + '"><div class="cutText">' + entries[i].text + '</div>'
 																		) +
