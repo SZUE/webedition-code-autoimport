@@ -30,7 +30,7 @@ abstract class we_html_tools{
 	const TYPE_INFO = 2;
 	const TYPE_QUESTION = 3;
 	const TYPE_HELP = 4;
-	const TYPE_LINK = 4;
+	const TYPE_LINK = 5;
 
 	/** we_html_tools::protect()
 	  protects a page. Guests can not see this page */
