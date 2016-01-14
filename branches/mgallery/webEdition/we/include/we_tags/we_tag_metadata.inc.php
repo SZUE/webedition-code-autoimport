@@ -32,13 +32,8 @@ function we_parse_tag_metadata($attribs, $content, array $arr){
 function we_tag_metadata($attribs){
 	$name = weTag_getAttribute("name", $attribs, '', we_base_request::STRING);
 	$id = weTag_getAttribute("id", $attribs, 0, we_base_request::INT);
-	if(!isset($GLOBALS['we_lv_array'])){
-		$GLOBALS['we_lv_array'] = array();
-	}
 
 	$GLOBALS['lv'] = new metadatatag($name, $id);
-	if(is_array($GLOBALS['we_lv_array']))
-		$GLOBALS['we_lv_array'][] = clone($GLOBALS["lv"]);
-
+	we_pre_tag_listview();
 	return $GLOBALS['lv']->avail;
 }

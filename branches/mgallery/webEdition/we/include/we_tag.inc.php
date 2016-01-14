@@ -505,13 +505,23 @@ function we_getSelectField($name, $value, $values, $attribs = array(), $addMissi
 	return getHtmlTag('select', $attribs, $content, true);
 }
 
+function we_pre_tag_listview(){
+	//prevent error if $GLOBALS["we_lv_array"] is no array
+	if(!isset($GLOBALS['we_lv_array']) || !is_array($GLOBALS['we_lv_array'])){
+		$GLOBALS['we_lv_array'] = array();
+	}
+
+	//FIXME: check why we need cloning here
+	$GLOBALS['we_lv_array'][] = clone($GLOBALS['lv']);
+}
+
 //this function is used by all tags adding elements to we_lv_array
 function we_post_tag_listview(){
 	if(isset($GLOBALS['we_lv_array'])){
 		if(isset($GLOBALS['lv'])){
 			array_pop($GLOBALS['we_lv_array']);
 		}
-		if($GLOBALS['we_lv_array']){
+		if(!empty($GLOBALS['we_lv_array'])){
 			$GLOBALS['lv'] = clone(end($GLOBALS['we_lv_array']));
 		} else {
 			unset($GLOBALS['lv']);

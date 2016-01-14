@@ -77,10 +77,6 @@ function we_tag_collection($attribs){
 	$intID = !empty($GLOBALS['WE_COLLECTION_ID']) ? $GLOBALS['WE_COLLECTION_ID'] : $intID;
 
 	$GLOBALS['lv'] = new we_listview_collection('', 9999, 0, '', false, 0, 0, 0, 0, 0, '', 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, $intID, '', '', '', '');
-	if(!isset($GLOBALS['we_lv_array']) || !is_array($GLOBALS['we_lv_array'])){
-		$GLOBALS['we_lv_array'] = array();
-	}
-
-	$GLOBALS['we_lv_array'][] = clone($GLOBALS['lv']);
+	we_pre_tag_listview();
 	return true;
 }

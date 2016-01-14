@@ -86,10 +86,7 @@ function we_tag_listdir($attribs){
 	usort($files, ($sort ? 'we_cmpField' : 'we_cmpText') . ($desc ? 'Desc' : ''));
 	//Fake listview
 	$GLOBALS['lv'] = new stdClass();
-	if(!isset($GLOBALS['we_lv_array']) || !is_array($GLOBALS['we_lv_array'])){
-		$GLOBALS['we_lv_array'] = array();
-	}
-	$GLOBALS['we_lv_array'][] = null;
+	we_pre_tag_listview();
 }
 
 function _listdir_getField($field, $id, $text){

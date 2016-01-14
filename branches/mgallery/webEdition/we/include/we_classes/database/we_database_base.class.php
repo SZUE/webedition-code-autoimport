@@ -856,7 +856,7 @@ abstract class we_database_base{
 			}
 		}
 
-		return $this->query('CREATE TABLE ' . $this->escape($tab) . ' (' . implode(',', $cols_sql) . ') ENGINE = MYISAM ' . we_database_base::getCharsetCollation() . ';');
+		return $this->query('CREATE TABLE ' . $this->escape($tab) . ' (' . implode(',', $cols_sql) . ') ENGINE = MYISAM ' . self::getCharsetCollation() . ';');
 	}
 
 	/**

@@ -277,10 +277,6 @@ function we_tag_listview($attribs){
 
 		default:
 	}
-//prevent error if $GLOBALS["we_lv_array"] is no array
-	if(!isset($GLOBALS['we_lv_array']) || !is_array($GLOBALS['we_lv_array'])){
-		$GLOBALS['we_lv_array'] = array();
-	}
 
-	$GLOBALS['we_lv_array'][] = clone($GLOBALS['lv']);
+	we_pre_tag_listview();
 }

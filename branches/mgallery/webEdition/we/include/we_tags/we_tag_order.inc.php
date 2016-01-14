@@ -39,13 +39,8 @@ function we_tag_order($attribs){
 
 	$hidedirindex = weTag_getAttribute("hidedirindex", $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, we_base_request::BOOL);
 
-	if(!isset($GLOBALS["we_lv_array"])){
-		$GLOBALS["we_lv_array"] = array();
-	}
+	$GLOBALS['lv'] = new we_shop_ordertag(intval($we_orderid), $condition, $hidedirindex);
 
-	$GLOBALS["lv"] = new we_shop_ordertag(intval($we_orderid), $condition, $hidedirindex);
-	if(is_array($GLOBALS["we_lv_array"])){
-		$GLOBALS["we_lv_array"][] = clone($GLOBALS["lv"]);
-	}
-	return $GLOBALS["lv"]->avail;
+	we_pre_tag_listview();
+	return $GLOBALS['lv']->avail;
 }
