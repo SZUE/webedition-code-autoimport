@@ -990,7 +990,8 @@ ImageEditTools = {
 			setFocus: null,
 			moveFocus: null,
 			startMove: null,
-			stopMove: null
+			stopMove: null,
+			leaveBody: null
 		},
 		start: function () {
 			ImageEditTools.deactivateAll();
@@ -1013,8 +1014,9 @@ ImageEditTools = {
 			// add listeners (using late binding to set scope, and hold reference to bound fns!)
 			this.elems.image.addEventListener('click', (this.boundFNs.setFocus = this.setFocusPositionByMouse.bind(this)), false);
 			this.elems.focusPoint.addEventListener('mousedown', (this.boundFNs.startMove = this.startMoveFocusPosition.bind(this)), false);
-			this.elems.focusPoint.addEventListener('mouseup', (this.boundFNs.stopMove = this.stopMoveFocusPosition.bind(this)), false);
-			this.elems.image.addEventListener('mouseup', this.boundFNs.stopMove, false);
+			document.body.addEventListener('mouseup', (this.boundFNs.stopMove = this.stopMoveFocusPosition.bind(this)), false);
+			document.body.addEventListener('mouseleave', (this.boundFNs.leaveBody = this.mouseLeaveBody.bind(this)), false);
+
 			this.elems.focusPoint.addEventListener('dragstart', function (e) {
 				e.preventDefault();
 			}, false);
@@ -1023,50 +1025,56 @@ ImageEditTools = {
 			this.setFocusPositionByValue();
 			_EditorFrame.setEditorIsHot(hot);
 		},
-		drop: function () {
+		drop: function () { // when leaving edit focus
 			this.elems.focusPoint.style.display = 'none';
 			this.elems.image.style.cursor = 'default';
+			document.body.style.cursor = 'default';
 			this.elems.image.removeEventListener('click', this.boundFNs.setFocus, false);
 			this.elems.focusPoint.removeEventListener('mousedown', this.boundFNs.startMove, false);
-			this.elems.focusPoint.removeEventListener('mouseup', this.boundFNs.stopMove, false);
-			this.elems.image.removeEventListener('mouseup', this.boundFNs.stopMove, false);
-			this.elems.focusPoint.removeEventListener('mousemove', this.boundFNs.moveFocus, false);
-			this.elems.image.removeEventListener('mousemove', this.boundFNs.moveFocus, false);
+			document.body.removeEventListener('mouseup', this.boundFNs.stopMove, false);
+			document.body.removeEventListener('mousemove', this.boundFNs.moveFocus, false);
 			this.elems.x_focus.parentNode.style.display = 'none';
 			this.elems.info.style.display = 'none';
 		},
+		mouseLeaveBody: function (e) {
+			this.moveFocusPosition(e);
+			this.stopMoveFocusPosition();
+		},
 		startMoveFocusPosition: function (e) {
+			this.elems.image.style.cursor = 'move';
+			document.body.style.cursor = 'move';
 			this.vals.referenceX = e.clientX;
 			this.vals.referenceY = e.clientY;
 			this.vals.origLeft = parseInt(this.elems.focusPoint.style.left);
 			this.vals.origTop = parseInt(this.elems.focusPoint.style.top);
 			this.boundFNs.moveFocus = this.moveFocusPosition.bind(this);
-			this.elems.focusPoint.addEventListener('mousemove', (this.boundFNs.moveFocus = this.moveFocusPosition.bind(this)), false);
-			this.elems.image.addEventListener('mousemove', this.boundFNs.moveFocus, false);
+			document.body.addEventListener('mousemove', (this.boundFNs.moveFocus = this.moveFocusPosition.bind(this)), false);
 		},
 		stopMoveFocusPosition: function (e) {
-			this.elems.focusPoint.removeEventListener('mousemove', this.boundFNs.moveFocus, false);
-			this.elems.image.removeEventListener('mousemove', this.boundFNs.moveFocus, false);
+			this.elems.image.style.cursor = 'crosshair';
+			document.body.style.cursor = 'default';
+			document.body.removeEventListener('mousemove', this.boundFNs.moveFocus, false);
 		},
 		moveFocusPosition: function (e) {
 			var topVal = this.vals.origTop + (e.clientY - this.vals.referenceY),
-							leftVal = this.vals.origLeft + (e.clientX - this.vals.referenceX);
+				leftVal = this.vals.origLeft + (e.clientX - this.vals.referenceX);
 
-			this.setFocusPositionByMouse(null, leftVal, topVal);
+			this.setFocusPositionByMouse(null, topVal, leftVal);
 		},
 		setFocusPositionByMouse: function (e, topVal, leftVal) {
-			//var me = this;
+			topVal = topVal !== undefined ? topVal : (e ? e.offsetY : false);
+			leftVal = leftVal !== undefined ? leftVal : (e ? e.offsetX : false);
 
-			topVal = e ? e.offsetX : (topVal ? topVal : false);
-			leftVal = e ? e.offsetY : (leftVal ? leftVal : false);
+			topVal = topVal <= 0 ? 0 : (topVal >= this.elems.image.height ? this.elems.image.height : topVal);
+			leftVal = leftVal <= 0 ? 0 : (leftVal >= this.elems.image.width ? this.elems.image.width : leftVal);
 
-			this.elems.x_focus.value = ((topVal - this.elems.image.width / 2) / (this.elems.image.width / 2)).toFixed(2);
-			this.elems.y_focus.value = ((leftVal - this.elems.image.height / 2) / (this.elems.image.height / 2)).toFixed(2);
+			this.elems.x_focus.value = ((leftVal - this.elems.image.width / 2) / (this.elems.image.width / 2)).toFixed(2);
+			this.elems.y_focus.value = ((topVal - this.elems.image.height / 2) / (this.elems.image.height / 2)).toFixed(2);
 			this.setFocusPositionByValue();
 		},
 		setFocusPositionByValue: function () {
 			var x = document.getElementById('x_focus').value,
-							y = document.getElementById('y_focus').value;
+				y = document.getElementById('y_focus').value;
 
 			if (Math.abs(this.elems.x_focus) > 1) {
 				this.elems.x_focus = 0;

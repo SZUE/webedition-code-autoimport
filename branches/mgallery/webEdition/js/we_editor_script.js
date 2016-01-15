@@ -283,7 +283,7 @@ function we_cmd() {
 			new (WE().util.jsWindow)(this, url, "we_add_thumbnail", -1, -1, 400, 410, true, true, true);
 			break;
 		case "image_resize":
-			if (WE().consts.graphic.hasGD) {
+			if (WE().consts.graphic.gdSupportedTypes[gdType]) {
 				ImageEditTools.Resize.start(url, gdType);
 			} else {
 				top.we_showMessage(WE().util.sprintf(WE().consts.g_l.editorScript.gdTypeNotSupported, gdType), WE().consts.message.WE_MESSAGE_ERROR, this);
