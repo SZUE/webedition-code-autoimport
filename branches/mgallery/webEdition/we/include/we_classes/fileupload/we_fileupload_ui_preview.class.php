@@ -55,7 +55,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 		$this->responseClass = 'we_fileupload_resp_import';
 		$type = 'binDoc';
 		$this->callback = '';
-		$this->type = 'binDoc';
+		$this->type = 'preview';
 		$this->extension = $extension;
 		$this->setInternalProgress(array('isInternalProgress' => true));
 		$this->internalProgress['width'] = 170;
@@ -419,10 +419,10 @@ function selectCategories() {
 			'class' => 'paddingTop',
 			//'noline' => ,//$this->formElements[$formname]['noline'],
 			'forceRightHeadline' => $this->formElements[$formname]['rightHeadline'],
-			'space' => $this->formElements[$formname]['space']
+			'space' => !empty($this->formElements[$formname]['space']) ? $this->formElements[$formname]['space'] : 0
 		);
 
-		return $this->formElements[$formname]['noline'] ? array_merge($row, array('noline' => true)) : $row;
+		return !empty($this->formElements[$formname]['noline']) ? array_merge($row, array('noline' => true)) : $row;
 	}
 
 	public function getJsBtnCmd($btn = 'upload'){

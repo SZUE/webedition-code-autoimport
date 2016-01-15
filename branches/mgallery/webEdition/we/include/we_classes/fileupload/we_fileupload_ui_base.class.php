@@ -25,7 +25,7 @@
 class we_fileupload_ui_base extends we_fileupload{
 	protected $responseClass = 'we_fileupload_resp_base';
 	protected $genericFilename = '';
-	protected $type = 'inc';
+	protected $type = 'base';
 	protected $form = array(
 		'name' => '',
 		'action' => ''
@@ -102,7 +102,7 @@ class we_fileupload_ui_base extends we_fileupload{
 	}
 
 	public function setCallback($callback = ''){
-		$this->callback = $callback ? : 'document.forms["' . $this->form['name'] . '"].submit()';
+		$this->callback = $callback ? : 'if(document.forms["' . $this->form['name'] . '"]){document.forms["' . $this->form['name'] . '"].submit();}';
 	}
 
 	public function setIsPreset($isPreset = false){
@@ -347,7 +347,7 @@ doDragFromTree = function(text){
 			we_html_element::jsElement('
 we_FileUpload = new weFileUpload("' . $this->type . '");
 we_FileUpload.init({
-	uiClass : "' . get_class($this) . '",
+	uiType : "' . $this->type . '",
 	fieldName : "' . $this->name . '",
 	genericFilename : ' . json_encode($this->genericFilename) . ',
 	doCommitFile: ' . ($this->doCommitFile ? 'true' : 'false') . ',
