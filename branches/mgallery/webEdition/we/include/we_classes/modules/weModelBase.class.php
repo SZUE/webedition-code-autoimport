@@ -33,13 +33,15 @@ class weModelBase{
 	var $keys = array('ID');
 	var $isnew = true;
 	protected $MediaLinks = array();
+	protected $isAdvanced = false;
 
 	/**
 	 * Default Constructor
 	 */
-	public function __construct($table, we_database_base $db = null, $load = true){
+	public function __construct($table, we_database_base $db = null, $load = true, $isAdvanced = false){
 		$this->db = ($db ? : new DB_WE());
 		$this->table = $table;
+		$this->isAdvanced = $isAdvanced;
 		if($load){
 			$this->loadPresistents();
 		}
@@ -65,7 +67,7 @@ class weModelBase{
 			$this->ID = $id;
 		}
 		if($this->isKeyDefined()){
-			$isAdvanced|=!is_numeric(key($this->persistent_slots));
+			$isAdvanced|=$this->isAdvanced || !is_numeric(key($this->persistent_slots));
 			//if($id){
 			//	$this->ID = $id;
 			//}
@@ -94,7 +96,7 @@ class weModelBase{
 			$this->isnew = true;
 		}
 		foreach($this->persistent_slots as $key => $val){
-			$val = ($isAdvanced ? $key : $val);
+			$val = ($isAdvanced || $this->isAdvanced ? $key : $val);
 
 			if(isset($this->{$val})){
 				$sets[$val] = is_array($this->{$val}) ? we_serialize($this->{$val}, ($jsonSer ? 'json' : 'serialize')) : $this->{$val};
