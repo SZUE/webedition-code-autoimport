@@ -222,7 +222,6 @@ var options={
   rootDirID:' . $this->rootDirID . ',
 	table:"' . $this->table . '",
 	formtarget:"' . $_SERVER["SCRIPT_NAME"] . '",
-	type:"' . get_class($this) . '",
 	rootDirID:' . $this->rootDirID . ',
 	multiple:' . intval($this->multiple) . ',
 	needIEEscape:' . intval(we_base_browserDetect::isIE() && $GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8') . ',

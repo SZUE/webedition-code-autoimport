@@ -206,4 +206,22 @@ abstract class we_listview_objectBase extends we_listview_base{
 		);
 	}
 
+	public function getCustomerRestrictionQuery($specificCustomersQuery, $classID, $mfilter, $listQuery){
+		return //at least check only documents of the specified class
+				'FROM ' . CUSTOMER_FILTER_TABLE . ' f JOIN ' . OBJECT_X_TABLE . $classID . ' ON (modelId=OF_ID AND modelTable="' . stripTblPrefix(OBJECT_FILES_TABLE) . '") WHERE ' . $mfilter . ' AND (' . $listQuery . ' OR ' . $specificCustomersQuery . ')';
+	}
+
+	public function getFoundDocument(){
+		static $doc = null;
+		static $id = 0;
+		if($id == ($docID = $this->f('WE_ID'))){
+			return $doc;
+		}
+		$id = $docID;
+		$model = new we_objectFile();
+		$model->initByID($docID, OBJECT_FILES_TABLE);
+		$doc = $model;
+		return $doc;
+	}
+
 }

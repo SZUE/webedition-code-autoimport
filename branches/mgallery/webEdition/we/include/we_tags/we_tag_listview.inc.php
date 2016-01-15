@@ -176,7 +176,6 @@ function we_tag_listview($attribs){
 
 			switch(isset($GLOBALS['lv']) ? get_class($GLOBALS['lv']) : ''){
 				case 'we_listview_object':
-				case 'we_object_tag':
 					$we_lv_pageID = $GLOBALS['lv']->f('WE_ID');
 					$we_lv_linktype = 'tblObjectFiles';
 					$we_lv_pagelanguage = $we_lv_pagelanguage === 'self' ? $GLOBALS['lv']->getDBf('OF_Language') : ($we_lv_pagelanguage === 'top' ? $we_lv_ownlanguage : $we_lv_pagelanguage);

@@ -33,24 +33,10 @@
 function we_tag_ifHasVariants($attribs){
 	$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 
-	if(isset($GLOBALS['lv']) && $docAttr === 'listview'){
-		// get variants from listview object
-		switch(get_class($GLOBALS['lv'])){
-			case 'we_listview_object' :
-			case 'we_listview_multiobject' :
-				$objID = $GLOBALS['lv']->f('WE_ID');
-				$model = new we_objectFile();
-				$model->initByID($objID, OBJECT_FILES_TABLE);
-				break;
-			default :
-				$docID = $GLOBALS['lv']->f('WE_ID');
-				$model = new we_webEditionDocument();
-				$model->initByID($docID);
-				break;
-		}
-	}else{
-		$model = $GLOBALS['we_doc'];
-	}
+	$model = (!empty($GLOBALS['lv']) && $docAttr === 'listview' ?
+					$GLOBALS['lv']->getFoundDocument() :
+					$GLOBALS['we_doc']
+			);
 
 	return (we_base_variants::getNumberOfVariants($model) > 0);
 }

@@ -46,7 +46,7 @@ class rpcGetItemsFromDBCmd extends rpcCmd{
 
 		$full = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 'full');
 		$recursive = we_base_request::_(we_base_request::BOOL, 'we_cmd', true, 'recursive');
-		$resp->setData("itemsArray", $collection->getValidItemsFromIDs($IDs, $full, $recursive), JSON_F);
+		$resp->setData("itemsArray", $collection->getValidItemsFromIDs($IDs, $full, $recursive));
 
 		return $resp;
 	}

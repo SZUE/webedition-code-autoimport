@@ -89,7 +89,6 @@ function we_isFieldNotEmpty($attribs){
 			switch(get_class($GLOBALS['lv'])){
 				case 'we_listview_object':
 				case 'we_listview_multiobject':
-				case 'we_object_tag':
 					$hrefArr = $GLOBALS['lv']->f($match) ? we_unserialize($GLOBALS['lv']->f($match)) : array();
 					if(!$hrefArr){
 						return false;

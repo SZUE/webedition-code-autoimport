@@ -108,14 +108,28 @@ function we_tag_object($attribs){
 	} else {
 		$we_oid = $we_oid ? : we_base_request::_(we_base_request::INT, 'we_oid', 0);
 	}
-	
-	$GLOBALS['lv'] = new we_object_tag($classid, $we_oid, $triggerid, $searchable, $condition, $hidedirindex, $objectseourls);
+
+	$id = $we_oid;
+	if(!$id && ($oid = we_base_request::_(we_base_request::INT, 'we_objectID'))){
+		$id = $oid;
+	}
+
+	if($id && $classid){
+		$unique = md5(uniqid(__FUNCTION__, true));
+		$GLOBALS['lv'] = new we_listview_object($unique, 1, 0, '', 0, $classid, '', '', '(' . OBJECT_X_TABLE . $classid . '.OF_ID="' . intval($id) . '")' . ($condition ? ' AND ' . $condition : ''), $triggerid, '', '', $searchable, '', '', '', '', '', '', '', 0, '', '', '', '', $hidedirindex, $objectseourls);
+		$avail = $GLOBALS['lv']->next_record();
+
+		if($avail){
+			if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] === we_base_constants::MODE_SEE){
+				echo we_SEEM::getSeemAnchors($we_oid, 'object');
+			}
+		}
+	} else {
+		$GLOBALS['lv'] = null;
+		$avail = false;
+	}
+
 	we_pre_tag_listview();
 
-	if($GLOBALS['lv']->avail){
-		if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] === we_base_constants::MODE_SEE){
-			echo we_SEEM::getSeemAnchors($we_oid, 'object');
-		}
-	}
-	return $GLOBALS['lv']->avail;
+	return $avail;
 }

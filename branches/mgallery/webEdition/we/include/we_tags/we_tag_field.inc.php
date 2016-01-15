@@ -180,20 +180,20 @@ function we_tag_field($attribs){
 	}
 
 	$classid = ($classid ? :
-			(isset($GLOBALS['lv']) ? (
-				isset($GLOBALS['lv']->classID) ?
-					$GLOBALS['lv']->classID :
-					($GLOBALS['lv'] instanceof we_shop_shop ?
-						$GLOBALS['lv']->f('wedoc_TableID') :
-						''
+					(isset($GLOBALS['lv']) ? (
+							isset($GLOBALS['lv']->classID) ?
+									$GLOBALS['lv']->classID :
+									($GLOBALS['lv'] instanceof we_shop_shop ?
+											$GLOBALS['lv']->f('wedoc_TableID') :
+											''
+									)
+							) : //Fix #9223
+							($GLOBALS['we_doc'] instanceof we_objectFile ?
+									$GLOBALS['we_doc']->TableID :
+									0
+							)
 					)
-				) : //Fix #9223
-				($GLOBALS['we_doc'] instanceof we_objectFile ?
-					$GLOBALS['we_doc']->TableID :
-					0
-				)
-			)
-		);
+			);
 
 
 	$isImageDoc = (isset($GLOBALS['lv']->Record['wedoc_ContentType']) && $GLOBALS['lv']->Record['wedoc_ContentType'] == we_base_ContentTypes::IMAGE);
@@ -348,7 +348,6 @@ function we_tag_field($attribs){
 						break;
 					case 'we_listview_multiobject':
 					case 'we_listview_object':
-					case 'we_object_tag':
 					case 'we_shop_shop':
 					case 'we_listview_shopOrderitem': //Fix #7816
 						$hrefArr = we_unserialize($GLOBALS['lv']->f($name));
@@ -367,19 +366,18 @@ function we_tag_field($attribs){
 			}
 		default : // FIXME: treat type="select" as separate case, and clean up the mess with all this little fixes
 
-			if($orgName === 'WE_PATH' && $triggerid && in_array(get_class($GLOBALS['lv']), array('we_listview_search', 'we_listview_object', 'we_listview_multiobject', 'we_object_tag'))){
+			if($orgName === 'WE_PATH' && $triggerid && in_array(get_class($GLOBALS['lv']), array('we_listview_search', 'we_listview_object', 'we_listview_multiobject'))){
 				$triggerpath = id_to_path($triggerid);
 				$triggerpath_parts = pathinfo($triggerpath);
 				$normVal = ($triggerpath_parts['dirname'] != '/' ? $triggerpath_parts['dirname'] : '') . '/' .
-					(!empty($GLOBALS['lv']->hidedirindex) && seoIndexHide($triggerpath_parts['basename']) ?
-						'' : $triggerpath_parts['filename'] . '/' ) .
-					$GLOBALS['lv']->f('WE_URL');
+						(!empty($GLOBALS['lv']->hidedirindex) && seoIndexHide($triggerpath_parts['basename']) ?
+								'' : $triggerpath_parts['filename'] . '/' ) .
+						$GLOBALS['lv']->f('WE_URL');
 			} else {
 				$testtype = ($type === 'select' && $usekey) ? 'text' : $type;
 				switch(get_class($GLOBALS['lv'])){
 					case 'we_shop_shop':
 					case 'we_listview_object':
-					case 'we_object_tag':
 						if($type === 'select'){// bugfix #6399
 							$attribs['name'] = $attribs['_name_orig'];
 						}
@@ -522,16 +520,16 @@ function we_tag_field($attribs){
 						$listviewname = weTag_getAttribute('listviewname', $attribs, $lvname, we_base_request::STRING);
 
 						$_linkAttribs['href'] = id_to_path($id) . '?' .
-							(!empty($GLOBALS['lv']->contentTypes) ? ('we_lv_ct_' . $listviewname . '=' . rawurlencode($GLOBALS['lv']->contentTypes) . '&amp;') : '') .
-							($GLOBALS['lv']->order ? ('we_lv_order_' . $listviewname . '=' . rawurlencode($GLOBALS['lv']->order) . '&amp;') : '') .
-							($GLOBALS['lv']->desc ? ('we_lv_desc_' . $listviewname . '=' . rawurlencode($GLOBALS['lv']->desc) . '&amp;') : '') .
-							($GLOBALS['lv']->cats ? ('we_lv_cats_' . $listviewname . '=' . rawurlencode($GLOBALS['lv']->cats) . '&amp;') : '') .
-							($GLOBALS['lv']->catOr ? ('we_lv_catOr_' . $listviewname . '=' . rawurlencode($GLOBALS['lv']->catOr) . '&amp;') : '') .
-							($GLOBALS['lv']->workspaceID ? ('we_lv_ws_' . $listviewname . '=' . rawurlencode($GLOBALS['lv']->workspaceID) . '&amp;') : '') .
-							((isset($GLOBALS['lv']->searchable) && !$GLOBALS['lv']->searchable) ? ('we_lv_se_' . $listviewname . '=0&amp;') : '') .
-							('we_lv_calendar_' . $listviewname . '=' . rawurlencode($show) . '&amp;') .
-							($GLOBALS['lv']->calendar_struct['datefield'] ? ('we_lv_datefield_' . $listviewname . '=' . rawurlencode($GLOBALS['lv']->calendar_struct['datefield']) . '&amp;') : '') .
-							($GLOBALS['lv']->calendar_struct['date'] >= 0 ? ('we_lv_date_' . $listviewname . '=' . rawurlencode(date('Y-m-d', $GLOBALS['lv']->calendar_struct['date']))) : '');
+								(!empty($GLOBALS['lv']->contentTypes) ? ('we_lv_ct_' . $listviewname . '=' . rawurlencode($GLOBALS['lv']->contentTypes) . '&amp;') : '') .
+								($GLOBALS['lv']->order ? ('we_lv_order_' . $listviewname . '=' . rawurlencode($GLOBALS['lv']->order) . '&amp;') : '') .
+								($GLOBALS['lv']->desc ? ('we_lv_desc_' . $listviewname . '=' . rawurlencode($GLOBALS['lv']->desc) . '&amp;') : '') .
+								($GLOBALS['lv']->cats ? ('we_lv_cats_' . $listviewname . '=' . rawurlencode($GLOBALS['lv']->cats) . '&amp;') : '') .
+								($GLOBALS['lv']->catOr ? ('we_lv_catOr_' . $listviewname . '=' . rawurlencode($GLOBALS['lv']->catOr) . '&amp;') : '') .
+								($GLOBALS['lv']->workspaceID ? ('we_lv_ws_' . $listviewname . '=' . rawurlencode($GLOBALS['lv']->workspaceID) . '&amp;') : '') .
+								((isset($GLOBALS['lv']->searchable) && !$GLOBALS['lv']->searchable) ? ('we_lv_se_' . $listviewname . '=0&amp;') : '') .
+								('we_lv_calendar_' . $listviewname . '=' . rawurlencode($show) . '&amp;') .
+								($GLOBALS['lv']->calendar_struct['datefield'] ? ('we_lv_datefield_' . $listviewname . '=' . rawurlencode($GLOBALS['lv']->calendar_struct['datefield']) . '&amp;') : '') .
+								($GLOBALS['lv']->calendar_struct['date'] >= 0 ? ('we_lv_date_' . $listviewname . '=' . rawurlencode(date('Y-m-d', $GLOBALS['lv']->calendar_struct['date']))) : '');
 
 						return getHtmlTag('a', $_linkAttribs, $out, true);
 					}
@@ -539,17 +537,17 @@ function we_tag_field($attribs){
 			}
 		} elseif($id && $isImageDoc){
 			$_linkAttribs['href'] = id_to_path($id) . '?' .
-				($GLOBALS['lv']->contentTypes ? ('we_lv_ct_' . $lvname . '=' . rawurlencode($GLOBALS['lv']->contentTypes) . '&amp;') : '') .
-				($GLOBALS['lv']->order ? ('we_lv_order_' . $lvname . '=' . rawurlencode($GLOBALS['lv']->order) . '&amp;') : '') .
-				($GLOBALS['lv']->desc ? ('we_lv_desc_' . $lvname . '=' . rawurlencode($GLOBALS['lv']->desc) . '&amp;') : '') .
-				($GLOBALS['lv']->cats ? ('we_lv_cats_' . $lvname . '=' . rawurlencode($GLOBALS['lv']->cats) . '&amp;') : '') .
-				($GLOBALS['lv']->catOr ? ('we_lv_catOr_' . $lvname . '=' . rawurlencode($GLOBALS['lv']->catOr) . '&amp;') : '') .
-				($GLOBALS['lv']->workspaceID ? ('we_lv_ws_' . $lvname . '=' . rawurlencode($GLOBALS['lv']->workspaceID) . '&amp;') : '') .
-				((!$GLOBALS['lv']->searchable) ? ('we_lv_se_' . $lvname . '=0&amp;') : '') .
-				(!empty($GLOBALS['lv']->condition) ? ('we_lv_condition_' . $lvname . '=' . rawurlencode($GLOBALS['lv']->condition) . '&amp;') : '') .
-				'we_lv_start_' . $lvname . '=' . (($GLOBALS['lv']->count + $GLOBALS['lv']->start) - 1) .
-				'&amp;we_lv_pend_' . $lvname . '=' . ($GLOBALS['lv']->start + $GLOBALS['lv']->anz) .
-				'&amp;we_lv_pstart_' . $lvname . '=' . ($GLOBALS['lv']->start);
+					($GLOBALS['lv']->contentTypes ? ('we_lv_ct_' . $lvname . '=' . rawurlencode($GLOBALS['lv']->contentTypes) . '&amp;') : '') .
+					($GLOBALS['lv']->order ? ('we_lv_order_' . $lvname . '=' . rawurlencode($GLOBALS['lv']->order) . '&amp;') : '') .
+					($GLOBALS['lv']->desc ? ('we_lv_desc_' . $lvname . '=' . rawurlencode($GLOBALS['lv']->desc) . '&amp;') : '') .
+					($GLOBALS['lv']->cats ? ('we_lv_cats_' . $lvname . '=' . rawurlencode($GLOBALS['lv']->cats) . '&amp;') : '') .
+					($GLOBALS['lv']->catOr ? ('we_lv_catOr_' . $lvname . '=' . rawurlencode($GLOBALS['lv']->catOr) . '&amp;') : '') .
+					($GLOBALS['lv']->workspaceID ? ('we_lv_ws_' . $lvname . '=' . rawurlencode($GLOBALS['lv']->workspaceID) . '&amp;') : '') .
+					((!$GLOBALS['lv']->searchable) ? ('we_lv_se_' . $lvname . '=0&amp;') : '') .
+					(!empty($GLOBALS['lv']->condition) ? ('we_lv_condition_' . $lvname . '=' . rawurlencode($GLOBALS['lv']->condition) . '&amp;') : '') .
+					'we_lv_start_' . $lvname . '=' . (($GLOBALS['lv']->count + $GLOBALS['lv']->start) - 1) .
+					'&amp;we_lv_pend_' . $lvname . '=' . ($GLOBALS['lv']->start + $GLOBALS['lv']->anz) .
+					'&amp;we_lv_pstart_' . $lvname . '=' . ($GLOBALS['lv']->start);
 
 			return getHtmlTag('a', $_linkAttribs, $out, true);
 		}
@@ -574,28 +572,28 @@ function we_tag_field($attribs){
 			$pidstr = '?pid=' . intval($GLOBALS['lv']->f('WorkspaceID'));
 			if(!empty($GLOBALS['lv']->hidedirindex) && seoIndexHide($path_parts['basename'])){
 				$_linkAttribs['href'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
-					($GLOBALS['lv']->objectseourls && $objecturl ? $objecturl . $pidstr : '?we_objectID=' . $GLOBALS['lv']->f('OID') . str_replace('?', '&amp;', $pidstr));
+						($GLOBALS['lv']->objectseourls && $objecturl ? $objecturl . $pidstr : '?we_objectID=' . $GLOBALS['lv']->f('OID') . str_replace('?', '&amp;', $pidstr));
 			} else {
 				$_linkAttribs['href'] = ($GLOBALS['lv']->objectseourls && $objecturl ?
-						($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $objecturl . $pidstr :
-						$_SERVER['SCRIPT_NAME'] . '?we_objectID=' . $GLOBALS['lv']->f('OID') . str_replace('?', '&amp;', $pidstr)
-					);
+								($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $objecturl . $pidstr :
+								$_SERVER['SCRIPT_NAME'] . '?we_objectID=' . $GLOBALS['lv']->f('OID') . str_replace('?', '&amp;', $pidstr)
+						);
 			}
 			$_linkAttribs['href'] .= $tail;
 
 			return ($name === 'we_href' ?
-					$_linkAttribs['href'] :
-					getHtmlTag('a', $_linkAttribs, $out, true) //  output of link-tag
-				);
+							$_linkAttribs['href'] :
+							getHtmlTag('a', $_linkAttribs, $out, true) //  output of link-tag
+					);
 		}
 		if(($GLOBALS['lv'] instanceof we_listview_category) && we_tag('ifHasChildren')){
 			$parentidname = weTag_getAttribute('parentidname', $attribs, 'we_parentid', we_base_request::STRING);
 			$_linkAttribs['href'] = $_SERVER['SCRIPT_NAME'] . '?' . $parentidname . '=' . $GLOBALS['lv']->f('ID');
 
 			return ($name === 'we_href' ?
-					$_linkAttribs['href'] :
-					getHtmlTag('a', $_linkAttribs, $out, true) //  output of link-tag
-				);
+							$_linkAttribs['href'] :
+							getHtmlTag('a', $_linkAttribs, $out, true) //  output of link-tag
+					);
 		}
 		$showlink = false;
 		switch(get_class($GLOBALS['lv'])){
@@ -611,15 +609,12 @@ function we_tag_field($attribs){
 				$showlink = true;
 				break;
 			case 'we_listview_object':
-				$showlink = $tid || $GLOBALS['lv']->DB_WE->f('OF_Templates') || $GLOBALS['lv']->docID;
-				$tailOwnId = '?we_objectID=' . $GLOBALS['lv']->DB_WE->f('OF_ID');
-			case 'we_object_tag':
 				$triggerid = $triggerid ? : $GLOBALS['lv']->triggerID;
-				$showlink = $showlink || $triggerid;
-				$tailOwnId = isset($tailOwnId) ? $tailOwnId : '?we_objectID=' . $GLOBALS['lv']->f('WE_ID');
+				$showlink = $tid || $triggerid || $GLOBALS['lv']->getDBf('OF_Templates') || $GLOBALS['lv']->docID;
+				$tailOwnId = '?we_objectID=' . $GLOBALS['lv']->getDBf('OF_ID');
 				break;
 			case 'we_listview_multiobject':
-				$showlink = $GLOBALS['lv']->DB_WE->f('OF_Templates') || $GLOBALS['lv']->docID;
+				$showlink = $GLOBALS['lv']->getDBf('OF_Templates') || $GLOBALS['lv']->docID;
 				break;
 			case 'we_listview_shopOrder': //listview type="order"
 				$showlink = !empty($triggerid);
@@ -644,25 +639,25 @@ function we_tag_field($attribs){
 				$triggerpath_parts = pathinfo($triggerpath);
 
 				$_linkAttribs['href'] = (!empty($GLOBALS['lv']->objectseourls)) ? // objectseourls=true
-					rtrim($triggerpath_parts['dirname'], '/') . '/' .
-					((!$GLOBALS['WE_MAIN_DOC']->InWebEdition && !empty($GLOBALS['lv']->hidedirindex) && seoIndexHide($triggerpath_parts['basename'])) ? //hidedirindex of triggerID
-						$GLOBALS['lv']->f('WE_URL') . $tail : //Fix #8708 do not hidedirindex of triggerID
-						$triggerpath_parts['filename'] . '/' . $GLOBALS['lv']->f('WE_URL') . $tail
-					) : //objectseourls=false or not set
-					$triggerpath . $tailOwnId . $tail;
+						rtrim($triggerpath_parts['dirname'], '/') . '/' .
+						((!$GLOBALS['WE_MAIN_DOC']->InWebEdition && !empty($GLOBALS['lv']->hidedirindex) && seoIndexHide($triggerpath_parts['basename'])) ? //hidedirindex of triggerID
+								$GLOBALS['lv']->f('WE_URL') . $tail : //Fix #8708 do not hidedirindex of triggerID
+								$triggerpath_parts['filename'] . '/' . $GLOBALS['lv']->f('WE_URL') . $tail
+						) : //objectseourls=false or not set
+						$triggerpath . $tailOwnId . $tail;
 
 				/* End Fix '7771 */
 			} else {
 				$_linkAttribs['href'] = (!empty($GLOBALS['lv']->hidedirindex) && seoIndexHide($path_parts['basename']) ?
-						($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' :
-						$GLOBALS['lv']->f('WE_PATH') . $tail
-					);
+								($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' :
+								$GLOBALS['lv']->f('WE_PATH') . $tail
+						);
 			}
 		}
 
 		return ($name === 'we_href' ? //  return href for this object
-				$_linkAttribs['href'] :
-				$out = getHtmlTag('a', $_linkAttribs, $out, true));
+						$_linkAttribs['href'] :
+						$out = getHtmlTag('a', $_linkAttribs, $out, true));
 	}
 
 	return $out;
