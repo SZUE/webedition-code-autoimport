@@ -988,7 +988,7 @@ abstract class we_SEEM{
 		}
 
 		//find out what anchor is needed by examining context
-		if(isset($GLOBALS['lv']) && $GLOBALS['we_doc']->InWebEdition && $GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE){
+		if(!empty($GLOBALS['lv']) && $GLOBALS['we_doc']->InWebEdition && $GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE){
 			if($GLOBALS['lv'] instanceof we_listview_object){
 				return '<a href="' . $GLOBALS['lv']->f('WE_ID') . '" seem="object"></a>';
 			}

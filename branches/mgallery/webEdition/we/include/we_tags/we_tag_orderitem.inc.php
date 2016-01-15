@@ -39,11 +39,17 @@ function we_tag_orderitem($attribs){
 	$we_orderitemid = weTag_getAttribute("id", $attribs, 0, we_base_request::INT);
 	$hidedirindex = weTag_getAttribute("hidedirindex", $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, we_base_request::BOOL);
 	$condition = ($condition ? $condition . ' AND ' : '') . "IntID = " . $we_orderitemid;
-	$we_orderitemid = $we_orderitemid ? : we_base_request::_(we_base_request::INT, "we_orderitemid", 0);
+	$id = $we_orderitemid ? : we_base_request::_(we_base_request::INT, "we_orderitemid", 0);
 
-	$GLOBALS['lv'] = new we_shop_orderitemtag(intval($we_orderitemid), $condition, $hidedirindex);
+	if($id){
+		$GLOBALS["lv"] = new we_listview_shopOrderitem(0, 1, 0, "", 0, '(IntID=' . intval($id) . ')' . ($condition ? ' AND ' . $condition : ''), '', 0, 0, $hidedirindex);
+		$avail = ($GLOBALS["lv"]->next_record());
+	} else {
+		$GLOBALS["lv"] = null;
+		$avail = false;
+	}
 
 	we_pre_tag_listview();
 
-	return $GLOBALS["lv"]->avail;
+	return $avail;
 }

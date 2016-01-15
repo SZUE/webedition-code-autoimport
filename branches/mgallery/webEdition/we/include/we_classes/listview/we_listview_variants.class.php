@@ -30,8 +30,6 @@ class we_listview_variants extends we_listview_base{
 	var $Record = array();
 	var $VariantData = array();
 	var $Position = 0;
-	//old code compatibility
-	var $Id = 0;
 	public $id = 0;
 	var $ObjectId = 0;
 	var $DefaultName = 'default';

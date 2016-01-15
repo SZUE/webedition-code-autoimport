@@ -1,3 +1,6 @@
+we/include/we_modules/shop/we_shop_ordertag.class.php
+we/include/we_modules/shop/we_shop_orderitemtag.class.php
+we/include/we_modules/shop/we_shop_orderitemtag.class.php
 we/include/we_modules/banner/we_banner_listview.class.php
 we/include/we_modules/customer/we_customer_listview.class.php
 we/include/we_modules/object/we_object_listview.class.php
