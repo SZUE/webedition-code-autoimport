@@ -28,8 +28,9 @@ ImageEditTools = {
 	activeTool: '',
 	size: {
 		origW: 0,
-		origH: 0,
+		origH: 0
 	},
+
 	deactivateAll: function () {
 		switch (this.activeTool) {
 			case 'focus':
@@ -52,15 +53,13 @@ ImageEditTools = {
 		}
 		this.activeTool = '';
 	},
+
 	Crop: {
-		up: ImageEditTools,
 		imgSrc: "",
 		imgW: 0,
 		imgH: 0,
 		defW: 0,
 		defH: 0,
-		origW: ImageEditTools.size.origW,
-		origH: ImageEditTools.size.origH,
 		imgDiv: "weImgDiv",
 		imgBorder: "weImagePanelBorder",
 		imgPanel: "weImagePanel",
@@ -98,8 +97,8 @@ ImageEditTools = {
 			var elIdImage = document.getElementById(this.imgID);
 			this.defW = elIdImage.width;
 			this.defH = elIdImage.height;
-			elIdImage.width = this.origW;
-			elIdImage.height = this.origH;
+			elIdImage.width = ImageEditTools.size.origW;
+			elIdImage.height = ImageEditTools.size.origH;
 			this.imgW = elIdImage.offsetWidth;
 			this.imgH = elIdImage.offsetHeight;
 			this.imgSrc = elIdImage.src;
@@ -973,8 +972,8 @@ ImageEditTools = {
 			elIdBottom = null;
 		}
 	},
+
 	Focus: {
-		up: ImageEditTools,
 		elems: {
 			focusPoint: null,
 			image: null,
@@ -994,8 +993,8 @@ ImageEditTools = {
 			stopMove: null
 		},
 		start: function () {
-			this.up.deactivateAll();
-			this.up.activeTool = 'focus';
+			ImageEditTools.deactivateAll();
+			ImageEditTools.activeTool = 'focus';
 
 			// references to some gui elements
 			this.elems.focusPoint = document.getElementById('imgfocus_point');
@@ -1082,36 +1081,36 @@ ImageEditTools = {
 			_EditorFrame.setEditorIsHot(true);
 		}
 	},
+
 	Rotate: {
-		up: ImageEditTools,
 		win: null,
 		start: function (url, gdType) {
-			this.up.deactivateAll();
-			this.up.activeTool = 'rotate';
+			ImageEditTools.deactivateAll();
+			ImageEditTools.activeTool = 'rotate';
 			this.win = new (WE().util.jsWindow)(window, url, 'we_rotate', -1, -1, 300, (gdType === 'jpg' ? 230 : 170), true, false, true);
 		},
 		drop: function () {
 			this.win.close();
 		}
 	},
+
 	Resize: {
-		up: ImageEditTools,
 		win: null,
 		start: function (url, gdType) {
-			this.up.deactivateAll();
-			this.up.activeTool = 'resize';
+			ImageEditTools.deactivateAll();
+			ImageEditTools.activeTool = 'resize';
 			this.win = new (WE().util.jsWindow)(window, url, 'we_image_resize', -1, -1, 260, (gdType === 'jpg' ? 250 : 190), true, false, true);
 		},
 		drop: function () {
 			this.win.close();
 		}
 	},
+
 	ConvertJPEG: {
-		up: ImageEditTools,
 		win: null,
 		start: function (url) {
-			this.up.deactivateAll();
-			this.up.activeTool = 'convertJPEG';
+			ImageEditTools.deactivateAll();
+			ImageEditTools.activeTool = 'convertJPEG';
 			this.win = new (WE().util.jsWindow)(window, url, 'we_convert_jpg', -1, -1, 260, 160, true, false, true);
 		},
 		drop: function () {
@@ -1122,10 +1121,10 @@ ImageEditTools = {
 
 /*
  ImageEditTools.convertPNG = {
- up: WE().ImageEditTool
+
  };
  
  ImageEditTools.convertGIF = {
- up: WE().ImageEditTool
+
  };
  */
