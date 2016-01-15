@@ -375,8 +375,8 @@ $mfilter='mode IN(' . we_customer_abstractFilter::FILTER . ',' . we_customer_abs
 			case 'we_listview_document': // type="document"
 				$_queryForIds = 'FROM ' . CUSTOMER_FILTER_TABLE . ' f WHERE modelTable="' . stripTblPrefix(FILE_TABLE) . '" AND '.$mfilter.' AND (' . $listQuery . ' OR ' . $_specificCustomersQuery . ')';
 				break;
-			case 'we_object_listview':
-			case 'we_object_listviewMultiobject': // type="object"
+			case 'we_listview_object':
+			case 'we_listview_multiobject': // type="object"
 				//at least check only documents of the specified class
 				$_queryForIds = 'FROM ' . CUSTOMER_FILTER_TABLE . ' f JOIN ' . OBJECT_X_TABLE . $classID . ' ON (modelId=OF_ID AND modelTable="' . stripTblPrefix(OBJECT_FILES_TABLE) . '") WHERE '.$mfilter.' AND (' . $listQuery . ' OR ' . $_specificCustomersQuery . ')';
 				break;

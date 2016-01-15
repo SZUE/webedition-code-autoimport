@@ -23,11 +23,11 @@
  */
 
 /**
- * class    we_object_listview
+ * class    we_listview_object
  * @desc    class for tag <we:listview type="object">
  *
  */
-class we_object_listview extends we_object_listviewBase{
+class we_listview_object extends we_listview_objectBase{
 	var $customerFilterType = false;
 	var $customers = '';
 	var $we_predefinedSQL = '';

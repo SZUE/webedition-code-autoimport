@@ -24,12 +24,12 @@
  */
 
 /**
- * class    we_object_listviewMultiobject
+ * class    we_listview_multiobject
  * @desc    class for tag <we:listview type="multiobject">
  *
  */
 //FIXME: is this class not ~ listview_object? why is this not the base class???
-class we_object_listviewMultiobject extends we_object_listviewBase{
+class we_listview_multiobject extends we_listview_objectBase{
 
 	var $objects = ''; /* Comma sepearated list of all objetcs to show in this listview */
 

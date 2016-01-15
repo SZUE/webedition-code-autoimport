@@ -56,7 +56,7 @@ class we_object_tag{//FIXME: remove in 6.6
 		if(!$this->classID){
 			return;
 		}
-		$this->object = new we_object_listview($unique, 1, 0, '', 0, $this->classID, '', '', '(' . OBJECT_X_TABLE . $this->classID . '.OF_ID="' . intval($this->id) . '")' . ($condition ? ' AND ' . $condition : ''), $this->triggerID, '', '', $searchable, '', '', '', '', '', '', '', 0, '', '', '', '', $hidedirindex, $objectseourls);
+		$this->object = new we_listview_object($unique, 1, 0, '', 0, $this->classID, '', '', '(' . OBJECT_X_TABLE . $this->classID . '.OF_ID="' . intval($this->id) . '")' . ($condition ? ' AND ' . $condition : ''), $this->triggerID, '', '', $searchable, '', '', '', '', '', '', '', 0, '', '', '', '', $hidedirindex, $objectseourls);
 		$this->avail = $this->object->next_record();
 	}
 

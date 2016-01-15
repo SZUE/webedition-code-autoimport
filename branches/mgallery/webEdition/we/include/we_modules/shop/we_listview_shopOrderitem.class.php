@@ -23,11 +23,11 @@
  */
 
 /**
- * class    we_shop_listviewOrderitem
+ * class    we_listview_shopOrderitem
  * @desc    class for tag <we:listview type="banner">
  *
  */
-class we_shop_listviewOrderitem extends we_listview_base{
+class we_listview_shopOrderitem extends we_listview_base{
 	var $condition = '';
 	var $Path = '';
 	var $docID = 0;

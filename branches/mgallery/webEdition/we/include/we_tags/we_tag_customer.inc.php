@@ -85,7 +85,7 @@ function we_tag_customer($attribs){
 		$we_cid = $we_cid ? : we_base_request::_(we_base_request::INT, 'we_cid', 0);
 	}
 
-	$GLOBALS['lv'] = new we_customer_listview('', 1, 0, "", 0, '(ID=' . intval($we_cid) . ')' . ($condition ? " AND $condition" : ""), "", 0, $hidedirindex);
+	$GLOBALS['lv'] = new we_listview_customer('', 1, 0, "", 0, '(ID=' . intval($we_cid) . ')' . ($condition ? " AND $condition" : ""), "", 0, $hidedirindex);
 
 	$avail = $GLOBALS['lv']->next_record();
 	we_pre_tag_listview();

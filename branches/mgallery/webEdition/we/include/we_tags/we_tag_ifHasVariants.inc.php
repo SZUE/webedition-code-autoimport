@@ -36,8 +36,8 @@ function we_tag_ifHasVariants($attribs){
 	if(isset($GLOBALS['lv']) && $docAttr === 'listview'){
 		// get variants from listview object
 		switch(get_class($GLOBALS['lv'])){
-			case 'we_object_listview' :
-			case 'we_object_listviewMultiobject' :
+			case 'we_listview_object' :
+			case 'we_listview_multiobject' :
 				$objID = $GLOBALS['lv']->f('WE_ID');
 				$model = new we_objectFile();
 				$model->initByID($objID, OBJECT_FILES_TABLE);

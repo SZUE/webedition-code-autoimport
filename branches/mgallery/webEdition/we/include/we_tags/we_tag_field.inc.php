@@ -346,11 +346,11 @@ function we_tag_field($attribs){
 							'extPath' => $GLOBALS['lv']->f($name)
 						);
 						break;
-					case 'we_object_listviewMultiobject':
-					case 'we_object_listview':
+					case 'we_listview_multiobject':
+					case 'we_listview_object':
 					case 'we_object_tag':
 					case 'we_shop_shop':
-					case 'we_shop_listviewOrderitem': //Fix #7816
+					case 'we_listview_shopOrderitem': //Fix #7816
 						$hrefArr = we_unserialize($GLOBALS['lv']->f($name));
 						if(!is_array($hrefArr)){
 							$hrefArr = array();
@@ -367,7 +367,7 @@ function we_tag_field($attribs){
 			}
 		default : // FIXME: treat type="select" as separate case, and clean up the mess with all this little fixes
 
-			if($orgName === 'WE_PATH' && $triggerid && in_array(get_class($GLOBALS['lv']), array('we_listview_search', 'we_object_listview', 'we_object_listviewMultiobject', 'we_object_tag'))){
+			if($orgName === 'WE_PATH' && $triggerid && in_array(get_class($GLOBALS['lv']), array('we_listview_search', 'we_listview_object', 'we_listview_multiobject', 'we_object_tag'))){
 				$triggerpath = id_to_path($triggerid);
 				$triggerpath_parts = pathinfo($triggerpath);
 				$normVal = ($triggerpath_parts['dirname'] != '/' ? $triggerpath_parts['dirname'] : '') . '/' .
@@ -378,7 +378,7 @@ function we_tag_field($attribs){
 				$testtype = ($type === 'select' && $usekey) ? 'text' : $type;
 				switch(get_class($GLOBALS['lv'])){
 					case 'we_shop_shop':
-					case 'we_object_listview':
+					case 'we_listview_object':
 					case 'we_object_tag':
 						if($type === 'select'){// bugfix #6399
 							$attribs['name'] = $attribs['_name_orig'];
@@ -607,10 +607,10 @@ function we_tag_field($attribs){
 			case 'we_listview_variants':
 			case 'we_shop_shop':
 			case 'we_customertag':
-			case 'we_customer_listview':
+			case 'we_listview_customer':
 				$showlink = true;
 				break;
-			case 'we_object_listview':
+			case 'we_listview_object':
 				$showlink = $tid || $GLOBALS['lv']->DB_WE->f('OF_Templates') || $GLOBALS['lv']->docID;
 				$tailOwnId = '?we_objectID=' . $GLOBALS['lv']->DB_WE->f('OF_ID');
 			case 'we_object_tag':
@@ -618,10 +618,10 @@ function we_tag_field($attribs){
 				$showlink = $showlink || $triggerid;
 				$tailOwnId = isset($tailOwnId) ? $tailOwnId : '?we_objectID=' . $GLOBALS['lv']->f('WE_ID');
 				break;
-			case 'we_object_listviewMultiobject':
+			case 'we_listview_multiobject':
 				$showlink = $GLOBALS['lv']->DB_WE->f('OF_Templates') || $GLOBALS['lv']->docID;
 				break;
-			case 'we_shop_listviewOrder': //listview type="order"
+			case 'we_listview_shopOrder': //listview type="order"
 				$showlink = !empty($triggerid);
 				break;
 			default:
@@ -633,7 +633,7 @@ function we_tag_field($attribs){
 			return $out;
 		}
 
-		$tail = ($tid && ($GLOBALS['lv'] instanceof we_object_listview) ? '&amp;we_objectTID=' . $tid : '');
+		$tail = ($tid && ($GLOBALS['lv'] instanceof we_listview_object) ? '&amp;we_objectTID=' . $tid : '');
 
 		if((($GLOBALS['we_doc'] instanceof we_objectFile)) && ($GLOBALS['we_doc']->InWebEdition)){
 			$_linkAttribs['href'] = $GLOBALS['lv']->f('wedoc_lastPath') . $tail;

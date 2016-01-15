@@ -794,8 +794,8 @@ class we_document extends we_root{
 						case 'we_listview_document':
 							$alt = $GLOBALS['lv']->f($altField) ? : '';
 							$title = $GLOBALS['lv']->f($titleField) ? : '';
-						case 'we_object_listview':
-						case 'we_object_listviewMultiobject':
+						case 'we_listview_object':
+						case 'we_listview_multiobject':
 							$attribs['alt'] = !empty($alt) ? $alt : ($img->getElement('alt') ? : (isset($attribs['alt']) ? $attribs['alt'] : ''));
 							$attribs['title'] = !empty($title) ? $title : ($img->getElement('title') ? : (isset($attribs['title']) ? $attribs['title'] : ''));
 							break;

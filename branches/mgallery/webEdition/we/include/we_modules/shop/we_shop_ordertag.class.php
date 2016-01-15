@@ -43,7 +43,7 @@ class we_shop_ordertag{//FIXME: remove in 6.6
 		$this->hidedirindex = $hidedirindex;
 		$unique = md5(uniqid(__FILE__, true));
 
-		$this->object = new we_shop_listviewOrder($unique, 1, 0, "", 0, '(IntOrderID=' . intval($this->id) . ')' . ($condition ? ' AND '.$condition : ''), '', 0, $hidedirindex);
+		$this->object = new we_listview_shopOrder($unique, 1, 0, "", 0, '(IntOrderID=' . intval($this->id) . ')' . ($condition ? ' AND '.$condition : ''), '', 0, $hidedirindex);
 		$this->avail = ($this->object->next_record());
 	}
 

@@ -40,7 +40,7 @@ class we_shop_orderitemtag{//FIXME: remove in 6.6
 		$this->DB_WE = new DB_WE();
 		$this->hidedirindex = $hidedirindex;
 
-		$this->object = new we_shop_listviewOrderitem(0, 1, 0, "", 0, '(IntID=' . intval($this->id) . ')' . ($condition ? ' AND ' . $condition : ''), '', 0, 0, $hidedirindex);
+		$this->object = new we_listview_shopOrderitem(0, 1, 0, "", 0, '(IntID=' . intval($this->id) . ')' . ($condition ? ' AND ' . $condition : ''), '', 0, 0, $hidedirindex);
 		$this->avail = ($this->object->next_record());
 	}
 

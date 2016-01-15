@@ -34,7 +34,7 @@ function we_tag_author($attribs){
 			$authorID = 0;
 			switch(get_class($GLOBALS['lv'])){
 				case 'we_object_tag'://we:object
-				case 'we_object_listview'://listview type=object
+				case 'we_listview_object'://listview type=object
 					$objID = $GLOBALS['lv']->f('WE_ID');
 					break;
 				case 'we_listview_search'://listview type=search

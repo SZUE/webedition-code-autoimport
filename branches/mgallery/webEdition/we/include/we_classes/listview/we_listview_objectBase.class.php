@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -23,12 +24,13 @@
  */
 
 /**
- * class    we_object_listviewMultiobject
- * @desc    class for tag <we:listview type="multiobject">
+ * class
+
  *
  */
 //FIXME: is this class not ~ listview_object? why is this not the base class???
-abstract class we_object_listviewBase extends we_listview_base{
+abstract class we_listview_objectBase extends we_listview_base{
+
 	var $classID = 0; /* ID of a class */
 	var $triggerID = 0; /* ID of a document which to use for displaying thr detail page */
 	var $condition = ''; /* condition string (like SQL) */
@@ -98,13 +100,13 @@ abstract class we_object_listviewBase extends we_listview_base{
 		$from = $orderArr = $descArr = $ordertmp = array();
 
 		$cond = ' ' . preg_replace_callback("/'([^']*)'/", function (array $match){
-				$in = $match[1];
-				$out = '';
-				for($i = 0; $i < strlen($in); $i++){
-					$out .= '&' . ord(substr($in, $i, 1)) . ';';
-				}
-				return "'" . $out . "'";
-			}, strtr($cond, array('&gt;' => '>', '&lt;' => '<'))) . ' ';
+					$in = $match[1];
+					$out = '';
+					for($i = 0; $i < strlen($in); $i++){
+						$out .= '&' . ord(substr($in, $i, 1)) . ';';
+					}
+					return "'" . $out . "'";
+				}, strtr($cond, array('&gt;' => '>', '&lt;' => '<'))) . ' ';
 
 		if($order && ($order != 'random()')){
 			$foo = makeArrayFromCSV($order);
@@ -138,7 +140,7 @@ abstract class we_object_listviewBase extends we_listview_base{
 			}
 		}
 		$f = '`' . OBJECT_X_TABLE . $classID . '`.OF_ID AS ID,`' . OBJECT_X_TABLE . $classID . '`.OF_Templates,`' . OBJECT_X_TABLE . $classID . '`.OF_ID,`' . OBJECT_X_TABLE . $classID . '`.OF_Category,`' . OBJECT_X_TABLE . $classID . '`.OF_Text,`' . OBJECT_X_TABLE . $classID . '`.OF_Url,`' . OBJECT_X_TABLE . $classID . '`.OF_TriggerID,`' . OBJECT_X_TABLE . $classID . '`.OF_WebUserID,`' . OBJECT_X_TABLE . $classID . '`.OF_Language,`' . OBJECT_X_TABLE . $classID . '`.`OF_Published`' . ' AS we_wedoc_Published,' . $_selFields;
-		$charclass='[\!\=%&\(\)\*\+\.\/<>|~, ]';
+		$charclass = '[\!\=%&\(\)\*\+\.\/<>|~, ]';
 		foreach($matrix as $n => $p){
 			$n2 = $n;
 			if(strpos($n, 'we_object_') === 0){
@@ -156,8 +158,8 @@ abstract class we_object_listviewBase extends we_listview_base{
 		}
 		$cond = preg_replace_callback("/'([^']*)'/", function (array $match){
 			return "'" . preg_replace_callback("/&([^;]+);/", function (array $match){
-					return chr($match[1]);
-				}, $match[1]) . "'";
+						return chr($match[1]);
+					}, $match[1]) . "'";
 		}, $cond);
 
 		ksort($ordertmp);
