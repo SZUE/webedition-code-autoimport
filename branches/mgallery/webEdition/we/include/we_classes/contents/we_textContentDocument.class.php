@@ -54,19 +54,8 @@ abstract class we_textContentDocument extends we_textDocument{
 		}
 	}
 
-	public function makeSameNew(){
-		$Category = $this->Category;
-		$ContentType = $this->ContentType;
-		$DocType = $this->DocType;
-		$IsSearchable = $this->IsSearchable;
-		$Extension = $this->Extension;
-		parent::makeSameNew();
-		$this->DocType = $DocType;
-		$this->changeDoctype();
-		$this->Category = $Category;
-		$this->ContentType = $ContentType;
-		$this->IsSearchable = $IsSearchable;
-		$this->Extension = $Extension;
+	public function makeSameNew(array $keep = array()){
+		parent::makeSameNew(array_merge($keep, array('Category', 'ContentType', 'DocType', 'IsSearchable', 'Extension')));
 	}
 
 	public function insertAtIndex(array $only = null, array $fieldTypes = null){
