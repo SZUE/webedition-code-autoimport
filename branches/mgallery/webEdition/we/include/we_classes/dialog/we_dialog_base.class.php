@@ -26,7 +26,6 @@ class we_dialog_base{
 	/*	 * ***********************************************************************
 	 * VARIABLES
 	 * *********************************************************************** */
-
 	var $db = '';
 	var $what = '';
 	var $args = array();
@@ -87,7 +86,7 @@ class we_dialog_base{
 				return $this->getCmdHTML();
 			default:
 				return $this->getHeaderHTML(true) .
-						$this->getFramesetHTML() . '</html>';
+					$this->getFramesetHTML() . '</html>';
 		}
 	}
 
@@ -129,9 +128,9 @@ function doKeyDown() {
 			break;
 	}
 }') .
-				we_html_element::htmlBody(array('class' => 'weDialogBody', 'onunload' => 'doUnload()')
-						, we_html_element::htmlExIFrame('main', $this->getDialogHTML(), 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden;') .
-						we_html_element::htmlIFrame('we_' . $this->ClassName . '_cmd_frame', 'about:blank', 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
+			we_html_element::htmlBody(array('class' => 'weDialogBody', 'onunload' => 'doUnload()')
+				, we_html_element::htmlExIFrame('main', $this->getDialogHTML(), 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden;') .
+				we_html_element::htmlIFrame('we_' . $this->ClassName . '_cmd_frame', 'about:blank', 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
 		);
 	}
 
@@ -155,11 +154,11 @@ function doKeyDown() {
 		$dc = $this->getDialogContentHTML();
 
 		$dialogContent = (is_array($dc) ?
-						we_html_multiIconBox::getHTML('', $dc, 30, $this->getDialogButtons(), -1, '', '', false, $this->dialogTitle) :
-						we_html_tools::htmlDialogLayout($dc, $this->dialogTitle, $this->getDialogButtons()));
+				we_html_multiIconBox::getHTML('', $dc, 30, $this->getDialogButtons(), -1, '', '', false, $this->dialogTitle) :
+				we_html_tools::htmlDialogLayout($dc, $this->dialogTitle, $this->getDialogButtons()));
 
 		return $this->getFormHTML() . $dialogContent .
-				we_html_element::htmlHidden("we_what", "cmd") . $this->getHiddenArgs() . '</form>';
+			we_html_element::htmlHidden("we_what", "cmd") . $this->getHiddenArgs() . '</form>';
 	}
 
 	function getDialogButtons(){
@@ -219,21 +218,21 @@ function doKeyDown() {
 
 	function getHeaderHTML($printJS_Style = false, $additionals = ''){
 		return we_html_tools::getHtmlTop($this->dialogTitle, $this->charset) . ($printJS_Style ? STYLESHEET : '') . static::getTinyMceJS() .
-				($printJS_Style ?
-						$this->getJs() :
-						''
-				) . we_html_element::cssLink(CSS_DIR . 'wysiwyg/tinymce/weDialogCss.css') . $additionals .
-				'</head>';
+			($printJS_Style ?
+				$this->getJs() :
+				''
+			) . we_html_element::cssLink(CSS_DIR . 'wysiwyg/tinymce/weDialogCss.css') . $additionals .
+			'</head>';
 	}
 
 	public static function getTinyMceJS(){
 		return
-				we_html_element::jsElement('var isWeDialog = true;') .
-				we_html_element::jsScript(TINYMCE_SRC_DIR . 'tiny_mce_popup.js') .
-				we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/mctabs.js') .
-				we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/form_utils.js') .
-				we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/validate.js') .
-				we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/editable_selects.js');
+			we_html_element::jsElement('var isWeDialog = true;') .
+			we_html_element::jsScript(TINYMCE_SRC_DIR . 'tiny_mce_popup.js') .
+			we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/mctabs.js') .
+			we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/form_utils.js') .
+			we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/validate.js') .
+			we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/editable_selects.js');
 	}
 
 	function getJs(){
@@ -242,13 +241,13 @@ var textareaFocus = false;
 var onEnterKey=' . intval($this->pageNr == $this->numPages && $this->JsOnly) . ';
 
 function weDoOk() {' .
-						($this->pageNr == $this->numPages && $this->JsOnly ? '
+				($this->pageNr == $this->numPages && $this->JsOnly ? '
 	if (!textareaFocus) {
 		' . $this->getOkJs() . '
 	}' :
-								'') . '
+					'') . '
 }') .
-				we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js', 'addKeyListener();self.focus();');
+			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js', 'addKeyListener();self.focus();');
 	}
 
 	function getHttpVar($type, $name, $alt = ""){
