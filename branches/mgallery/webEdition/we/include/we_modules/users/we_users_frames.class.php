@@ -33,7 +33,7 @@ class we_users_frames extends we_modules_frame{
 		$this->View = new we_users_view($frameset, 'top.content');
 	}
 
-	function getHTMLFrameset(){
+	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
 		return parent::getHTMLFrameset($this->Tree->getJSTreeCode());
 	}
 

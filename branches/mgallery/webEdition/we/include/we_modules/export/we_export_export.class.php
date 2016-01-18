@@ -98,7 +98,7 @@ class we_export_export extends weModelBase{
 		return implode(',', $new);
 	}
 
-	function save($force_new = false){
+	function save($force_new = false, $isAdvanced = false, $jsonSer = false){
 		$sets = array();
 		$wheres = array();
 		foreach($this->persistent_slots as $val){

@@ -33,7 +33,7 @@ class we_shop_frames extends we_modules_frame{
 		$this->View = new we_shop_view($frameset, 'top.content');
 	}
 
-	function getHTMLFrameset(){
+	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
 		if(($bid = we_base_request::_(we_base_request::INT, 'bid')) === -1){
 			$bid = intval(f('SELECT MAX(IntOrderID) FROM ' . SHOP_TABLE, '', $this->db));
 		}
@@ -303,7 +303,7 @@ function setTab(tab) {
 		return $this->getHTMLDocument($tab_body, $tab_head);
 	}
 
-	public function getHTML($what = ''){
+	public function getHTML($what = '', $mode = '', $step = 0){
 		switch($what){
 			case 'iconbar':
 				return $this->getHTMLIconbar();

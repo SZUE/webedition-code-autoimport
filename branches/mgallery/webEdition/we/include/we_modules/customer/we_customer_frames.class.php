@@ -65,7 +65,7 @@ class we_customer_frames extends we_modules_frame{
 		}
 	}
 
-	function getHTMLFrameset(){
+	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
 		$this->View->customer->clearSessionVars();
 		$this->View->settings->load(false);
 		$extraHead = $this->Tree->getJSTreeCode() .

@@ -48,7 +48,7 @@ class we_workflow_frames extends we_modules_frame{
 		}
 	}
 
-	function getHTMLFrameset(){
+	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
 		return parent::getHTMLFrameset($this->Tree->getJSTreeCode() . $this->getJSCmdCode());
 	}
 

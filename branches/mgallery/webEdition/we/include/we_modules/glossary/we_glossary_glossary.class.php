@@ -242,7 +242,7 @@ class we_glossary_glossary extends weModelBase{
 	 * save the item to the database
 	 *
 	 */
-	function save(){
+	function save($force_new = false, $isAdvanced = false, $jsonSer = false){
 		$this->setPath();
 
 		// serialize all needed attributes

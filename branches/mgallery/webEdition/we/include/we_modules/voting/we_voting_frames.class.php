@@ -33,7 +33,7 @@ class we_voting_frames extends we_modules_frame{
 		$this->View = new we_voting_view($frameset);
 	}
 
-	function getHTML($what){
+	function getHTML($what = '', $mode = '', $step = 0){
 		switch($what){
 			case "export_csv":
 				return $this->getHTMLExportCsvMessage();
@@ -55,7 +55,7 @@ class we_voting_frames extends we_modules_frame{
 		}
 	}
 
-	function getHTMLFrameset(){
+	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
 		$this->View->voting->clearSessionVars();
 		return parent::getHTMLFrameset($this->Tree->getJSTreeCode());
 	}

@@ -103,7 +103,7 @@ class we_customer_customer extends weModelBase{
 		$this->save();
 	}
 
-	function save($force_new = false){
+	function save($force_new = false, $isAdvanced = false, $jsonSer = false){
 		/* 		$this->IsFolder = 0;
 		  $this->Text = $this->Username;
 		  $this->Path = '/' . $this->Username;

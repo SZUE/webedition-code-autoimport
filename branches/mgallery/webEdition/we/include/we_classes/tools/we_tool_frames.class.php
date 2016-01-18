@@ -40,7 +40,7 @@ abstract class we_tool_frames extends we_modules_frame{
 		$this->treeWidth = 200;
 	}
 
-	function getHTML($what){
+	function getHTML($what = '', $mode = '', $step = 0){
 		switch($what){
 			case 'treeheader':
 				return $this->getHTMLTreeHeader();
@@ -51,7 +51,7 @@ abstract class we_tool_frames extends we_modules_frame{
 		}
 	}
 
-	function getHTMLFrameset($extraUrlParams = ''){
+	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
 		$_class = we_tool_lookup::getModelClassName($this->toolName);
 		$this->Model = $this->Model ? : new $_class();
 		//$this->Model->clearSessionVars(); // why should we clear here?
