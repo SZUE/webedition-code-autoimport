@@ -50,6 +50,7 @@ function we_tag_select($attribs, $content){
 					);
 			}
 			break;
+		case 'html':
 		default:
 			$content = preg_replace('|<(option[^>]*) selected( *=? *"selected")?([^>]*)>|i', '<${1}${3}>', $content);
 			if(stripos($content, '<option>') !== false){
