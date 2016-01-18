@@ -225,8 +225,9 @@ class we_customer_customer extends weModelBase{
 		}
 
 		$ret = array();
+		$other = g_l('modules_customer', '[other]');
 		foreach(array_keys($arr) as $b){
-			if($branch == g_l('modules_customer', '[other]')){
+			if($branch === $other){
 				$ret[$b] = $b;
 			} else {
 				$ret[$branch . "_" . $b] = $b;
@@ -304,10 +305,10 @@ class we_customer_customer extends weModelBase{
 		return ($name ? f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $db->escape($name) . '" LIMIT 1', '', $db) : true);
 	}
 
-	function customerFieldValueExist($fieldname, $value, $condition = ''){
+	/*function customerFieldValueExist($fieldname, $value, $condition = ''){
 		$db = new DB_WE();
 		return (f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE ' . $db->escape($fieldname) . '="' . $db->escape($value) . '"' . ($condition ? ' AND ' . $condition : '') . ' LIMIT 1', '', $db));
-	}
+	}*/
 
 	function fieldExist($field){
 		return in_array($field, $this->persistent_slots);
