@@ -13,30 +13,30 @@
 			$pcreversionOK = true;
 			$phpExtensionsOK = true;
 			$sdkDbOK = true;
-			
+
 			$phpextensions = get_loaded_extensions();
 			foreach ($phpextensions as &$extens){
 				$extens= strtolower($extens);
 			}
 			$phpextensionsMissing = array();
-			$phpextensionsMin = array('ctype','date','dom','filter','iconv','libxml','mysql','pcre','Reflection','session','SimpleXML','SPL','standard','tokenizer','xml','zlib');
-			
+			$phpextensionsMin = array('ctype','date','dom','filter','iconv','libxml','mysqli','pcre','Reflection','session','SimpleXML','SPL','standard','tokenizer','xml','zlib');
+
 			if (count($phpextensions)> 3) {
 				foreach ($phpextensionsMin as $exten){
 					if(!in_array(strtolower($exten),$phpextensions,true) ){$phpextensionsMissing[]=$exten;}
 				}
-				
-				if ( in_array(strtolower('PDO'),$phpextensions) && in_array(strtolower('pdo_mysql'),$phpextensions) ){//später ODER mysqli
-						
-				} else {$sdkDbOK = false;}
+
+			/*	if ( in_array(strtolower('PDO'),$phpextensions) && in_array(strtolower('pdo_mysql'),$phpextensions) ){//später ODER mysqli
+
+				} else {$sdkDbOK = false;}*/
 			} else {
 				$phpExtensionsDetectable = false;
-			} 
+			}
 			// check if mbstring functions are available:
 			if(!is_callable("mb_get_info")) {
 				$mbstringAvailable = false;
 			}
-			
+
 			// check if gdlib functions are available:
 			if(!is_callable("gd_info")) {
 				$gdlibAvailable = false;
@@ -53,14 +53,14 @@
 			if(!is_callable("exif_imagetype")) {
 				$exifAvailable = false;
 			}
-			
+
 			// identify webEdition version that has to be installed
 			if($_SESSION["le_version"] >= "6391") {
 				$phpVersionMin="5.3.7";
 			} else if($_SESSION["le_version"] >= "6000") {
 				$phpVersionMin="5.2.4";
-			} 
-			
+			}
+
 			if(!$this->checkPHPVersion($phpVersionMin)) {
 				$phpVersionState = false;
 				$SoftwareRequirementsFulfilled = false;
@@ -69,14 +69,14 @@
 			if(defined("PCRE_VERSION") && substr(PCRE_VERSION,0,1)<7) {
 				$pcreversionOK = false;
 			}
-			
+
 			if(!empty($phpextensionsMissing)){
 				$phpExtensionsOK = false;
 				$SoftwareRequirementsFulfilled = false;
 			}
-			
+
 			$_SESSION["phpVersionState"] = $phpVersionState;
-			
+
 						$Content = "
 {$this->Language['content']}<br />
 <table id=\"requirementsLog\">
@@ -124,15 +124,15 @@ $Content .="<tr>
 			$this->setHeadline($this->Language['headline']);
 
 			$this->setContent($Content);
-			
+
 			if(!$phpExtensionsOK) {
 				$Template->addError($this->Language['phpextWarning'].implode(', ', $phpextensionsMissing) );
 			}
-			
+
 			if(!$pcreversionOK) {
 				$Template->addError($this->Language['pcreOLD']);
 			}
-			
+
 			if(!$mbstringAvailable) {
 				$Template->addError($this->Language['mbstringNotAvailable']);
 			}

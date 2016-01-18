@@ -842,7 +842,7 @@ class liveUpdateFunctions {
 											$success = true;
 											foreach ($alterQueries as $_query) {
 
-												if ($db->query(trim($_query))) {
+												if ($db->query(trim($_query))|| $db->Errno == 0) {
 													$this->QueryLog['success'][] = $_query;
 												} else {
 													$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $_query --";
@@ -864,9 +864,11 @@ class liveUpdateFunctions {
 									}
 								}
 							break;
-							case '1062':
+							case 1062:
 								$this->QueryLog['entryExists'][] = $db->Errno . ' ' . $db->Error . "\n<!-- $query -->";
-							break;
+								break;
+							case 0:
+								break;
 							default:
 								$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $query --";
 								$success = false;

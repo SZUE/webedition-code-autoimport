@@ -75,13 +75,13 @@ class le_MySQL {
 		/* establish connection, select database */
 		if( 0 == $this->Link_ID ){
 
-			$this->Link_ID=mysql_pconnect($Host, $User, $Password);
+			$this->Link_ID=mysqli_connect('p:'.$Host, $User, $Password);
 			if(!$this->Link_ID){
 				$this->halt("pconnect($Host, $User, \$Password) failed.");
 				return 0;
 			}
 
-			if(!@mysql_select_db($Database,$this->Link_ID)){
+			if(!mysqli_select_db($this->Link_ID,$Database)){
 				$this->halt("cannot use database ".$this->Database);
 				return 0;
 			}
@@ -93,7 +93,7 @@ class le_MySQL {
 	/* public: discard the query result */
 	function free() {
 		if(is_resource($this->Query_ID)){
-			@mysql_free_result($this->Query_ID);
+			mysqli_free_result($this->Query_ID);
 			$this->Query_ID = 0;
 		}
 	}
@@ -122,14 +122,14 @@ class le_MySQL {
 			printf("Debug: query = %s<br>\n", $Query_String);
 		}
 
-		$this->Query_ID = mysql_query($Query_String,$this->Link_ID);
+		$this->Query_ID = mysqli_query($this->Link_ID,$Query_String);
 		if(preg_match('/alter table (.*) (add|change|modify|drop)/i', $Query_String,$matches)){
-			mysql_query('ANALYSE TABLE '.$matches[1],$this->Link_ID);
+			mysqli_query($this->Link_ID,'ANALYZE TABLE '.$matches[1]);
 		}
 
 		$this->Row   = 0;
-		$this->Errno = mysql_errno();
-		$this->Error = mysql_error();
+		$this->Errno = mysqli_errno();
+		$this->Error = mysqli_error();
 		if(!$this->Query_ID){
 			$this->halt("Invalid SQL: ".$Query_String);
 		}
@@ -145,10 +145,10 @@ class le_MySQL {
 			return 0;
 		}
 
-		$this->Record = @mysql_fetch_array($this->Query_ID);
+		$this->Record = @mysqli_fetch_array($this->Query_ID);
 		$this->Row   += 1;
-		$this->Errno  = mysql_errno();
-		$this->Error  = mysql_error();
+		$this->Errno  = mysqli_errno();
+		$this->Error  = mysqli_error();
 
 		$stat = is_array($this->Record);
 		if(!$stat && $this->Auto_Free){
@@ -159,7 +159,7 @@ class le_MySQL {
 
 	/* public: position in result set */
 	function seek($pos = 0) {
-		$status = @mysql_data_seek($this->Query_ID, $pos);
+		$status = @mysqli_data_seek($this->Query_ID, $pos);
 		if ($status){
 			$this->Row = $pos;
 		} else{
@@ -169,7 +169,7 @@ class le_MySQL {
 			 * but do not consider this documented or even
 			 * desireable behaviour.
 			 */
-			@mysql_data_seek($this->Query_ID, $this->num_rows());
+			@mysqli_data_seek($this->Query_ID, $this->num_rows());
 			$this->Row = $this->num_rows;
 			return 0;
 		}
@@ -194,8 +194,8 @@ class le_MySQL {
 		} else{
 			$query.="$table $mode";
 		}
-		
-		$res = @mysql_query($query, $this->Link_ID);
+
+		$res = @mysqli_query($this->Link_ID,$query);
 		if(!$res){
 			$this->halt("lock($table, $mode) failed.");
 			return 0;
@@ -206,7 +206,7 @@ class le_MySQL {
 	function unlock() {
 		$this->connect();
 
-		$res = @mysql_query("unlock tables");
+		$res = @mysqli_query($this->Link_ID,"unlock tables");
 		if(!$res){
 			$this->halt("unlock() failed.");
 			return 0;
@@ -216,15 +216,15 @@ class le_MySQL {
 
 	/* public: evaluate the result (size, width) */
 	function affected_rows() {
-		return @mysql_affected_rows($this->Link_ID);
+		return @mysqli_affected_rows($this->Link_ID);
 	}
 
 	function num_rows() {
-		return @mysql_num_rows($this->Query_ID);
+		return @mysqli_num_rows($this->Query_ID);
 	}
 
 	function num_fields() {
-		return @mysql_num_fields($this->Query_ID);
+		return @mysqli_num_fields($this->Query_ID);
 	}
 
 	/* public: shorthand notation */
@@ -253,8 +253,8 @@ class le_MySQL {
 			$q  = sprintf("select nextid from %s where seq_name = '%s'",
 				$this->Seq_Table,
 				$seq_name);
-			$id  = @mysql_query($q, $this->Link_ID);
-			$res = @mysql_fetch_array($id);
+			$id  = @mysqli_query($this->Link_ID,$q);
+			$res = @mysqli_fetch_array($id);
 
 			/* No current value, make one */
 			if(!is_array($res)){
@@ -263,17 +263,17 @@ class le_MySQL {
 					$this->Seq_Table,
 					$seq_name,
 					$currentid);
-				$id = @mysql_query($q, $this->Link_ID);
+				$id = @mysqli_query($this->Link_ID,$q);
 			} else{
 				$currentid = $res["nextid"];
 			}
-			
+
 			$nextid = $currentid + 1;
 			$q = sprintf("update %s set nextid = '%s' where seq_name = '%s'",
 				$this->Seq_Table,
 				$nextid,
 				$seq_name);
-			$id = @mysql_query($q, $this->Link_ID);
+			$id = @mysqli_query($this->Link_ID,$q);
 			$this->unlock();
 		} else{
 			$this->halt("cannot lock ".$this->Seq_Table." - has it been created?");
@@ -329,41 +329,41 @@ class le_MySQL {
 			}
 		}
 
-		$count = @mysql_num_fields($id);
+		$count = @mysqli_num_fields($id);
 
 		// made this IF due to performance (one if is faster than $count if's)
 		if(!$full){
 			for ($i=0; $i<$count; $i++) {
-				$res[$i]["table"] = @mysql_field_table ($id, $i);
-				$res[$i]["name"]  = @mysql_field_name  ($id, $i);
-				$res[$i]["type"]  = @mysql_field_type  ($id, $i);
-				$res[$i]["len"]   = @mysql_field_len   ($id, $i);
-				$res[$i]["flags"] = @mysql_field_flags ($id, $i);
+				$res[$i]["table"] = @mysqli_field_table ($id, $i);
+				$res[$i]["name"]  = @mysqli_field_name  ($id, $i);
+				$res[$i]["type"]  = @mysqli_field_type  ($id, $i);
+				$res[$i]["len"]   = @mysqli_field_len   ($id, $i);
+				$res[$i]["flags"] = @mysqli_field_flags ($id, $i);
 			}
 		} else{ // full
 			$res["num_fields"]= $count;
 
 			for($i=0; $i<$count; $i++) {
-				$res[$i]["table"] = @mysql_field_table ($id, $i);
-				$res[$i]["name"]  = @mysql_field_name  ($id, $i);
-				$res[$i]["type"]  = @mysql_field_type  ($id, $i);
-				$res[$i]["len"]   = @mysql_field_len   ($id, $i);
-				$res[$i]["flags"] = @mysql_field_flags ($id, $i);
+				$res[$i]["table"] = @mysqli_field_table ($id, $i);
+				$res[$i]["name"]  = @mysqli_field_name  ($id, $i);
+				$res[$i]["type"]  = @mysqli_field_type  ($id, $i);
+				$res[$i]["len"]   = @mysqli_field_len   ($id, $i);
+				$res[$i]["flags"] = @mysqli_field_flags ($id, $i);
 				$res["meta"][$res[$i]["name"]] = $i;
 			}
 		}
 
 		// free the result only if we were called on a table
 		if($table){
-			@mysql_free_result($id);
+			@mysqli_free_result($id);
 		}
 		return $res;
 	}
 
 	/* private: error handling */
 	function halt($msg) {
-		$this->Error = @mysql_error($this->Link_ID);
-		$this->Errno = @mysql_errno($this->Link_ID);
+		$this->Error = @mysqli_error($this->Link_ID);
+		$this->Errno = @mysqli_errno($this->Link_ID);
 		if($this->Halt_On_Error == "no"){
 			return;
 		}
@@ -385,7 +385,7 @@ class le_MySQL {
 	function table_names() {
 		$this->query("SHOW TABLES");
 		$i=0;
-		while($info=mysql_fetch_row($this->Query_ID)){
+		while($info=mysqli_fetch_row($this->Query_ID)){
 			$return[$i]["table_name"]= $info[0];
 			$return[$i]["tablespace_name"]=$this->Database;
 			$return[$i]["database"]=$this->Database;
@@ -395,7 +395,7 @@ class le_MySQL {
 	}
 
 	function last_insert_id() {
-		return mysql_insert_id($this->Link_ID);
+		return mysqli_insert_id($this->Link_ID);
 	}
 }
 
@@ -442,21 +442,21 @@ class le_MySQL_DB extends le_MySQL {
 		/* establish connection, select database */
 		if( 0 == $this->Link_ID ){
 
-			if(isset($GLOBALS["dbconnect"]) && $GLOBALS["dbconnect"] == "pconnect"){
-				$this->Link_ID=mysql_pconnect($Host, $User, $Password);
+			if(isset($GLOBALS["dbconnect"]) && $GLOBALS["dbconnect"] == "mysqli_pconnect"){
+				$this->Link_ID=mysqli_connect('p:'.$Host, $User, $Password);
 				if (!$this->Link_ID) {
 					$this->halt("pconnect($Host, $User, \$Password) failed.");
 					return 0;
 				}
 			} else{
-				$this->Link_ID=mysql_connect($Host, $User, $Password);
+				$this->Link_ID=mysqli_connect($Host, $User, $Password);
 				if(!$this->Link_ID){
 					$this->halt("connect($Host, $User, \$Password) failed.");
 					return 0;
 				}
 			}
 
-			if(!@mysql_select_db($Database,$this->Link_ID)){
+			if(!@mysqli_select_db($this->Link_ID,$Database)){
 				$this->halt("cannot use database ".$this->Database);
 				return 0;
 			}
