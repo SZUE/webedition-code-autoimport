@@ -869,6 +869,8 @@ class liveUpdateFunctions {
 								break;
 							case 0:
 								break;
+							case 1065:
+								return true;
 							default:
 								$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $query --";
 								$success = false;
