@@ -119,7 +119,7 @@ class update extends updateBase{
 			$extens = strtolower($extens);
 		}
 		$phpextensionsMissing = array();
-		$phpextensionsMin = array('ctype', 'date', 'dom', 'filter', 'iconv', 'libxml', 'mysql', 'pcre', 'Reflection', 'session', 'SimpleXML', 'SPL', 'standard', 'tokenizer', 'xml', 'zlib');
+		$phpextensionsMin = array('ctype', 'date', 'dom', 'filter', 'iconv', 'libxml', 'mysqli', 'pcre', 'Reflection', 'session', 'SimpleXML', 'SPL', 'standard', 'tokenizer', 'xml', 'zlib');
 
 		if(count($phpextensions) > 3){
 			foreach($phpextensionsMin as $exten){
@@ -127,9 +127,18 @@ class update extends updateBase{
 					$phpextensionsMissing[] = $exten;
 				}
 			}
-			if(!(in_array(strtolower('PDO'), $phpextensions) && in_array(strtolower('pdo_mysql'), $phpextensions))){//sp�ter ODER mysqli
-				$sdkDbOK = false;
+			if($_SESSION['clientTargetVersionNumber'] > 6440){
+				if(!in_array(strtolower('mysql'), $phpextensions, true) && !in_array('mysqli', $phpextensions, true)){
+					$phpextensionsMissing[] = 'mysqli';
+				}
+			} else {
+				if(!in_array('mysqli', $phpextensions, true)){
+					$phpextensionsMissing[] = 'mysqli';
+				}
 			}
+			/* if(!(in_array(strtolower('PDO'), $phpextensions) && in_array(strtolower('pdo_mysql'), $phpextensions))){//sp�ter ODER mysqli
+			  $sdkDbOK = false;
+			  } */
 			if(!in_array(strtolower('mbstring'), $phpextensions)){
 				$mbstringAvailable = false;
 			}
@@ -378,7 +387,7 @@ class update extends updateBase{
 
 		// query for all selected modules
 		$modulesQuery = '';
-		
+
 		// get systemlanguage only
 		if($_SESSION['clientTargetVersionNumber'] >= LANGUAGELIMIT){
 			$clientSyslng = str_replace('_UTF-8', '', $_SESSION['clientSyslng']);
