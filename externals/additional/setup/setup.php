@@ -57,6 +57,9 @@ if(!is_readable('./webEdition/we/include/conf/we_conf.inc.php')){
 if(!is_readable('./webEdition/we/include/conf/we_conf_global.inc.php')){
 	copy('./webEdition/we/include/conf/we_conf_global.inc.php.default', './webEdition/we/include/conf/we_conf_global.inc.php');
 }
+if(!defined('DB_CONNECT')){
+	define('DB_CONNECT','mysqli_connect');
+}
 
 include_once './webEdition/we/include/we_version.php';
 include_once './webEdition/lib/we/core/autoload.php';
@@ -893,6 +896,7 @@ function step_installation() {
 
 		$we_config .= "define('DB_CHARSET','".$_SESSION["we_db_charset"]."');\n".
 		"define('DB_COLLATION','".$_SESSION["we_db_collation"]."');\n".
+		"define('DB_CONNECT','" . DB_CONNECT . "');\n".
 		"define('DB_HOST','".$_SESSION["db_host"]."');\n".
 		"define('DB_DATABASE','".$_SESSION["db_database"]."');\n".
 		"define('DB_USER','".$_SESSION["db_username"]."');\n".
