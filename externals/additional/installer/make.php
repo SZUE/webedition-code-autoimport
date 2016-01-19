@@ -35,10 +35,10 @@ class le_OnlineInstaller_Make {
 		if(is_null($directory)) {
 			$directory = "./base";
 		} else {
-			$directory .= (!eregi("/$", $directory) ? "/" : "");
+			$directory .= (!preg_match("|/$|", $directory) ? "/" : "");
 		}
 		if(!is_null($saveTo) || !empty($saveTo)) {
-			$saveTo .= !eregi("/$", $saveTo) ? "/" : "";
+			$saveTo .= !preg_match("|/$|", $saveTo) ? "/" : "";
 		}
 
 		$lang['error'] = "An error occured!";
@@ -280,7 +280,7 @@ EOF;
 		if(!file_exists($dirname) || !is_dir($dirname) || stristr($dirname,".svn")) {
 			return $files;
 		}
-		$dirname .= !eregi("/$", $dirname) ? "/" : "";
+		$dirname .= !preg_match("|/$|", $dirname) ? "/" : "";
 		$d = dir($dirname);
 		while (false !== ($entry = $d->read())) {
 			//ignore Tempfiles
@@ -514,5 +514,5 @@ EOF;
 
 // code for standalone usage of this script, should be commented out if make.php is not called via http using a web server:
 $le_OnlineInstaller = new le_OnlineInstaller_Make();
-$le_OnlineInstaller->execute('./base', './out/', '2.8.0.0');
+$le_OnlineInstaller->execute('./base', './out/', '2.9.1.0');
 ?>

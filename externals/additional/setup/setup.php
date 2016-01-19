@@ -199,18 +199,18 @@ function step_requirements() {
 		$extens= strtolower($extens);
 	}
 	$phpextensionsMissing = array();
-	$phpextensionsMin = array('ctype','date','dom','filter','gd','iconv','libxml','mbstring','mysql','pcre','Reflection','session','SimpleXML','SPL','standard','tokenizer','xml','zlib');
+	$phpextensionsMin = array('ctype','date','dom','filter','gd','iconv','libxml','mbstring','mysqli','pcre','Reflection','session','SimpleXML','SPL','standard','tokenizer','xml','zlib');
 
 	if (count($phpextensions)> 3) {
 		foreach ($phpextensionsMin as $exten){
 			if(!in_array(strtolower($exten),$phpextensions,true) ){$phpextensionsMissing[]=$exten;}
 		}
-		if ( in_array(strtolower('PDO'),$phpextensions) && in_array(strtolower('pdo_mysql'),$phpextensions) ){//später ODER mysqli
+		/*if ( in_array(strtolower('PDO'),$phpextensions) && in_array(strtolower('pdo_mysql'),$phpextensions) ){//später ODER mysqli
 			$phpextensionsSDK_DB = 'PDO &amp; PDO_mysql';
 		} else {
 			$phpextensionsSDK_DB= '';
 			$sdkDbOK = false;
-		}
+		}*/
 	} else {
 		$phpExtensionsDetectable = false;
 	}
@@ -227,12 +227,12 @@ function step_requirements() {
 		$output.=tpl_error("Required PHP extensions are not available, missing: ".implode(', ', $phpextensionsMissing));
 		$errors = true;
 	}
-	if(!is_callable("mysql_query")) {
+	if(!is_callable("mysqli_query")) {
 		$output.=tpl_error("PHP MySQL Support is required for running webEdition! MySQL servers at version 5.0 or newer are supported.");
 		$errors = true;
 	} else {
-		$mysqlVersion = mysql_get_client_info();
-		if(version_compare($mysqlVersion,"5.0","<")) {
+		$mysqlVersion = mysqli_get_client_version();
+		if($mysqlVersion < 50000) {
 			$output.=tpl_error("MySQL Version 5.0 or newer required!");
 			$errors = true;
 		} else {
@@ -523,7 +523,7 @@ function step_databasecheck() {
 	}
 
 	// check connection to db server using the entered data
-	$conn = @mysql_connect($_SESSION["db_host"],$_SESSION["db_username"],$_SESSION["db_password"]);
+	$conn = mysqli_connect($_SESSION["db_host"],$_SESSION["db_username"],$_SESSION["db_password"]);
 	if(!$conn) {
 		$output .= tpl_error("Could not connect to MySQL database server.");
 		$errors = true;
@@ -535,7 +535,7 @@ function step_databasecheck() {
 	// check if selected database already exists:
 	$op_createdb = false;
 	//$result = @mysql_list_dbs($conn);
-	$result = @mysql_query(sprintf('use `%s`', $_SESSION['db_database']), $conn);
+	$result = mysqli_query($conn, "USE " . $_SESSION['db_database']);
 	//$dblist = mysql_fetch_array($result);
 	//$output .= print_r($dblist,true);
 	//if(!in_array($_SESSION["db_database"],$dblist)) {
@@ -549,53 +549,53 @@ function step_databasecheck() {
 
 	// try to create db:
 	if($op_createdb === true) {
-		if(!@mysql_query(sprintf('use `%s`', $_SESSION['db_database']), $conn)) {
-			$output .= tpl_error("Could not create the database. Message from the server: ".mysql_error($conn));
+		if(!mysqli_query($conn,  "USE " . $_SESSION['db_database'])) {
+			$output .= tpl_error("Could not create the database. Message from the server: ".mysqli_error($conn));
 			$errors = true;
 			return $output.'</ul>';
 		}
 	}
-	$result = @mysql_query(sprintf('use `%s`', $_SESSION['db_database']),$conn);
+	$result = mysqli_query($conn,  "USE " . $_SESSION['db_database']);
 
 	// check if there is already a webEdition installation present:
 
-	$result = @mysql_query("select ID from ".$_SESSION["db_tableprefix"]."tblUser",$conn);
+	$result = mysqli_query($conn, "SELECT ID from ".$_SESSION["db_tableprefix"]."tblUser");
 	if(!$result) {
 		$output .= tpl_ok("The selected database obviously does not conain any previous webEdition installations using this table prefix");
 	} else {
-		$data = @mysql_num_rows($result);
+		$data = mysqli_num_rows($result);
 		if(!empty($data)) {
 			$output .= tpl_warning("There is obviously a previous webEdition installation in the selected database. <b>All data will be lost if you continue this installation!</b> Please backup your data or use an alternate table prefix.");
 		} else {
 			$output .= tpl_ok("The selected database obviously does not conain any previous webEdition installations using this table prefix");
 		}
 	}
-	if ( (float) mysql_get_server_info($conn) < 5.0) {
-		$output .= 	tpl_warning(sprintf("The database server reports the version %s, webEdition requires at least the  MySQL-Server version 5.0. webEdition may work with the used version, but this can not be guarented for new webEdition versions (i.e. after updates). For webEdition version 7,  MySQL version 5 will definitely be required.<br/><span style=\"color:red;font-weight:bold\">In addition: In addition: The installed MySQL version is outdated. There are no security updates available for this version, which may put the security of the whole system at risk!</span><br/<br/>",mysql_get_server_info($conn)));
+	if ( (float) mysqli_get_server_info($conn) < 5.0) {
+		$output .= 	tpl_warning(sprintf("The database server reports the version %s, webEdition requires at least the  MySQL-Server version 5.0. webEdition may work with the used version, but this can not be guarented for new webEdition versions (i.e. after updates). For webEdition version 7,  MySQL version 5 will definitely be required.<br/><span style=\"color:red;font-weight:bold\">In addition: In addition: The installed MySQL version is outdated. There are no security updates available for this version, which may put the security of the whole system at risk!</span><br/<br/>",mysqli_get_server_info($conn)));
 	}
 
 	// check for required database access permissions (select, insert, alter, update, drop)
 	$output .= "</ul>Performing some permission tests for important database operations:<ul>";
-	if(!@mysql_query("CREATE TABLE  `we_installer_test` (`id` VARCHAR( 100 ) NOT NULL) ENGINE = MyISAM;",$conn)) {
-		$output .= tpl_error("CREATE TABLE failed: ".mysql_error($conn));
+	if(!mysqli_query($conn, "CREATE TABLE  `we_installer_test` (`id` VARCHAR( 100 ) NOT NULL) ENGINE = MyISAM;")) {
+		$output .= tpl_error("CREATE TABLE failed: ".mysqli_error($conn));
 		$errors = true;
 	} else {
 		$output .= tpl_ok("CREATE TABLE succeeded");
 	}
-	if(!@mysql_query("INSERT INTO `we_installer_test` VALUES('eins');",$conn)) {
-		$output .= tpl_error("INSERT failed: ".mysql_error($conn));
+	if(!mysqli_query($conn, "INSERT INTO `we_installer_test` VALUES('eins');")) {
+		$output .= tpl_error("INSERT failed: ".mysqli_error($conn));
 		$errors = true;
 	} else {
 		$output .= tpl_ok("INSERT succeeded");
 	}
-	if(!@mysql_query("UPDATE `we_installer_test` SET `id` = 'zwei' WHERE `id` != 'zwei';",$conn)) {
-		$output .= tpl_error("UPDATE failed: ".mysql_error($conn));
+	if(!mysqli_query($conn, "UPDATE `we_installer_test` SET `id` = 'zwei' WHERE `id` != 'zwei';")) {
+		$output .= tpl_error("UPDATE failed: ".mysqli_error($conn));
 		$errors = true;
 	} else {
 		$output .= tpl_ok("UPDATE succeeded");
 	}
-	if(!@mysql_query("DROP TABLE `we_installer_test`;",$conn)) {
-		$output .= tpl_error("DROP TABLE failed: ".mysql_error($conn));
+	if(!mysqli_query($conn, "DROP TABLE `we_installer_test`;")) {
+		$output .= tpl_error("DROP TABLE failed: ".mysqli_error($conn));
 		$errors = true;
 	} else {
 		$output .= tpl_ok("DROP TABLE succeeded");
@@ -663,9 +663,9 @@ function step_language() {
 	}
 	$output .= "If your language is missing in this list, feel free to contribute a new translation to the webEdition community. You can find more informations about contributing code and translations on the <a href=\"http://www.webedition.org\" target=\"_blank\">webEdition website</a>.";
 
-	$conn = @mysql_connect($_SESSION["db_host"],$_SESSION["db_username"],$_SESSION["db_password"]);
-	$result = @mysql_query(sprintf('use `%s`', $_SESSION['db_database']),$conn);
-	$result = @mysql_query("SHOW COLLATION WHERE Compiled = 'Yes' ",$conn);
+	$conn = mysqli_connect($_SESSION["db_host"],$_SESSION["db_username"],$_SESSION["db_password"]);
+	$result = mysqli_query($conn,  "USE " . $_SESSION["db_database"]);
+	$result = mysqli_query($conn, "SHOW COLLATION WHERE Compiled = 'Yes' ");
 	if(!isset($_SESSION["we_db_collation"])) {
 		$currentcharset = 'utf8_general_ci';
 	} else {
@@ -678,7 +678,7 @@ function step_language() {
 
 	$output .= '<select name="we_db_char" onchange="document.getElementsByName(\'we_db_collation\')[0].value = this[this.selectedIndex].text;">';
 	$cset ='';
-	while ($row = mysql_fetch_assoc($result)) {
+	while ($row = mysqli_fetch_assoc($result)) {
 		if ($cset != $row['Charset']){
 			if ($cset != ''){$output .= '</optgroup>';}
 			$output .= '<optgroup label="'.$row['Charset'].'">';
@@ -782,26 +782,26 @@ function step_installation() {
 	}
 
 	echo sizeof($dbqueries).' queries found.';
-	$conn = @mysql_connect($_SESSION["db_host"],$_SESSION["db_username"],$_SESSION["db_password"]);
+	$conn = mysqli_connect($_SESSION["db_host"],$_SESSION["db_username"],$_SESSION["db_password"]);
 	if(!$conn) {
-		$output .= tpl_error("Could not connect to database server. Message from server: ".mysql_error());
+		$output .= tpl_error("Could not connect to database server. Message from server: ".mysqli_error());
 		$errors = true;
 		return $output;
 	} else {
 		$output .= tpl_ok("connected to database server on \"".$_SESSION["db_host"]."\"");
 	}
 	// select database:
-	if(!@mysql_query(sprintf('use `%s`', $_SESSION['db_database']),$conn)) {
-		$output .= tpl_error("Error using specified database. Message from server: ".mysql_error());
+	if(!mysqli_query($conn,  "USE " . $_SESSION["db_database"])) {
+		$output .= tpl_error("Error using specified database. Message from server: ".mysqli_error($conn));
 		$errors = true;
 		return $output;
 	} else {
 		$output .= tpl_ok("Using specified database \"".$_SESSION["db_database"]."\"");
 	}
 	// drop all existing tables beginning with $prefix$tbl:
-	$res = @mysql_query('show tables where Tables_in_'.$_SESSION["db_database"].' LIKE "'.$_SESSION["db_tableprefix"].'tbl%"',$conn);
-	while($table = @mysql_fetch_array($res)) {
-		@mysql_query("drop table ".$table[0],$conn);
+	$res = mysqli_query($conn, 'show tables where Tables_in_'.$_SESSION["db_database"].' LIKE "'.$_SESSION["db_tableprefix"].'tbl%"');
+	while($table = mysqli_fetch_array($res)) {
+		mysqli_query($conn, "drop table " . $table[0]);
 		echo $table[0]." dropped.<br />";
 	}
 	// insert table prefix and install all tables from sql dump:
@@ -816,7 +816,7 @@ function step_installation() {
 	} else {
 		$charset_collation = "ENGINE=MyISAM";
 	}
-	@mysql_query(" SET NAMES '" . $_SESSION["we_db_charset"] . "' ",$conn );
+	mysqli_query($conn, " SET NAMES '" . $_SESSION["we_db_charset"] . "' ");
 	foreach($dbqueries as $dbquery) {
 		if(isset($_SESSION["db_tableprefix"]) && !empty($_SESSION["db_tableprefix"])) {
 			$dbquery=str_replace('###TBLPREFIX###', $_SESSION["db_tableprefix"], $dbquery);
@@ -833,9 +833,9 @@ function step_installation() {
 
 		}
 		if(!empty($dbquery)) {
-			if(!@mysql_query($dbquery,$conn)) {
-				if(mysql_errno() != "1065") {
-					$output .= tpl_warning("error executing query. Message from server: ".mysql_error());
+			if(!mysqli_query($conn, $dbquery)) {
+				if(mysqli_errno($conn) != "1065") {
+					$output .= tpl_warning("error executing query. Message from server: ".mysqli_error($conn));
 					print("<pre>".$dbquery."</pre><hr />");
 					$queryErrors = true;
 				}
@@ -857,16 +857,16 @@ function step_installation() {
 	//$output .= "<li><i>under construction ...</i></li>";
 	
 	// set the language and backendcharset of the default user
-	if(!@mysql_query('INSERT INTO '.$_SESSION["db_tableprefix"].'tblPrefs (`userID`,`key`,`value`) VALUES("1","Language","' . $_SESSION["we_language"] . '")',$conn)
-			|| !@mysql_query('INSERT INTO '.$_SESSION["db_tableprefix"].'tblPrefs (`userID`,`key`,`value`) VALUES("1","BackendCharset","' . $_SESSION["we_charset"] . '")',$conn)) {
-		$output .= tpl_warning("Could not change the default user's language settings. Message from server: ".mysql_error());
+	if(!mysqli_query($conn, 'INSERT INTO '.$_SESSION["db_tableprefix"].'tblPrefs (`userID`,`key`,`value`) VALUES("1","Language","' . $_SESSION["we_language"] . '")')
+			|| !mysqli_query($conn, 'INSERT INTO '.$_SESSION["db_tableprefix"].'tblPrefs (`userID`,`key`,`value`) VALUES("1","BackendCharset","' . $_SESSION["we_charset"] . '")')) {
+		$output .= tpl_warning("Could not change the default user's language settings. Message from server: ".mysqli_error($conn));
 		print("<pre>".$dbquery."</pre><hr />");
 		$queryErrors = true;
 		//$output .= tpl_warning("error executing query.");
 	} else {
 		$output .= tpl_ok("Changed the default user's language to ".$_SESSION["we_language"]);
 	}
-	@mysql_close($conn);
+	mysqli_close($conn);
 
 	//create conf files for productive use
 	if(is_writable('./webEdition/we/include/conf/')){
