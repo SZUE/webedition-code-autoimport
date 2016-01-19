@@ -342,8 +342,7 @@ class we_binaryDocument extends we_document{
 	}
 
 	function formIsProtected(){
-		return we_html_forms::checkboxWithHidden((bool) $this->IsProtected, 'we_' . $this->Name . '_IsProtected', 'geschützt', false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
-		//return we_html_forms::checkboxWithHidden((bool) $this->IsProtected, 'we_' . $this->Name . '_IsProtected', g_l('weClass', '[IsProtected]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
+		return we_html_forms::checkboxWithHidden((bool) $this->IsProtected, 'we_' . $this->Name . '_IsProtected', g_l('weClass', '[protected]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
 	}
 
 	function formReferences(){
