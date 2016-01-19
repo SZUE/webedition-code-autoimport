@@ -1,9 +1,7 @@
 <?php
 
-class installer extends installerBase {
-
+class installer extends installerBase{
 	var $LanguageIndex = "installer";
-
 
 	/**
 	 * returns response part, with javascript orders to
@@ -16,31 +14,27 @@ class installer extends installerBase {
 	 * @param string $message
 	 * @return string
 	 */
-	function getProceedNextCommandResponsePart($nextUrl, $progress, $message='') {
+	function getProceedNextCommandResponsePart($nextUrl, $progress, $message = ''){
 
 		$activateStep = '';
 
 		$appendMessageLogJs = "appendText";
 
-		if ( !strpos($nextUrl, $_REQUEST['detail']) ) {
+		if(!strpos($nextUrl, $_REQUEST['detail'])){
 			$NextUpdateDetail = $this->getNextUpdateDetail();
-			if(key_exists($NextUpdateDetail, $GLOBALS['lang'][$this->LanguageIndex])) {
+			if(key_exists($NextUpdateDetail, $GLOBALS['lang'][$this->LanguageIndex])){
 				$message .= "<h1>" . $GLOBALS['lang'][$this->LanguageIndex][$NextUpdateDetail] . "</h1>";
-
 			}
-
 		}
 
-		if ( strpos($nextUrl, "leStep=" . $_REQUEST["nextLeStep"]) ) {
+		if(strpos($nextUrl, "leStep=" . $_REQUEST["nextLeStep"])){
 			$activateStep = '
 				top.leStatus.update("leStatus", "' . ($_REQUEST["nextLeWizard"]) . '", "' . ($_REQUEST["nextLeStep"]) . '");
 			';
-
 		}
 
-		if ( $this->getUpdateDetailPosition() === 0) {
+		if($this->getUpdateDetailPosition() === 0){
 			$appendMessageLogJs = "replaceText";
-
 		}
 
 		return '<script type="text/JavaScript">
@@ -60,13 +54,13 @@ class installer extends installerBase {
 	 * @param string $headline
 	 * @return string
 	 */
-	function getErrorMessage($headline='', $message='') {
+	function getErrorMessage($headline = '', $message = ''){
 
-		if (!$headline) {
+		if(!$headline){
 			$headline = "<br /><strong class=\'errorText\'>" . $GLOBALS['lang'][$this->LanguageIndex][$_REQUEST['detail'] . 'Error'] . '</strong>';
 		}
 
-		if ($message) {
+		if($message){
 			$message .= '<br />';
 		}
 
@@ -94,7 +88,7 @@ class installer extends installerBase {
 	 * @param string $message
 	 * @return string
 	 */
-	function getErrorMessageResponsePart($headline='', $message='') {
+	function getErrorMessageResponsePart($headline = '', $message = ''){
 		return '
 
 		$errorMessage = ' . $this->getErrorMessage($headline, $message) . ';
@@ -107,15 +101,15 @@ class installer extends installerBase {
 		';
 	}
 
-	function getUpdateDetailPosition() {
+	function getUpdateDetailPosition(){
 
 		$currentStep = $_REQUEST['detail'];
 
 		$steps = $this->getInstallationStepNames();
 
-		for ($i=0; $i<sizeof($steps); $i++) {
+		for($i = 0; $i < sizeof($steps); $i++){
 
-			if ($currentStep == $steps[$i]) {
+			if($currentStep == $steps[$i]){
 				return $i;
 			}
 		}
@@ -130,12 +124,12 @@ class installer extends installerBase {
 	 * @param string $nextDetail
 	 * @return array
 	 */
-	function _getDownloadFilesResponse($filesArray, $nextUrl, $progress=0) {
+	function _getDownloadFilesResponse($filesArray, $nextUrl, $progress = 0){
 		// prepare $filesArray (path => encodedContent) for the client
 		$writeFilesCode = '
 			$files = array();';
 
-		foreach ($filesArray as $path => $content) {
+		foreach($filesArray as $path => $content){
 
 			$writeFilesCode .= '
 				$files[' . $path . '] = "' . $content . '";';
@@ -186,7 +180,6 @@ class installer extends installerBase {
 ?>';
 
 		return $retArray;
-
 	}
 
 	/**
@@ -198,12 +191,12 @@ class installer extends installerBase {
 	 * @param string $nextDetail
 	 * @return array
 	 */
-	function _getDownloadFilesMergeResponse($filesArray, $nextUrl, $progress=0, $Realname, $numberOfParts) {
+	function _getDownloadFilesMergeResponse($filesArray, $nextUrl, $progress = 0, $Realname, $numberOfParts){
 		// prepare $filesArray (path => encodedContent) for the client
 		$writeFilesCode = '
 			$files = array();';
 
-		foreach ($filesArray as $path => $content) {
+		foreach($filesArray as $path => $content){
 
 			$writeFilesCode .= '
 				$files[' . $path . '] = "' . $content . '";';
@@ -269,9 +262,6 @@ class installer extends installerBase {
 ?>';
 
 		return $retArray;
-
 	}
 
 }
-
-?>

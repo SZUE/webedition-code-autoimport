@@ -8,17 +8,17 @@
  * @param string $text
  * @return string
  */
-function getCheckBox($name, $value, $text, $beta = false) {
-	
-	if(!is_array($_SESSION['clientInstalledLanguages'])) {
+function getCheckBox($name, $value, $text, $beta = false){
+
+	if(!is_array($_SESSION['clientInstalledLanguages'])){
 		$_SESSION['clientInstalledLanguages'] = unserialize(urldecode(base64_decode($_SESSION['clientInstalledLanguages'])));
 	}
-	
-	if (in_array($value, $_SESSION['clientInstalledLanguages'])) {
-		
+
+	if(in_array($value, $_SESSION['clientInstalledLanguages'])){
+
 		$text = "<i>$text</i>";
 	}
-	if($beta == true) {
+	if($beta == true){
 		$text = "$text <font color='red'>[beta]</font>";
 		//error_log("found beta language ".$text.".");
 	}
@@ -31,48 +31,47 @@ $missingBetaLanguages = $GLOBALS['updateServerTemplateData']['missingBetaLanguag
 $installableBetaLanguages = $GLOBALS['updateServerTemplateData']['installableBetaLanguages'];
 
 // selectBoxes for languages
-	$installAbleLanguages = $GLOBALS['updateServerTemplateData']['installAbleLanguages'];
+$installAbleLanguages = $GLOBALS['updateServerTemplateData']['installAbleLanguages'];
 
-if($_SESSION['clientVersionNumber']>=LANGUAGELIMIT){
-	foreach ($installAbleLanguages as $lk => $lv){
-		if(strpos($lv,'_UTF-8')=== false){
-			$newinstallAbleLanguages[]=$lv;
+if($_SESSION['clientVersionNumber'] >= LANGUAGELIMIT){
+	foreach($installAbleLanguages as $lk => $lv){
+		if(strpos($lv, '_UTF-8') === false){
+			$newinstallAbleLanguages[] = $lv;
 		}
-	}	
+	}
 } else {
 	$newinstallAbleLanguages = $installAbleLanguages;
 }
-	$installLanguages = '';
-	for ($i=0;$i<sizeof($newinstallAbleLanguages); $i++) {
-		
-		$installLanguages .= getCheckBox('lng_' .$newinstallAbleLanguages[$i], $newinstallAbleLanguages[$i], $newinstallAbleLanguages[$i], false);
-	}
+$installLanguages = '';
+for($i = 0; $i < sizeof($newinstallAbleLanguages); $i++){
+
+	$installLanguages .= getCheckBox('lng_' . $newinstallAbleLanguages[$i], $newinstallAbleLanguages[$i], $newinstallAbleLanguages[$i], false);
+}
 
 // missingLanguages
-	$missingStr = '';
-	if (sizeof($missingLanguages)) {
-		
-		$missingStr = "<ul>\n";
-		for ($i=0;$i<sizeof($missingLanguages); $i++) {
-			
-			$missingStr .= "<li>" . $missingLanguages[$i] . "</li>\n";
-		}
-		$missingStr .= "</ul>\n";
+$missingStr = '';
+if(sizeof($missingLanguages)){
+
+	$missingStr = "<ul>\n";
+	for($i = 0; $i < sizeof($missingLanguages); $i++){
+
+		$missingStr .= "<li>" . $missingLanguages[$i] . "</li>\n";
 	}
-	
-	if ($missingStr) {
-		$missingStr = 
-			'<div class="messageDiv">' .
-				$GLOBALS['lang']['languages']['languagesNotReady'] . $missingStr .
-			'</div>';
-	}
+	$missingStr .= "</ul>\n";
+}
+
+if($missingStr){
+	$missingStr = '<div class="messageDiv">' .
+		$GLOBALS['lang']['languages']['languagesNotReady'] . $missingStr .
+		'</div>';
+}
 
 // betaLanguages
-	//$installBetaLanguages = '';
-	for ($i=0;$i<sizeof($installableBetaLanguages); $i++) {
-		$installLanguages .= getCheckBox('lng_' . $installableBetaLanguages[$i], $installableBetaLanguages[$i], $installableBetaLanguages[$i], true);
-	}
-	
+//$installBetaLanguages = '';
+for($i = 0; $i < sizeof($installableBetaLanguages); $i++){
+	$installLanguages .= getCheckBox('lng_' . $installableBetaLanguages[$i], $installableBetaLanguages[$i], $installableBetaLanguages[$i], true);
+}
+
 // build response array
 $liveUpdateResponse['Type'] = 'eval';
 $liveUpdateResponse['Code'] = '<?php
@@ -103,4 +102,3 @@ $content = \'
 print liveUpdateTemplates::getHtml("' . addslashes($GLOBALS['lang']['languages']['headline']) . '", $content);
 ?>';
 
-?>

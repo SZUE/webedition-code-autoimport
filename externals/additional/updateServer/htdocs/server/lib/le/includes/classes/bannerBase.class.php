@@ -1,7 +1,5 @@
 <?php
 
-class bannerBase {
-	
-}
+class bannerBase{
 
-?>
+}

@@ -1,19 +1,16 @@
 <?php
-
 /**
  * check if its beta
  */
-
 // not possible for too old versions
-if (isset($clientRequestVars['isBeta'])) {
+if(isset($clientRequestVars['isBeta'])){
 	print notification::getLiveUpdateNotPossibleForOldBetaResponse();
 	exit;
-
 }
 
 // beta versions!
-if (isset($clientRequestVars['betaVersion'])) {
-	switch ($clientRequestVars['betaVersion']) {
+if(isset($clientRequestVars['betaVersion'])){
+	switch($clientRequestVars['betaVersion']){
 		case '5000':
 			//$_SESSION['testUpdate'] = true;
 			//print notification::getBetaExpiredResponse();
@@ -63,14 +60,12 @@ if (isset($clientRequestVars['betaVersion'])) {
 			exit;
 			break;
 		/*
-		case '5VG3QF4m31NkksvYVIUGZbqEtV6kVUQ':
-			$_SESSION['testUpdate'] = true;
-			//print notification::getBetaExpiredResponse();
-			//exit;
-			break;
-		*/
+		  case '5VG3QF4m31NkksvYVIUGZbqEtV6kVUQ':
+		  $_SESSION['testUpdate'] = true;
+		  //print notification::getBetaExpiredResponse();
+		  //exit;
+		  break;
+		 */
 	}
-
 }
 
-?>

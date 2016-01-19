@@ -1,15 +1,14 @@
 <?php
-
 // include config files
 /*
-if ( isset($_SERVER['SERVER_ADDR']) && ($_SERVER['SERVER_ADDR'] == '192.168.0.8' || $_SERVER['SERVER_ADDR'] == '127.0.0.1' || $_SERVER['SERVER_ADDR'] == '10.10.1.51') ) {
-	require_once(LIVEUPDATE_SERVER_DIR . '/../conf/conf.inc.hal.php');
-	
-} else {
-	require_once(LIVEUPDATE_SERVER_DIR . '/../conf/conf.inc.php');
-	
-}
-*/
+  if ( isset($_SERVER['SERVER_ADDR']) && ($_SERVER['SERVER_ADDR'] == '192.168.0.8' || $_SERVER['SERVER_ADDR'] == '127.0.0.1' || $_SERVER['SERVER_ADDR'] == '10.10.1.51') ) {
+  require_once(LIVEUPDATE_SERVER_DIR . '/../conf/conf.inc.hal.php');
+
+  } else {
+  require_once(LIVEUPDATE_SERVER_DIR . '/../conf/conf.inc.php');
+
+  }
+ */
 require_once(LIVEUPDATE_SERVER_DIR . '/../conf/conf.inc.php');
 require_once(LIVEUPDATE_SERVER_DIR . "/../conf/define.inc.php");
 
@@ -34,4 +33,3 @@ require_once(SHARED_DIR . '/includes/classes/updateUtilBase.class.php');
 require_once(SHARED_DIR . '/includes/classes/communityBase.class.php');
 require_once(SHARED_DIR . '/includes/classes/soapRequest.class.php');
 
-?>

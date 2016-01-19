@@ -2,7 +2,6 @@
 /**
  * This template is shown to confirm an update repeat
  */
-
 $liveUpdateResponse['Type'] = 'eval';
 $liveUpdateResponse['Code'] = '<?php
 
@@ -45,4 +44,3 @@ if($authenticated === true) {
 print liveUpdateTemplates::getHtml("' . addslashes($GLOBALS['lang']['community']['headline']) . '", $content);
 ?>';
 
-?>

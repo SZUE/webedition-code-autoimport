@@ -1,6 +1,4 @@
 <?php
-
-
 /*
  * Language-Limit
  */
@@ -19,13 +17,12 @@ define('SHARED_DOWNLOAD_DIR', SHARED_DIR . '/download');
 /**
  * Names of tables
  */
-
 // DB_Versioning
 define('VERSION_TABLE', 'v6_versions');
 define('SOFTWARE_TABLE', 'v6_changes');
 define('SOFTWARE_LANGUAGE_TABLE', 'v6_changes_language');
-define('UPDATELOG_TABLE','we_updatelog');
-define('INSTALLLOG_TABLE','we_installlog');
+define('UPDATELOG_TABLE', 'we_updatelog');
+define('INSTALLLOG_TABLE', 'we_installlog');
 
 // DB_Register
 define('STOCK_TABLE', 'we');

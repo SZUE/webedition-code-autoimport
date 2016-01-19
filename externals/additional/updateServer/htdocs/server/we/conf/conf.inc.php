@@ -1,17 +1,13 @@
 <?php
-
-
-
-
 /*
  * database connection
  */
 
 // database for version information
 $DSN_versioning = array(
-	'phptype'  => 'mysql',
-    'hostspec' => 'mysql5.webedition.info',
-    'database' => 'db343047_3', // webedition_versioning - versioning
+	'phptype' => 'mysql',
+	'hostspec' => 'mysql5.webedition.info',
+	'database' => 'db343047_3', // webedition_versioning - versioning
 );
 
 $OPTIONS_versioning = array(
@@ -20,9 +16,9 @@ $OPTIONS_versioning = array(
 
 // database for registration information
 $DSN_customer = array(
-	'phptype'  => 'mysql',
-    'hostspec' => 'mysql5.webedition.info',
-    'database' => 'licensing', // webedition_licensing - licensing
+	'phptype' => 'mysql',
+	'hostspec' => 'mysql5.webedition.info',
+	'database' => 'licensing', // webedition_licensing - licensing
 );
 
 $OPTIONS_customer = array(

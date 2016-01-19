@@ -1,15 +1,12 @@
 <?php
+$leInstallerSteps = array(
+	'PrepareApplicationInstallation',
+	'DetermineApplicationFiles',
+	'DownloadApplicationFiles',
+	'UpdateApplicationDatabase',
+	'PrepareApplicationFiles',
+	'CopyApplicationFiles',
+	'WriteApplicationConfiguration',
+	'FinishApplicationInstallation',
+);
 
-	$leInstallerSteps = array(
-		'PrepareApplicationInstallation',
-		'DetermineApplicationFiles',
-		'DownloadApplicationFiles',
-		'UpdateApplicationDatabase',
-		'PrepareApplicationFiles',
-		'CopyApplicationFiles',
-		'WriteApplicationConfiguration',
-		'FinishApplicationInstallation',
-
-	);
-
-?>

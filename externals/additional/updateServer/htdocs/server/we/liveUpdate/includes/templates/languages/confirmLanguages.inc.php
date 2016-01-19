@@ -1,8 +1,7 @@
 <?php
-
 $desiredLanguagesStr = "<ul>";
 
-foreach ($_SESSION['clientDesiredLanguages'] as $lng) {
+foreach($_SESSION['clientDesiredLanguages'] as $lng){
 	$desiredLanguagesStr .= "	<li>$lng</li>";
 }
 $desiredLanguagesStr .= "</ul>";
@@ -27,4 +26,3 @@ $content = \'
 print liveUpdateTemplates::getHtml("' . addslashes($GLOBALS['lang']['languages']['headline']) . '", $content);
 ?>';
 
-?>

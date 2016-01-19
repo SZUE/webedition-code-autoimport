@@ -1,7 +1,5 @@
 <?php
 
-class notification extends notificationBase {
+class notification extends notificationBase{
 
 }
-
-?>

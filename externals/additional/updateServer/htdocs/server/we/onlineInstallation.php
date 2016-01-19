@@ -1,16 +1,15 @@
 <?php
-
 // error logging
-ini_set("log_errors",0);
+ini_set("log_errors", 0);
 //ini_set("log_errors",1);
-//ini_set("error_reporting",E_ALL); 
+//ini_set("error_reporting",E_ALL);
 //ini_set("error_log",$_SERVER["DOCUMENT_ROOT"]."/server/we/php_errors.log");
 /*
-error_log(print_r($_REQUEST,1));
-if(isset($_REQUEST["reqArray"]) && !empty($_REQUEST["reqArray"])) {
-	error_log(print_r(unserialize(base64_decode($_REQUEST["reqArray"])),1));
-}
-*/
+  error_log(print_r($_REQUEST,1));
+  if(isset($_REQUEST["reqArray"]) && !empty($_REQUEST["reqArray"])) {
+  error_log(print_r(unserialize(base64_decode($_REQUEST["reqArray"])),1));
+  }
+ */
 
 // Set the current root directory
 define("ROOT_DIR", dirname(__FILE__));
@@ -78,7 +77,7 @@ require_once(SHARED_DIR . '/includes/init/checkTemporarilyShutDown.inc.php');
 
 /**
  * check online installer version
- * it has to be at least 2.0.0.0 or newer 
+ * it has to be at least 2.0.0.0 or newer
  */
 require_once(SHARED_DIR . '/includes/init/checkInstallerVersion.inc.php');
 
@@ -86,18 +85,17 @@ require_once(SHARED_DIR . '/includes/init/checkInstallerVersion.inc.php');
 /**
  * Start handling the incoming commands
  */
-
 $_SESSION['clientContent'] = true;
 
-if (isset($_REQUEST['update_cmd'])) {
+if(isset($_REQUEST['update_cmd'])){
 
 	// checkdatabases first
-	if ($db_register_down || $db_versioning_down) {
+	if($db_register_down || $db_versioning_down){
 		$_REQUEST['update_cmd'] = 'notification';
 		$_REQUEST['detail'] = 'databaseFailure';
 	}
 
-	switch ($_REQUEST['update_cmd']) {
+	switch($_REQUEST['update_cmd']){
 
 
 		case 'notification':
@@ -133,20 +131,16 @@ if (isset($_REQUEST['update_cmd'])) {
 		default:
 			print notification::getNotAvailableAtTheMomentResponse();
 			break;
-
 	}
 
 
 // check databases
 } else {
-	if ($db_register_down || $db_versioning_down) {
+	if($db_register_down || $db_versioning_down){
 		include(SHARED_TEMPLATE_DIR . '/connection/serverDatabaseDown.inc.php');
-
 	} else {
 		include(SHARED_TEMPLATE_DIR . '/connection/serverUpAndRunning.inc.php');
-
 	}
-
 }
 
 /*
@@ -164,5 +158,3 @@ if(isset($_SESSION)) {
 }
 */
 
-
-?>

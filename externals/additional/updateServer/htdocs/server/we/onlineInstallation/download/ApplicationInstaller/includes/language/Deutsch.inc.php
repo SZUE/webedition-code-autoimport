@@ -1,5 +1,4 @@
 <?php
-
 //
 // ---> Wizards
 //
@@ -15,7 +14,6 @@ $lang["Wizard"]["FinishInstallation"]["title"] = "Installation beenden";
 //
 // ---> Steps
 //
-
 // ImportantAnnouncement
 $lang["Step"]["ImportantAnnouncement"]["title"] = "Wichtige Information";
 $lang["Step"]["ImportantAnnouncement"]["headline"] = "Wichtige Information";
@@ -74,7 +72,7 @@ $lang["Step"]["SoftwareRequirements"]['sdk_db'] = 'SDK/Apps DB Unterst&uuml;tzun
 $lang["Step"]["SoftwareRequirements"]['sdk_dbWarnung'] = 'SDK DB-Operationen und WE-APPS mit Datenbanknutzung sind nicht verf&uuml;gbar, es fehlen die PHP Extensions PDO und PDO_mysql';
 $lang["Step"]["SoftwareRequirements"]['phpext'] = 'Minimal notwendige PHP-Extensions';
 $lang["Step"]["SoftwareRequirements"]['phpextWarning'] = 'Notwendige PHP-Extension nicht verf&uuml;gbar: ';
-$lang["Step"]["SoftwareRequirements"]['reqNotDetec'] = 'Einige Softwarevoraussetzungen konnten nicht überpr&uuml;ft werden (Suhosin?). Bitte pr&uuml;fen Sie die Systemvoraussetzungen unter http://www.webedition.org/de/webedition-cms/systemvoraussetzungen.php ';
+$lang["Step"]["SoftwareRequirements"]['reqNotDetec'] = 'Einige Softwarevoraussetzungen konnten nicht ï¿½berpr&uuml;ft werden (Suhosin?). Bitte pr&uuml;fen Sie die Systemvoraussetzungen unter http://www.webedition.org/de/webedition-cms/systemvoraussetzungen.php ';
 $lang["Step"]["SoftwareRequirements"]['softreq'] = "Weitere Softwarevoraussetzungen";
 
 
@@ -97,7 +95,7 @@ $lang["Step"]["Database"]["title"] = "Datenbank";
 $lang["Step"]["Database"]["headline"] = "Datenbank";
 $lang["Step"]["Database"]["content"] = "Geben Sie bitte hier die Zugangsdaten des MySQL-Datenbank-Servers ein! Diese Daten erhalten Sie in der Regel von Ihrem Webspace-Provider.";
 
-$lang["Step"]["Database"]['connecttype']	= "Verbindungsart";
+$lang["Step"]["Database"]['connecttype'] = "Verbindungsart";
 $lang["Step"]["Database"]['connect'] = "Normal (connect)";
 $lang["Step"]["Database"]['pconnect'] = "Persistent (pconnect)";
 $lang["Step"]["Database"]['pconnect_na'] = "nicht verf&uuml;gbar";
@@ -124,7 +122,7 @@ $lang["Step"]["DatabasePermissions"]["title"] = "Datenbankberechtigung";
 $lang["Step"]["DatabasePermissions"]["headline"] = "Datenbankberechtigungen pr&uuml;fen";
 $lang["Step"]["DatabasePermissions"]["content"] = "Sie verf&uuml;gen &uuml;ber alle ben&ouml;tigten Rechte, um webEdition zu installieren.<br /><ul><li>CREATE TABLE</li><li>ALTER TABLE</li><li>DROP TAPBE</li></ul>";
 
-$lang["Step"]["DatabasePermissions"]["dbserverwarning"] = "<br/>Der verwendete DB-Server meldet die Version %s, webEdition ben&ouml;tigt jedoch mindestens die MySQL-Server Version 5.0. webEdition mag mit der genutzten Version funktionieren, dies kann jedoch nicht f&uuml;r neue webEdition Versionen (z.B. nach Updates) garantiert werden. Sp&auml;testens ab webEdition Version 7 wird MySQL Version 5 ben&ouml;tigt.<br/><span style=\"color:red;font-weight:bold\">Außerdem: die auf dem Server installierte MySQL Version ist veraltet. Für diese Version gibt es keine Updates mehr, dies kann die Sicherheit des gesamten Systems beeintr&auml;chtigen.</span><br/>";
+$lang["Step"]["DatabasePermissions"]["dbserverwarning"] = "<br/>Der verwendete DB-Server meldet die Version %s, webEdition ben&ouml;tigt jedoch mindestens die MySQL-Server Version 5.0. webEdition mag mit der genutzten Version funktionieren, dies kann jedoch nicht f&uuml;r neue webEdition Versionen (z.B. nach Updates) garantiert werden. Sp&auml;testens ab webEdition Version 7 wird MySQL Version 5 ben&ouml;tigt.<br/><span style=\"color:red;font-weight:bold\">Auï¿½erdem: die auf dem Server installierte MySQL Version ist veraltet. Fï¿½r diese Version gibt es keine Updates mehr, dies kann die Sicherheit des gesamten Systems beeintr&auml;chtigen.</span><br/>";
 
 $lang["Step"]["DatabasePermissions"]["AccessDenied"] = "Die von Ihnen angegebene Datenbank '%s' existiert nicht. Der von Ihnen gew&auml;hlte Benutzer verf&uuml;gt nicht &uuml;ber die ben&ouml;tigten Rechte die Datenbank anzulegen, bzw. zu benutzen. Bitte gehen sie zur&uuml;ck und &uuml;berpr&uuml;fen Sie die eingegebenen Benutzerdaten, bzw. die Rechte der Datenbank.";
 $lang["Step"]["DatabasePermissions"]["errorNotCreateTable"] = "<strong>Fehlendes Recht: Tabelle erstellen</strong><br />Der verwendetet Datenbankbenutzer verf&uuml;gt nicht &uuml;ber die ben&ouml;tigten Rechte, eine Tabelle anzulegen. Bitte kontrollieren Sie Ihren Datenbankbenutzer, bzw. setzen Sie dessen Rechte hoch. Dabei kann Ihnen in der Regel Ihr Webspace-Provider helfen.";
@@ -377,4 +375,3 @@ $lang["Step"]["CleanUp"]["delete_failed"] = "Aus Sicherheitsgr&uuml;nden empfehl
 $lang["Step"]["CleanUp"]["openWebEdition"] = "webEdition &ouml;ffnen";
 
 
-?>

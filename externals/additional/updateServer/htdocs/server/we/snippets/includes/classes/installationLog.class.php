@@ -1,7 +1,5 @@
 <?php
 
-class installationLog extends installationLogBase {
+class installationLog extends installationLogBase{
 
 }
-
-?>

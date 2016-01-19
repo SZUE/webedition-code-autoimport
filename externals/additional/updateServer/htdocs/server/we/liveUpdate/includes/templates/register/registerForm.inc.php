@@ -3,9 +3,8 @@
  * This template is used, when the registration form of a demo version is
  * requested. This contains mainly a input field for the serial
  */
-
 $newsletterForm = register::getNewsletterHtml();
-	
+
 $liveUpdateResponse['Type'] = 'eval';
 $liveUpdateResponse['Code'] = '
 <?php
@@ -40,4 +39,3 @@ $content = \'
 print liveUpdateTemplates::getHtml("' . addslashes($GLOBALS['lang']['register']['headline']) . '", $content);
 ?>';
 
-?>

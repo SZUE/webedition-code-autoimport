@@ -553,5 +553,3 @@ class update extends updateBase{
 	}
 
 }
-
-?>

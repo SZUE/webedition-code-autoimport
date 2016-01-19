@@ -1,5 +1,4 @@
 <?php
-
 $GLOBALS["allTables"] = array(
 	"tblAnzeigePrefs",
 	"tblbanner",
@@ -68,7 +67,6 @@ $GLOBALS["allTables"] = array(
 	"tblWorkflowLog",
 	"tblWorkflowStep",
 	"tblWorkflowTask",
-	
 	"tblObject_1",
 	"tblObject_2",
 	"tblObject_3",
@@ -100,4 +98,3 @@ $GLOBALS["allTables"] = array(
 	"tblObject_29",
 	"tblObject_30",
 );
-?>

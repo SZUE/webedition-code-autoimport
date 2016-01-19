@@ -1,5 +1,4 @@
 <?php
-
 //
 // ---> Wizards
 //
@@ -15,7 +14,6 @@ $lang["Wizard"]["FinishInstallation"]["title"] = "Finish installation";
 //
 // ---> Steps
 //
-
 // ImportantAnnouncement
 $lang["Step"]["ImportantAnnouncement"]["title"] = "Important Information";
 $lang["Step"]["ImportantAnnouncement"]["headline"] = "Important Information";
@@ -96,7 +94,7 @@ $lang["Step"]["Database"]["title"] = "Database";
 $lang["Step"]["Database"]["headline"] = "Database";
 $lang["Step"]["Database"]["content"] = "Enter the access information for your MySQL-Database server! You will receive these data from your web-space provider. If the database does not exist, it will be created.";
 
-$lang["Step"]["Database"]['connecttype']	= "Connection type";
+$lang["Step"]["Database"]['connecttype'] = "Connection type";
 $lang["Step"]["Database"]['connect'] = "Normal (connect)";
 $lang["Step"]["Database"]['pconnect'] = "Persistent (pconnect)";
 $lang["Step"]["Database"]['pconnect_na'] = "not available";
@@ -323,4 +321,3 @@ $lang["Step"]["CleanUp"]["delete_failed"] = "For security reasons we recommend, 
 $lang["Step"]["CleanUp"]["openWebEdition"] = "Start webEdition";
 
 
-?>

@@ -1,5 +1,4 @@
 <?php
-
 // Set the current root directory
 define("ROOT_DIR", dirname(__FILE__));
 
@@ -67,19 +66,17 @@ require_once(SHARED_DIR . '/includes/init/checkTemporarilyShutDown.inc.php');
 /**
  * Start handling the incoming commands
  */
-
 $_SESSION['clientContent'] = true;
 
-if (isset($_REQUEST['update_cmd'])) {
+if(isset($_REQUEST['update_cmd'])){
 
 	// checkdatabases first
-	if ($db_register_down || $db_versioning_down) {
+	if($db_register_down || $db_versioning_down){
 		$_REQUEST['update_cmd'] = 'notification';
 		$_REQUEST['detail'] = 'databaseFailure';
-		
 	}
 
-	switch ($_REQUEST['update_cmd']) {
+	switch($_REQUEST['update_cmd']){
 
 
 		case 'notification':
@@ -100,20 +97,16 @@ if (isset($_REQUEST['update_cmd'])) {
 		default:
 			print notification::getNotAvailableAtTheMomentResponse();
 			break;
-
 	}
 
 
 // check databases
 } else {
-	if ($db_register_down || $db_versioning_down) {
+	if($db_register_down || $db_versioning_down){
 		include(SHARED_TEMPLATE_DIR . '/connection/serverDatabaseDown.inc.php');
-
 	} else {
 		include(SHARED_TEMPLATE_DIR . '/connection/serverUpAndRunning.inc.php');
-
 	}
-
 }
 
 /*
@@ -134,4 +127,3 @@ if(isset($_SESSION)) {
 
 
 
-?>

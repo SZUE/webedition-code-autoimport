@@ -1,13 +1,13 @@
 <?php
 
-class languagesBase {
+class languagesBase{
 
 	/**
 	 * returns array with all existing languages
 	 *
 	 * @return array
 	 */
-	function getExistingLanguages() {
+	function getExistingLanguages(){
 
 		global $DB_Versioning;
 
@@ -18,8 +18,8 @@ class languagesBase {
 			FROM " . VERSION_TABLE . "
 		";
 
-		$res =& $DB_Versioning->query($query);
-		while ( $row = $res->fetchRow() ) {
+		$res = & $DB_Versioning->query($query);
+		while($row = $res->fetchRow()){
 
 			$allLanguages[] = $row['language'];
 		}
@@ -27,5 +27,3 @@ class languagesBase {
 	}
 
 }
-
-?>

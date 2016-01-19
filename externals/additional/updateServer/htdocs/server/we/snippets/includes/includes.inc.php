@@ -1,5 +1,4 @@
 <?php
-
 // include config files
 require_once(LIVEUPDATE_SERVER_DIR . "/includes/conf/conf.inc.php");
 require_once(LIVEUPDATE_SERVER_DIR . "/includes/conf/define.inc.php");
@@ -25,4 +24,3 @@ require_once(LIVEUPDATE_SERVER_LANGUAGE_DIR . '/' . SHARED_LANGUAGE . '.lang.php
 
 
 
-?>

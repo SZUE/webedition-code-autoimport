@@ -1,5 +1,4 @@
 <?php
-
 $liveUpdateResponse['Type'] = 'executeOnline';
 $liveUpdateResponse['Code'] = '
 <?php
@@ -139,6 +138,4 @@ EOF;
 	return false;
 
 ?>';
-
-?>
 

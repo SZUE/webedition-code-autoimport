@@ -67,5 +67,3 @@ class SystemRequirements extends leStep{
 	}
 
 }
-
-?>

@@ -1,42 +1,42 @@
 <?php
 //version6300
 //code aus 6300
-if(file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/liveUpdate/includes/proxysettings.inc.php")){
-	include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/liveUpdate/includes/proxysettings.inc.php");
+if(file_exists($_SERVER["DOCUMENT_ROOT"] . "/webEdition/liveUpdate/includes/proxysettings.inc.php")){
+	include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/liveUpdate/includes/proxysettings.inc.php");
 }
 
 /*
  * Include all needed files
  */
- 	
-	require_once('../includes/includes.inc.php');
-	if(file_exists(	$_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_html_tools.class.php")){//gibt es vor 6.3 noch nicht
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_html_tools.class.php"); 
-		if(class_exists('we_html_tools') && method_exists('we_html_tools','protect')){
-			we_html_tools::protect();
-		}else{
-			protect();
-		}
+
+require_once('../includes/includes.inc.php');
+if(file_exists($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_html_tools.class.php")){//gibt es vor 6.3 noch nicht
+	include_once($_SERVER["DOCUMENT_ROOT"] . "/webEdition/we/include/we_classes/html/we_html_tools.class.php");
+	if(class_exists('we_html_tools') && method_exists('we_html_tools', 'protect')){
+		we_html_tools::protect();
+	} else {
+		protect();
 	}
+}
 
 
 /*
  * Deal with update_cmd
  */
-if (isset($_REQUEST['update_cmd'])) {
+if(isset($_REQUEST['update_cmd'])){
 
 	/*
 	 * Gather all needed Variables for the update-Request
 	 */
 	$parameters = array();
 
-	foreach ($LU_ParameterNames as $parameterName) {
+	foreach($LU_ParameterNames as $parameterName){
 
-		if (isset($_REQUEST[$parameterName])) {
+		if(isset($_REQUEST[$parameterName])){
 			$parameters[$parameterName] = $_REQUEST[$parameterName];
 		}
 	}
-	
+
 	// this is flag to check if a response was received!
 	$response = false;
 
@@ -44,14 +44,14 @@ if (isset($_REQUEST['update_cmd'])) {
 	 * For command checkConnection, it is not needed to create a session on the
 	 * server. Therefore treat this command in a special way.
 	 */
-	if ($_REQUEST['update_cmd'] == 'checkConnection') {
+	if($_REQUEST['update_cmd'] == 'checkConnection'){
 
 		$response = liveUpdateHttp::getHttpResponse(LIVEUPDATE_SERVER, LIVEUPDATE_SERVER_SCRIPT, $parameters);
 		$liveUpdateResponse = new liveUpdateResponse();
 
-		if ($liveUpdateResponse->initByHttpResponse($response)) {
+		if($liveUpdateResponse->initByHttpResponse($response)){
 
-			if ( $liveUpdateResponse->isError() ) {
+			if($liveUpdateResponse->isError()){
 				print liveUpdateFrames::htmlConnectionSuccess($liveUpdateResponse->getField('Message'));
 			} else {
 				print liveUpdateFrames::htmlConnectionSuccess();
@@ -61,9 +61,9 @@ if (isset($_REQUEST['update_cmd'])) {
 		}
 		exit();
 
-	/*
-	 * normal command flow - execute command, or init the communication
-	 */
+		/*
+		 * normal command flow - execute command, or init the communication
+		 */
 	} else {
 
 		/*
@@ -72,14 +72,13 @@ if (isset($_REQUEST['update_cmd'])) {
 		 * the session_id of the server. If this id is missing, create a new
 		 * session on the server.
 		 */
-		if (!isset($_REQUEST['liveUpdateSession'])) {
+		if(!isset($_REQUEST['liveUpdateSession'])){
 
 			/*
 			 * exit after submitting the form
 			 */
 			print liveUpdateHttp::getServerSessionForm();
 			exit;
-
 		} else {
 			/*
 			 * $_REQUEST['liveUpdateSession'] exists => Session on server is up
@@ -89,8 +88,8 @@ if (isset($_REQUEST['update_cmd'])) {
 
 			// add all other request parameters to the request
 			$reqVars = array();
-			foreach ($_REQUEST as $key => $value) {
-				if (!isset($parameters[$key]) && !in_array($key, $LU_IgnoreRequestParameters)) {
+			foreach($_REQUEST as $key => $value){
+				if(!isset($parameters[$key]) && !in_array($key, $LU_IgnoreRequestParameters)){
 					$reqVars[$key] = $value;
 				}
 			}
@@ -103,25 +102,22 @@ if (isset($_REQUEST['update_cmd'])) {
 	/*
 	 * There is a response from the Update-Server.
 	 */
-	if ($response) {
+	if($response){
 
 		$liveUpdateResponse = new liveUpdateResponse();
 
-		if ($liveUpdateResponse->initByHttpResponse($response)) {
+		if($liveUpdateResponse->initByHttpResponse($response)){
 
 			print $liveUpdateResponse->getOutput();
-
 		} else {
 			print liveUpdateFrames::htmlConnectionError();
 		}
-
 	} else {
 		/*
 		 * No response from the update-server. Error message
 		 */
 		print liveUpdateFrames::htmlConnectionError();
 	}
-
 } else {
 	/*
 	 * No update_cmd exists, show normal frameset
@@ -130,4 +126,3 @@ if (isset($_REQUEST['update_cmd'])) {
 	print $updateFrames->getFrame();
 }
 
-?>

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Part2: make demo-version after online-installation
  * @see /we4/includes/replaceCode/replaceCode.inc.php

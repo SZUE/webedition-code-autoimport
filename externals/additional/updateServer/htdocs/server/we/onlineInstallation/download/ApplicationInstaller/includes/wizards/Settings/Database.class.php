@@ -192,13 +192,13 @@ EOF;
 
 		// check if database exists
 		$_SESSION['le_db_exists'] = true;
-		$result = mysqli_query($resource,"USE " . $_SESSION["le_db_database"]);
+		$result = mysqli_query($resource, "USE " . $_SESSION["le_db_database"]);
 		if(!$result && mysqli_errno($resource) == 1049){
 			$_SESSION['le_db_exists'] = false;
 		}
 
 		// check if database exists, create if possible
-		$result = mysqli_query($resource,"CREATE DATABASE IF NOT EXISTS `" . $_SESSION["le_db_database"] . "`");
+		$result = mysqli_query($resource, "CREATE DATABASE IF NOT EXISTS `" . $_SESSION["le_db_database"] . "`");
 		if(!($result)){
 			$Template->addJavascript("top.leForm.setFocus('le_db_user');");
 			$Template->addJavascript("top.leContent.scrollDown();");

@@ -1,8 +1,5 @@
 <?php
 
-class update extends updateBase {
-
+class update extends updateBase{
 
 }
-
-?>

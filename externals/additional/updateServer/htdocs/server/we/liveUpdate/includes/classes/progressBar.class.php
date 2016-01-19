@@ -1,11 +1,11 @@
 <?php
 
-class progressBar extends progressBarBase {
+class progressBar extends progressBarBase{
 
 	/**
 	 * @return string
 	 */
-	function getProgressBarHtml() {
+	function getProgressBarHtml(){
 
 		return '<table cellpadding="0" cellspacing="0" width="100%" border="0" class="defaultfont">
 		<tr>
@@ -15,14 +15,12 @@ class progressBar extends progressBarBase {
 			<td valign="top" align="right" id="progressBarPercent">0%</td>
 		</tr>
 		</table>';
-
 	}
-
 
 	/**
 	 * @return string
 	 */
-	function getProgressBarJs() {
+	function getProgressBarJs(){
 		return '
 <script type="text/javascript">
 
@@ -40,9 +38,6 @@ class progressBar extends progressBarBase {
 		}
 	}
 </script>';
-
 	}
 
 }
-
-?>

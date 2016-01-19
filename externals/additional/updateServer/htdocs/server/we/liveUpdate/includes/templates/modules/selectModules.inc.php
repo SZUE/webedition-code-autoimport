@@ -1,5 +1,4 @@
 <?php
-
 $existingModules = $GLOBALS['updateServerTemplateData']['existingModules'];
 $installAbleModules = $GLOBALS['updateServerTemplateData']['installAbleModules'];
 
@@ -7,8 +6,8 @@ asort($installAbleModules);
 
 // prepare installable modules
 $proModules = array();
-foreach ($installAbleModules as $moduleKey => $moduletext) {
-	if ($existingModules[$moduleKey]['grade'] == 'pro') {
+foreach($installAbleModules as $moduleKey => $moduletext){
+	if($existingModules[$moduleKey]['grade'] == 'pro'){
 		$proModules[$existingModules[$moduleKey]['basismodule']] = $moduleKey;
 	}
 }
@@ -22,9 +21,9 @@ foreach ($installAbleModules as $moduleKey => $moduletext) {
  * @param string $onclick
  * @return string
  */
-function getCheckBoxForModule($name, $value, $text, $onclick='') {
+function getCheckBoxForModule($name, $value, $text, $onclick = ''){
 
-	if (in_array($value, $_SESSION['clientInstalledModules'])) {
+	if(in_array($value, $_SESSION['clientInstalledModules'])){
 
 		$onclick = "$onclick;alert('" . $GLOBALS['lang']['modules']['moduleAlreadyInstalled'] . "');";
 		$text = "<i>$text</i>";
@@ -33,51 +32,49 @@ function getCheckBoxForModule($name, $value, $text, $onclick='') {
 	return '\' . we_forms::checkbox("' . $value . '", false, "' . $name . '", "' . $text . '", false, "defaultfont", "' . $onclick . '") . \'';
 }
 
-
 $tableModules = '';
 $tableDependentModules = '';
 
 $jsRequiredModules = '';
 
-foreach ($installAbleModules as $moduleKey => $module) {
+foreach($installAbleModules as $moduleKey => $module){
 
 	// dependent modules in extra table
-	if ( isset($existingModules[$moduleKey]['dependent']) ) { // dependent modules are extra
-
+	if(isset($existingModules[$moduleKey]['dependent'])){ // dependent modules are extra
 		// check if all dependent modules are installed
 		$showEntry = true;
 
 		$dependentModules = explode(',', $existingModules[$moduleKey]['dependent']);
 		$dependentModuleTexts = array();
 
-		foreach ($dependentModules as $depModule) {
+		foreach($dependentModules as $depModule){
 
-			if (!in_array($depModule, $_SESSION['clientInstalledModules'])) {
+			if(!in_array($depModule, $_SESSION['clientInstalledModules'])){
 				$jsRequiredModules .= '
 				addRequiredModule("' . $moduleKey . '", "' . $depModule . '");';
 			}
 
 			$dependentModuleTexts[] = $existingModules[$depModule]['text'];
 
-			if ( !(in_array($depModule, $_SESSION['clientInstalledModules']) || isset($installAbleModules[$depModule])) ) {
+			if(!(in_array($depModule, $_SESSION['clientInstalledModules']) || isset($installAbleModules[$depModule]))){
 
 				$showEntry = false;
 			}
 		}
 
-		if ($showEntry) {
+		if($showEntry){
 			sort($dependentModuleTexts);
 			$tableDependentModules .= '<tr><td colspan="2">' . getCheckBoxForModule("module_$moduleKey", $moduleKey, $module . ' (' . implode(', ', $dependentModuleTexts) . ')', 'clickCheckBox(\'' . $moduleKey . '\');') . '</td></tr>';
 		}
 	} else {
 
-		if ($existingModules[$moduleKey]['grade'] == 'normal') {
+		if($existingModules[$moduleKey]['grade'] == 'normal'){
 
 			$tableModules .= '<tr><td>' . getCheckBoxForModule("module_$moduleKey", $moduleKey, $module, 'clickCheckBox(\'' . $moduleKey . '\');', $moduleKey) . '</td>';
-			if (isset($proModules[$moduleKey]) && isset( $installAbleModules[$proModules[$moduleKey]] )) {
+			if(isset($proModules[$moduleKey]) && isset($installAbleModules[$proModules[$moduleKey]])){
 
 
-				if (!in_array($moduleKey, $_SESSION['clientInstalledModules'])) {
+				if(!in_array($moduleKey, $_SESSION['clientInstalledModules'])){
 					$jsRequiredModules .= '
 				addRequiredModule("' . $proModules[$moduleKey] . '", "' . $moduleKey . '");';
 				}
@@ -194,4 +191,3 @@ $content = \'
 print liveUpdateTemplates::getHtml("' . addslashes($GLOBALS['lang']['modules']['headline']) . '", $content, $head);
 ?>';
 
-?>

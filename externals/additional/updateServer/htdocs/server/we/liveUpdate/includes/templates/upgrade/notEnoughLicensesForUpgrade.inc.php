@@ -1,5 +1,4 @@
 <?php
-
 $liveUpdateResponse['Type'] = 'template';
 $liveUpdateResponse['headline'] = $GLOBALS['lang']['upgrade']['headline'];
 $liveUpdateResponse['Content'] = '
@@ -8,4 +7,3 @@ $liveUpdateResponse['Content'] = '
 </div>
 ';
 
-?>

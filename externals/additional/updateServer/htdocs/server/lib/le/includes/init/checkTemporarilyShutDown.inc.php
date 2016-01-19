@@ -1,5 +1,4 @@
 <?php
-
 /**
  * temporarly shut down - preparations for wE4
  *
@@ -23,4 +22,3 @@ exit;
 print notification::getHighloadResponse();
 exit;
 */
-?>

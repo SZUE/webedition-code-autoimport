@@ -1,18 +1,25 @@
 <?php
 
-class updateBase {
-
+class updateBase{
 
 	function getZFversion($versionnumber){
-		$zf_version= "1.5.1";
-		if ($versionnumber >= 6007) $zf_version= "1.8.4";
-		if ($versionnumber >= 6009) $zf_version= "1.10.4";
-		if ($versionnumber >= 6100) $zf_version= "1.10.6";
-		if ($versionnumber >= 6103) $zf_version= "1.11.6";
-		if ($versionnumber >= 6201) $zf_version= "1.11.7";
-		if ($versionnumber >= 6261) $zf_version= "1.11.11";
-		if ($versionnumber >= 6351) $zf_version= "1.12.1";
-		if ($versionnumber >= 6360) $zf_version= "1.12.3";
+		$zf_version = "1.5.1";
+		if($versionnumber >= 6007)
+			$zf_version = "1.8.4";
+		if($versionnumber >= 6009)
+			$zf_version = "1.10.4";
+		if($versionnumber >= 6100)
+			$zf_version = "1.10.6";
+		if($versionnumber >= 6103)
+			$zf_version = "1.11.6";
+		if($versionnumber >= 6201)
+			$zf_version = "1.11.7";
+		if($versionnumber >= 6261)
+			$zf_version = "1.11.11";
+		if($versionnumber >= 6351)
+			$zf_version = "1.12.1";
+		if($versionnumber >= 6360)
+			$zf_version = "1.12.3";
 		return $zf_version;
 	}
 
@@ -21,13 +28,12 @@ class updateBase {
 	 *
 	 * @return array
 	 */
-	function getPossibleLanguagesArray() {
+	function getPossibleLanguagesArray(){
 		global $DB_Versioning;
 
 		$liveCondition = ' AND islive=1';
-		if (isset($_SESSION['testUpdate'])) {
+		if(isset($_SESSION['testUpdate'])){
 			$liveCondition = '';
-
 		}
 
 		//$query = 'SELECT distinct(language), isbeta  f�hrt zu dopplten betasprachen
@@ -42,23 +48,20 @@ class updateBase {
 
 		$versionLanguages = array();
 
-		$res =& $DB_Versioning->query($query);
+		$res = & $DB_Versioning->query($query);
 
-		while ($res->fetchInto($row)) {
+		while($res->fetchInto($row)){
 			$versionLanguages[] = $row['language'];
-
 		}
 		return $versionLanguages;
-
 	}
 
-	function getPossibleBetaLanguagesArray() {
+	function getPossibleBetaLanguagesArray(){
 		global $DB_Versioning;
 
 		$liveCondition = ' AND islive=1';
-		if (isset($_SESSION['testUpdate'])) {
+		if(isset($_SESSION['testUpdate'])){
 			$liveCondition = '';
-
 		}
 
 		$query = '
@@ -71,14 +74,12 @@ class updateBase {
 
 		$versionLanguages = array();
 
-		$res =& $DB_Versioning->query($query);
+		$res = & $DB_Versioning->query($query);
 
-		while ($res->fetchInto($row)) {
-			if ($row['isbeta']==1){
+		while($res->fetchInto($row)){
+			if($row['isbeta'] == 1){
 				$versionLanguages[] = $row['language'];
 			}
-			
-
 		}
 		return $versionLanguages;
 	}
@@ -89,36 +90,30 @@ class updateBase {
 	 *
 	 * @return array
 	 */
-	function getPossibleVersionsArray() {
+	function getPossibleVersionsArray(){
 
-		$langVersions = update::getVersionsLanguageArray(1,0);
+		$langVersions = update::getVersionsLanguageArray(1, 0);
 
 		$possibleVersions = array();
 
-		foreach ($langVersions as $version => $lngArray) {
-			if(isset($_SESSION["clientWE_LIGHT"]) && $_SESSION["clientWE_LIGHT"]) {
-				if ($version >= $_SESSION['clientVersionNumber'] && sizeof($lngArray) == sizeof($_SESSION['clientInstalledLanguages'])) {
+		foreach($langVersions as $version => $lngArray){
+			if(isset($_SESSION["clientWE_LIGHT"]) && $_SESSION["clientWE_LIGHT"]){
+				if($version >= $_SESSION['clientVersionNumber'] && sizeof($lngArray) == sizeof($_SESSION['clientInstalledLanguages'])){
 					$possibleVersions[$version] = updateUtil::number2version($version);
-
 				}
 			} else {
-			
-				if ($version > $_SESSION['clientVersionNumber'] && sizeof($lngArray) == sizeof($_SESSION['clientInstalledLanguages'])) {
-					$possibleVersions[$version] = updateUtil::number2version($version);
 
+				if($version > $_SESSION['clientVersionNumber'] && sizeof($lngArray) == sizeof($_SESSION['clientInstalledLanguages'])){
+					$possibleVersions[$version] = updateUtil::number2version($version);
 				} else {
 					if($version > $_SESSION['clientVersionNumber']){
 						$possibleVersions[$version] = updateUtil::number2version($version);
 					}
-					
 				}
 			}
-
 		}
 		return $possibleVersions;
-
 	}
-
 
 	/**
 	 * returns associative array with all versions where isLive is not true (betas)
@@ -126,7 +121,7 @@ class updateBase {
 	 *
 	 * @return array
 	 */
-	function getNotLiveVersions() {
+	function getNotLiveVersions(){
 		global $DB_Versioning;
 		$query = '
 			SELECT version, svnrevision, language, isbeta
@@ -134,18 +129,17 @@ class updateBase {
 			WHERE version >= 6000 AND islive!=1 ORDER BY version DESC, language
 		';
 		$NotLiveVersions = array();
-		
-		$res =& $DB_Versioning->query($query);
 
-		while ($res->fetchInto($row)) {
+		$res = & $DB_Versioning->query($query);
+
+		while($res->fetchInto($row)){
 			$NotLiveVersions[$row['version']][] = $row['language'];
 		}
-		
+
 		return $NotLiveVersions;
-		
 	}
 
-	function getAlphaBetaVersions() {
+	function getAlphaBetaVersions(){
 		global $DB_Versioning;
 		$query = '
 			SELECT version, svnrevision,type,typeversion, branch,language, isbeta
@@ -153,15 +147,14 @@ class updateBase {
 			WHERE version >= 6000 ORDER BY version DESC, language
 		';
 		$AlphaBetaVersions = array();
-		
-		$res =& $DB_Versioning->query($query);
 
-		while ($res->fetchInto($row)) {
+		$res = & $DB_Versioning->query($query);
+
+		while($res->fetchInto($row)){
 			$AlphaBetaVersions[$row['version']] = $row;
 		}
-		
+
 		return $AlphaBetaVersions;
-		
 	}
 
 	/**
@@ -170,7 +163,7 @@ class updateBase {
 	 *
 	 * @return array
 	 */
-	function getSubVersions() {
+	function getSubVersions(){
 		global $DB_Versioning;
 		$query = '
 			SELECT version, svnrevision
@@ -178,15 +171,14 @@ class updateBase {
 			WHERE version >= 6000 ORDER BY version DESC, language
 		';
 		$SubVersions = array();
-		
-		$res =& $DB_Versioning->query($query);
 
-		while ($res->fetchInto($row)) {
+		$res = & $DB_Versioning->query($query);
+
+		while($res->fetchInto($row)){
 			$SubVersions[$row['version']] = $row['svnrevision'];
 		}
-		
+
 		return $SubVersions;
-		
 	}
 
 	/**
@@ -195,26 +187,25 @@ class updateBase {
 	 *
 	 * @return string
 	 */
-	function getSubVersion($version) {
+	function getSubVersion($version){
 		global $DB_Versioning;
 		$query = '
 			SELECT  svnrevision
 			FROM ' . VERSION_TABLE . '
-			WHERE version = '.$version.'  
+			WHERE version = ' . $version . '
 		';
-		$SubVersion='';
-		
-		$res =& $DB_Versioning->query($query);
+		$SubVersion = '';
 
-		while ($res->fetchInto($row)) {
+		$res = & $DB_Versioning->query($query);
+
+		while($res->fetchInto($row)){
 			$SubVersion = $row['svnrevision'];
 		}
-		
+
 		return $SubVersion;
-		
 	}
 
-	function getVersionNames() {
+	function getVersionNames(){
 		global $DB_Versioning;
 		$query = '
 			SELECT version, versname
@@ -222,10 +213,10 @@ class updateBase {
 			WHERE version >= 6000 ORDER BY version DESC, language
 		';
 		$VersionNames = array();
-		
-		$res =& $DB_Versioning->query($query);
 
-		while ($res->fetchInto($row)) {
+		$res = & $DB_Versioning->query($query);
+
+		while($res->fetchInto($row)){
 			$VersionNames[$row['version']] = $row['versname'];
 		}
 
@@ -238,21 +229,21 @@ class updateBase {
 	 *
 	 * @return string
 	 */
-	function getVersionName($version) {
+	function getVersionName($version){
 		global $DB_Versioning;
 		$query = '
 			SELECT  versname
 			FROM ' . VERSION_TABLE . '
-			WHERE version = '.$version.'  
+			WHERE version = ' . $version . '
 		';
-		$VersionName='';
-		
-		$res =& $DB_Versioning->query($query);
+		$VersionName = '';
 
-		while ($res->fetchInto($row)) {
+		$res = & $DB_Versioning->query($query);
+
+		while($res->fetchInto($row)){
 			$VersionName = $row['versname'] ? $row['versname'] : '';
 		}
-		
+
 		return $VersionName;
 	}
 
@@ -262,82 +253,77 @@ class updateBase {
 	 *
 	 * @return string
 	 */
-	function getVersionType($version) {
+	function getVersionType($version){
 		global $DB_Versioning;
 		$query = '
 			SELECT  type, typeversion
 			FROM ' . VERSION_TABLE . '
-			WHERE version = '.$version.'  
+			WHERE version = ' . $version . '
 		';
-		$VersionType='';
-		
-		$res =& $DB_Versioning->query($query);
+		$VersionType = '';
 
-		while ($res->fetchInto($row)) {
-			$VersionType = $row['type']. (($row['typeversion']==0)? '': $row['typeversion']);
+		$res = & $DB_Versioning->query($query);
+
+		while($res->fetchInto($row)){
+			$VersionType = $row['type'] . (($row['typeversion'] == 0) ? '' : $row['typeversion']);
 		}
-		
+
 		return $VersionType;
-		
 	}
 
-	function getOnlyVersionType($version) {
+	function getOnlyVersionType($version){
 		global $DB_Versioning;
 		$query = '
 			SELECT  type, typeversion
 			FROM ' . VERSION_TABLE . '
-			WHERE version = '.$version.'  
+			WHERE version = ' . $version . '
 		';
-		$VersionType='';
-		
-		$res =& $DB_Versioning->query($query);
+		$VersionType = '';
 
-		while ($res->fetchInto($row)) {
+		$res = & $DB_Versioning->query($query);
+
+		while($res->fetchInto($row)){
 			$VersionType = $row['type'];
 		}
-		
+
 		return $VersionType;
-		
 	}
 
-	function getOnlyVersionTypeVersion($version) {
+	function getOnlyVersionTypeVersion($version){
 		global $DB_Versioning;
 		$query = '
 			SELECT  type, typeversion
 			FROM ' . VERSION_TABLE . '
-			WHERE version = '.$version.'  
+			WHERE version = ' . $version . '
 		';
-		$VersionType='';
-		
-		$res =& $DB_Versioning->query($query);
+		$VersionType = '';
 
-		while ($res->fetchInto($row)) {
+		$res = & $DB_Versioning->query($query);
+
+		while($res->fetchInto($row)){
 			$VersionType = $row['typeversion'];
 		}
-		
+
 		return $VersionType;
-		
 	}
 
-	function getOnlyVersionBranch($version) {
+	function getOnlyVersionBranch($version){
 		global $DB_Versioning;
 		$query = '
 			SELECT  branch, typeversion
 			FROM ' . VERSION_TABLE . '
-			WHERE version = '.$version.'  
+			WHERE version = ' . $version . '
 		';
-		$VersionType='';
-		
-		$res =& $DB_Versioning->query($query);
+		$VersionType = '';
 
-		while ($res->fetchInto($row)) {
+		$res = & $DB_Versioning->query($query);
+
+		while($res->fetchInto($row)){
 			$VersionType = $row['branch'];
 		}
-		
-		return $VersionType;
-		
-	}
 
+		return $VersionType;
+	}
 
 	/**
 	 * returns associative array assigning a version to all languages that
@@ -345,30 +331,28 @@ class updateBase {
 	 *
 	 * @return array
 	 */
-	function getVersionsLanguageArray($installedLanguagesOnly = true, $showBeta=true) {
+	function getVersionsLanguageArray($installedLanguagesOnly = true, $showBeta = true){
 		global $DB_Versioning;
 
 		//error_log(print_r(urldecode(base64_decode($_SESSION['clientInstalledLanguages'])),1));
-		if(isset($_SESSION['clientInstalledLanguages']) && !is_array($_SESSION['clientInstalledLanguages'])) {
+		if(isset($_SESSION['clientInstalledLanguages']) && !is_array($_SESSION['clientInstalledLanguages'])){
 			//$_SESSION['clientInstalledLanguages'] = @unserialize(urldecode(($_SESSION['clientInstalledLanguages'])));
-			if(@unserialize(urldecode(($_SESSION['clientInstalledLanguages'])))) {
+			if(@unserialize(urldecode(($_SESSION['clientInstalledLanguages'])))){
 				$_SESSION['clientInstalledLanguages'] = @unserialize(urldecode(($_SESSION['clientInstalledLanguages'])));
 			} else if(!is_array($_SESSION['clientInstalledLanguages'])){
 				//if(!is_array($_SESSION['clientInstalledLanguages'])) {
 				$_SESSION['clientInstalledLanguages'] = @unserialize(urldecode(base64_decode($_SESSION['clientInstalledLanguages'])));
 			}
 		}
-		
+
 		$liveCondition = ' AND islive=1';
-		if (isset($_SESSION['testUpdate'])) {
+		if(isset($_SESSION['testUpdate'])){
 			$liveCondition = '';
-
 		}
-		
-		$languageQuery = '';
-		if ($installedLanguagesOnly) {
-			$languageQuery = ' AND language IN ("' . implode('", "', $_SESSION['clientInstalledLanguages']) . '")';
 
+		$languageQuery = '';
+		if($installedLanguagesOnly){
+			$languageQuery = ' AND language IN ("' . implode('", "', $_SESSION['clientInstalledLanguages']) . '")';
 		}
 
 		$query = '
@@ -382,24 +366,22 @@ class updateBase {
 
 		$versionLanguages = array();
 		$versionLanguages["betaLanguages"] = array();
-		$res =& $DB_Versioning->query($query);
+		$res = & $DB_Versioning->query($query);
 
-		while ($res->fetchInto($row)) {
-			
-			if($row["isbeta"] == "1") {
+		while($res->fetchInto($row)){
+
+			if($row["isbeta"] == "1"){
 				if($showBeta){
 					$versionLanguages[$row['version']]["betaLanguages"][] = $row['language'];
-				} else {$versionLanguages[$row['version']][] = $row['language'];}
-				
+				} else {
+					$versionLanguages[$row['version']][] = $row['language'];
+				}
 			} else {
 				$versionLanguages[$row['version']][] = $row['language'];
 			}
 		}
-		
-		return $versionLanguages;
 
+		return $versionLanguages;
 	}
 
 }
-
-?>

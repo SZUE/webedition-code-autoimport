@@ -1,9 +1,7 @@
 <?php
-
 //
 // ---> installer
 //
-
 // installer common
 $lang["installer"]["errorAtStep"] = "Error during step: ";
 
@@ -56,7 +54,6 @@ $lang["installer"]["errorLine"] = "line";
 //
 // ---> installApplication
 //
-
 // installer::getProceedNextCommandResponsePart()
 $lang["installApplication"]["prepareApplicationInstallation"] = "Prepare application installation";
 $lang["installApplication"]["determineApplicationFiles"] = "Determine application files";
@@ -88,7 +85,6 @@ $lang["installApplication"]["rss_feed_url"] = "http://www.living-e.de/en/press-c
 //
 // ---> installerDownload
 //
-
 // installer::getProceedNextCommandResponsePart()
 $lang["installerDownload"]["determineInstallerFiles"] = "Determine installer files";
 $lang["installerDownload"]["downloadInstallerFiles"] = "Download installer files";
@@ -109,4 +105,3 @@ $lang["installer"]['rc'] = 'RC';
 $lang["installer"]['release'] = 'official release';
 
 
-?>

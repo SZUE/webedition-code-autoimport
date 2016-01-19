@@ -1,5 +1,4 @@
 ﻿<?php
-
 //
 // ---> Wizards
 //
@@ -15,7 +14,6 @@ $lang["Wizard"]["FinishInstallation"]["title"] = "Installation beenden";
 //
 // ---> Steps
 //
-
 // ImportantAnnouncement
 $lang["Step"]["ImportantAnnouncement"]["title"] = "Wichtige Information";
 $lang["Step"]["ImportantAnnouncement"]["headline"] = "Wichtige Information";
@@ -96,7 +94,7 @@ $lang["Step"]["Database"]["title"] = "Datenbank";
 $lang["Step"]["Database"]["headline"] = "Datenbank";
 $lang["Step"]["Database"]["content"] = "Geben Sie bitte hier die Zugangsdaten des MySQL-Datenbank-Servers ein! Diese Daten erhalten Sie in der Regel von Ihrem Webspace-Provider.";
 
-$lang["Step"]["Database"]['connecttype']	= "Verbindungsart";
+$lang["Step"]["Database"]['connecttype'] = "Verbindungsart";
 $lang["Step"]["Database"]['connect'] = "Normal (connect)";
 $lang["Step"]["Database"]['pconnect'] = "Persistent (pconnect)";
 $lang["Step"]["Database"]['pconnect_na'] = "nicht verfügbar";
@@ -377,4 +375,3 @@ $lang["Step"]["CleanUp"]["delete_failed"] = "Aus Sicherheitsgründen empfehlen w
 $lang["Step"]["CleanUp"]["openWebEdition"] = "webEdition öffnen";
 
 
-?>

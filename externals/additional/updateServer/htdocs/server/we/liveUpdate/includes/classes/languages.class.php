@@ -1,102 +1,93 @@
 <?php
 
-class languages extends languagesBase {
+class languages extends languagesBase{
 
 	/**
 	 * @return string
 	 */
-	function getSelectLanguagesResponse() {
+	function getSelectLanguagesResponse(){
 
 		// at least already installed languages can be reinstalled
 		$installAbleLanguages = $_SESSION['clientInstalledLanguages'];
 
 		// get all possible languages
 		$versionLngs = update::getVersionsLanguageArray(false);
-		if(!is_array($installAbleLanguages)) {
+		if(!is_array($installAbleLanguages)){
 			$installAbleLanguages = unserialize(urldecode(base64_decode($installAbleLanguages)));
 		}
-		if (isset($versionLngs[$_SESSION['clientVersionNumber']])) {
+		if(isset($versionLngs[$_SESSION['clientVersionNumber']])){
 			$installableBetaLanguages = $versionLngs[$_SESSION['clientVersionNumber']]["betaLanguages"];
 			unset($versionLngs[$_SESSION['clientVersionNumber']]["betaLanguages"]);
 			$versionLngCount = sizeof($versionLngs[$_SESSION['clientVersionNumber']]);
-			for ($i=0;$i<$versionLngCount;$i++) {
-				if (!in_array($versionLngs[$_SESSION['clientVersionNumber']][$i], $installAbleLanguages)) {
+			for($i = 0; $i < $versionLngCount; $i++){
+				if(!in_array($versionLngs[$_SESSION['clientVersionNumber']][$i], $installAbleLanguages)){
 					$installAbleLanguages[] = $versionLngs[$_SESSION['clientVersionNumber']][$i];
 				}
-
 			}
-
 		}
-		
+
 		// languages not existing for this version
 		$missingLanguages = array();
 		$missingBetaLanguages = array();
 		$allLanguages = languages::getExistingLanguages();
-		for ($i=0;$i<sizeof($allLanguages); $i++) {
-			if (!in_array($allLanguages[$i], $installAbleLanguages)) {
-				if(in_array($allLanguages[$i],$installableBetaLanguages)) {
+		for($i = 0; $i < sizeof($allLanguages); $i++){
+			if(!in_array($allLanguages[$i], $installAbleLanguages)){
+				if(in_array($allLanguages[$i], $installableBetaLanguages)){
 					$missingBetaLanguages[] = $allLanguages[$i];
 				} else {
 					$missingLanguages[] = $allLanguages[$i];
 				}
-
 			}
-
 		}
-		error_log(print_r($missingBetaLanguages,1));
-		
+		error_log(print_r($missingBetaLanguages, 1));
+
 		$GLOBALS['updateServerTemplateData']['installAbleLanguages'] = $installAbleLanguages;
 		$GLOBALS['updateServerTemplateData']['missingLanguages'] = $missingLanguages;
 		$GLOBALS['updateServerTemplateData']['installableBetaLanguages'] = $installableBetaLanguages;
 		$GLOBALS['updateServerTemplateData']['missingBetaLanguages'] = $missingBetaLanguages;
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/languages/selectLanguages.inc.php');
 		return updateUtil::getResponseString($ret);
-
 	}
 
 	/**
 	 * @return string
 	 */
-	function getNoLanguageSelectedResponse() {
+	function getNoLanguageSelectedResponse(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/languages/noLanguageSelected.inc.php');
 		return updateUtil::getResponseString($ret);
-
 	}
 
 	/**
 	 * @return string
 	 */
-	function getConfirmLanguagesResponse() {
+	function getConfirmLanguagesResponse(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/languages/confirmLanguages.inc.php');
 		return updateUtil::getResponseString($ret);
-
 	}
 
 	/**
 	 * @return array
 	 */
-	function getChangesForUpdate() {
+	function getChangesForUpdate(){
 
 		$lngPart = '';
 
 		// query for all installed modules
 		$modulesQuery = ' AND ( module = "" OR ';
-		foreach ($GLOBALS['MODULES_FREE_OF_CHARGE_INCLUDED'] as $module) {
+		foreach($GLOBALS['MODULES_FREE_OF_CHARGE_INCLUDED'] as $module){
 			$modulesQuery .= 'module="' . $module . '" OR ';
-
 		}
-		foreach ($_SESSION['clientInstalledModules'] as $module) {
+		foreach($_SESSION['clientInstalledModules'] as $module){
 			$modulesQuery .= 'module = "' . $module . '" OR  ';
-			
 		}
 		$modulesQuery .= '0 )';
-		if(!is_array($_SESSION['clientDesiredLanguages'])) {
+		if(!is_array($_SESSION['clientDesiredLanguages'])){
 			$_SESSION['clientDesiredLanguages'] = unserialize(urldecode(base64_decode($_SESSION['clientDesiredLanguages'])));
 		}
 		//error_log(print_r($_SESSION['clientDesiredLanguages'],true));
 		// desired languages
 		$languagePart = 'AND ( ';
-		foreach ($_SESSION['clientDesiredLanguages'] as $language) {
+		foreach($_SESSION['clientDesiredLanguages'] as $language){
 			$languagePart .= 'language="' . $language . '" OR ';
 		}
 		$languagePart .= ' 0 )';
@@ -113,15 +104,13 @@ class languages extends languagesBase {
 		';
 
 		return updateUtil::getChangesArrayByQueries(array($query));
-
 	}
 
 	/**
 	 * @return string
 	 */
-	function getGetChangesResponse() {
+	function getGetChangesResponse(){
 		return installer::getGetChangesResponse();
-
 	}
 
 	/**
@@ -130,10 +119,10 @@ class languages extends languagesBase {
 	 *
 	 * @return string
 	 */
-	function getFinishInstallationResponse() {
+	function getFinishInstallationResponse(){
 
 		$message = '<ul>';
-		for ($i=0; $i<sizeof($_SESSION['clientDesiredLanguages']);$i++) {
+		for($i = 0; $i < sizeof($_SESSION['clientDesiredLanguages']); $i++){
 			$message .= "<li>" . $_SESSION['clientDesiredLanguages'][$i] . "</li>\\n";
 		}
 		$message .= '</ul>';
@@ -151,9 +140,6 @@ class languages extends languagesBase {
 		?>' . installer::getFinishInstallationResponsePart("<div>" . $GLOBALS['lang']['languages']['finished'] . "\\n" . $message . "</div>") . '<?php
 		?>';
 		return updateUtil::getResponseString($retArray);
-
 	}
 
 }
-
-?>

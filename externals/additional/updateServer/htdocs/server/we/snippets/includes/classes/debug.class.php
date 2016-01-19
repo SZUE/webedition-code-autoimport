@@ -1,7 +1,5 @@
 <?php
 
-class debug extends debugBase {
+class debug extends debugBase{
 
 }
-
-?>

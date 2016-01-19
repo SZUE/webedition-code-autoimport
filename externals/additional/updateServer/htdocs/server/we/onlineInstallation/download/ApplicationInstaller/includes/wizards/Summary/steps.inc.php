@@ -1,8 +1,5 @@
 <?php
+$leInstallerSteps = array(
+	'Summary',
+);
 
-	$leInstallerSteps = array(
-		'Summary',
-
-	);
-
-?>

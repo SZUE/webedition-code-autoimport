@@ -1,5 +1,4 @@
 <?php
-
 $liveUpdateResponse['Type'] = 'eval';
 $liveUpdateResponse['Encoding'] = 'true';
 $liveUpdateResponse['EncodedCode'] = updateUtil::encodeCode('<?php

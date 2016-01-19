@@ -1,5 +1,4 @@
 <?php
-
 $lang['register']['headline'] = 'Registration';
 $lang['register']['insertSerial'] = 'Please enter your serial';
 $lang['register']['serial'] = 'Serial number';
@@ -43,11 +42,11 @@ $lang['upgrade']['confirmUpdateHint'][6220] = '<b>webEdition 6.2.2.0:</b><ul><li
 $lang['upgrade']['confirmUpdateHint'][6230] = '<b>webEdition 6.2.3.0:</b><ul><li>This update fixes a severe security problem in the customer module. To fix it, among other changes, the standard value for the attribute register of the tag we:saveRegisteredUser had to be changed. Should the registration of new customers not work properly after the update, you can set the old behaviour in the settings dialog of the customer module.</li></ul>';
 $lang['upgrade']['confirmUpdateHint'][6300] = '<b>webEdition 6.3.0.0:</b><ul><li>This update optimizes the complete webEdition infra strukture. Due to the many changes it is possible to run into problems after the update!</li><li><b>Perform a komplete backup of the entire Site</b></li><li>Follow the hints in the version history in detail about <b>possible problems und solutions Problemen und Lösungen, see <a href="http://www.webedition.org/de/webedition-cms/versionshistorie/webedition-6/version-6.3.0.0" target="_blank">version 6.3.0.0</a></b></li><li>Possibly, perform a <b>test update</b> on a copy of the site.</li><li>After rebuilding all templates and Ddkuments, please check the error log for further hints on problems</li></ul>';
 
-$lang['upgrade']['confirmUpdateDiskquotaWarning0']='<br/>You have more than 100 MB free Webspace.';
-$lang['upgrade']['confirmUpdateDiskquotaWarning1']='<br/>You have only <b>';
-$lang['upgrade']['confirmUpdateDiskquotaWarning2']='MB</b> free WebSpace (Quota) left, <br/><b>check the update hints carefully</b> for the required disk space!';
-$lang['upgrade']['repeatUpdateDiskquotaWarning1']='<br/>You have only <b>';
-$lang['upgrade']['repeatUpdateDiskquotaWarning2']='MB</b> free WebSpace (Quota) left, <br/><b>this will not be enough for an repeat update!</b>';
+$lang['upgrade']['confirmUpdateDiskquotaWarning0'] = '<br/>You have more than 100 MB free Webspace.';
+$lang['upgrade']['confirmUpdateDiskquotaWarning1'] = '<br/>You have only <b>';
+$lang['upgrade']['confirmUpdateDiskquotaWarning2'] = 'MB</b> free WebSpace (Quota) left, <br/><b>check the update hints carefully</b> for the required disk space!';
+$lang['upgrade']['repeatUpdateDiskquotaWarning1'] = '<br/>You have only <b>';
+$lang['upgrade']['repeatUpdateDiskquotaWarning2'] = 'MB</b> free WebSpace (Quota) left, <br/><b>this will not be enough for an repeat update!</b>';
 $lang['upgrade']['confirmUpdateWarningEnd'] = '';
 $lang['upgrade']['confirmUpdateWarningTitle'] = 'Please confirm to continue:';
 $lang['upgrade']['confirmUpdateWarningCheckbox'] = 'I hereby confirm that I have read the above notice.';

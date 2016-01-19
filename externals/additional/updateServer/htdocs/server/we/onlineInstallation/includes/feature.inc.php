@@ -1,7 +1,6 @@
 <?php
-
 // execute command
-switch ($_REQUEST['detail']) {
+switch($_REQUEST['detail']){
 
 	// get form with all possible languages
 	case 'languagesForm':
@@ -14,9 +13,8 @@ switch ($_REQUEST['detail']) {
 		$defaultLanguage = $clientRequestVars['le_defaultLanguage'];
 		$extraLanguages = array();
 
-		if(isset($clientRequestVars['le_extraLanguages'])) {
+		if(isset($clientRequestVars['le_extraLanguages'])){
 			$extraLanguages = $clientRequestVars['le_extraLanguages'];
-
 		}
 
 		print languages::getRegisterLanguagesResponse($defaultLanguage, $extraLanguages);
@@ -38,7 +36,7 @@ switch ($_REQUEST['detail']) {
 
 	// show the form for the serial number
 	case 'serialForm':
-error_log("serialForm");
+		error_log("serialForm");
 		unset($_SESSION['clientChanges']);
 		print register::getRegisterFormResponse();
 		break;
@@ -46,28 +44,26 @@ error_log("serialForm");
 
 	// skip the serial information
 	case 'skipSerial':
-error_log("skipSerial");
+		error_log("skipSerial");
 		print register::getDontRegisterResponse();
 		break;
 
 	// check the serial and save into session if the serial is correct
 	case 'checkSerial':
-error_log("checkSerial");
+		error_log("checkSerial");
 		$clientSerialFormatted = license::formatSerial($clientRequestVars['clientSerial']);
 		$serialState = license::checkSerialState($clientSerialFormatted);
 
-		if(isset($_SESSION['clientSerial'])) {
-			if($clientSerialFormatted != $_SESSION['clientSerial']) {
+		if(isset($_SESSION['clientSerial'])){
+			if($clientSerialFormatted != $_SESSION['clientSerial']){
 				unset($_SESSION['clientDesiredModules']);
 				unset($_SESSION['existingModules']);
-
 			}
-
 		}
-		switch ($serialState) {
+		switch($serialState){
 
 			case 'ok':
-				print register::getRegisterResponse( $clientSerialFormatted );
+				print register::getRegisterResponse($clientSerialFormatted);
 				break;
 
 			default:
@@ -81,7 +77,6 @@ error_log("checkSerial");
 				 */
 				print register::getRegisterFormErrorResponse($serialState);
 				break;
-
 		}
 		break;
 
@@ -97,9 +92,8 @@ error_log("checkSerial");
 	case 'registerModules':
 
 		$modules = array();
-		if(isset($clientRequestVars['le_modules'])) {
+		if(isset($clientRequestVars['le_modules'])){
 			$modules = $clientRequestVars['le_modules'];
-
 		}
 
 		print modules::getRegisterModulesResponse($modules);
@@ -110,7 +104,5 @@ error_log("checkSerial");
 	case 'snippetsForm':
 		print snippets::getSnippetsFormResponse();
 		break;
-
 }
 
-?>

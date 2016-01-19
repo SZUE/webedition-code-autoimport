@@ -1,14 +1,13 @@
 <?php
 
-class modules extends modulesBase {
-
+class modules extends modulesBase{
 
 	/**
 	 * returns response with screen to select modules
 	 *
 	 * @return string
 	 */
-	function getSelectModulesResponse() {
+	function getSelectModulesResponse(){
 
 		$serial = license::getSerialByUid();
 		$serialInformation = license::getSerialInformation($serial);
@@ -17,27 +16,22 @@ class modules extends modulesBase {
 		$installAbleModules = array();
 
 		// which modules can be installed?
-		foreach ($serialInformation['modules'] as $moduleKey => $amount) {
-			if ( in_array($moduleKey, $_SESSION['clientInstalledModules']) || ($amount > $serialInformation['installedModules'][$moduleKey]) ) {
+		foreach($serialInformation['modules'] as $moduleKey => $amount){
+			if(in_array($moduleKey, $_SESSION['clientInstalledModules']) || ($amount > $serialInformation['installedModules'][$moduleKey])){
 				$installAbleModules[$moduleKey] = $existingModules[$moduleKey]['text'];
-
 			}
-
 		}
 
-		if (sizeof($installAbleModules)) {
+		if(sizeof($installAbleModules)){
 			$GLOBALS['updateServerTemplateData']['installAbleModules'] = $installAbleModules;
 			$GLOBALS['updateServerTemplateData']['existingModules'] = $existingModules;
 
 			$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/modules/selectModules.inc.php');
 			return updateUtil::getResponseString($ret);
-
 		} else {
 			$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/modules/noInstallableModules.inc.php');
 			return updateUtil::getResponseString($ret);
-
 		}
-
 	}
 
 	/**
@@ -45,27 +39,23 @@ class modules extends modulesBase {
 	 *
 	 * @return array
 	 */
-	function getChangesForUpdate() {
+	function getChangesForUpdate(){
 
 		$contentQuery = '';
-		if (!$_SESSION['clientContent']) {
+		if(!$_SESSION['clientContent']){
 			$contentQuery .= ' AND (type="system") ';
-
 		}
 
 		// get systemlanguage only
 		$sysLngQuery = ' AND (language="" OR language="' . $_SESSION['clientSyslng'] . '") ';
 
 		$modulesQuery = ' AND ( ';
-		foreach ($_SESSION['clientDesiredModules'] as $module) {
-			if (in_array($module, $_SESSION['clientInstalledModules'])) {
+		foreach($_SESSION['clientDesiredModules'] as $module){
+			if(in_array($module, $_SESSION['clientInstalledModules'])){
 				$modulesQuery .= ' (module = "' . $module . '" AND type="system") OR ';
-
 			} else {
 				$modulesQuery .= ' module = "' . $module . '" OR ';
-
 			}
-
 		}
 		$modulesQuery .= ' 0 )';
 
@@ -82,9 +72,8 @@ class modules extends modulesBase {
 
 
 		$languagePart = 'AND ( ';
-		foreach ($_SESSION['clientInstalledLanguages'] as $language) {
+		foreach($_SESSION['clientInstalledLanguages'] as $language){
 			$languagePart .= 'language="' . $language . '" OR ';
-
 		}
 		$languagePart .= ' 0 )';
 
@@ -101,44 +90,36 @@ class modules extends modulesBase {
 		';
 
 		return updateUtil::getChangesArrayByQueries(array($query, $languageQuery));
-
 	}
 
-
-	function getNoModulesSelectedResponse() {
+	function getNoModulesSelectedResponse(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/modules/noModulesSelected.inc.php');
 		return updateUtil::getResponseString($ret);
-
 	}
 
-	function getReselectModulesResponse($desiredModules=array()) {
+	function getReselectModulesResponse($desiredModules = array()){
 
 		$GLOBALS['updateServerTemplateData']['existingModules'] = modules::getExistingModules();
 		$GLOBALS['updateServerTemplateData']['clientDesiredModules'] = $desiredModules;
 
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/modules/reselectModules.inc.php');
 		return updateUtil::getResponseString($ret);
-
 	}
 
-
-	function getConfirmModulesResponse() {
+	function getConfirmModulesResponse(){
 
 		$GLOBALS['updateServerTemplateData']['clientDesiredModules'] = $_SESSION['clientDesiredModules'];
 		$GLOBALS['updateServerTemplateData']['existingModules'] = modules::getExistingModules();
 
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/modules/confirmModules.inc.php');
 		return updateUtil::getResponseString($ret);
-
 	}
-
 
 	/**
 	 * @return string
 	 */
-	function getGetChangesResponse() {
+	function getGetChangesResponse(){
 		return installer::getGetChangesResponse();
-
 	}
 
 	/**
@@ -146,7 +127,7 @@ class modules extends modulesBase {
 	 *
 	 * @return string
 	 */
-	function getFinishUserInstallation() {
+	function getFinishUserInstallation(){
 
 		$phpCode = '
 		$tmpDB = new DB_WE();
@@ -173,9 +154,7 @@ class modules extends modulesBase {
 		';
 
 		return $phpCode;
-
 	}
-
 
 	/**
 	 * Response to finish installation, deletes not needed files and updates
@@ -183,7 +162,7 @@ class modules extends modulesBase {
 	 *
 	 * @return string
 	 */
-	function getFinishInstallationResponse() {
+	function getFinishInstallationResponse(){
 
 		$existingModules = modules::getExistingModules();
 
@@ -192,15 +171,13 @@ class modules extends modulesBase {
 
 		$extraCode = '';
 		// if usermodule is installed, create new user
-		if (in_array('users', $_SESSION['clientDesiredModules'])) {
+		if(in_array('users', $_SESSION['clientDesiredModules'])){
 			$extraCode = modules::getFinishUserInstallation();
-
 		}
 
 		$message = '<ul>';
-		for ($i=0; $i<sizeof($_SESSION['clientDesiredModules']);$i++) {
+		for($i = 0; $i < sizeof($_SESSION['clientDesiredModules']); $i++){
 			$message .= "<li>" . $existingModules[$_SESSION['clientDesiredModules'][$i]]['text'] . "</li>\\n";
-
 		}
 		$message .= '</ul>';
 
@@ -231,9 +208,6 @@ class modules extends modulesBase {
 		?>';
 
 		return updateUtil::getResponseString($retArray);
-
 	}
 
-
 }
-?>

@@ -1,5 +1,4 @@
 <?php
-
 $liveUpdateResponse['Type'] = 'eval';
 $liveUpdateResponse['Code'] = '<?php
 
@@ -18,4 +17,3 @@ print liveUpdateTemplates::getHtml("' . addslashes($GLOBALS['lang']['modules']['
 ?>';
 
 
-?>

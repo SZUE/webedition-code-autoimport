@@ -1,41 +1,36 @@
 <?php
 
-class upgrade {
+class upgrade{
 
-
-	function getNotEnoughLicensesForUpgradeResponse() {
+	function getNotEnoughLicensesForUpgradeResponse(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/upgrade/notEnoughLicensesForUpgrade.inc.php');
 		return updateUtil::getResponseString($ret);
-
 	}
-
 
 	/**
 	 * gathers all changes needed for an update and returns assoziative array
 	 *
 	 * @return array
 	 */
-	function getChangesForUpdate() {
+	function getChangesForUpdate(){
 
 		// which modules are installed/licensed
 		//$domainInformation = license::getRegisteredDomainInformationById($_SESSION['clientInstalledTableId']);
-
 		//$installedModules = $domainInformation['registeredModules'];
-
 		// query for all selected modules
 		$modulesQuery = '';
 		/*
-		$modulesQuery = ' AND ( module = "" OR ';
-		foreach ($GLOBALS['MODULES_FREE_OF_CHARGE_INCLUDED'] as $module) {
-			$modulesQuery .= 'module="' . $module . '" OR ';
+		  $modulesQuery = ' AND ( module = "" OR ';
+		  foreach ($GLOBALS['MODULES_FREE_OF_CHARGE_INCLUDED'] as $module) {
+		  $modulesQuery .= 'module="' . $module . '" OR ';
 
-		}
-		foreach ($installedModules as $module) {
-			$modulesQuery .= ' module = "' . $module . '" OR ';
+		  }
+		  foreach ($installedModules as $module) {
+		  $modulesQuery .= ' module = "' . $module . '" OR ';
 
-		}
-		$modulesQuery .= '0 )';
-		*/
+		  }
+		  $modulesQuery .= '0 )';
+		 */
 		$sysLngQuery = ' AND (language="" OR language="' . $_SESSION['clientSyslng'] . '") ';
 
 		// query for all needed changes - software
@@ -52,9 +47,8 @@ class upgrade {
 		';
 
 		$languagePart = 'AND ( ';
-		foreach ($_SESSION['clientInstalledLanguages'] as $language) {
+		foreach($_SESSION['clientInstalledLanguages'] as $language){
 			$languagePart .= 'language="' . $language . '" OR ';
-
 		}
 		$languagePart .= ' 0 )';
 
@@ -69,19 +63,16 @@ class upgrade {
 				' . $languagePart . '
 				ORDER BY version DESC
 		';
-		
+
 		return updateUtil::getChangesArrayByQueries(array($query, $languageQuery));
-
 	}
-
 
 	/**
 	 * @return string
 	 */
-	function getNoUpdateForLanguagesResponse() {
+	function getNoUpdateForLanguagesResponse(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/upgrade/noUpgradeForLanguages.inc.php');
 		return updateUtil::getResponseString($ret);
-
 	}
 
 	/**
@@ -89,24 +80,20 @@ class upgrade {
 	 *
 	 * @return string
 	 */
-	function getRegisterBeforeUpgradeResponse() {
+	function getRegisterBeforeUpgradeResponse(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/upgrade/registerBeforeUpgrade.inc.php');
 		return updateUtil::getResponseString($ret);
-
 	}
-
 
 	/**
 	 * upgrade possible response
 	 *
 	 * @return string
 	 */
-	function getUpgradePossibleResponse() {
+	function getUpgradePossibleResponse(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/upgrade/upgradePossible.inc.php');
 		return updateUtil::getResponseString($ret);
-
 	}
-
 
 	/**
 	 * during upgrade copy this folder to /webEdition6
@@ -114,7 +101,7 @@ class upgrade {
 	 *
 	 * @return string
 	 */
-	function getCopyFilesResponse() {
+	function getCopyFilesResponse(){
 
 		$nextUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail());
 		$versionnumber = updateUtilBase::version2number($_SESSION['clientTargetVersion']);
@@ -124,9 +111,9 @@ class upgrade {
 		$version_type = update::getOnlyVersionType($versionnumber);
 		$version_type_version = update::getOnlyVersionTypeVersion($versionnumber);
 		$version_branch = update::getOnlyVersionBranch($versionnumber);
-		$we_version = updateUtil::getReplaceCode('we_version', array($_SESSION['clientTargetVersion'], $version_type,$zf_version,$subversion,$version_type_version, $version_branch));
-		
-		
+		$we_version = updateUtil::getReplaceCode('we_version', array($_SESSION['clientTargetVersion'], $version_type, $zf_version, $subversion, $version_type_version, $version_branch));
+
+
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
 
@@ -157,7 +144,7 @@ class upgrade {
 			$success = false;
 			' . installer::getErrorMessageResponsePart('', $GLOBALS['lang']['upgrade']['copyFilesVersionError']) . '
 		}
-		
+
 		// we_conf.inc
 		$confContent = $liveUpdateFnc->getFileContent(LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we/include/conf/we_conf.inc' . $_SESSION['clientExtension'] . '");
 		if (!$liveUpdateFnc->filePutContent( LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/webEdition/we/include/conf/we_conf.inc' . $_SESSION['clientExtension'] . '", $confContent)) {
@@ -198,7 +185,7 @@ class upgrade {
 			' . installer::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesDirectoryError'], 'weTagWizard/custom_tags')) . '
 		}
 		*/
-		
+
 		// custom_tags #2
 		// moved to getFinishInstallationResponse because rename() will fail on Windows Servers if target already exists
 		/*
@@ -230,18 +217,16 @@ class upgrade {
 			$success = false;
 			' . installer::getErrorMessageResponsePart('', $GLOBALS['lang']['upgrade']['copyFilesError']) . '
 		}
-		
-		?>';	
-		
+
+		?>';
+
 		return updateUtil::getResponseString($retArray);
-
 	}
-
 
 	/**
 	 * @return string
 	 */
-	function getExecutePatchesResponse() {
+	function getExecutePatchesResponse(){
 
 		$nextUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail());
 
@@ -251,7 +236,7 @@ class upgrade {
 		' . updateUtil::getOverwriteClassesCode() . '
 
 		$success = true;
-		
+
 		if (!$success) {
 
 			$message = "<div>' . $GLOBALS['lang']['upgrade']['executePatchesDatabase'] . '<br /><ul>$errorDetail</ul></div>";
@@ -262,44 +247,42 @@ class upgrade {
 
 		?>';
 		return updateUtil::getResponseString($retArray);
-
 	}
-	
+
 	/**
 	 * returns php code to insert user in tblUser after installation of user management
 	 *
 	 * @return string
 	 */
-	function getFinishUserInstallation() {
+	function getFinishUserInstallation(){
 		/*
-		$phpCode = '
-		$tmpDB = new DB_WE();
-		$tmpDB->Halt_On_Error = "no";
-		
-		$userQuery = "SELECT passwd, username FROM " . TBL_PREFIX . "tblPasswd";
-		$tmpDB->query($userQuery);
-		$tmpDB->next_record();
-		$password = $tmpDB->f("passwd");
-		$username = $tmpDB->f("username");
-		
-		$insertUserQuery = "
-			INSERT INTO " . TBL_PREFIX . "tblUser
-			(ID, ParentID, Text, Path, Icon, IsFolder, Type, First, Second, Address, HouseNo, City, PLZ, State, Country, Tel_preselection, Telephone, Fax_preselection, Fax, Handy, Email, Description, username, passwd, Permissions, ParentPerms, Alias, CreatorID, CreateDate, ModifierID, ModifyDate, Ping, Portal, workSpace, workSpaceDef, workSpaceTmp, workSpaceNav, workSpaceObj, ParentWs, ParentWst, ParentWsn, ParentWso, Salutation)
-			VALUES (1, 0, \"$username\", \"/$username\", \"user.gif\", 0, 0, \"\", \"\", \"\", \"\", \"\", 0, \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"$username\", \"$password\", \'a:1:{s:13:\"ADMINISTRATOR\";i:1;}\', 0, 0, 0, 0, 0, 0, 0, \"\", \"\", \"\", \"\", \"\", \"\", 0, 0, 0, 0, \"\")
-		";
+		  $phpCode = '
+		  $tmpDB = new DB_WE();
+		  $tmpDB->Halt_On_Error = "no";
 
-		if ($tmpDB->query($insertUserQuery) ) {
-			
-		} else {
-			
-		}
-		
-		';
-		*/
+		  $userQuery = "SELECT passwd, username FROM " . TBL_PREFIX . "tblPasswd";
+		  $tmpDB->query($userQuery);
+		  $tmpDB->next_record();
+		  $password = $tmpDB->f("passwd");
+		  $username = $tmpDB->f("username");
+
+		  $insertUserQuery = "
+		  INSERT INTO " . TBL_PREFIX . "tblUser
+		  (ID, ParentID, Text, Path, Icon, IsFolder, Type, First, Second, Address, HouseNo, City, PLZ, State, Country, Tel_preselection, Telephone, Fax_preselection, Fax, Handy, Email, Description, username, passwd, Permissions, ParentPerms, Alias, CreatorID, CreateDate, ModifierID, ModifyDate, Ping, Portal, workSpace, workSpaceDef, workSpaceTmp, workSpaceNav, workSpaceObj, ParentWs, ParentWst, ParentWsn, ParentWso, Salutation)
+		  VALUES (1, 0, \"$username\", \"/$username\", \"user.gif\", 0, 0, \"\", \"\", \"\", \"\", \"\", 0, \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"$username\", \"$password\", \'a:1:{s:13:\"ADMINISTRATOR\";i:1;}\', 0, 0, 0, 0, 0, 0, 0, \"\", \"\", \"\", \"\", \"\", \"\", 0, 0, 0, 0, \"\")
+		  ";
+
+		  if ($tmpDB->query($insertUserQuery) ) {
+
+		  } else {
+
+		  }
+
+		  ';
+		 */
 		$phpCode = '';
 		return $phpCode;
 	}
-	
 
 	/**
 	 * Response to finish installation, prepares webEdition 5 folder and renames
@@ -307,47 +290,47 @@ class upgrade {
 	 *
 	 * @return string
 	 */
-	function getFinishInstallationResponse() {
+	function getFinishInstallationResponse(){
 		$versionnumber = updateUtilBase::version2number($_SESSION['clientTargetVersion']);
 		$zf_version = update::getZFversion($versionnumber);
-		
+
 		$SubVersions = $_SESSION['SubVersions'];
 		$subversion = $SubVersions[$versionnumber];
 		$version_type = update::getOnlyVersionType($versionnumber);
 		$version_type_version = update::getOnlyVersionTypeVersion($versionnumber);
 		$version_branch = update::getOnlyVersionBranch($versionnumber);
-		$we_version = updateUtil::getReplaceCode('we_version', array($_SESSION['clientTargetVersion'], $version_type,$zf_version,$subversion,$version_type_version,$version_branch));
-		
-		
+		$we_version = updateUtil::getReplaceCode('we_version', array($_SESSION['clientTargetVersion'], $version_type, $zf_version, $subversion, $version_type_version, $version_branch));
+
+
 		// folder name for old webEdition folder (i.e. "webEdition5" for version 5.x or webEdition5light for light version)
 		$we_versionDirName = self::getVersionDirName();
-		
+
 		$extraCode = '';
 		// if usermodule is installed, create new user
-		if (!in_array('users', $_SESSION['clientInstalledModules'])) {
+		if(!in_array('users', $_SESSION['clientInstalledModules'])){
 			$extraCode = modules::getFinishUserInstallation();
 		}
-		
+
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
 
 		' . updateUtil::getOverwriteClassesCode() . '
 
 		$success = true;
-		
+
 		// rename finish installation
 		if($success) {
 			$filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp";
 			$liveUpdateFnc->deleteDir($filesDir);
-			
+
 		}
-		
+
 		// add extraCode if needed
 		' . $extraCode . '
-		
+
 		// we -> we5 (move old (ugpraded) webEdition folder to $we_versionDirName)
-		if ($success && !file_exists(LIVEUPDATE_SOFTWARE_DIR . "/'.$we_versionDirName.'")) {
-			if ( !rename(LIVEUPDATE_SOFTWARE_DIR . "/webEdition", LIVEUPDATE_SOFTWARE_DIR . "/'.$we_versionDirName.'")) {
+		if ($success && !file_exists(LIVEUPDATE_SOFTWARE_DIR . "/' . $we_versionDirName . '")) {
+			if ( !rename(LIVEUPDATE_SOFTWARE_DIR . "/webEdition", LIVEUPDATE_SOFTWARE_DIR . "/' . $we_versionDirName . '")) {
 				$success = false;
 				' . installer::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesMoveDirectoryError'], 'webEdition')) . '
 			}
@@ -362,29 +345,29 @@ class upgrade {
 		}
 
 		// now move backupFolder
-		if ($success && !file_exists(LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we_backup") && file_exists(LIVEUPDATE_SOFTWARE_DIR . "/'.$we_versionDirName.'/we_backup")) {
-			if (!rename(LIVEUPDATE_SOFTWARE_DIR . "/'.$we_versionDirName.'/we_backup", LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we_backup")) {
+		if ($success && !file_exists(LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we_backup") && file_exists(LIVEUPDATE_SOFTWARE_DIR . "/' . $we_versionDirName . '/we_backup")) {
+			if (!rename(LIVEUPDATE_SOFTWARE_DIR . "/' . $we_versionDirName . '/we_backup", LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we_backup")) {
 				$success = false;
 				' . installer::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesMoveDirectoryError'], 'we_backup')) . '
 			}
 		}
 
 		// move custom_tags #1
-		if ($success && file_exists(LIVEUPDATE_SOFTWARE_DIR . "/'.$we_versionDirName.'/we/include/we_tags/custom_tags")) {
-			if ( !rename(LIVEUPDATE_SOFTWARE_DIR . "/'.$we_versionDirName.'/we/include/we_tags/custom_tags", LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we/include/we_tags/custom_tags")) {
+		if ($success && file_exists(LIVEUPDATE_SOFTWARE_DIR . "/' . $we_versionDirName . '/we/include/we_tags/custom_tags")) {
+			if ( !rename(LIVEUPDATE_SOFTWARE_DIR . "/' . $we_versionDirName . '/we/include/we_tags/custom_tags", LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we/include/we_tags/custom_tags")) {
 				$success = false;
 				' . installer::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesMoveDirectoryError'], 'custom_tags')) . '
 			}
 		}
-		
+
 		// movie custom_tags #2
-		if ($success && file_exists(LIVEUPDATE_SOFTWARE_DIR . "/'.$we_versionDirName.'/we/include/weTagWizard/we_tags/custom_tags")) {
-			if ( !rename(LIVEUPDATE_SOFTWARE_DIR . "/'.$we_versionDirName.'/we/include/weTagWizard/we_tags/custom_tags", LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we/include/weTagWizard/we_tags/custom_tags")) {
+		if ($success && file_exists(LIVEUPDATE_SOFTWARE_DIR . "/' . $we_versionDirName . '/we/include/weTagWizard/we_tags/custom_tags")) {
+			if ( !rename(LIVEUPDATE_SOFTWARE_DIR . "/' . $we_versionDirName . '/we/include/weTagWizard/we_tags/custom_tags", LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we/include/weTagWizard/we_tags/custom_tags")) {
 				$success = false;
 				' . installer::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesMoveDirectoryError'], 'custom_tags')) . '
 			}
 		}
-		
+
 		// custom_tags #1
 		if ($success && !file_exists(LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we/include/weTagWizard/we_tags/custom_tags")) {
 			if (!$liveUpdateFnc->checkMakeDir( LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we/include/weTagWizard/we_tags/custom_tags")) {
@@ -400,15 +383,15 @@ class upgrade {
 				' . installer::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesDirectoryError'], 'custom_tags')) . '
 			}
 		}
-		
+
 		// last part move site folder
-		if ($success && !file_exists(LIVEUPDATE_SOFTWARE_DIR . "/webEdition/site") && file_exists(LIVEUPDATE_SOFTWARE_DIR . "/'.$we_versionDirName.'/site")) {
-			if (!rename(LIVEUPDATE_SOFTWARE_DIR . "/'.$we_versionDirName.'/site", LIVEUPDATE_SOFTWARE_DIR . "/webEdition/site")) {
+		if ($success && !file_exists(LIVEUPDATE_SOFTWARE_DIR . "/webEdition/site") && file_exists(LIVEUPDATE_SOFTWARE_DIR . "/' . $we_versionDirName . '/site")) {
+			if (!rename(LIVEUPDATE_SOFTWARE_DIR . "/' . $we_versionDirName . '/site", LIVEUPDATE_SOFTWARE_DIR . "/webEdition/site")) {
 				$success = false;
 				' . installer::getErrorMessageResponsePart('', sprintf($GLOBALS['lang']['upgrade']['copyFilesMoveDirectoryError'], 'site')) . '
 			}
 		}
-		
+
 		// last add welcome message to tblnotepad -> this table should be empty.
 		if ($success) {
 			$tmpDB = new DB_WE();
@@ -432,7 +415,6 @@ class upgrade {
 		}
 		?>';
 		return updateUtil::getResponseString($retArray);
-
 	}
 
 	/**
@@ -442,9 +424,9 @@ class upgrade {
 	 * @param string $progress
 	 * @return string
 	 */
-	function getFinishUpgradeResponsePart($message, $jsMessage='', $progress=100) {
+	function getFinishUpgradeResponsePart($message, $jsMessage = '', $progress = 100){
 
-		if (!$jsMessage) {
+		if(!$jsMessage){
 			$jsMessage = strip_tags($message);
 		}
 
@@ -456,18 +438,18 @@ class upgrade {
 		</script>';
 	}
 
-	function getFinishUpgradePopUpResponse() {
+	function getFinishUpgradePopUpResponse(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/upgrade/finishUpgradePopUp.inc.php');
 		//error_log( updateUtil::getResponseString($ret) );
 		return updateUtil::getResponseString($ret);
 	}
-	
+
 	// identify upgraded webEdition version for renaming old webEdition/ folder (i.e. to "webEdition4/")
-	function getVersionDirName() {
+	function getVersionDirName(){
 		$_versionDirName = "webEdition5";
-		if(isset($_SESSION["clientWE_LIGHT"]) && $_SESSION["clientWE_LIGHT"]) {
-			$_versionDirName = "webEdition5light"; 
-		} else if(substr($_SESSION['clientVersionNumber'],0,1) == "5") {
+		if(isset($_SESSION["clientWE_LIGHT"]) && $_SESSION["clientWE_LIGHT"]){
+			$_versionDirName = "webEdition5light";
+		} else if(substr($_SESSION['clientVersionNumber'], 0, 1) == "5"){
 			$_versionDirName = "webEdition5";
 		} else {
 			// nothing special
@@ -476,4 +458,3 @@ class upgrade {
 	}
 
 }
-?>

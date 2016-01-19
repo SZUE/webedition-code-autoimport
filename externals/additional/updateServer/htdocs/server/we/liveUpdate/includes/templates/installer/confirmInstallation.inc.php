@@ -2,7 +2,6 @@
 /**
  * This template is shown, before installation starts
  */
-
 $liveUpdateResponse['Type'] = 'eval';
 $liveUpdateResponse['Code'] = '<?php
 
@@ -22,4 +21,3 @@ print liveUpdateTemplates::getHtml("' . $GLOBALS['lang']['installer']['headlineC
 
 ?>';
 
-?>

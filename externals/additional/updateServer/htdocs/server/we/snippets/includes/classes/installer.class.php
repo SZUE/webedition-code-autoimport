@@ -1,37 +1,32 @@
 <?php
 
-class installer extends installerBase {
-
+class installer extends installerBase{
 	var $LanguageIndex = "installer";
 
 	/**
 	 * @return array
 	 */
-	function getInstallationStepNames() {
+	function getInstallationStepNames(){
 
 		return array(
 			'determineFiles',
 			'downloadFiles',
-
 		);
-
 	}
-
 
 	/**
 	 * returns progress of current installer
 	 *
 	 * @return integer
 	 */
-	function getInstallerProgressPercent() {
+	function getInstallerProgressPercent(){
 
 		// current position
-		if (!isset($_REQUEST['position'])) {
+		if(!isset($_REQUEST['position'])){
 			$_REQUEST['position'] = 0;
 		}
 
 		// all steps are:
-
 		// - installation steps
 		// - all downloads/files per step
 		// - queryfiles/queries per step
@@ -45,31 +40,29 @@ class installer extends installerBase {
 		$installationStepsTotal = sizeof($installationSteps);
 
 		// downloads
-		$dlSteps = floor(sizeof($_SESSION['clientChanges']['allChanges'])/100);
+		$dlSteps = floor(sizeof($_SESSION['clientChanges']['allChanges']) / 100);
 		$installationStepsTotal += $dlSteps;
 
 		$currentStep = 0;
 
-		switch ($_REQUEST['detail']) {
+		switch($_REQUEST['detail']){
 
 			case 'determineFiles':
 				$currentStep = 1;
-			break;
+				break;
 			case 'downloadFiles':
 				$currentStep = 2;
 				$currentStep += ($_REQUEST['position'] / sizeof($_SESSION['clientChanges']['allChanges'])) * $dlSteps;
-			break;
+				break;
 		}
 
-		return number_format(($currentStep/$installationStepsTotal * 100), 0);
-
+		return number_format(($currentStep / $installationStepsTotal * 100), 0);
 	}
 
-
-	function getDownloadChangesResponse() {
+	function getDownloadChangesResponse(){
 
 		// current position
-		if (!isset($_REQUEST['position'])) {
+		if(!isset($_REQUEST['position'])){
 			$_REQUEST['position'] = 0;
 		}
 
@@ -84,8 +77,7 @@ class installer extends installerBase {
 		// If file is too large to transfer in one request, split it!
 		// when first part(s) are transfered do the next part until complete
 		// file is transfered
-		if(		(isset($_REQUEST['part']) && $_REQUEST['part'] > 0)
-			||	$FileSize > $_SESSION['DOWNLOAD_KBYTES_PER_STEP']*1024) {
+		if((isset($_REQUEST['part']) && $_REQUEST['part'] > 0) || $FileSize > $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024){
 
 			// Check which part have to be transfered
 			$Part = isset($_REQUEST['part']) ? $_REQUEST['part'] : 0;
@@ -100,75 +92,61 @@ class installer extends installerBase {
 			// value of the part -> must be base64_encoded
 			$Value = updateUtil::encodeCode(substr($Content, $Start, $Length));
 
-			$fileArray[$Paths[$Position] . ".'part" . $Part."'"] = $Value;
+			$fileArray[$Paths[$Position] . ".'part" . $Part . "'"] = $Value;
 
-			if($Start + $Length >= $FileSize) {
-				if($Position >= sizeof($_SESSION['clientChanges']['allChanges'])) {
-					$nextUrl = '?' . updateUtil::getCommonHrefParameters( $this->getNextUpdateDetail(), true );
+			if($Start + $Length >= $FileSize){
+				if($Position >= sizeof($_SESSION['clientChanges']['allChanges'])){
+					$nextUrl = '?' . updateUtil::getCommonHrefParameters($this->getNextUpdateDetail(), true);
 
 					// :IMPORTANT:
 					return updateUtil::getResponseString(installer::_getDownloadFilesMergeResponse($fileArray, $nextUrl, installer::getInstallerProgressPercent(), $Paths[$Position], $Part));
-
 				} else {
 					$Position++;
-					$nextUrl = '?' . updateUtil::getCommonHrefParameters( $_REQUEST['detail'], false ) . "&position=" . $Position;
+					$nextUrl = '?' . updateUtil::getCommonHrefParameters($_REQUEST['detail'], false) . "&position=" . $Position;
 
 					// :IMPORTANT:
-					return updateUtil::getResponseString(installer::_getDownloadFilesMergeResponse($fileArray, $nextUrl, installer::getInstallerProgressPercent(), $Paths[$Position-1], $Part));
-
+					return updateUtil::getResponseString(installer::_getDownloadFilesMergeResponse($fileArray, $nextUrl, installer::getInstallerProgressPercent(), $Paths[$Position - 1], $Part));
 				}
-
-
 			} else {
 				$Part += 1;
-				$nextUrl = '?' . updateUtil::getCommonHrefParameters( $_REQUEST['detail'], false ) . "&part=" . $Part . "&position=" . $Position;
+				$nextUrl = '?' . updateUtil::getCommonHrefParameters($_REQUEST['detail'], false) . "&part=" . $Part . "&position=" . $Position;
 
 				// :IMPORTANT:
 				return updateUtil::getResponseString(installer::_getDownloadFilesResponse($fileArray, $nextUrl, installer::getInstallerProgressPercent()));
-
 			}
 
-		// Only whole files	with max. $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] kbytes per step
+			// Only whole files	with max. $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] kbytes per step
 		} else {
 
 			$ResponseSize = 0;
-			do {
+			do{
 
-				if($Position >= sizeof($Paths)) {
+				if($Position >= sizeof($Paths)){
 					break;
-
 				}
 
 				$FileSize = filesize($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
 
 				// response + size of next file < max size for response
-				if( $ResponseSize + $FileSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024 ) {
+				if($ResponseSize + $FileSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024){
 					$ResponseSize += $FileSize;
 
 					$fileArray[$Paths[$Position]] = updateUtil::getFileContentEncoded($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
 					$Position++;
-
 				} else {
 					break;
-
 				}
+			} while($ResponseSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
 
-			} while ( $ResponseSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024 );
-
-			if ( $Position >= sizeof($_SESSION['clientChanges']['allChanges']) ) {
-				$nextUrl = '?' . updateUtil::getCommonHrefParameters( $this->getNextUpdateDetail(), true );
-
+			if($Position >= sizeof($_SESSION['clientChanges']['allChanges'])){
+				$nextUrl = '?' . updateUtil::getCommonHrefParameters($this->getNextUpdateDetail(), true);
 			} else {
-				$nextUrl = '?' . updateUtil::getCommonHrefParameters( $_REQUEST['detail'], false ) . "&position=$Position";
-
+				$nextUrl = '?' . updateUtil::getCommonHrefParameters($_REQUEST['detail'], false) . "&position=$Position";
 			}
 
 			// :IMPORTANT:
 			return updateUtil::getResponseString(installer::_getDownloadFilesResponse($fileArray, $nextUrl, installer::getInstallerProgressPercent()));
-
 		}
-
-
 	}
 
 	/**
@@ -182,15 +160,14 @@ class installer extends installerBase {
 	 * @param string $message
 	 * @return string
 	 */
-	function getProceedNextCommandResponsePart($nextUrl, $progress) {
+	function getProceedNextCommandResponsePart($nextUrl, $progress){
 
 		$activateStep = '';
 
-		if ( strpos($nextUrl, "leStep=" . $_REQUEST["nextLeStep"]) ) {
+		if(strpos($nextUrl, "leStep=" . $_REQUEST["nextLeStep"])){
 			$activateStep = '
 				top.leWizardStatus.update("' . ($_REQUEST["nextLeWizard"]) . '", "' . ($_REQUEST["nextLeStep"]) . '");
 			';
-
 		}
 
 		return '<script type="text/JavaScript">
@@ -209,13 +186,13 @@ class installer extends installerBase {
 	 * @param string $headline
 	 * @return string
 	 */
-	function getErrorMessage($headline='', $message='') {
+	function getErrorMessage($headline = '', $message = ''){
 
-		if (!$headline) {
+		if(!$headline){
 			$headline = "<br /><strong class=\'errorText\'>" . $GLOBALS['lang'][$this->LanguageIndex][$_REQUEST['detail'] . 'Error'] . '</strong>';
 		}
 
-		if ($message) {
+		if($message){
 			$message .= '<br />\\\n';
 		}
 
@@ -243,7 +220,7 @@ class installer extends installerBase {
 	 * @param string $message
 	 * @return string
 	 */
-	function getErrorMessageResponsePart($headline='', $message='') {
+	function getErrorMessageResponsePart($headline = '', $message = ''){
 
 		return '
 
@@ -257,15 +234,15 @@ class installer extends installerBase {
 		';
 	}
 
-	function getUpdateDetailPosition() {
+	function getUpdateDetailPosition(){
 
 		$currentStep = $_REQUEST['detail'];
 
 		$steps = $this->getInstallationStepNames();
 
-		for ($i=0; $i<sizeof($steps); $i++) {
+		for($i = 0; $i < sizeof($steps); $i++){
 
-			if ($currentStep == $steps[$i]) {
+			if($currentStep == $steps[$i]){
 				return $i;
 			}
 		}
@@ -280,13 +257,13 @@ class installer extends installerBase {
 	 * @param string $nextDetail
 	 * @return array
 	 */
-	function _getDownloadFilesResponse($filesArray, $nextUrl, $progress=0) {
+	function _getDownloadFilesResponse($filesArray, $nextUrl, $progress = 0){
 
 		// prepare $filesArray (path => encodedContent) for the client
 		$writeFilesCode = '
 			$files = array();';
 
-		foreach ($filesArray as $path => $content) {
+		foreach($filesArray as $path => $content){
 
 			$writeFilesCode .= '
 				$files[' . $path . '] = "' . $content . '";';
@@ -327,7 +304,6 @@ class installer extends installerBase {
 ?>';
 
 		return $retArray;
-
 	}
 
 	/**
@@ -339,13 +315,13 @@ class installer extends installerBase {
 	 * @param string $nextDetail
 	 * @return array
 	 */
-	function _getDownloadFilesMergeResponse($filesArray, $nextUrl, $progress=0, $Realname, $numberOfParts) {
+	function _getDownloadFilesMergeResponse($filesArray, $nextUrl, $progress = 0, $Realname, $numberOfParts){
 
 		// prepare $filesArray (path => encodedContent) for the client
 		$writeFilesCode = '
 			$files = array();';
 
-		foreach ($filesArray as $path => $content) {
+		foreach($filesArray as $path => $content){
 
 			$writeFilesCode .= '
 				$files[' . $path . '] = "' . $content . '";';
@@ -398,9 +374,6 @@ class installer extends installerBase {
 ?>';
 
 		return $retArray;
-
 	}
 
 }
-
-?>

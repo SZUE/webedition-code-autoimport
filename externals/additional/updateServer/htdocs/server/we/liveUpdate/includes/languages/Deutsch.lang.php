@@ -1,5 +1,4 @@
 <?php
-
 $lang['register']['headline'] = 'Registrierung';
 $lang['register']['insertSerial'] = 'Bitte geben Sie hier Ihre Seriennummer ein';
 $lang['register']['serial'] = 'Seriennummer';
@@ -42,11 +41,11 @@ $lang['upgrade']['confirmUpdateHint'][6210] = '<b>webEdition 6.2.1.0:</b><ul><li
 $lang['upgrade']['confirmUpdateHint'][6220] = '<b>webEdition 6.2.2.0:</b><ul><li>In der webEdition Version wird <u>PHP in der Version 5.2.4</u> oder neuer ben&ouml;tigt sowie eine MySQL DB Version 5.X</li><li>Dieses Update behebt einen alten Fehler, der aber in den meisten F&auml;llen nur in der Version 6.2.1 relevant wird: Die Schreibweise der Tags &lt;we:conditionAnd&gt; (nicht AND) und &lt;we:conditionOr&gt; (nicht OR) ist jetzt wichtig f&uuml;r korrektes Funktionieren. Bei Problemen kann in den Einstellungen Tab System der Haken bei Abw&auml;rtskompatibilit&auml;t gesetzt werden. </li></ul>';
 $lang['upgrade']['confirmUpdateHint'][6230] = '<b>webEdition 6.2.3.0:</b><ul><li>Dieses Update behebt ein schwerwiegendes Sicherheitsproblem in der Kundenverwaltung. Zur Behebung musste unter anderem der Standardwert f&uuml;r das Attribut register des Tags we:saveRegisteredUser ge&auml;ndert werden. Sollte eine Neuregistrierung von Kunden in Ihrer Site nach dem Update nicht m&ouml;glich sein, so k&ouml;nnen Sie das alte Verhalten im Dialog Einstellungen Kundenverwaltung wiederherstellen</li></ul>';
 $lang['upgrade']['confirmUpdateHint'][6300] = '<b>webEdition 6.3.0.0:</b><ul><li>Dieses Update optimiert die komplette webEdition Infrastruktur. Wegen der vielen grundlegenden &Auml;nderungen kann es beim Update einer Site durchaus zu Problemen kommen!</li><li><b>Erstellen Sie unbedingt ein Backup der vorhandenen Site</b></li><li>Beachten Sie die Hinweise in der Versionshistorie zu <b>m&ouml;glichen Problemen und L&ouml;sungen, siehe <a href="http://www.webedition.org/de/webedition-cms/versionshistorie/webedition-6/version-6.3.0.0" target="_blank">Version 6.3.0.0</a></b></li><li>F&uuml;hren Sie gegebenfalls ein <b>Testupdate</b> in einer Kopie der Site durch, insbesondere wenn Sie Module (z.B. Shop, Objekt/DB, aber auch andere) einsetzen.</li><li>Nach dem Rebuild aller Vorlagen und Dokumente pr&uuml;fen Sie das Fehlerlog auf weitere Hinweise</li></ul>';
-$lang['upgrade']['confirmUpdateDiskquotaWarning0']='<br/>Sie haben mehr als 100 MB freien Webspace.';
-$lang['upgrade']['confirmUpdateDiskquotaWarning1']='<br/>Sie haben nur noch <b>';
-$lang['upgrade']['confirmUpdateDiskquotaWarning2']='MB</b> freien WebSpace (Quota), <br/><b>pr&uuml;fen Sie die Update Hinweise</b> auf den ben&ouml;tigen Speicherplatz!';
-$lang['upgrade']['repeatUpdateDiskquotaWarning1']='<br/>Sie haben nur noch <b>';
-$lang['upgrade']['repeatUpdateDiskquotaWarning2']='MB</b> freien WebSpace (Quota), <br/><b>Dies wird f&uuml;r eine Updatewiederholung nicht ausreichen!</b>';
+$lang['upgrade']['confirmUpdateDiskquotaWarning0'] = '<br/>Sie haben mehr als 100 MB freien Webspace.';
+$lang['upgrade']['confirmUpdateDiskquotaWarning1'] = '<br/>Sie haben nur noch <b>';
+$lang['upgrade']['confirmUpdateDiskquotaWarning2'] = 'MB</b> freien WebSpace (Quota), <br/><b>pr&uuml;fen Sie die Update Hinweise</b> auf den ben&ouml;tigen Speicherplatz!';
+$lang['upgrade']['repeatUpdateDiskquotaWarning1'] = '<br/>Sie haben nur noch <b>';
+$lang['upgrade']['repeatUpdateDiskquotaWarning2'] = 'MB</b> freien WebSpace (Quota), <br/><b>Dies wird f&uuml;r eine Updatewiederholung nicht ausreichen!</b>';
 
 $lang['upgrade']['confirmUpdateWarningEnd'] = '';
 $lang['upgrade']['confirmUpdateWarningTitle'] = 'Zum Fortfahren bitte best&auml;tigen:';
@@ -87,7 +86,7 @@ $lang['update']['updateAvailableText'] = 'Ihre installierte Version ist nicht me
 $lang['update']['updatetoVersion'] = 'Update auf Version:';
 $lang['update']['suggestCurrentVersion'] = 'Wir empfehlen Ihnen, immer die aktuellste webEdition Version zu verwenden.';
 $lang['update']['noUpdateNeeded'] = 'Derzeit ist kein Update verf&uuml;gbar. Sie haben bereits die aktuellste Version installiert.';
-	$lang['update']['repeatUpdatePossible'] = 'Wenn Sie m&ouml;chten, k&ouml;nnen Sie eine Update-Wiederholung durchf&uuml;hren. Dabei werden alle webEdition Programmdateien neu eingespielt.<br />Achtung, dieser Vorgang kann unter Umst&auml;nden eine gewisse Zeit in Anspruch nehmen.<br/><b>Dabei werden maximal ca. 100 MB freier Webspace ben&ouml;tigt.</b>';
+$lang['update']['repeatUpdatePossible'] = 'Wenn Sie m&ouml;chten, k&ouml;nnen Sie eine Update-Wiederholung durchf&uuml;hren. Dabei werden alle webEdition Programmdateien neu eingespielt.<br />Achtung, dieser Vorgang kann unter Umst&auml;nden eine gewisse Zeit in Anspruch nehmen.<br/><b>Dabei werden maximal ca. 100 MB freier Webspace ben&ouml;tigt.</b>';
 $lang['update']['repeatUpdateNeeded'] = '<b>Bevor Sie auf die neue Version updaten k&ouml;nnen, m&uuml;ssen Sie eine Updatewiederholung Ihrer jetzigen Version durchf&uuml;hren</b>, da Ihre SVN-Revision niedriger ist als die in der Datenbank f&uuml;r Ihre Version hinterlegte. <br />Achtung, dieser Vorgang kann unter Umst&auml;nden eine gewisse Zeit in Anspruch nehmen.<br/><b>Dabei werden maximal ca. 100 MB freier Webspace ben&ouml;tigt.</b>';
 $lang['update']['repeatUpdateNotPossible'] = 'Die installierte Version ist neuer als die f&uuml;r Updates verf&uuml;gbare Version. <b>Eine Update-Wiederholung daher nicht m&ouml;glich.</b> Falls Sie nightly Builds bzw. Alpha, Beta oder RCs updaten wollen, so aktivieren Sie bitte die entsprechende Option im Reiter "Pre-Release Versionen"';
 $lang['update']['noUpdateForLanguagesText'] = 'Sie haben die Version %s installiert. Momentan ist kein Update m&ouml;glich, da nicht f&uuml;r alle installierten Sprachen ein Update vorliegt.';
@@ -214,4 +213,3 @@ $luSystemLanguage['modules']['finished'] = 'Modulinstallation abgeschlossen';
 $luSystemLanguage['languages']['start'] = 'Starte Sprachinstallation';
 $luSystemLanguage['languages']['finished'] = 'Sprachinstallation abgeschlossen';
 
-?>

@@ -2,7 +2,6 @@
 /**
  * This template is shown to confirm an update repeat
  */
-
 $liveUpdateResponse['Type'] = 'eval';
 $liveUpdateResponse['Code'] = '<?php
 

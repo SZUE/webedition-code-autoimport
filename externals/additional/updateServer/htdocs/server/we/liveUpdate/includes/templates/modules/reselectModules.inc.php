@@ -1,8 +1,7 @@
 <?php
-
 $modules = array();
-foreach ($GLOBALS['updateServerTemplateData']['clientDesiredModules'] as $moduleKey) {
-	
+foreach($GLOBALS['updateServerTemplateData']['clientDesiredModules'] as $moduleKey){
+
 	$modules[$moduleKey] = $GLOBALS['updateServerTemplateData']['existingModules'][$moduleKey]['text'];
 }
 asort($modules);
@@ -28,4 +27,3 @@ print liveUpdateTemplates::getHtml("' . addslashes($GLOBALS['lang']['modules']['
 ?>';
 
 
-?>

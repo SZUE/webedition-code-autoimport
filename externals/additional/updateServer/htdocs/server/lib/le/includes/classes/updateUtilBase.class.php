@@ -477,5 +477,3 @@ class updateUtilBase{
 	}
 
 }
-
-?>

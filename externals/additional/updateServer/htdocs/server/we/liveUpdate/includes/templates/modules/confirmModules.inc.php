@@ -1,8 +1,7 @@
 <?php
-
 // get names of the modules
 $installModules = array();
-foreach ($GLOBALS['updateServerTemplateData']['clientDesiredModules'] as $moduleKey) {
+foreach($GLOBALS['updateServerTemplateData']['clientDesiredModules'] as $moduleKey){
 	$installModules[$moduleKey] = $GLOBALS['updateServerTemplateData']['existingModules'][$moduleKey]['text'];
 }
 asort($installModules);
@@ -11,7 +10,7 @@ asort($installModules);
 $modulesStr = '<ul>
 ';
 
-foreach ($installModules as $module) {
+foreach($installModules as $module){
 	$modulesStr .= "<li>$module</li>\n";
 }
 $modulesStr .= '</ul>';
@@ -35,4 +34,3 @@ print liveUpdateTemplates::getHtml("' . addslashes($GLOBALS['lang']['modules']['
 ?>';
 
 
-?>

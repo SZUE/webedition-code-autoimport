@@ -1,21 +1,19 @@
 <?php
 
-class modulesBase {
-
+class modulesBase{
 
 	/**
 	 * returns array with all existing modules and some information about the modules
 	 *
 	 * @return array
 	 */
-	function getExistingModules($forceSelect = false, $language = "") {
+	function getExistingModules($forceSelect = false, $language = ""){
 		global $DB_Versioning;
 
-		if ( !isset($_SESSION['existingModules']) || $forceSelect) {
+		if(!isset($_SESSION['existingModules']) || $forceSelect){
 
-			if($language == "") {
+			if($language == ""){
 				$language = $_SESSION['clientSyslng'];
-
 			}
 			$_SESSION['existingModules'] = array();
 
@@ -26,9 +24,9 @@ class modulesBase {
 					AND PK_moduleKey = strModuleKey
 			";
 
-			$res =& $DB_Versioning->query($query);
+			$res = & $DB_Versioning->query($query);
 
-			while ( $row = $res->fetchRow() ) {
+			while($row = $res->fetchRow()){
 				$_SESSION['existingModules'][$row['PK_moduleKey']] = array(
 					'text' => $row['strText'],
 					'grade' => $row['grade'],
@@ -38,23 +36,17 @@ class modulesBase {
 
 				// occasionally add information about basis module for promodules
 				// and information about module dependencies
-				if($row['grade'] == "pro"){	//	ProModule - add basismodule
+				if($row['grade'] == "pro"){ //	ProModule - add basismodule
 					$_SESSION['existingModules'][$row["PK_moduleKey"]]["basismodule"] = $row["basismodule"];
-
 				}
 
 				if($row['dependent'] != ""){
 					$_SESSION['existingModules'][$row["PK_moduleKey"]]["dependent"] = $row["dependent"];
-
 				}
-
 			}
-
 		}
 		return $_SESSION['existingModules'];
-
 	}
-
 
 	/**
 	 * checks if allowed module combination is allowed.
@@ -62,38 +54,31 @@ class modulesBase {
 	 * @param array $desiredModules
 	 * @return boolean
 	 */
-	function isDesiredModuleCombinationAllowed($desiredModules) {
+	function isDesiredModuleCombinationAllowed($desiredModules){
 
 		$existingModules = modules::getExistingModules();
 
-		foreach ($desiredModules as $moduleKey) {
+		foreach($desiredModules as $moduleKey){
 			$module = $existingModules[$moduleKey];
 
 			// base module to desired promodule
-			if ($module['grade'] == 'pro') {
-				if ( !(in_array($module['basismodule'], $desiredModules) || in_array($module['basismodule'], $_SESSION['clientInstalledModules']))  ) {
+			if($module['grade'] == 'pro'){
+				if(!(in_array($module['basismodule'], $desiredModules) || in_array($module['basismodule'], $_SESSION['clientInstalledModules']))){
 					return false;
-
 				}
-
 			}
 
 			// all modules this module depends from
-			if (isset($module['dependent'])) {
+			if(isset($module['dependent'])){
 				$depModules = explode(',', $module['dependent']);
-				for ($i=0; $i<sizeof($depModules); $i++) {
-					if ( !(in_array($depModules[$i], $desiredModules) || in_array($depModules[$i], $_SESSION['clientInstalledModules']))  ) {
+				for($i = 0; $i < sizeof($depModules); $i++){
+					if(!(in_array($depModules[$i], $desiredModules) || in_array($depModules[$i], $_SESSION['clientInstalledModules']))){
 						return false;
-
 					}
-
 				}
-
 			}
-
 		}
 		return true;
-
 	}
 
 	/**
@@ -101,7 +86,7 @@ class modulesBase {
 	 *
 	 * @return string
 	 */
-	function getCodeForInstalledModules() {
+	function getCodeForInstalledModules(){
 
 		$existingModules = modules::getExistingModules();
 
@@ -111,47 +96,39 @@ class modulesBase {
 		// write all modules in we_installed modulesveUpdateServer.php?liveUpdateSession=ad6d6fc29eaeb51
 		$allModules = $_SESSION['clientInstalledModules'];
 
-		if (isset($_SESSION['clientDesiredModules'])) {
+		if(isset($_SESSION['clientDesiredModules'])){
 			$allModules = array_merge($allModules, $_SESSION['clientDesiredModules']);
-
 		}
 		$allModules = array_unique($allModules);
 
-		foreach ($allModules as $moduleKey) {
-			if( !in_array($moduleKey, $GLOBALS['MODULES_FREE_OF_CHARGE_INCLUDED'])
-				&& $moduleKey != 'customerpro'
-				) {
+		foreach($allModules as $moduleKey){
+			if(!in_array($moduleKey, $GLOBALS['MODULES_FREE_OF_CHARGE_INCLUDED']) && $moduleKey != 'customerpro'
+			){
 
-				if ($existingModules[$moduleKey]['grade'] == 'pro') {
+				if($existingModules[$moduleKey]['grade'] == 'pro'){
 					$installedProModules[] = $moduleKey;
 
-				// user management is integrated module now!
-				// intern it is still handled as module
-				// busers is now treated like a normal grade module
-				// in module selection dialog it must be located in normal modules
-				} else if ($moduleKey == "busers") {
+					// user management is integrated module now!
+					// intern it is still handled as module
+					// busers is now treated like a normal grade module
+					// in module selection dialog it must be located in normal modules
+				} else if($moduleKey == "busers"){
 					$installedProModules[] = $moduleKey;
-
 				} else {
 					$installedModules[] = $moduleKey;
-
 				}
-
 			}
-
 		}
 
 		$modules_content = '';
 		$pro_modules_content = '';
 
-		foreach ($installedModules as $moduleKey) {
+		foreach($installedModules as $moduleKey){
 			$modules_content .= "\$_we_installed_modules[] = \"$moduleKey\";\n";
-
 		}
 
-		foreach ($installedProModules as $moduleKey) {
+		foreach($installedProModules as $moduleKey){
 			$pro_modules_content .= "\$_pro_modules[] = \"$moduleKey\";\n";
-
 		}
 		$newContent = '<?php
 
@@ -164,7 +141,6 @@ $_pro_modules = array();
 ' . $pro_modules_content . '
 ?>';
 		return $newContent;
-
 	}
 
 	/**
@@ -172,22 +148,20 @@ $_pro_modules = array();
 	 *
 	 * @return string
 	 */
-	function getCodeForActiveIntegratedModules() {
+	function getCodeForActiveIntegratedModules(){
 
 		// write all active integrated modules
-		$Content	=	'<?php' . "\n"
-					.	'' . "\n"
-					.	'$_we_active_integrated_modules = array();' . "\n";
-		foreach ($GLOBALS['MODULES_FREE_OF_CHARGE_INCLUDED'] as $moduleKey) {
+		$Content = '<?php' . "\n"
+			. '' . "\n"
+			. '$_we_active_integrated_modules = array();' . "\n";
+		foreach($GLOBALS['MODULES_FREE_OF_CHARGE_INCLUDED'] as $moduleKey){
 			$_we_active_integrated_modules[] = $moduleKey;
 			$Content .= '$_we_active_integrated_modules[] = "' . $moduleKey . '";' . "\n";
-
 		}
-		$Content	.=	'' . "\n"
-					.	'?>';
+		$Content .= '' . "\n"
+			. '?>';
 
 		return $Content;
-
 	}
 
 }

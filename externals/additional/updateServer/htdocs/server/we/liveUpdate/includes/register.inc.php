@@ -1,14 +1,11 @@
 <?php
-
 // 1st check if software is installed correct
-
-
 // execute command
-switch ($_REQUEST['detail']) {
+switch($_REQUEST['detail']){
 
 	case 'registerForm': // this is a new installation
 		print register::getRegisterFormResponse();
-	break;
+		break;
 
 	case 'register':
 
@@ -17,11 +14,11 @@ switch ($_REQUEST['detail']) {
 
 		$serialState = license::checkSerialState($clientSerialFormatted);
 
-		switch ($serialState) {
+		switch($serialState){
 
 			case 'ok':
-				print register::getRegisterResponse( $clientSerialFormatted );
-			break;
+				print register::getRegisterResponse($clientSerialFormatted);
+				break;
 			default:
 				/*
 				 * possible responses
@@ -32,15 +29,15 @@ switch ($_REQUEST['detail']) {
 				 * 'noWpolskaIp'
 				 */
 				print register::getRegisterFormErrorResponse($serialState);
-			break;
+				break;
 		}
 		installationLog::insertRegistrationEntry($serialState);
-	break;
+		break;
 
 
 	case 'repeatRegistrationForm': // user has to repeat his registration
 		print register::getRepeatRegistrationFormResponse();
-	break;
+		break;
 
 	case 'repeatRegistration':
 
@@ -48,11 +45,11 @@ switch ($_REQUEST['detail']) {
 		$clientSerialFormatted = license::formatSerial($clientRequestVars['clientSerial']);
 		$serialState = license::checkSerialState($clientSerialFormatted);
 
-		switch ($serialState) {
+		switch($serialState){
 
 			case 'ok':
-				print register::getRepeatRegistrationResponse( $clientSerialFormatted );
-			break;
+				print register::getRepeatRegistrationResponse($clientSerialFormatted);
+				break;
 			default:
 				/*
 				 * possible responses
@@ -63,10 +60,9 @@ switch ($_REQUEST['detail']) {
 				 * 'noWpolskaIp'
 				 */
 				print register::getRepeatRegistrationFormErrorResponse($serialState);
-			break;
+				break;
 		}
 		installationLog::insertRegistrationEntry($serialState);
-	break;
+		break;
 }
 
-?>

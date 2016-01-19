@@ -26,7 +26,7 @@ EOF;
 
 	return LE_STEP_NEXT;
 
-?>';	
+?>';
 /*
 $liveUpdateResponse['Type'] = 'executeOnline';
 $liveUpdateResponse['Code'] = '
@@ -53,4 +53,3 @@ EOF;
 
 ?>';
 */
-?>

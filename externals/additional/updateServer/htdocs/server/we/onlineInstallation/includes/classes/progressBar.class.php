@@ -1,7 +1,5 @@
 <?php
 
-class progressBar extends progressBarBase {
+class progressBar extends progressBarBase{
 
 }
-
-?>

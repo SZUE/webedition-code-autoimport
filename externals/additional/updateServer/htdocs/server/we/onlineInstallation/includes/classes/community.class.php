@@ -1,6 +1,5 @@
 <?php
 
-class community extends communityBase {
+class community extends communityBase{
 
 }
-?>

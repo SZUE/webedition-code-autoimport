@@ -1,19 +1,17 @@
 <?php
-
 // execute command
-switch ($_REQUEST['detail']) {
-	
+switch($_REQUEST['detail']){
+
 	case 'lostSession':
 		print notification::getLostSessionResponse();
-	break;
-	
+		break;
+
 	case 'databaseFailure':
 		print notification::getDatabaseFailureResponse();
-	break;
-	
+		break;
+
 	default:
 		print notification::getCommandNotKnownResponse();
-	break;
+		break;
 }
 
-?>

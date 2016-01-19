@@ -2,7 +2,6 @@
 /**
  * This template is shown, when any form of installation should start.
  */
-
 // use a banner if needed
 $bannerHtml = banner::getBannerHtml();
 $bannerHeader = banner::getBannerHeader();
@@ -11,9 +10,9 @@ $bannerHeader = banner::getBannerHeader();
 // get steps
 $stepList = '';
 $firstStep = '';
-foreach ($GLOBALS['updateServerTemplateData']['installationSteps'] as $installationStep) {
-	
-	if (!$firstStep) {
+foreach($GLOBALS['updateServerTemplateData']['installationSteps'] as $installationStep){
+
+	if(!$firstStep){
 		$firstStep = $installationStep;
 	}
 	$stepList .= '
@@ -40,7 +39,7 @@ $content = \'
 	</td>
 	<td valign="top" id="tdMessageLog" colspan="2">
 		<div id="messageLog">
-			<strong>' . $GLOBALS['lang']['installer'][$firstStep]. '</strong>
+			<strong>' . $GLOBALS['lang']['installer'][$firstStep] . '</strong>
 		</div>
 	</td>
 </tr>
@@ -64,5 +63,3 @@ $content = \'
 print liveUpdateTemplates::getHtml("' . addslashes($GLOBALS['lang']['installer']['headline']) . '", $content, "' . addslashes(progressBar::getProgressBarJs() . installer::getJsFunctions() . $bannerHeader) . '", "", 550, 500);
 
 ?>';
-
-?>

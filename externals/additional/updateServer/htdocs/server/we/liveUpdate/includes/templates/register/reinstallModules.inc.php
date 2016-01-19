@@ -3,20 +3,19 @@
  * This template is used, when the registration form of a demo version is
  * requested. This contains mainly a input field for the serial
  */
-
 $reinstallModules = $GLOBALS['updateServerTemplateData']['reinstallModules'];
 $existingModules = $GLOBALS['updateServerTemplateData']['existingModules'];
 
 $orderedModules = array();
-foreach ($reinstallModules as $moduleKey) {
+foreach($reinstallModules as $moduleKey){
 	$orderedModules[$moduleKey] = $existingModules[$moduleKey]['text'];
 }
 asort($orderedModules);
 
 $moduleString = '
 <ul>';
-foreach ($orderedModules as $key => $moduleName) {
-	
+foreach($orderedModules as $key => $moduleName){
+
 	$moduleString .= '
 	<li>' . $moduleName . '</li>';
 }
@@ -44,4 +43,3 @@ print liveUpdateTemplates::getHtml("' . addslashes($GLOBALS['lang']['register'][
 ?>
 ');
 
-?>

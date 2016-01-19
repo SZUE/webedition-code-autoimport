@@ -2,7 +2,6 @@
 /**
  * This template is shown, until webEdition version 4 is published
  */
-
 $liveUpdateResponse['Type'] = 'template';
 $liveUpdateResponse['Headline'] = $GLOBALS['lang']['update']['headline'];
 $liveUpdateResponse['Content'] = '
@@ -10,4 +9,3 @@ $liveUpdateResponse['Content'] = '
 	' . $GLOBALS['lang']['notification']['updateNotPossibleUntilRelease'] . '
 </div>';
 
-?>

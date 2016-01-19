@@ -1,10 +1,8 @@
 <?php
-
 /**
  * Part2: make demo-version after online-installation
  * @see /we4/includes/replaceCode/replaceCode.inc.php
  */
-
 $replaceCode['we_conf_demo']['path'][4900] = '/webEdition/we/include/conf/we_conf.inc%s';
 $replaceCode['we_conf_demo']['replace'][4900] = <<< weConfDemoSaveCodeBoundary
 <?php
@@ -677,17 +675,17 @@ $replaceCode['templateSaveCode_demo']['replace'][4900] = '#save template2';
 // insert tblPrefs
 $replaceCode['insert_tblPrefs']['path'][4900] = '';
 
-$replaceCode['insert_tblPrefs']['replace'][4900] = 'UPDATE %s'.'tblPrefs set Language = \'%s\' where userID = \'1\'';
-$replaceCode['insert_tblPrefs']['replace'][LANGUAGELIMIT] = 'UPDATE %s'.'tblPrefs set Language = \'%s\',BackendCharset = \'%s\'  where userID = \'1\'';
+$replaceCode['insert_tblPrefs']['replace'][4900] = 'UPDATE %s' . 'tblPrefs set Language = \'%s\' where userID = \'1\'';
+$replaceCode['insert_tblPrefs']['replace'][LANGUAGELIMIT] = 'UPDATE %s' . 'tblPrefs set Language = \'%s\',BackendCharset = \'%s\'  where userID = \'1\'';
 
 
 // insert tblUser
 $replaceCode['insert_tblUser']['path'][4900] = '';
-$replaceCode['insert_tblUser']['needle'][4900]='';
-$replaceCode['insert_tblUser']['replace'][4900] = 'UPDATE %s'.'tblUser set Text=\'%s\', username=\'%s\', passwd=MD5(\'%s\'), UseSalt=0 where ID=1';
+$replaceCode['insert_tblUser']['needle'][4900] = '';
+$replaceCode['insert_tblUser']['replace'][4900] = 'UPDATE %s' . 'tblUser set Text=\'%s\', username=\'%s\', passwd=MD5(\'%s\'), UseSalt=0 where ID=1';
 
 $replaceCode['insert_tblUser']['path'][6490] = '/webEdition/we/include/we_modules/users/we_users_user.class.php';
-$replaceCode['insert_tblUser']['needle'][6490]='$x="";$_SESSION["le_login_pass"]=we_users_user::makeSaltedPassword($x,"",$_SESSION["le_login_pass"]);';
-$replaceCode['insert_tblUser']['needle'][6496]='$_SESSION["le_login_pass"]=we_users_user::makeSaltedPassword("",$_SESSION["le_login_pass"]);';
-$replaceCode['insert_tblUser']['needle'][6497]='$_SESSION["le_login_pass"]=we_users_user::makeSaltedPassword($_SESSION["le_login_pass"]);';
-$replaceCode['insert_tblUser']['replace'][6490] = 'UPDATE %s'.'tblUser set Text=\'%s\', username=\'%s\', passwd=\'%s\', UseSalt=2 where ID=1';
+$replaceCode['insert_tblUser']['needle'][6490] = '$x="";$_SESSION["le_login_pass"]=we_users_user::makeSaltedPassword($x,"",$_SESSION["le_login_pass"]);';
+$replaceCode['insert_tblUser']['needle'][6496] = '$_SESSION["le_login_pass"]=we_users_user::makeSaltedPassword("",$_SESSION["le_login_pass"]);';
+$replaceCode['insert_tblUser']['needle'][6497] = '$_SESSION["le_login_pass"]=we_users_user::makeSaltedPassword($_SESSION["le_login_pass"]);';
+$replaceCode['insert_tblUser']['replace'][6490] = 'UPDATE %s' . 'tblUser set Text=\'%s\', username=\'%s\', passwd=\'%s\', UseSalt=2 where ID=1';

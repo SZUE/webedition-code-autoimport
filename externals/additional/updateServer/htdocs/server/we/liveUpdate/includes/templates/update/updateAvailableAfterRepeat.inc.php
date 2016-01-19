@@ -3,20 +3,21 @@
  * This template is shown, when there is an update available. But the SVN-REvision ist not high enough It is possible
  * to start an updaterepeat.
  */
-
 //client version: text and version string
-$clientVersionComplete = update::getFormattedVersionStringFromWeVersion(true,false);
+$clientVersionComplete = update::getFormattedVersionStringFromWeVersion(true, false);
 $clientVersionText = addslashes($GLOBALS['lang']['update']['installedVersion']) . ':<br />' . $clientVersionComplete . '.<br />';
 
 //maxBranchVersion: text + version string
-if (isset($_SESSION['clientVersionBranch']) && $_SESSION['clientVersionBranch']!='' && isset($_SESSION['testUpdate']) &&  $_SESSION['testUpdate']){
+if(isset($_SESSION['clientVersionBranch']) && $_SESSION['clientVersionBranch'] != '' && isset($_SESSION['testUpdate']) && $_SESSION['testUpdate']){
 	$maxBranchVersionComplete = update::getFormattedVersionString(update::getMaxVersionNumberForBranch($_SESSION['clientVersionBranch']), true, false);
-	$maxBranchVersionText = addslashes($GLOBALS['lang']['update']['newestVersionSameBranch']) . ':<br/> '. $maxBranchVersionComplete . '.<br/>';
-} else {$maxBranchVersionText='';}
+	$maxBranchVersionText = addslashes($GLOBALS['lang']['update']['newestVersionSameBranch']) . ':<br/> ' . $maxBranchVersionComplete . '.<br/>';
+} else {
+	$maxBranchVersionText = '';
+}
 
 //maxVersion: text + version string
 $maxVersionComplete = update::getFormattedVersionString($GLOBALS['updateServerTemplateData']['maxVersionNumber']['version'], true, false);
-$maxVersionText = addslashes($GLOBALS['lang']['update']['newestVersion']).':<br/> '. $maxVersionComplete . '.';
+$maxVersionText = addslashes($GLOBALS['lang']['update']['newestVersion']) . ':<br/> ' . $maxVersionComplete . '.';
 
 //error_log('getUpdateAvailableResponseAfterRepeat2');
 //error_log($GLOBALS['updateServerTemplateData']['maxVersionNumber']['version']);
@@ -54,9 +55,9 @@ function checkfreequota(&$AnzMB){
 
 $testdiskquota = 100;
 if (!checkfreequota($testdiskquota)){
-	$diskquotawarning = "'.$GLOBALS['lang']['upgrade']['repeatUpdateDiskquotaWarning1'].'".$testdiskquota."'.$GLOBALS['lang']['upgrade']['repeatUpdateDiskquotaWarning2'].'";
+	$diskquotawarning = "' . $GLOBALS['lang']['upgrade']['repeatUpdateDiskquotaWarning1'] . '".$testdiskquota."' . $GLOBALS['lang']['upgrade']['repeatUpdateDiskquotaWarning2'] . '";
 } else {
-	$diskquotawarning = "'.$GLOBALS['lang']['upgrade']['confirmUpdateDiskquotaWarning0'].'";
+	$diskquotawarning = "' . $GLOBALS['lang']['upgrade']['confirmUpdateDiskquotaWarning0'] . '";
 }
 
 $we_button = new we_button();
@@ -81,20 +82,19 @@ $content = \'
 	$maxBranchVersionText .
 	$maxVersionText;
 
-if ($_SESSION['clientVersionNumber'] > $GLOBALS['updateServerTemplateData']['maxVersionNumber']['version']){
-$liveUpdateResponse['Code'] .= '
+if($_SESSION['clientVersionNumber'] > $GLOBALS['updateServerTemplateData']['maxVersionNumber']['version']){
+	$liveUpdateResponse['Code'] .= '
 <div class="messageDiv">
 		' . $GLOBALS['lang']['update']['repeatUpdateNotPossible'] . '
 
 	</div>';
 } else {
-$liveUpdateResponse['Code'] .= ' <br/>\'.$diskquotawarning.\'<br/>
+	$liveUpdateResponse['Code'] .= ' <br/>\'.$diskquotawarning.\'<br/>
 
 	<div class="messageDiv">
 		' . $GLOBALS['lang']['update']['repeatUpdateNeeded'] . '
 		\' . $nextButton . \'
 	</div>';
-
 }
 $liveUpdateResponse['Code'] .= '
 </form>
@@ -103,4 +103,3 @@ $liveUpdateResponse['Code'] .= '
 print liveUpdateTemplates::getHtml("' . addslashes($GLOBALS['lang']['update']['headline']) . '", $content);
 ?>';
 
-?>

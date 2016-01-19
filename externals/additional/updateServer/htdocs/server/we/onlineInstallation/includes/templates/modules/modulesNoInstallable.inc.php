@@ -1,5 +1,4 @@
 <?php
-
 $Code = <<<CODE
 <?php
 
@@ -12,5 +11,3 @@ CODE;
 
 $liveUpdateResponse['Type'] = 'executeOnline';
 $liveUpdateResponse['Code'] = $Code;
-
-?>

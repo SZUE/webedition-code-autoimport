@@ -1,13 +1,13 @@
 <?php
 
-class register extends registerBase {
+class register extends registerBase{
 
 	/**
 	 * Register webEdition online and on the client
 	 *
 	 * @return array
 	 */
-	function getRegisterResponse($serial) {
+	function getRegisterResponse($serial){
 
 		// start with inserting/updateing registration information on server
 		$uid = register::generateUniqueId();
@@ -19,16 +19,16 @@ class register extends registerBase {
 
 		$domainId = license::checkDomain($_SESSION['clientDomain'], $stockTableId);
 
-		if( $domainId ){
+		if($domainId){
 
 			// important !!
 			// if there are missing modules - save information on client, only if modules are installed -> module installation
 
 			$domainInformation = license::getRegisteredDomainInformationById($domainId);
 
-			for ($i=0; $i<sizeof($domainInformation['registeredModules']); $i++) {
+			for($i = 0; $i < sizeof($domainInformation['registeredModules']); $i++){
 
-				if(!in_array( $domainInformation['registeredModules'][$i], $_SESSION['clientInstalledModules'])){
+				if(!in_array($domainInformation['registeredModules'][$i], $_SESSION['clientInstalledModules'])){
 
 					$reinstallModules[] = $domainInformation['registeredModules'][$i];
 				}
@@ -51,7 +51,7 @@ class register extends registerBase {
 		$webEdition = updateUtil::getReplaceCode('webEdition');
 		$we_version = updateUtil::getReplaceCode('we_version', array($_SESSION['clientVersion'], $uid));
 
-		if ( sizeof($reinstallModules) ) {
+		if(sizeof($reinstallModules)){
 
 
 			$_SESSION['clientUid'] = $uid;
@@ -60,14 +60,13 @@ class register extends registerBase {
 			$GLOBALS['updateServerTemplateData']['reinstallModules'] = $reinstallModules;
 			$GLOBALS['updateServerTemplateData']['existingModules'] = modules::getExistingModules();
 
-			$internalResponse = updateUtil::getInternalResponse( LIVEUPDATE_SERVER_TEMPLATE_DIR . '/register/reinstallModules.inc.php' );
-
+			$internalResponse = updateUtil::getInternalResponse(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/register/reinstallModules.inc.php');
 		} else {
 
-			$internalResponse = updateUtil::getInternalResponse( LIVEUPDATE_SERVER_TEMPLATE_DIR . '/register/registerSuccess.inc.php' );
+			$internalResponse = updateUtil::getInternalResponse(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/register/registerSuccess.inc.php');
 		}
 
-		$ret = array (
+		$ret = array(
 			'Type' => 'eval',
 			'Code' => '
 			<?php
@@ -86,8 +85,8 @@ class register extends registerBase {
 				$GLOBALS["liveUpdateError"]["headline"] = "' . addslashes($GLOBALS['lang']['register']['registerErrorDetail']) . '";
 
 				restore_error_handler();
-				// führe response aus
-				' . updateUtil::getInternalResponse( LIVEUPDATE_SERVER_TEMPLATE_DIR . '/register/registerError.inc.php' ) . '
+				// fï¿½hre response aus
+				' . updateUtil::getInternalResponse(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/register/registerError.inc.php') . '
 				exit;
 
 			} else {
@@ -107,7 +106,7 @@ class register extends registerBase {
 	 * @param serial $serial
 	 * @return string
 	 */
-	function getRepeatRegistrationResponse($serial) {
+	function getRepeatRegistrationResponse($serial){
 
 		// start with inserting/updateing registration information on server
 		$uid = register::generateUniqueId();
@@ -119,16 +118,16 @@ class register extends registerBase {
 
 		$domainId = license::checkDomain($_SESSION['clientDomain'], $stockTableId);
 
-		if( $domainId ){
+		if($domainId){
 
 			// important !!
 			// if there are missing modules - save information on client, only if modules are installed -> module installation
 
 			$domainInformation = license::getRegisteredDomainInformationById($domainId);
 
-			for ($i=0; $i<sizeof($domainInformation['registeredModules']); $i++) {
+			for($i = 0; $i < sizeof($domainInformation['registeredModules']); $i++){
 
-				if(!in_array( $domainInformation['registeredModules'][$i], $_SESSION['clientInstalledModules'])){
+				if(!in_array($domainInformation['registeredModules'][$i], $_SESSION['clientInstalledModules'])){
 
 					$reinstallModules[] = $domainInformation['registeredModules'][$i];
 				}
@@ -147,7 +146,7 @@ class register extends registerBase {
 		$we_conf = updateUtil::getReplaceCode('we_conf', array($licensee));
 		$we_version = updateUtil::getReplaceCode('we_version', array($_SESSION['clientVersion'], $uid));
 
-		if ( sizeof($reinstallModules) ) {
+		if(sizeof($reinstallModules)){
 
 
 			$_SESSION['clientUid'] = $uid;
@@ -156,14 +155,13 @@ class register extends registerBase {
 			$GLOBALS['updateServerTemplateData']['reinstallModules'] = $reinstallModules;
 			$GLOBALS['updateServerTemplateData']['existingModules'] = modules::getExistingModules();
 
-			$internalResponse = updateUtil::getInternalResponse( LIVEUPDATE_SERVER_TEMPLATE_DIR . '/register/reinstallModules.inc.php' );
-
+			$internalResponse = updateUtil::getInternalResponse(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/register/reinstallModules.inc.php');
 		} else {
 
-			$internalResponse = updateUtil::getInternalResponse( LIVEUPDATE_SERVER_TEMPLATE_DIR . '/register/registerSuccess.inc.php' );
+			$internalResponse = updateUtil::getInternalResponse(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/register/registerSuccess.inc.php');
 		}
 
-		$ret = array (
+		$ret = array(
 			'Type' => 'eval',
 			'Code' => '<?php
 
@@ -177,9 +175,9 @@ class register extends registerBase {
 				$GLOBALS["liveUpdateError"]["headline"] = "' . addslashes($GLOBALS['lang']['register']['registerErrorDetail']) . '";
 
 				restore_error_handler();
-				// führe response aus
+				// fï¿½hre response aus
 
-				' . updateUtil::getInternalResponse( LIVEUPDATE_SERVER_TEMPLATE_DIR . '/register/registerError.inc.php' ) . '
+				' . updateUtil::getInternalResponse(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/register/registerError.inc.php') . '
 				exit;
 
 			} else {
@@ -194,20 +192,20 @@ class register extends registerBase {
 		return updateUtil::getResponseString($ret);
 	}
 
-	function getNewsletterHtml() {
+	function getNewsletterHtml(){
 
 		global $clientRequestVars;
 
 		$salutations = array($GLOBALS['lang']['register']['salutationMr'], $GLOBALS['lang']['register']['salutationMrs']);
 		$salutationSelect = '<select name="salutation" id="salutation">';
-		foreach ($salutations as $salutation) {
+		foreach($salutations as $salutation){
 			$salutationSelect .= '<option' . (isset($clientRequestVars['salutation']) && $clientRequestVars['salutation'] == $salutation ? ' selected="selected"' : '') . '>' . $salutation . '</option>';
 		}
 		$salutationSelect .= '</select>';
 
 		$languages = array('Deutsch', 'English');
 		$languageSelect = '<select name="language" id="language">';
-		foreach ($languages as $lng) {
+		foreach($languages as $lng){
 			$languageSelect .= '<option' . (isset($clientRequestVars['language']) && $clientRequestVars['language'] == $lng ? ' selected="selected"' : '') . '>' . $lng . '</option>';
 		}
 		$languageSelect .= '</select>';
@@ -267,7 +265,7 @@ class register extends registerBase {
 
 					if(document.forms[0].newsletter.checked){
 
-						pattern = "^[a-zA-Z0-9-äöü_\.]+@[a-zA-Z0-9äöü\.-]+.[a-zA-Z0-9]{1,4}$";
+						pattern = "^[a-zA-Z0-9-ï¿½ï¿½ï¿½_\.]+@[a-zA-Z0-9ï¿½ï¿½ï¿½\.-]+.[a-zA-Z0-9]{1,4}$";
 
 						if(document.forms[0].email.value == "" || !document.forms[0].email.value.match(pattern) ){
 							alert("' . $GLOBALS['lang']['register']['enterValidEmail'] . '");
@@ -282,111 +280,101 @@ class register extends registerBase {
 		';
 	}
 
-	function insertNewsletter($stockTableId) {
+	function insertNewsletter($stockTableId){
 
 		//global $DB_Register, $clientRequestVars;
 		global $clientRequestVars;
 
-		if(isset($clientRequestVars["newsletter"]) && $clientRequestVars["newsletter"] == "yes" && $clientRequestVars["email"]) {
+		if(isset($clientRequestVars["newsletter"]) && $clientRequestVars["newsletter"] == "yes" && $clientRequestVars["email"]){
 
 			//where does the User come from?
 			//	for prices of newsletter
 			/*
-			$query = "
-					SELECT *
-					FROM tblCustomer
-					WHERE weID=" . $stockTableId . "
-			";
-			
-			$res =& $DB_Register->query($query);
+			  $query = "
+			  SELECT *
+			  FROM tblCustomer
+			  WHERE weID=" . $stockTableId . "
+			  ";
 
-			if ($row = $res->fetchRow()) {
+			  $res =& $DB_Register->query($query);
 
-				$queryFields[] = "FK_tblCustomer";
-				$queryVals[]   = $row['id'];
+			  if ($row = $res->fetchRow()) {
 
-				if($row['isus']){
+			  $queryFields[] = "FK_tblCustomer";
+			  $queryVals[]   = $row['id'];
 
-					$queryFields[] = "currency";
-					$queryVals[]   = "us";
-				} else {
-					$queryFields[] = "currency";
-					$queryVals[]   = "eu";
-				}
+			  if($row['isus']){
 
-				$fields = array("email", "salutation", "title", "forename", "surname", "language");
-				foreach($fields AS $name){
-					if(isset($clientRequestVars[$name]) && $clientRequestVars[$name] != ""){
-						$queryFields[] = $name;
-						$queryVals[] = $clientRequestVars[$name];
-					}
-				}
+			  $queryFields[] = "currency";
+			  $queryVals[]   = "us";
+			  } else {
+			  $queryFields[] = "currency";
+			  $queryVals[]   = "eu";
+			  }
 
-				//	now build the query ...
-				$insertQuery = 'INSERT INTO newsletter (' . implode(",", $queryFields) . ')
-								VALUES ("' . implode('","', str_replace('"', '\\"', $queryVals)) . '")
-				';
+			  $fields = array("email", "salutation", "title", "forename", "surname", "language");
+			  foreach($fields AS $name){
+			  if(isset($clientRequestVars[$name]) && $clientRequestVars[$name] != ""){
+			  $queryFields[] = $name;
+			  $queryVals[] = $clientRequestVars[$name];
+			  }
+			  }
 
-				$res =& $DB_Register->query($insertQuery);
-			}
-			*/
+			  //	now build the query ...
+			  $insertQuery = 'INSERT INTO newsletter (' . implode(",", $queryFields) . ')
+			  VALUES ("' . implode('","', str_replace('"', '\\"', $queryVals)) . '")
+			  ';
+
+			  $res =& $DB_Register->query($insertQuery);
+			  }
+			 */
 		}
 	}
 
-
 	/**
 	 * returns form to register a demoversion of webedition
 	 *
 	 * @return string
 	 */
-	function getRegisterFormResponse() {
+	function getRegisterFormResponse(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/register/registerForm.inc.php');
 		return updateUtil::getResponseString($ret);
-
 	}
 
-
-	function getRepeatRegistrationFormResponse() {
+	function getRepeatRegistrationFormResponse(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/register/repeatRegistrationForm.inc.php');
 		return updateUtil::getResponseString($ret);
-
 	}
-
 
 	/**
 	 * returns form to register a demoversion of webedition
 	 *
 	 * @return string
 	 */
-	function getRegisterFormErrorResponse($serialstate) {
+	function getRegisterFormErrorResponse($serialstate){
 
 		$GLOBALS['updateServerTemplateData']['licenceError'] = $GLOBALS['lang']['license']['undefinedError'] . ': <code>' . $serialstate . '</code>';
 
-		if (file_exists(SHARED_TEMPLATE_DIR . '/license/' . $serialstate . '.inc.php')) {
+		if(file_exists(SHARED_TEMPLATE_DIR . '/license/' . $serialstate . '.inc.php')){
 
 			$GLOBALS['updateServerTemplateData']['licenceError'] = updateUtil::getTemplateContentForResponse(SHARED_TEMPLATE_DIR . '/license/' . $serialstate . '.inc.php');
 		}
 
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/register/registerFormError.inc.php');
 		return updateUtil::getResponseString($ret);
-
 	}
 
-
-	function getRepeatRegistrationFormErrorResponse($serialstate) {
+	function getRepeatRegistrationFormErrorResponse($serialstate){
 
 		$GLOBALS['updateServerTemplateData']['licenceError'] = $GLOBALS['lang']['license']['undefinedError'] . ': <code>' . $serialstate . '</code>';
 
-		if (file_exists(SHARED_TEMPLATE_DIR . '/license/' . $serialstate . '.inc.php')) {
+		if(file_exists(SHARED_TEMPLATE_DIR . '/license/' . $serialstate . '.inc.php')){
 
 			$GLOBALS['updateServerTemplateData']['licenceError'] = updateUtil::getTemplateContentForResponse(SHARED_TEMPLATE_DIR . '/license/' . $serialstate . '.inc.php');
 		}
 
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/register/repeatRegistrationFormError.inc.php');
 		return updateUtil::getResponseString($ret);
-
 	}
 
 }
-
-?>

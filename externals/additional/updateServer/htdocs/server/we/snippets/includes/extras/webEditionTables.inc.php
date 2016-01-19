@@ -1,5 +1,4 @@
 <?php
-
 $GLOBALS["allTables"] = array(
 	"tblCategorys",
 	"tblCleanUp",
@@ -89,4 +88,3 @@ $GLOBALS["allTables"] = array(
 	"tblexport",
 	"tblvoting",
 );
-?>

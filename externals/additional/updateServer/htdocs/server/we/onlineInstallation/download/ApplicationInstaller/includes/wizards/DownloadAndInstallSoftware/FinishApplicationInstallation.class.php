@@ -1,24 +1,17 @@
 <?php
 
-	class FinishApplicationInstallation extends leStep {
+class FinishApplicationInstallation extends leStep{
+	var $EnabledButtons = array("next");
+	var $ProgressBarVisible = true;
+	var $AutoContinue = 5;
 
-		var $EnabledButtons = array("next");
+	function execute(&$Template = ''){
 
-		var $ProgressBarVisible = true;
+		$this->setHeadline($this->Language['headline']);
 
-		var $AutoContinue = 5;
+		$this->setContent($this->Language['content']);
 
-
-		function execute(&$Template = '') {
-
-			$this->setHeadline($this->Language['headline']);
-
-			$this->setContent($this->Language['content']);
-
-			return LE_STEP_NEXT;
-
-		}
-
+		return LE_STEP_NEXT;
 	}
 
-?>
+}

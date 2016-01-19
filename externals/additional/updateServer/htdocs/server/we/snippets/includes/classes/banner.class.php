@@ -1,7 +1,5 @@
 <?php
 
-class banner extends bannerBase {
+class banner extends bannerBase{
 
 }
-
-?>

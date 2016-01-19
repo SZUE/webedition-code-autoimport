@@ -1,7 +1,5 @@
 <?php
-
-	$leInstallerSteps = array(
-		'InstallationFinished',
-		'CleanUp',
-
-	);
+$leInstallerSteps = array(
+	'InstallationFinished',
+	'CleanUp',
+);

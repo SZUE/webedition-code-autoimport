@@ -3,7 +3,6 @@
  * This template is used, when the registration form of a demo version is
  * requested. This contains mainly a input field for the serial
  */
-
 $liveUpdateResponse['Type'] = 'eval';
 $liveUpdateResponse['Encoding'] = 'true';
 $liveUpdateResponse['EncodedCode'] = updateUtil::encodeCode('<?php
@@ -24,4 +23,3 @@ print liveUpdateTemplates::getHtml("' . addslashes($GLOBALS['lang']['register'][
 ?>
 ');
 
-?>

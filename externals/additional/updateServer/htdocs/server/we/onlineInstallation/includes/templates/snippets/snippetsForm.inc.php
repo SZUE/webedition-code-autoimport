@@ -1,5 +1,4 @@
 <?php
-
 $liveUpdateResponse['Type'] = 'executeOnline';
 $liveUpdateResponse['Code'] = '
 <?php
@@ -8,7 +7,7 @@ $liveUpdateResponse['Code'] = '
 {$this->Language[\'content\']}<br />
 <br />
 
-Leider derzeit noch nicht verfügbar!
+Leider derzeit noch nicht verfï¿½gbar!
 EOF;
 
 	$this->setHeadline($this->Language[\'headline\']);
@@ -19,4 +18,3 @@ EOF;
 
 ?>';
 
-?>

@@ -1,11 +1,9 @@
 <?php
+$leInstallerWizards = array(
+	'Settings',
+	'Features',
+	'Summary',
+	'DownloadAndInstallSoftware',
+	'FinishInstallation',
+);
 
-	$leInstallerWizards = array(
-		'Settings',
-		'Features',
-		'Summary',
-		'DownloadAndInstallSoftware',
-		'FinishInstallation',
-	);
-
-?>

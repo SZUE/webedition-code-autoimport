@@ -1,9 +1,7 @@
 <?php
-
 //
 // ---> installer
 //
-
 // installer common
 $lang["installer"]["errorAtStep"] = "Fehler beim Schritt: ";
 
@@ -56,7 +54,6 @@ $lang["installer"]["errorLine"] = "Zeile";
 //
 // ---> installApplication
 //
-
 // installer::getProceedNextCommandResponsePart()
 $lang["installApplication"]["prepareApplicationInstallation"] = "Installation vorbereiten";
 $lang["installApplication"]["determineApplicationFiles"] = "Ben&ouml;tigte Daten ermitteln";
@@ -87,7 +84,6 @@ $lang["installApplication"]["rss_feed_url"] = "http://www.living-e.de/de/pressez
 //
 // ---> installerDownload
 //
-
 // installer::getProceedNextCommandResponsePart()
 $lang["installerDownload"]["determineInstallerFiles"] = "Ben&ouml;tigte Daten ermitteln";
 $lang["installerDownload"]["downloadInstallerFiles"] = "Daten herunterladen";
@@ -109,4 +105,3 @@ $lang["installer"]['release'] = 'offizieller Release';
 
 
 
-?>

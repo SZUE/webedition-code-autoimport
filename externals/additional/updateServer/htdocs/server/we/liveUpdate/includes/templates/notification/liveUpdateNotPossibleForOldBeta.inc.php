@@ -3,9 +3,6 @@
  * This template is shown, when there is no update available. It is possible
  * to start an updaterepeat.
  */
-
 $liveUpdateResponse['Type'] = 'template';
 $liveUpdateResponse['Headline'] = 'webEdition 4 Live Update';
-$liveUpdateResponse['Content'] = 'Für die von Ihnen verwendete Beta-Version ist leider kein LiveUpdate verfügbar. Ein LiveUpdate steht Ihnen erst ab einer späteren Beta-Version zur Verfügung.';
-
-?>
+$liveUpdateResponse['Content'] = 'Fï¿½r die von Ihnen verwendete Beta-Version ist leider kein LiveUpdate verfï¿½gbar. Ein LiveUpdate steht Ihnen erst ab einer spï¿½teren Beta-Version zur Verfï¿½gung.';

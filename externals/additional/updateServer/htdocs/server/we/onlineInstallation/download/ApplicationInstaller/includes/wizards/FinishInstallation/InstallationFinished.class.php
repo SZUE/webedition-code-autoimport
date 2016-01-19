@@ -1,63 +1,61 @@
 <?php
 
-	class InstallationFinished extends leStep {
+class InstallationFinished extends leStep{
 
-		//var $EnabledButtons = array('next');
-
-
-		function execute(&$Template = '') {
+	//var $EnabledButtons = array('next');
 
 
-			unset($GLOBALS['leApplicationList']['webEdition']);
-			
-			$PostContent = "";
-			$JSString = "";
-			if(sizeof($GLOBALS['leApplicationList']) < 0) { // temporarily disabled (should never be smaller than zero)
+	function execute(&$Template = ''){
 
-				$Options = array();
-				$JSString = 'var information = new Array();' . "\n";
 
-				foreach($GLOBALS['leApplicationList'] as $Key => $Value) {
-					$Options[$Key] = $Value['Name'];
-					$JSString .= 'information["' . $Key . '"] = new Array();' . "\n";
-					$JSString .= 'information["' . $Key . '"]["Name"] = "' . $Value['Name'] . '";' . "\n";
-					$JSString .= 'information["' . $Key . '"]["Description"] = "' . $Value['Description'] . '";' . "\n";
+		unset($GLOBALS['leApplicationList']['webEdition']);
 
-				}
-				$temp = $Options;
+		$PostContent = "";
+		$JSString = "";
+		if(sizeof($GLOBALS['leApplicationList']) < 0){ // temporarily disabled (should never be smaller than zero)
+			$Options = array();
+			$JSString = 'var information = new Array();' . "\n";
 
-				$Name = 'changeApplication';
-				$Value = array_shift($temp);
+			foreach($GLOBALS['leApplicationList'] as $Key => $Value){
+				$Options[$Key] = $Value['Name'];
+				$JSString .= 'information["' . $Key . '"] = new Array();' . "\n";
+				$JSString .= 'information["' . $Key . '"]["Name"] = "' . $Value['Name'] . '";' . "\n";
+				$JSString .= 'information["' . $Key . '"]["Description"] = "' . $Value['Description'] . '";' . "\n";
+			}
+			$temp = $Options;
 
-				$Attributes = array(
-					'onchange'	=> 'switchInformation(this.value)',
-					'id'		=> 'changeApplication',
-					'style'		=> 'width: 293px;',
-					'disabled'	=> 'disabled',
-				);
+			$Name = 'changeApplication';
+			$Value = array_shift($temp);
 
-				$Application = $GLOBALS['leApplicationList'][$Value];
+			$Attributes = array(
+				'onchange' => 'switchInformation(this.value)',
+				'id' => 'changeApplication',
+				'style' => 'width: 293px;',
+				'disabled' => 'disabled',
+			);
 
-				$Select = leSelect::get($Name, $Options, $Value, $Attributes);
+			$Application = $GLOBALS['leApplicationList'][$Value];
 
-				$TrueJs	=	'top.document.getElementById(\'changeApplication\').disabled=false;'
-						.	'top.leForm.setInputField(\'leWizard\', \'DownloadInstaller\');'
-						.	'top.leForm.setInputField(\'leStep\', \'DetermineFilesInstaller\');';
+			$Select = leSelect::get($Name, $Options, $Value, $Attributes);
 
-				$FalseJs	=	'top.document.getElementById(\'changeApplication\').disabled=true;'
-							.	'top.leForm.setInputField(\'leWizard\', \'FinishInstallation\');'
-							.	'top.leForm.setInputField(\'leStep\', \'CleanUp\');';
-				
-				$Name = 'nextApplicaton';
-				$Value = 1;
-				$Attributes = array(
-					"onClick"	=> "top.leForm.evalCheckBox(this, '" . $TrueJs . "', '" . $FalseJs . "');",
-				);
-				$Text = $this->Language["installMore"];
-				$Checked = false;
-				$nextApplicaton = leCheckbox::get($Name, $Value, $Attributes, $Text, $Checked);
+			$TrueJs = 'top.document.getElementById(\'changeApplication\').disabled=false;'
+				. 'top.leForm.setInputField(\'leWizard\', \'DownloadInstaller\');'
+				. 'top.leForm.setInputField(\'leStep\', \'DetermineFilesInstaller\');';
 
-				$PostContent = <<<EOF
+			$FalseJs = 'top.document.getElementById(\'changeApplication\').disabled=true;'
+				. 'top.leForm.setInputField(\'leWizard\', \'FinishInstallation\');'
+				. 'top.leForm.setInputField(\'leStep\', \'CleanUp\');';
+
+			$Name = 'nextApplicaton';
+			$Value = 1;
+			$Attributes = array(
+				"onClick" => "top.leForm.evalCheckBox(this, '" . $TrueJs . "', '" . $FalseJs . "');",
+			);
+			$Text = $this->Language["installMore"];
+			$Checked = false;
+			$nextApplicaton = leCheckbox::get($Name, $Value, $Attributes, $Text, $Checked);
+
+			$PostContent = <<<EOF
 <p>
 {$this->Language['additional_software']}<br />
 <br />
@@ -72,21 +70,20 @@
 {$Application['Description']}
 </p>
 EOF;
-				$Template->addJavascript('top.leForm.setInputField("leWizard", "DownloadInstaller");');
-				$Template->addJavascript('top.leForm.setInputField("leStep", "DetermineFilesInstaller");');
+			$Template->addJavascript('top.leForm.setInputField("leWizard", "DownloadInstaller");');
+			$Template->addJavascript('top.leForm.setInputField("leStep", "DetermineFilesInstaller");');
+		}
 
-			}
+		$this->setHeadline($this->Language['headline']);
 
-			$this->setHeadline($this->Language['headline']);
+		$Button = leButton::get("openWebEdition", $this->Language['login_webEdition'], "javascript:window.open('/webEdition/index.php', 'webEdition');", 150, 22, "", false, false);
 
-			$Button = leButton::get("openWebEdition", $this->Language['login_webEdition'], "javascript:window.open('/webEdition/index.php', 'webEdition');", 150, 22, "", false, false);
-									
-			$Content = <<<EOF
+		$Content = <<<EOF
 {$this->Language['content']}<br />
 <div align="center" class="defaultfont">
 {$Button}
 </div>
-<div style="margin-top:20px;">Diese webEdition Version wurde ermöglicht durch die Arbeit des gemeinnützigen webEdition e.V. Unterstützen Sie die kostenlose und freiwillige Arbeit der Vereins- und Community-Mitglieder. 
+<div style="margin-top:20px;">Diese webEdition Version wurde ermöglicht durch die Arbeit des gemeinnützigen webEdition e.V. Unterstützen Sie die kostenlose und freiwillige Arbeit der Vereins- und Community-Mitglieder.
 <br>Ermöglichen Sie durch Ihre Spende, dass:<ul>
 <li>der webEdition e.V. professionelle Entwickler einstellen kann</li>
 <li>die Beseitigung von Fehlern sowie die Entwicklung<br>
@@ -100,9 +97,9 @@ gesichert wird</li></ul><form target="_blank" action="https://www.paypal.com/cgi
                 </form></div>
 {$PostContent}
 EOF;
-			$this->setContent($Content);
+		$this->setContent($Content);
 
-			$Javascript = <<<EOF
+		$Javascript = <<<EOF
 //automatically go on to last step (delete installer): very dirty...
 window.setTimeout(top.document.forms[0].submit(), 2000);
 
@@ -115,25 +112,17 @@ top.switchInformation = function(val) {
 
 }
 EOF;
-			$Template->addJavascript($Javascript);
+		$Template->addJavascript($Javascript);
 
-			return LE_STEP_NEXT;
-
-		}
-
-
-		function check(&$Template = '') {
-
-			if(isset($_REQUEST['changeApplication']) && array_key_exists($_REQUEST['changeApplication'], $GLOBALS['leApplicationList'])) {
-				$_SESSION['leApplication'] = $_REQUEST['changeApplication'];
-
-
-			}
-			return true;
-
-		}
-
-
+		return LE_STEP_NEXT;
 	}
 
-?>
+	function check(&$Template = ''){
+
+		if(isset($_REQUEST['changeApplication']) && array_key_exists($_REQUEST['changeApplication'], $GLOBALS['leApplicationList'])){
+			$_SESSION['leApplication'] = $_REQUEST['changeApplication'];
+		}
+		return true;
+	}
+
+}

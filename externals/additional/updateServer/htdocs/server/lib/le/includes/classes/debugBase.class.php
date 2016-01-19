@@ -1,8 +1,8 @@
 <?php
 
-class debugBase {
+class debugBase{
 
-	function log($var) {
+	function log($var){
 
 		ob_start('error_log');
 		print "\n>>>>>>>>>>>>>>>>>>>> SERVER\n";
@@ -12,5 +12,3 @@ class debugBase {
 	}
 
 }
-
-?>

@@ -1,18 +1,16 @@
 <?php
-
 //
 // ---> installer
 //
-
 // installer common
 $lang["installer"]["errorAtStep"] = "Fehler beim Schritt: ";
 
 // installApplication::getPrepareApplicationInstallationResponse()
-$lang["installer"]["tableNotDrop"] = "Bestehende webEdition-Tabellen konnten nicht gelöscht werden. Bitte prüfen Sie, ob der Datenbankbenutzer über die benötigten Rechte verfügt.";
+$lang["installer"]["tableNotDrop"] = "Bestehende webEdition-Tabellen konnten nicht gelï¿½scht werden. Bitte prï¿½fen Sie, ob der Datenbankbenutzer ï¿½ber die benï¿½tigten Rechte verfï¿½gt.";
 
 // installApplication::getApplicationFilesResponse()
 // installerDownload::getGetInstallerFilesResponse()
-$lang["installer"]["downloadFilesTotal"] = "Diese Installation benötigt %s Dateien";
+$lang["installer"]["downloadFilesTotal"] = "Diese Installation benï¿½tigt %s Dateien";
 $lang["installer"]["downloadFilesFiles"] = "Dateien";
 
 // installApplication::getApplicationFilesResponse()
@@ -24,8 +22,8 @@ $lang["installer"]["updateDatabaseNotice"] = "Hinweis beim Schritt: Datenbank an
 $lang["installer"]["tableExists"] = "Tabelle existiert bereits";
 $lang["installer"]["tableReCreated"] = "Tabelle wurde neu gespeichert";
 $lang["installer"]["tableChanged"] = "Tabelle wurde aktualisiert";
-$lang["installer"]["entryAlreadyExists"] = "Einträge sind schon vorhanden";
-$lang["installer"]["errorExecutingQuery"] = "Einige Datenbankanfragen konnten nicht durchgeführt werden.";
+$lang["installer"]["entryAlreadyExists"] = "Eintrï¿½ge sind schon vorhanden";
+$lang["installer"]["errorExecutingQuery"] = "Einige Datenbankanfragen konnten nicht durchgefï¿½hrt werden.";
 
 // installApplication::getCopyApplicationFilesResponse()
 // installerDownload::getCopyFilesResponse()
@@ -34,7 +32,7 @@ $lang["installer"]["amountFilesCopied"] = "Dateien %s bis %s von %s wurden insta
 // installApplication::getCopyApplicationFilesResponse()
 // installApplication::getWriteApplicationConfigurationResponse()
 // installerDownload::getCopyFilesResponse()
-$lang["installer"]["errorMoveFile"] = "Konnte Datei nicht installieren, bitte überprüfen Sie ob PHP (Apache) Schreibrecht auf das webEdition Verzeichnis (inkl. Dateien) hat.";
+$lang["installer"]["errorMoveFile"] = "Konnte Datei nicht installieren, bitte ï¿½berprï¿½fen Sie ob PHP (Apache) Schreibrecht auf das webEdition Verzeichnis (inkl. Dateien) hat.";
 
 
 // installer::_getDownloadFilesResponse()
@@ -44,7 +42,7 @@ $lang["installer"]["amountFilesDownloaded"] = "Dateien %s bis %s wurden herunter
 $lang["installer"]["amountFilesPrepared"] = "Dateien %s bis %s wurden vorbereitet.";
 
 // installApplication::getUpdateApplicationDatabaseResponse()
-$lang["installer"]["amountDatabaseQueries"] = "Datenbankqueries %s bis %s wurden ausgeführt.";
+$lang["installer"]["amountDatabaseQueries"] = "Datenbankqueries %s bis %s wurden ausgefï¿½hrt.";
 
 
 // installer::getErrorMessage()
@@ -59,11 +57,10 @@ $lang["installer"]["errorLine"] = "Zeile";
 $lang["downloadSnippet"]["noImportTypeSet"] = "Fehler: Es wurde kein Import Typ angegeben.";
 
 // installer::getProceedNextCommandResponsePart()
-$lang["downloadSnippet"]["determineFiles"] = "Benötigte Daten ermitteln";
+$lang["downloadSnippet"]["determineFiles"] = "Benï¿½tigte Daten ermitteln";
 $lang["downloadSnippet"]["downloadFiles"] = "Daten herunterladen";
 
 // installer::getErrorMessage()
 $lang["downloadSnippet"]["determineFilesError"] = $lang["installer"]["errorAtStep"] . $lang["downloadSnippet"]["determineFiles"];
 $lang["downloadSnippet"]["downloadFilesError"] = $lang["installer"]["errorAtStep"] . $lang["downloadSnippet"]["downloadFiles"];
 
-?>

@@ -1,10 +1,9 @@
 <?php
-
 // error logging
 //ini_set("log_errors",1);
-ini_set("log_errors",0);
-//ini_set("error_reporting",E_ALL); 
-ini_set("error_log",$_SERVER["DOCUMENT_ROOT"]."/php_errors.log.php");
+ini_set("log_errors", 0);
+//ini_set("error_reporting",E_ALL);
+ini_set("error_log", $_SERVER["DOCUMENT_ROOT"] . "/php_errors.log.php");
 
 // Set the current root directory
 define("ROOT_DIR", dirname(__FILE__));
@@ -74,35 +73,34 @@ require_once(SHARED_DIR . '/includes/init/checkTemporarilyShutDown.inc.php');
  * display important announcements:
  */
 /*
-if ( !isset($_SESSION['testUpdate']) ) {
-	print notificationBase::getAnnouncementResponse();
-}
-*/
+  if ( !isset($_SESSION['testUpdate']) ) {
+  print notificationBase::getAnnouncementResponse();
+  }
+ */
 //require_once(SHARED_DIR . '/includes/init/displayAnnouncement.inc.php');
 
 /**
  * Start handling the incoming commands
  */
-if (isset($_REQUEST['update_cmd'])) {
+if(isset($_REQUEST['update_cmd'])){
 	// show global announcement on every liveUpdate page using $GLOBALS['lang']['notification']['importantAnnouncement']
 	//$_showCommands = array("lookForUpgrade", "lookForUpdate", "confirmLanguages", "selectLanguages");
 	$_showCommands = array();
-	if(isset($_REQUEST['detail']) && in_array($_REQUEST['detail'],$_showCommands)) {
+	if(isset($_REQUEST['detail']) && in_array($_REQUEST['detail'], $_showCommands)){
 		$_SESSION["displayAnnouncement"] = true;
 	} else {
 		$_SESSION["displayAnnouncement"] = false;
 	}
-	
+
 	// checkdatabases first
 	//if ($db_register_down || $db_versioning_down) {
-	if ($db_versioning_down) {
+	if($db_versioning_down){
 		$_REQUEST['update_cmd'] = 'notification';
 		$_REQUEST['detail'] = 'databaseFailure';
-
 	}
 	//error_log($_REQUEST['update_cmd']." > ".$_REQUEST['detail']);
 	// handling request
-	switch ($_REQUEST['update_cmd']) {
+	switch($_REQUEST['update_cmd']){
 
 
 		case 'notification':
@@ -132,12 +130,12 @@ if (isset($_REQUEST['update_cmd'])) {
 
 		case 'upgrade':
 			/*
-			if(isset($_SESSION["clientWE_LIGHT"]) && $_SESSION["clientWE_LIGHT"]) {
-				require_once(LIVEUPDATE_SERVER_DIR . '/includes/upgrade.inc.php');
-			} else {
-				print notification::getNotAvailableAtTheMomentResponse();
-			}
-			*/
+			  if(isset($_SESSION["clientWE_LIGHT"]) && $_SESSION["clientWE_LIGHT"]) {
+			  require_once(LIVEUPDATE_SERVER_DIR . '/includes/upgrade.inc.php');
+			  } else {
+			  print notification::getNotAvailableAtTheMomentResponse();
+			  }
+			 */
 			//print notification::getNotAvailableAtTheMomentResponse();
 			require_once(LIVEUPDATE_SERVER_DIR . '/includes/upgrade.inc.php');
 			break;
@@ -158,20 +156,16 @@ if (isset($_REQUEST['update_cmd'])) {
 		default:
 			print notification::getNotAvailableAtTheMomentResponse();
 			break;
-
 	}
 
 
 // check databases
 } else {
-	if ($db_register_down || $db_versioning_down) {
+	if($db_register_down || $db_versioning_down){
 		include(SHARED_TEMPLATE_DIR . '/connection/serverDatabaseDown.inc.php');
-
 	} else {
 		include(SHARED_TEMPLATE_DIR . '/connection/serverUpAndRunning.inc.php');
-
 	}
-
 }
 
 /*

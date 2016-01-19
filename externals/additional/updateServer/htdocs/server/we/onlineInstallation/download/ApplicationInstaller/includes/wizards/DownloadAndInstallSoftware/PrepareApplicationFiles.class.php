@@ -1,20 +1,14 @@
 <?php
 
-	class PrepareApplicationFiles extends leStep {
+class PrepareApplicationFiles extends leStep{
+	var $EnabledButtons = array("reload");
+	var $ProgressBarVisible = true;
 
-		var $EnabledButtons = array("reload");
+	function execute(&$Template = ''){
 
-		var $ProgressBarVisible = true;
+		$this->liveUpdateHttpResponse = $this->getLiveUpdateHttpResponse();
 
-
-		function execute(&$Template = '') {
-
-			$this->liveUpdateHttpResponse = $this->getLiveUpdateHttpResponse();
-
-			return LE_STEP_NEXT;
-
-		}
-
+		return LE_STEP_NEXT;
 	}
 
-?>
+}

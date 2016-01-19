@@ -2,7 +2,6 @@
 /**
  * This template is shown to confirm an update repeat
  */
-
 $input_uid = '<input class="wetextinput" size="24" type="text" name="clientUID" id="clientUID" value="\'.(isset($_REQUEST["clientUID"]) ? $_REQUEST["clientUID"] : "").\'" />';
 $input_password = '<input class="wetextinput" size="24" type="password" name="clientPassword" id="clientPassword" />';
 
@@ -26,10 +25,10 @@ $content = \'
 	<br />
 	<table class="defaultfont">
 		<tr>
-			<td width="120px">' . $GLOBALS['lang']['community']['uid'] . '</td><td>'.$input_uid.'</td>
+			<td width="120px">' . $GLOBALS['lang']['community']['uid'] . '</td><td>' . $input_uid . '</td>
 		</tr>
 		<tr>
-			<td width="120px">' . $GLOBALS['lang']['community']['password'] . '</td><td>'.$input_password.'</td>
+			<td width="120px">' . $GLOBALS['lang']['community']['password'] . '</td><td>' . $input_password . '</td>
 		</tr>
 		<tr>
 			<td colspan="2"><br />
@@ -45,4 +44,3 @@ $content = \'
 print liveUpdateTemplates::getHtml("' . addslashes($GLOBALS['lang']['community']['headline']) . '", $content);
 ?>';
 
-?>

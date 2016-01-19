@@ -9,19 +9,19 @@ $i18n = new I18Nv2_Country();
 $CountryList = $i18n->getAllCodes();
 asort($CountryList);
 $CountryListOutput = '"" => "-", ';
-foreach($CountryList as $k => $v) {
-	$CountryListOutput .= '"'.$k.'" => "'.$v.'", ';
+foreach($CountryList as $k => $v){
+	$CountryListOutput .= '"' . $k . '" => "' . $v . '", ';
 }
-unset($i18n,$CountryList);
+unset($i18n, $CountryList);
 require_once('I18Nv2/Language.php');
 $i18n = new I18Nv2_Language();
 $LanguageList = $i18n->getAllCodes();
 asort($LanguageList);
 $LanguageListOutput = '"" => "-", ';
-foreach($LanguageList as $k => $v) {
-	$LanguageListOutput .= '"'.$k.'" => "'.$v.'", ';
+foreach($LanguageList as $k => $v){
+	$LanguageListOutput .= '"' . $k . '" => "' . $v . '", ';
 }
-unset($i18n,$LanguageList);
+unset($i18n, $LanguageList);
 
 $liveUpdateResponse['Code'] = '
 <?php
@@ -45,6 +45,5 @@ EOF;
 
 	return LE_STEP_NEXT;
 
-?>';	
+?>';
 
-?>

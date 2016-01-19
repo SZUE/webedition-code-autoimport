@@ -2,36 +2,35 @@
 /**
  * This file is the template for the update screen, if there are updates
  * available which cannot be installed - due to installed langugages
- * 
+ *
  * This file can use the following variables
  * - possibleVersions -> array with versions matching to the system
  * - availableVersions -> array with the maximal versions foreach existing
  *   language
  * - maxVersionNumber
  */
-
 $installedLngList = '';
-	foreach ($_SESSION['clientInstalledLanguages'] as $lng) {
-		
-		$installedLngList .= "\t<li>$lng</li>\n";
-	}
+foreach($_SESSION['clientInstalledLanguages'] as $lng){
+
+	$installedLngList .= "\t<li>$lng</li>\n";
+}
 
 
 $preventLngsList = '';
-	foreach ($updateServerTemplateData['availableVersions'] as $lng => $version) {
-	
-		if ( updateUtil::version2number($version) == $_SESSION['clientVersionNumber'] ) {
-			$preventLngsList .= "
+foreach($updateServerTemplateData['availableVersions'] as $lng => $version){
+
+	if(updateUtil::version2number($version) == $_SESSION['clientVersionNumber']){
+		$preventLngsList .= "
 		<li>$lng (-> $version)</li>";
-		}
 	}
-	foreach ($_SESSION['clientInstalledLanguages'] as $lng) {
-			
-		if (!isset($updateServerTemplateData['availableVersions'][$lng])) {
-			$preventLngsList .= "
+}
+foreach($_SESSION['clientInstalledLanguages'] as $lng){
+
+	if(!isset($updateServerTemplateData['availableVersions'][$lng])){
+		$preventLngsList .= "
 	<li>$lng</li>";
-		}
 	}
+}
 //$preventLngsList .='<li>'.print_r($_SESSION['clientInstalledLanguages'],1).'</li>';
 $liveUpdateResponse['Type'] = 'eval';
 $liveUpdateResponse['Code'] = '<?php
@@ -62,8 +61,7 @@ $content = \'
 </div>
 </form>
 \';
-	
+
 print liveUpdateTemplates::getHtml("' . addslashes($GLOBALS['lang']['update']['headline']) . '", $content);
 ?>';
 
-?>

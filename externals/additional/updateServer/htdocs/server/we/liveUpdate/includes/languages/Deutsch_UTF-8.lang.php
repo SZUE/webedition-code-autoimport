@@ -1,5 +1,4 @@
 <?php
-
 $lang['register']['headline'] = 'Registrierung';
 $lang['register']['insertSerial'] = 'Bitte geben Sie hier Ihre Seriennummer ein';
 $lang['register']['serial'] = 'Seriennummer';
@@ -43,11 +42,11 @@ $lang['upgrade']['confirmUpdateHint'][6220] = '<b>webEdition 6.2.2.0:</b><ul><li
 $lang['upgrade']['confirmUpdateHint'][6230] = '<b>webEdition 6.2.3.0:</b><ul><li>Dieses Update behebt ein schwerwiegendes Sicherheitsproblem in der Kundenverwaltung. Zur Behebung musste unter anderem der Standardwert für das Attribut register des Tags we:saveRegisteredUser geändert werden. Sollte eine Neuregistrierung von Kunden in Ihrer Site nach dem Update nicht möglich sein, so können Sie das alte Verhalten im Dialog Einstellungen Kundenverwaltung wiederherstellen</li></ul>';
 $lang['upgrade']['confirmUpdateHint'][6300] = '<b>webEdition 6.3.0.0:</b><ul><li>Dieses Update optimiert die komplette webEdition Infrastruktur. Wegen der vielen grundlegenden Änderungen kann es beim Update einer Site durchaus zu Problemen kommen!</li><li><b>Erstellen Sie unbedingt ein Backup der vorhandenen Site</b></li><li>Beachten Sie die Hinweise in der Versionshistorie zu <b>möglichen Problemen und Lösungen, siehe <a href="http://www.webedition.org/de/webedition-cms/versionshistorie/webedition-6/version-6.3.0.0" target="_blank">Version 6.3.0.0</a></b></li><li>Führen Sie gegebenfalls ein <b>Testupdate</b> in einer Kopie der Site durch, insbesondere wenn Sie Module (z.B. Shop, Objekt/DB, aber auch andere) einsetzen.</li><li>Nach dem Rebuild aller Vorlagen und Dokumente prüfen Sie das Fehlerlog auf weitere Hinweise</li></ul>';
 
-$lang['upgrade']['confirmUpdateDiskquotaWarning0']='<br/>Sie haben mehr als 100 MB freien Webspace.';
-$lang['upgrade']['confirmUpdateDiskquotaWarning1']='<br/>Sie haben nur noch <b>';
-$lang['upgrade']['confirmUpdateDiskquotaWarning2']='MB</b> freien WebSpace (Quota), <br/><b>prüfen Sie die Update Hinweise</b> auf den benötigen Speicherplatz!';
-$lang['upgrade']['repeatUpdateDiskquotaWarning1']='<br/>Sie haben nur noch <b>';
-$lang['upgrade']['repeatUpdateDiskquotaWarning2']='MB</b> freien WebSpace (Quota), <br/><b>Dies wird für eine Updatewiederholung nicht ausreichen!</b>';
+$lang['upgrade']['confirmUpdateDiskquotaWarning0'] = '<br/>Sie haben mehr als 100 MB freien Webspace.';
+$lang['upgrade']['confirmUpdateDiskquotaWarning1'] = '<br/>Sie haben nur noch <b>';
+$lang['upgrade']['confirmUpdateDiskquotaWarning2'] = 'MB</b> freien WebSpace (Quota), <br/><b>prüfen Sie die Update Hinweise</b> auf den benötigen Speicherplatz!';
+$lang['upgrade']['repeatUpdateDiskquotaWarning1'] = '<br/>Sie haben nur noch <b>';
+$lang['upgrade']['repeatUpdateDiskquotaWarning2'] = 'MB</b> freien WebSpace (Quota), <br/><b>Dies wird für eine Updatewiederholung nicht ausreichen!</b>';
 
 $lang['upgrade']['confirmUpdateWarningEnd'] = '';
 $lang['upgrade']['confirmUpdateWarningTitle'] = 'Zum Fortfahren bitte bestätigen:';
@@ -95,7 +94,7 @@ $lang['update']['noUpdateForLanguagesText'] = 'Sie haben die Version %s installi
 $lang['update']['installedLanguages'] = 'Folgende Sprachen sind auf Ihrem System installiert';
 $lang['update']['updatePreventingLanguages'] = 'Folgende Sprachen verhindern ein Update:';
 $lang['update']['confirmUpdateText'] = 'Sie haben derzeit Version&nbsp;%s installiert und möchten ein Update zur Version&nbsp;%s durchführen.';
-$lang['update']['confirmUpdateSysReqNoCheck'] ='<b>Achtung</b><br/>Die Systemvoraussetzungen können bei einem Update von Version %s nicht überprüft werden.';
+$lang['update']['confirmUpdateSysReqNoCheck'] = '<b>Achtung</b><br/>Die Systemvoraussetzungen können bei einem Update von Version %s nicht überprüft werden.';
 $lang['update']['confirmUpdateVersionDetails'] = 'Details zu den einzelnen Versionen entnehmen Sie bitte der <a target="_blank" href="http://documentation.webedition.org/wiki/de/webedition/change-log/version-6/start">Versionshistorie</a>.';
 $lang['update']['confirmRepeatUpdateText'] = 'Sie haben momentan Version&nbsp;%s installiert und möchten diese Version erneut einspielen. ';
 $lang['update']['confirmRepeatUpdateMessage'] = 'Bei einer Update Wiederholung werden alle webEdition Programmdateien durch die Original webEdition Dateien ersetzt. Dieser Vorgang kann unter Umständen einige Zeit in Anspruch nehmen.';
