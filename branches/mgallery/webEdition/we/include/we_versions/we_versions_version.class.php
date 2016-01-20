@@ -1410,17 +1410,15 @@ class we_versions_version{
 
 	function getDocContent($we_doc, $includepath = ""){
 		update_time_limit(0);
-		$requestBackup = $_REQUEST;
-		$docBackup = isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] : false;
+		$backup = array(
+			'request' => empty($_REQUEST) ? false : $_REQUEST,
+			'trans' => empty($GLOBALS['we_transaction']) ? false : $GLOBALS['we_transaction'],
+			'doc' => isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] : false,
+			'dyn'=>isset($GLOBALS['WE_IS_DYN']) ? $GLOBALS['WE_IS_DYN'] : 'notSet',
+		);
 		$GLOBALS['getDocContentVersioning'] = true;
-		$transBackup = $GLOBALS['we_transaction'];
-		if(isset($GLOBALS['we_doc'])){
-			$WE_old_we_doc = $GLOBALS['we_doc'];
-		}
 		$GLOBALS['we_doc'] = $we_doc;
 		extract($GLOBALS, EXTR_SKIP); // globalen Namensraum herstellen.
-
-		$isdyn = isset($GLOBALS['WE_IS_DYN']) ? $GLOBALS['WE_IS_DYN'] : 'notSet';
 
 //usually the site file always exists
 		if($includepath != '' && file_exists($includepath)){
@@ -1450,29 +1448,28 @@ class we_versions_version{
 		}
 
 		//Note: some globals are overwritten by the above code, restore at least we_transaction
-		$GLOBALS['we_transaction'] = $transBackup;
+		if($backup['tarns']){
+			$GLOBALS['we_transaction'] = $backup['tarns'];
+		}
 
-		if($docBackup){
-			$GLOBALS['we_doc'] = $docBackup;
+		if($backup['doc']){
+			$GLOBALS['we_doc'] = $backup['doc'];
 		} else {
 			unset($GLOBALS['we_doc']);
 		}
-		$_REQUEST = $requestBackup;
+		if($backup['request']){
+			$_REQUEST = $backup['request'];
+		}
 
-		if($isdyn === 'notSet'){
+		if($backup['dyn'] === 'notSet'){
 			if(isset($GLOBALS['WE_IS_DYN'])){
 				unset($GLOBALS['WE_IS_DYN']);
 			}
 		} else {
-			$GLOBALS['WE_IS_DYN'] = $isdyn;
+			$GLOBALS['WE_IS_DYN'] = $backup['dyn'];
 		}
 
 		unset($GLOBALS['getDocContentVersioning']);
-		if(isset($WE_old_we_doc)){
-			$GLOBALS['we_doc'] = $WE_old_we_doc;
-		} else {
-			unset($GLOBALS['we_doc']);
-		}
 		return $contents;
 	}
 
