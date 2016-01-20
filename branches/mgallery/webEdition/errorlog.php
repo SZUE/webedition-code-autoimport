@@ -140,7 +140,8 @@ switch(we_base_request::_(we_base_request::STRING, 'function', 'last')){
 		$db->query('CREATE TEMPORARY TABLE del(ID bigint(20) unsigned NOT NULL,PRIMARY KEY  (ID))ENGINE=MEMORY');
 		$db->query('INSERT INTO del SELECT ID FROM `' . ERROR_LOG_TABLE . '` WHERE (Text,File,Type,Function,Line) IN (SELECT Text,File,Type,Function,Line FROM `' . ERROR_LOG_TABLE . '` WHERE ID=' . $id . ')');
 		$db->query('DELETE FROM `' . ERROR_LOG_TABLE . '` WHERE ID IN (SELECT ID FROM del)');
-		break;
+		$size = f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '`');
+		//no break;
 	default:
 	case 'last':
 		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` ORDER BY ID DESC LIMIT 1');
