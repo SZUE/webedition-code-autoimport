@@ -450,22 +450,23 @@ class updateUtilBase{
 
 		$retString = '
 
-			if(defined("LIVEUPDATE_DIR") && is_readable(LIVEUPDATE_DIR . \'updateClient/liveUpdateFunctionsServer.class.php\')) {
-				require_once(LIVEUPDATE_DIR . \'updateClient/liveUpdateFunctionsServer.class.php\');
-			}
-			if(defined("LIVEUPDATE_DIR") && is_readable(LIVEUPDATE_DIR . \'updateClient/liveUpdateResponseServer.class.php\')) {
-				require_once(LIVEUPDATE_DIR . \'updateClient/liveUpdateResponseServer.class.php\');
-			}
+			if(defined("LIVEUPDATE_DIR") && is_readable(LIVEUPDATE_DIR . "updateClient/liveUpdateFunctionsServer.class.php")){
+					require_once(LIVEUPDATE_DIR . "updateClient/liveUpdateFunctionsServer.class.php");
+					$liveUpdateFnc = new liveUpdateFunctionsServer();
+				} else {
+					$liveUpdateFnc = new liveUpdateFunctions();
+				}
+				if(defined("LIVEUPDATE_DIR") && is_readable(LIVEUPDATE_DIR . "updateClient/liveUpdateResponseServer.class.php")){
+					require_once(LIVEUPDATE_DIR . "updateClient/liveUpdateResponseServer.class.php");
+					$liveUpdateRsp = new liveUpdateResponseServer();
+				} else {
+					$liveUpdateRsp = new liveUpdateResponse();
+				}
+
+
 			if(defined("LIVEUPDATE_DIR") && is_readable(LIVEUPDATE_DIR . \'updateClient/liveUpdateServer.class.php\')) {
 				require_once(LIVEUPDATE_DIR . \'updateClient/liveUpdateServer.class.php\');
 			}
-			if (! @class_exists("liveUpdateFunctionsServer")) {
-				class liveUpdateFunctionsServer extends liveUpdateFunctions {}
-				class liveUpdateResponseServer extends liveUpdateResponse {}
-			}
-
-			$liveUpdateFnc = new liveUpdateFunctionsServer();
-			$liveUpdateRsp = new liveUpdateResponseServer();
 
 			function liveUpdateErrorHandler($errno, $errstr , $errfile , $errline, $errcontext) {
 				liveUpdateFunctionsServer::liveUpdateErrorHandler($errno, $errstr , $errfile , $errline, $errcontext);
