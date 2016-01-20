@@ -312,6 +312,9 @@ $l_buttons_global=array(
 		'value'=>'Supprimer type de document',
 		'width'=>174,
 	),
+	'delete_equal'=>array(
+		'value'=>'delete all equivalent entries',
+	),
 	'delold'=>array(
 		'value'=>'Delete files on server',
 	),
