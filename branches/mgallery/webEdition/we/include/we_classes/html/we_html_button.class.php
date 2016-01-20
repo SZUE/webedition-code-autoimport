@@ -42,6 +42,7 @@ abstract class we_html_button{
 	const WE_JS_BUTTON_IDENTIFY = 'javascript';
 	const DELETE_ALL = 'fa:delete_all,fa-lg fa-database,fa-lg fa-trash-o';
 	const DELETE = 'fa:delete,fa-lg fa-trash-o';
+	const DELETE_EQUAL = 'fa:delete_equal,fa-lg fa-trash-o, fa-lg fa-exchange';
 	const ADD = 'fa:add,fa-lg fa-plus';
 	const EDIT = 'fa:btn_edit,fa-lg fa-edit';
 	const TRASH = 'fa:btn_function_trash,fa-lg fa-trash-o';
