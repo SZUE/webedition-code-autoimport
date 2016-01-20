@@ -234,7 +234,7 @@ class we_listview_object extends we_listview_objectBase{
 					if(!$this->triggerID && $this->DB_WE->Record['OF_TriggerID']){
 						$path_parts = pathinfo(id_to_path($this->DB_WE->f('OF_TriggerID')));
 					}
-					$this->DB_WE->Record['we_WE_PATH'] = ($path_parts && $path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
+					$this->DB_WE->Record['we_WE_PATH'] = (!empty($path_parts['dirname']) && $path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
 						($this->hidedirindex && seoIndexHide($path_parts['basename']) ?
 							'' :
 							$path_parts['filename'] . '/'
