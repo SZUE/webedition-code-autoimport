@@ -1414,12 +1414,11 @@ class we_versions_version{
 			'request' => empty($_REQUEST) ? false : $_REQUEST,
 			'trans' => empty($GLOBALS['we_transaction']) ? false : $GLOBALS['we_transaction'],
 			'doc' => isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] : false,
-			'dyn'=>isset($GLOBALS['WE_IS_DYN']) ? $GLOBALS['WE_IS_DYN'] : 'notSet',
+			'dyn' => isset($GLOBALS['WE_IS_DYN']) ? $GLOBALS['WE_IS_DYN'] : 'notSet',
 		);
 		$GLOBALS['getDocContentVersioning'] = true;
 		$GLOBALS['we_doc'] = $we_doc;
 		extract($GLOBALS, EXTR_SKIP); // globalen Namensraum herstellen.
-
 //usually the site file always exists
 		if($includepath != '' && file_exists($includepath)){
 			ob_start();
@@ -1762,7 +1761,7 @@ class we_versions_version{
 			case 'Language':
 				return isset($GLOBALS['weFrontendLanguages'][$v]) ? $GLOBALS['weFrontendLanguages'][$v] : '';
 			case 'WebUserID':
-				return id_to_path($v, CUSTOMER_TABLE);
+				return (defined('CUSTOMER_TABLE') ? id_to_path($v, CUSTOMER_TABLE) : '/');
 			case 'Workspaces':
 				$fieldValueText = '';
 				if($v != ''){

@@ -29,6 +29,6 @@ require_once 'Zend/Exception.php';
  * @subpackage we_app_Hook
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_app_Hook_Exception extends Zend_Exception{
+class we_app_Hook_Exception extends we_Exception{
 
 }

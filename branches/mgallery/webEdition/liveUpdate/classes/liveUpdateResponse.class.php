@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -69,7 +70,6 @@ class liveUpdateResponse{
 	}
 
 	function getOutput(){
-
 		switch($this->Type){
 			case 'template':
 				return liveUpdateTemplates::getHtml($this->Headline, $this->Content, $this->Header);
@@ -78,7 +78,12 @@ class liveUpdateResponse{
 				return liveUpdateFunctionsServer::executeAllPatches();
 			case 'eval':
 				//t_e($this->Code);
-				$c = strtr($this->Code, array('we_forms' => 'we_html_forms', '$we_button->' => 'we_html_button::', 'new we_button()' => '""', 'getMysqlVer' => 'we_database_base::getMysqlVer'));
+				$c = strtr($this->Code, array(
+					'we_forms' => 'we_html_forms',
+					'$we_button->' => 'we_html_button::',
+					'new we_button()' => '""',
+					'getMysqlVer' => 'we_database_base::getMysqlVer',
+				));
 //FIXME:eval
 				//t_e($c);
 				return eval('?>' . $c);
