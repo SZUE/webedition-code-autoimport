@@ -14,7 +14,7 @@
 CREATE TABLE ###TBLPREFIX###tblLink (
   DID int(11) unsigned NOT NULL default '0',
   CID int(11) unsigned NOT NULL default '0',
-  `Type` enum('attrib','block','collection','customer','date','formfield','href','img','input','LanguageDocName','linklist','object','txt','variant','variants','video') NOT NULL default 'txt',
+  `Type` enum('attrib','block','checkbox','collection','customer','date','formfield','href','img','input','LanguageDocName','linklist','object','txt','variant','variants','video') NOT NULL default 'txt',
   Name varchar(255) NOT NULL default '',
   DocumentTable enum('tblFile','tblTemplates','tblWebUser') NOT NULL,
 	nHash binary(16) NOT NULL,
