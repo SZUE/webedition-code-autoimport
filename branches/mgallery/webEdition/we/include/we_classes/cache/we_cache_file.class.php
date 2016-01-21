@@ -54,7 +54,7 @@ class we_cache_file implements we_cache_base{
 			unlink($file);
 		}
 		//clean old zend as well
-		//FIXME: remove in 6.6
+		//FIXME: remove in 7.1
 		foreach(glob(WE_CACHE_PATH . 'zend_cache---*') as $file){
 			unlink($file);
 		}

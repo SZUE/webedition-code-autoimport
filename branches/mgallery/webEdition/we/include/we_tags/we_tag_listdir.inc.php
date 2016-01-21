@@ -58,14 +58,19 @@ function we_tag_listdir($attribs){
 	$index = explode(',', weTag_getAttribute('index', $attribs, 'index.html,index.htm,index.php,default.htm,default.html,default.php', we_base_request::STRING));
 	$name = weTag_getAttribute('field', $attribs, '', we_base_request::STRING);
 	$dirfield = weTag_getAttribute('dirfield', $attribs, $name, we_base_request::STRING);
-	$sort = weTag_getAttribute('order', $attribs, $name, we_base_request::STRING);
+	$sort = weTag_getAttribute('order', $attribs, '', we_base_request::STRING);
 	$desc = weTag_getAttribute('desc', $attribs, false, we_base_request::BOOL);
 	$searchable = weTag_getAttribute('searchable', $attribs, false, we_base_request::BOOL);
 
 	$indexes = ' Text IN ("' . implode('","', $index) . '")';
 	$db = new DB_WE();
 
-	$db->query('SELECT ID,Text,IsFolder,Path,IF(IsFolder,(SELECT ID FROM ' . FILE_TABLE . ' WHERE ParentID=f.ID AND IsFolder=0 AND (' . $indexes . ') AND (Published>0 ' . ($searchable ? 'AND IsSearchable=1' : '') . ') LIMIT 1),0) AS FolderIndex FROM ' . FILE_TABLE . ' f WHERE ((Published>0 ' . ($searchable ? 'AND IsSearchable=1' : '') . ') OR (IsFolder=1)) AND ParentID=' . intval($dirID));
+	$db->query('SELECT ID,Text,IsFolder,Path,IF(IsFolder,(SELECT ID FROM ' . FILE_TABLE . ' WHERE ParentID=f.ID AND IsFolder=0 AND (' . $indexes . ') AND (Published>0 ' . ($searchable ? 'AND IsSearchable=1' : '') . ') LIMIT 1),0) AS FolderIndex,
+(SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DID=f.ID AND l.Name=IF(f.IsFolder,"' . $db->escape($dirfield) . '","' . $db->escape($name) . '")) AS name,
+' . ($sort ?
+					'(SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DID=f.ID AND l.Name="' . $db->escape($sort) . '")' :
+					'Text') . ' AS sort
+FROM ' . FILE_TABLE . ' f WHERE ((Published>0 ' . ($searchable ? 'AND IsSearchable=1' : '') . ') OR (IsFolder=1)) AND ParentID=' . intval($dirID) . ' ORDER BY ' . ($sort ? 'sort' : 'Text') . ($desc ? ' DESC' : ''));
 
 	while($db->next_record()){
 		$id = intval($db->f('IsFolder') ?
@@ -77,47 +82,13 @@ function we_tag_listdir($attribs){
 				'ID' => $db->f('ID'),
 				'Path' => $db->f('Path'),
 				'Text' => $db->f('Text'),
-				'sort' => _listdir_getField($sort, $id, $db->f('Text')),
-				'name' => _listdir_getField($dirfield, $id, $db->f('Text'))
+				'sort' => $db->f('sort'),
+				'name' => $db->f('name')
 			);
 		}
 	}
 	$GLOBALS['we_position']['listdir'] = array('position' => 0);
-	usort($files, ($sort ? 'we_cmpField' : 'we_cmpText') . ($desc ? 'Desc' : ''));
 	//Fake listview
 	$GLOBALS['lv'] = new stdClass();
 	we_pre_tag_listview();
-}
-
-function _listdir_getField($field, $id, $text){
-	if(!$field){
-		return $text;
-	}
-	$db = $GLOBALS['DB_WE'];
-	$dat = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DID=' . intval($id) . ' AND l.Name="' . $db->escape($field) . '"', '', $db);
-	return $dat ? : $text;
-}
-
-function we_cmpText($a, $b){
-	$x = strtolower(correctUml($a['Text']));
-	$y = strtolower(correctUml($b['Text']));
-	return ($x == $y ? 0 : ($x < $y ? -1 : 1));
-}
-
-function we_cmpTextDesc($a, $b){
-	$x = strtolower(correctUml($a['Text']));
-	$y = strtolower(correctUml($b['Text']));
-	return ($x == $y ? 0 : ($x > $y ? -1 : 1));
-}
-
-function we_cmpField($a, $b){
-	$x = strtolower(correctUml($a['sort']));
-	$y = strtolower(correctUml($b['sort']));
-	return ($x == $y ? 0 : ($x < $y ? -1 : 1));
-}
-
-function we_cmpFieldDesc($a, $b){
-	$x = strtolower(correctUml($a['sort']));
-	$y = strtolower(correctUml($b['sort']));
-	return ($x == $y ? 0 : ($x > $y ? -1 : 1));
 }

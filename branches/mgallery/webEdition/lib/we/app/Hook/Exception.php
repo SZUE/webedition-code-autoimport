@@ -20,8 +20,7 @@
  * @subpackage we_app_Hook
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-/** Zend_Exception */
-require_once 'Zend/Exception.php';
+/** Exception */
 
 /**
  * @category   we

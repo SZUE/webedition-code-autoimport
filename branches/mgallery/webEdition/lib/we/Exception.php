@@ -19,7 +19,7 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 /**
- * @see Zend_Exception
+ * @see 
  */
 
 /**
@@ -28,7 +28,7 @@
  * @category   we
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_Exception{
+class we_Exception extends Exception{
 
 	/**
 	 * write exception into errorlog

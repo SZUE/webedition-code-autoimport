@@ -127,9 +127,9 @@ class we_versions_model extends we_search_modelBase{
 			}
 		}
 
-		$this->searchFieldsVersionSearch = array_merge($this->searchFieldsVersionSearch);
-		$this->locationVersionSearch = array_merge($this->locationVersionSearch);
-		$this->searchVersionSearch = array_merge($this->searchVersionSearch);
+		$this->searchFieldsVersionSearch = ($this->searchFieldsVersionSearch);
+		$this->locationVersionSearch = ($this->locationVersionSearch);
+		$this->searchVersionSearch = ($this->searchVersionSearch);
 
 		$this->prepareModelForSearch();
 	}
@@ -165,7 +165,7 @@ class we_versions_model extends we_search_modelBase{
 		if(!empty($this->toolName) && isset($_SESSION['weS'][$this->toolName . '_session'])){
 			unset($_SESSION['weS'][$this->toolName . '_session']);
 		}
-		 * 
+		 *
 		 */
 	}
 

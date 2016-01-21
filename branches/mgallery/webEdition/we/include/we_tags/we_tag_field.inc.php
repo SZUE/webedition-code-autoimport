@@ -23,6 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_field($attribs){
+	//show field in case of e.g. listdir
+	if(isset($GLOBALS['lv']) && $GLOBALS['lv'] instanceof stdClass){
+		return $GLOBALS['lv']->field;
+	}
+
 	$orgName = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
 	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
 
@@ -160,10 +165,6 @@ function we_tag_field($attribs){
 
 	if(!isset($GLOBALS['lv'])){
 		return parseError(g_l('parser', '[field_not_in_lv]'));
-	}
-
-	if($GLOBALS['lv'] instanceof stdClass){
-		return $GLOBALS['lv']->field;
 	}
 
 	$lvname = isset($GLOBALS['lv']->name) ? $GLOBALS['lv']->name : '';
