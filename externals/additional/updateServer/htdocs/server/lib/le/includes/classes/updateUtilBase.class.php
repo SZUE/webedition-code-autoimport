@@ -453,12 +453,12 @@ class updateUtilBase{
 			if(defined("LIVEUPDATE_DIR") && is_readable(LIVEUPDATE_DIR . "updateClient/liveUpdateFunctionsServer.class.php")){
 					require_once(LIVEUPDATE_DIR . "updateClient/liveUpdateFunctionsServer.class.php");
 				} else {
-					class_alias("liveUpdateFunctionsServer","liveUpdateFunctions");
+					class_alias("liveUpdateFunctions","liveUpdateFunctionsServer");
 				}
 				if(defined("LIVEUPDATE_DIR") && is_readable(LIVEUPDATE_DIR . "updateClient/liveUpdateResponseServer.class.php")){
 					require_once(LIVEUPDATE_DIR . "updateClient/liveUpdateResponseServer.class.php");
 				} else {
-					class_alias("liveUpdateResponseServer","liveUpdateResponse");
+					class_alias("liveUpdateResponse","liveUpdateResponseServer");
 				}
 				$liveUpdateFnc = new liveUpdateFunctionsServer();
 				$liveUpdateRsp = new liveUpdateResponseServer();
@@ -469,7 +469,6 @@ class updateUtilBase{
 			}
 
 			function liveUpdateErrorHandler($errno, $errstr , $errfile , $errline, $errcontext) {
-			function
 				liveUpdateFunctionsServer::liveUpdateErrorHandler($errno, $errstr , $errfile , $errline, $errcontext);
 			}
 			set_error_handler("liveUpdateErrorHandler");
