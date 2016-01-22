@@ -1,6 +1,7 @@
 <?php
 
 class installApplication extends installer{
+
 	var $LanguageIndex = "installApplication";
 
 	/**
@@ -123,55 +124,53 @@ class installApplication extends installer{
 
 					// :IMPORTANT:
 					return updateUtil::getResponseString(installApplication::_getDownloadFilesMergeResponse($fileArray, $nextUrl, installApplication::getInstallerProgressPercent(), $Paths[$Position], $Part));
-				} else {
-					$Position++;
-					$nextUrl = '?' . updateUtil::getCommonHrefParameters($_REQUEST['detail'], false) . "&position=" . $Position;
-
-					// :IMPORTANT:
-					return updateUtil::getResponseString(installApplication::_getDownloadFilesMergeResponse($fileArray, $nextUrl, installApplication::getInstallerProgressPercent(), $Paths[$Position - 1], $Part));
 				}
-			} else {
-				$Part += 1;
-				$nextUrl = '?' . updateUtil::getCommonHrefParameters($_REQUEST['detail'], false) . "&part=" . $Part . "&position=" . $Position;
+				$Position++;
+				$nextUrl = '?' . updateUtil::getCommonHrefParameters($_REQUEST['detail'], false) . "&position=" . $Position;
 
 				// :IMPORTANT:
-				return updateUtil::getResponseString(installApplication::_getDownloadFilesResponse($fileArray, $nextUrl, installApplication::getInstallerProgressPercent()));
+				return updateUtil::getResponseString(installApplication::_getDownloadFilesMergeResponse($fileArray, $nextUrl, installApplication::getInstallerProgressPercent(), $Paths[$Position - 1], $Part));
 			}
-
-			// Only whole files	with max. $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] kbytes per step
-		} else {
-
-			$ResponseSize = 0;
-			do{
-
-				if($Position >= sizeof($Paths)){
-					break;
-				}
-				if(!is_readable($_SESSION['clientChanges']['allChanges'][$Paths[$Position]])){
-					//error_log('ERROR: file '.$_SESSION['clientChanges']['allChanges'][$Paths[$Position]].' not readable');
-				}
-				$FileSize = @filesize($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
-
-				// response + size of next file < max size for response
-				if($ResponseSize + $FileSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024){
-					$ResponseSize += $FileSize;
-
-					$fileArray[$Paths[$Position]] = updateUtil::getFileContentEncoded($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
-					$Position++;
-				} else {
-					break;
-				}
-			} while($ResponseSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
-
-			if($Position >= sizeof($_SESSION['clientChanges']['allChanges'])){
-				$nextUrl = '?' . updateUtil::getCommonHrefParameters($this->getNextUpdateDetail(), true);
-			} else {
-				$nextUrl = '?' . updateUtil::getCommonHrefParameters($_REQUEST['detail'], false) . "&position=$Position";
-			}
+			$Part += 1;
+			$nextUrl = '?' . updateUtil::getCommonHrefParameters($_REQUEST['detail'], false) . "&part=" . $Part . "&position=" . $Position;
 
 			// :IMPORTANT:
 			return updateUtil::getResponseString(installApplication::_getDownloadFilesResponse($fileArray, $nextUrl, installApplication::getInstallerProgressPercent()));
+
+
+			// Only whole files	with max. $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] kbytes per step
 		}
+
+		$ResponseSize = 0;
+		do{
+
+			if($Position >= sizeof($Paths)){
+				break;
+			}
+			if(!is_readable($_SESSION['clientChanges']['allChanges'][$Paths[$Position]])){
+				//error_log('ERROR: file '.$_SESSION['clientChanges']['allChanges'][$Paths[$Position]].' not readable');
+			}
+			$FileSize = @filesize($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
+
+			// response + size of next file < max size for response
+			if($ResponseSize + $FileSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024){
+				$ResponseSize += $FileSize;
+
+				$fileArray[$Paths[$Position]] = updateUtil::getFileContentEncoded($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
+				$Position++;
+			} else {
+				break;
+			}
+		}while($ResponseSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
+
+		if($Position >= sizeof($_SESSION['clientChanges']['allChanges'])){
+			$nextUrl = '?' . updateUtil::getCommonHrefParameters($this->getNextUpdateDetail(), true);
+		} else {
+			$nextUrl = '?' . updateUtil::getCommonHrefParameters($_REQUEST['detail'], false) . "&position=$Position";
+		}
+
+		// :IMPORTANT:
+		return updateUtil::getResponseString(installApplication::_getDownloadFilesResponse($fileArray, $nextUrl, installApplication::getInstallerProgressPercent()));
 	}
 
 	/**
@@ -321,12 +320,12 @@ class installApplication extends installer{
 		$nextUrl = '?' . updateUtil::getCommonHrefParameters($this->getNextUpdateDetail(), true);
 
 		$message = '<p>'
-			. sprintf($GLOBALS['lang']['installer']['downloadFilesTotal'], sizeof($_SESSION['clientChanges']['allChanges']))
-			. '</p>'
-			. '<ul>'
-			. '<li>' . sizeof($_SESSION['clientChanges']['files']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesFiles'] . '</li>'
-			. '<li>' . sizeof($_SESSION['clientChanges']['queries']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesQueries'] . '</li>'
-			. '</ul>';
+				. sprintf($GLOBALS['lang']['installer']['downloadFilesTotal'], sizeof($_SESSION['clientChanges']['allChanges']))
+				. '</p>'
+				. '<ul>'
+				. '<li>' . sizeof($_SESSION['clientChanges']['files']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesFiles'] . '</li>'
+				. '<li>' . sizeof($_SESSION['clientChanges']['queries']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesQueries'] . '</li>'
+				. '</ul>';
 
 		$progress = $this->getInstallerProgressPercent();
 
@@ -717,14 +716,14 @@ class installApplication extends installer{
 				exit;
 			}
 		}' .
-			/*
+				/*
 
-			  if (!$leDB->query($query)) {
-			  ' . $this->getErrorMessageResponsePart('', $GLOBALS['lang'][$this->LanguageIndex]['dbNotInsertPrefs']) . '
-			  exit;
-			  }
-			 */
-			'?>' . $this->getProceedNextCommandResponsePart($nextUrl, $this->getInstallerProgressPercent(), "<p>" . $GLOBALS['lang'][$this->LanguageIndex]['finished'] . "</p>") . '<?php
+				  if (!$leDB->query($query)) {
+				  ' . $this->getErrorMessageResponsePart('', $GLOBALS['lang'][$this->LanguageIndex]['dbNotInsertPrefs']) . '
+				  exit;
+				  }
+				 */
+				'?>' . $this->getProceedNextCommandResponsePart($nextUrl, $this->getInstallerProgressPercent(), "<p>" . $GLOBALS['lang'][$this->LanguageIndex]['finished'] . "</p>") . '<?php
 
 		?>';
 

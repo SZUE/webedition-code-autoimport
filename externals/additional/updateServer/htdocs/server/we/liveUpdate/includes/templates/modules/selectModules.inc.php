@@ -110,7 +110,7 @@ $we_button = new we_button();
 $submitButton = $we_button->create_button("next", "javascript:document.we_form.submit();");
 
 $head = \'
-	<script type="text/javascript">
+	<script>
 
 		var dependentModules = [];
 		var requiredModules = [];

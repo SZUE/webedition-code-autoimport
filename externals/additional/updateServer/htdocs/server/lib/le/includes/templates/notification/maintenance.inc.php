@@ -4,7 +4,7 @@ $liveUpdateResponse['Headline'] = $GLOBALS['lang']['notification']['headline'];
 $liveUpdateResponse['Content'] = '
 <div class="messageDiv">
 ' . $GLOBALS['lang']['notification']['maintenance'] . '
-<script type="text/JavaScript">
+<script>
 		alert("' . $GLOBALS['lang']['notification']['maintenance'] . '");
 	</script>
 </div>

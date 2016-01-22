@@ -22,7 +22,7 @@ class progressBar extends progressBarBase{
 	 */
 	function getProgressBarJs(){
 		return '
-<script type="text/javascript">
+<script>
 
 	function setProgressBar(width) {
 

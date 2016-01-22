@@ -1,6 +1,7 @@
 <?php
 
 class installerDownload extends installer{
+
 	var $LanguageIndex = "installerDownload";
 
 	/**
@@ -107,53 +108,50 @@ class installerDownload extends installer{
 
 					// :IMPORTANT:
 					return updateUtil::getResponseString(self::_getDownloadFilesMergeResponse($fileArray, $nextUrl, self::getInstallerProgressPercent(), $Paths[$Position], $Part));
-				} else {
-					$Position++;
-					$nextUrl = '?' . updateUtil::getCommonHrefParameters($_REQUEST['detail'], false) . "&position=" . $Position;
-
-					// :IMPORTANT:
-					return updateUtil::getResponseString(self::_getDownloadFilesMergeResponse($fileArray, $nextUrl, self::getInstallerProgressPercent(), $Paths[$Position - 1], $Part));
 				}
-			} else {
-				$Part += 1;
-				$nextUrl = '?' . updateUtil::getCommonHrefParameters($_REQUEST['detail'], false) . "&part=" . $Part . "&position=" . $Position;
+				$Position++;
+				$nextUrl = '?' . updateUtil::getCommonHrefParameters($_REQUEST['detail'], false) . "&position=" . $Position;
 
 				// :IMPORTANT:
-				return updateUtil::getResponseString(self::_getDownloadFilesResponse($fileArray, $nextUrl, self::getInstallerProgressPercent()));
+				return updateUtil::getResponseString(self::_getDownloadFilesMergeResponse($fileArray, $nextUrl, self::getInstallerProgressPercent(), $Paths[$Position - 1], $Part));
 			}
-
-			// Only whole files	with max. $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] kbytes per step
-		} else {
-
-			$ResponseSize = 0;
-			do{
-
-				if($Position >= sizeof($Paths)){
-					break;
-				}
-
-				$FileSize = filesize($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
-
-				// response + size of next file < max size for response
-				if($ResponseSize + $FileSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024){
-					$ResponseSize += $FileSize;
-
-					$fileArray[$Paths[$Position]] = updateUtil::getFileContentEncoded($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
-					$Position++;
-				} else {
-					break;
-				}
-			} while($ResponseSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
-
-			if($Position >= sizeof($_SESSION['clientChanges']['allChanges'])){
-				$nextUrl = '?' . updateUtil::getCommonHrefParameters($this->getNextUpdateDetail(), true);
-			} else {
-				$nextUrl = '?' . updateUtil::getCommonHrefParameters($_REQUEST['detail'], false) . "&position=$Position";
-			}
+			$Part += 1;
+			$nextUrl = '?' . updateUtil::getCommonHrefParameters($_REQUEST['detail'], false) . "&part=" . $Part . "&position=" . $Position;
 
 			// :IMPORTANT:
 			return updateUtil::getResponseString(self::_getDownloadFilesResponse($fileArray, $nextUrl, self::getInstallerProgressPercent()));
+
+
+			// Only whole files	with max. $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] kbytes per step
 		}
+
+		$ResponseSize = 0;
+		do{
+
+			if($Position >= sizeof($Paths)){
+				break;
+			}
+
+			$FileSize = filesize($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
+
+			// response + size of next file < max size for response
+			if($ResponseSize + $FileSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024){
+				$ResponseSize += $FileSize;
+
+				$fileArray[$Paths[$Position]] = updateUtil::getFileContentEncoded($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
+				$Position++;
+			} else {
+				break;
+			}
+		}while($ResponseSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
+
+		$nextUrl = ($Position >= sizeof($_SESSION['clientChanges']['allChanges']) ?
+						'?' . updateUtil::getCommonHrefParameters($this->getNextUpdateDetail(), true) :
+						'?' . updateUtil::getCommonHrefParameters($_REQUEST['detail'], false) . "&position=$Position"
+				);
+
+		// :IMPORTANT:
+		return updateUtil::getResponseString(self::_getDownloadFilesResponse($fileArray, $nextUrl, self::getInstallerProgressPercent()));
 	}
 
 	/**
@@ -184,7 +182,7 @@ class installerDownload extends installer{
 		$nextUrl = '?' . updateUtil::getCommonHrefParameters($this->getNextUpdateDetail(), true);
 
 		$message = '<h1>' . $GLOBALS['lang'][$this->LanguageIndex][$_REQUEST["detail"]] . '</h1>'
-			. '<p>' . sprintf($GLOBALS['lang']['installer']['downloadFilesTotal'], sizeof($_SESSION['clientChanges']['allChanges'])) . '</p>';
+				. '<p>' . sprintf($GLOBALS['lang']['installer']['downloadFilesTotal'], sizeof($_SESSION['clientChanges']['allChanges'])) . '</p>';
 
 		$progress = $this->getInstallerProgressPercent();
 

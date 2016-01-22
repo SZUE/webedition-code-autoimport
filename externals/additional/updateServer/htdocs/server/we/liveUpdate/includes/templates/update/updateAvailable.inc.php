@@ -90,7 +90,7 @@ $pcreV = PCRE_VERSION;
 
 
 $content = \'
-<script type="text/javascript">
+<script>
 function toggleNextButton() {
 	if (document.getElementById("clientTargetVersionNumber").selectedIndex==-1){
 		alert("' . $GLOBALS['lang']['upgrade']['pleaseSelectVersion'] . '");

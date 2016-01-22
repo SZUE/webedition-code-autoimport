@@ -6,5 +6,5 @@
 $liveUpdateResponse['Type'] = 'template';
 $liveUpdateResponse['Headline'] = $GLOBALS['lang']['notification']['headline'];
 $liveUpdateResponse['Content'] = $GLOBALS['lang']['notification']['lostSession'] .
-	'<script type="text/javascript>alert("' . $GLOBALS['lang']['notification']['lostSession'] . '")</script>';
+	'<script>alert("' . $GLOBALS['lang']['notification']['lostSession'] . '")</script>';
 

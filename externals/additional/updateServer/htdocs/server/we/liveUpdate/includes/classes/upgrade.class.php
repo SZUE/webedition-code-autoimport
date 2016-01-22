@@ -430,7 +430,7 @@ class upgrade{
 			$jsMessage = strip_tags($message);
 		}
 
-		return '<script type="text/javascript">
+		return '<script>
 			top.frames["updatecontent"].setProgressBar("' . $progress . '");
 			top.frames["updatecontent"].appendMessageLog("' . $message . '\n");
 			window.open(\'?' . updateUtil::getCommonHrefParameters('upgrade', 'finishUpgradePopUp') . '\', \'finishInstallationPopUp' . session_id() . '\', \'dependent=yes,height=250,width=600,menubar=no,location=no,resizable=no,status=no,toolbar=no,scrollbars=no\');

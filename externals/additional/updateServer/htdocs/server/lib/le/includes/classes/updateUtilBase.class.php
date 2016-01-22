@@ -384,7 +384,7 @@ class updateUtilBase{
 	 * @param string $filePath
 	 * @return string
 	 */
-	function getFileContentEncoded($filePath, $replaceExtension = false){
+	static function getFileContentEncoded($filePath, $replaceExtension = false){
 		$content = updateUtil::getFileContent($filePath);
 
 		if($replaceExtension){

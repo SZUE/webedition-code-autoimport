@@ -27,7 +27,7 @@ $pcreV = PCRE_VERSION;
 
 
 $content = \'
-<script type="text/javascript">
+<script>
 function toggleNextButton() {
 	if(document.getElementById("nextButton").style.display == "") {
 		document.getElementById("nextButton").style.display = "none";

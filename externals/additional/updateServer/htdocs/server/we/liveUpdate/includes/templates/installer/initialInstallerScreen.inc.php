@@ -50,11 +50,11 @@ $content = \'
 	<td align="right" id="tdRefreshButton">\' . $refreshButton . \'</td>
 </tr>
 </table>
-<script type="text/javascript">
+<script>
 	activateLiInstallerStep("' . $firstStep . '");
 </script>
 <!-- <a href="javascript:proceedUrl();">weiter</a> -->
-<script type="text/javascript">
+<script>
 	proceedUrl();
 </script>
 ' . $bannerHtml . '

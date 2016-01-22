@@ -3,6 +3,7 @@
 //version6400
 //code aus 6400
 class liveUpdateFunctionsServer extends liveUpdateFunctions{
+
 	var $QueryLog = array(
 		'success' => array(),
 		'tableChanged' => array(),
@@ -46,8 +47,12 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * @return string
 	 */
 	function decodeCode($string){
-
-		return base64_decode($string);
+		$string = base64_decode($string);
+		if($string && $string[0] === 'x'){
+			$str = gzuncompress($string);
+			return ($str === false ? $string : $str);
+		}
+		return $string;
 	}
 
 	/**
@@ -90,8 +95,8 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	function checkReplaceDocRoot($content){
 		//replaces any count of escaped docroot-strings
 		return ($this->replaceDocRootNeeded() ?
-				preg_replace('-\$(_SERVER|GLOBALS)\[([\\\"\']+)DOCUMENT_ROOT([\\\"\']+)\]-', '\2' . LIVEUPDATE_SOFTWARE_DIR . '\3', $content) :
-				$content);
+						preg_replace('-\$(_SERVER|GLOBALS)\[([\\\"\']+)DOCUMENT_ROOT([\\\"\']+)\]-', '\2' . LIVEUPDATE_SOFTWARE_DIR . '\3', $content) :
+						$content);
 	}
 
 	/**
@@ -287,7 +292,8 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 					touch($source . 'x');
 					$_SESSION['weS']['moveOk'] = @rename($source . 'x', $destination . 'x');
 					$this->deleteFile($destination . 'x');
-					$this->QueryLog['success'][] = 'Using ' . ($_SESSION['weS']['moveOk'] ? 'move' : 'copy') . ' for installation';
+					$this->deleteFile($source . 'x');
+					$this->insertUpdateLogEntry('Using ' . ($_SESSION['weS']['moveOk'] ? 'move' : 'copy') . ' for installation', WE_VERSION, 0);
 				}
 
 				if($_SESSION['weS']['moveOk']){

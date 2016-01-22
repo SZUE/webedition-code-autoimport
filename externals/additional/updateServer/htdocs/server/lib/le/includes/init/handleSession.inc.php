@@ -71,7 +71,7 @@ if(isset($_REQUEST["update_cmd"]) && $_REQUEST["update_cmd"] == "startSession"){
 
 		// recall script on client with session_id as parameter
 		print "
-<script type=\"text/javascript\">
+<script>
 	document.location = '" . $_SESSION['clientUpdateUrl'] . "?update_cmd=" . $_REQUEST['next_cmd'] . "&detail=" . $_REQUEST['detail'] . $clientsession . "&liveUpdateSession=" . session_id() . "&$le_online_installer_req';
 </script>";
 	} else {

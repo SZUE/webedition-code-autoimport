@@ -1,6 +1,7 @@
 <?php
 
 class installer extends installerBase{
+
 	var $LanguageIndex = "installer";
 
 	/**
@@ -37,7 +38,7 @@ class installer extends installerBase{
 			$appendMessageLogJs = "replaceText";
 		}
 
-		return '<script type="text/JavaScript">
+		return '<script>
 			top.decreaseSpeed = false;
 			top.nextUrl = "' . $nextUrl . '";
 			top.leProgressBar.set("leProgress", "' . $progress . '");
@@ -94,7 +95,7 @@ class installer extends installerBase{
 		$errorMessage = ' . $this->getErrorMessage($headline, $message) . ';
 
 		echo \'
-			<script type="text/javascript">
+			<script>
 				top.leContent.appendErrorText("\' . $errorMessage . \'");
 				alert("\' . strip_tags($errorMessage) . \'");
 			</script>\';
@@ -124,7 +125,7 @@ class installer extends installerBase{
 	 * @param string $nextDetail
 	 * @return array
 	 */
-	function _getDownloadFilesResponse($filesArray, $nextUrl, $progress = 0){
+	static function _getDownloadFilesResponse($filesArray, $nextUrl, $progress = 0){
 		// prepare $filesArray (path => encodedContent) for the client
 		$writeFilesCode = '
 			$files = array();';
@@ -135,8 +136,9 @@ class installer extends installerBase{
 				$files[' . $path . '] = "' . $content . '";';
 		}
 
-		$retArray['Type'] = 'eval';
-		$retArray['Code'] = '<?php
+		return array(
+			'Type' => 'eval',
+			'Code' => '<?php
 
 	' . updateUtil::getOverwriteClassesCode() . '
 
@@ -177,9 +179,7 @@ class installer extends installerBase{
 		} else {
 			' . $this->getErrorMessageResponsePart() . '
 		}
-?>';
-
-		return $retArray;
+?>');
 	}
 
 	/**

@@ -45,8 +45,12 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * @return string
 	 */
 	function decodeCode($string){
-
-		return base64_decode($string);
+		$string = base64_decode($string);
+		if($string && $string[0] === 'x'){
+			$str = gzuncompress($string);
+			retrurn($str === false ? $string : $str);
+		}
+		return $string;
 	}
 
 	/**

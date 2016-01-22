@@ -248,7 +248,7 @@ class register extends registerBase{
 				<td>' . $languageSelect . '</td>
 			</tr>
 			</table>
-			<script type="text/Javascript">
+			<script>
 
 				function clickNewsletter(){
 
