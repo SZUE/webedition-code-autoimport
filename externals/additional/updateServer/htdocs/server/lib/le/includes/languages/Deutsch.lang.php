@@ -1,11 +1,9 @@
 <?php
 $lang['license']['undefinedError'] = 'Unbekannter Fehler';
 $lang['license']['missingModuleLicenses'] = 'Sie haben nicht mehr alle ben&ouml;tigten Lizenzen f&uuml;r alle installierten Module.<br />Bitte kaufen Sie die ben&ouml;tigten Module oder verst&auml;ndigen Sie unseren Support.<br /><br />F&uuml;r folgende Module besitzen Sie keine Lizenz mehr:';
-$lang['license']['noStratoIp'] = 'Die eingegebene Lizenz ist Eigentum der STRATO AG und kann nur auf einem Server dieses Unternehmens genutzt werden.';
 $lang['license']['notEnoughLicencesForModules'] = 'Alle gekauften Lizenzen f&uuml;r webEdition 6 Module sind bereits installiert';
 $lang['license']['notEnoughVersions'] = 'Alle gekauften Lizenzen f&uuml;r webEdition 6 sind bereits installiert';
 $lang['license']['noVersion6'] = 'Sie besitzen noch keine Lizenz f&uuml;r webEdition 6';
-$lang['license']['noWpolskaIp'] = 'Die eingegebene ist Eigentum der Wirtualna Polska und kann nur auf einem Server dieses Unternehmens genutzt werden.';
 $lang['license']['serialNotExist'] = 'Die angegebene Seriennummer ist nicht g&uuml;ltig.';
 
 $lang['update']['headline'] = 'Update';

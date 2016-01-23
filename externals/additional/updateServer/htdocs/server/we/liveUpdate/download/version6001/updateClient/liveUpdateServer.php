@@ -27,7 +27,7 @@ if (isset($_REQUEST['update_cmd'])) {
 			$parameters[$parameterName] = $_REQUEST[$parameterName];
 		}
 	}
-	
+
 	// this is flag to check if a response was received!
 	$response = false;
 
@@ -63,7 +63,7 @@ if (isset($_REQUEST['update_cmd'])) {
 		 * the session_id of the server. If this id is missing, create a new
 		 * session on the server.
 		 */
-		if (!isset($_REQUEST['liveUpdateSession'])) {
+		if (empty($_REQUEST['liveUpdateSession'])) {
 
 			/*
 			 * exit after submitting the form

@@ -7,9 +7,9 @@ $liveUpdateResponse['Code'] = '
 $Table = \'<table class="leContentTable">\';
 
 
-$Output = "<table class=\'leContentTable\'>\n";
-$_choiceNotYetOnClickJs ="document.getElementById(\'le_communityChoice_notYet_Form\').style.display = \'\';\n"
-	."document.getElementById(\'le_communityChoice_already_Form\').style.display = \'none\';\n";
+$Output = "<table class=\'leContentTable\'>";
+$_choiceNotYetOnClickJs ="document.getElementById(\'le_communityChoice_notYet_Form\').style.display = \'\';"
+	."document.getElementById(\'le_communityChoice_already_Form\').style.display = \'none\';";
 //error_log($_SESSION["le_communityChoice"]);
 if(!isset($_SESSION["le_communityChoice"]) || $_SESSION["le_communityChoice"] == "" || $_SESSION["le_communityChoice"] == "notYet") {
 	$_choiceNotYetSelected = true;
@@ -39,8 +39,8 @@ $Output	.=	\'<tr id="le_communityChoice_notYet_Form" style="\' . $_choiceNotYetR
 		.	\'<td class="defaultfont">\'.$_choiceNotYetButton.\'</td>\'
 		.	\'</tr>\';
 
-$_choiceAlreadyOnClickJs = "document.getElementById(\'le_communityChoice_notYet_Form\').style.display = \'none\';\n"
-	."document.getElementById(\'le_communityChoice_already_Form\').style.display = \'\';\n";
+$_choiceAlreadyOnClickJs = "document.getElementById(\'le_communityChoice_notYet_Form\').style.display = \'none\';"
+	."document.getElementById(\'le_communityChoice_already_Form\').style.display = \'\';";
 //error_log($_SESSION["le_communityChoice"]);
 if(isset($_SESSION["le_communityChoice"]) && $_SESSION["le_communityChoice"] == "Already") {
 	$_choiceAlreadySelected = true;
@@ -95,8 +95,8 @@ $Output	.=	\'<tr id="le_communityChoice_already_Form" style="\'.$_choiceAlreadyR
 		.	\'<td class="defaultfont">\'.$_choiceAlreadyForm.\'</td>\'
 		.	\'</tr>\';
 
-$_choiceSkipOnClickJs = "document.getElementById(\'le_communityChoice_notYet_Form\').style.display = \'none\';\n"
-	."document.getElementById(\'le_communityChoice_already_Form\').style.display = \'none\';\n";
+$_choiceSkipOnClickJs = "document.getElementById(\'le_communityChoice_notYet_Form\').style.display = \'none\';
+document.getElementById(\'le_communityChoice_already_Form\').style.display = \'none\';";
 
 //error_log($_SESSION["le_communityChoice"]);
 if(isset($_SESSION["le_communityChoice"]) && $_SESSION["le_communityChoice"] == "skip") {

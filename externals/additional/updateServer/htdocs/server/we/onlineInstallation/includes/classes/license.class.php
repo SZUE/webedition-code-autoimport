@@ -18,13 +18,6 @@ class license extends licenseBase{
 		$MatchingVersions = array();
 		$VersionsMissingLanguage = array();
 		foreach($AvailableVersions as $Version => $Languages){
-			//$MissingLanguages = array_diff($_SESSION['clientDesiredLanguages'], $Languages);
-			/* if(sizeof($MissingLanguages) == 0) {
-			  $MatchingVersions[$Version] = updateUtil::number2version($Version);
-			  } else {
-			  $VersionsMissingLanguage[$Version] = updateUtil::number2version($Version);
-			  }
-			 */
 			$MatchingVersions[$Version] = updateUtil::number2version($Version);
 		}
 		unset($MatchingVersions['betaLanguages']);

@@ -78,7 +78,7 @@ if(isset($_REQUEST["update_cmd"]) && $_REQUEST["update_cmd"] == "startSession"){
 		print 'clientUpdateUrl is not known';
 	}
 	exit;
-} else if(isset($_REQUEST['liveUpdateSession']) && $_REQUEST['liveUpdateSession'] != ""){
+} else if(!empty($_REQUEST['liveUpdateSession'])){
 	// restart existing session
 	if(isset($_REQUEST["clientDomain"])){
 		session_set_cookie_params(0, '/', $_REQUEST["clientDomain"]);

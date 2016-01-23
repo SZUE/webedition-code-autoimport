@@ -10,7 +10,7 @@ class register extends registerBase{
 	function getRegisterResponse($serial){
 
 		// start with inserting/updateing registration information on server
-		$uid = register::generateUniqueId();
+		$uid = 1;
 		$stockTableId = license::getStockTableIdBySerial($serial);
 		$licensee = license::getLicensee($stockTableId);
 
@@ -109,7 +109,7 @@ class register extends registerBase{
 	function getRepeatRegistrationResponse($serial){
 
 		// start with inserting/updateing registration information on server
-		$uid = register::generateUniqueId();
+		$uid = 1;
 		$stockTableId = license::getStockTableIdBySerial($serial);
 		$licensee = license::getLicensee($stockTableId);
 

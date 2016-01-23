@@ -31,22 +31,4 @@ class license extends licenseBase{
 		return true;
 	}
 
-	function hasEnoughLicensesForUpgrade(){
-
-		$serial = license::getSerialByUid($_SESSION['clientUid']);
-		$serialInformation = license::getSerialInformation($serial);
-
-		if($serialInformation['upgrades']['version5'] > $serialInformation['installedUpgrades']['version5']){
-			return true;
-		} else {
-			// check if there was already an installation of version 5 on this domain
-			$domainInformation = license::getRegisteredDomainInformationById($_SESSION['clientInstalledTableId']);
-			if(in_array('version5', $domainInformation['registeredUpgrades'])){
-				return true;
-			}
-		}
-
-		return false;
-	}
-
 }

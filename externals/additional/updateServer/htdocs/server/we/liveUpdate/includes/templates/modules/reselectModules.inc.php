@@ -6,7 +6,7 @@ foreach($GLOBALS['updateServerTemplateData']['clientDesiredModules'] as $moduleK
 }
 asort($modules);
 
-$moduleStr = "<ul>\n<li>" . implode("</li>\n<li>", $modules) . "</li>\n</ul>";
+$moduleStr = "<ul><li>" . implode("</li><li>", $modules) . "</li></ul>";
 
 $liveUpdateResponse['Type'] = 'eval';
 $liveUpdateResponse['Code'] = '<?php

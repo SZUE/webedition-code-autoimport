@@ -129,14 +129,6 @@ if(isset($_REQUEST['update_cmd'])){
 
 
 		case 'upgrade':
-			/*
-			  if(isset($_SESSION["clientWE_LIGHT"]) && $_SESSION["clientWE_LIGHT"]) {
-			  require_once(LIVEUPDATE_SERVER_DIR . '/includes/upgrade.inc.php');
-			  } else {
-			  print notification::getNotAvailableAtTheMomentResponse();
-			  }
-			 */
-			//print notification::getNotAvailableAtTheMomentResponse();
 			require_once(LIVEUPDATE_SERVER_DIR . '/includes/upgrade.inc.php');
 			break;
 
@@ -167,18 +159,3 @@ if(isset($_REQUEST['update_cmd'])){
 		include(SHARED_TEMPLATE_DIR . '/connection/serverUpAndRunning.inc.php');
 	}
 }
-
-/*
-if(isset($_REQUEST)) {
-	error_log("---> REQUEST");
-	error_log(print_r($_REQUEST, true));
-
-}
-*/
-/*
-if(isset($_SESSION)) {
-	error_log("---> SESSION");
-	error_log(print_r($_SESSION, true));
-
-}
-*/

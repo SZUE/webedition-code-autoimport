@@ -24,91 +24,91 @@ function getButtonForTemplates($name, $onClick, $disabled = false){
 	return $Button;
 }
 
-$JavaScript = ''
-	. 'var imports = new Array();\n'
-	. 'var previews = new Array();\n'
-	. 'var previewId = \'\'\n'
-	. 'var previewIndex = 0\n'
-	. 'function addImport(id) {\n'
-	. '	imports[imports.length] = id;\n'
-	. '	previews[id] = new Array();\n'
-	. '}\n'
-	. 'function addPreview(id, imageSrc, width, height, text) {\n'
-	. '	myImport = new Array();\n'
-	. '	temp = new Image();\n'
-	. '	temp.src = imageSrc;\n'
-	. '	myImport[\'src\'] = imageSrc;\n'
-	. '	myImport[\'width\'] = width;\n'
-	. '	myImport[\'height\'] = height;\n'
-	. '	myImport[\'text\'] = text;\n'
-	. '	previews[id][previews[id].length] = myImport;\n'
-	. '}\n'
-	. '\n'
-	. 'function showPreview(id) {\n'
-	. '	previewId = id;\n'
-	. '	previewIndex = -1;\n'
-	. '	nextPreview();\n'
-	. '}\n'
-	. '\n'
-	. 'function getPreview() {\n'
-	. '	top.document.getElementById(\'leWizardPreviewImage\').src = previews[previewId][previewIndex][\'src\'];\n'
-	. '	top.document.getElementById(\'leWizardPreviewImage\').height = previews[previewId][previewIndex][\'height\'];\n'
-	. '	top.document.getElementById(\'leWizardPreviewImage\').width = previews[previewId][previewIndex][\'width\'];\n'
-	. '	top.document.getElementById(\'leWizardPreview\').style.height = (parseInt(previews[previewId][previewIndex][\'height\']) + 95) + \'px\';\n'
-	. '	top.document.getElementById(\'leWizardPreview\').style.width = previews[previewId][previewIndex][\'width\'];\n'
-	. '	top.document.getElementById(\'leWizardPreviewText\').innerHTML = previews[previewId][previewIndex][\'text\'];\n'
-	. '	top.document.getElementById(\'leWizardPreview\').style.marginTop = (-1)*(previews[previewId][previewIndex][\'height\']/2)-50;\n'
-	. '	top.document.getElementById(\'leWizardPreview\').style.marginLeft = (-1)*(previews[previewId][previewIndex][\'width\']/2)-5;\n'
-	. '	top.document.getElementById(\'leWizardContent\').style.overflow = \'hidden\';\n'
-	. '	top.document.getElementById(\'leWizardPreview\').style.zIndex = \'101\';\n'
-	. '	top.document.getElementById(\'leWizardPreviewContainer\').style.zIndex = \'100\';\n'
-	. '	top.document.getElementById(\'leWizardPreview\').style.display = \'block\';\n'
-	. '	top.document.getElementById(\'leWizardPreviewContainer\').style.display = \'block\';\n'
-	. '	if(previews[previewId].length == previewIndex + 1) {\n'
-	. '		top.weButton.disable(\'direction_right\');\n'
-	. '	} else {\n'
-	. '		top.weButton.enable(\'direction_right\');\n'
-	. '	}\n'
-	. '	if(previewIndex == 0) {\n'
-	. '		top.weButton.disable(\'direction_left\');\n'
-	. '	} else {\n'
-	. '		top.weButton.enable(\'direction_left\');\n'
-	. '	}\n'
-	. '}\n'
-	. '\n'
-	. 'function nextPreview() {\n'
-	. '	if(previews[previewId].length >= previewIndex + 1) {'
-	. '		previewIndex++;\n'
-	. '	}\n'
-	. '	getPreview();\n'
-	. '}\n'
-	. '\n'
-	. 'function backPreview() {\n'
-	. '	if(previewIndex > 0) {'
-	. '		previewIndex--;\n'
-	. '	}\n'
-	. '	getPreview();\n'
-	. '}\n'
-	. '\n'
-	. 'function hidePreview() {\n'
-	. '	top.document.getElementById(\'leWizardPreview\').style.zIndex = \'2\';\n'
-	. '	top.document.getElementById(\'leWizardPreviewContainer\').style.zIndex = \'1\';\n'
-	. '	top.document.getElementById(\'leWizardPreview\').style.display = \'none\';\n'
-	. '	top.document.getElementById(\'leWizardPreviewContainer\').style.display = \'none\';\n'
-	. '	top.document.getElementById(\'leWizardContent\').style.overflow = \'auto\';\n'
-	. '	top.document.getElementById(\'leWizardPreviewImage\').src = \'/webEdition/images/pixel.gif\';\n'
-	. '}\n'
-	. '\n'
-	. 'function setSelected(id) {\n'
-	. '	for(i = 0; i < imports.length; i++) {\n'
-	. '		if(imports[i] == id) {\n'
-	. '			top.document.getElementById(\'imports_\' + imports[i]).className = \'cellselected\';\n'
-	. '			top.document.getElementById(\'import\').value = id;\n'
-	. '		} else if(imports[i] != id) {\n'
-	. '			top.document.getElementById(\'imports_\' + imports[i]).className = \'cell\';\n'
-	. '		}'
-	. '	}'
-	. '}\n';
+$JavaScript = '
+var imports = [];
+var previews = [];
+var previewId = \'\'
+var previewIndex = 0
+function addImport(id) {
+	imports[imports.length] = id;
+	previews[id] = [];
+}
+function addPreview(id, imageSrc, width, height, text) {
+	myImport = {};
+	temp = new Image();
+	temp.src = imageSrc;
+	myImport[\'src\'] = imageSrc;
+	myImport[\'width\'] = width;
+	myImport[\'height\'] = height;
+	myImport[\'text\'] = text;
+	previews[id][previews[id].length] = myImport;
+}
+
+function showPreview(id) {
+	previewId = id;
+	previewIndex = -1;
+	nextPreview();
+}
+
+function getPreview() {
+	top.document.getElementById(\'leWizardPreviewImage\').src = previews[previewId][previewIndex][\'src\'];
+	top.document.getElementById(\'leWizardPreviewImage\').height = previews[previewId][previewIndex][\'height\'];
+	top.document.getElementById(\'leWizardPreviewImage\').width = previews[previewId][previewIndex][\'width\'];
+	top.document.getElementById(\'leWizardPreview\').style.height = (parseInt(previews[previewId][previewIndex][\'height\']) + 95) + \'px\';
+	top.document.getElementById(\'leWizardPreview\').style.width = previews[previewId][previewIndex][\'width\'];
+	top.document.getElementById(\'leWizardPreviewText\').innerHTML = previews[previewId][previewIndex][\'text\'];
+	top.document.getElementById(\'leWizardPreview\').style.marginTop = (-1)*(previews[previewId][previewIndex][\'height\']/2)-50;
+	top.document.getElementById(\'leWizardPreview\').style.marginLeft = (-1)*(previews[previewId][previewIndex][\'width\']/2)-5;
+	top.document.getElementById(\'leWizardContent\').style.overflow = \'hidden\';
+	top.document.getElementById(\'leWizardPreview\').style.zIndex = \'101\';
+	top.document.getElementById(\'leWizardPreviewContainer\').style.zIndex = \'100\';
+	top.document.getElementById(\'leWizardPreview\').style.display = \'block\';
+	top.document.getElementById(\'leWizardPreviewContainer\').style.display = \'block\';
+	if(previews[previewId].length == previewIndex + 1) {
+		top.weButton.disable(\'direction_right\');
+	} else {
+		top.weButton.enable(\'direction_right\');
+	}
+	if(previewIndex == 0) {
+		top.weButton.disable(\'direction_left\');
+	} else {
+		top.weButton.enable(\'direction_left\');
+	}
+}
+
+function nextPreview() {
+	if(previews[previewId].length >= previewIndex + 1) {
+		previewIndex++;
+	}
+	getPreview();
+}
+
+function backPreview() {
+	if(previewIndex > 0) {
+		previewIndex--;
+	}
+	getPreview();
+}
+
+function hidePreview() {
+	top.document.getElementById(\'leWizardPreview\').style.zIndex = \'2\';
+	top.document.getElementById(\'leWizardPreviewContainer\').style.zIndex = \'1\';
+	top.document.getElementById(\'leWizardPreview\').style.display = \'none\';
+	top.document.getElementById(\'leWizardPreviewContainer\').style.display = \'none\';
+	top.document.getElementById(\'leWizardContent\').style.overflow = \'auto\';
+	top.document.getElementById(\'leWizardPreviewImage\').src = \'/webEdition/images/pixel.gif\';
+}
+
+function setSelected(id) {
+	for(i = 0; i < imports.length; i++) {
+		if(imports[i] == id) {
+			top.document.getElementById(\'imports_\' + imports[i]).className = \'cellselected\';
+			top.document.getElementById(\'import\').value = id;
+		} else if(imports[i] != id) {
+			top.document.getElementById(\'imports_\' + imports[i]).className = \'cell\';
+		}
+	}
+}';
 
 
 $Output = "<input type=\"hidden\" name=\"import\" id=\"import\" value=\"" . (isset($_SESSION['clientSelectedImport']) ? $_SESSION['clientSelectedImport'] : "") . "\">"

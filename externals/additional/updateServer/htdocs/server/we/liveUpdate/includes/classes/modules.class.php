@@ -123,40 +123,6 @@ class modules extends modulesBase{
 	}
 
 	/**
-	 * returns php code to insert user in tblUser after installation of user management
-	 *
-	 * @return string
-	 */
-	function getFinishUserInstallation(){
-
-		$phpCode = '
-		$tmpDB = new DB_WE();
-		$tmpDB->Halt_On_Error = "no";
-
-		$userQuery = "SELECT passwd, username FROM " . TBL_PREFIX . "tblPasswd";
-		$tmpDB->query($userQuery);
-		$tmpDB->next_record();
-		$password = $tmpDB->f("passwd");
-		$username = $tmpDB->f("username");
-
-		$insertUserQuery = "
-			INSERT INTO " . TBL_PREFIX . "tblUser
-			(ID, ParentID, Text, Path, Icon, IsFolder, Type, First, Second, Address, HouseNo, City, PLZ, State, Country, Tel_preselection, Telephone, Fax_preselection, Fax, Handy, Email, Description, username, passwd, Permissions, ParentPerms, Alias, CreatorID, CreateDate, ModifierID, ModifyDate, Ping, Portal, workSpace, workSpaceDef, workSpaceTmp, workSpaceNav, workSpaceObj, ParentWs, ParentWst, ParentWsn, ParentWso, Salutation)
-			VALUES (1, 0, \"$username\", \"/$username\", \"user.gif\", 0, 0, \"\", \"\", \"\", \"\", \"\", 0, \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"$username\", \"$password\", \'a:1:{s:13:\"ADMINISTRATOR\";i:1;}\', 0, 0, 0, 0, 0, 0, 0, \"\", \"\", \"\", \"\", \"\", \"\", 0, 0, 0, 0, \"\")
-		";
-
-		if ($tmpDB->query($insertUserQuery) ) {
-
-		} else {
-
-		}
-
-		';
-
-		return $phpCode;
-	}
-
-	/**
 	 * Response to finish installation, deletes not needed files and updates
 	 * installed_modules file
 	 *
@@ -169,15 +135,10 @@ class modules extends modulesBase{
 		$modules_path = "LIVEUPDATE_SOFTWARE_DIR . '/webEdition/we/include/we_installed_modules.inc" . $_SESSION['clientExtension'] . "'";
 		// end of installed modules
 
-		$extraCode = '';
 		// if usermodule is installed, create new user
-		if(in_array('users', $_SESSION['clientDesiredModules'])){
-			$extraCode = modules::getFinishUserInstallation();
-		}
-
 		$message = '<ul>';
 		for($i = 0; $i < sizeof($_SESSION['clientDesiredModules']); $i++){
-			$message .= "<li>" . $existingModules[$_SESSION['clientDesiredModules'][$i]]['text'] . "</li>\\n";
+			$message .= "<li>" . $existingModules[$_SESSION['clientDesiredModules'][$i]]['text'] . "</li>";
 		}
 		$message .= '</ul>';
 
@@ -186,26 +147,24 @@ class modules extends modulesBase{
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
 
-		' . updateUtil::getOverwriteClassesCode() . '
+' . updateUtil::getOverwriteClassesCode() . '
 
-		$modulesPath = ' . $modules_path . ';
-		$modulesContent = "' . updateUtil::encodeCode($newContent) . '";
+$modulesPath = ' . $modules_path . ';
+$modulesContent = "' . updateUtil::encodeCode($newContent) . '";
 
-		$filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp";
-		$liveUpdateFnc->deleteDir($filesDir);
+$filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp";
+$liveUpdateFnc->deleteDir($filesDir);
 
-		' . $extraCode . '
+if ($liveUpdateFnc->filePutContent($modulesPath, $liveUpdateFnc->decodeCode($modulesContent))) {
 
-		if ($liveUpdateFnc->filePutContent($modulesPath, $liveUpdateFnc->decodeCode($modulesContent))) {
+	$liveUpdateFnc->insertUpdateLogEntry("' . $GLOBALS['luSystemLanguage']['modules']['finished'] . $message . '", "' . $_SESSION['clientVersion'] . '", 0);
 
-			$liveUpdateFnc->insertUpdateLogEntry("' . $GLOBALS['luSystemLanguage']['modules']['finished'] . $message . '", "' . $_SESSION['clientVersion'] . '", 0);
+	?>' . installer::getFinishInstallationResponsePart("<div>" . $GLOBALS['lang']['modules']['finished'] . "\\n" . $message . "</div>") . '<?php
 
-			?>' . installer::getFinishInstallationResponsePart("<div>" . $GLOBALS['lang']['modules']['finished'] . "\\n" . $message . "</div>") . '<?php
-
-		} else {
-			' . installer::getErrorMessageResponsePart() . '
-		}
-		?>';
+} else {
+	' . installer::getErrorMessageResponsePart() . '
+}
+?>';
 
 		return updateUtil::getResponseString($retArray);
 	}

@@ -12,7 +12,7 @@
 $installedLngList = '';
 foreach($_SESSION['clientInstalledLanguages'] as $lng){
 
-	$installedLngList .= "\t<li>$lng</li>\n";
+	$installedLngList .= "\t<li>$lng</li>";
 }
 
 $preventLngsList = '';

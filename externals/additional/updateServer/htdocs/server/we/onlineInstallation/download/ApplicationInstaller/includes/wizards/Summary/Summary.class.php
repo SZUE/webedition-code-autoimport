@@ -80,7 +80,7 @@ class Summary extends leStep{
 				if(in_array($Key, $passwordFields)){
 					$showPasswordsJS .= "top.document.getElementById('field_" . $temp . "').style.display = 'none';top.document.getElementById('field_" . $temp . "_2').style.display = 'block';";
 					$hidePasswordsJS .= "top.document.getElementById('field_" . $temp . "_2').style.display = 'none';top.document.getElementById('field_" . $temp . "').style.display = 'block';";
-					$Javascript .= "top.document.getElementById('field_" . $temp . "').value = document.getElementById('field_" . $temp . "').value;\n";
+					$Javascript .= "top.document.getElementById('field_" . $temp . "').value = document.getElementById('field_" . $temp . "').value;";
 				}
 			}
 			$Content .= "</table>";

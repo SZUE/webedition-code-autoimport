@@ -72,8 +72,6 @@ switch($_REQUEST['detail']){
 				 * 'notEnoughVersions'
 				 * 'noVersion5'
 				 * 'serialNotExist'
-				 * 'noStratoIp'
-				 * 'noWpolskaIp'
 				 */
 				print register::getRegisterFormErrorResponse($serialState);
 				break;

@@ -108,22 +108,3 @@ if(isset($_REQUEST['update_cmd'])){
 		include(SHARED_TEMPLATE_DIR . '/connection/serverUpAndRunning.inc.php');
 	}
 }
-
-/*
-if(isset($_REQUEST)) {
-	error_log("---> REQUEST");
-	error_log(print_r($_REQUEST, true));
-
-}
-*/
-
-/*
-if(isset($_SESSION)) {
-	error_log("---> SESSION");
-	error_log(print_r($_SESSION, true));
-
-}
-*/
-
-
-

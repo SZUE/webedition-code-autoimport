@@ -58,28 +58,11 @@ switch($_REQUEST['detail']){
 		$updateServerTemplateData['possibleVersions'] = $possibleVersions;
 		//error_log(print_r($lngVersions,true));
 		if(sizeof($possibleVersions)){
-			/*
-			  // has user enough licenses left?
-			  if(license::hasEnoughLicensesForUpgrade()) {
-
-			  print upgrade::getUpgradePossibleResponse();
-
-			  } else {
-
-			  print upgrade::getNotEnoughLicensesForUpgradeResponse();
-			  }
-			 */
 			print upgrade::getUpgradePossibleResponse();
 		} else {
 
 			print upgrade::getNoUpdateForLanguagesResponse();
 		}
-		/*
-		  } else {
-
-		  print upgrade::getRegisterBeforeUpgradeResponse();
-		  }
-		 */
 		break;
 
 
@@ -98,8 +81,6 @@ switch($_REQUEST['detail']){
 		$_SESSION['clientTargetVersionType'] = update::getVersionType($_SESSION['clientTargetVersionNumber']);
 		$_SESSION['clientTargetVersion'] = updateUtil::number2version($_REQUEST['clientTargetVersionNumber']);
 
-		//installationLog::insertUpgradeEntry();
-		//license::insertUpgradeInformation($_SESSION['clientInstalledTableId']);
 		// start Update -> get the screen and start downloading the installer
 		print installer::getInstallationScreenResponse();
 		break;
@@ -129,7 +110,6 @@ switch($_REQUEST['detail']){
 
 	case 'finishInstallation':
 		// delete tmp dir and write new version number
-		//installationLog::insertUpgradeEntry();
 		print upgrade::getFinishInstallationResponse();
 		break;
 
@@ -142,9 +122,3 @@ switch($_REQUEST['detail']){
 		print notification::getCommandNotKnownResponse();
 		break;
 }
-/*
-} else { // this installation is not registered -> show reregistration formular
-
-	print upgrade::getRegisterBeforeUpgradeResponse();
-}
-*/

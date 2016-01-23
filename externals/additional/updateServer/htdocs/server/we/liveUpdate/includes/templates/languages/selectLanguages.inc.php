@@ -52,12 +52,12 @@ for($i = 0; $i < sizeof($newinstallAbleLanguages); $i++){
 $missingStr = '';
 if(sizeof($missingLanguages)){
 
-	$missingStr = "<ul>\n";
+	$missingStr = "<ul>";
 	for($i = 0; $i < sizeof($missingLanguages); $i++){
 
-		$missingStr .= "<li>" . $missingLanguages[$i] . "</li>\n";
+		$missingStr .= "<li>" . $missingLanguages[$i] . "</li>";
 	}
-	$missingStr .= "</ul>\n";
+	$missingStr .= "</ul>";
 }
 
 if($missingStr){

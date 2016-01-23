@@ -65,8 +65,8 @@ $replaceCode['templateSaveCode']['replace']['3900'] = <<< TemplateSaveCodeBounda
 							if(\$we_doc->we_save()) {
 								\$wasSaved = true;
 								\$wasNew = (abs(\$we_doc->ID) == 0) ? true : false;
-								\$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('".\$we_doc->Path."', '" . \$we_doc->Text . "');\n";
-								\$we_JavaScript .= "_EditorFrame.setEditorDocumentId(".\$we_doc->ID.");\n".\$we_doc->getUpdateTreeScript().";\n";// save/ rename a document
+								\$we_JavaScript .= "_EditorFrame.getDocumentReference().frames[0].we_setPath('".\$we_doc->Path."', '" . \$we_doc->Text . "');";
+								\$we_JavaScript .= "_EditorFrame.setEditorDocumentId(".\$we_doc->ID.");".\$we_doc->getUpdateTreeScript().";";// save/ rename a document
 								\$we_responseText = sprintf(\$l_we_editor[\$we_doc->ContentType]["response_save_ok"],\$we_doc->Path);
 								\$we_responseTextType = WE_MESSAGE_NOTICE;
 								if(\$_REQUEST["we_cmd"][4]) {

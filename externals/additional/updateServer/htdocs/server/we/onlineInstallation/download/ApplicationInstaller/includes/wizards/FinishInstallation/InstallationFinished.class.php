@@ -14,13 +14,13 @@ class InstallationFinished extends leStep{
 		$JSString = "";
 		if(sizeof($GLOBALS['leApplicationList']) < 0){ // temporarily disabled (should never be smaller than zero)
 			$Options = array();
-			$JSString = 'var information = new Array();' . "\n";
+			$JSString = 'var information = {};';
 
 			foreach($GLOBALS['leApplicationList'] as $Key => $Value){
 				$Options[$Key] = $Value['Name'];
-				$JSString .= 'information["' . $Key . '"] = new Array();' . "\n";
-				$JSString .= 'information["' . $Key . '"]["Name"] = "' . $Value['Name'] . '";' . "\n";
-				$JSString .= 'information["' . $Key . '"]["Description"] = "' . $Value['Description'] . '";' . "\n";
+				$JSString .= 'information["' . $Key . '"] = {};';
+				$JSString .= 'information["' . $Key . '"].Name = "' . $Value['Name'] . '";';
+				$JSString .= 'information["' . $Key . '"].Description = "' . $Value['Description'] . '";';
 			}
 			$temp = $Options;
 

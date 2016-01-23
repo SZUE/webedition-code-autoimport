@@ -1,11 +1,9 @@
 <?php
 $lang['license']['undefinedError'] = 'Undefined Error';
 $lang['license']['missingModuleLicenses'] = 'You do not have all of the required licenses for the modules you have installed.<br><br>The license is missing for the following modules:<br><br>%s<br>Please purchase the required modules or contact webEdition support.<br /><br />The licenses for the following modules are missing:';
-$lang['license']['noStratoIp'] = 'This licence is property of the STRATO AG and can only be used on a server of this company.';
 $lang['license']['notEnoughLicencesForModules'] = 'All buyed licences for webEdition 6 Modules are already installed.';
 $lang['license']['notEnoughVersions'] = 'All of your available licenses for version 6 have already been installed.';
 $lang['license']['noVersion6'] = 'You do not yet have a license for webEdition Version 6.';
-$lang['license']['noWpolskaIp'] = 'This licence is property of Wirtualna Polska and can only be used on a server of this company.';
 $lang['license']['serialNotExist'] = 'The donated serial does not exist.';
 
 $lang['update']['headline'] = 'Update';

@@ -73,25 +73,6 @@ class licenseBase{
 	 * @return state
 	 */
 	function checkSerialState($serial){
-
-		/*		 * ************************************************************** */
-		/* Strato serials are only allowed in a certain IP-Range
-		  /* *************************************************************** */
-		if(substr($serial, 0, 6) == "STRATO"){
-			if(!updateUtil::isStratoIp($_SERVER['REMOTE_ADDR'])){
-				return 'noStratoIp';
-			}
-		}
-
-		/*		 * ************************************************************** */
-		/* Wirtualna Polska serials are only allowed in a certain IP-Range
-		  /* *************************************************************** */
-		if(substr($serial, 0, 7) == "WPOLSKA"){
-			if(!updateUtil::isWpolskaIp($_SERVER['REMOTE_ADDR'])){
-				return 'noWpolskaIp';
-			}
-		}
-
 		// get all information about this serial
 		$serialInfo = license::getSerialInformation($serial);
 
@@ -158,8 +139,6 @@ class licenseBase{
 						return 'notEnoughVersions';
 					}
 				}
-			} else {
-				return 'noVersion5';
 			}
 		}
 
@@ -630,30 +609,6 @@ class licenseBase{
 		}
 
 		if($res = & $DB_Register->query($query)){
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	function insertUpgradeInformation($domainId){
-		global $DB_Register;
-
-		$queryModules = '';
-		// query for modules
-		foreach($GLOBALS['MODULES_FREE_OF_CHARGE_DOMAINFIELDS'] as $moduleKey => $queryModuleField){
-
-			$queryModules .= ', ' . $queryModuleField . '=0';
-		}
-
-		$query = "
-			UPDATE " . INSTALLATION_TABLE . "
-			SET intVersion5=1
-			$queryModules
-			WHERE id=\"$domainId\"
-		";
-
-		if($res = &$DB_Register->query($query)){
 			return true;
 		} else {
 			return false;

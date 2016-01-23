@@ -7,8 +7,8 @@ $liveUpdateResponse['Code'] = '
 $Table = \'<table class="leContentTable">\';
 
 
-$Output = "<table class=\'leContentTable\'>\n";
-$_choiceNotYetOnClickJs ="document.getElementById(\'le_communityChoice_already_Form\').style.display = \'none\';\n";
+$Output = "<table class=\'leContentTable\'>";
+$_choiceNotYetOnClickJs ="document.getElementById(\'le_communityChoice_already_Form\').style.display = \'none\';";
 //error_log($_SESSION["le_communityChoice"]);
 if(!isset($_SESSION["le_communityChoice"]) || $_SESSION["le_communityChoice"] == "" || $_SESSION["le_communityChoice"] == "notYet") {
 	$_choiceNotYetSelected = true;

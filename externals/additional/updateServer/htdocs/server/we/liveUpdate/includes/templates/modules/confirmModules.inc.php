@@ -11,7 +11,7 @@ $modulesStr = '<ul>
 ';
 
 foreach($installModules as $module){
-	$modulesStr .= "<li>$module</li>\n";
+	$modulesStr .= "<li>$module</li>";
 }
 $modulesStr .= '</ul>';
 

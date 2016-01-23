@@ -123,7 +123,7 @@ class languages extends languagesBase{
 
 		$message = '<ul>';
 		for($i = 0; $i < sizeof($_SESSION['clientDesiredLanguages']); $i++){
-			$message .= "<li>" . $_SESSION['clientDesiredLanguages'][$i] . "</li>\\n";
+			$message .= "<li>" . $_SESSION['clientDesiredLanguages'][$i] . "</li>";
 		}
 		$message .= '</ul>';
 

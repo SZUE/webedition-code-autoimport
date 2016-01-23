@@ -154,7 +154,6 @@ switch($_REQUEST['detail']){
 	case 'startRepeatUpdate':
 	case 'startUpdate':
 
-		//installationLog::insertUpdateEntry();
 		// save all needed stuff in session here!
 		$_SESSION['update_cmd'] = $_REQUEST['update_cmd'];
 
@@ -175,7 +174,6 @@ switch($_REQUEST['detail']){
 
 	case 'finishInstallation':
 		//error_log('testFI '.print_r($_SESSION,true)); Wird scheinbar nicht aufgerufen
-		//installationLog::insertUpdateEntry();
 		// delete tmp dir and write new version number
 		print update::getFinishInstallationResponse();
 		break;

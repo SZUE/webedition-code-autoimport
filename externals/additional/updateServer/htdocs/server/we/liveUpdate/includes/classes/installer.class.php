@@ -480,49 +480,49 @@ class installer extends installerBase{
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
 
-		' . updateUtil::getOverwriteClassesCode() . '
+' . updateUtil::getOverwriteClassesCode() . '
 
-		$filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/";
+$filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/";
 
-		$allFiles = array();
-		$liveUpdateFnc->getFilesOfDir($allFiles, $filesDir);
-		sort($allFiles);
+$allFiles = array();
+$liveUpdateFnc->getFilesOfDir($allFiles, $filesDir);
+sort($allFiles);
 
-		$message = "";
-		$success = true;
+$message = "";
+$success = true;
 
-		for ( $i=' . $_REQUEST["position"] . ',$j=0; $i<sizeof($allFiles) && $success && $j < ' . $_SESSION['PREPARE_FILES_PER_STEP'] . '; $i++,$j++) {
+for ( $i=' . $_REQUEST["position"] . ',$j=0; $i<sizeof($allFiles) && $success && $j < ' . $_SESSION['PREPARE_FILES_PER_STEP'] . '; $i++,$j++) {
 
-			$content = $liveUpdateFnc->getFileContent($allFiles[$i]);
+	$content = $liveUpdateFnc->getFileContent($allFiles[$i]);
 
-			$text = basename($allFiles[$i]);
-			$text = (strlen($text) > 40) ? substr($text, (strlen($text) -40)) : $text;
+	$text = basename($allFiles[$i]);
+	$text = (strlen($text) > 40) ? substr($text, (strlen($text) -40)) : $text;
 
-			$message .= "<div>...$text</div>";
+	$message .= "<div>...$text</div>";
 
-			if ($liveUpdateFnc->isPhpFile($allFiles[$i])) {
-				$success = $liveUpdateFnc->filePutContent($allFiles[$i], $liveUpdateFnc->preparePhpCode($content, ".php", "' . $_SESSION['clientExtension'] . '"));
-				if ($success) {
-					$success = rename($allFiles[$i], $liveUpdateFnc->replaceExtensionInContent($allFiles[$i], ".php", "' . $_SESSION['clientExtension'] . '"));
-				}
-			}
+	if ($liveUpdateFnc->isPhpFile($allFiles[$i])) {
+		$success = $liveUpdateFnc->filePutContent($allFiles[$i], $liveUpdateFnc->preparePhpCode($content, ".php", "' . $_SESSION['clientExtension'] . '"));
+		if ($success) {
+			$success = rename($allFiles[$i], $liveUpdateFnc->replaceExtensionInContent($allFiles[$i], ".php", "' . $_SESSION['clientExtension'] . '"));
 		}
+	}
+}
 
-		if (!$success) {
+if (!$success) {
 
-			' . installer::getErrorMessageResponsePart() . '
+	' . installer::getErrorMessageResponsePart() . '
 
-		} else {
+} else {
 
-			if ( sizeof($allFiles) >= (' . $_SESSION['PREPARE_FILES_PER_STEP'] . ' + ' . $_REQUEST["position"] . ') ) {
+	if ( sizeof($allFiles) >= (' . $_SESSION['PREPARE_FILES_PER_STEP'] . ' + ' . $_REQUEST["position"] . ') ) {
 
-				?>' . installer::getProceedNextCommandResponsePart($repeatUrl, installer::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
-			} else {
+		?>' . installer::getProceedNextCommandResponsePart($repeatUrl, installer::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
+	} else {
 
-				?>' . installer::getProceedNextCommandResponsePart($nextUrl, installer::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
-			}
-		}
-		?>';
+		?>' . installer::getProceedNextCommandResponsePart($nextUrl, installer::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
+	}
+}
+?>';
 
 		return updateUtil::getResponseString($retArray);
 	}
@@ -807,18 +807,18 @@ class installer extends installerBase{
 
 		switch($type){
 			case "notWritableError":
-				$errorMessage = '"<div class=\'errorDiv\'>" . "' . sprintf($GLOBALS['luSystemLanguage']['installer']['fileNotWritableError'], $message) . '" . "</div>\\\n"';
+				$errorMessage = '"<div class=\'errorDiv\'>" . "' . sprintf($GLOBALS['luSystemLanguage']['installer']['fileNotWritableError'], $message) . '" . "</div>"';
 				break;
 
 			default:
 				$errorMessage = '"<div class=\'errorDiv\'>"
-						. "' . $headline . '<br />\\\n"
+						. "' . $headline . '<br />"
 						. "' . $message . '"
-						. ($GLOBALS["liveUpdateError"]["errorString"] ?	"' . $GLOBALS['luSystemLanguage']['installer']['errorMessage'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorString"] . "</code><br />\\\n"
-						.												"' . $GLOBALS['luSystemLanguage']['installer']['errorIn'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorFile"] . "</code><br />\\\n"
-						. 												"' . $GLOBALS['luSystemLanguage']['installer']['errorLine'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorLine"] . "</code>\\\n"
+						. ($GLOBALS["liveUpdateError"]["errorString"] ?	"' . $GLOBALS['luSystemLanguage']['installer']['errorMessage'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorString"] . "</code><br />"
+						.												"' . $GLOBALS['luSystemLanguage']['installer']['errorIn'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorFile"] . "</code><br />"
+						. 												"' . $GLOBALS['luSystemLanguage']['installer']['errorLine'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorLine"] . "</code>"
 																	   : "")
-						. "</div>\\\n"';
+						. "</div>"';
 		}
 
 		return $errorMessage;

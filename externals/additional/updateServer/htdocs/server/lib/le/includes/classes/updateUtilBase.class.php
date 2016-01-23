@@ -2,88 +2,6 @@
 
 class updateUtilBase{
 
-	/**
-	 * Checks if given Ip is within range of Wirtualna Polska ips
-	 *
-	 * @param string $ip
-	 * @return boolean
-	 */
-	function isWpolskaIp($ip){
-		global $rootDir, $wpolskas_ips;
-
-		// include local file with known wpolska ips
-		include($rootDir . "/extras/registration/wpolska-ips.inc.php");
-
-		// calculate and correct ip
-		$ip = updateUtil::correctIp($ip);
-		$checkIp = ip2long($ip);
-
-		// check ip with given ips from file
-		for($i = 0; $i < sizeof($wpolskas_ips); $i++){
-
-			$start = ip2long($wpolskas_ips[$i]["start"]);
-			$stop = ip2long($wpolskas_ips[$i]["stop"]);
-
-			if(($start <= $checkIp) && ($checkIp <= $stop)){
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Checks if given Ip is within range of strato-ips
-	 *
-	 * @param string $ip
-	 * @return boolean
-	 */
-	function isStratoIp($ip){
-		global $rootDir, $strato_ips;
-
-		$ip = updateUtil::correctIp($ip);
-		$checkIp = ip2long($ip);
-
-		// include local file with known strato ips
-		include($rootDir . "/extras/registration/strato-ips.inc.php");
-
-		// check ip with given ips from file
-		for($i = 0; $i < sizeof($strato_ips); $i++){
-			$start = ip2long($strato_ips[$i]["start"]);
-			$stop = ip2long($strato_ips[$i]["stop"]);
-
-			if(($start <= $checkIp) && ($checkIp <= $stop)){
-				return true;
-			}
-		}
-
-		// ip does not match with known ips so read file on strato server
-		if(fopen("http://www.strato.de/shop/iparea.txt", "r")){
-			$fileContent = file("http://www.strato.de/shop/iparea.txt");
-
-			$strato_ips_extern = array();
-
-			// get given ips and tsave them in array
-			foreach($fileContent as $ip){
-
-				if(strpos($ip, "#") !== 0){
-					$strato_ips_extern[] = trim($ip);
-				}
-			}
-
-			// now check if ip is in these arrays
-			for($i = 0; $i < sizeof($strato_ips_extern); $i++){
-				$iprange = updateUtil::getIpRange($strato_ips_extern[$i]);
-
-				$start = ip2long($iprange["start"]);
-				$stop = ip2long($iprange["stop"]);
-
-				if(($start <= $checkIp) && ($checkIp <= $stop)){
-					return true;
-				}
-			}
-		}
-		return false;
-	}
 
 	/**
 	 * returns if domain is localhost
@@ -367,15 +285,14 @@ class updateUtilBase{
 		$liveUpdateResponse = updateUtil::getLiveUpdateResponseArrayFromFile($templatePath);
 
 		return '
-			$newResponse = new liveUpdateResponse();
-			$newResponse->initByHttpResponse("' . addslashes(updateUtil::getResponseString($liveUpdateResponse)) . '");
-			print $newResponse->getOutput();
+$newResponse = new liveUpdateResponse();
+$newResponse->initByHttpResponse("' . addslashes(updateUtil::getResponseString($liveUpdateResponse)) . '");
+print $newResponse->getOutput();
 		';
 	}
 
 	function replaceExtensionInContent($content){
-		$content = str_replace('.php', $_SESSION['clientExtension'], $content);
-		return $content;
+		return str_replace('.php', $_SESSION['clientExtension'], $content);
 	}
 
 	/**

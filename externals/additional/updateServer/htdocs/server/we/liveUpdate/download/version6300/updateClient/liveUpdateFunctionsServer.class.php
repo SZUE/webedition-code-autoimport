@@ -713,10 +713,10 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 						$alterQueries = array();
 
 						// get all queries to change existing fields
-						if(count($changeFields)){
+					if($changeFields){
 							$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($changeFields, $tableName));
 						}
-						if(count($addFields)){
+					if($addFields){
 							$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($addFields, $tableName, true));
 						}
 

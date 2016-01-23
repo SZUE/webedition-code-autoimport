@@ -190,17 +190,17 @@ class installer extends installerBase{
 		}
 
 		if($message){
-			$message .= '<br />\\\n';
+			$message .= '<br />';
 		}
 
 		$errorMessage = '"<div class=\'errorDiv\'>"
-				. "' . $headline . '<br />\\\n"
+				. "' . $headline . '<br />"
 				. "' . $message . '"
-				. ($GLOBALS["liveUpdateError"]["errorString"] ?	"' . $GLOBALS['lang']['installer']['errorMessage'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorString"] . "</code><br />\\\n"
-				.												"' . $GLOBALS['lang']['installer']['errorIn'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorFile"] . "</code><br />\\\n"
-				. 												"' . $GLOBALS['lang']['installer']['errorLine'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorLine"] . "</code>\\\n"
+				. ($GLOBALS["liveUpdateError"]["errorString"] ?	"' . $GLOBALS['lang']['installer']['errorMessage'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorString"] . "</code><br />"
+				.												"' . $GLOBALS['lang']['installer']['errorIn'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorFile"] . "</code><br />"
+				. 												"' . $GLOBALS['lang']['installer']['errorLine'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorLine"] . "</code>"
 															   : "")
-				. "</div>\\\n"';
+				. "</div>"';
 
 		return $errorMessage;
 	}
@@ -266,41 +266,38 @@ class installer extends installerBase{
 				$files[' . $path . '] = "' . $content . '";';
 		}
 
-		$retArray['Type'] = 'eval';
-		$retArray['Code'] = '<?php
+		return array('Type' => 'eval',
+			'Code' => '<?php
+' . updateUtil::getOverwriteClassesCode() . '
 
-	' . updateUtil::getOverwriteClassesCode() . '
+' . $writeFilesCode . '
 
-	' . $writeFilesCode . '
+$success = true; // all files fine
+$successFiles = array(); // successfully saved files
 
-		$success = true; // all files fine
-		$successFiles = array(); // successfully saved files
-
-		foreach ($files as $path => $content) {
-			if ($success) {
-				if ($liveUpdateFnc->filePutContent( $path, $liveUpdateFnc->decodeCode($content) ) ) {
-					$successFiles[] = $path;
-
-				} else {
-					$errorFile = $path;
-					$success = false;
-
-				}
-
-			}
-
-		}
-
-		if ($success) {
-			?>' . self::getProceedNextCommandResponsePart($nextUrl, $progress) . '<?php
+foreach ($files as $path => $content) {
+	if ($success) {
+		if ($liveUpdateFnc->filePutContent( $path, $liveUpdateFnc->decodeCode($content) ) ) {
+			$successFiles[] = $path;
 
 		} else {
-			' . self::getErrorMessageResponsePart() . '
+			$errorFile = $path;
+			$success = false;
 
 		}
-?>';
 
-		return $retArray;
+	}
+
+}
+
+if ($success) {
+	?>' . self::getProceedNextCommandResponsePart($nextUrl, $progress) . '<?php
+
+} else {
+	' . self::getErrorMessageResponsePart() . '
+
+}
+?>');
 	}
 
 	/**

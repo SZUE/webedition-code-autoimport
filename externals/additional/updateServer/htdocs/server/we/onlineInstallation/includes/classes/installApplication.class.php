@@ -261,7 +261,7 @@ class installApplication extends installer{
 		// generate code to drop existing webEdition tables
 		require( LIVEUPDATE_SERVER_DIR . "/includes/extras/webEditionTables.inc.php");
 
-		$dropTablesCode = '$dropQueries = array();' . "\n";
+		$dropTablesCode = '$dropQueries = array();';
 		foreach($GLOBALS["allTables"] as $table){
 			$dropTablesCode .= '$dropQueries[] = "DROP TABLE IF EXISTS ' . $table . '";' . "\n";
 		}

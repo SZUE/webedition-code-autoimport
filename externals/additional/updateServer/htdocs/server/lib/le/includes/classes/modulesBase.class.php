@@ -124,11 +124,11 @@ class modulesBase{
 		$pro_modules_content = '';
 
 		foreach($installedModules as $moduleKey){
-			$modules_content .= "\$_we_installed_modules[] = \"$moduleKey\";\n";
+			$modules_content .= "\$_we_installed_modules[] = \"$moduleKey\";";
 		}
 
 		foreach($installedProModules as $moduleKey){
-			$pro_modules_content .= "\$_pro_modules[] = \"$moduleKey\";\n";
+			$pro_modules_content .= "\$_pro_modules[] = \"$moduleKey\";";
 		}
 		$newContent = '<?php
 
@@ -151,15 +151,13 @@ $_pro_modules = array();
 	function getCodeForActiveIntegratedModules(){
 
 		// write all active integrated modules
-		$Content = '<?php' . "\n"
-			. '' . "\n"
-			. '$_we_active_integrated_modules = array();' . "\n";
+		$Content = '<?php'
+			. '$_we_active_integrated_modules = array();';
 		foreach($GLOBALS['MODULES_FREE_OF_CHARGE_INCLUDED'] as $moduleKey){
 			$_we_active_integrated_modules[] = $moduleKey;
-			$Content .= '$_we_active_integrated_modules[] = "' . $moduleKey . '";' . "\n";
+			$Content .= '$_we_active_integrated_modules[] = "' . $moduleKey . '";';
 		}
-		$Content .= '' . "\n"
-			. '?>';
+		$Content .= '?>';
 
 		return $Content;
 	}

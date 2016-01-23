@@ -8,10 +8,10 @@ if(file_exists($_SERVER["DOCUMENT_ROOT"]."/webEdition/liveUpdate/includes/proxys
 /*
  * Include all needed files
  */
- 	
+
 	require_once('../includes/includes.inc.php');
 	if(file_exists(	$_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_html_tools.class.php")){//gibt es vor 6.3 noch nicht
-		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_html_tools.class.php"); 
+		include_once($_SERVER["DOCUMENT_ROOT"]."/webEdition/we/include/we_classes/html/we_html_tools.class.php");
 		if(class_exists('we_html_tools') && method_exists('we_html_tools','protect')){
 			we_html_tools::protect();
 		}else{
@@ -36,7 +36,7 @@ if (isset($_REQUEST['update_cmd'])) {
 			$parameters[$parameterName] = $_REQUEST[$parameterName];
 		}
 	}
-	
+
 	// this is flag to check if a response was received!
 	$response = false;
 
@@ -72,7 +72,7 @@ if (isset($_REQUEST['update_cmd'])) {
 		 * the session_id of the server. If this id is missing, create a new
 		 * session on the server.
 		 */
-		if (!isset($_REQUEST['liveUpdateSession'])) {
+		if (empty($_REQUEST['liveUpdateSession'])) {
 
 			/*
 			 * exit after submitting the form
@@ -129,5 +129,3 @@ if (isset($_REQUEST['update_cmd'])) {
 	$updateFrames = new liveUpdateFrames();
 	print $updateFrames->getFrame();
 }
-
-?>

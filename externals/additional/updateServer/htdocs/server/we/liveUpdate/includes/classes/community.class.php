@@ -319,9 +319,9 @@ class community extends communityBase{
 		$nextUrl = '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail());
 
 		$message = '<div>' . sprintf($GLOBALS['lang']['installer']['downloadFilesTotal'], sizeof($_SESSION['clientChanges']['allChanges'])) . '<br />' .
-				sizeof($_SESSION['clientChanges']['files']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesFiles'] . '<br />' .
-				sizeof($_SESSION['clientChanges']['queries']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesQueries'] . '<br />' .
-				sizeof($_SESSION['clientChanges']['patches']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesPatches'] . '<br /></div>';
+			sizeof($_SESSION['clientChanges']['files']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesFiles'] . '<br />' .
+			sizeof($_SESSION['clientChanges']['queries']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesQueries'] . '<br />' .
+			sizeof($_SESSION['clientChanges']['patches']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesPatches'] . '<br /></div>';
 
 		$progress = installer::getInstallerProgressPercent();
 
@@ -727,17 +727,17 @@ class community extends communityBase{
 		}
 
 		if($message){
-			$message .= '<br />\\\n';
+			$message .= '<br />';
 		}
 
 		$errorMessage = '"<div class=\'errorDiv\'>"
-				. "' . $headline . '<br />\\\n"
+				. "' . $headline . '<br />"
 				. "' . $message . '"
-				. ($GLOBALS["liveUpdateError"]["errorString"] ?	"' . $GLOBALS['luSystemLanguage']['installer']['errorMessage'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorString"] . "</code><br />\\\n"
-				.												"' . $GLOBALS['luSystemLanguage']['installer']['errorIn'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorFile"] . "</code><br />\\\n"
-				. 												"' . $GLOBALS['luSystemLanguage']['installer']['errorLine'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorLine"] . "</code>\\\n"
+				. ($GLOBALS["liveUpdateError"]["errorString"] ?	"' . $GLOBALS['luSystemLanguage']['installer']['errorMessage'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorString"] . "</code><br />"
+				.												"' . $GLOBALS['luSystemLanguage']['installer']['errorIn'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorFile"] . "</code><br />"
+				. 												"' . $GLOBALS['luSystemLanguage']['installer']['errorLine'] . ': <code class=\'errorText\'>" . $GLOBALS["liveUpdateError"]["errorLine"] . "</code>"
 															   : "")
-				. "</div>\\\n"';
+				. "</div>"';
 
 		return $errorMessage;
 	}
@@ -772,7 +772,6 @@ class community extends communityBase{
 
 			// filename on the client
 			//$Index = $Paths[$Position] . ".part" . $Part;
-
 			// value of the part -> must be base64_encoded
 			$Value = updateUtil::encodeCode(substr($Content, $Start, $Length));
 
@@ -819,12 +818,12 @@ class community extends communityBase{
 			} else {
 				break;
 			}
-		}while($ResponseSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
+		} while($ResponseSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
 
 		$nextUrl = ($Position >= sizeof($_SESSION['clientChanges']['allChanges']) ?
-						installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail()) :
-						installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']) . "&position=$Position"
-				);
+				installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail()) :
+				installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']) . "&position=$Position"
+			);
 
 		// :IMPORTANT:
 		return updateUtil::getResponseString(installer::_getDownloadFilesResponse($fileArray, $nextUrl, installer::getInstallerProgressPercent()));
