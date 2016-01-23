@@ -5,7 +5,7 @@ class installerBase{
 	/**
 	 * @return array
 	 */
-	function getInstallationStepNames(){
+	static function getInstallationStepNames(){
 
 		error_log("Overwrite this:");
 		error_log(__FILE__ . ": " . __CLASS__ . "::" . __FUNCTION__);
@@ -33,13 +33,13 @@ class installerBase{
 	 * @param mixed $currentStep
 	 * @return string
 	 */
-	function getNextUpdateDetail($currentStep = false){
+	static function getNextUpdateDetail($currentStep = false){
 
 		if(!$currentStep){
 			$currentStep = $_REQUEST['detail'];
 		}
 
-		$steps = $this->getInstallationStepNames();
+		$steps = static::getInstallationStepNames();
 		for($i = 0; $i < sizeof($steps); $i++){
 			if($currentStep == $steps[$i] && isset($steps[($i + 1)])){
 				return $steps[($i + 1)];

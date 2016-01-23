@@ -1,9 +1,9 @@
 <?php
 // error logging
-ini_set("log_errors", 0);
-//ini_set("log_errors",1);
-//ini_set("error_reporting",E_ALL);
-//ini_set("error_log",$_SERVER["DOCUMENT_ROOT"]."/server/we/php_errors.log");
+//ini_set("log_errors", 0);
+ini_set("log_errors",1);
+ini_set("error_reporting",E_ALL);
+ini_set("error_log",$_SERVER["DOCUMENT_ROOT"]."/php_errors.log");
 /*
   error_log(print_r($_REQUEST,1));
   if(isset($_REQUEST["reqArray"]) && !empty($_REQUEST["reqArray"])) {

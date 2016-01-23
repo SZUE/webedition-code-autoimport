@@ -1,7 +1,7 @@
 <?php
 
 class downloadSnippet extends installer{
-	var $LanguageIndex = "downloadSnippet";
+	static  $LanguageIndex = "downloadSnippet";
 
 	/**
 	 * returns form to register webedition
@@ -44,7 +44,7 @@ class downloadSnippet extends installer{
 
 	function getGetFilesResponse(){
 
-		$nextUrl = '?' . updateUtil::getCommonHrefParameters($this->getNextUpdateDetail(), true);
+		$nextUrl = '?' . updateUtil::getCommonHrefParameters(self::getNextUpdateDetail(), true);
 
 		$message = '$this->Language[\'headline\']'
 			. '<p>' . sprintf($GLOBALS['lang']['installer']['downloadFilesTotal'], sizeof($_SESSION['clientChanges']['allChanges'])) . '</p>';
@@ -58,7 +58,7 @@ class downloadSnippet extends installer{
 		$filesDir = LE_INSTALLER_TEMP_PATH;
 		$liveUpdateFnc->deleteDir($filesDir);
 
-		?>' . $this->getProceedNextCommandResponsePart($nextUrl, $progress);
+		?>' . self::getProceedNextCommandResponsePart($nextUrl, $progress);
 
 		return updateUtil::getResponseString($retArray);
 	}

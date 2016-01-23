@@ -105,7 +105,7 @@ class updateUtilBase{
 	 * @param array $responseArray
 	 * @return string
 	 */
-	function serializeResponseArray($responseArray){
+	static function serializeResponseArray($responseArray){
 
 		return base64_encode(serialize($responseArray));
 	}
@@ -446,32 +446,32 @@ class updateUtilBase{
 	 *
 	 * @return string
 	 */
-	function getOverwriteClassesCode(){
+	static function getOverwriteClassesCode(){
 
 		$retString = '
 
-			if(defined("LIVEUPDATE_DIR") && is_readable(LIVEUPDATE_DIR . "updateClient/liveUpdateFunctionsServer.class.php")){
-					require_once(LIVEUPDATE_DIR . "updateClient/liveUpdateFunctionsServer.class.php");
-				} else {
-					class_alias("liveUpdateFunctions","liveUpdateFunctionsServer");
-				}
-				if(defined("LIVEUPDATE_DIR") && is_readable(LIVEUPDATE_DIR . "updateClient/liveUpdateResponseServer.class.php")){
-					require_once(LIVEUPDATE_DIR . "updateClient/liveUpdateResponseServer.class.php");
-				} else {
-					class_alias("liveUpdateResponse","liveUpdateResponseServer");
-				}
-				$liveUpdateFnc = new liveUpdateFunctionsServer();
-				$liveUpdateRsp = new liveUpdateResponseServer();
+if(defined("LIVEUPDATE_DIR") && is_readable(LIVEUPDATE_DIR . "updateClient/liveUpdateFunctionsServer.class.php")){
+		require_once(LIVEUPDATE_DIR . "updateClient/liveUpdateFunctionsServer.class.php");
+	} else {
+		class_alias("liveUpdateFunctions","liveUpdateFunctionsServer");
+	}
+	if(defined("LIVEUPDATE_DIR") && is_readable(LIVEUPDATE_DIR . "updateClient/liveUpdateResponseServer.class.php")){
+		require_once(LIVEUPDATE_DIR . "updateClient/liveUpdateResponseServer.class.php");
+	} else {
+		class_alias("liveUpdateResponse","liveUpdateResponseServer");
+	}
+	$liveUpdateFnc = new liveUpdateFunctionsServer();
+	$liveUpdateRsp = new liveUpdateResponseServer();
 
 
-			if(defined("LIVEUPDATE_DIR") && is_readable(LIVEUPDATE_DIR . \'updateClient/liveUpdateServer.class.php\')) {
-				require_once(LIVEUPDATE_DIR . \'updateClient/liveUpdateServer.class.php\');
-			}
+if(defined("LIVEUPDATE_DIR") && is_readable(LIVEUPDATE_DIR . \'updateClient/liveUpdateServer.class.php\')) {
+	require_once(LIVEUPDATE_DIR . \'updateClient/liveUpdateServer.class.php\');
+}
 
-			function liveUpdateErrorHandler($errno, $errstr , $errfile , $errline, $errcontext) {
-				liveUpdateFunctionsServer::liveUpdateErrorHandler($errno, $errstr , $errfile , $errline, $errcontext);
-			}
-			set_error_handler("liveUpdateErrorHandler");
+function liveUpdateErrorHandler($errno, $errstr , $errfile , $errline, $errcontext) {
+	liveUpdateFunctionsServer::liveUpdateErrorHandler($errno, $errstr , $errfile , $errline, $errcontext);
+}
+set_error_handler("liveUpdateErrorHandler");
 
 		';
 		return $retString;

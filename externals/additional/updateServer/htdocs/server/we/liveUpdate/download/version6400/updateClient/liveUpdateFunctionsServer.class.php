@@ -265,7 +265,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * @return boolean true if the file is not existent after this call
 	 */
 	function deleteFile($file){
-		return (file_exists($file) ? @unlink($file) : true);
+		return (file_exists($file) ? unlink($file) : true);
 	}
 
 	/**
@@ -290,7 +290,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 			if($this->deleteFile($destination)){
 				if(!isset($_SESSION['weS']['moveOk'])){
 					touch($source . 'x');
-					$_SESSION['weS']['moveOk'] = @rename($source . 'x', $destination . 'x');
+					$_SESSION['weS']['moveOk'] = rename($source . 'x', $destination . 'x');
 					$this->deleteFile($destination . 'x');
 					$this->deleteFile($source . 'x');
 					$this->insertUpdateLogEntry('Using ' . ($_SESSION['weS']['moveOk'] ? 'move' : 'copy') . ' for installation', WE_VERSION, 0);

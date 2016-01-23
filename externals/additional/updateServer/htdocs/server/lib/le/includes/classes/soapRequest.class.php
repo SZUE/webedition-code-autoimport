@@ -3,9 +3,9 @@
  * deactivate php wsdl-caching for development:
  */
 //@ini_set("display_errors","Off");
-@ini_set("soap.wsdl_cache", 0);
-@ini_set("soap.wsdl_cache_enabled", 0);
-@ini_set("soap.wsdl_cache_ttl", "0");
+ini_set("soap.wsdl_cache", 0);
+ini_set("soap.wsdl_cache_enabled", 0);
+ini_set("soap.wsdl_cache_ttl", "0");
 
 /*
  * usage example:
@@ -90,7 +90,7 @@ class crypt{
 		/* Intialize encryption */
 		mcrypt_generic_init($td, self::$_key, self::$_iv);
 		/* Encrypt data */
-		$encrypted = @mcrypt_generic($td, $input);
+		$encrypted = mcrypt_generic($td, $input);
 		/* Terminate encryption handler */
 		mcrypt_generic_deinit($td);
 		/* return string */

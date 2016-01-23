@@ -333,7 +333,7 @@ class update extends updateBase{
 			'branch' => $_SESSION['clientVersionBranch'],
 		);
 
-		return self::getFormattedVersionString(0, $showBranch, $showBranchIfTrunk, $versionArray);
+		return static::getFormattedVersionString(0, $showBranch, $showBranchIfTrunk, $versionArray);
 	}
 
 	static function getFormattedVersionString($versionnumber, $showBranch = false, $showBranchIfTrunk = false, $versionArray = array()){
@@ -548,7 +548,7 @@ class update extends updateBase{
 			' . installer::getErrorMessageResponsePart() . '
 		}
 		?>';
-		//self::updateLogFinish(1);
+		//static::updateLogFinish(1);
 		return updateUtil::getResponseString($retArray);
 	}
 

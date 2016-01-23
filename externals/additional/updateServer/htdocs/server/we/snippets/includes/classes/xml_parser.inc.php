@@ -139,7 +139,7 @@ class XML_Parser{
 		if(preg_match("/^(((f|ht){1}tp:\/\/)" .
 				"[-a-zA-Z0-9@:%_\+.~#?&\/\/=]+)/i", $file)){
 			// Read the content of the url.
-			$data = @implode('', @file($file));
+			$data = implode('', file($file));
 			if(empty($data)){
 				//$this->addWarning(ERROR_FILE_EMPTY, __LINE__, $this->fileName);
 				return FALSE;

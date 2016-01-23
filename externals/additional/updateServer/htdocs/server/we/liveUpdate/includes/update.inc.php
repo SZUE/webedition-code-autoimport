@@ -126,7 +126,7 @@ switch($_REQUEST['detail']){
 			$_SESSION['clientPcreVersion'] = $Request['clientPcreVersion'];
 		}
 		if(isset($Request['clientPhpExtensions']) && $Request['clientPhpExtensions'] != ''){
-			$tmp = @unserialize(@base64_decode($Request['clientPhpExtensions']));
+			$tmp = unserialize(base64_decode($Request['clientPhpExtensions']));
 			if($tmp === false){
 				$_SESSION['clientPhpExtensions'] = $Request['clientPhpExtensions'];
 			} else {

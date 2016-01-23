@@ -2,7 +2,7 @@
 
 class installer extends installerBase{
 
-	var $LanguageIndex = "installer";
+	static $LanguageIndex = "installer";
 
 	/**
 	 * returns response part, with javascript orders to
@@ -15,16 +15,16 @@ class installer extends installerBase{
 	 * @param string $message
 	 * @return string
 	 */
-	function getProceedNextCommandResponsePart($nextUrl, $progress, $message = ''){
+	static function getProceedNextCommandResponsePart($nextUrl, $progress, $message = ''){
 
 		$activateStep = '';
 
 		$appendMessageLogJs = "appendText";
 
 		if(!strpos($nextUrl, $_REQUEST['detail'])){
-			$NextUpdateDetail = $this->getNextUpdateDetail();
-			if(key_exists($NextUpdateDetail, $GLOBALS['lang'][$this->LanguageIndex])){
-				$message .= "<h1>" . $GLOBALS['lang'][$this->LanguageIndex][$NextUpdateDetail] . "</h1>";
+			$NextUpdateDetail = static::getNextUpdateDetail();
+			if(key_exists($NextUpdateDetail, $GLOBALS['lang'][self::$LanguageIndex])){
+				$message .= "<h1>" . $GLOBALS['lang'][self::$LanguageIndex][$NextUpdateDetail] . "</h1>";
 			}
 		}
 
@@ -34,7 +34,7 @@ class installer extends installerBase{
 			';
 		}
 
-		if($this->getUpdateDetailPosition() === 0){
+		if(static::getUpdateDetailPosition() === 0){
 			$appendMessageLogJs = "replaceText";
 		}
 
@@ -55,10 +55,10 @@ class installer extends installerBase{
 	 * @param string $headline
 	 * @return string
 	 */
-	function getErrorMessage($headline = '', $message = ''){
+	static function getErrorMessage($headline = '', $message = ''){
 
 		if(!$headline){
-			$headline = "<br /><strong class=\'errorText\'>" . $GLOBALS['lang'][$this->LanguageIndex][$_REQUEST['detail'] . 'Error'] . '</strong>';
+			$headline = "<br /><strong class=\'errorText\'>" . $GLOBALS['lang'][self::$LanguageIndex][$_REQUEST['detail'] . 'Error'] . '</strong>';
 		}
 
 		if($message){
@@ -89,10 +89,10 @@ class installer extends installerBase{
 	 * @param string $message
 	 * @return string
 	 */
-	function getErrorMessageResponsePart($headline = '', $message = ''){
+	static function getErrorMessageResponsePart($headline = '', $message = ''){
 		return '
 
-		$errorMessage = ' . $this->getErrorMessage($headline, $message) . ';
+		$errorMessage = ' . static::getErrorMessage($headline, $message) . ';
 
 		echo \'
 			<script>
@@ -102,11 +102,11 @@ class installer extends installerBase{
 		';
 	}
 
-	function getUpdateDetailPosition(){
+	static function getUpdateDetailPosition(){
 
 		$currentStep = $_REQUEST['detail'];
 
-		$steps = $this->getInstallationStepNames();
+		$steps = static::getInstallationStepNames();
 
 		for($i = 0; $i < sizeof($steps); $i++){
 
@@ -174,10 +174,10 @@ class installer extends installerBase{
 
 			$message	.=	"</ul>"
 						.	"<p>" . sprintf("' . $GLOBALS['lang']['installer']['amountFilesDownloaded'] . '", $endFile, $maxFile) . "</p>";
-			?>' . $this->getProceedNextCommandResponsePart($nextUrl, $progress, '<?php print $message; ?>') . '<?php
+			?>' . static::getProceedNextCommandResponsePart($nextUrl, $progress, '<?php print $message; ?>') . '<?php
 
 		} else {
-			' . $this->getErrorMessageResponsePart() . '
+			' . static::getErrorMessageResponsePart() . '
 		}
 ?>');
 	}
@@ -252,10 +252,10 @@ class installer extends installerBase{
 
 			$message	.=	"</ul>"
 						.	"<p>" . sprintf("' . $GLOBALS['lang']['installer']['amountFilesDownloaded'] . '", $endFile, $maxFile) . "</p>";
-			?>' . $this->getProceedNextCommandResponsePart($nextUrl, $progress, '<?php print $message; ?>') . '<?php
+			?>' . static::getProceedNextCommandResponsePart($nextUrl, $progress, '<?php print $message; ?>') . '<?php
 
 		} else {
-			' . $this->getErrorMessageResponsePart() . '
+			' . static::getErrorMessageResponsePart() . '
 
 		}
 

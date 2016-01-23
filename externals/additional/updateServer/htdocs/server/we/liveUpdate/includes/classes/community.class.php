@@ -53,7 +53,7 @@ class community extends communityBase{
 	 * @param mixed $currentStep
 	 * @return string
 	 */
-	function getNextUpdateDetail($currentStep = false){
+	static function getNextUpdateDetail($currentStep = false){
 		if(!$currentStep){
 			$currentStep = $_REQUEST['detail'];
 		}
@@ -634,7 +634,7 @@ class community extends communityBase{
 	 * @param string $message
 	 * @return string
 	 */
-	function getProceedNextCommandResponsePart($nextUrl, $progress, $message = ''){
+	static function getProceedNextCommandResponsePart($nextUrl, $progress, $message = ''){
 
 		$activateStep = '';
 		if(!strpos($nextUrl, $_REQUEST['detail'])){
@@ -671,7 +671,7 @@ class community extends communityBase{
 	 * @param string $message
 	 * @return string
 	 */
-	function getErrorMessageResponsePart($headline = '', $message = ''){
+	static function getErrorMessageResponsePart($headline = '', $message = ''){
 
 		return '
 
@@ -720,7 +720,7 @@ class community extends communityBase{
 	 * @param string $headline
 	 * @return string
 	 */
-	function getErrorMessage($headline = '', $message = ''){
+	static function getErrorMessage($headline = '', $message = ''){
 
 		if(!$headline){
 			$headline = "<br /><strong class=\'errorText\'>" . $GLOBALS['luSystemLanguage']['installer'][$_REQUEST['detail'] . 'Error'] . '</strong>';

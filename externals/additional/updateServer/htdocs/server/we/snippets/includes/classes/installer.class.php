@@ -1,13 +1,12 @@
 <?php
 
 class installer extends installerBase{
-
-	var $LanguageIndex = "installer";
+	static $LanguageIndex = "installer";
 
 	/**
 	 * @return array
 	 */
-	function getInstallationStepNames(){
+	static function getInstallationStepNames(){
 
 		return array(
 			'determineFiles',
@@ -37,7 +36,7 @@ class installer extends installerBase{
 		$installationStepsTotal = 0;
 
 		// each step
-		$installationSteps = $this->getInstallationStepNames();
+		$installationSteps = self::getInstallationStepNames();
 		$installationStepsTotal = sizeof($installationSteps);
 
 		// downloads
@@ -97,7 +96,7 @@ class installer extends installerBase{
 
 			if($Start + $Length >= $FileSize){
 				if($Position >= sizeof($_SESSION['clientChanges']['allChanges'])){
-					$nextUrl = '?' . updateUtil::getCommonHrefParameters($this->getNextUpdateDetail(), true);
+					$nextUrl = '?' . updateUtil::getCommonHrefParameters(self::getNextUpdateDetail(), true);
 
 					// :IMPORTANT:
 					return updateUtil::getResponseString(installer::_getDownloadFilesMergeResponse($fileArray, $nextUrl, installer::getInstallerProgressPercent(), $Paths[$Position], $Part));
@@ -136,12 +135,12 @@ class installer extends installerBase{
 			} else {
 				break;
 			}
-		}while($ResponseSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
+		} while($ResponseSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
 
 		$nextUrl = ($Position >= sizeof($_SESSION['clientChanges']['allChanges']) ?
-						'?' . updateUtil::getCommonHrefParameters($this->getNextUpdateDetail(), true) :
-						'?' . updateUtil::getCommonHrefParameters($_REQUEST['detail'], false) . "&position=$Position"
-				);
+				'?' . updateUtil::getCommonHrefParameters(self::getNextUpdateDetail(), true) :
+				'?' . updateUtil::getCommonHrefParameters($_REQUEST['detail'], false) . "&position=$Position"
+			);
 
 		// :IMPORTANT:
 		return updateUtil::getResponseString(installer::_getDownloadFilesResponse($fileArray, $nextUrl, installer::getInstallerProgressPercent()));
@@ -158,7 +157,7 @@ class installer extends installerBase{
 	 * @param string $message
 	 * @return string
 	 */
-	function getProceedNextCommandResponsePart($nextUrl, $progress){
+	static function getProceedNextCommandResponsePart($nextUrl, $progress){
 
 		$activateStep = '';
 
@@ -184,10 +183,10 @@ class installer extends installerBase{
 	 * @param string $headline
 	 * @return string
 	 */
-	function getErrorMessage($headline = '', $message = ''){
+	static function getErrorMessage($headline = '', $message = ''){
 
 		if(!$headline){
-			$headline = "<br /><strong class=\'errorText\'>" . $GLOBALS['lang'][$this->LanguageIndex][$_REQUEST['detail'] . 'Error'] . '</strong>';
+			$headline = "<br /><strong class=\'errorText\'>" . $GLOBALS['lang'][self::$LanguageIndex][$_REQUEST['detail'] . 'Error'] . '</strong>';
 		}
 
 		if($message){
@@ -218,11 +217,11 @@ class installer extends installerBase{
 	 * @param string $message
 	 * @return string
 	 */
-	function getErrorMessageResponsePart($headline = '', $message = ''){
+	static function getErrorMessageResponsePart($headline = '', $message = ''){
 
 		return '
 
-		$errorMessage = ' . $this->getErrorMessage($headline, $message) . ';
+		$errorMessage = ' . self::getErrorMessage($headline, $message) . ';
 
 		print \'
 			<script>
@@ -232,11 +231,11 @@ class installer extends installerBase{
 		';
 	}
 
-	function getUpdateDetailPosition(){
+	static function getUpdateDetailPosition(){
 
 		$currentStep = $_REQUEST['detail'];
 
-		$steps = $this->getInstallationStepNames();
+		$steps = self::getInstallationStepNames();
 
 		for($i = 0; $i < sizeof($steps); $i++){
 
@@ -293,10 +292,10 @@ class installer extends installerBase{
 		}
 
 		if ($success) {
-			?>' . $this->getProceedNextCommandResponsePart($nextUrl, $progress) . '<?php
+			?>' . self::getProceedNextCommandResponsePart($nextUrl, $progress) . '<?php
 
 		} else {
-			' . $this->getErrorMessageResponsePart() . '
+			' . self::getErrorMessageResponsePart() . '
 
 		}
 ?>';
@@ -363,10 +362,10 @@ class installer extends installerBase{
 		}
 
 		if ($success) {
-			?>' . $this->getProceedNextCommandResponsePart($nextUrl, $progress) . '<?php
+			?>' . self::getProceedNextCommandResponsePart($nextUrl, $progress) . '<?php
 
 		} else {
-			' . $this->getErrorMessageResponsePart() . '
+			' . self::getErrorMessageResponsePart() . '
 
 		}
 ?>';

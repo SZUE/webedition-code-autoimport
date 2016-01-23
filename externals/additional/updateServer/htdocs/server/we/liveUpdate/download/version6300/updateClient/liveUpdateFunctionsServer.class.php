@@ -266,7 +266,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 */
 	function deleteFile($file){
 		if(file_exists($file)){
-			return @unlink($file);
+			return unlink($file);
 		} else {
 			return true;
 		}
@@ -632,7 +632,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		  $query = preg_replace("/^TRUNCATE TABLE /", "TRUNCATE TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
 		  $query = preg_replace("/^DROP TABLE /", "DROP TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
 
-		  $query = @str_replace(LIVEUPDATE_TABLE_PREFIX.'`', '`'.LIVEUPDATE_TABLE_PREFIX, $query);
+		  $query = str_replace(LIVEUPDATE_TABLE_PREFIX.'`', '`'.LIVEUPDATE_TABLE_PREFIX, $query);
 		  } */
 
 		// second, we need to check if there is a collation

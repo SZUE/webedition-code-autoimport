@@ -1,6 +1,6 @@
 <?php
 class liveUpdateFunctionsServer extends liveUpdateFunctions {
-	
+
 	/**
 	 * executes all queries in a single file
 	 * - there is one query, if create-statement
@@ -37,11 +37,11 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions {
 				$success = $this->executeUpdateQuery($query);
 				if(!$success) $success = false;
 			}
-			
+
 		}
 		return $success;
 	}
-	
+
 
 	/**
 	 * updates the database with given dump.
@@ -67,8 +67,8 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions {
 			$query = preg_replace("/^RENAME TABLE /", "RENAME TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
 			$query = preg_replace("/^TRUNCATE TABLE /", "TRUNCATE TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
 			$query = preg_replace("/^DROP TABLE /", "DROP TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-			
-			$query = @str_replace(LIVEUPDATE_TABLE_PREFIX.'`', '`'.LIVEUPDATE_TABLE_PREFIX, $query);
+
+			$query = str_replace(LIVEUPDATE_TABLE_PREFIX.'`', '`'.LIVEUPDATE_TABLE_PREFIX, $query);
 		}
 
 		// second, we need to check if there is a collation

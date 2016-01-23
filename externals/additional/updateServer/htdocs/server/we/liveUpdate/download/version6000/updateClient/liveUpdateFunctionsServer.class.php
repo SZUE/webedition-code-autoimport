@@ -26,19 +26,19 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * @param string $file
 	 * @return boolean true if the file is not existent after this call
 	 */
 	function deleteFile($file) {
 		if(file_exists($file)){
-			return @unlink($file);
+			return unlink($file);
 		}else{
 			return true;
 		}
 	}
-	
+
 	/**
 	 * Reads filecontent in a string and returns it
 	 *
@@ -72,7 +72,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions {
 				fclose($fh);
 				if(!chmod($filePath, 0755)) {
 					return false;
-					
+
 				}
 				return true;
 
@@ -81,7 +81,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * returns array with key information of a table by tablename
 	 *
@@ -111,7 +111,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions {
 
 		return $keysOfTable;
 	}
-	
+
 	/**
     * expects array from getFieldsOfTable and returns generated queries to
     * alter these fields
@@ -201,7 +201,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions {
 		}
 		return $queries;
 	}
-	
+
 	/**
 	 * executes all queries in a single file
 	 * - there is one query, if create-statement
@@ -232,11 +232,11 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions {
 			foreach($queries as $query) {
 				$success &= $this->executeUpdateQuery($query);
 			}
-			
+
 		}
 		return $success;
 	}
-	
+
 	/**
 	 * updates the database with given dump.
 	 *
@@ -266,11 +266,11 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions {
 			$query = preg_replace("/^RENAME TABLE /", "RENAME TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
 			$query = preg_replace("/^TRUNCATE TABLE /", "TRUNCATE TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
 			$query = preg_replace("/^DROP TABLE /", "DROP TABLE " . LIVEUPDATE_TABLE_PREFIX, $query, 1);
-			
-			$query = @str_replace(LIVEUPDATE_TABLE_PREFIX.'`', '`'.LIVEUPDATE_TABLE_PREFIX, $query);
+
+			$query = str_replace(LIVEUPDATE_TABLE_PREFIX.'`', '`'.LIVEUPDATE_TABLE_PREFIX, $query);
 		}
 		$query=str_replace('###TBLPREFIX###', LIVEUPDATE_TABLE_PREFIX, $query);
-		
+
 
 		// second, we need to check if there is a collation
 		if (defined("DB_CHARSET") && DB_CHARSET != "" && defined("DB_COLLATION") && DB_COLLATION != "") {
@@ -433,7 +433,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * This file searchs $needle in given file and replaces it with $replace
 	 * If needle is empty the whole file is overwritten. Also

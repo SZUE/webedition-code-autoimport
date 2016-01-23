@@ -2,12 +2,12 @@
 
 class installApplication extends installer{
 
-	var $LanguageIndex = "installApplication";
+	static $LanguageIndex = "installApplication";
 
 	/**
 	 * @return array
 	 */
-	function getInstallationStepNames(){
+	static function getInstallationStepNames(){
 
 		return array(
 			'prepareApplicationInstallation',
@@ -38,7 +38,7 @@ class installApplication extends installer{
 		}
 
 		// each step
-		$installationSteps = $this->getInstallationStepNames();
+		$installationSteps = static::getInstallationStepNames();
 		$installationStepsTotal = sizeof($installationSteps);
 
 		// downloads
@@ -120,7 +120,7 @@ class installApplication extends installer{
 
 			if($Start + $Length >= $FileSize){
 				if($Position >= sizeof($_SESSION['clientChanges']['allChanges'])){
-					$nextUrl = '?' . updateUtil::getCommonHrefParameters($this->getNextUpdateDetail(), true);
+					$nextUrl = '?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true);
 
 					// :IMPORTANT:
 					return updateUtil::getResponseString(installApplication::_getDownloadFilesMergeResponse($fileArray, $nextUrl, installApplication::getInstallerProgressPercent(), $Paths[$Position], $Part));
@@ -150,7 +150,7 @@ class installApplication extends installer{
 			if(!is_readable($_SESSION['clientChanges']['allChanges'][$Paths[$Position]])){
 				//error_log('ERROR: file '.$_SESSION['clientChanges']['allChanges'][$Paths[$Position]].' not readable');
 			}
-			$FileSize = @filesize($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
+			$FileSize = filesize($_SESSION['clientChanges']['allChanges'][$Paths[$Position]]);
 
 			// response + size of next file < max size for response
 			if($ResponseSize + $FileSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024){
@@ -164,7 +164,7 @@ class installApplication extends installer{
 		}while($ResponseSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
 
 		if($Position >= sizeof($_SESSION['clientChanges']['allChanges'])){
-			$nextUrl = '?' . updateUtil::getCommonHrefParameters($this->getNextUpdateDetail(), true);
+			$nextUrl = '?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true);
 		} else {
 			$nextUrl = '?' . updateUtil::getCommonHrefParameters($_REQUEST['detail'], false) . "&position=$Position";
 		}
@@ -256,7 +256,7 @@ class installApplication extends installer{
 
 	function getPrepareApplicationInstallationResponse(){
 
-		$nextUrl = '?' . updateUtil::getCommonHrefParameters($this->getNextUpdateDetail(), true);
+		$nextUrl = '?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true);
 
 		// generate code to drop existing webEdition tables
 		require( LIVEUPDATE_SERVER_DIR . "/includes/extras/webEditionTables.inc.php");
@@ -267,7 +267,7 @@ class installApplication extends installer{
 		}
 		$dropTablesCode .= '
 			if (!$liveUpdateFnc->executeDropQueries($dropQueries)) {
-			' . $this->getErrorMessageResponsePart('', '<h1 class=\"error\">' . $GLOBALS['lang']['installer']['tableNotDrop'] . '</h1>') . '
+			' . static::getErrorMessageResponsePart('', '<h1 class=\"error\">' . $GLOBALS['lang']['installer']['tableNotDrop'] . '</h1>') . '
 			exit;
 		}
 		';
@@ -277,7 +277,7 @@ class installApplication extends installer{
 
 		' . updateUtil::getOverwriteClassesCode() . '
 
-		$message = "<h1>' . $GLOBALS['lang'][$this->LanguageIndex][$_REQUEST["detail"]] . '</h1>";
+		$message = "<h1>' . $GLOBALS['lang'][self::$LanguageIndex][$_REQUEST["detail"]] . '</h1>";
 
 		$success = true;
 
@@ -291,7 +291,7 @@ class installApplication extends installer{
 
 			if (file_exists($_SESSION["le_installationDirectory"] . "/webEdition")) {
 				if (!rename($_SESSION["le_installationDirectory"] . "/webEdition", $newFolder)) {
-					' . $this->getErrorMessageResponsePart() . '
+					' . static::getErrorMessageResponsePart() . '
 					exit;
 
 				}
@@ -305,7 +305,7 @@ class installApplication extends installer{
 
 		}
 
-		?>' . $this->getProceedNextCommandResponsePart($nextUrl, $this->getInstallerProgressPercent(), '<?php print $message ?>') . '<?php
+		?>' . static::getProceedNextCommandResponsePart($nextUrl, $this->getInstallerProgressPercent(), '<?php print $message ?>') . '<?php
 		';
 		return updateUtil::getResponseString($retArray);
 	}
@@ -317,7 +317,7 @@ class installApplication extends installer{
 	 */
 	function getApplicationFilesResponse($nextUrl = ''){
 
-		$nextUrl = '?' . updateUtil::getCommonHrefParameters($this->getNextUpdateDetail(), true);
+		$nextUrl = '?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true);
 
 		$message = '<p>'
 				. sprintf($GLOBALS['lang']['installer']['downloadFilesTotal'], sizeof($_SESSION['clientChanges']['allChanges']))
@@ -336,7 +336,7 @@ class installApplication extends installer{
 		$filesDir = LE_INSTALLER_TEMP_PATH;
 		$liveUpdateFnc->deleteDir($filesDir);
 
-		?>' . $this->getProceedNextCommandResponsePart($nextUrl, $progress, $message);
+		?>' . static::getProceedNextCommandResponsePart($nextUrl, $progress, $message);
 
 		return updateUtil::getResponseString($retArray);
 	}
@@ -353,7 +353,7 @@ class installApplication extends installer{
 		}
 
 		$repeatUrl = '?' . updateUtil::getCommonHrefParameters($_REQUEST['detail']) . '&position=' . ($_REQUEST['position'] + $_SESSION['EXECUTE_QUERIES_PER_STEP']);
-		$nextUrl = '?' . updateUtil::getCommonHrefParameters($this->getNextUpdateDetail(), true);
+		$nextUrl = '?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true);
 
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
@@ -418,10 +418,10 @@ class installApplication extends installer{
 					.	"<p>" . sprintf("' . $GLOBALS['lang']['installer']['amountDatabaseQueries'] . '", $endFile, $maxFile) . "</p>";
 
 		if ( sizeof($allFiles) > ' . ( $_REQUEST['position'] + $_SESSION['EXECUTE_QUERIES_PER_STEP'] ) . ' ) { // continue with DB steps
-			?>' . $this->getProceedNextCommandResponsePart($repeatUrl, $this->getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
+			?>' . static::getProceedNextCommandResponsePart($repeatUrl, $this->getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
 
 		} else { // proceed to next step.
-			?>' . $this->getProceedNextCommandResponsePart($nextUrl, $this->getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
+			?>' . static::getProceedNextCommandResponsePart($nextUrl, $this->getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
 
 		}
 		';
@@ -443,7 +443,7 @@ class installApplication extends installer{
 		}
 
 		$repeatUrl = '?' . updateUtil::getCommonHrefParameters($_REQUEST['detail']) . '&position=' . ($_REQUEST['position'] + $_SESSION['PREPARE_FILES_PER_STEP']);
-		$nextUrl = '?' . updateUtil::getCommonHrefParameters($this->getNextUpdateDetail(), true);
+		$nextUrl = '?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true);
 
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
@@ -479,7 +479,7 @@ class installApplication extends installer{
 		$message .= "</ul>";
 
 		if (!$success) {
-			' . $this->getErrorMessageResponsePart() . '
+			' . static::getErrorMessageResponsePart() . '
 
 		} else {
 			$endFile = min(sizeof($allFiles), ' . ($_REQUEST["position"] + $_SESSION['PREPARE_FILES_PER_STEP']) . ');
@@ -489,10 +489,10 @@ class installApplication extends installer{
 
 			if ( sizeof($allFiles) >= (' . $_SESSION['PREPARE_FILES_PER_STEP'] . ' + ' . $_REQUEST["position"] . ') ) {
 
-				?>' . $this->getProceedNextCommandResponsePart($repeatUrl, $this->getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
+				?>' . static::getProceedNextCommandResponsePart($repeatUrl, $this->getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
 			} else {
 
-				?>' . $this->getProceedNextCommandResponsePart($nextUrl, $this->getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
+				?>' . static::getProceedNextCommandResponsePart($nextUrl, $this->getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
 			}
 		}
 		?>';
@@ -507,7 +507,7 @@ class installApplication extends installer{
 	 */
 	function getCopyApplicationFilesResponse(){
 
-		$nextUrl = '?' . updateUtil::getCommonHrefParameters($this->getNextUpdateDetail(), true);
+		$nextUrl = '?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true);
 
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
@@ -541,10 +541,10 @@ class installApplication extends installer{
 
 			$message .= "<p>" . sprintf(\'' . $GLOBALS['lang']['installer']['amountFilesCopied'] . '\', $endFile, $maxFile) . "</p>";
 
-			?>' . $this->getProceedNextCommandResponsePart($nextUrl, $this->getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
+			?>' . static::getProceedNextCommandResponsePart($nextUrl, $this->getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
 
 		} else {
-			' . $this->getErrorMessageResponsePart('', $GLOBALS['lang']['installer']['errorMoveFile']) . '
+			' . static::getErrorMessageResponsePart('', $GLOBALS['lang']['installer']['errorMoveFile']) . '
 		}
 		?>';
 
@@ -575,7 +575,7 @@ class installApplication extends installer{
 	 */
 	function getWriteApplicationConfigurationResponse(){
 
-		$nextUrl = '?' . updateUtil::getCommonHrefParameters($this->getNextUpdateDetail(), true);
+		$nextUrl = '?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true);
 
 		// 1st step: missing files
 		$replaceVersionDemo = updateUtil::getReplaceCode('we_version_demo');
@@ -648,7 +648,7 @@ class installApplication extends installer{
 
 			0
 			) {
-			' . $this->getErrorMessageResponsePart('', $GLOBALS['lang']['installer']['errorMoveFile']) . '
+			' . static::getErrorMessageResponsePart('', $GLOBALS['lang']['installer']['errorMoveFile']) . '
 			exit;
 
 		}
@@ -689,7 +689,7 @@ class installApplication extends installer{
 		$query = sprintf("' . $tblUserQuery['replace'] . '", $_SESSION[\'le_db_prefix\'], $userText, $_SESSION["le_login_user"], $_SESSION["le_login_pass"]);
 
 		if (!$leDB->query($query)) {
-			' . $this->getErrorMessageResponsePart('', $GLOBALS['lang'][$this->LanguageIndex]['dbNotInsertUser']) . '
+			' . static::getErrorMessageResponsePart('', $GLOBALS['lang'][self::$LanguageIndex]['dbNotInsertUser']) . '
 			exit;
 
 		}';
@@ -708,22 +708,22 @@ class installApplication extends installer{
 		$retArray['Code'] .= '
 		if (!$leDB->query($query)) {
 			if (!$leDB->query("INSERT INTO " . $_SESSION[\'le_db_prefix\'] . "tblPrefs (userID,`key`,value) VALUES (\'1\',\'Language\',\'' . $_SESSION['clientSyslngNEW'] . '\');")) {
-				' . $this->getErrorMessageResponsePart('', $GLOBALS['lang'][$this->LanguageIndex]['dbNotInsertPrefs']) . '
+				' . static::getErrorMessageResponsePart('', $GLOBALS['lang'][self::$LanguageIndex]['dbNotInsertPrefs']) . '
 				exit;
 			}
 			if (!$leDB->query("INSERT INTO " . $_SESSION[\'le_db_prefix\'] . "tblPrefs (userID,`key`,value) VALUES (\'1\',\'BackendCharset\',\'' . $backendCH . '\')")) {
-				' . $this->getErrorMessageResponsePart('', $GLOBALS['lang'][$this->LanguageIndex]['dbNotInsertPrefs']) . '
+				' . static::getErrorMessageResponsePart('', $GLOBALS['lang'][self::$LanguageIndex]['dbNotInsertPrefs']) . '
 				exit;
 			}
 		}' .
 				/*
 
 				  if (!$leDB->query($query)) {
-				  ' . $this->getErrorMessageResponsePart('', $GLOBALS['lang'][$this->LanguageIndex]['dbNotInsertPrefs']) . '
+				  ' . $this->getErrorMessageResponsePart('', $GLOBALS['lang'][self::$LanguageIndex]['dbNotInsertPrefs']) . '
 				  exit;
 				  }
 				 */
-				'?>' . $this->getProceedNextCommandResponsePart($nextUrl, $this->getInstallerProgressPercent(), "<p>" . $GLOBALS['lang'][$this->LanguageIndex]['finished'] . "</p>") . '<?php
+				'?>' . static::getProceedNextCommandResponsePart($nextUrl, $this->getInstallerProgressPercent(), "<p>" . $GLOBALS['lang'][self::$LanguageIndex]['finished'] . "</p>") . '<?php
 
 		?>';
 

@@ -140,7 +140,7 @@ if (!isset(\$GLOBALS["WE_LANGUAGE"])) {
 }
 
 // PHP 5.3 date init #4353
-if (!date_default_timezone_set(@date_default_timezone_get())){
+if (!date_default_timezone_set(date_default_timezone_get())){
 	date_default_timezone_set('Europe/Berlin');
 }
 define("DATETIME_INITIALIZED",'1'); // to prevent additional initialization in we_defines und autoload, this allows later to make that an settings-item

@@ -52,10 +52,10 @@ if(!isset($disableCache) && is_readable($cachefile) && filemtime($cachefile) >= 
 	}
 }
 
-@include("./conf/conf.inc.php");
-@include("./conf/define.inc.php");
+include("./conf/conf.inc.php");
+include("./conf/define.inc.php");
 
-@include("PEAR.php");
+include("PEAR.php");
 // include the PEAR Db class
 require_once('DB.php');
 // include the PEAR i18n class
@@ -125,5 +125,5 @@ switch($format){
 }
 
 // write to cache
-@file_put_contents($cachefile, $out);
+file_put_contents($cachefile, $out);
 echo $out;

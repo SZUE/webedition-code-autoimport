@@ -91,13 +91,13 @@ class CommunityRegistration extends leStep{
 
 	function _validateUserData(&$Template = ''){
 		// check if all required fields are filled:
-		$_SESSION["le_community_SalutationSelect"] = @escapeshellcmd($_REQUEST["le_community_SalutationSelect"]);
-		$_SESSION["le_community_Prename"] = escapeshellcmd(@$_REQUEST["le_community_Prename"]);
-		$_SESSION["le_community_Surname"] = escapeshellcmd(@$_REQUEST["le_community_Surname"]);
-		$_SESSION["le_community_Company"] = escapeshellcmd(@$_REQUEST["le_community_Company"]);
-		$_SESSION["le_community_Website"] = escapeshellcmd(@$_REQUEST["le_community_Website"]);
-		$_SESSION["le_community_LanguageSelect"] = escapeshellcmd(@$_REQUEST["le_community_LanguageSelect"]);
-		$_SESSION["le_community_CountrySelect"] = @escapeshellcmd($_REQUEST["le_community_CountrySelect"]);
+		$_SESSION["le_community_SalutationSelect"] = escapeshellcmd($_REQUEST["le_community_SalutationSelect"]);
+		$_SESSION["le_community_Prename"] = escapeshellcmd($_REQUEST["le_community_Prename"]);
+		$_SESSION["le_community_Surname"] = escapeshellcmd($_REQUEST["le_community_Surname"]);
+		$_SESSION["le_community_Company"] = escapeshellcmd($_REQUEST["le_community_Company"]);
+		$_SESSION["le_community_Website"] = escapeshellcmd($_REQUEST["le_community_Website"]);
+		$_SESSION["le_community_LanguageSelect"] = escapeshellcmd($_REQUEST["le_community_LanguageSelect"]);
+		$_SESSION["le_community_CountrySelect"] = escapeshellcmd($_REQUEST["le_community_CountrySelect"]);
 		if(empty($_SESSION["le_community_Prename"]) || empty($_SESSION["le_community_Surname"])){
 			$Template->addError($this->Language['error']["userData"]);
 			//$Template->addJavascript("top.leForm.setFocus('le_community_PasswordVerification');");

@@ -2,7 +2,7 @@
 $liveUpdateResponse['Type'] = 'executeOnline';
 
 //error_log(print_r($_REQUEST,true));
-$_params = @unserialize(base64_decode($_REQUEST["reqArray"]));
+$_params = unserialize(base64_decode($_REQUEST["reqArray"]));
 //error_log(print_r($_params["le_communityChoice"],true));
 $liveUpdateResponse['Code'] = '
 <?php

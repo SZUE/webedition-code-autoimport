@@ -22,7 +22,7 @@ class communityBase{
 		$members = array();
 		//error_log(print_r($DB_Customer,true));
 		//error_log(print_r($res,true));
-		while($row = @$res->fetchRow()){
+		while($row = $res->fetchRow()){
 			$members[] = $row['id'];
 		}
 		//error_log(count($members)." members found");
@@ -53,7 +53,7 @@ class communityBase{
 	 * creates a response for using an existing account, called from Community::check()
 	 */
 	function getCommunityRegistrationCheckResponse(){
-		$memberdata = @unserialize(base64_decode($_REQUEST["reqArray"]));
+		$memberdata = unserialize(base64_decode($_REQUEST["reqArray"]));
 		//error_log(print_r($memberdata,true));
 		if(isset($memberdata["le_communityChoice_Already_Email"])){
 			$email = $memberdata["le_communityChoice_Already_Email"];
@@ -71,7 +71,7 @@ class communityBase{
 		}
 
 		if($memberdata["le_communityChoice"] == "Already"){
-			$registrationCheck = self::checkRegistration($email, $password, true);
+			$registrationCheck = static::checkRegistration($email, $password, true);
 			//error_log("existing member");
 			if($registrationCheck === false){
 				$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/community/communityCheckRegistration.inc.php');
@@ -81,7 +81,7 @@ class communityBase{
 			}
 		} else {
 			//error_log("new member");
-			$registrationCheck = self::checkRegistration($email, $password, false);
+			$registrationCheck = static::checkRegistration($email, $password, false);
 			if($registrationCheck === true){
 				$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/community/communityCheckNewRegistration.inc.php');
 				return updateUtil::getResponseString($ret);
@@ -117,7 +117,7 @@ class communityBase{
 
 	function saveCommunityRegistrationResponse(){
 		global $DB_Customer;
-		$memberdata = @unserialize(base64_decode($_REQUEST["reqArray"]));
+		$memberdata = unserialize(base64_decode($_REQUEST["reqArray"]));
 		if(isset($_SESSION["le_communityRegistrationVerified"]) && $_SESSION["le_communityRegistrationVerified"] === true){
 			//error_log(print_r($memberdata,true));
 			$ip = (isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : "");

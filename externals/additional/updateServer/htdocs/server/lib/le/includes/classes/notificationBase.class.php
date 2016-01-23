@@ -76,7 +76,8 @@ class notificationBase{
 	 *
 	 * @return string
 	 */
-	function getCommandNotKnownResponse(){
+	static function getCommandNotKnownResponse(){
+		trigger_error('Eine Kombination aus<br />update_cmd->' . $_REQUEST['update_cmd'] . '<br />und<br />detail->' . $_REQUEST['detail'] . '<br /> ist nicht bekannt');
 		print notification::getStateResponseString('false', 'Eine Kombination aus<br />update_cmd->' . $_REQUEST['update_cmd'] . '<br />und<br />detail->' . $_REQUEST['detail'] . '<br /> ist nicht bekannt');
 	}
 
@@ -86,7 +87,7 @@ class notificationBase{
 	 * @param boolean $state
 	 * @return string
 	 */
-	function getStateResponseString($state = 'success', $message = 'no message'){
+	static function getStateResponseString($state = 'success', $message = 'no message'){
 
 		$ret = array(
 			'Type' => 'state',

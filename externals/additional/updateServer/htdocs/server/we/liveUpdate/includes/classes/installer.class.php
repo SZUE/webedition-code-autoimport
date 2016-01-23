@@ -5,7 +5,7 @@ class installer extends installerBase{
 	/**
 	 * @return array
 	 */
-	function getInstallationStepNames(){
+	static function getInstallationStepNames(){
 		return array(
 			'downloadInstaller',
 			'getChanges',
@@ -97,11 +97,11 @@ class installer extends installerBase{
 	 * @param mixed $currentStep
 	 * @return string
 	 */
-	function getNextUpdateDetail($currentStep = false){
+	static function getNextUpdateDetail($currentStep = false){
 		if(!$currentStep){
 			$currentStep = $_REQUEST['detail'];
 		}
-		$steps = installer::getInstallationStepNames();
+		$steps = static::getInstallationStepNames();
 		for($i = 0; $i < sizeof($steps); $i++){
 			if($currentStep == $steps[$i]){
 				return $steps[($i + 1)];
@@ -714,19 +714,19 @@ class installer extends installerBase{
 	 * @param string $message
 	 * @return string
 	 */
-	function getProceedNextCommandResponsePart($nextUrl, $progress, $message = ''){
+	static function getProceedNextCommandResponsePart($nextUrl, $progress, $message = ''){
 
 		$activateStep = '';
 		if(!strpos($nextUrl, $_REQUEST['detail'])){
 
-			$NextUpdateDetail = installer::getNextUpdateDetail();
+			$NextUpdateDetail = static::getNextUpdateDetail();
 			if(key_exists($NextUpdateDetail, $GLOBALS['lang']['installer'])){
 				$message .= "<br /><strong>" . $GLOBALS['lang']['installer'][$NextUpdateDetail] . "</strong>";
 			}
 
 			$activateStep = '
 			top.frames["updatecontent"].finishLiInstallerStep("' . $_REQUEST['detail'] . '");
-			top.frames["updatecontent"].activateLiInstallerStep("' . installer::getNextUpdateDetail() . '");';
+			top.frames["updatecontent"].activateLiInstallerStep("' . static::getNextUpdateDetail() . '");';
 		}
 
 		return '<script>
@@ -751,7 +751,7 @@ class installer extends installerBase{
 	 * @param string $message
 	 * @return string
 	 */
-	function getErrorMessageResponsePart($headline = '', $message = '', $type = ''){
+	static function getErrorMessageResponsePart($headline = '', $message = '', $type = ''){
 
 		return '
 
@@ -800,7 +800,7 @@ class installer extends installerBase{
 	 * @param string $headline
 	 * @return string
 	 */
-	function getErrorMessage($headline = '', $message = '', $type = ''){
+	static function getErrorMessage($headline = '', $message = '', $type = ''){
 
 		$headline = !$headline ? "<br /><strong class=\'errorText\'>" . $GLOBALS['luSystemLanguage']['installer'][$_REQUEST['detail'] . 'Error'] . '</strong>' : $headline;
 		$message .= $message ? '<br />\\\n' : '';

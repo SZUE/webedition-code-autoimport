@@ -303,7 +303,7 @@ class upgrade{
 
 
 		// folder name for old webEdition folder (i.e. "webEdition5" for version 5.x or webEdition5light for light version)
-		$we_versionDirName = self::getVersionDirName();
+		$we_versionDirName = static::getVersionDirName();
 
 		$extraCode = '';
 		// if usermodule is installed, create new user

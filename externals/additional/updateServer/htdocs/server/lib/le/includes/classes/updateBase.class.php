@@ -336,12 +336,12 @@ class updateBase{
 
 		//error_log(print_r(urldecode(base64_decode($_SESSION['clientInstalledLanguages'])),1));
 		if(isset($_SESSION['clientInstalledLanguages']) && !is_array($_SESSION['clientInstalledLanguages'])){
-			//$_SESSION['clientInstalledLanguages'] = @unserialize(urldecode(($_SESSION['clientInstalledLanguages'])));
-			if(@unserialize(urldecode(($_SESSION['clientInstalledLanguages'])))){
-				$_SESSION['clientInstalledLanguages'] = @unserialize(urldecode(($_SESSION['clientInstalledLanguages'])));
+			//$_SESSION['clientInstalledLanguages'] = unserialize(urldecode(($_SESSION['clientInstalledLanguages'])));
+			if(unserialize(urldecode(($_SESSION['clientInstalledLanguages'])))){
+				$_SESSION['clientInstalledLanguages'] = unserialize(urldecode(($_SESSION['clientInstalledLanguages'])));
 			} else if(!is_array($_SESSION['clientInstalledLanguages'])){
 				//if(!is_array($_SESSION['clientInstalledLanguages'])) {
-				$_SESSION['clientInstalledLanguages'] = @unserialize(urldecode(base64_decode($_SESSION['clientInstalledLanguages'])));
+				$_SESSION['clientInstalledLanguages'] = unserialize(urldecode(base64_decode($_SESSION['clientInstalledLanguages'])));
 			}
 		}
 

@@ -17,7 +17,7 @@ class InstallationDirectory extends leStep{
 		if(is_dir($docRoot . "/webEdition")){
 			if(!file_exists($docRoot . "/webEdition/we/include/conf/we_conf.inc.$extension")){ // verify passwords
 				// check if the webEdition directory is empty. In this case the installation may continue:
-				$dir = @opendir($docRoot . "/webEdition");
+				$dir = opendir($docRoot . "/webEdition");
 				$files = array();
 				while(false !== ($file = readdir($dir))){
 					if($file != "." && $file != ".."){
