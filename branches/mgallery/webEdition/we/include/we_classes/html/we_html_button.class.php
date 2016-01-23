@@ -218,7 +218,7 @@ abstract class we_html_button{
 		switch($hrefData[0]){
 			case self::WE_FORM:
 				$_form_name = $hrefData[1];
-				$cmd = 'if (document.' . $_form_name . '.onsubmit===undefined||document.' . $_form_name . '.onsubmit()) {' . $on_click . ' document.' . $_form_name . '.submit(); } return false;';
+				$cmd = 'if (document.' . $_form_name . '.onsubmit===undefined||document.' . $_form_name . '.onsubmit===null||document.' . $_form_name . '.onsubmit()) {' . $on_click . ' document.' . $_form_name . '.submit(); } return false;';
 				break;
 			case self::WE_JS_BUTTON_IDENTIFY:
 				// Get content of JavaScript
