@@ -253,7 +253,6 @@ define("FORMMAIL_BLOCKTIME", 86400);
 // Time how long formmail calls should be logged
 define("FORMMAIL_EMPTYLOG", 604800);
 
-?>
 weConfGlobalDemoSaveCodeBoundary;
 
 // add version and uid
@@ -261,7 +260,7 @@ $replaceCode['we_version_demo']['path']['3900'] = '/webEdition/we/include/we_ver
 $replaceCode['we_version_demo']['replace']['3900'] = '<?php
 define("WE_VERSION", "%s");
 %s
-?>';
+';
 
 
 // Proxysettings
@@ -271,17 +270,7 @@ $replaceCode['we_proxysettings']['replace']['3900'] = '<?php
 	define("WE_PROXYPORT", "%s");
 	define("WE_PROXYUSER", "%s");
 	define("WE_PROXYPASSWORD", "%s");
-?>';
-
-// enable demo pop-up webEdition.php
-$replaceCode['webEdition_demo']['path']['3900'] = '/webEdition/webEdition%s';
-$replaceCode['webEdition_demo']['needle']['3900'] = 'var we_demo = false;';
-$replaceCode['webEdition_demo']['replace']['3900'] = 'var we_demo = true;';
-
-// template savecode
-$replaceCode['templateSaveCode_demo']['path']['3900'] = '/webEdition/we/include/we_editors/we_editor.inc%s';
-$replaceCode['templateSaveCode_demo']['needle']['3900'] = '####TEMPLATE_SAVE_CODE2_START###.*####TEMPLATE_SAVE_CODE2_END###'; // ! IMPORTANT
-$replaceCode['templateSaveCode_demo']['replace']['3900'] = '#save template2';
+';
 
 $replaceCode['we_conf_content']['path']['3900'] = '/webEdition/we/include/conf/we_conf.inc%s';
 $replaceCode['we_conf_content']['needle']['3900'] = 'define\(\'LIVEUPDATE_INSTALLED_WITH_CONTENT\', .*\);';

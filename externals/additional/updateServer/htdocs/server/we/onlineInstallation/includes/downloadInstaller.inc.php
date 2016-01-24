@@ -46,7 +46,7 @@ switch($_REQUEST['detail']){
 
 	case "copyInstallerFiles":
 
-		print $downloadInstaller->getCopyFilesResponse();
+		print installerDownload::getCopyFilesResponse();
 
 		break;
 

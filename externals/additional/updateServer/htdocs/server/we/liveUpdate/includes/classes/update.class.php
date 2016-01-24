@@ -2,7 +2,7 @@
 
 class update extends updateBase{
 
-	function updateLogStart(){
+	static function updateLogStart(){
 		global $DB_Versioning;
 		$res = $DB_Versioning->query('INSERT INTO ' . UPDATELOG_TABLE . ' (date) VALUES (NOW())');
 		$res2 = $DB_Versioning->query('SELECT LAST_INSERT_ID() FROM ' . UPDATELOG_TABLE . ' ; ');
@@ -73,7 +73,7 @@ class update extends updateBase{
 		$res = $DB_Versioning->query($query);
 	}
 
-	function updateLogAvail($verarray){
+	static function updateLogAvail($verarray){
 		global $DB_Versioning;
 
 		$setvalues = "";
@@ -82,7 +82,7 @@ class update extends updateBase{
 		$res = $DB_Versioning->query($query);
 	}
 
-	function updateLogTarget(){
+	static function updateLogTarget(){
 		global $DB_Versioning;
 		$version = $_SESSION['clientTargetVersionNumber'];
 		$versionname = update::getVersionName($version);
@@ -95,7 +95,7 @@ class update extends updateBase{
 		$res = $DB_Versioning->query($query);
 	}
 
-	function updateLogFinish($success){
+	static function updateLogFinish($success){
 		global $DB_Versioning;
 
 		$setvalues = "success = '" . $success . "' ";
@@ -230,7 +230,7 @@ class update extends updateBase{
 	 *
 	 * @return boolean
 	 */
-	function checkForUpdate(){
+	static function checkForUpdate(){
 		global $DB_Versioning;
 
 		$liveCondition = ' WHERE islive=1';
@@ -250,7 +250,7 @@ class update extends updateBase{
 		}
 	}
 
-	function getMaxVersionNumber(){
+	static function getMaxVersionNumber(){
 		global $DB_Versioning;
 
 		$liveCondition = ' WHERE islive=1';
@@ -276,7 +276,7 @@ class update extends updateBase{
 		}
 	}
 
-	function getMaxVersionNumberForBranch($branch){
+	static function getMaxVersionNumberForBranch($branch){
 		global $DB_Versioning;
 
 		$liveCondition = " WHERE `islive`=1 AND `branch`='" . $branch . "'";
@@ -294,7 +294,7 @@ class update extends updateBase{
 		return $maxVersionBranch;
 	}
 
-	function getMaxVersionFieldsForBranch($branch){
+	static function getMaxVersionFieldsForBranch($branch){
 		global $DB_Versioning;
 
 		$liveCondition = " WHERE `islive`=1 AND `branch`='" . $branch . "'";
@@ -501,7 +501,7 @@ class update extends updateBase{
 	 *
 	 * @return string
 	 */
-	function getFinishInstallationResponse(){
+	static function getFinishInstallationResponse(){
 		//error_log('getFinishInstallationResponse'); taucht nicht im Log des Servers auf
 		$versionnumber = updateUtilBase::version2number($_SESSION['clientTargetVersion']);
 		$zf_version = update::getZFversion($versionnumber);

@@ -342,10 +342,6 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 			$oldContent = $this->getFileContent($filePath);
 			$replace = $this->checkReplaceDocRoot($replace);
 			if($needle){
-				/* This version is used in OnlineInstaller! which one is correct?
-				  $newneedle= preg_quote($needle, '~');
-				  $newContent = preg_replace('~'.$newneedle.'~', $replace, $oldContent);
-				 */
 				$newContent = preg_replace('/' . preg_quote($needle) . '/', $replace, $oldContent);
 			} else {
 				$newContent = $replace;
@@ -713,10 +709,10 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 						$alterQueries = array();
 
 						// get all queries to change existing fields
-					if($changeFields){
+						if($changeFields){
 							$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($changeFields, $tableName));
 						}
-					if($addFields){
+						if($addFields){
 							$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($addFields, $tableName, true));
 						}
 

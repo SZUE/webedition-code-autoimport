@@ -387,7 +387,7 @@ class installer extends installerBase{
 	 *
 	 * @return string
 	 */
-	function getUpdateDatabaseResponse(){
+	static function getUpdateDatabaseResponse(){
 
 		if(!isset($_REQUEST['position'])){
 			$_REQUEST['position'] = 0;
@@ -468,7 +468,7 @@ class installer extends installerBase{
 	 *
 	 * @return string
 	 */
-	function getPrepareChangesResponse(){
+	static function getPrepareChangesResponse(){
 
 		if(!isset($_REQUEST['position'])){
 			$_REQUEST['position'] = 0;
@@ -532,7 +532,7 @@ if (!$success) {
 	 *
 	 * @return string
 	 */
-	function getCopyFilesResponse(){
+	static function getCopyFilesResponse(){
 
 		$nextUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail());
 
@@ -560,17 +560,13 @@ if (!$success) {
 		);
 
 		for ($i=0;$success && $i<sizeof($allFiles);$i++) {
-			if (in_array(LIVEUPDATE_SOFTWARE_DIR . substr($allFiles[$i], $preLength),$donotcopy)) {
 				$text = basename($allFiles[$i]);
 				$text = ((strlen($text) > 40) ? substr($text, (strlen($text) -40)) : $text).": -";
 				$message .= "<div>...$text</div>";
+
+			if (in_array(LIVEUPDATE_SOFTWARE_DIR . substr($allFiles[$i], $preLength),$donotcopy)) {
 				$success = $liveUpdateFnc->deleteFile($allFiles[$i]);
-
 			} else {
-				$text = basename($allFiles[$i]);
-				$text = (strlen($text) > 40) ? substr($text, (strlen($text) -40)) : $text;
-				$message .= "<div>...$text</div>";
-
 				$success = $liveUpdateFnc->moveFile($allFiles[$i], LIVEUPDATE_SOFTWARE_DIR . substr($allFiles[$i], $preLength));
 			}
 		}
@@ -595,7 +591,7 @@ if (!$success) {
 	 *
 	 * @return string
 	 */
-	function getExecutePatchesResponse(){
+	static function getExecutePatchesResponse(){
 
 		$nextUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail());
 
@@ -774,7 +770,7 @@ if (!$success) {
 	 * @param string $progress
 	 * @return string
 	 */
-	function getFinishInstallationResponsePart($message, $jsMessage = '', $progress = 100){
+	static function getFinishInstallationResponsePart($message, $jsMessage = '', $progress = 100){
 
 		if(!$jsMessage){
 			$jsMessage = strip_tags($message);

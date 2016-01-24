@@ -662,16 +662,6 @@ $replaceCode['we_proxysettings']['replace'][4900] = '<?php
 	define("WE_PROXYPASSWORD", "%s");
 ?>';
 
-// enable demo pop-up webEdition.php
-$replaceCode['webEdition_demo']['path'][4900] = '/webEdition/webEdition%s';
-$replaceCode['webEdition_demo']['needle'][4900] = 'var we_demo = false;';
-$replaceCode['webEdition_demo']['replace'][4900] = 'var we_demo = true;';
-
-// template savecode
-$replaceCode['templateSaveCode_demo']['path'][4900] = '/webEdition/we/include/we_editors/we_editor.inc%s';
-$replaceCode['templateSaveCode_demo']['needle'][4900] = '####TEMPLATE_SAVE_CODE2_START###.*####TEMPLATE_SAVE_CODE2_END###'; // ! IMPORTANT
-$replaceCode['templateSaveCode_demo']['replace'][4900] = '#save template2';
-
 // insert tblPrefs
 $replaceCode['insert_tblPrefs']['path'][4900] = '';
 

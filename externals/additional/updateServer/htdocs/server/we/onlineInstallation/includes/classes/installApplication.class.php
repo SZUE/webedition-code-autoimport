@@ -1,7 +1,6 @@
 <?php
 
 class installApplication extends installer{
-
 	static $LanguageIndex = "installApplication";
 
 	/**
@@ -161,7 +160,7 @@ class installApplication extends installer{
 			} else {
 				break;
 			}
-		}while($ResponseSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
+		} while($ResponseSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
 
 		if($Position >= sizeof($_SESSION['clientChanges']['allChanges'])){
 			$nextUrl = '?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true);
@@ -320,12 +319,12 @@ class installApplication extends installer{
 		$nextUrl = '?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true);
 
 		$message = '<p>'
-				. sprintf($GLOBALS['lang']['installer']['downloadFilesTotal'], sizeof($_SESSION['clientChanges']['allChanges']))
-				. '</p>'
-				. '<ul>'
-				. '<li>' . sizeof($_SESSION['clientChanges']['files']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesFiles'] . '</li>'
-				. '<li>' . sizeof($_SESSION['clientChanges']['queries']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesQueries'] . '</li>'
-				. '</ul>';
+			. sprintf($GLOBALS['lang']['installer']['downloadFilesTotal'], sizeof($_SESSION['clientChanges']['allChanges']))
+			. '</p>'
+			. '<ul>'
+			. '<li>' . sizeof($_SESSION['clientChanges']['files']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesFiles'] . '</li>'
+			. '<li>' . sizeof($_SESSION['clientChanges']['queries']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesQueries'] . '</li>'
+			. '</ul>';
 
 		$progress = self::getInstallerProgressPercent();
 
@@ -593,10 +592,6 @@ class installApplication extends installer{
 		// proxy settings
 		$replaceProxySettings = updateUtil::getReplaceCode('we_proxysettings');
 
-		// 2nd overwrite some stuff
-		$webEdition_demo = updateUtil::getReplaceCode('webEdition_demo');
-		$editor_demo = updateUtil::getReplaceCode('templateSaveCode_demo');
-
 
 		$reinstallModules = array();
 		$_SESSION['clientInstalledModules'] = $_SESSION['clientDesiredModules'];
@@ -711,14 +706,7 @@ class installApplication extends installer{
 				exit;
 			}
 		}' .
-				/*
-
-				  if (!$leDB->query($query)) {
-				  ' . $this->getErrorMessageResponsePart('', $GLOBALS['lang'][self::$LanguageIndex]['dbNotInsertPrefs']) . '
-				  exit;
-				  }
-				 */
-				'?>' . static::getProceedNextCommandResponsePart($nextUrl, self::getInstallerProgressPercent(), "<p>" . $GLOBALS['lang'][self::$LanguageIndex]['finished'] . "</p>") . '<?php
+			'?>' . static::getProceedNextCommandResponsePart($nextUrl, self::getInstallerProgressPercent(), "<p>" . $GLOBALS['lang'][self::$LanguageIndex]['finished'] . "</p>") . '<?php
 
 		?>';
 

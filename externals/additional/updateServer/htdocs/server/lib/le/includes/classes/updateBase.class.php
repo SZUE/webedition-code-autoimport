@@ -1,6 +1,6 @@
 <?php
 
-class updateBase{
+abstract class updateBase{
 
 	static function getZFversion($versionnumber){
 		$zf_version = "1.5.1";
@@ -28,7 +28,7 @@ class updateBase{
 	 *
 	 * @return array
 	 */
-	function getPossibleLanguagesArray(){
+	static function getPossibleLanguagesArray(){
 		global $DB_Versioning;
 
 		$liveCondition = ' AND islive=1';
@@ -56,7 +56,7 @@ class updateBase{
 		return $versionLanguages;
 	}
 
-	function getPossibleBetaLanguagesArray(){
+	static function getPossibleBetaLanguagesArray(){
 		global $DB_Versioning;
 
 		$liveCondition = ' AND islive=1';
@@ -90,7 +90,7 @@ class updateBase{
 	 *
 	 * @return array
 	 */
-	function getPossibleVersionsArray(){
+	static function getPossibleVersionsArray(){
 
 		$langVersions = update::getVersionsLanguageArray(1, 0);
 
@@ -121,7 +121,7 @@ class updateBase{
 	 *
 	 * @return array
 	 */
-	function getNotLiveVersions(){
+	static function getNotLiveVersions(){
 		global $DB_Versioning;
 		$query = '
 			SELECT version, svnrevision, language, isbeta
@@ -139,7 +139,7 @@ class updateBase{
 		return $NotLiveVersions;
 	}
 
-	function getAlphaBetaVersions(){
+	static function getAlphaBetaVersions(){
 		global $DB_Versioning;
 		$query = '
 			SELECT version, svnrevision,type,typeversion, branch,language, isbeta
@@ -163,7 +163,7 @@ class updateBase{
 	 *
 	 * @return array
 	 */
-	function getSubVersions(){
+	static function getSubVersions(){
 		global $DB_Versioning;
 		$query = '
 			SELECT version, svnrevision
@@ -187,7 +187,7 @@ class updateBase{
 	 *
 	 * @return string
 	 */
-	function getSubVersion($version){
+	static function getSubVersion($version){
 		global $DB_Versioning;
 		$query = '
 			SELECT  svnrevision
@@ -205,7 +205,7 @@ class updateBase{
 		return $SubVersion;
 	}
 
-	function getVersionNames(){
+	static function getVersionNames(){
 		global $DB_Versioning;
 		$query = '
 			SELECT version, versname
@@ -229,7 +229,7 @@ class updateBase{
 	 *
 	 * @return string
 	 */
-	function getVersionName($version){
+	static function getVersionName($version){
 		global $DB_Versioning;
 		$query = '
 			SELECT  versname
@@ -253,7 +253,7 @@ class updateBase{
 	 *
 	 * @return string
 	 */
-	function getVersionType($version){
+	static function getVersionType($version){
 		global $DB_Versioning;
 		$query = '
 			SELECT  type, typeversion
@@ -271,7 +271,7 @@ class updateBase{
 		return $VersionType;
 	}
 
-	function getOnlyVersionType($version){
+	static function getOnlyVersionType($version){
 		global $DB_Versioning;
 		$query = '
 			SELECT  type, typeversion
@@ -289,7 +289,7 @@ class updateBase{
 		return $VersionType;
 	}
 
-	function getOnlyVersionTypeVersion($version){
+	static function getOnlyVersionTypeVersion($version){
 		global $DB_Versioning;
 		$query = '
 			SELECT  type, typeversion
@@ -331,7 +331,7 @@ class updateBase{
 	 *
 	 * @return array
 	 */
-	function getVersionsLanguageArray($installedLanguagesOnly = true, $showBeta = true){
+	static function getVersionsLanguageArray($installedLanguagesOnly = true, $showBeta = true){
 		global $DB_Versioning;
 
 		//error_log(print_r(urldecode(base64_decode($_SESSION['clientInstalledLanguages'])),1));

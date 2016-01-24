@@ -82,7 +82,7 @@ class upgrade{
 	 *
 	 * @return string
 	 */
-	function getCopyFilesResponse(){
+	static function getCopyFilesResponse(){
 
 		$nextUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail());
 		$versionnumber = updateUtilBase::version2number($_SESSION['clientTargetVersion']);
@@ -207,7 +207,7 @@ if ($success && rename(LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/webEdition",
 	/**
 	 * @return string
 	 */
-	function getExecutePatchesResponse(){
+	static function getExecutePatchesResponse(){
 
 		$nextUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail());
 

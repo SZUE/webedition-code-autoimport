@@ -274,7 +274,7 @@ class installerDownload extends installer{
 	 *
 	 * @return string
 	 */
-	function getCopyFilesResponse(){
+	static function getCopyFilesResponse(){
 
 		$nextUrl = '?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true);
 

@@ -342,7 +342,7 @@ class community extends communityBase{
 	 *
 	 * @return string
 	 */
-	function getUpdateDatabaseResponse(){
+	static function getUpdateDatabaseResponse(){
 
 		if(!isset($_REQUEST['position'])){
 			$_REQUEST['position'] = 0;
@@ -423,7 +423,7 @@ class community extends communityBase{
 	 *
 	 * @return string
 	 */
-	function getPrepareChangesResponse(){
+	static function getPrepareChangesResponse(){
 
 		if(!isset($_REQUEST['position'])){
 			$_REQUEST['position'] = 0;
@@ -487,7 +487,7 @@ class community extends communityBase{
 	 *
 	 * @return string
 	 */
-	function getCopyFilesResponse(){
+	static function getCopyFilesResponse(){
 
 		$nextUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail());
 
@@ -535,7 +535,7 @@ class community extends communityBase{
 	 *
 	 * @return string
 	 */
-	function getExecutePatchesResponse(){
+	static function getExecutePatchesResponse(){
 
 		$nextUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail());
 
@@ -694,7 +694,7 @@ class community extends communityBase{
 	 * @param string $progress
 	 * @return string
 	 */
-	function getFinishInstallationResponsePart($message, $jsMessage = '', $progress = 100){
+	static function getFinishInstallationResponsePart($message, $jsMessage = '', $progress = 100){
 
 		if(!$jsMessage){
 			$jsMessage = strip_tags($message);
