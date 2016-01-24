@@ -13,10 +13,8 @@ require_once(LIVEUPDATE_SERVER_DIR . '/includes/classes/installationLog.class.ph
 require_once(LIVEUPDATE_SERVER_DIR . '/includes/classes/installer.class.php');
 require_once(LIVEUPDATE_SERVER_DIR . '/includes/classes/languages.class.php');
 require_once(LIVEUPDATE_SERVER_DIR . '/includes/classes/license.class.php');
-require_once(LIVEUPDATE_SERVER_DIR . '/includes/classes/modules.class.php');
 require_once(LIVEUPDATE_SERVER_DIR . '/includes/classes/notification.class.php');
 require_once(LIVEUPDATE_SERVER_DIR . '/includes/classes/progressBar.class.php');
-require_once(LIVEUPDATE_SERVER_DIR . '/includes/classes/register.class.php');
 require_once(LIVEUPDATE_SERVER_DIR . '/includes/classes/update.class.php');
 require_once(LIVEUPDATE_SERVER_DIR . '/includes/classes/updateUtil.class.php');
 require_once(LIVEUPDATE_SERVER_DIR . '/includes/classes/upgrade.class.php');

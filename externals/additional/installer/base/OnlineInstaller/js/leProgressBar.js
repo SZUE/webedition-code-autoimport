@@ -1,7 +1,7 @@
 function leProgressBar() {}
 
 
-leProgressBar.hide = function(id) {
+leProgressBar.hide = function (id) {
 	document.getElementById(id).style.display = "none";
 	leButton.hide('reload');
 	leButton.show('print');
@@ -9,7 +9,7 @@ leProgressBar.hide = function(id) {
 }
 
 
-leProgressBar.show = function(id) {
+leProgressBar.show = function (id) {
 	leButton.hide('print');
 	document.getElementById(id).style.display = "block";
 	leButton.show('reload');
@@ -17,7 +17,7 @@ leProgressBar.show = function(id) {
 }
 
 
-leProgressBar.set = function(id, width) {
+leProgressBar.set = function (id, width) {
 	var progressPercent = document.getElementById(id + "Percent");
 	var progressBar = document.getElementById(id + "Bar");
 
@@ -34,7 +34,7 @@ leProgressBar.set = function(id, width) {
 }
 
 
-leProgressBar.enable = function(id, status) {
+leProgressBar.enable = function (id, status) {
 	if (status) {
 		leProgressBar.show(id);
 

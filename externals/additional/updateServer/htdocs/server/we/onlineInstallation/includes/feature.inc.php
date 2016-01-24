@@ -33,24 +33,6 @@ switch($_REQUEST['detail']){
 		print license::getRegisterVersionResponse($clientRequestVars['le_version']);
 		break;
 
-	// skip the serial information
-	case 'skipSerial':
-		error_log("skipSerial");
-		print register::getDontRegisterResponse();
-		break;
-
-
-	// save chosen modules in session
-	case 'registerModules':
-
-		$modules = array();
-		if(isset($clientRequestVars['le_modules'])){
-			$modules = $clientRequestVars['le_modules'];
-		}
-
-		print modules::getRegisterModulesResponse($modules);
-		break;
-
 
 	// get form with all snippets
 	case 'snippetsForm':

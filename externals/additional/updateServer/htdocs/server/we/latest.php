@@ -58,8 +58,6 @@ include("./conf/define.inc.php");
 include("PEAR.php");
 // include the PEAR Db class
 require_once('DB.php');
-// include the PEAR i18n class
-require_once('I18Nv2.php');
 
 $db_versioning_down = false;
 

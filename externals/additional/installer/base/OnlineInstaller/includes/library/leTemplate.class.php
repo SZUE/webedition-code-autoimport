@@ -1,6 +1,6 @@
 <?php
-class leTemplate {
 
+class leTemplate{
 	/**
 	 * occurd errors
 	 *
@@ -43,25 +43,23 @@ class leTemplate {
 	 */
 	var $UseOnlineInstallerTemplate = true;
 
-
-	function __construct() {
+	function __construct(){
 		//
 	}
 
-	function addError($ErrorMessage) {
+	function addError($ErrorMessage){
 		$this->_Errors[] = $ErrorMessage;
 	}
 
-	function addErrors($Errors = array()) {
+	function addErrors($Errors = array()){
 		$this->_Errors = array_merge($this->Errors, $Errors);
 	}
 
-
-	function addJavascript($Javascript) {
+	function addJavascript($Javascript){
 		$this->_Javascripts[] = $Javascript;
 	}
 
-	function setButtons(&$nextStep, &$backStep) {
+	function setButtons(&$nextStep, &$backStep){
 		if($nextStep){
 			$this->addJavascript('top.leForm.setInputField("leWizard", "' . $nextStep->getWizardName() . '");');
 			$this->addJavascript('top.leForm.setInputField("leStep", "' . $nextStep->getName() . '");');
@@ -76,12 +74,12 @@ class leTemplate {
 		}
 	}
 
-	function getProgressBarJs(&$CurrentStep) {
+	function getProgressBarJs(&$CurrentStep){
 		// enable/disable the progress bar
 		return 'top.leProgressBar.enable("leProgress", ' . ($CurrentStep->ProgressBarVisible ? "true" : "false") . ')';
 	}
 
-	function getButtonJs(&$CurrentStep) {
+	function getButtonJs(&$CurrentStep){
 
 		// enable/disable buttons
 		$ButtonNames = array(
@@ -95,7 +93,7 @@ class leTemplate {
 		foreach($ButtonNames as $Button){
 			if(in_array($Button, $CurrentStep->EnabledButtons)){
 				$ReturnValue .= 'top.leButton.enable("' . $Button . '");';
-			} else{
+			} else {
 				$ReturnValue .= 'top.leButton.disable("' . $Button . '");';
 			}
 		}
@@ -103,13 +101,13 @@ class leTemplate {
 		return $ReturnValue;
 	}
 
-	function getOutput(&$CurrentStep) {
+	function getOutput(&$CurrentStep){
 		if($CurrentStep->liveUpdateHttpResponse){
 			$Output = "<script type=\"text/javascript\">"
-					. $this->getButtonJs($CurrentStep)
-					. $this->getProgressBarJs($CurrentStep)
-					. "</script>"
-					. $CurrentStep->liveUpdateHttpResponse->getOutput();
+				. $this->getButtonJs($CurrentStep)
+				. $this->getProgressBarJs($CurrentStep)
+				. "</script>"
+				. $CurrentStep->liveUpdateHttpResponse->getOutput();
 			return $Output;
 		}
 
@@ -123,12 +121,12 @@ class leTemplate {
 			}
 
 			if(sizeof($this->_Errors) > 0){
-				for ($i = 0; $i < sizeof($this->_Errors); $i++) {
+				for($i = 0; $i < sizeof($this->_Errors); $i++){
 					$this->Errors .= "<h1 class=\"error\">{$this->_Errors[$i]}</h1>\n";
 				}
-			} else{
+			} else {
 				if($CurrentStep->AutoContinue >= 0){
-					$CurrentStep->Content .= "<br /><br /><div class=\"defaultfont\">" .  sprintf($GLOBALS["lang"]["Template"]["autocontinue"], "<span id=\"secondTimer\">" . $CurrentStep->AutoContinue . "</span>") . "</div>";
+					$CurrentStep->Content .= "<br /><br /><div class=\"defaultfont\">" . sprintf($GLOBALS["lang"]["Template"]["autocontinue"], "<span id=\"secondTimer\">" . $CurrentStep->AutoContinue . "</span>") . "</div>";
 					$this->addJavascript("top.leForm.forward();");
 				}
 			}
@@ -166,7 +164,7 @@ class leTemplate {
 EOF;
 
 			return $Output;
-		} else{
+		} else {
 			return $this->Output;
 		}
 	}

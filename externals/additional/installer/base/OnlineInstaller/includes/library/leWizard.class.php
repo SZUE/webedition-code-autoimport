@@ -1,16 +1,14 @@
 <?php
-class leWizard {
 
+class leWizard{
 	var $IsCurrent = false;
 	var $Name = "";
-
-	var $LastStep    = null;
+	var $LastStep = null;
 	var $CurrentStep = null;
-	var $NextStep    = null;
-
+	var $NextStep = null;
 	var $WizardSteps = array();
 
-	function __construct($Name, $Type = LE_APPLICATION_INSTALLER_WIZARD) {
+	function __construct($Name, $Type = LE_APPLICATION_INSTALLER_WIZARD){
 		$this->Name = $Name;
 
 		/*
@@ -18,7 +16,7 @@ class leWizard {
 		 */
 		if($Type == LE_ONLINE_INSTALLER_WIZARD){
 			$Path = LE_ONLINE_INSTALLER_PATH;
-		} else{
+		} else {
 			$Path = LE_APPLICATION_INSTALLER_PATH;
 		}
 
@@ -28,10 +26,10 @@ class leWizard {
 			require_once($Path . "/includes/wizards/" . $this->Name . "/steps.inc.php");
 
 			foreach($leInstallerSteps as $Step){
-				if(file_exists($Path .  "/includes/wizards/" . $this->Name . "/" . $Step . ".class.php")){
-					require_once($Path .  "/includes/wizards/" . $this->Name . "/" . $Step . ".class.php");
+				if(file_exists($Path . "/includes/wizards/" . $this->Name . "/" . $Step . ".class.php")){
+					require_once($Path . "/includes/wizards/" . $this->Name . "/" . $Step . ".class.php");
 					$Classname = $Step;
-				} else{
+				} else {
 					die("Cannot load class '" . $Step . "'!");
 				}
 
@@ -51,7 +49,7 @@ class leWizard {
 	/**
 	 * sets this wizard current, calls function to determine current step
 	 */
-	function setCurrent() {
+	function setCurrent(){
 		$this->IsCurrent = true;
 		$this->initialize();
 	}
@@ -60,7 +58,7 @@ class leWizard {
 	 * @param string $name
 	 * @return le_OnlineInstaller_WizardStep
 	 */
-	function getWizardStepIndexByName($Name) {
+	function getWizardStepIndexByName($Name){
 		for($i = 0; $i < sizeof($this->WizardSteps); $i++){
 			if($this->WizardSteps[$i]->Name == $Name){
 				return $i;
@@ -73,23 +71,23 @@ class leWizard {
 	 * @param string $name
 	 * @return le_OnlineInstaller_WizardStep
 	 */
-	function getWizardStepByName($Name) {
+	function getWizardStepByName($Name){
 		return $this->WizardSteps[$this->getWizardStepIndexByName($Name)];
 	}
 
 	/**
 	 * selects current active step, regarding request variables
 	 */
-	function initialize() {
+	function initialize(){
 
 		// detect current wizard regarding request-var "leWizard"
 		if(isset($_REQUEST["leStep"])){
-			if ( is_int($index = $this->getWizardStepIndexByName($_REQUEST["leStep"])) ) {
+			if(is_int($index = $this->getWizardStepIndexByName($_REQUEST["leStep"]))){
 				$this->CurrentStep = & $this->WizardSteps[$index];
 			}
 		}
 
-		if (!$this->CurrentStep){
+		if(!$this->CurrentStep){
 			$this->CurrentStep = & $this->WizardSteps[0];
 		}
 	}
@@ -97,7 +95,7 @@ class leWizard {
 	/**
 	 * @return string
 	 */
-	function getName() {
+	function getName(){
 		return $this->Name;
 	}
 

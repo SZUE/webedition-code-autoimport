@@ -1,6 +1,6 @@
 <?php
-class leStep {
 
+class leStep{
 	/**
 	 * The name of the step
 	 *
@@ -92,64 +92,58 @@ class leStep {
 	 */
 	var $liveUpdateHttpResponse = null;
 
-
 	/**
 	 * PHP5 Constructor
 	 *
 	 */
-	function __construct($Name, $WizardObj, $Language = array()) {
+	function __construct($Name, $WizardObj, $Language = array()){
 		$this->Name = $Name;
 		$this->Wizard = $WizardObj;
 		$this->Language = $Language;
 	}
-
 
 	/**
 	 * set the headline
 	 *
 	 * @param string $Headline
 	 */
-	function setHeadline($Headline = '') {
+	function setHeadline($Headline = ''){
 		$this->Headline = $Headline;
 	}
-
 
 	/**
 	 * set the content
 	 *
 	 * @param string $Content
 	 */
-	function setContent($Content = '') {
+	function setContent($Content = ''){
 		$this->Content = $Content;
 	}
-
 
 	/**
 	 * return the name of the staep
 	 *
 	 * @return string
 	 */
-	function getName() {
+	function getName(){
 		return $this->Name;
 	}
-
 
 	/**
 	 * return the name of the wizard
 	 *
 	 * @return string
 	 */
-	function getWizardName() {
+	function getWizardName(){
 		return $this->Wizard->getName();
 	}
-
 
 	/**
 	 * get the url for this step
 	 *
 	 * @return string
 	 */
-	function getUrl() {
+	function getUrl(){
 
 		$additional = "";
 		if(isset($_REQUEST['debug'])){
@@ -158,21 +152,18 @@ class leStep {
 		return LE_INSTALLER_ADAPTER_URL . "?leWizard=" . $this->getWizardName() . "&leStep=" . $this->Name . $additional;
 	}
 
-
 	/**
 	 * Execute the preparation of the step, like setting cookies for example
 	 *
 	 * @return booelan
 	 */
-	function prepare() {
+	function prepare(){
 		return true;
 	}
 
-
-	function execute(&$Template = '') {
+	function execute(&$Template = ''){
 		return LE_STEP_NEXT;
 	}
-
 
 	/**
 	 * executes a step at the live update / online installation server
@@ -182,17 +173,17 @@ class leStep {
 	 * @param string $UpdateCmdDetail
 	 * @return integer
 	 */
-	function executeOnline(&$Template = '', $UpdateCmd = '', $UpdateCmdDetail = '') {
+	function executeOnline(&$Template = '', $UpdateCmd = '', $UpdateCmdDetail = ''){
 
 		if($UpdateCmd != ""){
 			$_REQUEST['update_cmd'] = $UpdateCmd;
-		} else{
+		} else {
 			$_REQUEST['update_cmd'] = $this->Wizard->Name;
 		}
 
 		if($UpdateCmdDetail != ""){
 			$_REQUEST['detail'] = $UpdateCmdDetail;
-		} else{
+		} else {
 			$_REQUEST['detail'] = $this->Name;
 		}
 
@@ -209,22 +200,21 @@ class leStep {
 		return LE_STEP_NEXT;
 	}
 
-
 	/**
 	 * Do some validation
 	 *
 	 * @return boolean
 	 */
-	function check(&$Template = '') {
+	function check(&$Template = ''){
 		return true;
 	}
 
 	/**
 	 * @return liveUpdateResponse
 	 */
-	function getLiveUpdateHttpResponse() {
+	function getLiveUpdateHttpResponse(){
 
-		global $LU_IgnoreRequestParameters, $LU_ParameterNames,$leApplicationList;
+		global $LU_IgnoreRequestParameters, $LU_ParameterNames, $leApplicationList;
 
 		$parameters = array();
 		foreach($LU_ParameterNames as $parameterName){
@@ -240,7 +230,7 @@ class leStep {
 		// add all other request parameters to the request
 		$reqVars = array();
 		foreach($_REQUEST as $key => $value){
-			if(!isset($parameters[$key]) && !in_array($key, $LU_IgnoreRequestParameters) && !array_key_exists($key,$_COOKIE) ){
+			if(!isset($parameters[$key]) && !in_array($key, $LU_IgnoreRequestParameters) && !array_key_exists($key, $_COOKIE)){
 				$reqVars[$key] = $value;
 			}
 		}

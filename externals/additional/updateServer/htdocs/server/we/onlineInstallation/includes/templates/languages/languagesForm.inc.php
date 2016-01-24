@@ -1,6 +1,5 @@
 <?php
 $installAbleLanguages = $GLOBALS['updateServerTemplateData']['installAbleLanguages'];
-$installAbleBetaLanguages = $GLOBALS['updateServerTemplateData']['installAbleBetaLanguages'];
 
 $Output = '<table class="leContentTable">'
 	. '<tr>'
@@ -93,7 +92,7 @@ for($i = 0; $i < sizeof($installAbleLanguages); $i++){
 	$AdditionalCheckbox = str_replace("'", "***", $AdditionalCheckbox);
 
 	$Output .= '<tr>'
-		. '<td><label for="le_defaultLanguage_' . $i . '">' . $installAbleLanguages[$i] . (in_array($installAbleLanguages[$i], $installAbleBetaLanguages) ? ' <font color="red">[beta]</font>' : '') . '</label></td>'
+		. '<td><label for="le_defaultLanguage_' . $i . '">' . $installAbleLanguages[$i] . '</label></td>'
 		. '<td align="center">### . ' . $DefaultRadio . ' . ###</td>'
 		. '<td align="center">### . ' . $AdditionalCheckbox . ' . ###</td>'
 		. '</tr>';

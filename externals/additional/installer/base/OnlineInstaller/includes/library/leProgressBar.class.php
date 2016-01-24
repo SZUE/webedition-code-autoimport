@@ -1,7 +1,8 @@
 <?php
-class leProgressBar {
 
-	static function get($Id) {
+class leProgressBar{
+
+	static function get($Id){
 
 		return '<table id="' . $Id . '" cellpadding="0" cellspacing="0" border="0">
 <tr>
@@ -11,7 +12,6 @@ class leProgressBar {
 	<td valign="top" align="right" id="' . $Id . 'Percent">0%</td>
 </tr>
 </table>';
-
 	}
 
 }

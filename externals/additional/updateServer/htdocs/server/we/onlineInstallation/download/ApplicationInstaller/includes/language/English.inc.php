@@ -67,14 +67,13 @@ $lang["Step"]["SoftwareRequirements"]["found"] = "found";
 $lang["Step"]["SoftwareRequirements"]["exif"] = "EXIF support";
 $lang["Step"]["SoftwareRequirements"]["exifNotAvailable"] = "The exif PHP extension is not available on this server, therefore EXIF metadata for images are not usabale.";
 $lang["Step"]["SoftwareRequirements"]["pcre"] = "Version of PCRE PHP extension: ";
-$lang["Step"]["SoftwareRequirements"]["pcreOLD"] = "Your PCRE-Version is outdated: This can lead to problems, particularly in future webEdition versions";
+$lang["Step"]["SoftwareRequirements"]["pcreOLD"] = "Your PCRE-Version is outdated: This can lead to problems, particularly in future webEdition versions.";
 $lang["Step"]["SoftwareRequirements"]['sdk_db'] = 'SDK/Apps DB support';
 $lang["Step"]["SoftwareRequirements"]['sdk_dbWarnung'] = 'SDK DB operations and WE-APPS using database access are not available, the following PHP extensions are missing: PDO and PDO_mysql';
 $lang["Step"]["SoftwareRequirements"]['phpext'] = 'Required PHP extensions';
 $lang["Step"]["SoftwareRequirements"]['phpextWarning'] = 'Not available required PHP extensions: ';
 $lang["Step"]["SoftwareRequirements"]['reqNotDetec'] = 'Some of the software requirements could not be checked (Suhosin?). Please check the system requirements at http://www.webedition.org/de/webedition-cms/systemvoraussetzungen.php ';
 $lang["Step"]["SoftwareRequirements"]['softreq'] = "Additional software requirements";
-
 // InstallationDirectory
 $lang["Step"]["InstallationDirectory"]["title"] = "Installation directory";
 $lang["Step"]["InstallationDirectory"]["headline"] = "Check installation directory";
@@ -121,7 +120,7 @@ $lang["Step"]["DatabasePermissions"]["title"] = "Database permissions";
 $lang["Step"]["DatabasePermissions"]["headline"] = "Check database permissions";
 $lang["Step"]["DatabasePermissions"]["content"] = "You have the required priviliges to install webEdition.<br /><ul><li>CREATE TABLE</li><li>ALTER TABLE</li><li>DROP TAPBE</li></ul>";
 
-$lang["Step"]["DatabasePermissions"]["dbserverwarning"] = "<br/>The database server reports the version %s, webEdition requires at least the  MySQL-Server version 5.0. webEdition may work with the used version, but this can not be guarented for new webEdition versions (i.e. after updates). For webEdition version 7,  MySQL version 5 will definitely be required.<br/><span style=\"color:red;font-weight:bold\">In addition: The installed MySQL version is outdated. There are no security updates available for this version which may put the security of the whole system at risk!</span><br/>";
+$lang["Step"]["DatabasePermissions"]["dbserverwarning"] = "<br/>The database server reports the version %s, webEdition requires at least the  MySQL-Server version 5.0. webEdition may work with the used version, but this can not be guarented for new webEdition versions (i.e. after updates). For webEdition version 7,  MySQL version 5 will definitely be required.<br/><span style=\"color:red;font-weight:bold\">In addition: The installed MySQL version is outdated. There are no security updates available for this version, which may put the security of the whole system at risk!</span><br/>";
 
 $lang["Step"]["DatabasePermissions"]["AccessDenied"] = "The database '%s' does not exist. The user you entered has no the required permissions to create or use the database. Please move back and check the user data or the permissions of the database.";
 $lang["Step"]["DatabasePermissions"]["errorNotCreateTable"] = "<strong>Missing privilege: create table</strong><br />The database user has not the required privileges to create a table. This privilege is required to install webEdition. Please check your database user and increase his privileges. Normally your webspace-provider can assist you doing this.";
@@ -181,28 +180,6 @@ $lang["Step"]["ChooseVersion"]['alpha'] = 'Alpha';
 $lang["Step"]["ChooseVersion"]['beta'] = 'Beta';
 $lang["Step"]["ChooseVersion"]['rc'] = 'RC';
 $lang["Step"]["ChooseVersion"]['release'] = 'official Release';
-
-// SerialNumber
-$lang["Step"]["SerialNumber"]["title"] = "Serial number";
-$lang["Step"]["SerialNumber"]["headline"] = "Serial number";
-$lang["Step"]["SerialNumber"]["content"] = "You could now register your copy of webEdition and use the full functional range. Please enter your serial number.<br />If you don't have a serial number, you could by a licence at <a href=\"http://www.living-e.com/\" target=\"_blank\">http://www.living-e.com/</a> or install webEdition as demo without entering a serial number.";
-
-$lang["Step"]["SerialNumber"]["labelRegister"] = "Yes, i would now register webEdition.";
-$lang["Step"]["SerialNumber"]["serial"] = "Serial number";
-$lang["Step"]["SerialNumber"]["serialNotValid"] = "The entered serial number is invalid.";
-
-
-// ChooseModules
-$lang["Step"]["ChooseModules"]["title"] = "Modules";
-$lang["Step"]["ChooseModules"]["headline"] = "Choose modules";
-$lang["Step"]["ChooseModules"]["content"] = "Please choose the modules which have to be installed";
-
-$lang["Step"]["ChooseModules"]["modules"] = "Module";
-$lang["Step"]["ChooseModules"]["pro_modules"] = "Pro module";
-$lang["Step"]["ChooseModules"]["depending_modules"] = "Depending module";
-$lang["Step"]["ChooseModules"]["no_serial"] = "It is not possible to install modules in demo mode.";
-$lang["Step"]["ChooseModules"]["no_modules"] = "There a no modules left for the entered serial.";
-
 
 // ChooseSnippets
 $lang["Step"]["ChooseSnippets"]["title"] = "Additional data";
@@ -319,5 +296,3 @@ $lang["Step"]["CleanUp"]["content"] = "At the end of the installation, the demo 
 
 $lang["Step"]["CleanUp"]["delete_failed"] = "For security reasons we recommend, that you delete the installer files now.";
 $lang["Step"]["CleanUp"]["openWebEdition"] = "Start webEdition";
-
-

@@ -19,15 +19,14 @@ $lang["Application"]["webEdition5"]["longdescription"] = "The webEdition web CMS
 $lang["Application"]["webEdition5"]["link"] = "http://www.living-e.de/produkte/webEdition/index.php";
 
 $lang["Application"]["webEdition"]["name"] = "webEdition 6";
-$lang["Application"]["webEdition"]["description"] = "Professional web content management system.";
-$lang["Application"]["webEdition"]["longdescription"] = "The webEdition web CMS (content management system) is an OpenSource CMS based on PHP and MySQL. It is the perfect CMS for users, who wish to manage their website comfortably with a CMS. The webEdition CMS has a large function spectrum and can be customized easily.";
+$lang["Application"]["webEdition"]["description"] = "Professional open source web content management system.";
+$lang["Application"]["webEdition"]["longdescription"] = "The webEdition web CMS (content management system) is a CMS based on PHP and MySQL. It is the perfect CMS for users, who wish to manage their website comfortably with a CMS. The webEdition CMS has a large function spectrum and can be customized easily.";
 $lang["Application"]["webEdition"]["link"] = "http://www.webedition.org/";
 
 $lang["Application"]["webEditionBeta"]["name"] = "webEdition incl. Pre-Release Versions";
 $lang["Application"]["webEditionBeta"]["description"] = "Professional web content management system.";
 $lang["Application"]["webEditionBeta"]["longdescription"] = "Pre-Release versions (nightly builds, Alpha-, Beta and RC-Versions) are used to find errors before a new official version is released. <b>They should never be used for productive sites. We take no responsibility for any damages or loss of data.</b>";
 $lang["Application"]["webEditionBeta"]["link"] = "http://www.webedition.org/";
-
 
 $lang["Application"]["pageLogger"]["name"] = "pageLogger 1.6";
 $lang["Application"]["pageLogger"]["description"] = "Open source real time tracking for your homepage.";
@@ -57,17 +56,14 @@ $lang["Wizard"]["DownloadInstaller"]["title"] = "Download installer";
 //
 // ---> Steps
 //
-
 // Welcome
 $lang["Step"]["Welcome"]["title"] = "Choose language";
 $lang["Step"]["Welcome"]["headline"] = "webEdition Online Installer";
 $lang["Step"]["Welcome"]["content"] = "This wizard will guide you step by step through the installation process of our software projects.";
 $lang["Step"]["Welcome"]['choose_language'] = "Change language";
-$lang["Step"]["Welcome"]['ISO_language'] = "<b>Important:</b> We strongly recommend using UTF-8 for new projects. webEdition still contains a couple of ISO-8859-1 (ISO Latin-1) encoded translations for backwards compatibility, but all new translations are and will be UTF-8 encoded.<br /> In addition, for the upcoming Version 7, we do do not guarantee full support for ISO languages, so you might need to convert your site to UTF-8. <br /><br />";
-$lang["Step"]["Welcome"]['language_Deutsch_UTF-8'] = "Deutsch (UTF-8)";
-$lang["Step"]["Welcome"]['language_English_UTF-8'] = "English (UTF-8)";
-$lang["Step"]["Welcome"]['language_Deutsch'] = "Deutsch (ISO 8859-1)";
-$lang["Step"]["Welcome"]['language_English'] = "English (ISO 8859-1)";
+$lang["Step"]["Welcome"]['ISO_language'] = "";
+$lang["Step"]["Welcome"]['language_Deutsch'] = "Deutsch";
+$lang["Step"]["Welcome"]['language_English'] = "English";
 
 
 // HintAboutOnlineInstallation
@@ -90,7 +86,7 @@ $lang["Step"]["VersionCheck"]["installerVersionFailed"] = "";
 // ChooseApplication
 $lang["Step"]["ChooseApplication"]["title"] = "Choose application";
 $lang["Step"]["ChooseApplication"]["headline"] = "Choose the application";
-$lang["Step"]["ChooseApplication"]["content"] = "With this installer it is possible to install all web based application of the the webEdition project.";
+$lang["Step"]["ChooseApplication"]["content"] = "With this installer it is possible to install all web based applications of the webEdition project.";
 
 $lang["Step"]["ChooseApplication"]["select_application"] = "Please choose the application to be installed";
 
@@ -169,7 +165,6 @@ $lang["Step"]["SessionAndCookieTest"]["suhosin_OK"] = "Suhosin extension is not 
 $lang["Step"]["SessionAndCookieTest"]["suhosin_warning"] = "Suhosin is active!<br />The application <b>might</b> work with activated <a href=\"http://www.hardened-php.net/\" target=\"_blank\">Suhosin</a>,but yet we do not recommend it, since Suhosin can lead to problems due it's many configuration options.<br />It can happen, although the OnlineInstaller itself does not run properly, the application runs without problems. <br/>In this case, we recommend to try the installation of  tarball, found at <a href=\"http://download.webedition.org/releases\" target=\"_blank\">WebEdition Tarballs</a>.";
 
 
-
 // DetermineFilesInstaller
 $lang["Step"]["DetermineFilesInstaller"]["title"] = "Determine files";
 $lang["Step"]["DetermineFilesInstaller"]["headline"] = "Determine required files";
@@ -200,10 +195,8 @@ $lang["Step"]["ConfigureInstaller"]["headline"] = "Configure installer";
 $lang["Step"]["ConfigureInstaller"]["content"] = "Now the installation package will be configured.";
 
 // Error Messages
-
 // Error message for missing write permissions:
-$lang["errors"]["writeFile"] = "No Write Permissions!<br /><br />Could not write to %s<br /><br />In order for 
-		webEdition to be installed, the root directory (DOCUMENT_ROOT) must be writable for the web server (Apache, IIS, ..) 
+$lang["errors"]["writeFile"] = "No Write Permissions!<br /><br />Could not write to %s<br /><br />In order for
+		webEdition to be installed, the root directory (DOCUMENT_ROOT) must be writable for the web server (Apache, IIS, ..)
 		at least during installation.";
-
 ?>

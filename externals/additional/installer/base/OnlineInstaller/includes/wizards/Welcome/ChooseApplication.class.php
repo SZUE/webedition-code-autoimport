@@ -1,20 +1,18 @@
 <?php
-class ChooseApplication extends leStep {
 
+class ChooseApplication extends leStep{
 	var $EnabledButtons = array('next', 'back');
 
-
-	function execute(&$Template = '') {
+	function execute(&$Template = ''){
 
 		$Options = array();
 		$JSString = 'var information = new Array();' . "\n";
-		foreach($GLOBALS['leApplicationList'] as $Key => $Value) {
+		foreach($GLOBALS['leApplicationList'] as $Key => $Value){
 			$Options[$Key] = $Value['Name'];
 			$JSString .= 'information["' . $Key . '"] = new Array();' . "\n";
 			$JSString .= 'information["' . $Key . '"]["Name"] = "' . $Value['Name'] . '";' . "\n";
 			$JSString .= 'information["' . $Key . '"]["Description"] = "' . $Value['Description'] . '";' . "\n";
 			$JSString .= 'information["' . $Key . '"]["Longdescription"] = "' . $Value['Longdescription'] . '";' . "\n";
-			
 		}
 		$temp = $Options;
 
@@ -22,9 +20,9 @@ class ChooseApplication extends leStep {
 		$Value = isset($_SESSION['leApplication']) ? $_SESSION['leApplication'] : array_shift($temp);
 
 		$Attributes = array(
-			'onchange'	=> 'switchInformation(this.value)',
-			'id'		=> 'changeApplication',
-			'style'		=> 'width: 293px',
+			'onchange' => 'switchInformation(this.value)',
+			'id' => 'changeApplication',
+			'style' => 'width: 293px',
 		);
 
 		$Application = $GLOBALS['leApplicationList'][$Value];
@@ -63,19 +61,14 @@ EOF;
 		$Template->addJavascript($Javascript);
 
 		return LE_STEP_NEXT;
-
 	}
 
+	function check(&$Template = ''){
 
-	function check(&$Template = '') {
-
-		if(isset($_REQUEST['changeApplication']) && array_key_exists($_REQUEST['changeApplication'], $GLOBALS['leApplicationList'])) {
+		if(isset($_REQUEST['changeApplication']) && array_key_exists($_REQUEST['changeApplication'], $GLOBALS['leApplicationList'])){
 			$_SESSION['leApplication'] = $_REQUEST['changeApplication'];
-
-
 		}
 		return true;
-
 	}
 
 }

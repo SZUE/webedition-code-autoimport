@@ -1,17 +1,14 @@
 <?php
-class PrepareFilesInstaller extends leStep {
 
+class PrepareFilesInstaller extends leStep{
 	var $EnabledButtons = array("reload");
-
 	var $ProgressBarVisible = true;
 
-
-	function execute(&$Template = '') {
+	function execute(&$Template = ''){
 
 		$this->liveUpdateHttpResponse = $this->getLiveUpdateHttpResponse();
 
 		return LE_STEP_NEXT;
-
 	}
 
 }

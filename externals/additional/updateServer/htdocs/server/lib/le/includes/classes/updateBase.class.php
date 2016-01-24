@@ -36,8 +36,6 @@ abstract class updateBase{
 			$liveCondition = '';
 		}
 
-		//$query = 'SELECT distinct(language), isbeta  f�hrt zu dopplten betasprachen
-
 		$query = '
 			SELECT distinct(language)
 			FROM ' . VERSION_TABLE . '
@@ -52,34 +50,6 @@ abstract class updateBase{
 
 		while($res->fetchInto($row)){
 			$versionLanguages[] = $row['language'];
-		}
-		return $versionLanguages;
-	}
-
-	static function getPossibleBetaLanguagesArray(){
-		global $DB_Versioning;
-
-		$liveCondition = ' AND islive=1';
-		if(isset($_SESSION['testUpdate'])){
-			$liveCondition = '';
-		}
-
-		$query = '
-			SELECT distinct(language), isbeta
-			FROM ' . VERSION_TABLE . '
-			WHERE version >= 1590
-				' . $liveCondition . '
-			ORDER BY language ASC
-		';
-
-		$versionLanguages = array();
-
-		$res = & $DB_Versioning->query($query);
-
-		while($res->fetchInto($row)){
-			if($row['isbeta'] == 1){
-				$versionLanguages[] = $row['language'];
-			}
 		}
 		return $versionLanguages;
 	}

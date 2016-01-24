@@ -1,12 +1,10 @@
 <?php
-class ConfigureInstaller extends leStep {
 
+class ConfigureInstaller extends leStep{
 	var $AutoContinue = 3;
-
 	var $EnabledButtons = array('next');
 
-
-	function execute(&$Template = '') {
+	function execute(&$Template = ''){
 
 		// update the steps on the left side.
 		// ulInstallerSteps
@@ -21,7 +19,6 @@ class ConfigureInstaller extends leStep {
 		$this->setContent($this->Language['content']);
 
 		return LE_STEP_NEXT;
-
 	}
 
 }

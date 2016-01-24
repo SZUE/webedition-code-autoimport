@@ -629,7 +629,7 @@ function step_language() {
 	//$output .= print_r($langdirs,true);
 	$_language = array();
 	foreach($langdirs as $lang) {
-		if(substr($lang,0,1) != "." && strtoupper($lang) != "CVS" && strtoupper($lang) != "SVN") {
+		if(substr($lang,0,1) != ".") {
 			$_language["translation"][$lang] = $lang;
 		}
 	}
@@ -764,7 +764,7 @@ function step_summary() {
 function step_installation() {
 	global $errors;
 	$output = "<b>Installation of database tables:</b><br /><br />";
-	
+
 	// read and parse database dump:
 	if(!is_readable("./webEdition/liveUpdate/sqldumps") || !is_dir("./webEdition/liveUpdate/sqldumps")) {
 		$output .= tpl_error("Could not read database dumps directory.");
@@ -776,7 +776,7 @@ function step_installation() {
 	$dbqueries = array();
 	foreach($sqldumps as $sqldump) {
 		if(substr($sqldump,0,1) != "." && substr($sqldump,0,3) == 'tbl'){
-			$dumpcontent = file_get_contents("./webEdition/liveUpdate/sqldumps/".$sqldump); 
+			$dumpcontent = file_get_contents("./webEdition/liveUpdate/sqldumps/".$sqldump);
 			$dumpsarr = explode("/* query separator */",$dumpcontent);
 			foreach($dumpsarr as $dbquery){$j++;
 				$dbqueries[] = $dbquery;
@@ -858,7 +858,7 @@ function step_installation() {
 	$output .= "<br /><b>Writing webEdition configuration:</b><br /><br />";
 
 	//$output .= "<li><i>under construction ...</i></li>";
-	
+
 	// set the language and backendcharset of the default user
 	if(!mysqli_query($conn, 'INSERT INTO '.$_SESSION["db_tableprefix"].'tblPrefs (`userID`,`key`,`value`) VALUES("1","Language","' . $_SESSION["we_language"] . '")')
 			|| !mysqli_query($conn, 'INSERT INTO '.$_SESSION["db_tableprefix"].'tblPrefs (`userID`,`key`,`value`) VALUES("1","BackendCharset","' . $_SESSION["we_charset"] . '")')) {
@@ -905,7 +905,7 @@ function step_installation() {
 		"define('WE_BACKENDCHARSET','".$_SESSION["we_charset"]."');\n".
 		"define('WE_LANGUAGE','". $_SESSION["we_language"]."');\n".
 		"";
-		
+
 		//define DB_SET_CHARSET in we_config_global due to old versions, will be corrected on we startup
 		$we_config_global .= "define('DB_SET_CHARSET','". $_SESSION["we_db_charset"]."');\n".
 		"define('DEFAULT_CHARSET','". $_SESSION["we_charset"]."');\n".

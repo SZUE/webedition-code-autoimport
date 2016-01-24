@@ -1,17 +1,17 @@
 <?php
-class SessionAndCookieTest extends leStep {
 
+class SessionAndCookieTest extends leStep{
 	var $AutoContinue = 15;
 
-	function ini_get_bool($val) {
+	function ini_get_bool($val){
 		$bool = ini_get($val);
-		if($val == "1") {
+		if($val == "1"){
 			return true;
 		}
-		if($val == "0") {
+		if($val == "0"){
 			return false;
 		}
-		switch (strtolower($bool)) {
+		switch(strtolower($bool)){
 			case '1':
 			case 'on':
 			case 'yes':
@@ -23,15 +23,14 @@ class SessionAndCookieTest extends leStep {
 		return false;
 	}
 
-	function prepare() {
+	function prepare(){
 		$_SESSION["le_testSession"] = "test-session";
 		//@setcookie("le_testCookie", "test-cookie", time() + 3600);
 		//test-cookie is now set in setup.php, where session_start() is called
 		$_SESSION["le_testPHP"] = phpversion();
 	}
 
-
-	function execute(&$Template = '') {
+	function execute(&$Template = ''){
 
 		$Success = true;
 
@@ -44,42 +43,41 @@ class SessionAndCookieTest extends leStep {
 		$PHPText = sprintf($this->Language['php'], PHP_VERSION);
 		$PHPWarning = '';
 		$PHPImage = leLayout::getRequirementStateImage();
-		if (version_compare(PHP_VERSION, '5.2.4', '<' )) {
+		if(version_compare(PHP_VERSION, '5.2.4', '<')){
 			$Success = false;
 			$PHPImage = leLayout::getRequirementStateImage(false);
 			$Template->addError(sprintf($this->Language['phpFailed'], PHP_VERSION));
-		} else if(version_compare(PHP_VERSION, '5.3.7', '<' )){
+		} else if(version_compare(PHP_VERSION, '5.3.7', '<')){
 			$PHPImage = leLayout::getWarningStateImage(false);
 			$PHPWarning = '<tr><td colspan="2">' . $this->Language['phpWarning'] . '</td></tr>';
 		}
 
 		$SessionImage = leLayout::getRequirementStateImage();
-		if ( !(isset($_SESSION["le_testSession"]) && $_SESSION["le_testSession"] == "test-session" ) ) {
+		if(!(isset($_SESSION["le_testSession"]) && $_SESSION["le_testSession"] == "test-session" )){
 			$Success = false;
 			$SessionImage = leLayout::getRequirementStateImage(false);
 			$Template->addError($this->Language['sessionFailed']);
 		}
 
 		$CookieImage = leLayout::getRequirementStateImage();
-		if ( !(isset($_COOKIE["le_testCookie"]) && $_COOKIE["le_testCookie"] == "test-cookie") ) {
+		if(!(isset($_COOKIE["le_testCookie"]) && $_COOKIE["le_testCookie"] == "test-cookie")){
 			$Success = false;
 			$CookieImage = leLayout::getRequirementStateImage(false);
 			$Template->addError($this->Language["cookieFailed"]);
 		}
-		
+
 		$MaxInputVarsImage = leLayout::getRequirementStateImage();
 		$MaxInputVarsText = $this->Language['max_input_vars_ok'];
 		$MaxInputVarsWarning = '';
-		
+
 		$maxInputVarsValue = ini_get('max_input_vars') ? ini_get('max_input_vars') : 1000;
-		if ($maxInputVarsValue < 2000){
-			if ($maxInputVarsValue < 500){
+		if($maxInputVarsValue < 2000){
+			if($maxInputVarsValue < 500){
 				$Success = false;
 				$MaxInputVarsImage = leLayout::getRequirementStateImage(false);
 				$MaxInputVarsText = $this->Language['max_input_vars'];
 				$Template->addError($this->Language["max_input_vars_failed"]);
-				
-			} else{
+			} else {
 				$MaxInputVarsImage = leLayout::getWarningStateImage(false);
 				$MaxInputVarsText = $this->Language['max_input_vars'];
 				$MaxInputVarsWarning = $this->Language['max_input_vars_warning'];
@@ -88,40 +86,40 @@ class SessionAndCookieTest extends leStep {
 
 		$SafeModeImage = leLayout::getWarningStateImage();
 		$SafeModeText = $this->Language['safe_mode_OK'];
-		$SafeModeWarning = '';	
-		if ( $this->ini_get_bool('safe_mode') ) {
+		$SafeModeWarning = '';
+		if($this->ini_get_bool('safe_mode')){
 			$SafeModeImage = leLayout::getWarningStateImage(false);
 			$SafeModeText = $this->Language['safe_mode'];
 			$SafeModeWarning = $this->Language['safe_mode_warning'];
 		}
-		
+
 		$RegisterGlobalsImage = leLayout::getWarningStateImage();
 		$RegisterGlobalsText = $this->Language['register_globals_OK'];
-		$RegisterGlobalsWarning = '';	
-		if ( $this->ini_get_bool('register_globals') ) {
+		$RegisterGlobalsWarning = '';
+		if($this->ini_get_bool('register_globals')){
 			$RegisterGlobalsImage = leLayout::getWarningStateImage(false);
 			$RegisterGlobalsText = $this->Language['register_globals'];
 			$RegisterGlobalsWarning = $this->Language['register_globals_warning'];
 		}
-		
+
 		$ShortOpenTagImage = leLayout::getWarningStateImage();
 		$ShortOpenTagText = $this->Language['short_open_tag_OK'];
-		$ShortOpenTagWarning = '';	
-		if ( $this->ini_get_bool('short_open_tag') ) {
+		$ShortOpenTagWarning = '';
+		if($this->ini_get_bool('short_open_tag')){
 			$ShortOpenTagImage = leLayout::getWarningStateImage(false);
 			$ShortOpenTagText = $this->Language['short_open_tag'];
 			$ShortOpenTagWarning = $this->Language['short_open_tag_warning'];
 		}
-		
+
 		$SuhosinImage = leLayout::getWarningStateImage();
 		$SuhosinText = $this->Language['suhosin_OK'];
-		$SuhosinWarning = '';	
-		if ( in_array('suhosin',get_loaded_extensions() ) ){
+		$SuhosinWarning = '';
+		if(in_array('suhosin', get_loaded_extensions())){
 			$SuhosinImage = leLayout::getWarningStateImage(false);
 			$SuhosinText = $this->Language['suhosin'];
 			$SuhosinWarning = $this->Language['suhosin_warning'];
 		}
-		
+
 
 		$Content = <<<EOF
 {$this->Language['content']}<br />
@@ -181,15 +179,12 @@ EOF;
 
 		$this->setContent($Content);
 
-		if ($Success) {
+		if($Success){
 			return LE_STEP_NEXT;
-
 		} else {
 			$this->setContent($this->Language['failureMessage']);
 			return LE_STEP_FATAL_ERROR;
-
 		}
-
 	}
 
 }

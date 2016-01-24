@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Session Management for PHP3
  *
@@ -10,8 +9,7 @@
  *
  */
 
-class le_MySQL {
-
+class le_MySQL{
 	/* public: connection parameters */
 	var $Host = "";
 	var $Database = "";
@@ -19,7 +17,7 @@ class le_MySQL {
 	var $Password = "";
 
 	/* public: configuration parameters */
-	var $Auto_Free  = 0; //Set to 1 for automatic mysql_free_result()
+	var $Auto_Free = 0; //Set to 1 for automatic mysql_free_result()
 	var $Debug = 0; //Set to 1 for debugging messages.
 	var $Halt_On_Error = "no"; //"yes" (halt with message), "no" (ignore errors quietly), "report" (ignore errror, but spit a warning)
 	var $Seq_Table = "db_sequence";
@@ -40,24 +38,25 @@ class le_MySQL {
 	var $Link_ID = 0;
 	var $Query_ID = 0;
 
-
-
 	/* public: constructor */
-	function MySQL($query = "") {
+
+	function MySQL($query = ""){
 		$this->query($query);
 	}
 
 	/* public: some trivial reporting */
-	function link_id() {
+
+	function link_id(){
 		return $this->Link_ID;
 	}
 
-	function query_id() {
+	function query_id(){
 		return $this->Query_ID;
 	}
 
 	/* public: connection management */
-	function connect($Database = "", $Host = "", $User = "", $Password = "") {
+
+	function connect($Database = "", $Host = "", $User = "", $Password = ""){
 		/* Handle defaults */
 		if("" == $Database){
 			$Database = $this->Database;
@@ -73,16 +72,16 @@ class le_MySQL {
 		}
 
 		/* establish connection, select database */
-		if( 0 == $this->Link_ID ){
+		if(0 == $this->Link_ID){
 
-			$this->Link_ID=mysqli_connect('p:'.$Host, $User, $Password);
+			$this->Link_ID = mysqli_connect('p:' . $Host, $User, $Password);
 			if(!$this->Link_ID){
 				$this->halt("pconnect($Host, $User, \$Password) failed.");
 				return 0;
 			}
 
-			if(!mysqli_select_db($this->Link_ID,$Database)){
-				$this->halt("cannot use database ".$this->Database);
+			if(!mysqli_select_db($this->Link_ID, $Database)){
+				$this->halt("cannot use database " . $this->Database);
 				return 0;
 			}
 		}
@@ -91,7 +90,8 @@ class le_MySQL {
 	}
 
 	/* public: discard the query result */
-	function free() {
+
+	function free(){
 		if(is_resource($this->Query_ID)){
 			mysqli_free_result($this->Query_ID);
 			$this->Query_ID = 0;
@@ -99,7 +99,8 @@ class le_MySQL {
 	}
 
 	/* public: perform a query */
-	function query($Query_String) {
+
+	function query($Query_String){
 		/* No empty queries, please, since PHP4 chokes on them. */
 		if($Query_String == ""){
 			/* The empty query string is passed on from the constructor,
@@ -114,24 +115,24 @@ class le_MySQL {
 		};
 
 		/* New query, discard previous result */
-		if ($this->Query_ID){
+		if($this->Query_ID){
 			$this->free();
 		}
 
-		if ($this->Debug){
+		if($this->Debug){
 			printf("Debug: query = %s<br>\n", $Query_String);
 		}
 
-		$this->Query_ID = mysqli_query($this->Link_ID,$Query_String);
-		if(preg_match('/alter table (.*) (add|change|modify|drop)/i', $Query_String,$matches)){
-			mysqli_query($this->Link_ID,'ANALYZE TABLE '.$matches[1]);
+		$this->Query_ID = mysqli_query($this->Link_ID, $Query_String);
+		if(preg_match('/alter table (.*) (add|change|modify|drop)/i', $Query_String, $matches)){
+			mysqli_query($this->Link_ID, 'ANALYZE TABLE ' . $matches[1]);
 		}
 
-		$this->Row   = 0;
+		$this->Row = 0;
 		$this->Errno = mysqli_errno();
 		$this->Error = mysqli_error();
 		if(!$this->Query_ID){
-			$this->halt("Invalid SQL: ".$Query_String);
+			$this->halt("Invalid SQL: " . $Query_String);
 		}
 
 		/* Will return nada if it fails. That's fine */
@@ -139,6 +140,7 @@ class le_MySQL {
 	}
 
 	/* public: walk result set */
+
 	function next_record(){
 		if(!$this->Query_ID){
 			$this->halt("next_record called with no query pending.");
@@ -146,9 +148,9 @@ class le_MySQL {
 		}
 
 		$this->Record = @mysqli_fetch_array($this->Query_ID);
-		$this->Row   += 1;
-		$this->Errno  = mysqli_errno();
-		$this->Error  = mysqli_error();
+		$this->Row += 1;
+		$this->Errno = mysqli_errno();
+		$this->Error = mysqli_error();
 
 		$stat = is_array($this->Record);
 		if(!$stat && $this->Auto_Free){
@@ -158,12 +160,13 @@ class le_MySQL {
 	}
 
 	/* public: position in result set */
-	function seek($pos = 0) {
+
+	function seek($pos = 0){
 		$status = @mysqli_data_seek($this->Query_ID, $pos);
-		if ($status){
+		if($status){
 			$this->Row = $pos;
-		} else{
-			$this->halt("seek($pos) failed: result has ".$this->num_rows()." rows");
+		} else {
+			$this->halt("seek($pos) failed: result has " . $this->num_rows() . " rows");
 
 			/* half assed attempt to save the day,
 			 * but do not consider this documented or even
@@ -178,24 +181,25 @@ class le_MySQL {
 	}
 
 	/* public: table locking */
-	function lock($table, $mode="write"){
+
+	function lock($table, $mode = "write"){
 		$this->connect();
 
-		$query="lock tables ";
+		$query = "lock tables ";
 		if(is_array($table)){
-			while (list($key, $value)=each($table)){
-				if ($key=="read" && $key!=0) {
+			while(list($key, $value) = each($table)){
+				if($key == "read" && $key != 0){
 					$query.="$value read, ";
-				} else{
+				} else {
 					$query.="$value $mode, ";
 				}
 			}
-			$query=substr($query,0,-2);
-		} else{
+			$query = substr($query, 0, -2);
+		} else {
 			$query.="$table $mode";
 		}
 
-		$res = @mysqli_query($this->Link_ID,$query);
+		$res = @mysqli_query($this->Link_ID, $query);
 		if(!$res){
 			$this->halt("lock($table, $mode) failed.");
 			return 0;
@@ -203,10 +207,10 @@ class le_MySQL {
 		return $res;
 	}
 
-	function unlock() {
+	function unlock(){
 		$this->connect();
 
-		$res = @mysqli_query($this->Link_ID,"unlock tables");
+		$res = @mysqli_query($this->Link_ID, "unlock tables");
 		if(!$res){
 			$this->halt("unlock() failed.");
 			return 0;
@@ -215,78 +219,74 @@ class le_MySQL {
 	}
 
 	/* public: evaluate the result (size, width) */
-	function affected_rows() {
+
+	function affected_rows(){
 		return @mysqli_affected_rows($this->Link_ID);
 	}
 
-	function num_rows() {
+	function num_rows(){
 		return @mysqli_num_rows($this->Query_ID);
 	}
 
-	function num_fields() {
+	function num_fields(){
 		return @mysqli_num_fields($this->Query_ID);
 	}
 
 	/* public: shorthand notation */
-	function nf() {
+
+	function nf(){
 		return $this->num_rows();
 	}
 
-	function np() {
+	function np(){
 		print $this->num_rows();
 	}
 
-	function f($Name) {
+	function f($Name){
 		return $this->Record[$Name];
 	}
 
-	function p($Name) {
+	function p($Name){
 		print $this->Record[$Name];
 	}
 
 	/* public: sequence numbers */
-	function nextid($seq_name) {
+
+	function nextid($seq_name){
 		$this->connect();
 
 		if($this->lock($this->Seq_Table)){
 			/* get sequence number (locked) and increment */
-			$q  = sprintf("select nextid from %s where seq_name = '%s'",
-				$this->Seq_Table,
-				$seq_name);
-			$id  = @mysqli_query($this->Link_ID,$q);
+			$q = sprintf("select nextid from %s where seq_name = '%s'", $this->Seq_Table, $seq_name);
+			$id = @mysqli_query($this->Link_ID, $q);
 			$res = @mysqli_fetch_array($id);
 
 			/* No current value, make one */
 			if(!is_array($res)){
 				$currentid = 0;
-				$q = sprintf("insert into %s values('%s', %s)",
-					$this->Seq_Table,
-					$seq_name,
-					$currentid);
-				$id = @mysqli_query($this->Link_ID,$q);
-			} else{
+				$q = sprintf("insert into %s values('%s', %s)", $this->Seq_Table, $seq_name, $currentid);
+				$id = @mysqli_query($this->Link_ID, $q);
+			} else {
 				$currentid = $res["nextid"];
 			}
 
 			$nextid = $currentid + 1;
-			$q = sprintf("update %s set nextid = '%s' where seq_name = '%s'",
-				$this->Seq_Table,
-				$nextid,
-				$seq_name);
-			$id = @mysqli_query($this->Link_ID,$q);
+			$q = sprintf("update %s set nextid = '%s' where seq_name = '%s'", $this->Seq_Table, $nextid, $seq_name);
+			$id = @mysqli_query($this->Link_ID, $q);
 			$this->unlock();
-		} else{
-			$this->halt("cannot lock ".$this->Seq_Table." - has it been created?");
+		} else {
+			$this->halt("cannot lock " . $this->Seq_Table . " - has it been created?");
 			return 0;
 		}
 		return $nextid;
 	}
 
 	/* public: return table metadata */
-	function metadata($table='', $full=false) {
+
+	function metadata($table = '', $full = false){
 		$count = 0;
-		$id    = 0;
-		$res   = array();
+		$id = 0;
+		$res = array();
 
 		/*
 		 * Due to compatibility problems with Table we changed the behavior
@@ -322,7 +322,7 @@ class le_MySQL {
 			if(!$id){
 				$this->halt("Metadata query failed.");
 			}
-		} else{
+		} else {
 			$id = $this->Query_ID;
 			if(!$id){
 				$this->halt("No query specified.");
@@ -333,22 +333,22 @@ class le_MySQL {
 
 		// made this IF due to performance (one if is faster than $count if's)
 		if(!$full){
-			for ($i=0; $i<$count; $i++) {
-				$res[$i]["table"] = @mysqli_field_table ($id, $i);
-				$res[$i]["name"]  = @mysqli_field_name  ($id, $i);
-				$res[$i]["type"]  = @mysqli_field_type  ($id, $i);
-				$res[$i]["len"]   = @mysqli_field_len   ($id, $i);
-				$res[$i]["flags"] = @mysqli_field_flags ($id, $i);
+			for($i = 0; $i < $count; $i++){
+				$res[$i]["table"] = @mysqli_field_table($id, $i);
+				$res[$i]["name"] = @mysqli_field_name($id, $i);
+				$res[$i]["type"] = @mysqli_field_type($id, $i);
+				$res[$i]["len"] = @mysqli_field_len($id, $i);
+				$res[$i]["flags"] = @mysqli_field_flags($id, $i);
 			}
-		} else{ // full
-			$res["num_fields"]= $count;
+		} else { // full
+			$res["num_fields"] = $count;
 
-			for($i=0; $i<$count; $i++) {
-				$res[$i]["table"] = @mysqli_field_table ($id, $i);
-				$res[$i]["name"]  = @mysqli_field_name  ($id, $i);
-				$res[$i]["type"]  = @mysqli_field_type  ($id, $i);
-				$res[$i]["len"]   = @mysqli_field_len   ($id, $i);
-				$res[$i]["flags"] = @mysqli_field_flags ($id, $i);
+			for($i = 0; $i < $count; $i++){
+				$res[$i]["table"] = @mysqli_field_table($id, $i);
+				$res[$i]["name"] = @mysqli_field_name($id, $i);
+				$res[$i]["type"] = @mysqli_field_type($id, $i);
+				$res[$i]["len"] = @mysqli_field_len($id, $i);
+				$res[$i]["flags"] = @mysqli_field_flags($id, $i);
 				$res["meta"][$res[$i]["name"]] = $i;
 			}
 		}
@@ -361,7 +361,8 @@ class le_MySQL {
 	}
 
 	/* private: error handling */
-	function halt($msg) {
+
+	function halt($msg){
 		$this->Error = @mysqli_error($this->Link_ID);
 		$this->Errno = @mysqli_errno($this->Link_ID);
 		if($this->Halt_On_Error == "no"){
@@ -375,52 +376,49 @@ class le_MySQL {
 		}
 	}
 
-	function haltmsg($msg) {
+	function haltmsg($msg){
 		printf("</td></tr></table><b>Database error:</b> %s<br>\n", $msg);
-		printf("<b>MySQL Error</b>: %s (%s)<br>\n",
-		$this->Errno,
-		$this->Error);
+		printf("<b>MySQL Error</b>: %s (%s)<br>\n", $this->Errno, $this->Error);
 	}
 
-	function table_names() {
+	function table_names(){
 		$this->query("SHOW TABLES");
-		$i=0;
-		while($info=mysqli_fetch_row($this->Query_ID)){
-			$return[$i]["table_name"]= $info[0];
-			$return[$i]["tablespace_name"]=$this->Database;
-			$return[$i]["database"]=$this->Database;
+		$i = 0;
+		while($info = mysqli_fetch_row($this->Query_ID)){
+			$return[$i]["table_name"] = $info[0];
+			$return[$i]["tablespace_name"] = $this->Database;
+			$return[$i]["database"] = $this->Database;
 			$i++;
 		}
 		return $return;
 	}
 
-	function last_insert_id() {
+	function last_insert_id(){
 		return mysqli_insert_id($this->Link_ID);
 	}
+
 }
 
-class le_MySQL_DB extends le_MySQL {
-
+class le_MySQL_DB extends le_MySQL{
 	var $Host;
 	var $Database;
 	var $User;
 	var $Password;
 
-	function __construct() {
+	function __construct(){
 
-		$this->Host     = $_SESSION["le_db_host"];
-		$this->User     = $_SESSION["le_db_user"];
+		$this->Host = $_SESSION["le_db_host"];
+		$this->User = $_SESSION["le_db_user"];
 		$this->Password = $_SESSION["le_db_password"];
 		$this->Database = $_SESSION["le_db_database"];
 		if(isset($_SESSION["le_db_charset"])){
 			$this->Charset = $_SESSION["le_db_charset"];
-		} else{
-			$this->Charset ='';
+		} else {
+			$this->Charset = '';
 		}
 	}
 
-
-	function connect($Database = "", $Host = "", $User = "", $Password = "", $Charset="") {
+	function connect($Database = "", $Host = "", $User = "", $Password = "", $Charset = ""){
 
 		/* Handle defaults */
 		if("" == $Database){
@@ -440,34 +438,35 @@ class le_MySQL_DB extends le_MySQL {
 		}
 
 		/* establish connection, select database */
-		if( 0 == $this->Link_ID ){
+		if(0 == $this->Link_ID){
 
 			if(isset($GLOBALS["dbconnect"]) && $GLOBALS["dbconnect"] == "mysqli_pconnect"){
-				$this->Link_ID=mysqli_connect('p:'.$Host, $User, $Password);
-				if (!$this->Link_ID) {
+				$this->Link_ID = mysqli_connect('p:' . $Host, $User, $Password);
+				if(!$this->Link_ID){
 					$this->halt("pconnect($Host, $User, \$Password) failed.");
 					return 0;
 				}
-			} else{
-				$this->Link_ID=mysqli_connect($Host, $User, $Password);
+			} else {
+				$this->Link_ID = mysqli_connect($Host, $User, $Password);
 				if(!$this->Link_ID){
 					$this->halt("connect($Host, $User, \$Password) failed.");
 					return 0;
 				}
 			}
 
-			if(!@mysqli_select_db($this->Link_ID,$Database)){
-				$this->halt("cannot use database ".$this->Database);
+			if(!@mysqli_select_db($this->Link_ID, $Database)){
+				$this->halt("cannot use database " . $this->Database);
 				return 0;
 			}
 			// deactivate MySQL strict mode #185
 			$this->query(" SET SESSION sql_mode='' ");
 
 			//
-			if($Charset !=''){
+			if($Charset != ''){
 				$this->query(" SET NAMES '" . $Charset . "' ");
 			}
 		}
 		return $this->Link_ID;
 	}
+
 }

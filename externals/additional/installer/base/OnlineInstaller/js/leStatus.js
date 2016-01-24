@@ -1,7 +1,7 @@
 function leStatus() {}
 
 
-leStatus.getChildNodes = function(myElem, filter) {
+leStatus.getChildNodes = function (myElem, filter) {
 
 	if (!myElem) {
 		var _childs = [];
@@ -17,7 +17,7 @@ leStatus.getChildNodes = function(myElem, filter) {
 
 		for (var i = 0; i < childs.length; i++) {
 
-			if(childs[i].nodeName == filter) {
+			if (childs[i].nodeName == filter) {
 
 				_childs.push(childs[i]);
 			}
@@ -32,7 +32,7 @@ leStatus.getChildNodes = function(myElem, filter) {
 }
 
 
-leStatus.update = function(id, wizard, step) {
+leStatus.update = function (id, wizard, step) {
 	var ulWizards = id + "Bar";
 
 	var liWizard = "liWizard_" + wizard;
@@ -54,14 +54,14 @@ leStatus.update = function(id, wizard, step) {
 
 		liWizards[i].className = setClassWizard
 
-		for (var j=0; j<liWizardSteps.length; j++) {
+		for (var j = 0; j < liWizardSteps.length; j++) {
 			isIterationStep = false;
 			liWizardSteps[j].className = setClassWizardStep;
 
 			if (liWizardSteps[j].id == liWizardStep) {
 				liWizardSteps[j].className = id + "ActiveStep";
 
-				if ( liWizardSteps[j].getAttribute("iterationStep") ) {
+				if (liWizardSteps[j].getAttribute("iterationStep")) {
 
 				} else {
 

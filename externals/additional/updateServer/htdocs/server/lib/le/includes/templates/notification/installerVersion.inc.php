@@ -6,4 +6,3 @@ $liveUpdateResponse['Content'] = '
 ' . $GLOBALS['lang']['notification']['installerVersionFailed']['content'] . '
 </div>
 ';
-

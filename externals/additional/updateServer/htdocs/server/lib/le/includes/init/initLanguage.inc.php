@@ -5,11 +5,11 @@ $AvailableLanguages = array(
 	'de' => 'Deutsch',
 	'Deutsch' => 'Deutsch',
 	'de_utf8' => 'Deutsch',
-	'Deutsch_UTF-8' => 'Deutsch_UTF-8',
+	'Deutsch_UTF-8' => 'Deutsch',
 	'en' => 'English',
 	'English' => 'English',
-	'en_utf8' => 'English_UTF-8',
-	'English_UTF-8' => 'English_UTF-8',
+	'en_utf8' => 'English',
+	'English_UTF-8' => 'English',
 );
 
 

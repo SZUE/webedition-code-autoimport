@@ -1,5 +1,6 @@
 <?php
-class leInput {
+
+class leInput{
 
 	static function get($name, $value, $attribs, $type = "text"){
 
@@ -11,7 +12,6 @@ class leInput {
 		$_attribs .= " class=\"textinput\" onblur=\"this.className='textinput';\" onfocus=\"this.className='textinputselected'\"";
 
 		return "<input type=\"$type\" name=\"$name\" value=\"" . stripslashes(htmlspecialchars($value)) . "\" $_attribs />";
-
 	}
 
 }

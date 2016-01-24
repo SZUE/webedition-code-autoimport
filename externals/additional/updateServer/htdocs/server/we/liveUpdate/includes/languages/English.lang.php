@@ -21,7 +21,7 @@ $lang['register']['salutationMrs'] = 'Mrs.';
 
 $lang['license']['undefinedError'] = 'Undefined Error';
 
-$lang['upgrade']['headline'] = 'Upgrade to webEdition 6';
+$lang['upgrade']['headline'] = 'Upgrade to webEdition 5';
 $lang['upgrade']['registerBeforeUpgrade'] = 'The registration information on our server differs from the information on your domain. This error can occur if you have modules that are registered and associated with your domain but which are no longer installed (after reinstall). To correct this, use the update functions for webEdition 5. Thereafter you can proceed with the update to webEdition version 6.';
 $lang['upgrade']['registerBeforeUpgrade_we4'] = 'The registration information on our server differs from the information on your domain. This error can occur if you have modules that are registered and associated with your domain but which are no longer installed (after reinstall). To correct this, use the update functions for webEdition 4. Thereafter you can proceed with the update to webEdition version 5.';
 $lang['upgrade']['registerBeforeUpgrade_we5light'] = 'The registration information on our server differs from the information on your domain. To correct this, use the update functions for webEdition 5 light. Thereafter you can proceed with the update to webEdition version 5.';
@@ -37,7 +37,7 @@ $lang['upgrade']['confirmUpdateHint'][6100] = '<b>webEdition 6.1.0.0:</b><ul><li
 $lang['upgrade']['confirmUpdateHint'][6101] = '<b>webEdition 6.1.0.1:</b><ul><li><b>For this webEdition version, <u>PHP version 5.2.4</u> or newer is required.</b></li></ul>';
 $lang['upgrade']['confirmUpdateHint'][6102] = '<b>webEdition 6.1.0.2:</b><ul><li>For this webEdition version, <u>PHP version 5.2.4</u> or newer is required.</li><li>The wrong behavior of &lt;we:ifRegisteredUser cfilter="true" /&gt; with set customer filter and document setting "Filter is off (all visitors have access)" was corrected.</b> If this exact setting os used in documents, all visitors get now access to these documents. <b>This should be checked <u>before</u> and after the update.</b></li></ul>';
 $lang['upgrade']['confirmUpdateHint'][6200] = '<b>webEdition 6.2.0.0:</b><ul><li>This update requires temporarily about <b>80 MB free webspace (Quota!)</b> since the files of the Zend framework are replaced</li><li>For this webEdition version, <u>PHP version 5.2.4</u> or newer is required.</li><li>After the rebuild over documents and templates, please rebuild also:<ul><li>Navigation</li><li>Objects</li><li>Index</li></ul></li><li>In this version, new DB indices are introduced. Please check the update log after the update. If there are errors due to double entries, you have to clean up the tables (delete double entries) with an external tool. After cleaning up, please repeat the update and all rebuilds</li><li>The loading of WE tags was optimized. If problems occur, you can go back to the old behavior in the settings dialog, tab system at backward compatibility</li></ul>';
-$lang['upgrade']['confirmUpdateHint'][6210] = '<b>webEdition 6.2.1.0:</b><ul><li>This update requires temporarily about <b>35 MB free webspace (Quota!)</b> since the files of the Zend framework are replaced</li><li>For this webEdition version, <u>PHP version 5.2.4</u> or newer is required and a MySQL databse Version 5.x or higher.</li><<li>In 6.2.0, new DB indices were introduced. Please check the update log after the update. If there are errors due to double entries, you have to clean up the tables (delete double entries) with an external tool. After cleaning up, please repeat the update and all rebuilds</li></ul>';
+$lang['upgrade']['confirmUpdateHint'][6210] = '<b>webEdition 6.2.1.0:</b><ul><li>This update requires temporarily about <b>35 MB free webspace (Quota!)</b> since the files of the Zend framework are replaced</li><li>For this webEdition version, <u>PHP version 5.2.4</u> or newer is required and a MySQL databse Version 5.x or higher.</li><li>In 6.2.0, new DB indices were introduced. Please check the update log after the update. If there are errors due to double entries, you have to clean up the tables (delete double entries) with an external tool. After cleaning up, please repeat the update and all rebuilds</li></ul>';
 $lang['upgrade']['confirmUpdateHint'][6220] = '<b>webEdition 6.2.2.0:</b><ul><li>For this webEdition version, <u>PHP version 5.2.4</u> or newer is required and a MySQL databse Version 5.x or higher.</li><li>This update fixes an old error which was relevant only in version 6.2.1. The spelling of the tags is correctd to the old standard: &lt;we:conditionAnd&gt; (not AND) und &lt;we:conditionOr&gt; (not OR). If problems occur, you can select backward compatibility in the settings, tab system.</li></ul>';
 $lang['upgrade']['confirmUpdateHint'][6230] = '<b>webEdition 6.2.3.0:</b><ul><li>This update fixes a severe security problem in the customer module. To fix it, among other changes, the standard value for the attribute register of the tag we:saveRegisteredUser had to be changed. Should the registration of new customers not work properly after the update, you can set the old behaviour in the settings dialog of the customer module.</li></ul>';
 $lang['upgrade']['confirmUpdateHint'][6300] = '<b>webEdition 6.3.0.0:</b><ul><li>This update optimizes the complete webEdition infra strukture. Due to the many changes it is possible to run into problems after the update!</li><li><b>Perform a komplete backup of the entire Site</b></li><li>Follow the hints in the version history in detail about <b>possible problems und solutions Problemen und Lösungen, see <a href="http://www.webedition.org/de/webedition-cms/versionshistorie/webedition-6/version-6.3.0.0" target="_blank">version 6.3.0.0</a></b></li><li>Possibly, perform a <b>test update</b> on a copy of the site.</li><li>After rebuilding all templates and Ddkuments, please check the error log for further hints on problems</li></ul>';
@@ -80,11 +80,9 @@ $lang['update']['alpha'] = 'Alpha';
 $lang['update']['beta'] = 'Beta';
 $lang['update']['rc'] = 'RC';
 $lang['update']['release'] = 'official Release';
-
 $lang['update']['installedVersion'] = 'Running version';
 $lang['update']['newestVersionSameBranch'] = '<br/>Available version from the same branch';
 $lang['update']['newestVersion'] = '<br/>Newest available version';
-
 $lang['update']['updateAvailableText'] = 'Your installed webEdition is not up to date anymore. Please select the version you want to update to';
 $lang['update']['updatetoVersion'] = 'Update to version:';
 $lang['update']['suggestCurrentVersion'] = 'We strongly recommend to use the most recent version all the time.';
@@ -92,6 +90,7 @@ $lang['update']['noUpdateNeeded'] = 'There is currently no update available. You
 $lang['update']['repeatUpdatePossible'] = 'You can repeat an update. During that process all webEdition program files are replaced.<br />Attention, this process will need some time.<br/><b>This process needs up to max. 100 MB free Webspace.</b>';
 $lang['update']['repeatUpdateNeeded'] = '<b>Before you can update to the new version, you have to repeat the update of the current installed version (replacing all webEdition program files)</b>, since your installed SVN revison is lower than the SVN revision stored in the database.<br />Attention, this process will need some time.<br/><b>This process needs up to max. 100 MB free Webspace.</b>';
 $lang['update']['repeatUpdateNotPossible'] = 'Your installed version is newer than the version available for update. <b>Therefore, you can not repeat the update.</b> If you want to repeat  nightly builds or Alpha, Beta or RC versions, please activate the option in the tab "Pre-Release Versions"';
+
 $lang['update']['noUpdateForLanguagesText'] = 'You are running webEdition vesrion %s. There is no update available currently, as the update is not available for all your installed languages.';
 $lang['update']['installedLanguages'] = 'The following languages are installed on your system';
 $lang['update']['updatePreventingLanguages'] = 'These languages prevent the update:';
@@ -109,7 +108,6 @@ $lang['update']['ReqWarnungHinweis'] = 'Hint: ';
 $lang['update']['ReqWarnungPCREold1'] = 'Your PCRE version (';
 $lang['update']['ReqWarnungPCREold2'] = ') is outdated. This can lead to some problems.';
 $lang['update']['ReqWarnungPHPextension'] = 'A required PHP extension is missing: ';
-$lang['update']['ReqWarnungPHPextensionND'] = 'It can not be determined if your system meets the current system requirements for the update. Please check the system requirements yourself at http://www.webedition.org/de/webedition-cms/systemvoraussetzungen.php ';
 $lang['update']['ReqWarnungPHPextensionND'] = 'The required PHP extensions can not be checked';
 $lang['update']['ReqWarnungNoCheck'] = 'It can not be determined if your system meets the current system requirements for the update. Please check the system requirements yourself at <a href="http://www.webedition.org/de/webedition-cms/systemvoraussetzungen.php" target="_blank">http://www.webedition.org/de/webedition-cms/systemvoraussetzungen.php</a><br/>We recommend, <b>after manually checking the system requirements above,</b> to update first to <b>version 6.1.0.2</b>. The requirements in this version are lower and be checked in later updates automatically.';
 $lang['update']['ReqWarnungMySQL4'] = 'For the desired version, MySQL version 4.1 or higher is required. benötigt. This requirement is not met.';
@@ -125,6 +123,7 @@ $lang['update']['spenden'] = 'This webEdition version was made possible bei the 
 It allows the foundation to employ professional developers which make it <br/>
 possible to fix bugs and to implement new features faster and to ensure <br/>
 the development of webEdition on the long run';
+
 $lang['modules']['headline'] = 'Installation of modules';
 $lang['modules']['textConfirmModules'] = 'The following modules will be installed. Confirm them and the installation will start. After the installation webEdition must be restarted.';
 $lang['modules']['reselectModules'] = 'The selected Modules can not be installed. You do not have enough licenses for the selected modules.<br /><br />Please reselect the modules.<br /><br />You selected the follwing modules:';
@@ -163,7 +162,6 @@ $lang['installer']['finished'] = 'The installation is completed. To activate all
 
 $lang['languages']['headline'] = 'Installation of languages';
 $lang['languages']['installLamguages'] = 'The following languages can be installed.<br /><i>Emphasized</i> languages are already installed on your system, but you can repeat the installation.<br /><b>Please Note:</b> Languages marked as <font color="red">[beta]</font> can be incomplete or even defective. But you are welcome to help the webEdition team completing these translations.';
-
 $lang['languages']['languagesNotReady'] = 'The follwoing languages can not be installed for the version you are running';
 $lang['languages']['confirmInstallation'] = 'The following languages will be installed.';
 $lang['languages']['installLanguages'] = 'Install selected languages';
@@ -196,7 +194,6 @@ $luSystemLanguage['installer']['entryAlreadyExists'] = 'Entries already exist';
 $luSystemLanguage['installer']['errorExecutingQuery'] = 'Could not execute several queries.';
 $luSystemLanguage['installer']['fileNotWritableError'] = 'weBedition does not have write access for the following file, and the installer was not able to adjust the access rights by itself:<br />\\\n<code class=\\\\\"errorText\\\\\">%s</code><br />\\\nPlease adjust the rights manually and click on the button \\\\\"Load again\\\\\" to continue installation.';
 
-
 $luSystemLanguage['register']['registrationError'] = 'Error during Registration process';
 $luSystemLanguage['register']['finished'] = 'Registration finished';
 
@@ -208,7 +205,7 @@ $luSystemLanguage['upgrade']['finished'] = 'Update to webEdition version 5 compl
 $luSystemLanguage['update']['start'] = 'Start Update to version ' . (isset($_SESSION['clientTargetVersion']) ? $_SESSION['clientTargetVersion'] : '');
 $luSystemLanguage['update']['finished'] = 'Update completed.';
 $luSystemLanguage['update']['version'] = ' Version: ';
-$luSystemLanguage['update']['branch'] = ', Branch: ';
+$luSystemLanguage['update']['branch'] = ' Branch: ';
 $luSystemLanguage['update']['svn'] = ', SVN-Revision: ';
 
 $luSystemLanguage['modules']['start'] = 'Start installation of modules';
@@ -216,4 +213,3 @@ $luSystemLanguage['modules']['finished'] = 'Installation of modules completed';
 
 $luSystemLanguage['languages']['start'] = 'Start installation of languages';
 $luSystemLanguage['languages']['finished'] = 'Installation of languages completed';
-

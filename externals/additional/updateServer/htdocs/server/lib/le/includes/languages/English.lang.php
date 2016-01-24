@@ -15,7 +15,7 @@ $lang['notification']['highload'] = 'Dear webEdition User,<br />Unfortunately, w
 $lang['notification']['highloadSourceforge'] = 'Dear webEdition User,<br />Unfortunately, we are experiencing some bottlenecks with our server at the moment due to the huge interest in webEdition 6 Open Source. As a result, an installation with the online installer might not be possible at the moment.<br />Please use the complete installation archives for the "manual installation" from our <a href="http://sourceforge.net/projects/webedition/" target="_blank">sourcforge.net project site</a>instead.<br />We apologize for any inconvenience and hope you enjoy webEdition 6.';
 $lang['notification']['maintenance'] = 'Due to maintenance, the update functions of webEdition 6 are not available at the moment.';
 $lang['notification']['maintenance_15'] = 'Due to maintenance work, the webEdition update and installation server is not available at the moment until approx 15.00. Please, excuse the inconvenience.';
-$lang['notification']['updateNotPossibleUntilRelease'] = 'The update functions for webEdition 6 are disabled until 2008-1!-03.';
+$lang['notification']['updateNotPossibleUntilRelease'] = 'The update functions for webEdition 6 are disabled until 2008-11-03.';
 $lang['notification']['betaExpired'] = 'You are currently running a beta version of webEdition. The beta programme of version %s is completed. Please install a regurlar version of webEdition.';
 
 $lang['notification']['importantAnnouncementIcon'] = '<img src="http://' . $_SERVER["HTTP_HOST"] . '/server/lib/img/alert.gif" style="margin:0px 10px 10px 0px; float:right;"/>';

@@ -11,7 +11,6 @@ class languages extends languagesBase{
 
 		// at least already installed languages can be reinstalled
 		$GLOBALS['updateServerTemplateData']['installAbleLanguages'] = update::getPossibleLanguagesArray();
-		$GLOBALS['updateServerTemplateData']['installAbleBetaLanguages'] = update::getPossibleBetaLanguagesArray();
 
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/languages/languagesForm.inc.php');
 		return updateUtil::getResponseString($ret);

@@ -1,7 +1,6 @@
 <?php
 
-class leOnlineInstaller {
-
+class leOnlineInstaller{
 	/**
 	 * @var array
 	 */
@@ -25,98 +24,82 @@ class leOnlineInstaller {
 	/**
 	 * @var le_OnlineInstaller_WizardStep
 	 */
-	var $CurrentStep   = null;
+	var $CurrentStep = null;
 
 	/**
 	 * @var le_OnlineInstaller_WizardStep
 	 */
-	var $BackStep   = null;
+	var $BackStep = null;
 
 	/**
 	 * @var le_OnlineInstaller_WizardStep
 	 */
-	var $NextStep   = null;
+	var $NextStep = null;
 
 	/**
 	 * @var le_OnlineInstaller_StepTemplate
 	 */
 	var $StepTemplate = null;
 
-
 	//function leOnlineInstaller() {
-		//$this->__construct();
-
+	//$this->__construct();
 	//}
 
-	function __construct() {
+	function __construct(){
 		$this->initLanguage();
 	}
 
-	function initLanguage() {
+	function initLanguage(){
 
-		$AvailableLanguages = $this->getAvailableLanguages();
-		$DefaultLanguage = 'Deutsch_UTF-8';
+		$AvailableLanguages = self::getAvailableLanguages();
+		$DefaultLanguage = 'Deutsch';
 
 		if(isset($_REQUEST['leInstallerLanguage']) && in_array($_REQUEST['leInstallerLanguage'], $AvailableLanguages)){
 			$_SESSION['leInstallerLanguage'] = $_REQUEST['leInstallerLanguage'];
-
 		} elseif(isset($_SESSION['leInstallerLanguage']) && in_array($_SESSION['leInstallerLanguage'], $AvailableLanguages)){
 			$_SESSION['leInstallerLanguage'] = $_SESSION['leInstallerLanguage'];
-
-		} else{
-			$_SESSION['leInstallerLanguage'] = $this->getLanguageFromBrowser($AvailableLanguages, $DefaultLanguage);
-
-		}
-		
-		if(substr($_SESSION['leInstallerLanguage'],-6) == "_UTF-8"){
-			$_SESSION['leInstallerCharset'] = "UTF-8";
 		} else {
-			$_SESSION['leInstallerCharset'] = "ISO-8859-1";
+			$_SESSION['leInstallerLanguage'] = $this->getLanguageFromBrowser($AvailableLanguages, $DefaultLanguage);
 		}
+
+		$_SESSION['leInstallerCharset'] = "UTF-8";
 
 		// Load language files
 		$LanguageOnlineInstaller = array();
-		if(file_exists(LE_ONLINE_INSTALLER_PATH . "/includes/language/" . $_SESSION['leInstallerLanguage'] . ".inc.php")) {
+		if(file_exists(LE_ONLINE_INSTALLER_PATH . "/includes/language/" . $_SESSION['leInstallerLanguage'] . ".inc.php")){
 			require(LE_ONLINE_INSTALLER_PATH . "/includes/language/" . $_SESSION['leInstallerLanguage'] . ".inc.php");
 			$LanguageOnlineInstaller = $lang;
 		}
 
 		$LanguageApplicationInstaller = array();
-		if(file_exists(LE_APPLICATION_INSTALLER_PATH . "/includes/language/" . $_SESSION['leInstallerLanguage'] . ".inc.php")) {
+		if(file_exists(LE_APPLICATION_INSTALLER_PATH . "/includes/language/" . $_SESSION['leInstallerLanguage'] . ".inc.php")){
 			require(LE_APPLICATION_INSTALLER_PATH . "/includes/language/" . $_SESSION['leInstallerLanguage'] . ".inc.php");
 			$LanguageApplicationInstaller = $lang;
 		}
 		$GLOBALS['lang'] = array_merge($LanguageOnlineInstaller, $LanguageApplicationInstaller);
-
 	}
 
-
-	function getAvailableLanguages() {
+	static function getAvailableLanguages(){
 
 		$AvailableLanguages = array();
 
 		if(file_exists(LE_ONLINE_INSTALLER_PATH . "/includes/language") && is_dir(LE_ONLINE_INSTALLER_PATH . "/includes/language")){
 			$_handle = opendir(LE_ONLINE_INSTALLER_PATH . "/includes/language");
 
-			while(false !== ($_readdir = readdir($_handle)) ){
-				if($_readdir != '.' && $_readdir != '..') {
-					$_path = LE_ONLINE_INSTALLER_PATH . '/includes/language/'. $_readdir;
-					if (is_file($_path)) {
+			while(false !== ($_readdir = readdir($_handle))){
+				if($_readdir != '.' && $_readdir != '..'){
+					$_path = LE_ONLINE_INSTALLER_PATH . '/includes/language/' . $_readdir;
+					if(is_file($_path)){
 						array_push($AvailableLanguages, preg_replace('/\.inc\.php$/', '', $_readdir));
-
 					}
-
 				}
-
 			}
 			closedir($_handle);
-
 		}
 		return $AvailableLanguages;
 	}
 
-
-	function getLanguageFromBrowser($AllowedLanguages, $DefaultLanguage, $LanguageVariable = null, $StrictMode = true) {
+	function getLanguageFromBrowser($AllowedLanguages, $DefaultLanguage, $LanguageVariable = null, $StrictMode = true){
 
 		// use $_SERVER['HTTP_ACCEPT_LANGUAGE'] if no Language Varviable is given
 		if($LanguageVariable === null){
@@ -139,7 +122,7 @@ class leOnlineInstaller {
 		foreach($AcceptedLanguages as $AcceptedLanguage){
 			// get all information about the language
 			$matches = array();
-			$res = preg_match ('/^([a-z]{1,8}(?:-[a-z]{1,8})*)(?:;\s*q=(0(?:\.[0-9]{1,3})?|1(?:\.0{1,3})?))?$/i', $AcceptedLanguage, $matches);
+			$res = preg_match('/^([a-z]{1,8}(?:-[a-z]{1,8})*)(?:;\s*q=(0(?:\.[0-9]{1,3})?|1(?:\.0{1,3})?))?$/i', $AcceptedLanguage, $matches);
 
 			// the sytnax was valid
 			if(!$res){
@@ -148,23 +131,23 @@ class leOnlineInstaller {
 			}
 
 			// get the langugae code
-			$LanguageCode = explode ('-', $matches[1]);
+			$LanguageCode = explode('-', $matches[1]);
 
 			// is there a qaulity
 			if(isset($matches[2])){
 				// use quality
-				$LanguageQuality = (float)$matches[2];
-			} else{
+				$LanguageQuality = (float) $matches[2];
+			} else {
 				// Compatibility mode: quality 1.0
 				$LanguageQuality = 1.0;
 			}
 
 			// until Language Code is empty
-			while(count ($LanguageCode)){
-				if(in_array (strtolower (join ('-', $LanguageCode)), $AllowedLanguages)){
+			while(count($LanguageCode)){
+				if(in_array(strtolower(join('-', $LanguageCode)), $AllowedLanguages)){
 					if($LanguageQuality > $CurrentQuality){
 						// diese Sprache verwenden
-						$CurrentLanguage = strtolower (join ('-', $LanguageCode));
+						$CurrentLanguage = strtolower(join('-', $LanguageCode));
 						$CurrentQuality = $LanguageQuality;
 						break;
 					}
@@ -172,7 +155,7 @@ class leOnlineInstaller {
 				if($StrictMode){
 					break;
 				}
-				array_pop ($LanguageCode);
+				array_pop($LanguageCode);
 			}
 		}
 
@@ -180,15 +163,14 @@ class leOnlineInstaller {
 		return $CurrentLanguage;
 	}
 
-
 	/**
 	 * returns index (position) of wizard by name
 	 *
 	 * @param string $name
 	 * @return integer
 	 */
-	function getWizardIndexByName($name) {
-		for($i=0; $i<sizeof($this->Wizards); $i++){
+	function getWizardIndexByName($name){
+		for($i = 0; $i < sizeof($this->Wizards); $i++){
 			if($this->Wizards[$i]->Name == $name){
 				return $i;
 			}
@@ -196,23 +178,21 @@ class leOnlineInstaller {
 		return null;
 	}
 
-
 	/**
 	 * @param string $name
 	 * @return le_OnlineInstaller_Wizard
 	 */
-	function getWizardByName($name) {
+	function getWizardByName($name){
 		return $this->Wizards[$this->getWizardIndexByName($name)];
 	}
 
-
-	function initialize() {
+	function initialize(){
 
 		unset($leInstallerWizards);
 		if(file_exists(LE_ONLINE_INSTALLER_PATH . "/includes/wizards/wizards.inc.php")){
 			require(LE_ONLINE_INSTALLER_PATH . "/includes/wizards/wizards.inc.php");
 
-			for($i = 0; $i<sizeof($leInstallerWizards); $i++){
+			for($i = 0; $i < sizeof($leInstallerWizards); $i++){
 				$temp = new leWizard($leInstallerWizards[$i], LE_ONLINE_INSTALLER_WIZARD);
 
 				// array with all steps
@@ -228,7 +208,7 @@ class leOnlineInstaller {
 
 			require(LE_APPLICATION_INSTALLER_PATH . "/includes/wizards/wizards.inc.php");
 
-			for($i = 0; $i<sizeof($leInstallerWizards); $i++){
+			for($i = 0; $i < sizeof($leInstallerWizards); $i++){
 
 				$temp = new leWizard($leInstallerWizards[$i]);
 
@@ -238,12 +218,11 @@ class leOnlineInstaller {
 				}
 				$this->Wizards[] = $temp;
 			}
-
 		}
 
 		if(isset($_REQUEST["leWizard"])){
 
-			if( is_int($index = $this->getWizardIndexByName($_REQUEST["leWizard"])) ){
+			if(is_int($index = $this->getWizardIndexByName($_REQUEST["leWizard"]))){
 				$this->CurrentWizard = & $this->Wizards[$index];
 			}
 		}
@@ -266,19 +245,18 @@ class leOnlineInstaller {
 		}
 	}
 
-	function getFirstStepUrl() {
-		
+	function getFirstStepUrl(){
+
 		$leWizard = $this->Wizards[0]->Name;
-		$leStep =  $this->Wizards[0]->WizardSteps[0]->Name;
+		$leStep = $this->Wizards[0]->WizardSteps[0]->Name;
 
-		return LE_INSTALLER_ADAPTER_URL . "?leWizard=" . $leWizard. "&amp;leStep=" . $leStep;
+		return LE_INSTALLER_ADAPTER_URL . "?leWizard=" . $leWizard . "&amp;leStep=" . $leStep;
 	}
-
 
 	/**
 	 * @return le_OnlineInstaller_WizardStep
 	 */
-	function &getNextWizardStep() {
+	function &getNextWizardStep(){
 
 		$wizardStepInformation = $this->_getCurrentWizardStepInformation();
 		$currentPosition = $wizardStepInformation["position"];
@@ -299,11 +277,10 @@ class leOnlineInstaller {
 		return $null;
 	}
 
-
 	/**
 	 * @return le_OnlineInstaller_WizardStep
 	 */
-	function &getLastWizardStep() {
+	function &getLastWizardStep(){
 
 		$wizardStepInformation = $this->_getCurrentWizardStepInformation();
 		$currentPosition = $wizardStepInformation["position"];
@@ -325,14 +302,13 @@ class leOnlineInstaller {
 		return $null;
 	}
 
-
 	/**
 	 * @access private
 	 * @return array
 	 */
-	function _getCurrentWizardStepInformation() {
+	function _getCurrentWizardStepInformation(){
 
-		$i=0;
+		$i = 0;
 
 		$current = null;
 
@@ -354,11 +330,10 @@ class leOnlineInstaller {
 		return $current;
 	}
 
-
 	/**
 	 * @return string
 	 */
-	function executeStep() {
+	function executeStep(){
 
 		$Template = new leTemplate();
 
@@ -374,16 +349,13 @@ class leOnlineInstaller {
 
 			$this->BackStep = $this->getLastWizardStep();
 			$this->NextStep = $this->getNextWizardStep();
-
-		} else{ // excute current step
-
+		} else { // excute current step
 			switch($this->CurrentStep->execute($Template)){
 
 				// all was fine, open next step
 				case LE_STEP_NEXT:
-					if ($this->NextStep) {
+					if($this->NextStep){
 						$this->NextStep->prepare();
-
 					}
 					break;
 
@@ -406,5 +378,5 @@ class leOnlineInstaller {
 
 		print $Template->getOutput($this->CurrentStep);
 	}
-	
+
 }

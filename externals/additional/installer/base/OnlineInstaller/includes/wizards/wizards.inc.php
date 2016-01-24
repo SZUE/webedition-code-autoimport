@@ -1,9 +1,6 @@
 <?php
+$leInstallerWizards = array(
+	'Welcome',
+	'DownloadInstaller',
+);
 
-	$leInstallerWizards = array(
-		'Welcome',
-		'DownloadInstaller',
-
-	);
-
-?>

@@ -5,8 +5,6 @@ $leInstallerSteps = array(
 	'SoftwareRequirements',
 	//'Community',
 	//'CommunityRegistration',
-	//'SerialNumber',
-	//'ChooseModules',
 	//'ChooseSnippets', // not implemented yet
 );
 

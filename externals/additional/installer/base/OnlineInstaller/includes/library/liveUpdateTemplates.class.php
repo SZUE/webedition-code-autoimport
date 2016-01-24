@@ -1,10 +1,11 @@
 <?php
+
 /**
  * LiveUpdateTemplates is a helper function taking care of the view of the
  * update process. The functions here are only called from templates!
  *
  */
-class liveUpdateTemplates {
+class liveUpdateTemplates{
 
 	/**
 	 * returns standard html container for output
@@ -15,7 +16,7 @@ class liveUpdateTemplates {
 	 * @param integer $height
 	 * @return string
 	 */
-	function getContainer($headline, $content) {
+	function getContainer($headline, $content){
 
 
 		return "
@@ -25,7 +26,6 @@ class liveUpdateTemplates {
 				{$content}
 			</p>
 		</div>";
-
 	}
 
 	/**
@@ -33,7 +33,7 @@ class liveUpdateTemplates {
 	 *
 	 * @return string
 	 */
-	function getHtmlHead() {
+	function getHtmlHead(){
 
 		return "";
 	}
@@ -49,14 +49,12 @@ class liveUpdateTemplates {
 	 * @param integer $contentHeight
 	 * @return string
 	 */
-	function getHtml($headline, $content, $header='', $append = false) {
+	function getHtml($headline, $content, $header = '', $append = false){
 
-		if($append) {
+		if($append){
 			$PushJs = 'top.leContent.appendElement(document.getElementById("leContent"));';
-
 		} else {
 			$PushJs = 'top.leContent.replaceElement(document.getElementById("leContent"));';
-
 		}
 
 		return '<html>
@@ -72,4 +70,5 @@ class liveUpdateTemplates {
 	</body>
 </html>';
 	}
+
 }

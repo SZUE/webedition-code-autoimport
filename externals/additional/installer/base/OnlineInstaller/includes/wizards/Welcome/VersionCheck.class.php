@@ -1,26 +1,23 @@
 <?php
-class VersionCheck extends leStep {
 
+class VersionCheck extends leStep{
 	var $AutoContinue = 10;
 
-
-	function prepare() {
+	function prepare(){
 		global $LU_Version;
 		$_SESSION["le_installerVersion"] = $LU_Version;
 	}
 
-
-	function execute(&$Template = '') {
+	function execute(&$Template = ''){
 
 		$Success = true;
 		$VersionState = true;
-		
+
 		$VersionImage = leLayout::getRequirementStateImage();
-		if ( !(isset($_SESSION["le_testSession"]) && $_SESSION["le_testSession"] == "test-session" ) ) {
+		if(!(isset($_SESSION["le_testSession"]) && $_SESSION["le_testSession"] == "test-session" )){
 			$Success = false;
 			$VersionImage = leLayout::getRequirementStateImage(false);
 			$Template->addError($this->Language['installerVersionFailed']);
-
 		}
 
 		$Content = <<<EOF
@@ -37,15 +34,12 @@ EOF;
 
 		$this->setContent($Content);
 
-		if ($Success) {
+		if($Success){
 			return LE_STEP_NEXT;
-
 		} else {
 			$this->setContent($this->Language['failureMessage']);
 			return LE_STEP_FATAL_ERROR;
-
 		}
-
 	}
 
 }

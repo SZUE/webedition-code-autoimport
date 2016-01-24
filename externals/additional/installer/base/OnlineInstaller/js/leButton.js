@@ -1,7 +1,7 @@
 function leButton() {}
 
 
-leButton.down = function(el){
+leButton.down = function (el) {
 	if (el.className != "leBtnDisabled") {
 		var tds = el.getElementsByTagName("TD");
 		el.className = "leBtnClicked";
@@ -14,7 +14,7 @@ leButton.down = function(el){
 }
 
 
-leButton.up = function(el) {
+leButton.up = function (el) {
 	if (el.className != "leBtnDisabled") {
 		leButton.out(el);
 		return true;
@@ -25,7 +25,7 @@ leButton.up = function(el) {
 }
 
 
-leButton.out = function(el) {
+leButton.out = function (el) {
 	if (el.className != "leBtnDisabled" && el.className != "leBtn") {
 		var tds = el.getElementsByTagName("TD");
 		el.className = "leBtn";
@@ -38,16 +38,16 @@ leButton.out = function(el) {
 }
 
 
-leButton.disable = function(id) {
+leButton.disable = function (id) {
 	var el = document.getElementById(id + '_table');
-	if(el != null) {
+	if (el != null) {
 		el.className = "leBtnDisabled";
 		var tds = el.getElementsByTagName("TD");
 		tds[0].className = "leBtnLeftDisabled";
 		tds[1].className = "leBtnMiddleDisabled";
 		tds[2].className = "leBtnRightDisabled";
 		var img = document.getElementById(el.id + "_img");
-		if(img != null && img.src.indexOf("Disabled.gif") == -1) {
+		if (img != null && img.src.indexOf("Disabled.gif") == -1) {
 			img.src = img.src.replace(/\.gif/, "Disabled.gif");
 
 		}
@@ -58,16 +58,16 @@ leButton.disable = function(id) {
 }
 
 
-leButton.enable = function(id) {
+leButton.enable = function (id) {
 	var el = document.getElementById(id + '_table');
-	if(el != null) {
+	if (el != null) {
 		el.className = "leBtn";
 		var tds = el.getElementsByTagName("TD");
 		tds[0].className = "leBtnLeft";
 		tds[1].className = "leBtnMiddle";
 		tds[2].className = "leBtnRight";
 		var img = document.getElementById(el.id + "_img");
-		if(img != null) {
+		if (img != null) {
 			img.src = img.src.replace(/\Disabled.gif/, ".gif");
 
 		}
@@ -78,9 +78,9 @@ leButton.enable = function(id) {
 }
 
 
-leButton.isDisabled = function(id) {
+leButton.isDisabled = function (id) {
 	var el = document.getElementById(id + '_table');
-	if(el != null && el.className == "leBtnDisabled") {
+	if (el != null && el.className == "leBtnDisabled") {
 		return true
 
 	} else {
@@ -91,14 +91,14 @@ leButton.isDisabled = function(id) {
 }
 
 
-leButton.isEnabled = function(id) {
+leButton.isEnabled = function (id) {
 	return !this.isDisabled(id);
 
 }
 
-leButton.hide = function(id) {
+leButton.hide = function (id) {
 	var el = document.getElementById(id + '_table');
-	if(el != null){
+	if (el != null) {
 		el.style.display = 'none';
 
 	}
@@ -106,9 +106,9 @@ leButton.hide = function(id) {
 }
 
 
-leButton.show = function(id) {
+leButton.show = function (id) {
 	var el = document.getElementById(id + '_table');
-	if(el != null) {
+	if (el != null) {
 		el.style.display = 'block';
 
 	}

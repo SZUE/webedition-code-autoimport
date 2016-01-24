@@ -4,6 +4,8 @@ $liveUpdateResponse['Type'] = 'executeOnline';
 $_params = unserialize(base64_decode($_REQUEST["reqArray"]));
 //error_log(print_r($_params["le_communityChoice"],true));
 // generate country list:
+// include the PEAR i18n class
+require_once('I18Nv2.php');
 require_once('I18Nv2/Country.php');
 $i18n = new I18Nv2_Country();
 $CountryList = $i18n->getAllCodes();

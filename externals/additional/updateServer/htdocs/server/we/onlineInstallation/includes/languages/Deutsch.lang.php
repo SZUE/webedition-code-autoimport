@@ -50,12 +50,6 @@ $lang["installer"]["errorMessage"] = "Fehlermeldung";
 $lang["installer"]["errorIn"] = "in";
 $lang["installer"]["errorLine"] = "Zeile";
 
-$lang["installer"]['nightly-build'] = 'nightly Build';
-$lang["installer"]['alpha'] = 'Alpha';
-$lang["installer"]['beta'] = 'Beta';
-$lang["installer"]['rc'] = 'RC';
-$lang["installer"]['release'] = 'offizieller Release';
-
 
 //
 // ---> installApplication
@@ -101,4 +95,13 @@ $lang["installerDownload"]["determineInstallerFilesError"] = $lang["installer"][
 $lang["installerDownload"]["downloadInstallerFilesError"] = $lang["installer"]["errorAtStep"] . $lang["installerDownload"]["downloadInstallerFiles"];
 $lang["installerDownload"]["prepareInstallerFilesError"] = $lang["installer"]["errorAtStep"] . $lang["installerDownload"]["prepareInstallerFiles"];
 $lang["installerDownload"]["copyInstallerFilesError"] = $lang["installer"]["errorAtStep"] . $lang["installerDownload"]["copyInstallerFiles"];
+
+
+$lang["installer"]['nightly-build'] = 'nightly Build';
+$lang["installer"]['alpha'] = 'Alpha';
+$lang["installer"]['beta'] = 'Beta';
+$lang["installer"]['rc'] = 'RC';
+$lang["installer"]['release'] = 'offizieller Release';
+
+
 

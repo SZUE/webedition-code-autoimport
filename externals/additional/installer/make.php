@@ -1,14 +1,15 @@
 <?php
-if(substr(phpversion(),0,1) <=4) {
+if(substr(phpversion(), 0, 1) <= 4){
 	die("PHP Version 5 or newer required.");
 }
 
-class le_OnlineInstaller_Make {
+class le_OnlineInstaller_Make{
+
 	/**
 	 * PHP5 Constructor
 	 *
 	 */
-	function __construct() {
+	function __construct(){
 
 	}
 
@@ -16,7 +17,7 @@ class le_OnlineInstaller_Make {
 	 * Desctructor
 	 *
 	 */
-	function __destruct() {
+	function __destruct(){
 
 	}
 
@@ -31,26 +32,26 @@ class le_OnlineInstaller_Make {
 	 * @param string $version
 	 * @return unknown
 	 */
-	function execute($directory, $saveTo, $version) {
-		if(is_null($directory)) {
+	function execute($directory, $saveTo, $version){
+		if(is_null($directory)){
 			$directory = "./base";
 		} else {
 			$directory .= (!preg_match("|/$|", $directory) ? "/" : "");
 		}
-		if(!is_null($saveTo) || !empty($saveTo)) {
-			$saveTo .= !preg_match("|/$|", $saveTo) ? "/" : "";
+		if(!is_null($saveTo) || !empty($saveTo)){
+			$saveTo .=!preg_match("|/$|", $saveTo) ? "/" : "";
 		}
 
 		$lang['error'] = "An error occured!";
 		$lang["file_permissions"] = '<br /><br />In order for webEdition to be installed, the root directory (DOCUMENT_ROOT) must be writable for the web server (Apache, IIS, ..) at least during installation.';
-		$lang['dir_create'] = "Cannot create directory '\$directory'.<br />Please check your file access permissions.".$lang["file_permissions"];
-		$lang['file_open'] = "Cannot open/create file '\$filename'.<br />Please check your file access permissions.".$lang["file_permissions"];
-		$lang['file_write'] = "Cannot write file '\$filename'.<br />Please check your file access permissions.".$lang["file_permissions"];
-		$lang['file_save'] = "Cannot save file '\$filename'.<br />Please check your file access permissions.".$lang["file_permissions"];
+		$lang['dir_create'] = "Cannot create directory '\$directory'.<br />Please check your file access permissions." . $lang["file_permissions"];
+		$lang['file_open'] = "Cannot open/create file '\$filename'.<br />Please check your file access permissions." . $lang["file_permissions"];
+		$lang['file_write'] = "Cannot write file '\$filename'.<br />Please check your file access permissions." . $lang["file_permissions"];
+		$lang['file_save'] = "Cannot save file '\$filename'.<br />Please check your file access permissions." . $lang["file_permissions"];
 		$lang['change_perms'] = "Cannot change file permissions of file '\$filename'.";
-		
+
 		// first build array with all files
-		$files = $this->getDirAsBase64EncodedString($directory,'files',$version);
+		$files = $this->getDirAsBase64EncodedString($directory, 'files', $version);
 		$cleanUpContent = $this->getCleanUp();
 		$header = $this->getHeader($version);
 		$content = <<<EOF
@@ -77,10 +78,10 @@ define("DOCUMENT_ROOT", \$document_root);
 
 // write the installer files
 foreach(\$installerFiles as \$filename => \$content) {
-	
+
 	// decode the content and change extensions
 	\$content = str_replace(".php", "." . \$pathinfo['extension'], base64_decode(\$content));
-	
+
 	// get the filename with the correct extension
 	\$filename = str_replace(".php", "." . \$pathinfo['extension'], '/OnlineInstaller' . \$filename);
 
@@ -123,7 +124,7 @@ foreach(\$installerFiles as \$filename => \$content) {
 }
 
 function checkMakeDir(\$dirPath, \$mod=0755) {
-	
+
 	// open_base_dir - seperate document-root from rest
 	if (strpos(\$dirPath, DOCUMENT_ROOT) === 0) {
 		\$preDir = DOCUMENT_ROOT;
@@ -145,7 +146,7 @@ function checkMakeDir(\$dirPath, \$mod=0755) {
 		}
 		\$path .= "/";
 	}
-	
+
 	if(!chmod(\$dirPath, \$mod)) {
 		return false;
 	}
@@ -240,25 +241,25 @@ if(\$parameters != "") {
 header("Location: " . \$http . \$host . \$cleanUp . \$parameters);
 ?>
 EOF;
-		if(is_null($saveTo)) {
+		if(is_null($saveTo)){
 			return $content;
 		} else {
 			$fp = fopen($saveTo . "OnlineInstaller.php", "wb+");
-			if(!$fp) {
+			if(!$fp){
 				return false;
 			}
-	
+
 			// put the content into the file
 			fputs($fp, $content);
-	
+
 			// save the file
-			if(!fclose($fp)) {
+			if(!fclose($fp)){
 				return false;
 			}
-			
-			header ("Content-Type: application/octet-stream");
-	        header ("Content-Length: " . filesize($saveTo . "OnlineInstaller.php"));
-	        header ("Content-Disposition: attachment; filename=OnlineInstaller.php");
+
+			header("Content-Type: application/octet-stream");
+			header("Content-Length: " . filesize($saveTo . "OnlineInstaller.php"));
+			header("Content-Disposition: attachment; filename=OnlineInstaller.php");
 			readfile($saveTo . "OnlineInstaller.php");
 			return true;
 		}
@@ -274,31 +275,31 @@ EOF;
 	 * @desc read the content of all files in this directory an return
 	 * them as an array with the filename as key and content as value.
 	 */
-	function readFiles($dirname, $prefix = "",$version="") {
+	function readFiles($dirname, $prefix = "", $version = ""){
 		$files = array();
 
-		if(!file_exists($dirname) || !is_dir($dirname) || stristr($dirname,".svn")) {
+		if(!file_exists($dirname) || !is_dir($dirname) || stristr($dirname, ".svn")){
 			return $files;
 		}
-		$dirname .= !preg_match("|/$|", $dirname) ? "/" : "";
+		$dirname .=!preg_match("|/$|", $dirname) ? "/" : "";
 		$d = dir($dirname);
-		while (false !== ($entry = $d->read())) {
+		while(false !== ($entry = $d->read())){
 			//ignore Tempfiles
-			if($entry != '.' && $entry != '..' && substr($entry,-1)!='~' ) {
-				if(is_dir($dirname.$entry)) {
-					$tmpfiles = self::readFiles($dirname.$entry.'/', $prefix.'/'.$entry,$version);
+			if($entry != '.' && $entry != '..' && substr($entry, -1) != '~'){
+				if(is_dir($dirname . $entry)){
+					$tmpfiles = self::readFiles($dirname . $entry . '/', $prefix . '/' . $entry, $version);
 					$files = array_merge($files, $tmpfiles);
 				} else {
-					$fp = fopen($dirname.$entry, "rb");
-					if($fp) {
-						if(filesize($dirname.$entry)==0) {
-							$files[$prefix.'/'.$entry] = "";
+					$fp = fopen($dirname . $entry, "rb");
+					if($fp){
+						if(filesize($dirname . $entry) == 0){
+							$files[$prefix . '/' . $entry] = "";
 						} else {
-							if($entry == "setup.php") {
+							if($entry == "setup.php"){
 								//$files[$prefix.'/'.$entry] = fread($fp, filesize($dirname.$entry));
-								$files[$prefix.'/'.$entry] = str_replace("###VERSION###",$version,fread($fp, filesize($dirname.$entry)));
+								$files[$prefix . '/' . $entry] = str_replace("###VERSION###", $version, fread($fp, filesize($dirname . $entry)));
 							} else {
-								$files[$prefix.'/'.$entry] = fread($fp, filesize($dirname.$entry));
+								$files[$prefix . '/' . $entry] = fread($fp, filesize($dirname . $entry));
 							}
 						}
 						fclose($fp);
@@ -321,13 +322,13 @@ EOF;
 	 * The keys of the array represent the filenames and the values
 	 * the base64encoded content
 	 */
-	function getDirAsBase64EncodedString($dirname, $arrayname = 'files',$version="") {
-		$files = self::readFiles($dirname,"",$version);
-		$encoded =	"\$$arrayname = array(\n";
-		foreach ($files as $filename => $content) {
+	function getDirAsBase64EncodedString($dirname, $arrayname = 'files', $version = ""){
+		$files = self::readFiles($dirname, "", $version);
+		$encoded = "\$$arrayname = array(\n";
+		foreach($files as $filename => $content){
 			$encoded .= "	'$filename' => '" . base64_encode($content) . "',\n";
 		}
-		$encoded .=		");\n";
+		$encoded .= ");\n";
 		return $encoded;
 	}
 
@@ -336,7 +337,7 @@ EOF;
 	 *
 	 * @return string
 	 */
-	function getCleanUp() {
+	function getCleanUp(){
 		$lang['headline']['OnlineInstaller.php'] = "Security Hint!";
 		$lang['content']['OnlineInstaller.php'] = "Cannot delete file 'OnlineInstaller.php'.<br />For security reasons delete this file manually.";
 		$lang['headline']['OnlineInstaller.log.php'] = "Security Hint!";
@@ -472,7 +473,7 @@ EOF;
 	 *
 	 * @return string
 	 */
-	function getHeader($version = "") {
+	function getHeader($version = ""){
 		$HeaderCols = 69;
 		$HeaderSpacer = str_repeat("-", $HeaderCols);
 
@@ -481,16 +482,16 @@ EOF;
 
 		$SoftwareDate = date("r");
 		$SoftwareDateFiller = str_repeat(" ", $HeaderCols - strlen($SoftwareDate));
-		
-		$SoftwareVersion = "Version ".$version;
+
+		$SoftwareVersion = "Version " . $version;
 		$SoftwareVersionFiller = str_repeat(" ", $HeaderCols - strlen($SoftwareVersion));
-		
+
 		$PHPVersion = "PHP version 5.2.4 or greater";
 		$PHPVersionFiller = str_repeat(" ", $HeaderCols - strlen($PHPVersion));
 
 		$AvailableSoftware = "Applications: webEdition, pageLogger";
 		$AvailableSoftwareFiller = str_repeat(" ", $HeaderCols - strlen($AvailableSoftware));
-		
+
 		$DefaultSoftware = "Default Application: webEdition";
 		$DefaultSoftwareFiller = str_repeat(" ", $HeaderCols - strlen($DefaultSoftware));
 
@@ -510,9 +511,9 @@ EOF;
 EOF;
 		return $header;
 	}
+
 }
 
 // code for standalone usage of this script, should be commented out if make.php is not called via http using a web server:
 $le_OnlineInstaller = new le_OnlineInstaller_Make();
 $le_OnlineInstaller->execute('./base', './out/', '2.9.1.0');
-?>

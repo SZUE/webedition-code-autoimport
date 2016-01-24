@@ -48,18 +48,15 @@ function le_errorhandler($type, $message, $file, $line, $context){
 		'message' => $message,
 		'file' => $file,
 		'line' => $line,
-		'context' => $context,
+//		'context' => $context,
 		'backtrace' => $_backtrace
 	);
 	file_put_contents('installer.err', print_r($data, true), FILE_APPEND);
 }
 
-$_error_level = E_DEPRECATED | E_USER_DEPRECATED | E_STRICT | E_NOTICE | E_USER_NOTICE | E_STRICT | E_WARNING | E_CORE_WARNING | E_COMPILE_WARNING | E_USER_WARNING | E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR;
 error_reporting($_error_level);
-ini_set('error_reporting', $_error_level);
+ini_set('error_reporting', E_ALL);
 set_error_handler('le_errorhandler');
-//ini_set("display_errors", "Off");
-//ini_set("error_reporting", 0);
 
 if(isset($_REQUEST["phpinfo"])){
 	echo '<body style="margin:0px; padding:0px;"><div style="background:transparent url(./OnlineInstaller/img/leLayout/bgcontent.gif);">';
