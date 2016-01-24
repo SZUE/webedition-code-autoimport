@@ -565,8 +565,16 @@ class liveUpdateFunctions{
 	 * @return boolean
 	 */
 	function executeQueriesInFiles($path){
-		$db = new DB_WE();
-		$content = $this->getFileContent($path);
+		static $db = null;
+		$db = $db? : new DB_WE();
+		$db->query('show variables LIKE "default_storage_engine"');
+		$db->next_record();
+		$defaultEngine = $db->f('Value');
+		if(!in_array(strtolower($defaultEngine), array('myisam', 'aria'))){
+			$defaultEngine = 'myisam';
+		}
+
+		$content = str_replace("ENGINE=MyISAM", 'ENGINE=' . $defaultEngine, $this->getFileContent($path));
 		$queries = explode("/* query separator */", $content);
 		$success = true;
 		foreach($queries as $query){

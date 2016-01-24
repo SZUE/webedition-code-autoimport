@@ -18,7 +18,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-//FIXME: remove this file almost complete; at least all DB queries. Replace by Update-Script calls on DB-Files.
 abstract class we_updater{
 
 	static function replayUpdateDB($specFile = ''){
