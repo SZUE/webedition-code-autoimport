@@ -1445,7 +1445,7 @@ class we_versions_version{
 		}
 
 		//Note: some globals are overwritten by the above code, restore at least we_transaction
-		if($backup['tarns']){
+		if($backup['trans']){
 			$GLOBALS['we_transaction'] = $backup['trans'];
 		}
 

@@ -135,7 +135,7 @@ class liveUpdateHttp{
 		}
 	}
 
-	function getFopenHttpResponse($server, $url, $parameters = array()){
+	static function getFopenHttpResponse($server, $url, $parameters = array()){
 		return (defined("WE_PROXYHOST") && WE_PROXYHOST ?
 				liveUpdateHttp::connectProxy($server, $url, $parameters) :
 				liveUpdateHttp::connectFopen($server, $url, $parameters)
@@ -147,7 +147,7 @@ class liveUpdateHttp{
 	 *
 	 * @return unknown
 	 */
-	function getServerSessionForm(){
+	static function getServerSessionForm(){
 		$params = '';
 		foreach($GLOBALS['LU_Variables'] as $LU_name => $LU_value){
 			$params .= '<input type="hidden" name="' . $LU_name . '" value="' . urlencode((is_array($LU_value) ? base64_encode(serialize($LU_value)) : $LU_value)) . '" />';
