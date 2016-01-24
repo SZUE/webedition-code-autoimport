@@ -39,7 +39,6 @@ $GLOBALS["allTables"] = array(
 	"tblObject",
 	"tblObjectFiles",
 	"tblOrders",
-	"tblPasswd",
 	"tblPrefs",
 	"tblRecipients",
 	"tblSchedule",

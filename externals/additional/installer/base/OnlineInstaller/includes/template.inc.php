@@ -7,7 +7,7 @@
 if(isset($_REQUEST['debug']) && isset($LU_Version)){
 	echo " &bull; Version " . $LU_Version;
 } ?></title>
-		<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $_SESSION['leInstallerCharset']; ?>" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
 		<!-- FavIcon -->
 		<link rel="SHORTCUT ICON" href="<?php echo LE_ONLINE_INSTALLER_URL; ?>/img/leLayout/favicon.ico" />
@@ -19,16 +19,16 @@ if(isset($_REQUEST['debug']) && isset($LU_Version)){
 		<link type="text/css" rel="stylesheet" id="leCSSContent" href="<?php echo LE_ONLINE_INSTALLER_URL; ?>/css/leContent.css.php" media="screen" />
 
 		<!-- Use button styles from Online-Installer -->
-		<link type="text/css" rel="stylesheet" id="leCSSButton" href="<?php echo LE_ONLINE_INSTALLER_URL; ?>/css/leButton.css.php" media="screen" />
+		<link type="text/css" rel="stylesheet" id="leCSSButton" href="<?php echo LE_ONLINE_INSTALLER_URL; ?>/css/leButton.css" media="screen" />
 
 		<!-- Use layout styles from Online-Installer -->
 		<link type="text/css" rel="stylesheet" id="leCSSLayout" href="<?php echo LE_ONLINE_INSTALLER_URL; ?>/css/leLayout.css.php" media="screen" />
 
 		<!-- Use progress bar styles from Online-Installer -->
-		<link type="text/css" rel="stylesheet" id="leCSSProgressBar" href="<?php echo LE_ONLINE_INSTALLER_URL; ?>/css/leProgressBar.css.php" media="screen" />
+		<link type="text/css" rel="stylesheet" id="leCSSProgressBar" href="<?php echo LE_ONLINE_INSTALLER_URL; ?>/css/leProgressBar.css" media="screen" />
 
 		<!-- Use status styles from Online-Installer -->
-		<link type="text/css" rel="stylesheet" id="leCSSStatus" href="<?php echo LE_ONLINE_INSTALLER_URL; ?>/css/leStatus.css.php" media="screen" />
+		<link type="text/css" rel="stylesheet" id="leCSSStatus" href="<?php echo LE_ONLINE_INSTALLER_URL; ?>/css/leStatus.css" media="screen" />
 
 		<!-- Use styles for forms -->
 		<link type="text/css" rel="stylesheet" id="leCSSPrint" href="<?php echo LE_ONLINE_INSTALLER_URL; ?>/css/lePrint.css.php" media="print" />

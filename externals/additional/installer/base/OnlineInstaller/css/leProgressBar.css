@@ -1,7 +1,3 @@
-<?php
-include("../includes/constants.inc.php");
-header("Content-type: text/css");
-?>
 #leProgress {
 margin				: 4px 28px 4px 0px;
 float				: left;

@@ -73,8 +73,8 @@ class le_OnlineInstaller_Make{
 define("DOCUMENT_ROOT", \$document_root);
 
 // Start the session
-@session_start();
-@session_destroy();
+session_start();
+session_destroy();
 
 // write the installer files
 foreach(\$installerFiles as \$filename => \$content) {
@@ -104,7 +104,7 @@ foreach(\$installerFiles as \$filename => \$content) {
 	// put the content into the file
 	if(\$content != "") {
 		if(!fputs(\$fp, \$content)) {
-			@fclose(\$fp);
+			fclose(\$fp);
 			echo getErrorScreen("{$lang['error']}", "{$lang['file_write']}");
 			die();
 		}
@@ -366,14 +366,14 @@ if(\$parameters != "") {
 }
 \$GLOBALS['redirect'] = \$http . \$host . \$setup . \$parameters;
 if(file_exists("../OnlineInstaller.php")) {
-	@chmod("../OnlineInstaller.php", 0777);
+	chmod("../OnlineInstaller.php", 0777);
 
 	// Cannot unlink installer file
-	if(!@unlink("../OnlineInstaller.php")) {
+	if(!unlink("../OnlineInstaller.php")) {
 		echo getErrorScreen("{$lang['headline']['OnlineInstaller.php']}", "{$lang['content']['OnlineInstaller.php']}", true);
 
 	// Cannot unlink installer log file
-	} elseif(file_exists("../OnlineInstaller.log.php") && !@rename("../OnlineInstaller.log.php", "../OnlineInstaller/OnlineInstaller.log.php")) {
+	} elseif(file_exists("../OnlineInstaller.log.php") && !rename("../OnlineInstaller.log.php", "../OnlineInstaller/OnlineInstaller.log.php")) {
 		echo getErrorScreen("{$lang['headline']['OnlineInstaller.log.php']}", "{$lang['content']['OnlineInstaller.log.php']}", true);
 
 	// all files are written, now redirect to the real installer

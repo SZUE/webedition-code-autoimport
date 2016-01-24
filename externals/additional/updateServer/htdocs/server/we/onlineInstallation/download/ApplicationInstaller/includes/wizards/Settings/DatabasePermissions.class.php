@@ -52,7 +52,6 @@ class DatabasePermissions extends leStep{
 		}
 
 		// Check if webEdition is already installed
-		$Query1 = "SELECT * FROM {$_SESSION["le_db_prefix"]}tblPasswd";
 		$Query2 = "SELECT * FROM {$_SESSION["le_db_prefix"]}tblPrefs";
 
 		$Checked = true;
@@ -63,7 +62,7 @@ class DatabasePermissions extends leStep{
 			return $ReturnValue;
 
 			// webEdition seems to be installed
-		} else if(mysqli_query($Resource, $Query1) || mysqli_query($Resource, $Query2)){
+		} else if(mysqli_query($Resource, $Query2)){
 
 			$Name = 'continue';
 			$Value = 1;
@@ -92,21 +91,12 @@ EOF;
 				$Content .= sprintf($this->Language["dbserverwarning"], $_SESSION['le_dbserver_version']);
 			}
 		}
-		$isoLanguages = false;
-		if(!strpos($_SESSION['leInstallerLanguage'], "UTF-8")){
-			$isoLanguages = true;
-			$v .= " (ISO 8859-1)";
-		}
+		$_SESSION['leInstallerLanguage'] = str_replace('_UTF-8', '', $_SESSION['leInstallerLanguage']);
 		$_SESSION['le_db_version'] = mysqli_get_client_info();
 		$_SESSION['le_dbserver_version'] = mysqli_get_server_info($Resource);
 		$_REQUEST["le_dbserver_version"] = $_SESSION['le_dbserver_version'];
 		if(version_compare("4.1.0", $_SESSION['le_db_version']) < 1){
-			if(version_compare("5.0.0", $_SESSION['le_dbserver_version']) < 1){
-				$Query = "SHOW COLLATION WHERE Compiled = 'Yes' ";
-			} else {
-				$Query = "SHOW COLLATION  ";
-			}
-			$Result = mysqli_query($Resource, $Query);
+			$Result = mysqli_query($Resource, "SHOW COLLATION  ");
 
 			if(mysqli_connect_errno()){
 				$Charsets = array();
@@ -117,19 +107,11 @@ EOF;
 				}
 			}
 
-			$SelectedCollation = "";
-			if(isset($_SESSION["le_db_collation"])){
-				$SelectedCollation = $_SESSION['le_db_collation'];
-			} else {
-				if($isoLanguages){
-					$SelectedCollation = 'latin1_general_ci';
-				} else {
-					$SelectedCollation = 'utf8_general_ci';
-				}
-			}
+			$SelectedCollation = (isset($_SESSION["le_db_collation"]) ?
+					$_SESSION['le_db_collation'] :
+					'utf8_general_ci');
 
 			ksort($Charsets);
-			print_r($_SESSION);
 			$Select = "<select name=\"le_db_collation\" id=\"le_db_collation\" class=\"textselect\" style=\"width: 293px;\" onblur=\"this.className='textselect';\" onfocus=\"this.className='textselectselected'\"" . ($Checked ? '' : ' disabled=\"disabled\"') . ">";
 			$Select .= "<option value=\"-1\"" . ($SelectedCollation == "-1" ? "selected=\"selected\"" : "") . ">" . $this->Language['defaultCollation'] . "</option>";
 			foreach($Charsets as $Charset => $Collations){
@@ -189,26 +171,17 @@ EOF;
 	}
 
 	function openConnection(){
+		$preHost = (isset($_SESSION['le_db_connect']) && $_SESSION['le_db_connect'] == "mysqli_pconnect" ? 'p:' : '');
 
-		if(isset($_SESSION['le_db_connect']) && $_SESSION['le_db_connect'] == "mysqli_pconnect"){
-			$preHost = 'p:';
-		} else {
-			$preHost = '';
-		}
-
-		$Resource = mysqli_connect($preHost . $_SESSION['le_db_host'], $_SESSION['le_db_user'], $_SESSION['le_db_password']);
-
-		return $Resource;
+		return mysqli_connect($preHost . $_SESSION['le_db_host'], $_SESSION['le_db_user'], $_SESSION['le_db_password']);
 	}
 
 	function checkDatabaseExists($Resource){
 		$result = mysqli_query($Resource, "USE " . $_SESSION["le_db_database"]);
-
 		return !mysqli_error($Resource);
 	}
 
 	function closeConnection($Resource){
-
 		mysqli_close($Resource);
 	}
 
@@ -235,17 +208,11 @@ EOF;
 	}
 
 	function checkAlterTable($Resource, $TableName){
-
-		$Query = "ALTER TABLE {$TableName} ADD myTest VARCHAR( 255 ) NOT NULL;";
-
-		return mysqli_query($Resource, $Query);
+		return mysqli_query($Resource, "ALTER TABLE {$TableName} ADD myTest VARCHAR( 255 ) NOT NULL;");
 	}
 
 	function checkDropTable($Resource, $TableName){
-
-		$Query = "DROP TABLE {$TableName}";
-
-		return mysqli_query($Resource, $Query);
+		return mysqli_query($Resource, "DROP TABLE {$TableName}");
 	}
 
 }

@@ -14,7 +14,7 @@ $AvailableLanguages = array(
 
 
 // get the requested language
-$DefaultLanguage = "English_UTF-8";
+$DefaultLanguage = "English";
 $useLng = isset($_REQUEST['clientLng']) ? $_REQUEST['clientLng'] : '';
 $useLng = isset($_SESSION['clientLng']) ? $_SESSION['clientLng'] : $useLng;
 

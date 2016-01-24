@@ -24,10 +24,10 @@ class leButton{
 
 
 		//	Onmousedown-Events
-		$_on_mouse_down = $_button_name . "_mouse_event = true;";
-		$_on_mouse_down .= "if (" . $_button_name . "_enabled) { document.getElementById('" . $_button_name . "_left').className = 'leBtnLeftClicked'; }";
-		$_on_mouse_down .= "if (" . $_button_name . "_enabled) { document.getElementById('" . $_button_name . "_middle').className = 'leBtnMiddleClicked'; }";
-		$_on_mouse_down .= "if (" . $_button_name . "_enabled) { document.getElementById('" . $_button_name . "_right').className = 'leBtnRightClicked'; }";
+		$_on_mouse_down = $_button_name . "_mouse_event = true;" .
+			"if (" . $_button_name . "_enabled) { document.getElementById('" . $_button_name . "_left').className = 'leBtnLeftClicked'; }" .
+			"if (" . $_button_name . "_enabled) { document.getElementById('" . $_button_name . "_middle').className = 'leBtnMiddleClicked'; }" .
+			"if (" . $_button_name . "_enabled) { document.getElementById('" . $_button_name . "_right').className = 'leBtnRightClicked'; }";
 
 		//	Onmouseover-Events
 		if(!preg_match('/\.gif$/', $text)){
@@ -38,9 +38,9 @@ class leButton{
 		}
 
 		//	Onmouseout
-		$_on_mouse_out = "document.getElementById('" . $_button_name . "_left').className = 'leBtnLeft';";
-		$_on_mouse_out .= "document.getElementById('" . $_button_name . "_middle').className = 'leBtnMiddle';";
-		$_on_mouse_out .= "document.getElementById('" . $_button_name . "_right').className = 'leBtnRight';";
+		$_on_mouse_out = "document.getElementById('" . $_button_name . "_left').className = 'leBtnLeft';".
+			"document.getElementById('" . $_button_name . "_middle').className = 'leBtnMiddle';".
+			"document.getElementById('" . $_button_name . "_right').className = 'leBtnRight';";
 
 		//	OnmouseUp
 		$_on_mouse_up = $_on_mouse_out . $_button_name . "_mouse_event = false;";

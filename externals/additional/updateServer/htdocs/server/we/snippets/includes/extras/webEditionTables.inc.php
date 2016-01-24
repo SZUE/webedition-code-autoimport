@@ -10,7 +10,6 @@ $GLOBALS["allTables"] = array(
 	"tblFile",
 	"tblIndex",
 	"tblLink",
-	"tblPasswd",
 	"tblPrefs",
 	"tblRecipients",
 	"tblTemplates",

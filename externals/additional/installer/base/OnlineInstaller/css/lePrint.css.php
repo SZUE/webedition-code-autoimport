@@ -13,10 +13,6 @@ if(stristr($_SERVER['HTTP_USER_AGENT'], 'X11')){
 	$System = "UNKNOWN";
 }
 
-$BROWSER = "";
-if(stristr($_SERVER['HTTP_USER_AGENT'], 'safari')){
-	$BROWSER = "SAFARI";
-}
 ?>
 body {
 background-color	: #ffffff ! important;
@@ -82,11 +78,7 @@ overflow			: hidden;
 
 #leContent {
 background-color	: #ffffff;
-<?php if($BROWSER == "SAFARI"){ ?>
-	position			: absolute;
-<?php } else { ?>
-	position			: relative;
-<?php } ?>
+position			: relative;
 top					: 0pt;
 left				: 0pt;
 display				: block;

@@ -1,7 +1,3 @@
-<?php
-include("../includes/constants.inc.php");
-header("Content-type: text/css");
-?>
 .leBtn,
 .leBtnLeft,
 .leBtnMiddle,

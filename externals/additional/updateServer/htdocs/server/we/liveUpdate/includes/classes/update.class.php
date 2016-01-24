@@ -388,11 +388,11 @@ class update extends updateBase{
 		$modulesQuery = '';
 
 		// get systemlanguage only
-		if($_SESSION['clientTargetVersionNumber'] >= LANGUAGELIMIT){
-			$clientSyslng = str_replace('_UTF-8', '', $_SESSION['clientSyslng']);
-		} else {
-			$clientSyslng = $_SESSION['clientSyslng'];
-		}
+		$clientSyslng = ($_SESSION['clientTargetVersionNumber'] >= LANGUAGELIMIT ?
+				str_replace('_UTF-8', '', $_SESSION['clientSyslng']) :
+				$_SESSION['clientSyslng']
+			);
+
 		$sysLngQuery = ' AND (language="" OR language="' . $clientSyslng . '") ';
 
 		// query for all needed changes - software

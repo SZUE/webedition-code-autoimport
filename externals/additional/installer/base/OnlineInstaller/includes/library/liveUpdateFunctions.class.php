@@ -623,7 +623,6 @@ class liveUpdateFunctions{
 	 * @return boolean
 	 */
 	function executeQueriesInFiles($path){
-
 		if($this->isInsertQueriesFile($path)){
 			$success = true;
 			$queryArray = file($path);
