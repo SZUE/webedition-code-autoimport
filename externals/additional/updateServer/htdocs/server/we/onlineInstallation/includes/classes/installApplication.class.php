@@ -654,11 +654,6 @@ class installApplication extends installer{
 		}
 			';
 
-		// Insert log --> Languages
-		installationLog::insertLanguagesEntry();
-
-		// Insert log --> Modules
-		installationLog::insertModulesEntry();
 
 		$tblPrefsQuery = updateUtil::getReplaceCode('insert_tblPrefs');
 		$tblUserQuery = updateUtil::getReplaceCode('insert_tblUser');

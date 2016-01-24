@@ -4,20 +4,6 @@ class updateUtilBase{
 
 
 	/**
-	 * returns if domain is localhost
-	 *
-	 * @param string $domain
-	 * @return boolean
-	 */
-	function isLocalhost($domain){
-
-		if(strtolower($domain) == "localhost" || $domain == "127.0.0.1"){
-			return true;
-		}
-		return false;
-	}
-
-	/**
 	 * return serialized version of the response
 	 *
 	 * @param array $responseArray
@@ -148,7 +134,7 @@ class updateUtilBase{
 	 * @param integer $length
 	 * @return integer
 	 */
-	function version2number($version, $length = VERSIONNUMBER_LENGTH){
+	static function version2number($version, $length = VERSIONNUMBER_LENGTH){
 
 		$numberStr = str_replace('.', '', $version);
 		$number = (int) $numberStr;
@@ -244,7 +230,7 @@ class updateUtilBase{
 	 * @param integer $version
 	 * @return string
 	 */
-	function getNearestVersion($array, $version){
+	static function getNearestVersion($array, $version){
 		if(sizeof($array) == 1){
 			return key($array);
 		}

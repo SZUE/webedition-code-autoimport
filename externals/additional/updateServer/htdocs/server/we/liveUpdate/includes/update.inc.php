@@ -1,23 +1,9 @@
 <?php
-// 1st check if software is installed correct
-// not needed any more
-/*
-
-  if ( !(isset($_SESSION['clientInstalledTableId']) &&  $_SESSION['clientInstalledTableId']) ) {
-
-  $_SESSION['clientInstalledTableId'] = license::getDomainId($_SESSION['clientDomain'], $_SESSION['clientUid']);
-  }
-
-  if( $_SESSION['clientInstalledTableId'] ) {
- */
 // execute command
 
 switch($_REQUEST['detail']){
 
 	case 'lookForUpdate':
-		// no need for license checks in webEdition OSS any more:
-		//if (license::areInstalledModulesLicensed($_SESSION['clientInstalledTableId']) ) {
-
 		/*
 		 * at least one Update exists, if its not a beta which needs to be updated and beta-switch is off
 		 */
@@ -96,12 +82,6 @@ switch($_REQUEST['detail']){
 
 			print update::getNoUpdateAvailableResponse();
 		}
-		/*
-		  } else {
-
-		  print register::getRepeatRegistrationFormResponse();
-		  }
-		 */
 		break;
 
 	case 'confirmRepeatUpdate':
@@ -183,9 +163,3 @@ switch($_REQUEST['detail']){
 
 		break;
 }
-/*
-} else { // this installation is not registered -> show reregistration formular
-
-	print register::getRepeatRegistrationFormResponse();
-}
-*/

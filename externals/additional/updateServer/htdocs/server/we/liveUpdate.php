@@ -93,7 +93,6 @@ if(isset($_REQUEST['update_cmd'])){
 	}
 
 	// checkdatabases first
-	//if ($db_register_down || $db_versioning_down) {
 	if($db_versioning_down){
 		$_REQUEST['update_cmd'] = 'notification';
 		$_REQUEST['detail'] = 'databaseFailure';
@@ -112,12 +111,6 @@ if(isset($_REQUEST['update_cmd'])){
 			require_once(SHARED_DIR . '/includes/connection.inc.php');
 			break;
 
-
-		case 'register':
-			require_once(LIVEUPDATE_SERVER_DIR . '/includes/register.inc.php');
-			break;
-
-
 		case 'installer':
 			require_once(LIVEUPDATE_SERVER_DIR . '/includes/installer.inc.php');
 			break;
@@ -132,10 +125,6 @@ if(isset($_REQUEST['update_cmd'])){
 			require_once(LIVEUPDATE_SERVER_DIR . '/includes/upgrade.inc.php');
 			break;
 
-
-		case 'modules':
-			require_once(LIVEUPDATE_SERVER_DIR . '/includes/modules.inc.php');
-			break;
 
 		case 'languages':
 			require_once(LIVEUPDATE_SERVER_DIR . '/includes/languages.inc.php');
@@ -153,7 +142,7 @@ if(isset($_REQUEST['update_cmd'])){
 
 // check databases
 } else {
-	if($db_register_down || $db_versioning_down){
+	if($db_versioning_down){
 		include(SHARED_TEMPLATE_DIR . '/connection/serverDatabaseDown.inc.php');
 	} else {
 		include(SHARED_TEMPLATE_DIR . '/connection/serverUpAndRunning.inc.php');

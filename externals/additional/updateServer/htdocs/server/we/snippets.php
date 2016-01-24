@@ -71,7 +71,7 @@ $_SESSION['clientContent'] = true;
 if(isset($_REQUEST['update_cmd'])){
 
 	// checkdatabases first
-	if($db_register_down || $db_versioning_down){
+	if($db_versioning_down){
 		$_REQUEST['update_cmd'] = 'notification';
 		$_REQUEST['detail'] = 'databaseFailure';
 	}
@@ -102,7 +102,7 @@ if(isset($_REQUEST['update_cmd'])){
 
 // check databases
 } else {
-	if($db_register_down || $db_versioning_down){
+	if($db_versioning_down){
 		include(SHARED_TEMPLATE_DIR . '/connection/serverDatabaseDown.inc.php');
 	} else {
 		include(SHARED_TEMPLATE_DIR . '/connection/serverUpAndRunning.inc.php');

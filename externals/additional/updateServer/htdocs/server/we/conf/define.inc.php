@@ -25,7 +25,6 @@ define('UPDATELOG_TABLE', 'we_updatelog');
 define('INSTALLLOG_TABLE', 'we_installlog');
 
 // DB_Register
-define('STOCK_TABLE', 'we');
 define('INSTALLATION_TABLE', 'domains');
 define('CUSTOMER_TABLE', 'tblCustomer');
 define('INSTALLATIONLOG_TABLE', 'we6_installation_log');

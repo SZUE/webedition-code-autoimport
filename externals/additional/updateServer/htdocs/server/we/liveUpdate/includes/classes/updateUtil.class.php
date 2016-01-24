@@ -10,7 +10,7 @@ class updateUtil extends updateUtilBase{
 	 * @param string $liveUpdateSession
 	 * @return string
 	 */
-	function getCommonHrefParameters($update_cmd, $detail, $liveUpdateSession = false){
+	static function getCommonHrefParameters($update_cmd, $detail, $liveUpdateSession = false){
 
 		return "liveUpdateSession=" . ($liveUpdateSession ? $liveUpdateSession : session_id()) . "&update_cmd=$update_cmd&detail=$detail";
 	}
@@ -21,7 +21,7 @@ class updateUtil extends updateUtilBase{
 	 * @param string $name
 	 * @return array
 	 */
-	function getReplaceCode($name, $replacements = array()){
+	static function getReplaceCode($name, $replacements = array()){
 		global $replaceCode;
 
 		$ret = array();

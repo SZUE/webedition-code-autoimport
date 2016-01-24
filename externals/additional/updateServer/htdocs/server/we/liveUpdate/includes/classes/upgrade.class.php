@@ -10,7 +10,6 @@ class upgrade{
 	function getChangesForUpdate(){
 
 		// which modules are installed/licensed
-		//$domainInformation = license::getRegisteredDomainInformationById($_SESSION['clientInstalledTableId']);
 		//$installedModules = $domainInformation['registeredModules'];
 		// query for all selected modules
 		$modulesQuery = '';

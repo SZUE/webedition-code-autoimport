@@ -1,13 +1,6 @@
 <?php
 // 1st check if software is installed correct
-/*
-  if ( !(isset($_SESSION['clientInstalledTableId']) &&  $_SESSION['clientInstalledTableId']) ) {
-
-  $_SESSION['clientInstalledTableId'] = license::getDomainId($_SESSION['clientDomain'], $_SESSION['clientUid']);
-  }
- */
 // execute command
-//if (isset($_SESSION['clientInstalledTableId'])) {
 
 
 switch($_REQUEST['detail']){

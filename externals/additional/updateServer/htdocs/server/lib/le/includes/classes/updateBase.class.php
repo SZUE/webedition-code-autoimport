@@ -2,7 +2,7 @@
 
 class updateBase{
 
-	function getZFversion($versionnumber){
+	static function getZFversion($versionnumber){
 		$zf_version = "1.5.1";
 		if($versionnumber >= 6007)
 			$zf_version = "1.8.4";
@@ -307,7 +307,7 @@ class updateBase{
 		return $VersionType;
 	}
 
-	function getOnlyVersionBranch($version){
+	static function getOnlyVersionBranch($version){
 		global $DB_Versioning;
 		$query = '
 			SELECT  branch, typeversion

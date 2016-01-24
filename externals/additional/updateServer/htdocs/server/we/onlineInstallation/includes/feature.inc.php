@@ -33,56 +33,10 @@ switch($_REQUEST['detail']){
 		print license::getRegisterVersionResponse($clientRequestVars['le_version']);
 		break;
 
-
-	// show the form for the serial number
-	case 'serialForm':
-		error_log("serialForm");
-		unset($_SESSION['clientChanges']);
-		print register::getRegisterFormResponse();
-		break;
-
-
 	// skip the serial information
 	case 'skipSerial':
 		error_log("skipSerial");
 		print register::getDontRegisterResponse();
-		break;
-
-	// check the serial and save into session if the serial is correct
-	case 'checkSerial':
-		error_log("checkSerial");
-		$clientSerialFormatted = license::formatSerial($clientRequestVars['clientSerial']);
-		$serialState = license::checkSerialState($clientSerialFormatted);
-
-		if(isset($_SESSION['clientSerial'])){
-			if($clientSerialFormatted != $_SESSION['clientSerial']){
-				unset($_SESSION['clientDesiredModules']);
-				unset($_SESSION['existingModules']);
-			}
-		}
-		switch($serialState){
-
-			case 'ok':
-				print register::getRegisterResponse($clientSerialFormatted);
-				break;
-
-			default:
-				/*
-				 * possible responses
-				 * 'notEnoughVersions'
-				 * 'noVersion5'
-				 * 'serialNotExist'
-				 */
-				print register::getRegisterFormErrorResponse($serialState);
-				break;
-		}
-		break;
-
-
-	// get form with all possible modules
-	case 'modulesForm':
-
-		print modules::getModulesFormResponse();
 		break;
 
 

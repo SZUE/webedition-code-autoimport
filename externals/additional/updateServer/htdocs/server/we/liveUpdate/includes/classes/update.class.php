@@ -374,7 +374,6 @@ class update extends updateBase{
 	function getChangesForUpdate(){
 
 		// which modules are installed/licensed
-		//$domainInformation = license::getRegisteredDomainInformationById($_SESSION['clientInstalledTableId']);
 		//$installedModules = $domainInformation['registeredModules'];
 		// query for versions
 		$versionQuery = '';

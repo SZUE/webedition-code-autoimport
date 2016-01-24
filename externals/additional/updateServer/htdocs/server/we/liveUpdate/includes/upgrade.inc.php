@@ -1,19 +1,9 @@
 <?php
-// 1st check if software is installed correct
-/*
-  if ( !(isset($_SESSION['clientInstalledTableId']) &&  $_SESSION['clientInstalledTableId']) ) {
-  $_SESSION['clientInstalledTableId'] = license::getDomainId($_SESSION['clientDomain'], $_SESSION['clientUid'], false);
-
-  }
-
-  if( $_SESSION['clientInstalledTableId'] ) {
- */
 // execute command
 switch($_REQUEST['detail']){
 
 	case 'lookForUpgrade':
 		update::updateLogStart();
-		//if (license::areInstalledModulesLicensed($_SESSION['clientInstalledTableId']) ) {
 		// get all possible versions
 		$possibleVersions = update::getPossibleVersionsArray();
 		$SubVersions = update::getSubVersions();

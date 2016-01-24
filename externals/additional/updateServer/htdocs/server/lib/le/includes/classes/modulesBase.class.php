@@ -49,39 +49,6 @@ class modulesBase{
 	}
 
 	/**
-	 * checks if allowed module combination is allowed.
-	 *
-	 * @param array $desiredModules
-	 * @return boolean
-	 */
-	function isDesiredModuleCombinationAllowed($desiredModules){
-
-		$existingModules = modules::getExistingModules();
-
-		foreach($desiredModules as $moduleKey){
-			$module = $existingModules[$moduleKey];
-
-			// base module to desired promodule
-			if($module['grade'] == 'pro'){
-				if(!(in_array($module['basismodule'], $desiredModules) || in_array($module['basismodule'], $_SESSION['clientInstalledModules']))){
-					return false;
-				}
-			}
-
-			// all modules this module depends from
-			if(isset($module['dependent'])){
-				$depModules = explode(',', $module['dependent']);
-				for($i = 0; $i < sizeof($depModules); $i++){
-					if(!(in_array($depModules[$i], $desiredModules) || in_array($depModules[$i], $_SESSION['clientInstalledModules']))){
-						return false;
-					}
-				}
-			}
-		}
-		return true;
-	}
-
-	/**
 	 * returns code for installed modules
 	 *
 	 * @return string
@@ -148,7 +115,7 @@ $_pro_modules = array();
 	 *
 	 * @return string
 	 */
-	function getCodeForActiveIntegratedModules(){
+	static function getCodeForActiveIntegratedModules(){
 
 		// write all active integrated modules
 		$Content = '<?php'
