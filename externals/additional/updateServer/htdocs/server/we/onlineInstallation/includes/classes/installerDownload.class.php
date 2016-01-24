@@ -22,7 +22,7 @@ class installerDownload extends installer{
 	 *
 	 * @return integer
 	 */
-	function getInstallerProgressPercent(){
+	static function getInstallerProgressPercent(){
 
 		// all steps are:
 		// - installation steps
@@ -67,7 +67,7 @@ class installerDownload extends installer{
 		return number_format(($currentStep / $installationStepsTotal * 100), 0);
 	}
 
-	function getDownloadChangesResponse(){
+	static function getDownloadChangesResponse(){
 
 		// current position
 		if(!isset($_REQUEST['position'])){
@@ -184,7 +184,7 @@ class installerDownload extends installer{
 		$message = '<h1>' . $GLOBALS['lang'][self::$LanguageIndex][$_REQUEST["detail"]] . '</h1>'
 				. '<p>' . sprintf($GLOBALS['lang']['installer']['downloadFilesTotal'], sizeof($_SESSION['clientChanges']['allChanges'])) . '</p>';
 
-		$progress = $this->getInstallerProgressPercent();
+		$progress = self::getInstallerProgressPercent();
 
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
@@ -256,10 +256,10 @@ class installerDownload extends installer{
 
 			$message .= "<p>" . sprintf(\'' . $GLOBALS['lang']['installer']['amountFilesPrepared'] . '\', $endFile, $maxFile) . "</p>";
 			if ( sizeof($allFiles) >= (' . $_SESSION['PREPARE_FILES_PER_STEP'] . ' + ' . $_REQUEST["position"] . ') ) {
-				?>' . static::getProceedNextCommandResponsePart($repeatUrl, $this->getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
+				?>' . static::getProceedNextCommandResponsePart($repeatUrl, self::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
 
 			} else {
-				?>' . static::getProceedNextCommandResponsePart($nextUrl, $this->getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
+				?>' . static::getProceedNextCommandResponsePart($nextUrl, self::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
 
 			}
 
@@ -308,7 +308,7 @@ class installerDownload extends installer{
 
 			$message .= "<p>" . sprintf(\'' . $GLOBALS['lang']['installer']['amountFilesCopied'] . '\', $endFile, $maxFile) . "</p>";
 
-			?>' . static::getProceedNextCommandResponsePart($nextUrl, $this->getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
+			?>' . static::getProceedNextCommandResponsePart($nextUrl, self::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
 
 		} else {
 

@@ -68,7 +68,7 @@ class languages extends languagesBase{
 	/**
 	 * @return array
 	 */
-	function getChangesForUpdate(){
+	static function getChangesForUpdate(){
 
 		$lngPart = '';
 

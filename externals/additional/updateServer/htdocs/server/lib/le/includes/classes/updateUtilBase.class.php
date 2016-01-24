@@ -2,7 +2,6 @@
 
 class updateUtilBase{
 
-
 	/**
 	 * return serialized version of the response
 	 *
@@ -49,7 +48,7 @@ class updateUtilBase{
 	 * @param string $file
 	 * @return array
 	 */
-	function getLiveUpdateResponseArrayFromFile($file){
+	static function getLiveUpdateResponseArrayFromFile($file){
 		global $updateServerTemplateData;
 
 		$liveUpdateResponse = array();
@@ -116,7 +115,7 @@ class updateUtilBase{
 	 * @param string $liveUpdateSession
 	 * @return string
 	 */
-	function getCommonFormFields($update_cmd, $detail, $liveUpdateSession = false){
+	static function getCommonFormFields($update_cmd, $detail, $liveUpdateSession = false){
 		global $clientRequestVars;
 
 		return "
@@ -151,7 +150,7 @@ class updateUtilBase{
 	 * @param integer $length
 	 * @return string
 	 */
-	function number2version($number, $length = VERSIONNUMBER_LENGTH){
+	static function number2version($number, $length = VERSIONNUMBER_LENGTH){
 
 		$number = "$number";
 		$numbers = array();
@@ -164,63 +163,6 @@ class updateUtilBase{
 			}
 		}
 		return implode('.', $numbers);
-	}
-
-	/**
-	 * returns array of ip-range array(start=>IP,stop=>IP)
-	 *
-	 * @param string $ip
-	 * @return array
-	 */
-	function getIpRange($ip){
-		// correct format of given ip-address
-		$ip = updateUtil::correctIp($ip);
-
-		$startIp = $ip;
-		$stopIp = $ip;
-
-		// determine
-		$iparr = explode(".", $ip);
-
-		switch(sizeof($iparr)){
-			case 1:
-				$startIp .= ".0";
-				$stopIp .= ".255";
-
-			case 2:
-				$startIp .= ".0";
-				$stopIp .= ".255";
-
-			case 3:
-				$startIp .= ".0";
-				$stopIp .= ".255";
-
-			case 4:
-				return array('start' => $startIp, 'stop' => $stopIp);
-				break;
-
-			default:
-				return array('start' => "0.0.0.0", 'stop' => "0.0.0.0");
-				break;
-		}
-	}
-
-	/**
-	 * checks and corrects given ip-address to the form
-	 * for example 180.005.80 -> 180.5.80.
-	 * Attention: only corrects as many numbers as given !!!
-	 *
-	 * @param string $ip
-	 * @return string
-	 */
-	function correctIp($ip){
-
-		$iparr = explode(".", $ip);
-
-		for($i = 0; $i < sizeof($iparr); $i++){
-			$iparr[$i] = abs($iparr[$i]);
-		}
-		return implode(".", $iparr);
 	}
 
 	/**

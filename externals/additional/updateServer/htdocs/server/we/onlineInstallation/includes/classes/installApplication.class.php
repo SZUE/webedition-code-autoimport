@@ -25,7 +25,7 @@ class installApplication extends installer{
 	 *
 	 * @return integer
 	 */
-	function getInstallerProgressPercent(){
+	static function getInstallerProgressPercent(){
 
 		// all steps are:
 		// - installation steps
@@ -83,7 +83,7 @@ class installApplication extends installer{
 		return number_format(($currentStep / $installationStepsTotal * 100), 0);
 	}
 
-	function getDownloadChangesResponse(){
+	static function getDownloadChangesResponse(){
 
 		// current position
 		if(!isset($_REQUEST['position'])){
@@ -305,7 +305,7 @@ class installApplication extends installer{
 
 		}
 
-		?>' . static::getProceedNextCommandResponsePart($nextUrl, $this->getInstallerProgressPercent(), '<?php print $message ?>') . '<?php
+		?>' . static::getProceedNextCommandResponsePart($nextUrl, self::getInstallerProgressPercent(), '<?php print $message ?>') . '<?php
 		';
 		return updateUtil::getResponseString($retArray);
 	}
@@ -327,7 +327,7 @@ class installApplication extends installer{
 				. '<li>' . sizeof($_SESSION['clientChanges']['queries']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesQueries'] . '</li>'
 				. '</ul>';
 
-		$progress = $this->getInstallerProgressPercent();
+		$progress = self::getInstallerProgressPercent();
 
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
@@ -418,10 +418,10 @@ class installApplication extends installer{
 					.	"<p>" . sprintf("' . $GLOBALS['lang']['installer']['amountDatabaseQueries'] . '", $endFile, $maxFile) . "</p>";
 
 		if ( sizeof($allFiles) > ' . ( $_REQUEST['position'] + $_SESSION['EXECUTE_QUERIES_PER_STEP'] ) . ' ) { // continue with DB steps
-			?>' . static::getProceedNextCommandResponsePart($repeatUrl, $this->getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
+			?>' . static::getProceedNextCommandResponsePart($repeatUrl, self::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
 
 		} else { // proceed to next step.
-			?>' . static::getProceedNextCommandResponsePart($nextUrl, $this->getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
+			?>' . static::getProceedNextCommandResponsePart($nextUrl, self::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
 
 		}
 		';
@@ -489,10 +489,10 @@ class installApplication extends installer{
 
 			if ( sizeof($allFiles) >= (' . $_SESSION['PREPARE_FILES_PER_STEP'] . ' + ' . $_REQUEST["position"] . ') ) {
 
-				?>' . static::getProceedNextCommandResponsePart($repeatUrl, $this->getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
+				?>' . static::getProceedNextCommandResponsePart($repeatUrl, self::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
 			} else {
 
-				?>' . static::getProceedNextCommandResponsePart($nextUrl, $this->getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
+				?>' . static::getProceedNextCommandResponsePart($nextUrl, self::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
 			}
 		}
 		?>';
@@ -541,7 +541,7 @@ class installApplication extends installer{
 
 			$message .= "<p>" . sprintf(\'' . $GLOBALS['lang']['installer']['amountFilesCopied'] . '\', $endFile, $maxFile) . "</p>";
 
-			?>' . static::getProceedNextCommandResponsePart($nextUrl, $this->getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
+			?>' . static::getProceedNextCommandResponsePart($nextUrl, self::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
 
 		} else {
 			' . static::getErrorMessageResponsePart('', $GLOBALS['lang']['installer']['errorMoveFile']) . '
@@ -718,7 +718,7 @@ class installApplication extends installer{
 				  exit;
 				  }
 				 */
-				'?>' . static::getProceedNextCommandResponsePart($nextUrl, $this->getInstallerProgressPercent(), "<p>" . $GLOBALS['lang'][self::$LanguageIndex]['finished'] . "</p>") . '<?php
+				'?>' . static::getProceedNextCommandResponsePart($nextUrl, self::getInstallerProgressPercent(), "<p>" . $GLOBALS['lang'][self::$LanguageIndex]['finished'] . "</p>") . '<?php
 
 		?>';
 

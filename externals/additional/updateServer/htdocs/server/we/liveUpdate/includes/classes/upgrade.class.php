@@ -7,7 +7,7 @@ class upgrade{
 	 *
 	 * @return array
 	 */
-	function getChangesForUpdate(){
+	static function getChangesForUpdate(){
 
 		// which modules are installed/licensed
 		//$installedModules = $domainInformation['registeredModules'];

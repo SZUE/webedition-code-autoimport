@@ -19,7 +19,7 @@ class installer extends installerBase{
 	 *
 	 * @return integer
 	 */
-	function getInstallerProgressPercent(){
+	static function getInstallerProgressPercent(){
 
 		// current position
 		if(!isset($_REQUEST['position'])){
@@ -59,7 +59,7 @@ class installer extends installerBase{
 		return number_format(($currentStep / $installationStepsTotal * 100), 0);
 	}
 
-	function getDownloadChangesResponse(){
+	static function getDownloadChangesResponse(){
 
 		// current position
 		if(!isset($_REQUEST['position'])){

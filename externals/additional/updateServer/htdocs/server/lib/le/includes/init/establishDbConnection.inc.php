@@ -11,16 +11,3 @@ if(PEAR::isError($DB_Versioning)){
 } else {
 	$DB_Versioning->setFetchMode(DB_FETCHMODE_ASSOC);
 }
-
-// customer registration database (new)
-/*
-$db_customer_down = false;
-$DB_Customer = & DB::connect($DSN_customer, $OPTIONS_customer);
-if (PEAR::isError($DB_Customer)) {
-    $db_customer_down = true;
-
-} else {
-	$DB_Customer->setFetchMode(DB_FETCHMODE_ASSOC);
-
-}
-*/

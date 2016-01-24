@@ -32,7 +32,7 @@ switch($_REQUEST['detail']){
 		if(isset($_REQUEST['decreaseSpeed']) && $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] > 100){
 			$_SESSION['DOWNLOAD_KBYTES_PER_STEP'] -= 100;
 		}
-		print $installer->getDownloadChangesResponse();
+		print installApplication::getDownloadChangesResponse();
 
 		break;
 

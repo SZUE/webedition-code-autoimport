@@ -49,7 +49,7 @@ class downloadSnippet extends installer{
 		$message = '$this->Language[\'headline\']'
 			. '<p>' . sprintf($GLOBALS['lang']['installer']['downloadFilesTotal'], sizeof($_SESSION['clientChanges']['allChanges'])) . '</p>';
 
-		$progress = $this->getInstallerProgressPercent();
+		$progress = self::getInstallerProgressPercent();
 
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php

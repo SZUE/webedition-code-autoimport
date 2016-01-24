@@ -75,7 +75,7 @@ class community extends communityBase{
 	 * @param unknown_type $detail
 	 * @return unknown
 	 */
-	function getCommandNameForDetail($detail){
+	static function getCommandNameForDetail($detail){
 
 		$cmd['update'] = array('getChanges', 'finishInstallation');
 		$cmd['modules'] = array('getChanges', 'finishInstallation');
@@ -742,7 +742,7 @@ class community extends communityBase{
 		return $errorMessage;
 	}
 
-	function getDownloadChangesResponse(){
+	static function getDownloadChangesResponse(){
 
 		// current position
 		if(!isset($_REQUEST['position'])){

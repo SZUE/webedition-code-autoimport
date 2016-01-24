@@ -371,7 +371,7 @@ class update extends updateBase{
 	 *
 	 * @return array
 	 */
-	function getChangesForUpdate(){
+	static function getChangesForUpdate(){
 
 		// which modules are installed/licensed
 		//$installedModules = $domainInformation['registeredModules'];
@@ -448,7 +448,7 @@ class update extends updateBase{
 	 *
 	 * @return string
 	 */
-	function getNoUpdateAvailableResponse(){
+	static function getNoUpdateAvailableResponse(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/update/noUpdateAvailable.inc.php');
 		return updateUtil::getResponseString($ret);
 	}
@@ -459,7 +459,7 @@ class update extends updateBase{
 	 *
 	 * @return string
 	 */
-	function getNoUpdateForLanguagesResponse(){
+	static function getNoUpdateForLanguagesResponse(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/update/noUpdateForLanguages.inc.php');
 		return updateUtil::getResponseString($ret);
 	}
@@ -467,22 +467,22 @@ class update extends updateBase{
 	/**
 	 * @return string
 	 */
-	function getUpdateAvailableResponse(){
+	static function getUpdateAvailableResponse(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/update/updateAvailable.inc.php');
 		return updateUtil::getResponseString($ret);
 	}
 
-	function getUpdateAvailableAfterRepeatResponse(){//error_log('getUpdateAvailableAfterRepeatResponse');
+	static function getUpdateAvailableAfterRepeatResponse(){//error_log('getUpdateAvailableAfterRepeatResponse');
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/update/updateAvailableAfterRepeat.inc.php');
 		return updateUtil::getResponseString($ret);
 	}
 
-	function getConfirmUpdateResponse(){
+	static function getConfirmUpdateResponse(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/update/confirmUpdate.inc.php');
 		return updateUtil::getResponseString($ret);
 	}
 
-	function getConfirmRepeatUpdateResponse(){
+	static function getConfirmRepeatUpdateResponse(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/update/confirmRepeatUpdate.inc.php');
 		return updateUtil::getResponseString($ret);
 	}

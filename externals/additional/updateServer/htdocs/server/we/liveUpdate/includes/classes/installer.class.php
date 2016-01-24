@@ -23,7 +23,7 @@ class installer extends installerBase{
 	 *
 	 * @return integer
 	 */
-	function getInstallerProgressPercent(){
+	static function getInstallerProgressPercent(){
 
 		// all steps are:
 		// - installation steps
@@ -87,7 +87,7 @@ class installer extends installerBase{
 	 *
 	 * @return string
 	 */
-	function getConfirmInstallationWindow(){
+	static function getConfirmInstallationWindow(){
 		return 'javascript:window.open(\'?' . updateUtil::getCommonHrefParameters('installer', 'confirmInstallation') . '\', \'confirmUpdate' . time() . '\', \'dependent=yes,height=250,width=600,menubar=no,location=no,resizable=no,status=no,toolbar=no,scrollbars=no\')';
 	}
 
@@ -119,7 +119,7 @@ class installer extends installerBase{
 	 * @param unknown_type $detail
 	 * @return unknown
 	 */
-	function getCommandNameForDetail($detail){
+	static function getCommandNameForDetail($detail){
 
 		$cmd['update'] = array('getChanges', 'finishInstallation');
 		$cmd['modules'] = array('getChanges', 'finishInstallation');
@@ -824,7 +824,7 @@ if (!$success) {
 		return $errorMessage;
 	}
 
-	function getDownloadChangesResponse(){
+	static function getDownloadChangesResponse(){
 
 		// current position
 		if(!isset($_REQUEST['position'])){

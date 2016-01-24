@@ -19,7 +19,7 @@ class installerBase{
 	 *
 	 * @return integer
 	 */
-	function getInstallerProgressPercent(){
+	static function getInstallerProgressPercent(){
 
 		error_log("Overwrite this:");
 		error_log(__FILE__ . ": " . __CLASS__ . "::" . __FUNCTION__);
