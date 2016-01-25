@@ -51,7 +51,7 @@ function we_tag_metadata($attribs){
 		$GLOBALS['lv'] = new we_listview_document($unique, 1, 0, "", false, "", "", false, false, 0, "", "", false, "", "", "", "", "", "", "off", true, "", $id, '', false, false, 0);
 		$avail = ($GLOBALS['lv']->next_record());
 	} else {
-		$GLOBALS['lv'] = null;
+		$GLOBALS['lv'] = new stdClass();
 		$avail = false;
 	}
 

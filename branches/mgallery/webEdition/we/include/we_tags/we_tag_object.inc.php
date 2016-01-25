@@ -125,7 +125,7 @@ function we_tag_object($attribs){
 			}
 		}
 	} else {
-		$GLOBALS['lv'] = null;
+		$GLOBALS['lv'] = new stdClass();
 		$avail = false;
 	}
 

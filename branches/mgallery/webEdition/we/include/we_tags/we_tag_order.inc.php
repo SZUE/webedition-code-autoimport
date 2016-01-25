@@ -46,7 +46,7 @@ function we_tag_order($attribs){
 		$GLOBALS['lv'] = new we_listview_shopOrder($unique, 1, 0, "", 0, '(IntOrderID=' . intval($id) . ')' . ($condition ? ' AND ' . $condition : ''), '', 0, $hidedirindex);
 		$avail = ($GLOBALS['lv']->next_record());
 	} else {
-		$GLOBALS['lv'] = null;
+		$GLOBALS['lv'] = new stdClass();
 		$avail = false;
 	}
 	we_pre_tag_listview();

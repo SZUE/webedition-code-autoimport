@@ -24,17 +24,17 @@
  */
 class liveUpdateHttp{
 
-	function getServerProtocol($addslashes = true){
+	static function getServerProtocol($addslashes = true){
 		return getServerProtocol($addslashes);
 	}
 
-	function connectFopen($server, $url, $parameters = array()){
+	static function connectFopen($server, $url, $parameters = array()){
 		// try fopen first
 		$address = 'https://' . $server . $url . ($parameters ? '?' . http_build_query($parameters, '', '&') : '');
 		return file_get_contents($address);
 	}
 
-	function connectProxy($server, $url, $parameters){
+	static function connectProxy($server, $url, $parameters){
 		$proxyhost = defined("WE_PROXYHOST") ? WE_PROXYHOST : "";
 		$proxyport = (defined("WE_PROXYPORT") && WE_PROXYPORT) ? WE_PROXYPORT : "80";
 		$proxy_user = defined("WE_PROXYUSER") ? WE_PROXYUSER : "";
@@ -74,7 +74,7 @@ class liveUpdateHttp{
 		return substr($zeile, strpos($zeile, "\r\n\r\n") + 4);
 	}
 
-	function getCurlHttpResponse($server, $url, $parameters){
+	static function getCurlHttpResponse($server, $url, $parameters){
 
 		$_address = 'https://' . $server . $url;
 
@@ -109,7 +109,7 @@ class liveUpdateHttp{
 		return $_data;
 	}
 
-	function getHttpOption(){
+	static function getHttpOption(){
 		if(ini_get('allow_url_fopen') != 1 && strtolower(ini_get('allow_url_fopen')) != "on"){
 			@ini_set('allow_url_fopen', 1);
 			if(ini_get('allow_url_fopen') != 1 && strtolower(ini_get('allow_url_fopen')) != "on"){
@@ -123,7 +123,7 @@ class liveUpdateHttp{
 		return 'fopen';
 	}
 
-	function getHttpResponse($server, $url, $parameters = array()){
+	static function getHttpResponse($server, $url, $parameters = array()){
 		switch(liveUpdateHttp::getHttpOption()){
 			case 'fopen':
 				return liveUpdateHttp::getFopenHttpResponse($server, $url, $parameters);
