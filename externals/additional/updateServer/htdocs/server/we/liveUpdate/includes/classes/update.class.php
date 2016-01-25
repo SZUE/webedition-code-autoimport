@@ -3,11 +3,8 @@
 class update extends updateBase{
 
 	static function updateLogStart(){
-		global $DB_Versioning;
-		$res = $DB_Versioning->query('INSERT INTO ' . UPDATELOG_TABLE . ' (date) VALUES (NOW())');
-		$res2 = $DB_Versioning->query('SELECT LAST_INSERT_ID() FROM ' . UPDATELOG_TABLE . ' ; ');
-		$res2->fetchInto($row);
-		$_SESSION['db_log_id'] = $row['LAST_INSERT_ID()'];
+		$GLOBALS['DB_WE']->query('INSERT INTO ' . UPDATELOG_TABLE . ' (date) VALUES (NOW())');
+		$_SESSION['db_log_id'] = $GLOBALS['DB_WE']->getInsertId();
 		$setvalues = "";
 		$setvalues = "installedVersion = '" . updateUtil::version2number($_SESSION['clientVersion']) . "'";
 		if(isset($_SESSION['clientSubVersion'])){
@@ -70,20 +67,18 @@ class update extends updateBase{
 		}
 		$query = "UPDATE " . UPDATELOG_TABLE . " SET " . $setvalues . " WHERE id = '" . $_SESSION['db_log_id'] . "' ;";
 
-		$res = $DB_Versioning->query($query);
+		$GLOBALS['DB_WE']->query($query);
 	}
 
 	static function updateLogAvail($verarray){
-		global $DB_Versioning;
 
 		$setvalues = "";
 		$setvalues = "installedSvnRevisionDB = '" . $verarray['svnrevisionDB'] . "', newestVersion = '" . $verarray['version'] . "', newestVersionStatus = '" . $verarray['type'] . "', newestSvnRevision = '" . $verarray['svnrevision'] . "', newestVersionBranch = '" . $verarray['versionBranch'] . "' ";
 		$query = "UPDATE " . UPDATELOG_TABLE . " SET " . $setvalues . " WHERE id = '" . $_SESSION['db_log_id'] . "' ;";
-		$res = $DB_Versioning->query($query);
+		$GLOBALS['DB_WE']->query($query);
 	}
 
 	static function updateLogTarget(){
-		global $DB_Versioning;
 		$version = $_SESSION['clientTargetVersionNumber'];
 		$versionname = update::getVersionName($version);
 		$svnrevision = update::getSubVersion($version);
@@ -92,15 +87,14 @@ class update extends updateBase{
 		$setvalues = "";
 		$setvalues = "updatedVersion = '" . $version . "', updatedVersionName = '" . $versionname . "', updatedVersionStatus = '" . $versiontype . "', updatedSvnRevision = '" . $svnrevision . "', updatedVersionBranch = '" . $versionbranch . "', success = '1' ";
 		$query = "UPDATE " . UPDATELOG_TABLE . " SET " . $setvalues . " WHERE id = '" . $_SESSION['db_log_id'] . "' ;";
-		$res = $DB_Versioning->query($query);
+		$GLOBALS['DB_WE']->query($query);
 	}
 
 	static function updateLogFinish($success){
-		global $DB_Versioning;
 
 		$setvalues = "success = '" . $success . "' ";
 		$query = "UPDATE " . UPDATELOG_TABLE . " SET " . $setvalues . " WHERE id = '" . $_SESSION['db_log_id'] . "' ;";
-		$res = $DB_Versioning->query($query);
+		$GLOBALS['DB_WE']->query($query);
 	}
 
 	function checkRequirements(&$output, $pcreV, $phpextensionsstring, $phpV, $mysqlV = ''){
@@ -231,96 +225,65 @@ class update extends updateBase{
 	 * @return boolean
 	 */
 	static function checkForUpdate(){
-		global $DB_Versioning;
-
 		$liveCondition = ' WHERE islive=1';
 		if(isset($_SESSION['testUpdate'])){
 			$liveCondition = '';
 		}
 
-		$res = & $DB_Versioning->query('SELECT MAX(version) AS maxVersion FROM ' . VERSION_TABLE . $liveCondition);
+		$row = $GLOBALS['DB_WE']->getHash('SELECT MAX(version) AS maxVersion FROM ' . VERSION_TABLE . $liveCondition);
 
-		if($res->fetchInto($row)){
 
-			if($row['maxVersion'] > $_SESSION['clientVersionNumber']){
-				return $row['maxVersion'];
-			} else {
-				return false;
-			}
+		if($row['maxVersion'] > $_SESSION['clientVersionNumber']){
+			return $row['maxVersion'];
 		}
+		return false;
 	}
 
 	static function getMaxVersionNumber(){
-		global $DB_Versioning;
-
 		$liveCondition = ' WHERE islive=1';
 		if(isset($_SESSION['testUpdate'])){
 			$liveCondition = '';
 		}
 
-		$res = & $DB_Versioning->query('SELECT MAX(version) AS maxVersion FROM ' . VERSION_TABLE . $liveCondition);
+		$row = $GLOBALS['DB_WE']->getHash('SELECT MAX(version) AS maxVersion FROM ' . VERSION_TABLE . $liveCondition);
 
-		if($res->fetchInto($row)){
-			$maxVersion = $row['maxVersion'];
-			$liveCondition = ' WHERE islive=1 AND version=' . $maxVersion;
-			if(isset($_SESSION['testUpdate'])){
-				$liveCondition = ' WHERE version=' . $maxVersion;
-			}
-			$res2 = & $DB_Versioning->query('SELECT version, svnrevision,type,typeversion,branch,versname FROM ' . VERSION_TABLE . $liveCondition);
-			if($res2->fetchInto($row2)){
-				return $row2;
-			}
-
-
-			//return $row['maxVersion'];
+		$maxVersion = $row['maxVersion'];
+		$liveCondition = ' WHERE islive=1 AND version=' . $maxVersion;
+		if(isset($_SESSION['testUpdate'])){
+			$liveCondition = ' WHERE version=' . $maxVersion;
 		}
+		return $GLOBALS['DB_WE']->getHash('SELECT version, svnrevision,type,typeversion,branch,versname FROM ' . VERSION_TABLE . $liveCondition);
+
+
+		//return $row['maxVersion'];
 	}
 
 	static function getMaxVersionNumberForBranch($branch){
-		global $DB_Versioning;
-
 		$liveCondition = " WHERE `islive`=1 AND `branch`='" . $branch . "'";
 		if(isset($_SESSION['testUpdate'])){
 			$liveCondition = " WHERE `branch`='" . $branch . "'";
 		}
 
-		$res = & $DB_Versioning->query('SELECT MAX(version) AS maxVersion FROM `' . VERSION_TABLE . '`' . $liveCondition);
+		$row = $GLOBALS['DB_WE']->getHash('SELECT MAX(version) AS maxVersion FROM `' . VERSION_TABLE . '`' . $liveCondition);
 
-		$maxVersionBranch = 0;
-		if($res->fetchInto($row)){
-			$maxVersionBranch = $row['maxVersion'];
-		}
-
-		return $maxVersionBranch;
+		return intval($row['maxVersion']);
 	}
 
 	static function getMaxVersionFieldsForBranch($branch){
-		global $DB_Versioning;
 
 		$liveCondition = " WHERE `islive`=1 AND `branch`='" . $branch . "'";
 		if(isset($_SESSION['testUpdate'])){
 			$liveCondition = " WHERE `branch`='" . $branch . "'";
 		}
 
-		$res = & $DB_Versioning->query('SELECT MAX(version) AS maxVersion FROM `' . VERSION_TABLE . '`' . $liveCondition);
+		$row = $GLOBALS['DB_WE']->getHash('SELECT MAX(version) AS maxVersion FROM `' . VERSION_TABLE . '`' . $liveCondition);
 
-		if($res->fetchInto($row)){
-			$maxVersion = $row['maxVersion'];
-			$liveCondition = " WHERE `islive`=1 AND `version`='" . $maxVersion . "' AND `branch`='" . $branch . "'";
-			if(isset($_SESSION['testUpdate'])){
-				$liveCondition = " WHERE `version`='" . $maxVersion . "' AND `branch`='" . $branch . "'";
-			}
-			$res2 = & $DB_Versioning->query('SELECT version, svnrevision,type,typeversion,branch,versname FROM `' . VERSION_TABLE . '`' . $liveCondition);
-			if($res2->fetchInto($row2)){
-				//if($allFields){
-				return $row2;
-				//}
-				//return !$allFields ? $row2 : $row2['version'];
-			}
-
-
-			//return $row['maxVersion'];
+		$maxVersion = $row['maxVersion'];
+		$liveCondition = " WHERE `islive`=1 AND `version`='" . $maxVersion . "' AND `branch`='" . $branch . "'";
+		if(isset($_SESSION['testUpdate'])){
+			$liveCondition = " WHERE `version`='" . $maxVersion . "' AND `branch`='" . $branch . "'";
 		}
+		return $GLOBALS['DB_WE']->getHash('SELECT version, svnrevision,type,typeversion,branch,versname FROM `' . VERSION_TABLE . '`' . $liveCondition);
 	}
 
 	static function getFormattedVersionStringFromWeVersion($showBranch = false, $showBranchIfTrunk = false){
@@ -338,18 +301,12 @@ class update extends updateBase{
 
 	static function getFormattedVersionString($versionnumber, $showBranch = false, $showBranchIfTrunk = false, $versionArray = array()){
 		if($versionnumber != 0){
-			global $DB_Versioning;
 			$query = '
 				SELECT version, versname, svnrevision, type, typeversion, branch
 				FROM ' . VERSION_TABLE . '
 				WHERE version = ' . $versionnumber . '
 			';
-			$versionArray = array();
-
-			$res = & $DB_Versioning->query($query);
-			while($res->fetchInto($row)){
-				$versionArray = $row;
-			}
+			$versionArray = $GLOBALS['DB_WE']->getHash($query);
 		}
 
 		if(count($versionArray) > 0){

@@ -29,7 +29,6 @@ abstract class updateBase{
 	 * @return array
 	 */
 	static function getPossibleLanguagesArray(){
-		global $DB_Versioning;
 
 		$liveCondition = ' AND islive=1';
 		if(isset($_SESSION['testUpdate'])){
@@ -44,14 +43,11 @@ abstract class updateBase{
 			ORDER BY language ASC
 		';
 
-		$versionLanguages = array();
 
-		$res = & $DB_Versioning->query($query);
+		$GLOBALS['DB_WE']->query($query);
 
-		while($res->fetchInto($row)){
-			$versionLanguages[] = $row['language'];
-		}
-		return $versionLanguages;
+
+		return $GLOBALS['DB_WE']->getAll(true);
 	}
 
 	/**
@@ -92,7 +88,6 @@ abstract class updateBase{
 	 * @return array
 	 */
 	static function getNotLiveVersions(){
-		global $DB_Versioning;
 		$query = '
 			SELECT version, svnrevision, language, isbeta
 			FROM ' . VERSION_TABLE . '
@@ -100,17 +95,16 @@ abstract class updateBase{
 		';
 		$NotLiveVersions = array();
 
-		$res = & $DB_Versioning->query($query);
+		$GLOBALS['DB_WE']->query($query);
 
-		while($res->fetchInto($row)){
-			$NotLiveVersions[$row['version']][] = $row['language'];
+		while($GLOBALS['DB_WE']->next_record()){
+			$NotLiveVersions[$GLOBALS['DB_WE']->f('version')][] = $GLOBALS['DB_WE']->f('language');
 		}
 
 		return $NotLiveVersions;
 	}
 
 	static function getAlphaBetaVersions(){
-		global $DB_Versioning;
 		$query = '
 			SELECT version, svnrevision,type,typeversion, branch,language, isbeta
 			FROM ' . VERSION_TABLE . '
@@ -118,10 +112,10 @@ abstract class updateBase{
 		';
 		$AlphaBetaVersions = array();
 
-		$res = & $DB_Versioning->query($query);
+		$GLOBALS['DB_WE']->query($query);
 
-		while($res->fetchInto($row)){
-			$AlphaBetaVersions[$row['version']] = $row;
+		while($GLOBALS['DB_WE']->next_record()){
+			$AlphaBetaVersions[$GLOBALS['DB_WE']->f('version')] = $GLOBALS['DB_WE']->getRecord();
 		}
 
 		return $AlphaBetaVersions;
@@ -134,7 +128,7 @@ abstract class updateBase{
 	 * @return array
 	 */
 	static function getSubVersions(){
-		global $DB_Versioning;
+
 		$query = '
 			SELECT version, svnrevision
 			FROM ' . VERSION_TABLE . '
@@ -142,13 +136,9 @@ abstract class updateBase{
 		';
 		$SubVersions = array();
 
-		$res = & $DB_Versioning->query($query);
+		$GLOBALS['DB_WE']->query($query);
 
-		while($res->fetchInto($row)){
-			$SubVersions[$row['version']] = $row['svnrevision'];
-		}
-
-		return $SubVersions;
+		return $GLOBALS['DB_WE']->getAllFirst(false);
 	}
 
 	/**
@@ -158,7 +148,7 @@ abstract class updateBase{
 	 * @return string
 	 */
 	static function getSubVersion($version){
-		global $DB_Versioning;
+
 		$query = '
 			SELECT  svnrevision
 			FROM ' . VERSION_TABLE . '
@@ -166,31 +156,21 @@ abstract class updateBase{
 		';
 		$SubVersion = '';
 
-		$res = & $DB_Versioning->query($query);
+		$GLOBALS['DB_WE']->query($query);
 
-		while($res->fetchInto($row)){
-			$SubVersion = $row['svnrevision'];
-		}
-
-		return $SubVersion;
+		return $GLOBALS['DB_WE']->getAll(true);
 	}
 
 	static function getVersionNames(){
-		global $DB_Versioning;
 		$query = '
 			SELECT version, versname
 			FROM ' . VERSION_TABLE . '
 			WHERE version >= 6000 ORDER BY version DESC, language
 		';
-		$VersionNames = array();
 
-		$res = & $DB_Versioning->query($query);
+		$GLOBALS['DB_WE']->query($query);
 
-		while($res->fetchInto($row)){
-			$VersionNames[$row['version']] = $row['versname'];
-		}
-
-		return $VersionNames;
+		return $GLOBALS['DB_WE']->getAllFirst(false);
 	}
 
 	/**
@@ -200,21 +180,15 @@ abstract class updateBase{
 	 * @return string
 	 */
 	static function getVersionName($version){
-		global $DB_Versioning;
 		$query = '
 			SELECT  versname
 			FROM ' . VERSION_TABLE . '
 			WHERE version = ' . $version . '
-		';
-		$VersionName = '';
+		LIMIT 1';
 
-		$res = & $DB_Versioning->query($query);
+		$h = $GLOBALS['DB_WE']->getHash($query);
 
-		while($res->fetchInto($row)){
-			$VersionName = $row['versname'] ? $row['versname'] : '';
-		}
-
-		return $VersionName;
+		return $h['versname'];
 	}
 
 	/**
@@ -224,7 +198,6 @@ abstract class updateBase{
 	 * @return string
 	 */
 	static function getVersionType($version){
-		global $DB_Versioning;
 		$query = '
 			SELECT  type, typeversion
 			FROM ' . VERSION_TABLE . '
@@ -232,9 +205,10 @@ abstract class updateBase{
 		';
 		$VersionType = '';
 
-		$res = & $DB_Versioning->query($query);
+		$GLOBALS['DB_WE']->query($query);
 
-		while($res->fetchInto($row)){
+		while($GLOBALS['DB_WE']->next_record()){
+			$row = $GLOBALS['DB_WE']->getRecord();
 			$VersionType = $row['type'] . (($row['typeversion'] == 0) ? '' : $row['typeversion']);
 		}
 
@@ -242,57 +216,32 @@ abstract class updateBase{
 	}
 
 	static function getOnlyVersionType($version){
-		global $DB_Versioning;
 		$query = '
-			SELECT  type, typeversion
+			SELECT  type
 			FROM ' . VERSION_TABLE . '
-			WHERE version = ' . $version . '
-		';
-		$VersionType = '';
-
-		$res = & $DB_Versioning->query($query);
-
-		while($res->fetchInto($row)){
-			$VersionType = $row['type'];
-		}
-
-		return $VersionType;
+			WHERE version = ' . $version . ' LIMIT 1';
+		$h = $GLOBALS['DB_WE']->getHash($query);
+		return $h['type'];
 	}
 
 	static function getOnlyVersionTypeVersion($version){
-		global $DB_Versioning;
 		$query = '
-			SELECT  type, typeversion
+			SELECT  typeversion
 			FROM ' . VERSION_TABLE . '
-			WHERE version = ' . $version . '
-		';
-		$VersionType = '';
-
-		$res = & $DB_Versioning->query($query);
-
-		while($res->fetchInto($row)){
-			$VersionType = $row['typeversion'];
-		}
-
-		return $VersionType;
+			WHERE version = ' . $version . ' LIMIT 1		';
+		$h = $GLOBALS['DB_WE']->getHash($query);
+		return $h['typeversion'];
 	}
 
 	static function getOnlyVersionBranch($version){
-		global $DB_Versioning;
 		$query = '
-			SELECT  branch, typeversion
+			SELECT  branch
 			FROM ' . VERSION_TABLE . '
-			WHERE version = ' . $version . '
+			WHERE version = ' . $version . ' LIMIT 1
 		';
-		$VersionType = '';
 
-		$res = & $DB_Versioning->query($query);
-
-		while($res->fetchInto($row)){
-			$VersionType = $row['branch'];
-		}
-
-		return $VersionType;
+		$h = $GLOBALS['DB_WE']->getHash($query);
+		return $h['branch'];
 	}
 
 	/**
@@ -302,8 +251,6 @@ abstract class updateBase{
 	 * @return array
 	 */
 	static function getVersionsLanguageArray($installedLanguagesOnly = true, $showBeta = true){
-		global $DB_Versioning;
-
 		//error_log(print_r(urldecode(base64_decode($_SESSION['clientInstalledLanguages'])),1));
 		if(isset($_SESSION['clientInstalledLanguages']) && !is_array($_SESSION['clientInstalledLanguages'])){
 			//$_SESSION['clientInstalledLanguages'] = unserialize(urldecode(($_SESSION['clientInstalledLanguages'])));
@@ -336,9 +283,10 @@ abstract class updateBase{
 
 		$versionLanguages = array();
 		$versionLanguages["betaLanguages"] = array();
-		$res = & $DB_Versioning->query($query);
+		$GLOBALS['DB_WE']->query($query);
 
-		while($res->fetchInto($row)){
+		while($GLOBALS['DB_WE']->next_record()){
+			$row=$GLOBALS['DB_WE']->getRecord();
 
 			if($row["isbeta"] == "1"){
 				if($showBeta){

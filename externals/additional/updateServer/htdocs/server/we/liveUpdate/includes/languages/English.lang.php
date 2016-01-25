@@ -1,13 +1,5 @@
 <?php
 $lang['register']['headline'] = 'Registration';
-$lang['register']['insertSerial'] = 'Please enter your serial';
-$lang['register']['serial'] = 'Serial number';
-$lang['register']['repeatRegistration'] = 'The registration information on our server differs from the information on your domain. This error can occur if you have modules that are registered and associated with your domain but which are no longer installed (after reinstall). Please re-enter your serial number to adjust the registered data. Thereafter you can proceed with the update/installation of modules.';
-$lang['register']['reInstallModules'] = 'The registration could not be completed. Some of the registered modules are not installed on the domain. To complete the registration, these modules are now installed.';
-$lang['register']['errorWithSerial'] = 'The registration could not be processed';
-$lang['register']['registerSuccess'] = 'Your webEdition licence has been successfully registered. webEdition will be restarted now to use all included features.';
-$lang['register']['registerError'] = 'The registration could not be completed. There was the follwoing error.';
-$lang['register']['registerErrorDetail'] = 'The files needed for registration could not be changed!';
 $lang['register']['informAboutUpdates'] = 'Inform me about updates';
 $lang['register']['email'] = 'E-Mail Address';
 $lang['register']['salutation'] = 'Salutation';
@@ -21,11 +13,7 @@ $lang['register']['salutationMrs'] = 'Mrs.';
 
 $lang['license']['undefinedError'] = 'Undefined Error';
 
-$lang['upgrade']['headline'] = 'Upgrade to webEdition 5';
-$lang['upgrade']['registerBeforeUpgrade'] = 'The registration information on our server differs from the information on your domain. This error can occur if you have modules that are registered and associated with your domain but which are no longer installed (after reinstall). To correct this, use the update functions for webEdition 5. Thereafter you can proceed with the update to webEdition version 6.';
-$lang['upgrade']['registerBeforeUpgrade_we4'] = 'The registration information on our server differs from the information on your domain. This error can occur if you have modules that are registered and associated with your domain but which are no longer installed (after reinstall). To correct this, use the update functions for webEdition 4. Thereafter you can proceed with the update to webEdition version 5.';
-$lang['upgrade']['registerBeforeUpgrade_we5light'] = 'The registration information on our server differs from the information on your domain. To correct this, use the update functions for webEdition 5 light. Thereafter you can proceed with the update to webEdition version 5.';
-$lang['upgrade']['upgradePossibleText'] = 'Select to which version you want to update';
+$lang['upgrade']['headline'] = 'Upgrade to webEdition 6';
 $lang['upgrade']['upgradeToVersion'] = 'Upgrade to version';
 $lang['upgrade']['confirmUpgradeWarning'] = 'You are about to upgrade to webEdition 6. <b>In a first step, you can upgrade only to version 6.0.0.6.</b> During this process, all webEdition programme files will be replaced. This process can take some time.<br /><br /><b>Attention:</b><ul><li>webEdition 6 requires at least <u>PHP version 5.2</u> or newer.</li><li>After the update webEdition must be restarted.</li><li>After restart, you must make a complete rebuild of your web-site.</li><li><b>Finally you can update to the latest version of webEdition 6.</b></li><li>We recommend to do this step by step 6.0.0.6 -&gt; 6.1.0.2, 6.1.0.2 -&gt; 6.2.X (latest) with rebuilds after each step.</li></ul>';
 $lang['upgrade']['confirmUpgradeWarningTitle'] = 'Please confirm to continue:';

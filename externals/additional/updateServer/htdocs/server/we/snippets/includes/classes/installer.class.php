@@ -309,7 +309,7 @@ if ($success) {
 	 * @param string $nextDetail
 	 * @return array
 	 */
-	function _getDownloadFilesMergeResponse($filesArray, $nextUrl, $progress = 0, $Realname, $numberOfParts){
+	static function _getDownloadFilesMergeResponse($filesArray, $nextUrl, $progress = 0, $Realname, $numberOfParts){
 
 		// prepare $filesArray (path => encodedContent) for the client
 		$writeFilesCode = '

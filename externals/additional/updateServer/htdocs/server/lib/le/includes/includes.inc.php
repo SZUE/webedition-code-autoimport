@@ -4,8 +4,10 @@
 require_once(LIVEUPDATE_SERVER_DIR . '/../conf/conf.inc.php');
 require_once(LIVEUPDATE_SERVER_DIR . "/../conf/define.inc.php");
 
+//require_once('DB.php');
 // include the PEAR Db class
-require_once('DB.php');
+require_once(LIVEUPDATE_SERVER_DIR.'/../database/we_database_base.class.php');
+require_once(LIVEUPDATE_SERVER_DIR.'/../database/we_database_mysqli.class.php');
 
 // include system classes
 require_once(SHARED_DIR . '/includes/classes/bannerBase.class.php');

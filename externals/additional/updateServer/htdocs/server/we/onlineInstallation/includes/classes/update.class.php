@@ -3,11 +3,8 @@
 class update extends updateBase{
 
 	function installLogStart(){
-		global $DB_Versioning;
-		$res = $DB_Versioning->query('INSERT INTO ' . INSTALLLOG_TABLE . ' (date) VALUES (NOW())');
-		$res2 = $DB_Versioning->query('SELECT LAST_INSERT_ID() FROM ' . INSTALLLOG_TABLE . ' ; ');
-		$res2->fetchInto($row);
-		$_SESSION['db_log_id'] = $row['LAST_INSERT_ID()'];
+		$GLOBALS['DB_WE']->query('INSERT INTO ' . INSTALLLOG_TABLE . ' (date) VALUES (NOW())');
+		$_SESSION['db_log_id'] = $GLOBALS['DB_WE']->getInsertId();
 		$setvalues = "";
 		$setvalues = "installerVersion = '" . str_replace('.', '', $_SESSION['le_installer_version']) . "'";
 		if(isset($_SESSION['clientPhpVersion'])){
@@ -69,7 +66,7 @@ class update extends updateBase{
 		}
 		$query = "UPDATE " . INSTALLLOG_TABLE . " SET " . $setvalues . " WHERE id = '" . $_SESSION['db_log_id'] . "' ;";
 
-		$res = $DB_Versioning->query($query);
+		$GLOBALS['DB_WE']->query($query);
 	}
 
 }

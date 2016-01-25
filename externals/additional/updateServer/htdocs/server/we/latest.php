@@ -16,12 +16,14 @@
  * 		available languages
  */
 
+ini_set("log_errors", 1);
+ini_set("error_reporting", E_ALL);
+ini_set("error_log", $_SERVER["DOCUMENT_ROOT"] . "/php_errors.log");
 
 // this script fetches the most recent webEdition version from the database
 // for webEdition 6
-//ini_set("display_errors","Off");
 // uncomment this to disable the cache:
-//$disableCache = true;
+$disableCache = true;
 // check which output format to use:
 $formats = array("json", "array");
 
@@ -55,27 +57,18 @@ if(!isset($disableCache) && is_readable($cachefile) && filemtime($cachefile) >= 
 include("./conf/conf.inc.php");
 include("./conf/define.inc.php");
 
-include("PEAR.php");
-// include the PEAR Db class
-require_once('DB.php');
-
 $db_versioning_down = false;
+require_once './database/we_database_base.class.php';
+require_once './database/we_database_mysqli.class.php';
 
-$DB_Versioning = & DB::connect($DSN_versioning, $OPTIONS_versioning);
+$GLOBALS['DB_WE'] = new DB_WE(); //& DB::connect($DSN_versioning, $OPTIONS_versioning);
 
-if(PEAR::isError($DB_Versioning)){
-	$db_versioning_down = true;
-	exit;
-} else {
-	$DB_Versioning->setFetchMode(DB_FETCHMODE_ASSOC);
-}
 if($beta === true){
 	$query = "SELECT DISTINCT(version), date, islive FROM " . VERSION_TABLE . " ORDER BY version DESC limit 1";
 } else {
 	$query = "SELECT DISTINCT(version), date, islive FROM " . VERSION_TABLE . " WHERE islive = 1 ORDER BY version DESC limit 1";
 }
-$res = & $DB_Versioning->query($query);
-$latest = $res->fetchRow();
+$latest = $GLOBALS['DB_WE']->getHash($query);
 $latestVersion = $latest["version"];
 
 // create dotted version
@@ -93,8 +86,9 @@ $latest["dotted"] = $dotted;
 // fetch languages:
 if(!empty($latestVersion)){
 	$query = "SELECT DISTINCT(language), isbeta FROM " . VERSION_TABLE . " WHERE version = '" . $latestVersion . "'";
-	$res = & $DB_Versioning->query($query);
-	while($row = $res->fetchRow()){
+	$GLOBALS['DB_WE']->query($query);
+	while($GLOBALS['DB_WE']->next_record()){
+		$row = $GLOBALS['DB_WE']->getRecord();
 		if(substr($row['language'], -6) == "_UTF-8"){
 			$name = substr($row['language'], 0, -6);
 			$charset = "UTF-8";

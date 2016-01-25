@@ -8,7 +8,6 @@ class modulesBase{
 	 * @return array
 	 */
 	function getExistingModules($forceSelect = false, $language = ""){
-		global $DB_Versioning;
 
 		if(!isset($_SESSION['existingModules']) || $forceSelect){
 
@@ -24,9 +23,10 @@ class modulesBase{
 					AND PK_moduleKey = strModuleKey
 			";
 
-			$res = & $DB_Versioning->query($query);
+			$GLOBALS['DB_WE']->query($query);
 
-			while($row = $res->fetchRow()){
+			while($GLOBALS['DB_WE']->next_record()){
+				$row=$GLOBALS['DB_WE']->getRecord();
 				$_SESSION['existingModules'][$row['PK_moduleKey']] = array(
 					'text' => $row['strText'],
 					'grade' => $row['grade'],

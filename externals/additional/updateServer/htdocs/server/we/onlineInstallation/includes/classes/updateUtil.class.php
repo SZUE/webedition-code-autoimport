@@ -51,8 +51,6 @@ class updateUtil extends updateUtilBase{
 	 * @return array
 	 */
 	function getChangesArrayByQueries($queryArray){
-		global $DB_Versioning;
-
 		$changes = array(
 			'files' => array(),
 			'queries' => array(),
@@ -61,9 +59,9 @@ class updateUtil extends updateUtilBase{
 		);
 
 		foreach($queryArray as $query){
-			$res = & $DB_Versioning->query($query);
-			while(($row = $res->fetchRow())){
-
+			$GLOBALS['DB_WE']->query($query);
+			while($GLOBALS['DB_WE']->next_record()){
+				$row = $GLOBALS['DB_WE']->getRecord();
 				$changesDb = explode(',', $row['changes']);
 				$pathPrefix = '../../files/we/version' . $row['version'] . '/';
 
@@ -98,11 +96,9 @@ class updateUtil extends updateUtilBase{
 	}
 
 	function getLastSnapShot($targetVersionNumber){
-		global $DB_Versioning;
-		$res = & $DB_Versioning->query('SELECT version FROM ' . VERSION_TABLE . " WHERE isSnapshot='1' AND version <= '" . $targetVersionNumber . "' ORDER BY version DESC ");
-		$anzahl = & $DB_Versioning->numCols();
-		if($anzahl > 0){
-			$row = $res->fetchRow();
+		$row = $GLOBALS['DB_WE']->getHash('SELECT version FROM ' . VERSION_TABLE . " WHERE isSnapshot='1' AND version <= '" . $targetVersionNumber . "' ORDER BY version DESC ");
+
+		if($row){
 			return $row['version'];
 		}
 		return 6000;
