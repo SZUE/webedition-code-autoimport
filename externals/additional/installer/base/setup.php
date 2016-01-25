@@ -54,7 +54,7 @@ function le_errorhandler($type, $message, $file, $line, $context){
 	file_put_contents('installer.err', print_r($data, true), FILE_APPEND);
 }
 
-error_reporting($_error_level);
+error_reporting(E_ALL);
 ini_set('error_reporting', E_ALL);
 set_error_handler('le_errorhandler');
 
