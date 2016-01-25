@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -27,7 +26,6 @@
  * class for handling image documents
  */
 class we_imageDocument extends we_binaryDocument{
-
 	const ALT_FIELD = '_img_custom_alt';
 	const TITLE_FIELD = '_img_custom_title';
 	const THUMB_FIELD = '_img_custom_thumb';
@@ -280,8 +278,8 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		return $this->getElement('RollOverFlag') ? array(
 			'onmouseover' => ($child ? 'if(this.firstChild){ this.firstChild' : '{this') . '.src = img' . self::$imgCnt . 'Over.src; }',
 			'onmouseout' => ($child ? 'if(this.firstChild){ this.firstChild' : '{this') . '.src = img' . self::$imgCnt . 'Out.src;}',
-				) :
-				array();
+			) :
+			array();
 	}
 
 	/**
@@ -409,8 +407,8 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 					if($thumbObj->isOriginal()){
 //						$create = false;
 					} elseif((!$thumbObj->isOriginal()) && file_exists(WEBEDITION_PATH . '../' . $img_path) &&
-							// open a file
-							intval(filectime(WEBEDITION_PATH . '../' . $img_path)) > intval($thumbObj->getDate())){
+						// open a file
+						intval(filectime(WEBEDITION_PATH . '../' . $img_path)) > intval($thumbObj->getDate())){
 //						$create = false;
 						//picture created after thumbnail definition was changed, so all is up-to-date
 					} else {
@@ -433,8 +431,8 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 			$target = $this->getElement('LinkTarget');
 
 			$src = $dyn ?
-					WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' . $this->ContentType . '&we_cmd[2]=' . $GLOBALS['we_transaction'] . '&rand=' . microtime() :
-					$img_path . '?m=' . $this->Published;
+				WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' . $this->ContentType . '&we_cmd[2]=' . $GLOBALS['we_transaction'] . '&rand=' . microtime() :
+				$img_path . '?m=' . $this->Published;
 
 			if($this->issetElement('sizingrel')){
 				$this->setElement('width', round($this->getElement('width') * $this->getElement('sizingrel')), 'attrib');
@@ -503,18 +501,16 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 			}
 
 			$showAttrOnly = (!empty($attribs['only'])) ?
-					$attribs['only'] :
-					((!empty($attribs['pathonly'])) ?
-							'src' :
-							''
-					);
+				$attribs['only'] :
+				((!empty($attribs['pathonly'])) ?
+					'src' :
+					''
+				);
 
 			switch($showAttrOnly){
 				default:
 				case 'src':
 				case 'alt':
-				case 'width':
-				case 'height':
 					return empty($attribs[$showAttrOnly]) ? '' : $attribs[$showAttrOnly];
 				case 'filename':
 					return $this->Filename;
@@ -524,6 +520,10 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 					return $this->Extension;
 				case 'parentpath':
 					return $this->getParentPath();
+				case 'width':
+					return $this->getElement('width');
+				case 'height':
+					return $this->getElement('height');
 				case '':
 					break;
 			}
@@ -546,8 +546,8 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 				$this->html = ( trim($this->getRollOverScript($src)) . getHtmlTag('a', $aAtts, getHtmlTag('img', $attribs)) );
 			} else {
 				$this->html = (defined('WE_EDIT_IMAGE')) ?
-						we_base_imageCrop::getJS() . we_base_imageCrop::getCSS() . we_base_imageCrop::getCrop($attribs) :
-						$this->getRollOverScript($src) . getHtmlTag('img', array_merge($attribs, $this->getRollOverAttribsArr(false)));
+					we_base_imageCrop::getJS() . we_base_imageCrop::getCSS() . we_base_imageCrop::getCrop($attribs) :
+					$this->getRollOverScript($src) . getHtmlTag('img', array_merge($attribs, $this->getRollOverAttribsArr(false)));
 			}
 		} else {
 			if($pathOnly){
@@ -719,11 +719,11 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		}
 
 		return '<img src="' . WEBEDITION_DIR . 'thumbnail.php?' . http_build_query(array(
-					'id' => $this->ID,
-					'size' => $size,
-					'path' => str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->getElement('data')),
-					'extension' => $this->Extension,
-					'size2' => $size2)) . '" />';
+				'id' => $this->ID,
+				'size' => $size,
+				'path' => str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->getElement('data')),
+				'extension' => $this->Extension,
+				'size2' => $size2)) . '" />';
 	}
 
 	protected function getMetaDataReader($force = false){
@@ -813,7 +813,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 
 		$cmd1 = "document.we_form.elements['" . $extname . "'].value";
 		$butExt = permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ?
-				we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . we_base_request::encCmd($cmd1) . "',''," . $cmd1 . ",'" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_" . $this->Name . "_txt[LinkType]'][1].checked=true;") . "')") : "";
+			we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . we_base_request::encCmd($cmd1) . "',''," . $cmd1 . ",'" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_" . $this->Name . "_txt[LinkType]'][1].checked=true;") . "')") : "";
 
 		if(defined('OBJECT_TABLE')){
 			$objidname = 'we_' . $this->Name . '_txt[ObjID]';
@@ -946,7 +946,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 								}
 
 								$tmp_Filename = $imgName . '_' . we_base_file::getUniqueId() . '_' .
-										preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES['we_ui_' . $formname]['name'][$imgName]);
+									preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES['we_ui_' . $formname]['name'][$imgName]);
 
 								if($imgId){
 									$_SESSION[$_imgDataId]['id'] = $imgId;
@@ -954,12 +954,12 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 
 								$_SESSION[$_imgDataId]['fileName'] = preg_replace('#^(.+)\..+$#', '$1', $tmp_Filename);
 								$_SESSION[$_imgDataId]['extension'] = (strpos($tmp_Filename, '.') > 0) ?
-										preg_replace('#^.+(\..+)$#', '$1', $tmp_Filename) : '';
+									preg_replace('#^.+(\..+)$#', '$1', $tmp_Filename) : '';
 								$_SESSION[$_imgDataId]['text'] = $_SESSION[$_imgDataId]['fileName'] . $_SESSION[$_imgDataId]['extension'];
 
 								//image needs to be scaled
 								if((isset($_SESSION[$_imgDataId]['width']) && $_SESSION[$_imgDataId]['width']) ||
-										(isset($_SESSION[$_imgDataId]['height']) && $_SESSION[$_imgDataId]['height'])){
+									(isset($_SESSION[$_imgDataId]['height']) && $_SESSION[$_imgDataId]['height'])){
 									$imageData = we_base_file::load($_SESSION[$_imgDataId]['serverPath']);
 									$thumb = new we_thumbnail();
 									$thumb->init('dummy', $_SESSION[$_imgDataId]['width'], $_SESSION[$_imgDataId]['height'], array($_SESSION[$_imgDataId]['keepratio'] ? we_thumbnail::OPTION_RATIO : 0, $_SESSION[$_imgDataId]['maximize'] ? we_thumbnail::OPTION_MAXSIZE : 0), '', 'dummy', 0, '', '', $_SESSION[$_imgDataId]['extension'], $we_size[0], $we_size[1], $imageData, '', $_SESSION[$_imgDataId]['quality']);
@@ -987,13 +987,13 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 	public function getPropertyPage(){
 		echo we_html_multiIconBox::getJS() .
 		we_html_multiIconBox::getHTML('PropertyPage', array(
-			array('icon' =>"path.gif", "headline" => g_l('weClass', '[path]'), "html" => $this->formPath(), 'space' => 140),
-			array('icon' =>"doc.gif", "headline" => g_l('weClass', '[document]'), "html" => $this->formIsSearchable() . $this->formIsProtected(), 'space' => 140),
-			array('icon' =>"meta.gif", "headline" => g_l('weClass', '[metainfo]'), "html" => $this->formMetaInfos(), 'space' => 140),
-			array('icon' =>"navi.gif", "headline" => g_l('global', '[navigation]'), "html" => $this->formNavigation(), 'space' => 140),
-			array('icon' =>"cat.gif", "headline" => g_l('global', '[categorys]'), "html" => $this->formCategory(), 'space' => 140),
-			array('icon' =>"user.gif", "headline" => g_l('weClass', '[owners]'), "html" => $this->formCreatorOwners(), 'space' => 140),
-			array('icon' =>"hyperlink.gif", "headline" => g_l('weClass', '[hyperlink]'), "html" => $this->formLink(), 'space' => 140),
+			array('icon' => "path.gif", "headline" => g_l('weClass', '[path]'), "html" => $this->formPath(), 'space' => 140),
+			array('icon' => "doc.gif", "headline" => g_l('weClass', '[document]'), "html" => $this->formIsSearchable() . $this->formIsProtected(), 'space' => 140),
+			array('icon' => "meta.gif", "headline" => g_l('weClass', '[metainfo]'), "html" => $this->formMetaInfos(), 'space' => 140),
+			array('icon' => "navi.gif", "headline" => g_l('global', '[navigation]'), "html" => $this->formNavigation(), 'space' => 140),
+			array('icon' => "cat.gif", "headline" => g_l('global', '[categorys]'), "html" => $this->formCategory(), 'space' => 140),
+			array('icon' => "user.gif", "headline" => g_l('weClass', '[owners]'), "html" => $this->formCreatorOwners(), 'space' => 140),
+			array('icon' => "hyperlink.gif", "headline" => g_l('weClass', '[hyperlink]'), "html" => $this->formLink(), 'space' => 140),
 		));
 	}
 
