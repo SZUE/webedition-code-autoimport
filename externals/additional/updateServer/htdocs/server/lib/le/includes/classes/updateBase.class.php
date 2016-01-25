@@ -152,13 +152,13 @@ abstract class updateBase{
 		$query = '
 			SELECT  svnrevision
 			FROM ' . VERSION_TABLE . '
-			WHERE version = ' . $version . '
+			WHERE version = ' . $version . ' LIMIT 1
 		';
 		$SubVersion = '';
 
-		$GLOBALS['DB_WE']->query($query);
+		$h = $GLOBALS['DB_WE']->getHash($query);
 
-		return $GLOBALS['DB_WE']->getAll(true);
+		return $h['svnrevision'];
 	}
 
 	static function getVersionNames(){
@@ -203,16 +203,9 @@ abstract class updateBase{
 			FROM ' . VERSION_TABLE . '
 			WHERE version = ' . $version . '
 		';
-		$VersionType = '';
+		$row = $GLOBALS['DB_WE']->getHash($query);
 
-		$GLOBALS['DB_WE']->query($query);
-
-		while($GLOBALS['DB_WE']->next_record()){
-			$row = $GLOBALS['DB_WE']->getRecord();
-			$VersionType = $row['type'] . (($row['typeversion'] == 0) ? '' : $row['typeversion']);
-		}
-
-		return $VersionType;
+		return $row['type'] . (($row['typeversion'] == 0) ? '' : $row['typeversion']);
 	}
 
 	static function getOnlyVersionType($version){
@@ -286,7 +279,7 @@ abstract class updateBase{
 		$GLOBALS['DB_WE']->query($query);
 
 		while($GLOBALS['DB_WE']->next_record()){
-			$row=$GLOBALS['DB_WE']->getRecord();
+			$row = $GLOBALS['DB_WE']->getRecord();
 
 			if($row["isbeta"] == "1"){
 				if($showBeta){
