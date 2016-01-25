@@ -922,7 +922,7 @@ class liveUpdateFunctions{
 	 * @param integer $errline
 	 * @param string $errcontext
 	 */
-	function liveUpdateErrorHandler($errno, $errstr, $errfile, $errline, $errcontext){
+	static function liveUpdateErrorHandler($errno, $errstr, $errfile, $errline, $errcontext){
 
 		global $liveUpdateError;
 

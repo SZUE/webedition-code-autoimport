@@ -135,10 +135,8 @@ if(isset($_REQUEST['update_cmd'])){
 
 
 // check databases
+} elseif($db_versioning_down){
+	include(SHARED_TEMPLATE_DIR . '/connection/serverDatabaseDown.inc.php');
 } else {
-	if($db_versioning_down){
-		include(SHARED_TEMPLATE_DIR . '/connection/serverDatabaseDown.inc.php');
-	} else {
-		include(SHARED_TEMPLATE_DIR . '/connection/serverUpAndRunning.inc.php');
-	}
+	include(SHARED_TEMPLATE_DIR . '/connection/serverUpAndRunning.inc.php');
 }

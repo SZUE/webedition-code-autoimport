@@ -62,12 +62,13 @@ class leOnlineInstaller{
 			$_SESSION['leInstallerLanguage'] = $this->getLanguageFromBrowser($AvailableLanguages, $DefaultLanguage);
 		}
 
+		$_SESSION['leInstallerLanguage'] = str_replace('_UTF-8', '', $_SESSION['leInstallerLanguage']);
 		$_SESSION['leInstallerCharset'] = "UTF-8";
 
 		// Load language files
 		$LanguageOnlineInstaller = array();
-		if(file_exists(LE_ONLINE_INSTALLER_PATH . "/includes/language/" . $_SESSION['leInstallerLanguage'] . ".inc.php")){
-			require(LE_ONLINE_INSTALLER_PATH . "/includes/language/" . $_SESSION['leInstallerLanguage'] . ".inc.php");
+		if(file_exists(LE_ONLINE_INSTALLER_PATH . '/includes/language/' . $_SESSION['leInstallerLanguage'] . '.inc.php')){
+			require(LE_ONLINE_INSTALLER_PATH . '/includes/language/' . $_SESSION['leInstallerLanguage'] . '.inc.php');
 			$LanguageOnlineInstaller = $lang;
 		}
 

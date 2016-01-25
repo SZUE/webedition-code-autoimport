@@ -20,10 +20,12 @@ if(isset($_REQUEST["update_cmd"]) && $_REQUEST["update_cmd"] == "startSession"){
 		if(strpos($varName, 'client') === 0){
 
 			$varValue = urldecode($varValue);
-			if(!is_array(unserialize(base64_decode($varValue)))){
+			if(preg_match('|^[asO]:\d+:|', $varValue)){
 				$varArray = unserialize(($varValue));
-			} else {
+			} elseif(preg_match('|^[asO]:\d+:|', base64_decode($varValue))){
 				$varArray = unserialize(base64_decode($varValue));
+			} else {
+				$varArray = '';
 			}
 			if(is_array($varArray)){
 				$_SESSION[$varName] = $varArray;

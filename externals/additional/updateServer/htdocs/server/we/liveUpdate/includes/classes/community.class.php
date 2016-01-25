@@ -607,7 +607,7 @@ class community extends communityBase{
 		$installerVersionDir = $availableInstallers[updateUtil::getNearestVersion($availableInstallers, $_SESSION['clientTargetVersionNumber'])];
 		$installerDir = LIVEUPDATE_SERVER_DOWNLOAD_DIR . '/' . $installerVersionDir;
 
-		$fileArray["LIVEUPDATE_CLIENT_DOCUMENT_DIR . '/updateClient/liveUpdateServer" . $_SESSION['clientExtension'] . "'"] = updateUtil::getFileContentEncoded($installerDir . '/updateClient/liveUpdateServer.php', true);
+		$fileArray["LIVEUPDATE_CLIENT_DOCUMENT_DIR . '/updateClient/liveUpdateServer.php" . $_SESSION['clientExtension'] . "'"] = updateUtil::getFileContentEncoded($installerDir . '/updateClient/liveUpdateServer.php', true);
 		$fileArray["LIVEUPDATE_CLIENT_DOCUMENT_DIR . '/updateClient/liveUpdateFunctionsServer.class" . $_SESSION['clientExtension'] . "'"] = updateUtil::getFileContentEncoded($installerDir . '/updateClient/liveUpdateFunctionsServer.class.php', true);
 		$fileArray["LIVEUPDATE_CLIENT_DOCUMENT_DIR . '/updateClient/liveUpdateResponseServer.class" . $_SESSION['clientExtension'] . "'"] = updateUtil::getFileContentEncoded($installerDir . '/updateClient/liveUpdateResponseServer.class.php', true);
 

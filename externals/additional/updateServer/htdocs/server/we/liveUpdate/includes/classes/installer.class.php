@@ -364,9 +364,9 @@ class installer extends installerBase{
 		$nextUrl = '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail());
 
 		$message = '<div>' . sprintf($GLOBALS['lang']['installer']['downloadFilesTotal'], sizeof($_SESSION['clientChanges']['allChanges'])) . '<br />' .
-				sizeof($_SESSION['clientChanges']['files']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesFiles'] . '<br />' .
-				sizeof($_SESSION['clientChanges']['queries']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesQueries'] . '<br />' .
-				sizeof($_SESSION['clientChanges']['patches']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesPatches'] . '<br /></div>';
+			sizeof($_SESSION['clientChanges']['files']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesFiles'] . '<br />' .
+			sizeof($_SESSION['clientChanges']['queries']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesQueries'] . '<br />' .
+			sizeof($_SESSION['clientChanges']['patches']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesPatches'] . '<br /></div>';
 
 		$progress = installer::getInstallerProgressPercent();
 
@@ -675,17 +675,17 @@ if (!$success) {
 		$d->close();
 		//bug #6305: bei 6.2.7 (ev. auch anderen) wird bein Nachinstallieren von Sprachen nicht $_SESSION['clientTargetVersionNumber'] gesetzt
 		//dann findet er auch nicht das downzuloadende Installer-Vereichnis und alles kommt leer an
-		if(isset($_SESSION['clientTargetVersionNumber']) && $_SESSION['clientTargetVersionNumber']){
-			$suchInstallerVersion = $_SESSION['clientTargetVersionNumber'];
-		} else {
-			$suchInstallerVersion = $_SESSION['clientVersionNumber'];
-		}
+		$suchInstallerVersion = (!empty($_SESSION['clientTargetVersionNumber']) ?
+				$_SESSION['clientTargetVersionNumber'] :
+				$_SESSION['clientVersionNumber']
+			);
+
 		$installerVersionDir = $availableInstallers[updateUtil::getNearestVersion($availableInstallers, $suchInstallerVersion)];
 		$installerDir = LIVEUPDATE_SERVER_DOWNLOAD_DIR . '/' . $installerVersionDir;
 
-		$fileArray["LIVEUPDATE_CLIENT_DOCUMENT_DIR . '/updateClient/liveUpdateServer" . $_SESSION['clientExtension'] . "'"] = updateUtil::getFileContentEncoded($installerDir . '/updateClient/liveUpdateServer.php', true);
-		$fileArray["LIVEUPDATE_CLIENT_DOCUMENT_DIR . '/updateClient/liveUpdateFunctionsServer.class" . $_SESSION['clientExtension'] . "'"] = updateUtil::getFileContentEncoded($installerDir . '/updateClient/liveUpdateFunctionsServer.class.php', true);
-		$fileArray["LIVEUPDATE_CLIENT_DOCUMENT_DIR . '/updateClient/liveUpdateResponseServer.class" . $_SESSION['clientExtension'] . "'"] = updateUtil::getFileContentEncoded($installerDir . '/updateClient/liveUpdateResponseServer.class.php', true);
+		$fileArray["LIVEUPDATE_CLIENT_DOCUMENT_DIR . '/updateClient/liveUpdateServer.php'"] = updateUtil::getFileContentEncoded($installerDir . '/updateClient/liveUpdateServer.php', true);
+		$fileArray["LIVEUPDATE_CLIENT_DOCUMENT_DIR . '/updateClient/liveUpdateFunctionsServer.class.php'"] = updateUtil::getFileContentEncoded($installerDir . '/updateClient/liveUpdateFunctionsServer.class.php', true);
+		$fileArray["LIVEUPDATE_CLIENT_DOCUMENT_DIR . '/updateClient/liveUpdateResponseServer.class.php'"] = updateUtil::getFileContentEncoded($installerDir . '/updateClient/liveUpdateResponseServer.class.php', true);
 
 		return $fileArray;
 	}
@@ -696,7 +696,7 @@ if (!$success) {
 	 * @return string
 	 */
 	static function getUpdateClientUrl(){
-		return dirname($_SESSION['clientUpdateUrl']) . '/updateClient/liveUpdateServer' . $_SESSION['clientExtension'];
+		return dirname($_SESSION['clientUpdateUrl']) . '/updateClient/liveUpdateServer.php';
 	}
 
 	/**
@@ -896,12 +896,12 @@ if (!$success) {
 			} else {
 				break;
 			}
-		}while($ResponseSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
+		} while($ResponseSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
 
 		$nextUrl = ($Position >= sizeof($_SESSION['clientChanges']['allChanges']) ?
-						installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail()) :
-						installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']) . "&position=$Position"
-				);
+				installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail()) :
+				installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']) . "&position=$Position"
+			);
 
 
 		// :IMPORTANT:

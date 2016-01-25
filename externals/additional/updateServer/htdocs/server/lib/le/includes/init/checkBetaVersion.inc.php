@@ -26,10 +26,6 @@ if(isset($clientRequestVars['betaVersion'])){
 		case '5097':
 		case '5098':
 		case '5099':
-			//$_SESSION['testUpdate'] = true;
-			print notification::getBetaExpiredResponse();
-			exit;
-			break;
 		case '5490':
 		case '5491':
 		case '5492':
@@ -41,10 +37,6 @@ if(isset($clientRequestVars['betaVersion'])){
 		case '5498':
 		case '5499':
 		case '5500':
-			//$_SESSION['testUpdate'] = true;
-			print notification::getBetaExpiredResponse();
-			exit;
-			break;
 		case '5900':
 		case '5901':
 		case '5902':

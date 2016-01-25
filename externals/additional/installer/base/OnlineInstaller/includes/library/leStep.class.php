@@ -174,18 +174,9 @@ class leStep{
 	 * @return integer
 	 */
 	function executeOnline(&$Template = '', $UpdateCmd = '', $UpdateCmdDetail = ''){
+		$_REQUEST['update_cmd'] = ($UpdateCmd != "" ? $UpdateCmd : $this->Wizard->Name);
+		$_REQUEST['detail'] = ($UpdateCmdDetail != "" ? $UpdateCmdDetail : $this->Name);
 
-		if($UpdateCmd != ""){
-			$_REQUEST['update_cmd'] = $UpdateCmd;
-		} else {
-			$_REQUEST['update_cmd'] = $this->Wizard->Name;
-		}
-
-		if($UpdateCmdDetail != ""){
-			$_REQUEST['detail'] = $UpdateCmdDetail;
-		} else {
-			$_REQUEST['detail'] = $this->Name;
-		}
 
 		$this->liveUpdateHttpResponse = $this->getLiveUpdateHttpResponse();
 

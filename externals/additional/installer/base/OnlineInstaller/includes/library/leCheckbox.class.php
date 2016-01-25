@@ -25,7 +25,7 @@ class leCheckbox{
 			. "value=\"" . $value . "\"" . $_attribs . $_checked . " />"
 			. "</td>"
 			. "<td class=\"defaultfont\" nowrap=\"nowrap\">"
-			. ($text != "" ? "<label for=\"" . $name . "\" style=\"cursor: pointer;-moz-user-select: none;-moz-outline: none;\" hidefocus=\"hidefocus\" >&nbsp;" . $text . "</label>" : "")
+			. ($text != "" ? "<label for=\"" . $name . "\" style=\"cursor: pointer;\" hidefocus=\"hidefocus\" >&nbsp;" . $text . "</label>" : "")
 			. "</td>"
 			. "</tr>"
 			. "</table>";

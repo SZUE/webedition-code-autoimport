@@ -170,7 +170,7 @@ class liveUpdateHttp{
 	 *
 	 * @return unknown
 	 */
-	function getServerSessionForm(){
+	static function getServerSessionForm(){
 
 		$params = '';
 		foreach($GLOBALS['LU_Variables'] as $LU_name => $LU_value){
