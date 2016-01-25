@@ -74,16 +74,16 @@ class le_MySQL{
 		/* establish connection, select database */
 		if(0 == $this->Link_ID){
 
-			$this->Link_ID = mysqli_connect('p:' . $Host, $User, $Password);
+			$this->Link_ID = mysqli_connect('p:' . $Host, $User, $Password, $Database);
 			if(!$this->Link_ID){
 				$this->halt("pconnect($Host, $User, \$Password) failed.");
 				return 0;
 			}
 
-			if(!mysqli_select_db($this->Link_ID, $Database)){
+/*			if(!mysqli_select_db($this->Link_ID, $Database)){
 				$this->halt("cannot use database " . $this->Database);
 				return 0;
-			}
+}*/
 		}
 
 		return $this->Link_ID;
