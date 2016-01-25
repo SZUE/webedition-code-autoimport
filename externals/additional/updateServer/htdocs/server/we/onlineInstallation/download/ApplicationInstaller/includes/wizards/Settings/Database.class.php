@@ -179,7 +179,7 @@ EOF;
 			$_SESSION["le_db_connect"] = "connect";
 			$preHost = '';
 		}
-		$resource = mysqli_connect($preHost . $_SESSION['le_db_host'], $_SESSION['le_db_user'], $_SESSION['le_db_password']);
+		$resource = mysqli_connect($preHost . $_SESSION['le_db_host'], $_SESSION['le_db_user'], $_SESSION['le_db_password'],$_SESSION["le_db_database"]);
 
 		// connect to server
 		if(mysqli_connect_errno()){
@@ -192,10 +192,10 @@ EOF;
 
 		// check if database exists
 		$_SESSION['le_db_exists'] = true;
-		$result = mysqli_query($resource, "USE " . $_SESSION["le_db_database"]);
-		if(!$result && mysqli_errno($resource) == 1049){
+		//$result = mysqli_query($resource, "USE " . $_SESSION["le_db_database"]);
+	/*	if(!$result && mysqli_errno($resource) == 1049){
 			$_SESSION['le_db_exists'] = false;
-		}
+	}*/
 
 		// check if database exists, create if possible
 		$result = mysqli_query($resource, "CREATE DATABASE IF NOT EXISTS `" . $_SESSION["le_db_database"] . "`");
