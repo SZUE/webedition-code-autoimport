@@ -155,8 +155,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 	}
 	$aDiscard = array('rss', 'pad');
 	$s1 = '';
-	$iCurrCol = 0;
-	$iCurrId = 0;
+	$iCurrCol = $iCurrId = 0;
 	foreach($aDat as $d){
 		$bExtendedCol = false;
 		$s2 = '';

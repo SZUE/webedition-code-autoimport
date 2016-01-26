@@ -144,7 +144,7 @@ class we_imageDocument extends we_binaryDocument{
 
 			$this->Thumbs = implode(',', $thumbs);
 		} else {
-			$thumbs = explode(',', trim($this->Thumbs, ','));
+			$thumbs = array_filter(explode(',', $this->Thumbs));
 		}
 
 		return $thumbs;
@@ -200,7 +200,7 @@ class we_imageDocument extends we_binaryDocument{
 			}
 		}
 
-		$this->Thumbs = implode(',', $newArray);
+		$this->Thumbs = implode(',', array_filter($newArray));
 		$this->DocChanged = true;
 	}
 

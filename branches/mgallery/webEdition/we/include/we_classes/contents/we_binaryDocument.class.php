@@ -257,9 +257,9 @@ class we_binaryDocument extends we_document{
 			$_tagName = $_defined_fields[$i]["tag"];
 			if($_tagName != 'Title' && $_tagName != 'Description' && $_tagName != 'Keywords'){
 				$_type = $_defined_fields[$i]['type'];
-				$_mode = $_defined_fields[$i]['mode'];
-				$_csv = boolval($_defined_fields[$i]['csv']);
-				$_closed = boolval($_defined_fields[$i]['closed']);
+				//$_mode = $_defined_fields[$i]['mode'];
+				//$_csv = boolval($_defined_fields[$i]['csv']);
+				//$_closed = boolval($_defined_fields[$i]['closed']);
 
 				switch($_type){
 					case 'textarea':
