@@ -155,8 +155,8 @@ class we_quicktimeDocument extends we_document_deprecatedVideo{
 	function formProperties(){
 		return '<table class="default propertydualtable">
 	<tr>
-		<td>' . $this->formInputInfo2(155, "width", 10, "attrib", "onchange=\"WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);\"", "origwidth") . '</td>
-		<td>' . $this->formInputInfo2(155, "height", 10, "attrib", "onchange=\"WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);\"", "origheight") . '</td>
+		<td>' . $this->formInputInfo2(155, "width", 10, "attrib", 'onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"', "origwidth") . '</td>
+		<td>' . $this->formInputInfo2(155, "height", 10, "attrib", 'onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"', "origheight") . '</td>
 		<td>' . $this->formSelectElement(155, "scale", array(
 				"" => "",
 				"tofit" => "tofit",
@@ -168,9 +168,9 @@ class we_quicktimeDocument extends we_document_deprecatedVideo{
 			) . '</td>
 	</tr>
 	<tr>
-		<td>' . $this->formInput2(155, "hspace", 10, "attrib", "onchange=\"WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);\"") . '</td>
-		<td>' . $this->formInput2(155, "vspace", 10, "attrib", "onchange=\"WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);\"") . '</td>
-		<td>' . $this->formInput2(155, "name", 10, "attrib", "onchange=\"WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);\"") . '</td>
+		<td>' . $this->formInput2(155, "hspace", 10, "attrib", 'onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"') . '</td>
+		<td>' . $this->formInput2(155, "vspace", 10, "attrib", 'onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"') . '</td>
+		<td>' . $this->formInput2(155, "name", 10, "attrib", 'onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"') . '</td>
 	</tr>
 	<tr>
 		<td>' . $this->formSelectElement(155, "autoplay", array("" => g_l('global', '[true]'), "false" => g_l('global', '[false]')), "attrib", 1, array('onchange' => 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);')) . '</td>
@@ -187,8 +187,8 @@ class we_quicktimeDocument extends we_document_deprecatedVideo{
 
 	function formOther(){
 		return '<table class="default">
-	<tr><td>' . $this->formInputField("txt", "Pluginspage", "Pluginspage", 24, 388, "", "onchange=\"WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);\"") . '</td><tr>
-	<tr><td>' . $this->formInputField("txt", "Codebase", "Codebase", 24, 388, "", "onchange=\"WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);\"") . '</td></tr>
+	<tr><td>' . $this->formInputField("txt", "Pluginspage", "Pluginspage", 24, 388, "", 'onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"') . '</td><tr>
+	<tr><td>' . $this->formInputField("txt", "Codebase", "Codebase", 24, 388, "", 'onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"') . '</td></tr>
 </table>';
 	}
 

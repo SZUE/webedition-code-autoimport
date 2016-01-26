@@ -1426,7 +1426,7 @@ class we_document extends we_root{
 		if(empty($props) || $props['mode'] === 'none' /* || !$values */ || $props['type'] !== 'textfield'){
 			$name = in_array($field, explode(',', we_metadata_metaData::STANDARD_FIELDS)) ? g_l('weClass', '[' . $field . ']') : $field;
 
-			return $this->formInputField('txt', $field, $name, 40, 508, '', 'onchange=\"WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);\"');
+			return $this->formInputField('txt', $field, $name, 40, 508, '', 'onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"');
 		}
 
 		$leading = $props['csv'] ? '-- ' . g_l('buttons_global', '[add][value]') . ' -- ' : '-- ' . g_l('buttons_global', '[select][value]') . ' --';
