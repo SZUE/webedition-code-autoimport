@@ -76,6 +76,7 @@ WE().consts.weSearch= {
 	SEARCH_DOCLIST: "' . we_search_view::SEARCH_DOCLIST . '"
 };
 WE().consts.g_l.weSearch = {
+	publish_docs:"'.g_l('searchtool', '[publish_docs]').'",
 	noTempTableRightsSearch: "' . g_l('searchtool', '[noTempTableRightsSearch]') . '",
 	nothingCheckedAdv: \'' . g_l('searchtool', '[nothingCheckedAdv]') . '\',
 	nothingCheckedTmplDoc: \'' . g_l('searchtool', '[nothingCheckedTmplDoc]') . '\',

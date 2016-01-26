@@ -63,6 +63,7 @@ class we_search_view extends we_modules_view{
 	function getJSTop(){
 		return we_html_element::jsElement('
 WE().consts.g_l.weSearch = {
+	publish_docs:"'.g_l('searchtool', '[publish_docs]').'",
 	noTempTableRightsSearch: "' . g_l('searchtool', '[noTempTableRightsSearch]') . '",
 	nothingCheckedAdv: \'' . g_l('searchtool', '[nothingCheckedAdv]') . '\',
 	nothingCheckedTmplDoc: \'' . g_l('searchtool', '[nothingCheckedTmplDoc]') . '\',
