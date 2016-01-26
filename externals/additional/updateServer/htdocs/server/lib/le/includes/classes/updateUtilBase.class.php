@@ -261,7 +261,7 @@ print $newResponse->getOutput();
 	 * @param string $dir
 	 * @param array $files
 	 */
-	function getFilesOfDir($dir, & $files){
+	static function getFilesOfDir($dir, & $files){
 
 		if(file_exists($dir)){
 
@@ -277,7 +277,7 @@ print $newResponse->getOutput();
 					}
 
 					if(is_dir($_entry)){
-						updateUtilBase::getFilesOfDir($_entry, $files);
+						self::getFilesOfDir($_entry, $files);
 					}
 				}
 			}

@@ -218,15 +218,12 @@ class installer extends installerBase{
 	 * @return string
 	 */
 	static function getErrorMessageResponsePart($headline = '', $message = ''){
-
+$errorMessage = self::getErrorMessage($headline, $message);
 		return '
-
-		$errorMessage = ' . self::getErrorMessage($headline, $message) . ';
-
 		print \'
 			<script>
-				top.leWizardContent.appendErrorText("\' . $errorMessage . \'");
-				alert("\' . strip_tags($errorMessage) . \'");
+				top.leWizardContent.appendErrorText("' . $errorMessage . '");
+				alert("' . strip_tags($errorMessage) . '");
 			</script>\';
 		';
 	}

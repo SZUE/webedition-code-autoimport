@@ -748,17 +748,15 @@ if (!$success) {
 	 * @return string
 	 */
 	static function getErrorMessageResponsePart($headline = '', $message = '', $type = ''){
-
+		$errorMessage = installer::getErrorMessage($headline, $message, $type);
 		return '
 
-		$errorMessage = ' . installer::getErrorMessage($headline, $message, $type) . ';
-
-		$liveUpdateFnc->insertUpdateLogEntry($errorMessage, "' . (isset($_SESSION['clientTargetVersion']) ? $_SESSION['clientTargetVersion'] : $_SESSION['clientVersion']) . '", 1);
+		$liveUpdateFnc->insertUpdateLogEntry("'.$errorMessage.'", "' . (isset($_SESSION['clientTargetVersion']) ? $_SESSION['clientTargetVersion'] : $_SESSION['clientVersion']) . '", 1);
 
 		print \'
 			<script>
-				top.frames["updatecontent"].appendMessageLog("\' . $errorMessage . \'");
-				alert("\' . strip_tags($errorMessage) . \'");
+				top.frames["updatecontent"].appendMessageLog("' . $errorMessage . '");
+				alert("' . strip_tags($errorMessage) . '");
 			</script>\';
 		';
 	}

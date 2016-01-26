@@ -7,7 +7,7 @@ class languages extends languagesBase{
 	 *
 	 * @return string
 	 */
-	function getLanguagesFormResponse(){
+	static function getLanguagesFormResponse(){
 
 		// at least already installed languages can be reinstalled
 		$GLOBALS['updateServerTemplateData']['installAbleLanguages'] = update::getPossibleLanguagesArray();
@@ -21,7 +21,7 @@ class languages extends languagesBase{
 	 *
 	 * @return array
 	 */
-	function getRegisterLanguagesResponse($systemLanguage = '', $extraLanguages = array()){
+	static function getRegisterLanguagesResponse($systemLanguage = '', $extraLanguages = array()){
 
 		$_SESSION['clientSyslng'] = $systemLanguage;
 		$_SESSION['clientDesiredLanguages'] = array_merge(array($systemLanguage), $extraLanguages);

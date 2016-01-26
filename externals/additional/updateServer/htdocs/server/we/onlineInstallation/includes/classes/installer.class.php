@@ -1,7 +1,6 @@
 <?php
 
 class installer extends installerBase{
-
 	static $LanguageIndex = "installer";
 
 	/**
@@ -90,14 +89,12 @@ class installer extends installerBase{
 	 * @return string
 	 */
 	static function getErrorMessageResponsePart($headline = '', $message = ''){
+		$errorMessage = static::getErrorMessage($headline, $message);
 		return '
-
-		$errorMessage = ' . static::getErrorMessage($headline, $message) . ';
-
 		echo \'
 			<script>
-				top.leContent.appendErrorText("\' . $errorMessage . \'");
-				alert("\' . strip_tags($errorMessage) . \'");
+				top.leContent.appendErrorText("' . $errorMessage . '");
+				alert("' . strip_tags($errorMessage) . '");
 			</script>\';
 		';
 	}

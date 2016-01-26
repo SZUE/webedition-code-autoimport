@@ -207,7 +207,7 @@ EOF;
 			return false;
 		}
 
-	//	mysqli_close($resource);
+		mysqli_close($resource);
 		return true;
 	}
 
