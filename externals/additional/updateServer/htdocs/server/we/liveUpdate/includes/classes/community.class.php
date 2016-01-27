@@ -672,14 +672,17 @@ class community extends communityBase{
 	 * @return string
 	 */
 	static function getErrorMessageResponsePart($headline = '', $message = ''){
-		$errorMessage = installer::getErrorMessage($headline, $message);
+
 		return '
+
+		$errorMessage = ' . installer::getErrorMessage($headline, $message) . ';
+
 		$liveUpdateFnc->insertUpdateLogEntry($errorMessage, "' . (isset($_SESSION['clientTargetVersion']) ? $_SESSION['clientTargetVersion'] : $_SESSION['clientVersion']) . '", 1);
 
 		print \'
 			<script>
-				top.frames["updatecontent"].appendMessageLog("' . $errorMessage . '");
-				alert("' . strip_tags($errorMessage) . '");
+				top.frames["updatecontent"].appendMessageLog("\' . $errorMessage . \'");
+				alert("\' . strip_tags($errorMessage) . \'");
 			</script>\';
 		';
 	}
