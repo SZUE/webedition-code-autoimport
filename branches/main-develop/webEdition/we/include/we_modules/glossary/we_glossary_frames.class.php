@@ -35,7 +35,7 @@ class we_glossary_frames extends we_modules_frame{
 		$this->View = new we_glossary_view($frameset);
 	}
 
-	function getHTMLFrameset(){
+	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
 		return parent::getHTMLFrameset($this->Tree->getJSTreeCode());
 	}
 

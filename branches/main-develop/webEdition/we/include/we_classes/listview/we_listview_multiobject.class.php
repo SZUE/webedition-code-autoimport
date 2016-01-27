@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -23,12 +24,13 @@
  */
 
 /**
- * class    we_object_listviewMultiobject
+ * class    we_listview_multiobject
  * @desc    class for tag <we:listview type="multiobject">
  *
  */
 //FIXME: is this class not ~ listview_object? why is this not the base class???
-class we_object_listviewMultiobject extends we_object_listviewBase{
+class we_listview_multiobject extends we_listview_objectBase{
+
 	var $objects = ''; /* Comma sepearated list of all objetcs to show in this listview */
 
 	/**
@@ -58,19 +60,18 @@ class we_object_listviewMultiobject extends we_object_listviewBase{
 		parent::__construct($name, $rows, $offset, $order, $desc, $cats, $catOr, 0, $cols, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType);
 
 		$data = 0;
-		if(isset($GLOBALS['we_lv_array']) && ($parent_lv = end($GLOBALS['we_lv_array']))){
+		if(!empty($GLOBALS['we_lv_array']) && ($parent_lv = end($GLOBALS['we_lv_array']))){
 			if(($dat = $parent_lv->f($name))){
 				$data = we_unserialize($dat);
 			}
-		} elseif(isset($GLOBALS['lv'])){
+		} elseif(!empty($GLOBALS['lv'])){
 			if(($dat = $GLOBALS['lv']->f($name))){
 				$data = we_unserialize($dat);
 			}
-		} else {
-			if($GLOBALS['we_doc']->getElement($name)){
-				$data = we_unserialize($GLOBALS['we_doc']->getElement($name));
-			}
+		} elseif($GLOBALS['we_doc']->getElement($name)){
+			$data = we_unserialize($GLOBALS['we_doc']->getElement($name));
 		}
+
 		$objects = isset($data['objects']) ? $data['objects'] : $data;
 		if(!$objects){
 			return;
@@ -96,17 +97,17 @@ class we_object_listviewMultiobject extends we_object_listviewBase{
 		$_obxTable = OBJECT_X_TABLE . $this->classID;
 
 		$where_lang = ($this->languages ?
-				' AND ' . $_obxTable . '.OF_Language IN ("' . implode('","', array_map('escape_sql_query', array_filter(array_map('trim', explode(',', $this->languages))))) . '")' :
-				'');
+						' AND ' . $_obxTable . '.OF_Language IN ("' . implode('","', array_map('escape_sql_query', array_filter(array_map('trim', explode(',', $this->languages))))) . '")' :
+						'');
 
 		if($this->desc && (!preg_match('|.+ desc$|i', $this->order))){
 			$this->order .= ' DESC';
 		}
 
 		$this->Path = ($this->triggerID && show_SeoLinks() ?
-				id_to_path($this->triggerID, FILE_TABLE, $this->DB_WE) :
-				(isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : '')
-			);
+						id_to_path($this->triggerID, FILE_TABLE, $this->DB_WE) :
+						(isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : '')
+				);
 
 
 		// IMPORTANT for seeMode !!!! #5317
@@ -126,11 +127,11 @@ class we_object_listviewMultiobject extends we_object_listviewBase{
 		$pid_tail = 1;
 
 		$cat_tail = ($this->cats || $this->categoryids ?
-				we_category::getCatSQLTail($this->cats, $_obxTable, $this->catOr, $this->DB_WE, "OF_Category", $this->categoryids) : '');
+						we_category::getCatSQLTail($this->cats, $_obxTable, $this->catOr, $this->DB_WE, "OF_Category", $this->categoryids) : '');
 
 		$weDocumentCustomerFilter_tail = (defined('CUSTOMER_FILTER_TABLE') ?
-				we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this, $this->classID) :
-				'');
+						we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this, $this->classID) :
+						'');
 
 		if($sqlParts["tables"]){
 			$this->DB_WE->query('SELECT ' . $this->DB_WE->escape($_obxTable) . '.OF_ID as ID ' . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . ($this->objects ? OBJECT_X_TABLE . $this->classID . '.OF_ID IN (' . implode(',', $this->objects) . ') AND ' : '') . ($this->searchable ? ' ' . OBJECT_X_TABLE . $this->classID . '.OF_IsSearchable=1 AND' : '') . ' ' . $pid_tail . $where_lang . ' AND ' . OBJECT_X_TABLE . $this->classID . '.OF_ID!=0 ' . ($join ? ' AND (' . $join . ') ' : '') . $cat_tail . ' ' . ($sqlParts["publ_cond"] ? (' AND ' . $sqlParts["publ_cond"]) : '') . ' ' . ($sqlParts["cond"] ? (' AND (' . $sqlParts["cond"] . ') ') : '') . $calendar_where . $weDocumentCustomerFilter_tail . $sqlParts['groupBy']);

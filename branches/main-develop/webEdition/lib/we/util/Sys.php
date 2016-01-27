@@ -63,27 +63,3 @@ t_e('deprecated',__FUNCTION__);
 	}
 
 }
-
-// example usage of sys classes:
-/*
-we_util_Sys_Server::product(); // gibt den Namen des Webserver-Produktes zurueck
-we_util_Sys_Server::isApache();
-we_util_Sys_Server::isApache("2");
-we_util_Sys_Server::isIIS(); // checks if IIS_RUNNING is defined and (bool)true
-
-we_util_Sys_Server_Apache::version(); // Version des Webservers, uses apache_get_version()
-we_util_Sys_Server_Apache::module(); // vgl.: we_util_Sys_Php::extension(), uses apache_get_modules()
-
-we_util_Sys_Server_IIS::function(); // IIS class not implemented (yet)
-
-if(we_util_Sys_Webedition::version("customer")) {}
-if(we_util_Sys_Webedition::module("customer")) {}
-if(we_util_Sys_Webedition::moduleLicense("customer")) {}
-if(we_util_Sys_Webedition::tool("customer")) {}
-if(we_util_Sys_Webedition::toolLicense("customer")) {}
-
-if(we_util_Sys_Php::version("customer")) {}
-if(we_util_Sys_Php::ini("customer")) {}
-if(we_util_Sys_Php::extension("customer")) {}
-
-*/

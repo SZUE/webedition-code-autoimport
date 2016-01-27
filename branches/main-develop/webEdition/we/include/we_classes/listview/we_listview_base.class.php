@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -28,6 +29,7 @@
  *
  */
 abstract class we_listview_base{
+
 	var $DB_WE; /* Main DB Object */
 	var $name; /* name of listview */
 	var $rows = -1; /* Number of rows */
@@ -313,7 +315,7 @@ abstract class we_listview_base{
 			'pv_tid',
 			'bsuniquevid',
 			's'//password-form
-			), ($filter ? explode(',', $filter) : array()), array_keys($_COOKIE));
+				), ($filter ? explode(',', $filter) : array()), array_keys($_COOKIE));
 		if($queryString){
 			$foo = explode('&', $queryString);
 			$queryString = '';
@@ -525,8 +527,8 @@ abstract class we_listview_base{
 			$calendar_where = ' AND (' . FILE_TABLE . '.Published>=' . $start_date . ' AND ' . FILE_TABLE . '.Published<=' . $end_date . ') ';
 		} else {
 			$field = ($matrix && in_array($this->calendar_struct['datefield'], array_keys($matrix))) ?
-				$matrix[$this->calendar_struct['datefield']]['table'] . '.' . $matrix[$this->calendar_struct['datefield']]['type'] . '_' . $this->calendar_struct['datefield'] :
-				CONTENT_TABLE . '.Dat';
+					$matrix[$this->calendar_struct['datefield']]['table'] . '.' . $matrix[$this->calendar_struct['datefield']]['type'] . '_' . $this->calendar_struct['datefield'] :
+					CONTENT_TABLE . '.Dat';
 
 			$calendar_select = ',' . $field . ' AS Calendar ';
 			$condition = ($condition ? $condition . ' AND ' : '') . $this->calendar_struct['datefield'] . '>=' . $start_date . ' AND ' . $this->calendar_struct['datefield'] . '<=' . $end_date;
@@ -620,6 +622,23 @@ abstract class we_listview_base{
 	 */
 	public function getDBf($field){
 		return $this->DB_WE->f($field);
+	}
+
+	public function getCustomerRestrictionQuery($specificCustomersQuery, $classID, $mfilter, $listQuery){
+		return '';
+	}
+
+	public function getFoundDocument(){
+		static $doc = null;
+		static $id = 0;
+		if($id == ($docID = $this->f('WE_ID'))){
+			return $doc;
+		}
+		$id = $docID;
+		$model = new we_webEditionDocument();
+		$model->initByID($docID);
+		$doc = $model;
+		return $doc;
 	}
 
 }

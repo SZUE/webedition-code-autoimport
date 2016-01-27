@@ -42,7 +42,7 @@ class rpcDeleteMediaDocsCmd extends rpcCmd{
 		}
 
 		$resp = new rpcResponse();
-		$resp->setData("data", $this->delete($selectedItems[FILE_TABLE]), JSON_F);
+		$resp->setData("data", $this->delete($selectedItems[FILE_TABLE]));
 
 		return $resp;
 	}

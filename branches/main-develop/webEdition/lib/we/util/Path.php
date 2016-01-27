@@ -33,7 +33,6 @@ class we_util_Path{
 	 *
 	 * @param integer $id  id to convert
 	 * @param string $dbTable name of table
-	 * @param Zend_Db_Adapter $db  Zend db adapter object
 	 * @return string
 	 */
 	static function id2Path($id, $dbTable, $db = NULL){
@@ -45,7 +44,6 @@ class we_util_Path{
 	 *
 	 * @param string $path  path to convert
 	 * @param string $dbTable name of table
-	 * @param Zend_Db_Adapter $db  Zend db adapter object
 	 * @return integer
 	 */
 	static function path2Id($path, $dbTable){
@@ -58,7 +56,6 @@ class we_util_Path{
 	 *
 	 * @param string $path  path to convert
 	 * @param string $dbTable name of table
-	 * @param Zend_Db_Adapter $db  Zend db adapter object
 	 * @return boolean
 	 */
 	static function pathExists($path, $dbTable){

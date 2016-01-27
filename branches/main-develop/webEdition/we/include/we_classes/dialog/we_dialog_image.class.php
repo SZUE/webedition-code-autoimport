@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_dialog_image extends we_dialog_base{
-
 	private $weFileupload = null;
 	var $ClassName = __CLASS__;
 	var $changeableArgs = array(
@@ -88,7 +87,7 @@ class we_dialog_image extends we_dialog_base{
 					'|^https?://' . $_SERVER['SERVER_NAME'] . '(/.*)$|i',
 					'|^' . WEBEDITION_DIR . 'we_cmd.php[^"\'#]+(#.*)$|',
 					'|^' . WEBEDITION_DIR . '|',
-						), array('$1', '$1', ''), $this->args["src"]);
+					), array('$1', '$1', ''), $this->args["src"]);
 				$this->args["fileID"] = '';
 				$this->args["fileSrc"] = '';
 				$this->args["thumbnail"] = 0;
@@ -265,10 +264,6 @@ class we_dialog_image extends we_dialog_base{
 	  function getFormHTML(){}
 	 */
 
-	function getFormJsOnSubmit(){
-		return ' onsubmit="return fsubmit(this)"';
-	}
-
 	function getHeaderHTML($printJS_Style = false){
 		return parent::getHeaderHTML($printJS_Style, $this->weFileupload->getJs() . $this->weFileupload->getEditorJs() . $this->weFileupload->getCss());
 	}
@@ -286,14 +281,14 @@ class we_dialog_image extends we_dialog_base{
 			 * input for external image files
 			 */
 			$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[extSrc]'].value");
-			$wecmdenc4 = we_base_request::encCmd("opener.document.we_form.elements['radio_type'][0].checked=true;top.we_form.elements['we_dialog_args[type]'].value='" . we_base_link::TYPE_INT . "';opener.imageChanged();");
+			$wecmdenc4 = we_base_request::encCmd("opener.document.we_form.elements.radio_type[0].checked=true;top.we_form.elements['we_dialog_args[type]'].value='" . we_base_link::TYPE_INT . "';opener.imageChanged();");
 			$but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ?
-					we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','',document.we_form.elements['we_dialog_args[extSrc]'].value,'" . $wecmdenc4 . "')"
-					) : "";
+				we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','',document.we_form.elements['we_dialog_args[extSrc]'].value,'" . $wecmdenc4 . "')"
+				) : "";
 			$openbutton = we_html_button::create_button(we_html_button::EDIT, "javascript:var f=top.document.we_form.elements['we_dialog_args[extSrc]']; if(f.value && f.value !== '" . we_base_link::EMPTY_EXT . "'){new (WE().util.jsWindow)(window, f.value, '_blank', -1, -1, 500, 550, true, true, true);}", true, 0, 0, '', '', true, false, '_ext', false, g_l('wysiwyg', '[openNewWindow]'));
 
 			$radioButtonExt = we_html_forms::radiobutton(we_base_link::TYPE_EXT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_EXT), "radio_type", g_l('wysiwyg', '[external_image]'), true, "defaultfont", "if(this.form.elements['radio_type'][2].checked){this.form.elements['we_dialog_args[type]'].value='" . we_base_link::TYPE_EXT . "';top.document.getElementById('imageExt').style.display='block';top.document.getElementById('imageInt').style.display='none';top.document.getElementById('imageUpload').style.display='none';}imageChanged();");
-			$textInput = we_html_tools::htmlTextInput("we_dialog_args[extSrc]", 30, (isset($this->args["extSrc"]) ? $this->args["extSrc"] : ""), "", ' onfocus="if(this.form.elements[\'radio_type\'][2].checked){imageChanged();}" onchange="imageChanged();if(this.value !== \'\' && this.value !== \'' . we_base_link::EMPTY_EXT . '\'){weButton[\'enable\'](\'btn_edit_ext\')}else{weButton[\'disable\'](\'btn_edit_ext\')}" ', "text", 315);
+			$textInput = we_html_tools::htmlTextInput("we_dialog_args[extSrc]", 30, (isset($this->args["extSrc"]) ? $this->args["extSrc"] : ""), "", ' onfocus="if(this.form.elements.radio_type[2].checked){imageChanged();}" onchange="imageChanged();if(this.value !== \'\' && this.value !== \'' . we_base_link::EMPTY_EXT . '\'){weButton.enable(\'btn_edit_ext\')}else{weButton.disable(\'btn_edit_ext\')}" ', "text", 315);
 			$extSrc = we_html_tools::htmlFormElementTable($textInput, '', "left", "defaultfont", $but, $openbutton, '', '', '', 0);
 
 			/**
@@ -301,11 +296,11 @@ class we_dialog_image extends we_dialog_base{
 			 */
 			$cmd1 = "document.we_form.elements['we_dialog_args[fileID]'].value";
 			$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[fileSrc]'].value");
-			$wecmdenc3 = we_base_request::encCmd("opener.document.we_form.elements['radio_type'][0].checked=true;opener.document.we_form.elements['we_dialog_args[type]'].value='" . we_base_link::TYPE_INT . "';opener.imageChanged();");
+			$wecmdenc3 = we_base_request::encCmd("opener.document.we_form.elements.radio_type[0].checked=true;opener.document.we_form.elements['we_dialog_args[type]'].value='" . we_base_link::TYPE_INT . "';opener.imageChanged();");
 			$startID = $this->args['selectorStartID'] ? : (IMAGESTARTID_DEFAULT ? : 0);
 
 			$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "'," . $startID . ",'','" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
-			$radioButtonInt = we_html_forms::radiobutton(we_base_link::TYPE_INT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_INT), "radio_type", g_l('wysiwyg', '[internal_image]'), true, "defaultfont", "if(this.form.elements['radio_type'][0].checked){this.form.elements['we_dialog_args[type]'].value='" . we_base_link::TYPE_INT . "';top.document.getElementById('imageInt').style.display='block';top.document.getElementById('imageExt').style.display='none';top.document.getElementById('imageUpload').style.display='none';}imageChanged();");
+			$radioButtonInt = we_html_forms::radiobutton(we_base_link::TYPE_INT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_INT), "radio_type", g_l('wysiwyg', '[internal_image]'), true, "defaultfont", "if(this.form.elements.radio_type[0].checked){this.form.elements['we_dialog_args[type]'].value='" . we_base_link::TYPE_INT . "';top.document.getElementById('imageInt').style.display='block';top.document.getElementById('imageExt').style.display='none';top.document.getElementById('imageUpload').style.display='none';}imageChanged();");
 
 			$yuiSuggest->setAcId("Image");
 			$yuiSuggest->setContentType("folder," . we_base_ContentTypes::IMAGE);
@@ -321,7 +316,7 @@ class we_dialog_image extends we_dialog_base{
 			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setWidth(315);
 			$yuiSuggest->setSelectButton($but);
-			$yuiSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:if(top.document.we_form.elements['yuiAcResultImage'].value){if(opener.top.doClickDirect!==undefined){var p=opener.top;}else if(opener.top.opener.top.doClickDirect!==undefined){var p=opener.top.opener.top;}else{return;}p.doClickDirect(document.we_form.elements['yuiAcResultImage'].value,'" . we_base_ContentTypes::IMAGE . "','" . FILE_TABLE . "'); }"));
+			$yuiSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:if(top.document.we_form.elements.yuiAcResultImage.value){if(opener.top.doClickDirect!==undefined){var p=opener.top;}else if(opener.top.opener.top.doClickDirect!==undefined){var p=opener.top.opener.top;}else{return;}p.doClickDirect(document.we_form.elements.yuiAcResultImage.value,'" . we_base_ContentTypes::IMAGE . "','" . FILE_TABLE . "'); }"));
 			$intSrc = $yuiSuggest->getHTML();
 
 			/**
@@ -403,9 +398,9 @@ class we_dialog_image extends we_dialog_base{
 <table class="default" style="margin-bottom:4px;">
 <tr><td><div id="imageExt" style="margin-top:4px;' . (isset($this->args["type"]) && $this->args["type"] === we_base_link::TYPE_EXT ? '' : 'display:none;') . '">' . $extSrc . '</div></td></tr>' .
 				($intSrc ?
-						'<tr><td><div id="imageInt" style="margin:2px 0 2px 0;' . (isset($this->args["type"]) && $this->args["type"] === we_base_link::TYPE_INT ? '' : 'display:none;') . '">' . $intSrc . '</div></td></tr>
+					'<tr><td><div id="imageInt" style="margin:2px 0 2px 0;' . (isset($this->args["type"]) && $this->args["type"] === we_base_link::TYPE_INT ? '' : 'display:none;') . '">' . $intSrc . '</div></td></tr>
 <tr><td><div id="imageUpload" style="margin:2px 0 2px 20px;display:none;background-color:#fafafa;">' . $this->weFileupload->getHTML() . '</div></td></tr>' :
-						'') .
+					'') .
 				'</table>'
 			),
 			//$parts = array_merge($parts, array(array('html' => '<div id="imageUpload">' . $this->weFileupload->getHTML() . '</div>')));
@@ -471,7 +466,7 @@ class we_dialog_image extends we_dialog_base{
 				$js .= '
 
 						try{' .
-						($this->getDisplayThumbsSel() === 'none' ? 'top.document.getElementById("selectThumbnail").setAttribute("disabled", "disabled");' : 'top.document.getElementById("selectThumbnail").removeAttribute("disabled");') . '
+					($this->getDisplayThumbsSel() === 'none' ? 'top.document.getElementById("selectThumbnail").setAttribute("disabled", "disabled");' : 'top.document.getElementById("selectThumbnail").removeAttribute("disabled");') . '
 						} catch(err){}
 
 						var rh = ' . (intval($args["width"] * $args["height"]) ? ($this->args["width"] / $args["height"]) : 0) . ';
@@ -493,22 +488,22 @@ class we_dialog_image extends we_dialog_base{
 
 				$attribs = we_base_request::_(we_base_request::BOOL, 'imgChangedCmd') && !we_base_request::_(we_base_request::BOOL, 'wasThumbnailChange') ? we_base_request::_(we_base_request::STRING, 'we_dialog_args') : $args;
 				return we_dialog_base::getTinyMceJS() .
-						we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/weimage/js/image_insert.js') .
-						'<form name="tiny_form">' .
-						we_html_element::htmlHiddens(array(
-							"src" => (isset($args["src"]) ? $args["src"] : ''),
-							"width" => (intval($attribs["width"]) === 0 ? '' : $attribs["width"]),
-							"height" => (intval($attribs["height"]) === 0 ? '' : $attribs["height"]),
-							"hspace" => $attribs["hspace"],
-							"vspace" => $attribs["vspace"],
-							"border" => $attribs["border"],
-							"alt" => $attribs["alt"],
-							"align" => $attribs["align"],
-							"name" => $attribs["name"],
-							"class" => $attribs["cssclass"],
-							"title" => $attribs["title"],
-							"longdesc" => (intval($attribs["longdescid"]) ? $attribs["longdescsrc"] . '?id=' . intval($attribs["longdescid"]) : '')
-						)) . '</form>';
+					we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/weimage/js/image_insert.js') .
+					'<form name="tiny_form">' .
+					we_html_element::htmlHiddens(array(
+						"src" => (isset($args["src"]) ? $args["src"] : ''),
+						"width" => (intval($attribs["width"]) === 0 ? '' : $attribs["width"]),
+						"height" => (intval($attribs["height"]) === 0 ? '' : $attribs["height"]),
+						"hspace" => $attribs["hspace"],
+						"vspace" => $attribs["vspace"],
+						"border" => $attribs["border"],
+						"alt" => $attribs["alt"],
+						"align" => $attribs["align"],
+						"name" => $attribs["name"],
+						"class" => $attribs["cssclass"],
+						"title" => $attribs["title"],
+						"longdesc" => (intval($attribs["longdescid"]) ? $attribs["longdescsrc"] . '?id=' . intval($attribs["longdescid"]) : '')
+					)) . '</form>';
 		}
 	}
 
@@ -520,8 +515,8 @@ var classNames=' . ($css ? '["' . implode('","', $css) . '"]' : 'top.opener.wecl
 var ratioh = ' . (intval($this->args["width"] * $this->args["height"]) ? ($this->args["width"] / $this->args["height"]) : 0) . ';
 var ratiow = ' . (intval($this->args["width"] * $this->args["height"]) ? ($this->args["height"] / $this->args["width"]) : 0) . ';
 ') .
-				we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_image.js') .
-				weSuggest::getYuiFiles();
+			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_image.js') .
+			weSuggest::getYuiFiles();
 	}
 
 }

@@ -59,7 +59,7 @@ class we_io_DB{
 				'utf8' : $charset);
 
 
-		$db = Zend_Db::factory('Pdo_Mysql', $DBpar);
+		$db = new DB_WE();
 		return $db;
 	}
 

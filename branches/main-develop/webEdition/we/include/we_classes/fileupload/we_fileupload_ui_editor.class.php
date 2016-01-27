@@ -33,6 +33,7 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 	public function __construct($contentType = array(), $extensions = '', $doImport = true){
 		parent::__construct($contentType, $extensions);
 
+		$this->type = 'editor';
 		$permImageEdit = permissionhandler::hasPerm("NEW_GRAFIK");
 		$permCat = permissionhandler::hasPerm("EDIT_KATEGORIE");
 		$this->formElements = array_merge($this->formElements, array(

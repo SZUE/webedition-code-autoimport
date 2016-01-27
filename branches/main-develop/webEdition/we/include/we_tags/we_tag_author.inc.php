@@ -31,30 +31,7 @@ function we_tag_author($attribs){
 
 	switch($docAttr){
 		case 'listview' :
-			$authorID = 0;
-			switch(get_class($GLOBALS['lv'])){
-				case 'we_object_tag'://we:object
-				case 'we_object_listview'://listview type=object
-					$objID = $GLOBALS['lv']->f('WE_ID');
-					break;
-				case 'we_listview_search'://listview type=search
-					if($GLOBALS['lv']->f('ClassID')){//object
-						$objID = $GLOBALS['lv']->f('WE_ID');
-					} else {//document
-						$docID = $GLOBALS['lv']->f('WE_ID');
-					}
-					break;
-				default://we_listview (document)
-					$author = 'wedoc_' . $author;
-					$authorID = $GLOBALS['lv']->f($author);
-			}
-
-			if(!$authorID){
-				$authorID = (!empty($objID) ?
-								f('SELECT ' . $author . ' FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($objID)) :
-								f('SELECT ' . $author . ' FROM ' . FILE_TABLE . ' WHERE ID=' . intval($docID)));
-			}
-
+			$authorID = $GLOBALS['lv']->f('wedoc_' . $author);
 			break;
 		case 'self' :
 		default :

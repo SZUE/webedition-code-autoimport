@@ -25,7 +25,8 @@
 class we_fileupload_ui_importer extends we_fileupload_ui_base{
 	protected $dimensions = array(
 		'width' => 400,
-		'dragHeight' => 30,
+		'dragHeight' => 80,
+		'dragWidth' => 395,
 		'progressWidth' => 90,
 		'alertBoxWidth' => 390,
 		'marginTop' => 0,
@@ -36,13 +37,12 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base{
 		parent::__construct($name);
 		$this->responseClass = 'we_fileupload_resp_multiimport';
 
-		$this->type = 'imp';
+		$this->type = 'importer';
 		$this->doCommitFile = true;
-		$this->setDimensions(array('width' => 400, 'dragHeight' => 44));
 		$this->isGdOk = we_base_imageEdit::gd_version() > 0;
 		$this->internalProgress = array(
 			'isInternalProgress' => true,
-			'width' => 90
+			'width' => 130
 		);
 		$this->externalProgress = array(
 			'isExternalProgress' => true,
@@ -64,14 +64,14 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base{
 				"html" => $alert)
 		);
 
-		$butBrowse = str_replace(array("\n\r", "\r\n", "\r", "\n"), "", $isIE10 ? we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, 84, we_html_button::HEIGHT, '', '', false, false, '_btn') :
-				we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, 278, we_html_button::HEIGHT, '', '', false, false, '_btn'));
+		$butBrowse = str_replace(array("\n\r", "\r\n", "\r", "\n"), "", $isIE10 ? we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, 80, we_html_button::HEIGHT, '', '', false, false, '_btn') :
+				we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, 281, we_html_button::HEIGHT, '', '', false, false, '_btn'));
 		$butReset = str_replace(array("\n\r", "\r\n", "\r", "\n"), "", we_html_button::create_button('reset', 'javascript:we_FileUpload.reset()', true, ($isIE10 ? 84 : 100), we_html_button::HEIGHT, '', '', true, false, '_btn'));
 		$fileselect = '
 		<div style="float:left;">
 		<form id="filechooser" action="" method="" enctype="multipart/form-data">
 			<div>
-				<div class="we_fileInputWrapper" id="div_' . $this->name . '_fileInputWrapper" style="vertical-align: top; display: inline-block; height: 26px">
+				<div class="we_fileInputWrapper" id="div_' . $this->name . '_fileInputWrapper" style="vertical-align: top; display: inline-block; height: 26px; margin-left:-4px;">
 					<input class="fileInput fileInputHidden' . ($isIE10 ? ' fileInputIE10' : '') . '" type="file" id="' . $this->name . '" name="fileselect[]" multiple="multiple" />
 					' . $butBrowse . '
 				</div>
@@ -84,7 +84,7 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base{
 		</div>
 		';
 
-		$topParts[] = array("headline" => g_l('importFiles', '[select_files]'), "html" => $fileselect, 'space' => 130);
+		$topParts[] = array("headline" => g_l('importFiles', '[select_files]'), "html" => $fileselect, 'space' => 119);
 
 		// TODO: throw out inline css and use we_html_element
 		$messageLayer = '
@@ -113,8 +113,8 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base{
 
 	protected function _getHtmlFileRow(){
 		return str_replace(array("\r", "\n"), "", '<table class="default"><tbody><tr height="28">
-			<td class="weMultiIconBoxHeadline" style="width:80px;padding-left:20px;padding-right:20px;" >' . g_l('importFiles', '[file]') . '&nbsp;<span id="headline_uploadFiles_WEFORMNUM">WE_FORM_NUM</span></td>
-			<td><input id="name_uploadFiles_WEFORMNUM" style="width:15em;" type="text" readonly="readonly" value="FILENAME" /></td>
+			<td class="weMultiIconBoxHeadline" style="width:55px;padding-left:45px;padding-right:20px;" >' . g_l('importFiles', '[file]') . '&nbsp;<span id="headline_uploadFiles_WEFORMNUM">WE_FORM_NUM</span></td>
+			<td><input id="name_uploadFiles_WEFORMNUM" style="width:17.4em;" type="text" readonly="readonly" value="FILENAME" /></td>
 			<td>
 				<div id="div_rowButtons_WEFORMNUM">
 					<table class="default"><tbody><tr>
@@ -131,10 +131,10 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base{
 							</td>
 					</tr></tbody></table>
 				</div>
-				<div style="display: none" id="div_rowProgress_WEFORMNUM">
+				<div style="display: none; margin-left: 12px;" id="div_rowProgress_WEFORMNUM">
 					<table class="default"><tbody><tr>
-						<td style="vertical-align:middle"><div class="progress_image" style="width:0px;height:10px;" id="' . $this->name . '_progress_image_WEFORMNUM" style="vertical-align:top"></div><div class="progress_image_bg" style="width:90px;height:10px;" id="' . $this->name . '_progress_image_bg_WEFORMNUM" style="vertical-align:top"></div></td>
-						<td class="small bold" style="width:3em;color:#006699;margin-left:8px;" id="span_' . $this->name . '_progress_text_WEFORMNUM">0%</td>
+						<td style="vertical-align:middle"><div class="progress_image" style="width:0px;height:10px;" id="' . $this->name . '_progress_image_WEFORMNUM" style="vertical-align:top"></div><div class="progress_image_bg" style="width:130px;height:10px;" id="' . $this->name . '_progress_image_bg_WEFORMNUM" style="vertical-align:top"></div></td>
+						<td class="small bold" style="width:3em;color:#006699;padding-left:8px;" id="span_' . $this->name . '_progress_text_WEFORMNUM">0%</td>
 						<td><span id="alert_img_WEFORMNUM" style="visibility:hidden;" class="fa-stack fa-lg" style="color:#F2F200;" title=""><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span></td>
 					</tr></tbody></table>
 				</div>

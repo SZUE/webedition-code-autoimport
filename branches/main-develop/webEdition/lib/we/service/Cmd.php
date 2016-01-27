@@ -45,7 +45,7 @@ class we_service_Cmd extends we_service_AbstractService{
 				$model->load(($args[1]));
 			}
 			return $model;
-		} catch (Zend_Exception $e){
+		} catch (Exception $e){
 			throw new we_service_Exception('Error creating new model: ' . $e->getMessage());
 		}
 		return NULL;

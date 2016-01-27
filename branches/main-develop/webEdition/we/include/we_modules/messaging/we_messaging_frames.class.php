@@ -45,7 +45,7 @@ class we_messaging_frames extends we_modules_frame{
 		$this->Tree = new we_messaging_tree($this->frameset, "top.content", "top.content", "top.content.cmd", $this->weTransaction);
 	}
 
-	function getHTML($what){
+	function getHTML($what = '', $mode = '', $step = 0){
 		switch($what){
 			default:
 				return parent::getHTML($what);
@@ -64,7 +64,7 @@ class we_messaging_frames extends we_modules_frame{
 		);
 	}
 
-	function getHTMLFrameset(){
+	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
 		$this->transaction = $this->weTransaction;
 
 		$this->messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$this->transaction]);

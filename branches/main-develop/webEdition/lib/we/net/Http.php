@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -66,6 +67,7 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_net_Http{
+
 	/**
 	 * @var Zend_Uri_Http object Uri for this request, with (GET) or without parameters
 	 */
@@ -316,8 +318,7 @@ class we_net_Http{
 			$this->_response = $this->_client->request($method);
 			$this->_status = $this->_response->getStatus();
 			$this->_statustext = $this->_response->responseCodeAsText($this->_status);
-		} catch (Exception $e){
-			//we_util_Log::errorLog(get_class($this).": could send request to ".$this->_uri);
+		}catch(Exception $e){
 			throw new we_net_Exception(get_class($this) . ": could send request to " . $this->_uri);
 		}
 		return true;

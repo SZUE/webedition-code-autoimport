@@ -28,8 +28,9 @@ ImageEditTools = {
 	activeTool: '',
 	size: {
 		origW: 0,
-		origH: 0,
+		origH: 0
 	},
+
 	deactivateAll: function () {
 		switch (this.activeTool) {
 			case 'focus':
@@ -52,15 +53,13 @@ ImageEditTools = {
 		}
 		this.activeTool = '';
 	},
+
 	Crop: {
-		up: ImageEditTools,
 		imgSrc: "",
 		imgW: 0,
 		imgH: 0,
 		defW: 0,
 		defH: 0,
-		origW: ImageEditTools.size.origW,
-		origH: ImageEditTools.size.origH,
 		imgDiv: "weImgDiv",
 		imgBorder: "weImagePanelBorder",
 		imgPanel: "weImagePanel",
@@ -98,8 +97,8 @@ ImageEditTools = {
 			var elIdImage = document.getElementById(this.imgID);
 			this.defW = elIdImage.width;
 			this.defH = elIdImage.height;
-			elIdImage.width = this.origW;
-			elIdImage.height = this.origH;
+			elIdImage.width = ImageEditTools.size.origW;
+			elIdImage.height = ImageEditTools.size.origH;
 			this.imgW = elIdImage.offsetWidth;
 			this.imgH = elIdImage.offsetHeight;
 			this.imgSrc = elIdImage.src;
@@ -973,8 +972,8 @@ ImageEditTools = {
 			elIdBottom = null;
 		}
 	},
+
 	Focus: {
-		up: ImageEditTools,
 		elems: {
 			focusPoint: null,
 			image: null,
@@ -991,11 +990,12 @@ ImageEditTools = {
 			setFocus: null,
 			moveFocus: null,
 			startMove: null,
-			stopMove: null
+			stopMove: null,
+			leaveBody: null
 		},
 		start: function () {
-			this.up.deactivateAll();
-			this.up.activeTool = 'focus';
+			ImageEditTools.deactivateAll();
+			ImageEditTools.activeTool = 'focus';
 
 			// references to some gui elements
 			this.elems.focusPoint = document.getElementById('imgfocus_point');
@@ -1014,8 +1014,9 @@ ImageEditTools = {
 			// add listeners (using late binding to set scope, and hold reference to bound fns!)
 			this.elems.image.addEventListener('click', (this.boundFNs.setFocus = this.setFocusPositionByMouse.bind(this)), false);
 			this.elems.focusPoint.addEventListener('mousedown', (this.boundFNs.startMove = this.startMoveFocusPosition.bind(this)), false);
-			this.elems.focusPoint.addEventListener('mouseup', (this.boundFNs.stopMove = this.stopMoveFocusPosition.bind(this)), false);
-			this.elems.image.addEventListener('mouseup', this.boundFNs.stopMove, false);
+			document.body.addEventListener('mouseup', (this.boundFNs.stopMove = this.stopMoveFocusPosition.bind(this)), false);
+			document.body.addEventListener('mouseleave', (this.boundFNs.leaveBody = this.mouseLeaveBody.bind(this)), false);
+
 			this.elems.focusPoint.addEventListener('dragstart', function (e) {
 				e.preventDefault();
 			}, false);
@@ -1024,50 +1025,56 @@ ImageEditTools = {
 			this.setFocusPositionByValue();
 			_EditorFrame.setEditorIsHot(hot);
 		},
-		drop: function () {
+		drop: function () { // when leaving edit focus
 			this.elems.focusPoint.style.display = 'none';
 			this.elems.image.style.cursor = 'default';
+			document.body.style.cursor = 'default';
 			this.elems.image.removeEventListener('click', this.boundFNs.setFocus, false);
 			this.elems.focusPoint.removeEventListener('mousedown', this.boundFNs.startMove, false);
-			this.elems.focusPoint.removeEventListener('mouseup', this.boundFNs.stopMove, false);
-			this.elems.image.removeEventListener('mouseup', this.boundFNs.stopMove, false);
-			this.elems.focusPoint.removeEventListener('mousemove', this.boundFNs.moveFocus, false);
-			this.elems.image.removeEventListener('mousemove', this.boundFNs.moveFocus, false);
+			document.body.removeEventListener('mouseup', this.boundFNs.stopMove, false);
+			document.body.removeEventListener('mousemove', this.boundFNs.moveFocus, false);
 			this.elems.x_focus.parentNode.style.display = 'none';
 			this.elems.info.style.display = 'none';
 		},
+		mouseLeaveBody: function (e) {
+			this.moveFocusPosition(e);
+			this.stopMoveFocusPosition();
+		},
 		startMoveFocusPosition: function (e) {
+			this.elems.image.style.cursor = 'move';
+			document.body.style.cursor = 'move';
 			this.vals.referenceX = e.clientX;
 			this.vals.referenceY = e.clientY;
 			this.vals.origLeft = parseInt(this.elems.focusPoint.style.left);
 			this.vals.origTop = parseInt(this.elems.focusPoint.style.top);
 			this.boundFNs.moveFocus = this.moveFocusPosition.bind(this);
-			this.elems.focusPoint.addEventListener('mousemove', (this.boundFNs.moveFocus = this.moveFocusPosition.bind(this)), false);
-			this.elems.image.addEventListener('mousemove', this.boundFNs.moveFocus, false);
+			document.body.addEventListener('mousemove', (this.boundFNs.moveFocus = this.moveFocusPosition.bind(this)), false);
 		},
 		stopMoveFocusPosition: function (e) {
-			this.elems.focusPoint.removeEventListener('mousemove', this.boundFNs.moveFocus, false);
-			this.elems.image.removeEventListener('mousemove', this.boundFNs.moveFocus, false);
+			this.elems.image.style.cursor = 'crosshair';
+			document.body.style.cursor = 'default';
+			document.body.removeEventListener('mousemove', this.boundFNs.moveFocus, false);
 		},
 		moveFocusPosition: function (e) {
 			var topVal = this.vals.origTop + (e.clientY - this.vals.referenceY),
-							leftVal = this.vals.origLeft + (e.clientX - this.vals.referenceX);
+				leftVal = this.vals.origLeft + (e.clientX - this.vals.referenceX);
 
-			this.setFocusPositionByMouse(null, leftVal, topVal);
+			this.setFocusPositionByMouse(null, topVal, leftVal);
 		},
 		setFocusPositionByMouse: function (e, topVal, leftVal) {
-			//var me = this;
+			topVal = topVal !== undefined ? topVal : (e ? e.offsetY : false);
+			leftVal = leftVal !== undefined ? leftVal : (e ? e.offsetX : false);
 
-			topVal = e ? e.offsetX : (topVal ? topVal : false);
-			leftVal = e ? e.offsetY : (leftVal ? leftVal : false);
+			topVal = topVal <= 0 ? 0 : (topVal >= this.elems.image.height ? this.elems.image.height : topVal);
+			leftVal = leftVal <= 0 ? 0 : (leftVal >= this.elems.image.width ? this.elems.image.width : leftVal);
 
-			this.elems.x_focus.value = ((topVal - this.elems.image.width / 2) / (this.elems.image.width / 2)).toFixed(2);
-			this.elems.y_focus.value = ((leftVal - this.elems.image.height / 2) / (this.elems.image.height / 2)).toFixed(2);
+			this.elems.x_focus.value = ((leftVal - this.elems.image.width / 2) / (this.elems.image.width / 2)).toFixed(2);
+			this.elems.y_focus.value = ((topVal - this.elems.image.height / 2) / (this.elems.image.height / 2)).toFixed(2);
 			this.setFocusPositionByValue();
 		},
 		setFocusPositionByValue: function () {
 			var x = document.getElementById('x_focus').value,
-							y = document.getElementById('y_focus').value;
+				y = document.getElementById('y_focus').value;
 
 			if (Math.abs(this.elems.x_focus) > 1) {
 				this.elems.x_focus = 0;
@@ -1082,36 +1089,36 @@ ImageEditTools = {
 			_EditorFrame.setEditorIsHot(true);
 		}
 	},
+
 	Rotate: {
-		up: ImageEditTools,
 		win: null,
 		start: function (url, gdType) {
-			this.up.deactivateAll();
-			this.up.activeTool = 'rotate';
+			ImageEditTools.deactivateAll();
+			ImageEditTools.activeTool = 'rotate';
 			this.win = new (WE().util.jsWindow)(window, url, 'we_rotate', -1, -1, 300, (gdType === 'jpg' ? 230 : 170), true, false, true);
 		},
 		drop: function () {
 			this.win.close();
 		}
 	},
+
 	Resize: {
-		up: ImageEditTools,
 		win: null,
 		start: function (url, gdType) {
-			this.up.deactivateAll();
-			this.up.activeTool = 'resize';
+			ImageEditTools.deactivateAll();
+			ImageEditTools.activeTool = 'resize';
 			this.win = new (WE().util.jsWindow)(window, url, 'we_image_resize', -1, -1, 260, (gdType === 'jpg' ? 250 : 190), true, false, true);
 		},
 		drop: function () {
 			this.win.close();
 		}
 	},
+
 	ConvertJPEG: {
-		up: ImageEditTools,
 		win: null,
 		start: function (url) {
-			this.up.deactivateAll();
-			this.up.activeTool = 'convertJPEG';
+			ImageEditTools.deactivateAll();
+			ImageEditTools.activeTool = 'convertJPEG';
 			this.win = new (WE().util.jsWindow)(window, url, 'we_convert_jpg', -1, -1, 260, 160, true, false, true);
 		},
 		drop: function () {
@@ -1122,10 +1129,10 @@ ImageEditTools = {
 
 /*
  ImageEditTools.convertPNG = {
- up: WE().ImageEditTool
+
  };
  
  ImageEditTools.convertGIF = {
- up: WE().ImageEditTool
+
  };
  */

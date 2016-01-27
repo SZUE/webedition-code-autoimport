@@ -465,7 +465,7 @@ class we_helpers_mail extends Zend_Mail{
 	public function Send(){
 		try{
 			$t = parent::send();
-		}catch(Zend_Exception $e){
+		}catch(Exception $e){
 			t_e('warning', 'Error while sending mail: ', $e);
 			return false;
 		}

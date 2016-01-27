@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_shop_shop{
+
 	const DOCUMENT = 'w';
 	const OBJECT = 'o';
 
@@ -49,11 +50,6 @@ class we_shop_shop{
 		}
 
 		$this->IDs = array_keys($this->ShoppingCartItems);
-
-		if(!isset($GLOBALS['we_lv_array']) || !is_array($GLOBALS['we_lv_array'])){
-			$GLOBALS['we_lv_array'] = array();
-		}
-		$GLOBALS['we_lv_array'][] = clone($this);
 	}
 
 	function next_record(){
@@ -74,7 +70,6 @@ class we_shop_shop{
 				}
 			}
 			$this->count++;
-			$GLOBALS["we_lv_array"][(count($GLOBALS["we_lv_array"]) - 1)] = clone($GLOBALS["lv"]);
 			return true;
 		}
 		return false;

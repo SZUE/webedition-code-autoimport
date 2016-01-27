@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -25,13 +24,12 @@
  */
 /* * this is the abstract super class for DB connections */
 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf.inc.php');
 if(!defined('DB_DATABASE')){
+	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf.inc.php');
 	require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.inc.php');
 }
 
 abstract class we_database_base{
-
 	private static $pool = array(); //fixme: don't repool temporary tables - they require the same connection
 	protected static $conCount = 0;
 	protected static $linkCount = 0;
@@ -759,8 +757,8 @@ abstract class we_database_base{
 			$query = array();
 			foreach($table as $key => $value){
 				$query[] = (is_numeric($key) ?
-								$value . ' ' . $mode :
-								$key . ' ' . $value);
+						$value . ' ' . $mode :
+						$key . ' ' . $value);
 			}
 			$query = implode(',', $query);
 		} else {
@@ -856,7 +854,7 @@ abstract class we_database_base{
 			}
 		}
 
-		return $this->query('CREATE TABLE ' . $this->escape($tab) . ' (' . implode(',', $cols_sql) . ') ENGINE = MYISAM ' . we_database_base::getCharsetCollation() . ';');
+		return $this->query('CREATE TABLE ' . $this->escape($tab) . ' (' . implode(',', $cols_sql) . ') ENGINE = MYISAM ' . self::getCharsetCollation() . ';');
 	}
 
 	/**
@@ -904,8 +902,8 @@ abstract class we_database_base{
 	function getTableCreateArray($tab){
 		$this->query('SHOW CREATE TABLE ' . $this->escape($tab));
 		return ($this->next_record()) ?
-				explode("\n", $this->f("Create Table")) :
-				false;
+			explode("\n", $this->f("Create Table")) :
+			false;
 	}
 
 	public function getTableKeyArray($tab){
