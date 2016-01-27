@@ -1,70 +1,82 @@
 <?php
 
-//
-// +----------------------------------------------------------------------+
-// | PHP Version 4                                                        |
-// +----------------------------------------------------------------------+
-// | Copyright (c) 1997-2004 The PHP Group                                |
-// +----------------------------------------------------------------------+
-// | This source file is subject to version 3.0 of the PHP license,       |
-// | that is bundled with this package in the file LICENSE, and is        |
-// | available at through the world-wide-web at                           |
-// | http://www.php.net/license/3_0.txt.                                  |
-// | If you did not receive a copy of the PHP license and are unable to   |
-// | obtain it through the world-wide-web, please send a note to          |
-// | license@php.net so we can mail you a copy immediately.               |
-// +----------------------------------------------------------------------+
-// | Author: Stig Bakken <ssb@fast.no>                                    |
-// |         Tomas V.V.Cox <cox@idecnet.com>                              |
-// |         Stephan Schmidt <schst@php-tools.net>                        |
-// +----------------------------------------------------------------------+
-//
-// $Id: Parser.php,v 1.3 2007/01/30 11:21:56 bjoern.boettle Exp $
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * XML Parser class.
+ * XML_Parser2
  *
- * This is an XML parser based on PHP's "xml" extension,
- * based on the bundled expat library.
+ * XML Parser package
  *
- * @category XML
- * @package none
- * @author  Stig Bakken <ssb@fast.no>
- * @author  Tomas V.V.Cox <cox@idecnet.com>
- * @author  Stephan Schmidt <schst@php-tools.net>
- */
-/**
- * uses PEAR's error handling
+ * PHP version 5
+ *
+ * LICENSE:
+ *
+ * Copyright (c) 2002-2008 The PHP Group
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ *    * Redistributions of source code must retain the above copyright
+ *      notice, this list of conditions and the following disclaimer.
+ *    * Redistributions in binary form must reproduce the above copyright
+ *      notice, this list of conditions and the following disclaimer in the
+ *      documentation and/or other materials provided with the distribution.
+ *    * The name of the author may not be used to endorse or promote products
+ *      derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+ * IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
+ * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * @category  XML
+ * @package   XML_Parser2
+ * @author    Stig Bakken <ssb@fast.no>
+ * @author    Tomas V.V.Cox <cox@idecnet.com>
+ * @author    Stephan Schmidt <schst@php.net>
+ * @copyright 2002-2008 The PHP Group
+ * @license   http://opensource.org/licenses/bsd-license New BSD License
+ * @version   CVS: $Id$
+ * @link      http://pear.php.net/package/XML_Parser2
  */
 /**
  * resource could not be created
  */
-define('XML_PARSER_ERROR_NO_RESOURCE', 200);
+define('XML_PARSER2_ERROR_NO_RESOURCE', 200);
 
 /**
  * unsupported mode
  */
-define('XML_PARSER_ERROR_UNSUPPORTED_MODE', 201);
+define('XML_PARSER2_ERROR_UNSUPPORTED_MODE', 201);
 
 /**
  * invalid encoding was given
  */
-define('XML_PARSER_ERROR_INVALID_ENCODING', 202);
+define('XML_PARSER2_ERROR_INVALID_ENCODING', 202);
 
 /**
  * specified file could not be read
  */
-define('XML_PARSER_ERROR_FILE_NOT_READABLE', 203);
+define('XML_PARSER2_ERROR_FILE_NOT_READABLE', 203);
 
 /**
  * invalid input
  */
-define('XML_PARSER_ERROR_INVALID_INPUT', 204);
+define('XML_PARSER2_ERROR_INVALID_INPUT', 204);
 
 /**
  * remote file cannot be retrieved in safe mode
  */
-define('XML_PARSER_ERROR_REMOTE', 205);
+define('XML_PARSER2_ERROR_REMOTE', 205);
 
 /**
  * XML Parser class.
@@ -77,22 +89,27 @@ define('XML_PARSER_ERROR_REMOTE', 205);
  * - From revision 1.17, the function names used by the 'func' mode
  *   are in the format "xmltag_$elem", for example: use "xmltag_name"
  *   to handle the <name></name> tags of your xml file.
- *
- * @category XML
- * @package none
- * @author  Stig Bakken <ssb@fast.no>
- * @author  Tomas V.V.Cox <cox@idecnet.com>
- * @author  Stephan Schmidt <schst@php-tools.net>
- * @todo    create XML_Parser_Namespace to parse documents with namespaces
- * @todo    create XML_Parser_Pull
- * @todo    Tests that need to be made:
- *          - mixing character encodings
- *          - a test using all expat handlers
- *          - options (folding, output charset)
  *          - different parsing modes
+ *
+ * @category  XML
+ * @package   XML_Parser2
+ * @author    Stig Bakken <ssb@fast.no>
+ * @author    Tomas V.V.Cox <cox@idecnet.com>
+ * @author    Stephan Schmidt <schst@php.net>
+ * @copyright 2002-2008 The PHP Group
+ * @license   http://opensource.org/licenses/bsd-license New BSD License
+ * @version   Release: @package_version@
+ * @link      http://pear.php.net/package/XML_Parser2
+ * @todo      create XML_Parser2_Namespace to parse documents with namespaces
+ * @todo      create XML_Parser2_Pull
+ * @todo      Tests that need to be made:
+ *            - mixing character encodings
+ *            - a test using all expat handlers
+ *            - options (folding, output charset)
  */
-class XML_Parser extends PEAR{
-	// {{{ properties
+class XML_Parser2
+{
+    // {{{ properties
 
 	/**
 	 * XML parser handle
@@ -101,16 +118,15 @@ class XML_Parser extends PEAR{
 	 * @see  xml_parser_create()
 	 */
 	var $parser;
+    /**
+     * File handle if parsing from a file
+     *
+     * @var  resource
+     */
+    var $fp;
 
-	/**
-	 * File handle if parsing from a file
-	 *
-	 * @var  resource
-	 */
-	var $fp;
-
-	/**
-	 * Whether to do case folding
+    /**
+     * Whether to do case folding
 	 *
 	 * If set to true, all tag and attribute names will
 	 * be converted to UPPER CASE.
@@ -160,6 +176,16 @@ class XML_Parser extends PEAR{
 	 * @var object
 	 */
 	var $_handlerObj;
+    /**
+     * valid encodings
+     *
+     * @var array
+     */
+    var $_validEncodings = array('ISO-8859-1', 'UTF-8', 'US-ASCII');
+
+    // }}}
+
+    // {{{ php5 constructor
 
 	/**
 	 * PHP5 constructor
@@ -169,10 +195,10 @@ class XML_Parser extends PEAR{
 	 * @param string $mode   how this parser object should work, "event" for
 	 *                       startelement/endelement-type events, "func"
 	 *                       to have it call functions named after elements
-	 * @param string $tgenc  a valid target encoding
+     * @param string $tgtenc a valid target encoding
 	 */
-	function __construct($srcenc = null, $mode = 'event', $tgtenc = null){
-		$this->PEAR('XML_Parser_Error');
+    function __construct($srcenc = null, $mode = 'event', $tgtenc = null)
+    {
 
 		$this->mode = $mode;
 		$this->srcenc = $srcenc;
@@ -194,13 +220,16 @@ class XML_Parser extends PEAR{
 	 * This method is only needed, when switching to a new
 	 * mode at a later point.
 	 *
-	 * @access  public
-	 * @param   string          mode, either 'func' or 'event'
+     * @param string $mode mode, either 'func' or 'event'
+     *
 	 * @return  boolean|object  true on success, PEAR_Error otherwise
+     * @access public
 	 */
-	function setMode($mode){
+    function setMode($mode)
+    {
 		if($mode != 'func' && $mode != 'event'){
-			$this->raiseError('Unsupported mode given', XML_PARSER_ERROR_UNSUPPORTED_MODE);
+            throw new XML_Parser2_Exception('Unsupported mode given', 
+                XML_PARSER2_ERROR_UNSUPPORTED_MODE);
 		}
 
 		$this->mode = $mode;
@@ -214,37 +243,42 @@ class XML_Parser extends PEAR{
 	 * parser object that you are using and easily switch the underlying
 	 * parser.
 	 *
-	 * If no object will be set, XML_Parser assumes that you
+     * If no object will be set, XML_Parser2 assumes that you
 	 * extend this class and handle the events in $this.
 	 *
-	 * @access  public
-	 * @param   object      object to handle the events
+     * @param object $obj object to handle the events
+     *
 	 * @return  boolean     will always return true
+     * @access public
 	 * @since   v1.2.0beta3
 	 */
-	function setHandlerObj(&$obj){
-		$this->_handlerObj = &$obj;
+    function setHandlerObj($obj)
+    {
+        $this->_handlerObj = $obj;
 		return true;
 	}
 
 	/**
 	 * Init the element handlers
 	 *
+     * @return mixed
 	 * @access  private
 	 */
-	function _initHandlers(){
+    function _initHandlers()
+    {
 		if(!is_resource($this->parser)){
 			return false;
 		}
 
 		if(!is_object($this->_handlerObj)){
-			$this->_handlerObj = &$this;
+            $this->_handlerObj = $this;
 		}
 		switch($this->mode){
 
 			case 'func':
 				xml_set_object($this->parser, $this->_handlerObj);
-				xml_set_element_handler($this->parser, array(&$this, 'funcStartHandler'), array(&$this, 'funcEndHandler'));
+            xml_set_element_handler($this->parser, 
+                array($this, 'funcStartHandler'), array($this, 'funcEndHandler'));
 				break;
 
 			case 'event':
@@ -252,7 +286,8 @@ class XML_Parser extends PEAR{
 				xml_set_element_handler($this->parser, 'startHandler', 'endHandler');
 				break;
 			default:
-				return $this->raiseError('Unsupported mode given', XML_PARSER_ERROR_UNSUPPORTED_MODE);
+            throw new XML_Parser2_Exception('Unsupported mode given', 
+                XML_PARSER2_ERROR_UNSUPPORTED_MODE);
 				break;
 		}
 
@@ -279,12 +314,14 @@ class XML_Parser extends PEAR{
 	 * Furthermore it allows us returning an error
 	 * if something fails.
 	 *
-	 * @access   private
-	 * @return   boolean|object     true on success, PEAR_Error otherwise
+     * NOTE: uses '@' error suppresion in this method
 	 *
+     * @return bool|PEAR_Error true on success, PEAR_Error otherwise
+     * @access private
 	 * @see xml_parser_create
 	 */
-	function _create(){
+    function _create()
+    {
 		if($this->srcenc === null){
 			$xp = @xml_parser_create();
 		} else {
@@ -292,20 +329,25 @@ class XML_Parser extends PEAR{
 		}
 		if(is_resource($xp)){
 			if($this->tgtenc !== null){
-				if(!@xml_parser_set_option($xp, XML_OPTION_TARGET_ENCODING, $this->tgtenc)){
-					return $this->raiseError('invalid target encoding', XML_PARSER_ERROR_INVALID_ENCODING);
+                if (!@xml_parser_set_option($xp, XML_OPTION_TARGET_ENCODING, 
+                    $this->tgtenc)
+                ) {
+                    throw new XML_Parser2_Exception('invalid target encoding', 
+                        XML_PARSER2_ERROR_INVALID_ENCODING);
 				}
 			}
 			$this->parser = $xp;
 			$result = $this->_initHandlers($this->mode);
-			if($this->isError($result)){
-				return $result;
-			}
 			xml_parser_set_option($xp, XML_OPTION_CASE_FOLDING, $this->folding);
 
 			return true;
 		}
-		return $this->raiseError('Unable to create XML parser resource.', XML_PARSER_ERROR_NO_RESOURCE);
+        if (!in_array(strtoupper($this->srcenc), $this->_validEncodings)) {
+            throw new XML_Parser2_Exception('invalid source encoding', 
+                XML_PARSER2_ERROR_INVALID_ENCODING);
+        }
+        throw new XML_Parser2_Exception('Unable to create XML parser resource.', 
+            XML_PARSER2_ERROR_NO_RESOURCE);
 	}
 
 	// }}}
@@ -320,11 +362,9 @@ class XML_Parser extends PEAR{
 	 * @access   public
 	 * @return   boolean|object     true on success, PEAR_Error otherwise
 	 */
-	function reset(){
+    function reset()
+    {
 		$result = $this->_create();
-		if($this->isError($result)){
-			return $result;
-		}
 		return true;
 	}
 
@@ -334,19 +374,23 @@ class XML_Parser extends PEAR{
 	/**
 	 * Sets the input xml file to be parsed
 	 *
-	 * @param    string      Filename (full path)
+     * @param string $file Filename (full path)
+     *
 	 * @return   resource    fopen handle of the given file
-	 * @throws   XML_Parser_Error
-	 * @see      setInput(), setInputString(), parse()
 	 * @access   public
+     * @throws XML_Parser2_Error
+     * @see setInput(), setInputString(), parse()
 	 */
-	function setInputFile($file){
+    function setInputFile($file)
+    {
 		/**
 		 * check, if file is a remote file
 		 */
-		if(preg_match('#^(http|ftp)://#i', substr($file, 0, 10))){
-			if(!ini_get('allow_url_fopen')){
-				return $this->raiseError('Remote files cannot be parsed, as safe mode is enabled.', XML_PARSER_ERROR_REMOTE);
+        if (preg_match('/^(http|ftp):\/\//i', substr($file, 0, 10))) {
+            if (!ini_get('allow_url_fopen')) {
+                return $this->
+                raiseError('Remote files cannot be parsed, as safe mode is enabled.',
+                XML_PARSER2_ERROR_REMOTE);
 			}
 		}
 
@@ -355,21 +399,24 @@ class XML_Parser extends PEAR{
 			$this->fp = $fp;
 			return $fp;
 		}
-		return $this->raiseError('File could not be opened.', XML_PARSER_ERROR_FILE_NOT_READABLE);
+        throw new XML_Parser2_Exception('File could not be opened.', 
+            XML_PARSER2_ERROR_FILE_NOT_READABLE);
 	}
 
 	// }}}
 	// {{{ setInputString()
 
 	/**
-	 * XML_Parser::setInputString()
+     * XML_Parser2::setInputString()
 	 *
 	 * Sets the xml input from a string
 	 *
 	 * @param string $data a string containing the XML document
+     *
 	 * @return null
-	 * */
-	function setInputString($data){
+     */
+    function setInputString($data)
+    {
 		$this->fp = $data;
 		return null;
 	}
@@ -385,30 +432,31 @@ class XML_Parser extends PEAR{
 	 *
 	 * @param    mixed  $fp  Can be either a resource returned from fopen(),
 	 *                       a URL, a local filename or a string.
+     *
+     * @return mixed
 	 * @access   public
 	 * @see      parse()
 	 * @uses     setInputString(), setInputFile()
 	 */
-	function setInput($fp){
+    function setInput($fp)
+    {
 		if(is_resource($fp)){
 			$this->fp = $fp;
 			return true;
-		}
+        } elseif (preg_match('/^[a-z]+:\/\//i', substr($fp, 0, 10))) {
 		// see if it's an absolute URL (has a scheme at the beginning)
-		elseif(preg_match('|^[a-z]+://|i', substr($fp, 0, 10))){
 			return $this->setInputFile($fp);
-		}
+        } elseif (file_exists($fp)) {
 		// see if it's a local file
-		elseif(file_exists($fp)){
 			return $this->setInputFile($fp);
-		}
+        } else {
 		// it must be a string
-		else {
 			$this->fp = $fp;
 			return true;
 		}
 
-		return $this->raiseError('Illegal input format', XML_PARSER_ERROR_INVALID_INPUT);
+        throw new XML_Parser2_Exception('Illegal input format', 
+            XML_PARSER2_ERROR_INVALID_INPUT);
 	}
 
 	// }}}
@@ -417,33 +465,27 @@ class XML_Parser extends PEAR{
 	/**
 	 * Central parsing function.
 	 *
-	 * @return   true|object PEAR error     returns true on success, or a PEAR_Error otherwise
+     * @return bool|PEAR_Error returns true on success, or a PEAR_Error otherwise
 	 * @access   public
 	 */
-	function parse(){
+    function parse()
+    {
 		/**
 		 * reset the parser
 		 */
 		$result = $this->reset();
-		if($this->isError($result)){
-			return $result;
-		}
 		// if $this->fp was fopened previously
 		if(is_resource($this->fp)){
 
 			while($data = fread($this->fp, 4096)){
 				if(!$this->_parseString($data, feof($this->fp))){
-					$error = &$this->raiseError();
-					$this->free();
-					return $error;
+                    throw new XML_Parser2_Exception();
 				}
 			}
-			// otherwise, $this->fp must be a string
 		} else {
+            // otherwise, $this->fp must be a string
 			if(!$this->_parseString($this->fp, true)){
-				$error = &$this->raiseError();
-				$this->free();
-				return $error;
+                throw new XML_Parser2_Exception();
 			}
 		}
 		$this->free();
@@ -452,15 +494,17 @@ class XML_Parser extends PEAR{
 	}
 
 	/**
-	 * XML_Parser::_parseString()
+     * XML_Parser2::_parseString()
 	 *
-	 * @param string $data
-	 * @param boolean $eof
+     * @param string $data data
+     * @param bool   $eof  end-of-file flag
+     *
 	 * @return bool
 	 * @access private
 	 * @see parseString()
 	 * */
-	function _parseString($data, $eof = false){
+    function _parseString($data, $eof = false)
+    {
 		return xml_parse($this->parser, $data, $eof);
 	}
 
@@ -468,25 +512,26 @@ class XML_Parser extends PEAR{
 	// {{{ parseString()
 
 	/**
-	 * XML_Parser::parseString()
+     * XML_Parser2::parseString()
 	 *
 	 * Parses a string.
 	 *
 	 * @param    string  $data XML data
-	 * @param    boolean $eof  If set and TRUE, data is the last piece of data sent in this parser
-	 * @throws   XML_Parser_Error
-	 * @return   Pear Error|true   true on success or a PEAR Error
+     * @param boolean $eof  If set and TRUE, data is the last piece 
+     *                      of data sent in this parser
+     *
+     * @return bool|PEAR_Error true on success or a PEAR Error
+     * @throws XML_Parser2_Error
 	 * @see      _parseString()
 	 */
-	function parseString($data, $eof = false){
+    function parseString($data, $eof = false)
+    {
 		if(!isset($this->parser) || !is_resource($this->parser)){
 			$this->reset();
 		}
 
 		if(!$this->_parseString($data, $eof)){
-			$error = $this->raiseError();
-			$this->free();
-			return $error;
+            throw new XML_Parser2_Exception();
 		}
 
 		if($eof === true){
@@ -496,13 +541,14 @@ class XML_Parser extends PEAR{
 	}
 
 	/**
-	 * XML_Parser::free()
+     * XML_Parser2::free()
 	 *
 	 * Free the internal resources associated with the parser
 	 *
 	 * @return null
 	 * */
-	function free(){
+    function free()
+    {
 		if(isset($this->parser) && is_resource($this->parser)){
 			xml_parser_free($this->parser);
 			unset($this->parser);
@@ -514,48 +560,49 @@ class XML_Parser extends PEAR{
 		return null;
 	}
 
-	/**
-	 * XML_Parser::raiseError()
-	 *
-	 * Throws a XML_Parser_Error
-	 *
-	 * @param string  $msg   the error message
-	 * @param integer $ecode the error message code
-	 * @return XML_Parser_Error
-	 * */
-	function &raiseError($msg = null, $ecode = 0){
-		$msg = !is_null($msg) ? $msg : $this->parser;
-		$err = new XML_Parser_Error($msg, $ecode);
-		return parent::raiseError($err);
-	}
-
 	// }}}
 	// {{{ funcStartHandler()
 
-	function funcStartHandler($xp, $elem, $attribs){
+    /**
+     * derives and calls the Start Handler function
+     *
+     * @param mixed $xp      ??
+     * @param mixed $elem    ??
+     * @param mixed $attribs ??
+     *
+     * @return void
+     */
+    function funcStartHandler($xp, $elem, $attribs)
+    {
 		$func = 'xmltag_' . $elem;
-		if(strchr($func, '.')){
-			$func = str_replace('.', '_', $func);
-		}
+        $func = str_replace(array('.', '-', ':'), '_', $func);
 		if(method_exists($this->_handlerObj, $func)){
-			call_user_func(array(&$this->_handlerObj, $func), $xp, $elem, $attribs);
+            call_user_func(array($this->_handlerObj, $func), $xp, $elem, $attribs);
 		} elseif(method_exists($this->_handlerObj, 'xmltag')){
-			call_user_func(array(&$this->_handlerObj, 'xmltag'), $xp, $elem, $attribs);
+            call_user_func(array($this->_handlerObj, 'xmltag'), 
+                $xp, $elem, $attribs);
 		}
 	}
 
 	// }}}
 	// {{{ funcEndHandler()
 
-	function funcEndHandler($xp, $elem){
+    /**
+     * derives and calls the End Handler function
+     *
+     * @param mixed $xp   ??
+     * @param mixed $elem ??
+     *
+     * @return void
+     */
+    function funcEndHandler($xp, $elem)
+    {
 		$func = 'xmltag_' . $elem . '_';
-		if(strchr($func, '.')){
-			$func = str_replace('.', '_', $func);
-		}
+        $func = str_replace(array('.', '-', ':'), '_', $func);
 		if(method_exists($this->_handlerObj, $func)){
-			call_user_func(array(&$this->_handlerObj, $func), $xp, $elem);
+            call_user_func(array($this->_handlerObj, $func), $xp, $elem);
 		} elseif(method_exists($this->_handlerObj, 'xmltag_')){
-			call_user_func(array(&$this->_handlerObj, 'xmltag_'), $xp, $elem);
+            call_user_func(array($this->_handlerObj, 'xmltag_'), $xp, $elem);
 		}
 	}
 
@@ -563,74 +610,62 @@ class XML_Parser extends PEAR{
 	// {{{ startHandler()
 
 	/**
+     * abstract method signature for Start Handler
 	 *
+     * @param mixed $xp       ??
+     * @param mixed $elem     ??
+     * @param mixed $attribs ??
+     *
+     * @return null
 	 * @abstract
 	 */
-	function startHandler($xp, $elem, &$attribs){
-		return NULL;
+    function startHandler($xp, $elem, $attribs)
+    {
+        return null;
 	}
 
 	// }}}
 	// {{{ endHandler()
 
 	/**
+     * abstract method signature for End Handler
 	 *
+     * @param mixed $xp   ??
+     * @param mixed $elem ??
+     *
+     * @return null
 	 * @abstract
 	 */
-	function endHandler($xp, $elem){
-		return NULL;
+    function endHandler($xp, $elem)
+    {
+        return null;
 	}
 
 	// }}}me
 }
 
-/**
- * error class, replaces PEAR_Error
- *
- * An instance of this class will be returned
- * if an error occurs inside XML_Parser.
- *
- * There are three advantages over using the standard PEAR_Error:
- * - All messages will be prefixed
- * - check for XML_Parser error, using is_a( $error, 'XML_Parser_Error' )
- * - messages can be generated from the xml_parser resource
- *
- * @package none
- * @access  public
- * @see     PEAR_Error
- */
-class XML_Parser_Error extends PEAR_Error{
-	// {{{ properties
-
-	/**
-	 * prefix for all messages
-	 *
-	 * @var      string
-	 */
-	var $error_message_prefix = 'XML_Parser: ';
-
-	// }}}
-	// {{{ constructor()
+class XML_Parser2_Exception extends Exception {
 	/**
 	 * construct a new error instance
 	 *
 	 * You may either pass a message or an xml_parser resource as first
 	 * parameter. If a resource has been passed, the last error that
 	 * happened will be retrieved and returned.
+    *
+    * @param string|resource $msgorparser message or parser resource
+    * @param integer         $code        error code
 	 *
 	 * @access   public
-	 * @param    string|resource     message or parser resource
-	 * @param    integer             error code
-	 * @param    integer             error handling
-	 * @param    integer             error level
 	 */
-	function XML_Parser_Error($msgorparser = 'unknown error', $code = 0, $mode = PEAR_ERROR_RETURN, $level = E_USER_NOTICE){
+    public function __construct($msgorparser = 'unknown error', $code = 0) {
 		if(is_resource($msgorparser)){
 			$code = xml_get_error_code($msgorparser);
-			$msgorparser = sprintf('%s at XML input line %d:%d', xml_error_string($code), xml_get_current_line_number($msgorparser), xml_get_current_column_number($msgorparser));
+            $msgorparser = sprintf('%s at XML input line %d:%d',
+                xml_error_string($code),
+                xml_get_current_line_number($msgorparser),
+                xml_get_current_column_number($msgorparser));
 		}
-		$this->PEAR_Error($msgorparser, $code, $mode, $level);
+        parent::__construct($msgorparser, $code);
 	}
 
-	// }}}
 }
