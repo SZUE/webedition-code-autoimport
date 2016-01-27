@@ -1571,10 +1571,12 @@ WE().layout.we_setPath = function (path, text, id, classname) {
 
 	var doc = _EditorFrame.getDocumentReference().frames.editHeader.document;
 	var div = doc.getElementById('h_path');
-	div.innerHTML = path.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-	if (id > 0) {
-		div = doc.getElementById('h_id');
-		div.innerHTML = id;
+	if (div) {
+		div.innerHTML = path.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+		if (id > 0) {
+			div = doc.getElementById('h_id');
+			div.innerHTML = id;
+		}
 	}
 
 };
