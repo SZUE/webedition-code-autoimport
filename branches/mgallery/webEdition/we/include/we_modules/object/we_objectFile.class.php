@@ -3006,7 +3006,7 @@ class we_objectFile extends we_document{
 		}
 
 // check if object is published.
-		if(!$GLOBALS['we_doc'] || (!$GLOBALS['we_doc']->InWebEdition && !$foo['Published'])){
+		if(empty($GLOBALS['we_doc']) || (!$GLOBALS['we_doc']->InWebEdition && !$foo['Published'])){
 			$GLOBALS['we_link_not_published'] = 1;
 			return '';
 		}
@@ -3025,24 +3025,24 @@ class we_objectFile extends we_document{
 			}
 			$pidstr = ($pid ? '?pid=' . intval($pid) : '');
 
-			if($hidedirindex && !(!empty($GLOBALS['we_editmode']) || !empty($GLOBALS['WE_MAIN_EDITMODE']) )){
-				$path_parts = pathinfo($path);
-				if(seoIndexHide($path_parts['basename'])){
-					$path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
-				}
-			}
 			if($objectseourls && show_SeoLinks()){
 				$objectdaten = getHash('SELECT Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id) . ' LIMIT 1', $DB_WE);
 				if($objectdaten['TriggerID']){
 					$path_parts = pathinfo(id_to_path($objectdaten['TriggerID']));
-				}
 
-				if($objectdaten['Url']){
-					return ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
-						($hidedirindex && seoIndexHide($path_parts['basename']) ?
-							'' :
-							$path_parts['filename'] . '/' ) .
-						$objectdaten['Url'] . $pidstr;
+					if($objectdaten['Url']){
+						return ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
+							($hidedirindex && seoIndexHide($path_parts['basename']) ?
+								'' :
+								$path_parts['filename'] . '/' ) .
+							$objectdaten['Url'] . $pidstr;
+					}
+				}
+			}
+			if($hidedirindex && !(!empty($GLOBALS['we_editmode']) || !empty($GLOBALS['WE_MAIN_EDITMODE']) )){
+				$path_parts = pathinfo($path);
+				if(seoIndexHide($path_parts['basename'])){
+					$path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 				}
 			}
 			return $path . '?we_objectID=' . intval($id) . str_replace('?', '&amp;', $pidstr);
