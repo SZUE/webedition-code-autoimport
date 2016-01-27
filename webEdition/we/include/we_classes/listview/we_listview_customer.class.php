@@ -27,7 +27,7 @@
  * @desc    class for tag <we:listview type="customer">
  *
  */
-class we_customer_listview extends we_listview_base{
+class we_listview_customer extends we_listview_base{
 	var $condition = '';
 	var $Path = '';
 	var $docID = 0;

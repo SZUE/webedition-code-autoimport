@@ -44,22 +44,17 @@ var weFileUpload = (function () {
 			return false;
 		}
 		switch (type) {
-			case 'inc' :
-				weFileUpload_inc.prototype = new weFileUpload_abstract();
-				weFileUpload_inc.prototype.constructor = weFileUpload_inc;
-				return new weFileUpload_inc();
-			case 'imp' :
-				weFileUpload_imp.prototype = new weFileUpload_abstract();
-				weFileUpload_imp.prototype.constructor = weFileUpload_imp;
-				return new weFileUpload_imp();
-			case 'tag' :
-				//for userInput typ img
-				/*
-				 weFileUpload_tag.prototype = new weFileUpload_abstract;
-				 weFileUpload_tag.prototype.constructor = weFileUpload_tag;
-				 return new weFileUpload_tag;
-				 */
-			case 'binDoc' :
+			case 'base' :
+				weFileUpload_base.prototype = new weFileUpload_abstract();
+				weFileUpload_base.prototype.constructor = weFileUpload_base;
+				return new weFileUpload_base();
+			case 'importer' :
+				weFileUpload_importer.prototype = new weFileUpload_abstract();
+				weFileUpload_importer.prototype.constructor = weFileUpload_importer;
+				return new weFileUpload_importer();
+			case 'preview' :
+			case 'wedoc' :
+			case 'editor' :
 				weFileUpload_binDoc.prototype = new weFileUpload_abstract();
 				weFileUpload_binDoc.prototype.constructor = weFileUpload_binDoc;
 				return new weFileUpload_binDoc();
@@ -67,11 +62,11 @@ var weFileUpload = (function () {
 	}
 
 	function weFileUpload_abstract() {
-		//declare "protected" members: they are accessible from weFileUpload_include/imp too!
+		//declare "protected" members: they are accessible from weFileUpload_include/importer too!
 		_.fieldName = '';
 		_.genericFilename = '';
 		_.fileuploadType = 'abstract';
-		_.uiClass = 'we_fileupload_ui_base';
+		_.uiType = 'base';
 
 		_.init_abstract = function (conf) {
 			var that = _.self, c = _.controller, s = _.sender, v = _.view, u = _.utils;
@@ -93,7 +88,7 @@ var weFileUpload = (function () {
 			if (typeof conf !== 'undefined') {
 				s.typeCondition = conf.typeCondition || s.typeCondition;
 				_.fieldName = conf.fieldName || _.fieldName;
-				_.uiClass = conf.uiClass || _.uiClass;
+				_.uiType = conf.uiType || _.uiType;
 				_.genericFilename = conf.genericFilename || _.genericFilename;
 				c.fileselectOnclick = conf.fileselectOnclick || _.controller.fileselectOnclick;
 				c.isPreset = conf.isPreset || c.isPreset;
@@ -649,8 +644,12 @@ var weFileUpload = (function () {
 
 			this.sendNextFile = function () {
 				var cur, fr = null, cnt,
-								that = _.sender;//IMPORTANT: if we use that = this, then that is of type AbstractSender not knowing members of Sender!
+					that = _.sender;//IMPORTANT: if we use that = this, then that is of type AbstractSender not knowing members of Sender!
 
+				/* when using short syntax in line 1156 we must change some this to that = _.sender. FIXME: WHY?!
+				if (that.uploadFiles.length > 0) {
+					that.currentFile = cur = that.uploadFiles.shift();
+				*/
 				if (this.uploadFiles.length > 0) {
 					this.currentFile = cur = this.uploadFiles.shift();
 					if (cur.uploadConditionsOk) {
@@ -692,7 +691,7 @@ var weFileUpload = (function () {
 
 			this.sendNextChunk = function (split) {
 				var resp, oldPos, blob,
-								cur = this.currentFile;
+					cur = this.currentFile; // when using short syntax in line 1156 we must change some this to that = _.sender. FIXME: WHY?!
 
 				if (this.isCancelled) {
 					this.isCancelled = false;
@@ -707,15 +706,15 @@ var weFileUpload = (function () {
 						blob = new Blob([cur.dataArray.subarray(oldPos, cur.currentPos)]);
 
 						this.sendChunk(
-										blob,
-										cur.file.name,
-										(cur.mimePHP !== 'none' ? cur.mimePHP : cur.file.type),
-										(cur.partNum === cur.totalParts ? cur.lastChunkSize : this.chunkSize),
-										cur.partNum,
-										cur.totalParts,
-										cur.fileNameTemp,
-										cur.size
-										);
+							blob,
+							cur.file.name,
+							(cur.mimePHP !== 'none' ? cur.mimePHP : cur.file.type),
+							(cur.partNum === cur.totalParts ? cur.lastChunkSize : this.chunkSize),
+							cur.partNum,
+							cur.totalParts,
+							cur.fileNameTemp,
+							cur.size
+						);
 					}
 				} else {
 					this.sendChunk(cur.file, cur.file.name, cur.file.type, cur.size, 1, 1, '', cur.size);
@@ -1144,7 +1143,10 @@ var weFileUpload = (function () {
 		//public functions
 		this.startUpload = function () {
 			if (_.sender.prepareUpload()) {
-				setTimeout(_.sender.sendNextFile, 100);
+				//setTimeout(_.sender.sendNextFile, 100); // FIXME: check why this does not work!!
+				setTimeout(function () {
+					_.sender.sendNextFile();
+				}, 100);
 			} else {
 				_.sender.processError({from: 'gui', msg: _.utils.gl.errorNoFileSelected});
 			}
@@ -1172,7 +1174,7 @@ var weFileUpload = (function () {
 		};
 	}
 
-	function weFileUpload_inc() {
+	function weFileUpload_base() {
 		(function () {
 			weFileUpload_abstract.call(this);
 
@@ -1181,7 +1183,7 @@ var weFileUpload = (function () {
 			View.prototype = this.getAbstractView();
 			Utils.prototype = this.getAbstractUtils();
 
-			_.fileuploadType = 'inc';
+			_.fileuploadType = 'base';
 			_.self = this;
 			_.controller = new Controller();
 			_.sender = new Sender();
@@ -1239,7 +1241,10 @@ var weFileUpload = (function () {
 				this.form.form.elements.weFileCt.value = cur.mimePHP;
 				this.form.form.elements.weFileName.value = cur.file.name;
 				//this.form.form.elements.weIsUploadComplete.value = 1;
-				setTimeout(that.callback, 100, resp);
+				//setTimeout(that.callback, 100, resp); // FIXME: check if this works
+				setTimeout(function () {
+					that.callback(resp);
+				}, 100);
 			};
 
 			this.processError = function (arg) {
@@ -1404,7 +1409,7 @@ var weFileUpload = (function () {
 		function Utils() {}
 	}
 
-	function weFileUpload_imp() {
+	function weFileUpload_importer() {
 		(function () {
 			weFileUpload_abstract.call(this);
 
@@ -1413,7 +1418,7 @@ var weFileUpload = (function () {
 			View.prototype = this.getAbstractView();
 			Utils.prototype = this.getAbstractUtils();
 
-			_.fileuploadType = 'imp';
+			_.fileuploadType = 'importer';
 			_.self = this;
 			_.controller = new Controller();
 			_.sender = new Sender();
@@ -1424,7 +1429,7 @@ var weFileUpload = (function () {
 		this.init = function (conf) {
 			_.init_abstract(conf);
 
-			//initialize weFileUpload_imp properties: dispatch them to respective module-objects
+			//initialize weFileUpload_importer properties: dispatch them to respective module-objects
 			if (typeof conf !== 'undefined') {
 				_.sender.isGdOk = typeof conf.isGdOk !== 'undefined' ? conf.isGdOk : _.sender.isGdOk;
 				_.view.htmlFileRow = conf.htmlFileRow || _.view.htmlFileRow;
@@ -1465,9 +1470,9 @@ var weFileUpload = (function () {
 				if (files[0] instanceof File && !_.utils.contains(_.sender.preparedFiles, files[0])) {
 					f = _.controller.prepareFile(files[0]);
 					var inputId = 'fileInput_uploadFiles_',
-									index = e.target.id.substring(inputId.length),
-									nameField = document.getElementById('name_uploadFiles_' + index),
-									sizeField = document.getElementById('size_uploadFiles_' + index);
+						index = e.target.id.substring(inputId.length),
+						nameField = document.getElementById('name_uploadFiles_' + index),
+						sizeField = document.getElementById('size_uploadFiles_' + index);
 
 					_.sender.preparedFiles[index] = f.isSizeOk ? f : null;
 					nameField.value = f.file.name;
@@ -1596,7 +1601,10 @@ var weFileUpload = (function () {
 					_.view.elems.footer.setProgressText('progress_title', '');
 					eval(resp.completed);
 
-					setTimeout(that.callback, 100, _);
+					//setTimeout(that.callback, 100, _); // FIXME: check if this works
+					setTimeout(function () {
+						that.callback(_);
+					}, 100);
 				}
 				_.view.reloadOpener();
 
@@ -1927,7 +1935,7 @@ var weFileUpload = (function () {
 			this.doSubmit = false;
 
 			this.setEditorIsHot = function () {
-				if (_.uiClass !== 'we_fileupload_ui_wedoc') {
+				if (_.uiType !== 'wedoc') {
 					WE().layout.weEditorFrameController.setEditorIsHot(true, WE().layout.weEditorFrameController.ActiveEditorFrameId);
 				}
 			};
@@ -1943,14 +1951,17 @@ var weFileUpload = (function () {
 
 			this.postProcess = function (resp) {
 				_.sender.preparedFiles = [];
-				if (_.uiClass !== 'we_fileupload_ui_wedoc') {
+				if (_.uiType !== 'wedoc') {
 					var cur = this.currentFile;
 
 					this.form.form.elements.weFileNameTemp.value = cur.fileNameTemp;
 					this.form.form.elements.weFileCt.value = cur.mimePHP;
 					this.form.form.elements.weFileName.value = cur.file.name;
 					_.sender.currentFile = null;
-					setTimeout(_.sender.dialogCallback, 100, resp);
+					//setTimeout(_.sender.dialogCallback, 100, resp); // FIXME: check if this works
+					setTimeout(function () {
+						_.sender.dialogCallback(resp);
+					}, 100);
 				} else if (resp.status === 'success') {
 					_.sender.currentFile = null;
 					if (WE()) {
@@ -2167,7 +2178,7 @@ var weFileUpload = (function () {
 						_.controller.setWeButtonState(_.view.uploadBtnName, false);
 						_.controller.setWeButtonState('reset_btn', false);
 						this.setDisplay('fileInputWrapper', 'none');
-						if (_.uiClass === 'we_fileupload_ui_wedoc') {
+						if (_.uiType !== 'wedoc') {
 							this.setDisplay('divBtnReset', 'none');
 						}
 						this.setDisplay('divBtnUpload', 'none');

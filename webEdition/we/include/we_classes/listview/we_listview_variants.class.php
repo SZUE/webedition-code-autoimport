@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -27,11 +28,10 @@
  *
  */
 class we_listview_variants extends we_listview_base{
+
 	var $Record = array();
 	var $VariantData = array();
 	var $Position = 0;
-	//old code compatibility
-	var $Id = 0;
 	public $id = 0;
 	var $ObjectId = 0;
 	var $DefaultName = 'default';
@@ -61,7 +61,7 @@ class we_listview_variants extends we_listview_base{
 			$this->Model = new we_objectFile();
 			$this->Model->initByID($this->id, OBJECT_FILES_TABLE);
 			// check if its a document or a objectFile
-		} elseif($GLOBALS['we_doc'] instanceof we_objectFile){ // is an objectFile can this happen??!
+		} elseif(isset($GLOBALS['we_doc']->TableID)){ // is an objectFile can this happen??!
 			$this->id = $GLOBALS['we_doc']->ID;
 			$this->IsObjectFile = true;
 			$this->Model = $GLOBALS['we_doc'];
@@ -90,10 +90,10 @@ class we_listview_variants extends we_listview_base{
 			foreach($vardata as $name => $value){
 
 				$ret[$name] = (isset($value['type']) && $value['type'] === 'img' ?
-						// there is a difference between objects and webEdition Documents
-						isset($value['bdid']) ? $value['bdid'] : $value['dat'] :
-						(isset($value['dat']) ? $value['dat'] : '')
-					);
+								// there is a difference between objects and webEdition Documents
+								isset($value['bdid']) ? $value['bdid'] : $value['dat'] :
+								(isset($value['dat']) ? $value['dat'] : '')
+						);
 			}
 
 			$ret['WE_VARIANT_NAME'] = $key;
@@ -112,14 +112,14 @@ class we_listview_variants extends we_listview_base{
 					$Url = f('SELECT Url FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $this->id, '', $this->DB_WE);
 					if($Url != ''){
 						$ret['WE_PATH'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') .
-							( $this->hidedirindex && seoIndexHide($path_parts['basename']) ?
-								'' : '/' . $path_parts['filename']
-							) . '/' . $Url . ($varUrl ? "?$varUrl" : '');
+								( $this->hidedirindex && seoIndexHide($path_parts['basename']) ?
+										'' : '/' . $path_parts['filename']
+								) . '/' . $Url . ($varUrl ? "?$varUrl" : '');
 					} else {
 						$ret['WE_PATH'] = ($this->hidedirindex && seoIndexHide($path_parts['basename']) ?
-								($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . '?we_objectID=' . $this->id . ($varUrl ? "&amp;$varUrl" : '') :
-								$GLOBALS['we_doc']->Path . '?we_objectID=' . $this->id . ($varUrl ? '&amp;' . $varUrl : '')
-							);
+										($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . '?we_objectID=' . $this->id . ($varUrl ? "&amp;$varUrl" : '') :
+										$GLOBALS['we_doc']->Path . '?we_objectID=' . $this->id . ($varUrl ? '&amp;' . $varUrl : '')
+								);
 					}
 				} elseif($this->hidedirindex && seoIndexHide($path_parts['basename'])){
 					$ret['WE_PATH'] = $GLOBALS['we_doc']->Path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . ($varUrl ? "?$varUrl" : '');

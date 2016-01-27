@@ -156,7 +156,7 @@ class we_voting_voting extends weModelBase{
 		}
 	}
 
-	function save($with_scores = true){
+	function save($with_scores = true, $isAdvanced = false, $jsonSer = false){
 		if($this->ActiveTime && $this->Valid < time()){
 			$this->Active = 0;
 		}

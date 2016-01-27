@@ -283,7 +283,7 @@ function we_cmd() {
 			new (WE().util.jsWindow)(this, url, "we_add_thumbnail", -1, -1, 400, 410, true, true, true);
 			break;
 		case "image_resize":
-			if (WE().consts.graphic.hasGD) {
+			if (WE().consts.graphic.gdSupportedTypes[gdType]) {
 				ImageEditTools.Resize.start(url, gdType);
 			} else {
 				top.we_showMessage(WE().util.sprintf(WE().consts.g_l.editorScript.gdTypeNotSupported, gdType), WE().consts.message.WE_MESSAGE_ERROR, this);
@@ -418,17 +418,17 @@ function we_checkObjFieldname(i) {
 	}
 }
 
-function metaFieldSelectProposal(sel, inputName, isCsv){
+function metaFieldSelectProposal(sel, inputName, isCsv) {
 	WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
 
 	var valInput = document.forms[0].elements[inputName].value,
-		newVal = valInput,
-		valSel = sel.options[sel.selectedIndex].value;
+					newVal = valInput,
+					valSel = sel.options[sel.selectedIndex].value;
 
-	if(isCsv){
-		switch(valSel){
+	if (isCsv) {
+		switch (valSel) {
 			case '__del_last__':
-				var arr=valInput.split(',');
+				var arr = valInput.split(',');
 				arr.pop();
 				newVal = arr.join();
 				break;
@@ -439,10 +439,10 @@ function metaFieldSelectProposal(sel, inputName, isCsv){
 				break;
 			default:
 				var valSelCsv = ', ' + valInput + ',';
-				newVal = ((valInput == '' || (valSel== '')) ? valSel : (valSelCsv.search(' *, *' + valSel + ' *, *') === -1 ? (valInput + ', ' + valSel) : valInput));
+				newVal = ((valInput == '' || (valSel == '')) ? valSel : (valSelCsv.search(' *, *' + valSel + ' *, *') === -1 ? (valInput + ', ' + valSel) : valInput));
 		}
 	} else {
-		switch(valSel){
+		switch (valSel) {
 			case '__del_last__':
 			case '__del__':
 				newVal = '';
@@ -455,5 +455,5 @@ function metaFieldSelectProposal(sel, inputName, isCsv){
 	}
 
 	document.forms[0].elements[inputName].value = newVal;
-	sel.selectedIndex=0;
+	sel.selectedIndex = 0;
 }

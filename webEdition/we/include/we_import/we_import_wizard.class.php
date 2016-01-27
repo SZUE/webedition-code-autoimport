@@ -135,6 +135,7 @@ class we_import_wizard extends we_import_wizardBase{
 		}
 
 		$cmd = we_base_request::_(we_base_request::RAW, 'we_cmd', array('import', $defaultVal));
+		$cmd[1] = empty($cmd[1]) ? we_import_functions::TYPE_LOCAL_FILES : $cmd[1];
 		$expat = (function_exists('xml_parser_create')) ? true : false;
 
 		$tblFiles = new we_html_table(array('class' => 'default withSpace'), 2, 1);

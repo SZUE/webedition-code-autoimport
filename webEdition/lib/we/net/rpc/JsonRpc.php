@@ -119,7 +119,7 @@ class we_net_rpc_JsonRpc{
 			/* Load the class */
 			/* Instantiate the service */
 			$service = new $serviceClass();
-		} catch (Zend_Exception $e){
+		} catch (Exception $e){
 			/* Couldn't find the requested service */
 			$error->SetError(we_net_rpc_JsonRpcError::kErrorServiceNotFound, "Service `$serviceClass` not found with message: " . $e->getMessage());
 			return $error->getError();

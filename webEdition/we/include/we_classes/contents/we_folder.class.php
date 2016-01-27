@@ -25,8 +25,6 @@
 /* a class for handling directories */
 class we_folder extends we_root{
 	/* Flag which is set, when the file is a folder  */
-	var $IsFolder = 1;
-	var $IsClassFolder = 0;
 	var $WorkspacePath = '';
 	var $WorkspaceID = '';
 	var $Language = '';
@@ -48,6 +46,7 @@ class we_folder extends we_root{
 	/* Constructor */
 
 	function __construct(){
+		$this->IsFolder=1;
 		parent::__construct();
 		array_push($this->persistent_slots, 'SearchStart', 'SearchField', 'Search', 'Order', 'GreenOnly', 'IsClassFolder', 'WorkspacePath', 'WorkspaceID', 'Language', 'TriggerID', 'urlMap', 'doclistModel', 'viewType');
 		if(isWE()){
@@ -232,7 +231,7 @@ class we_folder extends we_root{
 			}
 		}
 		$this->OldPath = $this->Path;
-		if(defined('OBJECT_TABLE') && $this->Table == OBJECT_TABLE){
+		if(defined('OBJECT_TABLE') && $this->Table === OBJECT_TABLE){
 			$f = new we_class_folder();
 			$f->initByPath($this->Path, OBJECT_FILES_TABLE, true);
 		}
@@ -244,7 +243,7 @@ class we_folder extends we_root{
 		}
 
 		if(LANGLINK_SUPPORT && in_array($this->Table, array(FILE_TABLE, OBJECT_FILES_TABLE))){
-			$this->setLanguageLink($this->LangLinks, 'tblFile', true, ($this instanceof we_class_folder));
+			$this->setLanguageLink($this->LangLinks, 'tblFile', true, $this->IsClassFolder);
 		} else {
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!
 			$this->checkRemoteLanguage($this->Table, true); //if language changed, we

@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_base_request{
-
 	private static $allTables = array();
 
 	const NOT_VALID = '__NOT_VALID__'; // to be used as default just for indicating that is IS an default
@@ -98,8 +97,8 @@ class we_base_request{
 				return;
 			case self::CMD:
 				$var = strpos($var, 'WECMDENC_') !== false ?
-						base64_decode(urldecode(substr($var, 9))) :
-						$var;
+					base64_decode(urldecode(substr($var, 9))) :
+					$var;
 				return;
 			case self::UNIT:
 				$regs = array(); //FIMXE: check for %d[em,ex,pt,%...]?
@@ -184,7 +183,7 @@ class we_base_request{
 				$var = explode(',', trim(strtr($var, array(
 					'../' => '',
 					'//' => ''
-								)), ','));
+						)), ','));
 				foreach($var as &$cur){
 					$cur = ($type == self::WEFILELIST || $type == self::WEFILELISTA ? $cur : filter_var($cur, FILTER_SANITIZE_URL));
 					if($cur === rtrim(WEBEDITION_DIR, '/') || strpos($cur, WEBEDITION_DIR) === 0){//file-selector has propably access
@@ -211,7 +210,7 @@ class we_base_request{
 				if(preg_match('-(' . we_base_link::TYPE_INT_PREFIX . '|' . we_base_link::TYPE_MAIL_PREFIX . '|' . we_base_link::TYPE_OBJ_PREFIX . '|' . we_base_link::TYPE_THUMB_PREFIX . ')-', $var)){
 					return;
 				}
-				$urls = parse_url(urldecode($var));
+				$urls = parse_url($var); //removed urldecode due to %20 elemination in paths
 				if(!empty($urls['host'])){
 					$urls['host'] = (function_exists('idn_to_ascii') ? idn_to_ascii($urls['host']) : $urls['host']);
 				}
@@ -400,16 +399,17 @@ class we_base_request{
 	}
 
 	private static function unparse_url($parsed_url){
-		$scheme = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
-		$host = isset($parsed_url['host']) ? $parsed_url['host'] : '';
-		$port = isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '';
 		$user = isset($parsed_url['user']) ? $parsed_url['user'] : '';
 		$pass = isset($parsed_url['pass']) ? ':' . $parsed_url['pass'] : '';
-		$pass = ($user || $pass) ? "$pass@" : '';
-		$path = isset($parsed_url['path']) ? $parsed_url['path'] : '';
-		$query = isset($parsed_url['query']) ? '?' . $parsed_url['query'] : '';
-		$fragment = isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : '';
-		return "$scheme$user$pass$host$port$path$query$fragment";
+
+		return
+			(isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '') .
+			(isset($parsed_url['host']) ? $parsed_url['host'] : '') .
+			(isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '') .
+			($user || $pass ? $pass . '@' : '') .
+			(isset($parsed_url['path']) ? $parsed_url['path'] : '') .
+			(isset($parsed_url['query']) ? '?' . $parsed_url['query'] : '') .
+			(isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : '');
 	}
 
 }

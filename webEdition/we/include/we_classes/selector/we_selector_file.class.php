@@ -99,8 +99,11 @@ class we_selector_file{
 			case CATEGORY_TABLE:
 				$this->fields = 'ID,ParentID,Text,Path,1 AS IsFolder';
 				break;
+			case NAVIGATION_TABLE:
+				$this->fields = 'ID,ParentID,Text,Path,IsFolder,IF(IsFolder,"folder","we/navigation") AS ContentType';
+				break;
 			default:
-				$this->fields = 'ID,ParentID,Text,Path,IsFolder';
+				$this->fields = 'ID,ParentID,Text,Path,IsFolder,ContentType';
 		}
 
 		$this->JSIDName = $JSIDName;
@@ -222,7 +225,6 @@ var options={
   rootDirID:' . $this->rootDirID . ',
 	table:"' . $this->table . '",
 	formtarget:"' . $_SERVER["SCRIPT_NAME"] . '",
-	type:"' . get_class($this) . '",
 	rootDirID:' . $this->rootDirID . ',
 	multiple:' . intval($this->multiple) . ',
 	needIEEscape:' . intval(we_base_browserDetect::isIE() && $GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8') . ',

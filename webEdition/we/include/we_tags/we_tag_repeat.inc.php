@@ -31,13 +31,15 @@ function we_tag_repeat(){
 	}
 	if(isset($GLOBALS['lv'])){
 		if($GLOBALS['lv']->next_record()){
-			$GLOBALS['we_lv_array'][(count($GLOBALS['we_lv_array']) - 1)] = clone($GLOBALS['lv']);
-			if($GLOBALS['lv'] instanceof we_object_listview){
-				$GLOBALS['_we_object_listview_flag'] = true;
-			}
+			//FIXME: is there any sense to have an copy of the old state?
+			end($GLOBALS['we_lv_array']);
+			$GLOBALS['we_lv_array'][key($GLOBALS['we_lv_array'])] = clone($GLOBALS['lv']);
+			/*if($GLOBALS['lv'] instanceof we_listview_object){
+				$GLOBALS['_we_listview_object_flag'] = true;
+			}*/
 			return true;
 		} //last entry
-		unset($GLOBALS['_we_object_listview_flag']);
+		//unset($GLOBALS['_we_listview_object_flag']);
 	}
 
 	return false;

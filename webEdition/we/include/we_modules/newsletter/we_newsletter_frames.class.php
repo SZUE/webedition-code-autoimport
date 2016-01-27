@@ -55,7 +55,7 @@ class we_newsletter_frames extends we_modules_frame{
 		}
 	}
 
-	function getHTML($what = '', $mode = 0){
+	function getHTML($what = '', $mode = 0, $step = 0){
 		switch($what){
 			case 'qlog':
 				return $this->getHTMLLogQuestion();
@@ -102,7 +102,7 @@ class we_newsletter_frames extends we_modules_frame{
 		}
 	}
 
-	function getHTMLFrameset(){
+	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
 		return parent::getHTMLFrameset($this->Tree->getJSTreeCode());
 	}
 

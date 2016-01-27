@@ -234,7 +234,7 @@ switch($class){
 			$JSCommand = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 5);
 			$rootDirID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 7);
 			$filter = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 8);
-			$_REQUEST['multiple'] = we_base_request::_(we_base_request::BOOL, 'we_cmd', '', 9);
+			$multiple = we_base_request::_(we_base_request::BOOL, 'we_cmd', '', 9);
 		} else {
 			$JSIDName = $JSTextName = $JSCommand = '';
 			$id = we_base_request::_(we_base_request::INT, 'id', 0);

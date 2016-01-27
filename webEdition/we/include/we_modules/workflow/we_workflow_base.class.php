@@ -140,7 +140,7 @@ class we_workflow_base{
 			$errs = $res['msg'];
 		}
 
-		return ($res['err'] == 0);
+		return (!isset($res['err']) || $res['err'] == 0);
 	}
 
 	/* remove To Do */

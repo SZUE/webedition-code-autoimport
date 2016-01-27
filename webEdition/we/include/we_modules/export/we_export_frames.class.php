@@ -47,7 +47,7 @@ class we_export_frames extends we_modules_frame{
 		}
 	}
 
-	function getHTML($what){
+	function getHTML($what = '', $mode = '', $step = 0){
 		switch($what){
 			case "load":
 				return $this->getHTMLCmd();
@@ -59,7 +59,7 @@ class we_export_frames extends we_modules_frame{
 		}
 	}
 
-	function getHTMLFrameset(){
+	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
 		$this->View->export->clearSessionVars();
 		$extraHead = $this->Tree->getJSTreeCode();
 

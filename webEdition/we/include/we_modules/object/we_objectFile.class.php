@@ -188,35 +188,11 @@ class we_objectFile extends we_document{
 		return $wof;
 	}
 
-	function makeSameNew(){
-		$Category = $this->Category;
-		$TableID = $this->TableID;
-		$rootDirID = $this->rootDirID;
-		$RootDirPath = $this->RootDirPath;
-		$Workspaces = $this->Workspaces;
-		$ExtraWorkspaces = $this->ExtraWorkspaces;
-		$ExtraWorkspacesSelected = $this->ExtraWorkspacesSelected;
-		$IsSearchable = $this->IsSearchable;
-		$Charset = $this->Charset;
-		$Url = $this->Url;
-		$TriggerID = $this->TriggerID;
-
+	function makeSameNew(array $keep = array()){
 		$this->DefaultInit = true;
-		we_root::makeSameNew();
-		$this->Category = $Category;
-		$this->TableID = $TableID;
-		$this->rootDirID = $rootDirID;
-		$this->RootDirPath = $RootDirPath;
+		we_root::makeSameNew(array_merge($keep, array('Category', 'TableID', 'rootDirID', 'RootDirPath', 'Workspaces', 'ExtraWorkspaces', 'ExtraWorkspacesSelected', 'IsSearchable', 'Charset', 'Url', 'TriggerID')));
 		$this->i_objectFileInit(true);
 		$this->DefaultInit = false;
-
-		$this->Url = $Url;
-		$this->TriggerID = $TriggerID;
-		$this->Workspaces = $Workspaces;
-		$this->ExtraWorkspaces = $ExtraWorkspaces;
-		$this->ExtraWorkspacesSelected = $ExtraWorkspacesSelected;
-		$this->IsSearchable = $IsSearchable;
-		$this->Charset = $Charset;
 	}
 
 	function we_rewrite(){
@@ -768,7 +744,6 @@ class we_objectFile extends we_document{
 				$parts[] = array(
 					'headline' => '',
 					'html' => $c2,
-
 					'name' => $realName);
 			}
 
@@ -3122,7 +3097,7 @@ class we_objectFile extends we_document{
 					"headline" => g_l('weClass', '[path]'),
 					"html" => $this->formPath(),
 					'space' => 140,
-					'icon' =>"path.gif"
+					'icon' => "path.gif"
 				)
 			);
 
@@ -3132,7 +3107,7 @@ class we_objectFile extends we_document{
 					"html" => $this->formClass(),
 					'space' => 140,
 					'noline' => true,
-					'icon' =>"class.gif"
+					'icon' => "class.gif"
 				);
 			} elseif($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){ //	Link to class in normal mode
 				$_html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;"><a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . OBJECT_TABLE . '\',' . $this->TableID . ',\'object\');">' . g_l('modules_object', '[class]') . '</a></div>' .
@@ -3146,7 +3121,7 @@ class we_objectFile extends we_document{
 					"html" => $_html,
 					'space' => 140,
 					"forceRightHeadline" => 1,
-					'icon' =>"class.gif"
+					'icon' => "class.gif"
 				);
 			}
 
@@ -3154,7 +3129,7 @@ class we_objectFile extends we_document{
 				"headline" => g_l('weClass', '[language]'),
 				"html" => $this->formLangLinks(),
 				'space' => 140,
-				'icon' =>"lang.gif"
+				'icon' => "lang.gif"
 			);
 
 
@@ -3162,7 +3137,7 @@ class we_objectFile extends we_document{
 				"headline" => g_l('global', '[categorys]'),
 				"html" => $this->formCategory(),
 				'space' => 140,
-				'icon' =>"cat.gif"
+				'icon' => "cat.gif"
 			);
 
 
@@ -3170,7 +3145,7 @@ class we_objectFile extends we_document{
 				"headline" => g_l('modules_object', '[copyObject]'),
 				"html" => $this->formCopyDocument(),
 				'space' => 140,
-				'icon' =>"copy.gif"
+				'icon' => "copy.gif"
 			);
 
 
@@ -3178,7 +3153,7 @@ class we_objectFile extends we_document{
 				"headline" => g_l('weClass', '[owners]'),
 				"html" => $this->formCreatorOwners(),
 				'space' => 140,
-				'icon' =>"user.gif"
+				'icon' => "user.gif"
 			);
 
 
@@ -3186,7 +3161,7 @@ class we_objectFile extends we_document{
 				"headline" => g_l('weClass', '[Charset]'),
 				"html" => $this->formCharset(),
 				'space' => 140,
-				'icon' =>"charset.gif"
+				'icon' => "charset.gif"
 			);
 		} elseif($this->hasWorkspaces()){ //	Show workspaces
 			$parts = array(
@@ -3195,7 +3170,7 @@ class we_objectFile extends we_document{
 					"html" => $this->formWorkspaces(),
 					'space' => 140,
 					'noline' => 1,
-					'icon' =>"workspace.gif"
+					'icon' => "workspace.gif"
 				),
 				array(
 					"headline" => g_l('weClass', '[extraWorkspaces]'),

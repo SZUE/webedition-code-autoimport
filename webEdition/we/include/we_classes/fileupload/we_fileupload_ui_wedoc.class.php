@@ -29,6 +29,7 @@ class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
 		$this->formElements = array_merge($this->formElements, array(
 			'importMeta' => array('set' => true, 'multiIconBox' => false, 'rightHeadline' => true, 'noline' => true),
 		));
+		$this->type = 'wedoc';
 		$this->dimensions['dragWidth'] = 300;
 		$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, array(
 			array('we_transaction', 'text'),

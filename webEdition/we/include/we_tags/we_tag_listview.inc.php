@@ -163,7 +163,7 @@ function we_tag_listview($attribs){
 				return '';
 			}
 			if(f('SELECT 1 FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($class))){
-				$GLOBALS['lv'] = new we_object_listview($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $class, $we_lv_cats, $we_lv_catOr, $cond, $triggerid, $cols, $seeMode, $we_lv_se, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $we_lv_ws, $cfilter, $docid, $customers, $id, $predefinedSQL, $we_lv_languages, $hidedirindex, $objectseourls);
+				$GLOBALS['lv'] = new we_listview_object($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $class, $we_lv_cats, $we_lv_catOr, $cond, $triggerid, $cols, $seeMode, $we_lv_se, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $we_lv_ws, $cfilter, $docid, $customers, $id, $predefinedSQL, $we_lv_languages, $hidedirindex, $objectseourls);
 			} else {
 				t_e('warning', 'Class with id=' . intval($class) . ' does not exist');
 				unset($GLOBALS['lv']);
@@ -175,8 +175,7 @@ function we_tag_listview($attribs){
 			$we_lv_ownlanguage = $we_lv_langguagesdoc->Language;
 
 			switch(isset($GLOBALS['lv']) ? get_class($GLOBALS['lv']) : ''){
-				case 'we_object_listview':
-				case 'we_object_tag':
+				case 'we_listview_object':
 					$we_lv_pageID = $GLOBALS['lv']->f('WE_ID');
 					$we_lv_linktype = 'tblObjectFiles';
 					$we_lv_pagelanguage = $we_lv_pagelanguage === 'self' ? $GLOBALS['lv']->getDBf('OF_Language') : ($we_lv_pagelanguage === 'top' ? $we_lv_ownlanguage : $we_lv_pagelanguage);
@@ -203,7 +202,7 @@ function we_tag_listview($attribs){
 				echo modulFehltError('Customer', __FUNCTION__ . ' type="customer"');
 				return;
 			}
-			$GLOBALS['lv'] = new we_customer_listview($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $hidedirindex);
+			$GLOBALS['lv'] = new we_listview_customer($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $hidedirindex);
 			break;
 		case 'onlinemonitor':
 			if(defined('CUSTOMER_SESSION_TABLE')){
@@ -220,14 +219,14 @@ function we_tag_listview($attribs){
 				echo modulFehltError('Shop', __FUNCTION__ . ' type="order"');
 				return;
 			}
-			$GLOBALS['lv'] = new we_shop_listviewOrder($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $hidedirindex);
+			$GLOBALS['lv'] = new we_listview_shopOrder($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $hidedirindex);
 			break;
 		case 'orderitem':
 			if(!defined('SHOP_TABLE')){
 				echo modulFehltError('Shop', __FUNCTION__ . ' type="orderitem"');
 				return;
 			}
-			$GLOBALS['lv'] = new we_shop_listviewOrderitem($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $orderid, $hidedirindex);
+			$GLOBALS['lv'] = new we_listview_shopOrderitem($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $orderid, $hidedirindex);
 			break;
 		case 'multiobject':
 			if(!defined('OBJECT_TABLE')){
@@ -235,7 +234,7 @@ function we_tag_listview($attribs){
 				return;
 			}
 			$name = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
-			$GLOBALS['lv'] = new we_object_listviewMultiobject($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $we_lv_cats, $we_lv_catOr, $cond, $triggerid, $cols, $seeMode, $we_lv_se, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $cfilter, $docid, $we_lv_languages, $hidedirindex, $objectseourls);
+			$GLOBALS['lv'] = new we_listview_multiobject($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $we_lv_cats, $we_lv_catOr, $cond, $triggerid, $cols, $seeMode, $we_lv_se, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $cfilter, $docid, $we_lv_languages, $hidedirindex, $objectseourls);
 			break;
 		case 'banner':
 			if(!defined('BANNER_TABLE')){
@@ -250,7 +249,7 @@ function we_tag_listview($attribs){
 			if($customer && defined('CUSTOMER_TABLE') && !empty($_SESSION['webuser']['registered']) && (!we_banner_banner::customerOwnsBanner($_SESSION['webuser']['ID'], $bannerid, $GLOBALS['DB_WE']))){
 				$bannerid = 0;
 			}
-			$GLOBALS['lv'] = new we_banner_listview($name, $we_rows, $order, $bannerid, $usefilter, $filterdatestart, $filterdateend);
+			$GLOBALS['lv'] = new we_listview_banner($name, $we_rows, $order, $bannerid, $usefilter, $filterdatestart, $filterdateend);
 			break;
 		case 'shopVariant': // TODO: Remove in webEdition 7 - for backwords compatibility since FR# 8556
 			if(!defined('SHOP_TABLE')){
@@ -277,10 +276,6 @@ function we_tag_listview($attribs){
 
 		default:
 	}
-//prevent error if $GLOBALS["we_lv_array"] is no array
-	if(!isset($GLOBALS['we_lv_array']) || !is_array($GLOBALS['we_lv_array'])){
-		$GLOBALS['we_lv_array'] = array();
-	}
 
-	$GLOBALS['we_lv_array'][] = clone($GLOBALS['lv']);
+	we_pre_tag_listview();
 }

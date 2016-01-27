@@ -121,7 +121,6 @@ echo we_tool_lookup::getJsCmdInclude($jsCmd);
 $jsmods = array_keys($jsCmd);
 $jsmods[] = 'base';
 $jsmods[] = 'tools';
-$hasGD = isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ContentType == we_base_ContentTypes::IMAGE && $GLOBALS['we_doc']->gd_support();
 
 if(!empty($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT'])){
 	echo 'alert("' . g_l('global', '[pwd][startupRegExFailed]') . '");';
@@ -238,16 +237,16 @@ TEMPLATE: '<?php echo we_base_ContentTypes::TEMPLATE; ?>',
 								cockpit:{
 								},
 								editorScript:{
-								confirm_navDel: "<?php echo g_l('navigation', '[del_question]'); ?>",
-												gdTypeNotSupported: "<?php echo g_l('weClass', '[type_not_supported_hint]'); ?>",
-												noRotate: "<?php echo we_message_reporting::prepareMsgForJS(g_l('weClass', '[rotate_hint]')); ?>",
-												field_int_value_to_height: "<?php echo g_l('alert', '[field_int_value_to_height]'); ?>",
-												field_contains_incorrect_chars: '<?php echo g_l('alert', '[field_contains_incorrect_chars]'); ?>',
-												field_input_contains_incorrect_length: '<?php echo g_l('alert', '[field_input_contains_incorrect_length]'); ?>',
-												field_int_contains_incorrect_length: '<?php echo g_l('alert', '[field_int_contains_incorrect_length]'); ?>',
-												fieldNameNotValid: '<?php echo g_l('modules_object', '[fieldNameNotValid]'); ?>',
-												fieldNameNotTitleDesc: '<?php echo g_l('modules_object', '[fieldNameNotTitleDesc]'); ?>',
-												fieldNameEmpty: '<?php echo g_l('modules_object', '[fieldNameEmpty]'); ?>'
+									confirm_navDel: "<?php echo g_l('navigation', '[del_question]'); ?>",
+									gdTypeNotSupported: "<?php echo g_l('weClass', '[type_not_supported_hint]'); ?>",
+									noRotate: "<?php echo we_message_reporting::prepareMsgForJS(g_l('weClass', '[rotate_hint]')); ?>",
+									field_int_value_to_height: "<?php echo g_l('alert', '[field_int_value_to_height]'); ?>",
+									field_contains_incorrect_chars: '<?php echo g_l('alert', '[field_contains_incorrect_chars]'); ?>',
+									field_input_contains_incorrect_length: '<?php echo g_l('alert', '[field_input_contains_incorrect_length]'); ?>',
+									field_int_contains_incorrect_length: '<?php echo g_l('alert', '[field_int_contains_incorrect_length]'); ?>',
+									fieldNameNotValid: '<?php echo g_l('modules_object', '[fieldNameNotValid]'); ?>',
+									fieldNameNotTitleDesc: '<?php echo g_l('modules_object', '[fieldNameNotTitleDesc]'); ?>',
+									fieldNameEmpty: '<?php echo g_l('modules_object', '[fieldNameEmpty]'); ?>'
 								},
 <?php
 foreach($jsmods as $mod){
@@ -316,8 +315,8 @@ foreach(we_base_request::getAllTables() as $k => $v){
 								TYPE_MAIL_PREFIX: '<?php echo we_base_link::TYPE_MAIL_PREFIX; ?>'
 				},
 				graphic:{
-				hasGD:<?php echo intval($hasGD); ?>,
-								canRotate:<?php echo intval(function_exists("ImageRotate")); ?>,
+					gdSupportedTypes:{<?php echo implode(',', array_map(function($v){return '"' . $v . '" : true';}, we_base_imageEdit::supported_image_types())); ?>},
+					canRotate:<?php echo intval(function_exists("ImageRotate")); ?>,
 				}
 },
 				//all relevant settings for current session

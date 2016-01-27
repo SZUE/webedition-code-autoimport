@@ -46,10 +46,6 @@ function we_tag_customer($attribs){
 	$size = weTag_getAttribute('size', $attribs, 30, we_base_request::UNIT);
 	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, we_base_request::BOOL);
 
-	if(!isset($GLOBALS['we_lv_array'])){
-		$GLOBALS['we_lv_array'] = array();
-	}
-
 	if($name){
 		if(strpos($name, ' ') !== false){
 			echo parseError(sprintf(g_l('parser', '[name_with_space]'), 'object'));
@@ -58,10 +54,10 @@ function we_tag_customer($attribs){
 
 		$we_doc = $GLOBALS['we_doc'];
 		$we_cid = intval(($we_doc->getElement($name, 'bdid') ?
-				$we_doc->getElement($name, 'bdid') :
-				($we_doc->getElement($name) ?
-					$we_doc->getElement($name) :
-					$we_cid)
+						$we_doc->getElement($name, 'bdid') :
+						($we_doc->getElement($name) ?
+								$we_doc->getElement($name) :
+								$we_cid)
 		));
 
 		$we_cid = $we_cid ? : we_base_request::_(we_base_request::INT, 'we_cid', 0);
@@ -89,12 +85,10 @@ function we_tag_customer($attribs){
 		$we_cid = $we_cid ? : we_base_request::_(we_base_request::INT, 'we_cid', 0);
 	}
 
-	$GLOBALS['lv'] = new we_customer_listview('', 1, 0, "", 0, '(ID=' . intval($we_cid) . ')' . ($condition ? " AND $condition" : ""), "", 0, $hidedirindex);
+	$GLOBALS['lv'] = new we_listview_customer('', 1, 0, "", 0, '(ID=' . intval($we_cid) . ')' . ($condition ? " AND $condition" : ""), "", 0, $hidedirindex);
 
 	$avail = $GLOBALS['lv']->next_record();
-	if(is_array($GLOBALS['we_lv_array'])){
-		$GLOBALS['we_lv_array'][] = clone($GLOBALS['lv']);
-	}
+	we_pre_tag_listview();
 	if($avail){
 //implement seem
 	}

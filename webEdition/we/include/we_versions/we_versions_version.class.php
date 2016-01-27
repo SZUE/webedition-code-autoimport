@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_versions_version{
-
 	protected $ID;
 	protected $documentID;
 	protected $documentTable;
@@ -885,8 +884,8 @@ class we_versions_version{
 			$this->saveVersion($docObj);
 		} else {
 			if((!empty($_SESSION['weS']['versions']['fromScheduler'])) ||
-					((we_base_request::_(we_base_request::STRING, "type") === "reset_versions") ||
-					(!empty($_SESSION['weS']['versions']['initialVersions'])))){
+				((we_base_request::_(we_base_request::STRING, "type") === "reset_versions") ||
+				(!empty($_SESSION['weS']['versions']['initialVersions'])))){
 				$cmd0 = "save_document";
 				if(isset($_SESSION['weS']['versions']['initialVersions'])){
 					unset($_SESSION['weS']['versions']['initialVersions']);
@@ -909,14 +908,13 @@ class we_versions_version{
 	 */
 	public static function CheckPreferencesCtypes($ct){
 
-//if folder was saved don' make versions (if path was changed of folder)
-		if(($GLOBALS['we_doc'] instanceof we_folder) || ($GLOBALS['we_doc'] instanceof we_class_folder)){
-			return false;
-		}
-
 //apply content types in preferences
 
 		switch($ct){
+//if folder was saved don' make versions (if path was changed of folder)
+			case we_base_ContentTypes::FOLDER:
+			case we_base_ContentTypes::CLASS_FOLDER:
+				return false;
 			case we_base_ContentTypes::WEDOCUMENT:
 				return VERSIONING_TEXT_WEBEDITION;
 			case we_base_ContentTypes::IMAGE:
@@ -1021,7 +1019,7 @@ class we_versions_version{
 		}
 
 		if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "save_document" &&
-				we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 5)){
+			we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 5)){
 			$status = "published";
 		}
 
@@ -1072,8 +1070,8 @@ class we_versions_version{
 		if(isset($_SESSION['weS']['versions']['versionToCompare'][$document["Table"]][$document["ID"]]) && ($lastEntry = $_SESSION['weS']['versions']['versionToCompare'][$document['Table']][$document['ID']]) != ''){
 
 			$diffExists = (is_array($document) && $lastEntry ?
-							($docHash != $lastEntry) :
-							false);
+					($docHash != $lastEntry) :
+					false);
 
 			$lastEntry = self::getLastEntry($document['ID'], $document['Table'], $db);
 
@@ -1094,9 +1092,9 @@ class we_versions_version{
 		foreach($tblversionsFields as $fieldName){
 			if($fieldName != 'ID'){
 				$set[$fieldName] = (isset($document[$fieldName]) ?
-								$document[$fieldName] :
-								$this->makePersistentEntry($fieldName, $status, $document, $documentObj)
-						);
+						$document[$fieldName] :
+						$this->makePersistentEntry($fieldName, $status, $document, $documentObj)
+					);
 			}
 		}
 
@@ -1240,9 +1238,9 @@ class we_versions_version{
 										$lastEntryField = array();
 									} else {
 										$lastEntryField = we_unserialize(
-												(substr_compare($lastEntryField, 'a%3A', 0, 4) == 0 ?
-														html_entity_decode(urldecode($lastEntryField), ENT_QUOTES) :
-														$lastEntryField)
+											(substr_compare($lastEntryField, 'a%3A', 0, 4) == 0 ?
+												html_entity_decode(urldecode($lastEntryField), ENT_QUOTES) :
+												$lastEntryField)
 										);
 									}
 									switch($val){
@@ -1410,18 +1408,15 @@ class we_versions_version{
 
 	function getDocContent($we_doc, $includepath = ""){
 		update_time_limit(0);
-		$requestBackup = $_REQUEST;
-		$docBackup = isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] : false;
+		$backup = array(
+			'request' => empty($_REQUEST) ? false : $_REQUEST,
+			'trans' => empty($GLOBALS['we_transaction']) ? false : $GLOBALS['we_transaction'],
+			'doc' => isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] : false,
+			'dyn' => isset($GLOBALS['WE_IS_DYN']) ? $GLOBALS['WE_IS_DYN'] : 'notSet',
+		);
 		$GLOBALS['getDocContentVersioning'] = true;
-		$transBackup = $GLOBALS['we_transaction'];
-		if(isset($GLOBALS['we_doc'])){
-			$WE_old_we_doc = $GLOBALS['we_doc'];
-		}
 		$GLOBALS['we_doc'] = $we_doc;
 		extract($GLOBALS, EXTR_SKIP); // globalen Namensraum herstellen.
-
-		$isdyn = isset($GLOBALS['WE_IS_DYN']) ? $GLOBALS['WE_IS_DYN'] : 'notSet';
-
 //usually the site file always exists
 		if($includepath != '' && file_exists($includepath)){
 			ob_start();
@@ -1450,29 +1445,28 @@ class we_versions_version{
 		}
 
 		//Note: some globals are overwritten by the above code, restore at least we_transaction
-		$GLOBALS['we_transaction'] = $transBackup;
+		if($backup['trans']){
+			$GLOBALS['we_transaction'] = $backup['trans'];
+		}
 
-		if($docBackup){
-			$GLOBALS['we_doc'] = $docBackup;
+		if($backup['doc']){
+			$GLOBALS['we_doc'] = $backup['doc'];
 		} else {
 			unset($GLOBALS['we_doc']);
 		}
-		$_REQUEST = $requestBackup;
+		if($backup['request']){
+			$_REQUEST = $backup['request'];
+		}
 
-		if($isdyn === 'notSet'){
+		if($backup['dyn'] === 'notSet'){
 			if(isset($GLOBALS['WE_IS_DYN'])){
 				unset($GLOBALS['WE_IS_DYN']);
 			}
 		} else {
-			$GLOBALS['WE_IS_DYN'] = $isdyn;
+			$GLOBALS['WE_IS_DYN'] = $backup['dyn'];
 		}
 
 		unset($GLOBALS['getDocContentVersioning']);
-		if(isset($WE_old_we_doc)){
-			$GLOBALS['we_doc'] = $WE_old_we_doc;
-		} else {
-			unset($GLOBALS['we_doc']);
-		}
 		return $contents;
 	}
 
@@ -1642,7 +1636,7 @@ class we_versions_version{
 
 							$parentID = (isset($_SESSION['weS']['versions']['lastPathID'])) ? $_SESSION['weS']['versions']['lastPathID'] : 0;
 							$folder = (defined('OBJECT_FILES_TABLE') && $resetArray['documentTable'] == OBJECT_FILES_TABLE ?
-											new we_class_folder() : new we_folder());
+									new we_class_folder() : new we_folder());
 
 							$folder->we_new($resetArray['documentTable'], $parentID, $v);
 							$existsFolderPathID = f('SELECT ID FROM ' . $db->escape($resetArray['documentTable']) . ' WHERE Path="' . $db->escape($folder->Path) . '" AND IsFolder=1', '', $db);
@@ -1765,7 +1759,7 @@ class we_versions_version{
 			case 'Language':
 				return isset($GLOBALS['weFrontendLanguages'][$v]) ? $GLOBALS['weFrontendLanguages'][$v] : '';
 			case 'WebUserID':
-				return id_to_path($v, CUSTOMER_TABLE);
+				return (defined('CUSTOMER_TABLE') ? id_to_path($v, CUSTOMER_TABLE) : '/');
 			case 'Workspaces':
 				$fieldValueText = '';
 				if($v != ''){
@@ -2105,8 +2099,8 @@ class we_versions_version{
 		$fields = self::getLastEntry($docID, $docTable, $db);
 		if($fields){
 			$db->query('UPDATE ' . VERSIONS_TABLE . ' SET ' . we_database_base::arraySetter(array(
-						'ParentID' => $parentId,
-						'Path' => $path
+					'ParentID' => $parentId,
+					'Path' => $path
 			)));
 		}
 	}

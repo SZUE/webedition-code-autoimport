@@ -77,6 +77,7 @@ function getNavButtons($size, $pos, $id){
 			'</td><td style="text-align:center">' .
 			we_html_button::create_button("export", $url . '?function=export&ID=' . $id, true, 0, 0) .
 			we_html_button::create_button(we_html_button::DELETE, $url . '?function=delete&ID=' . $id, true, 0, 0) .
+			we_html_button::create_button(we_html_button::DELETE_EQUAL, $url . '?function=deleteEqual&ID=' . $id, true, 0, 0) .
 			'</td><td style="text-align:right">' .
 			we_html_button::create_button(we_html_button::NEXT, $url . '?function=next&ID=' . $id, true, 0, 0, "", "", ($pos == $size)) .
 			we_html_button::getButton("+" . $div, 'btn2', "window.location.href='" . $url . '?function=nextX&ID=' . $id . '&step=' . $div . "';", -1, '', ($pos + $div > $size)) .
@@ -135,6 +136,13 @@ $id = we_base_request::_(we_base_request::INT, 'ID', 0);
 $step = we_base_request::_(we_base_request::INT, 'step', 0);
 
 switch(we_base_request::_(we_base_request::STRING, 'function', 'last')){
+	case 'deleteEqual':
+		$db->query('CREATE TEMPORARY TABLE del(ID bigint(20) unsigned NOT NULL,PRIMARY KEY  (ID))ENGINE=MEMORY');
+		$db->query('INSERT INTO del SELECT ID FROM `' . ERROR_LOG_TABLE . '` WHERE (Text,File,Type,Function,Line) IN (SELECT Text,File,Type,Function,Line FROM `' . ERROR_LOG_TABLE . '` WHERE ID=' . $id . ')');
+		$db->query('DELETE FROM `' . ERROR_LOG_TABLE . '` WHERE ID IN (SELECT ID FROM del)');
+		$db->query('DROP TEMPORARY TABLE del');
+		$size = f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '`');
+		//no break;
 	default:
 	case 'last':
 		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` ORDER BY ID DESC LIMIT 1');

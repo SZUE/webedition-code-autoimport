@@ -42,6 +42,7 @@ abstract class we_html_button{
 	const WE_JS_BUTTON_IDENTIFY = 'javascript';
 	const DELETE_ALL = 'fa:delete_all,fa-lg fa-database,fa-lg fa-trash-o';
 	const DELETE = 'fa:delete,fa-lg fa-trash-o';
+	const DELETE_EQUAL = 'fa:delete_equal,fa-lg fa-trash-o, fa-lg fa-exchange';
 	const ADD = 'fa:add,fa-lg fa-plus';
 	const EDIT = 'fa:btn_edit,fa-lg fa-edit';
 	const TRASH = 'fa:btn_function_trash,fa-lg fa-trash-o';
@@ -217,7 +218,7 @@ abstract class we_html_button{
 		switch($hrefData[0]){
 			case self::WE_FORM:
 				$_form_name = $hrefData[1];
-				$cmd = 'if (document.' . $_form_name . '.onsubmit===undefined||document.' . $_form_name . '.onsubmit()) {' . $on_click . ' document.' . $_form_name . '.submit(); } return false;';
+				$cmd = 'if (document.' . $_form_name . '.onsubmit===undefined||document.' . $_form_name . '.onsubmit===null||document.' . $_form_name . '.onsubmit()) {' . $on_click . ' document.' . $_form_name . '.submit(); } return false;';
 				break;
 			case self::WE_JS_BUTTON_IDENTIFY:
 				// Get content of JavaScript

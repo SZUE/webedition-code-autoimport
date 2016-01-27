@@ -90,7 +90,7 @@ function submitForm(target,action,method,form) {
 		$_starttable->setCol($_row++, 0, array("style" => "text-align:center"), $content);
 
 		ob_start();
-		echo we_html_tools::getHtmlTop('', '', '', STYLESHEET . we_html_element::cssLink(CSS_DIR . 'tools_home.css') . $this->getJSProperty());
+		echo we_html_tools::getHtmlTop('', '', '', STYLESHEET . we_html_element::cssLink(CSS_DIR . 'tools_home.css') . $this->getJSProperty() . (empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']));
 		?>
 		<body class="home" onload="loaded = true;
 				var we_is_home = 1;">

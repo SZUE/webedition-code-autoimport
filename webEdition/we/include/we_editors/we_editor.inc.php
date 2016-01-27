@@ -390,8 +390,8 @@ if(
 						$_REQUEST['we_cmd'][3] = 1;
 						$_REQUEST['we_cmd'][4] = 1;
 					}
-					if($_REQUEST['we_cmd'][5]){ //Save in version
-						$_REQUEST['we_cmd'][5] = '';
+					if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 5)){ //Save in version
+						$_REQUEST['we_cmd'][5] = false;
 						$we_doc->we_publish();
 					}
 
@@ -487,7 +487,7 @@ if(
 							$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_save_ok]'), $we_doc->Path);
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 
-							if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5)){
+							if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 5)){
 								if($we_doc->i_publInScheduleTable()){
 									if(($foo = $we_doc->getNextPublishDate())){
 										$we_responseText .= ' - ' . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][autoschedule]'), date(g_l('date', '[format][default]'), $foo));
@@ -501,9 +501,14 @@ if(
 									$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 // SEEM, here a doc is published
 									$GLOBALS['publish_doc'] = true;
-									if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE && ($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_INFO || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW) && (!we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 4))){
-										$GLOBALS['we_responseJS'] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");
+									switch($we_doc->EditPageNr){
+										case we_base_constants::WE_EDITPAGE_PROPERTIES:
+										case we_base_constants::WE_EDITPAGE_INFO:
+										case we_base_constants::WE_EDITPAGE_PREVIEW:
+											if($_SESSION['weS']['we_mode'] !== we_base_constants::MODE_SEE && (!we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 4))){
+												$GLOBALS['we_responseJS'] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");
 _EditorFrame.getDocumentReference().frames.editFooter.location.reload();'; // reload the footer with the buttons
+											}
 									}
 								} else {
 									$we_responseText .= ' - ' . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_notok]'), $we_doc->Path);

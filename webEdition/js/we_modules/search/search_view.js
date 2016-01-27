@@ -877,7 +877,7 @@ weSearch = {
 		if (check === false) {//searchtool__notChecked
 			top.we_showMessage(WE().consts.g_l.weSearch.searchtool__notChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
 		} else {
-			Check = confirm("' . g_l('searchtool', '[publish_docs]') . '");
+			Check = confirm(WE().consts.g_l.weSearch.publish_docs);
 			if (Check === true) {
 				this.publishDocsAjax(whichSearch);
 			}

@@ -44,6 +44,7 @@ if(isset($_SERVER['HTTP_HOST']) && $_SERVER['SERVER_NAME'] != $_SERVER['HTTP_HOS
 @ini_set('allow_url_fopen', '1');
 @ini_set('file_uploads', '1');
 @ini_set('session.use_trans_sid', '0');
+@ini_set('max_input_vars', '9000');
 //@ini_set("arg_separator.output","&");
 //fix insecure cookies
 $cookie = session_get_cookie_params();

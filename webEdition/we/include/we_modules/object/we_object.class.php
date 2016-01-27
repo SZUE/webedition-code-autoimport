@@ -1669,19 +1669,18 @@ class we_object extends we_document{
 
 	function formDefault(){
 		$select = '';
-		if(($anz = $this->getElement("Defaultanzahl"))){
-			$this->DefaultText = '';
+		$this->DefaultText = '';
+		$anz = intval($this->getElement("Defaultanzahl"));
 
-			for($i = 0; $i <= $anz; $i++){
-				$was = "DefaultText_" . $i;
-				if(($dat = $this->getElement($was)) != ""){
-					if(stristr($dat, 'unique')){
-						$unique = $this->getElement("unique_" . $i);
-						$dat = "%" . str_replace("%", "", $dat) . ( $unique > 0 ? $unique : 16) . "%";
-						$this->setElement($was, $dat, 'defaultText');
-					}
-					$this->DefaultText .= $dat;
+		for($i = 0; $i <= $anz; $i++){
+			$was = "DefaultText_" . $i;
+			if(($dat = $this->getElement($was)) != ""){
+				if(stristr($dat, 'unique')){
+					$unique = $this->getElement("unique_" . $i);
+					$dat = "%" . str_replace("%", "", $dat) . ( $unique > 0 ? $unique : 16) . "%";
+					$this->setElement($was, $dat, 'defaultText');
 				}
+				$this->DefaultText .= $dat;
 			}
 		}
 

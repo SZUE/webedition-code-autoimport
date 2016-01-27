@@ -33,7 +33,7 @@ class we_banner_frames extends we_modules_frame{
 		$this->Tree = new we_banner_tree($this->frameset, $this->topFrame, $this->treeFrame, $this->cmdFrame);
 	}
 
-	function getHTML($what = '', $mode = ''){
+	function getHTML($what = '', $mode = '', $step = 0){
 		switch($what){
 			case "edheader":
 				return $this->getHTMLEditorHeader($mode);
@@ -44,7 +44,7 @@ class we_banner_frames extends we_modules_frame{
 		}
 	}
 
-	function getHTMLFrameset(){
+	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
 		return parent::getHTMLFrameset($this->Tree->getJSTreeCode());
 	}
 

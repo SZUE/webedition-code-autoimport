@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -27,6 +28,7 @@
  * TBD if we divide this class in several classes
  */
 class liveUpdateFunctions{
+
 	var $QueryLog = array(
 		'success' => array(),
 		'tableChanged' => array(),
@@ -41,9 +43,9 @@ class liveUpdateFunctions{
 
 	function insertUpdateLogEntry($action, $version, $errorCode){
 		$GLOBALS['DB_WE']->query('INSERT INTO ' . UPDATE_LOG_TABLE . ' SET ' . we_database_base::arraySetter(array(
-				'aktion' => $action,
-				'versionsnummer' => $version,
-				'error' => $errorCode
+					'aktion' => $action,
+					'versionsnummer' => $version,
+					'error' => $errorCode
 		)));
 	}
 
@@ -72,7 +74,12 @@ class liveUpdateFunctions{
 	 * @return string
 	 */
 	function decodeCode($string){
-		return base64_decode($string);
+		$string = base64_decode($string);
+		if($string && $string[0] === 'x'){
+			$str = gzuncompress($string);
+			return ($str === false ? $string : $str);
+		}
+		return $string;
 	}
 
 	/**
@@ -113,8 +120,8 @@ class liveUpdateFunctions{
 	function checkReplaceDocRoot($content){
 		//replaces any count of escaped docroot-strings
 		return ($this->replaceDocRootNeeded() ?
-				preg_replace('-\$(_SERVER|GLOBALS)\[([\\\"\']+)DOCUMENT' . '_ROOT([\\\"\']+)\]-', '\2' . LIVEUPDATE_SOFTWARE_DIR . '\3', $content) :
-				$content);
+						preg_replace('-\$(_SERVER|GLOBALS)\[([\\\"\']+)DOCUMENT' . '_ROOT([\\\"\']+)\]-', '\2' . LIVEUPDATE_SOFTWARE_DIR . '\3', $content) :
+						$content);
 	}
 
 	/**
@@ -558,8 +565,16 @@ class liveUpdateFunctions{
 	 * @return boolean
 	 */
 	function executeQueriesInFiles($path){
-		$db = new DB_WE();
-		$content = $this->getFileContent($path);
+		static $db = null;
+		$db = $db? : new DB_WE();
+		$db->query('show variables LIKE "default_storage_engine"');
+		$db->next_record();
+		$defaultEngine = $db->f('Value');
+		if(!in_array(strtolower($defaultEngine), array('myisam', 'aria'))){
+			$defaultEngine = 'myisam';
+		}
+
+		$content = str_replace("ENGINE=MyISAM", 'ENGINE=' . $defaultEngine, $this->getFileContent($path));
 		$queries = explode("/* query separator */", $content);
 		$success = true;
 		foreach($queries as $query){

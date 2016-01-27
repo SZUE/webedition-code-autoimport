@@ -32,6 +32,7 @@ abstract class we_root extends we_class{
 	const EDITOR_HEADER = 1;
 	const EDITOR_FOOTER = 2;
 
+	var $IsClassFolder = 0;
 	/* ParentID of the object (ID of the Parent-Folder of the Object) */
 	var $ParentID = 0;
 
@@ -99,20 +100,18 @@ abstract class we_root extends we_class{
 		array_push($this->persistent_slots, 'OwnersReadOnly', 'ParentID', 'ParentPath', 'Text', 'Filename', 'Path', 'Filehash', 'OldPath', 'CreationDate', 'ModDate', 'RebuildDate', 'IsFolder', 'ContentType', 'elements', 'EditPageNr', 'CopyID', 'Owners', 'CreatorID', 'ModifierID', 'RestrictOwners', 'WebUserID', 'LockUser', 'LangLinks');
 	}
 
-	public function makeSameNew(){
-		$ParentID = $this->ParentID;
-		$ParentPath = $this->ParentPath;
-		$EditPageNr = $this->EditPageNr;
+	public function makeSameNew(array $keep = array()){
+		$keep = array_merge($keep, array('ParentID', 'ParentPath', 'EditPageNr',));
 		$tempDoc = $this->ClassName;
 		$tempDoc = new $tempDoc();
 		$tempDoc->we_new();
 		foreach($tempDoc->persistent_slots as $name){
-			$this->{$name} = isset($tempDoc->{$name}) ? $tempDoc->{$name} : '';
+			if(!in_array($name, $keep)){
+				$this->{$name} = isset($tempDoc->{$name}) ? $tempDoc->{$name} : '';
+			}
 		}
+		//t_e($this->ClassName, get_class($this), $tempDoc->persistent_slots, );
 		$this->InWebEdition = true;
-		$this->ParentID = $ParentID;
-		$this->ParentPath = $ParentPath;
-		$this->EditPageNr = $EditPageNr;
 	}
 
 	function equals($obj){
@@ -855,7 +854,7 @@ abstract class we_root extends we_class{
 		}
 		$this->update_filehash();
 		$a = $this->i_saveContentDataInDB();
-		if(!$resave && !($this instanceof we_class_folder)){
+		if(!$resave && !$this->IsClassFolder){
 			we_history::insertIntoHistory($this);
 		}
 		return $a;
@@ -1050,9 +1049,8 @@ abstract class we_root extends we_class{
 		$_languages = getWeFrontendLanguagesForBackend();
 		$langkeys = array_keys($_languages);
 		if(LANGLINK_SUPPORT){
-			$isFolder = $this instanceof we_folder;
 			$isObject = (defined('OBJECT_FILES_TABLE') ? $this->Table == OBJECT_FILES_TABLE || $this->Table == OBJECT_TABLE : false);
-			$documentTable = $isObject && !$isFolder ? stripTblPrefix(OBJECT_FILES_TABLE) : stripTblPrefix(FILE_TABLE);
+			$documentTable = $isObject && !$this->IsFolder ? stripTblPrefix(OBJECT_FILES_TABLE) : stripTblPrefix(FILE_TABLE);
 			$this->DB_WE->query('SELECT Locale,LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $documentTable . '" AND IsObject=' . intval($isObject) . ' AND DID=' . intval($this->ID) . ' AND Locale IN("' . implode('","', $langkeys) . '")');
 			$tmpIDs = $this->DB_WE->getAllFirst(false);
 

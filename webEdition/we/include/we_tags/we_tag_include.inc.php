@@ -27,10 +27,9 @@ function we_parse_tag_include($attribs, $c, array $attr){
 	if($type === 'template'){
 		$attr['_parsed'] = 'true';
 	}
-	return ($type !== 'template' ?
-			'<?php eval(' . we_tag_tagParser::printTag('include', $attribs) . ');?>' : //include documents
-			//(($path ?
-			'<?php if(($we_inc=' . we_tag_tagParser::printTag('include', $attr) . ')){include' . (weTag_getParserAttribute('once', $attr, false, true) ? '_once' : '') . '($we_inc);}; ?>'//include templates of ID's
+	return ($type === 'template' ?
+			'<?php if(($we_inc=' . we_tag_tagParser::printTag('include', $attr) . ')){include' . (weTag_getParserAttribute('once', $attr, false, true) ? '_once' : '') . '($we_inc);}; ?>' : //include templates of ID's
+			'<?php eval(' . we_tag_tagParser::printTag('include', $attribs) . ');?>' //include documents
 		);
 }
 
@@ -94,8 +93,8 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 			echo 'cannot use we:include with type="template" dynamically';
 			return '';
 		}
-		$ret = preg_replace('/.tmpl$/i', '.php', ($id ? id_to_path($id, TEMPLATES_TABLE) : str_replace('..', '', $path))); //filter rel. paths
-		return ($ret && $ret != '/' ? TEMPLATES_PATH . $ret : '');
+		$ret = rtrim(preg_replace('/.tmpl$/i', '.php', ($id ? id_to_path($id, TEMPLATES_TABLE) : str_replace('..', '', $path))), '/'); //filter rel. paths
+		return (empty($ret) ? '' : TEMPLATES_PATH . $ret);
 	}
 
 	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
@@ -135,7 +134,7 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 
 	if(
 		(!$id && !$path) ||
-		$GLOBALS['WE_MAIN_DOC']->ID == $id//don't include same id
+		($GLOBALS['WE_MAIN_DOC']->ID && $GLOBALS['WE_MAIN_DOC']->ID == $id)//don't include same id
 	){
 		return '';
 	}
@@ -176,7 +175,7 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 	$isSeemode = (we_tag('ifSeeMode'));
 	// check early if there is a document - if not the rest is never needed
 	if($gethttp){
-		$content = /* ($isSeemode ? getHTTP(getServerUrl(true), $realPath) : */ 'echo getHTTP(getServerUrl(true), \'' . $realPath . '\');'/* )' */;
+		$content = 'echo getHTTP(getServerUrl(true), \'' . $realPath . '\');';
 	} else {
 		$realPath = WEBEDITION_PATH . '..' . $realPath; //(symlink) webEdition always points to the REAL DOC-Root!
 		if(!file_exists($realPath) || !is_file($realPath)){
@@ -194,7 +193,7 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 				}
 			}
 		}
-		$content = /* ($isSeemode ? file_get_contents($realPath) : */ 'include' . ($once ? '_once' : '') . '(\'' . $realPath . '\');'/* ) */;
+		$content = 'include' . ($once ? '_once' : '') . '(\'' . $realPath . '\');';
 	}
 
 	if(!empty($GLOBALS['we']['backVars'])){
@@ -208,8 +207,8 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 		);
 	}
 
-	return 'we_setBackVar(' . $we_unique . ');' .
-		$content .
+	we_setBackVar($we_unique);
+	return $content .
 		($isSeemode && $seeMode && ($id || $path) ? 'echo \'' . we_SEEM::getSeemAnchors(($id ? : path_to_id($path, FILE_TABLE, $GLOBALS['DB_WE'])), 'include') . '\';' : '') .
 		'we_resetBackVar(' . $we_unique . ');';
 }

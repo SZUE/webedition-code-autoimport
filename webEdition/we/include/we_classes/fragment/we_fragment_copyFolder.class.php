@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_fragment_copyFolder extends we_fragment_base{
-
 	var $copyToPath = "";
 
 	function init(){
@@ -125,8 +124,8 @@ class we_fragment_copyFolder extends we_fragment_base{
 			if(!isset($this->data['TheTable'])){
 				if($this->copyFile()){
 					$pbText = ($this->data['IsWeFile'] && $this->data['num'] ?
-									sprintf(g_l('copyFolder', '[rewrite]'), basename($this->data['Path'])) :
-									sprintf(g_l('copyFolder', $this->data['IsFolder'] ? '[copyFolder]' : '[copyFile]'), basename($this->data['Path'])));
+							sprintf(g_l('copyFolder', '[rewrite]'), basename($this->data['Path'])) :
+							sprintf(g_l('copyFolder', $this->data['IsFolder'] ? '[copyFolder]' : '[copyFile]'), basename($this->data['Path'])));
 
 					echo we_html_element::jsElement('parent.document.getElementById("pbTd").style.display="block";parent.setProgress(' . ((int) ((100 / count($this->alldata)) * (1 + $this->currentTask))) . ');parent.setProgressText("pbar1","' . addslashes($pbText) . '");');
 					flush();
@@ -267,7 +266,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 					if($GLOBALS['we_doc']->DocType && $this->data['CreateDoctypes']){
 						// check if a doctype was created from prior doc
 						if(!(isset($_SESSION['weS']['WE_CREATE_DOCTYPE']) &&
-								isset($_SESSION['weS']['WE_CREATE_DOCTYPE'][$GLOBALS['we_doc']->DocType]))){
+							isset($_SESSION['weS']['WE_CREATE_DOCTYPE'][$GLOBALS['we_doc']->DocType]))){
 
 							$dt = new we_docTypes();
 
@@ -476,7 +475,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 								$pathTo = $this->getNewPath($path);
 								$idTo = path_to_id($pathTo, FILE_TABLE, $GLOBALS['DB_WE'])? : '##WEPATH##' . $pathTo . ' ###WEPATH###';
 								$destTag = preg_replace('/' .
-										$attribname . '="[0-9]+"/', $attribname . '="' . $idTo . '"', $destTag);
+									$attribname . '="[0-9]+"/', $attribname . '="' . $idTo . '"', $destTag);
 							}
 						}
 					}
@@ -523,7 +522,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 				case 'href':
 					$regs = array();
 					if(preg_match('|(.+)' . we_base_link::MAGIC_INFIX . '(.+)|', $k, $regs) && // is a we:href field
-							!in_array($regs[1], $hrefs)){//already scanned?
+						!in_array($regs[1], $hrefs)){//already scanned?
 						$hrefs[] = $regs[1];
 						$int = intval($we_doc->getElement($regs[1] . we_base_link::MAGIC_INT_LINK));
 						if($int){
@@ -649,11 +648,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 	//FIXME: this function is called statically!
 	static function printHeader(){
 		//FIXME: missing title
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET . weSuggest::getYuiFiles() .
-				we_html_element::jsElement('
-function fsubmit(e) {
-	return false;
-}'));
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET . weSuggest::getYuiFiles());
 	}
 
 	static function formCreateTemplateDirChooser(){
@@ -685,7 +680,7 @@ function fsubmit(e) {
 		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;'));
 
 		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
-				we_html_element::jsElement('
+			we_html_element::jsElement('
 			var categories_edit = new multi_edit("categories",document.we_form,0,"' . $del_but . '",478,false);
 			categories_edit.addVariant();
 			categories_edit.showVariant(0);
@@ -695,14 +690,14 @@ function fsubmit(e) {
 			'id' => 'CategoriesBlock',
 			'style' => 'display: block;',
 			'class' => 'default',
-				), 5, 2);
+			), 5, 2);
 
 		$table->setCol(1, 0, array('class' => 'defaultfont', 'width' => 100, 'style' => 'padding-top:5px;'), g_l('copyFolder', '[categories]'));
 		$table->setCol(1, 1, array('class' => 'defaultfont'), we_html_forms::checkbox(1, 0, 'OverwriteCategories', g_l('copyFolder', '[overwrite_categories]'), false, "defaultfont", "toggleButton();"));
 		$table->setCol(2, 0, array('colspan' => 2), we_html_element::htmlDiv(array(
-					'id' => 'categories',
-					'class' => 'blockWrapper',
-					'style' => 'width: 488px; height: 60px; border: #AAAAAA solid 1px;'
+				'id' => 'categories',
+				'class' => 'blockWrapper',
+				'style' => 'width: 488px; height: 60px; border: #AAAAAA solid 1px;'
 		)));
 
 		$table->setCol(4, 0, array('colspan' => 2, 'style' => 'text-align:right;padding-top:5px;'), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut);

@@ -468,16 +468,16 @@ function show_seem_chooser(val) {
 			}
 			/* falls through */
 		default:
-			if (document.getElementById('selectordummy') !== undefined) {
+			if (document.getElementById('selectordummy') !== null) {
 				document.getElementById('selectordummy').style.display = 'block';
 			}
-			if (document.getElementById('seem_start_document') !== undefined) {
+			if (document.getElementById('seem_start_document') !== null) {
 				document.getElementById('seem_start_document').style.display = 'none';
 			}
-			if (document.getElementById('seem_start_weapp') !== undefined) {
+			if (document.getElementById('seem_start_weapp') !== null) {
 				document.getElementById('seem_start_weapp').style.display = 'none';
 			}
-			if (document.getElementById('seem_start_object') !== undefined) {
+			if (document.getElementById('seem_start_object') !== null) {
 				document.getElementById('seem_start_object').style.display = 'none';
 			}
 

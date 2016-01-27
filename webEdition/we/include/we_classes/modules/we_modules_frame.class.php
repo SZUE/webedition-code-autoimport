@@ -64,7 +64,7 @@ abstract class we_modules_frame{
 		return $this->View->getJSTop();
 	}
 
-	function getHTML($what = ''){
+	function getHTML($what = '', $mode = '', $step = 0){
 		switch($what){
 			case 'frameset':
 				return $this->getHTMLFrameset();

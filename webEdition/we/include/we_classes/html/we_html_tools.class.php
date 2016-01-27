@@ -30,6 +30,7 @@ abstract class we_html_tools{
 	const TYPE_INFO = 2;
 	const TYPE_QUESTION = 3;
 	const TYPE_HELP = 4;
+	const TYPE_LINK = 5;
 
 	/** we_html_tools::protect()
 	  protects a page. Guests can not see this page */
@@ -734,7 +735,15 @@ this.selectedIndex = 0;' .
 	 */
 
 	static function htmlAlertAttentionBox($text, $type = self::TYPE_NONE, $width = 0, $useHtmlSpecialChars = true, $clip = 0){
-		if($width === false || $type === self::TYPE_HELP){
+		switch($type){
+			case self::TYPE_LINK:
+				//we have link & text attached in an array
+				list($link, $text) = $text;
+			case self::TYPE_HELP:
+				$width = false;
+		}
+
+		if($width === false){
 			$class = 'infobox';
 			$title = '<span>' . $text . '</span>';
 		} else {
@@ -752,6 +761,8 @@ this.selectedIndex = 0;' .
 				break;
 			case self::TYPE_HELP:
 				return '<span class="fa-stack alertIcon ' . $class . '" style="color:inherit;"><i class="fa fa-question-circle" ></i>' . $title . '</span>';
+			case self::TYPE_LINK:
+				return '<span class="fa-stack alertIcon ' . $class . '" style="color:inherit;"><i class="fa fa-external-link-square" ></i>' . $title . '</span>';
 			default :
 				$icon = '';
 		}

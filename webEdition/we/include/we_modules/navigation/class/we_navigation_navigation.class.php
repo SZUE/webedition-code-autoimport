@@ -241,7 +241,7 @@ class we_navigation_navigation extends weModelBase{
 		}
 	}
 
-	function save($order = true, $rebuild = false){
+	function save($order = true, $rebuild = false, $jsonSer = false){
 		if(defined('CUSTOMER_TABLE') && $this->UseDocumentFilter){
 			$this->_getFilterOfDocument();
 		}

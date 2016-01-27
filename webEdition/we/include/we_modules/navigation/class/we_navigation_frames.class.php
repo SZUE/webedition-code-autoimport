@@ -40,7 +40,7 @@ class we_navigation_frames extends we_modules_frame{
 		$this->Model = &$this->View->Model;
 	}
 
-	function getHTML($what){
+	function getHTML($what = '', $mode = '', $step = 0){
 		switch($what){
 			case 'preview' :
 				return $this->getHTMLEditorBody();
@@ -55,7 +55,7 @@ class we_navigation_frames extends we_modules_frame{
 		}
 	}
 
-	function getHTMLFrameset(){
+	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
 		$extraHead = $this->getJSCmdCode() .
 				$this->Tree->getJSTreeCode();
 

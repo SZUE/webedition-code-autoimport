@@ -35,17 +35,20 @@ function we_tag_order($attribs){
 	}
 
 	$condition = weTag_getAttribute("condition", $attribs, 0, we_base_request::RAW);
-	$we_orderid = weTag_getAttribute("id", $attribs, we_base_request::_(we_base_request::INT, 'we_orderid', 0), we_base_request::INT);
+	$id = weTag_getAttribute("id", $attribs, we_base_request::_(we_base_request::INT, 'we_orderid', 0), we_base_request::INT);
 
 	$hidedirindex = weTag_getAttribute("hidedirindex", $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, we_base_request::BOOL);
 
-	if(!isset($GLOBALS["we_lv_array"])){
-		$GLOBALS["we_lv_array"] = array();
-	}
 
-	$GLOBALS["lv"] = new we_shop_ordertag(intval($we_orderid), $condition, $hidedirindex);
-	if(is_array($GLOBALS["we_lv_array"])){
-		$GLOBALS["we_lv_array"][] = clone($GLOBALS["lv"]);
+	if($id){
+		$unique = md5(uniqid(__FILE__, true));
+
+		$GLOBALS['lv'] = new we_listview_shopOrder($unique, 1, 0, "", 0, '(IntOrderID=' . intval($id) . ')' . ($condition ? ' AND ' . $condition : ''), '', 0, $hidedirindex);
+		$avail = ($GLOBALS['lv']->next_record());
+	} else {
+		$GLOBALS['lv'] = new stdClass();
+		$avail = false;
 	}
-	return $GLOBALS["lv"]->avail;
+	we_pre_tag_listview();
+	return $avail;
 }

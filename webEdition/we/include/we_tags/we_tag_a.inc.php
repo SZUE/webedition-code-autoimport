@@ -93,9 +93,9 @@ function we_tag_a($attribs, $content){
 				$customReq = $GLOBALS['lv']->getCustomFieldsAsRequest();
 			} else {
 				//Zwei Faelle werden abgedeckt, bei denen die Objekt-ID nicht gefunden wird: (a) bei einer listview ueber shop-objekte, darin eine listview über shop-varianten, hierin der we:a-link und (b) Objekt wird ueber den objekt-tag geladen #3538
-				if((isset($GLOBALS['lv']) && ((isset($GLOBALS['lv']->Model) && $GLOBALS['lv']->Model instanceof we_objectFile) || ($GLOBALS['lv'] instanceof we_object_tag)))){
+				if((isset($GLOBALS['lv']) && ((isset($GLOBALS['lv']->Model) && $GLOBALS['lv']->Model instanceof we_objectFile)))){
 					$type = we_shop_shop::OBJECT;
-					$idd = $GLOBALS['lv']->id;
+					$idd = $GLOBALS['lv']->ID;
 				} else {
 					$idd = ((isset($GLOBALS['lv']) && $GLOBALS['lv'] instanceof we_listview_document) && ($lastE = end($GLOBALS['lv']->IDs))) ?
 						$lastE :
@@ -104,7 +104,7 @@ function we_tag_a($attribs, $content){
 							((isset($GLOBALS['we_obj']->ID)) ?
 								$GLOBALS['we_obj']->ID :
 								$GLOBALS['WE_MAIN_DOC']->ID));
-					$type = (isset($GLOBALS['lv']) && $GLOBALS['lv'] instanceof we_listview_document && end($GLOBALS['lv']->IDs)) ?
+					$type = (isset($GLOBALS['lv']) && $GLOBALS['lv'] instanceof we_listview_document && $GLOBALS['lv']->IDs) ?
 						(
 						(isset($GLOBALS['lv']->classID) || isset($GLOBALS['lv']->Record['OF_ID'])) ? we_shop_shop::OBJECT : we_shop_shop::DOCUMENT) :
 						((isset($GLOBALS['lv']->classID)) ?
