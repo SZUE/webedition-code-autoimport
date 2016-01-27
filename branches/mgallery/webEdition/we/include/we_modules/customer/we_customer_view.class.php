@@ -1060,7 +1060,7 @@ self.close();');
 				break;
 			case g_l('modules_customer', '[objectTab]'):
 				$DB_WE = new DB_WE();
-				$DB_WE->query('SELECT ID,TableID,ContentType,Path,Text,ModDate,Published FROM ' . OBJECT_FILES_TABLE . ' WHERE ' . OBJECT_FILES_TABLE . '.WebUserID = ' . $this->customer->ID . ' ORDER BY ' . OBJECT_FILES_TABLE . '.Path');
+				$DB_WE->query('SELECT ID,TableID,ContentType,Path,Text,ModDate,Published FROM ' . OBJECT_FILES_TABLE . ' WHERE ' . OBJECT_FILES_TABLE . '.WebUserID=' . intval($this->customer->ID) . ' ORDER BY ' . OBJECT_FILES_TABLE . '.Path');
 				$objectStr = '';
 				if($DB_WE->num_rows()){
 					$objectStr.='<table class="defaultfont" style="width:600px;">' .
