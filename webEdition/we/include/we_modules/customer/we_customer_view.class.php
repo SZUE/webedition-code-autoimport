@@ -1171,9 +1171,9 @@ self.close();');
 			case 'number':
 				return we_html_tools::htmlTextInput($field, 32, intval($value), '', "onchange=\"top.content.setHot();\" style='width:240px;'", 'number');
 			case 'multiselect':
-				if(!$this->customer->ID && $value == null){
+				/*if(!$this->customer->ID && $value == null){
 					$value = $props['default'];
-				}
+				}*/
 				$out = we_html_element::htmlHidden(array('name' => $field, 'value' => $value));
 				$values = explode(',', $value);
 				$defs = explode(',', $props['default']);
