@@ -34,15 +34,16 @@ function we_include_tag_file($name){
 		require_once (WE_INCLUDES_PATH . 'we_tags/' . $fn . '.inc.php');
 		return true;
 	}
+	//error check is only required for custom tags
 	if(file_exists(WE_INCLUDES_PATH . 'we_tags/custom_tags/' . $fn . '.inc.php')){
 		require_once (WE_INCLUDES_PATH . 'we_tags/custom_tags/' . $fn . '.inc.php');
-		return true;
+		return function_exists($fn) ? true : parseError(sprintf(g_l('parser', '[tag_not_known]'), trim($name)));
 	}
 
 	$toolinc = '';
 	if(we_tool_lookup::getToolTag($name, $toolinc, true)){
 		require_once ($toolinc);
-		return true;
+		return function_exists($fn) ? true : parseError(sprintf(g_l('parser', '[tag_not_known]'), trim($name)));
 	}
 	if(strpos(trim($name), 'if') === 0){ // this ifTag does not exist
 		echo parseError(sprintf(g_l('parser', '[tag_not_known]'), trim($name)));
@@ -274,8 +275,8 @@ function weTag_getAttribute($name, $attribs, $default = '', $type = we_base_requ
 	$regs = array();
 	if($useGlobal && !is_array($value) && preg_match('|^\\\\?\$([^\[]+)(\[.*\])?|', $value, $regs)){
 		$value = (isset($regs[2]) ?
-						getArrayValue($GLOBALS, $regs[1], $regs[2]) :
-						(isset($GLOBALS[$regs[1]]) ? $GLOBALS[$regs[1]] : ''));
+				getArrayValue($GLOBALS, $regs[1], $regs[2]) :
+				(isset($GLOBALS[$regs[1]]) ? $GLOBALS[$regs[1]] : ''));
 	}
 
 	$value = we_base_request::filterVar($value, (is_bool($type) ? we_base_request::BOOL : $type), $default);
@@ -299,12 +300,12 @@ function cutSimpleText($text, $len){
 	$text = substr($text, 0, $len);
 	//cut to last whitespace, if any.
 	return substr($text, 0, max(array(
-				strrpos($text, ' '),
-				strrpos($text, '.'),
-				strrpos($text, ','),
-				strrpos($text, "\n"),
-				strrpos($text, "\t"),
-			))? : $len
+			strrpos($text, ' '),
+			strrpos($text, '.'),
+			strrpos($text, ','),
+			strrpos($text, "\n"),
+			strrpos($text, "\t"),
+		))? : $len
 	);
 }
 
@@ -372,8 +373,8 @@ function we_getDocForTag($docAttr, $maindefault = false){
 			return $GLOBALS['WE_MAIN_DOC'];
 		default :
 			return ($maindefault ?
-							$GLOBALS['WE_MAIN_DOC'] :
-							$GLOBALS['we_doc']);
+					$GLOBALS['WE_MAIN_DOC'] :
+					$GLOBALS['we_doc']);
 	}
 }
 
@@ -500,7 +501,7 @@ function we_getSelectField($name, $value, $values, $attribs = array(), $addMissi
 	if((!$isin) && $addMissing && $value != ''){
 		$content .= getHtmlTag('option', array(
 			'value' => oldHtmlspecialchars($value), 'selected' => 'selected'
-				), oldHtmlspecialchars($value), true);
+			), oldHtmlspecialchars($value), true);
 	}
 	return getHtmlTag('select', $attribs, $content, true);
 }

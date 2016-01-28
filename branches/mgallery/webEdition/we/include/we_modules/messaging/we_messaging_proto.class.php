@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /* message protocol root class */
-class we_messaging_proto extends we_class{
+abstract class we_messaging_proto /* extends we_class */{
 	const FOLDER_DONE = 13;
 	const FOLDER_REJECT = 11;
 	const FOLDER_TRASH = 9;
@@ -74,9 +74,15 @@ class we_messaging_proto extends we_class{
 		self::FOLDER_INBOX => -1);
 	var $table = MESSAGES_TABLE;
 	var $folder_tbl = MSG_FOLDERS_TABLE;
+	var $DB_WE;
+	var $ClassName;
+	var $ID;
+	var $Table;
 
 	function __construct(){
-		parent::__construct();
+		$this->ClassName = get_class($this); //$this is different from self!
+		$this->DB_WE = new DB_WE();
+
 		$this->Name = 'msg_proto_' . md5(uniqid(__FILE__, true));
 		$this->persistent_slots = array('ClassName', 'Name', 'ID', 'Table', 'Folder_ID', 'selected_message', 'sortorder', 'last_sortfield', 'search_ids', 'available_folders', 'search_folder_ids', 'search_fields', 'cached');
 	}
