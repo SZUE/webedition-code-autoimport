@@ -975,6 +975,13 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	},
 
 	paste_text_sticky : true,
+	paste_preprocess :(pl, o) {
+		var patt = /<img [^>]*src=["\']data:[^>]*>/gi;
+		if (o.content.match(patt)) {
+			o.content = o.content.replace(patt, "");
+			alert("Eingebette Bilder wurden entfernt.");
+		}
+	},
 
 	/* <br/><br/> => </p><p> on paste: restore default behaviour */
 	/*
