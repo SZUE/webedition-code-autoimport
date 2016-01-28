@@ -7,7 +7,11 @@
 		Deny from all
 	</ifModule>
 </FilesMatch>
-AddType image/svg+xml .svg
+
+<IfModule mime_module>
+	AddType image/svg+xml .svg
+</IfModule>
+
 #<ifModule mod_expires.c>
 #ExpiresActive On
 #ExpiresDefault "access plus 1 month"
