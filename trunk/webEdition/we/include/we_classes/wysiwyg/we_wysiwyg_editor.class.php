@@ -975,6 +975,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	},
 
 	paste_text_sticky : true,
+	paste_auto_cleanup_on_paste: true,
 	paste_preprocess :(pl, o) {
 		var patt = /<img [^>]*src=["\']data:[^>]*>/gi;
 		if (o.content.match(patt)) {
