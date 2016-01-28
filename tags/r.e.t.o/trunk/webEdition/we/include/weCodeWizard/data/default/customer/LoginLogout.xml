@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic SYSTEM "http://docs.oasis-open.org/dita/v1.0.1/dtd/topic.dtd">
+<topic id="topic_52EC37D9C7A34C07B8A1808A4CD3E552">
+	<title>
+		<g_l>[customer][LoginLogout][title]</g_l>
+	</title>
+	<shortdesc>
+		<g_l>[customer][LoginLogout][desc]</g_l>
+	</shortdesc>
+	<prolog>
+		<author>webEdition project</author>
+	</prolog>
+	<body>
+		<p><![CDATA[<we:ifRegisteredUser>
+  <we:sessionLogout id="self">__GL([customer][LoginLogout][logout])__</we:sessionLogout>
+</we:ifRegisteredUser>
+<we:ifNotRegisteredUser>
+  <we:form id="self" method="post" xml="true">
+    <we:ifLoginFailed>
+      <p>
+        <strong>__GL([customer][LoginLogout][failed])__</strong>
+      </p>
+    </we:ifLoginFailed>
+    <p>
+      <label for="Username">__GL([customer][LoginLogout][username])__:</label><br />
+      <we:sessionField name="Username" id="Username" type="textinput" xml="true" />
+    </p>
+    <p>
+      <label for="Password">__GL([customer][LoginLogout][password])__:</label><br />
+      <we:sessionField name="Password" id="Password" type="password" xml="true" />
+    </p>
+    <p>
+      <input type="submit" value="__GL([customer][LoginLogout][login])__" />
+    </p>
+  </we:form>
+</we:ifNotRegisteredUser>]]></p>
+	</body>
+</topic>
