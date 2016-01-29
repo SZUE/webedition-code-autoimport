@@ -177,7 +177,7 @@ EOF;
 	}
 
 	function checkDatabaseExists($Resource){
-		$result = mysqli_query($Resource, "USE " . $_SESSION["le_db_database"]);
+		$result = mysqli_select_db($Resource, $_SESSION["le_db_database"]);
 		return !mysqli_error($Resource);
 	}
 
