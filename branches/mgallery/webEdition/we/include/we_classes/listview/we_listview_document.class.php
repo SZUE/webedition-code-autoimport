@@ -244,9 +244,9 @@ class we_listview_document extends we_listview_base{
 				$workspaces = explode(',', $this->workspaceID);
 				if($this->subfolders){ // all entries with given parentIds
 					$cond = array();
-					$workspacePaths = id_to_path($workspaces, FILE_TABLE, $this->DB_WE);
-					foreach($workspacePaths as $workspace){
-						$cond[] = 'Path LIKE "' . $this->DB_WE->escape($workspace) . '/%"';
+					foreach($workspaces as $workspace){
+						$workspacePath = id_to_path($workspace, FILE_TABLE, $this->DB_WE);
+						$cond[] = 'Path LIKE "' . $this->DB_WE->escape($workspacePath) . '/%"';
 					}
 					if($cond){
 						$this->DB_WE->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE IsFolder=1 AND (' . implode(' OR ', $cond) . ')');
