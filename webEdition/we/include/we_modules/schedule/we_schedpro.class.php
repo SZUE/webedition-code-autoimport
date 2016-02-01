@@ -24,21 +24,21 @@
 we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER);
 
 class we_schedpro{
-	const SCHEDULE_FROM = 1; //publish
-	const SCHEDULE_TO = 2; //park
-	const DELETE = 3;
-	const DOCTYPE = 4;
-	const CATEGORY = 5;
-	const DIR = 6;
-	const SEARCHABLE_ENABLED = 7;
-	const SEARCHABLE_DISABLED = 8;
-	const CALL = 9;
-	const TYPE_ONCE = 0;
-	const TYPE_HOUR = 1;
-	const TYPE_DAY = 2;
-	const TYPE_WEEK = 3;
-	const TYPE_MONTH = 4;
-	const TYPE_YEAR = 5;
+	const SCHEDULE_FROM = 'publish'; //publish
+	const SCHEDULE_TO = 'park'; //park
+	const DELETE = 'delete';
+	const DOCTYPE = 'doctype';
+	const CATEGORY = 'category';
+	const DIR = 'directory';
+	const SEARCHABLE_ENABLED = 'search_enable';
+	const SEARCHABLE_DISABLED = 'search_disable';
+	const CALL = 'call';
+	const TYPE_ONCE = 'once';
+	const TYPE_HOUR = 'hour';
+	const TYPE_DAY = 'day';
+	const TYPE_WEEK = 'week';
+	const TYPE_MONTH = 'month';
+	const TYPE_YEAR = 'year';
 
 	var $task = self::SCHEDULE_FROM;
 	var $type = self::TYPE_ONCE;
@@ -239,12 +239,12 @@ function checkFooter(){
 		}
 
 		$typepopup = '<select class="weSelect" name="we_schedule_type_' . $this->nr . '" size="1" onchange="_EditorFrame.setEditorIsHot(true);setScrollTo();we_cmd(\'reload_editpage\')">
-<option value="' . self::TYPE_ONCE . '"' . (($this->type == self::TYPE_ONCE) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][' . self::TYPE_ONCE . ']') . '</option>
-<option value="' . self::TYPE_HOUR . '"' . (($this->type == self::TYPE_HOUR) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][' . self::TYPE_HOUR . ']') . '</option>
-<option value="' . self::TYPE_DAY . '"' . (($this->type == self::TYPE_DAY) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][' . self::TYPE_DAY . ']') . '</option>
-<option value="' . self::TYPE_WEEK . '"' . (($this->type == self::TYPE_WEEK) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][' . self::TYPE_WEEK . ']') . '</option>
-<option value="' . self::TYPE_MONTH . '"' . (($this->type == self::TYPE_MONTH) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][' . self::TYPE_MONTH . ']') . '</option>
-<option value="' . self::TYPE_YEAR . '"' . (($this->type == self::TYPE_YEAR) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][' . self::TYPE_YEAR . ']') . '</option>
+<option value="' . self::TYPE_ONCE . '"' . (($this->type == self::TYPE_ONCE) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][0]') . '</option>
+<option value="' . self::TYPE_HOUR . '"' . (($this->type == self::TYPE_HOUR) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][1]') . '</option>
+<option value="' . self::TYPE_DAY . '"' . (($this->type == self::TYPE_DAY) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][2]') . '</option>
+<option value="' . self::TYPE_WEEK . '"' . (($this->type == self::TYPE_WEEK) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][3]') . '</option>
+<option value="' . self::TYPE_MONTH . '"' . (($this->type == self::TYPE_MONTH) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][4]') . '</option>
+<option value="' . self::TYPE_YEAR . '"' . (($this->type == self::TYPE_YEAR) ? ' selected' : '') . '>' . g_l('modules_schedule', '[type][5]') . '</option>
 </select>';
 
 
@@ -421,9 +421,9 @@ function checkFooter(){
 			}
 
 			if($s['type'] != self::TYPE_ONCE && ($nextWann = self::getNextTimestamp($s, $now))){
-				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET `expire`=FROM_UNIXTIME(' . intval($nextWann) . ') WHERE Active=1 AND DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '" AND Type="' . $s['type'] . '" AND Was="' . $s['task'] . '" AND `expire`="' . $schedFile['Wann'].'"');
+				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET `expire`=FROM_UNIXTIME(' . intval($nextWann) . ') WHERE Active=1 AND DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '" AND rerun="' . $s['type'] . '" AND task="' . $s['task'] . '" AND `expire`="' . $schedFile['Wann'] . '"');
 			} else {
-				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0,SerializedData="" WHERE Active=1 AND DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '" AND Type="' . $s['type'] . '" AND Was="' . $s['task'] . '" AND `expire`="' . $schedFile['Wann'].'"');
+				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0,SerializedData="" WHERE Active=1 AND DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '" AND rerun="' . $s['type'] . '" AND task="' . $s['task'] . '" AND `expire`="' . $schedFile['Wann'] . '"');
 			}
 		}
 
@@ -471,7 +471,7 @@ function checkFooter(){
 		}
 
 		while((!$hasLock || $DB_WE->lock(array(SCHEDULE_TABLE, ERROR_LOG_TABLE))) && ( --$maxSched != 0) && ($rec = getHash('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE `expire`<=NOW() AND lockedUntil<NOW() AND Active=1 ORDER BY `expire` LIMIT 1', $DB_WE))){
-			$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET lockedUntil=NOW()+INTERVAL 1 minute WHERE DID=' . $rec['DID'] . ' AND Active=1 AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec['Type'] . '" AND Was="' . $rec['Was'] . '" AND `expire`="' . $rec['expire'] . '"');
+			$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET lockedUntil=NOW()+INTERVAL 1 minute WHERE DID=' . $rec['DID'] . ' AND Active=1 AND ClassName="' . $rec['ClassName'] . '" AND rerun="' . $rec['rerun'] . '" AND task="' . $rec['task'] . '" AND `expire`="' . $rec['expire'] . '"');
 			if($hasLock){
 				$DB_WE->unlock();
 			}
@@ -487,11 +487,11 @@ function checkFooter(){
 				self::processSchedule($rec['DID'], $tmp, $now, $DB_WE);
 			} else {
 				//data invalid, reset & make sure this is not processed the next time
-				$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . $rec['DID'] . ' AND Active=1 AND `expire`="' . $rec['expire'] . '" AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec['Type'] . '" AND Was="' . $rec['Was'] . '"');
+				$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . $rec['DID'] . ' AND Active=1 AND `expire`="' . $rec['expire'] . '" AND ClassName="' . $rec['ClassName'] . '" AND rerun="' . $rec['rerun'] . '" AND task="' . $rec['task'] . '"');
 			}
 		}
 		//cleanup old single shots
-		$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE Active=0 AND Type=' . self::TYPE_ONCE . ' AND `expire`<(CURDATE()-INTERVAL 1 YEAR)');
+		$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE Active=0 AND rerun="' . self::TYPE_ONCE . '" AND `expire`<(CURDATE()-INTERVAL 1 YEAR)');
 		//make sure DB is unlocked!
 		$DB_WE->unlock();
 //reset state
@@ -505,7 +505,7 @@ function checkFooter(){
 		if(!$now){
 			$now = time();
 		}
-		switch($s['type']){
+		switch($s['rerun']){
 			case self::TYPE_ONCE:
 				return $s['time'];
 			case self::TYPE_HOUR:
@@ -591,8 +591,8 @@ function checkFooter(){
 
 	static function getEmptyEntry(){
 		return array(
-			'task' => 1,
-			'type' => 0,
+			'task' => self::SCHEDULE_FROM,
+			'rerun' => self::TYPE_ONCE,
 			'months' => array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
 			'days' => array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
 			'weekdays' => array(0, 0, 0, 0, 0, 0, 0),
@@ -609,7 +609,7 @@ function checkFooter(){
 		if(!$now){
 			$now = time();
 		}
-		switch($s['type']){
+		switch($s['rerun']){
 			case self::TYPE_ONCE:
 				return $s['time'];
 			case self::TYPE_HOUR:
@@ -722,15 +722,15 @@ function checkFooter(){
 			}
 
 			if(!$db->query('INSERT INTO ' . SCHEDULE_TABLE . ' SET ' . we_database_base::arraySetter(array(
-						'DID' => $object->ID,
-						'expire' => sql_function('FROM_UNIXTIME(' . $Wann . ')'),
-						'Was' => $s['task'],
-						'ClassName' => $object->ClassName,
-						'SerializedData' => ($serializedDoc ? sql_function('x\'' . bin2hex(gzcompress($serializedDoc, 9)) . '\'') : ''),
-						'Schedpro' => we_serialize($s, 'json'),
-						'Type' => $s['type'],
-						'Active' => $s['active']
-				)))){
+								'DID' => $object->ID,
+								'expire' => sql_function('FROM_UNIXTIME(' . $Wann . ')'),
+								'task' => $s['task'],
+								'ClassName' => $object->ClassName,
+								'SerializedData' => ($serializedDoc ? sql_function('x\'' . bin2hex(gzcompress($serializedDoc, 9)) . '\'') : ''),
+								'Schedpro' => we_serialize($s, 'json'),
+								'rerun' => $s['rerun'],
+								'Active' => $s['active']
+					)))){
 				return false;
 			}
 		}
