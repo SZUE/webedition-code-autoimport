@@ -401,8 +401,9 @@ abstract class we_database_base{
 		} elseif(preg_match('/insert\s|delete\s|update\s|replace\s/i', $Query_String)){
 			$this->Insert_ID = $this->_getInsertId();
 			$this->Affected_Rows = $this->_affected_rows();
+			//don't kill query cache if we add errors
+			if(!strpos($Query_String, ERROR_LOG_TABLE) || (stripos($Query_String, 'DELETE') === 0)){
 // delete getHash DB Cache
-			if(!strpos($Query_String, ERROR_LOG_TABLE)){
 				$this->getHash();
 			}
 			$repool = true;

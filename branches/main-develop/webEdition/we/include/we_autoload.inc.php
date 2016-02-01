@@ -37,22 +37,7 @@ if(ini_set('include_path', WE_LIB_PATH . PATH_SEPARATOR . WE_APPS_PATH . PATH_SE
 	t_e('unable to add webEdition to include path! Expect Problems!');
 }
 
-//FIXME: remove with PHP 5.5.... but currently some hosters have this still enabled.
-if(get_magic_quotes_gpc()) {
-    $process = array(&$_GET, &$_POST, &$_COOKIE, &$_REQUEST);
-    while (list($key, $val) = each($process)) {
-        foreach ($val as $k => $v) {
-            unset($process[$key][$k]);
-            if (is_array($v)) {
-                $process[$key][stripslashes($k)] = $v;
-                $process[] = &$process[$key][stripslashes($k)];
-            } else {
-                $process[$key][stripslashes($k)] = stripslashes($v);
-            }
-        }
-    }
-    unset($process);
-}
+include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/fixOldPhp.inc.php');
 
 //make we_autoloader the first autoloader
 $ret = spl_autoload_register('we_autoloader::autoload', false, true);

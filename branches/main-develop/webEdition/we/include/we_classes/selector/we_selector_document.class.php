@@ -239,11 +239,20 @@ function enableNewFileBut() {
 	}
 
 	protected function printHeaderTable($extra = ''){
+		$newFileState = $this->userCanMakeNewFile ? 1 : 0;
+
 		if($this->table !== VFILE_TABLE){
-			return parent::printHeaderTable($extra);
+			return parent::printHeaderTable(
+					'<td>' .
+					we_html_element::jsElement('newFileState=' . $newFileState . ';') .
+					($this->filter && isset($this->ctb[$this->filter]) ?
+						we_html_button::create_button($this->ctb[$this->filter], "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false) :
+						(permissionhandler::hasPerm('NEW_GRAFIK') ? we_html_button::create_button("fa:btn_add_file,fa-plus,fa-lg fa-file-o", "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false) : '')
+					) .
+					'</td>' .
+					$extra, true);
 		}
 
-		$newFileState = $this->userCanMakeNewFile ? 1 : 0;
 		return parent::printHeaderTable(
 				'<td>' .
 				we_html_element::jsElement('newFileState=' . $newFileState . ';') .
@@ -293,15 +302,15 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
 
-	/*function printNewDocumentHTML(){
-		echo '<script><!--
-top.clearEntries();
-top.makeNewDocument = true;' .
-		$this->printCmdAddEntriesHTML() .
-		$this->printCMDWriteAndFillSelectorHTML() . '
-//-->
-</script>';
-	}*/
+	/* function printNewDocumentHTML(){
+	  echo '<script><!--
+	  top.clearEntries();
+	  top.makeNewDocument = true;' .
+	  $this->printCmdAddEntriesHTML() .
+	  $this->printCMDWriteAndFillSelectorHTML() . '
+	  //-->
+	  </script>';
+	  } */
 
 	protected function printFooterTable($more = null){
 		$ret = '
@@ -636,13 +645,13 @@ top.makeNewDocument = true;' .
 	}
 
 	protected function getFramesetJavaScriptDef(){
-		/*$ctypes = array();
-		$ct = we_base_ContentTypes::inst();
-		foreach($ct->getContentTypes() as $ctype){
-			if(g_l('contentTypes', '[' . $ctype . ']') !== false){
-				$ctypes[] = '"' . $ctype . '" : "' . g_l('contentTypes', '[' . $ctype . ']') . '"';
-			}
-		}*/
+		/* $ctypes = array();
+		  $ct = we_base_ContentTypes::inst();
+		  foreach($ct->getContentTypes() as $ctype){
+		  if(g_l('contentTypes', '[' . $ctype . ']') !== false){
+		  $ctypes[] = '"' . $ctype . '" : "' . g_l('contentTypes', '[' . $ctype . ']') . '"';
+		  }
+		  } */
 
 		return parent::getFramesetJavaScriptDef() . we_html_element::jsElement('
 options.canSelectDir=' . intval($this->canSelectDir) . ';

@@ -66,7 +66,7 @@ node.prototype.getLayout = function () {
 	}
 	var layout_key = (this.typ === "group" ? "group" : "item");
 
-	return treeData.node_layouts[layout_key] + (this.typ === "item" && this.published ? "" : " loginDenied");
+	return treeData.node_layouts[layout_key] + (this.typ === "item" ? (this.published ? "" : " loginDenied") : "");
 };
 
 function doClick(id, typ) {

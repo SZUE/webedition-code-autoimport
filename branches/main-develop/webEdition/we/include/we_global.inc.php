@@ -1248,11 +1248,10 @@ function we_serialize($array, $target = 'serialize', $numeric = false, $compress
 		return '';
 	}
 	switch($target){
-		//remove defined after php 5.3 support ends
 		case 'json':
 			if(!is_object($array)){
 				//we don't encode objects as json!
-				$ret = json_encode($numeric ? array_values($array) : $array, (defined('JSON_UNESCAPED_UNICODE') ? JSON_UNESCAPED_UNICODE : 0));
+				$ret = json_encode($numeric ? array_values($array) : $array, JSON_UNESCAPED_UNICODE);
 				if($ret){
 					break;
 				}

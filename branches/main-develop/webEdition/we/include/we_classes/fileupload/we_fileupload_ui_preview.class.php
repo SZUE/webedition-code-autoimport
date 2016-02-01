@@ -101,7 +101,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 		$dropText = g_l('newFile', $this->isDragAndDrop ? '[drop_text_ok]' : '[drop_text_nok]');
 
 		return we_html_element::htmlDiv(array('id' => 'div_fileupload_fileDrag_state_0', 'class' => 'we_file_drag we_file_drag_content', 'style' => (!$this->isDragAndDrop ? 'border-color:white;' : ''), 'ondragenter' => "alert('wrong div')"), we_html_element::htmlDiv(array('class' => 'filedrag_content_left', 'style' => (!$this->isDragAndDrop ? 'font-size:14px' : '')), $dropText) .
-				we_html_element::htmlDiv(array('class' => 'filedrag_content_right'), ($thumbnailSmall ? : we_html_element::jsElement('document.write(getTreeIcon("' . $this->contentType . '"));')))
+				we_html_element::htmlDiv(array('class' => 'filedrag_content_right'), ($thumbnailSmall ? : we_html_element::jsElement('document.write(WE().util.getTreeIcon("' . $this->contentType . '"));')))
 			) .
 			we_html_element::htmlDiv(array('id' => 'div_fileupload_fileDrag_state_1', 'class' => 'we_file_drag we_file_drag_preview', 'style' => (!$this->isDragAndDrop ? 'border-color:rgb(243, 247, 255);' : '')), we_html_element::htmlDiv(array('id' => 'div_upload_fileDrag_innerLeft', 'class' => 'filedrag_preview_left'), we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_filename')) . we_html_element::htmlBr() .
 					we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_size')) . we_html_element::htmlBr() .

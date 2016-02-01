@@ -33,7 +33,7 @@ header('Pragma: ', true);
 /* css editor body:font-size: this sheet is included first, for font-size to be eventually overwritten by document-css */
 
 body {
-font-size: <?php echo (we_base_browserDetect::isUNIX() ? 13 : 12); ?>px;
+font-size: 12px;
 <?php
 $bgcol = we_base_request::_(we_base_request::STRING, 'tinyMceBackgroundColor');
 $bgcol = preg_match('/^[a-f0-9]{6}$/i', $bgcol) ? '#' . $bgcol : $bgcol;
@@ -67,7 +67,7 @@ we-gallery{
 
 we-gallery:before {
 	font-family: FontAwesome;
-	content: "\f187 "; 
+	content: "\f187 ";
 	color: #164F94;
 }
 

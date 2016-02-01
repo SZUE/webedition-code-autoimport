@@ -40,6 +40,7 @@ class we_binaryDocument extends we_document{
 	 */
 	private $metaDataReader = null;
 	var $documentCustomerFilter = ''; // DON'T SET TO NULL !
+	protected $IsProtected = false;
 
 	/**
 	 * @var array for metadata read via $metaDataReader
@@ -52,7 +53,7 @@ class we_binaryDocument extends we_document{
 	 */
 	function __construct(){
 		parent::__construct();
-		array_push($this->persistent_slots, 'html', 'DocChanged');
+		array_push($this->persistent_slots, 'html', 'DocChanged', 'IsProtected');
 		if(isWE()){
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_VERSIONS);
 			if(defined('CUSTOMER_TABLE') && (permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER') || permissionhandler::hasPerm('CAN_CHANGE_DOCS_CUSTOMER'))){
