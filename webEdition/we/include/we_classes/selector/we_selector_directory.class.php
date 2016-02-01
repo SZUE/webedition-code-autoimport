@@ -256,8 +256,8 @@ top.selectIt();';
 		</td>
 		<td>' . we_html_button::create_button("root_dir", "javascript:if(rootDirButsState){top.setRootDir();}", true, 0, 0, "", "", $this->dir == intval($this->rootDirID), false) . '</td>
 		<td>' . we_html_button::create_button("fa:btn_fs_back,fa-lg fa-level-up,fa-lg fa-folder", "javascript:if(rootDirButsState){top.goBackDir();}", true, 0, 0, "", "", $this->dir == intval($this->rootDirID), false) . '</td>' .
-				($extra? : '') .
-				($append || !$extra ? '<td>' . we_html_button::create_button("fa:btn_new_dir,fa-plus,fa-lg fa-folder", "javascript:top.drawNewFolder();", true, 0, 0, '', '', !$this->userCanMakeNewDir(), false) . '</td>' : '') :
+				($append || !$extra ? '<td>' . we_html_button::create_button("fa:btn_new_dir,fa-plus,fa-lg fa-folder", "javascript:top.drawNewFolder();", true, 0, 0, '', '', !$this->userCanMakeNewDir(), false) . '</td>' : '') .
+				($extra? : '') :
 				''
 			) . '
 	</tr>
@@ -309,7 +309,7 @@ top.clearEntries();';
 				new we_class_folder() :
 				new we_folder());
 
-		$folder->we_new($this->table,$this->dir,$txt);
+		$folder->we_new($this->table, $this->dir, $txt);
 		if(($msg = $folder->checkFieldsOnSave())){
 			echo we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
@@ -504,7 +504,7 @@ top.selectFile(top.currentID);
 						$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
 						if($imagesize[0] > 150 || $imagesize[1] > 150){
 							$extension = substr($result['Extension'], 1);
-							$thumbpath = WE_THUMBNAIL_DIRECTORY.'/' . $this->id . '.' . $extension;
+							$thumbpath = WE_THUMBNAIL_DIRECTORY . '/' . $this->id . '.' . $extension;
 							$created = filemtime($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
 							if(file_exists($_SERVER['DOCUMENT_ROOT'] . $thumbpath) && ($created > filemtime($_SERVER['DOCUMENT_ROOT'] . $thumbpath))){
 								//remove old thumb

@@ -45,7 +45,7 @@ class we_customer_customer extends weModelBase{
 	const PWD_NOT_SUFFICIENT = 6;
 
 	//properties
-	var $ID;
+	var $ID = 0;
 //	var $Text;
 	//var $ParentID;
 	//var $IsFolder;
@@ -305,10 +305,10 @@ class we_customer_customer extends weModelBase{
 		return ($name ? f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $db->escape($name) . '" LIMIT 1', '', $db) : true);
 	}
 
-	/*function customerFieldValueExist($fieldname, $value, $condition = ''){
-		$db = new DB_WE();
-		return (f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE ' . $db->escape($fieldname) . '="' . $db->escape($value) . '"' . ($condition ? ' AND ' . $condition : '') . ' LIMIT 1', '', $db));
-	}*/
+	/* function customerFieldValueExist($fieldname, $value, $condition = ''){
+	  $db = new DB_WE();
+	  return (f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE ' . $db->escape($fieldname) . '="' . $db->escape($value) . '"' . ($condition ? ' AND ' . $condition : '') . ' LIMIT 1', '', $db));
+	  } */
 
 	function fieldExist($field){
 		return in_array($field, $this->persistent_slots);

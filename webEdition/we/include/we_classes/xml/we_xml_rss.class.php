@@ -32,7 +32,7 @@
  * @version $Revision$
  * @access  public
  */
-class we_xml_rss extends XML_Parser{
+class we_xml_rss extends XML_Parser2{
 	// {{{ properties
 
 	/**
@@ -157,7 +157,7 @@ class we_xml_rss extends XML_Parser{
 		$this->setInputString($handle);
 
 		if($handle == ''){
-			$this->raiseError('No input passed.');
+			throw new XML_Parser2_Exception('No input passed.');
 		}
 	}
 
@@ -173,7 +173,7 @@ class we_xml_rss extends XML_Parser{
 	 * @param  array  Attributes of XML tag
 	 * @return void
 	 */
-	function startHandler($parser, $element, $attribs){
+	function startHandler($parser, $element, &$attribs){
 		if(substr($element, 0, 4) === "RSS:"){
 			$element = substr($element, 4);
 		}

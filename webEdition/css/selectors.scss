@@ -62,6 +62,9 @@ div{
 		text-align: center;
 		cursor: pointer;
 		position: relative;
+		span.fileicon{
+			font-size:inherit;
+		}
 	}
 	&.imgText{
 		text-overflow: ellipsis;

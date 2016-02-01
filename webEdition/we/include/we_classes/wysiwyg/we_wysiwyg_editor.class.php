@@ -165,7 +165,7 @@ class we_wysiwyg_editor{
 			$this->tinyCssClasses = rtrim($tf, ';');
 		}
 
-		$this->contentCss = $contentCss;
+		$this->contentCss = ($contentCss === '/' ? '' : $contentCss);
 
 		$this->Language = $Language;
 		$this->showSpell = $spell;
@@ -521,7 +521,7 @@ class we_wysiwyg_editor{
 	function getHTML(){
 		static $printed = false;
 		$js = $printed ? '' :
-			'function getDocumentCss(){
+			'function getDocumentCss(preKomma){
 	var doc=document;
 	var styles=[];
 	for(var i=0;i<doc.styleSheets.length;i++){
@@ -529,7 +529,7 @@ class we_wysiwyg_editor{
 			styles.push(doc.styleSheets[i].href);
 		}
 	}
-	return styles;
+	return styles?(preKomma?",":"")+styles.join(","):"";
 }';
 		$printed = true;
 		return
@@ -543,7 +543,7 @@ class we_wysiwyg_editor{
 		$width = is_numeric($width) ? max($width, self::MIN_WIDTH_POPUP) : '(' . intval($width) . '/100*screen.availWidth)';
 		$height = we_base_util::convertUnits($this->height);
 		$height = is_numeric($height) ? max($height, self::MIN_HEIGHT_POPUP) : '(' . intval($height) . '/100*screen.availHeight)';
-		return we_html_button::create_button(we_html_button::EDIT, "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "', " . $width . ", " . $height . ",'" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($this->fontnamesCSV, ',') . "','" . $this->outsideWE . "'," . $width . "," . $height . ",'" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . urlencode($this->baseHref) . "','" . $this->charset . "','" . $this->cssClasses . "','" . $this->Language . "','" . $this->contentCss . ",'+getDocumentCss().join(','),'" . $this->origName . "','" . we_base_request::encCmd($this->tinyParams) . "','" . we_base_request::encCmd($this->restrictContextmenu) . "', 'true', '" . $this->isFrontendEdit . "','" . $this->templates . "','" . $this->formats . "','" . $this->imageStartID . "','" . $this->galleryTemplates . "','" . $this->fontsizes . "');", true, 25);
+		return we_html_button::create_button(we_html_button::EDIT, "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "', " . $width . ", " . $height . ",'" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($this->fontnamesCSV, ',') . "','" . $this->outsideWE . "'," . $width . "," . $height . ",'" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . urlencode($this->baseHref) . "','" . $this->charset . "','" . $this->cssClasses . "','" . $this->Language . "','" . $this->contentCss . "'+getDocumentCss(" . ($this->contentCss ? 'true' : '') . ")+'," . $this->origName . "','" . we_base_request::encCmd($this->tinyParams) . "','" . we_base_request::encCmd($this->restrictContextmenu) . "', 'true', '" . $this->isFrontendEdit . "','" . $this->templates . "','" . $this->formats . "','" . $this->imageStartID . "','" . $this->galleryTemplates . "','" . $this->fontsizes . "');", true, 25);
 	}
 
 	static function parseInternalImageSrc($value){
@@ -814,7 +814,7 @@ class we_wysiwyg_editor{
 			'removeFirstParagraph' => $this->removeFirstParagraph ? "1" : "0",
 		);
 
-		$contentCss = $this->contentCss ? $this->contentCss . ',' : '';
+		$contentCss = $this->contentCss ? $this->contentCss : '';
 
 		$editorLang = array_search($GLOBALS['WE_LANGUAGE'], getWELangs());
 		$editorLangSuffix = $editorLang === 'de' ? 'de_' : '';
@@ -922,7 +922,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		screenHeight: screen.availHeight - 70,
 		className: "' . $this->className . '",
 		propString: "' . urlencode($this->propstring) . '",
-		contentCss: "' . urlencode($this->contentCss) . ',"+getDocumentCss().join(","),
+		contentCss: "' . urlencode($this->contentCss) . '"+getDocumentCss(' . ($this->contentCss ? 'true' : '') . '),
 		origName: "' . urlencode($this->origName) . '",
 		tinyParams: "' . urlencode($this->tinyParams) . '",
 		contextmenu: "' . urlencode(trim($this->restrictContextmenu, ',')) . '",
@@ -989,7 +989,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	//paste_text_use_dialog: true,
 	//fullscreen_new_window: true,
 	editor_css: "' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/editorCss.css') . '",
-	content_css: "' . we_html_element::getUnCache(LIB_DIR . 'additional/fontawesome/css/font-awesome.min.css') . ',' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/contentCssFirst.php') . '&tinyMceBackgroundColor=' . $this->bgcol . ',"+getDocumentCss().join(",")+",' . $contentCss . '",
+	content_css: "' . we_html_element::getUnCache(LIB_DIR . 'additional/fontawesome/css/font-awesome.min.css') . ',' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/contentCssFirst.php') . '&tinyMceBackgroundColor=' . $this->bgcol . '"+getDocumentCss(true)+"' . ($contentCss ? ',' . $contentCss : '') . '",
 	popup_css_add: "' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss.css') . (we_base_browserDetect::isMAC() ? ',' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss_mac.css') : '') . '",
 	' . (in_array('template', $allCommands) && $this->templates ? $this->getTemplates() : '') . '
 

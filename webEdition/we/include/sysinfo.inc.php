@@ -160,22 +160,11 @@ function getOK($message = '', $value = ''){
 $_install_dir = '<abbr title="' . $_SERVER['DOCUMENT_ROOT'] . '">' . we_base_util::shortenPath(WEBEDITION_PATH, 35) . '</abbr>';
 
 $weVersion = WE_VERSION .
-	(defined('WE_SVNREV') && WE_SVNREV != '0000' ? ' (SVN-Revision: ' . WE_SVNREV . ((defined('WE_VERSION_BRANCH') && WE_VERSION_BRANCH != 'trunk') ? '|' . WE_VERSION_BRANCH : '') . ')' : '') .
-	(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP ? ' ' . g_l('global', '[' . WE_VERSION_SUPP . ']') : '') .
-	(defined('WE_VERSION_SUPP_VERSION') && WE_VERSION_SUPP_VERSION ? WE_VERSION_SUPP_VERSION : '');
+		(defined('WE_SVNREV') && WE_SVNREV != '0000' ? ' (SVN-Revision: ' . WE_SVNREV . ((defined('WE_VERSION_BRANCH') && WE_VERSION_BRANCH != 'trunk') ? '|' . WE_VERSION_BRANCH : '') . ')' : '') .
+		(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP ? ' ' . g_l('global', '[' . WE_VERSION_SUPP . ']') : '') .
+		(defined('WE_VERSION_SUPP_VERSION') && WE_VERSION_SUPP_VERSION ? WE_VERSION_SUPP_VERSION : '');
 
-// GD_VERSION is more precise but only available in PHP 5.2.4 or newer
-if(is_callable("gd_info")){
-	if(defined('GD_VERSION')){
-		$gdVersion = GD_VERSION;
-	} else {
-		$gdinfoArray = gd_info();
-		$gdVersion = $gdinfoArray["GD Version"];
-		unset($gdinfoArray);
-	}
-} else {
-	$gdVersion = "";
-}
+$gdVersion = (defined('GD_VERSION') ? GD_VERSION : '');
 
 $phpExtensionsDetectable = true;
 
@@ -297,7 +286,7 @@ $_parts[] = array(
 	'space' => 10
 );
 echo we_html_tools::getHtmlTop(g_l('sysinfo', '[sysinfo]'), '', '', STYLESHEET .
-	we_html_element::jsScript(JS_DIR . 'sysinfo.js')
+		we_html_element::jsScript(JS_DIR . 'sysinfo.js')
 );
 ?>
 <body class="weDialogBody" style="overflow:hidden;" onload="self.focus();">

@@ -351,6 +351,9 @@ YAHOO.autocoml = {
 		return {'running': false, 'valid': true};
 	},
 	selectorSetValid: function (setFieldId) {
+		if (YAHOO.autocoml.yuiAcFields === undefined) {
+			return;
+		}
 		for (i = 0; i < YAHOO.autocoml.yuiAcFields.length; i++) {
 			set = YAHOO.autocoml.yuiAcFields[i];
 			if (set.id == setFieldId) {

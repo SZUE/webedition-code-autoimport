@@ -93,8 +93,7 @@ abstract class we_autoloader{
 		'PEAR' => 'lib/additional/pear/PEAR.php',
 		'Services_JSON_Error' => 'lib/additional/pear/Services_JSON.class.php',
 		'Services_JSON' => 'lib/additional/pear/Services_JSON.class.php',
-		'XML_Parser_Error' => 'lib/additional/pear/XML_Parser.class.php',
-		'XML_Parser' => 'lib/additional/pear/XML_Parser.class.php',
+		'XML_Parser2' => 'lib/additional/pear/XML_Parser.class.php',
 	);
 	private static $classes = array(
 		'we_classes/contents' => array(
