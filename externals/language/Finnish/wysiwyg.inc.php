@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_wysiwyg=array(
-	'XHTML Extras'=>'XHTML Extras',
 	'abbr'=>'Lyhenne',
 	'abbr_title'=>'Muokkaa lyhennettä',
 	'acronym'=>'Akronyymi',
@@ -147,6 +146,7 @@ $l_wysiwyg=array(
 	'region_class'=>'Vain valinta',
 	'relation'=>'Relaatio',
 	'removecaption'=>'Poista otsikko',
+	'removedInlinePictures'=>'Inline pictures have been removed from pasted text.',
 	'removeformat'=>'Poista muotoilut',
 	'removeformat_warning'=>'Tämä toiminto poistaa muotoilun koko tekstikentästä! Haluatko jatkaa?',
 	'removetags'=>'Remove tags, styles and comments',

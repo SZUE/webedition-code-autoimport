@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_wysiwyg=array(
-	'XHTML Extras'=>'XHTML Extras',
 	'abbr'=>'Abbreviation',
 	'abbr_title'=>'Edit Abbreviation',
 	'acronym'=>'Acrónimo',
@@ -147,6 +146,7 @@ $l_wysiwyg=array(
 	'region_class'=>'Selección solamente',
 	'relation'=>'Relación',
 	'removecaption'=>'Remover Caption',
+	'removedInlinePictures'=>'Inline pictures have been removed from pasted text.',
 	'removeformat'=>'Remover formato',
 	'removeformat_warning'=>'This functions will remove the formating of the whole text field! Do you really want to continue?',
 	'removetags'=>'Remove tags, styles and comments',

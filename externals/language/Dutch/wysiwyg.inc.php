@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_wysiwyg=array(
-	'XHTML Extras'=>'XHTML Extras',
 	'abbr'=>'Afkorting',
 	'abbr_title'=>'Wijzig afkorting',
 	'acronym'=>'Acroniem',
@@ -147,6 +146,7 @@ $l_wysiwyg=array(
 	'region_class'=>'Alleen selectie',
 	'relation'=>'Relatie',
 	'removecaption'=>'Verwijder onderschrift',
+	'removedInlinePictures'=>'Inline pictures have been removed from pasted text.',
 	'removeformat'=>'Verwijder opmaak',
 	'removeformat_warning'=>'Deze functie zal alle opmaak van het tekstveld verwijderen! Weet u zeker dat u wilt doorgaan?',
 	'removetags'=>'Remove tags, styles and comments',

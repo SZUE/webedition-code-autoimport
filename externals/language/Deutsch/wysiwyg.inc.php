@@ -1,7 +1,6 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_wysiwyg=array(
-	'XHTML Extras'=>'typo',
 	'abbr'=>'Abkürzung',
 	'abbr_title'=>'Abkürzung bearbeiten',
 	'acronym'=>'Akronym',
@@ -147,6 +146,7 @@ $l_wysiwyg=array(
 	'region_class'=>'Nur Auswahl',
 	'relation'=>'Beziehung',
 	'removecaption'=>'Beschriftung entfernen',
+	'removedInlinePictures'=>'Eingebette Bilder wurden aus dem eingefügten Text entfernt.',
 	'removeformat'=>'Formatierung löschen',
 	'removeformat_warning'=>'Diese Funktion löscht die Formatierung des gesamten Textfeldes! Möchten Sie wirklich fortfahren?',
 	'removetags'=>'Tags, Styles und Kommentare löschen',
