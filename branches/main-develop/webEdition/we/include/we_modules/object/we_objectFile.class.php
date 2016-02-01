@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_objectFile extends we_document{
+
 	const TYPE_BINARY = 'binary';
 	const TYPE_CHECKBOX = 'checkbox';
 	const TYPE_COUNTRY = 'country';
@@ -166,8 +167,8 @@ class we_objectFile extends we_document{
 		}
 		if(isset($_REQUEST['we_ui_' . $formname . '_Category'])){
 			$_REQUEST['we_ui_' . $formname . '_Category'] = (is_array($_REQUEST['we_ui_' . $formname . '_Category']) ?
-					implode(',', $_REQUEST['we_ui_' . $formname . '_Category']) :
-					implode(',', array_filter(explode(',', $_REQUEST['we_ui_' . $formname . '_Category']))));
+							implode(',', $_REQUEST['we_ui_' . $formname . '_Category']) :
+							implode(',', array_filter(explode(',', $_REQUEST['we_ui_' . $formname . '_Category']))));
 		}
 		foreach($wof->persistent_slots as $slotname){
 			if($slotname != 'categories' && ($tmp = we_base_request::_(we_base_request::RAW, 'we_ui_' . $formname . '_' . $slotname)) !== false){
@@ -199,7 +200,7 @@ class we_objectFile extends we_document{
 		$this->setLanguage();
 		$this->setUrl();
 		if(!$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->Table) . ' SET Url="' . $this->DB_WE->escape($this->Url) . '" WHERE ID=' . intval($this->ID)) ||
-			!$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($this->TableID) . ' SET OF_Url="' . $this->DB_WE->escape($this->Url) . '" WHERE OF_ID=' . intval($this->ID))){
+				!$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($this->TableID) . ' SET OF_Url="' . $this->DB_WE->escape($this->Url) . '" WHERE OF_ID=' . intval($this->ID))){
 			return false;
 		}
 
@@ -552,8 +553,8 @@ class we_objectFile extends we_document{
 
 	public function formClass(){
 		return ($this->ID ?
-				'<span class="defaultfont">' . f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE) . '</span>' :
-				$this->formSelect2(388, 'TableID', OBJECT_TABLE, 'ID', 'Text', '', '', 'IsFolder=0' . ($this->AllowedClasses ? ' AND ID IN(' . $this->AllowedClasses . ')' : '') . ' ORDER BY Path ', 1, $this->TableID, false, "if(_EditorFrame.getEditorDocumentId() != 0){we_cmd('reload_editpage');}else{we_cmd('restore_defaults');};_EditorFrame.setEditorIsHot(true);"));
+						'<span class="defaultfont">' . f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE) . '</span>' :
+						$this->formSelect2(388, 'TableID', OBJECT_TABLE, 'ID', 'Text', '', '', 'IsFolder=0' . ($this->AllowedClasses ? ' AND ID IN(' . $this->AllowedClasses . ')' : '') . ' ORDER BY Path ', 1, $this->TableID, false, "if(_EditorFrame.getEditorDocumentId() != 0){we_cmd('reload_editpage');}else{we_cmd('restore_defaults');};_EditorFrame.setEditorIsHot(true);"));
 	}
 
 	public function formClassId(){
@@ -754,9 +755,9 @@ class we_objectFile extends we_document{
 
 	private static function formatDescription($desc){
 		return '<div class="objectDescription">' . (strpos($desc, '<script') === false ?
-				str_replace("\n", we_html_element::htmlBr(), $desc) :
-				$desc
-			) . '</div>';
+						str_replace("\n", we_html_element::htmlBr(), $desc) :
+						$desc
+				) . '</div>';
 	}
 
 	private function getMetaFieldHTML($type, $name, array $attribs, $editable = true, $variant = false){
@@ -766,8 +767,8 @@ class we_objectFile extends we_document{
 			return $this->getPreviewView($name, isset($vals[$element]) ? $vals[$element] : '');
 		}
 		return ($variant ?
-				$this->htmlSelect('we_' . $this->Name . '_meta[' . $name . ']', $vals, 1, $element) :
-				$this->formSelectFromArray('meta', $name, $vals, '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["meta_" . $name]["required"] ? '*' : '') . '</span>' . (!empty($this->DefArray["meta_$name"]['editdescription']) ? self::formatDescription($this->DefArray["meta_$name"]['editdescription']) : we_html_element::htmlBr()), 1, false, array('onchange' => '_EditorFrame.setEditorIsHot(true);')));
+						$this->htmlSelect('we_' . $this->Name . '_meta[' . $name . ']', $vals, 1, $element) :
+						$this->formSelectFromArray('meta', $name, $vals, '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["meta_" . $name]["required"] ? '*' : '') . '</span>' . (!empty($this->DefArray["meta_$name"]['editdescription']) ? self::formatDescription($this->DefArray["meta_$name"]['editdescription']) : we_html_element::htmlBr()), 1, false, array('onchange' => '_EditorFrame.setEditorIsHot(true);')));
 	}
 
 	private function getObjectFieldHTML($type, $ObjectID, array $attribs, $editable = true){
@@ -803,12 +804,12 @@ class we_objectFile extends we_document{
 		if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 			$uniq = md5(uniqid(__FUNCTION__, true));
 			$openCloseButton = $myid ?
-				we_html_multiIconBox::_getButton($uniq, "weToggleBox('" . $uniq . "','','')", "down", g_l('global', '[openCloseBox]')) :
-				'';
+					we_html_multiIconBox::_getButton($uniq, "weToggleBox('" . $uniq . "','','')", "down", g_l('global', '[openCloseBox]')) :
+					'';
 
 			$objectpreview = '<div id="text_' . $uniq . '"></div><div id="table_' . $uniq . '" style="display:block; padding: 10px 0px 20px 30px;">' .
-				($myid ? $ob->getFieldsHTML(0, true) : "") .
-				'</div>';
+					($myid ? $ob->getFieldsHTML(0, true) : "") .
+					'</div>';
 		} else {
 			$openCloseButton = '';
 			$objectpreview = '';
@@ -820,10 +821,10 @@ class we_objectFile extends we_document{
 			$but = we_html_multiIconBox::_getButton($uniq, "weToggleBox('" . $uniq . "','" . $txt . "','" . $txt . "')", "down", g_l('global', '[openCloseBox]'));
 
 			return $but .
-				'<span style="cursor: pointer;" class="weObjectPreviewHeadline" id="text_' . $uniq . '" onclick="weToggleBox(\'' . $uniq . '\',\'' . $txt . '\',\'' . $txt . '\');">' . $txt . '</span>' . ($npubl ? '' : ' <span class="weObjectPreviewHeadline" style="color:red">' . g_l('modules_object', '[not_published]') . '</span>'
-				) .
-				'<div id="table_' . $uniq . '" style="display:block; padding: 10px 0px 20px 30px;">' .
-				$myid ? $ob->getFieldsHTML(false, true) : '</div>';
+					'<span style="cursor: pointer;" class="weObjectPreviewHeadline" id="text_' . $uniq . '" onclick="weToggleBox(\'' . $uniq . '\',\'' . $txt . '\',\'' . $txt . '\');">' . $txt . '</span>' . ($npubl ? '' : ' <span class="weObjectPreviewHeadline" style="color:red">' . g_l('modules_object', '[not_published]') . '</span>'
+					) .
+					'<div id="table_' . $uniq . '" style="display:block; padding: 10px 0px 20px 30px;">' .
+					$myid ? $ob->getFieldsHTML(false, true) : '</div>';
 		}
 
 		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
@@ -831,9 +832,9 @@ class we_objectFile extends we_document{
 		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('object_change_objectlink','" . $GLOBALS['we_transaction'] . "','" . we_object::QUERY_PREFIX . $ObjectID . "');");
 
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . $table . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $pid . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ')') .
-			$editObjectButton .
-			($myid ? $openCloseButton : '') .
-			we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value=0;document.we_form.elements['" . $textname . "'].value='';_EditorFrame.setEditorIsHot(true);top.we_cmd('object_reload_entry_at_object','" . $GLOBALS['we_transaction'] . "','" . we_object::QUERY_PREFIX . $ObjectID . "')");
+				$editObjectButton .
+				($myid ? $openCloseButton : '') .
+				we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value=0;document.we_form.elements['" . $textname . "'].value='';_EditorFrame.setEditorIsHot(true);top.we_cmd('object_reload_entry_at_object','" . $GLOBALS['we_transaction'] . "','" . we_object::QUERY_PREFIX . $ObjectID . "')");
 
 		$yuiSuggest = &weSuggest::getInstance();
 		$yuiSuggest->setAcId($textname . we_base_file::getUniqueId(), '/' . $name);
@@ -847,8 +848,8 @@ class we_objectFile extends we_document{
 		$yuiSuggest->setWidth($inputWidth);
 
 		return we_html_tools::htmlFormElementTable(
-				$yuiSuggest->getHTML(), '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray[we_object::QUERY_PREFIX . $ObjectID]["required"] ? "*" : "") . '</span>' . ($npubl ? '' : ' <span style="color:red">' . g_l('modules_object', '[not_published]') . '</span>') . (!empty($this->DefArray[we_object::QUERY_PREFIX . $ObjectID]['editdescription']) ? self::formatDescription($this->DefArray[we_object::QUERY_PREFIX . $ObjectID]['editdescription']) : we_html_element::htmlBr() ), "left", "defaultfont", $button) .
-			$objectpreview;
+						$yuiSuggest->getHTML(), '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray[we_object::QUERY_PREFIX . $ObjectID]["required"] ? "*" : "") . '</span>' . ($npubl ? '' : ' <span style="color:red">' . g_l('modules_object', '[not_published]') . '</span>') . (!empty($this->DefArray[we_object::QUERY_PREFIX . $ObjectID]['editdescription']) ? self::formatDescription($this->DefArray[we_object::QUERY_PREFIX . $ObjectID]['editdescription']) : we_html_element::htmlBr() ), "left", "defaultfont", $button) .
+				$objectpreview;
 	}
 
 	private function getMultiObjectFieldHTML($type, $name, array $attribs, $editable = true){
@@ -919,12 +920,12 @@ class we_objectFile extends we_document{
 				$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_delete_meta_at_object','" . $GLOBALS['we_transaction'] . "','" . self::TYPE_MULTIOBJECT . '_' . $name . "','" . ($f) . "')");
 
 				$buttontable = $selectObject .
-					($myid ? $editObjectButton : $editObjectButtonDis) .
-					($myid ? $openCloseButton : '') .
-					(empty($max) || (count($objects) < $max) ? $plusbut : $plusbutDis) .
-					($f > 0 ? $upbut : $upbutDis ) .
-					($f < count($objects) - 1 ? $downbut : $downbutDis) .
-					$trashbut;
+						($myid ? $editObjectButton : $editObjectButtonDis) .
+						($myid ? $openCloseButton : '') .
+						(empty($max) || (count($objects) < $max) ? $plusbut : $plusbutDis) .
+						($f > 0 ? $upbut : $upbutDis ) .
+						($f < count($objects) - 1 ? $downbut : $downbutDis) .
+						$trashbut;
 
 				$yuiSuggest->setAcId($textname . we_base_file::getUniqueId(), $rootDirPath);
 				$yuiSuggest->setInput($textname, $path);
@@ -938,14 +939,14 @@ class we_objectFile extends we_document{
 					$ob->DefArray = $ob->getDefaultValueArray();
 
 					$content .= '<div id="text_' . $uniq . '"></div><div id="table_' . $uniq . '" style="display:none; padding: 10px 0px 20px 30px;">' .
-						$ob->getFieldsHTML(0, true) .
-						'</div>';
+							$ob->getFieldsHTML(0, true) .
+							'</div>';
 				}
 			}
 
 			$content .= (empty($max) || count($objects) < $max ?
-					we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_meta_at_object','" . $GLOBALS['we_transaction'] . "','" . self::TYPE_MULTIOBJECT . '_' . $name . "','" . ($f - 1) . "')") :
-					we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', '#', true, 21, 22, "", "", true));
+							we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_meta_at_object','" . $GLOBALS['we_transaction'] . "','" . self::TYPE_MULTIOBJECT . '_' . $name . "','" . ($f - 1) . "')") :
+							we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', '#', true, 21, 22, "", "", true));
 
 			$this->setElement($name, implode(',', $objects), 'multiobject');
 
@@ -964,11 +965,11 @@ class we_objectFile extends we_document{
 
 				$but = we_html_multiIconBox::_getButton($uniq, "weToggleBox('" . $uniq . "','" . $txt . "','" . $txt . "')", "right", g_l('global', '[openCloseBox]'));
 				$content .= $but .
-					'<span style="cursor: pointer;" class="weObjectPreviewHeadline" id="text_' . $uniq . '" onclick="weToggleBox(\'' . $uniq . '\',\'' . $txt . '\',\'' . $txt . '\');" >' . $txt . '</span>';
+						'<span style="cursor: pointer;" class="weObjectPreviewHeadline" id="text_' . $uniq . '" onclick="weToggleBox(\'' . $uniq . '\',\'' . $txt . '\',\'' . $txt . '\');" >' . $txt . '</span>';
 
 				$content .= '<div id="table_' . $uniq . '" style="display:none; padding: 10px 0px 20px 30px;">' .
-					$ob->getFieldsHTML(0, true) .
-					'</div>';
+						$ob->getFieldsHTML(0, true) .
+						'</div>';
 			}
 		}
 
@@ -990,7 +991,7 @@ class we_objectFile extends we_document{
 			$val = $this->getElement($name) ? : $attribs['default'];
 
 			return
-				'<table class="defaultfont">
+					'<table class="defaultfont">
 				<tr><td><span class="weObjectPreviewHeadline">' . $name . '</span>' . (!empty($this->DefArray["shopVat_shopvat"]['editdescription']) ? self::formatDescription($this->DefArray["shopVat_shopvat"]['editdescription']) : '' ) . '</td></tr>
 				<tr><td>' . we_class::htmlSelect('we_' . $this->Name . '_shopVat[' . $name . ']', $values, 1, $val) . '</td></tr>
 			</table>';
@@ -1011,14 +1012,14 @@ class we_objectFile extends we_document{
 			if($attribs['shopcatLimitChoice']){
 				$values[] = we_category::we_getCatsFromIDs(intval($attribs['default']), ',', true, $this->DB_WE, '', 'Path');
 				$input = we_class::htmlSelect('dummy', $values, 1, 0, false, array('disabled' => 'disabled')) .
-					we_html_element::htmlHidden('we_' . $this->Name . '_shopCategory[' . $name . ']', $attribs['default']);
+						we_html_element::htmlHidden('we_' . $this->Name . '_shopCategory[' . $name . ']', $attribs['default']);
 			} else {
 				$values = array('0' => ' ') + we_shop_category::getShopCatFieldsFromDir('Path', true); //Fix #9355 don't use array_merge() because numeric keys will be renumbered!
 				$input = we_class::htmlSelect('we_' . $this->Name . '_shopCategory[' . $name . ']', $values, 1, ($this->getElement($name) ? : $attribs['default']));
 			}
 
 			return
-				'<table class="defaultfont">
+					'<table class="defaultfont">
 				<tr><td><span class="weObjectPreviewHeadline">' . $name . '</span>' . (!empty($this->DefArray['_shopCategory__shopcategory']['editdescription']) ? self::formatDescription($this->DefArray['_shopCategory__shopcategory']['editdescription']) : '' ) . '</td></tr>
 				<tr><td>' . $input . '</td></tr>
 			</table>';
@@ -1064,10 +1065,10 @@ class we_objectFile extends we_document{
 				break;
 			default:
 				$out = self::hrefRow($intID_elem_Name, $intID, $intPath_elem_Name, $intPath, $attr, $int_elem_Name, true, $int, '', $file, $directory) .
-					self::hrefRow('', 0, $ext_elem_Name, $extPath, $attr, $int_elem_Name, true, $int, '', $file, $directory);
+						self::hrefRow('', 0, $ext_elem_Name, $extPath, $attr, $int_elem_Name, true, $int, '', $file, $directory);
 		}
 		return ($variant ? '' : '<span class="weObjectPreviewHeadline"><b>' . $n . ($this->DefArray['href_' . $n]['required'] ? '*' : '') . '</b></span>' . (!empty($this->DefArray["href_" . $n]['editdescription']) ? self::formatDescription($this->DefArray["href_" . $n]['editdescription']) : we_html_element::htmlBr() )) .
-			'<table class="default weEditTable">' . $out . '</table>';
+				'<table class="default weEditTable">' . $out . '</table>';
 	}
 
 	public static function hrefRow($intID_elem_Name, $intID, $Path_elem_Name, $path, $attr, $int_elem_Name, $showRadio = false, $int = true, $extraCmd = '', $file = true, $directory = false){
@@ -1079,9 +1080,9 @@ class we_objectFile extends we_document{
 			$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Path_elem_Name . "'].value");
 			$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);" . ($showRadio ? "opener.document.we_form.elements['" . $int_elem_Name . "'][0].checked=true;" : "") . str_replace('\\', '', $extraCmd));
 			$but = (($directory && $file) || $file ?
-					we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 0 : 1) . ");") :
-					we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0);")
-				);
+							we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 0 : 1) . ");") :
+							we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0);")
+					);
 			$yuiSuggest = &weSuggest::getInstance();
 			$yuiSuggest->setAcId($int_elem_Name . we_base_file::getUniqueId());
 			$yuiSuggest->setContentType(implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::QUICKTIME)));
@@ -1097,19 +1098,19 @@ class we_objectFile extends we_document{
 			$cmd1 = "document.forms[0].elements['" . $Path_elem_Name . "'].value";
 			$wecmdenc4 = we_base_request::encCmd("if (opener.opener != null){opener.opener._EditorFrame.setEditorIsHot(true);}else{opener._EditorFrame.setEditorIsHot(true);}" . ($showRadio ? "opener.document.we_form.elements['" . $int_elem_Name . "'][1].checked=true;" : ""));
 			$but = (!permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? '' : (
-					we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . $cmd1 . "','" . (($directory && $file) ? 'filefolder' : ($file ? '' : we_base_ContentTypes::FOLDER)) . "'," . we_base_request::encCmd($cmd1) . ",'" . $wecmdenc4 . "')")
-					));
+							we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . $cmd1 . "','" . (($directory && $file) ? 'filefolder' : ($file ? '' : we_base_ContentTypes::FOLDER)) . "'," . we_base_request::encCmd($cmd1) . ",'" . $wecmdenc4 . "')")
+							));
 		}
 
 		return '<tr>' .
-			($showRadio ?
-				'<td>' . we_html_forms::radiobutton(($intID_elem_Name ? 1 : 0), $checked, $int_elem_Name, g_l('tags', (!$intID_elem_Name) ? '[ext_href]' : '[int_href]') . ':&nbsp;', true, 'defaultfont', '') . '</td>' :
-				'<input type="hidden" name="' . $int_elem_Name . '" value="' . ($intID_elem_Name ? 1 : 0) . '" />'
-			) . '<td>' .
-			($intID_elem_Name ?
-				$yuiSuggest->getHTML() :
-				'<input' . ($showRadio ? ' onchange="this.form.elements[\'' . $int_elem_Name . '\'][' . ($intID_elem_Name ? 0 : 1) . '].checked=true;"' : '' ) . ' type="text" style="width:200px" name="' . $Path_elem_Name . '" value="' . $path . '" ' . $attr . ' />'
-			) . '
+				($showRadio ?
+						'<td>' . we_html_forms::radiobutton(($intID_elem_Name ? 1 : 0), $checked, $int_elem_Name, g_l('tags', (!$intID_elem_Name) ? '[ext_href]' : '[int_href]') . ':&nbsp;', true, 'defaultfont', '') . '</td>' :
+						'<input type="hidden" name="' . $int_elem_Name . '" value="' . ($intID_elem_Name ? 1 : 0) . '" />'
+				) . '<td>' .
+				($intID_elem_Name ?
+						$yuiSuggest->getHTML() :
+						'<input' . ($showRadio ? ' onchange="this.form.elements[\'' . $int_elem_Name . '\'][' . ($intID_elem_Name ? 0 : 1) . '].checked=true;"' : '' ) . ' type="text" style="width:200px" name="' . $Path_elem_Name . '" value="' . $path . '" ' . $attr . ' />'
+				) . '
 	</td>
 	<td>' . $but . '</td>
 	<td>' . $trashbut . '</td>
@@ -1134,13 +1135,13 @@ class we_objectFile extends we_document{
 		}
 
 		return ($headline ?
-				'<span class="weObjectPreviewHeadline">' . $n . ($this->DefArray["link_" . $n]["required"] ? "*" : "") . '</span>' . ( $we_editmode && !empty($this->DefArray["link_" . $n]['editdescription']) ? self::formatDescription($this->DefArray["link_" . $n]['editdescription']) : we_html_element::htmlBr() ) :
-				'') . ($startTag ? $startTag . $content . '</a>' : $content) . ($we_editmode ? ($buttons) : "");
+						'<span class="weObjectPreviewHeadline">' . $n . ($this->DefArray["link_" . $n]["required"] ? "*" : "") . '</span>' . ( $we_editmode && !empty($this->DefArray["link_" . $n]['editdescription']) ? self::formatDescription($this->DefArray["link_" . $n]['editdescription']) : we_html_element::htmlBr() ) :
+						'') . ($startTag ? $startTag . $content . '</a>' : $content) . ($we_editmode ? ($buttons) : "");
 	}
 
 	private function getPreviewView($name, $content){
 		return '<div class="weObjectPreviewHeadline">' . $name . '</div>' .
-			( ($content !== '') ? '<div class="defaultfont">' . $content . '</div>' : '');
+				( ($content !== '') ? '<div class="defaultfont">' . $content . '</div>' : '');
 	}
 
 	private function getInputFieldHTML($type, $name, $attribs, $editable = true, $variant = false){
@@ -1148,10 +1149,10 @@ class we_objectFile extends we_document{
 			return $this->getPreviewView($name, $this->getElement($name));
 		}
 		return ($variant ?
-				'' :
-				'<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["input_" . $name]["required"] ? '*' : '') . '</span>' . (!empty($this->DefArray["input_" . $name]['editdescription']) ? we_html_element::htmlBr() . self::formatDescription($this->DefArray["input_" . $name]['editdescription']) : we_html_element::htmlBr() )
-			) .
-			we_html_tools::htmlTextInput("we_" . $this->Name . "_input[$name]", 40, $this->getElement($name), $this->getElement($name, "len"), 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 620);
+						'' :
+						'<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["input_" . $name]["required"] ? '*' : '') . '</span>' . (!empty($this->DefArray["input_" . $name]['editdescription']) ? we_html_element::htmlBr() . self::formatDescription($this->DefArray["input_" . $name]['editdescription']) : we_html_element::htmlBr() )
+				) .
+				we_html_tools::htmlTextInput("we_" . $this->Name . "_input[$name]", 40, $this->getElement($name), $this->getElement($name, "len"), 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 620);
 	}
 
 	private function getCountryFieldHTML($type, $name, $attribs, $editable = true, $variant = false){
@@ -1160,8 +1161,8 @@ class we_objectFile extends we_document{
 
 		if(!$editable){
 			return '<div class="weObjectPreviewHeadline">' . $name . '</div>' .
-				($this->getElement($name) != '--' || $this->getElement($name) ? '<div class="defaultfont">' . CheckAndConvertISObackend(we_base_country::getTranslation($this->getElement($name), we_base_country::TERRITORY, $langcode)) . '</div>' :
-					'');
+					($this->getElement($name) != '--' || $this->getElement($name) ? '<div class="defaultfont">' . CheckAndConvertISObackend(we_base_country::getTranslation($this->getElement($name), we_base_country::TERRITORY, $langcode)) . '</div>' :
+							'');
 		}
 
 		$countrycode = array_search($langcode, getWECountries());
@@ -1202,17 +1203,17 @@ class we_objectFile extends we_document{
 		$countryselect->selectOption($this->getElement($name));
 
 		return ($variant ?
-				'' :
-				'<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["country_" . $name]["required"] ? "*" : "") . "</span>" . (!empty($this->DefArray["country_" . $name]['editdescription']) ? we_html_element::htmlBr() . self::formatDescription($this->DefArray["country_" . $name]['editdescription']) : we_html_element::htmlBr() )
-			) .
-			$countryselect->getHtml();
+						'' :
+						'<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["country_" . $name]["required"] ? "*" : "") . "</span>" . (!empty($this->DefArray["country_" . $name]['editdescription']) ? we_html_element::htmlBr() . self::formatDescription($this->DefArray["country_" . $name]['editdescription']) : we_html_element::htmlBr() )
+				) .
+				$countryselect->getHtml();
 	}
 
 	private function getLanguageFieldHTML($type, $name, $attribs, $editable = true, $variant = false){
 		if(!$editable){
 			return '<div class="weObjectPreviewHeadline">' . $name . '</div>' .
-				($this->getElement($name) != '--' || $this->getElement($name) ? '<div class="defaultfont">' . CheckAndConvertISObackend(we_base_country::getTranslation($this->getElement($name), we_base_country::LANGUAGE, array_search($GLOBALS['WE_LANGUAGE'], getWELangs()))) . '</div>' :
-					'');
+					($this->getElement($name) != '--' || $this->getElement($name) ? '<div class="defaultfont">' . CheckAndConvertISObackend(we_base_country::getTranslation($this->getElement($name), we_base_country::LANGUAGE, array_search($GLOBALS['WE_LANGUAGE'], getWELangs()))) . '</div>' :
+							'');
 		}
 		$frontendL = $GLOBALS["weFrontendLanguages"];
 		foreach($frontendL as &$lcvalue){
@@ -1231,9 +1232,9 @@ class we_objectFile extends we_document{
 		}
 		$languageselect->selectOption($this->getElement($name));
 		return ($variant ?
-				'' :
-				'<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["language_" . $name]["required"] ? "*" : "") . "</span>" . (!empty($this->DefArray["language_" . $name]['editdescription']) ? we_html_element::htmlBr() . self::formatDescription($this->DefArray["language_" . $name]['editdescription']) : we_html_element::htmlBr() )
-			) . $languageselect->getHtml();
+						'' :
+						'<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["language_" . $name]["required"] ? "*" : "") . "</span>" . (!empty($this->DefArray["language_" . $name]['editdescription']) ? we_html_element::htmlBr() . self::formatDescription($this->DefArray["language_" . $name]['editdescription']) : we_html_element::htmlBr() )
+				) . $languageselect->getHtml();
 	}
 
 	private function getCheckboxFieldHTML($type, $name, array $attribs, $editable = true){
@@ -1241,7 +1242,7 @@ class we_objectFile extends we_document{
 			return $this->getPreviewView($name, g_l('global', ($this->getElement($name) ? '[yes]' : '[no]')));
 		}
 		return '<span class="weObjectPreviewHeadline"><b>' . $name . ($this->DefArray['checkbox_' . $name]["required"] ? "*" : "") . "</b></span>" . (!empty($this->DefArray["checkbox_" . $name]['editdescription']) ? self::formatDescription($this->DefArray["checkbox_" . $name]['editdescription']) : we_html_element::htmlBr()) .
-			we_html_forms::checkboxWithHidden(($this->getElement($name) ? true : false), "we_" . $this->Name . "_checkbox[$name]", "", false, "defaultfont", "_EditorFrame.setEditorIsHot(true);");
+				we_html_forms::checkboxWithHidden(($this->getElement($name) ? true : false), "we_" . $this->Name . "_checkbox[$name]", "", false, "defaultfont", "_EditorFrame.setEditorIsHot(true);");
 	}
 
 	private function getIntFieldHTML($type, $name, array $attribs, $editable = true, $variant = false){
@@ -1249,8 +1250,8 @@ class we_objectFile extends we_document{
 			return $this->getPreviewView($name, (strlen($this->getElement($name)) ? $this->getElement($name) : ''));
 		}
 		return ($variant ? '' : '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["int_" . $name]["required"] ? "*" : "") . "</span>" . (!empty($this->DefArray["int_" . $name]['editdescription']) ? self::formatDescription($this->DefArray["int_" . $name]['editdescription']) : we_html_element::htmlBr() )
-			) .
-			we_html_tools::htmlTextInput("we_" . $this->Name . "_int[$name]", 40, $this->getElement($name), $this->getElement($name, "len"), 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 620);
+				) .
+				we_html_tools::htmlTextInput("we_" . $this->Name . "_int[$name]", 40, $this->getElement($name), $this->getElement($name, "len"), 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 620);
 	}
 
 	private function getFloatFieldHTML($type, $name, array $attribs, $editable = true, $variant = false){
@@ -1259,10 +1260,10 @@ class we_objectFile extends we_document{
 		}
 
 		return ($variant ?
-				'' :
-				'<span class="weObjectPreviewHeadline"><b>' . $name . ($this->DefArray["float_" . $name]["required"] ? "*" : "") . "</b></span>" . (!empty($this->DefArray["float_" . $name]['editdescription']) ? self::formatDescription($this->DefArray["float_" . $name]['editdescription']) : we_html_element::htmlBr())
-			) .
-			we_html_tools::htmlTextInput("we_" . $this->Name . "_float[$name]", 40, strlen($this->getElement($name)) ? $this->getElement($name) : "", $this->getElement($name, "len"), 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 620);
+						'' :
+						'<span class="weObjectPreviewHeadline"><b>' . $name . ($this->DefArray["float_" . $name]["required"] ? "*" : "") . "</b></span>" . (!empty($this->DefArray["float_" . $name]['editdescription']) ? self::formatDescription($this->DefArray["float_" . $name]['editdescription']) : we_html_element::htmlBr())
+				) .
+				we_html_tools::htmlTextInput("we_" . $this->Name . "_float[$name]", 40, strlen($this->getElement($name)) ? $this->getElement($name) : "", $this->getElement($name, "len"), 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 620);
 	}
 
 	private function getDateFieldHTML($type, $name, array $attribs, $editable = true, $variant = false){
@@ -1271,10 +1272,10 @@ class we_objectFile extends we_document{
 		}
 		$d = abs($this->getElement($name));
 		return ($variant ?
-				'' :
-				'<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray['date_' . $name]["required"] ? '*' : '') . '</span>' . (!empty($this->DefArray["date_$name"]['editdescription']) ? self::formatDescription($this->DefArray["date_$name"]['editdescription']) : we_html_element::htmlBr()) . we_html_element::htmlBr()
-			) .
-			we_html_tools::getDateInput2("we_" . $this->Name . '_date[' . $name . ']', ($d ? : time()), true);
+						'' :
+						'<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray['date_' . $name]["required"] ? '*' : '') . '</span>' . (!empty($this->DefArray["date_$name"]['editdescription']) ? self::formatDescription($this->DefArray["date_$name"]['editdescription']) : we_html_element::htmlBr()) . we_html_element::htmlBr()
+				) .
+				we_html_tools::getDateInput2("we_" . $this->Name . '_date[' . $name . ']', ($d ? : time()), true);
 	}
 
 	private function getTextareaHTML($type, $name, array $attribs, $editable = true, $variant = false){
@@ -1304,8 +1305,8 @@ class we_objectFile extends we_document{
 		$textarea = we_html_forms::weTextarea('we_' . $this->Name . '_text[' . $name . ']', $value, $attribs, $autobr, $autobrName, true, "", ((!empty($attribs["classes"])) || $this->getDocumentCss()) ? false : true, false, $xml, $removefirstparagraph, $charset, true, false, $name);
 
 		return ($variant ? '' :
-				'<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["text_" . $name]["required"] ? "*" : "") . "</span>" . (!empty($this->DefArray["text_" . $name]['editdescription']) ? self::formatDescription($this->DefArray["text_" . $name]['editdescription']) : we_html_element::htmlBr())
-			) . $textarea;
+						'<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["text_" . $name]["required"] ? "*" : "") . "</span>" . (!empty($this->DefArray["text_" . $name]['editdescription']) ? self::formatDescription($this->DefArray["text_" . $name]['editdescription']) : we_html_element::htmlBr())
+				) . $textarea;
 	}
 
 	private function getImageHTML($type, $name, array $attribs, $editable = true, $variant = false){
@@ -1351,16 +1352,16 @@ class we_objectFile extends we_document{
 		$wecmdenc3 = we_base_request::encCmd("opener.top.we_cmd('object_reload_entry_at_object','" . $GLOBALS['we_transaction'] . "','img_" . $name . "');opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();");
 
 		return ($variant ?
-				'' :
-				'<span class="weObjectPreviewHeadline"><b>' . $name . ($this->DefArray["img_" . $name]["required"] ? '*' : '') . '</b></span>' . (!empty($this->DefArray["img_$name"]['editdescription']) ? self::formatDescription($this->DefArray["img_$name"]['editdescription']) : we_html_element::htmlBr())
-			) .
-			'<input type=hidden name="' . $fname . '" value="' . $this->getElement($name) . '" />' .
+						'' :
+						'<span class="weObjectPreviewHeadline"><b>' . $name . ($this->DefArray["img_" . $name]["required"] ? '*' : '') . '</b></span>' . (!empty($this->DefArray["img_$name"]['editdescription']) ? self::formatDescription($this->DefArray["img_$name"]['editdescription']) : we_html_element::htmlBr())
+				) .
+				'<input type=hidden name="' . $fname . '" value="' . $this->getElement($name) . '" />' .
 // show thumbnail of image if there exists one:
-			(!empty($thumbID) ?
-				'<img src="' . $_imgSrc . '" style="height:' . $_imgHeight . 'px;width:' . $_imgWight . 'px" />' :
-				$img->getHtml()) .
-			we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('we_selector_image','" . ($id ? : (isset($this->DefArray["img_$name"]['defaultdir']) ? $this->DefArray["img_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','', " . (!empty($this->DefArray["img_$name"]['rootdir']) ? $this->DefArray["img_$name"]['rootdir'] : 0) . ",'" . we_base_ContentTypes::IMAGE . "')") .
-			we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('object_remove_image_at_object','" . $GLOBALS['we_transaction'] . "','img_" . $name . "');setScrollTo();");
+				(!empty($thumbID) ?
+						'<img src="' . $_imgSrc . '" style="height:' . $_imgHeight . 'px;width:' . $_imgWight . 'px" />' :
+						$img->getHtml()) .
+				we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('we_selector_image','" . ($id ? : (isset($this->DefArray["img_$name"]['defaultdir']) ? $this->DefArray["img_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','', " . (!empty($this->DefArray["img_$name"]['rootdir']) ? $this->DefArray["img_$name"]['rootdir'] : 0) . ",'" . we_base_ContentTypes::IMAGE . "')") .
+				we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('object_remove_image_at_object','" . $GLOBALS['we_transaction'] . "','img_" . $name . "');setScrollTo();");
 	}
 
 	private function getBinaryHTML($type, $name, array $attribs, $editable = true){
@@ -1377,9 +1378,9 @@ class we_objectFile extends we_document{
 		$wecmdenc3 = we_base_request::encCmd("opener.top.we_cmd('object_reload_entry_at_object','" . $GLOBALS['we_transaction'] . "','binary_" . $name . "');opener._EditorFrame.setEditorIsHot(true);");
 
 		$content = '<input type=hidden name="' . $fname . '" value="' . $this->getElement($name) . '" />' .
-			$img->getHtml() .
-			we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('we_selector_document','" . ($id ? : (isset($this->DefArray["binary_$name"]['defaultdir']) ? $this->DefArray["binary_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','', " . (!empty($this->DefArray["binary_$name"]['rootdir']) ? $this->DefArray["binary_$name"]['rootdir'] : 0) . ",'" . we_base_ContentTypes::APPLICATION . "')") .
-			we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('object_remove_image_at_object','" . $GLOBALS['we_transaction'] . "','binary_" . $name . "')");
+				$img->getHtml() .
+				we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('we_selector_document','" . ($id ? : (isset($this->DefArray["binary_$name"]['defaultdir']) ? $this->DefArray["binary_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','', " . (!empty($this->DefArray["binary_$name"]['rootdir']) ? $this->DefArray["binary_$name"]['rootdir'] : 0) . ",'" . we_base_ContentTypes::APPLICATION . "')") .
+				we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('object_remove_image_at_object','" . $GLOBALS['we_transaction'] . "','binary_" . $name . "')");
 		return '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["binary_" . $name]["required"] ? "*" : "") . "</span>" . (!empty($this->DefArray["binary_$name"]['editdescription']) ? self::formatDescription($this->DefArray["binary_$name"]['editdescription']) : we_html_element::htmlBr()) . $content;
 	}
 
@@ -1398,7 +1399,7 @@ class we_objectFile extends we_document{
 		$wecmdenc3 = we_base_request::encCmd("opener.top.we_cmd('object_reload_entry_at_object','" . $GLOBALS['we_transaction'] . "','flashmovie_" . $name . "');opener._EditorFrame.setEditorIsHot(true);");
 
 		$content .= we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('we_selector_document','" . ($id ? : (isset($this->DefArray["flashmovie_$name"]['defaultdir']) ? $this->DefArray["flashmovie_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','', " . (!empty($this->DefArray["flashmovie_$name"]['rootdir']) ? $this->DefArray["flashmovie_$name"]['rootdir'] : 0) . ",'" . we_base_ContentTypes::FLASH . "')") .
-			we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('object_remove_image_at_object','" . $GLOBALS['we_transaction'] . "','flashmovie_" . $name . "')");
+				we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('object_remove_image_at_object','" . $GLOBALS['we_transaction'] . "','flashmovie_" . $name . "')");
 		return '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["flashmovie_" . $name]["required"] ? "*" : "") . "</span>" . (!empty($this->DefArray["flashmovie_$name"]['editdescription']) ? self::formatDescription($this->DefArray["flashmovie_$name"]['editdescription']) : we_html_element::htmlBr()) . $content;
 	}
 
@@ -1415,9 +1416,9 @@ class we_objectFile extends we_document{
 		$wecmdenc3 = we_base_request::encCmd("opener.top.we_cmd('object_reload_entry_at_object','" . $GLOBALS['we_transaction'] . "','quicktime_" . $name . "');opener._EditorFrame.setEditorIsHot(true);");
 
 		return '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["quicktime_" . $name]["required"] ? "*" : "") . "</span>" . (!empty($this->DefArray["quicktime_$name"]['editdescription']) ? self::formatDescription($this->DefArray["quicktime_$name"]['editdescription']) : we_html_element::htmlBr()) .
-			'<input type=hidden name="' . $fname . '" value="' . $this->getElement($name) . '" />' . $img->getHtml() .
-			we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('we_selector_document','" . ($id ? : (isset($this->DefArray["quicktime_$name"]['defaultdir']) ? $this->DefArray["quicktime_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','', " . (!empty($this->DefArray["quicktime_$name"]['rootdir']) ? $this->DefArray["quicktime_$name"]['rootdir'] : 0) . ",'" . we_base_ContentTypes::QUICKTIME . "')") .
-			we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('object_remove_image_at_object','" . $GLOBALS['we_transaction'] . "',quicktime_" . $name . "')");
+				'<input type=hidden name="' . $fname . '" value="' . $this->getElement($name) . '" />' . $img->getHtml() .
+				we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('we_selector_document','" . ($id ? : (isset($this->DefArray["quicktime_$name"]['defaultdir']) ? $this->DefArray["quicktime_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','', " . (!empty($this->DefArray["quicktime_$name"]['rootdir']) ? $this->DefArray["quicktime_$name"]['rootdir'] : 0) . ",'" . we_base_ContentTypes::QUICKTIME . "')") .
+				we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('object_remove_image_at_object','" . $GLOBALS['we_transaction'] . "',quicktime_" . $name . "')");
 	}
 
 	public function getDefaultValueArray(){
@@ -1804,7 +1805,7 @@ class we_objectFile extends we_document{
 				if(!empty($foo['DefaultUrlfield' . $i])){
 					preg_match('/(.+?)_(.*)/', $foo['DefaultUrlfield' . $i], $regs);
 					$cur = $urlfield[$i] = (isset($regs[1]) && $regs[1] !== '' && isset($regs[2]) && $regs[2] !== '' ?
-							$this->geFieldValue($regs[2], $regs[1]) : '');
+									$this->geFieldValue($regs[2], $regs[1]) : '');
 				}
 				if($i > 0 && preg_match('/%urlfield' . $i . '([^%]*)%/', $text, $regs)){
 					$anz = (!$regs[1] ? 64 : abs($regs[1]));
@@ -1857,7 +1858,7 @@ class we_objectFile extends we_document{
 				'%Fh%' => date("H", $urlfield[0]),
 				'%FH%' => date("H", $urlfield[0]),
 				'%DirSep%' => '/'
-				)
+					)
 			);
 
 
@@ -1880,28 +1881,28 @@ class we_objectFile extends we_document{
 			//remove duplicate "//" which will produce errors and transform URL to lowercase
 			$text = preg_replace('|\.+$|', '', str_replace(array(' ', '//'), array('-', '/'), (OBJECTSEOURLS_LOWERCASE ? strtolower($text) : $text)));
 			$text = (URLENCODE_OBJECTSEOURLS ?
-					str_replace('%2F', '/', urlencode($text)) :
-					preg_replace(array(
-						'~&szlig;~',
-						'~-*&(.)dash;-*~',
-						'~&(.)uml;~',
-						'~&(.)(grave|acute|circ|tilde|ring|cedil|slash|caron);|&(..)(lig);|&#.*;~',
-						'~&[^;]+;~',
-						'~[^0-9a-zA-Z/._-]~',
-						'~--+~',
-						'~//+~',
-						'~/$~',
-						), array(
-						'ss', //ß
-						'-', //~
-						'${1}e', //uml
-						'${1}${3}', //grave
-						'', //;;
-						'', //^a-z
-						'-', //--
-						'/', // //
-						'', // xxx/
-						), htmlentities($text, ENT_COMPAT, $this->Charset)));
+							str_replace('%2F', '/', urlencode($text)) :
+							preg_replace(array(
+								'~&szlig;~',
+								'~-*&(.)dash;-*~',
+								'~&(.)uml;~',
+								'~&(.)(grave|acute|circ|tilde|ring|cedil|slash|caron);|&(..)(lig);|&#.*;~',
+								'~&[^;]+;~',
+								'~[^0-9a-zA-Z/._-]~',
+								'~--+~',
+								'~//+~',
+								'~/$~',
+									), array(
+								'ss', //ß
+								'-', //~
+								'${1}e', //uml
+								'${1}${3}', //grave
+								'', //;;
+								'', //^a-z
+								'-', //--
+								'/', // //
+								'', // xxx/
+									), htmlentities($text, ENT_COMPAT, $this->Charset)));
 			$this->Url = substr($text, 0, 256);
 		} else {
 			$this->Url = '';
@@ -1967,16 +1968,16 @@ class we_objectFile extends we_document{
 
 		if(!$ws){
 			return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
-						'ID' => $this->ID,
-						'OID' => $this->ID,
-						'Text' => $text,
-						'WorkspaceID' => 0,
-						'Category' => $this->Category,
-						'ClassID' => $this->TableID,
-						'Title' => $this->getElement('Title'),
-						'Description' => $this->getElement('Description'),
-						'Path' => $this->Text,
-						'Language' => $this->Language
+								'ID' => $this->ID,
+								'OID' => $this->ID,
+								'Text' => $text,
+								'WorkspaceID' => 0,
+								'Category' => $this->Category,
+								'ClassID' => $this->TableID,
+								'Title' => $this->getElement('Title'),
+								'Description' => $this->getElement('Description'),
+								'Path' => $this->Text,
+								'Language' => $this->Language
 			)));
 		}
 
@@ -1984,17 +1985,17 @@ class we_objectFile extends we_document{
 
 		foreach($ws as $w){
 			if(!$this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
-						'ID' => $this->ID,
-						'OID' => $this->ID,
-						'Text' => $text,
-						'WorkspaceID' => $w,
-						'Category' => $this->Category,
-						'ClassID' => $this->TableID,
-						'Title' => $this->getElement("Title"),
-						'Description' => $this->getElement("Description"),
-						'Path' => $this->Text,
-						'Language' => $this->Language
-				)))){
+								'ID' => $this->ID,
+								'OID' => $this->ID,
+								'Text' => $text,
+								'WorkspaceID' => $w,
+								'Category' => $this->Category,
+								'ClassID' => $this->TableID,
+								'Title' => $this->getElement("Title"),
+								'Description' => $this->getElement("Description"),
+								'Path' => $this->Text,
+								'Language' => $this->Language
+					)))){
 				return false;
 			}
 		}
@@ -2009,8 +2010,8 @@ class we_objectFile extends we_document{
 	private function setPublishTime($time){
 		$this->Published = $time;
 		return
-			$this->DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . ' SET Published=' . $time . ' WHERE ID=' . $this->ID) &&
-			$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($this->TableID) . ' SET OF_Published=' . intval($time) . ' WHERE OF_ID=' . intval($this->ID));
+				$this->DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . ' SET Published=' . $time . ' WHERE ID=' . $this->ID) &&
+				$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($this->TableID) . ' SET OF_Published=' . intval($time) . ' WHERE OF_ID=' . intval($this->ID));
 	}
 
 	function markAsPublished(){
@@ -2257,7 +2258,7 @@ class we_objectFile extends we_document{
 		switch($from){
 			case we_class::LOAD_SCHEDULE_DB:
 				if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
-					$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . ' AND ClassName="' . $this->DB_WE->escape($this->ClassName) . '" AND Was=' . we_schedpro::SCHEDULE_FROM, '', $this->DB_WE);
+					$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . ' AND ClassName="' . $this->DB_WE->escape($this->ClassName) . '" AND task="' . we_schedpro::SCHEDULE_FROM . '"', '', $this->DB_WE);
 					if($sessDat){
 						$this->i_getPersistentSlotsFromDB(/* "Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url,TriggerID" */);
 						if($this->i_initSerializedDat(we_unserialize($sessDat))){
@@ -2425,9 +2426,9 @@ class we_objectFile extends we_document{
 
 	public function we_republish($rebuildMain = true){
 		return ($this->Published && $this->ModDate <= $this->Published ?
-				$this->we_publish(true, $rebuildMain) :
-				$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=' . $this->TableID . ' AND ID=' . intval($this->ID))
-			);
+						$this->we_publish(true, $rebuildMain) :
+						$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=' . $this->TableID . ' AND ID=' . intval($this->ID))
+				);
 	}
 
 	function i_objectFileInit($makeSameNewFlag = false){
@@ -2640,8 +2641,8 @@ class we_objectFile extends we_document{
 
 	function i_publInScheduleTable(){
 		return (we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) ?
-				we_schedpro::publInScheduleTable($this, $this->DB_WE) :
-				false);
+						we_schedpro::publInScheduleTable($this, $this->DB_WE) :
+						false);
 	}
 
 	protected function i_writeDocument(){
@@ -2710,9 +2711,9 @@ class we_objectFile extends we_document{
 		}
 		if($this->ID){
 			$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($this->TableID) . ' SET ' . we_database_base::arraySetter(array(
-					'OF_TEXT' => $this->Text,
-					'OF_PATH' => $this->Path)) .
-				' WHERE OF_ID=' . intval($this->ID));
+						'OF_TEXT' => $this->Text,
+						'OF_PATH' => $this->Path)) .
+					' WHERE OF_ID=' . intval($this->ID));
 		}
 		return $this->i_savePersistentSlotsToDB('Path,Text,ParentID,CreatorID,ModifierID,RestrictOwners,Owners,OwnersReadOnly,Published,ModDate,IsSearchable,Charset,Url,TriggerID');
 	}
@@ -2859,8 +2860,8 @@ class we_objectFile extends we_document{
 		$object->initByID($this->TableID, OBJECT_TABLE);
 
 		return ($checkFields ?
-				$object->canHaveVariants() && count($object->getVariantFields()) :
-				$object->canHaveVariants());
+						$object->canHaveVariants() && count($object->getVariantFields()) :
+						$object->canHaveVariants());
 	}
 
 	public function initByID($we_ID, $we_Table = OBJECT_FILES_TABLE, $from = we_class::LOAD_MAID_DB){
@@ -3039,10 +3040,10 @@ class we_objectFile extends we_document{
 
 				if($objectdaten['Url']){
 					return ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
-						($hidedirindex && seoIndexHide($path_parts['basename']) ?
-							'' :
-							$path_parts['filename'] . '/' ) .
-						$objectdaten['Url'] . $pidstr;
+							($hidedirindex && seoIndexHide($path_parts['basename']) ?
+									'' :
+									$path_parts['filename'] . '/' ) .
+							$objectdaten['Url'] . $pidstr;
 				}
 			}
 			return $path . '?we_objectID=' . intval($id) . str_replace('?', '&amp;', $pidstr);
@@ -3111,9 +3112,9 @@ class we_objectFile extends we_document{
 				);
 			} elseif($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){ //	Link to class in normal mode
 				$_html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;"><a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . OBJECT_TABLE . '\',' . $this->TableID . ',\'object\');">' . g_l('modules_object', '[class]') . '</a></div>' .
-					'<div style="margin-bottom:12px;">' . $this->formClass() . '</div>';
+						'<div style="margin-bottom:12px;">' . $this->formClass() . '</div>';
 				$_html .= '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">' . g_l('modules_object', '[class_id]') . '</div>' .
-					'<div style="margin-bottom:12px;">' . $this->formClassId() . '</div>';
+						'<div style="margin-bottom:12px;">' . $this->formClassId() . '</div>';
 
 
 				$parts[] = array(
