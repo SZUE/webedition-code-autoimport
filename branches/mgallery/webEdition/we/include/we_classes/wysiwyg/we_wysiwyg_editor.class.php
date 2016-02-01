@@ -25,6 +25,7 @@
 //make sure we know which browser is used
 
 class we_wysiwyg_editor{
+
 	var $name = '';
 	private $origName = '';
 	private $fieldName = '';
@@ -241,7 +242,7 @@ class we_wysiwyg_editor{
 		$ret = array_merge(array(
 			'',
 			g_l('wysiwyg', '[groups]') => we_html_tools::OPTGROUP
-			), $tmp);
+				), $tmp);
 		foreach($commands as $key => $values){
 			$ret = array_merge($ret, array($key => we_html_tools::OPTGROUP), $values);
 		}
@@ -288,9 +289,9 @@ class we_wysiwyg_editor{
 		}
 
 		return we_html_element::cssLink(CSS_DIR . 'wysiwyg/tinymce/toolbar.css') .
-			we_html_element::jsScript(TINYMCE_SRC_DIR . 'tiny_mce.js') .
-			($loadDialogRegistry ? we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') : '') .
-			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceFunctions.js');
+				we_html_element::jsScript(TINYMCE_SRC_DIR . 'tiny_mce.js') .
+				($loadDialogRegistry ? we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') : '') .
+				we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceFunctions.js');
 	}
 
 	function getAllCmds(){
@@ -482,16 +483,16 @@ class we_wysiwyg_editor{
 			new we_wysiwyg_ToolbarButton($this, "redo"),
 			$sepCon,
 			(defined('SPELLCHECKER') && $this->showSpell ?
-				new we_wysiwyg_ToolbarButton($this, 'spellcheck') :
-				false),
+					new we_wysiwyg_ToolbarButton($this, 'spellcheck') :
+					false),
 			new we_wysiwyg_ToolbarButton($this, "selectall"),
 			$sepCon,
 			new we_wysiwyg_ToolbarButton($this, "search"),
 			new we_wysiwyg_ToolbarButton($this, "replace"),
 			$sepCon,
 			($this->fullscreen ?
-				false :
-				new we_wysiwyg_ToolbarButton($this, "fullscreen")
+					false :
+					new we_wysiwyg_ToolbarButton($this, "fullscreen")
 			),
 			new we_wysiwyg_ToolbarButton($this, "visibleborders"),
 			$sep,
@@ -521,7 +522,7 @@ class we_wysiwyg_editor{
 	function getHTML(){
 		static $printed = false;
 		$js = $printed ? '' :
-			'function getDocumentCss(preKomma){
+				'function getDocumentCss(preKomma){
 	var doc=document;
 	var styles=[];
 	for(var i=0;i<doc.styleSheets.length;i++){
@@ -533,7 +534,7 @@ class we_wysiwyg_editor{
 }';
 		$printed = true;
 		return
-			($this->inlineedit ? $this->getInlineHTML($js) : we_html_element::jsElement($js) . $this->getEditButtonHTML());
+				($this->inlineedit ? $this->getInlineHTML($js) : we_html_element::jsElement($js) . $this->getEditButtonHTML());
 	}
 
 	private function getEditButtonHTML(){
@@ -568,7 +569,7 @@ class we_wysiwyg_editor{
 			foreach($regs as $reg){
 				$path = empty($lookup[intval($reg[3])]) ? '' : $lookup[intval($reg[3])];
 				$value = $path ? str_ireplace($reg[1], 'src="' . $path . '?id=' . $reg[3] . '&time=' . $t . '"', $value) :
-					str_ireplace($reg[0], '<img src="' . ICON_DIR . 'no_image.gif?id=0">', $value);
+						str_ireplace($reg[0], '<img src="' . ICON_DIR . 'no_image.gif?id=0">', $value);
 			}
 		}
 
@@ -578,7 +579,7 @@ class we_wysiwyg_editor{
 				$thumbObj = new we_thumbnail();
 				$imageExists = $thumbObj->initByImageIDAndThumbID($imgID, $thumbID);
 				$value = $imageExists ? str_ireplace($reg[1], 'src="' . $thumbObj->getOutputPath() . "?thumb=" . $reg[3] . '&time=' . $t . '"', $value) :
-					str_ireplace($reg[0], '<img src="' . ICON_DIR . 'no_image.gif?id=0">', $value);
+						str_ireplace($reg[0], '<img src="' . ICON_DIR . 'no_image.gif?id=0">', $value);
 				unset($thumbObj);
 			}
 		}
@@ -796,10 +797,10 @@ class we_wysiwyg_editor{
 		$this->tinyPlugins = implode(',', array_unique($this->tinyPlugins));
 		$this->wePlugins = implode(',', array_intersect($this->wePlugins, $allCommands));
 		$plugins = ($this->createContextmenu ? 'wecontextmenu,' : '') .
-			($this->tinyPlugins ? $this->tinyPlugins . ',' : '') .
-			($this->wePlugins ? $this->wePlugins . ',' : '') .
-			(in_array('wevisualaid', $allCommands) ? 'visualblocks,' : '') .
-			'weutil,autolink,template,wewordcount'; //TODO: load "templates" on demand as we do it with other plugins
+				($this->tinyPlugins ? $this->tinyPlugins . ',' : '') .
+				($this->wePlugins ? $this->wePlugins . ',' : '') .
+				(in_array('wevisualaid', $allCommands) ? 'visualblocks,' : '') .
+				'weutil,autolink,template,wewordcount'; //TODO: load "templates" on demand as we do it with other plugins
 
 		$height = we_base_util::convertUnits($this->height);
 		$width = we_base_util::convertUnits($this->width);
@@ -823,7 +824,7 @@ class we_wysiwyg_editor{
 		$height = (is_numeric($height) ? round(max($height, self::MIN_HEIGHT_INLINE) / 96, 3) . 'in' : $height);
 
 		return we_html_element::jsElement($js .
-				($this->fieldName ? '
+						($this->fieldName ? '
 /* -- tinyMCE -- */
 
 /*
@@ -1012,6 +1013,14 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	},
 
 	paste_text_sticky : true,
+	paste_auto_cleanup_on_paste: true,
+	paste_preprocess: function(pl, o) {
+		var patt = /<img [^>]*src=["\']data:[^>]*>/gi;
+		if (o.content.match(patt)) {
+			o.content = o.content.replace(patt, "");
+			alert("' . g_l('wysiwyg', '[removedInlinePictures]') . '");
+		}
+	},
 
 	/* <br/><br/> => </p><p> on paste: restore default behaviour */
 	/*
@@ -1373,12 +1382,12 @@ tinyMCE.weResizeEditor = function(render){
 
 tinyMCE.init(tinyMceConfObject__' . $this->fieldName_clean . ');
 ') . getHtmlTag('textarea', array(
-				'wrap' => "off",
-				'style' => 'color:#eeeeee; background-color:#eeeeee;  width:' . $width . '; height:' . $height . ';',
-				'id' => $this->name,
-				'name' => $this->name,
-				'class' => 'wetextarea'
-				), strtr($editValue, array('\n' => '', '&' => '&amp;')), true);
+					'wrap' => "off",
+					'style' => 'color:#eeeeee; background-color:#eeeeee;  width:' . $width . '; height:' . $height . ';',
+					'id' => $this->name,
+					'name' => $this->name,
+					'class' => 'wetextarea'
+						), strtr($editValue, array('\n' => '', '&' => '&amp;')), true);
 	}
 
 }
