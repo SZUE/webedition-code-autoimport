@@ -265,7 +265,7 @@ class we_object extends we_document{
 			}
 
 			$arrt['WE_CSS_FOR_CLASS'] = $this->CSS;
-			$this->DefaultValues = we_serialize($arrt);
+			$this->DefaultValues = we_serialize($arrt, 'json');
 
 			$this->DefaultTitle = ($tmp = $this->getElement('title')) ? $this->getElement($tmp . self::ELEMENT_TYPE) . '_' . $this->getElement($tmp) : '_';
 			$this->DefaultDesc = ($tmp = $this->getElement('desc')) ? $this->getElement($tmp . self::ELEMENT_TYPE) . '_' . $this->getElement($tmp) : '_';
@@ -484,7 +484,7 @@ class we_object extends we_document{
 
 			$arrt['WE_CSS_FOR_CLASS'] = $this->CSS;
 
-			$this->DefaultValues = we_serialize($arrt);
+			$this->DefaultValues = we_serialize($arrt, 'json');
 
 			$variant_field = 'variant_' . we_base_constants::WE_VARIANTS_ELEMENT_NAME;
 
