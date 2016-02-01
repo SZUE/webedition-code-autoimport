@@ -40,6 +40,7 @@ class we_binaryDocument extends we_document{
 	 */
 	private $metaDataReader = null;
 	var $documentCustomerFilter = ''; // DON'T SET TO NULL !
+	protected $IsProtected = false;
 
 	/**
 	 * @var array for metadata read via $metaDataReader
