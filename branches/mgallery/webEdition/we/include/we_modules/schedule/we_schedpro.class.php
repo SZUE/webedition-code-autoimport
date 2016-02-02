@@ -461,8 +461,7 @@ function checkFooter(){
 		$DB_WE = new DB_WE();
 		$DB_WE->query('CREATE TEMPORARY TABLE del(ID bigint(20) unsigned NOT NULL,ClassName enum("we_htmlDocument","we_webEditionDocument","we_objectFile") NOT NULL,PRIMARY KEY (ID,ClassName))ENGINE=MEMORY');
 		$DB_WE->query('INSERT INTO del (ID,ClassName) SELECT s.DID,s.ClassName FROM ' . SCHEDULE_TABLE . ' s LEFT JOIN ' . FILE_TABLE . ' f ON f.ID=s.DID ' . (defined('OBJECT_FILES_TABLE') ? ' LEFT JOIN ' . OBJECT_FILES_TABLE . ' of ON of
-.ID=s.DID' : '') . ' WHERE (f.ID IS NULL AND s.ClassName IN ("we_htmlDocument","we_webEditionDocument"))' . (defined('OBJECT_FILES_TABLE') ? ' OR (of.ID IS NULL AND s.ClassName="we_objectFile")' : '') . ' GROUP BY s.DI
-D,s.`ClassName');
+.ID=s.DID' : '') . ' WHERE (f.ID IS NULL AND s.ClassName IN ("we_htmlDocument","we_webEditionDocument"))' . (defined('OBJECT_FILES_TABLE') ? ' OR (of.ID IS NULL AND s.ClassName="we_objectFile")' : '') . ' GROUP BY s.DID,s.`ClassName');
 		$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE (DID,ClassName) IN (SELECT ID,ClassName FROM del )');
 		$DB_WE->query('DROP TEMPORARY TABLE del');
 
