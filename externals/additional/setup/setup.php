@@ -529,9 +529,9 @@ function step_databasecheck(){
 	}
 
 	// check connection to db server using the entered data
-	$conn = mysqli_connect($_SESSION["db_host"], $_SESSION["db_username"], $_SESSION["db_password"]);
+	$conn = mysqli_connect($_SESSION["db_host"], $_SESSION["db_username"], $_SESSION["db_password"], $_SESSION['db_database']);
 	if(!$conn){
-		$output .= tpl_error("Could not connect to MySQL database server.");
+		$output .= tpl_error("Could not connect to MySQL database server: ".mysqli_connect_error());
 		$errors = true;
 		return $output . '</ul>';
 	} else {
@@ -541,11 +541,11 @@ function step_databasecheck(){
 	// check if selected database already exists:
 	$op_createdb = false;
 	//$result = @mysql_list_dbs($conn);
-	$result = mysqli_query($conn, "USE " . $_SESSION['db_database']);
+//	$result = mysqli_query($conn, "USE " . $_SESSION['db_database']);
 	//$dblist = mysql_fetch_array($result);
 	//$output .= print_r($dblist,true);
 	//if(!in_array($_SESSION["db_database"],$dblist)) {
-	if(!$result){
+	/*if(!$result){
 		$output .= tpl_info("The database \"" . $_SESSION["db_database"] . "\" does not exist yet. Will try to create it.");
 		$op_createdb = true;
 	} else {
@@ -562,7 +562,7 @@ function step_databasecheck(){
 		}
 	}
 	$result = mysqli_query($conn, "USE " . $_SESSION['db_database']);
-
+	 */
 	// check if there is already a webEdition installation present:
 
 	$result = mysqli_query($conn, "SELECT ID from " . $_SESSION["db_tableprefix"] . "tblUser");
