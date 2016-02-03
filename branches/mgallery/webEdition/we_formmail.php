@@ -161,7 +161,7 @@ function check_recipient($email){
 function check_captcha(){
 	return ($name = we_base_request::_(we_base_request::STRING, we_base_request::_(we_base_request::STRING, 'captchaname')) ?
 		we_captcha_captcha::check($name) :
-		false);
+		true); // Fix: #10297
 }
 
 if(!check_captcha()){
