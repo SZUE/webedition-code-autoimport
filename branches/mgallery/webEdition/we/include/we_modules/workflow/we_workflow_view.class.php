@@ -1221,7 +1221,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 				//	Propertie-button
 				$_footerTable->addCol(2);
-				$_footerTable->setColContent(0, $_col++, we_html_button::create_button("properties", "javascript:parent.editHeader.we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PROPERTIES . ",'" . $GLOBALS["we_transaction"] . "');"));
+				$_footerTable->setColContent(0, $_col++, we_html_button::create_button('properties', "javascript:parent.editHeader.we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PROPERTIES . ",'" . $GLOBALS["we_transaction"] . "');"));
 
 				//	Decline Workflow
 				$_footerTable->addCol(2);
@@ -1273,7 +1273,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 	}
 
 	public function getHomeScreen(){
-		$content = we_html_button::create_button("fat:new_workflow,fa-lg fa-gears", "javascript:top.opener.top.we_cmd('new_workflow');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_WORKFLOW"));
+		$content = we_html_button::create_button('fat:new_workflow,fa-lg fa-gears', "javascript:top.opener.top.we_cmd('new_workflow');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_WORKFLOW"));
 
 		return parent::getHomeScreen('workflow', "workflow.gif", $content, '<form name="we_form">' . $this->getHiddens() . '</form>');
 	}

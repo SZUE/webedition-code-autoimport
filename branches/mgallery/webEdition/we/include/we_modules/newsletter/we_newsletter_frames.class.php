@@ -279,7 +279,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 				$table2->setCol(0, 1, array('style' => 'padding-left:70px;'), $select->getHtml());
 				$table2->setCol(0, 2, array('style' => 'padding-left:5px;'), we_html_forms::checkbox(0, false, "htmlmail_check", g_l('modules_newsletter', '[html_preview]'), false, "defaultfont", "if(document.we_form.htmlmail_check.checked) { document.we_form.hm.value=1;top.opener.top.nlHTMLMail=1; } else { document.we_form.hm.value=0;top.opener.top.nlHTMLMail=0; }"));
 				$table2->setCol(0, 3, array(), we_html_button::create_button(we_html_button::PREVIEW, "javascript:we_cmd('popPreview')"));
-				$table2->setCol(0, 4, array(), (permissionhandler::hasPerm("SEND_NEWSLETTER") ? we_html_button::create_button("send", "javascript:we_cmd('popSend')") : ""));
+				$table2->setCol(0, 4, array(), (permissionhandler::hasPerm("SEND_NEWSLETTER") ? we_html_button::create_button('send', "javascript:we_cmd('popSend')") : ""));
 			}
 		}
 
@@ -860,8 +860,8 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 		$table->setCol(1, 2, array('style' => 'vertical-align:top;'), $buttons_table->getHtml());
 
 		// 3. ROW: Buttons for email import and export
-		$importbut = we_html_button::create_button("import", "javascript:we_cmd('set_import'," . $group . ")");
-		$exportbut = we_html_button::create_button("export", "javascript:we_cmd('set_export'," . $group . ")");
+		$importbut = we_html_button::create_button('import', "javascript:we_cmd('set_import'," . $group . ")");
+		$exportbut = we_html_button::create_button('export', "javascript:we_cmd('set_export'," . $group . ")");
 
 		$table->setCol(2, 0, array("colspan" => 3), $importbut . $exportbut);
 
@@ -1515,8 +1515,8 @@ self.focus();
 		$table->setCol(0, 0, array('style' => 'vertical-align:middle;'), we_html_tools::htmlSelect("blacklist_sel", $arr, 10, "", false, array('style' => "width:388px"), "value", 600));
 		$table->setCol(0, 1, array('style' => 'vertical-align:top;padding-left:15px;'), $buttons_table->getHtml());
 
-		$importbut = we_html_button::create_button("import", "javascript:set_import(1)");
-		$exportbut = we_html_button::create_button("export", "javascript:set_export(1)");
+		$importbut = we_html_button::create_button('import', "javascript:set_import(1)");
+		$exportbut = we_html_button::create_button('export', "javascript:set_export(1)");
 
 		$table->setCol(2, 0, array("colspan" => 3, 'style' => 'padding-top:10px;'), $importbut . $exportbut);
 

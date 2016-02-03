@@ -262,7 +262,7 @@ $oTblProps->setCol(8, 0, array("colspan" => 3), $buttons);
 
 // Button: add note
 $oTblBtnProps = new we_html_table(array("width" => "100%", 'class' => 'default'), 1, 1);
-$oTblBtnProps->setCol(0, 0, array("style" => "text-align:"), we_html_button::create_button("fa:btn_add_note,fa-plus,fa-lg fa-newspaper-o", "javascript:displayNote();", false, 0, 0));
+$oTblBtnProps->setCol(0, 0, array("style" => "text-align:"), we_html_button::create_button('fa:btn_add_note,fa-plus,fa-lg fa-newspaper-o', "javascript:displayNote();", false, 0, 0));
 
 // Table with the note list
 $oPad = new we_html_table(

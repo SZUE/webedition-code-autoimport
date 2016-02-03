@@ -312,7 +312,7 @@ extra_files_desc=[];';
 			$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[select_server_file]'), we_html_tools::TYPE_INFO, 600, false), 'noline' => 1);
 			$parts[] = array("headline" => "", "html" => $select->getHtml(), 'noline' => 1);
 			//$parts[] =array("headline"=>"","html"=>we_html_forms::checkbox(1, false, "show_all", g_l('backup',"[show_all]"), false, "defaultfont", "showAll()"),"space"=>0,"noline"=>1);
-			$parts[] = array("headline" => "", "html" => we_html_button::create_button("delete_backup", "javascript:delSelected();", true, 100, 22, '', '', false, false),);
+			$parts[] = array("headline" => "", "html" => we_html_button::create_button('delete_backup', "javascript:delSelected();", true, 100, 22, '', '', false, false),);
 		}
 
 		$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, true, "rebuild", g_l('backup', '[rebuild]'), false),);
@@ -844,7 +844,7 @@ function doExport() {
 		top.body.we_submitForm("cmd","' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php");
 	}
 }');
-						$table->setCol(0, 1, null, we_html_button::position_yes_no_cancel(we_html_button::create_button("make_backup", "javascript:doExport();"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")));
+						$table->setCol(0, 1, null, we_html_button::position_yes_no_cancel(we_html_button::create_button('make_backup', "javascript:doExport();"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")));
 						break;
 					case 2:
 						$table->setCol(0, 1, null, we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();"));
@@ -910,10 +910,10 @@ function press_yes() {
 						if(defined('WORKFLOW_TABLE')){
 							$db = new DB_WE();
 							$nextbut = (we_workflow_utility::getAllWorkflowDocs(FILE_TABLE, $db) || (defined('OBJECT_FILES_TABLE') && we_workflow_utility::getAllWorkflowDocs(OBJECT_FILES_TABLE, $db)) ?
-											we_html_button::create_button("restore_backup", "javascript:if(confirm('" . g_l('modules_workflow', '[ask_before_recover]') . "')) " . $startImportCall . ";") :
-											we_html_button::create_button("restore_backup", "javascript:" . $startImportCall));
+											we_html_button::create_button('restore_backup', "javascript:if(confirm('" . g_l('modules_workflow', '[ask_before_recover]') . "')) " . $startImportCall . ";") :
+											we_html_button::create_button('restore_backup', "javascript:" . $startImportCall));
 						} else {
-							$nextbut = we_html_button::create_button("restore_backup", "javascript:" . $startImportCall);
+							$nextbut = we_html_button::create_button('restore_backup', "javascript:" . $startImportCall);
 						}
 
 						$nextprevbuts = we_html_button::create_button(we_html_button::BACK, "javascript:top.body.location='" . $this->frameset . "&pnt=body&step=2';") . $nextbut;

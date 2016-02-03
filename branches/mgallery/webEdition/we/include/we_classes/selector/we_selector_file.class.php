@@ -206,7 +206,6 @@ class we_selector_file{
 			$this->path = '/';
 		}
 		return we_html_element::jsElement('
-var weSelectorWindow = true;
 var currentID="' . $this->id . '";
 var currentDir="' . $this->dir . '";
 var currentPath="' . $this->path . '";
@@ -275,9 +274,13 @@ var g_l={
 	protected function getExitOpen(){
 		$frameRef = $this->JSTextName && strpos($this->JSTextName, ".document.") > 0 ? substr($this->JSTextName, 0, strpos($this->JSTextName, ".document.") + 1) : "";
 		return we_html_element::jsElement('
-function exit_open(){' . ($this->JSIDName ? '
-	opener.' . $this->JSIDName . '=top.currentID;' : '') .
-						($this->JSTextName ? 'opener.' . $this->JSTextName . '= top.currentID ? top.currentPath : "";
+function exit_open(){' .
+						($this->JSIDName ? '
+	opener.' . $this->JSIDName . '=top.currentID;' :
+								''
+						) .
+						($this->JSTextName ? '
+	opener.' . $this->JSTextName . '= top.currentID ? top.currentPath : "";
 	if((opener.parent!==undefined) && (opener.parent.frames.editHeader!==undefined)) {
 			if(currentType!="")	{
 				switch(currentType){
@@ -332,8 +335,8 @@ function exit_open(){' . ($this->JSIDName ? '
 		<td class="lookin"><select name="lookin" id="lookin" class="weSelect" size="1" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%">
 		</select>
 		</td>
-		<td>' . we_html_button::create_button("root_dir", "javascript:if(rootDirButsState){top.setRootDir();}", false, 40, 22, "", "", ($this->dir == 0), false) . '</td>
-		<td>' . we_html_button::create_button("fa:btn_fs_back,fa-lg fa-level-up,fa-lg fa-folder", "javascript:top.goBackDir();", false, 40, 22, "", "", ($this->dir == 0), false) . '</td>' .
+		<td>' . we_html_button::create_button('root_dir', "javascript:if(rootDirButsState){top.setRootDir();}", false, 40, 22, "", "", ($this->dir == 0), false) . '</td>
+		<td>' . we_html_button::create_button('fa:btn_fs_back,fa-lg fa-level-up,fa-lg fa-folder', "javascript:top.goBackDir();", false, 40, 22, "", "", ($this->dir == 0), false) . '</td>' .
 				$extra .
 				'</tr>
 </table>';

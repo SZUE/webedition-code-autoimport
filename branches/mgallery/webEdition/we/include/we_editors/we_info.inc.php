@@ -107,7 +107,7 @@ if(!empty($GLOBALS["loginpage"])){
 	//	mode-table
 	$_modetable = new we_html_table(array('class' => 'plainTable modeTable'), 1, 3);
 
-	$loginButton = we_html_button::create_button("fat:login,fa-lg fa-sign-in", we_html_button::WE_FORM . ':loginForm', true, 0, 0, 'this.style.display=\'none\';');
+	$loginButton = we_html_button::create_button('fat:login,fa-lg fa-sign-in', we_html_button::WE_FORM . ':loginForm', true, 0, 0, 'this.style.display=\'none\';');
 	if(!WE_SEEM){ //	deactivate See-Mode
 		if(WE_LOGIN_WEWINDOW){
 			$_modetable->setCol(0, 0, array(), '');
@@ -155,7 +155,7 @@ if(!empty($GLOBALS["loginpage"])){
 	$_table->setCol($_actRow++, 0, array("class" => "small spaceTable"), g_l('global', '[loginok]'));
 
 	//	11th back button
-	$_table->setCol($_actRow++, 0, array("width" => $_middlePart, "class" => "small", 'style' => 'text-align:right;padding-bottom:15px'), we_html_button::create_button("back_to_login", WEBEDITION_DIR . 'index.php?r=' . $r));
+	$_table->setCol($_actRow++, 0, array("width" => $_middlePart, "class" => "small", 'style' => 'text-align:right;padding-bottom:15px'), we_html_button::create_button('back_to_login', WEBEDITION_DIR . 'index.php?r=' . $r));
 }
 
 return $_table->getHtml();

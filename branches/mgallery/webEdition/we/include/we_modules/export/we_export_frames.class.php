@@ -132,7 +132,7 @@ function setTab(tab) {
 		$table2->setCol(0, $col++, array(), we_html_button::create_button(we_html_button::SAVE, "javascript:we_save()"));
 
 		if($this->View->export->IsFolder == 0){
-			$table2->setCol(0, $col++, array(), we_html_button::create_button("export", "javascript:top.content.we_cmd('start_export')", true, 100, 22, '', '', !permissionhandler::hasPerm("MAKE_EXPORT"))
+			$table2->setCol(0, $col++, array(), we_html_button::create_button('export', "javascript:top.content.we_cmd('start_export')", true, 100, 22, '', '', !permissionhandler::hasPerm("MAKE_EXPORT"))
 			);
 		}
 

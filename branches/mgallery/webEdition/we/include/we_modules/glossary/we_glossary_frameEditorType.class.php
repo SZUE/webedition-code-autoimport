@@ -300,7 +300,7 @@ function jump(val) {
 	private static function getHTMLPreferences($Search, $Type, $Language){
 
 		$button = we_html_button::create_button(we_html_button::SEARCH, "javascript:SubmitForm();");
-		$newButton = we_html_button::create_button("new_entry", "javascript:we_cmd('new_glossary_" . $Type . "','" . $Language . "');", true, 100, 22, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));
+		$newButton = we_html_button::create_button('new_entry', "javascript:we_cmd('new_glossary_" . $Type . "','" . $Language . "');", true, 100, 22, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));
 
 		$_rows = array(10 => 10, 25 => 25, 50 => 50, 100 => 100);
 
@@ -358,7 +358,7 @@ function jump(val) {
 		return '
 		<table class="default withBigSpace" style="margin:12px 0px 12px 5px;">
 		<tr>
-			<td>' . ($extended && (permissionhandler::hasPerm("DELETE_GLOSSARY") || permissionhandler::hasPerm("NEW_GLOSSARY")) ? we_html_button::create_button("selectAll", "javascript: AllItems();") : "") . '</td>
+			<td>' . ($extended && (permissionhandler::hasPerm("DELETE_GLOSSARY") || permissionhandler::hasPerm("NEW_GLOSSARY")) ? we_html_button::create_button('selectAll', "javascript: AllItems();") : "") . '</td>
 			<td style="text-align:right"><table class="default">
 				<tr>
 					<td>' . $prev . '</td>
@@ -384,7 +384,7 @@ function jump(val) {
 			<td colspan="3">
 				<table class="default">
 				<tr>
-					<td class="small">' . (permissionhandler::hasPerm("NEW_GLOSSARY") ? we_html_button::create_button("fa:btn_function_publish,fa-lg fa-sun-o", "javascript: if(confirm('" . g_l('modules_glossary', '[confirm_publish]') . "')) { document.we_form.elements.do.value='publish'; SubmitForm(); }") . '</td>
+					<td class="small">' . (permissionhandler::hasPerm("NEW_GLOSSARY") ? we_html_button::create_button('fa:btn_function_publish,fa-lg fa-sun-o', "javascript: if(confirm('" . g_l('modules_glossary', '[confirm_publish]') . "')) { document.we_form.elements.do.value='publish'; SubmitForm(); }") . '</td>
 					<td class="small" style="padding-left:1em;">' . g_l('modules_glossary', '[publish_selected_items]') : "") . '</td>
 				</tr>
 				</table>
@@ -394,7 +394,7 @@ function jump(val) {
 			<td colspan="3">
 				<table class="default">
 				<tr>
-					<td class="small">' . (permissionhandler::hasPerm("NEW_GLOSSARY") ? we_html_button::create_button("fa:btn_function_unpublish,fa-lg fa-moon-o", "javascript: if(confirm('" . g_l('modules_glossary', '[confirm_unpublish]') . "')) { document.we_form.elements.do.value='unpublish'; SubmitForm(); }") . '</td>
+					<td class="small">' . (permissionhandler::hasPerm("NEW_GLOSSARY") ? we_html_button::create_button('fa:btn_function_unpublish,fa-lg fa-moon-o', "javascript: if(confirm('" . g_l('modules_glossary', '[confirm_unpublish]') . "')) { document.we_form.elements.do.value='unpublish'; SubmitForm(); }") . '</td>
 					<td class="small" style="padding-left:1em;">' . g_l('modules_glossary', '[unpublish_selected_items]') : "") . '</td>
 				</tr>
 				</table>

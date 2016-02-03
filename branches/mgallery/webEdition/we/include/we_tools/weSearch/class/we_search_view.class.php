@@ -897,7 +897,7 @@ WE().consts.weSearch= {
 
 	function getSearchParameterBottom($foundItems, $whichSearch, $table = FILE_TABLE){
 		$resetButton = (permissionhandler::hasPerm('RESET_VERSIONS') && $whichSearch === self::SEARCH_ADV ?
-				we_html_button::create_button("reset", "javascript:.weSearch.resetVersions();", true, 100, 22, "", "") :
+				we_html_button::create_button('reset', "javascript:.weSearch.resetVersions();", true, 100, 22, "", "") :
 				'');
 
 		$actionButton = $actionButtonCheckboxAll = '';

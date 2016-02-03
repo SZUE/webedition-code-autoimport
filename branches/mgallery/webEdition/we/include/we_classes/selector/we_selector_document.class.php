@@ -220,18 +220,8 @@ function exit_open() {
 		switch($this->table){
 			case FILE_TABLE:
 			case VFILE_TABLE:
-				$btn = ($this->filter && isset($this->ctb[$this->filter]) ? $this->ctb[$this->filter] : 'btn_add_file');
 				return parent::printHeaderJSDef() . '
-var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';
-function disableNewFileBut() {
-	WE().layout.button.switch_button_state(document, "' . $btn . '",  "disabled");
-	newFileState = 0;
-}
-
-function enableNewFileBut() {
-	WE().layout.button.switch_button_state(document, "' . $btn . '",  "enabled");
-	newFileState = 1;
-}';
+var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 		}
 	}
 
@@ -240,8 +230,8 @@ function enableNewFileBut() {
 			case FILE_TABLE:
 				$extra = '<td>' .
 						($this->filter && isset($this->ctb[$this->filter]) ?
-								we_html_button::create_button($this->ctb[$this->filter], "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false) :
-								(permissionhandler::hasPerm('NEW_GRAFIK') ? we_html_button::create_button("fa:btn_add_file,fa-plus,fa-lg fa-file-o", "javascript:top.newFile();", true, 0, 0, "", "", !$this->userCanMakeNewFile, false) :
+								we_html_button::create_button($this->ctb[$this->filter], "javascript:top.newFile();", true, 0, 0, "", "", !$this->userCanMakeNewFile, false, '', false, '', '', 'btn_add_file') :
+								(permissionhandler::hasPerm('NEW_GRAFIK') || permissionhandler::hasPerm('NEW_SONSTIGE') ? we_html_button::create_button('fa:btn_add_file,fa-plus,fa-lg fa-file-o', "javascript:top.newFile();", true, 0, 0, "", "", !$this->userCanMakeNewFile, false, '', false, '', '', 'btn_add_file') :
 										'')
 						) .
 						'</td>' .
@@ -249,7 +239,7 @@ function enableNewFileBut() {
 				break;
 
 			case VFILE_TABLE:
-				$extra = we_html_button::create_button($this->ctb[we_base_ContentTypes::COLLECTION], "javascript:top.newCollection();", true, 0, 0, "", "", !$newFileState, false);
+				$extra = we_html_button::create_button($this->ctb[we_base_ContentTypes::COLLECTION], "javascript:top.newCollection();", true, 0, 0, "", "", !$this->userCanMakeNewFile, false, '', false, '', '', 'btn_add_file');
 				break;
 		}
 		return parent::printHeaderTable($extra, true);

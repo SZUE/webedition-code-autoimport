@@ -551,7 +551,7 @@ set_button_state(false);';
 			'noline' => 1,
 		);
 
-		$clearDate = we_html_button::create_button("reset", "javascript:document.getElementById('reset_date').value='';", true, -1, -1, "", "", "", false);
+		$clearDate = we_html_button::create_button('reset', "javascript:document.getElementById('reset_date').value='';", true, -1, -1, "", "", "", false);
 
 		$parts[] = array(
 			'headline' => g_l('versions', '[time]'),
@@ -1060,7 +1060,7 @@ set_button_state(false);';
 		//reset
 		$act = ($action === "delete" ? 0 : 1);
 
-		$nextButton = we_html_button::create_button("go", 'javascript:parent.wizbody.handle_event("next");', true, 0, 0, "", "", $disabled, false);
+		$nextButton = we_html_button::create_button('go', 'javascript:parent.wizbody.handle_event("next");', true, 0, 0, "", "", $disabled, false);
 		$publish = we_base_request::_(we_base_request::BOOL, 'reset_doPublish');
 		$we_transaction = $GLOBALS['we_transaction'];
 		return '

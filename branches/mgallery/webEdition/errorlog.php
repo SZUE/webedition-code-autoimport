@@ -70,18 +70,18 @@ function getNavButtons($size, $pos, $id){
 
 	$url = WEBEDITION_DIR . basename(__FILE__);
 	return '<table style="margin-top: 10px;width:100%;" class="default"><tr><td>' .
-			we_html_button::create_button("fa:first,fa-lg fa-fast-backward", $url . '?function=first', true, 0, 0, '', '', ($pos == 1)) .
+			we_html_button::create_button('fa:first,fa-lg fa-fast-backward', $url . '?function=first', true, 0, 0, '', '', ($pos == 1)) .
 			we_html_button::getButton("-" . $div, 'btn', "window.location.href='" . $url . '?function=prevX&ID=' . $id . '&step=' . $div . "';", -1, '', ($pos - $div < 1)) .
 			we_html_button::create_button(we_html_button::BACK, $url . '?function=prev&ID=' . $id, true, 0, 0, "", "", ($pos == 1))
 			.
 			'</td><td style="text-align:center">' .
-			we_html_button::create_button("export", $url . '?function=export&ID=' . $id, true, 0, 0) .
-			we_html_button::create_button(we_html_button::DELETE, $url . '?function=delete&ID=' . $id, true, 0, 0) .
-			we_html_button::create_button(we_html_button::DELETE_EQUAL, $url . '?function=deleteEqual&ID=' . $id, true, 0, 0) .
+			we_html_button::create_button('export', $url . '?function=export&ID=' . $id, true) .
+			we_html_button::create_button(we_html_button::DELETE, $url . '?function=delete&ID=' . $id, true) .
+			we_html_button::create_button(we_html_button::DELETE_EQUAL, $url . '?function=deleteEqual&ID=' . $id, true) .
 			'</td><td style="text-align:right">' .
 			we_html_button::create_button(we_html_button::NEXT, $url . '?function=next&ID=' . $id, true, 0, 0, "", "", ($pos == $size)) .
 			we_html_button::getButton("+" . $div, 'btn2', "window.location.href='" . $url . '?function=nextX&ID=' . $id . '&step=' . $div . "';", -1, '', ($pos + $div > $size)) .
-			we_html_button::create_button("fa:last,fa-lg fa-fast-forward", $url . '?function=last', true) .
+			we_html_button::create_button('fa:last,fa-lg fa-fast-forward', $url . '?function=last', true) .
 			'</td></tr><tr><td colspan="3" style="text-align:center;width:120px;" class="defaultfont bold" >' . $pos . "&nbsp;" . g_l('global', '[from]') . ' ' . $size . '</td></table>';
 }
 

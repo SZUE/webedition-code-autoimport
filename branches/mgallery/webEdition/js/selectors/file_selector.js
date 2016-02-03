@@ -366,11 +366,11 @@ function enableRootDirButs() {
 }
 function disableNewFolderBut() {
 	WE().layout.button.switch_button_state(document, "btn_new_dir", "disabled");
-	makefolderState = 0;
+	makefolderState = false;
 }
 function enableNewFolderBut() {
 	WE().layout.button.switch_button_state(document, "btn_new_dir", "enabled");
-	makefolderState = 1;
+	makefolderState = true;
 }
 function disableNewBut() {
 	WE().layout.button.switch_button_state(document, "btn_new_dir", "disabled");
@@ -382,6 +382,16 @@ function enableNewBut() {
 		WE().layout.button.switch_button_state(document, "btn_new_dir", "enabled");
 		WE().layout.button.switch_button_state(document, "btn_add_cat", "enabled");
 	}
+}
+
+function disableNewFileBut() {
+	WE().layout.button.switch_button_state(document, "btn_add_file", "disabled");
+	newFileState = 0;
+}
+
+function enableNewFileBut() {
+	WE().layout.button.switch_button_state(document, "btn_add_file", "enabled");
+	newFileState = 1;
 }
 
 function clearOptions() {

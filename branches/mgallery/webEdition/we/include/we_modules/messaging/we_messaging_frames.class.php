@@ -165,8 +165,8 @@ function clearSearch() {
 			we_html_tools::htmlTextInput('messaging_search_keyword', 15, we_base_request::_(we_base_request::STRING, 'messaging_search_keyword', ''), 15));
 
 		$buttons = we_html_button::create_button(we_html_button::SEARCH, "javascript:doSearch();") .
-			we_html_button::create_button("advanced", "javascript:launchAdvanced()", true) .
-			we_html_button::create_button("reset_search", "javascript:clearSearch();");
+			we_html_button::create_button('advanced', "javascript:launchAdvanced()", true) .
+			we_html_button::create_button('reset_search', "javascript:clearSearch();");
 
 		$table->setCol(0, 1, array('class' => 'defaultfont'), $buttons);
 		$form = we_html_element::htmlForm(

@@ -107,11 +107,11 @@ abstract class we_editor_footer{
 			switch($we_doc->ContentType){
 				case we_base_ContentTypes::TEMPLATE:
 					$_normalTable->addCol(2);
-					$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("fat:make_new_document,fa-lg fa-file", "javascript:top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "','','" . $we_doc->ID . "');WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorMakeNewDoc(false);"));
+					$_normalTable->setColContent(0, $_pos++, we_html_button::create_button('fat:make_new_document,fa-lg fa-file', "javascript:top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "','','" . $we_doc->ID . "');WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorMakeNewDoc(false);"));
 					break;
 				case we_base_ContentTypes::OBJECT:
 					$_normalTable->addCol(2);
-					$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("make_new_object", "javascript:top.we_cmd('new','" . OBJECT_FILES_TABLE . "','','objectFile','" . $we_doc->ID . "');WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorMakeNewDoc(false);"));
+					$_normalTable->setColContent(0, $_pos++, we_html_button::create_button('make_new_object', "javascript:top.we_cmd('new','" . OBJECT_FILES_TABLE . "','','objectFile','" . $we_doc->ID . "');WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorMakeNewDoc(false);"));
 					break;
 			}
 		}
@@ -122,7 +122,7 @@ abstract class we_editor_footer{
 
 			if(!$_ctrlElem || !$_ctrlElem['hide']){
 				$_normalTable->addCol(2);
-				$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("fat:in_workflow,fa-lg fa-gears", "javascript:put_in_workflow('" . stripTblPrefix($we_doc->Table) . "');"));
+				$_normalTable->setColContent(0, $_pos++, we_html_button::create_button('fat:in_workflow,fa-lg fa-gears', "javascript:put_in_workflow('" . stripTblPrefix($we_doc->Table) . "');"));
 			}
 		}
 
@@ -132,7 +132,7 @@ abstract class we_editor_footer{
 
 			if(!$_ctrlElem || !$_ctrlElem['hide']){
 				$_normalTable->addCol(2);
-				$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("fat:unpublish,fa-lg fa-moon-o", "javascript:we_cmd('unpublish', '" . $we_transaction . "');"));
+				$_normalTable->setColContent(0, $_pos++, we_html_button::create_button('fat:unpublish,fa-lg fa-moon-o', "javascript:we_cmd('unpublish', '" . $we_transaction . "');"));
 			}
 		}
 
@@ -148,8 +148,8 @@ abstract class we_editor_footer{
 				$_normalTable->addCol(2);
 				if(we_base_moduleInfo::isActive(we_base_moduleInfo::EDITOR)){
 					$_normalTable->setColContent(0, $_pos++, (stripos($we_doc->ContentType, 'text/') !== false ?
-									we_html_button::create_button("fat:startEditor,fa-lg fa-external-link", "javascript:editSource();") :
-									we_html_button::create_button("fat:startEditor,fa-lg fa-external-link", "javascript:editFile();"))
+									we_html_button::create_button('fat:startEditor,fa-lg fa-external-link', "javascript:editSource();") :
+									we_html_button::create_button('fat:startEditor,fa-lg fa-external-link', "javascript:editFile();"))
 					);
 				}
 		}
@@ -189,7 +189,7 @@ abstract class we_editor_footer{
 			case we_base_ContentTypes::TEMPLATE:
 				if(defined('VERSIONING_TEXT_WETMPL') && defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL){
 					$_normalTable->addCol(2);
-					$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("fat:saveversion,fa-lg fa-save", "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(true);we_save_document();"));
+					$_normalTable->setColContent(0, $_pos++, we_html_button::create_button('fat:saveversion,fa-lg fa-save', "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(true);we_save_document();"));
 				}
 				if($hasPerm){
 					self::addDelButton($_normalTable, $we_doc, $_pos);
@@ -251,21 +251,21 @@ abstract class we_editor_footer{
 		//	Always button preview
 		if(in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $GLOBALS['we_doc']->EditPageNrs) && $GLOBALS['we_doc']->EditPageNr != we_base_constants::WE_EDITPAGE_PREVIEW){ // first button is always - preview, when exists
 			$_seeModeTable->addCol(2);
-			$_seeModeTable->setCol(0, $_pos++, array('style' => 'vertical-align:top'), we_html_button::create_button("fat:preview,fa-lg fa-eye", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
+			$_seeModeTable->setCol(0, $_pos++, array('style' => 'vertical-align:top'), we_html_button::create_button('fat:preview,fa-lg fa-eye', "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
 		}
 
 		// shop variants
 		if(defined('SHOP_TABLE')){
 			if($GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT && in_array(we_base_constants::WE_EDITPAGE_VARIANTS, $GLOBALS['we_doc']->EditPageNrs) && $GLOBALS['we_doc']->canHaveVariants(true) && $GLOBALS['we_doc']->EditPageNr != we_base_constants::WE_EDITPAGE_VARIANTS){ // first button is always - preview, when exists
 				$_seeModeTable->addCol(2);
-				$_seeModeTable->setCol(0, $_pos++, array('style' => 'vertical-align:top'), we_html_button::create_button("shopVariants", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_VARIANTS . ",'" . $GLOBALS["we_transaction"] . "');"));
+				$_seeModeTable->setCol(0, $_pos++, array('style' => 'vertical-align:top'), we_html_button::create_button('shopVariants', "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_VARIANTS . ",'" . $GLOBALS["we_transaction"] . "');"));
 			}
 		}
 
 		//	image-documents have no preview but thumbnailview instead ...
 		if($GLOBALS['we_doc']->EditPageNr != we_base_constants::WE_EDITPAGE_THUMBNAILS && in_array(we_base_constants::WE_EDITPAGE_THUMBNAILS, $GLOBALS['we_doc']->EditPageNrs)){
 			$_seeModeTable->addCol(2);
-			$_seeModeTable->setCol(0, $_pos++, array('style' => 'vertical-align:top'), we_html_button::create_button("thumbnails", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_THUMBNAILS . ",'" . $GLOBALS["we_transaction"] . "');"));
+			$_seeModeTable->setCol(0, $_pos++, array('style' => 'vertical-align:top'), we_html_button::create_button('thumbnails', "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_THUMBNAILS . ",'" . $GLOBALS["we_transaction"] . "');"));
 		}
 
 		//	Button edit !!!
@@ -277,14 +277,14 @@ abstract class we_editor_footer{
 		if(in_array(we_base_constants::WE_EDITPAGE_PROPERTIES, $GLOBALS['we_doc']->EditPageNrs) && ($GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_SCHEDULER)){
 			if(permissionhandler::isUserAllowedForAction("switch_edit_page", "we_base_constants::WE_EDITPAGE_PROPERTIES")){
 				$_seeModeTable->addCol(2);
-				$_seeModeTable->setCol(0, $_pos++, array('style' => 'vertical-align:top'), we_html_button::create_button("properties", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_PROPERTIES . ", '" . $GLOBALS["we_transaction"] . "');"));
+				$_seeModeTable->setCol(0, $_pos++, array('style' => 'vertical-align:top'), we_html_button::create_button('properties', "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_PROPERTIES . ", '" . $GLOBALS["we_transaction"] . "');"));
 			}
 		}
 
 		// Button workspace
 		if(in_array(we_base_constants::WE_EDITPAGE_WORKSPACE, $GLOBALS['we_doc']->EditPageNrs) && ($GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES)){
 			$_seeModeTable->addCol(2);
-			$_seeModeTable->setCol(0, $_pos++, array('style' => 'vertical-align:top;'), we_html_button::create_button("workspace_button", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_WORKSPACE . ", '" . $GLOBALS["we_transaction"] . "');"));
+			$_seeModeTable->setCol(0, $_pos++, array('style' => 'vertical-align:top;'), we_html_button::create_button('workspace_button', "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_WORKSPACE . ", '" . $GLOBALS["we_transaction"] . "');"));
 		}
 
 
@@ -292,7 +292,7 @@ abstract class we_editor_footer{
 		if(in_array(we_base_constants::WE_EDITPAGE_SCHEDULER, $GLOBALS['we_doc']->EditPageNrs) && ($GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES) &&
 				we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && permissionhandler::hasPerm("CAN_SEE_SCHEDULER")){
 			$_seeModeTable->addCol(2);
-			$_seeModeTable->setCol(0, $_pos++, array('style' => 'vertical-align:top;'), we_html_button::create_button("fat:schedule_button,fa-lg fa-clock-o", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_SCHEDULER . ", '" . $GLOBALS["we_transaction"] . "');"));
+			$_seeModeTable->setCol(0, $_pos++, array('style' => 'vertical-align:top;'), we_html_button::create_button('fat:schedule_button,fa-lg fa-clock-o', "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_SCHEDULER . ", '" . $GLOBALS["we_transaction"] . "');"));
 		}
 
 		//	Button put in workflow
@@ -303,7 +303,7 @@ abstract class we_editor_footer{
 
 			if(!$_ctrlElem || !$_ctrlElem['hide']){
 				$_seeModeTable->addCol(2);
-				$_seeModeTable->setCol(0, $_pos++, array('style' => 'vertical-align:top;'), we_html_button::create_button("fat:in_workflow,fa-lg fa-gears", "javascript:put_in_workflow('" . stripTblPrefix($we_doc->Table) . "');"));
+				$_seeModeTable->setCol(0, $_pos++, array('style' => 'vertical-align:top;'), we_html_button::create_button('fat:in_workflow,fa-lg fa-gears', "javascript:put_in_workflow('" . stripTblPrefix($we_doc->Table) . "');"));
 			}
 		}
 
@@ -317,7 +317,7 @@ abstract class we_editor_footer{
 			$_ctrlElem = getControlElement('button', 'unpublish'); //	look tag we:controlElement for details
 			if(!$_ctrlElem || !$_ctrlElem['hide']){
 				$_seeModeTable->addCol(2);
-				$_seeModeTable->setCol(0, $_pos++, array('style' => 'vertical-align:top;'), we_html_button::create_button("fat:unpublish,fa-lg fa-moon-o", "javascript:we_cmd('unpublish', '" . $we_transaction . "');"));
+				$_seeModeTable->setCol(0, $_pos++, array('style' => 'vertical-align:top;'), we_html_button::create_button('fat:unpublish,fa-lg fa-moon-o', "javascript:we_cmd('unpublish', '" . $we_transaction . "');"));
 			}
 		}
 

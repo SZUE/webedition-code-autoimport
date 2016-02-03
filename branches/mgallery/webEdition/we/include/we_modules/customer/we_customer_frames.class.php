@@ -225,7 +225,7 @@ function setTab(tab) {
 			we_html_button::create_button(we_html_button::DIRUP, "javascript:we_cmd('move_field_up')") .
 			we_html_button::create_button(we_html_button::DIRDOWN, "javascript:we_cmd('move_field_down')") .
 			we_html_element::htmlSpan(array("class" => "defaultfont lowContrast"), g_l('modules_customer', '[sort_edit_fields_explain]')) .
-			we_html_button::create_button("reset", "javascript:we_cmd('reset_edit_order')");
+			we_html_button::create_button('reset', "javascript:we_cmd('reset_edit_order')");
 
 		$table = new we_html_table(array('class' => 'default', "width" => 500), 4, 5);
 

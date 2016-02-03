@@ -1459,7 +1459,7 @@ for(i=0;i<elements.length; ++i){
 				$_html = '<table class="default">
 							<tr>
 								<td>' . $_formmail_log->getHtml() . '</td>
-								<td style="padding-left:10px;">' . we_html_button::create_button("logbook", 'javascript:we_cmd(\'show_formmail_log\')') . '</td>
+								<td style="padding-left:10px;">' . we_html_button::create_button('logbook', 'javascript:we_cmd(\'show_formmail_log\')') . '</td>
 							</tr>
 						</table>';
 				$_settings[] = array('html' => $_html, 'space' => 250, "headline" => g_l('prefs', '[logFormmailRequests]'), 'noline' => 1);
@@ -1507,7 +1507,7 @@ for(i=0;i<elements.length; ++i){
 				$_html = '<table class="default">
 							<tr>
 								<td>' . $_formmail_block->getHtml() . '</td>
-								<td style="padding-left:10px;">' . we_html_button::create_button("logbook", 'javascript:we_cmd(\'show_formmail_block_log\')') . '</td>
+								<td style="padding-left:10px;">' . we_html_button::create_button('logbook', 'javascript:we_cmd(\'show_formmail_block_log\')') . '</td>
 							</tr>
 						</table>';
 
