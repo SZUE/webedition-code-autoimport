@@ -1,4 +1,4 @@
-/* global top, WE */
+/* global top, WE, tinyMCE */
 
 /**
  * webEdition CMS
@@ -237,21 +237,21 @@ function tinyInit_instance_callback(ed) {
 }
 
 function tinyEdOnPaste(ed) {
-	if (!weEditorFrameIsHot && editorLevel == "inline" && ed.isDirty()) {
+	if (!ed.weEditorFrameIsHot && ed.editorLevel == "inline" && ed.isDirty()) {
 		try {
-			weEditorFrame.setEditorIsHot(true);
+			ed.weEditorFrame.setEditorIsHot(true);
 		} catch (e) {
 		}
-		weEditorFrameIsHot = true;
+		ed.weEditorFrameIsHot = true;
 	}
 }
 
 function tinyEdOnSaveContent(ed, o) {
-	weEditorFrameIsHot = false;
+	ed.weEditorFrameIsHot = false;
 	// if is popup and we click on ok
-	if (editorLevel == "popup" && ed.isDirty()) {
+	if (ed.editorLevel == "popup" && ed.isDirty()) {
 		try {
-			weEditorFrame.setEditorIsHot(true);
+			ed.weEditorFrame.setEditorIsHot(true);
 		} catch (e) {
 		}
 	}
@@ -413,7 +413,7 @@ function tinyEdOnPostRender(ed, cm) {
 function tinyWeResizeEditor(render, name) {
 	var h = tinyMCE.DOM.get(name + "_toolbargroup").parentNode.offsetHeight;
 	if (render && --tinyMCE.weResizeLoops && h < 24) {
-		setTimeout(weResizeEditor, 10, true);
+		setTimeout(tinyWeResizeEditor, 10, true);
 	}
 
 	tinyMCE.DOM.setStyle(
@@ -422,4 +422,45 @@ function tinyWeResizeEditor(render, name) {
 					//(tinyMCE.DOM.get(name+"_tbl").offsetHeight - h - 30)+"px");
 									(window.innerHeight - h - 60) + "px"
 									);
+}
+
+function tinySetEditorLevel(ed) {
+	/* set EditorFrame.setEditorIsHot(true) */
+
+	// we look for editorLevel and weEditorFrameController just once at editor init
+	ed.editorLevel = "";
+	ed.weEditorFrame = null;
+	// if editorLevel = "inline" we use a local copy of weEditorFrame.EditorIsHot
+	ed.weEditorFrameIsHot = false;
+
+	if (window._EditorFrame !== undefined) {
+		ed.editorLevel = "inline";
+		ed.weEditorFrame = window._EditorFrame;
+	} else {
+		//FIXME: check if WE().layout.weEditorFrameController cannot be used
+		if (top.opener !== null && top.opener.top.WebEdition.layout.weEditorFrameController !== undefined && top.isWeDialog === undefined) {
+			ed.editorLevel = "popup";
+			ed.weEditorFrame = top.opener.top.WebEdition.layout.weEditorFrameController;
+		} else {
+			ed.editorLevel = "fullscreen";
+			ed.weEditorFrame = null;
+		}
+	}
+
+	try {
+		ed.weEditorFrameIsHot = ed.editorLevel === "inline" ? ed.weEditorFrame.EditorIsHot : false;
+	} catch (e) {
+	}
+
+	// listeners for editorLevel = "inline"
+	//could be rather CPU-intensive. But weEditorFrameIsHot is nearly allways true, so we could try
+	ed.onKeyDown.add(function (ed) {
+		if (!ed.weEditorFrameIsHot && ed.editorLevel === "inline") {
+			try {
+				ed.weEditorFrame.setEditorIsHot(true);
+			} catch (e) {
+			}
+			ed.weEditorFrameIsHot = true;
+		}
+	});
 }

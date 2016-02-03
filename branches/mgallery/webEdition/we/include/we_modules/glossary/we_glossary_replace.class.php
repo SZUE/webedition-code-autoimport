@@ -36,8 +36,8 @@ abstract class we_glossary_replace{
 	 */
 	public static function replace($content, $language){
 		return (self::useAutomatic() ?
-				self::doReplace($content, $language) :
-				$content);
+						self::doReplace($content, $language) :
+						$content);
 	}
 
 	/**
@@ -87,27 +87,31 @@ abstract class we_glossary_replace{
 		  This is the fastest variant
 		 */
 		// split the source into tag and non-tag pieces
-		$pieces = preg_split('|(<[^>]*>)|', $replBody, -1, PREG_SPLIT_DELIM_CAPTURE);
+		$pieces = preg_split('|(<[^>]*>)|', $replBody, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
 		// replace words in non-tag pieces
-		$replBody = '';
-		$before = '';
-		foreach($pieces as $piece){
-			if($piece && $piece[0] != '<' && stripos($before, '<script') === FALSE){
+		$lastHtmlTag = '';
+		$tagMatch = array();
+		$ignoreTags = array('script' => 0, 'style' => 0, 'textarea' => 0, 'select' => 0);
+		foreach($pieces as &$piece){
+			if(preg_match('|^<(/)?([[:alnum:]]+)|', $piece, $tagMatch)){//is a tag
+				list(, $not, $lastHtmlTag) = $tagMatch;
+				if(isset($ignoreTags[$lastHtmlTag])){
+					$ignoreTags[$lastHtmlTag]+=($not ? -1 : 1);
+				}
+			} elseif(!array_sum($ignoreTags)){
 				//this will generate invalid code: $piece = str_replace('&quot;', '"', $piece);
 				foreach($replace as $tag => $words){
-					if(!$tag || stripos($before, $tag) === FALSE){
+					if(!$tag || $lastHtmlTag === $tag){
 						$piece = self::doReplaceWords($piece, $words);
 					}
 				}
 			}
-			$replBody .= $piece;
-			$before = $piece;
 		}
 
-		$replBody = strtr($replBody, array('@@@we@@@' => '\''));
+		$replBody = strtr(implode('',$pieces), array('@@@we@@@' => '\''));
 		return (isset($matches[1]) ?
-				str_replace($srcBody, $replBody, $src) :
-				$replBody);
+						str_replace($srcBody, $replBody, $src) :
+						$replBody);
 	}
 
 	/**

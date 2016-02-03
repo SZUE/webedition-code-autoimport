@@ -289,7 +289,7 @@ class we_wysiwyg_editor{
 		}
 		return we_html_element::cssLink(CSS_DIR . 'wysiwyg/tinymce/toolbar.css') .
 				we_html_element::jsScript(TINYMCE_SRC_DIR . 'tiny_mce.js') .
-				($frontendEdit ? we_html_element::jsElement('
+				($frontendEdit /*&& !$GLOBALS['WE_MAIN_DOC']->InWebEdition*/ ? we_html_element::jsElement('
 function WE(){
 return {
 	consts:{
@@ -302,8 +302,8 @@ return {
 			WE_JS_TINYMCE_DIR:"' . WE_JS_TINYMCE_DIR . '",
 		},
 		linkPrefix:{
-			TYPE_INT_PREFIX:"' . TYPE_INT_PREFIX . '",
-			TYPE_OBJ_PREFIX:"' . TYPE_OBJ_PREFIX . '",
+			TYPE_INT_PREFIX:"' . we_base_link::TYPE_INT_PREFIX . '",
+			TYPE_OBJ_PREFIX:"' . we_base_link::TYPE_OBJ_PREFIX . '",
 		},
 	},
 };
@@ -1098,50 +1098,15 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 
 		ed.onPostProcess.add(tinyOnPostProcess);' . ($this->isFrontendEdit ? '' : '
 
-		/* set EditorFrame.setEditorIsHot(true) */
-
-		// we look for editorLevel and weEditorFrameController just once at editor init
-		var editorLevel = "";
-		var weEditorFrame = null;
-
-		if(window._EditorFrame !== undefined){
-			editorLevel = "inline";
-			weEditorFrame = _EditorFrame;
-		} else {
-			//FIXME: check if WE().layout.weEditorFrameController cannot be used
-			if(top.opener !== null && top.opener.top.WebEdition.layout.weEditorFrameController !== undefined && top.isWeDialog === undefined){
-				editorLevel = "popup";
-				weEditorFrame = top.opener.top.WebEdition.layout.weEditorFrameController;
-			} else {
-				editorLevel = "fullscreen";
-				weEditorFrame = null;
-			}
-		}
-
-		// if editorLevel = "inline" we use a local copy of weEditorFrame.EditorIsHot
-		var weEditorFrameIsHot = false;
-		try{
-			weEditorFrameIsHot = editorLevel == "inline" ? weEditorFrame.EditorIsHot : false;
-		}catch(e){}
-
-		// listeners for editorLevel = "inline"
-		//could be rather CPU-intensive. But weEditorFrameIsHot is nearly allways true, so we could try
-		ed.onKeyDown.add(function(ed) {
-			if(!weEditorFrameIsHot && editorLevel == "inline"){
-				try{
-					weEditorFrame.setEditorIsHot(true);
-				} catch(e) {}
-				weEditorFrameIsHot = true;
-			}
-		});
+		tinySetEditorLevel(ed);
 
 		/*
 		ed.onChange.add(function(ed) {
-			if(!weEditorFrameIsHot && editorLevel == "inline" && ed.isDirty()){
+			if(!ed.weEditorFrameIsHot && editorLevel == "inline" && ed.isDirty()){
 				try{
-					weEditorFrame.setEditorIsHot(true);
+					ed.weEditorFrame.setEditorIsHot(true);
 				} catch(e) {}
-				weEditorFrameIsHot = true;
+				ed.weEditorFrameIsHot = true;
 			}
 		});
 		*/
@@ -1152,7 +1117,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		ed.onClick.add(function(ed) {
 			if(!weEditorFrameIsHot && editorLevel == "inline" && ed.isDirty()){
 				try{
-					weEditorFrame.setEditorIsHot(true);
+					ed.weEditorFrame.setEditorIsHot(true);
 				} catch(e) {}
 				weEditorFrameIsHot = true;
 			}
