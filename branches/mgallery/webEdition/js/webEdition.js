@@ -532,16 +532,16 @@ function we_cmd_base(args, url) {
 			}
 			break;
 		case "do_delete":
-			we_sbmtFrm(self.load, url, self.treeheader);
+			we_sbmtFrm(self.load, url, document.getElementsByTagName("iframe").treeheader);
 			break;
 		case "move_single_document":
 			we_sbmtFrm(self.load, url, WE().layout.weEditorFrameController.getActiveDocumentReference().editFooter);
 			break;
 		case "do_move":
-			we_sbmtFrm(self.load, url, self.treeheader);
+			we_sbmtFrm(self.load, url, document.getElementsByTagName("iframe").treeheader);
 			break;
 		case "do_addToCollection":
-			we_sbmtFrm(self.load, url, self.treeheader);
+			we_sbmtFrm(self.load, url, document.getElementsByTagName("iframe").treeheader);
 			break;
 		case "change_passwd":
 			new (WE().util.jsWindow)(this, url, "we_change_passwd", -1, -1, 250, 220, true, false, true, false);
@@ -1062,7 +1062,7 @@ function we_cmd_base(args, url) {
 			widthBeforeDeleteModeSidebar = widthSidebar;
 
 			if (args[2] != 1) {
-				we_repl(self.treeheader, url, args[0]);
+				we_repl(document.getElementsByTagName("iframe").treeheader, url, args[0]);
 			}
 			break;
 		case "move":
@@ -1098,7 +1098,7 @@ function we_cmd_base(args, url) {
 				widthBeforeDeleteModeSidebar = widthSidebar;
 
 				if (args[2] != 1) {
-					we_repl(self.treeheader, url, args[0]);
+					we_repl(document.getElementsByTagName("iframe").treeheader, url, args[0]);
 				}
 			}
 			break;
@@ -1127,7 +1127,7 @@ function we_cmd_base(args, url) {
 				widthBeforeDeleteModeSidebar = widthSidebar;
 
 				if (args[2] != 1) {
-					we_repl(self.treeheader, url, args[0]);
+					we_repl(document.getElementsByTagName("iframe").treeheader, url, args[0]);
 				}
 			}
 			break;

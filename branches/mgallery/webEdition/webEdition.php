@@ -186,6 +186,7 @@ TEMPLATE: '<?php echo we_base_ContentTypes::TEMPLATE; ?>',
 								WE_INCLUDES_DIR:"<?php echo WE_INCLUDES_DIR; ?>",
 								WE_SHOP_MODULE_DIR: "<?php echo defined('WE_SHOP_MODULE_DIR') ? WE_SHOP_MODULE_DIR : 'WE_SHOP_MODULE_DIR'; ?>",
 								WE_WORKFLOW_MODULE_DIR: "<?php echo defined('WE_WORKFLOW_MODULE_DIR') ? WE_WORKFLOW_MODULE_DIR : 'WE_WORKFLOW_MODULE_DIR'; ?>",
+								WE_JS_TINYMCE_DIR: "<?php echo WE_JS_TINYMCE_DIR;?>",
 				},
 				g_l:{
 				main:{
@@ -247,6 +248,33 @@ TEMPLATE: '<?php echo we_base_ContentTypes::TEMPLATE; ?>',
 									fieldNameNotValid: '<?php echo g_l('modules_object', '[fieldNameNotValid]'); ?>',
 									fieldNameNotTitleDesc: '<?php echo g_l('modules_object', '[fieldNameNotTitleDesc]'); ?>',
 									fieldNameEmpty: '<?php echo g_l('modules_object', '[fieldNameEmpty]'); ?>'
+								},
+								tinyMceTranslationObject: {
+									<?php echo  array_search($GLOBALS['WE_LANGUAGE'], getWELangs());?>:{
+										we:{
+											group_link:"<?php echo  g_l('wysiwyg', '[links]');?>",//(insert_hyperlink)
+											group_copypaste:"<?php echo  g_l('wysiwyg', '[import_text]');?>",
+											group_advanced:"<?php echo  g_l('wysiwyg', '[advanced]');?>",
+											group_insert:"<?php echo  g_l('wysiwyg', '[insert]');?>",
+											group_indent:"<?php echo  g_l('wysiwyg', '[indent]');?>",
+											//group_view:"<?php echo  g_l('wysiwyg', '[view]');?>",
+											group_table:"<?php echo  g_l('wysiwyg', '[table]');?>",
+											group_edit:"<?php echo  g_l('wysiwyg', '[edit]');?>",
+											group_layer:"<?php echo  g_l('wysiwyg', '[layer]');?>",
+											group_xhtml:"<?php echo  g_l('wysiwyg', '[xhtml_extras]');?>",
+											tt_weinsertbreak:"<?php echo  g_l('wysiwyg', '[insert_br]');?>",
+											tt_welink:"<?php echo  g_l('wysiwyg', '[hyperlink]');?>",
+											tt_weimage:"<?php echo  g_l('wysiwyg', '[insert_edit_image]');?>",
+											tt_wefullscreen_set:"<?php echo  g_l('wysiwyg', '[maxsize_set]');//($this->isInPopup ? g_l('wysiwyg', '[maxsize_set]') : g_l('wysiwyg', '[fullscreen]'));?>",
+											tt_wefullscreen_reset:"<?php echo  g_l('wysiwyg', '[maxsize_reset]');?>",
+											tt_welang:"<?php echo  g_l('wysiwyg', '[language]');?>",
+											tt_wespellchecker:"<?php echo  g_l('wysiwyg', '[spellcheck]');?>",
+											tt_wevisualaid:"<?php echo  g_l('wysiwyg', '[visualaid]');?>",
+											tt_wegallery:"not translated yet",
+											cm_inserttable:"<?php echo  g_l('wysiwyg', '[insert_table]');?>",
+											cm_table_props:"<?php echo  g_l('wysiwyg', '[edit_table]');?>",
+										}
+									}
 								},
 <?php
 foreach($jsmods as $mod){
@@ -312,7 +340,8 @@ foreach(we_base_request::getAllTables() as $k => $v){
 				linkPrefix: {
 				TYPE_OBJ_PREFIX: '<?php echo we_base_link::TYPE_OBJ_PREFIX; ?>',
 								TYPE_INT_PREFIX: '<?php echo we_base_link::TYPE_INT_PREFIX; ?>',
-								TYPE_MAIL_PREFIX: '<?php echo we_base_link::TYPE_MAIL_PREFIX; ?>'
+								TYPE_MAIL_PREFIX: '<?php echo we_base_link::TYPE_MAIL_PREFIX; ?>',
+								TYPE_THUMB_PREFIX: '<?php echo we_base_link::TYPE_THUMB_PREFIX;?>',
 				},
 				graphic:{
 					gdSupportedTypes:{<?php echo implode(',', array_map(function($v){return '"' . $v . '" : true';}, we_base_imageEdit::supported_image_types())); ?>},

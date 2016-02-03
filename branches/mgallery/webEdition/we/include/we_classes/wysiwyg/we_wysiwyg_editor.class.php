@@ -275,7 +275,7 @@ class we_wysiwyg_editor{
 		return $asArray ? $options : implode(',', $options);
 	}
 
-	static function getHeaderHTML($loadDialogRegistry = false){
+	static function getHeaderHTML($loadDialogRegistry = false, $frontendEdit = false){
 		if(defined('WE_WYSIWG_HEADER')){
 			if($loadDialogRegistry && !defined('WE_WYSIWG_HEADER_REG')){
 				define('WE_WYSIWG_HEADER_REG', 1);
@@ -287,9 +287,28 @@ class we_wysiwyg_editor{
 		if($loadDialogRegistry){
 			define('WE_WYSIWG_HEADER_REG', 1);
 		}
-
 		return we_html_element::cssLink(CSS_DIR . 'wysiwyg/tinymce/toolbar.css') .
 				we_html_element::jsScript(TINYMCE_SRC_DIR . 'tiny_mce.js') .
+				($frontendEdit ? we_html_element::jsElement('
+function WE(){
+return {
+	consts:{
+		tables:{
+			FILE_TABLE:"' . FILE_TABLE . '",
+			OBJECT_FILES_TABLE:"' . OBJECT_FILES_TABLE . '",
+
+		},
+		dirs:{
+			WE_JS_TINYMCE_DIR:"' . WE_JS_TINYMCE_DIR . '",
+		},
+		linkPrefix:{
+			TYPE_INT_PREFIX:"' . TYPE_INT_PREFIX . '",
+			TYPE_OBJ_PREFIX:"' . TYPE_OBJ_PREFIX . '",
+		},
+	},
+};
+}
+') : '') .
 				($loadDialogRegistry ? we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') : '') .
 				we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceFunctions.js');
 	}
@@ -868,31 +887,6 @@ and have a look at /webEdition/js/wysiwyg/tinymce/weTinyMceFunctions to see what
 
 var weclassNames_tinyMce = [' . $this->cssClassesJS . '];
 
-var tinyMceTranslationObject = {' . $editorLang . ':{
-	we:{
-		group_link:"' . g_l('wysiwyg', '[links]') . '",//(insert_hyperlink)
-		group_copypaste:"' . g_l('wysiwyg', '[import_text]') . '",
-		group_advanced:"' . g_l('wysiwyg', '[advanced]') . '",
-		group_insert:"' . g_l('wysiwyg', '[insert]') . '",
-		group_indent:"' . g_l('wysiwyg', '[indent]') . '",
-		//group_view:"' . g_l('wysiwyg', '[view]') . '",
-		group_table:"' . g_l('wysiwyg', '[table]') . '",
-		group_edit:"' . g_l('wysiwyg', '[edit]') . '",
-		group_layer:"' . g_l('wysiwyg', '[layer]') . '",
-		group_xhtml:"' . g_l('wysiwyg', '[xhtml_extras]') . '",
-		tt_weinsertbreak:"' . g_l('wysiwyg', '[insert_br]') . '",
-		tt_welink:"' . g_l('wysiwyg', '[hyperlink]') . '",
-		tt_weimage:"' . g_l('wysiwyg', '[insert_edit_image]') . '",
-		tt_wefullscreen_set:"' . ($this->isInPopup ? g_l('wysiwyg', '[maxsize_set]') : g_l('wysiwyg', '[fullscreen]')) . '",
-		tt_wefullscreen_reset:"' . g_l('wysiwyg', '[maxsize_reset]') . '",
-		tt_welang:"' . g_l('wysiwyg', '[language]') . '",
-		tt_wespellchecker:"' . g_l('wysiwyg', '[spellcheck]') . '",
-		tt_wevisualaid:"' . g_l('wysiwyg', '[visualaid]') . '",
-		tt_wegallery:"not translated yet",
-		cm_inserttable:"' . g_l('wysiwyg', '[insert_table]') . '",
-		cm_table_props:"' . g_l('wysiwyg', '[edit_table]') . '"
-	}}};
-
 //FIXME: if possible change this to an array/object element!
 var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	wePluginClasses : {
@@ -1002,15 +996,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	' . $this->tinyParams . ',' : '') . '
 
 	//Fix: ad attribute id to anchor
-	init_instance_callback: function(ed) {
-		ed.serializer.addNodeFilter("a", function(nodes) {
-			tinymce.each(nodes, function(node) {
-				if(!node.attr("href") && !node.attr("id")){
-					node.attr("id", node.attr("name"));
-				}
-			});
-		});
-	},
+	init_instance_callback: tinyInit_instance_callback,
 
 	paste_text_sticky : true,
 	paste_auto_cleanup_on_paste: true,
@@ -1021,15 +1007,6 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 			alert("' . g_l('wysiwyg', '[removedInlinePictures]') . '");
 		}
 	},
-
-	/* <br/><br/> => </p><p> on paste: restore default behaviour */
-	/*
-	paste_preprocess : function(pl, o){
-		if(!pl.editor.pasteAsPlainText){
-			o.content = o.content.replace(/<br\s?\/?\>s*<br\s?\/?>/g, "<p>");
-		}
-	},
-	*/
 
 	setup : function(ed){
 		ed.settings.language = "' . array_search($GLOBALS['WE_LANGUAGE'], getWELangs()) . '";
@@ -1056,59 +1033,10 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		});
 
 		' . ($this->isInPopup ? ' //still no solution for relative scaling when inlineedit=true
-		ed.onPostRender.add(function(ed, cm) {
-			window.addEventListener("resize", function(e){tinyMCE.weResizeEditor()});
-			if(typeof tinyMCE.weResizeEditor === "function"){
-				tinyMCE.weResizeEditor(true);
-			}
-		});
+		ed.onPostRender.add(tinyEdOnPostRender);
 		' : '') . '
 
-		ed.onDblClick.add(function(ed, e) {
-			var openDialogsOnDblClick = true;
-
-			if(openDialogsOnDblClick){
-				if(ed.selection.getNode().nodeName === "IMG" && ed.dom.getAttrib(ed.selection.getNode(), "src", "")){
-					tinyMCE.execCommand("mceWeimage");
-				}
-				if(ed.selection.getNode().nodeName === "A" && ed.dom.getAttrib(ed.selection.getNode(), "href", "")){
-					tinyMCE.execCommand("mceWelink");
-				}
-			} else {
-				var match,
-					frameControler = WE().layout.weEditorFrameController;
-
-				if(!frameController){
-					return;
-				}
-				if (ed.selection.getNode().nodeName == "IMG" && (src = ed.dom.getAttrib(ed.selection.getNode(), "src", ""))){
-					if(match = src.match(/[^" >]*\?id=(\d+)[^" >]*/)){
-						if(match[1] && parseInt(match[1]) !== 0){
-							frameControler.openDocument("' . FILE_TABLE . '", match[1], "");
-						}
-					} else {
-					new (WE().util.jsWindow)(window,src, "_blank", -1, -1, 2500, 2500, true, true, true);
-					}
-				}
-				if (ed.selection.getNode().nodeName == "A" && (href = ed.dom.getAttrib(ed.selection.getNode(), "href", ""))){
-					if(match = href.match(/(' . we_base_link::TYPE_INT_PREFIX . '|' . we_base_link::TYPE_OBJ_PREFIX . '|)(\d+)[^" >]*/)){
-						if(match[1]){
-							switch(match[1]){
-								case "' . we_base_link::TYPE_INT_PREFIX . '":
-									frameControler.openDocument("' . FILE_TABLE . '", match[2], "");
-									break;
-								case "' . we_base_link::TYPE_OBJ_PREFIX . '":
-									frameControler.openDocument("' . OBJECT_FILES_TABLE . '", match[2], "");
-									break;
-							}
-						}
-					} else {
-						new (WE().util.jsWindow)(window,href, "_blank", -1, -1, 2500, 2500, true, true, true);
-					}
-				}
-			}
-		});
-
+		ed.onDblClick.add(tinyEdonDblClick);
 
 		ed.onInit.add(function(ed, o){
 			//TODO: clean up the mess in here!
@@ -1168,47 +1096,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 			' : '') . '
 		});
 
-		ed.onPostProcess.add(function(ed, o) {
-			var c = document.createElement("div");
-			c.innerHTML = o.content;
-			var first = c.firstChild;
-
-			if(first){
-				if(first.innerHTML == "&nbsp;" && first == c.lastChild){
-				c.innerHTML = "";
-			}
-			else if(ed.settings.weRemoveFirstParagraph === "1" && first.nodeName == "P"){
-				var useDiv = false, div = document.createElement("div"), attribs = ["style", "class", "dir"];
-				div.innerHTML = first.innerHTML;
-
-				for(var i=0;i<attribs.length;i++){
-					if(first.hasAttribute(attribs[i])){
-						div.setAttribute(attribs[i], first.getAttribute(attribs[i]));
-						useDiv = true;
-					}
-				}
-				if(useDiv){
-					c.replaceChild(div, first);
-				} else{
-					c.removeChild(first);
-					c.innerHTML = first.innerHTML + c.innerHTML;
-					}
-				}
-			}
-
-			// remove border="0" and border="" from table tags
-			var tables;
-			if(tables = c.getElementsByTagName("TABLE")){
-				for(var i = 0; i < tables.length; i++){
-					if(tables[i].getAttribute("border") === "0" || tables[i].getAttribute("border") === ""){
-						tables[i].removeAttribute("border");
-					}
-				}
-			}
-
-			// write content back
-			o.content = c.innerHTML;
-		});' . ($this->isFrontendEdit ? '' : '
+		ed.onPostProcess.add(tinyOnPostProcess);' . ($this->isFrontendEdit ? '' : '
 
 		/* set EditorFrame.setEditorIsHot(true) */
 
@@ -1258,21 +1146,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		});
 		*/
 
-		ed.onNodeChange.add(function(ed, cm, n) {
-			var pc, tmp,
-				td = ed.dom.getParent(n, "td");
-
-			if(typeof td === "object" && td && td.getElementsByTagName("p").length === 1){
-				pc = td.getElementsByTagName("p")[0].cloneNode(true);
-				tmp = document.createElement("div");
-				tmp.appendChild(pc);
-
-				if(tmp.innerHTML === td.innerHTML){
-					td.innerHTML = "";
-					ed.selection.setContent(pc.innerHTML);
-				}
-			}
-		});
+		ed.onNodeChange.add(tinyEdOnNodeChange);
 
 		/*
 		ed.onClick.add(function(ed) {
@@ -1285,98 +1159,46 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		});
 		*/
 
-		ed.onPaste.add(function(ed) {
-			if(!weEditorFrameIsHot && editorLevel == "inline" && ed.isDirty()){
-				try{
-					weEditorFrame.setEditorIsHot(true);
-				} catch(e) {}
-				weEditorFrameIsHot = true;
-			}
-		});
+		ed.onPaste.add(tinyEdOnPaste);
 
 		// onSave (= we_save and we_publish) we reset the (tiny-internal) flag weEditorFrameIsHot to false
-		ed.onSaveContent.add(function(ed, o) {
-			weEditorFrameIsHot = false;
-			// if is popup and we click on ok
-			if(editorLevel == "popup" && ed.isDirty()){
-				try{
-					weEditorFrame.setEditorIsHot(true);
-				} catch(e) {}
-			}
-
-			/*
-			// and we transform image sources to we format before writing it to session!
-			var div = document.createElement("div"),
-				imgs;
-
-			div.innerHTML = o.content;
-			if(imgs = div.getElementsByTagName("IMG")){
-				var matches;
-				for(var i = 0; i < imgs.length; i++){
-					if(matches = imgs[i].src.match(/[^?]+\?id=(\d+)/)){
-						imgs[i].src = "' . we_base_link::TYPE_INT_PREFIX . '" + matches[1];
-					}
-					if(matches = imgs[i].src.match(/[^?]+\?thumb=(\d+,\d+)/)){
-						imgs[i].src = "' . we_base_link::TYPE_THUMB_PREFIX . '" + matches[1];
-					};
-				}
-				o.content = div.innerHTML;
-				div = imgs = matches = null;
-			}
-			*/
-		});
+		ed.onSaveContent.add(tinyEdOnSaveContent);
 		') . '
 	}
-}
-tinyMCE.addI18n(tinyMceTranslationObject);
-
+}' . ($this->isFrontendEdit ? '
+var tinyMceTranslationObject = {' . array_search($GLOBALS['WE_LANGUAGE'], getWELangs()) . ':{
+	we:{
+		group_link:"' . g_l('wysiwyg', '[links]') . '",//(insert_hyperlink)
+		group_copypaste:"' . g_l('wysiwyg', '[import_text]') . '",
+		group_advanced:"' . g_l('wysiwyg', '[advanced]') . '",
+		group_insert:"' . g_l('wysiwyg', '[insert]') . '",
+		group_indent:"' . g_l('wysiwyg', '[indent]') . '",
+		//group_view:"' . g_l('wysiwyg', '[view]') . '",
+		group_table:"' . g_l('wysiwyg', '[table]') . '",
+		group_edit:"' . g_l('wysiwyg', '[edit]') . '",
+		group_layer:"' . g_l('wysiwyg', '[layer]') . '",
+		group_xhtml:"' . g_l('wysiwyg', '[xhtml_extras]') . '",
+		tt_weinsertbreak:"' . g_l('wysiwyg', '[insert_br]') . '",
+		tt_welink:"' . g_l('wysiwyg', '[hyperlink]') . '",
+		tt_weimage:"' . g_l('wysiwyg', '[insert_edit_image]') . '",
+		tt_wefullscreen_set:"' . ($this->isInPopup ? g_l('wysiwyg', '[maxsize_set]') : g_l('wysiwyg', '[fullscreen]')) . '",
+		tt_wefullscreen_reset:"' . g_l('wysiwyg', '[maxsize_reset]') . '",
+		tt_welang:"' . g_l('wysiwyg', '[language]') . '",
+		tt_wespellchecker:"' . g_l('wysiwyg', '[spellcheck]') . '",
+		tt_wevisualaid:"' . g_l('wysiwyg', '[visualaid]') . '",
+		tt_wegallery:"not translated yet",
+		cm_inserttable:"' . g_l('wysiwyg', '[insert_table]') . '",
+		cm_table_props:"' . g_l('wysiwyg', '[edit_table]') . '"
+	}}};
+tinyMCE.addI18n(tinyMceTranslationObject);' : '
+tinyMCE.addI18n(WE().consts.g_l.tinyMceTranslationObject)
+') . '
 var TmpFn = tinyMCE.PluginManager.load;
-tinyMCE.PluginManager.load = function(n, u, cb, s) {
-	var t = this, url = u;
-	function loadDependencies() {
-		var dependencies = t.dependencies(n);
-		tinymce.each(dependencies, function(dep) {
-			var newUrl = t.createUrl(u, dep);
-			t.load(newUrl.resource, newUrl, undefined, undefined);
-		});
-		if (cb) {
-			if (s) {
-				cb.call(s);
-			} else {
-				cb.call(tinymce.ScriptLoader);
-			}
-		}
-	}
-	if (t.urls[n]){
-		return;
-	}
-	if (typeof u === "object"){
-		url = u.resource.indexOf("we") === 0 ? "' . WE_JS_TINYMCE_DIR . 'plugins/" + u.resource + u.suffix : u.prefix + u.resource + u.suffix;
-	}
-	if (url.indexOf("/") !== 0 && url.indexOf("://") == -1){
-		url = tinymce.baseURL + "/" + url;
-	}
-	t.urls[n] = url.substring(0, url.lastIndexOf("/"));
-	if (t.lookup[n]) {
-		loadDependencies();
-	} else {
-		tinymce.ScriptLoader.add(url, loadDependencies, s);
-	}
-};
+tinyMCE.PluginManager.load = tinyPluginManager;
 
 tinyMCE.weResizeLoops = 100;
 tinyMCE.weResizeEditor = function(render){
-	var h = tinyMCE.DOM.get("' . $this->name . '_toolbargroup").parentNode.offsetHeight;
-	if(render && --tinyMCE.weResizeLoops && h < 24){
-		setTimeout(weResizeEditor, 10,true);
-	}
-
-	tinyMCE.DOM.setStyle(
-		tinyMCE.DOM.get("' . $this->name . '_ifr"),
-		"height",
-		//(tinyMCE.DOM.get("' . $this->name . '_tbl").offsetHeight - h - 30)+"px");
-		(window.innerHeight - h - 60)+"px"
-	);
+	tinyWeResizeEditor(render, "' . $this->name . '")
 }
 
 

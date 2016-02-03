@@ -195,7 +195,7 @@ abstract class we_html_forms{
 		if($wysiwyg){
 			$commands = ($showmenues ? $commands : str_replace(array('formatblock,', 'fontname,', 'fontsize,',), '', $commands ? : implode(',', we_wysiwyg_editor::getAllCmds())));
 			$commands = ($hidestylemenu ? str_replace('applystyle,', '', $commands ? : implode(',', we_wysiwyg_editor::getAllCmds())) : $commands);
-			$out = we_wysiwyg_editor::getHeaderHTML(!$inwebedition);
+			$out = we_wysiwyg_editor::getHeaderHTML(!$inwebedition, $isFrontendEdit);
 			$_lang = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->Language)) ? $GLOBALS['we_doc']->Language : WE_LANGUAGE;
 			$buttonpos = $buttonpos ? : 'top';
 			$tinyParams = weTag_getAttribute('tinyparams', $attribs, '', we_base_request::RAW);
