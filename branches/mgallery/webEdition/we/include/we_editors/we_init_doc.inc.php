@@ -35,18 +35,14 @@ if(!isset($we_ContentType)){
 	}
 }
 
-if(isset($we_ContentType)){
-	$we_doc = we_base_ContentTypes::inst()->getObject($we_ContentType);
-}
-
 switch(isset($we_ContentType) ? $we_ContentType : ''){
 	/*
-	case we_base_ContentTypes::WEDOCUMENT:
-		$showDoc = !empty($GLOBALS['FROM_WE_SHOW_DOC']);
-		$we_doc = new we_webEditionDocument(); //($showDoc ? new we_webEditionDocument() : new we_view_webEditionDocument());
-		break;
-	*
-	*/
+	  case we_base_ContentTypes::WEDOCUMENT:
+	  $showDoc = !empty($GLOBALS['FROM_WE_SHOW_DOC']);
+	  $we_doc = new we_webEditionDocument(); //($showDoc ? new we_webEditionDocument() : new we_view_webEditionDocument());
+	  break;
+	 *
+	 */
 	case we_base_ContentTypes::FOLDER:
 		if(isset($we_dt)){
 			$we_doc = new $we_dt[0]['ClassName'];
