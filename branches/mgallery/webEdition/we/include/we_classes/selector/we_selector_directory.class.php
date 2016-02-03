@@ -315,9 +315,9 @@ top.clearEntries();';
 		} else {
 			$folder->we_save();
 			echo 'var ref;
-if(top.opener.top.makeNewEntry){
-	ref = top.opener.top;
-}else if(top.opener.top.opener){
+if(top.opener.treeData){
+	ref = top.opener;
+}else if(top.opener.top.opener.treeData){
 	ref = top.opener.top.opener.top;
 }
 ref.treeData.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"' . $folder->ContentType . '",table:"' . $this->table . '"});' .
@@ -402,10 +402,10 @@ top.clearEntries();';
 			if(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), 'Text', $this->db) != $txt){
 				$folder->we_save();
 				echo 'var ref;
-if(top.opener.top.makeNewEntry){
-ref = top.opener.top;
-}else if(top.opener.top.opener){
-ref = top.opener.top.opener.top;
+if(top.opener.treeData){
+	ref = top.opener;
+}else if(top.opener.top.opener.treeData){
+	ref = top.opener.top.opener.top;
 }
 ref.treeData.updateEntry({id:' . $folder->ID . ',text:"' . $txt . '",parentid:"' . $folder->ParentID . '",table:"' . $this->table . '"});' .
 				($this->canSelectDir ? '
