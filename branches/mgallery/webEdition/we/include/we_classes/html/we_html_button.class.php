@@ -88,11 +88,10 @@ abstract class we_html_button{
 	 * @param boolean $important
 	 * @static
 	 */
-	static function getButton($text, $id, $cmd = '', $width = self::WIDTH, $title = '', $disabled = false, $isFormButton = false, $class = ''){
-		//$width = ($width ? : ($width == self::AUTO_WIDTH ? 0 : self::WIDTH));
+	static function getButton($text, $id, $cmd = '', $title = '', $disabled = false, $isFormButton = false, $class = ''){
 		return '<button type="' . ($isFormButton ? 'submit' : 'button') . '" ' . ($title ? ' title="' . oldHtmlspecialchars($title) . '"' : '') .
 				($disabled ? ' disabled="disabled"' : '') .
-				' id="' . $id . '" class="weBtn' . ($class ? ' ' . $class : '') . '" ' . //($width ? ' style="width:' . $width . 'px !important;"' : '') .
+				' id="' . $id . '" class="weBtn' . ($class ? ' ' . $class : '') . '" ' .
 				' onclick="' . oldHtmlspecialchars($cmd) . '"' .
 				'>' . $text . '</button>';
 	}
@@ -117,7 +116,7 @@ abstract class we_html_button{
 		$cmd = '';
 
 		// Check width
-		$width = ($width ? : self::WIDTH);
+		//$width = ($width ? : self::WIDTH);
 
 		restart:
 		$all = explode(':', $name, 2);
@@ -146,7 +145,7 @@ abstract class we_html_button{
 				}
 			case self::WE_FASTACK_BUTTON_IDENTIFY://fixme: add stack class
 				//set width for image button if given width has not default value
-				$width = ($width == self::WIDTH ? self::AUTO_WIDTH : $width);
+				//$width = ($width == self::WIDTH ? self::AUTO_WIDTH : $width);
 				//get name for title
 				list($name, $names) = explode(',', $names, 2);
 				$fas = explode(',', $names);
@@ -161,9 +160,9 @@ abstract class we_html_button{
 				$class.=' weIconTextButton';
 			case self::WE_FA_BUTTON_IDENTIFY:
 				//set width for image button if given width has not default value
-				if($type == self::WE_FA_BUTTON_IDENTIFY){
-					$width = ($width == self::WIDTH ? self::AUTO_WIDTH : $width);
-				}
+				/* 				if($type == self::WE_FA_BUTTON_IDENTIFY){
+				  $width = ($width == self::WIDTH ? self::AUTO_WIDTH : $width);
+				  } */
 				//get name for title
 				list($name, $names) = explode(',', $names, 2);
 				$fas = explode(',', $names);
@@ -181,9 +180,9 @@ abstract class we_html_button{
 				//add text, no break;
 				$value.=' ';
 			default:
-				if(($width == self::WIDTH) && ($tmp = g_l('button', '[' . $name . '][width]', true))){
-					$width = $tmp;
-				}
+				/* 				if(($width == self::WIDTH) && ($tmp = g_l('button', '[' . $name . '][width]', true))){
+				  $width = $tmp;
+				  } */
 				$text = g_l('button', '[' . $name . '][value]') . ($opensDialog ? '&hellip;' : '');
 				$value = ($name == 'next' ? $text . ' ' . $value : $value . $text);
 		}
@@ -215,7 +214,7 @@ abstract class we_html_button{
 								"window.location.href='" . $href . "';");
 		}
 
-		return self::getButton($value, ($id? : ($uniqid ? 'we' . $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name) . $suffix), $cmd, $width, ($alt ? ($title ? : (($tmp = g_l('button', '[' . $name . '][alt]', true)) ? $tmp : '')) : ''), $disabled, $hrefData[0] === self::WE_FORM, $class);
+		return self::getButton($value, ($id? : ($uniqid ? 'we' . $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name) . $suffix), $cmd, ($alt ? ($title ? : (($tmp = g_l('button', '[' . $name . '][alt]', true)) ? $tmp : '')) : ''), $disabled, $hrefData[0] === self::WE_FORM, $class);
 	}
 
 	static function formatButtons($buttons){
