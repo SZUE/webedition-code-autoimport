@@ -54,6 +54,9 @@ class we_object_search extends we_search_base{
 
 	function getFields($name, $size, $select, $Path, $multi = ""){
 		$objID = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape($Path) . '"');
+		if(!$objID){
+			return '';
+		}
 		$opts = '';
 		$all = array();
 		$tableInfo = $GLOBALS['DB_WE']->metadata(OBJECT_X_TABLE . $objID);
@@ -148,7 +151,7 @@ function toggleShowVisible(c) {
 			if($exws[$i] != ""){
 
 				$checkbox = ($isAdmin || in_workspace($exws[$i], $userWSArray) ?
-						'<a href="javascript:we_cmd(\'object_toggleExtraWorkspace\',\'' . $GLOBALS["we_transaction"] . '\',\'' . $this->db->f("ID") . '\',\'' . $exws[$i] . '\',\'' . $id . '\')"><i name="check_' . $id . '_' . $this->db->f("ID") . '" class="fa fa-'.(strstr($this->db->f("OF_ExtraWorkspacesSelected"), "," . $exws[$i] . ",") ?'check-':'').'square-o wecheckIcon"></i></a>' :
+						'<a href="javascript:we_cmd(\'object_toggleExtraWorkspace\',\'' . $GLOBALS["we_transaction"] . '\',\'' . $this->db->f("ID") . '\',\'' . $exws[$i] . '\',\'' . $id . '\')"><i name="check_' . $id . '_' . $this->db->f("ID") . '" class="fa fa-' . (strstr($this->db->f("OF_ExtraWorkspacesSelected"), "," . $exws[$i] . ",") ? 'check-' : '') . 'square-o wecheckIcon"></i></a>' :
 						'<i name="check_' . $id . '_' . $this->db->f("ID") . '" class="fa fa-' . (strstr($this->db->f("OF_ExtraWorkspacesSelected"), "," . $exws[$i] . ",") ? 'check-' : '') . 'square-o wecheckIcon"></i>'
 					);
 

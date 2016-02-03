@@ -1568,7 +1568,9 @@ WE().layout.we_setPath = function (path, text, id, classname) {
 	if (classname) {
 		WE().layout.multiTabs.setTextClass(_EditorFrame.FrameId, classname);
 	}
-
+	if (_EditorFrame.getDocumentReference().frames.editHeader === undefined) {
+		return;
+	}
 	var doc = _EditorFrame.getDocumentReference().frames.editHeader.document;
 	if (doc) {
 		var div = doc.getElementById('h_path');
