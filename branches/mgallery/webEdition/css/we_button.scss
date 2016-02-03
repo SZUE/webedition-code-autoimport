@@ -36,13 +36,13 @@ button{
 		font-family: $weFont;
 		font-size: $smallfont ! important;
 		text-align: center;
-		padding-left: 0.5em !important;
-		padding-right: 0.5em !important;
+		padding-left: 2em !important;
+		padding-right: 2em !important;
 		box-shadow: 2px 2px 2px #555555;
 		margin-left:0.5em;
 		margin-right:0.5em;
 		margin-bottom: 1ex;
-		min-width: 2.5em;
+		min-width: 9em;
 
 		i.fa-moreicon {
 			padding-left: 0.3em;
@@ -72,9 +72,15 @@ button{
 	&.noMarginLeft {
 		margin-left:0;
 	}
-
+	&.weIconButton {
+		min-width: 2.5em;
+		width: 3em;
+		padding-left: 0.5em !important;
+		padding-right: 0.5em !important;
+	}
 	&.multiicon{
 		min-width: 4em;
+		width:auto;
 	}
 
 }

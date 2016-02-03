@@ -88,38 +88,13 @@ abstract class we_html_button{
 	 * @param boolean $important
 	 * @static
 	 */
-	static function getButton($value, $id, $cmd = '', $width = self::WIDTH, $title = '', $disabled = false, $margin = '', $padding = '', $key = '', $float = '', $display = '', $important = true, $isFormButton = false, $class = ''){
+	static function getButton($text, $id, $cmd = '', $width = self::WIDTH, $title = '', $disabled = false, $isFormButton = false, $class = ''){
+		//$width = ($width ? : ($width == self::AUTO_WIDTH ? 0 : self::WIDTH));
 		return '<button type="' . ($isFormButton ? 'submit' : 'button') . '" ' . ($title ? ' title="' . oldHtmlspecialchars($title) . '"' : '') .
 				($disabled ? ' disabled="disabled"' : '') .
-				' id="' . $id . '" class="weBtn' . ($class ? ' ' . $class : '') . '" ' . self::getInlineStyleByParam(($width ? : ($width == self::AUTO_WIDTH ? 0 : self::WIDTH)), '', $float, $margin, $padding, $display, '', $important) .
+				' id="' . $id . '" class="weBtn' . ($class ? ' ' . $class : '') . '" ' . //($width ? ' style="width:' . $width . 'px !important;"' : '') .
 				' onclick="' . oldHtmlspecialchars($cmd) . '"' .
-				'>' . $value . '</button>';
-	}
-
-	/**
-	 * Gets the style attribut for using in the elements HTML.
-	 *
-	 * @return string
-	 * @param integer $width
-	 * @param integer $height
-	 * @param string $margin
-	 * @param string $padding
-	 * @param string $display
-	 * @param string $extrastyle
-	 * @param boolean $important
-	 */
-	static function getInlineStyleByParam($width = '', $height = '', $float = '', $margin = '', $padding = '', $display = '', $extrastyle = '', $important = true, $clear = ''){
-
-		$_imp = $important ? ' ! important' : '';
-
-		return ' style="' . /* border-style:none; padding:0px;border-spacing:0px;' . */ ($width > 0 ? 'width:' . $width . 'px' . $_imp . ';' : '') .
-				($height ? 'height:' . $height . 'px' . $_imp . ';' : '') .
-				($float ? 'float:' . $float . $_imp . ';' : '') .
-				($clear ? 'clear:' . $clear . $_imp . ';' : '') .
-				($margin ? 'margin:' . $margin . $_imp . ';' : '') .
-				($display ? 'display:' . $display . $_imp . ';' : '') .
-				($padding ? 'padding:' . $padding . $_imp . ';' : '') .
-				$extrastyle . '"';
+				'>' . $text . '</button>';
 	}
 
 	/**
@@ -144,15 +119,9 @@ abstract class we_html_button{
 		// Check width
 		$width = ($width ? : self::WIDTH);
 
-		// Check height
-		$height = ($height ? : self::HEIGHT);
-
 		restart:
 		$all = explode(':', $name, 2);
 		list($type, $names) = count($all) == 1 ? array('', '') : $all;
-		/**
-		 * DEFINE THE NAME OF THE BUTTON
-		 */
 		// Check if the button is a text button or an image button
 		$value = '';
 		if($on_click){
@@ -186,8 +155,10 @@ abstract class we_html_button{
 					$value.='<i class="fa ' . ($cnt == 0 ? 'fa-stack-2x ' : 'fa-stack-1x ') . $fa . '"></i>';
 				}
 				$value.='</span>';
+				$class.=' weIconButton';
 				break;
 			case self::WE_FATEXT_BUTTON_IDENTIFY:
+				$class.=' weIconTextButton';
 			case self::WE_FA_BUTTON_IDENTIFY:
 				//set width for image button if given width has not default value
 				if($type == self::WE_FA_BUTTON_IDENTIFY){
@@ -204,6 +175,7 @@ abstract class we_html_button{
 					$value.='<i class="fa ' . ($cnt > 0 ? 'fa-moreicon ' : 'fa-firsticon ') . $fa . '"></i>';
 				}
 				if($type == self::WE_FA_BUTTON_IDENTIFY){
+					$class.=' weIconButton';
 					break;
 				}
 				//add text, no break;
@@ -243,7 +215,7 @@ abstract class we_html_button{
 								"window.location.href='" . $href . "';");
 		}
 
-		return self::getButton($value, ($id? : ($uniqid ? 'we' . $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name) . $suffix), $cmd, $width, ($alt ? ($title ? : (($tmp = g_l('button', '[' . $name . '][alt]', true)) ? $tmp : '')) : ''), $disabled, '', '', '', '', '', true, $hrefData[0] === self::WE_FORM, $class);
+		return self::getButton($value, ($id? : ($uniqid ? 'we' . $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name) . $suffix), $cmd, $width, ($alt ? ($title ? : (($tmp = g_l('button', '[' . $name . '][alt]', true)) ? $tmp : '')) : ''), $disabled, $hrefData[0] === self::WE_FORM, $class);
 	}
 
 	static function formatButtons($buttons){
