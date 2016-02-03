@@ -59,7 +59,6 @@ $l_global=array(
 	'jswin'=>'Popup Fenster',
 	'left'=>'links',
 	'licensed_to'=>'Lizenznehmer',
-	'load_menu_info'=>'Lade Daten!<br/>Dies kann bei vielen Menü-Einträgen etwas länger dauern ...',
 	'location'=>'Ort',
 	'loginok'=>'<strong>Login ok!</strong><br/>webEdition sollte sich nun in einem neuen Fenster öffnen.<br/>Ist dies nicht der Fall, haben Sie wahrscheinlich Pop-Ups in Ihrem Browser unterdrückt!',
 	'max_file_size'=>'Max. Dateigröße (in Bytes)',
@@ -174,6 +173,7 @@ Sie können Ihr Passwort über den folgenden Link zurücksetzen:',
 	'we_alert'=>'Diese Funktion ist in der Demo-Version von webEdition nicht verfügbar!',
 	
 	'we_make_same'=>array(
+		'folder'=>'Nach speichern neues Verzeichnis',
 		'objectFile'=>'Nach Speichern neues Objekt',
 		'text/html'=>'Nach Speichern neue HTML-Datei',
 		'text/webedition'=>'Nach Speichern neue webEdition-Seite',

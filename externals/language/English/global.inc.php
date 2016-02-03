@@ -59,7 +59,6 @@ $l_global=array(
 	'jswin'=>'Pop-up window',
 	'left'=>'Left',
 	'licensed_to'=>'Licensed to',
-	'load_menu_info'=>'Loading Data!<br/>This can take some time when loading several menu elements ...',
 	'location'=>'Location',
 	'loginok'=>'<strong>Login ok! Please wait!</strong><br/>webEdition will open up in a new window. If that window does not open up, make sure that you have not blocked pop-up windows in your browser!',
 	'max_file_size'=>'Maximum file size (in bytes)',
@@ -174,6 +173,7 @@ You can change your password using the following link:',
 	'we_alert'=>'This function is not availabe in the demo version of webEdition!',
 	
 	'we_make_same'=>array(
+		'folder'=>'New folder after saving',
 		'objectFile'=>'New object after saving',
 		'text/html'=>'New HTML file after saving',
 		'text/webedition'=>'New webEdtion document after saving',

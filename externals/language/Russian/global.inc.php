@@ -59,7 +59,6 @@ $l_global=array(
 	'jswin'=>'Окно Popup',
 	'left'=>'по левой стороне',
 	'licensed_to'=>'Владелец лицензии',
-	'load_menu_info'=>'Загрузка данных!<br/>Загрузка нескольких элементов меню займет некоторое время',
 	'location'=>'Location',
 	'loginok'=>'<strong>Login ok! Пожалуйста, подождите!</strong><br/>webEdition откроется в новом окне. В случае, если этого не произошло, убедитесь в том, что Вы не заблокировали окна pop-up в Вашем браузере!',
 	'max_file_size'=>'Максимальный размер файла (в байтах)',
@@ -174,6 +173,7 @@ You can change your password using the following link:',
 	'we_alert'=>'Данная функция не входит в демо-версию системы webEdition!',
 	
 	'we_make_same'=>array(
+		'folder'=>'New folder after saving',
 		'objectFile'=>'New object after saving',
 		'text/html'=>'После сохранения новая страница HTML',
 		'text/webedition'=>'После сохранения новая страница webEdition',

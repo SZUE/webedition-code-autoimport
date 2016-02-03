@@ -59,7 +59,6 @@ $l_global=array(
 	'jswin'=>'Fenêtre Popup',
 	'left'=>'gauche',
 	'licensed_to'=>'Licencié',
-	'load_menu_info'=>'Chargement des données en cours!<br/>Cela peut nécessiter du temps si le menu a beaucoup d`entrées ...',
 	'location'=>'Lieu',
 	'loginok'=>'<strong>Autentifacation ok!</strong><br/>webEdition devrait s`ouvrir dans une nouvelle fenêtre.<br/>Si ce n`est pas le cas, vous avez probablement bloquez les popups dans votre navigateur!',
 	'max_file_size'=>'Taille de fichier max. (en Octet)',
@@ -174,6 +173,7 @@ You can change your password using the following link:',
 	'we_alert'=>'Cette fonction n`est pas disponible dans la Version Démo de webEdition!',
 	
 	'we_make_same'=>array(
+		'folder'=>'New folder after saving',
 		'objectFile'=>'Nouveau objet après enregistrement',
 		'text/html'=>'Après l`enregistrement nouveau page HTML',
 		'text/webedition'=>'Après l`enregistrement nouveau page webEdition',

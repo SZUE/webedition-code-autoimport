@@ -59,7 +59,6 @@ $l_global=array(
 	'jswin'=>'Ponnahdusikkuna',
 	'left'=>'Vasen',
 	'licensed_to'=>'Lisenssin haltija',
-	'load_menu_info'=>'Ladataan tietoja!<br/>Lataaminen voi kestää jonkin aikaa kun ladataan useita valikkoelementtejä ...',
 	'location'=>'Paikka',
 	'loginok'=>'<strong>Kirjautuminen onnistui, Odota hetkinen!</strong><br/>webEdition avautuu uuteen ikkunaan. Jos ikkuna ei avaudu, varmista ettet ole estänyt ponnahdusikkunoiden avautumista selaimestasi!',
 	'max_file_size'=>'Maksimi tiedoston koko (tavuina)',
@@ -174,6 +173,7 @@ You can change your password using the following link:',
 	'we_alert'=>'Toimintoa ei ole webEditionin demoversiossa!',
 	
 	'we_make_same'=>array(
+		'folder'=>'New folder after saving',
 		'objectFile'=>'Uusi objekti tallennuksen jälkeen',
 		'text/html'=>'Uusi HTML-sivu tallentamisen jälkeen',
 		'text/webedition'=>'Uusi webEdition-sivu tallentamisen jälkeen',

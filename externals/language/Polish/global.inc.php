@@ -59,7 +59,6 @@ $l_global=array(
 	'jswin'=>'Wyskakujące okno',
 	'left'=>'lewa',
 	'licensed_to'=>'Licencjobiorcja',
-	'load_menu_info'=>'Załaduj dane!<br/>Przy wielu wpisach w menu może to długo potrwać ...',
 	'location'=>'Location',
 	'loginok'=>'<strong>Logowanie powiodło się!</strong><br/>webEdition powinien otworzyć się teraz w nowym oknie.<br/>Jeżeli tak się nie stało, prawdopodobnie zablokowałeś okna wyskakujące w swojej przeglądarce!',
 	'max_file_size'=>'Maks. wielkość pliku (w bajtach)',
@@ -174,6 +173,7 @@ You can change your password using the following link:',
 	'we_alert'=>'Ta funkcja nie jest dostępna w wersji demonstracyjnej webEdition!',
 	
 	'we_make_same'=>array(
+		'folder'=>'New folder after saving',
 		'objectFile'=>'New object after saving',
 		'text/html'=>'Po zapisie nowej strona HTML',
 		'text/webedition'=>'Po zapisie nowej strona webEdition',

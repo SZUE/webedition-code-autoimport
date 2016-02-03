@@ -59,7 +59,6 @@ $l_global=array(
 	'jswin'=>'Pop-up venster',
 	'left'=>'Links',
 	'licensed_to'=>'Licentie',
-	'load_menu_info'=>'Data wordt geladen!<br/>Dit kan enige tijd duren wanneer meerdere menu elementen geladen worden ...',
 	'location'=>'Locatie',
 	'loginok'=>'<strong>Login ok! Even geduld a.u.b.!</strong><br/>webEdition opent in een nieuw venster. Wanneer dit venster niet opent, zorg er dan voor dat u geen pop-up vensters blokkeert in uw browser!',
 	'max_file_size'=>'Maximale bestandsgrootte (in bytes)',
@@ -174,6 +173,7 @@ You can change your password using the following link:',
 	'we_alert'=>'Deze functie is niet beschikbaar in de demo-versie van webEdition!',
 	
 	'we_make_same'=>array(
+		'folder'=>'New folder after saving',
 		'objectFile'=>'New object after saving',
 		'text/html'=>'Nieuwe pagina na bewaren',
 		'text/webedition'=>'Nieuwe pagina na bewaren',
