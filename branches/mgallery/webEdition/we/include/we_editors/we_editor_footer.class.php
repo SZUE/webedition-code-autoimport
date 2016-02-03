@@ -213,7 +213,7 @@ abstract class we_editor_footer{
 				}
 		}
 
-		if(($we_doc->IsTextContentDoc || $we_doc->IsFolder) && $haspermNew){
+		if(($we_doc->IsTextContentDoc/* || $we_doc->IsFolder*/) && $haspermNew){
 			$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');
 			if(!$_ctrlElem || !$_ctrlElem['hide']){
 				$_normalTable->addCol(2);
@@ -344,7 +344,7 @@ abstract class we_editor_footer{
 			}
 		}
 
-		if(($we_doc->IsTextContentDoc || $we_doc->IsFolder) && $haspermNew && ($GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_THUMBNAILS)){
+		if(($we_doc->IsTextContentDoc/* || $we_doc->IsFolder*/) && $haspermNew && ($GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_THUMBNAILS)){
 
 			//	makesamedoc only when not in edit_include-window
 			$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');

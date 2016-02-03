@@ -132,7 +132,7 @@ function generatedSaveDoc(addCmd){
 	}
 }';
 
-if(($we_doc->IsTextContentDoc || $we_doc->IsFolder) && $haspermNew && //	$_js_permnew
+if(($we_doc->IsTextContentDoc /*|| $we_doc->IsFolder*/) && $haspermNew && //	$_js_permnew
 		($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT)){ // not in SeeMode or in editmode
 	$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');
 	$_js_permnew = ($_ctrlElem ? //	changes for we:controlElement
@@ -151,7 +151,7 @@ echo we_html_tools::getHtmlTop('', '', '', STYLESHEET . we_html_element::jsEleme
 		Text:"' . $we_doc->Text . '",
 		contentType:"' . $we_doc->ContentType . '",
 		editFilename:"' . preg_replace('|/' . $we_doc->Filename . '.*$|', $we_doc->Filename . (isset($we_doc->Extension) ? $we_doc->Extension : ''), $we_doc->Path) . '",
-		makeSameDocCheck: ' . intval(($we_doc->IsTextContentDoc || $we_doc->IsFolder) && $haspermNew && (!inWorkflow($we_doc))) . ',
+		makeSameDocCheck: ' . intval(($we_doc->IsTextContentDoc/* || $we_doc->IsFolder*/) && $haspermNew && (!inWorkflow($we_doc))) . ',
 		isTemplate:' . intval($we_doc->Table == TEMPLATES_TABLE) . ',
 		isFolder:' . intval($we_doc->ContentType == we_base_ContentTypes::FOLDER) . ',
 		classname:"' . ($we_doc->Published == 0 ? 'notpublished' : ($we_doc->Table != TEMPLATES_TABLE && $we_doc->ModDate > $we_doc->Published ? 'changed' : 'published')) . '"
