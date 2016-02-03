@@ -39,8 +39,7 @@ container.prototype.drawShop = function (nf, ai, zweigEintrag) {
 					(perm ?
 									"</a>" :
 									"") +
-					"<span style='" + nf[ai].st + "' " +
-					nf[ai].text + "</span>" +
+					'<span style="' + nf[ai].st + '">' + nf[ai].text + '</span>' +
 					"</span><br/>";
 };
 

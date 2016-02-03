@@ -68,7 +68,7 @@ WE().consts.g_l.shop={
 WE().consts.dirs.WE_SHOP_MODULE_DIR="' . WE_SHOP_MODULE_DIR . '";
 var isDocument=' . intval($resultD) . ';
 var isObject=' . intval((!empty($resultO))) . ';
-var classID=' . $classid . ';
+var classID=' . intval($classid) . ';
 ') .
 			we_html_element::jsScript(JS_DIR . 'we_modules/shop/we_shop_view.js', 'parent.document.title=\'' . $title . '\';');
 	}

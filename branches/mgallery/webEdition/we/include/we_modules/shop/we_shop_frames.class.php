@@ -177,11 +177,11 @@ function we_cmd() {
 // TODO::WANN UND VON WEM WIRD DAS AUFGERUFEN ????
 			$bodyURL = WE_SHOP_MODULE_DIR . 'edit_shop_overviewTop.php?mid=' . $mid;
 		} elseif($resultD && !$resultO){ // docs but no objects
-			$bodyURL = 'edit_shop_article_extend.php?typ=document';
+			$bodyURL = WE_SHOP_MODULE_DIR . 'edit_shop_article_extend.php?typ=document';
 		} elseif(!$resultD && $resultO){ // no docs but objects
-			$bodyURL = 'edit_shop_article_extend.php?typ=object&ViewClass=' . $classid;
+			$bodyURL = WE_SHOP_MODULE_DIR . 'edit_shop_article_extend.php?typ=object&ViewClass=' . $classid;
 		} elseif($resultD && $resultO){
-			$bodyURL = 'edit_shop_article_extend.php?typ=document';
+			$bodyURL = WE_SHOP_MODULE_DIR . 'edit_shop_article_extend.php?typ=document';
 		}
 
 		$body = we_html_element::htmlIFrame('edheader', WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edheader&top=1&home=' . $home . '&mid=' . $mid . '&bid=' . $bid . '&typ=object&ViewClass=' . $classid, 'position:absolute;top:0px;height:40px;left:0px;right:0px;', '', '', false) .
@@ -228,7 +228,7 @@ function setTab(tab) {
 			parent.edbody.document.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edbody&bid=' . $bid . '";
 			break;
 		case 1:
-			parent.edbody.document.location = "edit_shop_orderlist.php?cid=' . $cid . '";
+			parent.edbody.document.location = WE().consts.dirs.WE_MODULES_DIR+"shop/edit_shop_orderlist.php?cid=' . $cid . '";
 			break;
 	}
 }');
@@ -282,14 +282,14 @@ function setTab(tab) {
 function setTab(tab) {
 	switch (tab) {
 		case 0:
-			parent.edbody.document.location = "edit_shop_article_extend.php?typ=document";
+			parent.edbody.document.location = WE().consts.dirs.WE_MODULES_DIR+"shop/edit_shop_article_extend.php?typ=document";
 			break;
 		case 1:
-			parent.edbody.document.location = "edit_shop_article_extend.php?typ=object&ViewClass=' . $classid . '";
+			parent.edbody.document.location = WE().consts.dirs.WE_MODULES_DIR+"shop/edit_shop_article_extend.php?typ=object&ViewClass=' . $classid . '";
 			break;
 		' . (isset($yearTrans) ? '
 		case 2:
-			parent.edbody.document.location = "edit_shop_revenueTop.php?ViewYear=' . $yearTrans . '" // " + treeData.yearshop
+			parent.edbody.document.location = WE().consts.dirs.WE_MODULES_DIR+"shop/edit_shop_revenueTop.php?ViewYear=' . $yearTrans . '" // " + treeData.yearshop
 			break;
 		' : '') . '
 	}
