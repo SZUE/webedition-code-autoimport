@@ -357,7 +357,7 @@ foreach(we_base_request::getAllTables() as $k => $v){
 								permissions:{
 <?php
 foreach($_SESSION['perms'] as $perm => $access){
-	echo $perm . ':' . !empty($_SESSION['perms']['ADMINISTRATOR'] ? 1 : intval($access)) . ',';
+	echo $perm . ':' . !empty($_SESSION['perms']['ADMINISTRATOR']) ? 1 : intval($access) . ',';
 }
 ?>
 								},
