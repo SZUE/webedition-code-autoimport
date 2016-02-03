@@ -45,6 +45,10 @@ class we_class_folder extends we_folder{
 		$this->ContentType = we_base_ContentTypes::FOLDER;
 	}
 
+	public function makeSameNew(array $keep = array()){
+		parent::makeSameNew(array_merge($keep, array('TableID', 'TriggerID', 'ClassPath', 'RootfolderID', 'ParentID', 'Table')));
+	}
+
 	private function setClassProp(){
 		$sp = explode('/', $this->Path);
 		$this->ClassPath = '/' . $sp[1];
@@ -157,8 +161,8 @@ class we_class_folder extends we_folder{
 				return 'we_editors/we_editor_properties.inc.php';
 			case we_base_constants::WE_EDITPAGE_INFO:
 				return 'we_editors/we_editor_info.inc.php';
-/*			case we_base_constants::WE_EDITPAGE_CFWORKSPACE:
-				return 'we_modules/object/we_classFolder_properties.inc.php';*/
+			/* 			case we_base_constants::WE_EDITPAGE_CFWORKSPACE:
+			  return 'we_modules/object/we_classFolder_properties.inc.php'; */
 			case we_base_constants::WE_EDITPAGE_FIELDS:
 				return 'we_modules/object/we_classFolder_fields.inc.php';
 			case we_base_constants::WE_EDITPAGE_WEBUSER:

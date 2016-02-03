@@ -235,7 +235,6 @@ abstract class we_root extends we_class{
 		$idname = 'we_' . $this->Name . '_' . $IDName;
 		$path = $this->$Pathname;
 		$myid = $this->$IDName;
-
 		if($disabled){
 			return we_html_tools::htmlFormElementTable(array(
 					"text" => we_html_tools::hidden($idname, $myid, array('id' => $idname)) .

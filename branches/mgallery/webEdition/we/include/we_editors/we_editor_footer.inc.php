@@ -39,8 +39,8 @@ function getControlElement($type, $name){
 	if(isset($GLOBALS['we_doc']->controlElement) && is_array($GLOBALS['we_doc']->controlElement)){
 
 		return (isset($GLOBALS['we_doc']->controlElement[$type][$name]) ?
-				$GLOBALS['we_doc']->controlElement[$type][$name] :
-				false);
+						$GLOBALS['we_doc']->controlElement[$type][$name] :
+						false);
 	}
 	return false;
 }
@@ -83,11 +83,24 @@ switch($we_doc->ContentType){
 	case we_base_ContentTypes::OBJECT_FILE:
 		$haspermNew = permissionhandler::hasPerm("NEW_OBJECTFILE");
 		break;
+	case we_base_ContentTypes::FOLDER:
+		switch($we_doc->Table){
+			case FILE_TABLE:
+				$haspermNew = permissionhandler::hasPerm('NEW_DOC_FOLDER');
+				break;
+			case TEMPLATES_TABLE:
+				$haspermNew = permissionhandler::hasPerm('NEW_TEMP_FOLDER');
+				break;
+			case defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE':
+				$haspermNew = permissionhandler::hasPerm('NEW_OBJECTFILE_FOLDER');
+				break;
+		}
+		break;
 }
 
 $showGlossaryCheck = (isset($_SESSION['prefs']['force_glossary_check']) &&
-	$_SESSION['prefs']['force_glossary_check'] == 1 &&
-	( $we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType === we_base_ContentTypes::OBJECT_FILE ) ? 1 : 0);
+		$_SESSION['prefs']['force_glossary_check'] == 1 &&
+		( $we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType === we_base_ContentTypes::OBJECT_FILE ) ? 1 : 0);
 
 //	added for we:controlElement type="button" name="save" hide="true"
 $_ctrlElem = getControlElement('button', 'save');
@@ -95,9 +108,9 @@ $_ctrlElem = getControlElement('button', 'save');
 $canWeSave = $we_doc->userCanSave();
 
 if($canWeSave &&
-	(($_ctrlElem && $_ctrlElem['hide']) ||
-	(defined('WORKFLOW_TABLE') && inWorkflow($we_doc) && (!we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"])))
-	)){
+		(($_ctrlElem && $_ctrlElem['hide']) ||
+		(defined('WORKFLOW_TABLE') && inWorkflow($we_doc) && (!we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"])))
+		)){
 	$canWeSave = false;
 }
 
@@ -109,22 +122,22 @@ $js = "
 function generatedSaveDoc(addCmd){
 	if(weCanSave){
 " . ($we_doc->isBinary() ?
-		we_fileupload_ui_preview::getJsOnLeave($js_we_save_cmd) :
-		$js_we_save_cmd
-	) .
-	($reloadPage ?
-		'setTimeout(saveReload,1500);' :
-		''
-	) . '
+				we_fileupload_ui_preview::getJsOnLeave($js_we_save_cmd) :
+				$js_we_save_cmd
+		) .
+		($reloadPage ?
+				'setTimeout(saveReload,1500);' :
+				''
+		) . '
 	}
 }';
 
-if($we_doc->IsTextContentDoc && $haspermNew && //	$_js_permnew
-	($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT)){ // not in SeeMode or in editmode
+if(($we_doc->IsTextContentDoc || $we_doc->IsFolder) && $haspermNew && //	$_js_permnew
+		($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT)){ // not in SeeMode or in editmode
 	$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');
 	$_js_permnew = ($_ctrlElem ? //	changes for we:controlElement
-			'setTextDocument(true,' . ($_ctrlElem["checked"] ? "true" : "false") . ');' :
-			'setTextDocument(false);');
+					'setTextDocument(true,' . ($_ctrlElem["checked"] ? "true" : "false") . ');' :
+					'setTextDocument(false);');
 } else {
 	$_js_permnew = '';
 }
@@ -138,7 +151,7 @@ echo we_html_tools::getHtmlTop('', '', '', STYLESHEET . we_html_element::jsEleme
 		Text:"' . $we_doc->Text . '",
 		contentType:"' . $we_doc->ContentType . '",
 		editFilename:"' . preg_replace('|/' . $we_doc->Filename . '.*$|', $we_doc->Filename . (isset($we_doc->Extension) ? $we_doc->Extension : ''), $we_doc->Path) . '",
-		makeSameDocCheck: ' . intval($we_doc->IsTextContentDoc && $haspermNew && (!inWorkflow($we_doc))) . ',
+		makeSameDocCheck: ' . intval(($we_doc->IsTextContentDoc || $we_doc->IsFolder) && $haspermNew && (!inWorkflow($we_doc))) . ',
 		isTemplate:' . intval($we_doc->Table == TEMPLATES_TABLE) . ',
 		isFolder:' . intval($we_doc->ContentType == we_base_ContentTypes::FOLDER) . ',
 		classname:"' . ($we_doc->Published == 0 ? 'notpublished' : ($we_doc->Table != TEMPLATES_TABLE && $we_doc->ModDate > $we_doc->Published ? 'changed' : 'published')) . '"
@@ -151,12 +164,12 @@ function we_footerLoaded(){
 if(doc.isTemplate && !doc.isFolder){
 			setTemplate();
 			}' .
-		$_js_permnew .
-		'setPath();
+				$_js_permnew .
+				'setPath();
 }
 ' .
-		$js) .
-	we_html_element::jsScript(JS_DIR . 'we_editor_footer.js')
+				$js) .
+		we_html_element::jsScript(JS_DIR . 'we_editor_footer.js')
 );
 //	Document is in workflow
 if(inWorkflow($we_doc)){
