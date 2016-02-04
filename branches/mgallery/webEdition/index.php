@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -34,7 +33,7 @@ if(permissionhandler::hasPerm('ADMINISTRATOR')){
 	$suhosinMsg = (extension_loaded('suhosin') && !in_array(ini_get('suhosin.simulation'), array(1, 'on', 'yes', 'true', true))) ? 'suhosin=on\n' : '';
 
 	$maxInputMsg = (!ini_get('max_input_vars') ? 'max_input_vars = 1000 (PHP default value)' :
-					(ini_get('max_input_vars') < 2000 ? 'max_input_vars = ' . ini_get('max_input_vars') : ''));
+			(ini_get('max_input_vars') < 2000 ? 'max_input_vars = ' . ini_get('max_input_vars') : ''));
 	$maxInputMsg .= $maxInputMsg ? ': >= 2000 is recommended' : '';
 
 	$criticalPhpMsg = trim($maxInputMsg . $suhosinMsg);
@@ -141,7 +140,7 @@ function showMessage(message, prio, win){
 		}
 	}
 }' .
-			$js) .
+		$js) .
 	'</head>';
 }
 
@@ -224,19 +223,19 @@ function getError($reason, $cookie = false){
 	$tmp = ini_get('session.save_path');
 
 	$_error = we_html_element::htmlB($reason) .
-			(!(is_dir($tmp) || (is_link($tmp) && is_dir(readlink($tmp)))) ?
-					( ++$_error_count . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_html_element::htmlBr()) :
-					'') .
-			(!ini_get('session.use_cookies') ?
-					( ++$_error_count . ' - ' . g_l('start', '[use_cookies]') . we_html_element::htmlBr()) :
-					'') .
-			(ini_get('session.cookie_path') != '/' ?
-					( ++$_error_count . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . we_html_element::htmlBr()) :
-					'') .
-			($cookie && $_error_count == 0 ?
-					( ++$_error_count . ' - ' . g_l('start', '[login_session_terminated]') . we_html_element::htmlBr()) :
-					'') .
-			we_html_element::htmlBr() . g_l('start', ($_error_count == 1 ? '[solution_one]' : '[solution_more]'));
+		(!(is_dir($tmp) || (is_link($tmp) && is_dir(readlink($tmp)))) ?
+			( ++$_error_count . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_html_element::htmlBr()) :
+			'') .
+		(!ini_get('session.use_cookies') ?
+			( ++$_error_count . ' - ' . g_l('start', '[use_cookies]') . we_html_element::htmlBr()) :
+			'') .
+		(ini_get('session.cookie_path') != '/' ?
+			( ++$_error_count . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . we_html_element::htmlBr()) :
+			'') .
+		($cookie && $_error_count == 0 ?
+			( ++$_error_count . ' - ' . g_l('start', '[login_session_terminated]') . we_html_element::htmlBr()) :
+			'') .
+		we_html_element::htmlBr() . g_l('start', ($_error_count == 1 ? '[solution_one]' : '[solution_more]'));
 
 	$_layout = new we_html_table(array('style' => 'width: 100%; height: 75%;'), 1, 1);
 	$_layout->setCol(0, 0, array('style' => 'text-align:center;vertical-align:middle'), we_html_tools::htmlMessageBox(500, 250, we_html_element::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert', '[phpError]')));
@@ -264,8 +263,8 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 	 * *************************************************************************** */
 
 	$_hidden_values = we_html_element::htmlHiddens(array(
-				'checkLogin' => session_id(),
-				'indexDate' => date('d.m.Y, H:i:s')));
+			'checkLogin' => session_id(),
+			'indexDate' => date('d.m.Y, H:i:s')));
 
 	/*	 * ***********************************************************************
 	 * BUILD DIALOG
@@ -322,8 +321,8 @@ win = new jsWindow(top.window, "' . WEBEDITION_DIR . "webEdition.php?h='+ah+'&w=
 			$cnt = f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblUser" AND IP="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '" AND LoginDate>(NOW() - INTERVAL ' . intval(we_base_constants::LOGIN_FAILED_TIME) . ' MINUTE)');
 
 			$_body_javascript = ($cnt >= we_base_constants::LOGIN_FAILED_NR ?
-							we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[3timesLoginError]'), we_base_constants::LOGIN_FAILED_NR, we_base_constants::LOGIN_FAILED_TIME), we_message_reporting::WE_MESSAGE_ERROR) :
-							we_message_reporting::getShowMessageCall(g_l('alert', '[login_failed]'), we_message_reporting::WE_MESSAGE_ERROR));
+					we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[3timesLoginError]'), we_base_constants::LOGIN_FAILED_NR, we_base_constants::LOGIN_FAILED_TIME), we_message_reporting::WE_MESSAGE_ERROR) :
+					we_message_reporting::getShowMessageCall(g_l('alert', '[login_failed]'), we_message_reporting::WE_MESSAGE_ERROR));
 			break;
 		case 3:
 			$_body_javascript = we_message_reporting::getShowMessageCall(g_l('alert', '[login_failed_security]'), we_message_reporting::WE_MESSAGE_ERROR) . "document.location='" . WEBEDITION_DIR . "index.php';";
@@ -337,7 +336,8 @@ win = new jsWindow(top.window, "' . WEBEDITION_DIR . "webEdition.php?h='+ah+'&w=
 	}
 
 
-	$_layout = we_html_element::htmlDiv(array('style' => 'float: left;height: 50%;width: 1px;')) . we_html_element::htmlDiv(array('style' => 'clear:left;position:relative;top:-25%;'), we_html_element::htmlForm(array("action" => WEBEDITION_DIR . 'index.php', 'method' => 'post', 'name' => 'loginForm'), $_hidden_values . $dialogtable));
+	$_layout = we_html_element::htmlDiv(array('style' => 'float: left;height: 50%;width: 1px;')) . we_html_element::htmlDiv(array('style' => 'clear:left;position:relative;top:-25%;'), we_html_element::htmlForm(array("action" => WEBEDITION_DIR . 'index.php', 'method' => 'post', 'name' => 'loginForm'), $_hidden_values . $dialogtable)) .
+		we_html_element::htmlDiv(array('id' => 'picCopy'), 'Copyright &copy; nw7.eu / Fotolia.com');
 
 	printHeader($login, (isset($httpCode) ? $httpCode : 401), $headerjs);
 	echo we_html_element::htmlBody(array('id' => 'loginScreen', "onload" => (($login == LOGIN_OK) ? "open_we();" : "document.loginForm.WE_LOGIN_username.focus();document.loginForm.WE_LOGIN_username.select();")), $_layout . ((isset($_body_javascript)) ? we_html_element::jsElement($_body_javascript) : '')) . '</html>';

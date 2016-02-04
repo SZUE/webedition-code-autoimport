@@ -277,7 +277,7 @@ body.radient{
 	top: 0px;
 	bottom: 0px;
 	left: 0px;
-	/** NEU **/width: 40px;
+	/** NEU **/width: $vtabWidth;
 	overflow: hidden;
 	/** NEU **/background-color: #192c3a;
 	color: white;
@@ -2164,7 +2164,7 @@ a:hover, a:focus, a:active {
 
 /** NEU **/
 .fa-inverse {
-	color: transparent !important;
+	/*color: transparent !important;*/
 }
 
 /** NEU **/

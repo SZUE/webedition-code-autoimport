@@ -28,6 +28,9 @@
 	/** NEU **/background-size: cover;
 	/** NEU **/background-position: right bottom;
 	height: 100%;
+	#picCopy{
+		font-size: $smallfont;
+	}
 }
 
 #mainTable{

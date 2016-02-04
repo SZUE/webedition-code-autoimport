@@ -261,8 +261,7 @@ $oTblProps->setCol(6, 1, null, we_html_element::htmlTextArea(array(
 $oTblProps->setCol(8, 0, array("colspan" => 3), $buttons);
 
 // Button: add note
-$oTblBtnProps = new we_html_table(array("width" => "100%", 'class' => 'default'), 1, 1);
-$oTblBtnProps->setCol(0, 0, array("style" => "text-align:"), we_html_button::create_button('fa:btn_add_note,fa-plus,fa-lg fa-newspaper-o', "javascript:displayNote();", false, 0, 0));
+$oTblBtnProps = we_html_button::create_button('fa:btn_add_note,fa-plus,fa-lg fa-newspaper-o', "javascript:displayNote();", false, 0, 0);
 
 // Table with the note list
 $oPad = new we_html_table(
@@ -277,7 +276,7 @@ $oPad->setCol(0, 0, array("colspan" => 3, "class" => "cl_notes"), we_html_elemen
 
 $_notepad = $oPad->getHTML() .
 	we_html_element::htmlDiv(array("id" => "props"), $oTblProps->getHTML()) .
-	we_html_element::htmlDiv(array("id" => "view"), $oTblBtnProps->getHTML());
+	we_html_element::htmlDiv(array("id" => "view"), $oTblBtnProps);
 
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[notepad]'), '', '', STYLESHEET .
 	we_html_element::cssLink(CSS_DIR . 'pad.css') .
