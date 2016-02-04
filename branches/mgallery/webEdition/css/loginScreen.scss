@@ -22,14 +22,25 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+@import "config.scss";
 #loginScreen{
 	/** NEU **/ /*background-color: #386aab;*/
 	/** NEU **/background: url(../images/bg-login.jpg);
 	/** NEU **/background-size: cover;
 	/** NEU **/background-position: right bottom;
 	height: 100%;
+	form{
+		position:absolute;
+		left:0px;
+		right:0px;
+		bottom: 2em;
+	}
 	#picCopy{
 		font-size: $smallfont;
+		position: absolute;
+		right:5px;
+		bottom:0px;
+		color:white;
 	}
 }
 
@@ -37,7 +48,9 @@
 	border-style: none;
 	/** NEU **/padding: 30px 40px;
 	border-spacing: 0px;
-	/** NEU **/background: url(../images/bg-login-box.png);
+	background-color: #192C3A;
+	opacity: 0.9;
+	/** NEU *background: url(../images/bg-login-box.png);*/
 	width: 432px;
 	margin-left: auto;
 	margin-right: auto;
