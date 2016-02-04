@@ -25,9 +25,9 @@
  */
 @import "config.scss";
 .tree{
-	white-space: nowrap; 
-  	/** NEU **/margin-left: -13px;
-  	/** NEU **/padding: 10px 0px;
+	white-space: nowrap;
+	/** NEU **/margin-left: -13px;
+	/** NEU **/padding: 10px 0px;
 }
 #treetable{
 	margin: 0px;
@@ -60,10 +60,10 @@
 			position: relative;
 			display: inline-block;
 			/** NEU **/border: 0px solid #a5aaae;
-			/*for lines*/ 
+			/*for lines*/
 			/** NEU **/margin-right: 14px;
 			i.fa-square{
-				/** NEU **/color: #d7dce0; 
+				/** NEU **/color: #d7dce0;
 			}
 		}
 		&.threedots{
@@ -99,13 +99,13 @@
 				position: absolute;
 				top: 1.4ex;
 				width: 1em;
-				/** NEU **/border-bottom: 1px solid #a6abb0; 
+				/** NEU **/border-bottom: 1px solid #a6abb0;
 			}
 			i::before,
 			i::before{
 				position: absolute;
 				/** NEU **/top: -5px;
-				/** NEU **/left: 3px; 
+				/** NEU **/left: 3px;
 			}
 		}
 	}
@@ -137,12 +137,12 @@
 	.selected_item,
 	.selected_group{
 		/** NEU **/color: #192c3a;
-		cursor: pointer; 
+		cursor: pointer;
 		/** NEU **/font-size: 11px;
 	}
 	i.fa-folder-open,
 	i.fa-folder{
-		color: /** NEU **/#192c3a; 
+		color: /** NEU **/#192c3a;
 	}
 
 	.disabled a,
@@ -212,10 +212,7 @@
 	.selected_item {
 		background-color: #D4DBFA;
 	}
-
-}
-
-/** NEU **/
-#treetable span.fileicon {
+	span.fileicon {
     margin-right: 5px;
+	}
 }

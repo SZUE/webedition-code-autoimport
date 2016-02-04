@@ -49,13 +49,13 @@ button{
 			padding-left: 0.3em;
 		}
 		i.fa-folder{
-			color: #192c3a; 
+			color: #192c3a;
 		}
 
 		&:active{
 			color: #ffffff;
 			background: linear-gradient(#4675b1, #325e94);
-			box-shadow: none; 
+			box-shadow: none;
 		}
 
 		&[disabled]{
@@ -82,7 +82,7 @@ button{
 		padding-right: 0.5em !important;
 	}
 	&.multiicon{
-		min-width: 4em; 
+		min-width: 4em;
 		/** NEU **/height: 25px ! important;
 		/** NEU **/width: auto;
 		/** NEU **/cursor: pointer;
@@ -118,7 +118,7 @@ button{
   margin-left: 0.5em;
   margin-right: 0.5em;
   margin-bottom: 1ex;
-  min-width: 2.5em; 
+  min-width: 2.5em;
   /** NEU **/color: #4d565d;
   /** NEU **/white-space: nowrap;
   /** NEU **/box-shadow: 1px 1px 2px #4d565d;
@@ -126,30 +126,31 @@ button{
 
 /** NEU **/
 button.weBtn {
-    /** NEU **/height: 25px ! important;
-    /** NEU **/width: auto;
-    /** NEU **/cursor: pointer;
-    /** NEU **/background: linear-gradient(#ebeef0, #d8dadc);
-    /** NEU **/font-size: 13px ! important;
-    /** NEU **/text-align: center;
-    /** NEU **/padding-left: 10px !important;
-    /** NEU **/padding-right: 10px !important;
-    /** NEU **/color: #4d565d;
-    /** NEU **/white-space: nowrap;
-    /** NEU **/box-shadow: 1px 1px 2px #4d565d;
-    /** NEU **/border: none;
-    margin-left: 0.5em;
+	/** NEU **/height: 25px ! important;
+	/** NEU **/width: auto;
+	/** NEU **/cursor: pointer;
+	/** NEU **/background: linear-gradient(#ebeef0, #d8dadc);
+	/** NEU **/font-size: 13px ! important;
+	/** NEU **/text-align: center;
+	/** NEU **/padding-left: 10px !important;
+	/** NEU **/padding-right: 10px !important;
+	/** NEU **/color: #4d565d;
+	/** NEU **/white-space: nowrap;
+	/** NEU **/box-shadow: 1px 1px 2px #4d565d;
+	/** NEU **/border: none;
+	margin-left: 0.5em;
 	margin-right: 0.5em;
-}
 
-/** NEU **/
-button.weBtn:hover, button.multiicon:hover {
-	color: #ffffff;
-	background: linear-gradient(#4675b1, #325e94);
-}
 
-/** NEU **/
-button.weBtn[disabled]:hover {
+	/** NEU **/
+	&:hover, button.multiicon:hover {
+		color: #ffffff;
+		background: linear-gradient(#4675b1, #325e94);
+	}
+
+	/** NEU **/
+	&[disabled]:hover {
     color: #a5aaae;
     background: linear-gradient(#ebeef0, #d8dadc);
+	}
 }

@@ -24,100 +24,93 @@
 
 #loginScreen{
 	/** NEU **/ /*background-color: #386aab;*/
-  	/** NEU **/background: url(../images/bg-login.jpg);
-  	/** NEU **/background-size: cover;
-  	/** NEU **/background-position: right bottom;
-  	height: 100%; 
+	/** NEU **/background: url(../images/bg-login.jpg);
+	/** NEU **/background-size: cover;
+	/** NEU **/background-position: right bottom;
+	height: 100%;
 }
 
 #mainTable{
 	border-style: none;
-  	/** NEU **/padding: 30px 40px;
-  	border-spacing: 0px;
-  	/** NEU **/background: url(../images/bg-login-box.png);
-  	width: 432px;
-  	margin-left: auto;
-  	margin-right: auto;
-  	text-align: left;
-  	/** NEU **/box-shadow: none;
-  	/** NEU **/border-radius: 0px; 
-  	/** NEU **/color: #ffffff;
+	/** NEU **/padding: 30px 40px;
+	border-spacing: 0px;
+	/** NEU **/background: url(../images/bg-login-box.png);
+	width: 432px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: left;
+	/** NEU **/box-shadow: none;
+	/** NEU **/border-radius: 0px;
+	/** NEU **/color: #ffffff;
 	td.logo{
 		text-align:center;
 	}
-}
 
-/** NEU **/
-#mainTable .defaultfont,
-#mainTable label ,
-#mainTable .small {
-  	color: #ffffff;
-  	font-size: 14px;
-}
+	.defaultfont,
+	label ,
+	.small {
+		color: #ffffff;
+		font-size: 14px;
+	}
 
-/** NEU **/
-#mainTable label {
-  	font-weight: bold;
-  	margin-bottom: 2px;
-  	display: block;
-}
+	label {
+		font-weight: bold;
+		margin-bottom: 2px;
+		display: block;
+	}
 
-/** NEU **/
-#mainTable .radiobutton label {
-	font-weight: normal;
-	font-size: 12px;
-	vertical-align: top;
-}
+	.radiobutton label {
+		font-weight: normal;
+		font-size: 12px;
+		vertical-align: top;
+	}
+	input {
+		color: #4d565d;
+		background: #ffffff;
+		border: none;
+		padding: 0px 10px;
+		height: 30px;
+		line-height: 30px;
+		width: 100%;
+		margin-bottom: 5px;
+	}
 
-/** NEU **/
-#mainTable input {
-  	color: #4d565d;
-  	background: #ffffff;
-  	border: none;
-  	padding: 0px 10px;
-  	height: 30px;
-  	line-height: 30px;
-  	width: 100%;
-  	margin-bottom: 5px;
-}
+	/** NEU **/
+	input[type="radio"] {
+		padding: 0px;
+		height: auto;
+		line-height: inherit;
+		width: auto;
+		margin-bottom: 5px;
+	}
 
-/** NEU **/
-#mainTable input[type="radio"] {
-  	padding: 0px;
-  	height: auto;
-  	line-height: inherit;
-  	width: auto;
-  	margin-bottom: 5px;
-}
+	/** NEU **/
+	.defaultfont  {
+		padding-top: 0px;
+	}
 
-/** NEU **/
-#mainTable .defaultfont  {
-  	padding-top: 0px;
-}
+	/** NEU **/
+	.logo img  {
+		margin-bottom: 15px;
+		max-width: 300px;
+	}
 
-/** NEU **/
-#mainTable .logo img  {
-  	margin-bottom: 15px;
-  	max-width: 300px;
+	/** NEU **/
+	.agency img,
+	img.agency  {
+		max-width: 150px;
+		margin: 0px;
+	}
+	/** NEU **/
+	.defaultfont a,
+	.defaultfont a:link,
+		.defaultfont a:visited,
+		a,
+		a:link,
+		a:visited {
+		color: #a5aaae;
+	}
 }
-
-/** NEU **/
-#mainTable .agency img,
-#mainTable img.agency  {
-  	max-width: 150px;
-  	margin: 0px;
-}
-
-/** NEU **/
-#mainTable .defaultfont a,
-#mainTable .defaultfont a:link,
-#mainTable .defaultfont a:visited,
-#mainTable a,
-#mainTable a:link,
-#mainTable a:visited {
-  	color: #a5aaae;
-}
-
 
 #versionSpec{
 	font-family: monospace;
@@ -147,22 +140,17 @@
 
 .plainTable{
 	border-style: none;
-  	padding: 0px;
-  	border-spacing: 0px; 
-  	/** NEU **/width: 100%;
+	padding: 0px;
+	border-spacing: 0px;
+	/** NEU **/width: 100%;
+
+	button.weBtn {
+		height: 30px !important;
+		line-height: 27px;
+		margin: 0px;
+	}
 }
 
-/** NEU **/
-.plainTable button.weBtn {
-	height: 30px !important;
-	line-height: 27px;
-	margin: 0px;
-}
-
-/** NEU **/
-.spaceTable .plainTable {
-	padding-bottom: 20px;
-}
 
 #username {
 	width: 250px;
@@ -178,4 +166,7 @@
 .spaceTable {
 	padding-top:15px;
 	padding-bottom:5px;
+	.plainTable {
+		padding-bottom: 20px;
+	}
 }

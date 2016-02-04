@@ -29,18 +29,18 @@ html{
 
 body{
 	margin: 0px;
-  	letter-spacing: normal ! important;
-  	/** NEU **/font-family: 'Roboto', sans-serif;
-  	font-size: 14px;
-  	background-color: white; 
+	letter-spacing: normal ! important;
+	/** NEU **/font-family: 'Roboto', sans-serif;
+	font-size: 14px;
+	background-color: white;
 
 	&.weDialogBody,
 	&.weEditorBody{
-		 margin: 0px;
-		 padding: 0px;
-		 /** NEU **/background-color: #ffffff;
-		 overflow: hidden;
-		 height: 100%; 
+		margin: 0px;
+		padding: 0px;
+		/** NEU **/background-color: #ffffff;
+		overflow: hidden;
+		height: 100%;
 	}
 
 	&.weEditorBody {
@@ -58,8 +58,8 @@ body{
 
 /** NEU **/
 body.weEditorBody div.multiIcon div.weMultiIconBoxHeadline {
-    font-size: 16px;
-    color: #284a70;
+	font-size: 16px;
+	color: #284a70;
 }
 
 table,
@@ -157,7 +157,7 @@ div{
 		}
 
 		div.weMultiIconBoxLine{
-			/** NEU **/border-bottom: 1px solid #cacdd0; 
+			/** NEU **/border-bottom: 1px solid #cacdd0;
 		}
 
 		div.multiIconRight{
@@ -167,7 +167,7 @@ div{
 		div.multiiconleft{
 			display: inline-block;
 			vertical-align: top;
-			/** NEU **/text-align: center; 
+			/** NEU **/text-align: center;
 			span.fileicon{
 				margin-left:20px;
 			}
@@ -183,10 +183,10 @@ div{
 #multiEditorDocumentTabsFrameDiv,
 #naviDiv{
 	position: absolute;
-  	top: 0px;
-  	/** NEU **/height: 30px !important;
-  	width: 100%;
-  	/** NEU **/background-color: #192c3a; 
+	top: 0px;
+	/** NEU **/height: 30px !important;
+	width: 100%;
+	/** NEU **/background-color: #192c3a;
 	@if($useOldStyle){
 		background-color: Silver;
 		border-top: 1px solid #000000;
@@ -212,8 +212,8 @@ body.radient{
 
 #footerBody{
 	padding: 8px 0px 10px 0px;
-  	/** NEU **/background: #a5aaae;
-  	height: 100%;
+	/** NEU **/background: #a5aaae;
+	height: 100%;
 }
 
 #weMainBody{
@@ -242,19 +242,19 @@ body.radient{
 
 #resizeFrame{
 	margin: 0px;
-  	border: 0px none;
-  	position: fixed;
-  	/** NEU **/top: 44px;
-  	bottom: 0px;
-  	left: 0px;
-  	right: 0px;
-  	overflow: hidden; 
+	border: 0px none;
+	position: fixed;
+	/** NEU **/top: 44px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	overflow: hidden;
 	#bm_content_frameDiv{
 		position: absolute;
 		top: 0px;
 		bottom: 0px;
 		/** NEU **/border-left: 1px solid #989ca1;
-		overflow: hidden; 
+		overflow: hidden;
 		iframe{
 			border:0px;
 			width:100%;
@@ -280,39 +280,39 @@ body.radient{
 	/** NEU **/width: 40px;
 	overflow: hidden;
 	/** NEU **/background-color: #192c3a;
-	color: white; 
+	color: white;
 
+}
+
+div.tab	{
+	/** NEU **/border-bottom: 1px solid #284051;
+	/** NEU **/border-right: 1px solid #192c3a;
+	/** NEU **/width: 40px;
+	height: 100px;
+	position: relative;
+	cursor: pointer;
+	/** NEU **/background-color: #192c3a;
+	/** NEU **/color: #abc6e9;
+	span{
+		position: absolute;
+		display: block;
+		bottom: -15px;
+		/** NEU **/left: 12px;
+		width: 100px;
+		-webkit-transform: rotate(-90deg);
+		-webkit-transform-origin: 0 0;
+		/* Chrome, Opera 15+, Safari 3.1+ */
+		-ms-transform: rotate(-90deg);
+		-ms-transform-origin: 0 0;
+		/* IE 9 */
+		transform: rotate(-90deg);
+		/* Firefox 16+, IE 10+, Opera*/
+		transform-origin: 0 0;
+		text-align: center;
+		color: inherit;
+		/** NEU **/font-size: 13px;
 	}
 
-	div.tab	{
-		/** NEU **/border-bottom: 1px solid #284051;
-		/** NEU **/border-right: 1px solid #192c3a;
-		/** NEU **/width: 40px;
-		height: 100px;
-		position: relative;
-		cursor: pointer;
-		/** NEU **/background-color: #192c3a;
-		/** NEU **/color: #abc6e9;
-		span{
-			position: absolute;
-			display: block;
-			bottom: -15px;
-			/** NEU **/left: 12px;
-			width: 100px;
-			-webkit-transform: rotate(-90deg);
-			-webkit-transform-origin: 0 0;
-			/* Chrome, Opera 15+, Safari 3.1+ */
-			-ms-transform: rotate(-90deg);
-			-ms-transform-origin: 0 0;
-			/* IE 9 */
-			transform: rotate(-90deg);
-			/* Firefox 16+, IE 10+, Opera*/
-			transform-origin: 0 0;
-			text-align: center;
-			color: inherit; 
-			/** NEU **/font-size: 13px;
-		}
-	}
 
 	div.tabNorm:hover{
 		/** NEU **//*background: linear-gradient(to right, #cbd3dc, #bfc6cf 50%, #999) transparent;*/
@@ -324,11 +324,10 @@ body.radient{
 	div.tabActive{
 		/** NEU **//*color: black;*/
 		/** NEU **/background-color: #d7dce0;
-		/** NEU **/border-right-color: #a5aaae; 
+		/** NEU **/border-right-color: #a5aaae;
 		/** NEU **/color: #386aab;
 	}
 }
-
 
 #treeFrameDiv{
 	position:absolute;
@@ -369,10 +368,10 @@ td.boxHeader{
 
 #baumArrows{
 	position: absolute;
-  	/** NEU **/left: 11px;
-  	bottom: 13px;
-  	font-size: 10px;
-  	text-align: center; 
+	/** NEU **/left: 11px;
+	bottom: 13px;
+	font-size: 10px;
+	text-align: center;
 	.baumArrow{
 		margin-top: 5px;
 		width:2ex;
@@ -390,24 +389,24 @@ td.boxHeader{
 #treeControl{
 	/** NEU **/line-height: 30px;
 	/** NEU **/height: 30px;
-	/** NEU **/background-color: #a5aaae; 
+	/** NEU **/background-color: #a5aaae;
 	#treeName{
-		 padding: 0px 1ex;
-		 /** NEU **/color: #4d565d;
+		padding: 0px 1ex;
+		/** NEU **/color: #4d565d;
 	}
 	#toggleTree{
 		position: absolute;
-		right: 1ex; 
+		right: 1ex;
 		/** NEU **/color: #4d565d;
 	}
 }
 
 #treeContent{
 	position: absolute;
-  	/** NEU **/top: 29px;
-  	bottom: 0px;
-  	left: 0px;
-  	right: 0px; 
+	/** NEU **/top: 29px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
 	#bm_searchField{
 		position: absolute;
 		bottom: 0px;
@@ -418,20 +417,20 @@ td.boxHeader{
 		background-repeat: repeat;
 		margin: 0px;
 		/** NEU **/background: #a5aaae;
-		/** NEU **/border-top: none; 
+		/** NEU **/border-top: none;
 		#search{
-			/** NEU **/margin: 10px 0px 10px 10px; 
+			/** NEU **/margin: 10px 0px 10px 10px;
 		}
 	}
 }
 
 /** NEU **/
 #treeContent #bm_searchField #search input {
-    height: 30px;
-    /*width: 200px !important;*/
-    border: none;
-    line-height: 30px;
-    vertical-align: bottom;
+	height: 30px;
+	/*width: 200px !important;*/
+	border: none;
+	line-height: 30px;
+	vertical-align: bottom;
 }
 
 /** NEU **/
@@ -454,7 +453,7 @@ td.boxHeader{
   /** NEU **/margin-left: 0px;
   /** NEU **/margin-right: 0px;
   /** NEU **/margin-bottom: 0px;
-  min-width: 2.5em; 
+  min-width: 2.5em;
   /** NEU **/border: none;
 }
 
@@ -513,7 +512,7 @@ td.boxHeader{
 #treeheader,
 #eHeaderBody{
 	/** NEU **/background: #a5aaae;
-  	margin: 0px; 
+	margin: 0px;
 }
 
 /*div for iconbar frame*/
@@ -537,11 +536,11 @@ td.boxHeader{
 
 #headrow{
 	/** NEU **/margin: 7px 0px 7px 5px;
-  	white-space: nowrap;
-  	/** NEU **/color: #4d565d;
+	white-space: nowrap;
+	/** NEU **/color: #4d565d;
 	a{
 		#h_path{
-			/** NEU **/color: #386aab; 
+			/** NEU **/color: #386aab;
 		}
 	}
 }
@@ -560,7 +559,7 @@ td.boxHeader{
 	left: 0px;
 	right: 0px;
 	bottom: 0px;
-	border: 0px; 
+	border: 0px;
 	&.withIconBar{
 		top:72px;
 	}
@@ -579,9 +578,9 @@ td.boxHeader{
 .wetextinput,
 .wetextarea{
 	/** NEU **/border: #a5aaae solid 1px;
-  	/** NEU **/color: #192c3a;
-  	/** NEU **/box-sizing: border-box; 
-  	/** NEU **/padding: 5px 10px;
+	/** NEU **/color: #192c3a;
+	/** NEU **/box-sizing: border-box;
+	/** NEU **/padding: 5px 10px;
 }
 
 .wetextinput {
@@ -597,9 +596,9 @@ td.boxHeader{
 
 .multichooser {
 	background-color: white;
-  	border: 1px grey solid;
-  	/** NEU **/min-height: 30px;
-  	/** NEU **/margin-bottom: 3px; 
+	border: 1px grey solid;
+	/** NEU **/min-height: 30px;
+	/** NEU **/margin-bottom: 3px;
 }
 
 input[type="checkbox"]{
@@ -965,7 +964,7 @@ optgroup{
   box-sizing: border-box;
   overflow: hidden;
   background: #a5aaae;
-  border-top: none; 
+  border-top: none;
 }
 
 .weDialogButtonsBody {
@@ -991,10 +990,10 @@ optgroup{
 #toolMenu,
 #headerDiv{
 	/** NEU **/ /*background: linear-gradient(#4675b1, #325e94);*/
-  	/** NEU **/background: #325e94;
-  	color: white;
-  	/** NEU **/line-height: 40px;
-  	/** NEU **/height: 40px;
+	/** NEU **/background: #325e94;
+	color: white;
+	/** NEU **/line-height: 40px;
+	/** NEU **/height: 40px;
 }
 
 #headerDiv{
@@ -1002,13 +1001,13 @@ optgroup{
 	top: 0px;
 	left: 0px;
 	right: 0px;
-	/** NEU **/border-bottom: 4px solid #192c3a; 
+	/** NEU **/border-bottom: 4px solid #192c3a;
 	#logout,#home{
 		/** NEU **/height: 40px;
 		float: left;
 		/** NEU **/width: 40px;
 		cursor: pointer;
-		text-align: center; 
+		text-align: center;
 		/** NEU **/ /*background: linear-gradient(#345881, #284a70);*/
 		/** NEU **/background: #284a70;
 		/** NEU **/margin-left: 0px;
@@ -1017,55 +1016,55 @@ optgroup{
 	}
 	#logout{
 		/** NEU **/background: none;
-		border-left: 1px solid #366196; 
+		border-left: 1px solid #366196;
+	}
+}
+#weHeaderRight{
+	position:absolute;
+	top:0px;
+	bottom:0px;
+	right:0px;
+	border:0px;
+}
+#navigationHistory{
+	position: relative;
+	bottom: 0px;
+	border: 0px;
+	/** NEU **/padding-left: 0px;
+	float: left;
+}
+#msgheadertable{
+	position:relative;
+	float: left;
+	padding-left: 10px;
+	width:60px;
+	font-size: $medfont;
+	line-height: normal;
+	/** NEU **/border-right: 1px solid #366196;
+	padding-right: 10px;
+	table{
+		margin:2px 0px 2px auto;
+		border-spacing:0px;
+		border: none;
+		tr {
+			height: 12px;
+		}
+		tr:first-child td{
+			text-align:right;
+		}
+		td {
+			font-family: $weFontBold;
+			color: inherit;
+			padding:0px;
 		}
 	}
-	#weHeaderRight{
-		position:absolute;
-		top:0px;
-		bottom:0px;
-		right:0px;
-		border:0px;
-	}
-	#navigationHistory{
-		position: relative;
-		bottom: 0px;
-		border: 0px;
-		/** NEU **/padding-left: 0px;
-		float: left; 
-	}
-	#msgheadertable{
-		position:relative;
-		float: left;
-		padding-left: 10px;
-		width:60px;
-		font-size: $medfont;
-		line-height: normal;
-		/** NEU **/border-right: 1px solid #366196; 
-		padding-right: 10px;
-		table{
-			margin:2px 0px 2px auto;
-			border-spacing:0px;
-			border: none;
-			tr {
-				height: 12px;
-			}
-			tr:first-child td{
-				text-align:right;
-			}
-			td {
-				font-family: $weFontBold;
-				color: inherit;
-				padding:0px;
-			}
-		}
-		i{
-			//background-color:white;
-		}
+	i{
+		//background-color:white;
 	}
 }
 
-/** NEU **/  
+
+/** NEU **/
 #navigationHistory .navigation {
   width: 35px;
 }
@@ -1138,7 +1137,7 @@ table.error{
 	position:relative;
 	float:left;
 	i{
-		color: #ffffff; 
+		color: #ffffff;
 		/** NEU **/margin-top: 13px;
 		&.active{
 			color:#5f97cc;
@@ -1148,41 +1147,41 @@ table.error{
 
 /** NEU **/
 #messageConsole:hover {
-  	background: linear-gradient(to bottom, #345881, #284a70) transparent !important;
+	background: linear-gradient(to bottom, #345881, #284a70) transparent !important;
 }
 
 /** NEU **/
 #messageConsole table {
-  	height: 40px;
+	height: 40px;
 }
 
 /** NEU **/
 #messageConsole table tr {
-  	line-height: normal;
+	line-height: normal;
 }
 
 /** NEU **/
 #messageConsole table tr td {
-  	padding: 0px;
+	padding: 0px;
 }
 
 /** NEU **/
 #messageConsole table tr td .navigation {
-  	height: 40px;
-    margin: 0px;
-    top: -2px;
-    position: relative;
-    width: 35px
+	height: 40px;
+	margin: 0px;
+	top: -2px;
+	position: relative;
+	width: 35px
 }
 
 /** NEU **/
 #messageConsole table tr td .navigation:hover {
-  	background: none;
+	background: none;
 }
 
-/** NEU **/  
+/** NEU **/
 #messageConsole .navigation {
-  	border-right: none;
+	border-right: none;
 }
 
 .messageConsoleMessage{/*message*/
@@ -1277,7 +1276,7 @@ table.revenueTable {
 
 span.fileicon{
 	/** NEU **/font-size: 8px;
-  	color: black; 
+	color: black;
 	::-moz-selection,
 	::selection{
 		color: inherit;
@@ -1304,7 +1303,7 @@ span.fileicon{
 		margin-left: 0.2em;
 		vertical-align: bottom;
 		font-family: liberation_sansregular, sans-serif;
-		line-height: 1; 
+		line-height: 1;
 	}
 	.we-classification i{
 		top:-.3em;
@@ -1371,7 +1370,7 @@ table.customer{
 table.default td,
 table.default th{
 	padding: 0px;
-  	/** NEU **/vertical-align: top;
+	/** NEU **/vertical-align: top;
 }
 
 table.withSpace tr td{
@@ -1727,7 +1726,7 @@ div.collection-content{
 #PropertyPage{
 	input,
 	select{
-		width: 30em; 
+		width: 30em;
 		/** NEU **/height: 30px !important;
 		/** NEU **/margin-bottom: 5px;
 	}
@@ -1773,7 +1772,7 @@ body.editFrameset{
 		right:0px;
 	}
 	div.editHeader{
-		top: 0px; 
+		top: 0px;
 		/** TEST **/ /*height: 100px !important;*/
 	}
 	div.mainEditor,
@@ -1789,7 +1788,7 @@ body.editFrameset{
 		right: 0px;
 		/** NEU **/height: 53px;
 		/** NEU **/ /*background: linear-gradient(to bottom, #b4b3b3, #c6c5c5) transparent;*/
-		/** NEU **/border-top: 1px solid #cacdd0; 
+		/** NEU **/border-top: 1px solid #cacdd0;
 	}
 }
 
@@ -1808,7 +1807,7 @@ body.moduleEditor{
 	div.editorHeader{
 		top: 0px;
 		/** NEU **/height: 57px !important;
-		overflow: hidden; 
+		overflow: hidden;
 	}
 	div.editorBody{
 		/** NEU **/top: 57px !important;
@@ -1877,41 +1876,54 @@ body.moduleEditor{
 			position: absolute;
 			top: 0px;
 			bottom: 0px;
-			right: 0px; 
+			right: 0px;
 		}
 	}
-}
 
-/** NEU **/
-#moduleContent #lframeDiv #left button.weBtn {
-    height: 30px ! important;
-  width: 30px;
-  cursor: pointer;
-  border-width: 0px;
-  border-collapse: collapse;
-  padding: 0px;
-  /** NEU **/color: #ffffff;
-  /** NEU **/border-radius: 0px;
-  /** NEU **/background: #192c3a;
-  font-family: liberation_sansregular, sans-serif;
-  font-size: 11px ! important;
-  text-align: center;
-  padding-left: 0.5em !important;
-  padding-right: 0.5em !important;
-  /** NEU **/ /*box-shadow: 2px 2px 2px #555;*/
-  /** NEU **/margin-left: 0px;
-  /** NEU **/margin-right: 0px;
-  /** NEU **/margin-bottom: 0px;
-  min-width: 2.5em; 
-  /** NEU **/border: none;
-}
+	#lframeDiv #left{
+		button.weBtn {
+			height: 30px ! important;
+			width: 30px;
+			cursor: pointer;
+			border-width: 0px;
+			border-collapse: collapse;
+			padding: 0px;
+			/** NEU **/color: #ffffff;
+			/** NEU **/border-radius: 0px;
+			/** NEU **/background: #192c3a;
+			font-family: liberation_sansregular, sans-serif;
+			font-size: 11px ! important;
+			text-align: center;
+			padding-left: 0.5em !important;
+			padding-right: 0.5em !important;
+			/** NEU **/ /*box-shadow: 2px 2px 2px #555;*/
+			/** NEU **/margin-left: 0px;
+			/** NEU **/margin-right: 0px;
+			/** NEU **/margin-bottom: 0px;
+			min-width: 2.5em;
+			/** NEU **/border: none;
+		}
 
-/** NEU **/
-#moduleContent #lframeDiv #left .wetextinput {
-    height: 30px;
-    border: none;
-    line-height: 30px;
-    vertical-align: bottom;
+		.wetextinput {
+			height: 30px;
+			border: none;
+			line-height: 30px;
+			vertical-align: bottom;
+		}
+	}
+	#treeheader {
+		height: auto;
+		padding: 5px 10px;
+
+		.weSelect {
+			width: 109px !important;
+			height: 30px;
+		}
+
+		button.weBtn {
+			margin-right: 5px !important;
+		}
+	}
 }
 
 #right{
@@ -2041,8 +2053,8 @@ span.alertIcon{
 
 /** NEU **/
 .tree .fa-minus-square-o,
-.tree .fa-plus-square-o {	 
-	 font-size: 20px !important;
+.tree .fa-plus-square-o {
+	font-size: 20px !important;
 }
 
 /** NEU **/
@@ -2053,10 +2065,10 @@ span.alertIcon{
 }
 
 /** NEU **/
-.tree .fa-minus-square-o:before {	 
-	 content: "\0229F";
-	 font-size: 20px;
-	 color: #a5aaae;
+.tree .fa-minus-square-o:before {
+	content: "\0229F";
+	font-size: 20px;
+	color: #a5aaae;
 }
 
 /** NEU **/
@@ -2084,58 +2096,48 @@ a:hover, a:focus, a:active {
 /** NEU **/
 #props {
 	width: 100%;
-}
 
-/** NEU **/
-#props table {
-	width: 100%;
-}
+	table {
+		width: 100%;
 
-/** NEU **/
-#props table tr td {
-	vertical-align: top;
-	text-align: left !important;
-	color: #4d565d;
-}
+		tr td {
+			vertical-align: top;
+			text-align: left !important;
+			color: #4d565d;
 
-/** NEU **/
-#props table tr td label {
-	color: #4d565d !important;
-}
+			label {
+				color: #4d565d !important;
+			}
+			input,
+			select {
+				height: 20px;
+				line-height: 20px;
+				border-radius: 0px;
+				border: none;
+				background: #ffffff;
+				color: #4d565d;
+				padding: 0px 5px;
+			}
+			textarea {
+				height: 40px !important;
+				border-radius: 0px;
+				border: none;
+				background: #ffffff;
+				color: #4d565d;
+				margin-bottom: 5px;
+				padding: 5px;
+			}
+			button {
+				margin-left: 5px;
+				margin-bottom: 5px;
+			}
+			div {
+				float: none !important;
+				clear: both !important;
+			}
 
-/** NEU **/
-#props table tr td input,
-#props table tr td select {
-	height: 20px;
-	line-height: 20px;
-	border-radius: 0px;
-	border: none;
-	background: #ffffff;
-	color: #4d565d;
-	padding: 0px 5px;
-}
-
-/** NEU **/
-#props table tr td textarea {
-	height: 40px !important;
-	border-radius: 0px;
-	border: none;
-	background: #ffffff;
-	color: #4d565d;
-	margin-bottom: 5px;
-	padding: 5px;
-}
-
-/** NEU **/
-#props table tr td button {
-	margin-left: 5px;
-	margin-bottom: 5px;
-}
-
-/** NEU **/
-#props table tr td div {
-	float: none !important;
-	clear: both !important;
+		}
+	}
 }
 
 /** NEU **/
@@ -2170,19 +2172,3 @@ a:hover, a:focus, a:active {
 	background: #f8f8fa;
 }
 
-/** NEU **/
-#moduleContent #treeheader .weSelect {
-	width: 109px !important;
-	height: 30px;
-}
-
-/** NEU **/
-#moduleContent #treeheader button.weBtn {
-	margin-right: 5px !important;
-}
-
-/** NEU **/
-#moduleContent #treeheader {
-	height: auto;
-	padding: 5px 10px;
-}
