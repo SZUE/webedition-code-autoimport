@@ -282,53 +282,53 @@ body.radient{
 	/** NEU **/background-color: #192c3a;
 	color: white;
 
+
+
+	div.tab	{
+		/** NEU **/border-bottom: 1px solid #284051;
+		/** NEU **/border-right: 1px solid #192c3a;
+		/** NEU **/width: 40px;
+		height: 100px;
+		position: relative;
+		cursor: pointer;
+		/** NEU **/background-color: #192c3a;
+		/** NEU **/color: #abc6e9;
+		span{
+			position: absolute;
+			display: block;
+			bottom: -15px;
+			/** NEU **/left: 12px;
+			width: 100px;
+			-webkit-transform: rotate(-90deg);
+			-webkit-transform-origin: 0 0;
+			/* Chrome, Opera 15+, Safari 3.1+ */
+			-ms-transform: rotate(-90deg);
+			-ms-transform-origin: 0 0;
+			/* IE 9 */
+			transform: rotate(-90deg);
+			/* Firefox 16+, IE 10+, Opera*/
+			transform-origin: 0 0;
+			text-align: center;
+			color: inherit;
+			/** NEU **/font-size: 13px;
+		}
+
+
+		div.tabNorm:hover{
+			/** NEU **//*background: linear-gradient(to right, #cbd3dc, #bfc6cf 50%, #999) transparent;*/
+			/** NEU **//*color: black; */
+			/** NEU **/background-color: #d7dce0;
+			/** NEU **/color: #386aab;
+		}
+
+		div.tabActive{
+			/** NEU **//*color: black;*/
+			/** NEU **/background-color: #d7dce0;
+			/** NEU **/border-right-color: #a5aaae;
+			/** NEU **/color: #386aab;
+		}
+	}
 }
-
-div.tab	{
-	/** NEU **/border-bottom: 1px solid #284051;
-	/** NEU **/border-right: 1px solid #192c3a;
-	/** NEU **/width: 40px;
-	height: 100px;
-	position: relative;
-	cursor: pointer;
-	/** NEU **/background-color: #192c3a;
-	/** NEU **/color: #abc6e9;
-	span{
-		position: absolute;
-		display: block;
-		bottom: -15px;
-		/** NEU **/left: 12px;
-		width: 100px;
-		-webkit-transform: rotate(-90deg);
-		-webkit-transform-origin: 0 0;
-		/* Chrome, Opera 15+, Safari 3.1+ */
-		-ms-transform: rotate(-90deg);
-		-ms-transform-origin: 0 0;
-		/* IE 9 */
-		transform: rotate(-90deg);
-		/* Firefox 16+, IE 10+, Opera*/
-		transform-origin: 0 0;
-		text-align: center;
-		color: inherit;
-		/** NEU **/font-size: 13px;
-	}
-
-
-	div.tabNorm:hover{
-		/** NEU **//*background: linear-gradient(to right, #cbd3dc, #bfc6cf 50%, #999) transparent;*/
-		/** NEU **//*color: black; */
-		/** NEU **/background-color: #d7dce0;
-		/** NEU **/color: #386aab;
-	}
-
-	div.tabActive{
-		/** NEU **//*color: black;*/
-		/** NEU **/background-color: #d7dce0;
-		/** NEU **/border-right-color: #a5aaae;
-		/** NEU **/color: #386aab;
-	}
-}
-
 #treeFrameDiv{
 	position:absolute;
 	top:0px;
