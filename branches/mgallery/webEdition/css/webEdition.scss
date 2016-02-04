@@ -184,7 +184,7 @@ div{
 #naviDiv{
 	position: absolute;
 	top: 0px;
-	/** NEU **/height: 30px !important;
+	/** NEU height: 30px !important;*/
 	width: 100%;
 	/** NEU **/background-color: #192c3a;
 	@if($useOldStyle){
