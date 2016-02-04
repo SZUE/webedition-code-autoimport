@@ -25,7 +25,9 @@
  */
 @import "config.scss";
 .tree{
-	white-space: nowrap;
+	white-space: nowrap; 
+  	/** NEU **/margin-left: -13px;
+  	/** NEU **/padding: 10px 0px;
 }
 #treetable{
 	margin: 0px;
@@ -51,16 +53,17 @@
 		cursor: pointer;
 
 		&.treeKreuz{
-			font-size: 11px;
+			/** NEU **/font-size: 12px;
 			width: 16px;
 			height: 1.8em;
 			vertical-align: middle;
 			position: relative;
-			display:inline-block;
-			/*for lines*/
-			border: 0px solid darkgray;
+			display: inline-block;
+			/** NEU **/border: 0px solid #a5aaae;
+			/*for lines*/ 
+			/** NEU **/margin-right: 14px;
 			i.fa-square{
-				color:white;
+				/** NEU **/color: #d7dce0; 
 			}
 		}
 		&.threedots{
@@ -91,18 +94,18 @@
 		&.kreuzung,
 		&.kreuzungend{
 			&::before{
-				content:" ";
-				display:inline-block;
+				content: " ";
+				display: inline-block;
 				position: absolute;
 				top: 1.4ex;
-				width:1em;
-				border-bottom:1px solid darkgrey;
+				width: 1em;
+				/** NEU **/border-bottom: 1px solid #a6abb0; 
 			}
 			i::before,
 			i::before{
 				position: absolute;
-				top:0px;
-				left:-5px;
+				/** NEU **/top: -5px;
+				/** NEU **/left: 3px; 
 			}
 		}
 	}
@@ -133,12 +136,13 @@
 	a,
 	.selected_item,
 	.selected_group{
-		color: black;
-		cursor: pointer;
+		/** NEU **/color: #192c3a;
+		cursor: pointer; 
+		/** NEU **/font-size: 11px;
 	}
 	i.fa-folder-open,
 	i.fa-folder{
-		color: #ADC5E3;
+		color: /** NEU **/#192c3a; 
 	}
 
 	.disabled a,
@@ -164,8 +168,9 @@
 
 	.group,
 	.selected_group {
-		//font-weight: bold;
-		font-family: $weFontBold;
+		/** NEU **/ /*font-family: liberation_sansbold, sans-serif; */
+		/** NEU **/font-size: 11px;
+		/** NEU **/color: #192c3a;
 	}
 
 	.selected_item,
@@ -208,4 +213,9 @@
 		background-color: #D4DBFA;
 	}
 
+}
+
+/** NEU **/
+#treetable span.fileicon {
+    margin-right: 5px;
 }

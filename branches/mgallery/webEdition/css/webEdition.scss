@@ -29,18 +29,18 @@ html{
 
 body{
 	margin: 0px;
-	letter-spacing: normal ! important;
-	font-family: $weFont;
-	font-size: $bigfont;
-	background-color:white;
+  	letter-spacing: normal ! important;
+  	/** NEU **/font-family: 'Roboto', sans-serif;
+  	font-size: 14px;
+  	background-color: white; 
 
 	&.weDialogBody,
 	&.weEditorBody{
-		margin: 0px;
-		padding: 0px;
-		background-color: #EDEDED;
-		overflow: hidden;
-		height: 100%;
+		 margin: 0px;
+		 padding: 0px;
+		 /** NEU **/background-color: #ffffff;
+		 overflow: hidden;
+		 height: 100%; 
 	}
 
 	&.weEditorBody {
@@ -54,6 +54,12 @@ body{
 			height:100%;
 		}
 	}
+}
+
+/** NEU **/
+body.weEditorBody div.multiIcon div.weMultiIconBoxHeadline {
+    font-size: 16px;
+    color: #284a70;
 }
 
 table,
@@ -151,7 +157,7 @@ div{
 		}
 
 		div.weMultiIconBoxLine{
-			border-bottom: 1px solid #AFB0AF;
+			/** NEU **/border-bottom: 1px solid #cacdd0; 
 		}
 
 		div.multiIconRight{
@@ -161,6 +167,7 @@ div{
 		div.multiiconleft{
 			display: inline-block;
 			vertical-align: top;
+			/** NEU **/text-align: center; 
 			span.fileicon{
 				margin-left:20px;
 			}
@@ -175,10 +182,11 @@ div{
 
 #multiEditorDocumentTabsFrameDiv,
 #naviDiv{
-	position:absolute;
-	top:0px;
-	height:$defaultEditorTabHeight;
-	width:100%;
+	position: absolute;
+  	top: 0px;
+  	/** NEU **/height: 30px !important;
+  	width: 100%;
+  	/** NEU **/background-color: #192c3a; 
 	@if($useOldStyle){
 		background-color: Silver;
 		border-top: 1px solid #000000;
@@ -203,14 +211,9 @@ body.radient{
 }
 
 #footerBody{
-	//border-top: 2px groove white;
-	padding:8px 0px 10px 0px;
-	@if($useOldStyle){
-		background: linear-gradient(#B4B3B3, #C6C5C5);
-	}@else{
-		background: linear-gradient(#B4B3B3, #C6C5C5);
-	}
-	height:100%;
+	padding: 8px 0px 10px 0px;
+  	/** NEU **/background: #a5aaae;
+  	height: 100%;
 }
 
 #weMainBody{
@@ -238,20 +241,20 @@ body.radient{
 
 
 #resizeFrame{
-	margin:0px;
-	border:0px none;
-	position:fixed;
-	top:$menuHeight+1px;
-	bottom:0px;
-	left:0px;
-	right:0px;
-	overflow:hidden;
+	margin: 0px;
+  	border: 0px none;
+  	position: fixed;
+  	/** NEU **/top: 44px;
+  	bottom: 0px;
+  	left: 0px;
+  	right: 0px;
+  	overflow: hidden; 
 	#bm_content_frameDiv{
-		position:absolute;
-		top:0px;
-		bottom:0px;
-		border-left:1px solid #192C3A;
-		overflow: hidden;
+		position: absolute;
+		top: 0px;
+		bottom: 0px;
+		/** NEU **/border-left: 1px solid #989ca1;
+		overflow: hidden; 
 		iframe{
 			border:0px;
 			width:100%;
@@ -270,54 +273,59 @@ body.radient{
 
 
 #vtabs{
-	position:absolute;
-	top:0px;
-	bottom:0px;
-	left:0px;
-	width:$vtabWidth;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	/** NEU **/width: 40px;
 	overflow: hidden;
-	@if($useOldStyle){
-		background: linear-gradient(to right,#EAEAEA, #CFCFCF);
-		border-top:1px solid black;
-	}@else{
-		background-color:#192C3A;
-		color:white;
+	/** NEU **/background-color: #192c3a;
+	color: white; 
 
 	}
 
 	div.tab	{
-		border-bottom:1px solid #909090;
-		border-right:1px solid #909090;
-		width:$vtabWidth;
-		height:$vtabHeight;
-		position:relative;
+		/** NEU **/border-bottom: 1px solid #284051;
+		/** NEU **/border-right: 1px solid #192c3a;
+		/** NEU **/width: 40px;
+		height: 100px;
+		position: relative;
 		cursor: pointer;
+		/** NEU **/background-color: #192c3a;
+		/** NEU **/color: #abc6e9;
 		span{
 			position: absolute;
-			display:block;
+			display: block;
 			bottom: -15px;
-			left:4px;
-			width:$vtabHeight;
-			-webkit-transform:rotate(-90deg); /* Chrome, Opera 15+, Safari 3.1+ */
+			/** NEU **/left: 12px;
+			width: 100px;
+			-webkit-transform: rotate(-90deg);
 			-webkit-transform-origin: 0 0;
-			-ms-transform:rotate(-90deg); /* IE 9 */
+			/* Chrome, Opera 15+, Safari 3.1+ */
+			-ms-transform: rotate(-90deg);
 			-ms-transform-origin: 0 0;
-			transform: rotate(-90deg); /* Firefox 16+, IE 10+, Opera*/
+			/* IE 9 */
+			transform: rotate(-90deg);
+			/* Firefox 16+, IE 10+, Opera*/
 			transform-origin: 0 0;
 			text-align: center;
-			color:inherit;
+			color: inherit; 
+			/** NEU **/font-size: 13px;
 		}
 	}
 
 	div.tabNorm:hover{
-		background: linear-gradient(to right, #CBD3DC, #BFC6CF 50%, #999999) transparent;
-		color:black;
+		/** NEU **//*background: linear-gradient(to right, #cbd3dc, #bfc6cf 50%, #999) transparent;*/
+		/** NEU **//*color: black; */
+		/** NEU **/background-color: #d7dce0;
+		/** NEU **/color: #386aab;
 	}
 
 	div.tabActive{
-		color:black;
-		background-color:#C9CDD0;
-		border-right-color: #f3f7ff;
+		/** NEU **//*color: black;*/
+		/** NEU **/background-color: #d7dce0;
+		/** NEU **/border-right-color: #a5aaae; 
+		/** NEU **/color: #386aab;
 	}
 }
 
@@ -326,7 +334,7 @@ body.radient{
 	position:absolute;
 	top:0px;
 	bottom:0px;
-	left:$vtabWidth;
+	/** NEU **/left: 41px;
 	right:0px;
 	border:0px;
 	overflow: hidden;
@@ -360,11 +368,11 @@ td.boxHeader{
 }
 
 #baumArrows{
-	position:absolute;
-	left:5px;
-	bottom: 13px;
-	font-size: 10px;
-	text-align: center;
+	position: absolute;
+  	/** NEU **/left: 11px;
+  	bottom: 13px;
+  	font-size: 10px;
+  	text-align: center; 
 	.baumArrow{
 		margin-top: 5px;
 		width:2ex;
@@ -380,40 +388,74 @@ td.boxHeader{
 }
 
 #treeControl{
-	line-height: $defaultEditorTabHeight;
-	height:$defaultEditorTabHeight;
-	background-color: #B7BBBF;
+	/** NEU **/line-height: 30px;
+	/** NEU **/height: 30px;
+	/** NEU **/background-color: #a5aaae; 
 	#treeName{
-		padding:0px 1ex;
-		font-family: $weFontBold;
+		 padding: 0px 1ex;
+		 /** NEU **/color: #4d565d;
 	}
 	#toggleTree{
-		position:absolute;
-		right:1ex;
+		position: absolute;
+		right: 1ex; 
+		/** NEU **/color: #4d565d;
 	}
 }
 
 #treeContent{
 	position: absolute;
-	top: $defaultEditorTabHeight;
-	bottom: 0px;
-	left: 0px;
-	right: 0px;
+  	/** NEU **/top: 29px;
+  	bottom: 0px;
+  	left: 0px;
+  	right: 0px; 
 	#bm_searchField{
-		position:absolute;
-		bottom:0px;
-		height:$editorFooterHeight;
-		left:0px;
-		right:0px;
+		position: absolute;
+		bottom: 0px;
+		/** NEU **/ /*height: 40px;*/
+		left: 0px;
+		right: 0px;
 		overflow: hidden;
-		background-repeat:repeat;
-		margin:0px;
-		background: linear-gradient(to bottom, #B4B3B3, #C6C5C5) transparent;
-		border-top: 2px groove white;
+		background-repeat: repeat;
+		margin: 0px;
+		/** NEU **/background: #a5aaae;
+		/** NEU **/border-top: none; 
 		#search{
-			margin: 10px 0 0 10px;
+			/** NEU **/margin: 10px 0px 10px 10px; 
 		}
 	}
+}
+
+/** NEU **/
+#treeContent #bm_searchField #search input {
+    height: 30px;
+    /*width: 200px !important;*/
+    border: none;
+    line-height: 30px;
+    vertical-align: bottom;
+}
+
+/** NEU **/
+#treeContent #bm_searchField #search button.weBtn {
+  height: 30px ! important;
+  width: 30px;
+  cursor: pointer;
+  border-width: 0px;
+  border-collapse: collapse;
+  padding: 0px;
+  /** NEU **/color: #ffffff;
+  /** NEU **/border-radius: 0px;
+  /** NEU **/background: #192c3a;
+  font-family: liberation_sansregular, sans-serif;
+  font-size: 11px ! important;
+  text-align: center;
+  padding-left: 0.5em !important;
+  padding-right: 0.5em !important;
+  /** NEU **/ /*box-shadow: 2px 2px 2px #555;*/
+  /** NEU **/margin-left: 0px;
+  /** NEU **/margin-right: 0px;
+  /** NEU **/margin-bottom: 0px;
+  min-width: 2.5em; 
+  /** NEU **/border: none;
 }
 
 #bm_treeheaderDiv{
@@ -437,7 +479,7 @@ td.boxHeader{
 
 #tree,
 #treetable{
-	background-color:#f5f5f5;
+	/** NEU **/background-color: #d7dce0;
 	left:0px;
 	right:0px;
 	position:absolute;
@@ -470,14 +512,8 @@ td.boxHeader{
 
 #treeheader,
 #eHeaderBody{
-	@if($useOldStyle){
-		background-color: #C8D8EC;
-		background: linear-gradient(#c9d9ed, #afc3de);
-
-	}@else{
-		background: #9AA2A9;
-	}
-	margin: 0px;
+	/** NEU **/background: #a5aaae;
+  	margin: 0px; 
 }
 
 /*div for iconbar frame*/
@@ -500,11 +536,12 @@ td.boxHeader{
 }
 
 #headrow{
-	margin:3px 0px 3px 5px;
-	white-space: nowrap;
+	/** NEU **/margin: 7px 0px 7px 5px;
+  	white-space: nowrap;
+  	/** NEU **/color: #4d565d;
 	a{
 		#h_path{
-			color:#006699;
+			/** NEU **/color: #386aab; 
 		}
 	}
 }
@@ -518,12 +555,12 @@ td.boxHeader{
 }
 
 #resize{
-	position:absolute;
-	top:$menuHeight;
-	left:0px;
-	right:0px;
-	bottom:0px;
-	border: 0px;
+	position: absolute;
+	/** NEU **/top: 44px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	border: 0px; 
 	&.withIconBar{
 		top:72px;
 	}
@@ -541,14 +578,14 @@ td.boxHeader{
 .weSelect,
 .wetextinput,
 .wetextarea{
-	border: #AAAAAA solid 1px;
-	color: black;
-
-	box-sizing: border-box;
+	/** NEU **/border: #a5aaae solid 1px;
+  	/** NEU **/color: #192c3a;
+  	/** NEU **/box-sizing: border-box; 
+  	/** NEU **/padding: 5px 10px;
 }
 
 .wetextinput {
-	height: 20px;
+	/** NEU **/ /*height: 20px; */
 	&[disabled] {
 		background-color: #EEEEEE;
 	}
@@ -559,9 +596,10 @@ td.boxHeader{
 }
 
 .multichooser {
-	background-color:white;
-	border: 1px grey solid;
-	min-height: 2ex;
+	background-color: white;
+  	border: 1px grey solid;
+  	/** NEU **/min-height: 30px;
+  	/** NEU **/margin-bottom: 3px; 
 }
 
 input[type="checkbox"]{
@@ -916,17 +954,18 @@ optgroup{
 	background-position: bottom left;
 	background-repeat: no-repeat;
 }
-.editfooter{
-	left:0px;
-	height:$editorFooterHeight;
-	position:absolute;
-	bottom:0px;
-	right:0px;
-	padding: 7px 10px;
-	box-sizing: border-box;
-	overflow:hidden;
-	background: linear-gradient(#B4B3B3, #C6C5C5);
-	border-top: 2px groove white;
+
+/** NEU **/
+.editfooter {
+  left: 0px;
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  padding: 7px 10px;
+  box-sizing: border-box;
+  overflow: hidden;
+  background: #a5aaae;
+  border-top: none; 
 }
 
 .weDialogButtonsBody {
@@ -951,34 +990,34 @@ optgroup{
 
 #toolMenu,
 #headerDiv{
-	@if($useOldStyle){
-		background: linear-gradient(#F7F7F7, #E8E8E8);
-	}@else{
-		background: linear-gradient(#4675B1, #325E95);
-		color:white;
-
-	}
-	line-height: 32px;
-	height:32px;
+	/** NEU **/ /*background: linear-gradient(#4675b1, #325e94);*/
+  	/** NEU **/background: #325e94;
+  	color: white;
+  	/** NEU **/line-height: 40px;
+  	/** NEU **/height: 40px;
 }
 
 #headerDiv{
-	position:absolute;
-	top:0px;
-	left:0px;
-	right:0px;
-	border-bottom: 1px solid #192C3A;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	/** NEU **/border-bottom: 4px solid #192c3a; 
 	#logout,#home{
-		height:32px;
+		/** NEU **/height: 40px;
 		float: left;
-		width:30px;
+		/** NEU **/width: 40px;
 		cursor: pointer;
-		text-align: center;
+		text-align: center; 
+		/** NEU **/ /*background: linear-gradient(#345881, #284a70);*/
+		/** NEU **/background: #284a70;
+		/** NEU **/margin-left: 0px;
+		/** NEU **/margin-right: 0px;
+		/** NEU **/border-right: none;
 	}
 	#logout{
-		@if($useOldStyle){
-		}@else{
-			border-left: 2px solid #2F5889;
+		/** NEU **/background: none;
+		border-left: 1px solid #366196; 
 		}
 	}
 	#weHeaderRight{
@@ -989,11 +1028,11 @@ optgroup{
 		border:0px;
 	}
 	#navigationHistory{
-		position:relative;
-		bottom:0px;
-		border:0px;
-		padding-left: 10px;
-		float:left;
+		position: relative;
+		bottom: 0px;
+		border: 0px;
+		/** NEU **/padding-left: 0px;
+		float: left; 
 	}
 	#msgheadertable{
 		position:relative;
@@ -1002,6 +1041,8 @@ optgroup{
 		width:60px;
 		font-size: $medfont;
 		line-height: normal;
+		/** NEU **/border-right: 1px solid #366196; 
+		padding-right: 10px;
 		table{
 			margin:2px 0px 2px auto;
 			border-spacing:0px;
@@ -1022,6 +1063,11 @@ optgroup{
 			//background-color:white;
 		}
 	}
+}
+
+/** NEU **/  
+#navigationHistory .navigation {
+  width: 35px;
 }
 
 /*Error log*/
@@ -1092,12 +1138,53 @@ table.error{
 	position:relative;
 	float:left;
 	i{
-		color:#cbcbcb;
+		color: #ffffff; 
+		/** NEU **/margin-top: 13px;
 		&.active{
 			color:#5f97cc;
 		}
 	}
 }
+
+/** NEU **/
+#messageConsole:hover {
+  	background: linear-gradient(to bottom, #345881, #284a70) transparent !important;
+}
+
+/** NEU **/
+#messageConsole table {
+  	height: 40px;
+}
+
+/** NEU **/
+#messageConsole table tr {
+  	line-height: normal;
+}
+
+/** NEU **/
+#messageConsole table tr td {
+  	padding: 0px;
+}
+
+/** NEU **/
+#messageConsole table tr td .navigation {
+  	height: 40px;
+    margin: 0px;
+    top: -2px;
+    position: relative;
+    width: 35px
+}
+
+/** NEU **/
+#messageConsole table tr td .navigation:hover {
+  	background: none;
+}
+
+/** NEU **/  
+#messageConsole .navigation {
+  	border-right: none;
+}
+
 .messageConsoleMessage{/*message*/
 	display: none;
 	background-color: white;
@@ -1189,8 +1276,8 @@ table.revenueTable {
 }
 
 span.fileicon{
-	font-size:7px;
-	color:black;
+	/** NEU **/font-size: 8px;
+  	color: black; 
 	::-moz-selection,
 	::selection{
 		color: inherit;
@@ -1212,12 +1299,12 @@ span.fileicon{
 		color: #164F94;
 	}
 	> .we-otherfiles i{
-		bottom:.4em;
-		color:#164F94;
-		margin-left:.2em;
+		bottom: 0.4em;
+		/** NEU **/color: #192c3a;
+		margin-left: 0.2em;
 		vertical-align: bottom;
-		font-family: $weFont;
-		line-height:1;
+		font-family: liberation_sansregular, sans-serif;
+		line-height: 1; 
 	}
 	.we-classification i{
 		top:-.3em;
@@ -1283,7 +1370,8 @@ table.customer{
 
 table.default td,
 table.default th{
-	padding:0px;
+	padding: 0px;
+  	/** NEU **/vertical-align: top;
 }
 
 table.withSpace tr td{
@@ -1349,7 +1437,7 @@ table.propertydualtable td{
 table.footertable{
 	margin-left: 7px;
 	button.weBtn{
-		margin-right: 2em;
+		/** NEU **/ /*margin-right: 2em; */
 	}
 }
 
@@ -1639,7 +1727,9 @@ div.collection-content{
 #PropertyPage{
 	input,
 	select{
-		width:30em;
+		width: 30em; 
+		/** NEU **/height: 30px !important;
+		/** NEU **/margin-bottom: 5px;
 	}
 
 	input[type="checkbox"],
@@ -1683,20 +1773,23 @@ body.editFrameset{
 		right:0px;
 	}
 	div.editHeader{
-		top:0px;
+		top: 0px; 
+		/** TEST **/ /*height: 100px !important;*/
 	}
 	div.mainEditor,
 	div.contenteditor{
 		bottom:$editorFooterHeight;
+		/** TEST **/ /*top: 100px !important;*/
+		/** NEU **/border-top: 1px solid #cacdd0;
 	}
 	div.editorButtonFrame{
-		position:absolute;
-		bottom:0px;
-		left:0px;
-		right:0px;
-		height:$editorFooterHeight;
-		background: linear-gradient(to bottom, #B4B3B3, #C6C5C5) transparent;
-		border-top: 2px groove white;
+		position: absolute;
+		bottom: 0px;
+		left: 0px;
+		right: 0px;
+		/** NEU **/height: 53px;
+		/** NEU **/ /*background: linear-gradient(to bottom, #b4b3b3, #c6c5c5) transparent;*/
+		/** NEU **/border-top: 1px solid #cacdd0; 
 	}
 }
 
@@ -1714,11 +1807,11 @@ body.moduleEditor{
 	}
 	div.editorHeader{
 		top: 0px;
-		height: 40px;
-		overflow: hidden;
+		/** NEU **/height: 57px !important;
+		overflow: hidden; 
 	}
 	div.editorBody{
-		top: 40px;
+		/** NEU **/top: 57px !important;
 		bottom: $editorFooterHeight;
 	}
 	div.editorButtonFrame{
@@ -1780,14 +1873,47 @@ body.moduleEditor{
 		left: 0px;
 		right: 0px;
 		#left{
-			left:$vtabWidth;
+			/** NEU **/left: 40px;
 			position: absolute;
 			top: 0px;
 			bottom: 0px;
-			right: 0px;
+			right: 0px; 
 		}
 	}
 }
+
+/** NEU **/
+#moduleContent #lframeDiv #left button.weBtn {
+    height: 30px ! important;
+  width: 30px;
+  cursor: pointer;
+  border-width: 0px;
+  border-collapse: collapse;
+  padding: 0px;
+  /** NEU **/color: #ffffff;
+  /** NEU **/border-radius: 0px;
+  /** NEU **/background: #192c3a;
+  font-family: liberation_sansregular, sans-serif;
+  font-size: 11px ! important;
+  text-align: center;
+  padding-left: 0.5em !important;
+  padding-right: 0.5em !important;
+  /** NEU **/ /*box-shadow: 2px 2px 2px #555;*/
+  /** NEU **/margin-left: 0px;
+  /** NEU **/margin-right: 0px;
+  /** NEU **/margin-bottom: 0px;
+  min-width: 2.5em; 
+  /** NEU **/border: none;
+}
+
+/** NEU **/
+#moduleContent #lframeDiv #left .wetextinput {
+    height: 30px;
+    border: none;
+    line-height: 30px;
+    vertical-align: bottom;
+}
+
 #right{
 	background-color: #F0EFF0;
 	position: absolute;
@@ -1911,4 +2037,152 @@ div.htmlMessageBox{
 span.alertIcon{
 	font-size: 14px;
 	color:#F2F200;
+}
+
+/** NEU **/
+.tree .fa-minus-square-o,
+.tree .fa-plus-square-o {	 
+	 font-size: 20px !important;
+}
+
+/** NEU **/
+.tree .fa-plus-square-o:before {
+	content: "\0229E";
+	font-size: 20px;
+	color: #a5aaae;
+}
+
+/** NEU **/
+.tree .fa-minus-square-o:before {	 
+	 content: "\0229F";
+	 font-size: 20px;
+	 color: #a5aaae;
+}
+
+/** NEU **/
+.tree .fa-file-o:before {
+	color: #192c3a;
+	background: none;
+}
+
+/** NEU **/
+a, a:link, a:visited {
+	color: #386aab;
+}
+
+/** NEU **/
+a:hover, a:focus, a:active {
+	color: #386aab;
+	text-decoration: none;
+}
+
+/** NEU **/
+.widget iframe {
+	height: 294px !important;
+}
+
+/** NEU **/
+#props {
+	width: 100%;
+}
+
+/** NEU **/
+#props table {
+	width: 100%;
+}
+
+/** NEU **/
+#props table tr td {
+	vertical-align: top;
+	text-align: left !important;
+	color: #4d565d;
+}
+
+/** NEU **/
+#props table tr td label {
+	color: #4d565d !important;
+}
+
+/** NEU **/
+#props table tr td input,
+#props table tr td select {
+	height: 20px;
+	line-height: 20px;
+	border-radius: 0px;
+	border: none;
+	background: #ffffff;
+	color: #4d565d;
+	padding: 0px 5px;
+}
+
+/** NEU **/
+#props table tr td textarea {
+	height: 40px !important;
+	border-radius: 0px;
+	border: none;
+	background: #ffffff;
+	color: #4d565d;
+	margin-bottom: 5px;
+	padding: 5px;
+}
+
+/** NEU **/
+#props table tr td button {
+	margin-left: 5px;
+	margin-bottom: 5px;
+}
+
+/** NEU **/
+#props table tr td div {
+	float: none !important;
+	clear: both !important;
+}
+
+/** NEU **/
+.le_widget .fa-stack-2x {
+	font-size: 20px;
+}
+
+/** NEU **/
+.le_widget .mediumicons span.fileicon .we-icon i {
+	bottom: 5px;
+}
+
+/** NEU **/
+.le_widget .fa-stack-2x,
+.le_widget .fa-3x,
+.le_widget .fa-2x {
+	font-size: 20px;
+}
+
+/** NEU **/
+#le_tblWidgets div.widget td span {
+	padding-left: 5px;
+}
+
+/** NEU **/
+.fa-inverse {
+	color: transparent !important;
+}
+
+/** NEU **/
+.mainEditor iframe {
+	background: #f8f8fa;
+}
+
+/** NEU **/
+#moduleContent #treeheader .weSelect {
+	width: 109px !important;
+	height: 30px;
+}
+
+/** NEU **/
+#moduleContent #treeheader button.weBtn {
+	margin-right: 5px !important;
+}
+
+/** NEU **/
+#moduleContent #treeheader {
+	height: auto;
+	padding: 5px 10px;
 }

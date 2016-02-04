@@ -29,40 +29,45 @@ body{
 }
 
 #tabContainer{
-	font-size: $smallfont;
-	color: #000000;
-	width: 100%;
-	margin: 0px;
-	padding: 0px;
-	border: 0px;
-	overflow:hidden;
-	line-height:21px;
+	font-size: 11px;
+  	color: #000;
+  	width: 100%;
+  	margin: 0px;
+  	padding: 0px;
+  	border: 0px;
+  	overflow: hidden;
+  	/** NEU **/line-height: 30px; 
 
 	div{
 		margin: 0px;
 		padding: 0px;
 		display: inline-block;
-		cursor:pointer;
+		cursor: pointer;
 		white-space: nowrap;
+		/*	border-top-left-radius:10px;
+		border-top-right-radius:10px;*/
 		&.tab{
-			border-bottom: 1px solid #888888;
-			border-right: 1px solid #888888;
-			display:inline-block;
-			background-color: #D3D3D3;
-			background: linear-gradient(#dbdbdb, #cccccc 50%,#999999);
+			/** NEU **/border-bottom: none;
+			/** NEU **/border-right: 1px solid #192c3a;
+			display: inline-block;
+			/** NEU **/ /*background-color: #d3d3d3;*/
+			/** NEU **/background: #d7dce0; 
+			/** NEU **/color: #4d565d;
+			/** NEU **/padding: 0px 5px;
 			&:hover{
-				border-bottom: 1px solid #888888;
-				border-right: 1px solid #888888;
-				background: linear-gradient(#cbd3dc, #bfc6cf 50%,#999999);
+				/** NEU **/border-bottom: none;
+				/** NEU **/border-right: 1px solid #192c3a;
+				/** NEU **/background: #a5aaae; 
+				/** NEU **/color: #4d565d;
+				/** NEU **/padding: 0px 5px;
 			}
 		}
 		&.tabActive{
-			border-right: 1px solid #888888;
-			border-bottom:1px solid #9AA2A9;
-			background-color:#9AA2A9;
-			/*	border-top-left-radius:10px;
-				border-top-right-radius:10px;
-			*/
+			/** NEU **/border-right: 1px solid #192c3a;
+			/** NEU **/border-bottom: none;
+			/** NEU **/background-color: #a5aaae; 
+			/** NEU **/color: #4d565d;
+			/** NEU **/padding: 0px 5px;
 		}
 	}
 
@@ -88,7 +93,7 @@ body{
 			padding: 0px .5ex;
 			display:inline-block;
 			span.fileicon{
-				height: 14px;
+				/** NEU **/height: 20px; 
 			}
 		}
 		&.trailing{
@@ -108,6 +113,14 @@ body{
 		margin:2px;
 	}
 }
+
+/** NEU **/
+#tabContainer div.tab span.fileicon .we-color,
+#tabContainer div.tab:hover span.fileicon .we-color,
+#tabContainer div.tabActive span.fileicon .we-color {
+	color: #4d565d;
+}
+
 .hidden{
 	display: none;
 }
@@ -116,13 +129,13 @@ body{
 }
 
 #multiEditorEditorFramesetsDiv{
-	position:absolute;
-	top:$defaultEditorTabHeight;
-	bottom:0px;
-	left:0px;
-	right:0px;
-	overflow: hidden;
-	background-color: white;
+	position: absolute;
+  	/** NEU **/top: 30px !important;
+  	bottom: 0px;
+  	left: 0px;
+  	right: 0px;
+  	overflow: hidden;
+  	background-color: white;
 
 	iframe{
 		margin:0px;

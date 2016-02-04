@@ -55,15 +55,14 @@ body{
 	text-decoration:none;
 }
 
-div.le_widget{
-	margin-top:1ex;
-	margin-right:1em;
-	position:relative;
-	top:0px;
-	left:0px;
-	&:first-child{
-		margin-top:0px;
-	}
+div.le_widget {
+  	margin-top: 1ex;
+    margin-right: 1em;
+	position: relative;
+	top: 0px;
+	left: 0px; 
+	/** NEU **/margin-bottom: 15px;
+	/** NEU **/line-height: 120%;
 }
 
 #divClone{
@@ -96,11 +95,11 @@ div.le_widget{
 	table-layout:fixed;
 
 	.widgetTitle{
-		border-bottom: 2px solid white;
-		height:32px;
-		line-height: 32px;
-		padding-left:11px;
-		padding-right:11px;
+		/** NEU **/border-bottom: none;
+		/** NEU **/min-height: 22px;
+		/** NEU **/line-height: 20px;
+		/** NEU **/padding: 5px 11px;
+		/** NEU **/background: #192c3a;
 	}
 	.label{
 		//font-family:sans-serif;
@@ -110,74 +109,78 @@ div.le_widget{
 	}
 
 	div.widget{
-		border-radius: 10px;
-		width:100%;
-		border: 1px solid #B7B7B7;
+		/** NEU **/border-radius: 0px;
+		width: 100%;
+		/** NEU **/border: none; 
+		/** NEU **/background: #d7dce0;
 		&.bgc_white{
-			background-color:#FFFFFF;
+			/** NEU **/background-color: #d7dce0; 
 			.widgetTitle{
-				background-color: #CCCCCC;
+				/** NEU **/background-color: #ffffff; 
+				/** NEU **/border: 1px solid #d7dce0;
+				/** NEU **/color: #4d565d;
 			}
 		}
 
 		&.bgc_lightCyan{
-			background-color:#F1F5FF;
+			/** NEU **/background-color: #d7dce0; 
 			.widgetTitle{
-				background-color: #7FA5CA;
+				/** NEU **/background-color: #abc6e9; 
 			}
 		}
 
 		&.bgc_blue{
-			background-color:#CCE4FC;
+			/** NEU **/background-color: #d7dce0; 
 			.widgetTitle{
-				background-color: #7FA5CA;
+				/** NEU **/background-color: #4675b1; 
 			}
 		}
 
 		&.bgc_green{
-			background-color:#E2FDC7;
+			/** NEU **/background-color: #d7dce0; 
 			.widgetTitle{
-				background-color: #A4CB63;
+				/** NEU **/background-color: #82af38; 
 			}
 		}
 
 		&.bgc_orange{
-			background-color:#FBF2C9;
+			/** NEU **/background-color: #d7dce0;
 			.widgetTitle{
-				background-color: #FFA343;
+				/** NEU **/background-color: #f29638; 
 			}
 		}
 
 		&.bgc_red{
-			background-color:#FDE4CB;
+			/** NEU **/background-color: #d7dce0; 
 			.widgetTitle{
-				background-color: #CC6633;
+				/** NEU **/background-color: #c03a2f; 
 			}
 		}
 		&.bgc_yellow{
-			background-color:#FDFDBA;
+			/** NEU **/background-color: #d7dce0; 
 
 			.widgetTitle{
-				background-color: #CBCB5D;
+				/** NEU **/background-color: #FFBC00; 
 			}
 		}
 		td{
 			padding: 0px;
-			vertical-align: top;
+			vertical-align: top; 
+			/** NEU **/text-align: left;
+			height: 22px;
 		}
 	}
 
 	.widget_controls{
 		border-spacing: 0px;
-		border-top-left-radius: 10px;
-		border-top-right-radius: 10px;
-		width:100%;
-		background: linear-gradient(white, #E1E1E1 50%);
+		/** NEU **/border-top-left-radius: 0px;
+		/** NEU **/border-top-right-radius: 0px;
+	    width: 100%;
 		height: 16px;
-		border-bottom: 1px solid #B7B7B7;
+		/** NEU **/border-bottom: none;
 		font-size: 10px;
-		color: #ababab;
-		padding-right: 3px;
+		/** NEU **/color: #ffffff;
+		/** NEU **/padding: 3px; 
 		table{
 			border-spacing: 0px;
 		}
@@ -187,6 +190,57 @@ div.le_widget{
 		}
 	}
 }
+
+/** NEU **/
+#le_tblWidgets .widget_controls .fa-square-o:before {
+    display: none;
+}
+
+/** NEU **/
+#le_tblWidgets .widget_controls .fa {
+	line-height: 23px;
+    font-size: 14px;
+}
+
+/** NEU **/
+#le_tblWidgets div.widget.bgc_blue .widget_controls {
+    /** NEU **/background: #284a70;
+}
+
+/** NEU **/
+#le_tblWidgets div.widget.bgc_yellow .widget_controls {
+    /** NEU **/background: #705302;
+}
+
+/** NEU **/
+#le_tblWidgets div.widget.bgc_green .widget_controls {
+    /** NEU **/background: #2b4304;
+}
+
+/** NEU **/
+#le_tblWidgets div.widget.bgc_red .widget_controls {
+    /** NEU **/background: #410905;
+}
+
+/** NEU **/
+#le_tblWidgets div.widget.bgc_orange .widget_controls {
+    /** NEU **/background: #562e05;
+}
+
+/** NEU **/
+#le_tblWidgets div.widget.bgc_white .widget_controls {
+    /** NEU **/background: #a5aaae;
+}
+
+/** NEU **/
+#le_tblWidgets div.widget.bgc_lightCyan .widget_controls {
+    /** NEU **/background: #395e8d;
+}
+
+#le_tblWidgets .widget_controls i.fa-stack-1x:hover {
+    /** NEU **/color: #abc6e9; 
+}
+
 div.content{
 	text-align:left;
 	vertical-align:top;
