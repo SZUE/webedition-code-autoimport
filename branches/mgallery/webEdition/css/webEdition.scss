@@ -416,45 +416,46 @@ td.boxHeader{
 		overflow: hidden;
 		background-repeat: repeat;
 		margin: 0px;
+		height: 30px;
+		padding:10px;
 		/** NEU **/background: #a5aaae;
 		/** NEU **/border-top: none;
 		#search{
-			/** NEU **/margin: 10px 0px 10px 10px;
+			input {
+				height: 30px;
+				/*width: 200px !important;*/
+				border: none;
+				line-height: 30px;
+				vertical-align: bottom;
+			}
+
+			button.weBtn {
+				height: 30px ! important;
+				width: 30px;
+				cursor: pointer;
+				border-width: 0px;
+				border-collapse: collapse;
+				padding: 0px;
+				/** NEU **/color: #ffffff;
+				/** NEU **/border-radius: 0px;
+				/** NEU **/background: #192c3a;
+				font-family: liberation_sansregular, sans-serif;
+				font-size: 11px ! important;
+				text-align: center;
+				/*  padding-left: 0.5em !important;
+					padding-right: 0.5em !important;*/
+				/** NEU **/ /*box-shadow: 2px 2px 2px #555;*/
+				/** NEU **/margin-left: 0px;
+				/** NEU **/margin-right: 0px;
+				/** NEU **/margin-bottom: 0px;
+				min-width: 2.5em;
+				/** NEU **/border: none;
+			}
+		}
+		#infoField{
+			display: none;
 		}
 	}
-}
-
-/** NEU **/
-#treeContent #bm_searchField #search input {
-	height: 30px;
-	/*width: 200px !important;*/
-	border: none;
-	line-height: 30px;
-	vertical-align: bottom;
-}
-
-/** NEU **/
-#treeContent #bm_searchField #search button.weBtn {
-  height: 30px ! important;
-  width: 30px;
-  cursor: pointer;
-  border-width: 0px;
-  border-collapse: collapse;
-  padding: 0px;
-  /** NEU **/color: #ffffff;
-  /** NEU **/border-radius: 0px;
-  /** NEU **/background: #192c3a;
-  font-family: liberation_sansregular, sans-serif;
-  font-size: 11px ! important;
-  text-align: center;
-  padding-left: 0.5em !important;
-  padding-right: 0.5em !important;
-  /** NEU **/ /*box-shadow: 2px 2px 2px #555;*/
-  /** NEU **/margin-left: 0px;
-  /** NEU **/margin-right: 0px;
-  /** NEU **/margin-bottom: 0px;
-  min-width: 2.5em;
-  /** NEU **/border: none;
 }
 
 #bm_treeheaderDiv{
@@ -471,10 +472,7 @@ td.boxHeader{
 		overflow: hidden;
 	}
 }
-#infoField{
-	margin:5px;
-	display: none;
-}
+
 
 #tree,
 #treetable{
@@ -1786,7 +1784,7 @@ body.editFrameset{
 		bottom: 0px;
 		left: 0px;
 		right: 0px;
-		/** NEU **/height: 53px;
+		height: $editorFooterHeight;
 		/** NEU **/ /*background: linear-gradient(to bottom, #b4b3b3, #c6c5c5) transparent;*/
 		/** NEU **/border-top: 1px solid #cacdd0;
 	}
