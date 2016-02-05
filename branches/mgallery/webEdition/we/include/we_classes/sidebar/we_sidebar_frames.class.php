@@ -38,11 +38,9 @@ class we_sidebar_frames{
 	}
 
 	function getHTMLFrameset(){
-		echo we_html_element::cssLink(CSS_DIR . 'sidebar.css');
 		?>
-		</head>
-		<body>
-			<div id="weSidebarHeader" name="weSidebarHeader">
+		<div id="weSidebarBody">
+			<div id="weSidebarHeader">
 				<div id="Headline"><?php echo g_l('sidebar', '[headline]'); ?></div>
 				<div id="CloseButton">
 					<span class="close" id="###closeId###" onclick="WE().layout.sidebar.close();">
@@ -54,11 +52,7 @@ class we_sidebar_frames{
 			<div id="weSidebarContentDiv">
 				<iframe id="weSidebarContent" src="<?php echo WEBEDITION_DIR; ?>sideBarFrame.php?pnt=content" name="weSidebarContent"></iframe>
 			</div>
-			<div name="weSidebarFooter" id="weSidebarFooter">
-			</div>
-		</body>
-
-		</html>
+		</div>
 		<?php
 	}
 

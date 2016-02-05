@@ -30,7 +30,7 @@ html{
 body{
 	margin: 0px;
 	letter-spacing: normal ! important;
-	font-family: liberation_sansregular, sans-serif;
+	font-family: $weFont;
 	font-size: 14px;
 	background-color: white;
 
@@ -47,14 +47,14 @@ body{
 		padding: 10px 0px;
 		/** NEU **/
 		div.multiIcon {
-			
+
 			div.weMultiIconBoxHeadline {
 				font-size: 16px;
 				color: #284a70;
 			}
-			
+
 		}
-		
+
 	}
 
 	&.previewOther{
@@ -389,8 +389,8 @@ td.boxHeader{
 }
 
 #treeControl{
-	/** NEU **/line-height: 30px;
-	/** NEU **/height: 30px;
+	line-height: $defaultEditorTabHeight;
+	height: $defaultEditorTabHeight;
 	/** NEU **/background-color: $Grey;
 	#treeName{
 		padding: 0px 1ex;
@@ -405,7 +405,7 @@ td.boxHeader{
 
 #treeContent{
 	position: absolute;
-	/** NEU **/top: 29px;
+	top: $defaultEditorTabHeight;
 	bottom: 0px;
 	left: 0px;
 	right: 0px;
@@ -439,7 +439,7 @@ td.boxHeader{
 				/** NEU **/color: #ffffff;
 				/** NEU **/border-radius: 0px;
 				/** NEU **/background: #192c3a;
-				font-family: liberation_sansregular, sans-serif;
+				font-family: $weFont;
 				font-size: 11px ! important;
 				text-align: center;
 				/*  padding-left: 0.5em !important;
@@ -459,7 +459,7 @@ td.boxHeader{
 				line-height: 30px;
 				vertical-align: bottom;
 			}
-			
+
 			button.weBtn {
 				height: 30px ! important;
 				width: 30px;
@@ -470,7 +470,7 @@ td.boxHeader{
 				/** NEU **/color: $White;
 				/** NEU **/border-radius: 0px;
 				/** NEU **/background: $DarkBlue;
-				font-family: liberation_sansregular, sans-serif;
+				font-family: $weFont;
 				font-size: 11px ! important;
 				text-align: center;
 				padding-left: 0.5em !important;
@@ -1181,17 +1181,17 @@ table.error{
 }
 
 /** NEU **/
-#messageConsole { 
-	
+#messageConsole {
+
 	table {
 		height: $menuHeight;
-		
+
 		tr {
 			line-height: normal;
-			
+
 			td {
 				padding: 0px;
-				
+
 				.navigation {
 					height: $menuHeight;
 					margin: 0px;
@@ -1199,14 +1199,14 @@ table.error{
 					position: relative;
 					width: 35px
 				}
-				
+
 				.navigation:hover {
 					background: none;
 				}
 			}
 		}
 	}
-	
+
 	.navigation {
 		border-right: none;
 	}
@@ -1330,7 +1330,7 @@ span.fileicon{
 		/** NEU **/color: $DarkBlue;
 		margin-left: 0.2em;
 		vertical-align: bottom;
-		font-family: liberation_sansregular, sans-serif;
+		font-family: $weFont;
 		line-height: 1;
 	}
 	.we-classification i{
@@ -1919,7 +1919,7 @@ body.moduleEditor{
 			/** NEU **/color: #ffffff;
 			/** NEU **/border-radius: 0px;
 			/** NEU **/background: $DarkBlue;
-			font-family: liberation_sansregular, sans-serif;
+			font-family: $weFont;
 			font-size: 11px ! important;
 			text-align: center;
 			padding-left: 0.5em !important;
@@ -2080,25 +2080,25 @@ span.alertIcon{
 }
 
 /** NEU **/
-.tree { 
-	
+.tree {
+
 	.fa-minus-square-o,
 	.fa-plus-square-o {
 		font-size: 16px !important;
 	}
-	
+
 	.fa-plus-square-o:before {
 		content: "\0229E";
 		font-size: 16px;
 		color: $Grey;
 	}
-	
+
 	.fa-minus-square-o:before {
 		content: "\0229F";
 		font-size: 16px;
 		color: $Grey;
 	}
-	
+
 	.fa-file-o:before {
 		color: $DarkBlue;
 		background: none;
@@ -2170,24 +2170,24 @@ a:hover, a:focus, a:active {
 
 /** NEU **/
 .le_widget {
-	
+
 	.fa-stack-2x {
 		font-size: 16px;
 	}
-	
+
 	.mediumicons {
-		
+
 		span.fileicon {
-			
+
 			.we-icon {
-				
+
 				i {
 					bottom: 5px;
-				}				
-			}			
-		}		
+				}
+			}
+		}
 	}
-	
+
 	.fa-stack-2x, .fa-3x, .fa-2x {
 		font-size: 16px;
 	}
