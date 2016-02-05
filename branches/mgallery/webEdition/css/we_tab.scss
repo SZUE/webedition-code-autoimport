@@ -47,8 +47,8 @@ div.tabNormal {
   	cursor: pointer;
   	/** NEU **/border-right: 1px solid $Grey;
   	/** NEU **/border-bottom: 1px solid $Grey;
-  	white-space: nowrap; 
-  	/** NEU **/color: #767b81;
+  	white-space: nowrap;
+  	/** NEU *color: #767b81;*/
 	&:after {
 		content: attr(title);
 	}
@@ -56,19 +56,19 @@ div.tabNormal {
 
 div.tabNormal {
 	/** NEU **/ /*background-color: #d3d3d3;*/
-  	/** NEU **/background: $MiddleGrey; 
+  	/** NEU **/background: $MiddleGrey;
 }
 
 div.tabActive {
-	/** NEU **/background: #ffffff; 
+	/** NEU **/background: #ffffff;
 }
 
 span.text{
 	margin: 0px 1em;
   	padding: 0px;
   	font-size: 11px;
-  	vertical-align: top; 
-  	/** NEU **/color: #767b81;
+  	vertical-align: top;
+  	/** NEU *color: #767b81;*/
 }
 span.spacer{
 	font-size: $fafontMed;

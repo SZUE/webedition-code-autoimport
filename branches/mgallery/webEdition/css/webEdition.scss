@@ -394,7 +394,7 @@ td.boxHeader{
 	/** NEU **/background-color: $Grey;
 	#treeName{
 		padding: 0px 1ex;
-		/** NEU **/color: $DarkGrey;
+		/** NEU *color: $DarkGrey;*/
 	}
 	#toggleTree{
 		position: absolute;
@@ -567,7 +567,7 @@ td.boxHeader{
 #headrow{
 	/** NEU **/margin: 7px 0px 7px 5px;
 	white-space: nowrap;
-	/** NEU **/color: $DarkGrey;
+	/** NEU *color: $DarkGrey;*/
 	a{
 		#h_path{
 			/** NEU **/color: #386aab;
