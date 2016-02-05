@@ -116,7 +116,7 @@ way to fit your requirements.
 		list-style: none;
 		z-index: 300;
 		font-family: $weFont;
-		/** NEU **/background: #284a70 !important;
+		/** NEU **/background: #284a70;
 	}
 
 	li{
@@ -186,15 +186,7 @@ way to fit your requirements.
 			}
 		}
 
-		ul.sub li a.fly {
-			/** NEU **/background: url(/webEdition/images/navi-pfeil.png) !important;
-			/** NEU **/background-repeat: no-repeat !important;
-			/** NEU **/background-position: 99% 50% !important;
-		}
 		div.click ul li:hover > a.fly {
-			/** NEU **/background: url(/webEdition/images/navi-pfeil.png) !important;
-			/** NEU **/background-repeat: no-repeat !important;
-			/** NEU **/background-position: 99% 50% !important;
 			/** NEU **/color: #386aab !important;
 		}
 
@@ -206,6 +198,15 @@ way to fit your requirements.
 			border-bottom: 1px solid #fff;
 			margin: 5px 0px 5px 0px;
 		}
+
+
+		ul.sub li a,
+		ul.sub li a.fly {
+			/** NEU **/color: #ffffff !important;
+			/** NEU **/padding: 5px 0px;
+			display: block;
+		}
+
 	}
 
 	ul ul ul {
@@ -228,18 +229,12 @@ way to fit your requirements.
 
 	i.fa{
 		position:absolute;
-		right:0px;
+		right:10px;
+		font-size: 1.7em;
 	}
 }
 
-#nav li ul.sub li a,
-#nav li ul.sub li a.fly {
-    /** NEU **/background: none;
-    /** NEU **/color: #ffffff !important;
-    /** NEU **/padding: 5px 0px;
-    display: block;
-}
 
 #nav li div.click ul li:hover > a {
-    /** NEU **/color: #386aab !important;
+	/** NEU **/color: #386aab !important;
 }
