@@ -722,7 +722,7 @@ function checkFooter(){
 		$makeSched = array();
 		foreach($object->schedArr as $s){
 			$serializedDoc = ($s['task'] == self::SCHEDULE_FROM && $s['active'] ?
-							we_temporaryDocument::load($object->ID, $object->Table, $db) : // nicht noch mal unten beim Speichern serialisieren, ist bereits serialisiert #5743
+							we_temporaryDocument::load($object->ID, $object->Table, $db, true) : // nicht noch mal unten beim Speichern serialisieren, ist bereits serialisiert #5743
 							false);
 
 			$Wann = self::getNextTimestamp($s, time());
