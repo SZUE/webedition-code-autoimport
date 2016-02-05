@@ -45,8 +45,8 @@ div.tabNormal {
   	display: inline-block;
   	/** NEU **/line-height: 30px;
   	cursor: pointer;
-  	/** NEU **/border-right: 1px solid #a5aaae;
-  	/** NEU **/border-bottom: 1px solid #a5aaae;
+  	/** NEU **/border-right: 1px solid $Grey;
+  	/** NEU **/border-bottom: 1px solid $Grey;
   	white-space: nowrap; 
   	/** NEU **/color: #767b81;
 	&:after {
@@ -56,7 +56,7 @@ div.tabNormal {
 
 div.tabNormal {
 	/** NEU **/ /*background-color: #d3d3d3;*/
-  	/** NEU **/background: #d7dce0; 
+  	/** NEU **/background: $MiddleGrey; 
 }
 
 div.tabActive {

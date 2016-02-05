@@ -48,25 +48,25 @@ body{
 		border-top-right-radius:10px;*/
 		&.tab{
 			/** NEU **/border-bottom: none;
-			/** NEU **/border-right: 1px solid #192c3a;
+			/** NEU **/border-right: 1px solid $DarkBlue;
 			display: inline-block;
 			/** NEU **/ /*background-color: #d3d3d3;*/
-			/** NEU **/background: #d7dce0;
-			/** NEU **/color: #4d565d;
+			/** NEU **/background: $MiddleGrey;
+			/** NEU **/color: $DarkGrey;
 			/** NEU **/padding: 0px 5px;
 			&:hover{
 				/** NEU **/border-bottom: none;
-				/** NEU **/border-right: 1px solid #192c3a;
-				/** NEU **/background: #a5aaae;
-				/** NEU **/color: #4d565d;
+				/** NEU **/border-right: 1px solid $DarkBlue;
+				/** NEU **/background: $Grey;
+				/** NEU **/color: $DarkGrey;
 				/** NEU **/padding: 0px 5px;
 			}
 		}
 		&.tabActive{
-			/** NEU **/border-right: 1px solid #192c3a;
+			/** NEU **/border-right: 1px solid $DarkBlue;
 			/** NEU **/border-bottom: none;
-			/** NEU **/background-color: #a5aaae;
-			/** NEU **/color: #4d565d;
+			/** NEU **/background-color: $Grey;
+			/** NEU **/color: #000000;
 			/** NEU **/padding: 0px 5px;
 		}
 	}
@@ -116,7 +116,7 @@ body{
 	div.tab span.fileicon .we-color,
 	div.tab:hover span.fileicon .we-color,
 		div.tabActive span.fileicon .we-color {
-		color: #4d565d;
+		color: #000000;
 	}
 }
 
@@ -130,7 +130,7 @@ body{
 
 #multiEditorEditorFramesetsDiv{
 	position: absolute;
-	/** NEU **/top: 30px !important;
+	/** NEU **/ /*top: 30px !important;*/
 	bottom: 0px;
 	left: 0px;
 	right: 0px;

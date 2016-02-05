@@ -25,7 +25,7 @@ body.home{
 	background-color: #F0EFF0;
 
 	#tabelle{
-		/** NEU **/background-color: #d7dce0;
+		/** NEU **/background-color: $MiddleGrey;
 		/** NEU **/border-radius: 0px;
 		height: 220px;
 	    left: 40px;
@@ -48,8 +48,8 @@ body.home{
 			border-bottom: none;
 			/** NEU **/ /*font-family: liberation_sansbold, sans-serif;*/
 			text-align: center;
-			/** NEU **/background: linear-gradient(#4675b1, #325e94);
-			/** NEU **/color: #ffffff;
+			/** NEU **/background: $MiddleBlueGradient;
+			/** NEU **/color: $White;
 			/** NEU **/font-weight: bold;
 			/** NEU **/font-size: 16px;
 		}

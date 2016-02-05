@@ -23,7 +23,7 @@ way to fit your requirements.
 	padding: 0px;
 	margin: 0px;
 	list-style: none;
-	/** NEU **/height: 40px;
+	/** NEU **/height: $menuHeight;
 	position: relative;
 	z-index: 500;
 	font-size: $medfont;
@@ -31,7 +31,7 @@ way to fit your requirements.
 	li.top{
 		display: block;
 		float: left;
-		/** NEU **/height: 40px;
+		/** NEU **/height: $menuHeight;
 		/** NEU **/border-right: 1px solid #396298;
 		@if($useOldStyle){
 		}@else{
@@ -51,7 +51,7 @@ way to fit your requirements.
 				background: none;
 				/** NEU **/padding: 0px 18px;
 				/** NEU **//*height: 16px; */
-				/** NEU **/line-height: 40px;
+				/** NEU **/line-height: $menuHeight;
 				span {
 					/*float: left;
 					display: block;*/
@@ -85,7 +85,7 @@ way to fit your requirements.
 			}@else{
 				background: linear-gradient(#345881, #284a70);
 			}
-			/** NEU **/height: 40px;
+			/** NEU **/height: $menuHeight;
 			//top: 4px;
 			color: #ffffff;
 			a.top_link {
@@ -121,7 +121,7 @@ way to fit your requirements.
 		div.click:hover{
 			ul{
 				left: -1px;
-				/** NEU **/top: 40px;
+				/** NEU **/top: $menuHeight;
 				/** NEU **/background: #284a70;
 				/** NEU **/ /*border: 1px solid #a0a0a0;*/
 				word-wrap: break-word;
@@ -167,7 +167,7 @@ way to fit your requirements.
 				}
 				a{
 					display: block;
-					/** NEU **/padding: 5px 0px 5px 1.5em;
+					/** NEU **/padding: 3px 0px 3px 1.5em;
 					line-height: 2.5ex;
 					/** NEU **/ /*text-indent: -1em;*/
 					margin: 2px 10px 0px 0px;
@@ -202,7 +202,7 @@ way to fit your requirements.
 			padding: 0;
 			/** NEU **/ /*border-top: 1px solid #a0a0a0;*/
 			border-bottom: 1px solid #fff;
-			margin: 10px 0px 10px 0px; 
+			margin: 5px 0px 5px 0px; 
 		}
 	}
 
@@ -234,7 +234,7 @@ way to fit your requirements.
 #nav li ul.sub li a.fly {
     /** NEU **/background: none; 
     /** NEU **/color: #ffffff !important;
-    /** NEU **/padding: 10px 0px;
+    /** NEU **/padding: 5px 0px;
     display: block;
 }
 

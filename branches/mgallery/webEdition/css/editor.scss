@@ -28,18 +28,16 @@ input:invalid {
 
 .weEditmodeStyle {
   	border: 0px ! important;
-  	/** NEU **/font-family: 'Roboto', sans-serif;
   	/** NEU **/padding: 5px;
 }
 
 .weEditTable {
   	/** NEU **/background-color: transparent;
-  	/** NEU **/ border: 1px solid #a5aaae;
+  	/** NEU **/ border: 1px solid $Grey;
   	color: black;
-  	/** NEU **/font-family: 'Roboto', sans-serif;
   	/** NEU **/ /*margin: 10px 0px !important; */
   	/** NEU **/ /*width: 100%;*/
-  	/** NEU **/font-size: 12px;
+  	/** NEU **/font-size: $medfont;
 }
 
 /** NEU **/ /*

@@ -26,7 +26,7 @@
 @import "config.scss";
 .tree{
 	white-space: nowrap;
-	/** NEU **/margin-left: -13px;
+	/** NEU **/ /*margin-left: -13px;*/
 	/** NEU **/padding: 10px 0px;
 }
 #treetable{
@@ -53,17 +53,17 @@
 		cursor: pointer;
 
 		&.treeKreuz{
-			/** NEU **/font-size: 12px;
+			/** NEU **/font-size: $medfont;
 			width: 16px;
 			height: 1.8em;
 			vertical-align: middle;
 			position: relative;
 			display: inline-block;
-			/** NEU **/border: 0px solid #a5aaae;
+			/** NEU **/border: 0px solid $Grey;
 			/*for lines*/
 			/** NEU **/margin-right: 14px;
 			i.fa-square{
-				/** NEU **/color: #d7dce0;
+				/** NEU **/color: $MiddleGrey;
 			}
 		}
 		&.threedots{
@@ -136,13 +136,13 @@
 	a,
 	.selected_item,
 	.selected_group{
-		/** NEU **/color: #192c3a;
+		/** NEU **/color: $DarkBlue;
 		cursor: pointer;
-		/** NEU **/font-size: 11px;
+		/** NEU **/font-size: $smallfont;
 	}
 	i.fa-folder-open,
 	i.fa-folder{
-		color: /** NEU **/#192c3a;
+		/** NEU **/color: $DarkBlue;
 	}
 
 	.disabled a,
@@ -169,8 +169,8 @@
 	.group,
 	.selected_group {
 		/** NEU **/ /*font-family: liberation_sansbold, sans-serif; */
-		/** NEU **/font-size: 11px;
-		/** NEU **/color: #192c3a;
+		/** NEU **/font-size: $smallfont;
+		/** NEU **/color: $DarkBlue;
 	}
 
 	.selected_item,

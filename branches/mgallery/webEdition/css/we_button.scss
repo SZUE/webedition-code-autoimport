@@ -24,52 +24,65 @@
 @import "config.scss";
 button{
 	&.weBtn{
-		height:22px ! important;
+		/** NEU **/height: 25px ! important;
 		cursor:pointer;
-		border-width: 0px;
 		border-collapse: collapse;
 		padding: 0px;
-		color:black;
-		border-radius: 4px;
-		background: linear-gradient(to bottom, #F3F7FC, #E9F0FB 50%, #DCE8F8 50%,#D8E4F9);
+		/** NEU **/color: $DarkGrey;
+		/** NEU **/border-radius: 0px;
+		/** NEU **/border: none;
+		/** NEU **/background: $GreyGradient;
 		font-family: $weFont;
-		font-size: $smallfont ! important;
-		text-align: center;
-		padding-left: 2em !important;
-		padding-right: 2em !important;
-		box-shadow: 2px 2px 2px #555555;
+		font-size: $medfont ! important;
+		/** NEU **/text-align: center;
+		/** NEU **/padding-left: 10px !important;
+		/** NEU **/padding-right: 10px !important;
 		margin-left:0.5em;
 		margin-right:0.5em;
 		margin-bottom: 1ex;
-		min-width: 9em;
-		white-space: nowrap;
+		/** NEU **/ /*min-width: 9em; */
+		/** NEU **/white-space: nowrap;
+		/** NEU **/width: auto;		
+		/** NEU **/height: 25px ! important;    
+		/** NEU **/box-shadow: 1px 1px 2px $DarkGrey;
+		
+			/** NEU **/
+			&:hover, button.multiicon:hover {
+				color: $White;
+				background: $MiddleBlueGradient;
+			}
 
-
-		i.fa-moreicon {
-			padding-left: 0.3em;
-		}
-		i.fa-folder{
-			color: #192c3a;
-		}
-
-		&:active{
-			color: #ffffff;
-			background: linear-gradient(#4675b1, #325e94);
-			box-shadow: none;
-		}
-
-		&[disabled]{
-			/** NEU **/color: #a5aaae;
-			/** NEU **/ /*background: linear-gradient(to bottom, #f4f4f4, #e9e9e9 50%, #dedede 50%, #d9d9d9); */
-			/** NEU **/ box-shadow: none;
-		}
-
-		img{
-			border: none;
-			margin: 0px;
-			padding:0px;
-			display:block;
-		}
+			i.fa-moreicon {
+				padding-left: 0.3em;
+			}
+			i.fa-folder{
+				color: $DarkBlue;
+			}
+	
+			&:active{
+				color: $White;
+				background: $MiddleBlueGradient;
+				box-shadow: none;
+			}
+	
+			&[disabled]{
+				/** NEU **/color: $Grey;
+				/** NEU **/ /*background: linear-gradient(to bottom, #f4f4f4, #e9e9e9 50%, #dedede 50%, #d9d9d9); */
+				/** NEU **/ box-shadow: none;
+			}
+			
+			/** NEU **/
+			&[disabled]:hover {
+		    color: $Grey;
+		    background: $GreyGradient;
+			}
+	
+			img{
+				border: none;
+				margin: 0px;
+				padding:0px;
+				display:block;
+			}
 	}
 
 	&.noMarginLeft {
@@ -86,16 +99,21 @@ button{
 		/** NEU **/height: 25px ! important;
 		/** NEU **/width: auto;
 		/** NEU **/cursor: pointer;
-		/** NEU **/background: linear-gradient(#ebeef0, #d8dadc);
+		/** NEU **/background: $GreyGradient;
 		/** NEU **/font-size: 13px ! important;
 		/** NEU **/text-align: center;
 		/** NEU **/padding-left: 10px !important;
 		/** NEU **/padding-right: 10px !important;
-		/** NEU **/color: #4d565d;
+		/** NEU **/color: $DarkGrey;
 		/** NEU **/white-space: nowrap;
-		/** NEU **/box-shadow: 1px 1px 2px #4d565d;
+		/** NEU **/box-shadow: 1px 1px 2px $DarkGrey;
 		/** NEU **/border: none;
 	}
+	/** NEU **/
+	&.multiicon:hover {
+	color: $White;
+	background: $MiddleBlueGradient;
+}
 
 }
 
@@ -108,7 +126,7 @@ button{
   border-collapse: collapse;
   padding: 0px;
   /** NEU **/border-radius: 0px;
-  /** NEU **/background: linear-gradient(#ebeef0, #d8dadc);
+  /** NEU **/background: $GreyGradient;
   /** NEU **/ /*font-family: liberation_sansregular, sans-serif;*/
   /** NEU **/font-size: 13px ! important;
   text-align: center;
@@ -119,38 +137,7 @@ button{
   margin-right: 0.5em;
   margin-bottom: 1ex;
   min-width: 2.5em;
-  /** NEU **/color: #4d565d;
+  /** NEU **/color: $DarkGrey;
   /** NEU **/white-space: nowrap;
-  /** NEU **/box-shadow: 1px 1px 2px #4d565d;
-}
-
-/** NEU **/
-button.weBtn {
-	/** NEU **/height: 25px ! important;
-	/** NEU **/width: auto;
-	/** NEU **/cursor: pointer;
-	/** NEU **/background: linear-gradient(#ebeef0, #d8dadc);
-	/** NEU **/font-size: 13px ! important;
-	/** NEU **/text-align: center;
-	/** NEU **/padding-left: 10px !important;
-	/** NEU **/padding-right: 10px !important;
-	/** NEU **/color: #4d565d;
-	/** NEU **/white-space: nowrap;
-	/** NEU **/box-shadow: 1px 1px 2px #4d565d;
-	/** NEU **/border: none;
-	margin-left: 0.5em;
-	margin-right: 0.5em;
-
-
-	/** NEU **/
-	&:hover, button.multiicon:hover {
-		color: #ffffff;
-		background: linear-gradient(#4675b1, #325e94);
-	}
-
-	/** NEU **/
-	&[disabled]:hover {
-    color: #a5aaae;
-    background: linear-gradient(#ebeef0, #d8dadc);
-	}
+  /** NEU **/box-shadow: 1px 1px 2px $DarkGrey;
 }
