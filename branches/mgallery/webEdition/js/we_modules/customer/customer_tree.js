@@ -80,7 +80,7 @@ container.prototype.drawGroup = function (nf, ai, zweigEintrag) {
 	var cur = nf[ai];
 	var newAst = zweigEintrag;
 	var oc_js = this.topFrame + ".treeData.openClose('" + cur.id + "')\"";
-	var row = "<span onclick=\"" + oc_js + " class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open ? "minus" : "plus") + "-square-o fa-stack-1x'></i></span>" +
+	var row = "<span onclick=\"" + oc_js + " class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-caret-" + (nf[ai].open ? "down" : "right") + " fa-stack-1x'></i></span>" +
 					'<span ' +
 					(cur.disabled ? "" : "name=\"_" + cur.id + "\" onclick=\"" + oc_js + "\"") +
 					">" +
@@ -97,7 +97,7 @@ container.prototype.drawGroup = function (nf, ai, zweigEintrag) {
 container.prototype.drawSort = function (nf, ai, zweigEintrag) {
 	var oc_js = this.topFrame + ".treeData.openClose('" + nf[ai].id + "')\"";
 
-	return "<span onclick=\"" + oc_js + " class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open ? "minus" : "plus") + "-square-o fa-stack-1x'></i></span>" +
+	return "<span onclick=\"" + oc_js + " class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-caret-" + (nf[ai].open ? "down" : "right") + " fa-stack-1x'></i></span>" +
 					"<span name=\"_" + nf[ai].id + "\" onclick=\"" + oc_js + ";\">" +
 					WE().util.getTreeIcon(nf[ai].contenttype, nf[ai].open) +
 					"<label id=\"lab_" + nf[ai].id + "\" class=\"" + this.node_layout[nf[ai].state] + "\">" + nf[ai].text + "</label>" +

@@ -61,17 +61,17 @@
 		cursor: pointer;
 
 		&.treeKreuz{
-			/** NEU **/font-size: $medfont;
-			width: 16px;
+			font-size: $medfont;
+			width: 1ex;
 			height: 1.8em;
 			vertical-align: middle;
 			position: relative;
 			display: inline-block;
-			/** NEU **/border: 0px solid $Grey;
+			border: 0px solid $Grey;
 			/*for lines*/
-			/** NEU **/margin-right: 14px;
 			i.fa-square{
-				/** NEU **/color: $MiddleGrey;
+				left:-4px;
+				color: $MiddleGrey;
 			}
 		}
 		&.threedots{
@@ -107,13 +107,13 @@
 				position: absolute;
 				top: 1.4ex;
 				width: 1em;
-				/** NEU **/border-bottom: 1px solid #a6abb0;
+				border-bottom: 1px solid #a6abb0;
 			}
 			i::before,
 			i::before{
 				position: absolute;
-				/** NEU **/top: -5px;
-				/** NEU **/left: 3px;
+				top: -2px;
+				left: -4px;
 			}
 		}
 	}

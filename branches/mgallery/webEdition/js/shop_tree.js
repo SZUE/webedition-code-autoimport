@@ -45,7 +45,7 @@ container.prototype.drawShop = function (nf, ai, zweigEintrag) {
 
 container.prototype.drawFolder = function (nf, ai, zweigEintrag) {
 	var perm = WE().util.hasPerm("EDIT_SHOP_ORDER");
-	return "<span onclick=\"javascript:top.content.treeData.openClose('" + nf[ai].id + "',1)\" class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open ? "minus" : "plus") + "-square-o fa-stack-1x'></i></span>" +
+	return "<span onclick=\"javascript:top.content.treeData.openClose('" + nf[ai].id + "',1)\" class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-caret-" + (nf[ai].open ? "down" : "right") + " fa-stack-1x'></i></span>" +
 					"<span " +
 					(perm ? "onclick=\"doFolderClick(" + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');\"" : "") +
 					">" +
