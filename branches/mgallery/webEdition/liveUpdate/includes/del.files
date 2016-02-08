@@ -1408,3 +1408,4 @@ apps/toolfactory/hook/custom_hooks/dummy
 !editors/content/wysiwyg
 !editors/content/tinymce
 !cms
+!lib/we/ui/layout/img
