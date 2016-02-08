@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -34,9 +35,9 @@ $_logoPart = 140;
 $we_version = '';
 if(!isset($GLOBALS['loginpage'])){
 	$we_version .= ((defined('WE_VERSION_NAME') && WE_VERSION_NAME != '') ? WE_VERSION_NAME : WE_VERSION) . ' (' . WE_VERSION .
-		((defined('WE_SVNREV') && WE_SVNREV != '0000') ? ', SVN-Revision: ' . WE_SVNREV : '') . ')' .
-		((defined('WE_VERSION_SUPP') && WE_VERSION_SUPP != '') ? ' ' . g_l('global', '[' . WE_VERSION_SUPP . ']') : '') .
-		((defined('WE_VERSION_SUPP_VERSION') && WE_VERSION_SUPP_VERSION != 0) ? WE_VERSION_SUPP_VERSION : '');
+			((defined('WE_SVNREV') && WE_SVNREV != '0000') ? ', SVN-Revision: ' . WE_SVNREV : '') . ')' .
+			((defined('WE_VERSION_SUPP') && WE_VERSION_SUPP != '') ? ' ' . g_l('global', '[' . WE_VERSION_SUPP . ']') : '') .
+			((defined('WE_VERSION_SUPP_VERSION') && WE_VERSION_SUPP_VERSION != 0) ? WE_VERSION_SUPP_VERSION : '');
 }
 
 if(isset($GLOBALS['loginpage']) && WE_LOGIN_HIDEWESTATUS){
@@ -80,8 +81,8 @@ if($we_version){
 
 //	5th credits
 $_table->setCol($_actRow++, 0, array("class" => "defaultfont small row5"), '<div id="credits">' .
-	g_l('global', '[developed_further_by]') . ': <a href="http://www.webedition.org/" target="_blank" ><strong>webEdition e.V.</strong></a>' /* .
-	  g_l('global', '[with]') . ' <b><a href="http://credits.webedition.org/?language=' . $GLOBALS["WE_LANGUAGE"] . '" target="_blank" >' . g_l('global', '[credits_team]') . '</a></b>' */);
+		g_l('global', '[developed_further_by]') . ': <a href="http://www.webedition.org/" target="_blank" ><strong>webEdition e.V.</strong></a>' /* .
+		  g_l('global', '[with]') . ' <b><a href="http://credits.webedition.org/?language=' . $GLOBALS["WE_LANGUAGE"] . '" target="_blank" >' . g_l('global', '[credits_team]') . '</a></b>' */);
 
 //	7th agency
 if(is_readable(WEBEDITION_PATH . 'agency.php')){
@@ -93,11 +94,10 @@ $loginRow = 0;
 
 if(!empty($GLOBALS["loginpage"])){
 	$_loginTable = new we_html_table(array("class" => "plainTable"), 4, 1);
-
 	$_loginTable->setCol($loginRow++, 0, array("class" => "small"), we_html_baseElement::getHtmlCode(new we_html_baseElement("label", true, array("for" => "username"), g_l('global', '[username]'))));
-	$_loginTable->setCol($loginRow++, 0, array(), we_html_tools::htmlTextInput('WE_LOGIN_username', 25, '', 255, 'id="username" ', 'text', 0, 0));
+	$_loginTable->setCol($loginRow++, 0, array(), we_html_tools::htmlTextInput('WE_LOGIN_username', 25, '', 255, 'id="username" placeholder="' . g_l('global', '[username]') . '" ', 'text', 0, 0));
 	$_loginTable->setCol($loginRow++, 0, array("class" => "small row5"), we_html_baseElement::getHtmlCode(new we_html_baseElement("label", true, array("for" => 'password'), g_l('global', '[password]'))));
-	$_loginTable->setCol($loginRow++, 0, array(), we_html_tools::htmlTextInput('WE_LOGIN_password', 25, '', 255, 'id="password" ', 'password', 0, 0));
+	$_loginTable->setCol($loginRow++, 0, array(), we_html_tools::htmlTextInput('WE_LOGIN_password', 25, '', 255, 'id="password" placeholder="' . g_l('global', '[password]') . '" ', 'password', 0, 0));
 	$_loginTable->setCol($loginRow++, 0, array(), '<a href="' . WEBEDITION_DIR . 'resetpwd.php">' . g_l('global', '[pwd][forgotten]') . '</a>');
 
 	$_table->addRow(2);
@@ -135,10 +135,10 @@ if(!empty($GLOBALS["loginpage"])){
 		// if button is between these radio boces, they can not be reachable with <tab>
 		$_modetable->setCol(0, 0, array(), '<table class="default">
 		<tr><td>' . $we_login_type . '</td></tr>' .
-			'<tr><td>' . we_html_forms::radiobutton(we_base_constants::MODE_NORMAL, getValueLoginMode(we_base_constants::MODE_NORMAL), 'mode', g_l('SEEM', '[start_mode_normal]'), true, 'small') .
-			'</td></tr>
+				'<tr><td>' . we_html_forms::radiobutton(we_base_constants::MODE_NORMAL, getValueLoginMode(we_base_constants::MODE_NORMAL), 'mode', g_l('SEEM', '[start_mode_normal]'), true, 'small') .
+				'</td></tr>
 		<tr><td>' . we_html_forms::radiobutton(we_base_constants::MODE_SEE, getValueLoginMode(we_base_constants::MODE_SEE), 'mode', '<abbr title="' . g_l('SEEM', '[start_mode_seem_acronym]') . '">' . g_l('SEEM', '[start_mode_seem]') . '</abbr>', true, "small") .
-			'</td></tr>
+				'</td></tr>
 		</table>');
 		$_modetable->setCol(0, 1, array('style' => 'text-align:right;vertical-align:bottom', 'rowspan' => 3), $loginButton);
 	}

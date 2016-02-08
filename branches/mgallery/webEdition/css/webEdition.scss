@@ -38,14 +38,14 @@ body{
 	&.weEditorBody{
 		margin: 0px;
 		padding: 0px;
-		/** NEU **/background-color: $White;
+		background-color: $White;
 		overflow: hidden;
 		height: 100%;
 	}
 
 	&.weEditorBody {
 		padding: 10px 0px;
-		/** NEU **/
+
 		div.multiIcon {
 
 			div.weMultiIconBoxHeadline {
@@ -161,7 +161,7 @@ div{
 		}
 
 		div.weMultiIconBoxLine{
-			/** NEU **/border-bottom: 1px solid $LightGrey;
+			border-bottom: 1px solid $LightGrey;
 		}
 
 		div.multiIconRight{
@@ -171,7 +171,7 @@ div{
 		div.multiiconleft{
 			display: inline-block;
 			vertical-align: top;
-			/** NEU **/text-align: center;
+			text-align: center;
 			span.fileicon{
 				margin-left:20px;
 			}
@@ -194,7 +194,7 @@ div{
 		background-color: Silver;
 		border-top: 1px solid #000000;
 	}@else{
-		/** NEU **/background-color: $DarkBlue;
+		background-color: $DarkBlue;
 	}
 }
 
@@ -215,7 +215,7 @@ body.radient{
 
 #footerBody{
 	padding: 8px 0px 10px 0px;
-	/** NEU **/background: $Grey;
+	background: $Grey;
 	height: 100%;
 }
 
@@ -247,7 +247,7 @@ body.radient{
 	margin: 0px;
 	border: 0px none;
 	position: fixed;
-	/** NEU **/top: 44px;
+	top: 44px;
 	bottom: 0px;
 	left: 0px;
 	right: 0px;
@@ -256,7 +256,7 @@ body.radient{
 		position: absolute;
 		top: 0px;
 		bottom: 0px;
-		/** NEU **/border-left: 1px solid $Grey;
+		border-left: 1px solid $Grey;
 		overflow: hidden;
 		iframe{
 			border:0px;
@@ -280,27 +280,27 @@ body.radient{
 	top: 0px;
 	bottom: 0px;
 	left: 0px;
-	/** NEU **/width: $vtabWidth;
+	width: $vtabWidth;
 	overflow: hidden;
-	/** NEU **/background-color: $DarkBlue;
+	background-color: $DarkBlue;
 	color: white;
 
 
 
 	div.tab	{
-		/** NEU **/border-bottom: 1px solid #284051;
-		/** NEU **/border-right: 1px solid $DarkBlue;
-		/** NEU **/width: 40px;
+		border-bottom: 1px solid #284051;
+		border-right: 1px solid $DarkBlue;
+		width: 40px;
 		height: 100px;
 		position: relative;
 		cursor: pointer;
-		/** NEU **/background-color: $DarkBlue;
-		/** NEU **/color: $LightBlue;
+		background-color: $DarkBlue;
+		color: $LightBlue;
 		span{
 			position: absolute;
 			display: block;
 			bottom: -15px;
-			/** NEU **/left: 12px;
+			left: 12px;
 			width: 100px;
 			-webkit-transform: rotate(-90deg);
 			-webkit-transform-origin: 0 0;
@@ -313,29 +313,26 @@ body.radient{
 			transform-origin: 0 0;
 			text-align: center;
 			color: inherit;
-			/** NEU **/font-size: $medfont;
+			font-size: $medfont;
 		}
 	}
 
 	div.tabNorm:hover{
-		/** NEU **//*background: linear-gradient(to right, #cbd3dc, #bfc6cf 50%, #999) transparent;*/
-		/** NEU **//*color: black; */
-		/** NEU **/background-color: $MiddleGrey;
-		/** NEU **/color: $MiddleBlue;
+		background-color: $MiddleGrey;
+		color: $MiddleBlue;
 	}
 
 	div.tabActive{
-		/** NEU **//*color: black;*/
-		/** NEU **/background-color: $MiddleGrey;
-		/** NEU **/border-right-color: $Grey;
-		/** NEU **/color: $MiddleBlue;
+		background-color: $MiddleGrey;
+		border-right-color: $Grey;
+		color: $MiddleBlue;
 	}
 }
 #treeFrameDiv{
 	position:absolute;
 	top:0px;
 	bottom:0px;
-	/** NEU **/left: 41px;
+	left: 41px;
 	right:0px;
 	border:0px;
 	overflow: hidden;
@@ -359,7 +356,6 @@ td.boxHeader{
 	bottom:0px;
 	left:0px;
 	display:none;
-	//border-right:1px solid $DarkBlue;
 }
 #rframe{
 	border:0px;
@@ -370,7 +366,7 @@ td.boxHeader{
 
 #baumArrows{
 	position: absolute;
-	/** NEU **/left: 11px;
+	left: 11px;
 	bottom: 13px;
 	font-size: 10px;
 	text-align: center;
@@ -391,15 +387,14 @@ td.boxHeader{
 #treeControl{
 	line-height: $defaultEditorTabHeight;
 	height: $defaultEditorTabHeight;
-	/** NEU **/background-color: $Grey;
+	background-color: $Grey;
 	#treeName{
 		padding: 0px 1ex;
-		/** NEU *color: $DarkGrey;*/
 	}
 	#toggleTree{
 		position: absolute;
 		right: 1ex;
-		/** NEU **/color: $DarkGrey;
+		color: $DarkGrey;
 	}
 }
 
@@ -412,20 +407,21 @@ td.boxHeader{
 	#bm_searchField{
 		position: absolute;
 		bottom: 0px;
-		/** NEU **/ /*height: 40px;*/
+		height: 30px;
+		padding:10px;
 		left: 0px;
 		right: 0px;
 		overflow: hidden;
 		background-repeat: repeat;
 		margin: 0px;
-		/** NEU **/background: $Grey;
-		/** NEU **/border-top: none;
+		background: $Grey;
+		border-top: none;
 		#search{
 			input {
 				height: 30px;
-				/*width: 200px !important;*/
 				border: none;
 				line-height: 30px;
+				width:120px;
 				vertical-align: bottom;
 			}
 
@@ -436,25 +432,20 @@ td.boxHeader{
 				border-width: 0px;
 				border-collapse: collapse;
 				padding: 0px;
-				/** NEU **/color: #ffffff;
-				/** NEU **/border-radius: 0px;
-				/** NEU **/background: #192c3a;
+				color: #ffffff;
+				border-radius: 0px;
+				background: #192c3a;
 				font-family: $weFont;
 				font-size: 11px ! important;
 				text-align: center;
-				/*  padding-left: 0.5em !important;
-					padding-right: 0.5em !important;*/
-				/** NEU **/ /*box-shadow: 2px 2px 2px #555;*/
-				/** NEU **/margin-left: 0px;
-				/** NEU **/margin-right: 0px;
-				/** NEU **/margin-bottom: 0px;
+				margin-left: 0px;
+				margin-right: 0px;
+				margin-bottom: 0px;
 				min-width: 2.5em;
-				/** NEU **/border: none;
+				border: none;
 			}
-			/** NEU **/
 			input {
 				height: 30px;
-				/*width: 200px !important;*/
 				border: none;
 				line-height: 30px;
 				vertical-align: bottom;
@@ -467,20 +458,19 @@ td.boxHeader{
 				border-width: 0px;
 				border-collapse: collapse;
 				padding: 0px;
-				/** NEU **/color: $White;
-				/** NEU **/border-radius: 0px;
-				/** NEU **/background: $DarkBlue;
+				color: $White;
+				border-radius: 0px;
+				background: $DarkBlue;
 				font-family: $weFont;
 				font-size: 11px ! important;
 				text-align: center;
 				padding-left: 0.5em !important;
 				padding-right: 0.5em !important;
-				/** NEU **/ /*box-shadow: 2px 2px 2px #555;*/
-				/** NEU **/margin-left: 0px;
-				/** NEU **/margin-right: 0px;
-				/** NEU **/margin-bottom: 0px;
+				margin-left: 0px;
+				margin-right: 0px;
+				margin-bottom: 0px;
 				min-width: 2.5em;
-				/** NEU **/border: none;
+				border: none;
 			}
 		}
 		#infoField{
@@ -508,7 +498,7 @@ td.boxHeader{
 
 #tree,
 #treetable{
-	/** NEU **/background-color: $MiddleGrey;
+	background-color: $MiddleGrey;
 	left:0px;
 	right:0px;
 	position:absolute;
@@ -541,7 +531,7 @@ td.boxHeader{
 
 #treeheader,
 #eHeaderBody{
-	/** NEU **/background: $Grey;
+	background: $Grey;
 	margin: 0px;
 }
 
@@ -565,12 +555,11 @@ td.boxHeader{
 }
 
 #headrow{
-	/** NEU **/margin: 7px 0px 7px 5px;
+	margin: 7px 0px 7px 5px;
 	white-space: nowrap;
-	/** NEU *color: $DarkGrey;*/
 	a{
 		#h_path{
-			/** NEU **/color: #386aab;
+			color: #386aab;
 		}
 	}
 }
@@ -585,7 +574,7 @@ td.boxHeader{
 
 #resize{
 	position: absolute;
-	/** NEU **/top: 44px;
+	top: 44px;
 	left: 0px;
 	right: 0px;
 	bottom: 0px;
@@ -607,14 +596,13 @@ td.boxHeader{
 .weSelect,
 .wetextinput,
 .wetextarea{
-	/** NEU **/border: $Grey solid 1px;
-	/** NEU **/color: $DarkBlue;
-	/** NEU **/box-sizing: border-box;
-	/** NEU **/padding: 5px 10px;
+	border: $Grey solid 1px;
+	color: $DarkBlue;
+	box-sizing: border-box;
+	padding: 5px 10px;
 }
 
 .wetextinput {
-	/** NEU **/ /*height: 20px; */
 	&[disabled] {
 		background-color: #EEEEEE;
 	}
@@ -627,8 +615,8 @@ td.boxHeader{
 .multichooser {
 	background-color: white;
 	border: 1px grey solid;
-	/** NEU **/min-height: 30px;
-	/** NEU **/margin-bottom: 3px;
+	min-height: 30px;
+	margin-bottom: 3px;
 }
 
 input[type="checkbox"]{
@@ -984,7 +972,7 @@ optgroup{
 	background-repeat: no-repeat;
 }
 
-/** NEU **/
+
 .editfooter {
   left: 0px;
   position: absolute;
@@ -1019,11 +1007,11 @@ optgroup{
 
 #toolMenu,
 #headerDiv{
-	/** NEU **/ /*background: linear-gradient(#4675b1, $MiddleBlue);*/
-	/** NEU **/background: $MiddleBlue;
+	 /*background: linear-gradient(#4675b1, $MiddleBlue);*/
+	background: $MiddleBlue;
 	color: white;
-	/** NEU **/line-height: 40px;
-	/** NEU **/height: 40px;
+	line-height: 40px;
+	height: 40px;
 }
 
 #headerDiv{
@@ -1031,21 +1019,21 @@ optgroup{
 	top: 0px;
 	left: 0px;
 	right: 0px;
-	/** NEU **/border-bottom: 4px solid $DarkBlue;
+	border-bottom: 4px solid $DarkBlue;
 	#logout,#home{
-		/** NEU **/height: $menuHeight;
+		height: $menuHeight;
 		float: left;
-		/** NEU **/width: $menuHeight;
+		width: $menuHeight;
 		cursor: pointer;
 		text-align: center;
-		/** NEU **/ /*background: linear-gradient(#345881, #284a70);*/
-		/** NEU **/background: #284a70;
-		/** NEU **/margin-left: 0px;
-		/** NEU **/margin-right: 0px;
-		/** NEU **/border-right: none;
+		 /*background: linear-gradient(#345881, #284a70);*/
+		background: #284a70;
+		margin-left: 0px;
+		margin-right: 0px;
+		border-right: none;
 	}
 	#logout{
-		/** NEU **/background: none;
+		background: none;
 		border-left: 1px solid #366196;
 	}
 }
@@ -1060,7 +1048,7 @@ optgroup{
 	position: relative;
 	bottom: 0px;
 	border: 0px;
-	/** NEU **/padding-left: 0px;
+	padding-left: 0px;
 	float: left;
 }
 #msgheadertable{
@@ -1070,7 +1058,7 @@ optgroup{
 	width:60px;
 	font-size: $medfont;
 	line-height: normal;
-	/** NEU **/border-right: 1px solid #366196;
+	border-right: 1px solid #366196;
 	padding-right: 10px;
 	table{
 		margin:2px 0px 2px auto;
@@ -1094,7 +1082,7 @@ optgroup{
 }
 
 
-/** NEU **/
+
 #navigationHistory .navigation {
   width: 35px;
 }
@@ -1168,19 +1156,19 @@ table.error{
 	float:left;
 	i{
 		color: $White;
-		/** NEU **/margin-top: 13px;
+		margin-top: 13px;
 		&.active{
 			color:#5f97cc;
 		}
 	}
 }
 
-/** NEU **/
+
 #messageConsole:hover {
 	background: linear-gradient(to bottom, #345881, #284a70) transparent !important;
 }
 
-/** NEU **/
+
 #messageConsole {
 
 	table {
@@ -1303,7 +1291,7 @@ table.revenueTable {
 }
 
 span.fileicon{
-	/** NEU **/font-size: 8px;
+	font-size: 8px;
 	color: black;
 	::-moz-selection,
 	::selection{
@@ -1327,7 +1315,7 @@ span.fileicon{
 	}
 	> .we-otherfiles i{
 		bottom: 0.4em;
-		/** NEU **/color: $DarkBlue;
+		color: $DarkBlue;
 		margin-left: 0.2em;
 		vertical-align: bottom;
 		font-family: $weFont;
@@ -1398,7 +1386,7 @@ table.customer{
 table.default td,
 table.default th{
 	padding: 0px;
-	/** NEU **/vertical-align: top;
+	vertical-align: top;
 }
 
 table.withSpace tr td{
@@ -1464,7 +1452,7 @@ table.propertydualtable td{
 table.footertable{
 	margin-left: 7px;
 	button.weBtn{
-		/** NEU **/ /*margin-right: 2em; */
+		 /*margin-right: 2em; */
 	}
 }
 
@@ -1755,8 +1743,8 @@ div.collection-content{
 	input,
 	select{
 		width: 30em;
-		/** NEU **/height: 30px !important;
-		/** NEU **/margin-bottom: 5px;
+		height: 30px !important;
+		margin-bottom: 5px;
 	}
 
 	input[type="checkbox"],
@@ -1807,7 +1795,7 @@ body.editFrameset{
 	div.contenteditor{
 		bottom:$editorFooterHeight;
 		/** TEST **/ /*top: 100px !important;*/
-		/** NEU **/border-top: 1px solid $LightGrey;
+		border-top: 1px solid $LightGrey;
 	}
 	div.editorButtonFrame{
 		position: absolute;
@@ -1815,8 +1803,8 @@ body.editFrameset{
 		left: 0px;
 		right: 0px;
 		height: $editorFooterHeight;
-		/** NEU **/ /*background: linear-gradient(to bottom, #b4b3b3, #c6c5c5) transparent;*/
-		/** NEU **/border-top: 1px solid $LightGrey;
+		 /*background: linear-gradient(to bottom, #b4b3b3, #c6c5c5) transparent;*/
+		border-top: 1px solid $LightGrey;
 	}
 }
 
@@ -1834,11 +1822,11 @@ body.moduleEditor{
 	}
 	div.editorHeader{
 		top: 0px;
-		/** NEU **/height: 57px !important;
+		height: 57px !important;
 		overflow: hidden;
 	}
 	div.editorBody{
-		/** NEU **/top: 57px !important;
+		top: 57px !important;
 		bottom: $editorFooterHeight;
 	}
 	div.editorButtonFrame{
@@ -1900,7 +1888,7 @@ body.moduleEditor{
 		left: 0px;
 		right: 0px;
 		#left{
-			/** NEU **/left: 40px;
+			left: 40px;
 			position: absolute;
 			top: 0px;
 			bottom: 0px;
@@ -1916,20 +1904,20 @@ body.moduleEditor{
 			border-width: 0px;
 			border-collapse: collapse;
 			padding: 0px;
-			/** NEU **/color: #ffffff;
-			/** NEU **/border-radius: 0px;
-			/** NEU **/background: $DarkBlue;
+			color: #ffffff;
+			border-radius: 0px;
+			background: $DarkBlue;
 			font-family: $weFont;
 			font-size: 11px ! important;
 			text-align: center;
 			padding-left: 0.5em !important;
 			padding-right: 0.5em !important;
-			/** NEU **/ /*box-shadow: 2px 2px 2px #555;*/
-			/** NEU **/margin-left: 0px;
-			/** NEU **/margin-right: 0px;
-			/** NEU **/margin-bottom: 0px;
+			 /*box-shadow: 2px 2px 2px #555;*/
+			margin-left: 0px;
+			margin-right: 0px;
+			margin-bottom: 0px;
 			min-width: 2.5em;
-			/** NEU **/border: none;
+			border: none;
 		}
 
 		.wetextinput {
@@ -2079,7 +2067,7 @@ span.alertIcon{
 	color:#F2F200;
 }
 
-/** NEU **/
+
 .tree {
 
 	.fa-minus-square-o,
@@ -2105,23 +2093,23 @@ span.alertIcon{
 	}
 }
 
-/** NEU **/
+
 a, a:link, a:visited {
 	color: #386aab;
 }
 
-/** NEU **/
+
 a:hover, a:focus, a:active {
 	color: #386aab;
 	text-decoration: none;
 }
 
-/** NEU **/
+
 .widget iframe {
 	height: 294px !important;
 }
 
-/** NEU **/
+
 #props {
 	width: 100%;
 
@@ -2168,7 +2156,7 @@ a:hover, a:focus, a:active {
 	}
 }
 
-/** NEU **/
+
 .le_widget {
 
 	.fa-stack-2x {
@@ -2193,17 +2181,17 @@ a:hover, a:focus, a:active {
 	}
 }
 
-/** NEU **/
+
 #le_tblWidgets div.widget td span {
 	padding-left: 5px;
 }
 
-/** NEU **/
+
 .fa-inverse {
 	/*color: transparent !important;*/
 }
 
-/** NEU **/
+
 .mainEditor iframe {
 	background: #f8f8fa;
 }
