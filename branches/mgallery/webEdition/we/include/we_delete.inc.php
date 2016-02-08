@@ -475,7 +475,7 @@ $_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button
 $form = '<form name="we_form" method="post">' . we_html_tools::hidden('sel', '') . '</form>';
 
 echo '</head><body class="weTreeHeader">
-<div style="width:380px;">
+<div>
 <h1 class="big" style="padding:0px;margin:0px;">' . oldHtmlspecialchars(g_l('newFile', '[title_delete]')) . '</h1>
 <p class="small">' . $content . '</p>
 <div>' . $_buttons . '</div></div>' . $form . '

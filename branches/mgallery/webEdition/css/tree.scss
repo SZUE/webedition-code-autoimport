@@ -38,6 +38,14 @@
 	padding: 0px;
 	padding-left:1ex;
 	white-space: nowrap;
+	&.deleteSelector,
+	&.moveSelector{
+		top:160px;
+	}
+	&.collectionSelector{
+		top:205px;
+	}
+
 	table{
 		border: none;
 		width: 100%;

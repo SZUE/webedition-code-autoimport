@@ -483,10 +483,17 @@ td.boxHeader{
 #bm_treeheaderDiv{
 	position:absolute;
 	top:0px;
-	height:1px;
+	height:0px;
 	left:0px;
 	right:0px;
 	overflow: hidden;
+	&.deleteSelector,
+	&.moveSelector{
+		height:160px;
+	}
+	&.collectionSelector{
+		height:205px;
+	}
 
 	iframe{
 		width:100%;
@@ -503,17 +510,19 @@ td.boxHeader{
 	right:0px;
 	position:absolute;
 	overflow: auto;
-	top:1px;
-	bottom:$editorFooterHeight;
+	top:0px;
+	bottom:0px;
+	&.withHeader{
+		top:40px;
+	}
+	&.withFooter{
+		bottom:$editorFooterHeight;
+	}
 }
 
 #eHeaderBody,
 #footerBody{
 	overflow: hidden;
-}
-#eHeaderBody #tabContainer div{
-	min-width:5em;
-	text-align: center;
 }
 
 #treeheader/*used in modules*/{
@@ -527,12 +536,17 @@ td.boxHeader{
 	height: 40px;
 	box-sizing: border-box;
 	display:none;
+	background: $Grey;
+	margin: 0px;
 }
 
-#treeheader,
 #eHeaderBody{
 	background: $Grey;
 	margin: 0px;
+	#tabContainer div{
+		min-width:5em;
+		text-align: center;
+	}
 }
 
 /*div for iconbar frame*/
@@ -1007,7 +1021,7 @@ optgroup{
 
 #toolMenu,
 #headerDiv{
-	 /*background: linear-gradient(#4675b1, $MiddleBlue);*/
+	/*background: linear-gradient(#4675b1, $MiddleBlue);*/
 	background: $MiddleBlue;
 	color: white;
 	line-height: 40px;
@@ -1026,7 +1040,7 @@ optgroup{
 		width: $menuHeight;
 		cursor: pointer;
 		text-align: center;
-		 /*background: linear-gradient(#345881, #284a70);*/
+		/*background: linear-gradient(#345881, #284a70);*/
 		background: #284a70;
 		margin-left: 0px;
 		margin-right: 0px;
@@ -1452,7 +1466,7 @@ table.propertydualtable td{
 table.footertable{
 	margin-left: 7px;
 	button.weBtn{
-		 /*margin-right: 2em; */
+		/*margin-right: 2em; */
 	}
 }
 
@@ -1803,7 +1817,7 @@ body.editFrameset{
 		left: 0px;
 		right: 0px;
 		height: $editorFooterHeight;
-		 /*background: linear-gradient(to bottom, #b4b3b3, #c6c5c5) transparent;*/
+		/*background: linear-gradient(to bottom, #b4b3b3, #c6c5c5) transparent;*/
 		border-top: 1px solid $LightGrey;
 	}
 }
@@ -1912,7 +1926,7 @@ body.moduleEditor{
 			text-align: center;
 			padding-left: 0.5em !important;
 			padding-right: 0.5em !important;
-			 /*box-shadow: 2px 2px 2px #555;*/
+			/*box-shadow: 2px 2px 2px #555;*/
 			margin-left: 0px;
 			margin-right: 0px;
 			margin-bottom: 0px;

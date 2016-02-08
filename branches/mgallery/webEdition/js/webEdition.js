@@ -1021,9 +1021,14 @@ function we_cmd_base(args, url) {
 			if (!WE().session.seemode) {
 				treeData.setState(treeData.tree_states.edit);
 				drawTree();
-
-				self.document.getElementById("bm_treeheaderDiv").style.height = "1px";
-				self.document.getElementById("treetable").style.top = "1px";
+				var cl=self.document.getElementById("bm_treeheaderDiv").classList;
+				cl.remove('deleteSelector');
+				cl.remove('moveSelector');
+				cl.remove('collectionSelector');
+				cl=self.document.getElementById("treetable").classList;
+				cl.remove('deleteSelector');
+				cl.remove('moveSelector');
+				cl.remove('collectionSelector');
 				top.setTreeWidth(widthBeforeDeleteMode);
 				top.setSidebarWidth(widthBeforeDeleteModeSidebar);
 			}
@@ -1045,8 +1050,8 @@ function we_cmd_base(args, url) {
 				treeData.setState(treeData.tree_states.edit);
 				drawTree();
 			}
-			self.document.getElementById("bm_treeheaderDiv").style.height = "150px";
-			self.document.getElementById("treetable").style.top = "150px";
+			self.document.getElementById("bm_treeheaderDiv").classList.add('deleteSelector');
+			self.document.getElementById("treetable").classList.add('deleteSelector');
 			top.toggleTree(true);
 			var width = top.getTreeWidth();
 
@@ -1081,8 +1086,8 @@ function we_cmd_base(args, url) {
 					treeData.setState(treeData.tree_states.edit);
 					drawTree();
 				}
-				self.document.getElementById("bm_treeheaderDiv").style.height = "160px";
-				self.document.getElementById("treetable").style.top = "160px";
+				self.document.getElementById("bm_treeheaderDiv").classList.add('moveSelector');
+				self.document.getElementById("treetable").classList.add('moveSelector');
 				top.toggleTree(true);
 				var width = top.getTreeWidth();
 
@@ -1113,8 +1118,8 @@ function we_cmd_base(args, url) {
 					treeData.setState(treeData.tree_states.edit);
 					drawTree();
 				}
-				self.document.getElementById("bm_treeheaderDiv").style.height = "205px";
-				self.document.getElementById("treetable").style.top = "205px";
+				self.document.getElementById("bm_treeheaderDiv").classList.add('collectionSelector');
+				self.document.getElementById("treetable").classList.add('collectionSelector');
 				top.toggleTree(true);
 				var width = top.getTreeWidth();
 				widthBeforeDeleteMode = width;
