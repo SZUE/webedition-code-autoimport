@@ -570,7 +570,6 @@ _EditorFrame.getDocumentReference().frames.editFooter.location.reload();'; // re
 						$we_JavaScript .= $js;
 						$isClose = preg_match('|closeDocument|', $js);
 					} else if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 4) && (!$wf_flag)){
-
 						$we_doc->makeSameNew();
 						$we_JavaScript .= "WE().layout.we_setPath('" . $we_doc->Path . "','" . $we_doc->Text . "', " . intval($we_doc->ID) . ",'" . ($we_doc->Published == 0 ? 'notpublished' : ($we_doc->Table != TEMPLATES_TABLE && $we_doc->ModDate > $we_doc->Published ? 'changed' : 'published')) . "');";
 //	switch to propertiy page, when user is allowed to do so.

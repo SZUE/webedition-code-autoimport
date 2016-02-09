@@ -57,5 +57,3 @@ function we_save() {
 		}
 	}
 }
-
-self.focus();

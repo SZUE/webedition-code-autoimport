@@ -24,41 +24,56 @@
 @import "config.scss";
 button{
 	&.weBtn{
-		height:22px ! important;
-		width:auto;
+		height: 25px;
 		cursor:pointer;
-		border-width: 0px;
 		border-collapse: collapse;
 		padding: 0px;
-		color:black;
-		border-radius: 4px;
-		background: linear-gradient(to bottom, #F3F7FC, #E9F0FB 50%, #DCE8F8 50%,#D8E4F9);
+		color: $DarkGrey;
+		border-radius: 0px;
+		border: none;
+		background: $GreyGradient;
 		font-family: $weFont;
-		font-size: $smallfont ! important;
+		font-size: $medfont;
 		text-align: center;
-		padding-left: 0.5em !important;
-		padding-right: 0.5em !important;
-		box-shadow: 2px 2px 2px #555555;
+		padding-left: 10px;
+		padding-right: 10px;
 		margin-left:0.5em;
 		margin-right:0.5em;
 		margin-bottom: 1ex;
-		min-width: 2.5em;
+		/*min-width: 9em; */
+		white-space: nowrap;
+		width: auto;
+		box-shadow: 1px 1px 2px $DarkGrey;
+
+
+		&:hover, button.multiicon:hover {
+			color: $White;
+			background: $MiddleBlueGradient;
+		}
 
 		i.fa-moreicon {
 			padding-left: 0.3em;
 		}
 		i.fa-folder{
-			color:#006db8;
+			color: $DarkBlue;
 		}
 
 		&:active{
-			background: linear-gradient(to bottom, #EDF4FC, #DCE7F9 50%, #C7DAF4 50%,#C1D4F5);
+			color: $White;
+			background: $MiddleBlueGradient;
 			box-shadow: none;
 		}
 
 		&[disabled]{
-			color:grey !important;
-			background: linear-gradient(to bottom, #F4F4F4, #E9E9E9 50%, #DEDEDE 50%,#D9D9D9);
+			color: $Grey;
+			/*background: linear-gradient(to bottom, #f4f4f4, #e9e9e9 50%, #dedede 50%, #d9d9d9); */
+			box-shadow: none;
+		}
+
+
+		&[disabled]:hover {
+			color: $Grey;
+			background: $GreyGradient;
 		}
 
 		img{
@@ -72,9 +87,72 @@ button{
 	&.noMarginLeft {
 		margin-left:0;
 	}
-
+	&.weIconButton {
+		min-width: 2.5em;
+		width: 3em;
+		padding-left: 0.5em !important;
+		padding-right: 0.5em !important;
+	}
 	&.multiicon{
 		min-width: 4em;
+		width: auto;
+		cursor: pointer;
+		background: $GreyGradient;
+		font-size: 13px;
+		text-align: center;
+		padding-left: 10px;
+		padding-right: 10px;
+		color: $DarkGrey;
+		white-space: nowrap;
+		box-shadow: 1px 1px 2px $DarkGrey;
+		border: none;
 	}
 
+	&.multiicon:hover {
+		color: $White;
+		background: $MiddleBlueGradient;
+	}
+
+}
+
+#footerBody .footertable button.weBtn {
+  height: 35px;
+  padding: 0px;
+  background: $GreyGradient;
+  font-size: 13px;
+  text-align: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+  margin-bottom: 1ex;
+  min-width: 2.5em;
+  color: $DarkGrey;
+  white-space: nowrap;
+}
+
+#treeContent #bm_searchField #search,
+#moduleContent #lframeDiv #left{
+
+	button.weBtn{
+		height: 30px ! important;
+		width: 30px;
+		padding: 0px;
+		color: $White;
+		background: $DarkBlue;
+		font-family: $weFont;
+		font-size: 11px ! important;
+		text-align: center;
+		margin-left: 0px;
+		margin-right: 0px;
+		margin-bottom: 0px;
+		min-width: 2.5em;
+		border: none;
+		padding-left: 0.5em !important;
+		padding-right: 0.5em !important;
+	}
+}
+
+body.home button.weBtn{
+	width:80%;
 }

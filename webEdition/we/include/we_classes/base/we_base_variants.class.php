@@ -305,7 +305,7 @@ abstract class we_base_variants{
 
 		if($count > 0){
 			for($i = 0; $i < $count; $i++){
-				$plusBut = we_html_button::create_button("fa:btn_add_field,fa-plus,fa-lg fa-square-o", "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('shop_insert_variant','" . ($i) . "');", true, 40);
+				$plusBut = we_html_button::create_button('fa:btn_add_field,fa-plus,fa-lg fa-square-o', "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('shop_insert_variant','" . ($i) . "');", true, 40);
 				$upbut = ($i == 0 ? we_html_button::create_button(we_html_button::DIRUP, "", true, 21, 22, "", "", true) : we_html_button::create_button(we_html_button::DIRUP, "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('shop_move_variant_up','" . ($i) . "');"));
 				$downbut = ($i == ($count - 1) ? we_html_button::create_button(we_html_button::DIRDOWN, "", true, 21, 22, "", "", true) : we_html_button::create_button(we_html_button::DIRDOWN, "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('shop_move_variant_down','" . ($i) . "');"));
 				$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('shop_remove_variant','" . ($i) . "');", true, 30);
@@ -355,7 +355,7 @@ abstract class we_base_variants{
 
 		$parts[] = array(
 			'headline' => '',
-			'html' => we_html_button::create_button("fa:btn_add_field,fa-plus,fa-lg fa-square-o", "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('shop_insert_variant','" . ($i) . "');"),
+			'html' => we_html_button::create_button('fa:btn_add_field,fa-plus,fa-lg fa-square-o', "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('shop_insert_variant','" . ($i) . "');"),
 		);
 		return $parts;
 	}
@@ -371,7 +371,7 @@ abstract class we_base_variants{
 		if($count > 0){
 
 			for($i = 0; $i < $count; $i++){
-				$plusBut = we_html_button::create_button("fa:btn_add_field,fa-plus,fa-lg fa-square-o", "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('shop_insert_variant','" . ($i) . "');", true, 40);
+				$plusBut = we_html_button::create_button('fa:btn_add_field,fa-plus,fa-lg fa-square-o', "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('shop_insert_variant','" . ($i) . "');", true, 40);
 				$upbut = ($i == 0 ? we_html_button::create_button(we_html_button::DIRUP, '', true, 21, 22, '', '', true) : we_html_button::create_button(we_html_button::DIRUP, "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('shop_move_variant_up','" . ($i) . "');"));
 				$downbut = ($i == ($count - 1) ? we_html_button::create_button(we_html_button::DIRDOWN, "", true, 21, 22, "", "", true) : we_html_button::create_button(we_html_button::DIRDOWN, "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('shop_move_variant_down','" . ($i) . "');"));
 				$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('shop_remove_variant','" . ($i) . "');", true, 30);
@@ -416,7 +416,7 @@ abstract class we_base_variants{
 				);
 			}
 		}
-		$plusBut = we_html_button::create_button("fa:btn_add_field,fa-plus,fa-lg fa-square-o", "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('shop_insert_variant','" . ($i) . "');");
+		$plusBut = we_html_button::create_button('fa:btn_add_field,fa-plus,fa-lg fa-square-o', "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('shop_insert_variant','" . ($i) . "');");
 		$content = $plusBut;
 
 		$parts[] = array(

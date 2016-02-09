@@ -157,7 +157,8 @@ abstract class we_modules_frame{
 	protected function getHTMLTree($extraHead = ''){
 		return we_html_element::htmlDiv(array(
 					'id' => 'tree',
-					'style' => ($this->showTreeHeader ? 'top: 40px;' : '') . ($this->showTreeFooter ? 'bottom: 40px;' : '')), $extraHead . $this->Tree->getHTMLContruct()
+					'class' => ($this->showTreeHeader ? ' withHeader' : '') . ($this->showTreeFooter ? ' withFooter' : '')
+						), $extraHead . $this->Tree->getHTMLContruct()
 		);
 	}
 

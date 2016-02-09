@@ -34,7 +34,7 @@ if(permissionhandler::hasPerm("administrator")){
 
 	$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
 	$refresh = we_html_button::create_button(we_html_button::REFRESH, "javascript:location.reload();");
-	$deleteLogBut = we_html_button::create_button("clear_log", "javascript:clearLog()");
+	$deleteLogBut = we_html_button::create_button('clear_log', "javascript:clearLog()");
 
 
 	$headline = array(

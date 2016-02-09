@@ -21,15 +21,14 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 echo we_html_tools::getHtmlTop(g_l('modules_banner', '[defaultbanner]')) .
  STYLESHEET;
 
 if(we_base_request::_(we_base_request::BOOL, "ok")){
 	$GLOBALS['DB_WE']->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(array(
-			'tool' => 'banner',
-			'pref_name' => 'DefaultBannerID',
-			'pref_value' => we_base_request::_(we_base_request::INT, "DefaultBannerID", 0)
+				'tool' => 'banner',
+				'pref_name' => 'DefaultBannerID',
+				'pref_value' => we_base_request::_(we_base_request::INT, "DefaultBannerID", 0)
 	)));
 
 	echo we_html_element::jsElement('top.close();') . '</head><body></body></html>';
@@ -60,7 +59,7 @@ function formBannerChooser($width = "", $table = BANNER_TABLE, $idvalue = 0, $id
 	return $yuiSuggest->getHTML();
 }
 
-echo we_html_element::jsScript(WE_JS_MODULES_DIR. 'banner/we_defaultbanner.js') .
+echo we_html_element::jsScript(WE_JS_MODULES_DIR . 'banner/we_defaultbanner.js', 'self.focus();') .
  weSuggest::getYuiFiles();
 ?>
 </head>

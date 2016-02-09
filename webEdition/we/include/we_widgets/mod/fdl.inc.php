@@ -53,7 +53,7 @@ if(($maxRows = f('SELECT COUNT(DISTINCT f.Username) ' . $queryFailedLogins, '', 
 		$failedLoginsTable->setCol($i, 2, array("class" => "middlefont", "style" => "text-align:left"), intval($db->f('numberFailedLogins')) . ' / ' . SECURITY_LIMIT_CUSTOMER_NAME . ' ' . sprintf(g_l('cockpit', '[kv_failedLogins][logins]'), SECURITY_LIMIT_CUSTOMER_NAME_HOURS));
 
 		$buttonJSFunction = 'YAHOO.util.Connect.asyncRequest( "GET", WE().consts.dirs.WEBEDITION_DIR+"rpc/rpc.php?cmd=ResetFailedCustomerLogins&cns=customer&custid=' . $webUserID . '", ajaxCallbackResetLogins );';
-		$failedLoginsTable->setCol($i, 3, array("class" => "middlefont", "style" => "text-align:right"), ((intval($db->f('numberFailedLogins')) >= SECURITY_LIMIT_CUSTOMER_NAME && $webUserID) ? we_html_button::create_button("reset", "javascript:" . $buttonJSFunction) : ''));
+		$failedLoginsTable->setCol($i, 3, array("class" => "middlefont", "style" => "text-align:right"), ((intval($db->f('numberFailedLogins')) >= SECURITY_LIMIT_CUSTOMER_NAME && $webUserID) ? we_html_button::create_button('reset', "javascript:" . $buttonJSFunction) : ''));
 		$i++;
 	}
 	//$cur+=1000;

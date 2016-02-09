@@ -42,10 +42,9 @@ body{
 	display:none;
 }
 #view{
-	position:absolute;
-	bottom:0px;
-	display:block;
-	//height:22px;
+	position: relative;
+	top: 5px;
+	display: block;
 }
 
 .wetextinput{

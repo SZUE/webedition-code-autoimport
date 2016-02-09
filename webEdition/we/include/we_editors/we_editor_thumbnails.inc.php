@@ -82,7 +82,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 						);
 					}
 					$parts[] = array("headline" => "",
-						"html" => we_html_tools::htmlAlertAttentionBox(g_l('thumbnails', '[add_descriptiontext]'), we_html_tools::TYPE_INFO, 700) . '<br/><br/>' . we_html_button::create_button("fa:btn_add_thumbnail,fa-plus,fa-lg fa-picture-o", "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('add_thumbnail','" . $we_transaction . "');"),
+						"html" => we_html_tools::htmlAlertAttentionBox(g_l('thumbnails', '[add_descriptiontext]'), we_html_tools::TYPE_INFO, 700) . '<br/><br/>' . we_html_button::create_button('fa:btn_add_thumbnail,fa-plus,fa-lg fa-picture-o', "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('add_thumbnail','" . $we_transaction . "');"),
 					);
 				} else {
 					$parts[] = array("headline" => "",

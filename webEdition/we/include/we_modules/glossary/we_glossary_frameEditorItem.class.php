@@ -189,7 +189,7 @@ function submitForm(target,action,method) {
 
 	function Footer($weGlossaryFrames){
 		$SaveButton = we_html_button::create_button(we_html_button::SAVE, "javascript:if(top.publishWhenSave==1){top.content.editor.edbody.document.getElementById('Published').value=1;};we_save();", true, 100, 22, '', '', (!permissionhandler::hasPerm('NEW_GLOSSARY') && !permissionhandler::hasPerm('EDIT_GLOSSARY')));
-		$UnpublishButton = we_html_button::create_button("deactivate", "javascript:top.content.editor.edbody.document.getElementById('Published').value=0;top.opener.top.we_cmd('save_glossary')", true, 100, 22, '', '', (!permissionhandler::hasPerm('NEW_GLOSSARY') && !permissionhandler::hasPerm('EDIT_GLOSSARY')));
+		$UnpublishButton = we_html_button::create_button('deactivate', "javascript:top.content.editor.edbody.document.getElementById('Published').value=0;top.opener.top.we_cmd('save_glossary')", true, 100, 22, '', '', (!permissionhandler::hasPerm('NEW_GLOSSARY') && !permissionhandler::hasPerm('EDIT_GLOSSARY')));
 
 		$NewEntry = we_html_forms::checkbox(1, false, "makeNewEntry", g_l('modules_glossary', '[new_item_after_saving]'), false, "defaultfont", "top.makeNewEntryCheck = (this.checked) ? 1 : 0", false);
 		$PublishWhenSaved = we_html_forms::checkbox(1, false, "publishWhenSave", g_l('modules_glossary', '[publish_when_saved]'), false, "defaultfont", "top.publishWhenSave = (this.checked) ? 1 : 0", false);

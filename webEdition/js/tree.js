@@ -174,7 +174,7 @@ container.prototype = {
 		return '<span class="treeKreuz ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + '"></span>' + this.clickHandler(nf[ai]);
 	},
 	drawGroup: function (nf, ai, zweigEintrag) {
-		return  "<span onclick=\"" + this.topFrame + ".setScrollY();" + this.topFrame + ".treeData.openClose('" + nf[ai].id + "')\" class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open ? "minus" : "plus") + "-square-o fa-stack-1x'></i></span>" +
+		return  "<span onclick=\"" + this.topFrame + ".setScrollY();" + this.topFrame + ".treeData.openClose('" + nf[ai].id + "')\" class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-caret-" + (nf[ai].open ? "down" : "right") + " fa-stack-1x'></i></span>" +
 						this.clickHandler(nf[ai]) +
 						(nf[ai].open ?
 										this.draw(nf[ai].id, zweigEintrag + '<span class="' + (ai == nf.len ? "" : "strich ") + 'treeKreuz "></span>') :

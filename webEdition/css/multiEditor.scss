@@ -29,40 +29,45 @@ body{
 }
 
 #tabContainer{
-	font-size: $smallfont;
-	color: #000000;
+	font-size: 11px;
+	color: #000;
 	width: 100%;
 	margin: 0px;
 	padding: 0px;
 	border: 0px;
-	overflow:hidden;
-	line-height:21px;
+	overflow: hidden;
+	line-height: 30px;
 
 	div{
 		margin: 0px;
 		padding: 0px;
 		display: inline-block;
-		cursor:pointer;
+		cursor: pointer;
 		white-space: nowrap;
+		/*	border-top-left-radius:10px;
+		border-top-right-radius:10px;*/
 		&.tab{
-			border-bottom: 1px solid #888888;
-			border-right: 1px solid #888888;
-			display:inline-block;
-			background-color: #D3D3D3;
-			background: linear-gradient(#dbdbdb, #cccccc 50%,#999999);
+			border-bottom: none;
+			border-right: 1px solid $DarkBlue;
+			display: inline-block;
+			 /*background-color: #d3d3d3;*/
+			background: $MiddleGrey;
+			color: $DarkGrey;
+			padding: 0px 5px;
 			&:hover{
-				border-bottom: 1px solid #888888;
-				border-right: 1px solid #888888;
-				background: linear-gradient(#cbd3dc, #bfc6cf 50%,#999999);
+				border-bottom: none;
+				border-right: 1px solid $DarkBlue;
+				background: $Grey;
+				color: $DarkGrey;
+				padding: 0px 5px;
 			}
 		}
 		&.tabActive{
-			border-right: 1px solid #888888;
-			border-bottom:1px solid #9AA2A9;
-			background-color:#9AA2A9;
-			/*	border-top-left-radius:10px;
-				border-top-right-radius:10px;
-			*/
+			border-right: 1px solid $DarkBlue;
+			border-bottom: none;
+			background-color: $Grey;
+			color: #000000;
+			padding: 0px 5px;
 		}
 	}
 
@@ -88,7 +93,7 @@ body{
 			padding: 0px .5ex;
 			display:inline-block;
 			span.fileicon{
-				height: 14px;
+				height: 20px;
 			}
 		}
 		&.trailing{
@@ -107,7 +112,15 @@ body{
 		cursor:pointer;
 		margin:2px;
 	}
+
+	div.tab span.fileicon .we-color,
+	div.tab:hover span.fileicon .we-color,
+		div.tabActive span.fileicon .we-color {
+		color: #000000;
+	}
 }
+
+
 .hidden{
 	display: none;
 }
@@ -116,11 +129,10 @@ body{
 }
 
 #multiEditorEditorFramesetsDiv{
-	position:absolute;
-	top:$defaultEditorTabHeight;
-	bottom:0px;
-	left:0px;
-	right:0px;
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
 	overflow: hidden;
 	background-color: white;
 

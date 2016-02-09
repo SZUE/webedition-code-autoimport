@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -43,12 +44,12 @@ abstract class we_temporaryDocument{
 		$documentID = intval($documentID);
 		$db->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET Active=0 WHERE DocumentID=' . $documentID . ' AND Active=1 AND DocTable="' . $db->escape(stripTblPrefix($table)) . '"');
 		$ret = $db->query('INSERT INTO ' . TEMPORARY_DOC_TABLE . ' SET ' .
-			we_database_base::arraySetter(array(
-				'DocumentID' => $documentID,
-				'DocumentObject' => ($document ? we_serialize($document) : ''),
-				'Active' => 1,
-				'UnixTimestamp' => sql_function('UNIX_TIMESTAMP()'),
-				'DocTable' => stripTblPrefix($table))));
+				we_database_base::arraySetter(array(
+					'DocumentID' => $documentID,
+					'DocumentObject' => ($document ? we_serialize($document) : ''),
+					'Active' => 1,
+					'UnixTimestamp' => sql_function('UNIX_TIMESTAMP()'),
+					'DocTable' => stripTblPrefix($table))));
 		if($ret){
 			$db->query('DELETE FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . $documentID . ' AND Active=0 AND DocTable="' . $db->escape(stripTblPrefix($table)) . '"');
 		} else {
@@ -60,11 +61,11 @@ abstract class we_temporaryDocument{
 
 	static function resave($documentID, $table, $document, we_database_base $db){
 		return $db->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET ' .
-				we_database_base::arraySetter(array(
-					'DocumentObject' => ($document ? we_serialize($document) : ''),
-					'UnixTimestamp' => sql_function('UNIX_TIMESTAMP()'),
-				)) .
-				' WHERE DocumentID=' . intval($documentID) . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"');
+						we_database_base::arraySetter(array(
+							'DocumentObject' => ($document ? we_serialize($document) : ''),
+							'UnixTimestamp' => sql_function('UNIX_TIMESTAMP()'),
+						)) .
+						' WHERE DocumentID=' . intval($documentID) . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"');
 	}
 
 	/**
@@ -76,8 +77,9 @@ abstract class we_temporaryDocument{
 	 * @param int documentID Document ID
 	 * @return object mixed document object. if return value is flase, document doesn't exists in temporary table
 	 */
-	static function load($documentID, $table, we_database_base $db){
-		return we_unserialize(f('SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($documentID) . ' AND Active=1 AND DocTable="' . $db->escape(stripTblPrefix($table)) . '"', '', $db));
+	static function load($documentID, $table, we_database_base $db, $keep = false){
+		$dat = f('SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($documentID) . ' AND Active=1 AND DocTable="' . $db->escape(stripTblPrefix($table)) . '"', '', $db);
+		return ($keep ? $dat : we_unserialize($dat));
 	}
 
 	/**
@@ -94,8 +96,8 @@ abstract class we_temporaryDocument{
 
 	static function isInTempDB($id, $table, we_database_base $db){
 		return (intval($id) > 0 ?
-				(f('SELECT 1 FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($id) . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"  LIMIT 1', '', $db)) :
-				false);
+						(f('SELECT 1 FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($id) . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"  LIMIT 1', '', $db)) :
+						false);
 	}
 
 }

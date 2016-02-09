@@ -32,6 +32,8 @@ way to fit your requirements.
 		display: block;
 		float: left;
 		height: $menuHeight;
+		border-right: 1px solid #396298;
+		font-family: $weFontBold;
 		@if($useOldStyle){
 		}@else{
 			border-right: 1px solid #3B6598;
@@ -44,19 +46,17 @@ way to fit your requirements.
 			a.top_link {
 				display: block;
 				float: left;
-				//height: $menuHeight;
-				//line-height: 22px;
 				color: inherit;
 				text-decoration: none;
-				font-family: $weFontBold;
 				cursor: pointer;
 				background: none;
 				padding: 0px 18px;
-				height: 16px;
+				/*height: 16px; */
+				line-height: $menuHeight;
 				span {
 					/*float: left;
 					display: block;*/
-					color:inherit;
+					color: #ffffff;
 				}
 			}
 		}
@@ -84,7 +84,7 @@ way to fit your requirements.
 				border-left: solid 1px #ffffff;
 				background: #3399ff;
 			}@else{
-				background: linear-gradient(#345881, #284A70);
+				background: linear-gradient(#345881, #284a70);
 			}
 			height: $menuHeight;
 			//top: 4px;
@@ -115,39 +115,41 @@ way to fit your requirements.
 		padding: 0px;
 		list-style: none;
 		z-index: 300;
+		font-family: $weFont;
+		background: #284a70;
 	}
 
 	li{
 		div.click:hover{
 			ul{
 				left: -1px;
-				top: 22px;
-				background: #f0f0f0;
-				border: 1px solid #a0a0a0;
+				top: $menuHeight;
+				background: #284a70;
+				 /*border: 1px solid #a0a0a0;*/
 				word-wrap: break-word;
 				width: 16em;
 				height: auto;
 				z-index: 300;
 				margin-top: 0;
 				padding: 0 2px 4px 2px;
-				border-radius: 5px;
+				 /*border-radius: 5px;*/
 				border-top-left-radius: 0;
-				box-shadow: 3px 3px 10px #bbbbbb;
+				 /*box-shadow: 3px 3px 10px #bbb; */
 				li:hover ul,
 					li:hover ul li:hover ul,
 					li:hover ul li:hover ul li:hover ul,
 					li:hover ul li:hover ul li:hover ul li:hover ul{
 					left: 14.2em;
 					top: -1px;
-					background: #f0f0f0;
-					border: 1px solid #a0a0a0;
+					background: #284a70;
+					 /*border: 1px solid #a0a0a0;*/
 					word-wrap: break-word;
 					width: 14.5em;
 					z-index: 400;
 					height: auto;
 					padding: 0px 2px 5px 2px;
-					border-radius: 5px;
-					box-shadow: 3px 3px 10px #bbbbbb;
+					 /*border-radius: 5px;*/
+					 /*box-shadow: 3px 3px 10px #bbb;*/
 				}
 				li:hover ul{
 					left: 15.7em;
@@ -162,14 +164,14 @@ way to fit your requirements.
 				font-family: $weFont;
 				color:black;
 				&:hover {
-					background: #3399ff;
-					color: #ffffff;
+					background: #d7dce0;
+					color: #386aab;
 				}
 				a{
 					display: block;
-					padding: 1px 0px 1px 1.5em;
+					padding: 3px 0px 3px 1.5em;
 					line-height: 2.5ex;
-					text-indent: -1em;
+					 /*text-indent: -1em;*/
 					margin: 2px 10px 0px 0px;
 					color: inherit;
 					text-decoration: none;
@@ -184,29 +186,35 @@ way to fit your requirements.
 			}
 		}
 
-		ul.sub li a.fly {
-			background: #f0f0f0;
-		}
 		div.click ul li:hover > a.fly {
-			background: #3399ff;
-			color: #ffffff;
+			color: #386aab !important;
 		}
 
 		&.disabled{
 			height: 0px;
 			line-height: 0px;
 			padding: 0;
-			border-top: 1px solid #a0a0a0;
-			border-bottom: 1px solid #ffffff;
-			margin: 2px 0px 0px 0px;
+			 /*border-top: 1px solid #a0a0a0;*/
+			border-bottom: 1px solid #fff;
+			margin: 5px 0px 5px 0px;
 		}
+
+
+		ul.sub li a,
+		ul.sub li a.fly {
+			color: #ffffff !important;
+			padding: 5px 0px;
+			display: block;
+		}
+
 	}
 
 	ul ul ul {
 		width: 350px !important;
 		max-height: 400px;
 		overflow: auto !important;
-		font-size: $medfont;
+		font-size: 12px;
+		background: #192c3a !important;
 		li {
 			white-space: nowrap;
 			clear: both;
@@ -221,6 +229,12 @@ way to fit your requirements.
 
 	i.fa{
 		position:absolute;
-		right:0px;
+		right:10px;
+		font-size: 1.7em;
 	}
+}
+
+
+#nav li div.click ul li:hover > a {
+	color: #386aab !important;
 }

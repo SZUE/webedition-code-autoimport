@@ -123,7 +123,7 @@ class we_base_menu{
 			}
 
 			if((!(isset($e['cmd']) && $e['cmd'])) && $mtext){
-				$opt .= '<li><a class="fly" href="#void">' . $mtext . '</a><ul>' .
+				$opt .= '<li><a class="fly" href="#void">' . $mtext . '<i class="fa fa-caret-right"></i></a><ul>' .
 					$this->h_pCODE($men, $id, $newAst) .
 					'</ul></li>';
 			} else if($mtext){

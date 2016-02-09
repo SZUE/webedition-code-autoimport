@@ -26,6 +26,8 @@
 @import "config.scss";
 .tree{
 	white-space: nowrap;
+	 /*margin-left: -13px;*/
+	padding: 10px 0px;
 }
 #treetable{
 	margin: 0px;
@@ -36,6 +38,14 @@
 	padding: 0px;
 	padding-left:1ex;
 	white-space: nowrap;
+	&.deleteSelector,
+	&.moveSelector{
+		top:160px;
+	}
+	&.collectionSelector{
+		top:205px;
+	}
+
 	table{
 		border: none;
 		width: 100%;
@@ -51,16 +61,17 @@
 		cursor: pointer;
 
 		&.treeKreuz{
-			font-size: 11px;
-			width: 16px;
+			font-size: $medfont;
+			width: 1ex;
 			height: 1.8em;
 			vertical-align: middle;
 			position: relative;
-			display:inline-block;
+			display: inline-block;
+			border: 0px solid $Grey;
 			/*for lines*/
-			border: 0px solid darkgray;
 			i.fa-square{
-				color:white;
+				left:-4px;
+				color: $MiddleGrey;
 			}
 		}
 		&.threedots{
@@ -91,18 +102,18 @@
 		&.kreuzung,
 		&.kreuzungend{
 			&::before{
-				content:" ";
-				display:inline-block;
+				content: " ";
+				display: inline-block;
 				position: absolute;
 				top: 1.4ex;
-				width:1em;
-				border-bottom:1px solid darkgrey;
+				width: 1em;
+				border-bottom: 1px solid #a6abb0;
 			}
 			i::before,
 			i::before{
 				position: absolute;
-				top:0px;
-				left:-5px;
+				top: -2px;
+				left: -4px;
 			}
 		}
 	}
@@ -133,12 +144,13 @@
 	a,
 	.selected_item,
 	.selected_group{
-		color: black;
+		color: $DarkBlue;
 		cursor: pointer;
+		font-size: $smallfont;
 	}
 	i.fa-folder-open,
 	i.fa-folder{
-		color: #ADC5E3;
+		color: $DarkBlue;
 	}
 
 	.disabled a,
@@ -164,8 +176,9 @@
 
 	.group,
 	.selected_group {
-		//font-weight: bold;
 		font-family: $weFontBold;
+		font-size: $smallfont;
+		color: $DarkBlue;
 	}
 
 	.selected_item,
@@ -207,5 +220,7 @@
 	.selected_item {
 		background-color: #D4DBFA;
 	}
-
+	span.fileicon {
+    margin-right: .1em;
+	}
 }

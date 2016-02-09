@@ -61,7 +61,7 @@ class we_glossary_frameEditorFolder extends we_glossary_frameEditor{
 		foreach($_list as $key){
 			$items = f('SELECT count(1) FROM ' . GLOSSARY_TABLE . ' WHERE Language="' . $language . '" AND Type="' . $key . '"');
 //FIXME createbuttontable?
-			$button = we_html_button::create_button("new_glossary_" . $key, "javascript:top.opener.top.we_cmd('new_glossary_" . $key . "', '" . $cmdid . "');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));
+			$button = we_html_button::create_button('new_glossary_' . $key, "javascript:top.opener.top.we_cmd('new_glossary_" . $key . "', '" . $cmdid . "');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));
 
 			$parts[] = array(
 				"headline" => '<a href="javascript://" onclick="' . $this->topFrame . '.editor.edbody.location=\'' . $weGlossaryFrames->frameset . '&pnt=edbody&cmd=glossary_view_type&cmdid=' . $cmdid . '_' . $key . '&tabnr=\'+' . $weGlossaryFrames->topFrame . '.activ_tab;">' . g_l('modules_glossary', '[' . $key . ']') . '</a>',

@@ -275,7 +275,7 @@ ORDER BY o.OF_ID'); // get the shop-objects from DB;
 					array(
 						'html' => '<table style="width:100%">' .
 						'<tr><td class="defaultfont">' . g_l('modules_shop', '[noRecordAlert]') . '</td></tr>' .
-						'<tr><td class="defaultfont">' . we_html_button::create_button("fa:btn_shop_pref,fa-lg fa-pencil,fa-lg fa-list-alt", "javascript:top.opener.top.we_cmd('pref_shop')", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")) . '</td></tr>' .
+						'<tr><td class="defaultfont">' . we_html_button::create_button('fa:btn_shop_pref,fa-lg fa-pencil,fa-lg fa-list-alt', "javascript:top.opener.top.we_cmd('pref_shop')", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")) . '</td></tr>' .
 						'</table>',
 					)
 				);
@@ -295,7 +295,7 @@ ORDER BY o.OF_ID'); // get the shop-objects from DB;
 			if($entries){ // Pager: Number of records not empty?
 				$topInfo = ($entries ? : g_l('modules_shop', '[noRecord]'));
 				// :: then do the query for documents
-				$DB_WE->query('SELECT c.dat AS sql,l.DID AS dd,f.CreationDate AS dDate,f.Published AS dPub,f.ModDate AS dMod FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID JOIN ' . FILE_TABLE . ' f ON f.ID=l.DID WHERE l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND l.Name="' . WE_SHOP_TITLE_FIELD_NAME . '" ORDER BY dd'); // get the shop-documents from DB;
+				$DB_WE->query('SELECT c.dat AS `sql`,l.DID AS dd,f.CreationDate AS dDate,f.Published AS dPub,f.ModDate AS dMod FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID JOIN ' . FILE_TABLE . ' f ON f.ID=l.DID WHERE l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND l.Name="' . WE_SHOP_TITLE_FIELD_NAME . '" ORDER BY dd'); // get the shop-documents from DB;
 				// for the articlelist, we need also all these article, so save them in array
 				$orderRows = $DB_WE->getAll();
 				// we need functionalitty to order these

@@ -849,7 +849,7 @@ we_templateInit();?>';
 						$ids = explode(',', $tag['attribs']['id']);
 						foreach($ids as $id){
 							$id = trim($id);
-							if(is_numenric($id)){
+							if(is_numeric($id)){
 								$this->MediaLinks[] = intval($id);
 							}
 						}

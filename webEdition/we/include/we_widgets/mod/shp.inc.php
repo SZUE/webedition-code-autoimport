@@ -271,6 +271,6 @@ window.addEventListener('load',function() {
 		redTo: " . ($sRevenueTarget * 0.9) . "
 	};
 
-	new Gauge(WE().layout.cockpitFrame.getElementById('" . $newSCurrId . "_chart_div'), options );
+	new Gauge(WE().layout.cockpitFrame.document.getElementById('" . $newSCurrId . "_chart_div'), options );
 });");
 }

@@ -334,7 +334,7 @@ class we_metadata_metaData{
 		return true;
 	}
 
-	public static function getDefinedMetaDataFields($filter = self::ALL_BUT_STANDARD_FIELDS, $assoc = false){
+	public static function getDefinedMetaDataFields($filter = we_metadata_metaData::ALL_BUT_STANDARD_FIELDS, $assoc = false){
 		static $fields = false;
 
 		if($fields === false){
@@ -345,14 +345,14 @@ class we_metadata_metaData{
 		}
 
 		switch($filter){
-			case self::ONLY_STANDARD_FIELDS:
-				$ret = array_filter($fields, function($v){return in_array($v['tag'], explode(',', self::STANDARD_FIELDS));});
+			case we_metadata_metaData::ONLY_STANDARD_FIELDS:
+				$ret = array_filter($fields, function($v){return in_array($v['tag'], explode(',', we_metadata_metaData::STANDARD_FIELDS));});
 				break;
-			case self::ALL_FIELDS:
+			case we_metadata_metaData::ALL_FIELDS:
 				$ret = $fields;
 				break;
-			case self::ALL_BUT_STANDARD_FIELDS:
-				$ret = array_filter($fields, function($v){return !in_array($v['tag'], explode(',', self::STANDARD_FIELDS));});
+			case we_metadata_metaData::ALL_BUT_STANDARD_FIELDS:
+				$ret = array_filter($fields, function($v){return !in_array($v['tag'], explode(',', we_metadata_metaData::STANDARD_FIELDS));});
 		}
 
 		return $assoc ? $ret : array_values($ret);

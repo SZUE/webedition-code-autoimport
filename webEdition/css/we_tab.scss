@@ -39,33 +39,35 @@ body {
 div.tabActive,
 div.tabNormal {
 	margin: 0px;
-	padding: 0px 1em 0px 0px;
-	border:0px;
-	float:left;
-	display: inline-block;
-	line-height:21px;
-	cursor:pointer;
-	border-right:1px solid #888888;
-	white-space: nowrap;
+  	padding: 0px 1em 0px 0px;
+  	border: 0px;
+  	float: left;
+  	display: inline-block;
+  	line-height: 30px;
+  	cursor: pointer;
+  	border-right: 1px solid $Grey;
+  	border-bottom: 1px solid $Grey;
+  	white-space: nowrap;
 	&:after {
 		content: attr(title);
 	}
 }
 
 div.tabNormal {
-	background-color: #D3D3D3;
-	background: linear-gradient(#dbdbdb, #cccccc 50%,#999999);
+	 /*background-color: #d3d3d3;*/
+  	background: $MiddleGrey;
 }
 
 div.tabActive {
-	background: #ededed;
+	background: #ffffff;
 }
 
 span.text{
-	margin:0px 1em;
-	padding:0px;
-	font-size: $smallfont;
-	vertical-align:top;
+	margin: 0px 1em;
+  	padding: 0px;
+  	font-size: 11px;
+  	vertical-align: top;
+  	/** NEU *color: #767b81;*/
 }
 span.spacer{
 	font-size: $fafontMed;

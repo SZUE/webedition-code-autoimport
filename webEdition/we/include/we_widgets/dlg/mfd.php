@@ -91,9 +91,7 @@ $oChbxCls = (permissionhandler::hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['
 		we_html_forms::checkbox(1, $sType{3}, "chbx_type", g_l('cockpit', '[classes]'), true, "defaultfont", "", !(defined('OBJECT_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTS')), "", 0, 0) :
 		'<input type="hidden" name="chbx_type" value="0"/>');
 
-$oDbTableType = new we_html_table(array('class' => 'default'), 1, 3);
-$oDbTableType->setCol(0, 0, array('style' => 'padding-right:10px;'), $oChbxDocs . $oChbxTmpl);
-$oDbTableType->setCol(0, 2, null, $oChbxObjs . $oChbxCls);
+$oDbTableType = $oChbxDocs . $oChbxTmpl . $oChbxObjs . $oChbxCls;
 
 $oSctDate = new we_html_select(array("name" => "sct_date", "size" => 1, "class" => "defaultfont", "onchange" => ""));
 $aLangDate = array(
@@ -129,7 +127,7 @@ $show = $oSelMaxEntries->getHTML() . $oChbxShowMfdBy . $oChbxShowDate . we_html_
 $parts = array(
 	array(
 		"headline" => g_l('cockpit', '[type]'),
-		"html" => $oDbTableType->getHTML(),
+		"html" => $oDbTableType,
 		'space' => 80
 	),
 	array(

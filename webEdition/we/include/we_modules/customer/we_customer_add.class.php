@@ -258,7 +258,7 @@ function setScrollTo(){
 		$search->setCol(1, 0, array(), we_html_element::htmlHidden("count", $count) . $advsearch->getHtml());
 		$search->setCol(3, 0, array("colspan" => $colspan, 'style' => 'text-align:right;padding-top:5px;'), "<table class='default'><tr><td>" .
 				we_html_element::htmlDiv(array("class" => "defaultfont lowContrast"), g_l('modules_customer', '[simple_search]')) .
-				we_html_button::create_button("fa:btn_direction_left,fa-lg fa-caret-left", "javascript:we_cmd('switchToSimple')") .
+				we_html_button::create_button('fa:btn_direction_left,fa-lg fa-caret-left', "javascript:we_cmd('switchToSimple')") .
 				$search_but
 				. '</td><td>&nbsp;</td></tr></table>'
 		);
@@ -286,7 +286,7 @@ function setScrollTo(){
 			}
 		}
 
-		$db->query('SELECT ID,CONCAT(Username, " (",Forename," ",Surname,")") AS user FROM ' . CUSTOMER_TABLE . ' WHERE ' . (empty($where) ? 0 : $where) . ' ORDER BY Text LIMIT 0,' . $res_num);
+		$db->query('SELECT ID,CONCAT(Username, " (",Forename," ",Surname,")") AS user FROM ' . CUSTOMER_TABLE . ' WHERE ' . (empty($where) ? 0 : $where) . ' ORDER BY Username LIMIT 0,' . $res_num);
 		return $db->getAllFirst(false);
 	}
 

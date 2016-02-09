@@ -57,8 +57,8 @@ class we_navigation_dirSelector extends we_selector_directory{
 	protected function printHeaderTable($extra = ''){
 		$makefolderState = permissionhandler::hasPerm("EDIT_NAVIGATION");
 		return parent::printHeaderTable('<td>' .
-						we_html_element::jsElement('makefolderState=' . $makefolderState . ';') .
-						we_html_button::create_button("fa:btn_new_dir,fa-plus,fa-lg fa-folder", "javascript:if(makefolderState==1){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
+						we_html_element::jsElement('makefolderState=' . intval($makefolderState) . ';') .
+						we_html_button::create_button('fa:btn_new_dir,fa-plus,fa-lg fa-folder', "javascript:if(makefolderState){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
 						'</td>');
 	}
 
@@ -96,10 +96,9 @@ top.clearEntries();';
 				echo we_message_reporting::getShowMessageCall(g_l('navigation', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
 				$folder->we_save();
-				echo 'var ref;
-if(top.opener.top.makeNewEntry){
-	ref = top.opener.top;
-	ref.treeData.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"folder",table:"' . $this->table . '",published:0,order:0});
+				echo '
+if(top.opener.top.treeData.makeNewEntry){
+	top.opener.top.treeData.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"folder",table:"' . $this->table . '",published:0,order:0});
 }';
 				if($this->canSelectDir){
 					echo 'top.currentPath = "' . $folder->Path . '";

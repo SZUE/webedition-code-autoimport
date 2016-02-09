@@ -274,7 +274,7 @@ function doUnload() {
         <td rowspan="3"><select name="usel_addrbook" size="7" style="width:210px" multiple>
             </select>
         </td>
-        <td style="vertical-align:bottom">' . we_html_button::create_button("fa:btn_direction_left,fa-lg fa-caret-left", "javascript:add_toaddr()") . '</td>
+        <td style="vertical-align:bottom">' . we_html_button::create_button('fa:btn_direction_left,fa-lg fa-caret-left', "javascript:add_toaddr()") . '</td>
         <td rowspan="3"><select name="usel_currentsel" size="7" style="width:210px" multiple>
             </select>
         </td>
@@ -288,8 +288,8 @@ function doUnload() {
 	<td>' . we_html_button::create_button(we_html_button::DELETE, "javascript:rm_sel_user();") . '</td>
       </tr>
       <tr>
-	<td style="padding-top:15px;">' . we_html_button::create_button("save_address", "javascript:save_addrbook();") . '<td>
-	<td colspan="2">' . we_html_button::create_button("select_user", "javascript:browse_users_window();") . '<td>
+	<td style="padding-top:15px;">' . we_html_button::create_button('save_address', "javascript:save_addrbook();") . '<td>
+	<td colspan="2">' . we_html_button::create_button('select_user', "javascript:browse_users_window();") . '<td>
       </tr>
     </table>';
 		echo we_html_tools::htmlDialogLayout($tbl, g_l('modules_messaging', '[sel_rcpts]'), we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:ok()"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:window.close();")));

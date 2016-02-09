@@ -434,8 +434,8 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 				we_html_tools::htmlAlertAttentionBox(g_l('rebuild', '[expl_rebuild_metadata]'), we_html_tools::TYPE_INFO, 520) .
 				'<div class="defaultfont" style="margin:10px 0 5px 0;">' . g_l('rebuild', '[metadata]') . ':</div>';
 
-		$selAllBut = we_html_button::create_button("selectAll", "javascript:we_cmd('select_all_fields');");
-		$deselAllBut = we_html_button::create_button("deselectAll", "javascript:we_cmd('deselect_all_fields');");
+		$selAllBut = we_html_button::create_button('selectAll', "javascript:we_cmd('select_all_fields');");
+		$deselAllBut = we_html_button::create_button('deselectAll', "javascript:we_cmd('deselect_all_fields');");
 
 		foreach($metaDataFields as $md){
 			if($md['importFrom']){

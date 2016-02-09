@@ -74,7 +74,7 @@ class weTagData_selectorAttribute extends weTagDataAttribute{
 					'class' => 'wetextinput'
 		));
 		$wecmdenc1 = we_base_request::encCmd("document.getElementById('" . $this->getIdName() . "').value");
-		$button = we_html_button::create_button("select", "javascript:we_cmd('" . $weCmd . "', document.getElementById('" . $this->getIdName() . "').value, '" . $this->Table . "','" . ($this->useName ? '' : $wecmdenc1) . "','" . ($this->useName ? $wecmdenc1 : '') . "', '', '', '', '" . $this->Selectable . "')");
+		$button = we_html_button::create_button('select', "javascript:we_cmd('" . $weCmd . "', document.getElementById('" . $this->getIdName() . "').value, '" . $this->Table . "','" . ($this->useName ? '' : $wecmdenc1) . "','" . ($this->useName ? $wecmdenc1 : '') . "', '', '', '', '" . $this->Selectable . "')");
 
 		return '<table class="attribute"><tr>
 						<td class="attributeName">' . $this->getLabelCodeForTagWizard() . '</td>

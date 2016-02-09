@@ -287,7 +287,7 @@ abstract class we_customer_abstractFilter{
 				$customers[] = $val;
 				$i++;
 			} else {
-				return path_to_id($customers, CUSTOMER_TABLE, $GLOBALS['DB_WE']);
+				return path_to_id($customers, CUSTOMER_TABLE, $GLOBALS['DB_WE'], true);
 			}
 		}
 	}
@@ -310,7 +310,7 @@ abstract class we_customer_abstractFilter{
 				$blackList[] = $val;
 				$i++;
 			} else {
-				return path_to_id($blackList, CUSTOMER_TABLE, $GLOBALS['DB_WE']);
+				return path_to_id($blackList, CUSTOMER_TABLE, $GLOBALS['DB_WE'], true);
 			}
 		}
 	}
@@ -332,7 +332,7 @@ abstract class we_customer_abstractFilter{
 				$whiteList[] = $val;
 				$i++;
 			} else {
-				return path_to_id($whiteList, CUSTOMER_TABLE, $GLOBALS['DB_WE']);
+				return path_to_id($whiteList, CUSTOMER_TABLE, $GLOBALS['DB_WE'], true);
 			}
 		}
 	}

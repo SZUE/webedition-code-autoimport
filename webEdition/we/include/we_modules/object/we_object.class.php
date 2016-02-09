@@ -1119,7 +1119,7 @@ class we_object extends we_document{
 					$downbutDis = we_html_button::create_button(we_html_button::DIRDOWN, "#", true, 0, 0, "", "", true);
 
 					$plusAmount = $this->htmlSelect("amount_insert_meta_at_class_" . $name . $f, $addArray);
-					$plusbut = we_html_button::create_button("fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')");
+					$plusbut = we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')");
 					$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_delete_meta_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')");
 
 					$content .= "</td><td>" .
@@ -1401,8 +1401,8 @@ class we_object extends we_document{
 				$selectObject .
 				we_html_element::htmlHidden($idname, $myid) .
 				(($count + 1 < $this->getElement($name . "max") || $this->getElement($name . "max") == "") ?
-						we_html_button::create_button("fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 40, 22) :
-						we_html_button::create_button("fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul", "#", true, 21, 22, "", "", true)
+						we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 40, 22) :
+						we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "#", true, 21, 22, "", "", true)
 				) .
 				(($f > 0) ?
 						we_html_button::create_button(we_html_button::DIRUP, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_up_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 21, 22) :
@@ -1420,7 +1420,7 @@ class we_object extends we_document{
 	}
 
 	function dhtmledit($name, $i = 0){
-		return we_html_button::create_button("attributes", "javascript:setScrollTo();we_cmd('object_editObjectTextArea','" . $i . "','" . $name . "','" . $GLOBALS["we_transaction"] . "');") .
+		return we_html_button::create_button('attributes', "javascript:setScrollTo();we_cmd('object_editObjectTextArea','" . $i . "','" . $name . "','" . $GLOBALS["we_transaction"] . "');") .
 				$this->getWysiwygArea($name);
 	}
 

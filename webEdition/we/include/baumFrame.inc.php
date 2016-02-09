@@ -35,17 +35,17 @@ $table = isset($table) ? $table : FILE_TABLE;
 		<div id="bm_treeheaderDiv">
 			<iframe src="about:blank" name="treeheader"></iframe>
 		</div>
-			<?php
-			$Tree = new weMainTree('webEdition.php', 'top', 'top', 'top.load');
-			echo $Tree->getHTMLContruct();
-			?>
+		<?php
+		$Tree = new weMainTree('webEdition.php', 'top', 'top', 'top.load');
+		echo $Tree->getHTMLContruct();
+		?>
 		<div id="bm_searchField">
 			<div id="infoField" class="defaultfont"></div>
 			<form name="we_form" onsubmit="top.we_cmd('tool_weSearch_edit', document.we_form.keyword.value, top.treeData.table);
 					return false;">
 				<div id="search">
 					<?php
-					echo we_html_tools::htmlTextInput('keyword', 10, we_base_request::_(we_base_request::STRING, 'keyword', ''), '', '', 'search', '120px') .
+					echo we_html_tools::htmlTextInput('keyword', 10, we_base_request::_(we_base_request::STRING, 'keyword', ''), '', 'placeholder="' . g_l('buttons_modules_message', '[search][alt]') . '"', 'search') .
 					we_html_button::create_button(we_html_button::SEARCH, "javascript:top.we_cmd('tool_weSearch_edit',document.we_form.keyword.value, top.treeData.table);", true);
 					?>
 				</div>
