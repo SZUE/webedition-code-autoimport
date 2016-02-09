@@ -30,7 +30,7 @@ abstract class weTree{
 	const StepWidth = 20;
 	const DeleteWidth = 420;
 	const MoveWidth = 500;
-	const HiddenWidth = 24;
+	const HiddenWidth = 40;
 	const MinWidthModules = 120;
 	const MaxWidthModules = 800;
 
