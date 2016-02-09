@@ -424,54 +424,6 @@ td.boxHeader{
 				width:120px;
 				vertical-align: bottom;
 			}
-
-			button.weBtn {
-				height: 30px ! important;
-				width: 30px;
-				cursor: pointer;
-				border-width: 0px;
-				border-collapse: collapse;
-				padding: 0px;
-				color: #ffffff;
-				border-radius: 0px;
-				background: #192c3a;
-				font-family: $weFont;
-				font-size: 11px ! important;
-				text-align: center;
-				margin-left: 0px;
-				margin-right: 0px;
-				margin-bottom: 0px;
-				min-width: 2.5em;
-				border: none;
-			}
-			input {
-				height: 30px;
-				border: none;
-				line-height: 30px;
-				vertical-align: bottom;
-			}
-
-			button.weBtn {
-				height: 30px ! important;
-				width: 30px;
-				cursor: pointer;
-				border-width: 0px;
-				border-collapse: collapse;
-				padding: 0px;
-				color: $White;
-				border-radius: 0px;
-				background: $DarkBlue;
-				font-family: $weFont;
-				font-size: 11px ! important;
-				text-align: center;
-				padding-left: 0.5em !important;
-				padding-right: 0.5em !important;
-				margin-left: 0px;
-				margin-right: 0px;
-				margin-bottom: 0px;
-				min-width: 2.5em;
-				border: none;
-			}
 		}
 		#infoField{
 			margin:5px 0px;
@@ -1465,9 +1417,6 @@ table.propertydualtable td{
 
 table.footertable{
 	margin-left: 7px;
-	button.weBtn{
-		/*margin-right: 2em; */
-	}
 }
 
 #anchorlistcontainer{
@@ -1907,40 +1856,16 @@ body.moduleEditor{
 			top: 0px;
 			bottom: 0px;
 			right: 0px;
+
+			.wetextinput {
+				height: 30px;
+				border: none;
+				line-height: 30px;
+				vertical-align: bottom;
+			}
 		}
 	}
 
-	#lframeDiv #left{
-		button.weBtn {
-			height: 30px ! important;
-			width: 30px;
-			cursor: pointer;
-			border-width: 0px;
-			border-collapse: collapse;
-			padding: 0px;
-			color: #ffffff;
-			border-radius: 0px;
-			background: $DarkBlue;
-			font-family: $weFont;
-			font-size: 11px ! important;
-			text-align: center;
-			padding-left: 0.5em !important;
-			padding-right: 0.5em !important;
-			/*box-shadow: 2px 2px 2px #555;*/
-			margin-left: 0px;
-			margin-right: 0px;
-			margin-bottom: 0px;
-			min-width: 2.5em;
-			border: none;
-		}
-
-		.wetextinput {
-			height: 30px;
-			border: none;
-			line-height: 30px;
-			vertical-align: bottom;
-		}
-	}
 	#treeheader {
 		height: auto;
 		padding: 5px 10px;

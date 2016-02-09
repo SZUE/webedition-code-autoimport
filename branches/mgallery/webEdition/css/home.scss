@@ -60,9 +60,9 @@ div.le_widget {
     margin-right: 1em;
 	position: relative;
 	top: 0px;
-	left: 0px; 
-	/** NEU **/margin-bottom: 15px;
-	/** NEU **/line-height: 120%;
+	left: 0px;
+	margin-bottom: 15px;
+	line-height: 120%;
 }
 
 #divClone{
@@ -95,11 +95,11 @@ div.le_widget {
 	table-layout:fixed;
 
 	.widgetTitle{
-		/** NEU **/border-bottom: none;
-		/** NEU **/min-height: 22px;
-		/** NEU **/line-height: 20px;
-		/** NEU **/padding: 5px 11px;
-		/** NEU **/background: $DarkBlue;
+		border-bottom: none;
+		min-height: 22px;
+		line-height: 20px;
+		padding: 5px 11px;
+		background: $DarkBlue;
 	}
 	.label{
 		//font-family:sans-serif;
@@ -109,16 +109,16 @@ div.le_widget {
 	}
 
 	div.widget{
-		/** NEU **/border-radius: 0px;
+		border-radius: 0px;
 		width: 100%;
-		/** NEU **/border: none; 
-		/** NEU **/background: $MiddleGrey;
+		border: none;
+		background: $MiddleGrey;
 		&.bgc_white{
-			/** NEU **/background-color: $MiddleGrey; 
+			background-color: $MiddleGrey;
 			.widgetTitle{
-				/** NEU **/background-color: $White; 
-				/** NEU **/border: 1px solid $MiddleGrey;
-				/** NEU **/color: $DarkGrey;
+				background-color: $White;
+				border: 1px solid $MiddleGrey;
+				color: $DarkGrey;
 			}
 			.widget_controls {
 				background: $Grey;
@@ -126,9 +126,9 @@ div.le_widget {
 		}
 
 		&.bgc_lightCyan{
-			/** NEU **/background-color: $MiddleGrey; 
+			background-color: $MiddleGrey;
 			.widgetTitle{
-				/** NEU **/background-color: #abc6e9; 
+				background-color: #abc6e9;
 			}
 			.widget_controls {
 				background: #395e8d;
@@ -136,9 +136,9 @@ div.le_widget {
 		}
 
 		&.bgc_blue{
-			/** NEU **/background-color: $MiddleGrey; 
+			background-color: $MiddleGrey;
 			.widgetTitle{
-				/** NEU **/background-color: #4675b1; 
+				background-color: #4675b1;
 			}
 			.widget_controls {
 				background: #284a70;
@@ -146,9 +146,9 @@ div.le_widget {
 		}
 
 		&.bgc_green{
-			/** NEU **/background-color: $MiddleGrey; 
+			background-color: $MiddleGrey;
 			.widgetTitle{
-				/** NEU **/background-color: #82af38; 
+				background-color: #82af38;
 			}
 			.widget_controls {
 				background: #2b4304;
@@ -156,9 +156,9 @@ div.le_widget {
 		}
 
 		&.bgc_orange{
-			/** NEU **/background-color: $MiddleGrey;
+			background-color: $MiddleGrey;
 			.widgetTitle{
-				/** NEU **/background-color: #f29638; 
+				background-color: #f29638;
 			}
 			.widget_controls {
 				background: #562e05;
@@ -166,19 +166,19 @@ div.le_widget {
 		}
 
 		&.bgc_red{
-			/** NEU **/background-color: $MiddleGrey; 
+			background-color: $MiddleGrey;
 			.widgetTitle{
-				/** NEU **/background-color: #c03a2f; 
+				background-color: #c03a2f;
 			}
 			.widget_controls {
 				background: #410905;
 			}
 		}
 		&.bgc_yellow{
-			/** NEU **/background-color: $MiddleGrey; 
+			background-color: $MiddleGrey;
 
 			.widgetTitle{
-				/** NEU **/background-color: #FFBC00; 
+				background-color: #FFBC00;
 			}
 			.widget_controls {
 				background: #705302;
@@ -186,41 +186,41 @@ div.le_widget {
 		}
 		td{
 			padding: 0px;
-			vertical-align: top; 
-			/** NEU **/text-align: left;
+			vertical-align: top;
+			text-align: left;
 			height: 22px;
 		}
 	}
 
 	.widget_controls{
 		border-spacing: 0px;
-		/** NEU **/border-top-left-radius: 0px;
-		/** NEU **/border-top-right-radius: 0px;
+		border-top-left-radius: 0px;
+		border-top-right-radius: 0px;
 	    width: 100%;
 		height: 16px;
-		/** NEU **/border-bottom: none;
+		border-bottom: none;
 		font-size: 10px;
-		/** NEU **/color: $White;
-		/** NEU **/padding: 3px; 
+		color: $White;
+		padding: 3px;
 		table{
 			border-spacing: 0px;
 		}
 
 		i.fa-stack-1x:hover{
-			/** NEU **/color: #abc6e9; 
+			color: #abc6e9;
 		}
-		
+
 		.fa-square-o:before {
 			display: none;
 		}
-		
+
 		.fa {
 			line-height: 23px;
 			font-size: $bigfont;
 		}
-		
+
 		i.fa-stack-1x:hover {
-			
+
 		}
 	}
 }

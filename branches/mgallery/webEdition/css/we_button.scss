@@ -24,65 +24,64 @@
 @import "config.scss";
 button{
 	&.weBtn{
-		/** NEU **/height: 25px ! important;
+		height: 25px;
 		cursor:pointer;
 		border-collapse: collapse;
 		padding: 0px;
-		/** NEU **/color: $DarkGrey;
-		/** NEU **/border-radius: 0px;
-		/** NEU **/border: none;
-		/** NEU **/background: $GreyGradient;
+		color: $DarkGrey;
+		border-radius: 0px;
+		border: none;
+		background: $GreyGradient;
 		font-family: $weFont;
-		font-size: $medfont ! important;
-		/** NEU **/text-align: center;
-		/** NEU **/padding-left: 10px !important;
-		/** NEU **/padding-right: 10px !important;
+		font-size: $medfont;
+		text-align: center;
+		padding-left: 10px;
+		padding-right: 10px;
 		margin-left:0.5em;
 		margin-right:0.5em;
 		margin-bottom: 1ex;
-		/** NEU **/ /*min-width: 9em; */
-		/** NEU **/white-space: nowrap;
-		/** NEU **/width: auto;		
-		/** NEU **/height: 25px ! important;    
-		/** NEU **/box-shadow: 1px 1px 2px $DarkGrey;
-		
-			/** NEU **/
-			&:hover, button.multiicon:hover {
-				color: $White;
-				background: $MiddleBlueGradient;
-			}
+		/*min-width: 9em; */
+		white-space: nowrap;
+		width: auto;
+		box-shadow: 1px 1px 2px $DarkGrey;
 
-			i.fa-moreicon {
-				padding-left: 0.3em;
-			}
-			i.fa-folder{
-				color: $DarkBlue;
-			}
-	
-			&:active{
-				color: $White;
-				background: $MiddleBlueGradient;
-				box-shadow: none;
-			}
-	
-			&[disabled]{
-				/** NEU **/color: $Grey;
-				/** NEU **/ /*background: linear-gradient(to bottom, #f4f4f4, #e9e9e9 50%, #dedede 50%, #d9d9d9); */
-				/** NEU **/ box-shadow: none;
-			}
-			
-			/** NEU **/
-			&[disabled]:hover {
-		    color: $Grey;
-		    background: $GreyGradient;
-			}
-	
-			img{
-				border: none;
-				margin: 0px;
-				padding:0px;
-				display:block;
-			}
+
+		&:hover, button.multiicon:hover {
+			color: $White;
+			background: $MiddleBlueGradient;
+		}
+
+		i.fa-moreicon {
+			padding-left: 0.3em;
+		}
+		i.fa-folder{
+			color: $DarkBlue;
+		}
+
+		&:active{
+			color: $White;
+			background: $MiddleBlueGradient;
+			box-shadow: none;
+		}
+
+		&[disabled]{
+			color: $Grey;
+			/*background: linear-gradient(to bottom, #f4f4f4, #e9e9e9 50%, #dedede 50%, #d9d9d9); */
+			box-shadow: none;
+		}
+
+
+		&[disabled]:hover {
+			color: $Grey;
+			background: $GreyGradient;
+		}
+
+		img{
+			border: none;
+			margin: 0px;
+			padding:0px;
+			display:block;
+		}
 	}
 
 	&.noMarginLeft {
@@ -96,48 +95,64 @@ button{
 	}
 	&.multiicon{
 		min-width: 4em;
-		/** NEU **/height: 25px ! important;
-		/** NEU **/width: auto;
-		/** NEU **/cursor: pointer;
-		/** NEU **/background: $GreyGradient;
-		/** NEU **/font-size: 13px ! important;
-		/** NEU **/text-align: center;
-		/** NEU **/padding-left: 10px !important;
-		/** NEU **/padding-right: 10px !important;
-		/** NEU **/color: $DarkGrey;
-		/** NEU **/white-space: nowrap;
-		/** NEU **/box-shadow: 1px 1px 2px $DarkGrey;
-		/** NEU **/border: none;
+		width: auto;
+		cursor: pointer;
+		background: $GreyGradient;
+		font-size: 13px;
+		text-align: center;
+		padding-left: 10px;
+		padding-right: 10px;
+		color: $DarkGrey;
+		white-space: nowrap;
+		box-shadow: 1px 1px 2px $DarkGrey;
+		border: none;
 	}
-	/** NEU **/
+
 	&.multiicon:hover {
-	color: $White;
-	background: $MiddleBlueGradient;
-}
+		color: $White;
+		background: $MiddleBlueGradient;
+	}
 
 }
 
 #footerBody .footertable button.weBtn {
-  /** NEU **/height: 35px ! important;
-  /** NEU **/width: auto !important;
-  width: auto;
-  cursor: pointer;
-  border-width: 0px;
-  border-collapse: collapse;
+  height: 35px;
   padding: 0px;
-  /** NEU **/border-radius: 0px;
-  /** NEU **/background: $GreyGradient;
-  /** NEU **/ /*font-family: liberation_sansregular, sans-serif;*/
-  /** NEU **/font-size: 13px ! important;
+  background: $GreyGradient;
+  font-size: 13px;
   text-align: center;
-  /** NEU **/padding-left: 10px !important;
-  /** NEU **/padding-right: 10px !important;
-  /** NEU **/ /*box-shadow: 2px 2px 2px #555;*/
+  padding-left: 10px;
+  padding-right: 10px;
   margin-left: 0.5em;
   margin-right: 0.5em;
   margin-bottom: 1ex;
   min-width: 2.5em;
-  /** NEU **/color: $DarkGrey;
-  /** NEU **/white-space: nowrap;
-  /** NEU **/box-shadow: 1px 1px 2px $DarkGrey;
+  color: $DarkGrey;
+  white-space: nowrap;
+}
+
+#treeContent #bm_searchField #search,
+#moduleContent #lframeDiv #left{
+
+	button.weBtn{
+		height: 30px ! important;
+		width: 30px;
+		padding: 0px;
+		color: $White;
+		background: $DarkBlue;
+		font-family: $weFont;
+		font-size: 11px ! important;
+		text-align: center;
+		margin-left: 0px;
+		margin-right: 0px;
+		margin-bottom: 0px;
+		min-width: 2.5em;
+		border: none;
+		padding-left: 0.5em !important;
+		padding-right: 0.5em !important;
+	}
+}
+
+body.home button.weBtn{
+	width:80%;
 }

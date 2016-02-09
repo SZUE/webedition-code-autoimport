@@ -490,9 +490,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 	i.alias{
 	color:grey;
 	}
-button.weBtn{
-	padding-bottom:1em;
-}') . we_html_button::create_button('fat:create_user,fa-lg fa-user-plus', "javascript:top.opener.top.we_cmd('new_user');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")) .
+') . we_html_button::create_button('fat:create_user,fa-lg fa-user-plus', "javascript:top.opener.top.we_cmd('new_user');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")) .
 				we_html_button::create_button('fat:create_group,fa-lg fa-users,fa-plus', "javascript:top.opener.top.we_cmd('new_group');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_GROUP")) .
 				we_html_button::create_button('fat:create_alias,alias fa-lg fa-user-plus', "javascript:top.opener.top.we_cmd('new_alias');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_ALIAS"));
 

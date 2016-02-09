@@ -28,19 +28,17 @@ input:invalid {
 
 .weEditmodeStyle {
   	border: 0px ! important;
-  	/** NEU **/padding: 5px;
+  	padding: 5px;
 }
 
 .weEditTable {
-  	/** NEU **/background-color: transparent;
-  	/** NEU **/ border: 1px solid $Grey;
+  	background-color: transparent;
+  	 border: 1px solid $Grey;
   	color: black;
-  	/** NEU **/ /*margin: 10px 0px !important; */
-  	/** NEU **/ /*width: 100%;*/
-  	/** NEU **/font-size: $medfont;
+  	font-size: $medfont;
 }
 
-/** NEU **/ /*
+ /*
 .spacing0 {
   border-spacing: 0px; }
 
@@ -58,21 +56,21 @@ input:invalid {
 */
 
 div.we_blockControls button, div.we_blockControls select {
-  margin-right: 1em; }  
-  
-/** NEU **/
+  margin-right: 1em; }
+
+
 table.mceLayout {
 	/* border: 1px solid #d7dce0 !important; */
-	/** NEU **/ /*margin: 10px 0px !important;*/
+	 /*margin: 10px 0px !important;*/
 }
 
-/** NEU **/
+
 table.mceLayout .mceToolbar,
 table.mceLayout .mceStatusbar {
 	/* background: #d7dce0 !important; */
 }
 
-/** NEU **/
+
 .we_blockControls {
 	/*background: #a5aaae;
 	padding: 5px;

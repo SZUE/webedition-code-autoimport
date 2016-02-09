@@ -24,17 +24,17 @@
 
 @import "config.scss";
 #loginScreen{
-	/** NEU **/ /*background-color: #386aab;*/
-	/** NEU **/background: url(../images/bg-login.jpg);
-	/** NEU **/background-size: cover;
-	/** NEU **/background-position: right bottom;
+	 /*background-color: #386aab;*/
+	background: url(../images/bg-login.jpg);
+	background-size: cover;
+	background-position: right bottom;
 	height: 100%;
 	form{
 		position:absolute;
 		left:0px;
 		right:0px;
-		/** NEU **/ /*bottom: 2em;*/
-		/** NEU **/ top: 5em;
+		 /*bottom: 2em;*/
+		 top: 5em;
 	}
 	#picCopy{
 		font-size: $smallfont;
@@ -47,7 +47,7 @@
 
 #mainTable{
 	border-style: none;
-	/** NEU **/padding: 30px 40px;
+	padding: 30px 40px;
 	border-spacing: 0px;
 	background-color: #192C3A;
 	/** NEU */background: url(../images/bg-login-box.png);
@@ -55,9 +55,9 @@
 	margin-left: auto;
 	margin-right: auto;
 	text-align: left;
-	/** NEU **/box-shadow: none;
-	/** NEU **/border-radius: 0px;
-	/** NEU **/color: #ffffff;
+	box-shadow: none;
+	border-radius: 0px;
+	color: #ffffff;
 	td.logo{
 		text-align:center;
 	}
@@ -91,7 +91,7 @@
 		margin-bottom: 5px;
 	}
 
-	/** NEU **/
+
 	input[type="radio"] {
 		padding: 0px;
 		height: auto;
@@ -99,8 +99,8 @@
 		width: auto;
 		margin-bottom: 5px;
 	}
-	
-	/** NEU **/
+
+
 	input[type="checkbox"] {
 		padding: 0px;
 		height: auto;
@@ -109,24 +109,24 @@
 		margin-bottom: 5px;
 	}
 
-	/** NEU **/
+
 	.defaultfont  {
 		padding-top: 0px;
 	}
 
-	/** NEU **/
+
 	.logo img  {
 		margin-bottom: 15px;
 		max-width: 300px;
 	}
 
-	/** NEU **/
+
 	.agency img,
 	img.agency  {
 		max-width: 150px;
 		margin: 0px;
 	}
-	/** NEU **/
+
 	.defaultfont a,
 	.defaultfont a:link,
 		.defaultfont a:visited,
@@ -167,10 +167,10 @@
 	border-style: none;
 	padding: 0px;
 	border-spacing: 0px;
-	/** NEU **/width: 100%;
+	width: 100%;
 
 	button.weBtn {
-		height: 30px !important;
+		height: 30px;
 		line-height: 27px;
 		margin: 0px;
 	}
