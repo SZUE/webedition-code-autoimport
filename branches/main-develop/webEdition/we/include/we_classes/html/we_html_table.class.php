@@ -188,6 +188,9 @@ class we_html_table extends we_html_baseCollection{
 	 */
 	function setColContent($rowid, $colid, $content = ""){
 		$col = & $this->getChild($rowid)->getChild($colid);
+		if($col===null){
+			t_e('err');
+		}
 		$col->setContent($content);
 	}
 

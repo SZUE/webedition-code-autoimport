@@ -22,63 +22,66 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 @import "config.scss";
-#jsMessageUl {
-	border-top			: 1px solid black;
-	background			: #fff;
-	margin:0px;
-	padding:0px;
+body.messageConsoleWindow{
+	#jsMessageUl {
+		border-top			: 1px solid black;
+		background			: #fff;
+		margin:0px;
+		padding:0px;
 
-	li {
-		border-bottom		: 1px solid black;
-		margin				: 0px 0px 0px 0px;
-		padding				: 1ex 0px 1ex 3em;
+		li {
+			border-bottom		: 1px solid black;
+			margin				: 0px 0px 0px 0px;
+			padding				: 1ex 0px 1ex 3em;
 
-		.fa-li.fa-lg{
-			left:0px;
-			top: auto;
+			.fa-li.fa-lg{
+				left:0px;
+				top: auto;
+			}
 		}
 	}
-}
 
-#headlineDiv {
-	height				: 40px;
-	div {
-		padding				: 10px 0px 0px 10px;
+	#headlineDiv {
+		position:absolute;
+		top:0px;
+		left:0px;
+		right:0px;
+		height				: 40px;
+		div {
+			padding				: 10px 0px 0px 10px;
+		}
 	}
-}
 
-#messageDiv {
-	background			: #fff;
-	overflow			: auto;
-	height				: 420px ! important;
-}
-
-#versionsDiv {
-	background			: #fff;
-	overflow			: auto;
-	height				: 420px ! important;
-	margin				: 0px ! important;
-}
-
-
-.dialogButtonDiv {
-	left				: 0px;
-	height				: 40px;
-	background: linear-gradient(#B4B3B3, #C6C5C5);
-	position			: absolute;
-	bottom				: 0px;
-	width				: 100%;
-	padding: 10px 10px 0px 0px;
-}
-
-li{
-	&.imgNoticeActive {
-		color				: darkgray;
+	#messageDiv,
+	#versionsDiv{
+		background			: #fff;
+		overflow			: auto;
+		position:absolute;
+		top:40px;
+		bottom:40px;
+		left:0px;
+		right:0px;
 	}
-	&.imgWarningActive {
-		color				: blue;
+
+	.dialogButtonDiv {
+		left				: 0px;
+		height				: 30px;
+		background: linear-gradient(#B4B3B3, #C6C5C5);
+		position			: absolute;
+		bottom				: 0px;
+		width				: 100%;
+		padding: 10px 10px 0px 0px;
 	}
-	&.imgErrorActive {
-		color				: red;
+
+	li{
+		&.imgNoticeActive {
+			color				: darkgray;
+		}
+		&.imgWarningActive {
+			color				: blue;
+		}
+		&.imgErrorActive {
+			color				: red;
+		}
 	}
 }

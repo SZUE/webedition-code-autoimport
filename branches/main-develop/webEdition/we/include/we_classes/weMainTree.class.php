@@ -24,6 +24,10 @@
  */
 class weMainTree extends weTree{
 
+	function getHTMLContruct($classes = ''){
+		return parent::getHTMLContruct('withFooter');
+	}
+
 	function getJSStartTree(){
 		return '
 var we_scrollY={};
@@ -59,16 +63,16 @@ while(1){
 		$s .= '
 if(weWindow.treeData){
 	var obj = weWindow.treeData;' .
-			($select ? '
+				($select ? '
 	weWindow.treeData.selection_table="' . $doc->Table . '";
 	weWindow.treeData.selection="' . $doc->ID . '";' :
-				'weWindow.treeData.unselectNode();') . '
+						'weWindow.treeData.unselectNode();') . '
 	if(weWindow.treeData.table == "' . $doc->Table . '"){
 		if(weWindow.treeData[top.treeData.indexOfEntry(' . $doc->ParentID . ')]){
 			var attribs={
 			"id":' . $doc->ID . ',
 			"parentid":' . $doc->ParentID . ',
-			"text":\'' . addcslashes($doc->Text,'\'') . '\',
+			"text":\'' . addcslashes($doc->Text, '\'') . '\',
 			"published":' . $published . ',
 			"table":\'' . $doc->Table . '\',
 			"inschedule":\'' . intval($hasSched) . '\'
@@ -109,11 +113,11 @@ if(weWindow.treeData){
 		if(is_array($treeItems)){
 			foreach($treeItems as $item){
 				$js.= ($clear ? '' : 'if(' . $this->topFrame . '.treeData.indexOfEntry("' . $item['id'] . '")<0){') .
-					$this->topFrame . '.treeData.add(new ' . $this->topFrame . '.node({';
+						$this->topFrame . '.treeData.add(new ' . $this->topFrame . '.node({';
 				foreach($item as $k => $v){
 					$js.= strtolower($k) . ':' . ($v === 1 || $v === 0 || is_bool($v) || $v === 'true' || $v === 'false' || is_int($v) ?
-							intval($v) :
-							'\'' . str_replace(array('"', '\'', '\\'), '', $v) . '\'') . ',';
+									intval($v) :
+									'\'' . str_replace(array('"', '\'', '\\'), '', $v) . '\'') . ',';
 				}
 				$js.='}));' . ($clear ? '' : '}');
 			}

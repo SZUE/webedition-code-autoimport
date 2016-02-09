@@ -31,7 +31,7 @@ echo we_html_tools::getHtmlTop(g_l('versions', '[versions_log]')) .
 ?>
 </head>
 
-<body class="weDialogBody">
+<body class="weDialogBody messageConsoleWindow">
 	<div id="headlineDiv">
 		<div class="weDialogHeadline">
 			<?php echo g_l('versions', '[versions_log]') ?>

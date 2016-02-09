@@ -200,7 +200,7 @@ function drawTree() {
 
 container.prototype.drawGroup = function (nf, ai, zweigEintrag) {
 	var newAst = zweigEintrag;
-	var ret = "<span onclick=\"top.content.treeData.openClose('" + nf[ai].id + "',1)\" class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open ? "minus" : "plus") + "-square-o fa-stack-1x'></i></span>";
+	var ret = "<span onclick=\"top.content.treeData.openClose('" + nf[ai].id + "',1)\" class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-caret-" + (nf[ai].open ? "down" : "right") + " fa-stack-1x'></i></span>";
 	if (deleteMode) {
 		if (nf[ai].id != -1) {
 			trg = "top.content.check('img_" + nf[ai].id + "');";

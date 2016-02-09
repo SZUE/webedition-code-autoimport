@@ -532,16 +532,16 @@ function we_cmd_base(args, url) {
 			}
 			break;
 		case "do_delete":
-			we_sbmtFrm(self.load, url, self.treeheader);
+			we_sbmtFrm(self.load, url, document.getElementsByTagName("iframe").treeheader);
 			break;
 		case "move_single_document":
 			we_sbmtFrm(self.load, url, WE().layout.weEditorFrameController.getActiveDocumentReference().editFooter);
 			break;
 		case "do_move":
-			we_sbmtFrm(self.load, url, self.treeheader);
+			we_sbmtFrm(self.load, url, document.getElementsByTagName("iframe").treeheader);
 			break;
 		case "do_addToCollection":
-			we_sbmtFrm(self.load, url, self.treeheader);
+			we_sbmtFrm(self.load, url, document.getElementsByTagName("iframe").treeheader);
 			break;
 		case "change_passwd":
 			new (WE().util.jsWindow)(this, url, "we_change_passwd", -1, -1, 250, 220, true, false, true, false);
@@ -1021,9 +1021,14 @@ function we_cmd_base(args, url) {
 			if (!WE().session.seemode) {
 				treeData.setState(treeData.tree_states.edit);
 				drawTree();
-
-				self.document.getElementById("bm_treeheaderDiv").style.height = "1px";
-				self.document.getElementById("treetable").style.top = "1px";
+				var cl=self.document.getElementById("bm_treeheaderDiv").classList;
+				cl.remove('deleteSelector');
+				cl.remove('moveSelector');
+				cl.remove('collectionSelector');
+				cl=self.document.getElementById("treetable").classList;
+				cl.remove('deleteSelector');
+				cl.remove('moveSelector');
+				cl.remove('collectionSelector');
 				top.setTreeWidth(widthBeforeDeleteMode);
 				top.setSidebarWidth(widthBeforeDeleteModeSidebar);
 			}
@@ -1045,8 +1050,8 @@ function we_cmd_base(args, url) {
 				treeData.setState(treeData.tree_states.edit);
 				drawTree();
 			}
-			self.document.getElementById("bm_treeheaderDiv").style.height = "150px";
-			self.document.getElementById("treetable").style.top = "150px";
+			self.document.getElementById("bm_treeheaderDiv").classList.add('deleteSelector');
+			self.document.getElementById("treetable").classList.add('deleteSelector');
 			top.toggleTree(true);
 			var width = top.getTreeWidth();
 
@@ -1062,7 +1067,7 @@ function we_cmd_base(args, url) {
 			widthBeforeDeleteModeSidebar = widthSidebar;
 
 			if (args[2] != 1) {
-				we_repl(self.treeheader, url, args[0]);
+				we_repl(document.getElementsByTagName("iframe").treeheader, url, args[0]);
 			}
 			break;
 		case "move":
@@ -1081,8 +1086,8 @@ function we_cmd_base(args, url) {
 					treeData.setState(treeData.tree_states.edit);
 					drawTree();
 				}
-				self.document.getElementById("bm_treeheaderDiv").style.height = "160px";
-				self.document.getElementById("treetable").style.top = "160px";
+				self.document.getElementById("bm_treeheaderDiv").classList.add('moveSelector');
+				self.document.getElementById("treetable").classList.add('moveSelector');
 				top.toggleTree(true);
 				var width = top.getTreeWidth();
 
@@ -1098,7 +1103,7 @@ function we_cmd_base(args, url) {
 				widthBeforeDeleteModeSidebar = widthSidebar;
 
 				if (args[2] != 1) {
-					we_repl(self.treeheader, url, args[0]);
+					we_repl(document.getElementsByTagName("iframe").treeheader, url, args[0]);
 				}
 			}
 			break;
@@ -1113,8 +1118,8 @@ function we_cmd_base(args, url) {
 					treeData.setState(treeData.tree_states.edit);
 					drawTree();
 				}
-				self.document.getElementById("bm_treeheaderDiv").style.height = "205px";
-				self.document.getElementById("treetable").style.top = "205px";
+				self.document.getElementById("bm_treeheaderDiv").classList.add('collectionSelector');
+				self.document.getElementById("treetable").classList.add('collectionSelector');
 				top.toggleTree(true);
 				var width = top.getTreeWidth();
 				widthBeforeDeleteMode = width;
@@ -1127,7 +1132,7 @@ function we_cmd_base(args, url) {
 				widthBeforeDeleteModeSidebar = widthSidebar;
 
 				if (args[2] != 1) {
-					we_repl(self.treeheader, url, args[0]);
+					we_repl(document.getElementsByTagName("iframe").treeheader, url, args[0]);
 				}
 			}
 			break;
@@ -1568,7 +1573,9 @@ WE().layout.we_setPath = function (path, text, id, classname) {
 	if (classname) {
 		WE().layout.multiTabs.setTextClass(_EditorFrame.FrameId, classname);
 	}
-
+	if (_EditorFrame.getDocumentReference().frames.editHeader === undefined) {
+		return;
+	}
 	var doc = _EditorFrame.getDocumentReference().frames.editHeader.document;
 	if (doc) {
 		var div = doc.getElementById('h_path');

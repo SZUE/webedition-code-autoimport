@@ -235,7 +235,6 @@ abstract class we_root extends we_class{
 		$idname = 'we_' . $this->Name . '_' . $IDName;
 		$path = $this->$Pathname;
 		$myid = $this->$IDName;
-
 		if($disabled){
 			return we_html_tools::htmlFormElementTable(array(
 					"text" => we_html_tools::hidden($idname, $myid, array('id' => $idname)) .
@@ -579,7 +578,7 @@ abstract class we_root extends we_class{
 			$db = new DB_WE();
 			$LDcoType = f('SELECT LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblDocTypes" AND DID=' . $this->DocType . ' AND Locale="' . $db->escape($langkey) . '"', '', $db);
 			if($LDcoType){
-				$createbutton = we_html_button::create_button("fa:add_doc,fa-plus,fa-lg fa-file-text-o", "javascript:top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "','" . $LDcoType . "');");
+				$createbutton = we_html_button::create_button('fa:add_doc,fa-plus,fa-lg fa-file-text-o', "javascript:top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "','" . $LDcoType . "');");
 				$yuiSuggest->setCreateButton($createbutton);
 			}
 		}

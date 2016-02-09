@@ -78,8 +78,9 @@ function we_cmd() {
 			}
 			break;
 		case "module_navigation_save":
-			if (top.content.editor.edbody.document.we_form.cmd.value === "home")
+			if (top.content.editor.edbody.document.we_form.cmd.value === "home"){
 				return;
+			}
 			if (top.content.editor.edbody.loaded) {
 				if (top.content.editor.edbody.document.we_form.presetFolder)
 					top.content.editor.edbody.document.we_form.presetFolder.value = makeNewDoc;
@@ -101,8 +102,9 @@ function we_cmd() {
 			break;
 		case "populate":
 		case "depopulate":
-			if (top.content.editor.edbody.document.we_form.cmd.value === "home")
+			if (top.content.editor.edbody.document.we_form.cmd.value === "home"){
 				return;
+			}
 			if (top.content.editor.edbody.loaded) {
 				q = (args[0] === "populate" ?
 								WE().consts.g_l.navigation.view.populate_question :

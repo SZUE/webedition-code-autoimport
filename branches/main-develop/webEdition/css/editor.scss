@@ -25,37 +25,67 @@
 input:invalid {
 	background-color: #ff8888 ! important;
 }
+
 .weEditmodeStyle {
-	border: 0px ! important;
-	font-family: $weFont;
-}
-.weEditTable{
-	background-color: #F5F5F5;
-	border: solid #006DB8 1px;
-	color: black;
-	font-family: $weFont;
+  	border: 0px ! important;
+  	padding: 5px;
 }
 
-.spacing0{
-	border-spacing: 0px;
-}
-.spacing2{
-	border-spacing: 2px;
-}
-
-.padding0 td{
-	padding: 0px;
-}
-.padding2 td{
-	padding: 2px;
-}
-.border0{
-	border-style: none;
+.weEditTable {
+  	background-color: transparent;
+  	 border: 1px solid $Grey;
+  	color: black;
+  	font-size: $medfont;
 }
 
-div.we_blockControls{
-	button,
-	select{
-		margin-right:1em;
-	}
+ /*
+.spacing0 {
+  border-spacing: 0px; }
+
+.spacing2 {
+  border-spacing: 2px; }
+
+.padding0 td {
+  padding: 0px; }
+
+.padding2 td {
+  padding: 2px; }
+
+.border0 {
+  border-style: none; }
+*/
+
+div.we_blockControls button, div.we_blockControls select {
+  margin-right: 1em; }
+
+
+table.mceLayout {
+	/* border: 1px solid #d7dce0 !important; */
+	 /*margin: 10px 0px !important;*/
 }
+
+
+table.mceLayout .mceToolbar,
+table.mceLayout .mceStatusbar {
+	/* background: #d7dce0 !important; */
+}
+
+
+.we_blockControls {
+	/*background: #a5aaae;
+	padding: 5px;
+	margin: 20px 0px 10px 0px;
+	/*border: 1px solid #a5aaae;*/
+}
+
+.we_blockControls button.weBtn,
+table.mceLayout button.weBtn {
+	margin-left: 0px !important;
+}
+
+/*
+article input {
+	width: 100% !important;
+	padding: 5px 10px;
+    box-sizing: border-box;
+}*/

@@ -297,7 +297,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 			);
 
 
-			$ok = we_html_button::create_button("export", "javascript:we_cmd('exportGroup_csv')");
+			$ok = we_html_button::create_button('export', "javascript:we_cmd('exportGroup_csv')");
 
 			$export_box = new we_html_table(array('class' => 'default', 'style' => 'margin-top:10px;'), 12, 1);
 
@@ -590,7 +590,7 @@ function newIp(){
 		$table->setColContent($i, 0, we_html_element::htmlB(g_l('modules_voting', '[total_voting]') . ':') . we_html_tools::hidden("updateScores", false, array("id" => 'updateScores')));
 		$table->setCol($i, 3, array('colspan' => 3), we_html_element::htmlB(we_html_element::htmlSpan(array('id' => 'total'), $total_score)));
 
-		$butt = we_html_button::create_button("reset_score", "javascript:top.content.setHot();resetScores();");
+		$butt = we_html_button::create_button('reset_score', "javascript:top.content.setHot();resetScores();");
 
 		$js = we_html_element::jsElement('
 function resetScores(){
@@ -638,7 +638,7 @@ function refreshTexts(){
 		);
 
 
-		$ok = we_html_button::create_button("export", "javascript:we_cmd('export_csv')");
+		$ok = we_html_button::create_button('export', "javascript:we_cmd('export_csv')");
 
 		$export_box = new we_html_table(array('class' => 'default', 'style' => 'margin-top:10px;'), 10, 1);
 

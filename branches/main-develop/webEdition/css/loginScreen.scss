@@ -22,24 +22,118 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+@import "config.scss";
 #loginScreen{
-	background-color:#386AAB;
-	height:100%;
+	 /*background-color: #386aab;*/
+	background: url(../images/bg-login.jpg);
+	background-size: cover;
+	background-position: right bottom;
+	height: 100%;
+	form{
+		position:absolute;
+		left:0px;
+		right:0px;
+		 /*bottom: 2em;*/
+		 top: 5em;
+	}
+	#picCopy{
+		font-size: $smallfont;
+		position: absolute;
+		right:5px;
+		bottom:0px;
+		color:white;
+	}
 }
 
 #mainTable{
-	border-style:none;
-	padding:20px 15px 20px;
-	border-spacing:0px;
-	background-color:#EBEBEB;
+	border-style: none;
+	padding: 30px 40px;
+	border-spacing: 0px;
+	background-color: #192C3A;
+	/** NEU */background: url(../images/bg-login-box.png);
 	width: 432px;
 	margin-left: auto;
 	margin-right: auto;
-	text-align:left;
-	box-shadow: 5px 5px 5px #555555;
-	border-radius:10px;
+	text-align: left;
+	box-shadow: none;
+	border-radius: 0px;
+	color: #ffffff;
 	td.logo{
 		text-align:center;
+	}
+
+	.defaultfont,
+	label ,
+	.small {
+		color: #ffffff;
+		font-size: $bigfont;
+	}
+
+	label {
+		font-weight: bold;
+		margin-bottom: 2px;
+		display: block;
+	}
+
+	.radiobutton label {
+		font-weight: normal;
+		font-size: $medfont;
+		vertical-align: top;
+	}
+	input {
+		color: #4d565d;
+		background: #ffffff;
+		border: none;
+		padding: 0px 10px;
+		height: 30px;
+		line-height: 30px;
+		width: 100%;
+		margin-bottom: 5px;
+	}
+
+
+	input[type="radio"] {
+		padding: 0px;
+		height: auto;
+		line-height: inherit;
+		width: auto;
+		margin-bottom: 5px;
+	}
+
+
+	input[type="checkbox"] {
+		padding: 0px;
+		height: auto;
+		line-height: inherit;
+		width: auto;
+		margin-bottom: 5px;
+	}
+
+
+	.defaultfont  {
+		padding-top: 0px;
+	}
+
+
+	.logo img  {
+		margin-bottom: 15px;
+		max-width: 300px;
+	}
+
+
+	.agency img,
+	img.agency  {
+		max-width: 150px;
+		margin: 0px;
+	}
+
+	.defaultfont a,
+	.defaultfont a:link,
+		.defaultfont a:visited,
+		a,
+		a:link,
+		a:visited {
+		color: #a5aaae;
 	}
 }
 
@@ -70,10 +164,18 @@
 }
 
 .plainTable{
-	border-style:none;
-	padding:0px;
-	border-spacing:0px;
+	border-style: none;
+	padding: 0px;
+	border-spacing: 0px;
+	width: 100%;
+
+	button.weBtn {
+		height: 30px;
+		line-height: 27px;
+		margin: 0px;
+	}
 }
+
 
 #username {
 	width: 250px;
@@ -89,4 +191,7 @@
 .spaceTable {
 	padding-top:15px;
 	padding-bottom:5px;
+	.plainTable {
+		padding-bottom: 20px;
+	}
 }

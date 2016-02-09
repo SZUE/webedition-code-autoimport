@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -28,6 +29,7 @@
  * Provides functions for creating webEdition buttons.
  */
 abstract class we_html_button{
+
 	const HEIGHT = 22;
 	const WIDTH = 100;
 	const AUTO_WIDTH = -1;
@@ -86,38 +88,12 @@ abstract class we_html_button{
 	 * @param boolean $important
 	 * @static
 	 */
-	static function getButton($value, $id, $cmd = '', $width = self::WIDTH, $title = '', $disabled = false, $margin = '', $padding = '', $key = '', $float = '', $display = '', $important = true, $isFormButton = false, $class = ''){
+	static function getButton($text, $id, $cmd = '', $title = '', $disabled = false, $isFormButton = false, $class = ''){
 		return '<button type="' . ($isFormButton ? 'submit' : 'button') . '" ' . ($title ? ' title="' . oldHtmlspecialchars($title) . '"' : '') .
-			($disabled ? ' disabled="disabled"' : '') .
-			' id="' . $id . '" class="weBtn' . ($class ? ' ' . $class : '') . '" ' . self::getInlineStyleByParam(($width ? : ($width == self::AUTO_WIDTH ? 0 : self::WIDTH)), '', $float, $margin, $padding, $display, '', $important) .
-			' onclick="' . oldHtmlspecialchars($cmd) . '"' .
-			'>' . $value . '</button>';
-	}
-
-	/**
-	 * Gets the style attribut for using in the elements HTML.
-	 *
-	 * @return string
-	 * @param integer $width
-	 * @param integer $height
-	 * @param string $margin
-	 * @param string $padding
-	 * @param string $display
-	 * @param string $extrastyle
-	 * @param boolean $important
-	 */
-	static function getInlineStyleByParam($width = '', $height = '', $float = '', $margin = '', $padding = '', $display = '', $extrastyle = '', $important = true, $clear = ''){
-
-		$_imp = $important ? ' ! important' : '';
-
-		return ' style="' . /* border-style:none; padding:0px;border-spacing:0px;' . */ ($width > 0 ? 'width:' . $width . 'px' . $_imp . ';' : '') .
-			($height ? 'height:' . $height . 'px' . $_imp . ';' : '') .
-			($float ? 'float:' . $float . $_imp . ';' : '') .
-			($clear ? 'clear:' . $clear . $_imp . ';' : '') .
-			($margin ? 'margin:' . $margin . $_imp . ';' : '') .
-			($display ? 'display:' . $display . $_imp . ';' : '') .
-			($padding ? 'padding:' . $padding . $_imp . ';' : '') .
-			$extrastyle . '"';
+				($disabled ? ' disabled="disabled"' : '') .
+				' id="' . $id . '" class="weBtn' . ($class ? ' ' . $class : '') . '" ' .
+				' onclick="' . oldHtmlspecialchars($cmd) . '"' .
+				'>' . $text . '</button>';
 	}
 
 	/**
@@ -136,21 +112,15 @@ abstract class we_html_button{
 	 *
 	 * @return     string
 	 */
-	static function create_button($name, $href, $alt = true, $width = self::WIDTH, $height = self::HEIGHT, $on_click = '', $target = '', $disabled = false, $uniqid = true, $suffix = '', $opensDialog = false, $title = '', $class = ''){
+	static function create_button($name, $href, $alt = true, $width = self::WIDTH, $height = self::HEIGHT, $on_click = '', $target = '', $disabled = false, $uniqid = true, $suffix = '', $opensDialog = false, $title = '', $class = '', $id = ''){
 		$cmd = '';
 
 		// Check width
-		$width = ($width ? : self::WIDTH);
-
-		// Check height
-		$height = ($height ? : self::HEIGHT);
+		//$width = ($width ? : self::WIDTH);
 
 		restart:
 		$all = explode(':', $name, 2);
 		list($type, $names) = count($all) == 1 ? array('', '') : $all;
-		/**
-		 * DEFINE THE NAME OF THE BUTTON
-		 */
 		// Check if the button is a text button or an image button
 		$value = '';
 		if($on_click){
@@ -175,7 +145,7 @@ abstract class we_html_button{
 				}
 			case self::WE_FASTACK_BUTTON_IDENTIFY://fixme: add stack class
 				//set width for image button if given width has not default value
-				$width = ($width == self::WIDTH ? self::AUTO_WIDTH : $width);
+				//$width = ($width == self::WIDTH ? self::AUTO_WIDTH : $width);
 				//get name for title
 				list($name, $names) = explode(',', $names, 2);
 				$fas = explode(',', $names);
@@ -184,13 +154,15 @@ abstract class we_html_button{
 					$value.='<i class="fa ' . ($cnt == 0 ? 'fa-stack-2x ' : 'fa-stack-1x ') . $fa . '"></i>';
 				}
 				$value.='</span>';
+				$class.=' weIconButton';
 				break;
 			case self::WE_FATEXT_BUTTON_IDENTIFY:
+				$class.=' weIconTextButton';
 			case self::WE_FA_BUTTON_IDENTIFY:
 				//set width for image button if given width has not default value
-				if($type == self::WE_FA_BUTTON_IDENTIFY){
-					$width = ($width == self::WIDTH ? self::AUTO_WIDTH : $width);
-				}
+				/* 				if($type == self::WE_FA_BUTTON_IDENTIFY){
+				  $width = ($width == self::WIDTH ? self::AUTO_WIDTH : $width);
+				  } */
 				//get name for title
 				list($name, $names) = explode(',', $names, 2);
 				$fas = explode(',', $names);
@@ -202,14 +174,15 @@ abstract class we_html_button{
 					$value.='<i class="fa ' . ($cnt > 0 ? 'fa-moreicon ' : 'fa-firsticon ') . $fa . '"></i>';
 				}
 				if($type == self::WE_FA_BUTTON_IDENTIFY){
+					$class.=' weIconButton';
 					break;
 				}
 				//add text, no break;
 				$value.=' ';
 			default:
-				if(($width == self::WIDTH) && ($tmp = g_l('button', '[' . $name . '][width]', true))){
-					$width = $tmp;
-				}
+				/* 				if(($width == self::WIDTH) && ($tmp = g_l('button', '[' . $name . '][width]', true))){
+				  $width = $tmp;
+				  } */
 				$text = g_l('button', '[' . $name . '][value]') . ($opensDialog ? '&hellip;' : '');
 				$value = ($name == 'next' ? $text . ' ' . $value : $value . $text);
 		}
@@ -231,17 +204,17 @@ abstract class we_html_button{
 				}
 				// Check if the link has to be opened in a different frame or in a new window
 				$cmd = $on_click . ($target ? // The link will be opened in a different frame or in a new window
-						// Check if the link has to be opend in a frame or a window
-						($target === '_blank' ? // The link will be opened in a new window
-							"new (WE().util.jsWindow)(window, '" . $href . "','" . $target . "', -1, -1, 500, 550, true, true, true);" :
-							// The link will be opened in a different frame
-							"target_frame = eval('parent.' + " . $target . ");" .
-							"target_frame.location.href='" . $href . "';") :
-						// The link will be opened in the current frame or window
-						"window.location.href='" . $href . "';");
+								// Check if the link has to be opend in a frame or a window
+								($target === '_blank' ? // The link will be opened in a new window
+										"new (WE().util.jsWindow)(window, '" . $href . "','" . $target . "', -1, -1, 500, 550, true, true, true);" :
+										// The link will be opened in a different frame
+										"target_frame = eval('parent.' + " . $target . ");" .
+										"target_frame.location.href='" . $href . "';") :
+								// The link will be opened in the current frame or window
+								"window.location.href='" . $href . "';");
 		}
 
-		return self::getButton($value, ($uniqid ? 'we' . $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name) . $suffix, $cmd, $width, ($alt ? ($title ? : (($tmp = g_l('button', '[' . $name . '][alt]', true)) ? $tmp : '')) : ''), $disabled, '', '', '', '', '', true, $hrefData[0] === self::WE_FORM, $class);
+		return self::getButton($value, ($id? : ($uniqid ? 'we' . $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name) . $suffix), $cmd, ($alt ? ($title ? : (($tmp = g_l('button', '[' . $name . '][alt]', true)) ? $tmp : '')) : ''), $disabled, $hrefData[0] === self::WE_FORM, $class);
 	}
 
 	static function formatButtons($buttons){
@@ -284,8 +257,8 @@ abstract class we_html_button{
 		//	Create button array
 		//	button order depends on OS
 		$buttons = (we_base_browserDetect::isMAC() ?
-				$no_button . $cancel_button . $yes_button :
-				$yes_button . $no_button . $cancel_button);
+						$no_button . $cancel_button . $yes_button :
+						$yes_button . $no_button . $cancel_button);
 
 		return we_html_element::htmlDiv($attr, $buttons);
 	}

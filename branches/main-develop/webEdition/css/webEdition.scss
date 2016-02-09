@@ -31,20 +31,30 @@ body{
 	margin: 0px;
 	letter-spacing: normal ! important;
 	font-family: $weFont;
-	font-size: $bigfont;
-	background-color:white;
+	font-size: 14px;
+	background-color: white;
 
 	&.weDialogBody,
 	&.weEditorBody{
 		margin: 0px;
 		padding: 0px;
-		background-color: #EDEDED;
+		background-color: $White;
 		overflow: hidden;
 		height: 100%;
 	}
 
 	&.weEditorBody {
 		padding: 10px 0px;
+
+		div.multiIcon {
+
+			div.weMultiIconBoxHeadline {
+				font-size: 16px;
+				color: #284a70;
+			}
+
+		}
+
 	}
 
 	&.previewOther{
@@ -151,7 +161,7 @@ div{
 		}
 
 		div.weMultiIconBoxLine{
-			border-bottom: 1px solid #AFB0AF;
+			border-bottom: 1px solid $LightGrey;
 		}
 
 		div.multiIconRight{
@@ -161,6 +171,7 @@ div{
 		div.multiiconleft{
 			display: inline-block;
 			vertical-align: top;
+			text-align: center;
 			span.fileicon{
 				margin-left:20px;
 			}
@@ -175,15 +186,15 @@ div{
 
 #multiEditorDocumentTabsFrameDiv,
 #naviDiv{
-	position:absolute;
-	top:0px;
-	height:$defaultEditorTabHeight;
-	width:100%;
+	position: absolute;
+	top: 0px;
+	/** NEU height: 30px !important;*/
+	width: 100%;
 	@if($useOldStyle){
 		background-color: Silver;
 		border-top: 1px solid #000000;
 	}@else{
-		background-color: #cde1d3;
+		background-color: $DarkBlue;
 	}
 }
 
@@ -203,14 +214,9 @@ body.radient{
 }
 
 #footerBody{
-	//border-top: 2px groove white;
-	padding:8px 0px 10px 0px;
-	@if($useOldStyle){
-		background: linear-gradient(#B4B3B3, #C6C5C5);
-	}@else{
-		background: linear-gradient(#B4B3B3, #C6C5C5);
-	}
-	height:100%;
+	padding: 8px 0px 10px 0px;
+	background: $Grey;
+	height: 100%;
 }
 
 #weMainBody{
@@ -238,19 +244,19 @@ body.radient{
 
 
 #resizeFrame{
-	margin:0px;
-	border:0px none;
-	position:fixed;
-	top:$menuHeight+1px;
-	bottom:0px;
-	left:0px;
-	right:0px;
-	overflow:hidden;
+	margin: 0px;
+	border: 0px none;
+	position: fixed;
+	top: 44px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	overflow: hidden;
 	#bm_content_frameDiv{
-		position:absolute;
-		top:0px;
-		bottom:0px;
-		border-left:1px solid #192C3A;
+		position: absolute;
+		top: 0px;
+		bottom: 0px;
+		border-left: 1px solid $Grey;
 		overflow: hidden;
 		iframe{
 			border:0px;
@@ -260,7 +266,7 @@ body.radient{
 		}
 	}
 	#sidebarDiv{
-		border-left:1px solid #192C3A;
+		border-left:1px solid $DarkBlue;
 		position:absolute;
 		top:0px;
 		bottom:0px;
@@ -270,63 +276,63 @@ body.radient{
 
 
 #vtabs{
-	position:absolute;
-	top:0px;
-	bottom:0px;
-	left:0px;
-	width:$vtabWidth;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	width: $vtabWidth;
 	overflow: hidden;
-	@if($useOldStyle){
-		background: linear-gradient(to right,#EAEAEA, #CFCFCF);
-		border-top:1px solid black;
-	}@else{
-		background-color:#192C3A;
-		color:white;
+	background-color: $DarkBlue;
+	color: white;
 
-	}
+
 
 	div.tab	{
-		border-bottom:1px solid #909090;
-		border-right:1px solid #909090;
-		width:$vtabWidth;
-		height:$vtabHeight;
-		position:relative;
+		border-bottom: 1px solid #284051;
+		border-right: 1px solid $DarkBlue;
+		width: 40px;
+		height: 100px;
+		position: relative;
 		cursor: pointer;
+		background-color: $DarkBlue;
+		color: $LightBlue;
 		span{
 			position: absolute;
-			display:block;
+			display: block;
 			bottom: -15px;
-			left:4px;
-			width:$vtabHeight;
-			-webkit-transform:rotate(-90deg); /* Chrome, Opera 15+, Safari 3.1+ */
+			left: 12px;
+			width: 100px;
+			-webkit-transform: rotate(-90deg);
 			-webkit-transform-origin: 0 0;
-			-ms-transform:rotate(-90deg); /* IE 9 */
+			/* Chrome, Opera 15+, Safari 3.1+ */
+			-ms-transform: rotate(-90deg);
 			-ms-transform-origin: 0 0;
-			transform: rotate(-90deg); /* Firefox 16+, IE 10+, Opera*/
+			/* IE 9 */
+			transform: rotate(-90deg);
+			/* Firefox 16+, IE 10+, Opera*/
 			transform-origin: 0 0;
 			text-align: center;
-			color:inherit;
+			color: inherit;
+			font-size: $medfont;
 		}
 	}
 
 	div.tabNorm:hover{
-		background: linear-gradient(to right, #CBD3DC, #BFC6CF 50%, #999999) transparent;
-		color:black;
+		background-color: $MiddleGrey;
+		color: $MiddleBlue;
 	}
 
 	div.tabActive{
-		color:black;
-		background-color:#C9CDD0;
-		border-right-color: #f3f7ff;
+		background-color: $MiddleGrey;
+		border-right-color: $Grey;
+		color: $MiddleBlue;
 	}
 }
-
-
 #treeFrameDiv{
 	position:absolute;
 	top:0px;
 	bottom:0px;
-	left:$vtabWidth;
+	left: 41px;
 	right:0px;
 	border:0px;
 	overflow: hidden;
@@ -350,7 +356,6 @@ td.boxHeader{
 	bottom:0px;
 	left:0px;
 	display:none;
-	//border-right:1px solid #192C3A;
 }
 #rframe{
 	border:0px;
@@ -360,8 +365,8 @@ td.boxHeader{
 }
 
 #baumArrows{
-	position:absolute;
-	left:5px;
+	position: absolute;
+	left: 11px;
 	bottom: 13px;
 	font-size: 10px;
 	text-align: center;
@@ -381,15 +386,15 @@ td.boxHeader{
 
 #treeControl{
 	line-height: $defaultEditorTabHeight;
-	height:$defaultEditorTabHeight;
-	background-color: #B7BBBF;
+	height: $defaultEditorTabHeight;
+	background-color: $Grey;
 	#treeName{
-		padding:0px 1ex;
-		font-family: $weFontBold;
+		padding: 0px 1ex;
 	}
 	#toggleTree{
-		position:absolute;
-		right:1ex;
+		position: absolute;
+		right: 1ex;
+		color: $DarkGrey;
 	}
 }
 
@@ -400,18 +405,29 @@ td.boxHeader{
 	left: 0px;
 	right: 0px;
 	#bm_searchField{
-		position:absolute;
-		bottom:0px;
-		height:$editorFooterHeight;
-		left:0px;
-		right:0px;
+		position: absolute;
+		bottom: 0px;
+		height: 30px;
+		padding:10px;
+		left: 0px;
+		right: 0px;
 		overflow: hidden;
-		background-repeat:repeat;
-		margin:0px;
-		background: linear-gradient(to bottom, #B4B3B3, #C6C5C5) transparent;
-		border-top: 2px groove white;
+		background-repeat: repeat;
+		margin: 0px;
+		background: $Grey;
+		border-top: none;
 		#search{
-			margin: 10px 0 0 10px;
+			input {
+				height: 30px;
+				border: none;
+				line-height: 30px;
+				width:120px;
+				vertical-align: bottom;
+			}
+		}
+		#infoField{
+			margin:5px 0px;
+			display: none;
 		}
 	}
 }
@@ -419,10 +435,17 @@ td.boxHeader{
 #bm_treeheaderDiv{
 	position:absolute;
 	top:0px;
-	height:1px;
+	height:0px;
 	left:0px;
 	right:0px;
 	overflow: hidden;
+	&.deleteSelector,
+	&.moveSelector{
+		height:160px;
+	}
+	&.collectionSelector{
+		height:205px;
+	}
 
 	iframe{
 		width:100%;
@@ -430,29 +453,28 @@ td.boxHeader{
 		overflow: hidden;
 	}
 }
-#infoField{
-	margin:5px;
-	display: none;
-}
+
 
 #tree,
 #treetable{
-	background-color:#f5f5f5;
+	background-color: $MiddleGrey;
 	left:0px;
 	right:0px;
 	position:absolute;
 	overflow: auto;
-	top:1px;
-	bottom:$editorFooterHeight;
+	top:0px;
+	bottom:0px;
+	&.withHeader{
+		top:40px;
+	}
+	&.withFooter{
+		bottom:$editorFooterHeight;
+	}
 }
 
 #eHeaderBody,
 #footerBody{
 	overflow: hidden;
-}
-#eHeaderBody #tabContainer div{
-	min-width:5em;
-	text-align: center;
 }
 
 #treeheader/*used in modules*/{
@@ -466,18 +488,17 @@ td.boxHeader{
 	height: 40px;
 	box-sizing: border-box;
 	display:none;
+	background: $Grey;
+	margin: 0px;
 }
 
-#treeheader,
 #eHeaderBody{
-	@if($useOldStyle){
-		background-color: #C8D8EC;
-		background: linear-gradient(#c9d9ed, #afc3de);
-
-	}@else{
-		background: #9AA2A9;
-	}
+	background: $Grey;
 	margin: 0px;
+	#tabContainer div{
+		min-width:5em;
+		text-align: center;
+	}
 }
 
 /*div for iconbar frame*/
@@ -500,11 +521,11 @@ td.boxHeader{
 }
 
 #headrow{
-	margin:3px 0px 3px 5px;
+	margin: 7px 0px 7px 5px;
 	white-space: nowrap;
 	a{
 		#h_path{
-			color:#006699;
+			color: #386aab;
 		}
 	}
 }
@@ -518,11 +539,11 @@ td.boxHeader{
 }
 
 #resize{
-	position:absolute;
-	top:$menuHeight;
-	left:0px;
-	right:0px;
-	bottom:0px;
+	position: absolute;
+	top: 44px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
 	border: 0px;
 	&.withIconBar{
 		top:72px;
@@ -541,14 +562,13 @@ td.boxHeader{
 .weSelect,
 .wetextinput,
 .wetextarea{
-	border: #AAAAAA solid 1px;
-	color: black;
-
+	border: $Grey solid 1px;
+	color: $DarkBlue;
 	box-sizing: border-box;
+	padding: 5px 10px;
 }
 
 .wetextinput {
-	height: 20px;
 	&[disabled] {
 		background-color: #EEEEEE;
 	}
@@ -559,9 +579,10 @@ td.boxHeader{
 }
 
 .multichooser {
-	background-color:white;
+	background-color: white;
 	border: 1px grey solid;
-	min-height: 2ex;
+	min-height: 30px;
+	margin-bottom: 3px;
 }
 
 input[type="checkbox"]{
@@ -916,17 +937,18 @@ optgroup{
 	background-position: bottom left;
 	background-repeat: no-repeat;
 }
-.editfooter{
-	left:0px;
-	height:$editorFooterHeight;
-	position:absolute;
-	bottom:0px;
-	right:0px;
-	padding: 7px 10px;
-	box-sizing: border-box;
-	overflow:hidden;
-	background: linear-gradient(#B4B3B3, #C6C5C5);
-	border-top: 2px groove white;
+
+
+.editfooter {
+  left: 0px;
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  padding: 7px 10px;
+  box-sizing: border-box;
+  overflow: hidden;
+  background: $Grey;
+  border-top: none;
 }
 
 .weDialogButtonsBody {
@@ -951,78 +973,83 @@ optgroup{
 
 #toolMenu,
 #headerDiv{
-	@if($useOldStyle){
-		background: linear-gradient(#F7F7F7, #E8E8E8);
-	}@else{
-		background: linear-gradient(#4675B1, #325E95);
-		color:white;
-
-	}
-	line-height: 32px;
-	height:32px;
+	/*background: linear-gradient(#4675b1, $MiddleBlue);*/
+	background: $MiddleBlue;
+	color: white;
+	line-height: 40px;
+	height: 40px;
 }
 
 #headerDiv{
-	position:absolute;
-	top:0px;
-	left:0px;
-	right:0px;
-	border-bottom: 1px solid #192C3A;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	border-bottom: 4px solid $DarkBlue;
 	#logout,#home{
-		height:32px;
+		height: $menuHeight;
 		float: left;
-		width:30px;
+		width: $menuHeight;
 		cursor: pointer;
 		text-align: center;
+		/*background: linear-gradient(#345881, #284a70);*/
+		background: #284a70;
+		margin-left: 0px;
+		margin-right: 0px;
+		border-right: none;
 	}
 	#logout{
-		@if($useOldStyle){
-		}@else{
-			border-left: 2px solid #2F5889;
-		}
-	}
-	#weHeaderRight{
-		position:absolute;
-		top:0px;
-		bottom:0px;
-		right:0px;
-		border:0px;
-	}
-	#navigationHistory{
-		position:relative;
-		bottom:0px;
-		border:0px;
-		padding-left: 10px;
-		float:left;
-	}
-	#msgheadertable{
-		position:relative;
-		float: left;
-		padding-left: 10px;
-		width:60px;
-		font-size: $medfont;
-		line-height: normal;
-		table{
-			margin:2px 0px 2px auto;
-			border-spacing:0px;
-			border: none;
-			tr {
-				height: 12px;
-			}
-			tr:first-child td{
-				text-align:right;
-			}
-			td {
-				font-family: $weFontBold;
-				color: inherit;
-				padding:0px;
-			}
-		}
-		i{
-			//background-color:white;
-		}
+		background: none;
+		border-left: 1px solid #366196;
 	}
 }
+#weHeaderRight{
+	position:absolute;
+	top:0px;
+	bottom:0px;
+	right:0px;
+	border:0px;
+}
+#navigationHistory{
+	position: relative;
+	bottom: 0px;
+	border: 0px;
+	padding-left: 0px;
+	float: left;
+	.navigation {
+		width: 35px;
+	}
+}
+#msgheadertable{
+	position:relative;
+	float: left;
+	padding-left: 10px;
+	width:60px;
+	font-size: $medfont;
+	line-height: normal;
+	border-right: 1px solid #366196;
+	padding-right: 10px;
+	table{
+		margin:2px 0px 2px auto;
+		border-spacing:0px;
+		border: none;
+		tr {
+			height: 12px;
+		}
+		tr:first-child td{
+			text-align:right;
+		}
+		td {
+			font-family: $weFontBold;
+			color: inherit;
+			padding:0px;
+		}
+	}
+	i{
+		//background-color:white;
+	}
+}
+
 
 /*Error log*/
 table.error{
@@ -1054,13 +1081,6 @@ table.error{
 		}
 	}
 }
-/*#weHeaderLogo{
-	width:78px;
-	height:25px;
-	padding-left: 10px;
-	padding-right: 5px;
-	padding-top:3px;
-}*/
 
 .navigation{
 	float:left;
@@ -1088,16 +1108,50 @@ table.error{
 	}
 }
 
-#messageConsole{
+
+#messageConsole {
 	position:relative;
 	float:left;
+	&:hover {
+		background: linear-gradient(to bottom, #345881, #284a70) transparent !important;
+	}
 	i{
-		color:#cbcbcb;
+		color: $White;
+		margin-top: 13px;
 		&.active{
 			color:#5f97cc;
 		}
 	}
+
+	table {
+		height: $menuHeight;
+
+		tr {
+			line-height: normal;
+
+			td {
+				padding: 0px;
+
+				.navigation {
+					height: $menuHeight;
+					margin: 0px;
+					top: -2px;
+					position: relative;
+					width: 35px
+				}
+
+				.navigation:hover {
+					background: none;
+				}
+			}
+		}
+	}
+
+	.navigation {
+		border-right: none;
+	}
 }
+
 .messageConsoleMessage{/*message*/
 	display: none;
 	background-color: white;
@@ -1189,8 +1243,8 @@ table.revenueTable {
 }
 
 span.fileicon{
-	font-size:7px;
-	color:black;
+	font-size: 8px;
+	color: black;
 	::-moz-selection,
 	::selection{
 		color: inherit;
@@ -1212,12 +1266,12 @@ span.fileicon{
 		color: #164F94;
 	}
 	> .we-otherfiles i{
-		bottom:.4em;
-		color:#164F94;
-		margin-left:.2em;
+		bottom: 0.4em;
+		color: $DarkBlue;
+		margin-left: 0.2em;
 		vertical-align: bottom;
 		font-family: $weFont;
-		line-height:1;
+		line-height: 1;
 	}
 	.we-classification i{
 		top:-.3em;
@@ -1283,7 +1337,8 @@ table.customer{
 
 table.default td,
 table.default th{
-	padding:0px;
+	padding: 0px;
+	vertical-align: top;
 }
 
 table.withSpace tr td{
@@ -1348,9 +1403,6 @@ table.propertydualtable td{
 
 table.footertable{
 	margin-left: 7px;
-	button.weBtn{
-		margin-right: 2em;
-	}
 }
 
 #anchorlistcontainer{
@@ -1639,7 +1691,9 @@ div.collection-content{
 #PropertyPage{
 	input,
 	select{
-		width:30em;
+		width: 30em;
+		height: 30px !important;
+		margin-bottom: 5px;
 	}
 
 	input[type="checkbox"],
@@ -1683,20 +1737,23 @@ body.editFrameset{
 		right:0px;
 	}
 	div.editHeader{
-		top:0px;
+		top: 0px;
+		/** TEST **/ /*height: 100px !important;*/
 	}
 	div.mainEditor,
 	div.contenteditor{
 		bottom:$editorFooterHeight;
+		/** TEST **/ /*top: 100px !important;*/
+		border-top: 1px solid $LightGrey;
 	}
 	div.editorButtonFrame{
-		position:absolute;
-		bottom:0px;
-		left:0px;
-		right:0px;
-		height:$editorFooterHeight;
-		background: linear-gradient(to bottom, #B4B3B3, #C6C5C5) transparent;
-		border-top: 2px groove white;
+		position: absolute;
+		bottom: 0px;
+		left: 0px;
+		right: 0px;
+		height: $editorFooterHeight;
+		/*background: linear-gradient(to bottom, #b4b3b3, #c6c5c5) transparent;*/
+		border-top: 1px solid $LightGrey;
 	}
 }
 
@@ -1714,11 +1771,11 @@ body.moduleEditor{
 	}
 	div.editorHeader{
 		top: 0px;
-		height: 40px;
+		height: 57px;
 		overflow: hidden;
 	}
 	div.editorBody{
-		top: 40px;
+		top: 57px;
 		bottom: $editorFooterHeight;
 	}
 	div.editorButtonFrame{
@@ -1780,14 +1837,36 @@ body.moduleEditor{
 		left: 0px;
 		right: 0px;
 		#left{
-			left:$vtabWidth;
+			left: 40px;
 			position: absolute;
 			top: 0px;
 			bottom: 0px;
 			right: 0px;
+
+			.wetextinput {
+				height: 30px;
+				border: none;
+				line-height: 30px;
+				vertical-align: bottom;
+			}
+		}
+	}
+
+	#treeheader {
+		height: auto;
+		padding: 5px 10px;
+
+		.weSelect {
+			width: 109px !important;
+			height: 30px;
+		}
+
+		button.weBtn {
+			margin-right: 5px !important;
 		}
 	}
 }
+
 #right{
 	background-color: #F0EFF0;
 	position: absolute;
@@ -1912,3 +1991,133 @@ span.alertIcon{
 	font-size: 14px;
 	color:#F2F200;
 }
+
+
+.tree {
+
+	.fa-minus-square-o,
+	.fa-plus-square-o {
+		font-size: 16px !important;
+	}
+
+	.fa-plus-square-o:before {
+		content: "\0229E";
+		font-size: 16px;
+		color: $Grey;
+	}
+
+	.fa-minus-square-o:before {
+		content: "\0229F";
+		font-size: 16px;
+		color: $Grey;
+	}
+
+	.fa-file-o:before {
+		color: $DarkBlue;
+		background: none;
+	}
+}
+
+
+a, a:link, a:visited {
+	color: #386aab;
+}
+
+
+a:hover, a:focus, a:active {
+	color: #386aab;
+	text-decoration: none;
+}
+
+
+.widget iframe {
+	height: 294px !important;
+}
+
+
+#props {
+	width: 100%;
+
+	table {
+		width: 100%;
+
+		tr td {
+			vertical-align: top;
+			text-align: left !important;
+			color: $DarkGrey;
+
+			label {
+				color: $DarkGrey !important;
+			}
+			input,
+			select {
+				height: 20px;
+				line-height: 20px;
+				border-radius: 0px;
+				border: none;
+				background: $White;
+				color: $DarkGrey;
+				padding: 0px 5px;
+			}
+			textarea {
+				height: 40px !important;
+				border-radius: 0px;
+				border: none;
+				background: $White;
+				color: $DarkGrey;
+				margin-bottom: 5px;
+				padding: 5px;
+			}
+			button {
+				margin-left: 5px;
+				margin-bottom: 5px;
+			}
+			div {
+				float: none !important;
+				clear: both !important;
+			}
+
+		}
+	}
+}
+
+
+.le_widget {
+
+	.fa-stack-2x {
+		font-size: 16px;
+	}
+
+	.mediumicons {
+
+		span.fileicon {
+
+			.we-icon {
+
+				i {
+					bottom: 5px;
+				}
+			}
+		}
+	}
+
+	.fa-stack-2x, .fa-3x, .fa-2x {
+		font-size: 16px;
+	}
+}
+
+
+#le_tblWidgets div.widget td span {
+	padding-left: 5px;
+}
+
+
+.fa-inverse {
+	/*color: transparent !important;*/
+}
+
+
+.mainEditor iframe {
+	background: #f8f8fa;
+}
+

@@ -61,8 +61,8 @@ class we_selector_image extends we_selector_document{
 	//FIXME: get/set view using tblFile.viewType
 	protected function printHeaderTable($extra = ''){
 		return parent::printHeaderTable(
-				'<td id="' . we_search_view::VIEW_ICONS . '" style="display:none">' . we_html_button::create_button("fa:iconview,fa-lg fa-th", "javascript:setview('" . we_search_view::VIEW_ICONS . "');", true, 40, "", "", "", false) . '</td>
-		<td id="' . we_search_view::VIEW_LIST . '">' . we_html_button::create_button("fa:listview,fa-lg fa-align-justify-lg fa-align-justify", "javascript:setview('" . we_search_view::VIEW_LIST . "');", true, 40, "", "", "", false) . '</td>', true);
+				'<td id="' . we_search_view::VIEW_ICONS . '" style="display:none">' . we_html_button::create_button('fa:iconview,fa-lg fa-th', "javascript:setview('" . we_search_view::VIEW_ICONS . "');", true, 40, "", "", "", false) . '</td>
+		<td id="' . we_search_view::VIEW_LIST . '">' . we_html_button::create_button('fa:listview,fa-lg fa-align-justify-lg fa-align-justify', "javascript:setview('" . we_search_view::VIEW_LIST . "');", true, 40, "", "", "", false) . '</td>', true);
 	}
 
 	protected function getFramesetJavaScriptDef(){

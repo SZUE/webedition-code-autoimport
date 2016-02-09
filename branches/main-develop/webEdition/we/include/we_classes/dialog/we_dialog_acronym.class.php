@@ -81,7 +81,7 @@ top.close();
 		$buttons = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['we_dialog_args[title]'].value='';weDoOk();");
 
 		if(defined('GLOSSARY_TABLE') && permissionhandler::hasPerm("NEW_GLOSSARY") && !$this->noInternals){
-			$buttons.= we_html_button::create_button("to_glossary", "javascript:weSaveToGlossaryFn();", true, 100);
+			$buttons.= we_html_button::create_button('to_glossary', "javascript:weSaveToGlossaryFn();", true, 100);
 		}
 
 		$buttons.= parent::getDialogButtons();

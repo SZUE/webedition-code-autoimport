@@ -186,6 +186,7 @@ TEMPLATE: '<?php echo we_base_ContentTypes::TEMPLATE; ?>',
 								WE_INCLUDES_DIR:"<?php echo WE_INCLUDES_DIR; ?>",
 								WE_SHOP_MODULE_DIR: "<?php echo defined('WE_SHOP_MODULE_DIR') ? WE_SHOP_MODULE_DIR : 'WE_SHOP_MODULE_DIR'; ?>",
 								WE_WORKFLOW_MODULE_DIR: "<?php echo defined('WE_WORKFLOW_MODULE_DIR') ? WE_WORKFLOW_MODULE_DIR : 'WE_WORKFLOW_MODULE_DIR'; ?>",
+								WE_JS_TINYMCE_DIR: "<?php echo WE_JS_TINYMCE_DIR; ?>",
 				},
 				g_l:{
 				main:{
@@ -237,16 +238,43 @@ TEMPLATE: '<?php echo we_base_ContentTypes::TEMPLATE; ?>',
 								cockpit:{
 								},
 								editorScript:{
-									confirm_navDel: "<?php echo g_l('navigation', '[del_question]'); ?>",
-									gdTypeNotSupported: "<?php echo g_l('weClass', '[type_not_supported_hint]'); ?>",
-									noRotate: "<?php echo we_message_reporting::prepareMsgForJS(g_l('weClass', '[rotate_hint]')); ?>",
-									field_int_value_to_height: "<?php echo g_l('alert', '[field_int_value_to_height]'); ?>",
-									field_contains_incorrect_chars: '<?php echo g_l('alert', '[field_contains_incorrect_chars]'); ?>',
-									field_input_contains_incorrect_length: '<?php echo g_l('alert', '[field_input_contains_incorrect_length]'); ?>',
-									field_int_contains_incorrect_length: '<?php echo g_l('alert', '[field_int_contains_incorrect_length]'); ?>',
-									fieldNameNotValid: '<?php echo g_l('modules_object', '[fieldNameNotValid]'); ?>',
-									fieldNameNotTitleDesc: '<?php echo g_l('modules_object', '[fieldNameNotTitleDesc]'); ?>',
-									fieldNameEmpty: '<?php echo g_l('modules_object', '[fieldNameEmpty]'); ?>'
+								confirm_navDel: "<?php echo g_l('navigation', '[del_question]'); ?>",
+												gdTypeNotSupported: "<?php echo g_l('weClass', '[type_not_supported_hint]'); ?>",
+												noRotate: "<?php echo we_message_reporting::prepareMsgForJS(g_l('weClass', '[rotate_hint]')); ?>",
+												field_int_value_to_height: "<?php echo g_l('alert', '[field_int_value_to_height]'); ?>",
+												field_contains_incorrect_chars: '<?php echo g_l('alert', '[field_contains_incorrect_chars]'); ?>',
+												field_input_contains_incorrect_length: '<?php echo g_l('alert', '[field_input_contains_incorrect_length]'); ?>',
+												field_int_contains_incorrect_length: '<?php echo g_l('alert', '[field_int_contains_incorrect_length]'); ?>',
+												fieldNameNotValid: '<?php echo g_l('modules_object', '[fieldNameNotValid]'); ?>',
+												fieldNameNotTitleDesc: '<?php echo g_l('modules_object', '[fieldNameNotTitleDesc]'); ?>',
+												fieldNameEmpty: '<?php echo g_l('modules_object', '[fieldNameEmpty]'); ?>'
+								},
+								tinyMceTranslationObject: {
+<?php echo array_search($GLOBALS['WE_LANGUAGE'], getWELangs()); ?>:{
+								we:{
+								group_link:"<?php echo g_l('wysiwyg', '[links]'); ?>", //(insert_hyperlink)
+												group_copypaste:"<?php echo g_l('wysiwyg', '[import_text]'); ?>",
+												group_advanced:"<?php echo g_l('wysiwyg', '[advanced]'); ?>",
+												group_insert:"<?php echo g_l('wysiwyg', '[insert]'); ?>",
+												group_indent:"<?php echo g_l('wysiwyg', '[indent]'); ?>",
+												//group_view:"<?php echo g_l('wysiwyg', '[view]'); ?>",
+												group_table:"<?php echo g_l('wysiwyg', '[table]'); ?>",
+												group_edit:"<?php echo g_l('wysiwyg', '[edit]'); ?>",
+												group_layer:"<?php echo g_l('wysiwyg', '[layer]'); ?>",
+												group_xhtml:"<?php echo g_l('wysiwyg', '[xhtml_extras]'); ?>",
+												tt_weinsertbreak:"<?php echo g_l('wysiwyg', '[insert_br]'); ?>",
+												tt_welink:"<?php echo g_l('wysiwyg', '[hyperlink]'); ?>",
+												tt_weimage:"<?php echo g_l('wysiwyg', '[insert_edit_image]'); ?>",
+												tt_wefullscreen_set:"<?php echo g_l('wysiwyg', '[maxsize_set]'); //($this->isInPopup ? g_l('wysiwyg', '[maxsize_set]') : g_l('wysiwyg', '[fullscreen]'));        ?>",
+												tt_wefullscreen_reset:"<?php echo g_l('wysiwyg', '[maxsize_reset]'); ?>",
+												tt_welang:"<?php echo g_l('wysiwyg', '[language]'); ?>",
+												tt_wespellchecker:"<?php echo g_l('wysiwyg', '[spellcheck]'); ?>",
+												tt_wevisualaid:"<?php echo g_l('wysiwyg', '[visualaid]'); ?>",
+												tt_wegallery:"not translated yet",
+												cm_inserttable:"<?php echo g_l('wysiwyg', '[insert_table]'); ?>",
+												cm_table_props:"<?php echo g_l('wysiwyg', '[edit_table]'); ?>",
+								}
+								}
 								},
 <?php
 foreach($jsmods as $mod){
@@ -312,11 +340,16 @@ foreach(we_base_request::getAllTables() as $k => $v){
 				linkPrefix: {
 				TYPE_OBJ_PREFIX: '<?php echo we_base_link::TYPE_OBJ_PREFIX; ?>',
 								TYPE_INT_PREFIX: '<?php echo we_base_link::TYPE_INT_PREFIX; ?>',
-								TYPE_MAIL_PREFIX: '<?php echo we_base_link::TYPE_MAIL_PREFIX; ?>'
+								TYPE_MAIL_PREFIX: '<?php echo we_base_link::TYPE_MAIL_PREFIX; ?>',
+								TYPE_THUMB_PREFIX: '<?php echo we_base_link::TYPE_THUMB_PREFIX; ?>',
 				},
 				graphic:{
-					gdSupportedTypes:{<?php echo implode(',', array_map(function($v){return '"' . $v . '" : true';}, we_base_imageEdit::supported_image_types())); ?>},
-					canRotate:<?php echo intval(function_exists("ImageRotate")); ?>,
+				gdSupportedTypes:{<?php
+echo implode(',', array_map(function($v){
+			return '"' . $v . '" : true';
+		}, we_base_imageEdit::supported_image_types()));
+?>},
+								canRotate:<?php echo intval(function_exists("ImageRotate")); ?>,
 				}
 },
 				//all relevant settings for current session
@@ -328,7 +361,7 @@ foreach(we_base_request::getAllTables() as $k => $v){
 								permissions:{
 <?php
 foreach($_SESSION['perms'] as $perm => $access){
-	echo $perm . ':' . ($_SESSION['perms']['ADMINISTRATOR'] ? 1 : intval($access)) . ',';
+	echo $perm . ':' . (!empty($_SESSION['perms']['ADMINISTRATOR']) ? 1 : intval($access)) . ',';
 }
 ?>
 								},
@@ -369,7 +402,8 @@ echo we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') .
  we_html_element::jsScript(JS_DIR . 'weButton.js') .
  we_html_element::jsScript(JS_DIR . 'we_users_ping.js') .
  we_html_element::jsScript(JS_DIR . 'we_lcmd.js') .
- we_main_headermenu::css();
+ we_main_headermenu::css() .
+ we_html_element::cssLink(CSS_DIR . 'sidebar.css');
 
 foreach($jsCmd as $cur){
 	echo we_html_element::jsScript($cur);

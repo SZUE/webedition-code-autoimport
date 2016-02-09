@@ -39,7 +39,7 @@ echo we_html_tools::getHtmlTop('', '', '', STYLESHEET .
 	we_html_element::jsScript(JS_DIR . 'multiEditor/EditorFrameController.js', '')
 	);
 ?>
-<body onresize="WE().layout.multiTabs.setFrameSize()" onload="startMultiEditor(<?php echo $_cmd_string; ?>);" style="overflow: hidden;">
+<body onresize="if(WE().layout.multiTabs){WE().layout.multiTabs.setFrameSize()}" onload="startMultiEditor(<?php echo $_cmd_string; ?>);" style="overflow: hidden;">
 	<div id="multiEditorDocumentTabsFrameDiv">
 		<div id="weMultiTabs">
 			<div id="tabContainer" name="tabContainer"></div>

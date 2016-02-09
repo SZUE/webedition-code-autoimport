@@ -38,6 +38,6 @@ if(($cid = we_base_request::_(we_base_request::INT, 'cid'))){
 }
 ?>
 </head>
-<body class="weEditorBody" onunload="doUnload()">
+<body class="weEditorBody">
 	<?php echo we_html_tools::htmlDialogLayout($orderList, g_l('modules_shop', '[order_liste]') . "&nbsp;" . $Kundenname); ?>
 </body></html>

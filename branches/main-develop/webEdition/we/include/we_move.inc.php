@@ -291,7 +291,7 @@ $_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button
 echo
 '</head><body class="weTreeHeaderMove">
 <form name="we_form" method="post" onsubmit="return false">
-<div style="width:460px;">
+<div>
 <h1 class="big" style="padding:0px;margin:0px;">' . oldHtmlspecialchars(
 		g_l('newFile', '[title_move]')) . '</h1>
 <p class="small"><span class="middlefont" style="padding-right:5px;padding-bottom:10px;">' . g_l('newFile', '[move_text]') . '</span>

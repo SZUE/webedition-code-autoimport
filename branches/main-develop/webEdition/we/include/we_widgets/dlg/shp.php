@@ -62,10 +62,7 @@ if(defined('WE_SHOP_MODULE_DIR') && (permissionhandler::hasPerm("NEW_SHOP_ARTICL
 	$oChbxOrders = $oChbxAverageOrder = $oChbxTarget = "";
 }
 
-$oDbTableType = new we_html_table(array('class' => 'default'), 1, 3);
-$oDbTableType->setCol(0, 0, null, $oChbxOrders . $oChbxCustomer);
-$oDbTableType->setCol(0, 1, array('width' => 10));
-$oDbTableType->setCol(0, 2, null, $oChbxAverageOrder . $oChbxTarget);
+$oDbTableType = $oChbxOrders . $oChbxCustomer.$oChbxAverageOrder . $oChbxTarget;
 //$oDbTableType->setCol(0, 3, null, $revenueTarget);
 
 $oSctDate = new we_html_select(array("name" => "sct_date", "size" => 1, "class" => "defaultfont", "onchange" => ""));
@@ -86,7 +83,7 @@ $oSctDate->selectOption($iDate);
 $parts = array(
 	array(
 		"headline" => g_l('cockpit', '[shop_dashboard][kpi]'),
-		"html" => $oDbTableType->getHTML(),
+		"html" => $oDbTableType,
 		'space' => 80
 	),
 	array(
