@@ -231,8 +231,8 @@ function setScrollTo(){
 				$field->selectOption($search_arr["field_" . $i]);
 			}
 
-			$branch->setAttributes(array("name" => "branch_" . $i, "onchange" => "we_cmd('selectBranch')", "style" => "width:145px"));
-			$field->setAttributes(array("name" => "field_" . $i, "style" => "width:145px", "onchange" => "isDateField($i)"));
+			$branch->setAttributes(array("name" => "branch_" . $i, "class" => 'weSelect', "onchange" => "we_cmd('selectBranch')", "style" => "width:145px"));
+			$field->setAttributes(array("name" => "field_" . $i, "style" => "width:145px", "class" => 'weSelect', "onchange" => "isDateField($i)"));
 
 			if($i != 0){
 				$advsearch->addRow();
