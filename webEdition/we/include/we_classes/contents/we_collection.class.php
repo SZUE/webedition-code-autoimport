@@ -795,7 +795,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		}
 		$tmpColl = array_slice($coll, $pos);
 		$newColl = array_slice($coll, 0, $pos);
-		$result = [[], []];
+		$result = array(array(), array());
 		$isFirstSet = false;
 		foreach($items as $item){
 			if($this->IsDuplicates || !in_array($item, $coll)){

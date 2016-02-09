@@ -366,7 +366,7 @@ class we_binaryDocument extends we_document{
 				$js .= "id_" . $c . ": {type: '" . $v['type'] . "', id: " . $v['id'] . ", table: '" . $v['table'] . "', ct: '" . $v['ct'] . "', mod: '" . $v['mod'] . "', referencedIn: '" . $v['referencedIn'] . "', isTempPossible: " . ($v['isTempPossible'] ? 1 : 0) . ", isModified: " . ($v['isModified'] ? 1 : 0) . "},";
 			}
 		}
-		$button = we_html_button::create_button(we_html_button::EDIT, "javascript:top.we_openMediaReference(document.we_form.elements['MediaReferences'].value);");
+		$button = we_html_button::create_button(we_html_button::EDIT, "javascript:top.we_openMediaReference(document.getElementById('MediaReferences').value);");
 
 		return we_html_element::jsElement("top.we_mediaReferences = {" . $js . "};") . we_html_tools::htmlFormElementTable($this->htmlSelect('MediaReferences', $values, 1, '', false, array(), 'value', 388), '', 'left', 'defaultfont', '', $button);
 	}

@@ -71,7 +71,7 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base{
 		<div style="float:left;">
 		<form id="filechooser" action="" method="" enctype="multipart/form-data">
 			<div>
-				<div class="we_fileInputWrapper" id="div_' . $this->name . '_fileInputWrapper" style="vertical-align: top; display: inline-block; height: 26px; margin-left:-4px;">
+				<div class="we_fileInputWrapper" id="div_' . $this->name . '_fileInputWrapper">
 					<input class="fileInput fileInputHidden' . ($isIE10 ? ' fileInputIE10' : '') . '" type="file" id="' . $this->name . '" name="fileselect[]" multiple="multiple" />
 					' . $butBrowse . '
 				</div>

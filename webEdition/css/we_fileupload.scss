@@ -63,7 +63,14 @@ div.we_fileInputWrapper{
 	overflow: hidden;
 	position: relative;
 	cursor: pointer;
+	vertical-align: top;
+	display: inline-block;
 }
+#div_fileupload_buttons button,
+#div_fileupload_buttons input{
+	width:90% ;
+}
+
 .fileInput{
 	cursor: pointer;
 	height: 100%;

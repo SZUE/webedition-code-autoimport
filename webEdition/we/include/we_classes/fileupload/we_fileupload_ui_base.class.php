@@ -120,7 +120,7 @@ class we_fileupload_ui_base extends we_fileupload{
 	public function setFileSelectOnclick($onclick = ''){
 		$this->fileselectOnclick = $onclick;
 	}
-	
+
 	public function setGenericFileName($genericFileName = ''){
 		$this->genericFilename = $genericFileName ? : TEMP_DIR . self::REPLACE_BY_UNIQUEID;
 	}
@@ -128,7 +128,7 @@ class we_fileupload_ui_base extends we_fileupload{
 	public function setDimensions($dimensions = array()){
 		$this->dimensions = array_merge($this->dimensions, $dimensions);
 	}
-	
+
 
 	public function setDoCommitFile($doCommitFile = true){
 		$this->doCommitFile =  boolval($doCommitFile);
@@ -141,7 +141,7 @@ class we_fileupload_ui_base extends we_fileupload{
 	public function setExternalProgress($externalProgress = array()){
 		$this->externalProgress = array_merge($this->externalProgress, $externalProgress);
 	}
-	
+
 	public function setExternalUiElements($externalUiElements = array()){
 		$this->externalUiElements = array_merge($this->externalUiElements, $externalUiElements);
 	}
@@ -243,7 +243,7 @@ doDragFromTree = function(text){
 				*/
 				$btn = we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, $width, we_html_button::HEIGHT, '', '', $disabled, false, '_btn', false, '', 'weBtn noMarginLeft');
 
-				return we_html_element::htmlDiv(array('id' => 'div_' . $this->name . '_fileInputWrapper', 'class' => 'we_fileInputWrapper', 'style' => 'vertical-align:top;display:inline-block;height:26px;width:' . ($width + 8) . 'px;'),
+				return we_html_element::htmlDiv(array('id' => 'div_' . $this->name . '_fileInputWrapper', 'class' => 'we_fileInputWrapper', 'style' => 'vertical-align:top;display:inline-block;width:100%;'),
 					$fileInput . $btn
 				);
 			case 'reset':
@@ -315,14 +315,14 @@ doDragFromTree = function(text){
 
 	protected function getHtmlFileInfo(){
 		return we_html_element::htmlDiv(array('id' => 'div_' . $this->name . '_fileName', 'style' => 'height:26px;padding-top:10px;display:' . ($this->isDragAndDrop ? 'none' : 'block') . ';'), '') .
-			we_html_element::htmlDiv(array('style' => 'display:block;padding:0.6em 0 0 0.2em'), 
+			we_html_element::htmlDiv(array('style' => 'display:block;padding:0.6em 0 0 0.2em'),
 				we_html_element::htmlDiv(array('id' => 'div_' . $this->name . '_message', 'style' => 'height:26px;font-size:1em;'), '&nbsp;') .
 				''//($this->internalProgress['isInternalProgress'] ? we_html_element::htmlDiv(array('id' => 'div_' . $this->name . '_progress', 'style' => 'height:26px;display:none;'), $this->_getProgressHTML()) : '')
 			);
 	}
 
 	public function getCss(){
-		return we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') . 
+		return we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') .
 			we_html_element::cssElement('
 				div.we_file_drag{
 					padding-top: ' . (($this->dimensions['dragHeight'] - 10) / 2) . 'px;
@@ -402,7 +402,7 @@ we_FileUpload.init({
 	}
 
 	public static function getJsBtnCmdStatic($btn = 'upload', $contentName = '', $callback = ''){
-		//FIXME: still need direct callback 
+		//FIXME: still need direct callback
 		$win = $contentName ? 'top.' . $contentName . '.' : '';
 		$callback = $btn === 'upload' ? ($callback ? : 'document.forms[0].submit()') : 'top.close()';
 		$call = $win . 'we_FileUpload.' . ($btn === 'upload' ? 'startUpload()' : 'cancelUpload()');

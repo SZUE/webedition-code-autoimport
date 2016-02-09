@@ -89,20 +89,19 @@ function we_tag_form($attribs){
 									we_shop_shop::OBJECT :
 									($GLOBALS['lv'] instanceof we_listview_document ?
 											we_shop_shop::DOCUMENT :
-											($GLOBALS['we_doc'] instanceof we_objectFile) ?
+											(isset($GLOBALS['we_doc']->OF_ID)) ?
 													we_shop_shop::OBJECT :
 													we_shop_shop::DOCUMENT
-									)
+							)
 							),
 						)) .
 						getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 'shop_artikelid',
 							'value' => (isset($GLOBALS['lv']->classID) || isset($GLOBALS['we_doc']->ClassID) ?
 									(isset($GLOBALS['lv']) && $GLOBALS['lv']->f('WE_ID') ?
 											$GLOBALS['lv']->f('WE_ID') :
-											($GLOBALS['we_doc']->getDBf('OF_ID') ? : //FIXME: wtf???? where is this set??? which kind of document is not object, but has this record?
-													(isset($GLOBALS['we_obj']) ?
-															$GLOBALS['we_obj']->ID :
-															$GLOBALS['we_doc']->ID))) :
+											(isset($GLOBALS['we_doc']->OF_ID) ?
+													$GLOBALS['we_doc']->OF_ID :
+													$GLOBALS['we_doc']->ID)) :
 									(isset($GLOBALS['lv']) ?
 											($GLOBALS['lv'] instanceof we_listview_document && ($lastE = end($GLOBALS['lv']->IDs)) ?
 													$lastE :

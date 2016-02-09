@@ -50,8 +50,8 @@ function defaultReset(){
 	we_html_element::htmlDiv(array('style' => 'float: left;height: 50%;width: 1px;')) . we_html_element::htmlDiv(array('style' => 'clear:left;position:relative;top:-25%;'), we_html_element::htmlForm(array("action" => WEBEDITION_DIR . 'resetpwd.php', 'method' => 'post'), '
 	<table id="mainTable">
 		<tr><td colspan="2"><h2>' . g_l('global', '[changePass]') . '</h2></td></tr>
-		<tr><td>' . g_l('global', '[username]') . '</td><td><input type="text" name="s[username]"/></td></tr>
-		<tr><td>' . g_l('modules_users', '[email]') . '</td><td><input type="email" name="s[Email]"/></td></tr>
+		<tr><td>' . g_l('global', '[username]') . '</td><td><input type="text" name="s[username]" placeholder="' . g_l('global', '[username]') . '"/></td></tr>
+		<tr><td>' . g_l('modules_users', '[email]') . '</td><td><input type="email" name="s[Email]"  placeholder="' . g_l('modules_users', '[email]') . '"/></td></tr>
 		<tr><td></td><td></td><td>' . we_html_button::create_button(we_html_button::SAVE, 'javascript:submit();') . '</td></tr>
 	</table>
 	<input type="hidden" name="type" value="mail"/>
@@ -66,8 +66,8 @@ function resetPwd(){
 	echo we_html_element::htmlDiv(array('style' => 'float: left;height: 50%;width: 1px;')) . we_html_element::htmlDiv(array('style' => 'clear:left;position:relative;top:-25%;'), we_html_element::htmlForm(array("action" => WEBEDITION_DIR . 'resetpwd.php', 'method' => 'post'), '
 	<table id="mainTable">
 		<tr><td colspan="2"><h2>' . g_l('global', '[changePass]') . '</h2></td></tr>
-		<tr><td>' . g_l('global', '[newPass]') . '</td><td><input type="password" name="s[Password]" onchange="comparePwd(\'s[Password]\',\'s[Password2]\')"/></td></tr>
-		<tr><td>' . g_l('global', '[newPass2]') . '</td><td><input type="password" name="s[Password2]" onchange="comparePwd(\'s[Password]\',\'s[Password2]\')"/></td></tr>
+		<tr><td>' . g_l('global', '[newPass]') . '</td><td><input type="password" name="s[Password]" onchange="comparePwd(\'s[Password]\',\'s[Password2]\')" placeholder="' . g_l('global', '[newPass]') . '"/></td></tr>
+		<tr><td>' . g_l('global', '[newPass2]') . '</td><td><input type="password" name="s[Password2]" onchange="comparePwd(\'s[Password]\',\'s[Password2]\')" placeholder="' . g_l('global', '[newPass2]') . '" /></td></tr>
 		<tr><td></td><td></td><td>' . we_html_button::create_button(we_html_button::SAVE, 'javascript:submit();') . '</td></tr>
 	</table>
 	<input type="hidden" name="type" value="mailreset"/>

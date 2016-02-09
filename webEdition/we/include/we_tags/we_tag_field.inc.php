@@ -189,7 +189,7 @@ function we_tag_field($attribs){
 											''
 									)
 							) : //Fix #9223
-							($GLOBALS['we_doc'] instanceof we_objectFile ?
+							(isset($GLOBALS['we_doc']->OF_ID) ?
 									$GLOBALS['we_doc']->TableID :
 									0
 							)
@@ -631,7 +631,7 @@ function we_tag_field($attribs){
 
 		$tail = ($tid && ($GLOBALS['lv'] instanceof we_listview_object) ? '&amp;we_objectTID=' . $tid : '');
 
-		if((($GLOBALS['we_doc'] instanceof we_objectFile)) && ($GLOBALS['we_doc']->InWebEdition)){
+		if(isset($GLOBALS['we_doc']->OF_ID) && ($GLOBALS['we_doc']->InWebEdition)){
 			$_linkAttribs['href'] = $GLOBALS['lv']->f('wedoc_lastPath') . $tail;
 		} else {
 			$path_parts = pathinfo($GLOBALS['lv']->f('WE_PATH'));
