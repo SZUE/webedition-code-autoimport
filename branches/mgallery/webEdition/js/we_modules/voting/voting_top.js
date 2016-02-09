@@ -100,8 +100,9 @@ function we_cmd() {
 			break;
 
 		case "save_voting":
-			if (top.content.editor.edbody.document.we_form.cmd.value === "home")
+			if (top.content.editor.edbody.document.we_form.cmd.value === "home"){
 				return;
+			}
 			if (top.content.editor.edbody.loaded) {
 				top.content.editor.edbody.document.we_form.cmd.value = args[0];
 				top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;
