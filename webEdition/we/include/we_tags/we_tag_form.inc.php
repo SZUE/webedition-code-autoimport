@@ -21,7 +21,7 @@
 function we_parse_tag_form($attribs, $content){
 	return '<?php printElement(' . we_tag_tagParser::printTag('form', $attribs) . ');
 ?>' . $content .
-		'<?php printElement(' . we_tag_tagParser::printTag('form', array('_type' => 'stop')) . ');?>';
+			'<?php printElement(' . we_tag_tagParser::printTag('form', array('_type' => 'stop')) . ');?>';
 }
 
 function we_tag_form($attribs){
@@ -68,8 +68,8 @@ function we_tag_form($attribs){
 	$formAttribs['method'] = $method;
 
 	$GLOBALS['we_form_action'] = ($id ?
-			($id === 'self' || ($id == 0 && defined('WE_REDIRECTED_SEO')) ? (defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : $_SERVER['SCRIPT_NAME']) : f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id))) :
-			($action ? : $_SERVER['SCRIPT_NAME']));
+					($id === 'self' || ($id == 0 && defined('WE_REDIRECTED_SEO')) ? (defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : $_SERVER['SCRIPT_NAME']) : f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id))) :
+					($action ? : $_SERVER['SCRIPT_NAME']));
 
 	if($type != 'search'){
 		$regs = array();
@@ -86,44 +86,43 @@ function we_tag_form($attribs){
 			$formAttribs['name'] = 'form' . $myID;
 			if(!isset($GLOBALS['we_editmode']) || !$GLOBALS['we_editmode']){
 				$ret = getHtmlTag('form', $formAttribs, '', false, true) .
-					getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 'type',
-						'value' => (
-						isset($GLOBALS['lv']->classID) || (isset($GLOBALS['lv']) && $GLOBALS['lv'] instanceof we_object_tag) ?
-							we_shop_shop::OBJECT :
-							(isset($GLOBALS['lv']->ID) ?
-								we_shop_shop::DOCUMENT :
-								(isset($GLOBALS['we_obj']) ? //Fix #9949
+						getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 'type',
+							'value' => (
+							isset($GLOBALS['lv']->classID) || (isset($GLOBALS['lv']) && $GLOBALS['lv'] instanceof we_object_tag) ?
 									we_shop_shop::OBJECT :
-									we_shop_shop::DOCUMENT
-								)
+									(isset($GLOBALS['lv']->ID) ?
+											we_shop_shop::DOCUMENT :
+											(isset($GLOBALS['we_obj']) ? //Fix #9949
+													we_shop_shop::OBJECT :
+													we_shop_shop::DOCUMENT
+											)
+									)
+							),
+						)) .
+						getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 'shop_artikelid',
+							'value' => (isset($GLOBALS['lv']->classID) || isset($GLOBALS['we_doc']->ClassID) ?
+									(isset($GLOBALS['lv']) && $GLOBALS['lv']->getDBf('OF_ID') != '' ?
+											$GLOBALS['lv']->getDBf('OF_ID') :
+											(isset($GLOBALS['we_doc']->OF_ID) ?
+													$GLOBALS['we_doc']->OF_ID :
+													$GLOBALS['we_doc']->ID)) :
+									(isset($GLOBALS['lv']) ?
+											($GLOBALS['lv'] instanceof we_object_tag ?
+													$GLOBALS['lv']->id :
+													(isset($GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1]) && $GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1] != '' ?
+															$GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1] :
+															$GLOBALS['we_doc']->ID)
+											) :
+											$GLOBALS['we_doc']->ID)
 							)
-						),
-					)) .
-					getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 'shop_artikelid',
-						'value' => (isset($GLOBALS['lv']->classID) || isset($GLOBALS['we_doc']->ClassID) ?
-							(isset($GLOBALS['lv']) && $GLOBALS['lv']->getDBf('OF_ID') != '' ?
-								$GLOBALS['lv']->getDBf('OF_ID') :
-								($GLOBALS['we_doc']->getDBf('OF_ID') ? :
-									(isset($GLOBALS['we_obj']) ?
-										$GLOBALS['we_obj']->ID :
-										$GLOBALS['we_doc']->ID))) :
-							(isset($GLOBALS['lv']) ?
-								($GLOBALS['lv'] instanceof we_object_tag ?
-									$GLOBALS['lv']->id :
-									(isset($GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1]) && $GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1] != '' ?
-										$GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1] :
-										$GLOBALS['we_doc']->ID)
-								) :
-								$GLOBALS['we_doc']->ID)
-						)
-					)) .
-					getHtmlTag('input', array(
-						'xml' => $xml,
-						'type' => 'hidden',
-						'name' => 'we_variant',
-						'value' => (isset($GLOBALS['we_doc']->Variant) ? $GLOBALS['we_doc']->Variant : ''),
-					)) .
-					getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 't', 'value' => time(),));
+						)) .
+						getHtmlTag('input', array(
+							'xml' => $xml,
+							'type' => 'hidden',
+							'name' => 'we_variant',
+							'value' => (isset($GLOBALS['we_doc']->Variant) ? $GLOBALS['we_doc']->Variant : ''),
+						)) .
+						getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 't', 'value' => time(),));
 			}
 			break;
 		case 'object' :
@@ -161,9 +160,9 @@ function we_tag_form($attribs){
 
 				if(!isset($GLOBALS['we_editmode']) || !$GLOBALS['we_editmode']){
 					$ret.=getHtmlTag('form', $formAttribs, '', false, true) .
-						getHtmlTag('input', array('type' => 'hidden', 'name' => 'edit_' . $type, 'value' => 1, 'xml' => $xml)) .
-						getHtmlTag('input', array('type' => 'hidden', 'name' => 'we_edit' . $typetmp . '_ID', 'xml' => $xml,
-							'value' => we_base_request::_(we_base_request::INT, 'we_edit' . $typetmp . '_ID', 0),
+							getHtmlTag('input', array('type' => 'hidden', 'name' => 'edit_' . $type, 'value' => 1, 'xml' => $xml)) .
+							getHtmlTag('input', array('type' => 'hidden', 'name' => 'we_edit' . $typetmp . '_ID', 'xml' => $xml,
+								'value' => we_base_request::_(we_base_request::INT, 'we_edit' . $typetmp . '_ID', 0),
 					));
 				}
 			} else {
@@ -209,26 +208,26 @@ function we_tag_form($attribs){
 				$_ids = $GLOBALS['DB_WE']->getAll(true);
 
 				$ret = getHtmlTag('form', $formAttribs, '', false, true) .
-					'<div class="weHide" style="display: none;">';
+						'<div class="weHide" style="display: none;">';
 				foreach(array(
-				'order' => weTag_getAttribute('order', $attribs, '', we_base_request::STRING),
-				'required' => weTag_getAttribute('required', $attribs, '', we_base_request::STRING),
-				'subject' => weTag_getAttribute('subject', $attribs, '', we_base_request::STRING),
-				'recipient' => ($_ids ? implode(',', $_ids) : ''),
-				'mimetype' => weTag_getAttribute('mimetype', $attribs, '', we_base_request::STRING),
-				'from' => weTag_getAttribute('from', $attribs, '', we_base_request::EMAIL),
-				'error_page' => $onerror ? we_folder::getUrlFromID($onerror) : '',
-				'mail_error_page' => $onmailerror ? we_folder::getUrlFromID($onmailerror) : '',
-				'recipient_error_page' => $onrecipienterror ? we_folder::getUrlFromID($onrecipienterror) : '',
-				'ok_page' => $onsuccess ? we_folder::getUrlFromID($onsuccess) : '',
-				'charset' => weTag_getAttribute('charset', $attribs, '', we_base_request::STRING),
-				'confirm_mail' => $confirmmail,
-				'pre_confirm' => $preconfirm,
-				'post_confirm' => $postconfirm,
-				'we_remove' => $remove,
-				'forcefrom' => weTag_getAttribute('forcefrom', $attribs, '', we_base_request::STRING),
-				'captcha_error_page' => $oncaptchaerror ? we_folder::getUrlFromID($oncaptchaerror) : '',
-				'captchaname' => $captchaname,
+			'order' => weTag_getAttribute('order', $attribs, '', we_base_request::STRING),
+			'required' => weTag_getAttribute('required', $attribs, '', we_base_request::STRING),
+			'subject' => weTag_getAttribute('subject', $attribs, '', we_base_request::STRING),
+			'recipient' => ($_ids ? implode(',', $_ids) : ''),
+			'mimetype' => weTag_getAttribute('mimetype', $attribs, '', we_base_request::STRING),
+			'from' => weTag_getAttribute('from', $attribs, '', we_base_request::EMAIL),
+			'error_page' => $onerror ? we_folder::getUrlFromID($onerror) : '',
+			'mail_error_page' => $onmailerror ? we_folder::getUrlFromID($onmailerror) : '',
+			'recipient_error_page' => $onrecipienterror ? we_folder::getUrlFromID($onrecipienterror) : '',
+			'ok_page' => $onsuccess ? we_folder::getUrlFromID($onsuccess) : '',
+			'charset' => weTag_getAttribute('charset', $attribs, '', we_base_request::STRING),
+			'confirm_mail' => $confirmmail,
+			'pre_confirm' => $preconfirm,
+			'post_confirm' => $postconfirm,
+			'we_remove' => $remove,
+			'forcefrom' => weTag_getAttribute('forcefrom', $attribs, '', we_base_request::STRING),
+			'captcha_error_page' => $oncaptchaerror ? we_folder::getUrlFromID($oncaptchaerror) : '',
+			'captchaname' => $captchaname,
 				) as $name => $val){
 					if($val){
 						$ret.=getHtmlTag('input', array('type' => 'hidden', 'name' => $name, 'value' => $val, 'xml' => $xml));
