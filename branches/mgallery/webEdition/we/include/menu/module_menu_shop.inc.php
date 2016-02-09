@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -24,7 +25,7 @@
 // file
 $years = we_shop_shop::getAllOrderYears();
 
-return array(
+$we_menu_shop = array(
 	'shop' => array(
 		'text' => g_l('javaMenu_shop', '[menu_user]'),
 	),
