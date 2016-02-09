@@ -37,7 +37,7 @@ function we_tag_href($attribs){
 	$directory = weTag_getAttribute('directory', $attribs, false, we_base_request::BOOL);
 	$attribs = removeAttribs($attribs, array('rootdir', 'file', 'directory'));
 
-	if($GLOBALS['we_doc'] instanceof we_objectFile){
+	if(isset($GLOBALS['we_doc']->OF_ID)){
 		$hrefArr = we_unserialize($GLOBALS['we_doc']->getElement($name));
 		return we_document::getHrefByArray($hrefArr);
 	}

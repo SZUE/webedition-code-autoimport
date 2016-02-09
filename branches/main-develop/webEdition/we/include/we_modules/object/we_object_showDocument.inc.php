@@ -134,22 +134,7 @@ if(($_userID && $_userID != $_SESSION['user']['ID']) || (we_base_request::_(we_b
 
 	$GLOBALS['we_doc'] = new we_webEditionDocument();
 	$GLOBALS['we_doc']->initByID(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1), FILE_TABLE);
-	$GLOBALS['we_doc']->elements = $GLOBALS['we_obj']->elements;
-	$GLOBALS['we_doc']->Templates = $GLOBALS['we_obj']->Templates;
-	$GLOBALS['we_doc']->ExtraTemplates = $GLOBALS['we_obj']->ExtraTemplates;
-	$GLOBALS['we_doc']->TableID = $GLOBALS['we_obj']->TableID;
-	$GLOBALS['we_doc']->CreatorID = $GLOBALS['we_obj']->CreatorID;
-	$GLOBALS['we_doc']->ModifierID = $GLOBALS['we_obj']->ModifierID;
-	$GLOBALS['we_doc']->RestrictOwners = $GLOBALS['we_obj']->RestrictOwners;
-	$GLOBALS['we_doc']->Owners = $GLOBALS['we_obj']->Owners;
-	$GLOBALS['we_doc']->OwnersReadOnly = $GLOBALS['we_obj']->OwnersReadOnly;
-	$GLOBALS['we_doc']->Category = $GLOBALS['we_obj']->Category;
-	$GLOBALS['we_doc']->OF_ID = $GLOBALS['we_obj']->ID;
-	$GLOBALS['we_doc']->Charset = $GLOBALS['we_obj']->Charset;
-	$GLOBALS['we_doc']->Language = $GLOBALS['we_obj']->Language;
-	$GLOBALS['we_doc']->Url = $GLOBALS['we_obj']->Url;
-	$GLOBALS['we_doc']->TriggerID = $GLOBALS['we_obj']->TriggerID;
-	$GLOBALS['we_doc']->elements['Charset']['dat'] = $GLOBALS['we_obj']->Charset; // for charset-tag
+	$GLOBALS['we_doc']->initByObj($GLOBALS['we_obj']);
 	$GLOBALS['TITLE'] = $GLOBALS['we_doc']->getElement('Title');
 	$GLOBALS['KEYWORDS'] = $GLOBALS['we_doc']->getElement('Keywords');
 	$GLOBALS['DESCRIPTION'] = $GLOBALS['we_doc']->getElement('Description');

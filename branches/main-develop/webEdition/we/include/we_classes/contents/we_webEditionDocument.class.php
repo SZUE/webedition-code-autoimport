@@ -58,6 +58,25 @@ class we_webEditionDocument extends we_textContentDocument{
 		$this->ContentType = we_base_ContentTypes::WEDOCUMENT;
 	}
 
+	public function initByObj(we_objectFile $obj){
+		$this->elements = $obj->elements;
+		$this->Templates = $obj->Templates;
+		$this->ExtraTemplates = $obj->ExtraTemplates;
+		$this->TableID = $obj->TableID;
+		$this->CreatorID = $obj->CreatorID;
+		$this->ModifierID = $obj->ModifierID;
+		$this->RestrictOwners = $obj->RestrictOwners;
+		$this->Owners = $obj->Owners;
+		$this->OwnersReadOnly = $obj->OwnersReadOnly;
+		$this->Category = $obj->Category;
+		$this->OF_ID = $obj->ID;
+		$this->Charset = $obj->Charset;
+		$this->Language = $obj->Language;
+		$this->Url = $obj->Url;
+		$this->TriggerID = $obj->TriggerID;
+		$this->elements['Charset']['dat'] = $obj->Charset; // for charset-tag
+	}
+
 	public static function initDocument($formname = 'we_global_form', $tid = 0, $doctype = '', $categories = '', $docID = 0, $wewrite = false){
 		//  check if a <we:sessionStart> Tag was before
 		$session = !empty($GLOBALS['WE_SESSION_START']);

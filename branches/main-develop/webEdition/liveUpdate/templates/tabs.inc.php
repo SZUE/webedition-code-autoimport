@@ -37,7 +37,7 @@ foreach($this->Data['allTabs'] as $tabname){
 
 // get output
 
-$bodyContent = '<div id="main"><div id="headrow"></div>' .
+$bodyContent = '<div id="main">' .
 		$tabs->getHTML() .
 		'</div>';
 

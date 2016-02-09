@@ -950,28 +950,27 @@ var weFileUpload = (function () {
 
 			this.checkFileType = function (type, name) {
 				var n = name || '',
-								ext = n.split('.').pop().toLowerCase(),
-								tc = _.sender.typeCondition,
-								typeGroup = type.split('/').shift() + '/*';
+					ext = n.split('.').pop().toLowerCase(),
+					tc = _.sender.typeCondition,
+					typeGroup = type.split('/').shift() + '/*';
 
 				if (tc.accepted.mime && tc.accepted.mime.length > 0 && type === '') {
 					return false;
 				}
 				if (tc.accepted.all && tc.accepted.all.length > 0 &&
-								!WE().util.in_array(type, tc.accepted.all) &&
-								!WE().util.in_array(typeGroup, tc.accepted.all) &&
-								!WE().util.in_array(ext, tc.accepted.all)) {
+						!WE().util.in_array(type, tc.accepted.all) &&
+						!WE().util.in_array(typeGroup, tc.accepted.all) &&
+						!WE().util.in_array(ext, tc.accepted.all)) {
 					return false;
 				}
 				if (tc.forbidden.all && tc.forbidden.all.length > 0 &&
-								(WE().util.in_array(type, tc.forbidden.all) ||
-												WE().util.in_array(typeGroup, tc.forbidden.all) ||
-												WE().util.in_array(ext, tc.forbidden.all))) {
+						(WE().util.in_array(type, tc.forbidden.all) ||
+							WE().util.in_array(typeGroup, tc.forbidden.all) ||
+							WE().util.in_array(ext, tc.forbidden.all))) {
 					return false;
 				}
 
 				return true;
-
 			};
 
 			this.computeSize = function (size) {
@@ -1912,6 +1911,7 @@ var weFileUpload = (function () {
 			}
 			v.elems.fileDrag_state_0 = document.getElementById('div_fileupload_fileDrag_state_0');
 			v.elems.fileDrag_state_1 = document.getElementById('div_fileupload_fileDrag_state_1');
+			v.elems.fileDrag_mask = document.getElementById('div_' + _.fieldName + '_fileDrag');
 			v.elems.dragInnerRight = document.getElementById('div_upload_fileDrag_innerRight');
 			v.elems.divRight = document.getElementById('div_fileupload_right');
 			v.elems.txtFilename = document.getElementById('span_fileDrag_inner_filename');
@@ -2056,7 +2056,18 @@ var weFileUpload = (function () {
 								'<span style="color:red;">' + _.utils.gl.typeTextNok + f.type + '</span>';
 
 				this.elems.fileDrag_state_1.style.backgroundColor = 'rgb(243, 247, 255)';
-				this.elems.txtFilename.innerHTML = f.file.name.substring(0, 19) + (f.file.name.lenght > 20 ? '...' : '');
+
+				var fn = f.file.name;
+				var fe = '';
+				if(fn.length > 27) {
+					var farr = fn.split('.');
+					fe = farr.pop();
+					fn = farr.join('.');
+					fn = fn.substr(0, 18) + '...' + fn.substring((fn.length - 2), fn.length) + '.';
+				}
+
+				this.elems.txtFilename.innerHTML = fn + fe;
+				this.elems.fileDrag_mask.title = f.file.name;
 				this.elems.txtSize.innerHTML = sizeText;
 				this.elems.txtType.innerHTML = typeText;
 				this.setDisplay('fileDrag_state_0', 'none');
@@ -2149,6 +2160,7 @@ var weFileUpload = (function () {
 					case this.STATE_RESET:
 						this.setDisplay('fileDrag_state_0', 'block');
 						this.setDisplay('fileDrag_state_1', 'none');
+						this.elems.fileDrag_mask.title = '';
 						this.setDisplay('fileInputWrapper', 'block');
 						if (this.isDragAndDrop && this.elems.fileDrag) {
 							this.setDisplay('fileDrag', 'block');
@@ -2182,6 +2194,7 @@ var weFileUpload = (function () {
 							this.setDisplay('divBtnReset', 'none');
 						}
 						this.setDisplay('divBtnUpload', 'none');
+						this.setDisplay('divBtnReset', 'none');
 						this.setDisplay('divProgressBar', '');
 						this.setDisplay('divBtnCancel', '');
 						if (this.preview) {
