@@ -1016,6 +1016,9 @@ optgroup{
 	border: 0px;
 	padding-left: 0px;
 	float: left;
+	.navigation {
+		width: 35px;
+	}
 }
 #msgheadertable{
 	position:relative;
@@ -1048,11 +1051,6 @@ optgroup{
 }
 
 
-
-#navigationHistory .navigation {
-  width: 35px;
-}
-
 /*Error log*/
 table.error{
 	background-color:#FFFFFF;
@@ -1083,13 +1081,6 @@ table.error{
 		}
 	}
 }
-/*#weHeaderLogo{
-	width:78px;
-	height:25px;
-	padding-left: 10px;
-	padding-right: 5px;
-	padding-top:3px;
-}*/
 
 .navigation{
 	float:left;
@@ -1117,9 +1108,13 @@ table.error{
 	}
 }
 
-#messageConsole{
+
+#messageConsole {
 	position:relative;
 	float:left;
+	&:hover {
+		background: linear-gradient(to bottom, #345881, #284a70) transparent !important;
+	}
 	i{
 		color: $White;
 		margin-top: 13px;
@@ -1127,15 +1122,6 @@ table.error{
 			color:#5f97cc;
 		}
 	}
-}
-
-
-#messageConsole:hover {
-	background: linear-gradient(to bottom, #345881, #284a70) transparent !important;
-}
-
-
-#messageConsole {
 
 	table {
 		height: $menuHeight;
