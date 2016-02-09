@@ -1771,11 +1771,11 @@ body.moduleEditor{
 	}
 	div.editorHeader{
 		top: 0px;
-		height: 57px !important;
+		height: 57px;
 		overflow: hidden;
 	}
 	div.editorBody{
-		top: 57px !important;
+		top: 57px;
 		bottom: $editorFooterHeight;
 	}
 	div.editorButtonFrame{
