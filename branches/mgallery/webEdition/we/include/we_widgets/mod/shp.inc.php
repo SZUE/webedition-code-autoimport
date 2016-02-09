@@ -247,16 +247,16 @@ $shopDashboard = '<div style="width:60%;float:left;">' .
 	$shopDashboardTable->getHtml() .
 	'</div>'
 	. '<div style="width:40%;float:right;">' . ($bTarget ? '<b>' . g_l('cockpit', '[shop_dashboard][revenue_target]') . '&nbsp;' . we_base_util::formatNumber($sRevenueTarget, $numberformat) . '&nbsp;' . $currency . '</b><br/>' : '') .
+		//note: canvas doesn't support CSS width/height....
 	'<canvas id="' . $newSCurrId . '_chart_div" width="160" height="160"></canvas>' .
 	'</div><br style="clear:both;"/>';
 
 if($bTarget){
-	$shopDashboard .= we_html_element::jsScript(LIB_DIR . 'additional/canvas/excanvas.js') .
+	$shopDashboard .= /*we_html_element::jsScript(LIB_DIR . 'additional/canvas/excanvas.js') .*/
 		we_html_element::jsScript(LIB_DIR . 'additional/gauge/gauge.min.js') .
 		we_html_element::jsElement("
 window.addEventListener('load',function() {
-	// Draw the gauge using custom settings
-	var options = {
+	new Gauge(WE().layout.cockpitFrame.document.getElementById('" . $newSCurrId . "_chart_div'), {
 		value: " . we_base_util::formatNumber(($total - $canceled)) . ",
 		label: 'Ziel in " . $currency . "',
 		unitsLabel: ' " . $currency . "',
@@ -269,8 +269,6 @@ window.addEventListener('load',function() {
 		yellowTo: " . ($sRevenueTarget * 1.1) . ",
 		redFrom: 0,
 		redTo: " . ($sRevenueTarget * 0.9) . "
-	};
-
-	new Gauge(WE().layout.cockpitFrame.document.getElementById('" . $newSCurrId . "_chart_div'), options );
+	} );
 });");
 }

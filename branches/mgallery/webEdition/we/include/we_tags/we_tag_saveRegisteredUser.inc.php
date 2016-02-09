@@ -119,10 +119,12 @@ function we_tag_saveRegisteredUser($attribs){
 
 			we_saveCustomerImages();
 			$set_a = we_tag_saveRegisteredUser_processRequest($protected, $allowed);
-			$password = we_base_request::_(we_base_request::RAW_CHECKED, 's', false, 'Password');
-			if($password !== false && $password != we_customer_customer::NOPWD_CHANGE){
+			$password = we_base_request::_(we_base_request::RAW, 's', we_customer_customer::NOPWD_CHANGE, 'Password');
+			if($password !== we_customer_customer::NOPWD_CHANGE){
 				if(!$password){
-					we_tag_saveRegisteredUser_keepInput();
+					if($changesessiondata){
+						we_tag_saveRegisteredUser_keepInput(true);
+					}
 					$GLOBALS['ERROR']['saveRegisteredUser'] = we_customer_customer::PWD_FIELD_NOT_SET;
 					if($passempty !== ''){
 						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(($passempty ? : g_l('modules_customer', '[password_empty]')), we_message_reporting::WE_MESSAGE_FRONTEND));
@@ -130,13 +132,16 @@ function we_tag_saveRegisteredUser($attribs){
 					return;
 				}
 				if($pwdRule && !preg_match('/' . preg_quote($pwdRule, '/') . '/', $password)){
-					we_tag_saveRegisteredUser_keepInput();
+					if($changesessiondata){
+						we_tag_saveRegisteredUser_keepInput(true);
+					}
 					$GLOBALS['ERROR']['saveRegisteredUser'] = we_customer_customer::PWD_NOT_SUFFICIENT;
 					return;
 				}
-			}
-			if($password != we_customer_customer::NOPWD_CHANGE && !we_customer_customer::comparePassword(f('SELECT Password FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $_SESSION['webuser']['ID']), $password)){//bei Passwordaenderungen muessen die Autologins des Users geloescht werden
-				$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE WebUserID=' . intval($_SESSION['webuser']['ID']));
+
+				if(!we_customer_customer::comparePassword(f('SELECT Password FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $_SESSION['webuser']['ID']), $password)){//bei Passwordaenderungen muessen die Autologins des Users geloescht werden
+					$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE WebUserID=' . intval($_SESSION['webuser']['ID']));
+				}
 			}
 			if($set_a){
 				$set_a['ModifyDate'] = sql_function('UNIX_TIMESTAMP()');
@@ -269,10 +274,10 @@ function we_saveCustomerImages(){
 	}
 }
 
-function we_tag_saveRegisteredUser_keepInput(){
+function we_tag_saveRegisteredUser_keepInput($merge = false){
 	if(isset($_REQUEST['s'])){
 		$registered = $_SESSION['webuser']['registered'];
-		$_SESSION['webuser'] = we_base_request::_(we_base_request::HTML, 's');
+		$_SESSION['webuser'] = $merge ? array_merge($_SESSION['webuser'], we_base_request::_(we_base_request::HTML, 's')) : we_base_request::_(we_base_request::HTML, 's');
 		//never set ID + Password
 		if(isset($_SESSION['webuser']['ID'])){
 			unset($_SESSION['webuser']['ID']);

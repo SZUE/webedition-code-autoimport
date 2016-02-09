@@ -89,10 +89,10 @@ function we_tag_form($attribs){
 									we_shop_shop::OBJECT :
 									($GLOBALS['lv'] instanceof we_listview_document ?
 											we_shop_shop::DOCUMENT :
-											($GLOBALS['we_doc'] instanceof we_objectFile) ?
+											(isset($GLOBALS['we_doc']->OF_ID)) ?
 													we_shop_shop::OBJECT :
 													we_shop_shop::DOCUMENT
-									)
+							)
 							),
 						)) .
 						getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 'shop_artikelid',
