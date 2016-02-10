@@ -80,24 +80,58 @@ img{
 	}
 }
 
+select{
+	margin-right:.5ex;
+}
+
+textarea {
+	height: 80px;
+}
+
 select,
-input,
+.wetextinput,
+input[type=text],
+input[type=number],
+input[type=search],
+input[type=tel],
+input[type=url],
 textarea{
 	//Fix fonts in these fields
 	font:inherit;
+	background-color: white;
+	border: $Grey solid 1px;
+	color: $DarkBlue;
+	box-sizing: border-box;
+	padding: 5px 10px;
+
+	&[disabled] {
+		background-color: #EEEEEE;
+	}
+	&:focus{
+		border: #888888 solid 1px;
+		background-color: #dce6f2;
+	}
+}
+
+.wetextinput,
+input[type=text],
+input[type=number],
+input[type=search],
+input[type=tel],
+input[type=url],
+textarea{
+	line-height: 150%;
+}
+
+.weMarkInputError,
+input:invalid {
+	background-color: #ff8888 ! important;
 }
 
 b,
 strong,
 .bold{
 	font-family: $weFontBold;
-}
-
-select.defaultfont{
-	border: #AAAAAA solid 1px;
-	&:focus{
-		border: #888888 solid 1px;
-	}
 }
 
 span.infobox{
@@ -196,11 +230,6 @@ div{
 	}@else{
 		background-color: $DarkBlue;
 	}
-}
-
-select,
-textarea{
-	border:#AAAAAA solid 1px;
 }
 
 body.radient{
@@ -550,34 +579,6 @@ td.boxHeader{
 	}
 }
 
-.weSelect{
-	margin-right:.5ex;
-}
-
-.weSelect,
-.wetextinput{
-	background-color: white;
-}
-
-.weSelect,
-.wetextinput,
-.wetextarea{
-	border: $Grey solid 1px;
-	color: $DarkBlue;
-	box-sizing: border-box;
-	padding: 5px 10px;
-}
-
-.wetextinput {
-	&[disabled] {
-		background-color: #EEEEEE;
-	}
-}
-
-.wetextarea {
-	height: 80px;
-}
-
 .multichooser {
 	background-color: white;
 	border: 1px grey solid;
@@ -603,11 +604,6 @@ label{
 	}
 }
 
-.weMarkInputError,
-input:invalid {
-	background-color: #ff8888 ! important;
-}
-
 .weEditmodeStyle {
 	border: 0px ! important;
 }
@@ -618,14 +614,9 @@ input:invalid {
 	background-color: #F5F5F5;
 }
 
-input.wetextinput:focus{
-	border: #888888 solid 1px;
-	background-color: #dce6f2;
-}
-
-.weSelect,
-.wetextinput,
-.wetextarea,
+select,
+input,
+textarea,
 .defaultfont,
 .changeddefaultfont,
 .shopContentfont,
@@ -665,12 +656,6 @@ shopContentfontGreySmall,
 	font-size: $bigfont;
 }
 
-.wetextinput,
-.wetextarea{
-	line-height: 150%;
-}
-
-
 .small,
 .big,
 .defaultfont,
@@ -686,13 +671,6 @@ shopContentfontGreySmall,
 .objectDescription {
 	padding: 4px 0 4px 0;
 	max-width:50em;
-}
-
-textarea.wetextarea:focus {
-	color: black;
-	border: #888888 solid 1px;
-	background-color: #dce6f2;
-	height: 80px;
 }
 
 .changed,
@@ -1843,7 +1821,7 @@ body.moduleEditor{
 			bottom: 0px;
 			right: 0px;
 
-			.wetextinput {
+			input[type=text] {
 				height: 30px;
 				border: none;
 				line-height: 30px;
@@ -1856,7 +1834,7 @@ body.moduleEditor{
 		height: auto;
 		padding: 5px 10px;
 
-		.weSelect {
+		select {
 			width: 109px !important;
 			height: 30px;
 		}
