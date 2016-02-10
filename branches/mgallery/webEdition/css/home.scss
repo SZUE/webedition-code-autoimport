@@ -189,11 +189,6 @@ div.le_widget {
 			vertical-align: top;
 			text-align: left;
 			height: 22px;
-			span {
-				padding-left: 5px;
-				width:2em;
-				display:inline-block;
-			}
 		}
 	}
 
@@ -209,6 +204,11 @@ div.le_widget {
 		padding: 3px;
 		table{
 			border-spacing: 0px;
+		}
+		span {
+			padding-left: 5px;
+			width:2em;
+			display:inline-block;
 		}
 
 		.fa {
