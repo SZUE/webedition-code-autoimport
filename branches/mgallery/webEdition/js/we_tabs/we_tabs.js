@@ -81,7 +81,8 @@ WE().layout.we_tabs.prototype = {
 				tabsHeight = this.doc.getElementById('main').offsetHeight;
 				this.doc.getElementById('naviDiv').style.height = tabsHeight + "px";
 				this.doc.getElementById('contentDiv').style.top = tabsHeight + "px";
-			} else if (this.win.parent) {
+			} //no else since in modules both can exist
+			if (this.win.parent) {
 				if (this.win.parent.document.getElementById("edheaderDiv")) {
 					tabsHeight = this.doc.getElementById('main').offsetHeight;
 					this.win.parent.document.getElementById('edheaderDiv').style.height = tabsHeight + "px";
