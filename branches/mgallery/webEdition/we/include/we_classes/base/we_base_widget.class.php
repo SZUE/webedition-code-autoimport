@@ -58,27 +58,22 @@ abstract class we_base_widget{
 
 		$oIco_prc = new we_html_table(array(), 1, 3);
 		$oIco_prc->setCol(0, 0, array(), '<span class="fa-stack" title="' . g_l('cockpit', '[properties]') . '" onclick="propsWidget(\'' . $sType . '\',\'' . $iId . '\',document.getElementById(\'' . $iId . '_csv\').value);this.blur();">
-		  <i class="fa fa-square-o fa-stack-2x"></i>
-		  <i class="fa fa-align-justify fa-stack-1x"></i>
+		  <i class="fa fa-align-justify"></i>
 		  </span>'
 		);
 		$oIco_prc->setCol(0, 1, array(), '<span id="' . $iId . '_icon_resize" class="fa-stack" title="' . g_l('cockpit', ($iRes == 0 ? '[increase_size]' : '[reduce_size]')) . '" onclick="resizeWidget(\'' . $iId . '\');this.blur();">
-		  <i class="fa fa-square-o fa-stack-2x"></i>
-		  <i class="fa fa-expand fa-stack-1x"></i>
+		  <i class="fa fa-expand"></i>
 		  </span>'
 		);
-		$oIco_prc->setCol(0, 2, array(), '<span class="fa-stack" title="' . g_l('cockpit', '[close]') . '" onclick="removeWidget(\'' . $iId . '\');this.blur();">
-		  <i class="fa fa-square-o fa-stack-2x"></i>
-		  <i class="fa fa-close fa-stack-1x"></i>
+		$oIco_prc->setCol(0, 2, array(), '<span class="" title="' . g_l('cockpit', '[close]') . '" onclick="removeWidget(\'' . $iId . '\');this.blur();">
+		  <i class="fa fa-close"></i>
 		  </span>');
 		$oIco_pc = new we_html_table(array(), 1, 2);
-		$oIco_pc->setCol(0, 0, array(), '<span class="fa-stack" title="' . g_l('cockpit', '[properties]') . '" onclick="propsWidget(\'' . $sType . '\',\'' . $iId . '\',document.getElementById(\'' . $iId . '_csv\').value);this.blur();">
-		  <i class="fa fa-square-o fa-stack-2x"></i>
-		  <i class="fa fa-align-justify fa-stack-1x"></i>
+		$oIco_pc->setCol(0, 0, array(), '<span class="" title="' . g_l('cockpit', '[properties]') . '" onclick="propsWidget(\'' . $sType . '\',\'' . $iId . '\',document.getElementById(\'' . $iId . '_csv\').value);this.blur();">
+		  <i class="fa fa-align-justify"></i>
 		  </span>');
-		$oIco_pc->setCol(0, 1, array(), '<span class="fa-stack" title="' . g_l('cockpit', '[close]') . '" onclick="removeWidget(\'' . $iId . '\');this.blur();">
-		  <i class="fa fa-square-o fa-stack-2x"></i>
-		  <i class="fa fa-close fa-stack-1x"></i>
+		$oIco_pc->setCol(0, 1, array(), '<span class="" title="' . g_l('cockpit', '[close]') . '" onclick="removeWidget(\'' . $iId . '\');this.blur();">
+		  <i class="fa fa-close"></i>
 		  </span>');
 
 		$sIco = ($sType != "_reCloneType_") ? ($resize ? $oIco_prc->getHtml() : $oIco_pc->getHtml()) :

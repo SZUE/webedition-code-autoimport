@@ -2106,12 +2106,6 @@ a:hover, a:focus, a:active {
 	}
 }
 
-
-#le_tblWidgets div.widget td span {
-	padding-left: 5px;
-}
-
-
 .fa-inverse {
 	/*color: transparent !important;*/
 }
@@ -2123,6 +2117,6 @@ a:hover, a:focus, a:active {
 
 #div_fileupload_buttons{
 	button{
-		width:170px;
+		width:90% !important;
 	}
 }

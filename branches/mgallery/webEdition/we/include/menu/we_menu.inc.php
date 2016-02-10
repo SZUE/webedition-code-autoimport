@@ -24,12 +24,9 @@
  */
 $seeMode = !(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL);
 $we_menu = array(
-	'file' => array(// File
-		'text' => g_l('javaMenu_global', '[file]'),
-	),
 	'file_new' => array(// File > New
 		'text' => g_l('javaMenu_global', '[new]'),
-		'parent' => 'file',
+		//'parent' => 'file',
 	),
 	'file_new_wedoc' => array(// File > New > webEdition Document
 		'text' => g_l('javaMenu_global', '[webEdition_page]'),
@@ -215,6 +212,10 @@ $we_menu = array(
 		'perm' => 'NEW_COLLECTION',
 		'hide' => !we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION)
 	),
+		'file' => array(// File
+		'text' => g_l('javaMenu_global', '[file]'),
+	),
+
 	/* 	$we_menu[1011100]['parent'] = 'file_new'; // separator
 	  // File > New > Wizards
 	  'text'=> g_l('javaMenu_global', '[wizards]') . '&hellip;',
