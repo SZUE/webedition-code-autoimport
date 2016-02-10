@@ -31,7 +31,7 @@ $weBackupWizard = new we_backup_wizard(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=re
 
 if($what === 'cmd' || ($what === 'body' && $step == 3)){
 	$fileUploader = new we_fileupload_ui_base('we_upload_file');
-	$fileUploader->setTypeCondition('accepted', array(), array('xml', 'gz', 'tgz'));
+	$fileUploader->setTypeCondition('accepted', array(we_base_ContentTypes::XML), array('gz', 'tgz'));
 	$fileUploader->setCallback('top.body.startImport(true)');
 	$fileUploader->setInternalProgress(array('isInternalProgress' => true, 'width' => 300));
 	$fileUploader->setDimensions(array('width' => 500, 'dragHeight' => 60, 'marginTop' => 5));

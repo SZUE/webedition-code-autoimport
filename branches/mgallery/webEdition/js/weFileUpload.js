@@ -954,23 +954,34 @@ var weFileUpload = (function () {
 					tc = _.sender.typeCondition,
 					typeGroup = type.split('/').shift() + '/*';
 
-				if (tc.accepted.mime && tc.accepted.mime.length > 0 && type === '') {
-					return false;
-				}
-				if (tc.accepted.all && tc.accepted.all.length > 0 &&
-						!WE().util.in_array(type, tc.accepted.all) &&
-						!WE().util.in_array(typeGroup, tc.accepted.all) &&
-						!WE().util.in_array(ext, tc.accepted.all)) {
-					return false;
-				}
-				if (tc.forbidden.all && tc.forbidden.all.length > 0 &&
-						(WE().util.in_array(type, tc.forbidden.all) ||
-							WE().util.in_array(typeGroup, tc.forbidden.all) ||
-							WE().util.in_array(ext, tc.forbidden.all))) {
-					return false;
+				// no restrictions
+				if(!tc.accepted.cts && !tc.accepted.exts && !tc.forbidden.cts && !tc.forbidden.exts){
+					return 1; // 4: no restrictions
 				}
 
-				return true;
+				// check forbidden mimes and extensions
+				if((tc.forbidden.cts && type && (tc.forbidden.cts.indexOf(',' + type + ',') !== -1 || tc.forbidden.cts.indexOf(',' + typeGroup + ',') !== -1))
+						|| (tc.forbidden.exts && tc.forbidden.exts.indexOf(',' + ext + ',') !== -1)
+						|| (tc.forbidden.exts4cts && tc.forbidden.exts4cts.indexOf(',' + ext + ',') !== -1)){
+					return 0;
+				}
+
+				// explicitly aloud
+				if(tc.accepted.cts || tc.accepted.exts){
+					if(tc.accepted.cts && type && (tc.accepted.cts.indexOf(',' + type + ',') !== -1 || tc.accepted.cts.indexOf(',' + typeGroup + ',') !== -1)){
+						return 1; // 1: mime ok
+					}
+					if (tc.accepted.exts && tc.accepted.exts.indexOf(',' + ext + ',') !== -1) {
+						return 2; // 2: ext ok
+					}
+					if (tc.accepted.exts4cts && tc.accepted.exts4cts.indexOf(',' + ext + ',') !== -1) {
+						return 3; // 3: mime not ok but ext belongs to aloud mime
+					}
+
+					return 0; // it's not forbidden but does not match explicitly aloud mine/extensions
+				}
+
+				return 1; // it's not forbidden and there are no explicitly aloud mine/extensions
 			};
 
 			this.computeSize = function (size) {
@@ -2051,9 +2062,9 @@ var weFileUpload = (function () {
 
 			this.addFile = function (f) {
 				var sizeText = f.isSizeOk ? _.utils.gl.sizeTextOk + _.utils.computeSize(f.size) + ', ' :
-								'<span style="color:red;">' + _.utils.gl.sizeTextNok + '</span>';
-				var typeText = f.isTypeOk ? _.utils.gl.typeTextOk + f.type :
-								'<span style="color:red;">' + _.utils.gl.typeTextNok + f.type + '</span>';
+					'<span style="color:red;">' + _.utils.gl.sizeTextNok + '</span>';
+				var typeText = f.isTypeOk ? _.utils.gl.typeTextOk + (f.isTypeOk === 1 ? f.type : f.file.name.split('.').pop().toUpperCase()) :
+					'<span style="color:red;">' + _.utils.gl.typeTextNok + f.type + '</span>';
 
 				this.elems.fileDrag_state_1.style.backgroundColor = 'rgb(243, 247, 255)';
 
