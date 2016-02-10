@@ -1393,253 +1393,8 @@ span.cutText{
 	max-width:10em;
 }
 
-/* we_collection.class */
-
-
-div.collection_props-mime,
-div.collection_props-classes{
-	width: 380px;
-	margin-top: 5px;
-}
-
-div.collection_props-dublettes{
-	width: 388px;
-	margin: 20px 0 10px 0;
-}
-
-div.collection-head{
-	margin: 20px 0 0 20px;
-}
-
-div.collection-toolbar{
-	width: 850px;
-	padding: 10px 0 0 20px;
-	margin: 12px 0 0 0;
-
-	td{
-		&.toolbarRecursive{
-			width: 320px;
-		}
-
-		&.toolbarSlider{
-			width: 160px;
-		}
-
-		&.toolbarView{
-			width: 42px;
-		}
-
-		&.toolbarAdd{
-			width: 60px;
-			padding-left: 20px;
-		}
-
-		&.toolbarImport{
-			width: 40px;
-		}
-
-		&.toolbarNum{
-			width: 100px;
-			text-align: right;
-			padding-right: 4px;
-		}
-	}
-	.toolbarNum i{
-		font-size: 1em;
-	}
-}
-
-input.collection-Slider{
-	width: 120px;
-	height: 20px;
-}
-
-div.collection-content{
-	width: 808px;
-	border: 1px solid #afb0af;
-	padding: 20px;
-	margin: 20px;
-	background-color: white;
-	min-height: 200px;
-
-	div.listItem{
-		margin: 4px 0 0 0;
-		border: 1px solid #006db8;
-		background-color: #f5f5f5;
-		cursor: default;
-
-		td{
-			&.colNum{
-				width: 46px;
-				padding: 0 16px 0 0;
-				text-align: right;
-			}
-
-			&.colPreview{
-				width: 90px;
-				padding: 3px 9px 3px 0;
-			}
-			&.colContent{
-				width: 420px;
-			}
-			&.colControls{
-				width: 180px;
-				padding: 4px 20px 0 0;
-			}
-		}
-
-		div{
-			&.previewDiv{
-				width: 80px;
-				height: 80px;
-				display: block;
-				background-repeat: no-repeat;
-				background-position: center center;
-				background-size: contain;
-				text-align: center;
-				cursor: default;
-
-				div.divBtnSelect{
-					padding: 28px 0 0 0;
-					display: none;
-				}
-
-				span{
-					text-align: center;
-					font-size: 24px;
-					padding-top: 18px;
-				}
-
-				span:first-child{
-					color: #aaaaaa;
-				}
-			}
-
-			&.innerDiv{
-				float: left;
-				width: 20px;
-				padding: 0px 10px 3px 6px;
-				cursor: default;
-				white-space: nowrap;
-				overflow: hidden;
-				text-overflow: ellipsis;
-
-				i{
-					font-size: $fafontBig;
-				}
-			}
-		}
-	}
-
-	div.gridItem{
-		position: relative;
-		float: left;
-		display: block;
-		::selection,
-		::-moz-selection{
-			color: inherit;
-			background: inherit;
-		}
-		div.divToolbar{
-			position: absolute;
-			bottom: 0px;
-			width: 100%;
-			height: auto;
-			min-height: 30px;
-			text-align: right;
-			padding-bottom: 6px;
-			background-color: #f5f5f5;
-			opacity: 0.6;
-			display: none;
-			padding: 6px 0 0 0;
-			cursor: default;
-		}
-		div.toolbarLeft{
-			float: left;
-			width: 26px;
-			padding: 4px 0 0 10px;
-			text-align: left;
-			font-size: $bigfont;
-		}
-		div.toolbarRight{
-			float: right;
-			width: auto;
-		}
-		div.toolbarAttribs{
-			float: left;
-			width: auto;
-			padding: 6px 0 4px 0;
-		}
-
-		.toolbarAttr{
-			width: 24px;
-			float: left;
-			text-align: right;
-			font-size: $medfont;
-		}
-		.toolbarBtns{
-			width: auto;
-			float: right;
-		}
-		div.divContent{
-			position: absolute;
-			left: 0;
-			top: 0;
-			bottom: 14px;
-			right: 14px;
-			border: 1px solid #006db8;
-			float: left;
-			display: block;
-			background-color: white;
-			background-repeat: no-repeat;
-			background-position: center center;
-			background-size: contain;
-			vertical-align: middle;
-			cursor: default;
-
-			.divInner{
-				position: absolute;
-				top: 0px;
-				bottom: 30px;
-				width: 100%;
-				padding: 40% 0 0 0;
-				text-align: center;
-				span{
-					font-size: 24px;
-					&:first-child{
-						color: #aaaaaa;
-					}
-				}
-			}
-		}
-		.divTitle{
-			padding: 7% 0 0 0;
-			width: 80%;
-			white-space: nowrap;
-			overflow: hidden;
-			text-overflow: ellipsis;
-		}
-		.divSpace{
-			position: absolute;
-			top: 0;
-			right: 0;
-			bottom: 14px;
-			width: 12px;
-			border: 1px solid white;
-			float: left;
-			display: block;
-		}
-	}
-}
-
-
 .we-state-green{
 	color: #00cc00;
-}
-
-.collection-content .listItem div.div_we-state-green{
-	width:auto;
-	max-width: 160px;
 }
 
 .we-state-red{
@@ -1667,7 +1422,7 @@ div.collection-content{
 	input,
 	select{
 		width: 30em;
-		height: 30px !important;
+		height: 30px;
 		margin-bottom: 5px;
 	}
 
@@ -2094,4 +1849,252 @@ a:hover, a:focus, a:active {
 	button{
 		width:90% !important;
 	}
+}
+
+/* we_collection.class */
+div.collection_props-mime,
+div.collection_props-classes{
+	width: 380px;
+	margin-top: 5px;
+}
+
+#collection_props-mime_class{
+	select {
+		height: auto;
+	}
+}
+
+div.collection_props-dublettes{
+	width: 388px;
+	margin: 20px 0 10px 0;
+}
+
+div.collection-head{
+	margin: 20px 0 0 20px;
+}
+
+div.collection-toolbar{
+	width: 850px;
+	padding: 10px 0 0 20px;
+	margin: 12px 0 0 0;
+
+	td{
+		&.toolbarRecursive{
+			width: 320px;
+		}
+
+		&.toolbarSlider{
+			width: 160px;
+		}
+
+		&.toolbarView{
+			width: 42px;
+		}
+
+		&.toolbarAdd{
+			width: 60px;
+			padding-left: 20px;
+		}
+
+		&.toolbarImport{
+			width: 40px;
+		}
+
+		&.toolbarNum{
+			width: 100px;
+			text-align: right;
+			padding-right: 4px;
+		}
+	}
+	.toolbarNum i{
+		font-size: 1em;
+	}
+}
+
+input.collection-Slider{
+	width: 120px;
+	height: 20px;
+}
+
+div.collection-content{
+	width: 808px;
+	border: 1px solid #afb0af;
+	padding: 20px;
+	margin: 20px;
+	background-color: white;
+	min-height: 200px;
+
+	div.listItem{
+		margin: 4px 0 0 0;
+		border: 1px solid #006db8;
+		background-color: #f5f5f5;
+		cursor: default;
+
+		td{
+			&.colNum{
+				width: 46px;
+				padding: 0 16px 0 0;
+				text-align: right;
+			}
+
+			&.colPreview{
+				width: 90px;
+				padding: 3px 9px 3px 0;
+			}
+			&.colContent{
+				width: 420px;
+			}
+			&.colControls{
+				width: 180px;
+				padding: 4px 20px 0 0;
+			}
+		}
+
+		div{
+			&.previewDiv{
+				width: 80px;
+				height: 80px;
+				display: block;
+				background-repeat: no-repeat;
+				background-position: center center;
+				background-size: contain;
+				text-align: center;
+				cursor: default;
+
+				div.divBtnSelect{
+					padding: 28px 0 0 0;
+					display: none;
+				}
+
+				span{
+					text-align: center;
+					font-size: 24px;
+					padding-top: 18px;
+				}
+
+				span:first-child{
+					color: #aaaaaa;
+				}
+			}
+
+			&.innerDiv{
+				float: left;
+				width: 20px;
+				padding: 0px 10px 3px 6px;
+				cursor: default;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+
+				i{
+					font-size: $fafontBig;
+				}
+			}
+		}
+	}
+
+	div.gridItem{
+		position: relative;
+		float: left;
+		display: block;
+		::selection,
+		::-moz-selection{
+			color: inherit;
+			background: inherit;
+		}
+		div.divToolbar{
+			position: absolute;
+			bottom: 0px;
+			width: 100%;
+			height: auto;
+			min-height: 30px;
+			text-align: right;
+			padding-bottom: 6px;
+			background-color: #f5f5f5;
+			opacity: 0.6;
+			display: none;
+			padding: 6px 0 0 0;
+			cursor: default;
+		}
+		div.toolbarLeft{
+			float: left;
+			width: 26px;
+			padding: 4px 0 0 10px;
+			text-align: left;
+			font-size: $bigfont;
+		}
+		div.toolbarRight{
+			float: right;
+			width: auto;
+		}
+		div.toolbarAttribs{
+			float: left;
+			width: auto;
+			padding: 6px 0 4px 0;
+		}
+
+		.toolbarAttr{
+			width: 24px;
+			float: left;
+			text-align: right;
+			font-size: $medfont;
+		}
+		.toolbarBtns{
+			width: auto;
+			float: right;
+		}
+		div.divContent{
+			position: absolute;
+			left: 0;
+			top: 0;
+			bottom: 14px;
+			right: 14px;
+			border: 1px solid #006db8;
+			float: left;
+			display: block;
+			background-color: white;
+			background-repeat: no-repeat;
+			background-position: center center;
+			background-size: contain;
+			vertical-align: middle;
+			cursor: default;
+
+			.divInner{
+				position: absolute;
+				top: 0px;
+				bottom: 30px;
+				width: 100%;
+				padding: 40% 0 0 0;
+				text-align: center;
+				span{
+					font-size: 24px;
+					&:first-child{
+						color: #aaaaaa;
+					}
+				}
+			}
+		}
+		.divTitle{
+			padding: 7% 0 0 0;
+			width: 80%;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+		.divSpace{
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 14px;
+			width: 12px;
+			border: 1px solid white;
+			float: left;
+			display: block;
+		}
+	}
+}
+
+.collection-content .listItem div.div_we-state-green{
+	width:auto;
+	max-width: 160px;
 }
