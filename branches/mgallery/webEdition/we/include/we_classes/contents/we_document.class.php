@@ -215,7 +215,7 @@ class we_document extends we_root{
 	}
 
 	function addCat(array $ids){
-		$this->Category = implode(',', array_unique(array_filter(explode(',', $this->Category)) + $ids, SORT_NUMERIC));
+		$this->Category = implode(',', array_unique(array_merge(array_filter(explode(',', $this->Category)), $ids), SORT_NUMERIC));
 	}
 
 	function delCat($id){
