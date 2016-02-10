@@ -206,7 +206,7 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 			// get information about the object which has to be moved
 			$row = getHash('SELECT TableID,Path,Text,IsFolder,Icon,ContentType FROM ' . $DB_WE->escape($table) . ' WHERE IsClassFolder=0 AND ID=' . intval($id), $DB_WE);
 
-			if(!$row || $isFolder){
+			if(!$row || ($row['IsFolder'] == 1)){
 				$notMovedItems[] = array(
 					'ID' => $id,
 					'Text' => ($row ? $row['Text'] : ''),
