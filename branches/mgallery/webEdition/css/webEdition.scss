@@ -533,17 +533,14 @@ td.boxHeader{
 /*div for iconbar frame*/
 #iconbarDiv{
 	position: absolute;
-	top: 32px;
+	top: $menuHeight;
 	left: 0px;
 	right: 0px;
-	height: 40px;
+	height: $iconbarHeight;
 	overflow: hidden;
 }
 
 #iconBar{
-	border-top: 1px solid #a5a4a4;
-	background: linear-gradient(white, #e6e7e6);
-
 	table.iconBar td{
 		padding:6px;
 	}
@@ -575,7 +572,7 @@ td.boxHeader{
 	bottom: 0px;
 	border: 0px;
 	&.withIconBar{
-		top:72px;
+		top:($menuHeight+$iconbarHeight);
 	}
 }
 
