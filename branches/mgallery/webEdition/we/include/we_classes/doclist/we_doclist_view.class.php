@@ -112,7 +112,7 @@ WE().consts.g_l.weSearch = {
 </tr>
 </table>' .
 			we_class::hiddenTrans() .
-			'<table class="default"  id="filterTable' . we_search_view::SEARCH_DOCLIST . '" style="margin-left:20px;display:' . ($this->Model->mode ? 'block' : 'none') . ';">
+			'<table class="default"  style="margin-left:20px;display:' . ($this->Model->mode ? 'block' : 'none') . ';">
 <tbody id="filterTable' . we_search_view::SEARCH_DOCLIST . '">';
 
 		// we always have at least an empty 'Content' search: it's set in model initialisation
