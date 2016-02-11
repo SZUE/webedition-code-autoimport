@@ -165,10 +165,10 @@ doOnImportSuccess = function(importedDocument){
 			opener.top.reloadDir();
 			opener.top.unselectAllFiles();
 			opener.top.addEntry(importedDocument.id, "noch nichts", false, "importedDocument.path");
-			opener.top.doClick(importedDocument, 0);
-			setTimeout(opener.top.selectFile, 200,importedDocument);
+			opener.top.doClick(importedDocument.id);
+			setTimeout(opener.top.selectFile, 200, importedDocument.id);
 			reloadMainTree();
-			setTimeout(self.close, 250);
+			setTimeout(self.close, 100);
 			break;
 		case "sselector":
 			opener.top.fscmd.selectDir();
