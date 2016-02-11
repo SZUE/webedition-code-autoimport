@@ -395,12 +395,12 @@ $we_menu = array(
 	  'perm' => 'PUBLISH',
 
 	  ), */
-	array(
+	/*array(
 		'text' => g_l('javaMenu_glossary', '[glossary_check]'),
 		'parent' => 'file',
 		'cmd' => 'glossary_check',
 		'hide' => !(defined('GLOSSARY_TABLE'))
-	),
+	),*/
 	array(// File > Delete Active Document
 		'text' => g_l('javaMenu_global', '[delete_active_document]'),
 		'parent' => 'file',

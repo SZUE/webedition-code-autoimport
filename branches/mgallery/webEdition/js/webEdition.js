@@ -1021,11 +1021,11 @@ function we_cmd_base(args, url) {
 			if (!WE().session.seemode) {
 				treeData.setState(treeData.tree_states.edit);
 				drawTree();
-				var cl=self.document.getElementById("bm_treeheaderDiv").classList;
+				var cl = self.document.getElementById("bm_treeheaderDiv").classList;
 				cl.remove('deleteSelector');
 				cl.remove('moveSelector');
 				cl.remove('collectionSelector');
-				cl=self.document.getElementById("treetable").classList;
+				cl = self.document.getElementById("treetable").classList;
 				cl.remove('deleteSelector');
 				cl.remove('moveSelector');
 				cl.remove('collectionSelector');
@@ -1391,34 +1391,33 @@ WE().util.getTreeIcon = function (contentType, open, extension) {
 			return simplepre + '<i class="fa fa-archive fa-stack-2x we-color"></i>' + post;
 //Banner module
 		case 'we/banner':
-			return pre + '<i class="fa fa-flag-checkered fa-stack-1x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
-		case 'we/costumer':
-			return pre + '<i class="fa fa-user fa-stack-2x we-color"></i>' + post;
-		case 'we/costumerGroup':
-			return pre + '<i class="fa fa-user fa-stack-2x we-color"></i>' + post;
+			return simplepre + '<i class="fa fa-flag-checkered fa-stack-2x we-color"></i>' + post;
+		case 'we/customerGroup':
 		case 'we/userGroup':
-			return pre + '<i class="fa fa-users fa-stack-2x we-color"></i>' + post;
+			return simplepre + '<i class="fa fa-users fa-stack-2x we-color"></i>' + post;
 		case 'we/alias':
-			return pre + '<i class="fa fa-user fa-stack-2x" style="color:grey"></i>' + post;
+			return simplepre + '<i class="fa fa-user fa-stack-2x" style="color:grey"></i>' + post;
 		case 'we/customer':
 		case 'we/user':
-			return pre + '<i class="fa fa-user fa-stack-2x we-color"></i>' + post;
+			return simplepre + '<i class="fa fa-user fa-stack-2x we-color"></i>' + post;
 		case 'we/export':
 			return pre + '<i class="fa fa-download fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
 		case 'we/glossar':
-			return pre + '<i class="fa fa-commenting fa-stack-1x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
+			return simplepre + '<i class="fa fa-commenting fa-stack-2x we-color"></i>' + post;
 		case 'we/newsletter':
-			return pre + '<i class="fa fa-newspaper-o fa-stack-2x we-color"></i>' + post;
+			return simplepre + '<i class="fa fa-newspaper-o fa-stack-2x we-color"></i>' + post;
 		case 'we/voting':
-			return pre + '<i class="fa fa-thumbs-up fa-stack-1x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
+			return simplepre + '<i class="fa fa-thumbs-up fa-stack-2x we-color"></i>' + post;
 		case 'we/navigation':
-			return pre + '<i class="fa fa-compass fa-stack-1x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
+			return simplepre + '<i class="fa fa-compass fa-stack-2x we-color"></i>' + post;
 		case 'we/search':
 			return pre + '<i class="fa fa-search fa-stack-1x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
 		case 'we/shop':
-			return pre + '<i class="fa fa-shopping-cart fa-stack-1x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
+			return simplepre + '<i class="fa fa-shopping-cart fa-stack-2x we-color"></i></i>' + post;
+		case 'we/workflow':
+			return simplepre + '<i class="fa fa-fa-gears fa-stack-2x we-color"></i></i>' + post;
 		case 'we/category':
-			return pre + '<i class="fa fa-tag fa-stack-1x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
+			return simplepre + '<i class="fa fa-tag fa-stack-2x we-color"></i>' + post;
 		case 'symlink':
 			return pre + '<i class="fa fa-link fa-stack-2x we-color"></i>' + post;
 		case 'settings':
