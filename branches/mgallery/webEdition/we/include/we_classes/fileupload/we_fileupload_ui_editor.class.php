@@ -39,16 +39,16 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 		$permCat = permissionhandler::hasPerm("EDIT_KATEGORIE");
 		$this->formElements = array_merge($this->formElements, array(
 			'uploader' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
-			'parentId' => array('set' => true, 'multiIconBox' => true, 'space' => 130, 'rightHeadline' => false, 'noline' => true),
+			'parentId' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
 			'sameName' => array('set' => true, 'multiIconBox' => true, 'space' => 180, 'rightHeadline' => false),
 			'importMeta' => array('set' => true, 'multiIconBox' => true, 'space' => 120, 'rightHeadline' => false, 'noline' => true),
 			'isSearchable' => array('set' => true, 'multiIconBox' => true, 'space' => 120, 'rightHeadline' => false),
 			'categories' => array('set' => $permCat, 'multiIconBox' => true, 'space' => 120, 'rightHeadline' => false),
 			'attributes' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true),
 			'thumbnails' => array('set' => $permImageEdit, 'multiIconBox' => true, 'rightHeadline' => true),
-			'imageResize' => array('set' => $permImageEdit, 'multiIconBox' => true, 'space' => 130, 'rightHeadline' => false, 'noline' => true),
-			'imageRotate' => array('set' => $permImageEdit, 'multiIconBox' => true, 'space' => 130, 'rightHeadline' => false, 'noline' => true),
-			'imageQuality' => array('set' => $permImageEdit, 'multiIconBox' => true, 'space' => 130, 'rightHeadline' => false, 'noline' => true),
+			'imageResize' => array('set' => $permImageEdit, 'multiIconBox' => true, 'space' => 180, 'rightHeadline' => false, 'noline' => true),
+			'imageRotate' => array('set' => $permImageEdit, 'multiIconBox' => true, 'space' => 180, 'rightHeadline' => false, 'noline' => true),
+			'imageQuality' => array('set' => $permImageEdit, 'multiIconBox' => true, 'space' => 180, 'rightHeadline' => false, 'noline' => true),
 		));
 
 		$this->dimensions['dragWidth'] = 400;
