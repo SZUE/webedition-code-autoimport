@@ -97,11 +97,11 @@ abstract class we_fileupload{
 			'cts' => $cts ? ',' . $cts : '',
 			'exts4cts' => $exts4cts,
 			'exts' => $exts ? ',' . implode(',', $exts) . ',' : '',
-			// old vars: used in php
-			'mime' => $mime,
+			// old vars: used in php // FIXME: throw away when sure that we do not need them anymore
+			'mime' => $weCts,
 			'ext' => $exts
 		);
-		$ret['all'] = array_merge($tmp['mime'], $ret['ext']);
+		$ret['all'] = array_merge($ret['mime'], $ret['ext']);
 
 		$this->typeCondition[$field] = $ret;
 	}
@@ -127,14 +127,6 @@ abstract class we_fileupload{
 		return false;
 	}
 
-	protected function _isFileExtensionOk($fileName){
-		return $this->_checkFileType('', $fileName, 'ext');
-	}
-
-	protected function _isFileMimeOk($mime){//FIXME:unused!
-		return $this->_checkFileType($mime, '', 'mime');
-	}
-	
 	public function setPredefinedConfig($predefinedConfig = ''){
 		$this->predefinedConfig = $predefinedConfig;
 	}
