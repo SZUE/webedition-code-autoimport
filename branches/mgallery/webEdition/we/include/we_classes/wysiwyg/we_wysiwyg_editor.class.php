@@ -890,6 +890,8 @@ var weclassNames_tinyMce = [' . $this->cssClassesJS . '];
 
 //FIXME: if possible change this to an array/object element!
 var tinyMceConfObject__' . $this->fieldName_clean . ' = {
+	doctype: "<!DOCTYPE html>",
+	fix_list_elements:true,
 	wePluginClasses : {
 		weadaptbold : "' . $editorLangSuffix . 'weadaptbold",
 		weadaptitalic : "' . $editorLangSuffix . 'weadaptitalic",
@@ -1002,11 +1004,16 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	paste_text_sticky : true,
 	paste_auto_cleanup_on_paste: true,
 	paste_preprocess: function(pl, o) {
-		var patt = /<img [^>]*src=["\']data:[^>]*>/gi;
-		if (o.content.match(patt)) {
-			o.content = o.content.replace(patt, "");
+		var pattImg = /<img [^>]*src=["\']data:[^>]*>/gi;
+		if (o.content.match(pattImg)) {
+			o.content = o.content.replace(pattImg, "");
 			alert("' . g_l('wysiwyg', '[removedInlinePictures]') . '");
 		}
+		var patScript=/<script[^>]*.*< ?\/script[^>]*>/gi;
+		o.content.replace(patScript, "");
+		var patStyle=/<style[^>]*.*< ?\/style[^>]*>/gi;
+		o.content.replace(patStyle, "");
+
 	},
 
 	setup : function(ed){
