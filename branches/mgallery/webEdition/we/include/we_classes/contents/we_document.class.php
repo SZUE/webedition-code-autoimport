@@ -1440,7 +1440,7 @@ class we_document extends we_root{
 			//'onclick' => "this.parentNode.getElementsByClassName('meta_icons')[0].style.display='none';",
 		);
 
-		$input = we_html_tools::htmlTextInput($inputName, 23, (($elVal = $this->getElement($field)) ? $elVal : (isset($GLOBALS['meta'][$field]) ? $GLOBALS['meta'][$field]['default'] : '')), '', '', 'txt', 308, 0, '', false, $props['closed']);
+		$input = we_html_tools::htmlTextInput($inputName, 23, ($this->getElement($field) ? : (isset($GLOBALS['meta'][$field]) ? $GLOBALS['meta'][$field]['default'] : '')), '', '', 'txt', 308, 0, '', false, $props['closed']);
 		$sel = $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $field . ']', $values, 1, '', false, array("onchange" => $onchange), "value", 200);
 
 		// FIXME: if we want the icons make icon-css and better js
