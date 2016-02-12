@@ -9,6 +9,7 @@ CREATE TABLE ###TBLPREFIX###tblCategorys (
   ParentID int(11) unsigned default NULL,
 	Title varchar(255) NOT NULL default '',
 	Description longtext NOT NULL,
+	`Language` varchar(5) NOT NULL default '',
   PRIMARY KEY  (ID),
   KEY Path (Path)
 ) ENGINE=MyISAM;
