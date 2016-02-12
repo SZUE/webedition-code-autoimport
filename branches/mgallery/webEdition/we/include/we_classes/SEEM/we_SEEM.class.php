@@ -876,9 +876,6 @@ abstract class we_SEEM{
 	 * @return  string
 	 */
 	static function link2we_cmd($linkArray){
-
-		$code = "";
-
 		//  The target of the Link is a webEdition - Document.
 		if($linkArray[6][0] != -1){
 

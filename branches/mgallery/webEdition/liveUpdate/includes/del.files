@@ -89,6 +89,9 @@ we/include/we_tags/we_tag_econda.inc.php
 we/include/we_tags/custom_tags/dummy
 we/include/we_tag_elements.inc.php
 we/include/we_tagParser.inc.php
+we/include/we_seem/we_SEEM_openExtDoc_frameset.php
+we/include/we_seem/open_url_in_editor.php
+we/include/we_seem/open_form_in_editor.php
 we/include/we_perms.inc.php
 we/include/we_modules/workflow/we_workflow_doc_footer.inc.php
 we/include/we_modules/workflow/we_webEditionCmd_workflow.inc.php
