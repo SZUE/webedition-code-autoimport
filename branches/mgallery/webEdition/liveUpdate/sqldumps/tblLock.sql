@@ -4,6 +4,8 @@ CREATE TABLE ###TBLPREFIX###tblLock (
   sessionID char(64) NOT NULL default '',
   lockTime datetime NOT NULL,
   tbl enum('tblFile','tblObject','tblTemplates','tblObjectFiles') NOT NULL,
+	freeDoc text NOT NULL,
+	freeDocUID int(11) unsigned NOT NULL default '0',
   PRIMARY KEY (ID,tbl),
   KEY UserID (UserID,sessionID),
   KEY lockTime (lockTime)

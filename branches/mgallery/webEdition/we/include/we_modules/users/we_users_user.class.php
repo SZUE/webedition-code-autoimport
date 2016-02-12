@@ -2489,9 +2489,9 @@ function resetTabs(){
 	}
 
 	public static function updateActiveUser(){
-		if($_SESSION["user"]["ID"]){
-			$GLOBALS['DB_WE']->query("UPDATE " . USER_TABLE . " SET Ping=NOW() WHERE ID=" . $_SESSION["user"]["ID"]);
-			$GLOBALS['DB_WE']->query('UPDATE ' . LOCK_TABLE . ' SET lockTime=NOW() + INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND WHERE UserID=' . intval($_SESSION["user"]["ID"]) . ' AND sessionID="' . session_id() . '"');
+		if($_SESSION['user']['ID']){
+			$GLOBALS['DB_WE']->query('UPDATE ' . USER_TABLE . ' SET Ping=NOW() WHERE ID=' . $_SESSION['user']['ID']);
+			$GLOBALS['DB_WE']->query('UPDATE ' . LOCK_TABLE . ' SET lockTime=NOW()+INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND WHERE UserID=' . intval($_SESSION['user']['ID']) . ' AND sessionID="' . session_id() . '"');
 		}
 	}
 
