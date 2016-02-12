@@ -164,7 +164,7 @@ doOnImportSuccess = function(importedDocument){
 		case "selector":
 			opener.top.reloadDir();
 			opener.top.unselectAllFiles();
-			opener.top.addEntry(importedDocument.id, "noch nichts", false, "importedDocument.path");
+			opener.top.addEntry(importedDocument.id, importedDocument.text, false, "importedDocument.path");
 			opener.top.doClick(importedDocument.id);
 			setTimeout(opener.top.selectFile, 200, importedDocument.id);
 			reloadMainTree();
@@ -186,7 +186,6 @@ doOnImportSuccess = function(importedDocument){
 			document.getElementById("yuiAcResultImage").value = importedDocument.id;
 			document.getElementById("yuiAcInputImage").value = importedDocument.path;
 			imageChanged();
-
 			break;
 		default:
 			// do nothing
