@@ -326,10 +326,12 @@ class we_dialog_Hyperlink extends we_dialog_base{
 	function getDialogContentHTML(){
 		// Initialize we_button class
 		$yuiSuggest = &weSuggest::getInstance();
+		$noInternals = false; 
 
 		$extHref = (!$this->args['extHref'] ? we_base_link::EMPTY_EXT : ((substr($this->args['extHref'], 0, 1) === '#') ? '' : $this->args['extHref']));
 		if($this->noInternals || (isset($this->args['outsideWE']) && $this->args['outsideWE'] == 1)){
-			$_select_type = '<option value="' . we_base_link::TYPE_EXT . '"' . (($this->args["type"] == we_base_link::TYPE_EXT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[external_link]') . '</option>
+			$noInternals = true;
+			$_select_type = '<option value="' . we_base_link::TYPE_EXT . '"' . (($this->args["type"] !== we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[external_link]') . '</option>
 <option value="' . we_base_link::TYPE_MAIL . '"' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', '[emaillink]') . '</option>';
 
 			$_external_link = we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref, '', '', 'url', 300);
@@ -443,7 +445,7 @@ if(this.value === \'\' || this.value === consts.EMPTY_EXT){
 		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px;height:20px">' . g_l('weClass', '[linkType]') . '</td>
 		<td style="vertical-align:top"><select name="we_dialog_args[type]" class="defaultfont" id="weDialogType" size="1" style="margin-bottom:5px;width:300px;" onchange="changeTypeSelect(this);">' . $_select_type . '</select></td>
 	</tr>
-	<tr class="we_change ' . we_base_link::TYPE_EXT . '" style="display:' . (($this->args["type"] == we_base_link::TYPE_EXT) ? "table-row" : "none") . ';">
+	<tr class="we_change ' . we_base_link::TYPE_EXT . '" style="display:' . (($this->args["type"] == we_base_link::TYPE_EXT) || ($noInternals && $this->args["type"] !== we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
 		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px;">' . g_l('linklistEdit', '[external_link]') . '</td><td style="vertical-align:top" >' . $_external_link . '</td>
 	</tr>' .
 				(isset($_internal_link) ? '
