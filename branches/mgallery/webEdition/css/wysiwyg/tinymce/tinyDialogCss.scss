@@ -24,6 +24,8 @@
 /* TODO: clean up this messy css! */
 /*FIXME: if we have STYLESHEETS applied, we don't need special handling of body (font) */
 
+/*FIXME: adapt to 7.0!! */
+
 /* CSS for all tiny Dialogs */
 @import "../../config.scss";
 body{ /* [role=application]? */
@@ -32,6 +34,14 @@ body{ /* [role=application]? */
 	font-size: $smallfont;
 	margin:0px;
 
+}
+
+i.fa-ok {
+	color: green;
+}
+
+i.fa-ban, i.fa-cancel {
+	color: red;
 }
 
 .tabs{
@@ -157,22 +167,65 @@ height:19px;
 .mceActionPanel #apply,
 body .mceActionPanel #replaceBtn,
 .mceActionPanel #replaceAllBtn {
-	height: 22px !important;
-	color: black !important;
-	float: none;
-	font-weight:normal;
-	background: rgba(0, 0, 0, 0) linear-gradient(to bottom, #f3f7fc, #e9f0fb 50%, #dce8f8 50%, #d8e4f9) repeat scroll 0 0;
-	border-radius: 4px;
-	box-shadow: 2px 2px 2px #555555;
-	font-family: verdana,arial,helvetica;
-	font-size: $smallfont !important;
-	margin-bottom: 1ex;
-	margin-left: 0.5em;
-	margin-right: 0.5em;
-	min-width: 2.5em;
-	padding-left: 0.5em !important;
-	padding-right: 0.5em !important;
-	text-align: center;
+		height: 25px;
+		cursor:pointer;
+		border-collapse: collapse;
+		padding: 0px;
+		color: $DarkGrey;
+		border-radius: 0px;
+		border: none;
+		background: $GreyGradient;
+		font-family: $weFont;
+		font-size: $medfont;
+		font-weight: normal;
+		text-align: center;
+		padding-left: 10px;
+		padding-right: 10px;
+		margin-left:0.5em;
+		margin-right:0.5em;
+		margin-bottom: 1ex;
+		/*min-width: 9em; */
+		white-space: nowrap;
+		width: auto;
+		box-shadow: 1px 1px 2px $DarkGrey;
+
+
+		&:hover, button.multiicon:hover {
+			color: $White;
+			background: $MiddleBlueGradient;
+		}
+
+		i.fa-moreicon {
+			padding-left: 0.3em;
+		}
+		i.fa-folder{
+			color: $DarkBlue;
+		}
+
+		&:active{
+			color: $White;
+			background: $MiddleBlueGradient;
+			box-shadow: none;
+		}
+
+		&[disabled]{
+			color: $Grey;
+			/*background: linear-gradient(to bottom, #f4f4f4, #e9e9e9 50%, #dedede 50%, #d9d9d9); */
+			box-shadow: none;
+		}
+
+
+		&[disabled]:hover {
+			color: $Grey;
+			background: $GreyGradient;
+		}
+
+		img{
+			border: none;
+			margin: 0px;
+			padding:0px;
+			display:block;
+		}
 }
 
 .mceActionPanel #preview{

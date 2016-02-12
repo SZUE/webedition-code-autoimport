@@ -937,7 +937,11 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	weIsFrontend:"' . ($this->isFrontendEdit ? 1 : 0) . '",
 	weWordCounter:0,
 	weRemoveFirstParagraph:"' . ($this->removeFirstParagraph ? 1 : 0) . '",
-
+	wePopupGl: {
+		btnOk: {text: "' . g_l('button', '[ok][value]') . '", alt: "' . g_l('button', '[ok][alt]') . '"},
+		btnCancel: {text: "' . g_l('button', '[cancel][value]') . '", alt: "' . g_l('button', '[cancel][alt]') . '"},
+		btnDelete: {text: "' . g_l('button', '[delete][value]') . '", alt: "' . g_l('button', '[delete][alt]') . '"}
+	},
 	language: "' . $lang . '",
 	mode: "exact",
 	elements: "' . $this->name . '",
@@ -988,7 +992,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	//fullscreen_new_window: true,
 	editor_css: "' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/editorCss.css') . '",
 	content_css: "' . we_html_element::getUnCache(LIB_DIR . 'additional/fontawesome/css/font-awesome.min.css') . ',' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/contentCssFirst.php') . '&tinyMceBackgroundColor=' . $this->bgcol . '"+getDocumentCss(true)' . ($contentCss ? '+",' . $contentCss . '"' : '') . ',
-	popup_css_add: "' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss.css') . (we_base_browserDetect::isMAC() ? ',' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss_mac.css') : '') . '",
+	popup_css_add: "' . we_html_element::getUnCache(WEBEDITION_DIR . 'lib/additional/fontLiberation/stylesheet.css') . ',' . we_html_element::getUnCache(WEBEDITION_DIR . 'lib/additional/fontawesome/css/font-awesome.min.css') . ',' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss.css') . (we_base_browserDetect::isMAC() ? ',' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss_mac.css') : '') . '",
 	' . (in_array('template', $allCommands) && $this->templates ? $this->getTemplates() : '') . '
 
 	// Skin options

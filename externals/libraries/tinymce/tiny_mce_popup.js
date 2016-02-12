@@ -38,6 +38,34 @@ tinyMCEPopup.resizeToInnerSize = function(){
 		a.dom.addClass(document.body,"useWeFooter");
 	}
 
+	//replace buttons
+	if(!tinymce.isIE && typeof(top.isWeDialog) === "undefined"){
+		var btn, replace;
+		var g_l = a.editor.getParam("wePopupGl","");
+
+		if((btn = document.getElementById('insert'))){
+			if(!document.getElementById('search_tab')){ // we do not replace 'find next' //FIXME: make btn find
+				replace = document.createElement("div");
+				replace.innerHTML = '<button id="insert" class="weBtn weIconTextButton" title="' + g_l.btnOk.alt + '" type="insert"><i class="fa fa-firsticon fa-lg fa-check fa-ok"> </i> ' + g_l.btnOk.text + '</button>';
+				btn.parentNode.replaceChild(replace, btn);
+			}
+		}
+
+		if((btn = document.getElementById('cancel'))){
+			replace = document.createElement("div");
+			replace.innerHTML = '<button id="cancel" class="weBtn weIconTextButton" onclick="tinyMCEPopup.close();" title="' + g_l.btnCancel.alt + '" type="button"><i class="fa fa-firsticon fa-lg fa-ban fa-cancel"> </i> ' + g_l.btnCancel.text + '</button>';
+			btn.parentNode.replaceChild(replace, btn);
+		}
+
+		if((btn = document.getElementById('remove'))){
+			var oc = btn.getAttribute('onclick');
+			replace = document.createElement("div");
+			replace.innerHTML = '<button id="remove" class="weBtn weIconButton" onclick="' + oc + '" title="' + g_l.btnDelete.alt + '" type="button" style="display:none;"><i class="fa fa-firsticon fa-lg fa-trash-o"> </i></button>';
+			btn.parentNode.replaceChild(replace, btn);
+		}
+	}
+
+
 	//tinyMCEPopup.onclose does not work, so we set attribute onbeforeunload (does not work in Opera)
 	if((a.dom.getAttrib(document.body,"id") === "table" || a.dom.getAttrib(document.body,"id") === "styleprops"
 			|| a.dom.getAttrib(document.body,"id") === "tablecell" || a.dom.getAttrib(document.body,"id") === "tablerow")
