@@ -29,8 +29,11 @@ tinyMCEPopup.resizeToInnerSize = function(){
 
 	var a=this;
 	setTimeout(function(){
-		var b=a.dom.getViewPort(window);
-		a.editor.windowManager.resizeBy(a.getWindowArg("mce_width")-(b.w*ratio_w),a.getWindowArg("mce_height")-(b.h*ratio_h),a.id||window)
+		var b=a.dom.getViewPort(window), pw;
+		a.editor.windowManager.resizeBy(a.getWindowArg("mce_width")-(b.w*ratio_w),a.getWindowArg("mce_height")-(b.h*ratio_h),a.id||window);
+		if(typeof (pw = document.getElementsByClassName("panel_wrapper")[0]) !== undefined){
+			pw.style.height = '300px';
+		}
 	},10);
 
 	if(!tinymce.isIE && typeof(top.isWeDialog) === "undefined"
@@ -39,30 +42,51 @@ tinyMCEPopup.resizeToInnerSize = function(){
 	}
 
 	//replace buttons
-	if(!tinymce.isIE && typeof(top.isWeDialog) === "undefined"){
-		var btn, replace;
+	if(typeof(top.isWeDialog) === "undefined"){
+		var btn, tmp;
 		var g_l = a.editor.getParam("wePopupGl","");
+		var buttonsDiv = document.createElement("div");
+		buttonsDiv.style.float = 'right';
 
-		if((btn = document.getElementById('insert'))){
-			if(!document.getElementById('search_tab')){ // we do not replace 'find next' //FIXME: make btn find
-				replace = document.createElement("div");
-				replace.innerHTML = '<button id="insert" class="weBtn weIconTextButton" title="' + g_l.btnOk.alt + '" type="insert"><i class="fa fa-firsticon fa-lg fa-check fa-ok"> </i> ' + g_l.btnOk.text + '</button>';
-				btn.parentNode.replaceChild(replace, btn);
-			}
+		if((btn = document.getElementById('apply'))){
+			btn.parentNode.removeChild(btn);
+			buttonsDiv.appendChild(btn);
 		}
-
-		if((btn = document.getElementById('cancel'))){
-			replace = document.createElement("div");
-			replace.innerHTML = '<button id="cancel" class="weBtn weIconTextButton" onclick="tinyMCEPopup.close();" title="' + g_l.btnCancel.alt + '" type="button"><i class="fa fa-firsticon fa-lg fa-ban fa-cancel"> </i> ' + g_l.btnCancel.text + '</button>';
-			btn.parentNode.replaceChild(replace, btn);
+		if((btn = document.getElementById('replaceBtn'))){
+			btn.parentNode.removeChild(btn);
+			buttonsDiv.appendChild(btn);
+		}
+		if((btn = document.getElementById('replaceAllBtn'))){
+			btn.parentNode.removeChild(btn);
+			buttonsDiv.appendChild(btn);
 		}
 
 		if((btn = document.getElementById('remove'))){
 			var oc = btn.getAttribute('onclick');
-			replace = document.createElement("div");
-			replace.innerHTML = '<button id="remove" class="weBtn weIconButton" onclick="' + oc + '" title="' + g_l.btnDelete.alt + '" type="button" style="display:none;"><i class="fa fa-firsticon fa-lg fa-trash-o"> </i></button>';
-			btn.parentNode.replaceChild(replace, btn);
+			tmp = document.createElement("div");
+			tmp.innerHTML = '<button id="remove" class="weBtn weIconButton" onclick="' + oc + '" title="' + g_l.btnDelete.alt + '" type="button" style="display:none;"><i class="fa fa-firsticon fa-lg fa-trash-o"> </i></button>';
+			btn.parentNode.removeChild(btn);
+			buttonsDiv.appendChild(tmp.firstChild);
 		}
+		if((btn = document.getElementById('insert'))){
+			if(!document.getElementById('search_tab')){ // we do not replace 'find next' //FIXME: make btn find
+				tmp = document.createElement("div");
+				tmp.innerHTML = '<button id="insert" class="weBtn weIconTextButton" title="' + g_l.btnOk.alt + '" type="insert"><i class="fa fa-firsticon fa-lg fa-check fa-ok"> </i> ' + g_l.btnOk.text + '</button>';
+				btn.parentNode.removeChild(btn);
+				buttonsDiv.appendChild(tmp.firstChild);
+			} else {
+				btn.parentNode.removeChild(btn);
+				buttonsDiv.appendChild(btn);
+			}
+		}
+		if((btn = document.getElementById('cancel'))){
+			tmp = document.createElement("div");
+			tmp.innerHTML = '<button id="cancel" class="weBtn weIconTextButton" onclick="tinyMCEPopup.close();" title="' + g_l.btnCancel.alt + '" type="button"><i class="fa fa-firsticon fa-lg fa-ban fa-cancel"> </i> ' + g_l.btnCancel.text + '</button>';
+			btn.parentNode.removeChild(btn);
+			buttonsDiv.appendChild(tmp.firstChild);
+		}
+
+		document.getElementsByClassName('mceActionPanel')[0].appendChild(buttonsDiv);
 	}
 
 

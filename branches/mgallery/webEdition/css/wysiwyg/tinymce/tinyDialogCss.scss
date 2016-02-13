@@ -28,12 +28,19 @@
 
 /* CSS for all tiny Dialogs */
 @import "../../config.scss";
+html{
+	background: #ffffff;
+}
+
 body{ /* [role=application]? */
 	letter-spacing: normal !important;
 	font-family: $weFont;
 	font-size: $smallfont;
 	margin:0px;
-
+	background: #ffffff;
+	height: 100%;
+	padding-bottom:20px;
+	overflow: hidden; //add this
 }
 
 i.fa-ok {
@@ -45,45 +52,54 @@ i.fa-ban, i.fa-cancel {
 }
 
 .tabs{
-	background: rgba(0, 0, 0, 0) linear-gradient(#c9d9ed, #afc3de) repeat scroll 0 0;
-	border: none;
-	border-bottom: 1px solid #888888;
-	display:block;
-	height: 21px;
-	padding-left:0px;
+	background:#192c3a;
+	margin:0px; padding:0px;
+	border: 0px;
+	font-size: $bigfont;
+	color: #000000;
+	width:100%;
+	margin: 0px; padding: 0;
+	border: 0px;
+	overflow:hidden;
+	height:auto;
+
 	li {
-		height: 21px;
-		border-bottom: 1px solid #888888;
-		background-color: #D3D3D3;
-		background: linear-gradient(#dbdbdb, #cccccc 50%,#999999);
-		border-right: 1px solid gray;
-		cursor: pointer;
-		display: inline-block;
-		float: left;
-		font-size: $bigfont;
-		line-height: $bigfont;
 		margin: 0px;
-		padding: 0px 6px 0px 6px;
+		padding: 0px 1em 0px 0px;
+		border: 0px;
+		float: left;
+		display: inline-block;
+		line-height: 30px;
+		cursor: pointer;
+		border-right: 1px solid $Grey;
+		border-bottom: 1px solid $Grey;
+		white-space: nowrap;
+		background: $MiddleGrey;
+		height: auto;
+		font-size: $bigfont;
+		&:after {
+			content: attr(title);
+		}
 		&.current {
-			background-image: none;
-			background-color:#F0F0EE;
+			background: #ffffff;
 			margin:0px;
 		}
 		span{
-			background-image: none;
-			background-color: transparent;
+			background: transparent;
 			border: none;
-			margin: 0px;
+			margin: 0px 1em;
 			padding: 0px;
+			font-size: 11px;
 			vertical-align: top;
 		}
 	}
 	.current span {
-		background-image: none;
-		background-color: transparent;
-		border: none;
-		margin: 0px;
-		padding: 0px;
+			background: transparent;
+			border: none;
+			margin: 0px 1em;
+			padding: 0px;
+			font-size: 11px;
+			vertical-align: top;
 	}
 }
 
@@ -104,6 +120,7 @@ form{
 	background-color: transparent;
 	border: none;
 	overflow: auto;
+	padding-top: 12px;
 }
 
 label{
@@ -114,17 +131,6 @@ label{
 legend{
 	color:black;
 	margin-top:16px;
-}
-
-body select,
-#block_text_indent,
-#box_width,
-#box_height,
-#box_padding_top,
-#box_padding_right,
-#box_padding_bottom,
-#box_padding_left {
-	height: 18px;
 }
 
 #styleSelectRow select{
@@ -147,26 +153,38 @@ input[type="text"]{
 	height: 18px;
 	line-height: 18px;
 }
-/*
-#colorpicker #preview{
-margin-right:10px;
-height:19px;
+
+input[type="text"], input[type="number"], input[type="search"], input[type="tel"], input[type="url"], textarea {
+	line-height: 18px;
 }
-*/
-.mceActionPanel{
-	display:block;
-	background-color:transparent;
-	text-align:right;
-	padding:0px;
-	padding-bottom:10px;
-	border-top: 2px groove white;
+select, input[type="text"], input[type="number"], input[type="search"], input[type="tel"], input[type="url"], textarea {
+	background-color: white;
+	border: 1px solid #a5aaae;
+	box-sizing: border-box;
+	color: #192c3a;
+	font: inherit;
+	padding: 5px 3px;
+	line-height: 150%;
+	height:auto;
 }
 
-.mceActionPanel #insert,
-.mceActionPanel #cancel,
-.mceActionPanel #apply,
-body .mceActionPanel #replaceBtn,
-.mceActionPanel #replaceAllBtn {
+.mceActionPanel{
+	background: #a5aaae none repeat scroll 0 0;
+	border-top: medium none;
+	bottom: 0;
+	box-sizing: border-box;
+	left: 0;
+	overflow: hidden;
+	padding: 7px 10px;
+	position: absolute;
+	right: 0;
+
+	#insert,
+	#cancel,
+	#apply,
+	#replaceBtn,
+	#replaceAllBtn,
+	button{
 		height: 25px;
 		cursor:pointer;
 		border-collapse: collapse;
@@ -188,7 +206,6 @@ body .mceActionPanel #replaceBtn,
 		white-space: nowrap;
 		width: auto;
 		box-shadow: 1px 1px 2px $DarkGrey;
-
 
 		&:hover, button.multiicon:hover {
 			color: $White;
@@ -226,10 +243,12 @@ body .mceActionPanel #replaceBtn,
 			padding:0px;
 			display:block;
 		}
-}
-
-.mceActionPanel #preview{
-	/* padding-right:0px; */
+	}
+	
+	//float:right;
+	#insert{
+		float:none;
+	}
 }
 
 #colorpicker #previewblock{
@@ -252,7 +271,6 @@ body .mceActionPanel #replaceBtn,
 
 .mceActionPanel div {
 	display: inline;
-	margin-right:20px;
 }
 
 .panel_toggle_insert_span{
@@ -277,28 +295,12 @@ body[role=application]{
 	textarea{
 		margin-left:6px;
 	}
-
-	.mceActionPanel{
-		background: linear-gradient(#B4B3B3, #C6C5C5);
-		height: 30px;
-		position:absolute;
-		bottom: 0px;
-		width: 100%;
-		padding: 10px 10px 0px 0px;
-		margin-left: 0px;
-
-		#insert,
-		#cancel,
-		#apply,
-		#replaceBtn,
-		#replaceAllBtn {
-			margin: 0px 10px 0px 0px;
-		}
-	}
 }
 
 /* Dialogs which work not with webEDition-Footer in IE get body-class weFooter when initialized by tinyMce_popup.
 	=> This specially added class is not recognized by IE */
+
+/*
 body.useWeFooter{
 	letter-spacing: normal !important;
 	font-family: sans-serif;
@@ -340,3 +342,4 @@ body.useWeFooter{
 		}
 	}
 }
+*/
