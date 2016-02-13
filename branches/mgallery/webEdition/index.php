@@ -336,9 +336,19 @@ win = new jsWindow(top.window, "' . WEBEDITION_DIR . "webEdition.php?h='+ah+'&w=
 	}
 
 
-	$_layout = /*we_html_element::htmlDiv(array('style' => 'float: left;height: 50%;width: 1px;')) . we_html_element::htmlDiv(array('style' => 'clear:left;position:relative;top:-25%;'), */we_html_element::htmlForm(array("action" => WEBEDITION_DIR . 'index.php', 'method' => 'post', 'name' => 'loginForm'), $_hidden_values . $dialogtable)/*)*/ .
+	$_layout = /* we_html_element::htmlDiv(array('style' => 'float: left;height: 50%;width: 1px;')) . we_html_element::htmlDiv(array('style' => 'clear:left;position:relative;top:-25%;'), */we_html_element::htmlForm(array("action" => WEBEDITION_DIR . 'index.php', 'method' => 'post', 'name' => 'loginForm'), $_hidden_values . $dialogtable)/* ) */ .
 		we_html_element::htmlDiv(array('id' => 'picCopy'), 'Copyright &copy; nw7.eu / Fotolia.com');
 
 	printHeader($login, (isset($httpCode) ? $httpCode : 401), $headerjs);
 	echo we_html_element::htmlBody(array('id' => 'loginScreen', "onload" => (($login == LOGIN_OK) ? "open_we();" : "document.loginForm.WE_LOGIN_username.focus();document.loginForm.WE_LOGIN_username.select();")), $_layout . ((isset($_body_javascript)) ? we_html_element::jsElement($_body_javascript) : '')) . '</html>';
+}
+session_write_close();
+flush();
+if(function_exists('fastcgi_finish_request')){
+	fastcgi_finish_request();
+}
+ignore_user_abort(true);
+if(!file_exists(TEMP_PATH . 'newwe_version.json')){
+	we_base_file::save(TEMP_PATH . 'newwe_version.json', getHTTP('https://update.webedition.org', '/server/we/latest.php'));
+	we_base_file::insertIntoCleanUp(TEMP_DIR . 'newwe_version.json', 7 * 86400);
 }

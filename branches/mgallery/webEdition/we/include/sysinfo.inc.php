@@ -160,9 +160,9 @@ function getOK($message = '', $value = ''){
 $_install_dir = '<abbr title="' . $_SERVER['DOCUMENT_ROOT'] . '">' . we_base_util::shortenPath(WEBEDITION_PATH, 35) . '</abbr>';
 
 $weVersion = WE_VERSION .
-		(defined('WE_SVNREV') && WE_SVNREV != '0000' ? ' (SVN-Revision: ' . WE_SVNREV . ((defined('WE_VERSION_BRANCH') && WE_VERSION_BRANCH != 'trunk') ? '|' . WE_VERSION_BRANCH : '') . ')' : '') .
-		(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP ? ' ' . g_l('global', '[' . WE_VERSION_SUPP . ']') : '') .
-		(defined('WE_VERSION_SUPP_VERSION') && WE_VERSION_SUPP_VERSION ? WE_VERSION_SUPP_VERSION : '');
+	(defined('WE_SVNREV') && WE_SVNREV != '0000' ? ' (SVN-Revision: ' . WE_SVNREV . ((defined('WE_VERSION_BRANCH') && WE_VERSION_BRANCH != 'trunk') ? '|' . WE_VERSION_BRANCH : '') . ')' : '') .
+	(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP ? ' ' . g_l('global', '[' . WE_VERSION_SUPP . ']') : '') .
+	(defined('WE_VERSION_SUPP_VERSION') && WE_VERSION_SUPP_VERSION ? WE_VERSION_SUPP_VERSION : '');
 
 $gdVersion = (defined('GD_VERSION') ? GD_VERSION : '');
 
@@ -181,15 +181,8 @@ if(count($phpextensions) > 3){
 			$phpextensionsMissing[] = $exten;
 		}
 	}
-
-	if(in_array(strtolower('PDO'), $phpextensions) && in_array(strtolower('pdo_mysql'), $phpextensions)){//sp�ter ODER mysqli
-		$phpextensionsSDK_DB = 'PDO &amp; PDO_mysql';
-	} else {
-		$phpextensionsSDK_DB = getWarning(g_l('sysinfo', '[sdk_db warning]'), '-');
-	}
 } else {
 	$phpExtensionsDetectable = false;
-	$phpextensionsSDK_DB = 'unkown';
 }
 if(extension_loaded('suhosin')){
 	if(ini_get_bool('suhosin.simulation')){
@@ -251,7 +244,6 @@ $_info = array(
 		g_l('sysinfo', '[gdlib]') => ($gdVersion ? g_l('sysinfo', '[version]') . ' ' . $gdVersion : '-'),
 		g_l('sysinfo', '[exif]') => (is_callable('exif_imagetype') ? g_l('sysinfo', '[available]') : getWarning(g_l('sysinfo', '[exif warning]'), '-')),
 		g_l('sysinfo', '[pcre]') => ((defined('PCRE_VERSION')) ? ( (substr(PCRE_VERSION, 0, 1) < 7) ? getWarning(g_l('sysinfo', '[pcre warning]'), g_l('sysinfo', '[version]') . ' ' . PCRE_VERSION) : g_l('sysinfo', '[version]') . ' ' . PCRE_VERSION ) : getWarning(g_l('sysinfo', '[available]'), g_l('sysinfo', '[pcre_unkown]'))),
-		g_l('sysinfo', '[sdk_db]') => $phpextensionsSDK_DB,
 		g_l('sysinfo', '[phpext]') => (!empty($phpextensionsMissing) ? getWarning(g_l('sysinfo', '[phpext warning2]'), g_l('sysinfo', '[phpext warning]') . implode(', ', $phpextensionsMissing)) : g_l('sysinfo', ($phpExtensionsDetectable ? '[available]' : '[detectable warning]')) ),
 		g_l('sysinfo', '[crypt]') => (function_exists('mcrypt_module_open') && ($res = mcrypt_module_open(MCRYPT_BLOWFISH, '', MCRYPT_MODE_OFB, '')) ? getOK() : getWarning(g_l('sysinfo', '[crypt_warning]'), '-'))
 	),
@@ -286,32 +278,32 @@ $_parts[] = array(
 	'space' => 10
 );
 echo we_html_tools::getHtmlTop(g_l('sysinfo', '[sysinfo]'), '', '', STYLESHEET .
-		we_html_element::jsScript(JS_DIR . 'sysinfo.js')
+	we_html_element::jsScript(JS_DIR . 'sysinfo.js')
 );
 ?>
 <body class="weDialogBody" style="overflow:hidden;" onload="self.focus();">
 	<div id="info" style="display: block;">
-		<?php
-		echo we_html_multiIconBox::getJS() .
-		we_html_multiIconBox::getHTML('', $_parts, 30, $buttons, -1, '', '', false, "", "", 620, "auto");
-		?>
+<?php
+echo we_html_multiIconBox::getJS() .
+ we_html_multiIconBox::getHTML('', $_parts, 30, $buttons, -1, '', '', false, "", "", 620, "auto");
+?>
 	</div>
 	<div id="more" style="display:none;">
-		<?php
-		$_parts = array(
-			array(
-				'headline' => '',
-				'html' => '<iframe id="phpinfo" style="width:1280px;height:530px;">' . g_l('sysinfo', '[more_info]') . ' &hellip;</iframe>',
-			),
-			array(
-				'headline' => '',
-				'html' => '<a href="javascript:showInfoTable();">' . g_l('sysinfo', '[back]') . '</a>',
-				'space' => 10
-			),
-		);
+<?php
+$_parts = array(
+	array(
+		'headline' => '',
+		'html' => '<iframe id="phpinfo" style="width:1280px;height:530px;">' . g_l('sysinfo', '[more_info]') . ' &hellip;</iframe>',
+	),
+	array(
+		'headline' => '',
+		'html' => '<a href="javascript:showInfoTable();">' . g_l('sysinfo', '[back]') . '</a>',
+		'space' => 10
+	),
+);
 
-		echo we_html_multiIconBox::getHTML('', $_parts, 30, $buttons, -1, '', '', false);
-		?>
+echo we_html_multiIconBox::getHTML('', $_parts, 30, $buttons, -1, '', '', false);
+?>
 	</div>
 </body>
 </html>

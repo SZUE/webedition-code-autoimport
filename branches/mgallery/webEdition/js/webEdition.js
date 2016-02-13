@@ -1522,6 +1522,7 @@ WE().util.showMessage = function (message, prio, win) {
 		// the used vars are in file JS_DIR . "weJsStrings.php";
 		switch (prio) {
 			// Notice
+			case WE().consts.message.WE_MESSAGE_INFO:
 			case WE().consts.message.WE_MESSAGE_NOTICE:
 				win.alert(WE().consts.g_l.message_reporting.notice + ":\n" + message);
 				break;
