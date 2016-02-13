@@ -69,15 +69,14 @@ tinyMCEPopup.resizeToInnerSize = function(){
 			buttonsDiv.appendChild(tmp.firstChild);
 		}
 		if((btn = document.getElementById('insert'))){
-			if(!document.getElementById('search_tab')){ // we do not replace 'find next' //FIXME: make btn find
-				tmp = document.createElement("div");
+			tmp = document.createElement("div");
+			if(!document.getElementById('search_tab')){
 				tmp.innerHTML = '<button id="insert" class="weBtn weIconTextButton" title="' + g_l.btnOk.alt + '" type="insert"><i class="fa fa-firsticon fa-lg fa-check fa-ok"> </i> ' + g_l.btnOk.text + '</button>';
-				btn.parentNode.removeChild(btn);
-				buttonsDiv.appendChild(tmp.firstChild);
 			} else {
-				btn.parentNode.removeChild(btn);
-				buttonsDiv.appendChild(btn);
+				tmp.innerHTML = '<button id="insert" class="weBtn weIconTextButton" title="' + g_l.btnSearchNext.alt + '" type="insert"><i class="fa fa-firsticon fa-lg fa-binoculars"> </i> ' + g_l.btnSearchNext.text + '</button>';
 			}
+			btn.parentNode.removeChild(btn);
+			buttonsDiv.appendChild(tmp.firstChild);
 		}
 		if((btn = document.getElementById('cancel'))){
 			tmp = document.createElement("div");
