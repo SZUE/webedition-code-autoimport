@@ -941,7 +941,9 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		btnOk: {text: "' . g_l('button', '[ok][value]') . '", alt: "' . g_l('button', '[ok][alt]') . '"},
 		btnCancel: {text: "' . g_l('button', '[cancel][value]') . '", alt: "' . g_l('button', '[cancel][alt]') . '"},
 		btnDelete: {text: "' . g_l('button', '[delete][value]') . '", alt: "' . g_l('button', '[delete][alt]') . '"},
-		btnSearchNext: {text: "Weitersuchen", alt: "Weitersuchen"}//FIXME: G_L()
+		btnSearchNext: {text: "Weitersuchen", alt: "Weitersuchen"},//FIXME: G_L()
+		btnReplace: {text: "Ersetzen", alt: "Ersetzen"},//FIXME: G_L()
+		btnReplaceAll: {text: "Alle Ersetzen", alt: "Alle Ersetzen"}//FIXME: G_L()
 	},
 	language: "' . $lang . '",
 	mode: "exact",

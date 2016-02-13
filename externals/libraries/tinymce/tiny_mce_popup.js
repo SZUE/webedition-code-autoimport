@@ -12,7 +12,7 @@ var tinymce=null,tinyMCEPopup,tinyMCE;tinyMCEPopup={init:function(){var b=this,a
 tinyMCEPopup.resizeToInnerSize = function(){
 	var a = this;
 	var ratio_h = a.dom.getAttrib(document.body,"role") === "application" ? 4/6 : 1;
-	var ratio_w = typeof(isWeDialog) === "undefined" ? 4/5 : 1;
+	var ratio_w = typeof(isWeDialog) === "undefined" ? 3/4 : 1;
 
 	if((a.dom.getAttrib(document.body,"id") === "table")){
 		document.getElementById("advanced_panel").style.height = "auto";
@@ -52,15 +52,6 @@ tinyMCEPopup.resizeToInnerSize = function(){
 			btn.parentNode.removeChild(btn);
 			buttonsDiv.appendChild(btn);
 		}
-		if((btn = document.getElementById('replaceBtn'))){
-			btn.parentNode.removeChild(btn);
-			buttonsDiv.appendChild(btn);
-		}
-		if((btn = document.getElementById('replaceAllBtn'))){
-			btn.parentNode.removeChild(btn);
-			buttonsDiv.appendChild(btn);
-		}
-
 		if((btn = document.getElementById('remove'))){
 			var oc = btn.getAttribute('onclick');
 			tmp = document.createElement("div");
@@ -75,6 +66,20 @@ tinyMCEPopup.resizeToInnerSize = function(){
 			} else {
 				tmp.innerHTML = '<button id="insert" class="weBtn weIconTextButton" title="' + g_l.btnSearchNext.alt + '" type="insert"><i class="fa fa-firsticon fa-lg fa-binoculars"> </i> ' + g_l.btnSearchNext.text + '</button>';
 			}
+			btn.parentNode.removeChild(btn);
+			buttonsDiv.appendChild(tmp.firstChild);
+		}
+		if((btn = document.getElementById('replaceBtn'))){
+			var oc = btn.getAttribute('onclick');
+			tmp = document.createElement("div");
+			tmp.innerHTML = '<button id="replaceBtn" class="weBtn weIconTextButton" onclick="' + oc + '" title="' + g_l.btnReplace.alt + '" type="button" style="display:none;"> <i class="fa fa-firsticon fa-lg fa-retweet"> </i> ' + g_l.btnReplace.text + '</button>';
+			btn.parentNode.removeChild(btn);
+			buttonsDiv.appendChild(tmp.firstChild);
+		}
+		if((btn = document.getElementById('replaceAllBtn'))){
+			var oc = btn.getAttribute('onclick');
+			tmp = document.createElement("div");
+			tmp.innerHTML = '<button id="replaceAllBtn" class="weBtn weIconTextButton" onclick="' + oc + '" title="' + g_l.btnReplaceAll.alt + '" type="button" style="display:none;"><i class="fa fa-firsticon fa-lg fa-database"> </i> <i class="fa fa-firsticon fa-lg fa-retweet"> </i> ' + g_l.btnReplaceAll.alt + '</button>';
 			btn.parentNode.removeChild(btn);
 			buttonsDiv.appendChild(tmp.firstChild);
 		}

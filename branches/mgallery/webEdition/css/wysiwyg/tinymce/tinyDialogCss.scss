@@ -43,7 +43,9 @@ body{ /* [role=application]? */
 	overflow: hidden; //add this
 }
 
-i.fa-ok {
+i.fa-ok,
+i.fa-retweet,
+i.fa-database {
 	color: green;
 }
 
