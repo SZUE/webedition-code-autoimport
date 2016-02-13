@@ -348,7 +348,7 @@ if(function_exists('fastcgi_finish_request')){
 	fastcgi_finish_request();
 }
 ignore_user_abort(true);
-if(!file_exists(TEMP_PATH . 'newwe_version.json')){
-	we_base_file::save(TEMP_PATH . 'newwe_version.json', getHTTP('https://update.webedition.org', '/server/we/latest.php'));
-	we_base_file::insertIntoCleanUp(TEMP_DIR . 'newwe_version.json', 7 * 86400);
+if(!file_exists(WE_CACHE_PATH . 'newwe_version.json')){
+	we_base_file::save(WE_CACHE_PATH . 'newwe_version.json', getHTTP('https://update.webedition.org', '/server/we/latest.php'));
+	we_base_file::insertIntoCleanUp(WE_CACHE_DIR . 'newwe_version.json', 7 * 86400);
 }

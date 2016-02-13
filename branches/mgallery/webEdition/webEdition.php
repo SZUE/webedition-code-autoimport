@@ -478,7 +478,7 @@ echo we_main_headermenu::createMessageConsole('mainWindow', true);
 	function updateCheck(){
 <?php
 if(!empty($_SESSION['perms']['ADMINISTRATOR'])){
-	$versionInfo = json_decode((we_base_file::load(TEMP_PATH . 'newwe_version.json')? : ''), true);
+	$versionInfo = json_decode((we_base_file::load(WE_CACHE_PATH . 'newwe_version.json')? : ''), true);
 	if($versionInfo && version_compare($versionInfo['dotted'], WE_VERSION) > 0){
 		?>
 			top.we_showMessage("<?php sprintf(g_l('sysinfo', '[newWEAvailable]'), $versionInfo['dotted'], $versionInfo['date']); ?>", WE().consts.message.WE_MESSAGE_INFO, window);
