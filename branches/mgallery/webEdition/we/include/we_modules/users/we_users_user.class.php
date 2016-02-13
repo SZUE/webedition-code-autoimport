@@ -207,7 +207,7 @@ class we_users_user{
 	var $extensions_slots = array();
 	private $permissions_defaults = array();
 	// Preferences array
-	private $preference_slots = array('sizeOpt', 'weWidth', 'weHeight', 'usePlugin', 'autostartPlugin', 'promptPlugin', 'Language', 'BackendCharset', 'seem_start_file', 'seem_start_type', 'seem_start_weapp', 'editorSizeOpt', 'editorWidth', 'editorHeight', 'editorFontname', 'editorFontsize', 'editorFont', 'default_tree_count', 'force_glossary_action', 'force_glossary_check', 'cockpit_amount_columns', 'cockpit_amount_last_documents', 'cockpit_rss_feed_url', 'editorMode');
+	private $preference_slots = array('sizeOpt', 'weWidth', 'weHeight', 'usePlugin', 'autostartPlugin', 'promptPlugin', 'Language', 'BackendCharset', 'seem_start_file', 'seem_start_type', 'seem_start_weapp', 'editorSizeOpt', 'editorWidth', 'editorHeight', 'editorFontname', 'editorFontsize', 'editorFont', 'default_tree_count',/* 'force_glossary_action', 'force_glossary_check',*/ 'cockpit_amount_columns', 'cockpit_amount_last_documents', 'cockpit_rss_feed_url', 'editorMode');
 
 	// Constructor
 	public function __construct(){
@@ -442,9 +442,9 @@ class we_users_user{
 			$this->rememberPreference(isset($this->Preferences['editorFontsize']) ? $this->Preferences['editorFontsize'] : null, 'editorFontsize') .
 			$this->rememberPreference(isset($this->Preferences['editorSizeOpt']) ? $this->Preferences['editorSizeOpt'] : null, 'editorSizeOpt') .
 			$this->rememberPreference(isset($this->Preferences['editorWidth']) ? $this->Preferences['editorWidth'] : null, 'editorWidth') .
-			$this->rememberPreference(isset($this->Preferences['editorHeight']) ? $this->Preferences['editorHeight'] : null, 'editorHeight') .
+			$this->rememberPreference(isset($this->Preferences['editorHeight']) ? $this->Preferences['editorHeight'] : null, 'editorHeight') /*.
 			$this->rememberPreference(isset($this->Preferences['force_glossary_action']) ? $this->Preferences['force_glossary_action'] : null, 'force_glossary_action') .
-			$this->rememberPreference(isset($this->Preferences['force_glossary_check']) ? $this->Preferences['force_glossary_check'] : null, 'force_glossary_check');
+			$this->rememberPreference(isset($this->Preferences['force_glossary_check']) ? $this->Preferences['force_glossary_check'] : null, 'force_glossary_check')*/;
 
 		return $save_javascript;
 	}
@@ -915,7 +915,7 @@ _multiEditorreload = true;';
 				case 'default_tree_count':
 					$_SESSION['prefs']['default_tree_count'] = $settingvalue;
 					break;
-
+/*
 				case 'force_glossary_check':
 					$_SESSION['prefs']['force_glossary_check'] = $settingvalue;
 					break;
@@ -923,7 +923,7 @@ _multiEditorreload = true;';
 				case 'force_glossary_action':
 					$_SESSION['prefs']['force_glossary_action'] = $settingvalue;
 					break;
-
+*/
 				case 'cockpit_amount_columns':
 					$_SESSION['prefs']['cockpit_amount_columns'] = $settingvalue;
 					break;
@@ -1721,7 +1721,7 @@ function delElement(elvalues,elem) {
 
 	function formPreferencesGlossary(){
 		$_settings = array();
-
+return array();
 		// Create checkboxes
 		$_table = new we_html_table(array('class' => 'default withSpace'), 2, 1);
 //FIXME: where is the difference between force_glossary_check + force_glossary_action?!

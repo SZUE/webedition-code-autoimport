@@ -23,7 +23,6 @@
  */
 //	frameset called when opened a none webEdition-document from webEdition
 //	here all parameters are dealt and submitted to the document
-we_html_tools::protect();
 $_text = we_base_request::_(we_base_request::URL, 'we_cmd', '', 1); // Path
 $param = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2);
 $_url = $_text . $param; // + Parameters

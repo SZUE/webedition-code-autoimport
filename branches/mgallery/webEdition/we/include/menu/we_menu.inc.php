@@ -49,13 +49,6 @@ $we_menu = array(
 		'perm' => 'NEW_OBJECTFILE',
 		'hide' => !defined('OBJECT_TABLE')
 	),
-	array(// File > New > Others (Import)
-		'text' => g_l('javaMenu_global', '[other]'),
-		'parent' => 'file_new',
-		'cmd' => 'openFirstStepsWizardDetailTemplates',
-		'perm' => 'NO_DOCTYPE && ADMINISTRATOR',
-		'hide' => !$seeMode,
-	),
 	'file_new_media' => array(
 		'text' => g_l('javaMenu_global', '[media]'),
 		'parent' => 'file_new',

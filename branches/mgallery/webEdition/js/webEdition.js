@@ -472,10 +472,6 @@ function we_cmd_base(args, url) {
 		case "exit_modules":
 			WE().util.jsWindow.prototype.closeByName('edit_module');
 			break;
-		case "openFirstStepsWizardMasterTemplate":
-		case "openFirstStepsWizardDetailTemplates":
-			new (WE().util.jsWindow)(this, url, "we_firststepswizard", -1, -1, 1024, 768, true, true, true);
-			break;
 		case "openUnpublishedObjects":
 			we_cmd("tool_weSearch_edit", "", "", 7, 3);
 			break;

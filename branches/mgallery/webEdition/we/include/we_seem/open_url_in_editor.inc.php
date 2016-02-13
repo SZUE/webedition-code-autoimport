@@ -22,11 +22,9 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 //	The following will translate a given URL to a we_cmd.
 //	When pressing a link in edit-mode this functionality
 //	is needed to reopen the document (if possible) with webEdition
 
-we_html_tools::protect();
 echo we_html_element::jsElement(we_SEEM::getJavaScriptCommandForOneLink('<a href="' . we_base_request::_(we_base_request::URL, 'we_cmd', '', 1) . '">l</a>'));
