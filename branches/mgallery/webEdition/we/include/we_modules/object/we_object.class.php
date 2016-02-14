@@ -2163,6 +2163,10 @@ class we_object extends we_document{
 		return false;
 	}
 
+	protected function i_triggerIdNotValdid(){
+		return $this->DefaultUrl && (!$this->DefaultTriggerID || !f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->DefaultTriggerID) . ' AND IsFolder=0', '', $this->DB_WE));
+	}
+
 	function includedObjectHasDoubbleFieldNames($incClass){
 		$sort = $this->getElement('we_sort');
 		$count = $this->getElement('Sortgesamt');
