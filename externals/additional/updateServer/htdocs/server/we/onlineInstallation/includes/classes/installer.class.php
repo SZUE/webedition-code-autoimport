@@ -58,7 +58,7 @@ class installer extends installerBase{
 	static function getErrorMessage($headline = '', $message = ''){
 
 		if(!$headline){
-			$headline = "<br /><strong class=\'errorText\'>" . $GLOBALS['lang'][self::$LanguageIndex][$_REQUEST['detail'] . 'Error'] . '</strong>';
+			$headline = "<br /><strong class=\'errorText\'>" . (empty($GLOBALS['lang'][self::$LanguageIndex][$_REQUEST['detail'] . 'Error'])?$_REQUEST['detail']:$GLOBALS['lang'][self::$LanguageIndex][$_REQUEST['detail'] . 'Error']) . '</strong>';
 		}
 
 		if($message){

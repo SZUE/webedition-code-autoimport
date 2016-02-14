@@ -5,7 +5,7 @@ if(isset($_REQUEST["update_cmd"]) && $_REQUEST["update_cmd"] == "startSession"){
 	 */
 
 	// destroy existing session
-	session_start();
+	@session_start();
 	$_SESSION = array();
 	session_destroy();
 
@@ -13,7 +13,7 @@ if(isset($_REQUEST["update_cmd"]) && $_REQUEST["update_cmd"] == "startSession"){
 	if(isset($_REQUEST["clientDomain"])){
 		session_set_cookie_params(0, '/', $_REQUEST["clientDomain"]);
 	}
-	session_start();
+	@session_start();
 
 	foreach($_REQUEST as $varName => $varValue){
 

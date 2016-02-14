@@ -2,7 +2,7 @@
 
 class update extends updateBase{
 
-	function installLogStart(){
+	static function installLogStart(){
 		$GLOBALS['DB_WE']->query('INSERT INTO ' . INSTALLLOG_TABLE . ' (date) VALUES (NOW())');
 		$_SESSION['db_log_id'] = $GLOBALS['DB_WE']->getInsertId();
 		$setvalues = "";

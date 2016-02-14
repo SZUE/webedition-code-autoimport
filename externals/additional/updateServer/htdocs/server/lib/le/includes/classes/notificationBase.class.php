@@ -1,33 +1,33 @@
 <?php
 
-class notificationBase{
+abstract class notificationBase{
 
 	/**
 	 * Maintenance
 	 *
 	 * @return string
 	 */
-	function getMaintenanceResponse(){
+	static function getMaintenanceResponse(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(SHARED_TEMPLATE_DIR . '/notification/maintenance.inc.php');
 		return updateUtil::getResponseString($ret);
 	}
 
-	function getInstallerVersionCheckResponse(){
+	static function getInstallerVersionCheckResponse(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(SHARED_TEMPLATE_DIR . '/notification/installerVersion.inc.php');
 		return updateUtil::getResponseString($ret);
 	}
 
-	function getAnnouncementResponse(){
+	static function getAnnouncementResponse(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(SHARED_TEMPLATE_DIR . '/notification/announcement.inc.php');
 		return updateUtil::getResponseString($ret);
 	}
 
-	function getHighloadResponse(){
+	static function getHighloadResponse(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(SHARED_TEMPLATE_DIR . '/notification/highload.inc.php');
 		return updateUtil::getResponseString($ret);
 	}
 
-	function getHighloadSourceforgeResponse(){
+	static function getHighloadSourceforgeResponse(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(SHARED_TEMPLATE_DIR . '/notification/highloadSourceforge.inc.php');
 		return updateUtil::getResponseString($ret);
 	}
@@ -37,7 +37,7 @@ class notificationBase{
 	 *
 	 * @return string
 	 */
-	function getNotAvailableAtTheMomentResponse(){
+	static function getNotAvailableAtTheMomentResponse(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(SHARED_TEMPLATE_DIR . '/notification/notAvailableAtTheMoment.inc.php');
 		return updateUtil::getResponseString($ret);
 	}
@@ -47,7 +47,7 @@ class notificationBase{
 	 *
 	 * @return string
 	 */
-	function getLiveUpdateNotReadyYet(){
+	static function getLiveUpdateNotReadyYet(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(SHARED_TEMPLATE_DIR . '/notification/liveUpdateNotReadyYet.inc.php');
 		return updateUtil::getResponseString($ret);
 	}
@@ -57,7 +57,7 @@ class notificationBase{
 	 *
 	 * @return string
 	 */
-	function getLostSessionResponse(){
+	static function getLostSessionResponse(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(SHARED_TEMPLATE_DIR . '/notification/lostSession.inc.php');
 		return updateUtil::getResponseString($ret);
 	}
@@ -67,7 +67,7 @@ class notificationBase{
 	 *
 	 * @return string
 	 */
-	function getDatabaseFailureResponse(){
+	static function getDatabaseFailureResponse(){
 		print notification::getStateResponseString('error', $GLOBALS['lang']['notification']['databaseFailure']);
 	}
 

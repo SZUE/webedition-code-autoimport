@@ -50,7 +50,7 @@ class updateUtil extends updateUtilBase{
 	 * @param array $query
 	 * @return array
 	 */
-	function getChangesArrayByQueries($queryArray){
+	static function getChangesArrayByQueries($queryArray){
 		$changes = array(
 			'files' => array(),
 			'queries' => array(),
@@ -95,7 +95,7 @@ class updateUtil extends updateUtilBase{
 		return $changes;
 	}
 
-	function getLastSnapShot($targetVersionNumber){
+	static function getLastSnapShot($targetVersionNumber){
 		$row = $GLOBALS['DB_WE']->getHash('SELECT version FROM ' . VERSION_TABLE . " WHERE isSnapshot='1' AND version <= '" . $targetVersionNumber . "' ORDER BY version DESC ");
 
 		if($row){

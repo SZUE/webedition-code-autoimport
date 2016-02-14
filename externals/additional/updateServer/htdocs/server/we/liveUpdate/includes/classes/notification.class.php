@@ -1,13 +1,13 @@
 <?php
 
-class notification extends notificationBase{
+abstract class notification extends notificationBase{
 
 	/**
 	 * Maintenance of upgrade to webEdition 4
 	 *
 	 * @return string
 	 */
-	function getUpgradeMaintenanceResponse(){
+	static function getUpgradeMaintenanceResponse(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/notification/upgradeMaintenance.inc.php');
 		return updateUtil::getResponseString($ret);
 	}
@@ -17,7 +17,7 @@ class notification extends notificationBase{
 	 *
 	 * @return string
 	 */
-	function getLiveUpdateNotPossibleForOldBetaResponse(){
+	static function getLiveUpdateNotPossibleForOldBetaResponse(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/notification/liveUpdateNotPossibleForOldBeta.inc.php');
 		return updateUtil::getResponseString($ret);
 	}
@@ -27,7 +27,7 @@ class notification extends notificationBase{
 	 *
 	 * @return string
 	 */
-	function getUpgradeNotPossibleYetResponse(){
+	static function getUpgradeNotPossibleYetResponse(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/notification/upgradeNotPossibleYet.inc.php');
 		return updateUtil::getResponseString($ret);
 	}
@@ -37,7 +37,7 @@ class notification extends notificationBase{
 	 *
 	 * @return string
 	 */
-	function getUpdateNotPossibleUntilReleaseResponse(){
+	static function getUpdateNotPossibleUntilReleaseResponse(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/notification/updateNotPossibleUntilRelease.inc.php');
 		return updateUtil::getResponseString($ret);
 	}
@@ -47,7 +47,7 @@ class notification extends notificationBase{
 	 *
 	 * @return string
 	 */
-	function getBetaExpiredResponse(){
+	static function getBetaExpiredResponse(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(SHARED_TEMPLATE_DIR . '/notification/betaExpired.inc.php');
 		return updateUtil::getResponseString($ret);
 	}

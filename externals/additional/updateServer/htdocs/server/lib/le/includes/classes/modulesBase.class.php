@@ -7,7 +7,7 @@ class modulesBase{
 	 *
 	 * @return array
 	 */
-	function getExistingModules($forceSelect = false, $language = ""){
+	static function getExistingModules($forceSelect = false, $language = ""){
 
 		if(!isset($_SESSION['existingModules']) || $forceSelect){
 
@@ -53,7 +53,7 @@ class modulesBase{
 	 *
 	 * @return string
 	 */
-	function getCodeForInstalledModules(){
+	static function getCodeForInstalledModules(){
 
 		$existingModules = modules::getExistingModules();
 

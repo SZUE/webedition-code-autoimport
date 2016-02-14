@@ -7,7 +7,7 @@ class license extends licenseBase{
 	 *
 	 * @return string
 	 */
-	function getVersionFormResponse(){
+	static function getVersionFormResponse(){
 
 		$AvailableVersions = update::getVersionsLanguageArray(false);
 		$NotLiveVersions = update::getNotLiveVersions();
@@ -40,7 +40,7 @@ class license extends licenseBase{
 	 *
 	 * @return array
 	 */
-	function getRegisterVersionResponse($version){
+	static function getRegisterVersionResponse($version){
 
 		$_SESSION['clientTargetVersionNumber'] = $version;
 		$_SESSION['clientTargetSubVersionNumber'] = update::getSubVersion($_SESSION['clientTargetVersionNumber']);
