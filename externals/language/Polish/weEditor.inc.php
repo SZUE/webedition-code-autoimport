@@ -214,6 +214,7 @@ All characters except <>?":|\\/* are valid.',
 		'we_filename_notAllowed'=>'Wprowadzona nazwa pliku jest niedozwolona!',
 		'we_filename_notValid'=>'Wprowadzona nazwa pliku jest nieprawidłowa!\nDozwolone znaki to litery od a do z (wielkie lub małe) , cyfry, znak podkrelenia (_), minus (-) oraz kropka (.).',
 	),
+	'triggerIdNotValid'=>'No valid document has been entered into "Preset document for display": This entry is mandatory if SEO-URLs are activated.',
 	'variantNameInvalid'=>'The name of an article variant can not be empty!',
 	
 	'video/*'=>array(

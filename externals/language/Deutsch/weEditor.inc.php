@@ -214,6 +214,7 @@ Erlaubte Zeichen sind alle außer <>?":|\\/* .',
 		'we_filename_notAllowed'=>'Der eingegebene Dateiname ist nicht erlaubt!',
 		'we_filename_notValid'=>'Der eingegebene Dateiname ist nicht gültig!\nErlaubte Zeichen sind alle außer <>?":|\\/* .',
 	),
+	'triggerIdNotValid'=>'Sie haben unter "Voreinstellung Dokument für die Darstellung" kein oder kein gültiges Dokument eingetragen: Dieses ist bei aktivierten SEU-URLs zwingend erforderlich.',
 	'variantNameInvalid'=>'Der Name einer Artikel-Variante darf nicht leer sein!',
 	
 	'video/*'=>array(

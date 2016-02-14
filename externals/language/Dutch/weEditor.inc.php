@@ -214,6 +214,7 @@ All characters except <>?":|\\/* are valid.',
 		'we_filename_notAllowed'=>'De bestandsnaam die u heeft ingevoerd is niet toegestaan!',
 		'we_filename_notValid'=>'Ongeldige bestandsnaam\nGeldige karakters zijn alfa-numeriek, boven- en onderkast, eveneens als de underscore, koppelteken en punt (a-z, A-Z, 0-9, _, -, .)',
 	),
+	'triggerIdNotValid'=>'No valid document has been entered into "Preset document for display": This entry is mandatory if SEO-URLs are activated.',
 	'variantNameInvalid'=>'De naam van een artikel variant mag niet leeg zijn!',
 	
 	'video/*'=>array(
