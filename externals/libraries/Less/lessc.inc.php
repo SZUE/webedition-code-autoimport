@@ -134,8 +134,9 @@ class lessc{
 
 		$parser = new we_helpers_lessParser();
 		$parser->SetImportDirs($this->getImportDirs());
-		if(count($this->registeredVars))
+		if(count($this->registeredVars)){
 			$parser->ModifyVars($this->registeredVars);
+		}
 		$parser->parseFile($fname);
 		$out = $parser->getCss();
 
