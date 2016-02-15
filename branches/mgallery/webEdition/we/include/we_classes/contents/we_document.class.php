@@ -577,8 +577,8 @@ class we_document extends we_root{
 				$values = $meta['csv'] ? array_map('trim', explode(',', $value)) : array($value);
 				foreach($values as $v){
 					$this->DB_WE->query('INSERT INTO ' . METAVALUES_TABLE . ' SET ' . we_database_base::arraySetter(array(
-								'tag' => $meta['tag'],
-								'value' => $v
+							'tag' => $meta['tag'],
+							'value' => $v
 					)));
 				}
 			}
@@ -839,6 +839,14 @@ class we_document extends we_root{
 						return (isset($attribs['thumbnail']) ? $img->getHtml(false, true, $pathOnly) : $img->Path);
 					case 'id':
 						return $img->ID;
+					case 'parentpath':
+						return $img->ParentPath;
+					case 'filename':
+						return $img->Filename;
+					case 'extension':
+						return $img->Extension;
+					case 'filesize':
+						return $img->getFilesize();
 				}
 
 				return $img->getHtml(false, true);
