@@ -974,6 +974,9 @@ ImageEditTools = {
 	},
 
 	Focus: {
+		state: {
+			isMoveFocus: false
+		},
 		elems: {
 			focusPoint: null,
 			image: null,
@@ -1037,10 +1040,13 @@ ImageEditTools = {
 			this.elems.info.style.display = 'none';
 		},
 		mouseLeaveBody: function (e) {
-			this.moveFocusPosition(e);
+			if(this.state.isMoveFocus){
+				this.moveFocusPosition(e);
+			}
 			this.stopMoveFocusPosition();
 		},
 		startMoveFocusPosition: function (e) {
+			this.state.isMoveFocus = true;
 			this.elems.image.style.cursor = 'move';
 			document.body.style.cursor = 'move';
 			this.vals.referenceX = e.clientX;
@@ -1051,6 +1057,7 @@ ImageEditTools = {
 			document.body.addEventListener('mousemove', (this.boundFNs.moveFocus = this.moveFocusPosition.bind(this)), false);
 		},
 		stopMoveFocusPosition: function (e) {
+			this.state.isMoveFocus = false;
 			this.elems.image.style.cursor = 'crosshair';
 			document.body.style.cursor = 'default';
 			document.body.removeEventListener('mousemove', this.boundFNs.moveFocus, false);
@@ -1059,6 +1066,7 @@ ImageEditTools = {
 			var topVal = this.vals.origTop + (e.clientY - this.vals.referenceY),
 				leftVal = this.vals.origLeft + (e.clientX - this.vals.referenceX);
 
+			//window.getSelection().removeAllRanges();
 			this.setFocusPositionByMouse(null, topVal, leftVal);
 		},
 		setFocusPositionByMouse: function (e, topVal, leftVal) {
