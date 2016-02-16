@@ -39,7 +39,6 @@ abstract class we_backup_util{
 	}
 
 	static function getDefaultTableName($table){
-
 		$match = array();
 		if(defined('OBJECT_X_TABLE') && preg_match('|^' . OBJECT_X_TABLE . '([0-9]*)$|i', $table, $match)){
 			if(isset($_SESSION['weS']['weBackupVars']['tables']['tblobject_'])){
@@ -51,7 +50,6 @@ abstract class we_backup_util{
 
 			return false;
 		}
-
 
 //$_def_table = array_search($table,$_SESSION['weS']['weBackupVars']['tables']);
 		foreach($_SESSION['weS']['weBackupVars']['tables'] as $_key => $_value){
@@ -68,11 +66,7 @@ abstract class we_backup_util{
 		return false;
 	}
 
-	static function setBackupVar($name, $value){
-		$_SESSION['weS']['weBackupVars'][$name] = $value;
-	}
-
-	static function getDescription($table, $prefix){
+	public static function getDescription($table, $prefix){
 		switch($table){
 			case CONTENT_TABLE:
 				return g_l('backup', '[' . $prefix . '_content]');
@@ -98,8 +92,6 @@ abstract class we_backup_util{
 				return g_l('backup', '[' . $prefix . '_shop_data]');
 			case (defined('PREFS_TABLE') ? PREFS_TABLE : 'PREFS_TABLE'):
 				return g_l('backup', '[' . $prefix . '_prefs]');
-			case (defined('BACKUP_TABLE') ? BACKUP_TABLE : 'BACKUP_TABLE'):
-				return g_l('backup', '[' . $prefix . '_extern_data]');
 			case (defined('BANNER_CLICKS_TABLE') ? BANNER_CLICKS_TABLE : 'BANNER_CLICKS_TABLE'):
 				return g_l('backup', '[' . $prefix . '_banner_data]');
 			default:
@@ -107,7 +99,7 @@ abstract class we_backup_util{
 		}
 	}
 
-	static function getImportPercent(){
+	public static function getImportPercent(){
 		if(isset($_SESSION['weS']['weBackupVars']['files_to_delete_count'])){
 			$rest1 = intval($_SESSION['weS']['weBackupVars']['files_to_delete_count']) - count($_SESSION['weS']['weBackupVars']['files_to_delete']);
 			$rest2 = intval($_SESSION['weS']['weBackupVars']['files_to_delete_count']);
@@ -123,7 +115,7 @@ abstract class we_backup_util{
 		return max(min($percent, 100), 0);
 	}
 
-	static function getProgressJS($percent, $description, $return){
+	public static function getProgressJS($percent, $description, $return){
 		$ret = 'if(top.busy && top.busy.setProgressText && top.busy.setProgress){
 		top.busy.setProgressText("current_description", "' . $description . '");
 		top.busy.setProgress(' . $percent . ');
@@ -138,7 +130,7 @@ abstract class we_backup_util{
 		flush();
 	}
 
-	static function getExportPercent(){
+	public static function getExportPercent(){
 		$all = intval($_SESSION['weS']['weBackupVars']['row_count']);
 		$done = intval($_SESSION['weS']['weBackupVars']['row_counter']);
 
@@ -151,7 +143,7 @@ abstract class we_backup_util{
 		return max(min($percent, 100), 0);
 	}
 
-	static function canImportBinary($id, $path){
+	public static function canImportBinary($id, $path){
 		if($id){
 			return $_SESSION['weS']['weBackupVars']['options']['backup_binary'];
 		}
@@ -172,14 +164,13 @@ abstract class we_backup_util{
 		return false;
 	}
 
-	static function canImportVersion($id, $path){
+	public static function canImportVersion($id, $path){
 		return (!empty($id) && stristr($path, VERSION_DIR) && $_SESSION['weS']['weBackupVars']['handle_options']['versions_binarys']);
 	}
 
 	static function exportFile($file, $fh, $fwrite = 'fwrite'){
-		$bin = we_exim_contentProvider::getInstance('weBinary', 0);
+		$bin = we_exim_contentProvider::getInstance('we_backup_binary', 0);
 		$bin->Path = $file;
-
 		we_exim_contentProvider::binary2file($bin, $fh, $fwrite);
 	}
 
@@ -223,17 +214,13 @@ abstract class we_backup_util{
 		return $_SESSION['weS']['weBackupVars']['current_table'];
 	}
 
-	static function getCurrentTable(){
-		return $_SESSION['weS']['weBackupVars']['current_table'];
-	}
-
-	static function addLog($log){
+	public static function addLog($log){
 		if(isset($_SESSION['weS']['weBackupVars']['backup_log_data'])){
 			$_SESSION['weS']['weBackupVars']['backup_log_data'] .= '[' . date('d-M-Y H:i:s', time()) . '] ' . $log . "\r\n";
 		}
 	}
 
-	static function writeLog(){
+	public static function writeLog(){
 		if(empty($_SESSION['weS']['weBackupVars']['backup_log_data'])){
 			return;
 		}
@@ -243,17 +230,15 @@ abstract class we_backup_util{
 		$_SESSION['weS']['weBackupVars']['backup_log_data'] = '';
 	}
 
-	static function getFormat($file, $iscompr = 0){
+	public static function getFormat($file, $iscompr = 0){
 		$_part = we_base_file::loadPart($file, 0, 512, $iscompr);
 
 		return (preg_match('|<\?xml |i', $_part) ?
 				'xml' :
-				(stripos($_part, 'create table') !== false ?
-					'sql' :
-					'unknown'));
+				'unknown');
 	}
 
-	static function getXMLImportType($file, $iscompr = 0, $end_off = 0){
+	public static function getXMLImportType($file, $iscompr = 0, $end_off = 0){
 		$_found = 'unknown';
 		$_try = 0;
 		$_count = 30;
@@ -303,12 +288,9 @@ abstract class we_backup_util{
 		return $_found;
 	}
 
-	static function getEndOffset($filename, $iscompressed){
-
+	public static function getEndOffset($filename, $iscompressed){
 		$end = 0;
-
 		if($iscompressed == 0){
-
 			$fh = fopen($filename, 'rb');
 			if($fh){
 				fseek($fh, 0, SEEK_END);
@@ -327,8 +309,7 @@ abstract class we_backup_util{
 		return $end;
 	}
 
-	static function hasNextTable(){
-
+	public static function hasNextTable(){
 		$_current_id = $_SESSION['weS']['weBackupVars']['current_table_id'];
 		$_current_id++;
 

@@ -401,6 +401,7 @@ we/include/we_exim/weContentProvider.class.php
 we/include/we_exim/backup/we_backuphtaccess.txt
 we/include/we_exim/backup/we_backup_sqlFileReader.class.php
 we/include/we_exim/backup/we_backup_importSql.class.php
+we/include/we_exim/backup/we_backup_base.class.php
 we/include/we_exim/backup/weTableKeys.inc.php
 we/include/we_exim/backup/weBackupUtil.class.php
 we/include/we_exim/backup/weBackupUpdater.class.php

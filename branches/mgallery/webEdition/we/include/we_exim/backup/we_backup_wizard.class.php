@@ -607,7 +607,7 @@ self.focus();');
 
 		if($compression){
 			$switchbut = 9;
-			$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(we_backup_base::COMPRESSION, true, "compress", g_l('backup', '[compress]'), false, "defaultfont", "", false, g_l('backup', '[ftp_hint]')), 'space' => 100);
+			$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(we_backup_backup::COMPRESSION, true, "compress", g_l('backup', '[compress]'), false, "defaultfont", "", false, g_l('backup', '[ftp_hint]')), 'space' => 100);
 		} else {
 			$switchbut = 7;
 		}
@@ -979,7 +979,7 @@ top.busy.location="' . $this->frameset . '&pnt=busy";' .
 					$we_backup_obj->export2server = we_base_request::_(we_base_request::BOOL, "export_server");
 					$we_backup_obj->export2send = we_base_request::_(we_base_request::BOOL, "export_send");
 					$we_backup_obj->filename = we_base_request::_(we_base_request::FILE, "filename");
-					$we_backup_obj->compress = we_base_request::_(we_base_request::STRING, 'compress', we_backup_base::NO_COMPRESSION);
+					$we_backup_obj->compress = we_base_request::_(we_base_request::STRING, 'compress', we_backup_backup::NO_COMPRESSION);
 					$we_backup_obj->backup_binary = we_base_request::_(we_base_request::BOOL, "handle_binary");
 
 					//create file list
@@ -990,7 +990,6 @@ top.busy.location="' . $this->frameset . '&pnt=busy";' .
 					//$we_backup_obj->getTableList();
 				} else {
 					$temp_filename = $we_backup_obj->restoreState($temp_filename);
-					$we_backup_obj->setDescriptions();
 				}
 
 				$ret = $we_backup_obj->makeBackup();
@@ -1116,7 +1115,6 @@ top.busy.location="' . $this->frameset . '&pnt=busy";' .
 					}
 				} else {
 					$temp_filename = $we_backup_obj->restoreState($temp_filename);
-					$we_backup_obj->setDescriptions();
 				}
 
 				if($continue){

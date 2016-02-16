@@ -126,7 +126,8 @@ class we_exim_XMLExIm{
 			case 'we_thumbnailEx':
 			case 'we_thumbnail':
 				return THUMBNAILS_TABLE;
-			case 'weBinary':
+			case 'we_backup_binary':
+			case 'weBinary'://FIMXE remove
 				return '';
 			case 'we_object':
 				return OBJECT_TABLE;
@@ -150,7 +151,8 @@ class we_exim_XMLExIm{
 				return TEMPLATES_TABLE;
 			case we_base_ContentTypes::OBJECT_FILE:
 				return (defined('OBJECT_FILES_TABLE')) ? OBJECT_FILES_TABLE : null;
-			case "weBinary":
+			case "we_backup_binary":
+			case 'weBinary'://FIMXE remove
 				return null;
 			case "weNavigation":
 				return NAVIGATION_TABLE;

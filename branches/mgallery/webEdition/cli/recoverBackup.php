@@ -303,7 +303,7 @@ if(we_backup_preparer::prepareImport() === true){
 		if($_REQUEST['verbose']){
 			print '-';
 		}
-		if(!we_backup_import::import($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset'], $_SESSION['weS']['weBackupVars']['backup_steps'], $_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_base::NO_COMPRESSION, $_SESSION['weS']['weBackupVars']['encoding'])){
+		if(!we_backup_import::import($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset'], $_SESSION['weS']['weBackupVars']['backup_steps'], $_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_backup::NO_COMPRESSION, $_SESSION['weS']['weBackupVars']['encoding'])){
 			break;
 		}
 	}

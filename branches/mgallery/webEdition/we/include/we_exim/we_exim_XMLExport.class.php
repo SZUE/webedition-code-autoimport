@@ -77,7 +77,8 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 			default :
 				we_exim_contentProvider::object2xml($doc, $fh, $attribute);
 				break;
-			case 'weBinary':
+			case 'we_backup_binary':
+			case 'weBinary'://FIXME remove
 				if(!is_numeric($id)){
 					$doc->Path = $doc->ID;
 					$doc->ID = 0;
@@ -92,7 +93,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 		if($classname === 'we_backup_tableItem' && $export_binary &&
 			strtolower($doc->table) == strtolower(FILE_TABLE) &&
 			($doc->ContentType == we_base_ContentTypes::IMAGE || stripos($doc->ContentType, "application/") !== false)){
-			$bin = we_exim_contentProvider::getInstance("weBinary", $doc->ID);
+			$bin = we_exim_contentProvider::getInstance("we_backup_binary", $doc->ID);
 			$attribute = (isset($bin->attribute_slots) ? $bin->attribute_slots : array());
 			we_exim_contentProvider::binary2file($bin, $fh);
 		}

@@ -35,7 +35,6 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 		update_time_limit(0);
 
 		$objects = array();
-		$GLOBALS['isNewImport'] = version_compare(we_backup_preparer::getWeVersion($chunk_file, false), '6.3.3.1', '>');
 
 		$data = we_base_file::load($chunk_file);
 		$this->xmlBrowser = new we_backup_XMLParser();
@@ -228,7 +227,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					}
 				}
 
-				if($object->ClassName === 'weBinary'){
+				if($object->ClassName === 'we_backup_binary'){
 					if(is_file($_SERVER['DOCUMENT_ROOT'] . $object->Path)){
 						switch($this->options['handle_collision']){
 							case 'replace':
@@ -428,7 +427,8 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 							case 'we_thumbnailEx':
 								$object = new we_exim_thumbnailExport();
 								break;
-							case 'weBinary':
+							case 'we_backup_binary':
+							case 'weBinary'://FIXME: remove
 							default:
 								$object = new $noddata();
 								break;
@@ -436,8 +436,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					//no break!
 					default:
 						$node_data[$nodname] = $noddata;
-						$node_coding[$nodname] = $GLOBALS['isNewImport'] ? (isset($attributes[we_exim_contentProvider::CODING_ATTRIBUTE]) ? $attributes[we_exim_contentProvider::CODING_ATTRIBUTE] : we_exim_contentProvider::CODING_NONE) :
-								(we_exim_contentProvider::needCoding($node_data['ClassName'], $nodname, we_exim_contentProvider::CODING_OLD) ? we_exim_contentProvider::CODING_ENCODE : we_exim_contentProvider::CODING_NONE);
+						$node_coding[$nodname] = (isset($attributes[we_exim_contentProvider::CODING_ATTRIBUTE]) ? $attributes[we_exim_contentProvider::CODING_ATTRIBUTE] : we_exim_contentProvider::CODING_NONE);
 				}
 			}
 		}
@@ -589,7 +588,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 		$marker2 = "<!--webackup -->"; //Bug 5089
 		$pattern = basename($filename) . "_%s";
 
-		$compress = (we_base_file::isCompressed($filename) ? we_backup_base::COMPRESSION : we_backup_base::NO_COMPRESSION);
+		$compress = (we_base_file::isCompressed($filename) ? we_backup_backup::COMPRESSION : we_backup_backup::NO_COMPRESSION);
 		$head = we_base_file::loadPart($filename, 0, 256, $compress === 'gzip');
 
 		$encoding = we_xml_parser::getEncoding('', $head);
@@ -598,7 +597,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 		$footer = we_exim_XMLExIm::getFooter();
 
 		$buff = $filename_tmp = "";
-		$fh = ($compress != we_backup_base::NO_COMPRESSION ? gzopen($filename, "rb") : @fopen($filename, "rb"));
+		$fh = ($compress != we_backup_backup::NO_COMPRESSION ? gzopen($filename, "rb") : @fopen($filename, "rb"));
 
 		$num = -1;
 		$fsize = $elnum = 0;
@@ -613,7 +612,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 				$findline = false;
 
 				while($findline == false && !@feof($fh)){
-					$line .= ($compress != we_backup_base::NO_COMPRESSION ? @gzgets($fh, 4096) : @fgets($fh, 4096));
+					$line .= ($compress != we_backup_backup::NO_COMPRESSION ? @gzgets($fh, 4096) : @fgets($fh, 4096));
 					if(substr($line, -1) === "\n"){
 						$findline = true;
 					}
@@ -679,7 +678,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 			fclose($fh_temp);
 			$fh_temp = 0;
 		}
-		if($compress != we_backup_base::NO_COMPRESSION){
+		if($compress != we_backup_backup::NO_COMPRESSION){
 			gzclose($fh);
 		} else {
 			fclose($fh);

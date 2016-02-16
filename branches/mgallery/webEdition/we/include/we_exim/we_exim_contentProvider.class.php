@@ -27,7 +27,6 @@ class we_exim_contentProvider{
 	const CODING_SERIALIZE = 'serial';
 	const CODING_ATTRIBUTE = 'coding';
 	const CODING_NONE = null;
-	const CODING_OLD = 'WE_OLD_CODING';
 
 	static function getInstance($we_ContentType, $ID = '', $table = ''){
 		$we_doc = '';
@@ -68,8 +67,9 @@ class we_exim_contentProvider{
 				}
 				break;
 
-			case 'weBinary':
-				$we_doc = new weBinary();
+			case 'we_backup_binary':
+			case 'weBinary'://FIXME: remove
+				$we_doc = new we_backup_binary();
 				$we_doc->load($ID, false);
 				break;
 			case 'weVersion':
@@ -153,7 +153,8 @@ class we_exim_contentProvider{
 				return 'we:tableadv';
 			case 'we_backup_tableItem'://for backup
 				return 'we:tableitem';
-			case 'weBinary':
+			case 'we_backup_binary':
+			case 'weBinary'://fixme: remove
 				return 'we:binary';
 			case 'we_navigation_navigation':
 				return 'we:navigation';
@@ -172,49 +173,7 @@ class we_exim_contentProvider{
 			return true;
 		}
 
-		if($data !== self::CODING_OLD){//all arrays, strings & objects can be changed due to line-ending conversion
-			return preg_match('!(^[asO]:\d+:)|([\\x0-\x08\x0e-\x19\x11\x12<>&])!', $data); //exclude x9:\t,x10:\n,x13:\r,x20:space
-		}
-//FIXME: remove the following code in 6.5
-		$encoded = array(
-			'we_element' => array('Dat', 'dat'),
-			'we_backup_tableItem' => array('Dat', 'strSerial', 'DocumentObject',
-				'QASet', 'QASetAdditions', 'RevoteUserAgent', 'agent',
-				'LogData', 'strSerialOrder',
-				'documentElements', 'documentScheduler', 'documentCustomFilter'//tblVersions
-			),
-			'we_object' => array('DefaultText', 'DefaultValues', 'SerializedArray'),
-			'we_objectFile' => array('DefArray', 'schedArr'),
-			'weBinary' => array('Data'),
-			'weVersion' => array('Data',),
-			'weNavigation' => array('Sort', 'Attributes')
-		);
-
-		return (isset($encoded[$classname]) ? in_array($prop, $encoded[$classname]) : false);
-	}
-
-	static function noEncodingChange($classname, $prop, $wedocClass, $objectname){
-
-		$nocoding = array(
-			'we_object' => array('DefaultText', 'DefaultValues', 'SerializedArray'),
-			'weBinary' => array('Data')
-		);
-		$nocoding2 = array(
-			'we_element' => array('Dat', 'dat')
-		);
-		$nocodingDocClasses = array(
-			'we_imageDocument',
-			'we_flashDocument',
-			'we_quicktimeDocument',
-			'we_otherDocument'
-		);
-		if(isset($nocoding[$classname])){
-			return in_array($prop, $nocoding[$classname]);
-		}
-		if(in_array($wedocClass[0], $nocodingDocClasses) && $objectname === 'data' && isset($nocoding2[$classname])){
-			return in_array($prop, $nocoding2[$classname]);
-		}
-		return false;
+		return preg_match('!(^[asO]:\d+:)|([\\x0-\x08\x0e-\x19\x11\x12<>&])!', $data); //exclude x9:\t,x10:\n,x13:\r,x20:space
 	}
 
 	static function needCdata($content){

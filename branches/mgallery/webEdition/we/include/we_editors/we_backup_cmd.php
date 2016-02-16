@@ -56,7 +56,7 @@ if(($cmd === 'export' || $cmd === 'import') && isset($_SESSION['weS']['weBackupV
 			++$_SESSION['weS']['weBackupVars']['retry'];
 		}
 
-		if($_SESSION['weS']['weBackupVars']['retry'] > 10 || $_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_base::NO_COMPRESSION){//in case of compression the file can't be used
+		if($_SESSION['weS']['weBackupVars']['retry'] > 10 || $_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_backup::NO_COMPRESSION){//in case of compression the file can't be used
 			$_SESSION['weS']['weBackupVars']['retry'] = 1;
 			echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[error_timeout]'), we_message_reporting::WE_MESSAGE_ERROR));
 			exit();
@@ -79,7 +79,7 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 				we_backup_util::addLog('Export to server: ' . ($_SESSION['weS']['weBackupVars']['options']['export2server'] ? 'yes' : 'no'));
 				we_backup_util::addLog('Export to local: ' . ($_SESSION['weS']['weBackupVars']['options']['export2send'] ? 'yes' : 'no'));
 				we_backup_util::addLog('File name: ' . $_SESSION['weS']['weBackupVars']['backup_file']);
-				we_backup_util::addLog('Use compression: ' . ($_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_base::NO_COMPRESSION ? 'yes (' . $_SESSION['weS']['weBackupVars']['options']['compress'] . ')' : 'no'));
+				we_backup_util::addLog('Use compression: ' . ($_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_backup::NO_COMPRESSION ? 'yes (' . $_SESSION['weS']['weBackupVars']['options']['compress'] . ')' : 'no'));
 				we_backup_util::addLog('Export external files: ' . ($_SESSION['weS']['weBackupVars']['options']['backup_extern'] ? 'yes' : 'no'));
 				we_backup_util::addLog('Backup steps: FAST_BACKUP');
 				we_backup_util::writeLog();
@@ -139,7 +139,7 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 					}
 				}
 				we_backup_util::writeLog();
-			}while(we_backup_backup::limitsReached(we_backup_util::getCurrentTable(), microtime(true) - $start));
+			}while(we_backup_backup::limitsReached($_SESSION['weS']['weBackupVars']['current_table'], microtime(true) - $start));
 			$_SESSION['weS']['weBackupVars']['close']($_fh);
 		}
 		if(($_SESSION['weS']['weBackupVars']['row_counter'] < $_SESSION['weS']['weBackupVars']['row_count']) || (isset($_SESSION['weS']['weBackupVars']['extern_files']) && count($_SESSION['weS']['weBackupVars']['extern_files']) > 0) || we_backup_util::hasNextTable()){
@@ -232,7 +232,7 @@ top.cmd.location = "about:blank";
 
 			if(we_backup_preparer::prepareImport() === true){
 
-				if($_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_base::NO_COMPRESSION && !we_base_file::hasGzip()){
+				if($_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_backup::NO_COMPRESSION && !we_base_file::hasGzip()){
 					$_err = we_backup_preparer::getErrorMessage();
 					unset($_SESSION['weS']['weBackupVars']);
 					echo $_err;
@@ -242,7 +242,7 @@ top.cmd.location = "about:blank";
 				we_backup_util::addLog('Start backup import');
 				we_backup_util::addLog('File name: ' . $_SESSION['weS']['weBackupVars']['backup_file']);
 				we_backup_util::addLog('Format: ' . $_SESSION['weS']['weBackupVars']['options']['format']);
-				we_backup_util::addLog('Use compression: ' . ($_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_base::NO_COMPRESSION ? 'yes' : 'no'));
+				we_backup_util::addLog('Use compression: ' . ($_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_backup::NO_COMPRESSION ? 'yes' : 'no'));
 				we_backup_util::addLog('Import external files: ' . ($_SESSION['weS']['weBackupVars']['options']['backup_extern'] ? 'yes' : 'no'));
 			} else {
 
@@ -293,7 +293,7 @@ top.cmd.location = "about:blank";
 							$count = 10;
 					}
 
-					if(!we_backup_import::import($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset'], $count, $_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_base::NO_COMPRESSION, $_SESSION['weS']['weBackupVars']['encoding'])){
+					if(!we_backup_import::import($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset'], $count, $_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_backup::NO_COMPRESSION, $_SESSION['weS']['weBackupVars']['encoding'])){
 						if($_SESSION['weS']['weBackupVars']['offset'] == 0){
 							we_backup_util::addLog(sprintf('File %s not readable.', $_SESSION['weS']['weBackupVars']['backup_file']));
 
