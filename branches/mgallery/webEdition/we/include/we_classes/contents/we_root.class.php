@@ -1206,6 +1206,10 @@ abstract class we_root extends we_class{
 		return false;
 	}
 
+	protected function i_triggerDocNotDynamic(){
+		return false;
+	}
+
 	### check if ParentPath is diffrent as ParentID, so we need to look what ParentID it is.
 	### If it donesn't exists we have to create the folders (for auto Date-Folder Names)
 
@@ -1529,6 +1533,8 @@ abstract class we_root extends we_class{
 			return sprintf(g_l('weEditor', '[' . $this->ContentType . '][we_objecturl_exists]'), $this->Url);
 		} else if($this->i_triggerIdNotValdid()){
 			return g_l('weEditor', '[triggerIdNotValid]');
+		} else if($this->i_triggerDocNotDynamic()){
+			return g_l('weEditor', '[triggerDocNotDynamic]');
 		} else if(!$this->i_checkPathDiffAndCreate()){
 			return sprintf(g_l('weClass', '[notValidFolder]'), $this->Path);
 		} else if(($n = $this->i_check_requiredFields())){

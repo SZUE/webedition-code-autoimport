@@ -2166,6 +2166,10 @@ class we_object extends we_document{
 		return $this->DefaultUrl && (!$this->DefaultTriggerID || !f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->DefaultTriggerID) . ' AND IsFolder=0', '', $this->DB_WE));
 	}
 
+	protected function i_triggerDocNotDynamic(){
+		return $this->DefaultUrl && (!f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->DefaultTriggerID) . ' AND IsFolder=0 AND IsDynamic=1', '', $this->DB_WE));
+	}
+
 	function includedObjectHasDoubbleFieldNames($incClass){
 		$sort = $this->getElement('we_sort');
 		$count = $this->getElement('Sortgesamt');
