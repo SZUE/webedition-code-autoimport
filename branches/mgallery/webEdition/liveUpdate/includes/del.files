@@ -160,7 +160,6 @@ we/include/we_modules/shop/we_template_variant.inc.php
 we/include/we_modules/shop/we_shop_variants.class.php
 we/include/we_modules/shop/we_shop_ordertag.class.php
 we/include/we_modules/shop/we_shop_orderitemtag.class.php
-we/include/we_modules/shop/we_shop_orderitemtag.class.php
 we/include/we_modules/shop/we_shop_listviewShopVariants.class.php
 we/include/we_modules/shop/we_shop_listviewOrderitem.class.php
 we/include/we_modules/shop/we_shop_listviewOrder.class.php
@@ -400,6 +399,8 @@ we/include/we_exim/weImportUpdater.class.php
 we/include/we_exim/weExportPreparer.class.php
 we/include/we_exim/weContentProvider.class.php
 we/include/we_exim/backup/we_backuphtaccess.txt
+we/include/we_exim/backup/we_backup_sqlFileReader.class.php
+we/include/we_exim/backup/we_backup_importSql.class.php
 we/include/we_exim/backup/weTableKeys.inc.php
 we/include/we_exim/backup/weBackupUtil.class.php
 we/include/we_exim/backup/weBackupUpdater.class.php
@@ -643,7 +644,9 @@ liveUpdate/templates/register.inc.php
 liveUpdate/templates/modules.inc.php
 liveUpdate/sqldumps/tblbannerprefs.sql
 liveUpdate/sqldumps/tblWebAdmin.sql
+liveUpdate/sqldumps/tblObjectLink.sql
 liveUpdate/sqldumps/tblNewsletterPrefs.sql
+liveUpdate/sqldumps/tblMsgSettings.sql
 liveUpdate/sqldumps/tblIcons.sql
 liveUpdate/sqldumps/tblContentTypes.sql
 liveUpdate/sqldumps/tblAnzeigePrefs.sql
