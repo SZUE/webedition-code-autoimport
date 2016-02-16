@@ -222,7 +222,6 @@ div{
 #naviDiv{
 	position: absolute;
 	top: 0px;
-	/** NEU height: 30px !important;*/
 	width: 100%;
 	@if($useOldStyle){
 		background-color: Silver;
@@ -1469,12 +1468,10 @@ body.editFrameset{
 	}
 	div.editHeader{
 		top: 0px;
-		/** TEST **/ /*height: 100px !important;*/
 	}
 	div.mainEditor,
 	div.contenteditor{
 		bottom:$editorFooterHeight;
-		/** TEST **/ /*top: 100px !important;*/
 		border-top: 1px solid $LightGrey;
 	}
 	div.editorButtonFrame{
@@ -1483,7 +1480,6 @@ body.editFrameset{
 		left: 0px;
 		right: 0px;
 		height: $editorFooterHeight;
-		/*background: linear-gradient(to bottom, #b4b3b3, #c6c5c5) transparent;*/
 		border-top: 1px solid $LightGrey;
 	}
 }
@@ -1728,7 +1724,7 @@ span.alertIcon{
 
 	.fa-minus-square-o,
 	.fa-plus-square-o {
-		font-size: 16px !important;
+		font-size: 16px;
 	}
 
 	.fa-plus-square-o:before {
@@ -1838,7 +1834,6 @@ a:hover, a:focus, a:active {
 }
 
 .fa-inverse {
-	/*color: transparent !important;*/
 }
 
 

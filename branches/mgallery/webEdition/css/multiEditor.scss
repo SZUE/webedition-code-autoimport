@@ -44,13 +44,10 @@ body{
 		display: inline-block;
 		cursor: pointer;
 		white-space: nowrap;
-		/*	border-top-left-radius:10px;
-		border-top-right-radius:10px;*/
 		&.tab{
 			border-bottom: none;
 			border-right: 1px solid $DarkBlue;
 			display: inline-block;
-			 /*background-color: #d3d3d3;*/
 			background: $MiddleGrey;
 			color: $DarkGrey;
 			padding: 0px 5px;
