@@ -312,7 +312,7 @@ top.cmd.location = "about:blank";
 				}while(we_backup_backup::limitsReached('', microtime(true) - $start));
 				we_backup_fileReader::closeFile();
 			} else {
-				we_backup_importSql::import($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset'], $_SESSION['weS']['weBackupVars']['backup_steps'], $_SESSION['weS']['weBackupVars']['options']['compress'], $_SESSION['weS']['weBackupVars']['encoding'], $_SESSION['weS']['weBackupVars']['backup_log']);
+				t_e('unsupported Fileformat');
 			}
 
 			$description = we_backup_util::getDescription($_SESSION['weS']['weBackupVars']['current_table'], 'import');
@@ -338,10 +338,6 @@ run();');
 
 // perform update
 			we_updater::doUpdate();
-
-			if($_SESSION['weS']['weBackupVars']['options']['format'] === 'sql'){
-				we_backup_importSql::delBackupTable();
-			}
 
 			if(is_file(BACKUP_PATH . 'tmp/' . $_SESSION['weS']['weBackupVars']['backup_file'])){
 				unlink(BACKUP_PATH . 'tmp/' . $_SESSION['weS']['weBackupVars']['backup_file']);

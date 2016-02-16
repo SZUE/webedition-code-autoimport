@@ -27,4 +27,3 @@ $this->Attributes[] = new weTagData_selectAttribute('doc', array(new weTagDataOp
 	new weTagDataOption('top'),
 	), false, '');
 $this->Attributes[] = new weTagData_selectAttribute('creator', weTagData_selectAttribute::getTrueFalse(), false, '');
-$this->Attributes[] = new weTagData_textAttribute('cachelifetime', false, '', '', true);
