@@ -330,7 +330,7 @@ class we_exim_XMLExIm{
 	}
 
 	function isBinary(){
-
+		return false;
 	}
 
 	function saveObject(&$object){

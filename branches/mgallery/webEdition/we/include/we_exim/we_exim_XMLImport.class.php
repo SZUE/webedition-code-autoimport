@@ -76,7 +76,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 			$object->Table = $this->getTable($object->ClassName);
 
 			switch($object->ClassName){
-				case 'weModelBase':
+				case 'we_base_model':
 					$extra['ContentType'] = 'category';
 					break;
 				case 'we_docTypes':

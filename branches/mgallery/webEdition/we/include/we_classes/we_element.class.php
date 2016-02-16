@@ -46,9 +46,9 @@ class we_element{
 			self::$db = new DB_WE();
 		}
 		$this->DID = 0;
-		$this->Link = new weModelBase(LINK_TABLE, self::$db);
+		$this->Link = new we_base_model(LINK_TABLE, self::$db);
 		$this->Link->setKeys(array('DID', 'CID'));
-		$this->Content = new weModelBase(CONTENT_TABLE, self::$db);
+		$this->Content = new we_base_model(CONTENT_TABLE, self::$db);
 		if(is_array($options)){
 			if($link_props){
 				$this->fetchLinkedOptions($options);

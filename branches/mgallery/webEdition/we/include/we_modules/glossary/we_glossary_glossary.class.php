@@ -26,7 +26,7 @@
  * General Definition of WebEdition Glossary
  *
  */
-class we_glossary_glossary extends weModelBase{
+class we_glossary_glossary extends we_base_model{
 	const TYPE_LINK = 'link';
 	const TYPE_ACRONYM = 'acronym';
 	const TYPE_ABBREVATION = 'abbreviation';

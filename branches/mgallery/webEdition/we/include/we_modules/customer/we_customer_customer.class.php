@@ -26,7 +26,7 @@
  * General Definition of WebEdition Customer
  *
  */
-class we_customer_customer extends weModelBase{
+class we_customer_customer extends we_base_model{
 	const NOPWD_CHANGE = '__WE__PWD_NO_CHANGE';
 	const ENCRYPTED_DATA = '**ENCRYPTED**';
 	const ENCRYPT_NONE = 0;
@@ -119,7 +119,7 @@ class we_customer_customer extends weModelBase{
 
 		$hook = new weHook('customer_preSave', '', array('customer' => $this, 'from' => 'management', 'type' => ($this->ID ? 'existing' : 'new')));
 
-		return $hook->executeHook() && weModelBase::save() && $this->registerMediaLinks();
+		return $hook->executeHook() && we_base_model::save() && $this->registerMediaLinks();
 	}
 
 	function registerMediaLinks(){
@@ -139,7 +139,7 @@ class we_customer_customer extends weModelBase{
 	 * @param recursive bool if true, customerfilter are deleted as well
 	 */
 	function delete($recursive = true){ //FIXME: what about documents/objects of customer?
-		if(weModelBase::delete() && $recursive){
+		if(we_base_model::delete() && $recursive){
 			we_customer_documentFilter::deleteWebUser($this->ID);
 			return true;
 		}

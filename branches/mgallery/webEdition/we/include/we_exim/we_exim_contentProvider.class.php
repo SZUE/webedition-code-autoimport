@@ -40,76 +40,76 @@ class we_exim_contentProvider{
 				if($ID){
 					$we_doc->initByID($ID, $we_doc->Table);
 				}
-				break;
+				return $we_doc;
 			case 'category':
 				$we_doc = new we_category();
 				$we_doc->load($ID);
-				break;
+				return $we_doc;
 			case 'weNavigation':
 				$we_doc = new we_navigation_navigation();
 				$we_doc->we_load($ID);
-				break;
+				return $we_doc;
 			case 'weNavigationRule':
 				$we_doc = new we_navigation_rule();
 				$we_doc->we_load($ID);
-				break;
+				return $we_doc;
 			case 'weThumbnail':
 				$we_doc = new we_exim_thumbnailExport();
 				$we_doc->we_load($ID);
-				break;
+				return $we_doc;
 			case 'we_backup_table':
 				$we_doc = new we_backup_table($table);
-				break;
+				return $we_doc;
 			case 'we_backup_tableItem':
 				$we_doc = new we_backup_tableItem($table);
 				if($ID){
 					$we_doc->load($ID);
 				}
-				break;
+				return $we_doc;
 
 			case 'we_backup_binary':
 			case 'weBinary'://FIXME: remove
 				$we_doc = new we_backup_binary();
 				$we_doc->load($ID, false);
-				break;
+				return $we_doc;
 			case 'weVersion':
 				$we_doc = new we_backup_version();
 				$we_doc->load($ID, false);
-				break;
+				return $we_doc;
 			// fix for classes
 			case 'object':
 				if(defined('OBJECT_TABLE')){
 					$we_doc = new we_backup_object();
 					$we_doc->initByID($ID, OBJECT_TABLE);
 				}
-				break;
+				return $we_doc;
 			// fix ends ------------------------------------------------
-			default:
-				switch($we_ContentType){
-					case we_base_ContentTypes::FOLDER:
-						$we_Table = $table ? : FILE_TABLE;
-						break;
-					case we_base_ContentTypes::TEMPLATE:
-						$we_Table = TEMPLATES_TABLE;
-						break;
-					case we_base_ContentTypes::OBJECT:
-						if(!defined('OBJECT_TABLE')){
-							return $we_doc;
-						}
-						$we_Table = OBJECT_TABLE;
-						break;
-					case we_base_ContentTypes::OBJECT_FILE:
-						if(!defined('OBJECT_FILES_TABLE')){
-							return $we_doc;
-						}
-						$we_Table = OBJECT_FILES_TABLE;
-						break;
-					default:
-						$we_Table = FILE_TABLE;
-				}
-				$dontMakeGlobal = true;
-				include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 		}
+
+		switch($we_ContentType){
+			case we_base_ContentTypes::FOLDER:
+				$we_Table = $table ? : FILE_TABLE;
+				break;
+			case we_base_ContentTypes::TEMPLATE:
+				$we_Table = TEMPLATES_TABLE;
+				break;
+			case we_base_ContentTypes::OBJECT:
+				if(!defined('OBJECT_TABLE')){
+					return '';
+				}
+				$we_Table = OBJECT_TABLE;
+				break;
+			case we_base_ContentTypes::OBJECT_FILE:
+				if(!defined('OBJECT_FILES_TABLE')){
+					return '';
+				}
+				$we_Table = OBJECT_FILES_TABLE;
+				break;
+			default:
+				$we_Table = FILE_TABLE;
+		}
+		$dontMakeGlobal = true;
+		include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
 		return $we_doc;
 	}
@@ -202,19 +202,23 @@ class we_exim_contentProvider{
 		return false;
 	}
 
-	static function binary2file(&$object, $file, $fwrite = 'fwrite'){
+	static function binary2file(&$object, $file, $fwrite = 'fwrite', $tag = 'we:binary'){
 		$attribs = '';
 		foreach($object->persistent_slots as $v){
-			if($v != 'Data' && $v != 'SeqN'){
-				$coding = self::CODING_NONE;
-				if(isset($object->$v)){
-					$content = $object->$v;
-				}
-				if(self::needCoding($object->ClassName, $v, $content) || self::needCdata($content) || self::needSerialize($object->ClassName, $v, $content)){//fix for faulty parser
-					$content = self::encode($content);
-					$coding = array(self::CODING_ATTRIBUTE => self::CODING_ENCODE);
-				}
-				$attribs .= we_xml_composer::we_xmlElement($v, $content, $coding);
+			switch($v){
+				case 'Data':
+				case 'SeqN':
+					break;
+				default:
+					$coding = self::CODING_NONE;
+					if(isset($object->$v)){
+						$content = $object->$v;
+					}
+					if(self::needCoding($object->ClassName, $v, $content) || self::needCdata($content) || self::needSerialize($object->ClassName, $v, $content)){//fix for faulty parser
+						$content = self::encode($content);
+						$coding = array(self::CODING_ATTRIBUTE => self::CODING_ENCODE);
+					}
+					$attribs .= we_xml_composer::we_xmlElement($v, $content, $coding);
 			}
 		}
 
@@ -225,15 +229,18 @@ class we_exim_contentProvider{
 				//prefer doc_root over site.
 				//FIXME: this must be changed, if parking of documents is implemented
 				$path = $_SERVER['DOCUMENT_ROOT'] . $object->Path;
+				if($object->Path == ''){
+					break;
+				}
 				if(!file_exists($path)){
 					$path = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $object->Path;
 				}
 				$data = we_base_file::loadPart($path, $offset, $rsize);
 				if($data){
-					$fwrite($file, '<we:binary>' . $attribs .
+					$fwrite($file, '<' . $tag . '>' . $attribs .
 						we_xml_composer::we_xmlElement('SeqN', $object->SeqN) .
 						we_xml_composer::we_xmlElement('Data', self::encode($data), array(self::CODING_ATTRIBUTE => self::CODING_ENCODE)) .
-						'</we:binary>' . we_backup_backup::backupMarker . "\n");
+						'</' . $tag . '>' . we_backup_backup::backupMarker . "\n");
 					$offset+=$rsize;
 					$object->SeqN++;
 				}
@@ -246,48 +253,7 @@ class we_exim_contentProvider{
 	}
 
 	static function version2file(&$object, $file, $fwrite = 'fwrite'){
-		$attribs = '';
-		foreach($object->persistent_slots as $v){
-			if($v != 'Data' && $v != 'SeqN'){
-				if(isset($object->$v)){
-					$content = $object->$v;
-				}
-				$coding = self::CODING_NONE;
-				if(self::needCoding($object->ClassName, $v, $content) || self::needCdata($content)){//fix for faulty parser
-					$content = self::encode($content);
-					$coding = array(self::CODING_ATTRIBUTE => self::CODING_ENCODE);
-				} else if(self::needCdata($content)){
-					$content = self::getCDATA($content);
-				}
-				$attribs .= we_xml_composer::we_xmlElement($v, $content, $coding);
-			}
-		}
-
-		if(isset($object->Data)){
-			$offset = 0;
-			$rsize = 1048576;
-			do{
-
-				$path = $_SERVER['DOCUMENT_ROOT'] . $object->Path;
-				if($object->Path == ''){
-					break;
-				}
-				$data = we_base_file::loadPart($path, $offset, $rsize);
-
-				if(!empty($data)){
-					$fwrite($file, '<we:version>' . $attribs .
-						we_xml_composer::we_xmlElement('SeqN', $object->SeqN) .
-						we_xml_composer::we_xmlElement('Data', self::encode($data), array(self::CODING_ATTRIBUTE => self::CODING_ENCODE)) .
-						'</we:version>' . we_backup_backup::backupMarker . "\n");
-					$offset+=$rsize;
-					$object->SeqN++;
-				}
-				// if offset g.t. filesize then exit
-				/* if(filesize($path)<$offset){
-				  $data = null;
-				  } */
-			} while($data);
-		}
+		self::binary2file($object, $file, $fwrite, 'we:version');
 	}
 
 	private static function objectMetadata($obj){
@@ -306,7 +272,6 @@ class we_exim_contentProvider{
 		switch($classname){
 			case 'we_navigation_navigation':
 			case 'weNavigation':
-				t_e($object);
 				$object->persistent_slots['ClassName'] = we_base_request::STRING;
 				break;
 			case 'we_navigation_rule':
@@ -430,18 +395,6 @@ class we_exim_contentProvider{
 		self::binary2file($bin, $fh, false);
 	}
 
-	static function xml2object(&$object){
-		switch($object->ClassName){
-			case 'we_template':
-				break;
-			case 'we_objectFile':
-				break;
-			case 'we_object':
-				break;
-			default:
-		}
-	}
-
 	static function isBinary($id){
 		return f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND ContentType="' . we_base_ContentTypes::IMAGE . '" OR ContentType LIKE "application/%"  LIMIT 1', '', new DB_WE()) == 1;
 	}
@@ -461,7 +414,7 @@ class we_exim_contentProvider{
 	static function getContentTypeHandler($contenttype){
 		switch($contenttype){
 			case 'category':
-				return 'weModelBase';
+				return 'we_base_model';
 			case we_base_ContentTypes::TEMPLATE:
 				return 'we_template';
 			case 'doctype':

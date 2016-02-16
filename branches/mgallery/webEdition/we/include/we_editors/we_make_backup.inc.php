@@ -21,7 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$weBackupWizard = new we_backup_wizard(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=make_backup', we_backup_wizard::BACKUP);
+$weBackupWizard = new we_backup_wizard(we_backup_wizard::BACKUP);
 
 switch($what = we_base_request::_(we_base_request::STRING, "pnt", 'frameset')){
 	case "frameset":

@@ -25,7 +25,7 @@
 
 $what = we_base_request::_(we_base_request::STRING, 'pnt', 'frameset');
 $step = we_base_request::_(we_base_request::INT, 'step', 1);
-$weBackupWizard = new we_backup_wizard(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup', we_backup_wizard::RECOVER);
+$weBackupWizard = new we_backup_wizard(we_backup_wizard::RECOVER);
 
 //FIXME: delete condition when new uploader is stable
 

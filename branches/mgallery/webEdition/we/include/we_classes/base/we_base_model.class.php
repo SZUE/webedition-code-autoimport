@@ -26,7 +26,7 @@
  * Definition of webEdition Base Model
  *
  */
-class weModelBase{
+class we_base_model{
 	var $db;
 	var $table = '';
 	var $persistent_slots = array();

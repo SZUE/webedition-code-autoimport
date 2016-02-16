@@ -529,6 +529,7 @@ we/include/we_classes/modules/weModuleView.class.php
 we/include/we_classes/modules/weModuleTree.class.php
 we/include/we_classes/modules/weModuleFrames.php
 we/include/we_classes/modules/weModelBase.php
+we/include/we_classes/modules/weModelBase.class.php
 we/include/we_classes/main/we_main_header.class.php
 we/include/we_classes/listview/we_search_listview.class.php
 we/include/we_classes/listview/we_listview.class.php
