@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_object_exImport extends we_object{
+class we_backup_object extends we_object{
 	private $_ObjectBaseElements = array(
 		'ID', 'OF_ID', 'OF_ParentID', 'OF_Text', 'OF_Path', 'OF_Url', 'OF_TriggerID', 'OF_Workspaces', 'OF_ExtraWorkspaces', 'OF_ExtraWorkspacesSelected',
 		'OF_Templates', 'OF_ExtraTemplates', 'OF_Category', 'OF_Published', 'OF_IsSearchable', 'OF_Charset', 'OF_WebUserID', 'OF_Language', 'variant_weInternVariantElement'
@@ -31,6 +31,11 @@ class we_object_exImport extends we_object{
 	protected $isModifyFieldNoSave = false;
 	protected $isDropFieldNoSave = false;
 	protected $isForceDropOnSave = false;
+
+	public function __construct(){
+		parent::__construct();
+		$this->ClassName = 'we_object'; //for we_backup_object, otherwise ist will save its own classname, or needs its own constructor
+	}
 
 	function saveToDB(){
 		$this->wasUpdate = $this->ID > 0;

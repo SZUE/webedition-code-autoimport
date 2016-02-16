@@ -61,7 +61,6 @@ class we_object extends we_document{
 		$this->setElement('Charset', DEFAULT_CHARSET, 'attrib');
 		$this->Table = OBJECT_TABLE;
 		$this->Published = PHP_INT_MAX;
-		$this->ClassName = 'we_object'; //for we_object_Eximport, otherwise ist will save its own classname, or needs its own constructor
 		$this->CSS = '';
 	}
 

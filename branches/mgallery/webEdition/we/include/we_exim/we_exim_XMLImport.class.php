@@ -405,7 +405,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 						$this->nodehierarchy[] = $noddata;
 						switch($noddata){
 							case "we_object":
-								$object = (defined('OBJECT_TABLE') ? new we_object_exImport() : '');
+								$object = (defined('OBJECT_TABLE') ? new we_backup_object() : '');
 
 								break;
 							case "we_objectFile":

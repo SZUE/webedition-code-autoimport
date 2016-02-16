@@ -79,7 +79,7 @@ class we_exim_contentProvider{
 			// fix for classes
 			case 'object':
 				if(defined('OBJECT_TABLE')){
-					$we_doc = new we_object_exImport();
+					$we_doc = new we_backup_object();
 					$we_doc->initByID($ID, OBJECT_TABLE);
 				}
 				break;
@@ -211,7 +211,7 @@ class we_exim_contentProvider{
 					$content = $object->$v;
 				}
 				if(self::needCoding($object->ClassName, $v, $content) || self::needCdata($content) || self::needSerialize($object->ClassName, $v, $content)){//fix for faulty parser
-					$content = self::getCDATA(self::encode($content));
+					$content = self::encode($content);
 					$coding = array(self::CODING_ATTRIBUTE => self::CODING_ENCODE);
 				}
 				$attribs .= we_xml_composer::we_xmlElement($v, $content, $coding);
@@ -254,7 +254,7 @@ class we_exim_contentProvider{
 				}
 				$coding = self::CODING_NONE;
 				if(self::needCoding($object->ClassName, $v, $content) || self::needCdata($content)){//fix for faulty parser
-					$content = self::getCDATA(self::encode($content));
+					$content = self::encode($content);
 					$coding = array(self::CODING_ATTRIBUTE => self::CODING_ENCODE);
 				} else if(self::needCdata($content)){
 					$content = self::getCDATA($content);
@@ -336,7 +336,7 @@ class we_exim_contentProvider{
 						$defvalues[$fieldname]['length'] = ($cur['len'] > 255) ? 255 : $cur['len'];
 					}
 				}
-				$object->DefaultValues = we_serialize($defvalues);
+				$object->DefaultValues = we_serialize($defvalues, 'json');
 				break;
 			// fix ends -----------------------------------------------------------
 
@@ -361,21 +361,16 @@ class we_exim_contentProvider{
 				continue;
 			}
 			if(self::needSerialize($object, $classname, $v)){
-				$content = we_serialize($content);
+				$content = self::encode(we_serialize($content, 'json'));
 				$coding = array(self::CODING_ATTRIBUTE => self::CODING_SERIALIZE);
 			} else {
 				$content = (isset($object->$v) ? $object->$v : '');
 				$coding = self::CODING_NONE;
-			}
-			if(self::needCoding($classname, $v, $content) || self::needCdata($content)){//fix for faulty parser
-				if(!is_array($content)){
+				if(self::needCoding($classname, $v, $content) || self::needCdata($content)){//fix for faulty parser
 					$content = self::encode($content);
 					$coding = array(self::CODING_ATTRIBUTE => self::CODING_ENCODE);
 				}
-			} else if(self::needCdata($content)){
-				$content = self::getCDATA($content);
 			}
-
 			$write.= we_xml_composer::we_xmlElement($v, $content, $coding);
 		}
 		$fwrite($file, $write);
@@ -481,7 +476,7 @@ class we_exim_contentProvider{
 			case self::CODING_ENCODE:
 				return self::decode($data);
 			case self::CODING_SERIALIZE:
-				return we_unserialize($data);
+				return self::decode(we_unserialize($data));
 			case self::CODING_NONE:
 			default:
 				return $data;
