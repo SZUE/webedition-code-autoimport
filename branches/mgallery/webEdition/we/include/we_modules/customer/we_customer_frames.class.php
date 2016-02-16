@@ -388,7 +388,7 @@ function setTab(tab) {
 		$foundItems = 0;
 		if($mode){
 			we_customer_add::getHTMLSearch($this, $search, $select);
-			$foundItems = 0;
+			$foundItems = $GLOBALS['advSearchFoundItems'] ? : 0;
 		} else {
 			$search->setCol(1, 0, array('style' => 'padding-bottom:5px;'), we_html_tools::htmlTextInput('keyword', 80, we_base_request::_(we_base_request::STRING, 'keyword', ''), '', 'onchange=""', 'text', '550px')
 			);

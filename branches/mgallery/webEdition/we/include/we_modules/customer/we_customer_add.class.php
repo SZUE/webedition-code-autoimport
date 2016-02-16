@@ -265,6 +265,8 @@ function setScrollTo(){
 		$max_res = $pob->View->settings->getMaxSearchResults();
 		$result = ($search_arr && we_base_request::_(we_base_request::BOOL, 'search') ? self::getAdvSearchResults($pob->db, $search_arr, $count, $max_res) : array());
 
+		$GLOBALS['advSearchFoundItems'] = count($result);
+
 		foreach($result as $id => $text){
 			$select->addOption($id, $text);
 		}
