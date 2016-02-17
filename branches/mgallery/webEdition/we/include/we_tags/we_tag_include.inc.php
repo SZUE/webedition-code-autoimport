@@ -123,12 +123,13 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 	if($name && !($id || $path)){
 		$type = weTag_getAttribute('kind', $attribs, we_base_link::TYPE_ALL, we_base_request::STRING);
 		$_name = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
-		$path = we_tag('href', array('name' => $_name, 'hidedirindex' => 'false', 'type' => $type, 'isInternal' => 1));
 		$nint = $name . we_base_link::MAGIC_INT_LINK;
-		$int = ($GLOBALS['we_doc']->getElement($nint) == '') ? 0 : $GLOBALS['we_doc']->getElement($nint);
-		$intID = $GLOBALS['we_doc']->getElement($nint . 'ID');
-		if($int && $intID){
-			$ct = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND Published>0');
+		$int = intval($GLOBALS['we_doc']->getElement($nint));
+		if($int && ($intID = intval($GLOBALS['we_doc']->getElement($nint . 'ID')))){
+			$id = $intID;
+			$path = '';
+		} else {
+			$path = we_tag('href', array('name' => $_name, 'hidedirindex' => 'false', 'type' => $type, 'isInternal' => 1));
 		}
 	}
 
@@ -183,12 +184,11 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 			return '';
 		}
 		//check Customer-Filter on static documents
-		$id = intval($id ? : (isset($intID) ? $intID : 0));
 		if(defined('CUSTOMER_TABLE') && $id){
 			$filter = we_customer_documentFilter::getFilterByIdAndTable($id, FILE_TABLE, $GLOBALS['DB_WE']);
 
 			if(is_object($filter)){
-				if($filter->accessForVisitor($intID, $ct, true) != we_customer_documentFilter::ACCESS){
+				if($filter->accessForVisitor($id, $ct, true) != we_customer_documentFilter::ACCESS){
 					return '';
 				}
 			}
