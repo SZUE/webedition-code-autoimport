@@ -42,6 +42,7 @@ button{
 		margin-right:0.5em;
 		margin-bottom: 1ex;
 		white-space: nowrap;
+		min-width: 2.5em;
 		width: auto;
 		box-shadow: 1px 1px 2px $DarkGrey;
 
@@ -89,7 +90,6 @@ button{
 		margin-left:0;
 	}
 	&.weIconButton {
-		min-width: 2.5em;
 		width: 3em;
 		padding-left: 0.5em !important;
 		padding-right: 0.5em !important;
@@ -131,13 +131,13 @@ button{
   min-width: 2.5em;
   color: $DarkGrey;
   white-space: nowrap;
-  
+
   &:hover {
-	color: $White;
-	/*background: $MiddleBlueGradient;*/
-	background: $ButtonBlue;
+		color: $White;
+		/*background: $MiddleBlueGradient;*/
+		background: $ButtonBlue;
   }
-  
+
 }
 
 #treeContent #bm_searchField #search,
