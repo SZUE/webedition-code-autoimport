@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  * TBD if we divide this class in several classes
  */
 class liveUpdateFunctions{
-
 	var $QueryLog = array(
 		'success' => array(),
 		'tableChanged' => array(),
@@ -43,9 +41,9 @@ class liveUpdateFunctions{
 
 	function insertUpdateLogEntry($action, $version, $errorCode){
 		$GLOBALS['DB_WE']->query('INSERT INTO ' . UPDATE_LOG_TABLE . ' SET ' . we_database_base::arraySetter(array(
-					'aktion' => $action,
-					'versionsnummer' => $version,
-					'error' => $errorCode
+				'aktion' => $action,
+				'versionsnummer' => $version,
+				'error' => $errorCode
 		)));
 	}
 
@@ -120,8 +118,8 @@ class liveUpdateFunctions{
 	function checkReplaceDocRoot($content){
 		//replaces any count of escaped docroot-strings
 		return ($this->replaceDocRootNeeded() ?
-						preg_replace('-\$(_SERVER|GLOBALS)\[([\\\"\']+)DOCUMENT' . '_ROOT([\\\"\']+)\]-', '\2' . LIVEUPDATE_SOFTWARE_DIR . '\3', $content) :
-						$content);
+				preg_replace('-\$(_SERVER|GLOBALS)\[([\\\"\']+)DOCUMENT' . '_ROOT([\\\"\']+)\]-', '\2' . LIVEUPDATE_SOFTWARE_DIR . '\3', $content) :
+				$content);
 	}
 
 	/**
@@ -499,11 +497,8 @@ class liveUpdateFunctions{
 			}
 
 			if($isNew){
-				//Bug #4431, siehe unten
 				$queries[] = "ALTER TABLE `$tableName` ADD `" . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
 			} else {
-				//Bug #4431
-				// das  mysql_real_escape_string bei $fieldInfo['Type'] f�hrt f�r enum dazu, das die ' escaped werden und ein Syntaxfehler entsteht (nicht abgeschlossene Zeichenkette
 				$queries[] = "ALTER TABLE `$tableName` CHANGE `" . $fieldInfo['Field'] . '` `' . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
 			}
 		}
@@ -566,16 +561,18 @@ class liveUpdateFunctions{
 	 */
 	function executeQueriesInFiles($path){
 		static $db = null;
+		static $defaultEngine = '';
 		$db = $db? : new DB_WE();
-		$db->query('show variables LIKE "default_storage_engine"');
-		$db->next_record();
-		$defaultEngine = $db->f('Value');
-		if(!in_array(strtolower($defaultEngine), array('myisam', 'aria'))){
-			$defaultEngine = 'myisam';
+		if(!$defaultEngine){
+			$db->query('show variables LIKE "default_storage_engine"');
+			$db->next_record();
+			$defaultEngine = $db->f('Value');
+			if(!in_array(strtolower($defaultEngine), array('myisam', 'aria'))){
+				$defaultEngine = 'myisam';
+			}
 		}
 
-		$content = str_replace("ENGINE=MyISAM", 'ENGINE=' . $defaultEngine, $this->getFileContent($path));
-		$queries = explode("/* query separator */", $content);
+		$queries = explode("/* query separator */", str_replace("ENGINE=MyISAM", 'ENGINE=' . $defaultEngine, $this->getFileContent($path)));
 		$success = true;
 		foreach($queries as $query){
 			$success &= $this->executeUpdateQuery($query, $db);
@@ -675,7 +672,7 @@ class liveUpdateFunctions{
 					$orgTable = preg_replace($namePattern, 'CREATE TABLE ' . $db->escape($backupName) . ' (', $orgTable);
 
 					// create temptable
-					$tmpQuery = preg_replace($namePattern, 'CREATE TABLE ' . $db->escape($tmpName) . ' (', $query);
+					$tmpQuery = preg_replace($namePattern, 'CREATE TEMPORARY TABLE ' . $db->escape($tmpName) . ' (', $query);
 					$db->query(trim($tmpQuery));
 
 					// get information from existing and new table
