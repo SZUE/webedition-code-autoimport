@@ -149,7 +149,7 @@ abstract class we_tool_lookup{
 		//ob_start();
 		foreach($_tools as $_tool){
 			$cmd.='	 case "tool_' . $_tool['name'] . '_edit":
- 			new (WE().util.jsWindow)(window,url,"tool_window",-1,-1,970,760,true,true,true,true);
+ 			new (WE().util.jsWindow)(window,url,"tool_window",-1,-1,1048,760,true,true,true,true);
 		break;
 ';
 

@@ -713,14 +713,14 @@ WE().consts.weSearch= {
 										))
 								), 'colgroup' => '</colgroup>
 	<col style="text-align:left;"/>
-	<col style="width:40px;text-align:left;"/>
+	<col style="width:48px;text-align:left;"/>
 	<col style="width:80px;text-align:left;"/>
 	<col style="width:45px;text-align:left;"/>
 	<col style="width:45px;text-align:left;"/>
 	<col style="width:45px;text-align:left;"/>
 	<col style="width:90px;text-align:left;"/>
 	<col style="width:90px;text-align:left;"/>
-	<col style="width:50px;text-align:left;"/>
+	<col style="width:60px;text-align:left;"/>
 </colgroup>'
 							)
 						)),
@@ -1081,7 +1081,7 @@ WE().consts.weSearch= {
 <col style="width:28%;text-align:left;"/>
 <col style="width:36%;text-align:left;"/>
 <col style="width:15%;text-align:left;"/>
-<col style="width:18%;text-align:left;"/>
+<col id="headerLast" style="width:18%;text-align:left;"/>
 </colgroup>' : '<colgroup>
 <col style="width:35px;text-align:center;"/>
 <col style="width:80px;text-align:center;"/>
@@ -1092,7 +1092,7 @@ WE().consts.weSearch= {
 <col style="width:50px;text-align:left;"/>
 <col style="width:90px;text-align:left;"/>
 <col style="width:90px;text-align:left;"/>
-<col style="width:50px;text-align:left;"/>
+<col id="headerLast" style="width:80px;text-align:left;"/>
 </colgroup>'
 			) .
 			'<tr style="height:20px;">
@@ -1105,7 +1105,7 @@ WE().consts.weSearch= {
 
 		$out .= '</tr></table>' .
 			//FIXME: realize with tbody?
-			'<div class="largeicons" id="scrollContent_' . $whichSearch . '" style="overflow-y:auto;background-color:#fff;width:100%;height:100%;">' .
+			'<div class="largeicons" id="scrollContent_' . $whichSearch . '">' .
 			$this->tabListContent($currentSetView, $content, $class, $whichSearch) .
 			'</div>';
 
