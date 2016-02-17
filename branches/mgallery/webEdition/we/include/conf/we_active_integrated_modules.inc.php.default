@@ -18,7 +18,7 @@ $GLOBALS['_we_active_integrated_modules'] = array(
 	'banner',
 	'export',
 	'voting',
-	'spellchecker',
+//	'spellchecker',
 	'glossary',
 	'navigation'
 );
