@@ -196,14 +196,13 @@ abstract class we_backup_preparer{
 			'configuration' => we_base_request::_(we_base_request::BOOL, 'handle_configuration'),
 			'export' => we_base_request::_(we_base_request::BOOL, 'handle_export'),
 			'voting' => we_base_request::_(we_base_request::BOOL, 'handle_voting'),
-			'spellchecker' => we_base_request::_(we_base_request::BOOL, 'handle_spellchecker'),
 			'versions' => we_base_request::_(we_base_request::BOOL, 'handle_versions'),
 			'versions_binarys' => we_base_request::_(we_base_request::BOOL, 'handle_versions_binarys'),
 			'tools' => array(),
-			'spellchecker' => we_base_request::_(we_base_request::BOOL, 'handle_spellchecker'),
+			//'spellchecker' => we_base_request::_(we_base_request::BOOL, 'handle_spellchecker'),
 			'glossary' => we_base_request::_(we_base_request::BOOL, 'handle_glossary'),
-			"hooks" => we_base_request::_(we_base_request::BOOL, "handle_hooks"),
-			"customTags" => we_base_request::_(we_base_request::BOOL, "handle_customtags"),
+			'hooks' => we_base_request::_(we_base_request::BOOL, "handle_hooks"),
+			'customTags' => we_base_request::_(we_base_request::BOOL, "handle_customtags"),
 			'backup' => $options['backup_extern'],
 		);
 

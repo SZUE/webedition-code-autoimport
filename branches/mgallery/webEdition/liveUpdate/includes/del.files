@@ -153,6 +153,8 @@ we/include/we_modules/users/edit_users_cmd.php
 we/include/we_modules/users/edit_users_bcmd.php
 we/include/we_modules/users/browse_users_frameset.inc.php
 we/include/we_modules/spellchecker/we_webEditionCmd_spellchecker.inc.php
+we/include/we_modules/spellchecker/lespellchecker.jar
+we/include/we_modules/spellchecker/dict
 we/include/we_modules/show_frameset.php
 we/include/we_modules/show.php
 we/include/we_modules/shop/we_webEditionCmd_shop.inc.php

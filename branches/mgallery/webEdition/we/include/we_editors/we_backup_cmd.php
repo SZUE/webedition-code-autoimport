@@ -154,7 +154,7 @@ run();');
 
 			$files = array();
 // export spellchecker files
-			if(defined('SPELLCHECKER') && $_SESSION['weS']['weBackupVars']['handle_options']['spellchecker']){
+			/*if(defined('SPELLCHECKER') && $_SESSION['weS']['weBackupVars']['handle_options']['spellchecker']){
 				we_backup_util::addLog('Exporting data for spellchecker');
 
 				$files[] = WE_SPELLCHECKER_MODULE_DIR . 'spellchecker.conf.inc.php';
@@ -166,7 +166,7 @@ run();');
 					$files[] = WE_SPELLCHECKER_MODULE_DIR . 'dict/' . $entry;
 				}
 				$_dir->close();
-			}
+			}*/
 
 // export settings from the file
 			if($_SESSION['weS']['weBackupVars']['handle_options']['settings']){

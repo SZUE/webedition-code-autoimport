@@ -43,23 +43,6 @@ $l_param = array(
 	'scid' => ''
 );
 
-// ----------------------
-/* if(we_base_browserDetect::isMAC() && we_base_browserDetect::isGecko()){
-  $l_param['scid'] = session_id();
-  $_tmp_dir = WE_SPELLCHECKER_MODULE_PATH . '/tmp';
-  if(!is_dir($_tmp_dir)){
-  we_base_file::createLocalFolder($_tmp_dir);
-  }
-  $_scid_file = $_tmp_dir . '/' . md5($l_param['scid']);
-  if(!file_exists($_scid_file)){
-  we_base_file::save($_scid_file, '');
-  we_base_file::insertIntoCleanUp($_scid_file, (24 * 3600));
-  }
-  } else {
-  $l_param['scid'] = '';
-  } */
-// -------------------------------
-
 $l_params = '';
 
 foreach($l_param as $key => $value){
