@@ -153,7 +153,7 @@ echo we_html_tools::getHtmlTop('', '', '', STYLESHEET . we_html_element::jsEleme
 		makeSameDocCheck: ' . intval(($we_doc->IsTextContentDoc/* || $we_doc->IsFolder */) && $haspermNew && (!inWorkflow($we_doc))) . ',
 		isTemplate:' . intval($we_doc->Table == TEMPLATES_TABLE) . ',
 		isFolder:' . intval($we_doc->ContentType == we_base_ContentTypes::FOLDER) . ',
-		classname:"' . ($we_doc->Published == 0 ? 'notpublished' : ($we_doc->Table != TEMPLATES_TABLE && $we_doc->ModDate > $we_doc->Published ? 'changed' : 'published')) . '"
+		classname:"' . ($we_doc->Published == 0 ? 'notpublished' : (!in_array($we_doc->Table, array(TEMPLATES_TABLE, VFILE_TABLE)) && $we_doc->ModDate > $we_doc->Published ? 'changed' : 'published')) . '"
 	};
 	var weCanSave=' . ($canWeSave ? 'true' : 'false') . ';
 	var _showGlossaryCheck = ' . $showGlossaryCheck . ';
