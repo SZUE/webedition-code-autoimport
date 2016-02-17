@@ -22,7 +22,15 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_isNotEmpty($attribs){
+function we_tag_ifEmpty($attribs){
+	if(($foo = attributFehltError($attribs, 'match', __FUNCTION__))){
+		echo $foo;
+		return false;
+	}
+	if(empty($GLOBALS['we_editmode'])){
+		return true;
+	}
+
 	$docAttr = weTag_getAttribute('doc', $attribs, '', we_base_request::STRING);
 	$type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING);
 	$match = we_tag_getPostName(weTag_getAttribute('match', $attribs, '', we_base_request::STRING));
@@ -35,7 +43,8 @@ function we_isNotEmpty($attribs){
 		case 'binary' :
 		case 'img':
 		case 'flashmovie' :
-			return (bool) $doc->getElement($match, 'bdid');
+			$val = $doc->getElement($match, 'bdid');
+			return empty($val);
 		case 'href':
 			if(isset($doc->OF_ID)){
 				$hreftmp = $doc->getElement($match);
@@ -44,19 +53,18 @@ function we_isNotEmpty($attribs){
 					return true;
 				}
 				$hreftmp = trim(we_document::getHrefByArray($hreftmp));
-				if(substr($hreftmp, 0, 1) === '/'){
-					return (!file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp));
-				}
-				return $hreftmp ? true : false;
+				return (substr($hreftmp, 0, 1) === '/' ?
+						(!file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp)) :
+						($hreftmp ? false : true)
+					);
 			}
-			$int = intval($doc->getElement($match . we_base_link::MAGIC_INT_LINK));
-			if($int){ // for type = href int
+			if(intval($doc->getElement($match . we_base_link::MAGIC_INT_LINK))){ // for type = href int
 				$intID = $doc->getElement($match . we_base_link::MAGIC_INT_LINK_ID, 'bdid');
-				return (bool) ($intID > 0) && strlen(id_to_path(array($intID)));
+				return !($intID && strlen(id_to_path(array($intID))));
 			}
 			$hreftmp = $doc->getElement($match);
 			if(substr($hreftmp, 0, 1) === '/'){
-				return (bool) (file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp));
+				return (!file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp));
 			}
 
 		default:
@@ -65,20 +73,11 @@ function we_isNotEmpty($attribs){
 				// Added @-operator in front of the unserialze function because there
 				// were some PHP notices that had no effect on the output of the function
 				// remark holeg: when it is a serialized array, the function looks if it is not empty
-				if(is_array(
-								$arr = we_unserialize($doc->getElement($match)))){
-					return !empty($arr);
+				if(is_array($arr = we_unserialize($doc->getElement($match)))){
+					return empty($arr);
 				}
 			}
 		//   end of #3938
 	}
-	return (bool) ($doc->getElement($match) != '') || $doc->getElement($match, 'bdid');
-}
-
-function we_tag_ifEmpty($attribs){
-	if(($foo = attributFehltError($attribs, 'match', __FUNCTION__))){
-		echo $foo;
-		return false;
-	}
-	return (!empty($GLOBALS['we_editmode'])) || !we_isNotEmpty($attribs);
+	return empty($doc->getElement($match)) && empty($doc->getElement($match, 'bdid'));
 }
