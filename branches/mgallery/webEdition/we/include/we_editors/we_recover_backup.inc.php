@@ -33,10 +33,7 @@ switch($what){
 		echo $weBackupWizard->getHTMLStep($step);
 		break;
 	case 'cmd':
-		$cmd = $weBackupWizard->getHTMLCmd();
-		if($cmd){
-			echo we_html_tools::getHtmlTop('', '', '', $cmd, we_html_element::htmlBody());
-		}
+		echo we_html_tools::getHtmlTop('', '', '', $weBackupWizard->getHTMLCmd(), we_html_element::htmlBody());
 		break;
 	case 'busy':
 		echo $weBackupWizard->getHTMLBusy();
