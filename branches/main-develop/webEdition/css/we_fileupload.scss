@@ -68,7 +68,7 @@ div.we_fileInputWrapper{
 }
 #div_fileupload_buttons button,
 #div_fileupload_buttons input{
-	width:90% ;
+	width:95% ;
 }
 
 .fileInput{
@@ -126,5 +126,13 @@ div.filedrag_preview_right{
 	img{
 		max-height: 100px;
 		max-width: 100px;
+	}
+}
+#weImageDialog{
+	div.weFileuploadEditor{
+		margin-left: 34px;
+		width: 496px;
+		border: 1px solid gray;
+		display:none;
 	}
 }

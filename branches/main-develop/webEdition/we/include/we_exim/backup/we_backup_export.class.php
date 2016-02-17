@@ -50,11 +50,11 @@ abstract class we_backup_export{
 
 			we_exim_contentProvider::object2xml($_object, $_fh, $_attributes, $_SESSION['weS']['weBackupVars']['write']);
 
-			$_SESSION['weS']['weBackupVars']['write']($_fh, we_backup_backup::backupMarker . "\n");
+			$_SESSION['weS']['weBackupVars']['write']($_fh, we_backup_util::backupMarker . "\n");
 		}
 
 
-		$_table = we_backup_util::getCurrentTable();
+		$_table = $_SESSION['weS']['weBackupVars']['current_table'];
 
 		//sppedup for some tables
 		if(isset($_table)){
@@ -107,7 +107,7 @@ abstract class we_backup_export{
 
 
 			we_exim_contentProvider::object2xml($_object, $_fh, $_attributes);
-			fwrite($_fh, we_backup_backup::backupMarker . "\n");
+			fwrite($_fh, we_backup_util::backupMarker . "\n");
 
 
 
@@ -117,7 +117,7 @@ abstract class we_backup_export{
 						$obname = $_object->ClassName;
 						$tmp = new $obname;
 						if($tmp->isBinary()){
-							$bin = we_exim_contentProvider::getInstance('weBinary', $_object->ID);
+							$bin = we_exim_contentProvider::getInstance('we_backup_binary', $_object->ID);
 							if($log){
 								we_backup_util::addLog(sprintf('Exporting binary data %s, %s', $bin->Path, we_base_file::getHumanFileSize($bin->getFilesize())));
 								we_backup_util::writeLog();

@@ -27,7 +27,7 @@
  */
 we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT);
 
-class we_export_export extends weModelBase{
+class we_export_export extends we_base_model{
 	//properties
 	var $ID;
 	var $Text;

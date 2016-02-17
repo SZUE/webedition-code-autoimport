@@ -97,7 +97,7 @@ echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET 
 		elem = document.forms[0];
 		elem.submit();
 	}')) . '
-<body class="weEditorBody" onload="self.focus();" onunload="">
+<body class="weEditorBody" onload="self.focus();top.content.editor.edheader.weTabs.setFrameSize();" onresize="top.content.editor.edheader.weTabs.setFrameSize();" onunload="">
 <form>';
 
 /* * ************ some config  ************** */

@@ -215,7 +215,7 @@ class we_document extends we_root{
 	}
 
 	function addCat(array $ids){
-		$this->Category = implode(',', array_unique(array_filter(explode(',', $this->Category)) + $ids, SORT_NUMERIC));
+		$this->Category = implode(',', array_unique(array_merge(array_filter(explode(',', $this->Category)), $ids), SORT_NUMERIC));
 	}
 
 	function delCat($id){
@@ -577,8 +577,8 @@ class we_document extends we_root{
 				$values = $meta['csv'] ? array_map('trim', explode(',', $value)) : array($value);
 				foreach($values as $v){
 					$this->DB_WE->query('INSERT INTO ' . METAVALUES_TABLE . ' SET ' . we_database_base::arraySetter(array(
-								'tag' => $meta['tag'],
-								'value' => $v
+							'tag' => $meta['tag'],
+							'value' => $v
 					)));
 				}
 			}
@@ -839,6 +839,14 @@ class we_document extends we_root{
 						return (isset($attribs['thumbnail']) ? $img->getHtml(false, true, $pathOnly) : $img->Path);
 					case 'id':
 						return $img->ID;
+					case 'parentpath':
+						return $img->ParentPath;
+					case 'filename':
+						return $img->Filename;
+					case 'extension':
+						return $img->Extension;
+					case 'filesize':
+						return $img->getFilesize();
 				}
 
 				return $img->getHtml(false, true);
@@ -1440,7 +1448,7 @@ class we_document extends we_root{
 			//'onclick' => "this.parentNode.getElementsByClassName('meta_icons')[0].style.display='none';",
 		);
 
-		$input = we_html_tools::htmlTextInput($inputName, 23, (($elVal = $this->getElement($field)) ? $elVal : (isset($GLOBALS['meta'][$field]) ? $GLOBALS['meta'][$field]['default'] : '')), '', '', 'txt', 308, 0, '', false, $props['closed']);
+		$input = we_html_tools::htmlTextInput($inputName, 23, ($this->getElement($field) ? : (isset($GLOBALS['meta'][$field]) ? $GLOBALS['meta'][$field]['default'] : '')), '', '', 'txt', 308, 0, '', false, $props['closed']);
 		$sel = $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $field . ']', $values, 1, '', false, array("onchange" => $onchange), "value", 200);
 
 		// FIXME: if we want the icons make icon-css and better js
@@ -1570,7 +1578,7 @@ class we_document extends we_root{
 				return $allIds;
 			}
 
-			$DB_WE->query('SELECT ID,Path,(ContentType="' . we_base_ContentTypes::IMAGE . '") AS isImage  FROM ' . FILE_TABLE . ' WHERE ID IN(' . implode(',', $allIds) . ')' . (!empty($GLOBALS['we_doc']->InWebEdition) ? '' : ' AND Published>0'));
+			$DB_WE->query('SELECT ID,Path,Published,IsDynamic  FROM ' . FILE_TABLE . ' WHERE ID IN(' . implode(',', $allIds) . ')' . (!empty($GLOBALS['we_doc']->InWebEdition) ? '' : ' AND Published>0'));
 			$allDocs = $DB_WE->getAllFirst(true, MYSQL_ASSOC);
 			foreach($regs as $reg){
 				$foo = isset($allDocs[$reg[3]]) ? $allDocs[$reg[3]] : '';
@@ -1579,7 +1587,7 @@ class we_document extends we_root{
 					if(WYSIWYGLINKS_DIRECTORYINDEX_HIDE && seoIndexHide($path_parts['basename'])){
 						$foo['Path'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 					}
-					$text = str_replace($reg[1] . '="' . $reg[2] . $reg[3] . $reg[4] . $reg[5], $reg[1] . '="' . $foo['Path'] . ($reg[4] ? '?' : '') . $reg[5], $text);
+					$text = str_replace($reg[1] . '="' . $reg[2] . $reg[3] . $reg[4] . $reg[5], $reg[1] . '="' . $foo['Path'] . (!$foo['IsDynamic'] ? '?m=' . $foo['Published'] . $reg[4] : ($reg[4] ? '?' : '')) . $reg[5], $text);
 				} else {
 					$text = preg_replace(array(
 						'-<(a|img) [^>]*' . $reg[2] . '="' . $reg[2] . $reg[3] . '("|&|&amp;|\?)[^>]*>(.*)</a>-Ui',

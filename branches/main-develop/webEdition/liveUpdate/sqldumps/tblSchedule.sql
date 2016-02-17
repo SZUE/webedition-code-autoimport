@@ -1,5 +1,5 @@
 CREATE TABLE ###TBLPREFIX###tblSchedule (
-  DID bigint(20) unsigned NOT NULL default '0',
+  DID bigint unsigned NOT NULL default '0',
   `expire` DATETIME NOT NULL,
   `lockedUntil` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	task enum('publish','park','delete','doctype','category','directory','search_enable','search_disable','call') default 'publish',
@@ -7,7 +7,7 @@ CREATE TABLE ###TBLPREFIX###tblSchedule (
   SerializedData longblob NOT NULL,
   Schedpro text NOT NULL,
 	rerun enum('once','hour','day','week','month','year') NOT NULL default '',
-  Active tinyint(1) unsigned default NULL,
+  Active tinyint unsigned default NULL,
   PRIMARY KEY (DID,ClassName,Active,`expire`,task,rerun),
   KEY Wann (`expire`,Active,`lockedUntil`)
 ) ENGINE=MyISAM;

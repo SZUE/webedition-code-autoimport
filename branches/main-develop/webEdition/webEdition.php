@@ -152,7 +152,7 @@ var specialUnload =<?php echo intval(!(we_base_browserDetect::isChrome() || we_b
 var dd = {
 dataTransfer: {
 text : ''
-				}
+}
 };
 var WebEdition = {
 //all constants in WE used in JS
@@ -174,7 +174,7 @@ TEMPLATE: '<?php echo we_base_ContentTypes::TEMPLATE; ?>',
 				CSS: "<?php echo we_base_ContentTypes::CSS; ?>",
 				APPLICATION: "<?php echo we_base_ContentTypes::APPLICATION; ?>",
 				COLLECTION: "<?php echo we_base_ContentTypes::COLLECTION; ?>"
-				},
+},
 				dirs:{
 				WEBEDITION_DIR:"<?php echo WEBEDITION_DIR; ?>",
 								WE_SHOP_MODULE_DIR: "<?php echo defined('WE_SHOP_MODULE_DIR') ? WE_SHOP_MODULE_DIR : ''; ?>",
@@ -265,7 +265,7 @@ TEMPLATE: '<?php echo we_base_ContentTypes::TEMPLATE; ?>',
 												tt_weinsertbreak:"<?php echo g_l('wysiwyg', '[insert_br]'); ?>",
 												tt_welink:"<?php echo g_l('wysiwyg', '[hyperlink]'); ?>",
 												tt_weimage:"<?php echo g_l('wysiwyg', '[insert_edit_image]'); ?>",
-												tt_wefullscreen_set:"<?php echo g_l('wysiwyg', '[maxsize_set]'); //($this->isInPopup ? g_l('wysiwyg', '[maxsize_set]') : g_l('wysiwyg', '[fullscreen]'));        ?>",
+												tt_wefullscreen_set:"<?php echo g_l('wysiwyg', '[maxsize_set]'); //($this->isInPopup ? g_l('wysiwyg', '[maxsize_set]') : g_l('wysiwyg', '[fullscreen]'));               ?>",
 												tt_wefullscreen_reset:"<?php echo g_l('wysiwyg', '[maxsize_reset]'); ?>",
 												tt_welang:"<?php echo g_l('wysiwyg', '[language]'); ?>",
 												tt_wespellchecker:"<?php echo g_l('wysiwyg', '[spellcheck]'); ?>",
@@ -346,8 +346,8 @@ foreach(we_base_request::getAllTables() as $k => $v){
 				graphic:{
 				gdSupportedTypes:{<?php
 echo implode(',', array_map(function($v){
-			return '"' . $v . '" : true';
-		}, we_base_imageEdit::supported_image_types()));
+		return '"' . $v . '" : true';
+	}, we_base_imageEdit::supported_image_types()));
 ?>},
 								canRotate:<?php echo intval(function_exists("ImageRotate")); ?>,
 				}
@@ -369,7 +369,7 @@ foreach($_SESSION['perms'] as $perm => $access){
 								specialUnload:specialUnload,
 								docuLang:"<?php echo ($GLOBALS["WE_LANGUAGE"] === 'Deutsch' ? 'de' : 'en'); ?>",
 								helpLang:"<?php echo $GLOBALS["WE_LANGUAGE"]; ?>",
-								messageSettings:<?php echo (!empty($_SESSION['prefs']['message_reporting']) ? we_message_reporting::WE_MESSAGE_ERROR | $_SESSION['prefs']['message_reporting'] : (we_message_reporting::WE_MESSAGE_ERROR | we_message_reporting::WE_MESSAGE_WARNING | we_message_reporting::WE_MESSAGE_NOTICE)); ?>,
+								messageSettings:<?php echo (!empty($_SESSION['prefs']['message_reporting']) ? we_message_reporting::WE_MESSAGE_INFO | we_message_reporting::WE_MESSAGE_ERROR | $_SESSION['prefs']['message_reporting'] : PHP_INT_MAX); ?>,
 								isChrome:<?php echo intval(we_base_browserDetect::isChrome()); ?>,
 				},
 				layout:{
@@ -475,10 +475,22 @@ foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do
 echo we_main_headermenu::createMessageConsole('mainWindow', true);
 ?>
 	}
+	function updateCheck(){
+<?php
+if(!empty($_SESSION['perms']['ADMINISTRATOR'])){
+	$versionInfo = json_decode((we_base_file::load(WE_CACHE_PATH . 'newwe_version.json')? : ''), true);
+	if($versionInfo && version_compare($versionInfo['dotted'], WE_VERSION) > 0){
+		?>
+			top.we_showMessage("<?php sprintf(g_l('sysinfo', '[newWEAvailable]'), $versionInfo['dotted'], $versionInfo['date']); ?>", WE().consts.message.WE_MESSAGE_INFO, window);
+		<?php
+	}
+}
+?>
+	}
 //-->
 </script>
 </head>
-<body id="weMainBody" onload="initWE(); top.start('<?php echo $_table_to_load; ?>'); startMsg();" onbeforeunload="return doUnload();">
+<body id="weMainBody" onload="initWE(); top.start('<?php echo $_table_to_load; ?>'); startMsg(); updateCheck();" onbeforeunload ="return doUnload();">
 	<div id="headerDiv"><?php
 		$SEEM_edit_include = we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include');
 		$msg = (defined('MESSAGING_SYSTEM') && !$SEEM_edit_include);
@@ -531,7 +543,7 @@ echo we_main_headermenu::createMessageConsole('mainWindow', true);
 	<?php
 //	get the frameset for the actual mode.
 	echo ((defined('MESSAGING_SYSTEM') && !$SEEM_edit_include) ?
-			we_messaging_headerMsg::getJS() : '') .
+		we_messaging_headerMsg::getJS() : '') .
 //	get the Treefunctions for docselector
 	getWebEdition_Tree();
 	?>

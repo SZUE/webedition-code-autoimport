@@ -78,18 +78,20 @@ function sizeEditor() { // to be fixed (on 12.12.11)
 		document.getElementById("reindentButton").style.marginRight = (window.editor.frame.nextSibling.offsetWidth - 3) + "px";
 	}
 	var srtable = document.getElementById("srtable");
-	var wizardTable = document.getElementById("weTMPLDocEdit");
-	var editorDiv = document.getElementById("editorDiv");
-	var editarea = document.getElementById("editarea");
-	var cm = document.getElementsByClassName("CodeMirror");
+	if (srtable) {
+		var wizardTable = document.getElementById("weTMPLDocEdit");
+		var editorDiv = document.getElementById("editorDiv");
+		var editarea = document.getElementById("editarea");
+		var cm = document.getElementsByClassName("CodeMirror");
 
-	editorDiv.style.bottom = (wizardTable ? wizardTable.offsetHeight : 0) + "px";
-	editarea.style.height = srtable.offsetTop + "px";
-	if (cm && cm.length) {
-		cm[0].style.height = srtable.offsetTop + "px";
+		editorDiv.style.bottom = (wizardTable ? wizardTable.offsetHeight : 0) + "px";
+		editarea.style.height = srtable.offsetTop + "px";
+		if (cm && cm.length) {
+			cm[0].style.height = srtable.offsetTop + "px";
+		}
+
+		window.scroll(0, 0);
 	}
-
-	window.scroll(0, 0);
 }
 
 // ################## Textarea specific functions #############

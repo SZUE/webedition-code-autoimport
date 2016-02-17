@@ -26,12 +26,10 @@
 @import "config.scss";
 .tree{
 	white-space: nowrap;
-	 /*margin-left: -13px;*/
 	padding: 10px 0px;
 }
 #treetable{
 	margin: 0px;
-	//	background-color: #C9CDD0;
 	color: black;
 	border-width: 0px;
 	border-collapse: collapse;
@@ -126,7 +124,6 @@
 		color:red !important;
 	}
 	.bold{
-		//font-weight: bold;
 		font-family: $weFontBold;
 	}
 
@@ -147,10 +144,6 @@
 		color: $DarkBlue;
 		cursor: pointer;
 		font-size: $smallfont;
-	}
-	i.fa-folder-open,
-	i.fa-folder{
-		color: $DarkBlue;
 	}
 
 	.disabled a,
@@ -193,12 +186,18 @@
 	.checked_item,
 	.checked_group,
 	.checked_notpublished{
-		color: #3366CC;
-		background-color: #D4DBFA;
+		/*color: #3366CC;*/
+		color: $White;
+		/*background-color: #D4DBFA;*/
+		background-color: $MiddleBlue;
+		padding: 2px 5px;
 		cursor: pointer;
 	}
 
-	.selected_open_group,
+	.selected_open_group {
+		font-family: $weFontBold;
+	}
+
 	.checked_group{
 		color: black;
 		font-family: $weFontBold;
@@ -218,7 +217,10 @@
 
 	.selected_group,
 	.selected_item {
-		background-color: #D4DBFA;
+		/*background-color: #D4DBFA;*/
+		background-color: $MiddleBlue;
+		padding: 2px 5px;
+		color: $White;
 	}
 	span.fileicon {
     margin-right: .1em;

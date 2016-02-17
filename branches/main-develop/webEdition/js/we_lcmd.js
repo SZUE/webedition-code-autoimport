@@ -28,7 +28,7 @@ function we_lcmd(par) {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 
 	switch (par) {
-		case 'trigger_save_document':
+		/*case 'trigger_save_document':
 			if (WE().layout.weEditorFrameController.getActiveDocumentReference() && WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter && WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter.weCanSave) {
 				WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(false);
 				WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter.we_save_document();
@@ -44,7 +44,7 @@ function we_lcmd(par) {
 				top.we_showMessage(WE().consts.g_l.main.nothing_to_publish, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 			return;
-
+*/
 		case 'new_webEditionPage':
 			top.we_cmd("new", WE().consts.tables.FILE_TABLE, "", WE().consts.contentTypes.WEDOCUMENT);
 			return;

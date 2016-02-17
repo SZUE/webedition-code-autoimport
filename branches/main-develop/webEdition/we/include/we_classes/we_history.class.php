@@ -37,7 +37,7 @@ abstract class we_history{
 
 	static function insertIntoHistory(&$object){
 		$db = new DB_WE();
-		$uid = (isset($GLOBALS['we']['Scheduler_active']) ? 0 : (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0));
+		$uid = intval(isset($GLOBALS['we']['Scheduler_active']) ? 0 : (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0));
 		$tab = stripTblPrefix($object->Table);
 		$cnt = f('SELECT COUNT(1) FROM ' . HISTORY_TABLE . ' WHERE DocumentTable="' . $tab . '" AND UID=' . $uid, '', $db);
 		if($cnt > self::MAX){

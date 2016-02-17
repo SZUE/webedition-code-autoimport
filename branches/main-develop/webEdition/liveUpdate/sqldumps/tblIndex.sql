@@ -28,14 +28,14 @@
 /* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblIndex (
-	ID int(11) unsigned NOT NULL default '0',
-  DID int(11) unsigned NOT NULL default '0',
-	OID int(11) unsigned NOT NULL default '0',
-  WorkspaceID int(11) unsigned NOT NULL default '0',
+	ID int unsigned NOT NULL default '0',
+  DID int unsigned NOT NULL default '0',
+	OID int unsigned NOT NULL default '0',
+  WorkspaceID int unsigned NOT NULL default '0',
   `Text` text NOT NULL,
   Category varchar(255) NOT NULL default '',
-  ClassID int(11) unsigned NOT NULL default '0',
-  Doctype smallint(6) unsigned NOT NULL default '0',
+  ClassID int unsigned NOT NULL default '0',
+  Doctype smallint unsigned NOT NULL default '0',
   Title varchar(255) NOT NULL default '',
   Description text NOT NULL,
   Path varchar(255) NOT NULL default '',

@@ -10,13 +10,13 @@
 /* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblcustomerfilter (
-  modelId bigint(20) unsigned NOT NULL,
+  modelId bigint unsigned NOT NULL,
   modelType enum('objectFile','image/*','text/html','text/webedition','folder','application/x-shockwave-flash','application/*','video/quicktime','video/*','audio/*')  NOT NULL,
   modelTable enum('tblFile','tblObjectFiles') NOT NULL,
-  accessControlOnTemplate tinyint(1) unsigned NOT NULL default '0',
-  errorDocNoLogin int(11) unsigned NOT NULL default '0',
-  errorDocNoAccess int(11) unsigned NOT NULL default '0',
-  mode tinyint(4) unsigned NOT NULL default '0',
+  accessControlOnTemplate tinyint unsigned NOT NULL default '0',
+  errorDocNoLogin int unsigned NOT NULL default '0',
+  errorDocNoAccess int unsigned NOT NULL default '0',
+  mode tinyint unsigned NOT NULL default '0',
   specificCustomers text NOT NULL,
   filter text NOT NULL,
   whiteList text NOT NULL,

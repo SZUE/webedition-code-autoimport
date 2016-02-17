@@ -721,7 +721,7 @@ abstract class we_base_file{
 					default:
 						$path = $foo . $entry;
 						if(is_dir($path)){
-							self::deleteLocalFolder($path, 1);
+							self::deleteLocalFolder($path, $delAll);
 						} else {
 							self::deleteLocalFile($path);
 						}

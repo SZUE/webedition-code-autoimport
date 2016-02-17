@@ -45,6 +45,7 @@ define('VERSION_DIR', WEBEDITION_DIR . 'we/versions/');
 define('LIB_DIR', WEBEDITION_DIR . 'lib/');
 define('TINYMCE_SRC_DIR', LIB_DIR . 'additional/tinymce/');
 define('WE_USERS_MODULE_DIR', WE_MODULES_DIR . 'users/');
+define('WE_CACHE_DIR', WEBEDITION_DIR . 'we/cache/');
 
 define('EDIT_IMAGE_DIR', IMAGE_DIR . 'edit/');
 
@@ -60,10 +61,10 @@ define('WE_MODULES_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_MODULES_DIR);
 define('WE_JS_MODULES_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_JS_MODULES_DIR);
 define('WE_USERS_MODULE_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_USERS_MODULE_DIR);
 define('BACKUP_PATH', $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR);
+define('WE_CACHE_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_CACHE_DIR);
 
 //paths without "DIRS"
 define('WE_FRAGMENT_PATH', WEBEDITION_PATH . 'fragments/');
-define('WE_CACHE_PATH', WEBEDITION_PATH . 'we/cache/');
 define('ZENDCACHE_PATH', WE_CACHE_PATH); //FIXME: remove
 
 include_once (WE_INCLUDES_PATH . 'we_version.php');

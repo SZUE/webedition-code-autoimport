@@ -125,7 +125,6 @@ abstract class we_autoloader{
 			'we_element' => 'we_element.class.php',
 			'we_history' => 'we_history.class.php',
 			'weMainTree' => 'weMainTree.class.php',
-			'weModelBase' => 'modules/weModelBase.class.php',
 			'we_progressBar' => 'we_progressBar.class.php',
 			'we_SEEM' => 'SEEM/we_SEEM.class.php',
 			'weSuggest' => 'weSuggest.class.php',

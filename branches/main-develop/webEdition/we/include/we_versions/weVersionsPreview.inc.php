@@ -315,10 +315,10 @@ if($newDocElements){
 			$oldVal = explode("\n", str_replace("\r", "\n", str_replace("\r\n", "\n", $oldVal)));
 			$newVal = explode("\n", str_replace("\r", "\n", str_replace("\r\n", "\n", $newVal)));
 			$diff = new Horde_Text_Diff('Native', array(($oldVersion ? $oldVal : array()), is_array($newVal) ? $newVal : array()));
-			$renderer = new Horde_Text_Diff_Renderer_Inline(array('ins_prefix' => '###INS_START###', 'ins_suffix' => '###INS_END###',
-				'del_prefix' => '###DEL_START###', 'del_suffix' => '###DEL_END###',));
+			$renderer = new Horde_Text_Diff_Renderer_Inline(array('ins_prefix' => '<span class="insA">+<span class="bold insB">', 'ins_suffix' => '</span>+</span>',
+				'del_prefix' => '<span class="delA">-<span class="bold delB">-', 'del_suffix' =>  '</span>-</span>',));
 
-			$text = str_replace('###INS_START###', '<span class="insA">+<span class="bold insB">', str_replace('###INS_END###', '</span>+</span>', str_replace('###DEL_END###', '</span>-</span>', str_replace('###DEL_START###', '<span class="delA">-<span class="bold delB">-', $renderer->render($diff)))));
+			$text = $renderer->render($diff);
 
 			$contentDiff .= '<td colspan="2" >' . $pre . $text . '</pre></td>';
 		} else {

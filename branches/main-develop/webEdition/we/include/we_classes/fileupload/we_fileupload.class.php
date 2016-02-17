@@ -73,39 +73,37 @@ abstract class we_fileupload{
 		return $this->maxUploadSizeBytes;
 	}
 
-	public function setTypeCondition($field = 'accepted', $mime = array(), $ext = array(), $cts = array()){ // move to ui_base or base
-		foreach($cts as $ct){
-			switch($ct){
-				case we_base_ContentTypes::IMAGE;
-					$mime = array_merge($mime, we_base_ContentTypes::inst()->getRealContentTypes($this->contentType));
-					$ext = array_merge($ext, explode(',', we_base_imageEdit::IMAGE_EXTENSIONS));
-					break;
-				case we_base_ContentTypes::VIDEO:
-					$mime = array_merge($mime, we_base_util::mimegroup2mimes(we_base_ContentTypes::VIDEO));
-					$ext = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::VIDEO);
-				case we_base_ContentTypes::AUDIO:
-					$mime = array_merge($mime, we_base_util::mimegroup2mimes(we_base_ContentTypes::AUDIO));
-					$ext = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::AUDIO);
-				case we_base_ContentTypes::APPLICATION;
-					$mime = array();
-					$ext = array();
-					break;
-				default:
-					$mime = array($this->contentType);
-					$ext = array();
+	public function setTypeCondition($field = 'accepted', $weCts = array(), $exts = array()){
+
+		// new vars for js
+		$cts = '';
+		$exts4cts = '';
+		foreach($weCts as $ct){
+			$ct = strtolower($ct);
+			if(in_array($ct, we_base_ContentTypes::inst()->getContentTypes(FILE_TABLE, true))){
+				$tmp = we_base_ContentTypes::inst()->getExtension($ct);
+				if(is_array($tmp)){
+					$tmp = array_map(function($e){return(substr($e, 1));}, $tmp);
+					$exts4cts .= ',' . implode(',', $tmp) . ',';
+				}
+				$cts .= $ct . ',';
 			}
 		}
 
-//		$mime = array_filter(array_map(function($e){return(strtolower(trim($e, ' ,')));}, $mime), function($var){return !$var ? false : true;});
-		$ext = array_map(function($e){return(strtolower(trim($e, ' ,')));}, $ext);
+		$exts = array_map(function($e){return(strtolower(trim($e, ' ,')));}, $exts);
 
-		$tmp = array(
-			'mime' => $mime,
-			'ext' => $ext,
+		$ret = array(
+			// new vars: used in js
+			'cts' => $cts ? ',' . $cts : '',
+			'exts4cts' => $exts4cts,
+			'exts' => $exts ? ',' . implode(',', $exts) . ',' : '',
+			// old vars: used in php // FIXME: throw away when sure that we do not need them anymore
+			'mime' => $weCts,
+			'ext' => $exts
 		);
-		$tmp['all'] = array_merge($tmp['mime'], $tmp['ext']);
+		$ret['all'] = array_merge($ret['mime'], $ret['ext']);
 
-		$this->typeCondition[$field] = $tmp;
+		$this->typeCondition[$field] = $ret;
 	}
 
 	public static function commitFile($fileInputName = '', $typecondition = array()){// FIXME: implement typecondition, move to resp_base?
@@ -129,14 +127,6 @@ abstract class we_fileupload{
 		return false;
 	}
 
-	protected function _isFileExtensionOk($fileName){
-		return $this->_checkFileType('', $fileName, 'ext');
-	}
-
-	protected function _isFileMimeOk($mime){//FIXME:unused!
-		return $this->_checkFileType($mime, '', 'mime');
-	}
-	
 	public function setPredefinedConfig($predefinedConfig = ''){
 		$this->predefinedConfig = $predefinedConfig;
 	}

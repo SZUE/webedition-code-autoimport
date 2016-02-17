@@ -130,7 +130,7 @@ class we_ui_layout_Frameset extends we_ui_abstract_AbstractElement{
 				$sources = array($this->_frames[0]['src'], $this->_frames[1]['src'], $this->_frames[2]['src']);
 				$names = array('', $this->_frames[1]['name'], $this->_frames[2]['name']);
 			}
-			$html = we_html_element::htmlDiv(array('style' => 'position: absolute; ' . $positioning[0] . ' left: 0px; right: 0px;'), $this->getHTMLCssMenu($appName)) .
+			$html = we_html_element::htmlDiv(array('name' => "headerDiv", 'id' => "headerDiv", 'style' => 'position: absolute; ' . $positioning[0] . ' left: 0px; right: 0px;'), $this->getHTMLCssMenu($appName)) .
 				($isToolbar ? we_html_element::htmlIFrame($names[1], $sources[1], 'position: absolute; ' . $positioning[1] . ' left: 0px; right: 0px; overflow: hidden;', '', '', false) : '') .
 				we_html_element::htmlIFrame($names[2], $sources[2], 'position: absolute; ' . $positioning[2] . ' left: 0px; right: 0px; overflow: hidden;') .
 				we_html_element::htmlIFrame('cmd_' . $appName, 'about:blank', 'position: absolute; bottom: 0px; height: 1px; left: 0px; right: 0px; overflow: hidden;', '', '', false);

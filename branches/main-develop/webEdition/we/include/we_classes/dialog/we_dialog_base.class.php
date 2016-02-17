@@ -38,6 +38,7 @@ class we_dialog_base{
 	var $dialogWidth = 350;
 	var $charset = '';
 	var $tinyMCEPopupManagment = true;
+	protected $bodyId = 'weDialog';
 	protected $noInternals = false;
 	protected $we_cmd = array();
 
@@ -128,7 +129,7 @@ function doKeyDown() {
 			break;
 	}
 }') .
-			we_html_element::htmlBody(array('class' => 'weDialogBody', 'onunload' => 'doUnload()')
+			we_html_element::htmlBody(array('id' => $this->bodyId, 'class' => 'weDialogBody', 'onunload' => 'doUnload()')
 				, we_html_element::htmlExIFrame('main', $this->getDialogHTML(), 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden;') .
 				we_html_element::htmlIFrame('we_' . $this->ClassName . '_cmd_frame', 'about:blank', 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
 		);

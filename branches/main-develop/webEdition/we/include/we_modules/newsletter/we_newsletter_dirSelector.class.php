@@ -46,9 +46,10 @@ top.clearEntries();
 		} else {
 			$folder->we_save();
 			echo 'var ref;
-if(top.opener.top.content.makeNewEntry) ref = top.opener.top.content;
-else if(top.opener.top.opener) ref = top.opener.top.opener.top;
-ref.treeData.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"' . $folder->ContentType . '",table:"' . $this->table . '",published:1});
+if(top.opener.top.content.makeNewEntry){
+	ref = top.opener.top.content;
+	ref.treeData.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"' . $folder->ContentType . '",table:"' . $this->table . '",published:1});
+}
 ' .
 			($this->canSelectDir ?
 					'top.currentPath = "' . $folder->Path . '";

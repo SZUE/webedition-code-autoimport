@@ -125,7 +125,7 @@ class we_customer_tree extends weTree{
 		while($db->next_record(MYSQL_ASSOC)){
 			$typ = array(
 				'typ' => ($db->f("IsFolder") == 1 ? 'group' : 'item'),
-				'contenttype' => ($db->f("IsFolder") == 1 ? 'folder' : 'we/costumer'),
+				'contenttype' => ($db->f("IsFolder") == 1 ? 'we/customerGroup' : 'we/customer'),
 				'disabled' => 0,
 				'published' => intval($db->f('LoginDenied')),
 				'tooltip' => intval($db->f("ID")),

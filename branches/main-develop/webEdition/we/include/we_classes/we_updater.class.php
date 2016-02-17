@@ -264,6 +264,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="href"
 				$recursive = false;
 				if($cur{0} === '!'){
 					$cur = substr($cur, 1);
+					$recursive = true;
 				}
 				if(file_exists(WEBEDITION_PATH . $cur)){
 					if(is_file(WEBEDITION_PATH . $cur)){
@@ -356,6 +357,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="href"
 		foreach($all as $cur){
 			we_base_file::delete($_SERVER['DOCUMENT_ROOT'] . $cur);
 		}
+		$db->query('DROP TEMPORARY TABLE tmp');
 	}
 
 	public static function doUpdate(){

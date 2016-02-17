@@ -39,7 +39,7 @@ abstract class we_backup_import{
 		we_backup_util::addLog(sprintf('Read %s bytes, Mem: %s', strlen($data), memory_get_usage(true)));
 		we_backup_util::writeLog();
 
-		$data .=we_backup_backup::weXmlExImFooter;
+		$data .=we_backup_util::weXmlExImFooter;
 
 		self::transfer($data, $encoding);
 		return true;
@@ -101,14 +101,7 @@ abstract class we_backup_import{
 						$parser->gotoMark('second');
 					} else {
 						$attr = $parser->getNodeAttributes();
-						if(version_compare($_SESSION['weS']['weBackupVars']['weVersion'], '6.3.3.1', '>')){
-							$object->$name = we_exim_contentProvider::getDecodedData(($attr && isset($attr[we_exim_contentProvider::CODING_ATTRIBUTE]) ? $attr[we_exim_contentProvider::CODING_ATTRIBUTE] : we_exim_contentProvider::CODING_NONE), $parser->getNodeData());
-						} else {
-							// import field
-							$object->$name = (we_exim_contentProvider::needCoding($classname, $name, we_exim_contentProvider::CODING_OLD) ?
-									we_exim_contentProvider::decode($parser->getNodeData()) :
-									$parser->getNodeData()); //original mit Bug #3412 aber diese Version l�st 4092
-						}
+						$object->$name = we_exim_contentProvider::getDecodedData(($attr && isset($attr[we_exim_contentProvider::CODING_ATTRIBUTE]) ? $attr[we_exim_contentProvider::CODING_ATTRIBUTE] : we_exim_contentProvider::CODING_NONE), $parser->getNodeData());
 
 						if(isset($object->persistent_slots) && !in_array($name, $object->persistent_slots)){
 							$object->persistent_slots[] = $name;
@@ -134,10 +127,9 @@ abstract class we_backup_import{
 				}
 				$_prefix = 'Saving object ';
 				switch($classname){
-					case 'we_backup_table':
 					case 'we_backup_tableAdv':
 					case 'we_backup_tableItem':
-					case 'weBinary':
+					case 'we_backup_binary':
 						we_backup_util::addLog($object->getLogString($_prefix . $classname . ':') . $addtext);
 						break;
 				}
@@ -163,20 +155,10 @@ abstract class we_backup_import{
 
 	private static function getObject($tagname, $attribs, &$object, &$classname){
 		switch($tagname){
-			case 'we:table':
-				$table = we_backup_util::getRealTableName($attribs['name']);
-				if($table !== false){
-					we_backup_util::setBackupVar('current_table', $table);
-					$object = new we_backup_table($table);
-					$classname = get_class($object);
-					return true;
-				}
-				return false;
-
 			case 'we:tableadv':
 				$table = we_backup_util::getRealTableName($attribs['name']);
 				if($table !== false){
-					we_backup_util::setBackupVar('current_table', $table);
+					$_SESSION['weS']['weBackupVars']['current_table'] = $table;
 					$object = new we_backup_tableAdv($table);
 					$classname = get_class($object);
 					return true;
@@ -186,7 +168,7 @@ abstract class we_backup_import{
 			case 'we:tableitem':
 				$table = we_backup_util::getRealTableName($attribs['table']);
 				if($table !== false){
-					we_backup_util::setBackupVar('current_table', $table);
+					$_SESSION['weS']['weBackupVars']['current_table'] = $table;
 					$object = new we_backup_tableItem($table);
 					$classname = get_class($object);
 					return true;
@@ -194,7 +176,7 @@ abstract class we_backup_import{
 				return false;
 
 			case 'we:binary':
-				$object = new weBinary();
+				$object = new we_backup_binary();
 				$classname = get_class($object);
 				return true;
 

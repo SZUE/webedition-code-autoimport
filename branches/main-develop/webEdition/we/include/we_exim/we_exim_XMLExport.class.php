@@ -68,7 +68,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 		$attribute = (isset($doc->attribute_slots) ? $doc->attribute_slots : array());
 
 		switch($classname){
-			case 'we_backup_table':
+			case 'we_backup_tableAdv':
 				if((defined('OBJECT_X_TABLE') && strtolower(substr($doc->table, 0, 10)) == strtolower(stripTblPrefix(OBJECT_X_TABLE))) ||
 					defined('CUSTOMER_TABLE')){
 					$doc->getColumns();
@@ -77,7 +77,8 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 			default :
 				we_exim_contentProvider::object2xml($doc, $fh, $attribute);
 				break;
-			case 'weBinary':
+			case 'we_backup_binary':
+			case 'weBinary'://FIXME remove
 				if(!is_numeric($id)){
 					$doc->Path = $doc->ID;
 					$doc->ID = 0;
@@ -87,12 +88,12 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 				break;
 		}
 
-		fwrite($fh, we_backup_backup::backupMarker . "\n");
+		fwrite($fh, we_backup_util::backupMarker . "\n");
 
 		if($classname === 'we_backup_tableItem' && $export_binary &&
 			strtolower($doc->table) == strtolower(FILE_TABLE) &&
 			($doc->ContentType == we_base_ContentTypes::IMAGE || stripos($doc->ContentType, "application/") !== false)){
-			$bin = we_exim_contentProvider::getInstance("weBinary", $doc->ID);
+			$bin = we_exim_contentProvider::getInstance("we_backup_binary", $doc->ID);
 			$attribute = (isset($bin->attribute_slots) ? $bin->attribute_slots : array());
 			we_exim_contentProvider::binary2file($bin, $fh);
 		}
@@ -258,7 +259,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 			$out.='></we:map>';
 		}
 		$out.='</we:info>' .
-			we_backup_backup::backupMarker . "\n";
+			we_backup_util::backupMarker . "\n";
 		return $out;
 	}
 

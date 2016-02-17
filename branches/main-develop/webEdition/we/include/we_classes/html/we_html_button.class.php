@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,6 @@
  * Provides functions for creating webEdition buttons.
  */
 abstract class we_html_button{
-
 	const HEIGHT = 22;
 	const WIDTH = 100;
 	const AUTO_WIDTH = -1;
@@ -90,10 +88,10 @@ abstract class we_html_button{
 	 */
 	static function getButton($text, $id, $cmd = '', $title = '', $disabled = false, $isFormButton = false, $class = ''){
 		return '<button type="' . ($isFormButton ? 'submit' : 'button') . '" ' . ($title ? ' title="' . oldHtmlspecialchars($title) . '"' : '') .
-				($disabled ? ' disabled="disabled"' : '') .
-				' id="' . $id . '" class="weBtn' . ($class ? ' ' . $class : '') . '" ' .
-				' onclick="' . oldHtmlspecialchars($cmd) . '"' .
-				'>' . $text . '</button>';
+			($disabled ? ' disabled="disabled"' : '') .
+			' id="' . $id . '" class="weBtn' . ($class ? ' ' . $class : '') . '" ' .
+			' onclick="' . oldHtmlspecialchars($cmd) . '"' .
+			'>' . $text . '</button>';
 	}
 
 	/**
@@ -204,17 +202,17 @@ abstract class we_html_button{
 				}
 				// Check if the link has to be opened in a different frame or in a new window
 				$cmd = $on_click . ($target ? // The link will be opened in a different frame or in a new window
-								// Check if the link has to be opend in a frame or a window
-								($target === '_blank' ? // The link will be opened in a new window
-										"new (WE().util.jsWindow)(window, '" . $href . "','" . $target . "', -1, -1, 500, 550, true, true, true);" :
-										// The link will be opened in a different frame
-										"target_frame = eval('parent.' + " . $target . ");" .
-										"target_frame.location.href='" . $href . "';") :
-								// The link will be opened in the current frame or window
-								"window.location.href='" . $href . "';");
+						// Check if the link has to be opend in a frame or a window
+						($target === '_blank' ? // The link will be opened in a new window
+							"new (WE().util.jsWindow)(window, '" . $href . "','" . $target . "', -1, -1, 500, 550, true, true, true);" :
+							// The link will be opened in a different frame
+							"target_frame = eval('parent.' + " . $target . ");" .
+							"target_frame.location.href='" . $href . "';") :
+						// The link will be opened in the current frame or window
+						"window.location.href='" . $href . "';");
 		}
 
-		return self::getButton($value, ($id? : ($uniqid ? 'we' . $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name) . $suffix), $cmd, ($alt ? ($title ? : (($tmp = g_l('button', '[' . $name . '][alt]', true)) ? $tmp : '')) : ''), $disabled, $hrefData[0] === self::WE_FORM, $class);
+		return self::getButton($value, ($id? : ($uniqid ? 'we' . $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name) . $suffix), $cmd, ($title ? : (g_l('button', '[' . $name . '][alt]', true) ? : '')), $disabled, $hrefData[0] === self::WE_FORM, $class);
 	}
 
 	static function formatButtons($buttons){
@@ -257,8 +255,8 @@ abstract class we_html_button{
 		//	Create button array
 		//	button order depends on OS
 		$buttons = (we_base_browserDetect::isMAC() ?
-						$no_button . $cancel_button . $yes_button :
-						$yes_button . $no_button . $cancel_button);
+				$no_button . $cancel_button . $yes_button :
+				$yes_button . $no_button . $cancel_button);
 
 		return we_html_element::htmlDiv($attr, $buttons);
 	}

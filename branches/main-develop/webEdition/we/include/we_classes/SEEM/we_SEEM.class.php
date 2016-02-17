@@ -390,16 +390,15 @@ abstract class we_SEEM{
 	 * @return               links without attributes, which can affect bad with webEdition.
 	 */
 	static function cleanLinks(array $linkArray){
-		$trenner = '\s*';
 		$pattern = array(
-			'/' . $trenner . 'onclick' . $trenner . '=/i' => ' thiswasonclick=',
-			'/' . $trenner . 'onmouseover' . $trenner . '=/i' => ' thiswasonmouseover=',
-			'/' . $trenner . 'onmouseout' . $trenner . '=/i' => ' thiswasonmouseout=',
-			'/' . $trenner . 'ondblclick' . $trenner . '=/i' => ' thiswasondblclick=',
+			'/\s*onclick\s*=/i' => ' thiswasonclick=',
+			'/\s*onmouseover\s*=/i' => ' thiswasonmouseover=',
+			'/\s*onmouseout\s*=/i' => ' thiswasonmouseout=',
+			'/\s*ondblclick\s*=/i' => ' thiswasondblclick=',
 		);
 
-		for($i = 0; $i < count($linkArray[0]); $i++){
-			$linkArray[1][$i] = preg_replace(array_keys($pattern), array_values($pattern), $linkArray[1][$i]);
+		foreach($linkArray[1] as $i => &$ll){
+			$ll = preg_replace(array_keys($pattern), array_values($pattern), $ll);
 			$linkArray[4][$i] = preg_replace(array_keys($pattern), array_values($pattern), $linkArray[4][$i]);
 		}
 		return $linkArray;
@@ -502,10 +501,9 @@ abstract class we_SEEM{
 	 * @return   allLinks    array containing all <a href ...>-Tags, the targets and parameters
 	 */
 	static function getAllHrefs($code){
-		$trenner = '\s*';
 		$allLinks = array();
 		//  <a href="(Ziele)(?Parameter)" ...> Ziele und Parameter eines Links ermitteln.
-		preg_match_all('/<(a' . $trenner . '[^>]+href' . $trenner . "(\=\"|\=\'|\=|\=\\\\)*" . $trenner . ")([^\'\"> ? \\\]*)([^\"\' \\\\>]*)(" . '[^>]*)>/sie', $code, $allLinks);
+		preg_match_all('/<(a\s*[^>]+href\s*=["\'])([^\'\"> ? \\\]*)([^\"\' \\\\>]*)([^>]*)>/sie', $code, $allLinks);
 		return $allLinks;
 	}
 
@@ -792,8 +790,8 @@ abstract class we_SEEM{
 				}
 				//  Now add some hidden fields.
 				$newForm .= we_html_element::htmlHiddens(array(
-					"we_cmd[0]"=>"open_form_in_editor",
-					"original_action"=>$formArray[1][$i]));
+						"we_cmd[0]" => "open_form_in_editor",
+						"original_action" => $formArray[1][$i]));
 			}
 
 			$code = str_replace($formArray[0][$i], $newForm, $code);
@@ -846,7 +844,6 @@ abstract class we_SEEM{
 	static function getJavaScriptCommandForOneLink($link){
 
 		$linkArray = self::getAllHrefs($link);
-
 		//  Remove all other Stuff from the linkArray
 		//  Here all SEEM - Links are removed as well
 		$linkArray = self::onlyUseHyperlinks($linkArray);
@@ -879,64 +876,53 @@ abstract class we_SEEM{
 	 * @return  string
 	 */
 	static function link2we_cmd($linkArray){
-
-		$i = 0;
-
-		$code = "";
-
 		//  The target of the Link is a webEdition - Document.
-		if($linkArray[6][$i] != -1){
+		if($linkArray[6][0] != -1){
 
-			if($linkArray[3][$i] != ""){ //  we have several parameters, deal with them
-				$theParameterArray = self::getAttributesFromGet($linkArray[3][$i], 'we_cmd');
+			if($linkArray[3][0] != ""){ //  we have several parameters, deal with them
+				$theParameterArray = self::getAttributesFromGet($linkArray[3][0], 'we_cmd');
 
 				if(array_key_exists("we_objectID", $theParameterArray)){ //	target is a object
-					$code = self::getClassVars("vtabSrcObjs") . "top.doClickDirect('" . $theParameterArray["we_objectID"] . "','objectFile','" . OBJECT_FILES_TABLE . "');";
-				} else { //	target is a normal file.
-					$theParameters = self::arrayToParameters($theParameterArray, "", array('we_cmd'));
-					$code = self::getClassVars("vtabSrcDocs") . "top.doClickWithParameters('" . $linkArray[6][$i] . "','" . $linkArray[7][$i] . "','" . FILE_TABLE . "', '" . $theParameters . "');";
-				}
-			} else { //	No Parameters
-				$code = self::getClassVars("vtabSrcDocs") . "top.doClickDirect(" . $linkArray[6][$i] . ",'" . $linkArray[7][$i] . "','" . FILE_TABLE . "');";
-			}
+					return self::getClassVars("vtabSrcObjs") . "top.doClickDirect('" . $theParameterArray["we_objectID"] . "','objectFile','" . OBJECT_FILES_TABLE . "');";
+				} //	target is a normal file.
+				$theParameters = self::arrayToParameters($theParameterArray, "", array('we_cmd'));
+				return self::getClassVars("vtabSrcDocs") . "top.doClickWithParameters('" . $linkArray[6][0] . "','" . $linkArray[7][0] . "','" . FILE_TABLE . "', '" . $theParameters . "');";
+			} //	No Parameters
+			return self::getClassVars("vtabSrcDocs") . "top.doClickDirect(" . $linkArray[6][0] . ",'" . $linkArray[7][0] . "','" . FILE_TABLE . "');";
+
 
 			//  The target is NO webEdition - Document
-		} else {
-
-			//  Target document is on another Web-Server - leave webEdition !
-			if(strpos($linkArray[5][$i], "http://") === 0){
-
-				$code = "window.open('" . $linkArray[5][$i] . $linkArray[3][$i] . "','_blank');";
-
-				//  Target is on the same Werb-Server - open doc with webEdition.
-			} else {
-				//  it is a command link - use open_document_with_parameters
-
-				if(strpos($linkArray[5][$i], WEBEDITION_DIR . 'we_cmd.php') === 0){
-
-					//  Work with the parameters
-					$theParameters = "";
-
-					if($linkArray[3][$i] != ""){
-						$theParametersArray = self::getAttributesFromGet($linkArray[3][$i], 'we_cmd');
-						$theParameters = self::arrayToParameters($theParametersArray, "", array('we_cmd'));
-					}
-
-					if(isset($GLOBALS['we_doc'])){
-						$GLOBALS['we_doc']->ID = $_SESSION['weS']['we_data'][$theParametersArray["we_transaction"]][0]["ID"];
-					}
-
-					$code = (isset($theParameterArray) && is_array($theParameterArray) && array_key_exists("we_objectID", $theParameterArray) ? //	target is a object
-							"top.doClickDirect('" . $theParameterArray["we_objectID"] . "','objectFile','" . OBJECT_FILES_TABLE . "')" :
-							"top.doClickWithParameters('" . $GLOBALS['we_doc']->ID . "','" . we_base_ContentTypes::WEDOCUMENT . "','" . FILE_TABLE . "', '" . $theParameters . "')");
-				} else {
-					//  we cant save data so we neednt make object
-					//	not recognized change of document
-					$code = "top.doExtClick('" . $linkArray[5][$i] . $linkArray[3][$i] . "');";
-				}
-			}
 		}
-		return $code;
+
+		//  Target document is on another Web-Server - leave webEdition !
+		if(strpos($linkArray[5][0], "http://") === 0){
+
+			return "window.open('" . $linkArray[5][0] . $linkArray[3][0] . "','_blank');";
+
+			//  Target is on the same Werb-Server - open doc with webEdition.
+		}
+		//  it is a command link - use open_document_with_parameters
+
+		if(strpos($linkArray[5][0], WEBEDITION_DIR . 'we_cmd.php') === 0){
+			//  Work with the parameters
+			$theParameters = '';
+
+			if($linkArray[3][0]){
+				$theParametersArray = self::getAttributesFromGet($linkArray[3][0], 'we_cmd');
+				$theParameters = self::arrayToParameters($theParametersArray, "", array('we_cmd'));
+			}
+
+			if(isset($GLOBALS['we_doc'])){
+				$GLOBALS['we_doc']->ID = $_SESSION['weS']['we_data'][$theParametersArray["we_transaction"]][0]["ID"];
+			}
+
+			return (isset($theParameterArray) && is_array($theParameterArray) && array_key_exists("we_objectID", $theParameterArray) ? //	target is a object
+					"top.doClickDirect('" . $theParameterArray["we_objectID"] . "','objectFile','" . OBJECT_FILES_TABLE . "')" :
+					"top.doClickWithParameters('" . $GLOBALS['we_doc']->ID . "','" . we_base_ContentTypes::WEDOCUMENT . "','" . FILE_TABLE . "', '" . $theParameters . "')");
+		}
+		//  we cant save data so we neednt make object
+		//	not recognized change of document
+		return "top.doExtClick('" . $linkArray[5][0] . $linkArray[3][0] . "');";
 	}
 
 	/**

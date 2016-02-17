@@ -26,7 +26,7 @@
  * General Definition of WebEdition Voting
  *
  */
-class we_voting_voting extends weModelBase{
+class we_voting_voting extends we_base_model{
 //voting status codes
 
 	const SUCCESS = 1;
