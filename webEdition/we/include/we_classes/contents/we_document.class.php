@@ -809,7 +809,7 @@ class we_document extends we_root{
 						$img->setElement('name', $img->getElement('name'), 'attrib');
 					}
 				}
-				
+
 				switch($pathOnly ? 'path' : (isset($attribs['only']) ? $attribs['only'] : '')){
 					case 'src': //TODO: make separate case for multi domain project to devide between path and src
 					case 'path':
@@ -817,7 +817,7 @@ class we_document extends we_root{
 					case 'id':
 						return $img->ID;
 				}
-				
+
 				return $img->getHtml(false, true);
 			case 'binary':
 				$bin = new we_otherDocument();
@@ -1516,14 +1516,14 @@ class we_document extends we_root{
 		$regs = array();
 		if(preg_match_all('/(href|src)="(' . we_base_link::TYPE_INT_PREFIX . '|\?id=)(\\d+)(&amp;|&)?("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
-				$foo = getHash('SELECT Path,(ContentType="' . we_base_ContentTypes::IMAGE . '") AS isImage  FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[3]) . (isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition ? '' : ' AND Published>0'), $DB_WE);
+				$foo = getHash('SELECT Path,(ContentType="' . we_base_ContentTypes::IMAGE . '") AS isImage,Published,IsDynamic  FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[3]) . (!empty($GLOBALS['we_doc']->InWebEdition) ? '' : ' AND Published>0'), $DB_WE);
 
 				if($foo && $foo['Path']){
 					$path_parts = pathinfo($foo['Path']);
 					if(show_SeoLinks() && WYSIWYGLINKS_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 						$foo['Path'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 					}
-					$text = str_replace($reg[1] . '="' . $reg[2] . $reg[3] . $reg[4] . $reg[5], $reg[1] . '="' . $foo['Path'] . ($reg[4] ? '?' : '') . $reg[5], $text);
+					$text = str_replace($reg[1] . '="' . $reg[2] . $reg[3] . $reg[4] . $reg[5], $reg[1] . '="' . $foo['Path'] . (!$foo['IsDynamic'] ? '?m=' . $foo['Published'] . $reg[4] : ($reg[4] ? '?' : '')) . $reg[5], $text);
 				} else {
 					$text = preg_replace(array(
 						'-<(a|img) [^>]*' . $reg[1] . '="' . $reg[2] . $reg[3] . '("|&|&amp;|\?)[^>]*>(.*)</a>-Ui',
