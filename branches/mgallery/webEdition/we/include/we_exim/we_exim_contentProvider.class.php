@@ -321,7 +321,7 @@ class we_exim_contentProvider{
 				//new persistents have the form name=>type
 				$v = $k;
 			}
-			if($v === 'elements' || $v === 'usedElementNames'){
+			if($v === 'elements' || $v === 'usedElementNames' || $v === 'nHash'){
 				continue;
 			}
 			if(self::needSerialize($object, $classname, $v)){
