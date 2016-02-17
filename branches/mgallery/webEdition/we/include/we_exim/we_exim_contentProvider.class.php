@@ -167,7 +167,7 @@ class we_exim_contentProvider{
 		}
 	}
 
-	static function needCoding($classname, $prop, $data){
+	static function needCoding($prop, $data){
 		if($prop === 'schedArr'){
 			return true;
 		}
@@ -213,7 +213,7 @@ class we_exim_contentProvider{
 					if(isset($object->$v)){
 						$content = $object->$v;
 					}
-					if(self::needCoding($object->ClassName, $v, $content) || self::needCdata($content) || self::needSerialize($object->ClassName, $v, $content)){//fix for faulty parser
+					if(self::needCoding($v, $content) || self::needCdata($content) || self::needSerialize($object->ClassName, $v, $content)){//fix for faulty parser
 						$content = self::encode($content);
 						$coding = array(self::CODING_ATTRIBUTE => self::CODING_ENCODE);
 					}
@@ -330,7 +330,7 @@ class we_exim_contentProvider{
 			} else {
 				$content = (isset($object->$v) ? $object->$v : '');
 				$coding = self::CODING_NONE;
-				if(self::needCoding($classname, $v, $content) || self::needCdata($content)){//fix for faulty parser
+				if(self::needCoding($v, $content) || self::needCdata($content)){//fix for faulty parser
 					$content = self::encode($content);
 					$coding = array(self::CODING_ATTRIBUTE => self::CODING_ENCODE);
 				}
