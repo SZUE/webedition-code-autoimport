@@ -328,7 +328,7 @@ extra_files_desc=[];';
 			55 => we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) ? 'handle_schedule' : '',
 			60 => we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT) ? 'handle_export' : '',
 			65 => defined('VOTING_TABLE') ? 'handle_voting' : '',
-			70 => defined('SPELLCHECKER') ? 'handle_spellchecker' : '',
+			//70 => defined('SPELLCHECKER') ? 'handle_spellchecker' : '',
 			75 => defined('GLOSSARY_TABLE') ? 'handle_glossary' : '',
 			98 => 'handle_hooks',
 			99 => 'handle_customtags',
@@ -567,9 +567,9 @@ self.focus();');
 		if(defined('VOTING_TABLE')){
 			$form_properties[65] = "handle_voting";
 		}
-		if(defined('SPELLCHECKER')){
+		/*if(defined('SPELLCHECKER')){
 			$form_properties[70] = "handle_spellchecker";
-		}
+		}*/
 		if(defined('GLOSSARY_TABLE')){
 			$form_properties[75] = "handle_glossary";
 		}
