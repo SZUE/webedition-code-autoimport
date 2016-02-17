@@ -264,7 +264,7 @@ class installer extends installerBase{
 			foreach ($successFiles as $path) {
 
 				$text = basename($path);
-				$text = (strlen($text) > 40) ? substr($text, (strlen($text) -40)) : $text;
+				$text = substr($text, -40);
 
 				$message .= "<div> ...$text</div>";
 			}
@@ -340,7 +340,7 @@ class installer extends installerBase{
 			foreach ($successFiles as $path) {
 
 				$text = basename(' . $Realname . ');
-				$text = (strlen($text) > 40) ? substr($text, (strlen($text) -40)) : $text;
+				$text = substr($text, -40);
 
 				$message .= "<div> ...$text</div>";
 			}
@@ -415,7 +415,7 @@ class installer extends installerBase{
 			if ($liveUpdateFnc->executeQueriesInFiles($allFiles[$i])) {
 
 				$text = basename($allFiles[$i]);
-				$text = (strlen($text) > 40) ? substr($text, (strlen($text) -40)) : $text;
+				$text = substr($text, -40);
 
 				$message .= "<div>...$text</div>";
 
@@ -496,7 +496,7 @@ for ( $i=' . $_REQUEST["position"] . ',$j=0; $i<sizeof($allFiles) && $success &&
 	$content = $liveUpdateFnc->getFileContent($allFiles[$i]);
 
 	$text = basename($allFiles[$i]);
-	$text = (strlen($text) > 40) ? substr($text, (strlen($text) -40)) : $text;
+	$text = substr($text, -40);
 
 	$message .= "<div>...$text</div>";
 
@@ -561,7 +561,7 @@ if (!$success) {
 
 		for ($i=0;$success && $i<sizeof($allFiles);$i++) {
 				$text = basename($allFiles[$i]);
-				$text = ((strlen($text) > 40) ? substr($text, (strlen($text) -40)) : $text).": -";
+				$text = substr($text, -40);
 				$message .= "<div>...$text</div>";
 
 			if (in_array(LIVEUPDATE_SOFTWARE_DIR . substr($allFiles[$i], $preLength),$donotcopy)) {

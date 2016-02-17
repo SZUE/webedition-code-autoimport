@@ -373,7 +373,7 @@ class installApplication extends installer{
 			// execute queries in each file
 			if ($liveUpdateFnc->executeQueriesInFiles($allFiles[$i])) {
 				$text = basename($allFiles[$i]);
-				$text = (strlen($text) > 40) ? substr($text, (strlen($text) -40)) : $text;
+				$text = substr($text, -40);
 				$message .= "<li>$text</li>";
 
 			} else {
@@ -463,7 +463,7 @@ class installApplication extends installer{
 			$content = $liveUpdateFnc->getFileContent($allFiles[$i]);
 
 			$text = basename($allFiles[$i]);
-			$text = (strlen($text) > 40) ? substr($text, (strlen($text) -40)) : $text;
+			$text = substr($text, -40);
 
 			$message .= "<li>$text</li>";
 
@@ -524,7 +524,7 @@ class installApplication extends installer{
 
 		for ($i=0; $success && $i<sizeof($allFiles); $i++) {
 			$text = basename($allFiles[$i]);
-			$text = (strlen($text) > 40) ? substr($text, (strlen($text) -40)) : $text;
+			$text = substr($text, -40);
 			$message .= "<li>$text</li>";
 
 			//$success = $liveUpdateFnc->moveFile($allFiles[$i], $_SESSION["le_installationDirectory"] . substr($allFiles[$i], $preLength));

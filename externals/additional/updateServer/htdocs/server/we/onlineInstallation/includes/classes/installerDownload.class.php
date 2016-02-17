@@ -232,7 +232,7 @@ class installerDownload extends installer{
 			$content = $liveUpdateFnc->getFileContent($allFiles[$i]);
 
 			$text = basename($allFiles[$i]);
-			$text = (strlen($text) > 40) ? substr($text, (strlen($text) -40)) : $text;
+			$text = substr($text, -40);
 			$message .= "<li>$text</li>";
 
 			if ($liveUpdateFnc->isPhpFile($allFiles[$i])) {
@@ -295,7 +295,7 @@ class installerDownload extends installer{
 
 		for ($i=0;$success && $i<sizeof($allFiles);$i++) {
 			$text = basename($allFiles[$i]);
-			$text = (strlen($text) > 40) ? substr($text, (strlen($text) -40)) : $text;
+			$text = substr($text, -40);
 			$message .= "<li>$text</li>";
 			$success = $liveUpdateFnc->moveFile($allFiles[$i], LE_INSTALLER_PATH . substr($allFiles[$i], $preLength));
 

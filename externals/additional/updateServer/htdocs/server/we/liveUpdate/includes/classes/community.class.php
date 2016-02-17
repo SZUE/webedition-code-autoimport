@@ -213,7 +213,7 @@ class community extends communityBase{
 			foreach ($successFiles as $path) {
 
 				$text = basename($path);
-				$text = (strlen($text) > 40) ? substr($text, (strlen($text) -40)) : $text;
+				$text = substr($text, -40);
 
 				$message .= "<div> ...$text</div>";
 			}
@@ -294,7 +294,7 @@ class community extends communityBase{
 			foreach ($successFiles as $path) {
 
 				$text = basename(' . $Realname . ');
-				$text = (strlen($text) > 40) ? substr($text, (strlen($text) -40)) : $text;
+				$text = substr($text, -40);
 
 				$message .= "<div> ...$text</div>";
 			}
@@ -370,7 +370,7 @@ class community extends communityBase{
 			if ($liveUpdateFnc->executeQueriesInFiles($allFiles[$i])) {
 
 				$text = basename($allFiles[$i]);
-				$text = (strlen($text) > 40) ? substr($text, (strlen($text) -40)) : $text;
+				$text = substr($text, -40);
 
 				$message .= "<div>...$text</div>";
 
@@ -451,7 +451,7 @@ class community extends communityBase{
 			$content = $liveUpdateFnc->getFileContent($allFiles[$i]);
 
 			$text = basename($allFiles[$i]);
-			$text = (strlen($text) > 40) ? substr($text, (strlen($text) -40)) : $text;
+			$text = substr($text, -40);
 
 			$message .= "<div>...$text</div>";
 
@@ -509,7 +509,7 @@ class community extends communityBase{
 		for ($i=0;$success && $i<sizeof($allFiles);$i++) {
 
 			$text = basename($allFiles[$i]);
-			$text = (strlen($text) > 40) ? substr($text, (strlen($text) -40)) : $text;
+			$text = substr($text, -40);
 			$message .= "<div>...$text</div>";
 
 			$success = $liveUpdateFnc->moveFile($allFiles[$i], LIVEUPDATE_SOFTWARE_DIR . substr($allFiles[$i], $preLength));

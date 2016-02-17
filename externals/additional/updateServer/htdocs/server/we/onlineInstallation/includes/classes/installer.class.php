@@ -165,7 +165,7 @@ class installer extends installerBase{
 			$message = "<ul>";
 			foreach ($successFiles as $path) {
 				$text = basename($path);
-				$text = (strlen($text) > 40) ? substr($text, (strlen($text) -40)) : $text;
+				$text = substr($text, -40);
 				$message .= "<li>$text</li>";
 
 			}
@@ -243,7 +243,7 @@ class installer extends installerBase{
 			$message = "<ul>";
 			foreach ($successFiles as $path) {
 				$text = basename($path);
-				$text = (strlen($text) > 40) ? substr($text, (strlen($text) -40)) : $text;
+				$text = substr($text, -40);
 				$message .= "<li>$text</li>";
 
 			}
