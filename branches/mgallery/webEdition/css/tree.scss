@@ -145,10 +145,6 @@
 		cursor: pointer;
 		font-size: $smallfont;
 	}
-	i.fa-folder-open,
-	i.fa-folder{
-		color: $DarkBlue;
-	}
 
 	.disabled a,
 	a,
@@ -201,7 +197,7 @@
 	.selected_open_group {
 		font-family: $weFontBold;
 	}
-	
+
 	.checked_group{
 		color: black;
 		font-family: $weFontBold;

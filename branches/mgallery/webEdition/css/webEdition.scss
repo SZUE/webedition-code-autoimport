@@ -1258,7 +1258,10 @@ span.fileicon{
 
 	i.fa-folder-open,
 	i.fa-folder{
-		color: #ADC5E3;
+		color: $DarkBlue;
+	}
+	i.fa-folder-open-o{
+		color:lightgrey;
 	}
 }
 
