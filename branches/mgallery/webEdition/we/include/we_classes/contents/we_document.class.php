@@ -1578,7 +1578,7 @@ class we_document extends we_root{
 				return $allIds;
 			}
 
-			$DB_WE->query('SELECT ID,Path,(ContentType="' . we_base_ContentTypes::IMAGE . '") AS isImage  FROM ' . FILE_TABLE . ' WHERE ID IN(' . implode(',', $allIds) . ')' . (!empty($GLOBALS['we_doc']->InWebEdition) ? '' : ' AND Published>0'));
+			$DB_WE->query('SELECT ID,Path,Published,IsDynamic  FROM ' . FILE_TABLE . ' WHERE ID IN(' . implode(',', $allIds) . ')' . (!empty($GLOBALS['we_doc']->InWebEdition) ? '' : ' AND Published>0'));
 			$allDocs = $DB_WE->getAllFirst(true, MYSQL_ASSOC);
 			foreach($regs as $reg){
 				$foo = isset($allDocs[$reg[3]]) ? $allDocs[$reg[3]] : '';
@@ -1587,7 +1587,7 @@ class we_document extends we_root{
 					if(WYSIWYGLINKS_DIRECTORYINDEX_HIDE && seoIndexHide($path_parts['basename'])){
 						$foo['Path'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 					}
-					$text = str_replace($reg[1] . '="' . $reg[2] . $reg[3] . $reg[4] . $reg[5], $reg[1] . '="' . $foo['Path'] . ($reg[4] ? '?' : '') . $reg[5], $text);
+					$text = str_replace($reg[1] . '="' . $reg[2] . $reg[3] . $reg[4] . $reg[5], $reg[1] . '="' . $foo['Path'] . (!$foo['IsDynamic'] ? '?m=' . $foo['Published'] . $reg[4] : ($reg[4] ? '?' : '')) . $reg[5], $text);
 				} else {
 					$text = preg_replace(array(
 						'-<(a|img) [^>]*' . $reg[2] . '="' . $reg[2] . $reg[3] . '("|&|&amp;|\?)[^>]*>(.*)</a>-Ui',
