@@ -26,7 +26,7 @@
  * Definition of webEdition Base Model
  *
  */
-class weModelBase{
+class we_base_model{
 	var $db;
 	var $table = '';
 	var $persistent_slots = array();
@@ -34,6 +34,7 @@ class weModelBase{
 	var $isnew = true;
 	protected $MediaLinks = array();
 	protected $isAdvanced = false;
+	private $binFields = array();
 
 	/**
 	 * Default Constructor
@@ -53,6 +54,15 @@ class weModelBase{
 		foreach($tableInfo as $info){
 			$fname = $info["name"];
 			$this->persistent_slots[] = $fname;
+			switch($info["type"]){
+				case 'tinyblob':
+				case 'mediumblob':
+				case 'blob':
+				case 'longblob':
+				case 'varbinary':
+				case 'binary':
+					$this->binFields[] = $fname;
+			}
 			if(!isset($this->$fname)){
 				$this->$fname = "";
 			}
@@ -95,15 +105,18 @@ class weModelBase{
 		if($force_new){
 			$this->isnew = true;
 		}
+		if($this->table == LINK_TABLE && empty($this->nHash)){
+			$this->nHash = md5($this->Name);
+		}
 		foreach($this->persistent_slots as $key => $val){
 			$val = ($isAdvanced || $this->isAdvanced ? $key : $val);
 
 			if(isset($this->{$val})){
-				$sets[$val] = is_array($this->{$val}) ? we_serialize($this->{$val}, ($jsonSer ? 'json' : 'serialize')) : $this->{$val};
+				$sets[$val] = is_array($this->{$val}) ? we_serialize($this->{$val}, ($jsonSer ? 'json' : 'serialize')) :
+					(in_array($val, $this->binFields) ?
+						sql_function('x\'' . $this->{$val} . '\'') :
+						$this->{$val});
 			}
-		}
-		if($this->table == LINK_TABLE && empty($this->nHash)){
-			$this->nHash = md5($this->Name);
 		}
 		$where = $this->getKeyWhere();
 		$set = we_database_base::arraySetter($sets);

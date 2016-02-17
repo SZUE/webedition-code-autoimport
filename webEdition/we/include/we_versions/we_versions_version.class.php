@@ -33,11 +33,10 @@ class we_versions_version{
 	protected $status;
 	protected $version = 1;
 	protected $binaryPath;
-	protected $Filehash;
 	protected $modifications;
 	protected $modifierID;
-	protected $IP;
-	protected $Browser;
+	/*protected $IP;
+	protected $Browser;*/
 	protected $ContentType;
 	protected $Text;
 	protected $ParentID;
@@ -128,12 +127,6 @@ class we_versions_version{
 		return $this->binaryPath;
 	}
 
-	/**
-	 * @return unknown
-	 */
-	public function getFilehash(){
-		return $this->Filehash;
-	}
 
 	/**
 	 * @return unknown
@@ -291,10 +284,10 @@ class we_versions_version{
 
 	/**
 	 * @return unknown
-	 */
+
 	public function getIP(){
 		return $this->iP;
-	}
+	}*/
 
 	/**
 	 * @return unknown
@@ -466,18 +459,10 @@ class we_versions_version{
 	}
 
 	/**
-	 * @param unknown_type $Filehash
-	 */
-	public function setFilehash($Filehash){
-		$this->Filehash = $Filehash;
-	}
-
-	/**
 	 * @param unknown_type $Browser
-	 */
 	public function setBrowser($browser){
 		$this->browser = $browser;
-	}
+	}*/
 
 	/**
 	 * @param unknown_type $Category
@@ -628,10 +613,10 @@ class we_versions_version{
 
 	/**
 	 * @param unknown_type $IP
-	 */
+
 	public function setIP($iP){
 		$this->iP = $iP;
-	}
+	}*/
 
 	/**
 	 * @param unknown_type $IsClassFolder
@@ -1163,7 +1148,6 @@ class we_versions_version{
 				break;
 			case 'binaryPath':
 				$binaryPath = '';
-				$this->Filehash = '';
 				switch($document['ContentType']){
 					case 'objectFile':
 					case we_base_ContentTypes::TEMPLATE:
@@ -1186,9 +1170,6 @@ class we_versions_version{
 							$this->writePreviewDynFile($document['ID'], $includeTemplate, $binaryFile, $documentObj);
 						} else {
 							we_base_file::save($binaryFile, gzencode(file_get_contents($siteFile), 9));
-						}
-						if(file_exists($binaryFile) && is_file($binaryFile)){
-							$this->Filehash = sha1_file($binaryFile);
 						}
 				}
 				$this->binaryPath = $binaryPath;
@@ -1325,14 +1306,14 @@ class we_versions_version{
 			case 'modifierID':
 				$entry = (isset($_SESSION['user']['ID'])) ? $_SESSION['user']['ID'] : '';
 				break;
-			case 'IP':
+/*			case 'IP':
 				$ip = $_SERVER['REMOTE_ADDR'];
 				$entry = $ip;
 				break;
 			case 'Browser':
 				$browser = $_SERVER['HTTP_USER_AGENT'];
 				$entry = $browser;
-				break;
+				break;*/
 			case 'active':
 				$entry = 1;
 				break;
@@ -1479,8 +1460,8 @@ class we_versions_version{
 			'status' => "deleted",
 			'modifications' => 1,
 			'modifierID' => isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : '',
-			'IP' => $_SERVER['REMOTE_ADDR'],
-			'Browser' => isset($_SERVER['HTTP_USER_AGENT']) ? : '',
+			/*'IP' => $_SERVER['REMOTE_ADDR'],
+			'Browser' => isset($_SERVER['HTTP_USER_AGENT']) ? : '',*/
 			'active' => 1,
 			'fromScheduler' => $this->IsScheduler(),
 		));
@@ -2067,7 +2048,7 @@ class we_versions_version{
 	}
 
 	private static function removeUnneededCompareFields(&$doc){
-		unset($doc['Published'], $doc['ModDate'], $doc['RebuildDate'], $doc['EditPageNr'], $doc['DocStream'], $doc['DB_WE'], $doc['Filehash'], $doc['usedElementNames'], $doc['hasVariants'], $doc['editorSaves'], $doc['Name'], $doc['wasUpdate'], $doc['InWebEdition'], $doc['PublWhenSave'], $doc['IsTextContentDoc'], $doc['fileExists'], $doc['elements']['allVariants'], $doc['persistent_slots']);
+		unset($doc['Published'], $doc['ModDate'], $doc['RebuildDate'], $doc['EditPageNr'], $doc['DocStream'], $doc['DB_WE'], $doc['usedElementNames'], $doc['hasVariants'], $doc['editorSaves'], $doc['Name'], $doc['wasUpdate'], $doc['InWebEdition'], $doc['PublWhenSave'], $doc['IsTextContentDoc'], $doc['fileExists'], $doc['elements']['allVariants'], $doc['persistent_slots']);
 		return $doc;
 	}
 

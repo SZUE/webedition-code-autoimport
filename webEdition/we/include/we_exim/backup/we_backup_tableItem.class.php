@@ -27,7 +27,7 @@
  *
  * Provides functions for exporting and importing table rows.
  */
-class we_backup_tableItem extends weModelBase{
+class we_backup_tableItem extends we_base_model{
 	var $ClassName = __CLASS__;
 	var $attribute_slots = array();
 

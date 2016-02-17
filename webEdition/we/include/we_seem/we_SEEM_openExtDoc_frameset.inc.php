@@ -23,7 +23,6 @@
  */
 //	frameset called when opened a none webEdition-document from webEdition
 //	here all parameters are dealt and submitted to the document
-we_html_tools::protect();
 $_text = we_base_request::_(we_base_request::URL, 'we_cmd', '', 1); // Path
 $param = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2);
 $_url = $_text . $param; // + Parameters
@@ -49,11 +48,11 @@ echo we_html_tools::getHtmlTop('', '', 'frameset');
 
 	_EditorFrame.initEditorFrameData({
 		EditorType: "none_webedition",
-		EditorDocumentText: "<?php echo $arr["path"] ?>",
-		EditorDocumentPath: "<?php echo $newUrl; ?>",
+		EditorDocumentText: "<?php echo str_replace('"', '', $arr["path"]); ?>",
+		EditorDocumentPath: "<?php echo str_replace('"', '', $newUrl); ?>",
 		EditorContentType: "none_webedition",
-		EditorUrl: "<?php echo $_text; ?>",
-		EditorDocumentParameters: "<?php echo $param; ?>"
+		EditorUrl: "<?php echo str_replace('"', '', $_text); ?>",
+		EditorDocumentParameters: "<?php echo str_replace('"', '', $param); ?>"
 	});
 
 	function checkDocument() {

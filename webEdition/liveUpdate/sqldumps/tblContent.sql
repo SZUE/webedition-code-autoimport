@@ -9,8 +9,8 @@
 ###UPDATEONLY### UPDATE ###TBLPREFIX###tblContent c SET c.BDID=0 WHERE c.BDID>0 AND c.Dat!=""
 /* query separator */
 CREATE TABLE ###TBLPREFIX###tblContent (
-  ID int(11) unsigned NOT NULL auto_increment,
-  BDID int(11) unsigned NOT NULL default '0',
+  ID int unsigned NOT NULL auto_increment,
+  BDID int unsigned NOT NULL default '0',
   Dat longtext,
 	dHash binary(16) NOT NULL,
   PRIMARY KEY (ID),

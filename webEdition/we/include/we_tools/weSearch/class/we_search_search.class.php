@@ -69,7 +69,7 @@ class we_search_search extends we_search_base{
 	public $founditems = 0;
 	public $View;
 
-	public function __construct($view = null) {
+	public function __construct($view = null){
 		parent::__construct();
 		$this->View = $view ? : new we_search_view();
 	}
@@ -77,7 +77,7 @@ class we_search_search extends we_search_base{
 	function searchProperties($whichSearch, $model){
 		$DB_WE = new DB_WE();
 		$workspaces = $_result = $versionsFound = $saveArrayIds = $_tables = $searchText = array();
-		$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = 0;// will be obsolete
+		$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = 0; // will be obsolete
 
 		$searchFields = $model->getProperty('currentSearchFields');
 		$searchText = $model->getProperty('currentSearch');
@@ -97,7 +97,7 @@ class we_search_search extends we_search_base{
 			$searchText = array();
 		}
 
-		$tab = we_base_request::_(we_base_request::INT, 'tab', we_base_request::_(we_base_request::INT, 'tabnr', 1));//init activTab like this
+		$tab = we_base_request::_(we_base_request::INT, 'tab', we_base_request::_(we_base_request::INT, 'tabnr', 1)); //init activTab like this
 
 		if(isset($searchText[0]) && substr($searchText[0], 0, 4) === 'exp:'){
 
@@ -118,8 +118,8 @@ class we_search_search extends we_search_base{
 			}
 		} elseif(
 			($model->IsFolder != 1 && ( ($whichSearch === we_search_view::SEARCH_DOCS && $tab === 1) || ($whichSearch === we_search_view::SEARCH_TMPL && $tab === 2) || ($whichSearch === we_search_view::SEARCH_ADV && $tab === 3)) || ($whichSearch === we_search_view::SEARCH_MEDIA && $tab === 5) ) ||
-				(we_base_request::_(we_base_request::INT, 'cmdid')) ||
-				(($view = we_base_request::_(we_base_request::STRING, 'view')) === "GetSearchResult" || $view === "GetMouseOverDivs")
+			(we_base_request::_(we_base_request::INT, 'cmdid')) ||
+			(($view = we_base_request::_(we_base_request::STRING, 'view')) === "GetSearchResult" || $view === "GetMouseOverDivs")
 		){
 
 			if(!we_search_search::checkRightTempTable() && !we_search_search::checkRightDropTable()){
@@ -153,17 +153,19 @@ class we_search_search extends we_search_base{
 							$done = true;
 							switch($searchFields[$i]){
 								case 'keyword':
-									foreach((array_filter($searchForField, function($var){return ($var == 1);})) as $field => $v){
+									foreach((array_filter($searchForField, function($var){
+										return ($var == 1);
+									})) as $field => $v){
 										switch($field){
 											case "title": // IMPORTANT: in media search options are generally AND-linked, but not "search in Title, Text, Meta!
-												$where_OR .= ($where_OR ? 'OR ' : ' ') . (($term = $this->searchInTitle($searchString, $_table)) ? $term : '0 ');
+												$where_OR .= ($where_OR ? 'OR ' : ' ') . ($this->searchInTitle($searchString, $_table)? : '0 ');
 												break;
 											case "text":
 												$where_OR .= ($where_OR ? 'OR ' : ' ') . $_table . '.`Text` LIKE "%' . $DB_WE->escape(trim($searchString)) . '%" ';
 												break;
 											case "meta":
 												//$where_OR .= ($where_OR && ($term = $this->searchInAllMetas($searchString)) ? 'OR ' : ' ') . $term;
-												$where_OR .= ($where_OR ? 'OR ' : ' ') . (($term = $this->searchInAllMetas($searchString, $_table)) ? $term : '0 ');
+												$where_OR .= ($where_OR ? 'OR ' : ' ') . ($this->searchInAllMetas($searchString, $_table) ? : '0 ');
 												break;
 										}
 									}
@@ -189,7 +191,7 @@ class we_search_search extends we_search_base{
 										}
 									}
 									$contentTypes = $contentTypes ? trim($contentTypes, ',') :
-											"'" . we_base_ContentTypes::IMAGE . "','" . we_base_ContentTypes::VIDEO . "','" . we_base_ContentTypes::QUICKTIME . "','" . we_base_ContentTypes::FLASH . "','" . we_base_ContentTypes::AUDIO . "','" . we_base_ContentTypes::APPLICATION . "'";
+										"'" . we_base_ContentTypes::IMAGE . "','" . we_base_ContentTypes::VIDEO . "','" . we_base_ContentTypes::QUICKTIME . "','" . we_base_ContentTypes::FLASH . "','" . we_base_ContentTypes::AUDIO . "','" . we_base_ContentTypes::APPLICATION . "'";
 									$where .= ' AND ' . $_table . '.ContentType IN (' . $contentTypes . ')';
 									break;
 								case 'IsUsed':
@@ -212,7 +214,6 @@ class we_search_search extends we_search_base{
 										$done = true;
 									}
 							}
-
 						}
 
 						if(!$done){
@@ -232,8 +233,8 @@ class we_search_search extends we_search_base{
 									break;
 								case 'modifierID':
 									//if($_table == VERSIONS_TABLE){
-										$w .= $this->searchModifier($searchString, $_table);
-										$where .= $w;
+									$w .= $this->searchModifier($searchString, $_table);
+									$where .= $w;
 									//}
 									break;
 								case 'allModsIn':
@@ -287,8 +288,8 @@ class we_search_search extends we_search_base{
 									break;
 								default:
 									//if($whichSearch != "AdvSearch"){
-										$where .= $this->searchfor($searchString, $searchFields[$i], $location[$i], $_table);
-									//}
+									$where .= $this->searchfor($searchString, $searchFields[$i], $location[$i], $_table);
+								//}
 							}
 						}
 					}
@@ -1342,18 +1343,18 @@ class we_search_search extends we_search_base{
 		}
 
 		/*
-		$startTime = microtime(true);
-		$this->db->query('SELECT l.DID, c.Dat FROM `' . LINK_TABLE . '` l JOIN `' . CONTENT_TABLE . '` c ON (l.CID=c.ID) JOIN SEARCH_TEMP_TABLE t ON t.docID=l.DID WHERE t.docTable="' . FILE_TABLE . '"  AND l.Name="filesize" AND l.Type="attrib" AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
-		$filesizes = $this->db->getAll();
-		if(is_array($filesizes) && $filesizes){
-			foreach($filesizes as $v){
-				if($v['Dat'] != ""){
-					$this->db->query('UPDATE SEARCH_TEMP_TABLE SET `media_filesize`="' . $this->db->escape($v['Dat']) . '" WHERE docID=' . intval($v['DID']) . ' AND DocTable="' . FILE_TABLE . '" LIMIT 1');
-				}
-			}
-		}
-		t_e('time used compute filesizes', $firstTime, (microtime(true) - $startTime));
-		 * 
+		  $startTime = microtime(true);
+		  $this->db->query('SELECT l.DID, c.Dat FROM `' . LINK_TABLE . '` l JOIN `' . CONTENT_TABLE . '` c ON (l.CID=c.ID) JOIN SEARCH_TEMP_TABLE t ON t.docID=l.DID WHERE t.docTable="' . FILE_TABLE . '"  AND l.Name="filesize" AND l.Type="attrib" AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
+		  $filesizes = $this->db->getAll();
+		  if(is_array($filesizes) && $filesizes){
+		  foreach($filesizes as $v){
+		  if($v['Dat'] != ""){
+		  $this->db->query('UPDATE SEARCH_TEMP_TABLE SET `media_filesize`="' . $this->db->escape($v['Dat']) . '" WHERE docID=' . intval($v['DID']) . ' AND DocTable="' . FILE_TABLE . '" LIMIT 1');
+		  }
+		  }
+		  }
+		  t_e('time used compute filesizes', $firstTime, (microtime(true) - $startTime));
+		 *
 		 */
 
 		// FIXME: attrib filesize is buggy so use filesize() to get size:
@@ -1369,7 +1370,6 @@ class we_search_search extends we_search_base{
 			}
 		}
 		//t_e('time used compute filesizes', (microtime(true) - $startTime));
-
 		//FIXME: remove this query - only temporary, searchMediaLinks should use the join as well
 		$this->db->query('SELECT docID FROM SEARCH_TEMP_TABLE WHERE docTable="' . FILE_TABLE . '"');
 		$IDs = implode(',', $this->db->getAll(true));
@@ -1434,7 +1434,9 @@ class we_search_search extends we_search_base{
 			case 'CreatorID':
 			case 'WebUserID':
 				if(!is_numeric($searchname)){
-					$arr = array_filter(explode(',', $searchname), function($var){return is_numeric($var);});
+					$arr = array_filter(explode(',', $searchname), function($var){
+						return is_numeric($var);
+					});
 					if(empty($arr)){
 						return '0';
 					} else {

@@ -310,7 +310,7 @@ class we_import_updater extends we_exim_XMLExIm{
 		}
 
 		// update elements serialized data
-		if($object->isBinary() != 1){
+		if(!$object->isBinary()){
 			if($this->debug){
 				t_e('Updating serialized data in elements');
 			}

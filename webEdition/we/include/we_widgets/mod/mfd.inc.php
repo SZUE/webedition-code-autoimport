@@ -179,19 +179,19 @@ LEFT JOIN ' .
 GROUP BY h.DID,h.DocumentTable
 ORDER BY ModDate DESC LIMIT 0,' . ($iMaxItems));
 
-$lastModified = '<table style="width:100%">';
+$lastModified = '<table style="width:100%" class="middlefont">';
 
 while($db->next_record(MYSQL_ASSOC) /* && $j < $iMaxItems */){
 	$file = $db->getRecord();
 
 	$isOpen = $file['isOpen'];
 	$lastModified .= '<tr><td class="mfdIcon" data-contenttype="' . $file['ContentType'] . '"></td>' .
-			'<td style="vertical-align: middle;' . ($isOpen ? 'color:red;' : '') . '" class="middlefont"><span ' .
+			'<td style="vertical-align: middle;' . ($isOpen ? 'color:red;' : '') . '" ><span ' .
 			($isOpen ? '' : 'style="color:#000000;" onclick="WE().layout.weEditorFrameController.openDocument(\'' . addTblPrefix($file['ctable']) . '\',' . $file['ID'] . ',\'' . $file['ContentType'] . '\');" title="' . $file['Path'] . '"') . '>' .
 			$file['Path'] .
 			'</span></td>' .
-			($bMfdBy ? '<td style="padding-left:.5em;" class="middlefont">' . $file['UserName'] . (($bDateLastMfd) ? ',' : '') . '</td>' : '') .
-			($bDateLastMfd ? '<td style="padding-left:.5em;" class="middlefont">' . $file['MDate'] . '</td>' : '') .
+			($bMfdBy ? '<td>' . $file['UserName'] . (($bDateLastMfd) ? ',' : '') . '</td>' : '') .
+			($bDateLastMfd ? '<td>' . $file['MDate'] . '</td>' : '') .
 			'</tr>';
 }
 

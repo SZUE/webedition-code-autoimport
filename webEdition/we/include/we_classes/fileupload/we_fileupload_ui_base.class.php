@@ -228,19 +228,8 @@ doDragFromTree = function(text){
 					'type' => 'file',
 					'name' => $this->name,
 					'id' => $this->name,
-					'accept' => implode(',', $this->typeCondition['accepted']['mime']))
-				);
-				/*
-				$fileInput .= !$isIE10 ? '' :
-					we_html_element::htmlInput(array(
-						'class' => 'fileInput fileInputHidden fileInputIE10',
-						'style' => 'width:' . $width . 'px; left:' . $width . 'px;',
-						'type' => 'file',
-						'name' => $this->name . '_x2',
-						'id' => $this->name . '_x2',
-						'accept' => implode(',', $this->typeCondition['accepted']['mime']))
-				);
-				*/
+					'accept' => trim($this->typeCondition['accepted']['cts'], ',')
+				));
 				$btn = we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, $width, we_html_button::HEIGHT, '', '', $disabled, false, '_btn', false, '', 'weBtn noMarginLeft');
 
 				return we_html_element::htmlDiv(array('id' => 'div_' . $this->name . '_fileInputWrapper', 'class' => 'we_fileInputWrapper', 'style' => 'vertical-align:top;display:inline-block;width:100%;'),
@@ -248,7 +237,7 @@ doDragFromTree = function(text){
 				);
 			case 'reset':
 				$btn = we_html_button::create_button('reset', 'javascript:we_FileUpload.reset()', true, $width, we_html_button::HEIGHT, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');
-				return we_html_element::htmlDiv(array('id' => 'div_fileupload_btnReset', 'style' => 'height:26px;margin-top:18px;display:none;'), $btn);
+				return we_html_element::htmlDiv(array('id' => 'div_fileupload_btnReset', 'style' => 'height:30px;margin-top:18px;display:none;'), $btn);
 
 			case 'upload':
 				$btn = we_html_button::create_button(we_html_button::UPLOAD, 'javascript:' . $this->getJsBtnCmd('upload'), true, $width, we_html_button::HEIGHT, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');

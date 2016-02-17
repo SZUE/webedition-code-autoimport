@@ -27,7 +27,7 @@
  *
  * Provides functions for handling webEdition category.
  */
-class we_category extends weModelBase{
+class we_category extends we_base_model{
 	var $ClassName = __CLASS__;
 	var $ContentType = 'category';
 

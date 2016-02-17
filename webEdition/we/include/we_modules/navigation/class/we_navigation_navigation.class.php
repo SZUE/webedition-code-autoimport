@@ -27,7 +27,7 @@
  * General Definition of WebEdition Navigation
  *
  */
-class we_navigation_navigation extends weModelBase{
+class we_navigation_navigation extends we_base_model{
 
 	const SELECTION_STATIC = 'static';
 	const SELECTION_DYNAMIC = 'dynamic';

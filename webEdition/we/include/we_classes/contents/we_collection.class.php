@@ -294,16 +294,18 @@ class we_collection extends we_root{
 		$defDir = $this->formDirChooser(360, 0, FILE_TABLE, 'DefaultPath', 'DefaultDir', '', g_l('weClass', '[collection][label_defaultDir]'), false);
 
 		$html = $selRemTable .
-			'<div id="mimetype" class="collection_props-mime" style="' . ($this->getRemTable() === 'tblObjectFiles' ? 'display:none' : 'display:block') . ';">' .
-			'<br/>' . g_l('weClass', '[collection][filter_contenttype]') . ':<br/>' .
-			we_html_element::htmlHidden('we_' . $this->Name . '_remCT', $this->remCT, 'we_remCT') .
-			$mimeTable->getHTML() .
-			'</div>
-		<div id="classname" class="collection_props-classes" style="' . ($this->getRemTable() === 'tblObjectFiles' ? 'display:block' : 'display:none') . ';">' .
-			(defined('OBJECT_TABLE') ? '<br/>' . g_l('weClass', '[collection][filter_class]') . ':<br/>' .
-				we_html_element::htmlHidden('we_' . $this->Name . '_remClass', $this->remClass, 'we_remClass') .
-				$classTable->getHTML() : '') .
-			'</div>' .
+			'<div id="collection_props-mime_class">
+	<div id="mimetype" class="collection_props-mime" style="' . ($this->getRemTable() === 'tblObjectFiles' ? 'display:none' : 'display:block') . ';">' .
+		'<br/>' . g_l('weClass', '[collection][filter_contenttype]') . ':<br/>' .
+		we_html_element::htmlHidden('we_' . $this->Name . '_remCT', $this->remCT, 'we_remCT') .
+		$mimeTable->getHTML() .
+	'</div>
+	<div id="classname" class="collection_props-classes" style="' . ($this->getRemTable() === 'tblObjectFiles' ? 'display:block' : 'display:none') . ';">' .
+		(defined('OBJECT_TABLE') ? '<br/>' . g_l('weClass', '[collection][filter_class]') . ':<br/>' .
+			we_html_element::htmlHidden('we_' . $this->Name . '_remClass', $this->remClass, 'we_remClass') .
+			$classTable->getHTML() : '') .
+	'</div>
+</div>' .
 			we_html_element::htmlDiv(array('class' => 'collection_props-dublettes'), $dublettes) .
 			we_html_element::htmlDiv(array(), $defDir);
 

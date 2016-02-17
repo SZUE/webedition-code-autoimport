@@ -70,6 +70,7 @@ $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 	new weTagDataOption('binary', false, '', array($name, $match, $operator, $striphtml, $usekey), array($name, $match)),
 	new weTagDataOption('float', false, '', array($name, $match, $operator, $striphtml, $usekey), array($name, $match)),
 	new weTagDataOption('int', false, '', array($name, $match, $operator, $striphtml, $usekey), array($name, $match)),
+	new weTagDataOption('collection', false, '', array($name, $match, $operator, $striphtml, $usekey), array($name, $match)),
 	new weTagDataOption('shopCategory', false, 'shop', (defined('SHOP_TABLE') ? array($catfield, $catmatch, $ignorefallbacks,) : array()), array()),
 	new weTagDataOption('shopVat', false, 'shop', isset($shopVatAttributes) ? $shopVatAttributes : array(), defined('SHOP_TABLE') && !we_shop_category::isCategoryMode() ? array($name, $match) : array()),
 	new weTagDataOption('checkbox', false, '', array($name, $match, $operator, $striphtml, $usekey), array($name, $match)),

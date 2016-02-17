@@ -317,7 +317,7 @@ class we_binaryDocument extends we_document{
 						(count($_mdtypes) > 0 ? implode(', ', $_mdtypes) : g_l('metadata', '[none]')) .
 						'</a>');
 
-		$fileUpload = new we_fileupload_ui_wedoc($this->ContentType, $this->Extension);
+		$fileUpload = new we_fileupload_ui_wedoc($this->ContentType);
 
 		return $fileUpload->getHTML($fs, $ft, $md, $this->getThumbnail(100, 100), $this->getThumbnail());
 	}

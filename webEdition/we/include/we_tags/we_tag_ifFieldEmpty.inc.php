@@ -80,6 +80,7 @@ function we_isFieldNotEmpty($attribs){
 		case 'img' :
 		case 'flashmovie' :
 		case 'quicktime' :
+		case 'collection':
 			return (bool) $GLOBALS['lv']->f($match);
 		case 'float':
 			return floatval($GLOBALS['lv']->f($match)) !== floatval(0);

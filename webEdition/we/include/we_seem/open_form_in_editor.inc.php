@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -22,11 +21,19 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '',' ');
+?>
+<body>
+	<?php
+	// build url from REQUEST ...
+	$paraStr = we_SEEM::arrayToParameters($_REQUEST, "", array("we_cmd", "original_action"));
+	$action = $_REQUEST['original_action'] . '?1' . $paraStr;
 
-//	The following will translate a given URL to a we_cmd.
-//	When pressing a link in edit-mode this functionality
-//	is needed to reopen the document (if possible) with webEdition
+	//	The following will translate a given URL to a we_cmd.
+	//	When pressing a link in edit-mode this functionality
+	//	is needed to reopen the document (if possible) with webEdition
 
-we_html_tools::protect();
-echo we_html_element::jsElement(we_SEEM::getJavaScriptCommandForOneLink('<a href="' . we_base_request::_(we_base_request::URL, 'we_cmd', '', 1) . '">'));
+	echo we_html_element::jsElement(we_SEEM::getJavaScriptCommandForOneLink('<a href="' . str_replace(' ', '+', $action) . '">'));
+	?>
+</body>
+</html>

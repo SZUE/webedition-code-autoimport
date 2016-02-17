@@ -53,7 +53,7 @@ abstract class we_export_functions{
 
 				// Check if can create the file now
 				if(!$_continue === false){
-					we_base_file::save($_file_name, '<?xml version="1.0" encoding="' . DEFAULT_CHARSET . "\"?>\n" . we_backup_backup::weXmlExImHead . ">\n");
+					we_base_file::save($_file_name, '<?xml version="1.0" encoding="' . DEFAULT_CHARSET . "\"?>\n" . we_backup_util::weXmlExImHead . ">\n");
 				}
 
 				break;
@@ -93,7 +93,7 @@ abstract class we_export_functions{
 	static function fileComplete($format = we_import_functions::TYPE_GENERIC_XML, $filename){
 		switch($format){
 			case we_import_functions::TYPE_GENERIC_XML:
-				we_base_file::save($filename, we_backup_backup::weXmlExImFooter, "ab");
+				we_base_file::save($filename, we_backup_util::weXmlExImFooter, "ab");
 
 				break;
 		}

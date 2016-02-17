@@ -83,6 +83,7 @@ weSearch = {
 
 			weSearch.sizeScrollContent();
 			document.addEventListener('mousemove', weSearch.updateElem, false);
+			document.addEventListener('resize', weSearch.sizeScrollContent(), false);
 			WE().util.setIconOfDocClass(document, 'resultIcon');
 		} else {
 			setTimeout(weSearch.init, 10);
@@ -137,6 +138,14 @@ weSearch = {
 				weSearch.conf.editorBodyFrame.document.getElementById('mouseOverDivs_' + weSearch.conf.whichsearch).innerHTML = weSearch.conf.editorBodyFrame.document.getElementById('movethemaway').innerHTML;
 				weSearch.conf.editorBodyFrame.document.getElementById('movethemaway').innerHTML = '';
 
+				if(weSearch.conf.whichsearch === WE().consts.weSearch.SEARCH_MEDIA || weSearch.conf.whichsearch === WE().consts.weSearch.SEARCH_ADV){
+					window.scrollTo(0,document.body.scrollHeight);
+
+					// correct result header when result list has vertical scrollbar
+					var sc = document.getElementById('scrollContent_' + weSearch.conf.whichsearch);
+					document.getElementById('headerLast').style.width = weSearch.conf.whichsearch === WE().consts.weSearch.SEARCH_MEDIA ? ((sc.firstChild.offsetHeight > sc.offsetHeight ? 78 : 64) + 'px') :
+							((sc.firstChild.offsetHeight > sc.offsetHeight ? 20 : 18) + '%');
+				}
 			}
 		},
 		failure: function (o) {
@@ -386,6 +395,7 @@ weSearch = {
 				top.console.log('found');
 				h = frameH - 324;
 				break;
+			/*
 			case WE().consts.weSearch.SEARCH_MEDIA:
 				rows = (document.getElementById('filterTableMediaSearch').rows.length - 1);
 				h = frameH - (534 + (rows * 32));
@@ -394,6 +404,12 @@ weSearch = {
 			case WE().consts.weSearch.SEARCH_ADV:
 				rows = (document.getElementById('filterTableAdvSearch').rows.length - 1);
 				h = frameH - (290 + (rows * 32));
+				break;
+			*/
+			case WE().consts.weSearch.SEARCH_MEDIA:
+			case WE().consts.weSearch.SEARCH_ADV:
+				h = frameH - 136;
+				hMin = 300;
 				break;
 			case WE().consts.weSearch.SEARCH_DOCLIST:
 				top.console.log('hier');

@@ -289,7 +289,7 @@ class we_wysiwyg_editor{
 		}
 		return we_html_element::cssLink(CSS_DIR . 'wysiwyg/tinymce/toolbar.css') .
 				we_html_element::jsScript(TINYMCE_SRC_DIR . 'tiny_mce.js') .
-				($frontendEdit /*&& !$GLOBALS['WE_MAIN_DOC']->InWebEdition*/ ? we_html_element::jsElement('
+				($frontendEdit /* && !$GLOBALS['WE_MAIN_DOC']->InWebEdition */ ? we_html_element::jsElement('
 function WE(){
 return {
 	consts:{
@@ -549,10 +549,11 @@ return {
 			styles.push(doc.styleSheets[i].href);
 		}
 	}
-	return styles?(preKomma?",":"")+styles.join(","):"";
+	return styles.length?((preKomma?",":"")+styles.join(",")):"";
 }';
 		$printed = true;
 		return
+
 				($this->inlineedit ? $this->getInlineHTML($js) : we_html_element::jsElement($js) . $this->getEditButtonHTML());
 	}
 
@@ -889,6 +890,8 @@ var weclassNames_tinyMce = [' . $this->cssClassesJS . '];
 
 //FIXME: if possible change this to an array/object element!
 var tinyMceConfObject__' . $this->fieldName_clean . ' = {
+	doctype: "<!DOCTYPE html>",
+	fix_list_elements:true,
 	wePluginClasses : {
 		weadaptbold : "' . $editorLangSuffix . 'weadaptbold",
 		weadaptitalic : "' . $editorLangSuffix . 'weadaptitalic",
@@ -934,7 +937,14 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	weIsFrontend:"' . ($this->isFrontendEdit ? 1 : 0) . '",
 	weWordCounter:0,
 	weRemoveFirstParagraph:"' . ($this->removeFirstParagraph ? 1 : 0) . '",
-
+	wePopupGl: {
+		btnOk: {text: "' . g_l('button', '[ok][value]') . '", alt: "' . g_l('button', '[ok][alt]') . '"},
+		btnCancel: {text: "' . g_l('button', '[cancel][value]') . '", alt: "' . g_l('button', '[cancel][alt]') . '"},
+		btnDelete: {text: "' . g_l('button', '[delete][value]') . '", alt: "' . g_l('button', '[delete][alt]') . '"},
+		btnSearchNext: {text: "Weitersuchen", alt: "Weitersuchen"},//FIXME: G_L()
+		btnReplace: {text: "Ersetzen", alt: "Ersetzen"},//FIXME: G_L()
+		btnReplaceAll: {text: "Alle Ersetzen", alt: "Alle Ersetzen"}//FIXME: G_L()
+	},
 	language: "' . $lang . '",
 	mode: "exact",
 	elements: "' . $this->name . '",
@@ -984,8 +994,8 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	//paste_text_use_dialog: true,
 	//fullscreen_new_window: true,
 	editor_css: "' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/editorCss.css') . '",
-	content_css: "' . we_html_element::getUnCache(LIB_DIR . 'additional/fontawesome/css/font-awesome.min.css') . ',' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/contentCssFirst.php') . '&tinyMceBackgroundColor=' . $this->bgcol . '"+getDocumentCss(true)+"' . ($contentCss ? ',' . $contentCss : '') . '",
-	popup_css_add: "' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss.css') . (we_base_browserDetect::isMAC() ? ',' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss_mac.css') : '') . '",
+	content_css: "' . we_html_element::getUnCache(LIB_DIR . 'additional/fontawesome/css/font-awesome.min.css') . ',' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/contentCssFirst.php') . '&tinyMceBackgroundColor=' . $this->bgcol . '"+getDocumentCss(true)' . ($contentCss ? '+",' . $contentCss . '"' : '') . ',
+	popup_css_add: "' . we_html_element::getUnCache(WEBEDITION_DIR . 'lib/additional/fontLiberation/stylesheet.css') . ',' . we_html_element::getUnCache(WEBEDITION_DIR . 'lib/additional/fontawesome/css/font-awesome.min.css') . ',' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss.css') . (we_base_browserDetect::isMAC() ? ',' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss_mac.css') : '') . '",
 	' . (in_array('template', $allCommands) && $this->templates ? $this->getTemplates() : '') . '
 
 	// Skin options
@@ -1001,11 +1011,16 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	paste_text_sticky : true,
 	paste_auto_cleanup_on_paste: true,
 	paste_preprocess: function(pl, o) {
-		var patt = /<img [^>]*src=["\']data:[^>]*>/gi;
-		if (o.content.match(patt)) {
-			o.content = o.content.replace(patt, "");
+		var pattImg = /<img [^>]*src=["\']data:[^>]*>/gi;
+		if (o.content.match(pattImg)) {
+			o.content = o.content.replace(pattImg, "");
 			alert("' . g_l('wysiwyg', '[removedInlinePictures]') . '");
 		}
+		var patScript=/<script[^>]*.*< ?\/script[^>]*>/gi;
+		o.content.replace(patScript, "");
+		var patStyle=/<style[^>]*.*< ?\/style[^>]*>/gi;
+		o.content.replace(patStyle, "");
+
 	},
 
 	setup : function(ed){

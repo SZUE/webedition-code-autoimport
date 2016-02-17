@@ -748,8 +748,7 @@ abstract class we_rebuild_base{
 		$tmp = implode(',', array_filter($tmpArray));
 		unset($tmpArray);
 		if($useLockTbl){
-			$GLOBALS['DB_WE']->query('SELECT ID FROM ' . LOCK_TABLE . ' WHERE tbl="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND ID IN (' . $tmp . ')');
-			$returnIDs['templateIDs'] = $GLOBALS['DB_WE']->getAll(true);
+			$returnIDs['templateIDs'] = $GLOBALS['DB_WE']->getAllq('SELECT ID FROM ' . LOCK_TABLE . ' WHERE tbl="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND ID IN (' . $tmp . ')', true);
 		}
 		$where = ' (' .
 			($PublishedAndTemp ? 'temp_template_id IN (' . $tmp . ') OR ' : '') .

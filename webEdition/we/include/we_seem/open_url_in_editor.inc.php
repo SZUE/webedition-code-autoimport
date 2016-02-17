@@ -1,3 +1,5 @@
+<?php
+
 /**
  * webEdition CMS
  *
@@ -20,42 +22,9 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-@import "config.scss";
-.weMarkInputError,
-input:invalid {
-	background-color: #ff8888 ! important;
-}
 
-.weEditmodeStyle {
-  	border: 0px ! important;
-  	padding: 5px;
-}
+//	The following will translate a given URL to a we_cmd.
+//	When pressing a link in edit-mode this functionality
+//	is needed to reopen the document (if possible) with webEdition
 
-.weEditTable {
-  	background-color: transparent;
-  	border: 1px solid $Grey;
-  	color: black;
-  	font-size: $medfont;
-}
-
-div.we_blockControls button, div.we_blockControls select {
-  	margin-right: 1em; 
-}
-
-table.mceLayout {
-	
-}
-
-table.mceLayout .mceToolbar,
-table.mceLayout .mceStatusbar {
-	
-}
-
-.we_blockControls {
-	
-}
-
-.we_blockControls button.weBtn,
-table.mceLayout button.weBtn {
-	margin-left: 0px !important;
-}
+echo we_html_element::jsElement(we_SEEM::getJavaScriptCommandForOneLink('<a href="' . we_base_request::_(we_base_request::URL, 'we_cmd', '', 1) . '">l</a>'));

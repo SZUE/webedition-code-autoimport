@@ -154,7 +154,7 @@ if(defined('WE_SHOP_MODULE_DIR') && (permissionhandler::hasPerm('NEW_SHOP_ARTICL
 				$total += $actPrice;
 
 				switch(true){
-					case ($DB_WE->f('payed')):
+					case ($DB_WE->f('payed') && !$DB_WE->f('canceled')): //Fix #10194
 						$payed += $actPrice;
 						break;
 					case ($DB_WE->f('canceled')):

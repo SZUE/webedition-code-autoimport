@@ -29,6 +29,7 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 	);
 	protected $doImport = true;
 	protected $contentType = array();
+	protected $posBtnUpload = 'bottom';
 
 	public function __construct($contentType = array(), $extensions = '', $doImport = true){
 		parent::__construct($contentType, $extensions);
@@ -38,16 +39,16 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 		$permCat = permissionhandler::hasPerm("EDIT_KATEGORIE");
 		$this->formElements = array_merge($this->formElements, array(
 			'uploader' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
-			'parentId' => array('set' => true, 'multiIconBox' => true, 'space' => 130, 'rightHeadline' => false, 'noline' => true),
-			'sameName' => array('set' => true, 'multiIconBox' => true, 'space' => 180, 'rightHeadline' => false,),
+			'parentId' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
+			'sameName' => array('set' => true, 'multiIconBox' => true, 'space' => 180, 'rightHeadline' => false),
 			'importMeta' => array('set' => true, 'multiIconBox' => true, 'space' => 120, 'rightHeadline' => false, 'noline' => true),
-			'isSearchable' => array('set' => true, 'multiIconBox' => true, 'space' => 120, 'rightHeadline' => false,),
-			'categories' => array('set' => $permCat, 'multiIconBox' => true, 'space' => 120, 'rightHeadline' => false,),
-			'attributes' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true,),
-			'thumbnails' => array('set' => $permImageEdit, 'multiIconBox' => true, 'rightHeadline' => true,),
-			'imageResize' => array('set' => $permImageEdit, 'multiIconBox' => true, 'space' => 130, 'rightHeadline' => false, 'noline' => true),
-			'imageRotate' => array('set' => $permImageEdit, 'multiIconBox' => true, 'space' => 130, 'rightHeadline' => false, 'noline' => true),
-			'imageQuality' => array('set' => $permImageEdit, 'multiIconBox' => true, 'space' => 130, 'rightHeadline' => false, 'noline' => true),
+			'isSearchable' => array('set' => true, 'multiIconBox' => true, 'space' => 120, 'rightHeadline' => false),
+			'categories' => array('set' => $permCat, 'multiIconBox' => true, 'space' => 120, 'rightHeadline' => false),
+			'attributes' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true),
+			'thumbnails' => array('set' => $permImageEdit, 'multiIconBox' => true, 'rightHeadline' => true),
+			'imageResize' => array('set' => $permImageEdit, 'multiIconBox' => true, 'space' => 180, 'rightHeadline' => false, 'noline' => true),
+			'imageRotate' => array('set' => $permImageEdit, 'multiIconBox' => true, 'space' => 180, 'rightHeadline' => false, 'noline' => true),
+			'imageQuality' => array('set' => $permImageEdit, 'multiIconBox' => true, 'space' => 180, 'rightHeadline' => false, 'noline' => true),
 		));
 
 		$this->dimensions['dragWidth'] = 400;
@@ -96,6 +97,8 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 		$divProgressbar = we_html_element::htmlDiv(array('id' => 'div_fileupload_progressBar', 'style' => 'display:none;'), $progress->getHTML('', 'font-size:11px;'));
 		$divButtons = we_html_element::htmlDiv(array('id' => 'div_fileupload_buttons', 'style' => 'width:400px'), $this->getDivBtnInputReset($this->dimensions['inputWidth'] - 4)
 		);
+		$divBtnUpload = we_html_element::htmlDiv(array('style' => 'float:right;padding-top:10px;width:auto;'), $this->getDivBtnUploadCancel(170));
+
 		$noImage = '<img style="margin:8px 18px;border-style:none;width:64px;height:64px;" src="/webEdition/images/icons/no_image.gif" alt="no-image" />';
 		$formUploader = we_html_element::htmlDiv(array('id' => 'imageUpload', 'style' => 'display:block;width:384px;'), $this->getJs() .
 				$this->getCss() .
@@ -105,10 +108,10 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 				we_html_element::htmlDiv(array('style' => 'width:200px'), we_html_element::htmlDiv(array('id' => 'div_fileupload_right', 'style' => "position:relative;"), $this->getHtmlDropZone('preview', $noImage)
 					)
 				) .
-				$divProgressbar
+				$divProgressbar . ($this->posBtnUpload === 'top' && !$this->isExternalBtnUpload ? $divBtnUpload : '')
 		);
 
-		$parts = $parts = array();
+		$parts = array();
 		$parts = is_array($form = $this->makeMultiIconRow('uploader', 'Dateiauswahl', $formUploader)) ? array_merge($parts, array($form)) : $parts;
 		if($this->parentID['setField']){
 			$parts = is_array($form = $this->getFormParentID()) ? array_merge($parts, array($form)) : $parts;
@@ -134,9 +137,8 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 		}
 
 		$box = we_html_multiIconBox::getHTML("", $parts, 20, '', $this->formElements['tableProperties']['foldAtNr'], $this->formElements['tableProperties']['foldAtOpen'], $this->formElements['tableProperties']['foldAtClose'], false);
-		$divBtnUpload = we_html_element::htmlDiv(array('style' => 'float:right;padding-top:10px;width:auto;'), $this->getDivBtnUploadCancel(170));
 
-		return we_html_multiIconBox::getJS() . $box . ($this->isExternalBtnUpload ? '' : $divBtnUpload);
+		return we_html_multiIconBox::getJS() . $box . ($this->isExternalBtnUpload || $this->posBtnUpload === 'top' ? '' : $divBtnUpload);
 	}
 
 	public function getHtmlFooter(){
@@ -162,11 +164,11 @@ doOnImportSuccess = function(importedDocument){
 		case "selector":
 			opener.top.reloadDir();
 			opener.top.unselectAllFiles();
-			opener.top.addEntry(importedDocument.id, "noch nichts", false, "importedDocument.path");
-			opener.top.doClick(importedDocument, 0);
-			setTimeout(opener.top.selectFile, 200,importedDocument);
+			opener.top.addEntry(importedDocument.id, importedDocument.text, false, "importedDocument.path");
+			opener.top.doClick(importedDocument.id);
+			setTimeout(opener.top.selectFile, 200, importedDocument.id);
 			reloadMainTree();
-			setTimeout(self.close, 250);
+			setTimeout(self.close, 100);
 			break;
 		case "sselector":
 			opener.top.fscmd.selectDir();
@@ -180,11 +182,10 @@ doOnImportSuccess = function(importedDocument){
 			document.we_form.elements["radio_type"][0].checked=true;
 			document.getElementById("imageInt").style.display="block";
 			document.getElementById("imageExt").style.display="none";
-			document.getElementById("imageUpload").style.display="none";
+			document.getElementsByClassName("weFileuploadEditor")[0].style.display="none";
 			document.getElementById("yuiAcResultImage").value = importedDocument.id;
 			document.getElementById("yuiAcInputImage").value = importedDocument.path;
 			imageChanged();
-
 			break;
 		default:
 			// do nothing
@@ -214,6 +215,10 @@ documentWriteback = function(importedDocument){
 	public function setDoImport($doImport = true){
 		$this->doImport = $doImport;
 		$this->responseClass = $this->doImport ? 'we_fileupload_resp_import' : 'we_fileupload_resp_base';
+	}
+
+	public function setPositionBtnUpload($pos = 'bottom'){
+		$this->posBtnUpload = $pos;
 	}
 
 }

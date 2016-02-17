@@ -45,8 +45,7 @@ if(!empty($wasSaved)){
 	switch($GLOBALS['we_doc']->ContentType){
 		case we_base_ContentTypes::FOLDER:
 			if($GLOBALS['we_doc']->wasMoved()){
-				$GLOBALS['DB_WE']->query('SELECT f.ID FROM ' . $GLOBALS['we_doc']->Table . ' f INNER JOIN ' . LOCK_TABLE . ' l ON f.ID=l.ID AND l.tbl="' . stripTblPrefix($GLOBALS['we_doc']->Table) . '" WHERE f.Path LIKE "' . $GLOBALS['we_doc']->Path . '/%"');
-				$reload[$GLOBALS['we_doc']->Table] = implode(',', $GLOBALS['DB_WE']->getAll(true));
+				$reload[$GLOBALS['we_doc']->Table] = implode(',', $GLOBALS['DB_WE']->getAllq('SELECT f.ID FROM ' . $GLOBALS['we_doc']->Table . ' f INNER JOIN ' . LOCK_TABLE . ' l ON f.ID=l.ID AND l.tbl="' . stripTblPrefix($GLOBALS['we_doc']->Table) . '" WHERE f.Path LIKE "' . $GLOBALS['we_doc']->Path . '/%"', true));
 			}
 			break;
 

@@ -319,8 +319,7 @@ var buttons={
 };') .
 			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_filter.js') .
 			$_filterTable .
-			'<div style="height:5px;"></div>' .
-			we_html_button::create_button(we_html_button::PLUS, "javascript:addRow()");
+			'<div style="height:5px;"></div>';
 	}
 
 	/* #########################################################################################

@@ -117,11 +117,11 @@ function findInclude($cmd){
 			$GLOBALS['FROM_WE_SHOW_DOC'] = true;
 			return 'we_showDocument.inc.php';
 		case 'open_url_in_editor': // Beim ungewollten Verlassen (Klick auf Link im Bearbeitenmodus) des Editors wird die Location auf diese Seite weitergeleitet. Hier wird dann ein Kommando gebildet
-			return 'we_seem/open_url_in_editor.php';
+			return 'we_seem/open_url_in_editor.inc.php';
 		case 'open_form_in_editor': // Formular wird an dieses Skript umgeleitet, hier wird ein Kommando daraus gebaut, um das Dokument korrekt zu �ffnen
 			return 'we_seem/open_form_in_editor.php';
 		case 'open_extern_document'; // wird ben�tigt um ein externes Dokument aufzurufen
-			return 'we_seem/we_SEEM_openExtDoc_frameset.php';
+			return 'we_seem/we_SEEM_openExtDoc_frameset.inc.php';
 		case 'edit_document_with_parameters':
 			$GLOBALS['parastr'] = we_base_request::_(we_base_request::RAW_CHECKED, 'we_cmd', '', 4);
 		case 'edit_document':

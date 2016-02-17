@@ -126,7 +126,8 @@ class we_exim_XMLExIm{
 			case 'we_thumbnailEx':
 			case 'we_thumbnail':
 				return THUMBNAILS_TABLE;
-			case 'weBinary':
+			case 'we_backup_binary':
+			case 'weBinary'://FIMXE remove
 				return '';
 			case 'we_object':
 				return OBJECT_TABLE;
@@ -150,7 +151,8 @@ class we_exim_XMLExIm{
 				return TEMPLATES_TABLE;
 			case we_base_ContentTypes::OBJECT_FILE:
 				return (defined('OBJECT_FILES_TABLE')) ? OBJECT_FILES_TABLE : null;
-			case "weBinary":
+			case "we_backup_binary":
+			case 'weBinary'://FIMXE remove
 				return null;
 			case "weNavigation":
 				return NAVIGATION_TABLE;
@@ -215,11 +217,11 @@ class we_exim_XMLExIm{
 
 	static function getHeader($encoding = '', $type = ''){
 		return '<?xml version="1.0" encoding="' . ($encoding ? : $GLOBALS['WE_BACKENDCHARSET']) . '" standalone="yes"?>' . "\n" .
-			we_backup_backup::weXmlExImHead . ' version="' . WE_VERSION . '" type="' . $type . '" xmlns:we="we-namespace">' . "\n";
+			we_backup_util::weXmlExImHead . ' version="' . WE_VERSION . '" type="' . $type . '" xmlns:we="we-namespace">' . "\n";
 	}
 
 	static function getFooter(){
-		return we_backup_backup::weXmlExImFooter;
+		return we_backup_util::weXmlExImFooter;
 	}
 
 	function getIDs($selIDs, $table, $with_dirs = false){
@@ -328,7 +330,7 @@ class we_exim_XMLExIm{
 	}
 
 	function isBinary(){
-
+		return false;
 	}
 
 	function saveObject(&$object){

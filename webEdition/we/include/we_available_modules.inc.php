@@ -202,7 +202,7 @@ return array(
 		'dependson' => '',
 		'childmodule' => ''
 	),
-	'spellchecker' => array(
+	/*'spellchecker' => array(
 		'name' => 'spellchecker',
 		'text' => g_l('javaMenu_moduleInformation', '[spellchecker][text]'),
 		'text_short' => g_l('javaMenu_moduleInformation', '[spellchecker][text_short]'),
@@ -214,7 +214,7 @@ return array(
 		'hasSettings' => true,
 		'dependson' => '',
 		'childmodule' => ''
-	),
+	),*/
 	'glossary' => array(
 		'name' => 'glossary',
 		'text' => g_l('javaMenu_moduleInformation', '[glossary][text]'),

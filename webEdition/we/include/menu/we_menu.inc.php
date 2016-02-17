@@ -24,12 +24,9 @@
  */
 $seeMode = !(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL);
 $we_menu = array(
-	'file' => array(// File
-		'text' => g_l('javaMenu_global', '[file]'),
-	),
 	'file_new' => array(// File > New
 		'text' => g_l('javaMenu_global', '[new]'),
-		'parent' => 'file',
+		//'parent' => 'file',
 	),
 	'file_new_wedoc' => array(// File > New > webEdition Document
 		'text' => g_l('javaMenu_global', '[webEdition_page]'),
@@ -51,13 +48,6 @@ $we_menu = array(
 		'parent' => 'file_new',
 		'perm' => 'NEW_OBJECTFILE',
 		'hide' => !defined('OBJECT_TABLE')
-	),
-	array(// File > New > Others (Import)
-		'text' => g_l('javaMenu_global', '[other]'),
-		'parent' => 'file_new',
-		'cmd' => 'openFirstStepsWizardDetailTemplates',
-		'perm' => 'NO_DOCTYPE && ADMINISTRATOR',
-		'hide' => !$seeMode,
 	),
 	'file_new_media' => array(
 		'text' => g_l('javaMenu_global', '[media]'),
@@ -215,6 +205,10 @@ $we_menu = array(
 		'perm' => 'NEW_COLLECTION',
 		'hide' => !we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION)
 	),
+		'file' => array(// File
+		'text' => g_l('javaMenu_global', '[file]'),
+	),
+
 	/* 	$we_menu[1011100]['parent'] = 'file_new'; // separator
 	  // File > New > Wizards
 	  'text'=> g_l('javaMenu_global', '[wizards]') . '&hellip;',
@@ -394,12 +388,12 @@ $we_menu = array(
 	  'perm' => 'PUBLISH',
 
 	  ), */
-	array(
+	/*array(
 		'text' => g_l('javaMenu_glossary', '[glossary_check]'),
 		'parent' => 'file',
 		'cmd' => 'glossary_check',
 		'hide' => !(defined('GLOSSARY_TABLE'))
-	),
+	),*/
 	array(// File > Delete Active Document
 		'text' => g_l('javaMenu_global', '[delete_active_document]'),
 		'parent' => 'file',

@@ -31,11 +31,11 @@ abstract class we_message_reporting{
 // constants for messaging!
 // these are binray checked like permissions in unix, DON'T change indexes
 
-	const WE_MESSAGE_INFO = -1;
-	const WE_MESSAGE_FRONTEND = -2;
 	const WE_MESSAGE_NOTICE = 1;
 	const WE_MESSAGE_WARNING = 2;
 	const WE_MESSAGE_ERROR = 4;
+	const WE_MESSAGE_INFO = 8;
+	const WE_MESSAGE_FRONTEND = 16;
 
 	/**
 	 * returns js-call for the showMessage function

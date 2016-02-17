@@ -1208,7 +1208,7 @@ function doNext(){
 		if($file_format == we_import_functions::TYPE_GENERIC_XML){
 
 			$file_name = $_SERVER['DOCUMENT_ROOT'] . $path . '/' . $filename;
-			we_customer_EI::save2File($file_name, we_backup_backup::weXmlExImFooter);
+			we_customer_EI::save2File($file_name, we_backup_util::weXmlExImFooter);
 		}
 
 		return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', STYLESHEET, we_html_element::htmlBody(array("onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), we_html_element::htmlHiddens(array(

@@ -229,7 +229,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 
 				$Modes = array();
 				if((
-					isset($_SESSION['prefs']['force_glossary_action']) && $_SESSION['prefs']['force_glossary_action'] == 0
+					empty($_SESSION['prefs']['force_glossary_action'])
 					) && $cmd3 != "checkOnly"
 				){
 					$Modes[''] = g_l('modules_glossary', '[please_choose]');
@@ -539,8 +539,8 @@ top.add();' .
 					</head>
 					<body class="weDialogBody">
 						<form name="we_form" action="<?php echo WEBEDITION_DIR; ?>we_cmd.php" method="post"><?php
-	}
-			?>
+					}
+					?>
 				</form>
 			</body>
 

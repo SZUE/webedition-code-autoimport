@@ -146,10 +146,6 @@ class we_import_wizard extends we_import_wizardBase{
 		$tblData->setCol(1, 0, array(), we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($cmd[1] == we_import_functions::TYPE_GENERIC_XML), 'type', g_l('import', '[gxml_import]'), true, 'defaultfont', '', (!permissionhandler::hasPerm('GENERICXML_IMPORT') || !$expat), g_l('import', ($expat ? '[txt_gxml_import]' : '[add_expat_support]')), 0, 384));
 		$tblData->setCol(2, 0, array(), we_html_forms::radiobutton(we_import_functions::TYPE_CSV, ($cmd[1] == we_import_functions::TYPE_CSV), 'type', g_l('import', '[csv_import]'), true, 'defaultfont', '', !permissionhandler::hasPerm('CSV_IMPORT'), g_l('import', '[txt_csv_import]'), 0, 384));
 
-		$tblTemplates = new we_html_table(array('class' => 'default'), 1, 1);
-		$tblTemplates->setCol(0, 0, array(), we_html_forms::radiobutton('template_import', ($cmd[1] === 'import_templates'), 'type', g_l('import', '[template_import]'), true, 'defaultfont', '', !permissionhandler::hasPerm('ADMINISTRATOR'), g_l('import', '[txt_template_import]'), 0, 384));
-
-
 		$parts = array(
 			array(
 				'headline' => g_l('import', '[import_file]'),
@@ -162,13 +158,6 @@ class we_import_wizard extends we_import_wizardBase{
 				'space' => 120,
 				'noline' => 1),
 		);
-		/* First Step Wizard #4606
-		  array_push($parts, array(
-		  'headline' => g_l('import','[import_templates]'),
-		  'html' => $tblTemplates->getHTML(),
-		  'space' => 120,
-		  'noline' => 1));
-		 */
 		return array(
 			"function we_cmd() {
 				//var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
@@ -193,9 +182,6 @@ class we_import_wizard extends we_import_wizardBase{
 										break;
 									case 'site_import':
 										top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=siteImport';
-										break;
-									case 'template_import':
-										top.opener.top.we_cmd('openFirstStepsWizardDetailTemplates');top.close();
 										break;
 									default:
 										f.type.value=f.type[i].value;

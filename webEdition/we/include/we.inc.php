@@ -124,7 +124,9 @@ $GLOBALS['_we_active_integrated_modules'] = array_unique(array_merge($GLOBALS['_
 
 //FIXME: don't include all confs!
 foreach($GLOBALS['_we_active_integrated_modules'] as $active){
-	we_base_moduleInfo::isActive($active);
+	if($active !== 'spellchecker'){
+		we_base_moduleInfo::isActive($active);
+	}
 }
 
 $GLOBALS['DB_WE'] = new DB_WE();

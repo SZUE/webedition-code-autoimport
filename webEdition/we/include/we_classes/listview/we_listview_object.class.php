@@ -153,12 +153,10 @@ class we_listview_object extends we_listview_objectBase{
 				}
 				$this->DB_WE->query('SELECT ' . $_obxTable . '.OF_ID AS ID ' . $calendar_select . ' FROM ' . $sqlParts["tables"] . ' WHERE ' . ($this->searchable ? ' ' . $_obxTable . '.OF_IsSearchable=1 AND' : '') . ' ' . $pid_tail . ' AND ' . $_obxTable . '.OF_ID!=0 ' . $where_lang . ($join ? ' AND (' . $join . ') ' : '') . $cat_tail . ' ' . ($sqlParts['publ_cond'] ? (' AND ' . $sqlParts['publ_cond']) : '') . ' ' . ($sqlParts['cond'] ? ' AND (' . $sqlParts['cond'] . ') ' : '') . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $_idTail . $sqlParts['groupBy']);
 				$this->anz_all = $this->DB_WE->num_rows();
-				if($calendar != ""){
+				if($calendar){
 					while($this->DB_WE->next_record()){
 						$this->IDs[] = $this->DB_WE->f('ID');
-						if($calendar != ''){
-							$this->calendar_struct['storage'][$this->DB_WE->f('ID')] = (int) $this->DB_WE->f('Calendar');
-						}
+						$this->calendar_struct['storage'][$this->DB_WE->f('ID')] = (int) $this->DB_WE->f('Calendar');
 					}
 				}
 				$q = 'SELECT ' . $sqlParts["fields"] . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . ($this->searchable ? ' ' . $_obxTable . '.OF_IsSearchable=1 AND' : '') . ' ' . $pid_tail . ' AND ' . $_obxTable . '.OF_ID!=0 ' . $where_lang . ($join ? " AND ($join) " : "") . $cat_tail . " " . ($sqlParts["publ_cond"] ? (' AND ' . $sqlParts["publ_cond"]) : '') . ' ' . ($sqlParts["cond"] ? ' AND (' . $sqlParts['cond'] . ') ' : '') . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $_idTail . $sqlParts['groupBy'] . $sqlParts["order"] . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : '');
@@ -206,77 +204,76 @@ class we_listview_object extends we_listview_objectBase{
 			$count = $this->calendar_struct['count'];
 			$fetch = $this->calendar_struct['forceFetch'];
 			$this->DB_WE->Record = array();
-		}
-
-		if(!$this->calendar_struct['calendar'] || $fetch){
-			$ret = $this->DB_WE->next_record();
-
-			if($ret){
-				$tmp = getHash('SELECT * FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $this->DB_WE->f('OF_ID'));
-				foreach($tmp as $key => $val){
-					$this->DB_WE->Record['we_wedoc_' . $key] = $val;
-				}
-
-				$paramName = $this->docID ? 'we_oid' : 'we_objectID';
-				$this->DB_WE->Record['we_wedoc_Path'] = $this->Path . '?' . $paramName . '=' . $this->DB_WE->Record['OF_ID'];
-				$this->DB_WE->Record['we_wedoc_WebUserID'] = isset($this->DB_WE->Record['OF_WebUserID']) ? $this->DB_WE->Record['OF_WebUserID'] : 0; // needed for ifRegisteredUserCanChange tag
-				$this->DB_WE->Record['we_WE_CUSTOMER_ID'] = $this->DB_WE->Record['we_wedoc_WebUserID'];
-				$this->DB_WE->Record['we_WE_TRIGGERID'] = ($this->triggerID ? : intval($this->DB_WE->f('OF_TriggerID')));
-				$this->DB_WE->Record['we_WE_URL'] = $this->DB_WE->f('OF_Url');
-				$this->DB_WE->Record['we_WE_TEXT'] = $this->DB_WE->f('OF_Text');
-				$this->DB_WE->Record['we_WE_ID'] = $this->DB_WE->f('OF_ID');
-				$this->DB_WE->Record['we_wedoc_Category'] = $this->DB_WE->f('OF_Category');
-				$this->DB_WE->Record['we_WE_SHOPVARIANTS'] = 0; //check this for global variants
-
-
-				$path_parts = pathinfo($this->Path);
-				if($this->objectseourls && $this->DB_WE->Record['OF_Url'] && show_SeoLinks()){
-					if(!$this->triggerID && $this->DB_WE->Record['OF_TriggerID']){
-						$path_parts = pathinfo(id_to_path($this->DB_WE->f('OF_TriggerID')));
-					}
-					$this->DB_WE->Record['we_WE_PATH'] = (!empty($path_parts['dirname']) && $path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
-						($this->hidedirindex && seoIndexHide($path_parts['basename']) ?
-							'' :
-							$path_parts['filename'] . '/'
-						) . $this->DB_WE->Record['OF_Url'];
-				} else {
-					$this->DB_WE->Record['we_WE_PATH'] = ($this->hidedirindex && seoIndexHide($path_parts['basename']) ?
-							($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' :
-							$this->Path
-						) . '?' . $paramName . '=' . $this->DB_WE->Record['OF_ID'];
-				}
-				if(($dat = $this->f(we_base_constants::WE_VARIANTS_ELEMENT_NAME))){
-					$variants = we_unserialize($dat);
-					if(is_array($variants) && count($variants) > 0){
-						$this->DB_WE->Record['we_WE_SHOPVARIANTS'] = count($variants);
-					}
-				}
-				// for seeMode #5317
-				$this->DB_WE->Record['we_wedoc_lastPath'] = $this->LastDocPath . '?' . $paramName . '=' . $this->DB_WE->Record['OF_ID'];
-				if($this->customers && $this->DB_WE->Record['we_wedoc_WebUserID']){
-					if(isset($this->customerArray['cid_' . $this->DB_WE->Record['we_wedoc_WebUserID']])){
-						foreach($this->customerArray['cid_' . $this->DB_WE->Record['we_wedoc_WebUserID']] as $key => $value){
-							$this->DB_WE->Record['we_WE_CUSTOMER_' . $key] = $value;
-						}
-					}
-				}
-
-				$this->count++;
-				return true;
-			}
-			$this->stop_next_row = $this->shouldPrintEndTR();
-			if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
-				$this->DB_WE->Record = array(
-					'WE_PATH' => '',
-					'WE_TEXT' => '',
-					'WE_ID' => '',
-				);
-				$this->count++;
-				return true;
+			if(!$fetch){
+				return !empty($this->calendar_struct['calendar']);
 			}
 		}
 
-		return ($this->calendar_struct['calendar'] != '');
+		if($this->DB_WE->next_record()){
+			$tmp = getHash('SELECT * FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $this->DB_WE->f('OF_ID'));
+			foreach($tmp as $key => $val){
+				$this->DB_WE->Record['we_wedoc_' . $key] = $val;
+			}
+
+			$paramName = $this->docID ? 'we_oid' : 'we_objectID';
+			$this->DB_WE->Record['we_wedoc_Path'] = $this->Path . '?' . $paramName . '=' . $this->DB_WE->Record['OF_ID'];
+			$this->DB_WE->Record['we_wedoc_WebUserID'] = isset($this->DB_WE->Record['OF_WebUserID']) ? $this->DB_WE->Record['OF_WebUserID'] : 0; // needed for ifRegisteredUserCanChange tag
+			$this->DB_WE->Record['we_WE_CUSTOMER_ID'] = $this->DB_WE->Record['we_wedoc_WebUserID'];
+			$this->DB_WE->Record['we_WE_TRIGGERID'] = ($this->triggerID ? : intval($this->DB_WE->f('OF_TriggerID')));
+			$this->DB_WE->Record['we_WE_URL'] = $this->DB_WE->f('OF_Url');
+			$this->DB_WE->Record['we_WE_TEXT'] = $this->DB_WE->f('OF_Text');
+			$this->DB_WE->Record['we_WE_ID'] = $this->DB_WE->f('OF_ID');
+			$this->DB_WE->Record['we_wedoc_Category'] = $this->DB_WE->f('OF_Category');
+			$this->DB_WE->Record['we_WE_SHOPVARIANTS'] = 0; //check this for global variants
+
+
+			$path_parts = pathinfo($this->Path);
+			if($this->objectseourls && $this->DB_WE->Record['OF_Url'] && show_SeoLinks()){
+				if(!$this->triggerID && $this->DB_WE->Record['OF_TriggerID']){
+					$path_parts = pathinfo(id_to_path($this->DB_WE->f('OF_TriggerID')));
+				}
+				$this->DB_WE->Record['we_WE_PATH'] = (!empty($path_parts['dirname']) && $path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
+					($this->hidedirindex && seoIndexHide($path_parts['basename']) ?
+						'' :
+						$path_parts['filename'] . '/'
+					) . $this->DB_WE->Record['OF_Url'];
+			} else {
+				$this->DB_WE->Record['we_WE_PATH'] = ($this->hidedirindex && seoIndexHide($path_parts['basename']) ?
+						($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' :
+						$this->Path
+					) . '?' . $paramName . '=' . $this->DB_WE->Record['OF_ID'];
+			}
+			if(($dat = $this->f(we_base_constants::WE_VARIANTS_ELEMENT_NAME))){
+				$variants = we_unserialize($dat);
+				if(is_array($variants) && count($variants) > 0){
+					$this->DB_WE->Record['we_WE_SHOPVARIANTS'] = count($variants);
+				}
+			}
+			// for seeMode #5317
+			$this->DB_WE->Record['we_wedoc_lastPath'] = $this->LastDocPath . '?' . $paramName . '=' . $this->DB_WE->Record['OF_ID'];
+			if($this->customers && $this->DB_WE->Record['we_wedoc_WebUserID']){
+				if(isset($this->customerArray['cid_' . $this->DB_WE->Record['we_wedoc_WebUserID']])){
+					foreach($this->customerArray['cid_' . $this->DB_WE->Record['we_wedoc_WebUserID']] as $key => $value){
+						$this->DB_WE->Record['we_WE_CUSTOMER_' . $key] = $value;
+					}
+				}
+			}
+
+			$this->count++;
+			return true;
+		}
+		$this->stop_next_row = $this->shouldPrintEndTR();
+		if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
+			$this->DB_WE->Record = array(
+				'WE_PATH' => '',
+				'WE_TEXT' => '',
+				'WE_ID' => '',
+			);
+			$this->count++;
+			return true;
+		}
+
+		return !empty($this->calendar_struct['calendar']);
 	}
 
 }

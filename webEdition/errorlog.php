@@ -187,7 +187,7 @@ session.auto_start: ' . ini_get('session.auto_start') . $sep .
 		break;
 	case 'delete':
 		$db->query('DELETE FROM `' . ERROR_LOG_TABLE . '` WHERE ID=' . $id);
-		$size = f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '`') - 1;
+		$size = f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '`');
 	//no break;
 	case 'next':
 		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` WHERE ID>' . $id . ' ORDER BY ID ASC LIMIT 1');

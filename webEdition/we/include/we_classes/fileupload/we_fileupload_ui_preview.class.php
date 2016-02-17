@@ -416,7 +416,7 @@ function selectCategories() {
 		$row = array(
 			'headline' => $headline,
 			'html' => $html,
-			'class' => 'paddingTop',
+			'class' => 'weFileUploadEditorElem' . (!empty($this->formElements[$formname]['class']) ? ' ' . $this->formElements[$formname]['class'] : ''),
 			//'noline' => ,//$this->formElements[$formname]['noline'],
 			'forceRightHeadline' => $this->formElements[$formname]['rightHeadline'],
 			'space' => !empty($this->formElements[$formname]['space']) ? $this->formElements[$formname]['space'] : 0

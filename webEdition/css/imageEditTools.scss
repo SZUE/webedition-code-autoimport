@@ -159,3 +159,13 @@
 		box-shadow:0 0 0 1px black;
 	}
 }
+#focus_info,
+#weImage,
+#CursoVal {
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-drag: none; 
+	-webkit-user-drag: none;
+}

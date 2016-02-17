@@ -29,7 +29,6 @@ echo we_html_tools::getHtmlTop('sideBar') .
 
 </head>
 <body class="weSidebarBody">
-
 	<table>
 		<?php
 
@@ -52,34 +51,19 @@ echo we_html_tools::getHtmlTop('sideBar') .
 						}
 					}
 
-					$icon = (!empty($text['icon']) ?
-							sprintf($link, '<img src="' . IMAGE_DIR . 'sidebar/' . $text['icon'] . '" style="width:42px;height:42px" />') :
-							'');
 
 					$headline = "";
 					if(!empty($text['headline'])){
 						$headline = sprintf($link, $text['headline']);
 					}
 					?>
-					<tr><?php
-						if($icon){
-							?>
-							<td class="defaultfont" style="vertical-align:top;width:52px;padding-top:5px;"><?php echo $icon; ?></td>
-							<td class="defaultfont" style="vertical-align:top">
-								<strong><?php echo $headline; ?></strong><br />
-								<?php echo $text['text']; ?>
-							</td>
-							<?php
-						} else {
-							?>
-							<td class="defaultfont" style="vertical-align:top;padding-top:5px;" colspan="2">
-								<strong><?php echo $headline; ?></strong><br />
-								<br />
-								<?php echo $text['text']; ?>
-							</td>
-							<?php
-						}
-						?>
+					<tr>
+						<td class="defaultfont" style="vertical-align:top;padding-top:5px;" colspan="2">
+							<strong><?php echo $headline; ?></strong><br />
+							<br />
+							<?php echo $text['text']; ?>
+						</td>
+
 					</tr>
 					<tr>
 						<?php

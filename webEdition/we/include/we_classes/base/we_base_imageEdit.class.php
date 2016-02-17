@@ -496,7 +496,9 @@ abstract class we_base_imageEdit{
 		$_fromFile = (strlen($imagedata) < 255 && @file_exists($imagedata));
 
 		// Output format is available
-		if(in_array($output_format, self::supported_image_types())){
+		if(!in_array($output_format, self::supported_image_types())){
+			return array(false, -1, -1);
+		}
 			// Set quality for JPG images
 			if($output_format === 'jpg'){
 				// Keep quality between 1 and 99
@@ -664,8 +666,8 @@ abstract class we_base_imageEdit{
 			}
 
 			return isset($_gdimg) ? array($_gdimg, $_outsize['width'], $_outsize['height']) : array(false, -1, -1);
-		}
-		return array(false, -1, -1);
+
+
 	}
 
 	/* static function ImageTrueColorToPalette2($image, $dither, $ncolors){

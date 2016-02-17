@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_navigation_rule extends weModelBase{
+class we_navigation_rule extends we_base_model{
 	var $Table = NAVIGATION_RULE_TABLE;
 	var $ContentType = 'weNavigationRule';
 	var $ClassName = __CLASS__;

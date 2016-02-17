@@ -147,9 +147,9 @@ function we_save_document() {
 		// Nothing
 	}
 
-	if (_EditorFrame.getEditorPublishWhenSave() && _showGlossaryCheck) {
+	/*if (_EditorFrame.getEditorPublishWhenSave() && _showGlossaryCheck) {
 		we_cmd('glossary_check', '', we_transaction);
-	} else {
+	} else */{
 		acStatus = '';
 		invalidAcFields = false;
 		try {
