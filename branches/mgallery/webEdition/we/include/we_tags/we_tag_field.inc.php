@@ -166,12 +166,11 @@ function we_tag_field($attribs){
 	}
 
 	$lvname = isset($GLOBALS['lv']->name) ? $GLOBALS['lv']->name : '';
-	$alt = ($alt === 'we_path' ? 'WE_PATH' : ($orgAlt === 'we_text' ? 'WE_TEXT' : $alt));
+	$alt = ($alt === 'we_path' ? 'WE_PATH' : ($alt === 'we_text' ? 'WE_TEXT' : $alt));
 	$name = ($orgName === 'we_path' ? 'WE_PATH' : ($orgName === 'we_text' ? 'WE_TEXT' : $name));
 
 	//listview of documents, document with a block. Try to access by blockname.
 	$name = ($GLOBALS['lv']->f($name) ? $name : $orgName);
-	$alt = ($GLOBALS['lv']->f($alt) ? $alt : $orgAlt);
 
 
 	if(isset($attribs['winprops'])){
