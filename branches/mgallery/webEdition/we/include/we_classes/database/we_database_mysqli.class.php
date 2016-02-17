@@ -185,9 +185,13 @@ class DB_WE extends we_database_base{
 				return 'geometry';
 			//252 is currently mapped to all text and blob types (MySQL 5.0.51a)
 			case MYSQLI_TYPE_VAR_STRING:
-				return 'varchar';
+				return ($this->field_flags($no) & MYSQLI_BINARY_FLAG ?
+						'varbinary' :
+						'varchar');
 			case MYSQLI_TYPE_STRING:
-				return 'char';
+				return ($this->field_flags($no) & MYSQLI_BINARY_FLAG ?
+						'binary' :
+						'char');
 			default:
 				return '';
 		}

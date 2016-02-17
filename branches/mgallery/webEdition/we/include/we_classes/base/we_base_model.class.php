@@ -34,6 +34,7 @@ class we_base_model{
 	var $isnew = true;
 	protected $MediaLinks = array();
 	protected $isAdvanced = false;
+	private $binFields = array();
 
 	/**
 	 * Default Constructor
@@ -53,6 +54,15 @@ class we_base_model{
 		foreach($tableInfo as $info){
 			$fname = $info["name"];
 			$this->persistent_slots[] = $fname;
+			switch($info["type"]){
+				case 'tinyblob':
+				case 'mediumblob':
+				case 'blob':
+				case 'longblob':
+				case 'varbinary':
+				case 'binary':
+					$this->binFields[] = $fname;
+			}
 			if(!isset($this->$fname)){
 				$this->$fname = "";
 			}
@@ -103,7 +113,7 @@ class we_base_model{
 
 			if(isset($this->{$val})){
 				$sets[$val] = is_array($this->{$val}) ? we_serialize($this->{$val}, ($jsonSer ? 'json' : 'serialize')) :
-					(we_exim_contentProvider::needCoding('', $this->{$val}) ?
+					(in_array($val, $this->binFields) ?
 						sql_function('x\'' . $this->{$val} . '\'') :
 						$this->{$val});
 			}
