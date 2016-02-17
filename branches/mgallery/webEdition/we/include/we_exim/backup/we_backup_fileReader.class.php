@@ -30,15 +30,15 @@ abstract class we_backup_fileReader extends we_backup_XMLFileReader{
 		if(preg_match('|<we:table(item)?([^>]*)|i', $content, $match)){
 
 			$attributes = explode('=', $match[2]);
-			$attributes[0] = trim($attributes[0]);
 
-			if($attributes[0] === 'name' || $attributes[0] === 'table'){
-				$attributes[1] = trim(str_replace(array('"', '\''), '', $attributes[1]));
+			switch(trim($attributes[0])){
+				case 'name':
+				case 'table':
 
-				// if the table should't be imported
-				if(we_backup_util::getRealTableName($attributes[1]) === false){
-					return true;
-				}
+					// if the table should't be imported
+					if(we_backup_util::getRealTableName(trim(str_replace(array('"', '\''), '', $attributes[1]))) === false){
+						return true;
+					}
 			}
 		}
 

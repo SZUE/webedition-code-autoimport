@@ -91,7 +91,7 @@ class we_backup_binary{
 	}
 
 	public function getLogString($prefix = ''){
-		return $prefix . $this->table . $this->ID . ':' . $this->Path;
+		return $prefix . FILE_TABLE . $this->ID . ':' . $this->Path;
 	}
 
 }

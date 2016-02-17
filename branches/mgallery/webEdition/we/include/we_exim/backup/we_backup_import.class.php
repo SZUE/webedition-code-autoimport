@@ -39,7 +39,7 @@ abstract class we_backup_import{
 		we_backup_util::addLog(sprintf('Read %s bytes, Mem: %s', strlen($data), memory_get_usage(true)));
 		we_backup_util::writeLog();
 
-		$data .=we_backup_backup::weXmlExImFooter;
+		$data .=we_backup_util::weXmlExImFooter;
 
 		self::transfer($data, $encoding);
 		return true;
@@ -127,7 +127,6 @@ abstract class we_backup_import{
 				}
 				$_prefix = 'Saving object ';
 				switch($classname){
-					case 'we_backup_table':
 					case 'we_backup_tableAdv':
 					case 'we_backup_tableItem':
 					case 'we_backup_binary':
@@ -156,16 +155,6 @@ abstract class we_backup_import{
 
 	private static function getObject($tagname, $attribs, &$object, &$classname){
 		switch($tagname){
-			case 'we:table':
-				$table = we_backup_util::getRealTableName($attribs['name']);
-				if($table !== false){
-					$_SESSION['weS']['weBackupVars']['current_table'] = $table;
-					$object = new we_backup_table($table);
-					$classname = get_class($object);
-					return true;
-				}
-				return false;
-
 			case 'we:tableadv':
 				$table = we_backup_util::getRealTableName($attribs['name']);
 				if($table !== false){

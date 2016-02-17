@@ -50,7 +50,7 @@ abstract class we_backup_export{
 
 			we_exim_contentProvider::object2xml($_object, $_fh, $_attributes, $_SESSION['weS']['weBackupVars']['write']);
 
-			$_SESSION['weS']['weBackupVars']['write']($_fh, we_backup_backup::backupMarker . "\n");
+			$_SESSION['weS']['weBackupVars']['write']($_fh, we_backup_util::backupMarker . "\n");
 		}
 
 
@@ -107,7 +107,7 @@ abstract class we_backup_export{
 
 
 			we_exim_contentProvider::object2xml($_object, $_fh, $_attributes);
-			fwrite($_fh, we_backup_backup::backupMarker . "\n");
+			fwrite($_fh, we_backup_util::backupMarker . "\n");
 
 
 

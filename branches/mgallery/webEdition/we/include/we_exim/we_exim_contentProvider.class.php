@@ -57,8 +57,9 @@ class we_exim_contentProvider{
 				$we_doc = new we_exim_thumbnailExport();
 				$we_doc->we_load($ID);
 				return $we_doc;
+			case 'we_backup_tableAdv':
 			case 'we_backup_table':
-				$we_doc = new we_backup_table($table);
+				$we_doc = new we_backup_tableAdv($table);
 				return $we_doc;
 			case 'we_backup_tableItem':
 				$we_doc = new we_backup_tableItem($table);
@@ -147,8 +148,6 @@ class we_exim_contentProvider{
 			case 'we_category':
 				return 'we:category';
 
-			case 'we_backup_table'://old:unused
-				return 'we:table';
 			case 'we_backup_tableAdv'://for backup
 				return 'we:tableadv';
 			case 'we_backup_tableItem'://for backup
@@ -173,7 +172,7 @@ class we_exim_contentProvider{
 			return true;
 		}
 
-		return preg_match('!(^[asO]:\d+:)|([\\x0-\x08\x0e-\x19\x11\x12<>&])!', $data); //exclude x9:\t,x10:\n,x13:\r,x20:space
+		return preg_match('!(^[asO]:\d+:)|([\x0-\x08\x0e-\x19\x11\x12<>&\x7F-\xFF])!', $data); //exclude x9:\t,x10:\n,x13:\r,x20:space
 	}
 
 	static function needCdata($content){
@@ -240,7 +239,7 @@ class we_exim_contentProvider{
 					$fwrite($file, '<' . $tag . '>' . $attribs .
 						we_xml_composer::we_xmlElement('SeqN', $object->SeqN) .
 						we_xml_composer::we_xmlElement('Data', self::encode($data), array(self::CODING_ATTRIBUTE => self::CODING_ENCODE)) .
-						'</' . $tag . '>' . we_backup_backup::backupMarker . "\n");
+						'</' . $tag . '>' . we_backup_util::backupMarker . "\n");
 					$offset+=$rsize;
 					$object->SeqN++;
 				}
@@ -345,9 +344,6 @@ class we_exim_contentProvider{
 
 			foreach($elements_ids as $ck){
 				switch($object->ClassName){
-					case 'we_backup_table':
-						$contentObj = new we_element(false, $object->elements[$ck]);
-						break;
 					case 'we_backup_tableAdv':
 						$contentObj = new we_element(false, $object->elements[$ck]);
 						foreach($object->elements[$ck] as $okey => $ov){

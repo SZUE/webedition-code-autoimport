@@ -217,11 +217,11 @@ class we_exim_XMLExIm{
 
 	static function getHeader($encoding = '', $type = ''){
 		return '<?xml version="1.0" encoding="' . ($encoding ? : $GLOBALS['WE_BACKENDCHARSET']) . '" standalone="yes"?>' . "\n" .
-			we_backup_backup::weXmlExImHead . ' version="' . WE_VERSION . '" type="' . $type . '" xmlns:we="we-namespace">' . "\n";
+			we_backup_util::weXmlExImHead . ' version="' . WE_VERSION . '" type="' . $type . '" xmlns:we="we-namespace">' . "\n";
 	}
 
 	static function getFooter(){
-		return we_backup_backup::weXmlExImFooter;
+		return we_backup_util::weXmlExImFooter;
 	}
 
 	function getIDs($selIDs, $table, $with_dirs = false){

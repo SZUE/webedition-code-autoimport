@@ -68,15 +68,15 @@ abstract class we_backup_XMLFileReader{
 				$end = substr($buffer, -20, 20);
 
 				// chek if line is complete
-				$iswestart = stripos($first, we_backup_backup::weXmlExImHead) !== false;
-				$isweend = stripos($end, we_backup_backup::weXmlExImFooter) !== false;
+				$iswestart = stripos($first, we_backup_util::weXmlExImHead) !== false;
+				$isweend = stripos($end, we_backup_util::weXmlExImFooter) !== false;
 				$isxml = preg_match('|<\?xml|i', $first);
 
 				$isend = preg_match('|<!-- *webackup *-->|', $buffer) || empty($buffer);
 
 				if($isend && we_backup_fileReader::preParse($first)){//preparse is true if table is not imported
 					$buffer = '';
-					$isend = $eof(self::$file['fp']) && we_backup_backup::limitsReached('', max(0.1, microtime(true) - $start), 10);
+					$isend = $eof(self::$file['fp']) && we_backup_util::limitsReached('', max(0.1, microtime(true) - $start), 10);
 					$count = 0;
 					//keep time if we decided to end
 					$start = $isend ? $start : microtime(true);
@@ -95,7 +95,7 @@ abstract class we_backup_XMLFileReader{
 				}
 			} while(!$isend);
 			//  check condition
-			$condition = --$lines > 0 && !$eof(self::$file['fp']) && we_backup_backup::limitsReached('', max(0.1, microtime(true) - $start), 10);
+			$condition = --$lines > 0 && !$eof(self::$file['fp']) && we_backup_util::limitsReached('', max(0.1, microtime(true) - $start), 10);
 
 			$data .= $buffer;
 			$condition&=strlen($data) < (5 * 1024 * 1024);

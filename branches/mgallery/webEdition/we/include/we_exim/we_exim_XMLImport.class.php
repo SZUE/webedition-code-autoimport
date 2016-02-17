@@ -584,11 +584,11 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 		}
 
 		$path = $tmppath;
-		$marker = we_backup_backup::backupMarker;
+		$marker = we_backup_util::backupMarker;
 		$marker2 = "<!--webackup -->"; //Bug 5089
 		$pattern = basename($filename) . "_%s";
 
-		$compress = (we_base_file::isCompressed($filename) ? we_backup_backup::COMPRESSION : we_backup_backup::NO_COMPRESSION);
+		$compress = (we_base_file::isCompressed($filename) ? we_backup_util::COMPRESSION : we_backup_util::NO_COMPRESSION);
 		$head = we_base_file::loadPart($filename, 0, 256, $compress === 'gzip');
 
 		$encoding = we_xml_parser::getEncoding('', $head);
@@ -597,7 +597,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 		$footer = we_exim_XMLExIm::getFooter();
 
 		$buff = $filename_tmp = "";
-		$fh = ($compress != we_backup_backup::NO_COMPRESSION ? gzopen($filename, "rb") : @fopen($filename, "rb"));
+		$fh = ($compress != we_backup_util::NO_COMPRESSION ? gzopen($filename, "rb") : @fopen($filename, "rb"));
 
 		$num = -1;
 		$fsize = $elnum = 0;
@@ -612,13 +612,13 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 				$findline = false;
 
 				while($findline == false && !@feof($fh)){
-					$line .= ($compress != we_backup_backup::NO_COMPRESSION ? @gzgets($fh, 4096) : @fgets($fh, 4096));
+					$line .= ($compress != we_backup_util::NO_COMPRESSION ? @gzgets($fh, 4096) : @fgets($fh, 4096));
 					if(substr($line, -1) === "\n"){
 						$findline = true;
 					}
 				}
 
-				if(!$fh_temp && $line && trim($line) != we_backup_backup::weXmlExImFooter){
+				if(!$fh_temp && $line && trim($line) != we_backup_util::weXmlExImFooter){
 					$num++;
 					$filename_tmp = sprintf($path . $pattern, $num);
 					$fh_temp = fopen($filename_tmp, "wb");
@@ -634,7 +634,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 				}
 
 				if($fh_temp){
-					if((substr($line, 0, 2) != "<?") && (substr($line, 0, 11) != we_backup_backup::weXmlExImHead) && (substr($line, 0, 12) != we_backup_backup::weXmlExImFooter)){
+					if((substr($line, 0, 2) != "<?") && (substr($line, 0, 11) != we_backup_util::weXmlExImHead) && (substr($line, 0, 12) != we_backup_util::weXmlExImFooter)){
 
 						$buff.=$line;
 						$write = false;
@@ -660,7 +660,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 							$buff = "";
 						}
 					} else {
-						if(((substr($line, 0, 2) === "<?") || (substr($line, 0, 11) == we_backup_backup::weXmlExImHead)) && $num == 0){
+						if(((substr($line, 0, 2) === "<?") || (substr($line, 0, 11) == we_backup_util::weXmlExImHead)) && $num == 0){
 							$header.=$line;
 							fwrite($fh_temp, $line);
 						}
@@ -670,7 +670,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 		} else {
 			return -1;
 		}
-		if($fh_temp && trim($line) != we_backup_backup::weXmlExImFooter){
+		if($fh_temp && trim($line) != we_backup_util::weXmlExImFooter){
 			if($buff){
 				fwrite($fh_temp, $buff);
 			}
@@ -678,7 +678,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 			fclose($fh_temp);
 			$fh_temp = 0;
 		}
-		if($compress != we_backup_backup::NO_COMPRESSION){
+		if($compress != we_backup_util::NO_COMPRESSION){
 			gzclose($fh);
 		} else {
 			fclose($fh);

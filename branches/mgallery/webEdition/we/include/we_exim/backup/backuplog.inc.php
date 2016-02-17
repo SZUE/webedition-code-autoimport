@@ -31,8 +31,8 @@ if(permissionhandler::hasPerm("BACKUPLOG")){
 		),
 		array(
 			'headline' => '',
-			'html' => (file_exists(BACKUP_PATH . we_backup_backup::logFile) ?
-				'<pre>' . file_get_contents(BACKUP_PATH . we_backup_backup::logFile) . '</pre>' :
+			'html' => (file_exists(BACKUP_PATH . we_backup_util::logFile) ?
+				'<pre>' . file_get_contents(BACKUP_PATH . we_backup_util::logFile) . '</pre>' :
 				'<p>' . g_l('backup', '[view_log_not_found]') . '</p>'),
 			'space' => 10
 		)

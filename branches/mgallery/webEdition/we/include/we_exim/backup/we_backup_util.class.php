@@ -23,6 +23,60 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_backup_util{
+	const COMPRESSION = 'gzip';
+	const NO_COMPRESSION = 'none';
+	const backupMarker = '<!-- webackup -->';
+	const weXmlExImHead = '<webEdition';
+	const weXmlExImFooter = '</webEdition>';
+	const weXmlExImProtectCode = '<?php exit();?>';
+	const logFile = 'data/lastlog.php';
+
+	/**
+	 *
+	 * @param type $table
+	 * @param type $execTime
+	 * @return boolean true, if still time left
+	 */
+	public static function limitsReached($table, $execTime, $memMulti = 2){
+		if($table){
+//check if at least 10 avg rows
+			$rowSz = $_SESSION['weS']['weBackupVars']['avgLen'][strtolower(stripTblPrefix($table))];
+			if(memory_get_usage(true) + 10 * $rowSz > $_SESSION['weS']['weBackupVars']['limits']['mem']){
+				return false;
+			}
+		} elseif($_SESSION['weS']['weBackupVars']['limits']['lastMem'] != 0){
+			$cur = memory_get_usage(true);
+			$diff = $cur - $_SESSION['weS']['weBackupVars']['limits']['lastMem'];
+			if($cur + $diff * $memMulti > $_SESSION['weS']['weBackupVars']['limits']['mem']){
+				return false;
+			}
+		}
+		$_SESSION['weS']['weBackupVars']['limits']['lastMem'] = memory_get_usage(true);
+
+		if($execTime == 0){
+			t_e('execTime was 0 - this should never happen - assume microtime is not working correct', $execTime);
+			$execTime = 1;
+		}
+
+		$maxTime = $_SESSION['weS']['weBackupVars']['limits']['exec'] - 2;
+		if(time() - intval($_SESSION['weS']['weBackupVars']['limits']['requestTime']) + 2 * $execTime > $maxTime){
+			return false;
+		}
+
+		return true;
+	}
+
+	public static function getSettingsFiles($import){
+		return array_filter(array(
+			WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php',
+			WE_INCLUDES_DIR . 'conf/we_conf_language.inc.php',
+			WE_INCLUDES_DIR . 'conf/we_active_integrated_modules.inc.php',
+			WE_INCLUDES_DIR . 'conf/we_conf_language.inc.php',
+			($import || file_exists(WEBEDITION_PATH . 'agency.php') ?
+				WEBEDITION_DIR . 'agency.php' :
+				'')
+		));
+	}
 
 	static function getRealTableName($table){
 		$table = strtolower($table);
@@ -148,7 +202,7 @@ abstract class we_backup_util{
 			return $_SESSION['weS']['weBackupVars']['options']['backup_binary'];
 		}
 		static $settingsFiles = array();
-		$settingsFiles = $settingsFiles? : we_backup_backup::getSettingsFiles(true);
+		$settingsFiles = $settingsFiles? : we_backup_util::getSettingsFiles(true);
 		$isSetting = in_array($path, $settingsFiles);
 
 		if(($_SESSION['weS']['weBackupVars']['handle_options']['settings'] && $isSetting) ||
@@ -257,12 +311,12 @@ abstract class we_backup_util{
 			return 'unreadble';
 		}
 
-		if(stripos($_part, we_backup_backup::weXmlExImHead) === false){
+		if(stripos($_part, we_backup_util::weXmlExImHead) === false){
 			return 'unknown';
 		}
 		$_hasbinary = false;
 		while($_found === 'unknown' && $_try < $_count){
-			if(preg_match('/.*' . we_backup_backup::weXmlExImHead . '.*type="backup".*>/', $_part)){
+			if(preg_match('/.*' . we_backup_util::weXmlExImHead . '.*type="backup".*>/', $_part)){
 				return 'backup';
 			} elseif(preg_match('/<we:(document|template|class|object|info|navigation)/i', $_part)){
 				return 'weimport';

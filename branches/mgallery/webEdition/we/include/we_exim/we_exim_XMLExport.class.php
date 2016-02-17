@@ -68,7 +68,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 		$attribute = (isset($doc->attribute_slots) ? $doc->attribute_slots : array());
 
 		switch($classname){
-			case 'we_backup_table':
+			case 'we_backup_tableAdv':
 				if((defined('OBJECT_X_TABLE') && strtolower(substr($doc->table, 0, 10)) == strtolower(stripTblPrefix(OBJECT_X_TABLE))) ||
 					defined('CUSTOMER_TABLE')){
 					$doc->getColumns();
@@ -88,7 +88,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 				break;
 		}
 
-		fwrite($fh, we_backup_backup::backupMarker . "\n");
+		fwrite($fh, we_backup_util::backupMarker . "\n");
 
 		if($classname === 'we_backup_tableItem' && $export_binary &&
 			strtolower($doc->table) == strtolower(FILE_TABLE) &&
@@ -259,7 +259,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 			$out.='></we:map>';
 		}
 		$out.='</we:info>' .
-			we_backup_backup::backupMarker . "\n";
+			we_backup_util::backupMarker . "\n";
 		return $out;
 	}
 
