@@ -257,6 +257,7 @@ function we_tag_field($attribs){
 		case 'date' :
 		case 'float' :
 		case 'checkbox' :
+		case 'collection':
 			$idd = ($isImageDoc && $type === 'img' ) ? $GLOBALS['lv']->Record['wedoc_ID'] : $GLOBALS['lv']->f($name);
 			$out = ($idd == 0 ? '' : $GLOBALS['we_doc']->getFieldByVal($idd, $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'));
 			if($type === 'img' && empty($out)){

@@ -25,6 +25,7 @@
 class we_objectFile extends we_document{
 	const TYPE_BINARY = 'binary';
 	const TYPE_CHECKBOX = 'checkbox';
+	const TYPE_COLLECTION = 'collection';
 	const TYPE_COUNTRY = 'country';
 	const TYPE_DATE = 'date';
 	const TYPE_FLASHMOVIE = 'flashmovie';
@@ -681,6 +682,8 @@ class we_objectFile extends we_document{
 				return $this->getObjectFieldHTML($type, $name, $attribs, $editable);
 			case self::TYPE_MULTIOBJECT:
 				return $this->getMultiObjectFieldHTML($type, $name, $attribs, $editable);
+			case self::TYPE_COLLECTION:
+				return $this->getCollectionFieldHTML($type, $name, $attribs, $editable);
 			case self::TYPE_META:
 				return $this->getMetaFieldHTML($type, $name, $attribs, $editable, $variant);
 			case self::TYPE_SHOPVAT:
@@ -849,6 +852,44 @@ class we_objectFile extends we_document{
 		return we_html_tools::htmlFormElementTable(
 				$yuiSuggest->getHTML(), '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray[we_object::QUERY_PREFIX . $ObjectID]["required"] ? "*" : "") . '</span>' . ($npubl ? '' : ' <span style="color:red">' . g_l('modules_object', '[not_published]') . '</span>') . (!empty($this->DefArray[we_object::QUERY_PREFIX . $ObjectID]['editdescription']) ? self::formatDescription($this->DefArray[we_object::QUERY_PREFIX . $ObjectID]['editdescription']) : we_html_element::htmlBr() ), "left", "defaultfont", $button) .
 			$objectpreview;
+	}
+
+	private function getCollectionFieldHTML($type, $name, array $attribs, $editable = true){
+		$collectionID = $this->getElement($name);
+
+		$db = new DB_WE();
+		$collectionID = (($path = f('SELECT Path FROM ' . VFILE_TABLE . ' WHERE ID=' . intval($collectionID) . ' AND IsFolder=0', '', $db))) ? $collectionID : 0;
+
+		$textname = 'we_' . $this->Name . '_txt[' . $name . '_path]';
+		$idname = 'we_' . $this->Name . '_collection[' . $name . ']';
+
+		if(!$editable){
+			return $this->getPreviewView($name, $path . ' (ID: ' . $collectionID . ')');
+		}
+
+		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
+		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('object_change_objectlink','" . $GLOBALS['we_transaction'] . "','" . we_object::QUERY_PREFIX . $ObjectID . "');");
+
+		$editCollectionButton = we_html_button::create_button(we_html_button::VIEW, ("javascript:var cid=document.we_form.elements['" . $idname . "'].value;if(cid != '0'){top.console.log(cid);top.doClickDirect(cid,'" . we_base_ContentTypes::COLLECTION . "','" . VFILE_TABLE . "');}"), true, 0, 0, '', '', ($collectionID ? false : false)); // FIXME: set disabled=true|false on select
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . VFILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . 0 . "','" . we_base_ContentTypes::COLLECTION . "'," . (permissionhandler::hasPerm("CAN_SEE_COLLECTIONS") ? 0 : 1) . ')') .
+			$editCollectionButton .
+			we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value=0;document.we_form.elements['" . $textname . "'].value='';_EditorFrame.setEditorIsHot(true);top.we_cmd('object_reload_entry_at_object','" . $GLOBALS['we_transaction'] . "','" . we_object::QUERY_PREFIX . $collectionID . "')");
+
+		$yuiSuggest = &weSuggest::getInstance();
+		$yuiSuggest->setNoAutoInit(true); // autosuggest is deactivated
+		$yuiSuggest->setAcId($textname);
+		$yuiSuggest->setContentType(we_base_ContentTypes::COLLECTION);
+		$yuiSuggest->setInput($textname, $path);
+		$yuiSuggest->setMaxResults(10);
+		$yuiSuggest->setMayBeEmpty(1);
+		$yuiSuggest->setResult($idname, $collectionID);
+		$yuiSuggest->setSelector(weSuggest::DocSelector);
+		$yuiSuggest->setTable(VFILES_TABLE);
+		$yuiSuggest->setWidth(443);
+
+		return we_html_tools::htmlFormElementTable(
+				$yuiSuggest->getHTML(), '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray['collection_' . $name]["required"] ? "*" : "") . '</span>' . (!empty($this->DefArray['collection_' . $name]['editdescription']) ? self::formatDescription($this->DefArray['collection_' . $name]['editdescription']) : we_html_element::htmlBr() ), "left", "defaultfont", $button);
 	}
 
 	private function getMultiObjectFieldHTML($type, $name, array $attribs, $editable = true){

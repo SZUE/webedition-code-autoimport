@@ -539,6 +539,7 @@ class we_object extends we_document{
 			case we_objectFile::TYPE_FLASHMOVIE:
 			case we_objectFile::TYPE_QUICKTIME:
 			case we_objectFile::TYPE_BINARY:
+			case we_objectFile::TYPE_COLLECTION:
 				return ' INT(11) DEFAULT "0" NOT NULL ';
 			case we_objectFile::TYPE_CHECKBOX:
 				return ' TINYINT(1) DEFAULT "' . ($this->getElement($name . 'default', 'dat') == 1 ? '1' : '0') . '" NOT NULL ';
@@ -891,6 +892,7 @@ class we_object extends we_document{
 			we_objectFile::TYPE_LANGUAGE => g_l('modules_object', '[language_field]'),
 			we_objectFile::TYPE_OBJECT => g_l('modules_object', '[objectFile_field]'),
 			we_objectFile::TYPE_MULTIOBJECT => g_l('modules_object', '[multiObjectFile_field]'),
+			we_objectFile::TYPE_COLLECTION => 'Sammlung',//g_l('modules_object', '[collection_field]'),
 		);
 		if(defined('SHOP_TABLE')){
 			$val[we_objectFile::TYPE_SHOPVAT] = g_l('modules_object', '[shopVat_field]');
@@ -917,6 +919,7 @@ class we_object extends we_document{
 			case we_objectFile::TYPE_HREF:
 			case we_objectFile::TYPE_CHECKBOX:
 			case we_objectFile::TYPE_MULTIOBJECT:
+			case we_objectFile::TYPE_COLLECTION:
 				break;
 			case we_objectFile::TYPE_INT:
 				$values = array(
@@ -1085,7 +1088,6 @@ class we_object extends we_document{
 						we_html_forms::checkboxWithHidden(($dd == '1' ? true : false), "we_" . $this->Name . "_xdate[" . $name . "defaultThumb]", 'Creation Date', false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);') .
 						we_html_tools::getDateInput2('we_' . $this->Name . '_date[' . $name . 'default]', ($d ? : time()), true) .
 						'</td></tr>';
-
 				break;
 			case we_objectFile::TYPE_TEXT:
 				$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin" style="vertical-align:top">' . g_l('modules_object', '[default]') . '</td>' .
@@ -1097,6 +1099,12 @@ class we_object extends we_document{
 				$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin" style="vertical-align:top">' . g_l('modules_object', '[default]') . '</td>' .
 						'<td width="170" class="defaultfont" style="vertical-align:top">' .
 						$this->getObjectFieldHTML($name, isset($attribs) ? $attribs : "") .
+						'</td></tr>';
+				break;
+			case we_objectFile::TYPE_COLLECTION:
+				$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin" style="vertical-align:top">' . g_l('modules_object', '[default]') . '</td>' .
+						'<td width="170" class="defaultfont" style="vertical-align:top">' .
+						$this->getCollectionFieldHTML($name . "default", $this->getElement($name . "default", "dat")) .
 						'</td></tr>';
 				break;
 			case we_objectFile::TYPE_META:
@@ -1367,6 +1375,41 @@ class we_object extends we_document{
 		  return weSuggest::getYuiFiles().$yuiSuggest->getHTML().$yuiSuggest->getYuiJs();
 		 */
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($textname, 30, $path, "", ' readonly', "text", 246, 0), "", "left", "defaultfont", we_html_element::htmlHidden($idname, $myid), $button, $delbutton) . ($DoubleNames ? '<span style="color:red" >' . sprintf(g_l('modules_object', '[incObject_sameFieldname]'), implode(', ', $DoubleNames)) . '</span>' : '');
+	}
+
+	private function getCollectionFieldHTML($name, $defaultID, $editable = true){
+		if(!$editable){
+			return '';
+		}
+
+		$textname = 'we_' . $this->Name . '_txt[' . $name . '_path]';
+		$idname = 'we_' . $this->Name . "_input[" . $name . "]";
+		$path = id_to_path($defaultID, VFILE_TABLE);
+		$rootDir = 0;
+		$table = VFILE_TABLE;
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $idname . "'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
+		$wecmdenc3 = we_base_request::encCmd("top.opener._EditorFrame.setEditorIsHot(true);");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDir . "','" . we_base_ContentTypes::COLLECTION . "'," . (permissionhandler::hasPerm("CAN_SEE_COLLECTIONS") ? 0 : 1) . ")");
+		$delbutton = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='';document.we_form.elements['" . $textname . "'].value=''");
+		/*
+		  DAMD: der Autocompleter funktioniert hier nicht...
+		  $yuiSuggest =& weSuggest::getInstance();
+		  $yuiSuggest->setAcId("TypeObject");
+		  $yuiSuggest->setContentType("folder,objectFile");
+		  $yuiSuggest->setInput($textname,$path);
+		  $yuiSuggest->setMaxResults(20);
+		  $yuiSuggest->setMayBeEmpty(false);
+		  $yuiSuggest->setResult($idname,$myid);
+		  $yuiSuggest->setSelector(weSuggest::DocSelector);
+		  $yuiSuggest->setTable($table);
+		  $yuiSuggest->setWidth(246);
+		  $yuiSuggest->setSelectButton($button,10);
+		  $yuiSuggest->setTrashButton($delbutton,5);
+
+		  return weSuggest::getYuiFiles().$yuiSuggest->getHTML().$yuiSuggest->getYuiJs();
+		 */
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($textname, 30, $path, "", ' readonly', "text", 246, 0), "", "left", "defaultfont", we_html_element::htmlHidden($idname, $collectionID), $button, $delbutton);
 	}
 
 	private function getMultiObjectFieldHTML($name, $i, $f){

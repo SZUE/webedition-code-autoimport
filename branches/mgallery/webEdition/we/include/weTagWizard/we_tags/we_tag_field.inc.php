@@ -135,6 +135,7 @@ $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 	new weTagDataOption('binary', false, 'object', array($name, $hyperlink, $href, $target, $only), array($name)),
 	new weTagDataOption('float', false, '', array($name, $hyperlink, $href, $target, $num_format, $triggerid), array($name)),
 	new weTagDataOption('int', false, 'object', array($name, $hyperlink, $href, $target, $triggerid), array($name)),
+	new weTagDataOption('collection', false, '', array($name), array($name)),
 	new weTagDataOption('shopVat', false, '', array($vatfield), array()),
 	new weTagDataOption('shopCategory', false, '', array($catfield, $showpath, $rootdir), array()),
 	new weTagDataOption('checkbox', false, '', array($name), array($name)),
