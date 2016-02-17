@@ -214,6 +214,7 @@ All characters except <>?":|\\/* are valid.',
 		'we_filename_notAllowed'=>'The file name you have entered is not allowed!',
 		'we_filename_notValid'=>'Invalid file name\nAll characters except <>?":|\\/* are valid.',
 	),
+	'triggerDocNotDynamic'=>'The document entered into "Preset document for display" must be dynamic.',
 	'triggerIdNotValid'=>'No valid document has been entered into "Preset document for display": This entry is mandatory if SEO-URLs are activated.',
 	'variantNameInvalid'=>'The name of an article variant can not be empty!',
 	

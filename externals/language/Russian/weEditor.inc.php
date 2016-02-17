@@ -214,6 +214,7 @@ All characters except <>?":|\\/* are valid.',
 		'we_filename_notAllowed'=>'Введенное имя файла недействительно!',
 		'we_filename_notValid'=>'Недействительное имя файла\nДопустимыми являются большие и малые буквы латинского алфавита, цифры, дефис, нижняя черта и точка (a-z, A-Z, 0-9, _, -, .).',
 	),
+	'triggerDocNotDynamic'=>'The document entered into "Preset document for display" must be dynamic.',
 	'triggerIdNotValid'=>'No valid document has been entered into "Preset document for display": This entry is mandatory if SEO-URLs are activated.',
 	'variantNameInvalid'=>'The name of an article variant can not be empty!',
 	

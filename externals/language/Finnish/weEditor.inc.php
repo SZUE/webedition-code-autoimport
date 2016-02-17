@@ -214,6 +214,7 @@ Sallitut kirjaimet ovat alfa-numeerisia , isot ja pienet kirjaimet, alaviiva, ta
 		'we_filename_notAllowed'=>'Annettu tiedoston nimi ei ole sallittu!',
 		'we_filename_notValid'=>'Virheellinen tiedoston nimi!\nSallitut merkit ovat alfa-numeerisia, isot ja pienet kirjaimet, alaviiva, tavuviiva ja piste (a-z, A-Z, 0-9, _, -, .)',
 	),
+	'triggerDocNotDynamic'=>'The document entered into "Preset document for display" must be dynamic.',
 	'triggerIdNotValid'=>'No valid document has been entered into "Preset document for display": This entry is mandatory if SEO-URLs are activated.',
 	'variantNameInvalid'=>'Artikkelimuuttujan nimi ei voi olla tyhjä!',
 	
