@@ -34,7 +34,7 @@ class we_base_model{
 	var $isnew = true;
 	protected $MediaLinks = array();
 	protected $isAdvanced = false;
-	private $binFields = array();
+	protected $binFields = array();
 
 	/**
 	 * Default Constructor
