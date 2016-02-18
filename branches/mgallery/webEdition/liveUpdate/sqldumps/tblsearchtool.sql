@@ -1,6 +1,6 @@
-###UPDATEONLY###DELETE FROM ###TBLPREFIX###tblsearchtool WHERE predefined=1 AND ID>13;
+###ONCOL(Icon,###TBLPREFIX###tblsearchtool) DELETE FROM ###TBLPREFIX###tblsearchtool WHERE predefined=1 AND ID>13;###
 /* query separator */
-###UPDATEONLY###UPDATE ###TBLPREFIX###tblsearchtool SET ID=ID+25 WHERE ID<25 AND predefined=0;
+###ONCOL(Icon,###TBLPREFIX###tblsearchtool) UPDATE ###TBLPREFIX###tblsearchtool SET ID=ID+25 WHERE ID<25 AND predefined=0;###
 /* query separator */
 ###UPDATEDROPCOL(Icon,###TBLPREFIX###tblsearchtool)###
 /* query separator */

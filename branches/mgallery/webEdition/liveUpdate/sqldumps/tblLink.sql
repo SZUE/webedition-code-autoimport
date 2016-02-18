@@ -1,10 +1,10 @@
-###UPDATEONLY### UPDATE ###TBLPREFIX###tblLink l SET l.Type="href" WHERE l.Name LIKE "%we_jkhdsf_%" AND Type="txt"
+###ONCOL(Icon,###TBLPREFIX###tblUser) UPDATE ###TBLPREFIX###tblLink l SET l.Type="href" WHERE l.Name LIKE "%we_jkhdsf_%" AND Type="txt";###
 /* query separator */
-###UPDATEONLY### UPDATE ###TBLPREFIX###tblLink l SET l.Type="txt" WHERE l.Type IN ('text','application')
+###ONCOL(Icon,###TBLPREFIX###tblUser) UPDATE ###TBLPREFIX###tblLink l SET l.Type="txt" WHERE l.Type IN ('text','application');###
 /* query separator */
-###UPDATEONLY### UPDATE ###TBLPREFIX###tblLink l SET l.Type="attrib" WHERE l.Name IN('Charset','useMetaTitle','origwidth','origheight','width','height') AND Type="txt"
+###ONCOL(Icon,###TBLPREFIX###tblUser) UPDATE ###TBLPREFIX###tblLink l SET l.Type="attrib" WHERE l.Name IN('Charset','useMetaTitle','origwidth','origheight','width','height') AND Type="txt";###
 /* query separator */
-###UPDATEONLY### UPDATE ###TBLPREFIX###tblLink l SET l.Type="block" WHERE l.Type='list'
+###ONCOL(Icon,###TBLPREFIX###tblUser) UPDATE ###TBLPREFIX###tblLink l SET l.Type="block" WHERE l.Type='list';###
 /* query separator */
 ###UPDATEDROPKEY(Type,###TBLPREFIX###tblLink)###
 /* query separator */

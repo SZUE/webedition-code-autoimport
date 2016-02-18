@@ -1,4 +1,4 @@
-###UPDATEONLY### UPDATE ###TBLPREFIX###tblFile SET Path=REPLACE(Path,"//","/") WHERE Path LIKE "%//%"
+###ONCOL(Icon,###TBLPREFIX###tblFile) UPDATE ###TBLPREFIX###tblFile SET Path=REPLACE(Path,"//","/") WHERE Path LIKE "%//%";###
 /* query separator */
 ###UPDATEDROPCOL(temp_doc_type,###TBLPREFIX###tblFile)###
 /* query separator */

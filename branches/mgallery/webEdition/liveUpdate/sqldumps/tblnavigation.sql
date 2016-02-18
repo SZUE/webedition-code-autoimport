@@ -1,4 +1,4 @@
-###UPDATEONLY###UPDATE ###TBLPREFIX###tblnavigation SET SelectionType="doctype" WHERE SelectionType="docType"
+###ONCOL(Icon,###TBLPREFIX###tblnavigation) UPDATE ###TBLPREFIX###tblnavigation SET SelectionType="doctype" WHERE SelectionType="docType";###
 /* query separator */
 ###UPDATEDROPCOL(Icon,###TBLPREFIX###tblnavigation)###
 /* query separator */

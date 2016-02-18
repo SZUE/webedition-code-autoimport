@@ -1,4 +1,4 @@
-###UPDATEONLY### UPDATE ###TBLPREFIX###tblWebUser SET Path=CONCAT("/",Username) WHERE SUBSTR(Path,1,1)!="/"
+###ONCOL(Icon,###TBLPREFIX###tblWebUser) UPDATE ###TBLPREFIX###tblWebUser SET Path=CONCAT("/",Username) WHERE SUBSTR(Path,1,1)!="/";###
 /* query separator */
 ###UPDATEDROPCOL(Icon,###TBLPREFIX###tblWebUser)###
 /* query separator */
