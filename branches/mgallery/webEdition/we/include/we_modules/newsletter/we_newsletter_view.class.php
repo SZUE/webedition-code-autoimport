@@ -1525,7 +1525,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 				if(!empty($tmp)){
 					$offset+=$this->settings['send_step'];
 					$groups++;
-					$this->saveToCache(we_serialize($tmp, 'json'), $emailcache . "_$groups");
+					$this->saveToCache(we_serialize($tmp, SERIALIZE_JSON), $emailcache . "_$groups");
 				} else {
 					$go = false;
 				}

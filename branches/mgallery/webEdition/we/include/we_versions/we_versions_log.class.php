@@ -89,7 +89,7 @@ class we_versions_log{
 
 	function saveVersionsLog($logArray, $action = ""){
 		$this->typ = $action;
-		$this->data = we_serialize($logArray, 'json');
+		$this->data = we_serialize($logArray, SERIALIZE_JSON);
 		$this->saveLog();
 	}
 

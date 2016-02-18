@@ -201,7 +201,7 @@ $GLOBALS['configs'] = array(
 		//current url for rss feed
 		'cockpit_rss_feed_url' => array(we_base_request::STRING, ''),
 		'editorMode' => array(we_base_request::STRING, 'codemirror2'),
-		'editorCodecompletion' => array(we_base_request::STRING, we_serialize(array('WE' => 1, 'htmlTag' => 1, 'html5Tag' => 1), 'json')),
+		'editorCodecompletion' => array(we_base_request::STRING, we_serialize(array('WE' => 1, 'htmlTag' => 1, 'html5Tag' => 1), SERIALIZE_JSON)),
 		'editorCommentFontcolor' => array(we_base_request::STRING, null),
 		'editorDocuintegration' => array(we_base_request::BOOL, true),
 		'editorFont' => array(we_base_request::BOOL, ''),

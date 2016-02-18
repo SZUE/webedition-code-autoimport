@@ -365,7 +365,7 @@ class we_document extends we_root{
 		$listarray[$newPos] = $listarray[$nr];
 		$listarray[$nr] = $temp;
 
-		$this->setElement($name, we_serialize($listarray), 'block');
+		$this->setElement($name, we_serialize($listarray, SERIALIZE_JSON, true, 0, true), 'block');
 	}
 
 	function downEntryAtList($name, $nr, $number = 1){
@@ -378,7 +378,7 @@ class we_document extends we_root{
 		$temp = $listarray[$newPos];
 		$listarray[$newPos] = $listarray[$nr];
 		$listarray[$nr] = $temp;
-		$this->setElement($name, we_serialize($listarray), 'block');
+		$this->setElement($name, we_serialize($listarray, SERIALIZE_JSON, true, 0, true), 'block');
 	}
 
 	function removeEntryFromList($name, $nr, $names = '', $isBlock = false){
@@ -441,7 +441,7 @@ class we_document extends we_root{
 		if(!isset($_SESSION['weS']['WE_LINK'])){
 			return;
 		}
-		$this->setElement($name, we_serialize($_SESSION['weS']['WE_LINK']), 'link');
+		$this->setElement($name, we_serialize($_SESSION['weS']['WE_LINK'], SERIALIZE_JSON), 'link');
 		unset($_SESSION['weS']['WE_LINK']);
 	}
 

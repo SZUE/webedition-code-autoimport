@@ -73,7 +73,7 @@ if(($format = we_base_request::_(we_base_request::RAW, "format"))){ //	save data
 	$DB_WE->query('REPLACE ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(array(
 			'tool' => 'shop',
 			'pref_name' => 'edit_shop_properties',
-			'pref_value' => we_serialize($fields, 'json')
+			'pref_value' => we_serialize($fields, SERIALIZE_JSON)
 	)));
 
 	$CLFields['stateField'] = we_base_request::_(we_base_request::RAW, 'stateField', '-');

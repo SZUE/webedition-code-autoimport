@@ -105,7 +105,7 @@ function we_tag_block($attribs){
 		if(is_array($list) && count($list) && ((count($list) - 1) != max(array_keys($list)))){
 			//reorder list!
 			$list = array_values($list);
-			$GLOBALS['we_doc']->setElement($name, we_serialize($list));
+			$GLOBALS['we_doc']->setElement($name, we_serialize($list, SERIALIZE_JSON, true, 0, true));
 		}
 	} else if($start){
 		$list = array();

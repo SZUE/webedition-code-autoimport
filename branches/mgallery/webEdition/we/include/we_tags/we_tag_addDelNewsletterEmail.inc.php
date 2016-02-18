@@ -416,7 +416,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 
 
 					if($updateCustomerFields){
-						$__db->query('UPDATE ' . SETTINGS_TABLE . ' SET pref_value="' . $__db->escape(we_serialize($customerFields, 'json')) . '" WHERE tool="webadmin" AND pref_name="FieldAdds"');
+						$__db->query('UPDATE ' . SETTINGS_TABLE . ' SET pref_value="' . $__db->escape(we_serialize($customerFields, SERIALIZE_JSON)) . '" WHERE tool="webadmin" AND pref_name="FieldAdds"');
 					}
 
 					if($_customerFieldPrefs['customer_html_field'] != 'ID'){

@@ -395,7 +395,7 @@ if (window.screen) {
 			}
 		}
 
-		return we_base_file::save($cacheFilename, we_serialize($content, 'json', false, 9));
+		return we_base_file::save($cacheFilename, we_serialize($content, SERIALIZE_JSON, false, 9));
 	}
 
 	/**

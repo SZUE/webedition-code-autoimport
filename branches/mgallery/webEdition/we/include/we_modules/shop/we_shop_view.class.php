@@ -173,7 +173,7 @@ function submitForm(target,action,method) {
 				$tmpDoc = we_unserialize(f('SELECT strSerial FROM ' . SHOP_TABLE . ' WHERE IntID=' . $article, '', $this->db));
 				if($tmpDoc){
 					$tmpDoc[WE_SHOP_VAT_FIELD_NAME] = $_REQUEST['vat'];
-					$this->db->query('UPDATE ' . SHOP_TABLE . ' SET strSerial="' . $this->db->escape(we_serialize($tmpDoc, 'json')) . '" WHERE IntID=' . $article);
+					$this->db->query('UPDATE ' . SHOP_TABLE . ' SET strSerial="' . $this->db->escape(we_serialize($tmpDoc, SERIALIZE_JSON)) . '" WHERE IntID=' . $article);
 				}
 			}
 		}
@@ -800,7 +800,7 @@ function CalendarChanged(calObject) {
 							'DateShipping' => $row['DateShipping'],
 							'Datepayment' => $row['Datepayment'],
 							'IntPayment_Type' => $row['IntPayment_Type'],
-							'strSerial' => we_serialize($serialDoc, 'json'),
+							'strSerial' => we_serialize($serialDoc, SERIALIZE_JSON),
 							'strSerialOrder' => $_strSerialOrder
 					))));
 				} else {

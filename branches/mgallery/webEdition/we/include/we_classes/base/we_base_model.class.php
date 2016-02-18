@@ -112,7 +112,7 @@ class we_base_model{
 			$val = ($isAdvanced || $this->isAdvanced ? $key : $val);
 
 			if(isset($this->{$val})){
-				$sets[$val] = is_array($this->{$val}) ? we_serialize($this->{$val}, ($jsonSer ? 'json' : 'serialize')) :
+				$sets[$val] = is_array($this->{$val}) ? we_serialize($this->{$val}, ($jsonSer ? SERIALIZE_JSON : SERIALIZE_PHP)) :
 					(in_array($val, $this->binFields) ?
 						sql_function('x\'' . $this->{$val} . '\'') :
 						$this->{$val});

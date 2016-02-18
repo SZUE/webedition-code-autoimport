@@ -72,7 +72,7 @@ class we_net_rpc_JsonRpcError{
 		$ret = array('error' => $this->data,
 			'id' => $this->id,
 			'result' => NULL);
-		return we_serialize($ret, 'json');
+		return we_serialize($ret, SERIALIZE_JSON);
 	}
 
 }

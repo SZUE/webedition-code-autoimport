@@ -29,7 +29,7 @@ class we_cache_file implements we_cache_base{
 	}
 
 	private static function saveMeta(array $data){
-		return we_base_file::save(WE_CACHE_PATH . 'we_cache_meta', we_serialize($data, 'json'));
+		return we_base_file::save(WE_CACHE_PATH . 'we_cache_meta', we_serialize($data, SERIALIZE_JSON));
 	}
 
 	public static function load($entry){
@@ -45,7 +45,7 @@ class we_cache_file implements we_cache_base{
 		$meta = self::loadMeta();
 		$meta[$entry] = time() + $expiry;
 		self::saveMeta($meta);
-		$ser = we_serialize($data, 'json');
+		$ser = we_serialize($data, SERIALIZE_JSON);
 		we_base_file::save(WE_CACHE_PATH . 'we_cache_data_' . $entry, (strlen($ser) > 1024 ? gzcompress($ser, 6) : $ser));
 	}
 

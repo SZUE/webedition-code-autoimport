@@ -102,7 +102,7 @@ class we_newsletter_group extends we_newsletter_base{
 				}
 			}
 
-			$this->Filter = we_serialize($this->aFilter, 'json');
+			$this->Filter = we_serialize($this->aFilter, SERIALIZE_JSON);
 		}
 	}
 

@@ -1244,7 +1244,7 @@ function we_unserialize($string, $default = array(), $quiet = false){
  * @param bool $ksort sort the array by key (useful when numeric is used)
  * @return string serialized data
  */
-function we_serialize($array, $target = 'serialize', $numeric = false, $compression = 0, $ksort = false){
+function we_serialize($array, $target = SERIALIZE_PHP, $numeric = false, $compression = 0, $ksort = false){
 	if(!$array){
 		return '';
 	}
@@ -1254,7 +1254,7 @@ function we_serialize($array, $target = 'serialize', $numeric = false, $compress
 	$array = ($numeric ? array_values($array) : $array);
 
 	switch($target){
-		case 'json':
+		case SERIALIZE_JSON:
 			if(!is_object($array)){
 				//we don't encode objects as json!
 				$ret = json_encode($array, JSON_UNESCAPED_UNICODE);
@@ -1272,7 +1272,7 @@ function we_serialize($array, $target = 'serialize', $numeric = false, $compress
 				t_e('tried to encode object as json', $array);
 			}
 		default:
-		case 'serialize':
+		case SERIALIZE_PHP:
 			$ret = serialize($array);
 			break;
 	}

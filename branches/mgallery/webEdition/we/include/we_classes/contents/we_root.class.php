@@ -1012,7 +1012,7 @@ abstract class we_root extends we_class{
 					$this->i_set_PersistentSlot($regs[1], $v);
 				}
 			} else if($n === 'we_owners_read_only'){
-				$this->OwnersReadOnly = we_serialize($v, 'json');
+				$this->OwnersReadOnly = we_serialize($v, SERIALIZE_JSON);
 			}
 		}
 		$year = date('Y');
@@ -1098,7 +1098,7 @@ abstract class we_root extends we_class{
 
 			switch($v['type']){
 				case 'formfield':
-					$dat = we_serialize($v, 'json');
+					$dat = we_serialize($v, SERIALIZE_JSON);
 					break;
 				case 'date':
 					$dat = sprintf('%016d', $dat);

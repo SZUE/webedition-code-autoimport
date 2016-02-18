@@ -398,7 +398,7 @@ class we_import_updater extends we_exim_XMLExIm{
 			unset($object->SerializedArray[$d]);
 		}
 		$object->SerializedArray = array_merge($object->SerializedArray, $new);
-		$object->DefaultValues = we_serialize($object->SerializedArray, 'json');
+		$object->DefaultValues = we_serialize($object->SerializedArray, SERIALIZE_JSON);
 	}
 
 	private function updateDocType(we_docTypes &$object){
