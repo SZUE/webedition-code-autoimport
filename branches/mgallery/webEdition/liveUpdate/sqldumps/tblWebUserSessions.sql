@@ -9,7 +9,7 @@ CREATE TABLE ###TBLPREFIX###tblWebUserSessions (
   LastLogin timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   LastAccess timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PageID int unsigned NOT NULL default '0',
-  SessionAutologin tinyintunsigned NOT NULL DEFAULT '0',
+  SessionAutologin tinyint unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY  (SessionID),
   KEY `WebUserID` (`WebUserID`),
   KEY `LastAccess` (`LastAccess`)
