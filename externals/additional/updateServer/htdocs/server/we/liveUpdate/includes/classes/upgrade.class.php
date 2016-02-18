@@ -341,21 +341,6 @@ if ($success) {
 	";
 	$tmpDB->query($_query);
 }
->>>>>>> .r11302
-
-<<<<<<< .mine
-// last add welcome message to tblnotepad -> this table should be empty.
-if ($success) {
-	$tmpDB = new DB_WE();
-	$tmpDB->Halt_On_Error = "no";
-	$_query = "INSERT INTO " . TBL_PREFIX . "tblwidgetnotepad
-				(WidgetName, UserID, CreationDate, Title, Text, Priority, Valid, ValidFrom, ValidUntil)
-		VALUES	(
-				\"' . $GLOBALS['lang']['upgrade']['notepad_category'] . '\", 1, NOW(), \"' . $GLOBALS['lang']['upgrade']['notepad_headline'] . '\", \"' . $GLOBALS['lang']['upgrade']['notepad_text'] . '\", \"low\", \"always\", NOW(), NOW()
-				)
-	";
-	$tmpDB->query($_query);
-}
 
 // insert into log
 if ($success) {
