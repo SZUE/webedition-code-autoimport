@@ -188,6 +188,7 @@ abstract class we_root extends we_class{
 			$save[0][$slot] = $bb;
 		}
 		// save weDocumentCustomerFilter in Session
+		//NOTE: this is an object!
 		if(isset($this->documentCustomerFilter) && defined('CUSTOMER_TABLE')){
 			$save[3] = $this->documentCustomerFilter;
 		}

@@ -11,6 +11,12 @@ CREATE TABLE ###TBLPREFIX###tblTemporaryDoc (
   DocumentObject longtext NOT NULL,
   DocTable enum('tblFile','tblObjectFiles') NOT NULL,
   UnixTimestamp int unsigned NOT NULL default '0',
+	saved TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
   Active tinyint unsigned NOT NULL default '0',
   PRIMARY KEY (`DocTable`,`DocumentID`,`Active`)
 ) ENGINE=MyISAM;
+
+/* query separator */
+###ONCOL(UnixTimestamp,###TBLPREFIX###tblTemporaryDoc)UPDATE ###TBLPREFIX###tblTemporaryDoc SET saved=FROM_UNIXTIME(UnixTimestamp) ;###
+/* query separator */
+###UPDATEDROPCOL(UnixTimestamp,###TBLPREFIX###tblTemporaryDoc)###

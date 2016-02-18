@@ -48,7 +48,6 @@ abstract class we_temporaryDocument{
 					'DocumentID' => $documentID,
 					'DocumentObject' => ($document ? we_serialize($document) : ''),
 					'Active' => 1,
-					'UnixTimestamp' => sql_function('UNIX_TIMESTAMP()'),
 					'DocTable' => stripTblPrefix($table))));
 		if($ret){
 			$db->query('DELETE FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . $documentID . ' AND Active=0 AND DocTable="' . $db->escape(stripTblPrefix($table)) . '"');
@@ -63,7 +62,6 @@ abstract class we_temporaryDocument{
 		return $db->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET ' .
 						we_database_base::arraySetter(array(
 							'DocumentObject' => ($document ? we_serialize($document) : ''),
-							'UnixTimestamp' => sql_function('UNIX_TIMESTAMP()'),
 						)) .
 						' WHERE DocumentID=' . intval($documentID) . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"');
 	}
