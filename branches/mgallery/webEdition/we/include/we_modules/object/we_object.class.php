@@ -2267,7 +2267,7 @@ class we_object extends we_document{
 			}
 			foreach($hrefs as $k => $v){
 				$href = array_merge($empty, $v);
-				$this->setElement($k, we_serialize($href), we_objectFile::TYPE_HREF);
+				$this->setElement($k, we_serialize($href, SERIALIZE_JSON), we_objectFile::TYPE_HREF);
 			}
 		}
 	}

@@ -52,7 +52,6 @@ class we_navigation_cache{
 		}
 	}
 
-
 	static function delCacheNavigationEntry($id){
 		we_base_file::delete(self::getNavigationFilename($id));
 	}
@@ -75,6 +74,7 @@ class we_navigation_cache{
 	}
 
 	static function saveRules($rules){
+		//FIMXE:	currently we need the classes, so we are unable to serialize as json!
 		return we_base_file::save(WE_CACHE_PATH . 'navigation_rules.php', we_serialize($rules, SERIALIZE_PHP, false, 9));
 	}
 
