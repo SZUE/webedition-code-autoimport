@@ -196,7 +196,8 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 				if(substr($filePath, -4) === '.php' && function_exists('opcache_invalidate')){
 					opcache_invalidate($filePath, true);
 				}
-				if(!chmod($filePath, 0444)){
+				//FIXME: current user must write because of "prepare"
+				if(!chmod($filePath, 0644)){
 					return false;
 				}
 				return true;
