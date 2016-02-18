@@ -149,16 +149,13 @@ class Community extends leStep{
 		switch($_SESSION["le_communityChoice"]){
 			case "notYet":
 				return true;
-				break;
 			case "Already":
 				// check existing user data (email, password, connect test):
 				return $this->_validateExistingUser($Template);
-				break;
 			default:
 				// skip registration:
 				//return $this->executeOnline($Template, "community", "skipCommunityRegistration");
 				return true;
-				break;
 		}
 
 		/*

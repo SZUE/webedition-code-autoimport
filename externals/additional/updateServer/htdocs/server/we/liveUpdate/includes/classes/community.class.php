@@ -187,43 +187,43 @@ class community extends communityBase{
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
 
-	' . updateUtil::getOverwriteClassesCode() . '
+' . updateUtil::getOverwriteClassesCode() . '
 
-	' . $writeFilesCode . '
+' . $writeFilesCode . '
 
-		$success = true; // all files fine
-		$successFiles = array(); // successfully saved files
+$success = true; // all files fine
+$successFiles = array(); // successfully saved files
 
-		foreach ($files as $path => $content) {
+foreach ($files as $path => $content) {
 
-			if ($success) {
+	if ($success) {
 
-				if ($liveUpdateFnc->filePutContent( $path, $liveUpdateFnc->decodeCode($content) ) ) {
-					$successFiles[] = $path;
-				} else {
-					$errorFile = $path;
-					$success = false;
-				}
-			}
+		if ($liveUpdateFnc->filePutContent( $path, $liveUpdateFnc->decodeCode($content) ) ) {
+			$successFiles[] = $path;
+		} else {
+			$errorFile = $path;
+			$success = false;
 		}
+	}
+}
 
-		if ($success) {
+if ($success) {
 
-			$message = "";
-			foreach ($successFiles as $path) {
+	$message = "";
+	foreach ($successFiles as $path) {
 
 				$text = basename($path);
 				$text = substr($text, -40);
 
-				$message .= "<div> ...$text</div>";
-			}
+		$message .= "<div> ...$text</div>";
+	}
 
-			?>' . installer::getProceedNextCommandResponsePart($nextUrl, $progress, '<?php print $message; ?>') . '<?php
+	?>' . installer::getProceedNextCommandResponsePart($nextUrl, $progress, '<?php print $message; ?>') . '<?php
 
-		} else {
+} else {
 
-			' . installer::getErrorMessageResponsePart() . '
-		}
+	' . installer::getErrorMessageResponsePart() . '
+}
 ?>';
 
 		return $retArray;
@@ -238,7 +238,7 @@ class community extends communityBase{
 	 * @param string $nextDetail
 	 * @return array
 	 */
-	static function _getDownloadFilesMergeResponse($filesArray, $nextUrl, $progress = 0, $Realname, $numberOfParts){
+	static function _getDownloadFilesMergeResponse($filesArray, $nextUrl, $progress, $Realname, $numberOfParts){
 
 		// prepare $filesArray (path => encodedContent) for the client
 		$writeFilesCode = '
@@ -253,57 +253,50 @@ class community extends communityBase{
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
 
-	' . updateUtil::getOverwriteClassesCode() . '
+' . updateUtil::getOverwriteClassesCode() . '
 
-	' . $writeFilesCode . '
+' . $writeFilesCode . '
 
-		$success = true; // all files fine
-		$successFiles = array(); // successfully saved files
+$success = true; // all files fine
+$successFiles = array(); // successfully saved files
 
-		foreach ($files as $path => $content) {
-			if ($success) {
-				if (!$liveUpdateFnc->filePutContent( $path, $liveUpdateFnc->decodeCode($content) ) ) {
-					$errorFile = $path;
-					$success = false;
-
-				}
-
-			}
+foreach ($files as $path => $content) {
+	if ($success) {
+		if (!$liveUpdateFnc->filePutContent( $path, $liveUpdateFnc->decodeCode($content) ) ) {
+			$errorFile = $path;
+			$success = false;
 
 		}
 
-		$Content = "";
-		for ($i = 0; $i <= ' . $numberOfParts . '; $i++) {
-			$Content .= $liveUpdateFnc->getFileContent(' . $Realname . '."part" . $i);
+	}
 
-		}
+}
 
-		if ($liveUpdateFnc->filePutContent( ' . $Realname . ', $Content ) ) {
-			$successFiles[] = $path;
+$Content = "";
+for ($i = 0; $i <= ' . $numberOfParts . '; $i++) {
+	$Content .= $liveUpdateFnc->getFileContent(' . $Realname . '."part" . $i);
 
-		}
-		for ($i = 0; $i <= ' . $numberOfParts . '; $i++) {
-			$liveUpdateFnc->deleteFile(' . $Realname . '."part" . $i);
+}
 
-		}
+if ($liveUpdateFnc->filePutContent( ' . $Realname . ', $Content ) ) {
+	$successFiles[] = $path;
 
+}
+for ($i = 0; $i <= ' . $numberOfParts . '; $i++) {
+	$liveUpdateFnc->deleteFile(' . $Realname . '."part" . $i);
 
-		if ($success) {
+}
+	$text = basename(' . $Realname . ');
+	$text = substr($text, -40);
 
-			$message = "";
-			foreach ($successFiles as $path) {
-
-				$text = basename(' . $Realname . ');
-				$text = substr($text, -40);
-
-				$message .= "<div> ...$text</div>";
-			}
-			?>' . installer::getProceedNextCommandResponsePart($nextUrl, $progress) . '<?php
-
-		} else {
-			' . installer::getErrorMessageResponsePart() . '
-
-		}
+	$message = "";
+	foreach ($successFiles as $path) {
+		$message .= "<div> ...$text</div>";
+	}
+	?>' . installer::getProceedNextCommandResponsePart($nextUrl, $progress) . '<?php
+} else {
+	' . installer::getErrorMessageResponsePart() . '
+}
 ?>';
 
 		return $retArray;
@@ -319,20 +312,18 @@ class community extends communityBase{
 		$nextUrl = '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail());
 
 		$message = '<div>' . sprintf($GLOBALS['lang']['installer']['downloadFilesTotal'], sizeof($_SESSION['clientChanges']['allChanges'])) . '<br />' .
-			sizeof($_SESSION['clientChanges']['files']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesFiles'] . '<br />' .
-			sizeof($_SESSION['clientChanges']['queries']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesQueries'] . '<br />' .
-			sizeof($_SESSION['clientChanges']['patches']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesPatches'] . '<br /></div>';
+				sizeof($_SESSION['clientChanges']['files']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesFiles'] . '<br />' .
+				sizeof($_SESSION['clientChanges']['queries']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesQueries'] . '<br />' .
+				sizeof($_SESSION['clientChanges']['patches']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesPatches'] . '<br /></div>';
 
 		$progress = installer::getInstallerProgressPercent();
 
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
-
-		' . updateUtil::getOverwriteClassesCode() . '
-		$filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp";
-		$liveUpdateFnc->deleteDir($filesDir);
-
-		?>' . installer::getProceedNextCommandResponsePart($nextUrl, $progress, $message);
+' . updateUtil::getOverwriteClassesCode() . '
+$filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp";
+$liveUpdateFnc->deleteDir($filesDir);
+?>' . installer::getProceedNextCommandResponsePart($nextUrl, $progress, $message);
 
 		return updateUtil::getResponseString($retArray);
 	}
@@ -354,64 +345,61 @@ class community extends communityBase{
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
 
-		' . updateUtil::getOverwriteClassesCode() . '
+' . updateUtil::getOverwriteClassesCode() . '
 
-		$queryDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/queries/";
+$queryDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/queries/";
 
-		$allFiles = array();
-		$liveUpdateFnc->getFilesOfDir($allFiles, $queryDir);
-		sort($allFiles);
+$allFiles = array();
+$liveUpdateFnc->getFilesOfDir($allFiles, $queryDir);
+sort($allFiles);
 
-		$message = "";
+$message = "";
 
-		for ($i=' . $_REQUEST['position'] . '; $i<sizeof($allFiles) && $i<' . ($_REQUEST['position'] + $_SESSION['EXECUTE_QUERIES_PER_STEP']) . '; $i++) {
+for ($i=' . $_REQUEST['position'] . '; $i<sizeof($allFiles) && $i<' . ($_REQUEST['position'] + $_SESSION['EXECUTE_QUERIES_PER_STEP']) . '; $i++) {
 
-			// execute queries in each file
-			if ($liveUpdateFnc->executeQueriesInFiles($allFiles[$i])) {
+	// execute queries in each file
+	if ($liveUpdateFnc->executeQueriesInFiles($allFiles[$i])) {
 
 				$text = basename($allFiles[$i]);
 				$text = substr($text, -40);
 
-				$message .= "<div>...$text</div>";
+		$message .= "<div>...$text</div>";
 
-			} else {
+	} else {
 
-				$msg = $liveUpdateFnc->getQueryLog();
-				$fileName = basename($allFiles[$i]);
+		$msg = $liveUpdateFnc->getQueryLog();
+		$fileName = basename($allFiles[$i]);
 
-				if ($msg["tableExists"]) {
-					$message .= "<div class=\'messageDiv\'>' . $GLOBALS['lang']['installer']['updateDatabaseNotice'] . '<br />$fileName: ' . $GLOBALS['luSystemLanguage']['installer']['tableExists'] . '</div>";
-					$liveUpdateFnc->insertQueryLogEntries("tableExists", $fileName . ": ' . $GLOBALS['luSystemLanguage']['installer']['tableExists'] . '", 2, "' . $_SESSION['clientVersion'] . '");
-				}
-
-				if ($msg["tableChanged"]) {
-					$message .= "<div class=\'messageDiv\'>' . $GLOBALS['lang']['installer']['updateDatabaseNotice'] . '<br />$fileName: ' . $GLOBALS['luSystemLanguage']['installer']['tableChanged'] . '</div>";
-					$liveUpdateFnc->insertQueryLogEntries("tableChanged", $fileName . ": ' . $GLOBALS['luSystemLanguage']['installer']['tableChanged'] . '", 2, "' . $_SESSION['clientVersion'] . '");
-				}
-
-				if ($msg["entryExists"]) {
-					$message .= "<div class=\'messageDiv\'>' . $GLOBALS['lang']['installer']['updateDatabaseNotice'] . '<br />$fileName: ' . $GLOBALS['luSystemLanguage']['installer']['entryAlreadyExists'] . '</div>";
-					$liveUpdateFnc->insertQueryLogEntries("entryExists", $fileName . ": ' . $GLOBALS['luSystemLanguage']['installer']['entryAlreadyExists'] . '", 2, "' . $_SESSION['clientVersion'] . '");
-				}
-
-				if ($msg["error"]) {
-					$message .= "<div class=\'errorDiv\'>' . $GLOBALS['lang']['installer']['updateDatabaseNotice'] . '<br />$fileName: ' . $GLOBALS['luSystemLanguage']['installer']['errorExecutingQuery'] . '</div>";
-					$liveUpdateFnc->insertQueryLogEntries("error", $fileName . ": ' . $GLOBALS['luSystemLanguage']['installer']['errorExecutingQuery'] . '", 1, "' . $_SESSION['clientVersion'] . '");
-				}
-
-				$liveUpdateFnc->clearQueryLog();
-			}
+		if ($msg["tableExists"]) {
+			$message .= "<div class=\'messageDiv\'>' . $GLOBALS['lang']['installer']['updateDatabaseNotice'] . '<br />$fileName: ' . $GLOBALS['luSystemLanguage']['installer']['tableExists'] . '</div>";
+			$liveUpdateFnc->insertQueryLogEntries("tableExists", $fileName . ": ' . $GLOBALS['luSystemLanguage']['installer']['tableExists'] . '", 2, "' . $_SESSION['clientVersion'] . '");
 		}
 
-		if ( sizeof($allFiles) > ' . ( $_REQUEST['position'] + $_SESSION['EXECUTE_QUERIES_PER_STEP'] ) . ' ) { // continue with DB steps
-
-			?>' . installer::getProceedNextCommandResponsePart($repeatUrl, installer::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
-
-		} else { // proceed to next step.
-
-			?>' . installer::getProceedNextCommandResponsePart($nextUrl, installer::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
+		if ($msg["tableChanged"]) {
+			$message .= "<div class=\'messageDiv\'>' . $GLOBALS['lang']['installer']['updateDatabaseNotice'] . '<br />$fileName: ' . $GLOBALS['luSystemLanguage']['installer']['tableChanged'] . '</div>";
+			$liveUpdateFnc->insertQueryLogEntries("tableChanged", $fileName . ": ' . $GLOBALS['luSystemLanguage']['installer']['tableChanged'] . '", 2, "' . $_SESSION['clientVersion'] . '");
 		}
-		';
+
+		if ($msg["entryExists"]) {
+			$message .= "<div class=\'messageDiv\'>' . $GLOBALS['lang']['installer']['updateDatabaseNotice'] . '<br />$fileName: ' . $GLOBALS['luSystemLanguage']['installer']['entryAlreadyExists'] . '</div>";
+			$liveUpdateFnc->insertQueryLogEntries("entryExists", $fileName . ": ' . $GLOBALS['luSystemLanguage']['installer']['entryAlreadyExists'] . '", 2, "' . $_SESSION['clientVersion'] . '");
+		}
+
+		if ($msg["error"]) {
+			$message .= "<div class=\'errorDiv\'>' . $GLOBALS['lang']['installer']['updateDatabaseNotice'] . '<br />$fileName: ' . $GLOBALS['luSystemLanguage']['installer']['errorExecutingQuery'] . '</div>";
+			$liveUpdateFnc->insertQueryLogEntries("error", $fileName . ": ' . $GLOBALS['luSystemLanguage']['installer']['errorExecutingQuery'] . '", 1, "' . $_SESSION['clientVersion'] . '");
+		}
+
+		$liveUpdateFnc->clearQueryLog();
+	}
+}
+
+if ( sizeof($allFiles) > ' . ( $_REQUEST['position'] + $_SESSION['EXECUTE_QUERIES_PER_STEP'] ) . ' ) { // continue with DB steps
+
+	?>' . installer::getProceedNextCommandResponsePart($repeatUrl, installer::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
+} else { // proceed to next step.
+	?>' . installer::getProceedNextCommandResponsePart($nextUrl, installer::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
+}';
 
 		return updateUtil::getResponseString($retArray);
 	}
@@ -435,49 +423,49 @@ class community extends communityBase{
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
 
-		' . updateUtil::getOverwriteClassesCode() . '
+' . updateUtil::getOverwriteClassesCode() . '
 
-		$filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/";
+$filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/";
 
-		$allFiles = array();
-		$liveUpdateFnc->getFilesOfDir($allFiles, $filesDir);
-		sort($allFiles);
+$allFiles = array();
+$liveUpdateFnc->getFilesOfDir($allFiles, $filesDir);
+sort($allFiles);
 
-		$message = "";
-		$success = true;
+$message = "";
+$success = true;
 
-		for ( $i=' . $_REQUEST["position"] . ',$j=0; $i<sizeof($allFiles) && $success && $j < ' . $_SESSION['PREPARE_FILES_PER_STEP'] . '; $i++,$j++) {
+for ( $i=' . $_REQUEST["position"] . ',$j=0; $i<sizeof($allFiles) && $success && $j < ' . $_SESSION['PREPARE_FILES_PER_STEP'] . '; $i++,$j++) {
 
-			$content = $liveUpdateFnc->getFileContent($allFiles[$i]);
+	$content = $liveUpdateFnc->getFileContent($allFiles[$i]);
 
 			$text = basename($allFiles[$i]);
 			$text = substr($text, -40);
 
-			$message .= "<div>...$text</div>";
+	$message .= "<div>...$text</div>";
 
-			if ($liveUpdateFnc->isPhpFile($allFiles[$i])) {
-				$success = $liveUpdateFnc->filePutContent($allFiles[$i], $liveUpdateFnc->preparePhpCode($content, ".php", "' . $_SESSION['clientExtension'] . '"));
-				if ($success) {
-					$success = rename($allFiles[$i], $liveUpdateFnc->replaceExtensionInContent($allFiles[$i], ".php", "' . $_SESSION['clientExtension'] . '"));
-				}
-			}
+	if ($liveUpdateFnc->isPhpFile($allFiles[$i])) {
+		$success = $liveUpdateFnc->filePutContent($allFiles[$i], $liveUpdateFnc->preparePhpCode($content, ".php", "' . $_SESSION['clientExtension'] . '"));
+		if ($success) {
+			$success = rename($allFiles[$i], $liveUpdateFnc->replaceExtensionInContent($allFiles[$i], ".php", "' . $_SESSION['clientExtension'] . '"));
 		}
+	}
+}
 
-		if (!$success) {
+if (!$success) {
 
-			' . installer::getErrorMessageResponsePart() . '
+	' . installer::getErrorMessageResponsePart() . '
 
-		} else {
+} else {
 
-			if ( sizeof($allFiles) >= (' . $_SESSION['PREPARE_FILES_PER_STEP'] . ' + ' . $_REQUEST["position"] . ') ) {
+	if ( sizeof($allFiles) >= (' . $_SESSION['PREPARE_FILES_PER_STEP'] . ' + ' . $_REQUEST["position"] . ') ) {
 
-				?>' . installer::getProceedNextCommandResponsePart($repeatUrl, installer::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
-			} else {
+		?>' . installer::getProceedNextCommandResponsePart($repeatUrl, installer::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
+	} else {
 
-				?>' . installer::getProceedNextCommandResponsePart($nextUrl, installer::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
-			}
-		}
-		?>';
+		?>' . installer::getProceedNextCommandResponsePart($nextUrl, installer::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
+	}
+}
+?>';
 
 		return updateUtil::getResponseString($retArray);
 	}
@@ -493,40 +481,38 @@ class community extends communityBase{
 
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
+' . updateUtil::getOverwriteClassesCode() . '
 
-		' . updateUtil::getOverwriteClassesCode() . '
+$filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/";
+$preLength = strlen($filesDir);
 
-		$filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/";
-		$preLength = strlen($filesDir);
+$success = true;
 
-		$success = true;
+$message = "";
 
-		$message = "";
+$allFiles = array();
+$liveUpdateFnc->getFilesOfDir($allFiles, $filesDir);
 
-		$allFiles = array();
-		$liveUpdateFnc->getFilesOfDir($allFiles, $filesDir);
+for ($i=0;$success && $i<sizeof($allFiles);$i++) {
 
-		for ($i=0;$success && $i<sizeof($allFiles);$i++) {
+	$text = basename($allFiles[$i]);
+	$text = substr($text, -40);
+	$message .= "<div>...$text</div>";
+	$success = $liveUpdateFnc->moveFile($allFiles[$i], LIVEUPDATE_SOFTWARE_DIR . substr($allFiles[$i], $preLength));
+}
 
-			$text = basename($allFiles[$i]);
-			$text = substr($text, -40);
-			$message .= "<div>...$text</div>";
+if ($success) {
 
-			$success = $liveUpdateFnc->moveFile($allFiles[$i], LIVEUPDATE_SOFTWARE_DIR . substr($allFiles[$i], $preLength));
-		}
+	$message = "<div>" . $message . "</div>";
+	$message .= "<div>' . sprintf($GLOBALS['lang']['installer']['amountFilesCopied'], sizeof($_SESSION['clientChanges']['files'])) . '</div>";
 
-		if ($success) {
+	?>' . installer::getProceedNextCommandResponsePart($nextUrl, installer::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
 
-			$message = "<div>" . $message . "</div>";
-			$message .= "<div>' . sprintf($GLOBALS['lang']['installer']['amountFilesCopied'], sizeof($_SESSION['clientChanges']['files'])) . '</div>";
+} else {
 
-			?>' . installer::getProceedNextCommandResponsePart($nextUrl, installer::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
-
-		} else {
-
-			' . installer::getErrorMessageResponsePart() . '
-		}
-		?>';
+	' . installer::getErrorMessageResponsePart() . '
+}
+?>';
 		return updateUtil::getResponseString($retArray);
 	}
 
@@ -543,35 +529,35 @@ class community extends communityBase{
 		//$retArray['Type'] = 'executePatches';
 		$retArray['Code'] = '<?php
 
-		' . updateUtil::getOverwriteClassesCode() . '
+' . updateUtil::getOverwriteClassesCode() . '
 
-		$filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/patches/";
+$filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/patches/";
 
-		$allFiles = array();
-		$liveUpdateFnc->getFilesOfDir($allFiles, $filesDir);
+$allFiles = array();
+$liveUpdateFnc->getFilesOfDir($allFiles, $filesDir);
 
-		$success = true;
-		$message = "";
+$success = true;
+$message = "";
 
-		for ($i=0; $success && $i<sizeof($allFiles); $i++) {
+for ($i=0; $success && $i<sizeof($allFiles); $i++) {
 
-			$message .= basename($allFiles[$i]) . "<br />";
-			$success = $liveUpdateFnc->executePatch($allFiles[$i]);
-			if (!$success) {
-				$errorFile = basename($allFiles[$i]);
-			}
-		}
+	$message .= basename($allFiles[$i]) . "<br />";
+	$success = $liveUpdateFnc->executePatch($allFiles[$i]);
+	if (!$success) {
+		$errorFile = basename($allFiles[$i]);
+	}
+}
 
-		if ($success) {
+if ($success) {
 
-			$message = "<div>" . $message . "</div>";
-			$message .= "<div>' . sprintf($GLOBALS['lang']['installer']['amountPatchesExecuted'], sizeof($_SESSION['clientChanges']['patches'])) . '</div>";
-			?>' . installer::getProceedNextCommandResponsePart($nextUrl, installer::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
+	$message = "<div>" . $message . "</div>";
+	$message .= "<div>' . sprintf($GLOBALS['lang']['installer']['amountPatchesExecuted'], sizeof($_SESSION['clientChanges']['patches'])) . '</div>";
+	?>' . installer::getProceedNextCommandResponsePart($nextUrl, installer::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
 
-		} else {
-			' . installer::getErrorMessageResponsePart(stripslashes('$errorFile'), '{$GLOBALS["errorDetail"]}') . '
-		}
-		?>';
+} else {
+	' . installer::getErrorMessageResponsePart(stripslashes('$errorFile'), '{$GLOBALS["errorDetail"]}') . '
+}
+?>';
 
 		return updateUtil::getResponseString($retArray);
 	}
@@ -818,12 +804,12 @@ class community extends communityBase{
 			} else {
 				break;
 			}
-		} while($ResponseSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
+		}while($ResponseSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
 
 		$nextUrl = ($Position >= sizeof($_SESSION['clientChanges']['allChanges']) ?
-				installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail()) :
-				installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']) . "&position=$Position"
-			);
+						installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail()) :
+						installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']) . "&position=$Position"
+				);
 
 		// :IMPORTANT:
 		return updateUtil::getResponseString(installer::_getDownloadFilesResponse($fileArray, $nextUrl, installer::getInstallerProgressPercent()));

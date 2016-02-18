@@ -341,6 +341,21 @@ if ($success) {
 	";
 	$tmpDB->query($_query);
 }
+>>>>>>> .r11302
+
+<<<<<<< .mine
+// last add welcome message to tblnotepad -> this table should be empty.
+if ($success) {
+	$tmpDB = new DB_WE();
+	$tmpDB->Halt_On_Error = "no";
+	$_query = "INSERT INTO " . TBL_PREFIX . "tblwidgetnotepad
+				(WidgetName, UserID, CreationDate, Title, Text, Priority, Valid, ValidFrom, ValidUntil)
+		VALUES	(
+				\"' . $GLOBALS['lang']['upgrade']['notepad_category'] . '\", 1, NOW(), \"' . $GLOBALS['lang']['upgrade']['notepad_headline'] . '\", \"' . $GLOBALS['lang']['upgrade']['notepad_text'] . '\", \"low\", \"always\", NOW(), NOW()
+				)
+	";
+	$tmpDB->query($_query);
+}
 
 // insert into log
 if ($success) {
@@ -367,9 +382,9 @@ if ($success) {
 		}
 
 		return '<script>
-			top.frames["updatecontent"].setProgressBar("' . $progress . '");
-			top.frames["updatecontent"].appendMessageLog("' . $message . '\n");
-			window.open(\'?' . updateUtil::getCommonHrefParameters('upgrade', 'finishUpgradePopUp') . '\', \'finishInstallationPopUp' . session_id() . '\', \'dependent=yes,height=250,width=600,menubar=no,location=no,resizable=no,status=no,toolbar=no,scrollbars=no\');
+top.frames["updatecontent"].setProgressBar("' . $progress . '");
+top.frames["updatecontent"].appendMessageLog("' . $message . '\n");
+window.open(\'?' . updateUtil::getCommonHrefParameters('upgrade', 'finishUpgradePopUp') . '\', \'finishInstallationPopUp' . session_id() . '\', \'dependent=yes,height=250,width=600,menubar=no,location=no,resizable=no,status=no,toolbar=no,scrollbars=no\');
 //			alert("' . $jsMessage . '");
 		</script>';
 	}

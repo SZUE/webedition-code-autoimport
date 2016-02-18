@@ -484,26 +484,26 @@ class update extends updateBase{
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
 
-		' . updateUtil::getOverwriteClassesCode() . '
+' . updateUtil::getOverwriteClassesCode() . '
 
-		$filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp";
-		$liveUpdateFnc->deleteDir($filesDir);
+$filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp";
+$liveUpdateFnc->deleteDir($filesDir);
 
 //FIXME: remove the following create code
-		if (	$liveUpdateFnc->replaceCode( LIVEUPDATE_SOFTWARE_DIR . "' . $we_version['path'] . '", "' . updateUtil::encodeCode($we_version['replace']) . '", "' . updateUtil::encodeCode($we_version['needle']) . '") &&
-				$liveUpdateFnc->checkMakeDir( LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we_backup", 0770 ) &&
-				$liveUpdateFnc->checkMakeDir( LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we_backup/tmp", 0770 ) &&
-				$liveUpdateFnc->checkMakeDir( LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we_backup/download", 0770 )
-			) {
+if (	$liveUpdateFnc->replaceCode( LIVEUPDATE_SOFTWARE_DIR . "' . $we_version['path'] . '", "' . updateUtil::encodeCode($we_version['replace']) . '", "' . updateUtil::encodeCode($we_version['needle']) . '") &&
+		$liveUpdateFnc->checkMakeDir( LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we_backup", 0770 ) &&
+		$liveUpdateFnc->checkMakeDir( LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we_backup/tmp", 0770 ) &&
+		$liveUpdateFnc->checkMakeDir( LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we_backup/download", 0770 )
+	) {
 
-			$liveUpdateFnc->insertUpdateLogEntry("' . $GLOBALS['luSystemLanguage']['update']['finished'] . $loginfo . '", "' . $_SESSION['clientTargetVersion'] . '", 0);
+	$liveUpdateFnc->insertUpdateLogEntry("' . $GLOBALS['luSystemLanguage']['update']['finished'] . $loginfo . '", "' . $_SESSION['clientTargetVersion'] . '", 0);
 
-			?>' . installer::getFinishInstallationResponsePart("<div>" . $GLOBALS['lang']['update']['finished'] . "</div>") . '<?php
+	?>' . installer::getFinishInstallationResponsePart("<div>" . $GLOBALS['lang']['update']['finished'] . "</div>") . '<?php
 
-		} else {
-			' . installer::getErrorMessageResponsePart() . '
-		}
-		?>';
+} else {
+	' . installer::getErrorMessageResponsePart() . '
+}
+?>';
 		//static::updateLogFinish(1);
 		return updateUtil::getResponseString($retArray);
 	}

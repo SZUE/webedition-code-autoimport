@@ -44,13 +44,7 @@ class SoftwareRequirements extends leStep{
 			$gdlibAvailable = false;
 			$gdVersion = "";
 		} else {
-			// GD_VERSION is mor precise but only available in PHP 5.2.4 or newer
-			if(defined("GD_VERSION")){
-				$gdVersion = GD_VERSION;
-			} else {
-				$gdInfo = gd_info();
-				$gdVersion = $gdInfo["GD Version"];
-			}
+			$gdVersion = (defined('GD_VERSION') ? GD_VERSION : '');
 		}
 		if(!is_callable("exif_imagetype")){
 			$exifAvailable = false;

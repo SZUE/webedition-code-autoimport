@@ -118,8 +118,7 @@ $_pro_modules = array();
 	static function getCodeForActiveIntegratedModules(){
 
 		// write all active integrated modules
-		$Content = '<?php'
-			. '$_we_active_integrated_modules = array();';
+		$Content = '<?php $_we_active_integrated_modules = array(); ';
 		foreach($GLOBALS['MODULES_FREE_OF_CHARGE_INCLUDED'] as $moduleKey){
 			$_we_active_integrated_modules[] = $moduleKey;
 			$Content .= '$_we_active_integrated_modules[] = "' . $moduleKey . '";';

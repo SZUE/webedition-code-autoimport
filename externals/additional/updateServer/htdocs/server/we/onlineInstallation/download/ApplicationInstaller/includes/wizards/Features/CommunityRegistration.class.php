@@ -15,13 +15,10 @@ class CommunityRegistration extends leStep{
 		switch($_SESSION["le_communityChoice"]){
 			case "notYet":
 				return $this->executeOnline($Template, "community", "communityCreateRegistrationForm");
-				break;
 			case "Already":
 				return $this->executeOnline($Template, "community", "checkCommunityRegistrationSuccess");
-				break;
 			default:
 				return $this->executeOnline($Template, "community", "skipCommunityRegistration");
-				break;
 		}
 	}
 

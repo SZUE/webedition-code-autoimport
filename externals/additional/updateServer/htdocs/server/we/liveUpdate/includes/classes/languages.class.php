@@ -130,15 +130,14 @@ class languages extends languagesBase{
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
 
-		' . updateUtil::getOverwriteClassesCode() . '
+' . updateUtil::getOverwriteClassesCode() . '
 
-		$filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp";
-		$liveUpdateFnc->deleteDir($filesDir);
+$filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp";
+$liveUpdateFnc->deleteDir($filesDir);
 
-		$liveUpdateFnc->insertUpdateLogEntry("' . $GLOBALS['luSystemLanguage']['languages']['finished'] . $message . '", "' . $_SESSION['clientVersion'] . '", 0);
+$liveUpdateFnc->insertUpdateLogEntry("' . $GLOBALS['luSystemLanguage']['languages']['finished'] . $message . '", "' . $_SESSION['clientVersion'] . '", 0);
 
-		?>' . installer::getFinishInstallationResponsePart("<div>" . $GLOBALS['lang']['languages']['finished'] . "\\n" . $message . "</div>") . '<?php
-		?>';
+?>' . installer::getFinishInstallationResponsePart("<div>" . $GLOBALS['lang']['languages']['finished'] . "\\n" . $message . "</div>");
 		return updateUtil::getResponseString($retArray);
 	}
 
