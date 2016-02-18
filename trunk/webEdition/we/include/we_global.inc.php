@@ -1335,8 +1335,7 @@ function we_serialize(array $array, $target = 'serialize', $numeric = false){
 				return $ret;
 			}
 			static $json = null;
-			class_exists('Services_JSON');
-			$json = $json? : new Services_JSON(SERVICES_JSON_USE_NO_CHARSET_CONVERSION);
+			$json = $json? : new Services_JSON(Services_JSON::SERVICES_JSON_USE_NO_CHARSET_CONVERSION);
 			return $json->encode($numeric ? array_values($array) : $array, false);
 		//no break, return default serialize
 		default:
