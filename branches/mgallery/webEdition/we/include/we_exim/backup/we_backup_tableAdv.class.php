@@ -104,7 +104,6 @@ class we_backup_tableAdv{
 	}
 
 	function save(){
-		global $DB_WE;
 		if(!(isset($_SESSION['weS']['weBackupVars']['tablekeys']) && is_array($_SESSION['weS']['weBackupVars']['tablekeys']))){
 			$_SESSION['weS']['weBackupVars']['tablekeys'] = array();
 		}
@@ -135,7 +134,7 @@ class we_backup_tableAdv{
 		$myarray[] = ' ) ' . we_database_base::getCharsetCollation() . ' ENGINE=MyISAM;';
 
 		$query = implode(' ', $myarray);
-		return ($DB_WE->query($query));
+		return ($this->db->query($query));
 	}
 
 }

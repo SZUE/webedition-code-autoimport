@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -28,6 +29,7 @@
  * Provides functions for creating webEdition buttons.
  */
 abstract class we_base_imageEdit{
+
 	const IMAGE_EXTENSIONS = 'svgz';
 
 	public static $GDIMAGE_TYPE = array('.gif' => 'gif', '.jpg' => 'jpg', '.jpeg' => 'jpg', '.png' => 'png');
@@ -193,8 +195,8 @@ abstract class we_base_imageEdit{
 
 			// Detect information string now
 			$_gdversion = (substr($_gdinfo['GD Version'], 0, strlen($_searchstring)) == $_searchstring ?
-					substr($_gdinfo['GD Version'], strlen($_searchstring), 3) :
-					substr($_gdinfo['GD Version'], 0, 3));
+							substr($_gdinfo['GD Version'], strlen($_searchstring), 3) :
+							substr($_gdinfo['GD Version'], 0, 3));
 		}
 
 		return $_gdversion;
@@ -499,175 +501,173 @@ abstract class we_base_imageEdit{
 		if(!in_array($output_format, self::supported_image_types())){
 			return array(false, -1, -1);
 		}
-			// Set quality for JPG images
-			if($output_format === 'jpg'){
-				// Keep quality between 1 and 99
-				$output_quality = max(1, min(99, (is_int($output_quality) ? $output_quality : 75)));
+		// Set quality for JPG images
+		if($output_format === 'jpg'){
+			// Keep quality between 1 and 99
+			$output_quality = max(1, min(99, (is_int($output_quality) ? $output_quality : 75)));
+		}
+
+		$_gdimg = ($_fromFile ? self::ImageCreateFromFileReplacement($imagedata) : self::ImageCreateFromStringReplacement($imagedata));
+
+		// Now we need to ensure that we could read the file
+		if($_gdimg){
+			// Detect dimension of image
+			$_width = ImageSX($_gdimg);
+			$_height = ImageSY($_gdimg);
+
+			if(($rotate_angle != 0) && function_exists('ImageRotate')){
+				$rotate_angle = floatval($rotate_angle);
+				if($rotate_angle < 0){
+					$rotate_angle = $rotate_angle + ((abs(intval($rotate_angle / 360)) + 1) * 360);
+				} elseif($rotate_angle > 360){
+					$rotate_angle = $rotate_angle % 360;
+				}
+
+				if($rotate_angle > 0){
+					$_gdimg = ImageRotate($_gdimg, $rotate_angle, 0);
+					$_width = ImageSX($_gdimg);
+					$_height = ImageSY($_gdimg);
+				}
 			}
 
-			$_gdimg = ($_fromFile ? self::ImageCreateFromFileReplacement($imagedata) : self::ImageCreateFromStringReplacement($imagedata));
+			$_outsize = self::calculate_image_size($_width, $_height, $width, $height, in_array(we_thumbnail::OPTION_RATIO, $options), true, in_array(we_thumbnail::OPTION_FITINSIDE, $options));
 
-			// Now we need to ensure that we could read the file
-			if($_gdimg){
-				// Detect dimension of image
-				$_width = ImageSX($_gdimg);
-				$_height = ImageSY($_gdimg);
+			// Decide, which functions to use (depends on version of GD library)
+			$_image_create_function = (self::gd_version() >= 2.0 ? 'imagecreatetruecolor' : 'imagecreate');
+			$_image_resize_function = (function_exists('imagecopyresampled') ? 'imagecopyresampled' : 'imagecopyresized');
 
-				if(($rotate_angle != 0) && function_exists('ImageRotate')){
-					$rotate_angle = floatval($rotate_angle);
-					if($rotate_angle < 0){
-						$rotate_angle = $rotate_angle + ((abs(intval($rotate_angle / 360)) + 1) * 360);
-					} elseif($rotate_angle > 360){
-						$rotate_angle = $rotate_angle % 360;
-					}
-
-					if($rotate_angle > 0){
-						$_gdimg = ImageRotate($_gdimg, $rotate_angle, 0);
-						$_width = ImageSX($_gdimg);
-						$_height = ImageSY($_gdimg);
-					}
-				}
-
-				$_outsize = self::calculate_image_size($_width, $_height, $width, $height, in_array(we_thumbnail::OPTION_RATIO, $options), true, in_array(we_thumbnail::OPTION_FITINSIDE, $options));
-
-				// Decide, which functions to use (depends on version of GD library)
-				$_image_create_function = (self::gd_version() >= 2.0 ? 'imagecreatetruecolor' : 'imagecreate');
-				$_image_resize_function = (function_exists('imagecopyresampled') ? 'imagecopyresampled' : 'imagecopyresized');
-
-				$_outsize['width'] = max(1, $_outsize['width']);
-				$_outsize['height'] = max(1, $_outsize['height']);
+			$_outsize['width'] = max(1, $_outsize['width']);
+			$_outsize['height'] = max(1, $_outsize['height']);
 
 
-				// Now create the image
-				$_output_gdimg = $_image_create_function($_outsize['width'], $_outsize['height']); // this image is always black
-				// preserve transparency of png and gif images:
-				switch($output_format){
-					case 'gif':
-						$colorTransparent = imagecolortransparent($_gdimg);
-						imagepalettecopy($_gdimg, $_output_gdimg);
-						imagefill($_output_gdimg, 0, 0, $colorTransparent);
-						imagecolortransparent($_output_gdimg, $colorTransparent);
-						imagetruecolortopalette($_output_gdimg, true, 256);
-						break;
-					case 'png':
-						imagealphablending($_output_gdimg, false);
-						//$transparent = imagecolorallocatealpha($_output_gdimg, 0, 0, 0, 127);
-						$transparent = imagecolorallocatealpha($_output_gdimg, 255, 255, 255, 127);
-						imagefill($_output_gdimg, 0, 0, $transparent);
-						imagesavealpha($_output_gdimg, true);
-						break;
-					default:
-				}
+			// Now create the image
+			$_output_gdimg = $_image_create_function($_outsize['width'], $_outsize['height']); // this image is always black
+			// preserve transparency of png and gif images:
+			switch($output_format){
+				case 'gif':
+					$colorTransparent = imagecolortransparent($_gdimg);
+					imagepalettecopy($_gdimg, $_output_gdimg);
+					imagefill($_output_gdimg, 0, 0, $colorTransparent);
+					imagecolortransparent($_output_gdimg, $colorTransparent);
+					imagetruecolortopalette($_output_gdimg, true, 256);
+					break;
+				case 'png':
+					imagealphablending($_output_gdimg, false);
+					//$transparent = imagecolorallocatealpha($_output_gdimg, 0, 0, 0, 127);
+					$transparent = imagecolorallocatealpha($_output_gdimg, 255, 255, 255, 127);
+					imagefill($_output_gdimg, 0, 0, $transparent);
+					imagesavealpha($_output_gdimg, true);
+					break;
+				default:
+			}
 
-				if((in_array(we_thumbnail::OPTION_FITINSIDE, $options) || in_array(we_thumbnail::OPTION_CROP, $options)) && $width && $height){
-					if(in_array(we_thumbnail::OPTION_FITINSIDE, $options)){
-						$wratio = $width / $_width;
-						$hratio = $height / $_height;
-						$ratio = max($width / $_width, $height / $_height);
-						$h = $height / $ratio;
-						$w = $width / $ratio;
+			if((in_array(we_thumbnail::OPTION_FITINSIDE, $options) || in_array(we_thumbnail::OPTION_CROP, $options)) && $width && $height){
+				if(in_array(we_thumbnail::OPTION_FITINSIDE, $options)){
+					$wratio = $width / $_width;
+					$hratio = $height / $_height;
+					$ratio = max($width / $_width, $height / $_height);
+					$h = $height / $ratio;
+					$w = $width / $ratio;
 
-						if($wratio < $hratio){
-							$x = ($_width - $w) / 2;
-							$y = 0;
-						} else {
-							$x = 0;
-							$y = ($_height - $h) / 2;
-						}
-					} else {
-						$h = $height;
-						$w = $width;
+					if($wratio < $hratio){
 						$x = ($_width - $w) / 2;
+						$y = 0;
+					} else {
+						$x = 0;
 						$y = ($_height - $h) / 2;
 					}
-
-					if(array_filter($crop)){
-						$_x = $x + ($w / 2); // x + origthumbwidth/2 => x-Mittelpunkt
-						$x = $_x + ($_x * $crop[0]) - ($w / 2); // Mittelpunkt + Bildfokus - origthumbwidth/2 => Neuer x-Punkt
-						if($x + $w > $_width){
-							$x = $_width - $w;
-						}
-						$x = max(0, $x);
-						$_y = $y + ($h / 2); // y + origthumbheight/2 => y-Mittelpunkt
-						$y = $_y + ($_y * $crop[1]) - ($h / 2); // Mittelpunkt + Bildfokus - origthumbheight/2 => Neuer y-Punkt
-						if($y + $h > $_height){
-							$y = $_height - $h;
-						}
-						$y = max(0, $y);
-					}
-
-					$_image_resize_function($_output_gdimg, $_gdimg, 0, 0, $x, $y, $width, $height, $w, $h);
 				} else {
-					$_image_resize_function($_output_gdimg, $_gdimg, 0, 0, 0, 0, $_outsize['width'], $_outsize['height'], $_width, $_height);
+					$h = $height;
+					$w = $width;
+					$x = ($_width - $w) / 2;
+					$y = ($_height - $h) / 2;
 				}
 
-				// PHP 4.4.1 GDLIB-Bug/Safemode - Workarround
-				if($output_filename != '' && file_exists($output_filename)){
-					touch($output_filename);
-				}
-				if(in_array(we_thumbnail::OPTION_GAUSSBLUR, $options)){
-					imagefilter($_output_gdimg, IMG_FILTER_GAUSSIAN_BLUR);
-				}
-				if(in_array(we_thumbnail::OPTION_GRAY, $options) || in_array(we_thumbnail::OPTION_SEPIA, $options)){
-					imagefilter($_output_gdimg, IMG_FILTER_GRAYSCALE);
-				}
-				if(in_array(we_thumbnail::OPTION_NEGATE, $options)){
-					imagefilter($_output_gdimg, IMG_FILTER_NEGATE);
-				}
-				if(in_array(we_thumbnail::OPTION_SEPIA, $options)){
-					imagefilter($_output_gdimg, IMG_FILTER_COLORIZE, 90, 60, 40);
+				if(array_filter($crop)){
+					$_x = $x + ($w / 2); // x + origthumbwidth/2 => x-Mittelpunkt
+					$x = $_x + ($_x * $crop[0]) - ($w / 2); // Mittelpunkt + Bildfokus - origthumbwidth/2 => Neuer x-Punkt
+					if($x + $w > $_width){
+						$x = $_width - $w;
+					}
+					$x = max(0, $x);
+					$_y = $y + ($h / 2); // y + origthumbheight/2 => y-Mittelpunkt
+					$y = $_y + ($_y * $crop[1]) - ($h / 2); // Mittelpunkt + Bildfokus - origthumbheight/2 => Neuer y-Punkt
+					if($y + $h > $_height){
+						$y = $_height - $h;
+					}
+					$y = max(0, $y);
 				}
 
-
-				if(in_array(we_thumbnail::OPTION_UNSHARP, $options)){
-					$_output_gdimg = self::UnsharpMask($_output_gdimg);
-				}
-				ImageInterlace($_output_gdimg, (in_array(we_thumbnail::OPTION_INTERLACE, $options) ? 1 : 0));
-
-				switch($output_format){
-					case 'jpg':
-						// Output to a filename or directly
-						if($output_filename){
-							$_gdimg = imagejpeg($_output_gdimg, $output_filename, $output_quality) ?
-								basename($output_filename) :
-								'';
-						} elseif(($_tempfilename = tempnam(TEMP_PATH, ''))){
-							imagejpeg($_output_gdimg, $_tempfilename, $output_quality);
-							$_gdimg = we_base_file::load($_tempfilename);
-
-							// As we read the temporary file we no longer need it
-							unlink($_tempfilename);
-						}
-
-						break;
-
-					case 'png':
-					case 'gif':
-						// Set output function
-						$_image_out_function = 'image' . $output_format;
-						// Output to a filename or directly
-						if($output_filename){
-							$_gdimg = $_image_out_function($_output_gdimg, $output_filename);
-							if($_gdimg){
-								$_gdimg = basename($output_filename);
-							}
-						} elseif(($_tempfilename = tempnam(TEMP_PATH, ''))){
-							$_image_out_function($_output_gdimg, $_tempfilename);
-							$_gdimg = we_base_file::load($_tempfilename);
-
-							// As we read the temporary file we no longer need it
-							unlink($_tempfilename);
-						}
-
-						break;
-				}
-
-				ImageDestroy($_output_gdimg);
+				$_image_resize_function($_output_gdimg, $_gdimg, 0, 0, $x, $y, $width, $height, $w, $h);
+			} else {
+				$_image_resize_function($_output_gdimg, $_gdimg, 0, 0, 0, 0, $_outsize['width'], $_outsize['height'], $_width, $_height);
 			}
 
-			return isset($_gdimg) ? array($_gdimg, $_outsize['width'], $_outsize['height']) : array(false, -1, -1);
+			// PHP 4.4.1 GDLIB-Bug/Safemode - Workarround
+			if($output_filename != '' && file_exists($output_filename)){
+				touch($output_filename);
+			}
+			if(in_array(we_thumbnail::OPTION_GAUSSBLUR, $options)){
+				imagefilter($_output_gdimg, IMG_FILTER_GAUSSIAN_BLUR);
+			}
+			if(in_array(we_thumbnail::OPTION_GRAY, $options) || in_array(we_thumbnail::OPTION_SEPIA, $options)){
+				imagefilter($_output_gdimg, IMG_FILTER_GRAYSCALE);
+			}
+			if(in_array(we_thumbnail::OPTION_NEGATE, $options)){
+				imagefilter($_output_gdimg, IMG_FILTER_NEGATE);
+			}
+			if(in_array(we_thumbnail::OPTION_SEPIA, $options)){
+				imagefilter($_output_gdimg, IMG_FILTER_COLORIZE, 90, 60, 40);
+			}
 
 
+			if(in_array(we_thumbnail::OPTION_UNSHARP, $options)){
+				$_output_gdimg = self::UnsharpMask($_output_gdimg);
+			}
+			ImageInterlace($_output_gdimg, (in_array(we_thumbnail::OPTION_INTERLACE, $options) ? 1 : 0));
+
+			switch($output_format){
+				case 'jpg':
+					// Output to a filename or directly
+					if($output_filename){
+						$_gdimg = imagejpeg($_output_gdimg, $output_filename, $output_quality) ?
+								basename($output_filename) :
+								'';
+					} elseif(($_tempfilename = tempnam(TEMP_PATH, ''))){
+						imagejpeg($_output_gdimg, $_tempfilename, $output_quality);
+						$_gdimg = we_base_file::load($_tempfilename);
+
+						// As we read the temporary file we no longer need it
+						unlink($_tempfilename);
+					}
+
+					break;
+
+				case 'png':
+				case 'gif':
+					// Set output function
+					$_image_out_function = 'image' . $output_format;
+					// Output to a filename or directly
+					if($output_filename){
+						$_gdimg = $_image_out_function($_output_gdimg, $output_filename);
+						if($_gdimg){
+							$_gdimg = basename($output_filename);
+						}
+					} elseif(($_tempfilename = tempnam(TEMP_PATH, ''))){
+						$_image_out_function($_output_gdimg, $_tempfilename);
+						$_gdimg = we_base_file::load($_tempfilename);
+
+						// As we read the temporary file we no longer need it
+						unlink($_tempfilename);
+					}
+
+					break;
+			}
+
+			ImageDestroy($_output_gdimg);
+		}
+
+		return isset($_gdimg) ? array($_gdimg, $_outsize['width'], $_outsize['height']) : array(false, -1, -1);
 	}
 
 	/* static function ImageTrueColorToPalette2($image, $dither, $ncolors){
@@ -708,8 +708,8 @@ abstract class we_base_imageEdit{
 		}
 		if($imagesize[0] > $width || $imagesize[1] > $height){
 			$_thumbSrc = ($imgID ?
-					WE_THUMBNAIL_DIRECTORY . '/' . $imgID . '_' . $width . '_' . $height . '.' . strtolower($outputFormat) :
-					TEMP_DIR . ($tmpName ? : we_base_file::getUniqueId()) . '.' . strtolower($outputFormat));
+							WE_THUMBNAIL_DIRECTORY . '/' . $imgID . '_' . $width . '_' . $height . '.' . strtolower($outputFormat) :
+							TEMP_DIR . ($tmpName ? : we_base_file::getUniqueId()) . '.' . strtolower($outputFormat));
 			$_thumbPath = WEBEDITION_PATH . '../' . $_thumbSrc;
 
 			$_thumbExists = file_exists($_thumbPath);
