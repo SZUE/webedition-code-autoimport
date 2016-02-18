@@ -138,13 +138,13 @@ weSearch = {
 				weSearch.conf.editorBodyFrame.document.getElementById('mouseOverDivs_' + weSearch.conf.whichsearch).innerHTML = weSearch.conf.editorBodyFrame.document.getElementById('movethemaway').innerHTML;
 				weSearch.conf.editorBodyFrame.document.getElementById('movethemaway').innerHTML = '';
 
-				if(weSearch.conf.whichsearch === WE().consts.weSearch.SEARCH_MEDIA || weSearch.conf.whichsearch === WE().consts.weSearch.SEARCH_ADV){
-					window.scrollTo(0,document.body.scrollHeight);
+				if (weSearch.conf.whichsearch === WE().consts.weSearch.SEARCH_MEDIA || weSearch.conf.whichsearch === WE().consts.weSearch.SEARCH_ADV) {
+					window.scrollTo(0, document.body.scrollHeight);
 
 					// correct result header when result list has vertical scrollbar
 					var sc = document.getElementById('scrollContent_' + weSearch.conf.whichsearch);
 					document.getElementById('headerLast').style.width = weSearch.conf.whichsearch === WE().consts.weSearch.SEARCH_MEDIA ? ((sc.firstChild.offsetHeight > sc.offsetHeight ? 78 : 64) + 'px') :
-							((sc.firstChild.offsetHeight > sc.offsetHeight ? 20 : 18) + '%');
+									((sc.firstChild.offsetHeight > sc.offsetHeight ? 20 : 18) + '%');
 				}
 			}
 		},
@@ -389,42 +389,45 @@ weSearch = {
 		var h = 0, hMin = 120, rows, mode;
 		var scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch);
 
-		switch (this.conf.whichsearch) {
-			case WE().consts.weSearch.SEARCH_DOCS:
-			case WE().consts.weSearch.SEARCH_TMPL:
-				top.console.log('found');
-				h = frameH - 324;
-				break;
-			/*
-			case WE().consts.weSearch.SEARCH_MEDIA:
-				rows = (document.getElementById('filterTableMediaSearch').rows.length - 1);
-				h = frameH - (534 + (rows * 32));
-				hMin = 300;
-				break;
-			case WE().consts.weSearch.SEARCH_ADV:
-				rows = (document.getElementById('filterTableAdvSearch').rows.length - 1);
-				h = frameH - (290 + (rows * 32));
-				break;
-			*/
-			case WE().consts.weSearch.SEARCH_MEDIA:
-			case WE().consts.weSearch.SEARCH_ADV:
-				h = frameH - 136;
-				hMin = 300;
-				break;
-			case WE().consts.weSearch.SEARCH_DOCLIST:
-				top.console.log('hier');
-				rows = (document.getElementById('filterTableDoclistSearch').rows.length);
-				mode = document.we_form.mode.value;
-				top.console.log('hier', mode);
-				h = parseInt(mode) === 1 ? (frameH - (220 + (rows * 28))) : (frameH - 183);
-				break;
+		if (scrollContent) {
+			switch (this.conf.whichsearch) {
+				case WE().consts.weSearch.SEARCH_DOCS:
+				case WE().consts.weSearch.SEARCH_TMPL:
+					top.console.log('found');
+					h = frameH - 324;
+					break;
+					/*
+					 case WE().consts.weSearch.SEARCH_MEDIA:
+					 rows = (document.getElementById('filterTableMediaSearch').rows.length - 1);
+					 h = frameH - (534 + (rows * 32));
+					 hMin = 300;
+					 break;
+					 case WE().consts.weSearch.SEARCH_ADV:
+					 rows = (document.getElementById('filterTableAdvSearch').rows.length - 1);
+					 h = frameH - (290 + (rows * 32));
+					 break;
+					 */
+				case WE().consts.weSearch.SEARCH_MEDIA:
+				case WE().consts.weSearch.SEARCH_ADV:
+					h = frameH - 136;
+					hMin = 300;
+					break;
+				case WE().consts.weSearch.SEARCH_DOCLIST:
+					//top.console.log('hier');
+					rows = (document.getElementById('filterTableDoclistSearch').rows.length);
+					mode = document.we_form.mode.value;
+					//top.console.log('hier', mode);
+					h = parseInt(mode) === 1 ? (frameH - (220 + (rows * 28))) : (frameH - 183);
+					break;
+			}
+
+			scrollContent.style.height = (Math.max(h, hMin)) + 'px';
 		}
-		scrollContent.style.height = (Math.max(h, hMin)) + 'px';
 	},
 	newinput: function () {
 		var elem = document.getElementById('filterTable' + this.conf.whichsearch),
 						//c = elem.rows.length - 1,
-						scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch),
+						//scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch),
 						newRow, cell;
 
 		this.conf.rows++;
@@ -539,7 +542,7 @@ weSearch = {
 		this.sizeScrollContent();
 	},
 	delRow: function (id) {
-		var scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch),
+		var //scrollContent = document.getElementById('scrollContent_' + this.conf.whichsearch),
 						elem = document.getElementById('filterTable' + this.conf.whichsearch);
 
 		if (elem) {
@@ -904,9 +907,17 @@ weSearch = {
 
 		if (elem) {
 			elem.style.display = elem.style.display === 'block' ? 'none' : 'block';
+
+			if (elem.style.display === 'block') {
+				// Group is expanded
+				btn.firstChild.classList.remove("fa-caret-right");
+				btn.firstChild.classList.add("fa-caret-down");
+			} else {
+				// Group is folded
+				btn.firstChild.classList.remove("fa-caret-down");
+				btn.firstChild.classList.add("fa-caret-right");
+			}
 		}
-		//FIXME: this image doesn't exist anymore
-		//btn.firstChild.src = WE().consts.dirs.IMAGE_DIR + 'button/icons/direction_' + (elem.style.display === 'block' ? 'down' : 'right') + '.gif';
 	},
 	ajaxCallbackPublishDocs: {
 		success: function (o) {
