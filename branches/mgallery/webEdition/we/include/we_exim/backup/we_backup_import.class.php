@@ -87,11 +87,13 @@ abstract class we_backup_import{
 
 						do{
 							$element_value = $parser->getNodeName();
+							//this code is for creation of tables with elements <lineX>
 							if($element_value === 'Field'){
 								$element_name = $parser->getNodeData();
 							}
 							if(!empty($element_name)){
-								$object->elements[$element_name][$element_value] = $parser->getNodeData();
+								$attr = $parser->getNodeAttributes();
+								$object->elements[$element_name][$element_value] = we_exim_contentProvider::getDecodedData((empty($attr[we_exim_contentProvider::CODING_ATTRIBUTE]) ? we_exim_contentProvider::CODING_NONE : $attr[we_exim_contentProvider::CODING_ATTRIBUTE]), $parser->getNodeData());
 							}
 						} while($parser->nextSibling());
 
@@ -101,7 +103,7 @@ abstract class we_backup_import{
 						$parser->gotoMark('second');
 					} else {
 						$attr = $parser->getNodeAttributes();
-						$object->$name = we_exim_contentProvider::getDecodedData(($attr && isset($attr[we_exim_contentProvider::CODING_ATTRIBUTE]) ? $attr[we_exim_contentProvider::CODING_ATTRIBUTE] : we_exim_contentProvider::CODING_NONE), $parser->getNodeData());
+						$object->$name = we_exim_contentProvider::getDecodedData((empty($attr[we_exim_contentProvider::CODING_ATTRIBUTE]) ? we_exim_contentProvider::CODING_NONE : $attr[we_exim_contentProvider::CODING_ATTRIBUTE]), $parser->getNodeData());
 
 						if(isset($object->persistent_slots) && !in_array($name, $object->persistent_slots)){
 							$object->persistent_slots[] = $name;

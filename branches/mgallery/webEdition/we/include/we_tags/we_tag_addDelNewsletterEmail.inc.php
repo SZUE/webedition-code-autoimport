@@ -228,7 +228,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 					}
 					$mailtextHTML = ($mailid > 0) && we_base_file::isWeFile($mailid, FILE_TABLE, $GLOBALS['DB_WE']) ? we_getDocumentByID($mailid, '', $GLOBALS['DB_WE']) : '';
 					if($f['subscribe_title']){
-						$mailtextHTML = preg_replace('%([^ ])###TITLE###%', '$1 ' . $f['subscribe_title'], $mailtextHTML);
+						$mailtextHTML = preg_replace('%([^ ])###TITLE###%', '${1} ' . $f['subscribe_title'], $mailtextHTML);
 					}
 					$mailtextHTML = str_replace('###TITLE###', $f['subscribe_title'], $mailtextHTML);
 				}
@@ -247,7 +247,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 				$mailtext = ($mailid > 0) && we_base_file::isWeFile($mailid, FILE_TABLE, $db) ? we_getDocumentByID($mailid, '', $db, $charset) : '';
 
 				if($f['subscribe_title']){
-					$mailtext = preg_replace('%([^ ])###TITLE###%', '$1 ' . $f['subscribe_title'], $mailtext);
+					$mailtext = preg_replace('%([^ ])###TITLE###%', '${1} ' . $f['subscribe_title'], $mailtext);
 				}
 				$mailtext = str_replace('###TITLE###', $f['subscribe_title'], $mailtext);
 

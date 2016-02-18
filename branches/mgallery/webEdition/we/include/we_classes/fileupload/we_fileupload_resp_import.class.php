@@ -93,12 +93,12 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			$we_dt = $_SESSION['weS']['we_data'][$this->docVars['transaction']];
 			include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
-			$we_doc->Extension = strtolower((strpos($this->fileVars['weFileName'], '.') > 0) ? preg_replace('/^.+(\..+)$/', '$1', $this->fileVars['weFileName']) : ''); //strtolower for feature 3764
+			$we_doc->Extension = strtolower((strpos($this->fileVars['weFileName'], '.') > 0) ? preg_replace('/^.+(\..+)$/', '${1}', $this->fileVars['weFileName']) : ''); //strtolower for feature 3764
 
 			if((!$we_doc->Filename) || (!$we_doc->ID)){ // new document not yet saved
 				// Bug Fix #6284
 				$we_doc->Filename = preg_replace('/[^A-Za-z0-9._-]/', '', $this->fileVars['weFileName']);
-				$we_doc->Filename = preg_replace('/^(.+)\..+$/', '$1', $we_doc->Filename);
+				$we_doc->Filename = preg_replace('/^(.+)\..+$/', '${1}', $we_doc->Filename);
 				$we_doc->Text = $we_doc->Filename . $we_doc->Extension;
 				$we_doc->Path = $we_doc->getParentPath() . (($we_doc->getParentPath() != '/') ? '/' : '') . $we_doc->Text;
 
@@ -122,7 +122,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 		// make new we_doc
 		$we_ContentType = getContentTypeFromFile($this->fileVars['weFileName']);
 		include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
-		
+
 		//TODO: check if $we_doc exists: depends on perms!!
 		/*
 		if(!$we_doc){
@@ -292,7 +292,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 				if(permissionhandler::hasPerm("EDIT_KATEGORIE")){
 					$we_doc->Category = isset($this->docVars['categories']) && $this->docVars['categories'] ? $this->docVars['categories'] : $we_doc->Category;
 				}
-			
+
 				if($this->docVars['importMetadata'] && $we_doc->Extension === '.pdf'){
 					$we_doc->setMetaDataFromFile($tempFile);
 				}

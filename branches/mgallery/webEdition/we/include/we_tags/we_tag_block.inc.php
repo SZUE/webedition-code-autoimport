@@ -45,7 +45,7 @@ function we_parse_tag_block($attribs, $content, array $arr){
 	} else {
 		$content = (preg_match('/< ?(tr|td)/i', $content) ?
 				//table found
-				strtr(preg_replace('|(< ?td[^>]*>)|si', '$1' . '<?php we_tag_blockControls($block_' . $name . ');?>', strtr($content, array('=>' => '#####PHPCALSSARROW####', '?>' => '#####PHPENDBRACKET####')), 1), array('#####PHPCALSSARROW####' => '=>', '#####PHPENDBRACKET####' => '?>')) :
+				strtr(preg_replace('|(< ?td[^>]*>)|si', '${1}' . '<?php we_tag_blockControls($block_' . $name . ');?>', strtr($content, array('=>' => '#####PHPCALSSARROW####', '?>' => '#####PHPENDBRACKET####')), 1), array('#####PHPCALSSARROW####' => '=>', '#####PHPENDBRACKET####' => '?>')) :
 				//no tables found
 				'<?php we_tag_blockControls($block_' . $name . ');?>' . $content
 			);

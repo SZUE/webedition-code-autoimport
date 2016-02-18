@@ -94,7 +94,7 @@ switch($type){
 				header("Location: $bannerpath");
 				exit();
 			}
-			$ext = preg_replace('/.*\.(.+)$/', '$1', $bannerpath);
+			$ext = preg_replace('/.*\.(.+)$/', '${1}', $bannerpath);
 			switch($ext){
 				case "jpg":
 				case "jpeg":

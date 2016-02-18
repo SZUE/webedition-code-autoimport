@@ -226,7 +226,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 
 	private function parseTemplate(){
 		$code = str_replace("<?xml", '<?php echo "<?xml"; ?>', $this->getTemplateCode(true));
-		//$code = preg_replace('/(< *\/? *we:[^>]+>\n)/i','$1'."\n",$code);
+		//$code = preg_replace('/(< *\/? *we:[^>]+>\n)/i','${1}'."\n",$code);
 		$tp = new we_tag_tagParser($code, $this->getPath());
 		$tags = $tp->getAllTags();
 		if(($foo = self::checkElsetags($tags))){
@@ -422,9 +422,7 @@ we_templateInit();?>';
 		$tp = new we_tag_tagParser($templateCode, $this->getPath());
 		$tags = $tp->getAllTags();
 
-		$blocks = array();
-		$out = array();
-		$regs = array();
+		$blocks = $out = $regs = array();
 
 		foreach($tags as $tag){
 			if(preg_match('|<we:([^> /]+)|i', $tag, $regs)){ // starttag found
@@ -748,7 +746,7 @@ we_templateInit();?>';
 		$this->Extension = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::TEMPLATE);
 		if($updateCode){
 			$this->_updateCompleteCode(true);
-			$this->setElement('allVariants', we_serialize($this->readAllVariantFields($this->getElement('completeData'))), 'variants');
+			$this->setElement('allVariants', we_serialize($this->readAllVariantFields($this->getElement('completeData')), SERIALIZE_JSON), 'variants');
 		} else {
 			$this->doUpdateCode = false;
 		}

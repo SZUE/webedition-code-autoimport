@@ -952,9 +952,9 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 									$_SESSION[$_imgDataId]['id'] = $imgId;
 								}
 
-								$_SESSION[$_imgDataId]['fileName'] = preg_replace('#^(.+)\..+$#', '$1', $tmp_Filename);
+								$_SESSION[$_imgDataId]['fileName'] = preg_replace('#^(.+)\..+$#', '${1}', $tmp_Filename);
 								$_SESSION[$_imgDataId]['extension'] = (strpos($tmp_Filename, '.') > 0) ?
-									preg_replace('#^.+(\..+)$#', '$1', $tmp_Filename) : '';
+									preg_replace('#^.+(\..+)$#', '${1}', $tmp_Filename) : '';
 								$_SESSION[$_imgDataId]['text'] = $_SESSION[$_imgDataId]['fileName'] . $_SESSION[$_imgDataId]['extension'];
 
 								//image needs to be scaled

@@ -122,7 +122,7 @@ class we_backup_tableAdv{
 		foreach($myarray as &$cur){
 			if(substr($cur, 0, 6) === 'CREATE'){
 				//Regex because of backups <6.2.4
-				$cur = preg_replace('/(CREATE *\w* *`?)\w*' . stripTblPrefix($this->table) . '/i', '$1' . $this->table, $cur, 1);
+				$cur = preg_replace('|(CREATE *\w* *`?)\w*' . stripTblPrefix($this->table) . '|i', '${1}' . $this->table, $cur, 1);
 			}
 			if($doConvert){
 				$cur = str_replace($searchArray, '', $cur);
@@ -132,7 +132,6 @@ class we_backup_tableAdv{
 		//FIXME: this is NOT Save for MySQL Updates!!!!
 		array_pop($myarray); //get rid of old Engine statement
 		$myarray[] = ' ) ' . we_database_base::getCharsetCollation() . ' ENGINE=MyISAM;';
-
 		$query = implode(' ', $myarray);
 		return ($this->db->query($query));
 	}

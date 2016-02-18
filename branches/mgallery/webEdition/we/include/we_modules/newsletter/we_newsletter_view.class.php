@@ -989,7 +989,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 			case we_newsletter_block::TEXT:
 				$blockHtml = $block->Html ? preg_replace(array(
 						'/(href=")(\\\\*&quot;)*(.+?)(\\\\*&quot;)*(")/',
-						'/(src=")(\\\\*&quot;)*(.+?)(\\\\*&quot;)*(")/'), '$1$3$5', stripslashes($block->Html)) : '';
+						'/(src=")(\\\\*&quot;)*(.+?)(\\\\*&quot;)*(")/'), '${1}${3}${5}', stripslashes($block->Html)) : '';
 
 				if($hm){
 					$content = $blockHtml ?
@@ -1070,7 +1070,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 
 				$urlReplace = we_folder::getUrlReplacements($this->db, false, true);
 				if($urlReplace){
-					$content = preg_replace('-(["\'])//-', '$1' . $protocol, preg_replace($urlReplace, array_keys($urlReplace), $content));
+					$content = preg_replace('-(["\'])//-', '${1}' . $protocol, preg_replace($urlReplace, array_keys($urlReplace), $content));
 				}
 				$content = preg_replace(array(
 					'-(<[^>]+src' . $spacer . '=' . $spacer . '[\'"]?)(/)-i',

@@ -1593,7 +1593,7 @@ class we_document extends we_root{
 						'-<(a|img) [^>]*' . $reg[2] . '="' . $reg[2] . $reg[3] . '("|&|&amp;|\?)[^>]*>(.*)</a>-Ui',
 						'-<(a|img) [^>]*' . $reg[2] . '="' . $reg[2] . $reg[3] . '(\?|&|&amp;|")[^>]*>-Ui',
 						), array(
-						'$3',
+						'${3}',
 						''
 						), $text);
 				}
@@ -1626,7 +1626,7 @@ class we_document extends we_root{
 							'-<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '("|&|&amp;|\?)[^>]*>(.*)</a>-Ui',
 							'-<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '("|&|&amp;|\?)[^>]*>-Ui',
 							), array(
-							'$2',
+							'${2}',
 							''
 							), $text);
 					}
@@ -1635,7 +1635,7 @@ class we_document extends we_root{
 		}
 
 
-		return preg_replace('/\<a>(.*)\<\/a>/siU', '$1', $text);
+		return preg_replace('/\<a>(.*)\<\/a>/siU', '${1}', $text);
 	}
 
 	private function getNavigationItems(){

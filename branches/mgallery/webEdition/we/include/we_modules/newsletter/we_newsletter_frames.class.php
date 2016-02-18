@@ -2195,8 +2195,8 @@ self.focus();');
 					'###LASTNAME###' => $lastname,
 					'###CUSTOMERID###' => $customerid,
 					'###TITLE###' => $title,);
-				$content = strtr(($title ? preg_replace('|([^ ])###TITLE###|', '$1 ' . $title, $contentF) : $contentF), $rep);
-				$content_plain = strtr(($title ? preg_replace('|([^ ])###TITLE###|', '$1 ' . $title, $contentF_plain) : $contentF_plain), $rep);
+				$content = strtr(($title ? preg_replace('|([^ ])###TITLE###|', '${1} ' . $title, $contentF) : $contentF), $rep);
+				$content_plain = strtr(($title ? preg_replace('|([^ ])###TITLE###|', '${1} ' . $title, $contentF_plain) : $contentF_plain), $rep);
 			} else if($salutation && $lastname && ($salutation == $this->View->settings[we_newsletter_newsletter::MALE_SALUTATION_FIELD]) && ((!$this->View->settings["title_or_salutation"]) || (!$title))){
 				$rep = array(
 					'###FIRSTNAME###' => $firstname,
@@ -2205,8 +2205,8 @@ self.focus();');
 					'###TITLE###' => $title
 				);
 
-				$content = strtr(($title ? preg_replace('|([^ ])###TITLE###|', '$1 ' . $title, $contentM) : $contentM), $rep);
-				$content_plain = strtr(($title ? preg_replace('|([^ ])###TITLE###|', '$1 ' . $title, $contentM_plain) : $contentM_plain), $rep);
+				$content = strtr(($title ? preg_replace('|([^ ])###TITLE###|', '${1} ' . $title, $contentM) : $contentM), $rep);
+				$content_plain = strtr(($title ? preg_replace('|([^ ])###TITLE###|', '${1} ' . $title, $contentM_plain) : $contentM_plain), $rep);
 			} else if($title && $firstname && $lastname){
 				$rep = array(
 					'###FIRSTNAME###' => $firstname,
@@ -2214,8 +2214,8 @@ self.focus();');
 					'###CUSTOMERID###' => $customerid,
 					'###TITLE###' => $title
 				);
-				$content = strtr(preg_replace('|([^ ])###TITLE###|', '$1 ' . $title, $contentTFL), $rep);
-				$content_plain = strtr(preg_replace('|([^ ])###TITLE###|', '$1 ' . $title, $contentTFL_plain), $rep);
+				$content = strtr(preg_replace('|([^ ])###TITLE###|', '${1} ' . $title, $contentTFL), $rep);
+				$content_plain = strtr(preg_replace('|([^ ])###TITLE###|', '${1} ' . $title, $contentTFL_plain), $rep);
 			} else if($title && $lastname){
 				$rep = array(
 					'###FIRSTNAME###' => $firstname,
@@ -2223,8 +2223,8 @@ self.focus();');
 					'###CUSTOMERID###' => $customerid,
 					'###TITLE###' => $title
 				);
-				$content = strtr(preg_replace('|([^ ])###TITLE###|', '$1 ' . $title, $contentTL), $rep);
-				$content_plain = strtr(preg_replace('|([^ ])###TITLE###|', '$1 ' . $title, $contentTL_plain), $rep);
+				$content = strtr(preg_replace('|([^ ])###TITLE###|', '${1} ' . $title, $contentTL), $rep);
+				$content_plain = strtr(preg_replace('|([^ ])###TITLE###|', '${1} ' . $title, $contentTL_plain), $rep);
 			} else if($lastname && $firstname){
 				$rep = array(
 					'###FIRSTNAME###' => $firstname,

@@ -118,7 +118,7 @@ class liveUpdateFunctions{
 	function checkReplaceDocRoot($content){
 		//replaces any count of escaped docroot-strings
 		return ($this->replaceDocRootNeeded() ?
-				preg_replace('-\$(_SERVER|GLOBALS)\[([\\\"\']+)DOCUMENT' . '_ROOT([\\\"\']+)\]-', '\2' . LIVEUPDATE_SOFTWARE_DIR . '\3', $content) :
+				preg_replace('-\$(_SERVER|GLOBALS)\[([\\\"\']+)DOCUMENT' . '_ROOT([\\\"\']+)\]-', '${2}' . LIVEUPDATE_SOFTWARE_DIR . '${3}', $content) :
 				$content);
 	}
 

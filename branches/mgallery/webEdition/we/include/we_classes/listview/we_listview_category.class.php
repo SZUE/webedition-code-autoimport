@@ -68,7 +68,7 @@ class we_listview_category extends we_listview_base{
 			foreach($cids as $cid){
 				$tail .= 'ID=' . intval($cid) . ' OR ';
 			}
-			$tail = preg_replace('/^(.+) OR /', '$1', $tail);
+			$tail = preg_replace('/^(.+) OR /', '${1}', $tail);
 			$tail = '(' . $tail . ')';
 		} else {
 			$tail = ' ParentID=' . intval($this->parentID) . ' ';
