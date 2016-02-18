@@ -177,10 +177,9 @@ self.focus();
 		$fileUploader->setTypeCondition('accepted', array(we_base_ContentTypes::XML), array('gz', 'tgz'));
 		$fileUploader->setCallback('top.body.startImport(true)');
 		$fileUploader->setInternalProgress(array('isInternalProgress' => true, 'width' => 300));
-		$fileUploader->setDimensions(array('width' => 500, 'dragHeight' => 60, 'marginTop' => 5));
+		$fileUploader->setDimensions(array('width' => 500, 'dragWidth' => 594, 'dragHeight' => 70, 'marginTop' => 5));
 		$fileUploader->setGenericFileName(BACKUP_DIR . 'tmp/' . we_fileupload::REPLACE_BY_FILENAME);
 		$this->fileUploader = $fileUploader;
-
 
 		$js = "";
 

@@ -217,7 +217,7 @@ doDragFromTree = function(text){
 				we_html_element::htmlDiv(array('id' => 'div_' . $name . '_fileDrag', 'class' => 'we_file_drag', 'ondrop'=> 'handleDrop(event);', 'ondragover' => 'handleDragOver(event);', 'ondragleave' => 'handleDragLeave(event);', 'style' => 'margin-top:0.5em;display:' . (self::isDragAndDrop() ? 'block;' : 'none;') . $style), $content);
 	}
 
-	public function getButtonWrapped($type, $disabled = false, $width = 170){
+	public function getButtonWrapped($type, $disabled = false, $width = 170, $notWrapped = false){
 		switch($type){
 			case 'browse':
 				$isIE10 = we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11;
@@ -232,12 +232,12 @@ doDragFromTree = function(text){
 				));
 				$btn = we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, $width, we_html_button::HEIGHT, '', '', $disabled, false, '_btn', false, '', 'weBtn noMarginLeft');
 
-				return we_html_element::htmlDiv(array('id' => 'div_' . $this->name . '_fileInputWrapper', 'class' => 'we_fileInputWrapper', 'style' => 'vertical-align:top;display:inline-block;width:100%;'),
+				return we_html_element::htmlDiv(array('id' => 'div_' . $this->name . '_fileInputWrapper', 'class' => 'we_fileInputWrapper', 'style' => 'vertical-align:top;display:inline-block;'),
 					$fileInput . $btn
 				);
 			case 'reset':
 				$btn = we_html_button::create_button('reset', 'javascript:we_FileUpload.reset()', true, $width, we_html_button::HEIGHT, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');
-				return we_html_element::htmlDiv(array('id' => 'div_fileupload_btnReset', 'style' => 'height:30px;margin-top:18px;display:none;'), $btn);
+				return $notWrapped ? $btn : we_html_element::htmlDiv(array('id' => 'div_fileupload_btnReset', 'style' => 'height:30px;margin-top:18px;display:none;'), $btn);
 
 			case 'upload':
 				$btn = we_html_button::create_button(we_html_button::UPLOAD, 'javascript:' . $this->getJsBtnCmd('upload'), true, $width, we_html_button::HEIGHT, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');
@@ -253,7 +253,7 @@ doDragFromTree = function(text){
 	public function getHTML(){
 		$isIE10 = we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11;
 		// FIXME: do we need thos replacements?
-		$butReset = str_replace(array("\n\r", "\r\n", "\r", "\n"), ' ', $this->getButtonWrapped('reset', true, ($isIE10 ? 84 : 100)));
+		$butReset = str_replace(array("\n\r", "\r\n", "\r", "\n"), ' ', $this->getButtonWrapped('reset', true, ($isIE10 ? 84 : 100), true));
 		$btnUpload = str_replace(array("\n\r", "\r\n", "\r", "\n"), ' ', $this->getButtonWrapped('upload', true, ($isIE10 ? 84 : 100)));
 		$btnCancel = str_replace(array("\n\r", "\r\n", "\r", "\n"), ' ', $this->getButtonWrapped('cancel', false, ($isIE10 ? 84 : 100)));
 
@@ -306,9 +306,29 @@ doDragFromTree = function(text){
 		return we_html_element::htmlDiv(array('id' => 'div_' . $this->name . '_fileName', 'style' => 'height:26px;padding-top:10px;display:' . ($this->isDragAndDrop ? 'none' : 'block') . ';'), '') .
 			we_html_element::htmlDiv(array('style' => 'display:block;padding:0.6em 0 0 0.2em'),
 				we_html_element::htmlDiv(array('id' => 'div_' . $this->name . '_message', 'style' => 'height:26px;font-size:1em;'), '&nbsp;') .
-				''//($this->internalProgress['isInternalProgress'] ? we_html_element::htmlDiv(array('id' => 'div_' . $this->name . '_progress', 'style' => 'height:26px;display:none;'), $this->_getProgressHTML()) : '')
+				($this->internalProgress['isInternalProgress'] ? $this->getProgress_tmp() : '')
 			);
 	}
+
+	protected function getProgress_tmp(){ // FIXME: use standard progress and adapt functions in uploader abstract to it!
+		return '<div style="display: none;height:26px;" id="div_' . $this->name . '_progress">
+					<table class="default"><tbody><tr>
+						<td style="vertical-align:middle"><div class="progress_image" style="width:0px;height:10px;" id="' . $this->name . '_progress_image" style="vertical-align:top"></div><div class="progress_image_bg" style="width:130px;height:10px;" id="' . $this->name . '_progress_image_bg" style="vertical-align:top"></div></td>
+						<td class="small bold" style="color:#006699;padding-left:8px;" id="span_' . $this->name . '_progress_text">0%</td>
+						<td class="small bold"><span id="span_' . $this->name . '_progress_more_text" style="color:#006699;"></span></td>
+					</tr></tbody></table>
+				</div>';
+		/*
+		$progress = new we_progressBar(0, true);
+		$progress->setStudLen(170);
+		$progress->setProgressTextPlace(0);
+		$progress->setName('_fileupload');
+		return $progress->getHTML('', 'font-size:11px;');
+		$divProgressbar = we_html_element::htmlDiv(array('id' => 'div_fileupload_progressBar', 'style' => 'margin: 13px 0 10px 0;display:none;'), $progress->getHTML('', 'font-size:11px;'));
+		 * 
+		 */
+	}
+	
 
 	public function getCss(){
 		return we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') .

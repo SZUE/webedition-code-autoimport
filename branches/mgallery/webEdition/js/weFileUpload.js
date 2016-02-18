@@ -1365,7 +1365,7 @@ var weFileUpload = (function () {
 							document.getElementById(_.fieldName + '_progress_image').className = "progress_image";
 							this.elems.progress.style.display = '';
 							this.elems.progressMoreText.style.display = '';
-							this.elems.progressMoreText.innerHTML = ' / ' + _.utils.computeSize(_.sender.currentFile.size);
+							this.elems.progressMoreText.innerHTML = '&nbsp;&nbsp;/ ' + _.utils.computeSize(_.sender.currentFile.size);
 						}
 						if (this.extProgress.isExtProgress) {
 							this.elems.extProgressDiv.style.display = '';
