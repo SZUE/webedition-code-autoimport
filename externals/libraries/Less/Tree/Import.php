@@ -162,7 +162,6 @@ class Less_Tree_Import extends Less_Tree{
 			$full_path = $uri = $evald->getPath();
 		}
 
-
 		//import once
 		if( $evald->skip( $full_path, $env) ){
 			return array();
@@ -180,11 +179,6 @@ class Less_Tree_Import extends Less_Tree{
 			}
 
 			return array( $contents );
-		}
-
-		// optional (need to be before "CSS" to support optional CSS imports. CSS should be checked only if empty($this->currentFileInfo))
-		if( isset($this->options['optional']) && $this->options['optional'] && !file_exists($full_path) && (!$evald->css || !empty($this->currentFileInfo))) {
-			return array();
 		}
 
 
@@ -236,24 +230,12 @@ class Less_Tree_Import extends Less_Tree{
 						$full_path = $path;
 						return array( $full_path, $uri );
 					}
-				}elseif( !empty($rootpath) ){
-
-
-					if( $rooturi ){
-						if( strpos($evald_path,$rooturi) === 0 ){
-							$evald_path = substr( $evald_path, strlen($rooturi) );
-						}
-					}
-
+				}else{
 					$path = rtrim($rootpath,'/\\').'/'.ltrim($evald_path,'/\\');
 
 					if( file_exists($path) ){
 						$full_path = Less_Environment::normalizePath($path);
 						$uri = Less_Environment::normalizePath(dirname($rooturi.$evald_path));
-						return array( $full_path, $uri );
-					} elseif( file_exists($path.'.less') ){
-						$full_path = Less_Environment::normalizePath($path.'.less');
-						$uri = Less_Environment::normalizePath(dirname($rooturi.$evald_path.'.less'));
 						return array( $full_path, $uri );
 					}
 				}
@@ -268,7 +250,6 @@ class Less_Tree_Import extends Less_Tree{
 	 * @return Less_Tree_Media|array
 	 */
     public function ParseImport( $full_path, $uri, $env ){
-
 		$import_env = clone $env;
 		if( (isset($this->options['reference']) && $this->options['reference']) || isset($this->currentFileInfo['reference']) ){
 			$import_env->currentFileInfo['reference'] = true;
@@ -278,7 +259,7 @@ class Less_Tree_Import extends Less_Tree{
 			$import_env->importMultiple = true;
 		}
 
-		$parser = new Less_Parser($import_env);
+		$parser = new we_helpers_lessParser($import_env);
 		$root = $parser->parseFile($full_path, $uri, true);
 
 
@@ -296,7 +277,7 @@ class Less_Tree_Import extends Less_Tree{
 	 */
 	private function Skip($path, $env){
 
-		$path = Less_Parser::winPath(realpath($path));
+		$path = realpath($path);
 
 		if( $path && Less_Parser::FileParsed($path) ){
 
@@ -309,3 +290,4 @@ class Less_Tree_Import extends Less_Tree{
 
 	}
 }
+
