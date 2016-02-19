@@ -118,8 +118,6 @@
 
 /* Anpassungen für ambiance.css */
 .CodeMirror.cm-s-ambiance {
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
   box-shadow: none;
 }
 .CodeMirror.cm-s-ambiance div.CodeMirror-gutters {
