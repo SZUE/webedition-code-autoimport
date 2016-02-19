@@ -316,10 +316,10 @@ top.clearEntries();';
 		} else {
 			$folder->we_save();
 			echo 'var ref;
-if(top.window.opener.top.treeData){
-	ref = top.window.opener.top;
-}else if(top.window.opener.top.opener.top.treeData){
-	ref = top.window.opener.top.opener.top;
+if(top.opener.top.treeData){
+	ref = top.opener.top;
+}else if(top.opener.top.opener.top.treeData){
+	ref = top.opener.top.opener.top;
 }
 if(ref){
 	ref.treeData.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"' . $folder->ContentType . '",table:"' . $this->table . '"});
@@ -405,9 +405,9 @@ top.clearEntries();';
 			if(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), 'Text', $this->db) != $txt){
 				$folder->we_save();
 				echo 'var ref;
-if(top.opener.treeData){
-	ref = top.opener;
-}else if(top.opener.top.opener.treeData){
+if(top.opener.top.treeData){
+	ref = top.opener.top;
+}else if(top.opener.top.opener.top.treeData){
 	ref = top.opener.top.opener.top;
 }
 if(ref){

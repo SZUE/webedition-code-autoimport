@@ -89,10 +89,10 @@ top.clearEntries();
 
 			$folder->we_save();
 			echo 'var ref;
-if(top.window.opener.top.content.makeNewEntry){
-	ref = top.window.opener.top.content;
-}else if(top.window.opener.top.opener){
-	ref = top.window.opener.top.opener.top;
+if(top.opener.top.content.makeNewEntry){
+	ref = top.opener.top;
+}else if(top.opener.top.opener){
+	ref = top.opener.top.opener.top;
 }
 ref.treeData.updateEntry({id:' . $folder->ID . ',text:"' . $txt . '",parentid:"' . $folder->ParentID . '"});';
 			if($this->canSelectDir){
