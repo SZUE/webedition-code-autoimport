@@ -1342,7 +1342,7 @@ abstract class we_root extends we_class{
 			$ret &= $this->DB_WE->query('REPLACE INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
 					'ID' => $this->ID,
 					'DocumentTable' => stripTblPrefix($this->Table),
-					'type' => 'media', // FIXME: change to "media"
+					'type' => 'media',
 					'remObj' => $remObj,
 					'remTable' => stripTblPrefix(FILE_TABLE),
 					'position' => 0,
