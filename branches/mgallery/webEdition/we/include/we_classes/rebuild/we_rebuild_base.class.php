@@ -257,27 +257,6 @@ abstract class we_rebuild_base{
 				'path' => $GLOBALS['DB_WE']->f('Path'),
 				'it' => 0);
 		}
-		/* why do we make an rebuild of navi table?
-		  $GLOBALS['DB_WE']->query('SELECT ID,Path FROM ' . NAVIGATION_TABLE . ' WHERE IsFolder=0 ORDER BY ID');
-		  while($GLOBALS['DB_WE']->next_record()){
-		  $data[] = array(
-		  'id' => $GLOBALS['DB_WE']->f('ID'),
-		  'type' => 'navigation',
-		  'cn' => 'weNavigation',
-		  'mt' => $maintable,
-		  'tt' => $tmptable,
-		  'path' => $GLOBALS['DB_WE']->f('Path'),
-		  'it' => 0);
-		  }
-		  $data[] = array(
-		  'id' => 0,
-		  'type' => 'navigation',
-		  'cn' => 'weNavigation',
-		  'mt' => $maintable,
-		  'tt' => $tmptable,
-		  'path' => $GLOBALS['DB_WE']->f('Path'),
-		  'it' => 0
-		  ); */
 
 		return $data;
 	}
@@ -323,7 +302,7 @@ abstract class we_rebuild_base{
 		//FIXME: pack this queries into the loop too
 		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path,ModDate,Published FROM ' . FILE_TABLE . ' WHERE
 			ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::CSS . '","' . we_base_ContentTypes::JS . '")
-			AND IsFolder = 0 ORDER BY ID');
+			AND IsFolder=0 ORDER BY ID');
 		while($GLOBALS['DB_WE']->next_record()){
 			// beware of a very special case: when a document is unpublished && mofified we must not have any main-table entries!
 			if($GLOBALS['DB_WE']->f('Published') > 0 || $GLOBALS['DB_WE']->f('Published') == $GLOBALS['DB_WE']->f('ModDate')){
@@ -339,7 +318,7 @@ abstract class we_rebuild_base{
 		}
 
 		if(defined('OBJECT_FILES_TABLE')){
-			$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder = 0 ORDER BY ID');
+			$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=0 ORDER BY ID');
 			while($GLOBALS['DB_WE']->next_record()){
 				// beware of a very special case: when an object is unpublished && mofified we must not have any main-table entries!
 				if($GLOBALS['DB_WE']->f('Published') > 0 || $GLOBALS['DB_WE']->f('Published') == $GLOBALS['DB_WE']->f('ModDate')){
@@ -371,7 +350,7 @@ abstract class we_rebuild_base{
 		$tables = array(
 			array(TEMPLATES_TABLE, 'WHERE IsFolder=0', 'we_template'),
 			array((defined('OBJECT_TABLE') ? OBJECT_TABLE : false), 'WHERE IsFolder=0', 'we_object'),
-			array(VFILE_TABLE, 'WHERE IsFolder=0', 'we_collection'),
+			array((defined('VFILE_TABLE') ? VFILE_TABLE : false), 'WHERE IsFolder=0', 'we_collection'),
 			array((defined('BANNER_TABLE') ? BANNER_TABLE : false), '', 'we_banner_banner'),
 			array(CATEGORY_TABLE, 'WHERE Description!=""', 'we_category'),
 			array((defined('GLOSSARY_TABLE') ? GLOSSARY_TABLE : false), 'WHERE IsFolder=0 AND type="link"', 'we_glossary_glossary'),
