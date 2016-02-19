@@ -625,9 +625,10 @@ weCollectionEdit = {
 			elem.parentNode.nextSibling.firstChild.style.left = '0px';
 		}
 	},
-	resetColors: function () {
-		for (var i = 0; i < this.ct[this.view].childNodes.length; i++) {
-			this.resetItemColors(this.ct[this.view].childNodes[i]);
+	resetColors: function (scope) {
+		var me = scope || this;
+		for (var i = 0; i < me.ct[me.view].childNodes.length; i++) {
+			me.resetItemColors(me.ct[me.view].childNodes[i]);
 		}
 	},
 	resetItemColors: function (el) {
@@ -908,7 +909,7 @@ weCollectionEdit = {
 
 				el = this.getItem(elem);
 				index = el.id.substr(10);
-				callback = "top.opener.WE().layout.weEditorFrameController.getVisibleEditorFrame().weCollectionEdit.callForValidItemsAndInsert(" + index + ", importedDocument.id, 'dummy');self.close();";
+				callback = "WE().layout.weEditorFrameController.getVisibleEditorFrame().weCollectionEdit.callForValidItemsAndInsert(" + index + ", importedDocument.id, 'dummy');self.close();";
 
 				document.presetFileupload = files;
 				top.we_cmd("we_fileupload_editor", ct, 1, "", "", callback, parentID, 0, "", true);
@@ -975,8 +976,7 @@ weCollectionEdit = {
 									top.we_showMessage(weCollectionEdit.g_l.info_insertion.replace(/##INS##/, resp[0]).replace(/##REJ##/, resp[1]), 1, window);
 								}
 							}
-							setTimeout(weCollectionEdit.resetColors, 300);
-
+							setTimeout(weCollectionEdit.resetColors, 300, weCollectionEdit);
 						} else {
 							top.console.debug('http request failed');
 							return false;
