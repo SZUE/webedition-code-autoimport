@@ -24,7 +24,7 @@
  */
 function we_tag_sessionStart($attribs){
 	$GLOBALS['WE_SESSION_START'] = true;
-	if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition){
+	if((isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->InWebEdition) || !empty($GLOBALS['we_editmode'])){
 		return '';
 	}
 
@@ -54,45 +54,45 @@ function we_tag_sessionStart($attribs){
 
 	$SessionAutologin = 0;
 
-	if((empty($GLOBALS['we_editmode']))){
-		if(!isset($_SESSION['webuser'])){
-			$_SESSION['webuser'] = array(
-				'registered' => false
-			);
-		}
-		$persistentlogins = weTag_getAttribute('persistentlogins', $attribs, false, we_base_request::BOOL);
-		if(!$_SESSION['webuser']['registered'] && isset($_REQUEST['s']['Username']) && isset($_REQUEST['s']['Password']) && !(isset($_REQUEST['s']['ID'])) && !isset($_REQUEST['s']['Password2'])//if set, we assume it is a password reset or use of an forgotten password routine, so we don't try to do an login
-		){
-			$GLOBALS['DB_WE']->query('DELETE FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND LoginDate<(NOW() - INTERVAL ' . we_base_constants::LOGIN_FAILED_HOLDTIME . ' DAY)');
-			$hook = new weHook('customer_preLogin', '', array('customer' => &$_REQUEST['s'], 'type' => 'normal', 'tagname' => 'sessionStart'));
+
+	if(!isset($_SESSION['webuser'])){
+		$_SESSION['webuser'] = array(
+			'registered' => false
+		);
+	}
+	$persistentlogins = weTag_getAttribute('persistentlogins', $attribs, false, we_base_request::BOOL);
+	if(!$_SESSION['webuser']['registered'] && isset($_REQUEST['s']['Username']) && isset($_REQUEST['s']['Password']) && !(isset($_REQUEST['s']['ID'])) && !isset($_REQUEST['s']['Password2'])//if set, we assume it is a password reset or use of an forgotten password routine, so we don't try to do an login
+	){
+		$GLOBALS['DB_WE']->query('DELETE FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND LoginDate<(NOW() - INTERVAL ' . we_base_constants::LOGIN_FAILED_HOLDTIME . ' DAY)');
+		$hook = new weHook('customer_preLogin', '', array('customer' => &$_REQUEST['s'], 'type' => 'normal', 'tagname' => 'sessionStart'));
+		$hook->executeHook();
+
+		if(!wetagsessionStartdoLogin($persistentlogins, $SessionAutologin)){
+			wetagsessionHandleFailedLogin();
+		} else {
+			$GLOBALS['DB_WE']->query('UPDATE ' . FAILED_LOGINS_TABLE . ' SET isValid="false" WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '"');
+			//change session ID to prevent session
+			we_base_sessionHandler::makeNewID();
+			$hook = new weHook('customer_Login', '', array('customer' => &$_SESSION['webuser'], 'type' => 'normal', 'tagname' => 'sessionStart'));
 			$hook->executeHook();
-
-			if(!wetagsessionStartdoLogin($persistentlogins, $SessionAutologin)){
-				wetagsessionHandleFailedLogin();
-			} else {
-				$GLOBALS['DB_WE']->query('UPDATE ' . FAILED_LOGINS_TABLE . ' SET isValid="false" WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '"');
-				//change session ID to prevent session
-				we_base_sessionHandler::makeNewID();
-				$hook = new weHook('customer_Login', '', array('customer' => &$_SESSION['webuser'], 'type' => 'normal', 'tagname' => 'sessionStart'));
-				$hook->executeHook();
-			}
-			unset($_REQUEST['s']['Password']);
 		}
-		if($persistentlogins && (!$_SESSION['webuser']['registered']) && isset($_COOKIE['_we_autologin'])){
-			if(!wetagsessionStartdoAutoLogin()){
-				wetagsessionHandleFailedLogin();
-			} else {
-				we_base_sessionHandler::makeNewID();
-			}
-		}
-
-		if(!empty($_SESSION['webuser']['registered']) && !empty($_SESSION['webuser']['ID']) && !empty($_SESSION['webuser']['Username'])){
-			if($_SESSION['webuser']['LastAccess'] + 60 < time()){
-				$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET LastAccess=UNIX_TIMESTAMP() WHERE ID=' . intval($_SESSION['webuser']['ID']));
-				$_SESSION['webuser']['LastAccess'] = time();
-			}
+		unset($_REQUEST['s']['Password']);
+	}
+	if($persistentlogins && (!$_SESSION['webuser']['registered']) && isset($_COOKIE['_we_autologin'])){
+		if(!wetagsessionStartdoAutoLogin()){
+			wetagsessionHandleFailedLogin();
+		} else {
+			we_base_sessionHandler::makeNewID();
 		}
 	}
+
+	if(!empty($_SESSION['webuser']['registered']) && !empty($_SESSION['webuser']['ID']) && !empty($_SESSION['webuser']['Username'])){
+		if($_SESSION['webuser']['LastAccess'] + 60 < time()){
+			$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET LastAccess=UNIX_TIMESTAMP() WHERE ID=' . intval($_SESSION['webuser']['ID']));
+			$_SESSION['webuser']['LastAccess'] = time();
+		}
+	}
+
 
 	if(!empty($_SESSION['webuser']['registered']) && weTag_getAttribute('onlinemonitor', $attribs, false, we_base_request::BOOL)){
 		$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_SESSION_TABLE . ' WHERE LastAccess<(NOW() - INTERVAL 1 HOUR)');
