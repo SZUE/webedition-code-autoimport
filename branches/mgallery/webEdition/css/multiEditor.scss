@@ -48,14 +48,14 @@ body{
 			border-bottom: none;
 			border-right: 1px solid $DarkBlue;
 			display: inline-block;
-			background: $MiddleGrey;
-			color: $DarkGrey;
+			background: $DarkGrey;
+			color: $LightGrey;
 			padding: 0px 5px;
 			&:hover{
 				border-bottom: none;
 				border-right: 1px solid $DarkBlue;
-				background: $Grey;
-				color: $DarkGrey;
+				background: $DarkGrey;
+				color: $LightGrey;
 				padding: 0px 5px;
 			}
 		}
@@ -82,15 +82,18 @@ body{
 		&.close{
 			color:#767B81;
 			padding: 0px .5ex;
+			color: $LightGrey;
 			&:hover i.fa-close{
-				color:black;
+				color:$LightGrey;
 			}
 		}
 		&.status{
 			padding: 0px .5ex;
 			display:inline-block;
+			color: $LightGrey;
 			span.fileicon{
 				height: 20px;
+				color: $LightGrey;
 			}
 		}
 		&.trailing{
