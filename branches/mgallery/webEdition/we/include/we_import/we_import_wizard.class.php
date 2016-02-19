@@ -165,8 +165,8 @@ class we_import_wizard extends we_import_wizardBase{
 				parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 			}
 			function set_button_state() {
-				top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'disabled');
-				top.WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'enabled');
+				WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'disabled');
+				WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'enabled');
 			}
 			function handle_event(evt) {
 				var f = self.document.we_form;
@@ -244,8 +244,8 @@ function we_cmd() {
 	parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 }
 function set_button_state() {
-	top.wizbusy.back_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
-	top.wizbusy.next_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'enabled');
+	top.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
+	top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'enabled');
 }
 function we_submit_form(f, target, url) {
 	f.target = target;
@@ -418,8 +418,8 @@ function we_cmd() {
 	}
 }
 function set_button_state() {
-	top.wizbusy.back_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
-	top.wizbusy.next_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'next', " .
+	top.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
+	top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'next', " .
 			(($we_valid) ? ((isset($v["mode"]) && $v["mode"] == 1) ? "'disabled'" : "'enabled'") : "'disabled'") . ");
 }" . $event_handler . '
 function toggle(name){
@@ -650,8 +650,8 @@ handle_event("previous");');
 			if(empty($header)){
 				$functions = '
 					function set_button_state() {
-						top.wizbusy.back_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, "back", "enabled");
-						top.wizbusy.next_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, "next", "disabled");
+						top.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "back", "enabled");
+						top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "next", "disabled");
 					}
 				' . $event_handler;
 				$parts = array(
@@ -705,8 +705,8 @@ function addLog(text){
 }
 
 function set_button_state() {
-	top.wizbusy.back_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, "back", "disabled");
-	top.wizbusy.next_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, "next", "disabled");
+	top.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "back", "disabled");
+	top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "next", "disabled");
 }
 
 function handle_event(evt) {
@@ -775,8 +775,8 @@ function we_cmd() {
 	parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 }
 function set_button_state() {
-	top.wizbusy.back_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
-	top.wizbusy.next_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'enabled');
+	top.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
+	top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'enabled');
 }
 function we_submit_form(f, target, url) {
 	f.target = target;
@@ -1218,8 +1218,8 @@ HTS;
 
 		$functions = "
 function set_button_state() {
-	top.wizbusy.back_enabled=top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back','enabled');
-	top.wizbusy.next_enabled=top.WE().layout.button.switch_button_state(top.wizbusy.document, 'next','" . (($xmlWellFormed && $hasChildNode) ? "enabled" : "disabled") . "');
+	top.wizbusy.back_enabled=WE().layout.button.switch_button_state(top.wizbusy.document, 'back','enabled');
+	top.wizbusy.next_enabled=WE().layout.button.switch_button_state(top.wizbusy.document, 'next','" . (($xmlWellFormed && $hasChildNode) ? "enabled" : "disabled") . "');
 }
 function we_submit_form(f, target, url) {
 	f.target = target;
@@ -1289,8 +1289,8 @@ function handle_event(evt) {
 
 		$functions = "
 function set_button_state() {
-	top.wizbusy.back_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
-	top.wizbusy.next_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'next', " . ((we_base_request::_(we_base_request::INT, 'mode') != 1) ? "'enabled'" : "'disabled'") . ");
+	top.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
+	top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'next', " . ((we_base_request::_(we_base_request::INT, 'mode') != 1) ? "'enabled'" : "'disabled'") . ");
 }
 function we_submit_form(f, target, url) {
 	f.target = target;
@@ -1309,7 +1309,7 @@ function handle_event(evt) {
 			f.step.value=3;
 			f.mode.value=1;
 			f.elements['v[mode]'].value=1;
-			top.wizbusy.next_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'disabled');
+			top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'disabled');
 			we_submit_form(f, 'wizbody', '" . $this->path . "&mode=1');
 			break;
 		case 'cancel':
@@ -1534,8 +1534,8 @@ function we_cmd() {
 	parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 }
 function set_button_state() {
-	top.frames.wizbusy.back_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
-	top.frames.wizbusy.next_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'enabled');
+	top.frames.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
+	top.frames.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'enabled');
 }
 function we_submit_form(f, target, url) {
 	f.target = target;
@@ -1740,8 +1740,8 @@ function we_cmd() {
 	parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 }
 function set_button_state() {
-	top.frames.wizbusy.back_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
-	top.frames.wizbusy.next_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'enabled');
+	top.frames.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
+	top.frames.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'enabled');
 }
 function we_submit_form(f, target, url) {
 	f.target = target;
@@ -2073,13 +2073,13 @@ HTS;
 					array(
 						"html" => we_html_tools::htmlAlertAttentionBox(g_l('import', '[file_exists]') . $_SERVER['DOCUMENT_ROOT'] . $v["import_from"], we_html_tools::TYPE_ALERT, 530),
 						'noline' => 1));
-				$functions.='top.WE().layout.button.switch_button_state(top.wizbusy.document, "next","disabled");';
+				$functions.='WE().layout.button.switch_button_state(top.wizbusy.document, "next","disabled");';
 			} else if(!is_readable($_SERVER['DOCUMENT_ROOT'] . $v["import_from"])){
 				$parts = array(
 					array(
 						"html" => we_html_tools::htmlAlertAttentionBox(g_l('import', '[file_readable]'), we_html_tools::TYPE_ALERT, 530),
 						'noline' => 1));
-				$functions.='top.WE().layout.button.switch_button_state(top.wizbusy.document, "next","disabled");';
+				$functions.='WE().layout.button.switch_button_state(top.wizbusy.document, "next","disabled");';
 			} else {
 				$parts = array();
 			}
@@ -2126,8 +2126,8 @@ HTS;
 
 		$functions = "
 function set_button_state() {
-				top.wizbusy.back_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
-				top.wizbusy.next_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'next', " . (we_base_request::_(we_base_request::INT, "mode") != 1 ? "'enabled'" : "'disabled'") . ");
+				top.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
+				top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'next', " . (we_base_request::_(we_base_request::INT, "mode") != 1 ? "'enabled'" : "'disabled'") . ");
 }
 function we_submit_form(f, target, url) {
 	f.target = target;
@@ -2147,7 +2147,7 @@ function handle_event(evt) {
 		f.mode.value=1;
 		f.elements['v[mode]'].value=1;
 		f.elements['v[startCSVImport]'].value=1;
-		top.wizbusy.next_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'disabled');
+		top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'disabled');
 		we_submit_form(f, 'wizbody', '" . $this->path . "&mode=1');
 		break;
 	case 'cancel':

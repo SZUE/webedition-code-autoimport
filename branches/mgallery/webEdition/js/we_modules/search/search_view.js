@@ -813,8 +813,8 @@ weSearch = {
 			_multiEditorreload = true;
 
 			//reload tree
-			if (top.opener.treeData) {
-				top.opener.we_cmd('load', top.opener.treeData.table, 0);
+			if (top.opener.top.treeData) {
+				top.opener.we_cmd('load', top.opener.top.treeData.table, 0);
 			}
 			document.getElementById('resetBusy' + this.conf.whichsearch).innerHTML = '';
 		},
@@ -939,8 +939,8 @@ weSearch = {
 			if (weSearch.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST) {
 				top.we_cmd("load", top.treeData.table, 0);
 			} else {
-				if (top.opener.treeData) {
-					top.opener.we_cmd("load", top.opener.treeData.table, 0);
+				if (top.opener.top.treeData) {
+					top.opener.we_cmd("load", top.opener.top.treeData.table, 0);
 				}
 			}
 
@@ -1039,8 +1039,8 @@ weSearch = {
 			}
 
 			//reload tree
-			if (top.opener.treeData) {
-				top.opener.we_cmd("load", top.opener.treeData.table, 0);
+			if (top.opener.top.treeData) {
+				top.opener.we_cmd("load", top.opener.top.treeData.table, 0);
 			}
 
 			// reset busy
