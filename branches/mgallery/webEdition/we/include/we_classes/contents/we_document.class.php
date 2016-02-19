@@ -54,7 +54,7 @@ class we_document extends we_root{
 		parent::__construct();
 		array_push($this->persistent_slots, 'Extension', 'IsDynamic', 'Published', 'Category', 'IsSearchable', 'InGlossar', 'Language', 'schedArr', 'parseFile', 'editorSaves', 'versionsModel');
 		$this->Table = FILE_TABLE;
-		if(isWE()){
+		if(isWE() || defined('WE_SIDEBAR')){
 			$this->InWebEdition = true;
 		}
 	}
