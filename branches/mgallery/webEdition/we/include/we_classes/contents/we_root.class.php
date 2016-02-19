@@ -1311,7 +1311,7 @@ abstract class we_root extends we_class{
 
 	}
 
-	protected function correctFields(){
+	public function correctFields(){
 
 	}
 
