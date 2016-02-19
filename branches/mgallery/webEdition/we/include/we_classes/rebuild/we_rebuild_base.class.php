@@ -367,15 +367,15 @@ abstract class we_rebuild_base{
 		}
 
 		$tables = array(
-			array(TEMPLATES_TABLE, 'WHERE IsFolder = 0', 'we_template'),
-			array(OBJECT_TABLE, 'WHERE IsFolder = 0', 'we_object'),
-			array(VFILE_TABLE, 'WHERE IsFolder = 0', 'we_collection'),
+			array(TEMPLATES_TABLE, 'WHERE IsFolder=0', 'we_template'),
+			array(OBJECT_TABLE, 'WHERE IsFolder=0', 'we_object'),
+			array(VFILE_TABLE, 'WHERE IsFolder=0', 'we_collection'),
 			array(BANNER_TABLE, '', 'we_banner_banner'),
-			array(CATEGORY_TABLE, 'WHERE Description != ""', 'we_category'),
-			array(GLOSSARY_TABLE, 'WHERE IsFolder = 0 AND type = "link"', 'we_glossary_glossary'),
-			array(NAVIGATION_TABLE, 'WHERE IconID != 0 OR (SelectionType = "docLink" AND LinkID != 0)', 'we_navigation_navigation'),
+			array(CATEGORY_TABLE, 'WHERE Description!=""', 'we_category'),
+			array(GLOSSARY_TABLE, 'WHERE IsFolder=0 AND type="link"', 'we_glossary_glossary'),
+			array(NAVIGATION_TABLE, 'WHERE IconID!=0 OR (SelectionType="docLink" AND LinkID!=0)', 'we_navigation_navigation'),
 			array(NEWSLETTER_TABLE, '', 'we_newsletter_newsletter'),
-			array(CUSTOMER_TABLE, 'WHERE IsFolder = 0', 'we_customer_customer'),
+			array(CUSTOMER_TABLE, 'WHERE 1', 'we_customer_customer'),
 		);
 
 		foreach($tables as $table){
