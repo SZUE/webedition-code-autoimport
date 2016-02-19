@@ -90,7 +90,7 @@ function we_getCSSIds(){
 	$ret = '';
 	foreach($query as $type => $docs){
 		foreach($docs as $id => $path){
-			$ret.='.cm-we' . $type . 'ID-' . $id . ':hover:before {content: "' . $path . '";}';
+			$ret.='.cm-we' . $type . 'ID-' . $id . ':hover:after {content: "' . $path . '";}';
 		}
 	}
 	return $ret;
@@ -201,7 +201,7 @@ function we_getCodeMirror2Code(){
 				''
 			) .
 			we_html_element::cssElement(
-				(false && $GLOBALS['we_doc']->ContentType == we_base_ContentTypes::TEMPLATE && $_SESSION['prefs']['editorTooltipsIDs'] ?
+				($GLOBALS['we_doc']->ContentType == we_base_ContentTypes::TEMPLATE && $_SESSION['prefs']['editorTooltipsIDs'] ?
 					we_getCSSIds() : '') . '
 .weSelfClose:hover:after,
 .cm-weSelfClose:hover:after,

@@ -603,7 +603,7 @@ function isValidEmail(email) {
 }
 
 function setHeaderTitle() {
-	if (parent.edheader && parent.edheader.weTabs.setTitlePath) {
+	if (parent.edheader && parent.edheader.weTabs && parent.edheader.weTabs.setTitlePath) {
 		var preObj = document.getElementById("yuiAcInputPathGroup");
 		var postObj = document.getElementById("yuiAcInputPathName");
 
