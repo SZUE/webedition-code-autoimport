@@ -670,7 +670,7 @@ function we_cmd_base(args, url) {
 			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "we_fileupload_editor":
-			new (WE().util.jsWindow)(this, url, "we_fileupload_editor", -1, -1, 500, top.WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_fileupload_editor", -1, -1, 500, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "setTab":
 			if (treeData !== undefined) {
