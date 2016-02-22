@@ -90,7 +90,7 @@ echo STYLESHEET;
 
 				$content = '<table border="0" cellpadding="0" cellspacing="0">';
 
-				if(permissionhandler::hasPerm("PUBLISH")){
+//				if(permissionhandler::hasPerm("PUBLISH")){
 					$wf_textarea = '<textarea name="wf_text" rows="5" cols="50" style="left:10px;right:10px;height:150px;"></textarea>';
 					$content .= '
 <tr>
@@ -102,10 +102,10 @@ echo STYLESHEET;
 <tr>
 	<td>' . we_html_tools::getPixel(2, 5) . '</td>
 </tr>';
-				} else {
+				/*} else {
 					$wf_textarea = '<textarea name="wf_text" rows="7" cols="50" style="left:10px;right:10px;height:190px"></textarea>';
 					$content .= '<input type="hidden" name="wf_select" value="' . $wfID . '" />';
-				}
+				}*/
 				$content .= '
 <tr>
 	<td class="defaultfont">
