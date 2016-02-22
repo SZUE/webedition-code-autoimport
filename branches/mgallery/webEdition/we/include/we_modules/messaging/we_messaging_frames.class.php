@@ -121,7 +121,7 @@ class we_messaging_frames extends we_modules_frame{
 		return $this->getHTMLDocument(we_html_element::htmlBody(array(), $tree), $head);
 	}
 
-	protected function getHTMLEditor(){
+	protected function getHTMLEditor($extraUrlParams = '', $extraHead = ''){
 		$body = we_html_element::htmlBody(array('class' => 'moduleEditor'), we_html_element::htmlIFrame('edheader', WEBEDITION_DIR . 'we_showMod.php?mod=messaging&pnt=edheader&we_transaction=' . $this->transaction, 'position: absolute; top: 0px; left: 0px; right: 0px; height: 35px; overflow: hidden;', 'width: 100%; overflow: hidden', '', '', false) .
 				we_html_element::htmlIFrame('edbody', WEBEDITION_DIR . 'we_showMod.php?mod=messaging&pnt=edbody&we_transaction=' . $this->transaction, 'position: absolute; top: 35px; bottom: 0px; left: 0px; right: 0px;', 'border:0px;width:100%;height:100%;')
 		);
@@ -223,7 +223,7 @@ function clearSearch() {
 		return $this->getHTMLDocument(we_html_element::htmlBody($attribs = array('id' => 'eHeaderBody'), $table->getHTML()), $extraHead);
 	}
 
-	protected function getHTMLEditorFooter(){
+	protected function getHTMLEditorFooter($btn_cmd='', $extraHead = ''){
 
 	}
 

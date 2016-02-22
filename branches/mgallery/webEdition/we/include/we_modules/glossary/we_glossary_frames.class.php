@@ -90,7 +90,7 @@ class we_glossary_frames extends we_modules_frame{
 		}
 	}
 
-	protected function getHTMLEditorFooter(){
+	protected function getHTMLEditorFooter($btn_cmd = '', $extraHead = ''){
 		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return parent::getHTMLEditorFooter('');
 		}
