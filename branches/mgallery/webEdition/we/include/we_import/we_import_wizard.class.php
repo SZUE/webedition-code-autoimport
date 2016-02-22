@@ -345,16 +345,22 @@ function handle_eventNext(){
 		$_upload_error = false;
 
 		if($v['rdofloc'] === 'lLocal' && (isset($_FILES['uploaded_xml_file']))){
-			if(!($_FILES['uploaded_xml_file']['tmp_name']) || $_FILES['uploaded_xml_file']['error']){
+			// FIXME: let fu_resp_base check the existence of a finished upload-file and handle it to import => the following blocks are nonsens
+			if(!($_FILES['uploaded_xml_file'])){
 				$_upload_error = true;
 			} else {
+				$tmpFile = we_base_request::_(we_base_request::STRING, 'weFileNameTemp');
+				$v['import_from'] = $tmpFile;
 				//FIXME: still need else branch?
+				/*
 				if($this->fileUploader && $this->fileUploader->processFileRequest()){
 					$v['import_from'] = $this->fileUploader->getFileNameTemp();
 				} else {
 					$v['import_from'] = TEMP_DIR . we_base_file::getUniqueId() . '_w.xml';
 					move_uploaded_file($_FILES['uploaded_xml_file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . $v['import_from']);
 				}
+				 * 
+				 */
 			}
 		}
 
