@@ -70,62 +70,62 @@ echo STYLESHEET;
 </head>
 
 <body class="weDialogBody">
-<div style="text-align:center">
-	<?php
-	if($cmd != 'ok'){
-		$all = array();
-		$wfDoc = ($we_doc->Table == FILE_TABLE ?
-				we_workflow_utility::getWorkflowDocumentForDoc($GLOBALS['DB_WE'], $we_doc->DocType, $we_doc->Category, $we_doc->ParentID, $all) :
-				we_workflow_utility::getWorkflowDocumentForObject($GLOBALS['DB_WE'], $we_doc->TableID, $we_doc->Category, $we_doc->ParentID, $all));
-		$wfID = $wfDoc->workflowID;
-		if($wfID){
-			?>
-			<form action="<?php echo WEBEDITION_DIR; ?>we_cmd.php" method="post"><?php
-				$wf_select = '<select name="wf_select" size="1">';
-				$wfs = we_workflow_utility::getAllWorkflows(we_workflow_workflow::STATE_ACTIVE, $we_doc->Table, $all);
-				foreach($wfs as $wID => $wfname){
-					$wf_select .= '<option value="' . $wID . '"' . (($wID == $wfID) ? ' selected' : '') . '>' . oldHtmlspecialchars($wfname) . "</option>\n";
-				}
-				$wf_select .= '</select>';
+	<div style="text-align:center">
+		<?php
+		if($cmd != 'ok'){
+			$all = array();
+			$wfDoc = ($we_doc->Table == FILE_TABLE ?
+					we_workflow_utility::getWorkflowDocumentForDoc($GLOBALS['DB_WE'], $we_doc->DocType, $we_doc->Category, $we_doc->ParentID, $all) :
+					we_workflow_utility::getWorkflowDocumentForObject($GLOBALS['DB_WE'], $we_doc->TableID, $we_doc->Category, $we_doc->ParentID, $all));
+			$wfID = $wfDoc->workflowID;
+			if($wfID){
+				?>
+				<form action="<?php echo WEBEDITION_DIR; ?>we_cmd.php" method="post"><?php
+					$wf_select = '<select name="wf_select" size="1">';
+					$wfs = we_workflow_utility::getAllWorkflows(we_workflow_workflow::STATE_ACTIVE, $we_doc->Table, $all);
+					foreach($wfs as $wID => $wfname){
+						$wf_select .= '<option value="' . $wID . '"' . (($wID == $wfID) ? ' selected' : '') . '>' . oldHtmlspecialchars($wfname) . "</option>\n";
+					}
+					$wf_select .= '</select>';
 
-				$okbut = we_html_button::create_button(we_html_button::OK, "javascript:document.forms[0].submit()");
-				$cancelbut = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close()");
+					$okbut = we_html_button::create_button(we_html_button::OK, "javascript:document.forms[0].submit()");
+					$cancelbut = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close()");
 
-				$content = '<table class="default">';
+					$content = '<table class="default">';
 
-				if(permissionhandler::hasPerm("PUBLISH")){
+					//if(permissionhandler::hasPerm("PUBLISH")){
 					$wf_textarea = '<textarea name="wf_text" rows="5" cols="50" style="left:10px;right:10px;height:150px;"></textarea>';
 					$content .= '
 <tr><td class="defaultfont">' . g_l('modules_workflow', '[workflow]') . '</td></tr>
 <tr><td style="padding-bottom:5px;">' . $wf_select . '</td></tr>
 ';
-				} else {
-					$wf_textarea = '<textarea name="wf_text" rows="7" cols="50" style="left:10px;right:10px;height:190px"></textarea>';
-					$content .= we_html_element::htmlHidden("wf_select", $wfID);
-				}
-				$content .= '
+					/* } else {
+					  $wf_textarea = '<textarea name="wf_text" rows="7" cols="50" style="left:10px;right:10px;height:190px"></textarea>';
+					  $content .= we_html_element::htmlHidden("wf_select", $wfID);
+					  } */
+					$content .= '
 <tr><td class="defaultfont">' . g_l('modules_workflow', '[message]') . '</td></tr>
 <tr><td>' . $wf_textarea . '</td></tr>
 </table>';
 
-				echo we_html_tools::htmlDialogLayout($content, g_l('modules_workflow', '[in_workflow]'), we_html_button::position_yes_no_cancel($okbut, '', $cancelbut)) .
-				we_html_element::htmlHiddens(array(
-					"cmd" => "ok",
-					"we_cmd[0]" => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
-					"we_cmd[1]" => $we_transaction,
-					"we_cmd[2]" => $cmd2
-				));
-				?>
-			</form>
-			<?php
-		} else {
-			echo we_html_element::jsElement(
-				we_message_reporting::getShowMessageCall(g_l('modules_workflow', ($we_doc->Table == FILE_TABLE ? '[no_wf_defined]' : '[no_wf_defined_object]')), we_message_reporting::WE_MESSAGE_ERROR) .
-				'top.close();');
+					echo we_html_tools::htmlDialogLayout($content, g_l('modules_workflow', '[in_workflow]'), we_html_button::position_yes_no_cancel($okbut, '', $cancelbut)) .
+					we_html_element::htmlHiddens(array(
+						"cmd" => "ok",
+						"we_cmd[0]" => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
+						"we_cmd[1]" => $we_transaction,
+						"we_cmd[2]" => $cmd2
+					));
+					?>
+				</form>
+				<?php
+			} else {
+				echo we_html_element::jsElement(
+					we_message_reporting::getShowMessageCall(g_l('modules_workflow', ($we_doc->Table == FILE_TABLE ? '[no_wf_defined]' : '[no_wf_defined_object]')), we_message_reporting::WE_MESSAGE_ERROR) .
+					'top.close();');
+			}
 		}
-	}
-	?>
-</div>
+		?>
+	</div>
 </body>
 
 </html>
