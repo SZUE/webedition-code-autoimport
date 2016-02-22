@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,8 +28,10 @@ if(!defined('DB_CONNECT')){
 switch(DB_CONNECT){
 	case 'connect':
 	case 'pconnect':
-		require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/database/we_database_mysql.class.php');
-		break;
+		if(function_exists('mysql_connect')){
+			require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/database/we_database_mysql.class.php');
+			break;
+		}
 	case 'mysqli_connect':
 	case 'mysqli_pconnect':
 		require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_classes/database/we_database_mysqli.class.php');
