@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_tool_model extends we_base_model{
-
 	var $ID = 0;
 	var $Text;
 	var $ParentID = 0;
@@ -47,7 +46,7 @@ class we_tool_model extends we_base_model{
 		}
 	}
 
-	function filenameNotValid(){
+	function filenameNotValid($text = ''){
 		return false;
 	}
 
