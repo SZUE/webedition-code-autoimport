@@ -138,7 +138,6 @@ options.userCanEditCat=' . intval($this->userCanEditCat()) . ';
 					'ParentID' => intval($this->dir),
 					'Text' => $txt,
 					'Path' => $Path,
-					'IsFolder' => 1, //intval($what),
 			)));
 			$folderID = $this->db->getInsertId();
 			$js.='top.currentPath = "' . $Path . '";
@@ -171,18 +170,17 @@ top.selectFile(top.currentID);'), we_html_element::htmlBody());
 
 	function printDoRenameEntryHTML(){
 		we_html_tools::protect();
-		$what = f('SELECT IsFolder FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($this->we_editCatID), '', $this->db);
 		$this->EntryText = rawurldecode($this->EntryText);
 		$txt = trim($this->EntryText);
 		$Path = ($txt ? (!intval($this->dir) ? '' : f('SELECT Path FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), 'Path', $this->db)) . '/' . $txt : '');
 		$js = 'top.clearEntries();';
 
 		if(!$txt){
-			$js.=we_message_reporting::getShowMessageCall(g_l('weEditor', ($what == 1 ? '[folder]' : '[category]') . '[filename_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$js.=we_message_reporting::getShowMessageCall(g_l('weEditor', '[category][filename_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif(strpos($txt, ',') !== false){
 			$js.=we_message_reporting::getShowMessageCall(g_l('weEditor', '[category][name_komma]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif(f('SELECT 1 FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($Path) . '" AND ID!=' . intval($this->we_editCatID) . ' LIMIT 1', '', $this->db)){
-			$js.=we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', ($what == 1 ? '[folder]' : '[category]') . '[response_path_exists]'), $Path), we_message_reporting::WE_MESSAGE_ERROR);
+			$js.=we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][response_path_exists]'), $Path), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif(preg_match('|[\'"<>/]|', $txt)){
 			$js.=we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][we_filename_notValid]'), $Path), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editCatID), 'Text', $this->db) != $txt){
@@ -193,9 +191,7 @@ top.selectFile(top.currentID);'), we_html_element::htmlBody());
 					'Path' => $Path,
 				)) .
 				' WHERE ID=' . intval($this->we_editCatID));
-			if(true || f('SELECT IsFolder FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editCatID), '', $this->db)){
-				$this->renameChildrenPath($this->we_editCatID);
-			}
+			$this->renameChildrenPath($this->we_editCatID);
 			$js.='top.currentPath = "' . $Path . '";
 
 top.hot = 1; // this is hot for category edit!!
