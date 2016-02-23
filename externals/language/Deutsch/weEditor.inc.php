@@ -215,7 +215,7 @@ Erlaubte Zeichen sind alle außer <>?":|\\/* .',
 		'we_filename_notValid'=>'Der eingegebene Dateiname ist nicht gültig!\nErlaubte Zeichen sind alle außer <>?":|\\/* .',
 	),
 	'triggerDocNotDynamic'=>'Das unter "Voreinstellung Dokument für die Darstellung" gewählte Dokument muss dynamisch gespeichert sein.',
-	'triggerIdNotValid'=>'Sie haben unter "Voreinstellung Dokument für die Darstellung" kein oder kein gültiges Dokument eingetragen: Dieses ist bei aktivierten SEU-URLs zwingend erforderlich.',
+	'triggerIdNotValid'=>'Sie haben unter "Voreinstellung Dokument für die Darstellung" kein oder kein gültiges Dokument eingetragen: Dieses ist bei aktivierten SEO-URLs zwingend erforderlich.',
 	'variantNameInvalid'=>'Der Name einer Artikel-Variante darf nicht leer sein!',
 	
 	'video/*'=>array(
