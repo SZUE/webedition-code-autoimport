@@ -33,8 +33,6 @@ define('INSTALLATIONLOG_TABLE', 'we6_installation_log');
 /**
  * Special stuff for modules
  */
-define('MODULES_INFORMATION', 'v5_modules_general');
-define('MODULES_TRANSLATIONS', 'v5_modules');
 define('MIN_INSTALLER_V', '2.9.2.0');
 
 /*

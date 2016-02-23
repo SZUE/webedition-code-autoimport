@@ -133,7 +133,7 @@ class updateUtilBase{
 	 * @param integer $length
 	 * @return integer
 	 */
-	static function version2number($version, $length = VERSIONNUMBER_LENGTH){
+	static function version2number($version){
 
 		$numberStr = str_replace('.', '', $version);
 		$number = (int) $numberStr;

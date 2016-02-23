@@ -102,24 +102,6 @@ class upgrade{
 
 $success = true;
 
-// prepare files
-
-// we_installed_modules
-/*
-$we_installed_modules = \'' . updateUtil::encodeCode(modules::getCodeForInstalledModules()) . '\';
-if (!$liveUpdateFnc->filePutContent(LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/webEdition/we/include/we_installed_modules.inc' . $_SESSION['clientExtension'] . '", $liveUpdateFnc->decodeCode($we_installed_modules))) {
-	$success = false;
-	' . installer::getErrorMessageResponsePart('', $GLOBALS['lang']['upgrade']['copyFilesInstalledModulesError']) . '
-}
-*/
-// we_active_integrated_modules
-/*
-$we_active_integrated_modules = \'' . updateUtil::encodeCode(modules::getCodeForActiveIntegratedModules()) . '\';
-if (!$liveUpdateFnc->filePutContent(LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/webEdition/we/include/we_active_integrated_modules.inc' . $_SESSION['clientExtension'] . '", $liveUpdateFnc->decodeCode($we_active_integrated_modules))) {
-	$success = false;
-	' . installer::getErrorMessageResponsePart('', $GLOBALS['lang']['upgrade']['copyFilesInstalledModulesError']) . '
-}
-*/
 // we_version
 if (!$liveUpdateFnc->filePutContent( LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/webEdition/we/include/we_version' . $_SESSION['clientExtension'] . '", $liveUpdateFnc->decodeCode("' . updateUtil::encodeCode($we_version['replace']) . '") )) {
 	$success = false;
@@ -383,9 +365,7 @@ window.open(\'?' . updateUtil::getCommonHrefParameters('upgrade', 'finishUpgrade
 	// identify upgraded webEdition version for renaming old webEdition/ folder (i.e. to "webEdition4/")
 	function getVersionDirName(){
 		$_versionDirName = "webEdition5";
-		if(isset($_SESSION["clientWE_LIGHT"]) && $_SESSION["clientWE_LIGHT"]){
-			$_versionDirName = "webEdition5light";
-		} else if(substr($_SESSION['clientVersionNumber'], 0, 1) == "5"){
+		if(substr($_SESSION['clientVersionNumber'], 0, 1) == "5"){
 			$_versionDirName = "webEdition5";
 		} else {
 			// nothing special

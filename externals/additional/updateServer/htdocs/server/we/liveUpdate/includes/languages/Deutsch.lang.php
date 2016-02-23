@@ -32,7 +32,6 @@ $lang['upgrade']['pleaseSelectVersion'] = 'Bitte w&auml;hlen Sie eine Zielversio
 $lang['upgrade']['noUpgradeForLanguages'] = 'Ein Update zur Version 6 ist momentan nicht m&ouml;glich. Eine oder mehrere installierte Sprachen verhindern das Update.';
 $lang['upgrade']['copyFilesSuccess'] = 'Alle ben&ouml;tigten webEdition Dateien wurden angelegt.';
 $lang['upgrade']['copyFilesError'] = 'Konnte das webEdition 6 Verzeichnis nicht verschieben';
-$lang['upgrade']['copyFilesInstalledModulesError'] = 'Konnte die Datei we_installed_modules nicht anlegen';
 $lang['upgrade']['copyFilesVersionError'] = 'Konnte die Datei version.php nicht anlegen';
 $lang['upgrade']['copyFilesConfError'] = 'Konnte die Konfigurationsdatei nicht abspeichern';
 $lang['upgrade']['copyFilesBackupError'] = 'Konnte die Backup Ordner nicht Kopieren';
@@ -42,8 +41,6 @@ $lang['upgrade']['copyFilesFileError'] = 'Konnte die Datei %s nicht kopieren';
 $lang['upgrade']['executePatchesDatabase'] = 'Fehler beim Anpassen der Datenbank. Folgende Tabellen konnten nicht angepasst werden.';
 $lang['upgrade']['notEnoughLicenses'] = 'Sie besitzen nicht gen&uuml;gend Lizenzen um ein Update auf webEdition Version 6 vorzunehmen. Sie k&ouml;nnen Updates in unserem Shop kaufen.';
 $lang['upgrade']['finishInstallationError'] = 'Beim abschließen des Updates auf webEdition 6 ist ein Fehler aufgetreten.<br />\\\nBitte pr&uuml;fen Sie, ob<br />\\\n<ul><li>Der webEdition Ordner in webEdition5 umbenannt werden konnte (Gibt es den Ordner /webEdition5 ?)</li>\\\n<li>Der webEdition6 Ordner in webEdition umbenannt werden konnte (Gibt es den Ordner /webEdition)</li><br />\\\n<li>Der Backup Ordner nach webEdition/we_backup verschoben werden konnte (Gibt es den Ordner /webEdition/we_backup ?)</li><br />\\\n<li>Das site Verzeichnis nach /webEdition/site Verzeichnis verschoben werden konnte. (Gibt es den Ordner /webEdition/site ?)</li></ul><br />\\\nBitte versuchen Sie zun&auml;chst den Aktualisieren Button zu dr&uuml;cken, f&uuml;hren Sie die genannten Ver&auml;nderungen notfalls von Hand aus, bzw. verst&auml;ndigen Sie den Support';
-$lang['upgrade']['finishInstallationError_we4'] = 'Beim abschließen des Updates auf webEdition 5 ist ein Fehler aufgetreten.<br />\\\nBitte pr&uuml;fen Sie, ob<br />\\\n<ul><li>Der webEdition Ordner in webEdition4 umbenannt werden konnte (Gibt es den Ordner /webEdition4 ?)</li>\\\n<li>Der webEdition4 Ordner in webEdition umbenannt werden konnte (Gibt es den Ordner /webEdition)</li><br />\\\n<li>Der Backup Ordner nach webEdition/we_backup verschoben werden konnte (Gibt es den Ordner /webEdition/we_backup ?)</li><br />\\\n<li>Das site Verzeichnis nach /webEdition/site Verzeichnis verschoben werden konnte. (Gibt es den Ordner /webEdition/site ?)</li></ul><br />\\\nBitte versuchen Sie zun&auml;chst den Aktualisieren Button zu dr&uuml;cken, f&uuml;hren Sie die genannten Ver&auml;nderungen notfalls von Hand aus, bzw. verst&auml;ndigen Sie den Support';
-$lang['upgrade']['finishInstallationError_we5light'] = 'Beim abschließen des Updates auf webEdition 5 ist ein Fehler aufgetreten.<br />\\\nBitte pr&uuml;fen Sie, ob<br />\\\n<ul><li>Der webEdition Ordner in webEdition5light umbenannt werden konnte (Gibt es den Ordner /webEdition5light ?)</li>\\\n<li>Der webEdition5light Ordner in webEdition umbenannt werden konnte (Gibt es den Ordner /webEdition)</li><br />\\\n<li>Der Backup Ordner nach webEdition/we_backup verschoben werden konnte (Gibt es den Ordner /webEdition/we_backup ?)</li><br />\\\n<li>Das site Verzeichnis nach /webEdition/site Verzeichnis verschoben werden konnte. (Gibt es den Ordner /webEdition/site ?)</li></ul><br />\\\nBitte versuchen Sie zun&auml;chst den Aktualisieren Button zu dr&uuml;cken, f&uuml;hren Sie die genannten Ver&auml;nderungen notfalls von Hand aus, bzw. verst&auml;ndigen Sie den Support';
 $lang['upgrade']['finished'] = 'Update auf Version 6 abgeschlossen';
 $lang['upgrade']['finished_note'] = 'Die Installation ist beendet. Um alle &Auml;nderungen zu &uuml;bernehmen, wird webEdition nun neu gestartet.<br /><strong>Bitte l&ouml;schen Sie vor der n&auml;chsten Anmeldung Ihren Browsercache und f&uuml;hren dann einen Rebuild durch.</strong>';
 $lang['upgrade']['notepad_category'] = 'Sonstiges';
@@ -76,7 +73,6 @@ $lang['update']['confirmUpdateVersionDetails'] = 'Details zu den einzelnen Versi
 $lang['update']['confirmRepeatUpdateText'] = 'Sie haben momentan Version&nbsp;%s installiert und m&ouml;chten diese Version erneut einspielen. ';
 $lang['update']['confirmRepeatUpdateMessage'] = 'Bei einer Update Wiederholung werden alle webEdition Programmdateien durch die Original webEdition Dateien ersetzt. Dieser Vorgang kann unter Umst&auml;nden einige Zeit in Anspruch nehmen.';
 $lang['update']['finished'] = 'Update abgeschlossen';
-$lang['update']['we51Notification'] = '<h2>Wichtige Informationen vor dem Update!</h2><p>Diese Informationen sind f&uuml;r Sie relevant, wenn Sie von webEdition 5.0 auf Version 5.1 oder h&ouml;her aktualisieren.</p><ul><li><b>&Auml;nderungen an der Benutzeroberfl&auml;che:</b> Die Oberfl&auml;che wurde verbessert, genaue Informationen entnehmen Sie bitte der <a target="_blank" href="http://documentation.webedition.org/wiki/de/webedition/change-log/version-5/start">Versionshistorie</a>.</li><li><b>Ge&auml;nderte Systemvoraussetzungen:</b> webEdition ben&ouml;tigt ab Version 5.1 mindestens PHP 4.3. Sie k&ouml;nnen die auf Ihrem Server installierte PHP Version innerhalb von webEdition &uuml;ber den Men&uuml;punkt Hilfe => Systeminformationen feststellen.</li><li><b>Navigationstool:</b> Ist die Kundenverwaltung installiert, kann es n&ouml;tig sein, die Zugriffsrechte f&uuml;r Kunden im Navigationstool neu zu setzen. Die Filter wurden vollst&auml;ndig &uuml;berarbeitet, teilweise k&ouml;nnen die Einstellungen aus 5.0 beim Update nicht automatisch vollst&auml;ndig &uuml;bernommen werden.</li></ul>';
 $lang['update']['spenden'] = 'Diese webEdition Version wurde erm&ouml;glicht durch die Arbeit des gemeinn&uuml;tzigen webEdition e.V. Unterst&uuml;tzen Sie die kostenlose und freiwillige Arbeit der der Vereins- und Community-Mitglieder.
 <br>Erm&ouml;glichen Sie durch Ihre Spende, dass:<ul>
 <li>der webEdition e.V. professionelle Entwickler einstellen kann</li>
@@ -86,18 +82,6 @@ neuer Features beschleunigt wird</li>
 gesichert wird</li></ul>';
 
 $lang['update']['confirmUpdateWarning6300'] = 'Die webEdition Version 6.3.x f&uuml;hrt grundlegende Neuerungen in der webEdition Infrastruktur ein. Dabei kann es durchaus zu Problemen nach einem Update kommen. Beachten Sie unbedingt diese <a href="http://www.webedition.org/de/webedition-cms/versionshistorie/webedition-6/version-6.3.0.0" target="_blank">Hinweise zu Version 6.3.x</a>. Installieren Sie bitte immer die letzte verf&uuml;gbare Version dieser Serie.<br><b>Wichtig:</b><br>Nach dem Update sollte die Spracheinstellungen jedes einzelnen Backend-Users in der Benutzerverwaltung &uuml;berpr&uuml;ft werden:<br>1. Schritt: Men&uuml; Extras-> Einstellungen->Allgemein, pr&uuml;fen und setzen Sie Backend Sprache und Backend Zeichensatz, speichern!<br>2. Schritt Benutzerverwaltung, je User: Tab "Einstellungen, dort "Oberfl&auml;che", pr&uuml;fen und setzten von Backend Sprache und Backend Zeichensatz.';
-
-
-$lang['modules']['headline'] = 'Modulinstallation';
-$lang['modules']['textConfirmModules'] = 'Folgende Module sollen installiert werden. Best&auml;tigen Sie Ihre Auswahl und die Installation beginnt. Nach der Installation wird webEdition neu gestartet.';
-$lang['modules']['reselectModules'] = 'Die ausgew&auml;hlten Module k&ouml;nnen nicht installiert werden. Sie besitzen nicht gen&uuml;gend Lizenzen f&uuml;r alle ausgew&auml;hlten Module.<br /><br /> Bitte w&auml;hlen Sie die zu installierenden Module erneut aus.<br /><br />Sie haben folgende Module ausgew&auml;hlt:';
-$lang['modules']['noModulesSelected'] = 'Sie haben noch kein Modul ausgesucht.';
-$lang['modules']['moduleAlreadyInstalled'] = 'Dieses Modul ist bereits installiert. Wenn Sie m&ouml;chten k&ouml;nnen Sie die Installation wiederholen.';
-$lang['modules']['normalModules'] = 'Module';
-$lang['modules']['proModules'] = '';
-$lang['modules']['dependentModules'] = 'Abh&auml;ngige Module';
-$lang['modules']['noInstallableModules'] = 'Sie k&ouml;nnen derzeit kein Modul installieren. Alle gekauften Module sind bereits installiert.<br />Neue Module k&ouml;nnen Sie in unserem Shop kaufen.';
-$lang['modules']['finished'] = 'Modulinstallation abgeschlossen';
 
 $lang['update']['ReqWarnung'] = 'Warnung!';
 $lang['update']['ReqWarnungText'] = 'Ihr System erf&uuml;llt nicht alle Softwarevoraussetzungen:';

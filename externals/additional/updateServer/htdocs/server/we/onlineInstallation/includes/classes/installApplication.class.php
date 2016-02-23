@@ -583,17 +583,9 @@ class installApplication extends installer{
 		$replaceWeConfGlobalDemo = updateUtil::getReplaceCode('we_conf_global_demo');
 		$replaceWeActiveModules = updateUtil::getReplaceCode('we_activeModules');
 
-		// we_installed_modules
-		$we_installed_modules = updateUtil::encodeCode(modules::getCodeForInstalledModules());
-
-		// we_active_integrated_modules
-		$we_active_integrated_modules = updateUtil::encodeCode(modules::getCodeForActiveIntegratedModules());
-
 		// proxy settings
 		$replaceProxySettings = updateUtil::getReplaceCode('we_proxysettings');
 
-
-		$reinstallModules = array();
 		$_SESSION['clientInstalledModules'] = $_SESSION['clientDesiredModules'];
 		$licenceName = "GPL";
 		$version = $_SESSION['clientTargetVersion'];
@@ -637,7 +629,6 @@ class installApplication extends installer{
 			!$liveUpdateFnc->filePutContent( $_SESSION["le_installationDirectory"] . "' . $replaceWeConfGlobalDemo['path'] . '", $liveUpdateFnc->preparePhpCode( sprintf($liveUpdateFnc->decodeCode("' . updateUtil::encodeCode($replaceWeConfGlobalDemo['replace']) . '"), "' . $_SESSION['client_default_charset'] . '", $_SESSION["le_db_charset"]), ".php","' . $_SESSION['clientExtension'] . '")) ||
 
 			!$liveUpdateFnc->filePutContent($_SESSION["le_installationDirectory"] . "/webEdition/we/include/conf/we_active_integrated_modules.inc' . $_SESSION['clientExtension'] . '", $liveUpdateFnc->decodeCode("' . updateUtil::encodeCode($replaceWeActiveModules['replace']) . '")) ||
-
 
 			(isset($_SESSION["le_proxy_use"]) && $_SESSION["le_proxy_use"] ? !$liveUpdateFnc->filePutContent($_SESSION["le_installationDirectory"] . "' . $replaceProxySettings['path'] . '", $liveUpdateFnc->preparePhpCode( sprintf($liveUpdateFnc->decodeCode("' . updateUtil::encodeCode($replaceProxySettings['replace']) . '"), $_SESSION["le_proxy_host"], $_SESSION["le_proxy_port"], $_SESSION["le_proxy_username"], $_SESSION["le_proxy_password"])), ".php","' . $_SESSION['clientExtension'] . '") : false)  ||
 
@@ -685,11 +676,6 @@ class installApplication extends installer{
 		}';
 
 		if($_SESSION['clientTargetVersionNumber'] >= LANGUAGELIMIT){
-			if(strpos($_SESSION['clientSyslng'], 'UTF-8') !== false){
-				$backendCH = 'UTF-8';
-			} else {
-				$backendCH = 'ISO-8859-1';
-			}
 			$backendCH = 'UTF-8';
 			$retArray['Code'] .= '$query = sprintf("' . $tblPrefsQuery['replace'] . '", $_SESSION[\'le_db_prefix\'], "' . $_SESSION['clientSyslngNEW'] . '", "' . $backendCH . '");';
 		} else {

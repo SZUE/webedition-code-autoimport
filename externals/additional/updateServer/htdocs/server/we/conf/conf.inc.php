@@ -39,7 +39,6 @@ $DSN_versioning = array(
 $OPTIONS_versioning = array(
 );
 
-
 /*
  * Path to pear, only uses DB atm
  */

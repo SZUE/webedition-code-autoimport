@@ -63,18 +63,11 @@ abstract class updateBase{
 		$possibleVersions = array();
 
 		foreach($langVersions as $version => $lngArray){
-			if(isset($_SESSION["clientWE_LIGHT"]) && $_SESSION["clientWE_LIGHT"]){
-				if($version >= $_SESSION['clientVersionNumber'] && sizeof($lngArray) == sizeof($_SESSION['clientInstalledLanguages'])){
-					$possibleVersions[$version] = updateUtil::number2version($version);
-				}
+			if($version > $_SESSION['clientVersionNumber'] && sizeof($lngArray) == sizeof($_SESSION['clientInstalledLanguages'])){
+				$possibleVersions[$version] = updateUtil::number2version($version);
 			} else {
-
-				if($version > $_SESSION['clientVersionNumber'] && sizeof($lngArray) == sizeof($_SESSION['clientInstalledLanguages'])){
+				if($version > $_SESSION['clientVersionNumber']){
 					$possibleVersions[$version] = updateUtil::number2version($version);
-				} else {
-					if($version > $_SESSION['clientVersionNumber']){
-						$possibleVersions[$version] = updateUtil::number2version($version);
-					}
 				}
 			}
 		}

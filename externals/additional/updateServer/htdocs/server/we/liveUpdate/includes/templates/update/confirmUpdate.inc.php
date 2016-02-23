@@ -13,11 +13,11 @@ $clientTargetVersionComplete = update::getFormattedVersionString($target, true, 
 
 $ReqOK = update::checkRequirements($ReqOut, $_SESSION['clientPcreVersion'], $_SESSION['clientPhpExtensions'], $_SESSION['clientPhpVersion'], $_SESSION['clientMySQLVersion']);
 //$ReqOK = update::checkRequirements($ReqOut,'','','','','');
-if($source < 5100 && $target >= 5100){
-	$meldung = $GLOBALS['lang']['update']['we51Notification'];
-} else {
-	$meldung = "";
-}
+/* if($source < 5100 && $target >= 5100){
+  } else {
+  $meldung = "";
+  } */
+
 if($source < 6300 && $target >= 6300){
 	$weiterwarnung = '<div class="messageDiv"  style="color:#ff0000;">' . $GLOBALS['lang']['update']['confirmUpdateWarning6300'] . '</div>';
 } else {
@@ -25,10 +25,8 @@ if($source < 6300 && $target >= 6300){
 }
 $liveUpdateResponse['Type'] = 'eval';
 $liveUpdateResponse['Code'] = '<?php
-
 $we_button = new we_button();
 $nextButton = $we_button->create_button("next", "' . installer::getConfirmInstallationWindow() . '");
-
 
 $ReqOK = ' . $ReqOK . ';
 if (!$ReqOK) {$nextButton = "";}

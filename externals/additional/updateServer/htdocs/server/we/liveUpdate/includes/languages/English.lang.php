@@ -31,7 +31,6 @@ $lang['upgrade']['pleaseSelectVersion'] = 'Please select a target version for th
 $lang['upgrade']['noUpgradeForLanguages'] = 'An update to webEdition 6 is not possible at the moment. Several of your installed languages prevent the update.';
 $lang['upgrade']['copyFilesSuccess'] = 'All needed webEdition files are stored, the webEdition folder successful moved.';
 $lang['upgrade']['copyFilesError'] = 'Could not move the webEdition 5 folder';
-$lang['upgrade']['copyFilesInstalledModulesError'] = 'Could not create the file we_installed_modules';
 $lang['upgrade']['copyFilesVersionError'] = 'Could not create the file version.php';
 $lang['upgrade']['copyFilesConfError'] = 'Could not create the configuration file';
 $lang['upgrade']['copyFilesBackupError'] = 'Could not move the backup folder';
@@ -41,8 +40,6 @@ $lang['upgrade']['copyFilesFileError'] = 'Could not copy the file %s';
 $lang['upgrade']['executePatchesDatabase'] = 'Could no adjust Tables for webEdition 6. The following tables could not be adjusted.';
 $lang['upgrade']['notEnoughLicenses'] = 'You do not own enough licenses to update to webEdition 6. You can buy updates in our shop.';
 $lang['upgrade']['finishInstallationError'] = 'Could not complete the update to webEdition 6.<br />Please check, if<br /><ul><li>The webEdition folder was renamed to webEdition5 (Does the folder /webEdition5 exist?)</li><li>The webEdition6 folder was renamed to webEdition (Is there also the folder /webEdition?)</li><br /><li>The backup folder was moved to webEdition/we_backup (Does the folder /webEdition/we_backup exist?)</li><br /><li>The site folder was moved to webEdition/site. (Does the folder /webEdition/site exist?)</li></ul><br />Please try to refresh this site first (press the refresh button), or try to make the described changes by yourself, or contact our support.';
-$lang['upgrade']['finishInstallationError_we4'] = 'Could not complete the update to webEdition 5.<br />Please check, if<br /><ul><li>The webEdition folder was renamed to webEdition4 (Does the folder /webEdition4 exist?)</li><li>The webEdition5 folder was renamed to webEdition (Is there also the folder /webEdition?)</li><br /><li>The backup folder was moved to webEdition/we_backup (Does the folder /webEdition/we_backup exist?)</li><br /><li>The site folder was moved to webEdition/site. (Does the folder /webEdition/site exist?)</li></ul><br />Please try to refresh this site first (press the refresh button), or try to make the described changes by yourself, or contact our support.';
-$lang['upgrade']['finishInstallationError_we5light'] = 'Could not complete the update to webEdition 5.<br />Please check, if<br /><ul><li>The webEdition folder was renamed to webEdition5light (Does the folder /webEdition5light exist?)</li><li>The webEdition5 folder was renamed to webEdition (Is there also the folder /webEdition?)</li><br /><li>The backup folder was moved to webEdition/we_backup (Does the folder /webEdition/we_backup exist?)</li><br /><li>The site folder was moved to webEdition/site. (Does the folder /webEdition/site exist?)</li></ul><br />Please try to refresh this site first (press the refresh button), or try to make the described changes by yourself, or contact our support.';
 $lang['upgrade']['finished'] = 'Update to webEdition version 6 completed';
 $lang['upgrade']['finished_note'] = 'The installation is completed. To activate all changes, webEdition is restarted now.<br /><strong>Please dont\'t forget to delete your browser cache and make a complete rebuild of your web-site.</strong>';
 $lang['upgrade']['notepad_category'] = 'Sonstiges';
@@ -76,7 +73,6 @@ $lang['update']['confirmUpdateVersionDetails'] = 'Details to the versions can be
 $lang['update']['confirmRepeatUpdateText'] = 'You are currently using version&nbsp;%s and want to install it again.';
 $lang['update']['confirmRepeatUpdateMessage'] = 'During a reinstallation (update repeat) all webEdition programm files are replaced by the original programme files. This process could take some time.';
 $lang['update']['finished'] = 'Update completed';
-$lang['update']['we51Notification'] = '<h2>Important information before updating!</h2><p>This information is relevant for you if you update from webEdition 5.0 to version 5.1 or higher.</p><ul><li><b>Changes in the user interface:</b> The GUI has been improved. Further information can be found in the <a target="_blank" href="http://documentation.webedition.org/wiki/en/webedition/change-log/version-5/start">version history</a>.</li><li><b>System requirements have changed:</b> From version 5.1, webEdition requires at least PHP 4.3. You can check the installed PHP version on your server from within webEdition using the menu item Help => system information.</li><li><b>Navigation tool:</b> If the customer management is installed, it might be necessary to set the permissions for customers in the navigation tool anew. The filters were redesigned completely, so some settings from 5.0 cannot be taken over with the update automatically.</li></ul>';
 
 $lang['update']['ReqWarnung'] = 'Attention!';
 $lang['update']['ReqWarnungText'] = 'Your system does not fulfill all system requirements:';
@@ -96,22 +92,10 @@ $lang['update']['ReqWarnungExif'] = "The exif PHP extension is not available, th
 $lang['update']['ReqWarnungPHPversion'] = 'PHP version 5.2.4 or newer is required for the update. Determined was version ';
 $lang['update']['ReqWarnungPHPversionForV640'] = 'PHP version 5.3.7 or newer is required for the update to a webEdition version newer than 6.3.9.0. Determined was PHP version ';
 
-$lang['update']['spenden'] = 'This webEdition version was made possible bei the work of the charitable foundation webEdition e.V. Support the work of the foundation and its members with your donation<br>
+$lang['update']['spenden'] = 'This webEdition version was made possible by the work of the charitable foundation webEdition e.V. Support the work of the foundation and its members with your donation<br/>
 It allows the foundation to employ professional developers which make it <br/>
 possible to fix bugs and to implement new features faster and to ensure <br/>
 the development of webEdition on the long run';
-
-$lang['modules']['headline'] = 'Installation of modules';
-$lang['modules']['textConfirmModules'] = 'The following modules will be installed. Confirm them and the installation will start. After the installation webEdition must be restarted.';
-$lang['modules']['reselectModules'] = 'The selected Modules can not be installed. You do not have enough licenses for the selected modules.<br /><br />Please reselect the modules.<br /><br />You selected the follwing modules:';
-$lang['modules']['noModulesSelected'] = 'You have no module selected';
-$lang['modules']['moduleAlreadyInstalled'] = 'This module is already installed. You can repeat the installation if you want to.';
-$lang['modules']['normalModules'] = 'Modules';
-$lang['modules']['proModules'] = '';
-$lang['modules']['dependentModules'] = 'Dependent modules';
-$lang['modules']['noInstallableModules'] = 'You can not install any modules now. All the modules you have are already installed.<br />You can buy new modules in our shop.';
-$lang['modules']['finished'] = 'Installation of modules completed';
-
 
 $lang['installer']['headline'] = 'Installation';
 $lang['installer']['headlineConfirmInstallation'] = 'Confirm Installation';
