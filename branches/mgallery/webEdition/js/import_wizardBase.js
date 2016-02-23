@@ -33,7 +33,7 @@ var weGetCategoriesHandleSuccess = function (o) {
 				propval = propval.replace(/\\\'/g, "'");
 				propval = propval.replace(/'/g, "\\\'");
 				var eId = json.elemsById[elemNr].elemId;
-				self.wizbody.document.getElementById(json.elemsById[elemNr].elemId)[json.elemsById[elemNr].props[propNr].prop ] = propval;
+				top.wizbody.document.getElementById(json.elemsById[elemNr].elemId)[json.elemsById[elemNr].props[propNr].prop ] = propval;
 			}
 		}
 	}
@@ -109,7 +109,7 @@ function we_cmd() {
 						this.wizbody.document.we_form.elements['v[docCategories]'].value = '';
 					}
 				}
-				this.wizbody.we_submit_form(self.wizbody.document.we_form, 'wizbody', path);
+				this.wizbody.we_submit_form(top.wizbody.document.we_form, 'wizbody', path);
 			}
 			break;
 		case 'add_objCat':
