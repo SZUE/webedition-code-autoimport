@@ -30,9 +30,6 @@ class installer extends installerBase{
 		// - all downloads/files per step
 		// - queryfiles/queries per step
 		// - all files to prepare/prepareFiles per step
-
-		$installationStepsTotal = 0;
-
 		// each step
 		$installationSteps = installer::getInstallationStepNames();
 		$installationStepsTotal = sizeof($installationSteps);
@@ -50,7 +47,9 @@ class installer extends installerBase{
 		$currentStep = 0;
 
 		switch($_REQUEST['detail']){
-
+			default:
+				$currentStep = 0;
+				break;
 			case 'downloadInstaller':
 				$currentStep = 1;
 				break;
@@ -58,16 +57,13 @@ class installer extends installerBase{
 				$currentStep = 2;
 				break;
 			case 'downloadChanges':
-				$currentStep = 3;
-				$currentStep += ($_REQUEST['position'] / sizeof($_SESSION['clientChanges']['allChanges'])) * $dlSteps;
-				break;
-			case 'updateDatabase':
-				$currentStep = 4 + $dlSteps;
-				$currentStep += ($_REQUEST['position'] / EXECUTE_QUERIES_PER_STEP);
+				$currentStep = 3 + ($_REQUEST['position'] / sizeof($_SESSION['clientChanges']['allChanges'])) * $dlSteps;
 				break;
 			case 'prepareChanges':
-				$currentStep = 5 + $dlSteps + $querySteps;
-				$currentStep += ($_REQUEST['position'] / PREPARE_FILES_PER_STEP);
+				$currentStep = 4 + $dlSteps + ($_REQUEST['position'] / PREPARE_FILES_PER_STEP);
+				break;
+			case 'updateDatabase':
+				$currentStep = 5 + $dlSteps + $prepareSteps + ($_REQUEST['position'] / EXECUTE_QUERIES_PER_STEP);
 				break;
 			case 'copyFiles':
 				$currentStep = $installationStepsTotal - 2;
@@ -101,8 +97,8 @@ class installer extends installerBase{
 			$currentStep = $_REQUEST['detail'];
 		}
 		$steps = static::getInstallationStepNames();
-		for($i = 0; $i < sizeof($steps); $i++){
-			if($currentStep == $steps[$i]){
+		foreach($steps as $i => $step){
+			if($currentStep == $step){
 				return $steps[($i + 1)];
 			}
 		}
@@ -120,52 +116,50 @@ class installer extends installerBase{
 	 */
 	static function getCommandNameForDetail($detail){
 
-		$cmd['update'] = array('getChanges', 'finishInstallation');
-		$cmd['modules'] = array('getChanges', 'finishInstallation');
-		$cmd['languages'] = array('getChanges', 'finishInstallation');
-		$cmd['upgrade'] = array('getChanges', 'copyFiles', 'executePatches', 'finishInstallation');
+		$cmd = [
+			'update' => ['getChanges', 'finishInstallation'],
+			'modules' => ['getChanges', 'finishInstallation'],
+			'languages' => ['getChanges', 'finishInstallation'],
+			'upgrade' => ['getChanges', 'copyFiles', 'executePatches', 'finishInstallation'],
+		];
 
 		if(in_array($detail, $cmd[$_SESSION['update_cmd']])){
 			return $_SESSION['update_cmd'];
-		} else {
-			return 'installer';
 		}
+		return 'installer';
 	}
 
 	/**
 	 * @return string
 	 */
 	static function getJsFunctions(){
+		return '<script><!--
+var decreaseSpeed = 1; // is set false, when script was successful, otherwise decrease speed
+var nextUrl = "?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail('downloadInstaller'), 'downloadInstaller') . '";
 
-		return '<script>
-
-	var decreaseSpeed = 1; // is set false, when script was successful, otherwise decrease speed
-	var nextUrl = "?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail('downloadInstaller'), 'downloadInstaller') . '";
-
-	function proceedUrl() {
-		if (!decreaseSpeed) {
-			top.frames["updateload"].document.location = nextUrl;
-		} else {
-			top.frames["updateload"].document.location = nextUrl + "&decreaseSpeed=1";
-		}
-		decreaseSpeed = 1;
+function proceedUrl() {
+	if (!decreaseSpeed) {
+		top.frames["updateload"].document.location = nextUrl;
+	} else {
+		top.frames["updateload"].document.location = nextUrl + "&decreaseSpeed=1";
 	}
+	decreaseSpeed = 1;
+}
 
-	function appendMessageLog(newText) {
+function appendMessageLog(newText) {
+	var messageLog = document.getElementById("messageLog");
+	messageLog.innerHTML += "\n" + newText;
+	messageLog.scrollTop = 1000000;
+}
 
-		var messageLog = document.getElementById("messageLog");
-		messageLog.innerHTML += "\n" + newText;
-		messageLog.scrollTop = 1000000;
-	}
+function activateLiInstallerStep(stepId) {
+	document.getElementById(stepId).className = "activeStep";
+}
 
-	function activateLiInstallerStep(stepId) {
-		document.getElementById(stepId).className = "activeStep";
-	}
-
-	function finishLiInstallerStep(stepId) {
-		document.getElementById(stepId).className = "finishedStep";
-	}
-
+function finishLiInstallerStep(stepId) {
+	document.getElementById(stepId).className = "finishedStep";
+}
+//-->
 </script>';
 	}
 
@@ -238,7 +232,6 @@ $success = true; // all files fine
 $successFiles = array(); // successfully saved files
 
 foreach ($files as $path => $content) {
-
 	if ($success) {
 
 		$testPath = ltrim(str_replace(LIVEUPDATE_CLIENT_DOCUMENT_DIR, "", $path), "/");
@@ -257,7 +250,6 @@ foreach ($files as $path => $content) {
 }
 
 if ($success) {
-
 	$message = "";
 	foreach ($successFiles as $path) {
 
@@ -289,7 +281,6 @@ if ($success) {
 			$files = array();';
 
 		foreach($filesArray as $path => $content){
-
 			$writeFilesCode .= '
 				$files[' . $path . '] = "' . $content . '";';
 		}
@@ -309,44 +300,32 @@ foreach ($files as $path => $content) {
 		if (!$liveUpdateFnc->filePutContent( $path, $liveUpdateFnc->decodeCode($content) ) ) {
 			$errorFile = $path;
 			$success = false;
-
 		}
-
 	}
-
 }
 
 $Content = "";
 for ($i = 0; $i <= ' . $numberOfParts . '; $i++) {
 	$Content .= $liveUpdateFnc->getFileContent(' . $Realname . '."part" . $i);
-
 }
 
 if ($liveUpdateFnc->filePutContent( ' . $Realname . ', $Content ) ) {
 	$successFiles[] = $path;
-
 }
+
 for ($i = 0; $i <= ' . $numberOfParts . '; $i++) {
 	$liveUpdateFnc->deleteFile(' . $Realname . '."part" . $i);
-
 }
 
-
 if ($success) {
-
 	$message = "";
 	foreach ($successFiles as $path) {
-
-				$text = basename(' . $Realname . ');
-				$text = substr($text, -40);
-
+		$text = substr(basename(' . $Realname . '), -40);
 		$message .= "<div> ...$text</div>";
 	}
 	?>' . installer::getProceedNextCommandResponsePart($nextUrl, $progress) . '<?php
-
 } else {
 	' . installer::getErrorMessageResponsePart() . '
-
 }
 ?>';
 
@@ -385,7 +364,6 @@ $liveUpdateFnc->deleteDir($filesDir);
 	 * @return string
 	 */
 	static function getUpdateDatabaseResponse(){
-
 		if(!isset($_REQUEST['position'])){
 			$_REQUEST['position'] = 0;
 		}
@@ -407,17 +385,11 @@ sort($allFiles);
 $message = "";
 
 for ($i=' . $_REQUEST['position'] . '; $i<sizeof($allFiles) && $i<' . ($_REQUEST['position'] + $_SESSION['EXECUTE_QUERIES_PER_STEP']) . '; $i++) {
-
 	// execute queries in each file
 	if ($liveUpdateFnc->executeQueriesInFiles($allFiles[$i])) {
-
-				$text = basename($allFiles[$i]);
-				$text = substr($text, -40);
-
-		$message .= "<div>...$text</div>";
-
+		$text = substr(basename($allFiles[$i]), -40);
+		$message .= "<div>&hellip;$text</div>";
 	} else {
-
 		$msg = $liveUpdateFnc->getQueryLog();
 		$fileName = basename($allFiles[$i]);
 
@@ -488,13 +460,10 @@ $message = "";
 $success = true;
 
 for ( $i=' . $_REQUEST["position"] . ',$j=0; $i<sizeof($allFiles) && $success && $j < ' . $_SESSION['PREPARE_FILES_PER_STEP'] . '; $i++,$j++) {
-
 	$content = $liveUpdateFnc->getFileContent($allFiles[$i]);
+	$text = substr(basename($allFiles[$i]), -40);
 
-	$text = basename($allFiles[$i]);
-	$text = substr($text, -40);
-
-	$message .= "<div>...$text</div>";
+	$message .= "<div>&hellip;$text</div>";
 
 	if ($liveUpdateFnc->isPhpFile($allFiles[$i])) {
 		$success = $liveUpdateFnc->filePutContent($allFiles[$i], $liveUpdateFnc->preparePhpCode($content, ".php", "' . $_SESSION['clientExtension'] . '"));
@@ -505,16 +474,11 @@ for ( $i=' . $_REQUEST["position"] . ',$j=0; $i<sizeof($allFiles) && $success &&
 }
 
 if (!$success) {
-
 	' . installer::getErrorMessageResponsePart() . '
-
 } else {
-
 	if ( sizeof($allFiles) >= (' . $_SESSION['PREPARE_FILES_PER_STEP'] . ' + ' . $_REQUEST["position"] . ') ) {
-
 		?>' . installer::getProceedNextCommandResponsePart($repeatUrl, installer::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
 	} else {
-
 		?>' . installer::getProceedNextCommandResponsePart($nextUrl, installer::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
 	}
 }
@@ -529,7 +493,6 @@ if (!$success) {
 	 * @return string
 	 */
 	static function getCopyFilesResponse(){
-
 		$nextUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail());
 
 		$retArray['Type'] = 'eval';
@@ -556,9 +519,8 @@ $donotcopy = array(
 );
 
 		for ($i=0;$success && $i<sizeof($allFiles);$i++) {
-				$text = basename($allFiles[$i]);
-				$text = substr($text, -40);
-				$message .= "<div>...$text</div>";
+				$text = substr(basename($allFiles[$i]), -40);
+				$message .= "<div>&hellip;$text</div>";
 
 			if (in_array(LIVEUPDATE_SOFTWARE_DIR . substr($allFiles[$i], $preLength),$donotcopy)) {
 				$success = $liveUpdateFnc->deleteFile($allFiles[$i]);
@@ -616,7 +578,6 @@ $success = true;
 $message = "";
 
 for ($i=0; $success && $i<sizeof($allFiles); $i++) {
-
 	$message .= basename($allFiles[$i]) . "<br />";
 	$success = $liveUpdateFnc->executePatch($allFiles[$i]);
 	if (!$success) {
@@ -629,11 +590,9 @@ if(method_exists($liveUpdateFnc, "weUpdaterDoUpdate")){
 }
 
 if ($success) {
-
-	$message = "<div>" . $message . "</div>";
-	$message .= "<div>' . sprintf($GLOBALS['lang']['installer']['amountPatchesExecuted'], sizeof($_SESSION['clientChanges']['patches'])) . '</div>";
+	$message = "<div>" . $message . "</div>".
+	"<div>' . sprintf($GLOBALS['lang']['installer']['amountPatchesExecuted'], sizeof($_SESSION['clientChanges']['patches'])) . '</div>";
 	?>' . installer::getProceedNextCommandResponsePart($nextUrl, installer::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
-
 } else {
 	' . installer::getErrorMessageResponsePart(stripslashes('$errorFile'), '{$GLOBALS["errorDetail"]}') . '
 }
@@ -744,14 +703,12 @@ window.setTimeout("top.frames[\"updatecontent\"].proceedUrl();", 50);
 	 * @return string
 	 */
 	static function getErrorMessageResponsePart($headline = '', $message = '', $type = ''){
-
 		return '
+$errorMessage = ' . installer::getErrorMessage($headline, $message, $type) . ';
 
-		$errorMessage = ' . installer::getErrorMessage($headline, $message, $type) . ';
+$liveUpdateFnc->insertUpdateLogEntry($errorMessage, "' . (isset($_SESSION['clientTargetVersion']) ? $_SESSION['clientTargetVersion'] : $_SESSION['clientVersion']) . '", 1);
 
-		$liveUpdateFnc->insertUpdateLogEntry($errorMessage, "' . (isset($_SESSION['clientTargetVersion']) ? $_SESSION['clientTargetVersion'] : $_SESSION['clientVersion']) . '", 1);
-
-		print \'
+print \'
 <script>
 	top.frames["updatecontent"].appendMessageLog("\' . $errorMessage . \'");
 	alert("\' . strip_tags($errorMessage) . \'");

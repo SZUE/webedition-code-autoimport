@@ -33,20 +33,6 @@ switch($_REQUEST['detail']){
 
 		break;
 
-	case 'updateDatabase':
-
-		// this is to check if current query speed is too fast
-		if(!isset($_SESSION['EXECUTE_QUERIES_PER_STEP'])){
-			$_SESSION['EXECUTE_QUERIES_PER_STEP'] = EXECUTE_QUERIES_PER_STEP;
-		}
-
-		if(isset($_REQUEST['decreaseSpeed']) && $_SESSION['EXECUTE_QUERIES_PER_STEP'] > 1){
-			$_SESSION['EXECUTE_QUERIES_PER_STEP'] --;
-		}
-
-		print installer::getUpdateDatabaseResponse();
-		break;
-
 	case 'prepareChanges':
 
 		// this is to check if current preparation speed is too fast
@@ -62,6 +48,19 @@ switch($_REQUEST['detail']){
 		print installer::getPrepareChangesResponse();
 		break;
 
+
+	case 'updateDatabase':
+		// this is to check if current query speed is too fast
+		if(!isset($_SESSION['EXECUTE_QUERIES_PER_STEP'])){
+			$_SESSION['EXECUTE_QUERIES_PER_STEP'] = EXECUTE_QUERIES_PER_STEP;
+		}
+
+		if(isset($_REQUEST['decreaseSpeed']) && $_SESSION['EXECUTE_QUERIES_PER_STEP'] > 1){
+			$_SESSION['EXECUTE_QUERIES_PER_STEP'] --;
+		}
+
+		print installer::getUpdateDatabaseResponse();
+		break;
 	case 'copyFiles':
 		// copy webEdition files at right position
 		print installer::getCopyFilesResponse();

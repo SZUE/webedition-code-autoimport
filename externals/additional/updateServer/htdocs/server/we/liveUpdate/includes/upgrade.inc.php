@@ -10,11 +10,12 @@ switch($_REQUEST['detail']){
 		$AlphaBetaVersions = update::getAlphaBetaVersions();
 		$_SESSION['SubVersions'] = $SubVersions;
 		$maxVersionNumber = update::checkForUpdate();
-		$verlog = array();
-		$verlog['version'] = $maxVersionNumber;
-		$verlog['svnrevision'] = $_SESSION['SubVersions'][$maxVersionNumber];
-		$verlog['type'] = $AlphaBetaVersions[$maxVersionNumber]['type'];
-		$verlog['versionBranch'] = $AlphaBetaVersions[$maxVersionNumber]['branch'];
+		$verlog = array(
+			'version' => $maxVersionNumber,
+			'svnrevision' => $_SESSION['SubVersions'][$maxVersionNumber],
+			'type' => $AlphaBetaVersions[$maxVersionNumber]['type'],
+			'versionBranch' => $AlphaBetaVersions[$maxVersionNumber]['branch'],
+		);
 		if(isset($_SESSION['clientSubVersion']) && $_SESSION['clientSubVersion'] != '0000' && $_SESSION['clientSubVersion'] != ''){
 			$_SESSION['clientSubVersionDB'] = update::getSubVersion($_SESSION['clientVersionNumber']);
 			$verlog['svnrevisionDB'] = $_SESSION['clientSubVersionDB'];

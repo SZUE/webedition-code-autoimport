@@ -19,7 +19,7 @@ foreach($GLOBALS['updateServerTemplateData']['possibleVersions'] as $number => $
 }
 $confirmUpdateHint = '';
 foreach($shownversions as $number){
-	$confirmUpdateHint .= $GLOBALS['lang']['upgrade']['confirmUpdateHint'][$number];
+	$confirmUpdateHint .= empty($GLOBALS['lang']['upgrade']['confirmUpdateHint'][$number]) ? '' : $GLOBALS['lang']['upgrade']['confirmUpdateHint'][$number];
 }
 
 //client version: text and version string

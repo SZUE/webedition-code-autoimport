@@ -219,7 +219,7 @@ print $newResponse->getOutput();
 		';
 	}
 
-	function replaceExtensionInContent($content){
+	static function replaceExtensionInContent($content){
 		return str_replace('.php', $_SESSION['clientExtension'], $content);
 	}
 

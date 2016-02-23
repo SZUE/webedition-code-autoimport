@@ -9,8 +9,7 @@ switch($_REQUEST['detail']){
 		 */
 
 		update::updateLogStart();
-		if($maxVersionNumber = update::checkForUpdate()){
-
+		if(($maxVersionNumber = update::checkForUpdate())){
 			$updateServerTemplateData['maxVersionNumber'] = $maxVersionNumber;
 
 			// get all possible versions
@@ -30,11 +29,8 @@ switch($_REQUEST['detail']){
 
 			$lngVersions = array();
 			foreach($versionLngs as $version => $lngArray){
-
 				for($i = 0; $i < sizeof($lngArray); $i++){
-
 					if(!isset($lngVersions[$lngArray[$i]])){
-
 						$lngVersions[$lngArray[$i]] = updateUtil::number2version($version);
 					}
 				}
@@ -42,11 +38,12 @@ switch($_REQUEST['detail']){
 
 			$updateServerTemplateData['availableVersions'] = $lngVersions;
 			$updateServerTemplateData['xyzVersions'] = $versionLngs;
-			$verlog = array();
-			$verlog['version'] = $updateServerTemplateData['maxVersionNumber'];
-			$verlog['svnrevision'] = $_SESSION['SubVersions'][$updateServerTemplateData['maxVersionNumber']];
-			$verlog['type'] = $_SESSION['AlphaBetaVersions'][$updateServerTemplateData['maxVersionNumber']]['type'];
-			$verlog['versionBranch'] = $_SESSION['AlphaBetaVersions'][$updateServerTemplateData['maxVersionNumber']]['branch'];
+			$verlog = array(
+				'version' => $updateServerTemplateData['maxVersionNumber'],
+				'svnrevision' => $_SESSION['SubVersions'][$updateServerTemplateData['maxVersionNumber']],
+				'type' => $_SESSION['AlphaBetaVersions'][$updateServerTemplateData['maxVersionNumber']]['type'],
+				'versionBranch' => $_SESSION['AlphaBetaVersions'][$updateServerTemplateData['maxVersionNumber']]['branch'],
+			);
 			if(isset($_SESSION['clientSubVersion']) && $_SESSION['clientSubVersion'] != '0000' && $_SESSION['clientSubVersion'] != ''){
 				$_SESSION['clientSubVersionDB'] = update::getSubVersion($_SESSION['clientVersionNumber']);
 				$verlog['svnrevisionDB'] = $_SESSION['clientSubVersionDB'];
@@ -60,28 +57,28 @@ switch($_REQUEST['detail']){
 			//error_log(print_r($possibleVersions,true));
 			// is the update possible
 			if(sizeof($possibleVersions) < 1){
-
 				print update::getNoUpdateForLanguagesResponse();
-			} else {
-				if(isset($_SESSION['clientSubVersionDB']) && isset($_SESSION['clientSubVersion']) && $_SESSION['clientSubVersion'] < $_SESSION['clientSubVersionDB']){
-					$SubVersions = update::getSubVersions();
-					$_SESSION['SubVersions'] = $SubVersions;
-					$updateServerTemplateData['maxVersionNumber'] = update::getMaxVersionNumber();
-					print update::getUpdateAvailableAfterRepeatResponse();
-				} else {
-					print update::getUpdateAvailableResponse();
-				}
+				break;
 			}
-		} else {
-
-			// no new version available -> print correct template
-			$SubVersions = update::getSubVersions();
-			$_SESSION['SubVersions'] = $SubVersions;
-			$updateServerTemplateData['maxVersionNumber'] = update::getMaxVersionNumber();
-			update::updateLogAvail($updateServerTemplateData['maxVersionNumber']);
-
-			print update::getNoUpdateAvailableResponse();
+			if(isset($_SESSION['clientSubVersionDB']) && isset($_SESSION['clientSubVersion']) && $_SESSION['clientSubVersion'] < $_SESSION['clientSubVersionDB']){
+				$SubVersions = update::getSubVersions();
+				$_SESSION['SubVersions'] = $SubVersions;
+				$updateServerTemplateData['maxVersionNumber'] = update::getMaxVersionNumber();
+				print update::getUpdateAvailableAfterRepeatResponse();
+				break;
+			}
+			print update::getUpdateAvailableResponse();
+			break;
 		}
+
+		// no new version available -> print correct template
+		$SubVersions = update::getSubVersions();
+		$_SESSION['SubVersions'] = $SubVersions;
+		$updateServerTemplateData['maxVersionNumber'] = update::getMaxVersionNumber();
+		update::updateLogAvail($updateServerTemplateData['maxVersionNumber']);
+
+		print update::getNoUpdateAvailableResponse();
+
 		break;
 
 	case 'confirmRepeatUpdate':
@@ -99,21 +96,17 @@ switch($_REQUEST['detail']){
 
 		$Request = unserialize(base64_decode($_REQUEST['reqArray']));
 
-		if(isset($Request['clientPhpVersion']) && $Request['clientPhpVersion'] != ''){
+		if(!empty($Request['clientPhpVersion'])){
 			$_SESSION['clientPhpVersion'] = $Request['clientPhpVersion'];
 		}
-		if(isset($Request['clientPcreVersion']) && $Request['clientPcreVersion'] != ''){
+		if(!empty($Request['clientPcreVersion'])){
 			$_SESSION['clientPcreVersion'] = $Request['clientPcreVersion'];
 		}
-		if(isset($Request['clientPhpExtensions']) && $Request['clientPhpExtensions'] != ''){
+		if(!empty($Request['clientPhpExtensions'])){
 			$tmp = unserialize(base64_decode($Request['clientPhpExtensions']));
-			if($tmp === false){
-				$_SESSION['clientPhpExtensions'] = $Request['clientPhpExtensions'];
-			} else {
-				$_SESSION['clientPhpExtensions'] = implode(',', $tmp);
-			}
+			$_SESSION['clientPhpExtensions'] = ($tmp === false ? $Request['clientPhpExtensions'] : implode(',', $tmp));
 		}
-		if(isset($Request['clientMySQLVersion']) && $Request['clientMySQLVersion'] != ''){
+		if(!empty($Request['clientMySQLVersion'])){
 			$_SESSION['clientMySQLVersion'] = $Request['clientMySQLVersion'];
 		}
 
@@ -122,13 +115,12 @@ switch($_REQUEST['detail']){
 			 * Repeat the update
 			 */
 			print update::getConfirmRepeatUpdateResponse();
-		} else {
-			/*
-			 * Normal update
-			 */
-			print update::getConfirmUpdateResponse();
+			break;
 		}
-
+		/*
+		 * Normal update
+		 */
+		print update::getConfirmUpdateResponse();
 		break;
 
 	case 'startRepeatUpdate':
