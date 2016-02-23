@@ -10,8 +10,8 @@ class installer extends installerBase{
 			'downloadInstaller',
 			'getChanges',
 			'downloadChanges',
-			'updateDatabase',
 			'prepareChanges',
+			'updateDatabase',
 			'copyFiles',
 			'executePatches',
 			'finishInstallation'
@@ -135,7 +135,7 @@ class installer extends installerBase{
 	/**
 	 * @return string
 	 */
-	function getJsFunctions(){
+	static function getJsFunctions(){
 
 		return '<script>
 
@@ -174,7 +174,7 @@ class installer extends installerBase{
 	 *
 	 * @return string
 	 */
-	function getConfirmInstallationResponse(){
+	static function getConfirmInstallationResponse(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/installer/confirmInstallation.inc.php');
 		return updateUtil::getResponseString($ret);
 	}
@@ -182,7 +182,7 @@ class installer extends installerBase{
 	/**
 	 * @return string
 	 */
-	function getInstallationScreenResponse(){
+	static function getInstallationScreenResponse(){
 		$GLOBALS['updateServerTemplateData']['installationSteps'] = installer::getInstallationStepNames();
 
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/installer/initialInstallerScreen.inc.php');
@@ -195,7 +195,7 @@ class installer extends installerBase{
 	 *
 	 * @return string
 	 */
-	function getDownloadInstallerResponse(){
+	static function getDownloadInstallerResponse(){
 
 		$files = installer::getInstallerFilesArray();
 
@@ -358,7 +358,7 @@ if ($success) {
 	 *
 	 * @return string
 	 */
-	function getGetChangesResponse($nextUrl = ''){
+	static function getGetChangesResponse($nextUrl = ''){
 		$nextUrl = '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail());
 
 		$message = '<div>' . sprintf($GLOBALS['lang']['installer']['downloadFilesTotal'], sizeof($_SESSION['clientChanges']['allChanges'])) . '<br />' .
@@ -780,7 +780,7 @@ window.open(\'?' . updateUtil::getCommonHrefParameters('installer', 'finishInsta
 		</script>';
 	}
 
-	function getFinishInstallationPopUpResponse(){
+	static function getFinishInstallationPopUpResponse(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/installer/finishInstallationPopUp.inc.php');
 		return updateUtil::getResponseString($ret);
 	}

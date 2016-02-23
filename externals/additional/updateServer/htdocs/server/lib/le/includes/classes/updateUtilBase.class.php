@@ -233,7 +233,7 @@ print $newResponse->getOutput();
 		$content = updateUtil::getFileContent($filePath);
 
 		if($replaceExtension){
-			$content = updateUtil::replaceExtensionInContent($content);
+			$content = self::replaceExtensionInContent($content);
 		}
 		return updateUtil::encodeCode($content);
 	}

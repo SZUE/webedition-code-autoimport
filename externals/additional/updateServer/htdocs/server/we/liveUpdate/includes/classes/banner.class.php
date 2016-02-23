@@ -2,7 +2,7 @@
 
 class banner extends bannerBase{
 
-	function getBannerHtml(){
+	static function getBannerHtml(){
 
 		if(defined("BANNER_URL") && BANNER_URL){
 
@@ -38,7 +38,7 @@ class banner extends bannerBase{
 		}
 	}
 
-	function getBannerHeader(){
+	static function getBannerHeader(){
 
 		if(defined("BANNER_URL") && BANNER_URL){
 

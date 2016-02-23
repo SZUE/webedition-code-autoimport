@@ -5,7 +5,7 @@ class progressBar extends progressBarBase{
 	/**
 	 * @return string
 	 */
-	function getProgressBarHtml(){
+	static function getProgressBarHtml(){
 
 		return '<table cellpadding="0" cellspacing="0" width="100%" border="0" class="defaultfont">
 		<tr>
@@ -20,7 +20,7 @@ class progressBar extends progressBarBase{
 	/**
 	 * @return string
 	 */
-	function getProgressBarJs(){
+	static function getProgressBarJs(){
 		return '
 <script>
 

@@ -97,7 +97,7 @@ class update extends updateBase{
 		$GLOBALS['DB_WE']->query($query);
 	}
 
-	function checkRequirements(&$output, $pcreV, $phpextensionsstring, $phpV, $mysqlV = ''){
+	static function checkRequirements(&$output, $pcreV, $phpextensionsstring, $phpV, $mysqlV = ''){
 		$phpversionOK = true;
 		$phpversionOkForV640 = true;
 		$mysqlversionOK = true;
@@ -448,7 +448,7 @@ class update extends updateBase{
 	 * responses during update process
 	 */
 
-	function getGetChangesResponse(){
+	static function getGetChangesResponse(){
 		return installer::getGetChangesResponse();
 	}
 

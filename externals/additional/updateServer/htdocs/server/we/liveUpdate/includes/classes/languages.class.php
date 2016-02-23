@@ -109,7 +109,7 @@ class languages extends languagesBase{
 	/**
 	 * @return string
 	 */
-	function getGetChangesResponse(){
+	static function getGetChangesResponse(){
 		return installer::getGetChangesResponse();
 	}
 

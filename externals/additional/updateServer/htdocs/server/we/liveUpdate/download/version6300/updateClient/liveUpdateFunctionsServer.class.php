@@ -75,9 +75,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * @return unknown
 	 */
 	function replaceExtensionInContent($content, $needle, $replace){
-
-		$content = str_replace($needle, $replace, $content);
-		return $content;
+		return str_replace($needle, $replace, $content);
 	}
 
 	/**
