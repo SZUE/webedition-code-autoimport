@@ -1,5 +1,7 @@
 ###UPDATEDROPCOL(Icon,###TBLPREFIX###tblCategorys)###
 /* query separator */
+###UPDATEDROPCOL(IsFolder,###TBLPREFIX###tblCategorys)###
+/* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblCategorys (
   ID int unsigned NOT NULL auto_increment,
