@@ -262,12 +262,11 @@ function handle_event(evt) {
 			top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import&we_cmd[1]=" . we_import_functions::TYPE_WE_XML . "';
 			break;
 		case 'next':
-			" . ($this->fileUploader ? "if(f.elements['v[rdofloc]'][1].checked===true){
+			if(f.elements['v[rdofloc]'][1].checked===true){
 				" . $this->fileUploader->getJsBtnCmd('upload') . "}
 			else {
 				handle_eventNext();
-			}" :
-				"handle_eventNext();") . "
+			}
 			break;
 		case 'cancel':
 			top.close();
@@ -278,8 +277,7 @@ function handle_eventNext(){
 	var f = self.document.we_form,
 		fs = f.elements['v[fserver]'].value,
 		ext = '',
-		fl = f.elements.uploaded_xml_file.value;
-		" . ($this->fileUploader ? "fl = we_FileUpload !== undefined ? 'placeholder.xml' : fl" : "") . ";
+		fl = we_FileUpload !== undefined ? 'placeholder.xml' : f.elements.uploaded_xml_file.value;
 
 	if (f.elements['v[rdofloc]'][0].checked==true && fs!=='/') {
 		if (fs.match(/\.\./)=='..') { " . (we_message_reporting::getShowMessageCall(g_l('import', '[invalid_path]'), we_message_reporting::WE_MESSAGE_ERROR)) . "; return; }
@@ -305,9 +303,7 @@ function handle_eventNext(){
 		$inputLServer = we_html_tools::htmlTextInput("v[fserver]", 30, (isset($v["fserver"]) ? $v["fserver"] : "/"), 255, "readonly", "text", 300);
 		$importFromServer = we_html_tools::htmlFormElementTable($inputLServer, "", "left", "defaultfont", $importFromButton, '', "", "", "", 0);
 
-		$inputLLocal = $this->fileUploader ? $this->fileUploader->getHTML() :
-			we_html_tools::htmlTextInput("uploaded_xml_file", 30, "", 255, "accept=\"text/xml\" onclick=\"self.document.we_form.elements['v[rdofloc]'][1].checked=true;\"", "file");
-
+		$inputLLocal = $this->fileUploader->getHTML();
 		$importFromLocal = we_html_tools::htmlFormElementTable($inputLLocal, "", "left", "defaultfont", '', "", "", "", "", 0);
 		$rdoLServer = we_html_forms::radiobutton("lServer", (isset($v["rdofloc"])) ? ($v["rdofloc"] === "lServer") : 1, "v[rdofloc]", g_l('import', '[fileselect_server]'));
 		$rdoLLocal = we_html_forms::radiobutton("lLocal", (isset($v["rdofloc"])) ? ($v["rdofloc"] === "lLocal") : 0, "v[rdofloc]", g_l('import', '[fileselect_local]'));
@@ -315,7 +311,7 @@ function handle_eventNext(){
 		$importLocs->setCol(0, 0, array(), $rdoLServer);
 		$importLocs->setCol(1, 0, array(), $importFromServer);
 		$importLocs->setCol(3, 0, array('style' => 'padding-top:4px;'), $rdoLLocal);
-		$importLocs->setCol(4, 0, array(), $this->fileUploader ? $this->fileUploader->getHtmlAlertBoxes() : we_fileupload_ui_base::getHtmlAlertBoxesStatic(410));
+		$importLocs->setCol(4, 0, array(), $this->fileUploader->getHtmlAlertBoxes());
 		$importLocs->setCol(5, 0, array(), $importFromLocal);
 		$fn_colsn = new we_html_table(array('class' => 'default withSpace'), 4, 1);
 		$fn_colsn->setCol(0, 0, array(), we_html_tools::htmlAlertAttentionBox(g_l('import', '[collision_txt]'), we_html_tools::TYPE_ALERT, 410));
@@ -344,23 +340,9 @@ function handle_eventNext(){
 		$v = we_base_request::_(we_base_request::STRING, 'v', array());
 		$_upload_error = false;
 
-		if($v['rdofloc'] === 'lLocal' && (isset($_FILES['uploaded_xml_file']))){
-			// FIXME: let fu_resp_base check the existence of a finished upload-file and handle it to import => the following blocks are nonsens
-			if(!($_FILES['uploaded_xml_file'])){
-				$_upload_error = true;
-			} else {
-				$tmpFile = we_base_request::_(we_base_request::STRING, 'weFileNameTemp');
-				$v['import_from'] = $tmpFile;
-				//FIXME: still need else branch?
-				/*
-				if($this->fileUploader && $this->fileUploader->processFileRequest()){
-					$v['import_from'] = $this->fileUploader->getFileNameTemp();
-				} else {
-					$v['import_from'] = TEMP_DIR . we_base_file::getUniqueId() . '_w.xml';
-					move_uploaded_file($_FILES['uploaded_xml_file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . $v['import_from']);
-				}
-				 * 
-				 */
+		if($v['rdofloc'] === 'lLocal'){
+			if((!$v['import_from'] = $this->fileUploader->commitUploadedFile())){
+				$_upload_error = $this->fileUploader->getError();
 			}
 		}
 
@@ -435,10 +417,8 @@ function toggle(name){
 
 		$_return = array('', '');
 		if($_upload_error){
-			//FIXME: still need condition?
-			$maxsize = $this->fileUploader ? $this->fileUploader->getMaxUploadSize() : getUploadMaxFilesize();
 			$_return[1] = we_html_element::jsElement($functions . ' ' .
-					we_message_reporting::getShowMessageCall(sprintf(g_l('import', '[upload_failed]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_message_reporting::WE_MESSAGE_ERROR) . '
+					we_message_reporting::getShowMessageCall($_upload_error, we_message_reporting::WE_MESSAGE_ERROR) . '
 							handle_event("previous");');
 			return $_return;
 		}
@@ -809,12 +789,11 @@ function handle_event(evt) {
 			top.location.href=WE().consts.dirs.WEBEDITION_DIR+ 'we_cmd.php?we_cmd[0]=import&we_cmd[1]=" . we_import_functions::TYPE_GENERIC_XML . "';
 			break;
 		case 'next':
-			" . ($this->fileUploader ? "if(f.elements['v[rdofloc]'][1].checked===true){
+			if(f.elements['v[rdofloc]'][1].checked===true){
 				" . $this->fileUploader->getJsBtnCmd('upload') . "}
 			else {
-					handle_eventNext();
-			}" :
-				"handle_eventNext();") . "
+				handle_eventNext();
+			}
 			break;
 		case 'cancel':
 			top.close();
@@ -829,9 +808,9 @@ function handle_eventNext(){
 		f.elements['v[we_TemplateID]'].value = f.elements.docTypeTemplateId.value;
 	}
 	var fs = f.elements['v[fserver]'].value;
-	var fl = f.elements.uploaded_xml_file.value,
-		ext = '';
-	" . ($this->fileUploader ? "fl = we_FileUpload !== undefined ? 'placeholder.xml' : fl" : "") . "
+	var fl = we_FileUpload !== undefined ? 'placeholder.xml' : f.elements.uploaded_xml_file.value;
+	var ext = '';
+	
 
 	if ((f.elements['v[rdofloc]'][0].checked==true) && fs!='/') {
 		if (fs.match(/\.\./)=='..') {
@@ -924,9 +903,7 @@ HTS;
 		$importFromServer = we_html_tools::htmlFormElementTable($inputLServer, '', 'left', 'defaultfont', $importFromButton, '', '', '', '', 0);
 
 		//FIXME: still need condition?
-		$inputLLocal = $this->fileUploader ? $this->fileUploader->getHTML() :
-			we_html_tools::htmlTextInput('uploaded_xml_file', 30, '', 255, "accept=\"text/xml\" onclick=\"self.document.we_form.elements['v[rdofloc]'][1].checked=true;\"", "file");
-
+		$inputLLocal = $this->fileUploader->getHTML();
 		$importFromLocal = we_html_tools::htmlFormElementTable($inputLLocal, '', 'left', 'defaultfont', '', '', '', '', '', 0);
 		$rdoLServer = we_html_forms::radiobutton('lServer', (isset($v['rdofloc'])) ? ($v['rdofloc'] === 'lServer') : 1, 'v[rdofloc]', g_l('import', '[fileselect_server]'));
 		$rdoLLocal = we_html_forms::radiobutton('lLocal', (isset($v['rdofloc'])) ? ($v['rdofloc'] === 'lLocal') : 0, 'v[rdofloc]', g_l('import', '[fileselect_local]'));
@@ -936,7 +913,7 @@ HTS;
 		$importLocs->setCol($_tblRow++, 0, array(), $importFromServer);
 		$importLocs->setCol($_tblRow++, 0, array('style' => 'padding-top:4px;'), $rdoLLocal);
 		//FIXME: still need condition?
-		$importLocs->setCol($_tblRow++, 0, array(), $this->fileUploader ? $this->fileUploader->getHtmlAlertBoxes() : we_fileupload_ui_base::getHtmlAlertBoxesStatic(410));
+		$importLocs->setCol($_tblRow++, 0, array(), $this->fileUploader->getHtmlAlertBoxes());
 		$importLocs->setCol($_tblRow++, 0, array(), $importFromLocal);
 
 		$DB_WE->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt ORDER BY dt.DocType');
@@ -1128,14 +1105,11 @@ HTS;
 		$parts = array();
 		$hdns = "\n";
 		$v = we_base_request::_(we_base_request::STRING, 'v');
+		$_upload_error = false;
 
-		if($v['rdofloc'] === 'lLocal' && (isset($_FILES['uploaded_xml_file']) and $_FILES['uploaded_xml_file']['size'])){
-			//FIXME: still need condition?
-			if($this->fileUploader && $this->fileUploader->processFileRequest()){
-				$v['import_from'] = $this->fileUploader->getFileNameTemp();
-			} else {
-				$v['import_from'] = TEMP_DIR . 'we_xml_' . we_base_file::getUniqueId() . '.xml';
-				move_uploaded_file($_FILES['uploaded_xml_file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . $v['import_from']);
+		if($v['rdofloc'] === 'lLocal'){
+			if((!$v['import_from'] = $this->fileUploader->commitUploadedFile())){
+				$_upload_error = $this->fileUploader->getError();
 			}
 		}
 
@@ -1215,10 +1189,15 @@ HTS;
 			}
 		} else {
 			$xmlWellFormed = $hasChildNode = false;
-			if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $v['import_from'])){
-				$parts[] = array('html' => we_html_tools::htmlAlertAttentionBox(g_l('import', '[file_exists]') . $_SERVER['DOCUMENT_ROOT'] . $v['import_from'], we_html_tools::TYPE_ALERT, 530), 'noline' => 1);
-			} elseif(!is_readable($_SERVER['DOCUMENT_ROOT'] . $v['import_from'])){
-				$parts[] = array('html' => we_html_tools::htmlAlertAttentionBox(g_l('import', '[file_readable]'), we_html_tools::TYPE_ALERT, 530), 'noline' => 1);
+
+			if($_upload_error){ // uploaded file nok: get error from uploader
+				$parts[] = array('html' => we_html_tools::htmlAlertAttentionBox($_upload_error, we_html_tools::TYPE_ALERT, 530), 'noline' => 1);
+			} else { // file from server nok
+				if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $v['import_from'])){
+					$parts[] = array('html' => we_html_tools::htmlAlertAttentionBox(g_l('import', '[file_exists]') . $_SERVER['DOCUMENT_ROOT'] . $v['import_from'], we_html_tools::TYPE_ALERT, 530), 'noline' => 1);
+				} elseif(!is_readable($_SERVER['DOCUMENT_ROOT'] . $v['import_from'])){
+					$parts[] = array('html' => we_html_tools::htmlAlertAttentionBox(g_l('import', '[file_readable]'), we_html_tools::TYPE_ALERT, 530), 'noline' => 1);
+				}
 			}
 		}
 
@@ -1558,12 +1537,11 @@ function handle_event(evt) {
 			top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import&we_cmd[1]=" . we_import_functions::TYPE_CSV . "';
 			break;
 		case 'next':
-			" . ($this->fileUploader ? "if(f.elements['v[rdofloc]'][1].checked===true){
+			if(f.elements['v[rdofloc]'][1].checked===true){
 				" . $this->fileUploader->getJsBtnCmd('upload') . "}
 			else {
 				handle_eventNext();
-			}" :
-				"handle_eventNext();") . "
+			}
 			break;
 		case 'cancel':
 			top.close();
@@ -1574,9 +1552,8 @@ function handle_eventNext(){
 	var f = self.document.we_form,
 		fvalid = true,
 		fs = f.elements['v[fserver]'].value,
-		fl = f.elements['uploaded_csv_file'].value,
+		fl = we_FileUpload !== undefined ? 'placeholder.xml' : f.elements['uploaded_csv_file'].value,
 		ext = '';
-		" . ($this->fileUploader ? "fl = we_FileUpload !== undefined ? 'placeholder.xml' : fl" : "") . "
 
 	if ((f.elements['v[rdofloc]'][0].checked==true) && fs!='/') {
 		if (fs.match(/\.\./)=='..') { " . we_message_reporting::getShowMessageCall(g_l('import', '[invalid_path]'), we_message_reporting::WE_MESSAGE_ERROR) . " return; }
@@ -1597,16 +1574,12 @@ function handle_eventNext(){
 ";
 
 		$v['import_type'] = isset($v['import_type']) ? $v['import_type'] : 'documents';
-		/*		 * *************************************************************************************************************** */
 		$wecmdenc1 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[fserver]'].value");
 		$importFromButton = (permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES')) ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.we_form.elements['v[fserver]'].value)") : "";
 		$inputLServer = we_html_tools::htmlTextInput('v[fserver]', 30, (isset($v['fserver']) ? $v['fserver'] : '/'), 255, "readonly onclick=\"self.document.we_form.elements['v[rdofloc]'][0].checked=true;\"", "text", 300);
 		$importFromServer = we_html_tools::htmlFormElementTable($inputLServer, '', 'left', 'defaultfont', $importFromButton, '', "", "", "", 0);
 
-		//FIXME: still need condition?
-		$inputLLocal = $this->fileUploader ? $this->fileUploader->getHTML() :
-			we_html_tools::htmlTextInput('uploaded_csv_file', 30, '', 255, 'accept="text/csv" onclick="self.document.we_form.elements[\'v[rdofloc]\'][1].checked=true;"', 'file');
-
+		$inputLLocal = $this->fileUploader->getHTML();
 		$importFromLocal = we_html_tools::htmlFormElementTable($inputLLocal, '', 'left', 'defaultfont', '', "", "", "", "", 0);
 		$rdoLServer = we_html_forms::radiobutton('lServer', (isset($v['rdofloc'])) ? ($v['rdofloc'] === 'lServer') : 1, 'v[rdofloc]', g_l('import', '[fileselect_server]'));
 		$rdoLLocal = we_html_forms::radiobutton('lLocal', (isset($v['rdofloc'])) ? ($v['rdofloc'] === 'lLocal') : 0, 'v[rdofloc]', g_l('import', '[fileselect_local]'));
@@ -1616,9 +1589,9 @@ function handle_eventNext(){
 		$importLocs->setCol($_tblRow++, 0, array(), $importFromServer);
 		$importLocs->setCol($_tblRow++, 0, array('style' => 'padding-top:4px;'), $rdoLLocal);
 		// FIXME: still need condition?
-		$importLocs->setCol($_tblRow++, 0, array(), $this->fileUploader ? $this->fileUploader->getHtmlAlertBoxes() : we_fileupload_ui_base::getHtmlAlertBoxesStatic(410));
+		$importLocs->setCol($_tblRow++, 0, array(), $this->fileUploader->getHtmlAlertBoxes());
 		$importLocs->setCol($_tblRow++, 0, array(), $importFromLocal);
-		/*		 * *************************************************************************************************************** */
+
 		$iptDel = we_html_tools::htmlTextInput('v[csv_seperator]', 2, (isset($v['csv_seperator']) ? (($v['csv_seperator'] != '') ? $v['csv_seperator'] : ' ') : ';'), 2, '', 'text', 20);
 		$fldDel = new we_html_select(array('name' => 'v[sct_csv_seperator]', 'size' => 1, 'class' => 'weSelect', 'onchange' => "this.form.elements['v[csv_seperator]'].value=this.options[this.selectedIndex].innerHTML.substr(0,2);this.selectedIndex=options[0];", "style" => "width: 130px"));
 		$fldDel->addOption('', '');
@@ -1682,27 +1655,21 @@ function handle_eventNext(){
 	protected function getCSVImportStep2(){
 		global $DB_WE;
 		$v = we_base_request::_(we_base_request::STRING, 'v');
-		$fileFromUploader = we_fileupload::commitFile('uploaded_csv_file');
+		$_upload_error = false;
 
-		if(((isset($_FILES['uploaded_csv_file']) and $_FILES['uploaded_csv_file']['size'])) || $v['file_format'] === 'mac'){
-			$uniqueId = we_base_file::getUniqueId(); // #6590, changed from: uniqid(microtime())
-
-			switch($v['rdofloc']){
-				case 'lLocal':
-					$v['import_from'] = $fileFromUploader;
-					break;
-				case 'lServer':
-					$realPath = realpath($_SERVER['DOCUMENT_ROOT'] . $v['import_from']);
-					if(strpos($realPath, $_SERVER['DOCUMENT_ROOT']) === FALSE){
-						t_e('warning', 'Acess outside document_root forbidden!', $realPath);
-						break;
-					}
-
-					$contents = we_base_file::load($fp, 'r');
-					$v['import_from'] = TEMP_DIR . 'we_csv_' . $uniqueId . '.csv';
-					$replacement = str_replace("\r", "\n", $contents);
-					we_base_file::save($fp, $replacement, 'w+');
-					break;
+		if($v['rdofloc'] === 'lLocal'){
+			if((!$v['import_from'] = $this->fileUploader->commitUploadedFile())){
+				$_upload_error = $this->fileUploader->getError();
+			}
+		} else {
+			$realPath = realpath($_SERVER['DOCUMENT_ROOT'] . $v['import_from']);
+			if(strpos($realPath, $_SERVER['DOCUMENT_ROOT']) === FALSE){
+				t_e('warning', 'Acess outside document_root forbidden!', $realPath);
+			} else {
+				$contents = we_base_file::load($fp, 'r');
+				$v['import_from'] = TEMP_DIR . 'we_csv_' . we_base_file::getUniqueId() . '.csv';
+				$replacement = str_replace("\r", "\n", $contents);
+				we_base_file::save($fp, $replacement, 'w+');
 			}
 		}
 

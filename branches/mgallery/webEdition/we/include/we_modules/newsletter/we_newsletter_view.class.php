@@ -718,8 +718,12 @@ edf.populateGroups();');
 				we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);
 				echo we_html_tools::getHtmlTop('newsletter') . STYLESHEET;
 
-				//we have finished upload or we are in fallback mode
-				$tempName = we_fileupload::commitFile('we_File');
+				$tempName = '';
+				$fileUploader = new we_fileupload_resp_base();
+				//$fileUploader->setTypeCondition();
+				if(!($tempName = $fileUploader->commitUploadedFile())){
+					//some reaction on upload failure
+				}
 
 				//print next command
 				echo we_html_element::jsElement($ncmd === 'do_upload_csv' ? '

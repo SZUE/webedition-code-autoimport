@@ -75,6 +75,7 @@ class we_fileupload_resp_base extends we_fileupload{
 	);
 	protected $FILES = array();
 	protected $maxChunkCount = 0;
+	protected $uploadError = '';
 
 	const GET_PATH_ONLY = 1;
 	const GET_NAME_ONLY = 2;
@@ -158,9 +159,25 @@ class we_fileupload_resp_base extends we_fileupload{
 
 		if(!copy($_SERVER['DOCUMENT_ROOT'] . $this->fileVars['fileTemp'], $_SERVER['DOCUMENT_ROOT'] . str_replace(array('\\', '//'), '/', $this->fileVars['fileDef']))){
 			return $this->response = array_merge($this->response, array('status' => 'failure', 'message' => 'error_copy_file', 'completed' => 1));
-		};
+		}
 
 		return array_merge($this->response, array('status' => 'success', 'fileNameTemp' => $this->fileVars['fileTemp'], 'completed' => 1, 'weDoc' => array('id' => 0, 'path' => $this->fileVars['fileDef'], 'text' => $this->fileVars['weFileName']), 'commited' => 1));
+	}
+
+	public function commitUploadedFile($absolute = false){
+		$file = $_SERVER['DOCUMENT_ROOT'] . $this->fileVars['fileTemp']; 
+		if(!file_exists($file) || !is_readable($file)){
+			$this->uploadError = 'no valid file uploaded';
+
+			return '';
+		}
+		if(!$this->checkFileType($file)){
+			$this->uploadError = 'filetype not ok';
+
+			return '';
+		}
+
+		return $absolute ? $file : $this->fileVars['fileTemp'];
 	}
 
 	protected function checkSetFile(){
@@ -204,26 +221,9 @@ class we_fileupload_resp_base extends we_fileupload{
 		return $this->fileVars['genericFileNameTemp'] ? str_replace(array(self::REPLACE_BY_UNIQUEID, self::REPLACE_BY_FILENAME), array(we_base_file::getUniqueId(), $this->fileVars['weFileName']), $this->fileVars['genericFileNameTemp']) : TEMP_DIR . we_base_file::getUniqueId();
 	}
 
-	protected function checkIntegrity(){
-		return true;
-	}
-
-	protected function getAllowedContentTypes(){
-		switch($this->contentType){
-			case we_base_ContentTypes::IMAGE;
-			case we_base_ContentTypes::VIDEO:
-			case we_base_ContentTypes::AUDIO:
-				$allowedContentTypes = implode(',', we_base_ContentTypes::inst()->getRealContentTypes($this->contentType));
-				break;
-			case we_base_ContentTypes::APPLICATION;
-				$allowedContentTypes = '';
-				break;
-			default:
-				$allowedContentTypes = $this->contentType;
-		}
-	}
-
 	private function checkFileType($mime = '', $fileName = '', $mode = ''){
+		return true; // FIXME: make same test as in JS
+
 		$tc = $this->typeCondition;
 		$fileInfo = pathinfo($fileName);
 

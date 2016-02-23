@@ -57,8 +57,12 @@ abstract class we_fileupload{
 		$this->isDragAndDrop = !$this->isDragAndDrop ? false : $isDragAndDrop;
 	}
 
-	public function setIsFallback($isFallback = false){
-		self::$isFallback = $isFallback;
+	public function getCss(){
+		return '';
+	}
+	
+	public function getJs(){
+		return '';
 	}
 
 	public function getName(){
@@ -74,7 +78,6 @@ abstract class we_fileupload{
 	}
 
 	public function setTypeCondition($field = 'accepted', $weCts = array(), $exts = array()){
-
 		// new vars for js
 		$cts = '';
 		$exts4cts = '';
@@ -104,27 +107,6 @@ abstract class we_fileupload{
 		$ret['all'] = array_merge($ret['mime'], $ret['ext']);
 
 		$this->typeCondition[$field] = $ret;
-	}
-
-	public static function commitFile($fileInputName = '', $typecondition = array()){// FIXME: implement typecondition, move to resp_base?
-		if($fileInputName && 
-				($filenametemp = we_base_request::_(we_base_request::STRING, 'weFileNameTemp', '')) &&
-				($filename = we_base_request::_(we_base_request::STRING, 'weFileName', ''))){
-
-			$_FILES[$fileInputName] = array(
-				'type' => we_base_request::_(we_base_request::STRING, 'weFileCt', ''),
-				'tmp_name' => 'notempty',
-				'name' => $filename,
-				'size' => 1,//we_base_request::_(we_base_request::STRING, 'weFileCt', ''),
-				'error' => UPLOAD_ERR_OK,
-			);
-
-			// make some integrity tests
-
-			return $filenametemp;
-		}
-
-		return false;
 	}
 
 	public function setPredefinedConfig($predefinedConfig = ''){

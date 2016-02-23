@@ -282,16 +282,10 @@ doDragFromTree = function(text){
 	}
 
 	public function getHtmlAlertBoxes(){
-		return self::getHtmlAlertBoxesStatic($this->dimensions['alertBoxWidth'] ? : $this->dimensions['width'], $this->maxUploadSizeMBytes, true);
-	}
+		$text = $this->maxUploadSizeMBytes ? sprintf(g_l('newFile', '[size_limit_set_to]'), $this->maxUploadSizeMBytes) : g_l('newFile', '[no_size_limit]');
+		$box = we_html_tools::htmlAlertAttentionBox($text, we_html_tools::TYPE_INFO, ($this->dimensions['alertBoxWidth'] ? : $this->dimensions['width']));
 
-	public static function getHtmlAlertBoxesStatic($width = 410, $maxSize = -1, $isSizeReady = false){
-			$size = $isSizeReady ? $maxSize : (intval($maxSize !== -1 ? $maxSize : (defined('FILE_UPLOAD_MAX_UPLOAD_SIZE') ? FILE_UPLOAD_MAX_UPLOAD_SIZE : 0)));
-			$text = $size ? sprintf(g_l('newFile', '[size_limit_set_to]'), $size) : g_l('newFile', '[no_size_limit]');
-
-			return '<div id="div_alert">' .
-				we_html_tools::htmlAlertAttentionBox($text, we_html_tools::TYPE_INFO, $width) .
-				'</div>';
+		return we_html_element::htmlDiv(array('id' => 'div_alert'), $box);
 	}
 
 	protected function _getHtmlFileRow(){

@@ -244,26 +244,16 @@ abstract class we_backup_preparer{
 			return BACKUP_PATH . $backup_select;
 		}
 
-		// FIXME: we have still parts of fallback here:
-		// change fileinput name to standard, and stop mesing around with $_FILES: not even commit() should be necessary!
-		$commitedFile = we_fileupload::commitFile('we_upload_file', array('accepted' => array('xml', 'gz', 'tgz', 'zip')));
-
-		$we_upload_file = (!empty($_FILES['we_upload_file']) ? $_FILES['we_upload_file'] : '');
-		if($we_upload_file && ($we_upload_file != 'none')){
-			$_SESSION['weS']['weBackupVars']['options']['upload'] = 1;
-			if(empty($_FILES['we_upload_file']['tmp_name']) || $_FILES['we_upload_file']['error']){
-				return false;
-			}
-			$filename = BACKUP_PATH . 'tmp/' . $_FILES['we_upload_file']['name'];
-			if($commitedFile){
-				we_base_file::insertIntoCleanUp($filename, 0);
-				return $filename;
-			} else {
-				t_e('we_fileupload failure');
-			}
+		$fileUploader = new we_fileupload_resp_base();
+		//$fileUploader->setTypeCondition('accepted', array(we_base_ContentTypes::XML), array('gz', 'tgz'));
+		if(($commitedFile = $fileUploader->commitUploadedFile(true))){
+			we_base_file::insertIntoCleanUp($commitedFile, 0);
+			return $commitedFile;
+		} else {
+			t_e('we_fileupload failure', $this->fileUploader->getError());
 		}
 
-		return null;
+		return false;
 	}
 
 	static function getExternalFiles(){
