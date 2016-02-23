@@ -77,7 +77,6 @@ class installer extends installerBase{
 				break;
 			case 'finishInstallation':
 				return 100;
-				break;
 		}
 		return number_format(($currentStep / $installationStepsTotal * 100), 0);
 	}

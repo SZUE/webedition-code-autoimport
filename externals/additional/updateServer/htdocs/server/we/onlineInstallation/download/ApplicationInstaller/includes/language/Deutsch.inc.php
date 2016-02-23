@@ -272,61 +272,6 @@ $lang["Step"]["FinishApplicationInstallation"]["title"] = "Installation abschlie
 $lang["Step"]["FinishApplicationInstallation"]["headline"] = "Installation wird abgeschlossen";
 $lang["Step"]["FinishApplicationInstallation"]["content"] = "Die Installation von webEdition wird abgeschlossen.";
 
-
-// Community
-$lang["Step"]["Community"]["title"] = "webEdition community";
-$lang["Step"]["Community"]["headline"] = "join the community!";
-$lang["Step"]["Community"]["content"] = "Nutzen Sie die Vorteile der webEdition community und werden Sie noch heute Mitglied! Die Mitgliedschaft umfasst neben einem Zugang zum Web-Forum auch ...";
-$lang["Step"]["Community"]["privacy"] = "Die Registrierung zur webEdition community ist freiwillig. Die an uns übermittelten Daten werden streng vertraulich behandelt und nicht an Dritte weitergegeben, sie werden ausschließlich zur internen Verwaltung des community-Zugangs gespeichert.";
-$lang["Step"]["Community"]["choice"]["notRegisteredYet"] = "Ich bin noch kein Mitglied";
-$lang["Step"]["Community"]["choice"]["alreadyRegistered"] = "Ich bin bereits Mitglied:";
-$lang["Step"]["Community"]["choice"]["skip"] = "Überspringen";
-$lang["Step"]["Community"]["input"]["email"] = "E-Mail";
-$lang["Step"]["Community"]["input"]["password"] = "Passwort";
-$lang["Step"]["Community"]["button"]["enterData"] = "Daten eingeben";
-$lang["Step"]["Community"]["button"]["privacyStatement"] = "Datenschutzbestimmungen";
-$lang["Step"]["Community"]["button"]["hideForm"] = "Formular ausblenden";
-$lang["Step"]["Community"]["help"]["email"] = "Die E-Mail Adresse wird für den Login benötigt und kann nur für jeweils einen Benutzer verwendet werden.";
-$lang["Step"]["Community"]["help"]["password"] = "Das Passwort muss aus Sichehreitsgründen mindestens 8 Zeichen lang sein.";
-$lang["Step"]["Community"]["error"]["email"] = "Fehlerhafte oder leere E-Mail Adresse";
-$lang["Step"]["Community"]["error"]["password"] = "Fehlerhaftes oder zu kurzes Passwort: das Passwort muss mindestens 8 Zeichen lang sein!";
-$lang["Step"]["Community"]["error"]["noSuchUser"] = "Der angegebene Benutzer existiert nicht oder das eingetragene Passwort ist falsch.";
-$lang["Step"]["Community"]["message"]["reallySkip"] = "Warum willsch net?";
-$lang["Step"]["Community"]["message"]["reallySkipVerify"] = "Weil halt.";
-
-$lang["Step"]["CommunityRegistration"]["title"] = "join the community";
-$lang["Step"]["CommunityRegistration"]["headline"] = "join the community!";
-$lang["Step"]["CommunityRegistration"]["content"] = "Willkommen in der webEdition community ... blah blah blubb";
-$lang["Step"]["CommunityRegistration"]["message"]["reallySkip"] = "Warum willsch net?";
-$lang["Step"]["CommunityRegistration"]["message"]["reallySkipVerify"] = "Weil halt.";
-$lang["Step"]["CommunityRegistration"]["privacy"] = "* Die Registrierung zur webEdition community ist freiwillig. Die an uns übermittelten Daten werden streng vertraulich behandelt und nicht an Dritte weitergegeben, sie werden ausschließlich zur internen Verwaltung des community-Zugangs gespeichert.";
-$lang["Step"]["CommunityRegistration"]["message"]["welcome"] = "Willkommen in der supertollen webEdition community!";
-$lang["Step"]["CommunityRegistration"]["help"]["optional"] = "Optionale Angabe: Diese Angabe ist freiwillig und wird nicht zwingend für eine Mitgliedschaft in der webEdition community benötigt.";
-$lang["Step"]["CommunityRegistration"]["help"]["email"] = "Die E-Mail Adresse wird für den Login benötigt und kann nur für jeweils einen Benutzer verwendet werden.";
-$lang["Step"]["CommunityRegistration"]["help"]["website"] = "Hier können Sie die URL Ihrer mit webEdition verwalteten Webseite angeben.";
-$lang["Step"]["CommunityRegistration"]["help"]["password"] = "Das Passwort muss aus Sichehreitsgründen mindestens 8 Zeichen lang sein.";
-$lang["Step"]["CommunityRegistration"]["help"]["passwordVerification"] = "Das Passwort muss aus Sichehreitsgründen zwei mal eingegeben werden, um Tippfehlern vorzubeugen.";
-$lang["Step"]["CommunityRegistration"]["error"]["email"] = "Fehlerhafte oder leere E-Mail Adresse";
-$lang["Step"]["CommunityRegistration"]["error"]["password"] = "Fehlerhaftes oder zu kurzes Passwort: das Passwort muss mindestens 8 Zeichen lang sein!";
-$lang["Step"]["CommunityRegistration"]["error"]["passwordVerification"] = "Die beiden eingegebenen Passwörter sind nicht identisch!";
-$lang["Step"]["CommunityRegistration"]["error"]["noSuchUser"] = "Der angegebene Benutzer existiert nicht oder das eingetragene Passwort ist falsch.";
-$lang["Step"]["CommunityRegistration"]["error"]["userExists"] = "Es existiert bereits ein Konto mit der angegebenen E-Mail Adresse. Pro E-Mail Adresse ist nur ein webEdition community Konto möglich.";
-$lang["Step"]["CommunityRegistration"]["error"]["userData"] = "Die folgenden Felder sind leer, müssen jedoch ausgefüllt werden:<li>Vorname</li><li>Name</li>";
-$lang["Step"]["CommunityRegistration"]["email"] = "E-Mail";
-$lang["Step"]["CommunityRegistration"]["salutation_m"] = "Herr";
-$lang["Step"]["CommunityRegistration"]["salutation_f"] = "Frau";
-$lang["Step"]["CommunityRegistration"]["salutation_c"] = "Firma";
-$lang["Step"]["CommunityRegistration"]["salutation"] = "Anrede";
-$lang["Step"]["CommunityRegistration"]["password"] = "Passwort";
-$lang["Step"]["CommunityRegistration"]["passwordVerification"] = "Passwort bestätigen";
-$lang["Step"]["CommunityRegistration"]["prename"] = "Vorname";
-$lang["Step"]["CommunityRegistration"]["surname"] = "Nachname";
-$lang["Step"]["CommunityRegistration"]["company"] = "Firmenname";
-$lang["Step"]["CommunityRegistration"]["website"] = "Webseite (URL)";
-$lang["Step"]["CommunityRegistration"]["language"] = "Sprache";
-$lang["Step"]["CommunityRegistration"]["country"] = "Land";
-
-
 // InstallationFinished
 $lang["Step"]["InstallationFinished"]["title"] = "Installation beendet";
 $lang["Step"]["InstallationFinished"]["headline"] = "webEdition wurde installiert";

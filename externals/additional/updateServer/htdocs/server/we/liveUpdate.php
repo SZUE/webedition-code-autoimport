@@ -129,10 +129,6 @@ if(isset($_REQUEST['update_cmd'])){
 			require_once(LIVEUPDATE_SERVER_DIR . '/includes/languages.inc.php');
 			break;
 
-		case 'community':
-			require_once(LIVEUPDATE_SERVER_DIR . '/includes/community.inc.php');
-			break;
-
 		default:
 			print notification::getNotAvailableAtTheMomentResponse();
 			break;

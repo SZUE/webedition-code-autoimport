@@ -18,7 +18,6 @@ require_once(LIVEUPDATE_SERVER_DIR . '/includes/classes/progressBar.class.php');
 require_once(LIVEUPDATE_SERVER_DIR . '/includes/classes/snippets.class.php');
 require_once(LIVEUPDATE_SERVER_DIR . '/includes/classes/update.class.php');
 require_once(LIVEUPDATE_SERVER_DIR . '/includes/classes/updateUtil.class.php');
-require_once(LIVEUPDATE_SERVER_DIR . '/includes/classes/community.class.php');
 
 // include languages
 require_once(LIVEUPDATE_SERVER_LANGUAGE_DIR . '/' . SHARED_LANGUAGE . '.lang.php');

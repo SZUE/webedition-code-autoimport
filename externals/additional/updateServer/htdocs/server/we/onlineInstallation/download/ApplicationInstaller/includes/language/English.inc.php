@@ -272,12 +272,6 @@ $lang["Step"]["FinishApplicationInstallation"]["headline"] = "Installation will 
 $lang["Step"]["FinishApplicationInstallation"]["content"] = "The installation will now be finished.";
 
 
-// Community
-$lang["Step"]["Community"]["title"] = "webEdition community";
-$lang["Step"]["Community"]["headline"] = "join the community!";
-$lang["Step"]["Community"]["content"] = "blah blah blubb ...";
-
-
 // InstallationFinished
 $lang["Step"]["InstallationFinished"]["title"] = "Installation finished";
 $lang["Step"]["InstallationFinished"]["headline"] = "webEdition is now installed";
