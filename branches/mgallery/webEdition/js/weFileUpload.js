@@ -960,9 +960,9 @@ var weFileUpload = (function () {
 				}
 
 				// check forbidden mimes and extensions
-				if((tc.forbidden.cts && type && (tc.forbidden.cts.indexOf(',' + type + ',') !== -1 || tc.forbidden.cts.indexOf(',' + typeGroup + ',') !== -1))
-						|| (tc.forbidden.exts && tc.forbidden.exts.indexOf(',' + ext + ',') !== -1)
-						|| (tc.forbidden.exts4cts && tc.forbidden.exts4cts.indexOf(',' + ext + ',') !== -1)){
+				if ((tc.forbidden.cts && type && (tc.forbidden.cts.indexOf(',' + type + ',') !== -1 || tc.forbidden.cts.indexOf(',' + typeGroup + ',') !== -1)) ||
+								(tc.forbidden.exts && tc.forbidden.exts.indexOf(',' + ext + ',') !== -1) ||
+								(tc.forbidden.exts4cts && tc.forbidden.exts4cts.indexOf(',' + ext + ',') !== -1)) {
 					return 0;
 				}
 
@@ -1609,6 +1609,7 @@ var weFileUpload = (function () {
 				if (!this.isCancelled) {
 					_.view.elems.footer.setProgress(100);
 					_.view.elems.footer.setProgressText('progress_title', '');
+					//FIXME: can we use JSON.parse??
 					eval(resp.completed);
 
 					//setTimeout(that.callback, 100, _); // FIXME: check if this works
