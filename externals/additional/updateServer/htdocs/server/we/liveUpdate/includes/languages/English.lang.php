@@ -1,15 +1,4 @@
 <?php
-$lang['register']['headline'] = 'Registration';
-$lang['register']['informAboutUpdates'] = 'Inform me about updates';
-$lang['register']['email'] = 'E-Mail Address';
-$lang['register']['salutation'] = 'Salutation';
-$lang['register']['titel'] = 'Title';
-$lang['register']['forename'] = 'Forename';
-$lang['register']['surname'] = 'Surname';
-$lang['register']['language'] = 'Language';
-$lang['register']['enterValidEmail'] = 'Please enter a valid E-Mail address.';
-$lang['register']['salutationMr'] = 'Mr.';
-$lang['register']['salutationMrs'] = 'Mrs.';
 
 $lang['license']['undefinedError'] = 'Undefined Error';
 
@@ -181,11 +170,6 @@ $luSystemLanguage['installer']['tableChanged'] = 'Altered Table';
 $luSystemLanguage['installer']['entryAlreadyExists'] = 'Entries already exist';
 $luSystemLanguage['installer']['errorExecutingQuery'] = 'Could not execute several queries.';
 $luSystemLanguage['installer']['fileNotWritableError'] = 'weBedition does not have write access for the following file, and the installer was not able to adjust the access rights by itself:<br />\\\n<code class=\\\\\"errorText\\\\\">%s</code><br />\\\nPlease adjust the rights manually and click on the button \\\\\"Load again\\\\\" to continue installation.';
-
-$luSystemLanguage['register']['registrationError'] = 'Error during Registration process';
-$luSystemLanguage['register']['finished'] = 'Registration finished';
-
-$luSystemLanguage['repeatRegistration']['finished'] = 'Reentered registration information';
 
 $luSystemLanguage['upgrade']['start'] = 'Start Update to webEdition version 5 (' . (isset($_SESSION['clientTargetVersion']) ? $_SESSION['clientTargetVersion'] : '') . ')';
 $luSystemLanguage['upgrade']['finished'] = 'Update to webEdition version 5 completed';

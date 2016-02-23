@@ -853,6 +853,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 					$recursive = false;
 					if($cur{0} === '!'){
 						$cur = substr($cur, 1);
+						$recursive = true;
 					}
 					if(file_exists(WEBEDITION_PATH . $cur)){
 						if(is_file(WEBEDITION_PATH . $cur)){

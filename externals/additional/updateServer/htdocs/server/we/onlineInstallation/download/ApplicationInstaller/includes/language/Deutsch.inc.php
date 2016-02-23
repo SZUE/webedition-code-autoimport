@@ -224,10 +224,6 @@ $lang["Step"]["Summary"]['yes'] = "ja";
 $lang["Step"]["Summary"]['no'] = "nein";
 $lang["Step"]["Summary"]['showPasswords'] = "Passwörter anzeigen";
 $lang["Step"]["Summary"]['hidePasswords'] = "Passwörter verbergen";
-$lang["Step"]["Summary"]['webEditionCommunity'] = "webEdition community";
-$lang["Step"]["Summary"]['communityEmail'] = "E-Mail Adresse";
-$lang["Step"]["Summary"]['communityPassword'] = "Passwort";
-$lang["Step"]["Summary"]["communityWebsite"] = "Webseite (URL)";
 
 // PrepareApplicationInstallation
 $lang["Step"]["PrepareApplicationInstallation"]["title"] = "Installation vorbereiten";

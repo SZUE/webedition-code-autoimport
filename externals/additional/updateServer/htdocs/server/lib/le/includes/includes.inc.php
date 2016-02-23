@@ -19,7 +19,6 @@ require_once(SHARED_DIR . '/includes/classes/licenseBase.class.php');
 require_once(SHARED_DIR . '/includes/classes/modulesBase.class.php');
 require_once(SHARED_DIR . '/includes/classes/notificationBase.class.php');
 require_once(SHARED_DIR . '/includes/classes/progressBarBase.class.php');
-require_once(SHARED_DIR . '/includes/classes/registerBase.class.php');
 require_once(SHARED_DIR . '/includes/classes/updateBase.class.php');
 require_once(SHARED_DIR . '/includes/classes/updateUtilBase.class.php');
 require_once(SHARED_DIR . '/includes/classes/communityBase.class.php');

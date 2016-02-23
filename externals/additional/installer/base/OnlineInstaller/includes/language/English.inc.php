@@ -18,21 +18,15 @@ $lang["Application"]["webEdition5"]["description"] = "Professional web content m
 $lang["Application"]["webEdition5"]["longdescription"] = "The webEdition web CMS (content management system) is a CMS based on PHP and MySQL. It is the perfect CMS for users, who wish to manage their website comfortably with a CMS. The webEdition CMS has a large function spectrum and can be customized easily.";
 $lang["Application"]["webEdition5"]["link"] = "http://www.living-e.de/produkte/webEdition/index.php";
 
-$lang["Application"]["webEdition"]["name"] = "webEdition 6";
+$lang["Application"]["webEdition"]["name"] = "webEdition stable releases";
 $lang["Application"]["webEdition"]["description"] = "Professional open source web content management system.";
 $lang["Application"]["webEdition"]["longdescription"] = "The webEdition web CMS (content management system) is a CMS based on PHP and MySQL. It is the perfect CMS for users, who wish to manage their website comfortably with a CMS. The webEdition CMS has a large function spectrum and can be customized easily.";
 $lang["Application"]["webEdition"]["link"] = "http://www.webedition.org/";
 
-$lang["Application"]["webEditionBeta"]["name"] = "webEdition incl. Pre-Release Versions";
+$lang["Application"]["webEditionBeta"]["name"] = "webEdition including pre-release versions";
 $lang["Application"]["webEditionBeta"]["description"] = "Professional web content management system.";
 $lang["Application"]["webEditionBeta"]["longdescription"] = "Pre-Release versions (nightly builds, Alpha-, Beta and RC-Versions) are used to find errors before a new official version is released. <b>They should never be used for productive sites. We take no responsibility for any damages or loss of data.</b>";
 $lang["Application"]["webEditionBeta"]["link"] = "http://www.webedition.org/";
-
-$lang["Application"]["pageLogger"]["name"] = "pageLogger 1.6";
-$lang["Application"]["pageLogger"]["description"] = "Open source real time tracking for your homepage.";
-$lang["Application"]["pageLogger"]["longdescription"] = "pageLogger records visitor traffic on your website in real time, and does not rely on server log files. At the push of a button you get all the details about recent visitors to your website - clearly and efficiently displayed.";
-$lang["Application"]["pageLogger"]["link"] = "http://www.pagelogger.com/en/";
-
 
 //
 // ---> Buttons

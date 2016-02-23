@@ -23,12 +23,7 @@ class Summary extends leStep{
 				$this->Language['databasePassword'] => $_SESSION['le_db_password'],
 				$this->Language['databaseTablePrefix'] => (isset($_SESSION['le_db_prefix']) && $_SESSION['le_db_prefix'] != "" ? $_SESSION['le_db_prefix'] : "-"),
 				$this->Language['databaseConnectionType'] => (isset($_SESSION['le_db_connect']) ? $_SESSION['le_db_connect'] : "connect"),
-			) /* ,
-			  $this->Language['webEditionCommunity'] => array(
-			  $this->Language['communityEmail'] => (isset($_SESSION['le_community_Email'])) ? $_SESSION['le_community_Email'] : "-",
-			  $this->Language['communityPassword'] => (isset($_SESSION['le_community_Password'])) ? $_SESSION['le_community_Password'] : "-",
-			  $this->Language['communityWebsite'] => (isset($_SESSION['le_community_Website']) && !empty($_SESSION['le_community_Website']) && $_SESSION['le_community_Website'] != "http://" && $_SESSION['le_community_Website'] != "https://") ? $_SESSION['le_community_Website'] : "-",
-			  ) */
+			)
 		);
 
 		if(version_compare("4.1.0", $_SESSION['le_db_version']) < 1){

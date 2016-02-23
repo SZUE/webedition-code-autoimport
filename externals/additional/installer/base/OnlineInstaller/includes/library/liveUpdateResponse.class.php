@@ -9,10 +9,6 @@ class liveUpdateResponse{
 	var $EncodedCode;
 	var $Encoding = false;
 
-	function liveUpdateResponse(){
-
-	}
-
 	function initByArray($respArray){
 
 		foreach($respArray as $key => $value){

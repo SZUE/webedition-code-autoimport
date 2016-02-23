@@ -163,7 +163,7 @@ function ini_get_bool($val){
 
 // function for executing steps:
 function step_welcome(){
-	$output = '<b>Welcome to webEdition 6!</b><br />
+	$output = '<b>Welcome to webEdition!</b><br />
 We recommend to use the latest OnlineInstaller instead of this <br/>tarball setup, because the OnlineInstaller has much more features<br/> and is much faster.<br/>
 
 The OnlineInstaller is available at <a href="http://download.webedition.org/releases/" target="_blank">download.webedition.org/releases/</a>

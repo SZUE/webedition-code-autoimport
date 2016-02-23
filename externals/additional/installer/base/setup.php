@@ -18,7 +18,7 @@
  * 2010-02-23
  * - Various bugsfixes regarding all parts and steps of the online installation process
 
- * - Implemented some updates needed for installing webEdition 6 and pageLogger 1.6
+ * - Implemented some updates needed for installing webEdition
  * - Implemented a slightly different mechanism for executing sql queries
 
  * - Included webEdition 5, 6 and pageLogger into one single installer
@@ -51,7 +51,7 @@ function le_errorhandler($type, $message, $file, $line, $context){
 //		'context' => $context,
 		'backtrace' => $_backtrace
 	);
-	file_put_contents('installer.err', print_r($data, true), FILE_APPEND);
+	file_put_contents('../installer.err', print_r($data, true), FILE_APPEND);
 }
 
 error_reporting(E_ALL);
@@ -100,7 +100,7 @@ if(file_exists(LE_INSTALLER_PATH . "/OnlineInstaller.log.php") && is_file(LE_INS
 
 // Installer for Update Server Beta:
 $leApplicationList = array(
-	'webEdition' => array(// webEdition 6 (Open Source)
+	'webEdition' => array(// webEdition  (Open Source)
 		'Name' => $lang["Application"]["webEdition"]["name"],
 		'Description' => $lang["Application"]["webEdition"]["description"],
 		'Longdescription' => $lang["Application"]["webEdition"]["longdescription"],
@@ -109,7 +109,7 @@ $leApplicationList = array(
 		'UpdateScript' => '/server/we/onlineInstallation.p' . 'hp',
 		'testUpdate' => false,
 	),
-	'webEditionBeta' => array(// webEdition 6 (Open Source)
+	'webEditionBeta' => array(// webEdition  (Open Source)
 		'Name' => $lang["Application"]["webEditionBeta"]["name"],
 		'Description' => $lang["Application"]["webEditionBeta"]["description"],
 		'Longdescription' => $lang["Application"]["webEditionBeta"]["longdescription"],

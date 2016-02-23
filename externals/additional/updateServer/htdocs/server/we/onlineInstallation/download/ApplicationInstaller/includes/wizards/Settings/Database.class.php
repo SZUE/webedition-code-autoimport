@@ -76,7 +76,7 @@ EOF;
 			$Content .= <<<EOF
 	<b>{$this->Language['connecttype']}:</b> {$connect_help}<br />
 		<input id="connect" type="radio" name="le_db_connect" value="mysqli_connect"{$connect} /> <label for="connect">{$this->Language["connect"]}</label><br />
-		<input id="pconnect" type="radio" name="le_db_connect" value="mysqli_pconnect"{$pconnect}{$disabled} /> <label for="pconnect">{$this->Language["pconnect"]}{$disabledText}</label><br />
+		<input id="pconnect" type="radio" name="le_db_connect" value="mysqli_pconnect"{$pconnect} /> <label for="pconnect">{$this->Language["pconnect"]}{$disabledText}</label><br />
 		<br />
 EOF;
 		}
@@ -103,11 +103,7 @@ EOF;
 EOF;
 		}
 
-		if(!$this->CheckFailed){
-			$Template->addJavascript("top.leForm.setFocus('le_db_host');");
-		} else {
-			$Template->addJavascript("top.leForm.setFocus('le_db_host');");
-		}
+		$Template->addJavascript("top.leForm.setFocus('le_db_host');");
 
 		$this->setHeadline($this->Language['headline']);
 
@@ -172,24 +168,21 @@ EOF;
 		 */
 		if(isset($_REQUEST['le_db_connect']) && $_REQUEST['le_db_connect'] == "mysqli_pconnect"){
 			$_SESSION["le_db_connect"] = $_REQUEST['le_db_connect'];
-			//$function = "mysqli_pconnect";
 			$preHost = 'p:';
 		} else {
-			//$function = "mysqli_connect";
-			$_SESSION["le_db_connect"] = "connect";
+			$_SESSION["le_db_connect"] = "mysqli_connect";
 			$preHost = '';
 		}
 		$resource = mysqli_connect($preHost . $_SESSION['le_db_host'], $_SESSION['le_db_user'], $_SESSION['le_db_password'], $_SESSION["le_db_database"]);
 
 		// connect to server
 		if(mysqli_connect_errno()){
-			$Template->addError($this->Language['ErrorDBConnect'] . ' Err: ' . mysqli_connect_error()/*. '<br/>'.
-				$preHost . $_SESSION['le_db_host'].' '. $_SESSION['le_db_user'].' '. $_SESSION['le_db_password'].' '. $_SESSION["le_db_database"]
-*/
-				);
+			$Template->addError($this->Language['ErrorDBConnect'] . ' Err: ' . mysqli_connect_error()/* . '<br/>'.
+				  $preHost . $_SESSION['le_db_host'].' '. $_SESSION['le_db_user'].' '. $_SESSION['le_db_password'].' '. $_SESSION["le_db_database"]
+				 */
+			);
 			$Template->addJavascript("top.leForm.setFocus('le_db_password');");
 			$Template->addJavascript("top.leContent.scrollDown();");
-			//$_SESSION['le_db_password'] = "";
 			return false;
 		}
 

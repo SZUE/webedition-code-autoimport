@@ -1,16 +1,4 @@
 <?php
-$lang['register']['headline'] = 'Registrierung';
-$lang['register']['informAboutUpdates'] = 'Ich m&ouml;chte &uuml;ber Updates informiert werden';
-$lang['register']['email'] = 'E-Mail-Adresse';
-$lang['register']['salutation'] = 'Anrede';
-$lang['register']['titel'] = 'Titel';
-$lang['register']['forename'] = 'Vorname';
-$lang['register']['surname'] = 'Nachname';
-$lang['register']['language'] = 'Sprache';
-$lang['register']['enterValidEmail'] = 'Bitte geben Sie eine g&uuml;ltige E-Mail-Adresse ein.';
-$lang['register']['salutationMr'] = 'Herr';
-$lang['register']['salutationMrs'] = 'Frau';
-
 $lang['license']['undefinedError'] = 'Undefinierter Fehler';
 
 $lang['upgrade']['headline'] = 'Upgrade zu webEdition 6';
@@ -166,41 +154,43 @@ $lang['notification']['upgradeMaintenance'] = 'Wegen Wartungsarbeiten ist ein Up
 
 
 
-$luSystemLanguage = array();
-
-$luSystemLanguage['installer']['downloadInstallerError'] = 'Fehler beim Schritt: Herunterladen des Installers';
-$luSystemLanguage['installer']['getChangesError'] = 'Fehler beim Schritt: Ben&ouml;tigte Dateien ermitteln';
-$luSystemLanguage['installer']['downloadChangesError'] = 'Fehler beim Schritt: Dateien herunterladen';
-$luSystemLanguage['installer']['updateDatabaseError'] = 'Fehler beim Schritt: Datenbank aktualisieren';
-$luSystemLanguage['installer']['updateDatabaseNotice'] = 'Hinweis beim Schritt: Datenbank aktualisieren';
-$luSystemLanguage['installer']['prepareChangesError'] = 'Fehler beim Schritt: Dateien vorbereiten';
-$luSystemLanguage['installer']['copyFilesError'] = 'Fehler beim Schritt: Dateien installieren';
-$luSystemLanguage['installer']['executePatchesError'] = 'Fehler beim Schritt:  Patche ausf&uuml;hren';
-$luSystemLanguage['installer']['finishInstallationError'] = 'Fehler beim Schritt: Installation abschliessen';
-$luSystemLanguage['installer']['errorMessage'] = 'Fehlermeldung';
-$luSystemLanguage['installer']['errorIn'] = 'in';
-$luSystemLanguage['installer']['errorLine'] = 'Zeile';
-$luSystemLanguage['installer']['tableExists'] = 'Tabelle existiert bereits';
-$luSystemLanguage['installer']['tableChanged'] = 'Tabelle wurde aktualisiert';
-$luSystemLanguage['installer']['entryAlreadyExists'] = 'Eintr&auml;ge sind schon vorhanden';
-$luSystemLanguage['installer']['errorExecutingQuery'] = 'Einige Datenbankanfragen konnten nicht durchgef&uuml;hrt werden.';
-$luSystemLanguage['installer']['fileNotWritableError'] = 'Auf folgende Datei kann nicht schreibend zugegriffen werden:<br />\\\n<code class=\\\\\"errorText\\\\\">%s</code><br />\\\nDa webEdition die Zugriffsrechte der Datei nicht anpassen konnte, machen Sie dies bitte manuell auf Ihrem Server. Danach klicken Sie zum Fortsetzen der Installation auf \\\\\"Neu laden\\\\\".';
-
-$luSystemLanguage['register']['registrationError'] = 'Bei der Registrierung trat ein Fehler auf';
-$luSystemLanguage['register']['finished'] = 'Registrierung abgeschlossen';
-
-$luSystemLanguage['repeatRegistration']['finished'] = 'Registrierungsinformationen erneut eingegeben';
-
-$luSystemLanguage['upgrade']['start'] = 'Starte Update auf webEdition Version 5 (' . (isset($_SESSION['clientTargetVersion']) ? $_SESSION['clientTargetVersion'] : '') . ')';
-$luSystemLanguage['upgrade']['finished'] = 'Update auf Version 5 abgeschlossen';
-
-$luSystemLanguage['update']['start'] = 'Starte Update auf Version ' . (isset($_SESSION['clientTargetVersion']) ? $_SESSION['clientTargetVersion'] : '');
-$luSystemLanguage['update']['finished'] = 'Update abgeschlossen.';
-$luSystemLanguage['update']['version'] = ' Version: ';
-$luSystemLanguage['update']['branch'] = ', Entw.-Zweig: ';
-$luSystemLanguage['update']['svn'] = ', SVN-Revision: ';
-
-$luSystemLanguage['modules']['start'] = 'Starte Modulinstallation';
-$luSystemLanguage['modules']['finished'] = 'Modulinstallation abgeschlossen';
-$luSystemLanguage['languages']['start'] = 'Starte Sprachinstallation';
-$luSystemLanguage['languages']['finished'] = 'Sprachinstallation abgeschlossen';
+$luSystemLanguage = array(
+	'installer' => array(
+		'downloadInstallerError' => 'Fehler beim Schritt: Herunterladen des Installers',
+		'getChangesError' => 'Fehler beim Schritt: Ben&ouml;tigte Dateien ermitteln',
+		'downloadChangesError' => 'Fehler beim Schritt: Dateien herunterladen',
+		'updateDatabaseError' => 'Fehler beim Schritt: Datenbank aktualisieren',
+		'updateDatabaseNotice' => 'Hinweis beim Schritt: Datenbank aktualisieren',
+		'prepareChangesError' => 'Fehler beim Schritt: Dateien vorbereiten',
+		'copyFilesError' => 'Fehler beim Schritt: Dateien installieren',
+		'executePatchesError' => 'Fehler beim Schritt:  Patche ausf&uuml,hren',
+		'finishInstallationError' => 'Fehler beim Schritt: Installation abschliessen',
+		'errorMessage' => 'Fehlermeldung',
+		'errorIn' => 'in',
+		'errorLine' => 'Zeile',
+		'tableExists' => 'Tabelle existiert bereits',
+		'tableChanged' => 'Tabelle wurde aktualisiert',
+		'entryAlreadyExists' => 'Eintr&auml,ge sind schon vorhanden',
+		'errorExecutingQuery' => 'Einige Datenbankanfragen konnten nicht durchgef&uuml,hrt werden.',
+		'fileNotWritableError' => 'Auf folgende Datei kann nicht schreibend zugegriffen werden:<br />\\\n<code class=\\\\\"errorText\\\\\">%s</code><br />\\\nDa webEdition die Zugriffsrechte der Datei nicht anpassen konnte, machen Sie dies bitte manuell auf Ihrem Server. Danach klicken Sie zum Fortsetzen der Installation auf \\\\\"Neu laden\\\\\".',
+	),
+	'upgrade' => array(
+		'start' => 'Starte Update auf webEdition Version 5 (' . (isset($_SESSION['clientTargetVersion']) ? $_SESSION['clientTargetVersion'] : '') . ')',
+		'finished' => 'Update auf Version 5 abgeschlossen',
+	),
+	'update' => array(
+		'start' => 'Starte Update auf Version ' . (isset($_SESSION['clientTargetVersion']) ? $_SESSION['clientTargetVersion'] : ''),
+		'finished' => 'Update abgeschlossen.',
+		'version' => ' Version: ',
+		'branch' => ', Entw.-Zweig: ',
+		'svn' => ', SVN-Revision: ',
+	),
+	'modules' => array(
+		'start' => 'Starte Modulinstallation',
+		'finished' => 'Modulinstallation abgeschlossen',
+	),
+	'languages' => array(
+		'start' => 'Starte Sprachinstallation',
+		'finished' => 'Sprachinstallation abgeschlossen',
+	),
+);
