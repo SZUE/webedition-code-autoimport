@@ -528,12 +528,13 @@ handle_event("previous");');
 
 			$docPath = $yuiSuggest->getHTML();
 
-			if((isset($v['import_templ']) && !$v['import_templ']))
+			$dir_table = new we_html_table(array('id' => 'tpl_table', 'style' => 'margin-left:20px;'), 3, 2);
+			if((isset($v['import_templ']) && !$v['import_templ'])){
 				$dir_table->setStyle('display', 'none');
-			$dir_table->setAttribute('id', 'tpl_table');
-			$dir_table->setCol(0, 1, null, we_html_tools::htmlAlertAttentionBox(g_l('import', '[templates_desc]'), we_html_tools::TYPE_ALERT, 390, true, 50));
-			$dir_table->setCol(1, 1, null, $docPath);
-			$dir_table->setCol(2, 1, null, we_html_forms::checkboxWithHidden((!empty($v['restore_tpl_path'])) ? true : false, 'v[restore_tpl_path]', g_l('import', '[maintain_paths]'), false, 'defaultfont', "self.document.we_form.elements['v[tpl_dir]'].value='/';"));
+			}
+			$dir_table->setCol(0, 0, null, we_html_tools::htmlAlertAttentionBox(g_l('import', '[templates_desc]'), we_html_tools::TYPE_ALERT, 390, true, 50));
+			$dir_table->setCol(1, 0, null, $docPath);
+			$dir_table->setCol(2, 0, null, we_html_forms::checkboxWithHidden((!empty($v['restore_tpl_path'])) ? true : false, 'v[restore_tpl_path]', g_l('import', '[maintain_paths]'), false, 'defaultfont', "self.document.we_form.elements['v[tpl_dir]'].value='/';"));
 
 
 			$tbl_extra->setCol(3, 0, null, $dir_table->getHtml());
