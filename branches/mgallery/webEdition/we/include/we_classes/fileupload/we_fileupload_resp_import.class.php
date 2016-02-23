@@ -256,7 +256,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 				$we_doc->setElement("data", $tempFile);
 			} else {
 				$mime = explode('/', $this->fileVars['weFileCt']);
-				$we_doc->setElement("data", $tempFile, $mime[0]);
+				$we_doc->setElement("data", fread($fh, ($this->fileVars['weFileSize'] < 1 ? 1 : $this->fileVars['weFileSize'])), $mime[0]);
 			}
 			fclose($fh);
 		} else {
