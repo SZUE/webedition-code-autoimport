@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -23,7 +24,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class we_rpc_cmdShell{
 	protected $Protocol;
 	protected $Cmd;
@@ -48,7 +48,7 @@ class we_rpc_cmdShell{
 		}
 	}
 
-	private function createCmd(&$cmd){
+	private function createCmd($cmd){
 		$this->CmdName = $cmd['cmd'];
 		$_classname = 'rpc' . $cmd['cmd'] . 'Cmd';
 
@@ -71,7 +71,7 @@ class we_rpc_cmdShell{
 		return null;
 	}
 
-	function getView(&$cmd){
+	function getView($cmd){
 		$_classname = 'rpc' . $cmd["view"] . 'View';
 		$namespace = '/' . (isset($cmd['vns']) ? $cmd['vns'] . '/' : (isset($cmd['cns']) ? $cmd['cns'] . '/' : ''));
 
@@ -79,15 +79,10 @@ class we_rpc_cmdShell{
 				we_tool_lookup::getViewInclude($this->Protocol, $namespace, $cmd['tool'], $cmd["view"]) :
 				'views/' . $this->Protocol . $namespace . $_classname . '.class.php');
 		if(@include_once($_viewfile)){
-
-			$_obj = new $_classname();
-			$_obj->setCmdShell($this);
-
-			return $_obj;
+			$_obj = new $_classname($this, $this->Protocol);
+		} else {
+			$_obj = new we_rpc_genericJSONView($this, $this->Protocol);
 		}
-		require_once('views/json/rpcGenericJSONView.class.php');
-		$_obj = new rpcGenericJSONView();
-		$_obj->setCmdShell($this);
 		return $_obj;
 	}
 

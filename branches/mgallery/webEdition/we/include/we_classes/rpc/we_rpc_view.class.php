@@ -28,13 +28,15 @@
  */
 class we_rpc_view{
 	var $CmdShell;
+	protected $protocol;
 
-	function getResponse($response){
-
+	public function __construct($cmdshell, $protocol){
+		$this->CmdShell = $cmdshell;
+		$this->protocol = $protocol;
 	}
 
-	function setCmdShell($cmdshell){
-		$this->CmdShell = $cmdshell;
+	function getResponse($response){
+		return $response->getData("data");
 	}
 
 }

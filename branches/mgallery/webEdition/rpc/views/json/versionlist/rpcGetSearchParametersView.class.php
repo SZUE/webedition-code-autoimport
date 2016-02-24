@@ -24,9 +24,4 @@
  */
 class rpcGetSearchParametersView extends we_rpc_view{
 
-	function getResponse($response){
-
-		return $response->getData("data");
-	}
-
 }

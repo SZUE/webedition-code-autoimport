@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcGenericJSONView extends we_rpc_view{
+class we_rpc_genericJSONView extends we_rpc_view{
 
 	function getResponse($response){
 		$json = new Services_JSON();
