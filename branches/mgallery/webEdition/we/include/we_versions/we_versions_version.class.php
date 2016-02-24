@@ -2046,7 +2046,7 @@ class we_versions_version{
 		return $arr;
 	}
 
-	private static function removeUnneededCompareFields(&$doc){
+	private static function removeUnneededCompareFields($doc){
 		unset($doc['Published'], $doc['ModDate'], $doc['RebuildDate'], $doc['EditPageNr'], $doc['DocStream'], $doc['DB_WE'], $doc['usedElementNames'], $doc['hasVariants'], $doc['editorSaves'], $doc['Name'], $doc['wasUpdate'], $doc['InWebEdition'], $doc['PublWhenSave'], $doc['IsTextContentDoc'], $doc['fileExists'], $doc['elements']['allVariants'], $doc['persistent_slots']);
 		return $doc;
 	}

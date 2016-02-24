@@ -242,7 +242,7 @@ class we_folder extends we_root{
 			we_navigation_cache::clean(true);
 		}
 
-		if(LANGLINK_SUPPORT && in_array($this->Table, array(FILE_TABLE, OBJECT_FILES_TABLE))){
+		if(LANGLINK_SUPPORT && in_array($this->Table, array(FILE_TABLE, defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'))){
 			$this->setLanguageLink($this->LangLinks, 'tblFile', true, $this->IsClassFolder);
 		} else {
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!

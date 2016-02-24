@@ -141,11 +141,9 @@ function checkFooter(){
 
 	if(active){
 		button.title="' . g_l('button', '[saveInScheduler][alt]') . '";
-		button.style.width="' . g_l('button', '[saveInScheduler][width]') . 'px";
 		button.innerHTML="<i class=\"fa fa-lg fa-clock-o\"></i> ' . g_l('button', '[saveInScheduler][value]') . '";
 	}else{
 		button.title="' . g_l('button', '[publish][alt]') . '";
-		button.style.width="' . g_l('button', '[publish][width]') . 'px";
 		button.innerHTML="<i class=\"fa fa-lg fa-sun-o\"></i> ' . g_l('button', '[publish][value]') . '";
 	}
 }
