@@ -209,7 +209,7 @@ abstract class we_root extends we_class{
 
 	/* init the object with data from the database */
 
-	function copyDoc(/* $id */){
+	function copyDoc($id){
 		// overwrite
 	}
 
@@ -1021,7 +1021,7 @@ abstract class we_root extends we_class{
 		}
 	}
 
-	protected function i_isElement(/* $Name */){
+	protected function i_isElement($Name){
 		return true; // overwrite
 	}
 

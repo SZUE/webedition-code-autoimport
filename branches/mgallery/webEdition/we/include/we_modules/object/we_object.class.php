@@ -78,7 +78,7 @@ class we_object extends we_document{
 		return $this->isInApp;
 	}
 
-	function save(){
+	function save($resave = 0, $skipHook = 0){
 		if(!$this->checkIfPathOk()){
 			return false;
 		}
@@ -1852,7 +1852,7 @@ class we_object extends we_document{
 		return '<table class="default"><tr><td><i class="fa fa-' . ($this->RestrictUsers ? 'check-' : '') . 'square-o wecheckIcon disabled"></i></td><td class="defaultfont">&nbsp;' . g_l('weClass', '[limitedAccess]') . '</td></tr></table>';
 	}
 
-	public function formPath(){
+	public function formPath($disablePath = false, $notSetHot = false){
 		return '<table class="default">
 	<tr><td>' . $this->formInputField('', 'Text', g_l('modules_object', '[classname]'), 30, 508, 255, 'onchange="_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();"') . '</td><td></td><td></td></tr>
 </table>';
@@ -2291,7 +2291,7 @@ class we_object extends we_document{
 		return true;
 	}
 
-	function registerMediaLinks(){// FIXME: publish is obsolete for classes
+	function registerMediaLinks($temp = false, $linksReady = false){// FIXME: publish is obsolete for classes
 		$serializedArray = is_array($this->SerializedArray) ? $this->SerializedArray : array();
 		foreach($serializedArray as $k => $v){
 			if(($type = strstr($k, '_', true)) !== false){

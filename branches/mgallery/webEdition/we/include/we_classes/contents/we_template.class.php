@@ -337,13 +337,13 @@ we_templateInit();?>';
 		}
 	}
 
-	function i_getDocument(){
+	function i_getDocument($includepath = ''){
 		$this->_updateCompleteCode();
 		/* remove unwanted/-needed start/stop parser tags (?><php) */
 		return preg_replace(array("/(:|;|{|})(\r|\n| |\t)*\?>(\r|\n|\t)*<\?= ?/si", "/(:|;|{|})(\r|\n| |\t)*\?>(\r|\n|\t)*<\?php ?/si"), array('${1}' . "\n" . '${2} echo ', '${1}' . "\n" . '${2}'), $this->parseTemplate());
 	}
 
-	protected function i_writeSiteDir(){
+	protected function i_writeSiteDir($doc){
 		return true;
 	}
 
@@ -790,7 +790,7 @@ we_templateInit();?>';
 		}
 	}
 
-	function registerMediaLinks(){
+	function registerMediaLinks($temp = false, $linksReady = false){
 		$tp = new we_tag_tagParser($this->getTemplateCode());
 		foreach($tp->getTagsWithAttributes() as $tag){
 			switch($tag['name']){
