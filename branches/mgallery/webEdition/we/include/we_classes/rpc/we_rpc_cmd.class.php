@@ -29,7 +29,7 @@
  * @package none
  * @abstract
  */
-class we_rpc_cmd{
+abstract class we_rpc_cmd{
 
 	const STATUS_OK = 0;
 	const STATUS_NO_PERMISSION = 1;
