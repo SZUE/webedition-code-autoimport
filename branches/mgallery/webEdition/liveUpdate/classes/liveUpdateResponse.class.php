@@ -73,7 +73,6 @@ class liveUpdateResponse{
 		switch($this->Type){
 			case 'template':
 				return liveUpdateTemplates::getHtml($this->Headline, $this->Content, $this->Header);
-
 			case 'executePatches':
 				return liveUpdateFunctionsServer::executeAllPatches();
 			case 'eval':
@@ -87,11 +86,9 @@ class liveUpdateResponse{
 //FIXME:eval
 				//t_e($c);
 				return eval('?>' . $c);
-
 			case 'state':
 				return liveUpdateFrames::htmlStateMessage();
 			//return 'Meldung vom Server:<br />Status: ' . $this->State . '<br />Meldung: ' . $this->Message;
-
 			default:
 				return $this->Type . ' is not implemented yet';
 		}

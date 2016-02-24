@@ -483,7 +483,7 @@ new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.p
 
 				$message = "";
 
-				$ret = $this->newsletter->save($message, (isset($this->settings["reject_save_malformed"]) ? $this->settings["reject_save_malformed"] : true));
+				$ret = $this->newsletter->saveNewsletter($message, (isset($this->settings["reject_save_malformed"]) ? $this->settings["reject_save_malformed"] : true));
 				switch($ret){
 					default:
 						$jsmess = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_newsletter', '[malformed_mail_group]'), $ret, $message), we_message_reporting::WE_MESSAGE_ERROR);
@@ -1661,7 +1661,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 			'<br/>' .
 			we_html_button::create_button('new_newsletter_group', "javascript:top.opener.top.we_cmd('new_newsletter_group');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_NEWSLETTER"));
 
-		return parent::getHomeScreen('newsletter', "newsletter.gif", $content, we_html_element::htmlForm(array('name' => 'we_form'), $this->getHiddens(array('ncmd' => 'home')) . we_html_element::htmlHidden('home', 0)));
+		return parent::getActualHomeScreen('newsletter', "newsletter.gif", $content, we_html_element::htmlForm(array('name' => 'we_form'), $this->getHiddens(array('ncmd' => 'home')) . we_html_element::htmlHidden('home', 0)));
 	}
 
 	private static function we_getObjectFileByID($id, $includepath = ''){

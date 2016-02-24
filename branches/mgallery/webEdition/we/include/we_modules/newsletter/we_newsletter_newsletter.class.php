@@ -106,7 +106,7 @@ class we_newsletter_newsletter extends we_newsletter_base{
 	 *
 	 * @param int $newsletterID
 	 */
-	function load($newsletterID){
+	function load($newsletterID = 0){
 		parent::load($newsletterID);
 		$this->Text = stripslashes($this->Text);
 		$this->Path = ($this->Path ? : '/');
@@ -123,7 +123,7 @@ class we_newsletter_newsletter extends we_newsletter_base{
 	 * @param bool $check
 	 * @return int
 	 */
-	function save(&$message, $check = true){
+	function saveNewsletter(&$message, $check = true){
 		//check addesses
 		if($check && ($ret = $this->checkEmails($message)) != 0){
 			return $ret;

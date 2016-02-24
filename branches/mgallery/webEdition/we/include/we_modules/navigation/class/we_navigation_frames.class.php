@@ -91,7 +91,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 		));
 	}
 
-	public function getHTMLDocumentHeader(){
+	public function getHTMLDocumentHeader($charset = ''){
 		return parent::getHTMLDocumentHeader($this->Model->Charset);
 	}
 

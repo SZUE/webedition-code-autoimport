@@ -519,7 +519,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('navigation', ($this->Model->IsFolder
 		$createNavigationGroup = we_html_button::create_button('new_folder', "javascript:we_cmd('module_navigation_new_group');", true, 0, 0, "", "", !permissionhandler::hasPerm('EDIT_NAVIGATION'));
 		$content = $createNavigation . '<br/>' . $createNavigationGroup;
 
-		return parent::getHomeScreen('navigation', 'navigation.gif', $content, we_html_element::htmlForm(array('name' => 'we_form'), $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden('home', '0')));
+		return parent::getActualHomeScreen('navigation', 'navigation.gif', $content, we_html_element::htmlForm(array('name' => 'we_form'), $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden('home', '0')));
 	}
 
 }

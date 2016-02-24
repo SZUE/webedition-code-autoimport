@@ -75,7 +75,7 @@ class we_banner_view extends we_modules_view{
 			'<br/>' .
 			we_html_button::create_button('new_bannergroup', "javascript:top.opener.top.we_cmd('new_bannergroup');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_BANNER"));
 
-		return parent::getHomeScreen('banner', "banner.gif", $content, '<form name="we_form">' . $this->getHiddens() . '</form>');
+		return parent::getActualHomeScreen('banner', "banner.gif", $content, '<form name="we_form">' . $this->getHiddens() . '</form>');
 	}
 
 	function getProperties(){

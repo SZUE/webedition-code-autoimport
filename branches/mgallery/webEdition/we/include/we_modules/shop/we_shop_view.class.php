@@ -1393,7 +1393,7 @@ function CalendarChanged(calObject) {
 			$content.= we_html_button::create_button('quick_rev', "javascript:top.content.editor.location='" . $this->frameset . "&pnt=editor&top=1&typ=document '", true) . '<br/>';
 		}
 
-		return parent::getHomeScreen('shop', "shop.gif", $content);
+		return parent::getActualHomeScreen('shop', "shop.gif", $content);
 	}
 
 }

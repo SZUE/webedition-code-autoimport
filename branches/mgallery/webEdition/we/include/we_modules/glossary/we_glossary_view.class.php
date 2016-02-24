@@ -344,7 +344,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('modules_glossary', ($this->Glossary-
 			$createLink . '<br/>' .
 			$createTextReplacement;
 
-		return parent::getHomeScreen("glossary", "glossary.gif", $content, we_html_element::htmlForm($_form, $this->getCommonHiddens($_hidden)));
+		return parent::getActualHomeScreen("glossary", "glossary.gif", $content, we_html_element::htmlForm($_form, $this->getCommonHiddens($_hidden)));
 	}
 
 }
