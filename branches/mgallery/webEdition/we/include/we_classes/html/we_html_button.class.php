@@ -178,9 +178,6 @@ abstract class we_html_button{
 				//add text, no break;
 				$value.=' ';
 			default:
-				/* 				if(($width == self::WIDTH) && ($tmp = g_l('button', '[' . $name . '][width]', true))){
-				  $width = $tmp;
-				  } */
 				$text = g_l('button', '[' . $name . '][value]') . ($opensDialog ? '&hellip;' : '');
 				$value = ($name == 'next' ? $text . ' ' . $value : $value . $text);
 		}

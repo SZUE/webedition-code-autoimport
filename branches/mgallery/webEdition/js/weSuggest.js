@@ -159,6 +159,7 @@ YAHOO.autocoml = {
 	},
 	ajaxSuccess: function (o, id) {
 		if (o.responseText !== undefined && o.responseText !== '') {
+			//FIXME: check if this is always json, so we can use JSON.parse
 			eval(o.responseText);
 			if (weResponse.type == 'error') {
 				//for (i=0; i < YAHOO.autocoml.yuiAcFields[id].fields_id.length; i++) {

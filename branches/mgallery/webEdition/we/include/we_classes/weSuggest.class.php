@@ -203,7 +203,7 @@ class weSuggest{
 		$weSelfContentType = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ContentType)) ? $GLOBALS['we_doc']->ContentType : '';
 		$weSelfID = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ID)) ? $GLOBALS['we_doc']->ID : '';
 
-		if(is_array($this->inputfields) && empty($this->inputfields)){
+		if(empty($this->inputfields)){
 			return;
 		}
 
