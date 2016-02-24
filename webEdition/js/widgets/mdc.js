@@ -187,11 +187,11 @@ function init(tab, title, sBinary, _sCsv) {
 		if (parseInt(sBinary.substr(1)) == parseInt(aInitCsv[1].substr(1))) {
 			_fo.FolderID.value = dir[0];
 			_fo.FolderPath.value = dir[1];
-			if (aInitCsv[3] != 0) {
+			if (aInitCsv[3] !== 0) {
 				var obj = parseInt(sBinary.substr(1)) ? _fo.classID : _fo.DocTypeID;
 				obj.value = aInitCsv[3];
 			}
-			if (aInitCsv[4] !== undefined && aInitCsv[4] != '') {
+			if (aInitCsv[4] !== undefined && aInitCsv[4] !== '') {
 				addCat(opener.Base64.decode(aInitCsv[4]));
 			}
 		}

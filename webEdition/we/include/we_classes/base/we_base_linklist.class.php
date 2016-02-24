@@ -321,7 +321,7 @@ class we_base_linklist{
 	}
 
 	function getString(){
-		return ($this->listArray ? we_serialize($this->listArray, 'json') : '');
+		return ($this->listArray ? we_serialize($this->listArray, SERIALIZE_JSON) : '');
 	}
 
 	//added for #7269

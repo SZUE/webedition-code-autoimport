@@ -165,8 +165,8 @@ class we_import_wizard extends we_import_wizardBase{
 				parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 			}
 			function set_button_state() {
-				top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'disabled');
-				top.WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'enabled');
+				WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'disabled');
+				WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'enabled');
 			}
 			function handle_event(evt) {
 				var f = self.document.we_form;
@@ -244,8 +244,8 @@ function we_cmd() {
 	parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 }
 function set_button_state() {
-	top.wizbusy.back_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
-	top.wizbusy.next_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'enabled');
+	top.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
+	top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'enabled');
 }
 function we_submit_form(f, target, url) {
 	f.target = target;
@@ -262,12 +262,11 @@ function handle_event(evt) {
 			top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import&we_cmd[1]=" . we_import_functions::TYPE_WE_XML . "';
 			break;
 		case 'next':
-			" . ($this->fileUploader ? "if(f.elements['v[rdofloc]'][1].checked===true){
+			if(f.elements['v[rdofloc]'][1].checked===true){
 				" . $this->fileUploader->getJsBtnCmd('upload') . "}
 			else {
 				handle_eventNext();
-			}" :
-				"handle_eventNext();") . "
+			}
 			break;
 		case 'cancel':
 			top.close();
@@ -278,8 +277,7 @@ function handle_eventNext(){
 	var f = self.document.we_form,
 		fs = f.elements['v[fserver]'].value,
 		ext = '',
-		fl = f.elements.uploaded_xml_file.value;
-		" . ($this->fileUploader ? "fl = we_FileUpload !== undefined ? 'placeholder.xml' : fl" : "") . ";
+		fl = we_FileUpload !== undefined ? 'placeholder.xml' : f.elements.uploaded_xml_file.value;
 
 	if (f.elements['v[rdofloc]'][0].checked==true && fs!=='/') {
 		if (fs.match(/\.\./)=='..') { " . (we_message_reporting::getShowMessageCall(g_l('import', '[invalid_path]'), we_message_reporting::WE_MESSAGE_ERROR)) . "; return; }
@@ -300,14 +298,12 @@ function handle_eventNext(){
 }
 ";
 
-		$wecmdenc1 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[fserver]'].value");
+		$wecmdenc1 = we_base_request::encCmd("top.wizbody.document.we_form.elements['v[fserver]'].value");
 		$importFromButton = (permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES")) ? we_html_button::create_button(we_html_button::SELECT, "javascript: self.document.we_form.elements['v[rdofloc]'][0].checked=true;we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.we_form.elements['v[fserver]'].value)") : "";
 		$inputLServer = we_html_tools::htmlTextInput("v[fserver]", 30, (isset($v["fserver"]) ? $v["fserver"] : "/"), 255, "readonly", "text", 300);
 		$importFromServer = we_html_tools::htmlFormElementTable($inputLServer, "", "left", "defaultfont", $importFromButton, '', "", "", "", 0);
 
-		$inputLLocal = $this->fileUploader ? $this->fileUploader->getHTML() :
-			we_html_tools::htmlTextInput("uploaded_xml_file", 30, "", 255, "accept=\"text/xml\" onclick=\"self.document.we_form.elements['v[rdofloc]'][1].checked=true;\"", "file");
-
+		$inputLLocal = $this->fileUploader->getHTML();
 		$importFromLocal = we_html_tools::htmlFormElementTable($inputLLocal, "", "left", "defaultfont", '', "", "", "", "", 0);
 		$rdoLServer = we_html_forms::radiobutton("lServer", (isset($v["rdofloc"])) ? ($v["rdofloc"] === "lServer") : 1, "v[rdofloc]", g_l('import', '[fileselect_server]'));
 		$rdoLLocal = we_html_forms::radiobutton("lLocal", (isset($v["rdofloc"])) ? ($v["rdofloc"] === "lLocal") : 0, "v[rdofloc]", g_l('import', '[fileselect_local]'));
@@ -315,7 +311,7 @@ function handle_eventNext(){
 		$importLocs->setCol(0, 0, array(), $rdoLServer);
 		$importLocs->setCol(1, 0, array(), $importFromServer);
 		$importLocs->setCol(3, 0, array('style' => 'padding-top:4px;'), $rdoLLocal);
-		$importLocs->setCol(4, 0, array(), $this->fileUploader ? $this->fileUploader->getHtmlAlertBoxes() : we_fileupload_ui_base::getHtmlAlertBoxesStatic(410));
+		$importLocs->setCol(4, 0, array(), $this->fileUploader->getHtmlAlertBoxes());
 		$importLocs->setCol(5, 0, array(), $importFromLocal);
 		$fn_colsn = new we_html_table(array('class' => 'default withSpace'), 4, 1);
 		$fn_colsn->setCol(0, 0, array(), we_html_tools::htmlAlertAttentionBox(g_l('import', '[collision_txt]'), we_html_tools::TYPE_ALERT, 410));
@@ -344,17 +340,9 @@ function handle_eventNext(){
 		$v = we_base_request::_(we_base_request::STRING, 'v', array());
 		$_upload_error = false;
 
-		if($v['rdofloc'] === 'lLocal' && (isset($_FILES['uploaded_xml_file']))){
-			if(!($_FILES['uploaded_xml_file']['tmp_name']) || $_FILES['uploaded_xml_file']['error']){
-				$_upload_error = true;
-			} else {
-				//FIXME: still need else branch?
-				if($this->fileUploader && $this->fileUploader->processFileRequest()){
-					$v['import_from'] = $this->fileUploader->getFileNameTemp();
-				} else {
-					$v['import_from'] = TEMP_DIR . we_base_file::getUniqueId() . '_w.xml';
-					move_uploaded_file($_FILES['uploaded_xml_file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . $v['import_from']);
-				}
+		if($v['rdofloc'] === 'lLocal'){
+			if((!$v['import_from'] = $this->fileUploader->commitUploadedFile())){
+				$_upload_error = $this->fileUploader->getError();
 			}
 		}
 
@@ -418,8 +406,8 @@ function we_cmd() {
 	}
 }
 function set_button_state() {
-	top.wizbusy.back_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
-	top.wizbusy.next_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'next', " .
+	top.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
+	top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'next', " .
 			(($we_valid) ? ((isset($v["mode"]) && $v["mode"] == 1) ? "'disabled'" : "'enabled'") : "'disabled'") . ");
 }" . $event_handler . '
 function toggle(name){
@@ -429,10 +417,8 @@ function toggle(name){
 
 		$_return = array('', '');
 		if($_upload_error){
-			//FIXME: still need condition?
-			$maxsize = $this->fileUploader ? $this->fileUploader->getMaxUploadSize() : getUploadMaxFilesize();
 			$_return[1] = we_html_element::jsElement($functions . ' ' .
-					we_message_reporting::getShowMessageCall(sprintf(g_l('import', '[upload_failed]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_message_reporting::WE_MESSAGE_ERROR) . '
+					we_message_reporting::getShowMessageCall($_upload_error, we_message_reporting::WE_MESSAGE_ERROR) . '
 							handle_event("previous");');
 			return $_return;
 		}
@@ -491,8 +477,8 @@ handle_event("previous");');
 			$tbl_extra->setCol(0, 0, null, we_html_forms::checkboxWithHidden((!empty($v['import_docs'])) ? true : false, 'v[import_docs]', g_l('import', '[import_docs]'), false, 'defaultfont', "toggle('doc_table')"));
 
 			$rootDirID = get_def_ws();
-			$wecmdenc1 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[doc_dir_id]'].value");
-			$wecmdenc2 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[doc_dir]'].value");
+			$wecmdenc1 = we_base_request::encCmd("top.wizbody.document.we_form.elements['v[doc_dir_id]'].value");
+			$wecmdenc2 = we_base_request::encCmd("top.wizbody.document.we_form.elements['v[doc_dir]'].value");
 
 			$btnDocDir = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['v[doc_dir_id]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "')");
 			$yuiSuggest = & weSuggest::getInstance();
@@ -524,8 +510,8 @@ handle_event("previous");');
 			// import templates
 			$rootDirID = get_def_ws(TEMPLATES_TABLE);
 			$tbl_extra->setCol(2, 0, array('colspan' => 2), we_html_forms::checkboxWithHidden((!empty($v['import_templ'])), 'v[import_templ]', g_l('import', '[import_templ]'), false, 'defaultfont', "toggle('tpl_table')"));
-			$wecmdenc1 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[tpl_dir_id]'].value");
-			$wecmdenc2 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[tpl_dir]'].value");
+			$wecmdenc1 = we_base_request::encCmd("top.wizbody.document.we_form.elements['v[tpl_dir_id]'].value");
+			$wecmdenc2 = we_base_request::encCmd("top.wizbody.document.we_form.elements['v[tpl_dir]'].value");
 			$wecmdenc3 = '';
 			$btnDocDir = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['v[tpl_dir]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "')");
 
@@ -542,12 +528,13 @@ handle_event("previous");');
 
 			$docPath = $yuiSuggest->getHTML();
 
-			if((isset($v['import_templ']) && !$v['import_templ']))
+			$dir_table = new we_html_table(array('id' => 'tpl_table', 'style' => 'margin-left:20px;'), 3, 2);
+			if((isset($v['import_templ']) && !$v['import_templ'])){
 				$dir_table->setStyle('display', 'none');
-			$dir_table->setAttribute('id', 'tpl_table');
-			$dir_table->setCol(0, 1, null, we_html_tools::htmlAlertAttentionBox(g_l('import', '[templates_desc]'), we_html_tools::TYPE_ALERT, 390, true, 50));
-			$dir_table->setCol(1, 1, null, $docPath);
-			$dir_table->setCol(2, 1, null, we_html_forms::checkboxWithHidden((!empty($v['restore_tpl_path'])) ? true : false, 'v[restore_tpl_path]', g_l('import', '[maintain_paths]'), false, 'defaultfont', "self.document.we_form.elements['v[tpl_dir]'].value='/';"));
+			}
+			$dir_table->setCol(0, 0, null, we_html_tools::htmlAlertAttentionBox(g_l('import', '[templates_desc]'), we_html_tools::TYPE_ALERT, 390, true, 50));
+			$dir_table->setCol(1, 0, null, $docPath);
+			$dir_table->setCol(2, 0, null, we_html_forms::checkboxWithHidden((!empty($v['restore_tpl_path'])) ? true : false, 'v[restore_tpl_path]', g_l('import', '[maintain_paths]'), false, 'defaultfont', "self.document.we_form.elements['v[tpl_dir]'].value='/';"));
 
 
 			$tbl_extra->setCol(3, 0, null, $dir_table->getHtml());
@@ -650,8 +637,8 @@ handle_event("previous");');
 			if(empty($header)){
 				$functions = '
 					function set_button_state() {
-						top.wizbusy.back_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, "back", "enabled");
-						top.wizbusy.next_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, "next", "disabled");
+						top.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "back", "enabled");
+						top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "next", "disabled");
 					}
 				' . $event_handler;
 				$parts = array(
@@ -705,8 +692,8 @@ function addLog(text){
 }
 
 function set_button_state() {
-	top.wizbusy.back_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, "back", "disabled");
-	top.wizbusy.next_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, "next", "disabled");
+	top.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "back", "disabled");
+	top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "next", "disabled");
 }
 
 function handle_event(evt) {
@@ -775,8 +762,8 @@ function we_cmd() {
 	parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 }
 function set_button_state() {
-	top.wizbusy.back_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
-	top.wizbusy.next_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'enabled');
+	top.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
+	top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'enabled');
 }
 function we_submit_form(f, target, url) {
 	f.target = target;
@@ -803,12 +790,11 @@ function handle_event(evt) {
 			top.location.href=WE().consts.dirs.WEBEDITION_DIR+ 'we_cmd.php?we_cmd[0]=import&we_cmd[1]=" . we_import_functions::TYPE_GENERIC_XML . "';
 			break;
 		case 'next':
-			" . ($this->fileUploader ? "if(f.elements['v[rdofloc]'][1].checked===true){
+			if(f.elements['v[rdofloc]'][1].checked===true){
 				" . $this->fileUploader->getJsBtnCmd('upload') . "}
 			else {
-					handle_eventNext();
-			}" :
-				"handle_eventNext();") . "
+				handle_eventNext();
+			}
 			break;
 		case 'cancel':
 			top.close();
@@ -823,9 +809,9 @@ function handle_eventNext(){
 		f.elements['v[we_TemplateID]'].value = f.elements.docTypeTemplateId.value;
 	}
 	var fs = f.elements['v[fserver]'].value;
-	var fl = f.elements.uploaded_xml_file.value,
-		ext = '';
-	" . ($this->fileUploader ? "fl = we_FileUpload !== undefined ? 'placeholder.xml' : fl" : "") . "
+	var fl = we_FileUpload !== undefined ? 'placeholder.xml' : f.elements.uploaded_xml_file.value;
+	var ext = '';
+	
 
 	if ((f.elements['v[rdofloc]'][0].checked==true) && fs!='/') {
 		if (fs.match(/\.\./)=='..') {
@@ -912,15 +898,13 @@ function _executeAjaxRequest(aMethod, aUrl, aCallback, aData){
 HTS;
 
 		$v['import_type'] = isset($v['import_type']) ? $v['import_type'] : 'documents';
-		$wecmdenc1 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[fserver]'].value");
+		$wecmdenc1 = we_base_request::encCmd("top.wizbody.document.we_form.elements['v[fserver]'].value");
 		$importFromButton = (permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES')) ? we_html_button::create_button(we_html_button::SELECT, "javascript: self.document.we_form.elements['v[rdofloc]'][0].checked=true;we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.we_form.elements['v[fserver]'].value);") : "";
 		$inputLServer = we_html_tools::htmlTextInput('v[fserver]', 30, (isset($v['fserver']) ? $v['fserver'] : '/'), 255, 'readonly', 'text', 300);
 		$importFromServer = we_html_tools::htmlFormElementTable($inputLServer, '', 'left', 'defaultfont', $importFromButton, '', '', '', '', 0);
 
 		//FIXME: still need condition?
-		$inputLLocal = $this->fileUploader ? $this->fileUploader->getHTML() :
-			we_html_tools::htmlTextInput('uploaded_xml_file', 30, '', 255, "accept=\"text/xml\" onclick=\"self.document.we_form.elements['v[rdofloc]'][1].checked=true;\"", "file");
-
+		$inputLLocal = $this->fileUploader->getHTML();
 		$importFromLocal = we_html_tools::htmlFormElementTable($inputLLocal, '', 'left', 'defaultfont', '', '', '', '', '', 0);
 		$rdoLServer = we_html_forms::radiobutton('lServer', (isset($v['rdofloc'])) ? ($v['rdofloc'] === 'lServer') : 1, 'v[rdofloc]', g_l('import', '[fileselect_server]'));
 		$rdoLLocal = we_html_forms::radiobutton('lLocal', (isset($v['rdofloc'])) ? ($v['rdofloc'] === 'lLocal') : 0, 'v[rdofloc]', g_l('import', '[fileselect_local]'));
@@ -930,7 +914,7 @@ HTS;
 		$importLocs->setCol($_tblRow++, 0, array(), $importFromServer);
 		$importLocs->setCol($_tblRow++, 0, array('style' => 'padding-top:4px;'), $rdoLLocal);
 		//FIXME: still need condition?
-		$importLocs->setCol($_tblRow++, 0, array(), $this->fileUploader ? $this->fileUploader->getHtmlAlertBoxes() : we_fileupload_ui_base::getHtmlAlertBoxesStatic(410));
+		$importLocs->setCol($_tblRow++, 0, array(), $this->fileUploader->getHtmlAlertBoxes());
 		$importLocs->setCol($_tblRow++, 0, array(), $importFromLocal);
 
 		$DB_WE->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt ORDER BY dt.DocType');
@@ -963,8 +947,8 @@ HTS;
 		$myid = (isset($v['we_TemplateID'])) ? $v['we_TemplateID'] : 0;
 		//$path = f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($myid), 'Path', $DB_WE);
 
-		$cmd1 = "self.wizbody.document.we_form.elements['noDocTypeTemplateId'].value";
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . TEMPLATES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("self.wizbody.document.we_form.elements['v[we_TemplateName]'].value") . "','" . we_base_request::encCmd("opener.top.we_cmd('reload_editpage');") . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
+		$cmd1 = "top.wizbody.document.we_form.elements['noDocTypeTemplateId'].value";
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . TEMPLATES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("top.wizbody.document.we_form.elements['v[we_TemplateName]'].value") . "','" . we_base_request::encCmd("opener.top.we_cmd('reload_editpage');") . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
 		/*		 * ******************************************************************** */
 		$yuiSuggest = & weSuggest::getInstance();
 
@@ -1018,8 +1002,8 @@ HTS;
 		$docCats = new we_html_table(array('class' => 'default'), 2, 2);
 		$docCats->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', 'class' => 'defaultfont lowContrast'), g_l('import', '[categories]'));
 		$docCats->setCol(0, 1, array('style' => 'width:150px;'), $docCategories);
-		$cmd1 = "self.wizbody.document.we_form.elements['v[store_to_id]'].value";
-		$storeToButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("self.wizbody.document.we_form.elements['v[store_to_path]'].value") . "','','','0')"
+		$cmd1 = "top.wizbody.document.we_form.elements['v[store_to_id]'].value";
+		$storeToButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("top.wizbody.document.we_form.elements['v[store_to_path]'].value") . "','','','0')"
 		);
 
 		$yuiSuggest->setAcId('DirPath');
@@ -1122,14 +1106,11 @@ HTS;
 		$parts = array();
 		$hdns = "\n";
 		$v = we_base_request::_(we_base_request::STRING, 'v');
+		$_upload_error = false;
 
-		if($v['rdofloc'] === 'lLocal' && (isset($_FILES['uploaded_xml_file']) and $_FILES['uploaded_xml_file']['size'])){
-			//FIXME: still need condition?
-			if($this->fileUploader && $this->fileUploader->processFileRequest()){
-				$v['import_from'] = $this->fileUploader->getFileNameTemp();
-			} else {
-				$v['import_from'] = TEMP_DIR . 'we_xml_' . we_base_file::getUniqueId() . '.xml';
-				move_uploaded_file($_FILES['uploaded_xml_file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . $v['import_from']);
+		if($v['rdofloc'] === 'lLocal'){
+			if((!$v['import_from'] = $this->fileUploader->commitUploadedFile())){
+				$_upload_error = $this->fileUploader->getError();
 			}
 		}
 
@@ -1209,17 +1190,22 @@ HTS;
 			}
 		} else {
 			$xmlWellFormed = $hasChildNode = false;
-			if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $v['import_from'])){
-				$parts[] = array('html' => we_html_tools::htmlAlertAttentionBox(g_l('import', '[file_exists]') . $_SERVER['DOCUMENT_ROOT'] . $v['import_from'], we_html_tools::TYPE_ALERT, 530), 'noline' => 1);
-			} elseif(!is_readable($_SERVER['DOCUMENT_ROOT'] . $v['import_from'])){
-				$parts[] = array('html' => we_html_tools::htmlAlertAttentionBox(g_l('import', '[file_readable]'), we_html_tools::TYPE_ALERT, 530), 'noline' => 1);
+
+			if($_upload_error){ // uploaded file nok: get error from uploader
+				$parts[] = array('html' => we_html_tools::htmlAlertAttentionBox($_upload_error, we_html_tools::TYPE_ALERT, 530), 'noline' => 1);
+			} else { // file from server nok
+				if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $v['import_from'])){
+					$parts[] = array('html' => we_html_tools::htmlAlertAttentionBox(g_l('import', '[file_exists]') . $_SERVER['DOCUMENT_ROOT'] . $v['import_from'], we_html_tools::TYPE_ALERT, 530), 'noline' => 1);
+				} elseif(!is_readable($_SERVER['DOCUMENT_ROOT'] . $v['import_from'])){
+					$parts[] = array('html' => we_html_tools::htmlAlertAttentionBox(g_l('import', '[file_readable]'), we_html_tools::TYPE_ALERT, 530), 'noline' => 1);
+				}
 			}
 		}
 
 		$functions = "
 function set_button_state() {
-	top.wizbusy.back_enabled=top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back','enabled');
-	top.wizbusy.next_enabled=top.WE().layout.button.switch_button_state(top.wizbusy.document, 'next','" . (($xmlWellFormed && $hasChildNode) ? "enabled" : "disabled") . "');
+	top.wizbusy.back_enabled=WE().layout.button.switch_button_state(top.wizbusy.document, 'back','enabled');
+	top.wizbusy.next_enabled=WE().layout.button.switch_button_state(top.wizbusy.document, 'next','" . (($xmlWellFormed && $hasChildNode) ? "enabled" : "disabled") . "');
 }
 function we_submit_form(f, target, url) {
 	f.target = target;
@@ -1289,8 +1275,8 @@ function handle_event(evt) {
 
 		$functions = "
 function set_button_state() {
-	top.wizbusy.back_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
-	top.wizbusy.next_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'next', " . ((we_base_request::_(we_base_request::INT, 'mode') != 1) ? "'enabled'" : "'disabled'") . ");
+	top.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
+	top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'next', " . ((we_base_request::_(we_base_request::INT, 'mode') != 1) ? "'enabled'" : "'disabled'") . ");
 }
 function we_submit_form(f, target, url) {
 	f.target = target;
@@ -1309,7 +1295,7 @@ function handle_event(evt) {
 			f.step.value=3;
 			f.mode.value=1;
 			f.elements['v[mode]'].value=1;
-			top.wizbusy.next_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'disabled');
+			top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'disabled');
 			we_submit_form(f, 'wizbody', '" . $this->path . "&mode=1');
 			break;
 		case 'cancel':
@@ -1534,8 +1520,8 @@ function we_cmd() {
 	parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 }
 function set_button_state() {
-	top.frames.wizbusy.back_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
-	top.frames.wizbusy.next_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'enabled');
+	top.frames.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
+	top.frames.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'enabled');
 }
 function we_submit_form(f, target, url) {
 	f.target = target;
@@ -1552,12 +1538,11 @@ function handle_event(evt) {
 			top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import&we_cmd[1]=" . we_import_functions::TYPE_CSV . "';
 			break;
 		case 'next':
-			" . ($this->fileUploader ? "if(f.elements['v[rdofloc]'][1].checked===true){
+			if(f.elements['v[rdofloc]'][1].checked===true){
 				" . $this->fileUploader->getJsBtnCmd('upload') . "}
 			else {
 				handle_eventNext();
-			}" :
-				"handle_eventNext();") . "
+			}
 			break;
 		case 'cancel':
 			top.close();
@@ -1568,9 +1553,8 @@ function handle_eventNext(){
 	var f = self.document.we_form,
 		fvalid = true,
 		fs = f.elements['v[fserver]'].value,
-		fl = f.elements['uploaded_csv_file'].value,
+		fl = we_FileUpload !== undefined ? 'placeholder.xml' : f.elements['uploaded_csv_file'].value,
 		ext = '';
-		" . ($this->fileUploader ? "fl = we_FileUpload !== undefined ? 'placeholder.xml' : fl" : "") . "
 
 	if ((f.elements['v[rdofloc]'][0].checked==true) && fs!='/') {
 		if (fs.match(/\.\./)=='..') { " . we_message_reporting::getShowMessageCall(g_l('import', '[invalid_path]'), we_message_reporting::WE_MESSAGE_ERROR) . " return; }
@@ -1591,16 +1575,12 @@ function handle_eventNext(){
 ";
 
 		$v['import_type'] = isset($v['import_type']) ? $v['import_type'] : 'documents';
-		/*		 * *************************************************************************************************************** */
-		$wecmdenc1 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[fserver]'].value");
+		$wecmdenc1 = we_base_request::encCmd("top.wizbody.document.we_form.elements['v[fserver]'].value");
 		$importFromButton = (permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES')) ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.we_form.elements['v[fserver]'].value)") : "";
 		$inputLServer = we_html_tools::htmlTextInput('v[fserver]', 30, (isset($v['fserver']) ? $v['fserver'] : '/'), 255, "readonly onclick=\"self.document.we_form.elements['v[rdofloc]'][0].checked=true;\"", "text", 300);
 		$importFromServer = we_html_tools::htmlFormElementTable($inputLServer, '', 'left', 'defaultfont', $importFromButton, '', "", "", "", 0);
 
-		//FIXME: still need condition?
-		$inputLLocal = $this->fileUploader ? $this->fileUploader->getHTML() :
-			we_html_tools::htmlTextInput('uploaded_csv_file', 30, '', 255, 'accept="text/csv" onclick="self.document.we_form.elements[\'v[rdofloc]\'][1].checked=true;"', 'file');
-
+		$inputLLocal = $this->fileUploader->getHTML();
 		$importFromLocal = we_html_tools::htmlFormElementTable($inputLLocal, '', 'left', 'defaultfont', '', "", "", "", "", 0);
 		$rdoLServer = we_html_forms::radiobutton('lServer', (isset($v['rdofloc'])) ? ($v['rdofloc'] === 'lServer') : 1, 'v[rdofloc]', g_l('import', '[fileselect_server]'));
 		$rdoLLocal = we_html_forms::radiobutton('lLocal', (isset($v['rdofloc'])) ? ($v['rdofloc'] === 'lLocal') : 0, 'v[rdofloc]', g_l('import', '[fileselect_local]'));
@@ -1610,9 +1590,9 @@ function handle_eventNext(){
 		$importLocs->setCol($_tblRow++, 0, array(), $importFromServer);
 		$importLocs->setCol($_tblRow++, 0, array('style' => 'padding-top:4px;'), $rdoLLocal);
 		// FIXME: still need condition?
-		$importLocs->setCol($_tblRow++, 0, array(), $this->fileUploader ? $this->fileUploader->getHtmlAlertBoxes() : we_fileupload_ui_base::getHtmlAlertBoxesStatic(410));
+		$importLocs->setCol($_tblRow++, 0, array(), $this->fileUploader->getHtmlAlertBoxes());
 		$importLocs->setCol($_tblRow++, 0, array(), $importFromLocal);
-		/*		 * *************************************************************************************************************** */
+
 		$iptDel = we_html_tools::htmlTextInput('v[csv_seperator]', 2, (isset($v['csv_seperator']) ? (($v['csv_seperator'] != '') ? $v['csv_seperator'] : ' ') : ';'), 2, '', 'text', 20);
 		$fldDel = new we_html_select(array('name' => 'v[sct_csv_seperator]', 'size' => 1, 'class' => 'weSelect', 'onchange' => "this.form.elements['v[csv_seperator]'].value=this.options[this.selectedIndex].innerHTML.substr(0,2);this.selectedIndex=options[0];", "style" => "width: 130px"));
 		$fldDel->addOption('', '');
@@ -1676,27 +1656,21 @@ function handle_eventNext(){
 	protected function getCSVImportStep2(){
 		global $DB_WE;
 		$v = we_base_request::_(we_base_request::STRING, 'v');
-		$fileFromUploader = we_fileupload::commitFile('uploaded_csv_file');
+		$_upload_error = false;
 
-		if(((isset($_FILES['uploaded_csv_file']) and $_FILES['uploaded_csv_file']['size'])) || $v['file_format'] === 'mac'){
-			$uniqueId = we_base_file::getUniqueId(); // #6590, changed from: uniqid(microtime())
-
-			switch($v['rdofloc']){
-				case 'lLocal':
-					$v['import_from'] = $fileFromUploader;
-					break;
-				case 'lServer':
-					$realPath = realpath($_SERVER['DOCUMENT_ROOT'] . $v['import_from']);
-					if(strpos($realPath, $_SERVER['DOCUMENT_ROOT']) === FALSE){
-						t_e('warning', 'Acess outside document_root forbidden!', $realPath);
-						break;
-					}
-
-					$contents = we_base_file::load($fp, 'r');
-					$v['import_from'] = TEMP_DIR . 'we_csv_' . $uniqueId . '.csv';
-					$replacement = str_replace("\r", "\n", $contents);
-					we_base_file::save($fp, $replacement, 'w+');
-					break;
+		if($v['rdofloc'] === 'lLocal'){
+			if((!$v['import_from'] = $this->fileUploader->commitUploadedFile())){
+				$_upload_error = $this->fileUploader->getError();
+			}
+		} else {
+			$realPath = realpath($_SERVER['DOCUMENT_ROOT'] . $v['import_from']);
+			if(strpos($realPath, $_SERVER['DOCUMENT_ROOT']) === FALSE){
+				t_e('warning', 'Acess outside document_root forbidden!', $realPath);
+			} else {
+				$contents = we_base_file::load($fp, 'r');
+				$v['import_from'] = TEMP_DIR . 'we_csv_' . we_base_file::getUniqueId() . '.csv';
+				$replacement = str_replace("\r", "\n", $contents);
+				we_base_file::save($fp, $replacement, 'w+');
 			}
 		}
 
@@ -1740,8 +1714,8 @@ function we_cmd() {
 	parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 }
 function set_button_state() {
-	top.frames.wizbusy.back_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
-	top.frames.wizbusy.next_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'enabled');
+	top.frames.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
+	top.frames.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'enabled');
 }
 function we_submit_form(f, target, url) {
 	f.target = target;
@@ -1858,8 +1832,8 @@ function _executeAjaxRequest(aMethod, aUrl, aCallback, aData){
 
 HTS;
 		$v['import_type'] = isset($v['import_type']) ? $v['import_type'] : 'documents';
-		$wecmdenc1 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[store_to_id]'].value");
-		$wecmdenc2 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[store_to_path]'].value");
+		$wecmdenc1 = we_base_request::encCmd("top.wizbody.document.we_form.elements['v[store_to_id]'].value");
+		$wecmdenc2 = we_base_request::encCmd("top.wizbody.document.we_form.elements['v[store_to_path]'].value");
 
 		$storeToButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['v[store_to_path]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','0')");
 
@@ -1893,8 +1867,8 @@ HTS;
 
 		$myid = (isset($v["we_TemplateID"])) ? $v["we_TemplateID"] : 0;
 		//$path = f('SELECT Path FROM ' . $DB_WE->escape(TEMPLATES_TABLE) . " WHERE ID=" . intval($myid), "Path", $DB_WE);
-		$wecmdenc1 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[we_TemplateID]'].value");
-		$wecmdenc2 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[we_TemplateName]'].value");
+		$wecmdenc1 = we_base_request::encCmd("top.wizbody.document.we_form.elements['v[we_TemplateID]'].value");
+		$wecmdenc2 = we_base_request::encCmd("top.wizbody.document.we_form.elements['v[we_TemplateName]'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener.top.we_cmd('reload_editpage');");
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['v[we_TemplateID]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
 
@@ -2001,8 +1975,8 @@ HTS;
 			$objClass->setCol(0, 0, array('style' => 'vertical-align:top;width:130px;', "class" => "defaultfont lowContrast"), g_l('import', '[class]'));
 			$objClass->setCol(0, 1, array('style' => 'width:150px;'), $CLselect->getHTML());
 
-			$wecmdenc1 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[obj_path_id]'].value");
-			$wecmdenc2 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[obj_path]'].value");
+			$wecmdenc1 = we_base_request::encCmd("top.wizbody.document.we_form.elements['v[obj_path_id]'].value");
+			$wecmdenc2 = we_base_request::encCmd("top.wizbody.document.we_form.elements['v[obj_path]'].value");
 
 			$objStoreToButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['v[obj_path]'].value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','',document.we_form.elements['v[classID]'].value.split('_')[1])");
 
@@ -2073,13 +2047,13 @@ HTS;
 					array(
 						"html" => we_html_tools::htmlAlertAttentionBox(g_l('import', '[file_exists]') . $_SERVER['DOCUMENT_ROOT'] . $v["import_from"], we_html_tools::TYPE_ALERT, 530),
 						'noline' => 1));
-				$functions.='top.WE().layout.button.switch_button_state(top.wizbusy.document, "next","disabled");';
+				$functions.='WE().layout.button.switch_button_state(top.wizbusy.document, "next","disabled");';
 			} else if(!is_readable($_SERVER['DOCUMENT_ROOT'] . $v["import_from"])){
 				$parts = array(
 					array(
 						"html" => we_html_tools::htmlAlertAttentionBox(g_l('import', '[file_readable]'), we_html_tools::TYPE_ALERT, 530),
 						'noline' => 1));
-				$functions.='top.WE().layout.button.switch_button_state(top.wizbusy.document, "next","disabled");';
+				$functions.='WE().layout.button.switch_button_state(top.wizbusy.document, "next","disabled");';
 			} else {
 				$parts = array();
 			}
@@ -2126,8 +2100,8 @@ HTS;
 
 		$functions = "
 function set_button_state() {
-				top.wizbusy.back_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
-				top.wizbusy.next_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'next', " . (we_base_request::_(we_base_request::INT, "mode") != 1 ? "'enabled'" : "'disabled'") . ");
+				top.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
+				top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'next', " . (we_base_request::_(we_base_request::INT, "mode") != 1 ? "'enabled'" : "'disabled'") . ");
 }
 function we_submit_form(f, target, url) {
 	f.target = target;
@@ -2147,7 +2121,7 @@ function handle_event(evt) {
 		f.mode.value=1;
 		f.elements['v[mode]'].value=1;
 		f.elements['v[startCSVImport]'].value=1;
-		top.wizbusy.next_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'disabled');
+		top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'disabled');
 		we_submit_form(f, 'wizbody', '" . $this->path . "&mode=1');
 		break;
 	case 'cancel':

@@ -154,7 +154,7 @@ abstract class we_listview_objectBase extends we_listview_base{
 			if(($pos = array_search($n, $orderArr)) !== false){
 				$ordertmp[$pos] = '`' . $p['table'] . '`.`' . $p['type'] . '_' . $n . '`' . ($descArr[$pos] ? ' DESC' : '');
 			}
-			$cond = preg_replace("/($charclass)$n($charclass)/", '$1' . $p['table'] . '.`' . $p['type'] . '_' . $n . '`$2', $cond);
+			$cond = preg_replace("/($charclass)$n($charclass)/", '${1}' . $p['table'] . '.`' . $p['type'] . '_' . $n . '`$2', $cond);
 		}
 		$cond = preg_replace_callback("/'([^']*)'/", function (array $match){
 			return "'" . preg_replace_callback("/&([^;]+);/", function (array $match){

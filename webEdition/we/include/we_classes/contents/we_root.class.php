@@ -188,6 +188,7 @@ abstract class we_root extends we_class{
 			$save[0][$slot] = $bb;
 		}
 		// save weDocumentCustomerFilter in Session
+		//NOTE: this is an object!
 		if(isset($this->documentCustomerFilter) && defined('CUSTOMER_TABLE')){
 			$save[3] = $this->documentCustomerFilter;
 		}
@@ -208,7 +209,7 @@ abstract class we_root extends we_class{
 
 	/* init the object with data from the database */
 
-	function copyDoc(/* $id */){
+	function copyDoc($id){
 		// overwrite
 	}
 
@@ -1011,7 +1012,7 @@ abstract class we_root extends we_class{
 					$this->i_set_PersistentSlot($regs[1], $v);
 				}
 			} else if($n === 'we_owners_read_only'){
-				$this->OwnersReadOnly = we_serialize($v, 'json');
+				$this->OwnersReadOnly = we_serialize($v, SERIALIZE_JSON);
 			}
 		}
 		$year = date('Y');
@@ -1020,7 +1021,7 @@ abstract class we_root extends we_class{
 		}
 	}
 
-	protected function i_isElement(/* $Name */){
+	protected function i_isElement($Name){
 		return true; // overwrite
 	}
 
@@ -1097,7 +1098,7 @@ abstract class we_root extends we_class{
 
 			switch($v['type']){
 				case 'formfield':
-					$dat = we_serialize($v, 'json');
+					$dat = we_serialize($v, SERIALIZE_JSON);
 					break;
 				case 'date':
 					$dat = sprintf('%016d', $dat);
@@ -1310,7 +1311,7 @@ abstract class we_root extends we_class{
 
 	}
 
-	protected function correctFields(){
+	public function correctFields(){
 
 	}
 
@@ -1341,7 +1342,7 @@ abstract class we_root extends we_class{
 			$ret &= $this->DB_WE->query('REPLACE INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
 					'ID' => $this->ID,
 					'DocumentTable' => stripTblPrefix($this->Table),
-					'type' => 'media', // FIXME: change to "media"
+					'type' => 'media',
 					'remObj' => $remObj,
 					'remTable' => stripTblPrefix(FILE_TABLE),
 					'position' => 0,

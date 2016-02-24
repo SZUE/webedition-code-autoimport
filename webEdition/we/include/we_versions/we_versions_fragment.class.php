@@ -75,7 +75,7 @@ class we_versions_fragment extends we_fragment_base{
 			_multiEditorreload = true;
 
 			//reload tree
-			top.opener.we_cmd("load", top.opener.treeData.table ,0);
+			top.opener.we_cmd("load", top.opener.top.treeData.table ,0);
 
 			top.close();
 		') .

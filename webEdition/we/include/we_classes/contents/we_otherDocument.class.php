@@ -203,8 +203,8 @@ class we_otherDocument extends we_binaryDocument{
 								$_SESSION[$_binaryDataId]['id'] = $binaryId;
 							}
 
-							$_SESSION[$_binaryDataId]['fileName'] = preg_replace('#^(.+)\..+$#', '$1', $tmp_Filename);
-							$_SESSION[$_binaryDataId]['extension'] = (strpos($tmp_Filename, '.') > 0) ? preg_replace('#^.+(\..+)$#', '$1', $tmp_Filename) : '';
+							$_SESSION[$_binaryDataId]['fileName'] = preg_replace('#^(.+)\..+$#', '${1}', $tmp_Filename);
+							$_SESSION[$_binaryDataId]['extension'] = (strpos($tmp_Filename, '.') > 0) ? preg_replace('#^.+(\..+)$#', '${1}', $tmp_Filename) : '';
 							$_SESSION[$_binaryDataId]['text'] = $_SESSION[$_binaryDataId]['fileName'] . $_SESSION[$_binaryDataId]['extension'];
 							$_SESSION[$_binaryDataId]['type'] = $_FILES["we_ui_$formname"]['type'][$binaryName];
 							$_SESSION[$_binaryDataId]['size'] = $_FILES["we_ui_$formname"]['size'][$binaryName];

@@ -153,6 +153,7 @@ function updateCustomerFilterIfNeeded() {
 					if (o.responseText !== undefined && o.responseText !== '') {
 						var weResponse = false;
 						try {
+							//FIXME can we use JSON.parse
 							eval(o.responseText);
 							if (weResponse) {
 								if (weResponse.data === "true") {
@@ -439,7 +440,7 @@ function metaFieldSelectProposal(sel, inputName, isCsv) {
 				break;
 			default:
 				var valSelCsv = ', ' + valInput + ',';
-				newVal = ((valInput == '' || (valSel == '')) ? valSel : (valSelCsv.search(' *, *' + valSel + ' *, *') === -1 ? (valInput + ', ' + valSel) : valInput));
+				newVal = ((valInput === '' || (valSel === '')) ? valSel : (valSelCsv.search(' *, *' + valSel + ' *, *') === -1 ? (valInput + ', ' + valSel) : valInput));
 		}
 	} else {
 		switch (valSel) {

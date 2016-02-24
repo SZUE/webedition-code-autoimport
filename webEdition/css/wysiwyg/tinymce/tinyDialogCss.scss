@@ -96,12 +96,12 @@ i.fa-ban, i.fa-cancel {
 		}
 	}
 	.current span {
-			background: transparent;
-			border: none;
-			margin: 0px 1em;
-			padding: 0px;
-			font-size: 11px;
-			vertical-align: top;
+		background: transparent;
+		border: none;
+		margin: 0px 1em;
+		padding: 0px;
+		font-size: 11px;
+		vertical-align: top;
 	}
 }
 
@@ -245,11 +245,6 @@ select, input[type="text"], input[type="number"], input[type="search"], input[ty
 			padding:0px;
 			display:block;
 		}
-	}
-	
-	//float:right;
-	#insert{
-		float:none;
 	}
 }
 

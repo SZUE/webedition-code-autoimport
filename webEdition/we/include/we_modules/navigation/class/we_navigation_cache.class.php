@@ -52,14 +52,13 @@ class we_navigation_cache{
 		}
 	}
 
-
 	static function delCacheNavigationEntry($id){
 		we_base_file::delete(self::getNavigationFilename($id));
 	}
 
 	static function saveCacheNavigation($id, $_naviItemes){
 		//FIMXE:	currently we need the classes, so we are unable to serialize as json!
-		we_base_file::save(self::getNavigationFilename($id), we_serialize($_naviItemes->items, 'serialize', false, 9));
+		we_base_file::save(self::getNavigationFilename($id), we_serialize($_naviItemes->items, SERIALIZE_PHP, false, 9));
 	}
 
 	static function getCacheFromFile($parentid){
@@ -75,7 +74,8 @@ class we_navigation_cache{
 	}
 
 	static function saveRules($rules){
-		return we_base_file::save(WE_CACHE_PATH . 'navigation_rules.php', we_serialize($rules, 'serialize', false, 9));
+		//FIMXE:	currently we need the classes, so we are unable to serialize as json!
+		return we_base_file::save(WE_CACHE_PATH . 'navigation_rules.php', we_serialize($rules, SERIALIZE_PHP, false, 9));
 	}
 
 	/**

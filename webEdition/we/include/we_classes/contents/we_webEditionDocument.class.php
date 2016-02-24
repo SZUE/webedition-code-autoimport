@@ -550,7 +550,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		return $fieldTypes;
 	}
 
-	protected function correctFields(){
+	public function correctFields(){
 		// this is new for shop-variants
 		$this->correctVariantFields();
 		$regs = array();
@@ -676,11 +676,11 @@ class we_webEditionDocument extends we_textContentDocument{
 
 		$this->i_writeMetaValues();
 
-		if(!$resave){
+		/*if(!$resave){
 			$hy = we_unserialize(we_base_preferences::getUserPref('History'));
 			$hy['doc'][$this->ID] = array('Table' => $this->Table, 'ModDate' => $this->ModDate);
 			we_base_preferences::setUserPref('History', we_serialize($hy));
-		}
+		}*/
 		return $out;
 	}
 

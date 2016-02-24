@@ -527,7 +527,7 @@ class we_users_user{
 				$permissions[$k] = $v;
 			}
 		}
-		$this->Permissions = we_serialize($permissions, 'json');
+		$this->Permissions = we_serialize($permissions, SERIALIZE_JSON);
 	}
 
 	function loadWorkspaces(){

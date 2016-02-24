@@ -93,21 +93,21 @@ class we_search_frames extends we_tool_frames{
 
 		//tabs for entries
 		if(permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
-			$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-file-o"></i> '.g_l('searchtool', '[documents]'), '((' . $this->topFrame . '.activ_tab==1) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('1');", array(
+			$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-file-o"></i> ' . g_l('searchtool', '[documents]'), '((' . $this->topFrame . '.activ_tab==1) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('1');", array(
 				'id' => 'tab_1', 'style' => "display:$displayEntry"
 			)));
 		}
 		if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE && permissionhandler::hasPerm('CAN_SEE_TEMPLATES')){
-			$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-file-code-o"></i> '.g_l('searchtool', '[templates]'), '((' . $this->topFrame . '.activ_tab==2) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('2');", array(
+			$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-file-code-o"></i> ' . g_l('searchtool', '[templates]'), '((' . $this->topFrame . '.activ_tab==2) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('2');", array(
 				'id' => 'tab_2', 'style' => "display:$displayEntry"
 			)));
 		}
 		if(permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){// FIXME: add some media related perm // FIXME: g_l()
-			$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-image"></i> '.g_l('searchtool', '[media]'), '((' . $this->topFrame . '.activ_tab==5) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('5');", array(
+			$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-image"></i> ' . g_l('searchtool', '[media]'), '((' . $this->topFrame . '.activ_tab==5) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('5');", array(
 				'id' => 'tab_5', 'style' => "display:$displayEntry"
 			)));
 		}
-		$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-search-plus"></i> '.g_l('searchtool', '[advSearch]'), '((' . $this->topFrame . '.activ_tab==3) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('3');", array(
+		$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-search-plus"></i> ' . g_l('searchtool', '[advSearch]'), '((' . $this->topFrame . '.activ_tab==3) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('3');", array(
 			'id' => 'tab_3', 'style' => "display:$displayEntry"
 		)));
 
@@ -201,7 +201,7 @@ function setTab(tab) {
 		return we_base_request::_(we_base_request::INT, 'tabnr', 1);
 	}
 
-	protected function getHTMLEditorFooter(){
+	protected function getHTMLEditorFooter($btn_cmd = '', $extraHead = ''){
 		$_but_table = we_html_button::create_button('save', 'javascript:we_save();', true, 100, 22, '', '', (!permissionhandler::hasPerm('EDIT_NAVIGATION')));
 
 		return $this->getHTMLDocument(we_html_element::jsElement('

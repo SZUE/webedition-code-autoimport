@@ -173,7 +173,7 @@ function submitForm(target,action,method) {
 				$tmpDoc = we_unserialize(f('SELECT strSerial FROM ' . SHOP_TABLE . ' WHERE IntID=' . $article, '', $this->db));
 				if($tmpDoc){
 					$tmpDoc[WE_SHOP_VAT_FIELD_NAME] = $_REQUEST['vat'];
-					$this->db->query('UPDATE ' . SHOP_TABLE . ' SET strSerial="' . $this->db->escape(we_serialize($tmpDoc, 'json')) . '" WHERE IntID=' . $article);
+					$this->db->query('UPDATE ' . SHOP_TABLE . ' SET strSerial="' . $this->db->escape(we_serialize($tmpDoc, SERIALIZE_JSON)) . '" WHERE IntID=' . $article);
 				}
 			}
 		}
@@ -800,7 +800,7 @@ function CalendarChanged(calObject) {
 							'DateShipping' => $row['DateShipping'],
 							'Datepayment' => $row['Datepayment'],
 							'IntPayment_Type' => $row['IntPayment_Type'],
-							'strSerial' => we_serialize($serialDoc, 'json'),
+							'strSerial' => we_serialize($serialDoc, SERIALIZE_JSON),
 							'strSerialOrder' => $_strSerialOrder
 					))));
 				} else {
@@ -1303,73 +1303,6 @@ function CalendarChanged(calObject) {
 		}
 	}
 
-	/* 	function processCommands_back(){
-	  switch(we_base_request::_(we_base_request::STRING, 'cmd')){
-	  case 'new_raw':
-	  $this->raw = new weShop();
-	  echo we_html_element::jsElement(
-	  'top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
-	  'top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edfooter";'
-	  );
-	  break;
-	  case 'edit_raw':
-	  $this->raw = new weShop($_REQUEST['cmdid']);
-	  echo we_html_element::jsElement(
-	  'top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edheader&text=' . urlencode($this->raw->Text) . '";' .
-	  'top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edfooter";'
-	  );
-	  break;
-	  case 'save_raw':
-	  if($this->raw->filenameNotValid()){
-	  echo we_html_element::jsElement(
-	  we_message_reporting::getShowMessageCall(g_l('modules_shop', '[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR)
-	  );
-	  break;
-	  }
-
-	  $newone = ($this->raw->ID ? false : true);
-
-	  $this->raw->save();
-
-	  //$ttrow = getHash('SELECT * FROM ' . RAW_TABLE . ' WHERE ID=' . intval($this->raw->ID), $this->db);
-	  $tt = addslashes($tt ? : $this->raw->Text);
-	  $js = ($newone ?
-	  '
-	  var attribs = {
-	  id:"' . $this->raw->ID . '",
-	  typ:"item",
-	  parentid:"0",
-	  text:"' . $tt . '",
-	  disable:0,
-	  tooltip:""
-	  };
-	  top.content.treeData.addSort(new top.content.node(attribs));
-	  top.content.drawTree();' :
-	  'top.content.treeData.updateEntry({id:' . $this->raw->ID . ',text:"' . $tt . '"});'
-	  );
-	  echo we_html_element::jsElement(
-	  $js .
-	  we_message_reporting::getShowMessageCall(g_l('modules_shop', '[raw_saved_ok]'), we_message_reporting::WE_MESSAGE_NOTICE)
-	  );
-	  break;
-	  case 'delete_raw':
-	  $js = 'top.content.treeData.deleteEntry(' . $this->raw->ID . ');';
-
-	  $this->raw->delete();
-	  $this->raw = new weShop();
-
-	  echo we_html_element::jsElement(
-	  $js .
-	  we_message_reporting::getShowMessageCall(g_l('modules_shop', '[raw_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE)
-	  );
-	  break;
-	  case 'switchPage':
-	  break;
-	  default:
-	  }
-
-	  $_SESSION['weS']['raw_session'] = we_serialize($this->raw);
-	  } */
 
 	function processVariables(){
 		if(isset($_SESSION['weS']['raw_session'])){
@@ -1460,7 +1393,7 @@ function CalendarChanged(calObject) {
 			$content.= we_html_button::create_button('quick_rev', "javascript:top.content.editor.location='" . $this->frameset . "&pnt=editor&top=1&typ=document '", true) . '<br/>';
 		}
 
-		return parent::getHomeScreen('shop', "shop.gif", $content);
+		return parent::getActualHomeScreen('shop', "shop.gif", $content);
 	}
 
 }

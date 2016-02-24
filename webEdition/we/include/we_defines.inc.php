@@ -22,6 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf.inc.php');
+define('SERIALIZE_PHP', 'serialize');
+define('SERIALIZE_JSON', 'json');
 
 define('WEBEDITION_DIR', '/webEdition/');
 

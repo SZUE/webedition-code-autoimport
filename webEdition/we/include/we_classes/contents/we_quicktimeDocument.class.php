@@ -268,8 +268,8 @@ class we_quicktimeDocument extends we_document_deprecatedVideo{
 							$_SESSION[$videoDataId]["id"] = $videoid;
 						}
 
-						$_SESSION[$videoDataId]["fileName"] = preg_replace('#^(.+)\..+$#', '$1', $tmp_Filename);
-						$_SESSION[$videoDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? preg_replace('#^.+(\..+)$#', '$1', $tmp_Filename) : '';
+						$_SESSION[$videoDataId]["fileName"] = preg_replace('#^(.+)\..+$#', '${1}', $tmp_Filename);
+						$_SESSION[$videoDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? preg_replace('#^.+(\..+)$#', '${1}', $tmp_Filename) : '';
 						$_SESSION[$videoDataId]["text"] = $_SESSION[$videoDataId]["fileName"] . $_SESSION[$videoDataId]["extension"];
 
 

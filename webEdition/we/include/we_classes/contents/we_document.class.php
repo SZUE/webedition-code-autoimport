@@ -54,7 +54,7 @@ class we_document extends we_root{
 		parent::__construct();
 		array_push($this->persistent_slots, 'Extension', 'IsDynamic', 'Published', 'Category', 'IsSearchable', 'InGlossar', 'Language', 'schedArr', 'parseFile', 'editorSaves', 'versionsModel');
 		$this->Table = FILE_TABLE;
-		if(defined('WE_SIDEBAR')){
+		if(isWE() || defined('WE_SIDEBAR')){
 			$this->InWebEdition = true;
 		}
 	}
@@ -365,7 +365,7 @@ class we_document extends we_root{
 		$listarray[$newPos] = $listarray[$nr];
 		$listarray[$nr] = $temp;
 
-		$this->setElement($name, we_serialize($listarray), 'block');
+		$this->setElement($name, we_serialize($listarray, SERIALIZE_JSON, true, 0, true), 'block');
 	}
 
 	function downEntryAtList($name, $nr, $number = 1){
@@ -378,7 +378,7 @@ class we_document extends we_root{
 		$temp = $listarray[$newPos];
 		$listarray[$newPos] = $listarray[$nr];
 		$listarray[$nr] = $temp;
-		$this->setElement($name, we_serialize($listarray), 'block');
+		$this->setElement($name, we_serialize($listarray, SERIALIZE_JSON, true, 0, true), 'block');
 	}
 
 	function removeEntryFromList($name, $nr, $names = '', $isBlock = false){
@@ -441,7 +441,7 @@ class we_document extends we_root{
 		if(!isset($_SESSION['weS']['WE_LINK'])){
 			return;
 		}
-		$this->setElement($name, we_serialize($_SESSION['weS']['WE_LINK']), 'link');
+		$this->setElement($name, we_serialize($_SESSION['weS']['WE_LINK'], SERIALIZE_JSON), 'link');
 		unset($_SESSION['weS']['WE_LINK']);
 	}
 
@@ -1593,7 +1593,7 @@ class we_document extends we_root{
 						'-<(a|img) [^>]*' . $reg[2] . '="' . $reg[2] . $reg[3] . '("|&|&amp;|\?)[^>]*>(.*)</a>-Ui',
 						'-<(a|img) [^>]*' . $reg[2] . '="' . $reg[2] . $reg[3] . '(\?|&|&amp;|")[^>]*>-Ui',
 						), array(
-						'$3',
+						'${3}',
 						''
 						), $text);
 				}
@@ -1626,7 +1626,7 @@ class we_document extends we_root{
 							'-<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '("|&|&amp;|\?)[^>]*>(.*)</a>-Ui',
 							'-<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '("|&|&amp;|\?)[^>]*>-Ui',
 							), array(
-							'$2',
+							'${2}',
 							''
 							), $text);
 					}
@@ -1635,7 +1635,7 @@ class we_document extends we_root{
 		}
 
 
-		return preg_replace('/\<a>(.*)\<\/a>/siU', '$1', $text);
+		return preg_replace('/\<a>(.*)\<\/a>/siU', '${1}', $text);
 	}
 
 	private function getNavigationItems(){

@@ -82,11 +82,11 @@ if(!($fields['isInFrontend'] && $fields['empty'] === 'frontend')){
 }
 
 if(preg_match('%^.+_te?xt\[.+\]$%i', $fields['name'])){
-	$fieldName = preg_replace('/^.+_te?xt\[(.+)\]$/', '$1', $fields['name']);
+	$fieldName = preg_replace('/^.+_te?xt\[(.+)\]$/', '${1}', $fields['name']);
 } else if(preg_match('|^.+_input\[.+\]$|i', $fields['name'])){
-	$fieldName = preg_replace('/^.+_input\[(.+)\]$/', '$1', $fields['name']);
+	$fieldName = preg_replace('/^.+_input\[(.+)\]$/', '${1}', $fields['name']);
 } else if(preg_match('|^we_ui.+\[.+\]$|i', $fields['name'])){//we_user_input
-	$fieldName = preg_replace('/^we_ui.+\[(.+)\]$/', '$1', $fields['name']);
+	$fieldName = preg_replace('/^we_ui.+\[(.+)\]$/', '${1}', $fields['name']);
 	$writeToFrontend = true;
 }
 
@@ -95,9 +95,9 @@ echo we_html_tools::getHtmlTop($fieldName, $fields['charset']);
 if(isset($fieldName) && we_base_request::_(we_base_request::BOOL, 'we_okpressed')){
 	if(!isset($writeToFrontend)){
 		if(preg_match('%^(.+_te?xt)\[.+\]$%i', $fields['name'])){
-			$reqName = preg_replace('/^(.+_te?xt)\[.+\]$/', '$1', $fields['name']);
+			$reqName = preg_replace('/^(.+_te?xt)\[.+\]$/', '${1}', $fields['name']);
 		} else if(preg_match('|^(.+_input)\[.+\]$|i', $fields['name'])){
-			$reqName = preg_replace('/^(.+_input)\[.+\]$/', '$1', $fields['name']);
+			$reqName = preg_replace('/^(.+_input)\[.+\]$/', '${1}', $fields['name']);
 		}
 		$openerDocument = 'WE().layout.weEditorFrameController.getVisibleEditorFrame().document';
 	} else {

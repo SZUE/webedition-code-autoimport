@@ -55,14 +55,14 @@ class we_voting_dirSelector extends we_selector_directory{
 	protected function printHeaderTable($extra = ''){
 		$makefolderState = permissionhandler::hasPerm("NEW_VOTING");
 		return parent::printHeaderTable('<td>' .
-						we_html_element::jsElement('makefolderState=' . intval($makefolderState) . ';') .
-						we_html_button::create_button('fa:btn_new_dir,fa-plus,fa-lg fa-folder', "javascript:if(makefolderState){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
-						'</td>');
+				we_html_element::jsElement('makefolderState=' . intval($makefolderState) . ';') .
+				we_html_button::create_button('fa:btn_new_dir,fa-plus,fa-lg fa-folder', "javascript:if(makefolderState){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
+				'</td>');
 	}
 
 	protected function getFramsetJSFile(){
 		return parent::getFramsetJSFile() .
-				we_html_element::jsScript(JS_DIR . 'selectors/votingdir_selector.js');
+			we_html_element::jsScript(JS_DIR . 'selectors/votingdir_selector.js');
 	}
 
 	protected function printCmdAddEntriesHTML(){
@@ -101,7 +101,7 @@ if(top.opener.top.content.makeNewEntry){
 	ref.treeData.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"folder",table:"' . $this->table . '",published:1});
 }
 ' . ($this->canSelectDir ?
-						'top.currentPath = "' . $folder->Path . '";
+					'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
 top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 ' : '');
@@ -120,8 +120,8 @@ top.selectFile(top.currentID);
 
 	function query(){
 		$this->db->query('SELECT ' . $this->db->escape($this->fields) . ' FROM ' .
-				$this->db->escape($this->table) .
-				' WHERE IsFolder=1 AND ParentID=' . intval($this->dir) . ' ' . self::getUserExtraQuery($this->table));
+			$this->db->escape($this->table) .
+			' WHERE IsFolder=1 AND ParentID=' . intval($this->dir) . ' ' . self::getUserExtraQuery($this->table));
 	}
 
 	static function getUserExtraQuery($table, $useCreatorID = true){
@@ -161,14 +161,14 @@ top.clearEntries();
 			$folder->Text = $txt;
 			$folder->Filename = $txt;
 			$folder->Path = $folder->getPath();
-			$this->db->query("SELECT ID,Text FROM " . $this->db->escape($this->table) . ' WHERE Path="' . $folder->Path . '" AND ID!="' . $this->we_editDirID . '"');
+			$this->db->query("SELECT ID,Text FROM " . $this->db->escape($this->table) . ' WHERE Path="' . $folder->Path . '" AND ID!=' . $this->we_editDirID);
 			if($this->db->next_record()){
 				$we_responseText = sprintf(g_l('modules_voting', '[folder_exists]'), $folder->Path);
 				echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 			} elseif(preg_match('/[%/\\"\']/', $folder->Text)){
 				$we_responseText = g_l('modules_voting', '[wrongtext]');
 				echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
-			} elseif(f("SELECT Text FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($this->we_editDirID), "Text", $this->db) != $txt){
+			} elseif(f("SELECT Text FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($this->we_editDirID), "", $this->db) != $txt){
 				$folder->we_save();
 				echo 'var ref;
 if(top.opener.top.content.treeData){
@@ -176,7 +176,7 @@ if(top.opener.top.content.treeData){
 	ref.treeData.updateEntry({id:' . $folder->ID . ',text:"' . $txt . '",parentid:"' . $folder->ParentID . '"});
 }
 ' . ($this->canSelectDir ?
-						'top.currentPath = "' . $folder->Path . '";
+					'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
 top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 ' : '');

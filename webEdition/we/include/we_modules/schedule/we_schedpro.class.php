@@ -141,11 +141,9 @@ function checkFooter(){
 
 	if(active){
 		button.title="' . g_l('button', '[saveInScheduler][alt]') . '";
-		button.style.width="' . g_l('button', '[saveInScheduler][width]') . 'px";
 		button.innerHTML="<i class=\"fa fa-lg fa-clock-o\"></i> ' . g_l('button', '[saveInScheduler][value]') . '";
 	}else{
 		button.title="' . g_l('button', '[publish][alt]') . '";
-		button.style.width="' . g_l('button', '[publish][width]') . 'px";
 		button.innerHTML="<i class=\"fa fa-lg fa-sun-o\"></i> ' . g_l('button', '[publish][value]') . '";
 	}
 }
@@ -736,7 +734,7 @@ function checkFooter(){
 								'task' => $s['task'],
 								'ClassName' => $object->ClassName,
 								'SerializedData' => ($serializedDoc ? sql_function('x\'' . bin2hex(gzcompress($serializedDoc, 9)) . '\'') : ''),
-								'Schedpro' => we_serialize($s, 'json'),
+								'Schedpro' => we_serialize($s, SERIALIZE_JSON),
 								'rerun' => $s['rerun'],
 								'Active' => $s['active']
 					)))){

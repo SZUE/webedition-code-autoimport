@@ -90,7 +90,7 @@ top.clearEntries();
 			$folder->we_save();
 			echo 'var ref;
 if(top.opener.top.content.makeNewEntry){
-	ref = top.opener.top.content;
+	ref = top.opener.top;
 }else if(top.opener.top.opener){
 	ref = top.opener.top.opener.top;
 }

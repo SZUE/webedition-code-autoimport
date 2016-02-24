@@ -35,8 +35,8 @@ class we_versions_version{
 	protected $binaryPath;
 	protected $modifications;
 	protected $modifierID;
-	/*protected $IP;
-	protected $Browser;*/
+	/* protected $IP;
+	  protected $Browser; */
 	protected $ContentType;
 	protected $Text;
 	protected $ParentID;
@@ -126,7 +126,6 @@ class we_versions_version{
 	public function getBinaryPath(){
 		return $this->binaryPath;
 	}
-
 
 	/**
 	 * @return unknown
@@ -285,9 +284,9 @@ class we_versions_version{
 	/**
 	 * @return unknown
 
-	public function getIP(){
-		return $this->iP;
-	}*/
+	  public function getIP(){
+	  return $this->iP;
+	  } */
 
 	/**
 	 * @return unknown
@@ -460,9 +459,9 @@ class we_versions_version{
 
 	/**
 	 * @param unknown_type $Browser
-	public function setBrowser($browser){
-		$this->browser = $browser;
-	}*/
+	  public function setBrowser($browser){
+	  $this->browser = $browser;
+	  } */
 
 	/**
 	 * @param unknown_type $Category
@@ -614,9 +613,9 @@ class we_versions_version{
 	/**
 	 * @param unknown_type $IP
 
-	public function setIP($iP){
-		$this->iP = $iP;
-	}*/
+	  public function setIP($iP){
+	  $this->iP = $iP;
+	  } */
 
 	/**
 	 * @param unknown_type $IsClassFolder
@@ -1112,17 +1111,17 @@ class we_versions_version{
 				break;
 			case 'documentElements':
 				if(isset($document['elements']) && is_array($document['elements'])){
-					$entry = sql_function('x\'' . bin2hex(we_serialize($document['elements'], 'serialize', false, 9)) . '\'');
+					$entry = sql_function('x\'' . bin2hex(we_serialize($document['elements'], SERIALIZE_PHP, false, 9)) . '\'');
 				}
 				break;
 			case 'documentScheduler':
 				if(!empty($document['schedArr']) && is_array($document['schedArr'])){
-					$entry = sql_function('x\'' . bin2hex(we_serialize($document['schedArr'], 'json', false, 9)) . '\'');
+					$entry = sql_function('x\'' . bin2hex(we_serialize($document['schedArr'], SERIALIZE_JSON, false, 9)) . '\'');
 				}
 				break;
 			case 'documentCustomFilter':
 				if(!empty($document['documentCustomerFilter']) && is_array($document['documentCustomerFilter'])){
-					$entry = sql_function('x\'' . bin2hex(we_serialize($document['documentCustomerFilter'], 'serialize', false, 9)) . '\'');
+					$entry = sql_function('x\'' . bin2hex(we_serialize($document['documentCustomerFilter'], SERIALIZE_PHP, false, 9)) . '\'');
 				}
 				break;
 			case 'timestamp':
@@ -1306,14 +1305,14 @@ class we_versions_version{
 			case 'modifierID':
 				$entry = (isset($_SESSION['user']['ID'])) ? $_SESSION['user']['ID'] : '';
 				break;
-/*			case 'IP':
-				$ip = $_SERVER['REMOTE_ADDR'];
-				$entry = $ip;
-				break;
-			case 'Browser':
-				$browser = $_SERVER['HTTP_USER_AGENT'];
-				$entry = $browser;
-				break;*/
+			/* 			case 'IP':
+			  $ip = $_SERVER['REMOTE_ADDR'];
+			  $entry = $ip;
+			  break;
+			  case 'Browser':
+			  $browser = $_SERVER['HTTP_USER_AGENT'];
+			  $entry = $browser;
+			  break; */
 			case 'active':
 				$entry = 1;
 				break;
@@ -1460,8 +1459,8 @@ class we_versions_version{
 			'status' => "deleted",
 			'modifications' => 1,
 			'modifierID' => isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : '',
-			/*'IP' => $_SERVER['REMOTE_ADDR'],
-			'Browser' => isset($_SERVER['HTTP_USER_AGENT']) ? : '',*/
+			/* 'IP' => $_SERVER['REMOTE_ADDR'],
+			  'Browser' => isset($_SERVER['HTTP_USER_AGENT']) ? : '', */
 			'active' => 1,
 			'fromScheduler' => $this->IsScheduler(),
 		));
@@ -2047,7 +2046,7 @@ class we_versions_version{
 		return $arr;
 	}
 
-	private static function removeUnneededCompareFields(&$doc){
+	private static function removeUnneededCompareFields($doc){
 		unset($doc['Published'], $doc['ModDate'], $doc['RebuildDate'], $doc['EditPageNr'], $doc['DocStream'], $doc['DB_WE'], $doc['usedElementNames'], $doc['hasVariants'], $doc['editorSaves'], $doc['Name'], $doc['wasUpdate'], $doc['InWebEdition'], $doc['PublWhenSave'], $doc['IsTextContentDoc'], $doc['fileExists'], $doc['elements']['allVariants'], $doc['persistent_slots']);
 		return $doc;
 	}

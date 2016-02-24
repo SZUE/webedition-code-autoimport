@@ -79,7 +79,7 @@ function submitForm(target,action,method,form) {
 		$this->page = we_base_request::_(we_base_request::INT, 'page', $this->page);
 	}
 
-	public function getHomeScreen($mod, $icon, $content, $body = ''){
+	public function getActualHomeScreen($mod, $icon, $content, $body = ''){
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? $modData['text'] : '';
 

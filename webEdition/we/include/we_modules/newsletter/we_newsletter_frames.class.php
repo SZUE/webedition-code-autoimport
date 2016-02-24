@@ -189,9 +189,9 @@ function setTab(tab) {
 	 * @param Integer $mode
 	 * @return String
 	 */
-	protected function getHTMLEditorFooter($mode = 0){
+	protected function getHTMLEditorFooter($mode = 0, $extraHead = ''){
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#EFF0EF"), ""));
+			return parent::getHTMLEditorFooter('');
 		}
 
 		$group = we_base_request::_(we_base_request::INT, "group", 0);
@@ -686,30 +686,12 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 		return we_html_tools::htmlSelect($name, $values, 1, $selected, false, array('style' => "width:440px;", 'onchange' => 'we_cmd(\'switchPage\',2);'), "value", 315, "defaultfont");
 	}
 
-	function getHTMLBox($w, $h, $content, $headline = "", $width = 120, $height = 2){
-		$headline = str_replace(" ", "&nbsp;", $headline);
-
-		return '<table class="default" style="margin:' . $height . 'px 0 ' . $height . 'px 24px;">' . ($headline ? '<tr>
-		<td style="vertical-align:top" class="defaultfont lowContrast">' . $headline . '</td>
-		<td>' . $content . '</td>
-	</tr>
-</table>' : '
-	<tr>
-		<td></td>
-		<td>' . $content . '</td>
-	</tr>
-</table>'
-			);
-	}
-
 	function getHTMLCopy(){
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.copyid.value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.copyid_text.value");
-		$wecmdenc3 = we_base_request::encCmd("opener.we_cmd('copy_newsletter');");
+		$cmd1=document.we_form.elements.copyid.value;
 
 		return we_html_element::htmlHiddens(array('copyid' => 0,
 				'copyid_text' => "")) .
-			we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_file',document.we_form.elements.copyid.value,'" . NEWSLETTER_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . get_ws(NEWSLETTER_TABLE) . "')");
+			we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_file',".$cmd1.",'" . NEWSLETTER_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd('document.we_form.elements.copyid_text.value') . "','" . we_base_request::encCmd("opener.we_cmd('copy_newsletter');") . "','','" . get_ws(NEWSLETTER_TABLE) . "')");
 	}
 
 	function getHTMLCustomer($group){
@@ -2195,8 +2177,8 @@ self.focus();');
 					'###LASTNAME###' => $lastname,
 					'###CUSTOMERID###' => $customerid,
 					'###TITLE###' => $title,);
-				$content = strtr(($title ? preg_replace('|([^ ])###TITLE###|', '$1 ' . $title, $contentF) : $contentF), $rep);
-				$content_plain = strtr(($title ? preg_replace('|([^ ])###TITLE###|', '$1 ' . $title, $contentF_plain) : $contentF_plain), $rep);
+				$content = strtr(($title ? preg_replace('|([^ ])###TITLE###|', '${1} ' . $title, $contentF) : $contentF), $rep);
+				$content_plain = strtr(($title ? preg_replace('|([^ ])###TITLE###|', '${1} ' . $title, $contentF_plain) : $contentF_plain), $rep);
 			} else if($salutation && $lastname && ($salutation == $this->View->settings[we_newsletter_newsletter::MALE_SALUTATION_FIELD]) && ((!$this->View->settings["title_or_salutation"]) || (!$title))){
 				$rep = array(
 					'###FIRSTNAME###' => $firstname,
@@ -2205,8 +2187,8 @@ self.focus();');
 					'###TITLE###' => $title
 				);
 
-				$content = strtr(($title ? preg_replace('|([^ ])###TITLE###|', '$1 ' . $title, $contentM) : $contentM), $rep);
-				$content_plain = strtr(($title ? preg_replace('|([^ ])###TITLE###|', '$1 ' . $title, $contentM_plain) : $contentM_plain), $rep);
+				$content = strtr(($title ? preg_replace('|([^ ])###TITLE###|', '${1} ' . $title, $contentM) : $contentM), $rep);
+				$content_plain = strtr(($title ? preg_replace('|([^ ])###TITLE###|', '${1} ' . $title, $contentM_plain) : $contentM_plain), $rep);
 			} else if($title && $firstname && $lastname){
 				$rep = array(
 					'###FIRSTNAME###' => $firstname,
@@ -2214,8 +2196,8 @@ self.focus();');
 					'###CUSTOMERID###' => $customerid,
 					'###TITLE###' => $title
 				);
-				$content = strtr(preg_replace('|([^ ])###TITLE###|', '$1 ' . $title, $contentTFL), $rep);
-				$content_plain = strtr(preg_replace('|([^ ])###TITLE###|', '$1 ' . $title, $contentTFL_plain), $rep);
+				$content = strtr(preg_replace('|([^ ])###TITLE###|', '${1} ' . $title, $contentTFL), $rep);
+				$content_plain = strtr(preg_replace('|([^ ])###TITLE###|', '${1} ' . $title, $contentTFL_plain), $rep);
 			} else if($title && $lastname){
 				$rep = array(
 					'###FIRSTNAME###' => $firstname,
@@ -2223,8 +2205,8 @@ self.focus();');
 					'###CUSTOMERID###' => $customerid,
 					'###TITLE###' => $title
 				);
-				$content = strtr(preg_replace('|([^ ])###TITLE###|', '$1 ' . $title, $contentTL), $rep);
-				$content_plain = strtr(preg_replace('|([^ ])###TITLE###|', '$1 ' . $title, $contentTL_plain), $rep);
+				$content = strtr(preg_replace('|([^ ])###TITLE###|', '${1} ' . $title, $contentTL), $rep);
+				$content_plain = strtr(preg_replace('|([^ ])###TITLE###|', '${1} ' . $title, $contentTL_plain), $rep);
 			} else if($lastname && $firstname){
 				$rep = array(
 					'###FIRSTNAME###' => $firstname,

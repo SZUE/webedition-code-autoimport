@@ -301,7 +301,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 						'errorDocNoAccess' => $_docCustomerFilter->getErrorDocNoAccess(),
 						'mode' => $_docCustomerFilter->getMode(),
 						'specificCustomers' => ($_specificCustomers ? implode(',', $_specificCustomers) : ''),
-						'filter' => ($_filter ? we_serialize($_filter, 'json') : ''),
+						'filter' => ($_filter ? we_serialize($_filter, SERIALIZE_JSON) : ''),
 						'whiteList' => ($_whiteList ? implode(',', $_whiteList) : ''),
 						'blackList' => ($_blackList ? implode(',', $_blackList) : ''),
 					))

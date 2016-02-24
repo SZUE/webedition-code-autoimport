@@ -64,8 +64,8 @@ function we_submitForm(target, url) {
 }
 
 function doUnload() {
-	WE().util.jsWindow.prototype.closeAll(window);
-	opener.top.dc_win_open = false;
+	/*WE().util.jsWindow.prototype.closeAll(window);
+	opener.top.dc_win_open = false;*/
 }
 
 function disableLangDefault(allnames, allvalues, deselect) {

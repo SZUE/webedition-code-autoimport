@@ -960,9 +960,9 @@ var weFileUpload = (function () {
 				}
 
 				// check forbidden mimes and extensions
-				if((tc.forbidden.cts && type && (tc.forbidden.cts.indexOf(',' + type + ',') !== -1 || tc.forbidden.cts.indexOf(',' + typeGroup + ',') !== -1))
-						|| (tc.forbidden.exts && tc.forbidden.exts.indexOf(',' + ext + ',') !== -1)
-						|| (tc.forbidden.exts4cts && tc.forbidden.exts4cts.indexOf(',' + ext + ',') !== -1)){
+				if ((tc.forbidden.cts && type && (tc.forbidden.cts.indexOf(',' + type + ',') !== -1 || tc.forbidden.cts.indexOf(',' + typeGroup + ',') !== -1)) ||
+								(tc.forbidden.exts && tc.forbidden.exts.indexOf(',' + ext + ',') !== -1) ||
+								(tc.forbidden.exts4cts && tc.forbidden.exts4cts.indexOf(',' + ext + ',') !== -1)) {
 					return 0;
 				}
 
@@ -1365,7 +1365,7 @@ var weFileUpload = (function () {
 							document.getElementById(_.fieldName + '_progress_image').className = "progress_image";
 							this.elems.progress.style.display = '';
 							this.elems.progressMoreText.style.display = '';
-							this.elems.progressMoreText.innerHTML = ' / ' + _.utils.computeSize(_.sender.currentFile.size);
+							this.elems.progressMoreText.innerHTML = '&nbsp;&nbsp;/ ' + _.utils.computeSize(_.sender.currentFile.size);
 						}
 						if (this.extProgress.isExtProgress) {
 							this.elems.extProgressDiv.style.display = '';
@@ -1609,7 +1609,7 @@ var weFileUpload = (function () {
 				if (!this.isCancelled) {
 					_.view.elems.footer.setProgress(100);
 					_.view.elems.footer.setProgressText('progress_title', '');
-					eval(resp.completed);
+					top.we_showMessage(resp.completed.message, resp.completed.type, window);
 
 					//setTimeout(that.callback, 100, _); // FIXME: check if this works
 					setTimeout(function () {

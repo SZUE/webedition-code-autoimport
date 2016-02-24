@@ -22,21 +22,74 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_versions_log extends we_versions_logBase{
+class we_versions_log{
 	const VERSIONS_DELETE = 'delete';
 	const VERSIONS_RESET = 'reset';
 	const VERSIONS_PREFS = 'prefs';
 
 	public $action;
 	public $data;
+	public $db;
+	public $table = VERSIONSLOG_TABLE;
+	public $userID;
+	public $timestamp;
+	public $persistent_slots = array();
 
-	function __construct(){
-		parent::__construct(VERSIONSLOG_TABLE);
+	public function __construct(){
+		$this->db = new DB_WE();
+		$this->userID = $_SESSION['user']['ID'];
+		$this->timestamp = time();
+		$this->loadPresistents();
+	}
+
+	function loadPresistents(){
+
+		$tableInfo = $this->db->metadata($this->table);
+		foreach($tableInfo as $t){
+			$columnName = $t["name"];
+			$this->persistent_slots[] = $columnName;
+			if(!isset($this->$columnName)){
+				$this->$columnName = "";
+			}
+		}
+	}
+
+	function load(){
+
+		$content = array();
+		$tableInfo = $this->db->metadata($this->table);
+		$this->db->query('SELECT ID,timestamp,typ,userID FROM ' . $this->db->escape($this->table) . ' ORDER BY timestamp DESC');
+		$m = 0;
+		while($this->db->next_record()){
+			for($i = 0; $i < count($tableInfo); $i++){
+				$columnName = $tableInfo[$i]["name"];
+				if(in_array($columnName, $this->persistent_slots)){
+					$content[$m][$columnName] = $this->db->f($columnName);
+				}
+			}
+			$m++;
+		}
+
+		return $content;
+	}
+
+	function saveLog(){
+		$set = array();
+
+		foreach($this->persistent_slots as $val){
+			if(isset($this->$val)){
+				$set[$val] = $this->$val;
+			}
+		}
+
+		if($set){
+			$this->db->query('INSERT INTO ' . $this->db->escape($this->table) . ' SET ' . we_database_base::arraySetter($set));
+		}
 	}
 
 	function saveVersionsLog($logArray, $action = ""){
 		$this->typ = $action;
-		$this->data = we_serialize($logArray);
+		$this->data = we_serialize($logArray, SERIALIZE_JSON);
 		$this->saveLog();
 	}
 

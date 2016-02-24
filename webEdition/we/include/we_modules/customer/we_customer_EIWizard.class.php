@@ -608,25 +608,15 @@ function callBack(){
 		$import_from = we_base_request::_(we_base_request::STRING, "import_from", self::EXPORT_SERVER);
 		$source = we_base_request::_(we_base_request::FILE, "source", "/");
 		$type = we_base_request::_(we_base_request::STRING, "type", "");
-		$ext = $type == self::TYPE_CSV ? ".csv" : ".xml";
-		$filename = "";
-		$filesource = "";
 
 		if($import_from == self::EXPORT_LOCAL){
-			$filename = we_fileupload::commitFile('we_upload_file', array('accepted' => array()));
-			$filesource = $filename ? $_SERVER['DOCUMENT_ROOT'] . $filename : '';
-			if(!$filename && isset($_FILES['upload']) && $_FILES["upload"]["size"]){
-				$filename = TEMP_DIR . we_base_file::getUniqueId() . $ext;
-				$filesource = $_SERVER['DOCUMENT_ROOT'] . $filename;
-				if(!move_uploaded_file($_FILES['upload']["tmp_name"], $filesource)){
-					$filename = $filesource = '';
-				}
-			}
+			$fileUploader = new we_fileupload_resp_base();
+			//$fileUploader->setTypeCondition();
+			$filename = $fileUploader->commitUploadedFile();
 		} else {
 			$filename = $source;
-			$filesource = $_SERVER['DOCUMENT_ROOT'] . $filename;
 		}
-
+		$filesource = $filename ? $_SERVER['DOCUMENT_ROOT'] . $filename : '';
 
 		$parts = array();
 		if(is_file($filesource) && is_readable($filesource)){

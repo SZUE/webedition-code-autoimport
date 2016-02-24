@@ -118,7 +118,7 @@ function we_cmd() {
 		return $this->getHTMLDocument(we_html_element::htmlBody());
 	}
 
-	protected function getHTMLEditor(){//TODO: maybe abandon the split between former Top- and other editor files
+	protected function getHTMLEditor($extraUrlParams = '', $extraHead = ''){//TODO: maybe abandon the split between former Top- and other editor files
 		if(we_base_request::_(we_base_request::BOOL, 'top')){//doing what have been done in edit_shop_editorFramesetTop before
 			return $this->getHTMLEditorTop();
 		}

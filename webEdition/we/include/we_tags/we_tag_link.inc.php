@@ -78,7 +78,7 @@ function we_tag_link($attribs, $content){
 
 			// Link should only displayed if it's a preset link
 			if($id || $imageid != 0 || $text){
-				$_SESSION['weS']['WE_LINK'] = we_serialize($link, 'json');
+				$_SESSION['weS']['WE_LINK'] = we_serialize($link, SERIALIZE_JSON);
 				$GLOBALS['we_doc']->changeLink($name);
 				$GLOBALS['we_doc']->saveInSession($_SESSION['weS']['we_data'][$GLOBALS['we_transaction']]);
 			}

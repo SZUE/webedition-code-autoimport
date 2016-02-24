@@ -75,7 +75,7 @@ class we_banner_view extends we_modules_view{
 			'<br/>' .
 			we_html_button::create_button('new_bannergroup', "javascript:top.opener.top.we_cmd('new_bannergroup');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_BANNER"));
 
-		return parent::getHomeScreen('banner', "banner.gif", $content, '<form name="we_form">' . $this->getHiddens() . '</form>');
+		return parent::getActualHomeScreen('banner', "banner.gif", $content, '<form name="we_form">' . $this->getHiddens() . '</form>');
 	}
 
 	function getProperties(){
@@ -524,7 +524,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			preg_match_all('|(<we:banner [^>]+>)|U', $this->db->f('templateCode'), $foo, PREG_SET_ORDER);
 			foreach($foo as $cur){
 				$wholeTag = $cur[1];
-				$name = preg_replace('|.+name="([^"]+)".*|i', '$1', $wholeTag);
+				$name = preg_replace('|.+name="([^"]+)".*|i', '${1}', $wholeTag);
 				if($name && (!in_array($name, $tagnames))){
 					$tagnames[] = $name;
 				}

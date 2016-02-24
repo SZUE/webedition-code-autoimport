@@ -173,7 +173,7 @@ class we_xml_rss extends XML_Parser2{
 	 * @param  array  Attributes of XML tag
 	 * @return void
 	 */
-	function startHandler($parser, $element, &$attribs){
+	function startHandler($parser, $element, $attribs){
 		if(substr($element, 0, 4) === "RSS:"){
 			$element = substr($element, 4);
 		}

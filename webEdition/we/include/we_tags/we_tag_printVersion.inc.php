@@ -43,7 +43,7 @@ function we_tag_printVersion($attribs, $content){
 		$hideQuery[] = session_name();
 	}
 	if(isset($_REQUEST)){
-		$tmp = filterXss($_REQUEST);
+		$tmp = filterXss(array_merge($_GET, $_POST));
 		foreach($tmp as $k => $v){
 			if((!is_array($v)) && (!in_array($k, $hideQuery))){
 				$_query_string[$k] = $v;

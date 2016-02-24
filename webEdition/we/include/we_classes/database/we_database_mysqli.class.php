@@ -88,8 +88,10 @@ class DB_WE extends we_database_base{
 	protected function connect($Database = DB_DATABASE, $Host = DB_HOST, $User = DB_USER, $Password = DB_PASSWORD){
 		if(!$this->isConnected()){
 			switch(DB_CONNECT){
+				case 'pconnect'://old mysql if
 				case 'mysqli_pconnect':
 					$Host = 'p:' . $Host;
+				case 'connect'://old mysql if
 				case 'mysqli_connect':
 					$this->Query_ID = null;
 					$this->Link_ID = @new mysqli($Host, $User, $Password, $Database);

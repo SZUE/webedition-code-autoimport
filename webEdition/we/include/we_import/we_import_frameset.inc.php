@@ -30,7 +30,7 @@ $type = we_base_request::_(we_base_request::STRING, "type", '');
 $step = we_base_request::_(we_base_request::INT, "step", 0);
 $mode = we_base_request::_(we_base_request::INT, "mode", 0);
 
-if($type && ($step == 1) && $what === 'wizbody'){
+if($type && ($step == 1 || $step == 2) && $what === 'wizbody'){
 	$acceptedMime = $acceptedExt = array();
 	switch($type){
 		case we_import_functions::TYPE_GENERIC_XML:
@@ -54,14 +54,20 @@ if($type && ($step == 1) && $what === 'wizbody'){
 			break;
 	}
 
-	$wizard->fileUploader = new we_fileupload_ui_base($name);
+	switch($step){
+		case 2:
+			$wizard->fileUploader = new we_fileupload_resp_base();
+			break;
+		default:
+			$wizard->fileUploader = new we_fileupload_ui_base($name);
+			$wizard->fileUploader->setCallback('top.wizbody.handle_eventNext()');
+			$wizard->fileUploader->setExternalUiElements(array('contentName' => 'wizbody', 'btnUploadName' => 'next_btn'));
+			$wizard->fileUploader->setFileSelectOnclick("self.document.we_form.elements['v[rdofloc]'][1].checked=true;");
+			$wizard->fileUploader->setInternalProgress(array('isInternalProgress' => true, 'width' => 200));
+			$wizard->fileUploader->setGenericFileName($genericFileNameTemp);
+			$wizard->fileUploader->setDimensions(array('width' => 410, 'marginTop' => 12));
+	}
 	$wizard->fileUploader->setTypeCondition('accepted', $acceptedMime, $acceptedExt);
-	$wizard->fileUploader->setCallback('top.wizbody.handle_eventNext()');
-	$wizard->fileUploader->setExternalUiElements(array('contentName' => 'wizbody', 'btnUploadName' => 'next_btn'));
-	$wizard->fileUploader->setFileSelectOnclick("self.document.we_form.elements['v[rdofloc]'][1].checked=true;");
-	$wizard->fileUploader->setInternalProgress(array('isInternalProgress' => true, 'width' => 200));
-	$wizard->fileUploader->setGenericFileName($genericFileNameTemp);
-	$wizard->fileUploader->setDimensions(array('width' => 410, 'marginTop' => 12));
 }
 
 echo $wizard->getHTML($what, $type, $step, $mode);

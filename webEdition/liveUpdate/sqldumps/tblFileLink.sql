@@ -1,6 +1,6 @@
 CREATE TABLE ###TBLPREFIX###tblFileLink (
   ID int unsigned NOT NULL COMMENT 'collection ID',
-	DocumentTable enum('tblFile','tblObjectFiles','tblVFile','tblCategorys','tblTemplates','tblObject','tblnavigation','tblNewsletter','tblglossary','tblbanner') NOT NULL default 'tblFile' COMMENT 'the table where ID matches',
+	DocumentTable enum('tblFile','tblObjectFiles','tblVFile','tblCategorys','tblTemplates','tblObject','tblnavigation','tblNewsletter','tblglossary','tblbanner','tblWebUser') NOT NULL default 'tblFile' COMMENT 'the table where ID matches',
 	type enum('media','document','object','master','archive','collection') NOT NULL default 'media' COMMENT 'referenced type',
 	remObj int unsigned NOT NULL default '0' COMMENT 'the referenced object',
 	remTable enum('tblFile','tblObjectFiles') NOT NULL default 'tblFile' COMMENT 'the table where to find the referenced object',
