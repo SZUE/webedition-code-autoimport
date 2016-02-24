@@ -64,7 +64,7 @@ class rpcGetRssCmd extends we_rpc_cmd{
 		$http_request = new we_http_request($parsedurl['path'], $parsedurl['host'], 'GET');
 		$http_request->executeHttpRequest();
 		$http_response = new we_http_response($http_request->getHttpResponseStr());
-		if(isset($http_response->http_headers['Location'])){//eine Weiterleitung ist aktiv
+		while(isset($http_response->http_headers['Location'])){//eine Weiterleitung ist aktiv
 			$parsedurl = parse_url($http_response->http_headers['Location']);
 			$http_request = new we_http_request($parsedurl['path'], $parsedurl['host'], 'GET');
 			$http_request->executeHttpRequest();
