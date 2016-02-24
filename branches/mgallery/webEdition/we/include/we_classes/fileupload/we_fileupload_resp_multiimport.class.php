@@ -54,9 +54,9 @@ class we_fileupload_resp_multiimport extends we_fileupload_resp_import{
 					$filelist .= '- ' . $err["filename"] . ' => ' . $err["error"] . '\n';
 				}
 				unset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs']);
-				$response['completed'] = we_message_reporting::getShowMessageCall(sprintf(g_l('importFiles', '[error]'), $filelist), we_message_reporting::WE_MESSAGE_ERROR);
+				$response['completed'] = array('message' => sprintf(g_l('importFiles', '[error]'), $filelist), 'type' => we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
-				$response['completed'] = we_message_reporting::getShowMessageCall(g_l('importFiles', '[finished]'), we_message_reporting::WE_MESSAGE_NOTICE);
+				$response['completed'] = array('message' => g_l('importFiles', '[finished]'), 'type' => we_message_reporting::WE_MESSAGE_NOTICE);
 			}
 			$response['success'] = $_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS'];
 			$response['imported_files'] = $_SESSION['weS']['WE_IMPORT_FILES_DOCUMENTS'];

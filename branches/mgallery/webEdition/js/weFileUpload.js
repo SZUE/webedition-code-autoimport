@@ -1609,8 +1609,7 @@ var weFileUpload = (function () {
 				if (!this.isCancelled) {
 					_.view.elems.footer.setProgress(100);
 					_.view.elems.footer.setProgressText('progress_title', '');
-					//FIXME: can we use JSON.parse??
-					eval(resp.completed);
+					top.we_showMessage(resp.completed.message, resp.completed.type, window);
 
 					//setTimeout(that.callback, 100, _); // FIXME: check if this works
 					setTimeout(function () {
