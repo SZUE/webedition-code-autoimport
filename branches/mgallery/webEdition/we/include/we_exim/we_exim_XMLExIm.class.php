@@ -208,8 +208,8 @@ class we_exim_XMLExIm{
 		}
 	}
 
-	function prepareExport($ids){
-
+	//FIXME given parameter is not used in the call stack!
+	function prepareExport(array $ids = array()){
 		$this->RefTable = new we_exim_refTable();
 		$_preparer = new we_export_preparer($this->options, $this->RefTable);
 		$_preparer->prepareExport($ids);

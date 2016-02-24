@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpctoolfactoryView extends rpcView{
+class rpctoolfactoryView extends we_rpc_view{
 
 	function getResponse($response){
 

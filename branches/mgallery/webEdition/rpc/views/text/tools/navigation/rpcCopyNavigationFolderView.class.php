@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcCopyNavigationFolderView extends rpcView{
+class rpcCopyNavigationFolderView extends we_rpc_view{
 
 	function getResponse($response){
 		header('Content-type: text/plain');

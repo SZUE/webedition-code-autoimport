@@ -22,10 +22,10 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcGetUpdateDocumentCustomerFilterQuestionCmd extends rpcCmd{
+class rpcGetUpdateDocumentCustomerFilterQuestionCmd extends we_rpc_cmd{
 
 	function execute(){
-		$resp = new rpcResponse();
+		$resp = new we_rpc_response();
 
 		// compare filter of document with fitler of folder
 		$_filterOfFolder = $this->getFilterOfFolder(we_base_request::_(we_base_request::INT, 'folderId', 0), we_base_request::_(we_base_request::TABLE, 'table', FILE_TABLE));

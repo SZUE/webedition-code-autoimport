@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcPublishDocsCmd extends rpcCmd{
+class rpcPublishDocsCmd extends we_rpc_cmd{
 
 	function execute(){
 

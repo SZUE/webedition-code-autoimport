@@ -22,10 +22,10 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcChangeDocTypeCmd extends rpcCmd{
+class rpcChangeDocTypeCmd extends we_rpc_cmd{
 
 	function execute(){
-		$resp = new rpcResponse();
+		$resp = new we_rpc_response();
 		$categories = '<tr><td style="font-size:8px">&nbsp;</td></tr>';
 		if(($dt = we_base_request::_(we_base_request::INT, 'docType')) !== false){
 			if($dt >= 0){

@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcDeleteVersionCmd extends rpcCmd{
+class rpcDeleteVersionCmd extends we_rpc_cmd{
 
 	function execute(){
 		we_html_tools::protect();

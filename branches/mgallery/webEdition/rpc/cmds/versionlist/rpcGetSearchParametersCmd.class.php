@@ -22,11 +22,11 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcGetSearchParametersCmd extends rpcCmd{
+class rpcGetSearchParametersCmd extends we_rpc_cmd{
 
 	function execute(){
 
-		$resp = new rpcResponse();
+		$resp = new we_rpc_response();
 
 		$pos = we_base_request::_(we_base_request::STRING, 'position', '');
 

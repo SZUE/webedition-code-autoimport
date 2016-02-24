@@ -997,6 +997,7 @@ apps/toolfactory/hook/custom_hooks/dummy
 !we/include/java_menu
 !sidebar/img
 !rpc/cmds/tools/navigation
+!rpc/base
 !multiEditor
 !menuapplet
 !licenses/ckeditor

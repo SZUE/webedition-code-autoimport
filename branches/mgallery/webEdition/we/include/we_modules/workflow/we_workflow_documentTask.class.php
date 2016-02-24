@@ -81,19 +81,19 @@ class we_workflow_documentTask extends we_workflow_base{
 		$this->rejectTodo();
 	}
 
-	function removeTodo(){
+	function removeTodo($id = 0){
 		if($this->todoID){
 			parent::removeTodo($this->todoID);
 		}
 	}
 
-	function doneTodo(){
+	function doneTodo($id = 0){
 		if($this->todoID){
 			parent::doneTodo($this->todoID);
 		}
 	}
 
-	function rejectTodo(){
+	function rejectTodo($id = 0){
 		if($this->todoID){
 			parent::rejectTodo($this->todoID);
 		}

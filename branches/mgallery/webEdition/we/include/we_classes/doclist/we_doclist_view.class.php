@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,29 +22,28 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class we_doclist_view extends we_search_view{
+
 	public function __construct($model = null){
 		$this->Model = $model ? : new we_doclist_model();
 		$this->searchclass = new we_doclist_search($this);
 	}
 
-
 	/**
 	 * @abstract create javascript for document list
 	 * @return javascript code
 	 */
-	public function getSearchJS(){
+	public function getSearchJS($whichSearch = ''){
 		$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0);
 
 		return we_html_element::jsScript(JS_DIR . 'we_modules/search/search_view.js') .
-				we_html_element::jsElement('
+			we_html_element::jsElement('
 WE().consts.dirs.IMAGE_DIR="' . IMAGE_DIR . '";
 weSearch.conf = {
 	whichsearch: "' . we_search_view::SEARCH_DOCLIST . '",
 	we_transaction: "' . $this->Model->transaction . '",
 	editorBodyFrame : window,
-	ajaxURL: WE().consts.dirs.WEBEDITION_DIR+"rpc/rpc.php",
+	ajaxURL: WE().consts.dirs.WEBEDITION_DIR+"rpc.php",
 	rows: ' . (isset($_REQUEST['searchFields' . we_search_view::SEARCH_DOCLIST]) ? count($_REQUEST['searchFields' . we_search_view::SEARCH_DOCLIST]) - 1 : 0) . ',
 	tab: 0,
 	modelClassName: "placeholder",
@@ -76,7 +76,7 @@ WE().consts.weSearch= {
 	SEARCH_DOCLIST: "' . we_search_view::SEARCH_DOCLIST . '"
 };
 WE().consts.g_l.weSearch = {
-	publish_docs:"'.g_l('searchtool', '[publish_docs]').'",
+	publish_docs:"' . g_l('searchtool', '[publish_docs]') . '",
 	noTempTableRightsSearch: "' . g_l('searchtool', '[noTempTableRightsSearch]') . '",
 	nothingCheckedAdv: \'' . g_l('searchtool', '[nothingCheckedAdv]') . '\',
 	nothingCheckedTmplDoc: \'' . g_l('searchtool', '[nothingCheckedTmplDoc]') . '\',
@@ -94,7 +94,7 @@ WE().consts.g_l.weSearch = {
 	 * @abstract create search dialog-box
 	 * @return html for search dialog box
 	 */
-	public function getSearchDialog(){ // TODO: use parent
+	public function getSearchDialog($whichSearch = ''){ // TODO: use parent
 		$currentSearchFields = $this->Model->getProperty('currentSearchFields');
 		$currentSearch = $this->Model->getProperty('currentSearch');
 		$currentLocation = $this->Model->getProperty('currentLocation');
@@ -128,7 +128,6 @@ WE().consts.g_l.weSearch = {
 				case 'temp_template_id':
 				case 'temp_category':
 					$locationDisabled = 'disabled';
-
 			}
 
 			if(isset($currentSearchFields[$i])){
@@ -204,7 +203,7 @@ WE().consts.g_l.weSearch = {
 		);
 	}
 
-	public function makeContent($_result){
+	public function makeContent(array $_result = array(), $view = self::VIEW_LIST, $whichSearch = self::SEARCH_DOCS){
 		$DB_WE = new DB_WE();
 		$currentSetView = $this->Model->getProperty('currentSetView');
 		$we_PathLength = 30;

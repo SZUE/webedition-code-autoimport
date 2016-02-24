@@ -23,10 +23,10 @@
  */
 we_base_moduleInfo::isActive(we_base_moduleInfo::USERS);
 
-class rpcPingCmd extends rpcCmd{
+class rpcPingCmd extends we_rpc_cmd{
 
 	function execute(){
-		$resp = new rpcResponse();
+		$resp = new we_rpc_response();
 		we_users_user::updateActiveUser();
 
 		if(defined('MESSAGING_SYSTEM')){

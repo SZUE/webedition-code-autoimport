@@ -22,11 +22,11 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcSelectorGetFilesOfDirCmd extends rpcCmd{
+class rpcSelectorGetFilesOfDirCmd extends we_rpc_cmd{
 
 	function execute(){
 
-		$resp = new rpcResponse();
+		$resp = new we_rpc_response();
 
 		$queryClass = new we_selector_query();
 		$table = we_base_request::_(we_base_request::TABLE, 'table', FILE_TABLE);

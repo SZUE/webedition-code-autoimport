@@ -24,10 +24,10 @@
  */
 require_once(WE_INCLUDES_PATH . 'we_tools/weSearch/conf/define.conf.php');
 
-class rpcGetSearchResultCmd extends rpcCmd{
+class rpcGetSearchResultCmd extends we_rpc_cmd{
 
 	function execute(){
-		$resp = new rpcResponse();
+		$resp = new we_rpc_response();
 		$whichsearch = we_base_request::_(we_base_request::STRING, 'whichsearch', '');
 		$setView = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'setView' . $whichsearch);
 

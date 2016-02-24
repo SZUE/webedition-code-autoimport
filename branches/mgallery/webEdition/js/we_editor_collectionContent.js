@@ -983,7 +983,7 @@ weCollectionEdit = {
 						}
 					}
 				};
-				xhr.open('POST', WE().consts.dirs.WEBEDITION_DIR + 'rpc/rpc.php?protocol=json&cmd=GetItemsFromDB&cns=collection', true);
+				xhr.open('POST', WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?protocol=json&cmd=GetItemsFromDB&cns=collection', true);
 				xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 				xhr.send(postData);
 				// set max waiting time

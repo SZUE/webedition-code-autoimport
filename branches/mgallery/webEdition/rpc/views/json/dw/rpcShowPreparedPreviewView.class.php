@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcShowPreparedPreviewView extends rpcView{
+class rpcShowPreparedPreviewView extends we_rpc_view{
 
 	function getResponse($response){
 

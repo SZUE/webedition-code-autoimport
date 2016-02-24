@@ -150,11 +150,11 @@ class we_binaryDocument extends we_document{
 		return true;
 	}
 
-	protected function i_writeSiteDir(){
+	protected function i_writeSiteDir($doc){
 		//do nothing - remove functionality added
 	}
 
-	protected function i_writeMainDir(){
+	protected function i_writeMainDir($doc){
 		//do nothing - remove functionality added
 	}
 
@@ -164,7 +164,7 @@ class we_binaryDocument extends we_document{
 		return (file_exists($file) ? filesize($file) : 0);
 	}
 
-	function insertAtIndex(){
+	function insertAtIndex(array $only = null, array $fieldTypes = null){
 		if(!(!empty($this->IsSearchable) && $this->Published)){
 			$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=0 AND ID=' . intval($this->ID));
 			return true;

@@ -89,7 +89,7 @@ class we_imageDocument extends we_binaryDocument{
 		return false;
 	}
 
-	function registerMediaLinks(){
+	function registerMediaLinks($temp = false, $linksReady = false){
 		if(($id = $this->getElement('LinkID', 'bdid'))){
 			$this->MediaLinks[] = $id;
 		}

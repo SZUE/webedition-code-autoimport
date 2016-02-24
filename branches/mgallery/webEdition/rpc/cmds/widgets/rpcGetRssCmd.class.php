@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-class rpcGetRssCmd extends rpcCmd{
+class rpcGetRssCmd extends we_rpc_cmd{
 
 	function execute(){
 		//close session, we don't need it anymore
@@ -147,7 +147,7 @@ class rpcGetRssCmd extends rpcCmd{
 		if($bTbCopyright){
 			$aTb[] = (isset($oRssParser->channel["copyright"])) ? $oRssParser->channel["copyright"] : "";
 		}
-		$resp = new rpcResponse();
+		$resp = new we_rpc_response();
 		$resp->setData('data', $sRssOut);
 
 		// title

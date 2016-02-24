@@ -1250,7 +1250,7 @@ function we_cmd_base(args, url) {
 			// if visible frame equals to editpage content and there is already content loaded
 			if (_isEditpageContent && _visibleEditorFrame.weIsTextEditor !== undefined && _currentEditorRootFrame.frames[2].location !== "about:blank") {
 				// tell the backend the right edit page nr and break (don't send the form)
-				YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc/rpc.php", {
+				YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc.php", {
 					success: function (o) {
 					},
 					failure: function (o) {

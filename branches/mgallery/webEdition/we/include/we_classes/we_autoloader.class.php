@@ -50,7 +50,7 @@ abstract class we_autoloader{
 		'fileupload' => 'we_classes/fileupload',
 		'fragment' => 'we_classes/fragment',
 		'glossary' => 'we_modules/glossary',
-		'gui'=>'we_classes/js_gui',
+		'gui' => 'we_classes/js_gui',
 		'helpers' => 'we_classes/helpers',
 		'html' => 'we_classes/html',
 		'http' => 'we_classes/http',
@@ -64,6 +64,9 @@ abstract class we_autoloader{
 		'newsletter' => 'we_modules/newsletter',
 		'object' => 'we_modules/object',
 		'rebuild' => 'we_classes/rebuild',
+		'rpc'=>'we_classes/rpc',
+		'rpcCmd'=>'we_classes/rpc/cmd',
+		'rpcView'=>'we_classes/rpc/view',
 		'sdk' => 'we_classes/sdk',
 		'search' => 'we_tools/weSearch/class',
 		'selector' => 'we_classes/selector',
@@ -94,6 +97,7 @@ abstract class we_autoloader{
 		'Services_JSON_Error' => 'lib/additional/pear/Services_JSON.class.php',
 		'Services_JSON' => 'lib/additional/pear/Services_JSON.class.php',
 		'XML_Parser2' => 'lib/additional/pear/XML_Parser.class.php',
+		'Less_Parser' => 'lib/additional/Less/Parser.php',
 	);
 	private static $classes = array(
 		'we_classes/contents' => array(

@@ -499,7 +499,7 @@ class we_objectFile extends we_document{
 		$GLOBALS["we_JavaScript"] = "_EditorFrame.setEditorDocumentId(" . $this->ID . ");" . $this->getUpdateTreeScript();
 	}
 
-	public function formPath(){
+	public function formPath($disablePath = false, $notSetHot = false){
 		$rootDirId = self::getObjectRootPathOfObjectWorkspace($this->RootDirPath, $this->rootDirID, $this->DB_WE);
 		if(!$this->ParentID){
 			$this->ParentID = $rootDirId;

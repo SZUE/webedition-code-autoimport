@@ -811,7 +811,7 @@ function handle_eventNext(){
 	var fs = f.elements['v[fserver]'].value;
 	var fl = we_FileUpload !== undefined ? 'placeholder.xml' : f.elements.uploaded_xml_file.value;
 	var ext = '';
-	
+
 
 	if ((f.elements['v[rdofloc]'][0].checked==true) && fs!='/') {
 		if (fs.match(/\.\./)=='..') {
@@ -853,7 +853,7 @@ function deleteCategory(obj,cat){
 		}
 	}
 }
-var ajaxUrl = "/webEdition/rpc/rpc.php";
+var ajaxUrl = "/webEdition/rpc.php";
 
 var handleSuccess = function(o){
 	if(o.responseText !== undefined){
@@ -1790,7 +1790,7 @@ function deleteCategory(obj,cat){
 		}
 	}
 }
-var ajaxUrl = "/webEdition/rpc/rpc.php";
+var ajaxUrl = "/webEdition/rpc.php";
 
 var handleSuccess = function(o){
 	if(o.responseText !== undefined){

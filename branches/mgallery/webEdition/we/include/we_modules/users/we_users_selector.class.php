@@ -56,7 +56,7 @@ class we_users_selector extends we_selector_file{
 		}
 	}
 
-	function printHTML($what = we_selector_file::FRAMESET){
+	function printHTML($what = we_selector_file::FRAMESET, $withPreview = true){
 		switch($what){
 			case self::SETDIR:
 				$this->printSetDirHTML();
