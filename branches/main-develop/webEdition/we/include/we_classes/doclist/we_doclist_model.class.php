@@ -123,7 +123,7 @@ class we_doclist_model extends we_search_modelBase{
 						$_REQUEST['we_cmd']['search' . $this->whichSearch][] = $v;
 					}
 				}
-				
+
 			}
 
 			// FIXME: unify the different ways these params are committed
@@ -173,7 +173,7 @@ class we_doclist_model extends we_search_modelBase{
 		return $this->whichSearch;
 	}
 
-	function load($id = 0){
+	function load($id = 0, $isAdvanced = false){
 		parent::load($id);
 		// we could save doclist searches to some new table
 	}
@@ -188,7 +188,7 @@ class we_doclist_model extends we_search_modelBase{
 		if(!empty($this->toolName) && isset($_SESSION['weS'][$this->toolName . '_session'])){
 			unset($_SESSION['weS'][$this->toolName . '_session']);
 		}
-		 * 
+		 *
 		 */
 	}
 

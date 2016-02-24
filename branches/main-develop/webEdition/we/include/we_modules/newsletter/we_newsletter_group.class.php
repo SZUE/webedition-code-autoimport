@@ -72,7 +72,7 @@ class we_newsletter_group extends we_newsletter_base{
 	 *
 	 * *************************************** */
 
-	function load($groupID){
+	function load($groupID = 0){
 		parent::load($groupID);
 		$this->aFilter = we_unserialize($this->Filter);
 		return true;
@@ -102,7 +102,7 @@ class we_newsletter_group extends we_newsletter_base{
 				}
 			}
 
-			$this->Filter = we_serialize($this->aFilter, 'json');
+			$this->Filter = we_serialize($this->aFilter, SERIALIZE_JSON);
 		}
 	}
 

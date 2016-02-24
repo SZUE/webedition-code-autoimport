@@ -88,7 +88,7 @@ class we_dialog_image extends we_dialog_base{
 					'|^https?://' . $_SERVER['SERVER_NAME'] . '(/.*)$|i',
 					'|^' . WEBEDITION_DIR . 'we_cmd.php[^"\'#]+(#.*)$|',
 					'|^' . WEBEDITION_DIR . '|',
-					), array('$1', '$1', ''), $this->args["src"]);
+					), array('${1}', '${1}', ''), $this->args["src"]);
 				$this->args["fileID"] = '';
 				$this->args["fileSrc"] = '';
 				$this->args["thumbnail"] = 0;

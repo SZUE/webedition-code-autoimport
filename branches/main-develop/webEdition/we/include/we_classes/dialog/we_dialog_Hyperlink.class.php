@@ -122,9 +122,9 @@ class we_dialog_Hyperlink extends we_dialog_base{
 						'|^' . WEBEDITION_DIR . '|',
 						'|^([^\?#]+).*$|'
 						), array(
-						'$1',
+						'${1}',
 						'',
-						'$1'
+						'${1}'
 						), $this->args["href"]);
 					$this->args['fileID'] = '';
 					$this->args['fileHref'] = '';
@@ -326,7 +326,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 	function getDialogContentHTML(){
 		// Initialize we_button class
 		$yuiSuggest = &weSuggest::getInstance();
-		$noInternals = false; 
+		$noInternals = false;
 
 		$extHref = (!$this->args['extHref'] ? we_base_link::EMPTY_EXT : ((substr($this->args['extHref'], 0, 1) === '#') ? '' : $this->args['extHref']));
 		if($this->noInternals || (isset($this->args['outsideWE']) && $this->args['outsideWE'] == 1)){

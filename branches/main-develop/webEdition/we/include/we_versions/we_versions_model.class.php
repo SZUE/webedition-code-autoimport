@@ -150,7 +150,7 @@ class we_versions_model extends we_search_modelBase{
 		return $this->whichSearch;
 	}
 
-	function load($id = 0){
+	function load($id = 0, $isAdvanced = false){
 		parent::load($id);
 		// we could save doclist searches to some new table
 	}

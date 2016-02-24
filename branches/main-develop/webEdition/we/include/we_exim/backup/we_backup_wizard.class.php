@@ -177,10 +177,9 @@ self.focus();
 		$fileUploader->setTypeCondition('accepted', array(we_base_ContentTypes::XML), array('gz', 'tgz'));
 		$fileUploader->setCallback('top.body.startImport(true)');
 		$fileUploader->setInternalProgress(array('isInternalProgress' => true, 'width' => 300));
-		$fileUploader->setDimensions(array('width' => 500, 'dragHeight' => 60, 'marginTop' => 5));
+		$fileUploader->setDimensions(array('width' => 500, 'alertBoxWidth' => 600, 'dragWidth' => 594, 'dragHeight' => 70, 'marginTop' => 5));
 		$fileUploader->setGenericFileName(BACKUP_DIR . 'tmp/' . we_fileupload::REPLACE_BY_FILENAME);
 		$this->fileUploader = $fileUploader;
-
 
 		$js = "";
 
@@ -195,7 +194,7 @@ self.focus();
 				$parts = array(
 					array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[charset_warning]'), we_html_tools::TYPE_ALERT, 600, false), 'noline' => 1),
 					(DEFAULT_CHARSET ? null : array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[defaultcharset_warning]'), we_html_tools::TYPE_ALERT, 600, false), 'noline' => 1)),
-					array("headline" => "", "html" => we_fileupload_ui_base::getHtmlAlertBoxesStatic(600), 'noline' => 1),
+					array("headline" => "", "html" => $this->fileUploader->getHtmlAlertBoxes(), 'noline' => 1),
 					array("headline" => "", "html" => $inputTypeFile, 'noline' => 1)
 				);
 			}
@@ -207,8 +206,6 @@ function setLocation(loc){
 extra_files=[];
 extra_files_desc=[];';
 			$select = new we_html_select(array("name" => "backup_select", "size" => 7, "style" => "width: 600px;"));
-
-
 			$files = array();
 			$extra_files = array();
 			$dateformat = g_l('date', '[format][default]');

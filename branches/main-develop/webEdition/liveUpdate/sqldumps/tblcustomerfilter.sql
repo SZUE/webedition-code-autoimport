@@ -1,4 +1,4 @@
-###UPDATEONLY###DELETE FROM ###TBLPREFIX###tblcustomerfilter WHERE modelTable="";
+###ONCOL(id,###TBLPREFIX###tblcustomerfilter) DELETE FROM ###TBLPREFIX###tblcustomerfilter WHERE modelTable="";###
 /* query separator */
 ###UPDATEDROPCOL(id,###TBLPREFIX###tblcustomerfilter)###
 /* query separator */

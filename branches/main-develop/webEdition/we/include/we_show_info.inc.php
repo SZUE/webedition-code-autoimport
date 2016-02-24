@@ -25,7 +25,7 @@ echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET 
 	we_html_element::cssLink(CSS_DIR . 'loginScreen.css').
 	we_html_element::cssLink(CSS_DIR . 'infoScreen.css'));
 ?>
-<body id="infoScreen" onblur="self.close()" onclick="self.close()" onload="self.focus();">
+<body id="infoScreen" onload="self.focus();">
 	<?php
 	echo include (WE_INCLUDES_PATH . 'we_editors/we_info.inc.php');
 	?>

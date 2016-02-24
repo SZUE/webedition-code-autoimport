@@ -209,11 +209,6 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
 	protected function _renderHTML(){
 
 		$this->addJSFiles(array(
-			//JS_DIR . 'windows.js',
-			LIB_DIR . 'additional/yui/yahoo-min.js',
-			LIB_DIR . 'additional/yui/event-min.js',
-			LIB_DIR . 'additional/yui/connection-min.js',
-			LIB_DIR . 'additional/yui/json-min.js',
 			LIB_DIR . 'we/core/JsonRpc.js',
 		));
 
@@ -286,26 +281,28 @@ EOS;
 				// add <header> tag
 				'<head>' .
 				// add meta tag for charset if not empty
-				($this->getCharset() !== '' ? we_html_tools::htmlMetaCtCharset($this->getCharset()) . "\n" : '') .
+				($this->getCharset() !== '' ? we_html_tools::htmlMetaCtCharset($this->getCharset()) : '') .
 				// add title tag if not empty
-				($this->getTitle() !== '' ? '<title>' . $this->getTitle() . '</title>' . "\n" : '');
+				($this->getTitle() !== '' ? '<title>' . $this->getTitle() . '</title>' : '');
 
 		$html.=STYLESHEET;
 		// add link tags for external CSS files
 		foreach($this->_CSSFiles as $file){
-			$html .= '<link rel="stylesheet" type="text/css" href="' . $file['path'] . '" media="' . $file['media'] . '" />' . "\n";
+			$html .= '<link rel="stylesheet" type="text/css" href="' . $file['path'] . '" media="' . $file['media'] . '" />';
 		}
 
 		// add inline CSS
 		if($this->_inlineCSS){
-			$html .= "\t<style>\n";
+			$html .= "<style>";
 			foreach($this->_inlineCSS as $code){
 				$html .= $code . "\n";
 			}
-			$html .= "\t</style>\n";
+			$html .= "</style>";
 		}
 		$html.=STYLESHEET .
-				we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') . YAHOO_FILES;
+				we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
+				YAHOO_FILES;
+
 		// add javascript tags for external JavaScript files
 		foreach($this->_JSFiles as $file){
 			$html .= we_html_element::jsScript($file);
@@ -314,9 +311,10 @@ EOS;
 		$html .= we_html_element::jsElement($js . implode('', $this->_inlineJS)) .
 				// add head end tag
 				'</head>';
-		return ($this->_framesetHTML !== '' ?
-						$html . $this->_framesetHTML . '</html>' :
-						$html . getHtmlTag('body', $this->_bodyAttributes, $this->getBodyHTML()) . '</html>');
+		return $html . ($this->_framesetHTML !== '' ?
+						$this->_framesetHTML :
+						getHtmlTag('body', $this->_bodyAttributes, $this->getBodyHTML()) ) .
+				'</html>';
 	}
 
 	/**

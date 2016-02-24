@@ -228,7 +228,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 					}
 					$mailtextHTML = ($mailid > 0) && we_base_file::isWeFile($mailid, FILE_TABLE, $GLOBALS['DB_WE']) ? we_getDocumentByID($mailid, '', $GLOBALS['DB_WE']) : '';
 					if($f['subscribe_title']){
-						$mailtextHTML = preg_replace('%([^ ])###TITLE###%', '$1 ' . $f['subscribe_title'], $mailtextHTML);
+						$mailtextHTML = preg_replace('%([^ ])###TITLE###%', '${1} ' . $f['subscribe_title'], $mailtextHTML);
 					}
 					$mailtextHTML = str_replace('###TITLE###', $f['subscribe_title'], $mailtextHTML);
 				}
@@ -247,7 +247,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 				$mailtext = ($mailid > 0) && we_base_file::isWeFile($mailid, FILE_TABLE, $db) ? we_getDocumentByID($mailid, '', $db, $charset) : '';
 
 				if($f['subscribe_title']){
-					$mailtext = preg_replace('%([^ ])###TITLE###%', '$1 ' . $f['subscribe_title'], $mailtext);
+					$mailtext = preg_replace('%([^ ])###TITLE###%', '${1} ' . $f['subscribe_title'], $mailtext);
 				}
 				$mailtext = str_replace('###TITLE###', $f['subscribe_title'], $mailtext);
 
@@ -416,7 +416,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 
 
 					if($updateCustomerFields){
-						$__db->query('UPDATE ' . SETTINGS_TABLE . ' SET pref_value="' . $__db->escape(we_serialize($customerFields, 'json')) . '" WHERE tool="webadmin" AND pref_name="FieldAdds"');
+						$__db->query('UPDATE ' . SETTINGS_TABLE . ' SET pref_value="' . $__db->escape(we_serialize($customerFields, SERIALIZE_JSON)) . '" WHERE tool="webadmin" AND pref_name="FieldAdds"');
 					}
 
 					if($_customerFieldPrefs['customer_html_field'] != 'ID'){

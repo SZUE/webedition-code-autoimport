@@ -402,7 +402,7 @@ abstract class we_database_base{
 			$this->Insert_ID = $this->_getInsertId();
 			$this->Affected_Rows = $this->_affected_rows();
 			//don't kill query cache if we add errors
-			if(!strpos($Query_String, ERROR_LOG_TABLE) || (stripos($Query_String, 'DELETE') === 0)){
+			if(!strpos($Query_String, defined('ERROR_LOG_TABLE') ? ERROR_LOG_TABLE : 'ERROR_LOG_TABLE') || (stripos($Query_String, 'DELETE') === 0)){
 // delete getHash DB Cache
 				$this->getHash();
 			}

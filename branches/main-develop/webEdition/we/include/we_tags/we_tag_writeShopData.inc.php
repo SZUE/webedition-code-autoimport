@@ -121,7 +121,7 @@ function we_tag_writeShopData($attribs){
 					'DateOrder' => sql_function('NOW()'),
 					'DateShipping' => 0,
 					'Datepayment' => 0,
-					'strSerial' => we_serialize($shoppingItem['serial'], 'json'),
+					'strSerial' => we_serialize($shoppingItem['serial'], SERIALIZE_JSON),
 					'shopname' => $shopname
 			)))){
 
@@ -168,7 +168,7 @@ function we_tag_writeShopData($attribs){
 		$cartField[WE_SHOP_CALC_VAT] = $calcVat; // add flag to shop, if vats shall be used
 	}
 
-	if(!$DB_WE->query('UPDATE ' . SHOP_TABLE . ' SET strSerialOrder="' . $DB_WE->escape(we_serialize($cartField, 'json')) . '" WHERE intOrderID=' . intval($orderID))){
+	if(!$DB_WE->query('UPDATE ' . SHOP_TABLE . ' SET strSerialOrder="' . $DB_WE->escape(we_serialize($cartField, SERIALIZE_JSON)) . '" WHERE intOrderID=' . intval($orderID))){
 		return;
 	}
 	//}

@@ -36,9 +36,7 @@ class we_search_modelBase extends we_tool_model{
 	 * @var string: toolname
 	 */
 	public $toolName = 'weSearch';
-
 	public $mode = 0;
-
 	// in these variables we hold data of actual search (= whichSearch) after initByHttp();
 	protected $currentSearchstart = 0;
 	protected $currentSearch = array();
@@ -48,7 +46,7 @@ class we_search_modelBase extends we_tool_model{
 	protected $currentOrder = 'Text';
 	protected $currentAnzahl = 10;
 	protected $currentSetView = 0;
-	protected $currentFolderID = 0; 
+	protected $currentFolderID = 0;
 	protected $currentSearchForField = array(
 		'text' => 0,
 		'title' => 0,
@@ -73,9 +71,13 @@ class we_search_modelBase extends we_tool_model{
 		parent::load($id);
 	}
 
-	public function initByHttp(){}
+	public function initByHttp(){
 
-	public function prepareModelForSearch(){}
+	}
+
+	public function prepareModelForSearch(){
+
+	}
 
 	public function getProperty($property = ''){
 		switch($property){
@@ -102,14 +104,13 @@ class we_search_modelBase extends we_tool_model{
 			case 'currentSearchForContentType':
 				return $this->currentSearchForContentType;
 		}
-
 	}
 
 	public function setIsFolder($value){
 		$this->IsFolder = $value;
 	}
 
-	public function filenameNotValid($text){
+	public function filenameNotValid($text = ''){
 		return preg_match('|[^a-z0-9._-]|i', $text);
 	}
 

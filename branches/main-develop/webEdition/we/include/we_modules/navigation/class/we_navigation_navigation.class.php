@@ -176,7 +176,7 @@ class we_navigation_navigation extends we_base_model{
 		$this->Charset = DEFAULT_CHARSET;
 	}
 
-	function load($id = 0){
+	function load($id = 0, $isAdvanced = false){
 		if(parent::load($id, true)){
 			$this->CategoryIDs = $this->Categories;
 

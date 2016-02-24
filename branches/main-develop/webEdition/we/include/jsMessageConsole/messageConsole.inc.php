@@ -24,7 +24,7 @@
 echo we_html_tools::getHtmlTop(g_l('messageConsole', '[headline]')) .
  STYLESHEET;
 
-$deleteAllButton = we_html_button::create_button(we_html_button::DELETE, "javascript:messageConsoleWindow.removeMessages();");
+$deleteAllButton = we_html_button::create_button(we_html_button::DELETE, "javascript:msgWin.removeMessages();");
 $closeButton = we_html_button::create_button(we_html_button::CLOSE, "javascript:window.close();");
 
 $_buttons = we_html_button::formatButtons($deleteAllButton . $closeButton);
@@ -35,7 +35,7 @@ we_html_element::cssLink(CSS_DIR . 'messageConsole.css') .
 ?>
 </head>
 
-<body onload="(new messageConsoleWindow(window)).init();" onunload="messageConsoleWindow.remove();" class="weDialogBody messageConsoleWindow">
+<body onload="(msgWin=new messageConsoleWindow(window)).init();" onunload="msgWin.remove();" class="weDialogBody messageConsoleWindow">
 	<div id="headlineDiv">
 		<div class="weDialogHeadline">
 			<?php echo g_l('messageConsole', '[headline]') ?>

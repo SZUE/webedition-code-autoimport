@@ -62,7 +62,10 @@ class we_collection extends we_root{
 	 */
 	function __construct(){
 		parent::__construct();
-		$this->Published = 1;
+
+		$this->ModDate = $this->ModDate ? $this->ModDate : $this->CreationDate;
+		$this->Published = $this->ModDate;
+		
 		$this->Table = VFILE_TABLE;
 		array_push($this->persistent_slots, 'fileCollection', 'objectCollection', 'remTable', 'remCT', 'remClass', 'DefaultDir', 'insertPrefs', 'IsDuplicates', 'InsertRecursive', 'ContentType', 'view', 'itemsPerRow');
 

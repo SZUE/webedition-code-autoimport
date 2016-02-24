@@ -224,7 +224,7 @@ class we_net_rpc_JsonRpc{
 
 		/* Give 'em what they came for! */
 		$ret = array("result" => $output, "id" => $phpObj['id'], "error" => NULL);
-		return we_serialize($ret, 'json');
+		return we_serialize($ret, SERIALIZE_JSON);
 	}
 
 }

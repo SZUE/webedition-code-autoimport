@@ -300,7 +300,7 @@ class we_exim_contentProvider{
 						$defvalues[$fieldname]['length'] = ($cur['len'] > 255) ? 255 : $cur['len'];
 					}
 				}
-				$object->DefaultValues = we_serialize($defvalues, 'json');
+				$object->DefaultValues = we_serialize($defvalues, SERIALIZE_JSON);
 				break;
 			// fix ends -----------------------------------------------------------
 
@@ -325,7 +325,7 @@ class we_exim_contentProvider{
 				continue;
 			}
 			if(self::needSerialize($object, $classname, $v)){
-				$content = self::encode(we_serialize($content, 'json'));
+				$content = self::encode(we_serialize($content, SERIALIZE_JSON));
 				$coding = array(self::CODING_ATTRIBUTE => self::CODING_SERIALIZE);
 			} else {
 				$content = (isset($object->$v) ? $object->$v : '');

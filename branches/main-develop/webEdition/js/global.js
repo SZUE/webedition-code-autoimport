@@ -35,16 +35,16 @@ function WE() {
 	if (top.window.WebEdition !== undefined) {
 		return top.window.WebEdition;
 	}
-	if (top.window.opener && top.window.opener.top) {
-		if (top.window.opener.top.WebEdition !== undefined) {
-			return top.window.opener.top.WebEdition;
+	if (top.opener && top.opener.top) {
+		if (top.opener.top.WebEdition !== undefined) {
+			return top.opener.top.WebEdition;
 		}
-		if (top.window.opener.top.opener && top.window.opener.top.opener.top) {
-			if (top.window.opener.top.opener.top.WebEdition !== undefined) {
-				return top.window.opener.top.opener.top.WebEdition;
+		if (top.opener.top.opener && top.opener.top.opener.top) {
+			if (top.opener.top.opener.top.WebEdition !== undefined) {
+				return top.opener.top.opener.top.WebEdition;
 			}
-			if (top.window.opener.top.opener.top.opener && top.window.opener.top.opener.top.opener.top && top.window.opener.top.opener.top.opener.top.WebEdition !== undefined) {
-				return top.window.opener.top.opener.top.opener.top.WebEdition;
+			if (top.opener.top.opener.top.opener && top.opener.top.opener.top.opener.top && top.opener.top.opener.top.opener.top.WebEdition !== undefined) {
+				return top.opener.top.opener.top.opener.top.WebEdition;
 			}
 		}
 	}

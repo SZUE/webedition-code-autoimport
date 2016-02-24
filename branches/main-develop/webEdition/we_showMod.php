@@ -46,7 +46,6 @@ $what = we_base_request::_(we_base_request::STRING, "pnt", "frameset");
 $mode = we_base_request::_(we_base_request::INT, "art", 0);
 $step = we_base_request::_(we_base_request::INT, 'step', 0);
 
-
 if($what === 'show_frameset'){ //old call to show_frameset.php
 	echo we_html_tools::getHtmlTop() .
 	STYLESHEET .
@@ -103,6 +102,7 @@ switch($mod){
 			case 'eiload':
 			case 'import':
 			case 'eiupload':
+				$mode = we_base_request::_(we_base_request::STRING, "art", 0);
 				$weFrame = new we_customer_EIWizard(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
 				break;
 			default:

@@ -257,27 +257,6 @@ abstract class we_rebuild_base{
 				'path' => $GLOBALS['DB_WE']->f('Path'),
 				'it' => 0);
 		}
-		/* why do we make an rebuild of navi table?
-		  $GLOBALS['DB_WE']->query('SELECT ID,Path FROM ' . NAVIGATION_TABLE . ' WHERE IsFolder=0 ORDER BY ID');
-		  while($GLOBALS['DB_WE']->next_record()){
-		  $data[] = array(
-		  'id' => $GLOBALS['DB_WE']->f('ID'),
-		  'type' => 'navigation',
-		  'cn' => 'weNavigation',
-		  'mt' => $maintable,
-		  'tt' => $tmptable,
-		  'path' => $GLOBALS['DB_WE']->f('Path'),
-		  'it' => 0);
-		  }
-		  $data[] = array(
-		  'id' => 0,
-		  'type' => 'navigation',
-		  'cn' => 'weNavigation',
-		  'mt' => $maintable,
-		  'tt' => $tmptable,
-		  'path' => $GLOBALS['DB_WE']->f('Path'),
-		  'it' => 0
-		  ); */
 
 		return $data;
 	}
@@ -323,7 +302,7 @@ abstract class we_rebuild_base{
 		//FIXME: pack this queries into the loop too
 		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path,ModDate,Published FROM ' . FILE_TABLE . ' WHERE
 			ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::CSS . '","' . we_base_ContentTypes::JS . '")
-			AND IsFolder = 0 ORDER BY ID');
+			AND IsFolder=0 ORDER BY ID');
 		while($GLOBALS['DB_WE']->next_record()){
 			// beware of a very special case: when a document is unpublished && mofified we must not have any main-table entries!
 			if($GLOBALS['DB_WE']->f('Published') > 0 || $GLOBALS['DB_WE']->f('Published') == $GLOBALS['DB_WE']->f('ModDate')){
@@ -338,18 +317,20 @@ abstract class we_rebuild_base{
 			}
 		}
 
-		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder = 0 ORDER BY ID');
-		while($GLOBALS['DB_WE']->next_record()){
-			// beware of a very special case: when an object is unpublished && mofified we must not have any main-table entries!
-			if($GLOBALS['DB_WE']->f('Published') > 0 || $GLOBALS['DB_WE']->f('Published') == $GLOBALS['DB_WE']->f('ModDate')){
-				$data[] = array(
-					'id' => $GLOBALS['DB_WE']->f('ID'),
-					'type' => 'medialink',
-					'cn' => $GLOBALS['DB_WE']->f('ClassName'),
-					'mt' => 1,
-					'tt' => 0,
-					'path' => $GLOBALS['DB_WE']->f('Path'),
-					'it' => 0);
+		if(defined('OBJECT_FILES_TABLE')){
+			$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=0 ORDER BY ID');
+			while($GLOBALS['DB_WE']->next_record()){
+				// beware of a very special case: when an object is unpublished && mofified we must not have any main-table entries!
+				if($GLOBALS['DB_WE']->f('Published') > 0 || $GLOBALS['DB_WE']->f('Published') == $GLOBALS['DB_WE']->f('ModDate')){
+					$data[] = array(
+						'id' => $GLOBALS['DB_WE']->f('ID'),
+						'type' => 'medialink',
+						'cn' => $GLOBALS['DB_WE']->f('ClassName'),
+						'mt' => 1,
+						'tt' => 0,
+						'path' => $GLOBALS['DB_WE']->f('Path'),
+						'it' => 0);
+				}
 			}
 		}
 
@@ -367,28 +348,30 @@ abstract class we_rebuild_base{
 		}
 
 		$tables = array(
-			array(TEMPLATES_TABLE, 'WHERE IsFolder = 0', 'we_template'),
-			array(OBJECT_TABLE, 'WHERE IsFolder = 0', 'we_object'),
-			array(VFILE_TABLE, 'WHERE IsFolder = 0', 'we_collection'),
-			array(BANNER_TABLE, '', 'we_banner_banner'),
-			array(CATEGORY_TABLE, 'WHERE Description != ""', 'we_category'),
-			array(GLOSSARY_TABLE, 'WHERE IsFolder = 0 AND type = "link"', 'we_glossary_glossary'),
-			array(NAVIGATION_TABLE, 'WHERE IconID != 0 OR (SelectionType = "docLink" AND LinkID != 0)', 'we_navigation_navigation'),
-			array(NEWSLETTER_TABLE, '', 'we_newsletter_newsletter'),
-			array(CUSTOMER_TABLE, 'WHERE IsFolder = 0', 'we_customer_customer'),
+			array(TEMPLATES_TABLE, 'WHERE IsFolder=0', 'we_template'),
+			array((defined('OBJECT_TABLE') ? OBJECT_TABLE : false), 'WHERE IsFolder=0', 'we_object'),
+			array((defined('VFILE_TABLE') ? VFILE_TABLE : false), 'WHERE IsFolder=0', 'we_collection'),
+			array((defined('BANNER_TABLE') ? BANNER_TABLE : false), '', 'we_banner_banner'),
+			array(CATEGORY_TABLE, 'WHERE Description!=""', 'we_category'),
+			array((defined('GLOSSARY_TABLE') ? GLOSSARY_TABLE : false), 'WHERE IsFolder=0 AND type="link"', 'we_glossary_glossary'),
+			array(NAVIGATION_TABLE, 'WHERE IconID!=0 OR (SelectionType="docLink" AND LinkID!=0)', 'we_navigation_navigation'),
+			array((defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : false), '', 'we_newsletter_newsletter'),
+			array((defined('CUSTOMER_TABLE') ? CUSTOMER_TABLE : false), 'WHERE 1', 'we_customer_customer'),
 		);
 
 		foreach($tables as $table){
-			$GLOBALS['DB_WE']->query('SELECT ID,Path FROM ' . $table[0] . ' ' . $table[1] . ' ORDER BY ID');
-			while($GLOBALS['DB_WE']->next_record()){
-				$data[] = array(
-					'id' => $GLOBALS['DB_WE']->f('ID'),
-					'type' => 'medialink',
-					'cn' => $table[2],
-					'mt' => 1,
-					'tt' => 0,
-					'path' => $GLOBALS['DB_WE']->f('Path'),
-					'it' => 0);
+			if($table[0]){
+				$GLOBALS['DB_WE']->query('SELECT ID,Path FROM ' . $table[0] . ' ' . $table[1] . ' ORDER BY ID');
+				while($GLOBALS['DB_WE']->next_record()){
+					$data[] = array(
+						'id' => $GLOBALS['DB_WE']->f('ID'),
+						'type' => 'medialink',
+						'cn' => $table[2],
+						'mt' => 1,
+						'tt' => 0,
+						'path' => $GLOBALS['DB_WE']->f('Path'),
+						'it' => 0);
+				}
 			}
 		}
 

@@ -29,7 +29,6 @@ button{
 		border-collapse: collapse;
 		padding: 0px;
 		color: $DarkGrey;
-		border-radius: 0px;
 		border: none;
 		/*background: $GreyGradient;*/
 		background: $ButtonGrey;
@@ -46,8 +45,8 @@ button{
 		width: auto;
 		box-shadow: 1px 1px 2px $DarkGrey;
 
-
-		&:hover, button.multiicon:hover {
+		&:hover,
+			button.multiicon:hover {
 			color: $White;
 			/*background: $MiddleBlueGradient;*/
 			background: $ButtonBlue;
@@ -67,14 +66,10 @@ button{
 			box-shadow: none;
 		}
 
-		&[disabled]{
+		&[disabled],
+		&[disabled]:hover{
 			color: $Grey;
 			box-shadow: none;
-		}
-
-
-		&[disabled]:hover {
-			color: $Grey;
 			background: $GreyGradient;
 		}
 

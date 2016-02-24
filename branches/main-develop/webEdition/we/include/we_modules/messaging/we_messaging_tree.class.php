@@ -106,7 +106,7 @@ function startTree(){
 		return $items;
 	}
 
-	function getJSTreeCode(we_messaging_messaging $messaging){
+	function getMsgJSTreeCode(we_messaging_messaging $messaging){
 		$mod = we_base_request::_(we_base_request::STRING, 'mod', '');
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';

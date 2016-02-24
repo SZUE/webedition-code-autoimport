@@ -201,7 +201,7 @@ $GLOBALS['configs'] = array(
 		//current url for rss feed
 		'cockpit_rss_feed_url' => array(we_base_request::STRING, ''),
 		'editorMode' => array(we_base_request::STRING, 'codemirror2'),
-		'editorCodecompletion' => array(we_base_request::STRING, we_serialize(array('WE' => 1, 'htmlTag' => 1, 'html5Tag' => 1), 'json')),
+		'editorCodecompletion' => array(we_base_request::STRING, we_serialize(array('WE' => 1, 'htmlTag' => 1, 'html5Tag' => 1), SERIALIZE_JSON)),
 		'editorCommentFontcolor' => array(we_base_request::STRING, null),
 		'editorDocuintegration' => array(we_base_request::BOOL, true),
 		'editorFont' => array(we_base_request::BOOL, ''),
@@ -222,7 +222,7 @@ $GLOBALS['configs'] = array(
 		'editorTooltipFontname' => array(we_base_request::STRING, ''),
 		'editorTooltipFontsize' => array(we_base_request::INT, 0),
 		'editorWrap' => array(we_base_request::BOOL, false),
-		'message_reporting' => array(we_base_request::INT, 7),
+		'message_reporting' => array(we_base_request::INT, we_message_reporting::WE_MESSAGE_WARNING | we_message_reporting::WE_MESSAGE_ERROR),
 		'xhtml_show_wrong' => array(we_base_request::BOOL, false),
 		'xhtml_show_wrong_text' => array(we_base_request::BOOL, false),
 		'xhtml_show_wrong_js' => array(we_base_request::BOOL, false),

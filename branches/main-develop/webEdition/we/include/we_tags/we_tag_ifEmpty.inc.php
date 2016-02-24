@@ -27,8 +27,8 @@ function we_tag_ifEmpty($attribs){
 		echo $foo;
 		return false;
 	}
-	if(empty($GLOBALS['we_editmode'])){
-		return true;
+	if(!empty($GLOBALS['we_editmode'])){
+		return false;
 	}
 
 	$docAttr = weTag_getAttribute('doc', $attribs, '', we_base_request::STRING);
@@ -79,5 +79,9 @@ function we_tag_ifEmpty($attribs){
 			}
 		//   end of #3938
 	}
-	return empty($doc->getElement($match)) && empty($doc->getElement($match, 'bdid'));
+	//FIXMe: remove as end of php 5.3
+	$tmp = $doc->getElement($match);
+	$tmp2 = $doc->getElement($match, 'bdid');
+
+	return empty($tmp) && empty($tmp2);
 }

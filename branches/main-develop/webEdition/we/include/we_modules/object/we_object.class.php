@@ -78,7 +78,7 @@ class we_object extends we_document{
 		return $this->isInApp;
 	}
 
-	function save(){
+	function save($resave = 0, $skipHook = 0){
 		if(!$this->checkIfPathOk()){
 			return false;
 		}
@@ -264,7 +264,7 @@ class we_object extends we_document{
 			}
 
 			$arrt['WE_CSS_FOR_CLASS'] = $this->CSS;
-			$this->DefaultValues = we_serialize($arrt, 'json');
+			$this->DefaultValues = we_serialize($arrt, SERIALIZE_JSON);
 
 			$this->DefaultTitle = ($tmp = $this->getElement('title')) ? $this->getElement($tmp . self::ELEMENT_TYPE) . '_' . $this->getElement($tmp) : '_';
 			$this->DefaultDesc = ($tmp = $this->getElement('desc')) ? $this->getElement($tmp . self::ELEMENT_TYPE) . '_' . $this->getElement($tmp) : '_';
@@ -483,7 +483,7 @@ class we_object extends we_document{
 
 			$arrt['WE_CSS_FOR_CLASS'] = $this->CSS;
 
-			$this->DefaultValues = we_serialize($arrt, 'json');
+			$this->DefaultValues = we_serialize($arrt, SERIALIZE_JSON);
 
 			$variant_field = 'variant_' . we_base_constants::WE_VARIANTS_ELEMENT_NAME;
 
@@ -1852,7 +1852,7 @@ class we_object extends we_document{
 		return '<table class="default"><tr><td><i class="fa fa-' . ($this->RestrictUsers ? 'check-' : '') . 'square-o wecheckIcon disabled"></i></td><td class="defaultfont">&nbsp;' . g_l('weClass', '[limitedAccess]') . '</td></tr></table>';
 	}
 
-	public function formPath(){
+	public function formPath($disablePath = false, $notSetHot = false){
 		return '<table class="default">
 	<tr><td>' . $this->formInputField('', 'Text', g_l('modules_object', '[classname]'), 30, 508, 255, 'onchange="_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();"') . '</td><td></td><td></td></tr>
 </table>';
@@ -2267,7 +2267,7 @@ class we_object extends we_document{
 			}
 			foreach($hrefs as $k => $v){
 				$href = array_merge($empty, $v);
-				$this->setElement($k, we_serialize($href), we_objectFile::TYPE_HREF);
+				$this->setElement($k, we_serialize($href, SERIALIZE_JSON), we_objectFile::TYPE_HREF);
 			}
 		}
 	}
@@ -2291,7 +2291,7 @@ class we_object extends we_document{
 		return true;
 	}
 
-	function registerMediaLinks(){// FIXME: publish is obsolete for classes
+	function registerMediaLinks($temp = false, $linksReady = false){// FIXME: publish is obsolete for classes
 		$serializedArray = is_array($this->SerializedArray) ? $this->SerializedArray : array();
 		foreach($serializedArray as $k => $v){
 			if(($type = strstr($k, '_', true)) !== false){

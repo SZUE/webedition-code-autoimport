@@ -118,7 +118,7 @@ class we_voting_frames extends we_modules_frame{
 		return $this->getHTMLDocument($body, $this->View->getJSProperty());
 	}
 
-	protected function getHTMLEditorFooter(){
+	protected function getHTMLEditorFooter($btn_cmd = '', $extraHead = ''){
 		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#EFF0EF"), ""));
 		}
@@ -923,7 +923,6 @@ function setVisible(id,visible){
 				array(
 					'headline' => '',
 					'html' => we_html_tools::htmlDialogBorder3(730, 300, $content, $headline) . $nextprev,
-
 					'noline' => 1
 				)
 			);
@@ -934,7 +933,6 @@ function setVisible(id,visible){
 					'html' => we_html_element::htmlSpan(array('class' => 'middlefont lowContrast'), g_l('modules_voting', '[log_is_empty]')) .
 					we_html_element::htmlBr() .
 					we_html_element::htmlBr(),
-
 					'noline' => 1
 				)
 			);
@@ -1051,7 +1049,6 @@ function setVisible(id,visible){
 				array(
 					'headline' => '',
 					'html' => we_html_tools::htmlDialogBorder4(1000, 300, $content, $headline) . $nextprev,
-
 					'noline' => 1
 				)
 			);
@@ -1062,7 +1059,6 @@ function setVisible(id,visible){
 					'html' => we_html_element::htmlSpan(array('class' => 'middlefont lowContrast'), g_l('modules_voting', '[log_is_empty]')) .
 					we_html_element::htmlBr() .
 					we_html_element::htmlBr(),
-
 					'noline' => 1
 				)
 			);
@@ -1163,7 +1159,6 @@ function setVisible(id,visible){
 				array(
 					'headline' => '',
 					'html' => we_html_tools::htmlDialogBorder3(730, 300, $content, $headline) . $nextprev,
-
 					'noline' => 1
 				)
 			);
@@ -1174,7 +1169,6 @@ function setVisible(id,visible){
 					'html' => we_html_element::htmlSpan(array('class' => 'middlefont lowContrast'), g_l('modules_voting', '[log_is_empty]')) .
 					we_html_element::htmlBr() .
 					we_html_element::htmlBr(),
-
 					'noline' => 1
 				)
 			);

@@ -31,11 +31,11 @@ function we_submitForm(target, url) {
 
 	if (f.input_pass) {
 		if (f.oldtab.value == 0) {
-			if (f.input_pass.value.length < 4 && f.input_pass.value.length != 0) {
+			if (f.input_pass.value.length < 4 && f.input_pass.value.length !== 0) {
 				WE().util.showMessage(WE().consts.g_l.navigation.users.password_alert, WE().consts.message.WE_MESSAGE_ERROR, this);
 				return false;
 			}
-			if (f.input_pass.value != "") {
+			if (f.input_pass.value !== "") {
 				var clearPass = f.input_pass.value;
 				f.input_pass.value = "";
 				f[f.obj_name.value + "_clearpasswd"].value = clearPass;

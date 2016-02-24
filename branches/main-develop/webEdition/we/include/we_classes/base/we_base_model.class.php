@@ -34,7 +34,7 @@ class we_base_model{
 	var $isnew = true;
 	protected $MediaLinks = array();
 	protected $isAdvanced = false;
-	private $binFields = array();
+	protected $binFields = array();
 
 	/**
 	 * Default Constructor
@@ -105,16 +105,24 @@ class we_base_model{
 		if($force_new){
 			$this->isnew = true;
 		}
-		if($this->table == LINK_TABLE && empty($this->nHash)){
-			$this->nHash = md5($this->Name);
+		switch($this->table){
+			case LINK_TABLE:
+				if($this->nHash){
+					$this->nHash = md5($this->Name, true);
+				}
+				break;
+			case CONTENT_TABLE:
+				$this->dHash = md5($this->Dat, true);
+				break;
 		}
+
 		foreach($this->persistent_slots as $key => $val){
 			$val = ($isAdvanced || $this->isAdvanced ? $key : $val);
 
 			if(isset($this->{$val})){
-				$sets[$val] = is_array($this->{$val}) ? we_serialize($this->{$val}, ($jsonSer ? 'json' : 'serialize')) :
+				$sets[$val] = is_array($this->{$val}) ? we_serialize($this->{$val}, ($jsonSer ? SERIALIZE_JSON : SERIALIZE_PHP)) :
 					(in_array($val, $this->binFields) ?
-						sql_function('x\'' . $this->{$val} . '\'') :
+						sql_function('x\'' . bin2hex($this->{$val}) . '\'') :
 						$this->{$val});
 			}
 		}

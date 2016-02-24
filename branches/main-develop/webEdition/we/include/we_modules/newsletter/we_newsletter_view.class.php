@@ -483,7 +483,7 @@ new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.p
 
 				$message = "";
 
-				$ret = $this->newsletter->save($message, (isset($this->settings["reject_save_malformed"]) ? $this->settings["reject_save_malformed"] : true));
+				$ret = $this->newsletter->saveNewsletter($message, (isset($this->settings["reject_save_malformed"]) ? $this->settings["reject_save_malformed"] : true));
 				switch($ret){
 					default:
 						$jsmess = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_newsletter', '[malformed_mail_group]'), $ret, $message), we_message_reporting::WE_MESSAGE_ERROR);
@@ -718,8 +718,12 @@ edf.populateGroups();');
 				we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);
 				echo we_html_tools::getHtmlTop('newsletter') . STYLESHEET;
 
-				//we have finished upload or we are in fallback mode
-				$tempName = we_fileupload::commitFile('we_File');
+				$tempName = '';
+				$fileUploader = new we_fileupload_resp_base();
+				//$fileUploader->setTypeCondition();
+				if(!($tempName = $fileUploader->commitUploadedFile())){
+					//some reaction on upload failure
+				}
 
 				//print next command
 				echo we_html_element::jsElement($ncmd === 'do_upload_csv' ? '
@@ -989,7 +993,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 			case we_newsletter_block::TEXT:
 				$blockHtml = $block->Html ? preg_replace(array(
 						'/(href=")(\\\\*&quot;)*(.+?)(\\\\*&quot;)*(")/',
-						'/(src=")(\\\\*&quot;)*(.+?)(\\\\*&quot;)*(")/'), '$1$3$5', stripslashes($block->Html)) : '';
+						'/(src=")(\\\\*&quot;)*(.+?)(\\\\*&quot;)*(")/'), '${1}${3}${5}', stripslashes($block->Html)) : '';
 
 				if($hm){
 					$content = $blockHtml ?
@@ -1070,7 +1074,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 
 				$urlReplace = we_folder::getUrlReplacements($this->db, false, true);
 				if($urlReplace){
-					$content = preg_replace('-(["\'])//-', '$1' . $protocol, preg_replace($urlReplace, array_keys($urlReplace), $content));
+					$content = preg_replace('-(["\'])//-', '${1}' . $protocol, preg_replace($urlReplace, array_keys($urlReplace), $content));
 				}
 				$content = preg_replace(array(
 					'-(<[^>]+src' . $spacer . '=' . $spacer . '[\'"]?)(/)-i',
@@ -1525,7 +1529,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 				if(!empty($tmp)){
 					$offset+=$this->settings['send_step'];
 					$groups++;
-					$this->saveToCache(we_serialize($tmp, 'json'), $emailcache . "_$groups");
+					$this->saveToCache(we_serialize($tmp, SERIALIZE_JSON), $emailcache . "_$groups");
 				} else {
 					$go = false;
 				}
@@ -1657,7 +1661,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 			'<br/>' .
 			we_html_button::create_button('new_newsletter_group', "javascript:top.opener.top.we_cmd('new_newsletter_group');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_NEWSLETTER"));
 
-		return parent::getHomeScreen('newsletter', "newsletter.gif", $content, we_html_element::htmlForm(array('name' => 'we_form'), $this->getHiddens(array('ncmd' => 'home')) . we_html_element::htmlHidden('home', 0)));
+		return parent::getActualHomeScreen('newsletter', "newsletter.gif", $content, we_html_element::htmlForm(array('name' => 'we_form'), $this->getHiddens(array('ncmd' => 'home')) . we_html_element::htmlHidden('home', 0)));
 	}
 
 	private static function we_getObjectFileByID($id, $includepath = ''){

@@ -152,7 +152,7 @@ var specialUnload =<?php echo intval(!(we_base_browserDetect::isChrome() || we_b
 var dd = {
 dataTransfer: {
 text : ''
-}
+				}
 };
 var WebEdition = {
 //all constants in WE used in JS
@@ -174,7 +174,7 @@ TEMPLATE: '<?php echo we_base_ContentTypes::TEMPLATE; ?>',
 				CSS: "<?php echo we_base_ContentTypes::CSS; ?>",
 				APPLICATION: "<?php echo we_base_ContentTypes::APPLICATION; ?>",
 				COLLECTION: "<?php echo we_base_ContentTypes::COLLECTION; ?>"
-},
+				},
 				dirs:{
 				WEBEDITION_DIR:"<?php echo WEBEDITION_DIR; ?>",
 								WE_SHOP_MODULE_DIR: "<?php echo defined('WE_SHOP_MODULE_DIR') ? WE_SHOP_MODULE_DIR : ''; ?>",
@@ -265,7 +265,7 @@ TEMPLATE: '<?php echo we_base_ContentTypes::TEMPLATE; ?>',
 												tt_weinsertbreak:"<?php echo g_l('wysiwyg', '[insert_br]'); ?>",
 												tt_welink:"<?php echo g_l('wysiwyg', '[hyperlink]'); ?>",
 												tt_weimage:"<?php echo g_l('wysiwyg', '[insert_edit_image]'); ?>",
-												tt_wefullscreen_set:"<?php echo g_l('wysiwyg', '[maxsize_set]'); //($this->isInPopup ? g_l('wysiwyg', '[maxsize_set]') : g_l('wysiwyg', '[fullscreen]'));               ?>",
+												tt_wefullscreen_set:"<?php echo g_l('wysiwyg', '[maxsize_set]'); //($this->isInPopup ? g_l('wysiwyg', '[maxsize_set]') : g_l('wysiwyg', '[fullscreen]'));                ?>",
 												tt_wefullscreen_reset:"<?php echo g_l('wysiwyg', '[maxsize_reset]'); ?>",
 												tt_welang:"<?php echo g_l('wysiwyg', '[language]'); ?>",
 												tt_wespellchecker:"<?php echo g_l('wysiwyg', '[spellcheck]'); ?>",
@@ -294,9 +294,9 @@ foreach($jsmods as $mod){
 								WE_MESSAGE_ERROR:<?php echo we_message_reporting::WE_MESSAGE_ERROR; ?>,
 				},
 				tables: {
-				OBJECT_FILES_TABLE: "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'; ?>",
+				TBL_PREFIX: '<?php echo TBL_PREFIX; ?>',
+								OBJECT_FILES_TABLE: "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'; ?>",
 								OBJECT_TABLE: "<?php echo defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'; ?>",
-								TBL_PREFIX: '<?php echo TBL_PREFIX; ?>',
 <?php
 foreach(we_base_request::getAllTables() as $k => $v){
 	echo $k . ':"' . $v . '",';

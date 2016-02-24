@@ -45,7 +45,7 @@ function we_parse_tag_block($attribs, $content, array $arr){
 	} else {
 		$content = (preg_match('/< ?(tr|td)/i', $content) ?
 				//table found
-				strtr(preg_replace('|(< ?td[^>]*>)|si', '$1' . '<?php we_tag_blockControls($block_' . $name . ');?>', strtr($content, array('=>' => '#####PHPCALSSARROW####', '?>' => '#####PHPENDBRACKET####')), 1), array('#####PHPCALSSARROW####' => '=>', '#####PHPENDBRACKET####' => '?>')) :
+				strtr(preg_replace('|(< ?td[^>]*>)|si', '${1}' . '<?php we_tag_blockControls($block_' . $name . ');?>', strtr($content, array('=>' => '#####PHPCALSSARROW####', '?>' => '#####PHPENDBRACKET####')), 1), array('#####PHPCALSSARROW####' => '=>', '#####PHPENDBRACKET####' => '?>')) :
 				//no tables found
 				'<?php we_tag_blockControls($block_' . $name . ');?>' . $content
 			);
@@ -105,7 +105,7 @@ function we_tag_block($attribs){
 		if(is_array($list) && count($list) && ((count($list) - 1) != max(array_keys($list)))){
 			//reorder list!
 			$list = array_values($list);
-			$GLOBALS['we_doc']->setElement($name, we_serialize($list));
+			$GLOBALS['we_doc']->setElement($name, we_serialize($list, SERIALIZE_JSON, true, 0, true));
 		}
 	} else if($start){
 		$list = array();

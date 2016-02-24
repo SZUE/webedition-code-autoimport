@@ -1028,7 +1028,7 @@ class we_search_search extends we_search_base{
 									break;
 								default:
 									if(isset($v['dat']) &&
-										stristr((is_array($v['dat']) ? we_serialize($v['dat']) : $v['dat']), $keyword)){
+										stristr((is_array($v['dat']) ? we_serialize($v['dat'], SERIALIZE_PHP) : $v['dat']), $keyword)){
 										$contents[] = $_db->f('ID');
 									}
 							}
