@@ -402,6 +402,11 @@ weCollectionEdit = {
 
 		return elem;
 	},
+	getItemId: function (elem) {
+		var item = this.getItem(elem);
+
+		return item ? item.id.substr(10) : 0;
+	},
 	insertItem: function (elem, repaint, item, scope, color) {
 		var t = scope ? scope : this,
 						el = elem ? t.getItem(elem) : null,
