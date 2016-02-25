@@ -24,11 +24,10 @@
  */
 function we_isNotEmpty($attribs){
 	$docAttr = weTag_getAttribute('doc', $attribs, '', we_base_request::STRING);
-	$type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING);
 	$match = we_tag_getPostName(weTag_getAttribute('match', $attribs, '', we_base_request::STRING));
 	$doc = we_getDocForTag($docAttr, false);
 
-	switch($type){
+	switch(weTag_getAttribute('type', $attribs, '', we_base_request::STRING)){
 		case 'object':
 			return (bool) $doc->getElement($match);
 		case 'binary' :
@@ -65,13 +64,14 @@ function we_isNotEmpty($attribs){
 				// were some PHP notices that had no effect on the output of the function
 				// remark holeg: when it is a serialized array, the function looks if it is not empty
 				if(is_array(
-								$arr = unserialize($doc->getElement($match)))){
+						$arr = unserialize($doc->getElement($match)))){
 					return !empty($arr);
 				}
 			}
 		//   end of #3938
 	}
-	return (bool) (!empty($doc->getElement($match))) || $doc->getElement($match, 'bdid');
+	$x = $doc->getElement($match);
+	return (bool) (!empty($x)) || $doc->getElement($match, 'bdid');
 }
 
 function we_tag_ifEmpty($attribs){
