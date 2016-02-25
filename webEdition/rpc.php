@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -26,27 +25,22 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
 $protocol = we_base_request::_(we_base_request::STRING, 'protocol', 'json');
-define('RPC_DIR', str_replace('\\', '/', __DIR__) . '/');
-define('RPC_URL', str_replace($_SERVER['DOCUMENT_ROOT'], '', RPC_DIR));
-
-ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . RPC_DIR);
-
-require('base/rpcCmdShell.class.php');
+ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . WEBEDITION_PATH . '/rpc/');
 
 function dieWithError($text, $protocol){
 	switch($protocol){
 		case 'json':
-			$resp = new rpcResponse();
+			$resp = new we_rpc_response();
 			$resp->setStatus(false);
 			$resp->setData('data', $text);
-			$errorView = new rpcJsonView();
+			$errorView = new we_rpc_jsonView();
 			echo $errorView->getResponse($resp);
 			exit;
 		case 'text':
-			$resp = new rpcResponse();
+			$resp = new we_rpc_response();
 			$resp->setStatus(false);
 			$resp->setData('data', $text);
-			$errorView = new rpcView();
+			$errorView = new we_rpc_view();
 			echo $errorView->getResponse($resp);
 			exit;
 		default:
@@ -59,9 +53,9 @@ if(!we_base_request::_(we_base_request::RAW, 'cmd')){
 }
 
 //FIXME: !this is not safe at all
-$_shell = new rpcCmdShell($_REQUEST, $protocol);
+$_shell = new we_rpc_cmdShell($_REQUEST, $protocol);
 
-if($_shell->getStatus() == rpcCmd::STATUS_OK){
+if($_shell->getStatus() == we_rpc_cmd::STATUS_OK){
 	$_shell->executeCommand();
 	echo $_shell->getResponse();
 } else { // there was an error in initializing the command

@@ -22,11 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcGetLogVersionDetailsView extends rpcView{
-
-	function getResponse($response){
-
-		return $response->getData("data");
-	}
+class rpcGetLogVersionDetailsView extends we_rpc_view{
 
 }

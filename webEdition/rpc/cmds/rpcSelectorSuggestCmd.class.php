@@ -22,10 +22,10 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcSelectorSuggestCmd extends rpcCmd{
+class rpcSelectorSuggestCmd extends we_rpc_cmd{
 
 	function execute(){
-		$resp = new rpcResponse();
+		$resp = new we_rpc_response();
 		$cmd1 = we_base_request::_(we_base_request::FILE, 'we_cmd', false, 1);
 		$cmd2 = we_base_request::_(we_base_request::TABLE, 'we_cmd', false, 2);
 		if(!$cmd1 || !$cmd2){

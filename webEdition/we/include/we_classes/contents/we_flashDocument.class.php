@@ -70,7 +70,7 @@ class we_flashDocument extends we_document_deprecatedVideo{
 
 	/* gets the HTML for including in HTML-Docs */
 
-	function getHtml($dyn = false){
+	function getHtml($dyn = false, $preload = false){
 		$_data = $this->getElement('data');
 		if($this->ID || ($_data && !is_dir($_data) && is_readable($_data))){
 			$pluginspage = $this->getElement('Pluginspage') ? : 'http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash';

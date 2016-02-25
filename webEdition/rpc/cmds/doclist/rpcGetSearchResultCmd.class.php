@@ -22,11 +22,11 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcGetSearchResultCmd extends rpcCmd{
+class rpcGetSearchResultCmd extends we_rpc_cmd{
 
 	function execute(){
 
-		$resp = new rpcResponse();
+		$resp = new we_rpc_response();
 
 		we_html_tools::protect();
 

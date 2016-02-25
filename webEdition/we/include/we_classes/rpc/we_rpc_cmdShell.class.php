@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -23,17 +24,12 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once('base/rpcCmd.class.php');
-require_once('base/rpcResponse.class.php');
-require_once('base/rpcView.class.php');
-require_once('base/rpcJsonView.class.php');
-
-class rpcCmdShell{
+class we_rpc_cmdShell{
 	protected $Protocol;
 	protected $Cmd;
 	protected $View;
 	protected $Response;
-	protected $Status = rpcCmd::STATUS_OK;
+	protected $Status = we_rpc_cmd::STATUS_OK;
 
 	public function __construct(&$cmd, $protocol){
 
@@ -42,17 +38,17 @@ class rpcCmdShell{
 
 		if(($view = we_base_request::_(we_base_request::STRING, 'view'))){
 			if(!$this->isViewAllowed($view)){
-				$this->Status = rpcCmd::STATUS_NOT_ALLOWED_VIEW;
+				$this->Status = we_rpc_cmd::STATUS_NOT_ALLOWED_VIEW;
 			}
 		} else {
 			$cmd['view'] = $this->CmdName;
 		}
-		if($this->Status == rpcCmd::STATUS_OK){
+		if($this->Status == we_rpc_cmd::STATUS_OK){
 			$this->View = $this->getView($cmd);
 		}
 	}
 
-	private function createCmd(&$cmd){
+	private function createCmd($cmd){
 		$this->CmdName = $cmd['cmd'];
 		$_classname = 'rpc' . $cmd['cmd'] . 'Cmd';
 
@@ -70,12 +66,12 @@ class rpcCmdShell{
 
 			return $_obj;
 		}
-		$this->Status = rpcCmd::STATUS_NO_CMD;
+		$this->Status = we_rpc_cmd::STATUS_NO_CMD;
 
 		return null;
 	}
 
-	function getView(&$cmd){
+	function getView($cmd){
 		$_classname = 'rpc' . $cmd["view"] . 'View';
 		$namespace = '/' . (isset($cmd['vns']) ? $cmd['vns'] . '/' : (isset($cmd['cns']) ? $cmd['cns'] . '/' : ''));
 
@@ -83,15 +79,10 @@ class rpcCmdShell{
 				we_tool_lookup::getViewInclude($this->Protocol, $namespace, $cmd['tool'], $cmd["view"]) :
 				'views/' . $this->Protocol . $namespace . $_classname . '.class.php');
 		if(@include_once($_viewfile)){
-
-			$_obj = new $_classname();
-			$_obj->setCmdShell($this);
-
-			return $_obj;
+			$_obj = new $_classname($this, $this->Protocol);
+		} else {
+			$_obj = new we_rpc_genericJSONView($this, $this->Protocol);
 		}
-		require_once('views/json/rpcGenericJSONView.class.php');
-		$_obj = new rpcGenericJSONView();
-		$_obj->setCmdShell($this);
 		return $_obj;
 	}
 
@@ -131,11 +122,11 @@ class rpcCmdShell{
 
 	function getErrorOut(){
 		switch($this->Status){
-			case rpcCmd::STATUS_NO_CMD :
+			case we_rpc_cmd::STATUS_NO_CMD :
 				return 'ERROR: No command defined!';
-			case rpcCmd::STATUS_NO_VIEW :
+			case we_rpc_cmd::STATUS_NO_VIEW :
 				return 'ERROR: No view defined!';
-			case rpcCmd::STATUS_NO_SESSION :
+			case we_rpc_cmd::STATUS_NO_SESSION :
 				return 'ERROR: No session exists!';
 			default:
 				return 'ERROR';

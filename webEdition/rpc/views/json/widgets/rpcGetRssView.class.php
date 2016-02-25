@@ -22,10 +22,10 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcGetRssView extends rpcJsonView{
+class rpcGetRssView extends we_rpc_jsonView{
 
 	/**
-	 * @param rpcResponse $response
+	 * @param we_rpc_response $response
 	 * @return string
 	 */
 	function getResponse($response){

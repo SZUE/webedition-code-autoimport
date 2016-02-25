@@ -29,7 +29,7 @@ class we_selector_image extends we_selector_document{
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $sessionID, $we_editDirID, $FolderText, $filter, $rootDirID, $open_doc, $multiple, $canSelectDir, $startID);
 	}
 
-	protected function getFrameset(){
+	protected function getFrameset($withPreview = false){
 		return
 			STYLESHEET .
 			we_html_element::cssLink(CSS_DIR . 'selectors.css') .
@@ -45,7 +45,7 @@ class we_selector_image extends we_selector_document{
 </html>';
 	}
 
-	protected function printFooterTable(){
+	protected function printFooterTable($more = null){
 		//IE doesn't support slider correctly inside tables, disable this
 		return parent::printFooterTable(we_base_browserDetect::inst()->isIE() ? '<input name="zoom" type="hidden"/>' : '<input type="range" style="width:120px;height:20px;" name="zoom" min="50" step="25" max="250" value="100" onchange="top.fsbody.document.body.style.fontSize=this.value+\'%\';"/>');
 	}
@@ -59,7 +59,7 @@ class we_selector_image extends we_selector_document{
 	}
 
 	//FIXME: get/set view using tblFile.viewType
-	protected function printHeaderTable($extra = ''){
+	protected function printHeaderTable($extra = '', $append = true){
 		return parent::printHeaderTable(
 				'<td id="' . we_search_view::VIEW_ICONS . '" style="display:none">' . we_html_button::create_button('fa:iconview,fa-lg fa-th', "javascript:setview('" . we_search_view::VIEW_ICONS . "');", true, 40, "", "", "", false) . '</td>
 		<td id="' . we_search_view::VIEW_LIST . '">' . we_html_button::create_button('fa:listview,fa-lg fa-align-justify-lg fa-align-justify', "javascript:setview('" . we_search_view::VIEW_LIST . "');", true, 40, "", "", "", false) . '</td>', true);

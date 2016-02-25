@@ -88,7 +88,7 @@ class we_fileupload_ui_base extends we_fileupload{
 		$this->setGenericFileName();
 		$this->doCommitFile = false;
 		$this->responseClass = 'we_fileupload_resp_base';
-		$this->form['action'] = WEBEDITION_DIR . 'rpc/rpc.php?protocol=json&cmd=ProcessFileupload&cns=fileupload';
+		$this->form['action'] = WEBEDITION_DIR . 'rpc.php?protocol=json&cmd=ProcessFileupload&cns=fileupload';
 	}
 
 	public function setResponseClass($responseClass){
@@ -319,10 +319,10 @@ doDragFromTree = function(text){
 		$progress->setName('_fileupload');
 		return $progress->getHTML('', 'font-size:11px;');
 		$divProgressbar = we_html_element::htmlDiv(array('id' => 'div_fileupload_progressBar', 'style' => 'margin: 13px 0 10px 0;display:none;'), $progress->getHTML('', 'font-size:11px;'));
-		 * 
+		 *
 		 */
 	}
-	
+
 
 	public function getCss(){
 		return we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') .

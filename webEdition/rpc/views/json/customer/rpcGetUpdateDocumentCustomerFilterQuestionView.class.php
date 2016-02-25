@@ -22,6 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcGetUpdateDocumentCustomerFilterQuestionView extends rpcJsonView{
+class rpcGetUpdateDocumentCustomerFilterQuestionView extends we_rpc_jsonView{
 
 }

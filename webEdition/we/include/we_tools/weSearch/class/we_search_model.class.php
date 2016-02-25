@@ -36,9 +36,7 @@ class we_search_model extends we_search_modelBase{
 	 * @var tinyint: flag if the search ist predefined or not
 	 */
 	public $predefined;
-
 	public $activTab = 1;
-
 	public $mode = 0;
 
 	/**
@@ -134,12 +132,10 @@ class we_search_model extends we_search_modelBase{
 	protected $searchFieldsTmplSearch = array();
 	protected $searchFieldsMediaSearch = array();
 	protected $searchFieldsAdvSearch = array();
-
 	protected $searchTablesDocSearch = array();
 	protected $searchTablesTmplSearch = array();
 	protected $searchTablesMediaSearch = array();
 	protected $searchTablesAdvSearch = array();
-
 	protected $searchForFieldTmplSearch = array(
 		'text' => 0,
 		'title' => 0,
@@ -158,7 +154,6 @@ class we_search_model extends we_search_modelBase{
 		'content' => 0,
 		'meta' => 0,
 	);
-
 	protected $searchForContentTypeMediaSearch = array(
 		'image' => 0,
 		'audio' => 0,
@@ -190,7 +185,7 @@ class we_search_model extends we_search_modelBase{
 		}
 	}
 
-	public function initByHttp($whichSearch, $isWeCmd = true){
+	public function initByHttp($whichSearch = '', $isWeCmd = true){
 		// prepare searchFields, location and search(text) to read as array
 		if($isWeCmd){
 			$request = we_base_request::_(we_base_request::STRING, 'we_cmd');
@@ -225,19 +220,19 @@ class we_search_model extends we_search_modelBase{
 				}
 			}
 		} else {
-			$modelVars = array_merge(array( // some vars are not persistent in db but must be written to session anyway: must COMPLETE!!
+			$modelVars = array_merge(array(// some vars are not persistent in db but must be written to session anyway: must COMPLETE!!
 				'searchstartDocSearch',
 				'searchstartTmplSearch',
 				'searchstartMediaSearch',
 				'searchstartAdvSearch'), (is_array($this->persistent_slots) ? $this->persistent_slots : array()));
 
 			/* was nice before 7.0, but it's not typed!
-			foreach($modelVars as $val){
-				if(($tmp = we_base_request::_(we_base_request::STRING, $val, we_base_request::NOT_VALID)) !== we_base_request::NOT_VALID){
-					$this->Model->$val = $tmp;
-				}
-			}
-			 * 
+			  foreach($modelVars as $val){
+			  if(($tmp = we_base_request::_(we_base_request::STRING, $val, we_base_request::NOT_VALID)) !== we_base_request::NOT_VALID){
+			  $this->Model->$val = $tmp;
+			  }
+			  }
+			 *
 			 */
 
 			foreach($modelVars as $v){
@@ -245,7 +240,6 @@ class we_search_model extends we_search_modelBase{
 					$_REQUEST['we_cmd'][$v] = $_REQUEST[$v];
 				}
 			}
-			
 		}
 
 		if(!$isWeCmd || $whichSearch === we_search_view::SEARCH_DOCS){
@@ -415,14 +409,14 @@ class we_search_model extends we_search_modelBase{
 				break;
 			case we_search_view::SEARCH_ADV:
 				// process some SEARCH_ADV specialties
-				$tmp = array( // default db entry
+				$tmp = array(// default db entry
 					FILE_TABLE => 1,
 					addTblPrefix('tblTemplates') => 0,
 					addTblPrefix('tblObjectFiles') => 1,
 					addTblPrefix('tblObject') => 0,
 					addTblPrefix('tblversions') => 0,
 				);
-				
+
 				$this->searchTablesAdvSearch = array();
 				foreach($this->search_tables_advSearch as $k => $v){
 					switch($k){
@@ -465,7 +459,7 @@ class we_search_model extends we_search_modelBase{
 				}
 				$this->search_tables_advSearch = $tmp;
 
-				// write current set 
+				// write current set
 				$this->currentSearchTables = $this->searchTablesAdvSearch;
 				$this->currentSearchFields = $this->searchFieldsAdvSearch;
 				$this->currentLocation = $this->locationAdvSearch;
@@ -480,7 +474,7 @@ class we_search_model extends we_search_modelBase{
 	public function setPredefinedSearch($tab = 3, $keyword = '', $tables = 0){
 		// set activTab
 		$this->activTab = $tab;
-		
+
 		// set SEARCH_ADV tables
 		$this->search_tables_advSearch = array(
 			FILE_TABLE => 0,
@@ -503,7 +497,7 @@ class we_search_model extends we_search_modelBase{
 			case 4:
 				$this->search_tables_advSearch[addTblPrefix('tblObject')] = 1;
 				break;
-			case 5: 
+			case 5:
 				$this->search_tables_advSearch[VERSIONS_TABLE] = 1;
 				break;
 			default:
@@ -514,7 +508,7 @@ class we_search_model extends we_search_modelBase{
 		// set searchfields
 		switch($tables){ // FIXME: make fn tabToWhichsearch()
 			case 1://Doc
-				$this->searchForTextDocSearch = $this->searchForTitleDocSearch = $this->searchForContentDocSearch = 1;// FIXME: make this default
+				$this->searchForTextDocSearch = $this->searchForTitleDocSearch = $this->searchForContentDocSearch = 1; // FIXME: make this default
 
 				if($keyword){
 					$this->searchDocSearch = array($keyword, $keyword, $keyword);
@@ -554,4 +548,5 @@ class we_search_model extends we_search_modelBase{
 				break;
 		}
 	}
+
 }

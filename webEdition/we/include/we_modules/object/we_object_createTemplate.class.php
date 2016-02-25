@@ -23,8 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_object_createTemplate extends we_template{
-
-	function formDirChooser($width = "", $rootDirID = 0, $table = TEMPLATES_TABLE, $Pathname = "ParentPath", $IDName = "ParentID", $cmd = ""){
+	function formDirChooser($width = 0, $rootDirID = 0, $table = TEMPLATES_TABLE, $Pathname = "ParentPath", $IDName = "ParentID", $cmd = "", $label = true, $disabled = false){
 		$table = $table? : $this->Table;
 		$textname = 'we_' . $this->Name . '_' . $Pathname;
 		$idname = 'we_' . $this->Name . '_' . $IDName;

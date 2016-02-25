@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcSelectorGetSelectedIdView extends rpcView{
+class rpcSelectorGetSelectedIdView extends we_rpc_view{
 
 	function getResponse($response){
 

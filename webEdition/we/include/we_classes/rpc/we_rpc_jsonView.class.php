@@ -22,16 +22,10 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcJsonView{
-
-	var $CmdShell;
-
-	function setCmdShell($cmdshell){
-		$this->CmdShell = $cmdshell;
-	}
+class we_rpc_jsonView extends we_rpc_view{
 
 	/**
-	 * @param rpcResponse $response
+	 * @param we_rpc_response $response
 	 * @return string
 	 */
 	function getResponse($response){

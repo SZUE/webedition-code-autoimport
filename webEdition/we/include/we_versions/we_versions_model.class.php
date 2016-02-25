@@ -67,7 +67,6 @@ class we_versions_model extends we_search_modelBase{
 	 * @var string: gives the order
 	 */
 	protected $OrderVersionSearch = 'ID';
-
 	protected $searchTablesVersionSearch = array();
 
 	/**
@@ -88,7 +87,7 @@ class we_versions_model extends we_search_modelBase{
 		$this->whichSearch = we_search_view::SEARCH_VERSION;
 	}
 
-	public function initByHttp(){
+	public function initByHttp($whichSearch = '', $isWeCmd = true){
 		// IMPORTANT: this is the ONLY place where model vars are set!
 		if(isset($_REQUEST['searchstart'])){
 			$this->mode = we_base_request::_(we_base_request::INT, "mode", $this->mode);
@@ -162,9 +161,9 @@ class we_versions_model extends we_search_modelBase{
 
 	function clearSessionVars(){
 		/*
-		if(!empty($this->toolName) && isset($_SESSION['weS'][$this->toolName . '_session'])){
-			unset($_SESSION['weS'][$this->toolName . '_session']);
-		}
+		  if(!empty($this->toolName) && isset($_SESSION['weS'][$this->toolName . '_session'])){
+		  unset($_SESSION['weS'][$this->toolName . '_session']);
+		  }
 		 *
 		 */
 	}

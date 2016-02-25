@@ -22,14 +22,14 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcSetPageNrCmd extends rpcCmd{
+class rpcSetPageNrCmd extends we_rpc_cmd{
 
 	function execute(){
 		$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'transaction', '');
 		if(isset($_SESSION['weS']['we_data'][$we_transaction])){
 			$_SESSION['weS']['we_data'][$we_transaction][0]['EditPageNr'] = we_base_request::_(we_base_request::INT, 'editPageNr');
 		}
-		$resp = new rpcResponse();
+		$resp = new we_rpc_response();
 		return $resp;
 	}
 

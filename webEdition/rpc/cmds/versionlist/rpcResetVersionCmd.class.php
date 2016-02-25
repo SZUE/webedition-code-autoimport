@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcResetVersionCmd extends rpcCmd{
+class rpcResetVersionCmd extends we_rpc_cmd{
 
 	function execute(){
 		$id = we_base_request::_(we_base_request::STRING, 'id');

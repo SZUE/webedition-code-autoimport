@@ -121,7 +121,7 @@ class we_workflow_base{
 	/* Mark To Do as done */
 	/* $id - value of the 'ID' field in MSG_TODO_TABLE */
 
-	function doneTodo($id){
+	function doneTodo($id = 0){
 		$errs = '';
 		$m = new we_messaging_todo();
 
@@ -146,7 +146,7 @@ class we_workflow_base{
 	/* remove To Do */
 	/* $id - value of the 'ID' field in MSG_TODO_TABLE */
 
-	function removeTodo($id){
+	function removeTodo($id = 0){
 		$m = new we_messaging_todo();
 		$m->set_login_data($_SESSION["user"]["ID"], isset($_SESSION["user"]["Name"]) ? $_SESSION["user"]["Name"] : "");
 
@@ -158,7 +158,7 @@ class we_workflow_base{
 	/* Mark To Do as rejected */
 	/* $id - value of the 'ID' field in MSG_TODO_TABLE */
 
-	function rejectTodo($id){
+	function rejectTodo($id = 0){
 		$m = new we_messaging_todo();
 		$db = new DB_WE();
 		$userid = f('SELECT UserID FROM ' . MSG_TODO_TABLE . ' WHERE ID=' . intval($id), '', $db);

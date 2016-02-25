@@ -22,11 +22,11 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcGetSnippetCodeCmd extends rpcCmd{
+class rpcGetSnippetCodeCmd extends we_rpc_cmd{
 
 	function execute(){
 
-		$resp = new rpcResponse();
+		$resp = new we_rpc_response();
 		if(!($file = we_base_request::_(we_base_request::FILE, 'we_cmd', '', 1)) ||
 			!is_file(WE_INCLUDES_PATH . we_wizard_code::SnippetPath . $file)){
 			exit();

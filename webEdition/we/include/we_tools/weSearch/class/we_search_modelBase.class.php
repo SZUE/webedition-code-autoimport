@@ -71,7 +71,7 @@ class we_search_modelBase extends we_tool_model{
 		parent::load($id);
 	}
 
-	public function initByHttp(){
+	public function initByHttp($whichSearch = '', $isWeCmd = true){
 
 	}
 

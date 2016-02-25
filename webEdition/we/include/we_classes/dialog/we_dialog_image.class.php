@@ -265,7 +265,7 @@ class we_dialog_image extends we_dialog_base{
 	  function getFormHTML(){}
 	 */
 
-	function getHeaderHTML($printJS_Style = false){
+	function getHeaderHTML($printJS_Style = false, $additionals = ''){
 		return parent::getHeaderHTML($printJS_Style, $this->weFileupload->getJs() . $this->weFileupload->getEditorJs() . $this->weFileupload->getCss());
 	}
 

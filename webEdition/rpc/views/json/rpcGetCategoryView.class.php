@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcGetCategoryView extends rpcView{
+class rpcGetCategoryView extends we_rpc_view{
 
 	function getResponse($response){
 		$_elems = "";

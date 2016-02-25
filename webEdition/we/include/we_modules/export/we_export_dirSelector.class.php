@@ -54,7 +54,7 @@ class we_export_dirSelector extends we_selector_directory{
 </table><div id="footerButtons">' . we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button) . '</div>';
 	}
 
-	protected function printHeaderTable($extra = ''){
+	protected function printHeaderTable($extra = '', $append = false){
 		$makefolderState = permissionhandler::hasPerm("NEW_EXPORT");
 		return parent::printHeaderTable('<td>' .
 				we_html_element::jsElement('makefolderState=' . intval($makefolderState) . ';') .
@@ -183,7 +183,7 @@ g_l.newFolder="' . g_l('export', '[newFolder]') . '";
 ');
 	}
 
-	function printHTML($what = we_selector_file::FRAMESET){
+	function printHTML($what = we_selector_file::FRAMESET, $withPreview = true){
 		parent::printHTML($what, false);
 	}
 

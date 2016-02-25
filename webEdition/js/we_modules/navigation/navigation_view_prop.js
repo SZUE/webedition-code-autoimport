@@ -122,7 +122,7 @@ function we_cmd() {
 }
 
 
-var copyNaviFolderUrl = WE().consts.dirs.WEBEDITION_DIR + "rpc/rpc.php";
+var copyNaviFolderUrl = WE().consts.dirs.WEBEDITION_DIR + "rpc.php";
 function copyNaviFolder(folderPath, folderID) {
 	var parentPos = selfNaviPath.indexOf(folderPath);
 	if (parentPos === -1 || selfNaviPath.indexOf(folderPath) > 0) {

@@ -579,7 +579,7 @@ class we_search_search extends we_search_base{
 		);
 	}
 
-	static function getLocation($whichField = ''){
+	static function getLocation($whichField = '', $select = '', $size = 1){
 		switch($whichField){
 			default:
 				return array(
@@ -1416,7 +1416,7 @@ class we_search_search extends we_search_base{
 		}
 	}
 
-	function searchfor($searchname, $searchfield, $searchlocation, $tablename){
+	function searchfor($searchname, $searchfield, $searchlocation, $tablename, $rows = -1, $start = 0, $order = '', $desc = 0){
 		$operator = ' AND ';
 		$this->table = $tablename;
 		$sql = '';

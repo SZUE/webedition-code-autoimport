@@ -22,10 +22,10 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcGetCategoryCmd extends rpcCmd{
+class rpcGetCategoryCmd extends we_rpc_cmd{
 
 	function execute(){
-		$resp = new rpcResponse();
+		$resp = new we_rpc_response();
 		$_error = array();
 		// check for necessory params
 		if(!($obj=we_base_request::_(we_base_request::STRING, 'obj'))){

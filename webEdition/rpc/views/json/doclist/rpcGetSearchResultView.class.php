@@ -22,11 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcGetSearchResultView extends rpcView{
-
-	function getResponse($response){
-
-		return $response->getData("data");
-	}
+class rpcGetSearchResultView extends we_rpc_view{
 
 }

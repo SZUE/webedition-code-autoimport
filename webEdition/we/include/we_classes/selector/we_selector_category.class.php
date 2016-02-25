@@ -37,7 +37,7 @@ class we_selector_category extends we_selector_file{
 		$this->multiple = true;
 	}
 
-	function printHTML($what = we_selector_file::FRAMESET){
+	function printHTML($what = we_selector_file::FRAMESET, $withPreview = true){
 		switch($what){
 			case self::CREATEFOLDER:
 				$this->printCreateEntryHTML(1);
@@ -74,7 +74,7 @@ class we_selector_category extends we_selector_file{
 		return $_SERVER["SCRIPT_NAME"] . "what=$what&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . "&noChoose=" . $this->noChoose;
 	}
 
-	protected function printHeaderTable(){
+	protected function printHeaderTable($extra = ''){
 		return '
 <table class="selectorHeaderTable">
 	<tr style="vertical-align:middle">

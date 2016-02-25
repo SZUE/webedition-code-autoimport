@@ -70,7 +70,7 @@ class we_quicktimeDocument extends we_document_deprecatedVideo{
 
 	/* gets the HTML for including in HTML-Docs */
 
-	function getHtml($dyn = false){
+	function getHtml($dyn = false, $preload = false){
 		//    At the moment it is not possible to make this tag xhtml valid, so the output is only posible
 		//    non xhtml valid
 

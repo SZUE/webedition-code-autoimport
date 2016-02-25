@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcTriggerJSErrorCmd extends rpcCmd{
+class rpcTriggerJSErrorCmd extends we_rpc_cmd{
 
 	function execute(){
 		if(isset($_REQUEST['we_cmd'])){

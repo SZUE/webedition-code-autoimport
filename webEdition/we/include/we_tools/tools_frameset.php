@@ -79,7 +79,7 @@ if($tool === "weSearch"){
 			$cmd = 'tool_weSearch_new_forClasses';
 			break;
 		default:
-			$table = we_base_request::_(we_base_request::INT, 'we_cmd', 1, 4);
+			$tab = we_base_request::_(we_base_request::INT, 'we_cmd', 1, 4);
 			$table = 5;
 			$cmd = 'tool_weSearch_new';
 	}
