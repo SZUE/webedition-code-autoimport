@@ -27,14 +27,14 @@
 var weRpcFailedCnt = 0;
 
 window.setInterval(function () {
-	YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc/rpc.php", {
+	YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc.php", {
 		success: function (o) {
 			if (o.responseText !== undefined && o.responseText !== '') {
 				var result;
 				try {
 					result = JSON.parse(o.responseText);
 				} catch (exp) {
-					
+
 				}
 				if (result && result.Success) {
 					var num_users = result.DataArray.num_users;

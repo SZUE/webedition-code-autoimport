@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcGetDocElementView extends rpcView{
+class rpcGetDocElementView extends we_rpc_view{
 
 	function getResponse($response){
 		$elem = we_base_request::_(we_base_request::STRING, 'element');

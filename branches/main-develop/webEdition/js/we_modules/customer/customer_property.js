@@ -130,7 +130,7 @@ function we_cmd() {
 }
 
 function resetLogins(id) {
-	YAHOO.util.Connect.asyncRequest("GET", WE().consts.dirs.WEBEDITION_DIR + "rpc/rpc.php?cmd=ResetFailedCustomerLogins&cns=customer&custid=" + id, {
+	YAHOO.util.Connect.asyncRequest("GET", WE().consts.dirs.WEBEDITION_DIR + "rpc.php?cmd=ResetFailedCustomerLogins&cns=customer&custid=" + id, {
 		success: function (o) {
 			if (o.responseText !== undefined && o.responseText !== "") {
 				try {

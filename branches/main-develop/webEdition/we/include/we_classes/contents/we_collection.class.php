@@ -65,7 +65,7 @@ class we_collection extends we_root{
 
 		$this->ModDate = $this->ModDate ? $this->ModDate : $this->CreationDate;
 		$this->Published = $this->ModDate;
-		
+
 		$this->Table = VFILE_TABLE;
 		array_push($this->persistent_slots, 'fileCollection', 'objectCollection', 'remTable', 'remCT', 'remClass', 'DefaultDir', 'insertPrefs', 'IsDuplicates', 'InsertRecursive', 'ContentType', 'view', 'itemsPerRow');
 
@@ -184,7 +184,7 @@ class we_collection extends we_root{
 		}
 	}
 
-	public function initByID($ID){
+	public function initByID($ID, $Table = VFILE_TABLE, $from = we_class::LOAD_MAID_DB){
 		parent::initByID($ID, VFILE_TABLE);
 	}
 
@@ -286,8 +286,8 @@ class we_collection extends we_root{
 		$classTable->setCol(0, 2, null, $classListTo);
 
 		$selRemTable = ($fixedRemTable && $this->getRemTable() ? we_html_element::htmlHidden('we_' . $this->Name . '_remTable', $this->getRemTable()) . we_html_element::htmlInput(array('disabled' => 1, 'name' => 'disabledField', 'value' => $valsRemTable[$this->getRemTable()], 'width' => 356)) :
-			we_html_tools::htmlSelect('we_' . $this->Name . '_remTable', $valsRemTable, 1, $this->getRemTable(), false, array('onchange' => 'document.getElementById(\'mimetype\').style.display=(this.value===\'tblFile\'?\'block\':\'none\');document.getElementById(\'classname\').style.display=(this.value===\'tblFile\'?\'none\':\'block\');', 'style' => 'margin-top: 5px;'), 'value')) .
-				we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[collection][selector_remTable]'), we_html_tools::TYPE_HELP, false);
+				we_html_tools::htmlSelect('we_' . $this->Name . '_remTable', $valsRemTable, 1, $this->getRemTable(), false, array('onchange' => 'document.getElementById(\'mimetype\').style.display=(this.value===\'tblFile\'?\'block\':\'none\');document.getElementById(\'classname\').style.display=(this.value===\'tblFile\'?\'none\':\'block\');', 'style' => 'margin-top: 5px;'), 'value')) .
+			we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[collection][selector_remTable]'), we_html_tools::TYPE_HELP, false);
 
 
 		$dublettes = we_html_forms::checkboxWithHidden($this->IsDuplicates, 'we_' . $this->Name . '_IsDuplicates', g_l('weClass', '[collection][allowDuplicates]'));
@@ -299,15 +299,15 @@ class we_collection extends we_root{
 		$html = $selRemTable .
 			'<div id="collection_props-mime_class">
 	<div id="mimetype" class="collection_props-mime" style="' . ($this->getRemTable() === 'tblObjectFiles' ? 'display:none' : 'display:block') . ';">' .
-		'<br/>' . g_l('weClass', '[collection][filter_contenttype]') . ':<br/>' .
-		we_html_element::htmlHidden('we_' . $this->Name . '_remCT', $this->remCT, 'we_remCT') .
-		$mimeTable->getHTML() .
-	'</div>
+			'<br/>' . g_l('weClass', '[collection][filter_contenttype]') . ':<br/>' .
+			we_html_element::htmlHidden('we_' . $this->Name . '_remCT', $this->remCT, 'we_remCT') .
+			$mimeTable->getHTML() .
+			'</div>
 	<div id="classname" class="collection_props-classes" style="' . ($this->getRemTable() === 'tblObjectFiles' ? 'display:block' : 'display:none') . ';">' .
-		(defined('OBJECT_TABLE') ? '<br/>' . g_l('weClass', '[collection][filter_class]') . ':<br/>' .
-			we_html_element::htmlHidden('we_' . $this->Name . '_remClass', $this->remClass, 'we_remClass') .
-			$classTable->getHTML() : '') .
-	'</div>
+			(defined('OBJECT_TABLE') ? '<br/>' . g_l('weClass', '[collection][filter_class]') . ':<br/>' .
+				we_html_element::htmlHidden('we_' . $this->Name . '_remClass', $this->remClass, 'we_remClass') .
+				$classTable->getHTML() : '') .
+			'</div>
 </div>' .
 			we_html_element::htmlDiv(array('class' => 'collection_props-dublettes'), $dublettes) .
 			we_html_element::htmlDiv(array(), $defDir);
@@ -502,7 +502,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		$idname = 'collectionItem_we_id_' . $index;
 		$wecmd1 = "document.we_form.elements['" . $idname . "'].value";
 		$wecmd2 = "";
-		$wecmd3 = "opener._EditorFrame.setEditorIsHot(true);try{opener._EditorFrame.getContentEditor().weCollectionEdit.callForValidItemsAndInsert(" . $index . ", opener._EditorFrame.getContentEditor().document.we_form.elements['collectionItem_we_id_" . $index . "'].value);} catch(e){}";
+		$wecmd3 = "opener._EditorFrame.setEditorIsHot(true);try{var ce = opener._EditorFrame.getContentEditor();ce.weCollectionEdit.callForValidItemsAndInsert(ce.weCollectionEdit.getItemId(ce.document.we_form.elements['collectionItem_we_id_" . $index . "']), top.currentID);} catch(e){}";
 
 		switch($item['id']){
 			case '##ID##':
@@ -743,7 +743,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		$this->ModDate = strtotime($this->ModDate);
 	}
 
-	protected function i_savePersistentSlotsToDB(){ // FIXME: throw out when CreationDate and ModDate are migrated to MySQL timestamp in all tables
+	protected function i_savePersistentSlotsToDB($felder = ''){ // FIXME: throw out when CreationDate and ModDate are migrated to MySQL timestamp in all tables
 		if(($key = array_search('CreationDate', $this->persistent_slots)) !== false){
 			unset($this->persistent_slots[$key]);
 		}

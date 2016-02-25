@@ -398,7 +398,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 		}
 	}
 
-	public function prepareExport(){
+	public function prepareExport(array $ids = array()){
 		we_updater::fixInconsistentTables();
 
 		if($this->options['handle_def_templates'] ||

@@ -51,7 +51,7 @@ function errorHandler(msg, file, line, col, errObj) {
 			lcaller = lcaller.caller;
 		}
 		xmlhttp = new XMLHttpRequest();
-		xmlhttp.open('POST', WE().consts.dirs.WEBEDITION_DIR + 'rpc/rpc.php?cmd=TriggerJSError&cns=error', true);
+		xmlhttp.open('POST', WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?cmd=TriggerJSError&cns=error', true);
 		xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 		xmlhttp.send(postData);
 	} catch (e) {

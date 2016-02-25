@@ -22,11 +22,11 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcShowPreparedPreviewCmd extends rpcCmd{
+class rpcShowPreparedPreviewCmd extends we_rpc_cmd{
 
 	function execute(){
 
-		$resp = new rpcResponse();
+		$resp = new we_rpc_response();
 
 		$we_dt = "";
 

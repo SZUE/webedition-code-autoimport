@@ -51,7 +51,7 @@ class we_rebuild_fragment extends we_fragment_base{
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', ' ');
 	}
 
-	function printBodyTag(){
+	function printBodyTag($attributes = ''){
 
 	}
 

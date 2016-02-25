@@ -22,10 +22,10 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcGetNaviItemsCmd extends rpcCmd{
+class rpcGetNaviItemsCmd extends we_rpc_cmd{
 
 	function execute(){
-		$resp = new rpcResponse();
+		$resp = new we_rpc_response();
 		$_navi = new we_navigation_navigation(we_base_request::_(we_base_request::INT, 'nid', 0));
 		$_items = $_navi->getChilds();
 		$_data = array();

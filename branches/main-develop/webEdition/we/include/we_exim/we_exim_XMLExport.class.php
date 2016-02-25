@@ -243,7 +243,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 		return $db->getAll(true);
 	}
 
-	function prepareExport(){
+	function prepareExport(array $ids = array()){
 		//$this->RefTable = new RefTable();
 		$_preparer = new we_export_preparer($this->options, $this->RefTable);
 		$_preparer->prepareExport();

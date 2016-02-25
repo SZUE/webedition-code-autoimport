@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcDeleteMediaDocsCmd extends rpcCmd{
+class rpcDeleteMediaDocsCmd extends we_rpc_cmd{
 
 	function execute(){
 		we_html_tools::protect();
@@ -41,7 +41,7 @@ class rpcDeleteMediaDocsCmd extends rpcCmd{
 			}
 		}
 
-		$resp = new rpcResponse();
+		$resp = new we_rpc_response();
 		$resp->setData("data", $this->delete($selectedItems[FILE_TABLE]));
 
 		return $resp;

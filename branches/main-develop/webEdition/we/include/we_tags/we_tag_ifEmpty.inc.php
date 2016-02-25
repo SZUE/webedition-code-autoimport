@@ -32,11 +32,10 @@ function we_tag_ifEmpty($attribs){
 	}
 
 	$docAttr = weTag_getAttribute('doc', $attribs, '', we_base_request::STRING);
-	$type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING);
 	$match = we_tag_getPostName(weTag_getAttribute('match', $attribs, '', we_base_request::STRING));
 	$doc = we_getDocForTag($docAttr, false);
 
-	switch($type){
+	switch(weTag_getAttribute('type', $attribs, '', we_base_request::STRING)){
 		case 'checkbox':
 		case 'object':
 			return (bool) $doc->getElement($match);

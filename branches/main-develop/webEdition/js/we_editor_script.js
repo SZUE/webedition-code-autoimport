@@ -147,7 +147,7 @@ function updateCustomerFilterIfNeeded() {
 	if ((_elem = document.we_form["we_" + docName + "_ParentID"])) {
 		_parentid = _elem.value;
 		if (_parentid !== _oldparentid) {
-			top.YAHOO.util.Connect.asyncRequest('GET', WE().consts.dirs.WEBEDITION_DIR + 'rpc/rpc.php?cmd=GetUpdateDocumentCustomerFilterQuestion&cns=customer&folderId=' + _parentid + '&we_transaction=' + we_transaction + '&table=' + docTable + '&classname=' + docClass, {
+			top.YAHOO.util.Connect.asyncRequest('GET', WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?cmd=GetUpdateDocumentCustomerFilterQuestion&cns=customer&folderId=' + _parentid + '&we_transaction=' + we_transaction + '&table=' + docTable + '&classname=' + docClass, {
 				// check if parentId was changed
 				success: function (o) {
 					if (o.responseText !== undefined && o.responseText !== '') {

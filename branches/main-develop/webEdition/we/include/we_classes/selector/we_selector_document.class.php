@@ -224,7 +224,7 @@ var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 		}
 	}
 
-	protected function printHeaderTable($extra = ''){
+	protected function printHeaderTable($extra = '', $append = true){
 		switch($this->table){
 			case FILE_TABLE:
 				$extra = '<td>' .
@@ -323,7 +323,7 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 		return $ret;
 	}
 
-	protected function getFrameset(){
+	protected function getFrameset($withPreview = false){
 		$is_object = defined('OBJECT_TABLE') && $this->table === OBJECT_TABLE;
 		return STYLESHEET .
 			we_html_element::cssLink(CSS_DIR . 'selectors.css') .

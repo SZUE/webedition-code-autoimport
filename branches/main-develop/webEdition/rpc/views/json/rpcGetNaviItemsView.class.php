@@ -22,6 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcGetNaviItemsView extends rpcJsonView{
+class rpcGetNaviItemsView extends we_rpc_jsonView{
 
 }

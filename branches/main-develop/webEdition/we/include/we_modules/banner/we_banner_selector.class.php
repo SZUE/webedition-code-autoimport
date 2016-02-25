@@ -56,7 +56,7 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
 
-	function printHTML($what = we_selector_file::FRAMESET){
+	function printHTML($what = we_selector_file::FRAMESET, $withPreview = true){
 		switch($what){
 			case self::SETDIR:
 				$this->printSetDirHTML();

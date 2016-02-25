@@ -22,7 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 /**
  * base class for rpc commands
@@ -30,7 +29,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
  * @package none
  * @abstract
  */
-class rpcCmd{
+abstract class we_rpc_cmd{
 
 	const STATUS_OK = 0;
 	const STATUS_NO_PERMISSION = 1;
@@ -62,7 +61,7 @@ class rpcCmd{
 	}
 
 	function execute(){
-		return new rpcResponse();
+		return new we_rpc_response();
 	}
 
 	function checkSession(){

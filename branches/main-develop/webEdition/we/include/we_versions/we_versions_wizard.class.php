@@ -1088,7 +1088,7 @@ function handle_event(what){
 	}
 }
 
-var ajaxURL = WE().consts.dirs.WEBEDITION_DIR+"rpc/rpc.php";
+var ajaxURL = WE().consts.dirs.WEBEDITION_DIR+"rpc.php";
 
 var ajaxCallbackDeleteVersionsWizard = {
 	success: function(o) {

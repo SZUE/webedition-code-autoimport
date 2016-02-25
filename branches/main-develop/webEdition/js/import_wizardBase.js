@@ -21,7 +21,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-var ajaxUrl = WE().consts.dirs.WEBEDITION_DIR + "rpc/rpc.php";
+var ajaxUrl = WE().consts.dirs.WEBEDITION_DIR + 'rpc.php';
 
 var weGetCategoriesHandleSuccess = function (o) {
 	if (o.responseText !== undefined) {

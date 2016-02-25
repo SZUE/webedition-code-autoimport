@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcResponse{
+class we_rpc_response{
 
 	var $Success = true;
 	var $Reason = '';

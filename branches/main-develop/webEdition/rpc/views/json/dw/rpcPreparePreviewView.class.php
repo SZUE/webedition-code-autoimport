@@ -22,6 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcPreparePreviewView extends rpcJsonView{
+class rpcPreparePreviewView extends we_rpc_jsonView{
 
 }

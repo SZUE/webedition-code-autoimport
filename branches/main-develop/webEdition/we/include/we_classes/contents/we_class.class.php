@@ -84,7 +84,7 @@ abstract class we_class{
 
 	/* Intialize the class. If $sessDat (array) is set, the class will be initialized from this array */
 
-	function init(){
+	function init($sessDat = ''){
 		$this->we_new();
 	}
 

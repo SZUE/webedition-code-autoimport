@@ -29,7 +29,7 @@ class we_selector_delete extends we_selector_file{
 		$this->title = g_l('fileselector', '[delSelector][title]');
 	}
 
-	function printHTML($what = we_selector_file::FRAMESET){
+	function printHTML($what = we_selector_file::FRAMESET, $withPreview = true){
 		switch($what){
 			case self::DEL:
 				$this->printDoDelEntryHTML();

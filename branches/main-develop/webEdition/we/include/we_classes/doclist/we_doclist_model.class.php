@@ -67,7 +67,6 @@ class we_doclist_model extends we_search_modelBase{
 	 * @var string: gives the order
 	 */
 	protected $OrderDoclistSearch = 'Text';
-
 	protected $searchTablesDoclistSearch = array();
 
 	/**
@@ -90,17 +89,16 @@ class we_doclist_model extends we_search_modelBase{
 		$this->whichSearch = we_search_view::SEARCH_DOCLIST;
 
 		/*
-		if($weSearchID){
-			$this->ID = $weSearchID;
-			$this->load($weSearchID);
-		} else {
-			$this->ID = 0;
-		}
+		  if($weSearchID){
+		  $this->ID = $weSearchID;
+		  $this->load($weSearchID);
+		  } else {
+		  $this->ID = 0;
+		  }
 		 * */
-
 	}
 
-	public function initByHttp(){
+	public function initByHttp($whichSearch = '', $isWeCmd = true){
 		// IMPORTANT: this is the ONLY place where model vars are set!
 		$request = we_base_request::_(we_base_request::STRING, 'we_cmd');
 
@@ -123,7 +121,6 @@ class we_doclist_model extends we_search_modelBase{
 						$_REQUEST['we_cmd']['search' . $this->whichSearch][] = $v;
 					}
 				}
-
 			}
 
 			// FIXME: unify the different ways these params are committed
@@ -185,9 +182,9 @@ class we_doclist_model extends we_search_modelBase{
 
 	function clearSessionVars(){
 		/*
-		if(!empty($this->toolName) && isset($_SESSION['weS'][$this->toolName . '_session'])){
-			unset($_SESSION['weS'][$this->toolName . '_session']);
-		}
+		  if(!empty($this->toolName) && isset($_SESSION['weS'][$this->toolName . '_session'])){
+		  unset($_SESSION['weS'][$this->toolName . '_session']);
+		  }
 		 *
 		 */
 	}
