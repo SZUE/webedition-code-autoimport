@@ -64,9 +64,9 @@ abstract class we_autoloader{
 		'newsletter' => 'we_modules/newsletter',
 		'object' => 'we_modules/object',
 		'rebuild' => 'we_classes/rebuild',
-		'rpc'=>'we_classes/rpc',
-		'rpcCmd'=>'we_classes/rpc/cmd',
-		'rpcView'=>'we_classes/rpc/view',
+		'rpc' => 'we_classes/rpc',
+		'rpcCmd' => 'we_classes/rpc/cmd',
+		'rpcView' => 'we_classes/rpc/view',
 		'sdk' => 'we_classes/sdk',
 		'search' => 'we_tools/weSearch/class',
 		'selector' => 'we_classes/selector',
@@ -246,11 +246,9 @@ abstract class we_autoloader{
 	public static function finalLoad($class_name){
 		if(isset(self::$fallBack[$class_name])){
 			include(WEBEDITION_PATH . self::$fallBack[$class_name]);
-
 			return true;
-		} else {
-			t_e('info', 'we_autoloader: class ' . $class_name . ' not found');
 		}
+		t_e('notice', 'we_autoloader: class ' . $class_name . ' not found');
 	}
 
 }
