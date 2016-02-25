@@ -71,7 +71,7 @@ function we_isNotEmpty($attribs){
 			}
 		//   end of #3938
 	}
-	return (bool) ($doc->getElement($match) != '') || $doc->getElement($match, 'bdid');
+	return (bool) (!empty($doc->getElement($match))) || $doc->getElement($match, 'bdid');
 }
 
 function we_tag_ifEmpty($attribs){
