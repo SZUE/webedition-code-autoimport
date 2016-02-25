@@ -84,7 +84,7 @@ function we_error_handler($in_webEdition = true){
 			define('WE_ERROR_HANDLER', 1);
 		}
 		//we want all errors inside WE
-		we_error_setHandleAll();
+		//we_error_setHandleAll();
 	} else {
 		$GLOBALS['we']['errorhandler']['display'] = defined('WE_ERROR_SHOW') ? (WE_ERROR_SHOW == 1 ? true : false) : true;
 	}
