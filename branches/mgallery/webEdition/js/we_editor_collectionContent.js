@@ -104,6 +104,23 @@ wePropertiesEdit = {
 };
 
 weCollectionEdit = {
+	styles: {
+		standard: {
+			border: '1px solid #888888',
+			borderLast: '1px solid #cccccc',
+			backgroundColor: '#ffffff'
+		},
+		okPrev: {
+			border: '1px dotted #00ff00',
+			borderLast: '1px dotted #00ff00',
+			backgroundColor: '#fafffa'
+		},
+		nokPrev: {
+			border: '1px dotted #ff0000',
+			borderLast: '1px dotted #ff0000',
+			backgroundColor: '#fffafa'
+		}
+	},
 	maxIndex: 0,
 	blankItem: {
 		list: '',
@@ -166,7 +183,7 @@ weCollectionEdit = {
 		 this.reindexAndRetrieveCollection(true);
 		 */
 
-		/* use this to render fron storage */
+		/* use this to render from storage */
 		//this.addListenersToContainer();
 		this.renderView(true);
 
@@ -185,7 +202,8 @@ weCollectionEdit = {
 		this.maxIndex = 0;
 
 		for (var i = 0; i < this.collectionArr.length; i++) {
-			this.insertItem(null, false, this.storage['item_' + this.collectionArr[i]], this);
+			var last = (i === (this.collectionArr.length) - 1) && (this.storage['item_' + this.collectionArr[i]].id === -1);
+			this.insertItem(null, false, this.storage['item_' + this.collectionArr[i]], this, '', last);
 		}
 		this.reindexAndRetrieveCollection(notSetHot);
 	},
@@ -218,44 +236,46 @@ weCollectionEdit = {
 		 }
 		 */
 	},
-	addListenersToItem: function (view, elem, isItemEmpty) {
+	addListenersToItem: function (view, elem, last) {
 		var t = this, item, input, ctrls, space;
 
 		//TODO: grab elems by getElementByClassName instead of counting children...
 		if (this.view === 'grid') {
 			item = elem.firstChild;
-			item.addEventListener('mouseover', function () {
-				t.overMouse('item', view, item);
-			}, false);
-			item.addEventListener('mouseout', function () {
-				t.outMouse('item', view, item);
-			}, false);
+			if(!last){
+				item.addEventListener('mouseover', function () {
+					t.overMouse('item', view, item);
+				}, false);
+				item.addEventListener('mouseout', function () {
+					t.outMouse('item', view, item);
+				}, false);
 
-			ctrls = item.lastChild;
-			ctrls.addEventListener('mouseover', function () {
-				t.overMouse('btns', view, ctrls);
-			}, false);
-			ctrls.addEventListener('mouseout', function () {
-				t.outMouse('btns', view, ctrls);
-			}, false);
+				ctrls = item.lastChild;
+				ctrls.addEventListener('mouseover', function () {
+					t.overMouse('btns', view, ctrls);
+				}, false);
+				ctrls.addEventListener('mouseout', function () {
+					t.outMouse('btns', view, ctrls);
+				}, false);
 
-			if (this.isDragAndDrop) {
-				space = elem.childNodes[1];
-				space.addEventListener('drop', function (e) {
-					t.dropOnItem('space', view, e, space);
-				}, false);
-				space.addEventListener('dragover', function (e) {
-					t.allowDrop(e);
-				}, false);
-				space.addEventListener('dragenter', function (e) {
-					t.enterDrag('space', view, e, space);
-				}, false);
-				space.addEventListener('dragleave', function (e) {
-					t.leaveDrag('space', view, e, space);
-				}, false);
-				space.addEventListener('dblclick', function (e) {
-					t.dblClick('space', view, e, space);
-				}, false);
+				if (this.isDragAndDrop) {
+					space = elem.childNodes[1];
+					space.addEventListener('drop', function (e) {
+						t.dropOnItem('space', view, e, space);
+					}, false);
+					space.addEventListener('dragover', function (e) {
+						t.allowDrop(e);
+					}, false);
+					space.addEventListener('dragenter', function (e) {
+						t.enterDrag('space', view, e, space);
+					}, false);
+					space.addEventListener('dragleave', function (e) {
+						t.leaveDrag('space', view, e, space);
+					}, false);
+					space.addEventListener('dblclick', function (e) {
+						t.dblClick('space', view, e, space);
+					}, false);
+				}
 			}
 		} else {
 			item = elem;
@@ -269,16 +289,18 @@ weCollectionEdit = {
 		}
 
 		if (this.isDragAndDrop) {
-			item.draggable = true;
-			item.style.cursor = 'move';
+			if(!last){
+				item.style.cursor = 'move';
+				item.draggable = true;
+			}
 			item.addEventListener('dragleave', function (e) {
 				t.leaveDrag('item', view, e, item);
 			}, false);
 			item.addEventListener('drop', function (e) {
-				t.dropOnItem('item', view, e, item);
+				t.dropOnItem('item', view, e, item, last);
 			}, false);
 			item.addEventListener('dragenter', function (e) {
-				t.enterDrag('item', view, e, item);
+				t.enterDrag('item', view, e, item, last);
 			}, false);
 			item.addEventListener('dragover', function (e) {
 				t.allowDrop(e);
@@ -380,13 +402,15 @@ weCollectionEdit = {
 			var inner = document.createElement("div");
 			inner.style.height = (this.gridItemDimension.item - 14) + 'px';
 			inner.style.width = (this.gridItemDimension.item - 18) + 'px';
-			inner.style.border = '1px dotted #006db8';
+			inner.style.border = this.styles.standard.border;
+			inner.style.borderStyle = 'dotted';
 			this.dd.placeholder.appendChild(inner);
 		} else {
 			this.dd.placeholder.setAttribute("ondrop", "weCollectionEdit.dropOnItem(\'item\',\'grid\',event, this)");
-			this.dd.placeholder.style.border = '1px dotted #006db8';
 			this.dd.placeholder.style.height = '90px';
 			this.dd.placeholder.style.margin = '4px 0 0 0';
+			this.dd.placeholder.style.border = this.styles.standard.border;
+			this.dd.placeholder.style.borderStyle = 'dotted';
 		}
 
 		return this.dd.placeholder;
@@ -407,10 +431,10 @@ weCollectionEdit = {
 
 		return item ? item.id.substr(10) : 0;
 	},
-	insertItem: function (elem, repaint, item, scope, color) {
+	insertItem: function (elem, repaint, item, scope, color, last) {
 		var t = scope ? scope : this,
-						el = elem ? t.getItem(elem) : null,
-						div, newItem, cmd1, cmd2, cmd3, blank, elPreview;
+			el = elem ? t.getItem(elem) : null,
+			div, newItem, cmd1, cmd2, cmd3, blank, elPreview;
 
 		color = color ? color : false;
 		item = item ? item : this.storage['item_-1'];
@@ -459,6 +483,9 @@ weCollectionEdit = {
 				elPreview.style.background = 'transparent';
 				elPreview.style.display = 'block';
 			}
+			if(last){
+				div.getElementsByClassName('colControls')[0].style.display = 'none';
+			}
 		} else {
 			if (item.id === -1) {
 				cmd1 = weCmdEnc(weCollectionEdit.gridBtnCmds[0].replace(/##INDEX##/g, t.maxIndex));
@@ -484,6 +511,7 @@ weCollectionEdit = {
 			}
 
 			div.firstChild.style.width = div.firstChild.style.height = t.gridItemDimension.item + 'px';
+
 			div.getElementsByClassName('toolbarAttribs')[0].style.display = this.itemsPerRow > 5 ? 'none' : 'block';
 			if (item.id === -1) {
 				div.getElementsByClassName('toolbarBtns')[0].removeChild(div.getElementsByClassName('toolbarBtns')[0].firstChild);
@@ -492,8 +520,11 @@ weCollectionEdit = {
 		}
 
 		newItem = el ? t.ct[t.view].insertBefore(div.firstChild, el.nextSibling) : t.ct[t.view].appendChild(div.firstChild);
-		newItem.firstChild.style.backgroundColor = color;
-		t.addListenersToItem(t.view, newItem, (item.id === -1));
+		if(last){
+			newItem.setAttribute("name", "last");
+		}
+		this.resetItemColors(newItem);
+		t.addListenersToItem(t.view, newItem, last);
 
 		if (repaint) {
 			t.reindexAndRetrieveCollection();
@@ -608,7 +639,7 @@ weCollectionEdit = {
 		this.numSpan.innerHTML = this.collectionNum;
 
 		if (val !== -1) {
-			this.insertItem(ct.lastChild, true);
+			this.insertItem(ct.lastChild, true, null, this, '', true);//elem, repaint, item, scope, color, last
 		}
 
 		if (!this.collectionName) {
@@ -622,8 +653,8 @@ weCollectionEdit = {
 	hideSpace: function (elem) { // TODO: use classes do define states!
 		elem.style.width = '12px';
 		elem.style.right = '0px';
-		elem.style.border = '1px solid white';
-		elem.style.backgroundColor = 'white';
+		elem.style.border = '1px solid #ffffff';
+		elem.style.backgroundColor = '#ffffff';
 		elem.style.margin = '0';
 		elem.previousSibling.style.right = '14px';
 		if (elem.parentNode.nextSibling) {
@@ -633,22 +664,24 @@ weCollectionEdit = {
 	resetColors: function (scope) {
 		var me = scope || this;
 		for (var i = 0; i < me.ct[me.view].childNodes.length; i++) {
-			me.resetItemColors(me.ct[me.view].childNodes[i]);
+			me.resetItemColors(me.ct[me.view].childNodes[i], false, me);
 		}
 	},
-	resetItemColors: function (el) {
+	resetItemColors: function (el, color) {
 		if (!el) {
-			return;
+			return false;
 		}
+		color = color || 'standard';
+		var set = weCollectionEdit.styles[color];
 
 		switch (this.view) {
 			case 'grid':
-				el.firstChild.style.border = '1px solid #006db8';
-				el.firstChild.style.backgroundColor = 'white';
+				el.firstChild.style.border = (el.getAttribute('name') === 'last' ? set.borderLast : set.border);
+				el.firstChild.style.backgroundColor = set.backgroundColor;
 				break;
 			case 'list':
-				el.style.border = '1px solid #006db8';
-				el.firstChild.style.backgroundColor = '#f5f5f5';
+				el.style.border = (el.getAttribute('name') === 'last' ? set.borderLast : set.border);
+				el.firstChild.style.backgroundColor = set.backgroundColor;
 				break;
 		}
 	},
@@ -663,10 +696,10 @@ weCollectionEdit = {
 	allowDrop: function (evt) {
 		evt.preventDefault();
 	},
-	enterDrag: function (type, view, evt, elem) {
+	enterDrag: function (type, view, evt, elem, last) {
 		var el = this.getItem(elem);
 		var data = evt.dataTransfer.getData("text") ? evt.dataTransfer.getData("text").split(',') : top.dd.dataTransfer.text.split(',');
-		var c, i, newPos;
+		var c, newPos;
 
 		if (this.view === 'grid' && type === 'item') {
 			this.outMouse(type, this.view, elem);
@@ -674,7 +707,7 @@ weCollectionEdit = {
 
 		switch (data[0]) {
 			case 'moveItem':
-				if (type === 'item') {
+				if (!last && type === 'item') {
 					c = this.ct[this.view];
 
 					if (!this.dd.moveItem.removed) {
@@ -682,7 +715,7 @@ weCollectionEdit = {
 						c.removeChild(this.dd.moveItem.el);
 						c.insertBefore(this.getPlaceholder(), c.childNodes[newPos + (newPos >= this.dd.moveItem.pos ? 0 : -1)]);
 						this.dd.moveItem.removed = true;
-						return;
+						return false;
 					}
 
 					newPos = [].indexOf.call(c.children, el);
@@ -695,13 +728,7 @@ weCollectionEdit = {
 				if (this.view === 'grid') {
 					switch (type) {
 						case 'item':
-							c = this.ct[this.view];
-
-							this.dd.counter++;
-							for (i = 0; i < c.childNodes.length; i++) {
-								c.childNodes[i].firstChild.border = '1px solid #006db8';
-								c.childNodes[i].firstChild.style.backgroundColor = '#ffffff';
-							}
+							this.resetColors();
 							break;
 						case 'space':
 							if (elem.parentNode.id.substr(10) % this.itemsPerRow === 0) {
@@ -719,48 +746,22 @@ weCollectionEdit = {
 							}
 							break;
 					}
-					if (data[0] === 'dragFolder') {
-						elem.style.border = '1px dotted #ffff00';
-						elem.style.backgroundColor = '#ffffee';
-					} else if (!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) !== -1) {
-						elem.style.border = '1px dotted #00ff00';
-						elem.style.backgroundColor = '#fafffa';
+					if (data[0] === 'dragFolder' || (!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) !== -1)) {
+						this.resetItemColors(el, 'okPrev');
 					} else {
-						elem.style.border = '1px dotted #ff0000';
-						elem.style.backgroundColor = '#fffafa';
+						this.resetItemColors(el, 'nokPrev');
 					}
 				} else {
 					this.dd.counter++;
-					c = this.ct[this.view];
-					for (i = 0; i < c.childNodes.length; i++) {
-						c.childNodes[i].style.border = '1px solid #006db8';
-						c.childNodes[i].firstChild.style.backgroundColor = '#f5f5f5';
-					}
+					this.resetColors();
 					switch (type) {
 						case 'item':
-							if (data[0] === 'dragFolder') {
-								el.style.border = '1px dotted #ffff00';
-								el.firstChild.style.backgroundColor = '#ffffee';
-							} else if (!this.we_doc.remCT || this.we_doc.remCT.search(',' + data[3]) !== -1) {
-								el.style.border = '1px dotted #00ff00';
-								el.firstChild.style.backgroundColor = '#fafffa';
+							if (data[0] === 'dragFolder' || (!this.we_doc.remCT || this.we_doc.remCT.search(',' + data[3]) !== -1)) {
+								this.resetItemColors(el, 'okPrev');
 							} else {
-								el.style.border = '1px dotted #ff0000';
-								el.firstChild.style.backgroundColor = '#fffafa';
+								this.resetItemColors(el, 'nokPrev');
 							}
 							break;
-							/*
-							 case 'space':
-							 if(!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) != -1){
-							 elem.style.width = '36px';
-							 elem.style.margin = '0 4px 0 4px';
-							 elem.style.border = '1px dotted #00cc00';
-							 elem.previousSibling.style.width = '224px';
-							 elem.parentNode.nextSibling.firstChild.style.width = '224px';
-							 } else {
-							 //el.style.border = '1px solid red';
-							 }
-							 */
 					}
 				}
 				break;
@@ -772,8 +773,7 @@ weCollectionEdit = {
 		if (this.view === 'list') {
 			this.dd.counter--;
 			if (this.dd.counter === 0) {
-				elem.style.border = '1px solid #006db8';
-				elem.firstChild.style.backgroundColor = '#f5f5f5';
+				this.resetItemColors(elem);
 			}
 		} else {
 			var data = evt.dataTransfer.getData("text") ? evt.dataTransfer.getData("text").split(',') : top.dd.dataTransfer.text.split(',');
@@ -784,8 +784,7 @@ weCollectionEdit = {
 						case 'item':
 							this.dd.counter--;
 							if (this.dd.counter === 0) {
-								elem.style.border = '1px solid #006db8';
-								elem.style.backgroundColor = '#ffffff';
+								this.resetItemColors(elem);
 							}
 							break;
 						case 'space':
@@ -843,7 +842,7 @@ weCollectionEdit = {
 			this.outMouse('item', this.view, el.firstChild);
 		}
 	},
-	dropOnItem: function (type, view, evt, elem) {
+	dropOnItem: function (type, view, evt, elem, last) {
 		evt.preventDefault();
 
 		var data = [], el, index;
@@ -856,21 +855,23 @@ weCollectionEdit = {
 
 		switch (data[0]) {
 			case 'moveItem':
-				this.dd.isMoveItem = false;
-				if (this.dd.moveItem.el !== this.getItem(elem)) {
-					var indexNextToNewPos = this.getPlaceholder().nextSibling ? this.getPlaceholder().nextSibling.id.substr(10) : 0,
-									otherView = view === 'grid' ? 'list' : 'grid';
+				if(!last){
+					this.dd.isMoveItem = false;
+					if (this.dd.moveItem.el !== this.getItem(elem)) {
+						var indexNextToNewPos = this.getPlaceholder().nextSibling ? this.getPlaceholder().nextSibling.id.substr(10) : 0,
+							otherView = view === 'grid' ? 'list' : 'grid';
 
-					this.ct[this.view].replaceChild(this.dd.moveItem.el, this.getPlaceholder());
-					this.dd.moveItem.el.firstChild.style.borderColor = 'green';
-					this.reindexAndRetrieveCollection();
+						this.ct[this.view].replaceChild(this.dd.moveItem.el, this.getPlaceholder());
+						this.dd.moveItem.el.firstChild.style.borderColor = 'green';
+						this.reindexAndRetrieveCollection();
 
-					setTimeout(function () {
-						weCollectionEdit.dd.moveItem.el.firstChild.style.borderColor = '#006db8';
-						weCollectionEdit.resetDdParams();
-					}, 200);
+						setTimeout(function () {
+							weCollectionEdit.resetItemColors(weCollectionEdit.dd.moveItem.el);
+							weCollectionEdit.resetDdParams();
+						}, 200);
 
-					//weCollectionEdit.resetDdParams();
+						//weCollectionEdit.resetDdParams();
+					}
 				}
 				break;
 			case 'dragItem':
@@ -892,8 +893,8 @@ weCollectionEdit = {
 						this.callForValidItemsAndInsert(index, data[2], false, type !== 'item', el);
 						return;
 					} else {
-
 						alert("the item you try to drag doesn't match your collection's contenttypes");
+						this.resetColors();
 					}
 				} else {
 					alert("the tree you try to drag from doesn't match your collection's table property"); // FIXME: GL()
@@ -934,7 +935,7 @@ weCollectionEdit = {
 		this.ct[this.view].insertBefore(this.dd.moveItem.el, this.dd.moveItem.next);
 		this.reindexAndRetrieveCollection();
 		setTimeout(function () {
-			weCollectionEdit.dd.moveItem.el.style.borderColor = '#006db8';
+			weCollectionEdit.resetItemColors(weCollectionEdit.dd.moveItem.el);
 			weCollectionEdit.resetDdParams();
 			if (this.view === 'list') {
 
