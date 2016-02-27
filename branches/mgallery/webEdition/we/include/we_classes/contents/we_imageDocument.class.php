@@ -109,7 +109,6 @@ class we_imageDocument extends we_binaryDocument{
 	 * @return array
 	 */
 	function getOrigSize($calculateNew = false, $useOldPath = false){
-		$arr = array(0, 0, 0, '');
 		if(!$this->DocChanged && $this->ID){
 			if($this->getElement('origwidth') && $this->getElement('origheight') && ($calculateNew == false)){
 				return array($this->getElement('origwidth'), $this->getElement('origheight'), 0, '');
@@ -117,10 +116,11 @@ class we_imageDocument extends we_binaryDocument{
 			// we have to calculate the path, because maybe the document was renamed
 			//$path = $this->getParentPath() . '/' . $this->Filename . $this->Extension;
 			return we_thumbnail::getimagesize(WEBEDITION_PATH . '../' . (($useOldPath && $this->OldPath) ? $this->OldPath : $this->Path));
-		} else if(($tmp = $this->getElement('data'))){
-			$arr = we_thumbnail::getimagesize($tmp);
 		}
-		return $arr;
+		if(($tmp = $this->getElement('data'))){
+			return we_thumbnail::getimagesize($tmp);
+		}
+		return array(0, 0, 0, '');
 	}
 
 	/**
@@ -129,24 +129,23 @@ class we_imageDocument extends we_binaryDocument{
 	 * @return array
 	 */
 	function getThumbs(){
-		$thumbs = array();
-		if($this->Thumbs == -1){
-			$this->DB_WE->query('SELECT * FROM ' . THUMBNAILS_TABLE);
-			$thumbObj = new we_thumbnail();
-
-			while($this->DB_WE->next_record()){
-				$thumbObj->init($this->DB_WE->f('ID'), $this->DB_WE->f('Width'), $this->DB_WE->f('Height'), $this->DB_WE->f('Options'), $this->DB_WE->f('Format'), $this->DB_WE->f('Name'), $this->ID, $this->Filename, $this->Path, $this->Extension, $this->getElement('origwidth'), $this->getElement('origheight'), $this->DB_WE->f('Quality'));
-
-				if($thumbObj->exists() && $thumbObj->getOutputPath() != $this->Path){
-					$thumbs[] = $this->DB_WE->f('ID');
-				}
-			}
-
-			$this->Thumbs = implode(',', $thumbs);
-		} else {
-			$thumbs = array_filter(explode(',', $this->Thumbs));
+		if($this->Thumbs != -1){
+			return array_filter(explode(',', $this->Thumbs));
 		}
 
+		$thumbs = array();
+		$this->DB_WE->query('SELECT * FROM ' . THUMBNAILS_TABLE);
+		$thumbObj = new we_thumbnail();
+
+		while($this->DB_WE->next_record()){
+			$thumbObj->init($this->DB_WE->f('ID'), $this->DB_WE->f('Width'), $this->DB_WE->f('Height'), $this->DB_WE->f('Options'), $this->DB_WE->f('Format'), $this->DB_WE->f('Name'), $this->ID, $this->Filename, $this->Path, $this->Extension, $this->getElement('origwidth'), $this->getElement('origheight'), $this->DB_WE->f('Quality'));
+
+			if($thumbObj->exists() && $thumbObj->getOutputPath() != $this->Path){
+				$thumbs[] = $this->DB_WE->f('ID');
+			}
+		}
+
+		$this->Thumbs = implode(',', $thumbs);
 		return $thumbs;
 	}
 
@@ -448,8 +447,8 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 			}
 
 			if($this->issetElement('sizingstyle')){
-				$sizingstyle = $this->getElement('sizingstyle');
-				$sizingstyle = $sizingstyle === 'none' ? false : $sizingstyle;
+				$tmp = $this->getElement('sizingstyle');
+				$sizingstyle = $tmp === 'none' ? false : $tmp;
 				$this->delElement('sizingstyle');
 			} else {
 				$sizingstyle = false;
@@ -549,25 +548,23 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 					we_base_imageCrop::getJS() . we_base_imageCrop::getCSS() . we_base_imageCrop::getCrop($attribs) :
 					$this->getRollOverScript($src) . getHtmlTag('img', array_merge($attribs, $this->getRollOverAttribsArr(false)));
 			}
-		} else {
-			if($pathOnly){
-				//be compatible
-				return '';
-			}
-			$xml = isset($attribs) ? weTag_getAttribute('xml', $attribs, false, we_base_request::BOOL) : true; //rest is done in getHtmlTag
-			$attribs = array('style' => 'margin:8px 18px;border-style:none;width:64px;height:64px;',
-				'src' => ICON_DIR . 'no_image.gif',
-				'alt' => 'no-image',
-				'xml' => $xml,
-			);
-			if(isset($this->name)){
-				$attribs['name'] = $this->name;
-			}
-
-			$this->html = getHtmlTag('img', $attribs);
+			return $this->html;
+		}
+		if($pathOnly){
+			//be compatible
+			return '';
+		}
+		$xml = isset($attribs) ? weTag_getAttribute('xml', $attribs, false, we_base_request::BOOL) : true; //rest is done in getHtmlTag
+		$attribs = array('style' => 'margin:8px 18px;border-style:none;width:64px;height:64px;',
+			'src' => ICON_DIR . 'no_image.gif',
+			'alt' => 'no-image',
+			'xml' => $xml,
+		);
+		if(isset($this->name)){
+			$attribs['name'] = $this->name;
 		}
 
-		return $this->html;
+		return ($this->html = getHtmlTag('img', $attribs));
 	}
 
 	/**
@@ -634,7 +631,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$_content->setCol($row, 0, array('colspan' => 3), $this->formInput2(328, 'title', 23, 'attrib', ($this->getElement('useMetaTitle') == 1 ? "readonly='readonly'" : "") . '" onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"', 'Title'));
 
 		$_titleField = 'we_' . $this->Name . '_attrib[title]';
-		$_metaTitleField = 'we_' . $this->Name . '_txt[Title]';
+		//$_metaTitleField = 'we_' . $this->Name . '_txt[Title]';
 		$useMetaTitle = 'we_' . $this->Name . '_attrib[useMetaTitle]';
 		//	disable field 'title' when checked or not.   on checked true: document.forms[0]['$_titleField'].value='$this->getElement('Title')' and  onchecked false: document.forms[0]['$_titleField'].value='' added to fix bug #5814
 		$_content->setCol($row++, 2, array('style' => 'vertical-align:bottom'), we_html_forms::checkboxWithHidden($this->getElement('useMetaTitle'), $useMetaTitle, g_l('weClass', '[use_meta_title]'), false, 'defaultfont', "if(this.checked){ document.forms[0]['" . $_titleField . "'].setAttribute('readonly', 'readonly', 'false'); document.forms[0]['" . $_titleField . "'].value = '" . $this->getElement('Title') . "'; }else{ document.forms[0]['" . $_titleField . "'].removeAttribute('readonly', 'false'); document.forms[0]['" . $_titleField . "'].value='';}WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"));
@@ -735,7 +732,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 
 	function importMetaData($fieldsToImport = null, $importOnlyEmptyFields = false){
 		$this->getMetaData();
-		if(!isset($this->metaData) || !is_array($this->metaData)){
+		if(empty($this->metaData) || !is_array($this->metaData)){
 			return;
 		}
 
@@ -797,14 +794,14 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$idname = 'we_' . $this->Name . '_txt[LinkID]';
 		$extname = 'we_' . $this->Name . '_txt[LinkHref]';
 		$linkType = $this->getElement('LinkType') ? : 'no';
-		$linkPath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID = ' . intval($this->getElement('LinkID')), '', $this->DB_WE);
+		$linkPath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->getElement('LinkID')), '', $this->DB_WE);
 
 		$RollOverFlagName = 'we_' . $this->Name . '_txt[RollOverFlag]';
 		$RollOverFlag = $this->getElement('RollOverFlag') ? 1 : 0;
 		$RollOverIDName = 'we_' . $this->Name . '_txt[RollOverID]';
 		$RollOverID = $this->getElement('RollOverID') ? : '';
 		$RollOverPathname = 'we_' . $this->Name . '_txt[RollOverPath]';
-		$RollOverPath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID = ' . intval($RollOverID), '', $this->DB_WE);
+		$RollOverPath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($RollOverID), '', $this->DB_WE);
 
 		$checkFlagName = 'check_' . $this->Name . '_RollOverFlag';
 		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
@@ -821,7 +818,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		if(defined('OBJECT_TABLE')){
 			$objidname = 'we_' . $this->Name . '_txt[ObjID]';
 			$objtextname = 'we_' . $this->Name . '_txt[ObjPath]';
-			$objPath = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID = ' . intval($this->getElement('ObjID')), '', $this->DB_WE);
+			$objPath = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->getElement('ObjID')), '', $this->DB_WE);
 			$cmd1 = "document.we_form.elements['" . $objidname . "'].value";
 			$butObj = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . OBJECT_FILES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $objtextname . "'].value") . "','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_" . $this->Name . "_txt[LinkType]'][3].checked=true;") . "','','','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");");
 		}
@@ -864,7 +861,6 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 
 		// Object link
 		if(defined('OBJECT_TABLE')){
-
 			$yuiSuggest->setAcId('objPathLink');
 			$yuiSuggest->setContentType("folder," . we_base_ContentTypes::OBJECT_FILE);
 			$yuiSuggest->setInput($objtextname, $objPath);
@@ -919,69 +915,73 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 
 	static function checkAndPrepare($formname, $key = 'we_document'){
 		// check to see if there is an image to create or to change
-		if(isset($_FILES['we_ui_' . $formname]) && is_array($_FILES['we_ui_' . $formname])){
+		if(empty($_FILES['we_ui_' . $formname]) ||
+			!is_array($_FILES['we_ui_' . $formname]) ||
+			empty($_FILES['we_ui_' . $formname]['name']) ||
+			!is_array($_FILES['we_ui_' . $formname]['name'])
+		){
+			return;
+		}
 
-			if(isset($_FILES['we_ui_' . $formname]['name']) && is_array($_FILES['we_ui_' . $formname]['name'])){
-				foreach($_FILES['we_ui_' . $formname]['name'] as $imgName => $filename){
-					$_imgDataId = we_base_request::_(we_base_request::STRING, 'WE_UI_IMG_DATA_ID_' . $imgName);
+		foreach($_FILES['we_ui_' . $formname]['name'] as $imgName => $filename){
+			$_imgDataId = we_base_request::_(we_base_request::STRING, 'WE_UI_IMG_DATA_ID_' . $imgName);
 
-					if($_imgDataId !== false && isset($_SESSION[$_imgDataId])){
-						$_SESSION[$_imgDataId]['doDelete'] = false;
+			if($_imgDataId === false || !isset($_SESSION[$_imgDataId])){
+				continue;
+			}
 
-						if(we_base_request::_(we_base_request::BOOL, 'WE_UI_DEL_CHECKBOX_' . $imgName)){
-							$_SESSION[$_imgDataId]['doDelete'] = true;
-							$_SESSION[$_imgDataId]['id'] = $_SESSION[$_imgDataId]['id'] ? : (intval($GLOBALS[$key][$formname]->getElement($imgName)) ? : 0);
-						} elseif($filename){
-							// file is selected, check to see if it is an image
-							$ct = getContentTypeFromFile($filename);
-							if($ct == we_base_ContentTypes::IMAGE){
-								$imgId = intval($GLOBALS[$key][$formname]->getElement($imgName));
+			$_SESSION[$_imgDataId]['doDelete'] = false;
 
-								// move document from upload location to tmp dir
-								$_SESSION[$_imgDataId]['serverPath'] = TEMP_PATH . we_base_file::getUniqueId();
-								move_uploaded_file($_FILES['we_ui_' . $formname]['tmp_name'][$imgName], $_SESSION[$_imgDataId]['serverPath']);
+			if(we_base_request::_(we_base_request::BOOL, 'WE_UI_DEL_CHECKBOX_' . $imgName)){
+				$_SESSION[$_imgDataId]['doDelete'] = true;
+				$_SESSION[$_imgDataId]['id'] = $_SESSION[$_imgDataId]['id'] ? : (intval($GLOBALS[$key][$formname]->getElement($imgName)) ? : 0);
+			} elseif($filename){
+				// file is selected, check to see if it is an image
+				$ct = getContentTypeFromFile($filename);
+				if($ct == we_base_ContentTypes::IMAGE){
+					$imgId = intval($GLOBALS[$key][$formname]->getElement($imgName));
 
-								$we_size = we_thumbnail::getimagesize($_SESSION[$_imgDataId]['serverPath']);
+					// move document from upload location to tmp dir
+					$_SESSION[$_imgDataId]['serverPath'] = TEMP_PATH . we_base_file::getUniqueId();
+					move_uploaded_file($_FILES['we_ui_' . $formname]['tmp_name'][$imgName], $_SESSION[$_imgDataId]['serverPath']);
 
-								if(empty($we_size)){
-									unset($_SESSION[$_imgDataId]);
-									return;
-								}
+					$we_size = we_thumbnail::getimagesize($_SESSION[$_imgDataId]['serverPath']);
 
-								$tmp_Filename = $imgName . '_' . we_base_file::getUniqueId() . '_' .
-									preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES['we_ui_' . $formname]['name'][$imgName]);
-
-								if($imgId){
-									$_SESSION[$_imgDataId]['id'] = $imgId;
-								}
-
-								$_SESSION[$_imgDataId]['fileName'] = preg_replace('#^(.+)\..+$#', '${1}', $tmp_Filename);
-								$_SESSION[$_imgDataId]['extension'] = (strpos($tmp_Filename, '.') > 0) ?
-									preg_replace('#^.+(\..+)$#', '${1}', $tmp_Filename) : '';
-								$_SESSION[$_imgDataId]['text'] = $_SESSION[$_imgDataId]['fileName'] . $_SESSION[$_imgDataId]['extension'];
-
-								//image needs to be scaled
-								if((isset($_SESSION[$_imgDataId]['width']) && $_SESSION[$_imgDataId]['width']) ||
-									(isset($_SESSION[$_imgDataId]['height']) && $_SESSION[$_imgDataId]['height'])){
-									$imageData = we_base_file::load($_SESSION[$_imgDataId]['serverPath']);
-									$thumb = new we_thumbnail();
-									$thumb->init('dummy', $_SESSION[$_imgDataId]['width'], $_SESSION[$_imgDataId]['height'], array($_SESSION[$_imgDataId]['keepratio'] ? we_thumbnail::OPTION_RATIO : 0, $_SESSION[$_imgDataId]['maximize'] ? we_thumbnail::OPTION_MAXSIZE : 0), '', 'dummy', 0, '', '', $_SESSION[$_imgDataId]['extension'], $we_size[0], $we_size[1], $imageData, '', $_SESSION[$_imgDataId]['quality']);
-
-									$imgData = '';
-									$thumb->getThumb($imgData);
-
-									we_base_file::save($_SESSION[$_imgDataId]['serverPath'], $imageData);
-
-									$we_size = we_thumbnail::getimagesize($_SESSION[$_imgDataId]['serverPath']);
-								}
-
-								$_SESSION[$_imgDataId]['imgwidth'] = $we_size[0];
-								$_SESSION[$_imgDataId]['imgheight'] = $we_size[1];
-								$_SESSION[$_imgDataId]['type'] = $_FILES['we_ui_' . $formname]['type'][$imgName];
-								$_SESSION[$_imgDataId]['size'] = $_FILES['we_ui_' . $formname]['size'][$imgName];
-							}
-						}
+					if(empty($we_size)){
+						unset($_SESSION[$_imgDataId]);
+						return;
 					}
+
+					$tmp_Filename = $imgName . '_' . we_base_file::getUniqueId() . '_' .
+						preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES['we_ui_' . $formname]['name'][$imgName]);
+
+					if($imgId){
+						$_SESSION[$_imgDataId]['id'] = $imgId;
+					}
+
+					$_SESSION[$_imgDataId]['fileName'] = preg_replace('#^(.+)\..+$#', '${1}', $tmp_Filename);
+					$_SESSION[$_imgDataId]['extension'] = (strpos($tmp_Filename, '.') > 0) ? preg_replace('#^.+(\..+)$#', '${1}', $tmp_Filename) : '';
+					$_SESSION[$_imgDataId]['text'] = $_SESSION[$_imgDataId]['fileName'] . $_SESSION[$_imgDataId]['extension'];
+
+					//image needs to be scaled
+					if(!empty($_SESSION[$_imgDataId]['width']) ||
+						!empty($_SESSION[$_imgDataId]['height'])){
+						$imageData = we_base_file::load($_SESSION[$_imgDataId]['serverPath']);
+						$thumb = new we_thumbnail();
+						$thumb->init('dummy', $_SESSION[$_imgDataId]['width'], $_SESSION[$_imgDataId]['height'], array($_SESSION[$_imgDataId]['keepratio'] ? we_thumbnail::OPTION_RATIO : 0, $_SESSION[$_imgDataId]['maximize'] ? we_thumbnail::OPTION_MAXSIZE : 0), '', 'dummy', 0, '', '', $_SESSION[$_imgDataId]['extension'], $we_size[0], $we_size[1], $imageData, '', $_SESSION[$_imgDataId]['quality']);
+
+						$imgData = '';
+						$thumb->getThumb($imgData);
+
+						we_base_file::save($_SESSION[$_imgDataId]['serverPath'], $imageData);
+
+						$we_size = we_thumbnail::getimagesize($_SESSION[$_imgDataId]['serverPath']);
+					}
+
+					$_SESSION[$_imgDataId]['imgwidth'] = $we_size[0];
+					$_SESSION[$_imgDataId]['imgheight'] = $we_size[1];
+					$_SESSION[$_imgDataId]['type'] = $_FILES['we_ui_' . $formname]['type'][$imgName];
+					$_SESSION[$_imgDataId]['size'] = $_FILES['we_ui_' . $formname]['size'][$imgName];
 				}
 			}
 		}

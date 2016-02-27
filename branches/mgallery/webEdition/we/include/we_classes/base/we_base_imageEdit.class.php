@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,6 @@
  * Provides functions for creating webEdition buttons.
  */
 abstract class we_base_imageEdit{
-
 	const IMAGE_EXTENSIONS = 'svgz';
 
 	public static $GDIMAGE_TYPE = array('.gif' => 'gif', '.jpg' => 'jpg', '.jpeg' => 'jpg', '.png' => 'png');
@@ -195,8 +193,8 @@ abstract class we_base_imageEdit{
 
 			// Detect information string now
 			$_gdversion = (substr($_gdinfo['GD Version'], 0, strlen($_searchstring)) == $_searchstring ?
-							substr($_gdinfo['GD Version'], strlen($_searchstring), 3) :
-							substr($_gdinfo['GD Version'], 0, 3));
+					substr($_gdinfo['GD Version'], strlen($_searchstring), 3) :
+					substr($_gdinfo['GD Version'], 0, 3));
 		}
 
 		return $_gdversion;
@@ -631,8 +629,8 @@ abstract class we_base_imageEdit{
 					// Output to a filename or directly
 					if($output_filename){
 						$_gdimg = imagejpeg($_output_gdimg, $output_filename, $output_quality) ?
-								basename($output_filename) :
-								'';
+							basename($output_filename) :
+							'';
 					} elseif(($_tempfilename = tempnam(TEMP_PATH, ''))){
 						imagejpeg($_output_gdimg, $_tempfilename, $output_quality);
 						$_gdimg = we_base_file::load($_tempfilename);
@@ -686,7 +684,7 @@ abstract class we_base_imageEdit{
 	public static function createPreviewThumb($imgSrc, $imgID, $width, $height, &$outputFormat = 'jpg', $outputQuality = 75, $tmpName = ''){
 		if(self::gd_version() == 0){
 			$outputFormat = 'gif';
-			return ICON_DIR . 'image.gif';
+			return $_SERVER['DOCUMENT_ROOT'] . ICON_DIR . 'image.gif';
 		}
 		if(substr($imgSrc, 0, strlen($_SERVER ['DOCUMENT_ROOT'])) == $_SERVER['DOCUMENT_ROOT']){ // it is no src, it is a server path
 			$imgSrc = substr($imgSrc, strlen($_SERVER['DOCUMENT_ROOT']));
@@ -698,18 +696,19 @@ abstract class we_base_imageEdit{
 		if(isset($path_parts['extension']) && ( $path_parts ['extension'] === 'svg' || $path_parts['extension'] === 'svgz')){
 			if(file_exists($_imgPath)){
 				$outputFormat = 'svg-xml';
-				return $imgSrc;
+				return $_imgPath;
 			}
 			$outputFormat = 'gif';
-			return ICON_DIR . 'image.gif';
+			return $_SERVER['DOCUMENT_ROOT'] . ICON_DIR . 'image.gif';
 		}
 		if(!file_exists($_imgPath) || !($imagesize = getimagesize($_imgPath))){
-			$imagesize = array(0, 0);
+			return $_imgPath;
 		}
+
 		if($imagesize[0] > $width || $imagesize[1] > $height){
 			$_thumbSrc = ($imgID ?
-							WE_THUMBNAIL_DIRECTORY . '/' . $imgID . '_' . $width . '_' . $height . '.' . strtolower($outputFormat) :
-							TEMP_DIR . ($tmpName ? : we_base_file::getUniqueId()) . '.' . strtolower($outputFormat));
+					WE_THUMBNAIL_DIRECTORY . '/' . $imgID . '_' . $width . '_' . $height . '.' . strtolower($outputFormat) :
+					TEMP_DIR . ($tmpName ? : we_base_file::getUniqueId()) . '.' . strtolower($outputFormat));
 			$_thumbPath = WEBEDITION_PATH . '../' . $_thumbSrc;
 
 			$_thumbExists = file_exists($_thumbPath);
@@ -728,7 +727,7 @@ abstract class we_base_imageEdit{
 			return $_thumbSrc;
 		}
 
-		return$_SERVER['DOCUMENT_ROOT'] . $imgSrc;
+		return $_imgPath;
 	}
 
 	/**
