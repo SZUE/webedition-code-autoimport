@@ -137,7 +137,7 @@ if($isTempl){
 	$contentNew = '<textarea style="width:99%;height:99%">' . ($nDocElements ? $nDocElements['data']['dat'] : '') . '</textarea>';
 }
 if(!empty($oldDoc) && !($isObj || $isTempl)){
-	$contentOld = '<iframe name="previewOld" src="' . WEBEDITION_DIR . 'showTempFile.php?file=' . str_replace(WEBEDITION_DIR, '', VERSION_DIR . $fileOld) .'&charset=' . $oldDoc['Charset'] . '" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>';
+	$contentOld = '<iframe name="previewOld" src="' . WEBEDITION_DIR . 'showTempFile.php?file=' . str_replace(WEBEDITION_DIR, '', VERSION_DIR . $fileOld) . '&charset=' . $oldDoc['Charset'] . '" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>';
 }
 if(!empty($oldDoc) && $isTempl){
 	$oDocElements = ($oldDoc['documentElements'] ?
@@ -316,7 +316,7 @@ if($newDocElements){
 			$newVal = explode("\n", str_replace("\r", "\n", str_replace("\r\n", "\n", $newVal)));
 			$diff = new Horde_Text_Diff('Native', array(($oldVersion ? $oldVal : array()), is_array($newVal) ? $newVal : array()));
 			$renderer = new Horde_Text_Diff_Renderer_Inline(array('ins_prefix' => '<span class="insA">+<span class="bold insB">', 'ins_suffix' => '</span>+</span>',
-				'del_prefix' => '<span class="delA">-<span class="bold delB">-', 'del_suffix' =>  '</span>-</span>',));
+				'del_prefix' => '<span class="delA">-<span class="bold delB">-', 'del_suffix' => '</span>-</span>',));
 
 			$text = $renderer->render($diff);
 
@@ -556,6 +556,7 @@ if(!$isObj){
 
 echo we_html_tools::getHtmlTop('webEdition - ' . g_l('versions', '[versioning]'), ($newDoc['Charset'] ? : DEFAULT_CHARSET)) .
  STYLESHEET .
+ we_html_element::cssLink(CSS_DIR . 'we_version_preview.css') .
  we_tabs::getHeader();
 ?>
 
@@ -576,90 +577,6 @@ echo we_html_tools::getHtmlTop('webEdition - ' . g_l('versions', '[versioning]')
 		activ_tab = tab;
 	}//-->
 </script>
-<style>
-	#top{
-		margin-left:25px;
-	}
-	td {
-		font-size:11px;
-		vertical-align:top;
-		padding: 5px;
-		border-bottom:1px solid #B8B8B7;
-		border-left:1px solid #B8B8B7;
-	}
-	#tab1 {
-		position:absolute;
-		overflow:auto;
-	}
-	#topPrint {
-		margin:0px 0px 0px 25px;
-		display: none;
-	}
-	#content{
-		position:absolute;
-		margin: 0px;
-		top:30px;
-		bottom:40px;
-		left:0px;
-		right:0px;
-		overflow:auto;
-	}
-	table{
-		width:95%;
-		background-color:#F5F5F5;
-		margin:15px 15px 15px 25px;
-		border-left:1px solid #B8B8B7;
-		border-right:1px solid #B8B8B7;
-	}
-	thead td{
-		background-color:#BCBBBB;
-		text-align:left;
-	}
-
-	table.propDiff td{
-		width:33%;
-	}
-
-	tr.changedElement{
-		background-color:#BFD5FF;
-	}
-
-	span.insA{
-		color:blue;
-	}
-	span.insB{
-		text-decoration:underline;
-	}
-	span.delA{
-		color:red;
-	}
-	span.delB{
-		text-decoration: line-through;
-	}
-
-
-	@media print{
-		td {
-			font-size:9px;
-			vertical-align:top;
-			padding: 5px;
-		}
-		#tab1 {
-			position:relative;
-			overflow: visible;
-			font-size:12px;
-		}
-		#tab2,
-		#tab3,
-		#eHeaderBody,
-		#top {
-			display: none
-		}
-		#topPrint {
-			display: block
-		}
-	}
-</style>
 </head>
 
 <body class="weDialogBody">
