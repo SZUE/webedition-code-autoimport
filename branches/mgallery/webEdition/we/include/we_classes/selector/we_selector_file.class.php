@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_selector_file{
-
 	const FRAMESET = 0;
 	const FOOTER = 2;
 	const BODY = 3;
@@ -103,6 +102,9 @@ class we_selector_file{
 			case NAVIGATION_TABLE:
 				$this->fields = 'ID,ParentID,Text,Path,IsFolder,IF(IsFolder,"folder","we/navigation") AS ContentType';
 				break;
+			case USER_TABLE:
+				$this->fields = 'ID,ParentID,CONCAT(First," ", Second," (",Text,")") AS Text,Path,IsFolder,(IF(IsFolder,"we/userGroup",(IF(Alias>0,"we/alias","we/user")))) AS ContentType';
+				break;
 			default:
 				$this->fields = 'ID,ParentID,Text,Path,IsFolder,ContentType';
 		}
@@ -120,15 +122,15 @@ class we_selector_file{
 
 	protected function setDirAndID(){
 		if($this->id > 0 &&
-				// get default Directory
-				($data = getHash('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->id), $this->db))){
+			// get default Directory
+			($data = getHash('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->id), $this->db))){
 
 			// getValues of selected Dir
 			$this->values = $data;
 
 			$this->dir = ($this->values['IsFolder'] ?
-							$this->id :
-							$this->values['ParentID']);
+					$this->id :
+					$this->values['ParentID']);
 
 			$this->path = $this->values['Path'];
 			return;
@@ -165,8 +167,8 @@ class we_selector_file{
 	function query(){
 		$wsQuery = $this->table == NAVIGATION_TABLE && get_ws($this->table) ? ' ' . getWsQueryForSelector($this->table) : '';
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' ' .
-				( ($this->filter ? ($this->table == CATEGORY_TABLE ? /* 'AND IsFolder="' . $this->db->escape($this->filter) . '" ' */ '' : 'AND ContentType="' . $this->db->escape($this->filter) . '" ') : '' ) . $wsQuery ) .
-				($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : ''));
+			( ($this->filter ? ($this->table == CATEGORY_TABLE ? /* 'AND IsFolder="' . $this->db->escape($this->filter) . '" ' */ '' : 'AND ContentType="' . $this->db->escape($this->filter) . '" ') : '' ) . $wsQuery ) .
+			($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : ''));
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
 
@@ -258,16 +260,16 @@ var g_l={
 
 	protected function getFrameset(){
 		return
-				STYLESHEET .
-				we_html_element::cssLink(CSS_DIR . 'selectors.css') .
-				$this->getFramsetJSFile() .
-				'<body class="selector" onload="startFrameset();">' .
-				we_html_element::htmlDiv(array('id' => 'fsheader'), $this->printHeaderHTML()) .
-				we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true) .
-				we_html_element::htmlDiv(array('id' => 'fsfooter'), $this->printFooterTable()) .
-				we_html_element::htmlDiv(array('id' => 'fspath', 'class' => 'radient'), we_html_element::jsElement('document.write( (top.startPath === undefined || top.startPath === "") ? "/" : top.startPath);')) .
-				we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
-				'</body>
+			STYLESHEET .
+			we_html_element::cssLink(CSS_DIR . 'selectors.css') .
+			$this->getFramsetJSFile() .
+			'<body class="selector" onload="startFrameset();">' .
+			we_html_element::htmlDiv(array('id' => 'fsheader'), $this->printHeaderHTML()) .
+			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true) .
+			we_html_element::htmlDiv(array('id' => 'fsfooter'), $this->printFooterTable()) .
+			we_html_element::htmlDiv(array('id' => 'fspath', 'class' => 'radient'), we_html_element::jsElement('document.write( (top.startPath === undefined || top.startPath === "") ? "/" : top.startPath);')) .
+			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
+			'</body>
 </html>';
 	}
 
@@ -275,11 +277,11 @@ var g_l={
 		$frameRef = $this->JSTextName && strpos($this->JSTextName, ".document.") > 0 ? substr($this->JSTextName, 0, strpos($this->JSTextName, ".document.") + 1) : "";
 		return we_html_element::jsElement('
 function exit_open(){' .
-						($this->JSIDName ? '
+				($this->JSIDName ? '
 	opener.' . $this->JSIDName . '=top.currentID;' :
-								''
-						) .
-						($this->JSTextName ? '
+					''
+				) .
+				($this->JSTextName ? '
 	opener.' . $this->JSTextName . '= top.currentID ? top.currentPath : "";
 	if((opener.parent!==undefined) && (opener.parent.frames.editHeader!==undefined)) {
 			if(currentType!="")	{
@@ -299,8 +301,8 @@ function exit_open(){' .
 	}
 	if(opener.' . $frameRef . 'YAHOO!==undefined && opener.' . $frameRef . 'YAHOO.autocoml!==undefined) {  opener.' . $frameRef . 'YAHOO.autocoml.selectorSetValid(opener.' . str_replace('.value', '.id', $this->JSTextName) . '); }
 	' : '') .
-						($this->JSCommand ? '	' . $this->JSCommand . ';' : '') .
-						'	self.close();
+				($this->JSCommand ? '	' . $this->JSCommand . ';' : '') .
+				'	self.close();
 	}'
 		);
 	}
@@ -321,10 +323,10 @@ function exit_open(){' .
 		$this->setDirAndID();
 		$do = (!defined('OBJECT_TABLE')) || $this->table != OBJECT_TABLE;
 		return
-				we_html_element::jsElement($this->printHeaderJSDef()) .
-				($do ? $this->printHeaderTable() : '') .
-				we_html_element::jsElement(($do ? $this->printCMDWriteAndFillSelectorHTML(false) : '')) .
-				$this->printHeaderHeadlines();
+			we_html_element::jsElement($this->printHeaderJSDef()) .
+			($do ? $this->printHeaderTable() : '') .
+			we_html_element::jsElement(($do ? $this->printCMDWriteAndFillSelectorHTML(false) : '')) .
+			$this->printHeaderHeadlines();
 	}
 
 	protected function printHeaderTable($extra = ''){
@@ -337,8 +339,8 @@ function exit_open(){' .
 		</td>
 		<td>' . we_html_button::create_button('root_dir', "javascript:if(rootDirButsState){top.setRootDir();}", false, 40, 22, "", "", ($this->dir == 0), false) . '</td>
 		<td>' . we_html_button::create_button('fa:btn_fs_back,fa-lg fa-level-up,fa-lg fa-folder', "javascript:top.goBackDir();", false, 40, 22, "", "", ($this->dir == 0), false) . '</td>' .
-				$extra .
-				'</tr>
+			$extra .
+			'</tr>
 </table>';
 	}
 
@@ -360,12 +362,12 @@ function exit_open(){' .
 	protected function printCmdHTML(){
 		echo we_html_element::jsElement('
 top.clearEntries();' .
-				$this->printCmdAddEntriesHTML() .
-				$this->printCMDWriteAndFillSelectorHTML() .
-				(($this->dir) == 0 ?
-						'top.disableRootDirButs();' :
-						'top.enableRootDirButs();') .
-				'top.currentPath = "' . $this->path . '";
+			$this->printCmdAddEntriesHTML() .
+			$this->printCMDWriteAndFillSelectorHTML() .
+			(($this->dir) == 0 ?
+				'top.disableRootDirButs();' :
+				'top.enableRootDirButs();') .
+			'top.currentPath = "' . $this->path . '";
 top.parentID = "' . $this->values["ParentID"] . '";
 ');
 	}
@@ -397,7 +399,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 		return ($withWrite ? 'top.writeBody(top.fsbody.document.body);' : '') . '
 top.clearOptions();
 top.addOption("/",0);' .
-				$out . '
+			$out . '
 top.selectIt();';
 	}
 
