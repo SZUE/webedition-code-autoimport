@@ -598,7 +598,7 @@ echo we_html_tools::getHtmlTop('webEdition - ' . g_l('versions', '[versioning]')
 	#content{
 		position:absolute;
 		margin: 0px;
-		top:21px;
+		top:30px;
 		bottom:40px;
 		left:0px;
 		right:0px;

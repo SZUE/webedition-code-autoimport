@@ -244,6 +244,19 @@ function executeEditButton() {
 	}
 }
 
+function YUIdoAjax(value) {
+	YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc.php", {
+		success: function (o) {
+			if (o.responseText !== undefined && o.responseText !== '') {
+				document.getElementById('tag_edit_area').value = o.responseText;
+			}
+		},
+		failure: function (o) {
+			alert("Failure");
+		}
+	}, 'protocol=text&cmd=GetSnippetCode&we_cmd[1]=' + value);
+}
+
 function edit_wetag(tagname, insertAtCursor) {
 	if (!insertAtCursor) {
 		insertAtCursor = 0;

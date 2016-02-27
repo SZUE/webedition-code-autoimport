@@ -697,6 +697,7 @@ lang/en/econda.xml
 lang/de/permissions.xml
 lang/de/messageConsole.xml
 lang/de/econda.xml
+js/wizard_code.js
 js/we_vtabs.js
 js/we_textarea_include.inc.php
 js/we_tabs/tabs.js
