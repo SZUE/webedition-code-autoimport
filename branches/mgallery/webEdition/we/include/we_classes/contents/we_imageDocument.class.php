@@ -702,17 +702,17 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$this->DocChanged = true;
 	}
 
-	function getThumbnail($size = 150, $size2 = 200){
+	protected function getThumbnail($size = 150, $sizeH = 200){
 		if(!$this->getElement('data') || !is_readable($this->getElement('data'))){
 			return $this->getHtml();
 		}
 
 		if($this->isSvg()){
 			/* if(($w = $this->getElement('width')) && ($h = $this->getElement('height'))){
-			  if(($tmpH = $h * ($size / $w)) <= $size2){
-			  $size2 = $tmpH;
+			  if(($tmpH = $h * ($size / $w)) <= $sizeH){
+			  $sizeH = $tmpH;
 			  } else {
-			  $size = $w * ($size2 / $h);
+			  $size = $w * ($sizeH / $h);
 			  }
 			  } */
 			return '<image style="max-width:100px;max-height:100px;" src="' . WEBEDITION_DIR . 'showTempFile.php?file=' . str_replace(array($_SERVER['DOCUMENT_ROOT'], WEBEDITION_DIR), '', $this->getElement('data')) . '" />';
@@ -720,10 +720,13 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 
 		return '<img src="' . WEBEDITION_DIR . 'thumbnail.php?' . http_build_query(array(
 				'id' => $this->ID,
-				'size' => $size,
+				'size' => array(
+					'width' => $size,
+					'height' => $sizeH,
+				),
 				'path' => str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->getElement('data')),
 				'extension' => $this->Extension,
-				'size2' => $size2)) . '" />';
+			)) . '" />';
 	}
 
 	protected function getMetaDataReader($force = false){
@@ -989,7 +992,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		we_html_multiIconBox::getHTML('PropertyPage', array(
 			array('icon' => "path.gif", "headline" => g_l('weClass', '[path]'), "html" => $this->formPath(), 'space' => 140),
 			array('icon' => "doc.gif", "headline" => g_l('weClass', '[document]'), "html" => $this->formIsSearchable() . $this->formIsProtected(), 'space' => 140),
-			array('icon' => "meta.gif", "headline" => g_l('weClass', '[metainfo]'), "html" => $this->formMetaInfos(), 'space' => 140),
+			//array('icon' => "meta.gif", "headline" => g_l('weClass', '[metainfo]'), "html" => $this->formMetaInfos(), 'space' => 140),
 			array('icon' => "navi.gif", "headline" => g_l('global', '[navigation]'), "html" => $this->formNavigation(), 'space' => 140),
 			array('icon' => "cat.gif", "headline" => g_l('global', '[categorys]'), "html" => $this->formCategory(), 'space' => 140),
 			array('icon' => "user.gif", "headline" => g_l('weClass', '[owners]'), "html" => $this->formCreatorOwners(), 'space' => 140),

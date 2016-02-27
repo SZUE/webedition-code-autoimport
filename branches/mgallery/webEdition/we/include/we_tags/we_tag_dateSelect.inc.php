@@ -142,5 +142,5 @@ WE_checkDate_' . $name . '();');
 
 	$submitonchange = weTag_getAttribute('submitonchange', $attribs, false, we_base_request::BOOL);
 	$time = we_base_request::_(we_base_request::HTML, $name, time());
-	return we_html_tools::getDateInput2($name . '%s', ($time == -1 ? time() : $time), false, "dmy", $submitonchange ? $checkDate . 'we_submitForm();' : $checkDate, $class, '', $minyear, $maxyear, $style) . $js;
+	return we_html_tools::getDateInput($name . '%s', ($time == -1 ? time() : $time), false, "dmy", $submitonchange ? $checkDate . 'we_submitForm();' : $checkDate, $class, '', $minyear, $maxyear, $style) . $js;
 }

@@ -1086,7 +1086,7 @@ class we_object extends we_document{
 				$content .= '<tr style="vertical-align:top"><td  width="100" class="defaultfont">Default</td>' .
 						'<td width="170" class="defaultfont">' .
 						we_html_forms::checkboxWithHidden(($dd == '1' ? true : false), "we_" . $this->Name . "_xdate[" . $name . "defaultThumb]", 'Creation Date', false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);') .
-						we_html_tools::getDateInput2('we_' . $this->Name . '_date[' . $name . 'default]', ($d ? : time()), true) .
+						we_html_tools::getDateInput('we_' . $this->Name . '_date[' . $name . 'default]', ($d ? : time()), true) .
 						'</td></tr>';
 				break;
 			case we_objectFile::TYPE_TEXT:

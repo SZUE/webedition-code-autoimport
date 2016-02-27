@@ -588,8 +588,8 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 	function formStat($class = "middlefont"){
 		$datefilterCheck = we_html_forms::checkboxWithHidden($this->UseFilter, "UseFilter", g_l('modules_banner', '[datefilter]'), false, "defaultfont", "top.content.setHot(); we_cmd('switchPage','" . $this->page . "')");
-		$datefilter = we_html_tools::getDateInput2("dateFilter%s", ($this->FilterDate == -1 ? time() : $this->FilterDate), false, "dmy", "top.content.setHot(); we_cmd('switchPage','" . $this->page . "');", $class);
-		$datefilter2 = we_html_tools::getDateInput2("dateFilter2%s", ($this->FilterDateEnd == -1 ? time() : $this->FilterDateEnd), false, "dmy", "top.content.setHot(); we_cmd('switchPage','" . $this->page . "');", $class);
+		$datefilter = we_html_tools::getDateInput("dateFilter%s", ($this->FilterDate == -1 ? time() : $this->FilterDate), false, "dmy", "top.content.setHot(); we_cmd('switchPage','" . $this->page . "');", $class);
+		$datefilter2 = we_html_tools::getDateInput("dateFilter2%s", ($this->FilterDateEnd == -1 ? time() : $this->FilterDateEnd), false, "dmy", "top.content.setHot(); we_cmd('switchPage','" . $this->page . "');", $class);
 
 		$content = '
 <table class="default" style="padding-bottom:10px;">
@@ -666,8 +666,8 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		<td>' . $checkEnd . '</td>
 	</tr>
 	<tr>
-		<td>' . we_html_tools::getDateInput2("we__From%s", $from, false, "", "top.content.setHot();") . '</td>
-		<td>' . we_html_tools::getDateInput2("we__To%s", $to, false, "", "top.content.setHot();") . '</td>
+		<td>' . we_html_tools::getDateInput("we__From%s", $from, false, "", "top.content.setHot();") . '</td>
+		<td>' . we_html_tools::getDateInput("we__To%s", $to, false, "", "top.content.setHot();") . '</td>
 	</tr>
 </table>';
 	}

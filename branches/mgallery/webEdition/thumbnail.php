@@ -28,8 +28,8 @@ session_write_close();
 
 $imageId = we_base_request::_(we_base_request::INT, 'id', 0);
 $imagePath = we_base_request::_(we_base_request::FILE, 'path', '');
-$imageSizeW = we_base_request::_(we_base_request::INT, 'size', 0);
-$imageSizeH = we_base_request::_(we_base_request::INT, 'size2', $imageSizeW);
+$imageSizeW = we_base_request::_(we_base_request::INT, 'size', 0, 'width');
+$imageSizeH = we_base_request::_(we_base_request::INT, 'size', $imageSizeW, 'height');
 $extension = we_base_request::_(we_base_request::STRING, 'extension', '');
 
 if(!($imageId || $imagePath) && !$imageSizeW && !$extension){
@@ -58,6 +58,6 @@ if(file_exists($file) && is_readable($file)){
 		header('Content-Length: ' . filesize($file));
 		readfile($file);
 	}
-}else{
+} else {
 	we_html_tools::setHttpCode(404);
 }

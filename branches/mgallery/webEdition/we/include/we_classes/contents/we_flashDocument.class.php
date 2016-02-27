@@ -213,7 +213,7 @@ class we_flashDocument extends we_document_deprecatedVideo{
 </table>';
 	}
 
-	function getThumbnail($width = 150, $height = 100){
+	protected function getThumbnail($width = 150, $height = 100){
 		$_width = $this->getElement('width');
 		$_height = $this->getElement('height');
 		$_scale = $this->getElement('scale');
