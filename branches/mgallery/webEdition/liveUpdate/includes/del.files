@@ -614,6 +614,8 @@ we/include/weCodeWizard/data/custom/_information.php
 we/include/weCodeWizard/classes/weCodeWizardSnippet.inc.php
 we/include/weCodeWizard/classes/weCodeWizard.inc.php
 we/include/weCodeWizard/classes
+we/include/validation/xhtml_10_transitional.inc.php
+we/include/validation/xhtml_10_strict.inc.php
 we/include/treeInfo.inc.php
 we/include/notInstalledModules.inc.php
 we/include/messageModuleNotActivated.inc.php
@@ -966,6 +968,7 @@ apps/toolfactory/hook/custom_hooks/dummy
 !we/include/we_widgets/dlg/fdl
 !we/include/we_versions/version_wizard
 !we/include/we_tools/weSearch/layout/icons
+!we/include/we_tools/weSearch/layout
 !we/include/we_tools/navigation
 !we/include/we_tools/first_steps_wizard
 !we/include/we_tools/cache

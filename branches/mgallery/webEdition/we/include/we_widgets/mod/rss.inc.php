@@ -24,6 +24,6 @@
 
 echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement(
 		"function init() {
-	parent.executeAjaxRequest('" . implode("', '", we_base_request::_(we_base_request::STRING, 'we_cmd')) . "');
+	WE().layout.cockpitFrame.executeAjaxRequest('" . implode("', '", we_base_request::_(we_base_request::STRING, 'we_cmd')) . "');
 
 }"), we_html_element::htmlBody(array('onload' => 'init()')));

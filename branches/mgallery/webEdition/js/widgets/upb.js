@@ -25,7 +25,6 @@
  */
 var _oCsv_;
 var _sInitCsv_;
-var _sUpbInc = 'upb/upb';
 var _bPrev = false;
 var _sLastPrevCsv = '';
 
@@ -64,7 +63,7 @@ function save() {
 	var sCsv = getBinary();
 	_oCsv_.value = sCsv;
 	if ((!_bPrev && _sInitCsv_ != sCsv) || (_bPrev && _sLastPrevCsv != sCsv)) {
-		opener.rpc(sCsv, '', '', '', '', _sObjId, _sUpbInc);
+		opener.rpc(sCsv, '', '', '', '', _sObjId);
 	}
 	previewPrefs();
 	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
@@ -76,12 +75,12 @@ function preview() {
 	var sCsv = getBinary();
 	_sLastPrevCsv = sCsv;
 	previewPrefs();
-	opener.rpc(sCsv, '', '', '', '', _sObjId, _sUpbInc);
+	opener.rpc(sCsv, '', '', '', '', _sObjId);
 }
 
 function exit_close() {
 	if (_sInitCsv_ != getBinary() && _bPrev) {
-		opener.rpc(_sInitCsv_, '', '', '', '', _sObjId, _sUpbInc);
+		opener.rpc(_sInitCsv_, '', '', '', '', _sObjId);
 	}
 	exitPrefs();
 	self.close();

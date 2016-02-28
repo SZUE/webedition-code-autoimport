@@ -25,7 +25,6 @@
  */
 
 var _oCsv_, _fo, _sCsv, _sInitCsv_, table, categories_edit, SelectedItems, _sInitTitle_;
-var _sMdcInc = 'mdc/mdc';
 
 function toggle(id) {
 	var elem = document.getElementById(id);
@@ -85,7 +84,7 @@ function preview() {
 	var sSwitch = (_fo.headerSwitch.selectedIndex) ? '1' : '0';
 	var sCsv = (parseInt(sSel)) ? getTreeSelected() : getCsv(parseInt(sSwitch));
 	previewPrefs();
-	opener.rpc(sSel + sSwitch, (sCsv) ? sCsv : '', '', '', sTitle, _sObjId, _sMdcInc);
+	opener.rpc(sSel + sSwitch, (sCsv) ? sCsv : '', '', '', sTitle, _sObjId);
 }
 
 function exit_close() {
@@ -96,7 +95,7 @@ function exit_close() {
 	var aInitCsv = _sInitCsv_.split(';');
 	var sInitTitle = opener.Base64.decode(aInitCsv[0]);
 	if ((sInitTitle !== '' && sInitTitle != sTitle) || aInitCsv[1] != sSel + sSwitch || aInitCsv[2] != sCsv) {
-		opener.rpc(aInitCsv[1], aInitCsv[2], '', '', sInitTitle, _sObjId, _sMdcInc);
+		opener.rpc(aInitCsv[1], aInitCsv[2], '', '', sInitTitle, _sObjId);
 	}
 	exitPrefs();
 	self.close();
@@ -147,7 +146,7 @@ function save() {
 	var sSel = (_fo.Selection.selectedIndex) ? '1' : '0';
 	var sSwitch = (_fo.headerSwitch.selectedIndex) ? '1' : '0';
 	var sCsv = (parseInt(sSel)) ? getTreeSelected() : getCsv(parseInt(sSwitch));
-	opener.rpc(sSel + sSwitch, sCsv, '', '', sTitle, _sObjId, _sMdcInc);
+	opener.rpc(sSel + sSwitch, sCsv, '', '', sTitle, _sObjId);
 	_oCsv_.value = opener.Base64.encode(sTitle) + ';' + sSel + sSwitch + ';' + sCsv;
 	WE().util.showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, top.window);
 	self.close();

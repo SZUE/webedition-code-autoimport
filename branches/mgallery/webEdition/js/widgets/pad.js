@@ -88,7 +88,7 @@ function deleteNote() {
 	var fo = document.forms[0];
 	var mark = fo.elements.mark.value;
 	var q_ID = document.getElementById(mark + '_ID').value;
-	parent.rpc(_ttlB64Esc.concat(',' + _sInitProps), q_ID, 'delete', '', _ttlB64Esc, _sObjId, 'pad/pad');
+	parent.rpc(_ttlB64Esc.concat(',' + _sInitProps), q_ID, 'delete', '', _ttlB64Esc, _sObjId);
 }
 
 function isHotNote() {
@@ -355,7 +355,7 @@ function save() {
 	if ((_lastPreviewCsv !== '' && sTitleEnc.concat(',' + sBit) !== _lastPreviewCsv) ||
 					(_lastPreviewCsv === '' && (_sInitTitle != getTitle() || _sInitBin != getBitString()))) {
 		var sTitleEsc = escape(sTitleEnc);
-		opener.rpc(sTitleEsc.concat(',' + sBit), '', '', '', sTitleEsc, _sObjId, _sPadInc);
+		opener.rpc(sTitleEsc.concat(',' + sBit), '', '', '', sTitleEsc, _sObjId);
 	}
 	opener.setPrefs(_sObjId, sBit, sTitleEnc);
 	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
@@ -367,14 +367,14 @@ function preview() {
 	var sTitleEnc = opener.Base64.encode(getTitle());
 	var sTitleEsc = escape(sTitleEnc);
 	var sBit = getBitString();
-	opener.rpc(sTitleEsc.concat(',' + sBit), '', '', '', sTitleEsc, _sObjId, _sPadInc);
+	opener.rpc(sTitleEsc.concat(',' + sBit), '', '', '', sTitleEsc, _sObjId);
 	previewPrefs();
 	_lastPreviewCsv = sTitleEnc.concat(',' + sBit);
 }
 
 function exit_close() {
 	if (_lastPreviewCsv !== '' && (_sInitTitle != getTitle() || _sInitBin != getBitString())) {
-		opener.rpc(_sInitCsv_, '', '', '', escape(opener.Base64.encode(_sInitTitle)), _sObjId, _sPadInc);
+		opener.rpc(_sInitCsv_, '', '', '', escape(opener.Base64.encode(_sInitTitle)), _sObjId);
 	}
 	exitPrefs();
 	self.close();

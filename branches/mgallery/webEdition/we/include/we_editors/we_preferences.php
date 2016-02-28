@@ -614,12 +614,12 @@ function build_dialog($selected_setting = 'ui'){
 	switch($selected_setting){
 		case 'save':
 
-			return create_dialog('', /* g_l('prefs', '[save_wait]'), */ array(
+			return create_dialog('', array(
 				array('headline' => '', 'html' => g_l('prefs', '[save]'),)
 			));
 
 		case 'saved'://SAVED SUCCESSFULLY DIALOG
-			return create_dialog('', /* g_l('prefs', '[saved_successfully]'), */ array(
+			return create_dialog('', array(
 				array('headline' => '', 'html' => g_l('prefs', '[saved]'),)
 			));
 
@@ -981,7 +981,7 @@ function build_dialog($selected_setting = 'ui'){
 
 			// Build dialog
 			$_settings[] = array('headline' => g_l('prefs', '[dimension]'), 'html' => $_window_html->getHtml(), 'space' => 200);
-			return create_dialog('', /* g_l('prefs', '[tab][ui]'), */ $_settings, -1);
+			return create_dialog('', $_settings, -1);
 
 		case 'defaultAttribs':
 			if(!permissionhandler::hasPerm('ADMINISTRATOR')){
@@ -1032,7 +1032,7 @@ function build_dialog($selected_setting = 'ui'){
 				array('headline' => g_l('prefs', '[cssapplyto_default]'), 'html' => $CSSAPPLYTO_DEFAULT->getHtml(), 'space' => 200),
 			);
 
-			return create_dialog(''/* , 'we:tag Standards' g_l('prefs', '[tab][defaultAttribs]') */, $_settings, -1);
+			return create_dialog('', $_settings, -1);
 
 		case 'countries':
 			if(!we_base_preferences::userIsAllowed('WE_COUNTRIES_DEFAULT')){
@@ -1072,7 +1072,7 @@ function build_dialog($selected_setting = 'ui'){
 				array('headline' => '', 'html' => $tabC->getHtml(), 'noline' => 1),
 			);
 			// Build dialog element if user has permission
-			return create_dialog(''/* , g_l('prefs', '[tab][countries]') */, $_settings);
+			return create_dialog('', $_settings);
 
 		case 'language':
 			if(!we_base_preferences::userIsAllowed('locale_default') && we_base_preferences::userIsAllowed('locale_locales')){
@@ -1167,46 +1167,8 @@ function build_dialog($selected_setting = 'ui'){
 				array('headline' => g_l('prefs', '[langlink_support]'), 'html' => getTrueFalseSelect('LANGLINK_SUPPORT'), 'space' => 200, 'noline' => 1),
 			);
 
-			return create_dialog('', /* g_l('prefs', '[tab][language]'), */ $_settings) . $postJs;
-		/*
-		  case 'extensions':
-		  //FILE EXTENSIONS
+			return create_dialog('', $_settings) . $postJs;
 
-		  // Get webEdition extensions
-		  $_we_extensions = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::WEDOCUMENT);
-
-		  // Build static webEdition extensions select box
-		  $_static_we_extensions = new we_html_select(array('name' => 'newconf[DEFAULT_STATIC_EXT]', 'class' => 'weSelect'));
-		  $_dynamic_we_extensions = new we_html_select(array('name' => 'newconf[DEFAULT_DYNAMIC_EXT]', 'class' => 'weSelect'));
-		  foreach($_we_extensions as $value){
-		  $_static_we_extensions->addOption($value, $value);
-		  $_dynamic_we_extensions->addOption($value, $value);
-		  }
-		  $_static_we_extensions->selectOption(get_value('DEFAULT_STATIC_EXT'));
-		  $_dynamic_we_extensions->selectOption(get_value('DEFAULT_DYNAMIC_EXT'));
-
-		  $_we_extensions_html = g_l('prefs', '[static]') . we_html_element::htmlBr() . $_static_we_extensions->getHtml() . we_html_element::htmlBr() . we_html_element::htmlBr() . g_l('prefs', '[dynamic]') . we_html_element::htmlBr() . $_dynamic_we_extensions->getHtml();
-
-		  // HTML extensions
-		  $_html_extensions = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::HTML);
-
-		  // Build static webEdition extensions select box
-		  $_static_html_extensions = new we_html_select(array('name' => 'newconf[DEFAULT_HTML_EXT]', 'class' => 'weSelect'));
-		  foreach($_html_extensions as $value){
-		  $_static_html_extensions->addOption($value, $value);
-		  }
-		  $_static_html_extensions->selectOption(get_value('DEFAULT_HTML_EXT'));
-
-		  $_html_extensions_html = g_l('prefs', '[html]') . '<br/>' . $_static_html_extensions->getHtml();
-
-		  $_settings = array(
-		  array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[extensions_information]'), we_html_tools::TYPE_INFO, 450, false), ),
-		  array('headline' => g_l('prefs', '[we_extensions]'), 'html' => $_we_extensions_html, 'space' => 200),
-		  array('headline' => g_l('prefs', '[html_extensions]'), 'html' => $_html_extensions_html, 'space' => 200, 'noline' => 1)
-		  );
-
-		  return create_dialog('', $_settings);
-		 */
 		case 'editor':
 			//EDITOR PLUGIN
 
@@ -1399,7 +1361,7 @@ for(i=0;i<elements.length; ++i){
 				//array('class'=>'editor editor_codemirror2','headline' => g_l('prefs', '[editor_docuclick]'), 'html' => $_template_editor_docuintegration_code, 'space' => 150),
 			);
 
-			return create_dialog("settings_editor_predefined", /* g_l('prefs', '[tab][editor]'), */ $_settings, count($_settings), g_l('prefs', '[show_predefined]'), g_l('prefs', '[hide_predefined]'));
+			return create_dialog("settings_editor_predefined", $_settings, count($_settings), g_l('prefs', '[show_predefined]'), g_l('prefs', '[hide_predefined]'));
 
 		case "recipients":
 			if(!we_base_preferences::userIsAllowed('FORMMAIL_VIAWEDOC')){
@@ -1573,7 +1535,7 @@ for(i=0;i<elements.length; ++i){
 				$_settings[] = array('html' => $_formmail_blocktime->getHtml(), 'space' => 250, "headline" => g_l('prefs', '[blockFor]'), 'noline' => 1);
 			}
 
-			return create_dialog("", /* g_l('prefs', '[formmail_recipients]'), */ $_settings, -1);
+			return create_dialog("", $_settings, -1);
 
 		case 'modules':
 			if(!we_base_preferences::userIsAllowed('active_integrated_modules')){
@@ -1604,7 +1566,7 @@ for(i=0;i<elements.length; ++i){
 					, "html" => $_html, 'space' => 200)
 			);
 
-			return create_dialog('', /* g_l('prefs', '[module_activation][headline]'), */ $_settings, -1);
+			return create_dialog('', $_settings, -1);
 
 		case 'proxy':
 			if(!we_base_preferences::userIsAllowed('useproxy')){
@@ -1633,7 +1595,7 @@ for(i=0;i<elements.length; ++i){
 				array("headline" => g_l('prefs', '[proxypass]'), "html" => $_proxypass, 'space' => 200, 'noline' => 1),
 			);
 			// Build dialog element if user has permission
-			return create_dialog("", /* g_l('prefs', '[tab][proxy]'), */ $_settings, -1);
+			return create_dialog("",$_settings, -1);
 
 
 		case "advanced":
@@ -1709,7 +1671,7 @@ for(i=0;i<elements.length; ++i){
 			$NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->selectOption(get_value("NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH") ? 1 : 0);
 			$_settings[] = array("headline" => g_l('prefs', '[navigation_rules_continue]'), "html" => $NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->getHtml(), 'space' => 200);
 
-			return create_dialog("", /* g_l('prefs', '[tab][advanced]'), */ $_settings, -1);
+			return create_dialog("",$_settings, -1);
 
 		case "system":
 			if(!permissionhandler::hasPerm("ADMINISTRATOR")){
@@ -1867,7 +1829,7 @@ for(i=0;i<elements.length; ++i){
 				array("headline" => g_l('prefs', '[session][crypt][title]'), "html" => $cryptSession->getHtml(), 'space' => 200),
 			);
 			// Build dialog element if user has permission
-			return create_dialog("", /* g_l('prefs', '[tab][system]'), */ $_settings, -1);
+			return create_dialog("", $_settings, -1);
 
 		case "seolinks":
 			/*			 * *******************************************************************
@@ -1917,7 +1879,7 @@ for(i=0;i<elements.length; ++i){
 				array('headline' => g_l('prefs', '[suppress404code]'), 'html' => getTrueFalseSelect('SUPPRESS404CODE'), 'space' => 200),
 				array('headline' => g_l('prefs', '[force404redirect]'), 'html' => getTrueFalseSelect('FORCE404REDIRECT') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[force404redirect_description]'), we_html_tools::TYPE_HELP), 'space' => 200),
 			);
-			return create_dialog('', /* g_l('prefs', '[tab][seolinks]'), */ $_settings, -1, '', '', null);
+			return create_dialog('',$_settings, -1, '', '', null);
 
 		case 'error_handling':
 			if(!permissionhandler::hasPerm('ADMINISTRATOR')){
@@ -1969,28 +1931,12 @@ for(i=0;i<elements.length; ++i){
 				array('headline' => g_l('prefs', '[error_displaying]'), 'html' => $_error_display_table->getHtml(), 'space' => 200),
 			);
 
-			return create_dialog('settings_error_expert', /* g_l('prefs', '[tab][error_handling]'), */ $_settings, $_foldAt, g_l('prefs', '[show_expert]'), g_l('prefs', '[hide_expert]'));
+			return create_dialog('settings_error_expert',  $_settings, $_foldAt, g_l('prefs', '[show_expert]'), g_l('prefs', '[hide_expert]'));
 
-		/*
-		  case 'message_reporting':
-
-		  $_val = get_value('message_reporting');
-
-		  $_html = "<input type=\"hidden\" id=\"message_reporting\" name=\"newconf[message_reporting]\" value=\"$_val\" />" . we_html_forms::checkbox(we_message_reporting::WE_MESSAGE_ERROR, 1, "message_reporting_errors", g_l('prefs', '[message_reporting][show_errors]'), false, "defaultfont", "handle_message_reporting_click();", true) . "<br />" .
-		  we_html_forms::checkbox(we_message_reporting::WE_MESSAGE_WARNING, $_val & we_message_reporting::WE_MESSAGE_WARNING, "message_reporting_warnings", g_l('prefs', '[message_reporting][show_warnings]'), false, "defaultfont", "handle_message_reporting_click();") . "<br />" .
-		  we_html_forms::checkbox(we_message_reporting::WE_MESSAGE_NOTICE, $_val & we_message_reporting::WE_MESSAGE_NOTICE, "message_reporting_notices", g_l('prefs', '[message_reporting][show_notices]'), false, "defaultfont", "handle_message_reporting_click();");
-
-		  $_settings = array(
-		  array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[message_reporting][information]'), we_html_tools::TYPE_INFO, 450, false), ),
-		  array('headline' => g_l('prefs', '[message_reporting][headline]'), 'html' => $_html, 'space' => 200),
-		  );
-
-		  return create_dialog('settings_message_reporting', /* g_l('prefs', '[tab][message_reporting]'),  $_settings, -1);
-		 */
 		/*		 * *******************************************************************
 		 * Validation (XHTML)
 		 * ******************************************************************* */
-		case 'validation':
+		/*case 'validation':
 			if(!permissionhandler::hasPerm('ADMINISTRATOR')){
 				break;
 			}
@@ -2031,8 +1977,8 @@ for(i=0;i<elements.length; ++i){
 					$_xhtml_show_wrong_error_log, 'space' => 200, 'noline' => 1),
 			);
 
-			return create_dialog('', /* g_l('prefs', '[tab][validation]'), */ $_settings, -1);
-
+			return create_dialog('',$_settings, -1);
+*/
 		case 'security':
 			if(!permissionhandler::hasPerm('ADMINISTRATOR')){
 				return;
@@ -2042,20 +1988,20 @@ for(i=0;i<elements.length; ++i){
 			$customer_table->setCol($row, 0, array('class' => 'defaultfont', 'width' => '20px'), '');
 			$customer_table->setCol($row, 1, array('class' => 'defaultfont', 'colspan' => 5), g_l('prefs', '[security][customer][disableLogins]') . ':');
 			$customer_table->setCol($row, 6, array('width' => 300));
-			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameIP]'));
+			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameIP]'));
 			$customer_table->setCol($row, 2, array('width' => '20px'));
 			$customer_table->setCol($row, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, array('class' => 'defaultfont', 'style' => 'width:2em;text-align:center'), '/');
 			$customer_table->setCol($row, 5, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP_HOURS'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 6, array('class' => 'defaultfont'), 'h');
 
-			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameUser]'));
+			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameUser]'));
 			$customer_table->setCol($row, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, array('class' => 'defaultfont', 'style' => 'text-align:center;'), '/');
 			$customer_table->setCol($row, 5, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME_HOURS'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 6, array('class' => 'defaultfont'), 'h');
 
-			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][errorPage]'));
+			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][errorPage]'));
 
 			$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value");
 			$wecmdenc2 = we_base_request::encCmd("document.forms[0].elements.SECURITY_LIMIT_CUSTOMER_REDIRECT_text.value");
@@ -2073,11 +2019,11 @@ for(i=0;i<elements.length; ++i){
 
 			$customer_table->setCol($row, 3, array('class' => 'defaultfont', 'colspan' => 5), $yuiSuggest->getHTML());
 
-			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][slowDownLogin]'));
+			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][slowDownLogin]'));
 			$customer_table->setCol($row, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_DELAY_FAILED_LOGIN]', 3, get_value('SECURITY_DELAY_FAILED_LOGIN'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, array(), 's');
 
-			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][deleteSession]'));
+			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][deleteSession]'));
 
 			$customer_table->setCol($row, 3, array(), we_html_tools::htmlSelect('newconf[SECURITY_DELETE_SESSION]', array(g_l('prefs', '[no]'), g_l('prefs', '[yes]')), 1, get_value('SECURITY_DELETE_SESSION')));
 
@@ -2110,7 +2056,7 @@ for(i=0;i<elements.length; ++i){
 				array('headline' => g_l('prefs', '[security][storeSessionPassword][title]'), 'html' => $storeSessionPassword->getHtml(), 'space' => 120),
 				array('headline' => g_l('prefs', '[security][userPassRegex][title]'), 'html' => we_html_tools::htmlTextInput('newconf[SECURITY_USER_PASS_REGEX]', 0, get_value('SECURITY_USER_PASS_REGEX'), 100, '', 'text', '20em'), 'space' => 120),
 			);
-			return create_dialog('settings_security', /* g_l('prefs', '[tab][security]'), */ $settings);
+			return create_dialog('settings_security',$settings);
 
 		case 'email':
 			/**
@@ -2147,7 +2093,7 @@ for(i=0;i<elements.length; ++i){
 				$_settings[] = array('headline' => '', 'html' => $_smtp_table->getHtml(), 'space' => 120, 'noline' => 1);
 			}
 
-			return create_dialog('settings_email', /* g_l('prefs', '[email]'), */ $_settings);
+			return create_dialog('settings_email', $_settings);
 
 		case 'versions':
 			if(!permissionhandler::hasPerm('ADMINISTRATOR')){
@@ -2346,7 +2292,7 @@ function checkAll(val) {
 				),
 			);
 
-			return create_dialog('', /* g_l('prefs', '[tab][validation]'), */ $_settings, -1, '', '', $js);
+			return create_dialog('', $_settings, -1, '', '', $js);
 	}
 
 	return 'No rights.';

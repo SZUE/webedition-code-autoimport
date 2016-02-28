@@ -54,11 +54,14 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1)){
 		$iCurrId = str_replace('m_', '', $cmd2);
 		$newSCurrId = $cmd2;
 		$iWidth = $aPrefs[$aProps[0]]['width'];
-		if($aProps[0] != 'rss' && $aProps[0] != 'pad'){
-			if($aProps[0] === 'msg'){
+		switch($aProps[0]){
+			case 'rss':
+			case 'pad':
+				break;
+			case 'msg':
 				$_transact = md5(uniqid(__FUNCTION__, true));
-			}
-			include_once (WE_INCLUDES_PATH . 'we_widgets/mod/' . $aProps[0] . '.inc.php');
+			default:
+				include_once (WE_INCLUDES_PATH . 'we_widgets/mod/' . $aProps[0] . '.inc.php');
 		}
 		include_once (WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php');
 
