@@ -141,7 +141,7 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]')) .
 		<td class="defaultfont lowContrast">
 			' . g_l('modules_messaging', '[deadline]') . ':</td>
 		<td>
-			' . we_html_tools::getDateInput2('td_deadline%s', $compose->get_deadline()) . '</td>
+			' . we_html_tools::getDateInput('td_deadline%s', $compose->get_deadline()) . '</td>
 	</tr>
 	<tr>
 		<td class="defaultfont lowContrast">' . g_l('modules_messaging', '[priority]') . ':</td>

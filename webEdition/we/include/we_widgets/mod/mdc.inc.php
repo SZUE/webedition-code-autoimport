@@ -23,8 +23,21 @@
  */
 // widget MY DOCUMENTS
 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-we_html_tools::protect();
+if(!isset($aProps)){//preview requested
+	$all = explode(';', we_base_request::_(we_base_request::RAW_CHECKED, 'we_cmd', '', 1));
+	list($dir, $dt_tid, $cats) = (count($all) > 1 ?
+			$all :
+			array($all[0], '', ''));
+
+	$aCsv = array(
+		0, //unused - compatibility
+		we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
+		$dir,
+		$dt_tid,
+		$cats
+	);
+}
+
 $mdc = "";
 //$ct["image"] = true;
 if(!isset($aCsv)){
@@ -47,10 +60,7 @@ if($_csv){
 			$_where[] = 'Path LIKE "' . $_path . '%" ';
 		}
 		$_query = ($_where ?
-				'SELECT ID,Path,Text,ContentType FROM ' . $GLOBALS['DB_WE']->escape($_table) . ' WHERE (' . implode(' OR ', $_where) . ') AND IsFolder=0'/* . ($ct["image"] ?
-				  '' :
-				  ' AND ContentType!="' . we_base_ContentTypes::IMAGE . '"'
-				  ) */ :
+				'SELECT ID,Path,Text,ContentType FROM ' . $GLOBALS['DB_WE']->escape($_table) . ' WHERE (' . implode(' OR ', $_where) . ') AND IsFolder=0' :
 				false);
 	} else {
 		list($folderID, $folderPath) = explode(",", $_csv);
@@ -80,4 +90,26 @@ if($_csv){
 		}
 		$mdc .= '</table>';
 	}
+}
+
+if(!isset($aProps)){//preview requested
+	$cmd4 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4);
+
+	$js = "
+var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5) . "';
+var _sType='mdc';
+var _sTb='" . ($cmd4 ? : g_l('cockpit', (($_binary{1} ? '[my_objects]' : '[my_documents]')))) . "';
+
+function init(){
+	parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
+}";
+
+	echo we_html_tools::getHtmlTop(g_l('cockpit', '[my_documents]'), '', '', STYLESHEET .
+		we_html_element::jsElement($js), we_html_element::htmlBody(
+			array(
+			'style' => 'margin:10px 15px;',
+			"onload" => "if(parent!=self){init();}WE().util.setIconOfDocClass(document,'mdcIcon');"
+			), we_html_element::htmlDiv(array(
+				"id" => "mdc"
+				), $mdc)));
 }

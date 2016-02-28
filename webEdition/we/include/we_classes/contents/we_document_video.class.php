@@ -107,7 +107,7 @@ class we_document_video extends we_binaryDocument{
 		return '';
 	}
 
-	function getThumbnail(){
+	protected function getThumbnail($width = 150, $height = 100){
 		if(($bdid = $this->getElement('poster', 'bdid'))){
 			$path = id_to_path($bdid);
 		}

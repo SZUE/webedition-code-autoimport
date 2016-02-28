@@ -927,10 +927,10 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		if($file["ContentType"] == we_base_ContentTypes::IMAGE){
 			if($file["size"] > 0){
 				$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $file["Path"]);
-				$url = WEBEDITION_DIR . 'thumbnail.php?id=' . $file["docID"] . "&size=" . $smallSize . "&path=" . urlencode($file["Path"]) . "&extension=" . $file["Extension"];
+				$url = WEBEDITION_DIR . 'thumbnail.php?id=' . $file["docID"] . "&size[width]=" . $smallSize . "&path=" . urlencode($file["Path"]) . "&extension=" . $file["Extension"];
 				$imageView = '<img src="' . $url . '" /></a>';
 
-				$urlPopup = WEBEDITION_DIR . "thumbnail.php?id=" . $file["docID"] . "&size=" . $bigSize . "&path=" . $file["Path"] . "&extension=" . $file["Extension"];
+				$urlPopup = WEBEDITION_DIR . "thumbnail.php?id=" . $file["docID"] . "&size[width]=" . $bigSize . "&path=" . $file["Path"] . "&extension=" . $file["Extension"];
 				$imageViewPopup = '<img src="' . $urlPopup . '" /></a>';
 			} else {
 				$imagesize = array(0, 0);

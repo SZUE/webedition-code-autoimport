@@ -838,11 +838,11 @@ WE().consts.weSearch= {
 		if(!($view !== self::VIEW_ICONS && $whichsearch !== self::SEARCH_MEDIA) && $file["ContentType"] == we_base_ContentTypes::IMAGE){
 			if($file["size"] > 0){
 				$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $file["Path"]);
-				$url = WEBEDITION_DIR . 'thumbnail.php?id=' . $file["docID"] . "&size=" . $smallSize . "&path=" . urlencode($file["Path"]) . "&extension=" . $file["Extension"];
-				$imageView = '<img src="' . $url . '" /></a>';
+				$url = WEBEDITION_DIR . 'thumbnail.php?id=' . $file["docID"] . "&size[width]=" . $smallSize . "&path=" . urlencode($file["Path"]) . "&extension=" . $file["Extension"];
+				$imageView = '<img src="' . $url . '" style="max-width:' . $smallSize . 'px;max-height:' . $smallSize . '"/></a>';
 
-				$urlPopup = WEBEDITION_DIR . "thumbnail.php?id=" . $file["docID"] . "&size=" . $bigSize . "&path=" . $file["Path"] . "&extension=" . $file["Extension"];
-				$imageViewPopup = '<img src="' . $urlPopup . '" /></a>';
+				$urlPopup = WEBEDITION_DIR . "thumbnail.php?id=" . $file["docID"] . "&size[width]=" . $bigSize . "&path=" . $file["Path"] . "&extension=" . $file["Extension"];
+				$imageViewPopup = '<img src="' . $urlPopup . '" style="max-width:' . $smallSize . 'px;max-height:' . $smallSize . '"/></a>';
 			} else {
 				$imagesize = array(0, 0);
 				$imageView = $imageViewPopup = '<span class="resultIcon" data-contenttype="' . $file["ContentType"] . '" data-extension="' . $file['Extension'] . '"></span>';
@@ -927,7 +927,7 @@ WE().consts.weSearch= {
 			$c = 0;
 		}
 		if(false && $whichSearch !== self::SEARCH_DOCLIST){
-			$tbl->setCol( ++$k, ($c = 0));
+			$tbl->setCol(++$k, ($c = 0));
 			$tbl->setCol($k, ++$c);
 			$tbl->setCol($k, ++$c);
 		}

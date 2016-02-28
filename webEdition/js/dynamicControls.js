@@ -37,18 +37,15 @@ var opened_group = "";
  */
 
 function toggle_arrow(image_name, display_style) {
-	// Check if the browser supports changing properties of images
-	if (document.images) {
-		// Check state of arrow
-		if (display_style == "closed") {
-			// Group is folded
-			document.getElementsByName(image_name)[0].classList.remove("fa-caret-down");
-			document.getElementsByName(image_name)[0].classList.add("fa-caret-right");
-		} else {
-			// Group is expanded
-			document.getElementsByName(image_name)[0].classList.remove("fa-caret-right");
-			document.getElementsByName(image_name)[0].classList.add("fa-caret-down");
-		}
+	// Check state of arrow
+	if (display_style === "closed") {
+		// Group is folded
+		document.getElementsByName(image_name)[0].classList.remove("fa-caret-down");
+		document.getElementsByName(image_name)[0].classList.add("fa-caret-right");
+	} else {
+		// Group is expanded
+		document.getElementsByName(image_name)[0].classList.remove("fa-caret-right");
+		document.getElementsByName(image_name)[0].classList.add("fa-caret-down");
 	}
 }
 

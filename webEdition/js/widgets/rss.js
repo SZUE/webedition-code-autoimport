@@ -1,4 +1,4 @@
-/* global WE */
+/* global WE, top */
 
 /**
  * webEdition CMS
@@ -23,8 +23,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-var _aTopRssFeeds_ = opener._trf;
-var _iTopRssFeedsLen = _aTopRssFeeds_.length;
+var aTopRssFeeds = opener._trf;
+var _iTopRssFeedsLen = aTopRssFeeds.length;
 var _bIsHotTopRssFeeds = false;
 var _sInitUri;
 var _sLastPreviewUri = '';
@@ -228,14 +228,14 @@ function handleTopRssFeed(sAction) {
 					var newOpt1 = new Option(sNewTitle, sNewUri);
 					oSctRss.options[1] = newOpt1;
 					oSctRss.selectedIndex = 1;
-				} else if (iSelIdx != -1) {
+				} else if (iSelIdx !== -1) {
 					var aSctText = [];
 					var aSctValues = [];
 					var iCount = -1;
 					var iNewSelected = -1;
 					for (var i = 0; i < oSctRss.length; i++) {
 						iCount++;
-						if (iCount == iSelIdx) {
+						if (iCount === iSelIdx) {
 							aSctText[(iSelIdx === 0 && iCount === 0) ? 1 : iCount] = sNewTitle;
 							aSctValues[(iSelIdx === 0 && iCount === 0) ? 1 : iCount] = sNewUri;
 							iNewSelected = (iSelIdx === 0 && iCount === 0) ? 1 : iCount;
@@ -247,7 +247,7 @@ function handleTopRssFeed(sAction) {
 					for (i = 0; i <= iCount; i++) {
 						var newOpt = new Option(aSctText[i], aSctValues[i]);
 						oSctRss.options[i] = newOpt;
-						oSctRss.options[i].selected = (i == iNewSelected) ? true : false;
+						oSctRss.options[i].selected = (i === iNewSelected) ? true : false;
 					}
 				}
 				handleButtonState(1, 'overwrite', 'delete');
@@ -271,8 +271,8 @@ function handleTopRssFeed(sAction) {
 
 function populateSct(oSctRss) {
 	for (var i = 0; _iTopRssFeedsLen > i; i++) {
-		var sOptVal = opener.Base64.decode(_aTopRssFeeds_[i][1]);
-		var sOptTxt = opener.Base64.decode(_aTopRssFeeds_[i][0]);
+		var sOptVal = opener.Base64.decode(aTopRssFeeds[i][1]);
+		var sOptTxt = opener.Base64.decode(aTopRssFeeds[i][0]);
 		oSctRss.options[oSctRss.options.length] = new Option(sOptTxt, sOptVal);
 	}
 }

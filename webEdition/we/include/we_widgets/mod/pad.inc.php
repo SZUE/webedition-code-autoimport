@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,8 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
 function convertDate($date){
 	return implode('.', array_reverse(explode('-', $date)));
 }
@@ -137,9 +136,9 @@ $bDate = $_sInitProps{2};
 $bPrio = $_sInitProps{3};
 $bValid = $_sInitProps{4};
 $title = base64_decode(we_base_request::_(we_base_request::RAW, 'we_cmd', '', 4));
-$type = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 6);
+$command = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2);
 
-switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2)){
+switch($command){
 	case 'delete' :
 		$DB_WE->query('DELETE FROM ' . NOTEPAD_TABLE . ' WHERE ID=' . we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
 		break;
@@ -281,30 +280,28 @@ $_notepad = $oPad->getHTML() .
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[notepad]'), '', '', STYLESHEET .
 	we_html_element::cssLink(CSS_DIR . 'pad.css') .
 	we_html_tools::getCalendarFiles() .
-	we_html_element::jsElement(
-		(($type === "pad/pad") ? "
+	we_html_element::jsElement("
 var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 5) . "';
+
+" .
+		(($command === "home") ? "
+var _sTb='" . $title . "';
+var _sInitProps='" . $_sInitProps . "';
+" : "
 var _sCls_=parent.document.getElementById(_sObjId+'_cls').value;
 var _sType='pad';
 var _sTb='" . g_l('cockpit', '[notes]') . " - " . $title . "';
-" : "
-var _sObjId='m_" . we_base_request::_(we_base_request::INT, 'we_cmd', 0, 5) . "';
-var _sTb='" . $title . "';
-var _sInitProps='" . $_sInitProps . "';") . "
-var _ttlB64Esc='';
+		") . "
 WE().consts.g_l.cockpit.pad={
 	until_befor_from: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[until_befor_from]')) . "',
 	note_not_modified: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[note_not_modified]')) . "',
 	title_empty: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[title_empty]')) . "',
 	date_empty: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[date_empty]')) . "',
 };
-if(typeof parent.Base64.encode=='function'){
-_ttlB64Esc=escape(parent.Base64.encode(_sTb));
-}
-
+var _ttlB64Esc=escape(WE().layout.cockpitFrame.Base64.encode(_sTb));
 ") . we_html_element::jsScript(JS_DIR . 'widgets/pad.js'), we_html_element::htmlBody(
 		array(
-		"onload" => (($type === "pad/pad") ? "if(parent!=self)init();" : "") . 'calendarSetup();toggleTblValidity();'
+		"onload" => (($command !== "home") ? "if(parent!=self)init();" : "") . 'calendarSetup();toggleTblValidity();'
 		), we_html_element::htmlForm(array("style" => "display:inline;"), we_html_element::htmlDiv(
 				array("id" => "pad"), $_notepad .
 				we_html_element::htmlHidden("mark", "")

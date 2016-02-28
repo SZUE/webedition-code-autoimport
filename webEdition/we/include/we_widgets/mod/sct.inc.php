@@ -136,8 +136,6 @@ $sc = new we_html_table(array("width" => "100%", 'class' => 'default'), 1, 1);
 $sc->setCol(0, 0, array('style' => 'text-align:center;vertical-align:top;'), $sSctOut . we_html_element::jsElement('WE().util.setIconOfDocClass(document,"sctFileIcon");'));
 
 if(!isset($aProps)){
-	we_html_tools::protect();
-
 	$sJsCode = "
 	var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5) . "';
 	var _sType='sct';

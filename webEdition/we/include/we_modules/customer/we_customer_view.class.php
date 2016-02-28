@@ -924,7 +924,7 @@ self.close();');
 
 				$format = (isset($format) ? $format : g_l('weEditorInfo', '[date_format]'));
 
-				return we_html_tools::getDateInput2('we_date_' . $field . '%s', $value, false, $format, '', "weSelect", false, $this->settings->getSettings('start_year'));
+				return we_html_tools::getDateInput('we_date_' . $field . '%s', $value, false, $format, '', "weSelect", false, $this->settings->getSettings('start_year'));
 			case 'password':
 				return we_html_tools::htmlTextInput($field, 32, $value, 32, 'onchange="top.content.setHot();" style="width:240px;" autocomplete="off" ', 'password');
 			case 'img':

@@ -64,7 +64,7 @@ function we_tag_sessionField($attribs, $content){
 			} catch (Exception $e){
 				$date = new DateTime('now');
 			}
-			return we_html_tools::getDateInput2("s[we_date_" . $name . "]", $date, false, $dateformat, '', '', $xml, $minyear, $maxyear);
+			return we_html_tools::getDateInput("s[we_date_" . $name . "]", $date, false, $dateformat, '', '', $xml, $minyear, $maxyear);
 
 		case 'country':
 			$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'maxlength', 'wysiwyg'));

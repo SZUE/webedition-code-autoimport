@@ -253,6 +253,8 @@ function findInclude($cmd){
 			return 'we_editors/checkDocument.inc.php'; //  Here request is performed
 		case 'customValidationService':
 			return 'we_editors/customizeValidation.inc.php'; //  edit parameters
+		case 'widget_cmd':
+			return 'we_widgets/cmd.inc.php';
 
 		default:
 			//	In we.inc.php all names of the active modules have already been searched

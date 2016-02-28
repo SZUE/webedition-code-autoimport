@@ -21,7 +21,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-var _sSctInc = 'sct/sct';
 var _sCsvInit_;
 var _bPrev = false;
 
@@ -313,12 +312,12 @@ function getCsv() {
 function preview() {
 	_bPrev = true;
 	previewPrefs();
-	opener.rpc(getCsv(), '', '', '', '', _sObjId, _sSctInc);
+	opener.rpc(getCsv(), '', '', '', '', _sObjId);
 }
 
 function exit_close() {
 	if (_sCsvInit_ != getCsv() && _bPrev) {
-		opener.rpc(_sCsvInit_, '', '', '', '', _sObjId, _sSctInc);
+		opener.rpc(_sCsvInit_, '', '', '', '', _sObjId);
 	}
 	exitPrefs();
 	self.close();
@@ -362,7 +361,7 @@ function save() {
 	oCsv_.value = sCsv;
 	//savePrefs();
 	if (_sCsvInit_ != sCsv) {
-		opener.rpc(sCsv, '', '', '', '', _sObjId, _sSctInc);
+		opener.rpc(sCsv, '', '', '', '', _sObjId);
 	}
 	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
 	self.close();

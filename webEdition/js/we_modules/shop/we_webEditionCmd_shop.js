@@ -25,7 +25,7 @@
 
 function shopCloseWindow(args) {
 	var wind = WE().util.jsWindow.prototype.find('edit_module');
-	if (wind) {
+	if (wind && wind.content) {
 		wind.content.we_cmd(args[0]);
 		wind.focus();
 		return true;
@@ -34,11 +34,6 @@ function shopCloseWindow(args) {
 }
 
 function we_cmd_shop(args, url) {
-	/*var swcmd = args[0];
-	if (swcmd.match(/^year\d+$/)) {
-		swcmd = 'yearCmd';
-	}*/
-
 	switch (args[0]) {
 		case "shop_edit_ifthere":
 		case "shop_edit":

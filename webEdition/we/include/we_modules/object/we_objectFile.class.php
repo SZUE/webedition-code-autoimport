@@ -1316,7 +1316,7 @@ class we_objectFile extends we_document{
 				'' :
 				'<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray['date_' . $name]["required"] ? '*' : '') . '</span>' . (!empty($this->DefArray["date_$name"]['editdescription']) ? self::formatDescription($this->DefArray["date_$name"]['editdescription']) : we_html_element::htmlBr()) . we_html_element::htmlBr()
 			) .
-			we_html_tools::getDateInput2("we_" . $this->Name . '_date[' . $name . ']', ($d ? : time()), true);
+			we_html_tools::getDateInput("we_" . $this->Name . '_date[' . $name . ']', ($d ? : time()), true);
 	}
 
 	private function getTextareaHTML($type, $name, array $attribs, $editable = true, $variant = false){

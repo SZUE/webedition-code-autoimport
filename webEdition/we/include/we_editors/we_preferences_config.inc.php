@@ -30,7 +30,7 @@ $GLOBALS['tabs'] = array(
 	'language' => array('fa-language', 'ADMINISTRATOR'),
 	'countries' => array('fa-flag-checkered', 'ADMINISTRATOR'),
 	'error_handling' => array('fa-bug', 'ADMINISTRATOR'),
-	'validation' => array('fa-check', 'ADMINISTRATOR'),
+//	'validation' => array('fa-check', 'ADMINISTRATOR'),
 	'email' => array('fa-envelope-o', 'ADMINISTRATOR'),
 	//'message_reporting' => '',
 	'recipients' => array('fa-envelope-o', 'FORMMAIL'),
@@ -80,8 +80,9 @@ $GLOBALS['configs'] = array(
 		'EXECUTE_HOOKS' => array('Default setting for hook execution', we_base_request::BOOL, false),
 // xhtml
 		'XHTML_DEFAULT' => array('Default setting for xml attribute', we_base_request::BOOL, true),
-		'XHTML_DEBUG' => array('Enable XHTML debug', we_base_request::BOOL, false),
+		/*'XHTML_DEBUG' => array('Enable XHTML debug', we_base_request::BOOL, false),
 		'XHTML_REMOVE_WRONG' => array('Remove wrong xhtml attributes from we:tags', we_base_request::BOOL, false),
+		 */
 //system
 		'FILE_UPLOAD_MAX_UPLOAD_SIZE' => array('Set the maximum size a file can have', we_base_request::INT, 128),
 		'WE_NEW_FOLDER_MOD' => array('File permissions when creating a new directory', we_base_request::INT, 755), //this should be string but deny access by user doesn't make sense
@@ -197,9 +198,7 @@ $GLOBALS['configs'] = array(
 		'cockpit_amount_last_documents' => array(we_base_request::INT, 5),
 		'cockpit_dat' => array(we_base_request::STRING, ''),
 		//all rss feeds set in cockpit
-		'cockpit_rss' => array(we_base_request::STRING, ''),
-		//current url for rss feed
-		'cockpit_rss_feed_url' => array(we_base_request::STRING, ''),
+		'cockpit_rss' => array(we_base_request::SERIALIZED_KEEP, ''),
 		'editorMode' => array(we_base_request::STRING, 'codemirror2'),
 		'editorCodecompletion' => array(we_base_request::STRING, we_serialize(array('WE' => 1, 'htmlTag' => 1, 'html5Tag' => 1), SERIALIZE_JSON)),
 		'editorCommentFontcolor' => array(we_base_request::STRING, null),
@@ -223,10 +222,10 @@ $GLOBALS['configs'] = array(
 		'editorTooltipFontsize' => array(we_base_request::INT, 0),
 		'editorWrap' => array(we_base_request::BOOL, false),
 		'message_reporting' => array(we_base_request::INT, we_message_reporting::WE_MESSAGE_WARNING | we_message_reporting::WE_MESSAGE_ERROR),
-		'xhtml_show_wrong' => array(we_base_request::BOOL, false),
+		/*'xhtml_show_wrong' => array(we_base_request::BOOL, false),
 		'xhtml_show_wrong_text' => array(we_base_request::BOOL, false),
 		'xhtml_show_wrong_js' => array(we_base_request::BOOL, false),
-		'xhtml_show_wrong_error_log' => array(we_base_request::BOOL, false),
+		'xhtml_show_wrong_error_log' => array(we_base_request::BOOL, false),*/
 		'specify_jeditor_colors' => array(we_base_request::BOOL, false),
 		'seem_start_type' => array(we_base_request::STRING, 'cockpit', 'CHANGE_START_DOCUMENT'),
 		'seem_start_file' => array(we_base_request::INT, 0),

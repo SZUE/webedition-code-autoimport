@@ -433,10 +433,13 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 					$_imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
 					$_thumbpath = WEBEDITION_DIR . 'thumbnail.php?' . http_build_query(array(
 							'id' => $this->id,
-							'size' => 150,
+							'size' => array(
+								'width' => 150,
+								'height' => 200,
+							),
 							'path' => str_replace($_SERVER['DOCUMENT_ROOT'], '', $result['Path']),
 							'extension' => $result['Extension'],
-							'size2' => 200));
+					));
 					$_imagepreview = "<a href='" . $result['Path'] . "' target='_blank'><img src='" . $_thumbpath . "' border='0' id='previewpic'></a>";
 				}
 			}
