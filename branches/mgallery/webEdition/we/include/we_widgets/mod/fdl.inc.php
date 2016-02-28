@@ -21,8 +21,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
 if(!(defined('CUSTOMER_TABLE') && permissionhandler::hasPerm('CAN_SEE_CUSTOMER'))){
 	return;
 }
@@ -63,6 +61,9 @@ if(($maxRows = f('SELECT COUNT(DISTINCT f.Username) ' . $queryFailedLogins, '', 
 	$failedLoginsTable->addRow();
 	$failedLoginsTable->setCol(1, 0, array("class" => "middlefont", "colspan" => "4", "style" => "text-align:left;color:green;"), we_html_element::htmlB(g_l("cockpit", "[kv_failedLogins][noFailedLogins]")));
 }
+if(!isset($aProps)){
+	$newSCurrId = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5);
+}
 
 $failedLoginHTML = YAHOO_FILES .
 	we_html_element::jsElement('var ajaxCallbackResetLogins = {
@@ -72,7 +73,7 @@ success: function(o) {
 			var weResponse =JSON.parse(o.responseText);
 			if ( weResponse ) {
 				if (weResponse.DataArray.data == "true") {
-					' . ( isset($newSCurrId) ? 'rpc("","","","","","' . $newSCurrId . '","fdl/fdl");' : '' ) .
+					' . ( isset($newSCurrId) ? 'rpc("","","","","","' . $newSCurrId . '");' : '' ) .
 		we_message_reporting::getShowMessageCall(g_l('cockpit', '[kv_failedLogins][deleted]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
 					self.setTheme(_sObjId,_oSctCls[_oSctCls.selectedIndex].value);
 				}
@@ -84,3 +85,22 @@ failure: function(o) {
 
 }}') .
 	$failedLoginsTable->getHtml();
+
+if(!isset($aProps)){//preview requested
+	$sJsCode = "
+var _sObjId='" . $newSCurrId . "';
+var _sType='fdl';
+var _sTb='" . g_l('cockpit', '[kv_failedLogins][headline]') . "';
+
+function init(){
+	parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
+}";
+
+	echo we_html_tools::getHtmlTop(g_l('cockpit', '[kv_failedLogins][headline]') . ' (' . $maxRows . ')', '', '', STYLESHEET . we_html_element::jsElement($sJsCode), we_html_element::htmlBody(array(
+			'style' => 'margin:10px 15px;',
+			"onload" => "if(parent!=self){init();}"
+			), we_html_element::htmlDiv(array(
+				"id" => "fdl"
+				), we_html_element::htmlDiv(array('id' => 'fdl_data'), $failedLoginHTML)
+	)));
+}

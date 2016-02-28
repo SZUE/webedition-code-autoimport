@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -34,8 +33,7 @@ if($aProps[3]){
 
 list($bTbLabel, $bTbTitel, $bTbDesc, $bTbLink, $bTbPubDate, $bTbCopyright) = $_rssTb;
 $aLabelPrefix = array();
-#if ($bTbLabel)
-#	$aLabelPrefix[] = g_l('cockpit','[rss_feed]');
+
 if($bTbTitel && $_rssTitle){
 	$_feed = (isset($aTrf)) ? $aTrf : $aTopRssFeeds;
 	foreach($_feed as $iRssFeedIndex => $aFeed){
@@ -46,16 +44,12 @@ if($bTbTitel && $_rssTitle){
 	}
 }
 $sTbPrefix = implode(' - ', $aLabelPrefix);
-$aLang = array(
-	$sTbPrefix, ''
-);
+$aLang = array($sTbPrefix, '');
 
-$_iFrmRss = we_html_element::jsElement("
+$oTblDiv = we_html_element::jsElement("
 window.addEventListener('load',
 	function() {
 		WE().layout.cockpitFrame.executeAjaxRequest('" . base64_decode($_rssUri) . "', '" . $_rssCont . "', '" . $_rssNumItems . "', '" . $_rssTb . "', '" . $sTbPrefix . "', '" . 'm_' . $iCurrId . "');
 	},
 	true
 );") . '<div class="rssDiv middlefont" id="m_' . $iCurrId . '_inline" style="width:100%;height:287px ! important; overflow: auto;"></div>';
-
-$oTblDiv = $_iFrmRss;

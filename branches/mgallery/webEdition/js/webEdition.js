@@ -935,7 +935,7 @@ function we_cmd_base(args, url) {
 			break;
 		case "edit_home":
 			if (args[1] === 'add') {
-				self.load.location = WE().consts.dirs.WE_INCLUDES_DIR + 'we_widgets/cmd.php?we_cmd[0]=' + args[1] + '&we_cmd[1]=' + args[2] + '&we_cmd[2]=' + args[3];
+				self.load.location = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=widget_cmd&we_cmd[1]=' + args[1] + '&we_cmd[2]=' + args[2] + '&we_cmd[3]=' + args[3];
 			}
 			break;
 		case "edit_navi":
@@ -1137,7 +1137,7 @@ function we_cmd_base(args, url) {
 			if (_currEditor && _currEditor.getEditorType() === "cockpit") {
 				if (confirm(WE().consts.g_l.main.cockpit_reset_settings)) {
 					//FIXME: currently this doesn't work
-					WE().layout.weEditorFrameController.getActiveDocumentReference().location = WE().consts.dirs.WE_INCLUDES_DIR + 'we_widgets/cmd.php?we_cmd[0]=' + args[0];
+					WE().layout.weEditorFrameController.getActiveDocumentReference().location = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=widget_cmd&we_cmd[1]' + args[0];
 					if ((window.treeData !== undefined) && window.treeData) {
 						window.treeData.unselectNode();
 					}
@@ -1555,7 +1555,6 @@ WE().util.clip = function (doc, unique, width) {
 		btn.classList.remove("fa-caret-down");
 		btn.classList.add("fa-caret-right");
 	}
-
 };
 
 WE().layout.we_setPath = function (path, text, id, classname) {

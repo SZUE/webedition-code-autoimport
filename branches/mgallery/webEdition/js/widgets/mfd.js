@@ -24,7 +24,6 @@
 
 var _oCsv_;
 var _sInitCsv_;
-var _sMfdInc = 'mfd/mfd';
 var _oSctDate;
 var _oSctNumEntries;
 var _bPrev = false;
@@ -34,7 +33,7 @@ var _sLastPreviewCsv = '';
 function exit_close() {
 	if (_bPrev && _sInitCsv_ != _sLastPreviewCsv) {
 		var aCsv = _sInitCsv_.split(';');
-		opener.rpc(aCsv[0], aCsv[1], aCsv[2], aCsv[3], aCsv[4], _sObjId, _sMfdInc);
+		opener.rpc(aCsv[0], aCsv[1], aCsv[2], aCsv[3], aCsv[4], _sObjId);
 	}
 	exitPrefs();
 	self.close();
@@ -84,7 +83,7 @@ function getCsv() {
 function refresh(bRender) {
 	if (bRender)
 		_sLastPreviewCsv = getCsv();
-	opener.rpc(getBinary('type'), _oSctDate.selectedIndex, _oSctNumEntries.selectedIndex, getBinary('display_opt'), _sUsers, _sObjId, _sMfdInc);
+	opener.rpc(getBinary('type'), _oSctDate.selectedIndex, _oSctNumEntries.selectedIndex, getBinary('display_opt'), _sUsers, _sObjId);
 }
 
 function init() {

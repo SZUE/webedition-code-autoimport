@@ -132,14 +132,13 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 
 
 		_isHotTrf = false;
-		var _trf = {};
+		var _trf =[
 	<?php
-	$iCurrRssFeed = 0;
 	foreach($aTrf as $aRssFeed){
-		echo "_trf[" . $iCurrRssFeed . "]=['" . $aRssFeed[0] . "','" . $aRssFeed[1] . "'];";
-		$iCurrRssFeed++;
+		echo "['" . $aRssFeed[0] . "','" . $aRssFeed[1] . "'],";
 	}
 	?>
+			];
 		//-->
 	</script>
 	<?php
@@ -224,9 +223,10 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 		), we_html_element::htmlForm(
 			array("name" => "we_form"
 			), we_html_element::htmlHiddens(array(
-				"we_cmd[0]" => "save",
-				"we_cmd[1]" => "",
-				"we_cmd[2]" => ""))
+				'we_cmd[0]' => 'widget_cmd',
+				'we_cmd[1]' => 'save',
+				'we_cmd[2]' => '',
+				'we_cmd[3]' => ''))
 		) .
 		we_html_element::htmlDiv(array("id" => "rpcBusy", "style" => "display:none;"), '<i class="fa fa-2x fa-spinner fa-pulse"></i>'
 		) . we_html_element::htmlDiv(array("id" => "widgets"), "") .

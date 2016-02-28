@@ -7,3 +7,5 @@ CREATE TABLE ###TBLPREFIX###tblPrefs (
   PRIMARY KEY (`userID`,`key`),
 	KEY lookup (`key`)
 ) ENGINE=MyISAM;
+/* query separator */
+###UPDATEONLY###DELETE FROM ###TBLPREFIX###tblPrefs WHERE key="cockpit_rss_feed_url";

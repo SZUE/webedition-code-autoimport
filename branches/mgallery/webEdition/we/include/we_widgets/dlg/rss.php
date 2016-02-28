@@ -67,9 +67,7 @@ function clip_' . $unique . '(){
 
 $oIptUri = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("ipt_uri", 55, "", 255, 'title=""', "text", 380, 0), g_l('cockpit', '[url]'), "left", "defaultfont");
 
-$oSctRss = new we_html_select(array(
-	"name" => "sct_rss", "size" => 1, "class" => "defaultfont", "onchange" => "onChangeSctRss(this);"
-	));
+$oSctRss = new we_html_select(array("name" => "sct_rss", "size" => 1, "class" => "defaultfont", "onchange" => "onChangeSctRss(this);"));
 $oSctRss->insertOption(0, "", "");
 $oTblSctRss = we_html_tools::htmlFormElementTable($oSctRss->getHTML(), g_l('cockpit', '[rss_top_feeds]'), 'left', 'defaultfont');
 

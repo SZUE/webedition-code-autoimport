@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -23,10 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 // widget LAST MODIFIED
-
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-we_html_tools::protect();
-
+if(!isset($aProps)){//preview requested
+	$aCols = we_base_request::_(we_base_request::STRING, 'we_cmd');
+}
 $mode = $_SESSION['weS']['we_mode'];
 $uid = $_SESSION['user']['ID'];
 session_write_close();
@@ -91,8 +89,8 @@ $bDateLastMfd = $sDisplayOpt{1};
 $db = $GLOBALS['DB_WE'];
 
 $aUsers = array_filter(array_map('intval', (permissionhandler::hasPerm('EDIT_MFD_USER') ?
-						makeArrayFromCSV($aCols[4]) :
-						array($uid))));
+			makeArrayFromCSV($aCols[4]) :
+			array($uid))));
 
 if($aUsers){
 	$aUsers = implode(',', $aUsers);
@@ -116,8 +114,8 @@ if($bTypeDoc){
 		$paths[] = 'f.Path LIKE ("' . $db->escape(id_to_path($id, FILE_TABLE)) . '%")';
 	}
 	$join[] = FILE_TABLE . ' f ON (h.DocumentTable="' . $t . '" AND f.ID=h.DID ' . ($paths ? ' AND (' . implode(' OR ', $paths) . ')' : '') .
-			($admin ? '' : ' AND (f.RestrictOwners=0 OR(f.RestrictOwners=1 AND (f.CreatorID=' . $_SESSION['user']['ID'] . ' OR FIND_IN_SET(' . $_SESSION['user']['ID'] . ',f.Owners))))') .
-			')';
+		($admin ? '' : ' AND (f.RestrictOwners=0 OR(f.RestrictOwners=1 AND (f.CreatorID=' . $_SESSION['user']['ID'] . ' OR FIND_IN_SET(' . $_SESSION['user']['ID'] . ',f.Owners))))') .
+		')';
 	$tables[] = 'f';
 }
 if($bTypeObj){
@@ -128,22 +126,22 @@ if($bTypeObj){
 		$paths[] = 'of.Path LIKE ("' . $db->escape(id_to_path($id, OBJECT_FILES_TABLE)) . '%")';
 	}
 	$join[] = OBJECT_FILES_TABLE . ' of ON (h.DocumentTable="' . $t . '" AND of.ID=h.DID ' . ($paths ? ' AND (' . implode(' OR ', $paths) . ')' : '') .
-			($admin ? '' : ' AND (of.RestrictOwners=0 OR(of.RestrictOwners=1 AND (of.CreatorID=' . $_SESSION['user']['ID'] . ' OR FIND_IN_SET(' . $_SESSION['user']['ID'] . ',of.Owners))))') .
-			')';
+		($admin ? '' : ' AND (of.RestrictOwners=0 OR(of.RestrictOwners=1 AND (of.CreatorID=' . $_SESSION['user']['ID'] . ' OR FIND_IN_SET(' . $_SESSION['user']['ID'] . ',of.Owners))))') .
+		')';
 	$tables[] = 'of';
 }
 if($bTypeTpl && $mode != we_base_constants::MODE_SEE){
 	$doctable[] = '"' . stripTblPrefix(TEMPLATES_TABLE) . '"';
 	$join[] = TEMPLATES_TABLE . ' t ON (h.DocumentTable="tblTemplates" AND t.ID=h.DID' .
-			($admin ? '' : ' AND (t.RestrictOwners=0 OR(t.RestrictOwners=1 AND (t.CreatorID=' . $_SESSION['user']['ID'] . ' OR FIND_IN_SET(' . $_SESSION['user']['ID'] . ',t.Owners))))') .
-			')';
+		($admin ? '' : ' AND (t.RestrictOwners=0 OR(t.RestrictOwners=1 AND (t.CreatorID=' . $_SESSION['user']['ID'] . ' OR FIND_IN_SET(' . $_SESSION['user']['ID'] . ',t.Owners))))') .
+		')';
 	$tables[] = 't';
 }
 if($bTypeCls && $mode != we_base_constants::MODE_SEE){
 	$doctable[] = '"' . stripTblPrefix(OBJECT_TABLE) . '"';
 	$join[] = OBJECT_TABLE . ' o ON (h.DocumentTable="tblObject" AND o.ID=h.DID' .
-			($admin ? '' : ' AND (o.RestrictOwners=0 OR(o.RestrictOwners=1 AND (o.CreatorID=' . $_SESSION['user']['ID'] . ' OR FIND_IN_SET(' . $_SESSION['user']['ID'] . ',o.Owners))))') .
-			')';
+		($admin ? '' : ' AND (o.RestrictOwners=0 OR(o.RestrictOwners=1 AND (o.CreatorID=' . $_SESSION['user']['ID'] . ' OR FIND_IN_SET(' . $_SESSION['user']['ID'] . ',o.Owners))))') .
+		')';
 	$tables[] = 'o';
 }
 
@@ -174,7 +172,7 @@ COALESCE(' . implode('.ContentType,', $tables) . '.ContentType) AS ContentType,
 COALESCE(' . implode('.ModDate,', $tables) . '.ModDate) AS ModDate
 FROM ' . HISTORY_TABLE . ' h
 LEFT JOIN ' .
-		LOCK_TABLE . ' l ON l.ID=DID AND l.tbl=h.DocumentTable AND l.UserID!=' . $uid . ($join ? ' LEFT JOIN ' . implode(' LEFT JOIN ', $join) : '') . '
+	LOCK_TABLE . ' l ON l.ID=DID AND l.tbl=h.DocumentTable AND l.UserID!=' . $uid . ($join ? ' LEFT JOIN ' . implode(' LEFT JOIN ', $join) : '') . '
 ' . $where . '
 GROUP BY h.DID,h.DocumentTable
 ORDER BY ModDate DESC LIMIT 0,' . ($iMaxItems));
@@ -186,14 +184,38 @@ while($db->next_record(MYSQL_ASSOC) /* && $j < $iMaxItems */){
 
 	$isOpen = $file['isOpen'];
 	$lastModified .= '<tr><td class="mfdIcon" data-contenttype="' . $file['ContentType'] . '"></td>' .
-			'<td style="vertical-align: middle;' . ($isOpen ? 'color:red;' : '') . '" ><span ' .
-			($isOpen ? '' : 'style="color:#000000;" onclick="WE().layout.weEditorFrameController.openDocument(\'' . addTblPrefix($file['ctable']) . '\',' . $file['ID'] . ',\'' . $file['ContentType'] . '\');" title="' . $file['Path'] . '"') . '>' .
-			$file['Path'] .
-			'</span></td>' .
-			($bMfdBy ? '<td>' . $file['UserName'] . (($bDateLastMfd) ? ',' : '') . '</td>' : '') .
-			($bDateLastMfd ? '<td>' . $file['MDate'] . '</td>' : '') .
-			'</tr>';
+		'<td style="vertical-align: middle;' . ($isOpen ? 'color:red;' : '') . '" ><span ' .
+		($isOpen ? '' : 'style="color:#000000;" onclick="WE().layout.weEditorFrameController.openDocument(\'' . addTblPrefix($file['ctable']) . '\',' . $file['ID'] . ',\'' . $file['ContentType'] . '\');" title="' . $file['Path'] . '"') . '>' .
+		$file['Path'] .
+		'</span></td>' .
+		($bMfdBy ? '<td>' . $file['UserName'] . (($bDateLastMfd) ? ',' : '') . '</td>' : '') .
+		($bDateLastMfd ? '<td>' . $file['MDate'] . '</td>' : '') .
+		'</tr>';
 }
 
 $lastModified .= '</table>';
-return $lastModified;
+if(isset($aProps)){//normal mode
+	return $lastModified;
+}
+//preview mode
+$sJsCode = "
+var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5) . "';
+var _sType='mfd';
+WE().consts.g_l.cockpit.mfd={
+	last_modified:'" . g_l('cockpit', '[last_modified]') . "'
+};
+
+function init(){
+	WE().util.setIconOfDocClass(document,'mfdIcon');
+	parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),WE().consts.g_l.cockpit.mfd.last_modified);
+}";
+
+echo we_html_tools::getHtmlTop(g_l('cockpit', '[last_modified]'), '', '', STYLESHEET .
+	we_html_element::jsElement($sJsCode), we_html_element::htmlBody(
+		array(
+		'style' => 'margin:10px 15px;',
+		"onload" => 'init();'
+		), we_html_element::htmlDiv(array(
+			'id' => 'mfd'
+			), we_html_element::htmlDiv(array('id' => 'mfd_data'), $lastModified)
+)));

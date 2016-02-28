@@ -32,7 +32,7 @@ function init(){
 }
 
 function refresh(){
-	opener.rpc('','','','','','" . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . "', 'fdl/fdl');
+	opener.rpc('','','','','','" . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . "');
 }
 
 function save(){

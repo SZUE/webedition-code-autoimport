@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -22,18 +21,20 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 list($pad_header_enc, $pad_csv) = explode(',', $aProps[3]);
 
-$_iFrmPadAtts['src'] = WE_INCLUDES_DIR . 'we_widgets/mod/pad.php?' . http_build_query(array(
-			'we_cmd' => array(
-				0 => $pad_csv,
-				2 => 'home',
-				3 => $aProps[1],
-				4 => $pad_header_enc,
-				5 => $iCurrId,
-				6 => $aProps[1],
-				7 => 'home')));
+$_iFrmPadAtts['src'] = WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array(
+		'mod' => 'pad',
+		'we_cmd' => array(
+			0 => 'widget_cmd',
+			1 => 'reload',
+			2 => $pad_csv,
+			4 => 'home',
+			5 => $aProps[1],
+			6 => $pad_header_enc,
+			7 => $iCurrId,
+			8 => $aProps[1],
+			9 => 'home')));
 $_iFrmPadAtts['id'] = 'm_' . $iCurrId . '_inline';
 $_iFrmPadAtts['style'] = 'width:100%;height:287px';
 
