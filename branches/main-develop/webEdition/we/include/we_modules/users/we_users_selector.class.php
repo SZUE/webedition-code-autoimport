@@ -29,8 +29,6 @@ class we_users_selector extends we_selector_file{
 
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $rootDirID, $multiple, $filter);
 		$this->title = g_l('fileselector', '[userSelector][title]');
-		$this->fields = str_replace('Text', 'CONCAT(First," ", Second," (",Text,")") AS Text', $this->fields);
-		$this->fields.= ',(IF(IsFolder,"we/userGroup",(IF(Alias>0,"we/alias","we/user")))) AS ContentType';
 	}
 
 	protected function setDefaultDirAndID($setLastDir){

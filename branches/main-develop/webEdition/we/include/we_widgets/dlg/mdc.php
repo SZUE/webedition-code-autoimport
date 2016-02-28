@@ -191,7 +191,7 @@ echo we_html_tools::getHtmlTop(g_l('cockpit', '[my_documents]'), '', '', weSugge
 	we_html_element::jsElement($jsPrefs) .
 	we_html_element::jsScript(JS_DIR . 'widgets/mdc.js'), we_html_element::htmlBody(
 		array(
-		"class" => "weDialogBody", "onload" => "init('" . $_selTable . "','" . $sTitle . "','" . $selBinary . "','" . $sCsv . ");"
+		"class" => "weDialogBody", "onload" => "init('" . $_selTable . "','" . $sTitle . "','" . $selBinary . "','" . $sCsv . "');"
 		), we_html_element::htmlForm(
 			"", we_html_element::htmlHiddens(array(
 				"table" => "",

@@ -21,9 +21,17 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+$preview = !isset($aProps); //preview requested
+if($preview){
+
+	$aProps = array(
+		0,
+		0,
+		0,
+		we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)
+	);
+}
 // widget UNPUBLISHED
-we_html_tools::protect();
 $bTypeDoc = (bool) $aProps[3]{0};
 $bTypeObj = (bool) $aProps[3]{1};
 $_objectFilesTable = defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : "";
@@ -131,3 +139,24 @@ foreach($tbls as $table){
 
 asort($_cont);
 $ct = '<table class="default">' . implode('', $_cont) . '</table>';
+
+if($preview){
+	$sTb = g_l('cockpit', ($bTypeDoc && $bTypeObj ? '[upb_docs_and_objs]' : ($bTypeDoc ? '[upb_docs]' : ($bTypeObj ? '[upb_objs]' : '[upb_docs_and_objs]'))));
+
+	$jsCode = "
+var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5) . "';
+var _sType='upb';
+var _sTb='" . $sTb . "';
+
+function init(){
+	parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
+}
+";
+
+	echo we_html_tools::getHtmlTop(g_l('cockpit', '[unpublished]'), '', '', STYLESHEET . we_html_element::jsElement($jsCode), we_html_element::htmlBody(array(
+			'style' => 'margin:10px 15px;',
+			"onload" => 'if(parent!=self){init();}WE().util.setIconOfDocClass(document,"upbIcon");'
+			), we_html_element::htmlDiv(array(
+				"id" => "upb"
+				), $ct)));
+}

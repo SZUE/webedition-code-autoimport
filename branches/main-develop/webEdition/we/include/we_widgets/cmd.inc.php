@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -22,21 +21,21 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-we_html_tools::protect();
-$cmd1 = we_base_request::_(we_base_request::SERIALIZED_KEEP, 'we_cmd', '', 1);
-switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
+$cmd1 = we_base_request::_(we_base_request::SERIALIZED_KEEP, 'we_cmd', '', 2);
+switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1)){
 	case 'save' :
 		we_base_preferences::setUserPref('cockpit_dat', $cmd1);
-		we_base_preferences::setUserPref('cockpit_rss', we_base_request::_(we_base_request::SERIALIZED_KEEP, 'we_cmd', '', 2));
+		we_base_preferences::setUserPref('cockpit_rss', we_base_request::_(we_base_request::SERIALIZED_KEEP, 'we_cmd', '', 3));
 		break;
 	case 'reload':
 		$mod = we_base_request::_(we_base_request::STRING, 'mod');
+		array_shift($_REQUEST['we_cmd']);
+		array_shift($_REQUEST['we_cmd']);
 		include_once (WE_INCLUDES_PATH . 'we_widgets/mod/' . $mod . '.inc.php');
 		break;
 	case 'add' :
 		include_once(WE_INCLUDES_PATH . 'we_widgets/cfg.inc.php');
-		$cmd2 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2);
+		$cmd2 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3);
 
 		$aProps = array(
 			$cmd1,
@@ -55,20 +54,23 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		$iCurrId = str_replace('m_', '', $cmd2);
 		$newSCurrId = $cmd2;
 		$iWidth = $aPrefs[$aProps[0]]['width'];
-		if($aProps[0] != 'rss' && $aProps[0] != 'pad'){
-			if($aProps[0] === 'msg'){
+		switch($aProps[0]){
+			case 'rss':
+			case 'pad':
+				break;
+			case 'msg':
 				$_transact = md5(uniqid(__FUNCTION__, true));
-			}
-			include_once (WE_INCLUDES_PATH . 'we_widgets/mod/' . $aProps[0] . '.inc.php');
+			default:
+				include_once (WE_INCLUDES_PATH . 'we_widgets/mod/' . $aProps[0] . '.inc.php');
 		}
 		include_once (WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php');
 
 		echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssElement('div,span{display:none;}'), we_html_element::htmlBody(
-						array('onload' => 'WE().layout.cockpitFrame.transmit(this,\'' . $aProps[0] . '\',\'m_' . $iCurrId . '\');'
-						), we_html_element::htmlDiv(array('id' => 'content'), $oTblDiv) .
-						we_html_element::htmlSpan(array('id' => 'prefix'), $aLang[0]) .
-						we_html_element::htmlSpan(array('id' => 'postfix'), $aLang[1]) .
-						we_html_element::htmlSpan(array('id' => 'csv'), (isset($aProps[3]) ? $aProps[3] : '')))
+				array('onload' => 'WE().layout.cockpitFrame.transmit(this,\'' . $aProps[0] . '\',\'m_' . $iCurrId . '\');'
+				), we_html_element::htmlDiv(array('id' => 'content'), $oTblDiv) .
+				we_html_element::htmlSpan(array('id' => 'prefix'), $aLang[0]) .
+				we_html_element::htmlSpan(array('id' => 'postfix'), $aLang[1]) .
+				we_html_element::htmlSpan(array('id' => 'csv'), (isset($aProps[3]) ? $aProps[3] : '')))
 		);
 		break;
 

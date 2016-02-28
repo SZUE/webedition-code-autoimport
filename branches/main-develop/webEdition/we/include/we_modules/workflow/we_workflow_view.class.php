@@ -1111,7 +1111,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 	}
 
 	function getLogQuestion(){
-		$vals = array('<table class="default" style="margin-left:22px;"><tr><td>' . we_html_tools::getDateInput2("log_time%s", (time() - (336 * 3600))) . '</td></tr></table>');
+		$vals = array('<table class="default" style="margin-left:22px;"><tr><td>' . we_html_tools::getDateInput("log_time%s", (time() - (336 * 3600))) . '</td></tr></table>');
 
 		return we_html_element::jsElement('
 			function clear(){

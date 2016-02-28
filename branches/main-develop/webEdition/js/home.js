@@ -293,28 +293,17 @@ function saveSettings() {
 			}
 		}
 	}
-	rss = [];
+	var rss = [];
 	var topRssFeedsLen = _trf.length;
 	for (i = 0; i < topRssFeedsLen; i++) {
 		rss[i] = [_trf[i][0], _trf[i][1]];
 	}
-	if (_bDgSave) {
-		var sDg = '';
-		for (i = 0; i < aDat.length; i++) {
-			sDg += i + ":\n";
-			for (var j = 0; j < aDat[i].length; j++) {
-				sDg += "\t" + aDat[i][j] + "\n";
-			}
-		}
-// interne Meldung - debug
-		console.log(sDg);
-	}
 
 	fo = self.document.forms.we_form;
-	fo.elements['we_cmd[1]'].value = JSON.stringify(aDat);
-	fo.elements['we_cmd[2]'].value = JSON.stringify(rss);
+	fo.elements['we_cmd[2]'].value = JSON.stringify(aDat);
+	fo.elements['we_cmd[3]'].value = JSON.stringify(rss);
 	top.YAHOO.util.Connect.setForm(fo);
-	var cObj = top.YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WE_INCLUDES_DIR + 'we_widgets/cmd.php', function () {
+	var cObj = top.YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php', function () {
 	});
 }
 
@@ -732,6 +721,7 @@ function rpc(a, b, c, d, e, wid, path) {
 	}
 	var sType = document.getElementById(wid + '_type').value;
 	showLoadingSymbol(wid);
+	var args = Array.prototype.slice.call(arguments);
 
 	// temporaryliy add a form submit the form and save all !
 	// start bugfix #1145
@@ -739,25 +729,22 @@ function rpc(a, b, c, d, e, wid, path) {
 	document.getElementsByTagName("body")[0].appendChild(_tmpForm);
 	switch (sType) {
 		case 'rss':
-		case 'sct':
-			path = 'cmd.php?we_cmd[0]=reload&mod=' + sType;
-			break;
-		case 'pad':
-			path = 'mod/' + sType + '.php';
-			break;
+			WE().layout.cockpitFrame.executeAjaxRequest(a, b, c, d, e, wid, path);
+			return false;
 		default:
-			path = 'dlg/' + path + '.php';
+			path = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?mod=' + sType;
+			args.unshift("widget_cmd", "reload");
 	}
 	_tmpForm.id = "_tmpSubmitForm";
 	_tmpForm.method = "POST";
-	_tmpForm.action = WE().consts.dirs.WE_INCLUDES_DIR + 'we_widgets/' + path;
+	_tmpForm.action = path;
 	_tmpForm.target = "RSIFrame";
-	for (var i = 0; i < arguments.length; i++) {
+	for (var i = 0; i < args.length; i++) {
 		var _tmpField = document.createElement('input');
 		_tmpForm.appendChild(_tmpField);
 
 		_tmpField.name = "we_cmd[]";
-		_tmpField.value = unescape(arguments[i]);
+		_tmpField.value = unescape(args[i]);
 		_tmpField.style.display = "none";
 	}
 	_tmpForm.submit();

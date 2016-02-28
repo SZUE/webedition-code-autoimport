@@ -30,7 +30,6 @@ list($sType, $iDate, $sRevenueTarget) = explode(";", we_base_request::_(we_base_
 $jsCode = "
 var _oCsv_;
 var _sInitCsv_;
-var _sShpInc='shp/shp';
 var _oSctDate;
 var _sInitNum='" . $sRevenueTarget . "';
 var _bPrev=false;

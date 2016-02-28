@@ -74,7 +74,7 @@ function do_confirm() {
 				'noline' => 1
 			),
 			array("headline" => g_l('modules_messaging', '[deadline]'),
-				"html" => we_html_tools::getDateInput2('td_deadline%s', $compose->get_deadline()),
+				"html" => we_html_tools::getDateInput('td_deadline%s', $compose->get_deadline()),
 				'space' => 120,
 				'noline' => 1
 			),

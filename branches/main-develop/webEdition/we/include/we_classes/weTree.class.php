@@ -98,7 +98,6 @@ container.prototype.treeFrame="' . $this->treeFrame . '";
 container.prototype.frameset="' . $this->frameset . '";
 container.prototype.frames={
 	top:' . $this->topFrame . ',
-	cmd:' . $this->cmdFrame . ',
 	tree:' . $this->treeFrame . '
 };
 ' . $this->getJSStartTree()

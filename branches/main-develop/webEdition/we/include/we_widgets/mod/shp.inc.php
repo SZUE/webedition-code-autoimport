@@ -22,10 +22,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 // widget Shop
-
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-we_html_tools::protect();
-
+if(!isset($aProps)){//preview requested
+	$aCols = we_base_request::_(we_base_request::STRING, 'we_cmd');
+	$newSCurrId = we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 5);
+}
 $isRefresh = true;
 if(!isset($aCols[5])){
 	$aCols = explode(';', $aProps[3]);
@@ -247,12 +247,12 @@ $shopDashboard = '<div style="width:60%;float:left;">' .
 	$shopDashboardTable->getHtml() .
 	'</div>'
 	. '<div style="width:40%;float:right;">' . ($bTarget ? '<b>' . g_l('cockpit', '[shop_dashboard][revenue_target]') . '&nbsp;' . we_base_util::formatNumber($sRevenueTarget, $numberformat) . '&nbsp;' . $currency . '</b><br/>' : '') .
-		//note: canvas doesn't support CSS width/height....
+	//note: canvas doesn't support CSS width/height....
 	'<canvas id="' . $newSCurrId . '_chart_div" width="160" height="160"></canvas>' .
 	'</div><br style="clear:both;"/>';
 
 if($bTarget){
-	$shopDashboard .= /*we_html_element::jsScript(LIB_DIR . 'additional/canvas/excanvas.js') .*/
+	$shopDashboard .= /* we_html_element::jsScript(LIB_DIR . 'additional/canvas/excanvas.js') . */
 		we_html_element::jsScript(LIB_DIR . 'additional/gauge/gauge.min.js') .
 		we_html_element::jsElement("
 window.addEventListener('load',function() {
@@ -271,4 +271,23 @@ window.addEventListener('load',function() {
 		redTo: " . ($sRevenueTarget * 0.9) . "
 	} );
 });");
+}
+
+if(!isset($aProps)){//preview requested
+	$sJsCode = "
+var _sObjId='" . $newSCurrId . "';
+var _sType='shp';
+var _sTb='" . g_l('cockpit', '[shop_dashboard][headline]') . ':&nbsp;' . $interval . "';
+
+function init(){
+	parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
+}";
+
+	echo we_html_tools::getHtmlTop(g_l('cockpit', '[shop_dashboard][headline]') . '&nbsp;' . $interval, '', '', STYLESHEET . we_html_element::jsElement($sJsCode), we_html_element::htmlBody(array(
+			'style' => 'margin:10px 15px;',
+			"onload" => "if(parent!=self){init();}"
+			), we_html_element::htmlDiv(array(
+				"id" => "shp"
+				), we_html_element::htmlDiv(array('id' => 'shp_data'), $shopDashboard)
+	)));
 }

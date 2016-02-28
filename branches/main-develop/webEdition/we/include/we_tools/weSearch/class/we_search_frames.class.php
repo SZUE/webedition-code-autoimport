@@ -102,7 +102,7 @@ class we_search_frames extends we_tool_frames{
 				'id' => 'tab_2', 'style' => "display:$displayEntry"
 			)));
 		}
-		if(permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){// FIXME: add some media related perm // FIXME: g_l()
+		if(permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){// FIXME: add some media related perm
 			$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-image"></i> ' . g_l('searchtool', '[media]'), '((' . $this->topFrame . '.activ_tab==5) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('5');", array(
 				'id' => 'tab_5', 'style' => "display:$displayEntry"
 			)));
@@ -225,21 +225,11 @@ function setTab(tab) {
 
 		return $this->View->getCommonHiddens($hiddens) .
 			we_html_element::htmlHidden('newone', ($this->View->Model->ID == 0 ? 1 : 0)) .
-			we_html_element::htmlDiv(array(
-				'id' => 'tab1', 'style' => ($tabNr == 1 ? 'display: block;' : 'display: none')
-				), $tabNr == 1 ? $this->getHTMLSearchtool($this->getHTMLTabDocuments()) : '') .
-			we_html_element::htmlDiv(array(
-				'id' => 'tab2', 'style' => ($tabNr == 2 ? 'display: block;' : 'display: none')
-				), $tabNr == 2 ? $this->getHTMLSearchtool($this->getHTMLTabTemplates()) : '') .
-			we_html_element::htmlDiv(array(
-				'id' => 'tab5', 'style' => ($tabNr == 5 ? 'display: block;' : 'display: none')
-				), $tabNr == 5 ? $this->getHTMLSearchtool($this->getHTMLTabMedia()) : '') .
-			we_html_element::htmlDiv(array(
-				'id' => 'tab3', 'style' => ($tabNr == 3 ? 'display: block;' : 'display: none')
-				), $tabNr == 3 ? $this->getHTMLSearchtool($this->getHTMLTabAdvanced()) : '') .
-			we_html_element::htmlDiv(array(
-				'id' => 'tab4', 'style' => ($tabNr == 4 ? 'display: block;' : 'display: none')
-				), $this->getHTMLSearchtool($this->getHTMLGeneral()));
+			we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? 'display: block;' : 'display: none')), $tabNr == 1 ? $this->getHTMLSearchtool($this->getHTMLTabDocuments()) : '') .
+			we_html_element::htmlDiv(array('id' => 'tab2', 'style' => ($tabNr == 2 ? 'display: block;' : 'display: none')), $tabNr == 2 ? $this->getHTMLSearchtool($this->getHTMLTabTemplates()) : '') .
+			we_html_element::htmlDiv(array('id' => 'tab5', 'style' => ($tabNr == 5 ? 'display: block;' : 'display: none')), $tabNr == 5 ? $this->getHTMLSearchtool($this->getHTMLTabMedia()) : '') .
+			we_html_element::htmlDiv(array('id' => 'tab3', 'style' => ($tabNr == 3 ? 'display: block;' : 'display: none')), $tabNr == 3 ? $this->getHTMLSearchtool($this->getHTMLTabAdvanced()) : '') .
+			we_html_element::htmlDiv(array('id' => 'tab4', 'style' => ($tabNr == 4 ? 'display: block;' : 'display: none')), $this->getHTMLSearchtool($this->getHTMLGeneral()));
 	}
 
 	function getHTMLGeneral(){
@@ -411,14 +401,11 @@ function setTab(tab) {
 
 		foreach($content as $i => $c){
 			$_forceRightHeadline = (!empty($c['forceRightHeadline']));
-			$icon = (!empty($c['icon']) ?
-					'<img src="' . ICON_DIR . $c["icon"] . '" alt="" style="width:64px;height:64px;margin-left:20px;" />' :
-					"");
 			$headline = (!empty($c['headline'])) ? ('<div  class="weMultiIconBoxHeadline" style="margin-bottom:10px;margin-left:30px;">' . $c["headline"] . '</div>') : "";
 			$mainContent = (!empty($c['html'])) ? $c['html'] : '';
 			$leftWidth = (!empty($c['space'])) ? abs($c['space']) : 0;
-			$leftContent = $icon ? : (($leftWidth && (!$_forceRightHeadline)) ? $headline : '');
-			$rightContent = '<div class="defaultfont">' . ((($icon && $headline) || ($leftContent === '') || $_forceRightHeadline) ? ($headline . '<div>' . $mainContent . '</div>') : '<div>' . $mainContent . '</div>') . '</div>';
+			$leftContent = (($leftWidth && (!$_forceRightHeadline)) ? $headline : '');
+			$rightContent = '<div class="defaultfont">' . ((($leftContent === '') || $_forceRightHeadline) ? ($headline . '<div>' . $mainContent . '</div>') : '<div>' . $mainContent . '</div>') . '</div>';
 
 			if($leftContent || $leftWidth && $leftContent != ''){
 				if((!$leftContent) && $leftWidth){

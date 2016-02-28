@@ -269,13 +269,10 @@ WE().consts.g_l.weSearch = {
 					if($fs){
 						$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $_result[$f]['Path']);
 
-						$url = WEBEDITION_DIR . 'thumbnail.php?id=' . $_result[$f]['docID'] . "&size=" . $smallSize . "&path=" . urlencode($_result[$f]["Path"]) . "&extension=" . $_result[$f]["Extension"];
+						$url = WEBEDITION_DIR . 'thumbnail.php?id=' . $_result[$f]['docID'] . "&size[width]=" . $smallSize . "&path=" . urlencode($_result[$f]["Path"]) . "&extension=" . $_result[$f]["Extension"];
 						$imageView = '<img src="' . $url . '" /></a>';
-						$urlPopup = WEBEDITION_DIR . "thumbnail.php?id=" . $_result[$f]["docID"] . "&size=" . $bigSize . "&path=" . $_result[$f]["Path"] . "&extension=" . $_result[$f]["Extension"];
+						$urlPopup = WEBEDITION_DIR . "thumbnail.php?id=" . $_result[$f]["docID"] . "&size[width]=" . $bigSize . "&path=" . $_result[$f]["Path"] . "&extension=" . $_result[$f]["Extension"];
 						$imageViewPopup = '<img src="' . $urlPopup . '"/></a>';
-
-						//$imageView = '<img src="' . WEBEDITION_DIR . 'thumbnail.php?id=' . $_result[$f]["docID"] . "&size=" . $smallSize . "&path=" . urlencode($_result[$f]["Path"]) . "&extension=" . $_result[$f]['Extension'] . "' border='0' /></a>";
-						//$imageViewPopup = '<img src="' . WEBEDITION_DIR . 'thumbnail.php?id=' . $_result[$f]['docID'] . '&size=' . $bigSize . '&path=' . urlencode($_result[$f]['Path']) . '&extension=' . $_result[$f]['Extension'] . '" /></a>';
 					} else {
 						$imagesize = array(0, 0);
 						$imageView = $imageViewPopup = '<span class="resultIcon" data-contenttype="' . $_result[$f]['ContentType'] . '" data-extension="' . $_result[$f]['Extension'] . '"></span>';

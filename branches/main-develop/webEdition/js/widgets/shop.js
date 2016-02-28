@@ -51,13 +51,13 @@ function getCsv() {
 function refresh(bRender) {
 	if (bRender)
 		_sLastPreviewCsv = getCsv();
-	opener.rpc(getBinary('type'), _oSctDate.selectedIndex, document.forms[0].elements.revenueTarget.value, '', '', _sObjId, _sShpInc);
+	opener.rpc(getBinary('type'), _oSctDate.selectedIndex, document.forms[0].elements.revenueTarget.value, '', '', _sObjId);
 }
 
 function exit_close() {
 	if (_bPrev && _sInitCsv_ != _sLastPreviewCsv) {
 		var aCsv = _sInitCsv_.split(';');
-		opener.rpc(aCsv[0], aCsv[1], aCsv[2], aCsv[3], aCsv[4], _sObjId, _sShpInc);
+		opener.rpc(aCsv[0], aCsv[1], aCsv[2], aCsv[3], aCsv[4], _sObjId);
 	}
 	exitPrefs();
 	self.close();

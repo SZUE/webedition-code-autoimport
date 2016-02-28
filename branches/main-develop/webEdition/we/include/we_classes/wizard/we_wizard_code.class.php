@@ -158,7 +158,7 @@ abstract class we_wizard_code{
 	 */
 	public static function getJavascript(){
 		return YAHOO_FILES .
-			we_html_element::jsScript(JS_DIR . 'wizard_code.js');
+			we_html_element::jsScript(JS_DIR . 'we_srcTmpl.js');
 	}
 
 }

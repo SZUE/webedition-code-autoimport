@@ -46,7 +46,7 @@ function we_tag_input($attribs, $content){
 		switch($type){
 			case 'date':
 				$d = abs($GLOBALS['we_doc']->getElement($name));
-				return we_html_tools::getDateInput2('we_' . $GLOBALS['we_doc']->Name . '_date[' . $name . ']', ($d ? : time()), true, $format);
+				return we_html_tools::getDateInput('we_' . $GLOBALS['we_doc']->Name . '_date[' . $name . ']', ($d ? : time()), true, $format);
 			case 'checkbox':
 				$attribs = removeAttribs($attribs, array('name', 'value', 'type', '_name_orig', 'reload'));
 				$attribs['type'] = 'checkbox';
