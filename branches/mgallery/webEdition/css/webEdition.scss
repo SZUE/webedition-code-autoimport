@@ -961,21 +961,28 @@ optgroup{
 	left: 0px;
 	right: 0px;
 	border-bottom: 4px solid $DarkBlue;
-	#logout,#home{
+
+	#logout,
+	#home,
+	#newUpdate{
 		height: $menuHeight;
 		float: left;
 		width: $menuHeight;
 		cursor: pointer;
 		text-align: center;
-		/*background: linear-gradient(#345881, #284a70);*/
-		background: #284a70;
 		margin-left: 0px;
 		margin-right: 0px;
 		border-right: none;
-	}
-	#logout{
 		background: none;
 		border-left: 1px solid #366196;
+	}
+	#home{
+		background: #284a70;
+		border-left:none;
+	}
+
+	#newUpdate{
+		color:yellow;
 	}
 }
 #weHeaderRight{
