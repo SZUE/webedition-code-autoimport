@@ -160,6 +160,20 @@ abstract class we_listview_objectBase extends we_listview_base{
 				}, $match[1]) . "'";
 		}, $cond);
 
+		$cond = strtr($cond, array(
+			'we_creationdate' => '`' . OBJECT_FILES_TABLE . '`.CreationDate',
+			'wedoc_CreationDate' => '`' . OBJECT_FILES_TABLE . '`.CreationDate',
+			'wedoc_ModDate' => '`' . OBJECT_FILES_TABLE . '`.ModDate',
+			'we_moddate' => '`' . OBJECT_FILES_TABLE . '`.ModDate',
+			'wedoc_Published' => '`' . OBJECT_FILES_TABLE . $classID . '`.Published',
+			'we_published' => '`' . OBJECT_FILES_TABLE . $classID . '`.Published',
+			'wedoc_ParentID' => '`' . OBJECT_FILES_TABLE . $classID . '`.ParentID',
+			'wedoc_Text' => '`' . OBJECT_FILES_TABLE . $classID . '`.Text',
+			'we_filename' => '`' . OBJECT_FILES_TABLE . $classID . '`.Text',
+			'we_id' => '`' . OBJECT_X_TABLE . $classID . '`.OF_ID',
+			'we_path'=> '`' . OBJECT_FILES_TABLE . $classID . '`.Path',
+		));
+
 		$_tmporder = trim(str_ireplace('desc', '', $order));
 		foreach($orderArr as $pos => $curOrd){
 			switch($curOrd){
