@@ -46,6 +46,7 @@ if(!defined('CONF_SAVED_VERSION') || (defined('CONF_SAVED_VERSION') && (intval(W
 	define('WE_VERSION_UPDATE', 1);
 	//resave config file(s)
 	we_base_preferences::check_global_config(true);
+	we_base_file::delete(WE_CACHE_PATH . 'newwe_version.json');
 }
 we_base_file::checkAndMakeFolder($_SERVER['DOCUMENT_ROOT'] . WE_THUMBNAIL_DIRECTORY);
 
