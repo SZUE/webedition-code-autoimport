@@ -68,6 +68,7 @@ $l_searchtool=array(
 	'import_tool_weSearch_data'=>'Die Daten des Tools Suche wiederherstellen',
 	'jeder'=>'alle anzeigen',
 	'media'=>'Medien',
+	'media_do_rebuild'=>'Die Verwendung von Mediendokumenten wird ab Version 7.0 beim Speichern der referenzierenden Dokumente/ Objekte/ Modul-Einträge registriert. Um sämtliche Referenzen neu zu schreiben, bzw. um sie auf älteren Installationen nachträglich zu registrieren, verwenden Sie bitte Rebuild -> Media-Links neu schreiben.',
 	'menu_advSearch'=>'Erweiterte Suche',
 	'menu_delete'=>'Löschen',
 	'menu_exit'=>'Schließen',

@@ -68,6 +68,7 @@ $l_searchtool=array(
 	'import_tool_weSearch_data'=>'Restaurer les donnés de l`util recherche',
 	'jeder'=>'afficher tout',
 	'media'=>'Media',
+	'media_do_rebuild'=>'From version 7.0 onwards references to Media-Documents are automatically registered when saving the referencing documents, objects or module-entries. To rewrite all references (especially on older installations) please use Rebuild -> Rewrite Media Links.',
 	'menu_advSearch'=>'Recherche avancé',
 	'menu_delete'=>'Supprimer',
 	'menu_exit'=>'Fermer',

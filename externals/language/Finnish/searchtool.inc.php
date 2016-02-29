@@ -68,6 +68,7 @@ $l_searchtool=array(
 	'import_tool_weSearch_data'=>'Palauta Haku tieto',
 	'jeder'=>'näytä kaikkia',
 	'media'=>'Media',
+	'media_do_rebuild'=>'From version 7.0 onwards references to Media-Documents are automatically registered when saving the referencing documents, objects or module-entries. To rewrite all references (especially on older installations) please use Rebuild -> Rewrite Media Links.',
 	'menu_advSearch'=>'Kehittynyt Haku',
 	'menu_delete'=>'Poista',
 	'menu_exit'=>'Sulje',
