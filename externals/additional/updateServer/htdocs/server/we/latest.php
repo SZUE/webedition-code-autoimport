@@ -34,15 +34,15 @@ if(!isset($_REQUEST["format"]) || !in_array($_REQUEST["format"], $formats)){
 }
 $beta = false;
 $verStr = "rel";
-if(isset($_REQUEST["beta"]) && $_REQUEST["beta"] == "true"){
+if(!empty($_REQUEST["beta"]) && $_REQUEST["beta"] == "true"){
 	$beta = true;
-	$verStr = "beta";
+	$branch = !empty($_REQUEST["branch"]) ? $_REQUEST["branch"] : "beta";
 }
 // check cache:
 if($format == "json"){
-	$cachefile = dirname(__FILE__) . "/latest.tmp/" . $verStr . ".json";
+	$cachefile = dirname(__FILE__) . "/latest.tmp/" . $branch . ".json";
 } else {
-	$cachefile = dirname(__FILE__) . "/latest.tmp/" . $verStr . ".php";
+	$cachefile = dirname(__FILE__) . "/latest.tmp/" . $branch . ".php";
 }
 
 $cachelt = 43200; // 43200 seconds = 12 hours
@@ -60,13 +60,14 @@ include("./conf/define.inc.php");
 $db_versioning_down = false;
 require_once './database/we_database_base.class.php';
 require_once './database/we_database_mysqli.class.php';
+require_once './include/we_db_tools.inc.php';
 
 $GLOBALS['DB_WE'] = new DB_WE(); //& DB::connect($DSN_versioning, $OPTIONS_versioning);
 
 if($beta === true){
-	$query = "SELECT DISTINCT(version), date, islive FROM " . VERSION_TABLE . " ORDER BY version DESC limit 1";
+	$query = 'SELECT DISTINCT(version), date, islive,svnrevision FROM ' . VERSION_TABLE . ' WHERE branch="' . $GLOBALS['DB_WE']->escape($branch) . '" ORDER BY version DESC limit 1';
 } else {
-	$query = "SELECT DISTINCT(version), date, islive FROM " . VERSION_TABLE . " WHERE islive = 1 ORDER BY version DESC limit 1";
+	$query = 'SELECT DISTINCT(version), date, islive,svnrevision FROM ' . VERSION_TABLE . ' WHERE islive=1 ORDER BY version DESC limit 1';
 }
 $latest = $GLOBALS['DB_WE']->getHash($query);
 $latestVersion = $latest["version"];
@@ -85,7 +86,7 @@ $latest["dotted"] = $dotted;
 
 // fetch languages:
 if(!empty($latestVersion)){
-	$query = "SELECT DISTINCT(language), isbeta FROM " . VERSION_TABLE . " WHERE version = '" . $latestVersion . "'";
+	$query = "SELECT DISTINCT(language), isbeta FROM " . VERSION_TABLE . " WHERE version='" . $latestVersion . "'";
 	$GLOBALS['DB_WE']->query($query);
 	while($GLOBALS['DB_WE']->next_record()){
 		$row = $GLOBALS['DB_WE']->getRecord();

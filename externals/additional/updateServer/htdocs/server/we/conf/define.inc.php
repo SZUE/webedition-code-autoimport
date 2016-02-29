@@ -4,15 +4,16 @@
  */
 define('LANGUAGELIMIT', '6300');
 
+if(defined('SHARED_DIR')){
 // set the shared template dir
-define("SHARED_TEMPLATE_DIR", SHARED_DIR . '/includes/templates');
+	define("SHARED_TEMPLATE_DIR", SHARED_DIR . '/includes/templates');
 
 // set the shared language dir
-define('SHARED_LANGUAGE_DIR', SHARED_DIR . '/includes/languages');
+	define('SHARED_LANGUAGE_DIR', SHARED_DIR . '/includes/languages');
 
 // set the shared language dir
-define('SHARED_DOWNLOAD_DIR', SHARED_DIR . '/download');
-
+	define('SHARED_DOWNLOAD_DIR', SHARED_DIR . '/download');
+}
 
 /**
  * Names of tables

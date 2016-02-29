@@ -41,10 +41,6 @@ class leOnlineInstaller{
 	 */
 	var $StepTemplate = null;
 
-	//function leOnlineInstaller() {
-	//$this->__construct();
-	//}
-
 	function __construct(){
 		$this->initLanguage();
 	}
