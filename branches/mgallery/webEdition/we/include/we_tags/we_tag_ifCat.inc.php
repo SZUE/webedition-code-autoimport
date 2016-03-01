@@ -48,17 +48,16 @@ function we_tag_ifCat($attribs){
 		} else {
 			//no need to query db
 			$cat = array_filter(array_map('intval', explode(',', $cat)));
-			$categories = array_filter($catids);
-			return (array_intersect($cat, $categories) ? true : false);
+			return (array_intersect($cat, array_filter($catids)) ? true : false);
 		}
 	}
 
-	$DocCatsPaths = id_to_path($cat, CATEGORY_TABLE, $GLOBALS['DB_WE'], false, true, $parent);
+	$DocCatsPaths = id_to_path($cat, CATEGORY_TABLE, $GLOBALS['DB_WE'], false, !$parent);
 
 	foreach($categories as $match){
-		$match = '/' . ltrim($match, '/');
+		$match = '/' . trim($match, '/');
 		if($parent){
-			if(in_array($match, $DocCatsPaths) || in_array($match . '/', $DocCatsPaths)){
+			if(strpos($DocCatsPaths, $match . '/') !== false){
 				return true;
 			}
 		} else if(in_array($match, $DocCatsPaths)){
