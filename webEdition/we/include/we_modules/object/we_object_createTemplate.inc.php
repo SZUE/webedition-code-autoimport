@@ -205,7 +205,7 @@ $content .= '
 $_SESSION['weS']['content'] = $content;
 
 $buttons = we_html_button::position_yes_no_cancel(
-		we_html_button::create_button(we_html_button::SAVE, "javascript:if(document.we_form.we_" . $tmpl->Name . "_Filename.value != ''){ document.we_form.action='" . WE_OBJECT_MODULE_DIR . "we_object_createTemplatecmd.php';document.we_form.submit();}else{ " . we_message_reporting::getShowMessageCall(g_l('alert', '[input_file_name]'), we_message_reporting::WE_MESSAGE_ERROR) . " }"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();")
+		we_html_button::create_button(we_html_button::SAVE, "javascript:if(document.we_form.we_" . $tmpl->Name . "_Filename.value != ''){ document.we_form.action=WE().consts.dirs.WE_MODULES_DIR+'object/we_object_createTemplatecmd.php';document.we_form.submit();}else{ " . we_message_reporting::getShowMessageCall(g_l('alert', '[input_file_name]'), we_message_reporting::WE_MESSAGE_ERROR) . " }"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();")
 );
 
 

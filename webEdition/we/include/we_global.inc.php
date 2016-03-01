@@ -32,33 +32,6 @@ function correctUml($in){//FIXME: need charset!!
 	return strtr($in, array('ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue', 'ß' => 'ss'));
 }
 
-function makePIDTail($pid, $cid, we_database_base $db = null, $table = FILE_TABLE){
-	if($table != FILE_TABLE){
-		return '1';
-	}
-
-	$db = $db ? : new DB_WE();
-	$parentIDs = array();
-	$pid = intval($pid);
-	$parentIDs[] = $pid;
-	while($pid != 0){
-		$pid = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pid), '', $db);
-		$parentIDs[] = $pid;
-	}
-	$cid = intval($cid);
-	$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($cid), '', $db);
-	$fooArr = we_unserialize($foo);
-	$flag = (isset($fooArr['WorkspaceFlag']) ? $fooArr['WorkspaceFlag'] : 1);
-	$pid_tail = array();
-	if($flag){
-		$pid_tail[] = OBJECT_X_TABLE . intval($cid) . '.OF_Workspaces=""';
-	}
-	foreach($parentIDs as $pid){
-		$pid_tail[] = 'FIND_IN_SET(' . intval($pid) . ',' . OBJECT_X_TABLE . intval($cid) . '.OF_Workspaces) OR FIND_IN_SET(' . intval($pid) . ',' . OBJECT_X_TABLE . intval($cid) . '.OF_ExtraWorkspacesSelected)';
-	}
-	return ($pid_tail ? ' (' . implode(' OR ', $pid_tail) . ') ' : 1);
-}
-
 function makeIDsFromPathCVS($paths, $table = FILE_TABLE){
 	if(!$paths || !$table){
 		return '';
@@ -1279,4 +1252,15 @@ if(!function_exists('hex2bin')){//FIXME: remove if php >= 5.4
 		return pack("H*", $hex_string);
 	}
 
+}
+
+function updateAvailable(){
+	$versionInfo = json_decode((we_base_file::load(WE_CACHE_PATH . 'newwe_version.json')? : ''), true);
+	if($versionInfo && (version_compare($versionInfo['dotted'], WE_VERSION) > 0 ||
+		//in branched mode, we compare svn revisions
+		( WE_VERSION_BRANCH != "" && intval(WE_SVNREV) < intval($versionInfo['svnrevision'])))
+	){
+		return $versionInfo;
+	}
+	return false;
 }

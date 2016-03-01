@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -30,7 +29,6 @@
  */
 //FIXME: is this class not ~ listview_object? why is this not the base class???
 abstract class we_listview_objectBase extends we_listview_base{
-
 	var $classID = 0; /* ID of a class */
 	var $triggerID = 0; /* ID of a document which to use for displaying thr detail page */
 	var $condition = ''; /* condition string (like SQL) */
@@ -100,13 +98,13 @@ abstract class we_listview_objectBase extends we_listview_base{
 		$from = $orderArr = $descArr = $ordertmp = array();
 
 		$cond = ' ' . preg_replace_callback("/'([^']*)'/", function (array $match){
-					$in = $match[1];
-					$out = '';
-					for($i = 0; $i < strlen($in); $i++){
-						$out .= '&' . ord(substr($in, $i, 1)) . ';';
-					}
-					return "'" . $out . "'";
-				}, strtr($cond, array('&gt;' => '>', '&lt;' => '<'))) . ' ';
+				$in = $match[1];
+				$out = '';
+				for($i = 0; $i < strlen($in); $i++){
+					$out .= '&' . ord(substr($in, $i, 1)) . ';';
+				}
+				return "'" . $out . "'";
+			}, strtr($cond, array('&gt;' => '>', '&lt;' => '<'))) . ' ';
 
 		if($order && ($order != 'random()')){
 			$foo = makeArrayFromCSV($order);
@@ -139,7 +137,7 @@ abstract class we_listview_objectBase extends we_listview_base{
 				}
 			}
 		}
-		$f = '`' . OBJECT_X_TABLE . $classID . '`.OF_ID AS ID,`' . OBJECT_X_TABLE . $classID . '`.OF_Templates,`' . OBJECT_X_TABLE . $classID . '`.OF_ID,`' . OBJECT_X_TABLE . $classID . '`.OF_Category,`' . OBJECT_X_TABLE . $classID . '`.OF_Text,`' . OBJECT_X_TABLE . $classID . '`.OF_Url,`' . OBJECT_X_TABLE . $classID . '`.OF_TriggerID,`' . OBJECT_X_TABLE . $classID . '`.OF_WebUserID,`' . OBJECT_X_TABLE . $classID . '`.OF_Language,`' . OBJECT_X_TABLE . $classID . '`.`OF_Published`' . ' AS we_wedoc_Published,' . $_selFields;
+		$f = '`' . OBJECT_X_TABLE . $classID . '`.OF_ID AS ID,`' . OBJECT_X_TABLE . $classID . '`.OF_Templates,`' . OBJECT_X_TABLE . $classID . '`.OF_ID,`' . OBJECT_X_TABLE . $classID . '`.OF_Category,`' . OBJECT_X_TABLE . $classID . '`.OF_Text,`' . OBJECT_X_TABLE . $classID . '`.OF_Url,`' . OBJECT_X_TABLE . $classID . '`.OF_TriggerID,`' . OBJECT_X_TABLE . $classID . '`.OF_WebUserID,`' . OBJECT_X_TABLE . $classID . '`.OF_Language,' . $_selFields;
 		$charclass = '[\!\=%&\(\)\*\+\.\/<>|~, ]';
 		foreach($matrix as $n => $p){
 			$n2 = $n;
@@ -158,36 +156,55 @@ abstract class we_listview_objectBase extends we_listview_base{
 		}
 		$cond = preg_replace_callback("/'([^']*)'/", function (array $match){
 			return "'" . preg_replace_callback("/&([^;]+);/", function (array $match){
-						return chr($match[1]);
-					}, $match[1]) . "'";
+					return chr($match[1]);
+				}, $match[1]) . "'";
 		}, $cond);
 
-		ksort($ordertmp);
-		$_tmporder = trim(str_ireplace('desc', '', $order));
-		switch($_tmporder){
-			case 'we_id':
-			case 'we_filename':
-			case 'we_published':
-			case 'we_moddate':
-				$_tmporder = strtr($_tmporder, array(
-					'we_id' => '`' . OBJECT_X_TABLE . $classID . '`.OF_ID',
-					'we_filename' => '`' . OBJECT_X_TABLE . $classID . '`.OF_Text',
-					'we_published' => '`' . OBJECT_X_TABLE . $classID . '`.OF_Published',
-					'we_moddate' => '`' . OBJECT_FILES_TABLE . '`.ModDate',
-				));
-				$order = ' ORDER BY ' . $_tmporder . ($this->desc ? ' DESC' : '');
-				break;
-			case 'random()':
-				$order = ' ORDER BY RANDOM ';
-				break;
-			default:
-				$order = implode(',', $ordertmp);
-				if($order){
-					$order = ' ORDER BY ' . $order;
-				}
-				break;
-		}
+		$cond = strtr($cond, array(
+			'we_creationdate' => '`' . OBJECT_FILES_TABLE . '`.CreationDate',
+			'wedoc_CreationDate' => '`' . OBJECT_FILES_TABLE . '`.CreationDate',
+			'wedoc_ModDate' => '`' . OBJECT_FILES_TABLE . '`.ModDate',
+			'we_moddate' => '`' . OBJECT_FILES_TABLE . '`.ModDate',
+			'wedoc_Published' => '`' . OBJECT_FILES_TABLE . $classID . '`.Published',
+			'we_published' => '`' . OBJECT_FILES_TABLE . $classID . '`.Published',
+			'wedoc_ParentID' => '`' . OBJECT_FILES_TABLE . $classID . '`.ParentID',
+			'wedoc_Text' => '`' . OBJECT_FILES_TABLE . $classID . '`.Text',
+			'we_filename' => '`' . OBJECT_FILES_TABLE . $classID . '`.Text',
+			'we_id' => '`' . OBJECT_X_TABLE . $classID . '`.OF_ID',
+			'we_path'=> '`' . OBJECT_FILES_TABLE . $classID . '`.Path',
+		));
 
+		$_tmporder = trim(str_ireplace('desc', '', $order));
+		foreach($orderArr as $pos => $curOrd){
+			switch($curOrd){
+				case 'we_id':
+					$ordertmp[$pos] = '`' . OBJECT_X_TABLE . $classID . '`.OF_ID' . ($descArr[$pos] ? ' DESC' : '');
+					break;
+				case 'we_filename':
+					$ordertmp[$pos] = '`' . OBJECT_FILES_TABLE . $classID . '`.Text' . ($descArr[$pos] ? ' DESC' : '');
+					break;
+				case 'we_path':
+					$ordertmp[$pos] = '`' . OBJECT_FILES_TABLE . $classID . '`.Path' . ($descArr[$pos] ? ' DESC' : '');
+					break;
+				case 'we_published':
+					$ordertmp[$pos] = '`' . OBJECT_FILES_TABLE . $classID . '`.Published' . ($descArr[$pos] ? ' DESC' : '');
+					break;
+				case 'we_moddate':
+					$ordertmp[$pos] = '`' . OBJECT_FILES_TABLE . '`.ModDate' . ($descArr[$pos] ? ' DESC' : '');
+					break;
+				case 'we_creationdate':
+					$ordertmp[$pos] = '`' . OBJECT_FILES_TABLE . '`.CreationDate' . ($descArr[$pos] ? ' DESC' : '');
+					break;
+				case 'random()':
+					$ordertmp = array();
+					$order = ' ORDER BY RANDOM ';
+					break 2;
+			}
+		}
+		if($ordertmp){
+			ksort($ordertmp);
+			$order = ' ORDER BY ' . implode(',', $ordertmp);
+		}
 		$tb = array_unique($from);
 
 		$publ_cond = array();
@@ -208,7 +225,7 @@ abstract class we_listview_objectBase extends we_listview_base{
 
 	public function getCustomerRestrictionQuery($specificCustomersQuery, $classID, $mfilter, $listQuery){
 		return //at least check only documents of the specified class
-				'FROM ' . CUSTOMER_FILTER_TABLE . ' f JOIN ' . OBJECT_X_TABLE . $classID . ' ON (modelId=OF_ID AND modelTable="' . stripTblPrefix(OBJECT_FILES_TABLE) . '") WHERE ' . $mfilter . ' AND (' . $listQuery . ' OR ' . $specificCustomersQuery . ')';
+			'FROM ' . CUSTOMER_FILTER_TABLE . ' f JOIN ' . OBJECT_X_TABLE . $classID . ' ON (modelId=OF_ID AND modelTable="' . stripTblPrefix(OBJECT_FILES_TABLE) . '") WHERE ' . $mfilter . ' AND (' . $listQuery . ' OR ' . $specificCustomersQuery . ')';
 	}
 
 	public function getFoundDocument(){

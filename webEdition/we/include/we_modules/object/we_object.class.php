@@ -1338,7 +1338,7 @@ class we_object extends we_document{
 	}
 
 	private function getObjectFieldHTML($ObjectID, $attribs, $editable = true){
-		$pid = intval($this->getElement($ObjectID, "dat"));
+		$pid = intval($this->getElement($ObjectID));
 		if(!$editable){
 			return '';
 		}

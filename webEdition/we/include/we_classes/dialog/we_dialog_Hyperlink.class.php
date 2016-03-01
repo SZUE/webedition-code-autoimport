@@ -569,7 +569,8 @@ var consts={
 		if(!empty($param)){
 			$tmp = array();
 			parse_str($param, $tmp);
-			$param = '?' . http_build_query($tmp, null, '&', PHP_QUERY_RFC3986);
+			//FIXME remove as of php 5.3 support ends
+			$param = '?' . (defined('PHP_QUERY_RFC3986') ? http_build_query($tmp, null, '&', PHP_QUERY_RFC3986) : http_build_query($tmp, null, '&'));
 		}
 		// TODO: $args['href'] comes from weHyperlinkDialog with params and anchor: strip these elements there, not here!
 		$href = (strpos($args['href'], '?') !== false ? substr($args['href'], 0, strpos($args['href'], '?')) :
@@ -586,7 +587,8 @@ var consts={
 			if(!empty($args['mail_bcc'])){
 				$query['bcc'] = $args['mail_bcc'];
 			}
-			$href = $args['href'] . (empty($query) ? '' : '?' . http_build_query($query, null, '&', PHP_QUERY_RFC3986));
+			//FIXME remove as of php 5.3 support ends
+			$href = $args['href'] . (empty($query) ? '' : '?' . (defined('PHP_QUERY_RFC3986') ? http_build_query($query, null, '&', PHP_QUERY_RFC3986) : http_build_query($query, null, '&')));
 
 			$tmpClass = $args['class'];
 			foreach($args as &$val){
