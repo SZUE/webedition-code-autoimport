@@ -3248,4 +3248,30 @@ class we_objectFile extends we_document{
 		}
 	}
 
+	public static function makePIDTail($pid, $cid, we_database_base $db, $table = FILE_TABLE){
+		if($table != FILE_TABLE){
+			return '1';
+		}
+
+		$parentIDs = array();
+		$pid = intval($pid);
+		$parentIDs[] = $pid;
+		while($pid != 0){
+			$pid = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pid), '', $db);
+			$parentIDs[] = $pid;
+		}
+		$cid = intval($cid);
+		$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $cid, '', $db);
+		$fooArr = we_unserialize($foo);
+		$flag = (isset($fooArr['WorkspaceFlag']) ? $fooArr['WorkspaceFlag'] : 1);
+		$pid_tail = array();
+		if($flag){
+			$pid_tail[] = OBJECT_X_TABLE . $cid . '.OF_Workspaces=""';
+		}
+		foreach($parentIDs as $pid){
+			$pid_tail[] = 'FIND_IN_SET(' . intval($pid) . ',' . OBJECT_X_TABLE . $cid . '.OF_Workspaces) OR FIND_IN_SET(' . intval($pid) . ',' . OBJECT_X_TABLE . $cid . '.OF_ExtraWorkspacesSelected)';
+		}
+		return ($pid_tail ? ' (' . implode(' OR ', $pid_tail) . ') ' : 1);
+	}
+
 }

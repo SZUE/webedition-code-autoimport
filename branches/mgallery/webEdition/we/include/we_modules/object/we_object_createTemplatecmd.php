@@ -54,7 +54,7 @@ unset($_SESSION['weS']['content']);
 
 if(($we_responseText = $GLOBALS['we_doc']->checkFieldsOnSave())){
 	echo we_html_element::jsElement(we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR));
-	require_once(WE_OBJECT_MODULE_PATH . 'we_object_createTemplate.inc.php');
+	require_once(WE_MODULES_PATH . 'object/we_object_createTemplate.inc.php');
 } else {
 	if($GLOBALS['we_doc']->we_save()){
 		$we_responseText = sprintf(g_l('weEditor', '[' . $GLOBALS['we_doc']->ContentType . '][response_save_ok]'), $GLOBALS['we_doc']->Path);
@@ -64,6 +64,6 @@ self.close();');
 	} else {
 		$we_responseText = sprintf(g_l('weEditor', '[' . $GLOBALS['we_doc']->ContentType . '][response_save_notok]'), $GLOBALS['we_doc']->Path);
 		echo we_html_element::jsElement(we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR));
-		require_once(WE_OBJECT_MODULE_PATH . 'we_object_createTemplate.inc.php');
+		require_once(WE_MODULES_PATH . 'object/we_object_createTemplate.inc.php');
 	}
 }

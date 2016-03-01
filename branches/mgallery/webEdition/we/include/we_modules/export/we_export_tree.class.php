@@ -181,7 +181,6 @@ var openFolders= {
 	}
 
 	public function loadHTML($table, $parentFolder, $openFolders){
-		$GLOBALS["OBJECT_FILES_TREE_COUNT"] = 20;
 		$GLOBALS['parentpaths'] = $wsQuery = array();
 
 		if(($ws = get_ws($table))){
