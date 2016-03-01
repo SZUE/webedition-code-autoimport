@@ -35,7 +35,7 @@ class we_main_headermenu{
 _console_' . $consoleName . ' = new (WE().layout.messageConsoleView)(\'' . $consoleName . '\', this.window );
 _console_' . $consoleName . '.register();
 window.document.body.addEventListener(\'onunload\',	_console_' . $consoleName . '.unregister);' :
-						'
+				'
 <div id="messageConsole">
 <table><tr>
 	<td style="vertical-align:middle"><div class="small messageConsoleMessage" id="messageConsoleMessage' . $consoleName . '">--</div></td>
@@ -46,8 +46,8 @@ window.document.body.addEventListener(\'onunload\',	_console_' . $consoleName . 
 
 	static function css(){
 		return
-				we_html_element::cssLink(WEBEDITION_DIR . 'css/menu/pro_drop_1.css') .
-				we_html_element::jsScript(JS_DIR . 'menu/clickMenu.js');
+			we_html_element::cssLink(WEBEDITION_DIR . 'css/menu/pro_drop_1.css') .
+			we_html_element::jsScript(JS_DIR . 'menu/clickMenu.js');
 	}
 
 	static function getMenuReloadCode($location = 'top.opener.'){
@@ -62,7 +62,7 @@ window.document.body.addEventListener(\'onunload\',	_console_' . $consoleName . 
 		$we_menu = include(WE_INCLUDES_PATH . 'menu/we_menu.inc.php');
 
 		if(// menu for normalmode
-				isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
+			isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 			$jmenu = new we_base_menu($we_menu, "top.load");
 		} else { // menu for seemode
 			if(!permissionhandler::isUserAllowedForAction("header", "with_java")){
@@ -98,7 +98,7 @@ window.document.body.addEventListener(\'onunload\',	_console_' . $consoleName . 
 				array("onclick" => "top.weNavigationHistory.navigateReload();", "i" => "refresh", "text" => g_l('javaMenu_global', '[reload]')),
 				array("onclick" => "top.weNavigationHistory.navigateBack();", "i" => "caret-left", "text" => g_l('javaMenu_global', '[back]')),
 				array("onclick" => "top.weNavigationHistory.navigateNext();", "i" => "caret-right", "text" => g_l('javaMenu_global', '[next]')),
-					)
+				)
 			);
 		}
 		?>
@@ -119,14 +119,23 @@ window.document.body.addEventListener(\'onunload\',	_console_' . $consoleName . 
 					}
 				}
 				?></div>
-			<div id="weHeaderRight"><?php if($msg){ ?>
+			<div id="weHeaderRight"><?php
+				if(($versionInfo = updateAvailable())){
+					?>
+					<div id="newUpdate" class="navigation">
+						<i class="fa fa-lg fa-exclamation-circle" title="<?php printf(g_l('sysinfo', '[newWEAvailable]'), $versionInfo['dotted']  . ' (svn ' . $versionInfo['svnrevision'] . ')', $versionInfo['date']); ?>"></i>
+					</div>
+					<?php
+				}
+				if($msg){
+					?>
 					<div id="msgheadertable"><?php we_messaging_headerMsg::pbody(); ?></div><?php
 				}
 
-				echo self::createMessageConsole('mainWindow',false);
+				echo self::createMessageConsole('mainWindow', false);
 //				<img src="<php echo IMAGE_DIR >/webedition.svg" alt="" id="weHeaderLogo"/>
 				?>
-			<div id="logout" class="navigation"><i class="fa fa-power-off fa-lg" onclick="top.we_cmd('dologout');"></i></div>
+				<div id="logout" class="navigation"><i class="fa fa-power-off fa-lg" onclick="top.we_cmd('dologout');"></i></div>
 			</div>
 		</div>
 		<?php

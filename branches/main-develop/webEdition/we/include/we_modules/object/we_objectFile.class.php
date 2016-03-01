@@ -2299,13 +2299,14 @@ class we_objectFile extends we_document{
 				if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 					$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . ' AND ClassName="' . $this->DB_WE->escape($this->ClassName) . '" AND task="' . we_schedpro::SCHEDULE_FROM . '"', '', $this->DB_WE);
 					if($sessDat){
-						$this->i_getPersistentSlotsFromDB(/* "Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url,TriggerID" */);
+						$this->i_getPersistentSlotsFromDB();
 						if($this->i_initSerializedDat(we_unserialize($sessDat))){
 
 							//make sure at least TableID is set from db
 							//and Published as well #5742
-							$this->i_getPersistentSlotsFromDB('TableID,Published');
+							$this->i_getPersistentSlotsFromDB('TableID,Published,Text,Path,ParentID');
 							$this->i_getUniqueIDsAndFixNames();
+							$this->setTypeAndLength();
 							break;
 						}
 					}
@@ -2346,7 +2347,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function i_getUniqueIDsAndFixNames(){
+	private function i_getUniqueIDsAndFixNames(){
 		if(is_array($this->DefArray) && count($this->DefArray)){
 			$newDefArr = $this->getDefaultValueArray();
 			foreach($newDefArr as $n => $v){
@@ -3247,6 +3248,32 @@ class we_objectFile extends we_document{
 			$objects = isset($old['objects']) ? $old['objects'] : $old;
 			$this->setElement($k, implode(',', $objects), 'multiobject');
 		}
+	}
+
+	public static function makePIDTail($pid, $cid, we_database_base $db, $table = FILE_TABLE){
+		if($table != FILE_TABLE){
+			return '1';
+		}
+
+		$parentIDs = array();
+		$pid = intval($pid);
+		$parentIDs[] = $pid;
+		while($pid != 0){
+			$pid = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pid), '', $db);
+			$parentIDs[] = $pid;
+		}
+		$cid = intval($cid);
+		$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $cid, '', $db);
+		$fooArr = we_unserialize($foo);
+		$flag = (isset($fooArr['WorkspaceFlag']) ? $fooArr['WorkspaceFlag'] : 1);
+		$pid_tail = array();
+		if($flag){
+			$pid_tail[] = OBJECT_X_TABLE . $cid . '.OF_Workspaces=""';
+		}
+		foreach($parentIDs as $pid){
+			$pid_tail[] = 'FIND_IN_SET(' . intval($pid) . ',' . OBJECT_X_TABLE . $cid . '.OF_Workspaces) OR FIND_IN_SET(' . intval($pid) . ',' . OBJECT_X_TABLE . $cid . '.OF_ExtraWorkspacesSelected)';
+		}
+		return ($pid_tail ? ' (' . implode(' OR ', $pid_tail) . ') ' : 1);
 	}
 
 }

@@ -122,21 +122,21 @@ function setOrder(order){
 }
 
 function setWs(path,id) {
-	document.we_form.elements[\'we_' . $name . '_WorkspacePath\'].value=path;
-	document.we_form.elements[\'we_' . $name . '_WorkspaceID\'].value=id;
+	document.we_form.elements["we_' . $name . '_WorkspacePath"].value=path;
+	document.we_form.elements["we_' . $name . '_WorkspaceID"].value=id;
 	top.we_cmd("reload_editpage");
 }
 
 function toggleShowVisible(c) {
 	c.value=(c.checked ? 1 : 0);
 	document.we_form.elements.SearchStart.value = 0;
-	top.we_cmd(\'reload_editpage\');
+	top.we_cmd("reload_editpage");
 }');
 	}
 
 	function greenOnly($GreenOnly, $pid, $cid){
 		if($GreenOnly){
-			$pid_tail = makePIDTail($pid, $cid, $GLOBALS['DB_WE'], FILE_TABLE);
+			$pid_tail = we_objectFile::makePIDTail($pid, $cid, $GLOBALS['DB_WE']);
 			return ' AND ' . OBJECT_X_TABLE . intval($cid) . '.OF_Published > 0 AND ' . $pid_tail;
 		}
 	}

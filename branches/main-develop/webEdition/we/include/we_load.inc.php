@@ -193,8 +193,6 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 	$openDirs = array_keys($openDirs);
 	$_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)] = implode(',', $openDirs);
 } else {
-	$GLOBALS["OBJECT_FILES_TREE_COUNT"] = defined('OBJECT_FILES_TREE_COUNT') ? OBJECT_FILES_TREE_COUNT : 20;
-
 	$counts = $parents = $childs = $parentpaths = $wspaces = array();
 	$parentlist = $childlist = "";
 

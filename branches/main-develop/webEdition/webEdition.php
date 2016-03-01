@@ -152,7 +152,7 @@ var specialUnload =<?php echo intval(!(we_base_browserDetect::isChrome() || we_b
 var dd = {
 dataTransfer: {
 text : ''
-				}
+}
 };
 var WebEdition = {
 //all constants in WE used in JS
@@ -174,7 +174,7 @@ TEMPLATE: '<?php echo we_base_ContentTypes::TEMPLATE; ?>',
 				CSS: "<?php echo we_base_ContentTypes::CSS; ?>",
 				APPLICATION: "<?php echo we_base_ContentTypes::APPLICATION; ?>",
 				COLLECTION: "<?php echo we_base_ContentTypes::COLLECTION; ?>"
-				},
+},
 				dirs:{
 				WEBEDITION_DIR:"<?php echo WEBEDITION_DIR; ?>",
 								WE_SHOP_MODULE_DIR: "<?php echo defined('WE_SHOP_MODULE_DIR') ? WE_SHOP_MODULE_DIR : ''; ?>",
@@ -265,7 +265,7 @@ TEMPLATE: '<?php echo we_base_ContentTypes::TEMPLATE; ?>',
 												tt_weinsertbreak:"<?php echo g_l('wysiwyg', '[insert_br]'); ?>",
 												tt_welink:"<?php echo g_l('wysiwyg', '[hyperlink]'); ?>",
 												tt_weimage:"<?php echo g_l('wysiwyg', '[insert_edit_image]'); ?>",
-												tt_wefullscreen_set:"<?php echo g_l('wysiwyg', '[maxsize_set]'); //($this->isInPopup ? g_l('wysiwyg', '[maxsize_set]') : g_l('wysiwyg', '[fullscreen]'));                ?>",
+												tt_wefullscreen_set:"<?php echo g_l('wysiwyg', '[maxsize_set]'); //($this->isInPopup ? g_l('wysiwyg', '[maxsize_set]') : g_l('wysiwyg', '[fullscreen]'));                   ?>",
 												tt_wefullscreen_reset:"<?php echo g_l('wysiwyg', '[maxsize_reset]'); ?>",
 												tt_welang:"<?php echo g_l('wysiwyg', '[language]'); ?>",
 												tt_wespellchecker:"<?php echo g_l('wysiwyg', '[spellcheck]'); ?>",
@@ -477,16 +477,12 @@ echo we_main_headermenu::createMessageConsole('mainWindow', true);
 	}
 	function updateCheck(){
 <?php
-if(!empty($_SESSION['perms']['ADMINISTRATOR'])){
-	$versionInfo = json_decode((we_base_file::load(WE_CACHE_PATH . 'newwe_version.json')? : ''), true);
-	if($versionInfo && version_compare($versionInfo['dotted'], WE_VERSION) > 0){
-		?>
-			top.we_showMessage("<?php sprintf(g_l('sysinfo', '[newWEAvailable]'), $versionInfo['dotted'], $versionInfo['date']); ?>", WE().consts.message.WE_MESSAGE_INFO, window);
-		<?php
-	}
-}
+if(!empty($_SESSION['perms']['ADMINISTRATOR']) && ($versionInfo = updateAvailable())){
+	?>top.we_showMessage("<?php printf(g_l('sysinfo', '[newWEAvailable]'), $versionInfo['dotted'].' (svn '.$versionInfo['svnrevision'].')', $versionInfo['date']); ?>", WE().consts.message.WE_MESSAGE_INFO, window);
+<?php }
 ?>
 	}
+
 //-->
 </script>
 </head>

@@ -950,7 +950,7 @@ class we_document extends we_root{
 				$langcode = (isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->Language ? $GLOBALS['WE_MAIN_DOC']->Language : $GLOBALS['weDefaultFrontendLanguage']);
 				$date = is_numeric($val) ? new DateTime('@' . $val) : new DateTime($val);
 
-				return we_base_country::dateformat($langcode, $date, $format);
+				return CheckAndConvertISOfrontend(we_base_country::dateformat($langcode, $date, $format));
 
 			case 'select':
 				if(defined('OBJECT_TABLE')){

@@ -207,7 +207,7 @@ class we_users_user{
 	var $extensions_slots = array();
 	private $permissions_defaults = array();
 	// Preferences array
-	private $preference_slots = array('sizeOpt', 'weWidth', 'weHeight', 'usePlugin', 'autostartPlugin', 'promptPlugin', 'Language', 'BackendCharset', 'seem_start_file', 'seem_start_type', 'seem_start_weapp', 'editorSizeOpt', 'editorWidth', 'editorHeight', 'editorFontname', 'editorFontsize', 'editorFont', 'default_tree_count',/* 'force_glossary_action', 'force_glossary_check',*/ 'cockpit_amount_columns', 'cockpit_amount_last_documents', 'editorMode');
+	private $preference_slots = array('sizeOpt', 'weWidth', 'weHeight', 'usePlugin', 'autostartPlugin', 'promptPlugin', 'Language', 'BackendCharset', 'seem_start_file', 'seem_start_type', 'seem_start_weapp', 'editorSizeOpt', 'editorWidth', 'editorHeight', 'editorFontname', 'editorFontsize', 'editorFont', 'default_tree_count', /* 'force_glossary_action', 'force_glossary_check', */ 'cockpit_amount_columns', 'cockpit_amount_last_documents', 'editorMode');
 
 	// Constructor
 	public function __construct(){
@@ -442,9 +442,9 @@ class we_users_user{
 			$this->rememberPreference(isset($this->Preferences['editorFontsize']) ? $this->Preferences['editorFontsize'] : null, 'editorFontsize') .
 			$this->rememberPreference(isset($this->Preferences['editorSizeOpt']) ? $this->Preferences['editorSizeOpt'] : null, 'editorSizeOpt') .
 			$this->rememberPreference(isset($this->Preferences['editorWidth']) ? $this->Preferences['editorWidth'] : null, 'editorWidth') .
-			$this->rememberPreference(isset($this->Preferences['editorHeight']) ? $this->Preferences['editorHeight'] : null, 'editorHeight') /*.
-			$this->rememberPreference(isset($this->Preferences['force_glossary_action']) ? $this->Preferences['force_glossary_action'] : null, 'force_glossary_action') .
-			$this->rememberPreference(isset($this->Preferences['force_glossary_check']) ? $this->Preferences['force_glossary_check'] : null, 'force_glossary_check')*/;
+			$this->rememberPreference(isset($this->Preferences['editorHeight']) ? $this->Preferences['editorHeight'] : null, 'editorHeight') /* .
+		  $this->rememberPreference(isset($this->Preferences['force_glossary_action']) ? $this->Preferences['force_glossary_action'] : null, 'force_glossary_action') .
+		  $this->rememberPreference(isset($this->Preferences['force_glossary_check']) ? $this->Preferences['force_glossary_check'] : null, 'force_glossary_check') */;
 
 		return $save_javascript;
 	}
@@ -915,15 +915,15 @@ _multiEditorreload = true;';
 				case 'default_tree_count':
 					$_SESSION['prefs']['default_tree_count'] = $settingvalue;
 					break;
-/*
-				case 'force_glossary_check':
-					$_SESSION['prefs']['force_glossary_check'] = $settingvalue;
-					break;
+				/*
+				  case 'force_glossary_check':
+				  $_SESSION['prefs']['force_glossary_check'] = $settingvalue;
+				  break;
 
-				case 'force_glossary_action':
-					$_SESSION['prefs']['force_glossary_action'] = $settingvalue;
-					break;
-*/
+				  case 'force_glossary_action':
+				  $_SESSION['prefs']['force_glossary_action'] = $settingvalue;
+				  break;
+				 */
 				case 'cockpit_amount_columns':
 					$_SESSION['prefs']['cockpit_amount_columns'] = $settingvalue;
 					break;
@@ -1220,14 +1220,17 @@ function comparePwd(f1,f2){
 	var pwd2=document.getElementsByName(f2)[0];
 	if(!(new RegExp("' . SECURITY_USER_PASS_REGEX . '").test(pwd1.value))){
 		pwd1.classList.add("weMarkInputError");
+		return 1;
 	}else{
 		pwd1.classList.remove("weMarkInputError");
-	if(pwd1.value!=pwd2.value){
-		pwd2.classList.add("weMarkInputError");
-	}else{
-		pwd2.classList.remove("weMarkInputError");
+		if(pwd1.value!=pwd2.value){
+			pwd2.classList.add("weMarkInputError");
+			return 2;
+		}else{
+			pwd2.classList.remove("weMarkInputError");
+		}
 	}
-	}
+	return false;
 }
 ') .
 					$this->formGeneralData();
@@ -1366,9 +1369,10 @@ function comparePwd(f1,f2){
 
 		$_username = $this->getUserfield('username', 'username', 'text', 255, false, 'id="yuiAcInputPathName" onblur="parent.frames[0].weTabs.setTitlePath(this.value);"');
 
-		$_password = (!empty($_SESSION['user']['ID']) && $_SESSION['user']['ID'] == $this->ID && !permissionhandler::hasPerm('EDIT_PASSWD') ?
+		$_password = '<div id="badPwd" style="display:none;" class="arrow_box">' . g_l('global', '[pass_to_short]') . '</div>' .
+			(!empty($_SESSION['user']['ID']) && $_SESSION['user']['ID'] == $this->ID && !permissionhandler::hasPerm('EDIT_PASSWD') ?
 				'****************' :
-				'<input type="hidden" name="' . $this->Name . '_clearpasswd" value="' . $this->clearpasswd . '" />' . we_html_tools::htmlTextInput('input_pass', 20, "", 255, 'onchange="comparePwd(\'input_pass\',\'input_pass\');top.content.setHot();" autocomplete="off"', 'password', 240));
+				'<input type="hidden" name="' . $this->Name . '_clearpasswd" value="' . $this->clearpasswd . '" />' . we_html_tools::htmlTextInput('input_pass', 20, "", 255, 'onchange="if(comparePwd(\'input_pass\',\'input_pass\')){document.getElementById(\'badPwd\').style.display=\'block\';}else{document.getElementById(\'badPwd\').style.display=\'none\';}top.content.setHot();" autocomplete="off"', 'password', 240));
 
 		$parent_name = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ParentID), '', $this->DB_WE)? : '/';
 
@@ -1721,7 +1725,7 @@ function delElement(elvalues,elem) {
 
 	function formPreferencesGlossary(){
 		$_settings = array();
-return array();
+		return array();
 		// Create checkboxes
 		$_table = new we_html_table(array('class' => 'default withSpace'), 2, 1);
 //FIXME: where is the difference between force_glossary_check + force_glossary_action?!
