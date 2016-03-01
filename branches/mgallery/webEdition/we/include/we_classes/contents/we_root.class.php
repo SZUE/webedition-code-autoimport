@@ -889,7 +889,7 @@ abstract class we_root extends we_class{
 		$this->i_setElementsFromHTTP();
 	}
 
-	//FIXME: make this __wakeup
+	//FIXME: make this __wakeup - used also to read data from temporary table
 	protected function i_initSerializedDat($sessDat){
 		if(!is_array($sessDat)){
 			$this->Name = md5(uniqid(__FUNCTION__, true));

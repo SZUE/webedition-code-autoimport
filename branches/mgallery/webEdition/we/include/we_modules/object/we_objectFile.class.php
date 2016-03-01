@@ -2298,13 +2298,14 @@ class we_objectFile extends we_document{
 				if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 					$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . ' AND ClassName="' . $this->DB_WE->escape($this->ClassName) . '" AND Was=' . we_schedpro::SCHEDULE_FROM, '', $this->DB_WE);
 					if($sessDat){
-						$this->i_getPersistentSlotsFromDB(/* "Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url,TriggerID" */);
+						$this->i_getPersistentSlotsFromDB();
 						if($this->i_initSerializedDat(we_unserialize($sessDat))){
 
 							//make sure at least TableID is set from db
 							//and Published as well #5742
-							$this->i_getPersistentSlotsFromDB('TableID,Published');
+							$this->i_getPersistentSlotsFromDB('TableID,Published,Text,Path,ParentID');
 							$this->i_getUniqueIDsAndFixNames();
+							$this->setTypeAndLength();
 							break;
 						}
 					}
@@ -2345,7 +2346,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function i_getUniqueIDsAndFixNames(){
+	private function i_getUniqueIDsAndFixNames(){
 		if(is_array($this->DefArray) && count($this->DefArray)){
 			$newDefArr = $this->getDefaultValueArray();
 			foreach($newDefArr as $n => $v){
