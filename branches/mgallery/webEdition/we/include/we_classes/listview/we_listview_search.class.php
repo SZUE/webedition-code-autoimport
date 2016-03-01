@@ -69,65 +69,55 @@ class we_listview_search extends we_listview_base{
 
 		// correct order
 		$orderArr = array();
-		$random = false;
 
-		switch($this->order? : '__noorder'){
-			case '__noorder':
-				break;
-			case 'we_creationdate':
-				$this->order = str_replace('we_creationdate', 'COALESCE(f.CreationDate' . (defined('OBJECT_FILES_TABLE') ? ',of.CreationDate' : '') . ')', $this->order);
-				break;
-			case 'we_moddate':
-				$this->order = str_replace('we_moddate', 'COALESCE(f.ModDate' . (defined('OBJECT_FILES_TABLE') ? ',of.ModDate' : '') . ')', $this->order);
-				break;
-			case 'we_filename':
-				$this->order = str_replace('we_filename', 'COALESCE(f.Text' . (defined('OBJECT_FILES_TABLE') ? ',of.Text' : '') . ')', $this->order);
-				break;
-			case 'Path':
-				$this->order = str_replace('Path', 'COALESCE(f.Path' . (defined('OBJECT_FILES_TABLE') ? ',of.Path' : '') . ')', $this->order);
-				break;
-			case 'we_id':
-				$this->order = str_replace('we_id', 'ID', $this->order);
-				break;
-			default:
-				$orderArr1 = array_map('trim', explode(',', $this->order));
-				if(in_array('random()', $orderArr1)){
-					$random = true;
+		$orderArr1 = array_map('trim', explode(',', $this->order));
+		$random = (in_array('random()', $orderArr1));
+		$orderArr1 = $random ? array() : $orderArr1;
+
+		foreach($orderArr1 as $o){
+			if(trim($o)){
+				$foo = preg_split('/ +/', $o);
+				$oname = $foo[0];
+				$otype = isset($foo[1]) ? $foo[1] : '';
+				$orderArr[] = array('oname' => $oname, 'otype' => $otype);
+			}
+		}
+		$this->order = '';
+		foreach($orderArr as $o){
+			switch($o['oname']){
+				case 'we_creationdate':
+					$this->order .= 'COALESCE(f.CreationDate' . (defined('OBJECT_FILES_TABLE') ? ',of.CreationDate' : '') . ')' . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
 					break;
-				}
-				foreach($orderArr1 as $o){
-					if(trim($o)){
-						$foo = preg_split('/ +/', $o);
-						$oname = $foo[0];
-						$otype = isset($foo[1]) ? $foo[1] : '';
-						$orderArr[] = array('oname' => $oname, 'otype' => $otype);
-					}
-				}
-				$this->order = '';
-				foreach($orderArr as $o){
-					switch($o['oname']){
-						case 'Workspace':
-							$this->order .= 'wsp.Path' . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
-							break;
-						case 'OID':
-						case 'DID':
-						case 'ID':
-							$this->order .= 'ID' . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
-							break;
-						case 'Title':
-						case 'Path':
-						case 'Text':
-						case 'Description':
-							$this->order .= $o['oname'] . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
-					}
-				}
-				$this->order = rtrim($this->order, ',');
+				case 'we_moddate':
+					$this->order .='COALESCE(f.ModDate' . (defined('OBJECT_FILES_TABLE') ? ',of.ModDate' : '') . ')' . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
+					break;
+				case 'we_filename':
+					$this->order .= 'COALESCE(f.Text' . (defined('OBJECT_FILES_TABLE') ? ',of.Text' : '') . ')' . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
+					break;
+				case 'Path':
+					$this->order .= 'COALESCE(f.Path' . (defined('OBJECT_FILES_TABLE') ? ',of.Path' : '') . ')' . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
+					break;
+				case 'Workspace':
+					$this->order .= 'wsp.Path' . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
+					break;
+				case 'we_id':
+				case 'OID':
+				case 'DID':
+				case 'ID':
+					$this->order .= 'ID' . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
+					break;
+				case 'Title':
+				case 'Text':
+				case 'Description':
+					$this->order .= $o['oname'] . ((trim(strtolower($o['otype'])) === 'desc') ? ' DESC' : '') . ',';
+					break;
+			}
 		}
+		$this->order = rtrim($this->order, ',');
 
-
-		if($this->order && $this->desc && (!preg_match('|.+ desc$|i', $this->order))){
-			$this->order .= ' DESC';
-		}
+		/* if($this->order && $this->desc && (!preg_match('|.+ desc$|i', $this->order))){
+		  $this->order .= ' DESC';
+		  } */
 
 		$this->docType = trim($docType);
 		$this->class = intval($class);
