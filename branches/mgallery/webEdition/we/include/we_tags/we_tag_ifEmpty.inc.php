@@ -38,7 +38,7 @@ function we_tag_ifEmpty($attribs){
 	switch(weTag_getAttribute('type', $attribs, '', we_base_request::STRING)){
 		case 'checkbox':
 		case 'object':
-			return (bool) $doc->getElement($match);
+			return !(bool) $doc->getElement($match);
 		case 'binary' :
 		case 'img':
 		case 'flashmovie' :
