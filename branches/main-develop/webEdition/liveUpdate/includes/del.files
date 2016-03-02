@@ -41,7 +41,6 @@ we/include/we_widgets/dlg/msg.inc.php
 we/include/we_widgets/dlg/mfd.inc.php
 we/include/we_widgets/dlg/mdc.inc.php
 we/include/we_widgets/cmd.php
-we/include/we_widgets/cmd.inc.php
 we/include/we_versions/we_versions_logBase.class.php
 we/include/we_versions/we_editor_versions.inc.php
 we/include/we_versions/weVersionsView.class.php
