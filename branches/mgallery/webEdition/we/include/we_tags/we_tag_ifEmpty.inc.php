@@ -38,7 +38,8 @@ function we_tag_ifEmpty($attribs){
 	switch(weTag_getAttribute('type', $attribs, '', we_base_request::STRING)){
 		case 'checkbox':
 		case 'object':
-			return !(bool) $doc->getElement($match);
+			$val = $doc->getElement($match);
+			return empty($val);
 		case 'binary' :
 		case 'img':
 		case 'flashmovie' :
@@ -47,12 +48,12 @@ function we_tag_ifEmpty($attribs){
 		case 'href':
 			if(isset($doc->OF_ID)){
 				$hreftmp = $doc->getElement($match);
-				$hreftmp = $hreftmp ? : '';
-				if(!is_array($hreftmp)){
+				if(!$hreftmp || !is_array($hreftmp)){
 					return true;
 				}
 				$hreftmp = trim(we_document::getHrefByArray($hreftmp));
-				return (substr($hreftmp, 0, 1) === '/' ?
+
+				return ($hreftmp && $hreftmp{0} === '/' ?
 						(!file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp)) :
 						($hreftmp ? false : true)
 					);
@@ -62,7 +63,7 @@ function we_tag_ifEmpty($attribs){
 				return !($intID && strlen(id_to_path(array($intID))));
 			}
 			$hreftmp = $doc->getElement($match);
-			if(substr($hreftmp, 0, 1) === '/'){
+			if($hreftmp{0} === '/'){
 				return (!file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp));
 			}
 
