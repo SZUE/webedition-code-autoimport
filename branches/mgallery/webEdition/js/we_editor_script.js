@@ -317,7 +317,7 @@ function we_cmd() {
 			}
 			break;
 		case "crop_cancel":
-			imageEditTools.deactivateAll();
+			ImageEditTools.deactivateAll();
 			break;
 		case "imageEditTools_reset":
 			ImageEditTools.deactivateAll();
