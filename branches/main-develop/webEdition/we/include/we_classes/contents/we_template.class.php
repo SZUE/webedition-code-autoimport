@@ -872,7 +872,7 @@ we_templateInit();?>';
 
 	public function getPropertyPage(){
 		list($cnt, $select) = $this->formTemplateDocuments();
-		echo we_html_multiIconBox::getHTML('PropertyPage', array(
+		return we_html_multiIconBox::getHTML('PropertyPage', array(
 			array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => 140),
 			array('icon' => 'mastertemplate.gif', 'headline' => g_l('weClass', '[master_template]'), 'html' => $this->formMasterTemplate(), 'space' => 140),
 			array('icon' => 'doc.gif', 'headline' => g_l('weClass', '[documents]') . ($cnt ? ' (' . $cnt . ')' : ''), 'html' => $select, 'space' => 140),

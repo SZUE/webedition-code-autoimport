@@ -1,5 +1,5 @@
 /**
- * webEdition CMS
+ * webEdition CMS 
  *
  * webEdition CMS
  * $Rev$
@@ -223,12 +223,7 @@ div{
 	position: absolute;
 	top: 0px;
 	width: 100%;
-	@if($useOldStyle){
-		background-color: Silver;
-		border-top: 1px solid #000000;
-	}@else{
-		background-color: $DarkBlue;
-	}
+	background-color: $DarkBlue;
 }
 
 body.radient{
@@ -404,10 +399,7 @@ td.boxHeader{
 		height:2ex;
 		border:1px solid grey;
 		padding:1px;
-		@if($useOldStyle){
-		}@else{
-			color:white;
-		}
+		color:white;
 		cursor: pointer;
 	}
 }
@@ -423,6 +415,7 @@ td.boxHeader{
 		position: absolute;
 		right: 1ex;
 		color: $DarkGrey;
+		cursor: pointer;
 	}
 }
 
@@ -1072,21 +1065,9 @@ table.error{
 	margin-right: 1px;
 	text-align: center;
 	cursor:pointer;
-	@if($useOldStyle){
-	}@else{
-		border-right: 1px solid #2F5889;
-	}
+	border-right: 1px solid #2F5889;
 	&:hover{
-		@if($useOldStyle){
-			margin-left: 0px;
-			margin-right: 0px;
-			border-bottom: black solid 1px;
-			border-right:	black solid 1px;
-			border-left:	#CCCCCC solid 1px;
-			border-top:		#CCCCCC solid 1px;
-		}@else{
-			background: linear-gradient(to bottom, #345881, #284A70) transparent !important;
-		}
+		background: linear-gradient(to bottom, #345881, #284A70) transparent !important;
 	}
 }
 
@@ -1099,7 +1080,6 @@ table.error{
 	}
 	i{
 		color: $White;
-		margin-top: 13px;
 		&.active{
 			color:#5f97cc;
 		}
@@ -1115,9 +1095,7 @@ table.error{
 				padding: 0px;
 
 				.navigation {
-					height: $menuHeight;
 					margin: 0px;
-					top: -2px;
 					position: relative;
 					width: 35px
 				}

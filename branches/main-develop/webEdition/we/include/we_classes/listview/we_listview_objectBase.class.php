@@ -94,7 +94,6 @@ abstract class we_listview_objectBase extends we_listview_base{
 			t_e('no classid given!');
 			return;
 		}
-		//FIXME: order ist totaler nonsense - das geht deutlich einfacher
 		$from = $orderArr = $descArr = $ordertmp = array();
 
 		$cond = ' ' . preg_replace_callback("/'([^']*)'/", function (array $match){
@@ -106,12 +105,11 @@ abstract class we_listview_objectBase extends we_listview_base{
 				return "'" . $out . "'";
 			}, strtr($cond, array('&gt;' => '>', '&lt;' => '<'))) . ' ';
 
-		if($order && ($order != 'random()')){
-			$foo = makeArrayFromCSV($order);
-			foreach($foo as $f){
-				$g = explode(' ', trim($f));
+		if($order){
+			foreach(array_map('trim', explode(',', $order)) as $f){
+				$g = explode(' ', $f);
 				$orderArr[] = $g[0];
-				$descArr[] = intval(isset($g[1]) && strtolower(trim($g[1])) === 'desc');
+				$descArr[] = isset($g[1]) && strtolower(trim($g[1])) === 'desc';
 			}
 		}
 
@@ -171,10 +169,9 @@ abstract class we_listview_objectBase extends we_listview_base{
 			'wedoc_Text' => '`' . OBJECT_FILES_TABLE . $classID . '`.Text',
 			'we_filename' => '`' . OBJECT_FILES_TABLE . $classID . '`.Text',
 			'we_id' => '`' . OBJECT_X_TABLE . $classID . '`.OF_ID',
-			'we_path'=> '`' . OBJECT_FILES_TABLE . $classID . '`.Path',
+			'we_path' => '`' . OBJECT_FILES_TABLE . $classID . '`.Path',
 		));
 
-		$_tmporder = trim(str_ireplace('desc', '', $order));
 		foreach($orderArr as $pos => $curOrd){
 			switch($curOrd){
 				case 'we_id':

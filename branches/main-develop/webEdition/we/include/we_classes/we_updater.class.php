@@ -345,7 +345,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="href"
 				case '..':
 					break;
 				default:
-					$all[] = VERSION_DIR . $entry;
+					$all[] = $entry;
 			}
 		}
 
@@ -355,7 +355,9 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="href"
 		$db->query('SELECT b FROM tmp LEFT JOIN ' . VERSIONS_TABLE . ' ON b=binaryPath WHERE ID IS NULL LIMIT 1000');
 		$all = $db->getAll(true);
 		foreach($all as $cur){
-			we_base_file::delete($_SERVER['DOCUMENT_ROOT'] . $cur);
+			if($cur && $cur != '/'){
+				we_base_file::delete($_SERVER['DOCUMENT_ROOT'] . VERSION_DIR . $cur);
+			}
 		}
 		$db->query('DROP TEMPORARY TABLE tmp');
 	}
