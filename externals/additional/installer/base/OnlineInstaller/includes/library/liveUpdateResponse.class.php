@@ -67,26 +67,15 @@ class liveUpdateResponse{
 	}
 
 	function getOutput(){
-
 		switch($this->Type){
-
 			case 'template':
-				return liveUpdateTemplates::getHtml(
-						$this->Headline, $this->Content, $this->Header
-				);
-				break;
-
+				return liveUpdateTemplates::getHtml($this->Headline, $this->Content, $this->Header);
 			case 'eval':
 				return eval('?>' . $this->Code);
-				break;
-
 			case 'state':
 				return liveUpdateFrames::htmlStateMessage();
-				break;
-
 			default:
 				return $this->Type . ' is not implemented yet';
-				break;
 		}
 	}
 

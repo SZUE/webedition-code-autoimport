@@ -59,8 +59,8 @@ class leWizard{
 	 * @return le_OnlineInstaller_WizardStep
 	 */
 	function getWizardStepIndexByName($Name){
-		for($i = 0; $i < sizeof($this->WizardSteps); $i++){
-			if($this->WizardSteps[$i]->Name == $Name){
+		foreach($this->WizardSteps as $i => $cur){
+			if($cur->Name == $Name){
 				return $i;
 			}
 		}

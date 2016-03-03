@@ -120,9 +120,9 @@ class leTemplate{
 				$this->addJavascript('top.leStatus.update("leStatus", "' . $CurrentStep->getWizardName() . '", "' . $CurrentStep->getName() . '");');
 			}
 
-			if(sizeof($this->_Errors) > 0){
-				for($i = 0; $i < sizeof($this->_Errors); $i++){
-					$this->Errors .= "<h1 class=\"error\">{$this->_Errors[$i]}</h1>\n";
+			if(!empty($this->_Errors)){
+				foreach($this->_Errors as $cur){
+					$this->Errors .= "<h1 class=\"error\">" . $cur . "</h1>\n";
 				}
 			} else {
 				if($CurrentStep->AutoContinue >= 0){
@@ -134,7 +134,7 @@ class leTemplate{
 			// replace content
 			$this->addJavascript('top.leContent.replaceElement(document.getElementById("leContent"));');
 
-			if(sizeof($this->_Javascripts) > 0){
+			if(!empty($this->_Javascripts)){
 				$this->_Javascripts = array_reverse($this->_Javascripts);
 				$this->Javascript .= '<script type="text/javascript">';
 				foreach($this->_Javascripts as $Javascript){

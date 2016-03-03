@@ -167,8 +167,8 @@ class leOnlineInstaller{
 	 * @return integer
 	 */
 	function getWizardIndexByName($name){
-		for($i = 0; $i < sizeof($this->Wizards); $i++){
-			if($this->Wizards[$i]->Name == $name){
+		foreach($this->Wizards as $i => $cur){
+			if($cur->Name == $name){
 				return $i;
 			}
 		}
@@ -184,17 +184,15 @@ class leOnlineInstaller{
 	}
 
 	function initialize(){
-
-		unset($leInstallerWizards);
 		if(file_exists(LE_ONLINE_INSTALLER_PATH . "/includes/wizards/wizards.inc.php")){
 			require(LE_ONLINE_INSTALLER_PATH . "/includes/wizards/wizards.inc.php");
 
-			for($i = 0; $i < sizeof($leInstallerWizards); $i++){
-				$temp = new leWizard($leInstallerWizards[$i], LE_ONLINE_INSTALLER_WIZARD);
+			foreach($leInstallerWizards as $cur){
+				$temp = new leWizard($cur, LE_ONLINE_INSTALLER_WIZARD);
 
 				// array with all steps
 				foreach($temp->WizardSteps as $Step){
-					$this->WizardStepNames[][$leInstallerWizards[$i]] = $Step->Name;
+					$this->WizardStepNames[][$cur] = $Step->Name;
 				}
 				$this->Wizards[] = $temp;
 			}
@@ -202,16 +200,14 @@ class leOnlineInstaller{
 
 		unset($leInstallerWizards);
 		if(isset($_REQUEST["leWizard"]) && file_exists(LE_APPLICATION_INSTALLER_PATH . "/includes/wizards/wizards.inc.php")){
-
 			require(LE_APPLICATION_INSTALLER_PATH . "/includes/wizards/wizards.inc.php");
 
-			for($i = 0; $i < sizeof($leInstallerWizards); $i++){
-
-				$temp = new leWizard($leInstallerWizards[$i]);
+			foreach($leInstallerWizards as $cur){
+				$temp = new leWizard($cur);
 
 				// array with all steps
 				foreach($temp->WizardSteps as $Step){
-					$this->WizardStepNames[][$leInstallerWizards[$i]] = $Step->Name;
+					$this->WizardStepNames[][$cur] = $Step->Name;
 				}
 				$this->Wizards[] = $temp;
 			}

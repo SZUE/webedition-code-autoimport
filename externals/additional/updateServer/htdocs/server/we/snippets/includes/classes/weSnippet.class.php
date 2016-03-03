@@ -160,7 +160,7 @@ class weSnippet{
 		}
 
 		$_array['Image'] = array();
-		if(sizeof($this->Image) > 0){
+		if(!empty($this->Image)){
 			$_array['Image']['Src'] = $this->Url . $this->Image['url'];
 			$_array['Image']['Width'] = $this->Image['width'];
 			$_array['Image']['Height'] = $this->Image['height'];

@@ -36,7 +36,7 @@ class Summary extends leStep{
 			$this->Language['databasePassword'],
 		);
 
-		if(isset($_SESSION['le_modules']) && sizeof($_SESSION['le_modules']) > 0){
+		if(!empty($_SESSION['le_modules'])){
 			$i = 0;
 			foreach($_SESSION['le_modules'] as $key => $value){
 				$i++;
@@ -53,7 +53,7 @@ class Summary extends leStep{
 			);
 		}
 
-		if(isset($_SESSION['le_snippets']) && sizeof($_SESSION['le_snippets']) > 0){
+		if(!empty($_SESSION['le_snippets'])){
 			$Summary[$this->Language['snippets']] = array();
 			foreach($_SESSION['le_snippets'] as $Key => $Value){
 				$Summary[$this->Language['snippets']][$Key] = $Value;

@@ -36,7 +36,7 @@ class updateUtil extends updateUtilBase{
 		if(isset($replaceCode[$name]['replace'])){
 			$replace = $replaceCode[$name]['replace'][updateUtil::getNearestVersion($replaceCode[$name]['replace'], $_SESSION['clientVersionNumber'])];
 
-			if(sizeof($replacements)){
+			if(!empty($replacements)){
 				$replace = vsprintf($replace, $replacements);
 			}
 			$ret['replace'] = $replace;

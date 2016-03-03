@@ -48,7 +48,7 @@ switch($_REQUEST['detail']){
 				$_SESSION['clientSubVersionDB'] = update::getSubVersion($_SESSION['clientVersionNumber']);
 				$verlog['svnrevisionDB'] = $_SESSION['clientSubVersionDB'];
 			} else {
-				$verlog['svnrevisionDB'] == '';
+				$verlog['svnrevisionDB'] = '';
 			}
 
 			update::updateLogAvail($verlog);
@@ -125,17 +125,13 @@ switch($_REQUEST['detail']){
 
 	case 'startRepeatUpdate':
 	case 'startUpdate':
-
 		// save all needed stuff in session here!
 		$_SESSION['update_cmd'] = $_REQUEST['update_cmd'];
 
 		// start Update -> get the screen and start downloading the installer
 		print installer::getInstallationScreenResponse();
-
 		break;
-
 	case 'getChanges':
-
 		update::updateLogTarget();
 		// get all needed files for this update
 		$_SESSION['clientChanges'] = update::getChangesForUpdate();

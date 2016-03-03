@@ -776,7 +776,7 @@ class liveUpdateFunctions{
 										}
 
 										// get all queries to change existing keys
-										if(sizeof($addKeys)){
+										if(!empty($addKeys)){
 											$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($addKeys, $tableName, true));
 										}
 

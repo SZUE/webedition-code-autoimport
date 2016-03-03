@@ -240,9 +240,9 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		$pathArray = explode('/', $dir);
 		$path = $preDir;
 
-		for($i = 0; $i < sizeof($pathArray); $i++){
-			$path .= $pathArray[$i];
-			if($pathArray[$i] != "" && !is_dir($path)){
+		foreach($pathArray as $cur){
+			$path .= $cur;
+			if($cur != "" && !is_dir($path)){
 				if(!(file_exists($path) || mkdir($path, $mod))){
 					return false;
 				}

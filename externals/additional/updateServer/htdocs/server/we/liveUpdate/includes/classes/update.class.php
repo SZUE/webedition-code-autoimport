@@ -188,22 +188,13 @@ class update extends updateBase{
 	}
 
 	static function getMaxVersionNumber(){
-		$liveCondition = ' WHERE islive=1';
-		if(isset($_SESSION['testUpdate'])){
-			$liveCondition = '';
-		}
+		$liveCondition = (isset($_SESSION['testUpdate']) ? '' : ' WHERE islive=1');
 
 		$row = $GLOBALS['DB_WE']->getHash('SELECT MAX(version) AS maxVersion FROM ' . VERSION_TABLE . $liveCondition);
 
 		$maxVersion = $row['maxVersion'];
-		$liveCondition = ' WHERE islive=1 AND version=' . $maxVersion;
-		if(isset($_SESSION['testUpdate'])){
-			$liveCondition = ' WHERE version=' . $maxVersion;
-		}
+		$liveCondition = (isset($_SESSION['testUpdate']) ? ' WHERE version=' . $maxVersion : ' WHERE islive=1 AND version=' . $maxVersion);
 		return $GLOBALS['DB_WE']->getHash('SELECT version, svnrevision,type,typeversion,branch,versname FROM ' . VERSION_TABLE . $liveCondition);
-
-
-		//return $row['maxVersion'];
 	}
 
 	static function getMaxVersionNumberForBranch($branch){

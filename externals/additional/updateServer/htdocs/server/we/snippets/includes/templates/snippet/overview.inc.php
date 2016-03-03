@@ -150,7 +150,7 @@ for($i = 0; $i < $size; $i++){
 		. '</td>';
 
 	$JavaScript .= 'top.frames["leLoadFrame"].addImport("' . $Import['ID'] . '");';
-	if(is_array($Import['Preview']) && sizeof($Import['Preview']) > 0){
+	if(is_array($Import['Preview']) && !empty($Import['Preview'])){
 		foreach($Import['Preview'] as $key => $value){
 			$id = $Import['ID'];
 			$src = (isset($value['Src']) && $value['Src'] != "") ? $value['Src'] : "";
@@ -162,7 +162,7 @@ for($i = 0; $i < $size; $i++){
 	}
 
 	// Close DIV
-	if($i % 2 == 0 && sizeof($AvailableImports) == 0){
+	if($i % 2 == 0 && empty($AvailableImports)){
 		$Output .= "<td></td>"
 			. "</tr>"
 			. "<tr>"

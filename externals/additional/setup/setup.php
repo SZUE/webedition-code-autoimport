@@ -1139,11 +1139,11 @@ ob_end_clean();
 				<td align="center" valign="middle">
 					<form action="/setup.php?step=<?php echo ($currentStep["id"] + 1) ?>" method="post">
 						<input name="step" value="<?php echo $currentStep["id"] + 1 ?>" type="hidden" />
-						<table cellpadding="0" cellspacing="0" border="0" style="width:818px;">
+						<table border="0" style="width:818px;">
 							<tr style="height:10px;">
 								<td style="width:260px;background-color:#386AAB;"></td>
 								<td rowspan="2" style="width:430px;">
-									<table border="0" cellpadding="0" cellspacing="0" style="background-image:url(/webEdition/images/info/info.jpg);background-repeat: no-repeat;background-color:#EBEBEB;">
+									<table border="0" style="background-image:url(/webEdition/images/info/info.jpg);background-repeat: no-repeat;background-color:#EBEBEB;">
 										<tr>
 											<td colspan="3" width="432" height="110"><img src="/webEdition/images/pixel.gif" width="432" height="110" border="0"></td>
 										</tr>

@@ -17,7 +17,7 @@ $ReqOK = update::checkRequirements($ReqOut, $_SESSION['clientPcreVersion'], $_SE
   } else {
   $meldung = "";
   } */
-
+$meldung = "";
 if($source < 6300 && $target >= 6300){
 	$weiterwarnung = '<div class="messageDiv"  style="color:#ff0000;">' . $GLOBALS['lang']['update']['confirmUpdateWarning6300'] . '</div>';
 } else {

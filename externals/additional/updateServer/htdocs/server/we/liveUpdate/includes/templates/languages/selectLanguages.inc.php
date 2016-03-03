@@ -50,7 +50,7 @@ for($i = 0; $i < sizeof($newinstallAbleLanguages); $i++){
 
 // missingLanguages
 $missingStr = '';
-if(sizeof($missingLanguages)){
+if(!empty($missingLanguages)){
 
 	$missingStr = "<ul>";
 	for($i = 0; $i < sizeof($missingLanguages); $i++){

@@ -48,7 +48,7 @@ switch($_REQUEST['detail']){
 		$updateServerTemplateData['availableVersions'] = $lngVersions;
 		$updateServerTemplateData['possibleVersions'] = $possibleVersions;
 		//error_log(print_r($lngVersions,true));
-		if(sizeof($possibleVersions)){
+		if(!empty($possibleVersions)){
 			print upgrade::getUpgradePossibleResponse();
 		} else {
 

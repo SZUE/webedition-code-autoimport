@@ -35,16 +35,7 @@ abstract class updateBase{
 			$liveCondition = '';
 		}
 
-		$query = '
-			SELECT distinct(language)
-			FROM ' . VERSION_TABLE . '
-			WHERE version >= 1590
-				' . $liveCondition . '
-			ORDER BY language ASC
-		';
-
-
-		$GLOBALS['DB_WE']->query($query);
+		$GLOBALS['DB_WE']->query('SELECT distinct(language) FROM ' . VERSION_TABLE . ' WHERE version >= 1590 ' . $liveCondition . ' ORDER BY language ASC');
 
 
 		return $GLOBALS['DB_WE']->getAll(true);
@@ -58,7 +49,7 @@ abstract class updateBase{
 	 */
 	static function getPossibleVersionsArray(){
 
-		$langVersions = update::getVersionsLanguageArray(1, 0);
+		$langVersions = update::getVersionsLanguageArray(true, false);
 
 		$possibleVersions = array();
 
@@ -98,14 +89,9 @@ abstract class updateBase{
 	}
 
 	static function getAlphaBetaVersions(){
-		$query = '
-			SELECT version, svnrevision,type,typeversion, branch,language, isbeta
-			FROM ' . VERSION_TABLE . '
-			WHERE version >= 6000 ORDER BY version DESC, language
-		';
 		$AlphaBetaVersions = array();
 
-		$GLOBALS['DB_WE']->query($query);
+		$GLOBALS['DB_WE']->query('SELECT version, svnrevision,type,typeversion, branch,language, isbeta FROM ' . VERSION_TABLE . ' WHERE version >= 6000 ORDER BY version DESC, language');
 
 		while($GLOBALS['DB_WE']->next_record()){
 			$AlphaBetaVersions[$GLOBALS['DB_WE']->f('version')] = $GLOBALS['DB_WE']->getRecord();
@@ -121,15 +107,7 @@ abstract class updateBase{
 	 * @return array
 	 */
 	static function getSubVersions(){
-
-		$query = '
-			SELECT version, svnrevision
-			FROM ' . VERSION_TABLE . '
-			WHERE version >= 6000 ORDER BY version DESC, language
-		';
-		$SubVersions = array();
-
-		$GLOBALS['DB_WE']->query($query);
+		$GLOBALS['DB_WE']->query('SELECT version, svnrevision FROM ' . VERSION_TABLE . ' WHERE version >= 6000 ORDER BY version DESC, language');
 
 		return $GLOBALS['DB_WE']->getAllFirst(false);
 	}
@@ -141,27 +119,12 @@ abstract class updateBase{
 	 * @return string
 	 */
 	static function getSubVersion($version){
-
-		$query = '
-			SELECT  svnrevision
-			FROM ' . VERSION_TABLE . '
-			WHERE version = ' . $version . ' LIMIT 1
-		';
-		$SubVersion = '';
-
-		$h = $GLOBALS['DB_WE']->getHash($query);
-
+		$h = $GLOBALS['DB_WE']->getHash('SELECT  svnrevision FROM ' . VERSION_TABLE . ' WHERE version = ' . $version . ' LIMIT 1');
 		return $h['svnrevision'];
 	}
 
 	static function getVersionNames(){
-		$query = '
-			SELECT version, versname
-			FROM ' . VERSION_TABLE . '
-			WHERE version >= 6000 ORDER BY version DESC, language
-		';
-
-		$GLOBALS['DB_WE']->query($query);
+		$GLOBALS['DB_WE']->query('SELECT version, versname FROM ' . VERSION_TABLE . ' WHERE version >= 6000 ORDER BY version DESC, language');
 
 		return $GLOBALS['DB_WE']->getAllFirst(false);
 	}
@@ -173,14 +136,7 @@ abstract class updateBase{
 	 * @return string
 	 */
 	static function getVersionName($version){
-		$query = '
-			SELECT  versname
-			FROM ' . VERSION_TABLE . '
-			WHERE version = ' . $version . '
-		LIMIT 1';
-
-		$h = $GLOBALS['DB_WE']->getHash($query);
-
+		$h = $GLOBALS['DB_WE']->getHash('SELECT versname FROM ' . VERSION_TABLE . ' WHERE version = ' . $version . ' LIMIT 1');
 		return $h['versname'];
 	}
 
@@ -191,42 +147,23 @@ abstract class updateBase{
 	 * @return string
 	 */
 	static function getVersionType($version){
-		$query = '
-			SELECT  type, typeversion
-			FROM ' . VERSION_TABLE . '
-			WHERE version = ' . $version . '
-		';
-		$row = $GLOBALS['DB_WE']->getHash($query);
+		$row = $GLOBALS['DB_WE']->getHash('SELECT  type, typeversion FROM ' . VERSION_TABLE . ' WHERE version = ' . $version);
 
 		return $row['type'] . (($row['typeversion'] == 0) ? '' : $row['typeversion']);
 	}
 
 	static function getOnlyVersionType($version){
-		$query = '
-			SELECT  type
-			FROM ' . VERSION_TABLE . '
-			WHERE version = ' . $version . ' LIMIT 1';
-		$h = $GLOBALS['DB_WE']->getHash($query);
+		$h = $GLOBALS['DB_WE']->getHash('SELECT  type FROM ' . VERSION_TABLE . ' WHERE version = ' . $version . ' LIMIT 1');
 		return $h['type'];
 	}
 
 	static function getOnlyVersionTypeVersion($version){
-		$query = '
-			SELECT  typeversion
-			FROM ' . VERSION_TABLE . '
-			WHERE version = ' . $version . ' LIMIT 1		';
-		$h = $GLOBALS['DB_WE']->getHash($query);
+		$h = $GLOBALS['DB_WE']->getHash('SELECT  typeversion FROM ' . VERSION_TABLE . ' WHERE version = ' . $version . ' LIMIT 1');
 		return $h['typeversion'];
 	}
 
 	static function getOnlyVersionBranch($version){
-		$query = '
-			SELECT  branch
-			FROM ' . VERSION_TABLE . '
-			WHERE version = ' . $version . ' LIMIT 1
-		';
-
-		$h = $GLOBALS['DB_WE']->getHash($query);
+		$h = $GLOBALS['DB_WE']->getHash('SELECT branch FROM ' . VERSION_TABLE . ' WHERE version = ' . $version . ' LIMIT 1');
 		return $h['branch'];
 	}
 

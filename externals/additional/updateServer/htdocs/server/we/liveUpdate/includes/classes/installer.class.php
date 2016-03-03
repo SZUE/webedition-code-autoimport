@@ -256,7 +256,7 @@ if ($success) {
 				$text = basename($path);
 				$text = substr($text, -40);
 
-		$message .= "<div> ...$text</div>";
+		$message .= "<div>&hellip;$text</div>";
 	}
 
 	?>' . installer::getProceedNextCommandResponsePart($nextUrl, $progress, '<?php print $message; ?>') . '<?php
@@ -321,7 +321,7 @@ if ($success) {
 	$message = "";
 	foreach ($successFiles as $path) {
 		$text = substr(basename(' . $Realname . '), -40);
-		$message .= "<div> ...$text</div>";
+		$message .= "<div>&hellip;$text</div>";
 	}
 	?>' . installer::getProceedNextCommandResponsePart($nextUrl, $progress) . '<?php
 } else {

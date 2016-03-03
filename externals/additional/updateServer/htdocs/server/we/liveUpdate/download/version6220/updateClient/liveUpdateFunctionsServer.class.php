@@ -343,10 +343,10 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 						$alterQueries = array();
 
 						// get all queries to change existing fields
-						if(sizeof($changeFields)){
+						if(!empty($changeFields)){
 							$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($changeFields, $tableName));
 						}
-						if(sizeof($addFields)){
+						if(!empty($addFields)){
 							$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($addFields, $tableName, true));
 						}
 
@@ -374,11 +374,11 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 						}
 
 						// get all queries to change existing keys
-						if(sizeof($addKeys)){
+						if(!empty($addKeys)){
 							$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($addKeys, $tableName, true));
 						}
 
-						if(sizeof($changedKeys)){
+						if(!empty($changedKeys)){
 							$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($changedKeys, $tableName, false));
 						}
 
@@ -387,7 +387,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 							$alterQueries = array_merge(array('ALTER TABLE `' . $tableName . '` DROP INDEX _temp'), $alterQueries);
 						}
 
-						if(sizeof($alterQueries)){
+						if(!empty($alterQueries)){
 							// execute all queries
 							$success = true;
 							foreach($alterQueries as $_query){

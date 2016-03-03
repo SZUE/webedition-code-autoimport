@@ -16,7 +16,7 @@ switch($_REQUEST['detail']){
 			}
 		}
 
-		if(sizeof($desiredLanguages)){
+		if(!empty($desiredLanguages)){
 
 			$_SESSION['clientDesiredLanguages'] = $desiredLanguages;
 			print languages::getConfirmLanguagesResponse();

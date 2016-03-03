@@ -12,7 +12,7 @@ class InstallationFinished extends leStep{
 
 		$PostContent = "";
 		$JSString = "";
-		if(sizeof($GLOBALS['leApplicationList']) < 0){ // temporarily disabled (should never be smaller than zero)
+		if(false && !empty($GLOBALS['leApplicationList'])){ // temporarily disabled (should never be smaller than zero)
 			$Options = array();
 			$JSString = 'var information = {};';
 

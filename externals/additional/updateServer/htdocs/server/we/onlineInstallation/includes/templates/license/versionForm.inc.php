@@ -9,7 +9,7 @@ $SubVersions = $GLOBALS['updateServerTemplateData']['SubVersions'];
 $VersionNames = $GLOBALS['updateServerTemplateData']['VersionNames'];
 $AlphaBetaVersions = $GLOBALS['updateServerTemplateData']['AlphaBetaVersions'];
 
-if(sizeof($VersionsMissingLanguage) > 0 && sizeof($MatchingVersions) > 0){
+if(!empty($VersionsMissingLanguage) && !empty($MatchingVersions)){
 	$temp0 = $VersionsMissingLanguage;
 	$temp1 = $MatchingVersions;
 	$Missing = array_shift($temp0);
@@ -32,10 +32,10 @@ if(sizeof($VersionsMissingLanguage) > 0 && sizeof($MatchingVersions) > 0){
 			$Output .= '### . $this->Language[\'highestVersionRecommended\'] . ###<br /><br />';
 		}
 	}
-} else if(sizeof($MatchingVersions) > 0){
+} else if(!empty($MatchingVersions)){
 	$Output .= '### . $this->Language[\'highestVersionRecommended\'] . ###<br /><br />';
 }
-if(sizeof($MatchingVersions) > 0){
+if(!empty($MatchingVersions)){
 	$ModMatchingVersions = $MatchingVersions;
 	$_SESSION['MatchingVersions'] = $MatchingVersions;
 	foreach($ModMatchingVersions as $key => &$value){
@@ -46,23 +46,20 @@ if(sizeof($MatchingVersions) > 0){
 		}
 		$value = ($VersionNames[$key] ? $VersionNames[$key] : $value) . ' (' . $value . ' ' . $GLOBALS['lang']['installer'][$AlphaBetaVersions[$key]['type']] . ($AlphaBetaVersions[$key]['typeversion'] ? ' ' . $AlphaBetaVersions[$key]['typeversion'] : '') . ', SVN-Revision:' . $SubVersions[$key] . $branchText . ')';
 	}
-
-	$SelectedVerison = ( isset($_SESSION['clientInstalledVersion']) && key_exists($_SESSION['clientInstalledVersion'], $MatchingVersions) ?
-			$_SESSION['clientInstalledVersion'] :
-			array_shift(array_flip($MatchingVersions))
-		);
+	$flippedVers = array_flip($MatchingVersions);
 
 	$VersionSelectBox = 'leSelect::get(
 									"le_version",
 									unserialize(***' . serialize($ModMatchingVersions) . '***),
-									"' . $SelectedVerison . '",
+									"' . (isset($_SESSION['clientInstalledVersion']) && key_exists($_SESSION['clientInstalledVersion'], $MatchingVersions) ?
+			$_SESSION['clientInstalledVersion'] :
+			array_shift($flippedVers)
+		) . '",
 									array(
 										"style" => "width:293px",
 									)
 								)';
-	$VersionSelectBox = str_replace('"', "###", $VersionSelectBox);
-	$VersionSelectBox = str_replace("'", "***", $VersionSelectBox);
-
+	$VersionSelectBox = str_replace(['"', "'"], ["###", "***"], $VersionSelectBox);
 
 	$Output .= '<strong>### . $this->Language[\'version\'] . ###</strong><br />'
 		. '### . ' . $VersionSelectBox . ' . ###<br /><br />';
@@ -75,7 +72,8 @@ if(sizeof($MatchingVersions) > 0){
 
 $Output = '"' . str_replace('###', '"', str_replace('***', "'", str_replace('"', '\"', $Output))) . '"';
 
-$Code = <<<CODE
+$liveUpdateResponse['Type'] = 'executeOnline';
+$liveUpdateResponse['Code'] = <<<CODE
 <?php
 
 \$this->setHeadline(\$this->Language['headline']);
@@ -84,7 +82,3 @@ return {$ReturnValue};
 
 ?>
 CODE;
-
-$liveUpdateResponse['Type'] = 'executeOnline';
-$liveUpdateResponse['Code'] = $Code;
-
