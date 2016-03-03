@@ -1270,7 +1270,7 @@ TabView.prototype = {
 	 */
 	setLoading: function (frameId, loading) {
 		if (loading) {
-			this.myDoc.getElementById('load_' + frameId).innerHTML = '<i class="fa fa-2x fa-spinner fa-pulse"></i>';
+			this.myDoc.getElementById('load_' + frameId).innerHTML = '<span class="fa-stack fa-lg fileicon"><i class="fa fa-2x fa-spinner fa-pulse"></i></span>';
 		} else {
 			var _text = this.myDoc.getElementById('text_' + frameId).innerHTML;
 			var _ext = _text ? _text.replace(/^.*\./, ".") : "";
@@ -1294,7 +1294,7 @@ TabView.prototype = {
 	},
 	setFrameSize: function () {
 		tabsHeight = (this.myDoc.getElementById('tabContainer').clientHeight ? (this.myDoc.getElementById('tabContainer').clientHeight) : (this.myDoc.body.clientHeight));
-		tabsHeight = tabsHeight < 24 ? 24 : tabsHeight;
+		tabsHeight = Math.max(tabsHeight, 30);
 		this.myDoc.getElementById('multiEditorDocumentTabsFrameDiv').style.height = tabsHeight + "px";
 		this.myDoc.getElementById('multiEditorEditorFramesetsDiv').style.top = tabsHeight + "px";
 	},

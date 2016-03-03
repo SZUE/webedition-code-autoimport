@@ -84,19 +84,26 @@ while($urlLookingFor){// first we try to get the object
  * now we try to get the trigger document
  */
 if($object && $object['ID']){
-	$docPathOfUrl = str_replace($urlLookingFor, '', WE_REDIRECTED_SEO); //cut the known seo-url from object of the whole URL
-	$triggerDocPath = ($object['TriggerID'] && ($isDynamic = f('SELECT IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($object['TriggerID'])))) ? 
-		id_to_path($object['TriggerID'], FILE_TABLE) : //yes, we have a dynamic trigger document
-		we_objectFile::getNextDynDoc(($path = rtrim($docPathOfUrl, "/") . '.php'), $object['ParentID'], $object['Workspaces'], $object['ExtraWorkspacesSelected'], $GLOBALS['DB_WE']); //no trigger id given, search for another dynamic trigger document
+	$docPathOfUrl = rtrim(WE_REDIRECTED_SEO,$urlLookingFor); //cut the known seo-url from object of the whole URL
 	
-	if(!$triggerDocPath && NAVIGATION_DIRECTORYINDEX_NAMES){//fallback: now we try to get trigger doc by the given SEO-URL and NAVIGATION_DIRECTORYINDEX_NAMES from preferences
-		$dirIndexArray = array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES));
-		foreach($dirIndexArray as $dirIndex){
-			if(($triggerID = intval(f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Published>0 AND IsDynamic=1 AND Path="' . $GLOBALS['DB_WE']->escape($docPathOfUrl . $dirIndex) . '" LIMIT 1')))){
-				$triggerDocPath = id_to_path($triggerID, FILE_TABLE);
-				break;
-			}
+	//get trigger document by url and/or (extra) workspaces by object properties
+	$triggerDocPath = we_objectFile::getNextDynDoc(($path = rtrim($docPathOfUrl, "/") . '.php'), $object['ParentID'], $object['Workspaces'], $object['ExtraWorkspacesSelected'], $GLOBALS['DB_WE']);
+	
+	if(!$triggerDocPath){//fallback
+		if(NAVIGATION_DIRECTORYINDEX_NAMES){ //now we try to get trigger doc by the given SEO-URL and NAVIGATION_DIRECTORYINDEX_NAMES from preferences
+			$dirIndexArray = array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES));
+			foreach($dirIndexArray as $dirIndex){
+				if(($triggerID = intval(f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Published>0 AND IsDynamic=1 AND Path="' . $GLOBALS['DB_WE']->escape($docPathOfUrl . $dirIndex) . '" LIMIT 1')))){
+					$triggerDocPath = id_to_path($triggerID, FILE_TABLE);
+					break;
+				}
+			}	
 		}
+		
+		$triggerDocPath = $triggerDocPath ? : //we use the default trigger document of object class
+			(($object['TriggerID'] && ($isDynamic = f('SELECT IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($object['TriggerID'])))) ? 
+				id_to_path($object['TriggerID'], FILE_TABLE) : 
+				false);
 	}
 
 	if($triggerDocPath){// now we have an object and a trigger document

@@ -682,8 +682,7 @@ class we_folder extends we_root{
 			}
 		}
 
-		echo we_html_multiIconBox::getJS() .
-		we_html_multiIconBox::getHTML('PropertyPage', $parts);
+		return we_html_multiIconBox::getHTML('PropertyPage', $parts);
 	}
 
 }

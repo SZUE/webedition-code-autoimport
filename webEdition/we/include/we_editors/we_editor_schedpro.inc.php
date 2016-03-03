@@ -29,7 +29,7 @@ echo we_html_tools::getHtmlTop() . STYLESHEET;
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 ?>
 </head>
-<body  class="weEditorBody" onload="checkFooter()" onunload="doUnload()">
+<body  class="weEditorBody" onload="checkFooter();doScrollTo();" onunload="doUnload();">
 	<form name="we_form" onsubmit="return false"><?php
 		echo we_class::hiddenTrans();
 

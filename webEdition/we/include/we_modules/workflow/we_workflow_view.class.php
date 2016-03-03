@@ -918,7 +918,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 	}') .
 				'</head>
 		<body class="weEditorBody" onunload="doUnload()">
-				<form name="we_form">' . we_class::hiddenTrans() . '<table cellpadding="6">' .
+				<form name="we_form">' . we_class::hiddenTrans() . '<table>' .
 				we_html_multiIconBox::getHTML('', $_parts, 30) .
 				'</form></body></html>';
 	}
