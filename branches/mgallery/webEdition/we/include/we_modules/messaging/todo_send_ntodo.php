@@ -94,7 +94,7 @@ if (opener && opener.top && opener.top.content) {
 	$res['err'] = array_map('oldHtmlspecialchars', $res['err']);
 
 
-	$tbl = '<table style="text-align:center" cellpadding="7" cellspacing="3">
+	$tbl = '<table style="text-align:center">
 		    <tr>
 		      <td class="defaultfont" style="vertical-align:top">' . $s_action . ':</td>
 		      <td class="defaultfont"><ul><li>' . (empty($res['ok']) ? g_l('modules_messaging', '[nobody]') : implode("</li>\n<li>", $res['ok'])) . '</li></ul></td>

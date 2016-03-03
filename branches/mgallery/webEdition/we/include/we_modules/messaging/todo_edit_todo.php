@@ -95,7 +95,7 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]')) .
 
 		if($mode === 'reject'){
 			$tbl = '
-<table cellpadding="6">
+<table>
 		<tr>
 		<td class="defaultfont lowContrast">
 			' . g_l('modules_messaging', '[from]') . ':</td>
@@ -115,10 +115,10 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]')) .
 			' . oldHtmlspecialchars($compose->get_subject()) . '</td>
 	</tr>
 </table>
-<table cellpadding="6">';
+<table">';
 		} else {
 			$tbl = '
-<table cellpadding="6">
+<table>
 	<tr>
 		<td class="defaultfont lowContrast">
 			' . g_l('modules_messaging', '[assigner]') . ':</td>
@@ -148,7 +148,7 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]')) .
 		<td>' . we_html_tools::html_select('mn_priority', 1, array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10)) . '</td>
 	</tr>
 </table>
-<table cellpadding="6">';
+<table>';
 		}
 		if($mode != 'new'){
 			$tbl .= '

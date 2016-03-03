@@ -3235,8 +3235,7 @@ class we_objectFile extends we_document{
 				)
 			);
 		}
-		echo we_html_multiIconBox::getJS() .
-		we_html_multiIconBox::getHTML('PropertyPage', $parts);
+		return we_html_multiIconBox::getHTML('PropertyPage', $parts);
 	}
 
 	private function correctMultiObject(){

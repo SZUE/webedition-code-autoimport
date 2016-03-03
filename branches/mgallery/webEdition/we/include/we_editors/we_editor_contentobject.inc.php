@@ -57,7 +57,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 </head>
 
-<body onunload="doUnload()" class="weEditorBody">
+<body onunload="doUnload()" class="weEditorBody" onload="doScrollTo();">
 	<form name="we_form" method="post"><?php
 		echo we_class::hiddenTrans();
 

@@ -30,16 +30,17 @@ $charset = ($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES ?
 
 we_html_tools::headerCtCharset('text/html', $charset);
 echo we_html_tools::getHtmlTop('', $charset) .
-	STYLESHEET;
+ STYLESHEET;
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 echo weSuggest::getYuiFiles();
 ?>
 </head>
-<body class="weEditorBody" onunload="doUnload()">
+<body class="weEditorBody" onload="doScrollTo()" onunload="doUnload()">
 	<form name="we_form" method="post" action="" onsubmit="return false;"><?php
-		echo we_class::hiddenTrans();
-		$GLOBALS['we_doc']->getPropertyPage();
-		echo we_html_element::htmlHidden("we_complete_request", 1);
+		echo we_class::hiddenTrans() .
+		we_html_multiIconBox::getJS() .
+		$GLOBALS['we_doc']->getPropertyPage() .
+		we_html_element::htmlHidden("we_complete_request", 1);
 		?>
 	</form>
 	<?php

@@ -988,8 +988,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 	}
 
 	public function getPropertyPage(){
-		echo we_html_multiIconBox::getJS() .
-		we_html_multiIconBox::getHTML('PropertyPage', array(
+		return we_html_multiIconBox::getHTML('PropertyPage', array(
 			array('icon' => "path.gif", "headline" => g_l('weClass', '[path]'), "html" => $this->formPath(), 'space' => 140),
 			array('icon' => "doc.gif", "headline" => g_l('weClass', '[document]'), "html" => $this->formIsSearchable() . $this->formIsProtected(), 'space' => 140),
 			//array('icon' => "meta.gif", "headline" => g_l('weClass', '[metainfo]'), "html" => $this->formMetaInfos(), 'space' => 140),
