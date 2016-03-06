@@ -494,6 +494,11 @@ td.boxHeader{
 	}
 }
 
+#treefooter {
+	height: $editorFooterHeight;
+	padding: 10px;
+}
+
 #eHeaderBody,
 #footerBody{
 	overflow: hidden;

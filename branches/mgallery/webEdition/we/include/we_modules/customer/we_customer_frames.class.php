@@ -197,13 +197,12 @@ function setTab(tab) {
 				'pnt' => 'cmd',
 				'cmd' => 'show_search'));
 
-		$table = '<div id="search" style="display: block;">' .
-			$hiddens .
+		$table = $hiddens .
 			we_html_tools::htmlTextInput("keyword", 10, '', '', 'placeholder="' . g_l('buttons_modules_message', '[search][alt]') . '"', "text", "150px") .
 			we_html_button::create_button(we_html_button::SEARCH, "javascript:submitForm('cmd', '', '', 'we_form_treefooter')");
 
 		return we_html_element::jsElement($this->View->getJSSubmitFunction("cmd")) .
-			we_html_element::htmlForm(array("name" => "we_form_treefooter", "target" => "cmd"), '<div id="bm_searchField">' . $table . '</div>');
+			we_html_element::htmlForm(array("name" => "we_form_treefooter", "target" => "cmd"), $table);
 	}
 
 	function getHTMLCustomerAdmin(){
