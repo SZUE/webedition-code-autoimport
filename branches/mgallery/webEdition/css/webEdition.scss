@@ -132,6 +132,7 @@ b,
 strong,
 .bold{
 	font-family: $weFontBold;
+	font-weight: normal;
 }
 
 span.infobox{
@@ -425,31 +426,31 @@ td.boxHeader{
 	bottom: 0px;
 	left: 0px;
 	right: 0px;
-	#bm_searchField{
-		position: absolute;
-		bottom: 0px;
-		height: 30px;
-		padding:10px;
-		left: 0px;
-		right: 0px;
-		overflow: hidden;
-		background-repeat: repeat;
-		margin: 0px;
-		background: $Grey;
-		border-top: none;
-		#search{
-			input {
-				height: 30px;
-				border: none;
-				line-height: 30px;
-				width:120px;
-				vertical-align: bottom;
-			}
+}
+#bm_searchField{
+	position: absolute;
+	bottom: 0px;
+	height: 30px;
+	padding:10px;
+	left: 0px;
+	right: 0px;
+	overflow: hidden;
+	background-repeat: repeat;
+	margin: 0px;
+	background: $Grey;
+	border-top: none;
+	#search{
+		input {
+			height: 30px;
+			border: none;
+			line-height: 30px;
+			width:120px;
+			vertical-align: bottom;
 		}
-		#infoField{
-			margin:5px 0px;
-			display: none;
-		}
+	}
+	#infoField{
+		margin:5px 0px;
+		display: none;
 	}
 }
 
