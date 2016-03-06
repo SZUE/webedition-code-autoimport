@@ -1,5 +1,5 @@
 /**
- * webEdition CMS 
+ * webEdition CMS
  *
  * webEdition CMS
  * $Rev$
@@ -1302,6 +1302,10 @@ table.default td,
 table.default th{
 	padding: 0px;
 	vertical-align: top;
+}
+
+#customer_table td{
+	vertical-align: middle;
 }
 
 table.withSpace tr td{
