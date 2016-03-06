@@ -36,10 +36,10 @@ _console_' . $consoleName . ' = new (WE().layout.messageConsoleView)(\'' . $cons
 _console_' . $consoleName . '.register();
 window.document.body.addEventListener(\'onunload\',	_console_' . $consoleName . '.unregister);' :
 				'
-<div id="messageConsole">
+<div id="messageConsole" onclick="_console_' . $consoleName . '.openMessageConsole();">
 <table><tr>
 	<td style="vertical-align:middle"><div class="small messageConsoleMessage" id="messageConsoleMessage' . $consoleName . '">--</div></td>
-	<td><div onclick="_console_' . $consoleName . '.openMessageConsole();" class="navigation" id="messageConsoleImageDiv"><i id="messageConsoleImage' . $consoleName . '" class="fa fa-lg fa-bell"></i></div></td>
+	<td><div class="navigation" id="messageConsoleImageDiv"><i id="messageConsoleImage' . $consoleName . '" class="fa fa-lg fa-bell"></i></div></td>
 	</tr></table>
 </div>');
 	}
@@ -135,7 +135,7 @@ window.document.body.addEventListener(\'onunload\',	_console_' . $consoleName . 
 				echo self::createMessageConsole('mainWindow', false);
 //				<img src="<php echo IMAGE_DIR >/webedition.svg" alt="" id="weHeaderLogo"/>
 				?>
-				<div id="logout" class="navigation"><i class="fa fa-power-off fa-lg" onclick="top.we_cmd('dologout');"></i></div>
+				<div id="logout" class="navigation" onclick="top.we_cmd('dologout');"><i class="fa fa-power-off fa-lg"></i></div>
 			</div>
 		</div>
 		<?php
