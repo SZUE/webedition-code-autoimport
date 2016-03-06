@@ -323,7 +323,7 @@ $l_buttons_global=array(
 		'value'=>'Start Editor',
 	),
 	'export'=>array(
-		'alt'=>'Export selected files',
+		'alt'=>'Export',
 		'value'=>'Export',
 	),
 	'first'=>array(
