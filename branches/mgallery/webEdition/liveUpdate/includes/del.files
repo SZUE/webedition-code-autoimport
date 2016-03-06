@@ -653,6 +653,7 @@ liveUpdate/sqldumps/tblMsgSettings.sql
 liveUpdate/sqldumps/tblIcons.sql
 liveUpdate/sqldumps/tblContentTypes.sql
 liveUpdate/sqldumps/tblAnzeigePrefs.sql
+liveUpdate/images/updateBackground.gif
 licenses/SMTP_PHPClass/License.txt
 licenses/PhpMailer/License.txt
 licenses/PEAR/PHP_License.txt
