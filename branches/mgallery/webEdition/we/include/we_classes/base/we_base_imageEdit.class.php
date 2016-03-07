@@ -665,7 +665,7 @@ abstract class we_base_imageEdit{
 			ImageDestroy($_output_gdimg);
 		}
 
-		return isset($_gdimg) ? array($_gdimg, $_outsize['width'], $_outsize['height']) : array(false, -1, -1);
+			return !empty($_gdimg) ? array($_gdimg, $_outsize['width'], $_outsize['height']) : array(false, -1, -1);
 	}
 
 	/* static function ImageTrueColorToPalette2($image, $dither, $ncolors){
