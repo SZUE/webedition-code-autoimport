@@ -422,7 +422,7 @@ weCollectionEdit = {
 			this.dd.placeholder.appendChild(inner);
 		} else {
 			this.dd.placeholder.setAttribute("ondrop", "weCollectionEdit.dropOnItem(\'item\',\'grid\',event, this)");
-			this.dd.placeholder.style.height = '90px';
+			this.dd.placeholder.style.height = this.viewSub === 'minimal' ? '50px' : '90px';
 			this.dd.placeholder.style.margin = '4px 0 0 0';
 			this.dd.placeholder.style.border = this.styles.standard.border;
 			this.dd.placeholder.style.borderStyle = 'dotted';
@@ -432,6 +432,7 @@ weCollectionEdit = {
 	},
 	getItem: function (elem) {
 		var itemClass = this.view === 'grid' ? 'gridItem' : 'listItem';
+
 		while (elem.className !== itemClass) {
 			elem = elem.parentNode;
 			if (elem.className === 'collection-content') {
@@ -471,7 +472,7 @@ weCollectionEdit = {
 		if (t.view === 'list') {
 			blank = blank.replace(/##W_ATTRIB_TITLE##/g, item.elements.attrib_title.write).replace(/##W_ATTRIB_ALT##/g, item.elements.attrib_alt.write).
 				replace(/##W_META_TITLE##/g, item.elements.meta_title.write).replace(/##W_META_DESC##/g, item.elements.meta_description.write).
-				replace(/##CLASS##/g, (this.viewSub === 'minimal' ? 'minimalListItem' : ''));
+				replace(/##CLASS##/g, (this.viewSub === 'minimal' ? 'minimalListItem' : 'broadListItem'));
 
 			//TODO: list fallback!
 			if (item.id === -1) {
@@ -838,24 +839,23 @@ weCollectionEdit = {
 		}
 	},
 	startMoveItem: function (evt, view) {
-		var el = this.getItem(evt.target),
-						index = parseInt(el.id.substr(10)),
-						position = [].indexOf.call(this.ct[view].children, el);
+		var elem = this.getItem(evt.target),
+			position = [].indexOf.call(this.ct[view].children, elem);
 
 		this.view = view;
 		this.dd.isMoveItem = true;
-		this.dd.moveItem.el = el;
-		this.dd.moveItem.id = el.id;
-		this.dd.moveItem.index = index;
-		this.dd.moveItem.next = el.nextSibling;
+		this.dd.moveItem.el = elem;
+		this.dd.moveItem.id = elem.id;
+		this.dd.moveItem.index = parseInt(elem.id.substr(10));
+		this.dd.moveItem.next = elem.nextSibling;
 		this.dd.moveItem.pos = position;
 		this.dd.moveItem.removed = false;
 
-		top.dd.dataTransfer.text = 'moveItem,' + el.id;
-		evt.dataTransfer.setData('text', 'moveItem,' + el.id);
+		top.dd.dataTransfer.text = 'moveItem,' + elem.id;
+		evt.dataTransfer.setData('text', 'moveItem,' + elem.id);
 
 		if (this.view === 'grid') {
-			this.outMouse('item', this.view, el.firstChild);
+			this.outMouse('item', this.view, elem.firstChild);
 		}
 	},
 	dropOnItem: function (type, view, evt, elem, last) {

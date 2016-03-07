@@ -464,7 +464,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 			we_html_button::create_button(we_html_button::DIRDOWN, 'javascript:weCollectionEdit.doClickDown(this);', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index, false, '', 'btn_down') .
 			we_html_button::create_button('fa:btn_remove_from_collection,fa-lg fa-trash-o', 'javascript:weCollectionEdit.doClickDelete(this)', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index);
 
-		$rowHtml = new we_html_table(array('draggable' => 'false'), 1, 4);
+		$rowHtml = new we_html_table(array('class' => $item['class'], 'draggable' => 'false'), 1, 4);
 		$imgDiv = we_html_element::htmlDiv(array(
 				'id' => 'previweDiv_' . $index,
 				'class' => 'previewDiv',
@@ -500,7 +500,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		$rowHtml->setCol(0, 2, array('class' => 'colContent'), $rowInnerTable->getHtml());
 		$rowHtml->setCol(0, 3, array('class' => 'colControls weMultiIconBoxHeadline'), $rowControlls);
 
-		return we_html_element::htmlDiv(array('id' => 'list_item_' . $index, 'class' => 'listItem ' . $item['class'], 'draggable' => 'false'), $rowHtml->getHtml());
+		return we_html_element::htmlDiv(array('id' => 'list_item_' . $index, 'class' => 'listItem', 'draggable' => 'false'), $rowHtml->getHtml());
 	}
 
 	private function makeGridItem($item, $index){ // TODO: maybe write only blank item and let JS render items oninit from storage?
