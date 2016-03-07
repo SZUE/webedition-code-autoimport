@@ -680,7 +680,7 @@ a.notpublished{
 
 .changed,
 a.changed{ /*elements which are saved & published*/
-	color: #3366CC;
+	color: $ModifiedColor;
 }
 
 .selector a {
@@ -1310,7 +1310,7 @@ table.customer{
 table.default td,
 table.default th{
 	padding: 0px;
-	vertical-align: top;
+	vertical-align: middle;
 }
 
 #customer_table td{

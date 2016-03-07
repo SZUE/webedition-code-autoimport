@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
 */
 
-/* CSS for home screen*/ 
+/* CSS for home screen*/
 @import "config.scss";
 body{
 	background-color: #F5F5F5;
@@ -235,6 +235,12 @@ td.mdcIcon{
 	width:20px;
 	height:20px;
 	padding-right:4px;
+}
+
+td.upbEntry{
+	vertical-align:middle;
+	white-space: nowrap;
+	cursor:pointer
 }
 
 #users_online td{

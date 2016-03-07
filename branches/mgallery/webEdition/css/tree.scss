@@ -185,7 +185,7 @@
 	.checked_item,
 	.checked_group,
 	.checked_notpublished{
-		/*color: #3366CC;*/
+		/*color: $ModifiedColor;*/
 		color: $White;
 		/*background-color: #D4DBFA;*/
 		background-color: $MiddleBlue;
@@ -223,5 +223,14 @@
 	}
 	span.fileicon {
     margin-right: .1em;
+	}
+	span.treeEntry{
+		position: relative;
+	}
+	i.inscheduler{
+		background-color: white;
+		color:$ModifiedColor;
+		left: 0em;
+		position: absolute;
 	}
 }
