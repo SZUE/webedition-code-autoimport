@@ -104,8 +104,8 @@ class we_textDocument extends we_document{
 			$oldDoc = ($this->ID ? f('SELECT Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.DID=' . $this->ID . ' AND DocumentTable="tblFile" AND l.nHash=x\'' . md5("data") . '\'', '', $this->DB_WE) : '');
 			$ok = we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $this->Path, $doc);
 			$data = getHTTP(getServerUrl(true), WEBEDITION_DIR . 'triggerWEtasks.php');
-			$data2 = getHTTP(getServerUrl(true), WEBEDITION_DIR . 'index.html');
-			if($data != 'OK' || strlen($data2) != filesize(WEBEDITION_PATH . 'index.html')){//generated error codes; since fopen is not capable of returning proper codes
+			$data2 = getHTTP(getServerUrl(true), WEBEDITION_DIR . 'html/blank_editor.html');
+			if($data != 'OK' || strlen($data2) != filesize(WEBEDITION_PATH . 'html/blank_editor.html')){//generated error codes; since fopen is not capable of returning proper codes
 				//restore old htaccess
 				if($this->ID){
 					we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $this->Path, $oldDoc);
