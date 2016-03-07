@@ -673,16 +673,14 @@ shopContentfontGreySmall,
 	max-width:50em;
 }
 
-.changed,
-a.changed{ /*elements which are saved & published*/
-	color: #3366CC;
+a.changed,
+a.notpublished{
 	cursor: pointer;
 }
 
-.notpublished,
-a.notpublished {
-	color: red;
-	cursor: pointer;
+.changed,
+a.changed{ /*elements which are saved & published*/
+	color: #3366CC;
 }
 
 .selector a {
@@ -697,11 +695,12 @@ a.notpublished {
 	text-decoration:none;
 }
 
+a.notpublished,
 .notpublished,
 .highlightElementChanged,
 .shopNotPayed
 {
-	color: red !important;
+	color: red;
 	a,a:visited{
 		color:inherit;
 	}
