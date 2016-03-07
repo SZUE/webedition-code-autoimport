@@ -58,4 +58,6 @@ if(file_exists($file) && is_readable($file)){
 		header('Content-Length: ' . filesize($file));
 		readfile($file);
 	}
+} else {
+	we_html_tools::setHttpCode(404);
 }

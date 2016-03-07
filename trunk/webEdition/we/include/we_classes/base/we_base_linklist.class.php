@@ -532,8 +532,8 @@ class we_base_linklist{
 		$nr = abs($nr);
 		$l = $this->getRawLink();
 		foreach($this->listArray as $i => &$cur){
-			if(!isset($cur["nr"])){
-				$cur["nr"] = $i;
+			if(!isset($cur['nr'])){
+				$cur['nr'] = $i;
 			}
 		}
 		unset($cur);
