@@ -129,6 +129,7 @@ weCollectionEdit = {
 	collectionName: '',
 	csv: '',
 	view: 'grid',
+	viewSub: 'broad',
 	gridItemDimension: {
 		item: 200,
 		icon: 32
@@ -188,12 +189,26 @@ weCollectionEdit = {
 		this.renderView(true);
 
 	},
-	setView: function (view) {
-		this.view = view;
+	setView: function (view, viewSub) {
+		switch(view){
+			case 'list':
+				this.view = 'list';
+				this.viewSub = viewSub === 'minimal' ? 'minimal' : 'broad';
+				this.ct.grid.style.display = 'none';
+				this.ct.list.style.display = 'block';
+				this.sliderDiv.style.display = 'none';
+				break;
+			case 'grid':
+			default:
+				this.view = view;
+				this.ct.grid.style.display = 'inline-block';
+				this.ct.list.style.display = 'none';
+				this.sliderDiv.style.display = 'block';
+				break;
+		}
+
 		document.we_form['we_' + this.we_doc.name + '_view'].value = this.view;
-		this.ct.grid.style.display = this.view === 'grid' ? 'inline-block' : 'none';
-		this.ct.list.style.display = this.view === 'list' ? 'block' : 'none';
-		this.sliderDiv.style.display = this.view === 'grid' ? 'block' : 'none';
+		document.we_form['we_' + this.we_doc.name + '_viewSub'].value = this.viewSub === 'minimal' ? 'minimal' : 'broad';
 		this.dd.counter = 0;
 		this.renderView(true);
 	},
@@ -447,15 +462,16 @@ weCollectionEdit = {
 
 		div = document.createElement("div");
 		blank = t.blankItem[t.view].replace(/##INDEX##/g, t.maxIndex).replace(/##ID##/g, item.id).replace(/##PATH##/g, item.path).
-						replace(/##CT##/g, item.ct).replace(/##ICONURL##/g, (item.icon ? item.icon.url.replace('%2F', '/') : '')).
-						replace(/##ATTRIB_TITLE##/g, item.elements.attrib_title.Dat).replace(/##S_ATTRIB_TITLE##/g, item.elements.attrib_title.state).
-						replace(/##ATTRIB_ALT##/g, item.elements.attrib_alt.Dat).replace(/##S_ATTRIB_ALT##/g, item.elements.attrib_alt.state).
-						replace(/##META_TITLE##/g, item.elements.meta_title.Dat).replace(/##S_META_TITLE##/g, item.elements.meta_title.state).
-						replace(/##META_DESC##/g, item.elements.meta_description.Dat).replace(/##S_META_DESC##/g, item.elements.meta_description.state);
+			replace(/##CT##/g, item.ct).replace(/##ICONURL##/g, (item.icon ? item.icon.url.replace('%2F', '/') : '')).
+			replace(/##ATTRIB_TITLE##/g, item.elements.attrib_title.Dat).replace(/##S_ATTRIB_TITLE##/g, item.elements.attrib_title.state).
+			replace(/##ATTRIB_ALT##/g, item.elements.attrib_alt.Dat).replace(/##S_ATTRIB_ALT##/g, item.elements.attrib_alt.state).
+			replace(/##META_TITLE##/g, item.elements.meta_title.Dat).replace(/##S_META_TITLE##/g, item.elements.meta_title.state).
+			replace(/##META_DESC##/g, item.elements.meta_description.Dat).replace(/##S_META_DESC##/g, item.elements.meta_description.state);
 
 		if (t.view === 'list') {
 			blank = blank.replace(/##W_ATTRIB_TITLE##/g, item.elements.attrib_title.write).replace(/##W_ATTRIB_ALT##/g, item.elements.attrib_alt.write).
-							replace(/##W_META_TITLE##/g, item.elements.meta_title.write).replace(/##W_META_DESC##/g, item.elements.meta_description.write);
+				replace(/##W_META_TITLE##/g, item.elements.meta_title.write).replace(/##W_META_DESC##/g, item.elements.meta_description.write).
+				replace(/##CLASS##/g, (this.viewSub === 'minimal' ? 'minimalListItem' : ''));
 
 			//TODO: list fallback!
 			if (item.id === -1) {
@@ -477,7 +493,7 @@ weCollectionEdit = {
 				div.getElementsByClassName('previewDiv')[0].innerHTML = '';
 			}
 
-			if (item.ct !== 'image/*' && item.id !== -1) {
+			if (this.viewSub === 'minimal' || (item.ct !== 'image/*' && item.id !== -1)) {
 				elPreview = div.getElementsByClassName('previewDiv')[0];
 				elPreview.innerHTML = WE().util.getTreeIcon(item.ct, false, item.ext);
 				elPreview.style.background = 'transparent';

@@ -67,7 +67,7 @@ class we_collection extends we_root{
 		$this->Published = $this->ModDate;
 
 		$this->Table = VFILE_TABLE;
-		array_push($this->persistent_slots, 'fileCollection', 'objectCollection', 'remTable', 'remCT', 'remClass', 'DefaultDir', 'insertPrefs', 'IsDuplicates', 'InsertRecursive', 'ContentType', 'view', 'itemsPerRow');
+		array_push($this->persistent_slots, 'fileCollection', 'objectCollection', 'remTable', 'remCT', 'remClass', 'DefaultDir', 'insertPrefs', 'IsDuplicates', 'InsertRecursive', 'ContentType', 'view', 'viewSub', 'itemsPerRow');
 
 		if(isWE()){
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_INFO);
@@ -319,7 +319,8 @@ class we_collection extends we_root{
 			we_html_element::htmlHidden('check_we_' . $GLOBALS['we_doc']->Name . '_IsDuplicates', $this->IsDuplicates);
 		$slider = '<div id="sliderDiv" style="display:' . ($this->view === 'grid' ? 'block' : 'none') . '"><input type="range" class="collection-Slider" name="zoom" min="1" step="1" max="5" value="' . (7 - $this->itemsPerRow) . '" onchange="weCollectionEdit.doZoomGrid(this.value);"/></div>';
 		$btnGridview = we_html_button::create_button('fa:iconview,fa-lg fa-th', "javascript:weCollectionEdit.setView('grid');", true, 40, "", "", "", false);
-		$btnListview = we_html_button::create_button('fa:listview,fa-lg fa-align-justify', "javascript:weCollectionEdit.setView('list');", true, 40, "", "", "", false);
+		$btnListview = we_html_button::create_button('fa:listview,fa-lg fa-th-list', "javascript:weCollectionEdit.setView('list');", true, 40, "", "", "", false);
+		$btnListviewMinimal = we_html_button::create_button('fa:listview_minimal,fa-lg fa-align-justify', "javascript:weCollectionEdit.setView('list', 'minimal');", true, 40, "", "", "", false);
 
 		//$callback = we_base_request::encCmd("if(WE().layout.weEditorFrameController.getEditorIfOpen('" . VFILE_TABLE . "', " . $this->ID . ", 1)){WE().layout.weEditorFrameController.getEditorIfOpen('" . VFILE_TABLE . "', " . $this->ID . ", 1).weCollectionEdit.insertImportedDocuments(scope.sender.resp.success)} top.close();");
 		$callback = we_base_request::encCmd("var fc, editorID, frame, ce; if((fc = WE().layout.weEditorFrameController) && (editorID = fc.getEditorIdOfOpenDocument('" . VFILE_TABLE . "', " . $this->ID . ")) && (fc.getEditorEditPageNr(editorID) == 1) && (frame = fc.getEditorFrame(editorID)) && (ce = frame.getContentEditor().weCollectionEdit)){ce.insertImportedDocuments(scope.sender.resp.success);} else {top.opener.top.console.debug('error: collection closed or changed tab');} top.close()");
@@ -327,14 +328,15 @@ class we_collection extends we_root{
 		$addFromTreeButton = we_html_button::create_button('fa:btn_select_files, fa-lg fa-sitemap, fa-lg fa-angle-right, fa-lg fa-copy', "javascript:weCollectionEdit.doClickAddItems();", true, 62, 22, '', '', false, false, '', false, '', 'btn_addFromTree');
 
 		//TODO: use tables and some padding
-		$toolbar = new we_html_table(array(), 1, 7);
+		$toolbar = new we_html_table(array(), 1, 8);
 		$toolbar->setCol(0, 0, array('class' => 'toolbarRecursive'), $recursive);
 		$toolbar->setCol(0, 1, array('class' => 'toolbarSlider'), $slider);
 		$toolbar->setCol(0, 2, array('class' => 'toolbarView'), $btnGridview);
 		$toolbar->setCol(0, 3, array('class' => 'toolbarView'), $btnListview);
-		$toolbar->setCol(0, 4, array('class' => 'toolbarAdd'), $addFromTreeButton);
-		$toolbar->setCol(0, 5, array('class' => 'toolbarImport'), $btnImport);
-		$toolbar->setCol(0, 6, array('class' => 'toolbarNum weMultiIconBoxHeadline'), g_l('weClass', '[collection][number]') . ': <span id="numSpan"><i class="fa fa-2x fa-spinner fa-pulse"></i></span>');
+		$toolbar->setCol(0, 4, array('class' => 'toolbarView'), $btnListviewMinimal);
+		$toolbar->setCol(0, 5, array('class' => 'toolbarAdd'), $addFromTreeButton);
+		$toolbar->setCol(0, 6, array('class' => 'toolbarImport'), $btnImport);
+		$toolbar->setCol(0, 7, array('class' => 'toolbarNum weMultiIconBoxHeadline'), g_l('weClass', '[collection][number]') . ': <span id="numSpan"><i class="fa fa-2x fa-spinner fa-pulse"></i></span>');
 
 		$items = $this->getValidCollection(false, true, true);
 
@@ -371,6 +373,7 @@ class we_collection extends we_root{
 			'id' => '##ID##',
 			'path' => '##PATH##',
 			'type' => '##CT##',
+			'class' => '##CLASS##',
 			'icon' => array('url' => '##ICONURL##', 'sizeX' => 200, 'sizeY' => 200),
 			'elements' => array(
 				'attrib_title' => array('Dat' => '##ATTRIB_TITLE##', 'state' => '##S_ATTRIB_TITLE##', 'write' => '##W_ATTRIB_TITLE##'),
@@ -389,6 +392,7 @@ weCollectionEdit.blankItem.list = '" . str_replace(array("'"), "\'", str_replace
 weCollectionEdit.blankItem.grid = '" . str_replace(array("'"), "\'", str_replace(array("\n\r", "\r\n", "\r", "\n"), "", $this->makeGridItem($placeholders, '##INDEX##'))) . "';
 weCollectionEdit.collectionArr = [" . rtrim($jsItemsArr, ',') . "];
 weCollectionEdit.view = '" . $this->view . "';
+weCollectionEdit.viewSub = '" . ($this->viewSub === 'minimal' ? 'minimal' : 'broad') . "';
 weCollectionEdit.gridItemDimensions = " . json_encode($this->gridItemDimensions) . ";
 weCollectionEdit.storage = {};
 weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . ";
@@ -402,6 +406,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		return we_html_element::jsElement($this->jsFormCollection) .
 			we_html_element::htmlHiddens(array(
 				'we_' . $this->Name . '_view' => $this->view,
+				'we_' . $this->Name . '_viewSub' => $this->viewSub,
 				'we_' . $this->Name . '_itemsPerRow' => $this->itemsPerRow,
 				'we_' . $this->Name . '_fileCollection' => $this->fileCollection,
 				'we_' . $this->Name . '_objectCollection' => $this->objectCollection)) .
@@ -434,7 +439,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		}
 
 		$selectButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',(document.we_form.elements['" . $idname . "'].value != -1 ? document.we_form.elements['" . $idname . "'].value : " . $this->DefaultDir . "),'" . addTblPrefix($this->getRemTable()) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "'," . (permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_OBJECTS') ? 0 : 1) . ")", true, 52, 0, '', '', false, false, '_' . $index);
-		$addFromTreeButton = we_html_button::create_button('fa:btn_select_files, fa-lg fa-sitemap, fa-lg fa-angle-right, fa-lg fa-copy', "javascript:weCollectionEdit.doClickAddItems(this);", true, 62, 22, '', '', false, false, '', false, '');
+		$addFromTreeButton = we_html_button::create_button('fa:btn_select_files, fa-lg fa-sitemap, fa-lg fa-angle-right, fa-lg fa-copy', "javascript:weCollectionEdit.doClickAddItems(this);", true, 62, 22, '', '', false, false, '', false, '', 'btn_addFromTree');
 		$editButton = we_html_button::create_button(we_html_button::EDIT, "javascript:weCollectionEdit.doClickOpenToEdit(" . $item['id'] . ", '" . $item['type'] . "');", true, 27, 22, '', '', ($item['id'] === -1), false, '', false, '', 'btn_edit');
 
 		$yuiSuggest->setTable(addTblPrefix($this->getRemTable()));
@@ -490,10 +495,12 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 				), '<i class="fa fa-lg fa-dot-circle-o ' . $item['elements']['meta_description']['state'] . '"></i> ' . $item['elements']['meta_description']['write']);
 
 		$rowInnerTable->setCol(1, 0, array(), $attrTitle . $attrAlt . $metaTitle . $metaDesc);
+		$rowInnerTable->setRowAttributes(1, array('class' => 'rowAttribsMeta'));
+
 		$rowHtml->setCol(0, 2, array('class' => 'colContent'), $rowInnerTable->getHtml());
 		$rowHtml->setCol(0, 3, array('class' => 'colControls weMultiIconBoxHeadline'), $rowControlls);
 
-		return we_html_element::htmlDiv(array('id' => 'list_item_' . $index, 'class' => 'listItem', 'draggable' => 'false'), $rowHtml->getHtml());
+		return we_html_element::htmlDiv(array('id' => 'list_item_' . $index, 'class' => 'listItem ' . $item['class'], 'draggable' => 'false'), $rowHtml->getHtml());
 	}
 
 	private function makeGridItem($item, $index){ // TODO: maybe write only blank item and let JS render items oninit from storage?
