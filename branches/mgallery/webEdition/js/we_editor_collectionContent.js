@@ -494,7 +494,7 @@ weCollectionEdit = {
 				div.getElementsByClassName('previewDiv')[0].innerHTML = '';
 			}
 
-			if (this.viewSub === 'minimal' || (item.ct !== 'image/*' && item.id !== -1)) {
+			if ((this.viewSub === 'minimal' || item.ct !== 'image/*') && item.id !== -1) {
 				elPreview = div.getElementsByClassName('previewDiv')[0];
 				elPreview.innerHTML = WE().util.getTreeIcon(item.ct, false, item.ext);
 				elPreview.style.background = 'transparent';

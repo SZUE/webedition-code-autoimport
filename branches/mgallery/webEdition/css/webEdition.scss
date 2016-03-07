@@ -1999,6 +1999,7 @@ div.collection-content{
 
 	table.minimalListItem{
 		.wetextinput{
+			margin: 0;
 			margin-top: 3px;
 		}
 		tr.rowAttribsMeta{
@@ -2010,11 +2011,14 @@ div.collection-content{
 		}
 		div.previewDiv{
 			width: 50px;
-			height: 40px;
+			height: 30px;
 			span{
 					text-align: center;
-					font-size: 16px;
-					padding-top: 4px;
+					font-size: 14px;
+					padding: 4px;
+			}
+			div.divBtnSelect{
+					padding: 2px 0 0 0;
 			}
 		}
 	}
