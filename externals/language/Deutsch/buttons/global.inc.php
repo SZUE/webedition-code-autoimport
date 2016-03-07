@@ -354,6 +354,13 @@ $l_buttons_global=array(
 		'alt'=>'Listenansicht',
 		'value'=>'Listenansicht',
 	),
+	'listview_minimal'=>array(
+		'alt'=>'Listenansicht (vereinfacht)',
+		'value'=>'Listenansicht (vereinfacht)',
+	),
+	'listview_narrow'=>array(
+		'alt'=>'delete me',
+	),
 	'logbook'=>array(
 		'alt'=>'Protokollbuch',
 		'value'=>'Logbuch',
