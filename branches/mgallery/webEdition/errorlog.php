@@ -166,7 +166,7 @@ switch(we_base_request::_(we_base_request::STRING, 'function', 'last')){
 		}
 		$data.='WE-Info:
 Version: ' . WE_VERSION . '
-SVN: ' . WE_SVNREV . ' ' . WE_VERSION_BRANCH . ' ' . WE_VERSION_SUPP . $sep .
+SVN: ' . WE_SVNREV . ' ' . WE_VERSION_BRANCH . ' ' . WE_VERSION_SUPP . ' h' . (defined('WE_VERSION_HOTFIX_NR') ? WE_VERSION_HOTFIX_NR : 0) . $sep .
 				'System:
 PHP: ' . PHP_VERSION . '
 max_execution_time: ' . ini_get('max_execution_time') . '

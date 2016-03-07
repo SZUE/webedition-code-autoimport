@@ -32,6 +32,7 @@ $LU_Variables = array(
 	'clientVersionName' => (defined('WE_VERSION_NAME')) ? WE_VERSION_NAME : '',
 	'clientVersionSupp' => (defined('WE_VERSION_SUPP')) ? WE_VERSION_SUPP : '',
 	'clientVersionSuppVersion' => (defined('WE_VERSION_SUPP_VERSION')) ? WE_VERSION_SUPP_VERSION : '',
+	'clientHotfixNr' => (defined('WE_VERSION_HOTFIX_NR')) ? WE_VERSION_HOTFIX_NR : 0,
 	'clientVersionBranch' => (defined('WE_VERSION_BRANCH')) ? WE_VERSION_BRANCH : '',
 	'clientPhpVersion' => PHP_VERSION,
 	'clientPhpExtensions' => implode(',', get_loaded_extensions()),
