@@ -92,7 +92,7 @@ $sSctOut = '';
 $_col = 0;
 
 foreach($shortcuts as $sctCol){
-	$sSctOut .= '<div class="sct_row mediumicons" style="display: block; margin-right: 1em; float: left;"><table class="default" style="width:100%;">';
+	$sSctOut .= '<div class="sct_row" style="display: block; margin-right: 1em; float: left;"><table class="default" style="width:100%;">';
 	$iCurrSctRow = 0;
 	foreach($sctCol as $_label){
 		if(isset($js[$_label])){
@@ -132,8 +132,7 @@ foreach($shortcuts as $sctCol){
 	$_col++;
 }
 
-$sc = new we_html_table(array("width" => "100%", 'class' => 'default'), 1, 1);
-$sc->setCol(0, 0, array('style' => 'text-align:center;vertical-align:top;'), $sSctOut . we_html_element::jsElement('WE().util.setIconOfDocClass(document,"sctFileIcon");'));
+$sc = $sSctOut . we_html_element::jsElement('WE().util.setIconOfDocClass(document,"sctFileIcon");');
 
 if(!isset($aProps)){
 	$sJsCode = "
@@ -150,5 +149,5 @@ if(!isset($aProps)){
 			"onload" => "if(parent!=self)init();"
 			), we_html_element::htmlDiv(array(
 				"id" => "sct"
-				), $sc->getHtml())));
+				), $sc)));
 }
