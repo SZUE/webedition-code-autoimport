@@ -2743,7 +2743,7 @@ function calendarSetup(x){
 			$allDivs .= $outDivs;
 		}
 
-		return $allDivs;
+		return str_replace("\n", '', $allDivs);
 	}
 
 	function tblListRow($content, $class = "middlefont", $bgColor = ""){
