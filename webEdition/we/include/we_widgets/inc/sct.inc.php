@@ -25,7 +25,7 @@
 $oTblDiv = we_html_element::htmlDiv(array(
 			"id" => "m_" . $iCurrId . "_inline",
 			"style" => "width:100%;height:" . ($aPrefs[$aProps[0]]["height"] - 25) . "px;overflow:auto;"
-				), $sc->getHtml());
+				), $sc);
 $aLang = array(
 	g_l('cockpit', '[shortcuts]'), ''
 );

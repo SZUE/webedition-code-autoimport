@@ -35,7 +35,7 @@ abstract class we_tool_frames extends we_modules_frame{
 
 	public function __construct($frameset){
 		parent::__construct($frameset);
-		$this->showTreeFooter = true;
+		$this->showTreeFooter = false;
 		$this->treeWidth = 200;
 	}
 
@@ -188,9 +188,9 @@ function we_save() {
 			we_html_multiIconBox::getHTML('', $this->getHTMLGeneral(), 30);
 	}
 
-	protected function getHTMLTreeFooter(){
+/*	protected function getHTMLTreeFooter(){
 		return '<div id="infoField" class="defaultfont"></div>';
-	}
+	}*/
 
 	protected function getHTMLCmd(){
 		$pid = we_base_request::_(we_base_request::STRING, "pid");

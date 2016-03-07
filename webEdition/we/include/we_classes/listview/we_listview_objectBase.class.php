@@ -163,13 +163,13 @@ abstract class we_listview_objectBase extends we_listview_base{
 			'wedoc_CreationDate' => '`' . OBJECT_FILES_TABLE . '`.CreationDate',
 			'wedoc_ModDate' => '`' . OBJECT_FILES_TABLE . '`.ModDate',
 			'we_moddate' => '`' . OBJECT_FILES_TABLE . '`.ModDate',
-			'wedoc_Published' => '`' . OBJECT_FILES_TABLE . $classID . '`.Published',
-			'we_published' => '`' . OBJECT_FILES_TABLE . $classID . '`.Published',
-			'wedoc_ParentID' => '`' . OBJECT_FILES_TABLE . $classID . '`.ParentID',
-			'wedoc_Text' => '`' . OBJECT_FILES_TABLE . $classID . '`.Text',
-			'we_filename' => '`' . OBJECT_FILES_TABLE . $classID . '`.Text',
+			'wedoc_Published' => '`' . OBJECT_FILES_TABLE . '`.Published',
+			'we_published' => '`' . OBJECT_FILES_TABLE . '`.Published',
+			'wedoc_ParentID' => '`' . OBJECT_FILES_TABLE . '`.ParentID',
+			'wedoc_Text' => '`' . OBJECT_FILES_TABLE . '`.Text',
+			'we_filename' => '`' . OBJECT_FILES_TABLE . '`.Text',
 			'we_id' => '`' . OBJECT_X_TABLE . $classID . '`.OF_ID',
-			'we_path' => '`' . OBJECT_FILES_TABLE . $classID . '`.Path',
+			'we_path' => '`' . OBJECT_FILES_TABLE . '`.Path',
 		));
 
 		foreach($orderArr as $pos => $curOrd){
@@ -178,13 +178,13 @@ abstract class we_listview_objectBase extends we_listview_base{
 					$ordertmp[$pos] = '`' . OBJECT_X_TABLE . $classID . '`.OF_ID' . ($descArr[$pos] ? ' DESC' : '');
 					break;
 				case 'we_filename':
-					$ordertmp[$pos] = '`' . OBJECT_FILES_TABLE . $classID . '`.Text' . ($descArr[$pos] ? ' DESC' : '');
+					$ordertmp[$pos] = '`' . OBJECT_FILES_TABLE . '`.Text' . ($descArr[$pos] ? ' DESC' : '');
 					break;
 				case 'we_path':
-					$ordertmp[$pos] = '`' . OBJECT_FILES_TABLE . $classID . '`.Path' . ($descArr[$pos] ? ' DESC' : '');
+					$ordertmp[$pos] = '`' . OBJECT_FILES_TABLE . '`.Path' . ($descArr[$pos] ? ' DESC' : '');
 					break;
 				case 'we_published':
-					$ordertmp[$pos] = '`' . OBJECT_FILES_TABLE . $classID . '`.Published' . ($descArr[$pos] ? ' DESC' : '');
+					$ordertmp[$pos] = '`' . OBJECT_FILES_TABLE . '`.Published' . ($descArr[$pos] ? ' DESC' : '');
 					break;
 				case 'we_moddate':
 					$ordertmp[$pos] = '`' . OBJECT_FILES_TABLE . '`.ModDate' . ($descArr[$pos] ? ' DESC' : '');

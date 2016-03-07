@@ -75,14 +75,11 @@ class we_users_frames extends we_modules_frame{
 				"pnt" => "cmd",
 				"cmd" => "show_search"));
 
-		$table = new we_html_table(array('class' => 'default'), 1, 1);
-		$table->setCol(0, 0, array("class" => "small"), we_html_element::jsElement($this->View->getJSSubmitFunction("cmd")) .
-			$hiddens .
+		$table = $hiddens .
 			we_html_tools::htmlTextInput("keyword", 10, "", "", 'placeholder="' . g_l('buttons_modules_message', '[search][alt]') . '"', "text", "120px") .
-			we_html_button::create_button(we_html_button::SEARCH, "javascript:top.content.we_cmd('search',document.we_form_treefooter.keyword.value);")
-		);
+			we_html_button::create_button(we_html_button::SEARCH, "javascript:top.content.we_cmd('search',document.we_form_treefooter.keyword.value);");
 
-		return we_html_element::htmlForm(array("name" => "we_form_treefooter"), $table->getHtml());
+		return we_html_element::jsElement($this->View->getJSSubmitFunction("cmd")) . we_html_element::htmlForm(array("name" => "we_form_treefooter"), $table);
 	}
 
 	protected function getHTMLEditorHeader(){

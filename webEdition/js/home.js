@@ -399,7 +399,7 @@ function initWidget(_id) {
 	if (oNode && oNode.value === "sct") {
 		var _width = "100%";
 		if (resizeIdx('get', _id) === "1") {
-			_width = "48%";
+			_width = "46%";
 		}
 
 		var _elem = document.getElementById(_id);

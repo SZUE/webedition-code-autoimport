@@ -1,5 +1,5 @@
 /**
- * webEdition CMS 
+ * webEdition CMS
  *
  * webEdition CMS
  * $Rev$
@@ -132,6 +132,7 @@ b,
 strong,
 .bold{
 	font-family: $weFontBold;
+	font-weight: normal;
 }
 
 span.infobox{
@@ -411,6 +412,10 @@ td.boxHeader{
 	#treeName{
 		padding: 0px 1ex;
 	}
+	#reloadTree {
+		position: absolute;
+		right: 2em;
+	}
 	#toggleTree{
 		position: absolute;
 		right: 1ex;
@@ -425,31 +430,31 @@ td.boxHeader{
 	bottom: 0px;
 	left: 0px;
 	right: 0px;
-	#bm_searchField{
-		position: absolute;
-		bottom: 0px;
-		height: 30px;
-		padding:10px;
-		left: 0px;
-		right: 0px;
-		overflow: hidden;
-		background-repeat: repeat;
-		margin: 0px;
-		background: $Grey;
-		border-top: none;
-		#search{
-			input {
-				height: 30px;
-				border: none;
-				line-height: 30px;
-				width:120px;
-				vertical-align: bottom;
-			}
+}
+#bm_searchField{
+	position: absolute;
+	bottom: 0px;
+	height: 30px;
+	padding:10px;
+	left: 0px;
+	right: 0px;
+	overflow: hidden;
+	background-repeat: repeat;
+	margin: 0px;
+	background: $Grey;
+	border-top: none;
+	#search{
+		input {
+			height: 30px;
+			border: none;
+			line-height: 30px;
+			width:120px;
+			vertical-align: bottom;
 		}
-		#infoField{
-			margin:5px 0px;
-			display: none;
-		}
+	}
+	#infoField{
+		margin:5px 0px;
+		display: none;
 	}
 }
 
@@ -491,6 +496,11 @@ td.boxHeader{
 	&.withFooter{
 		bottom:$editorFooterHeight;
 	}
+}
+
+#treefooter {
+	height: $editorFooterHeight;
+	padding: 10px;
 }
 
 #eHeaderBody,
@@ -1302,6 +1312,10 @@ table.default td,
 table.default th{
 	padding: 0px;
 	vertical-align: top;
+}
+
+#customer_table td{
+	vertical-align: middle;
 }
 
 table.withSpace tr td{
