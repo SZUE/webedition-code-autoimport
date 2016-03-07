@@ -1256,10 +1256,11 @@ if(!function_exists('hex2bin')){//FIXME: remove if php >= 5.4
 
 function updateAvailable(){
 	$versionInfo = json_decode((we_base_file::load(WE_CACHE_PATH . 'newwe_version.json')? : ''), true);
-	if($versionInfo && (version_compare($versionInfo['dotted'], WE_VERSION) > 0 ||
-		//in branched mode, we compare svn revisions
-		( WE_VERSION_BRANCH != "" && intval(WE_SVNREV) < intval($versionInfo['svnrevision'])))
-	){
+	if($versionInfo && (version_compare($versionInfo['dotted'], WE_VERSION) > 0 /* ||
+		  //in branched mode, we compare svn revisions
+		  ( WE_VERSION_BRANCH != "" && intval(WE_SVNREV) < intval($versionInfo['svnrevision'])
+		  ) */
+		)){
 		return $versionInfo;
 	}
 	return false;
