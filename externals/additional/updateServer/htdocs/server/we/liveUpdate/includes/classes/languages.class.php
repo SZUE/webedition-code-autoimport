@@ -92,16 +92,7 @@ class languages extends languagesBase{
 		}
 		$languagePart .= ' 0 )';
 
-		$query = '
-			SELECT *
-			FROM ' . SOFTWARE_LANGUAGE_TABLE . '
-			WHERE
-				(version <= ' . $_SESSION['clientVersionNumber'] . ')
-				AND type="system"
-				' . $modulesQuery . '
-				' . $languagePart . '
-			ORDER BY version DESC
-		';
+		$query = 'SELECT * FROM ' . SOFTWARE_LANGUAGE_TABLE . ' WHERE (version <= ' . $_SESSION['clientVersionNumber'] . ') AND type="system" ' . $modulesQuery . ' ' . $languagePart . ' ORDER BY version DESC';
 
 		return updateUtil::getChangesArrayByQueries(array($query));
 	}

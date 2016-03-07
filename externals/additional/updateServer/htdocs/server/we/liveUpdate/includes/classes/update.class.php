@@ -284,16 +284,7 @@ WHERE version = ' . $versionnumber . '
 
 		// query for all needed changes - software
 		// DON'T use content here.
-		$query = '
-			SELECT *
-			FROM ' . SOFTWARE_TABLE . '
-			WHERE
-				' . $versionQuery . '
-				AND (type="system")
-				' . $modulesQuery . '
-				' . $sysLngQuery . '
-				ORDER BY version DESC
-		';
+		$query = 'SELECT * FROM ' . SOFTWARE_TABLE . ' WHERE ' . $versionQuery . ' AND (type="system") ' . $modulesQuery . ' ' . $sysLngQuery . ' ORDER BY version DESC';
 
 		$languagePart = 'AND ( ';
 		if(!is_array($_SESSION["clientInstalledLanguages"])){
@@ -315,16 +306,7 @@ WHERE version = ' . $versionnumber . '
 		$languagePart .= ' 0 )';
 
 		// query for needed changes language
-		$languageQuery = '
-			SELECT *
-			FROM ' . SOFTWARE_LANGUAGE_TABLE . '
-			WHERE
-				' . $versionQuery . '
-				AND (type="system")
-				' . $modulesQuery . '
-				' . $languagePart . '
-				ORDER BY version DESC
-		';
+		$languageQuery = 'SELECT * FROM ' . SOFTWARE_LANGUAGE_TABLE . ' WHERE ' . $versionQuery . ' AND (type="system") ' . $modulesQuery . ' ' . $languagePart . ' ORDER BY version DESC';
 
 		return updateUtil::getChangesArrayByQueries(array($query, $languageQuery));
 	}
