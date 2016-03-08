@@ -12,7 +12,7 @@ var tinymce=null,tinyMCEPopup,tinyMCE;tinyMCEPopup={init:function(){var b=this,a
 tinyMCEPopup.resizeToInnerSize = function(){
 	var a = this;
 	var ratio_h = a.dom.getAttrib(document.body,"role") === "application" ? 4/6 : 1;
-	var ratio_w = typeof(isWeDialog) === "undefined" ? 3/4 : 1;
+	var ratio_w = isWeDialog === undefined ? 3/4 : 1;
 
 	if((a.dom.getAttrib(document.body,"id") === "table")){
 		document.getElementById("advanced_panel").style.height = "auto";
@@ -31,18 +31,18 @@ tinyMCEPopup.resizeToInnerSize = function(){
 	setTimeout(function(){
 		var b=a.dom.getViewPort(window), pw;
 		a.editor.windowManager.resizeBy(a.getWindowArg("mce_width")-(b.w*ratio_w),a.getWindowArg("mce_height")-(b.h*ratio_h),a.id||window);
-		if(typeof (pw = document.getElementsByClassName("panel_wrapper")[0]) !== undefined){
+		if((pw = document.getElementsByClassName("panel_wrapper")[0]) !== undefined){
 			pw.style.height = '300px';
 		}
 	},10);
 
-	if(!tinymce.isIE && typeof(top.isWeDialog) === "undefined"
-			&& (typeof(a.dom.getAttrib(document.body,"role")) === "undefined" || a.dom.getAttrib(document.body,"role") !== "application")){
+	if(!tinymce.isIE && top.isWeDialog === undefined
+			&& (a.dom.getAttrib(document.body,"role") === undefined || a.dom.getAttrib(document.body,"role") !== "application")){
 		a.dom.addClass(document.body,"useWeFooter");
 	}
 
 	//replace buttons
-	if(typeof(top.isWeDialog) === "undefined"){
+	if(top.isWeDialog === undefined){
 		var btn, tmp;
 		var g_l = a.editor.getParam("wePopupGl","");
 		var buttonsDiv = document.createElement("div");
