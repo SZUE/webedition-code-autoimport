@@ -29,7 +29,7 @@ abstract class updateBase{
 	 * @return array
 	 */
 	static function getPossibleLanguagesArray(){
-		$GLOBALS['DB_WE']->query('SELECT distinct(language) FROM ' . SOFTWARE_LANGUAGE_TABLE . ' WHERE ' . (isset($_SESSION['testUpdate']) ? '1' : 'islive=1') . ' ORDER BY language ASC');
+		$GLOBALS['DB_WE']->query('SELECT distinct(language) FROM ' . SOFTWARE_LANGUAGE_TABLE . /*' WHERE ' . (isset($_SESSION['testUpdate']) ? '1' : 'islive=1') . */' ORDER BY language ASC');
 
 		return $GLOBALS['DB_WE']->getAll(true);
 	}

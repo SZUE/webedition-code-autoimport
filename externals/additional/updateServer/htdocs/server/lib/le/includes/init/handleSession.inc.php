@@ -86,15 +86,7 @@ if(isset($_REQUEST["update_cmd"]) && $_REQUEST["update_cmd"] == "startSession"){
 		session_set_cookie_params(0, '/', $_REQUEST["clientDomain"]);
 	}
 	session_id($_REQUEST["liveUpdateSession"]);
-	if(!session_start()){
-		if(!session_start()){
-			if(!session_start()){
-				if(!session_start()){
-					session_start();
-				}
-			}
-		}
-	};
+	@session_start();
 
 	if(!isset($_SESSION['clientUpdateUrl'])){ // session is dead
 		$_REQUEST['update_cmd'] = 'notification';

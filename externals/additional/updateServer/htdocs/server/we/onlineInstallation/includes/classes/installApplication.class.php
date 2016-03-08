@@ -180,7 +180,6 @@ class installApplication extends installer{
 	function getApplicationFiles(){
 		// query for versions
 		$startversion = updateUtil::getLastSnapShot($_SESSION['clientTargetVersionNumber']);
-		$versionQuery = '( version >= ' . $startversion . ' AND version <= ' . $_SESSION['clientTargetVersionNumber'] . ' )';
 
 		// get systemlanguage only
 		if($_SESSION['clientTargetVersionNumber'] >= LANGUAGELIMIT){
@@ -198,9 +197,9 @@ class installApplication extends installer{
 
 		return updateUtil::getChangesArrayByQueries([
 				// query for all needed changes - software
-				'SELECT changes,version,detail FROM ' . SOFTWARE_TABLE . ' WHERE ' . $versionQuery . ' (detail != "patches") ORDER BY version DESC',
+				'SELECT changes,version,detail FROM ' . SOFTWARE_TABLE . ' WHERE (version>=' . $startversion . ' AND version<=' . $_SESSION['clientTargetVersionNumber'] . ' ) AND (detail!="patches") ORDER BY version DESC',
 				// query for needed changes language
-				'SELECT changes,version,detail FROM ' . SOFTWARE_LANGUAGE_TABLE . ' WHERE ' . $versionQuery . ' ' .
+				'SELECT changes,version,detail FROM ' . SOFTWARE_LANGUAGE_TABLE . ' WHERE (version>=' . $startversion . ' AND version<=' . $_SESSION['clientTargetVersionNumber'] . ' ) ' .
 				($_SESSION['clientDesiredLanguages'] ? ' AND language IN("' . implode('","', $_SESSION['clientDesiredLanguages']) . '")' : ' AND 0 ') .
 				' AND (detail!="patches") ORDER BY version DESC'
 		]);
