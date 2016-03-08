@@ -62,14 +62,9 @@ require_once './database/we_database_base.class.php';
 require_once './database/we_database_mysqli.class.php';
 require_once './include/we_db_tools.inc.php';
 
-$GLOBALS['DB_WE'] = new DB_WE(); //& DB::connect($DSN_versioning, $OPTIONS_versioning);
+$GLOBALS['DB_WE'] = new DB_WE();
 
-if($beta === true){
-	$query = 'SELECT DISTINCT(version), date, islive,svnrevision FROM ' . VERSION_TABLE . ' WHERE branch="' . $GLOBALS['DB_WE']->escape($branch) . '" ORDER BY version DESC limit 1';
-} else {
-	$query = 'SELECT DISTINCT(version), date, islive,svnrevision FROM ' . VERSION_TABLE . ' WHERE islive=1 ORDER BY version DESC limit 1';
-}
-$latest = $GLOBALS['DB_WE']->getHash($query);
+$latest = $GLOBALS['DB_WE']->getHash('SELECT DISTINCT(version), date, islive,svnrevision FROM ' . VERSION_TABLE . ' WHERE ' . ($beta === true ? 'branch="' . $GLOBALS['DB_WE']->escape($branch) . '"' : 'islive=1') . ' ORDER BY version DESC LIMIT 1');
 $latestVersion = $latest["version"];
 
 // create dotted version
@@ -86,8 +81,7 @@ $latest["dotted"] = $dotted;
 
 // fetch languages:
 if(!empty($latestVersion)){
-	$query = "SELECT DISTINCT(language), isbeta FROM " . VERSION_TABLE . " WHERE version='" . $latestVersion . "'";
-	$GLOBALS['DB_WE']->query($query);
+	$GLOBALS['DB_WE']->query("SELECT DISTINCT(language) FROM " . SOFTWARE_LANGUAGE_TABLE . ' WHERE version=' . $latestVersion);
 	while($GLOBALS['DB_WE']->next_record()){
 		$row = $GLOBALS['DB_WE']->getRecord();
 		if(substr($row['language'], -6) == "_UTF-8"){
@@ -100,7 +94,7 @@ if(!empty($latestVersion)){
 		$latest['lang'][] = array(
 			"name" => $name,
 			"charset" => $charset,
-			"beta" => $row['isbeta']
+			"beta" => 0
 		);
 	}
 	//print_r($allLanguages);

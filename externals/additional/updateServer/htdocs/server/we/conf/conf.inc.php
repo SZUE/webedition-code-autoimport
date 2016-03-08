@@ -32,6 +32,8 @@ define('DB_COLLATION', "utf8_general_ci");
 // database for version information
 $DSN_versioning = array(
 	'phptype' => 'mysql',
+    'username' => '',
+    'password' => '',
 	'hostspec' => 'mysql5.webedition.info',
 	'database' => 'db343047_3', // webedition_versioning - versioning
 );
@@ -51,16 +53,3 @@ ini_set('include_path', PATH_TO_PEAR . ":."); // - server
 
 ini_set('magic_quotes_gpc', 'Off');
 ini_set('session.use_cookies', 'Off');
-
-// Since version 5 there are some modules free of charge an included in webEdition per default
-$GLOBALS['MODULES_FREE_OF_CHARGE_INCLUDED'] = array(
-	'users',
-	'banner',
-	'editor',
-	'schedpro',
-	'schedule',
-	'spellchecker',
-	'export',
-	'voting',
-	'glossary',
-);

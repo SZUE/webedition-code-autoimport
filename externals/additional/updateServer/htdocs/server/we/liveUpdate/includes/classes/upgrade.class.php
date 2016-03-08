@@ -9,53 +9,14 @@ class upgrade{
 	 */
 	static function getChangesForUpdate(){
 
-		// which modules are installed/licensed
-		//$installedModules = $domainInformation['registeredModules'];
-		// query for all selected modules
-		$modulesQuery = '';
-		/*
-		  $modulesQuery = ' AND ( module = "" OR ';
-		  foreach ($GLOBALS['MODULES_FREE_OF_CHARGE_INCLUDED'] as $module) {
-		  $modulesQuery .= 'module="' . $module . '" OR ';
-
-		  }
-		  foreach ($installedModules as $module) {
-		  $modulesQuery .= ' module = "' . $module . '" OR ';
-
-		  }
-		  $modulesQuery .= '0 )';
-		 */
-		$sysLngQuery = ' AND (language="" OR language="' . $_SESSION['clientSyslng'] . '") ';
-
-		// query for all needed changes - software
-		// DON'T use content here.
-		$query = 'SELECT * FROM ' . SOFTWARE_TABLE . '  WHERE
-				version <= ' . $_SESSION['clientTargetVersionNumber'] . '
-				AND (type="system")
-				' . $modulesQuery . '
-				' . $sysLngQuery . '
-				ORDER BY version DESC
-		';
-
-		$languagePart = 'AND ( ';
-		foreach($_SESSION['clientInstalledLanguages'] as $language){
-			$languagePart .= 'language="' . $language . '" OR ';
-		}
-		$languagePart .= ' 0 )';
-
-		// query for needed changes language
-		$languageQuery = '
-			SELECT *
-			FROM ' . SOFTWARE_LANGUAGE_TABLE . '
-			WHERE
-				version <= ' . $_SESSION['clientTargetVersionNumber'] . '
-				AND (type="system")
-				' . $modulesQuery . '
-				' . $languagePart . '
-				ORDER BY version DESC
-		';
-
-		return updateUtil::getChangesArrayByQueries(array($query, $languageQuery));
+		return updateUtil::getChangesArrayByQueries([
+				// query for all needed changes - software
+				'SELECT changes,version,detail FROM ' . SOFTWARE_TABLE . '  WHERE version<=' . $_SESSION['clientTargetVersionNumber'] . ' ORDER BY version DESC',
+				// query for needed changes language
+				' SELECT changes,version,detail FROM ' . SOFTWARE_LANGUAGE_TABLE . ' WHERE version <= ' . $_SESSION['clientTargetVersionNumber'] .
+				($_SESSION['clientInstalledLanguages'] ? ' AND language IN("' . implode('","', $_SESSION['clientInstalledLanguages']) . '")' : ' AND 0 ') .
+				' ORDER BY version DESC'
+		]);
 	}
 
 	/**

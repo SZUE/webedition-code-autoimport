@@ -19,9 +19,6 @@ class banner extends bannerBase{
 				case "languages":
 					$details = urlencode(base64_encode(serialize($_SESSION["clientDesiredLanguages"])));
 					break;
-				case "modules":
-					$details = urlencode(base64_encode(serialize($_SESSION["clientDesiredModules"])));
-					break;
 
 				default:
 					$details = "";

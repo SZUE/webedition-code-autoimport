@@ -69,32 +69,15 @@ class languages extends languagesBase{
 	 * @return array
 	 */
 	static function getChangesForUpdate(){
-
-		$lngPart = '';
-
-		// query for all installed modules
-		$modulesQuery = ' AND ( module = "" OR ';
-		foreach($GLOBALS['MODULES_FREE_OF_CHARGE_INCLUDED'] as $module){
-			$modulesQuery .= 'module="' . $module . '" OR ';
-		}
-		foreach($_SESSION['clientInstalledModules'] as $module){
-			$modulesQuery .= 'module = "' . $module . '" OR  ';
-		}
-		$modulesQuery .= '0 )';
 		if(!is_array($_SESSION['clientDesiredLanguages'])){
 			$_SESSION['clientDesiredLanguages'] = unserialize(urldecode(base64_decode($_SESSION['clientDesiredLanguages'])));
 		}
-		//error_log(print_r($_SESSION['clientDesiredLanguages'],true));
-		// desired languages
-		$languagePart = 'AND ( ';
-		foreach($_SESSION['clientDesiredLanguages'] as $language){
-			$languagePart .= 'language="' . $language . '" OR ';
-		}
-		$languagePart .= ' 0 )';
 
-		$query = 'SELECT * FROM ' . SOFTWARE_LANGUAGE_TABLE . ' WHERE (version <= ' . $_SESSION['clientVersionNumber'] . ') AND type="system" ' . $modulesQuery . ' ' . $languagePart . ' ORDER BY version DESC';
-
-		return updateUtil::getChangesArrayByQueries(array($query));
+		return updateUtil::getChangesArrayByQueries([
+				'SELECT changes,version,detail FROM ' . SOFTWARE_LANGUAGE_TABLE . ' WHERE (version<=' . $_SESSION['clientVersionNumber'] . ') ' .
+				($_SESSION['clientDesiredLanguages'] ? ' AND language IN("' . implode('","', $_SESSION['clientDesiredLanguages']) . '")' : ' AND 0 ') .
+				' ORDER BY version DESC'
+		]);
 	}
 
 	/**

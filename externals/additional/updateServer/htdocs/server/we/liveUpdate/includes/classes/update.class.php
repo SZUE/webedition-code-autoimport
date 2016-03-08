@@ -4,32 +4,31 @@ class update extends updateBase{
 
 	static function updateLogStart(){
 		$GLOBALS['DB_WE']->query("INSERT INTO " . UPDATELOG_TABLE . " SET " .
-			" date=NOW(),installedVersion = '" . updateUtil::version2number($_SESSION['clientVersion']) . "'" .
-			(isset($_SESSION['clientSubVersion']) ? ", installedSvnRevision = '" . $_SESSION['clientSubVersion'] . "'" : '') .
-			(isset($_SESSION['clientVersionBranch']) ? ", installedVersionBranch = '" . $_SESSION['clientVersionBranch'] . "'" : '') .
-			(isset($_SESSION['clientPhpVersion']) ? ", clientPhpVersion = '" . $_SESSION['clientPhpVersion'] . "'" : '') .
-			(isset($_SESSION['clientPhpExtensions']) ? ", clientPhpExtensions = '" . $_SESSION['clientPhpExtensions'] . "'" : '') .
-			(isset($_SESSION['clientPcreVersion']) ? ", clientPcreVersion = '" . $_SESSION['clientPcreVersion'] . "'" : '') .
-			(isset($_SESSION['clientMySQLVersion']) ? ", clientMySqlVersion = '" . $_SESSION['clientMySQLVersion'] . "'" : '') .
-			(isset($_SESSION['clientServerSoftware']) ? ", clientServerSoftware = '" . $_SESSION['clientServerSoftware'] . "'" : '') .
-			(isset($_SESSION['clientEncoding']) ? ", clientEncoding = '" . $_SESSION['clientEncoding'] . "'" : '') .
-			(isset($_SESSION['clientSyslng']) ? ", clientSysLng = '" . $_SESSION['clientSyslng'] . "'" : '') .
-			(isset($_SESSION['clientLng']) ? ", clientLng = '" . $_SESSION['clientLng'] . "'" : '') .
-			(isset($_SESSION['clientExtension']) ? ", clientExtension = '" . $_SESSION['clientExtension'] . "'" : '') .
-			(isset($_SESSION['clientDomain']) ? ", clientDomain = '" . base64_encode($_SESSION['clientDomain']) . "'" : '') .
-			(isset($_SESSION['clientInstalledLanguages']) ? ", installedLanguages = '" . implode(',', $_SESSION['clientInstalledLanguages']) . "'" : '') .
-			(isset($_SESSION['clientInstalledModules']) ? ", installedModules = '" . implode(',', $_SESSION['clientInstalledModules']) . "'" : '') .
-			(isset($_SESSION['clientInstalledAppMeta']) ? ", installedAppMeta = '" . print_r($_SESSION['clientInstalledAppMeta'], true) . "'" : '') .
-			(isset($_SESSION['clientInstalledAppTOC']) ? ", installedAppTOC = '" . $_SESSION['clientInstalledAppTOC'] . "'" : '') .
-			(isset($_SESSION['clientDBcharset']) ? ", installedDbCharset = '" . $_SESSION['clientDBcharset'] . "'" : '') .
-			(isset($_SESSION['clientDBcollation']) ? ", installedDbCollation = '" . $_SESSION['clientDBcollation'] . "'" : '') .
-			(isset($_SESSION['testUpdate']) ? ", testUpdate = '" . $_SESSION['testUpdate'] . "'" : '')
+			" date=NOW(),installedVersion='" . updateUtil::version2number($_SESSION['clientVersion']) . "'" .
+			(isset($_SESSION['clientSubVersion']) ? ",installedSvnRevision='" . $_SESSION['clientSubVersion'] . "'" : '') .
+			(isset($_SESSION['clientVersionBranch']) ? ",installedVersionBranch='" . $_SESSION['clientVersionBranch'] . "'" : '') .
+			(isset($_SESSION['clientPhpVersion']) ? ",clientPhpVersion='" . $_SESSION['clientPhpVersion'] . "'" : '') .
+			(isset($_SESSION['clientPhpExtensions']) ? ",clientPhpExtensions='" . $_SESSION['clientPhpExtensions'] . "'" : '') .
+			(isset($_SESSION['clientPcreVersion']) ? ",clientPcreVersion='" . $_SESSION['clientPcreVersion'] . "'" : '') .
+			(isset($_SESSION['clientMySQLVersion']) ? ",clientMySqlVersion='" . $_SESSION['clientMySQLVersion'] . "'" : '') .
+			(isset($_SESSION['clientServerSoftware']) ? ",clientServerSoftware='" . $_SESSION['clientServerSoftware'] . "'" : '') .
+			(isset($_SESSION['clientEncoding']) ? ",clientEncoding='" . $_SESSION['clientEncoding'] . "'" : '') .
+			(isset($_SESSION['clientSyslng']) ? ",clientSysLng='" . $_SESSION['clientSyslng'] . "'" : '') .
+			(isset($_SESSION['clientLng']) ? ",clientLng='" . $_SESSION['clientLng'] . "'" : '') .
+			(isset($_SESSION['clientExtension']) ? ",clientExtension='" . $_SESSION['clientExtension'] . "'" : '') .
+			(isset($_SESSION['clientDomain']) ? ",clientDomain='" . base64_encode($_SESSION['clientDomain']) . "'" : '') .
+			(isset($_SESSION['clientInstalledLanguages']) ? ",installedLanguages='" . implode(',', $_SESSION['clientInstalledLanguages']) . "'" : '') .
+			(isset($_SESSION['clientInstalledModules']) ? ",installedModules='" . implode(',', $_SESSION['clientInstalledModules']) . "'" : '') .
+			(isset($_SESSION['clientInstalledAppMeta']) ? ",installedAppMeta='" . print_r($_SESSION['clientInstalledAppMeta'], true) . "'" : '') .
+			(isset($_SESSION['clientDBcharset']) ? ",installedDbCharset='" . $_SESSION['clientDBcharset'] . "'" : '') .
+			(isset($_SESSION['clientDBcollation']) ? ",installedDbCollation='" . $_SESSION['clientDBcollation'] . "'" : '') .
+			(isset($_SESSION['testUpdate']) ? ",testUpdate='" . $_SESSION['testUpdate'] . "'" : '')
 		);
 		$_SESSION['db_log_id'] = $GLOBALS['DB_WE']->getInsertId();
 	}
 
 	static function updateLogAvail($verarray){
-		$GLOBALS['DB_WE']->query("UPDATE " . UPDATELOG_TABLE . " SET installedSvnRevisionDB = '" . (empty($verarray['svnrevisionDB']) ? '' : $verarray['svnrevisionDB']) . "', newestVersion = '" . $verarray['version'] . "', newestVersionStatus = '" . $verarray['type'] . "', newestSvnRevision = '" . $verarray['svnrevision'] . "', newestVersionBranch = '" . (empty($verarray['versionBranch']) ? '' : $verarray['versionBranch']) . "' WHERE id='" . $_SESSION['db_log_id'] . "'");
+		$GLOBALS['DB_WE']->query("UPDATE " . UPDATELOG_TABLE . " SET installedSvnRevisionDB='" . (empty($verarray['svnrevisionDB']) ? '' : $verarray['svnrevisionDB']) . "', newestVersion='" . $verarray['version'] . "', newestVersionStatus='" . $verarray['type'] . "', newestSvnRevision='" . $verarray['svnrevision'] . "', newestVersionBranch='" . (empty($verarray['versionBranch']) ? '' : $verarray['versionBranch']) . "' WHERE id='" . $_SESSION['db_log_id'] . "'");
 	}
 
 	static function updateLogTarget(){
@@ -173,36 +172,24 @@ class update extends updateBase{
 	 * @return boolean
 	 */
 	static function checkForUpdate(){
-		$liveCondition = ' WHERE islive=1';
-		if(isset($_SESSION['testUpdate'])){
-			$liveCondition = '';
-		}
+		$row = $GLOBALS['DB_WE']->getHash('SELECT MAX(version) AS maxVersion FROM ' . VERSION_TABLE . (isset($_SESSION['testUpdate']) ? '' : ' WHERE islive=1'));
 
-		$row = $GLOBALS['DB_WE']->getHash('SELECT MAX(version) AS maxVersion FROM ' . VERSION_TABLE . $liveCondition);
-
-
-		if($row['maxVersion'] > $_SESSION['clientVersionNumber']){
-			return $row['maxVersion'];
-		}
-		return false;
+		return ($row['maxVersion'] > $_SESSION['clientVersionNumber'] ?
+				$row['maxVersion'] :
+				false);
 	}
 
 	static function getMaxVersionNumber(){
-		$liveCondition = (isset($_SESSION['testUpdate']) ? '' : ' WHERE islive=1');
+		$row = $GLOBALS['DB_WE']->getHash('SELECT MAX(version) AS maxVersion FROM ' . VERSION_TABLE . (isset($_SESSION['testUpdate']) ? '' : ' WHERE islive=1'));
 
-		$row = $GLOBALS['DB_WE']->getHash('SELECT MAX(version) AS maxVersion FROM ' . VERSION_TABLE . $liveCondition);
-
-		$maxVersion = $row['maxVersion'];
-		$liveCondition = (isset($_SESSION['testUpdate']) ? ' WHERE version=' . $maxVersion : ' WHERE islive=1 AND version=' . $maxVersion);
-		return $GLOBALS['DB_WE']->getHash('SELECT version, svnrevision,type,typeversion,branch,versname FROM ' . VERSION_TABLE . $liveCondition);
+		return $GLOBALS['DB_WE']->getHash('SELECT version, svnrevision,type,typeversion,branch,versname FROM ' . VERSION_TABLE .
+				(isset($_SESSION['testUpdate']) ? ' WHERE version=' . $row['maxVersion'] : ' WHERE islive=1 AND version=' . $row['maxVersion']));
 	}
 
 	static function getMaxVersionNumberForBranch($branch){
-		$liveCondition = (isset($_SESSION['testUpdate']) ?
+		$row = $GLOBALS['DB_WE']->getHash('SELECT MAX(version) AS maxVersion FROM `' . VERSION_TABLE . '` WHERE ' . (isset($_SESSION['testUpdate']) ?
 				" `branch`='" . $branch . "'" :
-				" `islive`=1 AND `branch`='" . $branch . "'");
-
-		$row = $GLOBALS['DB_WE']->getHash('SELECT MAX(version) AS maxVersion FROM `' . VERSION_TABLE . '` WHERE ' . $liveCondition);
+				" `islive`=1 AND `branch`='" . $branch . "'"));
 
 		return intval($row['maxVersion']);
 	}
@@ -210,11 +197,9 @@ class update extends updateBase{
 	static function getMaxVersionFieldsForBranch($branch){
 		$maxVersion = self::getMaxVersionNumberForBranch($branch);
 
-		$liveCondition = (isset($_SESSION['testUpdate']) ?
-				" `version`='" . $maxVersion . "' AND `branch`='" . $branch . "'" :
-				" `islive`=1 AND `version`='" . $maxVersion . "' AND `branch`='" . $branch . "'");
-
-		return $GLOBALS['DB_WE']->getHash('SELECT version, svnrevision,type,typeversion,branch,versname FROM `' . VERSION_TABLE . '` WHERE ' . $liveCondition);
+		return $GLOBALS['DB_WE']->getHash('SELECT version, svnrevision,type,typeversion,branch,versname FROM `' . VERSION_TABLE . '` WHERE ' . (isset($_SESSION['testUpdate']) ?
+					" `version`='" . $maxVersion . "' AND `branch`='" . $branch . "'" :
+					" `islive`=1 AND `version`='" . $maxVersion . "' AND `branch`='" . $branch . "'"));
 	}
 
 	static function getFormattedVersionStringFromWeVersion($showBranch = false, $showBranchIfTrunk = false){
@@ -232,11 +217,7 @@ class update extends updateBase{
 
 	static function getFormattedVersionString($versionnumber, $showBranch = false, $showBranchIfTrunk = false, $versionArray = array()){
 		if($versionnumber != 0){
-			$versionArray = $GLOBALS['DB_WE']->getHash('
-SELECT version, versname, svnrevision, type, typeversion, branch
-FROM ' . VERSION_TABLE . '
-WHERE version = ' . $versionnumber . '
-');
+			$versionArray = $GLOBALS['DB_WE']->getHash('SELECT version,versname,svnrevision,type,typeversion,branch FROM ' . VERSION_TABLE . ' WHERE version = ' . $versionnumber);
 		}
 
 		if(count($versionArray) > 0){
@@ -271,22 +252,12 @@ WHERE version = ' . $versionnumber . '
 			$versionQuery = '(version > ' . $_SESSION['clientVersionNumber'] . ' AND version <= ' . $_SESSION['clientTargetVersionNumber'] . ')';
 		}
 
-		// query for all selected modules
-		$modulesQuery = '';
-
 		// get systemlanguage only
 		$clientSyslng = ($_SESSION['clientTargetVersionNumber'] >= LANGUAGELIMIT ?
 				str_replace('_UTF-8', '', $_SESSION['clientSyslng']) :
 				$_SESSION['clientSyslng']
 			);
 
-		$sysLngQuery = ' AND (language="" OR language="' . $clientSyslng . '") ';
-
-		// query for all needed changes - software
-		// DON'T use content here.
-		$query = 'SELECT * FROM ' . SOFTWARE_TABLE . ' WHERE ' . $versionQuery . ' AND (type="system") ' . $modulesQuery . ' ' . $sysLngQuery . ' ORDER BY version DESC';
-
-		$languagePart = 'AND ( ';
 		if(!is_array($_SESSION["clientInstalledLanguages"])){
 			$_SESSION["clientInstalledLanguages"] = unserialize(urldecode(base64_decode(print_r($_SESSION["clientInstalledLanguages"], true))));
 		}
@@ -300,15 +271,14 @@ WHERE version = ' . $versionnumber . '
 			$theLanguages = array_unique($theLanguages);
 		}
 
-		foreach($theLanguages as $language){
-			$languagePart .= 'language="' . $language . '" OR ';
-		}
-		$languagePart .= ' 0 )';
-
-		// query for needed changes language
-		$languageQuery = 'SELECT * FROM ' . SOFTWARE_LANGUAGE_TABLE . ' WHERE ' . $versionQuery . ' AND (type="system") ' . $modulesQuery . ' ' . $languagePart . ' ORDER BY version DESC';
-
-		return updateUtil::getChangesArrayByQueries(array($query, $languageQuery));
+		return updateUtil::getChangesArrayByQueries([
+				// query for all needed changes - software
+				'SELECT changes,version,detail FROM ' . SOFTWARE_TABLE . ' WHERE ' . $versionQuery . ' ORDER BY version DESC',
+// query for needed changes language
+				'SELECT changes,version,detail FROM ' . SOFTWARE_LANGUAGE_TABLE . ' WHERE ' . $versionQuery .
+				($theLanguages ? ' AND language IN("' . implode('","', $theLanguages) . '")' : ' AND 0 ') .
+				' ORDER BY version DESC'
+		]);
 	}
 
 	/**

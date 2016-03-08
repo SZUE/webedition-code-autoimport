@@ -178,29 +178,9 @@ class installApplication extends installer{
 	 * @return array
 	 */
 	function getApplicationFiles(){
-
-		$contentQuery = '';
-		if(!$_SESSION['clientContent']){
-			$contentQuery .= ' AND (type="system") ';
-		}
-
 		// query for versions
 		$startversion = updateUtil::getLastSnapShot($_SESSION['clientTargetVersionNumber']);
 		$versionQuery = '( version >= ' . $startversion . ' AND version <= ' . $_SESSION['clientTargetVersionNumber'] . ' )';
-
-
-		// query for all selected modules
-		$modulesQuery = 'AND (module = "" OR ';
-		foreach($GLOBALS['MODULES_FREE_OF_CHARGE_INCLUDED'] as $module){
-			$modulesQuery .= 'module="' . $module . '" OR ';
-		}
-		if(isset($_SESSION['clientDesiredModules']) || empty($_SESSION['clientDesiredModules'])){
-			$_SESSION['clientDesiredModules'] = array();
-		}
-		foreach($_SESSION['clientDesiredModules'] as $module){
-			$modulesQuery .= 'module="' . $module . '" OR ';
-		}
-		$modulesQuery .= ' 0 )';
 
 		// get systemlanguage only
 		if($_SESSION['clientTargetVersionNumber'] >= LANGUAGELIMIT){
@@ -208,49 +188,22 @@ class installApplication extends installer{
 		} else {
 			$clientSyslng = $_SESSION['clientSyslng'];
 		}
-		$sysLngQuery = ' AND (language="" OR language="' . $clientSyslng . '") ';
-
-		// query for all needed changes - software
-		// DON'T use content here.
-		$query = '
-			SELECT *
-			FROM ' . SOFTWARE_TABLE . '
-			WHERE
-				' . $versionQuery . '
-				' . $contentQuery . '
-				' . $modulesQuery . '
-				' . $sysLngQuery . '
-				AND (detail != "patches")
-				ORDER BY version DESC
-		';
-
-		$languagePart = 'AND ( ';
 
 		if($_SESSION['clientTargetVersionNumber'] >= LANGUAGELIMIT){
 			foreach($_SESSION['clientDesiredLanguages'] as &$language){
 				$language = str_replace('_UTF-8', '', $language);
 			}
-			array_unique($_SESSION['clientDesiredLanguages']);
 		}
-		foreach($_SESSION['clientDesiredLanguages'] as $language){
-			$languagePart .= 'language="' . $language . '" OR ';
-		}
-		$languagePart .= ' 0 )';
+		array_unique($_SESSION['clientDesiredLanguages']);
 
-		// query for needed changes language
-		$languageQuery = '
-			SELECT *
-			FROM ' . SOFTWARE_LANGUAGE_TABLE . '
-			WHERE
-				' . $versionQuery . '
-				' . $contentQuery . '
-				' . $modulesQuery . '
-				' . $languagePart . '
-				AND (detail != "patches")
-				ORDER BY version DESC
-		';
-
-		return updateUtil::getChangesArrayByQueries(array($query, $languageQuery));
+		return updateUtil::getChangesArrayByQueries([
+				// query for all needed changes - software
+				'SELECT changes,version,detail FROM ' . SOFTWARE_TABLE . ' WHERE ' . $versionQuery . ' (detail != "patches") ORDER BY version DESC',
+				// query for needed changes language
+				'SELECT changes,version,detail FROM ' . SOFTWARE_LANGUAGE_TABLE . ' WHERE ' . $versionQuery . ' ' .
+				($_SESSION['clientDesiredLanguages'] ? ' AND language IN("' . implode('","', $_SESSION['clientDesiredLanguages']) . '")' : ' AND 0 ') .
+				' AND (detail!="patches") ORDER BY version DESC'
+		]);
 	}
 
 	function getPrepareApplicationInstallationResponse(){
@@ -586,7 +539,7 @@ class installApplication extends installer{
 		// proxy settings
 		$replaceProxySettings = updateUtil::getReplaceCode('we_proxysettings');
 
-		$_SESSION['clientInstalledModules'] = $_SESSION['clientDesiredModules'];
+		$_SESSION['clientInstalledModules'] = 'Install';
 		$licenceName = "GPL";
 		$version = $_SESSION['clientTargetVersion'];
 
