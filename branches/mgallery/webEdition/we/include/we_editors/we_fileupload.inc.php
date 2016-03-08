@@ -24,7 +24,7 @@
  */
 /* THIS IS TO BE THE ONE AND ONLY FU-EDITOR!! use we_rpc for legacy-mode and let some js collect all formfields to rpc! */
 /* => EDITOR PARAMS: FU-UI-CLASS (+ EVT. EXTRAPARAM), FU-RESP-CLASS, 2 ENCCOMMANDS FOR CALLBACK */
-//FIXME: is this file obsolete?
+//FIXME: is this file obsolete? imi: NO!
 
 we_html_tools::protect();
 
@@ -39,7 +39,7 @@ $predefinedCallback = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 8);
 $isPreset = boolval(we_base_request::_(we_base_request::CMD, 'we_cmd', false, 9));
 
 $fileUpload = new we_fileupload_ui_editor($contentType, '', $doImport);
-$fileUpload->setpredefinedConfig($predefinedConfig);
+$fileUpload->setPredefinedConfig($predefinedConfig);
 $fileUpload->setCallback('top.doOnImportSuccess(scope.weDoc);');
 $fileUpload->setDimensions(array('dragWidth' => 374, 'inputWidth' => 378));
 $fileUpload->setIsPreset($isPreset);

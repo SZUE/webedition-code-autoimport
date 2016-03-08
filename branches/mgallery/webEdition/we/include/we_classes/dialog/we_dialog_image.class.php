@@ -53,7 +53,7 @@ class we_dialog_image extends we_dialog_base{
 		$this->dialogTitle = g_l('wysiwyg', '[insert_image]');
 		$this->noInternals = $noInternals;
 		$this->bodyId = 'weImageDialog';
-		$this->initFileUploader();
+		//$this->initFileUploader();
 	}
 
 	function initBySrc($src, $width = 0, $height = 0, $hspace = 0, $vspace = 0, $border = 0, $alt = '', $align = '', $name = '', $class = '', $title = '', $longdesc = ''){
@@ -232,6 +232,7 @@ class we_dialog_image extends we_dialog_base{
 		$this->args['ratio'] = 1;
 	}
 
+	/*
 	private function initFileUploader(){
 		$this->weFileupload = new we_fileupload_ui_editor(we_base_ContentTypes::IMAGE);
 		$this->weFileupload->setCallback('top.doOnImportSuccess(scope.weDoc);');
@@ -260,13 +261,15 @@ class we_dialog_image extends we_dialog_base{
 		));
 		$this->weFileupload->setPositionBtnUpload('top');
 	}
+	 * 
+	 */
 
 	/* use parent
 	  function getFormHTML(){}
 	 */
 
 	function getHeaderHTML($printJS_Style = false, $additionals = ''){
-		return parent::getHeaderHTML($printJS_Style, $this->weFileupload->getJs() . $this->weFileupload->getEditorJs() . $this->weFileupload->getCss());
+		return parent::getHeaderHTML($printJS_Style, /* $this->weFileupload->getJs() . $this->weFileupload->getEditorJs() . $this->weFileupload->getCss() */ '');
 	}
 
 	function getDialogContentHTML(){
@@ -286,11 +289,11 @@ class we_dialog_image extends we_dialog_base{
 			$but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ?
 				we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','',document.we_form.elements['we_dialog_args[extSrc]'].value,'" . $wecmdenc4 . "')"
 				) : "";
-			$openbutton = we_html_button::create_button(we_html_button::EDIT, "javascript:var f=top.document.we_form.elements['we_dialog_args[extSrc]']; if(f.value && f.value !== '" . we_base_link::EMPTY_EXT . "'){new (WE().util.jsWindow)(window, f.value, '_blank', -1, -1, 500, 550, true, true, true);}", true, 0, 0, '', '', true, false, '_ext', false, g_l('wysiwyg', '[openNewWindow]'));
-
-			$radioButtonExt = we_html_forms::radiobutton(we_base_link::TYPE_EXT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_EXT), "radio_type", g_l('wysiwyg', '[external_image]'), true, "defaultfont", "if(this.form.elements['radio_type'][2].checked){this.form.elements['we_dialog_args[type]'].value='" . we_base_link::TYPE_EXT . "';top.document.getElementById('imageExt').style.display='block';top.document.getElementById('imageInt').style.display='none';top.document.getElementsByClassName('weFileuploadEditor')[0].style.display='none';}imageChanged();");
+			//$openbutton = we_html_button::create_button(we_html_button::EDIT, "javascript:var f=top.document.we_form.elements['we_dialog_args[extSrc]']; if(f.value && f.value !== '" . we_base_link::EMPTY_EXT . "'){new (WE().util.jsWindow)(window, f.value, '_blank', -1, -1, 500, 550, true, true, true);}", true, 0, 0, '', '', true, false, '_ext', false, g_l('wysiwyg', '[openNewWindow]'));
+			//$radioButtonExt = we_html_forms::radiobutton(we_base_link::TYPE_EXT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_EXT), "radio_type", g_l('wysiwyg', '[external_image]'), true, "defaultfont", "if(this.form.elements['radio_type'][2].checked){this.form.elements['we_dialog_args[type]'].value='" . we_base_link::TYPE_EXT . "';top.document.getElementById('imageExt').style.display='block';top.document.getElementById('imageInt').style.display='none';top.document.getElementsByClassName('weFileuploadEditor')[0].style.display='none';}imageChanged();");
+			$radioButtonExt = we_html_forms::radiobutton(we_base_link::TYPE_EXT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_EXT), "radio_type", g_l('wysiwyg', '[external_image]'), true, "defaultfont", "if(this.form.elements['radio_type'][1].checked){this.form.elements['we_dialog_args[type]'].value='" . we_base_link::TYPE_EXT . "';top.document.getElementById('imageExt').style.display='block';top.document.getElementById('imageInt').style.display='none';}imageChanged();");
 			$textInput = we_html_tools::htmlTextInput("we_dialog_args[extSrc]", 30, (isset($this->args["extSrc"]) ? $this->args["extSrc"] : ""), "", ' onfocus="if(this.form.elements.radio_type[2].checked){imageChanged();}" onchange="imageChanged();if(this.value !== \'\' && this.value !== \'' . we_base_link::EMPTY_EXT . '\'){weButton.enable(\'btn_edit_ext\')}else{weButton.disable(\'btn_edit_ext\')}" ', "text", 315);
-			$extSrc = we_html_tools::htmlFormElementTable($textInput, '', "left", "defaultfont", $but, $openbutton, '', '', '', 0);
+			$extSrc = we_html_tools::htmlFormElementTable($textInput, '', "left", "defaultfont", $but, /* $openbutton */ '', '', '', '', 0);
 
 			/**
 			 * input for webedition internal image files
@@ -301,7 +304,10 @@ class we_dialog_image extends we_dialog_base{
 			$startID = $this->args['selectorStartID'] ? : (IMAGESTARTID_DEFAULT ? : 0);
 
 			$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "'," . $startID . ",'','" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
-			$radioButtonInt = we_html_forms::radiobutton(we_base_link::TYPE_INT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_INT), "radio_type", g_l('wysiwyg', '[internal_image]'), true, "defaultfont", "if(this.form.elements.radio_type[0].checked){this.form.elements['we_dialog_args[type]'].value='" . we_base_link::TYPE_INT . "';top.document.getElementById('imageInt').style.display='block';top.document.getElementById('imageExt').style.display='none';top.document.getElementsByClassName('weFileuploadEditor')[0].style.display='none';}imageChanged();");
+			$btnUpload = we_html_button::create_button('fa:btn_add_image,fa-plus,fa-lg fa-file-image-o', "javascript:we_cmd('we_fileupload_editor', '" . we_base_ContentTypes::IMAGE . "', 1, '', '', '', 8, 0, 'imagedialog_popup', 0)");
+
+			//$radioButtonInt = we_html_forms::radiobutton(we_base_link::TYPE_INT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_INT), "radio_type", g_l('wysiwyg', '[internal_image]'), true, "defaultfont", "if(this.form.elements.radio_type[0].checked){this.form.elements['we_dialog_args[type]'].value='" . we_base_link::TYPE_INT . "';top.document.getElementById('imageInt').style.display='block';top.document.getElementById('imageExt').style.display='none';top.document.getElementsByClassName('weFileuploadEditor')[0].style.display='none';}imageChanged();");
+			$radioButtonInt = we_html_forms::radiobutton(we_base_link::TYPE_INT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_INT), "radio_type", g_l('wysiwyg', '[internal_image]'), true, "defaultfont", "if(this.form.elements.radio_type[0].checked){this.form.elements['we_dialog_args[type]'].value='" . we_base_link::TYPE_INT . "';top.document.getElementById('imageInt').style.display='block';top.document.getElementById('imageExt').style.display='none';}imageChanged();");
 
 			$yuiSuggest->setAcId("Image");
 			$yuiSuggest->setContentType("folder," . we_base_ContentTypes::IMAGE);
@@ -318,12 +324,13 @@ class we_dialog_image extends we_dialog_base{
 			$yuiSuggest->setWidth(315);
 			$yuiSuggest->setSelectButton($but);
 			$yuiSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:if(top.document.we_form.elements.yuiAcResultImage.value){if(opener.top.doClickDirect!==undefined){var p=opener.top;}else if(opener.top.opener.top.doClickDirect!==undefined){var p=opener.top.opener.top;}else{return;}p.doClickDirect(document.we_form.elements.yuiAcResultImage.value,'" . we_base_ContentTypes::IMAGE . "','" . FILE_TABLE . "'); }"));
+			$yuiSuggest->setAdditionalButton($btnUpload);
 			$intSrc = $yuiSuggest->getHTML();
 
 			/**
 			 * input for image upload
 			 */
-			$radioButtonUpload = we_html_forms::radiobutton(we_base_link::TYPE_INT, false, "radio_type", g_l('buttons_global', '[upload][value]'), true, "defaultfont", "if(this.form.elements['radio_type'][1].checked){this.form.elements['we_dialog_args[type]'].value='" . we_base_link::TYPE_INT . "';top.document.getElementById('imageInt').style.display='none';top.document.getElementById('imageExt').style.display='none';top.document.getElementsByClassName('weFileuploadEditor')[0].style.display='block';}imageChanged();");
+			//$radioButtonUpload = we_html_forms::radiobutton(we_base_link::TYPE_INT, false, "radio_type", g_l('buttons_global', '[upload][value]'), true, "defaultfont", "if(this.form.elements['radio_type'][1].checked){this.form.elements['we_dialog_args[type]'].value='" . we_base_link::TYPE_INT . "';top.document.getElementById('imageInt').style.display='none';top.document.getElementById('imageExt').style.display='none';top.document.getElementsByClassName('weFileuploadEditor')[0].style.display='block';}imageChanged();");
 
 			/**
 			 * thumbnail select list
@@ -393,7 +400,7 @@ class we_dialog_image extends we_dialog_base{
 		$parts = array();
 		$parts[] = array(
 				'html' => '<table class="default" style="margin-bottom:4px;">
-<tr><td style="width:500px"><div style="display:inline;float:left">' . ($intSrc ? $radioButtonInt : '') . '</div><div style="display:inline;float:right">' . $radioButtonUpload . '</div></tr>
+<tr><td style="width:500px"><div style="display:inline;float:left">' . ($intSrc ? $radioButtonInt : '') . '</div><div style="display:inline;float:right">' . /* $radioButtonUpload */ '' . '</div></tr>
 <tr><td>' . $radioButtonExt . '</td><td>&nbsp;</td></tr>
 </table
 <table class="default" style="margin-bottom:4px;">
@@ -404,12 +411,15 @@ class we_dialog_image extends we_dialog_base{
 				'</table>',
 				'noline' => true
 			);
+		/*
 		$parts[] = array(
 			'html' => $this->weFileupload->getHTML(),
 			'class' => 'weFileuploadEditor displayNone',
 			'forceRightHeadline' => false,
 			'noline' => true
 		);
+		 * 
+		 */
 		$parts[] = array();
 		$parts[] = array('headline' => g_l('wysiwyg', '[image][formatting]'),
 				'html' => '<table class="default" style="width:530px">
