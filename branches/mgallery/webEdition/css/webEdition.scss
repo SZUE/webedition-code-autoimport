@@ -1086,6 +1086,7 @@ table.error{
 	float:left;
 	&:hover {
 		background: linear-gradient(to bottom, #345881, #284a70) transparent !important;
+		cursor: pointer;
 	}
 	i{
 		color: $White;
