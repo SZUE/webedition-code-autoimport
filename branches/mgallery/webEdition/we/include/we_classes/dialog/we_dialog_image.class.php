@@ -357,6 +357,7 @@ class we_dialog_image extends we_dialog_base{
 			$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML);
 			$yuiSuggest->setInput("we_dialog_args[longdescsrc]", str_replace('"', '&quot;', (isset($this->args["longdescsrc"]) ? $this->args["longdescsrc"] : "")));
 			$yuiSuggest->setLabel(g_l('weClass', '[longdesc_text]'));
+			$yuiSuggest->setDoOnItemSelect();
 			$yuiSuggest->setMaxResults(7);
 			$yuiSuggest->setMayBeEmpty(true);
 			$yuiSuggest->setResult("we_dialog_args[longdescid]", (isset($this->args["longdescid"]) ? $this->args["longdescid"] : ""));
@@ -364,6 +365,7 @@ class we_dialog_image extends we_dialog_base{
 			$yuiSuggest->setWidth(315);
 			$yuiSuggest->setSelectButton($but);
 			$yuiSuggest->setTrashButton($but2);
+			$yuiSuggest->setAdditionalButton();
 
 			$_longdesc = $yuiSuggest->getHTML();
 		}
@@ -400,9 +402,9 @@ class we_dialog_image extends we_dialog_base{
 		$parts = array();
 		$parts[] = array(
 				'html' => '<table class="default" style="margin-bottom:4px;">
-<tr><td style="width:500px"><div style="display:inline;float:left">' . ($intSrc ? $radioButtonInt : '') . '</div><div style="display:inline;float:right">' . /* $radioButtonUpload */ '' . '</div></tr>
-<tr><td>' . $radioButtonExt . '</td><td>&nbsp;</td></tr>
-</table
+<tr><td style="width:200px"><div style="display:inline;float:left">' . ($intSrc ? $radioButtonInt : '') . '</div></td><td><div style="display:inline;float:right">' . /* $radioButtonUpload */ $radioButtonExt . '</div></td></tr>' .
+//<tr><td>' . $radioButtonExt . '</td><td>&nbsp;</td></tr>
+'</table
 <table class="default" style="margin-bottom:4px;">
 <tr><td><div id="imageExt" style="margin-top:4px;' . (isset($this->args["type"]) && $this->args["type"] === we_base_link::TYPE_EXT ? '' : 'display:none;') . '">' . $extSrc . '</div></td></tr>' .
 				($intSrc ?
