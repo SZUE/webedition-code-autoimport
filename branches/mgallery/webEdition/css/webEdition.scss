@@ -2165,3 +2165,38 @@ div.collection-content{
 		margin-left: -16px;
 	}
 }
+
+.editorThumbnailsFilter table{
+	width: 500px;
+	td{
+		height: 16px;
+	}
+	label.elementText{
+		display: inline-block;
+	}
+}
+
+.editorThumbnailsOptions{
+	.inputs{
+		margin-top: 20px;
+	}
+	
+	.wetextinput,
+	select{
+		width: 110px;
+		margin-bottom: 2px;
+	}
+
+	td {
+		padding-bottom: 4px;
+		padding-right: 10px;
+		vertical-align: top;
+		label.elementText{
+			display: inline-block;
+		}
+	}
+
+	label.elementText{
+		display: inline-block;
+	}
+}

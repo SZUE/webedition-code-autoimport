@@ -45,6 +45,7 @@ class we_thumbnail{
 	const OPTION_NEGATE = 'Negate';
 	const OPTION_GRAY = 'Gray';
 	const OPTION_SEPIA = 'Sepia';
+	const OPTION_DEFAULT = 'default';
 
 	/**
 	 * ID of the thumbnail
