@@ -450,7 +450,7 @@ class we_messaging_messaging extends we_class{
 		}
 	}
 
-	function saveInSession(&$save){
+	function saveInSession(&$save, $toFile = false){
 		$save = array(
 			'we_messaging' => array(
 				array(),

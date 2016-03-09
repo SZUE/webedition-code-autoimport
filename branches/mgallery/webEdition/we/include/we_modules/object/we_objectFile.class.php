@@ -72,7 +72,7 @@ class we_objectFile extends we_document{
 		$this->IsTextContentDoc = true;
 		array_push($this->persistent_slots, 'CSS', 'DefArray', 'Text', 'AllowedClasses', 'Templates', 'ExtraTemplates', 'Workspaces', 'ExtraWorkspaces', 'ExtraWorkspacesSelected', 'RootDirPath', 'rootDirID', 'TableID', 'Category', 'IsSearchable', 'Charset', 'Language', 'Url', 'TriggerID');
 		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
-			array_push($this->persistent_slots, 'FromOk', 'ToOk', 'From', 'To');
+			array_push($this->persistent_slots, 'From', 'To');
 		}
 		if(!isset($GLOBALS['WE_IS_DYN'])){
 			$ac = we_users_util::getAllowedClasses($this->DB_WE);
@@ -2675,7 +2675,8 @@ class we_objectFile extends we_document{
 	}
 
 	protected function i_scheduleToBeforeNow(){
-		return (we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && ($this->To < time() && $this->ToOk));
+		//FIXME: check schedarray!
+		return false; //(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && ($this->To < time()));
 	}
 
 	function i_publInScheduleTable(){

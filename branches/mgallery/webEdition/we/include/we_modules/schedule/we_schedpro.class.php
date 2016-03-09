@@ -462,6 +462,7 @@ function checkFooter(){
 	}
 
 	static function trigger_schedule(){
+		t_e('call');
 		//sth. to do???
 		if(!f('SELECT 1 FROM ' . SCHEDULE_TABLE . ' WHERE `expire`<=NOW() AND lockedUntil<NOW() AND Active=1')){
 			return;

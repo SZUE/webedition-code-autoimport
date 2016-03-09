@@ -782,8 +782,8 @@ EOF;
 		return '<i class="fa fa-sort fa-lg"></i>';
 	}
 
-	function saveInSession(&$save){
-		parent::saveInSession($save);
+	function saveInSession(&$save, $toFile = false){
+		parent::saveInSession($save, $toFile);
 
 		if(!isset($_SESSION['weS']['we_objectSearch'])){
 			$_SESSION['weS']['we_objectSearch'] = array();
