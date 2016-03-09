@@ -187,6 +187,10 @@ div.le_widget {
 			vertical-align: top;
 			text-align: left;
 			height: 22px;
+			
+			span {
+				cursor: pointer;
+			}
 		}
 	}
 
