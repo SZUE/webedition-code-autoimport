@@ -265,7 +265,10 @@ function build_dialog($selected_setting = 'ui'){
 				</td>
 				<td colspan="2" style="padding-bottom:1px;">
 					<div class="small" id="metadataProposalChecks0_' . $key . '">&nbsp;</div>
-					<div id="metadataProposalChecks1_' . $key . '">' . we_html_forms::checkboxWithHidden($value['csv'], 'metadataCsv[' . $key . ']', 'CSV') . we_html_forms::checkboxWithHidden($value['closed'], 'metadataClosed[' . $key . ']', g_l('metadata', '[closedList]')) . '</div>
+					<div id="metadataProposalChecks1_' . $key . '">' . 
+						we_html_forms::checkboxWithHidden($value['csv'], 'metadataCsv[' . $key . ']', 'CSV', false, 'defaultfont', '', false, '', we_html_tools::TYPE_NONE, 0, '', '', $title = g_l('metadata', '[csv_desc]')) .
+						we_html_forms::checkboxWithHidden($value['closed'], 'metadataClosed[' . $key . ']', g_l('metadata', '[closedList]'), false, 'defaultfont', '', false, '', we_html_tools::TYPE_NONE, 0, '', '', $title = g_l('metadata', '[closedList_desc]')) .
+					'</div>
 				</td>
 			</tr>
 			<tr id="metadataRow4_' . $key . '">
@@ -332,7 +335,7 @@ var phpdata={
 };') .
 			we_html_element::jsScript(JS_DIR . 'edit_metadatafields.js');
 
-			$_hint = we_html_tools::htmlAlertAttentionBox(g_l('metadata', '[fields_hint]'), we_html_tools::TYPE_ALERT, 440, false, 50);
+			$_hint = we_html_tools::htmlAlertAttentionBox(g_l('metadata', '[fields_hint]'), we_html_tools::TYPE_INFO, 440, false, 50);
 			$_hint2 = we_html_tools::htmlAlertAttentionBox(g_l('metadata', '[proposals_hint]'), we_html_tools::TYPE_INFO, 440, false);
 
 			//$_metadata = new we_html_table(array('style' => 'border:1px solid black', 'width' => 440, 'height' => 50), 4, 3);
