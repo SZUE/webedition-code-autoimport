@@ -1386,13 +1386,20 @@ table.footertable{
 	padding-left: 10px;
 }
 
-div.cutText,
-span.cutText{
-	text-overflow: ellipsis;
-	overflow: hidden;
-	white-space: nowrap;
-	display:inline-block;
-	max-width:10em;
+div,
+span{
+	&.cutText,
+	&.cutTextLeft{
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+		display:inline-block;
+		max-width:10em;
+	}
+	&.cutTextLeft{
+    direction:rtl;
+    text-align:left;
+	}
 }
 
 .we-state-green{
@@ -1937,7 +1944,7 @@ div.collection-content{
 
 		td{
 			vertical-align: top;
-			
+
 			&.colNum{
 				width: 46px;
 				padding: 0 16px 0 0;
@@ -2017,12 +2024,12 @@ div.collection-content{
 			width: 50px;
 			height: 30px;
 			span{
-					text-align: center;
-					font-size: 14px;
-					padding: 4px;
+				text-align: center;
+				font-size: 14px;
+				padding: 4px;
 			}
 			div.divBtnSelect{
-					padding: 2px 0 0 0;
+				padding: 2px 0 0 0;
 			}
 		}
 	}
