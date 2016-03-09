@@ -3,7 +3,8 @@
 $l_metadata=array(
 	'add'=>'hinzufügen',
 	'closedList'=>'abgeschlossen',
-	'closedList_desc'=>'Ist die Vorschlagsliste "abgeschlossen", wird das entsprechende Eingabefeld als "read only" ausgegeben. Inhalte können dann ausschließlich aus der Vorschlagsliste bezogen werden.',
+	'closedList_desc'=>'Ist die Vorschlagsliste "abgeschlossen", wird das entsprechende Eingabefeld auf "nur lesen" gesetzt. Inhalte können dann ausschließlich aus der Vorschlagsliste bezogen werden.',
+	'csv_desc'=>'In diesem Modus ist eine Mehrfachauswahl aus der Vorschlagsliste möglich: Die Einträge werden kommasepariert ins Eingabefeld eingefügt. Beim automatischen Erzeugen der Vorschlagsliste der Feldinhalt ebenfalls als kommaseparierte Liste interpretiert und in "Einzelvorschläge" gesplittet.',
 	'customfield'=>'Zusatzfeld',
 	'deleteEntry'=>'löschen',
 	'deleteLastEntry'=>'letztes löschen',
