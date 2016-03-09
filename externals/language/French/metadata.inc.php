@@ -3,6 +3,7 @@
 $l_metadata=array(
 	'add'=>'ajouter',
 	'closedList'=>'closed list',
+	'closedList_desc'=>'',
 	'customfield'=>'Custom field',
 	'deleteEntry'=>'supprimer',
 	'deleteLastEntry'=>'delete last',

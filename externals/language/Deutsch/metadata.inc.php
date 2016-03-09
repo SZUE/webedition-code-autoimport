@@ -3,6 +3,7 @@
 $l_metadata=array(
 	'add'=>'hinzufügen',
 	'closedList'=>'abgeschlossen',
+	'closedList_desc'=>'Ist die Vorschlagsliste "abgeschlossen", wird das entsprechende Eingabefeld als "read only" ausgegeben. Inhalte können dann ausschließlich aus der Vorschlagsliste bezogen werden.',
 	'customfield'=>'Zusatzfeld',
 	'deleteEntry'=>'löschen',
 	'deleteLastEntry'=>'letztes löschen',
