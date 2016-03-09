@@ -246,8 +246,8 @@ function delete_thumbnail() {" .
 				)
 			);
 			$options['filter'] = array(2, 3, array(
-					we_thumbnail::OPTION_DEFAULT => array(($id == -1) ? true : false, g_l('thumbnails', '[filter_none]'), g_l('thumbnails', '[filter_none_desc]')),
-					we_thumbnail::OPTION_UNSHARP => array(($id != -1) ? in_array(we_thumbnail::OPTION_UNSHARP, $allData['Options']) : false, g_l('thumbnails', '[unsharp]')),
+					we_thumbnail::OPTION_DEFAULT => array(($id == -1) ? true : false, g_l('thumbnails', '[filter_none]')),
+					we_thumbnail::OPTION_UNSHARP => array(($id != -1) ? in_array(we_thumbnail::OPTION_UNSHARP, $allData['Options']) : false, g_l('thumbnails', '[unsharp]'), g_l('thumbnails', '[unsharp_desc]')),
 					we_thumbnail::OPTION_GAUSSBLUR => array(($id != -1) ? in_array(we_thumbnail::OPTION_GAUSSBLUR, $allData['Options']) : false, g_l('thumbnails', '[gauss]'), g_l('thumbnails', '[gauss_desc]')),
 					we_thumbnail::OPTION_GRAY => array(($id != -1) ? in_array(we_thumbnail::OPTION_GRAY, $allData['Options']) : false, g_l('thumbnails', '[gray]')),
 					we_thumbnail::OPTION_NEGATE => array(($id != -1) ? in_array(we_thumbnail::OPTION_NEGATE, $allData['Options']) : false, g_l('thumbnails', '[negate]'), g_l('thumbnails', '[negate_desc]')),
