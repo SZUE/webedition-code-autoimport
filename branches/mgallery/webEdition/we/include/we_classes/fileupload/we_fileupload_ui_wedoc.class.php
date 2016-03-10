@@ -26,6 +26,13 @@ class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
 
 	public function __construct($contentType = array(), $extensions = '', $doImport = true){
 		parent::__construct($contentType, $extensions);
+
+		//Fix #10418
+		if($contentType === we_base_ContentTypes::APPLICATION){
+			$this->setTypeCondition('accepted', array());
+			$this->setTypeCondition('forbidden', array(we_base_ContentTypes::IMAGE));
+		}
+
 		$this->formElements = array_merge($this->formElements, array(
 			'importMeta' => array('set' => true, 'multiIconBox' => false, 'rightHeadline' => true, 'noline' => true),
 		));
