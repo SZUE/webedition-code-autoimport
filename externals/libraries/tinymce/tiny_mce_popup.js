@@ -12,7 +12,7 @@ var tinymce=null,tinyMCEPopup,tinyMCE;tinyMCEPopup={init:function(){var b=this,a
 tinyMCEPopup.resizeToInnerSize = function(){
 	var a = this;
 	var ratio_h = a.dom.getAttrib(document.body,"role") === "application" ? 4/6 : 1;
-	var ratio_w = isWeDialog === undefined ? 3/4 : 1;
+	var ratio_w = top.isWeDialog === undefined ? 3/4 : 1;
 
 	if((a.dom.getAttrib(document.body,"id") === "table")){
 		document.getElementById("advanced_panel").style.height = "auto";
