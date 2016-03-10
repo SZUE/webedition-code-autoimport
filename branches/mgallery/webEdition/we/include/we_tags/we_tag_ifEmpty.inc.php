@@ -63,7 +63,7 @@ function we_tag_ifEmpty($attribs){
 				return !($intID && strlen(id_to_path(array($intID))));
 			}
 			$hreftmp = $doc->getElement($match);
-			if($hreftmp{0} === '/'){
+			if($hreftmp && $hreftmp{0} === '/'){
 				return (!file_exists($_SERVER['DOCUMENT_ROOT'] . $hreftmp));
 			}
 
