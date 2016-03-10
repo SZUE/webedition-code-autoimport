@@ -192,7 +192,7 @@ class we_search_search extends we_search_base{
 									}
 									$contentTypes = $contentTypes ? trim($contentTypes, ',') :
 										"'" . we_base_ContentTypes::IMAGE . "','" . we_base_ContentTypes::VIDEO . "','" . we_base_ContentTypes::QUICKTIME . "','" . we_base_ContentTypes::FLASH . "','" . we_base_ContentTypes::AUDIO . "','" . we_base_ContentTypes::APPLICATION . "'";
-									$where .= ' AND ' . $_table . '.ContentType IN (' . $contentTypes . ')';
+									$where .= ($where ? '' : 1) . ' AND ' . $_table . '.ContentType IN (' . $contentTypes . ')';
 									break;
 								case 'IsUsed':
 									$where .= $this->searchMediaLinks($searchString, $_view !== we_search_view::VIEW_ICONS);
@@ -288,7 +288,7 @@ class we_search_search extends we_search_base{
 									break;
 								default:
 									//if($whichSearch != "AdvSearch"){
-									$where .= $this->searchfor($searchString, $searchFields[$i], $location[$i], $_table);
+									$where .= ($where ? '' : 1 ) . $this->searchfor($searchString, $searchFields[$i], $location[$i], $_table);
 								//}
 							}
 						}
@@ -1122,7 +1122,7 @@ class we_search_search extends we_search_base{
 				switch(addTblPrefix($k)){
 					case FILE_TABLE:
 					case defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE';
-						$db->query('SELECT ID,Path,ModDate,Published,ContentType FROM ' . addTblPrefix($k) . ' WHERE ID IN (' . implode(',', array_unique($v)) . ')');
+						$db->query('SELECT ID,Path,ModDate,Published,ContentType FROM ' . addTblPrefix($k) . ' WHERE ID IN (' . implode(',', array_unique($v)) . ')'/*. getWsQueryForSelector(addTblPrefix($k))*/);
 						while($db->next_record()){
 							$paths[$k][$db->f('ID')] = $db->f('Path');
 							$isModified[$k][$db->f('ID')] = $db->f('Published') > 0 && $db->f('ModDate') > $db->f('Published');
