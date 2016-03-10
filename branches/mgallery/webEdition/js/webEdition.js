@@ -1321,7 +1321,7 @@ WE().util.getTreeIcon = function (contentType, open, extension) {
 					post = '</span>';
 	switch (contentType) {
 		case 'cockpit':
-			return simplepre + '<i class="fa fa-th-large fa-stack-2x we-color" style="background-color:white"></i>' + post;
+			return simplepre + '<i class="fa fa-th-large fa-stack-2x"></i>' + post;
 		case 'class_folder'://FIXME: this contenttype is not set
 		case 'we/bannerFolder':
 		case 'folder':

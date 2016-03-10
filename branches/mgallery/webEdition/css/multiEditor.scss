@@ -50,8 +50,8 @@ body{
 		background: $DarkGrey;
 		color: $LightGrey;
 		&.tab:hover{
-/*			background: lighten($DarkGrey,20%);
-			color: lighten($LightGrey,20%);*/
+			/*			background: lighten($DarkGrey,20%);
+						color: lighten($LightGrey,20%);*/
 		}
 		&.tabActive{
 			background-color: $Grey;
@@ -90,6 +90,11 @@ body{
 			span.fileicon{
 				height: 20px;
 				color: $LightGrey;
+				//change some icon colors
+				.fa-th-large,
+				.fa-archive{
+					color: white;
+				}
 			}
 		}
 		&.trailing{
