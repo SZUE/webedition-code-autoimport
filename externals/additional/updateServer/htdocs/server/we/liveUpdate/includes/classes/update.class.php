@@ -172,7 +172,7 @@ class update extends updateBase{
 	 * @return boolean
 	 */
 	static function checkForUpdate(){
-		$row = $GLOBALS['DB_WE']->getHash('SELECT MAX(version) AS maxVersion FROM ' . VERSION_TABLE . (isset($_SESSION['testUpdate']) ? '' : ' WHERE islive=1'));
+		$row = $GLOBALS['DB_WE']->getHash('SELECT MAX(version) AS maxVersion FROM ' . VERSION_TABLE . (isset($_SESSION['testUpdate']) ? '' : ' WHERE liveStatus="live"'));
 
 		return ($row['maxVersion'] > $_SESSION['clientVersionNumber'] ?
 				$row['maxVersion'] :
@@ -180,16 +180,16 @@ class update extends updateBase{
 	}
 
 	static function getMaxVersionNumber(){
-		$row = $GLOBALS['DB_WE']->getHash('SELECT MAX(version) AS maxVersion FROM ' . VERSION_TABLE . (isset($_SESSION['testUpdate']) ? '' : ' WHERE islive=1'));
+		$row = $GLOBALS['DB_WE']->getHash('SELECT MAX(version) AS maxVersion FROM ' . VERSION_TABLE . (isset($_SESSION['testUpdate']) ? '' : ' WHERE liveStatus="live"'));
 
 		return $GLOBALS['DB_WE']->getHash('SELECT version, svnrevision,type,typeversion,branch,versname FROM ' . VERSION_TABLE .
-				(isset($_SESSION['testUpdate']) ? ' WHERE version=' . $row['maxVersion'] : ' WHERE islive=1 AND version=' . $row['maxVersion']));
+				(isset($_SESSION['testUpdate']) ? ' WHERE version=' . $row['maxVersion'] : ' WHERE liveStatus="live" AND version=' . $row['maxVersion']));
 	}
 
 	static function getMaxVersionNumberForBranch($branch){
 		$row = $GLOBALS['DB_WE']->getHash('SELECT MAX(version) AS maxVersion FROM `' . VERSION_TABLE . '` WHERE ' . (isset($_SESSION['testUpdate']) ?
 				" `branch`='" . $branch . "'" :
-				" `islive`=1 AND `branch`='" . $branch . "'"));
+				" liveStatus='live' AND `branch`='" . $branch . "'"));
 
 		return intval($row['maxVersion']);
 	}
@@ -199,7 +199,7 @@ class update extends updateBase{
 
 		return $GLOBALS['DB_WE']->getHash('SELECT version, svnrevision,type,typeversion,branch,versname FROM `' . VERSION_TABLE . '` WHERE ' . (isset($_SESSION['testUpdate']) ?
 					" `version`='" . $maxVersion . "' AND `branch`='" . $branch . "'" :
-					" `islive`=1 AND `version`='" . $maxVersion . "' AND `branch`='" . $branch . "'"));
+					" liveStatus='live' AND `version`='" . $maxVersion . "' AND `branch`='" . $branch . "'"));
 	}
 
 	static function getFormattedVersionStringFromWeVersion($showBranch = false, $showBranchIfTrunk = false){

@@ -10,7 +10,7 @@ class license extends licenseBase{
 	static function getVersionFormResponse(){
 
 		$AvailableVersions = update::getVersionsLanguageArray(false);
-		$NotLiveVersions = update::getNotLiveVersions();
+		//$NotLiveVersions = update::getNotLiveVersions();
 		$SubVersions = update::getSubVersions();
 		$AlphaBetaVersions = update::getAlphaBetaVersions();
 		$VersionNames = update::getVersionNames();
@@ -24,7 +24,7 @@ class license extends licenseBase{
 		$GLOBALS['updateServerTemplateData']['AvailableVersions'] = $AvailableVersions;
 		$GLOBALS['updateServerTemplateData']['MatchingVersions'] = $MatchingVersions;
 		$GLOBALS['updateServerTemplateData']['VersionsMissingLanguage'] = $VersionsMissingLanguage;
-		$GLOBALS['updateServerTemplateData']['NotLiveVersions'] = $NotLiveVersions;
+		//$GLOBALS['updateServerTemplateData']['NotLiveVersions'] = $NotLiveVersions;
 		$GLOBALS['updateServerTemplateData']['SubVersions'] = $SubVersions;
 		$GLOBALS['updateServerTemplateData']['VersionNames'] = $VersionNames;
 		$GLOBALS['updateServerTemplateData']['AlphaBetaVersions'] = $AlphaBetaVersions;

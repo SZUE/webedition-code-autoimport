@@ -29,7 +29,7 @@ abstract class updateBase{
 	 * @return array
 	 */
 	static function getPossibleLanguagesArray(){
-		$GLOBALS['DB_WE']->query('SELECT distinct(language) FROM ' . SOFTWARE_LANGUAGE_TABLE . /*' WHERE ' . (isset($_SESSION['testUpdate']) ? '1' : 'islive=1') . */' ORDER BY language ASC');
+		$GLOBALS['DB_WE']->query('SELECT distinct(language) FROM ' . SOFTWARE_LANGUAGE_TABLE .' ORDER BY language ASC');
 
 		return $GLOBALS['DB_WE']->getAll(true);
 	}
@@ -56,29 +56,6 @@ abstract class updateBase{
 			}
 		}
 		return $possibleVersions;
-	}
-
-	/**
-	 * returns associative array with all versions where isLive is not true (betas)
-	 * version exists
-	 *
-	 * @return array
-	 */
-	static function getNotLiveVersions(){
-		$query = '
-			SELECT version, svnrevision, language, isbeta
-			FROM ' . VERSION_TABLE . '
-			WHERE version >= 6000 AND islive!=1 ORDER BY version DESC, language
-		';
-		$NotLiveVersions = array();
-
-		$GLOBALS['DB_WE']->query($query);
-
-		while($GLOBALS['DB_WE']->next_record()){
-			$NotLiveVersions[$GLOBALS['DB_WE']->f('version')][] = $GLOBALS['DB_WE']->f('language');
-		}
-
-		return $NotLiveVersions;
 	}
 
 	static function getAlphaBetaVersions(){
@@ -179,7 +156,7 @@ abstract class updateBase{
 
 		$versionLanguages = array();
 		$versionLanguages["betaLanguages"] = array();
-		$GLOBALS['DB_WE']->query('SELECT v.version,l.language,0 AS isbeta FROM ' . VERSION_TABLE . ' v JOIN ' . SOFTWARE_LANGUAGE_TABLE . ' l ON v.version=l.version WHERE 1 ' . ($installedLanguagesOnly ? ' AND l.language IN ("' . implode('", "', $_SESSION['clientInstalledLanguages']) . '")' : '') . ' ' . (isset($_SESSION['testUpdate']) ? '' : ' AND v.islive=1') . ' ORDER BY v.version DESC,l.language');
+		$GLOBALS['DB_WE']->query('SELECT v.version,l.language,0 AS isbeta FROM ' . VERSION_TABLE . ' v JOIN ' . SOFTWARE_LANGUAGE_TABLE . ' l ON v.version=l.version WHERE 1 ' . ($installedLanguagesOnly ? ' AND l.language IN ("' . implode('", "', $_SESSION['clientInstalledLanguages']) . '")' : '') . ' ' . (isset($_SESSION['testUpdate']) ? '' : ' AND v.liveStatus="live"') . ' ORDER BY v.version DESC,l.language');
 
 		while($GLOBALS['DB_WE']->next_record()){
 			$row = $GLOBALS['DB_WE']->getRecord();
