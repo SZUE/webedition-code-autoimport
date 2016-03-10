@@ -3,8 +3,8 @@
 $l_metadata=array(
 	'add'=>'lisää',
 	'closedList'=>'closed list',
-	'closedList_desc'=>'',
-	'csv_desc'=>'',
+	'closedList_desc'=>'"Closed" list of proposals means that the respective input field is set "read only": The field can be filled exclusively by using the proposals.',
+	'csv_desc'=>'In this mode you can add more than one proposal to the field: They are entered comma separated. When proposals are created automatically the field content is understood as csv too: when containing commata it will be splittet into several proposals.',
 	'customfield'=>'Custom field',
 	'deleteEntry'=>'delete',
 	'deleteLastEntry'=>'delete last',
