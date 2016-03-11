@@ -64,26 +64,15 @@
 		),
 		'main-develop' => array(
 			'nightly' => array(
-				/*
 				'targetBranchDir' => 'branches/main-develop',
 				'targetType' => 'nightly-build',
-				'targetVersion' => 7001,
-				'targetName' => '7.0.0.1 MAIN-DEVELOP',
-				'targetTakeSnapshot' => true,
-				'builderVersionsToDelete' => array(6498, 6499),
-				 * 
-				 */
-				'targetBranchDir' => 'trunk',
-				'targetType' => 'nightly',
 				'targetVersion' => 8001,
 				'targetName' => '8.0.0.1 MAIN-DEVELOP',
 				'targetTakeSnapshot' => true,
-				'targetCompareVersion' => 6430,
-				'builderVersionsToDelete' => array(),
+				'builderVersionsToDelete' => array(6498, 6499),
 			)
 		)
 	);
-	
 
 	protected $defaultConfiguration = array(
 		'targetBranchDir' => '',
@@ -100,6 +89,7 @@
 		'targetHotfixNr' => 0,
 		'builderCreateTag' => false,
 		'builderVersionsToDelete' => array(),
+		'builderIsHotfix' => false,
 	);
 
 	protected $branchDirs = array(
@@ -176,8 +166,10 @@
 			'targetTakeSnapshot' => $hash['isSnapshot'],
 			'targetCompareVersion' => '[not needed when making hotfix]',
 			'targetRevisionFrom' => $hash['revisionFrom'],
+			'targetRevisionTo' => $hash['revisionTo'],
 			'targetHotfixNr' => $hash['hotfixnr'],
 			'targetZFVersion' => $hash['zfversion'],
+			'builderIsHotfix' => true
 		);
 	}
 
@@ -201,6 +193,7 @@
 			case 'targetCompareVersion':
 			case 'targetZFVersion':
 			case 'targetRevisionFrom':
+			case 'targetRevisionTo';
 			case 'targetHotfixNr':
 			case 'builderVersionsToDelete':
 			case 'targetTakeSnapshot':

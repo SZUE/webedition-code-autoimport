@@ -1,3 +1,4 @@
+#!/usr/local/bin/php5-56LATEST-CLI
 <?php
 /*
  * finish implementation of hotfixes and test
@@ -23,52 +24,40 @@ require($_SERVER['DOCUMENT_ROOT'] . '/we_builder_configurations.class.php');
 
 $GLOBALS['DB_WE']->query('DELETE FROM ' . ERROR_LOG_TABLE . ' WHERE `Date` < DATE_SUB(NOW(), INTERVAL ' . we_base_constants::ERROR_LOG_HOLDTIME . ' DAY)');
 
-$cli = false;
-$cliArguments = getopt("b:t:v:");
+$cliArguments = getopt("b:t:v:d:");
 if(empty($cliArguments)){
-	$branch = we_base_request::_(we_base_request::STRING, 'branch', 'trunk');
-	$type = we_base_request::_(we_base_request::STRING, 'type', 'nightly');
-	$version = we_base_request::_(we_base_request::INT, 'version', 0);
-	echo "Builder called by request<br>Branch: " . $branch . "<br>Type: " . $type . "<br>Version for Hotfix: " . $version . "<br>";
-} else {
-	// we have no defaults for cli-builds!
-	$branch = empty($cliArguments['b']) ? '' : $cliArguments['b'];
-	$type = empty($cliArguments['t']) ? '' : $cliArguments['t'];
-	$version = empty($cliArguments['v']) ? 0 : $cliArguments['v'];
-	$cli = true;
-	echo 1;
+	exit();
 }
+
+$branch = empty($cliArguments['b']) ? '' : $cliArguments['b'];
+$type = empty($cliArguments['t']) ? '' : $cliArguments['t'];
+$version = empty($cliArguments['v']) ? 0 : $cliArguments['v'];
+$debug = empty($cliArguments['d']) ? 0 : $cliArguments['d'];
+
+if($debug){
+	echo "debug\n";
+}
+echo 1;
+/*
+}
+ * 
+ */
 
 $configurations = new we_builder_configurations($GLOBALS['DB_WE'], $branch, $type, $version);
 if(!$configurations->getActiveConfiguration()){
-	echo "The parameters given are not valid!\n";
+	echo "\nThere is no configuration for the parameters given!\n";
 	exit();
 }
-echo 'sevi';
+
 // array $builder contains props of a future class we_builder_class
 $builder = array(
-	'isCli' => $cli,
-	'br' => $cli ? '\n' : '<br/>',
+	'debug' => $debug,
 	'DB_WE' => $GLOBALS['DB_WE'],
 	'externalsDir' => 'externals',
 	'source' => '/kunden/343047_10825/build/svn/' . $configurations->get('targetBranchDir') . '/',
 	'destination' => '/kunden/343047_10825/sites/webedition.org/update/htdocs/files/we/',
 	'comparesource' => '/kunden/343047_10825/build/svn',
 );
-
-
-if(!$builder['isCli']){
-	?>
-	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-	<html xmlns="http://www.w3.org/1999/xhtml">
-		<head>
-			<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-			<title>Nightly bulder</title>
-		</head>
-
-		<body>
-	<?php
-}
 
 // move this functions ot some new builder class
 function getSvnLatestRevision($branch = 'trunk'){
@@ -79,12 +68,12 @@ function getSvnLatestRevision($branch = 'trunk'){
 }
 
 function getFilelistFromSvn($branch = 'trunk', $startRev = 9000, $endRev = 'HEAD', $origBranch = ''){
+	$branchDirs = array('trunk', 'branches/mgallery', 'branches/main-develop'); // FIXME: when making we_builder_builder this will be property
 	$xml = simplexml_load_string(shell_exec('svn log --xml -v -r ' . $startRev . ':' . $endRev . ' http://svn.code.sf.net/p/webedition/code/' . $branch));
-
 	$latest = 0;
 	$M = array();
 	$delList = array(8444, 8447);
-echo '<hr>';
+
 	foreach($xml->logentry as $logentry){
 		$rev = intval($logentry['revision']);
 		if(in_array($rev, $delList)){
@@ -93,12 +82,29 @@ echo '<hr>';
 		$latest = max($rev, $latest);
 		$revAR = array();
 		$revD = array();
-
 		foreach($logentry->paths[0] as $path){
 			$p = (string) $path;
-			if($origBranch){
-				$p = str_replace($origBranch, $branch, $p);
+
+			//Fix some wrong paths (resulting from using log instead of diff):Throw out externals from 
+			//=> delete externals from branch log and vice versa
+			switch($branch){
+				case 'externals':
+					//=> delete branch paths from externals log
+					if(strpos($p, '/externals/') !== 0){
+						continue 2;
+					}
+					break;
+				default:
+					//=> delete external paths from branch log
+					if(strpos($p, '/externals/') === 0){
+						continue 2;
+					}
+					//=> change branch dir of files commited to other branch (before the tag or branch in question was created)
+					if(strpos($p, '/' . $branch . '/') !== 0){
+						$p = str_replace($branchDirs, $branch, $p);
+					}
 			}
+
 			switch($path['action']){
 				case 'A':
 				case 'R':
@@ -115,18 +121,18 @@ echo '<hr>';
 
 		$M = array_merge(array_diff_key($M, $revD), $revAR);
 	}
-echo '<hr>';
 	$M = array_keys($M);
 	sort($M);
 
 	return array('latest' => $latest, 'files' => $M);
 }
 
-function getFilelistWithExternals($branch = 'trunk', $startRev = 9000, $endRev = 'HEAD', $origBranch = ''){
-	$branchfiles = getFilelistFromSvn($branch, $startRev, $endRev, $origBranch);
-	$externals = getFilelistFromSvn('externals', $startRev, $endRev);
+function getFilelistWithExternals($branch = 'trunk', $startRev = 9000, $endRevBranch = 'HEAD', $endRevExternals = 'HEAD'){
+	//echo $branch . ': ' . $startRev . ':' . $endRevBranch . '/' . $endRevExternals;
+	$branchfiles = getFilelistFromSvn($branch, $startRev, $endRevBranch);
+	$externals = getFilelistFromSvn('externals', $startRev, $endRevExternals);
 
-	// filter some external paths
+	// Filter some external paths we do not need to have in the filelist
 	// TODO: use shell_exec('chdir /kunden/343047_10825/build/svn/trunk; svn propget svn:externals --xml --depth infinity > ../ausgabe.txt'); to find targetdirs of externals
 	$externals['files'] = array_filter($externals['files'], function($f){return strpos($f, "/externals/additional/") === false;});
 
@@ -175,7 +181,6 @@ function getFilelistFromSvn_plusD($branch = 'trunk', $startRev = 9000, $endRev =
 }
 */
 
-//$configurations->get('targetWEbranchDir')
 function getfiledescription($configurations, $builder, $svnpath, $isQuery, $isLang, $isBetalang = false, $areLangsExternal = false){
 	$entry = array(
 		'svnpath' => $svnpath
@@ -262,9 +267,7 @@ if($configurations->get('targetTakeSnapshot')){
 	if(is_dir($directory)){
 		$DirFileObjectsArray = array();
 		$DirFileObjects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory));
-		if(defined('debug') && !$builder['isCli']){
-			echo "<pre>" . print_r($DirFileObjects, true) . "</pre>";
-		}
+
 		foreach($DirFileObjects as $name => $object){
 			if(substr($name, -2) != '/.' && substr($name, -3) != '/..' && strpos($name, '/.svn/') === false){
 				$DirFileObjectsArray[] = str_replace($builder['comparesource'], '', $name);
@@ -272,8 +275,8 @@ if($configurations->get('targetTakeSnapshot')){
 		}
 		sort($DirFileObjectsArray);
 	}
-	if(defined('debug') && !$builder['isCli']){
-		echo "<pre>Scanned dir: " . print_r($DirFileObjectsArray, true) . "</pre>";
+	if($builder['debug']){
+		echo "Scanned dir:\n" . implode("\n", $DirFileObjectsArray);
 	}
 	$modifiedfiles = $DirFileObjectsArray;
 	$targetversion = getSvnLatestRevision($configurations->get('targetBranchDir'));
@@ -283,11 +286,12 @@ if($configurations->get('targetTakeSnapshot')){
 		// => for that purpose we could reintroduce type=tag instead of taking configuration from db
 		// => prcondition would be a version number not yet existing in update db
 	} else { //release, nightly and hotfix on all branches, NOT snapshot
-		if($configurations->get('targetNormalizedType') === 'hotfix'){
-			//exit;
+		if($configurations->getIsHotfix()){
+			//echo "is hotfix: " . $configurations->get('targetRevisionTo') . "\n";
+			$log = getFilelistWithExternals($configurations->get('targetBranchDir'), $configurations->get('targetRevisionFrom'), 'HEAD', $configurations->get('targetRevisionTo'));
+		} else {
+			$log = getFilelistWithExternals($configurations->get('targetBranchDir'), $configurations->get('targetRevisionFrom'));
 		}
-
-		$log = getFilelistWithExternals($configurations->get('targetBranchDir'), $configurations->get('targetRevisionFrom'), 'HEAD', $configurations->get('targetOrigBranchDir'));
 		$targetversion = $log['latest'];
 		$modifiedfiles = correctExternalPaths($configurations, $log['files']);
 		if(!in_array('/' . $configurations->get('targetBranchDir') . '/webEdition/we/include/we_version.php', $modifiedfiles)){
@@ -297,21 +301,19 @@ if($configurations->get('targetTakeSnapshot')){
 }
 sort($modifiedfiles);
 
-if(!$builder['isCli']){
-	echo $builder['br'] . "we_version:" . $builder['br'];
-	echo "Branch: " . $configurations->get('targetBranch') . $builder['br'];
-	echo "Branchdir: " . $configurations->get('targetBranchDir') . $builder['br'];
-	echo "Releasetype (basic): " . $configurations->get('targetNormalizedType') . $builder['br'];
-	echo "Releasetype: " . $configurations->get('targetType') . $builder['br'];
-	echo "RevisionFrom SVN-Revision: " . $configurations->get('targetRevisionFrom') . $builder['br'];
-	echo "TargetVersion: " . $configurations->get('targetVersion') . $builder['br'];
-	echo "IsSnapshot: " . ($configurations->get('targetTakeSnapshot') ? 'ja' : 'nein') . $builder['br'];
+if($builder['debug']){
+	echo "\n" . "we_version:" . $builder['br'];
+	echo "Branch: " . $configurations->get('targetBranch') . "\n";
+	echo "Branchdir: " . $configurations->get('targetBranchDir') . "\n";
+	echo "Releasetype (basic): " . $configurations->get('targetNormalizedType') . "\n";
+	echo "Releasetype: " . $configurations->get('targetType') . "\n";
+	echo "RevisionFrom: " . $configurations->get('targetRevisionFrom') . "\n";
+	echo "TargetVersion: " . $configurations->get('targetVersion') . "\n";
+	echo "IsSnapshot: " . ($configurations->get('targetTakeSnapshot') ? 'ja' : 'nein') . "\n";
 	echo "RevisionTo: " . $targetversion . $builder['br'];
-	//echo $builder['br'] . $builder['br'] . 'TIME TO COMPUTE FILELIST: ' . (time() - $starttime) . $builder['br'];
-
-	p_r($modifiedfiles);
+	//echo implode(",\n", $modifiedfiles);
 }
-//exit();
+
 ### find and process special files: externals, language files and sql dumps; throw out unused files of /additional ###
 // find sql dumps
 $sqlfiles = array();
@@ -363,20 +365,6 @@ if(count($languagesExt) > 0){
 	$areLangsExternal = true;
 }
 
-// eliminate /additional
-/*
-foreach($modifiedfiles as $key => &$filepath){
-	if(strpos($filepath, '/' . $configurations->get('targetBranchDir') . '/additional/') !== false && strpos($filepath, '/' . $configurations->get('targetBranchDir') . '/additional/') === 0){
-		unset($modifiedfiles[$key]);
-	}
-	if(strpos($filepath, '/' . $configurations->get('targetBranchDir') . '/webEdition/we/include/conf/we_conf') !== false &&
-			strpos($filepath, '/' . $configurations->get('targetBranchDir') . '/webEdition/we/include/conf/we_conf') === 0 &&
-			strpos($filepath, '.php.default') === false){
-		unset($modifiedfiles[$key]);
-	}
-}
-*/
-
 // process sql dumps
 $allsql = array();
 foreach($sqlfiles as $sql){
@@ -399,18 +387,14 @@ foreach($modifiedfiles as $afilepath){
 	$allfiles[] = getfiledescription($configurations, $builder, $afilepath, false, false);
 }
 
-if(defined('debug') && !$builder['isCli']){
-	echo "<hr>All Files";
-	p_r($allfiles);
+if($builder['debug']){
+	echo "All Files\n" . implode("\n", $allfiles) . "\n\n";
+	echo "All Langfiles\n" . implode("\n", $alllang) . "\n\n";
+	echo "All Sql\n" . implode("\n", $allsql) . "\n\n";
 	echo "<hr>All Langfiles";
-	p_r($alllang);
-	echo "<hr>All Sql";
-	p_r($allsql);
 }
 
-
 // #### START BUILD HERE ###
-
 $changessql = [];
 foreach($allsql as $data){
 	if(file_exists($data['frompath'])){
@@ -426,14 +410,12 @@ foreach($allsql as $data){
 		}
 	}
 }
-//echo "<pre>".print_r($changessql,true)."</pre>";
-//echo "<pre>".print_r($qsql,true)."</pre>";
 
 $changesfiles = [];
 foreach($allfiles as $data){
 	if(!file_exists($data['frompath'])){
-		if(!$builder['isCli']){
-			echo 'not exists: ' . $data['frompath'] . '<br>';
+		if($builder['debug']){
+			echo 'not exists: ' . $data['frompath'] . "\n";
 		}
 		continue;
 	}
@@ -456,9 +438,9 @@ foreach($allfiles as $data){
 					file_put_contents($data['frompath'], $doc);
 					$data['wepath'] = str_replace('.scss', '.css', $data['wepath']);
 				}catch(exception $e){
-					if(!$builder['isCli']){
+					if($builder['debug']){
 						echo 'ERROR with scss file ' . $data['frompath'];
-						p_r(str_replace(array('\n', "\n"), ' ', $e->getMessage()));
+						//p_r(str_replace(array('\n', "\n"), ' ', $e->getMessage()));
 					}
 					return false;
 				}
@@ -479,11 +461,12 @@ foreach($allfiles as $data){
 			$versionsfile[5] = 'define("WE_VERSION_SUPP_VERSION","' . trim($configurations->get('targetTypeversion')) . '");';
 			$versionsfile[6] = 'define("WE_VERSION_BRANCH","' . trim($configurations->get('targetBranch')) . '");';
 			$versionsfile[7] = 'define("WE_VERSION_NAME","' . trim($configurations->get('targetName')) . '");';
-			if(!$builder['isCli']){
-				echo "<pre>".print_r($versionsfile,true)."</pre>";
-			}
+
 			$versionsfiletext = implode("\n", $versionsfile);
 			file_put_contents($data['targetpath'], $versionsfiletext);
+			if($builder['debug']){
+				echo $versionsfiletext;
+			}
 		}
 	}
 }
@@ -502,46 +485,38 @@ if(intval($configurations->get('targetVersion')) > 6380 || !file_exists($weVersi
 		'define("WE_VERSION_BRANCH","' . trim($configurations->get('targetBranch')) . '");',
 		$configurations->get('targetName') ? 'define("WE_VERSION_NAME","' . trim($configurations->get('targetName')) . '");' . "\n" : 'define("WE_VERSION_NAME","");'
 	);
-	if(!$builder['isCli']){
-		p_r($versionsfile);
-	}
 	$versionsfiletext = implode("\n", $versionsfile);
 	file_put_contents($weVersionFile, $versionsfiletext);
+	if($builder['debug']){
+		echo $versionsfiletext;
+	}
 }
-
-$changesfiles = array_unique($changesfiles);
-if(!$builder['isCli']){
-	echo "<hr><pre>ChangeFiles: " . print_r($changesfiles, true) . "</pre>";
-}
-//echo !$builder['isCli'] ? "Fertig" : 1;
-//exit();
 
 if($changesfiles){
-	$changesfiles = array_unique($changesfiles);
-	if(defined('debug') && !$builder['isCli']){
-		echo "<pre>ChangeFiles: " . print_r($changesfiles, true) . "</pre>";
+	$strChangesfiles = implode(",\n", array_unique($changesfiles));
+	if($builder['debug']){
+		echo $strChangesfiles;
 	}
-	$strChangesfilesStr = implode(",\n", $changesfiles);
-	
-if($configurations->get('targetBranch') === 'main-develop'){
-		file_put_contents ('changes_new.txt', $strChangesfilesStr);
-}	
-	exit();
+
+file_put_contents ('changes_new.txt', $strChangesfiles . "\n\n". implode(",\n", $changessql));
+exit();
+
 	if(!f("SELECT 1 FROM `v6_changes` WHERE version= " . $configurations->get('targetVersion') . " AND detail = 'files' LIMIT 1")){
 		if(!$builder['DB_WE']->query("INSERT INTO `v6_changes` (version,detail) VALUES ('" . $configurations->get('targetVersion') . "','files')")){
 			exit();
 		}
 	}
 
-	if(!$builder['DB_WE']->query("UPDATE `v6_changes` SET changes = '" . $strChangesfilesStr . "', isSnapshot='" . intval($configurations->get('targetTakeSnapshot')) . "' WHERE version= " . $configurations->get('targetVersion') . " AND detail = 'files'")){
+	if(!$builder['DB_WE']->query("UPDATE `v6_changes` SET changes = '" . $strChangesfiles . "', isSnapshot='" . intval($configurations->get('targetTakeSnapshot')) . "' WHERE version= " . $configurations->get('targetVersion') . " AND detail = 'files'")){
 		exit();
 	}
 
 	if($changessql){
-		if(defined('debug') && !$builder['isCli']){
-			echo "<pre>Changes SQL: " . print_r($changessql, true) . "</pre>";
-		}
 		$changessql = implode(",\n", $changessql);
+		if($builder['debug']){
+			echo "\nChanges SQL: " . $changessql . "\n";
+		}
+
 		if(!f("SELECT 1 FROM `v6_changes` WHERE version= " . $configurations->get('targetVersion') . " AND detail = 'queries' LIMIT 1")){
 			if(!$builder['DB_WE']->query("INSERT INTO `v6_changes` (version,detail) VALUES ('" . $configurations->get('targetVersion') . "','queries')")){
 				exit();
@@ -571,9 +546,8 @@ if($configurations->get('targetBranch') === 'main-develop'){
 						}
 					}
 				} else {
-					if(defined('debug') && !$builder['isCli']){
-						echo 'no such file';
-						p_r($data['frompath']);
+					if($builder['debug']){
+						echo 'no such file: ' . $data['frompath'];
 					}
 				}
 			}
@@ -597,29 +571,6 @@ if($configurations->get('targetBranch') === 'main-develop'){
 	if(!$builder['DB_WE']->query("REPLACE INTO `v6_versions` SET version=" . $configurations->get('targetVersion') . ",versname='" . $configurations->get('targetName') . "', svnrevision = '" . $targetversion . "', comparerevision = '" . $targetversion . "', type='" . $configurations->get('targetType') . "', typeversion='" . $configurations->get('targetTypeversion') . "', branch='" . $configurations->get('targetBranch') . "', isSnapshot='" . intval($configurations->get('targetTakeSnapshot')) . "', date='" . date('Y-m-d H:i:s') . "'")){
 			exit();
 	}
-		/*=> das sollte oben bereits alles korrekt reinkommen, und in der tabelle gibt es nun eh kein language mehr
-	// fuer Versionen >=6266
-	if($configurations->get('targetVersion') >= $language_limit){
-//revisionFrom = '" . ($isSnapshot ? 0 : $GLOBALS['compareVersion']) . "', revisionTo = '" . $revisionTo . "',
-		$utflang = array('Deutsch_UTF-8', 'English_UTF-8', 'Dutch_UTF-8', 'Finnish_UTF-8', 'French_UTF-8', 'Polish_UTF-8', 'Russian_UTF-8', 'Spanish_UTF-8');
-		foreach($utflang as $langkkey => $langkey){
-			if(!f("SELECT revisionTo FROM `v6_versions` WHERE version= " . $configurations->get('targetVersion') . " AND language = '" . $langkey . "' LIMIT 1")){
-				if(!$builder['DB_WE']->query("INSERT INTO `v6_versions` (version,language) VALUES ('" . $configurations->get('targetVersion') . "','" . $langkey . "')")){
-					exit();
-				}
-			}
 
-			if(!$builder['DB_WE']->query("UPDATE `v6_versions` SET versname = '" . $configurations->get('targetName') . "', svnrevision = '" . $targetversion . "', comparerevision = '" . $targetversion . "', type='" . $configurations->get('targetType') . "', typeversion='" . $configurations->get('targetTypeversion') . "', branch='" . $configurations->get('targetBranch') . "', isSnapshot='" . intval($configurations->get('targetTakeSnapshot')) . "', date='" . date('Y-m-d H:i:s') . "' WHERE version= " . $configurations->get('targetVersion') . " AND language = '" . $langkey . "'")){
-				exit();
-			}
-		}
-	}
-}*/
-}
-echo !$builder['isCli'] ? "FERTIG" : 1;
-if(!$builder['isCli']){
-		?>
-	</body>
-</html>
-<?php
+	echo $builder['debug'] ? "FERTIG" : 1;
 }
