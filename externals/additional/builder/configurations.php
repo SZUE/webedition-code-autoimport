@@ -28,23 +28,12 @@ switch($GLOBALS['targetWEbranch']) {
 		switch($GLOBALS['basicReleaseType']){
 			case 'nightly':
 			case 'nightly-build':
-				/*
 				$GLOBALS['targetWEVersion'] = 7001;
 				$GLOBALS['targetWEVersionName'] = '7.0.0.1 MAIN-DEVELOP';
 				$GLOBALS['targetWEVersionString'] = '7.0.0.1';
 				$GLOBALS['targetWEtype'] = 'nightly-build';
 				$GLOBALS['takeSnapshot'] = true;
 				$GLOBALS['compareWeVersion'] = 6490; // not necessary when taking snapshot
-				$GLOBALS['versionsToDelete'] = array();
-				 * 
-				 */
-				$GLOBALS['targetWEbranchDir'] = 'trunk';
-				$GLOBALS['targetWEVersion'] = 8001;
-				$GLOBALS['targetWEVersionName'] = '8.0.0.1 MAIN-DEVELOP';
-				$GLOBALS['targetWEVersionString'] = '8.0.0.1';
-				$GLOBALS['targetWEtype'] = 'nightly-build';
-				$GLOBALS['takeSnapshot'] = true;
-				$GLOBALS['compareWeVersion'] = 6430; // not necessary when taking snapshot
 				$GLOBALS['versionsToDelete'] = array();
 				break;
 			default:

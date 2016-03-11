@@ -35,7 +35,7 @@ $version = empty($cliArguments['v']) ? 0 : $cliArguments['v'];
 $debug = empty($cliArguments['d']) ? 0 : $cliArguments['d'];
 
 if($debug){
-	echo "debug\n";
+	echo "debug mode: on\n";
 }
 echo 1;
 /*
@@ -275,7 +275,7 @@ if($configurations->get('targetTakeSnapshot')){
 		}
 		sort($DirFileObjectsArray);
 	}
-	if($builder['debug']){
+	if(false && $builder['debug']){
 		echo "Scanned dir:\n" . implode("\n", $DirFileObjectsArray);
 	}
 	$modifiedfiles = $DirFileObjectsArray;
@@ -307,12 +307,18 @@ if($builder['debug']){
 	echo "Branchdir: " . $configurations->get('targetBranchDir') . "\n";
 	echo "Releasetype (basic): " . $configurations->get('targetNormalizedType') . "\n";
 	echo "Releasetype: " . $configurations->get('targetType') . "\n";
-	echo "RevisionFrom: " . $configurations->get('targetRevisionFrom') . "\n";
 	echo "TargetVersion: " . $configurations->get('targetVersion') . "\n";
+	echo "CompareVersion: " . $configurations->get('targetCompareVersion') . " " . ($configurations->get('targetTakeSnapshot') ? "[not needed when snapshot]" : "") . "\n";
+	echo "RevisionFrom: " . $configurations->get('targetRevisionFrom') . " " . ($configurations->get('targetTakeSnapshot') ? "[not needed when snapshot]" : "") . "\n";
+	echo "RevisionTo: " . $targetversion . $builder['br'] . " " . ($configurations->get('targetTakeSnapshot') ? "[not needed when snapshot]" : "") . "\n";
 	echo "IsSnapshot: " . ($configurations->get('targetTakeSnapshot') ? 'ja' : 'nein') . "\n";
-	echo "RevisionTo: " . $targetversion . $builder['br'];
+	echo "IsHotfix: " . ($configurations->getIsHotfix() ? 'ja' : 'nein') . "\n";
+
 	//echo implode(",\n", $modifiedfiles);
 }
+
+echo "\n\nIMI: script stopt for debugging reasons. No version built!\n\n";
+exit();
 
 ### find and process special files: externals, language files and sql dumps; throw out unused files of /additional ###
 // find sql dumps

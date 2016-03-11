@@ -37,11 +37,10 @@
 			),
 			'nightly' => array(
 				'targetBranchDir' => 'trunk',
-				'targetType' => 'nightly-build',
-				//'targetVersion' => 6441,
-				'targetVersion' => 8441,
+				'targetType' => 'nightly',
+				'targetVersion' => 6441,
 				'targetCompareVersion' => 6440,
-				'targetName' => '8.4.4.1 Nightly',
+				'targetName' => '6.4.4.1 Nightly',
 			)
 		),
 		'mgallery' => array(
@@ -49,27 +48,27 @@
 				'targetBranchDir' => 'branches/mgallery',
 				'targetType' => 'rc',
 				'targetTypeversion' => 2,
-				'targetVersion' => 8501,
+				'targetVersion' => 6501,
 				'targetName' => '7.0 RC 2',
 				'targetTakeSnapshot' => true,
-				'builderVersionsToDelete' => array(8765,8766),
+				'builderVersionsToDelete' => array(),
 			),
 			'nightly' => array(
 				'targetBranchDir' => 'branches/mgallery',
-				'targetType' => 'nightly-build',
-				'targetVersion' => 8499,
-				'targetName' => '6.4.9.9 mGallery Nightly',
+				'targetType' => 'nightly',
+				'targetVersion' => 6502,
+				'targetName' => '6.5.0.2 mGallery Nightly',
 				'targetTakeSnapshot' => true,
 			)
 		),
 		'main-develop' => array(
 			'nightly' => array(
 				'targetBranchDir' => 'branches/main-develop',
-				'targetType' => 'nightly-build',
-				'targetVersion' => 8001,
-				'targetName' => '8.0.0.1 MAIN-DEVELOP',
+				'targetType' => 'nightly',
+				'targetVersion' => 7001,
+				'targetName' => '7.0.0.1 MAIN-DEVELOP',
 				'targetTakeSnapshot' => true,
-				'builderVersionsToDelete' => array(6498, 6499),
+				'builderVersionsToDelete' => array(),
 			)
 		)
 	);
@@ -104,6 +103,13 @@
 	protected $isHotfix = false;
 	protected $hotfixSN = 0;
 	protected $activeConfiguration = array();
+
+	const TYPE_RELEASE = 'release';
+	const TYPE_RC = 'rc';
+	const TYPE_BETA = 'beta';
+	const TYPE_ALPHA = 'alpha';
+	const TYPE_NIGHTLY = 'nightly';
+	const TYPE_HOTFIX = 'hotfix';
 
 	public function __construct($db, $branch = '', $type = '', $hotfixSN = 0){
 		$this->db = $db;
