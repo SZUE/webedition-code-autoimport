@@ -27,9 +27,6 @@ function getCheckBox($name, $value, $text, $beta = false){
 
 $missingLanguages = $GLOBALS['updateServerTemplateData']['missingLanguages'];
 
-$missingBetaLanguages = $GLOBALS['updateServerTemplateData']['missingBetaLanguages'];
-$installableBetaLanguages = $GLOBALS['updateServerTemplateData']['installableBetaLanguages'];
-
 // selectBoxes for languages
 $installAbleLanguages = $GLOBALS['updateServerTemplateData']['installAbleLanguages'];
 
@@ -64,12 +61,6 @@ if($missingStr){
 	$missingStr = '<div class="messageDiv">' .
 		$GLOBALS['lang']['languages']['languagesNotReady'] . $missingStr .
 		'</div>';
-}
-
-// betaLanguages
-//$installBetaLanguages = '';
-for($i = 0; $i < sizeof($installableBetaLanguages); $i++){
-	$installLanguages .= getCheckBox('lng_' . $installableBetaLanguages[$i], $installableBetaLanguages[$i], $installableBetaLanguages[$i], true);
 }
 
 // build response array

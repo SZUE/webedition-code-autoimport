@@ -23,7 +23,6 @@ switch($_REQUEST['detail']){
 			}
 			$updateServerTemplateData['possibleVersions'] = $possibleVersions;
 
-
 			// get max version foreach language
 			$versionLngs = update::getVersionsLanguageArray(true);
 
@@ -52,11 +51,9 @@ switch($_REQUEST['detail']){
 			}
 
 			update::updateLogAvail($verlog);
-			//error_log($maxVersionNumber);
-			//error_log(print_r($_SESSION,true));
-			//error_log(print_r($possibleVersions,true));
+
 			// is the update possible
-			if(sizeof($possibleVersions) < 1){
+			if(empty($possibleVersions)){
 				print update::getNoUpdateForLanguagesResponse();
 				break;
 			}

@@ -64,7 +64,7 @@ require_once './include/we_db_tools.inc.php';
 
 $GLOBALS['DB_WE'] = new DB_WE();
 
-$latest = $GLOBALS['DB_WE']->getHash('SELECT DISTINCT(version), date,(liveStatus="live") AS islive,svnrevision FROM ' . VERSION_TABLE . ' WHERE ' . ($beta === true ? 'branch="' . $GLOBALS['DB_WE']->escape($branch) . '" AND liveStatus IN ("live","beta")' : 'liveStatus="live"') . ' ORDER BY version DESC LIMIT 1');
+$latest = $GLOBALS['DB_WE']->getHash('SELECT DISTINCT(version), date,(type="release") AS islive,svnrevision FROM ' . VERSION_TABLE . ' WHERE ' . ($beta === true ? 'branch="' . $GLOBALS['DB_WE']->escape($branch) . '" AND type IN ("live","alpha","beta","rc")' : 'type="release"') . ' ORDER BY version DESC LIMIT 1');
 $latestVersion = $latest["version"];
 
 // create dotted version

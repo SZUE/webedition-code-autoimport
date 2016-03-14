@@ -29,7 +29,7 @@ abstract class updateBase{
 	 * @return array
 	 */
 	static function getPossibleLanguagesArray(){
-		$GLOBALS['DB_WE']->query('SELECT distinct(language) FROM ' . SOFTWARE_LANGUAGE_TABLE .' ORDER BY language ASC');
+		$GLOBALS['DB_WE']->query('SELECT distinct(language) FROM ' . SOFTWARE_LANGUAGE_TABLE . ' ORDER BY language ASC');
 
 		return $GLOBALS['DB_WE']->getAll(true);
 	}
@@ -41,18 +41,15 @@ abstract class updateBase{
 	 * @return array
 	 */
 	static function getPossibleVersionsArray(){
-
-		$langVersions = update::getVersionsLanguageArray(true, false);
+		$langVersions = update::getVersionsLanguageArray(true);
 
 		$possibleVersions = array();
 
 		foreach($langVersions as $version => $lngArray){
 			if($version > $_SESSION['clientVersionNumber'] && sizeof($lngArray) == sizeof($_SESSION['clientInstalledLanguages'])){
 				$possibleVersions[$version] = updateUtil::number2version($version);
-			} else {
-				if($version > $_SESSION['clientVersionNumber']){
-					$possibleVersions[$version] = updateUtil::number2version($version);
-				}
+			} elseif($version > $_SESSION['clientVersionNumber']){
+				$possibleVersions[$version] = updateUtil::number2version($version);
 			}
 		}
 		return $possibleVersions;
@@ -61,7 +58,7 @@ abstract class updateBase{
 	static function getAlphaBetaVersions(){
 		$AlphaBetaVersions = array();
 
-		$GLOBALS['DB_WE']->query('SELECT v.version,v.svnrevision,v.type,v.typeversion,v.branch,l.language,0 AS isbeta FROM ' . VERSION_TABLE . ' v JOIN ' . SOFTWARE_LANGUAGE_TABLE . ' l ON v.version=l.version WHERE 1 ORDER BY v.version DESC,l.language');
+		$GLOBALS['DB_WE']->query('SELECT v.version,v.svnrevision,v.type,v.typeversion,v.branch,l.language,0 AS isbeta FROM ' . VERSION_TABLE . ' v JOIN ' . SOFTWARE_LANGUAGE_TABLE . ' l ON v.version=l.version ORDER BY v.version DESC,l.language');
 
 		while($GLOBALS['DB_WE']->next_record()){
 			$AlphaBetaVersions[$GLOBALS['DB_WE']->f('version')] = $GLOBALS['DB_WE']->getRecord();
@@ -142,7 +139,7 @@ abstract class updateBase{
 	 *
 	 * @return array
 	 */
-	static function getVersionsLanguageArray($installedLanguagesOnly = true, $showBeta = true){
+	static function getVersionsLanguageArray($installedLanguagesOnly = true){
 		//error_log(print_r(urldecode(base64_decode($_SESSION['clientInstalledLanguages'])),1));
 		if(isset($_SESSION['clientInstalledLanguages']) && !is_array($_SESSION['clientInstalledLanguages'])){
 			//$_SESSION['clientInstalledLanguages'] = unserialize(urldecode(($_SESSION['clientInstalledLanguages'])));
@@ -155,21 +152,11 @@ abstract class updateBase{
 		}
 
 		$versionLanguages = array();
-		$versionLanguages["betaLanguages"] = array();
-		$GLOBALS['DB_WE']->query('SELECT v.version,l.language,0 AS isbeta FROM ' . VERSION_TABLE . ' v JOIN ' . SOFTWARE_LANGUAGE_TABLE . ' l ON v.version=l.version WHERE 1 ' . ($installedLanguagesOnly ? ' AND l.language IN ("' . implode('", "', $_SESSION['clientInstalledLanguages']) . '")' : '') . ' ' . (isset($_SESSION['testUpdate']) ? '' : ' AND v.liveStatus="live"') . ' ORDER BY v.version DESC,l.language');
+		$GLOBALS['DB_WE']->query('SELECT v.version,l.language FROM ' . VERSION_TABLE . ' v JOIN ' . SOFTWARE_LANGUAGE_TABLE . ' l ON v.version=l.version WHERE 1 ' . ($installedLanguagesOnly ? ' AND l.language IN ("' . implode('", "', $_SESSION['clientInstalledLanguages']) . '")' : '') . ' ' . (isset($_SESSION['testUpdate']) ? '' : ' AND v.type="release"') . ' ORDER BY v.version DESC,l.language');
 
 		while($GLOBALS['DB_WE']->next_record()){
 			$row = $GLOBALS['DB_WE']->getRecord();
-
-			if($row["isbeta"] == "1"){
-				if($showBeta){
-					$versionLanguages[$row['version']]["betaLanguages"][] = $row['language'];
-				} else {
-					$versionLanguages[$row['version']][] = $row['language'];
-				}
-			} else {
-				$versionLanguages[$row['version']][] = $row['language'];
-			}
+			$versionLanguages[$row['version']][] = $row['language'];
 		}
 
 		return $versionLanguages;

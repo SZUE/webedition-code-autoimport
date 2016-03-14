@@ -49,7 +49,7 @@ $lang['upgrade']['notepad_text'] = '';
 
 
 $lang['update']['headline'] = 'Update';
-$lang['update']['nightly-build'] = 'nightly build';
+$lang['update']['nightly'] = 'nightly build';
 $lang['update']['alpha'] = 'Alpha';
 $lang['update']['beta'] = 'Beta';
 $lang['update']['rc'] = 'RC';

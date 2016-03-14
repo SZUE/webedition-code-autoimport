@@ -40,7 +40,7 @@ if($debug){
 echo 1;
 /*
 }
- * 
+ *
  */
 
 $configurations = new we_builder_configurations($GLOBALS['DB_WE'], $branch, $type, $version);
@@ -85,7 +85,7 @@ function getFilelistFromSvn($branch = 'trunk', $startRev = 9000, $endRev = 'HEAD
 		foreach($logentry->paths[0] as $path){
 			$p = (string) $path;
 
-			//Fix some wrong paths (resulting from using log instead of diff):Throw out externals from 
+			//Fix some wrong paths (resulting from using log instead of diff):Throw out externals from
 			//=> delete externals from branch log and vice versa
 			switch($branch){
 				case 'externals':
@@ -566,7 +566,7 @@ exit();
 					exit();
 				}
 			}
-			if(!$builder['DB_WE']->query("UPDATE `v6_changes_language` SET changes='" . $changeslang . "', isSnapshot='" . intval($configurations->get('targetTakeSnapshot')) . "' WHERE version= " . $configurations->get('targetVersion') . " AND detail = 'files' AND language = '" . $langkey . "'")){
+			if(!$builder['DB_WE']->query("UPDATE `v6_changes_language` SET changes='" . $changeslang . "' WHERE version= " . $configurations->get('targetVersion') . " AND detail = 'files' AND language = '" . $langkey . "'")){
 				exit();
 			}
 		}

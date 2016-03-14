@@ -7,8 +7,8 @@ class languagesBase{
 	 *
 	 * @return array
 	 */
-	function getExistingLanguages(){//FIXME check version
-		$GLOBALS['DB_WE']->query("SELECT DISTINCT(language) AS language FROM " . SOFTWARE_LANGUAGE_TABLE);
+	static function getExistingLanguages(){//FIXME check version
+		$GLOBALS['DB_WE']->query('SELECT DISTINCT(language) AS language FROM ' . SOFTWARE_LANGUAGE_TABLE);
 		return $GLOBALS['DB_WE']->getAll(true);
 	}
 

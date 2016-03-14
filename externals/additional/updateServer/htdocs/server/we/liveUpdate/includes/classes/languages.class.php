@@ -5,7 +5,7 @@ class languages extends languagesBase{
 	/**
 	 * @return string
 	 */
-	function getSelectLanguagesResponse(){
+	static function getSelectLanguagesResponse(){
 
 		// at least already installed languages can be reinstalled
 		$installAbleLanguages = $_SESSION['clientInstalledLanguages'];
@@ -16,8 +16,6 @@ class languages extends languagesBase{
 			$installAbleLanguages = unserialize(urldecode(base64_decode($installAbleLanguages)));
 		}
 		if(isset($versionLngs[$_SESSION['clientVersionNumber']])){
-			$installableBetaLanguages = $versionLngs[$_SESSION['clientVersionNumber']]["betaLanguages"];
-			unset($versionLngs[$_SESSION['clientVersionNumber']]["betaLanguages"]);
 			$versionLngCount = sizeof($versionLngs[$_SESSION['clientVersionNumber']]);
 			for($i = 0; $i < $versionLngCount; $i++){
 				if(!in_array($versionLngs[$_SESSION['clientVersionNumber']][$i], $installAbleLanguages)){
@@ -28,23 +26,15 @@ class languages extends languagesBase{
 
 		// languages not existing for this version
 		$missingLanguages = array();
-		$missingBetaLanguages = array();
 		$allLanguages = languages::getExistingLanguages();
-		for($i = 0; $i < sizeof($allLanguages); $i++){
-			if(!in_array($allLanguages[$i], $installAbleLanguages)){
-				if(in_array($allLanguages[$i], $installableBetaLanguages)){
-					$missingBetaLanguages[] = $allLanguages[$i];
-				} else {
-					$missingLanguages[] = $allLanguages[$i];
-				}
+		foreach($allLanguages as $lang){
+			if(!in_array($lang, $installAbleLanguages)){
+					$missingLanguages[] = $lang;
 			}
 		}
-		error_log(print_r($missingBetaLanguages, 1));
 
 		$GLOBALS['updateServerTemplateData']['installAbleLanguages'] = $installAbleLanguages;
 		$GLOBALS['updateServerTemplateData']['missingLanguages'] = $missingLanguages;
-		$GLOBALS['updateServerTemplateData']['installableBetaLanguages'] = $installableBetaLanguages;
-		$GLOBALS['updateServerTemplateData']['missingBetaLanguages'] = $missingBetaLanguages;
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/languages/selectLanguages.inc.php');
 		return updateUtil::getResponseString($ret);
 	}

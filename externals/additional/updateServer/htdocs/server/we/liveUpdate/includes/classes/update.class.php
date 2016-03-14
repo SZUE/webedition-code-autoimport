@@ -37,11 +37,11 @@ class update extends updateBase{
 		$svnrevision = update::getSubVersion($version);
 		$versiontype = update::getVersionType($version);
 		$versionbranch = update::getOnlyVersionBranch($version);
-		$GLOBALS['DB_WE']->query("UPDATE " . UPDATELOG_TABLE . " SET updatedVersion = '" . $version . "', updatedVersionName = '" . $versionname . "', updatedVersionStatus = '" . $versiontype . "', updatedSvnRevision = '" . $svnrevision . "', updatedVersionBranch = '" . $versionbranch . "', success = '1' WHERE id = '" . $_SESSION['db_log_id'] . "'");
+		$GLOBALS['DB_WE']->query("UPDATE " . UPDATELOG_TABLE . " SET updatedVersion = '" . $version . "', updatedVersionName = '" . $versionname . "', updatedVersionStatus = '" . $versiontype . "', updatedSvnRevision = '" . $svnrevision . "', updatedVersionBranch = '" . $versionbranch . "', success = '1' WHERE id='" . $_SESSION['db_log_id'] . "'");
 	}
 
 	static function updateLogFinish($success){
-		$GLOBALS['DB_WE']->query("UPDATE " . UPDATELOG_TABLE . " SET success = '" . $success . "' WHERE id = '" . $_SESSION['db_log_id'] . "'");
+		$GLOBALS['DB_WE']->query('UPDATE ' . UPDATELOG_TABLE . " SET success='" . $success . "' WHERE id='" . $_SESSION['db_log_id'] . "'");
 	}
 
 	static function checkRequirements(&$output, $pcreV, $phpextensionsstring, $phpV, $mysqlV = ''){
@@ -172,7 +172,7 @@ class update extends updateBase{
 	 * @return boolean
 	 */
 	static function checkForUpdate(){
-		$row = $GLOBALS['DB_WE']->getHash('SELECT MAX(version) AS maxVersion FROM ' . VERSION_TABLE . (isset($_SESSION['testUpdate']) ? '' : ' WHERE liveStatus="live"'));
+		$row = $GLOBALS['DB_WE']->getHash('SELECT MAX(version) AS maxVersion FROM ' . VERSION_TABLE . (isset($_SESSION['testUpdate']) ? '' : ' WHERE type="release"'));
 
 		return ($row['maxVersion'] > $_SESSION['clientVersionNumber'] ?
 				$row['maxVersion'] :
@@ -180,16 +180,16 @@ class update extends updateBase{
 	}
 
 	static function getMaxVersionNumber(){
-		$row = $GLOBALS['DB_WE']->getHash('SELECT MAX(version) AS maxVersion FROM ' . VERSION_TABLE . (isset($_SESSION['testUpdate']) ? '' : ' WHERE liveStatus="live"'));
+		$row = $GLOBALS['DB_WE']->getHash('SELECT MAX(version) AS maxVersion FROM ' . VERSION_TABLE . (isset($_SESSION['testUpdate']) ? '' : ' WHERE type="release"'));
 
 		return $GLOBALS['DB_WE']->getHash('SELECT version, svnrevision,type,typeversion,branch,versname FROM ' . VERSION_TABLE .
-				(isset($_SESSION['testUpdate']) ? ' WHERE version=' . $row['maxVersion'] : ' WHERE liveStatus="live" AND version=' . $row['maxVersion']));
+				(isset($_SESSION['testUpdate']) ? ' WHERE version=' . $row['maxVersion'] : ' WHERE type="release" AND version=' . $row['maxVersion']));
 	}
 
 	static function getMaxVersionNumberForBranch($branch){
 		$row = $GLOBALS['DB_WE']->getHash('SELECT MAX(version) AS maxVersion FROM `' . VERSION_TABLE . '` WHERE ' . (isset($_SESSION['testUpdate']) ?
 				" `branch`='" . $branch . "'" :
-				" liveStatus='live' AND `branch`='" . $branch . "'"));
+				" type='release' AND `branch`='" . $branch . "'"));
 
 		return intval($row['maxVersion']);
 	}
@@ -199,14 +199,14 @@ class update extends updateBase{
 
 		return $GLOBALS['DB_WE']->getHash('SELECT version, svnrevision,type,typeversion,branch,versname FROM `' . VERSION_TABLE . '` WHERE ' . (isset($_SESSION['testUpdate']) ?
 					" `version`='" . $maxVersion . "' AND `branch`='" . $branch . "'" :
-					" liveStatus='live' AND `version`='" . $maxVersion . "' AND `branch`='" . $branch . "'"));
+					" type='release' AND `version`='" . $maxVersion . "' AND `branch`='" . $branch . "'"));
 	}
 
 	static function getFormattedVersionStringFromWeVersion($showBranch = false, $showBranchIfTrunk = false){
 		$versionArray = array(
 			'version' => $_SESSION['clientVersionNumber'],
-			'versname' => $_SESSION['clientVersionName'],
-			'svnrevision' => ($_SESSION['clientSubVersion'] == '0000' || $_SESSION['clientSubVersion'] == '') ? 'n.n.' : $_SESSION['clientSubVersion'],
+			'versname' => empty($_SESSION['clientVersionName']) ? '' : $_SESSION['clientVersionName'],
+			'svnrevision' => (empty($_SESSION['clientSubVersion']) || $_SESSION['clientSubVersion'] == '0000' ) ? 'n.n.' : $_SESSION['clientSubVersion'],
 			'type' => $_SESSION['clientVersionSupp'],
 			'typeversion' => $_SESSION['clientVersionSuppVersion'],
 			'branch' => $_SESSION['clientVersionBranch'],
@@ -299,8 +299,7 @@ class update extends updateBase{
 	 * @return string
 	 */
 	static function getNoUpdateForLanguagesResponse(){
-		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/update/noUpdateForLanguages.inc.php');
-		return updateUtil::getResponseString($ret);
+		return updateUtil::getResponseString(updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/update/noUpdateForLanguages.inc.php'));
 	}
 
 	/**
