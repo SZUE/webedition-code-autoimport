@@ -687,11 +687,11 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 	}
 
 	function getHTMLCopy(){
-		$cmd1=document.we_form.elements.copyid.value;
+		$cmd1 = 'document.we_form.elements.copyid.value';
 
 		return we_html_element::htmlHiddens(array('copyid' => 0,
 				'copyid_text' => "")) .
-			we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_file',".$cmd1.",'" . NEWSLETTER_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd('document.we_form.elements.copyid_text.value') . "','" . we_base_request::encCmd("opener.we_cmd('copy_newsletter');") . "','','" . get_ws(NEWSLETTER_TABLE) . "')");
+			we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_file'," . $cmd1 . ",'" . NEWSLETTER_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd('document.we_form.elements.copyid_text.value') . "','" . we_base_request::encCmd("opener.we_cmd('copy_newsletter');") . "','','" . get_ws(NEWSLETTER_TABLE) . "')");
 	}
 
 	function getHTMLCustomer($group){
