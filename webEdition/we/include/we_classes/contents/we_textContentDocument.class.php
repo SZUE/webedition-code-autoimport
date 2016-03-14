@@ -28,7 +28,7 @@ abstract class we_textContentDocument extends we_textDocument{
 	public $DocType = '';
 
 	/* these fields are never read from temporary tables */
-	const primaryDBFiels = 'Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners,WebUserID,Language,temp_template_id,DocType,TemplateID,OwnersReadOnly,temp_category,urlMap,viewType,IsProtected';
+	const primaryDBFiels = 'Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners,WebUserID,Language,temp_template_id,DocType,TemplateID,OwnersReadOnly,temp_category,urlMap,viewType,IsProtected,CreationDate,RebuildDate';
 
 	function __construct(){
 		parent::__construct();
@@ -38,7 +38,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		$this->IsTextContentDoc = true;
 		if(isWE()){
 			if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
-				array_push($this->persistent_slots, 'FromOk', 'ToOk', 'From', 'To');
+				array_push($this->persistent_slots, 'From', 'To');
 			}
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PREVIEW, we_base_constants::WE_EDITPAGE_SCHEDULER);
 		}
@@ -197,7 +197,7 @@ abstract class we_textContentDocument extends we_textDocument{
 				$sessDat = we_temporaryDocument::load($this->ID, $this->Table, $this->DB_WE);
 				if($sessDat){
 					$this->i_initSerializedDat($sessDat);
-					$this->i_getPersistentSlotsFromDB(self::primaryDBFiels);
+					$this->i_getPersistentSlotsFromDB(/*self::primaryDBFiels*/);
 					$this->OldPath = $this->Path;
 				} else {
 					$this->we_load(we_class::LOAD_MAID_DB);
@@ -210,7 +210,7 @@ abstract class we_textContentDocument extends we_textDocument{
 				if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 					$sessDat = we_unserialize(f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . ' AND ClassName="' . $this->DB_WE->escape($this->ClassName) . '" AND task="' . we_schedpro::SCHEDULE_FROM . '"', '', $this->DB_WE));
 					if($sessDat && $this->i_initSerializedDat($sessDat)){
-						$this->i_getPersistentSlotsFromDB(self::primaryDBFiels);
+						$this->i_getPersistentSlotsFromDB(/*self::primaryDBFiels*/);
 						$this->OldPath = $this->Path;
 
 						break;
@@ -367,7 +367,7 @@ abstract class we_textContentDocument extends we_textDocument{
 
 	function we_resaveTemporaryTable(){
 		$saveArr = array();
-		$this->saveInSession($saveArr);
+		$this->saveInSession($saveArr, true);
 		if(($this->ModDate > $this->Published) && $this->Published){
 			return (!we_temporaryDocument::isInTempDB($this->ID, $this->Table, $this->DB_WE) ?
 							we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE) :
@@ -391,7 +391,7 @@ abstract class we_textContentDocument extends we_textDocument{
 
 	private function i_saveTmp($write = true){
 		$saveArr = array();
-		$this->saveInSession($saveArr);
+		$this->saveInSession($saveArr, true);
 		if(!we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE)){
 			return false;
 		}

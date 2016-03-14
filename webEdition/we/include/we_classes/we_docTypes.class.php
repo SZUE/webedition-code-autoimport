@@ -70,7 +70,7 @@ class we_docTypes extends we_class{
 		return parent::we_save(false);
 	}
 
-	function saveInSession(&$save){
+	function saveInSession(&$save, $toFile = false){
 		$save = array(array());
 		foreach($this->persistent_slots as $cur){
 			$save[0][$cur] = $this->{$cur};

@@ -80,7 +80,7 @@ $iframe = '<iframe name="showthumbs" id="showthumbs" src="' . WEBEDITION_DIR . '
 
 $_thumbs[] = array("headline" => "", "html" => $iframe);
 
-$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:add_thumbnails();", false, 0, 0, "", "", !$_enabled_buttons, false);
+$addbut = we_html_button::create_button(we_html_button::OK, "javascript:add_thumbnails();", false, 0, 0, "", "", !$_enabled_buttons, false);
 $cancelbut = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
 
 $buttons = we_html_button::position_yes_no_cancel($addbut, null, $cancelbut);

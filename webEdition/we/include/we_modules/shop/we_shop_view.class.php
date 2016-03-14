@@ -146,7 +146,8 @@ function submitForm(target,action,method) {
 			//         'orderCustomerFields' => array('fieldname', ...) )
 		} else {
 			//unsupported
-			t_e('unsupported Shop-Settings found');
+			t_e('unsupported Shop-Settings found. Please open settings and readjust the settings of the shop module.');
+			$fields = array();
 		}
 
 		$_customer = $this->getOrderCustomerData(we_base_request::_(we_base_request::INT, 'bid', 0), $fields);
@@ -1302,7 +1303,6 @@ function CalendarChanged(calObject) {
 		}
 	}
 
-
 	function processVariables(){
 		if(isset($_SESSION['weS']['raw_session'])){
 			$this->raw = we_unserialize($_SESSION['weS']['raw_session']);
@@ -1317,20 +1317,20 @@ function CalendarChanged(calObject) {
 			}
 		}
 
-		if(isset($_REQUEST['page']))
+		if(isset($_REQUEST['page'])){
 			if(isset($_REQUEST['page'])){
 				$this->page = $_REQUEST['page'];
 			}
+		}
 	}
 
 	//some functions from edit_shop_properties
 
 	private static function getFieldFromShoparticle(array $array, $name, $length = 0){
 		$val = ( isset($array['we_' . $name]) ? $array['we_' . $name] : (isset($array[$name]) ? $array[$name] : '' ) );
-
-		return ($length && ($length < strlen($val)) ?
-				substr($val, 0, $length) . '...' :
-				$val);
+		return $length && strlen($val) > $length ?
+			'<span ' . ($length ? 'class="cutText" title="' . $val . '" style="max-width: ' . $length . 'em;"' : '') . '>' . $val . '</span>' :
+			$val;
 	}
 
 	private function getOrderCustomerData($orderId, array $strFelder = array()){

@@ -1045,6 +1045,7 @@ apps/toolfactory/hook/custom_hooks/dummy
 !images/button
 !images/box
 !images/backgrounds/doclistBg
+!fragments
 !eplugin
 !editors/template/editor
 !editors/template/CodeMirror/theme

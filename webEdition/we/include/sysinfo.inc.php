@@ -160,7 +160,7 @@ function getOK($message = '', $value = ''){
 $_install_dir = '<abbr title="' . $_SERVER['DOCUMENT_ROOT'] . '">' . we_base_util::shortenPath(WEBEDITION_PATH, 35) . '</abbr>';
 
 $weVersion = WE_VERSION .
-	(defined('WE_SVNREV') && WE_SVNREV != '0000' ? ' (SVN-Revision: ' . WE_SVNREV . ((defined('WE_VERSION_BRANCH') && WE_VERSION_BRANCH != 'trunk') ? '|' . WE_VERSION_BRANCH : '') . ')' : '') .
+	(defined('WE_SVNREV') && WE_SVNREV != '0000' ? ' (SVN-Revisionu: ' . WE_SVNREV . (defined('WE_VERSION_HOTFIX_NR') && WE_VERSION_HOTFIX_NR ? ' , h' . WE_VERSION_HOTFIX_NR . ',' : '') . ((defined('WE_VERSION_BRANCH') && WE_VERSION_BRANCH != 'trunk') ? ' ' . WE_VERSION_BRANCH : '') . ')' : '') .
 	(defined('WE_VERSION_SUPP') && WE_VERSION_SUPP ? ' ' . g_l('global', '[' . WE_VERSION_SUPP . ']') : '') .
 	(defined('WE_VERSION_SUPP_VERSION') && WE_VERSION_SUPP_VERSION ? WE_VERSION_SUPP_VERSION : '');
 

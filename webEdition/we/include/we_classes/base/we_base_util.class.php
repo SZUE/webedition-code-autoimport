@@ -406,7 +406,7 @@ abstract class we_base_util{
 	 * @param string $ext the extension of the file
 	 * @param string $filepath path of the file
 	 * @param enum $method the method how to determine the type
-	 * @param booö $handleCompressed if true compressed data type is not returned as "application/compressed", so the real type should be determined
+	 * @param bool $handleCompressed if true compressed data type is not returned as "application/compressed", so the real type should be determined
 	 * @return boolean
 	 */
 	public static function getMimeType($ext, $filepath = '', $method = self::MIME_BY_HEAD_THEN_EXTENSION, $handleCompressed = false){

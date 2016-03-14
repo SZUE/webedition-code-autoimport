@@ -30,6 +30,7 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 	protected $doImport = true;
 	protected $contentType = array();
 	protected $posBtnUpload = 'bottom';
+	//protected $predefinedConfigs = array();
 
 	public function __construct($contentType = array(), $extensions = '', $doImport = true){
 		parent::__construct($contentType, $extensions);
@@ -176,6 +177,7 @@ doOnImportSuccess = function(importedDocument){
 			self.close();
 		case "weimg":
 			break;
+		/*
 		case "imagedialog":
 			alert("import done: " + importedDocument.path + " (id: " + importedDocument.id + ")");
 			we_FileUpload.reset();
@@ -186,6 +188,17 @@ doOnImportSuccess = function(importedDocument){
 			document.getElementById("yuiAcResultImage").value = importedDocument.id;
 			document.getElementById("yuiAcInputImage").value = importedDocument.path;
 			imageChanged();
+			break;
+		*/
+		case "imagedialog_popup":
+			alert("import done: " + importedDocument.path + " (id: " + importedDocument.id + ")");
+			we_FileUpload.reset();
+			top.opener.document.getElementById("imageInt").style.display="block";
+			top.opener.document.getElementById("imageExt").style.display="none";
+			top.opener.document.getElementById("yuiAcResultImage").value = importedDocument.id;
+			top.opener.document.getElementById("yuiAcInputImage").value = importedDocument.path;
+			top.opener.imageChanged();
+			top.close();
 			break;
 		default:
 			// do nothing

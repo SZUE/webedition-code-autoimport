@@ -44,27 +44,18 @@ body{
 		display: inline-block;
 		cursor: pointer;
 		white-space: nowrap;
-		&.tab{
-			border-bottom: none;
-			border-right: 1px solid $DarkBlue;
-			display: inline-block;
-			background: $DarkGrey;
-			color: $LightGrey;
-			padding: 0px 5px;
-			&:hover{
-				border-bottom: none;
-				border-right: 1px solid $DarkBlue;
-				background: $DarkGrey;
-				color: $LightGrey;
-				padding: 0px 5px;
-			}
+		border-right: 1px solid $DarkBlue;
+		border-bottom: none;
+		padding: 0px 5px;
+		background: $DarkGrey;
+		color: $LightGrey;
+		&.tab:hover{
+			/*			background: lighten($DarkGrey,20%);
+						color: lighten($LightGrey,20%);*/
 		}
 		&.tabActive{
-			border-right: 1px solid $DarkBlue;
-			border-bottom: none;
 			background-color: $Grey;
 			color: #000000;
-			padding: 0px 5px;
 		}
 	}
 
@@ -74,6 +65,11 @@ body{
 			padding:0px;
 			font-size: $smallfont;
 			vertical-align:middle;
+			//FIXME: remove problem in 7.0 with contrast
+			&.notpublished,
+			&.changed{
+				color: inherit;
+			}
 		}
 		&.spacer{
 			font-size: $fafontBig;
@@ -84,7 +80,7 @@ body{
 			padding: 0px .5ex;
 			color: $LightGrey;
 			&:hover i.fa-close{
-				color:$LightGrey;
+				color:black;
 			}
 		}
 		&.status{
@@ -94,6 +90,11 @@ body{
 			span.fileicon{
 				height: 20px;
 				color: $LightGrey;
+				//change some icon colors
+				.fa-th-large,
+				.fa-archive{
+					color: white;
+				}
 			}
 		}
 		&.trailing{

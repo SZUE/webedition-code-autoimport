@@ -110,6 +110,7 @@ class we_fragment_base{
 			if(!we_base_file::save($filename, we_serialize($this->alldata, SERIALIZE_JSON))){
 				exit('Could not write: ' . $filename);
 			}
+			we_base_file::insertIntoCleanUp($filename, 10 * 3600);
 		}
 		$this->numberOfTasks = count($this->alldata);
 		static::printHeader();

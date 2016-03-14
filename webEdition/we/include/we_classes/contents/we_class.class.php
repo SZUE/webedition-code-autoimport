@@ -114,7 +114,7 @@ abstract class we_class{
 
 	/* must be overwritten by child */
 
-	function saveInSession(&$save){
+	function saveInSession(&$save, $toFile = false){
 
 	}
 

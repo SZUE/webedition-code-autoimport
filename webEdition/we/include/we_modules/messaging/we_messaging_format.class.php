@@ -98,7 +98,7 @@ class we_messaging_format extends we_class{
 		}
 	}
 
-	function saveInSession(&$save){
+	function saveInSession(&$save, $toFile = false){
 		$save = array(
 			array(),
 			$this->elements

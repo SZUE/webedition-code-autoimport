@@ -233,19 +233,15 @@ function we_saveCustomerImages(){
 
 						$imgDocument = new we_imageDocument();
 
-						if($imgId){
-							// document has already an image
-							// so change binary data
+						if($imgId){// document has already an image, so change binary data
 							$imgDocument->initByID($imgId);
+						}else{// set path for new image
+							$imgDocument->setParentID($_SESSION['webuser']['imgtmp'][$imgName]['parentid']);
 						}
 
 						$imgDocument->Filename = $_fileName;
 						$imgDocument->Extension = $_extension;
 						$imgDocument->Text = $_text;
-
-						if(!$imgId){
-							$imgDocument->setParentID($_SESSION['webuser']['imgtmp'][$imgName]['parentid']);
-						}
 
 						$imgDocument->Path = $imgDocument->getParentPath() . (($imgDocument->getParentPath() != '/') ? '/' : '') . $imgDocument->Text;
 

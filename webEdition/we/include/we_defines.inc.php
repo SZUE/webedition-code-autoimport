@@ -66,7 +66,7 @@ define('BACKUP_PATH', $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR);
 define('WE_CACHE_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_CACHE_DIR);
 
 //paths without "DIRS"
-define('WE_FRAGMENT_PATH', WEBEDITION_PATH . 'fragments/');
+define('WE_FRAGMENT_PATH', TEMP_PATH . 'fragments/');
 define('ZENDCACHE_PATH', WE_CACHE_PATH); //FIXME: remove
 
 include_once (WE_INCLUDES_PATH . 'we_version.php');

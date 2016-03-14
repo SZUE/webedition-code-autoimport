@@ -280,7 +280,7 @@ body.radient{
 		position: absolute;
 		top: 0px;
 		bottom: 0px;
-		border-left: 1px solid $Grey;
+		border-left: 1px solid $DarkBlue;
 		overflow: hidden;
 		iframe{
 			border:0px;
@@ -673,16 +673,14 @@ shopContentfontGreySmall,
 	max-width:50em;
 }
 
-.changed,
-a.changed{ /*elements which are saved & published*/
-	color: #3366CC;
+a.changed,
+a.notpublished{
 	cursor: pointer;
 }
 
-.notpublished,
-a.notpublished {
-	color: red;
-	cursor: pointer;
+.changed,
+a.changed{ /*elements which are saved & published*/
+	color: $ModifiedColor;
 }
 
 .selector a {
@@ -697,11 +695,12 @@ a.notpublished {
 	text-decoration:none;
 }
 
+a.notpublished,
 .notpublished,
 .highlightElementChanged,
 .shopNotPayed
 {
-	color: red !important;
+	color: $NotPublishedColor;
 	a,a:visited{
 		color:inherit;
 	}
@@ -1087,6 +1086,7 @@ table.error{
 	float:left;
 	&:hover {
 		background: linear-gradient(to bottom, #345881, #284a70) transparent !important;
+		cursor: pointer;
 	}
 	i{
 		color: $White;
@@ -1386,13 +1386,20 @@ table.footertable{
 	padding-left: 10px;
 }
 
-div.cutText,
-span.cutText{
-	text-overflow: ellipsis;
-	overflow: hidden;
-	white-space: nowrap;
-	display:inline-block;
-	max-width:10em;
+div,
+span{
+	&.cutText,
+	&.cutTextLeft{
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+		display:inline-block;
+		max-width:10em;
+	}
+	&.cutTextLeft{
+    direction:rtl;
+    text-align:left;
+	}
 }
 
 .we-state-green{
@@ -1930,7 +1937,14 @@ div.collection-content{
 		/* background-color: #f5f5f5; */
 		cursor: default;
 
+		.btn_edit,
+		.btn_addFromTree{
+			/*margin-top: 5px;*/
+		}
+
 		td{
+			vertical-align: top;
+
 			&.colNum{
 				width: 46px;
 				padding: 0 16px 0 0;
@@ -1962,7 +1976,8 @@ div.collection-content{
 				cursor: default;
 
 				div.divBtnSelect{
-					padding: 28px 0 0 0;
+					/*padding: 28px 0 0 0;*/
+					padding: 0px;
 					display: none;
 				}
 
@@ -1979,7 +1994,7 @@ div.collection-content{
 
 			&.innerDiv{
 				float: left;
-				width: 20px;
+				/*width: 20px;*/
 				padding: 0px 10px 3px 6px;
 				cursor: default;
 				white-space: nowrap;
@@ -1989,6 +2004,32 @@ div.collection-content{
 				i{
 					font-size: $fafontBig;
 				}
+			}
+		}
+	}
+
+	table.minimalListItem{
+		.wetextinput{
+			margin: 0;
+			/*margin-top: 3px;*/
+		}
+		tr.rowAttribsMeta{
+			display: none
+		}
+		td.colPreview {
+			width: 60px;
+			padding: 3px 9px 3px 0;
+		}
+		div.previewDiv{
+			width: 50px;
+			height: 30px;
+			span{
+				text-align: center;
+				font-size: 14px;
+				padding: 4px;
+			}
+			div.divBtnSelect{
+				padding: 2px 0 0 0;
 			}
 		}
 	}
@@ -2129,5 +2170,40 @@ div.collection-content{
 		border-top-color: red;
 		border-width: 16px;
 		margin-left: -16px;
+	}
+}
+
+.editorThumbnailsFilter table{
+	width: 500px;
+	td{
+		height: 16px;
+	}
+	label.elementText{
+		display: inline-block;
+	}
+}
+
+.editorThumbnailsOptions{
+	.inputs{
+		margin-top: 20px;
+	}
+
+	.wetextinput,
+	select{
+		width: 110px;
+		margin-bottom: 2px;
+	}
+
+	td {
+		padding-bottom: 2px;
+		padding-right: 10px;
+		vertical-align: top;
+		label.elementText{
+			display: inline-block;
+		}
+	}
+
+	label.elementText{
+		display: inline-block;
 	}
 }

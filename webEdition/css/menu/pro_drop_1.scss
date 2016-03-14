@@ -103,6 +103,7 @@ way to fit your requirements.
 				top: $menuHeight;
 				background: #284a70;
 				/*border: 1px solid #a0a0a0;*/
+				border-left: 1px solid $MiddleBlue;
 				word-wrap: break-word;
 				width: 16em;
 				height: auto;
@@ -110,7 +111,7 @@ way to fit your requirements.
 				margin-top: 0;
 				padding: 0 2px 4px 2px;
 				border-top-left-radius: 0;
-				/*box-shadow: 3px 3px 10px #bbb; */
+				box-shadow: 2px 2px 3px $DarkGrey; 
 				li:hover ul,
 					li:hover ul li:hover ul,
 					li:hover ul li:hover ul li:hover ul,

@@ -197,11 +197,11 @@ var i = 0;';
 				if(!(( $nf === 'rename_folder' || $nf === 'rename_file') && ($entry == $sid) && ($isfolder))){
 					if($indb){
 						if($isfolder){
-							$onclick = ' onclick="tout=setTimeout(function(){if(!wasdblclick){doClick(\\\'' . $entry . '\\\',1,' . ($indb ? 1 : 0) . ');}else{wasdblclick=false;}},300);return true;"';
+							$onclick = ' onclick="tout=setTimeout(function(){if(!wasdblclick){doClick(\'' . $entry . '\',1,' . ($indb ? 1 : 0) . ');}else{wasdblclick=false;}},300);return true;"';
 							$ondblclick = 'onDblClick="wasdblclick=true;clearTimeout(tout);doClick(\'' . $entry . '\',1,' . ($indb ? 1 : 0) . ');return true;"';
 							$_cursor = 'cursor:pointer;';
 						} elseif($selectOwn){
-							$onclick = 'onclick="if(old==\'' . $entry . '\') mk=setTimeout(function(){if(!wasdblclick){ clickEditFile(old);}},500); old=\'' . $entry . '\';doClick(\'' . $entry . '\',0,0);return true;"';
+							$onclick = 'onclick="if(old==\'' . $entry . '\') mk=setTimeout(function(){if(!wasdblclick){clickEditFile(old);}},500); old=\'' . $entry . '\';doClick(\'' . $entry . '\',0,0);return true;"';
 							$_cursor = 'cursor:pointer;';
 						}
 					} else if(!$indb){
@@ -209,7 +209,7 @@ var i = 0;';
 							$onclick = 'onclick="if(old==\'' . $entry . '\') mk=setTimeout(function(){if(!wasdblclick){clickEdit(old);}},500); old=\'' . $entry . '\';doSelectFolder(\'' . $entry . '\',' . ($indb ? 1 : 0) . ');"';
 							$ondblclick = 'onDblClick="wasdblclick=true;clearTimeout(tout);clearTimeout(mk);doClick(\'' . $entry . '\',1,0);return true;"';
 						} else {
-							$onclick = 'onclick="if(old==\'' . $entry . '\') mk=setTimeout(function(){if(!wasdblclick){ clickEditFile(old);}},500); old=\'' . $entry . '\';doClick(\'' . $entry . '\',0,0);return true;"';
+							$onclick = 'onclick="if(old==\'' . $entry . '\') mk=setTimeout(function(){if(!wasdblclick){clickEditFile(old);}},500); old=\'' . $entry . '\';doClick(\'' . $entry . '\',0,0);return true;"';
 						}
 						$_cursor = 'cursor:pointer;';
 					}

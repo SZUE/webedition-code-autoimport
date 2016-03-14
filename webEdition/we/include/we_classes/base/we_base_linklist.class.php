@@ -506,7 +506,7 @@ class we_base_linklist{
 
 	function upLink($nr){
 		if($nr > 0 && $nr < count($this->listArray)){
-			$temp = $this->listArray[$nr - 1];
+			$temp = isset($this->listArray[$nr - 1]) ? $this->listArray[$nr - 1] : '';
 			$this->listArray[$nr - 1] = $this->listArray[$nr];
 			$this->listArray[$nr] = $temp;
 		}
@@ -514,7 +514,7 @@ class we_base_linklist{
 
 	function downLink($nr){
 		if($nr >= 0 && ($nr + 1) < count($this->listArray)){
-			$temp = $this->listArray[$nr + 1];
+			$temp = isset($this->listArray[$nr + 1]) ? $this->listArray[$nr + 1] : '';
 			$this->listArray[$nr + 1] = $this->listArray[$nr];
 			$this->listArray[$nr] = $temp;
 		}
