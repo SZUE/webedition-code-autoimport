@@ -29,16 +29,20 @@ function getInfoTable($infoArr){
 		return;
 	}
 	$redTdir = ltrim(TEMPLATES_DIR, '/');
+	$realTemplate = realpath(TEMPLATES_PATH);
 	$droot = rtrim($_SERVER['DOCUMENT_ROOT'], '/');
+	$realDroot = realpath($_SERVER['DOCUMENT_ROOT']);
 	//recode data - this data might be different than the rest
 	foreach($infoArr as $val => &$tmp){
 		$extra = '';
 		switch($val){
 			case 'File':
-				if(strpos($tmp, TEMPLATES_PATH) === 0 || strpos($tmp, $redTdir) === 0){
-					$id = path_to_id(str_replace(array(TEMPLATES_PATH, $redTdir, '.php'), array('', '', '.tmpl'), $tmp), TEMPLATES_TABLE, $GLOBALS['DB_WE']);
+				//FIXME: check if we can ommit realpath, since logging was changed
+				//FIXME2: what about SECURITY_REPL_DOC_ROOT
+				if(strpos($tmp, TEMPLATES_PATH) === 0 || strpos($tmp, $realTemplate) === 0 || strpos($tmp, $redTdir) === 0){
+					$id = path_to_id(str_replace(array(TEMPLATES_PATH, $realTemplate, $redTdir, '.php'), array('', '', '', '.tmpl'), $tmp), TEMPLATES_TABLE, $GLOBALS['DB_WE']);
 					$extra = $id ? we_html_button::create_button(we_html_button::EDIT, 'javascript:WE().layout.weEditorFrameController.openDocument(WE().consts.tables.TEMPLATES_TABLE, ' . $id . ', WE().consts.contentTypes.TEMPLATE);') : '';
-				} elseif(($id = path_to_id(str_replace($droot, '', $tmp), FILE_TABLE, $GLOBALS['DB_WE']))){
+				} elseif(($id = path_to_id(str_replace(array($realDroot, $droot), '', $tmp), FILE_TABLE, $GLOBALS['DB_WE']))){
 					$extra = $id ? we_html_button::create_button(we_html_button::EDIT, 'javascript:WE().layout.weEditorFrameController.openDocument(WE().consts.tables.FILE_TABLE, ' . $id . ');') : '';
 				}
 		}

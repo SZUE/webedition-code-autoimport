@@ -261,7 +261,7 @@ class we_dialog_image extends we_dialog_base{
 		));
 		$this->weFileupload->setPositionBtnUpload('top');
 	}
-	 * 
+	 *
 	 */
 
 	/* use parent
@@ -357,7 +357,7 @@ class we_dialog_image extends we_dialog_base{
 			$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML);
 			$yuiSuggest->setInput("we_dialog_args[longdescsrc]", str_replace('"', '&quot;', (isset($this->args["longdescsrc"]) ? $this->args["longdescsrc"] : "")));
 			$yuiSuggest->setLabel(g_l('weClass', '[longdesc_text]'));
-			$yuiSuggest->setDoOnItemSelect();
+			$yuiSuggest->setDoOnItemSelect('');
 			$yuiSuggest->setMaxResults(7);
 			$yuiSuggest->setMayBeEmpty(true);
 			$yuiSuggest->setResult("we_dialog_args[longdescid]", (isset($this->args["longdescid"]) ? $this->args["longdescid"] : ""));
@@ -365,7 +365,7 @@ class we_dialog_image extends we_dialog_base{
 			$yuiSuggest->setWidth(315);
 			$yuiSuggest->setSelectButton($but);
 			$yuiSuggest->setTrashButton($but2);
-			$yuiSuggest->setAdditionalButton();
+			$yuiSuggest->setAdditionalButton('');
 
 			$_longdesc = $yuiSuggest->getHTML();
 		}
@@ -420,7 +420,7 @@ class we_dialog_image extends we_dialog_base{
 			'forceRightHeadline' => false,
 			'noline' => true
 		);
-		 * 
+		 *
 		 */
 		$parts[] = array();
 		$parts[] = array('headline' => g_l('wysiwyg', '[image][formatting]'),
