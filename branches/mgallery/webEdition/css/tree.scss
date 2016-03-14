@@ -120,7 +120,7 @@
 	.notpublished,
 	.checked_notpublished,
 	.red{
-		color:red !important;
+		color:$NotPublishedColor !important;
 	}
 	.bold{
 		font-family: $weFontBold;
@@ -153,9 +153,7 @@
 		.group a,
 		.selected_item a,
 		.selected_group a,
-		.notpublished a,.selected_open_group a,
-		.selected_notpublished_item a ,
-		.selected_changed_item a,
+		.notpublished a,
 		.checked_item a,
 		.checked_group a,
 		.checked_notpublished a,
@@ -185,12 +183,16 @@
 	.checked_item,
 	.checked_group,
 	.checked_notpublished{
-		/*color: $ModifiedColor;*/
 		color: $White;
-		/*background-color: #D4DBFA;*/
-		background-color: $MiddleBlue;
+		background-color: $DarkGrey;//$MiddleBlue;
 		padding: 2px 5px;
 		cursor: pointer;
+	}
+	.selected_notpublished_item{
+		background-color: $NotPublishedColor;
+	}
+	.selected_changed_item{
+		background-color: $ModifiedColor;
 	}
 
 	.selected_open_group {

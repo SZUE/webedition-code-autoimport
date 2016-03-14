@@ -700,7 +700,7 @@ a.notpublished,
 .highlightElementChanged,
 .shopNotPayed
 {
-	color: red;
+	color: $NotPublishedColor;
 	a,a:visited{
 		color:inherit;
 	}
