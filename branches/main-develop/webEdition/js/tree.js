@@ -240,7 +240,7 @@ container.prototype = {
 		}
 	},
 	clickHandler: function (cur) {
-		var row = "<span ";
+		var row = '<span class="treeEntry" ';
 		var href = false;
 		var select = false;
 		if (this.selection_table == this.table && cur.id == this.selection) {
@@ -270,7 +270,7 @@ container.prototype = {
 						//close open span tag
 						">" +
 						WE().util.getTreeIcon(cur.contenttype, cur.open, cur.text.replace(/^.*\./, ".")) +
-						(cur.inschedule > 0 ? '<i class="fa fa-clock-o"></i> ' : '') +
+						(cur.inschedule > 0 ? '<i class="inscheduler fa fa-clock-o"></i>' : '') +
 						(select && href ? '<i class="fa fa-' + (cur.checked ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + cur.id + '"></i>' : '') +
 						'<label id="lab_' + cur.id + '"' + (cur.tooltip !== "" ? ' title="' + (cur.tooltip ? cur.tooltip : cur.id) + '"' : "") + ' class="' + cur.getLayout() + (cur.class ? ' ' + cur.class : '') + '">' + cur.text + "</label>" +
 						"</span><br/>";

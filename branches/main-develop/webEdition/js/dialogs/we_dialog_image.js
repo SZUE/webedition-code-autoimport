@@ -88,6 +88,9 @@ function we_cmd() {
 		case 'browse_server':
 			new (WE().util.jsWindow)(this, url, 'browse_server', -1, -1, 840, 400, true, false, true);
 			break;
+		case "we_fileupload_editor":
+			new (WE().util.jsWindow)(this, url, "we_fileupload_editor", -1, -1, 500, WE().consts.size.docSelect.height, true, true, true, true);
+			break;
 		default :
 			top.opener.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 			break;

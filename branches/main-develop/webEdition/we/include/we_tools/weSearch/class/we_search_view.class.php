@@ -794,9 +794,9 @@ WE().consts.weSearch= {
 	function makeAdditionalContentMedia($result){
 		$usedMediaLinks = $this->searchclass->getUsedMediaLinks();
 
-		if(!empty($usedMediaLinks['mediaID_' . $result['docID']])){
+		if(!empty($usedMediaLinks['accessible']['mediaID_' . $result['docID']])){
 			$out = '<table style="font-weight:normal; background-color:#fafafa;width:480px"><tr><td colspan="2" style="padding:4px 0 0 6px;"><strong>Dieses Medien-Dokument wird an folgenden Stellen referenziert:</stong></td></tr>'; // FIXME: G_L()
-			foreach($usedMediaLinks['mediaID_' . $result['docID']] as $type => $links){
+			foreach($usedMediaLinks['accessible']['mediaID_' . $result['docID']] as $type => $links){
 				$out .= '<tr><td style="padding:4px 0 0 6px;"><em>' . $type . ':</em></td></tr>';
 				foreach($links as $link){
 					$color = 'black';

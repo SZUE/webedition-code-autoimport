@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_base_file{
-
 	const SZ_HUMAN = 0;
 	const SZ_BYTE = 1;
 	const SZ_KB = 2;
@@ -58,7 +57,7 @@ abstract class we_base_file{
 					break;
 				}
 				$buffer .= $data;
-			}while(true);
+			} while(true);
 			$close($fp);
 			return $buffer;
 		}
@@ -287,17 +286,17 @@ abstract class we_base_file{
 	static function mkpath($path){
 		$path = str_replace('\\', '/', $path);
 		return (self::hasURL($path) ?
-						false :
-						($path ? self::createLocalFolderByPath($path) : false));
+				false :
+				($path ? self::createLocalFolderByPath($path) : false));
 	}
 
 	public static function insertIntoCleanUp($path, $date){
 		$DB_WE = new DB_WE();
 		$date = ($date? : 300); //make each entry last at least 300 seconds
 		$DB_WE->query('INSERT INTO ' . CLEAN_UP_TABLE . ' SET ' . we_database_base::arraySetter(array(
-					'Path' => $DB_WE->escape($path),
-					'Date' => sql_function('(NOW()+ INTERVAL ' . intval($date) . ' SECOND)'),
-				)) . ' ON DUPLICATE KEY UPDATE Date=(NOW()+ INTERVAL ' . intval($date) . ' SECOND)');
+				'Path' => $DB_WE->escape($path),
+				'Date' => sql_function('(NOW()+ INTERVAL ' . intval($date) . ' SECOND)'),
+			)) . ' ON DUPLICATE KEY UPDATE Date=(NOW()+ INTERVAL ' . intval($date) . ' SECOND)');
 	}
 
 	public static function deleteLocalFile($filename){
@@ -459,7 +458,7 @@ abstract class we_base_file{
 					if($_data_size != $_written){
 						return false;
 					}
-				}while(true);
+				} while(true);
 				$close($gzfp);
 			} else {
 				fclose($fp);
@@ -490,7 +489,7 @@ abstract class we_base_file{
 						break;
 					}
 					fwrite($fp, $data);
-				}while(true);
+				} while(true);
 				fclose($fp);
 			} else {
 				gzclose($gzfp);
@@ -618,7 +617,7 @@ abstract class we_base_file{
 		}
 		if($cleanSessFiles){
 			$seesID = session_id();
-			$files = $db->getAllq('SELECT Path FROM ' . CLEAN_UP_TABLE . ' WHERE Path LIKE "%' . $GLOBALS['DB_WE']->escape($seesID) . '%"',true);
+			$files = $db->getAllq('SELECT Path FROM ' . CLEAN_UP_TABLE . ' WHERE Path LIKE "%' . $GLOBALS['DB_WE']->escape($seesID) . '%"', true);
 			foreach($files as $file){
 				if(file_exists($file)){
 					self::deleteLocalFile($file);
@@ -632,6 +631,7 @@ abstract class we_base_file{
 				case '.':
 				case '..':
 				case '.htaccess':
+				case 'fragments':
 					break;
 				default:
 					$foo = TEMP_PATH . $entry;
@@ -646,27 +646,25 @@ abstract class we_base_file{
 		}
 		$d->close();
 		$dstr = BACKUP_PATH . 'tmp/';
-		if(self::checkAndMakeFolder($dstr)){
-			$d = dir($dstr);
-			while(false !== ($entry = $d->read())){
-				switch($entry){
-					case '.':
-					case '..':
-					case '.htaccess':
-						break;
-					default:
-						$foo = $dstr . $entry;
-						if(filemtime($foo) <= (time() - 300)){
-							if(is_dir($foo)){
-								self::deleteLocalFolder($foo, 1);
-							} elseif(file_exists($foo) && is_writable($foo)){
-								self::deleteLocalFile($foo);
-							}
+		$d = dir($dstr);
+		while(false !== ($entry = $d->read())){
+			switch($entry){
+				case '.':
+				case '..':
+				case '.htaccess':
+					break;
+				default:
+					$foo = $dstr . $entry;
+					if(filemtime($foo) <= (time() - 300)){
+						if(is_dir($foo)){
+							self::deleteLocalFolder($foo, 1);
+						} elseif(file_exists($foo) && is_writable($foo)){
+							self::deleteLocalFile($foo);
 						}
-				}
+					}
 			}
-			$d->close();
 		}
+		$d->close();
 
 // when a fragment task was stopped by the user, the tmp file will not be deleted! So we have to clean up
 		$d = dir(rtrim(WE_FRAGMENT_PATH, '/'));

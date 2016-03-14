@@ -52,7 +52,7 @@ class we_document extends we_root{
 
 	function __construct(){
 		parent::__construct();
-		array_push($this->persistent_slots, 'Extension', 'IsDynamic', 'Published', 'Category', 'IsSearchable', 'InGlossar', 'Language', 'schedArr', 'parseFile', 'editorSaves', 'versionsModel');
+		array_push($this->persistent_slots, 'Extension', 'IsDynamic', 'Published', 'Category', 'IsSearchable', 'InGlossar', 'Language', 'schedArr', 'parseFile', 'editorSaves');
 		$this->Table = FILE_TABLE;
 		if(isWE() || defined('WE_SIDEBAR')){
 			$this->InWebEdition = true;
@@ -669,7 +669,9 @@ class we_document extends we_root{
 // reverse function to saveInSession !
 	public function we_initSessDat($sessDat){
 		parent::we_initSessDat($sessDat);
-		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
+		/*this is bad old code
+		 *
+		 * if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 			if(
 				($day = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_day')) && ($month = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_month')) && ($year = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_year')) && ($hour = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_hour')) !== false && ($min = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_minute')) !== false){
 				$this->From = mktime($hour, $min, 0, $month, $day, $year);
@@ -678,14 +680,13 @@ class we_document extends we_root{
 				($day = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_day')) && ($month = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_month')) && ($year = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_year')) && ($hour = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_hour')) !== false && ($min = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_minute')) !== false){
 				$this->To = mktime($hour, $min, 0, $month, $day, $year);
 			}
-		}
+		}*/
 
 		if(we_base_request::_(we_base_request::INT, 'wecf_mode') !== false){
 			$this->documentCustomerFilter = we_customer_documentFilter::getCustomerFilterFromRequest($this->ID, $this->ContentType, $this->Table);
 		} else if(isset($sessDat[3])){ // init webUser from session - unserialize is only needed for old temporary docs
 			$this->documentCustomerFilter = we_unserialize($sessDat[3]);
 		}
-
 
 		$this->i_setExtensions();
 

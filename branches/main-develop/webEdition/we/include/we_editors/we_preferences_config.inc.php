@@ -112,7 +112,7 @@ $GLOBALS['configs'] = array(
 		'FORMMAIL_TRIALS' => array('Num of trials sending formmail with same ip address in span', we_base_request::INT, 3, 'FORMMAIL'),
 		'FORMMAIL_BLOCKTIME' => array('Time to block ip', we_base_request::INT, 86400, 'FORMMAIL'),
 // sidebar stuff
-		'SIDEBAR_DISABLED' => array('Sidebar is disabled', we_base_request::BOOL, true),
+		'SIDEBAR_DISABLED' => array('Sidebar is disabled', we_base_request::BOOL, false),
 		'SIDEBAR_SHOW_ON_STARTUP' => array('Show Sidebar on startup', we_base_request::BOOL, true),
 		'SIDEBAR_DEFAULT_DOCUMENT' => array('Default document id of the sidebar', we_base_request::INT, 0),
 		'SIDEBAR_DEFAULT_WIDTH' => array('Default width of the sidebar', we_base_request::INT, 300),

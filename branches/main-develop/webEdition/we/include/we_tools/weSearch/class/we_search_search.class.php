@@ -66,6 +66,7 @@ class we_search_search extends we_search_base{
 	private $collectionMetaSearches = array();
 	private $usedMedia = array();
 	private $usedMediaLinks = array();
+	private $unaccessibleMediaLinks = array();
 	public $founditems = 0;
 	public $View;
 
@@ -192,7 +193,7 @@ class we_search_search extends we_search_base{
 									}
 									$contentTypes = $contentTypes ? trim($contentTypes, ',') :
 										"'" . we_base_ContentTypes::IMAGE . "','" . we_base_ContentTypes::VIDEO . "','" . we_base_ContentTypes::QUICKTIME . "','" . we_base_ContentTypes::FLASH . "','" . we_base_ContentTypes::AUDIO . "','" . we_base_ContentTypes::APPLICATION . "'";
-									$where .= ' AND ' . $_table . '.ContentType IN (' . $contentTypes . ')';
+									$where .= ($where ? '' : 1) . ' AND ' . $_table . '.ContentType IN (' . $contentTypes . ')';
 									break;
 								case 'IsUsed':
 									$where .= $this->searchMediaLinks($searchString, $_view !== we_search_view::VIEW_ICONS);
@@ -288,7 +289,7 @@ class we_search_search extends we_search_base{
 									break;
 								default:
 									//if($whichSearch != "AdvSearch"){
-									$where .= $this->searchfor($searchString, $searchFields[$i], $location[$i], $_table);
+									$where .= ($where ? '' : 1 ) . $this->searchfor($searchString, $searchFields[$i], $location[$i], $_table);
 								//}
 							}
 						}
@@ -1117,13 +1118,14 @@ class we_search_search extends we_search_base{
 			}
 
 			// get some more information about referencing objects
-			$paths = $isModified = $isUnpublished = $ct = $onclick = $type = $mod = $isTmpPossible = array(); // TODO: make these arrays elements of one array
+			$accessible = $paths = $isModified = $isUnpublished = $ct = $onclick = $type = $mod = $isTmpPossible = array(); // TODO: make these arrays elements of one array
 			foreach($groups as $k => $v){// FIXME: ct is obslete?
 				switch(addTblPrefix($k)){
 					case FILE_TABLE:
 					case defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE';
-						$db->query('SELECT ID,Path,ModDate,Published,ContentType FROM ' . addTblPrefix($k) . ' WHERE ID IN (' . implode(',', array_unique($v)) . ')');
+						$db->query('SELECT ID,Path,ModDate,Published,ContentType FROM ' . addTblPrefix($k) . ' WHERE ID IN (' . implode(',', array_unique($v)) . ')' . getWsQueryForSelector(addTblPrefix($k)));
 						while($db->next_record()){
+							$accessible[$k][$db->f('ID')] = true;
 							$paths[$k][$db->f('ID')] = $db->f('Path');
 							$isModified[$k][$db->f('ID')] = $db->f('Published') > 0 && $db->f('ModDate') > $db->f('Published');
 							$isUnpublished[$k][$db->f('ID')] = $db->f('Published') == 0;
@@ -1136,7 +1138,7 @@ class we_search_search extends we_search_base{
 						break;
 					case TEMPLATES_TABLE:
 					case defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE':
-						$db->query('SELECT ID,Path,ContentType FROM ' . addTblPrefix($k) . ' WHERE ID IN (' . implode(',', array_unique($v)) . ')');
+						$db->query('SELECT ID,Path,ContentType FROM ' . addTblPrefix($k) . ' WHERE ID IN (' . implode(',', array_unique($v)) . ')' .getWsQueryForSelector(addTblPrefix($k)));
 						while($db->next_record()){
 							$paths[$k][$db->f('ID')] = $db->f('Path');
 							$ct[$k][$db->f('ID')] = $db->f('ContentType');
@@ -1147,7 +1149,7 @@ class we_search_search extends we_search_base{
 						}
 						break;
 					case defined('VFILE_TABLE') ? VFILE_TABLE : 'VFILE_TABLE':
-						$db->query('SELECT ID,Path FROM ' . addTblPrefix($k) . ' WHERE ID IN (' . implode(',', array_unique($v)) . ')');
+						$db->query('SELECT ID,Path FROM ' . addTblPrefix($k) . ' WHERE ID IN (' . implode(',', array_unique($v)) . ')');//no ws fo collections
 						while($db->next_record()){
 							$paths[$k][$db->f('ID')] = $db->f('Path');
 							$ct[$k][$db->f('ID')] = we_base_ContentTypes::COLLECTION;
@@ -1189,30 +1191,37 @@ class we_search_search extends we_search_base{
 			}
 
 			foreach($tmpMediaLinks as $m_id => $v){
-				$this->usedMediaLinks['mediaID_' . $m_id] = $mediaArr;
+				$this->usedMediaLinks['accessible']['mediaID_' . $m_id] = $mediaArr;
 				foreach($v as $val){// FIXME: table, ct are obsolete when onclick works
 					//FIXME: here we have unintialized data, line type
-					if(!isset($this->usedMediaLinks['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0]])){
-						$this->usedMediaLinks['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0]] = array(
-							'referencedIn' => intval($val[2]) === 0 ? 'main' : 'temp',
-							'isTempPossible' => $isTmpPossible[$val[1]][$val[0]],
-							'id' => $val[0],
-							'type' => $type[$val[1]][$val[0]],
-							'table' => addTblPrefix($val[1]),
-							'ct' => isset($ct[$val[1]][$val[0]]) ? $ct[$val[1]][$val[0]] : '',
-							'mod' => $mod[$val[1]][$val[0]],
-							'onclick' => isset($onclick[$val[1]][$val[0]]) ? $onclick[$val[1]][$val[0]] : 'alert(\'not implemented yet: ' . $val[1] . '\')',
-							'path' => $paths[$val[1]][$val[0]],
-							'isModified' => isset($isModified[$val[1]][$val[0]]) ? $isModified[$val[1]][$val[0]] : false,
-							'isUnpublished' => isset($isUnpublished[$val[1]][$val[0]]) ? $isUnpublished[$val[1]][$val[0]] : false
-						);
+					if(!isset($this->usedMediaLinks['accessible']['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0]])){
+						if(isset($accessible[$val[1]][$val[0]])){
+							$this->usedMediaLinks['accessible']['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0]] = array(
+								'exists' => isset($accessible[$val[1]][$val[0]]),
+								'referencedIn' => intval($val[2]) === 0 ? 'main' : 'temp',
+								'isTempPossible' => $isTmpPossible[$val[1]][$val[0]],
+								'id' => $val[0],
+								'type' => $type[$val[1]][$val[0]],
+								'table' => addTblPrefix($val[1]),
+								'ct' => isset($ct[$val[1]][$val[0]]) ? $ct[$val[1]][$val[0]] : '',
+								'mod' => $mod[$val[1]][$val[0]],
+								'onclick' => isset($onclick[$val[1]][$val[0]]) ? $onclick[$val[1]][$val[0]] : 'alert(\'not implemented yet: ' . $val[1] . '\')',
+								'path' => isset($paths[$val[1]][$val[0]]) ? $paths[$val[1]][$val[0]] : '',
+								'isModified' => isset($isModified[$val[1]][$val[0]]) ? $isModified[$val[1]][$val[0]] : false,
+								'isUnpublished' => isset($isUnpublished[$val[1]][$val[0]]) ? $isUnpublished[$val[1]][$val[0]] : false
+							);
+						} else {
+							$this->usedMediaLinks['notaccessible']['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0]] = true;
+						}
 					} else {
-						$this->usedMediaLinks['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0]]['referencedIn'] = 'both';
+						$this->usedMediaLinks['accessible']['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0]]['referencedIn'] = 'both';
 					}
 				}
-				foreach($this->usedMediaLinks['mediaID_' . $m_id] as $k => $v){
+
+				// eliminate empty groups for a media id
+				foreach($this->usedMediaLinks['accessible']['mediaID_' . $m_id] as $k => $v){
 					if(empty($v)){
-						unset($this->usedMediaLinks['mediaID_' . $m_id][$k]);
+						unset($this->usedMediaLinks['accessible']['mediaID_' . $m_id][$k]);
 					}
 				}
 			}

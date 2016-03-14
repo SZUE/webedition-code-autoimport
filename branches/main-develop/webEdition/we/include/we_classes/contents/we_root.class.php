@@ -176,20 +176,67 @@ abstract class we_root extends we_class{
 	}
 
 	//FIXME: make this __sleep
-	function saveInSession(&$save){
+	function saveInSession(&$save, $toFile = false){
 		//NOTE: this is used for temporary documents! so be carefull when changing
 		$save = array(
 			array(),
 			$this->elements
 		);
 		foreach($this->persistent_slots as $slot){
-			$bb = isset($this->{$slot}) ? $this->{$slot} : '';
+			switch($slot){
+				case 'elements'://elements are saved in slot 1
+					break;
+				//if saved to scheduler/temporary table we don't need these fields, they are only relevant in editor - or reread on load from current state table
+				//FIXME: use primaryDBFiels or better
+				case 'EditPageNr':
+				case 'schedArr':
+				case 'Path':
+				case 'Text':
+				case 'Filename':
+				case 'Extension':
+				case 'ParentID':
+				case 'Published':
+				case 'ModDate':
+				case 'CreatorID':
+				case 'ModifierID':
+				case 'Owners':
+				case 'RestrictOwners':
+				case 'WebUserID':
+				case 'Language':
+				case 'temp_template_id':
+				case 'DocType':
+				case 'TemplateID':
+				case 'OwnersReadOnly':
+				case 'temp_category':
+				case 'urlMap':
+				case 'viewType':
+				case 'IsProtected':
+				case 'Filehash':
+				case 'LockUser':
+				case 'wasUpdate':
+				case 'InWebEdition':
+				case 'CreationDate':
+				case 'RebuildDate':
+				case 'CopyID':
+				case 'hidePages':
+				case 'controlElement':
+				case 'usedElementNames':
+				case 'editorSaves':
+					if($toFile){
+						break;
+					}
+
+
+				default:
+					$bb = isset($this->{$slot}) ? $this->{$slot} : '';
 //note these are objects: for searchclass, searchclassFolder
-			$save[0][$slot] = $bb;
+					$save[0][$slot] = $bb;
+			}
 		}
 		// save weDocumentCustomerFilter in Session
 		//NOTE: this is an object!
-		if(isset($this->documentCustomerFilter) && defined('CUSTOMER_TABLE')){
+		//if we save to file, we load the new content from db instead
+		if(!$toFile && !empty($this->documentCustomerFilter) && defined('CUSTOMER_TABLE')){
 			$save[3] = $this->documentCustomerFilter;
 		}
 	}
@@ -1026,17 +1073,18 @@ abstract class we_root extends we_class{
 	}
 
 	protected function i_getContentData(){
-		$this->DB_WE->query('SELECT * FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID WHERE l.DID=' . intval($this->ID) . ' AND l.DocumentTable="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '"');
+		//FIXME:if we need dHash/nHash we have to get it hex, since tblTemporaryDoc will have problems with bin data
+		$this->DB_WE->query('SELECT ID,BDID,Dat,CID,Type,Name,DocumentTable FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID WHERE l.DID=' . intval($this->ID) . ' AND l.DocumentTable="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '"');
 		$filter = array('Name', 'DID', 'Ord');
-		while($this->DB_WE->next_record()){
+		while($this->DB_WE->next_record(MYSQLI_ASSOC)){
 			$Name = $this->DB_WE->f('Name');
 			$type = $this->DB_WE->f('Type');
 
-			if($type === 'formfield'){ // Artjom garbage fix!
+			if($type === 'formfield'){ // garbage fix!
 				$this->elements[$Name] = we_unserialize($this->DB_WE->f('Dat'));
 			} elseif($this->i_isElement($Name)){
 				foreach($this->DB_WE->Record as $k => $v){
-					if(!in_array($k, $filter) && !is_numeric($k)){
+					if(!in_array($k, $filter)){
 						$this->elements[$Name][strtolower($k)] = $v;
 					}
 				}
@@ -1381,7 +1429,8 @@ abstract class we_root extends we_class{
 			$this->LockUser = $uid;
 			$this->saveInSession($_SESSION['weS']['we_data'][$GLOBALS['we_transaction']]);
 			return self::FILE_LOCKED;
-		} elseif($this->LockUser != 0 && $this->LockUser != $_SESSION['user']['ID'] && $uid == 0){
+		}
+		if($this->LockUser != 0 && $this->LockUser != $_SESSION['user']['ID'] && $uid == 0){
 			$this->we_load(self::LOAD_TEMP_DB);
 		}
 
@@ -1397,12 +1446,10 @@ abstract class we_root extends we_class{
 			if($this->RestrictUsers && !(we_users_util::isOwner($this->CreatorID) || we_users_util::isOwner($this->Users))){ //	user is creator of doc - all is allowed.
 				return self::USER_NO_PERM;
 			}
-		} else {
-			if(we_users_util::isOwner($this->CreatorID) || we_users_util::isOwner($this->Owners)){ //	user is creator/owner of doc - all is allowed.
-				$this->lockDocument();
-				$this->saveInSession($_SESSION['weS']['we_data'][$GLOBALS['we_transaction']]);
-				return self::USER_HASACCESS;
-			}
+		} elseif(we_users_util::isOwner($this->CreatorID) || we_users_util::isOwner($this->Owners)){ //	user is creator/owner of doc - all is allowed.
+			$this->lockDocument();
+			$this->saveInSession($_SESSION['weS']['we_data'][$GLOBALS['we_transaction']]);
+			return self::USER_HASACCESS;
 		}
 
 		if($this->userHasPerms()){ //	access to doc is not restricted, check workspaces of user

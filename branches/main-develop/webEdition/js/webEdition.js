@@ -603,7 +603,7 @@ function we_cmd_base(args, url) {
 			we_cmd("we_selector_category", 0, WE().consts.tables.CATEGORY_TABLE, "", "", "", "", "", 1);
 			break;
 		case "editThumbs":
-			new (WE().util.jsWindow)(this, url, "thumbnails", -1, -1, 560, 550, true, true, true);
+			new (WE().util.jsWindow)(this, url, "thumbnails", -1, -1, 570, 660, true, true, true);
 			break;
 		case "editMetadataFields":
 			new (WE().util.jsWindow)(this, url, "metadatafields", -1, -1, 500, 550, true, true, true);
@@ -1321,7 +1321,7 @@ WE().util.getTreeIcon = function (contentType, open, extension) {
 					post = '</span>';
 	switch (contentType) {
 		case 'cockpit':
-			return simplepre + '<i class="fa fa-th-large fa-stack-2x we-color" style="background-color:white"></i>' + post;
+			return simplepre + '<i class="fa fa-th-large fa-stack-2x"></i>' + post;
 		case 'class_folder'://FIXME: this contenttype is not set
 		case 'we/bannerFolder':
 		case 'folder':
