@@ -173,13 +173,12 @@ self.focus();
 			unset($_SESSION['weS']['weBackupVars']);
 		}
 
-		$fileUploader = new we_fileupload_ui_base('we_upload_file');
-		$fileUploader->setTypeCondition('accepted', array(we_base_ContentTypes::XML), array('gz', 'tgz'));
-		$fileUploader->setCallback('top.body.startImport(true)');
-		$fileUploader->setInternalProgress(array('isInternalProgress' => true, 'width' => 300));
-		$fileUploader->setDimensions(array('width' => 500, 'alertBoxWidth' => 600, 'dragWidth' => 594, 'dragHeight' => 70, 'marginTop' => 5));
-		$fileUploader->setGenericFileName(BACKUP_DIR . 'tmp/' . we_fileupload::REPLACE_BY_FILENAME);
-		$this->fileUploader = $fileUploader;
+		$this->fileUploader = new we_fileupload_ui_base('we_upload_file');
+		$this->fileUploader->setTypeCondition('accepted', array(we_base_ContentTypes::XML), array('gz', 'tgz'));
+		$this->fileUploader->setCallback('top.body.startImport(true)');
+		$this->fileUploader->setInternalProgress(array('isInternalProgress' => true, 'width' => 300));
+		$this->fileUploader->setDimensions(array('width' => 500, 'alertBoxWidth' => 600, 'dragWidth' => 594, 'dragHeight' => 70, 'marginTop' => 5));
+		$this->fileUploader->setGenericFileName(TEMP_DIR . we_fileupload::REPLACE_BY_FILENAME);
 
 		$js = "";
 
@@ -564,9 +563,9 @@ self.focus();');
 		if(defined('VOTING_TABLE')){
 			$form_properties[65] = "handle_voting";
 		}
-		/*if(defined('SPELLCHECKER')){
-			$form_properties[70] = "handle_spellchecker";
-		}*/
+		/* if(defined('SPELLCHECKER')){
+		  $form_properties[70] = "handle_spellchecker";
+		  } */
 		if(defined('GLOSSARY_TABLE')){
 			$form_properties[75] = "handle_glossary";
 		}

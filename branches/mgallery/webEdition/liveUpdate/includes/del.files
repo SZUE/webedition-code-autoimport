@@ -9,7 +9,6 @@ we_dirSelect.php
 we_delSelect.php
 we_customerSelect.php
 we_catSelect.php
-we_backup/tmp/dummy
 we_backup/download/dummy
 we_ajaxcmd.php
 we/versions/dummy
@@ -957,6 +956,7 @@ apps/toolfactory/hook/we_jsCmdHook_toolfactory.inc.php
 apps/toolfactory/hook/custom_hooks/weCustomHook_toolfactory_save.inc.php
 apps/toolfactory/hook/custom_hooks/dummy
 !wysiwyg
+!we_backup/tmp
 !we/include/we_widgets/inc/plg
 !we/include/we_widgets/dlg/upb
 !we/include/we_widgets/dlg/shp
