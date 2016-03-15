@@ -40,18 +40,17 @@
 				'targetType' => 'nightly',
 				'targetVersion' => 6441,
 				'targetCompareVersion' => 6440,
-				'targetName' => '6.4.4.1 Nightly',
+				'targetName' => '8.4.4.1 Nightly',
 			)
 		),
 		'mgallery' => array(
 			'release' => array(
 				'targetBranchDir' => 'branches/mgallery',
 				'targetType' => 'rc',
-				'targetTypeversion' => 2,
-				'targetVersion' => 6501,
-				'targetName' => '7.0 RC 2',
+				'targetTypeversion' => 3,
+				'targetVersion' => 6503,
+				'targetName' => '7.0 RC 3',
 				'targetTakeSnapshot' => true,
-				'builderVersionsToDelete' => array(),
 			),
 			'nightly' => array(
 				'targetBranchDir' => 'branches/mgallery',
@@ -65,10 +64,9 @@
 			'nightly' => array(
 				'targetBranchDir' => 'branches/main-develop',
 				'targetType' => 'nightly',
-				'targetVersion' => 7001,
+				'targetVersion' => 7007,
 				'targetName' => '7.0.0.1 MAIN-DEVELOP',
 				'targetTakeSnapshot' => true,
-				'builderVersionsToDelete' => array(),
 			)
 		)
 	);
@@ -210,7 +208,7 @@
 			case 'targetBranch':
 				return $this->branch;
 			default:
-				t_e('call for unexisting builder param');
+				t_e('call for unexisting builder param: ' . $name);
 				return '';
 		}
 	}

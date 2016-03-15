@@ -1,9 +1,6 @@
 #!/usr/local/bin/php5-56LATEST-CLI
 <?php
 /*
- * finish implementation of hotfixes and test
- * what about $Rev?
- *
  * later: pack this script to class we_builder_builder and reduce index.php to...:
  *		$configuration = new we_builder_configuration;
  *		$builder new we_builder_builder($configuration);
@@ -26,6 +23,7 @@ $GLOBALS['DB_WE']->query('DELETE FROM ' . ERROR_LOG_TABLE . ' WHERE `Date` < DAT
 
 $cliArguments = getopt("b:t:v:d:");
 if(empty($cliArguments)){
+	echo "Builder won't run when called by http!";
 	exit();
 }
 
@@ -34,14 +32,7 @@ $type = empty($cliArguments['t']) ? '' : $cliArguments['t'];
 $version = empty($cliArguments['v']) ? 0 : $cliArguments['v'];
 $debug = empty($cliArguments['d']) ? 0 : $cliArguments['d'];
 
-if($debug){
-	echo "debug mode: on\n";
-}
-echo 1;
-/*
-}
- *
- */
+echo $debug ? "debug mode: on\n" : 1;
 
 $configurations = new we_builder_configurations($GLOBALS['DB_WE'], $branch, $type, $version);
 if(!$configurations->getActiveConfiguration()){
@@ -128,14 +119,12 @@ function getFilelistFromSvn($branch = 'trunk', $startRev = 9000, $endRev = 'HEAD
 }
 
 function getFilelistWithExternals($branch = 'trunk', $startRev = 9000, $endRevBranch = 'HEAD', $endRevExternals = 'HEAD'){
-	//echo $branch . ': ' . $startRev . ':' . $endRevBranch . '/' . $endRevExternals;
 	$branchfiles = getFilelistFromSvn($branch, $startRev, $endRevBranch);
 	$externals = getFilelistFromSvn('externals', $startRev, $endRevExternals);
 
 	// Filter some external paths we do not need to have in the filelist
 	// TODO: use shell_exec('chdir /kunden/343047_10825/build/svn/trunk; svn propget svn:externals --xml --depth infinity > ../ausgabe.txt'); to find targetdirs of externals
 	$externals['files'] = array_filter($externals['files'], function($f){return strpos($f, "/externals/additional/") === false;});
-
 
 	return array('latest' => (max($branchfiles['latest'], $externals['latest'])) , 'files' => array_merge($branchfiles['files'], $externals['files']));
 }
@@ -181,32 +170,20 @@ function getFilelistFromSvn_plusD($branch = 'trunk', $startRev = 9000, $endRev =
 }
 */
 
-function getfiledescription($configurations, $builder, $svnpath, $isQuery, $isLang, $isBetalang = false, $areLangsExternal = false){
+function getfiledescription($configurations, $builder, $svnpath, $isQuery, $isLang, $areLangsExternal = false){
 	$entry = array(
 		'svnpath' => $svnpath
 	);
 	if($isQuery){
-		if((strpos($svnpath, '/' . $configurations->get('targetBranchDir') . '/webEdition/liveUpdate/sqldumps/tbl') !== false && strpos($svnpath, '/' . $configurations->get('targetBranchDir') . '/webEdition/liveUpdate/sqldumps/tbl') == 0)){
-			//versions >= 6.3.5.1
-			$entry['targetpath'] = str_replace('/' . $configurations->get('targetBranchDir') . '/webEdition/liveUpdate/sqldumps/', $builder['destination'] . 'version' . $configurations->get('targetVersion') . '/queries/', $svnpath);
-			$entry['frompath'] = str_replace('/' . $configurations->get('targetBranchDir') . '/webEdition/liveUpdate/sqldumps/', $builder['source'] . 'webEdition/liveUpdate/sqldumps/', $svnpath);
-		} else {
-			$entry['targetpath'] = str_replace('/' . $configurations->get('targetBranchDir') . '/additional/sqldumps/', $builder['destination'] . 'version' . $configurations->get('targetVersion') . '/queries/', $svnpath);
-			$entry['frompath'] = str_replace('/' . $configurations->get('targetBranchDir') . '/additional/sqldumps/', $builder['source'] . 'additional/sqldumps/', $svnpath);
-		}
+		$entry['targetpath'] = str_replace('/' . $configurations->get('targetBranchDir') . '/webEdition/liveUpdate/sqldumps/', $builder['destination'] . 'version' . $configurations->get('targetVersion') . '/queries/', $svnpath);
+		$entry['frompath'] = str_replace('/' . $configurations->get('targetBranchDir') . '/webEdition/liveUpdate/sqldumps/', $builder['source'] . 'webEdition/liveUpdate/sqldumps/', $svnpath);
 		$entry['isQuery'] = true;
 		$entry['isLang'] = 0;
 	} elseif($isLang){
 		if(!$areLangsExternal){
-			if((strpos($svnpath, '/' . $configurations->get('targetBranchDir') . '/additional/lang_iso/') !== false && strpos($svnpath, $configurations->get('targetBranchDir') . '/additional/lang_iso/') === 0)){
-				$entry['targetpath'] = str_replace('/' . $configurations->get('targetBranchDir') . '/additional/lang_iso/', $builder['destination'] . 'version' . $configurations->get('targetVersion') . '/files/none/webEdition/we/include/we_language/', $svnpath);
-				$entry['wepath'] = str_replace('/' . $configurations->get('targetBranchDir') . '/additional/lang_iso/', '/webEdition/we/include/we_language/', $svnpath);
-				$entry['frompath'] = str_replace('/' . $configurations->get('targetBranchDir') . '/additional/lang_iso/', $builder['source'] . 'additional/lang_iso/', $svnpath);
-			} else { // used for >6.5 doing snapshot
-				$entry['targetpath'] = str_replace('/' . $configurations->get('targetBranchDir') . '/webEdition/we/include/we_language/', $builder['destination'] . 'version' . $configurations->get('targetVersion') . '/files/none/webEdition/we/include/we_language/', $svnpath);
-				$entry['wepath'] = str_replace('/' . $configurations->get('targetBranchDir') . '/webEdition/we/include/we_language/', '/webEdition/we/include/we_language/', $svnpath);
-				$entry['frompath'] = str_replace('/' . $configurations->get('targetBranchDir') . '/webEdition/we/include/we_language/', $builder['source'] . 'webEdition/we/include/we_language/', $svnpath);
-			}
+			$entry['targetpath'] = str_replace('/' . $configurations->get('targetBranchDir') . '/webEdition/we/include/we_language/', $builder['destination'] . 'version' . $configurations->get('targetVersion') . '/files/none/webEdition/we/include/we_language/', $svnpath);
+			$entry['wepath'] = str_replace('/' . $configurations->get('targetBranchDir') . '/webEdition/we/include/we_language/', '/webEdition/we/include/we_language/', $svnpath);
+			$entry['frompath'] = str_replace('/' . $configurations->get('targetBranchDir') . '/webEdition/we/include/we_language/', $builder['source'] . 'webEdition/we/include/we_language/', $svnpath);
 		} else {
 			$entry['targetpath'] = str_replace('/' . $builder['externalsDir'] . '/language/', $builder['destination'] . 'version' . $configurations->get('targetVersion') . '/files/none/webEdition/we/include/we_language/', $svnpath);
 			$entry['wepath'] = str_replace('/' . $builder['externalsDir'] . '/language/', '/webEdition/we/include/we_language/', $svnpath);
@@ -214,7 +191,6 @@ function getfiledescription($configurations, $builder, $svnpath, $isQuery, $isLa
 		}
 		$entry['isLang'] = true;
 		$entry['isQuery'] = 0;
-		$entry['$isBetalang'] = $isBetalang;
 	} else {
 		$entry['targetpath'] = str_replace('/' . $configurations->get('targetBranchDir') . '/webEdition/', $builder['destination'] . 'version' . $configurations->get('targetVersion') . '/files/none/webEdition/', $svnpath);
 		$entry['frompath'] = str_replace('/' . $configurations->get('targetBranchDir') . '/webEdition/', $builder['source'] . 'webEdition/', $svnpath);
@@ -264,22 +240,23 @@ function correctExternalPath($configurations, $svnpath){
 // #### COMPUTE FILEDESCRIPTIONS ###
 if($configurations->get('targetTakeSnapshot')){
 	$directory = $builder['source'];
+	$modifiedfiles = array();
 	if(is_dir($directory)){
 		$DirFileObjectsArray = array();
 		$DirFileObjects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory));
 
 		foreach($DirFileObjects as $name => $object){
-			if(substr($name, -2) != '/.' && substr($name, -3) != '/..' && strpos($name, '/.svn/') === false){
-				$DirFileObjectsArray[] = str_replace($builder['comparesource'], '', $name);
+			if(substr($name, -2) != '/.' && substr($name, -3) != '/..' && strpos($name, '/.svn/') === false &&
+					strpos($name, $builder['comparesource'] . '/' . $configurations->get('targetBranchDir') . '/additional') !== 0){ //throw out /additional
+				$modifiedfiles[] = str_replace($builder['comparesource'], '', $name);
 			}
 		}
-		sort($DirFileObjectsArray);
+		sort($modifiedfiles);
 	}
 	if(false && $builder['debug']){
-		echo "Scanned dir:\n" . implode("\n", $DirFileObjectsArray);
+		echo "Scanned dir:\n" . implode("\n", $modifiedfiles) . "\n\n";
 	}
-	$modifiedfiles = $DirFileObjectsArray;
-	$targetversion = getSvnLatestRevision($configurations->get('targetBranchDir'));
+	$targetRevision = getSvnLatestRevision($configurations->get('targetBranchDir'));
 } else { //normale Verarbeitung
 	if($configurations->get('targetBranch') === 'tag'){
 		// this was intended to make NEW versions from tag, not replacing existing ones
@@ -287,12 +264,11 @@ if($configurations->get('targetTakeSnapshot')){
 		// => prcondition would be a version number not yet existing in update db
 	} else { //release, nightly and hotfix on all branches, NOT snapshot
 		if($configurations->getIsHotfix()){
-			//echo "is hotfix: " . $configurations->get('targetRevisionTo') . "\n";
 			$log = getFilelistWithExternals($configurations->get('targetBranchDir'), $configurations->get('targetRevisionFrom'), 'HEAD', $configurations->get('targetRevisionTo'));
 		} else {
 			$log = getFilelistWithExternals($configurations->get('targetBranchDir'), $configurations->get('targetRevisionFrom'));
 		}
-		$targetversion = $log['latest'];
+		$targetRevision = $log['latest'];
 		$modifiedfiles = correctExternalPaths($configurations, $log['files']);
 		if(!in_array('/' . $configurations->get('targetBranchDir') . '/webEdition/we/include/we_version.php', $modifiedfiles)){
 			$modifiedfiles[] = '/' . $configurations->get('targetBranchDir') . '/webEdition/we/include/we_version.php';
@@ -302,23 +278,18 @@ if($configurations->get('targetTakeSnapshot')){
 sort($modifiedfiles);
 
 if($builder['debug']){
-	echo "\n" . "we_version:" . $builder['br'];
-	echo "Branch: " . $configurations->get('targetBranch') . "\n";
-	echo "Branchdir: " . $configurations->get('targetBranchDir') . "\n";
-	echo "Releasetype (basic): " . $configurations->get('targetNormalizedType') . "\n";
-	echo "Releasetype: " . $configurations->get('targetType') . "\n";
-	echo "TargetVersion: " . $configurations->get('targetVersion') . "\n";
-	echo "CompareVersion: " . $configurations->get('targetCompareVersion') . " " . ($configurations->get('targetTakeSnapshot') ? "[not needed when snapshot]" : "") . "\n";
-	echo "RevisionFrom: " . $configurations->get('targetRevisionFrom') . " " . ($configurations->get('targetTakeSnapshot') ? "[not needed when snapshot]" : "") . "\n";
-	echo "RevisionTo: " . $targetversion . $builder['br'] . " " . ($configurations->get('targetTakeSnapshot') ? "[not needed when snapshot]" : "") . "\n";
-	echo "IsSnapshot: " . ($configurations->get('targetTakeSnapshot') ? 'ja' : 'nein') . "\n";
-	echo "IsHotfix: " . ($configurations->getIsHotfix() ? 'ja' : 'nein') . "\n";
-
-	//echo implode(",\n", $modifiedfiles);
+	echo "\nConfiguration:\n" ;
+	echo "targetBranch: " . $configurations->get('targetBranch') . "\n";
+	echo "targetBranchDir: " . $configurations->get('targetBranchDir') . "\n";
+	echo "type (basic): " . $configurations->get('targetNormalizedType') . "\n";
+	echo "type: " . $configurations->get('targetType') . "\n";
+	echo "targetVersion: " . $configurations->get('targetVersion') . "\n";
+	echo "targetCompareVersion: " . $configurations->get('targetCompareVersion') . " " . ($configurations->get('targetTakeSnapshot') ? "[not needed when snapshot]" : "") . "\n";
+	echo "targetRevisionFrom: " . $configurations->get('targetRevisionFrom') . " " . ($configurations->get('targetTakeSnapshot') ? "[not needed when snapshot]" : "") . "\n";
+	echo "targetRevisionTo: " . $targetRevision . "\n";
+	echo "targetTakeSnapshot: " . ($configurations->get('targetTakeSnapshot') ? 'ja' : 'nein') . "\n";
+	echo "isHotfix: " . ($configurations->getIsHotfix() ? 'ja' : 'nein') . "\n\n";
 }
-
-echo "\n\nIMI: script stopt for debugging reasons. No version built!\n\n";
-exit();
 
 ### find and process special files: externals, language files and sql dumps; throw out unused files of /additional ###
 // find sql dumps
@@ -327,32 +298,17 @@ foreach($modifiedfiles as $key => $filepath){
 	if((strpos($filepath, '/' . $configurations->get('targetBranchDir') . '/webEdition/liveUpdate/sqldumps/tbl') !== false && strpos($filepath, '/' . $configurations->get('targetBranchDir') . '/webEdition/liveUpdate/sqldumps/tbl') == 0)){
 		//versions >= 6.3.5.1
 		$sqlfiles[] = $filepath;
-	} else if((strpos($filepath, '/' . $configurations->get('targetBranchDir') . '/additional/sqldumps/tbl') !== false && strpos($filepath, '/' . $configurations->get('targetBranchDir') . '/additional/sqldumps/tbl') == 0)){
-		$sqlfiles[] = $filepath;
-		unset($modifiedfiles[$key]);
 	}
 }
 
 // find language files
-if($configurations->get('targetVersion') < $language_limit){
-	$languages = array('Deutsch' => '', 'Deutsch_UTF-8' => '', 'Dutch' => '', 'Dutch_UTF-8' => '', 'English' => '', 'English_UTF-8' => '', 'Finnish' => '', 'Finnish_UTF-8' => '', 'French_UTF-8' => '', 'Polish_UTF-8' => '', 'Russian_UTF-8' => '', 'Spanish_UTF-8' => '');
-} else {
-	$languages = array('Deutsch' => '', 'Dutch' => '', 'English' => '', 'Finnish' => '', 'French' => '', 'Polish' => '', 'Russian' => '', 'Spanish' => '');
-}
-
+$languages = array('Deutsch' => '', 'Dutch' => '', 'English' => '', 'Finnish' => '', 'French' => '', 'Polish' => '', 'Russian' => '', 'Spanish' => '');
 $alllang = $languages;
 $languagesExt = array();
 foreach($languages as $lkey => $lang){
-	if($configurations->get('targetVersion') < $language_limit){
-		if(strpos($lkey, 'UTF-8') === false){//iso
-			$pathstr = '/' . $configurations->get('targetBranchDir') . '/additional/lang_iso/' . $lkey . '/';
-		} else {
-			$pathstr = '/' . $configurations->get('targetBranchDir') . '/webEdition/we/include/we_language/' . $lkey . '/';
-		}
-	} else {
-		$pathstr = '/' . $configurations->get('targetBranchDir') . '/webEdition/we/include/we_language/' . $lkey . '/';
-		$extPathStr = '/' . $builder['externalsDir'] . '/language/' . $lkey . '/';
-	}
+	$pathstr = '/' . $configurations->get('targetBranchDir') . '/webEdition/we/include/we_language/' . $lkey . '/';
+	$extPathStr = '/' . $builder['externalsDir'] . '/language/' . $lkey . '/';
+
 	foreach($modifiedfiles as $key => $filepath){
 		if((strpos($filepath, $pathstr) !== false && strpos($filepath, $pathstr) === 0)){
 			$languages[$lkey][] = $filepath;
@@ -381,7 +337,7 @@ foreach($sqlfiles as $sql){
 foreach($languages as $lang => $langfilepath){
 	if(is_array($langfilepath)){
 		foreach($langfilepath as $lfilepath){
-			$alllang[$lang][] = getfiledescription($configurations, $builder, $lfilepath, false, true, $betaLang, $areLangsExternal);
+			$alllang[$lang][] = getfiledescription($configurations, $builder, $lfilepath, false, true, $areLangsExternal);
 		}
 	}
 }
@@ -393,12 +349,6 @@ foreach($modifiedfiles as $afilepath){
 	$allfiles[] = getfiledescription($configurations, $builder, $afilepath, false, false);
 }
 
-if($builder['debug']){
-	echo "All Files\n" . implode("\n", $allfiles) . "\n\n";
-	echo "All Langfiles\n" . implode("\n", $alllang) . "\n\n";
-	echo "All Sql\n" . implode("\n", $allsql) . "\n\n";
-	echo "<hr>All Langfiles";
-}
 
 // #### START BUILD HERE ###
 $changessql = [];
@@ -421,7 +371,7 @@ $changesfiles = [];
 foreach($allfiles as $data){
 	if(!file_exists($data['frompath'])){
 		if($builder['debug']){
-			echo 'not exists: ' . $data['frompath'] . "\n";
+			echo 'not exists in repo: ' . $data['frompath'] . "\n";
 		}
 		continue;
 	}
@@ -445,7 +395,7 @@ foreach($allfiles as $data){
 					$data['wepath'] = str_replace('.scss', '.css', $data['wepath']);
 				}catch(exception $e){
 					if($builder['debug']){
-						echo 'ERROR with scss file ' . $data['frompath'];
+						echo 'ERROR with scss file ' . $data['frompath'] . "\n";
 						//p_r(str_replace(array('\n', "\n"), ' ', $e->getMessage()));
 					}
 					return false;
@@ -455,64 +405,37 @@ foreach($allfiles as $data){
 		if(!is_dir($data['frompath']) && copy($data['frompath'], $data['targetpath'])){
 			$changesfiles[] = $data['wepath'];
 		}
-		//TODO: check up to what version the installer-function replacecode() was active and then throw the following code out!
-		if($path_parts['basename'] == 'we_version.php' && intval($configurations->get('targetVersion')) < 6381){
-			$versionsfile = intval($configurations->get('targetVersion')) > 6380 || file($data['targetpath']) === false ? array("<?php") : file($data['targetpath']);
-
-			$versionsfile[1] = 'define("WE_VERSION","' . trim($configurations->get('targetVersionstring')) . '");';
-			$versionsfile[2] = 'define("WE_VERSION_SUPP","' . trim($configurations->get('targetType')) . '");';
-			$versionsfile[3] = intval($configurations->get('targetVersion')) > 6380 ? 'define("WE_ZFVERSION","' . trim($configurations->get('targetZFVersion')) . '"); // test. recommended version of the Zend Framework (bundled with webEdition)' :
-					(file($data['targetpath']) !== false ? $versionsfile[3] : 'define("WE_VERSION_NAME","");');
-			$versionsfile[4] = 'define("WE_SVNREV","' . trim($targetversion) . '");';
-			$versionsfile[5] = 'define("WE_VERSION_SUPP_VERSION","' . trim($configurations->get('targetTypeversion')) . '");';
-			$versionsfile[6] = 'define("WE_VERSION_BRANCH","' . trim($configurations->get('targetBranch')) . '");';
-			$versionsfile[7] = 'define("WE_VERSION_NAME","' . trim($configurations->get('targetName')) . '");';
-
-			$versionsfiletext = implode("\n", $versionsfile);
-			file_put_contents($data['targetpath'], $versionsfiletext);
-			if($builder['debug']){
-				echo $versionsfiletext;
-			}
-		}
 	}
 }
-
-//if WE_VERSION > 6380 or if file we_version.php does not exist: write it!
-//new code 2014-03-13
+//exit();
 $weVersionFile = $builder['destination'] . 'version' . $configurations->get('targetVersion') . '/files/none/webEdition/we/include/we_version.php';
-
-if(intval($configurations->get('targetVersion')) > 6380 || !file_exists($weVersionFile)){
-	$versionsfile = array("<?php",
-		'define("WE_VERSION","' . trim($configurations->get('targetVersionstring')) . '");',
-		'define("WE_VERSION_SUPP","' . trim($configurations->get('targetType')) . '");',
-		'define("WE_ZFVERSION","' . trim($configurations->get('targetZFVersion')) . '"); // recommended version of the Zend Framework (bundled with webEdition)',
-		'define("WE_SVNREV","' . trim($targetversion) . '");',
-		'define("WE_VERSION_SUPP_VERSION","' . trim($configurations->get('targetTypeversion')) . '");',
-		'define("WE_VERSION_BRANCH","' . trim($configurations->get('targetBranch')) . '");',
-		$configurations->get('targetName') ? 'define("WE_VERSION_NAME","' . trim($configurations->get('targetName')) . '");' . "\n" : 'define("WE_VERSION_NAME","");'
-	);
-	$versionsfiletext = implode("\n", $versionsfile);
-	file_put_contents($weVersionFile, $versionsfiletext);
-	if($builder['debug']){
-		echo $versionsfiletext;
-	}
+$versionsfile = array("<?php",
+	'define("WE_VERSION","' . trim($configurations->get('targetVersionstring')) . '");',
+	'define("WE_VERSION_SUPP","' . trim($configurations->get('targetType')) . '");',
+	'define("WE_ZFVERSION","' . trim($configurations->get('targetZFVersion')) . '"); // recommended version of the Zend Framework (bundled with webEdition)',
+	'define("WE_SVNREV","' . trim($targetRevision) . '");',
+	'define("WE_VERSION_SUPP_VERSION","' . trim($configurations->get('targetTypeversion')) . '");',
+	'define("WE_VERSION_BRANCH","' . trim($configurations->get('targetBranch')) . '");',
+	$configurations->get('targetName') ? 'define("WE_VERSION_NAME","' . trim($configurations->get('targetName')) . '");' . "\n" : 'define("WE_VERSION_NAME","");'
+);
+$versionsfiletext = implode("\n", $versionsfile);
+file_put_contents($weVersionFile, $versionsfiletext);
+if($builder['debug']){
+	echo "\nwe_version.php\n" . $versionsfiletext;
 }
 
+// #### WRITE VERSION TO DB ###
 if($changesfiles){
 	$strChangesfiles = implode(",\n", array_unique($changesfiles));
 	if($builder['debug']){
-		echo $strChangesfiles;
+		//echo $strChangesfiles;
 	}
-
-file_put_contents ('changes_new.txt', $strChangesfiles . "\n\n". implode(",\n", $changessql));
-exit();
 
 	if(!f("SELECT 1 FROM `v6_changes` WHERE version= " . $configurations->get('targetVersion') . " AND detail = 'files' LIMIT 1")){
 		if(!$builder['DB_WE']->query("INSERT INTO `v6_changes` (version,detail) VALUES ('" . $configurations->get('targetVersion') . "','files')")){
 			exit();
 		}
 	}
-
 	if(!$builder['DB_WE']->query("UPDATE `v6_changes` SET changes = '" . $strChangesfiles . "', isSnapshot='" . intval($configurations->get('targetTakeSnapshot')) . "' WHERE version= " . $configurations->get('targetVersion') . " AND detail = 'files'")){
 		exit();
 	}
@@ -520,7 +443,7 @@ exit();
 	if($changessql){
 		$changessql = implode(",\n", $changessql);
 		if($builder['debug']){
-			echo "\nChanges SQL: " . $changessql . "\n";
+			//echo "\nChanges SQL: " . $changessql . "\n";
 		}
 
 		if(!f("SELECT 1 FROM `v6_changes` WHERE version= " . $configurations->get('targetVersion') . " AND detail = 'queries' LIMIT 1")){
@@ -532,9 +455,8 @@ exit();
 			exit();
 		}
 	}
-	//revisionFrom = '" . ($isSnapshot ? 0 : $GLOBALS['compareVersion']) . "'
-	$revisionTo = ($revisionTo = f('SELECT revisionTo FROM `v6_versions` WHERE version=' . $configurations->get('targetVersion') . ' LIMIT 1')) &&
-			$configurations->get('targetNormalizedType') === 'hotfix' ? $revisionTo : $targetversion;
+
+	//file_put_contents ('changes_new.txt', $strChangesfiles . "\n\n". $changessql);
 
 	foreach($alllang as $langkey => $langdata){
 		$changeslang = [];
@@ -553,7 +475,7 @@ exit();
 					}
 				} else {
 					if($builder['debug']){
-						echo 'no such file: ' . $data['frompath'];
+						echo 'no such file: ' . $data['frompath'] . "\n";
 					}
 				}
 			}
@@ -571,12 +493,15 @@ exit();
 			}
 		}
 
-
-
 	}
-	if(!$builder['DB_WE']->query("REPLACE INTO `v6_versions` SET version=" . $configurations->get('targetVersion') . ",versname='" . $configurations->get('targetName') . "', svnrevision = '" . $targetversion . "', comparerevision = '" . $targetversion . "', type='" . $configurations->get('targetType') . "', typeversion='" . $configurations->get('targetTypeversion') . "', branch='" . $configurations->get('targetBranch') . "', isSnapshot='" . intval($configurations->get('targetTakeSnapshot')) . "', date='" . date('Y-m-d H:i:s') . "'")){
+
+	// in new builds svnrevision and revisionTo are the same. when making hotfix revisionTo stays untouched whereas svnrevision is the real latest revision
+	$revisionTo = ($revisionTo = f('SELECT revisionTo FROM `v6_versions` WHERE version=' . $configurations->get('targetVersion') . ' LIMIT 1')) &&
+		$configurations->get('targetNormalizedType') === 'hotfix' ? $revisionTo : $targetRevision;
+
+	if(!$builder['DB_WE']->query("REPLACE INTO `v6_versions` SET version=" . $configurations->get('targetVersion') . ",versname='" . $configurations->get('targetName') . "', svnrevision = '" . $targetRevision . "', revisionFrom = '" . ($configurations->get('targetTakeSnapshot') ? 0 : $configurations->get('targetRevisionFrom')) . "', revisionTo = '" . $revisionTo . "', type='" . $configurations->get('targetType') . "', typeversion='" . $configurations->get('targetTypeversion') . "', branch='" . $configurations->get('targetBranch') . "', isSnapshot='" . intval($configurations->get('targetTakeSnapshot')) . "', date='" . date('Y-m-d H:i:s') . "', zfversion='" . trim($configurations->get('targetZFVersion')) . "'")){
 			exit();
 	}
 
-	echo $builder['debug'] ? "FERTIG" : 1;
+	echo $builder['debug'] ? "\nFERTIG" : 1;
 }
