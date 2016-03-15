@@ -44,7 +44,7 @@ function we_tag_collection($attribs){
 		$open = we_html_button::create_button(we_html_button::VIEW, "javascript:if(document.forms[0].elements['" . $idname . "'].value){WE().layout.weEditorFrameController.openDocument('" . VFILE_TABLE . "', document.forms[0].elements['" . $idname . "'].value,'');}");
 		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
-		$wecmdenc3 = we_base_request::encCmd("opener.we_cmd('reload_editpage');opener._EditorFrame.setEditorIsHot(true);");
+		$wecmdenc3 = we_base_request::encCmd("opener.setScrollTo();opener.we_cmd('reload_editpage');opener._EditorFrame.setEditorIsHot(true);");
 
 
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . VFILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")"); //FIXME: permissions in collections

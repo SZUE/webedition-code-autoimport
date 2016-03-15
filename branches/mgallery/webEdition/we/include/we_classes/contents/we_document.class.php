@@ -1287,12 +1287,10 @@ class we_document extends we_root{
 				$_linkAttribs['target'] = 'we_' . (isset($attribs["name"]) ? $attribs["name"] : "");
 				$_linkAttribs['onclick'] = $foo;
 			}
-			$_linkAttribs = removeAttribs($_linkAttribs, array('hidedirindex', 'objectseourls'));
-			return $rollOverScript . getHtmlTag('a', $_linkAttribs, '', false, true);
-		} else {
-			if(!empty($GLOBALS['we_link_not_published'])){
-				unset($GLOBALS['we_link_not_published']);
-			}
+			return $rollOverScript . getHtmlTag('a', removeAttribs($_linkAttribs, array('hidedirindex', 'objectseourls')), '', false, true);
+		}
+		if(!empty($GLOBALS['we_link_not_published'])){
+			unset($GLOBALS['we_link_not_published']);
 		}
 	}
 
@@ -1653,15 +1651,13 @@ class we_document extends we_root{
 	protected static function makeBlockName($block, $field){
 		$block = str_replace('[0-9]+', '####BLOCKNR####', $block);
 		$field = str_replace('[0-9]+', '####BLOCKNR####', $field);
-		$out = preg_quote($field . 'blk_' . $block . '__') . '[0-9]+';
-		return str_replace('####BLOCKNR####', '[0-9]+', $out);
+		return str_replace('####BLOCKNR####', '[0-9]+', preg_quote($field . 'blk_' . $block . '__') . '[0-9]+');
 	}
 
 	protected static function makeLinklistName($block, $field){
 		$block = str_replace('[0-9]+', '####BLOCKNR####', $block);
 		$field = str_replace('[0-9]+', '####BLOCKNR####', $field);
-		$out = preg_quote($field . $block . '_TAGS_') . '[0-9]+';
-		return str_replace('####BLOCKNR####', '[0-9]+', $out);
+		return str_replace('####BLOCKNR####', '[0-9]+', preg_quote($field . $block . '_TAGS_') . '[0-9]+');
 	}
 
 }
