@@ -318,7 +318,7 @@ class we_document extends we_root{
 
 			$listarray[] = '_' . $new_nr;
 		}
-		$this->setElement($name, serialize(array_values($listarray)), 'block');
+		$this->setElement($name, we_serialize(array_values($listarray), SERIALIZE_JSON, true, 0, true), 'block');
 	}
 
 	function getMaxListArrayNr(array $la){
@@ -334,7 +334,6 @@ class we_document extends we_root{
 		$listarray = we_unserialize($this->getElement($name));
 
 		for($f = 0; $f < $number; $f++){
-
 			$content = $this->getElement($name, 'content');
 			$new_nr = $this->getMaxListArrayNr($listarray) + 1;
 // clear value
@@ -350,7 +349,7 @@ class we_document extends we_root{
 			$listarray[$nr] = '_' . $new_nr;
 		}
 
-		$this->setElement($name, serialize(array_values($listarray)), 'block');
+		$this->setElement($name, we_serialize($listarray, SERIALIZE_JSON, true, 0, true), 'block');
 	}
 
 	function upEntryAtList($name, $nr, $number = 1){
@@ -381,30 +380,20 @@ class we_document extends we_root{
 		$this->setElement($name, we_serialize($listarray, SERIALIZE_JSON, true, 0, true), 'block');
 	}
 
-	function removeEntryFromList($name, $nr, $names = '', $isBlock = false){
+	function removeEntryFromList($name, $nr, $names){
 		$list = $this->getElement($name);
 		$listarray = we_unserialize($list);
 		if(is_array($listarray)){
-			if($isBlock){
-				foreach(array_keys($this->elements) as $key){
-					if(preg_match('/' . $names . '(__.*)*$/', $key)){// # Bug 6904
-						unset($this->elements[$key]);
-					}
-				}
-			} else {
-				$namesArray = $names ? explode(',', $names) : array($names);
-				foreach($namesArray as $element){
-					unset($this->elements[$element . $listarray[$nr]]);
+			foreach(array_keys($this->elements) as $key){
+				if(preg_match('/' . $names . '(__.*)*$/', $key)){// # Bug 6904
+					unset($this->elements[$key]);
 				}
 			}
-			if(is_array($listarray)){// Bug #4079
-				unset($listarray[$nr]);
-			}
+			unset($listarray[$nr]);
 		} else {
 			$listarray = array();
 		}
-
-		$this->setElement($name, serialize(array_values($listarray)), 'block');
+		$this->setElement($name, we_serialize($listarray, SERIALIZE_JSON, true, 0, true), 'block');
 	}
 
 	function addLinkToLinklist($name){
@@ -669,18 +658,18 @@ class we_document extends we_root{
 // reverse function to saveInSession !
 	public function we_initSessDat($sessDat){
 		parent::we_initSessDat($sessDat);
-		/*this is bad old code
+		/* this is bad old code
 		 *
 		 * if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
-			if(
-				($day = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_day')) && ($month = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_month')) && ($year = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_year')) && ($hour = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_hour')) !== false && ($min = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_minute')) !== false){
-				$this->From = mktime($hour, $min, 0, $month, $day, $year);
-			}
-			if(
-				($day = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_day')) && ($month = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_month')) && ($year = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_year')) && ($hour = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_hour')) !== false && ($min = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_minute')) !== false){
-				$this->To = mktime($hour, $min, 0, $month, $day, $year);
-			}
-		}*/
+		  if(
+		  ($day = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_day')) && ($month = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_month')) && ($year = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_year')) && ($hour = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_hour')) !== false && ($min = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_minute')) !== false){
+		  $this->From = mktime($hour, $min, 0, $month, $day, $year);
+		  }
+		  if(
+		  ($day = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_day')) && ($month = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_month')) && ($year = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_year')) && ($hour = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_hour')) !== false && ($min = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_minute')) !== false){
+		  $this->To = mktime($hour, $min, 0, $month, $day, $year);
+		  }
+		  } */
 
 		if(we_base_request::_(we_base_request::INT, 'wecf_mode') !== false){
 			$this->documentCustomerFilter = we_customer_documentFilter::getCustomerFilterFromRequest($this->ID, $this->ContentType, $this->Table);
