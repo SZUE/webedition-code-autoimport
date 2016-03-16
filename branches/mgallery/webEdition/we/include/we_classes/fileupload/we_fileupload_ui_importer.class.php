@@ -112,7 +112,7 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base{
 	}
 
 	protected function _getHtmlFileRow(){
-		return str_replace(array("\r", "\n"), "", '<table class="default"><tbody><tr height="28">
+		return str_replace(array("\r", "\n"), "", '<table class="default importer_files"><tbody><tr height="28">
 			<td class="weMultiIconBoxHeadline" style="width:55px;padding-left:45px;padding-right:20px;" >' . g_l('importFiles', '[file]') . '&nbsp;<span id="headline_uploadFiles_WEFORMNUM">WE_FORM_NUM</span></td>
 			<td><input id="name_uploadFiles_WEFORMNUM" style="width:17.4em;" type="text" readonly="readonly" value="FILENAME" /></td>
 			<td>
