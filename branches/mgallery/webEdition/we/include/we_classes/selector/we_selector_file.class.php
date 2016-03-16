@@ -97,7 +97,7 @@ class we_selector_file{
 				$this->fields = 'ID,ParentID,Text,Path,IsFolder,ContentType';
 				break;
 			case CATEGORY_TABLE:
-				$this->fields = 'ID,ParentID,Text,Path,1 AS IsFolder';
+				$this->fields = 'ID,ParentID,Text,Path,1 AS IsFolder,IF(EXISTS(SELECT * FROM ' . CATEGORY_TABLE . ' cc WHERE cc.ParentID=' . CATEGORY_TABLE . '.ID),"we/categories","we/category") AS ContentType';
 				break;
 			case NAVIGATION_TABLE:
 				$this->fields = 'ID,ParentID,Text,Path,IsFolder,IF(IsFolder,"folder","we/navigation") AS ContentType';
@@ -170,7 +170,7 @@ class we_selector_file{
 	function query(){
 		$wsQuery = $this->table == NAVIGATION_TABLE && get_ws($this->table) ? ' ' . getWsQueryForSelector($this->table) : '';
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' ' .
-			( ($this->filter ? ($this->table == CATEGORY_TABLE ? /* 'AND IsFolder="' . $this->db->escape($this->filter) . '" ' */ '' : 'AND ContentType="' . $this->db->escape($this->filter) . '" ') : '' ) . $wsQuery ) .
+			( ($this->filter && $this->table != CATEGORY_TABLE ? 'AND ContentType="' . $this->db->escape($this->filter) . '" ' : '' ) . $wsQuery ) .
 			($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : ''));
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}

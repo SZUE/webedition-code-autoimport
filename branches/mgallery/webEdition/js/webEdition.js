@@ -1404,6 +1404,8 @@ WE().util.getTreeIcon = function (contentType, open, extension) {
 			return simplepre + '<i class="fa fa-shopping-cart fa-stack-2x we-color"></i></i>' + post;
 		case 'we/workflow':
 			return simplepre + '<i class="fa fa-fa-gears fa-stack-2x we-color"></i></i>' + post;
+		case 'we/categories':
+			return simplepre + '<i class="fa fa-tags fa-stack-2x we-color"></i>' + post;
 		case 'we/category':
 			return simplepre + '<i class="fa fa-tag fa-stack-2x we-color"></i>' + post;
 		case 'symlink':
