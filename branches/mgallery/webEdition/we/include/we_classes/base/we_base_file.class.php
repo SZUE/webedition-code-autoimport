@@ -645,26 +645,6 @@ abstract class we_base_file{
 			}
 		}
 		$d->close();
-		$dstr = BACKUP_PATH . 'tmp/';
-		$d = dir($dstr);
-		while(false !== ($entry = $d->read())){
-			switch($entry){
-				case '.':
-				case '..':
-				case '.htaccess':
-					break;
-				default:
-					$foo = $dstr . $entry;
-					if(filemtime($foo) <= (time() - 300)){
-						if(is_dir($foo)){
-							self::deleteLocalFolder($foo, 1);
-						} elseif(file_exists($foo) && is_writable($foo)){
-							self::deleteLocalFile($foo);
-						}
-					}
-			}
-		}
-		$d->close();
 
 // when a fragment task was stopped by the user, the tmp file will not be deleted! So we have to clean up
 		$d = dir(rtrim(WE_FRAGMENT_PATH, '/'));
