@@ -816,6 +816,8 @@ WE().consts.weSearch= {
 					
 					$color = 'black';
 					$makeLink = true;
+					// FIXME: establishing document state is buggy
+					/*
 					switch($reference['referencedIn']){
 						case 'temp':
 						case 'both':
@@ -833,6 +835,8 @@ WE().consts.weSearch= {
 								$color = 'red';
 							}
 					}
+					 * 
+					 */
 					$out .= '<tr>' .
 						($makeLink ? '
 							<td style="padding-left:26px;width:410px;"><a href="javascript:' . $reference['onclick'] . '" title="' . $reference['path'] . ' (' . $reference["id"] . ')"><span style="color:' . $color . ';"><u>' . $reference['path'] . '</u></span></a></td>
