@@ -944,33 +944,12 @@ function we_cmd_base(args, url) {
 		case "initPlugin":
 			weplugin_wait = new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "editors/content/eplugin/weplugin_wait.php?callback=" + args[1], "weplugin_wait", -1, -1, 300, 100, true, false, true);
 			break;
-		case "edit_settings_newsletter":
-			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=newsletter_settings", "newsletter_settings", -1, -1, 600, 750, true, false, true);
-			break;
-		case "edit_settings_customer":
-			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=settings", "customer_settings", -1, -1, 520, 300, true, false, true);
-			break;
-		case "edit_settings_shop":
-			new (WE().util.jsWindow)(this, WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_pref.php", "shoppref", -1, -1, 470, 600, true, false, true);
-			break;
-		case "edit_settings_messaging":
-			new (WE().util.jsWindow)(this, WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "messaging_settings.php?mode=1", "messaging_settings", -1, -1, 280, 200, true, false, true);
-			break;
-		case "edit_settings_spellchecker":
-			we_cmd("spellchecker_edit");
-			break;
-		case "edit_settings_banner":
-			we_cmd("banner_default");
-			break;
 		case "edit_settings_editor":
 			if (top.plugin.editSettings) {
 				top.plugin.editSettings();
 			} else {
 				we_cmd("initPlugin", "top.plugin.editSettings()");
 			}
-			break;
-		case "edit_settings_glossary":
-			we_cmd("glossary_settings");
 			break;
 		case "sysinfo":
 			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=sysinfo", "we_sysinfo", -1, -1, 720, 660, true, false, true);
@@ -1276,6 +1255,19 @@ function we_cmd_base(args, url) {
 			}
 
 			break;
+		case "insert_variant":
+		case "move_variant_up":
+		case "move_variant_down":
+		case "remove_variant":
+			url += "#f" + (parseInt(args[1]) - 1);
+			we_sbmtFrm(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url);
+			break;
+		case 'preview_variant':
+			url += "#f" + (parseInt(args[1]) - 1);
+			var prevWin = new (WE().util.jsWindow)(this, url, "previewVariation", -1, -1, 1600, 1200, true, true, true, true);
+			we_sbmtFrm(prevWin.wind, url);
+			break;
+
 		default:
 			return false;
 	}

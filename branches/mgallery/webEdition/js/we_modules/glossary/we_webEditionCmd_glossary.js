@@ -25,6 +25,9 @@
 function we_cmd_glossary(args, url) {
 	var wind;
 	switch (args[0]) {
+		case "edit_settings_glossary":
+			we_cmd("glossary_settings");
+			break;
 		case "glossary_check":
 
 			var _EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
