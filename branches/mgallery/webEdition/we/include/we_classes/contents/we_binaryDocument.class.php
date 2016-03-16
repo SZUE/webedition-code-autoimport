@@ -363,11 +363,11 @@ class we_binaryDocument extends we_document{
 		$limit=10;
 		foreach($groups as $group){
 			$cna = count($notaccessibles[$group]);
-			$values[(count($accessibles[$group]) + $cna) . ' '. $group . ($cna ? ' (' . $cna . ' ' . g_l('weClass', '[medialinks_unaccessible]') . ')' : '')] = we_html_tools::OPTGROUP;
+			$values[$group . ' [' . (count($accessibles[$group]) + $cna) . ($cna ? ', davon ' . $cna . ' ' . g_l('weClass', '[medialinks_unaccessible]') . '' : '') . ']'] = we_html_tools::OPTGROUP;
 			$cc = 0;
 			foreach($accessibles[$group] as $v){
 				if($cc++ >= $limit){
-					$values[-1] = '+ ' . (count($accessibles[$group]) - $limit) . ' ' . g_l('weClass', '[medialinks_more]');
+					$values[-1] = '[ + ' . (count($accessibles[$group]) - $limit) . ' ' . g_l('weClass', '[medialinks_more]') . ' ]';
 					break;
 				}
 				$values[++$c] = $v['path'];

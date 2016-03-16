@@ -1197,7 +1197,6 @@ class we_search_search extends we_search_base{
 				$this->usedMediaLinks['accessible']['mediaID_' . $m_id] = array();
 				$this->usedMediaLinks['notaccessible']['mediaID_' . $m_id] = array();
 				foreach($v as $val){// FIXME: table, ct are obsolete when onclick works
-					//FIXME: here we have unintialized data, line type
 					if(!isset($this->usedMediaLinks['accessible']['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0]])){
 						if(isset($accessible[$val[1]][$val[0]])){
 							$this->usedMediaLinks['accessible']['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0]] = array(
@@ -1205,7 +1204,7 @@ class we_search_search extends we_search_base{
 								'referencedIn' => intval($val[2]) === 0 ? 'main' : 'temp',
 								'isTempPossible' => $isTmpPossible[$val[1]][$val[0]],
 								'id' => $val[0],
-								'type' => $type[$val[1]][$val[0]],
+								'type' => isset($type[$val[1]][$val[0]]) ? $type[$val[1]][$val[0]] : '',
 								'table' => addTblPrefix($val[1]),
 								'ct' => isset($ct[$val[1]][$val[0]]) ? $ct[$val[1]][$val[0]] : '',
 								'mod' => $mod[$val[1]][$val[0]],

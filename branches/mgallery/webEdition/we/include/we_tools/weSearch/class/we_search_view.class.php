@@ -793,36 +793,51 @@ WE().consts.weSearch= {
 
 	function makeAdditionalContentMedia($result){
 		$usedMediaLinks = $this->searchclass->getUsedMediaLinks();
+		$mediaLinks = $this->searchclass->getUsedMediaLinks();
+		$accessibles = isset($mediaLinks['accessible']['mediaID_' . $result['docID']]) ? $mediaLinks['accessible']['mediaID_' . $result['docID']] : array();
+		$notaccessibles = isset($mediaLinks['notaccessible']['mediaID_' . $result['docID']]) ? $mediaLinks['notaccessible']['mediaID_' . $result['docID']] : array();
+		$groups = isset($mediaLinks['groups']['mediaID_' . $result['docID']]) ? $mediaLinks['groups']['mediaID_' . $result['docID']] : array();
 
-		if(!empty($usedMediaLinks['accessible']['mediaID_' . $result['docID']])){
+		if(!empty($groups)){
 			$out = '<table style="font-weight:normal; background-color:#fafafa;width:480px"><tr><td colspan="2" style="padding:4px 0 0 6px;"><strong>Dieses Medien-Dokument wird an folgenden Stellen referenziert:</stong></td></tr>'; // FIXME: G_L()
-			foreach($usedMediaLinks['accessible']['mediaID_' . $result['docID']] as $type => $links){
-				$out .= '<tr><td style="padding:4px 0 0 6px;"><em>' . $type . ':</em></td></tr>';
-				foreach($links as $link){
+			foreach($groups as $group){
+				$numNotaccessible = count($notaccessibles[$group]);
+				$numAccessibles = count($accessibles[$group]);
+				$out .= '<tr><td style="padding:4px 0 0 6px;"><em>' . $group . ' [' . ($numNotaccessible + $numAccessibles) . ($numNotaccessible ? ', davon ' . $numNotaccessible . ' nicht ' . g_l('weClass', '[medialinks_unaccessible]') : '') . ']:</em></td></tr>';
+
+				$references = $accessibles[$group];
+				$limit = 5;
+				$c = 0;
+				foreach($references as $reference){
+					if($c++ >= $limit){
+						$out .= '<tr><td style="padding-left:26px;width:410px;">[ + ' . ($numAccessibles - $limit) . ' ' . g_l('weClass', '[medialinks_more]') . ' ]</td></tr>';
+						break;
+					}
+					
 					$color = 'black';
 					$makeLink = true;
-					switch($link['referencedIn']){
+					switch($reference['referencedIn']){
 						case 'temp':
 						case 'both':
-							if($link['isUnpublished']){
+							if($reference['isUnpublished']){
 								$color = 'red';
 							} else {
 								$color = '#3366cc';
 							}
 							break;
 						case 'main':
-							if($link['isModified']){
+							if($reference['isModified']){
 								$color = 'gray';
 								$makeLink = false;
-							} else if($link['isUnpublished']){
+							} else if($reference['isUnpublished']){
 								$color = 'red';
 							}
 					}
 					$out .= '<tr>' .
 						($makeLink ? '
-							<td style="padding-left:26px;width:410px;"><a href="javascript:' . $link['onclick'] . '" title="' . $link['path'] . ' (' . $link["id"] . ')"><span style="color:' . $color . ';"><u>' . $link['path'] . '</u></span></a></td>
-							<td>' . we_html_button::create_button(we_html_button::EDIT, "javascript:weSearch.openToEdit('" . $link['table'] . "'," . $link["id"] . ",'');", true, 27, 22) . '</td>' :
-							'<td style="padding-left:26px;width:410px;"><span style="color:' . $color . ';">' . $link['path'] . '</span></td>
+							<td style="padding-left:26px;width:410px;"><a href="javascript:' . $reference['onclick'] . '" title="' . $reference['path'] . ' (' . $reference["id"] . ')"><span style="color:' . $color . ';"><u>' . $reference['path'] . '</u></span></a></td>
+							<td>' . we_html_button::create_button(we_html_button::EDIT, "javascript:weSearch.openToEdit('" . $reference['table'] . "'," . $reference["id"] . ",'');", true, 27, 22) . '</td>' :
+							'<td style="padding-left:26px;width:410px;"><span style="color:' . $color . ';">' . $reference['path'] . '</span></td>
 							<td>' . we_html_button::create_button(we_html_button::EDIT, '', true, 27, 22, '', '', true, false, '', false, 'Der Link wurde bei einer unveröffentlichten Änderung entfernt: Er existiert nur noch in der veröffentlichten Version!') . '</td>') .
 						'</tr>';
 				}
