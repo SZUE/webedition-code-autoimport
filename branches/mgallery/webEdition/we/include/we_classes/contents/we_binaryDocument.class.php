@@ -349,18 +349,27 @@ class we_binaryDocument extends we_document{
 		$search = new we_search_search();
 		$search->searchMediaLinks(0, true, $this->ID);
 		$ml = $search->getUsedMediaLinks();
-		$references = isset($ml['accessible']['mediaID_' . $this->ID]) ? $ml['accessible']['mediaID_' . $this->ID] : array(); //IMPORTANT: we hava a nested structure: make optgroupa
+		$accessibles = isset($ml['accessible']['mediaID_' . $this->ID]) ? $ml['accessible']['mediaID_' . $this->ID] : array(); //IMPORTANT: we hava a nested structure: make optgroups
+		$notaccessibles = isset($ml['notaccessible']['mediaID_' . $this->ID]) ? $ml['notaccessible']['mediaID_' . $this->ID] : array();
+		$groups = isset($ml['groups']['mediaID_' . $this->ID]) ? $ml['groups']['mediaID_' . $this->ID] : array();
 
-		if(empty($references)){
+		if(empty($groups)){
 			return g_l('weClass', '[notReferenced]');
 		}
 
 		$js = "";
 		$values = array();
 		$c = 0;
-		foreach($references as $groupname => $group){
-			$values[$groupname] = we_html_tools::OPTGROUP;
-			foreach($group as $v){
+		$limit=10;
+		foreach($groups as $group){
+			$cna = count($notaccessibles[$group]);
+			$values[(count($accessibles[$group]) + $cna) . ' '. $group . ($cna ? ' (' . $cna . ' ' . g_l('weClass', '[medialinks_unaccessible]') . ')' : '')] = we_html_tools::OPTGROUP;
+			$cc = 0;
+			foreach($accessibles[$group] as $v){
+				if($cc++ >= $limit){
+					$values[-1] = '+ ' . (count($accessibles[$group]) - $limit) . ' ' . g_l('weClass', '[medialinks_more]');
+					break;
+				}
 				$values[++$c] = $v['path'];
 				$js .= "id_" . $c . ": {type: '" . $v['type'] . "', id: " . $v['id'] . ", table: '" . $v['table'] . "', ct: '" . $v['ct'] . "', mod: '" . $v['mod'] . "', referencedIn: '" . $v['referencedIn'] . "', isTempPossible: " . ($v['isTempPossible'] ? 1 : 0) . ", isModified: " . ($v['isModified'] ? 1 : 0) . "},";
 			}
