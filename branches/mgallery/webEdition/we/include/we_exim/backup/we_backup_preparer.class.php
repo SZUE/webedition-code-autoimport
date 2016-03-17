@@ -25,9 +25,9 @@
 abstract class we_backup_preparer{
 
 	private static function checkFilePermission(){
-		if(!is_writable(BACKUP_PATH . 'tmp/')){
-			we_backup_util::addLog('Error: Can\'t write to ' . BACKUP_PATH . 'tmp/');
-			t_e('Error: Can\'t write to ' . BACKUP_PATH . 'tmp/');
+		if(!is_writable(TEMP_PATH)){
+			we_backup_util::addLog('Error: Can\'t write to ' . TEMP_PATH);
+			t_e('Error: Can\'t write to ' . TEMP_PATH);
 			return false;
 		}
 		return true;
@@ -82,7 +82,7 @@ abstract class we_backup_preparer{
 
 		$_SESSION['weS']['weBackupVars']['options']['compress'] = (we_base_file::hasCompression(we_base_request::_(we_base_request::BOOL, 'compress'))) ? we_backup_util::COMPRESSION : we_backup_util::NO_COMPRESSION;
 		$_SESSION['weS']['weBackupVars']['filename'] = we_base_request::_(we_base_request::FILE, 'filename') . ($_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_util::NO_COMPRESSION ? '.' . we_base_file::getZExtension(we_backup_util::COMPRESSION) : '');
-		$_SESSION['weS']['weBackupVars']['backup_file'] = BACKUP_PATH . 'tmp/' . $_SESSION['weS']['weBackupVars']['filename'];
+		$_SESSION['weS']['weBackupVars']['backup_file'] = TEMP_PATH . $_SESSION['weS']['weBackupVars']['filename'];
 		$prefix = we_base_file::getComPrefix($_SESSION['weS']['weBackupVars']['options']['compress']);
 		$_SESSION['weS']['weBackupVars']['open'] = $prefix . 'open';
 		$_SESSION['weS']['weBackupVars']['close'] = $prefix . 'close';
