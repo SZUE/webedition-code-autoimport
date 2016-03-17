@@ -412,6 +412,7 @@ we/include/we_exim/backup/weBackupExport.class.php
 we/include/we_editors/we_thumbnails_frameset.inc.php
 we/include/we_editors/we_thumbnails_footer.php
 we/include/we_editors/we_thumbnails.php
+we/include/we_editors/we_template_variant.inc.php
 we/include/we_editors/we_recover_backup.php
 we/include/we_editors/we_preferences_header.php
 we/include/we_editors/we_preferences_header.inc.php
