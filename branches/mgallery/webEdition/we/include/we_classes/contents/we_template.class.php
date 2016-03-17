@@ -837,7 +837,7 @@ we_templateInit();?>';
 						if(isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
 							$this->MediaLinks[] = intval($tag['attribs']['id']); // selector: text/webEdition only
 						}
-						if(isset($tag['attribs']['path']) && $tag['attribs']['path'] && ($id = path_to_id($tag['attribs']['path'], FILE_TABLE, $this->db))){
+						if(isset($tag['attribs']['path']) && $tag['attribs']['path'] && ($id = path_to_id($tag['attribs']['path'], FILE_TABLE, $this->DB_WE))){
 							$this->MediaLinks[] = intval($tag['attribs']['id']); // selector: text/webEdition only
 						}
 					}
