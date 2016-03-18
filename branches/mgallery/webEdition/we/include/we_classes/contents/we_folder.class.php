@@ -111,14 +111,19 @@ class we_folder extends we_root{
 		if(!isWE()){
 			return;
 		}
+
 		if(defined('CUSTOMER_TABLE') && (permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER') || permissionhandler::hasPerm('CAN_CHANGE_DOCS_CUSTOMER'))){
-			if($this->Table == FILE_TABLE || $this->Table == OBJECT_FILES_TABLE){
-				array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_WEBUSER);
+			switch($this->Table){
+				case FILE_TABLE:
+				case OBJECT_FILES_TABLE:
+					array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_WEBUSER);
 			}
 		}
-
-		if($this->Table === FILE_TABLE || $this->Table === TEMPLATES_TABLE || $this->Table === VFILE_TABLE){
-			$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_DOCLIST;
+		switch($this->Table){
+			case FILE_TABLE:
+			case TEMPLATES_TABLE:
+			case VFILE_TABLE:
+				$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_DOCLIST;
 		}
 	}
 
@@ -132,9 +137,7 @@ class we_folder extends we_root{
 					$this->Language = 'de_DE';
 				}
 			} else {
-				$Query = 'SELECT Language, ParentID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID = ' . intval($ParentID);
-				$this->DB_WE->query($Query);
-
+				$this->DB_WE->query('SELECT Language, ParentID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID = ' . intval($ParentID));
 				while($this->DB_WE->next_record()){
 					$ParentID = $this->DB_WE->f('ParentID');
 					$this->Language = $this->DB_WE->f('Language');
@@ -366,6 +369,12 @@ class we_folder extends we_root{
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
 
 	function editor(){
+		/*
+		 * if($we_Table == FILE_TABLE && $we_ContentType === we_base_ContentTypes::FOLDER && $we_ID){
+	$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_DOCLIST;
+	$_SESSION['weS']['EditPageNr'] = getTabs($we_doc->ClassName, we_base_constants::WE_EDITPAGE_DOCLIST);
+}
+		 */
 		switch($this->EditPageNr){
 			default:
 				$_SESSION['weS']['EditPageNr'] = $this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
