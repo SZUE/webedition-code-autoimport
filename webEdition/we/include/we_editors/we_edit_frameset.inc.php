@@ -186,11 +186,6 @@ if($we_doc->ID == 0){
 					getFirstValidEditPageNr($we_doc, we_base_constants::WE_EDITPAGE_CONTENT));
 }
 
-if($we_Table == FILE_TABLE && $we_ContentType === we_base_ContentTypes::FOLDER && $we_ID){
-	$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_DOCLIST;
-	$_SESSION['weS']['EditPageNr'] = getTabs($we_doc->ClassName, 16);
-}
-
 if($we_doc->EditPageNr === -1){ //	there is no view available for this document
 	//	show errorMessage - no view for this document (we:hidePages)
 	echo we_html_tools::getHtmlTop('', '', '', STYLESHEET, we_html_element::htmlBody(array('class' => 'weDialogBody'), we_html_tools::htmlDialogLayout(we_html_tools::htmlAlertAttentionBox(g_l('alert', '[no_views][description]'), we_html_tools::TYPE_ALERT, 500, true), g_l('alert', '[no_views][headline]'))

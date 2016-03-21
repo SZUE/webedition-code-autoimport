@@ -35,6 +35,7 @@ class we_selector_category extends we_selector_file{
 		$this->EntryText = $EntryText;
 		$this->noChoose = $noChoose;
 		$this->multiple = true;
+		$this->filter = '';
 	}
 
 	function printHTML($what = we_selector_file::FRAMESET, $withPreview = true){
@@ -364,7 +365,7 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 			we_html_element::htmlDiv(array('id' => 'fsheader'), $this->printHeaderHTML()) .
 			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, ($isMainChooser ? 'catproperties' : '')) .
 			($isMainChooser ?
-				we_html_element::htmlIFrame('fsvalues', $this->getFsQueryString(we_selector_file::PROPERTIES), '', '', '', true,($isMainChooser ? 'catproperties' : '')) : ''
+				we_html_element::htmlIFrame('fsvalues', $this->getFsQueryString(we_selector_file::PROPERTIES), '', '', '', true, ($isMainChooser ? 'catproperties' : '')) : ''
 			) .
 			we_html_element::htmlDiv(array('id' => 'fsfooter'), $this->printFooterTable()) .
 			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
@@ -508,7 +509,7 @@ function we_checkName() {
 }') .
 			weSuggest::getYuiFiles(), '<body class="defaultfont weDialogBody" style="padding: 15px 0 0 10px;">
 ' . ($showPrefs ? '
-	<form onsubmit="weWysiwygSetHiddenText();"; action="' . $_SERVER["SCRIPT_NAME"] . '" name="we_form" method="post" target="fscmd"><input type="hidden" name="what" value="' . self::CHANGE_CAT . '" /><input type="hidden" name="catid" value="' . we_base_request::_(we_base_request::INT, 'catid', 0) . '" />
+	<form onsubmit="weWysiwygSetHiddenText();" action="' . $_SERVER["SCRIPT_NAME"] . '" name="we_form" method="post" target="fscmd"><input type="hidden" name="what" value="' . self::CHANGE_CAT . '" /><input type="hidden" name="catid" value="' . we_base_request::_(we_base_request::INT, 'catid', 0) . '" />
 		' . $table->getHtml() . "<br/>" . $ta . "<br/>" . $saveBut . '
 	</div></form>' : '' ) .
 			(isset($yuiSuggest) ?

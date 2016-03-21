@@ -35,6 +35,9 @@ function shopCloseWindow(args) {
 
 function we_cmd_shop(args, url) {
 	switch (args[0]) {
+		case "edit_settings_shop":
+			new (WE().util.jsWindow)(this, WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_pref.php", "shoppref", -1, -1, 470, 600, true, false, true);
+			break;
 		case "shop_edit_ifthere":
 		case "shop_edit":
 			new (WE().util.jsWindow)(this, url, "edit_module", -1, -1, 970, 760, true, true, true, true);
@@ -86,18 +89,6 @@ function we_cmd_shop(args, url) {
 			break;
 		case "exit_shop":
 			top.opener.top.we_cmd("exit_modules");
-			break;
-		case "shop_insert_variant":
-		case "shop_move_variant_up":
-		case "shop_move_variant_down":
-		case "shop_remove_variant":
-			url += "#f" + (parseInt(args[1]) - 1);
-			we_sbmtFrm(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url);
-			break;
-		case 'shop_preview_variant':
-			url += "#f" + (parseInt(args[1]) - 1);
-			var prevWin = new (WE().util.jsWindow)(this, url, "previewVariation", -1, -1, 1600, 1200, true, true, true, true);
-			we_sbmtFrm(prevWin.wind, url);
 			break;
 		default:
 			return false;

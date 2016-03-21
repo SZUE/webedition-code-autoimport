@@ -176,7 +176,7 @@ class we_document extends we_root{
 	function formCategory(){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('delete_all_cats')", true, 0, 0, '', '', $this->Category ? false : true);
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','opener.setScrollTo();fillIDs();opener.top.we_cmd(\\'add_cat\\',top.allIDs);')");
-		$cats = new we_chooser_multiDir(508, $this->Category, 'delete_cat', $delallbut . $addbut, '', '"folder","we/category"', CATEGORY_TABLE);
+		$cats = new we_chooser_multiDir(508, $this->Category, 'delete_cat', $delallbut . $addbut, '', '"we/category"', CATEGORY_TABLE);
 		$cats->extraDelFn = 'setScrollTo();';
 		return $cats->get();
 	}
@@ -318,7 +318,7 @@ class we_document extends we_root{
 
 			$listarray[] = '_' . $new_nr;
 		}
-		$this->setElement($name, serialize(array_values($listarray)), 'block');
+		$this->setElement($name, we_serialize(array_values($listarray), SERIALIZE_JSON, true, 0, true), 'block');
 	}
 
 	function getMaxListArrayNr(array $la){
@@ -334,7 +334,6 @@ class we_document extends we_root{
 		$listarray = we_unserialize($this->getElement($name));
 
 		for($f = 0; $f < $number; $f++){
-
 			$content = $this->getElement($name, 'content');
 			$new_nr = $this->getMaxListArrayNr($listarray) + 1;
 // clear value
@@ -350,7 +349,7 @@ class we_document extends we_root{
 			$listarray[$nr] = '_' . $new_nr;
 		}
 
-		$this->setElement($name, serialize(array_values($listarray)), 'block');
+		$this->setElement($name, we_serialize($listarray, SERIALIZE_JSON, true, 0, true), 'block');
 	}
 
 	function upEntryAtList($name, $nr, $number = 1){
@@ -381,30 +380,20 @@ class we_document extends we_root{
 		$this->setElement($name, we_serialize($listarray, SERIALIZE_JSON, true, 0, true), 'block');
 	}
 
-	function removeEntryFromList($name, $nr, $names = '', $isBlock = false){
+	function removeEntryFromList($name, $nr, $names){
 		$list = $this->getElement($name);
 		$listarray = we_unserialize($list);
 		if(is_array($listarray)){
-			if($isBlock){
-				foreach(array_keys($this->elements) as $key){
-					if(preg_match('/' . $names . '(__.*)*$/', $key)){// # Bug 6904
-						unset($this->elements[$key]);
-					}
-				}
-			} else {
-				$namesArray = $names ? explode(',', $names) : array($names);
-				foreach($namesArray as $element){
-					unset($this->elements[$element . $listarray[$nr]]);
+			foreach(array_keys($this->elements) as $key){
+				if(preg_match('/' . $names . '(__.*)*$/', $key)){// # Bug 6904
+					unset($this->elements[$key]);
 				}
 			}
-			if(is_array($listarray)){// Bug #4079
-				unset($listarray[$nr]);
-			}
+			unset($listarray[$nr]);
 		} else {
 			$listarray = array();
 		}
-
-		$this->setElement($name, serialize(array_values($listarray)), 'block');
+		$this->setElement($name, we_serialize($listarray, SERIALIZE_JSON, true, 0, true), 'block');
 	}
 
 	function addLinkToLinklist($name){
@@ -669,18 +658,18 @@ class we_document extends we_root{
 // reverse function to saveInSession !
 	public function we_initSessDat($sessDat){
 		parent::we_initSessDat($sessDat);
-		/*this is bad old code
+		/* this is bad old code
 		 *
 		 * if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
-			if(
-				($day = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_day')) && ($month = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_month')) && ($year = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_year')) && ($hour = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_hour')) !== false && ($min = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_minute')) !== false){
-				$this->From = mktime($hour, $min, 0, $month, $day, $year);
-			}
-			if(
-				($day = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_day')) && ($month = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_month')) && ($year = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_year')) && ($hour = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_hour')) !== false && ($min = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_minute')) !== false){
-				$this->To = mktime($hour, $min, 0, $month, $day, $year);
-			}
-		}*/
+		  if(
+		  ($day = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_day')) && ($month = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_month')) && ($year = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_year')) && ($hour = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_hour')) !== false && ($min = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_From_minute')) !== false){
+		  $this->From = mktime($hour, $min, 0, $month, $day, $year);
+		  }
+		  if(
+		  ($day = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_day')) && ($month = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_month')) && ($year = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_year')) && ($hour = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_hour')) !== false && ($min = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_To_minute')) !== false){
+		  $this->To = mktime($hour, $min, 0, $month, $day, $year);
+		  }
+		  } */
 
 		if(we_base_request::_(we_base_request::INT, 'wecf_mode') !== false){
 			$this->documentCustomerFilter = we_customer_documentFilter::getCustomerFilterFromRequest($this->ID, $this->ContentType, $this->Table);
@@ -1298,12 +1287,10 @@ class we_document extends we_root{
 				$_linkAttribs['target'] = 'we_' . (isset($attribs["name"]) ? $attribs["name"] : "");
 				$_linkAttribs['onclick'] = $foo;
 			}
-			$_linkAttribs = removeAttribs($_linkAttribs, array('hidedirindex', 'objectseourls'));
-			return $rollOverScript . getHtmlTag('a', $_linkAttribs, '', false, true);
-		} else {
-			if(!empty($GLOBALS['we_link_not_published'])){
-				unset($GLOBALS['we_link_not_published']);
-			}
+			return $rollOverScript . getHtmlTag('a', removeAttribs($_linkAttribs, array('hidedirindex', 'objectseourls')), '', false, true);
+		}
+		if(!empty($GLOBALS['we_link_not_published'])){
+			unset($GLOBALS['we_link_not_published']);
 		}
 	}
 
@@ -1587,8 +1574,8 @@ class we_document extends we_root{
 					$text = str_replace($reg[1] . '="' . $reg[2] . $reg[3] . $reg[4] . $reg[5], $reg[1] . '="' . $foo['Path'] . (!$foo['IsDynamic'] ? '?m=' . $foo['Published'] . $reg[4] : ($reg[4] ? '?' : '')) . $reg[5], $text);
 				} else {
 					$text = preg_replace(array(
-						'-<(a|img) [^>]*' . $reg[2] . '="' . $reg[2] . $reg[3] . '("|&|&amp;|\?)[^>]*>(.*)</a>-Ui',
-						'-<(a|img) [^>]*' . $reg[2] . '="' . $reg[2] . $reg[3] . '(\?|&|&amp;|")[^>]*>-Ui',
+						'-<(a|img) [^>]*' . $reg[1] . '="' . $reg[2] . $reg[3] . '("|&|&amp;|\?)[^>]*>(.*)</a>-Ui',
+						'-<(a|img) [^>]*' . $reg[1] . '="' . $reg[2] . $reg[3] . '(\?|&|&amp;|")[^>]*>-Ui',
 						), array(
 						'${3}',
 						''
@@ -1664,15 +1651,13 @@ class we_document extends we_root{
 	protected static function makeBlockName($block, $field){
 		$block = str_replace('[0-9]+', '####BLOCKNR####', $block);
 		$field = str_replace('[0-9]+', '####BLOCKNR####', $field);
-		$out = preg_quote($field . 'blk_' . $block . '__') . '[0-9]+';
-		return str_replace('####BLOCKNR####', '[0-9]+', $out);
+		return str_replace('####BLOCKNR####', '[0-9]+', preg_quote($field . 'blk_' . $block . '__') . '[0-9]+');
 	}
 
 	protected static function makeLinklistName($block, $field){
 		$block = str_replace('[0-9]+', '####BLOCKNR####', $block);
 		$field = str_replace('[0-9]+', '####BLOCKNR####', $field);
-		$out = preg_quote($field . $block . '_TAGS_') . '[0-9]+';
-		return str_replace('####BLOCKNR####', '[0-9]+', $out);
+		return str_replace('####BLOCKNR####', '[0-9]+', preg_quote($field . $block . '_TAGS_') . '[0-9]+');
 	}
 
 }

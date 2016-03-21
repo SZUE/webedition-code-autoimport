@@ -1,5 +1,5 @@
 <?php
-/**
+/** 
  * webEdition CMS
  *
  * $Rev$

@@ -1105,11 +1105,6 @@ class we_search_search extends we_search_base{
 				NAVIGATION_TABLE => g_l('javaMenu_moduleInformation', '[navigation][text]'),
 			);
 
-			$mediaArr = array();
-			foreach(array_keys($types) as $key){
-				$mediaArr[$key] = array();
-			}
-
 			while($db->next_record()){
 				$rec = $db->getRecord();
 				$tmpMediaLinks[$rec['remObj']][] = array($rec['ID'], $rec['DocumentTable'], $rec['isTemp']);
@@ -1140,6 +1135,7 @@ class we_search_search extends we_search_base{
 					case defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE':
 						$db->query('SELECT ID,Path,ContentType FROM ' . addTblPrefix($k) . ' WHERE ID IN (' . implode(',', array_unique($v)) . ')' .getWsQueryForSelector(addTblPrefix($k)));
 						while($db->next_record()){
+							$accessible[$k][$db->f('ID')] = true;
 							$paths[$k][$db->f('ID')] = $db->f('Path');
 							$ct[$k][$db->f('ID')] = $db->f('ContentType');
 							$onclick[$k][$db->f('ID')] = 'weSearch.openToEdit(\'' . addTblPrefix($k) . '\',\'' . $db->f('ID') . '\',\'' . $db->f('ContentType') . '\')';
@@ -1149,14 +1145,17 @@ class we_search_search extends we_search_base{
 						}
 						break;
 					case defined('VFILE_TABLE') ? VFILE_TABLE : 'VFILE_TABLE':
-						$db->query('SELECT ID,Path FROM ' . addTblPrefix($k) . ' WHERE ID IN (' . implode(',', array_unique($v)) . ')');//no ws fo collections
-						while($db->next_record()){
-							$paths[$k][$db->f('ID')] = $db->f('Path');
-							$ct[$k][$db->f('ID')] = we_base_ContentTypes::COLLECTION;
-							$onclick[$k][$db->f('ID')] = 'weSearch.openToEdit(\'' . addTblPrefix($k) . '\',\'' . $db->f('ID') . '\',\'' . we_base_ContentTypes::COLLECTION . '\')';
-							$type[$k][$db->f('ID')] = 'we_doc';
-							$mod[$k][$db->f('ID')] = '';
-							$isTmpPossible[$k][$db->f('ID')] = false;
+						if(permissionhandler::hasPerm('CAN_SEE_COLLECTIONS')){
+							$db->query('SELECT ID,Path FROM ' . addTblPrefix($k) . ' WHERE ID IN (' . implode(',', array_unique($v)) . ')');//no ws fo collections
+							while($db->next_record()){
+								$accessible[$k][$db->f('ID')] = true;
+								$paths[$k][$db->f('ID')] = $db->f('Path');
+								$ct[$k][$db->f('ID')] = we_base_ContentTypes::COLLECTION;
+								$onclick[$k][$db->f('ID')] = 'weSearch.openToEdit(\'' . addTblPrefix($k) . '\',\'' . $db->f('ID') . '\',\'' . we_base_ContentTypes::COLLECTION . '\')';
+								$type[$k][$db->f('ID')] = 'we_doc';
+								$mod[$k][$db->f('ID')] = '';
+								$isTmpPossible[$k][$db->f('ID')] = false;
+							}
 						}
 						break;
 					case defined('BANNER_TABLE') ? BANNER_TABLE : 'BANNER_TABLE':
@@ -1173,6 +1172,7 @@ class we_search_search extends we_search_base{
 							defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : 'NEWSLETTER_TABLE' => 'newsletter'
 						);
 						foreach($paths[$k] as $key => $v){
+							$accessible[$k][$key] = true;
 							$onclick[$k][$key] = 'weSearch.openModule(\'' . $modules[addTblPrefix($k)] . '\',' . $key . ')';
 							$type[$k][$key] = 'module';
 							$mod[$k][$key] = $modules[addTblPrefix($k)];
@@ -1180,20 +1180,23 @@ class we_search_search extends we_search_base{
 						}
 						break;
 					case CATEGORY_TABLE:
-						$paths[$k] = id_to_path($v, addTblPrefix($k), null, false, true);
-						foreach($paths[$k] as $key => $v){
-							$onclick[$k][$key] = 'weSearch.openCategory(' . $key . ')';
-							$type[$k][$key] = 'cat';
-							$mod[$k][$key] = '';
-							$isTmpPossible[$k][$key] = false;
+						if(permissionhandler::hasPerm('EDIT_KATEGORIE')){
+							$paths[$k] = id_to_path($v, addTblPrefix($k), null, false, true);
+							foreach($paths[$k] as $key => $v){
+								$accessible[$k][$key] = true;
+								$onclick[$k][$key] = 'weSearch.openCategory(' . $key . ')';
+								$type[$k][$key] = 'cat';
+								$mod[$k][$key] = '';
+								$isTmpPossible[$k][$key] = false;
+							}
 						}
 				}
 			}
 
 			foreach($tmpMediaLinks as $m_id => $v){
-				$this->usedMediaLinks['accessible']['mediaID_' . $m_id] = $mediaArr;
+				$this->usedMediaLinks['accessible']['mediaID_' . $m_id] = array();
+				$this->usedMediaLinks['notaccessible']['mediaID_' . $m_id] = array();
 				foreach($v as $val){// FIXME: table, ct are obsolete when onclick works
-					//FIXME: here we have unintialized data, line type
 					if(!isset($this->usedMediaLinks['accessible']['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0]])){
 						if(isset($accessible[$val[1]][$val[0]])){
 							$this->usedMediaLinks['accessible']['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0]] = array(
@@ -1201,7 +1204,7 @@ class we_search_search extends we_search_base{
 								'referencedIn' => intval($val[2]) === 0 ? 'main' : 'temp',
 								'isTempPossible' => $isTmpPossible[$val[1]][$val[0]],
 								'id' => $val[0],
-								'type' => $type[$val[1]][$val[0]],
+								'type' => isset($type[$val[1]][$val[0]]) ? $type[$val[1]][$val[0]] : '',
 								'table' => addTblPrefix($val[1]),
 								'ct' => isset($ct[$val[1]][$val[0]]) ? $ct[$val[1]][$val[0]] : '',
 								'mod' => $mod[$val[1]][$val[0]],
@@ -1218,10 +1221,9 @@ class we_search_search extends we_search_base{
 					}
 				}
 
-				// eliminate empty groups for a media id
-				foreach($this->usedMediaLinks['accessible']['mediaID_' . $m_id] as $k => $v){
-					if(empty($v)){
-						unset($this->usedMediaLinks['accessible']['mediaID_' . $m_id][$k]);
+				foreach($types as $type){
+					if(!empty($this->usedMediaLinks['accessible']['mediaID_' . $m_id][$type]) || !empty($this->usedMediaLinks['notaccessible']['mediaID_' . $m_id][$type])){
+						$this->usedMediaLinks['groups']['mediaID_' . $m_id][] = $type;
 					}
 				}
 			}
