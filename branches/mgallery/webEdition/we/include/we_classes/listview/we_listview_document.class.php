@@ -448,7 +448,9 @@ FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->DB_WE, MYSQL_ASSOC)
 	}
 
 	function makeFieldCondition($name, $operation, $value){
-		return '(l.nHash=x\'' . md5($name) . '\' AND c.Dat ' . $operation . ' ' . $value . ')';
+		return strstr($name, 'wedoc_') ? //Fix: #9389
+			'('. FILE_TABLE . '.' . ltrim($name, 'wedoc_') .' ' . $operation . ' ' . $value . ')' : 
+			'(l.nHash=x\'' . md5($name) . '\' AND c.Dat ' . $operation . ' ' . $value . ')';
 	}
 
 	public function getCustomerRestrictionQuery($specificCustomersQuery, $classID, $mfilter, $listQuery){
