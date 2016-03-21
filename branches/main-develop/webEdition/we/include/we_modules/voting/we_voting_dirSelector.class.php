@@ -119,7 +119,7 @@ top.selectFile(top.currentID);
 	}
 
 	function query(){
-		$this->db->query('SELECT ' . $this->db->escape($this->fields) . ' FROM ' .
+		$this->db->query('SELECT ' .$this->fields . ' FROM ' .
 			$this->db->escape($this->table) .
 			' WHERE IsFolder=1 AND ParentID=' . intval($this->dir) . ' ' . self::getUserExtraQuery($this->table));
 	}

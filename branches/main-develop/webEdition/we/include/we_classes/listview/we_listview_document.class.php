@@ -147,7 +147,7 @@ class we_listview_document extends we_listview_base{
 					break;
 				default:
 					$cnt = count($this->joins);
-					$this->joins[] = ' LEFT JOIN ' . LINK_TABLE . ' ll' . $cnt . ' ON ll' . $cnt . '.DID=' . FILE_TABLE . '.ID LEFT JOIN ' . CONTENT_TABLE . ' cc' . $cnt . ' ON ll' . $cnt . '.CID=cc' . $cnt . '.ID';
+					$this->joins[] = ' JOIN ' . LINK_TABLE . ' ll' . $cnt . ' ON ll' . $cnt . '.DID=' . FILE_TABLE . '.ID JOIN ' . CONTENT_TABLE . ' cc' . $cnt . ' ON ll' . $cnt . '.CID=cc' . $cnt . '.ID';
 					$this->orderWhere[] = 'll' . $cnt . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND ll' . $cnt . '.nHash=x\'' . md5($ord) . '\'';
 					if($this->search){
 						$order[] = 'ranking';
@@ -262,8 +262,8 @@ class we_listview_document extends we_listview_base{
 		}
 		$this->DB_WE->query(
 			'SELECT ' . FILE_TABLE . '.ID, ' . FILE_TABLE . '.WebUserID' . $extraSelect .
-			' FROM ' . FILE_TABLE . ' LEFT JOIN ' . LINK_TABLE . ' l ON (' . FILE_TABLE . '.ID=l.DID AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '") LEFT JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID ' . $joinstring .
-			($this->search ? ' LEFT JOIN ' . INDEX_TABLE . ' i ON (i.ID=' . FILE_TABLE . '.ID AND i.ClassID=0) LEFT JOIN ' . FILE_TABLE . ' wsp ON wsp.ID=i.WorkspaceID ' : '') .
+			' FROM ' . FILE_TABLE . ' JOIN ' . LINK_TABLE . ' l ON (' . FILE_TABLE . '.ID=l.DID AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '") JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID ' . $joinstring .
+			($this->search ? ' JOIN ' . INDEX_TABLE . ' i ON (i.ID=' . FILE_TABLE . '.ID AND i.ClassID=0) LEFT JOIN ' . FILE_TABLE . ' wsp ON wsp.ID=i.WorkspaceID ' : '') .
 			' WHERE ' . $orderwhereString .
 			($this->searchable ? ' ' . FILE_TABLE . '.IsSearchable=1' : 1) . ' ' .
 			$where_lang . ' ' .
@@ -302,7 +302,7 @@ class we_listview_document extends we_listview_base{
 			'SELECT ' . FILE_TABLE . '.ID as ID, ' . FILE_TABLE . '.WebUserID as WebUserID' .
 			($random ? ',RAND() as RANDOM' : ($this->search ? ',' . $ranking . ' AS ranking' : '')) .
 			' FROM ' . FILE_TABLE . ' JOIN ' . LINK_TABLE . ' l ON ' . FILE_TABLE . '.ID=l.DID JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID' .
-			($this->search ? ' LEFT JOIN ' . INDEX_TABLE . ' i ON (i.ID=' . FILE_TABLE . '.ID AND i.ClassID=0)' : '') .
+			($this->search ? ' JOIN ' . INDEX_TABLE . ' i ON (i.ID=' . FILE_TABLE . '.ID AND i.ClassID=0)' : '') .
 			$joinstring .
 			' WHERE ' .
 			$orderwhereString .

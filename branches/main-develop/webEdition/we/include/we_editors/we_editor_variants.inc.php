@@ -42,7 +42,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 				break;
 
 			case we_base_ContentTypes::TEMPLATE:
-				include(WE_INCLUDES_PATH . 'we_editors/we_template_variant.inc.php');
+				we_base_variants::getTemplateCode($we_doc);
 				break;
 
 			default:

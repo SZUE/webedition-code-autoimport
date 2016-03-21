@@ -317,7 +317,7 @@ class we_base_linklist{
 
 	function getImageSrcInt($nr = -1){
 		$id = $this->getImageID($nr);
-		return ($id ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), 'Path', $this->db) : '');
+		return ($id ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), '', $this->db) : '');
 	}
 
 	function getString(){

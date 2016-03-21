@@ -338,8 +338,8 @@ run();');
 // perform update
 			we_updater::doUpdate();
 
-			if(is_file(BACKUP_PATH . 'tmp/' . $_SESSION['weS']['weBackupVars']['backup_file'])){
-				unlink(BACKUP_PATH . 'tmp/' . $_SESSION['weS']['weBackupVars']['backup_file']);
+			if(is_file(TEMP_PATH . $_SESSION['weS']['weBackupVars']['backup_file'])){
+				unlink(TEMP_PATH . $_SESSION['weS']['weBackupVars']['backup_file']);
 			}
 
 // reload user prefs

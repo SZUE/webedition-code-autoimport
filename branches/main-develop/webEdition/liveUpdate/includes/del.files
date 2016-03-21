@@ -9,7 +9,6 @@ we_dirSelect.php
 we_delSelect.php
 we_customerSelect.php
 we_catSelect.php
-we_backup/tmp/dummy
 we_backup/download/dummy
 we_ajaxcmd.php
 we/versions/dummy
@@ -413,6 +412,7 @@ we/include/we_exim/backup/weBackupExport.class.php
 we/include/we_editors/we_thumbnails_frameset.inc.php
 we/include/we_editors/we_thumbnails_footer.php
 we/include/we_editors/we_thumbnails.php
+we/include/we_editors/we_template_variant.inc.php
 we/include/we_editors/we_recover_backup.php
 we/include/we_editors/we_preferences_header.php
 we/include/we_editors/we_preferences_header.inc.php
@@ -958,6 +958,7 @@ apps/toolfactory/hook/we_jsCmdHook_toolfactory.inc.php
 apps/toolfactory/hook/custom_hooks/weCustomHook_toolfactory_save.inc.php
 apps/toolfactory/hook/custom_hooks/dummy
 !wysiwyg
+!we_backup/tmp
 !we/include/we_widgets/inc/plg
 !we/include/we_widgets/dlg/upb
 !we/include/we_widgets/dlg/shp

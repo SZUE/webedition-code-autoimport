@@ -36,10 +36,10 @@ class we_selector_document extends we_selector_directory{
 	);
 	protected $ctb = array(
 		"" => "btn_add_file",
-		we_base_ContentTypes::IMAGE => 'fa:btn_add_image,fa-plus,fa-lg fa-file-image-o',
-		we_base_ContentTypes::QUICKTIME => 'fa:btn_add_quicktime,fa-plus,fa-lg fa-fire',
-		we_base_ContentTypes::FLASH => 'fa:btn_add_flash,fa-plus,fa-lg fa-flash',
-		we_base_ContentTypes::VIDEO => 'fa:btn_add_video,fa-plus,fa-lg fa-file-video-o',
+		we_base_ContentTypes::IMAGE => 'fa:btn_add_image,fa-upload,fa-lg fa-file-image-o',
+		we_base_ContentTypes::QUICKTIME => 'fa:btn_add_quicktime,fa-upload,fa-lg fa-fire',
+		we_base_ContentTypes::FLASH => 'fa:btn_add_flash,fa-upload,fa-lg fa-flash',
+		we_base_ContentTypes::VIDEO => 'fa:btn_add_video,fa-upload,fa-lg fa-file-video-o',
 		we_base_ContentTypes::COLLECTION => 'fa:btn_add_collection,fa-plus,fa-lg fa-suitcase',
 	);
 
@@ -75,11 +75,9 @@ class we_selector_document extends we_selector_directory{
 		if($this->filter){
 			if(strpos($this->filter, ',')){
 				$contentTypes = explode(',', $this->filter);
-				$filterQuery .= ' AND (  ';
-				foreach($contentTypes as $ct){
-					$filterQuery .= ' ContentType="' . $this->db->escape($ct) . '" OR ';
-				}
-				$filterQuery .= ' isFolder=1)';
+				$filterQuery .= ' AND (  ' .
+					($contentTypes ? 'ContentType IN ("' . implode('","', $contentTypes) . '")' : '') .
+					' isFolder=1)';
 			} else {
 				$filterQuery = ' AND (ContentType="' . $this->db->escape($this->filter) . '" OR IsFolder=1 ) ';
 			}

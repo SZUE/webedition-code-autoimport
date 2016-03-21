@@ -659,7 +659,7 @@ class we_objectFile extends we_document{
 			case self::TYPE_HREF:
 				return $this->getHrefFieldHTML($type, $name, $attribs, $editable, $variant);
 			case self::TYPE_LINK:
-				return $this->htmlLinkInput($type, $name, $attribs, $editable);
+				return $this->htmlLinkInput($type, $name, $attribs, $editable, $variant);
 			case self::TYPE_TEXT:
 				return $this->getTextareaHTML($type, $name, $attribs, $editable, $variant);
 			case self::TYPE_IMG:
@@ -1158,7 +1158,7 @@ class we_objectFile extends we_document{
 </tr>';
 	}
 
-	private function htmlLinkInput($type, $n, array $attribs, $we_editmode = true, $headline = true){
+	private function htmlLinkInput($type, $n, array $attribs, $we_editmode = true, $variant = true){
 		$attribs["name"] = $n;
 		$link = we_unserialize($this->getElement($n));
 		$link = $link ? : array("ctype" => "text", "type" => we_base_link::TYPE_EXT, "href" => "#", "text" => g_l('global', '[new_link]'));
@@ -1175,9 +1175,10 @@ class we_objectFile extends we_document{
 			$content = g_l('global', '[new_link]');
 		}
 
-		return ($headline ?
-				'<span class="weObjectPreviewHeadline">' . $n . ($this->DefArray["link_" . $n]["required"] ? "*" : "") . '</span>' . ( $we_editmode && !empty($this->DefArray["link_" . $n]['editdescription']) ? self::formatDescription($this->DefArray["link_" . $n]['editdescription']) : we_html_element::htmlBr() ) :
-				'') . ($startTag ? $startTag . $content . '</a>' : $content) . ($we_editmode ? ($buttons) : "");
+		return ($variant ?
+				'' :
+				'<span class="weObjectPreviewHeadline">' . $n . ($this->DefArray["link_" . $n]["required"] ? "*" : "") . '</span>' . ( $we_editmode && !empty($this->DefArray["link_" . $n]['editdescription']) ? self::formatDescription($this->DefArray["link_" . $n]['editdescription']) : we_html_element::htmlBr() )
+			) . ($startTag ? $startTag . $content . '</a>' : $content) . ($we_editmode ? ($buttons) : "");
 	}
 
 	private function getPreviewView($name, $content){
@@ -1549,8 +1550,7 @@ class we_objectFile extends we_document{
 		$arr = makeArrayFromCSV($this->Workspaces);
 		$tmpls = makeArrayFromCSV($this->Templates);
 
-		$newArr = array();
-		$newTmpls = array();
+		$newArr = $newTmpls = array();
 //$newDefaultArr = array();
 		foreach($arr as $nr => $id){
 			if(we_base_file::isWeFile($id, FILE_TABLE, $this->DB_WE)){
@@ -1565,8 +1565,9 @@ class we_objectFile extends we_document{
 		$arr = makeArrayFromCSV($this->ExtraWorkspaces);
 		$newArr = array();
 		foreach($arr as $nr => $id){
-			if(we_base_file::isWeFile($id, FILE_TABLE, $this->DB_WE))
+			if(we_base_file::isWeFile($id, FILE_TABLE, $this->DB_WE)){
 				$newArr[] = $id;
+			}
 		}
 		$this->ExtraWorkspaces = implode(',', $newArr);
 
@@ -1637,26 +1638,14 @@ class we_objectFile extends we_document{
 		$Templates = makeArrayFromCSV($this->Templates);
 		foreach($workspaces as $key => $val){
 			if($val == $id){
-				unset($workspaces[$key]);
-				unset($Templates[$key]);
+				unset($workspaces[$key], $Templates[$key]);
 				break;
 			}
 		}
-		$tempArr = array();
 
-		foreach($workspaces as $ws){
-			$tempArr[] = $ws;
-		}
+		$this->Workspaces = implode(',', $workspaces);
 
-		$this->Workspaces = implode(',', $tempArr);
-
-		$tempArr = array();
-
-		foreach($Templates as $t){
-			$tempArr[] = $t;
-		}
-
-		$this->Templates = implode(',', $tempArr);
+		$this->Templates = implode(',', $Templates);
 	}
 
 	function ws_from_class(){

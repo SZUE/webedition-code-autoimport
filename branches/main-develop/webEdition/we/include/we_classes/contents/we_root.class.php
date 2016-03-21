@@ -1561,37 +1561,53 @@ abstract class we_root extends we_class{
 	public function checkFieldsOnSave(){
 		if($this->i_pathNotValid()){
 			return sprintf(g_l('weClass', '[notValidFolder]'), $this->Path);
-		} else if($this->i_filenameEmpty()){
+		}
+		if($this->i_filenameEmpty()){
 			return g_l('weEditor', '[' . $this->ContentType . '][filename_empty]');
-		} else if(!$this->i_canSaveDirinDir()){
+		}
+		if(!$this->i_canSaveDirinDir()){
 			return g_l('weEditor', '[pfolder_notsave]');
-		} else if($this->i_sameAsParent()){
+		}
+		if($this->i_sameAsParent()){
 			return g_l('weEditor', '[folder_save_nok_parent_same]');
-		} else if($this->i_fileExtensionNotValid()){
+		}
+		if($this->i_fileExtensionNotValid()){
 			return sprintf(g_l('weEditor', '[' . $this->ContentType . '][we_filename_notValid]'), $this->Path);
-		} else if($this->i_filenameNotValid()){
+		}
+		if($this->i_filenameNotValid()){
 			return sprintf(g_l('weEditor', '[' . $this->ContentType . '][we_filename_notValid]'), $this->Path);
-		} else if($this->i_descriptionMissing()){
+		}
+		if($this->i_descriptionMissing()){
 			return sprintf(g_l('weEditor', '[' . $this->ContentType . '][we_description_missing]'), $this->Path);
-		} else if($this->i_filenameNotAllowed()){
+		}
+		if($this->i_filenameNotAllowed()){
 			return sprintf(g_l('weEditor', '[' . $this->ContentType . '][we_filename_notAllowed]'), $this->Path);
-		} else if($this->i_filenameDouble()){
+		}
+		if($this->i_filenameDouble()){
 			return sprintf(g_l('weEditor', '[' . $this->ContentType . '][response_path_exists]'), $this->Path);
-		} else if($this->i_urlDouble()){
+		}
+		if($this->i_urlDouble()){
 			return sprintf(g_l('weEditor', '[' . $this->ContentType . '][we_objecturl_exists]'), $this->Url);
-		} else if($this->i_triggerIdNotValdid()){
+		}
+		if($this->i_triggerIdNotValdid()){
 			return g_l('weEditor', '[triggerIdNotValid]');
-		} else if($this->i_triggerDocNotDynamic()){
+		}
+		if($this->i_triggerDocNotDynamic()){
 			return g_l('weEditor', '[triggerDocNotDynamic]');
-		} else if(!$this->i_checkPathDiffAndCreate()){
+		}
+		if(!$this->i_checkPathDiffAndCreate()){
 			return sprintf(g_l('weClass', '[notValidFolder]'), $this->Path);
-		} else if(($n = $this->i_check_requiredFields())){
+		}
+		if(($n = $this->i_check_requiredFields())){
 			return sprintf(g_l('weEditor', '[required_field_alert]'), $n);
-		} else if($this->i_scheduleToBeforeNow()){
+		}
+		if($this->i_scheduleToBeforeNow()){
 			return g_l('modules_schedule', '[toBeforeNow]');
-		} else if(($n = $this->i_hasDoubbleFieldNames())){
+		}
+		if(($n = $this->i_hasDoubbleFieldNames())){
 			return sprintf(g_l('weEditor', '[doubble_field_alert]'), $n);
-		} else if(!$this->i_areVariantNamesValid()){
+		}
+		if(!$this->i_areVariantNamesValid()){
 			return g_l('weEditor', '[variantNameInvalid]');
 		}
 		return false;

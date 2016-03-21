@@ -24,6 +24,9 @@
  */
 function we_cmd_banner(args, url) {
 	switch (args[0]) {
+		case "edit_settings_banner":
+			we_cmd("banner_default");
+			break;
 		case "banner_edit":
 		case "banner_edit_ifthere":
 			new (WE().util.jsWindow)(this, url, "edit_module", -1, -1, 970, 760, true, true, true, true);

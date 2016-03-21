@@ -247,7 +247,7 @@ function writeBody(d) {
 						var onclick = ' onclick="return selectorOnClick(event,' + entries[i].ID + ');"';
 						var ondblclick = ' onDblClick="return selectorOnDblClick(' + entries[i].ID + ');"';
 						body += '<tr id="line_' + entries[i].ID + '" style="' + ((we_editCatID != entries[i].ID) ? '' : '') + '"' + ((we_editCatID || makeNewFolder || makeNewCat) ? '' : onclick) + /*(entries[i].isFolder ? */ondblclick /*: '')*/ + ' >' +
-										'<td class="selector selectoricon">' + WE().util.getTreeIcon('we/category') + '</td>' +
+										'<td class="selector selectoricon">' + WE().util.getTreeIcon(entries[i].contentType) + '</td>' +
 														((we_editCatID !== undefined && we_editCatID === entries[i].ID) ?
 																		'<td class="selector"><input type="hidden" name="we_EntryText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
 																		'<td class="selector filename" title="' + entries[i].text + '"><div class="cutText">' + entries[i].text + '</div>'

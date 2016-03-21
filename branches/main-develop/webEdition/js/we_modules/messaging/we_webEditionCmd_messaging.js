@@ -24,6 +24,9 @@
  */
 function we_cmd_messaging(args, url) {
 	switch (args[0]) {
+		case "edit_settings_messaging":
+			new (WE().util.jsWindow)(this, WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "messaging_settings.php?mode=1", "messaging_settings", -1, -1, 280, 200, true, false, true);
+			break;
 		case "messaging_start":
 		case "messaging_edit_ifthere":
 			new (WE().util.jsWindow)(this, url, "edit_module", -1, -1, 970, 760, true, true, true, true);

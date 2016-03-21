@@ -154,14 +154,14 @@ class we_fileupload_ui_base extends we_fileupload{
 		$this->isInternalBtnUpload = $flag;
 	}
 
-	public static function getExternalDropZone($name = 'we_File', $content = '', $style = '', $contentType = '', $callback = array()){
+	public static function getExternalDropZone($name = 'we_File', $content = '', $style = '', $contentType = '', $callback = array(), $writebackId = '', $writebackTarget = ''){
 		if(!self::isDragAndDrop()){
 			return $content;
 		}
 
 		$callback = array_merge(array('external' => '', 'tree' => ''), $callback);
 
-		// move to js file
+		// // FIXME: make the following functions more concise und move to extarnal js file
 		$js = we_html_element::jsElement('
 handleDragOver = function(e){
 	if(e.preventDefault){
@@ -179,7 +179,7 @@ handleDragLeave = function(e){
 	e.target.className = "we_file_drag";
 }
 
-handleDrop = function(e){
+handleDrop = function(e, writebackId, writebackTarget){
 	var text, files;
 
 	e.target.className = "we_file_drag";
@@ -189,21 +189,21 @@ handleDrop = function(e){
 	if(text = e.dataTransfer.getData("text")){
 		switch(text.split(",")[0]){
 			case "dragItem": // drag from tree
-				doDragFromTree(text);
+				doDragFromTree(text, writebackId);
 				break;
 			default:
 				// more cases to come
 		}
 	} else if(e.dataTransfer.files){top.console.log("from ext");
-		doDragFromExternal(e.dataTransfer.files);
+		doDragFromExternal(e.dataTransfer.files, writebackTarget);
 	}
 }
 
-doDragFromExternal = function(files){
+doDragFromExternal = function(files, writebackTarget){
 	document.presetFileupload = files;
-	top.we_cmd("we_fileupload_editor", "' . $contentType . '", 1, "", "", "' . $callback['external'] . '", 0, 0, "", true);
+	top.we_cmd("we_fileupload_editor", "' . $contentType . '", 1, "", writebackTarget, "' . $callback['external'] . '", 0, 0, "", true);
 }
-doDragFromTree = function(text){
+doDragFromTree = function(text, writebackId){
 	var data = text.split(",");
 
 	if(data[2] && data[3] === "' . $contentType . '"){
@@ -214,7 +214,7 @@ doDragFromTree = function(text){
 		');
 
 		return we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') . $js .
-				we_html_element::htmlDiv(array('id' => 'div_' . $name . '_fileDrag', 'class' => 'we_file_drag', 'ondrop'=> 'handleDrop(event);', 'ondragover' => 'handleDragOver(event);', 'ondragleave' => 'handleDragLeave(event);', 'style' => 'margin-top:0.5em;display:' . (self::isDragAndDrop() ? 'block;' : 'none;') . $style), $content);
+				we_html_element::htmlDiv(array('id' => 'div_' . $name . '_fileDrag', 'class' => 'we_file_drag', 'ondrop'=> 'handleDrop(event, \'' . $writebackId . '\', \'' . $writebackTarget . '\');', 'ondragover' => 'handleDragOver(event);', 'ondragleave' => 'handleDragLeave(event);', 'style' => 'margin-top:0.5em;display:' . (self::isDragAndDrop() ? 'block;' : 'none;') . $style), $content);
 	}
 
 	public function getButtonWrapped($type, $disabled = false, $width = 170, $notWrapped = false){

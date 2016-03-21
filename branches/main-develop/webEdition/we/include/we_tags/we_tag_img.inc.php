@@ -125,12 +125,11 @@ function we_tag_img($attribs){
 	$btnSelectCallback = "var ed = WE().layout.weEditorFrameController.getVisibleEditorFrame(); ed.setScrollTo(); ed._EditorFrame.setEditorIsHot(true); top.we_cmd('reload_editpage','" . $name . "','change_image');";
 	$btnSelectWecmdenc3 = we_base_request::encCmd($btnSelectCallback);
 
-	$dropzoneCallbackInt = "if(id){document.we_form.elements['" . $fname . "'].value=id;}";
-	$dropzoneCallbackExt = "WE().layout.weEditorFrameController.getVisibleEditorFrame().document.we_form.elements['" . $fname . "'].value = importedDocument.id;";
+	$dropzoneCallbackInt = "if(id && writebackId){document.we_form.elements[writebackId].value=id;}";
 	$dropzoneCmdencInt = we_base_request::encCmd($dropzoneCallbackInt . $btnSelectCallback);
-	$dropzoneCmdencExt = we_base_request::encCmd($dropzoneCallbackExt . $btnSelectCallback . 'setTimeout(self.close, 250);');
+	$dropzoneCmdencExt = we_base_request::encCmd($btnSelectCallback . 'setTimeout(self.close, 250);');
 	if($GLOBALS['we_editmode'] && $out && $showcontrol){ //in editMode we surround image with dropzone
-		$out = we_fileupload_ui_base::getExternalDropZone('we_File', $out, 'width:auto;height:auto;padding:12px;', we_base_ContentTypes::IMAGE, array('tree' => $dropzoneCmdencInt, 'external' => $dropzoneCmdencExt), 'weimg');
+		$out = we_fileupload_ui_base::getExternalDropZone('we_File', $out, 'width:auto;height:auto;padding:12px;', we_base_ContentTypes::IMAGE, array('tree' => $dropzoneCmdencInt, 'external' => $dropzoneCmdencExt), $fname, $btnSelectWecmdenc1);
 	}
 
 	if(!$id && (!$GLOBALS['we_editmode'])){

@@ -183,6 +183,12 @@ function findInclude($cmd){
 		case 'delete_all_navi':
 		case 'revert_published':
 		case 'load_editor':
+			//variants
+		case 'insert_variant':
+		case 'move_variant_up':
+		case 'move_variant_down':
+		case 'remove_variant':
+		case 'preview_variant':
 			return 'we_editors/we_editor.inc.php';
 		case 'edit_linklist':
 		case 'edit_link':

@@ -121,7 +121,7 @@ top.selectFile(top.currentID);
 	}
 
 	function query(){
-		$this->db->query('SELECT ' . $this->db->escape($this->fields) . ' FROM ' . $this->db->escape($this->table) . ' WHERE IsFolder=1 AND ParentID=' . intval(is_null($this->dir) ? $this->dir : $this->db->affected_rows()));
+		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE IsFolder=1 AND ParentID=' . intval(is_null($this->dir) ? $this->dir : $this->db->affected_rows()));
 	}
 
 	function printDoRenameFolderHTML(){

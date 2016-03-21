@@ -24,6 +24,9 @@
  */
 function we_cmd_spellchecker(args, url) {
 	switch (args[0]) {
+		case "edit_settings_spellchecker":
+			we_cmd("spellchecker_edit");
+			break;
 		case "spellchecker_edit":
 		case "spellchecker_edit_ifthere":
 			new (WE().util.jsWindow)(this, url, "spellcheckadmin", -1, -1, 470, 510, true, false, true, false);
