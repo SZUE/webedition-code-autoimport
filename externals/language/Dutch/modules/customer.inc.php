@@ -68,6 +68,7 @@ $l_modules_customer=array(
 	'edit_branche'=>'Wijzig weergave',
 	'edit_field'=>'Wijzig veld',
 	'edit_mail'=>'Wijzig E-mail',
+	'encryptField'=>'Encrypt this field?',
 	'export'=>'Exporteer',
 	'export_finished'=>'Export voltooid.',
 	'export_step1'=>'Export formaat',

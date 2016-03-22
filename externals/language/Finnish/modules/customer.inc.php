@@ -68,6 +68,7 @@ $l_modules_customer=array(
 	'edit_branche'=>'Muokkaa näkymää',
 	'edit_field'=>'Muokkaa kenttää',
 	'edit_mail'=>'Muokkaa E-mail',
+	'encryptField'=>'Encrypt this field?',
 	'export'=>'Vie',
 	'export_finished'=>'Vienti päättynyt.',
 	'export_step1'=>'Vientimuoto',

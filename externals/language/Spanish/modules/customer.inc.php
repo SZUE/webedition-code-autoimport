@@ -68,6 +68,7 @@ $l_modules_customer=array(
 	'edit_branche'=>'Editar vista',
 	'edit_field'=>'Editar campo',
 	'edit_mail'=>'Editar E-Mail',
+	'encryptField'=>'Encrypt this field?',
 	'export'=>'Exportar',
 	'export_finished'=>'La exportación ha finalizado.',
 	'export_step1'=>'Exportar formato',

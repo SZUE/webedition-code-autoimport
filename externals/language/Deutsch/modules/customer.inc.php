@@ -68,6 +68,7 @@ $l_modules_customer=array(
 	'edit_branche'=>'Bearbeite Bereich',
 	'edit_field'=>'Bearbeite Feld',
 	'edit_mail'=>'Bearbeite E-Mail',
+	'encryptField'=>'Feld verschlüsseln?',
 	'export'=>'Export',
 	'export_finished'=>'Der Export wurde erfolgreich beendet.',
 	'export_step1'=>'Export-Format',
