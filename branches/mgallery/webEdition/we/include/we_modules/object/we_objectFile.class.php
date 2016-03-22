@@ -2412,7 +2412,6 @@ class we_objectFile extends we_document{
 		$this->rewriteNavigation();
 		//}
 //clear navigation cache to see change if object in navigation #6916
-//		weNavigationCache::clean(true);
 
 		return $this->insertAtIndex();
 	}
@@ -2438,7 +2437,6 @@ class we_objectFile extends we_document{
 			}
 		}
 //clear navigation cache to see change if object in navigation #6916
-		//	weNavigationCache::clean(true);
 		$this->rewriteNavigation();
 
 		$ret = $this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=' . $this->TableID . ' AND ID=' . intval($this->ID));

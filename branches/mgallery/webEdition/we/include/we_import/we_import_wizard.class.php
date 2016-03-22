@@ -568,10 +568,7 @@ handle_event("previous");');
 
 			// --
 
-			$wecmdenc1 = we_base_request::encCmd("document.we_form.elements[\"v[navigation_dir_id]\"].value");
-			$wecmdenc2 = we_base_request::encCmd("document.we_form.elements[\"v[navigation_dir]\"].value");
-
-			$btnDocDir = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('openNavigationDirselector','" . $wecmdenc1 . "','','" . $wecmdenc2 . "');");
+			$btnDocDir = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('openNavigationDirselector','" . we_base_request::encCmd("document.we_form.elements[\"v[navigation_dir_id]\"].value") . "','','" . we_base_request::encCmd("document.we_form.elements[\"v[navigation_dir]\"].value") . "');");
 
 			$yuiSuggest->setAcId("NaviPath");
 			$yuiSuggest->setContentType("folder");

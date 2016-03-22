@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  *
  */
 class we_navigation_navigation extends we_base_model{
-
 	const SELECTION_STATIC = 'static';
 	const SELECTION_DYNAMIC = 'dynamic';
 	const SELECTION_NODYNAMIC = 'nodynamic';
@@ -253,14 +251,14 @@ class we_navigation_navigation extends we_base_model{
 		$this->setPath();
 
 		if($order){
-			$_ord_count = f('SELECT COUNT(1) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ParentID), '', $this->db);
+			$ord_count = f('SELECT COUNT(1) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ParentID), '', $this->db);
 			if($this->ID == 0){
-				$this->Ordn = $_ord_count;
+				$this->Ordn = $ord_count;
 			} else {
-				if($this->Ordn > ($_ord_count - 1)){
-					$this->Ordn = $_ord_count;
+				if($this->Ordn > ($ord_count - 1)){
+					$this->Ordn = $ord_count;
 				}
-				$_oldPid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->ID), '', $this->db);
+				$oldPid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->ID), '', $this->db);
 			}
 		}
 
@@ -283,9 +281,9 @@ class we_navigation_navigation extends we_base_model{
 			$this->registerMediaLinks();
 		}
 
-		if($order && isset($_oldPid) && $_oldPid != $this->ParentID){
+		if($order && isset($oldPid) && $oldPid != $this->ParentID){
 			// the entry has been moved
-			$this->reorder($_oldPid);
+			$this->reorder($oldPid);
 			$this->reorder($this->ParentID);
 			$this->previewCode = str_replace('@###PARENTID###@', $this->ID, self::defaultPreviewCode);
 		}
@@ -301,9 +299,9 @@ class we_navigation_navigation extends we_base_model{
 		$this->Name = $this->Text;
 		if(!$rebuild){
 			we_navigation_cache::delNavigationTree($this->ID);
-			if(isset($_oldPid) && $_oldPid != $this->ParentID){
+			if(isset($oldPid) && $oldPid != $this->ParentID){
 				we_navigation_cache::delNavigationTree($this->ParentID);
-				we_navigation_cache::delNavigationTree($_oldPid);
+				we_navigation_cache::delNavigationTree($oldPid);
 			}
 		}
 		return true;
@@ -438,8 +436,8 @@ class we_navigation_navigation extends we_base_model{
 
 	function saveField($name, $serialize = false){
 		$this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . we_database_base::arraySetter(array(
-					$name => ($serialize ? we_serialize($this->$name) : $this->$name)
-				)) . ' WHERE ID=' . intval($this->ID));
+				$name => ($serialize ? we_serialize($this->$name) : $this->$name)
+			)) . ' WHERE ID=' . intval($this->ID));
 		return $this->db->affected_rows();
 	}
 
@@ -452,8 +450,8 @@ class we_navigation_navigation extends we_base_model{
 					return we_navigation_dynList::getCatgories($this->FolderID, $this->ShowCount);
 				default:
 					return $this->ClassID > 0 ?
-							we_navigation_dynList::getObjects($this->ClassID, $this->FolderID, $this->Categories, $this->CatAnd ? 'AND' : 'OR', $this->Sort, $this->ShowCount, $this->TitleField) :
-							array();
+						we_navigation_dynList::getObjects($this->ClassID, $this->FolderID, $this->Categories, $this->CatAnd ? 'AND' : 'OR', $this->Sort, $this->ShowCount, $this->TitleField) :
+						array();
 			}
 		}
 	}
@@ -530,20 +528,20 @@ class we_navigation_navigation extends we_base_model{
 
 	function hasDynChilds(){
 		return ($this->ID ?
-						f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=1 LIMIT 1', '', $this->db) :
-						false);
+				f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=1 LIMIT 1', '', $this->db) :
+				false);
 	}
 
 	function hasAnyChilds(){
 		return ($this->ID ?
-						f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' LIMIT 1', '', $this->db) :
-						false);
+				f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' LIMIT 1', '', $this->db) :
+				false);
 	}
 
 	function hasIndependentChilds(){
 		return ($this->ID ?
-						f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=0 LIMIT 1', '', $this->db) :
-						false);
+				f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=0 LIMIT 1', '', $this->db) :
+				false);
 	}
 
 	function getDynamicPreview(array &$storage, $rules = false){
@@ -557,7 +555,6 @@ class we_navigation_navigation extends we_base_model{
 				if($_nav->IsFolder || $_nav->Selection != self::SELECTION_DYNAMIC){
 					$_items[] = array(
 						'id' => $_nav->ID,
-						//'text'=>str_replace('&amp;','&',$_nav->Text),
 						'name' => $_nav->Text,
 						'text' => (isset($_nav->Display) && !empty($_nav->Display)) ? $_nav->Display : $_nav->Text,
 						'display' => (isset($_nav->Display) && !empty($_nav->Display)) ? $_nav->Display : "",
@@ -586,7 +583,6 @@ class we_navigation_navigation extends we_base_model{
 						$_href = $_nav->getHref($storage['ids'], $_dyn['id']);
 						$_items[] = array(
 							'id' => $_nav->ID . '_' . $_dyn['id'],
-							//'text'=>str_replace('&amp;','&',!empty($_dyn['field']) ? $_dyn['field'] : $_dyn['text']),
 							'name' => $_dyn['field'] ? : $_dyn['text'],
 							'text' => $_dyn['field'] ? : $_dyn['text'],
 							'display' => isset($_dyn['display']) ? $_dyn['display'] : '',
@@ -609,7 +605,7 @@ class we_navigation_navigation extends we_base_model{
 
 						if($rules){
 							$_items[(count($_items) - 1)]['currentRule'] = we_navigation_rule::getWeNavigationRule(
-											'defined_' . ($_dyn['field'] ? : $_dyn['text']), $_nav->ID, $_nav->SelectionType, $_nav->FolderID, $_nav->DocTypeID, $_nav->ClassID, $_nav->CategoryIDs, $_nav->WorkspaceID, $_href, false);
+									'defined_' . ($_dyn['field'] ? : $_dyn['text']), $_nav->ID, $_nav->SelectionType, $_nav->FolderID, $_nav->DocTypeID, $_nav->ClassID, $_nav->CategoryIDs, $_nav->WorkspaceID, $_href, false);
 						}
 					}
 				}
@@ -714,7 +710,7 @@ class we_navigation_navigation extends we_base_model{
 		if($this->IsFolder){
 			$_path = '';
 			//FIXME: remove eval
-			eval('$_param = "' . addslashes(preg_replace('%\\$%', '$this->', $this->FolderParameter)) . '";');
+			eval('$_param = "' . addslashes(str_replace('\$', '$this->', $this->FolderParameter)) . '";');
 			switch($this->FolderSelection){
 				case self::STYPE_URLLINK:
 					$_path = $this->FolderUrl;
@@ -725,8 +721,8 @@ class we_navigation_navigation extends we_base_model{
 						if(NAVIGATION_OBJECTSEOURLS){
 							$_db = new DB_WE();
 							$objectdaten = getHash('SELECT Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->LinkID) . ' LIMIT 1', $_db);
-							$objecturl = isset($objectdaten['Url']) ? $objectdaten['Url'] : '';
-							$objecttriggerid = isset($objectdaten['TriggerID']) ? $objectdaten['TriggerID'] : 0;
+							$objecturl = empty($objectdaten['Url']) ? '' : $objectdaten['Url'];
+							$objecttriggerid = empty($objectdaten['TriggerID']) ? 0 : $objectdaten['TriggerID'];
 							if(!$objecturl){
 								$_param = 'we_objectID=' . $this->LinkID . ($_param ? '&' : '') . $_param;
 							}
@@ -743,9 +739,9 @@ class we_navigation_navigation extends we_base_model{
 						$path_parts = pathinfo($_path);
 						//FIXME: can we use seoIndexHide($path_parts['basename'])??
 						$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
-								(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
-										'' : $path_parts['filename'] . '/'
-								) . $objecturl;
+							(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
+								'' : $path_parts['filename'] . '/'
+							) . $objecturl;
 					}
 					break;
 			}
@@ -795,9 +791,9 @@ class we_navigation_navigation extends we_base_model{
 						$path_parts = pathinfo($_path);
 						//FIXME: can we use seoIndexHide($path_parts['basename'])??
 						$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . (
-								(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))) ?
-										'' : $path_parts['filename'] . '/'
-								) . $objecturl;
+							(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))) ?
+								'' : $path_parts['filename'] . '/'
+							) . $objecturl;
 					}
 			}
 		}
@@ -806,11 +802,11 @@ class we_navigation_navigation extends we_base_model{
 			$this->Attributes = array_filter(we_unserialize($this->Attributes));
 		}
 		$_path = str_replace(' ', '%20', trim($_path)) .
-				($_param ? ((strpos($_path, '?') === false ? '?' : '&amp;') . $_param) : '');
+			($_param ? ((strpos($_path, '?') === false ? '?' : '&amp;') . $_param) : '');
 
 		//leave this, because of strpos
 		$_path .= (($this->CurrentOnAnker && !empty($this->Attributes['anchor'])) ? ( (strpos($_path, '?') === false ? '?' : '&amp;') . 'we_anchor=' . $this->Attributes['anchor']) : '') .
-				((!empty($this->Attributes['anchor']) ) ? ('#' . $this->Attributes['anchor']) : '');
+			((!empty($this->Attributes['anchor']) ) ? ('#' . $this->Attributes['anchor']) : '');
 
 		$_path = str_replace(array('&amp;', '&'), array('&', '&amp;'), $_path);
 
@@ -883,22 +879,22 @@ class we_navigation_navigation extends we_base_model{
 			'|<(\/)?b>|',
 			'|<(\/)?i>|',
 			'|&([^;]+);|',
-				), array(
+			), array(
 			$open . 'br${1}' . $close,
 			$open . '${1}b' . $close,
 			$open . '${1}i' . $close,
 			$amp . '${1};',
-				), $string);
+			), $string);
 
 		return str_replace(array(
 			$open,
 			$close,
 			$amp,
-				), array(
+			), array(
 			'<',
 			'>',
 			'&',
-				), oldHtmlspecialchars($string));
+			), oldHtmlspecialchars($string));
 	}
 
 	public static function getNavCondition($id, $table){

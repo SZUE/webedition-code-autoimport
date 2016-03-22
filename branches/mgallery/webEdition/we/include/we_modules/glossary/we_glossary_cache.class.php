@@ -69,20 +69,8 @@ class we_glossary_cache{
 	 * @access public
 	 * @abstract
 	 */
-	function cacheIdToFilename($id){
-		return WE_GLOSSARY_MODULE_PATH . 'cache/cache_' . $id . '.php';
-	}
-
-	/**
-	 * get the cache id of a given cache filename
-	 *
-	 * @param string $filename
-	 * @return string
-	 * @access public
-	 * @abstract
-	 */
-	function filenameToCacheId($filename){
-		return intval(str_replace(array(WE_GLOSSARY_MODULE_PATH . 'data/cache_', '.php'), '', $filename));
+	public static function cacheIdToFilename($id){
+		return WE_CACHE_PATH. 'glossar_' . $id . '.php';
 	}
 
 	/**
@@ -291,9 +279,9 @@ if (window.screen) {
 	var x = (screen_width - w) / 2;
 	var y = (screen_height - h) / 2;
 	we_winOpts = \'left=\'+x+\',top=\'+y;
-}' :'
+}' : '
 	we_winOpts = \'\';
-'.
+' .
 // popup_xposition
 							(!empty($Attributes['popup_xposition']) ?
 								"we_winOpts += (we_winOpts ? ',' : '')+'left=" . $Attributes['popup_xposition'] . "';" :

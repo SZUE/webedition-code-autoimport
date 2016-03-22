@@ -265,7 +265,7 @@ abstract class we_backup_preparer{
 	static function getFileLists(){//FIXME:unused??
 		$list = array();
 		self::getFileList($list, TEMPLATES_PATH, true, false);
-		self::getFileList($list, $_SERVER['DOCUMENT_ROOT'] . we_navigation_cache::CACHEDIR, true, false);
+		self::getFileList($list, WE_CACHE_PATH, true, false);
 		self::getSiteFiles($list);
 		return $list;
 	}
