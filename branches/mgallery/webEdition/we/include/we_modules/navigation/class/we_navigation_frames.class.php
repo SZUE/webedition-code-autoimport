@@ -406,33 +406,22 @@ function setTab(tab) {
 		}
 
 		// COPY FOLDER
-		//$cmd = 'opener.'.$this->topFrame.'.mark()';
-		if($this->Model->isnew){
-			$_disabled = true;
-			$_disabledNote = " " . g_l('weClass', '[availableAfterSave]');
-			$_padding = "15";
-		} else {
-			$_disabled = false;
-			$_disabledNote = "";
-			$_padding = "10";
-		}
-
+		$_disabled = ($this->Model->isnew ? ' ' . g_l('weClass', '[availableAfterSave]') : '');
 		$cmd1 = "document.we_form.CopyFolderID.value";
 
 		$_cmd = "javascript:we_cmd('openNavigationDirselector'," . $cmd1 . ",'" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.CopyFolderPath.value") . "','opener.we_cmd(\"copyNaviFolder\")')";
-		$_button_copyFolder = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 100, 22, '', '', $_disabled);
+		$_button_copyFolder = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 100, 22, '', '', !empty($_disabled));
 
 		$parts[] = array(
 			'headline' => g_l('weClass', '[copyFolder]'),
-			'html' => we_html_element::jsElement("var selfNaviPath ='" . addslashes($this->Model->Path) . "';
+			'html' => we_html_element::jsElement("var selfNaviPath='" . addslashes($this->Model->Path) . "';
 var selfNaviId = '" . $this->Model->ID . "';") .
 			"<div style='float:left; margin-right:20px'>" .
-			we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[copy_owners_expl]') .
-				$_disabledNote, we_html_tools::TYPE_INFO, ($this->_width_size - 120), true, 0) . "</div>" . "<div style='padding-top:{$_padding}px'>" . $_button_copyFolder . "</div>" . we_html_element::htmlHiddens(
+			we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[copy_owners_expl]') . $_disabled, we_html_tools::TYPE_INFO, ($this->_width_size - 120), true, 0) . "</div>" . "<div style='padding-top:15px'>" . $_button_copyFolder . "</div>" . we_html_element::htmlHiddens(
 				array(
-					'name' => 'CopyFolderID',
-					"value" => '',
-					'CopyFolderPath' => '')),
+					'CopyFolderID' => '',
+					'CopyFolderPath' => ''
+			)),
 			'space' => $this->_space_size,
 			'noline' => 1
 		);
@@ -910,14 +899,14 @@ function showPreview() {
 			}
 		}
 
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.$IDName.value");
+		$cmd1 = "document.we_form.$IDName.value";
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.$PathName.value");
 
 		if($table == NAVIGATION_TABLE){
-			$_cmd = "javascript:we_cmd('openNavigationDirselector',document.we_form.elements['" . $IDName . "'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $cmd . "')";
+			$_cmd = "javascript:we_cmd('openNavigationDirselector'," . $cmd1 . ",'" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $cmd . "')";
 			$_selector = weSuggest::DirSelector;
 		} else if($filter == we_base_ContentTypes::FOLDER){
-			$_cmd = "javascript:we_cmd('we_selector_file',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $cmd . "','','" . $rootDirID . "')";
+			$_cmd = "javascript:we_cmd('we_selector_file'," . $cmd1 . ",'" . $table . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $cmd . "','','" . $rootDirID . "')";
 			$_selector = weSuggest::DirSelector;
 		} else {
 			$cmd1 = "document.we_form.$IDName.value";
