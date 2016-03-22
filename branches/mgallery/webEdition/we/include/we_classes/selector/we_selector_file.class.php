@@ -106,7 +106,7 @@ class we_selector_file{
 				$this->fields = 'ID,ParentID,CONCAT(First," ", Second," (",Text,")") AS Text,Path,IsFolder,(IF(IsFolder,"we/userGroup",(IF(Alias>0,"we/alias","we/user")))) AS ContentType';
 				break;
 			case defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : 'NEWSLETTER_TABLE':
-				$this->fields = 'ID,ParentID,Text,Path,IsFolder,(IF(IsFolder,"we/folder","we/newsletter") AS ContentType';
+				$this->fields = 'ID,ParentID,Text,Path,IsFolder,IF(IsFolder,"we/folder","we/newsletter") AS ContentType';
 				break;
 			default:
 				$this->fields = 'ID,ParentID,Text,Path,IsFolder,ContentType';
