@@ -289,22 +289,22 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		}
 
 		if($this->checkMakeDir(dirname($destination))){
-			if($this->deleteFile($destination)){
-				if(!isset($_SESSION['weS']['moveOk'])){
-					touch($source . 'x');
-					$_SESSION['weS']['moveOk'] = @rename($source . 'x', $destination . 'x');
-					$this->deleteFile($destination . 'x');
-					$this->deleteFile($source . 'x');
-					$this->insertUpdateLogEntry('Using ' . ($_SESSION['weS']['moveOk'] ? 'move' : 'copy') . ' for installation', WE_VERSION, 0);
-				}
-				if(substr($destination, -4) === '.php' && function_exists('opcache_invalidate')){
-					opcache_invalidate($destination, true);
-				}
+			if(!isset($_SESSION['weS']['moveOk'])){
+				touch($source . 'x');
+				$_SESSION['weS']['moveOk'] = @rename($source . 'x', $destination . 'x');
+				$this->deleteFile($destination . 'x');
+				$this->deleteFile($source . 'x');
+				$this->insertUpdateLogEntry('Using ' . ($_SESSION['weS']['moveOk'] ? 'move' : 'copy') . ' for installation', WE_VERSION, 0);
+			}
+			if(substr($destination, -4) === '.php' && function_exists('opcache_invalidate')){
+				opcache_invalidate($destination, true);
+			}
 
-				if($_SESSION['weS']['moveOk']){
-					return rename($source, $destination);
-				}
-				//rename seems to have problems - we do it old school way: copy, on success delete
+			if($_SESSION['weS']['moveOk']){
+				return rename($source, $destination);
+			}
+			//rename seems to have problems - we do it old school way: copy, on success delete
+			if($this->deleteFile($destination)){
 				if(copy($source, $destination)){
 					$this->deleteFile($source);
 					//should we handle file deletion?
@@ -554,12 +554,12 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		static $defaultEngine = '';
 		$db = $db? : new DB_WE();
 		if(!$defaultEngine){
-		$db->query('show variables LIKE "default_storage_engine"');
-		$db->next_record();
-		$defaultEngine = $db->f('Value');
-		if(!in_array(strtolower($defaultEngine), array('myisam', 'aria'))){
-			$defaultEngine = 'myisam';
-		}
+			$db->query('show variables LIKE "default_storage_engine"');
+			$db->next_record();
+			$defaultEngine = $db->f('Value');
+			if(!in_array(strtolower($defaultEngine), array('myisam', 'aria'))){
+				$defaultEngine = 'myisam';
+			}
 		}
 
 		$queries = explode("/* query separator */", str_replace("ENGINE=MyISAM", 'ENGINE=' . $defaultEngine, $this->getFileContent($path)));
@@ -886,7 +886,6 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 
 		return true;
 	}
-
 
 	/**
 	 * This file sets another errorhandler - to make specific error-messages

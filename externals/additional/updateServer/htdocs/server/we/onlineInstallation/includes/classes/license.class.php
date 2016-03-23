@@ -17,7 +17,7 @@ class license extends licenseBase{
 
 		$MatchingVersions = array();
 		$VersionsMissingLanguage = array();
-		foreach($AvailableVersions as $Version => $Languages){
+		foreach(array_keys($AvailableVersions) as $Version){
 			$MatchingVersions[$Version] = updateUtil::number2version($Version);
 		}
 		unset($MatchingVersions['betaLanguages']);

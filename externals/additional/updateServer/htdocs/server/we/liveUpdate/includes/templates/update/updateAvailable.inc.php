@@ -84,10 +84,7 @@ $repeatUpdateButton = $we_button->create_button("next", "?' . updateUtil::getCom
 
 $confirmCheckbox = we_forms::checkboxWithHidden(false, "confirmUpgrade", "' . $GLOBALS['lang']['upgrade']['confirmUpdateWarningCheckbox'] . '", false, "defaultfont","toggleNextButton();");
 
-if( defined("PCRE_VERSION") ) {
-$pcreV = PCRE_VERSION;
-} else {$pcreV="";}
-
+$pcreV = (defined("PCRE_VERSION")?PCRE_VERSION:"");
 
 $content = \'
 <script>

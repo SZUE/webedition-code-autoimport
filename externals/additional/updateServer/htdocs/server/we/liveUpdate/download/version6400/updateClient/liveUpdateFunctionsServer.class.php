@@ -286,19 +286,19 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		}
 
 		if($this->checkMakeDir(dirname($destination))){
-			if($this->deleteFile($destination)){
-				if(!isset($_SESSION['weS']['moveOk'])){
-					touch($source . 'x');
-					$_SESSION['weS']['moveOk'] = rename($source . 'x', $destination . 'x');
-					$this->deleteFile($destination . 'x');
-					$this->deleteFile($source . 'x');
-					$this->insertUpdateLogEntry('Using ' . ($_SESSION['weS']['moveOk'] ? 'move' : 'copy') . ' for installation', WE_VERSION, 0);
-				}
+			if(!isset($_SESSION['weS']['moveOk'])){
+				touch($source . 'x');
+				$_SESSION['weS']['moveOk'] = rename($source . 'x', $destination . 'x');
+				$this->deleteFile($destination . 'x');
+				$this->deleteFile($source . 'x');
+				$this->insertUpdateLogEntry('Using ' . ($_SESSION['weS']['moveOk'] ? 'move' : 'copy') . ' for installation', WE_VERSION, 0);
+			}
 
-				if($_SESSION['weS']['moveOk']){
-					return rename($source, $destination);
-				}
-				//rename seems to have problems - we do it old school way: copy, on success delete
+			if($_SESSION['weS']['moveOk']){
+				return rename($source, $destination);
+			}
+			//rename seems to have problems - we do it old school way: copy, on success delete
+			if($this->deleteFile($destination)){
 				if(copy($source, $destination)){
 					$this->deleteFile($source);
 					//should we handle file deletion?
