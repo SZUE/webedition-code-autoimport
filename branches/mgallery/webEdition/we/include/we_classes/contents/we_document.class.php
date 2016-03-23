@@ -938,7 +938,17 @@ class we_document extends we_root{
 				$val = $val ? : time();
 				$format = !empty($attribs['format']) ? $attribs['format'] : g_l('date', '[format][default]');
 				$langcode = (isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->Language ? $GLOBALS['WE_MAIN_DOC']->Language : $GLOBALS['weDefaultFrontendLanguage']);
-				$date = is_numeric($val) ? new DateTime('@' . $val) : new DateTime($val);
+				
+				/**
+				* Fix #10459
+				* new DateTime([ string $time = "now" [, DateTimeZone $timezone = NULL ]] )
+				* The $timezone parameter and the current timezone are ignored when the $time parameter 
+				* either is a UNIX timestamp (e.g. @946684800) or specifies a timezone (e.g. 2010-01-28T15:00:00+02:00).
+				* 
+				* we have to set timezone manually
+				*/
+				
+				$date = date_timezone_set((is_numeric($val) ? new DateTime('@' . $val) : new DateTime($val)), new DateTimeZone(date_default_timezone_get()));
 
 				return CheckAndConvertISOfrontend(we_base_country::dateformat($langcode, $date, $format));
 
