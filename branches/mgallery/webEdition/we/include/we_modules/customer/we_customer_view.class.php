@@ -914,9 +914,8 @@ self.close();');
 				$date_format = DATE_ONLY_FORMAT;
 				$format = g_l('weEditorInfo', '[date_only_format]');
 			case 'dateTime':
-				//$out = rray('name' => $field, 'value' => $value));
 				try{
-					$value = $value && $value != '0000-00-00' ? new DateTime($value /* ? $value : $this->settings->getSettings('start_year') . '-01-01' */) : 0;
+					$value = $value && $value != '0000-00-00' ? new DateTime($value) : 0;
 				} catch (Exception $e){
 					$value = 0;
 				}
