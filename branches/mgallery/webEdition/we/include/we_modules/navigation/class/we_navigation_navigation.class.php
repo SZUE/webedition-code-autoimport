@@ -111,7 +111,7 @@ class we_navigation_navigation extends we_base_model{
 	 * Default Constructor
 	 * Can load or create new navigation depends of parameter
 	 */
-	function __construct($navigationID = 0, we_database_base $db = null){
+	public function __construct($navigationID = 0, we_database_base $db = null){
 		parent::__construct(NAVIGATION_TABLE, $db, false);
 		$this->persistent_slots = array(
 			'ID' => we_base_request::INT,
@@ -262,7 +262,7 @@ class we_navigation_navigation extends we_base_model{
 			}
 		}
 
-		if($this->IsFolder == 0){
+		if(!$this->IsFolder){
 			$_charset = $this->Charset;
 			$this->Charset = '';
 		}
@@ -289,7 +289,7 @@ class we_navigation_navigation extends we_base_model{
 		}
 		$this->Categories = $_paths;
 
-		if($this->IsFolder == 0){
+		if(!$this->IsFolder){
 			$this->Charset = $_charset;
 		}
 
@@ -576,7 +576,7 @@ class we_navigation_navigation extends we_base_model{
 					);
 				}
 
-				if($_nav->IsFolder == 0 && $_nav->Selection == self::SELECTION_DYNAMIC){
+				if(!$_nav->IsFolder && $_nav->Selection == self::SELECTION_DYNAMIC){
 					$_dyn_items = $_nav->getDynamicEntries();
 					foreach($_dyn_items as $_dyn){
 
@@ -729,9 +729,9 @@ class we_navigation_navigation extends we_base_model{
 						} else {
 							$_param = 'we_objectID=' . $this->LinkID . ($_param ? '&' : '') . $_param;
 						}
-						$_id = ($objecttriggerid ? : we_navigation_dynList::getFirstDynDocument($this->FolderWsID));
+						$id = ($objecttriggerid ? : we_navigation_dynList::getFirstDynDocument($this->FolderWsID));
 					} else {
-						$_id = $this->LinkID;
+						$id = $this->LinkID;
 					}
 					$p = we_navigation_items::id2path($id);
 					$_path = ($p === '/' ? '' : $p);
@@ -746,7 +746,7 @@ class we_navigation_navigation extends we_base_model{
 					break;
 			}
 		} else {
-			$_id = ($id ? : $this->LinkID);
+			$id = ($id ? : $this->LinkID);
 			$_path = '';
 //FIXME: remove eval
 			eval('$_param = "' . addslashes(preg_replace('%\\$%', '$this->', $this->Parameter)) . '";');
@@ -759,7 +759,7 @@ class we_navigation_navigation extends we_base_model{
 				case self::STYPE_CATLINK:
 					$_path = $this->LinkSelection === self::LSELECTION_EXTERN ? $this->Url : we_navigation_items::id2path($this->UrlID);
 					if(!empty($this->CatParameter)){
-						$_param = $this->CatParameter . '=' . $_id . (!empty($_param) ? '&' : '') . $_param;
+						$_param = $this->CatParameter . '=' . $id . (!empty($_param) ? '&' : '') . $_param;
 					}
 					break;
 				default:
@@ -767,7 +767,7 @@ class we_navigation_navigation extends we_base_model{
 						$objecturl = '';
 						if(NAVIGATION_OBJECTSEOURLS){
 							$_db = new DB_WE();
-							$objectdaten = getHash('SELECT  Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($_id) . ' LIMIT 1', $_db);
+							$objectdaten = getHash('SELECT  Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id) . ' LIMIT 1', $_db);
 							if(isset($objectdaten['Url'])){
 								$objecturl = $objectdaten['Url'];
 								$objecttriggerid = $objectdaten['TriggerID'];
@@ -776,16 +776,16 @@ class we_navigation_navigation extends we_base_model{
 								$objecttriggerid = '';
 							}
 							if(!$objecturl){
-								$_param = 'we_objectID=' . $_id . ($_param ? '&' : '') . $_param;
+								$_param = 'we_objectID=' . $id . ($_param ? '&' : '') . $_param;
 							}
 						} else {
-							$_param = 'we_objectID=' . $_id . ($_param ? '&' : '') . $_param;
+							$_param = 'we_objectID=' . $id . ($_param ? '&' : '') . $_param;
 							$objecttriggerid = '';
 						}
-						$_id = ($objecttriggerid ? : we_navigation_dynList::getFirstDynDocument($this->WorkspaceID, $_db));
+						$id = ($objecttriggerid ? : we_navigation_dynList::getFirstDynDocument($this->WorkspaceID, $_db));
 					}
 
-					$p = we_navigation_items::id2path($_id);
+					$p = we_navigation_items::id2path($id);
 					$_path = ($p === '/' ? '' : $p);
 					if(NAVIGATION_OBJECTSEOURLS && !empty($objecturl)){
 						$path_parts = pathinfo($_path);

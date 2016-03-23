@@ -393,7 +393,7 @@ class we_navigation_items{
 			$_tmpItem['Name'] = $_tmpItem['Text'];
 			self::$Storage['items'][] = $_tmpItem;
 
-			if($_db->Record['IsFolder'] == 1 && ($_db->Record['FolderSelection'] === '' || $_db->Record['FolderSelection'] == we_navigation_navigation::STYPE_DOCLINK)){
+			if($_db->Record['IsFolder'] && ($_db->Record['FolderSelection'] === '' || $_db->Record['FolderSelection'] == we_navigation_navigation::STYPE_DOCLINK)){
 				$_ids[] = $_db->Record['LinkID'];
 			} elseif($_db->Record['Selection'] == we_navigation_navigation::SELECTION_STATIC && $_db->Record['SelectionType'] == we_navigation_navigation::STYPE_DOCLINK){
 				$_ids[] = $_db->Record['LinkID'];
@@ -405,12 +405,11 @@ class we_navigation_items{
 				$_ids[] = $_db->Record['IconID'];
 			}
 		}
-
-		$_ids = $_ids ? array_diff(array_keys(self::$Storage['ids']), array_unique($_ids)) : array();
+		$_ids = $_ids ? array_diff(array_unique($_ids), array_keys(self::$Storage['ids'])) : array();
 		if($_ids){
-			$_db->query('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ID IN(' . implode(',', $_ids) . ') ORDER BY ID');
+			$_db->query('SELECT ID,IF(Published>0,Path,"") FROM ' . FILE_TABLE . ' WHERE ID IN(' . implode(',', $_ids) . ') ORDER BY ID');
 			//keep array index
-			self::$Storage['ids'] = self::$Storage['ids'] + $_db->getAllFirst(false, MYSQL_ASSOC);
+			self::$Storage['ids'] = self::$Storage['ids'] + $_db->getAllFirst(false);
 		}
 	}
 
