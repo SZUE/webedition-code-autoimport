@@ -464,7 +464,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			case 'del_cat':
 				$arr = $this->workflowDef->Categories;
 				if(($cat = we_base_request::_(we_base_request::INT, 'wcat'))){
-					if(($pos = array_search($cat, $arr)) === false){
+					if(($pos = array_search($cat, $arr, false)) === false){
 						break;
 					}
 					unset($arr[$pos]);
@@ -488,7 +488,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			case 'del_objcat':
 				$arr = $this->workflowDef->ObjCategories;
 				if(($cat = we_base_request::_(we_base_request::INT, 'wcat'))){
-					if(($pos = array_search($cat, $arr)) === false){
+					if(($pos = array_search($cat, $arr, false)) === false){
 						break;
 					}
 					unset($arr[$pos]);
@@ -512,7 +512,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			case 'del_folder':
 				$arr = $this->workflowDef->Folders;
 				if(($id = we_base_request::_(we_base_request::INT, 'wfolder')) !== false){
-					if(($pos = array_search($id, $arr)) === false){
+					if(($pos = array_search($id, $arr, false)) === false){
 						break;
 					}
 					unset($arr[$pos]);
@@ -536,7 +536,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			case 'del_object_file_folder':
 				$arr = $this->workflowDef->ObjectFileFolders;
 				if(($id = we_base_request::_(we_base_request::INT, 'woffolder')) !== false){
-					if(($pos = array_search($id, $arr)) === false){
+					if(($pos = array_search($id, $arr, false)) === false){
 						break;
 					}
 					unset($arr[$pos]);
@@ -556,7 +556,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			case 'del_object':
 				$arr = $this->workflowDef->Objects;
 				if(($id = we_base_request::_(we_base_request::INT, 'wobject'))){
-					if(($pos = array_search($id, $arr)) === false){
+					if(($pos = array_search($id, $arr, false)) === false){
 						break;
 					}
 					unset($arr[$pos]);

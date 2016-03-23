@@ -36,7 +36,10 @@ class we_navigation_items{
 	var $rootItem = 0;
 	var $hasCurrent = false;
 	var $currentRules = array();
-	private $Storage = array(); //FIXME: make this static
+	private static $Storage = array(
+		'items' => array(),
+		'ids' => array(),
+	);
 
 	static function getCustomerData(we_navigation_navigation $navi){
 		//FIXME: check if we need this csv/unserialize code any more
@@ -133,16 +136,16 @@ class we_navigation_items{
 		$this->rootItem = intval($parentid);
 		$_navigation = new we_navigation_navigation();
 		$this->readItemsFromDb($this->rootItem);
-		$_item = $this->getItemFromPool($parentid);
+		$_item = self::getItemFromPool($parentid);
 		$_navigation->initByRawData($_item ? : array('ID' => 0, 'Path' => '/'));
 
 // set defaultTemplates
 		$this->setDefaultTemplates();
 		list($table, $linkid) = $_navigation->getTableIdForItem();
 		$this->items['id' . $_navigation->ID] = new we_navigation_item(
-			$_navigation->ID, $linkid, $table, $_navigation->Text, $_navigation->Display, $_navigation->getHref($this->Storage['ids']), (!$showRoot || $_navigation->ID == 0 ? 'root' : ($_navigation->IsFolder ? we_base_ContentTypes::FOLDER : 'item')), $this->id2path($_navigation->IconID), $_navigation->Attributes, $_navigation->LimitAccess, self::getCustomerData($_navigation), $_navigation->CurrentOnUrlPar, $_navigation->CurrentOnAnker);
+			$_navigation->ID, $linkid, $table, $_navigation->Text, $_navigation->Display, $_navigation->getHref(), (!$showRoot || $_navigation->ID == 0 ? 'root' : ($_navigation->IsFolder ? we_base_ContentTypes::FOLDER : 'item')), self::id2path($_navigation->IconID), $_navigation->Attributes, $_navigation->LimitAccess, self::getCustomerData($_navigation), $_navigation->CurrentOnUrlPar, $_navigation->CurrentOnAnker);
 
-		$items = $_navigation->getDynamicPreview($this->Storage, true);
+		$items = $_navigation->getDynamicPreview(self::$Storage['items'], true);
 
 		foreach($items as $_item){
 			if($_item['id']){
@@ -171,7 +174,7 @@ class we_navigation_items{
 		self::$cache[$parentid] = $this->items;
 
 //reduce Memory consumption!
-		$this->Storage = array();
+		self::$Storage['items'] = array();
 	}
 
 	private function checkCategories(array $idsRule, array $idDoc){
@@ -217,7 +220,7 @@ class we_navigation_items{
 						$ponder--;
 					}
 
-					$parentPath = $this->id2path($_rule->FolderID);
+					$parentPath = self::id2path($_rule->FolderID);
 					if($parentPath && $parentPath != '/'){
 						$parentPath .= '/';
 					}
@@ -234,7 +237,7 @@ class we_navigation_items{
 						$ponder--;
 					}
 
-					$parentPath = rtrim($this->id2path($_rule->WorkspaceID), '/') . '/';
+					$parentPath = rtrim(self::id2path($_rule->WorkspaceID), '/') . '/';
 					break;
 			}
 
@@ -378,11 +381,6 @@ class we_navigation_items{
 	}
 
 	function readItemsFromDb($id){
-		$this->Storage = array(
-			'items' => array(),
-			'ids' => array(),
-		);
-
 		$_pathArr = id_to_path($id, NAVIGATION_TABLE, null, false, true);
 		$_path = we_base_file::clearPath((isset($_pathArr[0]) ? $_pathArr[0] : '') . '/%');
 
@@ -393,7 +391,7 @@ class we_navigation_items{
 		while($_db->next_record()){
 			$_tmpItem = $_db->getRecord();
 			$_tmpItem['Name'] = $_tmpItem['Text'];
-			$this->Storage['items'][] = $_tmpItem;
+			self::$Storage['items'][] = $_tmpItem;
 
 			if($_db->Record['IsFolder'] == 1 && ($_db->Record['FolderSelection'] === '' || $_db->Record['FolderSelection'] == we_navigation_navigation::STYPE_DOCLINK)){
 				$_ids[] = $_db->Record['LinkID'];
@@ -408,15 +406,16 @@ class we_navigation_items{
 			}
 		}
 
+		$_ids = $_ids ? array_diff(array_keys(self::$Storage['ids']), array_unique($_ids)) : array();
 		if($_ids){
-			array_unique($_ids);
 			$_db->query('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ID IN(' . implode(',', $_ids) . ') ORDER BY ID');
-			$this->Storage['ids'] = $_db->getAllFirst(false, MYSQL_ASSOC);
+			//keep array index
+			self::$Storage['ids'] = self::$Storage['ids'] + $_db->getAllFirst(false, MYSQL_ASSOC);
 		}
 	}
 
-	function getItemFromPool($id){
-		foreach($this->Storage['items'] as $item){
+	private static function getItemFromPool($id){
+		foreach(self::$Storage['items'] as $item){
 			if($item['ID'] == $id){
 				return $item;
 			}
@@ -425,13 +424,14 @@ class we_navigation_items{
 		return null;
 	}
 
-	function id2path($id){
-		if(isset($this->Storage['ids'][$id])){
-			return $this->Storage['ids'][$id];
+	public static function id2path($id){
+		if(!$id){
+			return '/';
 		}
-
-
-		return ($this->Storage['ids'][$id] = id_to_path($id, FILE_TABLE));
+		if(isset(self::$Storage['ids'][$id])){
+			return self::$Storage['ids'][$id];
+		}
+		return (self::$Storage['ids'][$id] = id_to_path($id, FILE_TABLE));
 	}
 
 }

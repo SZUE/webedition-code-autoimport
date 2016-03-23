@@ -332,7 +332,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				if(($ngroup = we_base_request::_(we_base_request::STRING, 'ngroup')) !== false){
 					$arr = explode(',', $this->newsletter->groups[$ngroup]->Extern);
 					if(($nfile = we_base_request::_(we_base_request::FILE, "nfile")) !== false){
-						if(($pos = array_search($nfile, $arr)) !== false){
+						if(($pos = array_search($nfile, $arr, false)) !== false){
 							unset($arr[$pos]);
 						}
 						$this->newsletter->groups[$ngroup]->Extern = implode(',', $arr);
@@ -530,7 +530,7 @@ new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.p
 							$this->newsletter = new we_newsletter_newsletter();
 							echo we_html_element::jsElement('
 top.content.treeData.deleteEntry(' . $nid . ',"file");
-setTimeout(top.we_showMessage,500,"' . g_l('modules_newsletter', (we_base_request::_(we_base_request::BOOL, "IsFolder") ? '[delete_group_ok]' : '[delete_ok]')). '", WE().consts.message.WE_MESSAGE_NOTICE, window);
+setTimeout(top.we_showMessage,500,"' . g_l('modules_newsletter', (we_base_request::_(we_base_request::BOOL, "IsFolder") ? '[delete_group_ok]' : '[delete_ok]')) . '", WE().consts.message.WE_MESSAGE_NOTICE, window);
 								');
 							$_REQUEST['home'] = 1;
 							$_REQUEST['pnt'] = 'edbody';

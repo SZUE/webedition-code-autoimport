@@ -116,7 +116,7 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$we_transaction]);
 		$foo = makeArrayFromCSV($we_doc->Templates);
 		$cmd1 = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
-		if($cmd1 && ($pos = array_search($cmd1, $foo)) !== false){
+		if($cmd1 && ($pos = array_search($cmd1, $foo, false)) !== false){
 			unset($foo[$pos]);
 		}
 		if($we_doc->TemplateID == $cmd1){

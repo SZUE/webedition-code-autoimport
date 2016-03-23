@@ -1603,11 +1603,11 @@ class we_objectFile extends we_document{
 		$tarr = explode(',', $foo["Templates"]);
 		$warr = explode(',', $foo["Workspaces"]);
 
-		if(($pos = array_search($wsID, $warr)) === false){
+		if(($pos = array_search($wsID, $warr, false)) === false){
 			foreach($warr as $wsi){
 				$wsp = id_to_path($wsi, FILE_TABLE, $this->DB_WE);
 				if(substr($mwsp, 0, strlen($wsp)) == $wsp){
-					$pos = array_search($wsi, $warr);
+					$pos = array_search($wsi, $warr, false);
 					break;
 				}
 			}

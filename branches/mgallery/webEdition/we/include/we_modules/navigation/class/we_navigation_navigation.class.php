@@ -55,7 +55,7 @@ class we_navigation_navigation extends we_base_model{
 <we:navigationWrite navigationname="default" />
 </ul>';
 
-	//properties
+//properties
 	var $ID = 0;
 	var $Text = '';
 	var $Display = '';
@@ -111,8 +111,8 @@ class we_navigation_navigation extends we_base_model{
 	 * Default Constructor
 	 * Can load or create new navigation depends of parameter
 	 */
-	function __construct($navigationID = 0){
-		parent::__construct(NAVIGATION_TABLE, null, false);
+	function __construct($navigationID = 0, we_database_base $db = null){
+		parent::__construct(NAVIGATION_TABLE, $db, false);
 		$this->persistent_slots = array(
 			'ID' => we_base_request::INT,
 			'ParentID' => we_base_request::INT,
@@ -227,7 +227,7 @@ class we_navigation_navigation extends we_base_model{
 		if($id && $table){
 			$docFilter = we_customer_documentFilter::getFilterByIdAndTable($id, $table);
 			if($docFilter){
-				//quick hack
+//quick hack
 				$mode = $docFilter->getMode();
 				$cust = $docFilter->getSpecificCustomers();
 				we_navigation_customerFilter::translateModeToNavModel($mode, $this);
@@ -282,7 +282,7 @@ class we_navigation_navigation extends we_base_model{
 		}
 
 		if($order && isset($oldPid) && $oldPid != $this->ParentID){
-			// the entry has been moved
+// the entry has been moved
 			$this->reorder($oldPid);
 			$this->reorder($this->ParentID);
 			$this->previewCode = str_replace('@###PARENTID###@', $this->ID, self::defaultPreviewCode);
@@ -408,7 +408,7 @@ class we_navigation_navigation extends we_base_model{
 		if(permissionhandler::hasPerm('ADMINISTRATOR')){
 			return true;
 		}
-		//checkWS
+//checkWS
 		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->ParentID) . ' ' . self::getWSQuery(), '', $this->db);
 	}
 
@@ -509,7 +509,7 @@ class we_navigation_navigation extends we_base_model{
 			);
 		}
 
-		// delete old items??
+// delete old items??
 
 
 		return $_new_items;
@@ -544,12 +544,12 @@ class we_navigation_navigation extends we_base_model{
 				false);
 	}
 
-	function getDynamicPreview(array &$storage, $rules = false){
+	function getDynamicPreview(array $sitem, $rules = false){
 		$_items = array();
 
-		foreach($storage['items'] as $item){
+		foreach($sitem as $item){
 			if($item['ParentID'] == $this->ID){
-				$_nav = new we_navigation_navigation();
+				$_nav = new we_navigation_navigation(0, $this->db);
 				$_nav->initByRawData($item);
 				list($table, $linkid) = $_nav->getTableIdForItem();
 				if($_nav->IsFolder || $_nav->Selection != self::SELECTION_DYNAMIC){
@@ -560,11 +560,11 @@ class we_navigation_navigation extends we_base_model{
 						'display' => (isset($_nav->Display) && !empty($_nav->Display)) ? $_nav->Display : "",
 						'docid' => $linkid,
 						'table' => $table,
-						'href' => $_nav->getHref($storage['ids']),
+						'href' => $_nav->getHref(),
 						'type' => $_nav->IsFolder ? we_base_ContentTypes::FOLDER : 'item',
 						'parentid' => $_nav->ParentID,
 						'workspaceid' => $_nav->WorkspaceID,
-						'icon' => isset($storage['ids'][$_nav->IconID]) ? $storage['ids'][$_nav->IconID] : id_to_path($_nav->IconID),
+						'icon' => we_navigation_items::id2path($_nav->IconID),
 						'attributes' => $_nav->Attributes,
 						'customers' => we_navigation_items::getCustomerData($_nav),
 						'currentonurlpar' => $_nav->CurrentOnUrlPar,
@@ -580,7 +580,7 @@ class we_navigation_navigation extends we_base_model{
 					$_dyn_items = $_nav->getDynamicEntries();
 					foreach($_dyn_items as $_dyn){
 
-						$_href = $_nav->getHref($storage['ids'], $_dyn['id']);
+						$_href = $_nav->getHref($_dyn['id']);
 						$_items[] = array(
 							'id' => $_nav->ID . '_' . $_dyn['id'],
 							'name' => $_dyn['field'] ? : $_dyn['text'],
@@ -592,7 +592,7 @@ class we_navigation_navigation extends we_base_model{
 							'type' => 'item',
 							'parentid' => $_nav->ParentID,
 							'workspaceid' => $_nav->WorkspaceID,
-							'icon' => isset($storage['ids'][$_nav->IconID]) ? $storage['ids'][$_nav->IconID] : id_to_path($_nav->IconID),
+							'icon' => we_navigation_items::id2path($_nav->IconID),
 							'attributes' => $_nav->Attributes,
 							'customers' => we_navigation_items::getCustomerData($_nav),
 							'currentonurlpar' => $_nav->CurrentOnUrlPar,
@@ -611,7 +611,7 @@ class we_navigation_navigation extends we_base_model{
 				}
 
 				if($_nav->IsFolder){
-					$_items = array_merge($_items, $_nav->getDynamicPreview($storage, $rules));
+					$_items = array_merge($_items, $_nav->getDynamicPreview($sitem, $rules));
 				}
 			}
 		}
@@ -628,7 +628,7 @@ class we_navigation_navigation extends we_base_model{
 			$this->saveField('Ordn');
 			$this->reorder($this->ParentID);
 		} else {
-			//check position
+//check position
 			if($newPos < 0 || $newPos > $max = f('SELECT MAX(Ordn) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ParentID), '', $this->db)){
 				return false;
 			}
@@ -656,7 +656,7 @@ class we_navigation_navigation extends we_base_model{
 		if(!($this->ID && $this->Ordn > 0)){
 			return false;
 		}
-		$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval(--$this->Ordn));
+		$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval( --$this->Ordn));
 		$this->saveField('Ordn');
 		$this->reorder($this->ParentID);
 		return true;
@@ -668,7 +668,7 @@ class we_navigation_navigation extends we_base_model{
 		}
 		$_num = f('SELECT COUNT(1) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ParentID), '', $this->db);
 		if($this->Ordn < ($_num - 1)){
-			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval(++$this->Ordn));
+			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval( ++$this->Ordn));
 			$this->saveField('Ordn');
 			$this->reorder($this->ParentID);
 			return true;
@@ -706,11 +706,11 @@ class we_navigation_navigation extends we_base_model{
 		}
 	}
 
-	function getHref(&$storage, $id = 0){
+	function getHref($id = 0){
 		if($this->IsFolder){
 			$_path = '';
-			//FIXME: remove eval
-			eval('$_param = "' . addslashes(str_replace('\$', '$this->', $this->FolderParameter)) . '";');
+//FIXME: remove eval
+			eval('$_param = "' . addslashes(preg_replace('%\\$%', '$this->', $this->FolderParameter)) . '";');
 			switch($this->FolderSelection){
 				case self::STYPE_URLLINK:
 					$_path = $this->FolderUrl;
@@ -733,11 +733,11 @@ class we_navigation_navigation extends we_base_model{
 					} else {
 						$_id = $this->LinkID;
 					}
-					$_path = isset($storage[$_id]) ? $storage[$_id] : id_to_path($_id, FILE_TABLE);
-					$_path = ($_path === '/' ? '' : $_path);
+					$p = we_navigation_items::id2path($id);
+					$_path = ($p === '/' ? '' : $p);
 					if(NAVIGATION_OBJECTSEOURLS && $objecturl != ''){
 						$path_parts = pathinfo($_path);
-						//FIXME: can we use seoIndexHide($path_parts['basename'])??
+//FIXME: can we use seoIndexHide($path_parts['basename'])??
 						$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
 							(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
 								'' : $path_parts['filename'] . '/'
@@ -748,7 +748,7 @@ class we_navigation_navigation extends we_base_model{
 		} else {
 			$_id = ($id ? : $this->LinkID);
 			$_path = '';
-			//FIXME: remove eval
+//FIXME: remove eval
 			eval('$_param = "' . addslashes(preg_replace('%\\$%', '$this->', $this->Parameter)) . '";');
 
 			switch($this->SelectionType){
@@ -757,7 +757,7 @@ class we_navigation_navigation extends we_base_model{
 					break;
 				case self::STYPE_CATEGORY:
 				case self::STYPE_CATLINK:
-					$_path = $this->LinkSelection === self::LSELECTION_EXTERN ? $this->Url : ($_path = isset($storage[$this->UrlID]) ? $storage[$this->UrlID] : id_to_path($this->UrlID, FILE_TABLE));
+					$_path = $this->LinkSelection === self::LSELECTION_EXTERN ? $this->Url : we_navigation_items::id2path($this->UrlID);
 					if(!empty($this->CatParameter)){
 						$_param = $this->CatParameter . '=' . $_id . (!empty($_param) ? '&' : '') . $_param;
 					}
@@ -782,14 +782,14 @@ class we_navigation_navigation extends we_base_model{
 							$_param = 'we_objectID=' . $_id . ($_param ? '&' : '') . $_param;
 							$objecttriggerid = '';
 						}
-						$_id = ($objecttriggerid ? : we_navigation_dynList::getFirstDynDocument($this->WorkspaceID));
+						$_id = ($objecttriggerid ? : we_navigation_dynList::getFirstDynDocument($this->WorkspaceID, $_db));
 					}
 
-					$_path = isset($storage[$_id]) ? $storage[$_id] : id_to_path($_id, FILE_TABLE);
-					$_path = ($_path === '/' ? '' : $_path);
+					$p = we_navigation_items::id2path($_id);
+					$_path = ($p === '/' ? '' : $p);
 					if(NAVIGATION_OBJECTSEOURLS && !empty($objecturl)){
 						$path_parts = pathinfo($_path);
-						//FIXME: can we use seoIndexHide($path_parts['basename'])??
+//FIXME: can we use seoIndexHide($path_parts['basename'])??
 						$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . (
 							(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))) ?
 								'' : $path_parts['filename'] . '/'
@@ -804,13 +804,13 @@ class we_navigation_navigation extends we_base_model{
 		$_path = str_replace(' ', '%20', trim($_path)) .
 			($_param ? ((strpos($_path, '?') === false ? '?' : '&amp;') . $_param) : '');
 
-		//leave this, because of strpos
+//leave this, because of strpos
 		$_path .= (($this->CurrentOnAnker && !empty($this->Attributes['anchor'])) ? ( (strpos($_path, '?') === false ? '?' : '&amp;') . 'we_anchor=' . $this->Attributes['anchor']) : '') .
 			((!empty($this->Attributes['anchor']) ) ? ('#' . $this->Attributes['anchor']) : '');
 
 		$_path = str_replace(array('&amp;', '&'), array('&', '&amp;'), $_path);
 
-		//FIXME: can we use seoIndexHide($path_parts['basename'])??
+//FIXME: can we use seoIndexHide($path_parts['basename'])??
 		if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && $this->LinkSelection != self::LSELECTION_EXTERN && $this->SelectionType != self::STYPE_URLLINK){ //Fix #8353
 			$dirindexnames = array_map('trim', explode(',', '/' . str_replace(',', ',/', NAVIGATION_DIRECTORYINDEX_NAMES)));
 			return str_replace($dirindexnames, '/', $_path);
@@ -831,7 +831,7 @@ class we_navigation_navigation extends we_base_model{
 					break;
 				}
 				$pid = $_hash['ParentID'];
-				//prevent deadlocks
+//prevent deadlocks
 				if($_count > 10000){
 					break;
 				}
@@ -906,7 +906,7 @@ class we_navigation_navigation extends we_base_model{
 		if(permissionhandler::hasPerm('ADMINISTRATOR') || !($ws = get_ws(NAVIGATION_TABLE))){
 			return '';
 		}
-		// #5836: Use function get_ws()
+// #5836: Use function get_ws()
 		$_wrkNavi = id_to_path(expolode(',', $ws), NAVIGATION_TABLE);
 
 		$_condition = array();

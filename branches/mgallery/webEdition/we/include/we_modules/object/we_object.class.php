@@ -1601,7 +1601,7 @@ class we_object extends we_document{
 
 	function del_user($id){
 		$users = array_filter(explode(',', $this->Users));
-		if(($pos = array_search($id, $users)) == false){
+		if(($pos = array_search($id, $users, false)) == false){
 			return;
 		}
 		unset($users[$pos]);
@@ -1618,7 +1618,7 @@ class we_object extends we_document{
 
 	function del_css($id){
 		$css = explode(',', $this->CSS);
-		if(($pos = array_search($id, $css)) === false){
+		if(($pos = array_search($id, $css, false)) === false){
 			return;
 		}
 		unset($css[$pos]);

@@ -302,8 +302,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			case "del_file":
 				$arr = makeArrayFromCSV($this->banner->FileIDs);
 				if(($id = we_base_request::_(we_base_request::INT, "ncmdvalue")) !== false){
-					$k = array_search($id, $arr);
-					if($k !== false){
+					if(($k = array_search($id, $arr, false)) !== false){
 						unset($arr[$k]);
 					}
 					$this->banner->FileIDs = implode(',', $arr);

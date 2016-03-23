@@ -427,7 +427,7 @@ abstract class we_root extends we_class{
 
 	function del_owner($id){
 		$owners = array_filter(explode(',', $this->Owners));
-		if(($pos = array_search($id, $owners)) === false){
+		if(($pos = array_search($id, $owners, false)) === false){
 			return;
 		}
 

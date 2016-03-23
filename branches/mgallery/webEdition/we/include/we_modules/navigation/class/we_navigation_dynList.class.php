@@ -113,7 +113,7 @@ abstract class we_navigation_dynList{
 		$_cats = array();
 		foreach($categories as $cat){
 			$cat = is_numeric($cat) ? $cat : $_db->escape(path_to_id($cat, CATEGORY_TABLE, $GLOBALS['DB_WE']));
-			$_cats[] = 'FIND_IN_SET('.$cat.',Category)'; //bug #6729
+			$_cats[] = 'FIND_IN_SET(' . $cat . ',Category)'; //bug #6729
 		}
 
 		$dirpath = we_base_file::clearPath($dirpath . '/');
@@ -165,7 +165,7 @@ abstract class we_navigation_dynList{
 		$_cats = array();
 		foreach($categories as $cat){
 			$cat = is_numeric($cat) ? $cat : $_db->escape(path_to_id($cat, CATEGORY_TABLE));
-			$_cats[] = 'FIND_IN_SET('.$cat.',OF_Category)'; //bug #6729
+			$_cats[] = 'FIND_IN_SET(' . $cat . ',OF_Category)'; //bug #6729
 		}
 
 		$_where = array();
@@ -216,7 +216,7 @@ abstract class we_navigation_dynList{
 			if(!we_base_file::isWeFile($_id, FILE_TABLE, $db) || !in_array($_id, $_all)){
 				unset($_values[$_k]);
 			} else {
-				$_ret[$_id] = id_to_path($_id);
+				$_ret[$_id] = id_to_path($_id, FILE_TABLE, $db);
 			}
 		}
 		return $_ret;
@@ -233,7 +233,7 @@ abstract class we_navigation_dynList{
 			if(!we_base_file::isWeFile($_id, FILE_TABLE, $db)){
 				unset($_values[$_k]);
 			} else {
-				$_ret[$_id] = id_to_path($_id);
+				$_ret[$_id] = id_to_path($_id, FILE_TABLE, $db);
 			}
 		}
 		return $_ret;
@@ -250,12 +250,10 @@ abstract class we_navigation_dynList{
 
 	public static function getFirstDynDocument($id, we_database_base $db = null){
 		$db = $db ? : new DB_WE();
-		$_id = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE ParentID=' . intval($id) . ' AND IsFolder=0 AND IsDynamic=1 AND Published!=0;', '', $db);
-		if(!$_id){
-			$_path = id_to_path($id);
-			$_id = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path LIKE "' . $db->escape($_path) . '%" AND IsFolder=0 AND IsDynamic=1 AND Published!=0;', '', $db);
-		}
-		return $_id;
+		return (
+			($_id = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE ParentID=' . intval($id) . ' AND IsFolder=0 AND IsDynamic=1 AND Published!=0;', '', $db))? :
+				f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path LIKE "' . $db->escape(id_to_path($id, FILE_TABLE, $db)) . '%" AND IsFolder=0 AND IsDynamic=1 AND Published!=0;', '', $db)
+			);
 	}
 
 	public static function getWorkspaceFlag($id){

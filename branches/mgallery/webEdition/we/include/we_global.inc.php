@@ -307,7 +307,7 @@ function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $pre
 		return ($asArray ? array(0 => '/') : '/');
 	}
 
-	$db = $db ? : new DB_WE();
+	$db = $db ? : $GLOBALS['DB_WE'];
 
 	if(!is_array($IDs)){
 		$IDs = makeArrayFromCSV($IDs);
@@ -1174,7 +1174,7 @@ function we_unserialize($string, $default = array(), $quiet = false){
 		return $default;
 	}
 	//std-serialized data by php
-	if(preg_match('|^[asO]:\d+:|', $string)){
+	if(preg_match('/^[asO]:\d+:|^b:[01];/', $string)){
 		$ret = @unserialize($string);
 		//unserialize failed, we try to eliminate \r which seems to be a cause for this
 		if(!$ret && strlen($string) > 6){
