@@ -948,7 +948,8 @@ class we_document extends we_root{
 				* we have to set timezone manually
 				*/
 				
-				$date = date_timezone_set((is_numeric($val) ? new DateTime('@' . $val) : new DateTime($val)), new DateTimeZone(date_default_timezone_get()));
+				$date = is_numeric($val) ? new DateTime('@' . $val) : new DateTime($val);
+				$date->setTimezone(date_default_timezone_get());
 
 				return CheckAndConvertISOfrontend(we_base_country::dateformat($langcode, $date, $format));
 
