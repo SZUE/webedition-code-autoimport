@@ -1264,9 +1264,7 @@ function comparePwd(f1,f2){
 
 		$_username = $this->getUserfield("username", "group_name", "text", 255, false, 'id="yuiAcInputPathName" onblur="parent.frames[0].weTabs.setTitlePath(this.value);"');
 		$_description = '<textarea name="' . $this->Name . '_Description" cols="25" rows="5" style="width:560px" class="defaultfont" onchange="top.content.setHot();">' . $this->Description . '</textarea>';
-		$parent_name = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ParentID), 'Path', $this->DB_WE);
-
-		$parent_name = ($parent_name ? : '/');
+		$parent_name = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ParentID), '', $this->DB_WE)? : '/';
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('PathGroup');
@@ -2150,7 +2148,7 @@ function show_seem_chooser(val) {
 		$weAcSelectorName = $yuiSuggest->getHTML();
 
 		$yuiSuggest->setAcId("PathGroup");
-		$yuiSuggest->setContentType("folder");
+		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
 		$yuiSuggest->setInput($this->Name . '_ParentID_Text', $parent_text, array("onchange" => "top.content.setHot();"));
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);

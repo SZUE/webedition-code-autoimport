@@ -288,7 +288,7 @@ class we_workflow_view extends we_modules_view{
 
 				$foo = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($tv->userID), '', $this->db);
 				$wecmdenc2 = we_base_request::encCmd("document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_usertext.value");
-				$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_users_selector','document.we_form." . $this->uid . "_task_" . $counter . '_' . $counter1 . '_userid.value', '' . $wecmdenc2 . "','',document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_userid.value);");
+				$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_users_selector','document.we_form." . $this->uid . '_task_' . $counter . '_' . $counter1 . "_userid.value', '" . $wecmdenc2 . "','',document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_userid.value);");
 
 				$yuiSuggest->setAcId('User_' . $counter . '_' . $counter1);
 				$yuiSuggest->setContentType(we_users_user::TYPE_USER . ',' . we_users_user::TYPE_USER_GROUP);
