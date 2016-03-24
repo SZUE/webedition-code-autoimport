@@ -42,8 +42,8 @@ class we_base_linklist{
 		$this->objectseourls = $objectseourls;
 		$this->docName = $docName;
 		$this->attribs = $attribs;
-		$this->listArray = $listArray;
-		ksort($this->listArray, SORT_NUMERIC);
+		ksort($listArray, SORT_NUMERIC);
+		$this->listArray = array_values($listArray);
 		$limit = !empty($attribs['limit']) ? abs($attribs['limit']) : 0;
 		$editmode = (!empty($GLOBALS["we_editmode"]) && (!isset($GLOBALS["lv"])));
 		if(!$editmode){
