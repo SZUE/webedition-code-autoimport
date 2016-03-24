@@ -472,13 +472,11 @@ class we_messaging_messaging extends we_class{
 		$this->DB_WE->query('DELETE FROM ' . MSG_ADDRBOOK_TABLE . ' WHERE UserID=' . intval($this->userid));
 		foreach($addressbook as $elem){
 			if(!empty($elem)){
-				$this->DB_WE->query('INSERT INTO ' . MSG_ADDRBOOK_TABLE . ' ' . we_database_base::arraySetter(array(
+				$this->DB_WE->query('INSERT INTO ' . MSG_ADDRBOOK_TABLE . ' SET ' . we_database_base::arraySetter(array(
 						'UserID' => $this->userid,
 						'strMsgType' => $elem[0],
 						'strID' => $elem[1],
 						'strAlias' => $elem[2],
-						/* 'strFirstname',
-						  'strSurname' */
 						)
 				));
 			}

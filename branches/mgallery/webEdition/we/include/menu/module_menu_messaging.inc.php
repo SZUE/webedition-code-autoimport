@@ -67,11 +67,6 @@ return array(
 		'parent' => 'edit',
 	),
 	array(
-		'text' => g_l('javaMenu_messaging', '[settings]') . '&hellip;',
-		'cmd' => 'messaging_settings',
-		'parent' => 'edit',
-	),
-	array(
 		'text' => g_l('javaMenu_messaging', '[copy]'),
 		'cmd' => 'messaging_copy',
 		'parent' => 'edit',
