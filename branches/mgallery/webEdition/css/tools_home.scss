@@ -45,11 +45,10 @@ body.home{
 			border-top-right-radius: 0px;
 			border-top-left-radius: 0px;
 			border-bottom: none;
-			 /*font-family: liberation_sansbold, sans-serif;*/
+			font-family: $weFontBold;
 			text-align: center;
 			background: $MiddleBlueGradient;
 			color: $White;
-			font-weight: bold;
 			font-size: 16px;
 		}
 	}
