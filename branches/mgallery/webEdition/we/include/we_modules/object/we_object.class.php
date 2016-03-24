@@ -831,7 +831,7 @@ class we_object extends we_document{
 		$type = $this->getElement($name . self::ELEMENT_TYPE, "dat") ? : we_objectFile::TYPE_INPUT;
 		$content = '<tr>
 			<td  class="weMultiIconBoxHeadline" style="width:100px;vertical-align:top" >' . g_l('weClass', '[name]') . '</td>
-			<td  class="defaultfont" style="width:170px;vertical-align:top">';
+			<td  class="defaultfont" style="vertical-align:top">';
 
 		switch($type){
 			case we_objectFile::TYPE_OBJECT:
@@ -871,7 +871,7 @@ class we_object extends we_document{
 			'</td></tr>' .
 //type
 			'<tr><td class="weMultiIconBoxHeadlineThin"  style="width:100px;vertical-align:top">' . g_l('modules_object', '[type]') . '</td>
-		<td class="defaultfont"  style="width:170px;vertical-align:top">';
+		<td class="defaultfont"  style="vertical-align:top">';
 
 		$val = array(
 			we_objectFile::TYPE_INPUT => g_l('modules_object', '[input_field]'),
@@ -937,7 +937,7 @@ class we_object extends we_document{
 				);
 				$sel = $this->getElement($name . "typeLen", "dat");
 				$content .= '<tr style="vertical-align:top"><td style="width:100px;" class="weMultiIconBoxHeadlineThin"></td>' .
-					'<td style="width:170px;" class="defaultfont">' .
+					'<td class="defaultfont">' .
 					we_class::htmlSelect('we_' . $this->Name . '_input[' . $name . 'typeLen]', $values, 1, $sel ? $sel : 'INT', false, array('onchange' => "_EditorFrame.setEditorIsHot(true);", 'width' => '388px')) .
 					'</td></tr>';
 //nobreak;
@@ -945,14 +945,14 @@ class we_object extends we_document{
 // Length
 				$maxLengthVal = $type == we_objectFile::TYPE_INT ? 9 : 255;
 				$content .= '<tr style="vertical-align:top"><td class="weMultiIconBoxHeadlineThin" style="width:100px;vertical-align:top">' . g_l('modules_object', '[length]') . '</td>' .
-					'<td style="width:170px;" class="defaultfont">' .
+					'<td class="defaultfont">' .
 					we_html_tools::htmlTextInput('we_' . $this->Name . "_input[" . $name . self::ELEMENT_LENGHT . ']', 10, ($this->getElement($name . "length", "dat") > 0 && ($this->getElement($name . "length", "dat") < ($maxLengthVal + 1)) ? $this->getElement($name . "length", "dat") : $maxLengthVal), ($type == we_objectFile::TYPE_INT ? 2 : 4), 'onchange="_EditorFrame.setEditorIsHot(true);" weType="weObject_' . $type . '_length"', "text", 388) .
 					'</td></tr>';
 		}
 
 		switch($type){
 			case we_objectFile::TYPE_MULTIOBJECT:
-				$content .= '<tr><td class="weMultiIconBoxHeadlineThin" style="width:100px;vertical-align:top" >' . g_l('contentTypes', '[object]') . '</td><td class="defaultfont" style="width:170px;vertical-align:top">';
+				$content .= '<tr><td class="weMultiIconBoxHeadlineThin" style="width:100px;vertical-align:top" >' . g_l('contentTypes', '[object]') . '</td><td class="defaultfont" style="vertical-align:top">';
 				$vals = array();
 				$all = $this->DB_WE->table_names(OBJECT_X_TABLE . "%");
 				$count = 0;
@@ -976,7 +976,7 @@ class we_object extends we_document{
 	<td style="width:100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[max_objects]') . '</td>
 	<td class="defaultfont"><nobr>' . we_html_tools::htmlTextInput("we_" . $this->Name . '_' . we_objectFile::TYPE_MULTIOBJECT . '[' . $name . "max]", 5, $this->getElement($name . "max", "dat"), 3, 'onchange="_EditorFrame.setEditorIsHot(true);we_cmd(\'object_reload_entry_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . ($identifier) . '\');"', "text", 50) . ' (' . g_l('modules_object', '[no_maximum]') . ')</nobr></td>
 </tr>
-<tr style="vertical-align:top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td><td width="170" class="defaultfont"><table>';
+<tr style="vertical-align:top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td><td class="defaultfont"><table>';
 
 				if(!$this->issetElement($name . "count")){
 					$this->setElement($name . "count", 0);
@@ -1011,104 +1011,103 @@ class we_object extends we_document{
 					$dirSelect .
 					'</td></tr>
 					<tr style="vertical-align:top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>
-						<td width="170" class="defaultfont">' .
+						<td class="defaultfont">' .
 					$this->htmlHref($name) .
 					'</td></tr>';
 				break;
 			case we_objectFile::TYPE_CHECKBOX:
 				$content .= '<tr style="vertical-align:top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>' .
-					'<td width="170" class="defaultfont">' .
+					'<td class="defaultfont">' .
 					we_html_forms::checkbox(1, $this->getElement($name . "default", "dat"), "we_" . $this->Name . "_input[" . $name . "default1]", g_l('modules_object', '[checked]'), true, "defaultfont", "if(this.checked){document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "default]" . "'].value=1;}else{ document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "default]" . "'].value=0;}") .
 					'<input type=hidden name="' . "we_" . $this->Name . "_input[" . $name . "default]" . '" value="' . $this->getElement($name . "default", "dat") . '" />' .
 					'</td></tr>';
 				break;
 			case we_objectFile::TYPE_IMG:
 				$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[rootdir]') . '</td>' .
-					'<td width="170" class="defaultfont" style="vertical-align:top">' .
+					'<td class="defaultfont" style="vertical-align:top">' .
 					$this->formDirChooser(267, 0, FILE_TABLE, "ParentPath", "input[" . $name . "rootdir]", "", $this->getElement($name . "rootdir", "dat"), $identifier) .
 					'</td></tr>' .
 					'<tr><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[defaultdir]') . '</td>' .
-					'<td width="170" class="defaultfont" style="vertical-align:top">' .
+					'<td class="defaultfont" style="vertical-align:top">' .
 					$this->formDirChooser(267, 0, FILE_TABLE, "StartPath", "input[" . $name . "defaultdir]", "", $this->getElement($name . "defaultdir", "dat"), $identifier) .
 					'</td></tr>' .
 					'<tr><td  width="100" class="weMultiIconBoxHeadlineThin" style="vertical-align:top">' . g_l('modules_object', '[default]') . '</td>' .
-					'<td width="170" class="defaultfont" style="vertical-align:top">' .
+					'<td class="defaultfont" style="vertical-align:top">' .
 					$this->getImageHTML($name . "default", $this->getElement($name . "default", "dat"), $identifier) .
 					'</td></tr>';
 				break;
 			case we_objectFile::TYPE_FLASHMOVIE:
 				$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[rootdir]') . '</td>' .
-					'<td width="170" class="defaultfont" style="vertical-align:top">' .
+					'<td class="defaultfont" style="vertical-align:top">' .
 					$this->formDirChooser(267, 0, FILE_TABLE, "ParentPath", "input[" . $name . "rootdir]", "", $this->getElement($name . "rootdir", "dat"), $identifier) .
 					'</td></tr>' .
 					'<tr><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[defaultdir]') . '</td>' .
-					'<td width="170" class="defaultfont" style="vertical-align:top">' .
+					'<td class="defaultfont" style="vertical-align:top">' .
 					$this->formDirChooser(267, 0, FILE_TABLE, "StartPath", "input[" . $name . "defaultdir]", "", $this->getElement($name . "defaultdir", "dat"), $identifier) .
 					'</td></tr>' .
 					'<tr><td  width="100" class="weMultiIconBoxHeadlineThin" style="vertical-align:top">' . g_l('modules_object', '[default]') . '</td>' .
-					'<td width="170" class="defaultfont" style="vertical-align:top">' .
+					'<td class="defaultfont" style="vertical-align:top">' .
 					$this->getFlashmovieHTML($name . "default", $this->getElement($name . "default", "dat"), $identifier) .
 					'</td></tr>';
 				break;
 			case we_objectFile::TYPE_QUICKTIME:
 				$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[rootdir]') . '</td>' .
-					'<td width="170" class="defaultfont" style="vertical-align:top">' .
+					'<td class="defaultfont" style="vertical-align:top">' .
 					$this->formDirChooser(267, 0, FILE_TABLE, "ParentPath", "input[" . $name . "rootdir]", "", $this->getElement($name . "rootdir", "dat"), $identifier) .
 					'</td></tr>' .
 					'<tr><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[defaultdir]') . '</td>' .
-					'<td width="170" class="defaultfont" style="vertical-align:top">' .
+					'<td class="defaultfont" style="vertical-align:top">' .
 					$this->formDirChooser(267, 0, FILE_TABLE, "StartPath", "input[" . $name . "defaultdir]", "", $this->getElement($name . "defaultdir", "dat"), $identifier) .
 					'</td></tr>' .
 					'<tr><td  width="100" class="weMultiIconBoxHeadlineThin" style="vertical-align:top">' . g_l('modules_object', '[default]') . '</td>' .
-					'<td width="170" class="defaultfont" style="vertical-align:top">' .
+					'<td class="defaultfont" style="vertical-align:top">' .
 					$this->getQuicktimeHTML($name . "default", $this->getElement($name . "default", "dat"), $identifier) .
 					'</td></tr>';
 				break;
 			case we_objectFile::TYPE_BINARY:
 				$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[rootdir]') . '</td>' .
-					'<td width="170" class="defaultfont" style="vertical-align:top">' .
+					'<td class="defaultfont" style="vertical-align:top">' .
 					$this->formDirChooser(267, 0, FILE_TABLE, "ParentPath", "input[" . $name . "rootdir]", "", $this->getElement($name . "rootdir", "dat"), $identifier) .
 					'</td></tr>' .
 					'<tr><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[defaultdir]') . '</td>' .
-					'<td width="170" class="defaultfont" style="vertical-align:top">' .
+					'<td class="defaultfont" style="vertical-align:top">' .
 					$this->formDirChooser(267, 0, FILE_TABLE, "StartPath", "input[" . $name . "defaultdir]", "", $this->getElement($name . "defaultdir", "dat"), $identifier) .
 					'</td></tr>' .
 					'<tr><td  width="100" style="vertical-align:top" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>' .
-					'<td width="170" class= "defaultfont"  style="vertical-align:top">' .
+					'<td class= "defaultfont"  style="vertical-align:top">' .
 					$this->getBinaryHTML($name . "default", $this->getElement($name . "default", "dat"), $identifier) .
 					'</td></tr>';
 				break;
 			case we_objectFile::TYPE_DATE:
-
 				$d = abs($this->getElement($name . "default", "dat"));
 				$dd = abs($this->getElement($name . "defaultThumb", "dat"));
 				$content .= '<tr style="vertical-align:top"><td  width="100" class="defaultfont">Default</td>' .
-					'<td width="170" class="defaultfont">' .
+					'<td class="defaultfont">' .
 					we_html_forms::checkboxWithHidden(($dd == '1' ? true : false), "we_" . $this->Name . "_xdate[" . $name . "defaultThumb]", 'Creation Date', false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);') .
 					we_html_tools::getDateInput('we_' . $this->Name . '_date[' . $name . 'default]', ($d ? : time()), true) .
 					'</td></tr>';
 				break;
 			case we_objectFile::TYPE_TEXT:
 				$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin" style="vertical-align:top">' . g_l('modules_object', '[default]') . '</td>' .
-					'<td width="170" class="defaultfont" style="vertical-align:top">' .
+					'<td class="defaultfont" style="vertical-align:top">' .
 					$this->dhtmledit($name, $identifier) .
 					'</td></tr>';
 				break;
 			case we_objectFile::TYPE_OBJECT:
 				$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin" style="vertical-align:top">' . g_l('modules_object', '[default]') . '</td>' .
-					'<td width="170" class="defaultfont" style="vertical-align:top">' .
+					'<td class="defaultfont" style="vertical-align:top">' .
 					$this->getObjectFieldHTML($name, isset($attribs) ? $attribs : "") .
 					'</td></tr>';
 				break;
 			case we_objectFile::TYPE_COLLECTION:
 				$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin" style="vertical-align:top">' . g_l('modules_object', '[default]') . '</td>' .
-					'<td width="170" class="defaultfont" style="vertical-align:top">' .
+					'<td class="defaultfont" style="vertical-align:top">' .
 					$this->getCollectionFieldHTML($name . "default", $this->getElement($name . "default", "dat")) .
 					'</td></tr>';
 				break;
 			case we_objectFile::TYPE_META:
 				$content .= '<tr style="vertical-align:top"><td width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>' .
-					'<td width="170" class="defaultfont"><table><tr><td class="defaultfont">Key</td><td class="defaultfont">Value</td><td></td></tr>';
+					'<td class="defaultfont"><table><tr><td class="defaultfont">Key</td><td class="defaultfont">Value</td><td></td></tr>';
 				if(!$this->issetElement($name . "count")){
 					$this->setElement($name . "count", 0);
 				}
@@ -1119,41 +1118,37 @@ class we_object extends we_document{
 					$content .= '<tr><td>' . we_html_tools::htmlTextInput('we_' . $this->Name . '_input[' . $name . 'defaultkey' . $f . ']', 40, $this->getElement($name . "defaultkey" . $f), 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 105) .
 						'</td><td>' . we_html_tools::htmlTextInput("we_" . $this->Name . "_input[" . $name . "defaultvalue" . $f . "]", 40, $this->getElement($name . "defaultvalue" . $f), 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 105);
 
-					$upbut = we_html_button::create_button(we_html_button::DIRUP, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_up_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')");
-					$upbutDis = we_html_button::create_button(we_html_button::DIRUP, "#", true, 0, 0, "", "", true);
-					$downbut = we_html_button::create_button(we_html_button::DIRDOWN, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_down_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')");
-					$downbutDis = we_html_button::create_button(we_html_button::DIRDOWN, "#", true, 0, 0, "", "", true);
-
-					$plusAmount = $this->htmlSelect("amount_insert_meta_at_class_" . $name . $f, $addArray);
-					$plusbut = we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')");
-					$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_delete_meta_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')");
-
 					$content .= "</td><td>" .
-						$plusAmount .
-						$plusbut .
-						(($f > 0) ? $upbut : $upbutDis ) .
-						(($f < ($this->getElement($name . 'count'))) ? $downbut : $downbutDis) .
-						$trashbut .
+						$this->htmlSelect("amount_insert_meta_at_class_" . $name . $f, $addArray) .
+						we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')") .
+						(($f > 0) ?
+							we_html_button::create_button(we_html_button::DIRUP, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_up_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')") :
+							we_html_button::create_button(we_html_button::DIRUP, "#", true, 0, 0, "", "", true)
+						) .
+						(($f < ($this->getElement($name . 'count'))) ?
+							we_html_button::create_button(we_html_button::DIRDOWN, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_down_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')") :
+							we_html_button::create_button(we_html_button::DIRDOWN, "#", true, 0, 0, "", "", true)
+						) .
+						we_html_button::create_button(we_html_button::TRASH, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_delete_meta_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')") .
 						'</td></tr>';
-//$content.="test<br/>test<input type='text'>".$upbut."test<br/>";
 				}
 				$content .= '</table></td></tr>';
 				break;
 			case we_objectFile::TYPE_COUNTRY:
 				$content .= '<tr style="vertical-align:top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>' .
-					'<td width="170" class="defaultfont">' .
+					'<td class="defaultfont">' .
 					we_html_tools::htmlTextInput("we_" . $this->Name . "_country[" . $name . "default]", 40, $this->getElement($name . "default", "dat"), 10, 'onchange="_EditorFrame.setEditorIsHot(true);" weType="' . $type . '"', "text", 388) .
 					'</td></tr>';
 				break;
 			case we_objectFile::TYPE_LANGUAGE:
 				$content .= '<tr style="vertical-align:top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>' .
-					'<td width="170" class="defaultfont">' .
+					'<td class="defaultfont">' .
 					we_html_tools::htmlTextInput("we_" . $this->Name . "_language[" . $name . "default]", 40, $this->getElement($name . "default", "dat"), 15, 'onchange="_EditorFrame.setEditorIsHot(true);" weType="' . $type . '"', "text", 388) .
 					'</td></tr>';
 				break;
 			case we_objectFile::TYPE_LINK:
 				$content .= '<tr style="vertical-align:top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>' .
-					'<td width="170" class="defaultfont">' .
+					'<td class="defaultfont">' .
 					$this->htmlLinkInput($name, $identifier) .
 					'</td></tr>';
 				break;
@@ -1170,7 +1165,7 @@ class we_object extends we_document{
 					}
 				}
 				$content .= '<tr style="vertical-align:top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>' .
-					'<td width="170" class="defaultfont">' .
+					'<td class="defaultfont">' .
 					we_class::htmlSelect("we_" . $this->Name . "_shopVat[" . $name . "default]", $values, 1, $this->getElement($name . "default", "dat")) .
 					'</td></tr>';
 				break;
@@ -1193,14 +1188,14 @@ class we_object extends we_document{
 						<tr style="vertical-align:top"><td  width="100" class="defaultfont" style="vertical-align:top"></td><td class="defaultfont">' .
 						'rootdir ' . $textRootdir . '</td>
 						</tr>
-						<tr style="vertical-align:top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td><td width="170" class="defaultfont">' .
+						<tr style="vertical-align:top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td><td class="defaultfont">' .
 						$selectCategories . '<br/>' . $selectLimitChoice . '</td>
 						</tr>';
 				}
 				break;
 			default: // default for input, int and float
 				$content .= '<tr style="vertical-align:top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td>' .
-					'<td width="170" class="defaultfont">' .
+					'<td class="defaultfont">' .
 					we_html_tools::htmlTextInput("we_" . $this->Name . '_input[' . $name . 'default]', 40, $this->getElement($name . "default", "dat"), ($type == we_objectFile::TYPE_INT ? 9 : ($type == we_objectFile::TYPE_FLOAT ? 19 : 255)), 'onchange="_EditorFrame.setEditorIsHot(true);" weType="' . $type . '"', "text", 388) .
 					'</td></tr>';
 				break;
@@ -1212,7 +1207,7 @@ class we_object extends we_document{
 			case we_objectFile::TYPE_META:
 			case we_objectFile::TYPE_LINK:
 			case we_objectFile::TYPE_HREF:
-				$content .= '<tr style="vertical-align:top"><td  width="100" class="weMultiIconBoxHeadlineThin"></td><td width="170" class="defaultfont">' .
+				$content .= '<tr style="vertical-align:top"><td  width="100" class="weMultiIconBoxHeadlineThin"></td><td class="defaultfont">' .
 // title
 					we_html_forms::radiobutton($name, ($this->getElement("title", "dat") == $name), "we_" . $this->Name . "_input[title]", g_l('global', '[title]'), true, "defaultfont", "if(this.waschecked){document.getElementById('empty_" . $this->Name . "_input[title]').checked=true;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
 // description
@@ -1228,7 +1223,7 @@ class we_object extends we_document{
 			case we_objectFile::TYPE_TEXT:
 			case we_objectFile::TYPE_INPUT:
 			case we_objectFile::TYPE_DATE:
-				$content .= '<tr style="vertical-align:top"><td  width="100" class="weMultiIconBoxHeadlineThin"></td><td width="170" class="defaultfont">';
+				$content .= '<tr style="vertical-align:top"><td  width="100" class="weMultiIconBoxHeadlineThin"></td><td class="defaultfont">';
 				if($type == we_objectFile::TYPE_DATE){
 					$content .= we_html_forms::radiobutton($name, ($this->getElement("urlfield0", "dat") == $name), "we_" . $this->Name . "_input[urlfield0]", g_l('weClass', '[urlfield0]'), true, "defaultfont", "if(this.waschecked){document.getElementById('empty_" . $this->Name . "_input[urlfield0]').checked=true;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}");
 				} else {
@@ -1244,7 +1239,7 @@ class we_object extends we_document{
 
 		if($type != we_objectFile::TYPE_CHECKBOX){
 //Pflichtfeld
-			$content .= '<tr style="vertical-align:top"><td  width="100" class="defaultfont"></td><td width="170" class="defaultfont">' .
+			$content .= '<tr style="vertical-align:top"><td  width="100" class="defaultfont"></td><td class="defaultfont">' .
 				we_html_forms::checkbox(1, $this->getElement($name . "required", "dat"), "we_" . $this->Name . "_input[" . $name . "required1]", g_l('global', '[required_field]'), true, "defaultfont", "if(this.checked){document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "required]" . "'].value=1;}else{ document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "required]" . "'].value=0;}") .
 				($this->canHaveVariants() && $this->isVariantField($name) ?
 					we_html_forms::checkboxWithHidden($this->getElement($name . "variant", "dat"), "we_" . $this->Name . "_variant[" . $name . "variant]", g_l('global', '[variant_field]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);') :
@@ -1255,7 +1250,7 @@ class we_object extends we_document{
 		} else {
 			$content .= (defined('SHOP_TABLE') ?
 //Pflichtfeld
-					'<tr style="vertical-align:top"><td  width="100" class="defaultfont"></td><td width="170" class="defaultfont">' .
+					'<tr style="vertical-align:top"><td  width="100" class="defaultfont"></td><td class="defaultfont">' .
 					($this->canHaveVariants() && $this->isVariantField($name) ?
 						we_html_forms::checkboxWithHidden($this->getElement($name . "variant", "dat"), "we_" . $this->Name . "_variant[" . $name . "variant]", g_l('global', '[variant_field]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);') :
 						'') .
@@ -1266,7 +1261,7 @@ class we_object extends we_document{
 
 
 		$content .= '<tr style="vertical-align:top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('weClass', '[fieldusers]') . '</td>
-			<td width="170" class="defaultfont" >' .
+			<td class="defaultfont" >' .
 			$this->formUsers1($name, $identifier) .
 			'</td></tr>';
 
