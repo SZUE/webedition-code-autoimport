@@ -204,23 +204,30 @@ class we_navigation_items{
 
 		$_isObject = (isset($GLOBALS['we_obj']) && !$GLOBALS['WE_MAIN_DOC']->IsFolder);
 		$main_cats = array_filter(explode(',', $GLOBALS['WE_MAIN_DOC']->Category));
+		
+		$currentWorksapce = $_isObject ? //webEdition object
+			(defined('WE_REDIRECTED_SEO') ? //webEdition object uses SEO-URL
+				we_objectFile::getNextDynDoc(($path = rtrim(substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $GLOBALS['WE_MAIN_DOC']->Url)), '/')), '', $GLOBALS['WE_MAIN_DOC']->Workspaces, $GLOBALS['WE_MAIN_DOC']->ExtraWorkspacesSelected, $GLOBALS['DB_WE']) :
+				parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH)	
+			) : //webEdition document
+			$GLOBALS['WE_MAIN_DOC']->Path;
 
-		foreach($this->currentRules as $_rule){
+		foreach($this->currentRules as $rule){
 			$ponder = 4;
 			$parentPath = '';
-			switch($_rule->SelectionType){ // FIXME: why not use continue instead of $ponder = 999?
+			switch($rule->SelectionType){ // FIXME: why not use continue instead of $ponder = 999?
 				case we_navigation_navigation::STYPE_DOCTYPE:
 					if($_isObject){
 						continue; // remove from selection
 					}
-					if($_rule->DoctypeID){
-						if(empty($GLOBALS['WE_MAIN_DOC']->DocType) || ($_rule->DoctypeID != $GLOBALS['WE_MAIN_DOC']->DocType)){
+					if($rule->DoctypeID){
+						if(empty($GLOBALS['WE_MAIN_DOC']->DocType) || ($rule->DoctypeID != $GLOBALS['WE_MAIN_DOC']->DocType)){
 							continue;
 						}
 						$ponder--;
 					}
 
-					$parentPath = self::id2path($_rule->FolderID);
+					$parentPath = self::id2path($rule->FolderID);
 					if($parentPath && $parentPath != '/'){
 						$parentPath .= '/';
 					}
@@ -230,18 +237,18 @@ class we_navigation_items{
 					if(!$_isObject){
 						continue; // remove from selection
 					}
-					if($_rule->ClassID){
-						if($GLOBALS["WE_MAIN_DOC"]->TableID != $_rule->ClassID){
+					if($rule->ClassID){
+						if($GLOBALS["WE_MAIN_DOC"]->TableID != $rule->ClassID){
 							continue; // remove from selection
 						}
 						$ponder--;
 					}
 
-					$parentPath = rtrim(self::id2path($_rule->WorkspaceID), '/') . '/';
+					$parentPath = rtrim(self::id2path($rule->WorkspaceID), '/') . '/';
 					break;
 			}
 
-			if(!empty($parentPath) && strpos($GLOBALS['WE_MAIN_DOC']->Path, $parentPath) === 0){
+			if(!empty($parentPath) && strpos($currentWorksapce, $parentPath) === 0){
 				$ponder--;
 				$_curr_len = strlen($parentPath);
 				if($_curr_len > $_len){
@@ -250,7 +257,7 @@ class we_navigation_items{
 				}
 			}
 
-			if(($cats = makeArrayFromCSV($_rule->Categories))){
+			if(($cats = makeArrayFromCSV($rule->Categories))){
 				if($this->checkCategories($cats, $main_cats)){
 					$ponder--;
 				} else {
@@ -260,10 +267,10 @@ class we_navigation_items{
 
 			if($ponder <= $_score){
 				if(NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH){
-					$this->setCurrent($_rule->NavigationID);
+					$this->setCurrent($rule->NavigationID);
 				} else {
 					$_score = $ponder;
-					$candidate = $_rule->NavigationID;
+					$candidate = $rule->NavigationID;
 				}
 			}
 		}
