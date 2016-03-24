@@ -84,7 +84,7 @@ while($urlLookingFor){// first we try to get the object
  * now we try to get the trigger document
  */
 if($object && $object['ID']){
-	$docPathOfUrl = rtrim(WE_REDIRECTED_SEO,$urlLookingFor); //cut the known seo-url from object of the whole URL
+	$docPathOfUrl = substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $urlLookingFor)); //cut the known seo-url from object of the whole URL
 	
 	//get trigger document by url and/or (extra) workspaces by object properties
 	$triggerDocPath = we_objectFile::getNextDynDoc(($path = rtrim($docPathOfUrl, "/") . '.php'), $object['ParentID'], $object['Workspaces'], $object['ExtraWorkspacesSelected'], $GLOBALS['DB_WE']);
