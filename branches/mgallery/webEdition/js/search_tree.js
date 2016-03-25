@@ -40,12 +40,14 @@ function reloadGroup(pid, offset) {
 
 function info(text) {
 	t = treeData.frames.top.document.getElementById("infoField");
-	if (text != " ") {
-		t.style.display = "block";
-		t.innerHTML = text;
-	} else {
-		t.innerHTML = text;
-		t.style.display = "none";
+	if (t) {
+		if (text != " ") {
+			t.style.display = "block";
+			t.innerHTML = text;
+		} else {
+			t.innerHTML = text;
+			t.style.display = "none";
+		}
 	}
 }
 

@@ -1183,7 +1183,7 @@ function we_unserialize($string, $default = array(), $quiet = false){
 		return ($ret === false ? $default : $ret);
 	}
 	//json data
-	if(preg_match('|^[{\[].*[}\]]$|', $string)){
+	if(preg_match('|^[{\[].*[}\]]$|sm', $string)){
 		//maybe we should just do it & check if it failed
 		if(mb_check_encoding($string, 'UTF-8')){
 			return json_decode($string, true);

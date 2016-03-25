@@ -83,7 +83,7 @@ jsWindow.prototype = {
 		var wind;
 		for (var i = 0; i < WE().layout.windows.length; i++) {
 			wind = WE().layout.windows[i].wind;
-			if (wind === this.wind || wind.closed) {
+			if (!wind || wind === this.wind || wind === undefined || wind.closed) {
 				WE().layout.windows.splice(i, 1);
 				i--;
 			}
