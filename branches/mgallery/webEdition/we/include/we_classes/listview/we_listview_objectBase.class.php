@@ -168,6 +168,7 @@ abstract class we_listview_objectBase extends we_listview_base{
 			'wedoc_ParentID' => '`' . OBJECT_FILES_TABLE . '`.ParentID',
 			'wedoc_Text' => '`' . OBJECT_FILES_TABLE . '`.Text',
 			'we_filename' => '`' . OBJECT_FILES_TABLE . '`.Text',
+			'WE_ID' => '`' . OBJECT_X_TABLE . $classID . '`.OF_ID',
 			'we_id' => '`' . OBJECT_X_TABLE . $classID . '`.OF_ID',
 			'we_path' => '`' . OBJECT_FILES_TABLE . '`.Path',
 		));
