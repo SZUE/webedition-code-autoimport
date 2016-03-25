@@ -1269,7 +1269,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 	}
 
 	public function getHomeScreen(){
-		$content = we_html_button::create_button('fat:new_workflow,fa-lg fa-gears', "javascript:top.opener.top.we_cmd('new_workflow');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_WORKFLOW"));
+		$content = we_html_button::create_button('fat:new_workflow,fa-lg fa-gears', "javascript:top.we_cmd('new_workflow');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_WORKFLOW"));
 
 		return parent::getActualHomeScreen('workflow', "workflow.gif", $content, '<form name="we_form">' . $this->getHiddens() . '</form>');
 	}

@@ -71,9 +71,9 @@ class we_banner_view extends we_modules_view{
 	}
 
 	public function getHomeScreen(){
-		$content = we_html_button::create_button('new_banner', "javascript:top.opener.top.we_cmd('new_banner');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_BANNER")) .
+		$content = we_html_button::create_button('new_banner', "javascript:top.we_cmd('new_banner');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_BANNER")) .
 			'<br/>' .
-			we_html_button::create_button('new_bannergroup', "javascript:top.opener.top.we_cmd('new_bannergroup');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_BANNER"));
+			we_html_button::create_button('new_bannergroup', "javascript:top.we_cmd('new_bannergroup');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_BANNER"));
 
 		return parent::getActualHomeScreen('banner', "banner.gif", $content, '<form name="we_form">' . $this->getHiddens() . '</form>');
 	}
