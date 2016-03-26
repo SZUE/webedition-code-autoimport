@@ -223,6 +223,8 @@ function we_tag_sessionField($attribs, $content){
 			if($dateformat){//FIXME: use document settings for dateformat => get locale - note DateTime doesn't use locale settings
 				try{
 					$date = new DateTime((is_numeric($orgVal) ? '@' : '') . $orgVal);
+					//we need to set it explicitly
+					$date->setTimezone(new DateTimeZone(date_default_timezone_get()));
 					return $date->format($dateformat);
 				} catch (Exception $e){
 					//fallback to default return

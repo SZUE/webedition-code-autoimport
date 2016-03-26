@@ -1604,11 +1604,11 @@ class we_objectFile extends we_document{
 		$tarr = explode(',', $foo["Templates"]);
 		$warr = explode(',', $foo["Workspaces"]);
 
-		if(($pos = array_search($wsID, $warr)) === false){
+		if(($pos = array_search($wsID, $warr, false)) === false){
 			foreach($warr as $wsi){
 				$wsp = id_to_path($wsi, FILE_TABLE, $this->DB_WE);
 				if(substr($mwsp, 0, strlen($wsp)) == $wsp){
-					$pos = array_search($wsi, $warr);
+					$pos = array_search($wsi, $warr, false);
 					break;
 				}
 			}
@@ -2413,7 +2413,6 @@ class we_objectFile extends we_document{
 		$this->rewriteNavigation();
 		//}
 //clear navigation cache to see change if object in navigation #6916
-//		weNavigationCache::clean(true);
 
 		return $this->insertAtIndex();
 	}
@@ -2439,7 +2438,6 @@ class we_objectFile extends we_document{
 			}
 		}
 //clear navigation cache to see change if object in navigation #6916
-		//	weNavigationCache::clean(true);
 		$this->rewriteNavigation();
 
 		$ret = $this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=' . $this->TableID . ' AND ID=' . intval($this->ID));
@@ -3097,7 +3095,7 @@ class we_objectFile extends we_document{
 		$arr3 = makeArrayFromCSV($ws1);
 		foreach($arr3 as $ws){
 			if(in_workspace($pid, $ws, FILE_TABLE, $DB_WE)){
-				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" AND IsDynamic=1 AND Path LIKE "' . id_to_path($ws, FILE_TABLE, $DB_WE) . '%" LIMIT 1', '', $DB_WE);
+				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" AND IsDynamic=1 AND Path LIKE "' . id_to_path($ws, FILE_TABLE, $DB_WE) . '%" ORDER BY CHAR_LENGTH(Path) LIMIT 1', '', $DB_WE);
 				if($path){
 					return $path;
 				}
@@ -3106,7 +3104,7 @@ class we_objectFile extends we_document{
 		$arr4 = makeArrayFromCSV($ws2);
 		foreach($arr4 as $ws){
 			if(in_workspace($pid, $ws)){
-				return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" AND IsDynamic=1 AND Path LIKE "' . id_to_path($ws, FILE_TABLE, $DB_WE) . '%" LIMIT 1', '', $DB_WE);
+				return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" AND IsDynamic=1 AND Path LIKE "' . id_to_path($ws, FILE_TABLE, $DB_WE) . '%" ORDER BY CHAR_LENGTH(Path) LIMIT 1', '', $DB_WE);
 			}
 		}
 		return '';

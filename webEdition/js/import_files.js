@@ -75,23 +75,16 @@ function setApplet() {
 }
 
 function makeArrayFromCSV(csv) {
-	if (csv.length && csv.substring(0, 1) == ",") {
+	if (csv.length && csv.substring(0, 1) === ",") {
 		csv = csv.substring(1, csv.length);
 	}
-	if (csv.length && csv.substring(csv.length - 1, csv.length) == ",") {
+	if (csv.length && csv.substring(csv.length - 1, csv.length) === ",") {
 		csv = csv.substring(0, csv.length - 1);
 	}
 	if (csv.length === 0) {
 		return [];
 	}
 	return csv.split(/,/);
-}
-
-function makeCSVFromArray(arr) {
-	if (arr.length === 0) {
-		return "";
-	}
-	return "," + arr.join(",") + ",";
 }
 
 function refreshTree() {

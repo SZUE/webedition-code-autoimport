@@ -138,7 +138,7 @@ class we_docTypes extends we_class{
 
 	public function delCat($id){
 		$cats = array_filter(explode(',', $this->Category));
-		if(($pos = array_search($id, $cats) === false)){
+		if(($pos = array_search($id, $cats, false)) === false){
 			return;
 		}
 

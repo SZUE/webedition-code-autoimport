@@ -220,7 +220,7 @@ class we_document extends we_root{
 
 	function delCat($id){
 		$cats = array_filter(explode(',', $this->Category));
-		if(($pos = array_search($id, $cats) === false)){
+		if(($pos = array_search($id, $cats, false)) === false){
 			return;
 		}
 
@@ -278,12 +278,12 @@ class we_document extends we_root{
 
 	function delAllNavi(){
 		$navis = $this->getNavigationItems();
-		foreach($navis as $_path){
-			$_id = path_to_id($_path, NAVIGATION_TABLE, $GLOBALS['DB_WE']);
+		foreach($navis as $path){
+			$_id = path_to_id($path, NAVIGATION_TABLE, $GLOBALS['DB_WE']);
 			$_naviItem = new we_navigation_navigation($_id);
 			if(!$_naviItem->hasAnyChilds()){
 				$_naviItem->delete();
-				if(($pos = array_search($_path, $navis)) === false){
+				if(($pos = array_search($path, $navis)) === false){
 					continue;
 				}
 				unset($navis[$pos]);
@@ -938,7 +938,10 @@ class we_document extends we_root{
 				$val = $val ? : time();
 				$format = !empty($attribs['format']) ? $attribs['format'] : g_l('date', '[format][default]');
 				$langcode = (isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->Language ? $GLOBALS['WE_MAIN_DOC']->Language : $GLOBALS['weDefaultFrontendLanguage']);
-				$date = is_numeric($val) ? new DateTime('@' . $val) : new DateTime($val);
+
+				$date = (is_numeric($val) ? new DateTime('@' . $val) : new DateTime($val));
+				//we need to set it explicitly
+				$date->setTimezone(new DateTimeZone(date_default_timezone_get()));
 
 				return CheckAndConvertISOfrontend(we_base_country::dateformat($langcode, $date, $format));
 
@@ -1375,7 +1378,7 @@ class we_document extends we_root{
 
 	function delete_schedcat($id, $nr){
 		$cats = array_filter(explode(',', $this->schedArr[$nr]['CategoryIDs']));
-		if(($pos = array_search($id, $cats)) === false){
+		if(($pos = array_search($id, $cats, false)) === false){
 			return;
 		}
 		unset($cats[$pos]);

@@ -288,7 +288,7 @@ class we_workflow_view extends we_modules_view{
 
 				$foo = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($tv->userID), '', $this->db);
 				$wecmdenc2 = we_base_request::encCmd("document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_usertext.value");
-				$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_users_selector','document.we_form." . $this->uid . "_task_" . $counter . '_' . $counter1 . '_userid.value', '' . $wecmdenc2 . "','',document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_userid.value);");
+				$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_users_selector','document.we_form." . $this->uid . '_task_' . $counter . '_' . $counter1 . "_userid.value', '" . $wecmdenc2 . "','',document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_userid.value);");
 
 				$yuiSuggest->setAcId('User_' . $counter . '_' . $counter1);
 				$yuiSuggest->setContentType(we_users_user::TYPE_USER . ',' . we_users_user::TYPE_USER_GROUP);
@@ -464,7 +464,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			case 'del_cat':
 				$arr = $this->workflowDef->Categories;
 				if(($cat = we_base_request::_(we_base_request::INT, 'wcat'))){
-					if(($pos = array_search($cat, $arr)) === false){
+					if(($pos = array_search($cat, $arr, false)) === false){
 						break;
 					}
 					unset($arr[$pos]);
@@ -488,7 +488,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			case 'del_objcat':
 				$arr = $this->workflowDef->ObjCategories;
 				if(($cat = we_base_request::_(we_base_request::INT, 'wcat'))){
-					if(($pos = array_search($cat, $arr)) === false){
+					if(($pos = array_search($cat, $arr, false)) === false){
 						break;
 					}
 					unset($arr[$pos]);
@@ -512,7 +512,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			case 'del_folder':
 				$arr = $this->workflowDef->Folders;
 				if(($id = we_base_request::_(we_base_request::INT, 'wfolder')) !== false){
-					if(($pos = array_search($id, $arr)) === false){
+					if(($pos = array_search($id, $arr, false)) === false){
 						break;
 					}
 					unset($arr[$pos]);
@@ -536,7 +536,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			case 'del_object_file_folder':
 				$arr = $this->workflowDef->ObjectFileFolders;
 				if(($id = we_base_request::_(we_base_request::INT, 'woffolder')) !== false){
-					if(($pos = array_search($id, $arr)) === false){
+					if(($pos = array_search($id, $arr, false)) === false){
 						break;
 					}
 					unset($arr[$pos]);
@@ -556,7 +556,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			case 'del_object':
 				$arr = $this->workflowDef->Objects;
 				if(($id = we_base_request::_(we_base_request::INT, 'wobject'))){
-					if(($pos = array_search($id, $arr)) === false){
+					if(($pos = array_search($id, $arr, false)) === false){
 						break;
 					}
 					unset($arr[$pos]);
@@ -1269,7 +1269,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 	}
 
 	public function getHomeScreen(){
-		$content = we_html_button::create_button('fat:new_workflow,fa-lg fa-gears', "javascript:top.opener.top.we_cmd('new_workflow');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_WORKFLOW"));
+		$content = we_html_button::create_button('fat:new_workflow,fa-lg fa-gears', "javascript:top.we_cmd('new_workflow');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_WORKFLOW"));
 
 		return parent::getActualHomeScreen('workflow', "workflow.gif", $content, '<form name="we_form">' . $this->getHiddens() . '</form>');
 	}

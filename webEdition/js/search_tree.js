@@ -38,17 +38,6 @@ function reloadGroup(pid, offset) {
 	}
 }
 
-function info(text) {
-	t = treeData.frames.top.document.getElementById("infoField");
-	if (text != " ") {
-		t.style.display = "block";
-		t.innerHTML = text;
-	} else {
-		t.innerHTML = text;
-		t.style.display = "none";
-	}
-}
-
 container.prototype.openClose = function (id) {
 	if (id === "") {
 		return;

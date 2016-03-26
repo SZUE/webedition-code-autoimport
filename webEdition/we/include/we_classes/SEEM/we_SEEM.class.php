@@ -541,16 +541,15 @@ abstract class we_SEEM{
 		$tmpPath = isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : str_replace(getServerUrl(), "", we_base_request::_(we_base_request::URL, "url"));
 
 		//  extern or as absolut recognized paths shall not be changed.
-		if($path{0} != "/" && strpos($path, "http://") === FALSE && strpos($path, "https://") === FALSE){
+		if($path && $path{0} != "/" && strpos($path, "http://") === FALSE && strpos($path, "https://") === FALSE){
 			$tmpPath = substr($tmpPath, 0, strrpos($tmpPath, '/'));
 			while(substr($path, 0, 3) === '../'){
 				$path = substr($path, 3);
 				$tmpPath = substr($tmpPath, 0, strrpos($tmpPath, '/'));
 			}
 			return $tmpPath . '/' . $path;
-		} else {
-			return $path;
 		}
+		return $path;
 	}
 
 	/**

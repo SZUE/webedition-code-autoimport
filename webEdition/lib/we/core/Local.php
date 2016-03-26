@@ -125,9 +125,9 @@ class we_core_Local{
 			self::$_lang = WE_WEBUSER_LANGUAGE;
 		} else {
 			if(!isset($_SESSION)){
-				if(!isset($_SERVER['TMP'])){
+				/*if(!isset($_SERVER['TMP'])){
 					$_SERVER['TMP'] = WEBEDITION_PATH . 'we/cache';
-				}
+				}*/
 			}
 
 			if(!empty($_SESSION['prefs']['Language'])){

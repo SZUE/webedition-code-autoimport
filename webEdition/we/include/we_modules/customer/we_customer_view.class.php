@@ -914,9 +914,8 @@ self.close();');
 				$date_format = DATE_ONLY_FORMAT;
 				$format = g_l('weEditorInfo', '[date_only_format]');
 			case 'dateTime':
-				//$out = rray('name' => $field, 'value' => $value));
 				try{
-					$value = $value && $value != '0000-00-00' ? new DateTime($value /* ? $value : $this->settings->getSettings('start_year') . '-01-01' */) : 0;
+					$value = $value && $value != '0000-00-00' ? new DateTime($value) : 0;
 				} catch (Exception $e){
 					$value = 0;
 				}
@@ -1165,7 +1164,7 @@ self.close();');
 
 	public function getHomeScreen(){
 		$hiddens['cmd'] = 'home';
-		$content = we_html_button::create_button('fat:new_customer,fa-lg fa-user-plus', "javascript:top.opener.top.we_cmd('new_customer');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_CUSTOMER"));
+		$content = we_html_button::create_button('fat:new_customer,fa-lg fa-user-plus', "javascript:top.we_cmd('new_customer');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_CUSTOMER"));
 
 		return parent::getActualHomeScreen('customer', "customer.gif", $content, we_html_element::htmlForm(array('name' => 'we_form'), $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden('home', 0)));
 	}

@@ -268,6 +268,7 @@ we/include/we_modules/messaging/msg_html_tools.inc.php
 we/include/we_modules/messaging/messaging_work.php
 we/include/we_modules/messaging/messaging_usel_iconbar.php
 we/include/we_modules/messaging/messaging_std.inc.php
+we/include/we_modules/messaging/messaging_settings.php
 we/include/we_modules/messaging/messaging_search_frame.php
 we/include/we_modules/messaging/messaging_right.php
 we/include/we_modules/messaging/messaging_mview.php

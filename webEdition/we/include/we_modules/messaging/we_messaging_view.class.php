@@ -271,11 +271,6 @@ top.content.folders_removed([' . implode(',', $folders) . ']);
 top.content.drawTree();');
 				}
 				return '';
-			case 'edit_settings':
-				return we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-					we_html_element::jsElement('
-					new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR+"messaging_settings.php?we_transaction=' . $this->transaction . '&mode=' . we_base_request::_(we_base_request::STRING, 'mode') . '", "messaging_settings",-1,-   1,280,200,true,false,true,false);
-					');
 			case 'save_settings':
 				if($ui){
 					if($this->messaging->save_settings(array('update_interval' => $ui))){

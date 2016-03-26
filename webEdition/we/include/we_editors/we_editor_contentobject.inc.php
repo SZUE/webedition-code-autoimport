@@ -95,7 +95,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 			echo '<div id="' . $uniqid . '" class="objectFileElement">
 <div id="f' . $uniqid . '" class="default">
-<table cellpadding="6" style="width:600px;float:left;">' .
+<table cellpadding="6" style="float:left;">' .
 			$we_doc->getFieldHTML($we_doc->getElement("wholename" . $identifier), $uniqid) .
 			'</table>
 		<span class="defaultfont clearfix" style="width:180px;">' .
