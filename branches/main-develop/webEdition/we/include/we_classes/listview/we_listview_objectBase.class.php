@@ -168,39 +168,46 @@ abstract class we_listview_objectBase extends we_listview_base{
 			'wedoc_ParentID' => '`' . OBJECT_FILES_TABLE . '`.ParentID',
 			'wedoc_Text' => '`' . OBJECT_FILES_TABLE . '`.Text',
 			'we_filename' => '`' . OBJECT_FILES_TABLE . '`.Text',
+			'WE_ID' => '`' . OBJECT_X_TABLE . $classID . '`.OF_ID',
 			'we_id' => '`' . OBJECT_X_TABLE . $classID . '`.OF_ID',
 			'we_path' => '`' . OBJECT_FILES_TABLE . '`.Path',
 		));
 
 		foreach($orderArr as $pos => $curOrd){
-			switch($curOrd){
+			switch(strtolower($curOrd)){
+				case 'wedoc_id':
 				case 'we_id':
 					$ordertmp[$pos] = '`' . OBJECT_X_TABLE . $classID . '`.OF_ID' . ($descArr[$pos] ? ' DESC' : '');
 					break;
+				case 'wedoc_filename':
 				case 'we_filename':
 					$ordertmp[$pos] = '`' . OBJECT_FILES_TABLE . '`.Text' . ($descArr[$pos] ? ' DESC' : '');
 					break;
+				case 'wedoc_path':
 				case 'we_path':
 					$ordertmp[$pos] = '`' . OBJECT_FILES_TABLE . '`.Path' . ($descArr[$pos] ? ' DESC' : '');
 					break;
+				case 'wedoc_published':
 				case 'we_published':
 					$ordertmp[$pos] = '`' . OBJECT_FILES_TABLE . '`.Published' . ($descArr[$pos] ? ' DESC' : '');
 					break;
+				case 'wedoc_moddate':
 				case 'we_moddate':
 					$ordertmp[$pos] = '`' . OBJECT_FILES_TABLE . '`.ModDate' . ($descArr[$pos] ? ' DESC' : '');
 					break;
+				case 'wedoc_creationdate':
 				case 'we_creationdate':
 					$ordertmp[$pos] = '`' . OBJECT_FILES_TABLE . '`.CreationDate' . ($descArr[$pos] ? ' DESC' : '');
 					break;
 				case 'random()':
 					$ordertmp = array();
-					$order = ' ORDER BY RANDOM ';
+					$order = 'RANDOM ';
 					break 2;
 			}
 		}
 		if($ordertmp){
 			ksort($ordertmp);
-			$order = ' ORDER BY ' . implode(',', $ordertmp);
+			$order = implode(',', $ordertmp);
 		}
 		$tb = array_unique($from);
 
@@ -212,7 +219,7 @@ abstract class we_listview_objectBase extends we_listview_base{
 
 		return array(//FIXME: maybe random can be changed by time%ID or sth. which is faster and quite rand enough
 			'fields' => rtrim($f, ',') . ($order === ' ORDER BY RANDOM ' ? ', RAND() AS RANDOM ' : ''),
-			'order' => $order,
+			'order' => $order ? ' ORDER BY ' . $order : '',
 			'tables' => implode(' JOIN ', $tb),
 			'groupBy' => (count($tb) > 1) ? ' GROUP BY `' . OBJECT_X_TABLE . $classID . '`.OF_ID ' : '',
 			'publ_cond' => $publ_cond ? ' ( ' . implode(' AND ', $publ_cond) . ' ) ' : '',

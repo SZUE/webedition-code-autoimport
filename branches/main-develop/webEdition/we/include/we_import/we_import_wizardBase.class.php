@@ -352,7 +352,7 @@ if (top.wizbody.addLog){
 									$out .= we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
 													we_html_element::jsElement($JScript . "setTimeout(we_import,15,1," . $v['cid'] . ");"));
 								} else {
-
+									we_updater::doUpdate();
 									$JScript = "
 top.wizbusy.finish(" . $xmlExIm->options['rebuild'] . ");
 setTimeout(we_import,15,1," . $v['numFiles'] . ");";

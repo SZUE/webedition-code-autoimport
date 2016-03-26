@@ -82,7 +82,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 		$content = '<div id="' . $uniqid . '" class="objectFileElement">
 	<div id="f' . $uniqid . '" class="default">
-					<table cellpadding="6" style="width:600px;float:left;">' .
+					<table cellpadding="6" style="float:left;">' .
 			$we_doc->getFieldHTML($wholename, $uniqid) .
 			'	</table>
 				<span class="defaultfont clearfix" style="width:180px;">' .
@@ -140,7 +140,7 @@ if(confObject = typeof tinyMceConfObject__' . $wholename . 'default === \'object
 
 			$content = '<div id="' . $uniqid . '" class="objectFileElement">
 <div id="f' . $uniqid . '" class="objectFileElement">
-				<table cellpadding="6" style="width:600px;float:left;">' .
+				<table cellpadding="6" style="float:left;">' .
 				$we_doc->getFieldHTML($we_doc->getElement("wholename" . $identifier), $uniqid) .
 				'</table>
 				<span class="defaultfont clearfix" style="width:180px;">' .

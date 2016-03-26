@@ -48,6 +48,6 @@ if(!defined('DATETIME_INITIALIZED')){// to prevent additional initialization if 
 	}
 	define('DATETIME_INITIALIZED', 1);
 }
-if(!isset($_SERVER['TMP'])){
+/*if(!isset($_SERVER['TMP'])){
 	$_SERVER['TMP'] = WEBEDITION_PATH . 'we/cache';
-}
+}*/

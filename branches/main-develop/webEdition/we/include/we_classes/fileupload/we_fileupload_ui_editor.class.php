@@ -30,9 +30,10 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 	protected $doImport = true;
 	protected $contentType = array();
 	protected $posBtnUpload = 'bottom';
+
 	//protected $predefinedConfigs = array();
 
-	public function __construct($contentType = array(), $extensions = '', $doImport = true){
+	public function __construct($contentType = '', $extensions = '', $doImport = true){
 		parent::__construct($contentType, $extensions);
 
 		$this->type = 'editor';

@@ -230,7 +230,7 @@ abstract class we_database_base{
 	 */
 	protected function _connect(){
 		$this->Link_ID = array_pop(self::$pool);
-		if(!$this->isConnected()){
+		if(!$this->isConnected(false)){
 			self::$linkCount++;
 			$this->connect();
 		}
@@ -268,8 +268,8 @@ abstract class we_database_base{
 	 *
 	 * @return bool true, if the DB is connected
 	 */
-	protected function isConnected(){
-		return ($this->Link_ID) && $this->ping();
+	protected function isConnected($withPing = true){
+		return ($this->Link_ID) && ($withPing ? $this->ping() : true);
 	}
 
 	/**
@@ -295,7 +295,7 @@ abstract class we_database_base{
 			$this->free();
 		}
 		/* No empty queries, please, since PHP4 chokes on them. */
-		if(!$this->isConnected() && !$this->_connect()){
+		if(!$this->isConnected(false) && !$this->_connect()){
 			return false;
 		}
 
@@ -440,7 +440,7 @@ abstract class we_database_base{
 					$tmp['explain'][] = implode(' | ', $this->Record);
 				}
 				$this->Row = 0;
-				!$this->isConnected() && !$this->_connect();
+				!$this->isConnected(false) && !$this->_connect();
 				$this->Query_ID = $this->_query($Query_String, $unbuffered);
 			}
 			t_e($Query_String, $tmp);

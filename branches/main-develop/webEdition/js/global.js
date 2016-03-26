@@ -29,6 +29,9 @@
 /**This file is intended to be a global file for many js functions in WE*/
 // this function is universal function for all messages in webEdition
 function WE() {
+	if (top === null || top === undefined) {
+		return false;
+	}
 	if (top.WebEdition !== undefined) {
 		return top.WebEdition;
 	}
