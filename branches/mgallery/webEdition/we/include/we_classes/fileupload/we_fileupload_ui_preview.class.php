@@ -53,7 +53,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 		$this->doCommitFile = true;
 		$this->contentType = $contentType;
 		$this->responseClass = 'we_fileupload_resp_import';
-		$type = 'binDoc';
+		//$type = 'binDoc';
 		$this->callback = '';
 		$this->type = 'preview';
 		$this->extension = $extension;

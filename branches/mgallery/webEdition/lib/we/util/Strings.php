@@ -49,25 +49,7 @@ abstract class we_util_Strings{
 	 * @return string
 	 */
 	static function makeCSVFromArray($arr, $prePostKomma = false, $sep = ","){
-		if(!$arr){
-			return '';
-		}
-
-		$replaceKomma = (count($arr) > 1) || ($prePostKomma == true);
-
-		if($replaceKomma){
-			for($i = 0; $i < count($arr); $i++){
-				$arr[$i] = str_replace($sep, "###komma###", $arr[$i]);
-			}
-		}
-		$out = implode($sep, $arr);
-		if($prePostKomma){
-			$out = $sep . $out . $sep;
-		}
-		if($replaceKomma){
-			$out = str_replace("###komma###", "\\$sep", $out);
-		}
-		return $out;
+		return makeCSVFromArray($arr, $prePostKomma, $sep);
 	}
 
 	/**

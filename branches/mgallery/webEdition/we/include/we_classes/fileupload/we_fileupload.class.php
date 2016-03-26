@@ -79,12 +79,8 @@ abstract class we_fileupload{
 
 	public function setTypeCondition($field = 'accepted', $weCts = array(), $exts = array()){
 		// new vars for js
-		$cts = '';
-		$exts4cts = '';
+		$cts = $exts4cts = '';
 		foreach($weCts as $ct){
-			if(is_array($ct)){
-				t_e('unexpected array found', $ct);
-			}
 			$ct = strtolower($ct);
 			if(in_array($ct, we_base_ContentTypes::inst()->getContentTypes(FILE_TABLE, true))){
 				$tmp = we_base_ContentTypes::inst()->getExtension($ct);
@@ -98,10 +94,6 @@ abstract class we_fileupload{
 			}
 		}
 
-		$exts = array_map(function($e){
-			return(strtolower(trim($e, ' ,')));
-		}, $exts);
-
 		$ret = array(
 			// new vars: used in js
 			'cts' => $cts ? ',' . $cts : '',
@@ -109,7 +101,9 @@ abstract class we_fileupload{
 			'exts' => $exts ? ',' . implode(',', $exts) . ',' : '',
 			// old vars: used in php // FIXME: throw away when sure that we do not need them anymore
 			'mime' => $weCts,
-			'ext' => $exts
+			'ext' => array_map(function($e){
+					return(strtolower(trim($e, ' ,')));
+				}, $exts),
 		);
 		$ret['all'] = array_merge($ret['mime'], $ret['ext']);
 
