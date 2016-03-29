@@ -27,7 +27,7 @@ CREATE TABLE ###TBLPREFIX###tblSettings (
 /* query separator */
 ###INSTALLONLY###INSERT IGNORE INTO ###TBLPREFIX###tblSettings SET tool='shop',pref_name='edit_shop_properties',pref_value='{"customerFields":[],"orderCustomerFields":[]}';
 /* query separator */
-###INSTALLONLY###INSERT IGNORE INTO ###TBLPREFIX###tblSettings SET tool='shop',pref_name='shop_pref',pref_value='€|19|german';
+###INSTALLONLY###INSERT IGNORE INTO ###TBLPREFIX###tblSettings SET tool='shop',pref_name='shop_pref',pref_value='EUR|19|german';
 /* query separator */
 ###INSTALLONLY###INSERT IGNORE INTO ###TBLPREFIX###tblSettings SET tool='glossary',pref_name='weGlossaryAutomaticReplacement',pref_value='1';
 /* query separator */

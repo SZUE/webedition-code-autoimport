@@ -215,9 +215,9 @@ class we_exim_XMLExIm{
 		$_preparer->prepareExport($ids);
 	}
 
-	static function getHeader($encoding = '', $type = ''){
+	static function getHeader($encoding = '', $type = '', $skipWE = false){
 		return '<?xml version="1.0" encoding="' . ($encoding ? : $GLOBALS['WE_BACKENDCHARSET']) . '" standalone="yes"?>' . "\n" .
-			we_backup_util::weXmlExImHead . ' version="' . WE_VERSION . '" type="' . $type . '" xmlns:we="we-namespace">' . "\n";
+			($skipWE ? '' : we_backup_util::weXmlExImHead . ' version="' . WE_VERSION . '" type="' . $type . '" xmlns:we="we-namespace">' . "\n");
 	}
 
 	static function getFooter(){

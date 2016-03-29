@@ -244,6 +244,9 @@ class we_html_baseElement{
 				}
 			}
 		}
+		if(is_array($this->content)){
+			t_e($this);
+		}
 		$out.=($this->need_end_tag === 'selfclose' ? '/' : '') . '>' .
 			$this->content .
 			($this->need_end_tag === true ? "</" . $this->tag_name . ">" : '');

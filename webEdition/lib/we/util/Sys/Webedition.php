@@ -75,10 +75,6 @@ class we_util_Sys_Webedition extends we_util_Sys{
 			return -1;
 		}
 
-		if(!we_base_moduleInfo::isModuleInstalled($property)){
-			return -1;
-		}
-
 		// integrated modules (free of charge, can be deactivated in webEdition preferences):
 		// users, schedule, editor, banner, export, voting, spellchecker, glossary
 		return (we_base_moduleInfo::isActive($property) ? 1 : 0);

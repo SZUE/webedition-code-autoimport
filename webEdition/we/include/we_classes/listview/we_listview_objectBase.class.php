@@ -218,7 +218,7 @@ abstract class we_listview_objectBase extends we_listview_base{
 		}
 
 		return array(//FIXME: maybe random can be changed by time%ID or sth. which is faster and quite rand enough
-			'fields' => rtrim($f, ',') . ($order === ' ORDER BY RANDOM ' ? ', RAND() AS RANDOM ' : ''),
+			'fields' => rtrim($f, ',') . ($order === 'RANDOM ' ? ', RAND() AS RANDOM ' : ''),
 			'order' => $order ? ' ORDER BY ' . $order : '',
 			'tables' => implode(' JOIN ', $tb),
 			'groupBy' => (count($tb) > 1) ? ' GROUP BY `' . OBJECT_X_TABLE . $classID . '`.OF_ID ' : '',

@@ -182,6 +182,7 @@ div{
 		width:100%;
 		top:0px;
 		left:0px;
+		bottom: $diaglogFooterHeight;
 	}
 	&.multiIcon{
 		padding-top:10px;
@@ -926,6 +927,7 @@ optgroup{
   overflow: hidden;
   background: $Grey;
   border-top: none;
+	height:$diaglogFooterHeight;
 }
 
 .weDialogButtonsBody {

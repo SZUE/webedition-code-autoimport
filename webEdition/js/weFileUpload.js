@@ -1860,13 +1860,17 @@ var weFileUpload = (function () {
 			this.setInternalProgressCompleted = function (success, index, txt) {
 				if (success) {
 					this.setInternalProgress(100, index);
-					document.getElementById(_.fieldName + '_progress_image_' + index).className = 'progress_finished';
+					if(document.getElementById(_.fieldName + '_progress_image_' + index)){
+						document.getElementById(_.fieldName + '_progress_image_' + index).className = 'progress_finished';
+					}
 				} else {
 					if (typeof document.images['alert_img_' + index] !== 'undefined') {
 						document.images['alert_img_' + index].style.visibility = 'visible';
 						document.images['alert_img_' + index].title = txt;
 					}
-					document.getElementById(_.fieldName + '_progress_image_' + index).className = 'progress_failed';
+					if(document.getElementById(_.fieldName + '_progress_image_' + index)){
+						document.getElementById(_.fieldName + '_progress_image_' + index).className = 'progress_failed';
+					}
 				}
 			};
 		}

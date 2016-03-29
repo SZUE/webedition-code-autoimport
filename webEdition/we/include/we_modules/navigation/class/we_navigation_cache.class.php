@@ -78,8 +78,8 @@ class we_navigation_cache{
 			unlink(WE_CACHE_PATH . 'cleannav');
 			$force = true;
 		}
-		if($force){
-			foreach(glob(WE_CACHE_PATH . 'navigation_*') as $file){
+		if($force && ($files=glob(WE_CACHE_PATH . 'navigation_*'))){
+			foreach($files as $file){
 				unlink($file);
 			}
 		}

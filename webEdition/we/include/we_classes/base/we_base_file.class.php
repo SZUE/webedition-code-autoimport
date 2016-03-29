@@ -290,9 +290,9 @@ abstract class we_base_file{
 				($path ? self::createLocalFolderByPath($path) : false));
 	}
 
-	public static function insertIntoCleanUp($path, $date){
+	public static function insertIntoCleanUp($path, $date = 300){
 		$DB_WE = new DB_WE();
-		$date = ($date? : 300); //make each entry last at least 300 seconds
+		$date = max($date,300); //make each entry last at least 300 seconds
 		$DB_WE->query('INSERT INTO ' . CLEAN_UP_TABLE . ' SET ' . we_database_base::arraySetter(array(
 				'Path' => $DB_WE->escape($path),
 				'Date' => sql_function('(NOW()+ INTERVAL ' . intval($date) . ' SECOND)'),

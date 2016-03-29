@@ -614,19 +614,15 @@ class we_messaging_messaging extends we_class{
 	}
 
 	private function get_recipient_info($r, array &$rcpt_info, $msgobj_name = ''){
-		$addr_is_email = 0;
 		$rcpt_info['address'] = trim($r);
-
-		if(strpos($rcpt_info['address'], '@', 1) != 0){
-			$addr_is_email = 1;
-		}
+		$addr_is_email = (!empty($rcpt_info['address']) && strpos($rcpt_info['address'], '@', 1) !== false);
 
 		if(!empty($msgobj_name)){
 			$rcpt_info['msg_obj'] = $msgobj_name;
-			if(!empty($addr_is_email) && ($rcpt_info['msg_obj'] != 'we_msg_email')){
+			if($addr_is_email && ($rcpt_info['msg_obj'] != 'we_msg_email')){
 				return 0;
 			}
-		} else if(!empty($addr_is_email)){
+		} else if($addr_is_email){
 			$rcpt_info['msg_obj'] = 'we_msg_email';
 		} else {
 			$rcpt_info['msg_obj'] = 'we_message';

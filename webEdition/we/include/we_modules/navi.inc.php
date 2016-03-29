@@ -32,7 +32,7 @@ we_base_moduleInfo::orderModuleArray($mods);
 $mod = we_base_request::_(we_base_request::STRING, 'mod', '');
 
 foreach($mods as $_menuItem){
-	if((!empty($_menuItem["inModuleMenu"])) || (!empty($_menuItem["inModuleWindow"]))){
+	if((!empty($_menuItem['inModuleMenu'])) || (!empty($_menuItem['inModuleWindow']))){
 		if(we_base_moduleInfo::isActive($_menuItem["name"])){ //	MODULE INSTALLED
 			if(we_users_util::canEditModule($_menuItem["name"])){
 				$we_tabs->addTab(new we_tab(
