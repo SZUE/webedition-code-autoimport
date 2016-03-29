@@ -750,7 +750,7 @@ function EditorFrameController() {
 	};
 
 	this.getEditorFrame = function (frameId) {
-		if (frameId !== undefined) {
+		if (frameId !== undefined && frameId !== "") {
 			return this.EditorFrames[frameId];
 		}
 		if (this.ActiveEditorFrameId) {
