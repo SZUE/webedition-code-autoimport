@@ -67,7 +67,7 @@ function we_cmd() {
 		case "new_voting_group":
 			if (top.content.editor.edbody.loaded) {
 				top.content.editor.edbody.document.we_form.cmd.value = args[0];
-				top.content.editor.edbody.document.we_form.cmdid.value = args[1];
+				top.content.editor.edbody.document.we_form.cmdid.value = (args[1] ? args[1] : 0);
 				top.content.editor.edbody.document.we_form.tabnr.value = 1;
 				top.content.editor.edbody.document.we_form.vernr.value = 0;
 				top.content.editor.edbody.submitForm();
@@ -76,8 +76,9 @@ function we_cmd() {
 			}
 			break;
 		case "delete_voting":
-			if (top.content.editor.edbody.document.we_form.cmd.value == "home")
+			if (top.content.editor.edbody.document.we_form.cmd.value == "home") {
 				return;
+			}
 			if (top.content.editor.edbody.document.we_form.newone.value == 1) {
 				WE().util.showMessage(WE().consts.g_l.voting.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
 				return;
@@ -100,7 +101,7 @@ function we_cmd() {
 			break;
 
 		case "save_voting":
-			if (top.content.editor.edbody.document.we_form.cmd.value === "home"){
+			if (top.content.editor.edbody.document.we_form.cmd.value === "home") {
 				return;
 			}
 			if (top.content.editor.edbody.loaded) {

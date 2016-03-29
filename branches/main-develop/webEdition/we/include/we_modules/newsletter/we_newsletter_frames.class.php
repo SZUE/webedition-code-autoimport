@@ -1034,7 +1034,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 
 
 					$content.=we_html_tools::htmlFormElementTable(we_html_element::htmlTextArea(array("cols" => 40, "rows" => 10, "name" => "block" . $counter . "_Source", "onchange" => "top.content.hot=1;", "style" => "width:440px;"), oldHtmlspecialchars($block->Source)), g_l('modules_newsletter', '[block_plain]')) .
-						we_html_element::jsScript(JS_DIR . "we_textarea.js") .
+						we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
 						we_html_tools::htmlFormElementTable(we_html_forms::weTextarea("block" . $counter . "_Html", $blockHtml, $attribs, "", "", true, "", true, true, false, true, $this->View->newsletter->Charset), g_l('modules_newsletter', '[block_html]')) .
 						we_html_element::jsElement('
 function extraInit(){
@@ -1329,7 +1329,7 @@ window.onload=extraInit;');
 
 		if(!$hm){
 			echo '<html><head></head><body><form>
-							<textarea name="foo" style="width:100%;height:95%" cols="80" rows="40">' .
+							<textarea name="foo" style="width:100%;height:95%">' .
 			oldHtmlspecialchars(trim($content)) .
 			'</textarea></form></body></html>';
 		} else {
@@ -1905,7 +1905,7 @@ function clearLog(){
 
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array("class" => 'weDialogBody', 'onload' => "self.focus();setTimeout(document.we_form.submit,200)"), we_html_element::htmlForm(array('name' => 'we_form'), we_html_element::htmlHiddens(array(
+				we_html_element::htmlBody(array("class" => 'weDialogBody', 'onload' => "self.focus();setTimeout(function (doc) {doc.we_form.submit();},200,document);"), we_html_element::htmlForm(array('name' => 'we_form', 'action' => WEBEDITION_DIR . 'we_showMod.php', 'method' => 'post'), we_html_element::htmlHiddens(array(
 							'mod' => 'newsletter',
 							"pnt" => "send_frameset",
 							'nid' => $nid,
@@ -1980,7 +1980,7 @@ self.focus();
 
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), $pb->getJS('', true) .
-						we_html_tools::htmlDialogLayout(we_html_element::htmlTextarea(array("name" => "details", "cols" => 60, "rows" => 15, "style" => "width:530px;height:300px;")), g_l('modules_newsletter', '[details]'), $_footer)
+						we_html_tools::htmlDialogLayout(we_html_element::htmlTextarea(array("name" => "details", "cols" => 60, "rows" => 15, "style" => "width:530px;height:280px;")), g_l('modules_newsletter', '[details]'), $_footer)
 					) .
 					we_html_element::jsElement('
 									document.we_form.details.value="' . g_l('modules_newsletter', (we_base_request::_(we_base_request::BOOL, "test") ? '[test_no_mail]' : '[sending]')) . '";
@@ -2334,7 +2334,7 @@ top.send_control.document.we_form.ecs.value=' . $ecs . ';');
 		we_base_file::delete(WE_NEWSLETTER_CACHE_DIR . $emailcache . "_" . $egc);
 		//$laststep = ceil(we_base_request::_(we_base_request::INT, "ecount", 0) / $this->View->settings["send_step"]);
 		echo we_html_element::jsElement((!empty($this->View->settings["send_wait"]) && is_numeric($this->View->settings["send_wait"]) && $egc > 0 && isset($this->View->settings["send_step"]) && is_numeric($this->View->settings["send_step"]) && $egc < ceil($ecount / $this->View->settings["send_step"]) ?
-				'setTimeout(document.we_form.submit,' . $this->View->settings["send_wait"] . ');' :
+				'setTimeout(function (doc) {doc.we_form.submit();},' . $this->View->settings["send_wait"] . ',document);' :
 				'document.we_form.submit();'
 		));
 		flush();

@@ -228,7 +228,7 @@ doDragFromTree = function(text, writebackId){
 					'type' => 'file',
 					'name' => $this->name,
 					'id' => $this->name,
-					'accept' => trim($this->typeCondition['accepted']['cts'], ',')
+					'accept' => implode(',', array_merge($this->typeCondition['accepted']['mime'], $this->typeCondition['accepted']['extensions'])),
 				));
 				$btn = we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, $width, we_html_button::HEIGHT, '', '', $disabled, false, '_btn', false, '', 'weBtn noMarginLeft');
 

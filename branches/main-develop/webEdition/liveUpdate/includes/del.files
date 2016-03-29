@@ -267,6 +267,7 @@ we/include/we_modules/messaging/safariHResize.html
 we/include/we_modules/messaging/msg_html_tools.inc.php
 we/include/we_modules/messaging/messaging_work.php
 we/include/we_modules/messaging/messaging_usel_iconbar.php
+we/include/we_modules/messaging/messaging_usel_browse_frameset.php
 we/include/we_modules/messaging/messaging_std.inc.php
 we/include/we_modules/messaging/messaging_settings.php
 we/include/we_modules/messaging/messaging_search_frame.php
@@ -702,6 +703,7 @@ js/we_textarea_include.inc.php
 js/we_tabs/tabs.js
 js/we_tabs/images.js
 js/we_showMessage.js
+js/we_modules/messaging/messaging_usel_browse.js
 js/we_modules/messaging/messaging_hl.js
 js/we_modules/banner/banner_cmd.js
 js/we_colors.js

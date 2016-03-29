@@ -38,6 +38,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.inc
 
 if(!defined('E_SQL')){
 	define('E_SQL', -1);
+	define('E_JS', -2);
 }
 
 $GLOBALS['we']['errorhandler'] = array(
@@ -144,6 +145,8 @@ function translate_error_type($type){
 			return 'User deprecated notice';
 		case E_SQL:
 			return 'SQL Error';
+		case E_JS:
+			return 'JS Error';
 		default:
 			return 'unknown Error';
 	}
@@ -310,24 +313,15 @@ function log_error_message($type, $message, $file, $_line, $skipBT = false){
 		$_detailedError = $skipBT;
 	}
 
-	// Error type
-	$_type = translate_error_type($type);
-
-	// Error message
-	$_text = str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $message);
-
-	// Script name
-	$_file = str_replace(array(realpath($_SERVER['DOCUMENT_ROOT']) . '/', $_SERVER['DOCUMENT_ROOT'] . '/', $_SERVER['DOCUMENT_ROOT']), 'SECURITY_REPL_DOC_ROOT', $file);
-
 	// Log the error
 	if(defined('DB_HOST') && defined('DB_USER') && defined('DB_PASSWORD') && defined('DB_DATABASE')){
 		$logVars = array('Request', 'Session', 'Server');
 		$tbl = defined('ERROR_LOG_TABLE') ? ERROR_LOG_TABLE : TBL_PREFIX . 'tblErrorLog';
-		$_query = 'INSERT INTO ' . $tbl . ' SET Type="' . escape_sql_query($_type) . '",
+		$_query = 'INSERT INTO ' . $tbl . ' SET Type="' . escape_sql_query(translate_error_type($type)) . '",
 			`Function`="' . escape_sql_query($_caller) . '",
-			File="' . escape_sql_query($_file) . '",
+			File="' . escape_sql_query(str_replace(array(realpath($_SERVER['DOCUMENT_ROOT']) . '/', $_SERVER['DOCUMENT_ROOT'] . '/', $_SERVER['DOCUMENT_ROOT']), 'SECURITY_REPL_DOC_ROOT', $file)) . '",
 			Line=' . intval($_line) . ',
-			Text="' . escape_sql_query($_text) . '",
+			Text="' . escape_sql_query(str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $message)) . '",
 			Backtrace="' . escape_sql_query($_detailedError) . '"';
 		if(isset($GLOBALS['DB_WE'])){
 			$db = new DB_WE();

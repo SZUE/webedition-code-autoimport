@@ -104,29 +104,23 @@ function we_cmd() {
 				top.we_showMessage(WE().consts.g_l.weSearch.predefinedSearchdelete, WE().consts.message.WE_MESSAGE_ERROR, this);
 				return;
 			}
-			if (top.content.editor.edbody.document.we_form.newone.value == 1) {
+			if (top.content.editor.edbody.document.we_form.newone.value == 1 || !top.content.editor.edbody.loaded) {
 				top.we_showMessage(WE().consts.g_l.weSearch.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
-
 				return;
 			}
-			if (WE().util.hasPerm("DELETE_WESEARCH")) {
-				if (top.content.editor.edbody.loaded) {
-					if (confirm(WE().consts.g_l.weSearch.confirmDel)) {
-						top.content.editor.edbody.document.we_form.cmd.value = args[0];
-						top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;
-						top.content.editor.edheader.location = WE().consts.dirs.WE_INCLUDES_DIR + "we_tools/weSearch/edit_weSearch_frameset.php?mod=weSearch&home=0&pnt=edheader";
-						top.content.editor.edfooter.location = WE().consts.dirs.WE_INCLUDES_DIR + "we_tools/weSearch/edit_weSearch_frameset.php?mod=weSearch&home=0&pnt=edfooter";
-						top.content.editor.edbody.submitForm();
-
-					}
-				} else {
-					top.we_showMessage(WE().consts.g_l.weSearch.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
-				}
-			} else {
+			if (!WE().util.hasPerm("DELETE_WESEARCH")) {
 				top.we_showMessage(WE().consts.g_l.weSearch.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
+				return;
+			}
+			if (top.content.editor.edbody.loaded && confirm(WE().consts.g_l.weSearch.confirmDel)) {
+				top.content.editor.edbody.document.we_form.cmd.value = args[0];
+				top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;
+				top.content.editor.edheader.location = WE().consts.dirs.WE_INCLUDES_DIR + "we_tools/weSearch/edit_weSearch_frameset.php?mod=weSearch&home=0&pnt=edheader";
+				top.content.editor.edfooter.location = WE().consts.dirs.WE_INCLUDES_DIR + "we_tools/weSearch/edit_weSearch_frameset.php?mod=weSearch&home=0&pnt=edfooter";
+				top.content.editor.edbody.submitForm();
+
 			}
 			break;
-
 		case "tool_weSearch_new_forDocuments":
 			if (top.content.editor.edbody.loaded) {
 				top.content.hot = 0;
