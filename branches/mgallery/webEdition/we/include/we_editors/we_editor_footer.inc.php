@@ -145,7 +145,7 @@ echo we_html_tools::getHtmlTop('', '', '', STYLESHEET . we_html_element::jsEleme
 	var we_transaction="' . $we_transaction . '";
 	var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction(we_transaction);
 	var doc={
-		ID:"' . $we_doc->ID . '",
+		ID:' . intval($we_doc->ID) . ',
 		Path:"' . $we_doc->Path . '",
 		Text:"' . $we_doc->Text . '",
 		contentType:"' . $we_doc->ContentType . '",

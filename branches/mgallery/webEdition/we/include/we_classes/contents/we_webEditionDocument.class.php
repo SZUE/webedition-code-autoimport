@@ -895,45 +895,47 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	 *
 	 */
 	function setControlElements($templatecode){
-		if(strpos($templatecode, '<we:controlElement') !== false){ // tag we:control exists
-			$_tags = we_tag_tagParser::itemize_we_tag('we:controlElement', $templatecode);
-			//	we need all given tags ...
+		if(strpos($templatecode, '<we:controlElement') === false){
+			return;
+		}
+// tag we:control exists
+		$_tags = we_tag_tagParser::itemize_we_tag('we:controlElement', $templatecode);
+		//	we need all given tags ...
 
-			if($_tags[0]){
+		if($_tags[0]){
 
-				if(!in_array('controlElement', $this->persistent_slots)){
-					$this->persistent_slots[] = 'controlElement';
-				} else {
-					unset($this->controlElement);
-				}
+			if(!in_array('controlElement', $this->persistent_slots)){
+				$this->persistent_slots[] = 'controlElement';
+			} else {
+				unset($this->controlElement);
+			}
 
-				$_ctrlArray = array();
+			$_ctrlArray = array();
 
-				foreach($_tags[2] as $cur){ //	go through all matches
-					$_tagAttribs = we_tag_tagParser::makeArrayFromAttribs($cur);
+			foreach($_tags[2] as $cur){ //	go through all matches
+				$_tagAttribs = we_tag_tagParser::makeArrayFromAttribs($cur);
 
-					$_type = weTag_getAttribute('type', $_tagAttribs, '', we_base_request::STRING);
-					$_name = weTag_getAttribute('name', $_tagAttribs, '', we_base_request::STRING);
-					$_hide = weTag_getAttribute('hide', $_tagAttribs, false, we_base_request::BOOL);
+				$_type = weTag_getAttribute('type', $_tagAttribs, '', we_base_request::STRING);
+				$_name = weTag_getAttribute('name', $_tagAttribs, '', we_base_request::STRING);
+				$_hide = weTag_getAttribute('hide', $_tagAttribs, false, we_base_request::BOOL);
 
-					if($_type && $_name){
-						switch($_type){
-							case 'button': //	only look, if the button shall be hidden or not
-								$_ctrlArray['button'][$_name] = array('hide' => ( $_hide ? 1 : 0 ));
-								break;
-							case 'checkbox':
-								$_ctrlArray['checkbox'][$_name] = array(
-									'hide' => ( $_hide ? 1 : 0 ),
-									'readonly' => ( weTag_getAttribute('readonly', $_tagAttribs, true, we_base_request::BOOL) ? 1 : 0 ),
-									'checked' => ( weTag_getAttribute('checked', $_tagAttribs, false, we_base_request::BOOL) ? 1 : 0 )
-								);
-								break;
-						}
+				if($_type && $_name){
+					switch($_type){
+						case 'button': //	only look, if the button shall be hidden or not
+							$_ctrlArray['button'][$_name] = array('hide' => ( $_hide ? 1 : 0 ));
+							break;
+						case 'checkbox':
+							$_ctrlArray['checkbox'][$_name] = array(
+								'hide' => ( $_hide ? 1 : 0 ),
+								'readonly' => ( weTag_getAttribute('readonly', $_tagAttribs, true, we_base_request::BOOL) ? 1 : 0 ),
+								'checked' => ( weTag_getAttribute('checked', $_tagAttribs, false, we_base_request::BOOL) ? 1 : 0 )
+							);
+							break;
 					}
 				}
 			}
-			$this->controlElement = $_ctrlArray;
 		}
+		$this->controlElement = $_ctrlArray;
 	}
 
 	/**
