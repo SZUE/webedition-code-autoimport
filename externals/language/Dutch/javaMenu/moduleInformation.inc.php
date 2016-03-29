@@ -62,6 +62,6 @@ $l_javaMenu_moduleInformation=array(
 		'text_short'=>'Peiling',
 	),
 	'workflow'=>array(
-		'text'=>'Workflow Module',
+		'text'=>'Workflow',
 		'text_short'=>'Workflow',
 ));

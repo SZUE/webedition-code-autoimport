@@ -26,7 +26,7 @@ $l_javaMenu_moduleInformation=array(
 		'text_short'=>'Glossary',
 	),
 	'messaging'=>array(
-		'text'=>'Task/Messaging Module',
+		'text'=>'Task/Messaging',
 		'text_short'=>'Messaging',
 	),
 	'navigation'=>array(
@@ -34,7 +34,7 @@ $l_javaMenu_moduleInformation=array(
 		'text_short'=>'Navigation',
 	),
 	'newsletter'=>array(
-		'text'=>'Newsletter Module',
+		'text'=>'Newsletter',
 		'text_short'=>'Newsletter',
 	),
 	'object'=>array(
@@ -46,7 +46,7 @@ $l_javaMenu_moduleInformation=array(
 		'text_short'=>'Scheduler',
 	),
 	'shop'=>array(
-		'text'=>'Shop Module',
+		'text'=>'Shop',
 		'text_short'=>'Shop',
 	),
 	'spellchecker'=>array(
@@ -62,6 +62,6 @@ $l_javaMenu_moduleInformation=array(
 		'text_short'=>'Voting',
 	),
 	'workflow'=>array(
-		'text'=>'Workflow Module',
+		'text'=>'Workflow',
 		'text_short'=>'Workflow',
 ));
