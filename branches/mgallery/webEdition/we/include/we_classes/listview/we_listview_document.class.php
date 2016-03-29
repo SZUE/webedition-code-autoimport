@@ -271,8 +271,16 @@ class we_listview_document extends we_listview_base{
 			$ws_where . ' AND ' .
 			FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0 ' .
 			(isset($bedingung_sql) ? ' AND ' . $bedingung_sql : '') .
-			($dt > 0 ? (' AND ' . FILE_TABLE . '.DocType=' . intval($dt)) : '') .
-			' ' . $sql_tail . $calendar_where . ' GROUP BY ' . $this->group . ' ' . $orderstring .
+			($this->docType ?
+				($dt ?
+					' AND ' . FILE_TABLE . '.DocType=' . intval($dt) :
+					' AND FALSE '//invalid DT => no results
+				) :
+				''
+			) . ' ' .
+			$sql_tail .
+			$calendar_where .
+			' GROUP BY ' . $this->group . ' ' . $orderstring .
 			$limit
 		);
 
@@ -312,7 +320,13 @@ class we_listview_document extends we_listview_base{
 			$ws_where .
 			' AND ' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0 AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"' .
 			($this->search ? ' AND ' . $bedingung_sql : '') .
-			($dt > 0 ? (' AND ' . FILE_TABLE . '.DocType=' . intval($dt)) : '') . ' ' .
+			($this->docType ?
+				($dt ?
+					' AND ' . FILE_TABLE . '.DocType=' . intval($dt) :
+					' AND FALSE ' //invalid DT => no results
+				) :
+				''
+			) . ' ' .
 			$sql_tail .
 			$calendar_where .
 			' GROUP BY ' . $this->group . ' ' . $orderstring);
@@ -449,7 +463,7 @@ FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->DB_WE, MYSQL_ASSOC)
 
 	function makeFieldCondition($name, $operation, $value){
 		return (strpos($name, 'WE_') == 0) ? //Fix: #9389
-			'('. FILE_TABLE . '.' . substr($name,3) .' ' . $operation . ' ' . $value . ')' : 
+			'(' . FILE_TABLE . '.' . substr($name, 3) . ' ' . $operation . ' ' . $value . ')' :
 			'(l.nHash=x\'' . md5($name) . '\' AND c.Dat ' . $operation . ' ' . $value . ')';
 	}
 
