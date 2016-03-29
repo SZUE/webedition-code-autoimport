@@ -1595,7 +1595,7 @@ for(i=0;i<elements.length; ++i){
 				array("headline" => g_l('prefs', '[proxypass]'), "html" => $_proxypass, 'space' => 200, 'noline' => 1),
 			);
 			// Build dialog element if user has permission
-			return create_dialog("",$_settings, -1);
+			return create_dialog("", $_settings, -1);
 
 
 		case "advanced":
@@ -1671,7 +1671,7 @@ for(i=0;i<elements.length; ++i){
 			$NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->selectOption(get_value("NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH") ? 1 : 0);
 			$_settings[] = array("headline" => g_l('prefs', '[navigation_rules_continue]'), "html" => $NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->getHtml(), 'space' => 200);
 
-			return create_dialog("",$_settings, -1);
+			return create_dialog("", $_settings, -1);
 
 		case "system":
 			if(!permissionhandler::hasPerm("ADMINISTRATOR")){
@@ -1879,7 +1879,7 @@ for(i=0;i<elements.length; ++i){
 				array('headline' => g_l('prefs', '[suppress404code]'), 'html' => getTrueFalseSelect('SUPPRESS404CODE'), 'space' => 200),
 				array('headline' => g_l('prefs', '[force404redirect]'), 'html' => getTrueFalseSelect('FORCE404REDIRECT') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[force404redirect_description]'), we_html_tools::TYPE_HELP), 'space' => 200),
 			);
-			return create_dialog('',$_settings, -1, '', '', null);
+			return create_dialog('', $_settings, -1, '', '', null);
 
 		case 'error_handling':
 			if(!permissionhandler::hasPerm('ADMINISTRATOR')){
@@ -1931,54 +1931,54 @@ for(i=0;i<elements.length; ++i){
 				array('headline' => g_l('prefs', '[error_displaying]'), 'html' => $_error_display_table->getHtml(), 'space' => 200),
 			);
 
-			return create_dialog('settings_error_expert',  $_settings, $_foldAt, g_l('prefs', '[show_expert]'), g_l('prefs', '[hide_expert]'));
+			return create_dialog('settings_error_expert', $_settings, $_foldAt, g_l('prefs', '[show_expert]'), g_l('prefs', '[hide_expert]'));
 
 		/*		 * *******************************************************************
 		 * Validation (XHTML)
 		 * ******************************************************************* */
-		/*case 'validation':
-			if(!permissionhandler::hasPerm('ADMINISTRATOR')){
-				break;
-			}
+		/* case 'validation':
+		  if(!permissionhandler::hasPerm('ADMINISTRATOR')){
+		  break;
+		  }
 
-			//  activate xhtml_debug
-			$_xhtml_debug = we_html_forms::checkbox(1, get_value('XHTML_DEBUG'), 'setXhtml_debug', g_l('prefs', '[xhtml_debug_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[XHTML_DEBUG]\');disable_xhtml_fields(this.checked, mainXhtmlFields);disable_xhtml_fields((document.forms[0][\'setXhtml_show_wrong\'].checked && this.checked), showXhtmlFields);') .
-				we_html_tools::hidden('newconf[XHTML_DEBUG]', get_value('XHTML_DEBUG'));
+		  //  activate xhtml_debug
+		  $_xhtml_debug = we_html_forms::checkbox(1, get_value('XHTML_DEBUG'), 'setXhtml_debug', g_l('prefs', '[xhtml_debug_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[XHTML_DEBUG]\');disable_xhtml_fields(this.checked, mainXhtmlFields);disable_xhtml_fields((document.forms[0][\'setXhtml_show_wrong\'].checked && this.checked), showXhtmlFields);') .
+		  we_html_tools::hidden('newconf[XHTML_DEBUG]', get_value('XHTML_DEBUG'));
 
-			//  activate xhtml_remove_wrong
-			$_xhtml_remove_wrong = we_html_forms::checkbox(1, get_value('XHTML_REMOVE_WRONG'), 'setXhtml_remove_wrong', g_l('prefs', '[xhtml_remove_wrong]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'xhtml_remove_wrong\');', !get_value('XHTML_DEBUG')) .
-				we_html_tools::hidden('newconf[XHTML_REMOVE_WRONG]', get_value('XHTML_REMOVE_WRONG'));
+		  //  activate xhtml_remove_wrong
+		  $_xhtml_remove_wrong = we_html_forms::checkbox(1, get_value('XHTML_REMOVE_WRONG'), 'setXhtml_remove_wrong', g_l('prefs', '[xhtml_remove_wrong]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'xhtml_remove_wrong\');', !get_value('XHTML_DEBUG')) .
+		  we_html_tools::hidden('newconf[XHTML_REMOVE_WRONG]', get_value('XHTML_REMOVE_WRONG'));
 
-			//  activate xhtml_show_wrong
-			$_xhtml_show_wrong = we_html_forms::checkbox(1, get_value('xhtml_show_wrong'), 'setXhtml_show_wrong', g_l('prefs', '[xhtml_show_wrong_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[xhtml_show_wrong]\');disable_xhtml_fields(this.checked,showXhtmlFields);', !get_value('XHTML_DEBUG')) .
-				we_html_tools::hidden('newconf[xhtml_show_wrong]', get_value('xhtml_show_wrong'));
+		  //  activate xhtml_show_wrong
+		  $_xhtml_show_wrong = we_html_forms::checkbox(1, get_value('xhtml_show_wrong'), 'setXhtml_show_wrong', g_l('prefs', '[xhtml_show_wrong_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[xhtml_show_wrong]\');disable_xhtml_fields(this.checked,showXhtmlFields);', !get_value('XHTML_DEBUG')) .
+		  we_html_tools::hidden('newconf[xhtml_show_wrong]', get_value('xhtml_show_wrong'));
 
-			//  activate xhtml_show_wrong_text
-			$_xhtml_show_wrong_text = we_html_forms::checkbox(1, get_value('xhtml_show_wrong_text'), 'setXhtml_show_wrong_text', g_l('prefs', '[xhtml_show_wrong_text_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[xhtml_show_wrong_text]\');', !get_value('xhtml_show_wrong')) .
-				we_html_tools::hidden('newconf[xhtml_show_wrong_text]', get_value('xhtml_show_wrong_text'));
+		  //  activate xhtml_show_wrong_text
+		  $_xhtml_show_wrong_text = we_html_forms::checkbox(1, get_value('xhtml_show_wrong_text'), 'setXhtml_show_wrong_text', g_l('prefs', '[xhtml_show_wrong_text_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[xhtml_show_wrong_text]\');', !get_value('xhtml_show_wrong')) .
+		  we_html_tools::hidden('newconf[xhtml_show_wrong_text]', get_value('xhtml_show_wrong_text'));
 
-			//  activate xhtml_show_wrong_text
-			$_xhtml_show_wrong_js = we_html_forms::checkbox(1, get_value('xhtml_show_wrong_js'), 'setXhtml_show_wrong_js', g_l('prefs', '[xhtml_show_wrong_js_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[xhtml_show_wrong_js]\');', !get_value('xhtml_show_wrong')) .
-				we_html_tools::hidden('newconf[xhtml_show_wrong_js]', get_value('xhtml_show_wrong_js'));
+		  //  activate xhtml_show_wrong_text
+		  $_xhtml_show_wrong_js = we_html_forms::checkbox(1, get_value('xhtml_show_wrong_js'), 'setXhtml_show_wrong_js', g_l('prefs', '[xhtml_show_wrong_js_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[xhtml_show_wrong_js]\');', !get_value('xhtml_show_wrong')) .
+		  we_html_tools::hidden('newconf[xhtml_show_wrong_js]', get_value('xhtml_show_wrong_js'));
 
-			//  activate xhtml_show_wrong_text
-			$_xhtml_show_wrong_error_log = we_html_forms::checkbox(1, get_value('xhtml_show_wrong_error_log'), 'setXhtml_show_wrong_error_log', g_l('prefs', '[xhtml_show_wrong_error_log_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[xhtml_show_wrong_error_log]\');', !get_value('xhtml_show_wrong')) .
-				we_html_tools::hidden('newconf[xhtml_show_wrong_error_log]', get_value('xhtml_show_wrong_error_log'));
+		  //  activate xhtml_show_wrong_text
+		  $_xhtml_show_wrong_error_log = we_html_forms::checkbox(1, get_value('xhtml_show_wrong_error_log'), 'setXhtml_show_wrong_error_log', g_l('prefs', '[xhtml_show_wrong_error_log_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[xhtml_show_wrong_error_log]\');', !get_value('xhtml_show_wrong')) .
+		  we_html_tools::hidden('newconf[xhtml_show_wrong_error_log]', get_value('xhtml_show_wrong_error_log'));
 
-			$_settings = array(
-				array('html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[xhtml_debug_explanation]'), we_html_tools::TYPE_INFO, 450), 'noline' => 1),
-				array('headline' => g_l('prefs', '[xhtml_debug_headline]'), 'html' => $_xhtml_debug . '<br/>' . $_xhtml_remove_wrong, 'space' => 200, 'noline' => 1),
-				array('headline' => g_l('prefs', '[xhtml_show_wrong_headline]'), 'html' => $_xhtml_show_wrong .
-					'<br/>' .
-					$_xhtml_show_wrong_text .
-					'<br/>' .
-					$_xhtml_show_wrong_js .
-					'<br/>' .
-					$_xhtml_show_wrong_error_log, 'space' => 200, 'noline' => 1),
-			);
+		  $_settings = array(
+		  array('html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[xhtml_debug_explanation]'), we_html_tools::TYPE_INFO, 450), 'noline' => 1),
+		  array('headline' => g_l('prefs', '[xhtml_debug_headline]'), 'html' => $_xhtml_debug . '<br/>' . $_xhtml_remove_wrong, 'space' => 200, 'noline' => 1),
+		  array('headline' => g_l('prefs', '[xhtml_show_wrong_headline]'), 'html' => $_xhtml_show_wrong .
+		  '<br/>' .
+		  $_xhtml_show_wrong_text .
+		  '<br/>' .
+		  $_xhtml_show_wrong_js .
+		  '<br/>' .
+		  $_xhtml_show_wrong_error_log, 'space' => 200, 'noline' => 1),
+		  );
 
-			return create_dialog('',$_settings, -1);
-*/
+		  return create_dialog('',$_settings, -1);
+		 */
 		case 'security':
 			if(!permissionhandler::hasPerm('ADMINISTRATOR')){
 				return;
@@ -2056,7 +2056,7 @@ for(i=0;i<elements.length; ++i){
 				array('headline' => g_l('prefs', '[security][storeSessionPassword][title]'), 'html' => $storeSessionPassword->getHtml(), 'space' => 120),
 				array('headline' => g_l('prefs', '[security][userPassRegex][title]'), 'html' => we_html_tools::htmlTextInput('newconf[SECURITY_USER_PASS_REGEX]', 0, get_value('SECURITY_USER_PASS_REGEX'), 100, '', 'text', '20em'), 'space' => 120),
 			);
-			return create_dialog('settings_security',$settings);
+			return create_dialog('settings_security', $settings);
 
 		case 'email':
 			/**
@@ -2139,13 +2139,6 @@ for(i=0;i<elements.length; ++i){
 				$jsCheckboxCheckAll .= 'document.getElementById("newconf[' . $v . ']").checked = checked;';
 			}
 
-			$js = we_html_element::jsElement('
-function checkAll(val) {
-	checked=(val.checked)?1:0;
-	' . $jsCheckboxCheckAll . ';
-}
-');
-
 			$_SESSION['weS']['versions']['logPrefs'] = array();
 			foreach($versionsPrefs as $v){
 				foreach($v as $val){
@@ -2153,7 +2146,13 @@ function checkAll(val) {
 				}
 			}
 
-			$checkboxes = we_html_forms::checkbox(1, false, 'version_all', g_l('prefs', '[version_all]'), false, 'defaultfont', 'checkAll(this);') . '<br/>';
+			$checkboxes = we_html_element::jsElement('
+function checkAll(val) {
+	checked=(val.checked)?1:0;
+	' . $jsCheckboxCheckAll . ';
+}
+') .
+				we_html_forms::checkbox(1, false, 'version_all', g_l('prefs', '[version_all]'), false, 'defaultfont', 'checkAll(this);') . '<br/>';
 
 			foreach($versionsPrefs['ctypes'] as $k => $v){
 				$checkboxes .= we_html_forms::checkbox(1, get_value($v), 'newconf[' . $v . ']', g_l('contentTypes', '[' . $k . ']'), false, 'defaultfont', 'checkAllRevert(this);') . '<br/>';
@@ -2292,7 +2291,7 @@ function checkAll(val) {
 				),
 			);
 
-			return create_dialog('', $_settings, -1, '', '', $js);
+			return create_dialog('', $_settings, -1, '', '');
 	}
 
 	return 'No rights.';
