@@ -1541,7 +1541,7 @@ for(i=0;i<elements.length; ++i){
 			if(!we_base_preferences::userIsAllowed('active_integrated_modules')){
 				break;
 			}
-			$_modInfos = we_base_moduleInfo::getIntegratedModules();
+			$_modInfos = we_base_moduleInfo::getAllModules();
 
 			$_html = '';
 

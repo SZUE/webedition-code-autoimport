@@ -58,8 +58,8 @@ if(we_base_request::_(we_base_request::STRING, 'mode') === 'save_addrbook'){
 
 	echo 'function doOnLoad() {' .
 	($messaging->save_addresses($addrbook) ?
-			we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[addr_book_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) :
-			we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[error_occured]'), we_message_reporting::WE_MESSAGE_ERROR)
+		we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[addr_book_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) :
+		we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[error_occured]'), we_message_reporting::WE_MESSAGE_ERROR)
 	) . '}';
 } else {
 
@@ -148,28 +148,16 @@ function dump_entries(u_type) {
 	current_sel = new_arr;
 }
 
-function delta_sel_add(user_type, delim) {
+function delta_sel_add(user_type) {
 	var i;
 	var opt;
 	var tarr;
-<?php
-$maxsel = we_base_request::_(we_base_request::INT, 'maxsel');
-if($maxsel){
-	/* 		echo "if (current_sel.length < $maxsel) {
-	  var len = $maxsel - current_sel.length;
-	  } else {
-	  return;
-	  }\n"; */
-} else {
-	echo "var len=delta_sel.length;";
-}
-?>
 	var len = delta_sel.length;
 
 	dump_entries(user_type);
 
 	for (i = 0; i < len; i++) {
-		tarr = delta_sel[i].split(delim);
+		tarr = delta_sel[i].split(',');
 
 		if (WE().util.in_array(String(tarr[0]), current_sel) != -1) {
 			continue;
@@ -227,17 +215,7 @@ function add_toaddr() {
 function add_addr2sel() {
 	var sel_elems = get_sel_elems(document.usel.usel_addrbook);
 	var i;
-<?php
-if($maxsel){
-	echo "if (current_sel.length < " . $maxsel . ") {
-		var len = " . $maxsel . " - current_sel.length;
-				} else {
-		return;
-				}\n";
-} else {
-	echo "var len=sel_elems.length;";
-}
-?>
+	var len = sel_elems.length;
 
 	for (i = 0; i < len; i++) {
 		addr_offset = array_two_dim_search(String(sel_elems[i]), addrbook_sel, 1);
@@ -271,12 +249,10 @@ function doUnload() {
 		$tbl = '  <table cellspacing="6">
       <tr><td class="defaultfont">' . g_l('modules_messaging', '[addr_book]') . '</td><td></td><td class="defaultfont">' . g_l('modules_messaging', '[selected]') . '</td></tr>
       <tr>
-        <td rowspan="3"><select name="usel_addrbook" size="7" style="width:210px" multiple>
-            </select>
+        <td rowspan="3"><select name="usel_addrbook" size="7" style="width:210px" multiple="multiple"></select>
         </td>
         <td style="vertical-align:bottom">' . we_html_button::create_button('fa:btn_direction_left,fa-lg fa-caret-left', "javascript:add_toaddr()") . '</td>
-        <td rowspan="3"><select name="usel_currentsel" size="7" style="width:210px" multiple>
-            </select>
+        <td rowspan="3"><select name="usel_currentsel" size="7" style="width:210px" multiple="multiple"></select>
         </td>
       </tr>
       <tr>

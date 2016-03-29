@@ -1,3 +1,5 @@
+/* global top, WE */
+
 /**
  * webEdition SDK
  *
@@ -73,21 +75,21 @@ function we_cmd() {
 			}
 			break;
 		case "delete_banner":
-			if (WE().util.hasPerm("DELETE_BANNER")) {
+			if (!WE().util.hasPerm("DELETE_BANNER")) {
 				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
-			} else {
-
-				if (top.content.editor.edbody.loaded && top.content.editor.edbody.we_is_home === undefined) {
-					if (!confirm(WE().consts.g_l.banner.view.delete_question)) {
-						return;
-					}
-				} else {
-					top.we_showMessage(WE().consts.g_l.banner.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_WARNING, this);
+				return;
+			}
+			if (top.content.editor.edbody.loaded && top.content.editor.edbody.we_is_home === undefined) {
+				if (!confirm(WE().consts.g_l.banner.view.delete_question)) {
 					return;
 				}
-				top.content.editor.edbody.document.we_form.ncmd.value = args[0];
-				top.content.editor.edbody.submitForm();
+			} else {
+				top.we_showMessage(WE().consts.g_l.banner.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_WARNING, this);
+				return;
 			}
+			top.content.editor.edbody.document.we_form.ncmd.value = args[0];
+			top.content.editor.edbody.submitForm();
+
 			break;
 		case "save_banner":
 			if (WE().util.hasPerm("EDIT_BANNER") || WE().util.hasPerm("NEW_BANNER")) {
@@ -104,7 +106,6 @@ function we_cmd() {
 				top.content.editor.edbody.submitForm();
 			} else {
 				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
-
 			}
 			top.content.usetHot();
 			break;

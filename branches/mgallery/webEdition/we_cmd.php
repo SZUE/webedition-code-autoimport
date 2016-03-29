@@ -279,7 +279,7 @@ function findInclude($cmd){
 			//	In we.inc.php all names of the installed modules have already been searched
 			//	so we only have to use the array $_we_active_integrated_modules
 
-			$mods = we_base_moduleInfo::getAllModules();
+			$mods = we_base_moduleInfo::getIntegratedModules(false);
 			foreach($mods as $m){
 				if($cmd == $m['name'] . '_edit_ifthere' && !we_base_moduleInfo::isActive($m['name'])){
 					$GLOBALS['moduleName'] = $m['text_short'];

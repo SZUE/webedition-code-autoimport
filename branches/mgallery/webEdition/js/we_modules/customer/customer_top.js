@@ -21,6 +21,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+/* global WE, top */
+
 var get_focus = 1;
 var activ_tab = 0;
 var hot = 0;

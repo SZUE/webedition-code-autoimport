@@ -48,31 +48,16 @@ abstract class we_base_moduleInfo{
 	}
 
 	/**
-	 * @param string $mKey
-	 * @return boolean
-	 */
-	static function isModuleInstalled($mKey){
-		self::init();
-		return (in_array($mKey, self::$we_available_modules) || $mKey === 'editor');
-	}
-
-	/**
-	 * returns hash of all integrated modules
+	 * returns hash of all modules
 	 * @return hash
 	 */
-	static function getIntegratedModules($active = null){
+	static function getIntegratedModules($active){
 		self::init();
-
 		$retArr = array();
 
 		foreach(self::$we_available_modules as $key => $modInfo){
-			if($modInfo['integrated'] == true){
-
-				if($active === null){
-					$retArr[$key] = $modInfo;
-				} else if(self::isActive($key) == $active){
-					$retArr[$key] = $modInfo;
-				}
+			if(self::isActive($key) == $active){
+				$retArr[$key] = $modInfo;
 			}
 		}
 
@@ -94,18 +79,18 @@ abstract class we_base_moduleInfo{
 	}
 
 	static function isActive($modul){
-		$ret = in_array($modul, $GLOBALS['_we_active_integrated_modules']);
-		if($ret){
-			switch($modul){
-				case 'users'://removed config
-					return $ret;
-				default:
-					if(file_exists(WE_MODULES_PATH . $modul . '/we_conf_' . $modul . '.inc.php')){
-						require_once (WE_MODULES_PATH . $modul . '/we_conf_' . $modul . '.inc.php');
-					}
-			}
+		if(!in_array($modul, $GLOBALS['_we_active_integrated_modules'])){
+			return false;
 		}
-		return $ret;
+		switch($modul){
+			case 'users'://removed config
+				break;
+			default:
+				if(file_exists(WE_MODULES_PATH . $modul . '/we_conf_' . $modul . '.inc.php')){
+					require_once (WE_MODULES_PATH . $modul . '/we_conf_' . $modul . '.inc.php');
+				}
+		}
+		return true;
 	}
 
 	static function getModuleData($module){
@@ -113,6 +98,7 @@ abstract class we_base_moduleInfo{
 		if(isset(self::$we_available_modules[$module])){
 			return self::$we_available_modules[$module];
 		}
+		return false;
 	}
 
 }
