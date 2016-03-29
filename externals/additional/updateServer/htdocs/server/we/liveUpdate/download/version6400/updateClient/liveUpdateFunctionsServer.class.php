@@ -580,11 +580,11 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 
 		$query = str_replace(array('###TBLPREFIX###', '###UPDATEONLY###'), array(LIVEUPDATE_TABLE_PREFIX, ''), trim($query));
 		$matches = array();
-		if(preg_match('/###UPDATEDROPCOL\((.*),(.*)\)###/', $query, $matches)){
+		if(preg_match('/###UPDATEDROPCOL\(([^,]*),([^)]*)\)###/', $query, $matches)){
 			$db->query('SHOW COLUMNS FROM ' . $db->escape($matches[2]) . ' WHERE Field="' . $matches[1] . '"');
 			$query = ($db->num_rows() ? 'ALTER TABLE ' . $db->escape($matches[2]) . ' DROP COLUMN ' . $db->escape($matches[1]) : '');
 		}
-		if(preg_match('/###ONCOL\((.*),(.*)\)(.+);###/', $query, $matches)){
+		if(preg_match('/###ONCOL\(([^,]*),([^)]*)\)(.+);###/', $query, $matches)){
 			$db->query('SHOW COLUMNS FROM ' . $db->escape($matches[2]) . ' WHERE Field="' . $matches[1] . '"');
 			$query = ($db->num_rows() ? $matches[3] : '');
 		}
@@ -597,7 +597,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 			$db->query('SHOW KEYS FROM ' . $db->escape($matches[2]) . ' WHERE Key_name="' . $matches[1] . '"');
 			$query = ($db->num_rows() ? 'ALTER TABLE ' . $db->escape($matches[2]) . ' DROP KEY ' . $db->escape($matches[1]) : '');
 		}
-		if(preg_match('/###ONTAB\((.*)\)(.+);###/', $query, $matches)){
+		if(preg_match('/###ONTAB\(([^)]*)\)(.+);###/', $query, $matches)){
 			$query = ($db->isTabExist($matches[1]) ? $matches[2] : '');
 		}
 
