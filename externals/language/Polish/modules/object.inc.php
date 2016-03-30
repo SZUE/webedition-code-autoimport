@@ -58,6 +58,10 @@ $l_modules_object=array(
 	'objectpath'=>'ďż˝cieďż˝ka obiektu',
 	'objecturl'=>'Object URL',
 	'quicktime_field'=>'Quicktime',
+	
+	'range'=>array(
+		'int'=>'Range',
+	),
 	'rootdir'=>'Workspace',
 	'search_field'=>'Wyszukiwane pole',
 	'search_term'=>'Wyszukiwane pojďż˝cie',

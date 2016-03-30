@@ -58,6 +58,10 @@ $l_modules_object=array(
 	'objectpath'=>'Objektin polku',
 	'objecturl'=>'Object URL',
 	'quicktime_field'=>'Quicktime',
+	
+	'range'=>array(
+		'int'=>'Range',
+	),
 	'rootdir'=>'Työtila',
 	'search_field'=>'Hakukenttä',
 	'search_term'=>'Hakuehto',
