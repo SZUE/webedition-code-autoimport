@@ -36,18 +36,18 @@ if($type && ($step == 1 || $step == 2) && $what === 'wizbody'){
 		case we_import_functions::TYPE_GENERIC_XML:
 			$name = 'uploaded_xml_file';
 			$acceptedMime = array('text/xml');
-			$acceptedExt = array('xml');
+			$acceptedExt = array('.xml');
 			$genericFileNameTemp = TEMP_DIR . 'we_xml_' . we_fileupload::REPLACE_BY_UNIQUEID . '.xml';
 			break;
 		case we_import_functions::TYPE_WE_XML:
 			$name = 'uploaded_xml_file';
 			$acceptedMime = array('text/xml');
-			$acceptedExt = array('xml');
+			$acceptedExt = array('.xml');
 			$genericFileNameTemp = TEMP_DIR . we_fileupload::REPLACE_BY_UNIQUEID . '_w.xml';
 			break;
 		case we_import_functions::TYPE_CSV:
 			$name = 'uploaded_csv_file';
-			$acceptedExt = array('csv', 'txt');
+			$acceptedExt = array('.csv', '.txt');
 			$genericFileNameTemp = TEMP_DIR . 'we_csv_' . we_fileupload::REPLACE_BY_UNIQUEID . '.csv';
 			break;
 		default:

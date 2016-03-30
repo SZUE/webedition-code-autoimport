@@ -26,18 +26,6 @@ class we_fileupload_resp_base extends we_fileupload{
 
 	protected $name = 'we_File';
 	protected $response = array('status' => '', 'fileNameTemp' => '', 'mimePhp' => 'none', 'message' => '', 'completed' => '', 'weDoc' => '');
-	protected $typeCondition = array(
-		'accepted' => array(
-			'mime' => array(),
-			'extensions' => array(),
-			'all' => array()
-		),
-		'forbidden' => array(
-			'mime' => array(),
-			'extensions' => array(),
-			'all' => array()
-		)
-	);
 	protected $contentType = 'image/*'; // alloud target ct: obsolete => use typeCondition
 	protected $controlVars = array(
 		'partNum' => 1,
@@ -223,54 +211,6 @@ class we_fileupload_resp_base extends we_fileupload{
 
 	private function checkFileType($mime = '', $fileName = '', $mode = ''){
 		return true; // FIXME: make same test as in JS
-
-		$tc = $this->typeCondition;
-		$fileInfo = pathinfo($fileName);
-
-		switch($mode){
-			case 'ext':
-				$ext = $fileInfo['extension'];
-				$alert = !$ext ? 'Function checkFileType: params not ok' : '';
-				$mime = we_base_util::extension2mime($ext);
-				$mimeGroup = $mime ? substr($mime, 0, strpos($mime, '/') + 1) . '*' : false;
-				break;
-			case 'mime':
-				$alert = !$mime ? 'Function checkFileType: params not ok' : '';
-				foreach($tc['accepted']['ext'] as $e){
-					$tc['accepted']['all'] = we_base_util::extension2mime($e);
-				}
-				foreach($tc['forbidden']['ext'] as $e){
-					$tc['forbidden']['all'] = we_base_util::extension2mime($e);
-				}
-				$ext = false;
-				$mimeGroup = substr($mime, 0, strpos($mime, '/') + 1) . '*';
-				break;
-			default:
-				$ext = $fileInfo['extension'];
-				$alert = !$ext || !$mime ? 'Function checkFileType: params not ok' : '';
-				$mimeGroup = substr($mime, 0, strpos($mime, '/') + 1) . '*';
-		}
-		if($alert){
-			// t_e($alert);
-		}
-
-		if($tc['accepted']['all']){
-			if(in_array($mime, $tc['accepted']['all']) ||
-					in_array($mimeGroup, $tc['accepted']['all']) ||
-					in_array($ext, $tc['accepted']['all'])){
-				//true
-			} else {
-				return false;
-			}
-		}
-
-		if($tc['forbidden']['all'] &&
-				(in_array($mime, $tc['forbidden']['all']) ||
-				in_array($mimeGroup, $tc['forbidden']['all']) ||
-				in_array($ext, $tc['forbidden']['all']))){
-			return false;
-		}
-		return true;
 	}
 
 }

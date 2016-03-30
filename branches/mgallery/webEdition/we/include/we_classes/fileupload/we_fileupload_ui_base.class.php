@@ -62,18 +62,6 @@ class we_fileupload_ui_base extends we_fileupload{
 		'name' => '',
 		'additionalParams' => array()
 	);
-	protected $typeCondition = array(
-		'accepted' => array(
-			'mime' => array(),
-			'extensions' => array(),
-			'all' => array()
-		),
-		'forbidden' => array(
-			'mime' => array(),
-			'extensions' => array(),
-			'all' => array()
-		)
-	);
 	protected $isPreset = false;
 	protected $fileTable = '';
 	protected $binDocProperties = array();
@@ -228,7 +216,7 @@ doDragFromTree = function(text, writebackId){
 					'type' => 'file',
 					'name' => $this->name,
 					'id' => $this->name,
-					'accept' => implode(',', array_merge($this->typeCondition['accepted']['mime'], $this->typeCondition['accepted']['extensions'])),
+					'accept' => trim($this->typeCondition['accepted']['all'], ','),
 				));
 				$btn = we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, $width, we_html_button::HEIGHT, '', '', $disabled, false, '_btn', false, '', 'weBtn noMarginLeft');
 

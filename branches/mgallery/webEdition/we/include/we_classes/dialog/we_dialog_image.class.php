@@ -232,42 +232,6 @@ class we_dialog_image extends we_dialog_base{
 		$this->args['ratio'] = 1;
 	}
 
-	/*
-	private function initFileUploader(){
-		$this->weFileupload = new we_fileupload_ui_editor(we_base_ContentTypes::IMAGE);
-		$this->weFileupload->setCallback('top.doOnImportSuccess(scope.weDoc);');
-		$this->weFileupload->setDimensions(array('dragWidth' => 374, 'inputWidth' => 378));
-		$this->weFileupload->setFormElements(array(
-			'parentId' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true,'noline' => true),
-			'sameName' => array('set' => true, 'multiIconBox' => true, 'space' => 130, 'rightHeadline' => false, 'noline' => true),
-			'importMeta' => array('set' => true, 'multiIconBox' => true, 'space' => 130, 'rightHeadline' => false, 'noline' => true),
-			'categories' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
-			'isSearchable' => array('set' => true, 'multiIconBox' => true, 'space' => 130, 'rightHeadline' => false, 'noline' => true),
-			'attributes' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
-			'thumbnails' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
-			'imageResize' => array('set' => true, 'multiIconBox' => true, 'space' => 130, 'rightHeadline' => false, 'noline' => true),
-			'imageRotate' => array('set' => true, 'multiIconBox' => true, 'space' => 130, 'rightHeadline' => false, 'noline' => true),
-			'imageQuality' => array('set' => true, 'multiIconBox' => true, 'space' => 130, 'rightHeadline' => false, 'noline' => true),
-			//'tableProperties' => array('foldAtNr' => 2, 'foldAtOpen' => g_l('importFiles', '[image_options_open]'), 'foldAtClose' => g_l('importFiles', '[image_options_close]'))
-		));
-		$this->weFileupload->setEditorJS(array(
-			'writebackTarget' => '',
-			'customCallback' => '',
-			'predefinedCallback' => 'imagedialog'
-		));
-		$this->weFileupload->setFieldParentID(array(
-			'setField' => true,
-			'preset' => IMAGESTARTID_DEFAULT,
-		));
-		$this->weFileupload->setPositionBtnUpload('top');
-	}
-	 *
-	 */
-
-	/* use parent
-	  function getFormHTML(){}
-	 */
-
 	function getHeaderHTML($printJS_Style = false, $additionals = ''){
 		return parent::getHeaderHTML($printJS_Style, /* $this->weFileupload->getJs() . $this->weFileupload->getEditorJs() . $this->weFileupload->getCss() */ '');
 	}

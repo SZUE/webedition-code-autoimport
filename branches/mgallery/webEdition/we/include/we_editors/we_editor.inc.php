@@ -481,10 +481,9 @@ if(
 							}
 							$wasSaved = true;
 							if($we_doc->ContentType === we_base_ContentTypes::OBJECT){
-//FIXME: removed: top.header.document.location.reload(); - what should be reloaded?!
 								$we_JavaScript .= "if(top.treeData.table=='" . OBJECT_FILES_TABLE . "'){top.we_cmd('loadVTab', top.treeData.table, 0);}";
 							} else if($we_doc->ContentType === we_base_ContentTypes::COLLECTION){
-								$we_JavaScript .= "if(top.treeData.table==='" . VFILE_TABLE . "'){alert('reload tree'); top.we_cmd('loadVTab', top.treeData.table, 0);}";
+								$we_JavaScript .= "if(top.treeData.table==='" . VFILE_TABLE . "'){top.we_cmd('loadVTab', top.treeData.table, 0);}";
 							}
 							$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_save_ok]'), $we_doc->Path);
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;

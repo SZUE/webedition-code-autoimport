@@ -954,6 +954,8 @@ var weFileUpload = (function () {
 					tc = _.sender.typeCondition,
 					typeGroup = type.split('/').shift() + '/*';
 
+				ext = ext ? '.' + ext : '';
+
 				// no restrictions
 				if(!tc.accepted.cts && !tc.accepted.exts && !tc.forbidden.cts && !tc.forbidden.exts){
 					return 1; // 4: no restrictions
