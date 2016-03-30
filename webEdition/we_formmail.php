@@ -294,7 +294,7 @@ $senderForename = we_base_request::_(we_base_request::STRING, 'forename', '');
 $senderSurname = we_base_request::_(we_base_request::STRING, 'surname', '');
 $sender = ($senderForename != '' || $senderSurname ? $senderForename . ' ' . $senderSurname . '<' . $fromMail . '>' : $fromMail);
 
-$phpmail = new we_helpers_mail('', $subject, $sender);
+$phpmail = new we_mail_mail('', $subject, $sender);
 $phpmail->setCharSet($charset);
 
 $recipientsList = array();
@@ -351,7 +351,7 @@ if((!empty($_REQUEST['confirm_mail'])) && FORMMAIL_CONFIRM){
 		if(!we_check_email($email)){
 			print_error(g_l('global', '[email_invalid]'));
 		}
-		$phpmail = new we_helpers_mail($email, $subject, $from);
+		$phpmail = new we_mail_mail($email, $subject, $from);
 		$phpmail->setCharSet($charset);
 		if($mimetype === 'text/html'){
 			$phpmail->addHTMLPart($we_html_confirm);

@@ -1028,7 +1028,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 					}
 
 					$url = parse_url($block->Field);
-					$content = getHTTP($url["host"], (isset($url["path"]) ? $url["path"] : ""), "", defined('HTTP_USERNAME') ? HTTP_USERNAME : "", defined('HTTP_PASSWORD') ? HTTP_PASSWORD : "");
+					$content = getHTTP($url["host"], (isset($url["path"]) ? $url["path"] : '/'), "", defined('HTTP_USERNAME') ? HTTP_USERNAME : "", defined('HTTP_PASSWORD') ? HTTP_PASSWORD : "");
 
 					$trenner = '\s*';
 					$patterns[] = "/<(img" . $trenner . "[^>]+src" . $trenner . "[\=\"|\=\'|\=\\\\|\=]*" . $trenner . ")([^\'\"> ? \\\]*)([^\"\' \\\\>]*)(" . $trenner . "[^>]*)>/sie";
@@ -1227,7 +1227,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 
 		$atts = $this->getAttachments($group);
 		//$_clean = $this->getCleanMail($this->newsletter->Reply);
-		$phpmail = new we_helpers_mail($this->newsletter->Test, $this->newsletter->Subject, $this->newsletter->Sender, $this->newsletter->Reply, $this->newsletter->isEmbedImages);
+		$phpmail = new we_mail_mail($this->newsletter->Test, $this->newsletter->Subject, $this->newsletter->Sender, $this->newsletter->Reply, $this->newsletter->isEmbedImages);
 		if(!$this->settings["use_base_href"]){
 			$phpmail->setIsUseBaseHref($this->settings["use_base_href"]);
 		}

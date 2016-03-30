@@ -56,6 +56,7 @@ abstract class we_autoloader{
 		'http' => 'we_classes/http',
 		'import' => 'we_import',
 		'listview' => 'we_classes/listview',
+		'mail' => 'we_classes/mail',
 		'main' => 'we_classes/main',
 		'messaging' => 'we_modules/messaging',
 		'metadata' => 'we_classes/weMetaData',

@@ -24,7 +24,7 @@
  *
  */
 //FIXME: this class is used in WE & uses Zend!!!
-class we_helpers_mail extends Zend_Mail{
+class we_mail_mail extends we_mail_znd{
 	/**
 	 * Type of Message, either text/html or text/plain
 	 *
@@ -122,7 +122,7 @@ class we_helpers_mail extends Zend_Mail{
 					if((SMTP_ENCRYPTION != 0 ) || SMTP_ENCRYPTION != ''){
 						$smtp_config['ssl'] = SMTP_ENCRYPTION;
 					}
-					$tr = new Zend_Mail_Transport_Smtp(SMTP_SERVER, $smtp_config);
+					$tr = new we_mail_TransportSmtp(SMTP_SERVER, $smtp_config);
 					$this->setDefaultTransport($tr);
 				}
 				break;
@@ -133,10 +133,10 @@ class we_helpers_mail extends Zend_Mail{
 				$suhosin = extension_loaded('suhosin');
 				$_sender = $sender ? $this->parseEmailUser($sender) : '';
 				$tr = ($_sender && !empty($_sender['email']) && !$suhosin ?
-						new Zend_Mail_Transport_Sendmail('-f' . $_sender['email']) :
-						new Zend_Mail_Transport_Sendmail());
+						new we_mail_TransportSendmail('-f' . $_sender['email']) :
+						new we_mail_TransportSendmail());
 
-				Zend_Mail::setDefaultTransport($tr);
+				we_mail_znd::setDefaultTransport($tr);
 				break;
 		}
 
@@ -298,7 +298,7 @@ class we_helpers_mail extends Zend_Mail{
 		 */
 		if($this->Body){ // es gibt einen HTML-Part
 			if($this->inlineAtt){ // es gibt Inline-Bilder
-				//$this->setType(Zend_Mime::MULTIPART_RELATED); // dann brauchen wir diesen Typ - wird in aktuellen Zend Versionen nicht mehr benötigt
+				//$this->setType(Mime::MULTIPART_RELATED); // dann brauchen wir diesen Typ - wird in aktuellen Zend Versionen nicht mehr benötigt
 				foreach($this->inlineAtt as $at){
 					$this->addAttachment($at);
 				}
@@ -347,14 +347,14 @@ class we_helpers_mail extends Zend_Mail{
 			return;
 		}
 		if($isBinData){
-			$at = new Zend_Mime_Part(base64_decode($attachment));
+			$at = new we_mail_mimePart(base64_decode($attachment));
 			$at->id = $at->filename = str_replace('.', '', uniqid('', true));
 			$at->type = self::get_mime_type($ext, '');
 		} else {
 			$filename = basename($attachment);
 			$rep = str_replace($_SERVER['DOCUMENT_ROOT'], '', $attachment);
 			$attachment = str_replace(rtrim($_SERVER['DOCUMENT_ROOT'], '/'), WEBEDITION_PATH . '..', $attachment);
-			$at = new Zend_Mime_Part(we_base_file::load($attachment));
+			$at = new we_mail_mimePart(we_base_file::load($attachment));
 			$at->id = md5($filename);
 			$at->filename = $filename;
 			$fileParts = pathinfo($filename);
@@ -363,8 +363,8 @@ class we_helpers_mail extends Zend_Mail{
 			$loc = getServerUrl() . $rep;
 			$at->location = $loc;
 		}
-		$at->disposition = Zend_Mime::DISPOSITION_INLINE;
-		$at->encoding = Zend_Mime::ENCODING_BASE64;
+		$at->disposition = we_mail_mime::DISPOSITION_INLINE;
+		$at->encoding = we_mail_mime::ENCODING_BASE64;
 		$this->inlineAtt[] = $at;
 		return $at->id;
 	}
@@ -382,9 +382,9 @@ class we_helpers_mail extends Zend_Mail{
 		$filename = basename($attachmentpath);
 		$ext = pathinfo($filename, PATHINFO_EXTENSION);
 		$binarydata = we_base_file::load($attachmentpath);
-		$at = new Zend_Mime_Part($binarydata);
-		$at->disposition = Zend_Mime::DISPOSITION_ATTACHMENT;
-		$at->encoding = Zend_Mime::ENCODING_BASE64;
+		$at = new we_mail_mimePart($binarydata);
+		$at->disposition = we_mail_mime::DISPOSITION_ATTACHMENT;
+		$at->encoding = we_mail_mime::ENCODING_BASE64;
 		$at->id = md5($filename);
 		$at->filename = $filename;
 		$at->type = self::get_mime_type($ext, $filename, $attachmentpath);
@@ -475,34 +475,29 @@ class we_helpers_mail extends Zend_Mail{
 	  Quelle: http://www.zfsnippets.com/snippets/view/id/64/zendmail-inline-picture-attachments
 	  Ersatz / Erweiterung mit interessantem Ansatz für inline Bilder, funktioniert mit webEdition exterenen Bildern aus fremden Domains (sonst entfernt eine textarea den URL-Teil)
 	 */
-	public function setBodyHtml2($html, $charset = null, $encoding = Zend_Mime::ENCODING_QUOTEDPRINTABLE, $preload_images = true){
+	public function setBodyHtml2($html, $charset = null, $encoding = we_mail_mime::ENCODING_QUOTEDPRINTABLE, $preload_images = true){
 		if($preload_images){
-			$this->setType(Zend_Mime::MULTIPART_RELATED);
+			$this->setType(we_mail_mime::MULTIPART_RELATED);
 
 			$dom = new DOMDocument(null, $this->getCharset());
 			@$dom->loadHTML($html);
 
 			$images = $dom->getElementsByTagName('img');
-
+			$status = 0;
 			for($i = 0; $i < $images->length; $i++){
 				$img = $images->item($i);
 				$url = $img->getAttribute('src');
+				//FIXME: do we really have to get all files by http?
+				$image_content = getHTTP($url, '', '', '', '', $status);
 
-				$image_http = new Zend_Http_Client($url);
-				$response = $image_http->request();
-
-				if($response->getStatus() == 200){
-					$image_content = $response->getBody();
-
+				if($status == 200){
 					$pathinfo = pathinfo($url);
-					$mime_type = $response->getHeader('Content-Type');
-
-					$mime = new Zend_Mime_Part($image_content);
+					$mime = new we_mail_mimePart($image_content);
 					$mime->id = $url;
 					$mime->location = $url;
-					$mime->type = $mime_type;
-					$mime->disposition = Zend_Mime::DISPOSITION_INLINE;
-					$mime->encoding = Zend_Mime::ENCODING_BASE64;
+					$mime->type = we_base_util::getMimeType($pathinfo['extension'], '', we_base_util::MIME_BY_EXTENSION);
+					$mime->disposition = we_mail_mime::DISPOSITION_INLINE;
+					$mime->encoding = we_mail_mime::ENCODING_BASE64;
 					$mime->filename = $pathinfo['basename'];
 
 					$this->addAttachment($mime);

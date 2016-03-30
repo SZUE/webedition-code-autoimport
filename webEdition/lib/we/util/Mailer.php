@@ -19,6 +19,6 @@
  * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_util_Mailer extends we_helpers_mail{
+class we_util_Mailer extends we_mail_mail{
 
 }
