@@ -922,19 +922,19 @@ class we_object extends we_document{
 				$values = array(
 					g_l('modules_object', '[int][signed]') => we_html_tools::OPTGROUP,
 					'TINYINT' => '[-128 .. 127] (tiny)',
-					'SMALLINT' => '[-32768 .. 32767] (small)',
-					'MEDIUMINT' => '[-8388608 .. 8388607] (medium)',
-					'INT' => '[-2147483648 .. 2147483647] (int)',
-					'BIGINT' => '[-9223372036854775808 .. 9223372036854775807] (big)',
+					'SMALLINT' => '[-32.768 .. 32.767] (small)',
+					'MEDIUMINT' => '[-8.388.608 .. 8.388.607] (medium)',
+					'INT' => '[-2.147.483.648 .. 2.147.483.647] (int)',
+					'BIGINT' => '[-9.223.372.036.854.775.808 .. 9.223.372.036.854.775.807] (big)',
 					g_l('modules_object', '[int][unsigned]') => we_html_tools::OPTGROUP,
 					'TINYINT_U' => '[0 .. 255] (tiny)',
-					'SMALLINT_U' => '[0 .. 65535] (small)',
-					'MEDIUMINT_U' => '[0 .. 16777215] (medium)',
-					'INT_U' => '[0 .. 4294967295] (int)',
-					'BIGINT_U' => '[0 .. 18446744073709551615] (big)',
+					'SMALLINT_U' => '[0 .. 65.535] (small)',
+					'MEDIUMINT_U' => '[0 .. 16.777.215] (medium)',
+					'INT_U' => '[0 .. 4.294.967.295] (int)',
+					'BIGINT_U' => '[0 .. 18.446.744.073.709.551.615] (big)',
 				);
 				$sel = $this->getElement($name . "typeLen", "dat");
-				$content .= '<tr style="vertical-align:top"><td style="width:100px;" class="weMultiIconBoxHeadlineThin"></td>' .
+				$content .= '<tr style="vertical-align:top"><td style="width:100px;" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[range][int]') . '</td>' .
 					'<td class="defaultfont">' .
 					we_class::htmlSelect('we_' . $this->Name . '_input[' . $name . 'typeLen]', $values, 1, $sel ? $sel : 'INT', false, array('onchange' => "_EditorFrame.setEditorIsHot(true);", 'width' => '388px')) .
 					'</td></tr>';
