@@ -241,7 +241,7 @@ abstract class we_backup_preparer{
 		}
 
 		$fileUploader = new we_fileupload_resp_base();
-		//$fileUploader->setTypeCondition('accepted', array(we_base_ContentTypes::XML), array('gz', 'tgz'));
+		//$fileUploader->setTypeCondition('accepted', array(we_base_ContentTypes::XML), array('.gz', '.tgz'));
 		if(($commitedFile = $fileUploader->commitUploadedFile(true))){
 			we_base_file::insertIntoCleanUp($commitedFile, 0);
 			return $commitedFile;

@@ -220,7 +220,7 @@ abstract class we_users_util{
 		//FIXME: why do we need the Workspaces of documents do determine allowed classes??
 //		$ws = get_ws(FILE_TABLE, true);
 		$ofWs = get_ws(OBJECT_FILES_TABLE, true);
-		$ofWsArray = id_to_path($ofWs, OBJECT_FILES_TABLE, $db, false, true);
+		$ofWsArray = id_to_path($ofWs, OBJECT_FILES_TABLE, $db, true);
 		$db->query('SELECT ID,Workspaces,Path FROM ' . OBJECT_TABLE);
 
 		foreach($db->getAll() as $result){

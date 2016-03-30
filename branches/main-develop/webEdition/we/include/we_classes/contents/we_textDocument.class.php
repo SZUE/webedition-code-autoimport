@@ -88,7 +88,7 @@ class we_textDocument extends we_document{
 					return $doc;
 				}
 				$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE'], true);
-				$paths = id_to_path($matches, FILE_TABLE, $GLOBALS['DB_WE'], false, true);
+				$paths = id_to_path($matches, FILE_TABLE, $GLOBALS['DB_WE'], true);
 				foreach($paths as $match => $path){
 					$doc = str_replace('#WE:' . $match . '#', ($urlReplace ? preg_replace($urlReplace, array_keys($urlReplace), $path) : $path), $doc);
 				}
@@ -197,11 +197,11 @@ class we_textDocument extends we_document{
 
 	public function getPropertyPage(){
 		return we_html_multiIconBox::getHTML('PropertyPage', array(
-			array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => 120),
-			($this->ContentType == we_base_ContentTypes::CSS ? array('icon' => 'doc.gif', 'headline' => g_l('weClass', '[document]'), 'html' => $this->formParseFile(), 'space' => 140) : null),
-			array('icon' => 'charset.gif', 'headline' => g_l('weClass', '[Charset]'), 'html' => $this->formCharset(), 'space' => 120),
-			array('icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners(), 'space' => 120),
-			array('icon' => 'copy.gif', 'headline' => g_l('weClass', '[copy' . $this->ContentType . ']'), 'html' => $this->formCopyDocument(), 'space' => 120))
+				array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => 120),
+				($this->ContentType == we_base_ContentTypes::CSS ? array('icon' => 'doc.gif', 'headline' => g_l('weClass', '[document]'), 'html' => $this->formParseFile(), 'space' => 140) : null),
+				array('icon' => 'charset.gif', 'headline' => g_l('weClass', '[Charset]'), 'html' => $this->formCharset(), 'space' => 120),
+				array('icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners(), 'space' => 120),
+				array('icon' => 'copy.gif', 'headline' => g_l('weClass', '[copy' . $this->ContentType . ']'), 'html' => $this->formCopyDocument(), 'space' => 120))
 		);
 	}
 

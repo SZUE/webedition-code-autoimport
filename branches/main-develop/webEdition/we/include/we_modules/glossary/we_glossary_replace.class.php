@@ -36,8 +36,8 @@ abstract class we_glossary_replace{
 	 */
 	public static function replace($content, $language){
 		return (self::useAutomatic() ?
-						self::doReplace($content, $language) :
-						$content);
+				self::doReplace($content, $language) :
+				$content);
 	}
 
 	/**
@@ -57,7 +57,7 @@ abstract class we_glossary_replace{
 		// get the words to replace
 		$cache = new we_glossary_cache($language);
 		$replace = array(
-			'' => $cache->get(we_glossary_glossary::TYPE_TEXTREPLACE), //text replacement must come first, since othe might generate iritation annotations
+			'' => $cache->get(we_glossary_glossary::TYPE_TEXTREPLACE), //text replacement must come first, since other might generate iritation annotations
 			'<span ' => $cache->get(we_glossary_glossary::TYPE_FOREIGNWORD),
 			'<abbr ' => (REPLACEACRONYM ? array_merge($cache->get(we_glossary_glossary::TYPE_ABBREVATION), $cache->get(we_glossary_glossary::TYPE_ACRONYM)) : $cache->get(we_glossary_glossary::TYPE_ABBREVATION)),
 			'<acronym ' => (REPLACEACRONYM ? array() : $cache->get(we_glossary_glossary::TYPE_ACRONYM)),
@@ -82,7 +82,6 @@ abstract class we_glossary_replace{
 		preg_match('|<body[^>]*>(.*)</body>|si', $src, $matches);
 
 		$srcBody = $replBody = (isset($matches[1]) ? $matches[1] : $src);
-
 		/*
 		  This is the fastest variant
 		 */
@@ -98,20 +97,20 @@ abstract class we_glossary_replace{
 				if(isset($ignoreTags[$lastHtmlTag])){
 					$ignoreTags[$lastHtmlTag]+=($not ? -1 : 1);
 				}
-			} elseif(!array_sum($ignoreTags)){
+			} elseif(!array_sum($ignoreTags)){//only if no ignored tag is open!
 				//this will generate invalid code: $piece = str_replace('&quot;', '"', $piece);
 				foreach($replace as $tag => $words){
-					if(!$tag || $lastHtmlTag === $tag){
+					if(!$tag || $lastHtmlTag !== $tag){
 						$piece = self::doReplaceWords($piece, $words);
 					}
 				}
 			}
 		}
 
-		$replBody = strtr(implode('',$pieces), array('@@@we@@@' => '\''));
+		$replBody = strtr(implode('', $pieces), array('@@@we@@@' => '\''));
 		return (isset($matches[1]) ?
-						str_replace($srcBody, $replBody, $src) :
-						$replBody);
+				str_replace($srcBody, $replBody, $src) :
+				$replBody);
 	}
 
 	/**

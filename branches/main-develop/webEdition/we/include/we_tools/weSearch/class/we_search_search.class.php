@@ -1133,7 +1133,7 @@ class we_search_search extends we_search_base{
 						break;
 					case TEMPLATES_TABLE:
 					case defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE':
-						$db->query('SELECT ID,Path,ContentType FROM ' . addTblPrefix($k) . ' WHERE ID IN (' . implode(',', array_unique($v)) . ')' .getWsQueryForSelector(addTblPrefix($k)));
+						$db->query('SELECT ID,Path,ContentType FROM ' . addTblPrefix($k) . ' WHERE ID IN (' . implode(',', array_unique($v)) . ')' . getWsQueryForSelector(addTblPrefix($k)));
 						while($db->next_record()){
 							$accessible[$k][$db->f('ID')] = true;
 							$paths[$k][$db->f('ID')] = $db->f('Path');
@@ -1146,7 +1146,7 @@ class we_search_search extends we_search_base{
 						break;
 					case defined('VFILE_TABLE') ? VFILE_TABLE : 'VFILE_TABLE':
 						if(permissionhandler::hasPerm('CAN_SEE_COLLECTIONS')){
-							$db->query('SELECT ID,Path FROM ' . addTblPrefix($k) . ' WHERE ID IN (' . implode(',', array_unique($v)) . ')');//no ws fo collections
+							$db->query('SELECT ID,Path FROM ' . addTblPrefix($k) . ' WHERE ID IN (' . implode(',', array_unique($v)) . ')'); //no ws fo collections
 							while($db->next_record()){
 								$accessible[$k][$db->f('ID')] = true;
 								$paths[$k][$db->f('ID')] = $db->f('Path');
@@ -1163,7 +1163,7 @@ class we_search_search extends we_search_base{
 					case defined('GLOSSARY_TABLE') ? GLOSSARY_TABLE : 'GLOSSARY_TABLE':
 					case defined('NAVIGATION_TABLE') ? NAVIGATION_TABLE : 'NAVIGATION_TABLE':
 					case defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : 'NEWSLETTER_TABLE':
-						$paths[$k] = id_to_path($v, addTblPrefix($k), null, false, true);
+						$paths[$k] = id_to_path($v, addTblPrefix($k), null, true);
 						$modules = array(
 							defined('BANNER_TABLE') ? BANNER_TABLE : 'BANNER_TABLE' => 'banner',
 							defined('CUSTOMER_TABLE') ? CUSTOMER_TABLE : 'CUSTOMER_TABLE' => 'customer',
@@ -1181,7 +1181,7 @@ class we_search_search extends we_search_base{
 						break;
 					case CATEGORY_TABLE:
 						if(permissionhandler::hasPerm('EDIT_KATEGORIE')){
-							$paths[$k] = id_to_path($v, addTblPrefix($k), null, false, true);
+							$paths[$k] = id_to_path($v, addTblPrefix($k), null, true);
 							foreach($paths[$k] as $key => $v){
 								$accessible[$k][$key] = true;
 								$onclick[$k][$key] = 'weSearch.openCategory(' . $key . ')';
@@ -1393,7 +1393,7 @@ class we_search_search extends we_search_base{
 	}
 
 	function createTempTable(){
-		$this->db->query('DROP TABLE IF EXISTS SEARCH_TEMP_TABLE');
+		$this->db->delTable('SEARCH_TEMP_TABLE');
 		if(self::checkRightTempTable() && self::checkRightDropTable()){
 			$this->db->query('CREATE TEMPORARY TABLE SEARCH_TEMP_TABLE (
 	ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
@@ -1638,21 +1638,15 @@ class we_search_search extends we_search_base{
 
 		$return = (stristr($db->Error, 'Access denied') ? false : true);
 
-		$db->query('DROP TABLE IF EXISTS test_SEARCH_TEMP_TABLE');
+		$db->delTable('test_SEARCH_TEMP_TABLE');
 
 		return $return;
 	}
 
 	static function checkRightDropTable(){
 		$db = new DB_WE();
-
-		$db->query('CREATE TABLE IF NOT EXISTS test_SEARCH_TEMP_TABLE (
-				`test` VARCHAR( 1 ) NOT NULL
-				) ENGINE=MEMORY' . we_database_base::getCharsetCollation());
-		$db->next_record();
-
-		$db->query('DROP TABLE IF EXISTS test_SEARCH_TEMP_TABLE');
-
+		$db->addTable('test_SEARCH_TEMP_TABLE', '`test` VARCHAR( 1 ) NOT NULL', array(), 'MEMORY');
+		$db->delTable('test_SEARCH_TEMP_TABLE');
 		return (stristr($db->Error, 'command denied') ? false : true);
 	}
 

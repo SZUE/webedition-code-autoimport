@@ -45,7 +45,7 @@ class we_newsletter_tree extends weTree{
 		$items = $_aWsQuery = $parentpaths = array();
 
 		if(($ws = get_ws($table))){
-			$wsPathArray = id_to_path($ws, $table, $db, false, true);
+			$wsPathArray = id_to_path($ws, $table, $db, true);
 			foreach($wsPathArray as $path){
 				$_aWsQuery[] = ' Path LIKE "' . $path . '/%" OR ' . self::getQueryParents($path);
 				while($path != "/" && $path != "\\" && $path){

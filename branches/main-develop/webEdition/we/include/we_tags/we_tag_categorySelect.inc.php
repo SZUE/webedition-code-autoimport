@@ -48,7 +48,7 @@ function we_tag_categorySelect($attribs, $content){
 		if($objekt){
 			$values = $objekt->Category;
 		}
-		$valuesArray = id_to_path($values, CATEGORY_TABLE, $GLOBALS['DB_WE'], false, true);
+		$valuesArray = id_to_path($values, CATEGORY_TABLE, $GLOBALS['DB_WE'], true);
 	} elseif($type === 'request'){
 		// Bug Fix #750
 		$valuesArray = we_base_request::_(we_base_request::STRING_LIST, $name, array());

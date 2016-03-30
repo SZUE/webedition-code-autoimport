@@ -83,7 +83,7 @@ top.close();
 		$btnTrash = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value=0;document.we_form.elements['" . $textname . "'].value=''");
 
 		$collid = we_html_tools::htmlFormElementTable($yuiSuggest->getHTML(), 'Sammlung');
-		$tempArr = id_to_path(isset($this->args['templateIDs']) ? $this->args['templateIDs'] : '', TEMPLATES_TABLE, null, false, true);
+		$tempArr = id_to_path(isset($this->args['templateIDs']) ? $this->args['templateIDs'] : '', TEMPLATES_TABLE, null, true);
 		$templatesArr = array('----');
 		foreach($tempArr as $k => $v){
 			$templatesArr[$k] = $v;

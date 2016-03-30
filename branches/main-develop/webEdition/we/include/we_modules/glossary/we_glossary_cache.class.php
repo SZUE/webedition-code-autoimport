@@ -39,7 +39,6 @@ class we_glossary_cache{
 	 *
 	 * @var string
 	 */
-	var $_cacheId = '';
 	private $content = '';
 
 	/**
@@ -49,16 +48,6 @@ class we_glossary_cache{
 	 */
 	function __construct($language){
 		$this->language = $language;
-		$this->_createCacheId();
-	}
-
-	/**
-	 * Create the cache identifier
-	 *
-	 * @access private
-	 */
-	function _createCacheId(){
-		$this->_cacheId = $this->language;
 	}
 
 	/**
@@ -79,8 +68,7 @@ class we_glossary_cache{
 	 * @return boolean
 	 */
 	function isValid(){
-		$cacheFilename = self::cacheIdToFilename($this->_cacheId);
-
+		$cacheFilename = self::cacheIdToFilename($this->language);
 		return file_exists($cacheFilename) && is_file($cacheFilename);
 	}
 
@@ -91,7 +79,7 @@ class we_glossary_cache{
 	 */
 	function clear(){
 		if($this->isValid()){
-			return unlink(self::cacheIdToFilename($this->_cacheId));
+			return unlink(self::cacheIdToFilename($this->language));
 		}
 		return true;
 	}
@@ -111,8 +99,7 @@ class we_glossary_cache{
 			$Type = $DB_WE->f('Type');
 			$Text = trim($DB_WE->f('Text'));
 			$Title = trim($DB_WE->f('Title'));
-			$Attributes = we_unserialize($DB_WE->f('Attributes'));
-			$Attributes = !is_array($Attributes) ? array() : array_map('trim', $Attributes);
+			$Attributes = array_map('trim', we_unserialize($DB_WE->f('Attributes')));
 
 
 			if($GLOBALS['WE_BACKENDCHARSET'] === 'UTF-8' && isset($GLOBALS['we_doc']->elements['Charset']['dat']) && $GLOBALS['we_doc']->elements['Charset']['dat'] != 'UTF-8'){
@@ -374,7 +361,7 @@ if (window.screen) {
 			}
 		}
 
-		$cacheFilename = self::cacheIdToFilename($this->_cacheId);
+		$cacheFilename = self::cacheIdToFilename($this->language);
 
 		// Create Cache Directory if it not exists
 		if(!is_dir(dirname($cacheFilename))){
@@ -393,7 +380,7 @@ if (window.screen) {
 	 */
 	function get($type){
 		if(!$this->content){
-			$cacheFilename = self::cacheIdToFilename($this->_cacheId);
+			$cacheFilename = self::cacheIdToFilename($this->language);
 
 			if(!file_exists($cacheFilename) || !is_file($cacheFilename)){
 				if(!self::write()){
