@@ -19,7 +19,6 @@
  * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-require_once 'Zend/Config/Xml.php';
 
 /**
  * @see we_app_Common

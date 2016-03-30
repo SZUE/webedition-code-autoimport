@@ -663,6 +663,7 @@ lib/we/ui/layout/NoteDiv.js
 lib/we/ui/dialog/OkCancelDialog.js
 lib/we/ui/controls/WeWysiwygEditorWindow.php
 lib/we/ui/controls/JavaMenu.jar
+lib/we/net/Community.php
 lib/we/License.txt
 lib/additional/archive/altArchive_Tar.class.php
 lib/Zend/Service/WindowsAzure/CommandLine/Scaffolders/DefaultScaffolder/resources/PhpOnAzure.Web/resources/WebPICmdLine/Microsoft.Web.PlatformInstaller.dll

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -19,7 +18,7 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 /**
- * @see 
+ * @see
  */
 
 /**
@@ -35,8 +34,8 @@ class we_Exception extends Exception{
 	 *
 	 * @return void
 	 */
-	public function __construct(){
-		t_e("webEdition exception '" . get_class($this) . "' in " . $this->getFile() . ":" . $this->getLine() . "\nStack trace;\n" . $this->getTraceAsString());
+	public function __construct($msg = ''){
+		t_e("webEdition exception", $msg);
 	}
 
 }

@@ -22,7 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once 'Zend/Controller/Action.php';
 
 /**
  * Base Home Controller
