@@ -302,7 +302,7 @@ function path_to_id($path, $table = FILE_TABLE, we_database_base $db = null, $as
 	return $asArray ? $ret : implode(',', $ret);
 }
 
-function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $prePostKomma = false, $asArray = false, $endslash = false, $isPublished = false){
+function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $asArray = false, $endslash = false, $isPublished = false){
 	if(!is_array($IDs) && !$IDs){
 		return ($asArray ? array(0 => '/') : '/');
 	}
@@ -347,7 +347,7 @@ function getHashArrayFromCSV($csv, $firstEntry, we_database_base $db){
 	$out = ($firstEntry ? array(
 			0 => $firstEntry
 			) : array()) +
-		id_to_path($IDArr, FILE_TABLE, $db, false, true);
+		id_to_path($IDArr, FILE_TABLE, $db, true);
 
 	return $out;
 }
@@ -458,7 +458,7 @@ function getWsQueryForSelector($tab, $includingFolders = true){
 	if(!($ws = makeArrayFromCSV(get_ws($tab)))){
 		return (($tab == NAVIGATION_TABLE || (defined('NEWSLETTER_TABLE') && $tab == NEWSLETTER_TABLE)) ? '' : ' OR RestrictOwners=0 ');
 	}
-	$paths = id_to_path($ws, $tab, null, false, true);
+	$paths = id_to_path($ws, $tab, null, true);
 	$wsQuery = array();
 	foreach($paths as $path){
 		$parts = explode('/', $path);

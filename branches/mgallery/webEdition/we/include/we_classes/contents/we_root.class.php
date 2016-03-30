@@ -1102,7 +1102,7 @@ abstract class we_root extends we_class{
 			$this->DB_WE->query('SELECT Locale,LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $documentTable . '" AND IsObject=' . intval($isObject) . ' AND DID=' . intval($this->ID) . ' AND Locale IN("' . implode('","', $langkeys) . '")');
 			$tmpIDs = $this->DB_WE->getAllFirst(false);
 
-			$tmpPaths = id_to_path($tmpIDs, $this->Table, null, false, true);
+			$tmpPaths = id_to_path($tmpIDs, $this->Table, $this->DB_WE, true);
 			foreach($langkeys as $langkey){
 				$this->LangLinks[$langkey] = isset($tmpIDs[$langkey]) ? array('id' => $tmpIDs[$langkey], 'path' => $tmpPaths[$tmpIDs[$langkey]]) :
 					array('id' => 0, 'path' => '');

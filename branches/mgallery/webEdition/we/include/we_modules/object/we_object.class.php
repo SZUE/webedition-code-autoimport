@@ -285,7 +285,7 @@ class we_object extends we_document{
 			$ctable = OBJECT_X_TABLE . intval($this->ID);
 
 			$this->DB_WE->delTable($ctable);
-			$this->DB_WE->query('CREATE TABLE ' . $ctable . ' (' . implode(',', $q) . ', ' . implode(',', $indexe) . ') ENGINE=MYISAM ' . we_database_base::getCharsetCollation());
+			$this->DB_WE->addTable($ctable, $q, $indexe);
 
 //dummy eintrag schreiben
 			$this->DB_WE->query('INSERT INTO ' . $ctable . ' SET OF_ID=0');
@@ -299,8 +299,7 @@ class we_object extends we_document{
 			$ctable = OBJECT_X_TABLE . intval($this->ID);
 			$tableInfo = $this->DB_WE->metadata($ctable);
 			$q = $regs = array();
-			$fieldsToDelete = $this->getElement('felderloeschen');
-			$fieldsToDelete = $fieldsToDelete ? explode(',', $fieldsToDelete) : array();
+			$fieldsToDelete = ($fD = $this->getElement('felderloeschen')) ? explode(',', $fD) : array();
 			foreach($tableInfo as $info){
 				if(!preg_match('/(.+?)_(.*)/', $info['name'], $regs)){
 					continue;
@@ -486,12 +485,11 @@ class we_object extends we_document{
 
 			$variant_field = 'variant_' . we_base_constants::WE_VARIANTS_ELEMENT_NAME;
 
-			$this->DB_WE->query('SHOW COLUMNS FROM ' . $ctable . ' LIKE "' . $variant_field . '"');
-			$exists = ($this->DB_WE->next_record()) ? true : false;
+			$exists = $this->DB_WE->isColExist($ctable, $variant_field);
 
 			if($this->hasVariantFields()){
 				if(!$exists){
-					$this->DB_WE->query('ALTER TABLE ' . $ctable . ' ADD `' . $variant_field . '` TEXT NOT NULL');
+					$this->DB_WE->addCol($ctable, $variant_field, 'TEXT NOT NULL');
 				}
 			} else {
 				if($exists){
@@ -2426,7 +2424,7 @@ class we_object extends we_document{
 	}
 
 	public function getDocumentCss(){
-		return id_to_path($this->CSS, FILE_TABLE, null, false, true);
+		return id_to_path($this->CSS, FILE_TABLE, null, true);
 	}
 
 	public function getPropertyPage(){

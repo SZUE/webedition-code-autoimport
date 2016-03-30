@@ -68,11 +68,11 @@ class we_sidebar_frames{
 		}
 
 		if(strpos($file, '/') !== 0){
-			$file = id_to_path($file, FILE_TABLE, $GLOBALS['DB_WE'], false, false, false, true);
+			$file = id_to_path($file, FILE_TABLE, $GLOBALS['DB_WE'], false, false, true);
 		}
 
 		if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $file) || !is_file($_SERVER['DOCUMENT_ROOT'] . $file)){
-			$file = id_to_path(intval(SIDEBAR_DEFAULT_DOCUMENT), FILE_TABLE, $GLOBALS['DB_WE'], false, false, false, true);
+			$file = id_to_path(intval(SIDEBAR_DEFAULT_DOCUMENT), FILE_TABLE, $GLOBALS['DB_WE'], false, false, true);
 			if(!$file || substr($file, -1) === '/' || $file === 'default'){
 				$file = WEBEDITION_DIR . 'sidebar/default.php';
 			}

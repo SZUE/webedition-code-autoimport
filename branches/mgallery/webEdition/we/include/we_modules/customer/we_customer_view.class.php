@@ -659,7 +659,7 @@ self.close();');
 			return self::ERR_SAVE_FIELD_NOT_EMPTY;
 		}
 
-		$h = $this->customer->getFieldDbProperties($field);
+		$h = $this->db->isColExist(CUSTOMER_TABLE, $field);
 
 		$new_field_name = (($branch && $branch != g_l('modules_customer', '[other]')) ? $branch . '_' : '') . $field_name;
 
@@ -667,7 +667,7 @@ self.close();');
 			return self::ERR_SAVE_FIELD_INVALID;
 		}
 
-		if($field != $new_field_name && count($this->customer->getFieldDbProperties($new_field_name))){
+		if($field != $new_field_name && $this->db->isColExist(CUSTOMER_TABLE, $new_field_name)){
 			return self::ERR_SAVE_FIELD_EXISTS;
 		}
 
@@ -686,20 +686,21 @@ self.close();');
 		$this->settings->storeFieldAdd($new_field_name, 'type', $field_type);
 		$this->settings->storeFieldAdd($new_field_name, 'encrypt', $encrypt);
 
-		$this->db->query('ALTER TABLE ' . CUSTOMER_TABLE . ' ' . ((count($h)) ? 'CHANGE ' . $field : 'ADD') . ' ' . $new_field_name . ' ' . ($encrypt ? 'BLOB' : $this->settings->getDbType($field_type, $new_field_name)) . ' NOT NULL');
+		if($h){
+			if($field != $new_field_name){
+				$this->db->renameCol(CUSTOMER_TABLE, $field, $new_field_name);
+			}
+			$this->db->changeColType(CUSTOMER_TABLE, $new_field_name, ($encrypt ? 'BLOB' : $this->settings->getDbType($field_type, $new_field_name)) . ' NOT NULL');
+		} else {
+			$this->db->addCol(CUSTOMER_TABLE, $new_field_name, ($encrypt ? 'BLOB' : $this->settings->getDbType($field_type, $new_field_name)) . ' NOT NULL');
+		}
 
 		$this->settings->save();
 	}
 
 	function deleteField($field){
-		$h = $this->customer->getFieldDbProperties($field);
-
-		if($h){
-			$this->db->query('ALTER TABLE ' . $this->customer->table . ' DROP ' . $field);
-		}
-
+		$this->db->delCol(CUSTOMER_TABLE, $field);
 		$this->settings->removeFieldAdd($field);
-
 		$this->settings->save();
 	}
 
@@ -710,7 +711,8 @@ self.close();');
 				$banche = '';
 				$fieldname = $this->customer->transFieldName($k, $banche);
 				if($banche == $old_branch && $fieldname != ''){
-					$this->db->query('ALTER TABLE ' . $this->customer->table . ' CHANGE ' . $k . ' ' . $new_branch . '_' . $fieldname . ' ' . $v['Type'] . (!empty($v["Default"]) ? " DEFAULT '" . $v["Default"] . "'" : '') . ' NOT NULL');
+					$this->db->renameCol(CUSTOMER_TABLE, $k, $new_branch . '_' . $fieldname);
+					$this->db->changeColType(CUSTOMER_TABLE, $new_branch . '_' . $fieldname, $v['Type'] . (!empty($v['Default']) ? ' DEFAULT "' . $v['Default'] . '"' : '') . ' NOT NULL');
 				}
 			}
 		}
@@ -817,9 +819,9 @@ self.close();');
 			case 'number':
 				return we_html_tools::htmlTextInput($field, 32, intval($value), '', "onchange=\"top.content.setHot();\" style='width:240px;'", 'number');
 			case 'multiselect':
-				/*if(!$this->customer->ID && $value == null){
-					$value = $props['default'];
-				}*/
+				/* if(!$this->customer->ID && $value == null){
+				  $value = $props['default'];
+				  } */
 				$out = we_html_element::htmlHidden($field, $value);
 				$values = explode(',', $value);
 				$defs = explode(',', $props['default']);

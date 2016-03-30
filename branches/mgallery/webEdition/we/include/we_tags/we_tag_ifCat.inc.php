@@ -44,7 +44,7 @@ function we_tag_ifCat($attribs){
 
 	if($catids){
 		if($parent){
-			$categories = id_to_path($catids, CATEGORY_TABLE, $GLOBALS['DB_WE'], false, true);
+			$categories = id_to_path($catids, CATEGORY_TABLE, $GLOBALS['DB_WE'], true);
 		} else {
 			//no need to query db
 			$cat = array_filter(array_map('intval', explode(',', $cat)));
@@ -52,7 +52,7 @@ function we_tag_ifCat($attribs){
 		}
 	}
 
-	$DocCatsPaths = id_to_path($cat, CATEGORY_TABLE, $GLOBALS['DB_WE'], false, !$parent);
+	$DocCatsPaths = id_to_path($cat, CATEGORY_TABLE, $GLOBALS['DB_WE'], !$parent);
 
 	foreach($categories as $match){
 		$match = '/' . trim($match, '/');

@@ -266,7 +266,7 @@ class we_exim_XMLExIm{
 		$db = new DB_WE();
 		$parentpaths = $wsQuery = array();
 		if(($ws = get_ws($table))){
-			$wsPathArray = id_to_path($ws, $table, $db, false, true);
+			$wsPathArray = id_to_path($ws, $table, $db, true);
 			foreach($wsPathArray as $path){
 				$wsQuery[] = ' Path LIKE "' . $db->escape($path) . '/%" OR ' . we_exim_XMLExIm::getQueryParents($path);
 				while($path != '/' && $path){

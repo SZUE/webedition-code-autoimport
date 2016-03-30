@@ -963,7 +963,7 @@ HTS;
 			$displayNoDocType = 'display:none';
 			$foo = getHash('SELECT TemplateID,Templates FROM ' . DOC_TYPES_TABLE . ' dt WHERE dt.ID=' . intval($v['docType']), $DB_WE);
 			$ids_arr = makeArrayFromCSV($foo['Templates']);
-			$paths_arr = id_to_path($foo['Templates'], TEMPLATES_TABLE, null, false, true);
+			$paths_arr = id_to_path($foo['Templates'], TEMPLATES_TABLE, null, true);
 
 			$optid = 0;
 			while(list(, $templateID) = each($ids_arr)){
@@ -1882,7 +1882,7 @@ HTS;
 		if($v["docType"] != -1){
 			$foo = f('SELECT Templates FROM ' . DOC_TYPES_TABLE . ' dt WHERE dt.ID=' . intval($v["docType"]), '', $DB_WE);
 			$ids_arr = makeArrayFromCSV($foo);
-			$paths_arr = id_to_path($foo, TEMPLATES_TABLE, null, false, true);
+			$paths_arr = id_to_path($foo, TEMPLATES_TABLE, null, true);
 
 
 			$optid = 0;

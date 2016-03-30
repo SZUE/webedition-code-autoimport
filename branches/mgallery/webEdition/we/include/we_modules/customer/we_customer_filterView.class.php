@@ -91,15 +91,15 @@ function updateView() {' .
 		$_modeRadioFilter = we_html_forms::radiobutton(we_customer_abstractFilter::FILTER, $mode === we_customer_abstractFilter::FILTER, 'wecf_mode', g_l('modules_customerFilter', '[mode_filter]'), true, "defaultfont", "wecf_hot();updateView();");
 
 		// ################# Selector for specific customers ###############
-		list($_specificCustomersSelect, $script) = $this->getMultiEdit('specificCustomersEdit', id_to_path($this->_filter->getSpecificCustomers(), CUSTOMER_TABLE, null, false, true), "", $mode === we_customer_abstractFilter::SPECIFIC);
+		list($_specificCustomersSelect, $script) = $this->getMultiEdit('specificCustomersEdit', id_to_path($this->_filter->getSpecificCustomers(), CUSTOMER_TABLE, null, true), "", $mode === we_customer_abstractFilter::SPECIFIC);
 		$_script.=$script;
 		// ################# Selector blacklist ###############
 
-		list($_blackListSelect, $script) = $this->getMultiEdit('blackListEdit', id_to_path($this->_filter->getBlackList(), CUSTOMER_TABLE, null, false, true), g_l('modules_customerFilter', '[black_list]'), $mode === we_customer_abstractFilter::FILTER);
+		list($_blackListSelect, $script) = $this->getMultiEdit('blackListEdit', id_to_path($this->_filter->getBlackList(), CUSTOMER_TABLE, null, true), g_l('modules_customerFilter', '[black_list]'), $mode === we_customer_abstractFilter::FILTER);
 		$_script.=$script;
 		// ################# Selector for whitelist ###############
 
-		list($_whiteListSelect, $script) = $this->getMultiEdit('whiteListEdit', id_to_path($this->_filter->getWhiteList(), CUSTOMER_TABLE, null, false, true), g_l('modules_customerFilter', '[white_list]'), $mode === we_customer_abstractFilter::FILTER);
+		list($_whiteListSelect, $script) = $this->getMultiEdit('whiteListEdit', id_to_path($this->_filter->getWhiteList(), CUSTOMER_TABLE, null, true), g_l('modules_customerFilter', '[white_list]'), $mode === we_customer_abstractFilter::FILTER);
 		$_script.=$script;
 		// ################# customer filter ###############
 

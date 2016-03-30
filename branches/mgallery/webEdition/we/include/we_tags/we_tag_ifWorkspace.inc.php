@@ -29,7 +29,7 @@ function we_tag_ifWorkspace($attribs){
 	$id = weTag_getAttribute('id', $attribs, array(), we_base_request::INTLISTA);
 
 	if(!$required_path){
-		$required_path = id_to_path($id, FILE_TABLE, $GLOBALS['DB_WE'], false, true);
+		$required_path = id_to_path($id, FILE_TABLE, $GLOBALS['DB_WE'], true);
 	}
 
 	if(!$required_path){

@@ -1484,7 +1484,7 @@ class we_objectFile extends we_document{
 		if(permissionhandler::hasPerm('ADMINISTRATOR') || ((!$userWs) && $all)){
 // alle ws, welche in Klasse definiert wurden und deren Unterordner zur?ckgeben
 //$foo = makeArrayFromCSV($ClassWs);
-			$paths = id_to_path($ClassWs, FILE_TABLE, $this->DB_WE, false, true);
+			$paths = id_to_path($ClassWs, FILE_TABLE, $this->DB_WE, true);
 			if(!empty($paths)){
 				$where = array();
 				if(is_array($paths)){
@@ -1512,7 +1512,7 @@ class we_objectFile extends we_document{
 					$out[] = $ws;
 				}
 			}
-			$paths = id_to_path($out, FILE_TABLE, $this->DB_WE, false, true);
+			$paths = id_to_path($out, FILE_TABLE, $this->DB_WE, true);
 			if(!empty($paths)){
 				$ClassWs = '';
 				$where = array();
@@ -3115,7 +3115,7 @@ class we_objectFile extends we_document{
 	}
 
 	public function getDocumentCss(){
-		return id_to_path($this->CSS, FILE_TABLE, null, false, true);
+		return id_to_path($this->CSS, FILE_TABLE, null, true);
 	}
 
 	public function getPropertyPage(){

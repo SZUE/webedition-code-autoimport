@@ -838,7 +838,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 
 		if($checkWs && (empty($wspaces))){
 			if(($ws = get_ws($this->getRemTable()))){
-				$wsPathArray = id_to_path($ws, $this->getRemTable(), $this->DB_WE, false, true);
+				$wsPathArray = id_to_path($ws, $this->getRemTable(), $this->DB_WE, true);
 				foreach($wsPathArray as $path){
 					$wspaces[] = ' Path LIKE "' . $this->DB_WE->escape($path) . '/%" OR ' . getQueryParents($path);
 					while($path != '/' && $path != '\\' && $path){
