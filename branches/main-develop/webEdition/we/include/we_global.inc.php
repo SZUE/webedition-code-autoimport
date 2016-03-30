@@ -58,7 +58,7 @@ function getHttpOption(){
 	return 'fopen';
 }
 
-function getHTTP($server, $url, $port = '', $username = '', $password = ''){
+function getHTTP($server, $url, $port = '', $username = '', $password = '', &$status){
 //FIXME: add code for proxy, see weXMLBrowser
 	if(strpos($server, '://') === FALSE){
 		$server = 'http' . ($port == 443 ? 's' : '') . '://' . (($username && $password) ? "$username:$password@" : '') . $server . ( $port !== '' ? ':' . $port : '');
@@ -75,8 +75,11 @@ function getHTTP($server, $url, $port = '', $username = '', $password = ''){
 			  return getHttpThroughProxy(($server . $url), $proxyhost, $proxyport, $proxy_user, $proxy_pass);
 			  }
 			 */
-			$page = 'Server Error: Failed opening URL: ' . $server . $url;
 			$fh = @fopen($server . $url, 'rb');
+			$matches = array();
+			preg_match('#HTTP/\d+\.\d+ (\d+)#', $http_response_header[0], $matches);
+			$status = $matches[1];
+
 			if(!$fh){
 				$fh = @fopen($_SERVER['DOCUMENT_ROOT'] . $server . $url, 'rb');
 			}
@@ -87,9 +90,10 @@ function getHTTP($server, $url, $port = '', $username = '', $password = ''){
 				}
 				fclose($fh);
 			}
-			return $page;
+			return ($fh ? $page : 'Server Error: Failed opening URL: ' . $server . $url);
 		case 'curl':
 			$_response = we_base_util::getCurlHttp($server, $url, array());
+			$status = $_response['status']? : 200;
 			return ($_response['status'] ? $_response['error'] : $_response['data']);
 		default:
 			return 'Server error: Unable to open URL (php configuration directive allow_url_fopen=Off)';
@@ -97,8 +101,7 @@ function getHTTP($server, $url, $port = '', $username = '', $password = ''){
 }
 
 function getHttpThroughProxy($url, $proxyhost, $proxyport, $proxy_user, $proxy_pass){
-	global $error;
-
+	$errno = $errstr = '';
 	$file = fsockopen($proxyhost, $proxyport, $errno, $errstr, 30);
 
 	if(!$file){
@@ -582,7 +585,7 @@ function we_mail($recipient, $subject, $txt, $from = '', $replyTo = ''){
 		$txt = str_replace("\n", "\r\n", $txt);
 	}
 
-	$phpmail = new we_helpers_mail($recipient, $subject, $from, $replyTo);
+	$phpmail = new we_mail_mail($recipient, $subject, $from, $replyTo);
 	$phpmail->setCharSet($GLOBALS['WE_BACKENDCHARSET']);
 	$txtMail = strip_tags($txt);
 	if($txt != $txtMail){

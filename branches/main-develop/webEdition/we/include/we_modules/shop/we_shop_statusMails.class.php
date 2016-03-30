@@ -272,7 +272,7 @@ class we_shop_statusMails{
 					array('email' => $this->EMailData['address'], 'name' => $this->EMailData['name'])
 				);
 
-			$phpmail = new we_helpers_mail('', $subject, $from);
+			$phpmail = new we_mail_mail('', $subject, $from);
 			$phpmail->setIsEmbedImages(true);
 
 			$phpmail->addHTMLPart($codes);

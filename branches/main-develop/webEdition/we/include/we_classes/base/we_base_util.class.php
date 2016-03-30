@@ -268,7 +268,7 @@ abstract class we_base_util{
 		return ($_result > 0 ? self::number2System($_result, $chars, $str) : $str);
 	}
 
-	static function getCurlHttp($server, $path, $files = array(), $header = false, $timeout = 0){
+	static function getCurlHttp($server, $path = '', $files = array(), $header = false, $timeout = 0){
 		$_response = array(
 			'data' => '', // data if successful
 			'status' => 0, // 0=ok otherwise error
@@ -345,7 +345,8 @@ abstract class we_base_util{
 		$_data = curl_exec($_session);
 
 		if(curl_errno($_session)){
-			$_response['status'] = 1;
+			$info = curl_getinfo($_session);
+			$_response['status'] = empty($info['http_code']) ? 1 : $info['http_code'];
 			$_response['error'] = curl_error($_session);
 			return false;
 		}
@@ -387,7 +388,7 @@ abstract class we_base_util{
 	 *
 	 *
 	 * @return         none
-	@deprecated
+	  @deprecated
 	 *
 	 *  */
 	public static function new_array_splice(&$a, $start, $len = 1){
