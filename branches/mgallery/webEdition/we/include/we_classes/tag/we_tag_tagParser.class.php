@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_tag_tagParser{
-
 	private $lastpos = 0;
 	private $tags = array();
 	private static $CloseTags = array();
@@ -193,8 +192,12 @@ class we_tag_tagParser{
 	}
 
 	public static function makeArrayFromAttribs($attr){
-		$arr = array();
-		@eval('$arr = array(' . self::parseAttribs($attr, false) . ');'); //FIXME: can we remove this eval?
+		$attribs = self::parseAttribs($attr, false);
+		@eval('$arr = array(' . $attribs . ');'); //FIXME: can we remove this eval?
+		if(!isset($arr)||!is_array($arr)){
+			t_e($attr,$attribs);
+			return array();
+		}
 		return $arr;
 	}
 
@@ -326,26 +329,26 @@ class we_tag_tagParser{
 			 */
 			$content = $parseFn($attr, $content, $attribs);
 			$code = substr($code, 0, $tagPos) .
-					$content .
-					substr($code, (isset($endeEndTagPos) ? $endeEndTagPos : $endeStartTag));
+				$content .
+				substr($code, (isset($endeEndTagPos) ? $endeEndTagPos : $endeStartTag));
 		} elseif(substr($tagname, 0, 2) === 'if' && $tagname !== 'ifNoJavaScript'){
 			if(!isset($endeEndTagPos)){
 				return parseError(sprintf(g_l('parser', '[selfclosingIf]'), $tagname), $tag);
 			}
 			$code = substr($code, 0, $tagPos) .
-					'<?php if(' . self::printTag($tagname, $attr) . '){ ?>' .
-					$content .
-					'<?php } ?>' .
-					substr($code, $endeEndTagPos);
+				'<?php if(' . self::printTag($tagname, $attr) . '){ ?>' .
+				$content .
+				'<?php } ?>' .
+				substr($code, $endeEndTagPos);
 		} else {
 
 			$code = substr($code, 0, $tagPos) . '<?php printElement(' .
-					($content ?
-							// Tag besitzt Endtag
-							self::printTag($tagname, $attr, $content, true) . '); ?>' :
-							// Tag ohne Endtag
-							self::printTag($tagname, $attr) . '); ?>'
-					) . substr($code, (isset($endeEndTagPos) ? $endeEndTagPos : $endeStartTag));
+				($content ?
+					// Tag besitzt Endtag
+					self::printTag($tagname, $attr, $content, true) . '); ?>' :
+					// Tag ohne Endtag
+					self::printTag($tagname, $attr) . '); ?>'
+				) . substr($code, (isset($endeEndTagPos) ? $endeEndTagPos : $endeStartTag));
 		}
 		return (isset($endTagNo) ? ($endTagNo - $ipos) : 1);
 	}
@@ -354,8 +357,8 @@ class we_tag_tagParser{
 	public static function printTag($name, $attribs = '', $content = '', $cslash = false){
 		$attr = (is_array($attribs) ? self::printArray($attribs, false) : ($attribs === 'array()' || $attribs === '[]' ? '' : $attribs));
 		return 'we_tag(\'' . $name . '\'' .
-				($attr ? ',' . $attr : ($content ? ',array()' : '')) .
-				($content ? ',"' . ($cslash ? addcslashes($content, '"') : $content) . '"' : '') . ')';
+			($attr ? ',' . $attr : ($content ? ',array()' : '')) .
+			($content ? ',"' . ($cslash ? addcslashes($content, '"') : $content) . '"' : '') . ')';
 	}
 
 	public static function printArray(array $array, $printEmpty = true){
