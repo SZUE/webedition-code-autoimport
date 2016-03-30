@@ -93,8 +93,7 @@ class we_core_Translate extends Zend_Translate{
 
 		$this->_adapter = new $adapter($data, $locale, $options);
 		if(!$this->_adapter instanceof Zend_Translate_Adapter){
-			require_once 'Zend/Translate/Exception.php';
-			throw new Zend_Translate_Exception("Adapter " . $adapter . " does not extend Zend_Translate_Adapter'");
+			throw new we_Exception("Adapter " . $adapter . " does not extend Zend_Translate_Adapter'");
 		}
 	}
 
@@ -115,8 +114,7 @@ class we_core_Translate extends Zend_Translate{
 			}
 			return $text;
 		}
-		require_once 'Zend/Translate/Exception.php';
-		throw new Zend_Translate_Exception("Unknown method '" . $method . "' called!");
+		throw new we_Exception("Unknown method '" . $method . "' called!");
 	}
 
 }

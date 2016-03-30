@@ -19,7 +19,6 @@
  * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-include_once ('Zend/Log.php');
 
 /**
  * class for loading and executing code execution hooks for webEdition applications
@@ -45,10 +44,10 @@ class we_app_Hook{
 	 * @param we_app_Reader_* reference to reader object, i.e. we_app_Reader_Xml
 	 */
 	public function __construct(&$reader = null){
-		error_log("creating hook object");
+		t_e('notice',"creating hook object");
 		if(!is_null($reader)){
 			$this->addReader($reader);
-			error_log("adding hook reader object of type " . get_class($reader));
+			t_e('notice',"adding hook reader object of type " . get_class($reader));
 		}
 	}
 

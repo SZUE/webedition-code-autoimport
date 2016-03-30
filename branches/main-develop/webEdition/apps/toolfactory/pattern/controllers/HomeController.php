@@ -1,5 +1,4 @@
 
-require_once 'Zend/Controller/Action.php';
 
 /**
  * Base Home Controller

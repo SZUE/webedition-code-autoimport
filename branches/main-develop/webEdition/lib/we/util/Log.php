@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -19,7 +18,6 @@
  * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-include_once ('Zend/Log.php');
 
 /**
  * static logging class for logging messages
@@ -29,7 +27,6 @@ include_once ('Zend/Log.php');
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_util_Log{
-
 	const ENABLE_LOGGING = true;
 
 	/**
@@ -58,33 +55,7 @@ class we_util_Log{
 	 * @return bool false if logging to file fails (mostly because of insufficient file access rights)
 	 */
 	public static function log($message = "", $errorlevel = 7, $filename = "syslog"){
-
-		if(!self::isActive()){
-			return false;
-		}
-		if($filename != "syslog"){
-			self::$_logfile = null;
-		}
-		if(is_null(self::$_syslog)){
-			//$writer = new Zend_Log_Writer_Stream('php://output');
-			$logCheck = self::checkCreateLog($filename);
-			if($logCheck === false){
-				error_log("could write to syslog");
-				return false;
-			} else {
-				$writer = new Zend_Log_Writer_Stream($logCheck);
-				if($filename === 'syslog'){
-					self::$_syslog = new Zend_Log($writer);
-				} else {
-					self::$_logfile = new Zend_Log($writer);
-				}
-			}
-		}
-		if($filename === 'syslog'){
-			self::$_syslog->log($message, $errorlevel);
-		} else {
-			self::$_logfile->log($message, $errorlevel);
-		}
+		t_e($message);
 	}
 
 	/**
@@ -103,12 +74,7 @@ class we_util_Log{
 	 * @uses syslog http://de.php.net/manual/de/function.syslog.php
 	 */
 	public static function syslog($message = "", $errorlevel = 7){
-		if(!self::isActive()){
-			return false;
-		}
-		$errorcodes = array(LOG_EMERG, LOG_ALERT, LOG_CRIT, LOG_ERR, LOG_WARNING, LOG_NOTICE, LOG_INFO, LOG_DEBUG);
-		$errorcode = $errorcodes[$errorlevel];
-		return syslog($errorcode, $message);
+		t_e($message);
 	}
 
 	/**
@@ -117,23 +83,7 @@ class we_util_Log{
 	 * 			$message can be a string as well as an array or an object
 	 */
 	public static function errorLog($message = ""){
-		if(!self::isActive()){
-			return false;
-		}
-		switch($message){
-			case "" :
-				error_log("empty log");
-				break;
-			case is_array($message) :
-				error_log(print_r($message, true));
-				break;
-			case is_object($message) :
-				error_log(print_r($message, true));
-				break;
-			default :
-				error_log(print_r($message, true));
-				break;
-		}
+		t_e($message);
 	}
 
 	/**
@@ -141,15 +91,7 @@ class we_util_Log{
 	 * @param string $message optional text message for description
 	 */
 	public static function memusage($message = ""){
-		if(!self::isActive()){
-			return false;
-		}
-		if(!empty($message)){
-			$message .= ": ";
-		} else {
-			$message = "used: ";
-		}
-		error_log($message . round(((memory_get_usage() / 1024) / 1024), 3) . " MB, limit: " . ini_get('memory_limit'));
+		t_e($message);
 	}
 
 	/**
@@ -158,27 +100,7 @@ class we_util_Log{
 	 * if it does not exist already.
 	 */
 	public static function checkCreateLog($filename = ""){
-		if(empty($filename) || ctype_alnum($filename) === false){
-			return false;
-		}
-		$logPath = WEBEDITION_PATH . 'log/';
-		$file = $logPath . $filename . ".php";
-		if(is_file($file) && is_writable($file)){
-			return $file;
-		} else {
-			if(!is_dir($logPath)){
-				if(!@mkdir($logPath)){
-					error_log("log directory not found, could not create it due to insufficient accesss rights.");
-					return false;
-				}
-			}
-			$exitCode = "<?php\n exit(); \n ?>\n";
-			if(!@file_put_contents($file, $exitCode)){
-				error_log("could not create logfile due to insufficient accesss rights.");
-			} else {
-				return $file;
-			}
-		}
+
 	}
 
 	/**
@@ -186,7 +108,7 @@ class we_util_Log{
 	 * @return bool true/false
 	 */
 	public static function isActive(){
-		return we_util_Log::ENABLE_LOGGING;
+		return true;
 	}
 
 }

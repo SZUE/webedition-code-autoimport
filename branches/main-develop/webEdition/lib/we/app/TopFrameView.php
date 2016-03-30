@@ -19,7 +19,6 @@
  * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-include_once ('Zend/View.php');
 
 /**
  * Base class for TopFrameView

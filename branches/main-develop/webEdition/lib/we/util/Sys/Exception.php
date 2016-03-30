@@ -20,10 +20,6 @@
  * @subpackage we_util_Sys
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-/**
- * @see Exception
- */
-require_once 'Zend/Exception.php';
 
 /**
  *
