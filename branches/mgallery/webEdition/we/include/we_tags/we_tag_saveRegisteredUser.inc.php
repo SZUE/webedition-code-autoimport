@@ -172,99 +172,100 @@ function we_tag_saveRegisteredUser($attribs){
 }
 
 function we_saveCustomerImages(){
-	if(isset($_FILES['WE_SF_IMG_DATA']['name']) && is_array($_FILES['WE_SF_IMG_DATA']['name'])){
-		$webuserId = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
-		foreach($_FILES['WE_SF_IMG_DATA']['name'] as $imgName => $filename){
-			$imgId = isset($_SESSION['webuser'][$imgName]) ? $_SESSION['webuser'][$imgName] : 0;
-			if(!id_to_path($imgId)){
-				$imgId = 0;
+	if(empty($_FILES['WE_SF_IMG_DATA']['name']) || !is_array($_FILES['WE_SF_IMG_DATA']['name'])){
+		return;
+	}
+	$webuserId = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
+	foreach($_FILES['WE_SF_IMG_DATA']['name'] as $imgName => $filename){
+		$imgId = isset($_SESSION['webuser'][$imgName]) ? $_SESSION['webuser'][$imgName] : 0;
+		if(!id_to_path($imgId)){
+			$imgId = 0;
+		}
+
+		if(we_base_request::_(we_base_request::BOOL, 'WE_SF_DEL_CHECKBOX_' . $imgName)){
+			if($imgId){
+				$imgDocument = new we_imageDocument();
+				$imgDocument->initByID($imgId);
+				if($imgDocument->WebUserID == $webuserId){
+					//everything ok, now delete
+
+					we_base_delete::deleteEntry($imgId, FILE_TABLE);
+					// reset image field
+					$_SESSION['webuser'][$imgName] = 0;
+					$_REQUEST['s'][$imgName] = 0;
+				}
 			}
+		} else if($filename){
+			// file is selected, check to see if it is an image
+			if(getContentTypeFromFile($filename) === we_base_ContentTypes::IMAGE){
 
-			if(we_base_request::_(we_base_request::BOOL, 'WE_SF_DEL_CHECKBOX_' . $imgName)){
-				if($imgId){
-					$imgDocument = new we_imageDocument();
-					$imgDocument->initByID($imgId);
-					if($imgDocument->WebUserID == $webuserId){
-						//everything ok, now delete
+				$_serverPath = TEMP_PATH . we_base_file::getUniqueId();
+				move_uploaded_file($_FILES['WE_SF_IMG_DATA']['tmp_name'][$imgName], $_serverPath);
 
-						we_base_delete::deleteEntry($imgId, FILE_TABLE);
-						// reset image field
-						$_SESSION['webuser'][$imgName] = 0;
-						$_REQUEST['s'][$imgName] = 0;
-					}
+				$we_size = we_thumbnail::getimagesize($_serverPath);
+
+				if(empty($we_size)){
+					continue;
 				}
-			} else if($filename){
-				// file is selected, check to see if it is an image
-				$ct = getContentTypeFromFile($filename);
-				if($ct == we_base_ContentTypes::IMAGE){
 
-					$_serverPath = TEMP_PATH . we_base_file::getUniqueId();
-					move_uploaded_file($_FILES['WE_SF_IMG_DATA']['tmp_name'][$imgName], $_serverPath);
+				$tmp_Filename = $imgName . '_' . we_base_file::getUniqueId() . '_' . preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES['WE_SF_IMG_DATA']['name'][$imgName]);
+				$tmp = explode('.', $tmp_Filename);
+				$_extension = '.' . $tmp[count($tmp) - 1];
+				unset($tmp[count($tmp) - 1]);
+				$_fileName = implode('.', $tmp);
+				$_text = $_fileName . $_extension;
 
+				//image needs to be scaled
+				if((!empty($_SESSION['webuser']['imgtmp'][$imgName]['width'])) ||
+					(!empty($_SESSION['webuser']['imgtmp'][$imgName]['height']))){
+					$imageData = we_base_file::load($_serverPath);
+					$thumb = new we_thumbnail();
+					$thumb->init('dummy', $_SESSION['webuser']['imgtmp'][$imgName]['width'], $_SESSION['webuser']['imgtmp'][$imgName]['height'], array($_SESSION['webuser']['imgtmp'][$imgName]['keepratio'] ? we_thumbnail::OPTION_RATIO : 0, $_SESSION['webuser']['imgtmp'][$imgName]['maximize'] ? we_thumbnail::OPTION_MAXSIZE : 0), '', 'dummy', 0, '', '', $_extension, $we_size[0], $we_size[1], $imageData, '', $_SESSION['webuser']['imgtmp'][$imgName]['quality'], true);
+
+					$imgData = '';
+					$thumb->getThumb($imgData);
+
+					we_base_file::save($_serverPath, $imgData);
 					$we_size = we_thumbnail::getimagesize($_serverPath);
-
-					if(!empty($we_size)){
-
-						$tmp_Filename = $imgName . '_' . we_base_file::getUniqueId() . '_' . preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES['WE_SF_IMG_DATA']['name'][$imgName]);
-						$tmp = explode('.', $tmp_Filename);
-						$_extension = '.' . $tmp[count($tmp) - 1];
-						unset($tmp[count($tmp) - 1]);
-						$_fileName = implode('.', $tmp);
-						$_text = $_fileName . $_extension;
-
-						//image needs to be scaled
-						if((!empty($_SESSION['webuser']['imgtmp'][$imgName]['width'])) ||
-							(!empty($_SESSION['webuser']['imgtmp'][$imgName]['height']))){
-							$imageData = we_base_file::load($_serverPath);
-							$thumb = new we_thumbnail();
-							$thumb->init('dummy', $_SESSION['webuser']['imgtmp'][$imgName]['width'], $_SESSION['webuser']['imgtmp'][$imgName]['height'], array($_SESSION['webuser']['imgtmp'][$imgName]['keepratio'] ? we_thumbnail::OPTION_RATIO : 0, $_SESSION['webuser']['imgtmp'][$imgName]['maximize'] ? we_thumbnail::OPTION_MAXSIZE : 0), '', 'dummy', 0, '', '', $_extension, $we_size[0], $we_size[1], $imageData, '', $_SESSION['webuser']['imgtmp'][$imgName]['quality'], true);
-
-							$imgData = '';
-							$thumb->getThumb($imgData);
-
-							we_base_file::save($_serverPath, $imgData);
-							$we_size = we_thumbnail::getimagesize($_serverPath);
-						}
-
-						$_imgwidth = $we_size[0];
-						$_imgheight = $we_size[1];
-						//$_type = $_FILES['WE_SF_IMG_DATA']['type'][$imgName];
-						$_size = $_FILES['WE_SF_IMG_DATA']['size'][$imgName];
-
-						$imgDocument = new we_imageDocument();
-
-						if($imgId){// document has already an image, so change binary data
-							$imgDocument->initByID($imgId);
-						}else{// set path for new image
-							$imgDocument->setParentID($_SESSION['webuser']['imgtmp'][$imgName]['parentid']);
-						}
-
-						$imgDocument->Filename = $_fileName;
-						$imgDocument->Extension = $_extension;
-						$imgDocument->Text = $_text;
-
-						$imgDocument->Path = $imgDocument->getParentPath() . (($imgDocument->getParentPath() != '/') ? '/' : '') . $imgDocument->Text;
-
-						$imgDocument->setElement('width', $_imgwidth, 'attrib');
-						$imgDocument->setElement('height', $_imgheight, 'attrib');
-						$imgDocument->setElement('origwidth', $_imgwidth, 'attrib');
-						$imgDocument->setElement('origheight', $_imgheight, 'attrib');
-						$imgDocument->setElement('type', we_base_ContentTypes::IMAGE, 'attrib');
-
-						$imgDocument->setElement('data', $_serverPath, 'image');
-
-						$imgDocument->setElement('filesize', $_size, 'attrib');
-
-						$imgDocument->Table = FILE_TABLE;
-						$imgDocument->Published = time();
-						$imgDocument->WebUserID = $webuserId;
-						$imgDocument->we_save();
-						$newId = $imgDocument->ID;
-
-						$_SESSION['webuser'][$imgName] = $newId;
-						$_REQUEST['s'][$imgName] = $newId;
-					}
 				}
+
+				$_imgwidth = $we_size[0];
+				$_imgheight = $we_size[1];
+				//$_type = $_FILES['WE_SF_IMG_DATA']['type'][$imgName];
+				$_size = $_FILES['WE_SF_IMG_DATA']['size'][$imgName];
+
+				$imgDocument = new we_imageDocument();
+
+				if($imgId){// document has already an image, so change binary data
+					$imgDocument->initByID($imgId);
+				} else {// set path for new image
+					$imgDocument->setParentID($_SESSION['webuser']['imgtmp'][$imgName]['parentid']);
+				}
+
+				$imgDocument->Filename = $_fileName;
+				$imgDocument->Extension = $_extension;
+				$imgDocument->Text = $_text;
+
+				$imgDocument->Path = $imgDocument->getParentPath() . (($imgDocument->getParentPath() != '/') ? '/' : '') . $imgDocument->Text;
+
+				$imgDocument->setElement('width', $_imgwidth, 'attrib');
+				$imgDocument->setElement('height', $_imgheight, 'attrib');
+				$imgDocument->setElement('origwidth', $_imgwidth, 'attrib');
+				$imgDocument->setElement('origheight', $_imgheight, 'attrib');
+				$imgDocument->setElement('type', we_base_ContentTypes::IMAGE, 'attrib');
+
+				$imgDocument->setElement('data', $_serverPath, 'image');
+
+				$imgDocument->setElement('filesize', $_size, 'attrib');
+
+				$imgDocument->Table = FILE_TABLE;
+				$imgDocument->Published = time();
+				$imgDocument->WebUserID = $webuserId;
+				$imgDocument->we_save();
+				$newId = $imgDocument->ID;
+
+				$_SESSION['webuser'][$imgName] = $newId;
+				$_REQUEST['s'][$imgName] = $newId;
 			}
 		}
 	}

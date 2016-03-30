@@ -57,7 +57,7 @@ abstract class we_glossary_replace{
 		// get the words to replace
 		$cache = new we_glossary_cache($language);
 		$replace = array(
-			'' => $cache->get(we_glossary_glossary::TYPE_TEXTREPLACE), //text replacement must come first, since othe might generate iritation annotations
+			'' => $cache->get(we_glossary_glossary::TYPE_TEXTREPLACE), //text replacement must come first, since other might generate iritation annotations
 			'<span ' => $cache->get(we_glossary_glossary::TYPE_FOREIGNWORD),
 			'<abbr ' => (REPLACEACRONYM ? array_merge($cache->get(we_glossary_glossary::TYPE_ABBREVATION), $cache->get(we_glossary_glossary::TYPE_ACRONYM)) : $cache->get(we_glossary_glossary::TYPE_ABBREVATION)),
 			'<acronym ' => (REPLACEACRONYM ? array() : $cache->get(we_glossary_glossary::TYPE_ACRONYM)),
@@ -97,7 +97,7 @@ abstract class we_glossary_replace{
 				if(isset($ignoreTags[$lastHtmlTag])){
 					$ignoreTags[$lastHtmlTag]+=($not ? -1 : 1);
 				}
-			} elseif(!array_sum($ignoreTags)){
+			} elseif(!array_sum($ignoreTags)){//only if no ignored tag is open!
 				//this will generate invalid code: $piece = str_replace('&quot;', '"', $piece);
 				foreach($replace as $tag => $words){
 					if(!$tag || $lastHtmlTag !== $tag){
