@@ -26,7 +26,12 @@ class rpcTriggerJSErrorCmd extends we_rpc_cmd{
 
 	function execute(){
 		if(isset($_REQUEST['we_cmd']) && function_exists('log_error_message')){
-			log_error_message(E_JS, print_r($_REQUEST['we_cmd'], true), empty($_REQUEST['we_cmd']['file']) ? '' : $_REQUEST['we_cmd']['file'], empty($_REQUEST['we_cmd']['line']) ? 0 : $_REQUEST['we_cmd']['line'], true);
+			$file = empty($_REQUEST['we_cmd']['file']) ? '' : $_REQUEST['we_cmd']['file'];
+			$line = empty($_REQUEST['we_cmd']['line']) ? 0 : $_REQUEST['we_cmd']['line'];
+			unset($_REQUEST['we_cmd']['file'], $_REQUEST['we_cmd']['line']);
+			$data = print_r($_REQUEST['we_cmd'], true);
+			unset($_REQUEST);
+			log_error_message(E_JS, $data, $file, $line, true);
 		}
 	}
 
