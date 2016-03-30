@@ -58,10 +58,6 @@ abstract class we_tool_lookup{
 				if(isset($metaInfo)){
 					$langStr = '';
 					if(isset($metaInfo['name'])){
-						/* $translate = we_core_Local::addTranslation('default.xml', $metaInfo['name']);
-						  if(is_object($translate)){
-						  $langStr = $translate->_($metaInfo['name']);
-						  } */
 						$langStr = $metaInfo['name'];
 					}
 					$metaInfo['text'] = oldHtmlspecialchars($langStr);

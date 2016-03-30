@@ -1,3 +1,4 @@
+webEdition/lib/we/net/Http.php
 we_vtabs.php
 we_sselector_inc.php
 we_sselector_header.php
@@ -962,6 +963,9 @@ apps/toolfactory/hook/we_jsCmdHook_toolfactory.inc.php
 apps/toolfactory/hook/custom_hooks/weCustomHook_toolfactory_save.inc.php
 apps/toolfactory/hook/custom_hooks/dummy
 !wysiwyg
+!webEdition/lib/we/xml
+!webEdition/lib/we/net/LiveUpdate
+!webEdition/lib/we/io
 !we_backup/tmp
 !we/include/we_widgets/inc/plg
 !we/include/we_widgets/dlg/upb
