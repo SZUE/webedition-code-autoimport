@@ -208,7 +208,7 @@ abstract class we_base_delete{
 			if($ofID){
 				self::deleteEntry($ofID, OBJECT_FILES_TABLE, true, 0, $DB_WE);
 			}
-			$DB_WE->query('DROP TABLE IF EXISTS ' . OBJECT_X_TABLE . intval($id));
+			$DB_WE->delTable(OBJECT_X_TABLE . intval($id));
 		}
 		if($contentType === we_base_ContentTypes::IMAGE){
 			we_thumbnail::deleteByImageID($id);

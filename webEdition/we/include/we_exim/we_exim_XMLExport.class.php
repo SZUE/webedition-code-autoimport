@@ -188,7 +188,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 		$parentpaths = array();
 		$wsQuery = '';
 		if(($ws = get_ws($table))){
-			$wsPathArray = id_to_path($ws, $table, $db, false, true);
+			$wsPathArray = id_to_path($ws, $table, $db, true);
 			foreach($wsPathArray as $path){
 				if($wsQuery != ''){
 					$wsQuery .=' OR ';

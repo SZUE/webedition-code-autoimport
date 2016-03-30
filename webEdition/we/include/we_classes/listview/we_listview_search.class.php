@@ -160,7 +160,7 @@ class we_listview_search extends we_listview_base{
 		if($this->workspaceID){
 			$ids = array_filter(explode(',', $this->workspaceID));
 			if($ids){
-				$workspaces = id_to_path($ids, FILE_TABLE, $this->DB_WE, false, true);
+				$workspaces = id_to_path($ids, FILE_TABLE, $this->DB_WE, true);
 				$cond = array('i.WorkspaceID IN (' . implode(',', $ids) . ')');
 				foreach($workspaces as $workspace){
 					$cond[] = 'wsp.Path LIKE "' . $this->DB_WE->escape($workspace) . '/%"';

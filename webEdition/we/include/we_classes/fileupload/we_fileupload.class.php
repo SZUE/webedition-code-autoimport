@@ -31,6 +31,20 @@ abstract class we_fileupload{
 	protected $genericFileNameTemp = '';
 	protected $predefinedConfig = '';
 	protected $doCommitFile = true;
+	protected $typeCondition = array(
+		'accepted' => array(
+			'cts' => '',
+			'exts4cts' => '',
+			'exts' => '',
+			'all' => '',
+		),
+		'forbidden' => array(
+			'cts' => '',
+			'exts4cts' => '',
+			'exts' => '',
+			'all' => '',
+		)
+	);
 
 	const CHUNK_SIZE = 128;
 	const ON_ERROR_RETURN = true; //obsolete?
@@ -79,33 +93,21 @@ abstract class we_fileupload{
 
 	public function setTypeCondition($field = 'accepted', $weCts = array(), $exts = array()){
 		// new vars for js
-		$cts = $exts4cts = '';
+		$cts = $exts4cts = array();
 		foreach($weCts as $ct){
 			$ct = strtolower($ct);
 			if(in_array($ct, we_base_ContentTypes::inst()->getContentTypes(FILE_TABLE, true))){
-				$tmp = we_base_ContentTypes::inst()->getExtension($ct);
-				if(is_array($tmp)){
-					$tmp = array_map(function($e){
-						return(substr($e, 1));
-					}, $tmp);
-					$exts4cts .= ',' . implode(',', $tmp) . ',';
-				}
-				$cts .= $ct . ',';
+				$exts4cts = is_array(($tmp = we_base_ContentTypes::inst()->getExtension($ct))) ? array_merge($exts4cts, $tmp) : $exts4cts;
+				$cts[] = $ct;
 			}
 		}
 
 		$ret = array(
-			// new vars: used in js
-			'cts' => $cts ? ',' . $cts : '',
-			'exts4cts' => $exts4cts,
-			'exts' => $exts ? ',' . implode(',', $exts) . ',' : '',
-			// old vars: used in php // FIXME: throw away when sure that we do not need them anymore
-			'mime' => $weCts,
-			'ext' => array_map(function($e){
-					return(strtolower(trim($e, ' ,')));
-				}, $exts),
+			'cts' => $cts ? ',' . implode(',', $cts) . ',' : '',
+			'exts4cts' => $exts4cts ? ',' . strtolower(implode(',', $exts4cts)) . ',' : '',
+			'exts' => $exts ? ',' . strtolower(implode(',', $exts)) . ',' : '',
 		);
-		$ret['all'] = array_merge($ret['mime'], $ret['ext']);
+		$ret['all'] = str_replace(',,', ',', $ret['cts'] . $ret['exts4cts'] . $ret['exts']);
 
 		$this->typeCondition[$field] = $ret;
 	}

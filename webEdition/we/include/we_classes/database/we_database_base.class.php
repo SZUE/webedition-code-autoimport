@@ -835,13 +835,12 @@ abstract class we_database_base{
 	}
 
 	/**
-	 * @deprecated since version 6.3.0
 	 * @param type $tab
 	 * @param type $cols
 	 * @param array $keys
 	 * @return type
 	 */
-	public function addTable($tab, $cols, array $keys = array()){
+	public function addTable($tab, $cols, array $keys = array(), $engine = 'MYISAM'){
 		if(!is_array($cols) || empty($cols)){
 			return;
 		}
@@ -855,7 +854,7 @@ abstract class we_database_base{
 			}
 		}
 
-		return $this->query('CREATE TABLE ' . $this->escape($tab) . ' (' . implode(',', $cols_sql) . ') ENGINE = MYISAM ' . self::getCharsetCollation() . ';');
+		return $this->query('CREATE TABLE ' . $this->escape($tab) . ' (' . implode(',', $cols_sql) . ') ENGINE=' . $engine . ' ' . self::getCharsetCollation());
 	}
 
 	/**
@@ -871,7 +870,7 @@ abstract class we_database_base{
 		if($this->isColExist($tab, $col)){
 			return false;
 		}
-		return $this->query('ALTER TABLE ' . $this->escape($tab) . ' ADD `' . $col . '` ' . $typ . (($pos != '') ? ' ' . $pos : ''));
+		return $this->query('ALTER TABLE ' . $this->escape($tab) . ' ADD `' . $this->escape($col) . '` ' . $typ . (($pos != '') ? ' ' . $pos : ''));
 	}
 
 	public function changeColType($tab, $col, $newtyp){
@@ -1005,6 +1004,9 @@ abstract class we_database_base{
 	 * @param string $newcol new col-name
 	 */
 	public function renameCol($tab, $oldcol, $newcol){
+		if($oldcol == $newcol){
+			return;
+		}
 		$this->query('ALTER TABLE ' . $this->escape($tab) . ' CHANGE `' . $oldcol . '` `' . $newcol . '`');
 	}
 

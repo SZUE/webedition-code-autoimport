@@ -184,7 +184,7 @@ var openFolders= {
 		$GLOBALS['parentpaths'] = $wsQuery = array();
 
 		if(($ws = get_ws($table))){
-			$wsPathArray = id_to_path($ws, $table, $GLOBALS['DB_WE'], false, true);
+			$wsPathArray = id_to_path($ws, $table, $GLOBALS['DB_WE'], true);
 			foreach($wsPathArray as $path){
 				$wsQuery[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%" OR ' . self::getQueryParents($path);
 				while($path != '/' && $path){

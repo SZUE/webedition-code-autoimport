@@ -360,10 +360,13 @@ class we_binaryDocument extends we_document{
 		$js = "";
 		$values = array();
 		$c = 0;
+		$num = 0;
 		$limit=10;
 		foreach($groups as $group){
 			$cna = count($notaccessibles[$group]);
-			$values[$group . ' [' . (count($accessibles[$group]) + $cna) . ($cna ? ', davon ' . $cna . ' ' . g_l('weClass', '[medialinks_unaccessible]') . '' : '') . ']'] = we_html_tools::OPTGROUP;
+			$ca = count($accessibles[$group]) + $cna;
+			$num += $ca;
+			$values[$group . ' (' . ($ca) . ($cna ? ', davon ' . $cna . ' ' . g_l('weClass', '[medialinks_unaccessible]') . '' : '') . ')'] = we_html_tools::OPTGROUP;
 			$cc = 0;
 			foreach($accessibles[$group] as $v){
 				if($cc++ >= $limit){
@@ -376,7 +379,9 @@ class we_binaryDocument extends we_document{
 		}
 		$button = we_html_button::create_button(we_html_button::EDIT, "javascript:top.we_openMediaReference(document.getElementById('MediaReferences').value);");
 
-		return we_html_element::jsElement("top.we_mediaReferences = {" . $js . "};") . we_html_tools::htmlFormElementTable($this->htmlSelect('MediaReferences', $values, 1, '', false, array(), 'value', 388), '', 'left', 'defaultfont', '', $button);
+		$form = we_html_element::jsElement("top.we_mediaReferences = {" . $js . "};") . we_html_tools::htmlFormElementTable($this->htmlSelect('MediaReferences', $values, 1, '', false, array(), 'value', 388), '', 'left', 'defaultfont', '', $button);
+		
+		return array('form' => $form, 'num' => $num);
 	}
 
 	public function getPropertyPage(){

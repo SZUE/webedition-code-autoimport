@@ -33,7 +33,7 @@ class rpcChangeDocTypeCmd extends we_rpc_cmd{
 
 				$ids_arr = makeArrayFromCSV($values['Templates']);
 
-				$paths_arr = id_to_path($values['Templates'], TEMPLATES_TABLE, null, false, true);
+				$paths_arr = id_to_path($values['Templates'], TEMPLATES_TABLE, null, true);
 				$TPLselect = new we_html_select(array(
 					'name' => 'docTypeTemplateId',
 					'size' => 1,

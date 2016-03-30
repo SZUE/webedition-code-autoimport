@@ -197,7 +197,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 	$parentlist = $childlist = "";
 
 	if(($ws = get_ws($table))){
-		$wsPathArray = id_to_path($ws, $table, $DB_WE, false, true);
+		$wsPathArray = id_to_path($ws, $table, $DB_WE, true);
 
 		foreach($wsPathArray as $path){
 			$wspaces[] = ' Path LIKE "' . $DB_WE->escape($path) . '/%" OR ' . getQueryParents($path);
@@ -208,7 +208,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 		}
 	} elseif(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
 		if(($ac = we_users_util::getAllowedClasses($DB_WE))){
-			$paths = id_to_path($ac, OBJECT_TABLE, $DB_WE, false, true);
+			$paths = id_to_path($ac, OBJECT_TABLE, $DB_WE, true);
 			$wspaces[] = 'IsClassFolder=1';
 			foreach($paths as $path){
 				$wspaces[] = 'Path LIKE "' . $DB_WE->escape($path) . '/%"';

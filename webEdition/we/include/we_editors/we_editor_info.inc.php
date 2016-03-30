@@ -202,9 +202,10 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 		}
 
 		if (is_a($GLOBALS['we_doc'], 'we_binaryDocument')) {
+			$formReference = $GLOBALS['we_doc']->formReferences();
 			$parts[] = array(
-				'headline' => g_l('weClass', '[isUsed]'),
-				'html' => $GLOBALS['we_doc']->formReferences(),
+				'headline' => g_l('weClass', '[isUsed]') . ' (' . $formReference['num'] . ')',
+				'html' => $formReference['form'],
 				'space' => 140,
 				'forceRightHeadline' => 1,
 				'icon' => 'references.gif'

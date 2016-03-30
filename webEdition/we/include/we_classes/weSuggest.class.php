@@ -131,7 +131,7 @@ class weSuggest{
 		for($i = 0; $i < count($this->inputfields); $i++){
 			if(!$this->noAutoInits[$i]){
 				//$weErrorMarkId = str_replace("Input", "ErrorMark", $this->inputfields[$i]);
-				$weWorkspacePathArray = id_to_path(get_ws($this->tables[$i]), $this->tables[$i], null, false, true);
+				$weWorkspacePathArray = id_to_path(get_ws($this->tables[$i]), $this->tables[$i], null, true);
 				//$weFieldWS[] = '[' . ($weWorkspacePathArray ? '"' . implode('","', $weWorkspacePathArray) . '"' : '') . ']';
 
 				$current = "{

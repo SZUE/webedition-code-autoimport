@@ -24,8 +24,8 @@
  */
 class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
 
-	public function __construct($contentType = array(), $extensions = '', $doImport = true){
-		parent::__construct($contentType, $extensions);
+	public function __construct($contentType = array()){
+		parent::__construct($contentType);
 
 		//Fix #10418
 		if($contentType === we_base_ContentTypes::APPLICATION){

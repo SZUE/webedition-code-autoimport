@@ -204,11 +204,11 @@ class we_navigation_items{
 
 		$_isObject = (isset($GLOBALS['we_obj']) && !$GLOBALS['WE_MAIN_DOC']->IsFolder);
 		$main_cats = array_filter(explode(',', $GLOBALS['WE_MAIN_DOC']->Category));
-		
+
 		$currentWorksapce = $_isObject ? //webEdition object
 			(defined('WE_REDIRECTED_SEO') ? //webEdition object uses SEO-URL
 				we_objectFile::getNextDynDoc(($path = rtrim(substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $GLOBALS['WE_MAIN_DOC']->Url)), '/'). '.php'), path_to_id(rtrim(substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $GLOBALS['WE_MAIN_DOC']->Url)), '/')), $GLOBALS['WE_MAIN_DOC']->Workspaces, $GLOBALS['WE_MAIN_DOC']->ExtraWorkspacesSelected, $GLOBALS['DB_WE']) :
-				parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH)	
+				parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH)
 			) : //webEdition document
 			$GLOBALS['WE_MAIN_DOC']->Path;
 
@@ -388,7 +388,7 @@ class we_navigation_items{
 	}
 
 	function readItemsFromDb($id){
-		$_pathArr = id_to_path($id, NAVIGATION_TABLE, null, false, true);
+		$_pathArr = id_to_path($id, NAVIGATION_TABLE, null, true);
 		$_path = we_base_file::clearPath((isset($_pathArr[0]) ? $_pathArr[0] : '') . '/%');
 
 		$_ids = array();

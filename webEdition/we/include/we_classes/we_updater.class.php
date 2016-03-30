@@ -49,7 +49,7 @@ abstract class we_updater{
 
 	public static function updateUsers($db = null){ //FIXME: remove after 6.5 from 6360/update6300.php
 		$db = $db? : new DB_WE();
-		$db->query('DROP TABLE IF EXISTS ' . PREFS_TABLE . '_old');
+		$db->delTable(PREFS_TABLE . '_old');
 		if(count(getHash('SELECT * FROM ' . PREFS_TABLE . ' LIMIT 1', null, MYSQL_ASSOC)) > 3){
 			//make a backup
 			$db->query('CREATE TABLE ' . PREFS_TABLE . '_old LIKE ' . PREFS_TABLE);
@@ -153,7 +153,7 @@ abstract class we_updater{
 			//finally delete key
 			$db->delKey(LINK_TABLE, 'tmpHash');
 			$db->addKey(LINK_TABLE, 'PRIMARY KEY (DID,DocumentTable,nHash)');
-			$db->query('DROP TABLE WE_tmp');
+			$db->delTable('WE_tmp');
 		}
 	}
 
@@ -236,7 +236,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="href"
 			foreach($all as $uid => $cnt){
 				$db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE UID=' . $uid . ' ORDER BY ModDate DESC LIMIT ' . ($cnt - we_history::MAX));
 			}
-			$db->query('DROP TABLE old' . HISTORY_TABLE);
+			$db->delTable('old' . HISTORY_TABLE);
 		}
 	}
 

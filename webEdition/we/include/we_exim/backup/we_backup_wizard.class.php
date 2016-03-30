@@ -174,7 +174,7 @@ self.focus();
 		}
 
 		$this->fileUploader = new we_fileupload_ui_base('we_upload_file');
-		$this->fileUploader->setTypeCondition('accepted', array(we_base_ContentTypes::XML), array('gz', 'tgz'));
+		$this->fileUploader->setTypeCondition('accepted', array(we_base_ContentTypes::XML), array('.gz', '.tgz'));
 		$this->fileUploader->setCallback('top.body.startImport(true)');
 		$this->fileUploader->setInternalProgress(array('isInternalProgress' => true, 'width' => 300));
 		$this->fileUploader->setDimensions(array('width' => 500, 'alertBoxWidth' => 600, 'dragWidth' => 594, 'dragHeight' => 70, 'marginTop' => 5));

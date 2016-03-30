@@ -603,7 +603,6 @@ class liveUpdateFunctions{
 			$query = ($db->isColExist($matches[2], $matches[1]) ? 'ALTER TABLE ' . $db->escape($matches[2]) . ' DROP COLUMN ' . $db->escape($matches[1]) : '');
 		}
 		if(preg_match('/###ONCOL\(([^,]*),([^)]*)\)(.+);###/', $query, $matches)){
-		t_e('m',$matches,$db->isColExist($matches[2], $matches[1]));
 			$query = ($db->isColExist($matches[2], $matches[1]) ? $matches[3] : '');
 		}
 		//handle if key is not set, should be used after table def. so handling code, e.g. truncate, copy... can be put here

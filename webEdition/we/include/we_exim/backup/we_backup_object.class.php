@@ -89,8 +89,8 @@ class we_backup_object extends we_object{
 
 			$q = implode(',', $qarr);
 
-			$this->DB_WE->query('DROP TABLE IF EXISTS ' . $ctable);
-			$this->DB_WE->query('CREATE TABLE ' . $ctable . ' (' . $q . ',' . implode(',', $indexe) . ') ENGINE=MYISAM ' . we_database_base::getCharsetCollation());
+			$this->DB_WE->delTable($ctable);
+			$this->DB_WE->addTable($ctable,$q,$indexe);
 
 //dummy eintrag schreiben
 			$this->DB_WE->query('INSERT INTO ' . $ctable . ' SET OF_ID=0');
@@ -112,7 +112,7 @@ class we_backup_object extends we_object{
 			$noFields = array('WorkspaceFlag', 'elements', 'WE_CSS_FOR_CLASS');
 			$tableInfo = $this->DB_WE->metadata($ctable, true);
 
-			$add = $drop = $alter = array();
+			$add = $drop = $alter = $addKey = array();
 
 			foreach($this->SerializedArray as $fieldname => $value){
 				$arr = explode('_', $fieldname);
@@ -128,17 +128,13 @@ class we_backup_object extends we_object{
 				if(isset($tableInfo['meta'][$fieldname])){
 					$props = $tableInfo[$tableInfo['meta'][$fieldname]];
 // the field exists
-					if(!empty($fieldtype) && (strtolower($fieldtype) == strtolower($props['type']))){
-						if($len != $props['len']){
-							$alter[$fieldname] = $fieldname . $type;
-						}
+					if(!empty($fieldtype) && (strtolower($fieldtype) == strtolower($props['type'])) && $len != $props['len']){
+						$alter[$fieldname] = $type;
 					}
-				} else {
-					if(!empty($type)){
-						$add[$fieldname] = $fieldname . $type;
-						if($isObject){
-							$add[$fieldname . '_key'] = ' INDEX (' . $fieldname . ')';
-						}
+				} elseif(!empty($type)){
+					$add[$fieldname] = $type;
+					if($isObject){
+						$addKey[$fieldname . '_key'] = ' INDEX (`' . $fieldname . '`)';
 					}
 				}
 			}
@@ -155,16 +151,19 @@ class we_backup_object extends we_object{
 //With $this->isForceDropOnSave drops can be activated
 			if($this->isForceDropOnSave){
 				foreach($drop as $key => $value){
-					$this->DB_WE->query('ALTER TABLE ' . $ctable . ' DROP ' . $value);
+					$this->DB_WE->delCol($ctable, $value);
 				}
 			}
 
 			foreach($alter as $key => $value){
-				$this->DB_WE->query('ALTER TABLE ' . $ctable . ' CHANGE ' . $key . ' ' . $value);
+				$this->DB_WE->changeColType($ctable, $key, $value);
 			}
 
 			foreach($add as $key => $value){
-				$this->DB_WE->query('ALTER TABLE ' . $ctable . ' ADD ' . $value);
+				$this->DB_WE->addCol($ctable, $col, $value);
+			}
+			foreach($addKey as $key => $value){
+				$this->DB_WE->addKey($ctable, $value);
 			}
 		}
 
@@ -343,7 +342,8 @@ class we_backup_object extends we_object{
 		$this->SerializedArray[$type . '_' . $newname] = $this->SerializedArray[$type . '_' . $name];
 		unset($this->SerializedArray[$type . '_' . $name]);
 		$this->DefaultValues = we_serialize($this->SerializedArray);
-		$this->DB_WE->query('ALTER TABLE ' . $ctable . ' CHANGE ' . $type . '_' . $name . ' ' . $type . '_' . $newname . ' ' . $this->switchtypes2($type));
+		$this->DB_WE->renameCol($ctable, $type . '_' . $name, $type . '_' . $newname);
+		$this->DB_WE->changeColType($ctable, $type . '_' . $newname, $this->switchtypes2($type));
 		unset($this->elements);
 		$this->i_savePersistentSlotsToDB();
 		$this->i_getContentData();
@@ -471,7 +471,8 @@ class we_backup_object extends we_object{
 						$len = $metadata[$nummer]['len'];
 						$type = 'VARCHAR(' . $len . ')';
 					}
-					$this->DB_WE->query('ALTER TABLE ' . $ctable . ' MODIFY COLUMN ' . $ovalname . ' ' . $type . ' AFTER ' . $last);
+					$this->DB_WE->moveCol($ctable,$ovalname,$last);
+						//query('ALTER TABLE ' . $ctable . ' MODIFY COLUMN ' . $ovalname . ' ' . $type . ' AFTER ' . $last);
 					$last = $ovalname;
 				} else {
 					t_e('warning', __METHOD__ . ' ' . $ctable . ' (' . $this->Text . ') Field not found: Field: ' . $ovalname);
