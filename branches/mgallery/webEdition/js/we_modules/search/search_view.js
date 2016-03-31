@@ -223,7 +223,7 @@ weSearch = {
 
 				if (Checks.length === 0) {
 					//FIXME: dirty fix => allow to search without searchForXX when no searchFieldsMediaSearch[0] is empty
-					if (this.conf.editorBodyFrame.document.we_form.elements['searchMediaSearch[0]'].value) {
+					if (this.conf.editorBodyFrame.document.we_form.elements['searchMediaSearch[0]'] !== undefined && this.conf.editorBodyFrame.document.we_form.elements['searchMediaSearch[0]'].value) {
 						top.we_showMessage(WE().consts.g_l.weSearch.nothingCheckedTmplDoc, WE().consts.message.WE_MESSAGE_ERROR, window);
 					} else {
 						Checks[0] = '';
