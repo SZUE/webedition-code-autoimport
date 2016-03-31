@@ -42,7 +42,8 @@ WE().consts.weSearch = {
 	SEARCH_TMPL: '',
 	SEARCH_MEDIA: '',
 	SEARCH_ADV: '',
-	SEARCH_DOCLIST: ''
+	SEARCH_DOCLIST: '',
+	MEDIA_CONTENTTYPES_CSV: ''
 };
 
 weSearch = {
@@ -604,7 +605,7 @@ weSearch = {
 				innerhtml = '<table class="default"><tbody><tr>' +
 								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
 								'<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td></td>' +
-								'<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, WE().consts.tables.CATEGORY_TABLE).replace(/__we_selector__/, 'we_selector_category') + '</td>' +
+								'<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, WE().consts.tables.CATEGORY_TABLE).replace(/__we_selector__/, 'we_selector_category').replace(/__we_content_types__/, '') + '</td>' +
 								'</tr></tbody></table>';
 
 				cell = document.createElement('TD');
@@ -625,7 +626,7 @@ weSearch = {
 				innerhtml = '<table class="default"><tbody><tr>' +
 								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
 								'<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td></td>' +
-								'<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, WE().consts.tables.TEMPLATES_TABLE).replace(/__we_selector__/, 'we_selector_document') + '</td>' +
+								'<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, WE().consts.tables.TEMPLATES_TABLE).replace(/__we_selector__/, 'we_selector_document').replace(/__we_content_types__/, '') + '</td>' +
 								'</tr></tbody></table>';
 
 				cell = document.createElement('TD');
@@ -648,7 +649,28 @@ weSearch = {
 				innerhtml = '<table class="default"><tbody><tr>' +
 								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
 								'<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td></td>' +
-								'<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, table).replace(/__we_selector__/, 'we_selector_directory') + '</td>' +
+								'<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, table).replace(/__we_selector__/, 'we_selector_directory').replace(/__we_content_types__/, '') + '</td>' +
+								'</tr></tbody></table>';
+
+				cell = document.createElement('TD');
+				cell.setAttribute('id', 'td_search' + this.conf.whichsearch + '[' + rowNr + ']');
+				cell.innerHTML = innerhtml;
+				row.appendChild(cell);
+
+				row.appendChild(this.getCell('delButton', rowNr));
+				row.appendChild(this.getCell('hiddenLocation' + this.conf.whichsearch, rowNr, '', 'IS'));
+				break;
+			case 'HasReferenceToID':
+				row.appendChild(this.getCell('location' + this.conf.whichsearch, rowNr, '', 'CONTAIN', true));
+				location = document.getElementById('location' + this.conf.whichsearch + '[' + rowNr + ']');
+				location.value = 'IS';
+				location.disabled = true;
+
+				var table = WE().consts.tables.FILE_TABLE;
+				innerhtml = '<table class="default"><tbody><tr>' +
+								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
+								'<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td></td>' +
+								'<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, table).replace(/__we_selector__/, 'we_selector_document').replace(/__we_content_types__/, WE().consts.weSearch.MEDIA_CONTENTTYPES_CSV) + '</td>' +
 								'</tr></tbody></table>';
 
 				cell = document.createElement('TD');

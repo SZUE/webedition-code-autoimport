@@ -479,6 +479,7 @@ class we_search_search extends we_search_base{
 			'temp_template_id' => g_l('searchtool', '[temp_template_id]'),
 			'MasterTemplateID' => g_l('searchtool', '[MasterTemplateID]'),
 			'ContentType' => g_l('searchtool', '[ContentType]'),
+			//'HasReferenceToID' => 'Refernziert Medium', => deactivated
 			//'temp_doc_type' => g_l('searchtool', '[temp_doc_type]'),
 			'temp_category' => g_l('searchtool', '[temp_category]'),
 			'CreatorID' => g_l('searchtool', '[CreatorID]'),
@@ -509,12 +510,14 @@ class we_search_search extends we_search_base{
 			unset($tableFields['Status']);
 			unset($tableFields['Speicherart']);
 			unset($tableFields['Published']);
+			unset($tableFields['HasReferenceToID']);
 		} elseif($whichSearch === we_search_view::SEARCH_DOCLIST){
 			unset($tableFields['Path']);
 			unset($tableFields['ParentIDDoc']);
 			unset($tableFields['ParentIDObj']);
 			unset($tableFields['ParentIDTmpl']);
 			unset($tableFields['MasterTemplateID']);
+			unset($tableFields['HasReferenceToID']);
 		}
 
 		if(!permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
