@@ -46,13 +46,14 @@ class we_tool_treeDataSource{
 		}
 	}
 
-	function getQueryParents($path){
+	public static function getQueryParents($path){
 		$out = array();
+		$db = $GLOBALS['DB_WE'];
 		while($path != '/' && $path != '\\' && $path){
-			$out[] = 'Path="' . $path . '"';
+			$out[] = '"' . $db->escape($path) . '"';
 			$path = dirname($path);
 		}
-		return implode(' OR ', $out);
+		return ($out ? 'Path IN(' . implode(',', $out) . ')' : '');
 	}
 
 	function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,IsFolder', $addWhere = '', $addOrderBy = ''){
@@ -69,7 +70,7 @@ class we_tool_treeDataSource{
 		if(($ws = get_ws($table))){
 			$wsPathArray = id_to_path($ws, $table, $db, true);
 			foreach($wsPathArray as $path){
-				$_aWsQuery[] = ' Path LIKE "' . $db->escape($path) . '/%" OR ' . we_tool_treeDataSource::getQueryParents($path);
+				$_aWsQuery[] = ' Path LIKE "' . $db->escape($path) . '/%" OR ' . self::getQueryParents($path);
 				while($path != '/' && $path != "\\" && $path){
 					$parentpaths[] = $path;
 					$path = dirname($path);

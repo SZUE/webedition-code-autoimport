@@ -203,7 +203,7 @@ if (top.wizbody && top.wizbody.addLog){
 							flush();
 
 							$path = TEMP_PATH . we_base_file::getUniqueId() . '/';
-							we_base_file::createLocalFolder($path);
+							we_base_file::createLocalFolderByPath($path);
 
 							if(is_dir($path)){
 								$num_files = we_exim_XMLImport::splitFile($_SERVER['DOCUMENT_ROOT'] . $v['import_from'], $path, 1);
@@ -236,7 +236,7 @@ if (top.wizbody && top.wizbody.addLog){
 							$unique_id = we_base_file::getUniqueId(); // #6590, changed from: uniqid(microtime())
 
 							$path = TEMP_PATH . $unique_id;
-							we_base_file::createLocalFolder($path);
+							we_base_file::createLocalFolderByPath($path);
 
 							if($cp->isOK()){
 								$fieldnames = ($v['csv_fieldnames']) ? 0 : 1;

@@ -43,9 +43,6 @@ function we_tag_linklist($attribs){
 			$ll->setName($name);
 			return $ll;
 		case 'stop':
-			/* $out = $ll->getHTML(
-			  (isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"] && (!$isInListview)), $attribs, $content, $GLOBALS['we_doc']->Name);
-			 */
 			return '';
 	}
 }

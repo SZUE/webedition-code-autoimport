@@ -147,7 +147,7 @@ class we_import_CSV extends we_import_csvBase{
 		$num_rows = $this->CSVNumRows();
 		$num_fields = $this->CSVNumFields();
 
-		we_base_file::createLocalFolder($path);
+		we_base_file::createLocalFolderByPath($path);
 
 		for($i = 0; $i < $num_rows + $fieldnames; $i++){
 			$d[0] = $d[1] = '';

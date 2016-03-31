@@ -162,6 +162,11 @@ switch(we_base_request::_(we_base_request::STRING, 'function', 'last')){
 		$db->query('DROP TEMPORARY TABLE del');
 		$size = f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '`');
 	//no break;
+	case 'prev':
+		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` WHERE ID<' . $id . ' ORDER BY ID DESC LIMIT 1');
+		$pos = f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '` WHERE ID<' . $id);
+		break;
+
 	default:
 	case 'last':
 		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` ORDER BY ID DESC LIMIT 1');
@@ -211,10 +216,6 @@ session.auto_start: ' . ini_get('session.auto_start') . $sep .
 	case 'next':
 		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` WHERE ID>' . $id . ' ORDER BY ID ASC LIMIT 1');
 		$pos = $size - f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '` WHERE ID>' . $id) + 1;
-		break;
-	case 'prev':
-		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` WHERE ID<' . $id . ' ORDER BY ID DESC LIMIT 1');
-		$pos = f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '` WHERE ID<' . $id);
 		break;
 	case 'nextX':
 		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` WHERE ID>=' . $id . ' ORDER BY ID ASC LIMIT ' . $step . ',1');

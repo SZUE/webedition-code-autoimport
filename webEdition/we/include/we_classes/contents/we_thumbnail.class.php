@@ -353,7 +353,7 @@ class we_thumbnail{
 
 		$_thumbdir = self::getThumbDirectory(true);
 		if(!file_exists($_thumbdir)){
-			we_base_file::createLocalFolder($_thumbdir);
+			we_base_file::createLocalFolderByPath($_thumbdir);
 		}
 		$quality = max(10, min(100, intval($this->thumbQuality) * 10));
 		$outarr = we_base_imageEdit::edit_image($this->imageData ? : WEBEDITION_PATH . '../' . $this->imagePath, $this->outputFormat, WEBEDITION_PATH . '../' . $this->outputPath, $quality, $this->thumbWidth, $this->thumbHeight, $this->options, $this->focus, 0);

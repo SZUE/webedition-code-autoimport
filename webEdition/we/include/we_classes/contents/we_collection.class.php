@@ -840,7 +840,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 			if(($ws = get_ws($this->getRemTable()))){
 				$wsPathArray = id_to_path($ws, $this->getRemTable(), $this->DB_WE, true);
 				foreach($wsPathArray as $path){
-					$wspaces[] = ' Path LIKE "' . $this->DB_WE->escape($path) . '/%" OR ' . getQueryParents($path);
+					$wspaces[] = ' Path LIKE "' . $this->DB_WE->escape($path) . '/%" OR ' . we_tool_treeDataSource::getQueryParents($path);
 					while($path != '/' && $path != '\\' && $path){
 						$parentpaths[] = $path;
 						$path = dirname($path);

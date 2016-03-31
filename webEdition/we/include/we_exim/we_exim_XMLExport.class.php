@@ -193,7 +193,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 				if($wsQuery != ''){
 					$wsQuery .=' OR ';
 				}
-				$wsQuery .= ' Path LIKE "' . $db->escape($path) . '/%" OR ' . we_exim_XMLExIm::getQueryParents($path);
+				$wsQuery .= ' Path LIKE "' . $db->escape($path) . '/%" OR ' . we_tool_treeDataSource::getQueryParents($path);
 				while($path != "/" && $path){
 					$parentpaths[] = $path;
 					$path = dirname($path);

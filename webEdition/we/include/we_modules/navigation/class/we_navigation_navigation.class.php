@@ -907,13 +907,14 @@ class we_navigation_navigation extends we_base_model{
 			return '';
 		}
 // #5836: Use function get_ws()
-		$_wrkNavi = id_to_path(expolode(',', $ws), NAVIGATION_TABLE);
+		$ids = explode(',', $ws);
+		$_wrkNavi = id_to_path($ids, NAVIGATION_TABLE, null, true);
 
 		$_condition = array();
 		foreach($_wrkNavi as $nav){
 			$_condition[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($nav) . '/%"';
 		}
-		return ' AND (ID IN(' . implode(',', $_wrkNavi) . ') OR (' . implode(' OR ', $_condition) . '))';
+		return ' AND (ID IN(' . implode(',', $ids) . ') OR (' . implode(' OR ', $_condition) . '))';
 	}
 
 }

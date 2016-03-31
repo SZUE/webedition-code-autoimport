@@ -1361,41 +1361,43 @@ abstract class we_root extends we_class{
 	}
 
 	function registerMediaLinks($temp = false){
-		$c = count($this->MediaLinks);
-		for($i = 0; $i < $c; $i++){
-			if(!$this->MediaLinks[$i] || !is_numeric($this->MediaLinks[$i])){
-				unset($this->MediaLinks[$i]);
-			}
-		}
+		$this->MediaLinks = array_filter($this->MediaLinks, function($v){
+			return $v && is_numeric($v);
+		});
 
 		// filter MediaLinks by media contenttype
+		$verifiedIDs = array();
 		if(!empty($this->MediaLinks)){
 			$whereType = 'AND ContentType IN ("' . we_base_ContentTypes::APPLICATION . '","' . we_base_ContentTypes::FLASH . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::QUICKTIME . '","' . we_base_ContentTypes::VIDEO . '")';
-			$this->DB_WE->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', array_unique($this->MediaLinks)) . ') ' . $whereType);
-			$this->MediaLinks = array();
+			$this->DB_WE->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', array_unique(array_values($this->MediaLinks))) . ') ' . $whereType);
 			while($this->DB_WE->next_record()){
-				$this->MediaLinks[] = $this->DB_WE->f('ID');
+				$verifiedIDs[] = $this->DB_WE->f('ID');
 			}
 		}
+		$this->MediaLinks = array_intersect($this->MediaLinks, $verifiedIDs);
 
 		if(empty($this->MediaLinks)){
 			return true;
 		}
 
-		$ret = true;
-		foreach(array_unique($this->MediaLinks) as $remObj){
-			$ret &= $this->DB_WE->query('REPLACE INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
+		$sets = array();
+		foreach($this->MediaLinks as $k => $remObj){
+			$sets[] = we_database_base::arraySetter(array(
 					'ID' => $this->ID,
 					'DocumentTable' => stripTblPrefix($this->Table),
 					'type' => 'media',
 					'remObj' => $remObj,
 					'remTable' => stripTblPrefix(FILE_TABLE),
+					'element' => !is_numeric($k) ? $k : '',
 					'position' => 0,
 					'isTemp' => $temp ? 1 : 0
-			)));
+			));
+		}
+		if($sets){
+			return $this->DB_WE->query('REPLACE INTO ' . FILELINK_TABLE . ' VALUES ' . implode(',', $sets));
 		}
 
-		return $ret;
+		return true;
 	}
 
 	function unregisterMediaLinks($delPublished = true, $delTemp = true){

@@ -30,8 +30,8 @@ function we_parse_tag_object($attribs, $content, array $arr){
 
 	//dont't check if id or name is set, since it is possible to set object ID by request
 
-	return '<?php global $lv;
-		if(' . we_tag_tagParser::printTag('object', $attribs) . '){?>' . $content . '<?php }
+	return '<?php ' . (strpos($content, '$lv') !== false ? 'global $lv;' : '') .
+		'if(' . we_tag_tagParser::printTag('object', $attribs) . '){?>' . $content . '<?php }
 		we_post_tag_listview(); ?>';
 }
 

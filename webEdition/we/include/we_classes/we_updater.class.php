@@ -240,7 +240,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="href"
 		}
 	}
 
-	private static function meassure($name){
+	public static function meassure($name){
 		static $last = 0;
 		static $times = array();
 		$last = $last? : microtime(true);

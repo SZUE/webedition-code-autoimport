@@ -27,15 +27,6 @@ $table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 1);
 $parentFolder = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
 $offset = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 6);
 
-function getQueryParents($path){
-	$out = array();
-	while($path != '/' && $path != '\\' && $path){
-		$out[] = $GLOBALS['DB_WE']->escape($path);
-		$path = dirname($path);
-	}
-	return ($out ? 'Path IN ("' . implode('","', $out) . '")' : '');
-}
-
 function getItems($table, $ParentID, $offset = 0, $segment = 0, $collectionIDs = array(), $collections = array()){
 	global $openFolders, $parentpaths, $wsQuery, $treeItems;
 	if(($table === TEMPLATES_TABLE && !permissionhandler::hasPerm('CAN_SEE_TEMPLATES')) ||
@@ -200,7 +191,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 		$wsPathArray = id_to_path($ws, $table, $DB_WE, true);
 
 		foreach($wsPathArray as $path){
-			$wspaces[] = ' Path LIKE "' . $DB_WE->escape($path) . '/%" OR ' . getQueryParents($path);
+			$wspaces[] = ' Path LIKE "' . $DB_WE->escape($path) . '/%" OR ' . we_tool_treeDataSource::getQueryParents($path);
 			while($path != '/' && $path != '\\' && $path){
 				$parentpaths[] = $path;
 				$path = dirname($path);

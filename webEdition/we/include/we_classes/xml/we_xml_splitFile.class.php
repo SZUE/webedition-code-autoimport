@@ -91,7 +91,7 @@ class we_xml_splitFile extends we_xml_parser{
 		$this->path = TEMP_PATH . $this->getUniqueId();
 
 		// Make the current directory.
-		we_base_file::createLocalFolder($this->path);
+		we_base_file::createLocalFolderByPath($this->path);
 
 		// Node-set with paths of the descendant nodes.
 		$nodeSet = $this->evaluate($absoluteXPath);

@@ -117,7 +117,7 @@ if(!$cmd || $cmd != "save_last"){
 			}
 			$path = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . we_base_request::_(we_base_request::FILE, 'pat') . '/' . $txt);
 			if(!is_dir($path)){
-				echo (!we_base_file::createLocalFolder($path) ?
+				echo (!we_base_file::createLocalFolderByPath($path) ?
 					we_message_reporting::getShowMessageCall(g_l('alert', '[create_folder_nok]'), we_message_reporting::WE_MESSAGE_ERROR) :
 					'selectFile("' . $txt . '");top.currentID="' . $path . '";');
 			} else {

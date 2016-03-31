@@ -78,7 +78,7 @@ function resetPwd(){
 }
 
 function showError($txt){
-	echo '<div style="background-color: #EBEBEB; color:red">' . $txt . '</div>';
+	echo '<div class="error">' . $txt . '</div>';
 }
 
 switch(we_base_request::_(we_base_request::STRING, 'type', '')){
@@ -128,10 +128,10 @@ switch(we_base_request::_(we_base_request::STRING, 'type', '')){
 			}
 			defaultReset();
 		} else {
-			showError(sprintf(g_l('global', '[pwd][noSuchUser]'), $_SESSION['webuser']['Email']));
+			showError(sprintf(g_l('global', '[pwd][mailSent]'), $_SESSION['webuser']['Email']));
 
 			we_mail($_SESSION['webuser']['Email'], g_l('global', '[pwd][mailSubject]'), $_SESSION['webuser']['First'] . ' ' . $_SESSION['webuser']['Second'] . ' (' . $_SESSION['webuser']['username'] . '),
-' . sprintf(g_l('global', '[pwd][resetMail]')), getServerUrl() . "\n" .
+' . sprintf(g_l('global', '[pwd][resetMail]'), getServerUrl()) . "\n" .
 				we_tag('customerResetPasswordLink', array('plain' => true), '', true)
 			);
 

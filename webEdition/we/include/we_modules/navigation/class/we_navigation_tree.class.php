@@ -41,7 +41,7 @@ class we_navigation_tree extends weTree{
 		if(($ws = get_ws(NAVIGATION_TABLE))){
 			$wsPathArray = id_to_path($ws, NAVIGATION_TABLE, $db, true);
 			foreach($wsPathArray as $path){
-				$_aWsQuery[] = ' Path LIKE "' . $db->escape($path) . '/%" OR ' . we_navigation_treeDataSource::getQueryParents($path);
+				$_aWsQuery[] = ' Path LIKE "' . $db->escape($path) . '/%" OR ' . we_tool_treeDataSource::getQueryParents($path);
 				while($path != "/" && $path != "\\" && $path){
 					$parentpaths[] = $path;
 					$path = dirname($path);
