@@ -858,10 +858,9 @@ we_templateInit();?>';
 			}
 		}
 
-		if(!empty($this->MediaLinks)){
-			return parent::registerMediaLinks(false, true);
-		}
-		return true;
+		return (empty($this->MediaLinks) ?
+				true :
+				parent::registerMediaLinks(false, true));
 	}
 
 	// .tmpl mod
