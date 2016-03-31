@@ -391,8 +391,10 @@ container.prototype = {
 
 };
 function treeStartDrag(evt, type, table, id, ct) { // TODO: throw out setData
-	top.dd.dataTransfer.text = type + ',' + table + ',' + id + ',' + ct;
-	evt.dataTransfer.setData('text', type + ',' + table + ',' + id + ',' + ct);
+	if (top.dd !== undefined && top.dd !== null) {
+		top.dd.dataTransfer.text = type + ',' + table + ',' + id + ',' + ct;
+		evt.dataTransfer.setData('text', type + ',' + table + ',' + id + ',' + ct);
+	}
 }
 
 
