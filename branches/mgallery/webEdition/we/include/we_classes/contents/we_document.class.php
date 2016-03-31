@@ -600,9 +600,9 @@ class we_document extends we_root{
 								case 'quicktime':
 								case 'video':
 									if(!empty($v['bdid']) && is_numeric($v['bdid'])){
-										$this->MediaLinks[] = $v['bdid'];
+										$this->MediaLinks[$k] = $v['bdid'];
 									} elseif(!empty($v['dat']) && is_numeric($v['dat'])){
-										$this->MediaLinks[] = $v['dat'];
+										$this->MediaLinks[$k] = $v['dat'];
 									}
 									break;
 								case 'link':
@@ -616,17 +616,17 @@ class we_document extends we_root{
 									if(isset($v['dat']) && ($link = we_unserialize($v['dat'], array(), true)) && is_array($link)){
 										if(isset($link['type']) && isset($link['id']) && isset($link['img_id'])){
 											if($link['type'] === 'int' && $link['id']){
-												$this->MediaLinks[] = $link['id'];
+												$this->MediaLinks[$k] = $link['id'];
 											}
 											if($link['img_id']){
-												$this->MediaLinks[] = $link['img_id'];
+												$this->MediaLinks[$k] = $link['img_id'];
 											}
 										}
 									}
 									break;
 								default:
 									if(!empty($v['bdid'])){
-										$this->MediaLinks[] = $v['bdid'];
+										$this->MediaLinks[$k] = $v['bdid'];
 									}
 							}
 						}

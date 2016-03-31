@@ -373,7 +373,7 @@ class we_binaryDocument extends we_document{
 					$values[-1] = '[ + ' . (count($accessibles[$group]) - $limit) . ' ' . g_l('weClass', '[medialinks_more]') . ' ]';
 					break;
 				}
-				$values[++$c] = $v['path'];
+				$values[++$c] = $v['path'] . ($v['element'] ? ' (Element: ' . $v['element'] . ')' : '');
 				$js .= "id_" . $c . ": {type: '" . $v['type'] . "', id: " . $v['id'] . ", table: '" . $v['table'] . "', ct: '" . $v['ct'] . "', mod: '" . $v['mod'] . "', referencedIn: '" . $v['referencedIn'] . "', isTempPossible: " . ($v['isTempPossible'] ? 1 : 0) . ", isModified: " . ($v['isModified'] ? 1 : 0) . "},";
 			}
 		}

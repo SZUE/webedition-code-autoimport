@@ -368,21 +368,18 @@ WE().consts.weSearch= {
 
 		switch($whichSearch){
 			case self::SEARCH_DOCS :
-				$_table->setCol($row, 0, array('style' => 'width:200px;'), we_html_forms::checkboxWithHidden($currentSearchForField['text'] ? true : false, 'searchForText' . $whichSearch, g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
-				$_table->setCol($row++, 1, array(), we_html_forms::checkboxWithHidden($currentSearchForField['title'] ? true : false, 'searchForTitle' . $whichSearch, g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
-				$_table->setCol($row, 0, array(), we_html_forms::checkboxWithHidden($currentSearchForField['content'] ? true : false, 'searchForContent' . $whichSearch, g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
+				$_table->setCol($row, 0, array('style' => 'width:200px;'), we_html_forms::checkboxWithHidden(empty($currentSearchForField['text']) ? false : true, 'searchForText' . $whichSearch, g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
+				$_table->setCol($row++, 1, array(), we_html_forms::checkboxWithHidden(empty($currentSearchForField['title']) ? false : true, 'searchForTitle' . $whichSearch, g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
+				$_table->setCol($row, 0, array(), we_html_forms::checkboxWithHidden(empty($currentSearchForField['content']) ? false : true, 'searchForContent' . $whichSearch, g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
 				break;
-
 			case self::SEARCH_TMPL :
-				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($currentSearchForField['text'] ? true : false, 'searchForText' . $whichSearch, g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
-				$_table->setCol($row, 0, array(), we_html_forms::checkboxWithHidden($currentSearchForField['content'] ? true : false, 'searchForContent' . $whichSearch, g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
+				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden(empty($currentSearchForField['text']) ? false : true, 'searchForText' . $whichSearch, g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
+				$_table->setCol($row, 0, array(), we_html_forms::checkboxWithHidden(empty($currentSearchForField['content']) ? false : true, 'searchForContent' . $whichSearch, g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
 				break;
 			case self::SEARCH_MEDIA :
-				//$_table->setCol($row++, 0, array('style' => 'padding-top: 10px'), we_html_tools::htmlAlertAttentionBox('Ohne Suchbegriff werden alle Medien-Dokumente ausgegeben.', we_html_tools::TYPE_INFO, 440));
-				$_table->setCol($row, 0, array('style' => 'width:200px;'), we_html_forms::checkboxWithHidden($currentSearchForField['text'] ? true : false, 'searchForText' . $whichSearch, g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
-				$_table->setCol($row++, 1, array(), we_html_forms::checkboxWithHidden($currentSearchForField['title'] ? true : false, 'searchForTitle' . $whichSearch, g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
-				$_table->setCol($row, 0, array(), we_html_forms::checkboxWithHidden($currentSearchForField['meta'] ? true : false, 'searchForMeta' . $whichSearch, g_l('searchtool', '[onlyMetadata]'), false, 'defaultfont', ''));
-				//$_table->setCol($row++, 1, array('style' => 'text-align:right'), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
+				$_table->setCol($row, 0, array('style' => 'width:200px;'), we_html_forms::checkboxWithHidden(empty($currentSearchForField['text']) ? false : true, 'searchForText' . $whichSearch, g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
+				$_table->setCol($row++, 1, array(), we_html_forms::checkboxWithHidden(empty($currentSearchForField['title']) ? false : true, 'searchForTitle' . $whichSearch, g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
+				$_table->setCol($row, 0, array(), we_html_forms::checkboxWithHidden(empty($currentSearchForField['meta']) ? false : true, 'searchForMeta' . $whichSearch, g_l('searchtool', '[onlyMetadata]'), false, 'defaultfont', ''));
 
 				return $_table->getHtml();
 		}
@@ -840,7 +837,7 @@ WE().consts.weSearch= {
 					 */
 					$out .= '<tr>' .
 						($makeLink ? '
-							<td style="padding-left:26px;width:410px;"><a href="javascript:' . $reference['onclick'] . '" title="' . $reference['path'] . ' (' . $reference["id"] . ')"><span style="color:' . $color . ';"><u>' . $reference['path'] . '</u></span></a></td>
+							<td style="padding-left:26px;width:410px;"><a href="javascript:' . $reference['onclick'] . '" title="ID ' . $reference["id"] . ': ' . $reference['path'] . ($reference['element'] ? ' (Element: ' . $reference['element'] . ')' : '') . '"><span style="color:' . $color . ';"><u>' . $reference['path'] . '</u> ' . ($reference['element'] ? '(Element: ' . $reference['element'] . ')' : '') . '</span></a></td>
 							<td>' . we_html_button::create_button(we_html_button::EDIT, "javascript:weSearch.openToEdit('" . $reference['table'] . "'," . $reference["id"] . ",'');", true, 27, 22) . '</td>' :
 							'<td style="padding-left:26px;width:410px;"><span style="color:' . $color . ';">' . $reference['path'] . '</span></td>
 							<td>' . we_html_button::create_button(we_html_button::EDIT, '', true, 27, 22, '', '', true, false, '', false, 'Der Link wurde bei einer unveröffentlichten Änderung entfernt: Er existiert nur noch in der veröffentlichten Version!') . '</td>') .
