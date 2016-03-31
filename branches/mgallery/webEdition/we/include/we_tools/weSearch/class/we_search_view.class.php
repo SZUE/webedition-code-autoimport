@@ -835,9 +835,10 @@ WE().consts.weSearch= {
 					}
 					 *
 					 */
+					$element = preg_replace('|NN[0-9]\]+$|', 'NN', $reference['element']);
 					$out .= '<tr>' .
 						($makeLink ? '
-							<td style="padding-left:26px;width:410px;"><a href="javascript:' . $reference['onclick'] . '" title="ID ' . $reference["id"] . ': ' . $reference['path'] . ($reference['element'] ? ' (Element: ' . $reference['element'] . ')' : '') . '"><span style="color:' . $color . ';"><u>' . $reference['path'] . '</u> ' . ($reference['element'] ? '(Element: ' . $reference['element'] . ')' : '') . '</span></a></td>
+							<td style="padding-left:26px;width:410px;"><a href="javascript:' . $reference['onclick'] . '" title="ID ' . $reference["id"] . ': ' . $reference['path'] . ($element ? ', in: ' . $reference['element'] : '') . '"><span style="color:' . $color . ';"><u>' . $reference['path'] . '</u></span></a>' . ($element ? /* '<br>' . */', in: ' . $element : '') . '</td>
 							<td>' . we_html_button::create_button(we_html_button::EDIT, "javascript:weSearch.openToEdit('" . $reference['table'] . "'," . $reference["id"] . ",'');", true, 27, 22) . '</td>' :
 							'<td style="padding-left:26px;width:410px;"><span style="color:' . $color . ';">' . $reference['path'] . '</span></td>
 							<td>' . we_html_button::create_button(we_html_button::EDIT, '', true, 27, 22, '', '', true, false, '', false, 'Der Link wurde bei einer unveröffentlichten Änderung entfernt: Er existiert nur noch in der veröffentlichten Version!') . '</td>') .

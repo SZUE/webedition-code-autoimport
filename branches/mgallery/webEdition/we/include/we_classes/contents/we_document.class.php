@@ -590,7 +590,9 @@ class we_document extends we_root{
 				case we_base_ContentTypes::WEDOCUMENT:
 				case we_base_ContentTypes::OBJECT_FILE:
 					if(!$linksReady){//FIXME: maybe move this part do we_webEditionDocument
-						foreach($this->elements as $k => $v){
+						$c = 0;
+						foreach($this->elements as $k => $v){t_e("lala", $k, $v);
+							$element = $v['type'] . '[name=' . ($k ? : 'NN' . ++$c) . ']';
 							switch(isset($v['type']) ? $v['type'] : ''){
 								case 'audio':
 								case 'binary':
@@ -600,9 +602,9 @@ class we_document extends we_root{
 								case 'quicktime':
 								case 'video':
 									if(!empty($v['bdid']) && is_numeric($v['bdid'])){
-										$this->MediaLinks[$k] = $v['bdid'];
+										$this->MediaLinks[$element] = $v['bdid'];
 									} elseif(!empty($v['dat']) && is_numeric($v['dat'])){
-										$this->MediaLinks[$k] = $v['dat'];
+										$this->MediaLinks[$element] = $v['dat'];
 									}
 									break;
 								case 'link':
@@ -616,17 +618,17 @@ class we_document extends we_root{
 									if(isset($v['dat']) && ($link = we_unserialize($v['dat'], array(), true)) && is_array($link)){
 										if(isset($link['type']) && isset($link['id']) && isset($link['img_id'])){
 											if($link['type'] === 'int' && $link['id']){
-												$this->MediaLinks[$k] = $link['id'];
+												$this->MediaLinks[$element] = $link['id'];
 											}
 											if($link['img_id']){
-												$this->MediaLinks[$k] = $link['img_id'];
+												$this->MediaLinks[$element] = $link['img_id'];
 											}
 										}
 									}
 									break;
 								default:
 									if(!empty($v['bdid'])){
-										$this->MediaLinks[$k] = $v['bdid'];
+										$this->MediaLinks[$element] = $v['bdid'];
 									}
 							}
 						}
