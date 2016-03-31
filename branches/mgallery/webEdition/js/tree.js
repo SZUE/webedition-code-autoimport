@@ -164,7 +164,7 @@ container.prototype = {
 	},
 	setSegment: function (id) {
 		var node = this.get(id);
-		node.showsegment();
+		node.prototype.showsegment();
 	},
 	drawThreeDots: function (nf, ai) {
 		return '<span class="treeKreuz kreuzungend"></span>' +
