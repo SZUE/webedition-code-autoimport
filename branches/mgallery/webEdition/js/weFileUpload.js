@@ -27,12 +27,14 @@
 		win.we_FileUpload_addListeners = true;
 	}, false);
 
+	/*
 	if (win.console) {
 		console = {
 			log: function () {
 			}
 		};
 	}
+	*/
 })(window);
 
 var weFileUpload = (function () {
