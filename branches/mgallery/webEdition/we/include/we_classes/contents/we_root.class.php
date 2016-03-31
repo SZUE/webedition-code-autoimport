@@ -1368,7 +1368,7 @@ abstract class we_root extends we_class{
 		if(!empty($this->MediaLinks)){
 			$whereType = 'AND ContentType IN ("' . we_base_ContentTypes::APPLICATION . '","' . we_base_ContentTypes::FLASH . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::QUICKTIME . '","' . we_base_ContentTypes::VIDEO . '")';
 			$this->DB_WE->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', array_unique(array_values($this->MediaLinks))) . ') ' . $whereType);
-			while($this->DB_WE->next_record()){t_e("found");
+			while($this->DB_WE->next_record()){
 				$verifiedIDs[] = $this->DB_WE->f('ID');
 			}
 		}
