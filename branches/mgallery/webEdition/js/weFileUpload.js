@@ -1808,15 +1808,19 @@ var weFileUpload = (function () {
 						return;
 					case 'fileOK' :
 						i = s.mapFiles[cur.fileNum];
-						document.getElementById('div_upload_files').scrollTop = document.getElementById('div_uploadFiles_' + i).offsetTop - 200;
+						try {
+							document.getElementById('div_upload_files').scrollTop = document.getElementById('div_uploadFiles_' + i).offsetTop - 200;
+						} catch(e){}
+
 						this.setInternalProgressCompleted(true, i, '');
 						return;
 					case 'chunkNOK' :
 						totalProg = (100 / s.totalWeight) * s.currentWeight;
 						i = s.mapFiles[cur.fileNum];
 						j = i + 1;
-
-						document.getElementById('div_upload_files').scrollTop = document.getElementById('div_uploadFiles_' + i).offsetTop - 200;
+						try {
+							document.getElementById('div_upload_files').scrollTop = document.getElementById('div_uploadFiles_' + i).offsetTop - 200;
+						} catch(e){}
 						this.setInternalProgressCompleted(false, i, arg.message);
 						if (cur.partNum === 1) {
 							this.elems.footer.setProgressText('progress_title', _.utils.gl.doImport + ' ' + _.utils.gl.file + ' ' + j);
@@ -1832,14 +1836,17 @@ var weFileUpload = (function () {
 						this.isUploadEnabled = false;
 						this.elems.footer.document.getElementById('progressbar').style.display = '';
 						this.elems.footer.setProgressText('progress_title', _.utils.gl.doImport + ' ' + _.utils.gl.file + ' 1');
-						//scroll to top of files list
-						document.getElementById('div_upload_files').scrollTop = 0;
+						try {
+							document.getElementById('div_upload_files').scrollTop = 0;
+						} catch(e){}
+
 						return;
 					case 'cancelUpload' :
 						i = s.mapFiles[cur.fileNum];
 						this.setInternalProgressCompleted(false, s.mapFiles[cur.fileNum], _.utils.gl.cancelled);
-						document.getElementById('div_upload_files').scrollTop = document.getElementById('div_uploadFiles_' + i).offsetTop - 200;
-
+						try {
+							document.getElementById('div_upload_files').scrollTop = document.getElementById('div_uploadFiles_' + i).offsetTop - 200;
+						} catch(e){}
 						for (j = 0; j < s.uploadFiles.length; j++) {
 							var file = s.uploadFiles[j];
 							this.setInternalProgressCompleted(false, s.mapFiles[file.fileNum], _.utils.gl.cancelled);
@@ -1849,7 +1856,9 @@ var weFileUpload = (function () {
 						_.controller.setWeButtonState('browse_harddisk_btn', true);
 						return;
 					case 'resetGui' :
-						document.getElementById('td_uploadFiles').innerHTML = '';
+						try {
+							document.getElementById('td_uploadFiles').innerHTML = '';
+						} catch(e){}
 						_.sender.preparedFiles = [];
 						this.nextTitleNr = 1;
 						this.isUploadEnabled = false;
