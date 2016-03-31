@@ -801,13 +801,14 @@ WE().consts.weSearch= {
 		if(!empty($groups)){
 			$out = '<table style="font-weight:normal; background-color:#fafafa;width:480px"><tr><td colspan="2" style="padding:4px 0 0 6px;"><strong>Dieses Medien-Dokument wird an folgenden Stellen referenziert:</stong></td></tr>'; // FIXME: G_L()
 			foreach($groups as $group){
-				$numNotaccessible = count($notaccessibles[$group]);
-				$numAccessibles = count($accessibles[$group]);
+				$numNotaccessible = isset($notaccessibles[$group]) && is_array($notaccessibles[$group]) ?  count($notaccessibles[$group]) : 0;
+				$numAccessibles = isset($accessibles[$group]) && is_array($accessibles[$group]) ?  count($accessibles[$group]) : 0;
 				$out .= '<tr><td style="padding:4px 0 0 6px;"><em>' . $group . ' [' . ($numNotaccessible + $numAccessibles) . ($numNotaccessible ? ', davon ' . $numNotaccessible . ' nicht ' . g_l('weClass', '[medialinks_unaccessible]') : '') . ']:</em></td></tr>';
 
-				$references = $accessibles[$group];
-				$limit = 5;
+				$references = isset($accessibles[$group]) && is_array($accessibles[$group]) ? $accessibles[$group] : array();
+				$limit = 20;
 				$c = 0;
+
 				foreach($references as $reference){
 					if($c++ >= $limit){
 						$out .= '<tr><td style="padding-left:26px;width:410px;">[ + ' . ($numAccessibles - $limit) . ' ' . g_l('weClass', '[medialinks_more]') . ' ]</td></tr>';

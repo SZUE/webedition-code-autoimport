@@ -349,26 +349,26 @@ class we_binaryDocument extends we_document{
 		$search = new we_search_search();
 		$search->searchMediaLinks(0, true, $this->ID);
 		$ml = $search->getUsedMediaLinks();
-		$accessibles = isset($ml['accessible']['mediaID_' . $this->ID]) ? $ml['accessible']['mediaID_' . $this->ID] : array(); //IMPORTANT: we hava a nested structure: make optgroups
+		$accessibles = isset($ml['accessible']['mediaID_' . $this->ID]) ? $ml['accessible']['mediaID_' . $this->ID] : array();
 		$notaccessibles = isset($ml['notaccessible']['mediaID_' . $this->ID]) ? $ml['notaccessible']['mediaID_' . $this->ID] : array();
 		$groups = isset($ml['groups']['mediaID_' . $this->ID]) ? $ml['groups']['mediaID_' . $this->ID] : array();
 
 		if(empty($groups)){
-			return g_l('weClass', '[notReferenced]');
+			return array('form' => g_l('weClass', '[notReferenced]'), 'num' => 0);
 		}
 
 		$js = "";
 		$values = array();
 		$c = 0;
 		$num = 0;
-		$limit=10;
+		$limit=20;
 		foreach($groups as $group){
-			$cna = count($notaccessibles[$group]);
-			$ca = count($accessibles[$group]) + $cna;
+			$cna = isset($notaccessibles[$group]) && is_array($notaccessibles[$group]) ? count($notaccessibles[$group]) : 0;
+			$ca = (isset($accessibles[$group]) && is_array($accessibles[$group]) ? count($accessibles[$group]) : 0) + $cna;
 			$num += $ca;
 			$values[$group . ' (' . ($ca) . ($cna ? ', davon ' . $cna . ' ' . g_l('weClass', '[medialinks_unaccessible]') . '' : '') . ')'] = we_html_tools::OPTGROUP;
 			$cc = 0;
-			foreach($accessibles[$group] as $v){
+			foreach((isset($accessibles[$group]) && is_array($accessibles[$group]) ? $accessibles[$group] : array()) as $v){
 				if($cc++ >= $limit){
 					$values[-1] = '[ + ' . (count($accessibles[$group]) - $limit) . ' ' . g_l('weClass', '[medialinks_more]') . ' ]';
 					break;
