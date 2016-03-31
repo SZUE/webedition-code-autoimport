@@ -75,14 +75,12 @@ class we_selector_document extends we_selector_directory{
 		if($this->filter){
 			if(strpos($this->filter, ',')){
 				$contentTypes = explode(',', $this->filter);
-				$filterQuery .= ' AND (  ' .
-					($contentTypes ? 'ContentType IN ("' . implode('","', $contentTypes) . '")' : '') .
+				$filterQuery .= ' AND (  ' . ($contentTypes ? 'ContentType IN ("' . implode('","', $contentTypes) . '") AND ' : '') .
 					' isFolder=1)';
 			} else {
 				$filterQuery = ' AND (ContentType="' . $this->db->escape($this->filter) . '" OR IsFolder=1 ) ';
 			}
 		}
-
 		// deal with workspaces
 		$wsQuery = '';
 		if(permissionhandler::hasPerm('ADMINISTRATOR') || ($this->table == FILE_TABLE && permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_FILES')) || (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE && permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_FILES'))){
