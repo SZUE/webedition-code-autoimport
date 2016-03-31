@@ -472,7 +472,7 @@ class we_document extends we_root{
 			case TEMPLATES_TABLE:
 				if(!isset($GLOBALS['WE_IS_DYN'])){
 					if(($ws = get_ws($this->Table, true))){
-						$this->setParentID(intval($ws[0]));
+						$this->setParentID(intval(reset($ws)));
 					}
 				}
 		}

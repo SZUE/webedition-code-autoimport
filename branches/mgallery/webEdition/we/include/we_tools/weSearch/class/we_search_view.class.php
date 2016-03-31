@@ -814,7 +814,7 @@ WE().consts.weSearch= {
 						$out .= '<tr><td style="padding-left:26px;width:410px;">[ + ' . ($numAccessibles - $limit) . ' ' . g_l('weClass', '[medialinks_more]') . ' ]</td></tr>';
 						break;
 					}
-					
+
 					$color = 'black';
 					$makeLink = true;
 					// FIXME: establishing document state is buggy
@@ -836,7 +836,7 @@ WE().consts.weSearch= {
 								$color = 'red';
 							}
 					}
-					 * 
+					 *
 					 */
 					$out .= '<tr>' .
 						($makeLink ? '
