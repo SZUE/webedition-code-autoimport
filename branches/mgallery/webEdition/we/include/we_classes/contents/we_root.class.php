@@ -1361,7 +1361,9 @@ abstract class we_root extends we_class{
 	}
 
 	function registerMediaLinks($temp = false){
-		$this->MediaLinks = array_filter($this->MediaLinks, function($v) {return $v && is_numeric($v);});
+		$this->MediaLinks = array_filter($this->MediaLinks, function($v){
+			return $v && is_numeric($v);
+		});
 
 		// filter MediaLinks by media contenttype
 		$verifiedIDs = array();
@@ -1378,9 +1380,9 @@ abstract class we_root extends we_class{
 			return true;
 		}
 
-		$ret = true;
+		$sets = array();
 		foreach($this->MediaLinks as $k => $remObj){
-			$ret &= $this->DB_WE->query('REPLACE INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
+			$sets[] = we_database_base::arraySetter(array(
 					'ID' => $this->ID,
 					'DocumentTable' => stripTblPrefix($this->Table),
 					'type' => 'media',
@@ -1389,10 +1391,13 @@ abstract class we_root extends we_class{
 					'element' => !is_numeric($k) ? $k : '',
 					'position' => 0,
 					'isTemp' => $temp ? 1 : 0
-			)));
+			));
+		}
+		if($sets){
+			return $this->DB_WE->query('REPLACE INTO ' . FILELINK_TABLE . ' VALUES ' . implode(',', $sets));
 		}
 
-		return $ret;
+		return true;
 	}
 
 	function unregisterMediaLinks($delPublished = true, $delTemp = true){

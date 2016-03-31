@@ -365,7 +365,7 @@ if (window.screen) {
 
 		// Create Cache Directory if it not exists
 		if(!is_dir(dirname($cacheFilename))){
-			if(!we_base_file::createLocalFolder(dirname($cacheFilename))){
+			if(!we_base_file::createLocalFolderByPath(dirname($cacheFilename))){
 				return false;
 			}
 		}

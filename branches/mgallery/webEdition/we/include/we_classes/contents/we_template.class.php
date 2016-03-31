@@ -751,13 +751,11 @@ we_templateInit();?>';
 			$this->doUpdateCode = false;
 		}
 		$_ret = parent::we_save($resave);
-
 		if($_ret){
 			$tmplPathWithTmplExt = parent::getRealPath();
 			if(file_exists($tmplPathWithTmplExt)){
 				unlink($tmplPathWithTmplExt);
 			}
-
 			$this->unregisterMediaLinks();
 			$_ret = $this->registerMediaLinks();
 		} else {
@@ -765,7 +763,6 @@ we_templateInit();?>';
 		}
 
 		$this->setElement('allVariants', we_unserialize($this->getElement('allVariants')), 'variants');
-
 		return $_ret;
 	}
 
@@ -794,7 +791,7 @@ we_templateInit();?>';
 		$tp = new we_tag_tagParser($this->getTemplateCode());
 		$c = 0;
 		foreach($tp->getTagsWithAttributes() as $tag){
-			$element = $tag['name'] . '[name=' . ($tag['attribs']['name'] ? : 'NN' . ++$c) . ']';
+			$element = $tag['name'] . '[name=' . (isset($tag['attribs']['name']) ? $tag['attribs']['name'] : 'NN' . ++$c) . ']';
 			switch($tag['name']){
 				case 'icon':
 				case 'img':
@@ -859,7 +856,6 @@ we_templateInit();?>';
 				//
 			}
 		}
-
 		return (empty($this->MediaLinks) ?
 				true :
 				parent::registerMediaLinks(false, true));

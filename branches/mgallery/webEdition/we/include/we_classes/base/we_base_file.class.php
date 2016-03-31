@@ -328,7 +328,12 @@ abstract class we_base_file{
 		umask($umask);
 		return true;
 	}
-
+	/**
+	 * @deprecated since version 7.0
+	 * @param type $RootDir
+	 * @param type $path
+	 * @return type
+	 */
 	public static function createLocalFolder($RootDir, $path = ''){
 		return self::createLocalFolderByPath($RootDir . $path);
 	}

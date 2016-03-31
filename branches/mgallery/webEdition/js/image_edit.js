@@ -21,11 +21,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-document.onkeyup = function(e) {
-	e = (event !== undefined) ? event : e;
+document.onkeyup = function (e) {
 	if (e.keyCode == 13) {
 		doOK();
-	} else if(e.keyCode == 27) {
+	} else if (e.keyCode == 27) {
 		top.close();
 	}
 };
@@ -37,19 +36,16 @@ function isSpecialKey(key) {
 function we_switchPixelPercent(inp, sel) {
 
 	if (sel.options[sel.selectedIndex].value == "pixel") {
-		if (inp.name == "width") {
-			inp.value = Math.round((width / 100) * inp.value);
-		} else {
-			inp.value = Math.round((height / 100) * inp.value);
-		}
+		inp.value = (inp.name == "width" ?
+						Math.round((width / 100) * inp.value) :
+						Math.round((height / 100) * inp.value)
+						);
 	} else {
-		if (inp.name == "width") {
-			inp.value = Math.round(100 * (100 / width) * inp.value) / 100.0;
-		} else {
-			inp.value = Math.round(100 * (100 / height) * inp.value) / 100.0;
-		}
+		inp.value = (inp.name == "width" ?
+						Math.round(100 * (100 / width) * inp.value) / 100.0 :
+						Math.round(100 * (100 / height) * inp.value) / 100.0
+						);
 	}
-
 }
 
 function we_keep_ratio(inp, sel) {

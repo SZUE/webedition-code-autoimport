@@ -642,8 +642,9 @@ abstract class we_database_base{
 	/**
 	 * is a handy setter, for executing `a`="\"b\"" set from an assoc array
 	 * @param type $arr
+	 * @param forValues set to true if used in VALUES (...)
 	 */
-	static function arraySetter(array $arr, $imp = ','){
+	static function arraySetter(array $arr, $imp = ',', $forValues = false){
 		$ret = array();
 		foreach($arr as $key => $val){
 			if($key === ''){
@@ -659,9 +660,9 @@ abstract class we_database_base{
 
 			$val = (is_bool($val) ? intval($val) : $val);
 			//we must escape int-values since the value might be an enum element
-			$ret[] = '`' . $key . '`=' . ($escape ? '"' . escape_sql_query($val) . '"' : $val);
+			$ret[] = ($forValues ? '' : '`' . $key . '`=' ) . ($escape ? '"' . escape_sql_query($val) . '"' : $val);
 		}
-		return implode($imp, $ret);
+		return ($forValues ? '(' : '') . implode($imp, $ret) . ($forValues ? ')' : '');
 	}
 
 	/* public: return table metadata */
