@@ -28,15 +28,6 @@ class we_newsletter_tree extends weTree{
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_tree.js');
 	}
 
-	private static function getQueryParents($path){
-		$out = '';
-		while($path != '/' && $path != '\\' && $path){
-			$out .= 'Path="' . $path . '" OR ';
-			$path = dirname($path);
-		}
-		return ($out ? substr($out, 0, strlen($out) - 3) : '');
-	}
-
 	public static function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,IsFolder', $addWhere = '', $addOrderBy = ''){
 		$db = new DB_WE();
 		$table = NEWSLETTER_TABLE;
@@ -47,7 +38,7 @@ class we_newsletter_tree extends weTree{
 		if(($ws = get_ws($table))){
 			$wsPathArray = id_to_path($ws, $table, $db, true);
 			foreach($wsPathArray as $path){
-				$_aWsQuery[] = ' Path LIKE "' . $path . '/%" OR ' . self::getQueryParents($path);
+				$_aWsQuery[] = ' Path LIKE "' . $path . '/%" OR ' . we_tool_treeDataSource::getQueryParents($path);
 				while($path != "/" && $path != "\\" && $path){
 					$parentpaths[] = $path;
 					$path = dirname($path);

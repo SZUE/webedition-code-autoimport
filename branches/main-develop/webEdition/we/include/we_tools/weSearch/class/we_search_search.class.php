@@ -479,6 +479,7 @@ class we_search_search extends we_search_base{
 			'temp_template_id' => g_l('searchtool', '[temp_template_id]'),
 			'MasterTemplateID' => g_l('searchtool', '[MasterTemplateID]'),
 			'ContentType' => g_l('searchtool', '[ContentType]'),
+			//'HasReferenceToID' => 'Refernziert Medium', => deactivated
 			//'temp_doc_type' => g_l('searchtool', '[temp_doc_type]'),
 			'temp_category' => g_l('searchtool', '[temp_category]'),
 			'CreatorID' => g_l('searchtool', '[CreatorID]'),
@@ -509,12 +510,14 @@ class we_search_search extends we_search_base{
 			unset($tableFields['Status']);
 			unset($tableFields['Speicherart']);
 			unset($tableFields['Published']);
+			unset($tableFields['HasReferenceToID']);
 		} elseif($whichSearch === we_search_view::SEARCH_DOCLIST){
 			unset($tableFields['Path']);
 			unset($tableFields['ParentIDDoc']);
 			unset($tableFields['ParentIDObj']);
 			unset($tableFields['ParentIDTmpl']);
 			unset($tableFields['MasterTemplateID']);
+			unset($tableFields['HasReferenceToID']);
 		}
 
 		if(!permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
@@ -1087,7 +1090,7 @@ class we_search_search extends we_search_base{
 		$useState = intval($useState);
 		$this->usedMedia = $this->usedMediaLinks = $tmpMediaLinks = $groups = $paths = array();
 
-		$fields = $holdAllLinks ? 'ID,DocumentTable,remObj,isTemp' : 'DISTINCT remObj';
+		$fields = $holdAllLinks ? 'ID,DocumentTable,remObj,isTemp,element' : 'DISTINCT remObj';
 		$db->query('SELECT ' . $fields . ' FROM ' . FILELINK_TABLE . ' WHERE type="media" AND remTable="' . stripTblPrefix(FILE_TABLE) . '" ' . ($inIDs ? 'AND remObj IN (' . trim($db->escape($inIDs), ',') . ')' : '') . ' AND position=0');
 
 		if($holdAllLinks){
@@ -1107,7 +1110,7 @@ class we_search_search extends we_search_base{
 
 			while($db->next_record()){
 				$rec = $db->getRecord();
-				$tmpMediaLinks[$rec['remObj']][] = array($rec['ID'], $rec['DocumentTable'], $rec['isTemp']);
+				$tmpMediaLinks[$rec['remObj']][] = array($rec['ID'], $rec['DocumentTable'], $rec['isTemp'], $rec['element']);
 				$groups[$rec['DocumentTable']][] = $rec['ID'];
 				$this->usedMedia[] = $rec['remObj'];
 			}
@@ -1197,13 +1200,14 @@ class we_search_search extends we_search_base{
 				$this->usedMediaLinks['accessible']['mediaID_' . $m_id] = array();
 				$this->usedMediaLinks['notaccessible']['mediaID_' . $m_id] = array();
 				foreach($v as $val){// FIXME: table, ct are obsolete when onclick works
-					if(!isset($this->usedMediaLinks['accessible']['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0]])){
+					if(!isset($this->usedMediaLinks['accessible']['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0] . $val[3]])){
 						if(isset($accessible[$val[1]][$val[0]])){
-							$this->usedMediaLinks['accessible']['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0]] = array(
+							$this->usedMediaLinks['accessible']['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0] . $val[3]] = array(
 								'exists' => isset($accessible[$val[1]][$val[0]]),
 								'referencedIn' => intval($val[2]) === 0 ? 'main' : 'temp',
 								'isTempPossible' => $isTmpPossible[$val[1]][$val[0]],
 								'id' => $val[0],
+								'element' => $val[3],
 								'type' => isset($type[$val[1]][$val[0]]) ? $type[$val[1]][$val[0]] : '',
 								'table' => addTblPrefix($val[1]),
 								'ct' => isset($ct[$val[1]][$val[0]]) ? $ct[$val[1]][$val[0]] : '',
@@ -1214,10 +1218,10 @@ class we_search_search extends we_search_base{
 								'isUnpublished' => isset($isUnpublished[$val[1]][$val[0]]) ? $isUnpublished[$val[1]][$val[0]] : false
 							);
 						} else {
-							$this->usedMediaLinks['notaccessible']['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0]] = true;
+							$this->usedMediaLinks['notaccessible']['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0] . $val[3]] = true;
 						}
 					} else {
-						$this->usedMediaLinks['accessible']['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0]]['referencedIn'] = 'both';
+						$this->usedMediaLinks['accessible']['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0] . $val[3]]['referencedIn'] = 'both';
 					}
 				}
 

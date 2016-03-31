@@ -23,8 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_parse_tag_orderitem($attribs, $content){
-	return '<?php global $lv;
-		if(' . we_tag_tagParser::printTag('orderitem', $attribs) . '){?>' . $content . '<?php }
+	return '<?php ' . (strpos($content, '$lv') !== false ? 'global $lv;' : '') .
+		'if(' . we_tag_tagParser::printTag('orderitem', $attribs) . '){?>' . $content . '<?php }
 		we_post_tag_listview(); ?>';
 }
 

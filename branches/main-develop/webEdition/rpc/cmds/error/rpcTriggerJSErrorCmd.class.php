@@ -29,6 +29,11 @@ class rpcTriggerJSErrorCmd extends we_rpc_cmd{
 			$file = empty($_REQUEST['we_cmd']['file']) ? '' : $_REQUEST['we_cmd']['file'];
 			$line = empty($_REQUEST['we_cmd']['line']) ? 0 : $_REQUEST['we_cmd']['line'];
 			unset($_REQUEST['we_cmd']['file'], $_REQUEST['we_cmd']['line']);
+			$br = we_base_browserDetect::inst();
+			$_REQUEST['we_cmd']['detected'] = array(
+				'Browser' => $br->getBrowser() . ' ' . $br->getBrowserVersion(),
+				'System' => $br->getSystem(),
+			);
 			$data = print_r($_REQUEST['we_cmd'], true);
 			unset($_REQUEST);
 			log_error_message(E_JS, $data, $file, $line, true);

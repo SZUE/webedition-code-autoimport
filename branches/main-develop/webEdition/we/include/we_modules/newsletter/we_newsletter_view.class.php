@@ -1642,7 +1642,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 
 	function saveToCache($content, $filename){
 		if(!is_dir(WE_NEWSLETTER_CACHE_DIR)){
-			we_base_file::createLocalFolder(WE_NEWSLETTER_CACHE_DIR);
+			we_base_file::createLocalFolderByPath(WE_NEWSLETTER_CACHE_DIR);
 		}
 
 		return we_base_file::save(WE_NEWSLETTER_CACHE_DIR . basename($filename), $content);

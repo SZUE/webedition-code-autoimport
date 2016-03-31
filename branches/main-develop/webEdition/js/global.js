@@ -30,6 +30,7 @@
 // this function is universal function for all messages in webEdition
 function WE() {
 	if (top === null || top === undefined) {
+		console.log("webedition (top) not found");
 		return false;
 	}
 	if (top.WebEdition !== undefined) {
@@ -38,19 +39,19 @@ function WE() {
 	if (top.window.WebEdition !== undefined) {
 		return top.window.WebEdition;
 	}
-	if (top.opener && top.opener.top) {
-		if (top.opener.top.WebEdition !== undefined) {
-			return top.opener.top.WebEdition;
-		}
-		if (top.opener.top.opener && top.opener.top.opener.top) {
-			if (top.opener.top.opener.top.WebEdition !== undefined) {
-				return top.opener.top.opener.top.WebEdition;
+	var cur = top;
+	for (var i = 0; i < 10; i++) {
+		cur = cur.top.opener;
+		if (cur && cur.top) {
+			if (cur.top.WebEdition) {
+				return cur.top.WebEdition;
 			}
-			if (top.opener.top.opener.top.opener && top.opener.top.opener.top.opener.top && top.opener.top.opener.top.opener.top.WebEdition !== undefined) {
-				return top.opener.top.opener.top.opener.top.WebEdition;
-			}
+		} else {
+			return false;
 		}
 	}
+
+	console.log("webedition (final) not found");
 	return false;
 }
 

@@ -397,31 +397,31 @@ class we_document extends we_root{
 	}
 
 	function addLinkToLinklist($name){
-		$ll = new we_base_linklist($this->getElement($name));
+		$ll = new we_base_linklist(we_unserialize($this->getElement($name)));
 		$ll->addLink();
 		$this->setElement($name, $ll->getString(), 'linklist');
 	}
 
 	function upEntryAtLinklist($name, $nr){
-		$ll = new we_base_linklist($this->getElement($name));
+		$ll = new we_base_linklist(we_unserialize($this->getElement($name)));
 		$ll->upLink($nr);
 		$this->setElement($name, $ll->getString(), 'linklist');
 	}
 
 	function downEntryAtLinklist($name, $nr){
-		$ll = new we_base_linklist($this->getElement($name));
+		$ll = new we_base_linklist(we_unserialize($this->getElement($name)));
 		$ll->downLink($nr);
 		$this->setElement($name, $ll->getString(), 'linklist');
 	}
 
 	function insertLinkAtLinklist($name, $nr){
-		$ll = new we_base_linklist($this->getElement($name));
+		$ll = new we_base_linklist(we_unserialize($this->getElement($name)));
 		$ll->insertLink($nr);
 		$this->setElement($name, $ll->getString(), 'linklist');
 	}
 
 	function removeLinkFromLinklist($name, $nr, $names = ''){
-		$ll = new we_base_linklist($this->getElement($name));
+		$ll = new we_base_linklist(we_unserialize($this->getElement($name)));
 		$ll->removeLink($nr, $names, $name);
 		$this->setElement($name, $ll->getString(), 'linklist');
 	}
@@ -472,7 +472,7 @@ class we_document extends we_root{
 			case TEMPLATES_TABLE:
 				if(!isset($GLOBALS['WE_IS_DYN'])){
 					if(($ws = get_ws($this->Table, true))){
-						$this->setParentID(intval($ws[0]));
+						$this->setParentID(intval(reset($ws)));
 					}
 				}
 		}
@@ -590,7 +590,9 @@ class we_document extends we_root{
 				case we_base_ContentTypes::WEDOCUMENT:
 				case we_base_ContentTypes::OBJECT_FILE:
 					if(!$linksReady){//FIXME: maybe move this part do we_webEditionDocument
-						foreach($this->elements as $k => $v){
+						$c = 0;
+						foreach($this->elements as $k => $v){t_e("lala", $k, $v);
+							$element = $v['type'] . '[name=' . ($k ? : 'NN' . ++$c) . ']';
 							switch(isset($v['type']) ? $v['type'] : ''){
 								case 'audio':
 								case 'binary':
@@ -600,9 +602,9 @@ class we_document extends we_root{
 								case 'quicktime':
 								case 'video':
 									if(!empty($v['bdid']) && is_numeric($v['bdid'])){
-										$this->MediaLinks[] = $v['bdid'];
+										$this->MediaLinks[$element] = $v['bdid'];
 									} elseif(!empty($v['dat']) && is_numeric($v['dat'])){
-										$this->MediaLinks[] = $v['dat'];
+										$this->MediaLinks[$element] = $v['dat'];
 									}
 									break;
 								case 'link':
@@ -616,17 +618,17 @@ class we_document extends we_root{
 									if(isset($v['dat']) && ($link = we_unserialize($v['dat'], array(), true)) && is_array($link)){
 										if(isset($link['type']) && isset($link['id']) && isset($link['img_id'])){
 											if($link['type'] === 'int' && $link['id']){
-												$this->MediaLinks[] = $link['id'];
+												$this->MediaLinks[$element] = $link['id'];
 											}
 											if($link['img_id']){
-												$this->MediaLinks[] = $link['img_id'];
+												$this->MediaLinks[$element] = $link['img_id'];
 											}
 										}
 									}
 									break;
 								default:
 									if(!empty($v['bdid'])){
-										$this->MediaLinks[] = $v['bdid'];
+										$this->MediaLinks[$element] = $v['bdid'];
 									}
 							}
 						}

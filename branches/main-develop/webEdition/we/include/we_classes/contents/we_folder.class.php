@@ -371,9 +371,9 @@ class we_folder extends we_root{
 	function editor(){
 		/*
 		 * if($we_Table == FILE_TABLE && $we_ContentType === we_base_ContentTypes::FOLDER && $we_ID){
-	$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_DOCLIST;
-	$_SESSION['weS']['EditPageNr'] = getTabs($we_doc->ClassName, we_base_constants::WE_EDITPAGE_DOCLIST);
-}
+		  $we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_DOCLIST;
+		  $_SESSION['weS']['EditPageNr'] = getTabs($we_doc->ClassName, we_base_constants::WE_EDITPAGE_DOCLIST);
+		  }
 		 */
 		switch($this->EditPageNr){
 			default:
@@ -567,7 +567,7 @@ class we_folder extends we_root{
 			case FILE_TABLE:
 				$path = $this->getPath();
 				// creates the folder on the local machine in the root-dir
-				if(!we_base_file::createLocalFolder(($isTemplFolder ? TEMPLATES_PATH : $_SERVER['DOCUMENT_ROOT']), $path)){
+				if(!we_base_file::createLocalFolderByPath(($isTemplFolder ? TEMPLATES_PATH : $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '..') . $path)){
 					return false;
 				}
 				if(!$isTemplFolder && $this->urlMap){
@@ -580,7 +580,7 @@ class we_folder extends we_root{
 				}
 
 				// creates the folder on the local machine in the root-dir+site-dir
-				if(!$isTemplFolder && !we_base_file::createLocalFolder($_SERVER['DOCUMENT_ROOT'] . SITE_DIR, $path)){
+				if(!$isTemplFolder && !we_base_file::createLocalFolderByPath($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $path)){
 					return false;
 				}
 			default:

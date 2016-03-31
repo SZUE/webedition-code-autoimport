@@ -1341,15 +1341,15 @@ function comparePwd(f1,f2){
 			),
 			array(
 				array(null, $this->getUserfield('Tel_preselection', 'tel_pre')),
-				array(null, $this->getUserfield('Telephone', 'telephone'))
+				array(null, $this->getUserfield('Telephone', 'telephone', 'tel'))
 			),
 			array(
 				array(null, $this->getUserfield('Fax_preselection', 'fax_pre')),
-				array(null, $this->getUserfield('Fax', 'fax'))
+				array(null, $this->getUserfield('Fax', 'fax', 'tel'))
 			),
 			array(
 				array(null, $this->getUserfield('Handy', 'mobile')),
-				array(null, $this->getUserfield('Email', 'email'))
+				array(null, $this->getUserfield('Email', 'email', 'email', 255, false, 'required="required"'))
 			),
 			array(
 				array(array('colspan' => 2), we_html_tools::htmlFormElementTable($_description, g_l('modules_users', '[description]')))
@@ -1365,7 +1365,7 @@ function comparePwd(f1,f2){
 		);
 
 
-		$_username = $this->getUserfield('username', 'username', 'text', 255, false, 'id="yuiAcInputPathName" onblur="parent.frames[0].weTabs.setTitlePath(this.value);"');
+		$_username = $this->getUserfield('username', 'username', 'text', 255, false, 'id="yuiAcInputPathName" onblur="parent.frames[0].weTabs.setTitlePath(this.value);" required="required"');
 
 		$_password = '<div id="badPwd" style="display:none;" class="arrow_box">' . g_l('global', '[pass_to_short]') . '</div>' .
 			(!empty($_SESSION['user']['ID']) && $_SESSION['user']['ID'] == $this->ID && !permissionhandler::hasPerm('EDIT_PASSWD') ?

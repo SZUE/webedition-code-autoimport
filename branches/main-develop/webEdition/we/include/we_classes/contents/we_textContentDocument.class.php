@@ -417,7 +417,7 @@ abstract class we_textContentDocument extends we_textDocument{
 			$parent = str_replace('\\', '/', dirname($parent));
 		}
 		for($i = (count($cf) - 1); $i >= 0; $i--){
-			we_base_file::createLocalFolder($cf[$i]);
+			we_base_file::createLocalFolderByPath($cf[$i]);
 		}
 		$doc = $this->i_getDocumentToSave();
 		return parent::i_writeMainDir($doc);

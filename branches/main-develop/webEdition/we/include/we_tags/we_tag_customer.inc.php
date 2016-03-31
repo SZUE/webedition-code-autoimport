@@ -28,8 +28,8 @@ function we_parse_tag_customer($attribs, $content, array $arr){
 		return parseError(sprintf(g_l('parser', '[name_with_space]'), 'customer'));
 	}
 
-	return '<?php global $lv;
-		if(' . we_tag_tagParser::printTag('customer', $attribs) . '){?>' . $content . '<?php }
+	return '<?php ' . (strpos($content, '$lv') !== false ? 'global $lv;' : '') .
+		'if(' . we_tag_tagParser::printTag('customer', $attribs) . '){?>' . $content . '<?php }
 		we_post_tag_listview(); ?>';
 }
 

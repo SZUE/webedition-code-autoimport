@@ -462,7 +462,7 @@ FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->DB_WE, MYSQL_ASSOC)
 	}
 
 	function makeFieldCondition($name, $operation, $value){
-		return (strpos($name, 'WE_') == 0) ? //Fix: #9389
+		return (strpos($name, 'WE_') === 0) ? //Fix: #9389
 			'(' . FILE_TABLE . '.' . substr($name, 3) . ' ' . $operation . ' ' . $value . ')' :
 			'(l.nHash=x\'' . md5($name) . '\' AND c.Dat ' . $operation . ' ' . $value . ')';
 	}

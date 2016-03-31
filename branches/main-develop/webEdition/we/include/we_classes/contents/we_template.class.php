@@ -427,7 +427,7 @@ we_templateInit();?>';
 		foreach($tags as $tag){
 			if(preg_match('|<we:([^> /]+)|i', $tag, $regs)){ // starttag found
 				$tagname = $regs[1];
-				if(preg_match('|name="([^"]+)"|i', $tag, $regs) && ($tagname != 'var') && ($tagname != 'field')){ // name found
+				if(preg_match('|\sname="([^"]+)"|i', $tag, $regs) && ($tagname != 'var') && ($tagname != 'field')){ // name found
 					$name = $regs[1];
 
 					if(!empty($blocks)){
@@ -444,9 +444,9 @@ we_templateInit();?>';
 						}
 					}
 
-					$att = we_tag_tagParser::makeArrayFromAttribs(str_ireplace('<we:' . $tagname, '', $tag));
 
 					if(in_array($tagname, $variant_tags)){
+						$att = we_tag_tagParser::makeArrayFromAttribs(str_ireplace('<we:' . $tagname, '', $tag));
 						if($tagname === 'input' && isset($att['type']) && $att['type'] === 'date' && !$includedatefield){
 							// do nothing
 						} else {
@@ -751,13 +751,11 @@ we_templateInit();?>';
 			$this->doUpdateCode = false;
 		}
 		$_ret = parent::we_save($resave);
-
 		if($_ret){
 			$tmplPathWithTmplExt = parent::getRealPath();
 			if(file_exists($tmplPathWithTmplExt)){
 				unlink($tmplPathWithTmplExt);
 			}
-
 			$this->unregisterMediaLinks();
 			$_ret = $this->registerMediaLinks();
 		} else {
@@ -765,7 +763,6 @@ we_templateInit();?>';
 		}
 
 		$this->setElement('allVariants', we_unserialize($this->getElement('allVariants')), 'variants');
-
 		return $_ret;
 	}
 
@@ -792,7 +789,9 @@ we_templateInit();?>';
 
 	function registerMediaLinks($temp = false, $linksReady = false){
 		$tp = new we_tag_tagParser($this->getTemplateCode());
+		$c = 0;
 		foreach($tp->getTagsWithAttributes() as $tag){
+			$element = $tag['name'] . '[name=' . (isset($tag['attribs']['name']) ? $tag['attribs']['name'] : 'NN' . ++$c) . ']';
 			switch($tag['name']){
 				case 'icon':
 				case 'img':
@@ -800,27 +799,27 @@ we_templateInit();?>';
 				case 'quicktime':
 				case 'video':
 					if(isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
-						$this->MediaLinks[] = intval($tag['attribs']['id']);
+						$this->MediaLinks[$element] = intval($tag['attribs']['id']);
 					}
 					break;
 				case 'url':
 					if(isset($tag['attribs']['type']) && $tag['attribs']['type'] === 'document' &&
 						isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
-						$this->MediaLinks[] = intval($tag['attribs']['id']);
+						$this->MediaLinks[$element] = intval($tag['attribs']['id']);
 					}
 					break;
 				case 'link':
 					if(isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
-						$this->MediaLinks[] = intval($tag['attribs']['id']);
+						$this->MediaLinks[$element] = intval($tag['attribs']['id']);
 					}
 					if(isset($tag['attribs']['imageid']) && is_numeric($tag['attribs']['imageid'])){
-						$this->MediaLinks[] = intval($tag['attribs']['imageid']);
+						$this->MediaLinks[$element] = intval($tag['attribs']['imageid']);
 					}
 					break;
 				case 'sessionfield':
 					if(isset($tag['attribs']['type']) && $tag['attribs']['type'] === 'img' &&
 						isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
-						$this->MediaLinks[] = intval($tag['attribs']['id']);
+						$this->MediaLinks[$element] = intval($tag['attribs']['id']);
 					}
 					break;
 
@@ -829,16 +828,16 @@ we_templateInit();?>';
 				case 'linkToSeeMode':// selector: text/webEdition only
 				case 'metadata':// selector: text/webEdition only
 					if(isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
-						$this->MediaLinks[] = intval($tag['attribs']['id']);
+						$this->MediaLinks[$element] = intval($tag['attribs']['id']);
 					}
 					break;
 				case 'include': //nur type=document: id, path
 					if(isset($tag['attribs']['type']) && $tag['attribs']['type'] === 'document'){
 						if(isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
-							$this->MediaLinks[] = intval($tag['attribs']['id']); // selector: text/webEdition only
+							$this->MediaLinks[$element] = intval($tag['attribs']['id']); // selector: text/webEdition only
 						}
 						if(isset($tag['attribs']['path']) && $tag['attribs']['path'] && ($id = path_to_id($tag['attribs']['path'], FILE_TABLE, $this->DB_WE))){
-							$this->MediaLinks[] = intval($tag['attribs']['id']); // selector: text/webEdition only
+							$this->MediaLinks[$element] = intval($tag['attribs']['id']); // selector: text/webEdition only
 						}
 					}
 					break;
@@ -848,7 +847,7 @@ we_templateInit();?>';
 						foreach($ids as $id){
 							$id = trim($id);
 							if(is_numeric($id)){
-								$this->MediaLinks[] = intval($id);
+								$this->MediaLinks[$element] = intval($id);
 							}
 						}
 					}
@@ -857,11 +856,9 @@ we_templateInit();?>';
 				//
 			}
 		}
-
-		if(!empty($this->MediaLinks)){
-			return parent::registerMediaLinks(false, true);
-		}
-		return true;
+		return (empty($this->MediaLinks) ?
+				true :
+				parent::registerMediaLinks(false, true));
 	}
 
 	// .tmpl mod
@@ -873,12 +870,12 @@ we_templateInit();?>';
 	public function getPropertyPage(){
 		list($cnt, $select) = $this->formTemplateDocuments();
 		return we_html_multiIconBox::getHTML('PropertyPage', array(
-			array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => 140),
-			array('icon' => 'mastertemplate.gif', 'headline' => g_l('weClass', '[master_template]'), 'html' => $this->formMasterTemplate(), 'space' => 140),
-			array('icon' => 'doc.gif', 'headline' => g_l('weClass', '[documents]') . ($cnt ? ' (' . $cnt . ')' : ''), 'html' => $select, 'space' => 140),
-			array('icon' => 'charset.gif', 'headline' => g_l('weClass', '[Charset]'), 'html' => $this->formCharset(), 'space' => 140),
-			array('icon' => 'copy.gif', 'headline' => g_l('weClass', '[copyTemplate]'), 'html' => $this->formCopyDocument(), 'space' => 140)
-			)
+				array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => 140),
+				array('icon' => 'mastertemplate.gif', 'headline' => g_l('weClass', '[master_template]'), 'html' => $this->formMasterTemplate(), 'space' => 140),
+				array('icon' => 'doc.gif', 'headline' => g_l('weClass', '[documents]') . ($cnt ? ' (' . $cnt . ')' : ''), 'html' => $select, 'space' => 140),
+				array('icon' => 'charset.gif', 'headline' => g_l('weClass', '[Charset]'), 'html' => $this->formCharset(), 'space' => 140),
+				array('icon' => 'copy.gif', 'headline' => g_l('weClass', '[copyTemplate]'), 'html' => $this->formCopyDocument(), 'space' => 140)
+				)
 		);
 	}
 

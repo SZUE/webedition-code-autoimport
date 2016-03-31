@@ -20,8 +20,8 @@
  */
 function we_parse_tag_collection($attribs, $content){
 	include_once('we_tag_repeat.inc.php');
-	return '<?php global $lv;
-if(' . we_tag_tagParser::printTag('collection', $attribs) . '){?>' . we_parse_tag_repeat(array(), $content) . '<?php } we_post_tag_listview();?>';
+	return '<?php ' . (strpos($content, '$lv') !== false ? 'global $lv;' : '') . 
+		'if(' . we_tag_tagParser::printTag('collection', $attribs) . '){?>' . we_parse_tag_repeat(array(), $content) . '<?php } we_post_tag_listview();?>';
 }
 
 function we_tag_collection($attribs){

@@ -41,6 +41,18 @@
 		bottom:0px;
 		color:white;
 	}
+	#error{
+		background-color: #EBEBEB;
+		color:red;
+		width:20em;
+		margin-left:auto;
+		margin-right:auto;
+		font: $weFontBold;
+		font-size: $bigfont;
+		position: relative;
+		padding: 1em;
+		top: 5em;
+	}
 }
 
 #mainTable{
