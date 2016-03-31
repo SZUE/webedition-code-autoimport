@@ -231,7 +231,7 @@ abstract class we_class{
 		if($firstEntry){
 			$vals[$firstEntry[0]] = $firstEntry[1];
 		}
-		$this->DB_WE->query('SELECT ' . ($sqlFrom ? : $this->DB_WE->escape($val) . ',' . $this->DB_WE->escape($txt)) . ' FROM ' . $this->DB_WE->escape($table) . ' WHERE ' . $sqlTail);
+		$this->DB_WE->query('SELECT ' . ($sqlFrom ? : $this->DB_WE->escape($val) . ',' . $this->DB_WE->escape($txt)) . ' FROM ' . $table . ' WHERE ' . $sqlTail);
 		while($this->DB_WE->next_record(MYSQL_ASSOC)){
 			$v = $this->DB_WE->f($val);
 			$t = $this->DB_WE->f($txt);

@@ -397,31 +397,31 @@ class we_document extends we_root{
 	}
 
 	function addLinkToLinklist($name){
-		$ll = new we_base_linklist($this->getElement($name));
+		$ll = new we_base_linklist(we_unserialize($this->getElement($name)));
 		$ll->addLink();
 		$this->setElement($name, $ll->getString(), 'linklist');
 	}
 
 	function upEntryAtLinklist($name, $nr){
-		$ll = new we_base_linklist($this->getElement($name));
+		$ll = new we_base_linklist(we_unserialize($this->getElement($name)));
 		$ll->upLink($nr);
 		$this->setElement($name, $ll->getString(), 'linklist');
 	}
 
 	function downEntryAtLinklist($name, $nr){
-		$ll = new we_base_linklist($this->getElement($name));
+		$ll = new we_base_linklist(we_unserialize($this->getElement($name)));
 		$ll->downLink($nr);
 		$this->setElement($name, $ll->getString(), 'linklist');
 	}
 
 	function insertLinkAtLinklist($name, $nr){
-		$ll = new we_base_linklist($this->getElement($name));
+		$ll = new we_base_linklist(we_unserialize($this->getElement($name)));
 		$ll->insertLink($nr);
 		$this->setElement($name, $ll->getString(), 'linklist');
 	}
 
 	function removeLinkFromLinklist($name, $nr, $names = ''){
-		$ll = new we_base_linklist($this->getElement($name));
+		$ll = new we_base_linklist(we_unserialize($this->getElement($name)));
 		$ll->removeLink($nr, $names, $name);
 		$this->setElement($name, $ll->getString(), 'linklist');
 	}

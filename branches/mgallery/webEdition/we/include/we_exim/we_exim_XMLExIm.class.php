@@ -253,22 +253,13 @@ class we_exim_XMLExIm{
 		return $db->getAll(true);
 	}
 
-	function getQueryParents($path){
-		$out = array();
-		while($path != '/' && $path){
-			$out[] = 'Path="' . $path . '"';
-			$path = dirname($path);
-		}
-		return $out ? implode(' OR ', $out) : '';
-	}
-
-	function queryForAllowed($table){
+		function queryForAllowed($table){
 		$db = new DB_WE();
 		$parentpaths = $wsQuery = array();
 		if(($ws = get_ws($table))){
 			$wsPathArray = id_to_path($ws, $table, $db, true);
 			foreach($wsPathArray as $path){
-				$wsQuery[] = ' Path LIKE "' . $db->escape($path) . '/%" OR ' . we_exim_XMLExIm::getQueryParents($path);
+				$wsQuery[] = ' Path LIKE "' . $db->escape($path) . '/%" OR ' . we_tool_treeDataSource::getQueryParents($path);
 				while($path != '/' && $path){
 					$parentpaths[] = $path;
 					$path = dirname($path);
