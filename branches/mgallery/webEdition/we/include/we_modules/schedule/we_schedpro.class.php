@@ -123,10 +123,10 @@ class we_schedpro{
 	public static function getMainJS($doc){
 		return we_html_element::jsElement('
 var we_hasExtraRow=[' . implode(',', self::$extraCont) . '];
-function changeSchedOption(nr){
+function changeSchedOption(elem,nr){
 	_EditorFrame.setEditorIsHot(true);
 	checkFooter();
-	if(self.we_hasExtraRow[nr] || this.options[this.selectedIndex].value==' . self::DOCTYPE . ' || this.options[this.selectedIndex].value==' . self::CATEGORY . ' || this.options[this.selectedIndex].value==' . self::DIR . '){
+	if(self.we_hasExtraRow[nr] || elem.options[elem.selectedIndex].value==' . self::DOCTYPE . ' || elem.options[elem.selectedIndex].value==' . self::CATEGORY . ' || elem.options[elem.selectedIndex].value==' . self::DIR . '){
 		setScrollTo();
 		we_cmd(\'reload_editpage\');
 	}
@@ -134,14 +134,14 @@ function changeSchedOption(nr){
 
 function checkFooter(){
 	var button=parent.editFooter.document.getElementById("publish_' . $doc->ID . '")
-	var aEl=this.document.getElementsByClassName("we_schedule_active");
+	var aEl=document.getElementsByClassName("we_schedule_active");
 	var active=false;
 	if(button != undefined){
 	button=button.getElementsByTagName("button")[0];
 		for( var i=0; i<aEl.length; ++i){
 			if(aEl[i].value==1){
 			var no=aEl[i].name.split("we_schedule_active_");
-			if(this.document.getElementsByName("we_schedule_task_"+no[1])[0].value== ' . self::SCHEDULE_FROM . '){
+			if(document.getElementsByName("we_schedule_task_"+no[1])[0].value== ' . self::SCHEDULE_FROM . '){
 				active=true;
 				break;
 			}
@@ -162,7 +162,7 @@ function checkFooter(){
 	}
 
 	function getHTML($isobj = false){
-		$taskpopup = '<select class="weSelect we_schedule_task" name="we_schedule_task_' . $this->nr . '" size="1" onchange="changeSchedOption(' . $this->nr . ');">
+		$taskpopup = '<select class="weSelect we_schedule_task" name="we_schedule_task_' . $this->nr . '" size="1" onchange="changeSchedOption(this,' . $this->nr . ');">
 <option value="' . self::SCHEDULE_FROM . '"' . (($this->task == self::SCHEDULE_FROM) ? ' selected' : '') . '>' . g_l('modules_schedule', "[task][" . self::SCHEDULE_FROM . ']') . '</option>
 <option value="' . self::SCHEDULE_TO . '"' . (($this->task == self::SCHEDULE_TO) ? ' selected' : '') . '>' . g_l('modules_schedule', '[task][' . self::SCHEDULE_TO . ']') . '</option>';
 		if((permissionhandler::hasPerm('DELETE_DOCUMENT') && (!$isobj)) || (permissionhandler::hasPerm('DELETE_OBJECTFILE') && $isobj)){
