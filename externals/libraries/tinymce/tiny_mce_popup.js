@@ -6,7 +6,7 @@ var tinymce=null,tinyMCEPopup,tinyMCE;tinyMCEPopup={init:function(){var b=this,a
 
 /* overwrite buggy function getWindowArg() */
 tinyMCEPopup.getWindowArg = function(c, b){
-	return (this.params !== undefined && this.params[c] !== undefined && tinymce.is(this.params[c])) ? this.params[c] : b;
+	return (this.params !== undefined && this.params !== null && this.params[c] !== undefined && tinymce.is(this.params[c])) ? this.params[c] : b;
 };
 
 /* webEdition Functions */
