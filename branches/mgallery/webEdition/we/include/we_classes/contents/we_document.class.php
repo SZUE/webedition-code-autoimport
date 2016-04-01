@@ -591,7 +591,7 @@ class we_document extends we_root{
 				case we_base_ContentTypes::OBJECT_FILE:
 					if(!$linksReady){//FIXME: maybe move this part do we_webEditionDocument
 						$c = 0;
-						foreach($this->elements as $k => $v){t_e("lala", $k, $v);
+						foreach($this->elements as $k => $v){
 							$element = $v['type'] . '[name=' . ($k ? : 'NN' . ++$c) . ']';
 							switch(isset($v['type']) ? $v['type'] : ''){
 								case 'audio':

@@ -1391,7 +1391,7 @@ abstract class we_root extends we_class{
 					'element' => !is_numeric($k) ? $k : '',
 					'position' => 0,
 					'isTemp' => $temp ? 1 : 0
-			));
+					), ',', true);
 		}
 		if($sets){
 			return $this->DB_WE->query('REPLACE INTO ' . FILELINK_TABLE . ' VALUES ' . implode(',', $sets));
