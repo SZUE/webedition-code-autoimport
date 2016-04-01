@@ -14,6 +14,7 @@ $l_searchtool=array(
 	'DELETE_SUCHE'=>'Käyttäjä voi poistaa hakukohteita',
 	'EDIT_SUCHE'=>'Käyttäjä voi muokata hakukohteita',
 	'END'=>'loppuu',
+	'HasReferenceToID'=>'Is referencing media',
 	'ID'=>'kohteen ID-numero',
 	'IN'=>'one of (list)',
 	'IS'=>'yhtä kuin (=)',

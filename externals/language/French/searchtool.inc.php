@@ -14,6 +14,7 @@ $l_searchtool=array(
 	'DELETE_SUCHE'=>'L`utilisateur a le droit de supprimer la recherche',
 	'EDIT_SUCHE'=>'L`utilisateur a le droit de modifier la recherche',
 	'END'=>'termine avec',
+	'HasReferenceToID'=>'Is referencing media',
 	'ID'=>'ID d`entrée',
 	'IN'=>'one of (list)',
 	'IS'=>'égal (=)',

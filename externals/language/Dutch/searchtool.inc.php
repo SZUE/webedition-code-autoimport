@@ -14,6 +14,7 @@ $l_searchtool=array(
 	'DELETE_SUCHE'=>'De gebruiker is bevoegd om zoek onderdelen te verwijderen',
 	'EDIT_SUCHE'=>'De gebruiker is bevoegd om zoek onderdelen te wijzigen',
 	'END'=>'eindigt op',
+	'HasReferenceToID'=>'Is referencing media',
 	'ID'=>'ID van invoer',
 	'IN'=>'one of (list)',
 	'IS'=>'gelijk aan (=)',

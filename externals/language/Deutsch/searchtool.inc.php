@@ -14,6 +14,7 @@ $l_searchtool=array(
 	'DELETE_SUCHE'=>'Der Benutzer darf Suche löschen',
 	'EDIT_SUCHE'=>'Der Benutzer darf Suche bearbeiten',
 	'END'=>'endet mit',
+	'HasReferenceToID'=>'Referenziert Medium',
 	'ID'=>'ID des Eintrags',
 	'IN'=>'eines von (Liste)',
 	'IS'=>'gleich (=)',
