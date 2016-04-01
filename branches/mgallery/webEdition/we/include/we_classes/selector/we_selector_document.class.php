@@ -71,10 +71,8 @@ class we_selector_document extends we_selector_directory{
 	}
 
 	protected function printCmdHTML($morejs = ''){
-		parent::printCmdHTML(
-			($this->userCanMakeNewFile ? 'top.enableNewFileBut();' : 'top.disableNewFileBut();') .
-			$morejs
-		);
+		$isWS = in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db);
+		parent::printCmdHTML(($isWS && $this->userCanMakeNewFile ? 'top.enableNewFileBut();' : 'top.disableNewFileBut();') . $morejs);
 	}
 
 	function query(){
@@ -279,7 +277,9 @@ var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 	}
 
 	protected function printSetDirHTML($morejs = ''){
-		parent::printSetDirHTML(($this->userCanMakeNewFile ? 'top.enableNewFileBut();' : 'top.disableNewFileBut();') . $morejs);
+		$isWS = in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db);
+
+		parent::printSetDirHTML(($isWS && $this->userCanMakeNewFile ? 'top.enableNewFileBut();' : 'top.disableNewFileBut();') . $morejs);
 	}
 
 	protected function printFooterTable($more = null){

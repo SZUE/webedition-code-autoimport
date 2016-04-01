@@ -268,8 +268,9 @@ top.clearEntries();' .
 			$this->printCmdAddEntriesHTML() .
 			$this->printCMDWriteAndFillSelectorHTML() .
 			($this->userCanMakeNewFolder ? 'top.enableNewFolderBut();' : 'top.disableNewFolderBut();') .
+			$morejs .
 			($isWS ?
-				($morejs? :
+				($morejs ? '' :
 					'top.currentPath="' . $this->path . '";
 top.currentID="' . $this->id . '";'
 
