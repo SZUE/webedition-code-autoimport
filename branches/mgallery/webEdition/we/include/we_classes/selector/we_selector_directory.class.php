@@ -71,18 +71,11 @@ class we_selector_directory extends we_selector_file{
 		}
 	}
 
-	protected function printCmdHTML(){
-
-		echo we_html_element::jsElement('
-top.clearEntries();' .
-			$this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() .
-			(intval($this->dir) == intval($this->rootDirID) ?
-				'top.disableRootDirButs();' :
-				'top.enableRootDirButs();') .
-			'top.currentPath = "' . $this->path . '";
-top.parentID = "' . $this->values["ParentID"] . '";
-');
+	protected function printCmdHTML($morejs = ''){
+		parent::printCmdHTML(
+			($this->userCanMakeNewFolder ? 'top.enableNewFolderBut();' : 'top.disableNewFolderBut();') .
+			$morejs
+		);
 	}
 
 	function query(){
@@ -264,28 +257,30 @@ top.selectIt();';
 </table>';
 	}
 
-	function printSetDirHTML(){
-		echo '<script><!--
-top.clearEntries();' .
-		$this->printCmdAddEntriesHTML() .
-		$this->printCMDWriteAndFillSelectorHTML() .
-		'top.' . (intval($this->dir) == intval($this->rootDirID) ? 'disable' : 'enable') . 'RootDirButs();';
-		if(in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db)){
-			if($this->id == 0){
-				$this->path = '/';
-			}
-			echo '
-top.unselectAllFiles();
-top.currentPath = "' . $this->path . '";
-top.currentID = "' . $this->id . '";
-top.document.getElementsByName("fname")[0].value = "' . (($this->id == 0) ? '/' : $this->values["Text"]) . '";';
+	protected function printSetDirHTML($morejs = ''){
+		$isWS = in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db);
+		if(!$morejs && $isWS && $this->id == 0){
+			$this->path = '/';
 		}
-		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
-		echo '
+
+		echo we_html_element::jsElement('
+top.clearEntries();' .
+			$this->printCmdAddEntriesHTML() .
+			$this->printCMDWriteAndFillSelectorHTML() .
+			($this->userCanMakeNewFolder ? 'top.enableNewFolderBut();' : 'top.disableNewFolderBut();') .
+			($isWS ?
+				($morejs? :
+					'top.currentPath="' . $this->path . '";
+top.currentID="' . $this->id . '";'
+
+				) .
+				'top.unselectAllFiles();
+top.' . (intval($this->dir) == intval($this->rootDirID) ? 'disable' : 'enable') . 'RootDirButs();
 top.currentDir = "' . $this->dir . '";
-top.parentID = "' . $this->values["ParentID"] . '";
-//-->
-</script>';
+top.parentID = "' . $this->values["ParentID"] . '";' :
+				'')
+		);
+		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
 
 	function printNewFolderHTML(){
@@ -334,7 +329,7 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' : '
 		echo
 		$this->printCmdAddEntriesHTML() .
 		$this->printCMDWriteAndFillSelectorHTML() .
-		'top.makeNewFolder = 0;
+		'top.makeNewFolder = false;
 top.selectFile(top.currentID);
 //-->
 </script>

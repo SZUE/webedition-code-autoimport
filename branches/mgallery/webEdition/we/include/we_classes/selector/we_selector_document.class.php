@@ -70,6 +70,13 @@ class we_selector_document extends we_selector_directory{
 		$this->open_doc = $open_doc;
 	}
 
+	protected function printCmdHTML($morejs = ''){
+		parent::printCmdHTML(
+			($this->userCanMakeNewFile ? 'top.enableNewFileBut();' : 'top.disableNewFileBut();') .
+			$morejs
+		);
+	}
+
 	function query(){
 		$filterQuery = '';
 		if($this->filter){
@@ -184,7 +191,7 @@ function exit_open() {
 
 			$title = strip_tags(str_replace(array('"', "\n\r", "\n", "\\", '°',), array('\"', ' ', ' ', "\\\\", '&deg;'), (isset($this->titles[$this->db->f("ID")]) ? oldHtmlspecialchars($this->titles[$this->db->f("ID")]) : '-')));
 
-			$ret .= 'top.addEntry(' . $this->db->f("ID") . ',"' . $this->db->f("Filename") . '","' . $this->db->f("Extension") . '",' . $this->db->f("IsFolder") . ',"' . $this->db->f("Path") . '","' . date(g_l('date', '[format][default]'), $this->db->f("ModDate")) . '","' . $this->db->f("ContentType") . '","' . $this->db->f("Published") . '","' . $title . '");';
+			$ret .= 'top.addEntry(' . $this->db->f("ID") . ',"' . $this->db->f("Filename") . '","' . $this->db->f("Extension") . '",' . $this->db->f('IsFolder') . ',"' . $this->db->f("Path") . '","' . date(g_l('date', '[format][default]'), $this->db->f("ModDate")) . '","' . $this->db->f("ContentType") . '","' . $this->db->f("Published") . '","' . $title . '");';
 		}
 		$ret .=' function startFrameset(){';
 		switch($this->filter){
@@ -271,26 +278,9 @@ var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 		return true;
 	}
 
-	function printSetDirHTML(){
-		echo we_html_element::jsElement('
-top.clearEntries();' .
-			$this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() . '
-top.' . (intval($this->dir) == 0 ? 'disable' : 'enable') . 'RootDirButs();
-top.currentDir = "' . $this->dir . '";
-top.parentID = "' . $this->values["ParentID"] . '";');
-		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
+	protected function printSetDirHTML($morejs = ''){
+		parent::printSetDirHTML(($this->userCanMakeNewFile ? 'top.enableNewFileBut();' : 'top.disableNewFileBut();') . $morejs);
 	}
-
-	/* function printNewDocumentHTML(){
-	  echo '<script><!--
-	  top.clearEntries();
-	  top.makeNewDocument = true;' .
-	  $this->printCmdAddEntriesHTML() .
-	  $this->printCMDWriteAndFillSelectorHTML() . '
-	  //-->
-	  </script>';
-	  } */
 
 	protected function printFooterTable($more = null){
 		$ret = '

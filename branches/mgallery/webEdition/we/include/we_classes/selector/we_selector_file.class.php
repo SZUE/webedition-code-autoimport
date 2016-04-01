@@ -362,17 +362,18 @@ function exit_open(){' .
 		return 'var rootDirButsState = ' . (($this->dir == 0) ? 0 : 1) . ';';
 	}
 
-	protected function printCmdHTML(){
+	protected function printCmdHTML($morejs = ''){
 		echo we_html_element::jsElement('
 top.clearEntries();' .
 			$this->printCmdAddEntriesHTML() .
 			$this->printCMDWriteAndFillSelectorHTML() .
-			(($this->dir) == 0 ?
+			(intval($this->dir) == intval($this->rootDirID) ?
 				'top.disableRootDirButs();' :
 				'top.enableRootDirButs();') .
 			'top.currentPath = "' . $this->path . '";
 top.parentID = "' . $this->values["ParentID"] . '";
-');
+' .
+			$morejs);
 	}
 
 	protected function printCmdAddEntriesHTML(){
