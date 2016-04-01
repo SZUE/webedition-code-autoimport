@@ -160,23 +160,23 @@ class we_object extends we_document{
 
 		if(!$this->wasUpdate){
 			$q = array(
-				'OF_ID BIGINT NOT NULL',
-				'OF_ParentID BIGINT NOT NULL',
-				'OF_Text VARCHAR(255) NOT NULL',
-				'OF_Path VARCHAR(255) NOT NULL',
-				'OF_Url VARCHAR(255) NOT NULL',
-				'OF_TriggerID  BIGINT NOT NULL  default "0"',
-				'OF_Workspaces VARCHAR(255) NOT NULL',
-				'OF_ExtraWorkspaces VARCHAR(255) NOT NULL',
-				'OF_ExtraWorkspacesSelected VARCHAR(255) NOT NULL',
-				'OF_Templates VARCHAR(255) NOT NULL',
-				'OF_ExtraTemplates VARCHAR(255) NOT NULL',
-				'OF_Category VARCHAR(255) NOT NULL',
-				'OF_Published int(11) NOT NULL',
-				'OF_IsSearchable tinyint(1) NOT NULL default "1"',
-				'OF_Charset VARCHAR(64) NOT NULL',
-				'OF_WebUserID BIGINT NOT NULL',
-				'OF_Language VARCHAR(5) default "NULL"',
+				'OF_ID' => 'BIGINT NOT NULL',
+				'OF_ParentID' => 'BIGINT NOT NULL',
+				'OF_Text' => 'VARCHAR(255) NOT NULL',
+				'OF_Path' => 'VARCHAR(255) NOT NULL',
+				'OF_Url' => 'VARCHAR(255) NOT NULL',
+				'OF_TriggerID' => 'BIGINT NOT NULL  default "0"',
+				'OF_Workspaces' => 'VARCHAR(255) NOT NULL',
+				'OF_ExtraWorkspaces' => 'VARCHAR(255) NOT NULL',
+				'OF_ExtraWorkspacesSelected' => 'VARCHAR(255) NOT NULL',
+				'OF_Templates' => 'VARCHAR(255) NOT NULL',
+				'OF_ExtraTemplates' => 'VARCHAR(255) NOT NULL',
+				'OF_Category' => 'VARCHAR(255) NOT NULL',
+				'OF_Published' => 'int(11) NOT NULL',
+				'OF_IsSearchable' => 'tinyint(1) NOT NULL default "1"',
+				'OF_Charset' => 'VARCHAR(64) NOT NULL',
+				'OF_WebUserID' => 'BIGINT NOT NULL',
+				'OF_Language' => 'VARCHAR(5) default "NULL"',
 			);
 
 			$indexe = array(
@@ -253,7 +253,7 @@ class we_object extends we_document{
 							$arrt[$name]['meta'][$key] = $_val;
 						}
 					}
-					$q[] = '`' . $name . '` ' . $this->switchtypes($cur);
+					$q[$name] = $this->switchtypes($cur);
 
 //add index for complex queries
 					if($this->getElement($cur . self::ELEMENT_TYPE, 'dat') == we_objectFile::TYPE_OBJECT){

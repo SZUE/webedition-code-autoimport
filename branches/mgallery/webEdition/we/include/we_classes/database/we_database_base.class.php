@@ -843,6 +843,7 @@ abstract class we_database_base{
 	 */
 	public function addTable($tab, $cols, array $keys = array(), $engine = 'MYISAM'){
 		if(!is_array($cols) || empty($cols)){
+			t_e('create table needs an array');
 			return;
 		}
 		$cols_sql = array();

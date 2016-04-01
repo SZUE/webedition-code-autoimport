@@ -1649,7 +1649,7 @@ class we_search_search extends we_search_base{
 
 	static function checkRightDropTable(){
 		$db = new DB_WE();
-		$db->addTable('test_SEARCH_TEMP_TABLE', '`test` VARCHAR( 1 ) NOT NULL', array(), 'MEMORY');
+		$db->addTable('test_SEARCH_TEMP_TABLE', array('test' => 'VARCHAR( 1 ) NOT NULL'), array(), 'MEMORY');
 		$db->delTable('test_SEARCH_TEMP_TABLE');
 		return (stristr($db->Error, 'command denied') ? false : true);
 	}
