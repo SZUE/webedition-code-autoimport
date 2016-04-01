@@ -291,8 +291,7 @@ WE().consts.weSearch= {
 	SEARCH_TMPL: "' . self::SEARCH_TMPL . '",
 	SEARCH_MEDIA: "' . self::SEARCH_MEDIA . '",
 	SEARCH_ADV: "' . self::SEARCH_ADV . '",
-	//MEDIA_CONTENTTYPES_CSV: "' . we_base_ContentTypes::APPLICATION . "," . we_base_ContentTypes::AUDIO . "," . we_base_ContentTypes::FLASH . "," . we_base_ContentTypes::IMAGE . "," . we_base_ContentTypes::QUICKTIME . "," . we_base_ContentTypes::VIDEO . '"
-	MEDIA_CONTENTTYPES_CSV: "' . we_base_ContentTypes::IMAGE . ',' . we_base_ContentTypes::AUDIO . '"
+	MEDIA_CONTENTTYPES_CSV: "' . we_base_ContentTypes::APPLICATION . "," . we_base_ContentTypes::AUDIO . "," . we_base_ContentTypes::FLASH . "," . we_base_ContentTypes::IMAGE . "," . we_base_ContentTypes::QUICKTIME . "," . we_base_ContentTypes::VIDEO . '"
 };
 ');
 	}

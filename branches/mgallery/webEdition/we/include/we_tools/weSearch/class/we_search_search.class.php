@@ -79,7 +79,6 @@ class we_search_search extends we_search_base{
 		$DB_WE = new DB_WE();
 		$workspaces = $_result = $versionsFound = $saveArrayIds = $_tables = $searchText = array();
 		$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = 0; // will be obsolete
-
 		$searchFields = $model->getProperty('currentSearchFields');
 		$searchText = $model->getProperty('currentSearch');
 		$location = $model->getProperty('currentLocation');
@@ -146,7 +145,7 @@ class we_search_search extends we_search_base{
 					$searchString = ($whichSearch === we_search_view::SEARCH_MEDIA && substr($searchFields[$i], 0, 6) === 'meta__' && $searchString === '' && $location[$i] === 'IS') ? '##EMPTY##' : $searchString;
 
 					if(!empty($searchString)){
-						if($searchFields[$i] != "Status" && $searchFields[$i] != "Speicherart"){
+						if(!in_array($searchFields[$i], array('Status', 'Speicherart', 'HasReferenceToID'))){
 							$searchString = str_replace(array('\\', '_', '%'), array('\\\\', '\_', '\%'), $searchString);
 						}
 
@@ -286,6 +285,9 @@ class we_search_search extends we_search_base{
 								case 'temp_category':
 									$w = $this->searchCategory($searchString, $_table, $searchFields[$i]);
 									$where .= $w;
+									break;
+								case 'HasReferenceToID':
+									$where .= !$searchString ? 1 : (($searchId = path_to_id($searchString)) ? $this->searchHasReferenceToId($searchId, $_table) : 0);
 									break;
 								default:
 									//if($whichSearch != "AdvSearch"){
@@ -479,7 +481,7 @@ class we_search_search extends we_search_base{
 			'temp_template_id' => g_l('searchtool', '[temp_template_id]'),
 			'MasterTemplateID' => g_l('searchtool', '[MasterTemplateID]'),
 			'ContentType' => g_l('searchtool', '[ContentType]'),
-			//'HasReferenceToID' => 'Refernziert Medium', => deactivated
+			'HasReferenceToID' => g_l('searchtool', '[HasReferenceToID]'),
 			//'temp_doc_type' => g_l('searchtool', '[temp_doc_type]'),
 			'temp_category' => g_l('searchtool', '[temp_category]'),
 			'CreatorID' => g_l('searchtool', '[CreatorID]'),
@@ -1240,6 +1242,17 @@ class we_search_search extends we_search_base{
 		}
 
 		return $this->usedMedia ? (' AND ' . FILE_TABLE . '.ID ' . ($useState === 2 ? 'NOT ' : ' ') . 'IN(' . implode(',', $this->usedMedia) . ')') : ($useState === 2 ? '' : ' AND 0');
+	}
+	
+	function searchHasReferenceToId($id, $table){
+		if(!id || !table){
+			return 0;
+		}
+
+		$db = new DB_WE();
+		$db->query('SELECT DISTINCT ID FROM ' . FILELINK_TABLE . ' WHERE type="media" AND DocumentTable="' . $db->escape(stripTblPrefix($table)) . '" AND remObj=' . intval($id));
+
+		return ($ids = $db->getAll(true)) ? ' ID IN (' . implode(',', array_unique($ids)) . ') ' : 0;
 	}
 
 	function selectFromTempTable($searchstart, $anzahl, $order){
