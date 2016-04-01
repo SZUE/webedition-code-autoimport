@@ -1054,6 +1054,8 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		ed.onDblClick.add(tinyEdonDblClick);
 
 		ed.onInit.add(function(ed, o){
+			//ed.execCommand("mceWevisualaid", true);
+
 			//TODO: clean up the mess in here!
 			ed.pasteAsPlainText = 0;
 			ed.controlManager.setActive("pastetext", 0);
