@@ -3091,14 +3091,7 @@ class we_objectFile extends we_document{
 			return $path;
 		}
 		
-		if(in_workspace($pid, $ws1)){
-			$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" AND IsDynamic=1 AND Path LIKE "' . id_to_path(intval($pid), FILE_TABLE, $DB_WE) . '%" ORDER BY CHAR_LENGTH(Path) LIMIT 1', '', $DB_WE);
-			if($path){
-				return $path;
-			}
-		}
-		
-		if(in_workspace($pid, $ws2)){
+		if(in_workspace($pid, $ws1) || in_workspace($pid, $ws2)){
 			return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" AND IsDynamic=1 AND Path LIKE "' . id_to_path(intval($pid), FILE_TABLE, $DB_WE) . '%" ORDER BY CHAR_LENGTH(Path) LIMIT 1', '', $DB_WE);
 		}
 		return '';
