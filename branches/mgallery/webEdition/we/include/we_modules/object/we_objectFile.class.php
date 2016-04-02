@@ -3090,20 +3090,13 @@ class we_objectFile extends we_document{
 		if($path && f('SELECT IsDynamic FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape($path) . '" LIMIT 1', '', $DB_WE)){
 			return $path;
 		}
-		$arr3 = makeArrayFromCSV($ws1);
-		foreach($arr3 as $ws){
-			if(in_workspace($pid, $ws, FILE_TABLE, $DB_WE)){
-				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" AND IsDynamic=1 AND Path LIKE "' . id_to_path($ws, FILE_TABLE, $DB_WE) . '%" ORDER BY CHAR_LENGTH(Path) LIMIT 1', '', $DB_WE);
-				if($path){
-					return $path;
-				}
-			}
+		
+		if(in_workspace($pid, $ws1)){
+			return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" AND IsDynamic=1 AND Path LIKE "' . id_to_path(intval($pid), FILE_TABLE, $DB_WE) . '%" ORDER BY CHAR_LENGTH(Path) LIMIT 1', '', $DB_WE);
 		}
-		$arr4 = makeArrayFromCSV($ws2);
-		foreach($arr4 as $ws){
-			if(in_workspace($pid, $ws)){
-				return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" AND IsDynamic=1 AND Path LIKE "' . id_to_path($ws, FILE_TABLE, $DB_WE) . '%" ORDER BY CHAR_LENGTH(Path) LIMIT 1', '', $DB_WE);
-			}
+		
+		if(in_workspace($pid, $ws2)){
+			return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" AND IsDynamic=1 AND Path LIKE "' . id_to_path(intval($pid), FILE_TABLE, $DB_WE) . '%" ORDER BY CHAR_LENGTH(Path) LIMIT 1', '', $DB_WE);
 		}
 		return '';
 	}
