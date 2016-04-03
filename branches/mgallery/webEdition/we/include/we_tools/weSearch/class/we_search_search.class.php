@@ -1613,15 +1613,13 @@ class we_search_search extends we_search_base{
 
 	static function checkRightTempTable(){
 		$db = new DB_WE();
-		$db->query('CREATE TEMPORARY TABLE test_SEARCH_TEMP_TABLE (
-				`test` VARCHAR(1) NOT NULL
-				) ENGINE=MEMORY' . we_database_base::getCharsetCollation());
+		$db->addTable('test_SEARCH_TEMP_TABLE', array('test' => 'VARCHAR(1) NOT NULL'), array(), 'MEMORY', true);
 
 		$db->next_record();
 
 		$return = (stristr($db->Error, 'Access denied') ? false : true);
 
-		$db->delTable('test_SEARCH_TEMP_TABLE');
+		$db->delTable('test_SEARCH_TEMP_TABLE', true);
 
 		return $return;
 	}

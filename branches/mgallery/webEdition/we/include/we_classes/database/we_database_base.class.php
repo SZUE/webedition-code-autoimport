@@ -841,7 +841,7 @@ abstract class we_database_base{
 	 * @param array $keys
 	 * @return type
 	 */
-	public function addTable($tab, $cols, array $keys = array(), $engine = 'MYISAM'){
+	public function addTable($tab, $cols, array $keys = array(), $engine = 'MYISAM', $temporary = false){
 		if(!is_array($cols) || empty($cols)){
 			t_e('create table needs an array');
 			return;
@@ -856,15 +856,15 @@ abstract class we_database_base{
 			}
 		}
 
-		return $this->query('CREATE TABLE ' . $this->escape($tab) . ' (' . implode(',', $cols_sql) . ') ENGINE=' . $engine . ' ' . self::getCharsetCollation());
+		return $this->query('CREATE ' . ($temporary ? 'TEMPORARY' : '') . ' TABLE ' . $this->escape($tab) . ' (' . implode(',', $cols_sql) . ') ENGINE=' . $engine . ' ' . self::getCharsetCollation());
 	}
 
 	/**
 	 * delete an table, checks if it exists.
 	 * @param type $tab
 	 */
-	public function delTable($tab){
-		$this->query('DROP TABLE IF EXISTS ' . $this->escape($tab));
+	public function delTable($tab, $temporary = false){
+		$this->query('DROP ' . ($temporary ? 'TEMPORARY' : '') . ' TABLE IF EXISTS ' . $this->escape($tab));
 	}
 
 	public function addCol($tab, $col, $typ, $pos = ''){
