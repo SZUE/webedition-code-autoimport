@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,12 +22,11 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class we_doclist_search extends we_search_search{
 	public $View;
 	protected $whichSearch;
 
-	public function __construct($view = null) {
+	public function __construct($view = null){
 		parent::__construct($view ? : new we_doclist_view());
 		$this->whichSearch = we_search_view::SEARCH_DOCLIST;
 	}
@@ -39,12 +39,12 @@ class we_doclist_search extends we_search_search{
 
 		$currentSearchFields = $model->getProperty('currentSearchFields');
 		$currentSearch = $model->getProperty('currentSearch');
-		$table = $table ? : (($t = $model->getProperty('currentSearchTables')) ? $t[0]: FILE_TABLE);
+		$table = $table ? : (($t = $model->getProperty('currentSearchTables')) ? $t[0] : FILE_TABLE);
 		$currentLocation = $model->getProperty('currentLocation');
 		$currentOrder = $model->getProperty('currentOrder');
 		//$_view = $model->getProperty('currentSetView');
 		$currentSearchstart = $model->getProperty('currentSearchstart');
-		$currentAnzahl= $model->getProperty('currentAnzahl');
+		$currentAnzahl = $model->getProperty('currentAnzahl');
 		$currentFolderID = $model->getProperty('currentFolderID');
 
 		$where = array();
@@ -91,11 +91,11 @@ class we_doclist_search extends we_search_search{
 
 						case 'Title':
 							break;
-							/*
-							$w = $this->searchInTitle($searchString, $table);
-							$where[] = ($w ? $w : '0');
-							 *
-							 */
+						/*
+						  $w = $this->searchInTitle($searchString, $table);
+						  $where[] = ($w ? $w : '0');
+						 *
+						 */
 						case "Status":
 						case "Speicherart":
 							if($searchString != ""){
@@ -175,4 +175,5 @@ class we_doclist_search extends we_search_search{
 
 		return $_result;
 	}
+
 }
