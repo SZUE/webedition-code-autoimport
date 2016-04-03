@@ -133,7 +133,7 @@ function getHttpThroughProxy($url, $proxyhost, $proxyport, $proxy_user, $proxy_p
  * @return string stripped tablename
  */
 function stripTblPrefix($table){
-	return TBL_PREFIX != '' && (strpos($table, TBL_PREFIX) !== FALSE) ? substr($table, strlen(TBL_PREFIX)) : $table;
+	return TBL_PREFIX != '' && (strpos($table, TBL_PREFIX) === 0) ? substr($table, strlen(TBL_PREFIX)) : $table;
 }
 
 function addTblPrefix($table){

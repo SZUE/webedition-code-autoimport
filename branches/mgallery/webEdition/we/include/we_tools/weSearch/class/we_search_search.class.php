@@ -411,7 +411,7 @@ class we_search_search extends we_search_base{
 		foreach($_result as $k => $v){
 			$_result[$k]["Description"] = '';
 
-			switch($_result[$k]['docTable']){
+			switch(addTblPrefix($_result[$k]['docTable'])){
 				case FILE_TABLE:
 					if($_result[$k]['Published'] >= $_result[$k]['ModDate'] && $_result[$k]['Published'] != 0){
 						$DB_WE->query('SELECT l.DID, c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DID=' . intval($_result[$k]["docID"]) . ' AND l.Name="Description" AND l.DocumentTable="' . FILE_TABLE . '"');
@@ -1253,7 +1253,7 @@ class we_search_search extends we_search_base{
 					$tmpTableWhere = ' AND DocumentID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE Path LIKE "' . $this->db->escape($path) . '%" )';
 				}
 
-				$this->db->query('INSERT INTO SEARCH_TEMP_TABLE (docID,docTable,Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,CreationDate,CreatorID,ModDate,Published,Extension) SELECT ID,"' . FILE_TABLE . '",Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,CreationDate,CreatorID,ModDate,Published,Extension FROM `' . FILE_TABLE . '` WHERE ' . $this->where);
+				$this->db->query('INSERT INTO SEARCH_TEMP_TABLE (docID,docTable,Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,CreationDate,CreatorID,ModDate,Published,Extension) SELECT ID,"' . stripTblPrefix(FILE_TABLE) . '",Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,CreationDate,CreatorID,ModDate,Published,Extension FROM `' . FILE_TABLE . '` WHERE ' . $this->where);
 
 				//first check published documents
 				$this->db->query('SELECT l.DID,c.Dat FROM `' . LINK_TABLE . '` l JOIN `' . CONTENT_TABLE . '` c ON (l.CID=c.ID) WHERE l.Name="Title" AND l.DocumentTable!="' . stripTblPrefix(TEMPLATES_TABLE) . '"');
@@ -1295,50 +1295,50 @@ class we_search_search extends we_search_base{
 				break;
 
 			case TEMPLATES_TABLE:
-				$this->db->query('INSERT INTO SEARCH_TEMP_TABLE (docID,docTable,Text,Path,ParentID,IsFolder,ContentType,SiteTitle,CreationDate,CreatorID,ModDate,Extension) SELECT ID,"' . TEMPLATES_TABLE . '",Text,Path,ParentID,IsFolder,ContentType,Path,CreationDate,CreatorID,ModDate,Extension FROM `' . TEMPLATES_TABLE . '` WHERE ' . $this->where);
+				$this->db->query('INSERT INTO SEARCH_TEMP_TABLE (docID,docTable,Text,Path,ParentID,IsFolder,ContentType,SiteTitle,CreationDate,CreatorID,ModDate,Extension) SELECT ID,"' . stripTblPrefix(TEMPLATES_TABLE) . '",Text,Path,ParentID,IsFolder,ContentType,Path,CreationDate,CreatorID,ModDate,Extension FROM `' . TEMPLATES_TABLE . '` WHERE ' . $this->where);
 				break;
 
 			case VFILE_TABLE:
-				$this->db->query('INSERT INTO SEARCH_TEMP_TABLE (docID,docTable,Text,Path,ParentID,IsFolder,ContentType,CreationDate,CreatorID,ModDate,remTable,remCT,remClass) SELECT ID,"' . VFILE_TABLE . '",Text,Path,ParentID,IsFolder,ContentType,CreationDate,CreatorID,ModDate,remTable,remCT,remClass FROM `' . VFILE_TABLE . '` WHERE ' . $this->where);
+				$this->db->query('INSERT INTO SEARCH_TEMP_TABLE (docID,docTable,Text,Path,ParentID,IsFolder,ContentType,CreationDate,CreatorID,ModDate,remTable,remCT,remClass) SELECT ID,"' . stripTblPrefix(VFILE_TABLE) . '",Text,Path,ParentID,IsFolder,ContentType,CreationDate,CreatorID,ModDate,remTable,remCT,remClass FROM `' . VFILE_TABLE . '` WHERE ' . $this->where);
 				break;
 
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-				$this->db->query('INSERT INTO SEARCH_TEMP_TABLE (docID,docTable,Text,Path,ParentID,IsFolder,ContentType,CreationDate,CreatorID,ModDate,Published,TableID) SELECT ID,"' . OBJECT_FILES_TABLE . '",Text,Path,ParentID,IsFolder,ContentType,CreationDate,CreatorID,ModDate,Published,TableID FROM `' . OBJECT_FILES_TABLE . '` WHERE ' . $this->where);
+				$this->db->query('INSERT INTO SEARCH_TEMP_TABLE (docID,docTable,Text,Path,ParentID,IsFolder,ContentType,CreationDate,CreatorID,ModDate,Published,TableID) SELECT ID,"' . stripTblPrefix(OBJECT_FILES_TABLE) . '",Text,Path,ParentID,IsFolder,ContentType,CreationDate,CreatorID,ModDate,Published,TableID FROM `' . OBJECT_FILES_TABLE . '` WHERE ' . $this->where);
 				break;
 
 			case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
-				$this->db->query('INSERT INTO SEARCH_TEMP_TABLE (docID,docTable,Text,Path,ParentID,IsFolder,ContentType,CreationDate,CreatorID,ModDate) SELECT ID,"' . OBJECT_TABLE . '",Text,Path,ParentID,IsFolder,ContentType,CreationDate,CreatorID,ModDate FROM `' . OBJECT_TABLE . '` WHERE ' . $this->where);
+				$this->db->query('INSERT INTO SEARCH_TEMP_TABLE (docID,docTable,Text,Path,ParentID,IsFolder,ContentType,CreationDate,CreatorID,ModDate) SELECT ID,"' . stripTblPrefix(OBJECT_TABLE) . '",Text,Path,ParentID,IsFolder,ContentType,CreationDate,CreatorID,ModDate FROM `' . OBJECT_TABLE . '` WHERE ' . $this->where);
 				break;
 		}
 	}
 
 	function insertMediaAttribsToTempTable(){
-		if(!f('SELECT 1 FROM SEARCH_TEMP_TABLE WHERE docTable="' . FILE_TABLE . '"')){
+		if(!f('SELECT 1 FROM SEARCH_TEMP_TABLE WHERE docTable="' . stripTblPrefix(FILE_TABLE) . '"')){
 			return;
 		}
-		$this->db->query('SELECT l.DID, c.Dat FROM `' . LINK_TABLE . '` l JOIN `' . CONTENT_TABLE . '` c ON (l.CID=c.ID) JOIN SEARCH_TEMP_TABLE t ON t.docID=l.DID WHERE t.docTable="' . FILE_TABLE . '" AND l.Name="title" AND l.Type="attrib" AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
+		$this->db->query('SELECT l.DID, c.Dat FROM `' . LINK_TABLE . '` l JOIN `' . CONTENT_TABLE . '` c ON (l.CID=c.ID) JOIN SEARCH_TEMP_TABLE t ON t.docID=l.DID WHERE t.docTable="' . stripTblPrefix(FILE_TABLE) . '" AND l.Name="title" AND l.Type="attrib" AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
 		$titles = $this->db->getAll();
 		if(is_array($titles) && $titles){
 			foreach($titles as $k => $v){
 				if($v['Dat']){
-					$this->db->query('UPDATE SEARCH_TEMP_TABLE SET `media_title`="' . $this->db->escape($v['Dat']) . '" WHERE docID=' . intval($v['DID']) . ' AND DocTable="' . FILE_TABLE . '" LIMIT 1');
+					$this->db->query('UPDATE SEARCH_TEMP_TABLE SET `media_title`="' . $this->db->escape($v['Dat']) . '" WHERE docID=' . intval($v['DID']) . ' AND docTable="' . stripTblPrefix(FILE_TABLE) . '" LIMIT 1');
 				}
 			}
 		}
 
-		$this->db->query('SELECT l.DID, c.Dat FROM `' . LINK_TABLE . '` l JOIN `' . CONTENT_TABLE . '` c ON (l.CID=c.ID) JOIN SEARCH_TEMP_TABLE t ON t.docID=l.DID WHERE t.docTable="' . FILE_TABLE . '"  AND l.Name="alt" AND l.Type="attrib" AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
+		$this->db->query('SELECT l.DID, c.Dat FROM `' . LINK_TABLE . '` l JOIN `' . CONTENT_TABLE . '` c ON (l.CID=c.ID) JOIN SEARCH_TEMP_TABLE t ON t.docID=l.DID WHERE t.docTable="' . stripTblPrefix(FILE_TABLE) . '"  AND l.Name="alt" AND l.Type="attrib" AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
 		$alts = $this->db->getAll();
 		if(is_array($alts) && $alts){
 			foreach($alts as $v){
 				if($v['Dat']){
-					$this->db->query('UPDATE SEARCH_TEMP_TABLE SET media_alt="' . $this->db->escape($v['Dat']) . '" WHERE docID=' . intval($v['DID']) . ' AND DocTable="' . FILE_TABLE . '" LIMIT 1');
+					$this->db->query('UPDATE SEARCH_TEMP_TABLE SET media_alt="' . $this->db->escape($v['Dat']) . '" WHERE docID=' . intval($v['DID']) . ' AND docTable="' . stripTblPrefix(FILE_TABLE) . '" LIMIT 1');
 				}
 			}
 		}
 
 		/*
 		  $startTime = microtime(true);
-		  $this->db->query('SELECT l.DID, c.Dat FROM `' . LINK_TABLE . '` l JOIN `' . CONTENT_TABLE . '` c ON (l.CID=c.ID) JOIN SEARCH_TEMP_TABLE t ON t.docID=l.DID WHERE t.docTable="' . FILE_TABLE . '"  AND l.Name="filesize" AND l.Type="attrib" AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
+		  $this->db->query('SELECT l.DID, c.Dat FROM `' . LINK_TABLE . '` l JOIN `' . CONTENT_TABLE . '` c ON (l.CID=c.ID) JOIN SEARCH_TEMP_TABLE t ON t.docID=l.DID WHERE t.docTable="' . stripTblPrefix(FILE_TABLE) . '"  AND l.Name="filesize" AND l.Type="attrib" AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
 		  $filesizes = $this->db->getAll();
 		  if(is_array($filesizes) && $filesizes){
 		  foreach($filesizes as $v){
@@ -1364,7 +1364,7 @@ class we_search_search extends we_search_base{
 			}
 		}
 		//FIXME: remove this query - only temporary, searchMediaLinks should use the join as well
-		$this->db->query('SELECT docID FROM SEARCH_TEMP_TABLE WHERE docTable="' . FILE_TABLE . '"');
+		$this->db->query('SELECT docID FROM SEARCH_TEMP_TABLE WHERE docTable="' . stripTblPrefix(FILE_TABLE) . '"');
 		$IDs = implode(',', $this->db->getAll(true));
 		$this->searchMediaLinks(0, true, $IDs); // we write $this->usedMediaLinks here, where we allready have final list of found media
 		if($this->usedMedia){
@@ -1380,7 +1380,7 @@ class we_search_search extends we_search_base{
 			$this->db->addTable('SEARCH_TEMP_TABLE', array(
 				'ID' => 'INT unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY',
 				'docID' => 'BIGINT unsigned NOT NULL',
-				'docTable' => 'VARCHAR(32) NOT NULL',
+				'docTable' => "enum('tblFile','tblObjectFiles','tblTemplates','tblObject','tblVFile') NOT NULL",
 				'Text' => 'VARCHAR(255) NOT NULL',
 				'Path' => 'VARCHAR(255) NOT NULL',
 				'ParentID' => 'BIGINT unsigned NOT NULL',

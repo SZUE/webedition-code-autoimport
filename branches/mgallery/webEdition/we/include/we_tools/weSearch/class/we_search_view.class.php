@@ -592,7 +592,7 @@ WE().consts.weSearch= {
 
 						$previewButton = we_html_button::create_button(we_html_button::PREVIEW, "javascript:weSearch.previewVersion('" . $ID . "');");
 
-						$fileExists = f('SELECT 1 FROM ' . escape_sql_query($_result[$f]['docTable']) . ' WHERE ID=' . intval($_result[$f]['docID']), '', $DB_WE);
+						$fileExists = f('SELECT 1 FROM ' . escape_sql_query(addTblPrefix($_result[$f]['docTable'])) . ' WHERE ID=' . intval($_result[$f]['docID']), '', $DB_WE);
 
 						if($active && $fileExists){
 							$resetDisabled = true;
@@ -630,8 +630,8 @@ WE().consts.weSearch= {
 						case we_base_ContentTypes::HTML:
 						case 'objectFile':
 							$actionCheckbox = (!$showPubCheckbox ?
-									(permissionhandler::hasPerm('PUBLISH') && f('SELECT 1 FROM ' . escape_sql_query($_result[$f]['docTable']) . ' WHERE ID=' . intval($_result[$f]['docID']), '', $DB_WE)) ?
-										we_html_forms::checkbox($_result[$f]['docID'] . '_' . $_result[$f]['docTable'], 0, 'publish_docs_' . $whichSearch, '', false, 'middlefont', '') :
+									(permissionhandler::hasPerm('PUBLISH') && f('SELECT 1 FROM ' . escape_sql_query(addTblPrefix($_result[$f]['docTable'])) . ' WHERE ID=' . intval($_result[$f]['docID']), '', $DB_WE)) ?
+										we_html_forms::checkbox($_result[$f]['docID'] . '_' . addTblPrefix($_result[$f]['docTable']), 0, 'publish_docs_' . $whichSearch, '', false, 'middlefont', '') :
 										'' :
 									'');
 							break;
@@ -650,8 +650,8 @@ WE().consts.weSearch= {
 							if($_result[$f]["IsProtected"]){
 								$actionCheckbox = we_html_element::htmlSpan(array('class' => 'wealertIcon', 'style' => 'margin-left:4px;', 'title' => g_l('searchtool', '[image_protected]')));
 							} else if(!in_array($_result[$f]['docID'], $this->searchclass->getUsedMedia())){
-								$actionCheckbox = permissionhandler::hasPerm('DELETE_DOCUMENT') && f('SELECT 1 FROM ' . escape_sql_query($_result[$f]["docTable"]) . ' WHERE ID=' . intval($_result[$f]['docID']), '', $DB_WE) ?
-									we_html_forms::checkbox($_result[$f]['docID'] . '_' . $_result[$f]['docTable'], 0, 'delete_docs_' . $whichSearch, '', false, 'middlefont', '') : '';
+								$actionCheckbox = permissionhandler::hasPerm('DELETE_DOCUMENT') && f('SELECT 1 FROM ' . escape_sql_query(addTblPrefix($_result[$f]["docTable"])) . ' WHERE ID=' . intval($_result[$f]['docID']), '', $DB_WE) ?
+									we_html_forms::checkbox($_result[$f]['docID'] . '_' . addTblPrefix($_result[$f]['docTable']), 0, 'delete_docs_' . $whichSearch, '', false, 'middlefont', '') : '';
 							}
 							break;
 						default:
@@ -667,7 +667,7 @@ WE().consts.weSearch= {
 					array(
 					array("dat" => $actionCheckbox),
 					array("dat" => '<span class="iconListview">' . $iconHTML['imageView'] . '</span>'),
-					array("dat" => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . ' (ID: ' . $_result[$f]['docID'] . ')"><u>' . $_result[$f]["Text"]),
+					array("dat" => '<a href="javascript:weSearch.openToEdit(\'' . addTblPrefix($_result[$f]['docTable']) . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . ' (ID: ' . $_result[$f]['docID'] . ')"><u>' . $_result[$f]["Text"]),
 					array("dat" => ($whichSearch === 'TmplSearch' ? str_replace('/' . $_result[$f]["Text"], '', $_result[$f]["Path"]) : $_result[$f]["SiteTitle"])),
 					array("dat" => isset($_result[$f]["VersionID"]) && $_result[$f]['VersionID'] ?
 							"-" :
@@ -692,11 +692,11 @@ WE().consts.weSearch= {
 								)
 							)
 						)),
-					array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'vertical-align:top;"', 'dat' => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . '"><span class="iconListview">' . $iconHTML['imageView'] . '</span>'),
+					array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'vertical-align:top;"', 'dat' => '<a href="javascript:weSearch.openToEdit(\'' . addTblPrefix($_result[$f]['docTable']) . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . '"><span class="iconListview">' . $iconHTML['imageView'] . '</span>'),
 					array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'vertical-align:top;"', 'dat' => array(
 							array('elem' => 'table', '' => '', 'dat' => array(
 									array('elem' => 'row', 'dat' => array(
-											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . '" class="bold"', 'dat' => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . ' (ID: ' . $_result[$f]['docID'] . ')"><u>' . $_result[$f]["Text"] . '</u></a>'),
+											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . '" class="bold"', 'dat' => '<a href="javascript:weSearch.openToEdit(\'' . addTblPrefix($_result[$f]['docTable']) . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . ' (ID: ' . $_result[$f]['docID'] . ')"><u>' . $_result[$f]["Text"] . '</u></a>'),
 											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'width:75px;text-align:left"', 'dat' => ($_result[$f]['IsUsed'] ? we_html_button::create_button(we_html_button::DIRRIGHT, "javascript:weSearch.toggleAdditionalContent(this, " . $_result[$f]['docID'] . ")", true, 21, 22, "", "", false, false, '__' . $_result[$f]['docID'], false, 'Verwendet in:') : '')),
 											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'width:70px;text-align:left"', 'dat' => $_result[$f]['fileSize']),
 											array('elem' => 'td', 'attribs' => ($_result[$f]['IsUsed'] ? 'title="Dokument wird benutzt." onclick="weSearch.showAdditional(' . $_result[$f]['docID'] . ')" style="cursor:pointer;width:45px;text-align:left;' . $standardStyle . 'height:auto;"' : 'title="Dokument wird nicht benutzt!" style="width:45px;text-align:left;' . $standardStyle . '"'), 'dat' => '<i class="fa fa-lg fa-circle" style="color:' . ($_result[$f]['IsUsed'] ? 'green' : 'yellow') . ';"></i>'),
@@ -761,12 +761,12 @@ WE().consts.weSearch= {
 				}
 
 				$content[] = array(
-					array("dat" => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $_result[$f]["Text"] . '"><span class="iconGridview">' . $iconHTML['imageView'] . '<span></a>'),
+					array("dat" => '<a href="javascript:weSearch.openToEdit(\'' . addTblPrefix($_result[$f]["docTable"]) . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $_result[$f]["Text"] . '"><span class="iconGridview">' . $iconHTML['imageView'] . '<span></a>'),
 					array("dat" => we_base_util::shortenPath($_result[$f]["SiteTitle"], 17)),
-					array("dat" => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . ' middlefont" title="' . ($whichSearch === self::SEARCH_MEDIA ? $_result[$f]["Path"] : $_result[$f]["Text"]) . '"><u>' . we_base_util::shortenPath($_result[$f]["Text"], 20) . '</u></a>'),
+					array("dat" => '<a href="javascript:weSearch.openToEdit(\'' . addTblPrefix($_result[$f]["docTable"]) . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . ' middlefont" title="' . ($whichSearch === self::SEARCH_MEDIA ? $_result[$f]["Path"] : $_result[$f]["Text"]) . '"><u>' . we_base_util::shortenPath($_result[$f]["Text"], 20) . '</u></a>'),
 					array("dat" => '<nobr>' . ($_result[$f]["CreationDate"] ? date(g_l('searchtool', '[date_format]'), $_result[$f]["CreationDate"]) : "-") . '</nobr>'),
 					array("dat" => '<nobr>' . ($_result[$f]["ModDate"] ? date(g_l('searchtool', '[date_format]'), $_result[$f]["ModDate"]) : "-") . '</nobr>'),
-					array("dat" => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $_result[$f]["Text"] . '"><span class="iconGridview">' . $iconHTML['imageViewPopup'] . '</span></a>'),
+					array("dat" => '<a href="javascript:weSearch.openToEdit(\'' . addTblPrefix($_result[$f]["docTable"]) . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $_result[$f]["Text"] . '"><span class="iconGridview">' . $iconHTML['imageViewPopup'] . '</span></a>'),
 					array("dat" => $_result[$f]['fileSize']),
 					array("dat" => $iconHTML['sizeX'] . " x " . $iconHTML['sizeY']),
 					array("dat" => we_base_util::shortenPath(g_l('contentTypes', '[' . $_result[$f]['ContentType'] . ']'), 22)),

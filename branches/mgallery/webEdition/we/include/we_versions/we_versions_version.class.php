@@ -968,12 +968,12 @@ class we_versions_version{
 			$this->deleteVersion('', $where);
 		}
 
-		$anzahl = f('SELECT COUNT(1) FROM ' . VERSIONS_TABLE . ' WHERE documentId=' . intval($docID) . ' AND documentTable="' . $db->escape($docTable) . '"', "", $db);
+		$anzahl = f('SELECT COUNT(1) FROM ' . VERSIONS_TABLE . ' WHERE documentId=' . intval($docID) . ' AND documentTable="' . $db->escape(stripTblPrefix($docTable)) . '"', "", $db);
 
 		if($anzahl > $prefAnzahl && $prefAnzahl != ""){
 			$toDelete = $anzahl - $prefAnzahl;
 			$m = 0;
-			$db->query('SELECT ID, version FROM ' . VERSIONS_TABLE . " WHERE documentId=" . intval($docID) . ' AND documentTable="' . $db->escape($docTable) . '" ORDER BY version ASC LIMIT ' . intval($toDelete));
+			$db->query('SELECT ID, version FROM ' . VERSIONS_TABLE . " WHERE documentId=" . intval($docID) . ' AND documentTable="' . $db->escape(stripTblPrefix($docTable)) . '" ORDER BY version ASC LIMIT ' . intval($toDelete));
 			while($db->next_record()){
 				if($m < $toDelete){
 					$this->deleteVersion($db->f('ID'), '');
@@ -1475,7 +1475,7 @@ class we_versions_version{
 		// always write delete versions, if enabled, so ignore VERSIONS_CREATE
 		if($lastEntry && $doDelete){
 			$db->query('INSERT INTO ' . VERSIONS_TABLE . ' SET ' . we_database_base::arraySetter($lastEntry));
-			$db->query('UPDATE ' . VERSIONS_TABLE . ' SET active=0 WHERE documentID=' . intval($docID) . ' AND documentTable="' . $db->escape($docTable) . '" AND version!=' . intval($lastEntry['version']));
+			$db->query('UPDATE ' . VERSIONS_TABLE . ' SET active=0 WHERE documentID=' . intval($docID) . ' AND documentTable="' . $db->escape(stripTblPrefix($docTable)) . '" AND version!=' . intval($lastEntry['version']));
 		}
 
 		$this->CheckPreferencesTime($docID, $docTable);
@@ -2067,12 +2067,12 @@ class we_versions_version{
 	 * @return array with fields and values
 	 */
 	private static function getLastEntry($docID, $docTable, we_database_base $db){
-		return getHash('SELECT * FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($docID) . ' AND documentTable="' . $db->escape($docTable) . '" AND status IN ("saved","published","unpublished","deleted") ORDER BY version DESC LIMIT 1', $db, MYSQL_ASSOC);
+		return getHash('SELECT * FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($docID) . ' AND documentTable="' . $db->escape(stripTblPrefix($docTable)) . '" AND status IN ("saved","published","unpublished","deleted") ORDER BY version DESC LIMIT 1', $db, MYSQL_ASSOC);
 	}
 
 	public static function versionExists($docID, $docTable){
 		$db = new DB_WE();
-		return f('SELECT 1 FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($docID) . ' AND documentTable="' . $db->escape($docTable) . '" AND status IN ("saved","published","unpublished","deleted") LIMIT 1', '', $db);
+		return f('SELECT 1 FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($docID) . ' AND documentTable="' . $db->escape(stripTblPrefix($docTable)) . '" AND status IN ("saved","published","unpublished","deleted") LIMIT 1', '', $db);
 	}
 
 	public static function updateLastVersionPath($docID, $docTable, $parentId, $path){
