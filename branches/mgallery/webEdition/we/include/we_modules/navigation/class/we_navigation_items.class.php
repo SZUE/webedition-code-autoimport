@@ -2,6 +2,8 @@
 /**
  * webEdition CMS
  *
+ * collection of the navigation items
+ *
  * $Rev$
  * $Author$
  * $Date$
@@ -17,14 +19,13 @@
  * A copy is found in the textfile
  * webEdition/licenses/webEditionCMS/License.txt
  *
- * @category   webEdition
- * @package none
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ *
+ * @category	webEdition
+ * @package		none
+ * @license		http://www.gnu.org/copyleft/gpl.html  GPL
+ * @version    	SVN: $Id$
  */
 
-/**
- * collection of the navigation items
- */
 class we_navigation_items{
 	const TEMPLATE_DEFAULT_CURRENT = 'defaultCurrent';
 	const TEMPLATE_DEFAULT_POSITION = 'defaultPosition';
@@ -60,20 +61,20 @@ class we_navigation_items{
 		}
 
 		return ($navi->LimitAccess ?
-				array(
+			array(
 				'id' => $navi->AllCustomers == 0 ? $navi->Customers : array(),
 				'filter' => $navi->ApplyFilter == 1 ? $navi->CustomerFilter : array(),
 				'blacklist' => $navi->ApplyFilter == 1 ? $navi->BlackList : array(),
 				'whitelist' => $navi->ApplyFilter == 1 ? $navi->WhiteList : array(),
 				'usedocumentfilter' => $navi->UseDocumentFilter ? 1 : 0
-				) :
-				array(
+			) :
+			array(
 				'id' => '',
 				'filter' => '',
 				'blacklist' => '',
 				'whitelist' => '',
 				'usedocumentfilter' => 1
-		));
+			));
 	}
 
 	private function initRulesFromDB(){
@@ -197,15 +198,13 @@ class we_navigation_items{
 		}
 
 		$candidate = 0;
-		$_score = 3;
-		$_len = 0;
-		$_curr_len = 0;
-		$ponder = 0;
+		$score = 3;
+		$len = 0;
 
-		$_isObject = (isset($GLOBALS['we_obj']) && !$GLOBALS['WE_MAIN_DOC']->IsFolder);
-		$main_cats = array_filter(explode(',', $GLOBALS['WE_MAIN_DOC']->Category));
+		$isObject = (isset($GLOBALS['we_obj']) && !$GLOBALS['WE_MAIN_DOC']->IsFolder);
+		$mainCats = array_filter(explode(',', $GLOBALS['WE_MAIN_DOC']->Category));
 
-		$currentWorksapce = $_isObject ? //webEdition object
+		$currentWorkspace = $isObject ? //webEdition object
 			(defined('WE_REDIRECTED_SEO') ? //webEdition object uses SEO-URL
 				we_objectFile::getNextDynDoc(($path = rtrim(substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $GLOBALS['WE_MAIN_DOC']->Url)), '/'). '.php'), path_to_id(rtrim(substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $GLOBALS['WE_MAIN_DOC']->Url)), '/')), $GLOBALS['WE_MAIN_DOC']->Workspaces, $GLOBALS['WE_MAIN_DOC']->ExtraWorkspacesSelected, $GLOBALS['DB_WE']) :
 				parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH)
@@ -217,7 +216,7 @@ class we_navigation_items{
 			$parentPath = '';
 			switch($rule->SelectionType){ // FIXME: why not use continue instead of $ponder = 999?
 				case we_navigation_navigation::STYPE_DOCTYPE:
-					if($_isObject){
+					if($isObject){
 						continue; // remove from selection
 					}
 					if($rule->DoctypeID){
@@ -234,7 +233,7 @@ class we_navigation_items{
 					break;
 
 				case we_navigation_navigation::STYPE_CLASS:
-					if(!$_isObject){
+					if(!$isObject){
 						continue; // remove from selection
 					}
 					if($rule->ClassID){
@@ -248,28 +247,28 @@ class we_navigation_items{
 					break;
 			}
 
-			if(!empty($parentPath) && strpos($currentWorksapce, $parentPath) === 0){
+			if(!empty($parentPath) && strpos($currentWorkspace, $parentPath) === 0){
 				$ponder--;
-				$_curr_len = strlen($parentPath);
-				if($_curr_len > $_len){
-					$_len = $_curr_len;
+				$currLen = strlen($parentPath);
+				if($currLen > $len){
+					$len = $currLen;
 					$ponder--;
 				}
 			}
 
 			if(($cats = makeArrayFromCSV($rule->Categories))){
-				if($this->checkCategories($cats, $main_cats)){
+				if($this->checkCategories($cats, $mainCats)){
 					$ponder--;
 				} else {
 					continue; // remove from selection
 				}
 			}
 
-			if($ponder <= $_score){
+			if($ponder <= $score){
 				if(NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH){
 					$this->setCurrent($rule->NavigationID);
 				} else {
-					$_score = $ponder;
+					$score = $ponder;
 					$candidate = $rule->NavigationID;
 				}
 			}
@@ -299,14 +298,18 @@ class we_navigation_items{
 
 	function getItems($id = false){
 		return ($id ?
-				$this->getItemIds($id) :
-				array_keys($this->items));
+			$this->getItemIds($id) :
+			array_keys($this->items));
 	}
 
 	function getItem($id){
 		return isset($this->items[$id]) ? $this->items[$id] : false;
 	}
 
+	/**
+	 * @param we_navigation_item $item
+	 * @return mixed
+	 */
 	function getTemplate(we_navigation_item $item){
 		if(!isset($this->templates[$item->type])){
 			return $this->getDefaultTemplate($item);
@@ -349,12 +352,13 @@ class we_navigation_items{
 		return $this->getDefaultTemplate($item);
 	}
 
+	/**
+	 * 	the default templates should look like this
+	 * 	$folderTemplate = '<li><a href="<we:navigationField name="href">"><we:navigationField name="text"></a><ul><we:navigationEntries /></ul></li>';
+	 * 	$itemTemplate = '<li><a href="<we:navigationField name="href">"><we:navigationField name="text"></a></li>';
+	 * 	$rootTemplate = '<we:navigationEntries />';
+	 */
 	private function setDefaultTemplates(){
-// the default templates should look like this
-//			$folderTemplate = '<li><a href="<we:navigationField name="href">"><we:navigationField name="text"></a><ul><we:navigationEntries /></ul></li>';
-//			$itemTemplate = '<li><a href="<we:navigationField name="href">"><we:navigationField name="text"></a></li>';
-//			$rootTemplate = '<we:navigationEntries />';
-
 		$this->setTemplate('<li><a href="<?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "href")) . '); ?>"><?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "text")) . '); ?></a><?php if(' . we_tag_tagParser::printTag('ifHasEntries') . '){ ?><ul><?php printElement( ' . we_tag_tagParser::printTag('navigationEntries') . '); ?></ul><?php } ?></li>', we_base_ContentTypes::FOLDER, self::TEMPLATE_DEFAULT_LEVEL, self::TEMPLATE_DEFAULT_CURRENT, self::TEMPLATE_DEFAULT_POSITION);
 		$this->setTemplate('<li><a href="<?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "href")) . '); ?>"><?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "text")) . '); ?></a></li>', 'item', self::TEMPLATE_DEFAULT_LEVEL, self::TEMPLATE_DEFAULT_CURRENT, self::TEMPLATE_DEFAULT_POSITION);
 		$this->setTemplate('<?php printElement( ' . we_tag_tagParser::printTag('navigationEntries') . '); ?>', 'root', self::TEMPLATE_DEFAULT_LEVEL, self::TEMPLATE_DEFAULT_CURRENT, self::TEMPLATE_DEFAULT_POSITION);
