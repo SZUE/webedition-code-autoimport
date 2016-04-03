@@ -141,8 +141,7 @@ class we_search_search extends we_search_base{
 				for($i = 0; $i < count($searchFields); $i++){
 					$w = '';
 					$done = false;
-					$searchString = $searchText[$i];
-					$searchString = ($whichSearch === we_search_view::SEARCH_MEDIA && substr($searchFields[$i], 0, 6) === 'meta__' && $searchString === '' && $location[$i] === 'IS') ? '##EMPTY##' : $searchString;
+					$searchString = ($whichSearch === we_search_view::SEARCH_MEDIA && substr($searchFields[$i], 0, 6) === 'meta__' && $searchText[$i] === '' && $location[$i] === 'IS') ? '##EMPTY##' : $searchText[$i];
 
 					if(!empty($searchString)){
 						if(!in_array($searchFields[$i], array('Status', 'Speicherart', 'HasReferenceToID'))){
@@ -287,7 +286,7 @@ class we_search_search extends we_search_base{
 									$where .= $w;
 									break;
 								case 'HasReferenceToID':
-									$where .= !$searchString ? 1 : (($searchId = path_to_id($searchString)) ? $this->searchHasReferenceToId($searchId, $_table) : 0);
+									$where .=!$searchString ? 1 : (($searchId = path_to_id($searchString)) ? $this->searchHasReferenceToId($searchId, $_table) : 0);
 									break;
 								default:
 									//if($whichSearch != "AdvSearch"){
@@ -1243,7 +1242,7 @@ class we_search_search extends we_search_base{
 
 		return $this->usedMedia ? (' AND ' . FILE_TABLE . '.ID ' . ($useState === 2 ? 'NOT ' : ' ') . 'IN(' . implode(',', $this->usedMedia) . ')') : ($useState === 2 ? '' : ' AND 0');
 	}
-	
+
 	function searchHasReferenceToId($id, $table){
 		if(!id || !table){
 			return 0;
