@@ -123,16 +123,16 @@ class we_doclist_search extends we_search_search{
 			$where[] = 'AND ParentID=' . intval($currentFolderID);
 			switch($table){
 				case FILE_TABLE:
-					$where[] = 'AND (RestrictOwners IN (0,' . intval($_SESSION['user']['ID']) . ') OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Owners))';
+					$where[] = 'AND (RestrictOwners=0 OR CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Owners))';
 					break;
 				case TEMPLATES_TABLE:
 					//$where[] = 'AND (RestrictUsers IN (0,' . intval($_SESSION['user']['ID']) . ') OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Users))';
 					break;
 				case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-					$where[] = 'AND (RestrictOwners IN (0,' . intval($_SESSION['user']['ID']) . ') OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Owners))';
+					$where[] = 'AND (RestrictOwners=0 OR f.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Owners))';
 					break;
 				case (defined('OBJECT_TABLE') ? OBJECT_TABLE : OBJECT_TABLE):
-					$where[] = 'AND (RestrictUsers IN (0,' . intval($_SESSION['user']['ID']) . ') OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Users))';
+					$where[] = 'AND (RestrictUsers=0 OR CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Users))';
 					break;
 			}
 			$whereQuery = '1 ' . implode(' ', $where);
