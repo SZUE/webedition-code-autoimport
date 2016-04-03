@@ -935,17 +935,19 @@ class we_versions_version{
 	}
 
 	function CheckPreferencesTime($docID, $docTable){
-
 		$db = new DB_WE();
-
-		if($docTable == TEMPLATES_TABLE){
-			$prefTimeDays = (VERSIONS_TIME_DAYS_TMPL != '-1') ? VERSIONS_TIME_DAYS_TMPL : "";
-			$prefTimeWeeks = (VERSIONS_TIME_WEEKS_TMPL != '-1') ? VERSIONS_TIME_WEEKS_TMPL : "";
-			$prefTimeYears = (VERSIONS_TIME_YEARS_TMPL != '-1') ? VERSIONS_TIME_YEARS_TMPL : "";
-		} else {
-			$prefTimeDays = (VERSIONS_TIME_DAYS != "-1") ? VERSIONS_TIME_DAYS : "";
-			$prefTimeWeeks = (VERSIONS_TIME_WEEKS != "-1") ? VERSIONS_TIME_WEEKS : "";
-			$prefTimeYears = (VERSIONS_TIME_YEARS != "-1") ? VERSIONS_TIME_YEARS : "";
+		switch($docTable){
+			case TEMPLATES_TABLE:
+				$prefTimeDays = (VERSIONS_TIME_DAYS_TMPL != '-1') ? VERSIONS_TIME_DAYS_TMPL : "";
+				$prefTimeWeeks = (VERSIONS_TIME_WEEKS_TMPL != '-1') ? VERSIONS_TIME_WEEKS_TMPL : "";
+				$prefTimeYears = (VERSIONS_TIME_YEARS_TMPL != '-1') ? VERSIONS_TIME_YEARS_TMPL : "";
+				$prefAnzahl = intval(VERSIONS_ANZAHL_TMPL);
+				break;
+			default:
+				$prefTimeDays = (VERSIONS_TIME_DAYS != "-1") ? VERSIONS_TIME_DAYS : "";
+				$prefTimeWeeks = (VERSIONS_TIME_WEEKS != "-1") ? VERSIONS_TIME_WEEKS : "";
+				$prefTimeYears = (VERSIONS_TIME_YEARS != "-1") ? VERSIONS_TIME_YEARS : "";
+				$prefAnzahl = intval(VERSIONS_ANZAHL);
 		}
 
 		$prefTime = 0;
@@ -965,7 +967,6 @@ class we_versions_version{
 			$where = ' timestamp < ' . $deletetime . ' AND CreationDate!=timestamp ';
 			$this->deleteVersion('', $where);
 		}
-		$prefAnzahl = intval($docTable == TEMPLATES_TABLE ? VERSIONS_ANZAHL_TMPL : VERSIONS_ANZAHL);
 
 		$anzahl = f('SELECT COUNT(1) FROM ' . VERSIONS_TABLE . ' WHERE documentId=' . intval($docID) . ' AND documentTable="' . $db->escape($docTable) . '"', "", $db);
 
@@ -1458,7 +1459,7 @@ class we_versions_version{
 			'timestamp' => sql_function('UNIX_TIMESTAMP()'),
 			'status' => "deleted",
 			'modifications' => 1,
-			'modifierID' => isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : '',
+			'modifierID' => isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : '',
 			/* 'IP' => $_SERVER['REMOTE_ADDR'],
 			  'Browser' => isset($_SERVER['HTTP_USER_AGENT']) ? : '', */
 			'active' => 1,
@@ -2101,10 +2102,6 @@ class we_versions_version{
 	}
 
 	public static function todo($data, $printIt = true){
-		if($printIt){
-			$_newLine = count($_SERVER['argv']) ? "\n" : "<br/>\n";
-		}
-
 		switch($data["type"]){
 			case 'version_delete':
 				/* FIXME: why is this not active???

@@ -309,7 +309,7 @@ class we_search_search extends we_search_base{
 					$whereQuery = $where;
 
 					//query for restrict users for FILE_TABLE, VERSIONS_TABLE AND OBJECT_FILES_TABLE
-					$restrictUserQuery = ' AND ((' . escape_sql_query($_table) . '.RestrictOwners=0 OR ' . escape_sql_query($_table) . '.RestrictOwners= ' . intval($_SESSION["user"]["ID"]) . ') OR (FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',' . escape_sql_query($_table) . '.Owners)))';
+					$restrictUserQuery = ' AND (f.RestrictOwners IN(0,' . intval($_SESSION["user"]["ID"]) . ') OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',f.Owners))';
 
 					switch($_table){
 						case FILE_TABLE:
@@ -410,21 +410,26 @@ class we_search_search extends we_search_base{
 
 		foreach($_result as $k => $v){
 			$_result[$k]["Description"] = '';
-			if($_result[$k]['docTable'] === FILE_TABLE && $_result[$k]['Published'] >= $_result[$k]['ModDate'] && $_result[$k]['Published'] != 0){
-				$DB_WE->query('SELECT l.DID, c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DID=' . intval($_result[$k]["docID"]) . ' AND l.Name="Description" AND l.DocumentTable="' . FILE_TABLE . '"');
-				while($DB_WE->next_record()){
-					$_result[$k]["Description"] = $DB_WE->f('Dat');
-				}
-			} elseif($_result[$k]['docTable'] === FILE_TABLE){
-				$tempDoc = f('SELECT DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID =' . intval($_result[$k]["docID"]) . ' AND DocTable = "tblFile" AND Active = 1', 'DocumentObject', $DB_WE);
-				if(!empty($tempDoc)){
-					$tempDoc = we_unserialize($tempDoc);
-					if(isset($tempDoc[0]['elements']['Description']) && $tempDoc[0]['elements']['Description']['dat'] != ''){
-						$_result[$k]["Description"] = $tempDoc[0]['elements']['Description']['dat'];
+
+			switch($_result[$k]['docTable']){
+				case FILE_TABLE:
+					if($_result[$k]['Published'] >= $_result[$k]['ModDate'] && $_result[$k]['Published'] != 0){
+						$DB_WE->query('SELECT l.DID, c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DID=' . intval($_result[$k]["docID"]) . ' AND l.Name="Description" AND l.DocumentTable="' . FILE_TABLE . '"');
+						while($DB_WE->next_record()){
+							$_result[$k]["Description"] = $DB_WE->f('Dat');
+						}
+					} else {
+						$tempDoc = f('SELECT DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID =' . intval($_result[$k]["docID"]) . ' AND DocTable = "tblFile" AND Active = 1', 'DocumentObject', $DB_WE);
+						if(!empty($tempDoc)){
+							$tempDoc = we_unserialize($tempDoc);
+							if(isset($tempDoc[0]['elements']['Description']) && $tempDoc[0]['elements']['Description']['dat'] != ''){
+								$_result[$k]["Description"] = $tempDoc[0]['elements']['Description']['dat'];
+							}
+						}
 					}
-				}
-			} else {
-				$_result[$k]['Description'] = '';
+					break;
+				default:
+					$_result[$k]['Description'] = '';
 			}
 		}
 
