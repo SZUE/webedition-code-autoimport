@@ -79,6 +79,12 @@ $l_searchtool=array(
 	'menu_new_group'=>'New Group',
 	'menu_save'=>'Save',
 	'menu_suche'=>'Search',
+	
+	'metadata'=>array(
+		'description'=>'Metadata: Description',
+		'field'=>'Metadata: Title',
+		'keyword'=>'Metadata: Keywords',
+	),
 	'metafelder'=>'Metafields (max. 6)',
 	'modified'=>'Modified',
 	'nameForSearch'=>'Choose a name for your search:',

@@ -79,6 +79,12 @@ $l_searchtool=array(
 	'menu_new_group'=>'Uusi Ryhmä',
 	'menu_save'=>'Tallenna',
 	'menu_suche'=>'Haku',
+	
+	'metadata'=>array(
+		'description'=>'Metadata: Description',
+		'field'=>'Metadata: Title',
+		'keyword'=>'Metadata: Keywords',
+	),
 	'metafelder'=>'Metakentät (max. 6)',
 	'modified'=>'Muokattu',
 	'nameForSearch'=>'Valitse nimi haullesi:',
