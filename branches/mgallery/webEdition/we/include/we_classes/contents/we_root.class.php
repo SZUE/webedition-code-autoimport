@@ -1219,7 +1219,7 @@ abstract class we_root extends we_class{
 		}
 		if(($ws = get_ws($GLOBALS['we_doc']->Table, true))){ //	doc has workspaces
 			if(!(we_users_util::in_workspace($GLOBALS['we_doc']->ParentID, $ws, $GLOBALS['we_doc']->Table, $GLOBALS['DB_WE']))){
-
+				return false;
 			}
 		}
 		return false;
