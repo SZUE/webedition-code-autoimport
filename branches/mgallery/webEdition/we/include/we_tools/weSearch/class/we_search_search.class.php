@@ -156,7 +156,7 @@ class we_search_search extends we_search_base{
 												$where_OR [] = ($this->searchInTitle($searchString, $_table)? : '');
 												break;
 											case "text":
-												$where_OR [] = $_table . '.`Text` LIKE "%' . $DB_WE->escape(trim($searchString)) . '%" ';
+												$where_OR [] = 'TABLE.`Text` LIKE "%' . $DB_WE->escape(trim($searchString)) . '%" ';
 												break;
 											case "meta":
 												$where_OR [] = ($this->searchInAllMetas($searchString, $_table) ? : '');
@@ -188,7 +188,7 @@ class we_search_search extends we_search_base{
 									}
 									$contentTypes = $contentTypes ? implode(',', $contentTypes) :
 										"'" . we_base_ContentTypes::IMAGE . "','" . we_base_ContentTypes::VIDEO . "','" . we_base_ContentTypes::QUICKTIME . "','" . we_base_ContentTypes::FLASH . "','" . we_base_ContentTypes::AUDIO . "','" . we_base_ContentTypes::APPLICATION . "'";
-									$where .= ($where ? ' AND ' : '') . $_table . '.ContentType IN (' . $contentTypes . ')';
+									$where .= ($where ? ' AND ' : '') . 'TABLE.ContentType IN (' . $contentTypes . ')';
 									break;
 								case 'IsUsed':
 									$where .= $this->searchMediaLinks($searchString, $_view !== we_search_view::VIEW_ICONS);
@@ -196,10 +196,10 @@ class we_search_search extends we_search_base{
 								case 'IsProtected':
 									switch($searchString){
 										case 1:
-											$where .= ' AND ' . $_table . '.IsProtected=1 ';
+											$where .= ' AND TABLE.IsProtected=1 ';
 											break;
 										case 2:
-											$where .= ' AND ' . $_table . '.IsProtected=0 ';
+											$where .= ' AND TABLE.IsProtected=0 ';
 											break;
 									}
 									break;
@@ -228,11 +228,11 @@ class we_search_search extends we_search_base{
 									}
 									break;
 								case 'modifierID':
-									$where .= $this->searchModifier($searchString, $_table);
+									$where .= $this->searchModifier($searchString);
 									break;
 								case 'allModsIn':
 									if($_table == VERSIONS_TABLE){
-										$where .= $this->searchModFields($searchString, $_table);
+										$where .= $this->searchModFields($searchString);
 									}
 									break;
 								case 'Title':
@@ -847,7 +847,7 @@ class we_search_search extends we_search_base{
 		return $IDs ? 'AND TABLE.ID ' . ($reverse ? 'NOT' : '') . ' IN (' . implode(',', $IDs) . ')' : 'AND 0';
 	}
 
-	function getStatusFiles($status, $table){//IMI: IMPORTANT: veröffentlichungsstatus grenzt die contenttypes auf djenigen ein, die solch einen status haben!!
+	protected function getStatusFiles($status, $table){//IMI: IMPORTANT: veröffentlichungsstatus grenzt die contenttypes auf djenigen ein, die solch einen status haben!!
 		// also kann auch beim verlinkungsstatus auf media-docs eingegremzt werden
 		switch($status){
 			case "jeder" :
@@ -895,11 +895,11 @@ class we_search_search extends we_search_base{
 		return $ret;
 	}
 
-	function searchModifier($text, $table){
+	private function searchModifier($text){
 		return ($text ? ' AND TABLE.modifierID = ' . intval($text) : '');
 	}
 
-	function searchModFields($text, $table){
+	private function searchModFields($text){
 		$where = "";
 		$db = new DB_WE();
 		$versions = new we_versions_version();
@@ -1227,7 +1227,7 @@ class we_search_search extends we_search_base{
 	}
 
 //FIXME path is only implemented for filetable
-	function insertInTempTable($where = '', $table = '', $path = ''){
+	protected function insertInTempTable($where = '', $table = '', $path = ''){
 		$this->table = ($table ? : ($this->table ? : ''));
 		if(!$this->table){
 			return;
@@ -1243,7 +1243,7 @@ class we_search_search extends we_search_base{
 					$tmpTableWhere = ' AND DocumentID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE Path LIKE "' . $this->db->escape($path) . '%" )';
 				}
 
-				$this->db->query('INSERT INTO SEARCH_TEMP_TABLE (docID,docTable,Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,CreationDate,CreatorID,ModDate,Published,Extension) SELECT ID,"' . stripTblPrefix(FILE_TABLE) . '",Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,CreationDate,CreatorID,ModDate,Published,Extension FROM `' . FILE_TABLE . '` f WHERE ' . $this->where);
+				$this->db->query('INSERT INTO SEARCH_TEMP_TABLE (docID,docTable,Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,CreationDate,CreatorID,ModDate,Published,Extension) SELECT ID,"' . stripTblPrefix(FILE_TABLE) . '",Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,CreationDate,CreatorID,ModDate,Published,Extension FROM `' . FILE_TABLE . '` f WHERE ' . str_replace('TABLE.', 'f.', $this->where));
 
 				//first check published documents
 				$this->db->query('SELECT l.DID,c.Dat FROM `' . LINK_TABLE . '` l JOIN `' . CONTENT_TABLE . '` c ON (l.CID=c.ID) WHERE l.Name="Title" AND l.DocumentTable!="' . stripTblPrefix(TEMPLATES_TABLE) . '"');
@@ -1268,24 +1268,16 @@ class we_search_search extends we_search_base{
 
 			case VERSIONS_TABLE:
 				if($_SESSION['weS']['weSearch']['onlyDocs'] || $_SESSION['weS']['weSearch']['ObjectsAndDocs']){
-					$query = 'INSERT INTO SEARCH_TEMP_TABLE (docID,docTable,Text,Path,ParentID,TemplateID,ContentType,CreationDate,CreatorID,Extension,TableID,VersionID) SELECT v.documentID,v.documentTable,v.Text,v.Path,v.ParentID,v.TemplateID,v.ContentType,v.timestamp,v.modifierID,v.Extension,v.TableID,v.ID FROM ' . VERSIONS_TABLE . ' v LEFT JOIN ' . FILE_TABLE . ' f ON v.documentID=f.ID WHERE ' . str_replace('TABLE.', 'f.', $this->where) . ' ' . $_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere'];
-					if(stristr($query, "v.status='deleted'")){
-						$query = str_replace(FILE_TABLE . ".", "v.", $query);
-					}
-					$this->db->query($query);
+					$this->db->query('INSERT INTO SEARCH_TEMP_TABLE (docID,docTable,Text,Path,ParentID,TemplateID,ContentType,CreationDate,CreatorID,Extension,TableID,VersionID) SELECT v.documentID,v.documentTable,v.Text,v.Path,v.ParentID,v.TemplateID,v.ContentType,v.timestamp,v.modifierID,v.Extension,v.TableID,v.ID FROM ' . VERSIONS_TABLE . ' v LEFT JOIN ' . FILE_TABLE . ' f ON v.documentID=f.ID WHERE ' . str_replace('TABLE.', (stristr($this->where, "status='deleted'") ? 'f.' : 'v.'), $this->where . ' ' . $_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere']));
 				}
 				if(defined('OBJECT_FILES_TABLE') && ($_SESSION['weS']['weSearch']['onlyObjects'] || $_SESSION['weS']['weSearch']['ObjectsAndDocs'])){
-					$query = 'INSERT INTO SEARCH_TEMP_TABLE (docID,docTable,Text,Path,ParentID,TemplateID,ContentType,CreationDate,CreatorID,Extension,TableID,VersionID) SELECT v.documentID,v.documentTable,v.Text,v.Path,v.ParentID,v.TemplateID,v.ContentType,v.timestamp,v.modifierID,v.Extension,v.TableID,v.ID FROM ' . VERSIONS_TABLE . ' v LEFT JOIN ' . OBJECT_FILES_TABLE . ' of ON v.documentID=of.ID WHERE ' . str_replace('TABLE.', 'of.', $this->where). " " . $_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'];
-					if(stristr($query, "v.status='deleted'")){
-						$query = str_replace(OBJECT_FILES_TABLE . ".", "v.", $query);
-					}
-					$this->db->query($query);
+					$this->db->query('INSERT INTO SEARCH_TEMP_TABLE (docID,docTable,Text,Path,ParentID,TemplateID,ContentType,CreationDate,CreatorID,Extension,TableID,VersionID) SELECT v.documentID,v.documentTable,v.Text,v.Path,v.ParentID,v.TemplateID,v.ContentType,v.timestamp,v.modifierID,v.Extension,v.TableID,v.ID FROM ' . VERSIONS_TABLE . ' v LEFT JOIN ' . OBJECT_FILES_TABLE . ' of ON v.documentID=of.ID WHERE ' . str_replace('TABLE.', (stristr($this->where, "status='deleted'") ? 'of.' : 'v.'), $this->where . ' ' . $_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere']));
 				}
 				unset($_SESSION['weS']['weSearch']['onlyObjects'], $_SESSION['weS']['weSearch']['onlyDocs'], $_SESSION['weS']['weSearch']['ObjectsAndDocs'], $_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'], $_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere']);
 				break;
 
 			case TEMPLATES_TABLE:
-				$this->db->query('INSERT INTO SEARCH_TEMP_TABLE (docID,docTable,Text,Path,ParentID,IsFolder,ContentType,SiteTitle,CreationDate,CreatorID,ModDate,Extension) SELECT ID,"' . stripTblPrefix(TEMPLATES_TABLE) . '",Text,Path,ParentID,IsFolder,ContentType,Path,CreationDate,CreatorID,ModDate,Extension FROM `' . TEMPLATES_TABLE . '` t WHERE ' .str_replace('TABLE.', 't.', $this->where));
+				$this->db->query('INSERT INTO SEARCH_TEMP_TABLE (docID,docTable,Text,Path,ParentID,IsFolder,ContentType,SiteTitle,CreationDate,CreatorID,ModDate,Extension) SELECT ID,"' . stripTblPrefix(TEMPLATES_TABLE) . '",Text,Path,ParentID,IsFolder,ContentType,Path,CreationDate,CreatorID,ModDate,Extension FROM `' . TEMPLATES_TABLE . '` t WHERE ' . str_replace('TABLE.', 't.', $this->where));
 				break;
 
 			case VFILE_TABLE:
@@ -1448,7 +1440,7 @@ class we_search_search extends we_search_base{
 			}
 
 			if($searchfield == $cur['name']){
-				$searchfield = $tablename . '.' . $cur['name'];
+				$searchfield = 'TABLE.' . $cur['name'];
 
 				if(!empty($searchname)){
 					if(($whatParentID === 'ParentIDDoc' && ($this->table == FILE_TABLE || $this->table == VERSIONS_TABLE)) || ($whatParentID === 'ParentIDObj' && ($this->table == OBJECT_FILES_TABLE || $this->table == VERSIONS_TABLE)) || ($whatParentID === 'ParentIDTmpl' && $this->table == TEMPLATES_TABLE)){
@@ -1469,11 +1461,11 @@ class we_search_search extends we_search_base{
 
 						if(($searchfield === 'temp_template_id' && $this->table == FILE_TABLE) || ($searchfield === 'TemplateID' && $this->table == VERSIONS_TABLE)){
 							if($this->table == FILE_TABLE){
-								$sql .= $this->sqlwhere($tablename . '.TemplateID', $searching, $operator . '( (Published >= ModDate AND Published !=0 AND ') .
+								$sql .= $this->sqlwhere('TABLE.TemplateID', $searching, $operator . '( (Published >= ModDate AND Published !=0 AND ') .
 									$this->sqlwhere($searchfield, $searching, ' ) OR (Published < ModDate AND ') .
 									'))';
 							} elseif($this->table == VERSIONS_TABLE){
-								$sql .= $this->sqlwhere($tablename . '.TemplateID', $searching, $operator . ' ');
+								$sql .= $this->sqlwhere('TABLE.TemplateID', $searching, $operator . ' ');
 							}
 						} else {
 							$sql .= $this->sqlwhere($searchfield, $searching, $operator);
