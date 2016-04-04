@@ -24,7 +24,6 @@
 
 function setHotDocuments() {
 	var allHotDocuments = WE().layout.weEditorFrameController.getEditorsInUse();
-	var liStr = "";
 	var _hotDocumentsOfCt = {};
 	for (var frameId in allHotDocuments) {
 		if (allHotDocuments[frameId].getEditorIsHot()) {

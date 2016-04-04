@@ -41,17 +41,11 @@ foreach(g_l('contentTypes', '') as $key => $lng){
 	$ctLngs [] = '"' . $key . '": "' . $lng . '"';
 }
 
-$ctLngs = implode(',', $ctLngs);
-
-print <<< EOFEOF
-<script><!--
-var ctLngs = {$ctLngs};
-var nextCmd="$nextCmd";
-	//-->
-</script>
-EOFEOF;
-
 echo STYLESHEET .
+ we_html_element::jsElement('
+var ctLngs = ' . implode(',', $ctLngs) . ';
+var nextCmd="' . $nextCmd . '";
+') .
  we_html_element::jsScript(JS_DIR . 'we_exit_multi_doc_question.js');
 ?>
 </head>
