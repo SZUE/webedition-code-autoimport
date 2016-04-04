@@ -12,11 +12,13 @@
 /* query separator */
 ###UPDATEDROPCOL(Browser,###TBLPREFIX###tblversions)###
 /* query separator */
+UPDATE ###TBLPREFIX###tblversions SET documentTable=REPLACE(documentTable,"###TBLPREFIX###","") WHERE documentTable LIKE "###TBLPREFIX###%"
+/* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblversions (
   ID bigint unsigned NOT NULL auto_increment,
   documentID int unsigned NOT NULL,
-  documentTable tinytext NOT NULL,
+  documentTable enum('tblFile','tblObjectFiles','tblTemplates','tblObject') NOT NULL default 'tblFile',
   documentElements longblob NOT NULL,
   documentScheduler blob NOT NULL,
   documentCustomFilter blob NOT NULL,

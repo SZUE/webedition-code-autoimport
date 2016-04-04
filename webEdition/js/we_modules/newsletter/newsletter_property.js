@@ -599,7 +599,7 @@ function searchEmail(searchname) {
 
 function isValidEmail(email) {
 	email = email.toLowerCase();
-	return checkMail ? we.validate.email(email) : true;
+	return checkMail ? WE().util.validate.email(email) : true;
 }
 
 function setHeaderTitle() {

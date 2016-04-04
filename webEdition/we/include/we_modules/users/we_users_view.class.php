@@ -50,13 +50,13 @@ WE().consts.dirs.WE_USERS_MODULE_DIR="' . WE_USERS_MODULE_DIR . '";
 parent.document.title = "' . $title . '";
 var cgroup=' . ($_SESSION['user']['ID'] ? intval(f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . $_SESSION["user"]["ID"])) : 0) . ';
 ') .
-				we_html_element::jsScript(JS_DIR . 'we_modules/users/users_view.js');
+			we_html_element::jsScript(JS_DIR . 'we_modules/users/users_view.js');
 	}
 
 	function getJSProperty(){
 		return
-				weSuggest::getYuiFiles() .
-				we_html_element::jsScript(JS_DIR . 'we_modules/users/users_property.js');
+			weSuggest::getYuiFiles() .
+			we_html_element::jsScript(JS_DIR . 'we_modules/users/users_property.js');
 	}
 
 	private function new_group(){
@@ -143,9 +143,9 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			$_SESSION["user_session_data"] = $user_object;
 
 			echo we_html_element::jsElement('top.content.usetHot();' .
-					($user_object->Type == 1 ?
-							'top.content.cgroup=' . $user_object->ID . ';' :
-							'') .					'
+				($user_object->Type == 1 ?
+					'top.content.cgroup=' . $user_object->ID . ';' :
+					'') . '
 top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edheader";
 top.content.editor.edbody.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edbody&oldtab=0";
 top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edfooter";');
@@ -227,119 +227,120 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', '[workspaceFieldError]'), we_message_reporting::WE_MESSAGE_ERROR));
 			return;
 		}
-		$user_object = $_SESSION["user_session_data"];
+		$user_object = $_SESSION['user_session_data'];
 		if(($oldtab = we_base_request::_(we_base_request::INT, 'oldtab')) !== false && ($opb = we_base_request::_(we_base_request::STRING, 'old_perm_branch')) !== false){//FIXME: is latter ever used?
 			$user_object->preserveState($oldtab, $opb);
-			$_SESSION["user_session_data"] = $user_object;
+			$_SESSION['user_session_data'] = $user_object;
 		}
 
-		if(!permissionhandler::hasPerm("ADMINISTRATOR") && $user_object->checkPermission("ADMINISTRATOR")){
+		if(!permissionhandler::hasPerm('ADMINISTRATOR') && $user_object->checkPermission('ADMINISTRATOR')){
 			echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR));
 			$user_object = new we_users_user();
 			return;
 		}
-		$oldperm = $user_object->checkPermission("ADMINISTRATOR");
-		if($user_object){
+		$oldperm = $user_object->checkPermission('ADMINISTRATOR');
+		if(!$user_object){
+			return;
+		}
 
-			if(!permissionhandler::hasPerm("SAVE_USER") && ($user_object->Type == we_users_user::TYPE_USER || $user_object->Type == we_users_user::TYPE_ALIAS) && $user_object->ID != 0){
-				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR));
-				return;
-			}
-			if(!permissionhandler::hasPerm("NEW_USER") && ($user_object->Type == we_users_user::TYPE_USER || $user_object->Type == we_users_user::TYPE_ALIAS) && $user_object->ID == 0){
-				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR));
-				return;
-			}
-			if(!permissionhandler::hasPerm("SAVE_GROUP") && $user_object->Type == we_users_user::TYPE_USER_GROUP && $user_object->ID != 0){
-				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR));
-				return;
-			}
-			if(!permissionhandler::hasPerm("NEW_GROUP") && $user_object->Type == we_users_user::TYPE_USER_GROUP && $user_object->ID == 0){
-				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR));
-				return;
-			}
-			if(($ot = we_base_request::_(we_base_request::INT, 'oldtab'))){
-				$user_object->preserveState($ot, we_base_request::_(we_base_request::STRING, 'old_perm_branch'));
-			}
+		if(!permissionhandler::hasPerm('SAVE_USER') && ($user_object->Type == we_users_user::TYPE_USER || $user_object->Type == we_users_user::TYPE_ALIAS) && $user_object->ID != 0){
+			echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR));
+			return;
+		}
+		if(!permissionhandler::hasPerm("NEW_USER") && ($user_object->Type == we_users_user::TYPE_USER || $user_object->Type == we_users_user::TYPE_ALIAS) && $user_object->ID == 0){
+			echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR));
+			return;
+		}
+		if(!permissionhandler::hasPerm("SAVE_GROUP") && $user_object->Type == we_users_user::TYPE_USER_GROUP && $user_object->ID != 0){
+			echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR));
+			return;
+		}
+		if(!permissionhandler::hasPerm("NEW_GROUP") && $user_object->Type == we_users_user::TYPE_USER_GROUP && $user_object->ID == 0){
+			echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR));
+			return;
+		}
+		if(($ot = we_base_request::_(we_base_request::INT, 'oldtab'))){
+			$user_object->preserveState($ot, we_base_request::_(we_base_request::STRING, 'old_perm_branch'));
+		}
 
-			$id = $user_object->ID;
-			if(!$user_object->username && $user_object->Type != we_users_user::TYPE_ALIAS){
-				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', '[username_empty]'), we_message_reporting::WE_MESSAGE_ERROR));
-				return;
-			}
+		$id = $user_object->ID;
+		if(!$user_object->username && $user_object->Type != we_users_user::TYPE_ALIAS){
+			echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', '[username_empty]'), we_message_reporting::WE_MESSAGE_ERROR));
+			return;
+		}
 
-			if($user_object->Alias == 0 && $user_object->Type == we_users_user::TYPE_ALIAS){
-				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', '[username_empty]'), we_message_reporting::WE_MESSAGE_ERROR));
-				return;
-			}
-			$exist = (f('SELECT 1 FROM ' . USER_TABLE . ' WHERE ID!=' . intval($user_object->ID) . ' AND username="' . $user_object->username . '" LIMIT 1'));
-			if($exist && $user_object->Type != we_users_user::TYPE_ALIAS){
-				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(g_l('modules_users', '[username_exists]'), $user_object->username), we_message_reporting::WE_MESSAGE_ERROR));
-				return;
-			}
-			if(($oldperm) && (!$user_object->checkPermission("ADMINISTRATOR")) && ($user_object->isLastAdmin())){
-				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', '[modify_last_admin]'), we_message_reporting::WE_MESSAGE_ERROR));
-				return;
-			}
-			$foo = ($user_object->ID ?
-							getHash('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($user_object->ID), $user_object->DB_WE) :
-							array('ParentID' => 0));
+		if($user_object->Alias == 0 && $user_object->Type == we_users_user::TYPE_ALIAS){
+			echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', '[username_empty]'), we_message_reporting::WE_MESSAGE_ERROR));
+			return;
+		}
+		$exist = (f('SELECT 1 FROM ' . USER_TABLE . ' WHERE ID!=' . intval($user_object->ID) . ' AND username="' . $user_object->username . '" LIMIT 1'));
+		if($exist && $user_object->Type != we_users_user::TYPE_ALIAS){
+			echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(g_l('modules_users', '[username_exists]'), $user_object->username), we_message_reporting::WE_MESSAGE_ERROR));
+			return;
+		}
+		if(($oldperm) && (!$user_object->checkPermission("ADMINISTRATOR")) && ($user_object->isLastAdmin())){
+			echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', '[modify_last_admin]'), we_message_reporting::WE_MESSAGE_ERROR));
+			return;
+		}
+		$foo = ($user_object->ID ?
+				getHash('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($user_object->ID), $user_object->DB_WE) :
+				array('ParentID' => 0));
 
-			$ret = $user_object->saveToDB();
-			$_SESSION['user_session_data'] = $user_object;
+		$ret = $user_object->saveToDB();
+		$_SESSION['user_session_data'] = $user_object;
 
-			//	Save seem_startfile to DB when needed.
-			if(($sid = we_base_request::_(we_base_request::INT, 'seem_start_file')) !== false){
-				$uid = we_base_request::_(we_base_request::INT, 'uid');
-				if($sid || (isset($_SESSION['save_user_seem_start_file'][$uid]))){
-					$tmp = new DB_WE();
+		//	Save seem_startfile to DB when needed.
+		if(($sid = we_base_request::_(we_base_request::INT, 'seem_start_file')) !== false){
+			$uid = we_base_request::_(we_base_request::INT, 'uid');
+			if($sid || (isset($_SESSION['save_user_seem_start_file'][$uid]))){
+				$tmp = new DB_WE();
 
-					if($sid !== false){
-						//	save seem_start_file from REQUEST
-						$seem_start_file = $sid;
-						if($user_object->ID == $_SESSION['user']['ID']){ // change preferences if user edits his own startfile
-							$_SESSION['prefs']['seem_start_file'] = $seem_start_file;
-						}
-					} else {
-						//	Speichere seem_start_file aus SESSION
-						$seem_start_file = $_SESSION['save_user_seem_start_file'][$uid];
+				if($sid !== false){
+					//	save seem_start_file from REQUEST
+					$seem_start_file = $sid;
+					if($user_object->ID == $_SESSION['user']['ID']){ // change preferences if user edits his own startfile
+						$_SESSION['prefs']['seem_start_file'] = $seem_start_file;
 					}
-
-					$tmp->query('REPLACE INTO ' . PREFS_TABLE . ' SET userID=' . $uid . ',`key`="seem_start_file",`value`="' . $tmp->escape($seem_start_file) . '"');
-					unset($tmp);
-					unset($seem_start_file);
-					if(isset($_SESSION['save_user_seem_start_file'][$uid])){
-						unset($_SESSION['save_user_seem_start_file'][$uid]);
-					}
-				}
-			}
-
-			if($ret == we_users_user::ERR_USER_PATH_NOK){
-				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', '[user_path_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
-			} else {
-				$tree_code = ($id ?
-								'top.content.treeData.updateEntry({id:' . $user_object->ID . ',parentid:' . $user_object->ParentID . ',text:"' . $user_object->Text . '",class:"' . ($user_object->checkPermission('ADMINISTRATOR') ? 'bold ' : '') . ($user_object->LoginDenied ? 'red' : '') . '"});' :
-								'top.content.treeData.makeNewEntry({id:' . $user_object->ID . ',parentid:' . $user_object->ParentID . ',text:"' . $user_object->Text . '",open:false,contenttype:"' . (($user_object->Type == we_users_user::TYPE_USER_GROUP) ? "folder" : (($user_object->Type == we_users_user::TYPE_ALIAS) ? "we/alias" : "we/user")) . '",table:"' . USER_TABLE . '",class:"' . ($user_object->checkPermission('ADMINISTRATOR') ? 'bold ' : '') . ($user_object->LoginDenied ? 'red' : '') . '"});') .
-						'top.content.editor.edheader.document.getElementById("titlePath").innerText="' . $user_object->Path . '";';
-
-				switch($user_object->Type){
-					case we_users_user::TYPE_ALIAS:
-						$savemessage = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_users', '[alias_saved_ok]'), $user_object->Text), we_message_reporting::WE_MESSAGE_NOTICE);
-						break;
-					case we_users_user::TYPE_USER_GROUP:
-						$savemessage = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_users', '[group_saved_ok]'), $user_object->Text), we_message_reporting::WE_MESSAGE_NOTICE);
-						break;
-					case we_users_user::TYPE_USER:
-					default:
-						$savemessage = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_users', '[user_saved_ok]'), $user_object->Text), we_message_reporting::WE_MESSAGE_NOTICE);
-						break;
+				} else {
+					//	Speichere seem_start_file aus SESSION
+					$seem_start_file = $_SESSION['save_user_seem_start_file'][$uid];
 				}
 
-				if($user_object->Type == we_users_user::TYPE_USER){
-					$tree_code .= 'top.content.cgroup=' . $user_object->ParentID . ';';
+				$tmp->query('REPLACE INTO ' . PREFS_TABLE . ' SET userID=' . $uid . ',`key`="seem_start_file",`value`="' . $tmp->escape($seem_start_file) . '"');
+				unset($tmp);
+				unset($seem_start_file);
+				if(isset($_SESSION['save_user_seem_start_file'][$uid])){
+					unset($_SESSION['save_user_seem_start_file'][$uid]);
 				}
-				echo we_html_element::jsElement('top.content.usetHot();' . $tree_code . $savemessage . $ret);
 			}
 		}
+
+		if($ret == we_users_user::ERR_USER_PATH_NOK){
+			echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', '[user_path_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
+			return;
+		}
+		$tree_code = ($id ?
+				'top.content.treeData.updateEntry({id:' . $user_object->ID . ',parentid:' . $user_object->ParentID . ',text:"' . $user_object->Text . '",class:"' . ($user_object->checkPermission('ADMINISTRATOR') ? 'bold ' : '') . ($user_object->LoginDenied ? 'red' : '') . '"});' :
+				'top.content.treeData.makeNewEntry({id:' . $user_object->ID . ',parentid:' . $user_object->ParentID . ',text:"' . $user_object->Text . '",open:false,contenttype:"' . (($user_object->Type == we_users_user::TYPE_USER_GROUP) ? "we/userGroup" : (($user_object->Type == we_users_user::TYPE_ALIAS) ? "we/alias" : "we/user")) . '",table:"' . USER_TABLE . '",class:"' . ($user_object->checkPermission('ADMINISTRATOR') ? 'bold ' : '') . ($user_object->LoginDenied ? 'red' : '') . '"});') .
+			'top.content.editor.edheader.document.getElementById("titlePath").innerText="' . $user_object->Path . '";';
+
+		switch($user_object->Type){
+			case we_users_user::TYPE_ALIAS:
+				$savemessage = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_users', '[alias_saved_ok]'), $user_object->Text), we_message_reporting::WE_MESSAGE_NOTICE);
+				break;
+			case we_users_user::TYPE_USER_GROUP:
+				$savemessage = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_users', '[group_saved_ok]'), $user_object->Text), we_message_reporting::WE_MESSAGE_NOTICE);
+				break;
+			case we_users_user::TYPE_USER:
+			default:
+				$savemessage = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_users', '[user_saved_ok]'), $user_object->Text), we_message_reporting::WE_MESSAGE_NOTICE);
+				break;
+		}
+
+		if($user_object->Type == we_users_user::TYPE_USER){
+			$tree_code .= 'top.content.cgroup=' . $user_object->ParentID . ';';
+		}
+		echo we_html_element::jsElement('top.content.usetHot();' . $tree_code . $savemessage . $ret);
 	}
 
 	private function delete_user(){
@@ -448,9 +449,9 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			}
 
 			echo we_html_element::jsElement(
-					($found || permissionhandler::hasPerm('ADMINISTRATOR') ?
-							'top.content.we_cmd(\'display_user\',' . $uid . ')' :
-							we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR)
+				($found || permissionhandler::hasPerm('ADMINISTRATOR') ?
+					'top.content.we_cmd(\'display_user\',' . $uid . ')' :
+					we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR)
 			));
 		}
 	}
@@ -491,8 +492,8 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 	color:grey;
 	}
 ') . we_html_button::create_button('fat:create_user,fa-lg fa-user-plus', "javascript:top.we_cmd('new_user');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")) .
-				we_html_button::create_button('fat:create_group,fa-lg fa-users,fa-plus', "javascript:top.we_cmd('new_group');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_GROUP")) .
-				we_html_button::create_button('fat:create_alias,alias fa-lg fa-user-plus', "javascript:top.we_cmd('new_alias');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_ALIAS"));
+			we_html_button::create_button('fat:create_group,fa-lg fa-users,fa-plus', "javascript:top.we_cmd('new_group');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_GROUP")) .
+			we_html_button::create_button('fat:create_alias,alias fa-lg fa-user-plus', "javascript:top.we_cmd('new_alias');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_ALIAS"));
 
 		return parent::getActualHomeScreen('users', "user.gif", $content);
 	}

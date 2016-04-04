@@ -359,13 +359,13 @@ if(!isset($_SESSION['weS']['weBackupVars']) || empty($_SESSION['weS']['weBackupV
 				$_SESSION['weS']['weBackupVars']['close']($fh);
 			}
 		}
-		we_base_file::save($_SESSION['weS']['weBackupVars']['backup_file'], we_backup_backup::weXmlExImFooter, 'ab', $_SESSION['weS']['weBackupVars']['options']['compress']);
+		we_base_file::save($_SESSION['weS']['weBackupVars']['backup_file'], we_backup_util::weXmlExImFooter, 'ab', $_SESSION['weS']['weBackupVars']['options']['compress']);
 
 		if(!empty($_SESSION['weS']['weBackupVars']['options']['compress'])){
 			if($_REQUEST['verbose']){
 				print "\nCompressing...\n";
 			}
-			$_SESSION['weS']['weBackupVars']['backup_file'] = we_base_file::compress($_SESSION['weS']['weBackupVars']['backup_file'], we_backup_backup::COMPRESSION);
+			$_SESSION['weS']['weBackupVars']['backup_file'] = we_base_file::compress($_SESSION['weS']['weBackupVars']['backup_file'], we_backup_util::COMPRESSION);
 			$_SESSION['weS']['weBackupVars']['filename'] .= '.gz';
 			$_backup_filename .= '.gz';
 		}

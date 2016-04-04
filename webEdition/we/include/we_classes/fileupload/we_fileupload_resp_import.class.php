@@ -82,7 +82,17 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 	}
 
 	protected function getWebeditionDocument(){ // TODO: avoid some more redundancy in this fn
-		if($this->docVars['transaction']){ // import ne binary for existing wedoc
+		if(($ws = get_ws(FILE_TABLE, true))){
+			if(!(we_users_util::in_workspace($this->fileVars['parentID'], $ws, FILE_TABLE))){
+				return array(
+					'error' => 'workspace not ok',
+					'success' => false,
+					'weDoc' => array('id' => 0, 'path' => '')
+				);
+			}
+		}
+
+		if($this->docVars['transaction']){ // import new binary for existing wedoc
 			if(!isset($_SESSION['weS']['we_data'][$this->docVars['transaction']])){
 				return array(
 					'error' => 'transaction is not correct',

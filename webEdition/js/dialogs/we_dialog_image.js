@@ -71,10 +71,6 @@ function checkWidthHeight(field) {
 	return true;
 }
 
-function fsubmit(e) {
-	return false;
-}
-
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);

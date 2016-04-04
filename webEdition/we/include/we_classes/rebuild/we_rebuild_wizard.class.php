@@ -558,7 +558,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 			$newFolders = array();
 			$foldersArray = makeArrayFromCSV($folders);
 			foreach($foldersArray as $folder){
-				if(in_workspace($folder, $ws)){
+				if(we_users_util::in_workspace($folder, $ws)){
 					$newFolders[] = $folder;
 				}
 			}
@@ -628,7 +628,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 			//$wsArray = makeArrayFromCSV($ws);
 			$foldersArray = makeArrayFromCSV($folders);
 			for($i = 0; $i < count($foldersArray); $i++){
-				if(in_workspace($foldersArray[$i], $ws)){
+				if(we_users_util::in_workspace($foldersArray[$i], $ws)){
 					$newFolders[] = $foldersArray[$i];
 				}
 			}

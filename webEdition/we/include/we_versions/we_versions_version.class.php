@@ -935,17 +935,19 @@ class we_versions_version{
 	}
 
 	function CheckPreferencesTime($docID, $docTable){
-
 		$db = new DB_WE();
-
-		if($docTable == TEMPLATES_TABLE){
-			$prefTimeDays = (VERSIONS_TIME_DAYS_TMPL != '-1') ? VERSIONS_TIME_DAYS_TMPL : "";
-			$prefTimeWeeks = (VERSIONS_TIME_WEEKS_TMPL != '-1') ? VERSIONS_TIME_WEEKS_TMPL : "";
-			$prefTimeYears = (VERSIONS_TIME_YEARS_TMPL != '-1') ? VERSIONS_TIME_YEARS_TMPL : "";
-		} else {
-			$prefTimeDays = (VERSIONS_TIME_DAYS != "-1") ? VERSIONS_TIME_DAYS : "";
-			$prefTimeWeeks = (VERSIONS_TIME_WEEKS != "-1") ? VERSIONS_TIME_WEEKS : "";
-			$prefTimeYears = (VERSIONS_TIME_YEARS != "-1") ? VERSIONS_TIME_YEARS : "";
+		switch($docTable){
+			case TEMPLATES_TABLE:
+				$prefTimeDays = (VERSIONS_TIME_DAYS_TMPL != '-1') ? VERSIONS_TIME_DAYS_TMPL : "";
+				$prefTimeWeeks = (VERSIONS_TIME_WEEKS_TMPL != '-1') ? VERSIONS_TIME_WEEKS_TMPL : "";
+				$prefTimeYears = (VERSIONS_TIME_YEARS_TMPL != '-1') ? VERSIONS_TIME_YEARS_TMPL : "";
+				$prefAnzahl = intval(VERSIONS_ANZAHL_TMPL);
+				break;
+			default:
+				$prefTimeDays = (VERSIONS_TIME_DAYS != "-1") ? VERSIONS_TIME_DAYS : "";
+				$prefTimeWeeks = (VERSIONS_TIME_WEEKS != "-1") ? VERSIONS_TIME_WEEKS : "";
+				$prefTimeYears = (VERSIONS_TIME_YEARS != "-1") ? VERSIONS_TIME_YEARS : "";
+				$prefAnzahl = intval(VERSIONS_ANZAHL);
 		}
 
 		$prefTime = 0;
@@ -965,14 +967,13 @@ class we_versions_version{
 			$where = ' timestamp < ' . $deletetime . ' AND CreationDate!=timestamp ';
 			$this->deleteVersion('', $where);
 		}
-		$prefAnzahl = intval($docTable == TEMPLATES_TABLE ? VERSIONS_ANZAHL_TMPL : VERSIONS_ANZAHL);
 
-		$anzahl = f('SELECT COUNT(1) FROM ' . VERSIONS_TABLE . ' WHERE documentId=' . intval($docID) . ' AND documentTable="' . $db->escape($docTable) . '"', "", $db);
+		$anzahl = f('SELECT COUNT(1) FROM ' . VERSIONS_TABLE . ' WHERE documentId=' . intval($docID) . ' AND documentTable="' . $db->escape(stripTblPrefix($docTable)) . '"', "", $db);
 
 		if($anzahl > $prefAnzahl && $prefAnzahl != ""){
 			$toDelete = $anzahl - $prefAnzahl;
 			$m = 0;
-			$db->query('SELECT ID, version FROM ' . VERSIONS_TABLE . " WHERE documentId=" . intval($docID) . ' AND documentTable="' . $db->escape($docTable) . '" ORDER BY version ASC LIMIT ' . intval($toDelete));
+			$db->query('SELECT ID, version FROM ' . VERSIONS_TABLE . " WHERE documentId=" . intval($docID) . ' AND documentTable="' . $db->escape(stripTblPrefix($docTable)) . '" ORDER BY version ASC LIMIT ' . intval($toDelete));
 			while($db->next_record()){
 				if($m < $toDelete){
 					$this->deleteVersion($db->f('ID'), '');
@@ -1458,7 +1459,7 @@ class we_versions_version{
 			'timestamp' => sql_function('UNIX_TIMESTAMP()'),
 			'status' => "deleted",
 			'modifications' => 1,
-			'modifierID' => isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : '',
+			'modifierID' => isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : '',
 			/* 'IP' => $_SERVER['REMOTE_ADDR'],
 			  'Browser' => isset($_SERVER['HTTP_USER_AGENT']) ? : '', */
 			'active' => 1,
@@ -1474,7 +1475,7 @@ class we_versions_version{
 		// always write delete versions, if enabled, so ignore VERSIONS_CREATE
 		if($lastEntry && $doDelete){
 			$db->query('INSERT INTO ' . VERSIONS_TABLE . ' SET ' . we_database_base::arraySetter($lastEntry));
-			$db->query('UPDATE ' . VERSIONS_TABLE . ' SET active=0 WHERE documentID=' . intval($docID) . ' AND documentTable="' . $db->escape($docTable) . '" AND version!=' . intval($lastEntry['version']));
+			$db->query('UPDATE ' . VERSIONS_TABLE . ' SET active=0 WHERE documentID=' . intval($docID) . ' AND documentTable="' . $db->escape(stripTblPrefix($docTable)) . '" AND version!=' . intval($lastEntry['version']));
 		}
 
 		$this->CheckPreferencesTime($docID, $docTable);
@@ -2066,12 +2067,12 @@ class we_versions_version{
 	 * @return array with fields and values
 	 */
 	private static function getLastEntry($docID, $docTable, we_database_base $db){
-		return getHash('SELECT * FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($docID) . ' AND documentTable="' . $db->escape($docTable) . '" AND status IN ("saved","published","unpublished","deleted") ORDER BY version DESC LIMIT 1', $db, MYSQL_ASSOC);
+		return getHash('SELECT * FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($docID) . ' AND documentTable="' . $db->escape(stripTblPrefix($docTable)) . '" AND status IN ("saved","published","unpublished","deleted") ORDER BY version DESC LIMIT 1', $db, MYSQL_ASSOC);
 	}
 
 	public static function versionExists($docID, $docTable){
 		$db = new DB_WE();
-		return f('SELECT 1 FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($docID) . ' AND documentTable="' . $db->escape($docTable) . '" AND status IN ("saved","published","unpublished","deleted") LIMIT 1', '', $db);
+		return f('SELECT 1 FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($docID) . ' AND documentTable="' . $db->escape(stripTblPrefix($docTable)) . '" AND status IN ("saved","published","unpublished","deleted") LIMIT 1', '', $db);
 	}
 
 	public static function updateLastVersionPath($docID, $docTable, $parentId, $path){
@@ -2101,10 +2102,6 @@ class we_versions_version{
 	}
 
 	public static function todo($data, $printIt = true){
-		if($printIt){
-			$_newLine = count($_SERVER['argv']) ? "\n" : "<br/>\n";
-		}
-
 		switch($data["type"]){
 			case 'version_delete':
 				/* FIXME: why is this not active???

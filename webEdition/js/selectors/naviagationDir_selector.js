@@ -147,3 +147,7 @@ function weonclick(e) {
 		}
 	}
 }
+
+function elementSelected() {
+	return true;
+}

@@ -93,7 +93,7 @@ class we_chooser_multiDir{
 		  return false;
 		  }
 		  if($this->ws){
-		  if(!in_workspace($this->Record["ID"], $this->ws, $this->table, $this->db)){
+		  if(!we_users_util::in_workspace($this->Record["ID"], $this->ws, $this->table, $this->db)){
 		  return false;
 		  }
 		  }

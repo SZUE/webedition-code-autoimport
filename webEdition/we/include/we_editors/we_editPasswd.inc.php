@@ -83,7 +83,8 @@ function closeOnEscape() {
 function comparePwd(f1,f2){
 	var pwd1=document.getElementsByName(f1)[0];
 	var pwd2=document.getElementsByName(f2)[0];
-	if(!(new RegExp("' . SECURITY_USER_PASS_REGEX . '").test(pwd1.value))){
+	var re=/' . SECURITY_USER_PASS_REGEX . '/;
+	if(!re.test(pwd1.value)){
 		pwd1.classList.add("weMarkInputError");
 		return 1;
 	}else{

@@ -25,7 +25,7 @@
  */
 
 function setHotDocuments() {
-	var allHotDocuments = WE().layout.weEditorFrameController.getAllHotEditors();
+	var allHotDocuments = WE().layout.weEditorFrameController.getEditorsInUse();
 	var _hotDocumentsOfCt = {};
 	var ct;
 	for (var frameId in allHotDocuments) {

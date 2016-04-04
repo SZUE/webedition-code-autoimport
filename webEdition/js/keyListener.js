@@ -172,6 +172,9 @@ function keyEditorListener(_successor) {
 		_editor = false;
 		_editorType = "";
 
+		if(!WE()){
+			return;
+		}
 		// check if an editor is open
 
 		_activeEditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();

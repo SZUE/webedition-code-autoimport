@@ -250,12 +250,22 @@ function selectCategories() {
 			return;
 		}
 
-		if(!$this->parentID['setFixed'] && is_numeric($this->parentID['preset'])){
+		$parentID = $parentID ? : ($this->parentID['preset'] ? (is_numeric($this->parentID['preset']) ? $this->parentID['preset'] : path_to_id($this->parentID['preset'])) : (IMAGESTARTID_DEFAULT ? : 0));
+		if(($ws = get_ws(FILE_TABLE, true))){
+			if(!(we_users_util::in_workspace($parentID, $ws, FILE_TABLE))){
+				$parentID = intval(reset($ws));
+
+				if($this->parentID['setFixed']){
+					t_e('wrong uploader configuration: fixed parentID not in user\'s ws', $ws, $this->parentID['preset']);
+				}
+			}
+		}
+
+		if(!$this->parentID['setFixed']){
 			$yuiSuggest = &weSuggest::getInstance();
 			$cmd1 = "document." . $formName . ".fu_file_parentID.value";
 			$wecmdenc2 = we_base_request::encCmd("document." . $formName . ".parentPath.value");
 			$wecmdenc3 = ''; //we_base_request::encCmd();
-			$parentID = $parentID ? : ($this->parentID['preset'] ? : (IMAGESTARTID_DEFAULT ? : 0));
 			$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',$parentID,'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::FOLDER . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 			/*
 			  $but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd({
@@ -284,18 +294,11 @@ function selectCategories() {
 
 			$html = $yuiSuggest->getHTML();
 		} else {
-			if(is_numeric($this->parentID['preset'])){
-				$id = $this->parentID['preset'];
-				$path = id_to_path($this->parentID['preset']);
-			} else {
-				$id = path_to_id($this->parentID['preset']);
-				$path = $this->parentID['preset'];
-			}
-
-			$html = we_html_element::htmlInput(array('value' => $path, 'disabled' => 'disabled')) .
+			$parentPath = id_to_path($parentID);
+			$html = we_html_element::htmlInput(array('value' => $parentPath, 'disabled' => 'disabled')) .
 				we_html_button::create_button(we_html_button::SELECT, '', '', '', '', '', '', true) .
 				we_html_element::htmlHiddens(array(
-					'fu_file_parentID' => $id,
+					'fu_file_parentID' => $parentID,
 			));
 		}
 

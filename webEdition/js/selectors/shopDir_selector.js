@@ -46,3 +46,7 @@ function doClick(id, ct) {
 function setDir(id) {
 	top.fscmd.location.replace(top.queryString(WE().consts.selectors.SETDIR, id));
 }
+
+function elementSelected() {
+	return true;
+}

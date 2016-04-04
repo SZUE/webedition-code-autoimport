@@ -990,7 +990,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 
 	extended_valid_elements: "we-gallery[id|tmpl|class]",
 	custom_elements: "we-gallery",
-	visual : false,
+	visual: true,
 	//paste_text_use_dialog: true,
 	//fullscreen_new_window: true,
 	editor_css: "' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/editorCss.css') . '",
@@ -1054,6 +1054,8 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		ed.onDblClick.add(tinyEdonDblClick);
 
 		ed.onInit.add(function(ed, o){
+			//ed.execCommand("mceWevisualaid", true);
+
 			//TODO: clean up the mess in here!
 			ed.pasteAsPlainText = 0;
 			ed.controlManager.setActive("pastetext", 0);

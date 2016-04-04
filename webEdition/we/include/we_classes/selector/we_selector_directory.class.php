@@ -71,18 +71,11 @@ class we_selector_directory extends we_selector_file{
 		}
 	}
 
-	protected function printCmdHTML(){
-
-		echo we_html_element::jsElement('
-top.clearEntries();' .
-			$this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() .
-			(intval($this->dir) == intval($this->rootDirID) ?
-				'top.disableRootDirButs();' :
-				'top.enableRootDirButs();') .
-			'top.currentPath = "' . $this->path . '";
-top.parentID = "' . $this->values["ParentID"] . '";
-');
+	protected function printCmdHTML($morejs = ''){
+		parent::printCmdHTML(
+			($this->userCanMakeNewFolder ? 'top.enableNewFolderBut();' : 'top.disableNewFolderBut();') .
+			$morejs
+		);
 	}
 
 	function query(){
@@ -159,7 +152,7 @@ top.' . ($this->userCanMakeNewDir() ? 'enable' : 'disable') . 'NewFolderBut();}'
 			return true;
 		}
 		if(!$showAll){
-			if(!in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db)){
+			if(!we_users_util::in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db)){
 				return false;
 			}
 		}
@@ -264,28 +257,31 @@ top.selectIt();';
 </table>';
 	}
 
-	function printSetDirHTML(){
-		echo '<script><!--
-top.clearEntries();' .
-		$this->printCmdAddEntriesHTML() .
-		$this->printCMDWriteAndFillSelectorHTML() .
-		'top.' . (intval($this->dir) == intval($this->rootDirID) ? 'disable' : 'enable') . 'RootDirButs();';
-		if(in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db)){
-			if($this->id == 0){
-				$this->path = '/';
-			}
-			echo '
-top.unselectAllFiles();
-top.currentPath = "' . $this->path . '";
-top.currentID = "' . $this->id . '";
-top.document.getElementsByName("fname")[0].value = "' . (($this->id == 0) ? '/' : $this->values["Text"]) . '";';
+	protected function printSetDirHTML($morejs = ''){
+		$isWS = we_users_util::in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db);
+		if(!$morejs && $isWS && $this->id == 0){
+			$this->path = '/';
 		}
-		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
-		echo '
+
+		echo we_html_element::jsElement('
+top.clearEntries();' .
+			$this->printCmdAddEntriesHTML() .
+			$this->printCMDWriteAndFillSelectorHTML() .
+			($this->userCanMakeNewFolder ? 'top.enableNewFolderBut();' : 'top.disableNewFolderBut();') .
+			$morejs .
+			($isWS ?
+				($morejs ? '' :
+					'top.currentPath="' . $this->path . '";
+top.currentID="' . $this->id . '";'
+
+				) .
+				'top.unselectAllFiles();
+top.' . (intval($this->dir) == intval($this->rootDirID) ? 'disable' : 'enable') . 'RootDirButs();
 top.currentDir = "' . $this->dir . '";
-top.parentID = "' . $this->values["ParentID"] . '";
-//-->
-</script>';
+top.parentID = "' . $this->values['ParentID'] . '";' :
+				'')
+		);
+		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
 
 	function printNewFolderHTML(){
@@ -334,7 +330,7 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' : '
 		echo
 		$this->printCmdAddEntriesHTML() .
 		$this->printCMDWriteAndFillSelectorHTML() .
-		'top.makeNewFolder = 0;
+		'top.makeNewFolder = false;
 top.selectFile(top.currentID);
 //-->
 </script>
@@ -367,7 +363,7 @@ options.userCanMakeNewFolder=' . intval($this->userCanMakeNewFolder) . ';
 	}
 
 	function printRenameFolderHTML(){
-		if(we_users_util::userIsOwnerCreatorOfParentDir($this->we_editDirID, $this->table) && in_workspace($this->we_editDirID, get_ws($this->table, true), $this->table, $this->db)){
+		if(we_users_util::userIsOwnerCreatorOfParentDir($this->we_editDirID, $this->table) && we_users_util::in_workspace($this->we_editDirID, get_ws($this->table, true), $this->table, $this->db)){
 			echo '<script><!--
 top.clearEntries();
 top.we_editDirID=' . $this->we_editDirID . ';' .
@@ -400,7 +396,7 @@ top.clearEntries();';
 		$folder->ModifierID = isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : '';
 		if(($msg = $folder->checkFieldsOnSave())){
 			echo we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR);
-		} elseif(in_workspace($this->we_editDirID, get_ws($this->table, true), $this->table, $this->db)){
+		} elseif(we_users_util::in_workspace($this->we_editDirID, get_ws($this->table, true), $this->table, $this->db)){
 			if(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), 'Text', $this->db) != $txt){
 				$folder->we_save();
 				echo 'var ref;
