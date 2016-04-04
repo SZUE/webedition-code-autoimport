@@ -79,7 +79,7 @@ function resetPwd(){
 }
 
 function showError($txt){
-	echo '<div class="error">' . $txt . '</div>';
+	echo '<div class="error"><div>' . $txt . '</div></div>';
 }
 
 switch(we_base_request::_(we_base_request::STRING, 'type', '')){
