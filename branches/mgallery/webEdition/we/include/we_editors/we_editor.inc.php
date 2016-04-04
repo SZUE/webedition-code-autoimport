@@ -461,7 +461,7 @@ if(
 						$wf_flag = false;
 						$wasNew = (intval($we_doc->ID) == 0) ? true : false;
 						$wasPubl = (!empty($we_doc->Published)) ? true : false;
-						if(!permissionhandler::hasPerm('ADMINISTRATOR') && $we_doc->ContentType != we_base_ContentTypes::OBJECT && $we_doc->ContentType != we_base_ContentTypes::OBJECT_FILE && !in_workspace($we_doc->ParentID, get_ws($we_doc->Table, true), $we_doc->Table)){
+						if(!permissionhandler::hasPerm('ADMINISTRATOR') && $we_doc->ContentType != we_base_ContentTypes::OBJECT && $we_doc->ContentType != we_base_ContentTypes::OBJECT_FILE && !we_users_util::in_workspace($we_doc->ParentID, get_ws($we_doc->Table, true), $we_doc->Table)){
 							$we_responseText = g_l('alert', '[' . FILE_TABLE . '][not_im_ws]');
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 							include(WE_INCLUDES_PATH . 'we_editors/we_editor_save.inc.php');

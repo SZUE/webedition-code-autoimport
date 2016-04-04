@@ -152,7 +152,7 @@ top.' . ($this->userCanMakeNewDir() ? 'enable' : 'disable') . 'NewFolderBut();}'
 			return true;
 		}
 		if(!$showAll){
-			if(!in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db)){
+			if(!we_users_util::in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db)){
 				return false;
 			}
 		}
@@ -258,7 +258,7 @@ top.selectIt();';
 	}
 
 	protected function printSetDirHTML($morejs = ''){
-		$isWS = in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db);
+		$isWS = we_users_util::in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db);
 		if(!$morejs && $isWS && $this->id == 0){
 			$this->path = '/';
 		}
@@ -363,7 +363,7 @@ options.userCanMakeNewFolder=' . intval($this->userCanMakeNewFolder) . ';
 	}
 
 	function printRenameFolderHTML(){
-		if(we_users_util::userIsOwnerCreatorOfParentDir($this->we_editDirID, $this->table) && in_workspace($this->we_editDirID, get_ws($this->table, true), $this->table, $this->db)){
+		if(we_users_util::userIsOwnerCreatorOfParentDir($this->we_editDirID, $this->table) && we_users_util::in_workspace($this->we_editDirID, get_ws($this->table, true), $this->table, $this->db)){
 			echo '<script><!--
 top.clearEntries();
 top.we_editDirID=' . $this->we_editDirID . ';' .
@@ -396,7 +396,7 @@ top.clearEntries();';
 		$folder->ModifierID = isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : '';
 		if(($msg = $folder->checkFieldsOnSave())){
 			echo we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR);
-		} elseif(in_workspace($this->we_editDirID, get_ws($this->table, true), $this->table, $this->db)){
+		} elseif(we_users_util::in_workspace($this->we_editDirID, get_ws($this->table, true), $this->table, $this->db)){
 			if(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), 'Text', $this->db) != $txt){
 				$folder->we_save();
 				echo 'var ref;

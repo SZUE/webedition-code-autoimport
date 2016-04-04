@@ -71,7 +71,7 @@ class we_selector_document extends we_selector_directory{
 	}
 
 	protected function printCmdHTML($morejs = ''){
-		$isWS = in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db);
+		$isWS = we_users_util::in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db);
 		parent::printCmdHTML(($isWS && $this->userCanMakeNewFile ? 'top.enableNewFileBut();' : 'top.disableNewFileBut();') . $morejs);
 	}
 
@@ -198,7 +198,7 @@ function exit_open() {
 			case we_base_ContentTypes::WEDOCUMENT:
 				break;
 			default:
-				$tmp = ((in_workspace($this->dir, get_ws($this->table, true))) && $this->userCanMakeNewFile) ? 'enable' : 'disable';
+				$tmp = ((we_users_util::in_workspace($this->dir, get_ws($this->table, true))) && $this->userCanMakeNewFile) ? 'enable' : 'disable';
 				$ret.= 'if(top.' . $tmp . 'NewFileBut){top.' . $tmp . 'NewFileBut();}';
 		}
 
@@ -276,7 +276,7 @@ var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 	}
 
 	protected function printSetDirHTML($morejs = ''){
-		$isWS = in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db);
+		$isWS = we_users_util::in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db);
 
 		parent::printSetDirHTML(($isWS && $this->userCanMakeNewFile ? 'top.enableNewFileBut();' : 'top.disableNewFileBut();') . $morejs);
 	}

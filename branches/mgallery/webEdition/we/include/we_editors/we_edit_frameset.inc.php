@@ -144,7 +144,7 @@ if(($doct = we_base_request::_(we_base_request::INT, 'we_cmd', false, 8)) !== fa
 
 if($we_doc->ID){
 	if(($ws = get_ws($we_Table, true))){
-		if(!(in_workspace($we_doc->ID, $ws, $we_Table, $DB_WE))){
+		if(!(we_users_util::in_workspace($we_doc->ID, $ws, $we_Table, $DB_WE))){
 			switch($we_Table){
 				case TEMPLATES_TABLE: //	different workspace. for template
 					$we_message = g_l('alert', '[' . ($we_ContentType === we_base_ContentTypes::FOLDER) ? 'folder' : $we_Table . '][not_im_ws]');

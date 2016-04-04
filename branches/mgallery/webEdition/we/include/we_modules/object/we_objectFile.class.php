@@ -218,7 +218,7 @@ class we_objectFile extends we_document{
 		$db->query('SELECT ID,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=1 AND (Path="' . $db->escape($classDir) . '" OR Path LIKE "' . $db->escape($classDir) . '/%")');
 		while($db->next_record()){
 			$all[$db->f('Path')] = $db->f('ID');
-			if((($tmp = substr_count($db->f('Path'), '/')) <= $slash) && (!$ws || in_workspace($db->f('ID'), $ws, OBJECT_FILES_TABLE, null, true))){
+			if((($tmp = substr_count($db->f('Path'), '/')) <= $slash) && (!$ws || we_users_util::in_workspace($db->f('ID'), $ws, OBJECT_FILES_TABLE, null, true))){
 				$rootId = $db->f('ID');
 				$cnt = ($tmp == $slash ? $cnt : 0) + 1;
 				if($cnt == 1){
@@ -291,7 +291,7 @@ class we_objectFile extends we_document{
 		foreach($defwsCSVArray as $i => $_defWs){
 // loop through each object workspace
 			foreach($owsCSVArray as $ows){
-				if((!in_array($_defWs, $processedWs)) && in_workspace($_defWs, $ows, FILE_TABLE, $this->DB_WE)){ // if default workspace is within object workspace
+				if((!in_array($_defWs, $processedWs)) && we_users_util::in_workspace($_defWs, $ows, FILE_TABLE, $this->DB_WE)){ // if default workspace is within object workspace
 					$processedWs[] = $_defWs;
 					$this->Workspaces[] = $_defWs;
 					$this->Templates[] = $otmplsCSVArray[$i];
@@ -1508,7 +1508,7 @@ class we_objectFile extends we_document{
 // alle UserWs, welche sich in einem der ClassWs befinden zur�ckgeben
 			$out = array();
 			foreach($userWs as $ws){
-				if(in_workspace($ws, $ClassWs, FILE_TABLE, $this->DB_WE)){
+				if(we_users_util::in_workspace($ws, $ClassWs, FILE_TABLE, $this->DB_WE)){
 					$out[] = $ws;
 				}
 			}
@@ -1744,7 +1744,7 @@ class we_objectFile extends we_document{
 				if($val === $parentID){
 					return $tmplArr[$key];
 				}
-			} elseif(in_workspace($parentID, $val)){
+			} elseif(we_users_util::in_workspace($parentID, $val)){
 				return $tmplArr[$key];
 			}
 		}
@@ -3042,7 +3042,7 @@ class we_objectFile extends we_document{
 		$showLink = false;
 		if($foo['Workspaces']){
 			$wsp = array_merge(explode(',', trim($foo['Workspaces'], ',')), explode(',', trim($foo['ExtraWorkspacesSelected'], ',')));
-			if(in_workspace(($foo['TriggerID'] ? : $pid), $wsp, FILE_TABLE, $DB_WE)){
+			if(we_users_util::in_workspace(($foo['TriggerID'] ? : $pid), $wsp, FILE_TABLE, $DB_WE)){
 				$showLink = true;
 			}
 		}
@@ -3090,8 +3090,8 @@ class we_objectFile extends we_document{
 		if($path && f('SELECT IsDynamic FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape($path) . '" LIMIT 1', '', $DB_WE)){
 			return $path;
 		}
-		
-		return (in_workspace($pid, $ws1) || in_workspace($pid, $ws2)) ? 
+
+		return (we_users_util::in_workspace($pid, $ws1) || we_users_util::in_workspace($pid, $ws2)) ?
 			f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" AND IsDynamic=1 AND Path LIKE "' . id_to_path(intval($pid), FILE_TABLE, $DB_WE) . '%" ORDER BY CHAR_LENGTH(Path) LIMIT 1', '', $DB_WE) :
 			'';
 	}

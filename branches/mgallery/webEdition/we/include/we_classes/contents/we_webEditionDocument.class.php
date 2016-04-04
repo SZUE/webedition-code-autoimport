@@ -334,7 +334,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		if($tlist){
 			$foo = array();
 			foreach($tlist as $tid){
-				if(($tid == $this->TemplateID) || in_workspace($tid, $ws, TEMPLATES_TABLE)){
+				if(($tid == $this->TemplateID) || we_users_util::in_workspace($tid, $ws, TEMPLATES_TABLE)){
 					$foo[] = $tid;
 				}
 			}
