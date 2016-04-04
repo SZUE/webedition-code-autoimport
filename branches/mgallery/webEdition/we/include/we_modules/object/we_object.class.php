@@ -817,7 +817,7 @@ class we_object extends we_document{
 			$val[we_objectFile::TYPE_SHOPVAT] = g_l('modules_object', '[shopVat_field]');
 			$val[we_objectFile::TYPE_SHOPCATEGORY] = 'Shop-Kategorie'; //GL
 		}
-		$content .= $this->htmlSelect("we_" . $this->Name . "_input[" . $name . self::ELEMENT_TYPE . ']', $val, 1, $type, "", array('onchange' => 'if(this.form.elements[\'we_' . $this->Name . '_input[' . $name . 'default]' . '\']){this.form.elements[\'we_' . $this->Name . '_input[' . $name . 'default]' . '\'].value=\'\' };_EditorFrame.setEditorIsHot(true);we_cmd(\'object_change_entry_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . $identifier . '\');'), "value", 388) .
+		$content .= $this->htmlSelect("we_" . $this->Name . "_input[" . $name . self::ELEMENT_TYPE . ']', $val, 1, $type, "", array('onchange' => "if(this.form.elements['we_" . $this->Name . '_input[' . $name . 'default]' . "']){this.form.elements['we_" . $this->Name . '_input[' . $name . 'default]' . "'].value='' };_EditorFrame.setEditorIsHot(true);we_cmd('object_change_entry_at_class','" . $GLOBALS['we_transaction'] . "','" . $identifier . "');"), "value", 388) .
 			'</td></tr>';
 
 		switch($type){
@@ -890,7 +890,7 @@ class we_object extends we_document{
 				if($this->getElement($name . "class") === ""){
 					$this->setElement($name . "class", array_shift(array_flip($vals)));
 				}
-				$content .= $this->htmlSelect("we_" . $this->Name . '_' . we_objectFile::TYPE_MULTIOBJECT . '[' . $name . "class]", $vals, 1, $this->getElement($name . 'class', "dat"), "", array('onchange' => 'if(this.form.elements[\'we_' . $this->Name . '_input[' . $name . 'default]' . '\']){this.form.elements[\'we_' . $this->Name . '_input[' . $name . 'default]' . '\'].value=\'\' };_EditorFrame.setEditorIsHot(true);we_cmd(\'object_change_multiobject_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . $identifier . '\',\'' . $name . '\')'), "value", 388) .
+				$content .= $this->htmlSelect("we_" . $this->Name . '_' . we_objectFile::TYPE_MULTIOBJECT . '[' . $name . "class]", $vals, 1, $this->getElement($name . 'class', "dat"), "", array('onchange' => "if(this.form.elements['we_" . $this->Name . '_input[' . $name . 'default]' . "']){this.form.elements['we_" . $this->Name . '_input[' . $name . 'default]' . "'].value='';};_EditorFrame.setEditorIsHot(true);we_cmd('object_change_multiobject_at_class','" . $GLOBALS['we_transaction'] . "','" . $identifier . "','" . $name . "')"), "value", 388) .
 					'</td></tr>
 <tr style="vertical-align:top">
 	<td style="width:100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[max_objects]') . '</td>
@@ -1498,7 +1498,7 @@ class we_object extends we_document{
 <tr><td><div style="width:506px;" class="multichooser">' . $content . '</div></td></tr>' .
 			($canChange ? '<tr><td style="text-align:right;padding-top:1em;">' . $delallbut . $addbut . '</td></tr>' : "") . '</table>';
 
-		return we_html_tools::htmlFormElementTable($content, g_l('weClass', '[otherowners]'), "left", "defaultfont") . we_html_element::jsElement('WE().util.setIconOfDocClass(document,\'userIcon\');');
+		return we_html_tools::htmlFormElementTable($content, g_l('weClass', '[otherowners]'), "left", "defaultfont") . we_html_element::jsElement('WE().util.setIconOfDocClass(document,"userIcon");');
 	}
 
 	function del_all_users($name){
@@ -1626,24 +1626,25 @@ class we_object extends we_document{
 	}
 
 	function formDefault(){
-		$select = '';
-		$this->DefaultText = '';
-		$anz = intval($this->getElement("Defaultanzahl"));
+		$select2 = $select = '';
 
-		for($i = 0; $i <= $anz; $i++){
-			$was = "DefaultText_" . $i;
-			if(($dat = $this->getElement($was)) != ""){
-				if(stristr($dat, 'unique')){
-					$unique = $this->getElement("unique_" . $i);
-					$dat = "%" . str_replace("%", "", $dat) . ( $unique > 0 ? $unique : 16) . "%";
-					$this->setElement($was, $dat, 'defaultText');
+		if(($anz = $this->getElement('Defaultanzahl', 'dat', -1)) >= 0){
+			$this->DefaultText = '';
+			for($i = 0; $i <= $anz; $i++){
+				$was = "DefaultText_" . $i;
+				if(($dat = $this->getElement($was)) != ""){
+					if(stristr($dat, 'unique')){
+						$unique = $this->getElement("unique_" . $i);
+						$dat = "%" . str_replace("%", "", $dat) . ( $unique > 0 ? $unique : 16) . "%";
+						$this->setElement($was, $dat, 'defaultText');
+					}
+					$this->DefaultText .= $dat;
 				}
-				$this->DefaultText .= $dat;
 			}
 		}
 
 		$all = $this->DefaultText;
-		$text1 = $zahl = 0;
+		$zahl = 0;
 		$regs = array();
 
 		while($all){
@@ -1654,38 +1655,36 @@ class we_object extends we_document{
 					$anz = (!$regs[1] ? 16 : abs($regs[1]));
 					$unique = substr(md5(uniqid(__FUNCTION__, true)), 0, min($anz, 32));
 					$text = preg_replace('/%unique[^%]*%/', $unique, (isset($text) ? $text : ""));
-					$select .= $this->htmlSelect("we_" . $this->Name . '_defaultText[DefaultText_' . $zahl . "]", g_l('modules_object', '[value]'), 1, "%unique%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
-						we_html_tools::htmlTextInput("we_" . $this->Name . "_input[unique_" . $zahl . "]", 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
+					$select .= $this->htmlSelect('we_' . $this->Name . '_input[DefaultText_' . $zahl . "]", g_l('modules_object', '[value]'), 1, "%unique%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
+						we_html_tools::htmlTextInput('we_' . $this->Name . "_input[unique_" . $zahl . "]", 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
 				} else {
-					$select .= $this->htmlSelect("we_" . $this->Name . "_defaultText[DefaultText_" . $zahl . "]", g_l('modules_object', '[value]'), 1, "%" . $key . "%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;";
+					$select .= $this->htmlSelect('we_' . $this->Name . "_input[DefaultText_" . $zahl . "]", g_l('modules_object', '[value]'), 1, "%" . $key . "%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;";
 				}
 			} else if(preg_match('/^([^%]+)/', $all, $regs)){
 				$all = substr($all, strlen($regs[1]));
 				$key = $regs[1];
-				$select .= $this->htmlSelect("textwert_" . $zahl, g_l('modules_object', '[value]'), 1, "Text", "", array('onchange' => '_EditorFrame.setEditorIsHot(true); document.we_form.elements[\'we_' . $this->Name . '_defaultText[DefaultText_' . $zahl . ']\'].value = this.options[this.selectedIndex].value; we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
-					we_html_tools::htmlTextInput("we_" . $this->Name . "_defaultText[DefaultText_" . $zahl . "]", 40, $key, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
+				$select .= $this->htmlSelect('textwert_' . $zahl, g_l('modules_object', '[value]'), 1, "Text", "", array('onchange' => "_EditorFrame.setEditorIsHot(true); document.we_form.elements['we_" . $this->Name . '_input[DefaultText_' . $zahl . "]'].value = this.options[this.selectedIndex].value; we_cmd('reload_editpage');"), "value", 140) . "&nbsp;" .
+					we_html_tools::htmlTextInput('we_' . $this->Name . '_input[DefaultText_' . $zahl . "]", 40, $key, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
 			}
 
 			$select .= we_html_element::htmlBr();
 			$zahl++;
 		}
 
-		$select .= $this->htmlSelect("we_" . $this->Name . "_defaultText[DefaultText_" . $zahl . "]", g_l('modules_object', '[value]'), 1, "", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
+		$select .= $this->htmlSelect('we_' . $this->Name . '_input[DefaultText_' . $zahl . ']', g_l('modules_object', '[value]'), 1, "", "", array('onchange' => "_EditorFrame.setEditorIsHot(true);we_cmd('reload_editpage');"), 'value', 140) . '&nbsp;' .
 			'<input type = "hidden" name="we_' . $this->Name . '_input[Defaultanzahl]" value="' . $zahl . '" />';
 
-//$var_flip = array_flip(g_l('modules_object', '[url]'));
 
-		$select2 = "";
 		if(($anz = $this->getElement('DefaultanzahlUrl', 'dat', -1)) >= 0){ //Fix #9964 0 is an corret value!
 			$allFields = array_merge(self::$urlUnique, self::$urlFields);
 			$this->DefaultUrl = '';
 
 			for($i = 0; $i <= $anz; $i++){
-				$was = "DefaultUrl_" . $i;
+				$was = 'DefaultUrl_' . $i;
 				if(($curDat = $this->getElement($was))){
 					foreach($allFields as $key => $len){
 						if(stristr($curDat, $key)){
-							$curDat = "%" . str_replace("%", "", $curDat) . ($this->getElement($key . '_' . $i) ? : $len) . "%";
+							$curDat = '%' . str_replace('%', '', $curDat) . ($this->getElement($key . '_' . $i) ? : $len) . '%';
 						}
 					}
 					$this->setElement($was, $curDat);
@@ -1695,7 +1694,7 @@ class we_object extends we_document{
 		}
 
 		$all = $this->DefaultUrl;
-		$text1 = $zahl = 0;
+		$zahl = 0;
 
 		while($all){
 			if(preg_match('/^%([^%]+)%/', $all, $regs)){
@@ -1707,8 +1706,8 @@ class we_object extends we_document{
 						$anz = (!$regs[1] ? $len : abs($regs[1]));
 						$unique = substr(md5(uniqid(__FUNCTION__, true)), 0, min($anz, 32));
 						$text = preg_replace('/%' . $key . '[^%]*%/', $unique, (isset($text) ? $text : ""));
-						$select2 .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", g_l('modules_object', '[url]'), 1, "%" . $key . "%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
-							we_html_tools::htmlTextInput("we_" . $this->Name . "_input[" . $key . "_" . $zahl . "]", 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
+						$select2 .= $this->htmlSelect('we_' . $this->Name . '_input[DefaultUrl_' . $zahl . ']', g_l('modules_object', '[url]'), 1, '%' . $key . '%', '', array('onchange' => "_EditorFrame.setEditorIsHot(true);we_cmd('reload_editpage');"), "value", 140) . "&nbsp;" .
+							we_html_tools::htmlTextInput('we_' . $this->Name . '_input[' . $key . '_' . $zahl . ']', 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
 						$found = true;
 						break;
 					}
@@ -1717,20 +1716,20 @@ class we_object extends we_document{
 					foreach(self::$urlFields as $key => $len){
 						if(preg_match('/' . $key . '([^%]*)/', $data, $regs)){
 							$anz = (!$regs[1] ? $len : abs($regs[1]));
-							$select2 .= $this->htmlSelect('we_' . $this->Name . '_input[DefaultUrl_' . $zahl . ']', g_l('modules_object', '[url]'), 1, "%" . $key . "%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
+							$select2 .= $this->htmlSelect('we_' . $this->Name . '_input[DefaultUrl_' . $zahl . ']', g_l('modules_object', '[url]'), 1, '%' . $key . '%', '', array('onchange' => "_EditorFrame.setEditorIsHot(true);we_cmd('reload_editpage');"), "value", 140) . "&nbsp;" .
 								we_html_tools::htmlTextInput('we_' . $this->Name . '_input[' . $key . '_' . $zahl . ']', 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
 							$found = true;
 							break;
 						}
 					}
 					if(!$found){
-						$select2 .= $this->htmlSelect('we_' . $this->Name . '_input[DefaultUrl_' . $zahl . ']', g_l('modules_object', '[url]'), 1, "%" . $data . "%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;";
+						$select2 .= $this->htmlSelect('we_' . $this->Name . '_input[DefaultUrl_' . $zahl . ']', g_l('modules_object', '[url]'), 1, '%' . $data . '%', '', array('onchange' => "_EditorFrame.setEditorIsHot(true);we_cmd('reload_editpage');"), "value", 140) . "&nbsp;";
 					}
 				}
 			} else if(preg_match('/^([^%]+)/', $all, $regs)){
 				$all = substr($all, strlen($regs[1]));
 				$data = $regs[1];
-				$select2 .= $this->htmlSelect('textwert_' . $zahl, g_l('modules_object', '[url]'), 1, 'Text', '', array('onchange' => '_EditorFrame.setEditorIsHot(true); document.we_form.elements[\'we_' . $this->Name . '_input[DefaultUrl_' . $zahl . ']\'].value = this.options[this.selectedIndex].value; we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
+				$select2 .= $this->htmlSelect('textwert_' . $zahl, g_l('modules_object', '[url]'), 1, 'Text', '', array('onchange' => "_EditorFrame.setEditorIsHot(true); document.we_form.elements['we_" . $this->Name . '_input[DefaultUrl_' . $zahl . "]'].value = this.options[this.selectedIndex].value; we_cmd('reload_editpage');"), "value", 140) . "&nbsp;" .
 					we_html_tools::htmlTextInput("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", 40, $data, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
 			}
 
@@ -1738,7 +1737,7 @@ class we_object extends we_document{
 			$zahl++;
 		}
 
-		$select2 .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", g_l('modules_object', '[url]'), 1, "", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
+		$select2 .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", g_l('modules_object', '[url]'), 1, "", "", array('onchange' => "_EditorFrame.setEditorIsHot(true);we_cmd('reload_editpage');"), "value", 140) . '&nbsp;' .
 			'<input type = "hidden" name="we_' . $this->Name . '_input[DefaultanzahlUrl]" value="' . $zahl . '" />';
 
 		return '<table class="default">
@@ -1799,7 +1798,7 @@ class we_object extends we_document{
 
 		$addbut = $button;
 
-		$obj = new we_chooser_multiDirTemplateAndDefault(450, $this->Workspaces, "object_del_workspace", $addbut, get_ws(FILE_TABLE), $this->Templates, "we_" . $this->Name . "_Templates", "", get_ws(TEMPLATES_TABLE), "we_" . $this->Name . "_DefaultWorkspaces", $this->DefaultWorkspaces);
+		$obj = new we_chooser_multiDirTemplateAndDefault(450, $this->Workspaces, "object_del_workspace", $addbut, get_ws(FILE_TABLE), $this->Templates, 'we_' . $this->Name . '_Templates', "", get_ws(TEMPLATES_TABLE), 'we_' . $this->Name . '_DefaultWorkspaces', $this->DefaultWorkspaces);
 		$obj->CanDelete = true;
 		$obj->create = 1;
 		$content = $obj->get();
