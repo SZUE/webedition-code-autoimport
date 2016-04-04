@@ -419,7 +419,7 @@ class we_search_search extends we_search_base{
 							$_result[$k]["Description"] = $DB_WE->f('Dat');
 						}
 					} else {
-						$tempDoc = f('SELECT DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID =' . intval($_result[$k]["docID"]) . ' AND DocTable = "tblFile" AND Active = 1', 'DocumentObject', $DB_WE);
+						$tempDoc = f('SELECT DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID =' . intval($_result[$k]["docID"]) . ' AND docTable="tblFile" AND Active = 1', 'DocumentObject', $DB_WE);
 						if(!empty($tempDoc)){
 							$tempDoc = we_unserialize($tempDoc);
 							if(isset($tempDoc[0]['elements']['Description']) && $tempDoc[0]['elements']['Description']['dat'] != ''){
@@ -636,7 +636,7 @@ class we_search_search extends we_search_base{
 		$titles = $_db2->getAll(true);
 
 		//check unpublished documents
-		$_db2->query('SELECT DocumentID, DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocTable="tblFile" AND Active = 1 AND DocumentObject LIKE "%' . $_db2->escape(trim($keyword)) . '%"');
+		$_db2->query('SELECT DocumentID, DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . ' WHERE docTable="tblFile" AND Active = 1 AND DocumentObject LIKE "%' . $_db2->escape(trim($keyword)) . '%"');
 		while($_db2->next_record()){
 			$tempDoc = we_unserialize($_db2->f('DocumentObject'));
 			if(!empty($tempDoc[0]['elements']['Title'])){
@@ -695,7 +695,7 @@ class we_search_search extends we_search_base{
 					$res[$_db->f('ID')] = $_db->f($field);
 				}
 				//search in unpublic objects and write them in the array
-				$query2 = 'SELECT DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocTable = "tblObjectFiles" AND Active=1';
+				$query2 = 'SELECT DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . ' WHERE docTable="tblObjectFiles" AND Active=1';
 				$_db->query($query2);
 				while($_db->next_record()){
 					$tempObj = we_unserialize($_db->f('DocumentObject'));
@@ -972,7 +972,7 @@ class we_search_search extends we_search_base{
 				$_db->query('SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE c.Dat LIKE "%' . $this->db->escape(trim($keyword)) . '%" AND l.Name!="completeData" AND l.DocumentTable="' . $_db->escape(stripTblPrefix(FILE_TABLE)) . '"');
 				$contents = $_db->getAll(true);
 
-				$_db->query('SELECT DocumentID FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentObject LIKE "%' . $_db->escape(trim($keyword)) . '%" AND DocTable="' . $this->db->escape(stripTblPrefix($table)) . '" AND Active=1');
+				$_db->query('SELECT DocumentID FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentObject LIKE "%' . $_db->escape(trim($keyword)) . '%" AND docTable="' . $this->db->escape(stripTblPrefix($table)) . '" AND Active=1');
 				$contents = array_unique(array_merge($contents, $_db->getAll(true)));
 
 				return ($contents ? ' ' . $table . '.ID IN (' . implode(',', $contents) . ')' : '');
@@ -1044,7 +1044,7 @@ class we_search_search extends we_search_base{
 					$Ids = array_merge($Ids, $_db->getAll(true));
 				}
 				//only saved objects
-				$_db->query('SELECT DocumentID FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentObject LIKE "%' . $_db->escape(trim($keyword)) . '%" AND DocTable="tblObjectFiles" AND Active=1');
+				$_db->query('SELECT DocumentID FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentObject LIKE "%' . $_db->escape(trim($keyword)) . '%" AND docTable="tblObjectFiles" AND Active=1');
 				$Ids = array_merge($Ids, $_db->getAll(true));
 
 				return ($Ids ? '  ' . OBJECT_FILES_TABLE . '.ID IN (' . implode(',', $Ids) . ')' : '');
@@ -1253,14 +1253,14 @@ class we_search_search extends we_search_base{
 					$tmpTableWhere = ' AND DocumentID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE Path LIKE "' . $this->db->escape($path) . '%" )';
 				}
 
-				$this->db->query('INSERT INTO SEARCH_TEMP_TABLE (docID,docTable,Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,CreationDate,CreatorID,ModDate,Published,Extension) SELECT ID,"' . stripTblPrefix(FILE_TABLE) . '",Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,CreationDate,CreatorID,ModDate,Published,Extension FROM `' . FILE_TABLE . '` WHERE ' . $this->where);
+				$this->db->query('INSERT INTO SEARCH_TEMP_TABLE (docID,docTable,Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,CreationDate,CreatorID,ModDate,Published,Extension) SELECT ID,"' . stripTblPrefix(FILE_TABLE) . '",Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,CreationDate,CreatorID,ModDate,Published,Extension FROM `' . FILE_TABLE . '` f WHERE ' . $this->where);
 
 				//first check published documents
 				$this->db->query('SELECT l.DID,c.Dat FROM `' . LINK_TABLE . '` l JOIN `' . CONTENT_TABLE . '` c ON (l.CID=c.ID) WHERE l.Name="Title" AND l.DocumentTable!="' . stripTblPrefix(TEMPLATES_TABLE) . '"');
 				$titles = $this->db->getAllFirst(false);
 
 				//check unpublished documents
-				$this->db->query('SELECT DocumentID, DocumentObject  FROM `' . TEMPORARY_DOC_TABLE . '` WHERE DocTable="tblFile" AND Active=1 ' . $tmpTableWhere);
+				$this->db->query('SELECT DocumentID, DocumentObject  FROM `' . TEMPORARY_DOC_TABLE . '` WHERE docTable="tblFile" AND Active=1 ' . $tmpTableWhere);
 				while($this->db->next_record()){
 					$tempDoc = we_unserialize($this->db->f('DocumentObject'));
 					if(isset($tempDoc[0]['elements']['Title'])){
@@ -1270,7 +1270,7 @@ class we_search_search extends we_search_base{
 				if(is_array($titles) && $titles){
 					foreach($titles as $k => $v){
 						if($v != ""){
-							$this->db->query('UPDATE SEARCH_TEMP_TABLE  SET SiteTitle="' . $this->db->escape($v) . '" WHERE docID=' . intval($k) . ' AND DocTable="' . FILE_TABLE . '" LIMIT 1');
+							$this->db->query('UPDATE SEARCH_TEMP_TABLE SET SiteTitle="' . $this->db->escape($v) . '" WHERE docID=' . intval($k) . ' AND docTable="' . stripTblPrefix(FILE_TABLE) . '" LIMIT 1');
 						}
 					}
 				}
@@ -1343,7 +1343,7 @@ class we_search_search extends we_search_base{
 		  if(is_array($filesizes) && $filesizes){
 		  foreach($filesizes as $v){
 		  if($v['Dat'] != ""){
-		  $this->db->query('UPDATE SEARCH_TEMP_TABLE SET `media_filesize`="' . $this->db->escape($v['Dat']) . '" WHERE docID=' . intval($v['DID']) . ' AND DocTable="' . FILE_TABLE . '" LIMIT 1');
+		  $this->db->query('UPDATE SEARCH_TEMP_TABLE SET `media_filesize`="' . $this->db->escape($v['Dat']) . '" WHERE docID=' . intval($v['DID']) . ' AND docTable="' . stripTblPrefix(FILE_TABLE) . '" LIMIT 1');
 		  }
 		  }
 		  }
@@ -1359,7 +1359,7 @@ class we_search_search extends we_search_base{
 		if(is_array($docs) && $docs){
 			foreach($docs as $v){
 				if($v['Path']){
-					$this->db->query('UPDATE SEARCH_TEMP_TABLE SET media_filesize="' . (is_file($_SERVER['DOCUMENT_ROOT'] . $v['Path']) ? intval(filesize($_SERVER['DOCUMENT_ROOT'] . $v['Path'])) : 0) . '" WHERE docID=' . intval($v['docID']) . ' AND DocTable="' . FILE_TABLE . '" LIMIT 1');
+					$this->db->query('UPDATE SEARCH_TEMP_TABLE SET media_filesize="' . (is_file($_SERVER['DOCUMENT_ROOT'] . $v['Path']) ? intval(filesize($_SERVER['DOCUMENT_ROOT'] . $v['Path'])) : 0) . '" WHERE docID=' . intval($v['docID']) . ' AND docTable="' . stripTblPrefix(FILE_TABLE) . '" LIMIT 1');
 				}
 			}
 		}
@@ -1369,7 +1369,7 @@ class we_search_search extends we_search_base{
 		$this->searchMediaLinks(0, true, $IDs); // we write $this->usedMediaLinks here, where we allready have final list of found media
 		if($this->usedMedia){
 			foreach($this->usedMedia as $v){
-				$this->db->query('UPDATE SEARCH_TEMP_TABLE SET `IsUsed`=1 WHERE docID=' . intval($v) . ' AND DocTable="' . FILE_TABLE . '" LIMIT 1');
+				$this->db->query('UPDATE SEARCH_TEMP_TABLE SET `IsUsed`=1 WHERE docID=' . intval($v) . ' AND docTable="' . stripTblPrefix(FILE_TABLE) . '" LIMIT 1');
 			}
 		}
 	}

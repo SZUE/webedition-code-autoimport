@@ -73,21 +73,22 @@ abstract class permissionhandler{
 		 */
 		//	The first entries are no we_cmd[0], but sometimes needed.
 		$knownActions = array(
-			"switch_edit_page" => array(
-				"we_base_constants::WE_EDITPAGE_PROPERTIES" => array("CAN_SEE_PROPERTIES"),
+			'switch_edit_page' => array(
+				'we_base_constants::WE_EDITPAGE_PROPERTIES' => array('CAN_SEE_PROPERTIES'),
 				0 => array("CAN_SEE_PROPERTIES"),
-				"we_base_constants::WE_EDITPAGE_INFO" => array("CAN_SEE_INFO"),
+				'we_base_constants::WE_EDITPAGE_INFO' => array('CAN_SEE_INFO'),
 				2 => array("CAN_SEE_INFO"),
-				"we_base_constants::WE_EDITPAGE_VALIDATION" => array("CAN_SEE_VALIDATION"),
-				10 => array("CAN_SEE_VALIDATION"),
+				'we_base_constants::WE_EDITPAGE_VALIDATION' => array('CAN_SEE_VALIDATION'),
+				10 => array('CAN_SEE_VALIDATION'),
+			),
+			//	Is user allowed to work in normal mode or only in SEEM
+			"work_mode" => array(
+				we_base_constants::MODE_NORMAL => array("CAN_WORK_NORMAL_MODE")
+			),
+			"header" => array(
+				"with_java" => array("CAN_SEE_MENUE")
 			)
 		);
-
-		//	Is user allowed to work in normal mode or only in SEEM
-		$knownActions["work_mode"][we_base_constants::MODE_NORMAL] = array("CAN_WORK_NORMAL_MODE");
-		$knownActions["header"]["with_java"] = array("CAN_SEE_MENUE");
-
-
 
 		return (isset($knownActions[$requestedAction][$parameter]) ?
 				$knownActions[$requestedAction][$parameter] : 'none');
