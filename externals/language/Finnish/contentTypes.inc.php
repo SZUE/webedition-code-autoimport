@@ -9,6 +9,7 @@ $l_contentTypes=array(
 	'folder'=>'Hakemisto',
 	'image/*'=>'Kuva',
 	'link'=>'Link',
+	'media/*'=>'other media files',
 	'objectFile'=>'Objekti',
 	'object'=>'Luokka',
 	'text/css'=>'Tyylitiedosto',

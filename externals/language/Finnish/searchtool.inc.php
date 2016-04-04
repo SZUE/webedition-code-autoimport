@@ -68,6 +68,11 @@ $l_searchtool=array(
 	'image_protected'=>'You cannot delete protected documents',
 	'import_tool_weSearch_data'=>'Palauta Haku tieto',
 	'jeder'=>'näytä kaikkia',
+	'linkPublishedOnly'=>'The link is not available in the current version. It is only present in the published version.',
+	
+	'mediaRef'=>array(
+		'title'=>'The media file is referenced as follows',
+	),
 	'media'=>'Media',
 	'media_do_rebuild'=>'From version 7.0 onwards references to Media-Documents are automatically registered when saving the referencing documents, objects or module-entries. To rewrite all references (especially on older installations) please use Rebuild -> Rewrite Media Links.',
 	'menu_advSearch'=>'Kehittynyt Haku',

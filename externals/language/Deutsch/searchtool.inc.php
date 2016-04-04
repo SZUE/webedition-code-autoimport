@@ -68,6 +68,11 @@ $l_searchtool=array(
 	'image_protected'=>'Geschützte Dokumente können nicht gelöscht werden',
 	'import_tool_weSearch_data'=>'Die Daten des Tools Suche wiederherstellen',
 	'jeder'=>'alle anzeigen',
+	'linkPublishedOnly'=>'Der Link wurde bei einer unveröffentlichten Änderung entfernt: Er existiert nur noch in der veröffentlichten Version!',
+	
+	'mediaRef'=>array(
+		'title'=>'Dieses Medien-Dokument wird an folgenden Stellen referenziert',
+	),
 	'media'=>'Medien',
 	'media_do_rebuild'=>'Die Verwendung von Mediendokumenten wird ab Version 7.0 beim Speichern der referenzierenden Dokumente/ Objekte/ Modul-Einträge registriert. Um sämtliche Referenzen neu zu schreiben, bzw. um sie auf älteren Installationen nachträglich zu registrieren, verwenden Sie bitte Rebuild -> Media-Links neu schreiben.',
 	'menu_advSearch'=>'Erweiterte Suche',

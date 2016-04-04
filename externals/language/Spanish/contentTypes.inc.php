@@ -9,6 +9,7 @@ $l_contentTypes=array(
 	'folder'=>'Directorio',
 	'image/*'=>'Imagen',
 	'link'=>'Link',
+	'media/*'=>'other media files',
 	'objectFile'=>'Object',
 	'object'=>'Clase',
 	'text/css'=>'Hoja de estilo',
