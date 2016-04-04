@@ -1214,7 +1214,7 @@ abstract class we_root extends we_class{
 	}
 
 	protected function i_pathNotValid(){
-		if($strpos($this->ParentPath, '..') !== false || ($this->ParentPath && $this->ParentPath{0} != '/')){
+		if(strpos($this->ParentPath, '..') !== false || ($this->ParentPath && $this->ParentPath{0} != '/')){
 			return true;
 		}
 		if(($ws = get_ws($GLOBALS['we_doc']->Table, true))){ //	doc has workspaces
