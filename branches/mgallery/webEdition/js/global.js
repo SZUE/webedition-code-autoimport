@@ -30,8 +30,7 @@
 // this function is universal function for all messages in webEdition
 function WE() {
 	if (top === null || top === undefined) {
-		console.log("webedition (top) not found");
-		return false;
+		throw "webedition (top) not found";
 	}
 	if (top.WebEdition !== undefined) {
 		return top.WebEdition;
@@ -65,23 +64,27 @@ function we_showMessage(message, prio, win) {
 
 function initWE() {
 //make some assignments to all WE documents
-	if (WE()) {
-		try {
-			window.onerror = WE().handler.errorHandler;
-			document.addEventListener('keydown', function (evt) {
-				WE().handler.dealWithKeyboardShortCut(evt, window);
-			});
-			document.addEventListener('drop', function (evt) {
-				evt.stopPropagation();
-				evt.preventDefault();
-			});
-			document.addEventListener('dragover', function (evt) {
-				evt.preventDefault();
-			});
-		} catch (e) {
-			console.log('unable to add listeners');
+	try {
+		if (WE()) {
+			try {
+				window.onerror = WE().handler.errorHandler;
+				document.addEventListener('keydown', function (evt) {
+					WE().handler.dealWithKeyboardShortCut(evt, window);
+				});
+				document.addEventListener('drop', function (evt) {
+					evt.stopPropagation();
+					evt.preventDefault();
+				});
+				document.addEventListener('dragover', function (evt) {
+					evt.preventDefault();
+				});
+			} catch (e) {
+				console.log('unable to add listeners');
+			}
+		} else {
+			//console.log('error handler possibly not attached');
 		}
-	} else {
-		//console.log('error handler possibly not attached');
+	} catch (e) {
+		//no WE present now
 	}
 }
