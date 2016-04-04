@@ -2209,27 +2209,3 @@ div.collection-content{
 		display: inline-block;
 	}
 }
-
-.error {
-	position: fixed;
-	top: 0px;
-	z-index: 1000;
-	width: 100%;
-	left: 0px;
-	text-align: center;
-}
-
-.error div {
-	background-color: $ErrorRed;
-	background-image: url(../images/error-icon.png);
-	background-repeat: no-repeat;
-	background-position: left center;
-	color: #ffffff;
-	font-size: 15px;
-	font-weight: normal;
-	padding: 12px 30px 12px 60px;
-	max-width: 100%;
-	width: 400px;
-	text-align: left;
-	margin: 0 auto;
-}
