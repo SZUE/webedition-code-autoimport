@@ -131,6 +131,9 @@ class we_binaryDocument extends we_document{
 		if(!($file && file_exists($file))){
 			return false;
 		}
+		if($this->i_pathNotValid()){
+			return false;
+		}
 		if($file != $this->getSitePath()){
 			if(!we_base_file::copyFile($file, $this->getSitePath())){
 				return false;
@@ -361,7 +364,7 @@ class we_binaryDocument extends we_document{
 		$values = array();
 		$c = 0;
 		$num = 0;
-		$limit=20;
+		$limit = 20;
 		foreach($groups as $group){
 			$cna = isset($notaccessibles[$group]) && is_array($notaccessibles[$group]) ? count($notaccessibles[$group]) : 0;
 			$ca = (isset($accessibles[$group]) && is_array($accessibles[$group]) ? count($accessibles[$group]) : 0) + $cna;
@@ -387,11 +390,11 @@ class we_binaryDocument extends we_document{
 
 	public function getPropertyPage(){
 		return we_html_multiIconBox::getHTML('PropertyPage', array(
-			array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => 140),
-			array('icon' => 'doc.gif', 'headline' => g_l('weClass', '[document]'), 'html' => $this->formIsSearchable() . $this->formIsProtected(), 'space' => 140),
-			//array('icon' => 'meta.gif', 'headline' => g_l('weClass', '[metainfo]'), 'html' => $this->formMetaInfos(), 'space' => 140),
-			array('icon' => 'cat.gif', 'headline' => g_l('weClass', '[category]'), 'html' => $this->formCategory(), 'space' => 140),
-			array('icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners(), 'space' => 140))
+				array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => 140),
+				array('icon' => 'doc.gif', 'headline' => g_l('weClass', '[document]'), 'html' => $this->formIsSearchable() . $this->formIsProtected(), 'space' => 140),
+				//array('icon' => 'meta.gif', 'headline' => g_l('weClass', '[metainfo]'), 'html' => $this->formMetaInfos(), 'space' => 140),
+				array('icon' => 'cat.gif', 'headline' => g_l('weClass', '[category]'), 'html' => $this->formCategory(), 'space' => 140),
+				array('icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners(), 'space' => 140))
 		);
 	}
 
