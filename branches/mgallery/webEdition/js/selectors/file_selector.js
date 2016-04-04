@@ -39,8 +39,8 @@ function applyOnEnter(evt) {
 		_elemName = "srcElement";
 	}
 
-	if (!(evt[_elemName].tagName == "SELECT" ||
-					(evt[_elemName].tagName == "INPUT" && evt[_elemName].name != "fname")
+	if (!(evt[_elemName].tagName === "SELECT" ||
+					(evt[_elemName].tagName === "INPUT" && evt[_elemName].name !== "fname")
 					)) {
 		top.press_ok_button();
 		return true;
@@ -52,7 +52,7 @@ function closeOnEscape() {
 }
 
 function orderIt(o) {
-	order = o + (order == o ? " DESC" : "");
+	order = o + (order === o ? " DESC" : "");
 	top.fscmd.location.replace(top.queryString(WE().consts.selectors.CMD, top.currentDir, order));
 }
 
@@ -329,12 +329,16 @@ function weonclick(e) {
 	}
 }
 
+function elementSelected() {
+	return top.document.getElementsByName("fname")[0].value !== "";
+}
+
 function press_ok_button() {
-	if (top.document.getElementsByName("fname")[0].value === "") {
+	if (elementSelected()) {
+		top.exit_open();
+	} else {
 		top.exit_close();
-		return;
 	}
-	top.exit_open();
 }
 
 function disableDelBut() {

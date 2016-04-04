@@ -278,7 +278,7 @@ top.currentID="' . $this->id . '";'
 				'top.unselectAllFiles();
 top.' . (intval($this->dir) == intval($this->rootDirID) ? 'disable' : 'enable') . 'RootDirButs();
 top.currentDir = "' . $this->dir . '";
-top.parentID = "' . $this->values["ParentID"] . '";' :
+top.parentID = "' . $this->values['ParentID'] . '";' :
 				'')
 		);
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;

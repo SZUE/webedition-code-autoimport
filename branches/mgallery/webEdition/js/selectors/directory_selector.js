@@ -99,12 +99,12 @@ function doClick(id, ct) {
 }
 
 function setDir(id) {
+	e = getEntry(id);
 	showPreview(id);
 	if (top.fspreview && top.fspreview.document.body) {
 		top.fspreview.document.body.innerHTML = "";
 	}
 	top.fscmd.location.replace(top.queryString(WE().consts.selectors.SETDIR, id));
-	e = getEntry(id);
 	top.document.getElementById('fspath').innerHTML = e.path;
 }
 
@@ -135,6 +135,9 @@ function selectFile(id) {
 	}
 }
 
+function elementSelected() {
+	return true;
+}
 
 function addEntry(id, txt, folder, pth, moddte, ct) {
 	entries.push({

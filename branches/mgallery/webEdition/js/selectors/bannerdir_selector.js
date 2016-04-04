@@ -33,6 +33,10 @@ function addEntry(id, txt, folder, pth) {
 	});
 }
 
+function elementSelected() {
+	return true;
+}
+
 function writeBody(d) {
 	var body = (top.we_editDirID ?
 					'<input type="hidden" name="what" value="' + WE().consts.selectors.DORENAMEFOLDER + '" />' +
