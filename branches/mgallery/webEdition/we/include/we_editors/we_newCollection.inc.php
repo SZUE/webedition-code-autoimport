@@ -57,7 +57,7 @@ if(we_base_request::_(we_base_request::BOOL, 'dosave')){
 	} else {
 		$saveSuccess = $collection->we_save();
 		if($saveSuccess){
-			$jsMessage = $caller == 'selector' ? '' : 'Die Sammlung wurde erfolgreich angelegt.'; // FIXME: G_L()
+			$jsMessage = $caller == 'selector' ? '' : sprintf(g_l('weEditor', '[text/weCollection][response_save_ok]'), $collection->Text);
 			$jsMessageType = we_message_reporting::WE_MESSAGE_NOTICE;
 			$id = f('SELECT ID FROM ' . VFILE_TABLE . ' WHERE Text ="' . $collection->Text . '" AND ParentID=' . $collection->ParentID . ' LIMIT 1');
 			$writeBack = array(we_base_request::_(we_base_request::CMD, 'we_cmd', '', 1), we_base_request::_(we_base_request::CMD, 'we_cmd', '', 2));

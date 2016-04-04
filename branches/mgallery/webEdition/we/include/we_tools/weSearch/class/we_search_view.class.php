@@ -400,10 +400,10 @@ WE().consts.weSearch= {
 						'searchFields' . $whichSearch . '[' . $n . ']' => 'ContentType',
 						'search' . $whichSearch . '[' . $n . ']' => 1,
 						'location' . $whichSearch . '[' . $n++ . ']' => 'IN')) .
-					we_html_forms::checkboxWithHidden($currentSearchForContentType['image'] ? true : false, 'searchForImage' . $whichSearch, 'Bilder', false, 'defaultfont withSpace', ''));
-				$_table->setCol(0, 1, array(), we_html_forms::checkboxWithHidden($currentSearchForContentType['audio'] ? true : false, 'searchForAudio' . $whichSearch, 'Audio', false, 'defaultfont', ''));
-				$_table->setCol(1, 1, array(), we_html_forms::checkboxWithHidden($currentSearchForContentType['video'] ? true : false, 'searchForVideo' . $whichSearch, 'Video', false, 'defaultfont', ''));
-				$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($currentSearchForContentType['other'] ? true : false, 'searchForOther' . $whichSearch, 'Sonstige Medien-Dateien', false, 'defaultfont', '', false)); // FIXME: G_L()
+					we_html_forms::checkboxWithHidden($currentSearchForContentType['image'] ? true : false, 'searchForImage' . $whichSearch, g_l('contentTypes', '[image/*]'), false, 'defaultfont withSpace', ''));
+				$_table->setCol(0, 1, array(), we_html_forms::checkboxWithHidden($currentSearchForContentType['audio'] ? true : false, 'searchForAudio' . $whichSearch, g_l('contentTypes', '[audio/*]'), false, 'defaultfont', ''));
+				$_table->setCol(1, 1, array(), we_html_forms::checkboxWithHidden($currentSearchForContentType['video'] ? true : false, 'searchForVideo' . $whichSearch, g_l('contentTypes', '[video/*]'), false, 'defaultfont', ''));
+				$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($currentSearchForContentType['other'] ? true : false, 'searchForOther' . $whichSearch, g_l('contentTypes', '[media/*]'), false, 'defaultfont', '', false));
 				break;
 			default:
 				return;
@@ -797,10 +797,10 @@ WE().consts.weSearch= {
 		$groups = isset($mediaLinks['groups']['mediaID_' . $result['docID']]) ? $mediaLinks['groups']['mediaID_' . $result['docID']] : array();
 
 		if(!empty($groups)){
-			$out = '<table style="font-weight:normal; background-color:#eeeeee;width:480px"><tr><td colspan="2" style="padding:4px 0 0 6px;"><strong>Dieses Medien-Dokument wird an folgenden Stellen referenziert:</stong></td></tr>'; // FIXME: G_L()
+			$out = '<table style="font-weight:normal; background-color:#eeeeee;width:480px"><tr><td colspan="2" style="padding:4px 0 0 6px;"><strong>' . g_l('searchtool', '[mediaRef][title]') . ':</stong></td></tr>'; // FIXME: G_L()
 			foreach($groups as $group){
-				$numNotaccessible = isset($notaccessibles[$group]) && is_array($notaccessibles[$group]) ?  count($notaccessibles[$group]) : 0;
-				$numAccessibles = isset($accessibles[$group]) && is_array($accessibles[$group]) ?  count($accessibles[$group]) : 0;
+				$numNotaccessible = isset($notaccessibles[$group]) && is_array($notaccessibles[$group]) ? count($notaccessibles[$group]) : 0;
+				$numAccessibles = isset($accessibles[$group]) && is_array($accessibles[$group]) ? count($accessibles[$group]) : 0;
 				$out .= '<tr><td style="padding:4px 0 0 6px;"><em>' . $group . ' (' . ($numNotaccessible + $numAccessibles) . ($numNotaccessible ? ', davon ' . $numNotaccessible . ' ' . g_l('weClass', '[medialinks_unaccessible]') : '') . '):</em></td></tr>';
 
 				$references = isset($accessibles[$group]) && is_array($accessibles[$group]) ? $accessibles[$group] : array();
@@ -817,23 +817,23 @@ WE().consts.weSearch= {
 					$makeLink = true;
 					// FIXME: establishing document state is buggy
 					/*
-					switch($reference['referencedIn']){
-						case 'temp':
-						case 'both':
-							if($reference['isUnpublished']){
-								$color = 'red';
-							} else {
-								$color = '#3366cc';
-							}
-							break;
-						case 'main':
-							if($reference['isModified']){
-								$color = 'gray';
-								$makeLink = false;
-							} else if($reference['isUnpublished']){
-								$color = 'red';
-							}
-					}
+					  switch($reference['referencedIn']){
+					  case 'temp':
+					  case 'both':
+					  if($reference['isUnpublished']){
+					  $color = 'red';
+					  } else {
+					  $color = '#3366cc';
+					  }
+					  break;
+					  case 'main':
+					  if($reference['isModified']){
+					  $color = 'gray';
+					  $makeLink = false;
+					  } else if($reference['isUnpublished']){
+					  $color = 'red';
+					  }
+					  }
 					 *
 					 */
 					$element = preg_replace('|NN[0-9]\]+$|', 'NN', $reference['element']);
@@ -842,7 +842,7 @@ WE().consts.weSearch= {
 							<td style="padding:8px 0 6px 26px;width:410px;"><a href="javascript:' . $reference['onclick'] . '" title="ID ' . $reference["id"] . ': ' . $reference['path'] . ($element ? ', in: ' . $reference['element'] : '') . '"><span style="color:' . $color . ';"><u>' . $reference['path'] . '</u></span></a>' . ($element ? '<br>' . 'in: ' . $element : '') . '</span></td>
 							<td style="padding:6px 0 0 0">' . we_html_button::create_button(we_html_button::EDIT, "javascript:weSearch.openToEdit('" . $reference['table'] . "'," . $reference["id"] . ",'');", true, 27, 22) . '</td>' :
 							'<td style="padding:8px 0 6px 26px;width:410px;"><span style="color:' . $color . ';">' . $reference['path'] . '</span></td>
-							<td style="padding:6px 0 0 0">' . we_html_button::create_button(we_html_button::EDIT, '', true, 27, 22, '', '', true, false, '', false, 'Der Link wurde bei einer unveröffentlichten Änderung entfernt: Er existiert nur noch in der veröffentlichten Version!') . '</td>') .
+							<td style="padding:6px 0 0 0">' . we_html_button::create_button(we_html_button::EDIT, '', true, 27, 22, '', '', true, false, '', false, g_l('searchtool', '[linkPublishedOnly]')) . '</td>') .
 						'</tr>';
 				}
 			}

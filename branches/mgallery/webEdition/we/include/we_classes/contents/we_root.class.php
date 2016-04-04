@@ -1241,7 +1241,7 @@ abstract class we_root extends we_class{
 	}
 
 	protected function i_filenameDouble(){
-		return f('SELECT 1 FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Filename="' . $this->DB_WE->escape($this->Filename) . '" AND ID!=' . intval($this->ID), '', $this->DB_WE);
+		return f('SELECT 1 FROM `' . $this->DB_WE->escape($this->Table) . '` WHERE ParentID=' . intval($this->ParentID) . ' AND Filename="' . $this->DB_WE->escape($this->Filename) . '" AND ID!=' . intval($this->ID), '', $this->DB_WE);
 	}
 
 	protected function i_urlDouble(){
