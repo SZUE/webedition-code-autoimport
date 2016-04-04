@@ -365,7 +365,9 @@ tinyMCEPopup.resizeToInnerSize = function(){
 			buttonsDiv.appendChild(tmp.firstChild);
 		}
 
-		document.getElementsByClassName('mceActionPanel')[0].appendChild(buttonsDiv);
+		try{
+			document.getElementsByClassName('mceActionPanel')[0].appendChild(buttonsDiv);
+		} catch(e){}
 	}
 
 
