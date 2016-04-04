@@ -237,12 +237,10 @@ var frameSet="' . $this->frameset . '";
 
 	function getJSProperty($load = ''){
 		$_mailCheck = (!empty($this->settings['reject_save_malformed']) ?
-				"we.validate.email(email);" :
+				"WE().util.validate.email(email);" :
 				"true");
 
 		return
-			parent::getJSProperty() .
-			we_html_element::jsScript(JS_DIR . 'weValidate.js') .
 			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 			we_html_element::jsElement('
 var modFrameSet="' . $this->frameset . '";
