@@ -372,7 +372,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="href"
 		}
 	}
 
-	public static function doUpdate(){
+	public static function doUpdate($internalCall = false){
 		$db = new DB_WE();
 		self::meassure('start');
 		self::replayUpdateDB();
@@ -402,8 +402,10 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="href"
 		self::meassure('versions');
 		self::cleanUnreferencedVersions($db);
 		self::meassure('fixVersions');
-		self::replayUpdateDB();
-		self::meassure('replayUpdateDB');
+		if($internalCall){
+			self::replayUpdateDB();
+			self::meassure('replayUpdateDB');
+		}
 		self::meassure(-1);
 		self::removeObsoleteFiles();
 	}

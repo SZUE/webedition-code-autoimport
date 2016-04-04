@@ -481,7 +481,7 @@ WE().consts.weSearch= {
 			}
 		}
 
-		if(false && permissionhandler::hasPerm('SEE_VERSIONS')){
+		if(permissionhandler::hasPerm('SEE_VERSIONS')){
 			$_table->setCol(0, 2, array(), we_html_forms::checkboxWithHidden(in_array(VERSIONS_TABLE, $currentSearchTables), 'search_tables_advSearch[' . VERSIONS_TABLE . ']', g_l('versions', '[versions]'), false, 'defaultfont', ''));
 		}
 
