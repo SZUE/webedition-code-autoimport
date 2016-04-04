@@ -273,11 +273,11 @@ class we_workflow_workflow extends we_workflow_base{
 			$folderID = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($folderID), '', $db);
 			$folders[] = $folderID;
 		}
-		$db->query('CREATE TEMPORARY TABLE TMP_WF (ID BIGINT(20) NOT NULL) ENGINE = MEMORY');
+		$db->addTable('TMP_WF', array('ID' => 'BIGINT(20) NOT NULL'), array(), 'MEMORY', true);
 		$db->query('INSERT INTO TMP_WF (ID) VALUES (' . implode('),(', $folders) . ')');
 		$db->query('SELECT DISTINCT(w.ID) FROM ' . WORKFLOW_TABLE . ' w JOIN TMP_WF WHERE FIND_IN_SET(TMP_WF.ID,w.Folders) AND w.Type=' . self::FOLDER . ' AND w.Status=' . self::STATE_ACTIVE);
 		$all = $db->getAll(true);
-		$db->delTable('TMP_WF');
+		$db->delTable('TMP_WF', true);
 		return $all ? $all[0] : 0;
 	}
 

@@ -61,7 +61,7 @@
 			}
 
 			d.addCommand('mceWevisualaid', function() {
-				d.hasVisual = !d.hasVisual;
+				//d.hasVisual = !d.hasVisual;
 				toggleBorders(this, d);
 			});
 			d.addButton('wevisualaid', {

@@ -164,9 +164,8 @@ function printFrameSet(){
 	<body onload="setLookin();
 			top.fscmd.selectDir();" onunload="doUnload();">
 				<?php
-					$footerHeight = (we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 2) ? 60 : 90);
 					echo we_html_element::htmlDiv(array('id' => 'fsheader'), printHeaderHTML(($cmd1 ? 1 : 0))) .
-					we_html_element::htmlIFrame('fsbody', 'about:blank', 'position:absolute;top:73px;bottom:' . $footerHeight . 'px;left:0px;right:0px;', '', '', true) .
+					we_html_element::htmlIFrame('fsbody', 'about:blank', '', '', '', true) .
 					we_html_element::htmlDiv(array('id' => 'fsfooter'), printFooterTable(($cmd1 ? 1 : 0), $filter)) .
 					we_html_element::htmlIFrame('fscmd', 'we_sselector_cmd.php?ret=' . ($cmd1 ? 1 : 0) . '&filter=' . $filter . '&currentName=' . $currentName . '&selectOwn=' . $selectOwn, 'display:none;', '', '', false);
 					?>

@@ -1981,15 +1981,18 @@ var weFileUpload = (function () {
 				_.sender.preparedFiles = [];
 				if (_.uiType !== 'wedoc') {
 					var cur = this.currentFile;
-
-					this.form.form.elements.weFileNameTemp.value = cur.fileNameTemp;
-					this.form.form.elements.weFileCt.value = cur.mimePHP;
-					this.form.form.elements.weFileName.value = cur.file.name;
-					_.sender.currentFile = null;
-					//setTimeout(_.sender.dialogCallback, 100, resp); // FIXME: check if this works
-					setTimeout(function () {
-						_.sender.dialogCallback(resp);
-					}, 100);
+					if(resp.status === 'failure'){
+						_.sender.resetParams();
+					} else {
+						this.form.form.elements.weFileNameTemp.value = cur.fileNameTemp;
+						this.form.form.elements.weFileCt.value = cur.mimePHP;
+						this.form.form.elements.weFileName.value = cur.file.name;
+						_.sender.currentFile = null;
+						//setTimeout(_.sender.dialogCallback, 100, resp); // FIXME: check if this works
+						setTimeout(function () {
+							_.sender.dialogCallback(resp);
+						}, 100);
+					}
 				} else if (resp.status === 'success') {
 					_.sender.currentFile = null;
 					if (WE()) {

@@ -70,13 +70,17 @@ class we_selector_document extends we_selector_directory{
 		$this->open_doc = $open_doc;
 	}
 
+	protected function printCmdHTML($morejs = ''){
+		$isWS = we_users_util::in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db);
+		parent::printCmdHTML(($isWS && $this->userCanMakeNewFile ? 'top.enableNewFileBut();' : 'top.disableNewFileBut();') . $morejs);
+	}
+
 	function query(){
 		$filterQuery = '';
 		if($this->filter){
 			if(strpos($this->filter, ',')){
 				$contentTypes = explode(',', $this->filter);
-				$filterQuery .= ' AND (  ' . ($contentTypes ? 'ContentType IN ("' . implode('","', $contentTypes) . '") AND ' : '') .
-					' isFolder=1)';
+				$filterQuery .= ' AND (  ' . ($contentTypes ? 'ContentType IN ("' . implode('","', $contentTypes) . '") OR ' : '') . ' isFolder=1)';
 			} else {
 				$filterQuery = ' AND (ContentType="' . $this->db->escape($this->filter) . '" OR IsFolder=1 ) ';
 			}
@@ -184,7 +188,7 @@ function exit_open() {
 
 			$title = strip_tags(str_replace(array('"', "\n\r", "\n", "\\", '°',), array('\"', ' ', ' ', "\\\\", '&deg;'), (isset($this->titles[$this->db->f("ID")]) ? oldHtmlspecialchars($this->titles[$this->db->f("ID")]) : '-')));
 
-			$ret .= 'top.addEntry(' . $this->db->f("ID") . ',"' . $this->db->f("Filename") . '","' . $this->db->f("Extension") . '",' . $this->db->f("IsFolder") . ',"' . $this->db->f("Path") . '","' . date(g_l('date', '[format][default]'), $this->db->f("ModDate")) . '","' . $this->db->f("ContentType") . '","' . $this->db->f("Published") . '","' . $title . '");';
+			$ret .= 'top.addEntry(' . $this->db->f("ID") . ',"' . $this->db->f("Filename") . '","' . $this->db->f("Extension") . '",' . $this->db->f('IsFolder') . ',"' . $this->db->f("Path") . '","' . date(g_l('date', '[format][default]'), $this->db->f("ModDate")) . '","' . $this->db->f("ContentType") . '","' . $this->db->f("Published") . '","' . $title . '");';
 		}
 		$ret .=' function startFrameset(){';
 		switch($this->filter){
@@ -194,7 +198,7 @@ function exit_open() {
 			case we_base_ContentTypes::WEDOCUMENT:
 				break;
 			default:
-				$tmp = ((in_workspace($this->dir, get_ws($this->table, true))) && $this->userCanMakeNewFile) ? 'enable' : 'disable';
+				$tmp = ((we_users_util::in_workspace($this->dir, get_ws($this->table, true))) && $this->userCanMakeNewFile) ? 'enable' : 'disable';
 				$ret.= 'if(top.' . $tmp . 'NewFileBut){top.' . $tmp . 'NewFileBut();}';
 		}
 
@@ -271,26 +275,11 @@ var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 		return true;
 	}
 
-	function printSetDirHTML(){
-		echo we_html_element::jsElement('
-top.clearEntries();' .
-			$this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() . '
-top.' . (intval($this->dir) == 0 ? 'disable' : 'enable') . 'RootDirButs();
-top.currentDir = "' . $this->dir . '";
-top.parentID = "' . $this->values["ParentID"] . '";');
-		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
-	}
+	protected function printSetDirHTML($morejs = ''){
+		$isWS = we_users_util::in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db);
 
-	/* function printNewDocumentHTML(){
-	  echo '<script><!--
-	  top.clearEntries();
-	  top.makeNewDocument = true;' .
-	  $this->printCmdAddEntriesHTML() .
-	  $this->printCMDWriteAndFillSelectorHTML() . '
-	  //-->
-	  </script>';
-	  } */
+		parent::printSetDirHTML(($isWS && $this->userCanMakeNewFile ? 'top.enableNewFileBut();' : 'top.disableNewFileBut();') . $morejs);
+	}
 
 	protected function printFooterTable($more = null){
 		$ret = '

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,12 +22,11 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class we_doclist_search extends we_search_search{
 	public $View;
 	protected $whichSearch;
 
-	public function __construct($view = null) {
+	public function __construct($view = null){
 		parent::__construct($view ? : new we_doclist_view());
 		$this->whichSearch = we_search_view::SEARCH_DOCLIST;
 	}
@@ -39,12 +39,12 @@ class we_doclist_search extends we_search_search{
 
 		$currentSearchFields = $model->getProperty('currentSearchFields');
 		$currentSearch = $model->getProperty('currentSearch');
-		$table = $table ? : (($t = $model->getProperty('currentSearchTables')) ? $t[0]: FILE_TABLE);
+		$table = $table ? : (($t = $model->getProperty('currentSearchTables')) ? $t[0] : FILE_TABLE);
 		$currentLocation = $model->getProperty('currentLocation');
 		$currentOrder = $model->getProperty('currentOrder');
 		//$_view = $model->getProperty('currentSetView');
 		$currentSearchstart = $model->getProperty('currentSearchstart');
-		$currentAnzahl= $model->getProperty('currentAnzahl');
+		$currentAnzahl = $model->getProperty('currentAnzahl');
 		$currentFolderID = $model->getProperty('currentFolderID');
 
 		$where = array();
@@ -91,11 +91,11 @@ class we_doclist_search extends we_search_search{
 
 						case 'Title':
 							break;
-							/*
-							$w = $this->searchInTitle($searchString, $table);
-							$where[] = ($w ? $w : '0');
-							 *
-							 */
+						/*
+						  $w = $this->searchInTitle($searchString, $table);
+						  $where[] = ($w ? $w : '0');
+						 *
+						 */
 						case "Status":
 						case "Speicherart":
 							if($searchString != ""){
@@ -120,24 +120,22 @@ class we_doclist_search extends we_search_search{
 				}
 			}
 
-			$where[] = 'AND ParentID=' . intval($currentFolderID);
+			$where[] = 'AND TABLE.ParentID=' . intval($currentFolderID);
 			switch($table){
 				case FILE_TABLE:
-					$where[] = 'AND (RestrictOwners IN (0,' . intval($_SESSION['user']['ID']) . ') OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Owners))';
+					$where[] = 'AND (TABLE.RestrictOwners=0 OR TABLE.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',TABLE.Owners))';
 					break;
 				case TEMPLATES_TABLE:
 					//$where[] = 'AND (RestrictUsers IN (0,' . intval($_SESSION['user']['ID']) . ') OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Users))';
 					break;
 				case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-					$where[] = 'AND (RestrictOwners IN (0,' . intval($_SESSION['user']['ID']) . ') OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Owners))';
+					$where[] = 'AND (TABLE.RestrictOwners=0 OR TABLE.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',TABLE.Owners))';
 					break;
 				case (defined('OBJECT_TABLE') ? OBJECT_TABLE : OBJECT_TABLE):
-					$where[] = 'AND (RestrictUsers IN (0,' . intval($_SESSION['user']['ID']) . ') OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Users))';
+					$where[] = 'AND (TABLE.RestrictUsers=0 OR TABLE.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',TABLE.Users))';
 					break;
 			}
 			$whereQuery = '1 ' . implode(' ', $where);
-			//t_e('where arr', $where);
-			//we_database_base::t_e_query(5);
 			$this->setwhere($whereQuery);
 			$this->insertInTempTable($whereQuery, $table, id_to_path($currentFolderID) . '/');
 
@@ -175,4 +173,5 @@ class we_doclist_search extends we_search_search{
 
 		return $_result;
 	}
+
 }

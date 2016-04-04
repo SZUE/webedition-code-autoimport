@@ -136,7 +136,7 @@ function getHttpThroughProxy($url, $proxyhost, $proxyport, $proxy_user, $proxy_p
  * @return string stripped tablename
  */
 function stripTblPrefix($table){
-	return TBL_PREFIX != '' && (strpos($table, TBL_PREFIX) !== FALSE) ? substr($table, strlen(TBL_PREFIX)) : $table;
+	return TBL_PREFIX != '' && (strpos($table, TBL_PREFIX) === 0) ? substr($table, strlen(TBL_PREFIX)) : $table;
 }
 
 function addTblPrefix($table){
@@ -264,32 +264,7 @@ function in_parentID($id, $pid, $table = FILE_TABLE, we_database_base $db = null
 }
 
 function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, we_database_base $db = null, $norootcheck = false){
-	if(!$wsIDs || $IDs === ''){
-		return true;
-	}
-	$db = ($db ? : new DB_WE());
-
-	if(!is_array($IDs)){
-		$IDs = explode(',', trim($IDs, ','));
-	}
-	if(!is_array($wsIDs)){
-		$wsIDs = explode(',', trim($wsIDs, ','));
-	}
-	if(!$wsIDs || (in_array(0, $wsIDs))){
-		return true;
-	}
-
-	if((!$norootcheck) && in_array(0, $IDs)){
-		return false;
-	}
-	foreach($IDs as $id){
-		foreach($wsIDs as $ws){
-			if(in_parentID($id, $ws, $table, $db) || ($id == $ws) || ($id == 0)){
-				return true;
-			}
-		}
-	}
-	return false;
+	return we_users_util::in_workspace($IDs, $wsIDs, $table, $db, $norootcheck);
 }
 
 function path_to_id($path, $table = FILE_TABLE, we_database_base $db = null, $asArray = false){
@@ -363,7 +338,7 @@ function getPathsFromTable($table, we_database_base $db, $type = we_base_constan
 		$wsPaths = makeArrayFromCSV(id_to_path($wsIDs, $table, $db));
 		$qfoo = array();
 		for($i = 0; $i < count($wsPaths); $i++){
-			if((!$limitCSV) || in_workspace($idArr[$i], $limitCSV, FILE_TABLE, $db)){
+			if((!$limitCSV) || we_users_util::in_workspace($idArr[$i], $limitCSV, FILE_TABLE, $db)){
 				$qfoo[] = ' Path LIKE "' . $db->escape($wsPaths[$i]) . '%" ';
 			}
 		}

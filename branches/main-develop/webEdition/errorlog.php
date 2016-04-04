@@ -156,10 +156,10 @@ $step = we_base_request::_(we_base_request::INT, 'step', 0);
 
 switch(we_base_request::_(we_base_request::STRING, 'function', 'last')){
 	case 'deleteEqual':
-		$db->query('CREATE TEMPORARY TABLE del(ID bigint(20) unsigned NOT NULL,PRIMARY KEY  (ID))ENGINE=MEMORY');
+		$db->addTable('del', array('ID' => 'bigint(20) unsigned NOT NULL'), array('PRIMARY KEY (ID)'), 'MEMORY', true);
 		$db->query('INSERT INTO del SELECT ID FROM `' . ERROR_LOG_TABLE . '` WHERE (Text,File,Type,Function,Line) IN (SELECT Text,File,Type,Function,Line FROM `' . ERROR_LOG_TABLE . '` WHERE ID=' . $id . ')');
 		$db->query('DELETE FROM `' . ERROR_LOG_TABLE . '` WHERE ID IN (SELECT ID FROM del)');
-		$db->query('DROP TEMPORARY TABLE del');
+		$db->delTable('del', true);
 		$size = f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '`');
 	//no break;
 	case 'prev':

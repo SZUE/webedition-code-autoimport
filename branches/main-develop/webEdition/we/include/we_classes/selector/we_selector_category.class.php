@@ -211,18 +211,8 @@ if(top.currentID){
 top.selectFile(' . $this->we_editCatID . ');top.makeNewFolder = 0;'), we_html_element::htmlBody());
 	}
 
-	protected function printCmdHTML(){
-		echo we_html_element::jsElement('
-top.clearEntries();' .
-			$this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() .
-			(intval($this->dir) == 0 ? '
-top.disableRootDirButs();
-top.disableDelBut();' : '
-top.enableRootDirButs();
-top.enableDelBut();' ) . '
-top.currentPath = "' . $this->path . '";
-top.parentID = "' . $this->values["ParentID"] . '";');
+	protected function printCmdHTML($morejs = ''){
+		parent::printCmdHTML((intval($this->dir) ? 'top.enableDelBut();' : 'top.disableDelBut();') . $morejs);
 	}
 
 	function renameChildrenPath($id, we_database_base $db = null){

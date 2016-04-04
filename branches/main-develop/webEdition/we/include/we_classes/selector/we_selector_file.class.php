@@ -88,7 +88,7 @@ class we_selector_file{
 		$this->table = $table;
 		switch($this->table){
 			case (defined('CUSTOMER_TABLE') ? CUSTOMER_TABLE : 'CUSTOMER_TABLE'):
-				$this->fields = 'ID,ParentID,IsFolder,CONCAT(Text," (",Forename," ", Surname,")") AS Text,CONCAT("/",Username) AS Path';
+				$this->fields = 'ID,ParentID,0 AS IsFolder,CONCAT(Text," (",Forename," ", Surname,")") AS Text,CONCAT("/",Username) AS Path';
 				break;
 			case FILE_TABLE:
 			case TEMPLATES_TABLE:
@@ -210,6 +210,7 @@ class we_selector_file{
 		if($this->id == 0){
 			$this->path = '/';
 		}
+		//FIXME: make a new selector-object & add all relevant information there
 		return we_html_element::jsElement('
 var currentID="' . $this->id . '";
 var currentDir="' . $this->dir . '";
@@ -230,7 +231,6 @@ var options={
   rootDirID:' . $this->rootDirID . ',
 	table:"' . $this->table . '",
 	formtarget:"' . $_SERVER["SCRIPT_NAME"] . '",
-	rootDirID:' . $this->rootDirID . ',
 	multiple:' . intval($this->multiple) . ',
 	needIEEscape:' . intval(we_base_browserDetect::isIE() && $GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8') . ',
 	open_doc:"' . $this->open_doc . '"
@@ -362,17 +362,18 @@ function exit_open(){' .
 		return 'var rootDirButsState = ' . (($this->dir == 0) ? 0 : 1) . ';';
 	}
 
-	protected function printCmdHTML(){
+	protected function printCmdHTML($morejs = ''){
 		echo we_html_element::jsElement('
 top.clearEntries();' .
 			$this->printCmdAddEntriesHTML() .
 			$this->printCMDWriteAndFillSelectorHTML() .
-			(($this->dir) == 0 ?
+			(intval($this->dir) == intval($this->rootDirID) ?
 				'top.disableRootDirButs();' :
 				'top.enableRootDirButs();') .
 			'top.currentPath = "' . $this->path . '";
 top.parentID = "' . $this->values["ParentID"] . '";
-');
+' .
+			$morejs);
 	}
 
 	protected function printCmdAddEntriesHTML(){

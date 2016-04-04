@@ -45,23 +45,23 @@ class we_backup_object extends we_object{
 
 		if(!$this->wasUpdate){
 			$qarr = array(
-				'OF_ID BIGINT NOT NULL',
-				'OF_ParentID BIGINT NOT NULL',
-				'OF_Text VARCHAR(255) NOT NULL',
-				'OF_Path VARCHAR(255) NOT NULL',
-				'OF_Url VARCHAR(255) NOT NULL',
-				'OF_TriggerID  BIGINT NOT NULL  default "0"',
-				'OF_Workspaces VARCHAR(255) NOT NULL',
-				'OF_ExtraWorkspaces VARCHAR(255) NOT NULL',
-				'OF_ExtraWorkspacesSelected VARCHAR(255) NOT NULL',
-				'OF_Templates VARCHAR(255) NOT NULL',
-				'OF_ExtraTemplates VARCHAR(255) NOT NULL',
-				'OF_Category VARCHAR(255) NOT NULL',
-				'OF_Published int(11) NOT NULL',
-				'OF_IsSearchable tinyint(1) NOT NULL default "1"',
-				'OF_Charset VARCHAR(64) NOT NULL',
-				'OF_WebUserID BIGINT NOT NULL',
-				'OF_Language VARCHAR(5) default "NULL"',
+				'OF_ID' => 'BIGINT NOT NULL',
+				'OF_ParentID' => 'BIGINT NOT NULL',
+				'OF_Text' => 'VARCHAR(255) NOT NULL',
+				'OF_Path' => 'VARCHAR(255) NOT NULL',
+				'OF_Url' => 'VARCHAR(255) NOT NULL',
+				'OF_TriggerID' => 'BIGINT NOT NULL  default "0"',
+				'OF_Workspaces' => 'VARCHAR(255) NOT NULL',
+				'OF_ExtraWorkspaces' => 'VARCHAR(255) NOT NULL',
+				'OF_ExtraWorkspacesSelected' => 'VARCHAR(255) NOT NULL',
+				'OF_Templates' => 'VARCHAR(255) NOT NULL',
+				'OF_ExtraTemplates' => 'VARCHAR(255) NOT NULL',
+				'OF_Category' => 'VARCHAR(255) NOT NULL',
+				'OF_Published' => 'int(11) NOT NULL',
+				'OF_IsSearchable' => 'tinyint(1) NOT NULL default "1"',
+				'OF_Charset' => 'VARCHAR(64) NOT NULL',
+				'OF_WebUserID' => 'BIGINT NOT NULL',
+				'OF_Language' => 'VARCHAR(5) default "NULL"',
 			);
 
 			$indexe = array(
@@ -78,7 +78,7 @@ class we_backup_object extends we_object{
 					$len = isset($value['length']) ? $value['length'] : $this->getElement($key . 'length', "dat");
 					$type = $this->switchtypes2($arr[0], $len);
 					if(!empty($type)){
-						$qarr[] = $key . $type;
+						$qarr[$key] = $type;
 //add index for complex queries
 						if($arr[0] === 'object'){
 							$indexe[] = 'KEY ' . $key . ' (' . $key . ')';
@@ -87,10 +87,8 @@ class we_backup_object extends we_object{
 				}
 			}
 
-			$q = implode(',', $qarr);
-
 			$this->DB_WE->delTable($ctable);
-			$this->DB_WE->addTable($ctable,$q,$indexe);
+			$this->DB_WE->addTable($ctable, $qarr, $indexe);
 
 //dummy eintrag schreiben
 			$this->DB_WE->query('INSERT INTO ' . $ctable . ' SET OF_ID=0');
@@ -471,8 +469,8 @@ class we_backup_object extends we_object{
 						$len = $metadata[$nummer]['len'];
 						$type = 'VARCHAR(' . $len . ')';
 					}
-					$this->DB_WE->moveCol($ctable,$ovalname,$last);
-						//query('ALTER TABLE ' . $ctable . ' MODIFY COLUMN ' . $ovalname . ' ' . $type . ' AFTER ' . $last);
+					$this->DB_WE->moveCol($ctable, $ovalname, $last);
+					//query('ALTER TABLE ' . $ctable . ' MODIFY COLUMN ' . $ovalname . ' ' . $type . ' AFTER ' . $last);
 					$last = $ovalname;
 				} else {
 					t_e('warning', __METHOD__ . ' ' . $ctable . ' (' . $this->Text . ') Field not found: Field: ' . $ovalname);

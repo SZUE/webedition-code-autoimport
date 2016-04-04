@@ -709,6 +709,7 @@ js/we_modules/messaging/messaging_usel_browse.js
 js/we_modules/messaging/messaging_hl.js
 js/we_modules/banner/banner_cmd.js
 js/we_colors.js
+js/weValidate.js
 js/weTinyMceFunctions.js
 js/weTinyMceDialogs.js
 js/weJsStrings.php

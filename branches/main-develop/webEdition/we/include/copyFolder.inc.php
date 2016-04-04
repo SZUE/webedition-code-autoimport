@@ -72,7 +72,7 @@ if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3)){
 	echo
 	we_html_element::jsScript(JS_DIR . 'copyFolder.js') .
 	'<body class="weDialogBody" onload="self.focus();">' .
-	'<form onsubmit="return fsubmit(this)" name="we_form" target="pbUpdateFrame" method="get">' .
+	'<form name="we_form" target="pbUpdateFrame" method="get">' .
 	we_html_tools::htmlDialogLayout($content, g_l('copyFolder', '[headline]') . ": " . we_base_util::shortenPath(id_to_path($cmd1, $cmd4), 46), $buttons) .
 	'</form>' .
 	'<iframe src="about:blank" name="pbUpdateFrame" style="width:0px;height:0px" id="pbUpdateFrame"></iframe>' .

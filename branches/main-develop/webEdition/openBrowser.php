@@ -30,7 +30,7 @@ if(($id = we_base_request::_(we_base_request::INT, 'url'))){
 	if($path){
 		$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE'], true);
 		$loc = ($urlReplace ?
-				(($http = preg_replace($urlReplace, array_keys($urlReplace), $path, -1, $cnt)) && $cnt ? 'http:' : getServerUrl()) . $http :
+				(($http = preg_replace($urlReplace, array_keys($urlReplace), $path, -1, $cnt)) && $cnt ? '' : getServerUrl()) . $http :
 				getServerUrl() . $path
 			) . '?r=' . rand();
 	} else {

@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_users_user{
+	//FIXME: make these constants (db) to enum fields
 	const TYPE_USER = 0;
 	const TYPE_USER_GROUP = 1;
 	const TYPE_ALIAS = 2;
@@ -1218,7 +1219,8 @@ _multiEditorreload = true;';
 function comparePwd(f1,f2){
 	var pwd1=document.getElementsByName(f1)[0];
 	var pwd2=document.getElementsByName(f2)[0];
-	if(!(new RegExp("' . SECURITY_USER_PASS_REGEX . '").test(pwd1.value))){
+	var re=/' . SECURITY_USER_PASS_REGEX . '/;
+	if(!re.test(pwd1.value)){
 		pwd1.classList.add("weMarkInputError");
 		return 1;
 	}else{
