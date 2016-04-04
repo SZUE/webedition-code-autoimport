@@ -47,12 +47,11 @@ function WE() {
 				return cur.top.WebEdition;
 			}
 		} else {
-			return false;
+			throw "WE not found (1)";
 		}
 	}
 
-	console.log("webedition (final) not found");
-	return false;
+	throw "webedition (final) not found";
 }
 
 function we_showMessage(message, prio, win) {
