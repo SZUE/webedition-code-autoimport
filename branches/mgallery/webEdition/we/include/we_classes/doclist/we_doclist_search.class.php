@@ -27,7 +27,6 @@ class we_doclist_search extends we_search_search{
 	protected $whichSearch;
 
 	public function __construct($view = null){
-		we_database_base::t_e_query(100);
 		parent::__construct($view ? : new we_doclist_view());
 		$this->whichSearch = we_search_view::SEARCH_DOCLIST;
 	}
@@ -51,11 +50,6 @@ class we_doclist_search extends we_search_search{
 		$where = array();
 		$this->settable($table);
 
-
-		if(!we_search_search::checkRightTempTable() && !we_search_search::checkRightDropTable()){
-			echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('searchtool', '[noTempTableRightsDoclist]'), we_message_reporting::WE_MESSAGE_NOTICE));
-			return '';
-		}
 		if($currentFolderID){
 			$this->createTempTable();
 

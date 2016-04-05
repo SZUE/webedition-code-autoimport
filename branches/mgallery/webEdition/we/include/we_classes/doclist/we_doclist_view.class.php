@@ -52,7 +52,6 @@ weSearch.conf = {
 	//showSelects: "placeholder",
 	rows: 0,
 	checkRightTempTable: ' . (we_search_search::checkRightTempTable() ? 1 : 0) . ',
-	checkRightDropTable: ' . (we_search_search::checkRightDropTable() ? 1 : 0) . '
 };
 weSearch.elems = {
 	btnTrash: \'' . str_replace("'", "\'", we_html_button::create_button(we_html_button::TRASH, "javascript:weSearch.delRow(__we_new_id__)")) . '\',

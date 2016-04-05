@@ -59,7 +59,6 @@ weSearch = {
 		rows: 0,
 		we_transaction: '',
 		checkRightTempTable: 0,
-		checkRightDropTable: 0
 	},
 	elems: {
 		btnTrash: '',
@@ -184,11 +183,6 @@ weSearch = {
 		}
 	},
 	search: function (newSearch) {
-		if (!this.conf.checkRightTempTable && !this.conf.checkRightDropTable) {
-			top.we_showMessage(WE().consts.g_l.weSearch.noTempTableRightsSearch, WE().consts.message.WE_MESSAGE_NOTICE, window);
-			return;
-		}
-
 		var Checks = [], m = 0, i, table;
 
 		switch (this.conf.whichsearch) {
