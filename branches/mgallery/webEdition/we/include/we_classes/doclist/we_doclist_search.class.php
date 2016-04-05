@@ -150,7 +150,7 @@ class we_doclist_search extends we_search_search{
 		if(!$this->founditems){
 			return array();
 		}
-		$this->db->delTable('SEARCH_TEMP_TABLE');
+		$this->createTempTable();
 
 		foreach($_result as $k => $v){
 			$_result[$k]['Description'] = '';

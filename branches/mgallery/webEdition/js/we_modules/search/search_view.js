@@ -58,7 +58,6 @@ weSearch = {
 		showSelects: 0,
 		rows: 0,
 		we_transaction: '',
-		checkRightTempTable: 0,
 	},
 	elems: {
 		btnTrash: '',
