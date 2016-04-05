@@ -1166,7 +1166,7 @@ function we_unserialize($string, $default = array(), $quiet = false){
 		//non UTF-8 json decode
 		static $json = null;
 		$json = $json ? : new Services_JSON(16/* SERVICES_JSON_LOOSE_TYPE */);
-		return (array) $json->decode($string);
+		return (array) $json->decode(str_replace("\n", '\n', $string));
 	}
 	//data is really not serialized!
 	if(preg_match('|^\d+(,\d+)*$|', $string)){
