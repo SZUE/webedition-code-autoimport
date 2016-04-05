@@ -95,47 +95,47 @@ class we_class_folder extends we_folder{
 	public function initByPath($path, $tblName = OBJECT_FILES_TABLE, $skipHook = false){
 		if(($id = f('SELECT ID FROM ' . $this->DB_WE->escape($tblName) . ' WHERE Path="' . $path . '" AND IsFolder=1', '', $this->DB_WE))){
 			$this->initByID($id, $tblName);
-		} else {
-			## Folder does not exist, so we have to create it (if user has permissons to create folders)
-			$spl = explode('/', $path);
-			$folderName = array_pop($spl);
-			$p = array();
-			$anz = count($spl);
-			$last_pid = 0;
-			for($i = 0; $i < $anz; $i++){
-				$p[] = array_shift($spl);
-				$pa = $this->DB_WE->escape(implode('/', $p));
-				if($pa){
-					if(($pid = f('SELECT ID FROM ' . $this->DB_WE->escape($tblName) . ' WHERE Path="' . $pa . '"', '', $this->DB_WE))){
-						$last_pid = $pid;
-					} else {
-						$folder = new self();
-						$folder->init();
-						$folder->Table = $tblName;
-						$folder->ParentID = $last_pid;
-						$folder->Text = $p[$i];
-						$folder->Filename = $p[$i];
-						$folder->IsClassFolder = $i == 0;
+			return true;
+		}
+		## Folder does not exist, so we have to create it (if user has permissons to create folders)
+		$spl = explode('/', $path);
+		$folderName = array_pop($spl);
+		$p = array();
+		$anz = count($spl);
+		$last_pid = 0;
+		for($i = 0; $i < $anz; $i++){
+			$p[] = array_shift($spl);
+			$pa = $this->DB_WE->escape(implode('/', $p));
+			if($pa){
+				if(($pid = f('SELECT ID FROM ' . $this->DB_WE->escape($tblName) . ' WHERE Path="' . $pa . '"', '', $this->DB_WE))){
+					$last_pid = $pid;
+				} else {
+					$folder = new self();
+					$folder->init();
+					$folder->Table = $tblName;
+					$folder->ParentID = $last_pid;
+					$folder->Text = $p[$i];
+					$folder->Filename = $p[$i];
+					$folder->IsClassFolder = $i == 0;
 
-						$folder->Path = $pa;
-						$folder->save($skipHook);
-						$last_pid = $folder->ID;
-					}
+					$folder->Path = $pa;
+					$folder->save($skipHook);
+					$last_pid = $folder->ID;
 				}
 			}
-			$this->init();
-			$this->Table = $tblName;
-			$this->ClassName = __CLASS__;
-			$this->IsClassFolder = $last_pid == 0;
-			$this->ParentID = $last_pid;
-			$this->Text = $folderName;
-			$this->Filename = $folderName;
-			$this->Path = $path;
-			//#4076
-			$this->setClassProp();
-
-			$this->save(0, $skipHook);
 		}
+		$this->init();
+		$this->Table = $tblName;
+		$this->ClassName = __CLASS__;
+		$this->IsClassFolder = $last_pid == 0;
+		$this->ParentID = $last_pid;
+		$this->Text = $folderName;
+		$this->Filename = $folderName;
+		$this->Path = $path;
+		//#4076
+		$this->setClassProp();
+
+		$this->save(0, $skipHook);
 		return true;
 	}
 

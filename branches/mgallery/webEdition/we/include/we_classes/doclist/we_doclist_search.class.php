@@ -120,26 +120,26 @@ class we_doclist_search extends we_search_search{
 				}
 			}
 
-			$where[] = 'AND f.ParentID=' . intval($currentFolderID);
+			$where[] = 'AND WETABLE.ParentID=' . intval($currentFolderID);
 			switch($table){
 				case FILE_TABLE:
-					$where[] = 'AND (f.RestrictOwners=0 OR f.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',f.Owners))';
+					$where[] = 'AND (WETABLE.RestrictOwners=0 OR WETABLE.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',WETABLE.Owners))';
 					break;
 				case TEMPLATES_TABLE:
 					//$where[] = 'AND (RestrictUsers IN (0,' . intval($_SESSION['user']['ID']) . ') OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Users))';
 					break;
 				case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-					$where[] = 'AND (f.RestrictOwners=0 OR f.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',f.Owners))';
+					$where[] = 'AND (WETABLE.RestrictOwners=0 OR WETABLE.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',WETABLE.Owners))';
 					break;
 				case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
-					$where[] = 'AND (f.RestrictUsers=0 OR f.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',f.Users))';
+					$where[] = 'AND (WETABLE.RestrictUsers=0 OR WETABLE.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',WETABLE.Users))';
 					break;
 			}
 			$whereQuery = '1 ' . implode(' ', $where);
 			$this->setwhere($whereQuery);
 			$this->insertInTempTable($whereQuery, $table, id_to_path($currentFolderID) . '/');
 
-			$foundItems = $this->countitems($whereQuery, $table, 'f');
+			$foundItems = $this->countitems($whereQuery, $table);
 			$_SESSION['weS']['weSearch']['foundItems'] = $this->founditems = $foundItems;
 
 			$this->selectFromTempTable($currentSearchstart, $currentAnzahl, $currentOrder);
@@ -160,7 +160,7 @@ class we_doclist_search extends we_search_search{
 		foreach($_result as $k => $v){
 			$_result[$k]['Description'] = '';
 			if($_result[$k]['Table'] == FILE_TABLE && $_result[$k]['Published'] >= $_result[$k]['ModDate'] && $_result[$k]['Published'] != 0){
-				$_result[$k]['Description'] = f('SELECT c.Dat FROM (' . FILE_TABLE . ' f LEFT JOIN ' . LINK_TABLE . ' l ON (f.ID=l.DID)) LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE f.ID=' . intval($_result[$k]["ID"]) . ' AND l.nHash=x\'' . md5("Description") . '\' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"', '', $DB_WE);
+				$_result[$k]['Description'] = f('SELECT c.Dat FROM (' . FILE_TABLE . ' f LEFT JOIN ' . LINK_TABLE . ' l ON (WETABLE.ID=l.DID)) LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE f.ID=' . intval($_result[$k]["ID"]) . ' AND l.nHash=x\'' . md5("Description") . '\' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"', '', $DB_WE);
 			} else {
 				if(($obj = f('SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($_result[$k]["ID"]) . ' AND DocTable="tblFile" AND Active=1', '', $DB_WE))){
 					$tempDoc = we_unserialize($obj);
