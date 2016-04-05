@@ -120,8 +120,8 @@ tinyMCEPopup = {
 			b()
 		}
 	},
-	_restoreSelection: function() {
-		var a = window.event.srcElement;
+	_restoreSelection: function(a) {
+		var a = (a && a.target) || window.event.srcElement;
 		if (a.nodeName == "INPUT" && (a.type == "submit" || a.type == "button")) {
 			tinyMCEPopup.restoreSelection()
 		}
@@ -147,11 +147,15 @@ tinyMCEPopup = {
 			b.dom.addClass(document.body, "forceColors")
 		}
 		document.body.style.display = "";
-		if (tinymce.isIE) {
+		if (tinymce.isIE && !tinymce.isIE11) {
 			document.attachEvent("onmouseup", tinyMCEPopup._restoreSelection);
 			b.dom.add(b.dom.select("head")[0], "base", {
 				target: "_self"
 			})
+		} else {
+			if (tinymce.isIE11) {
+				document.addEventListener("mouseup", tinyMCEPopup._restoreSelection, false)
+			}
 		}
 		b.restoreSelection();
 		b.resizeToInnerSize();
@@ -167,12 +171,12 @@ tinyMCEPopup = {
 		}
 		tinymce.each(b.dom.select("select"), function(f) {
 			f.onkeydown = tinyMCEPopup._accessHandler
-		});top.opener.top.console.log("tinymce", tinymce);
+		});
 		tinymce.each(b.listeners, function(f) {
 			f.func.call(f.scope, b.editor)
 		});
 		if (b.getWindowArg("mce_auto_focus", true)) {
-			window.focus();top.opener.top.console.log("tinymce2", tinymce);
+			window.focus();
 			tinymce.each(document.forms, function(g) {
 				tinymce.each(g.elements, function(f) {
 					if (b.dom.hasClass(f, "mceFocus") && !f.disabled) {
@@ -221,8 +225,7 @@ tinyMCEPopup._onDOMLoaded = function() {
 	var b = tinyMCEPopup,
 		d = document.title,
 		e, c, a;
-
-	try{
+	try {
 		if (b.features.translate_i18n !== false) {
 			c = document.body.innerHTML;
 			if (tinymce.isIE) {
@@ -240,11 +243,15 @@ tinyMCEPopup._onDOMLoaded = function() {
 			b.dom.addClass(document.body, "forceColors")
 		}
 		document.body.style.display = "";
-		if (tinymce.isIE) {
+		if (tinymce.isIE && !tinymce.isIE11) {
 			document.attachEvent("onmouseup", tinyMCEPopup._restoreSelection);
 			b.dom.add(b.dom.select("head")[0], "base", {
 				target: "_self"
 			})
+		} else {
+			if (tinymce.isIE11) {
+				document.addEventListener("mouseup", tinyMCEPopup._restoreSelection, false)
+			}
 		}
 		b.restoreSelection();
 		b.resizeToInnerSize();
@@ -260,12 +267,12 @@ tinyMCEPopup._onDOMLoaded = function() {
 		}
 		tinymce.each(b.dom.select("select"), function(f) {
 			f.onkeydown = tinyMCEPopup._accessHandler
-		});top.opener.top.console.log("tinymce", tinymce);
+		});
 		tinymce.each(b.listeners, function(f) {
 			f.func.call(f.scope, b.editor)
 		});
 		if (b.getWindowArg("mce_auto_focus", true)) {
-			window.focus();top.opener.top.console.log("tinymce2", tinymce);
+			window.focus();
 			tinymce.each(document.forms, function(g) {
 				tinymce.each(g.elements, function(f) {
 					if (b.dom.hasClass(f, "mceFocus") && !f.disabled) {
@@ -277,7 +284,7 @@ tinyMCEPopup._onDOMLoaded = function() {
 		}
 		document.onkeyup = tinyMCEPopup._closeWinKeyHandler
 	} catch(e){}
-};
+}
 
 tinyMCEPopup.init();
 
