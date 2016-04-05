@@ -127,7 +127,7 @@ class we_listview_langlink extends we_listview_base{
 			$this->foundlinks[$this->DB_WE->f('Locale')] = $this->DB_WE->Record;
 		}
 
-		if($this->recursive && ($diff = array_diff($_languages, array_keys($this->foundlinks)))){
+		if($this->recursive && ($diff = array_diff($langs, array_keys($this->foundlinks)))){
 			foreach(array_keys($diff) as $langkey){
 				$this->getParentData($this->id, $langkey);
 			}
