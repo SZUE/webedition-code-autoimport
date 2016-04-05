@@ -846,6 +846,10 @@ abstract class we_database_base{
 			t_e('create table needs an array');
 			return;
 		}
+		if($engine == 'MYISAM'){
+			$defaultEngine = f('show variables LIKE "default_storage_engine"', 'Value');
+			$engine = (in_array(strtolower($defaultEngine), array('myisam', 'aria')) ? $defaultEngine : 'myisam');
+		}
 		$cols_sql = array();
 		foreach($cols as $name => $type){
 			$cols_sql[] = "`" . $name . "` " . $type;
