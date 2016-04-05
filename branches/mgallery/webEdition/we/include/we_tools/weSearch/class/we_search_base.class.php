@@ -158,14 +158,14 @@ class we_search_base{
 		}
 	}
 
-	function countitems($where = '', $table = ''){
+	function countitems($where = '', $table = '', $alias = ''){//FIXME: $alias is used by doclist: remove when aliases are made the same way as in normal search
 		$this->table = ($table ? : ($this->table ? : ''));
 
 		if(!$this->table){
 			return -1;
 		}
 		$this->where = ($where ? : ($this->where ? : '1'));
-		return f('SELECT COUNT(1) FROM ' . $this->db->escape($this->table) . ' WHERE ' . $this->where, '', $this->db);
+		return f('SELECT COUNT(1) FROM ' . $this->db->escape($this->table) . ($alias ? ' ' . $alias : '') . ' WHERE ' . $this->where, '', $this->db);
 	}
 
 	function searchquery($where = '', $get = '*', $table = '', $order = '', $limit = ''){

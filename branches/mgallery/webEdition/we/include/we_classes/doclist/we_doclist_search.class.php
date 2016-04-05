@@ -120,26 +120,26 @@ class we_doclist_search extends we_search_search{
 				}
 			}
 
-			$where[] = 'AND TABLE.ParentID=' . intval($currentFolderID);
+			$where[] = 'AND f.ParentID=' . intval($currentFolderID);
 			switch($table){
 				case FILE_TABLE:
-					$where[] = 'AND (TABLE.RestrictOwners=0 OR TABLE.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',TABLE.Owners))';
+					$where[] = 'AND (f.RestrictOwners=0 OR f.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',f.Owners))';
 					break;
 				case TEMPLATES_TABLE:
 					//$where[] = 'AND (RestrictUsers IN (0,' . intval($_SESSION['user']['ID']) . ') OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Users))';
 					break;
 				case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-					$where[] = 'AND (TABLE.RestrictOwners=0 OR TABLE.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',TABLE.Owners))';
+					$where[] = 'AND (f.RestrictOwners=0 OR f.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',f.Owners))';
 					break;
-				case (defined('OBJECT_TABLE') ? OBJECT_TABLE : OBJECT_TABLE):
-					$where[] = 'AND (TABLE.RestrictUsers=0 OR TABLE.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',TABLE.Users))';
+				case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
+					$where[] = 'AND (f.RestrictUsers=0 OR f.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',f.Users))';
 					break;
 			}
 			$whereQuery = '1 ' . implode(' ', $where);
 			$this->setwhere($whereQuery);
 			$this->insertInTempTable($whereQuery, $table, id_to_path($currentFolderID) . '/');
 
-			$foundItems = $this->countitems($whereQuery, $table);
+			$foundItems = $this->countitems($whereQuery, $table, 'f');
 			$_SESSION['weS']['weSearch']['foundItems'] = $this->founditems = $foundItems;
 
 			$this->selectFromTempTable($currentSearchstart, $currentAnzahl, $currentOrder);
