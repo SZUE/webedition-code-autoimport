@@ -243,6 +243,9 @@ weSearch = {
 		if (Checks.length !== 0) {
 			if (newSearch) {
 				window.document.we_form.elements['searchstart' + this.conf.whichsearch].value = 0;
+				window.document.we_form.elements.newSearch.value = 1;
+			} else {
+				window.document.we_form.elements.newSearch.value = 0;
 			}
 			this.makeAjaxRequestDoclist();
 		}

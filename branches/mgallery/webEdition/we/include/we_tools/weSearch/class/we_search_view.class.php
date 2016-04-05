@@ -907,6 +907,7 @@ WE().consts.weSearch= {
 				'Order' . $whichSearch => $currentOrder,
 				'mode' => $_mode = $this->Model->mode,
 				'searchstart' . $whichSearch => $currentSearchstart,
+				'newSearch' => 1,
 				'position' => '',
 				'do' => '',
 			)) . $moreHiddens . $tbl->getHtml();
