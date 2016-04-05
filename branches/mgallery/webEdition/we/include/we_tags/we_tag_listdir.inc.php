@@ -40,19 +40,18 @@ function we_tag_listdir($attribs){
 			return false;
 		}
 		$we_locfile = $files[$pos];
-		$GLOBALS['lv']->field = $we_locfile['name'];
+		$GLOBALS['lv']->field = $we_locfile['Text'];
 		$GLOBALS['lv']->ID = $we_locfile['ID'];
 		$GLOBALS['lv']->Path = $we_locfile['Path'];
 		$GLOBALS['we_position']['listdir'] = array(
 			'position' => $pos + 1,
 			'size' => count($files),
-			'field' => $we_locfile['name'],
+			'field' => $we_locfile['Text'],
 			'id' => $we_locfile['ID'],
 			'path' => $we_locfile['Path']);
 		return true;
-	} else {
-		$files = array();
 	}
+	$files = array();
 
 	$dirID = weTag_getAttribute('id', $attribs, $GLOBALS['we_doc']->ParentID, we_base_request::INT);
 	$index = explode(',', weTag_getAttribute('index', $attribs, 'index.html,index.htm,index.php,default.htm,default.html,default.php', we_base_request::STRING));
@@ -68,14 +67,14 @@ function we_tag_listdir($attribs){
 	$db->query('SELECT ID,Text,IsFolder,Path,IF(IsFolder,(SELECT ID FROM ' . FILE_TABLE . ' WHERE ParentID=f.ID AND IsFolder=0 AND (' . $indexes . ') AND (Published>0 ' . ($searchable ? 'AND IsSearchable=1' : '') . ') LIMIT 1),0) AS FolderIndex,
 (SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DID=f.ID AND l.Name=IF(f.IsFolder,"' . $db->escape($dirfield) . '","' . $db->escape($name) . '")) AS name,
 ' . ($sort ?
-					'(SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DID=f.ID AND l.Name="' . $db->escape($sort) . '")' :
-					'Text') . ' AS sort
+			'(SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DID=f.ID AND l.Name="' . $db->escape($sort) . '")' :
+			'Text') . ' AS sort
 FROM ' . FILE_TABLE . ' f WHERE ((Published>0 ' . ($searchable ? 'AND IsSearchable=1' : '') . ') OR (IsFolder=1)) AND ParentID=' . intval($dirID) . ' ORDER BY ' . ($sort ? 'sort' : 'Text') . ($desc ? ' DESC' : ''));
 
 	while($db->next_record()){
 		$id = intval($db->f('IsFolder') ?
-						$db->f('FolderIndex') :
-						$db->f('ID'));
+				$db->f('FolderIndex') :
+				$db->f('ID'));
 
 		if($id){
 			$files[] = array(
@@ -83,7 +82,6 @@ FROM ' . FILE_TABLE . ' f WHERE ((Published>0 ' . ($searchable ? 'AND IsSearchab
 				'Path' => $db->f('Path'),
 				'Text' => $db->f('Text'),
 				'sort' => $db->f('sort'),
-				'name' => $db->f('name')
 			);
 		}
 	}
