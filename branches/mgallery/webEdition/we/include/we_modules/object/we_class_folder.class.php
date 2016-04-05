@@ -901,20 +901,10 @@ for ( frameId in _usedEditors ) {
 	function searchableObjects($searchable = true){
 		$this->setClassProp();
 
-		$weg = array_filter(we_base_request::_(we_base_request::BOOL, 'weg', array()));
-		foreach(array_keys($weg) as $ofid){
-
-			if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $this->DB_WE)){
-				$obj = new we_objectFile();
-				$obj->initByID($ofid, OBJECT_FILES_TABLE);
-				$obj->getContentDataFromTemporaryDocs($ofid);
-				$obj->IsSearchable = ($searchable != true ? 0 : 1);
-				$oldModDate = $obj->ModDate;
-				$obj->we_save(false, true);
-				if($obj->Published != 0 && $obj->Published == $oldModDate){
-					$obj->we_publish(false, true, true);
-				}
-			}
+		$ids = array_map('intval', array_keys(array_filter(we_base_request::_(we_base_request::BOOL, 'weg', array()))));
+		if(count($ids)){
+			$whereRestrictOwners = ' AND (o.RestrictOwners=0 OR o.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',o.Owners))';
+			$this->DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . ' o JOIN ' . OBJECT_X_TABLE . $this->TableID . ' of ON o.ID = of.OF_ID SET o.IsSearchable=' . intval($searchable) . ',of.OF_IsSearchable=' . intval($searchable) . ' WHERE o.ID IN(' . implode(',', $ids) . ') AND o.IsFolder=0' . $whereRestrictOwners);
 		}
 
 		return '';
