@@ -266,7 +266,7 @@ class we_search_base{
 	}
 
 	function next_record(){
-		$ret = $this->db->next_record();
+		$ret = $this->db->next_record(MYSQL_ASSOC);
 		$this->Record = $this->db->Record;
 		return $ret;
 	}

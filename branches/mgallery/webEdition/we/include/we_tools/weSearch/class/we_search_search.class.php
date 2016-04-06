@@ -22,6 +22,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once(WE_INCLUDES_PATH . 'we_tools/weSearch/conf/define.conf.php');
+
 class we_search_search extends we_search_base{
 	//for doclist!
 	/**
@@ -1387,139 +1389,143 @@ class we_search_search extends we_search_base{
 				}
 				break;
 		}
+		if(empty($searchname)){
+			return '';
+		}
+
+//change some field names
+		if($tablename == VERSIONS_TABLE){
+			switch($searchfield){
+				case 'ID' :
+					$searchfield = 'documentID';
+					break;
+				case 'temp_template_id' :
+					$searchfield = 'TemplateID';
+					break;
+				case 'ModDate' :
+					$searchfield = 'timestamp';
+					break;
+			}
+		}
 
 		//filter fields for each table
 		foreach($tableInfo as $cur){
-			if($tablename == VERSIONS_TABLE){
-				switch($searchfield){
-					case 'ID' :
-						$cur['name'] = 'documentID';
-						$searchfield = 'documentID';
-						break;
-					case 'temp_template_id' :
-						$searchfield = 'TemplateID';
-						break;
-					case 'ModDate' :
-						$searchfield = 'timestamp';
-						break;
-				}
+			if($searchfield != $cur['name']){
+				continue;
 			}
+			$searchfield = 'WETABLE.' . $cur['name'];
 
-			if($searchfield == $cur['name']){
-				$searchfield = 'WETABLE.' . $cur['name'];
+			if(($whatParentID === 'ParentIDDoc' && ($this->table == FILE_TABLE || $this->table == VERSIONS_TABLE)) || ($whatParentID === 'ParentIDObj' && ($this->table == OBJECT_FILES_TABLE || $this->table == VERSIONS_TABLE)) || ($whatParentID === 'ParentIDTmpl' && $this->table == TEMPLATES_TABLE)){
+				if($this->table == VERSIONS_TABLE){
+					if($whatParentID === 'ParentIDDoc'){
+						$this->table = FILE_TABLE;
+					}
+					if(defined('OBJECT_FILES_TABLE') && $whatParentID === 'ParentIDObj'){
+						$this->table = OBJECT_FILES_TABLE;
+					}
+				}
+				$searchname = path_to_id($searchname, $this->table);
+				$searching = " = '" . $this->db->escape($searchname) . "' ";
+				$sql .= $this->sqlwhere($searchfield, $searching, $operator);
+			} elseif(($cur['name'] === 'MasterTemplateID' && $this->table === TEMPLATES_TABLE) || ($cur['name'] === 'temp_template_id' && $this->table == FILE_TABLE) || ($cur['name'] === 'TemplateID' && $this->table === VERSIONS_TABLE)){
+				$searchname = path_to_id($searchname, TEMPLATES_TABLE);
+				$searching = " = '" . $this->db->escape($searchname) . "' ";
 
-				if(!empty($searchname)){
-					if(($whatParentID === 'ParentIDDoc' && ($this->table == FILE_TABLE || $this->table == VERSIONS_TABLE)) || ($whatParentID === 'ParentIDObj' && ($this->table == OBJECT_FILES_TABLE || $this->table == VERSIONS_TABLE)) || ($whatParentID === 'ParentIDTmpl' && $this->table == TEMPLATES_TABLE)){
-						if($this->table == VERSIONS_TABLE){
-							if($whatParentID === 'ParentIDDoc'){
-								$this->table = FILE_TABLE;
-							}
-							if(defined('OBJECT_FILES_TABLE') && $whatParentID === 'ParentIDObj'){
-								$this->table = OBJECT_FILES_TABLE;
-							}
-						}
-						$searchname = path_to_id($searchname, $this->table);
-						$searching = " = '" . $this->db->escape($searchname) . "' ";
-						$sql .= $this->sqlwhere($searchfield, $searching, $operator);
-					} elseif(($searchfield == TEMPLATES_TABLE . '.MasterTemplateID' && $this->table == TEMPLATES_TABLE) || ($searchfield == FILE_TABLE . '.temp_template_id' && $this->table == FILE_TABLE) || ($searchfield == VERSIONS_TABLE . '.TemplateID' && $this->table == VERSIONS_TABLE)){
-						$searchname = path_to_id($searchname, TEMPLATES_TABLE);
-						$searching = " = '" . $this->db->escape($searchname) . "' ";
+				if(($cur['name'] === 'temp_template_id' && $this->table == FILE_TABLE) || ($cur['name'] === 'TemplateID' && $this->table == VERSIONS_TABLE)){
+					if($this->table == FILE_TABLE){
+						$sql .= $this->sqlwhere('WETABLE.TemplateID', $searching, $operator . '( (Published >= ModDate AND Published !=0 AND ') .
+							$this->sqlwhere($searchfield, $searching, ' ) OR (Published < ModDate AND ') .
+							'))';
+					} elseif($this->table == VERSIONS_TABLE){
+						$sql .= $this->sqlwhere('WETABLE.TemplateID', $searching, $operator . ' ');
+					}
+				} else {
+					$sql .= $this->sqlwhere($searchfield, $searching, $operator);
+				}
+			} elseif($cur['name'] == 'Published' || $cur['name'] == 'CreationDate' || $cur['name'] == 'ModDate'){
+				if($cur['name'] == 'Published' && $this->table == FILE_TABLE || $this->table == OBJECT_FILES_TABLE || $cur['name'] != 'Published'){
+					if($this->table == VERSIONS_TABLE && $cur['name'] == 'CreationDate' || $cur['name'] == 'ModDate'){
+						$searchfield = $this->table . '.timestamp';
+					}
+					$date = explode('.', $searchname);
+					$day = $date[0];
+					$month = $date[1];
+					$year = $date[2];
+					$timestampStart = mktime(0, 0, 0, $month, $day, $year);
+					$timestampEnd = mktime(23, 59, 59, $month, $day, $year);
 
-						if(($searchfield === 'temp_template_id' && $this->table == FILE_TABLE) || ($searchfield === 'TemplateID' && $this->table == VERSIONS_TABLE)){
-							if($this->table == FILE_TABLE){
-								$sql .= $this->sqlwhere('WETABLE.TemplateID', $searching, $operator . '( (Published >= ModDate AND Published !=0 AND ') .
-									$this->sqlwhere($searchfield, $searching, ' ) OR (Published < ModDate AND ') .
-									'))';
-							} elseif($this->table == VERSIONS_TABLE){
-								$sql .= $this->sqlwhere('WETABLE.TemplateID', $searching, $operator . ' ');
-							}
-						} else {
-							$sql .= $this->sqlwhere($searchfield, $searching, $operator);
-						}
-					} elseif(stristr($searchfield, '.Published') || stristr($searchfield, '.CreationDate') || stristr($searchfield, '.ModDate')){
-						if((stristr($searchfield, '.Published') && $this->table == FILE_TABLE || $this->table == OBJECT_FILES_TABLE) || !stristr($searchfield, '.Published')){
-							if($this->table == VERSIONS_TABLE && (stristr($searchfield, '.CreationDate') || stristr($searchfield, '.ModDate'))){
-								$searchfield = $this->table . '.timestamp';
-							}
-							$date = explode('.', $searchname);
-							$day = $date[0];
-							$month = $date[1];
-							$year = $date[2];
-							$timestampStart = mktime(0, 0, 0, $month, $day, $year);
-							$timestampEnd = mktime(23, 59, 59, $month, $day, $year);
-
-							if(isset($searchlocation)){
-								switch($searchlocation){
-									case 'IS':
-										$searching = ' BETWEEN ' . $timestampStart . ' AND ' . $timestampEnd . ' ';
-										$sql .= $this->sqlwhere($searchfield, $searching, $operator);
-										break;
-									case 'LO':
-										$searching = ' < "' . $timestampStart . '" ';
-										$sql .= $this->sqlwhere($searchfield, $searching, $operator);
-										break;
-									case 'LEQ':
-										$searching = ' <= "' . $timestampEnd . '" ';
-										$sql .= $this->sqlwhere($searchfield, $searching, $operator);
-										break;
-									case 'HI':
-										$searching = ' > "' . $timestampEnd . '" ';
-										$sql .= $this->sqlwhere($searchfield, $searching, $operator);
-										break;
-									case 'HEQ':
-										$searching = ' >= "' . $timestampStart . '" ';
-										$sql .= $this->sqlwhere($searchfield, $searching, $operator);
-										break;
-								}
-							}
-						}
-					} elseif(isset($searchlocation)){
+					if(isset($searchlocation)){
 						switch($searchlocation){
-							case 'END':
-								$searching = ' LIKE "%' . $this->db->escape($searchname) . '" ';
-								$sql .= $this->sqlwhere($searchfield, $searching, $operator);
-								break;
-							case 'START':
-								$searching = ' LIKE "' . $this->db->escape($searchname) . '%" ';
-								$sql .= $this->sqlwhere($searchfield, $searching, $operator);
-								break;
-							case 'IN':
-								$searchname = str_replace(array('\_', '\%'), array('_', '%'), $searchname);
-								$searching = ' IN ("' . implode('","', array_map('trim', explode(',', $searchname))) . '") ';
-								$sql .= $this->sqlwhere($searchfield, $searching, $operator);
-								break;
 							case 'IS':
-								$searchname = str_replace(array('\_', '\%'), array('_', '%'), $searchname);
-								$searching = '="' . $this->db->escape($searchname) . '" ';
+								$searching = ' BETWEEN ' . $timestampStart . ' AND ' . $timestampEnd . ' ';
 								$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 								break;
 							case 'LO':
-								$searching = ' < "' . $this->db->escape($searchname) . '" ';
+								$searching = ' < "' . $timestampStart . '" ';
 								$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 								break;
 							case 'LEQ':
-								$searching = ' <= "' . $this->db->escape($searchname) . '" ';
+								$searching = ' <= "' . $timestampEnd . '" ';
 								$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 								break;
 							case 'HI':
-								$searching = ' > "' . $this->db->escape($searchname) . '" ';
+								$searching = ' > "' . $timestampEnd . '" ';
 								$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 								break;
 							case 'HEQ':
-								$searching = ' >= "' . $this->db->escape($searchname) . '" ';
-								$sql .= $this->sqlwhere($searchfield, $searching, $operator);
-								break;
-							default :
-								$searching = ' LIKE "%' . $this->db->escape($searchname) . '%" ';
+								$searching = ' >= "' . $timestampStart . '" ';
 								$sql .= $this->sqlwhere($searchfield, $searching, $operator);
 								break;
 						}
 					}
 				}
+			} elseif(isset($searchlocation)){
+				switch($searchlocation){
+					case 'END':
+						$searching = ' LIKE "%' . $this->db->escape($searchname) . '" ';
+						$sql .= $this->sqlwhere($searchfield, $searching, $operator);
+						break;
+					case 'START':
+						$searching = ' LIKE "' . $this->db->escape($searchname) . '%" ';
+						$sql .= $this->sqlwhere($searchfield, $searching, $operator);
+						break;
+					case 'IN':
+						$searchname = str_replace(array('\_', '\%'), array('_', '%'), $searchname);
+						$searching = ' IN ("' . implode('","', array_map('trim', explode(',', $searchname))) . '") ';
+						$sql .= $this->sqlwhere($searchfield, $searching, $operator);
+						break;
+					case 'IS':
+						$searchname = str_replace(array('\_', '\%'), array('_', '%'), $searchname);
+						$searching = '="' . $this->db->escape($searchname) . '" ';
+						$sql .= $this->sqlwhere($searchfield, $searching, $operator);
+						break;
+					case 'LO':
+						$searching = ' < "' . $this->db->escape($searchname) . '" ';
+						$sql .= $this->sqlwhere($searchfield, $searching, $operator);
+						break;
+					case 'LEQ':
+						$searching = ' <= "' . $this->db->escape($searchname) . '" ';
+						$sql .= $this->sqlwhere($searchfield, $searching, $operator);
+						break;
+					case 'HI':
+						$searching = ' > "' . $this->db->escape($searchname) . '" ';
+						$sql .= $this->sqlwhere($searchfield, $searching, $operator);
+						break;
+					case 'HEQ':
+						$searching = ' >= "' . $this->db->escape($searchname) . '" ';
+						$sql .= $this->sqlwhere($searchfield, $searching, $operator);
+						break;
+					default :
+						$searching = ' LIKE "%' . $this->db->escape($searchname) . '%" ';
+						$sql .= $this->sqlwhere($searchfield, $searching, $operator);
+						break;
+				}
 			}
+			//found col, return
+			return $sql;
 		}
 
-		return $sql;
+		return '';
 	}
 
 	static function ofFolderAndChildsOnly($folderID, $table){//move this to view class; or verse visa

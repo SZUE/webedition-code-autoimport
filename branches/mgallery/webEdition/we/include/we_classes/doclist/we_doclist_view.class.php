@@ -75,7 +75,6 @@ WE().consts.weSearch= {
 };
 WE().consts.g_l.weSearch = {
 	publish_docs:"' . g_l('searchtool', '[publish_docs]') . '",
-	noTempTableRightsSearch: "' . g_l('searchtool', '[noTempTableRightsSearch]') . '",
 	nothingCheckedAdv: \'' . g_l('searchtool', '[nothingCheckedAdv]') . '\',
 	nothingCheckedTmplDoc: \'' . g_l('searchtool', '[nothingCheckedTmplDoc]') . '\',
 	buttonSelectValue: "' . g_l('button', '[select][value]') . '",
@@ -84,7 +83,6 @@ WE().consts.g_l.weSearch = {
 	searchtool__notChecked: "' . g_l('searchtool', '[notChecked]') . '",
 	searchtool__publishOK: "' . g_l('searchtool', '[publishOK]') . '"
 };
-
 ');
 	}
 

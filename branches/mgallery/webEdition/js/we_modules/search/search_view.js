@@ -26,17 +26,6 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-WE().consts.g_l.weSearch = {
-	noTempTableRightsSearch: '',
-	nothingCheckedAdv: '',
-	nothingCheckedTmplDoc: '',
-	buttonSelectValue: '',
-	versionsResetAllVersionsOK: '',
-	versionsNotChecked: '',
-	searchtool__notChecked: '',
-	searchtool__publishOK: ''
-};
-
 WE().consts.weSearch = {
 	SEARCH_DOCS: '',
 	SEARCH_TMPL: '',
@@ -805,7 +794,6 @@ weSearch = {
 			case 'ModDate':
 				document.getElementById('search' + this.conf.whichsearch + '[' + rowNr + ']').value = '';
 				break;
-				//|| value =="allModsIn" || value =="MasterTemplateID" || value=="ParentIDTmpl" || value=="ParentIDObj" || value=="ParentIDDoc" || value=="temp_template_id" || value=="ContentType" || value=="temp_category" || value=="Status" || value=="Speicherart" || value=="Published" || value=="CreationDate" || value=="ModDate") {
 			default:
 				document.getElementById('search' + this.conf.whichsearch + '[' + rowNr + ']').value = setValue;
 		}

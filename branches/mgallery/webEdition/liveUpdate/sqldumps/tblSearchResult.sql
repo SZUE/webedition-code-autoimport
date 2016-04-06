@@ -24,7 +24,7 @@ CREATE TABLE ###TBLPREFIX###tblSearchResult (
 	IsUsed TINYINT unsigned NOT NULL,
 	remTable VARCHAR(32) NOT NULL,
 	remCT VARCHAR(32) NOT NULL,
-	remClass BIGINT unsigned NOT NULL,
+	remClass MEDIUMINT unsigned NOT NULL,
 	PRIMARY KEY (UID,docTable,docID)
 )ENGINE=MEMORY;
 

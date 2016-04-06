@@ -1085,7 +1085,7 @@ class we_document extends we_root{
 	}
 
 	static function getHrefByArray(array $hrefArr){
-		return ($hrefArr['extPath'] && empty($hrefArr['int'])) ? $hrefArr['extPath'] : (isset($hrefArr['intID']) ? id_to_path($hrefArr['intID']) : '');
+		return (!empty($hrefArr['extPath']) && empty($hrefArr['int'])) ? $hrefArr['extPath'] : (isset($hrefArr['intID']) ? id_to_path($hrefArr['intID']) : '');
 	}
 
 	function getLinkHref($link, $parentID, $path, we_database_base $db = null, $hidedirindex = false, $objectseourls = false){
