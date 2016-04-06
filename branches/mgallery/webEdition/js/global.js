@@ -28,7 +28,7 @@
 
 /**This file is intended to be a global file for many js functions in WE*/
 // this function is universal function for all messages in webEdition
-function WE() {
+function WE(retBool) {
 	if (top === null || top === undefined) {
 		throw "webedition (top) not found";
 	}
@@ -46,10 +46,15 @@ function WE() {
 				return cur.top.WebEdition;
 			}
 		} else {
+			if (retBool) {
+				return false;
+			}
 			throw "WE not found (1)";
 		}
 	}
-
+	if (retBool) {
+		return false;
+	}
 	throw "webedition (final) not found";
 }
 
@@ -64,27 +69,23 @@ function we_showMessage(message, prio, win) {
 
 function initWE() {
 //make some assignments to all WE documents
-	try {
-		if (WE()) {
-			try {
-				window.onerror = WE().handler.errorHandler;
-				document.addEventListener('keydown', function (evt) {
-					WE().handler.dealWithKeyboardShortCut(evt, window);
-				});
-				document.addEventListener('drop', function (evt) {
-					evt.stopPropagation();
-					evt.preventDefault();
-				});
-				document.addEventListener('dragover', function (evt) {
-					evt.preventDefault();
-				});
-			} catch (e) {
-				console.log('unable to add listeners');
-			}
-		} else {
-			//console.log('error handler possibly not attached');
+	if (WE(true)) {
+		try {
+			window.onerror = WE().handler.errorHandler;
+			document.addEventListener('keydown', function (evt) {
+				WE().handler.dealWithKeyboardShortCut(evt, window);
+			});
+			document.addEventListener('drop', function (evt) {
+				evt.stopPropagation();
+				evt.preventDefault();
+			});
+			document.addEventListener('dragover', function (evt) {
+				evt.preventDefault();
+			});
+		} catch (e) {
+			console.log('unable to add listeners');
 		}
-	} catch (e) {
-		//no WE present now
+	} else {
+		//console.log('error handler possibly not attached');
 	}
 }
