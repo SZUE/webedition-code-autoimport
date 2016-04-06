@@ -50,7 +50,7 @@ abstract class we_base_constants{
 	const WE_EDITPAGE_VALIDATION = 10;
 	const WE_EDITPAGE_VARIANTS = 11;
 	const WE_EDITPAGE_PREVIEW_TEMPLATE = 12;
-	//const WE_EDITPAGE_CFWORKSPACE = 13;unused
+	const WE_EDITPAGE_CFWORKSPACE = 13;//unused
 	const WE_EDITPAGE_WEBUSER = 14;
 	const WE_EDITPAGE_IMAGEEDIT = 15;
 	const WE_EDITPAGE_DOCLIST = 16;

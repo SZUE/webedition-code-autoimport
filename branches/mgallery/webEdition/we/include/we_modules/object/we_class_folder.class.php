@@ -39,7 +39,7 @@ class we_class_folder extends we_folder{
 		$this->IsClassFolder = 1;
 		array_push($this->persistent_slots, 'searchclass', 'TriggerID', 'TableID');
 		if(isWE()){
-			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_FIELDS, we_base_constants::WE_EDITPAGE_INFO);
+			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES,  we_base_constants::WE_EDITPAGE_CFWORKSPACE, we_base_constants::WE_EDITPAGE_FIELDS, we_base_constants::WE_EDITPAGE_INFO);
 		}
 		$this->ContentType = we_base_ContentTypes::FOLDER;
 	}
@@ -160,8 +160,8 @@ class we_class_folder extends we_folder{
 				return 'we_editors/we_editor_properties.inc.php';
 			case we_base_constants::WE_EDITPAGE_INFO:
 				return 'we_editors/we_editor_info.inc.php';
-			/* 			case we_base_constants::WE_EDITPAGE_CFWORKSPACE:
-			  return 'we_modules/object/we_classFolder_properties.inc.php'; */
+			case we_base_constants::WE_EDITPAGE_CFWORKSPACE:
+				return 'we_modules/object/we_classFolder_properties.inc.php';
 			case we_base_constants::WE_EDITPAGE_FIELDS:
 				return 'we_modules/object/we_classFolder_fields.inc.php';
 			case we_base_constants::WE_EDITPAGE_WEBUSER:
@@ -224,14 +224,16 @@ class we_class_folder extends we_folder{
 				'1 ' . $this->searchclass->searchfor($this->searchclass->searchname, $this->searchclass->searchfield, $this->searchclass->searchlocation, OBJECT_X_TABLE . $this->TableID, -1, 0, "", 0) . $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID) :
 				'1' . $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID));
 
-		$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID . ' JOIN ' . OBJECT_FILES_TABLE . ' ON ' . OBJECT_X_TABLE . $this->TableID . '.OF_ID = ' . OBJECT_FILES_TABLE . '.ID');
-		$this->searchclass->setwhere($where . ' AND ' . OBJECT_X_TABLE . $this->TableID . '.OF_PATH LIKE "' . $this->Path . '/%" AND ' . OBJECT_X_TABLE . $this->TableID . '.OF_ID!=0');
+		//$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID . ' JOIN ' . OBJECT_FILES_TABLE . ' ON ' . OBJECT_X_TABLE . $this->TableID . '.OF_ID = ' . OBJECT_FILES_TABLE . '.ID');
+		//$this->searchclass->setwhere($where . ' AND ' . OBJECT_X_TABLE . $this->TableID . '.OF_PATH LIKE "' . $this->Path . '/%" AND ' . OBJECT_X_TABLE . $this->TableID . '.OF_ID!=0');
 
+		$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID);
+		$this->searchclass->setwhere($where . ' AND OF_PATH LIKE "' . $this->Path . '/%" AND OF_ID!=0 ');
 		$foundItems = $this->searchclass->countitems();
 
-
+		$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID . ' JOIN ' . OBJECT_FILES_TABLE . ' ON ' . OBJECT_X_TABLE . $this->TableID . '.OF_ID = ' . OBJECT_FILES_TABLE . '.ID');
+		$this->searchclass->setwhere($where . ' AND ' . OBJECT_X_TABLE . $this->TableID . '.OF_PATH LIKE "' . $this->Path . '/%" AND ' . OBJECT_X_TABLE . $this->TableID . '.OF_ID!=0');
 		$this->searchclass->searchquery($where . ' AND ' . OBJECT_X_TABLE . $this->TableID . '.OF_PATH LIKE "' . $this->Path . '/%" AND ' . OBJECT_X_TABLE . $this->TableID . '.OF_ID!=0 AND ' . OBJECT_X_TABLE . $this->TableID . '.OF_ID = ' . OBJECT_FILES_TABLE . '.ID', OBJECT_X_TABLE . $this->TableID . '.OF_ID, ' . OBJECT_X_TABLE . $this->TableID . '.OF_Text, ' . OBJECT_X_TABLE . $this->TableID . '.OF_ID, ' . OBJECT_X_TABLE . $this->TableID . '.OF_Path, ' . OBJECT_X_TABLE . $this->TableID . '.OF_ParentID, ' . OBJECT_X_TABLE . $this->TableID . '.OF_Workspaces, ' . OBJECT_X_TABLE . $this->TableID . '.OF_ExtraWorkspaces, ' . OBJECT_X_TABLE . $this->TableID . '.OF_ExtraWorkspacesSelected, ' . OBJECT_X_TABLE . $this->TableID . '.OF_Published, ' . OBJECT_X_TABLE . $this->TableID . '.OF_IsSearchable, ' . OBJECT_X_TABLE . $this->TableID . '.OF_Charset, ' . OBJECT_X_TABLE . $this->TableID . '.OF_Language, ' . OBJECT_X_TABLE . $this->TableID . '.OF_Url, ' . OBJECT_X_TABLE . $this->TableID . '.OF_TriggerID, ' . OBJECT_FILES_TABLE . '.ModDate');
-
 
 		$content = array();
 		$foo = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $this->TableID, "", $this->DB_WE));
