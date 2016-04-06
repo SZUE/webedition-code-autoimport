@@ -231,7 +231,7 @@ class we_class_folder extends we_folder{
 
 		$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID . ' of JOIN ' . OBJECT_FILES_TABLE . ' o ON of.OF_ID = o.ID');
 		$this->searchclass->setwhere($where . ' AND o.ID!=0 AND o.Path LIKE "' . $this->Path . '/%" ' . $whereRestrictOwners);
-		$this->searchclass->searchquery($where, 'o.ID, o.Text, o.Path, o.ParentID, o.Workspaces, o.ExtraWorkspaces, o.ExtraWorkspacesSelected, o.Published, o.IsSearchable, o.Charset, o.Language, o.Url, o.TriggerID, o.ModDate');
+		$this->searchclass->searchquery($where, 'o.ID, o.Text, o.Path, o.ParentID, o.Workspaces, o.ExtraWorkspaces, o.ExtraWorkspacesSelected, o.Published, o.IsSearchable, o.Charset, o.Language, o.Url, o.TriggerID, o.ModDate, o.WebUserID');
 		$content = array();
 		$foo = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $this->TableID, "", $this->DB_WE));
 
@@ -266,6 +266,7 @@ class we_class_folder extends we_folder{
 					array('dat' => $this->searchclass->f("TriggerID") ? id_to_path($this->searchclass->f("TriggerID")) : ''),
 					array('dat' => $this->searchclass->f("Charset")),
 					array('dat' => $this->searchclass->f("Language")),
+					array('dat' => $this->searchclass->f("WebUserID")),
 				);
 
 				$javascriptAll .= "var flo=document.we_form.elements['weg[" . $this->searchclass->f("ID") . "]'].checked=true;";
@@ -286,6 +287,7 @@ class we_class_folder extends we_folder{
 			array('dat' => '<a href="javascript:setOrder(\'TriggerID\');">' . g_l('modules_objectClassfoldersearch', '[triggerid]') . '</a> ' . $this->getSortImage('TriggerID')),
 			array('dat' => g_l('modules_objectClassfoldersearch', '[charset]')),
 			array('dat' => g_l('modules_objectClassfoldersearch', '[language]')),
+			array('dat' => '<a href="javascript:setOrder(\'WebUserID\');">' . g_l('modules_objectClassfoldersearch', '[WebUser]') . '</a> ' . $this->getSortImage('WebUserID')),
 		);
 
 		return $this->getSearchresult($content, $headline, $foundItems, $javascriptAll);
