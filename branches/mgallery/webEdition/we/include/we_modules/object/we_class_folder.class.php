@@ -229,8 +229,8 @@ class we_class_folder extends we_folder{
 		$foundItems = $this->searchclass->countitems();
 
 		$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID . ' of JOIN ' . OBJECT_FILES_TABLE . ' o ON of.OF_ID = o.ID');
-		$this->searchclass->setwhere($where . ' AND o.ID!=0');
-		$this->searchclass->searchquery($where . ' AND o.Path LIKE "' . $this->Path . '/%"', 'o.ID, o.Text, o.Path, o.ParentID, o.Workspaces, o.ExtraWorkspaces, o.ExtraWorkspacesSelected, o.Published, o.IsSearchable, o.Charset, o.Language, o.Url, o.TriggerID, o.ModDate');
+		$this->searchclass->setwhere($where . ' AND o.ID!=0 AND o.Path LIKE "' . $this->Path . '/%"');
+		$this->searchclass->searchquery($where, 'o.ID, o.Text, o.Path, o.ParentID, o.Workspaces, o.ExtraWorkspaces, o.ExtraWorkspacesSelected, o.Published, o.IsSearchable, o.Charset, o.Language, o.Url, o.TriggerID, o.ModDate');
 		$content = array();
 		$foo = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $this->TableID, "", $this->DB_WE));
 
