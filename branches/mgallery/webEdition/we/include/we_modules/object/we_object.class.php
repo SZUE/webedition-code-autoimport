@@ -90,7 +90,7 @@ class we_object extends we_document{
 		$GLOBALS['we_responseText'] = g_l('weClass', '[response_save_ok]');
 		$GLOBALS['we_responseTextType'] = we_message_reporting::WE_MESSAGE_NOTICE;
 
-		if($this->OldPath && ($this->OldPath != $this->Path)){
+		if(!$this->OldPath || ($this->OldPath != $this->Path)){
 			$fID = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $this->DB_WE->escape($this->OldPath) . '"', '', $this->DB_WE);
 			$pID = intval(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . str_replace("\\", "/", dirname($this->Path)) . '"', '', $this->DB_WE));
 			$cf = new we_class_folder();
@@ -214,11 +214,6 @@ class we_object extends we_document{
 			$q = $indexe = array();
 			$this->wasUpdate = true;
 
-// folder in object schreiben
-			if(!($this->OldPath && ($this->OldPath != $this->Path))){
-				$fold = new we_class_folder();
-				$fold->initByPath($this->getPath(), OBJECT_FILES_TABLE);
-			}
 		}
 
 		$ctable = OBJECT_X_TABLE . intval($this->ID);
