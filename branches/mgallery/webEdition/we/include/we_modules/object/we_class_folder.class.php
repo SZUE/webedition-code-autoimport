@@ -223,13 +223,14 @@ class we_class_folder extends we_folder{
 		$where = (isset($this->searchclass->searchname) ?
 				'1 ' . $this->searchclass->searchfor($this->searchclass->searchname, $this->searchclass->searchfield, $this->searchclass->searchlocation, OBJECT_X_TABLE . $this->TableID, -1, 0, "", 0) . $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID) :
 				'1' . $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID));
+		$whereRestrictOwners = ' AND (o.RestrictOwners=0 OR o.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',o.Owners)) ';
 
 		$this->searchclass->settable(OBJECT_FILES_TABLE);
-		$this->searchclass->setwhere($where . ' AND PATH LIKE "' . $this->Path . '/%" AND ID!=0 ');
+		$this->searchclass->setwhere($where . ' AND PATH LIKE "' . $this->Path . '/%" AND ID!=0 ' . str_replace('o.', '', $whereRestrictOwners));
 		$foundItems = $this->searchclass->countitems();
 
 		$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID . ' of JOIN ' . OBJECT_FILES_TABLE . ' o ON of.OF_ID = o.ID');
-		$this->searchclass->setwhere($where . ' AND o.ID!=0 AND o.Path LIKE "' . $this->Path . '/%"');
+		$this->searchclass->setwhere($where . ' AND o.ID!=0 AND o.Path LIKE "' . $this->Path . '/%" ' . $whereRestrictOwners);
 		$this->searchclass->searchquery($where, 'o.ID, o.Text, o.Path, o.ParentID, o.Workspaces, o.ExtraWorkspaces, o.ExtraWorkspacesSelected, o.Published, o.IsSearchable, o.Charset, o.Language, o.Url, o.TriggerID, o.ModDate');
 		$content = array();
 		$foo = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $this->TableID, "", $this->DB_WE));
@@ -269,8 +270,6 @@ class we_class_folder extends we_folder{
 
 				$javascriptAll .= "var flo=document.we_form.elements['weg[" . $this->searchclass->f("ID") . "]'].checked=true;";
 			}
-		} else {
-			//echo "Leider nichts gefunden!";
 		}
 
 		$headline = array(
@@ -337,13 +336,14 @@ class we_class_folder extends we_folder{
 		} else {
 			$where = '1' . $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID);
 		}
+		$whereRestrictOwners = ' AND (o.RestrictOwners=0 OR o.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',o.Owners)) ';
 
-		$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID);
-		$this->searchclass->setwhere($where . ' AND OF_Path LIKE "' . $this->Path . '/%" AND OF_ID!=0 ');
+		$this->searchclass->settable(OBJECT_FILES_TABLE);
+		$this->searchclass->setwhere($where . ' AND Path LIKE "' . $this->Path . '/%" AND ID!=0 ' . str_replace('o.', '', $whereRestrictOwners));
 		$foundItems = $this->searchclass->countitems();
 
 		$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID . ' of JOIN ' . OBJECT_FILES_TABLE . ' o ON of.OF_ID = o.ID');
-		$this->searchclass->setwhere($where . ' AND o.ID!=0 AND o.Path LIKE "' . $this->Path . '/%"');
+		$this->searchclass->setwhere($where . ' AND o.ID!=0 AND o.Path LIKE "' . $this->Path . '/%" ' . $whereRestrictOwners);
 		$this->searchclass->searchquery($where, 'of.*, o.ID, o.Text, o.Path, o.ParentID, o.Workspaces, o.ExtraWorkspaces, o.ExtraWorkspacesSelected, o.Published, o.IsSearchable, o.ModDate');
 
 		$DefaultValues = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE));
