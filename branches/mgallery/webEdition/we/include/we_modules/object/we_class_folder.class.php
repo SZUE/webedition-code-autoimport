@@ -224,18 +224,13 @@ class we_class_folder extends we_folder{
 				'1 ' . $this->searchclass->searchfor($this->searchclass->searchname, $this->searchclass->searchfield, $this->searchclass->searchlocation, OBJECT_X_TABLE . $this->TableID, -1, 0, "", 0) . $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID) :
 				'1' . $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID));
 
-
-		//$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID . ' JOIN ' . OBJECT_FILES_TABLE . ' ON ' . OBJECT_X_TABLE . $this->TableID . '.OF_ID = ' . OBJECT_FILES_TABLE . '.ID');
-		//$this->searchclass->setwhere($where . ' AND ' . OBJECT_X_TABLE . $this->TableID . '.OF_PATH LIKE "' . $this->Path . '/%" AND ' . OBJECT_X_TABLE . $this->TableID . '.OF_ID!=0');
-
-		$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID);
-		$this->searchclass->setwhere($where . ' AND OF_PATH LIKE "' . $this->Path . '/%" AND OF_ID!=0 ');
+		$this->searchclass->settable(OBJECT_FILES_TABLE);
+		$this->searchclass->setwhere($where . ' AND PATH LIKE "' . $this->Path . '/%" AND ID!=0 ');
 		$foundItems = $this->searchclass->countitems();
 
-		$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID . ' JOIN ' . OBJECT_FILES_TABLE . ' ON ' . OBJECT_X_TABLE . $this->TableID . '.OF_ID = ' . OBJECT_FILES_TABLE . '.ID');
-		$this->searchclass->setwhere($where . ' AND ' . OBJECT_X_TABLE . $this->TableID . '.OF_PATH LIKE "' . $this->Path . '/%" AND ' . OBJECT_X_TABLE . $this->TableID . '.OF_ID!=0');
-		$this->searchclass->searchquery($where . ' AND ' . OBJECT_FILES_TABLE . '.Path LIKE "' . $this->Path . '/%"', OBJECT_FILES_TABLE . '.ID, ' . OBJECT_FILES_TABLE . '.Text,' . OBJECT_FILES_TABLE . '.Path, ' . OBJECT_FILES_TABLE . '.ParentID, ' . OBJECT_FILES_TABLE . '.Workspaces, ' . OBJECT_FILES_TABLE . '.ExtraWorkspaces, ' . OBJECT_FILES_TABLE . '.ExtraWorkspacesSelected, ' . OBJECT_FILES_TABLE . '.Published, ' . OBJECT_FILES_TABLE . '.IsSearchable, ' . OBJECT_FILES_TABLE . '.Charset, ' . OBJECT_FILES_TABLE . '.Language, ' . OBJECT_FILES_TABLE . '.Url, ' . OBJECT_FILES_TABLE . '.TriggerID, ' . OBJECT_FILES_TABLE . '.ModDate');
-
+		$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID . ' of JOIN ' . OBJECT_FILES_TABLE . ' o ON of.OF_ID = o.ID');
+		$this->searchclass->setwhere($where . ' AND o.ID!=0');
+		$this->searchclass->searchquery($where . ' AND o.Path LIKE "' . $this->Path . '/%"', 'o.ID, o.Text, o.Path, o.ParentID, o.Workspaces, o.ExtraWorkspaces, o.ExtraWorkspacesSelected, o.Published, o.IsSearchable, o.Charset, o.Language, o.Url, o.TriggerID, o.ModDate');
 		$content = array();
 		$foo = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $this->TableID, "", $this->DB_WE));
 
@@ -243,8 +238,8 @@ class we_class_folder extends we_folder{
 
 		$javascriptAll = "";
 		if($foundItems){
-
 			while($this->searchclass->next_record()){
+				$stateclass = !$this->searchclass->f("Published") ? 'notpublished' : ($this->searchclass->f("ModDate") > $this->searchclass->f("Published") ? 'changed' : '');
 				$content[] = array(
 					array(
 						"align" => "center",
@@ -254,14 +249,14 @@ class we_class_folder extends we_folder{
 					array(
 						"align" => "center",
 						"height" => 35,
-						'dat' => ($this->searchclass->f("Published")/* && (((we_users_util::in_workspace($this->WorkspaceID, $this->searchclass->f("OF_Workspaces")) && $this->searchclass->f("OF_Workspaces") != "") || (we_users_util::in_workspace($this->WorkspaceID, $this->searchclass->f("OF_ExtraWorkspacesSelected")) && $this->searchclass->f("OF_ExtraWorkspacesSelected") != "" ) ) || ($this->searchclass->f("OF_Workspaces") === "" && $ok))*/ ?
-							'<i class="fa fa-lg fa-circle" style="color:#006DB8;"></i>' :
-							'<i class="fa fa-lg fa-circle" style="color:#E7E7E7;"></i>')),
+						'dat' => ((((we_users_util::in_workspace($this->WorkspaceID, $this->searchclass->f("Workspaces")) && $this->searchclass->f("Workspaces") != "") || (we_users_util::in_workspace($this->WorkspaceID, $this->searchclass->f("ExtraWorkspacesSelected")) && $this->searchclass->f("ExtraWorkspacesSelected") != "" ) ) || ($this->searchclass->f("Workspaces") === "" && $ok)) ?
+							'<i class="fa fa-lg fa-circle" style="color:#006DB8;" title="' . g_l('modules_objectClassfoldersearch', '[visible_in_ws]') . '"></i>' :
+							'<i class="fa fa-lg fa-circle" style="color:#E7E7E7;" title="' . g_l('modules_objectClassfoldersearch', '[not_visible_in_ws]') . '"></i>')),
 					array('dat' => ($this->searchclass->f("IsSearchable") ?
 							'<i class="fa fa-lg fa-circle" style="color:#006DB8;" title="' . g_l('modules_objectClassfoldersearch', '[issearchable]') . '"></i>' :
 							'<i class="fa fa-lg fa-circle" style="color:#E7E7E7;" title="' . g_l('modules_objectClassfoldersearch', '[isnotsearchable]') . '"></i>')),
+					array('dat' => '<a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("ID") . ',\'objectFile\');" class="middlefont' . ($stateclass ? ' ' . $stateclass : '') . '" title="' . $this->searchclass->f("Path") . '">' . we_base_util::shortenPath($this->searchclass->f("Text"), $we_obectPathLength) . '</a>'),
 					array('dat' => '<a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("ID") . ',\'objectFile\');" class="middlefont" title="' . $this->searchclass->f("Path") . '">' . $this->searchclass->f("ID") . '</a>'),
-					array('dat' => '<a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("ID") . ',\'objectFile\');" class="middlefont" title="' . $this->searchclass->f("Path") . '">' . we_base_util::shortenPath($this->searchclass->f("Text"), $we_obectPathLength) . '</a>'),
 					array('dat' => $this->searchclass->getWorkspaces(makeArrayFromCSV($this->searchclass->f("Workspaces")), $we_wsLength)),
 					array('dat' => $this->searchclass->getExtraWorkspace(makeArrayFromCSV($this->searchclass->f("ExtraWorkspaces")), $we_extraWsLength, $this->TableID, $userWSArray)),
 					array('dat' => '<nobr>' . ($this->searchclass->f("Published") ? date(g_l('date', '[format][default]'), $this->searchclass->f("Published")) : "-") . '</nobr>'),
@@ -282,8 +277,8 @@ class we_class_folder extends we_folder{
 			array('dat' => ""),
 			array('dat' => g_l('modules_objectClassfoldersearch', '[zeige]')),
 			array('dat' => ""),
-			array('dat' => '<a href="javascript:setOrder(\'ID\');">' . g_l('modules_objectClassfoldersearch', '[ID]') . '</a> ' . $this->getSortImage('ID')),
 			array('dat' => '<a href="javascript:setOrder(\'Path\');">' . g_l('modules_objectClassfoldersearch', '[Objekt]') . '</a> ' . $this->getSortImage('Path')),
+			array('dat' => '<a href="javascript:setOrder(\'ID\');">' . g_l('modules_objectClassfoldersearch', '[ID]') . '</a> ' . $this->getSortImage('ID')),
 			array('dat' => g_l('modules_objectClassfoldersearch', '[Arbeitsbereiche]')),
 			array('dat' => g_l('modules_objectClassfoldersearch', '[xtraArbeitsbereiche]')),
 			array('dat' => '<a href="javascript:setOrder(\'Published\');">' . g_l('modules_objectClassfoldersearch', '[Veroeffentlicht]') . '</a> ' . $this->getSortImage('Published')),
@@ -358,8 +353,8 @@ class we_class_folder extends we_folder{
 			array('dat' => ""),
 			array('dat' => '<table class="default defaultfont"><tr><td>' . g_l('modules_objectClassfoldersearch', '[zeige]') . '</td><td></td></tr></table>'),
 			array('dat' => ''),
-			array('dat' => '<table class="default defaultfont"><tr><td><a href="javascript:setOrder(\'OF_ID\');">' . g_l('modules_objectClassfoldersearch', '[ID]') . '</a></td><td> ' . $this->getSortImage('OF_ID') . '</td></tr></table>'),
 			array('dat' => '<table class="default defaultfont"><tr><td><a href="javascript:setOrder(\'OF_Path\');">' . g_l('modules_objectClassfoldersearch', '[Objekt]') . '</a></td><td> ' . $this->getSortImage('OF_Path') . '</td></tr></table>'),
+			array('dat' => '<table class="default defaultfont"><tr><td><a href="javascript:setOrder(\'OF_ID\');">' . g_l('modules_objectClassfoldersearch', '[ID]') . '</a></td><td> ' . $this->getSortImage('OF_ID') . '</td></tr></table>'),
 		);
 
 		$content = array();
@@ -398,7 +393,7 @@ class we_class_folder extends we_folder{
 
 					$count = $i;
 				}
-
+//t_e("md", $this->searchclass->f("ModDate"));
 				$javascriptAll .= "var flo=document.we_form.elements['weg[" . $this->searchclass->f("OF_ID") . "]'].checked=true;";
 				$content[$f] = array(
 					array(
@@ -411,8 +406,8 @@ class we_class_folder extends we_folder{
 					array(
 						"align" => "center",
 						'dat' => '<i class="fa fa-lg fa-circle" style="color:#' . ($this->searchclass->f("OF_Published")/* && (((we_users_util::in_workspace($this->WorkspaceID, $this->searchclass->f("OF_Workspaces")) && $this->searchclass->f("OF_Workspaces") != "") || (we_users_util::in_workspace($this->WorkspaceID, $this->searchclass->f("OF_ExtraWorkspacesSelected")) && $this->searchclass->f("OF_ExtraWorkspacesSelected") != "" ) ) || ($this->searchclass->f("OF_Workspaces") === "" && $ok))*/ ?
-							'006DB8;" title="' . g_l('modules_objectClassfoldersearch', '[Veroeffentlicht]') . '"' : //blue
-							'E7E7E7;" title="' . g_l('searchtool', '[geparkt]') . '"'//grey
+							'006DB8;" title="' . g_l('modules_objectClassfoldersearch', '[visible_in_ws]') . '"' : //blue
+							'E7E7E7;" title="' . g_l('modules_objectClassfoldersearch', '[not_visible_in_ws]') . '"'//grey
 						) . '></i>'//FIXME: add text as in others shown
 					),
 					array(
@@ -421,8 +416,8 @@ class we_class_folder extends we_folder{
 							'#E7E7E7;" title="' . g_l('modules_objectClassfoldersearch', '[isnotsearchable]')) .
 						'"></i>'
 					),
-					array('dat' => '<a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" class="middlefont" title="' . $this->searchclass->f("OF_Path") . '">' . $this->searchclass->f("OF_ID") . '</a>'),
 					array('dat' => '<a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" class="defaultfont" title="' . $this->searchclass->f("OF_Path") . '">' . we_base_util::shortenPath($this->searchclass->f("OF_Text"), $we_obectPathLength) . '</a>'),
+					array('dat' => '<a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" class="middlefont" title="' . $this->searchclass->f("OF_Path") . '">' . $this->searchclass->f("OF_ID") . '</a>'),
 				);
 				for($i = 0; $i < $count; $i++){
 					switch($type[$i + 5]){
@@ -627,7 +622,7 @@ class we_class_folder extends we_folder{
 		<td style="text-align:right">' . $this->searchclass->getNextPrev($foundItems) . '</td>
 	</tr>
 	</table>' .
-			we_html_tools::htmlDialogBorder3(900, 0, $content, $headline) . '
+			'<div id="scrollContent_DoclistSearch">' . we_html_tools::htmlDialogBorder3(900, 0, $content, $headline) . '</div>
 	<table class="default" style="margin:12px 0px;">
 	<tr>
 		<td style="width:200px;">' . (permissionhandler::hasPerm("DELETE_OBJECTFILE") || permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button('selectAllObjects', "javascript: " . $javascriptAll) : "") . '</td>

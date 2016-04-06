@@ -23,32 +23,32 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-	switch(we_base_request::_(we_base_request::STRING,'do')){
-		case 'delete':
-			$javascript = $we_doc->deleteObjects();
-			break;
-		case 'unpublish':
-			$javascript = $we_doc->publishObjects(false);
-			break;
-		case 'publish':
-			$javascript = $we_doc->publishObjects();
-			break;
-		case 'unsearchable':
-			$javascript = $we_doc->searchableObjects(false);
-			break;
-		case 'searchable':
-			$javascript = $we_doc->searchableObjects();
-			break;
-		case 'copychar':
-			$javascript = $we_doc->copyCharsetfromClass();
-			break;
-		case 'copyws':
-			$javascript = $we_doc->copyWSfromClass();
-			break;
-		case 'copytid':
-			$javascript = $we_doc->copyTIDfromClass();
-			break;
-	}
+switch(we_base_request::_(we_base_request::STRING,'do')){
+	case 'delete':
+		$javascript = $we_doc->deleteObjects();
+		break;
+	case 'unpublish':
+		$javascript = $we_doc->publishObjects(false);
+		break;
+	case 'publish':
+		$javascript = $we_doc->publishObjects();
+		break;
+	case 'unsearchable':
+		$javascript = $we_doc->setObjectProperty('IsSearchable', false);
+		break;
+	case 'searchable':
+		$javascript = $we_doc->setObjectProperty('IsSearchable', true);
+		break;
+	case 'copychar':
+		$javascript = $we_doc->setObjectProperty('Charset');
+		break;
+	case 'copyws':
+		$javascript = $we_doc->setObjectProperty('Workspaces');
+		break;
+	case 'copytid':
+		$javascript = $we_doc->setObjectProperty('TriggerID');
+		break;
+}
 	
 	
 we_html_tools::protect();
