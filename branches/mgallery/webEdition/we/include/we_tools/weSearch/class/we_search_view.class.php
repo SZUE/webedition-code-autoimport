@@ -78,6 +78,7 @@ WE().consts.g_l.weSearch = {
 	no_perms:"' . we_message_reporting::prepareMsgForJS(g_l('tools', '[no_perms]')) . '",
 	confirmDel:"' . g_l('searchtool', '[confirmDel]') . '",
 	nameForSearch:"' . g_l('searchtool', '[nameForSearch]') . '",
+	resetVersionsSearchtool:"' . g_l('versions', '[resetVersionsSearchtool]') . '",
 };') .
 			we_html_element::jsScript(JS_DIR . 'we_modules/search/search_view2.js');
 	}
@@ -607,13 +608,13 @@ WE().consts.weSearch= {
 
 						$content[] = array(
 							array("version" => array($k => "")),
-							array("version" => array($k => "<span style='margin-left:5px;'>" . g_l('versions', '[version]') . " " . $version . "</span> <br/><span style='font-weight:100;color:red;margin-left:10px;'>" . $classNotExistsText . "</span>")),
+							array("version" => array($k => "<span style='margin-left:5px;'>" . g_l('versions', '[version]') . " " . $version . "</span><span style='font-weight:100;color:red;margin-left:10px;'>" . $classNotExistsText . "</span>")),
 							array("version" => array($k => "<div style='margin-bottom:5px;margin-left:5px;float:left;'>" .
-									we_html_forms::radiobutton($ID, 0, "resetVersion[" . $result[$f]['docID'] . "_" . $result[$f]["Table"] . "]", "", false, "defaultfont", "", $resetDisabled) . "</div><div style='float:left;margin-left:30px;'>" . $previewButton . "</div>")),
+									we_html_forms::checkbox($ID, 0, "resetVersion[" . $result[$f]['docID'] . "_" . $result[$f]["Table"] . "]", "", false, "defaultfont", "", $resetDisabled) . "</div><div style='float:left;margin-left:30px;'>" . $previewButton . "</div>")),
 							array("version" => array($k => "<span style='margin-left:5px;'>" . date("d.m.Y", $timestamp) . "</span>")),
 							array("version" => array($k => "")),
 							array("version" => array($k => "<div style='margin-left:5px;'>" .
-									(($result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $result[$f]["ContentType"] == we_base_ContentTypes::HTML || $result[$f]["ContentType"] === we_base_ContentTypes::OBJECT_FILE) ?
+									(in_array($result[$f]["ContentType"], array(we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::HTML, we_base_ContentTypes::OBJECT_FILE)) ?
 										we_html_forms::checkbox($ID, 0, "publishVersion_" . $ID, g_l('versions', '[publishIfReset]'), false, "middlefont", "") :
 										"") .
 									"</div>")),
@@ -914,7 +915,7 @@ WE().consts.weSearch= {
 
 	function getSearchParameterBottom($foundItems, $whichSearch, $table = FILE_TABLE){
 		$resetButton = (permissionhandler::hasPerm('RESET_VERSIONS') && $whichSearch === self::SEARCH_ADV ?
-				we_html_button::create_button('reset', "javascript:.weSearch.resetVersions();", true, 100, 22, "", "") :
+				we_html_button::create_button('reset', "javascript:weSearch.resetVersions();", true, 100, 22, "", "") :
 				'');
 
 		$actionButton = $actionButtonCheckboxAll = '';
@@ -939,15 +940,11 @@ WE().consts.weSearch= {
 		$tbl->setCol(($k = 0), ($c = 0), array('style' => 'font-size:12px;width:12px;'), $actionButtonCheckboxAll);
 		$tbl->setCol($k, ++$c, array('style' => 'font-size:12px;width:125px;'), $actionButton);
 		$tbl->setCol($k, ++$c, array('class' => 'defaultfont lowContrast', 'style' => 'width:48px;height:30px;', 'id' => 'resetBusy' . $whichSearch), '');
-		if(false && $resetButton){
+		if($resetButton){
 			$tbl->setCol($k++, ++$c, array('style' => 'font-size:12px;'), $resetButton);
 			$c = 0;
 		}
-		if(false && $whichSearch !== self::SEARCH_DOCLIST){
-			$tbl->setCol(++$k, ($c = 0));
-			$tbl->setCol($k, ++$c);
-			$tbl->setCol($k, ++$c);
-		}
+
 		$tbl->setCol($k, ++$c, array(), $this::getNextPrev($foundItems, $whichSearch, false));
 
 		return $tbl->getHtml();
