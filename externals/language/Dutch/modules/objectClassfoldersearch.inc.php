@@ -10,6 +10,7 @@ $l_modules_objectClassfoldersearch=array(
 	'Objekt'=>'Object',
 	'Veroeffentlicht'=>'Gepubliceerd',
 	'Verzeichnis'=>'Workspace',
+	'WebUser'=>'Customer',
 	'anzeige'=>'Toon...',
 	'charset'=>'Charset',
 	'copychar'=>'Copy the charset defined in the class to the selected objects',

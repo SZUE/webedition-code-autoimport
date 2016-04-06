@@ -10,6 +10,7 @@ $l_modules_objectClassfoldersearch=array(
 	'Objekt'=>'Objekt',
 	'Veroeffentlicht'=>'Veröffentlicht',
 	'Verzeichnis'=>'Arbeitsbereich',
+	'WebUser'=>'Kunde',
 	'anzeige'=>'Anzeige...',
 	'charset'=>'Zeichensatz',
 	'copychar'=>'Kopiere den in der Klasse definierten Zeichensatz in die ausgewählten Objekte.',
