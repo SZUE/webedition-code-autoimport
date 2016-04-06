@@ -158,6 +158,7 @@ class we_object extends we_document{
 			}
 		}
 
+
 		if(!$this->wasUpdate){
 			$q = array(
 				'OF_ID' => 'BIGINT NOT NULL',
@@ -212,12 +213,13 @@ class we_object extends we_document{
 			$this->DB_WE->query('INSERT INTO ' . $ctable . ' SET OF_ID=0');
 			$q = $indexe = array();
 			$this->wasUpdate = true;
-		}/*
-		  // folder in object schreiben
-		  if(!($this->OldPath && ($this->OldPath != $this->Path))){
-		  $fold = new we_class_folder();
-		  $fold->initByPath($this->getPath(), OBJECT_FILES_TABLE);
-		  } */
+
+// folder in object schreiben
+			if(!($this->OldPath && ($this->OldPath != $this->Path))){
+				$fold = new we_class_folder();
+				$fold->initByPath($this->getPath(), OBJECT_FILES_TABLE);
+			}
+		}
 
 		$ctable = OBJECT_X_TABLE . intval($this->ID);
 		$tableInfo = $this->DB_WE->metadata($ctable);
