@@ -251,7 +251,7 @@ class we_class_folder extends we_folder{
 					array(
 						"align" => "center",
 						"height" => 35,
-						'dat' => ($this->searchclass->f("OF_Published") && (((we_users_util::in_workspace($this->WorkspaceID, $this->searchclass->f("OF_Workspaces")) && $this->searchclass->f("OF_Workspaces") != "") || (we_users_util::in_workspace($this->WorkspaceID, $this->searchclass->f("OF_ExtraWorkspacesSelected")) && $this->searchclass->f("OF_ExtraWorkspacesSelected") != "" ) ) || ($this->searchclass->f("OF_Workspaces") === "" && $ok)) ?
+						'dat' => ($this->searchclass->f("OF_Published")/* && (((we_users_util::in_workspace($this->WorkspaceID, $this->searchclass->f("OF_Workspaces")) && $this->searchclass->f("OF_Workspaces") != "") || (we_users_util::in_workspace($this->WorkspaceID, $this->searchclass->f("OF_ExtraWorkspacesSelected")) && $this->searchclass->f("OF_ExtraWorkspacesSelected") != "" ) ) || ($this->searchclass->f("OF_Workspaces") === "" && $ok))*/ ?
 							'<i class="fa fa-lg fa-circle" style="color:#006DB8;"></i>' :
 							'<i class="fa fa-lg fa-circle" style="color:#E7E7E7;"></i>')),
 					array('dat' => ($this->searchclass->f("OF_IsSearchable") ?
@@ -407,7 +407,7 @@ class we_class_folder extends we_folder{
 						)),
 					array(
 						"align" => "center",
-						'dat' => '<i class="fa fa-lg fa-circle" style="color:#' . ($this->searchclass->f("OF_Published") && (((we_users_util::in_workspace($this->WorkspaceID, $this->searchclass->f("OF_Workspaces")) && $this->searchclass->f("OF_Workspaces") != "") || (we_users_util::in_workspace($this->WorkspaceID, $this->searchclass->f("OF_ExtraWorkspacesSelected")) && $this->searchclass->f("OF_ExtraWorkspacesSelected") != "" ) ) || ($this->searchclass->f("OF_Workspaces") === "" && $ok)) ?
+						'dat' => '<i class="fa fa-lg fa-circle" style="color:#' . ($this->searchclass->f("OF_Published")/* && (((we_users_util::in_workspace($this->WorkspaceID, $this->searchclass->f("OF_Workspaces")) && $this->searchclass->f("OF_Workspaces") != "") || (we_users_util::in_workspace($this->WorkspaceID, $this->searchclass->f("OF_ExtraWorkspacesSelected")) && $this->searchclass->f("OF_ExtraWorkspacesSelected") != "" ) ) || ($this->searchclass->f("OF_Workspaces") === "" && $ok))*/ ?
 							'006DB8;" title="' . g_l('modules_objectClassfoldersearch', '[Veroeffentlicht]') . '"' : //blue
 							'E7E7E7;" title="' . g_l('searchtool', '[geparkt]') . '"'//grey
 						) . '></i>'//FIXME: add text as in others shown
@@ -829,82 +829,46 @@ for ( frameId in _usedEditors ) {
 }";
 	}
 
-	function copyWSfromClass(){
-		$this->setClassProp(); //4076
-		$foo = getHash('SELECT Workspaces,Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
-
-		$weg = array_filter(we_base_request::_(we_base_request::BOOL, 'weg', array()));
-		foreach(array_keys($weg) as $ofid){
-			if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $this->DB_WE)){
-				$obj = new we_objectFile();
-				$obj->initByID($ofid, OBJECT_FILES_TABLE);
-				$obj->getContentDataFromTemporaryDocs($ofid);
-				$obj->Workspaces = $foo["Workspaces"];
-				$obj->Templates = $foo["Templates"];
-				$obj->ExtraTemplates = "";
-				$obj->ExtraWorkspaces = "";
-				$obj->ExtraWorkspacesSelected = "";
-				$oldModDate = $obj->ModDate;
-				$obj->we_save(false, true);
-				if($obj->Published != 0 && $obj->Published == $oldModDate){
-					$obj->we_publish(false, true, true);
-				}
-			}
-		}
-		return 'top.drawTree();';
-	}
-
-	function copyCharsetfromClass(){
+	function setObjectProperty($property = '', $value = false){
 		$this->setClassProp();
-		$fooo = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $this->TableID, '', $this->DB_WE));
-		$Charset = (isset($fooo["elements"]["Charset"]['dat']) ? $fooo["elements"]["Charset"]['dat'] : DEFAULT_CHARSET );
+		$IDs = array_map('intval', array_keys(array_filter(we_base_request::_(we_base_request::BOOL, 'weg', array()))));
 
-		$weg = array_filter(we_base_request::_(we_base_request::BOOL, 'weg', array()));
-
-		foreach(array_keys($weg) as $ofid){
-			if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $this->DB_WE)){
-				$obj = new we_objectFile();
-				$obj->initByID($ofid, OBJECT_FILES_TABLE);
-				$obj->getContentDataFromTemporaryDocs($ofid);
-				$obj->Charset = $Charset;
-				$oldModDate = $obj->ModDate;
-				$obj->we_save(false, true);
-				if($obj->Published != 0 && $obj->Published == $oldModDate){
-					$obj->we_publish(false, true, true);
-				}
+		if(count($IDs)){
+			switch($property){
+				case 'IsSearchable':
+					$value = intval($value);
+					$set = array($property => $value, 'OF_' . $property => $value);
+					break;
+				case 'TriggerID':
+					$value = intval(f('SELECT DefaultTriggerID FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE));
+					$set = array($property => $value, 'OF_' . $property => $value);
+					break;
+				case 'Charset':
+					$class = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $this->TableID, '', $this->DB_WE));
+					$value = (isset($class["elements"]["Charset"]['dat']) ? $class["elements"]["Charset"]['dat'] : DEFAULT_CHARSET );
+					$set = array($property => $value, 'OF_' . $property => $value);
+					break;
+				case 'Workspaces':
+					$class = getHash('SELECT Workspaces,Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
+					$set = array(
+						'Workspaces' => $class["Workspaces"],
+						'ExtraWorkspaces' => '',
+						'ExtraWorkspacesSelected' => '',
+						'Templates' => $class["Templates"],
+						'ExtraTemplates' => '',
+						'OF_Workspaces' => $class["Workspaces"],
+						'OF_ExtraWorkspaces' => '',
+						'OF_ExtraWorkspacesSelected' => '',
+						'OF_Templates' => $class["Templates"],
+						'OF_ExtraTemplates' => '',
+					);
+					break;
+				default:
+					return '';
 			}
-		}
-		return '';
-	}
 
-	function copyTIDfromClass(){
-		$this->setClassProp();
-		$DefaultTriggerID = f('SELECT DefaultTriggerID FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE);
-
-		$weg = array_filter(we_base_request::_(we_base_request::BOOL, 'weg', array()));
-		foreach(array_keys($weg) as $ofid){
-			if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $this->DB_WE)){
-				$obj = new we_objectFile();
-				$obj->initByID($ofid, OBJECT_FILES_TABLE);
-				$obj->getContentDataFromTemporaryDocs($ofid);
-				$obj->TriggerID = $DefaultTriggerID;
-				$oldModDate = $obj->ModDate;
-				$obj->we_save(false, true);
-				if($obj->Published != 0 && $obj->Published == $oldModDate){
-					$obj->we_publish(false, true, true);
-				}
-			}
-		}
-		return '';
-	}
-
-	function searchableObjects($searchable = true){
-		$this->setClassProp();
-
-		$ids = array_map('intval', array_keys(array_filter(we_base_request::_(we_base_request::BOOL, 'weg', array()))));
-		if(count($ids)){
 			$whereRestrictOwners = ' AND (o.RestrictOwners=0 OR o.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',o.Owners))';
-			$this->DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . ' o JOIN ' . OBJECT_X_TABLE . $this->TableID . ' of ON o.ID = of.OF_ID SET o.IsSearchable=' . intval($searchable) . ',of.OF_IsSearchable=' . intval($searchable) . ' WHERE o.ID IN(' . implode(',', $ids) . ') AND o.IsFolder=0' . $whereRestrictOwners);
+			$this->DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . ' o JOIN ' . OBJECT_X_TABLE . intval($this->TableID) . ' of ON o.ID = of.OF_ID SET ' . we_database_base::arraySetter($set) . ' WHERE o.ID IN(' . implode(',', $IDs) . ') AND o.IsFolder=0' . $whereRestrictOwners);
 		}
 
 		return '';
