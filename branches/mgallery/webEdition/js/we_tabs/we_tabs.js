@@ -52,7 +52,7 @@ WE().layout.we_tabs.prototype = {
 	allowed_change_edit_page: function () {
 		try {
 			var contentEditor = WE().layout.weEditorFrameController.getVisibleEditorFrame();
-			if (contentEditor && contentEditor.contentWindow.fields_are_valid) {
+			if (contentEditor && contentEditor.contentWindow && contentEditor.contentWindow.fields_are_valid) {
 				return contentEditor.contentWindow.fields_are_valid();
 			}
 		} catch (e) {

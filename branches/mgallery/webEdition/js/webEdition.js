@@ -243,16 +243,13 @@ function we_sbmtFrm(target, url, source) {
 		source = WE().layout.weEditorFrameController.getVisibleEditorFrame();
 	}
 
-	try {
-		if (source) {
-			if (source.we_submitForm) {
-				return source.we_submitForm(target.name, url);
-			}
-			if (source.contentWindow.we_submitForm) {
-				return source.contentWindow.we_submitForm(target.name, url);
-			}
+	if (source) {
+		if (source.we_submitForm) {
+			return source.we_submitForm(target.name, url);
 		}
-	} catch (e) {
+		if (source.contentWindow && source.contentWindow.we_submitForm) {
+			return source.contentWindow.we_submitForm(target.name, url);
+		}
 	}
 	return false;
 
