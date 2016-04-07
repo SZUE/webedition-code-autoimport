@@ -192,24 +192,6 @@ function tinyMCECallRegisterDialog(win, action) {
 	}
 }
 
-function weWysiwygSetHiddenTextSync() {
-	weWysiwygSetHiddenText();
-	setTimeout(weWysiwygSetHiddenTextSync, 500);
-}
-
-function weWysiwygSetHiddenText(arg) {
-	try {
-		if (weWysiwygIsIntialized) {
-			for (var i = 0; i < we_wysiwygs.length; i++) {
-				we_wysiwygs[i].setHiddenText(arg);
-			}
-		} else {
-		}
-	} catch (e) {
-		// Nothing
-	}
-}
-
 function tinyEdOnNodeChange(ed, cm, n) {
 	var pc, tmp,
 					td = ed.dom.getParent(n, "td");

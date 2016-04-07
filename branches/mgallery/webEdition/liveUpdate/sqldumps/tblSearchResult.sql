@@ -30,3 +30,5 @@ CREATE TABLE ###TBLPREFIX###tblSearchResult (
 
 /* query separator */
 TRUNCATE ###TBLPREFIX###tblSearchResult;
+/* query separator */
+DROP TABLE IF EXISTS SEARCH_TEMP_TABLE;

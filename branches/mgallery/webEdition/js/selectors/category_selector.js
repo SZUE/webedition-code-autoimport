@@ -305,7 +305,6 @@ function weonclick(e) {
 	}
 }
 function saveOnKeyBoard() {
-	top.fsvalues.weWysiwygSetHiddenText();
 	top.fsvalues.we_checkName();
 	return true;
 }

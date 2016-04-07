@@ -130,11 +130,6 @@ function we_submitForm(target, url) {
 	if (target && url) {
 		f.target = target;
 		f.method = "post";
-		if (self.weWysiwygSetHiddenText && _EditorFrame.getEditorDidSetHiddenText() === false) {
-			weWysiwygSetHiddenText();
-		} else if (_EditorFrame.getEditorDidSetHiddenText()) {
-			_EditorFrame.setEditorDidSetHiddenText(false);
-		}
 	}
 	f.submit();
 }
