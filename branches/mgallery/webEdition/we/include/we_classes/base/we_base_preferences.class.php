@@ -207,7 +207,7 @@ class we_base_preferences{
 	 *
 	 * @return         string
 	 */
-	public function getUserPref($name){
+	public static function getUserPref($name){
 		return (isset($_SESSION['prefs'][$name]) ?
 						$_SESSION['prefs'][$name] :
 						(defined($name) ? constant($name) : ''));
