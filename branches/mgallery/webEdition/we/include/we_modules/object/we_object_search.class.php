@@ -141,48 +141,50 @@ function toggleShowVisible(c) {
 		}
 	}
 
-	function getExtraWorkspace($exws, $we_extraWsLength, $id, $userWSArray){
+	function getExtraWorkspace($exws, $len, $id, $userWSArray){
 		if(empty($exws)){
 			return "-";
 		}
 		$isAdmin = permissionhandler::hasPerm("ADMINISTRATOR");
 		$out = '<table class="default">';
-		for($i = 0; $i < count($exws); $i++){
-			if($exws[$i] != ""){
+		foreach($exws as $cur){
+			if($cur == ""){
+				continue;
+			}
 
-				$checkbox = ($isAdmin || we_users_util::in_workspace($exws[$i], $userWSArray) ?
-						'<a href="javascript:we_cmd(\'object_toggleExtraWorkspace\',\'' . $GLOBALS["we_transaction"] . '\',\'' . $this->db->f("ID") . '\',\'' . $exws[$i] . '\',\'' . $id . '\')"><i name="check_' . $id . '_' . $this->db->f("ID") . '" class="fa fa-' . (strstr($this->db->f("OF_ExtraWorkspacesSelected"), "," . $exws[$i] . ",") ? 'check-' : '') . 'square-o wecheckIcon"></i></a>' :
-						'<i name="check_' . $id . '_' . $this->db->f("ID") . '" class="fa fa-' . (strstr($this->db->f("OF_ExtraWorkspacesSelected"), "," . $exws[$i] . ",") ? 'check-' : '') . 'square-o wecheckIcon"></i>'
-					);
+			$checkbox = ($isAdmin || we_users_util::in_workspace($cur, $userWSArray) ?
+					'<a href="javascript:we_cmd(\'object_toggleExtraWorkspace\',\'' . $GLOBALS["we_transaction"] . '\',\'' . $this->db->f("ID") . '\',\'' . $cur . '\',\'' . $id . '\')"><i name="check_' . $id . '_' . $this->db->f("ID") . '" class="fa fa-' . (strstr($this->db->f("OF_ExtraWorkspacesSelected"), "," . $cur . ",") ? 'check-' : '') . 'square-o wecheckIcon"></i></a>' :
+					'<i name="check_' . $id . '_' . $this->db->f("ID") . '" class="fa fa-' . (strstr($this->db->f("OF_ExtraWorkspacesSelected"), "," . $cur . ",") ? 'check-' : '') . 'square-o wecheckIcon"></i>'
+				);
 
-				$p = id_to_path($exws[$i]);
-				$out .= '
+			$p = id_to_path($cur);
+			$out .= '
 <tr>
 	<td>' . $checkbox . '</td>
 	<td style="width:5px;"></td>
-	<td class="middlefont">&nbsp;<a href="javascript:setWs(\'' . $p . '\',\'' . $exws[$i] . '\')" class="middlefont" title="' . $p . '">' . we_base_util::shortenPath($p, $we_extraWsLength) . '</a><td>
+	<td class="middlefont">&nbsp;<a href="javascript:setWs(\'' . $p . '\',\'' . $cur . '\')" class="middlefont" title="' . $p . '">' . we_base_util::shortenPath($p, $len) . '</a><td>
 </tr>';
-			}
 		}
 
 		return $out . '</table>';
 	}
 
-	function getWorkspaces(array $foo, $we_wsLength){
+	function getWorkspaces(array $foo, $len){
 		if(!$foo){
 			return '-';
 		}
 		$out = '<table class="default">';
 		foreach($foo as $cur){
-			if($cur != ""){
-				$p = id_to_path($cur);
+			if($cur == ""){
+				continue;
+			}
+			$p = id_to_path($cur);
 //				$pl = strlen($p);
-				$out .= '
+			$out .= '
 <tr>
 	<td class="middlefont">
-		&nbsp;<a href="javascript:setWs(\'' . $p . '\',\'' . $cur . '\')" class="middlefont" title="' . $p . '">' . we_base_util::shortenPath($p, $we_wsLength) . '</a><td>
+		&nbsp;<a href="javascript:setWs(\'' . $p . '\',\'' . $cur . '\')" class="middlefont" title="' . $p . '">' . we_base_util::shortenPath($p, $len) . '</a><td>
 </tr>';
-			}
 		}
 
 		return $out . '</table>';

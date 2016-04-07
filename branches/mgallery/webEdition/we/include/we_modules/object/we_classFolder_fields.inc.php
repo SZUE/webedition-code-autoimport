@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -22,8 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-switch(we_base_request::_(we_base_request::STRING,'do')){
+switch(we_base_request::_(we_base_request::STRING, 'do')){
 	case 'delete':
 		$javascript = $we_doc->deleteObjects();
 		break;
@@ -59,7 +57,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 $_parts = array(
 	array('html' => $we_doc->getSearchDialog()),
-	array('html' => $we_doc->searchFields()),
+	array('html' => $we_doc->getSearch()),
 );
 
 echo STYLESHEET .
