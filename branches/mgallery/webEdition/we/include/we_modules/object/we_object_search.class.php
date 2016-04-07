@@ -52,38 +52,32 @@ class we_object_search extends we_search_base{
 		}
 	}
 
-	function getFields($name, $size, $select, $Path, $multi = ""){
+	function getFields($name, $size, $select, $Path, $multi = '', $fields = true, $properties = true){
 		$objID = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape($Path) . '"');
 		if(!$objID){
 			return '';
 		}
 		$opts = '';
 		$all = array();
-		$tableInfo = $GLOBALS['DB_WE']->metadata(OBJECT_X_TABLE . $objID);
-		foreach($tableInfo as $cur){
-			if($cur["name"] != 'ID' && substr($cur["name"], 0, 3) != "OF_" && stripos($cur["name"], we_objectFile::TYPE_MULTIOBJECT) !== 0 && stripos($cur["name"], "object") !== 0){
-				$regs = explode('_', $cur["name"], 2);
-				if(count($regs) == 2){
-					$opts .= '<option value="' . $cur["name"] . '" '
-						. (($select == $cur["name"]) ? "selected" : "") . '>'
-						. $regs[1] . '</option>';
-				}
-				$all[] = $cur["name"];
-			} else {
+		$tableInfoFields = $GLOBALS['DB_WE']->metadata(OBJECT_X_TABLE . $objID);
+		$tableInfoProperties = $GLOBALS['DB_WE']->metadata(OBJECT_FILES_TABLE);
+
+		if($properties){
+			foreach($tableInfoProperties as $cur){
 				switch($cur["name"]){
-					case 'OF_Text':
+					case 'Text':
 						$opts .= '<option value="' . $cur["name"] . '" ' . (($select == $cur["name"]) ? "selected" : "") . '>' . g_l('modules_object', '[objectname]') . '</option>';
 						$all[] = $cur["name"];
 						break;
-					case 'OF_Path':
+					case 'Path':
 						$opts .= '<option value="' . $cur["name"] . '" ' . (($select == $cur["name"]) ? "selected" : "") . '>' . g_l('modules_object', '[objectpath]') . '</option>';
 						$all[] = $cur["name"];
 						break;
-					case 'OF_ID':
+					case 'ID':
 						$opts .= '<option value="' . $cur["name"] . '" ' . (($select == $cur["name"]) ? "selected" : "") . '>' . g_l('modules_object', '[objectid]') . '</option>';
 						$all[] = $cur["name"];
 						break;
-					case 'OF_Url':
+					case 'Url':
 						$opts .= '<option value="' . $cur["name"] . '" ' . (($select == $cur["name"]) ? "selected" : "") . '>' . g_l('modules_object', '[objecturl]') . '</option>';
 						$all[] = $cur["name"];
 						break;
@@ -91,7 +85,23 @@ class we_object_search extends we_search_base{
 			}
 		}
 
-		$opts = '<option value="' . implode(',', $all) . '">' . g_l('modules_object', '[allFields]') . '</option>' . $opts;
+		if($fields){
+			foreach($tableInfoFields as $cur){
+				if($cur["name"] != 'ID' && substr($cur["name"], 0, 3) != "OF_" && stripos($cur["name"], we_objectFile::TYPE_MULTIOBJECT) !== 0 && stripos($cur["name"], "object") !== 0){
+					$regs = explode('_', $cur["name"], 2);
+					if(count($regs) == 2){
+						$opts .= '<option value="' . $cur["name"] . '" '
+							. (($select == $cur["name"]) ? "selected" : "") . '>'
+							. $regs[1] . '</option>';
+					}
+					$all[] = $cur["name"];
+				}
+			}
+		}
+
+		if(count($all)){
+			$opts = '<option value="' . implode(',', $all) . '">' . g_l('modules_object', '[allFields]') . '</option>' . $opts;
+		}
 		$onchange = (substr($select, 0, 4) != "meta" && substr($select, 0, 4) != "date" && substr($select, 0, 8) != "checkbox" ? 'onchange="changeit(this.value);"' : 'onchange="changeitanyway(this.value);"');
 		return '<select name="' . $name . '" class="weSelect" size="' . $size . '" ' . $multi . ' ' . $onchange . '>' . $opts . '</select>';
 	}
