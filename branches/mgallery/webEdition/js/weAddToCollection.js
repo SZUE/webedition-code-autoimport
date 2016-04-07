@@ -142,6 +142,10 @@ weAddToCollection = {
 	},
 	we_submitForm: function (target, url) {
 		var f = self.document.we_form;
+		if (!f.checkValidity()) {
+			top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+			return false;
+		}
 		var sel = "";
 		for (var i = 1; i <= top.treeData.len; i++) {
 			if (top.treeData[i].checked == 1) {
@@ -159,12 +163,13 @@ weAddToCollection = {
 		f.action = url;
 		f.method = "post";
 		f.submit();
+		return true;
 	},
 	we_cmd: function () {
 		var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 		var url = WE().util.getWe_cmdArgsUrl(args);
 
-		switch(args[0]){
+		switch (args[0]) {
 			case "we_selector_document":
 				new (WE().util.jsWindow)(document, url, "we_fileselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 				break;
@@ -177,5 +182,5 @@ weAddToCollection = {
 };
 
 function we_submitForm(target, url) {
-	weAddToCollection.we_submitForm(target, url);
+	return weAddToCollection.we_submitForm(target, url);
 }

@@ -122,6 +122,10 @@ function br2nl(i) {
 
 function we_submitForm(target, url) {
 	var f = self.document.we_form;
+	if (!f.checkValidity()) {
+		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+		return false;
+	}
 
 	parent.openedWithWe = true;
 	if (url) {
@@ -132,6 +136,7 @@ function we_submitForm(target, url) {
 		f.method = "post";
 	}
 	f.submit();
+	return true;
 }
 
 function doUnload() {
@@ -228,18 +233,21 @@ function we_cmd() {
 		case "edit_link_at_class":
 		case "edit_link_at_object":
 			new (WE().util.jsWindow)(this, "", "we_linkEdit", -1, -1, 615, 600, true, true, true);
-			if (contentEditor.we_submitForm)
+			if (contentEditor.we_submitForm){
 				contentEditor.we_submitForm("we_linkEdit", url);
+			}
 			break;
 		case "edit_linklist":
 			new (WE().util.jsWindow)(this, "", "we_linklistEdit", -1, -1, 615, 600, true, true, true);
-			if (contentEditor.we_submitForm)
+			if (contentEditor.we_submitForm){
 				contentEditor.we_submitForm("we_linklistEdit", url);
+			}
 			break;
 		case "openColorChooser":
 			new (WE().util.jsWindow)(this, "", "we_colorChooser", -1, -1, 430, 370, true, true, true);
-			if (contentEditor.we_submitForm)
+			if (contentEditor.we_submitForm){
 				contentEditor.we_submitForm("we_colorChooser", url);
+			}
 			break;
 		case "we_selector_directory":
 		case "we_selector_document":
@@ -264,8 +272,9 @@ function we_cmd() {
 			break;
 		case "open_templateSelect":
 			new (WE().util.jsWindow)(this, "", "we_templateSelect", -1, -1, 600, 400, true, true, true);
-			if (contentEditor.we_submitForm)
+			if (contentEditor.we_submitForm){
 				contentEditor.we_submitForm("we_templateSelect", url);
+			}
 			break;
 		case "open_tag_wizzard":
 			new (WE().util.jsWindow)(this, url, "we_tag_wizzard", -1, -1, 600, 620, true, true, true);

@@ -246,12 +246,10 @@ function we_sbmtFrm(target, url, source) {
 	try {
 		if (source) {
 			if (source.we_submitForm) {
-				source.we_submitForm(target.name, url);
-				return true;
+				return source.we_submitForm(target.name, url);
 			}
 			if (source.contentWindow.we_submitForm) {
-				source.contentWindow.we_submitForm(target.name, url);
-				return true;
+				return source.contentWindow.we_submitForm(target.name, url);
 			}
 		}
 	} catch (e) {
