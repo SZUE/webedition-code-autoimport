@@ -64,11 +64,11 @@ abstract class we_base_imageCrop{
         	  <td style="width:100px;padding-top:4px;">
         	  	<div id="console" style="display:none;">
         		  <div id="weSizeDiv">
-         	 		  <input type="text" name="CropWidth" id="CropWidth" value="0" onchange="CropTool.setCropWidth(this.value);" onkeydown="return CropTool.catchKeystroke(event,this);" />
-								<input type="text" name="CropHeight" id="CropHeight" value="0" onchange="CropTool.setCropHeight(this.value);" onkeydown="return CropTool.catchKeystroke(event,this);" />
+         	 		  <input type="text" name="CropWidth" id="CropWidth" value="0" onchange="ImageEditTools.Crop.setCropWidth(this.value);" onkeydown="return ImageEditTools.Crop.catchKeystroke(event,this);" />
+								<input type="text" name="CropHeight" id="CropHeight" value="0" onchange="ImageEditTools.Crop.setCropHeight(this.value);" onkeydown="return ImageEditTools.Crop.catchKeystroke(event,this);" />
               </div>
-              <a id="cropButtonZoomIn" title="' . g_l('crop', '[enlarge_crop_area]') . '" onmousedown="CropTool.zoom(1);"><i class="fa fa-expand"></i></a>
-              <a id="cropButtonZoomOut" title="' . g_l('crop', '[reduce_crop_area]') . '" onmousedown="CropTool.zoom(-1);"><i class="fa fa-compress"></i></a>
+              <a id="cropButtonZoomIn" title="' . g_l('crop', '[enlarge_crop_area]') . '" onmousedown="ImageEditTools.Crop.zoom(1);"><i class="fa fa-expand"></i></a>
+              <a id="cropButtonZoomOut" title="' . g_l('crop', '[reduce_crop_area]') . '" onmousedown="ImageEditTools.Crop.zoom(-1);"><i class="fa fa-compress"></i></a>
               </div>
             </td>
             <td>' . we_html_button::position_yes_no_cancel($okbut, "", $cancelbut, 10, "", "", 2) . '</td>
