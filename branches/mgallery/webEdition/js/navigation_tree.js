@@ -47,10 +47,6 @@ container.prototype.openClose = function (id) {
 	}
 };
 
-node.prototype.showSegment = function () {
-	top.reloadGroup(this.parentid, this.offset);
-};
-
 function reloadGroup(pid, offset) {
 	var it = treeData.get(pid);
 	if (it) {
@@ -58,6 +54,11 @@ function reloadGroup(pid, offset) {
 		startTree(pid, (offset ? offset : 0));
 	}
 }
+
+node.prototype.showSegment = function () {
+	reloadGroup(this.parentid, this.offset);
+};
+
 
 function info(text) {
 	t = treeData.frames.top.document.getElementById("infoField");
