@@ -1375,7 +1375,7 @@ function doNext(){
 
 		$head = we_html_element::jsElement('
 function doNext(){
-		top.opener.top.content.treeheader.applySort();//TODO: check this adress
+		top.opener.top.content.applySort();//TODO: check this adress
 		' . $this->footerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&art=' . self::ART_IMPORT . '&step=6";
 		document.we_form.submit();
 }');
