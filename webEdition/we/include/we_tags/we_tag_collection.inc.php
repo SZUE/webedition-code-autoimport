@@ -35,7 +35,7 @@ function we_tag_collection($attribs){
 	$intID = $GLOBALS['we_doc']->getElement($name, 'bdid')? : $id;
 	$rootDirID = 0;
 
-	if($GLOBALS['we_editmode']){
+	if($GLOBALS['we_editmode'] && $name){
 		$path = f('SELECT Path FROM ' . VFILE_TABLE . ' WHERE ID=' . $intID);
 		$textname = 'we_' . $GLOBALS['we_doc']->Name . '_collection[' . $name . '_path]';
 		$idname = 'we_' . $GLOBALS['we_doc']->Name . '_collection[' . $name . '#bdid]';
@@ -46,9 +46,7 @@ function we_tag_collection($attribs){
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener.setScrollTo();opener.we_cmd('reload_editpage');opener._EditorFrame.setEditorIsHot(true);");
 
-
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . VFILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")"); //FIXME: permissions in collections
-
 
 		$yuiSuggest = &weSuggest::getInstance();
 		$yuiSuggest->setAcId($name . we_base_file::getUniqueId(), f('SELECT Path FROM ' . VFILE_TABLE . ' WHERE ID=' . $rootDirID));
