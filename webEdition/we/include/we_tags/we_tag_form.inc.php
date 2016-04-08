@@ -71,9 +71,9 @@ function we_tag_form($attribs){
 	if($type != 'search'){
 		$regs = array();
 		if(preg_match('/^(.*)return (.+)$/i', $onsubmit, $regs)){
-			$onsubmit = $regs[1] . ';if(self.weWysiwygSetHiddenText){weWysiwygSetHiddenText();};return ' . $regs[2];
+			$onsubmit = $regs[1] . ';return ' . $regs[2];
 		} else {
-			$onsubmit .= ';if(self.weWysiwygSetHiddenText){weWysiwygSetHiddenText();};return true;';
+			$onsubmit .= ';return true;';
 		}
 	}
 	switch($type){

@@ -44,12 +44,17 @@ function we_submitForm(target, url) {
 	}
 
 	if (ok) {
+		if (!f.checkValidity()) {
+			top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+			return false;
+		}
 		f.target = target;
 		f.action = url;
 		f.method = "post";
 		f.submit();
+		return true;
 	}
-	return true;
+	return false;
 }
 
 function switchPage(page) {

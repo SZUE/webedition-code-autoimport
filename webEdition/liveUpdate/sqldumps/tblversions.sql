@@ -28,8 +28,6 @@ CREATE TABLE ###TBLPREFIX###tblversions (
   binaryPath varchar(255) NOT NULL,
   modifications tinytext NOT NULL,
   modifierID int unsigned NOT NULL,
-  /*IP varchar(40) NOT NULL,
-  Browser tinytext NOT NULL,*/
   ContentType enum('image/*','text/html','text/webedition','text/weTmpl','text/js','text/css','text/htaccess','text/plain','folder','class_folder','application/x-shockwave-flash','video/quicktime','application/*','text/xml','object','objectFile','video/*','audio/*') NOT NULL,
   Text tinytext NOT NULL,
   ParentID int unsigned NOT NULL,

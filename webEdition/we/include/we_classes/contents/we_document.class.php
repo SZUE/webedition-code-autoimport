@@ -749,6 +749,53 @@ class we_document extends we_root{
 		return f('SELECT 1 FROM ' . escape_sql_query($this->Table) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Filename="' . escape_sql_query($this->Filename) . '" AND Extension="' . escape_sql_query($this->Extension) . '" AND ID!=' . intval($this->ID), "", $this->DB_WE);
 	}
 
+	public static function getFieldLink($val, we_database_base $db, array $attribs = array(), $pathOnly = false, $parentID = 0, $path = ''){
+		$link = we_unserialize($val);
+
+		$only = weTag_getAttribute('only', $attribs, '', we_base_request::STRING);
+
+		$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, we_base_request::BOOL);
+		$objectseourls = weTag_getAttribute('objectseourls', $attribs, TAGLINKS_OBJECTSEOURLS, we_base_request::BOOL);
+
+		if($pathOnly || $only === 'href'){
+			$return = self::getLinkHref($link, $parentID, $path, $db, $hidedirindex, $objectseourls);
+
+			if(!empty($GLOBALS['we_link_not_published'])){
+				unset($GLOBALS['we_link_not_published']);
+				return '';
+			}
+			return $return;
+		}
+
+		if(is_array($link)){
+			$img = new we_imageDocument();
+//	set name of image for rollover ...
+
+			if(isset($attribs['name'])){ //	here we must change the name for a rollover-image
+				$_useName = $attribs['name'] . '_img';
+				$img->setElement('name', $_useName, 'dat');
+			} else {
+				$_useName = '';
+			}
+
+			$xml = weTag_getAttribute('xml', $attribs, (XHTML_DEFAULT), we_base_request::BOOL);
+			$oldHtmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, true, we_base_request::BOOL);
+			if($only){
+				return ($only === 'content' ?
+						self::getLinkContent($link, $parentID, $path, $db, $img, $xml, $_useName, $oldHtmlspecialchars, $hidedirindex, $objectseourls) :
+						isset($link[$only]) ? $link[$only] : ''); // #3636
+			}
+
+			if(($content = self::getLinkContent($link, $parentID, $path, $db, $img, $xml, $_useName, $oldHtmlspecialchars, $hidedirindex, $objectseourls))){
+				if(($startTag = self::getLinkStartTag($link, $attribs, $parentID, $path, $db, $img, $_useName, $hidedirindex, $objectseourls))){
+					return $startTag . $content . '</a>';
+				}
+				return $content;
+			}
+		}
+		return '';
+	}
+
 //FIXME: parameter $attrib should be: array $attribs=array()
 //FIXME: check if we can rid of this function, since it causes problems every change of tags since it also uses the given attribs array!
 	public function getFieldByVal($val, $type, $attribs = '', $pathOnly = false, $parentID = 0, $path = '', we_database_base $db = null, $classID = '', $fn = 'this'){
@@ -892,50 +939,7 @@ class we_document extends we_root{
 				}
 				return $pathOnly ? $fl->Path : $fl->getHtml();
 			case 'link':
-				$link = we_unserialize($val);
-
-				$only = weTag_getAttribute('only', $attribs, '', we_base_request::STRING);
-
-				$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, we_base_request::BOOL);
-				$objectseourls = weTag_getAttribute('objectseourls', $attribs, TAGLINKS_OBJECTSEOURLS, we_base_request::BOOL);
-
-				if($pathOnly || $only === 'href'){
-					$return = self::getLinkHref($link, $parentID, $path, $db, $hidedirindex, $objectseourls);
-
-					if(!empty($GLOBALS['we_link_not_published'])){
-						unset($GLOBALS['we_link_not_published']);
-						return '';
-					}
-					return $return;
-				}
-
-				if(is_array($link)){
-					$img = new we_imageDocument();
-//	set name of image for rollover ...
-
-					if(isset($attribs['name'])){ //	here we must change the name for a rollover-image
-						$_useName = $attribs['name'] . '_img';
-						$img->setElement('name', $_useName, 'dat');
-					} else {
-						$_useName = '';
-					}
-
-					$xml = weTag_getAttribute('xml', $attribs, (XHTML_DEFAULT), we_base_request::BOOL);
-					$oldHtmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, true, we_base_request::BOOL);
-					if($only){
-						return ($only === 'content' ?
-								self::getLinkContent($link, $parentID, $path, $db, $img, $xml, $_useName, $oldHtmlspecialchars, $hidedirindex, $objectseourls) :
-								isset($link[$only]) ? $link[$only] : ''); // #3636
-					}
-
-					if(($content = self::getLinkContent($link, $parentID, $path, $db, $img, $xml, $_useName, $oldHtmlspecialchars, $hidedirindex, $objectseourls))){
-						if(($startTag = self::getLinkStartTag($link, $attribs, $parentID, $path, $db, $img, $_useName, $hidedirindex, $objectseourls))){
-							return $startTag . $content . '</a>';
-						}
-						return $content;
-					}
-				}
-				return '';
+				return self::getFieldLink($val, $db, $attribs, $pathOnly, $parentID, $path);
 			case 'date':
 				$val = $val ? : time();
 				$format = !empty($attribs['format']) ? $attribs['format'] : g_l('date', '[format][default]');
@@ -1085,7 +1089,7 @@ class we_document extends we_root{
 	}
 
 	static function getHrefByArray(array $hrefArr){
-		return ($hrefArr['extPath'] && empty($hrefArr['int'])) ? $hrefArr['extPath'] : (isset($hrefArr['intID']) ? id_to_path($hrefArr['intID']) : '');
+		return (!empty($hrefArr['extPath']) && empty($hrefArr['int'])) ? $hrefArr['extPath'] : (isset($hrefArr['intID']) ? id_to_path($hrefArr['intID']) : '');
 	}
 
 	function getLinkHref($link, $parentID, $path, we_database_base $db = null, $hidedirindex = false, $objectseourls = false){

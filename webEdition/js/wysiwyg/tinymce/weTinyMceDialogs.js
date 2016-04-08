@@ -31,15 +31,17 @@ function weRegisterTinyMcePopup(win, action) {
 	switch (action) {
 		case "registerDialog":
 			if (!blocked) {
-				try {
-					tinyMceDialog.close();
-				} catch (err) {
+				if (tinyMceDialog) {
+					try {
+						tinyMceDialog.close();
+					} catch (err) {
+					}
 				}
 				tinyMceDialog = win;
 			} else {
 				blocked = false;
 			}
-			if (tinyMceSecondaryDialog !== null) {
+			if (tinyMceSecondaryDialog) {
 				try {
 					tinyMceSecondaryDialog.close();
 				} catch (err) {
@@ -47,7 +49,7 @@ function weRegisterTinyMcePopup(win, action) {
 			}
 			break;
 		case "registerSecondaryDialog":
-			if (tinyMceSecondaryDialog !== null) {
+			if (tinyMceSecondaryDialog) {
 				try {
 					tinyMceSecondaryDialog.close();
 				} catch (err) {
@@ -56,19 +58,19 @@ function weRegisterTinyMcePopup(win, action) {
 			tinyMceSecondaryDialog = win;
 			break;
 		case "registerFullscreenDialog":
-			if (tinyMceDialog !== null) {
+			if (tinyMceDialog) {
 				try {
 					tinyMceDialog.close();
 				} catch (err) {
 				}
 			}
-			if (tinyMceSecondaryDialog !== null) {
+			if (tinyMceSecondaryDialog) {
 				try {
 					tinyMceSecondaryDialog.close();
 				} catch (err) {
 				}
 			}
-			if (tinyMceFullscreenDialog !== null) {
+			if (tinyMceFullscreenDialog) {
 				try {
 					tinyMceFullscreenDialog.close();
 				} catch (err) {
@@ -83,15 +85,19 @@ function weRegisterTinyMcePopup(win, action) {
 			// do nothing!
 			break;
 		case "unregisterDialog":
-			try {
-				tinyMceDialog.close();
-			} catch (err) {
+			if (tinyMceDialog) {
+				try {
+					tinyMceDialog.close();
+				} catch (err) {
+				}
 			}
 			/* falls through */
 		case "unregisterSecondaryDialog":
-			try {
-				tinyMceSecondaryDialog.close();
-			} catch (err) {
+			if (tinyMceSecondaryDialog) {
+				try {
+					tinyMceSecondaryDialog.close();
+				} catch (err) {
+				}
 			}
 			break;
 	}

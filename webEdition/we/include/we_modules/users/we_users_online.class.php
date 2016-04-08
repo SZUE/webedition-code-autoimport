@@ -55,7 +55,7 @@ class we_users_online{
 		while($DB_WE->next_record()){
 			$this->num_uo++;
 			$_row .= '<tr><td style="width:30px;margin-top:8px;color:' . $colors[( ++$i) % $colorCount] . '"><i class="fa fa-user fa-2x"></i></td>' .
-				'<td class="middlefont we-user">' . ($DB_WE->f('User')? : $DB_WE->f('username')) . '</td>' .
+				'<td class="middlefont we-user">' . htmlentities(($DB_WE->f('User')? : $DB_WE->f('username')), ENT_COMPAT, $GLOBALS['WE_BACKENDCHARSET']) . '</td>' .
 				(defined('MESSAGES_TABLE') ?
 					'<td><a href="javascript:newMessage(\'' . $DB_WE->f('username') . '\');">' .
 					'<i style="color:#9fbcd5;" class="fa fa-2x fa-envelope"></i></a><td>' :

@@ -235,14 +235,19 @@ echo $table;
 
 	function we_submitForm(target, url) {
 		var f = self.document.we_form;
+		if (!f.checkValidity()) {
+			top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+			return false;
+		}
 		var sel = "";
 		for (var i = 1; i <= top.treeData.len; i++) {
-			if (top.treeData[i].checked == 1)
+			if (top.treeData[i].checked == 1) {
 				sel += (top.treeData[i].id + ",");
+			}
 		}
 		if (!sel) {
 <?php echo we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR) ?>
-			return;
+			return false;
 		}
 
 		sel = sel.substring(0, sel.length - 1);
@@ -251,9 +256,10 @@ echo $table;
 		f.action = url;
 		f.method = "post";
 		f.submit();
+		return true;
 	}
 	function we_cmd() {
-	//var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+		//var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 //	var url = WE().util.getWe_cmdArgsUrl(args);
 		parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}

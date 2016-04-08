@@ -188,7 +188,7 @@ class we_navigation_items{
 
 	function setCurrent($navigationID){
 		if(isset($this->items['id' . $navigationID])){
-			$this->items['id' . $navigationID]->setCurrent($this, true);
+			$this->items['id' . $navigationID]->setCurrent($this);
 		}
 	}
 

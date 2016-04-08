@@ -1,5 +1,7 @@
 /* Functions for the welink plugin popup */
 
+/* global tinyMCEPopup */
+
 tinyMCEPopup.requireLangPack();
 
 function preinit() {
@@ -27,7 +29,7 @@ function setAttrib(elm, attrib, value) {
 	}
 
 	// Clean up the style
-	if (attrib == 'style') {
+	if (attrib === 'style') {
 		value = dom.serializeStyle(dom.parseStyle(value), 'a');
 	}
 

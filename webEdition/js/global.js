@@ -28,10 +28,9 @@
 
 /**This file is intended to be a global file for many js functions in WE*/
 // this function is universal function for all messages in webEdition
-function WE() {
+function WE(retBool) {
 	if (top === null || top === undefined) {
-		console.log("webedition (top) not found");
-		return false;
+		throw "webedition (top) not found";
 	}
 	if (top.WebEdition !== undefined) {
 		return top.WebEdition;
@@ -47,12 +46,16 @@ function WE() {
 				return cur.top.WebEdition;
 			}
 		} else {
-			return false;
+			if (retBool) {
+				return false;
+			}
+			throw "WE not found (1)";
 		}
 	}
-
-	console.log("webedition (final) not found");
-	return false;
+	if (retBool) {
+		return false;
+	}
+	throw "webedition (final) not found";
 }
 
 function we_showMessage(message, prio, win) {
@@ -66,7 +69,7 @@ function we_showMessage(message, prio, win) {
 
 function initWE() {
 //make some assignments to all WE documents
-	if (WE()) {
+	if (WE(true)) {
 		try {
 			window.onerror = WE().handler.errorHandler;
 			document.addEventListener('keydown', function (evt) {

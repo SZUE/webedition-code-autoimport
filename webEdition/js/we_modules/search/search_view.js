@@ -26,17 +26,6 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-WE().consts.g_l.weSearch = {
-	noTempTableRightsSearch: '',
-	nothingCheckedAdv: '',
-	nothingCheckedTmplDoc: '',
-	buttonSelectValue: '',
-	versionsResetAllVersionsOK: '',
-	versionsNotChecked: '',
-	searchtool__notChecked: '',
-	searchtool__publishOK: ''
-};
-
 WE().consts.weSearch = {
 	SEARCH_DOCS: '',
 	SEARCH_TMPL: '',
@@ -58,8 +47,6 @@ weSearch = {
 		showSelects: 0,
 		rows: 0,
 		we_transaction: '',
-		checkRightTempTable: 0,
-		checkRightDropTable: 0
 	},
 	elems: {
 		btnTrash: '',
@@ -184,11 +171,6 @@ weSearch = {
 		}
 	},
 	search: function (newSearch) {
-		if (!this.conf.checkRightTempTable && !this.conf.checkRightDropTable) {
-			top.we_showMessage(WE().consts.g_l.weSearch.noTempTableRightsSearch, WE().consts.message.WE_MESSAGE_NOTICE, window);
-			return;
-		}
-
 		var Checks = [], m = 0, i, table;
 
 		switch (this.conf.whichsearch) {
@@ -250,6 +232,9 @@ weSearch = {
 		if (Checks.length !== 0) {
 			if (newSearch) {
 				window.document.we_form.elements['searchstart' + this.conf.whichsearch].value = 0;
+				window.document.we_form.elements.newSearch.value = 1;
+			} else {
+				window.document.we_form.elements.newSearch.value = 0;
 			}
 			this.makeAjaxRequestDoclist();
 		}
@@ -809,7 +794,6 @@ weSearch = {
 			case 'ModDate':
 				document.getElementById('search' + this.conf.whichsearch + '[' + rowNr + ']').value = '';
 				break;
-				//|| value =="allModsIn" || value =="MasterTemplateID" || value=="ParentIDTmpl" || value=="ParentIDObj" || value=="ParentIDDoc" || value=="temp_template_id" || value=="ContentType" || value=="temp_category" || value=="Status" || value=="Speicherart" || value=="Published" || value=="CreationDate" || value=="ModDate") {
 			default:
 				document.getElementById('search' + this.conf.whichsearch + '[' + rowNr + ']').value = setValue;
 		}
@@ -850,42 +834,23 @@ weSearch = {
 	},
 	resetVersions: function () {
 		var checkboxes = [];
-		check = false;
-		var m = 0;
-		var i;
-		for (i = 0; i < document.we_form.elements.length; i++) {
-			var table = document.we_form.elements[i].name;
-			if (table.substring(0, 12) === "resetVersion") {
-				if (document.we_form.elements[i].checked === true) {
-					checkboxes[m] = document.we_form.elements[i].value;
-					check = true;
-					m++;
-				}
+		var i, pubElem;
+		var elems = document.we_form.querySelectorAll("input[name^=resetVersion]");
+		for (i = 0; i < elems.length; i++) {
+			if (elems[i].checked === true) {
+				pubElem = document.getElementById("publishVersion_" + elems[i].value);
+				checkboxes.push(elems[i].value + (pubElem !== null && pubElem.checked ? "___1" : "___0"));
 			}
 		}
-
-		if (check === false) {
+		if (checkboxes.length === 0) {
 			top.we_showMessage(WE().consts.g_l.weSearch.versionsNotChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
-		} else {
-			Check = confirm("' . g_l('versions', '[resetVersionsSearchtool]') . '");
-			if (Check === true) {
-				var vals = "";
-				for (i = 0; i < checkboxes.length; i++) {
-					if (vals !== "") {
-						vals += ",";
-					}
-					vals += checkboxes[i];
-					if (document.getElementById("publishVersion_" + checkboxes[i]) !== null) {
-						if (document.getElementById("publishVersion_" + checkboxes[i]).checked) {
-							vals += "___1";
-						} else {
-							vals += "___0";
-						}
-					}
-				}
-				this.resetVersionAjax(vals, 0, 0, 0);
-			}
+			return;
 		}
+		if (confirm(WE().consts.g_l.weSearch.resetVersionsSearchtool) !== true) {
+			return;
+		}
+		this.resetVersionAjax(checkboxes.join(","), 0, 0, 0);
+
 	},
 	checkAllActionChecks: function () {
 		var checkAll = document.getElementsByName("action_all_" + this.conf.whichsearch);

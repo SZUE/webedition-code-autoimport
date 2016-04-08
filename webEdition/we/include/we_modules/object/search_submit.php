@@ -46,7 +46,7 @@ switch(we_base_request::_(we_base_request::STRING, 'todo')){
 
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 
-		echo we_html_element::jsElement('top.we_cmd("switch_edit_page","' . (isset($go) ? $go : $we_doc->EditPageNr ) . '");');
+		echo we_html_element::jsElement('top.we_cmd("switch_edit_page",' . (isset($go) ? $go : $we_doc->EditPageNr ) . ');');
 		break;
 	case 'delete':
 
@@ -68,7 +68,7 @@ switch(we_base_request::_(we_base_request::STRING, 'todo')){
 
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 
-		echo we_html_element::jsElement('top.we_cmd("switch_edit_page","' . (isset($go) ? $go : $we_doc->EditPageNr ) . '");');
+		echo we_html_element::jsElement('top.we_cmd("switch_edit_page",' . (isset($go) ? $go : $we_doc->EditPageNr ) . ');');
 		break;
 	case 'search':
 		$we_doc->searchclass->searchname = $we_doc->searchclass->objsearch;
@@ -79,7 +79,7 @@ switch(we_base_request::_(we_base_request::STRING, 'todo')){
 		$we_doc->searchclass->setLimit();
 		$we_doc->SearchStart = 0;
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
-		echo we_html_element::jsElement('top.we_cmd("switch_edit_page","' . (isset($go) ? $go : $we_doc->EditPageNr ) . '");');
+		echo we_html_element::jsElement('top.we_cmd("switch_edit_page",' . (isset($go) ? $go : $we_doc->EditPageNr ) . ');');
 		break;
 	case 'changemeta':
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
@@ -132,7 +132,7 @@ switch(we_base_request::_(we_base_request::STRING, 'todo')){
 if (WE().layout.weEditorFrameController.getDocumentReferenceByTransaction("' . $_SESSION['weS']['we_data'][$we_transaction] . '").frames[1].document.we_form && WE().layout.weEditorFrameController.getDocumentReferenceByTransaction("' . $_SESSION['weS']['we_data'][$we_transaction] . '").frames[1].document.we_form.elements.SearchStart) {
 						WE().layout.weEditorFrameController.getDocumentReferenceByTransaction("' . $_SESSION['weS']['we_data'][$we_transaction] . '").frames[1].document.we_form.elements.SearchStart.value = 0;
 					}
-					top.we_cmd("switch_edit_page","' . $go . '");
+					top.we_cmd("switch_edit_page",' . $go . ');
 			');
 		}
 }

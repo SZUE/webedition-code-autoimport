@@ -29,37 +29,39 @@ echo we_html_tools::getHtmlTop() .
  STYLESHEET;
 
 $jsFunction = '
-
-	function we_submitForm(url){
-
-        var f = self.document.we_form;
-
-    	f.action = url;
-    	f.method = "post";
-
-    	f.submit();
-    }
-
-	function doUnload() {
-		WE().util.jsWindow.prototype.closeAll(window);
+function we_submitForm(url){
+var f = self.document.we_form;
+	if (!f.checkValidity()) {
+		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+		return false;
 	}
 
-	function we_cmd(){
-	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
+	f.action = url;
+	f.method = "post";
 
-		switch (args[0]) {
-			case "close":
-				window.close();
-				break;
-			case "save":
-				we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
-				break;
-			default:
-				top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
-		}
+	f.submit();
+	return true;
+}
+
+function doUnload() {
+	WE().util.jsWindow.prototype.closeAll(window);
+}
+
+function we_cmd(){
+var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+var url = WE().util.getWe_cmdArgsUrl(args);
+
+	switch (args[0]) {
+		case "close":
+			window.close();
+			break;
+		case "save":
+			we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
+			break;
+		default:
+			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
-';
+}';
 
 
 

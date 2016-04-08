@@ -213,9 +213,14 @@ $jsFunction = '
 
 	function we_submitForm(url){
 		var f = self.document.we_form;
+	if (!f.checkValidity()) {
+		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+		return false;
+	}
 		f.action = url;
 		f.method = "post";
 		f.submit();
+		return true;
 	}
 
 	function doUnload() {
@@ -289,14 +294,14 @@ $parts[] = array(
 
 $parts[] = array(
 	'headline' => '',
-	
+
 	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[shopcats][info_edit_shopCatDir]'), we_html_tools::TYPE_INFO, '614', false, 100),
 	'noline' => 1
 );
 
 $parts[] = array(
 	'headline' => '',
-	
+
 	'html' => $catsDirTableHtml,
 );
 
@@ -309,21 +314,21 @@ $parts[] = array(
 
 $parts[] = array(
 	'headline' => '',
-	
+
 	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[shopcats][info_editShopCats]'), we_html_tools::TYPE_INFO, "614", false, 101),
 	'noline' => 1
 );
 
 $parts[] = array(
 	'headline' => '',
-	
+
 	'html' => $catsTableHtml,
 	'noline' => 1
 );
 
 $parts[] = array(
 	'headline' => '',
-	
+
 	//'html' => $debug_output
 );
 

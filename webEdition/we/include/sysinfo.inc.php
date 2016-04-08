@@ -199,7 +199,7 @@ if(extension_loaded('suhosin')){
 }
 
 $lockTables = $GLOBALS['DB_WE']->hasLock();
-$allowTempTables = we_search_search::checkRightTempTable();
+//$allowTempTables = we_search_search::checkRightTempTable();
 $_info = array(
 	'webEdition' => array(
 		g_l('sysinfo', '[we_version]') => $weVersion,
@@ -235,7 +235,7 @@ $_info = array(
 		g_l('sysinfo', '[mysql_version]') => (version_compare("5.0.0", we_database_base::getMysqlVer(false)) > 1) ? getWarning(sprintf(g_l('sysinfo', '[dbversion warning]'), we_database_base::getMysqlVer(false)), we_database_base::getMysqlVer(false)) : getOK('', we_database_base::getMysqlVer(false)),
 		'max_allowed_packet' => $GLOBALS['DB_WE']->getMaxAllowedPacket(),
 		'lock tables' => ($lockTables ? getOK('', g_l('sysinfo', '[available]')) : getWarning('', '-')),
-		'create temporary tables' => ($allowTempTables ? getOK('', g_l('sysinfo', '[available]')) : getWarning('', '-')),
+		//'create temporary tables' => ($allowTempTables ? getOK('', g_l('sysinfo', '[available]')) : getWarning('', '-')),
 		'Info' => $GLOBALS['DB_WE']->getInfo(),
 	),
 	'System' => array(

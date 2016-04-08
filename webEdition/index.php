@@ -176,6 +176,7 @@ we_base_file::cleanTempFiles(true);
 cleanWECache();
 we_navigation_cache::clean();
 we_captcha_captcha::cleanup($GLOBALS['DB_WE']);
+we_search_search::cleanOldEntries();
 we_base_preferences::writeDefaultLanguageConfig();
 
 //clean Error-Log-Table

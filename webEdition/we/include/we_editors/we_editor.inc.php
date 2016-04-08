@@ -507,7 +507,7 @@ if(
 										case we_base_constants::WE_EDITPAGE_INFO:
 										case we_base_constants::WE_EDITPAGE_PREVIEW:
 											if($_SESSION['weS']['we_mode'] !== we_base_constants::MODE_SEE && (!we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 4))){
-												$GLOBALS['we_responseJS'] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");
+												$GLOBALS['we_responseJS'] = 'top.we_cmd("switch_edit_page",' . $we_doc->EditPageNr . ',"' . $we_transaction . '");
 _EditorFrame.getDocumentReference().frames.editFooter.location.reload();'; // reload the footer with the buttons
 											}
 									}
@@ -520,7 +520,7 @@ _EditorFrame.getDocumentReference().frames.editFooter.location.reload();'; // re
 								if(($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_INFO && (!we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 4))) || $tmp){
 									$we_responseText = $tmp ? '' : $we_responseText;
 									$we_responseTextType = $tmp ? we_message_reporting::WE_MESSAGE_ERROR : $we_responseTextType;
-									$GLOBALS['we_responseJS'] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");';
+									$GLOBALS['we_responseJS'] = 'top.we_cmd("switch_edit_page",' . $we_doc->EditPageNr . ',"' . $we_transaction . '");';
 
 									switch($tmp){
 										case 1:
@@ -540,7 +540,7 @@ _EditorFrame.getDocumentReference().frames.editFooter.location.reload();'; // re
 								}
 // Bug Fix #2065 -> Reload Preview Page of other documents
 								elseif($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW && $we_doc->ContentType == we_base_ContentTypes::APPLICATION){
-									$we_JavaScript .= 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");';
+									$we_JavaScript .= 'top.we_cmd("switch_edit_page",' . $we_doc->EditPageNr . ',"' . $we_transaction . '");';
 								}
 							}
 
@@ -548,7 +548,7 @@ _EditorFrame.getDocumentReference().frames.editFooter.location.reload();'; // re
 
 							if($wasNew || (!$wasPubl)){
 
-								$we_JavaScript .= ($we_doc->ContentType === "folder" ? 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");' : '') .
+								$we_JavaScript .= ($we_doc->ContentType === "folder" ? 'top.we_cmd("switch_edit_page",' . $we_doc->EditPageNr . ',"' . $we_transaction . '");' : '') .
 									'_EditorFrame.getDocumentReference().frames.editFooter.location.reload();';
 							}
 							$we_JavaScript .= "WE().layout.we_setPath('" . $we_doc->Path . "','" . $we_doc->Text . "', " . intval($we_doc->ID) . ",'" . ($we_doc->Published == 0 ? 'notpublished' : ($we_doc->Table != TEMPLATES_TABLE && $we_doc->ModDate > $we_doc->Published ? 'changed' : 'published')) . "');";
@@ -577,10 +577,10 @@ _EditorFrame.getDocumentReference().frames.editFooter.location.reload();'; // re
 						switch($_SESSION['weS']['we_mode']){
 							case we_base_constants::MODE_SEE:
 								$_showAlert = true; //	don't show confirm box in editor_save.inc
-								$GLOBALS['we_responseJS'] = 'top.we_cmd("switch_edit_page","' . (permissionhandler::hasPerm('CAN_SEE_PROPERTIES') ? we_base_constants::WE_EDITPAGE_PROPERTIES : $we_doc->EditPageNr) . '","' . $we_transaction . '");';
+								$GLOBALS['we_responseJS'] = 'top.we_cmd("switch_edit_page",' . (permissionhandler::hasPerm('CAN_SEE_PROPERTIES') ? we_base_constants::WE_EDITPAGE_PROPERTIES : $we_doc->EditPageNr) . ',"' . $we_transaction . '");';
 								break;
 							case we_base_constants::MODE_NORMAL:
-								$GLOBALS['we_responseJS'] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");';
+								$GLOBALS['we_responseJS'] = 'top.we_cmd("switch_edit_page",' . $we_doc->EditPageNr . ',"' . $we_transaction . '");';
 								break;
 						}
 					}
@@ -612,7 +612,7 @@ _EditorFrame.getDocumentReference().frames.editFooter.location.reload();'; // re
 					$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_unpublish_ok]'), $we_doc->Path);
 					$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 					if($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_INFO){
-						$GLOBALS['we_responseJS'] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");'; // wird in Templ eingef?gt
+						$GLOBALS['we_responseJS'] = 'top.we_cmd("switch_edit_page",' . $we_doc->EditPageNr . ',"' . $we_transaction . '");'; // wird in Templ eingef?gt
 					}
 //	When unpublishing a document stay where u are.
 //	uncomment the following line to switch to preview page.

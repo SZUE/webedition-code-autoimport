@@ -22,10 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function weFileExists($id, $table = FILE_TABLE, we_database_base $db = NULL){
-	t_e('deprecated', __FUNCTION__);
-	return we_base_file::isWeFile($id, $table, $db);
-}
 
 function correctUml($in){//FIXME: need charset!!
 	//FIXME: can we use this (as in objectfile): preg_replace(array('~&szlig;~','~&(.)(uml|grave|acute|circ|tilde|ring|cedil|slash|caron);|&(..)(lig);|&#.*;~', '~[^0-9a-zA-Z/._-]~'), array('ss','${1}${3}', ''), htmlentities($text, ENT_COMPAT, $this->Charset));
@@ -1169,7 +1165,7 @@ function we_unserialize($string, $default = array(), $quiet = false){
 		//non UTF-8 json decode
 		static $json = null;
 		$json = $json ? : new Services_JSON(16/* SERVICES_JSON_LOOSE_TYPE */);
-		return (array) $json->decode($string);
+		return (array) $json->decode(str_replace("\n", '\n', $string));
 	}
 	//data is really not serialized!
 	if(preg_match('|^\d+(,\d+)*$|', $string)){

@@ -427,6 +427,11 @@ if (top.treeData.table != "<?php echo $table; ?>") {
 
 function we_submitForm(target, url) {
 	var f = self.document.we_form;
+		if (!f.checkValidity()) {
+		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+		return false;
+	}
+
 	var sel = "";
 	for (var i = 1; i <= top.treeData.len; i++) {
 		if (top.treeData[i].checked == 1) {
@@ -447,6 +452,7 @@ echo we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_delete]'
 	f.action = url;
 	f.method = "post";
 	f.submit();
+	return true;
 }
 function we_cmd() {
 	if (top.we_cmd) {

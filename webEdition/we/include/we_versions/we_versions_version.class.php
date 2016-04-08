@@ -35,8 +35,6 @@ class we_versions_version{
 	protected $binaryPath;
 	protected $modifications;
 	protected $modifierID;
-	/* protected $IP;
-	  protected $Browser; */
 	protected $ContentType;
 	protected $Text;
 	protected $ParentID;
@@ -1306,14 +1304,6 @@ class we_versions_version{
 			case 'modifierID':
 				$entry = (isset($_SESSION['user']['ID'])) ? $_SESSION['user']['ID'] : '';
 				break;
-			/* 			case 'IP':
-			  $ip = $_SERVER['REMOTE_ADDR'];
-			  $entry = $ip;
-			  break;
-			  case 'Browser':
-			  $browser = $_SERVER['HTTP_USER_AGENT'];
-			  $entry = $browser;
-			  break; */
 			case 'active':
 				$entry = 1;
 				break;
@@ -1345,40 +1335,6 @@ class we_versions_version{
 
 		return $fromScheduler;
 	}
-
-	/**
-	 * @abstract get differences between two arrays
-	 * @return true if they differ, false if not
-	 */
-	/*
-	  private static function array_diff_values(array $newArr, array $oldArr){
-	  if(empty($newArr) && empty($oldArr)){
-	  return false;
-	  }
-	  //we can't use serialize, since the data in the array might be different
-	  //$ret = array();
-	  $keys = array_merge(array_keys($newArr), array_keys($oldArr));
-	  foreach($keys as $k){
-	  if(!isset($newArr[$k]) || !isset($oldArr[$k])){
-	  //$ret[] = $k;
-	  return true;
-	  } elseif(is_array($newArr[$k]) && !is_array($oldArr[$k]) || !is_array($newArr[$k]) && is_array($oldArr[$k])){
-	  //$ret[] = $k;
-	  return true;
-	  } elseif(is_array($newArr[$k])){
-	  $tmp = self::array_diff_values($newArr[$k], $oldArr[$k]);
-	  if($tmp){
-	  //$ret[] = array($k => $tmp);
-	  return true;
-	  }
-	  } elseif($newArr[$k] != $oldArr[$k]){
-	  //$ret[] = $k;
-	  return true;
-	  }
-	  }
-	  return false;
-	  }
-	 */
 
 	/**
 	 * @abstract create file to preview dynamic documents
@@ -1460,8 +1416,6 @@ class we_versions_version{
 			'status' => "deleted",
 			'modifications' => 1,
 			'modifierID' => isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : '',
-			/* 'IP' => $_SERVER['REMOTE_ADDR'],
-			  'Browser' => isset($_SERVER['HTTP_USER_AGENT']) ? : '', */
 			'active' => 1,
 			'fromScheduler' => $this->IsScheduler(),
 		));

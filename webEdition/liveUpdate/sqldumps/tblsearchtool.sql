@@ -49,7 +49,7 @@ CREATE TABLE ###TBLPREFIX###tblsearchtool (
   searchFieldsMediaSearch varchar(255) NOT NULL,
   search_tables_advSearch varchar(255) NOT NULL,
   activTab tinyint unsigned NOT NULL default '1',
-  PRIMARY KEY  (ID),
+  PRIMARY KEY (ID),
   UNIQUE KEY Path (Path)
 ) ENGINE=MyISAM AUTO_INCREMENT=25;
 /* query separator */
