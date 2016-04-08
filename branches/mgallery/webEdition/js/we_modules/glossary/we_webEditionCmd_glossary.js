@@ -93,9 +93,9 @@ function we_cmd_glossary(args, url) {
 					wind.content.we_cmd(tempargs[1], tempargs[2]);
 					wind.focus();
 				}
-				return false;
-
+				break;
 			}
+			return false;
 	}
 	return true;
 }
