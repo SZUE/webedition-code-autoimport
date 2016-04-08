@@ -149,7 +149,6 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 						$translate->_('The name already exists! Please choose another name or folder.'), $e->getCode());
 					$ex->setType('warning');
 					throw $ex;
-					break;
 				default :
 					throw new we_service_Exception($e->getMessage(), $e->getCode());
 			}
@@ -219,7 +218,6 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 				'The application toc.xml was succesfully rebuild!'));
 		$ex->setType('notice');
 		throw $ex;
-		return $args;
 	}
 
 	/**

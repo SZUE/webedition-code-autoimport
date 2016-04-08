@@ -30,7 +30,7 @@
 // this function is universal function for all messages in webEdition
 function WE(retBool) {
 	if (top === null || top === undefined) {
-		throw "webedition (top) not found";
+		throw new Error("webedition (top) not found");
 	}
 	if (top.WebEdition !== undefined) {
 		return top.WebEdition;
@@ -49,13 +49,13 @@ function WE(retBool) {
 			if (retBool) {
 				return false;
 			}
-			throw "WE not found (1)";
+			throw new Error("WE not found (1)");
 		}
 	}
 	if (retBool) {
 		return false;
 	}
-	throw "webedition (final) not found";
+	throw new Error("webedition (final) not found");
 }
 
 function we_showMessage(message, prio, win) {

@@ -103,7 +103,6 @@ abstract class we_app_service_AbstractCmd extends we_service_AbstractService{
 					$ex = new we_service_Exception($translate->_('The name already exists! Please choose another name or folder.'), $e->getCode());
 					$ex->setType('warning');
 					throw $ex;
-					break;
 				default :
 					throw new we_service_Exception($e->getMessage(), $e->getCode());
 			}

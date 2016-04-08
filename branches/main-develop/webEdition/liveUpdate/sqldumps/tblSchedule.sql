@@ -6,7 +6,7 @@ CREATE TABLE ###TBLPREFIX###tblSchedule (
   ClassName enum('we_htmlDocument','we_webEditionDocument','we_objectFile') NOT NULL,
   SerializedData longblob NOT NULL,
   Schedpro text NOT NULL,
-	`rerun` enum('once','hour','day','week','month','year') NOT NULL default '',
+	`rerun` enum('once','hour','day','week','month','year') NOT NULL default 'once',
   Active tinyint unsigned default NULL,
   PRIMARY KEY (DID,ClassName,Active,`expire`,task,rerun),
   KEY Wann (`expire`,Active,`lockedUntil`)
