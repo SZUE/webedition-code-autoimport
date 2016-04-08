@@ -208,7 +208,7 @@ abstract class we_editor_footer{
 						$_normalTable->setColContent(0, $_pos++, we_html_button::create_button($text, "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(true);we_save_document();"));
 					}
 				}
-				if($hasPerm){
+				if($hasPerm && $we_doc->ID){
 					self::addDelButton($_normalTable, $we_doc, $_pos);
 				}
 		}
@@ -361,7 +361,7 @@ abstract class we_editor_footer{
 		//	4. show delete button to delete this document, not in edit_include-window
 		//
 		$canDelete = ( (!we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include')) && (($we_doc instanceof we_objectFile) ? permissionhandler::hasPerm('DELETE_OBJECTFILE') : permissionhandler::hasPerm('DELETE_DOCUMENT')));
-		if($canDelete){
+		if($canDelete && $we_doc->ID){
 			self::addDelButton($_seeModeTable, $we_doc, $_pos);
 		}
 		echo $_seeModeTable->getHtml();
