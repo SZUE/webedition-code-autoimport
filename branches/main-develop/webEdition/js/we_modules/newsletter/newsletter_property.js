@@ -484,9 +484,6 @@ function we_cmd() {
 }
 
 function submitForm(target, action, method) {
-	if (self.weWysiwygSetHiddenText) {
-		weWysiwygSetHiddenText();
-	}
 	var f = self.document.we_form;
 	f.target = (target ? target : "edbody");
 	f.action = (action ? action : WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter");

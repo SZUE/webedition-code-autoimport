@@ -372,11 +372,14 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="href"
 		}
 	}
 
-	public static function doUpdate(){
+	public static function doUpdate($internalCall = false){
 		$db = new DB_WE();
 		self::meassure('start');
-		self::replayUpdateDB();
-		self::meassure('replayUpdateDB');
+		//if we are in liveupdate, initial db updates already triggered
+		if($internalCall){
+			self::replayUpdateDB();
+			self::meassure('replayUpdateDB');
+		}
 
 		self::updateUsers($db);
 		self::meassure('updateUsers');

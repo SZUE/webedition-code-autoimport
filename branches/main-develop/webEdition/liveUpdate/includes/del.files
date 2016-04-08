@@ -433,6 +433,7 @@ we/include/we_classes/xml_parser.inc.php
 we/include/we_classes/xml_import.inc.php
 we/include/we_classes/xml_export.inc.php
 we/include/we_classes/wysiwyg/we_wysiwyg_ToolbarSelect.class
+we/include/we_classes/we_wysiwyg.class.php
 we/include/we_classes/we_wysiwyg.class.inc.php
 we/include/we_classes/we_widget.inc.php
 we/include/we_classes/we_webEditionDocument.inc.php

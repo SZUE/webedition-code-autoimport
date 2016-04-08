@@ -60,7 +60,7 @@ class we_customer_customer extends we_base_model{
 	var $LastAccess = 0;
 	var $ModifyDate;
 	var $ModifiedBy;
-	var $protected = array('ID', /* 'ParentID', 'IsFolder', 'Path', 'Text', */ 'ModifiedBy', 'ModifyDate');
+	var $protected = array('ID', 'Path', 'ModifiedBy', 'ModifyDate');
 	var $properties = array('Username', 'Password', 'Forename', 'Surname', 'LoginDenied', 'MemberSince', 'LastLogin', 'LastAccess', 'AutoLoginDenied', 'AutoLogin');
 	var $udates = array('MemberSince', 'LastLogin', 'LastAccess');
 

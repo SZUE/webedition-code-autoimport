@@ -103,7 +103,7 @@ window.close();');
 			); //FIXME: what about the missing params?
 
 			$cancelBut = we_html_button::create_button(we_html_button::CANCEL, 'javascript:top.close()');
-			$okBut = we_html_button::create_button(we_html_button::OK, 'javascript:weWysiwygSetHiddenText();document.we_form.submit();');
+			$okBut = we_html_button::create_button(we_html_button::OK, 'javascript:document.we_form.submit();');
 
 			echo we_wysiwyg_editor::getHeaderHTML(false, false) . $e->getHTML() .
 			'<div style="height:8px"></div>' . we_html_button::position_yes_no_cancel($okBut, $cancelBut);

@@ -283,7 +283,7 @@ YAHOO.autocoml = {
 		YAHOO.autocoml.oldInputVal[i] = document.getElementById(YAHOO.autocoml.yuiAcFields[i].id).value;
 		if (YAHOO.autocoml.yuiAcFields[i].fields_id !== undefined) {
 			var name;
-			for (var j = 0; j <= YAHOO.autocoml.yuiAcFields[i].fields_id.length; j++) {
+			for (var j = 0; j < YAHOO.autocoml.yuiAcFields[i].fields_id.length; j++) {
 				name = YAHOO.autocoml.yuiAcFields[i].fields_id[j];
 				YAHOO.autocoml.old[name] = document.getElementById(name).value;
 			}

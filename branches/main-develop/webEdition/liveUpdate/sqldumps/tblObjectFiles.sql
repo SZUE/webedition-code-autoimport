@@ -47,3 +47,13 @@ CREATE TABLE ###TBLPREFIX###tblObjectFiles (
 ###UPDATEDROPCOL(OF_Charset,###TBLPREFIX###tblObjectFiles)###
 /* query separator */
 ###UPDATEDROPCOL(OF_WebUserID,###TBLPREFIX###tblObjectFiles)###
+/* query separator */
+###UPDATEDROPCOL(NCAddress,###TBLPREFIX###tblObjectFiles)###
+/* query separator */
+###UPDATEDROPCOL(NCPerson,###TBLPREFIX###tblObjectFiles)###
+/* query separator */
+###UPDATEDROPCOL(NCAddressHeadline,###TBLPREFIX###tblObjectFiles)###
+/* query separator */
+###UPDATEDROPCOL(NCPersonHeadline,###TBLPREFIX###tblObjectFiles)###
+/* query separator */
+###UPDATEDROPCOL(NCAddressOpen,###TBLPREFIX###tblObjectFiles)###

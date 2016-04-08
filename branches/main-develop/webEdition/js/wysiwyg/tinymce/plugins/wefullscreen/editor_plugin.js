@@ -29,28 +29,31 @@
 			d.addCommand('mceWefullscreen', function () {
 				var a = d.selection;
 				var weParams = d.getParam('weFullscrenParams');
-				if(weParams.isInPopup){
+				if (weParams.isInPopup) {
 					var weFullscreenState = d.getParam('weFullscreenState');
-					if(!weFullscreenState.fullscreen){
+					if (!weFullscreenState.fullscreen) {
 						weFullscreenState = {
-							fullscreen : true,
-							lastX : window.screenX,
-							lastY : window.screenY,
-							lastW : window.outerWidth,
-							lastH : window.outerHeight
+							fullscreen: true,
+							lastX: window.screenX,
+							lastY: window.screenY,
+							lastW: window.outerWidth,
+							lastH: window.outerHeight
 						};
 						d.settings.weFullscreenState = weFullscreenState;
 						window.resizeTo(screen.availWidth, screen.availHeight);
-						window.moveTo(0,0);
+						window.moveTo(0, 0);
 						d.controlManager.setActive('wefullscreen', 1);
 						document.getElementsByClassName('mce_wefullscreen')[1].className = 'mceIcon mce_wefullscreen_var mce_we_fa';
-						document.getElementsByClassName('mce_wefullscreen')[0].title = tinyMceTranslationObject.de.we.tt_wefullscreen_reset;
+						document.getElementsByClassName('mce_wefullscreen')[0].title = (tinyMceTranslationObject ? tinyMceTranslationObject.de.we.tt_wefullscreen_reset : '');
 					} else {
 						d.controlManager.setActive('wefullscreen', 0);
-						document.getElementsByClassName('mce_wefullscreen_var')[0].className = 'mceIcon mce_wefullscreen mce_we_fa';
-						document.getElementsByClassName('mce_wefullscreen')[0].title = tinyMceTranslationObject.de.we.tt_wefullscreen_set;
+						var v = document.getElementsByClassName('mce_wefullscreen_var');
+						if (v) {
+							v[0].className = 'mceIcon mce_wefullscreen mce_we_fa';
+						}
+						document.getElementsByClassName('mce_wefullscreen')[0].title = (tinyMceTranslationObject ? tinyMceTranslationObject.de.we.tt_wefullscreen_set : '');
 						window.resizeTo(weFullscreenState.lastW, weFullscreenState.lastH);
-						window.moveTo(weFullscreenState.lastX,weFullscreenState.lastY);
+						window.moveTo(weFullscreenState.lastX, weFullscreenState.lastY);
 						weFullscreenState.fullscreen = false;
 						d.settings.weFullscreenState = weFullscreenState;
 					}
@@ -61,7 +64,7 @@
 						width: screen.availWidth - 20,
 						height: screen.availHeight - 70,
 						inline: 1
-						}, {
+					}, {
 						plugin_url: e
 					});
 				}
@@ -73,7 +76,6 @@
 				class: 'mce_wefullscreen mce_we_fa'
 			});
 		},
-
 		getInfo: function () {
 			return {
 				longname: 'Wefullscreen plugin',

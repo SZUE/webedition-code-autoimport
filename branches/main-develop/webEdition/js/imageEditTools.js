@@ -1,3 +1,5 @@
+/* global WE */
+
 /**
  * webEdition SDK
  *
@@ -30,7 +32,6 @@ ImageEditTools = {
 		origW: 0,
 		origH: 0
 	},
-
 	deactivateAll: function () {
 		switch (this.activeTool) {
 			case 'focus':
@@ -53,7 +54,6 @@ ImageEditTools = {
 		}
 		this.activeTool = '';
 	},
-
 	Crop: {
 		imgSrc: "",
 		imgW: 0,
@@ -582,10 +582,10 @@ ImageEditTools = {
 				this.sel.setLeft(x1);
 				this.sel.setRight(x1 + w);
 				document.forms.we_form.cropCoordX.value = x1;
-				if (typeof w == "number" && x1 + w > this.imgW) {
+				if (typeof w === "number" && x1 + w > this.imgW) {
 					w = this.imgW - x1;
 				}
-				if (typeof w == "number" && typeof y1 == "number" && typeof h == "number") {
+				if (typeof w === "number" && typeof y1 === "number" && typeof h === "number") {
 					this.sel.draw(x1, y1, w, h);
 					cover.style.visibility = "visible";
 				}
@@ -627,7 +627,7 @@ ImageEditTools = {
 
 
 			if ((w - w !== 0) || (w < 1) || (w > this.imgW)) {
-				if (typeof this.sel.getWidth() != "number") {
+				if (typeof this.sel.getWidth() !== "number") {
 					document.forms.we_form.CropWidth.value = "";
 				} else {
 					document.forms.we_form.CropWidth.value = this.sel.getWidth();
@@ -653,7 +653,7 @@ ImageEditTools = {
 			var cov = document.getElementById(this.coverID);
 
 			if ((h - h !== 0) || (h < 1) || (h > this.imgH)) {
-				if (typeof this.sel.getHeight() != "number") {
+				if (typeof this.sel.getHeight() !== "number") {
 					document.forms.we_form.CropHeight.value = "";
 				} else {
 					document.forms.we_form.CropHeight.value = this.sel.getHeight();
@@ -661,9 +661,9 @@ ImageEditTools = {
 			} else {
 				this.sel.setHeight(h);
 				document.forms.we_form.CropHeight.value = h;
-				if (typeof y1 == "number" && y1 + h > this.imgH)
+				if (typeof y1 === "number" && y1 + h > this.imgH)
 					y1 = this.imgH - h;
-				if (typeof x1 == "number" && typeof y1 == "number" && typeof w == "number") {
+				if (typeof x1 === "number" && typeof y1 === "number" && typeof w === "number") {
 					this.sel.draw(x1, y1, w, h);
 					cov.style.visibility = "visible";
 				}
@@ -728,7 +728,7 @@ ImageEditTools = {
 			};
 
 			this.sel.setCursor = function (x1, y1, x2, y2, cr, co) {
-				if (arguments.length == 1) {
+				if (arguments.length === 1) {
 					y1 = x2 = y2 = cr = co = x1;
 				}
 				document.getElementById(this.idLeft).style.cursor = x1;
@@ -886,10 +886,11 @@ ImageEditTools = {
 				this.setCropHeight(h + px);
 		},
 		switch_button_state: function (element, state) {
-			if (state == "enabled") {
+			if (state === "enabled") {
 				WE().layout.button.enable(document, element);
 				return true;
-			} else if (state == "disabled") {
+			}
+			if (state === "disabled") {
 				WE().layout.button.disable(document, element);
 				return false;
 			}
@@ -972,7 +973,6 @@ ImageEditTools = {
 			elIdBottom = null;
 		}
 	},
-
 	Focus: {
 		state: {
 			isMoveFocus: false
@@ -1040,7 +1040,7 @@ ImageEditTools = {
 			this.elems.info.style.display = 'none';
 		},
 		mouseLeaveBody: function (e) {
-			if(this.state.isMoveFocus){
+			if (this.state.isMoveFocus) {
 				this.moveFocusPosition(e);
 			}
 			this.stopMoveFocusPosition();
@@ -1064,7 +1064,7 @@ ImageEditTools = {
 		},
 		moveFocusPosition: function (e) {
 			var topVal = this.vals.origTop + (e.clientY - this.vals.referenceY),
-				leftVal = this.vals.origLeft + (e.clientX - this.vals.referenceX);
+							leftVal = this.vals.origLeft + (e.clientX - this.vals.referenceX);
 
 			//window.getSelection().removeAllRanges();
 			this.setFocusPositionByMouse(null, topVal, leftVal);
@@ -1082,7 +1082,7 @@ ImageEditTools = {
 		},
 		setFocusPositionByValue: function () {
 			var x = document.getElementById('x_focus').value,
-				y = document.getElementById('y_focus').value;
+							y = document.getElementById('y_focus').value;
 
 			if (Math.abs(this.elems.x_focus) > 1) {
 				this.elems.x_focus = 0;
@@ -1097,7 +1097,6 @@ ImageEditTools = {
 			_EditorFrame.setEditorIsHot(true);
 		}
 	},
-
 	Rotate: {
 		win: null,
 		start: function (url, gdType) {
@@ -1109,7 +1108,6 @@ ImageEditTools = {
 			this.win.close();
 		}
 	},
-
 	Resize: {
 		win: null,
 		start: function (url, gdType) {
@@ -1121,7 +1119,6 @@ ImageEditTools = {
 			this.win.close();
 		}
 	},
-
 	ConvertJPEG: {
 		win: null,
 		start: function (url) {
@@ -1139,7 +1136,7 @@ ImageEditTools = {
  ImageEditTools.convertPNG = {
 
  };
- 
+
  ImageEditTools.convertGIF = {
 
  };

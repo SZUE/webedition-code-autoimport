@@ -1543,6 +1543,27 @@ body.moduleEditor{
 			font-size: 42px;
 		}
 	}
+
+	a {
+		color: black;
+		a,a:visited{
+			color:inherit;
+		}
+	}
+
+	a.notpublished{
+		color: $NotPublishedColor;
+		a,a:visited{
+			color:inherit;
+		}
+	}
+
+	a.changed{
+		color: $ModifiedColor;
+		a,a:visited{
+			color:inherit;
+		}
+	}
 }
 
 #scrollContent_MediaSearch {

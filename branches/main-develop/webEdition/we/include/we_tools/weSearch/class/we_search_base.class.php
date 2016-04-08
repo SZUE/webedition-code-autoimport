@@ -165,7 +165,7 @@ class we_search_base{
 			return -1;
 		}
 		$this->where = ($where ? : ($this->where ? : '1'));
-		return f('SELECT COUNT(1) FROM ' . $this->db->escape($this->table) . ' WHERE ' . $this->where, '', $this->db);
+		return f('SELECT COUNT(1) FROM ' . $this->db->escape($this->table) . ' WETABLE WHERE ' . $this->where, '', $this->db);
 	}
 
 	function searchquery($where = '', $get = '*', $table = '', $order = '', $limit = ''){
@@ -180,7 +180,7 @@ class we_search_base{
 
 		$this->limit = ' LIMIT ' . ($limit ? : $this->searchstart . ',' . $this->anzahl . ' ');
 
-		$this->db->query('SELECT ' . $this->get . ' FROM ' . $this->db->escape($this->table) . ' ' . ($this->where ? ' WHERE ' . $this->where : '') . ' ' . ($this->Order ? ' ORDER BY ' . $this->Order : '') . ' ' . $this->limit);
+		$this->db->query('SELECT ' . $this->get . ' FROM ' . $this->table . ' ' . ($this->where ? ' WHERE ' . $this->where : '') . ' ' . ($this->Order ? ' ORDER BY ' . $this->Order : '') . ' ' . $this->limit);
 	}
 
 	function setlimit($anzahl = '', $searchstart = ''){
@@ -266,7 +266,7 @@ class we_search_base{
 	}
 
 	function next_record(){
-		$ret = $this->db->next_record();
+		$ret = $this->db->next_record(MYSQL_ASSOC);
 		$this->Record = $this->db->Record;
 		return $ret;
 	}

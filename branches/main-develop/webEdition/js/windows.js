@@ -49,7 +49,7 @@ function jsWindow(opener, url, ref, x, y, w, h, openAtStartup, scroll, hideMenue
 	this.hideMenue = hideMenue;
 	this.resizable = resizable;
 	this.wind = null;
-	if (WE()) {
+	if (WE(true)) {
 		WE().layout.windows.push(this);
 	}
 	if (openAtStartup) {

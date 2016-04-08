@@ -22,4 +22,5 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-define("SUCHE_TABLE", TBL_PREFIX . "tblsearchtool");
+define("SUCHE_TABLE", TBL_PREFIX . 'tblsearchtool');
+define("SEARCHRESULT_TABLE", TBL_PREFIX . 'tblSearchResult');

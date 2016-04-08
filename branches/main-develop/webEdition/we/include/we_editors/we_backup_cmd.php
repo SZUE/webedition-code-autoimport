@@ -154,19 +154,19 @@ run();');
 
 			$files = array();
 // export spellchecker files
-			/*if(defined('SPELLCHECKER') && $_SESSION['weS']['weBackupVars']['handle_options']['spellchecker']){
-				we_backup_util::addLog('Exporting data for spellchecker');
+			/* if(defined('SPELLCHECKER') && $_SESSION['weS']['weBackupVars']['handle_options']['spellchecker']){
+			  we_backup_util::addLog('Exporting data for spellchecker');
 
-				$files[] = WE_SPELLCHECKER_MODULE_DIR . 'spellchecker.conf.inc.php';
-				$_dir = dir(WE_SPELLCHECKER_MODULE_PATH . 'dict');
-				while(false !== ($entry = $_dir->read())){
-					if($entry === '.' || $entry === '..' || (substr($entry, -4) === '.zip') || is_dir(WE_SPELLCHECKER_MODULE_PATH . 'dict/' . $entry)){
-						continue;
-					}
-					$files[] = WE_SPELLCHECKER_MODULE_DIR . 'dict/' . $entry;
-				}
-				$_dir->close();
-			}*/
+			  $files[] = WE_SPELLCHECKER_MODULE_DIR . 'spellchecker.conf.inc.php';
+			  $_dir = dir(WE_SPELLCHECKER_MODULE_PATH . 'dict');
+			  while(false !== ($entry = $_dir->read())){
+			  if($entry === '.' || $entry === '..' || (substr($entry, -4) === '.zip') || is_dir(WE_SPELLCHECKER_MODULE_PATH . 'dict/' . $entry)){
+			  continue;
+			  }
+			  $files[] = WE_SPELLCHECKER_MODULE_DIR . 'dict/' . $entry;
+			  }
+			  $_dir->close();
+			  } */
 
 // export settings from the file
 			if($_SESSION['weS']['weBackupVars']['handle_options']['settings']){
@@ -336,7 +336,7 @@ run();');
 		} else {
 
 // perform update
-			we_updater::doUpdate();
+			we_updater::doUpdate(true);
 
 			if(is_file(TEMP_PATH . $_SESSION['weS']['weBackupVars']['backup_file'])){
 				unlink(TEMP_PATH . $_SESSION['weS']['weBackupVars']['backup_file']);

@@ -51,8 +51,6 @@ weSearch.conf = {
 	modelIsFolder: true,
 	//showSelects: "placeholder",
 	rows: 0,
-	checkRightTempTable: ' . (we_search_search::checkRightTempTable() ? 1 : 0) . ',
-	checkRightDropTable: ' . (we_search_search::checkRightDropTable() ? 1 : 0) . '
 };
 weSearch.elems = {
 	btnTrash: \'' . str_replace("'", "\'", we_html_button::create_button(we_html_button::TRASH, "javascript:weSearch.delRow(__we_new_id__)")) . '\',
@@ -77,7 +75,6 @@ WE().consts.weSearch= {
 };
 WE().consts.g_l.weSearch = {
 	publish_docs:"' . g_l('searchtool', '[publish_docs]') . '",
-	noTempTableRightsSearch: "' . g_l('searchtool', '[noTempTableRightsSearch]') . '",
 	nothingCheckedAdv: \'' . g_l('searchtool', '[nothingCheckedAdv]') . '\',
 	nothingCheckedTmplDoc: \'' . g_l('searchtool', '[nothingCheckedTmplDoc]') . '\',
 	buttonSelectValue: "' . g_l('button', '[select][value]') . '",
@@ -86,7 +83,6 @@ WE().consts.g_l.weSearch = {
 	searchtool__notChecked: "' . g_l('searchtool', '[notChecked]') . '",
 	searchtool__publishOK: "' . g_l('searchtool', '[publishOK]') . '"
 };
-
 ');
 	}
 

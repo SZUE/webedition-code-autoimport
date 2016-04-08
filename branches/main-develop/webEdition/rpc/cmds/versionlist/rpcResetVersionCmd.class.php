@@ -34,22 +34,14 @@ class rpcResetVersionCmd extends we_rpc_cmd{
 				array($id)
 			);
 
-
+		$specVersion = we_base_request::_(we_base_request::INT, 'version', false);
 		$_SESSION['weS']['versions']['logResetIds'] = array();
 
-		foreach($ids as $id){
-
-			$parts = array();
-
-			if(stristr($id, '___')){
-				$parts = explode('___', $id);
-			}
-			$id = isset($parts[0]) ? $parts[0] : $id;
-			$publish = isset($parts[1]) ? $parts[1] : 0;
-
-			if(($version = we_base_request::_(we_base_request::INT, 'version', false)) === false){
-				$version = f('SELECT version FROM ' . VERSIONS_TABLE . ' WHERE ID=' . intval($id) . ' ORDER BY version DESC LIMIT 1');
-			}
+		foreach($ids as $documents){
+			$parts = explode('___', $documents);
+			$id = $parts[0];
+			$publish = intval(isset($parts[1]) ? $parts[1] : 0);
+			$version = $specVersion? : f('SELECT version FROM ' . VERSIONS_TABLE . ' WHERE ID=' . intval($id) . ' ORDER BY version DESC LIMIT 1');
 
 			we_versions_version::resetVersion($id, $version, $publish);
 		}

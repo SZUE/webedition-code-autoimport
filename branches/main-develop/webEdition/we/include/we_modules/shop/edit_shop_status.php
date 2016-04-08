@@ -29,13 +29,16 @@ echo we_html_tools::getHtmlTop() . STYLESHEET;
 
 $jsFunction = '
 	function we_submitForm(url){
-
-        var f = self.document.we_form;
-
-    	f.action = url;
+		var f = self.document.we_form;
+	if (!f.checkValidity()) {
+		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+		return false;
+	}
+		f.action = url;
     	f.method = "post";
 
     	f.submit();
+			return true;
     }
 
 	function doUnload() {

@@ -81,17 +81,11 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 		}
 	}
 
-	protected function getWebeditionDocument(){ // TODO: avoid some more redundancy in this fn
-		if(($ws = get_ws(FILE_TABLE, true))){
-			if(!(we_users_util::in_workspace($this->fileVars['parentID'], $ws, FILE_TABLE))){
-				return array(
-					'error' => 'workspace not ok',
-					'success' => false,
-					'weDoc' => array('id' => 0, 'path' => '')
-				);
-			}
-		}
+	protected function isParentIdOk($parentID = 0){
+		return ($ws = get_ws(FILE_TABLE, true)) ? (we_users_util::in_workspace($parentID, $ws, FILE_TABLE)) : true;
+	}
 
+	protected function getWebeditionDocument(){ // TODO: avoid some more redundancy in this fn
 		if($this->docVars['transaction']){ // import new binary for existing wedoc
 			if(!isset($_SESSION['weS']['we_data'][$this->docVars['transaction']])){
 				return array(
@@ -100,8 +94,16 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 					'weDoc' => array('id' => 0, 'path' => '')
 				);
 			}
+
 			$we_dt = $_SESSION['weS']['we_data'][$this->docVars['transaction']];
 			include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
+			if(!$this->isParentIdOk($we_doc->ParentID)){
+				return array(
+					'error' => 'workspace not ok',
+					'success' => false,
+					'weDoc' => array('id' => 0, 'path' => '')
+				);
+			}
 
 			$we_doc->Extension = strtolower((strpos($this->fileVars['weFileName'], '.') > 0) ? preg_replace('/^.+(\..+)$/', '${1}', $this->fileVars['weFileName']) : ''); //strtolower for feature 3764
 
@@ -127,6 +129,15 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			}
 
 			return $we_doc;
+		}
+
+		// check workspace for new document
+		if(!$this->isParentIdOk($this->fileVars['parentID'])){
+			return array(
+				'error' => 'workspace not ok',
+				'success' => false,
+				'weDoc' => array('id' => 0, 'path' => '')
+			);
 		}
 
 		// make new we_doc

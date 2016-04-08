@@ -85,7 +85,9 @@ function we_tag_blockControls($attribs){
 	}
 
 	echo '<input type="hidden" name="we_' . $GLOBALS['we_doc']->Name . '_block[' . $attribs['name'] . ']" value="' .
-	htmlentities(serialize(isset($attribs['list']) ? $attribs['list'] : array())) . //FIXME: do we really need this serialized in the document???
+	htmlentities(
+		(empty($attribs['list']) ? '' : we_serialize($attribs['list'], SERIALIZE_JSON, true, 0, true))
+	) . //FIXME: do we really need this serialized in the document???
 	'">' . $plusbut;
 	return;
 }

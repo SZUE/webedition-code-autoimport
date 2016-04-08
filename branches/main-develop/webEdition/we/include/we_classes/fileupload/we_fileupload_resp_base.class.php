@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_fileupload_resp_base extends we_fileupload{
-
 	protected $name = 'we_File';
 	protected $response = array('status' => '', 'fileNameTemp' => '', 'mimePhp' => 'none', 'message' => '', 'completed' => '', 'weDoc' => '');
 	protected $contentType = 'image/*'; // alloud target ct: obsolete => use typeCondition
@@ -80,22 +79,26 @@ class we_fileupload_resp_base extends we_fileupload{
 	protected function initByHttp(){
 		$this->FILES = $_FILES;
 		$this->fileVars = array_merge($this->fileVars, array_filter(array(
-				'genericFileNameTemp' => we_base_request::_(we_base_request::STRING, 'genericFilename', we_base_request::NOT_VALID),
-				'fileTemp' => we_base_request::_(we_base_request::STRING, 'weFileNameTemp', we_base_request::NOT_VALID),
-				'parentID' => we_base_request::_(we_base_request::URL, 'fu_file_parentID', we_base_request::NOT_VALID),
-				'weFileName' => we_base_request::_(we_base_request::STRING, 'weFileName', we_base_request::NOT_VALID),
-				'weFileSize' => we_base_request::_(we_base_request::INT, 'weFileSize', we_base_request::NOT_VALID),
-				'weFileCt' => we_base_request::_(we_base_request::STRING, 'weFileCt', we_base_request::NOT_VALID),
-				'sameName' => we_base_request::_(we_base_request::STRING, 'fu_file_sameName', we_base_request::NOT_VALID)
-			), function($var){return $var !== we_base_request::NOT_VALID;})
+			'genericFileNameTemp' => we_base_request::_(we_base_request::STRING, 'genericFilename', we_base_request::NOT_VALID),
+			'fileTemp' => we_base_request::_(we_base_request::STRING, 'weFileNameTemp', we_base_request::NOT_VALID),
+			'parentID' => we_base_request::_(we_base_request::URL, 'fu_file_parentID', we_base_request::NOT_VALID),
+			'weFileName' => we_base_request::_(we_base_request::STRING, 'weFileName', we_base_request::NOT_VALID),
+			'weFileSize' => we_base_request::_(we_base_request::INT, 'weFileSize', we_base_request::NOT_VALID),
+			'weFileCt' => we_base_request::_(we_base_request::STRING, 'weFileCt', we_base_request::NOT_VALID),
+			'sameName' => we_base_request::_(we_base_request::STRING, 'fu_file_sameName', we_base_request::NOT_VALID)
+				), function($var){
+				return $var !== we_base_request::NOT_VALID;
+			})
 		);
 		$this->controlVars = array_merge($this->controlVars, array_filter(array(
-				'doCommitFile' => we_base_request::_(we_base_request::BOOL, 'doCommitFile', true),
-				'partNum' => we_base_request::_(we_base_request::INT, 'wePartNum', we_base_request::NOT_VALID),
-				'partCount' => we_base_request::_(we_base_request::INT, 'wePartCount', we_base_request::NOT_VALID),
-				'formnum' => we_base_request::_(we_base_request::INT, "weFormNum", we_base_request::NOT_VALID),
-				'formcount' => we_base_request::_(we_base_request::INT, "weFormCount", we_base_request::NOT_VALID),
-			), function($var){return $var !== we_base_request::NOT_VALID;})
+			'doCommitFile' => we_base_request::_(we_base_request::BOOL, 'doCommitFile', true),
+			'partNum' => we_base_request::_(we_base_request::INT, 'wePartNum', we_base_request::NOT_VALID),
+			'partCount' => we_base_request::_(we_base_request::INT, 'wePartCount', we_base_request::NOT_VALID),
+			'formnum' => we_base_request::_(we_base_request::INT, "weFormNum", we_base_request::NOT_VALID),
+			'formcount' => we_base_request::_(we_base_request::INT, "weFormCount", we_base_request::NOT_VALID),
+				), function($var){
+				return $var !== we_base_request::NOT_VALID;
+			})
 		);
 	}
 
@@ -104,9 +107,11 @@ class we_fileupload_resp_base extends we_fileupload{
 			return array_merge($this->response, array('status' => 'failure', 'message' => g_l('importFiles', '[php_error]')));
 		}
 
+		// FIXME: this test ist too strong: 
+		// Only check permissions when we know, that the file is to be imported (important: e.g. html should be permitted on we_otherDocument even if the right new_html is missing!)
 		$this->fileVars['weFileCt'] = getContentTypeFromFile($this->FILES[$this->name]["name"]); //compare mime and ct by extension
-		if(!permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission($this->fileVars['weFileCt']))){
-			return array_merge($this->response, array('status' => 'failure', 'message' => 'no_perms'));
+		if(!permissionhandler::hasPerm(($perm = we_base_ContentTypes::inst()->getPermission($this->fileVars['weFileCt'])))){
+			return array_merge($this->response, array('status' => 'failure', 'message' => 'no perms: ' . g_l('perms_workpermissions', '[' . $perm . ']')));
 		}
 
 		if($this->controlVars['partNum'] > 1 && !$this->fileVars['fileTemp']){
@@ -153,7 +158,7 @@ class we_fileupload_resp_base extends we_fileupload{
 	}
 
 	public function commitUploadedFile($absolute = false){
-		$file = $_SERVER['DOCUMENT_ROOT'] . $this->fileVars['fileTemp']; 
+		$file = $_SERVER['DOCUMENT_ROOT'] . $this->fileVars['fileTemp'];
 		if(!file_exists($file) || !is_readable($file)){
 			$this->uploadError = 'no valid file uploaded';
 

@@ -147,8 +147,9 @@ function we_cmd() {
 		case "save_user":
 			if (top.content.editor.edbody.document.we_form) {
 				top.content.editor.edbody.document.we_form.ucmd.value = "save_user";
-				top.content.usetHot();
-				top.content.editor.edbody.we_submitForm("cmd", WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd");
+				if (top.content.editor.edbody.we_submitForm("cmd", WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd")) {
+					top.content.usetHot();
+				}
 			}
 			break;
 		case "delete_user":
