@@ -65,6 +65,7 @@ $l_wysiwyg=array(
 	'format'=>'Format',
 	'fullscreen'=>'Open editor in full-screen mode',
 	'fullscreen_editor'=>'Full-screen editor',
+	'gallery_alert_no_template'=>'',
 	'groups'=>'Groups',
 	'h1'=>'Heading 1',
 	'h2'=>'Heading 2',

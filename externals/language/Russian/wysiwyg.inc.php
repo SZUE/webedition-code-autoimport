@@ -65,6 +65,7 @@ $l_wysiwyg=array(
 	'format'=>'Формат',
 	'fullscreen'=>'Открыть редактор в режиме крупного экрана',
 	'fullscreen_editor'=>'Редактор крупного экрана',
+	'gallery_alert_no_template'=>'',
 	'groups'=>'Groups',
 	'h1'=>'1 Заголовок',
 	'h2'=>'2 Заголовок',

@@ -65,6 +65,7 @@ $l_wysiwyg=array(
 	'format'=>'Formato',
 	'fullscreen'=>'Abrir editor en modo pantalla completa',
 	'fullscreen_editor'=>'Editor de pantalla completa',
+	'gallery_alert_no_template'=>'',
 	'groups'=>'Groups',
 	'h1'=>'Encabezamiento 1',
 	'h2'=>'Encabezamiento 2',
