@@ -68,7 +68,7 @@ function we_tag_collection($attribs){
 				<td class="weEditmodeStyle"><?php echo $delbutton; ?></td>
 			</tr>
 		</table><?php
-		return false;
+		//return false;
 		//FIXME: add sth. to the stack, we need an extra element in editmode
 	}
 
