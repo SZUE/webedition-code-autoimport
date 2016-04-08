@@ -91,7 +91,6 @@ abstract class we_autoloader{
 		'Image_Transform' => 'lib/additional/pear/Image_Transform.class.php',
 		'Image_IPTC' => 'lib/additional/pear/Image_IPTC.class.php',
 		'lessc' => 'lib/additional/Less/lessc.inc.php',
-		'PEAR5' => 'lib/additional/pear/PEAR5.php',
 		'PEAR_Error' => 'lib/additional/pear/PEAR.php',
 		'PEAR' => 'lib/additional/pear/PEAR.php',
 		'Services_JSON_Error' => 'lib/additional/pear/Services_JSON.class.php',

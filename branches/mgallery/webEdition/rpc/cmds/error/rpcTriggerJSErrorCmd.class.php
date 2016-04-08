@@ -34,7 +34,7 @@ class rpcTriggerJSErrorCmd extends we_rpc_cmd{
 				'Browser' => $br->getBrowser() . ' ' . $br->getBrowserVersion(),
 				'System' => $br->getSystem(),
 			);
-			$data = print_r($_REQUEST['we_cmd'], true);
+			$data = str_replace($_SERVER['SERVER_NAME'], 'HOST', print_r($_REQUEST['we_cmd'], true));
 			unset($_REQUEST);
 			log_error_message(E_JS, $data, $file, $line, true);
 		}
