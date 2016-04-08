@@ -66,6 +66,7 @@ $l_wysiwyg=array(
 	'fullscreen'=>'Открыть редактор в режиме крупного экрана',
 	'fullscreen_editor'=>'Редактор крупного экрана',
 	'gallery_alert_no_template'=>'The function "Insert Gallery" cannot be used if there isn`t at least one template entered in "gallerytempaltes" for displaying the selected collection.',
+	'gallery_alert_values_nok'=>'One of the values you entered si not valid.',
 	'groups'=>'Groups',
 	'h1'=>'1 Заголовок',
 	'h2'=>'2 Заголовок',

@@ -66,6 +66,7 @@ $l_wysiwyg=array(
 	'fullscreen'=>'Abrir editor en modo pantalla completa',
 	'fullscreen_editor'=>'Editor de pantalla completa',
 	'gallery_alert_no_template'=>'The function "Insert Gallery" cannot be used if there isn`t at least one template entered in "gallerytempaltes" for displaying the selected collection.',
+	'gallery_alert_values_nok'=>'One of the values you entered si not valid.',
 	'groups'=>'Groups',
 	'h1'=>'Encabezamiento 1',
 	'h2'=>'Encabezamiento 2',

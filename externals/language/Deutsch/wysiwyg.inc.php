@@ -66,6 +66,7 @@ $l_wysiwyg=array(
 	'fullscreen'=>'Editor im Fullscreen-Modus öffnen',
 	'fullscreen_editor'=>'Fullscreen Editor',
 	'gallery_alert_no_template'=>'Die Funktion "Gallerie einfügen" kann nur genutzt werden, wenn im Attribut "gallerytemplates" mindestens ein Template zur Ausgabe der gewählten Sammlung eingetragen ist.',
+	'gallery_alert_values_nok'=>'Einer der eingegebenen Werte ist ungültig.',
 	'groups'=>'Gruppen',
 	'h1'=>'Überschrift 1',
 	'h2'=>'Überschrift 2',
