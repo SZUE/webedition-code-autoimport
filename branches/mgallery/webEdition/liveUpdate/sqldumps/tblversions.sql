@@ -8,7 +8,7 @@
 /* query separator */
 ###UPDATEDROPCOL(Browser,###TBLPREFIX###tblversions)###
 /* query separator */
-UPDATE ###TBLPREFIX###tblversions SET documentTable=REPLACE(documentTable,"###TBLPREFIX###","") WHERE documentTable LIKE "###TBLPREFIX###%"
+###ONTAB(###TBLPREFIX###tblversions)UPDATE ###TBLPREFIX###tblversions SET documentTable=REPLACE(documentTable,"###TBLPREFIX###","") WHERE documentTable LIKE "###TBLPREFIX###%";###
 /* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblversions (
@@ -59,7 +59,7 @@ CREATE TABLE ###TBLPREFIX###tblversions (
   resetFromVersion bigint unsigned NOT NULL,
   InGlossar tinyint unsigned NOT NULL,
   PRIMARY KEY  (ID),
-  UNIQUE KEY documentID (documentID,documentTable(64),version),
+  UNIQUE KEY documentID (documentID,documentTable,version),
   KEY timestamp (timestamp,CreationDate),
   KEY binaryPath (binaryPath),
   KEY version (version)
