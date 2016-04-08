@@ -33,7 +33,7 @@ class we_listview_collection extends we_listview_document{
 		$this->joins = array(' JOIN ' . FILELINK_TABLE . ' fl ON ' . FILE_TABLE . '.ID=fl.remObj');
 		$this->orderWhere = array('fl.ID=' . intval($id) . ' AND fl.DocumentTable="tblVFile" AND fl.type="collection"');
 		$this->table = VFILE_TABLE;
-		$this->group = 'fl.ID';
+		$this->group = 'fl.position';
 		parent::__construct($name, $rows, $offset, $order? : 'VFILE', $desc, $docType, $cats, $catOr, $casesensitive, $workspaceID, $contentTypes, $cols, false, $condition, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType, $subfolders, $customers, $id, $languages, $numorder, $hidedirindex, $triggerID);
 	}
 
