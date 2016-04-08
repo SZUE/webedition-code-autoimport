@@ -996,7 +996,7 @@ var weFileUpload = (function () {
 			//TODO: try to scale width and height by different ratio
 			this.downScaleCanvas = function (cv, scale) {
 				if (scale <= 0 || scale >= 1) {
-					throw ('scale must be a positive number <1 ');
+					throw new Error('scale must be a positive number <1 ');
 				}
 				var sqScale = scale * scale; // square scale = area of source pixel within target
 				var sw = cv.width; // source image width

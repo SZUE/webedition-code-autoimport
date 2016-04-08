@@ -2262,7 +2262,7 @@ function setTab(tab) {
 
 function resetTabs(){
 		top.content.editor.edbody.document.we_form.tab.value = ' . self::TAB_DATA . ';
-		top.content.editor.edheader.tabCtrl.weTabs.setActiveTab(' . self::TAB_DATA . ');
+		top.content.editor.edheader.weTabs.setActiveTab(' . self::TAB_DATA . ');
 }') .
 			'<div id="main"><div id="headrow"><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", ($this->Path ? : $this->getPath($this->ParentID))) . '</b></span></div>' . $we_tabs->getHTML() . '</div>';
 	}
