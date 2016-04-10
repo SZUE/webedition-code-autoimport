@@ -232,7 +232,7 @@ print we_html_element('<script>
 
 function query(){
 $ws_query = getWsQueryForSelector(<?php echo $TABLECONSTANT; ?>);
-$this->db->query("SELECT ".$this->fields.", abs(text) as Nr, (text REGEXP '^[0-9]') as isNr FROM ".
+$this->db->query('SELECT '.$this->fields.", abs(text) as Nr, (text REGEXP '^[0-9]') as isNr FROM ".
 $this->table.
 " WHERE IsFolder=1 AND ParentID='".abs($this->dir)."' ".
 $ws_query .

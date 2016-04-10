@@ -52,7 +52,6 @@ class we_dialog_gallery extends we_dialog_base{
 	function getOkJs(){
 		return '
 WegalleryDialog.insert();
-top.close();
 ';
 	}
 
@@ -78,17 +77,22 @@ top.close();
 		$wecmdenc2 = we_base_request::encCmd('top.document.we_form.elements["' . $textname . '"].value');
 		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . VFILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','',0)"), 4);
 		$yuiSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:if(document.we_form.elements['" . $idname . "'].value){opener.top.doClickDirect(document.we_form.elements['" . $idname . "'].value,'" . we_base_ContentTypes::COLLECTION . "','" . VFILE_TABLE . "'); return false}"));
-		$yuiSuggest->setAdditionalButton(we_html_button::create_button('fa:btn_add_collection,fa-plus,fa-lg fa-suitcase', "javascript:top.we_cmd('edit_new_collection','" . $wecmdenc1 . "','" . $wecmdenc2 . "',-1,'" . stripTblPrefix(FILE_TABLE) . "', 'wegallery');", true, 0, 0, "", "", false, false), 4);
+		$yuiSuggest->setAdditionalButton(we_html_button::create_button('fa:btn_add_collection,fa-plus,fa-lg fa-archive', "javascript:top.we_cmd('edit_new_collection','" . $wecmdenc1 . "','" . $wecmdenc2 . "',-1,'" . stripTblPrefix(FILE_TABLE) . "', 'wegallery');", true, 0, 0, "", "", false, false), 4);
 
-		$btnTrash = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value=0;document.we_form.elements['" . $textname . "'].value=''");
+		$btnTrash = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value=0;document.we_form.elements['" . $textname . "'].value='';document.we_form.elements['we_dialog_args[tmpl]'].value='0'");
 
 		$collid = we_html_tools::htmlFormElementTable($yuiSuggest->getHTML(), 'Sammlung');
-		$tempArr = id_to_path(isset($this->args['templateIDs']) ? $this->args['templateIDs'] : '', TEMPLATES_TABLE, null, true);
-		$templatesArr = array('----');
-		foreach($tempArr as $k => $v){
-			$templatesArr[$k] = $v;
+
+		if(($tempArr = id_to_path(isset($this->args['templateIDs']) ? $this->args['templateIDs'] : '', TEMPLATES_TABLE, null, true))){
+			$templatesArr = array('----');
+			foreach($tempArr as $k => $v){
+				$templatesArr[$k] = $v;
+			}
+			$input = we_html_tools::htmlSelect('we_dialog_args[tmpl]', $templatesArr, 1, (isset($this->args['tmpl']) ? id_to_path($this->args['tmpl'], TEMPLATES_TABLE) : '----'), false, array(), '', 430);
+		} else {
+			$input = we_html_element::htmlHidden('we_dialog_args[tmpl]', 0) .
+				we_html_tools::htmlAlertAttentionBox(g_l('wysiwyg', '[gallery_alert_no_template]'), we_html_tools::TYPE_ALERT, 410, false);
 		}
-		$input = we_html_tools::htmlSelect('we_dialog_args[tmpl]', $templatesArr, 1, (isset($this->args['tmpl']) ? id_to_path($this->args['tmpl'], TEMPLATES_TABLE) : 0), false, array(), '', 430);
 		$tmpl = we_html_tools::htmlFormElementTable($input, 'Template');
 
 		/*

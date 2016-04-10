@@ -56,14 +56,15 @@ var WegalleryDialog = { // TODO: clean code by using more vars
 		var tmplValue = document.forms.we_form.elements['we_dialog_args[tmpl]'].value;
 
 		if(this.isGallery){
-			if(idValue !== 0 && tmplValue !== 0){
+			if(idValue && tmplValue != 0){
 				inst.selection.getNode().setAttribute('id', idValue);
 				inst.selection.getNode().setAttribute('tmpl', tmplValue);
 			} else{
 				inst.dom.remove(inst.selection.getNode(), 1);
 			}
+			top.close();
 		} else{
-			if(idValue !== 0 && tmplValue !== 0){
+			if(idValue && tmplValue != 0){
 				var blank = '';
 				var isBlank = false;
 				while(sel.charAt(sel.length-1) === ' '){
@@ -75,6 +76,9 @@ var WegalleryDialog = { // TODO: clean code by using more vars
 
 				var content = '<we-gallery id="' + idValue + '" tmpl="' + tmplValue + '"></we-gallery>' + blank;
 				inst.execCommand('mceInsertContent', false, content);
+				top.close();
+			} else {
+				alert(WE().consts.g_l.tinyMceTranslationObject[inst.getParam('language')].we.plugin_wegallery_values_nok);
 			}
 		}
 		//tinyMCEPopup.close();

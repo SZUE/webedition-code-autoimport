@@ -1168,7 +1168,7 @@ var tinyMceTranslationObject = {' . array_search($GLOBALS['WE_LANGUAGE'], getWEL
 		tt_welang:"' . g_l('wysiwyg', '[language]') . '",
 		tt_wespellchecker:"' . g_l('wysiwyg', '[spellcheck]') . '",
 		tt_wevisualaid:"' . g_l('wysiwyg', '[visualaid]') . '",
-		tt_wegallery:"not translated yet",
+		tt_wegallery:"' . g_l('wysiwyg', '[addGallery]') . '",
 		cm_inserttable:"' . g_l('wysiwyg', '[insert_table]') . '",
 		cm_table_props:"' . g_l('wysiwyg', '[edit_table]') . '"
 	}}};
