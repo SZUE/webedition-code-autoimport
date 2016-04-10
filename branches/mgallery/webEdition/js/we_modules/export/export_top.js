@@ -146,18 +146,18 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.pnt.value = args[0] === "start_export" ? "load" : "edbody";
 				top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;
 				if (top.content.editor.edbody.document.we_form.IsFolder.value != 1) {
-					top.content.editor.edbody.document.we_form.selDocs.value = top.content.editor.edbody.SelectedItems[WE().consts.dirs.FILE_TABLE].join(",");
-					top.content.editor.edbody.document.we_form.selTempl.value = top.content.editor.edbody.SelectedItems[WE().consts.dirs.TEMPLATES_TABLE].join(",");
-					top.content.editor.edbody.document.we_form.selDocs_open.value = top.content.editor.edbody.openFolders[WE().consts.dirs.FILE_TABLE];
-					top.content.editor.edbody.document.we_form.selTempl_open.value = top.content.editor.edbody.openFolders[WE().consts.dirs.TEMPLATES_TABLE];
+					top.content.editor.edbody.document.we_form.selDocs.value = top.content.editor.edbody.SelectedItems[WE().consts.tables.FILE_TABLE].join(",");
+					top.content.editor.edbody.document.we_form.selTempl.value = top.content.editor.edbody.SelectedItems[WE().consts.tables.TEMPLATES_TABLE].join(",");
+					top.content.editor.edbody.document.we_form.selDocs_open.value = top.content.editor.edbody.openFolders[WE().consts.tables.FILE_TABLE];
+					top.content.editor.edbody.document.we_form.selTempl_open.value = top.content.editor.edbody.openFolders[WE().consts.tables.TEMPLATES_TABLE];
 
 					if (WE().consts.tables.OBJECT_FILES_TABLE !== "OBJECT_FILES_TABLE") {
-						top.content.editor.edbody.document.we_form.selObjs.value = top.content.editor.edbody.SelectedItems[WE().consts.dirs.OBJECT_FILES_TABLE].join(",");
-						top.content.editor.edbody.document.we_form.selObjs_open.value = top.content.editor.edbody.openFolders[WE().consts.dirs.OBJECT_FILES_TABLE];
+						top.content.editor.edbody.document.we_form.selObjs.value = top.content.editor.edbody.SelectedItems[WE().consts.tables.OBJECT_FILES_TABLE].join(",");
+						top.content.editor.edbody.document.we_form.selObjs_open.value = top.content.editor.edbody.openFolders[WE().consts.tables.OBJECT_FILES_TABLE];
 					}
 					if (WE().consts.tables.OBJECT_TABLE !== "OBJECT_TABLE") {
-						top.content.editor.edbody.document.we_form.selClasses.value = top.content.editor.edbody.SelectedItems[WE().consts.dirs.OBJECT_TABLE].join(",");
-						top.content.editor.edbody.document.we_form.selClasses_open.value = top.content.editor.edbody.openFolders[WE().consts.dirs.OBJECT_TABLE];
+						top.content.editor.edbody.document.we_form.selClasses.value = top.content.editor.edbody.SelectedItems[WE().consts.tables.OBJECT_TABLE].join(",");
+						top.content.editor.edbody.document.we_form.selClasses_open.value = top.content.editor.edbody.openFolders[WE().consts.tables.OBJECT_TABLE];
 					}
 				}
 
