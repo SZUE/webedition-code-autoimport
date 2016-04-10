@@ -471,7 +471,7 @@ class we_objectFile extends we_document{
 			case we_base_constants::WE_EDITPAGE_CONTENT:
 				return 'we_editors/we_editor_contentobjectFile.inc.php';
 			case we_base_constants::WE_EDITPAGE_PREVIEW:
-				return 'we_modules/object/we_object_showDocument.inc.php';
+				return 'we_showObject.inc.php';
 			case we_base_constants::WE_EDITPAGE_SCHEDULER:
 				return 'we_editors/we_editor_schedpro.inc.php';
 			case we_base_constants::WE_EDITPAGE_VARIANTS:
