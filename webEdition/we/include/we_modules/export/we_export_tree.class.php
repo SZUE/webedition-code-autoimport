@@ -108,7 +108,7 @@ var openFolders= {
 		} else {
 			$header = '';
 		}
-		return $js . $header . we_html_element::htmlDiv(array('id' => 'treetable', 'class' => 'blockWrapper', 'style' => 'position: static;width: ' . $width . 'px; height: ' . $height . 'px; border:1px #dce6f2 solid;'), '');
+		return $js . $header . we_html_element::htmlDiv(array('id' => 'treetable', 'class' => 'blockWrapper', 'style' => 'position: relative;width: ' . $width . 'px; height: ' . $height . 'px; border:1px #dce6f2 solid;'), '');
 	}
 
 	private static function getQueryParents($path){

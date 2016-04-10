@@ -223,7 +223,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 * @static
 	 * @return boolean
 	 */
-	function filterAreQual($filter1 = '', $filter2 = '', $applyCheck = false){
+	public static function filterAreQual($filter1 = '', $filter2 = '', $applyCheck = false){
 		$filter1 = $filter1? : self::getEmptyDocumentCustomerFilter();
 		$filter2 = $filter2? : self::getEmptyDocumentCustomerFilter();
 

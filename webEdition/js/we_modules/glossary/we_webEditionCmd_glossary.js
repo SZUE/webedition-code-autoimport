@@ -62,15 +62,6 @@ function we_cmd_glossary(args, url) {
 		case "glossary_dictionaries":
 			new (WE().util.jsWindow)(this, url, "edit_glossary_dictionaries", -1, -1, 490, 250, true, true, true, true);
 			break;
-		case ((args[0].substr(0, 15) === "GlossaryXYZnew_") ? args[0] : false):
-			tempargs = args[0].split("\XYZ");
-
-			wind = WE().util.jsWindow.prototype.find('edit_module');
-			if (wind) {
-				wind.content.we_cmd(tempargs[1], tempargs[2]);
-				wind.focus();
-			}
-			break;
 		case "new_glossary_acronym":
 		case "new_glossary_abbreviation":
 		case "new_glossary_foreignword":
@@ -94,6 +85,16 @@ function we_cmd_glossary(args, url) {
 			we_repl(self.load, url, args[0]);
 			break;
 		default:
+			if ((args[0].substr(0, 15) === "GlossaryXYZnew_")) {
+				tempargs = args[0].split("\XYZ");
+
+				wind = WE().util.jsWindow.prototype.find('edit_module');
+				if (wind) {
+					wind.content.we_cmd(tempargs[1], tempargs[2]);
+					wind.focus();
+				}
+				break;
+			}
 			return false;
 	}
 	return true;

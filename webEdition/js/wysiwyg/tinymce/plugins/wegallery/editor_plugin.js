@@ -27,7 +27,7 @@
 		init: function (e, f) {
 			var templates = e.getParam('weGalleryTemplates');
 			e.addButton('wegallery', {
-				title: 'not set',
+				title: 'we.tt_wegallery',
 				'class' : 'mce_wegallery mce_we_fa',
 				cmd: 'mceWegallery'
 			});

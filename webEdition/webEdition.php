@@ -155,237 +155,238 @@ text : ''
 				}
 };
 var WebEdition = {
-//all constants in WE used in JS
-consts:{
-contentTypes:{
-TEMPLATE: '<?php echo we_base_ContentTypes::TEMPLATE; ?>',
-				WEDOCUMENT: '<?php echo we_base_ContentTypes::WEDOCUMENT; ?>',
-				OBJECT_FILE: '<?php echo we_base_ContentTypes::OBJECT_FILE; ?>',
-				IMAGE: "<?php echo we_base_ContentTypes::IMAGE; ?>",
-				HTML: "<?php echo we_base_ContentTypes::HTML; ?>",
-				FLASH: "<?php echo we_base_ContentTypes::FLASH; ?>",
-				QUICKTIME: "<?php echo we_base_ContentTypes::QUICKTIME; ?>",
-				VIDEO: "<?php echo we_base_ContentTypes::VIDEO; ?>",
-				AUDIO: "<?php echo we_base_ContentTypes::AUDIO; ?>",
-				JS: "<?php echo we_base_ContentTypes::JS; ?>",
-				TEXT: "<?php echo we_base_ContentTypes::TEXT; ?>",
-				XML: "<?php echo we_base_ContentTypes::XML; ?>",
-				HTACESS: "<?php echo we_base_ContentTypes::HTACESS; ?>",
-				CSS: "<?php echo we_base_ContentTypes::CSS; ?>",
-				APPLICATION: "<?php echo we_base_ContentTypes::APPLICATION; ?>",
-				COLLECTION: "<?php echo we_base_ContentTypes::COLLECTION; ?>"
-				},
-				dirs:{
-				WEBEDITION_DIR:"<?php echo WEBEDITION_DIR; ?>",
-								WE_SHOP_MODULE_DIR: "<?php echo defined('WE_SHOP_MODULE_DIR') ? WE_SHOP_MODULE_DIR : ''; ?>",
-								WE_MODULES_DIR: "<?php echo WE_MODULES_DIR; ?>",
-								WE_MESSAGING_MODULE_DIR: "<?php echo defined('WE_MESSAGING_MODULE_DIR') ? WE_MESSAGING_MODULE_DIR : ''; ?>",
-								IMAGE_DIR:"<?php echo IMAGE_DIR; ?>",
-								ICON_DIR:"<?php echo ICON_DIR; ?>",
-								WE_CUSTOMER_MODULE_DIR:"<?php echo defined('WE_CUSTOMER_MODULE_DIR') ? WE_CUSTOMER_MODULE_DIR : 'WE_CUSTOMER_MODULE_DIR'; ?>",
-								WE_INCLUDES_DIR:"<?php echo WE_INCLUDES_DIR; ?>",
-								WE_SHOP_MODULE_DIR: "<?php echo defined('WE_SHOP_MODULE_DIR') ? WE_SHOP_MODULE_DIR : 'WE_SHOP_MODULE_DIR'; ?>",
-								WE_WORKFLOW_MODULE_DIR: "<?php echo defined('WE_WORKFLOW_MODULE_DIR') ? WE_WORKFLOW_MODULE_DIR : 'WE_WORKFLOW_MODULE_DIR'; ?>",
-								WE_JS_TINYMCE_DIR: "<?php echo WE_JS_TINYMCE_DIR; ?>",
-				},
-				g_l:{
-				main:{
+	//all constants in WE used in JS
+	consts:{
+		contentTypes:{
+			TEMPLATE: '<?php echo we_base_ContentTypes::TEMPLATE; ?>',
+			WEDOCUMENT: '<?php echo we_base_ContentTypes::WEDOCUMENT; ?>',
+			OBJECT_FILE: '<?php echo we_base_ContentTypes::OBJECT_FILE; ?>',
+			IMAGE: "<?php echo we_base_ContentTypes::IMAGE; ?>",
+			HTML: "<?php echo we_base_ContentTypes::HTML; ?>",
+			FLASH: "<?php echo we_base_ContentTypes::FLASH; ?>",
+			QUICKTIME: "<?php echo we_base_ContentTypes::QUICKTIME; ?>",
+			VIDEO: "<?php echo we_base_ContentTypes::VIDEO; ?>",
+			AUDIO: "<?php echo we_base_ContentTypes::AUDIO; ?>",
+			JS: "<?php echo we_base_ContentTypes::JS; ?>",
+			TEXT: "<?php echo we_base_ContentTypes::TEXT; ?>",
+			XML: "<?php echo we_base_ContentTypes::XML; ?>",
+			HTACESS: "<?php echo we_base_ContentTypes::HTACESS; ?>",
+			CSS: "<?php echo we_base_ContentTypes::CSS; ?>",
+			APPLICATION: "<?php echo we_base_ContentTypes::APPLICATION; ?>",
+			COLLECTION: "<?php echo we_base_ContentTypes::COLLECTION; ?>"
+		},
+		dirs:{
+			WEBEDITION_DIR:"<?php echo WEBEDITION_DIR; ?>",
+			WE_SHOP_MODULE_DIR: "<?php echo defined('WE_SHOP_MODULE_DIR') ? WE_SHOP_MODULE_DIR : ''; ?>",
+			WE_MODULES_DIR: "<?php echo WE_MODULES_DIR; ?>",
+			WE_MESSAGING_MODULE_DIR: "<?php echo defined('WE_MESSAGING_MODULE_DIR') ? WE_MESSAGING_MODULE_DIR : ''; ?>",
+			IMAGE_DIR:"<?php echo IMAGE_DIR; ?>",
+			ICON_DIR:"<?php echo ICON_DIR; ?>",
+			WE_CUSTOMER_MODULE_DIR:"<?php echo defined('WE_CUSTOMER_MODULE_DIR') ? WE_CUSTOMER_MODULE_DIR : 'WE_CUSTOMER_MODULE_DIR'; ?>",
+			WE_INCLUDES_DIR:"<?php echo WE_INCLUDES_DIR; ?>",
+			WE_SHOP_MODULE_DIR: "<?php echo defined('WE_SHOP_MODULE_DIR') ? WE_SHOP_MODULE_DIR : 'WE_SHOP_MODULE_DIR'; ?>",
+			WE_WORKFLOW_MODULE_DIR: "<?php echo defined('WE_WORKFLOW_MODULE_DIR') ? WE_WORKFLOW_MODULE_DIR : 'WE_WORKFLOW_MODULE_DIR'; ?>",
+			WE_JS_TINYMCE_DIR: "<?php echo WE_JS_TINYMCE_DIR; ?>",
+		},
+		g_l:{
+			main:{
 				unable_to_call_setpagenr: '<?php echo g_l('global', '[unable_to_call_setpagenr]'); ?>',
-								open_link_in_SEEM_edit_include: '<?php echo we_message_reporting::prepareMsgForJS(g_l('SEEM', '[open_link_in_SEEM_edit_include]')); ?>',
-								browser_crashed: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[browser_crashed]')); ?>',
-								no_perms_action: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[no_perms_action]')); ?>',
-								no_document_opened: '<?php echo we_message_reporting::prepareMsgForJS(g_l('global', '[no_document_opened]')); ?>',
-								no_editor_left: "<?php echo g_l('multiEditor', '[no_editor_left]'); ?>",
-								eplugin_exit_doc: "<?php echo g_l('alert', '[eplugin_exit_doc]'); ?>",
-								delete_single_confirm_delete: "<?php echo g_l('alert', '[delete_single][confirm_delete]'); ?>",
-								cockpit_reset_settings: '<?php echo g_l('alert', '[cockpit_reset_settings]'); ?>',
-								cockpit_not_activated: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[cockpit_not_activated]')); ?>',
-								no_perms: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[no_perms]')); ?>',
-								nav_first_document: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][first_document]')); ?>',
-								nav_last_document: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][last_document]')); ?>',
-								nav_no_open_document: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][no_open_document]')); ?>',
-								nav_no_entry: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][no_entry]')); ?>',
-								unable_to_call_ping: '<?php echo g_l('global', '[unable_to_call_ping]'); ?>',
-								nothing_to_save: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_save]')) ?>",
-								nothing_to_publish: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_publish]')) ?>",
-								nothing_to_delete: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_delete]')) ?>",
-								save_error_fields_value_not_valid: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[save_error_fields_value_not_valid]')); ?>",
-								name_nok:"<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[name_nok]')); ?>",
-								prefs_saved_successfully: "<?php echo we_message_reporting::prepareMsgForJS(g_l('cockpit', '[prefs_saved_successfully]')); ?>",
-								copy_folder_not_valid: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[copy_folder_not_valid]')); ?>",
-								folder_copy_success: "<?php echo we_message_reporting::prepareMsgForJS(g_l('copyFolder', '[copy_success]')); ?>",
-								exit_multi_doc_question: "<?php echo g_l('alert', '[exit_multi_doc_question]'); ?>",
-								close_include:"<?php echo we_message_reporting::prepareMsgForJS(g_l('SEEM', '[alert][close_include]')); ?>",
-								confirm_applyFilterFolder: "<?php echo g_l('alert', '[confirm][applyWeDocumentCustomerFiltersFolder]'); ?>",
-								confirm_applyFilterDocument: "<?php echo g_l('alert', '[confirm][applyWeDocumentCustomerFiltersDocument]'); ?>",
-								untitled:"<?php echo g_l('global', '[untitled]'); ?>",
-								in_wf_warning:{
-								tblFile:"<?php echo (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblFile][in_wf_warning]') : ''); ?>",
-												tblObjectFiles:"<?php echo (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblObjectFiles][in_wf_warning]') : ''); ?>",
-												tblObject:"<?php echo (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblObject][in_wf_warning]') : ''); ?>",
-												tblTemplates:"<?php echo (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblTemplates][in_wf_warning]') : ''); ?>",
-												tblVFiles:"<?php echo (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblVFiles][in_wf_warning]') : ''); ?>",
-								},
+				open_link_in_SEEM_edit_include: '<?php echo we_message_reporting::prepareMsgForJS(g_l('SEEM', '[open_link_in_SEEM_edit_include]')); ?>',
+				browser_crashed: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[browser_crashed]')); ?>',
+				no_perms_action: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[no_perms_action]')); ?>',
+				no_document_opened: '<?php echo we_message_reporting::prepareMsgForJS(g_l('global', '[no_document_opened]')); ?>',
+				no_editor_left: "<?php echo g_l('multiEditor', '[no_editor_left]'); ?>",
+				eplugin_exit_doc: "<?php echo g_l('alert', '[eplugin_exit_doc]'); ?>",
+				delete_single_confirm_delete: "<?php echo g_l('alert', '[delete_single][confirm_delete]'); ?>",
+				cockpit_reset_settings: '<?php echo g_l('alert', '[cockpit_reset_settings]'); ?>',
+				cockpit_not_activated: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[cockpit_not_activated]')); ?>',
+				no_perms: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[no_perms]')); ?>',
+				nav_first_document: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][first_document]')); ?>',
+				nav_last_document: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][last_document]')); ?>',
+				nav_no_open_document: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][no_open_document]')); ?>',
+				nav_no_entry: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][no_entry]')); ?>',
+				unable_to_call_ping: '<?php echo g_l('global', '[unable_to_call_ping]'); ?>',
+				nothing_to_save: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_save]')) ?>",
+				nothing_to_publish: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_publish]')) ?>",
+				nothing_to_delete: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_delete]')) ?>",
+				save_error_fields_value_not_valid: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[save_error_fields_value_not_valid]')); ?>",
+				name_nok:"<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[name_nok]')); ?>",
+				prefs_saved_successfully: "<?php echo we_message_reporting::prepareMsgForJS(g_l('cockpit', '[prefs_saved_successfully]')); ?>",
+				copy_folder_not_valid: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[copy_folder_not_valid]')); ?>",
+				folder_copy_success: "<?php echo we_message_reporting::prepareMsgForJS(g_l('copyFolder', '[copy_success]')); ?>",
+				exit_multi_doc_question: "<?php echo g_l('alert', '[exit_multi_doc_question]'); ?>",
+				close_include:"<?php echo we_message_reporting::prepareMsgForJS(g_l('SEEM', '[alert][close_include]')); ?>",
+				confirm_applyFilterFolder: "<?php echo g_l('alert', '[confirm][applyWeDocumentCustomerFiltersFolder]'); ?>",
+				confirm_applyFilterDocument: "<?php echo g_l('alert', '[confirm][applyWeDocumentCustomerFiltersDocument]'); ?>",
+				untitled:"<?php echo g_l('global', '[untitled]'); ?>",
+				in_wf_warning:{
+					tblFile:"<?php echo (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblFile][in_wf_warning]') : ''); ?>",
+					tblObjectFiles:"<?php echo (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblObjectFiles][in_wf_warning]') : ''); ?>",
+					tblObject:"<?php echo (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblObject][in_wf_warning]') : ''); ?>",
+					tblTemplates:"<?php echo (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblTemplates][in_wf_warning]') : ''); ?>",
+					tblVFiles:"<?php echo (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblVFiles][in_wf_warning]') : ''); ?>",
 				},
-								message_reporting:{
-								notice:"<?php echo g_l('alert', '[notice]'); ?>",
-												warning:"<?php echo g_l('alert', '[warning]'); ?>",
-												error:"<?php echo g_l('alert', '[error]'); ?>",
-												msgNotice:"<?php echo g_l('messageConsole', '[iconBar][notice]'); ?>",
-												msgWarning:"<?php echo g_l('messageConsole', '[iconBar][warning]'); ?>",
-												msgError:"<?php echo g_l('messageConsole', '[iconBar][error]'); ?>",
-								},
-								cockpit:{
-								},
-								editorScript:{
-								confirm_navDel: "<?php echo g_l('navigation', '[del_question]'); ?>",
-												gdTypeNotSupported: "<?php echo g_l('weClass', '[type_not_supported_hint]'); ?>",
-												noRotate: "<?php echo we_message_reporting::prepareMsgForJS(g_l('weClass', '[rotate_hint]')); ?>",
-												field_int_value_to_height: "<?php echo g_l('alert', '[field_int_value_to_height]'); ?>",
-												field_contains_incorrect_chars: '<?php echo g_l('alert', '[field_contains_incorrect_chars]'); ?>',
-												field_input_contains_incorrect_length: '<?php echo g_l('alert', '[field_input_contains_incorrect_length]'); ?>',
-												field_int_contains_incorrect_length: '<?php echo g_l('alert', '[field_int_contains_incorrect_length]'); ?>',
-												fieldNameNotValid: '<?php echo g_l('modules_object', '[fieldNameNotValid]'); ?>',
-												fieldNameNotTitleDesc: '<?php echo g_l('modules_object', '[fieldNameNotTitleDesc]'); ?>',
-												fieldNameEmpty: '<?php echo g_l('modules_object', '[fieldNameEmpty]'); ?>'
-								},
-								tinyMceTranslationObject: {
-<?php echo array_search($GLOBALS['WE_LANGUAGE'], getWELangs()); ?>:{
-								we:{
-								group_link:"<?php echo g_l('wysiwyg', '[links]'); ?>", //(insert_hyperlink)
-												group_copypaste:"<?php echo g_l('wysiwyg', '[import_text]'); ?>",
-												group_advanced:"<?php echo g_l('wysiwyg', '[advanced]'); ?>",
-												group_insert:"<?php echo g_l('wysiwyg', '[insert]'); ?>",
-												group_indent:"<?php echo g_l('wysiwyg', '[indent]'); ?>",
-												//group_view:"<?php echo g_l('wysiwyg', '[view]'); ?>",
-												group_table:"<?php echo g_l('wysiwyg', '[table]'); ?>",
-												group_edit:"<?php echo g_l('wysiwyg', '[edit]'); ?>",
-												group_layer:"<?php echo g_l('wysiwyg', '[layer]'); ?>",
-												group_xhtml:"<?php echo g_l('wysiwyg', '[xhtml_extras]'); ?>",
-												tt_weinsertbreak:"<?php echo g_l('wysiwyg', '[insert_br]'); ?>",
-												tt_welink:"<?php echo g_l('wysiwyg', '[hyperlink]'); ?>",
-												tt_weimage:"<?php echo g_l('wysiwyg', '[insert_edit_image]'); ?>",
-												tt_wefullscreen_set:"<?php echo g_l('wysiwyg', '[maxsize_set]'); //($this->isInPopup ? g_l('wysiwyg', '[maxsize_set]') : g_l('wysiwyg', '[fullscreen]'));                    ?>",
-												tt_wefullscreen_reset:"<?php echo g_l('wysiwyg', '[maxsize_reset]'); ?>",
-												tt_welang:"<?php echo g_l('wysiwyg', '[language]'); ?>",
-												tt_wespellchecker:"<?php echo g_l('wysiwyg', '[spellcheck]'); ?>",
-												tt_wevisualaid:"<?php echo g_l('wysiwyg', '[visualaid]'); ?>",
-												tt_wegallery:"not translated yet",
-												cm_inserttable:"<?php echo g_l('wysiwyg', '[insert_table]'); ?>",
-												cm_table_props:"<?php echo g_l('wysiwyg', '[edit_table]'); ?>",
-								}
-								}
-								},
+			},
+			message_reporting:{
+				notice:"<?php echo g_l('alert', '[notice]'); ?>",
+				warning:"<?php echo g_l('alert', '[warning]'); ?>",
+				error:"<?php echo g_l('alert', '[error]'); ?>",
+				msgNotice:"<?php echo g_l('messageConsole', '[iconBar][notice]'); ?>",
+				msgWarning:"<?php echo g_l('messageConsole', '[iconBar][warning]'); ?>",
+				msgError:"<?php echo g_l('messageConsole', '[iconBar][error]'); ?>",
+			},
+			cockpit:{
+			},
+			editorScript:{
+				confirm_navDel: "<?php echo g_l('navigation', '[del_question]'); ?>",
+				gdTypeNotSupported: "<?php echo g_l('weClass', '[type_not_supported_hint]'); ?>",
+				noRotate: "<?php echo we_message_reporting::prepareMsgForJS(g_l('weClass', '[rotate_hint]')); ?>",
+				field_int_value_to_height: "<?php echo g_l('alert', '[field_int_value_to_height]'); ?>",
+				field_contains_incorrect_chars: '<?php echo g_l('alert', '[field_contains_incorrect_chars]'); ?>',
+				field_input_contains_incorrect_length: '<?php echo g_l('alert', '[field_input_contains_incorrect_length]'); ?>',
+				field_int_contains_incorrect_length: '<?php echo g_l('alert', '[field_int_contains_incorrect_length]'); ?>',
+				fieldNameNotValid: '<?php echo g_l('modules_object', '[fieldNameNotValid]'); ?>',
+				fieldNameNotTitleDesc: '<?php echo g_l('modules_object', '[fieldNameNotTitleDesc]'); ?>',
+				fieldNameEmpty: '<?php echo g_l('modules_object', '[fieldNameEmpty]'); ?>'
+			},
+			tinyMceTranslationObject: {
+				<?php echo array_search($GLOBALS['WE_LANGUAGE'], getWELangs()); ?>:{
+					we:{
+						group_link:"<?php echo g_l('wysiwyg', '[links]'); ?>", //(insert_hyperlink)
+						group_copypaste:"<?php echo g_l('wysiwyg', '[import_text]'); ?>",
+						group_advanced:"<?php echo g_l('wysiwyg', '[advanced]'); ?>",
+						group_insert:"<?php echo g_l('wysiwyg', '[insert]'); ?>",
+						group_indent:"<?php echo g_l('wysiwyg', '[indent]'); ?>",
+						//group_view:"<?php echo g_l('wysiwyg', '[view]'); ?>",
+						group_table:"<?php echo g_l('wysiwyg', '[table]'); ?>",
+						group_edit:"<?php echo g_l('wysiwyg', '[edit]'); ?>",
+						group_layer:"<?php echo g_l('wysiwyg', '[layer]'); ?>",
+						group_xhtml:"<?php echo g_l('wysiwyg', '[xhtml_extras]'); ?>",
+						tt_weinsertbreak:"<?php echo g_l('wysiwyg', '[insert_br]'); ?>",
+						tt_welink:"<?php echo g_l('wysiwyg', '[hyperlink]'); ?>",
+						tt_weimage:"<?php echo g_l('wysiwyg', '[insert_edit_image]'); ?>",
+						tt_wefullscreen_set:"<?php echo g_l('wysiwyg', '[maxsize_set]'); //($this->isInPopup ? g_l('wysiwyg', '[maxsize_set]') : g_l('wysiwyg', '[fullscreen]'));                    ?>",
+						tt_wefullscreen_reset:"<?php echo g_l('wysiwyg', '[maxsize_reset]'); ?>",
+						tt_welang:"<?php echo g_l('wysiwyg', '[language]'); ?>",
+						tt_wespellchecker:"<?php echo g_l('wysiwyg', '[spellcheck]'); ?>",
+						tt_wevisualaid:"<?php echo g_l('wysiwyg', '[visualaid]'); ?>",
+						tt_wegallery:"<?php echo g_l('wysiwyg', '[addGallery]'); ?>",
+						plugin_wegallery_values_nok:"<?php echo g_l('wysiwyg', '[gallery_alert_values_nok]'); ?>",
+						cm_inserttable:"<?php echo g_l('wysiwyg', '[insert_table]'); ?>",
+						cm_table_props:"<?php echo g_l('wysiwyg', '[edit_table]'); ?>",
+					}
+				}
+			},
 <?php
 foreach($jsmods as $mod){
 	echo $mod . ':{},';
 }
 ?>
-				},
-				global:{
-				WE_EDITPAGE_CONTENT:<?php echo we_base_constants::WE_EDITPAGE_CONTENT; ?>,
-								PING_TIME:<?php echo (we_base_constants::PING_TIME * 1000); ?>,
-				},
-				message:{
-				WE_MESSAGE_INFO: <?php echo we_message_reporting::WE_MESSAGE_INFO; ?>,
-								WE_MESSAGE_FRONTEND: <?php echo we_message_reporting::WE_MESSAGE_FRONTEND; ?>,
-								WE_MESSAGE_NOTICE:<?php echo we_message_reporting::WE_MESSAGE_NOTICE; ?>,
-								WE_MESSAGE_WARNING:<?php echo we_message_reporting::WE_MESSAGE_WARNING; ?>,
-								WE_MESSAGE_ERROR:<?php echo we_message_reporting::WE_MESSAGE_ERROR; ?>,
-				},
-				tables: {
-				TBL_PREFIX: '<?php echo TBL_PREFIX; ?>',
-								OBJECT_FILES_TABLE: "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'; ?>",
-								OBJECT_TABLE: "<?php echo defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'; ?>",
+		},
+		global:{
+			WE_EDITPAGE_CONTENT:<?php echo we_base_constants::WE_EDITPAGE_CONTENT; ?>,
+			PING_TIME:<?php echo (we_base_constants::PING_TIME * 1000); ?>,
+		},
+		message:{
+			WE_MESSAGE_INFO: <?php echo we_message_reporting::WE_MESSAGE_INFO; ?>,
+			WE_MESSAGE_FRONTEND: <?php echo we_message_reporting::WE_MESSAGE_FRONTEND; ?>,
+			WE_MESSAGE_NOTICE:<?php echo we_message_reporting::WE_MESSAGE_NOTICE; ?>,
+			WE_MESSAGE_WARNING:<?php echo we_message_reporting::WE_MESSAGE_WARNING; ?>,
+			WE_MESSAGE_ERROR:<?php echo we_message_reporting::WE_MESSAGE_ERROR; ?>,
+		},
+		tables: {
+			TBL_PREFIX: '<?php echo TBL_PREFIX; ?>',
+			OBJECT_FILES_TABLE: "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'; ?>",
+			OBJECT_TABLE: "<?php echo defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'; ?>",
 <?php
 foreach(we_base_request::getAllTables() as $k => $v){
 	echo $k . ':"' . $v . '",';
 }
 ?>
-				},
-				size:{
-				tree: {
+		},
+		size:{
+			tree: {
 				hidden:<?php echo weTree::HiddenWidth; ?>,
-								defaultWidth:<?php echo weTree::DefaultWidth; ?>,
-								min:<?php echo weTree::MinWidth; ?>,
-								max:<?php echo weTree::MaxWidth; ?>,
-								step:<?php echo weTree::StepWidth; ?>,
-								moveWidth:<?php echo weTree::MoveWidth; ?>,
-								deleteWidth:<?php echo weTree::DeleteWidth; ?>
-				},
-								catSelect: {
-								width:<?php echo we_selector_file::WINDOW_CATSELECTOR_WIDTH; ?>,
-												height:<?php echo we_selector_file::WINDOW_CATSELECTOR_HEIGHT; ?>
-								},
-								docSelect: {
-								width:<?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH; ?>,
-												height:<?php echo we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>
-								},
-								windowSelect: {
-								width:<?php echo we_selector_file::WINDOW_SELECTOR_WIDTH; ?>,
-												height:<?php echo we_selector_file::WINDOW_SELECTOR_HEIGHT; ?>
-								},
-								windowDirSelect: {
-								width:<?php echo we_selector_file::WINDOW_DIRSELECTOR_WIDTH; ?>,
-												height:<?php echo we_selector_file::WINDOW_DIRSELECTOR_HEIGHT; ?>
-								},
-								windowDelSelect: {
-								width:<?php echo we_selector_file::WINDOW_DELSELECTOR_WIDTH; ?>,
-												height:<?php echo we_selector_file::WINDOW_DELSELECTOR_HEIGHT; ?>
-								},
-								sidebar: {
-								defaultWidth:<?php echo intval(defined('SIDEBAR_DEFAULT_WIDTH') ? SIDEBAR_DEFAULT_WIDTH : 0); ?>
-								}
-				},
-				linkPrefix: {
-				TYPE_OBJ_PREFIX: '<?php echo we_base_link::TYPE_OBJ_PREFIX; ?>',
-								TYPE_INT_PREFIX: '<?php echo we_base_link::TYPE_INT_PREFIX; ?>',
-								TYPE_MAIL_PREFIX: '<?php echo we_base_link::TYPE_MAIL_PREFIX; ?>',
-								TYPE_THUMB_PREFIX: '<?php echo we_base_link::TYPE_THUMB_PREFIX; ?>',
-				},
-				graphic:{
-				gdSupportedTypes:{<?php
+				defaultWidth:<?php echo weTree::DefaultWidth; ?>,
+				min:<?php echo weTree::MinWidth; ?>,
+				max:<?php echo weTree::MaxWidth; ?>,
+				step:<?php echo weTree::StepWidth; ?>,
+				moveWidth:<?php echo weTree::MoveWidth; ?>,
+				deleteWidth:<?php echo weTree::DeleteWidth; ?>
+			},
+			catSelect: {
+				width:<?php echo we_selector_file::WINDOW_CATSELECTOR_WIDTH; ?>,
+				height:<?php echo we_selector_file::WINDOW_CATSELECTOR_HEIGHT; ?>
+			},
+			docSelect: {
+				width:<?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH; ?>,
+				height:<?php echo we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>
+			},
+			windowSelect: {
+				width:<?php echo we_selector_file::WINDOW_SELECTOR_WIDTH; ?>,
+				height:<?php echo we_selector_file::WINDOW_SELECTOR_HEIGHT; ?>
+			},
+			windowDirSelect: {
+				width:<?php echo we_selector_file::WINDOW_DIRSELECTOR_WIDTH; ?>,
+				height:<?php echo we_selector_file::WINDOW_DIRSELECTOR_HEIGHT; ?>
+			},
+			windowDelSelect: {
+				width:<?php echo we_selector_file::WINDOW_DELSELECTOR_WIDTH; ?>,
+				height:<?php echo we_selector_file::WINDOW_DELSELECTOR_HEIGHT; ?>
+			},
+			sidebar: {
+				defaultWidth:<?php echo intval(defined('SIDEBAR_DEFAULT_WIDTH') ? SIDEBAR_DEFAULT_WIDTH : 0); ?>
+			}
+		},
+		linkPrefix: {
+			TYPE_OBJ_PREFIX: '<?php echo we_base_link::TYPE_OBJ_PREFIX; ?>',
+			TYPE_INT_PREFIX: '<?php echo we_base_link::TYPE_INT_PREFIX; ?>',
+			TYPE_MAIL_PREFIX: '<?php echo we_base_link::TYPE_MAIL_PREFIX; ?>',
+			TYPE_THUMB_PREFIX: '<?php echo we_base_link::TYPE_THUMB_PREFIX; ?>',
+		},
+		graphic:{
+			gdSupportedTypes:{<?php
 echo implode(',', array_map(function($v){
-		return '"' . $v . '" : true';
-	}, we_base_imageEdit::supported_image_types()));
+return '"' . $v . '" : true';
+}, we_base_imageEdit::supported_image_types()));
 ?>},
-								canRotate:<?php echo intval(function_exists("ImageRotate")); ?>,
-				}
-},
-				//all relevant settings for current session
-				session:{
-				seemode:<?php echo intval($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE); ?>,
-								seeMode_edit_include:<?php echo (!empty($SEEM_edit_include)) ? 'true' : 'false'; ?>, // in edit_include mode of seeMode
-								userID:<?php echo $_SESSION["user"]["ID"]; ?>,
-								//permissions set for the user
-								permissions:{
+			canRotate:<?php echo intval(function_exists("ImageRotate")); ?>,
+		}
+	},
+	//all relevant settings for current session
+	session:{
+		seemode:<?php echo intval($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE); ?>,
+		seeMode_edit_include:<?php echo (!empty($SEEM_edit_include)) ? 'true' : 'false'; ?>, // in edit_include mode of seeMode
+		userID:<?php echo $_SESSION["user"]["ID"]; ?>,
+		//permissions set for the user
+		permissions:{
 <?php
 foreach($_SESSION['perms'] as $perm => $access){
 	echo $perm . ':' . (!empty($_SESSION['perms']['ADMINISTRATOR']) ? 1 : intval($access)) . ',';
 }
 ?>
-								},
-								sess_id:"<?php echo session_id(); ?>",
-								specialUnload:specialUnload,
-								docuLang:"<?php echo ($GLOBALS["WE_LANGUAGE"] === 'Deutsch' ? 'de' : 'en'); ?>",
-								helpLang:"<?php echo $GLOBALS["WE_LANGUAGE"]; ?>",
-								messageSettings:<?php echo (!empty($_SESSION['prefs']['message_reporting']) ? we_message_reporting::WE_MESSAGE_INFO | we_message_reporting::WE_MESSAGE_ERROR | $_SESSION['prefs']['message_reporting'] : PHP_INT_MAX); ?>,
-								isChrome:<?php echo intval(we_base_browserDetect::isChrome()); ?>,
-				},
-				layout:{
-				//vtabs:Vtabs,
-				button:null,
-								sidebar:null,
-								cockpitFrame:null,
-								windows:[],
-				},
-				handler:{
-				errorHandler:errorHandler,
-								dealWithKeyboardShortCut:null,
-				},
-				//utility functions, defined in webedition.js
-				util:{
-				}
+		},
+		sess_id:"<?php echo session_id(); ?>",
+		specialUnload:specialUnload,
+		docuLang:"<?php echo ($GLOBALS["WE_LANGUAGE"] === 'Deutsch' ? 'de' : 'en'); ?>",
+		helpLang:"<?php echo $GLOBALS["WE_LANGUAGE"]; ?>",
+		messageSettings:<?php echo (!empty($_SESSION['prefs']['message_reporting']) ? we_message_reporting::WE_MESSAGE_INFO | we_message_reporting::WE_MESSAGE_ERROR | $_SESSION['prefs']['message_reporting'] : PHP_INT_MAX); ?>,
+		isChrome:<?php echo intval(we_base_browserDetect::isChrome()); ?>,
+	},
+	layout:{
+		//vtabs:Vtabs,
+		button:null,
+		sidebar:null,
+		cockpitFrame:null,
+		windows:[],
+	},
+	handler:{
+		errorHandler:errorHandler,
+		dealWithKeyboardShortCut:null,
+	},
+	//utility functions, defined in webedition.js
+	util:{
+	}
 };
 //-->
 </script>
