@@ -214,7 +214,7 @@ var openFolders= {
 						'};'
 		);
 
-		$body = we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => $this->bodyFrame . ".location=" . $this->frameset . "?pnt=body" . $args . "&step=' + step;")
+		$body = we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => $this->bodyFrame . ".location='" . $this->frameset . '?pnt=body' . $args . "&step=' + step;")
 						, we_html_element::htmlIFrame('header', $this->frameset . '?pnt=header', 'position:absolute;top:0px;height:1px;left:0px;right:0px;overflow: hidden', '', '', false) .
 						we_html_element::htmlIFrame('body', $this->frameset . '?pnt=body', 'position:absolute;top:1px;bottom:45px;left:0px;right:0px;', 'border:0px;width:100%;height:100%;') .
 						we_html_element::htmlIFrame('footer', $this->frameset . '?pnt=footer', 'position:absolute;height:45px;bottom:0px;left:0px;right:0px;overflow: hidden', '', '', false) .
@@ -300,7 +300,7 @@ top.close();');
 		}
 
 		$js = we_html_element::jsElement(
-				$this->footerFrame . '.location="' . $this->frameset . '?pnt=footer&step=1";
+						$this->footerFrame . '.location="' . $this->frameset . '?pnt=footer&step=1";
 ' . $this->headerFrame . '.location="' . $this->frameset . '?pnt=header&step=1";
 self.focus();
 
@@ -375,8 +375,7 @@ function we_cmd(){
 			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }');
-		$js.=we_html_element::jsElement(
-						$this->footerFrame . '.location=' . $this->frameset . '?pnt=footer&step=2";');
+		$js.=we_html_element::jsElement($this->footerFrame . '.location="' . $this->frameset . '?pnt=footer&step=2";');
 
 		$parts = array();
 		$showdocs = false;
@@ -418,8 +417,8 @@ function we_cmd(){
 		$_space = 10;
 		$art = $this->exportVars["art"];
 		$js = we_html_element::jsElement(
-						$this->headerFrame . '.location=' . $this->frameset . '?pnt=header&step=2";' .
-						$this->footerFrame . '.location=' . $this->frameset . '?pnt=footer&step=2";');
+						$this->headerFrame . '.location="' . $this->frameset . '?pnt=header&step=2";' .
+						$this->footerFrame . '.location="' . $this->frameset . '?pnt=footer&step=2";');
 
 		$parts = array(
 			array("headline" => "", "html" => we_html_forms::radiobutton("docs", ($art === "docs" ? true : ($art != 'objects')), "art", g_l('export', '[documents]'), true, "defaultfont", $this->topFrame . ".art='docs'"), 'space' => $_space, 'noline' => 1)
@@ -453,7 +452,7 @@ function we_cmd(){
 
 
 		$js.=we_html_element::jsElement(
-						$this->footerFrame . '.location=' . $this->frameset . '?pnt=footer&step=3";
+						$this->footerFrame . '.location="' . $this->frameset . '?pnt=footer&step=3";
 	setTimeout(' . $this->topFrame . '.startTree,100);
 
 function populate(id,table){
@@ -516,7 +515,7 @@ function we_submit(){
 			),
 			array(
 				"headline" => "",
-				"html" => $header->getHtml() . we_html_element::htmlDiv(array("id" => "treetable", "class" => "blockWrapper", "style" => "width: 540px; height: 250px; border:1px #dce6f2 solid;"), ""),
+				"html" => $header->getHtml() . we_html_element::htmlDiv(array("id" => "treetable", "class" => "blockWrapper", "style" => "position: relative;width: 540px; height: 250px; border:1px #dce6f2 solid;"), ""),
 			)
 		);
 
@@ -605,8 +604,8 @@ function setState(a) {
 			setLabelState("label_link_object_depth",_new_state);
 		}
 }
-' . $this->headerFrame . '.location=' . $this->frameset . '?pnt=header&step=4";
-' . $this->footerFrame . '.location=' . $this->frameset . '?pnt=footer&step=4";');
+' . $this->headerFrame . '.location="' . $this->frameset . '?pnt=header&step=4";
+' . $this->footerFrame . '.location="' . $this->frameset . '?pnt=footer&step=4";');
 
 
 
@@ -661,8 +660,8 @@ function setState(a) {
 
 //set variables in top frame
 		$js = we_html_element::jsElement(
-						$this->headerFrame . '.location=' . $this->frameset . '?pnt=header&step=7";' .
-						$this->footerFrame . '.location=' . $this->frameset . '?pnt=footer&step=7";');
+						$this->headerFrame . '.location="' . $this->frameset . '?pnt=header&step=7";' .
+						$this->footerFrame . '.location="' . $this->frameset . '?pnt=footer&step=7";');
 
 		$parts = array(
 			array("headline" => g_l('export', '[filename]'), "html" => we_html_tools::htmlTextInput("filename", $_input_size, $filename, "", "", "text", 260), 'space' => $_space)
@@ -956,8 +955,8 @@ function setState(a) {
 				break;
 			default:
 				$buttons = we_html_button::position_yes_no_cancel(
-								we_html_button::create_button(we_html_button::BACK, "javascript:" . $this->loadFrame . ".location=' . $this->frameset . '?pnt=load&cmd=back&step=" . $step . "';") .
-								we_html_button::create_button(we_html_button::NEXT, "javascript:" . $this->loadFrame . ".location=' . $this->frameset . '?pnt=load&cmd=next&step=" . $step . "';"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
+								we_html_button::create_button(we_html_button::BACK, 'javascript:' . $this->loadFrame . '.location=\'' . $this->frameset . '?pnt=load&cmd=back&step=' . $step . '\';') .
+								we_html_button::create_button(we_html_button::NEXT, 'javascript:' . $this->loadFrame . '.location=\'' . $this->frameset . '?pnt=load&cmd=next&step=' . $step . '\';'), we_html_button::create_button(we_html_button::CANCEL, 'javascript:top.close();')
 				);
 		}
 

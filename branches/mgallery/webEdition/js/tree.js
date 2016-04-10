@@ -1,4 +1,4 @@
-/* global top */
+/* global top, treeData */
 
 /**
  * webEdition SDK
@@ -461,14 +461,16 @@ function info(text) {
 }
 
 function setScrollY() {
-	if (top.we_scrollY) {
-		top.we_scrollY[treeData.table] = top.document.getElementById("treetable").scrollTop;
+	var el;
+	if (top.we_scrollY && (el = top.document.getElementById("treetable"))) {
+		top.we_scrollY[treeData.table] = el.scrollTop;
 	}
 }
 
 function scrollToY() {
-	if (top.we_scrollY) {
-		top.document.getElementById("treetable").scrollTop = (top.we_scrollY[treeData.table] ? top.we_scrollY[treeData.table] : 0);
+	var el;
+	if (top.we_scrollY && (el = top.document.getElementById("treetable"))) {
+		el.scrollTop = (top.we_scrollY[treeData.table] ? top.we_scrollY[treeData.table] : 0);
 	}
 }
 
