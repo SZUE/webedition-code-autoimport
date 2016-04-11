@@ -45,6 +45,11 @@ if(!$urlLookingFor){
  * url without query string
  * we need this in some we_tag() and to avoid dublicate content
  */
+$urlLookingFor = (URLENCODE_OBJECTSEOURLS ?
+	strtr(urlencode($urlLookingFor), array('%2F' => '/', '//' => '/')) :
+	strtr($urlLookingFor, array('//' => '/'))
+);
+
 define('WE_REDIRECTED_SEO', $urlLookingFor);
 
 /**
@@ -59,10 +64,6 @@ define('WE_REDIRECTED_SEO', $urlLookingFor);
  * third check: part-1-of-seo-url/part-2-of-seo-url --> we get the object
  * and so one
  */
-$urlLookingFor = (URLENCODE_OBJECTSEOURLS ?
-		strtr(urlencode($urlLookingFor), array('%2F' => '/', '//' => '/')) :
-		strtr($urlLookingFor, array('//' => '/'))
-	);
 
 while($urlLookingFor){// first we try to get the object
 	if(($object = getHash('SELECT ID,ParentID,TriggerID,Url,Workspaces,ExtraWorkspacesSelected FROM ' . OBJECT_FILES_TABLE . ' WHERE Published>0 AND Url LIKE "' . $GLOBALS['DB_WE']->escape($urlLookingFor) . '" LIMIT 1'))){
