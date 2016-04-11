@@ -118,10 +118,10 @@ if(($we_include = $we_doc->editor())){
 			}
 			echo $content;
 		}
-	} else {
-		we_html_tools::protect(); //	only inside webEdition !!!
-		include(WE_INCLUDES_PATH . $we_include);
+		return;
 	}
-} else {
-	exit('Nothing to include ...');
+	we_html_tools::protect(); //	only inside webEdition !!!
+	include(WE_INCLUDES_PATH . $we_include);
+	return;
 }
+exit('Nothing to include ...');

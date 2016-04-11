@@ -39,9 +39,9 @@ function showContent(){
 	exit;
 }
 
-$_userID = (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition ? $GLOBALS['we_doc']->isLockedByUser() : 0);
+$userID = (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition ? $GLOBALS['we_doc']->isLockedByUser() : 0);
 
-if(($_userID && $_userID != $_SESSION['user']['ID']) || (we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'switch_edit_page' || (isset($_SESSION['weS']['EditPageNr']) && $_SESSION['weS']['EditPageNr'] == we_base_constants::WE_EDITPAGE_PREVIEW))){ //	Preview-Mode of Tabs
+if(($userID && $userID != $_SESSION['user']['ID']) || (we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'switch_edit_page' || (isset($_SESSION['weS']['EditPageNr']) && $_SESSION['weS']['EditPageNr'] == we_base_constants::WE_EDITPAGE_PREVIEW))){ //	Preview-Mode of Tabs
 	//	We must choose the right template to show the object.
 	//	Therefore we must look, if $_SESSION['weS']['SEEM']['lastPath'] exists to check the workspace.
 	//	First check the workspaces for the document.
@@ -67,14 +67,14 @@ if(($_userID && $_userID != $_SESSION['user']['ID']) || (we_base_request::_(we_b
 		$tmpDB = new DB_WE();
 
 		//	determine Path from last opened wE-Document
-		$_lastDoc = isset($_SESSION['weS']['last_webEdition_document']) ? $_SESSION['weS']['last_webEdition_document'] : array();
-		if(isset($_lastDoc['Path'])){
+		$lastDoc = isset($_SESSION['weS']['last_webEdition_document']) ? $_SESSION['weS']['last_webEdition_document'] : array();
+		if(isset($lastDoc['Path'])){
 			if($workspaces){ // get the correct template
 				//	Select a matching workspace.
 				foreach($workspaces as $workspace){
 					$workspace = id_to_path($workspace, FILE_TABLE, $tmpDB);
 
-					if($workspace && strpos($_lastDoc['Path'], $workspace) === 0 && $tids){
+					if($workspace && strpos($lastDoc['Path'], $workspace) === 0 && $tids){
 						//	init document
 						$tid = $tids[0];
 						/* 						$GLOBALS['we_doc']->we_initSessDat($we_dt);
@@ -126,10 +126,10 @@ if(($_userID && $_userID != $_SESSION['user']['ID']) || (we_base_request::_(we_b
 			//if set, we show object again!
 			unset($_REQUEST);
 			include($_SERVER['DOCUMENT_ROOT'] . $path);
-		} else {
-			echo 'Sorry, we are unable to locate your requested Page.';
+			exit();
 		}
-		exit;
+		echo 'Sorry, we are unable to locate your requested Page.';
+		exit();
 	}
 
 	$GLOBALS['we_doc'] = new we_webEditionDocument();
@@ -149,52 +149,43 @@ if(isset($GLOBALS['we_obj']) && $GLOBALS['we_obj']->documentCustomerFilter && !i
 		new we_base_sessionHandler();
 	}
 
-	if(($_visitorHasAccess = $GLOBALS['we_obj']->documentCustomerFilter->accessForVisitor($GLOBALS['we_obj']->ID, $GLOBALS['we_obj']->ContentType))){
+	if(($visitorHasAccess = $GLOBALS['we_obj']->documentCustomerFilter->accessForVisitor($GLOBALS['we_obj']->ID, $GLOBALS['we_obj']->ContentType))){
+		switch($visitorHasAccess){
+			case we_customer_documentFilter::ACCESS:
+			case we_customer_documentFilter::CONTROLONTEMPLATE:
+				break;
+			default:
+				// user has NO ACCESS => show errordocument
+				$errorDocId = $GLOBALS['we_obj']->documentCustomerFilter->getErrorDoc($visitorHasAccess);
 
-		if(!($_visitorHasAccess == we_customer_documentFilter::ACCESS || $_visitorHasAccess == we_customer_documentFilter::CONTROLONTEMPLATE)){
-			// user has NO ACCESS => show errordocument
-			$_errorDocId = $GLOBALS['we_obj']->documentCustomerFilter->getErrorDoc($_visitorHasAccess);
-
-			if(($_errorDocPath = id_to_path($_errorDocId, FILE_TABLE))){ // use given document instead !
-				if($_errorDocId){
+				if($errorDocId && ($errorDocPath = id_to_path($errorDocId, FILE_TABLE))){ // use given document instead !
 					we_html_tools::setHttpCode(401);
 					//if REQUEST is set, we show object again!
-					unset($_errorDocId,$_REQUEST);
-					@include($_SERVER['DOCUMENT_ROOT'] . $_errorDocPath);
-					unset($_errorDocPath);
+					unset($errorDocId, $_REQUEST);
+					include($_SERVER['DOCUMENT_ROOT'] . $errorDocPath);
+					unset($errorDocPath);
+					return;
 				}
-				return;
-			}
-			die('Customer has no access to this document');
+				die('Customer has no access to this document');
 		}
 	}
 }
 
-if(!isset($pid) || !($pid)){
-	$pid = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape($_SERVER['SCRIPT_NAME']) . '"');
-}
-
-$tid = (!isset($tid) || !($tid) ? $GLOBALS['we_obj']->getTemplateID($pid) : $tid);
-
-if(!$tid){
-	if(($tids = explode(',', f('SELECT Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($GLOBALS['we_obj']->TableID))))){
-		$tid = $tids[0];
-	}
-}
-
+$pid = (empty($pid) ? f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape($_SERVER['SCRIPT_NAME']) . '"') : $pid);
+$tid = (empty($tid) ? $GLOBALS['we_obj']->getTemplateID($pid) : $tid);
 $tmplPath = $tid ? preg_replace('/.tmpl$/i', '.php', f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($tid))) : '';
 
 if(!$tid || !$tmplPath || !is_readable(TEMPLATES_PATH . $tmplPath)){
-	we_html_tools::setHttpCode(404);
+	we_html_tools::setHttpCode(SUPPRESS404CODE ? 200 : 404);
 
 	if(ERROR_DOCUMENT_NO_OBJECTFILE && ($path = id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE))){
 		//if set, we show object again!
 		unset($_REQUEST);
 		include($_SERVER['DOCUMENT_ROOT'] . $path);
-	} else {
-		echo 'Sorry, we are unable to locate your requested Page.';
+		exit();
 	}
-	exit;
+	echo 'Sorry, we are unable to locate your requested Page.';
+	exit();
 }
 
 
@@ -211,27 +202,27 @@ if(!empty($_SESSION['weS']['we_data'][$we_transaction]['0']['InWebEdition'])){ /
 	$contents = ob_get_clean();
 
 	echo we_SEEM::parseDocument($contents);
-} else { //	Not in webEdition, just show the file.
-	//
+	return;
+} //	Not in webEdition, just show the file.
+//
 		// --> Start Glossary Replacement
-	//
+//
 		$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE']);
 // --> Glossary Replacement
-	$useGlossary = ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_ID'] == $GLOBALS['we_doc']->ID)) && (isset($we_doc->InGlossar) && $we_doc->InGlossar == 0) && we_glossary_replace::useAutomatic());
-	$useBuffer = !empty($urlReplace) || $useGlossary;
-	if($useBuffer){
-		ob_start();
+$useGlossary = ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_ID'] == $GLOBALS['we_doc']->ID)) && (isset($we_doc->InGlossar) && $we_doc->InGlossar == 0) && we_glossary_replace::useAutomatic());
+$useBuffer = !empty($urlReplace) || $useGlossary;
+if($useBuffer){
+	ob_start();
+}
+include(TEMPLATES_PATH . $tmplPath);
+if($useBuffer){
+	$content = ob_get_clean();
+	if($useGlossary){
+		$content = we_glossary_replace::replace($content, $GLOBALS['we_doc']->Language);
 	}
-	include(TEMPLATES_PATH . $tmplPath);
-	if($useBuffer){
-		$content = ob_get_clean();
-		if($useGlossary){
-			$content = we_glossary_replace::replace($content, $GLOBALS['we_doc']->Language);
-		}
-		if($urlReplace){
-			$content = preg_replace($urlReplace, array_keys($urlReplace), $content);
-		}
+	if($urlReplace){
+		$content = preg_replace($urlReplace, array_keys($urlReplace), $content);
+	}
 
-		echo $content;
-	}
+	echo $content;
 }

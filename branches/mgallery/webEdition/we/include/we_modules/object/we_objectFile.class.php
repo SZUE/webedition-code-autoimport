@@ -1758,10 +1758,13 @@ class we_objectFile extends we_document{
 		$tmplArrExtra = makeArrayFromCSV($this->ExtraTemplates);
 
 
-		$tid = $this->getTemplateFromWorkspace($wsArr, $tmplArr, $parentID, 1);
-		$tid = $tid? : $this->getTemplateFromWorkspace($wsArrExtra, $tmplArrExtra, $parentID, 1);
-		$tid = $tid? : $this->getTemplateFromWorkspace($wsArr, $tmplArr, $parentID, 0);
-		$tid = $tid? : $this->getTemplateFromWorkspace($wsArrExtra, $tmplArrExtra, $parentID, 0);
+		$tid = ($this->getTemplateFromWorkspace($wsArr, $tmplArr, $parentID, 1)? :
+				($this->getTemplateFromWorkspace($wsArrExtra, $tmplArrExtra, $parentID, 1)? :
+					($this->getTemplateFromWorkspace($wsArr, $tmplArr, $parentID, 0)? :
+						$this->getTemplateFromWorkspace($wsArrExtra, $tmplArrExtra, $parentID, 0)
+					)
+				)
+			);
 
 		if(!$tid){
 			if(!empty($tmplArr)){
