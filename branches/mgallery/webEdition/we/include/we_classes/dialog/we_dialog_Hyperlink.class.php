@@ -93,8 +93,8 @@ class we_dialog_Hyperlink extends we_dialog_base{
 					$this->args['extHref'] = '';
 					$this->args['fileID'] = trim($ref, '/?#');
 					$hash = getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->args['fileID']), $this->db);
-					$this->args['fileHref'] = $hash['Path'];
-					$this->args['fileCT'] = $hash['ContentType'];
+					$this->args['fileHref'] = empty($hash['Path']) ? '' : $hash['Path'];
+					$this->args['fileCT'] = empty($hash['ContentType']) ? '' : $hash['ContentType'];
 					$this->args['mailHref'] = '';
 					$this->args['objID'] = '';
 					$this->args['objHref'] = '';
