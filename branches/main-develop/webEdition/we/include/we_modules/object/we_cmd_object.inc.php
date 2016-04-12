@@ -67,7 +67,7 @@ switch($cmd){
 	case 'object_obj_search':
 		return 'we_modules/object/search_submit.php';
 	case 'object_preview_objectFile':
-		return 'we_modules/object/we_object_showDocument.inc.php';
+		return 'we_showObject.inc.php';
 	case 'object_create_tmpfromClass':
 		return 'we_modules/object/we_object_createTemplate.inc.php';
 	case 'object_editObjectTextArea':
