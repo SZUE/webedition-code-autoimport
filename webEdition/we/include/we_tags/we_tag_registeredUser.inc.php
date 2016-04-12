@@ -37,7 +37,11 @@ function we_tag_registeredUser($attribs){
 	}
 	if($id){
 		$h = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($id));
+		if(!$h){
+			return '';
+		}
 		unset($h['Password']);
+		$h = array_merge($h, we_customer_customer::getEncryptedFields());
 		if($show){
 			$foo = array();
 			preg_match_all('|%([^ ]+) ?|i', $show, $foo, PREG_SET_ORDER);

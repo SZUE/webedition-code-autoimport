@@ -22,12 +22,12 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcGetDocElementCmd extends rpcCmd{
+class rpcGetDocElementCmd extends we_rpc_cmd{
 
 	var $Parameters = array('docid', 'element');
 
 	function execute(){
-		$resp = new rpcResponse();
+		$resp = new we_rpc_response();
 
 		$_doc = new we_webEditionDocument();
 

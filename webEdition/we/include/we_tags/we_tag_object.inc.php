@@ -30,13 +30,13 @@ function we_parse_tag_object($attribs, $content, array $arr){
 
 	//dont't check if id or name is set, since it is possible to set object ID by request
 
-	return '<?php global $lv;
-		if(' . we_tag_tagParser::printTag('object', $attribs) . '){?>' . $content . '<?php }
+	return '<?php ' . (strpos($content, '$lv') !== false ? 'global $lv;' : '') .
+		'if(' . we_tag_tagParser::printTag('object', $attribs) . '){?>' . $content . '<?php }
 		we_post_tag_listview(); ?>';
 }
 
 function we_tag_object($attribs){
-	if(!defined('WE_OBJECT_MODULE_PATH')){
+	if(!defined('OBJECT_TABLE')){
 		echo modulFehltError('Object/DB', __FUNCTION__);
 		return false;
 	}
@@ -50,10 +50,6 @@ function we_tag_object($attribs){
 	$searchable = weTag_getAttribute('searchable', $attribs, false, we_base_request::BOOL);
 	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, we_base_request::BOOL);
 	$objectseourls = weTag_getAttribute('objectseourls', $attribs, TAGLINKS_OBJECTSEOURLS, we_base_request::BOOL);
-
-	if(!isset($GLOBALS['we_lv_array'])){
-		$GLOBALS['we_lv_array'] = array();
-	}
 
 	if($name){
 		if(strpos($name, ' ') !== false){
@@ -76,22 +72,20 @@ function we_tag_object($attribs){
 		$path = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $we_oid);
 		$textname = 'we_' . $we_doc->Name . '_object[' . $name . '_path]';
 		$idname = 'we_' . $we_doc->Name . '_object[' . $name . '#bdid]';
-		$table = OBJECT_FILES_TABLE;
 
 		if($GLOBALS['we_editmode']){
-			$delbutton = we_html_button::create_button('image:btn_function_trash', "javascript:document.forms[0].elements['" . $idname . "'].value=0;document.forms[0].elements['" . $textname . "'].value='';_EditorFrame.setEditorIsHot(false);we_cmd('reload_editpage');");
-			$open = we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'function_view', "javascript:if(document.forms[0].elements['" . $idname . "'].value){top.weEditorFrameController.openDocument('" . OBJECT_FILES_TABLE . "', document.forms[0].elements['" . $idname . "'].value,'');}");
-			$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $idname . "'].value");
-			$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['" . $textname . "'].value");
-			$wecmdenc3 = we_base_request::encCmd("opener.we_cmd('reload_editpage');opener._EditorFrame.setEditorIsHot(true);");
+			$delbutton = we_html_button::create_button(we_html_button::TRASH, "javascript:document.forms[0].elements['" . $idname . "'].value=0;document.forms[0].elements['" . $textname . "'].value='';_EditorFrame.setEditorIsHot(false);we_cmd('reload_editpage');");
+			$open = we_html_button::create_button(we_html_button::VIEW, "javascript:if(document.forms[0].elements['" . $idname . "'].value){WE().layout.weEditorFrameController.openDocument('" . OBJECT_FILES_TABLE . "', document.forms[0].elements['" . $idname . "'].value,'');}");
+			$cmd1 = "document.we_form.elements['" . $idname . "'].value";
+			$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
+			$wecmdenc3 = we_base_request::encCmd("opener.setScrollTo();opener.we_cmd('reload_editpage');opener._EditorFrame.setEditorIsHot(true);");
 
-
-			$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.forms[0].elements['" . $idname . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
+			$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . OBJECT_FILES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
 
 
 			$yuiSuggest = &weSuggest::getInstance();
 			$yuiSuggest->setAcId($name . we_base_file::getUniqueId(), f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . $classid));
-			$yuiSuggest->setContentType('folder,objectFile');
+			$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::OBJECT_FILE);
 			$yuiSuggest->setInput($textname, $path);
 			$yuiSuggest->setResult($idname, $we_oid);
 			$yuiSuggest->setMaxResults(10);
@@ -102,7 +96,7 @@ function we_tag_object($attribs){
 			?>
 			<table class="weEditTable padding0 spacing0 border0">
 				<tr>
-					<td class="weEditmodeStyle" style="padding:0 6px;"><span style="font-weight: bold;"><?php echo weTag_getAttribute('text', $attribs, weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING), we_base_request::STRING); ?></span></td>
+					<td class="weEditmodeStyle" style="padding:0 6px;"><span class="bold"><?php echo weTag_getAttribute('text', $attribs, weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING), we_base_request::STRING); ?></span></td>
 					<td class="weEditmodeStyle" style="width: <?php echo ($size + 20); ?>px"><?php echo $yuiSuggest->getHTML(); ?></td>
 					<td class="weEditmodeStyle"><?php echo $button; ?></td>
 					<td class="weEditmodeStyle"><?php echo $open; ?></td>
@@ -110,18 +104,31 @@ function we_tag_object($attribs){
 				</tr>
 			</table><?php
 		}
-	} else {
-		$we_oid = $we_oid ? : we_base_request::_(we_base_request::INT, 'we_oid', 0);
-	}
-	$GLOBALS['lv'] = new we_object_tag($classid, $we_oid, $triggerid, $searchable, $condition, $hidedirindex, $objectseourls);
-	if(is_array($GLOBALS['we_lv_array'])){
-		$GLOBALS['we_lv_array'][] = clone($GLOBALS['lv']);
 	}
 
-	if($GLOBALS['lv']->avail){
-		if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
-			echo we_SEEM::getSeemAnchors($we_oid, 'object');
-		}
+	if(!$we_oid){//Fix #10526 check if objectID is given by request
+		$id = ($oid = we_base_request::_(we_base_request::INT, 'we_objectID')) ? $oid : we_base_request::_(we_base_request::INT, 'we_oid', 0);
+		$classid = $id ? f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=0 AND ID=' . intval($id), '', $GLOBALS['DB_WE']) : 0;
+	}else{
+		$id = $we_oid;
 	}
-	return $GLOBALS['lv']->avail;
+
+	if($id && $classid){
+		$unique = md5(uniqid(__FUNCTION__, true));
+		$GLOBALS['lv'] = new we_listview_object($unique, 1, 0, '', 0, $classid, '', '', '(' . OBJECT_X_TABLE . $classid . '.OF_ID="' . intval($id) . '")' . ($condition ? ' AND ' . $condition : ''), $triggerid, '', '', $searchable, '', '', '', '', '', '', '', 0, '', '', '', '', $hidedirindex, $objectseourls);
+		$avail = $GLOBALS['lv']->next_record();
+
+		if($avail){
+			if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] === we_base_constants::MODE_SEE){
+				echo we_SEEM::getSeemAnchors($we_oid, 'object');
+			}
+		}
+	} else {
+		$GLOBALS['lv'] = new stdClass();
+		$avail = false;
+	}
+
+	we_pre_tag_listview();
+
+	return $avail;
 }

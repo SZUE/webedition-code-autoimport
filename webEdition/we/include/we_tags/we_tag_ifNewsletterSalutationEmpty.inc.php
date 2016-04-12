@@ -20,7 +20,7 @@
  */
 function we_tag_ifNewsletterSalutationEmpty($attribs){
 	if(($foo = attributFehltError($attribs, 'type', __FUNCTION__, true))){
-		print($foo);
+		echo $foo;
 		return false;
 	}
 	return (we_tag('newsletterSalutation', $attribs) == '');

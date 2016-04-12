@@ -24,7 +24,7 @@
 if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/liveUpdate/includes/proxysettings.inc.php')){
 	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/liveUpdate/includes/proxysettings.inc.php');
 }
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_autoload.inc.php');
 
 if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/liveUpdate/updateClient')){
 	we_base_file::deleteLocalFolder($_SERVER['DOCUMENT_ROOT'] . '/webEdition/liveUpdate/updateClient', true);
@@ -73,7 +73,7 @@ if(isset($_REQUEST['update_cmd'])){
 	 * the session_id of the server. If this id is missing, create a new
 	 * session on the server.
 	 */
-	if(!isset($_REQUEST['liveUpdateSession'])){
+	if(empty($_REQUEST['liveUpdateSession'])){
 
 		/*
 		 * exit after submitting the form

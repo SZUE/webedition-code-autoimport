@@ -30,7 +30,7 @@ if(($id = we_base_request::_(we_base_request::INT, 'url'))){
 	if($path){
 		$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE'], true);
 		$loc = ($urlReplace ?
-				(($http = preg_replace($urlReplace, array_keys($urlReplace), $path, -1, $cnt)) && $cnt ? 'http:' : getServerUrl()) . $http :
+				(($http = preg_replace($urlReplace, array_keys($urlReplace), $path, -1, $cnt)) && $cnt ? '' : getServerUrl()) . $http :
 				getServerUrl() . $path
 			) . '?r=' . rand();
 	} else {
@@ -42,5 +42,5 @@ if(($id = we_base_request::_(we_base_request::INT, 'url'))){
 header('Location: ' . $loc);
 echo we_html_tools::getHtmlTop();
 ?>
-<meta HTTP-EQUIV="REFRESH" content="1; url=<?php echo $loc; ?>">
+<meta http-equiv="refresh" content="1; url=<?php echo $loc; ?>">
 </head><body></body></html>

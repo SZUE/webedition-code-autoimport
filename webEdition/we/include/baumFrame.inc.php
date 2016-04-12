@@ -23,29 +23,34 @@
  */
 $table = isset($table) ? $table : FILE_TABLE;
 ?>
-<div style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;">
-	<div style="position:absolute;top:0px;bottom:0px;left:0px;width:24px;overflow: hidden;background-image: url(<?php echo IMAGE_DIR; ?>v-tabs/background.gif);background-repeat:repeat-y;border-top:1px solid black;">
-		<?php include(WE_INCLUDES_PATH . 'we_vtabs.inc.php'); ?>
+<div id="vtabs">
+	<?php include(WE_INCLUDES_PATH . 'we_vtabs.inc.php'); ?>
+</div>
+<div id="treeFrameDiv">
+	<div id="treeControl">
+		<span id="treeName" class="middlefont"></span>
+		<span id="reloadTree" onclick="we_cmd('loadVTab', top.treeData.table, 0);"><i class="fa fa-refresh"></i></span>
+		<span id="toggleTree" onclick="toggleTree();" title="<?php echo g_l('global', '[tree][minimize]'); ?>"><i id="arrowImg" class="fa fa-lg fa-caret-<?php echo ($_treewidth <= 100) ? "right" : "left"; ?>" ></i></span>
 	</div>
-	<div style="position:absolute;top:0px;bottom:0px;left:24px;right:0px;border:0px;overflow: hidden;" id="treeFrameDiv">
-		<div style="position:absolute;top:0px;height:1px;left:0px;right:0px;overflow: hidden;" id="bm_treeheaderDiv">
-			<iframe frameBorder="0" src="about:blank" name="treeheader" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
+	<div id="treeContent">
+		<div id="bm_treeheaderDiv">
+			<iframe src="about:blank" name="treeheader"></iframe>
 		</div>
-		<div style="position:absolute;top:1px;bottom:40px;left:0px;right:0px;overflow: auto;background-color:#F3F7FF" id="bm_mainDiv">
-			<?php
-			$Tree = new weMainTree('webEdition.php', 'top', 'top.resize.left.tree', 'top.load');
-			echo $Tree->getHTMLContructX('if(top.treeResized){top.treeResized();}');
-			?>
-		</div>
-		<div style="position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;background-repeat:repeat;margin:0px;background-image: url(<?php echo EDIT_IMAGE_DIR ?>editfooterback.gif);">
-			<?php
-			include(WE_INCLUDES_PATH . 'treeInfo.inc.php');
-			?>
+		<?php
+		$Tree = new weMainTree('webEdition.php', 'top', 'top', 'top.load');
+		echo $Tree->getHTMLContruct();
+		?>
+		<div id="bm_searchField">
+			<div id="infoField" class="defaultfont"></div>
+			<form name="we_form" onsubmit="top.we_cmd('tool_weSearch_edit', document.we_form.keyword.value, top.treeData.table);
+					return false;">
+				<div id="search">
+					<?php
+					echo we_html_tools::htmlTextInput('keyword', 10, we_base_request::_(we_base_request::STRING, 'keyword', ''), '', 'placeholder="' . g_l('buttons_modules_message', '[search][alt]') . '"', 'search') .
+					we_html_button::create_button(we_html_button::SEARCH, "javascript:top.we_cmd('tool_weSearch_edit',document.we_form.keyword.value, top.treeData.table);", true);
+					?>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>
-<?php
-echo we_html_element::jsElement(
-	we_base_browserDetect::isIE() ? 'window.setTimeout("top.start()", 1000);' :
-		'top.start();'
-);

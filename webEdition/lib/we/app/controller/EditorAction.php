@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  * This source is part of the webEdition SDK. The webEdition SDK is
@@ -29,7 +28,6 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_app_controller_EditorAction extends Zend_Controller_Action{
-
 	/**
 	 * view
 	 */
@@ -108,7 +106,7 @@ class we_app_controller_EditorAction extends Zend_Controller_Action{
 	 * @return void
 	 */
 	protected function _setupParamString(){
-		$this->view->paramString = ((isset($this->view->tab) && $this->view->tab) ? '/tab/' . $this->view->tab : '') . ((isset($this->view->modelId) && $this->view->modelId) ? '/modelId/' . $this->view->modelId : '');
+		$this->view->paramString = (!empty($this->view->tab) ? '/tab/' . $this->view->tab : '') . (!empty($this->view->modelId) ? '/modelId/' . $this->view->modelId : '');
 	}
 
 	/**

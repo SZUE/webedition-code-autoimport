@@ -37,7 +37,7 @@ function we_parse_tag_checkForm($attribs, $content, array $arr){
  */
 function we_tag_checkForm($attribs, $content){
 	//  dont make this in editMode
-	if(isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"]){
+	if(!empty($GLOBALS["we_editmode"])){
 		return "";
 	}
 
@@ -64,30 +64,30 @@ function we_tag_checkForm($attribs, $content){
 
 	//  Generate errorHandler:
 	$jsOnError = ($onError ?
-					$jsOnError = '
+			$jsOnError = '
 if(self.' . $onError . '){' .
-					$onError . '(formular,missingReq,wrongEmail,pwError);
+			$onError . '(formular,missingReq,wrongEmail,pwError);
 } else {' .
-					we_message_reporting::getShowMessageCall($content, we_message_reporting::WE_MESSAGE_FRONTEND) . '
+			we_message_reporting::getShowMessageCall($content, we_message_reporting::WE_MESSAGE_FRONTEND) . '
 }' :
-					we_message_reporting::getShowMessageCall($content, we_message_reporting::WE_MESSAGE_FRONTEND)
-			);
+			we_message_reporting::getShowMessageCall($content, we_message_reporting::WE_MESSAGE_FRONTEND)
+		);
 
 	//  Generate mandatory array
 	if($mandatory){
 		$_fields = explode(',', $mandatory);
 		$jsMandatory = '//  check mandatory
-        var required = new Array("' . implode('", "', $_fields) . '");
+        var required = ["' . implode('", "', $_fields) . '"];
         missingReq = weCheckFormMandatory(formular, required);';
 	} else {
 		$jsMandatory = '';
 	}
 
 	$jsEmail = ($email ? //  code to check Emails
-					'//  validate emails
-        var email = new Array("' . implode('", "', explode(',', $email)) . '");
+			'//  validate emails
+        var email = ["' . implode('", "', explode(',', $email)) . '"];
         wrongEmail = weCheckFormEmail(formular, email);' :
-					'');
+			'');
 
 
 	if($password){
@@ -97,7 +97,7 @@ if(self.' . $onError . '){' .
 			return parseError(g_l('parser', '[checkForm_password]'));
 		}
 		$jsPasword = '//  check passwords
-        var password = new Array("' . implode('", "', $_pwFields) . '");
+        var password = ["' . implode('", "', $_pwFields) . '"];
         pwError = weCheckFormPassword(formular, password);
         ';
 	} else {
@@ -122,64 +122,59 @@ if(self.' . $onError . '){' .
 	switch($type){
 		case "id" : //  id of formular is given
 			$initFunction = 'weCheckFormEvent.addEvent( window, "load", function(){
-        initWeCheckForm_by_id("' . $match . '");
+        initWeCheckForm_by_id(weCheckForm_id_' . $match . ',"' . $match . '");
         }
     );';
 			$checkFunction = 'function weCheckForm_id_' . $match . '(ev){
+	var missingReq = [0];
+	var wrongEmail = [0];
+	var pwError    = false;
 
-        var missingReq = new Array(0);
-        var wrongEmail = new Array(0);
-        var pwError    = false;
+	formular = document.getElementById("' . $match . '");
+	' . $jsMandatory . '
+	' . $jsEmail . '
+	' . $jsPasword . '
 
-        formular = document.getElementById("' . $match . '");
-        ' . $jsMandatory . '
-        ' . $jsEmail . '
-        ' . $jsPasword . '
+	//  return true or false depending on errors
+	if( (wrongEmail.length>0) || (missingReq.length>0) || pwError){
 
-        //  return true or false depending on errors
-        if( (wrongEmail.length>0) || (missingReq.length>0) || pwError){
-
-            ' . $jsOnError . '
-            weCheckFormEvent.stopEvent(ev);
-            return false;
-        } else {
-            return true;
-        }
-    }
-            ';
+			' . $jsOnError . '
+			weCheckFormEvent.stopEvent(ev);
+			return false;
+	}
+	return true;
+}';
 
 			$function = we_html_element::jsElement($initFunction . ' ' . $checkFunction);
 			break;
 
 		case "name" : //  name of formular is given
 			$initFunction = 'weCheckFormEvent.addEvent( window, "load", function(){
-        initWeCheckForm_by_name("' . $match . '");
+        initWeCheckForm_by_name(weCheckForm_n_' . $match . ',"' . $match . '");
         }
     );';
 			$checkFunction = '
-    function weCheckForm_n_' . $match . '(ev){
-        var missingReq = new Array(0);
-        var wrongEmail = new Array(0);
-        var pwError    = false;
+function weCheckForm_n_' . $match . '(ev){
+		var missingReq = [0];
+		var wrongEmail = [0];
+		var pwError    = false;
 
-        formular = document.forms["' . $match . '"];
-        ' . $jsMandatory . '
-        ' . $jsEmail . '
-        ' . $jsPasword . '
+		formular = document.forms["' . $match . '"];
+		' . $jsMandatory . '
+		' . $jsEmail . '
+		' . $jsPasword . '
 
-        //  return true or false depending on errors
-        if( wrongEmail.length || missingReq.length || pwError){
+		//  return true or false depending on errors
+		if( wrongEmail.length || missingReq.length || pwError){
 
-            ' . $jsOnError . '
-            weCheckFormEvent.stopEvent(ev);
-            return false;
-        } else {
-            return true;
-        }
-    }
-            ';
+				' . $jsOnError . '
+				weCheckFormEvent.stopEvent(ev);
+				return false;
+		}
+	return true;
+}';
 
-			$function = we_html_element::jsElement($initFunction . ' ' . $checkFunction);
+			$function = we_html_element::jsElement($checkFunction . ' ' . $initFunction);
 			break;
 	}
 

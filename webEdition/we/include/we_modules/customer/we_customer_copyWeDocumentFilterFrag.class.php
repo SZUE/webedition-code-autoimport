@@ -45,7 +45,7 @@ class we_customer_copyWeDocumentFilterFrag extends we_fragment_base{
 		$_db = new DB_WE();
 		// now get all childs of this folder
 
-		$_db->query('SELECT *,ID,ContentType FROM ' . $_db->escape($_table) . ' WHERE	ContentType IN("folder","' . we_base_ContentTypes::WEDOCUMENT . '","objectFile") AND PATH LIKE "' . $_theFolder->Path . '/%"');
+		$_db->query('SELECT *,ID,ContentType FROM ' . $_db->escape($_table) . ' WHERE	ContentType IN("folder","' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::OBJECT_FILE . '") AND PATH LIKE "' . $_theFolder->Path . '/%"');
 
 		$this->alldata = array();
 
@@ -62,7 +62,6 @@ class we_customer_copyWeDocumentFilterFrag extends we_fragment_base{
 	}
 
 	function doTask(){
-
 		// getFilter of base-folder
 		$_theFolder = new we_folder();
 		$_theFolder->initByID($this->data["idForFilter"], $this->data["table"]);
@@ -76,7 +75,7 @@ class we_customer_copyWeDocumentFilterFrag extends we_fragment_base{
 			case we_base_ContentTypes::WEDOCUMENT:
 				$_targetDoc = new we_webEditionDocument();
 				break;
-			case "objectFile":
+			case we_base_ContentTypes::OBJECT_FILE:
 				$_targetDoc = new we_objectFile();
 				break;
 		}
@@ -91,18 +90,17 @@ class we_customer_copyWeDocumentFilterFrag extends we_fragment_base{
 		$_targetDoc->documentCustomerFilter->saveForModel($_targetDoc);
 		$_targetDoc->rewriteNavigation();
 
-		echo we_html_element::jsElement("parent.setProgressText('copyWeDocumentCustomerFilterText', '" . we_util_Strings::shortenPath($_targetDoc->Path, 55) . "');
-			parent.setProgress(" . number_format(( ( $this->currentTask ) / $this->numberOfTasks) * 100, 0) . ");");
+		echo we_html_element::jsElement("parent.setProgressText('copyWeDocumentCustomerFilterText', '" . we_base_util::shortenPath($_targetDoc->Path, 55) . "');
+parent.setProgress(" . number_format(( ( $this->currentTask ) / $this->numberOfTasks) * 100, 0) . ");");
 	}
 
 	function finish(){
-
 		echo we_html_element::jsElement("
-			parent.setProgressText('copyWeDocumentCustomerFilterText', '" . g_l('modules_customerFilter', '[apply_filter_done]') . "');
-			parent.setProgress(100);
-			" . we_message_reporting::getShowMessageCall(g_l('modules_customerFilter', '[apply_filter_done]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-			window.setTimeout('parent.top.close()', 2000);
-		");
+parent.setProgressText('copyWeDocumentCustomerFilterText', '" . g_l('modules_customerFilter', '[apply_filter_done]') . "');
+parent.setProgress(100);
+" . we_message_reporting::getShowMessageCall(g_l('modules_customerFilter', '[apply_filter_done]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
+window.setTimeout(parent.top.close, 2000);
+");
 	}
 
 }

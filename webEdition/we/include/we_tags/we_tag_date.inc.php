@@ -49,10 +49,10 @@ function getDateS(d){
 	}
 }
 function getDateWord(f,dateObj){
-	var l_day_Short = new Array("' . implode('","', g_l('date', '[day][short]')) . '");
-	var l_monthLong = new Array("' . implode('","', $monthsLong) . '");
-	var l_dayLong = new Array("' . implode('","', g_l('date', '[day][long]')) . '");
-	var l_monthShort = new Array("' . implode('","', $monthsShort) . '");
+	var l_day_Short = ["' . implode('","', g_l('date', '[day][short]')) . '"];
+	var l_monthLong = ["' . implode('","', $monthsLong) . '"];
+	var l_dayLong = ["' . implode('","', g_l('date', '[day][long]')) . '"];
+	var l_monthShort = ["' . implode('","', $monthsShort) . '"];
 	switch(f){
 		case "D":
 			return l_day_Short[dateObj.getDay()];
@@ -144,17 +144,8 @@ function getDateWord(f,dateObj){
 			return we_html_element::jsElement($js);
 		case 'php':
 		default:
-			Zend_Registry::set('Zend_Locale', new Zend_Locale((isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->Language ? $GLOBALS['WE_MAIN_DOC']->Language : $GLOBALS['weDefaultFrontendLanguage'])));
-			$zdate = new Zend_Date();
+			$langcode = (isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->Language ? $GLOBALS['WE_MAIN_DOC']->Language : $GLOBALS['weDefaultFrontendLanguage']);
 
-			//workaround buggy zend dateformat with \h which duplicates the char
-			$ret = '';
-			for($i = 0; $i < strlen($format); $i++){
-				$ret.=($format[$i] === '\\' ?
-						$format[++$i] :
-						$zdate->toString($format[$i], 'php')
-					);
-			}
-			return $ret;
+			return we_base_country::dateformat($langcode, new DateTime(), $format);
 	}
 }

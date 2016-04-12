@@ -44,7 +44,7 @@ $titlePathName = oldHtmlspecialchars($this->model->Path);
 
 $htmlPage->addHTML(
 '<div id="main">
-	<div style="margin:3px 0px 3px 0px;" id="headrow">
+	<div id="headrow">
 		&nbsp;<strong><span id="titlePathGroup">'.
 				$titlePathGroup . '</span>:&nbsp;<span id="titlePathName">'.
 				$titlePathName . '</span><div id="mark" style="display: none;">*</div></strong>
@@ -64,13 +64,12 @@ $js = <<<EOS
 
 	weEventController.register("docChanged", function(data, sender) {
 	var path = "";
-	if(typeof(parent.edbody.document.we_form.ParentPath)!="undefined") {
+	if(parent.edbody.document.we_form.ParentPath!==undefined) {
 	path = parent.edbody.document.we_form.ParentPath.value + "/";
 	}
 
 	path += parent.edbody.document.we_form.Text.value;
-	path = path.replace(/</g,"&lt;");
-path = path.replace(/>/g,"&gt;");
+	path = path.replace(/</g,"&lt;").replace(/>/g,"&gt;");
 self.setTitlePath("", path.replace(/\/\//,"/"));
 self.mark();
 });

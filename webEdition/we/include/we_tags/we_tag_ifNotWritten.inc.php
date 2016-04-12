@@ -41,4 +41,5 @@ function we_tag_ifNotWritten($attribs){
 		default:
 			return !we_tag('ifWritten', $attribs);
 	}
+
 }

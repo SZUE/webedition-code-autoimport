@@ -49,7 +49,7 @@ $_REQUEST = array(
 	/**
 	 * When rebuild type is set to "all", it rewrites
 	 * the maintable (tblFile) also.
-	 * Only use this if the maintable is broken!!!
+	 * Only use this if the maintable is broken!
 	 *
 	 *  @var boolean
 	 */
@@ -57,7 +57,7 @@ $_REQUEST = array(
 	/**
 	 * When rebuild type is set to "all", it rewrites the
 	 * temporary table (tblTemporaryDocs) also.
-	 * Only use this if the temporary table is broken!!!
+	 * Only use this if the temporary table is broken!
 	 *
 	 * @var boolean
 	 */
@@ -182,11 +182,11 @@ Options:
 
   --rewriteMaintable         When type is set to "all", it rewrites
                              the maintable (tblFile) also.
-                             Only use this if the maintable is broken!!!
+                             Only use this if the maintable is broken!
 
   --rewriteTmptable          When type is set to "all", it rewrites the
                              temporary table (tblTemporaryDocs) also.
-                             Only use this if the temporary table is broken!!!
+                             Only use this if the temporary table is broken!
 
 Options to use when type is set to "static":
 
@@ -244,8 +244,7 @@ if($_SERVER['argv'] && realpath($_SERVER['argv'][0]) == __FILE__){
 
 // Check the options are valid
 if(PEAR::isError($options)){
-	fwrite(STDERR, $options->getMessage() . "\n");
-	fwrite(STDERR, $_cliHelp . "\n");
+	fwrite(STDERR, $options->getMessage() . "\n" . $_cliHelp . "\n");
 	exit(INVALID_OPTION);
 }
 
@@ -291,14 +290,11 @@ foreach($options[0] as $opt){
 }
 
 switch(($type = we_base_request::_(we_base_request::STRING, 'type'))){
-
 	case 'static':
 		$_REQUEST['type'] = "filter";
 	case 'all':
 	case 'templates':
-		$data = we_rebuild_base::getDocuments(
-				"rebuild_" . $type, $_REQUEST['categories'], $_REQUEST['catAnd'], $_REQUEST['doctypes'], $_REQUEST['directories'], $_REQUEST['rewriteMaintable'], $_REQUEST['rewriteTmptable']
-		);
+		$data = we_rebuild_base::getDocuments("rebuild_" . $type, $_REQUEST['categories'], $_REQUEST['catAnd'], $_REQUEST['doctypes'], $_REQUEST['directories'], $_REQUEST['rewriteMaintable'], $_REQUEST['rewriteTmptable']);
 		break;
 
 	case 'objects':
@@ -320,7 +316,7 @@ switch(($type = we_base_request::_(we_base_request::STRING, 'type'))){
 		foreach($_thumbNames as $_thumbName){
 			$_thumbIds[] = f('SELECT ID FROM ' . THUMBNAILS_TABLE . " WHERE NAME='" . $db->escape($_thumbName) . "'", '', $db);
 		}
-		$_thumbIds = makeCSVFromArray($_thumbIds);
+		$_thumbIds = implode(',', $_thumbIds);
 		$data = we_rebuild_base::getThumbnails($_thumbIds);
 		break;
 

@@ -20,6 +20,6 @@
  */
 
 function we_tag_ifIsNotDomain($attribs){
-	return (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) || !we_tag('ifIsDomain', $attribs);
+	return (!empty($GLOBALS['we_editmode'])) || !we_tag('ifIsDomain', $attribs);
 }
 

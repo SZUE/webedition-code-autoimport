@@ -35,16 +35,10 @@ function we_tag_pageLanguage($attribs){
 			$out = $lang[1];
 			break;
 		case 'language_name':
-			if(!Zend_Locale::hasCache()){
-				Zend_Locale::setCache(getWEZendCache());
-			}
-			$out = Zend_Locale::getTranslation($lang[0], 'language', $lang[0]);
+			$out = we_base_country::getTranslation($lang[0], we_base_country::LANGUAGE, $lang[0]);
 			break;
 		case 'country_name':
-			if(!Zend_Locale::hasCache()){
-				Zend_Locale::setCache(getWEZendCache());
-			}
-			$out = Zend_Locale::getTranslation($lang[1], 'country', $lang[1]);
+			$out = we_base_country::getTranslation($lang[1], we_base_country::TERRITORY, $lang[1]);
 			break;
 		default:
 			$out = $doc->Language;

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,8 +27,7 @@
  *
  * Provides functions for exporting and importing table rows.
  */
-class we_backup_tableItem extends weModelBase{
-
+class we_backup_tableItem extends we_base_model{
 	var $ClassName = __CLASS__;
 	var $attribute_slots = array();
 
@@ -85,7 +83,6 @@ class we_backup_tableItem extends weModelBase{
 			$tables[OBJECT_FILES_TABLE] = array('Category');
 		}
 		if(defined('SHOP_TABLE')){
-			$tables[WE_SHOP_PREFS_TABLE] = array('strDateiname', 'strFelder');
 			$tables[SHOP_TABLE] = array('strSerial', 'strSerialOrder');
 		}
 		return (array_key_exists($this->table, $tables) && in_array($was, $tables[$this->table]));
@@ -162,7 +159,7 @@ class we_backup_tableItem extends weModelBase{
 			if($this->doConvertCharset($key)){
 				$mydata = $val;
 				if(we_exim_XMLImport::isSerialized($mydata)){ //mainly for tblcontent, where serialized data is mixed with others, but stored in backup as binary
-					$mydataUS = unserialize($mydata);
+					$mydataUS = we_unserialize($mydata);
 					if(is_array($mydataUS)){
 						foreach($mydataUS as &$ad){
 							if(is_array($ad)){
@@ -185,7 +182,7 @@ class we_backup_tableItem extends weModelBase{
 								$ad = self::convertCharsetString($fromC, $toC, $ad);
 							}
 						}
-						$val = serialize($mydataUS);
+						$val = we_serialize($mydataUS);
 					}
 				} else {
 					$val = self::convertSCharsetEncoding($fromC, $toC, $mydata);
@@ -205,7 +202,7 @@ class we_backup_tableItem extends weModelBase{
 
 			if($this->doCorrectSerializedExactCharsetString($key)){
 				$mydata = $val;
-				$mydataUS = @unserialize($mydata);
+				$mydataUS = we_unserialize($mydata);
 				if(is_array($mydataUS)){
 					foreach($mydataUS as &$ad){
 						if(isset($ad['Charset']) && isset($ad['Charset']['dat'])){
@@ -213,7 +210,7 @@ class we_backup_tableItem extends weModelBase{
 						}
 					}
 				}
-				$val = @serialize($mydataUS);
+				$val = we_serialize($mydataUS);
 			}
 		}
 	}
@@ -228,8 +225,20 @@ class we_backup_tableItem extends weModelBase{
 
 //FIXME: remove
 	static function correctSerDataISOtoUTF($serial_str){
-		return preg_replace_callback('|s:\d+:"(.*?)";|s', function($match){return 's:' . strlen($match[1]) . ':"' . $match[1] . '";';}, $serial_str);
+		return preg_replace_callback('|s:\d+:"(.*?)";|s', function($match){
+			return 's:' . strlen($match[1]) . ':"' . $match[1] . '";';
+		}, $serial_str);
+	}
+
+	public function getLogString($prefix = ''){
+		if($this->table == LINK_TABLE && empty($this->nHash)){
+			$this->nHash = md5($this->Name);
+		}
+		$_id_val = '';
+		foreach($this->keys as $_key){
+			$_id_val .= ':' . $this->$_key;
+		}
+		return $prefix . $this->table . $_id_val;
 	}
 
 }
-

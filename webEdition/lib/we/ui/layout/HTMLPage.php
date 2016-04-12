@@ -164,7 +164,7 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
 	/**
 	 * adds CSS code to the page
 	 * Will be inserted into the header section of the page
-	 * using the <style> tag
+	 * using the style tag
 	 *
 	 * @param string $css CSS code to add
 	 * @return void
@@ -178,7 +178,7 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
 	/**
 	 * adds JavaScript code to the page
 	 * Will be inserted into the header section of the page
-	 * using the <script> tag
+	 * using the script tag
 	 *
 	 * @param string $js JavaScript code to add
 	 * @return void
@@ -208,7 +208,9 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
 	 */
 	protected function _renderHTML(){
 
-		$this->addJSFile(JS_DIR . 'attachKeyListener.js');
+		$this->addJSFiles(array(
+			LIB_DIR . 'we/core/JsonRpc.js',
+		));
 
 		$js = '';
 		// write in all frames except in top frame
@@ -216,17 +218,17 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
 			$js = <<<EOS
 
 function weGetTop() {
-	return  (self != parent && typeof(parent.weGetTop) != "undefined"?
+	return  (self != parent && parent.weGetTop !== undefined?
 		parent.weGetTop():parent);
 }
 
 function weCC() {
-	if (typeof(weGetTop().we_core_CmdController) != "undefined") {
+	if (weGetTop().we_core_CmdController !== undefined) {
 		return weGetTop().we_core_CmdController.getInstance();
 	} else if (opener){
-		if (typeof(opener.we_core_CmdController) != "undefined") {
+		if (opener.we_core_CmdController !== undefined) {
 			return opener.we_core_CmdController.getInstance();
-		} else if (typeof(opener.weCC) != "undefined"){
+		} else if (opener.weCC !== undefined){
 			return opener.weCC();
 		}
 	}
@@ -235,12 +237,12 @@ function weCC() {
 
 function weEC() {
 	var topFrame = weGetTop();
-	if (typeof(topFrame.weEventController) !== "undefined") {
+	if (topFrame.weEventController !== undefined) {
 		return topFrame.weEventController;
 	} else if (opener){
-		if (typeof(opener.weEventController) != "undefined") {
+		if (opener.weEventController !== undefined) {
 			return opener.weEventController;
-		} else if (typeof(opener.weEC) != "undefined"){
+		} else if (opener.weEC != undefined){
 			return opener.weEC();
 		}
 	}
@@ -262,13 +264,9 @@ EOS;
 						unset($this->_CSSFiles[$i]);
 					}
 				}
-				foreach(we_main_headermenu::getCssForCssMenu() as $link){
-					$this->addCSSFile($link);
-				}
-				$this->addJSFile(we_main_headermenu::getJsForCssMenu());
+				$this->addCSSFile(WEBEDITION_DIR . 'css/menu/pro_drop_1.css');
+				$this->addJSFile(JS_DIR . 'menu/clickMenu.js');
 				$this->addCSSFile(LIB_DIR . 'we/ui/themes/default/we_ui_controls_MessageConsole/style.css');
-				$this->addJSFile(WEBEDITION_DIR . 'js/messageConsoleImages.js');
-				$this->addJSFile(WEBEDITION_DIR . 'js/messageConsoleView.js');
 			}
 			$js = <<<EOS
 
@@ -277,30 +275,33 @@ var weEventController = new we_core_EventController();
 EOS;
 		}
 		$html = // add doctype tag if not empty
-			($this->getDoctype() !== '' ? $this->getDoctype() . "\n" : '') .
-			// add <html> tag
-			'<html' . ($this->getLang() !== '' ? ' lang="' . $this->getLang() . '"' : '') . '>' .
-			// add <header> tag
-			'<head>' .
-			// add meta tag for charset if not empty
-			($this->getCharset() !== '' ? we_html_tools::htmlMetaCtCharset('text/html', $this->getCharset()) . "\n" : '') .
-			// add title tag if not empty
-			($this->getTitle() !== '' ? '<title>' . $this->getTitle() . '</title>' . "\n" : '');
+				($this->getDoctype() !== '' ? $this->getDoctype() . "\n" : '') .
+				// add <html> tag
+				'<html' . ($this->getLang() !== '' ? ' lang="' . $this->getLang() . '"' : '') . '>' .
+				// add <header> tag
+				'<head>' .
+				// add meta tag for charset if not empty
+				($this->getCharset() !== '' ? we_html_tools::htmlMetaCtCharset($this->getCharset()) : '') .
+				// add title tag if not empty
+				($this->getTitle() !== '' ? '<title>' . $this->getTitle() . '</title>' : '');
 
-
+		$html.=STYLESHEET;
 		// add link tags for external CSS files
 		foreach($this->_CSSFiles as $file){
-			$html .= '<link rel="stylesheet" type="text/css" href="' . $file['path'] . '" media="' . $file['media'] . '" />' . "\n";
+			$html .= '<link rel="stylesheet" type="text/css" href="' . $file['path'] . '" media="' . $file['media'] . '" />';
 		}
 
 		// add inline CSS
 		if($this->_inlineCSS){
-			$html .= "\t<style>\n";
+			$html .= "<style>";
 			foreach($this->_inlineCSS as $code){
 				$html .= $code . "\n";
 			}
-			$html .= "\t</style>\n";
+			$html .= "</style>";
 		}
+		$html.=STYLESHEET .
+				we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
+				YAHOO_FILES;
 
 		// add javascript tags for external JavaScript files
 		foreach($this->_JSFiles as $file){
@@ -308,11 +309,12 @@ EOS;
 		}
 
 		$html .= we_html_element::jsElement($js . implode('', $this->_inlineJS)) .
-			// add head end tag
-			'</head>';
-		return ($this->_framesetHTML !== '' ?
-				$html . $this->_framesetHTML . '</html>' :
-				$html . we_xml_Tags::createStartTag('body', $this->_bodyAttributes) . $this->getBodyHTML() . '</body></html>');
+				// add head end tag
+				'</head>';
+		return $html . ($this->_framesetHTML !== '' ?
+						$this->_framesetHTML :
+						getHtmlTag('body', $this->_bodyAttributes, $this->getBodyHTML()) ) .
+				'</html>';
 	}
 
 	/**

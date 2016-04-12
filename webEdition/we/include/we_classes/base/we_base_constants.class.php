@@ -42,18 +42,21 @@ abstract class we_base_constants{
 	const WE_EDITPAGE_INFO = 2;
 	const WE_EDITPAGE_PREVIEW = 3;
 	const WE_EDITPAGE_WORKSPACE = 4;
-	const WE_EDITPAGE_METAINFO = 5;
 	const WE_EDITPAGE_FIELDS = 6;
-	const WE_EDITPAGE_SEARCH = 7;
+	//const WE_EDITPAGE_SEARCH = 7;
 	const WE_EDITPAGE_SCHEDULER = 8;
 	const WE_EDITPAGE_THUMBNAILS = 9;
 	const WE_EDITPAGE_VALIDATION = 10;
 	const WE_EDITPAGE_VARIANTS = 11;
 	const WE_EDITPAGE_PREVIEW_TEMPLATE = 12;
-	const WE_EDITPAGE_CFWORKSPACE = 13;
 	const WE_EDITPAGE_WEBUSER = 14;
 	const WE_EDITPAGE_IMAGEEDIT = 15;
 	const WE_EDITPAGE_DOCLIST = 16;
 	const WE_EDITPAGE_VERSIONS = 17;
+	const WE_EDITPAGE_COLLECTION = 18;
+//Variants settings
+	const WE_VARIANTS_PREFIX = 'we__intern_variant___';
+	const WE_VARIANTS_ELEMENT_NAME = 'weInternVariantElement';
+	const WE_VARIANT_REQUEST = 'we_variant';
 
 }

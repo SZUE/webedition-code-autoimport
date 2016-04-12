@@ -22,11 +22,11 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcDeleteVersionsWizardCmd extends rpcCmd{
+class rpcDeleteVersionsWizardCmd extends we_rpc_cmd{
 
 	function execute(){
 
-		$resp = new rpcResponse();
+		$resp = new we_rpc_response();
 
 		we_html_tools::protect();
 
@@ -42,9 +42,9 @@ class rpcDeleteVersionsWizardCmd extends rpcCmd{
 //		foreach($_SESSION['weS']['versions']['IDs'] as $k=>$v) {
 //			weVersions::deleteVersion($v);
 //		}
-		if(isset($_SESSION['weS']['versions']['deleteWizardbinaryPath']) && is_array($_SESSION['weS']['versions']['deleteWizardbinaryPath']) && $_SESSION['weS']['versions']['deleteWizardbinaryPath']){
+		if(!empty($_SESSION['weS']['versions']['deleteWizardbinaryPath']) && is_array($_SESSION['weS']['versions']['deleteWizardbinaryPath'])){
 			foreach($_SESSION['weS']['versions']['deleteWizardbinaryPath'] as $v){
-				$binaryPath = $_SERVER['DOCUMENT_ROOT'] . $v;
+				$binaryPath = $_SERVER['DOCUMENT_ROOT'] .VERSION_DIR . $v;
 				$binaryPathUsed = f('SELECT 1 FROM ' . VERSIONS_TABLE . ' WHERE binaryPath="' . $db->escape($v) . '" LIMIT 1', '', $db);
 
 				if(file_exists($binaryPath) && !$binaryPathUsed){
@@ -61,7 +61,7 @@ class rpcDeleteVersionsWizardCmd extends rpcCmd{
 		unset($_SESSION['weS']['versions']['logDeleteIds']);
 
 
-		$WE_PB = new we_progressBar(100, 0, true);
+		$WE_PB = new we_progressBar(100, true);
 		$WE_PB->setStudLen(200);
 
 		$WE_PB->addText(g_l('versions', '[deleteDateVersionsOK]'), 0, "pb1");

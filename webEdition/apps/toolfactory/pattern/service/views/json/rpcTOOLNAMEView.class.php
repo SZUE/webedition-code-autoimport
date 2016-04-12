@@ -1,5 +1,5 @@
 
-class rpc<?php echo $TOOLNAME;?>View extends rpcView
+class rpc<?php echo $TOOLNAME;?>View extends we_rpc_view
 {
 	function getResponse($response)
 	{

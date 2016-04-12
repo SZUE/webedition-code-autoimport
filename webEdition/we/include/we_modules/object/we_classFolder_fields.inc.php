@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -22,8 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-switch(we_base_request::_(we_base_request::STRING,'do')){
+switch(we_base_request::_(we_base_request::STRING, 'do')){
 	case 'delete':
 		$javascript = $we_doc->deleteObjects();
 		break;
@@ -34,26 +32,24 @@ switch(we_base_request::_(we_base_request::STRING,'do')){
 		$javascript = $we_doc->publishObjects();
 		break;
 	case 'unsearchable':
-		$javascript = $we_doc->searchableObjects(false);
+		$javascript = $we_doc->setObjectProperty('IsSearchable', false);
 		break;
 	case 'searchable':
-		$javascript = $we_doc->searchableObjects();
+		$javascript = $we_doc->setObjectProperty('IsSearchable', true);
 		break;
 	case 'copychar':
-		$javascript = $we_doc->copyCharsetfromClass();
+		$javascript = $we_doc->setObjectProperty('Charset');
 		break;
 	case 'copyws':
-		$javascript = $we_doc->copyWSfromClass();
+		$javascript = $we_doc->setObjectProperty('Workspaces');
 		break;
 	case 'copytid':
-		$javascript = $we_doc->copyTIDfromClass();
+		$javascript = $we_doc->setObjectProperty('TriggerID');
 		break;
 }
 
-
 we_html_tools::protect();
 echo we_html_tools::getHtmlTop() .
- we_html_element::jsScript(JS_DIR . 'windows.js') .
  $we_doc->getSearchJS() .
  (isset($javascript) ? we_html_element::jsElement($javascript) : '');
 
@@ -61,12 +57,12 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 $_parts = array(
 	array('html' => $we_doc->getSearchDialog()),
-	array('html' => $we_doc->searchFields()),
+	array('html' => $we_doc->getSearch()),
 );
 
 echo STYLESHEET .
  '</head>
 <body class="weEditorBody" onunload="doUnload()">' .
- we_html_multiIconBox::getHTML('', '100%', $_parts, 30, '', -1, '', '', false) .
+ we_html_multiIconBox::getHTML('', $_parts, 30, '', -1, '', '', false) .
  '</body>
 </html>';

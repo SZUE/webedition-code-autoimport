@@ -31,7 +31,7 @@ function we_tag_categorySelect($attribs, $content){
 	$rootdir = weTag_getAttribute('rootdir', $attribs, '/', we_base_request::FILE);
 	$firstentry = weTag_getAttribute('firstentry', $attribs, '', we_base_request::STRING);
 	$showpath = weTag_getAttribute('showpath', $attribs, false, we_base_request::BOOL);
-	$indent = weTag_getAttribute('indent', $attribs, '', we_base_request::RAW);
+	$indent = weTag_getAttribute('indent', $attribs, '', we_base_request::RAW_CHECKED);
 	$multiple = weTag_getAttribute('multiple', $attribs, false, we_base_request::BOOL);
 
 	$catIDs = weTag_getAttribute('catIDs', $attribs, -1, we_base_request::INTLIST);
@@ -48,7 +48,7 @@ function we_tag_categorySelect($attribs, $content){
 		if($objekt){
 			$values = $objekt->Category;
 		}
-		$valuesArray = id_to_path($values, CATEGORY_TABLE, $GLOBALS['DB_WE'], false, true);
+		$valuesArray = id_to_path($values, CATEGORY_TABLE, $GLOBALS['DB_WE'], true);
 	} elseif($type === 'request'){
 		// Bug Fix #750
 		$valuesArray = we_base_request::_(we_base_request::STRING_LIST, $name, array());

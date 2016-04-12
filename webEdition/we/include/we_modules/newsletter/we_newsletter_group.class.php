@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  *
  */
 class we_newsletter_group extends we_newsletter_base{
-
 // properties start
 	var $ID = 0;
 	var $NewsletterID = 0;
@@ -74,9 +72,9 @@ class we_newsletter_group extends we_newsletter_base{
 	 *
 	 * *************************************** */
 
-	function load($groupID){
+	function load($groupID = 0){
 		parent::load($groupID);
-		$this->aFilter = unserialize($this->Filter);
+		$this->aFilter = we_unserialize($this->Filter);
 		return true;
 	}
 
@@ -93,7 +91,7 @@ class we_newsletter_group extends we_newsletter_base{
 					case "MemberSince":
 					case "LastAccess":
 					case "LastLogin":
-						if(isset($v['fieldvalue']) && $v['fieldvalue'] != ""){
+						if(!empty($v['fieldvalue'])){
 							if(stristr($v['fieldvalue'], '.')){
 								$date = explode(".", $v['fieldvalue']);
 								$v['fieldvalue'] = mktime($v['hours'], $v['minutes'], 0, $date[1], $date[0], $date[2]);
@@ -104,7 +102,7 @@ class we_newsletter_group extends we_newsletter_base{
 				}
 			}
 
-			$this->Filter = serialize($this->aFilter);
+			$this->Filter = we_serialize($this->aFilter, SERIALIZE_JSON);
 		}
 	}
 
@@ -118,7 +116,7 @@ class we_newsletter_group extends we_newsletter_base{
 		if($this->aFilter){
 			return $this->aFilter;
 		}
-		$this->aFilter = unserialize($this->Filter);
+		$this->aFilter = we_unserialize($this->Filter);
 		return $this->aFilter;
 	}
 
@@ -154,10 +152,7 @@ class we_newsletter_group extends we_newsletter_base{
 			}
 		}
 
-		$emails = $this->getEmailsFromList($this->Emails, 1);
-		$extern = $this->getEmailsFromExtern($this->Extern, 1);
-		$emails = array_merge($extern, $emails);
-
+		$emails = array_merge($this->getEmailsFromList($this->Emails, 1), $this->getEmailsFromExtern($this->Extern, 1));
 
 		foreach($emails as $email){
 			if(!$this->check_email($email)){
@@ -202,7 +197,7 @@ class we_newsletter_group extends we_newsletter_base{
 
 	static function getSettings(){
 		$db = new DB_WE();
-		$db->query('SELECT pref_name,pref_value FROM ' . NEWSLETTER_PREFS_TABLE);
+		$db->query('SELECT pref_name,pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="newsletter"');
 		return $db->getAllFirst(false);
 	}
 

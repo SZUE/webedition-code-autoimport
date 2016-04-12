@@ -27,38 +27,76 @@ function we_tag_textarea($attribs, $content){
 		return $foo;
 	}
 
-	$name = weTag_getAttribute("name", $attribs, '', we_base_request::STRING);
-	$xml = weTag_getAttribute("xml", $attribs, XHTML_DEFAULT, we_base_request::BOOL);
-	$removeFirstParagraph = weTag_getAttribute("removefirstparagraph", $attribs, defined('REMOVEFIRSTPARAGRAPH_DEFAULT') ? REMOVEFIRSTPARAGRAPH_DEFAULT : true, we_base_request::BOOL);
-	$attribs = removeAttribs($attribs, array('removefirstparagraph'));
-
-	$html = weTag_getAttribute("html", $attribs, true, we_base_request::BOOL);
-	$autobrAttr = weTag_getAttribute("autobr", $attribs, false, we_base_request::BOOL);
-	$spellcheck = weTag_getAttribute('spellcheck', $attribs, true, we_base_request::BOOL);
-
-	$autobr = $GLOBALS['we_doc']->getElement($name, "autobr");
-	if(strlen($autobr) == 0){
-		$autobr = $autobrAttr ? "on" : "off";
-	}
-	$showAutobr = isset($attribs["autobr"]);
-	if(!$showAutobr && $GLOBALS['we_editmode']){
-		$autobr = "off";
-		$GLOBALS['we_doc']->elements[$name]["autobr"] = "off";
-		$GLOBALS['we_doc']->saveInSession($_SESSION['weS']['we_data'][$GLOBALS['we_transaction']]);
-	}
-
-	$autobrName = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . '#autobr]';
-	$fieldname = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
-	$value = $GLOBALS['we_doc']->getElement($name) ? : $content;
-
 	if($GLOBALS['we_editmode']){
+		$name = weTag_getAttribute("name", $attribs, '', we_base_request::STRING);
+		$xml = weTag_getAttribute("xml", $attribs, XHTML_DEFAULT, we_base_request::BOOL);
+		$spellcheck = weTag_getAttribute('spellcheck', $attribs, true, we_base_request::BOOL);
+
+		$removeFirstParagraph = weTag_getAttribute("removefirstparagraph", $attribs, defined('REMOVEFIRSTPARAGRAPH_DEFAULT') ? REMOVEFIRSTPARAGRAPH_DEFAULT : true, we_base_request::BOOL);
+		$autobrAttr = weTag_getAttribute("autobr", $attribs, false, we_base_request::BOOL);
+		$autobr = $GLOBALS['we_doc']->getElement($name, "autobr")? : ($autobrAttr ? "on" : "off");
+		$showAutobr = isset($attribs["autobr"]);
+		if(!$showAutobr){
+			$autobr = 'off';
+			$GLOBALS['we_doc']->elements[$name]["autobr"] = "off";
+			$GLOBALS['we_doc']->saveInSession($_SESSION['weS']['we_data'][$GLOBALS['we_transaction']]);
+		}
+		$value = $GLOBALS['we_doc']->getElement($name) ? : $content;
 		if((!$GLOBALS['we_doc']->getElement($name)) && $value){ // when not inlineedit, we need to save the content in the object, if the field is empty
 			$GLOBALS['we_doc']->setElement($name, $value);
 			$GLOBALS['we_doc']->saveInSession($_SESSION['weS']['we_data'][$GLOBALS['we_transaction']]);
 		}
-		return we_html_forms::weTextarea($fieldname, $value, $attribs, $autobr, $autobrName, $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, '', ($spellcheck == 'true'), false, $name);
+		return we_html_forms::weTextarea('we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']', $value, $attribs, $autobr, 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . '#autobr]', $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, '', $spellcheck, false, $name);
 	}
 
-	$fieldVal = $GLOBALS['we_doc']->getField($attribs);
-	return $fieldVal;
+	$fieldVal = we_document::parseInternalLinks($GLOBALS['we_doc']->getField($attribs), 0, '');
+	if(!weTag_getAttribute('wysiwyg', $attribs, false, we_base_request::BOOL) && strpos($fieldVal, '</we-gallery>') === false){
+		return $fieldVal;
+	}
+
+	/* we are in wysiwyg and have at least one we-gallery */
+	$galleryAttribs = $regs = array();
+	if(preg_match_all('/<we-gallery *((id|tmpl)="\d+")* *((id|tmpl)="\d+")* *><\/we-gallery>/i', $fieldVal, $regs, PREG_SET_ORDER)){
+		for($i = 0; $i < count($regs); $i++){
+			array_shift($regs[$i]);
+			foreach($regs[$i] as $reg){
+				if(($pos = strpos($reg, '=')) !== false){
+					$galleryAttribs[$i][substr($reg, 0, $pos)] = substr($reg, $pos + 2, -1);
+				}
+			}
+		}
+	}
+
+	$splitVal = preg_split('/<we-gallery *((id|tmpl)="\d+")* *((id|tmpl)="\d+")* *><\/we-gallery>/i', $fieldVal);
+	printElement(array_shift($splitVal));
+	foreach($splitVal as $i => $cur){
+		if($galleryAttribs[$i]['id'] && $galleryAttribs[$i]['tmpl']){
+			$GLOBALS['WE_COLLECTION_ID'] = $galleryAttribs[$i]['id'];
+			if(($we_inc = we_tag('include', array('type' => 'template', 'id' => intval($galleryAttribs[$i]['tmpl']), '_parsed' => true)))){
+				include($we_inc);
+			}
+			unset($GLOBALS['WE_COLLECTION_ID']);
+		}
+		printElement($cur);
+	}
+
+	return;
+
+	/*
+	  $fieldVal = array_shift($splitVal);
+	  for($i = 0; $i < count($splitVal); $i++){
+	  if($galleryAttribs[$i]['id'] && $galleryAttribs[$i]['tmpl']){t_e("ga", $galleryAttribs[$i]['id'], $galleryAttribs[$i]['tmpl']);
+	  $GLOBALS['WE_COLLECTION_ID'] = $galleryAttribs[$i]['id'];
+	  ob_start();
+	  if(($we_inc = we_tag('include', array('type' => 'template', 'id' => intval($galleryAttribs[$i]['tmpl']), '_parsed' => true)))){
+	  include($we_inc);
+	  }
+	  $fieldVal .= ob_get_clean();
+	  }
+	  $fieldVal .= $splitVal[$i];
+	  }
+
+	  return $fieldVal;
+	 *
+	 */
 }

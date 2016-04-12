@@ -65,7 +65,7 @@ abstract class we_customer_EI{
 			$fields = $customer->getFieldsDbProperties();
 
 			$xml_out = (isset($options['firstexec']) && $options['firstexec'] == -999 ?
-					'<?xml version="1.0" encoding="' . $GLOBALS['WE_BACKENDCHARSET'] . '" standalone="yes" ?>' . "\n" . we_backup_backup::weXmlExImHead . ">\n" :
+					we_exim_XMLExIm::getHeader('', 'customer') :
 					'');
 
 			foreach($options['customers'] as $cid){
@@ -77,16 +77,16 @@ abstract class we_customer_EI{
 							if(!$customer->isProtected($k)){
 								$value = $customer->{$k};
 								if($value != ''){
-									$value = ($options['cdata'] ? '<![CDATA[' . $value . ']]>' : htmlentities($value)); //FIXME: is this a good idea??
+									$value = ($options['cdata'] ? (we_exim_contentProvider::needCdata($value) ? '<![CDATA[' . $value . ']]>' : $value) : htmlentities($value)); //FIXME: is this a good idea??
 								}
 								$customer_xml->addChild(new we_html_baseElement($k, true, null, $value));
 							}
 						}
 					}
-					$xml_out.=$customer_xml->getHtml() . we_backup_backup::backupMarker . "\n";
+					$xml_out.=$customer_xml->getHtml() . we_backup_util::backupMarker . "\n";
 				}
 			}
-			return $xml_out;
+			return $xml_out . we_exim_XMLExIm::getFooter();
 		}
 		return '';
 	}
@@ -256,7 +256,7 @@ abstract class we_customer_EI{
 				$csv_enclose = $options['csv_enclose'];
 				$csv_fields = $options['csv_fieldnames'];
 				$csv_charset = $options['the_charset'];
-				$exim = $options['exim'];
+				//$exim = $options['exim'];
 
 				$csvFile = $_SERVER['DOCUMENT_ROOT'] . $filename;
 
@@ -266,7 +266,7 @@ abstract class we_customer_EI{
 					$unique = self::getUniqueId();
 					$path = TEMP_PATH . $unique;
 
-					we_base_file::createLocalFolder($path);
+					we_base_file::createLocalFolderByPath($path);
 					$path.='/';
 
 					$fcount = 0;
@@ -285,28 +285,25 @@ abstract class we_customer_EI{
 					$csv->setFromCharset($csv_charset);
 					$csv->setToCharset('UTF-8');
 					$csv->parseCSV();
-					$data = $csv->CSVFetchRow();
-					while($data != FALSE){
-						$value = array();
+					while(($data = $csv->CSVFetchRow()) != FALSE){
+						$rootnode['content'] = array();
 						foreach($data as $kdat => $vdat){
-							$value[] = array(
+							$rootnode['content'][] = array(
 								'name' => ($csv_fields ? $csv->FieldNames[$kdat] : (str_replace(' ', '', g_l('modules_customer', '[record_field]')) . ($kdat + 1))),
 								'attributes' => null,
 								'content' => '<![CDATA[' . $vdat . ']]>'
 							);
 						}
-						$rootnode['content'] = $value;
-						$code = '<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>' . "\n";
-						$code.=self::buildXMLElement(array($rootnode));
-						self::save2File($path . 'temp_' . $fcount . '.xml', $code, 'wb');
+						$f = $path . 'temp_' . $fcount . '.xml';
+						self::save2File($f, we_exim_XMLExIm::getHeader('UTF-8', 'customer', true) . self::buildXMLElement(array($rootnode)), 'wb');
+						we_base_file::insertIntoCleanUp($f);
 						$fcount++;
-
-						$data = $csv->CSVFetchRow();
 					}
+					we_base_file::insertIntoCleanUp(rtrim($path, '/'));
 					$ret['tmp_dir'] = $unique;
 					$ret['file_count'] = $fcount;
 				}
-				break;
+				return $ret;
 		}
 
 		return $ret;
@@ -316,12 +313,12 @@ abstract class we_customer_EI{
 		$ret = false;
 		$xmlfile = isset($options['xmlfile']) ? $options['xmlfile'] : '';
 		$field_mappings = isset($options['field_mappings']) ? $options['field_mappings'] : array();
-		$attrib_mappings = isset($options['attrib_mappings']) ? $options['attrib_mappings'] : array();
+		//$attrib_mappings = isset($options['attrib_mappings']) ? $options['attrib_mappings'] : array();
 
 		$same = isset($options['same']) ? $options['same'] : '';
 		$logfile = isset($options['logfile']) ? $options['logfile'] : '';
 
-		$db = new DB_WE();
+		$db = $GLOBALS['DB_WE'];
 
 		$customer = new we_customer_customer();
 		$xp = new we_xml_parser($xmlfile);
@@ -331,11 +328,11 @@ abstract class we_customer_EI{
 		foreach($nodeSet as $node){
 			$node_name = $xp->nodeName($node);
 			$node_value = $xp->getData($node);
-			if(isset($fields[$node_name]))
+			if(isset($fields[$node_name])){
 				$customer->{$fields[$node_name]} = iconv('UTF-8', DEFAULT_CHARSET, $node_value);
+			}
 		}
-
-		$existid = f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $db->escape($customer->Username) . '" AND ID!=' . intval($customer->ID), 'ID', $db);
+		$existid = f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $db->escape($customer->Username) . '" AND ID!=' . intval($customer->ID));
 		if($existid){
 			switch($same){
 				case 'rename':
@@ -345,7 +342,7 @@ abstract class we_customer_EI{
 					while($exists){
 						$count++;
 						$new_name = $customer->Username . $count;
-						$exists = f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $db->escape($new_name) . '" AND ID!=' . intval($customer->ID), 'ID', $db);
+						$exists = f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $db->escape($new_name) . '" AND ID!=' . intval($customer->ID));
 					}
 					$customer->Username = $new_name;
 					$customer->save();

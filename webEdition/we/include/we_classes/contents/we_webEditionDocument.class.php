@@ -37,14 +37,14 @@ class we_webEditionDocument extends we_textContentDocument{
 	/**
 	 * @var we_customer_documentFilter
 	 */
-	var $documentCustomerFilter = ''; // DON'T SET TO NULL !!!!
+	var $documentCustomerFilter = ''; // DON'T SET TO NULL !
 
 	public function __construct(){
 		parent::__construct();
 		if(isWE()){
-			if(defined('SHOP_TABLE')){
-				$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_VARIANTS;
-			}
+			//if(defined('SHOP_TABLE')){not needed for global variants
+			$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_VARIANTS;
+			//}
 
 			if(defined('CUSTOMER_TABLE') && (permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER') || permissionhandler::hasPerm('CAN_CHANGE_DOCS_CUSTOMER'))){
 				$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_WEBUSER;
@@ -54,13 +54,31 @@ class we_webEditionDocument extends we_textContentDocument{
 			$this->TemplateID = $_SESSION['prefs']['DefaultTemplateID'];
 		}
 		array_push($this->persistent_slots, 'TemplateID', 'TemplatePath', 'hidePages', 'controlElement', 'temp_template_id', 'temp_category', 'usedElementNames');
-		$this->Icon = 'we_dokument.gif';
 		$this->ContentType = we_base_ContentTypes::WEDOCUMENT;
+	}
+
+	public function initByObj(we_objectFile $obj){
+		$this->elements = $obj->elements;
+		$this->Templates = $obj->Templates;
+		$this->ExtraTemplates = $obj->ExtraTemplates;
+		$this->TableID = $obj->TableID;
+		$this->CreatorID = $obj->CreatorID;
+		$this->ModifierID = $obj->ModifierID;
+		$this->RestrictOwners = $obj->RestrictOwners;
+		$this->Owners = $obj->Owners;
+		$this->OwnersReadOnly = $obj->OwnersReadOnly;
+		$this->Category = $obj->Category;
+		$this->OF_ID = $obj->ID;
+		$this->Charset = $obj->Charset;
+		$this->Language = $obj->Language;
+		$this->Url = $obj->Url;
+		$this->TriggerID = $obj->TriggerID;
+		$this->elements['Charset']['dat'] = $obj->Charset; // for charset-tag
 	}
 
 	public static function initDocument($formname = 'we_global_form', $tid = 0, $doctype = '', $categories = '', $docID = 0, $wewrite = false){
 		//  check if a <we:sessionStart> Tag was before
-		$session = isset($GLOBALS['WE_SESSION_START']) && $GLOBALS['WE_SESSION_START'];
+		$session = !empty($GLOBALS['WE_SESSION_START']);
 
 		if(!(isset($GLOBALS['we_document']) && is_array($GLOBALS['we_document']))){
 			$GLOBALS['we_document'] = array();
@@ -136,25 +154,19 @@ class we_webEditionDocument extends we_textContentDocument{
 		return $GLOBALS['we_document'][$formname];
 	}
 
-	public function makeSameNew(){
-		/* 		$TemplateID = $this->TemplateID;
-		  $TemplatePath = $this->TemplatePath; */
-		$IsDynamic = $this->IsDynamic;
-		parent::makeSameNew();
-		/* $this->TemplateID = $TemplateID;
-		  $this->TemplatePath = $TemplatePath; */
-		$this->IsDynamic = $IsDynamic;
+	public function makeSameNew(array $keep = array()){
+		parent::makeSameNew(array_merge($keep, array('TemplateID', 'TemplatePath', 'IsDynamic')));
 	}
 
 	function editor(){
 		switch($this->EditPageNr){
 			case we_base_constants::WE_EDITPAGE_PROPERTIES:
-				return 'we_templates/we_editor_properties.inc.php';
+				return 'we_editors/we_editor_properties.inc.php';
 			case we_base_constants::WE_EDITPAGE_INFO:
 				if(isset($GLOBALS['WE_MAIN_DOC'])){
 					$GLOBALS["WE_MAIN_DOC"]->InWebEdition = true; //Bug 3417
 				}
-				return 'we_templates/we_editor_info.inc.php';
+				return 'we_editors/we_editor_info.inc.php';
 
 			case we_base_constants::WE_EDITPAGE_CONTENT:
 				$GLOBALS['we_editmode'] = true;
@@ -163,9 +175,9 @@ class we_webEditionDocument extends we_textContentDocument{
 				$GLOBALS['we_editmode'] = false;
 				break;
 			case we_base_constants::WE_EDITPAGE_VALIDATION:
-				return 'we_templates/validateDocument.inc.php';
+				return 'we_editors/validateDocument.inc.php';
 			case we_base_constants::WE_EDITPAGE_VARIANTS:
-				return 'we_templates/we_editor_variants.inc.php';
+				return 'we_editors/we_editor_variants.inc.php';
 			case we_base_constants::WE_EDITPAGE_WEBUSER:
 				return 'we_editors/editor_weDocumentCustomerFilter.inc.php';
 			default:
@@ -182,15 +194,16 @@ class we_webEditionDocument extends we_textContentDocument{
 	private function formIsDynamic($disabled = false){
 		$v = $this->IsDynamic;
 		if(!$disabled){
-			$n = "we_" . $this->Name . "_IsDynamic";
-			return we_html_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', '[IsDynamic]'), false, "defaultfont", "_EditorFrame.setEditorIsHot(true);switchExt();") . we_html_element::jsElement(
+			$n = 'we_' . $this->Name . '_IsDynamic';
+			return we_html_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', '[IsDynamic]'), false, "defaultfont", "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);switchExt();") . we_html_element::jsElement(
 					'function switchExt() {' .
-					(!$this->Published ?
+					($this->Published ?
+						'' :
 						'var a=document.we_form.elements;' .
 						($this->ID ? 'if(confirm("' . g_l('weClass', '[confirm_ext_change]') . '")){' : '') . '
-					if(a["we_' . $this->Name . '_IsDynamic"].value==1){ var changeto="' . DEFAULT_DYNAMIC_EXT . '"; }else{ var changeto="' . DEFAULT_STATIC_EXT . '";}
-					a["we_' . $this->Name . '_Extension"].value=changeto;' .
-						($this->ID ? '}' : '') : '') .
+					a["we_' . $this->Name . '_Extension"].value=(a["we_' . $this->Name . '_IsDynamic"].value==1?"' . DEFAULT_DYNAMIC_EXT . '":"' . DEFAULT_STATIC_EXT . '");' .
+						($this->ID ? '}' : '')
+					) .
 					'}'
 			);
 		}
@@ -203,35 +216,17 @@ class we_webEditionDocument extends we_textContentDocument{
 				true);
 
 		return '
-<table style="border-spacing: 0px;border-style:none;" cellpadding="0">
-	<tr>
-		<td colspan="3" class="defaultfont" align="left">
-			' . $this->formDocType2(388, ($this->Published > 0)) . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(20, 4) . '</td>
-		<td>' . we_html_tools::getPixel(20, 2) . '</td>
-		<td>' . we_html_tools::getPixel(100, 2) . '</td>
-	</tr>
-	<tr>
-		<td colspan="3" class="defaultfont" align="left">' . $this->formTemplatePopup(388, ($this->Published > 0)) . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(20, 4) . '</td>
-		<td>' . we_html_tools::getPixel(20, 2) . '</td>
-		<td>' . we_html_tools::getPixel(100, 2) . '</td>
-	</tr>
-	<tr>
-		<td colspan="3">
-			<table style="border-spacing: 0px;border-style:none" cellpadding="0">
+<table class="default">
+	<tr><td colspan="3" class="defaultfont" style="text-align:left;padding-bottom:4px;">' . $this->formDocType(($this->Published > 0)) . '</td></tr>
+	<tr><td colspan="3" class="defaultfont" style="text-align:left;padding-bottom:4px;">' . $this->formTemplatePopup(($this->Published > 0)) . '</td></tr>
+	<tr><td colspan="3">
+			<table class="default">
 				<tr>
 					<td>' . $this->formIsDynamic($disable) . '</td>
 					<td class="defaultfont">&nbsp;</td>
 					<td>' . $this->formIsSearchable() . '</td>
 				</tr>
-				<tr>
-					<td>' . $this->formInGlossar(100) . '</td>
-				</tr>
+				<tr><td>' . $this->formInGlossar(100) . '</td></tr>
 			</table></td>
 	</tr></table>';
 	}
@@ -256,7 +251,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('reload_editpage');");
 
-		$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
 		$yuiSuggest->setAcId('Template');
 		$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::TEMPLATE);
 		$yuiSuggest->setInput($textname, $path);
@@ -266,18 +261,18 @@ class we_webEditionDocument extends we_textContentDocument{
 		$yuiSuggest->setResult($idname, $myid);
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setTable($table);
-		$yuiSuggest->setWidth(388);
+		$yuiSuggest->setWidth(0);
 		$yuiSuggest->setSelectButton($button);
 		//$yuiSuggest->setDoOnTextfieldBlur("if(document.getElementById('yuiAcResultTemplate').value == '' || document.getElementById('yuiAcResultTemplate').value == 0) { document.getElementById('TemplateLabel').style.display = 'inline'; document.getElementById('TemplateLabelLink').style.display = 'none'; } else { document.getElementById('TemplateLabel').style.display = 'none'; document.getElementById('TemplateLabelLink').style.display = 'inline'; }");
-		$yuiSuggest->setDoOnTextfieldBlur("if(yuiAcFields[yuiAcFieldsById['yuiAcInputTemplate'].set].changed && YAHOO.autocoml.isValidById('yuiAcInputTemplate')) top.we_cmd('reload_editpage')");
+		$yuiSuggest->setDoOnTextfieldBlur("if(YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById['yuiAcInputTemplate'].set].changed && YAHOO.autocoml.isValidById('yuiAcInputTemplate')){ top.we_cmd('reload_editpage')}");
 
 		return $yuiSuggest->getHTML();
 	}
 
 	// creates the Template PopupMenue
-	private function formTemplatePopup($leftsize, $disable){
+	private function formTemplatePopup($disable){
 		if($this->DocType){
-			$templateFromDoctype = f('SELECT Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($this->DocType) . ' LIMIT 1', 'Templates', $this->DB_WE);
+			$templateFromDoctype = f('SELECT Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($this->DocType) . ' LIMIT 1', '', $this->DB_WE);
 		}
 		if($disable){
 			$myid = intval($this->TemplateID ? : 0);
@@ -289,13 +284,12 @@ class we_webEditionDocument extends we_textContentDocument{
 
 			if($this->DocType){
 				return ($templateFromDoctype ?
-						$this->xformTemplatePopup(388) :
+						$this->xformTemplatePopup(0) :
 						we_html_tools::htmlFormElementTable($path, g_l('weClass', '[template]'), 'left', 'defaultfont')
 					);
 			}
 			$pop = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
-					'<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $path . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' .
-					we_html_button::create_button('edit', 'javascript:goTemplate(' . $myid . ')') .
+					'<table class="default"><tr><td>' . $path . '</td><td>' . we_html_button::create_button(we_html_button::EDIT, 'javascript:goTemplate(' . $myid . ')') .
 					'</td></tr></table>' :
 					$path);
 
@@ -313,7 +307,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	private function xformTemplatePopup($width = 50){
-		$ws = get_ws(TEMPLATES_TABLE, false, true);
+		$ws = get_ws(TEMPLATES_TABLE, true);
 
 		$hash = getHash('SELECT TemplateID,Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID =' . intval($this->DocType), $this->DB_WE);
 		$TID = $hash['TemplateID'];
@@ -335,20 +329,20 @@ class we_webEditionDocument extends we_textContentDocument{
 		$tlist = array_unique($temps);
 
 		$fieldname = 'we_' . $this->Name . '_TemplateID';
-		$openButton = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ? we_html_button::create_button('edit', 'javascript:goTemplate(document.we_form.elements[\'' . $fieldname . '\'].options[document.we_form.elements[\'' . $fieldname . '\'].selectedIndex].value)') : '');
+		$openButton = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ? we_html_button::create_button(we_html_button::EDIT, 'javascript:goTemplate(document.we_form.elements[\'' . $fieldname . '\'].options[document.we_form.elements[\'' . $fieldname . '\'].selectedIndex].value)') : '');
 
 		if($tlist){
 			$foo = array();
 			foreach($tlist as $tid){
-				if(($tid == $this->TemplateID) || in_workspace($tid, $ws, TEMPLATES_TABLE)){
+				if(($tid == $this->TemplateID) || we_users_util::in_workspace($tid, $ws, TEMPLATES_TABLE)){
 					$foo[] = $tid;
 				}
 			}
 
 
-			return $this->formSelect4($width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[template]'), ' WHERE ID IN (' . ($foo ? implode(',', $foo) : -1) . ') AND IsFolder=0 ORDER BY Path', 1, $TID, false, "we_cmd('template_changed');_EditorFrame.setEditorIsHot(true);", array(), 'left', 'defaultfont', '', $openButton, array(0, ''));
+			return $this->formSelect4($width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[template]'), ' WHERE ID IN (' . ($foo ? implode(',', $foo) : -1) . ') AND IsFolder=0 ORDER BY Path', 1, $TID, false, "we_cmd('template_changed');WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);", array(), 'left', 'defaultfont', '', $openButton, array(0, ''));
 		}
-		return $this->formSelect2($width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[template]'), '', 'IsFolder=0 ORDER BY Path ', 1, $this->TemplateID, false, '_EditorFrame.setEditorIsHot(true);', array(), 'left', 'defaultfont', '', $openButton);
+		return $this->formSelect2($width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[template]'), '', 'IsFolder=0 ORDER BY Path ', 1, $this->TemplateID, false, 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);', array(), 'left', 'defaultfont', '', $openButton);
 	}
 
 	/**
@@ -363,7 +357,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		weSuggest::setStaticInstance(false); //avoid modification on suggestor
 		$include = $this->editor();
 		$this->EditPageNr = $oldEdit;
-		if($include && $include != WE_INCLUDES_PATH . 'we_templates/' . we_template::NO_TEMPLATE_INC){
+		if($include && $include != WE_INCLUDES_PATH . 'we_editors/' . we_template::NO_TEMPLATE_INC){
 			ob_start();
 			//FIX for old code
 			$DB_WE = $GLOBALS['DB_WE'];
@@ -376,22 +370,10 @@ class we_webEditionDocument extends we_textContentDocument{
 
 		//	if a meta-tag is set all information are in array $GLOBALS["meta"]
 		return '
-<table style="border-spacing: 0px;border-style:none" cellpadding="0">
-	<tr>
-		<td colspan="2">' . $this->formInputField("txt", "Title", g_l('weClass', '[Title]'), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(2, 4) . '</td>
-	</tr>
-	<tr>
-		<td colspan="2">' . $this->formInputField("txt", "Description", g_l('weClass', '[Description]'), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(2, 4) . '</td>
-	</tr>
-	<tr>
-		<td colspan="2">' . $this->formInputField("txt", "Keywords", g_l('weClass', '[Keywords]'), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-	</tr>' .
+<table class="default">
+	<tr><td style="padding-bottom:2px;">' . $this->formMetaField('Title') . '</td></tr>
+	<tr><td style="padding-bottom:2px;">' . $this->formMetaField('Description') . '</td></tr>
+	<tr><td style="padding-bottom:2px;">' . $this->formMetaField('Keywords') . '</td></tr>' .
 			$this->getCharsetSelect() .
 			$this->formLangLinks(true) .
 			'</table>';
@@ -418,7 +400,7 @@ class we_webEditionDocument extends we_textContentDocument{
 						$GLOBALS["meta"][$name]["default"] :
 						''));
 
-			$retInput = $this->htmlTextInput($inputName, 40, $value, '', ' readonly ', 'text', 254);
+			$retInput = we_html_tools::htmlTextInput($inputName, 40, $value, '', ' readonly ', 'text', 254);
 
 			//	menu for all possible charsets
 
@@ -433,16 +415,16 @@ class we_webEditionDocument extends we_textContentDocument{
 			}
 
 			//	Last step: get Information about the charsets
-			$retSelect = $this->htmlSelect('we_tmp_' . $name, $_charsetHandler->getCharsetsByArray($chars), 1, $value, false, array('onblur' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;', 'onchange' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;'), 'value', 254);
+			$retSelect = $this->htmlSelect('we_tmp_' . $name, $_charsetHandler->getCharsetsByArray($chars), 1, $value, false, array('onblur' => 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;', 'onchange' => 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;'), 'value', 254);
 		} else {
 			//	charset-tag NOT available
-			$retInput = $this->htmlTextInput("dummi", 40, g_l('charset', '[error][no_charset_tag]'), '', ' readonly disabled', 'text', 254);
+			$retInput = we_html_tools::htmlTextInput("dummi", 40, g_l('charset', '[error][no_charset_tag]'), '', ' readonly disabled', 'text', 254);
 			$retSelect = $this->htmlSelect("dummi2", array(g_l('charset', '[error][no_charset_available]')), 1, DEFAULT_CHARSET, false, array('disabled' => 'disabled'), 'value', 254);
 		}
 		//getCharsets
-		return '<tr><td colspan="2">' . we_html_tools::getPixel(2, 4) . '</td></tr>
-<tr><td>
-	<table style="border-spacing: 0px;border-style:none" cellpadding="0">
+		return '
+<tr><td style="padding-top:2px;">
+	<table class="default">
 		<tr><td colspan="2" class="defaultfont">' . g_l('weClass', '[Charset]') . '</td>
 		<tr><td>' . $retInput . '</td><td>' . $retSelect . '</td></tr>
 	</table>
@@ -451,11 +433,9 @@ class we_webEditionDocument extends we_textContentDocument{
 
 	// for internal use
 	private function setTemplatePath(){
-		$path = $this->TemplateID ? f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($this->TemplateID), '', $this->DB_WE) : '';
-
+		$path = $this->TemplatePath = $this->TemplateID ? f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($this->TemplateID), '', $this->DB_WE) : '';
 		$this->TemplatePath = $path ?
-			TEMPLATES_PATH . $path :
-			WE_INCLUDES_PATH . 'we_templates/' . we_template::NO_TEMPLATE_INC;
+			TEMPLATES_PATH . $path : WE_INCLUDES_PATH . 'we_editors/' . we_template::NO_TEMPLATE_INC;
 	}
 
 	public function setTemplateID($templID){
@@ -477,6 +457,7 @@ class we_webEditionDocument extends we_textContentDocument{
 					return 'txt';
 				}
 			//no break;
+			case 'vars'://internal data which is never saved
 			case 'formfield':
 			case 'img':
 			case 'linklist':
@@ -509,7 +490,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	 * @desc this function returns the code of the template this document bases on
 	 */
 	function getTemplateCode($completeCode = true){
-		return f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . intval($this->TemplateID) . ' AND l.Name="' . ($completeCode ? 'completeData' : 'data') . '"', '', $this->DB_WE);
+		return f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . intval($this->TemplateID) . ' AND l.nHash=x\'' . md5($completeCode ? 'completeData' : 'data') . '\'', '', $this->DB_WE);
 	}
 
 	protected function getFieldTypes($templateCode, $useTextarea = false){
@@ -568,7 +549,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		return $fieldTypes;
 	}
 
-	private function correctFields(){
+	public function correctFields(){
 		// this is new for shop-variants
 		$this->correctVariantFields();
 		$regs = array();
@@ -616,9 +597,54 @@ class we_webEditionDocument extends we_textContentDocument{
 						$this->elements[$k]['type'] = $types[$k];
 					}
 					break;
-				default:
-					$this->elements[$k]['type'] = 'txt';
+				case 'vars'://internal data which is never saved
 					break;
+				default:
+					switch(isset($types[$k]) ? $types[$k] : ''){
+						case 'link':
+							// FIXME: make sure fixed types are written to tblFile too!
+							$this->elements[$k]['type'] = $types[$k];
+							break;
+						default:
+							$this->elements[$k]['type'] = 'txt';
+					}
+			}
+		}
+	}
+
+	/*
+	 * this function is used to replace to prepare wysiwyg img sources for db
+	 * it also writes img sources and hrefs to $this->MediaLinks
+	 *
+	 * when $isRebuildMediaLinks it only writes $this->MediaLinks (img sources come from db and must not be vhanged)
+	 */
+
+	function parseTextareaFields($rebuildMode = false){
+		if($rebuildMode === false){
+			$allElements = $this->getUsedElements();
+			if(isset($allElements['textarea'])){
+				foreach($allElements['textarea'] as $name){
+					$value = $this->getElement($name);
+					$this->MediaLinks = array_merge($this->MediaLinks, we_wysiwyg_editor::reparseInternalLinks($value, true)); //true: replace internal file paths
+					$this->setElement($name, $value);
+				}
+			}
+
+			return;
+		}
+
+		//FIXME: implement textarea as element-type for textareas!
+		if($rebuildMode === 'main'){
+			foreach($this->elements as $name => $elem){
+				if($elem['type'] === 'txt' && (strpos($elem['dat'], 'src="' . we_base_link::TYPE_INT_PREFIX) !== false || strpos($elem['dat'], 'href="' . we_base_link::TYPE_INT_PREFIX) !== false)){
+					$this->MediaLinks = array_merge($this->MediaLinks, we_document::parseInternalLinks($elem['dat'], 0, '', true));
+				}
+			}
+		} else {//rebuilding from tblTemporaryDoc
+			foreach($this->elements as $name => $elem){
+				if($elem['type'] === 'txt' && (strpos($elem['dat'], 'src="') !== false || strpos($elem['dat'], 'href="' . we_base_link::TYPE_INT_PREFIX) !== false)){
+					$this->MediaLinks = array_merge($this->MediaLinks, we_wysiwyg_editor::reparseInternalLinks($elem['dat'], true));
+				}
 			}
 		}
 	}
@@ -626,13 +652,19 @@ class we_webEditionDocument extends we_textContentDocument{
 	public function we_save($resave = false, $skipHook = false){
 		// First off correct corupted fields
 		$this->correctFields();
-//FIXME: maybe use $this->getUsedElements() to unset unused elements?! add setting to do this? check rebuild!!!
+
+//FIXME: maybe use $this->getUsedElements() to unset unused elements?! add setting to do this? check rebuild!
 		// Bug Fix #6615
 		$this->temp_template_id = $this->TemplateID;
 		$this->temp_category = $this->Category;
 
 		// Last step is to save the webEdition document
 		$out = parent::we_save($resave, $skipHook);
+		if($out){
+			$this->parseTextareaFields();
+			$this->unregisterMediaLinks(false, true);
+			$out = $this->registerMediaLinks(true);
+		}
 
 		if(LANGLINK_SUPPORT){
 			$this->setLanguageLink($this->LangLinks, 'tblFile', false, false); // response deactivated
@@ -641,11 +673,13 @@ class we_webEditionDocument extends we_textContentDocument{
 			$this->checkRemoteLanguage($this->Table, false);
 		}
 
-		if(!$resave){
-			$hy = unserialize(we_base_preferences::getUserPref('History'));
-			$hy['doc'][$this->ID] = array('Table' => $this->Table, 'ModDate' => $this->ModDate);
-			we_base_preferences::setUserPref('History', serialize($hy));
-		}
+		$this->i_writeMetaValues();
+
+		/* if(!$resave){
+		  $hy = we_unserialize(we_base_preferences::getUserPref('History'));
+		  $hy['doc'][$this->ID] = array('Table' => $this->Table, 'ModDate' => $this->ModDate);
+		  we_base_preferences::setUserPref('History', we_serialize($hy));
+		  } */
 		return $out;
 	}
 
@@ -657,22 +691,46 @@ class we_webEditionDocument extends we_textContentDocument{
 	public function we_publish($DoNotMark = false, $saveinMainDB = true, $skipHook = false){
 		$this->temp_template_id = $this->TemplateID;
 		$this->temp_category = $this->Category;
-		return parent::we_publish($DoNotMark, $saveinMainDB, $skipHook);
+		$out = parent::we_publish($DoNotMark, $saveinMainDB, $skipHook);
+		if($out){
+			if($DoNotMark){
+				// when called directly by rebuild we must prepare elements as is normally done in we_save
+				$this->correctFields();
+				$this->parseTextareaFields('main');
+				// TODO: we should try to throw out obsolete elements from temporary! but this affects static docs only!
+				// TODO: when doing rebuild media link test all elements against template!
+				$this->unregisterMediaLinks(true, false);
+				$out = $this->registerMediaLinks(); // last param: when rebuilding static docs do not delete temp entries!
+			} else {
+				$this->unregisterMediaLinks();
+				$out = $this->registerMediaLinks(false, true);
+			}
+		}
+
+		return $out;
 	}
 
 	public function we_unpublish($skipHook = 0){
-		return ($this->ID ? parent::we_unpublish($skipHook) : false);
+		$oldPublished = $this->Published;
+		$ret = ($this->ID ? parent::we_unpublish($skipHook) : false);
+
+		// if document was modified before unpublishing, the actual version is in tblTemporaryDoc: we unregister temp=0
+		// otherwise we have nothing to do
+		if($ret && $oldPublished && ($this->ModDate > $oldPublished)){
+			$this->unregisterMediaLinks(true, false);
+		}
+
+		return $ret;
 	}
 
 	public function we_load($from = we_class::LOAD_MAID_DB){
 		switch($from){
 			case we_class::LOAD_SCHEDULE_DB:
 				if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
-					$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . " AND ClassName='" . $this->DB_WE->escape($this->ClassName) . "' AND Was=" . we_schedpro::SCHEDULE_FROM, '', $this->DB_WE);
+					$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . ' AND ClassName="' . $this->DB_WE->escape($this->ClassName) . '" AND Was=' . we_schedpro::SCHEDULE_FROM, '', $this->DB_WE);
 
-					if($sessDat &&
-						$this->i_initSerializedDat(unserialize(substr_compare($sessDat, 'a:', 0, 2) == 0 ? $sessDat : gzuncompress($sessDat)))){
-						$this->i_getPersistentSlotsFromDB(self::primaryDBFiels);
+					if($sessDat && $this->i_initSerializedDat(we_unserialize($sessDat))){
+						$this->i_getPersistentSlotsFromDB();
 						break;
 					}
 				}
@@ -703,7 +761,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$this->EditPageNr = $editpageSave;
 		$this->InWebEdition = $inWebEditonSave;
 
-		if(isset($we_EDITOR) && $we_EDITOR){ //  fix for php5, in editor we_doc was replaced by $GLOBALS['we_doc'] from we:include tags
+		if(!empty($we_EDITOR)){ //  fix for php5, in editor we_doc was replaced by $GLOBALS['we_doc'] from we:include tags
 			$GLOBALS['we_doc'] = $this;
 		}
 
@@ -715,25 +773,23 @@ class we_webEditionDocument extends we_textContentDocument{
 		$this->setTemplatePath();
 	}
 
-	function i_scheduleToBeforeNow(){
-		return false;
-//FIXME: check
-		//return (defined('SCHEDULE_TABLE') && ($this->To < time() && $this->ToOk));
+	protected function i_scheduleToBeforeNow(){
+		//FIXME: check schedarray!
+		return false; //(defined('SCHEDULE_TABLE') && ($this->To < time()));
 	}
 
-	function i_areVariantNamesValid(){
-		if(defined('SHOP_TABLE')){
-			$variationFields = we_shop_variants::getAllVariationFields($this);
+	protected function i_areVariantNamesValid(){
+		$variationFields = we_base_variants::getAllVariationFields($this);
 
-			if(!empty($variationFields)){
-				$i = 0;
-				while($this->issetElement(WE_SHOP_VARIANTS_PREFIX . $i)){
-					if(!trim($this->getElement(WE_SHOP_VARIANTS_PREFIX . $i++))){
-						return false;
-					}
+		if(!empty($variationFields)){
+			$i = 0;
+			while($this->issetElement(we_base_constants::WE_VARIANTS_PREFIX . $i)){
+				if(!trim($this->getElement(we_base_constants::WE_VARIANTS_PREFIX . $i++))){
+					return false;
 				}
 			}
 		}
+
 		return true;
 	}
 
@@ -753,18 +809,15 @@ class we_webEditionDocument extends we_textContentDocument{
 	protected function i_getDocumentToSave(){
 		static $cache = array();
 		if($this->IsDynamic){
-			$data = array();
+			//$data = array();
 
-			if(defined('SHOP_TABLE')){
-				we_shop_variants::setVariantDataForModel($this, true);
-			}
-			$this->saveInSession($data);
+			we_base_variants::setVariantDataForModel($this, true);
 
-			if(defined('SHOP_TABLE')){
-				we_shop_variants::correctModelFields($this, true);
-			}
+			//$this->saveInSession($data, true);
 
-			$data[0]['InWebEdition'] = false;
+			we_base_variants::correctModelFields($this, true);
+
+			//$data[0]['InWebEdition'] = false;
 //FIXME: check if we can remove pv_id, used by we:printversion
 			return '<?php /*Generated by WE ' . WE_VERSION . ', SVN ' . WE_SVNREV . ', ' . date('Y-m-d, H:i') . '*/
 if(!defined(\'NO_SESS\')){define(\'NO_SESS\',1);}
@@ -773,25 +826,27 @@ $GLOBALS[\'we_transaction\'] = 0;
 $GLOBALS[\'we_ContentType\'] = \'' . we_base_ContentTypes::WEDOCUMENT . '\';
 
 if(isset($_REQUEST[\'pv_id\']) && isset($_REQUEST[\'pv_tid\'])) {
-	$_REQUEST[\'we_cmd\'] = array(
-		1 => intval($_REQUEST[\'pv_id\']),
-		4 => intval($_REQUEST[\'pv_tid\']),
-	);
+		$_REQUEST[\'we_cmd\'] = array(
+				1 => intval($_REQUEST[\'pv_id\']),
+				4 => intval($_REQUEST[\'pv_tid\']),
+		);
 } else {
-	$_REQUEST[\'we_cmd\'] = array(1 => ' . $this->ID . ');
+		$_REQUEST[\'we_cmd\'] = array(1 => ' . $this->ID . ');
 }
 
 $FROM_WE_SHOW_DOC = true;
 
 if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
-	include($_SERVER[\'DOCUMENT_ROOT\'] . \'' . WE_MODULES_DIR . 'object/we_object_showDocument.inc.php\');
+		include($_SERVER[\'DOCUMENT_ROOT\'] . \'' . WE_INCLUDES_DIR . 'we_showObject.inc.php\');
 } else {
-	include($_SERVER[\'DOCUMENT_ROOT\'] . \'' . WE_INCLUDES_DIR . 'we_showDocument.inc.php\');
+		include($_SERVER[\'DOCUMENT_ROOT\'] . \'' . WE_INCLUDES_DIR . 'we_showDocument.inc.php\');
 }';
 		}
+
 		if(isset($cache[$this->ID])){
 			return $cache[$this->ID];
 		}
+
 		$doc = $this->i_getDocument();
 		$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE']);
 // --> Glossary Replacement
@@ -840,45 +895,47 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	 *
 	 */
 	function setControlElements($templatecode){
-		if(strpos($templatecode, '<we:controlElement') !== false){ // tag we:control exists
-			$_tags = we_tag_tagParser::itemize_we_tag('we:controlElement', $templatecode);
-			//	we need all given tags ...
+		if(strpos($templatecode, '<we:controlElement') === false){
+			return;
+		}
+// tag we:control exists
+		$_tags = we_tag_tagParser::itemize_we_tag('we:controlElement', $templatecode);
+		//	we need all given tags ...
 
-			if($_tags[0]){
+		if($_tags[0]){
 
-				if(!in_array('controlElement', $this->persistent_slots)){
-					$this->persistent_slots[] = 'controlElement';
-				} else {
-					unset($this->controlElement);
-				}
+			if(!in_array('controlElement', $this->persistent_slots)){
+				$this->persistent_slots[] = 'controlElement';
+			} else {
+				unset($this->controlElement);
+			}
 
-				$_ctrlArray = array();
+			$_ctrlArray = array();
 
-				foreach($_tags[2] as $cur){ //	go through all matches
-					$_tagAttribs = we_tag_tagParser::makeArrayFromAttribs($cur);
+			foreach($_tags[2] as $cur){ //	go through all matches
+				$_tagAttribs = we_tag_tagParser::makeArrayFromAttribs($cur);
 
-					$_type = weTag_getAttribute('type', $_tagAttribs, '', we_base_request::STRING);
-					$_name = weTag_getAttribute('name', $_tagAttribs, '', we_base_request::STRING);
-					$_hide = weTag_getAttribute('hide', $_tagAttribs, false, we_base_request::BOOL);
+				$_type = weTag_getAttribute('type', $_tagAttribs, '', we_base_request::STRING);
+				$_name = weTag_getAttribute('name', $_tagAttribs, '', we_base_request::STRING);
+				$_hide = weTag_getAttribute('hide', $_tagAttribs, false, we_base_request::BOOL);
 
-					if($_type && $_name){
-						switch($_type){
-							case 'button': //	only look, if the button shall be hidden or not
-								$_ctrlArray['button'][$_name] = array('hide' => ( $_hide ? 1 : 0 ));
-								break;
-							case 'checkbox':
-								$_ctrlArray['checkbox'][$_name] = array(
-									'hide' => ( $_hide ? 1 : 0 ),
-									'readonly' => ( weTag_getAttribute('readonly', $_tagAttribs, true, we_base_request::BOOL) ? 1 : 0 ),
-									'checked' => ( weTag_getAttribute('checked', $_tagAttribs, false, we_base_request::BOOL) ? 1 : 0 )
-								);
-								break;
-						}
+				if($_type && $_name){
+					switch($_type){
+						case 'button': //	only look, if the button shall be hidden or not
+							$_ctrlArray['button'][$_name] = array('hide' => ( $_hide ? 1 : 0 ));
+							break;
+						case 'checkbox':
+							$_ctrlArray['checkbox'][$_name] = array(
+								'hide' => ( $_hide ? 1 : 0 ),
+								'readonly' => ( weTag_getAttribute('readonly', $_tagAttribs, true, we_base_request::BOOL) ? 1 : 0 ),
+								'checked' => ( weTag_getAttribute('checked', $_tagAttribs, false, we_base_request::BOOL) ? 1 : 0 )
+							);
+							break;
 					}
 				}
 			}
-			$this->controlElement = $_ctrlArray;
 		}
+		$this->controlElement = $_ctrlArray;
 	}
 
 	/**
@@ -957,16 +1014,12 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	 * @param mixed $sessDat
 	 */
 	protected function i_initSerializedDat($sessDat){
-		if(!is_array($sessDat)){
-			return false;
+		$ret = parent::i_initSerializedDat($sessDat);
+		if($ret && $this->canHaveVariants()){
+			$this->initVariantDataFromDb();
 		}
-		parent::i_initSerializedDat($sessDat);
-		if(defined('SHOP_TABLE')){
-			if($this->canHaveVariants()){
-				$this->initVariantDataFromDb();
-			}
-		}
-		return true;
+
+		return $ret;
 	}
 
 	/**
@@ -975,10 +1028,8 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	 */
 	protected function i_getContentData(){
 		parent::i_getContentData();
-		if(defined('SHOP_TABLE')){
-			if($this->canHaveVariants()){ // article variants
-				$this->initVariantDataFromDb();
-			}
+		if($this->canHaveVariants()){ // article variants
+			$this->initVariantDataFromDb();
 		}
 	}
 
@@ -993,7 +1044,7 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	 * @return boolean
 	 */
 	function canHaveVariants($checkFields = false){
-		if(!defined('SHOP_TABLE') || ($this->TemplateID == 0)){
+		if(($this->TemplateID == 0)){
 			return false;
 		}
 
@@ -1004,33 +1055,29 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 		if($this->InWebEdition){
 			return ($this->hasVariants = (f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE DID=' . intval($this->TemplateID) . ' AND DocumentTable="tblTemplates" AND Name LIKE ("variant_%") LIMIT 1', '', $this->DB_WE)));
 		}
-		$tmp = $this->getElement(WE_SHOP_VARIANTS_ELEMENT_NAME);
+		$tmp = $this->getElement(we_base_constants::WE_VARIANTS_ELEMENT_NAME);
 		if(is_array($tmp)){
-			$this->setElement(WE_SHOP_VARIANTS_ELEMENT_NAME, serialize($tmp), 'variant');
+			$this->setElement(we_base_constants::WE_VARIANTS_ELEMENT_NAME, we_serialize($tmp), 'variant');
 			return ($this->hasVariants = !empty($tmp));
 		}
-		if(substr($tmp, 0, 2) === 'a:'){
-			$_vars = unserialize($tmp);
-			return ($this->hasVariants = (is_array($_vars) && $_vars));
-		}
-		return ($this->hasVariants = false);
+		$_vars = we_unserialize($tmp);
+		return ($this->hasVariants = (is_array($_vars) && $_vars));
 	}
 
 	function correctVariantFields(){
 		if($this->canHaveVariants()){
-			we_shop_variants::correctModelFields($this);
+			we_base_variants::correctModelFields($this);
 		}
 	}
 
 	function initVariantDataFromDb(){
-		if(($tmp = $this->getElement(WE_SHOP_VARIANTS_ELEMENT_NAME))){
+		if(($tmp = $this->getElement(we_base_constants::WE_VARIANTS_ELEMENT_NAME))){
 
 			// unserialize the variant data when loading the model
-			//if(!is_array($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'])) {
-			$this->setElement(WE_SHOP_VARIANTS_ELEMENT_NAME, unserialize($tmp), 'variant');
-			//}
+			$this->setElement(we_base_constants::WE_VARIANTS_ELEMENT_NAME, we_unserialize($tmp), 'variant');
+
 			// now register variant fields in document
-			we_shop_variants::setVariantDataForModel($this);
+			we_base_variants::setVariantDataForModel($this);
 		}
 	}
 
@@ -1071,10 +1118,23 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 
 	public function getUsedElements($txtNamesOnly = false){
 		if($txtNamesOnly){
-			return array_unique(array_merge(
-					(isset($this->usedElementNames['txt']) ? $this->usedElementNames['txt'] : array()), isset($this->usedElementNames['textarea']) ? $this->usedElementNames['textarea'] : array()));
+			return array_unique(array_merge((isset($this->usedElementNames['txt']) ? $this->usedElementNames['txt'] : array()), isset($this->usedElementNames['textarea']) ? $this->usedElementNames['textarea'] : array()));
 		}
 		return $this->usedElementNames;
+	}
+
+	public function getPropertyPage(){
+		$wepos = weGetCookieVariable('but_weDocProp');
+
+		return we_html_multiIconBox::getHTML('PropertyPage', array(
+				array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => 140),
+				array('icon' => 'doc.gif', 'headline' => g_l('weClass', '[document]'), 'html' => $this->formDocTypeTempl(), 'space' => 140),
+				array('icon' => 'meta.gif', 'headline' => g_l('weClass', '[metainfo]'), 'html' => $this->formMetaInfos(), 'space' => 140),
+				array('icon' => 'cat.gif', 'headline' => g_l('global', '[categorys]'), 'html' => $this->formCategory(), 'space' => 140),
+				array('icon' => 'navi.gif', 'headline' => g_l('global', '[navigation]'), 'html' => $this->formNavigation(), 'space' => 140),
+				array('icon' => 'copy.gif', 'headline' => g_l('weClass', '[copyWeDoc]'), 'html' => $this->formCopyDocument(), 'space' => 140),
+				array('icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners(), 'space' => 140)
+				), 0, '', -1, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos === 'down'));
 	}
 
 }

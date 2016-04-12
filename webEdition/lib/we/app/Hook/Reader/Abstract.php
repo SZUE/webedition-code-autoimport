@@ -20,7 +20,7 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 /*
- * @see Zend_Log
+ * @see 
  */
 
 /**

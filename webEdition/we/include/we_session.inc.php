@@ -21,10 +21,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-if(isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == str_replace(dirname(__FILE__), '', __FILE__)){
-	exit();
-}
-
 //FIXME: handle to start different session if name doesn't match!
 
 if(!isset($_SESSION)){
@@ -58,15 +54,15 @@ if(!(isset($_POST['WE_LOGIN_username']) && isset($_POST['WE_LOGIN_password']))){
 }
 
 //check if we have utf-8 -> Login-Screen is always utf-8
-/*if($GLOBALS['WE_BACKENDCHARSET'] !== 'UTF-8'){
-	$_POST['WE_LOGIN_username'] = utf8_decode($_POST['WE_LOGIN_username']);
-	$_POST['WE_LOGIN_password'] = utf8_decode($_POST['WE_LOGIN_password']);
-}*/
+/* if($GLOBALS['WE_BACKENDCHARSET'] !== 'UTF-8'){
+  $_POST['WE_LOGIN_username'] = utf8_decode($_POST['WE_LOGIN_username']);
+  $_POST['WE_LOGIN_password'] = utf8_decode($_POST['WE_LOGIN_password']);
+  } */
 
-$userdata = getHash('SELECT UseSalt,passwd,username,LoginDenied,ID FROM ' . USER_TABLE . ' WHERE IsFolder=0 AND username="' . $DB_WE->escape($_POST['WE_LOGIN_username']) . '"');
+$userdata = getHash('SELECT passwd,username,LoginDenied,ID FROM ' . USER_TABLE . ' WHERE IsFolder=0 AND username="' . $DB_WE->escape($_POST['WE_LOGIN_username']) . '"');
 
 // only if username exists !!
-if(!$userdata || (!we_users_user::comparePasswords($userdata['UseSalt'], $_POST['WE_LOGIN_username'], $userdata['passwd'], $_POST['WE_LOGIN_password']))){
+if(!$userdata || (!we_users_user::comparePasswords($_POST['WE_LOGIN_username'], $userdata['passwd'], $_POST['WE_LOGIN_password']))){
 	we_base_sessionHandler::makeNewID(true);
 	return;
 }
@@ -77,10 +73,14 @@ if($userdata['LoginDenied']){ // userlogin is denied
 	return;
 }
 
-if(($userdata['UseSalt'] != we_users_user::SALT_CRYPT)){ //will cause update on old php-versions every time. since md5 doesn't cost much, ignore this.
-	$salted = we_users_user::makeSaltedPassword($userdata['UseSalt'], $_POST['WE_LOGIN_username'], $_POST['WE_LOGIN_password']);
+if(!preg_match('|^\$([^$]{2,4})\$([^$]+)\$(.+)$|', $userdata['passwd'])){ //will cause update on old php-versions every time. since md5 doesn't cost much, ignore this.
+	$salted = we_users_user::makeSaltedPassword($_POST['WE_LOGIN_password']);
 	// UPDATE Password with SALT
-	$DB_WE->query('UPDATE ' . USER_TABLE . ' SET passwd="' . $DB_WE->escape($salted) . '",UseSalt=' . intval($userdata['UseSalt']) . ' WHERE IsFolder=0 AND username="' . $DB_WE->escape($_POST["WE_LOGIN_username"]) . '" AND ID=' . $userdata['ID']);
+	$DB_WE->query('UPDATE ' . USER_TABLE . ' SET passwd="' . $DB_WE->escape($salted) . '" WHERE IsFolder=0 AND username="' . $DB_WE->escape($_POST["WE_LOGIN_username"]) . '" AND ID=' . $userdata['ID']);
+}
+
+if(!preg_match('/' . addcslashes(SECURITY_USER_PASS_REGEX, '/') . '/', $_POST['WE_LOGIN_password'])){
+	$_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT'] = 1;
 }
 
 if(!(isset($_SESSION['user']) && is_array($_SESSION['user']))){

@@ -31,32 +31,7 @@ function we_tag_author($attribs){
 
 	switch($docAttr){
 		case 'listview' :
-			$authorID = '';
-			switch(get_class($GLOBALS['lv'])){
-				case 'we_object_listview'://listview type=object
-					$objID = $GLOBALS['lv']->getDBf('OF_ID');
-					break;
-				case 'we_object_tag'://we:object
-					$objID = $GLOBALS['lv']->id;
-					break;
-				case 'we_listview_search'://listview type=search
-					if($GLOBALS['lv']->getDBf('ClassID')){//object
-						$objID = $GLOBALS['lv']->getDBf('WE_ID');
-					} else {//document
-						$docID = $GLOBALS['lv']->getDBf('WE_ID');
-					}
-					break;
-				default://we_listview (document)
-					$author = 'wedoc_' . $author;
-					$authorID = $GLOBALS['lv']->f($author);
-			}
-
-			if(!$authorID){
-				$authorID = (isset($objID) && $objID  ?
-								f('SELECT ' . $author . ' FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($objID)) :
-								f('SELECT ' . $author . ' FROM ' . FILE_TABLE . ' WHERE ID=' . intval($docID)));
-			}
-
+			$authorID = $GLOBALS['lv']->f('wedoc_' . $author);
 			break;
 		case 'self' :
 		default :
@@ -65,7 +40,7 @@ function we_tag_author($attribs){
 			break;
 	}
 
-	$foo = getHash('SELECT Username,First,Second,Address,HouseNo,City,PLZ,State,Country,Tel_preselection,Telephone,Fax_preselection,Fax,Handy,Email,Description,Salutation FROM ' . USER_TABLE . ' WHERE ID=' . intval($authorID));
+	$foo = $authorID ? getHash('SELECT Username,First,Second,Address,HouseNo,City,PLZ,State,Country,Tel_preselection,Telephone,Fax_preselection,Fax,Handy,Email,Description,Salutation FROM ' . USER_TABLE . ' WHERE ID=' . intval($authorID)) : 0;
 	if(!$foo){
 		return '';
 	}

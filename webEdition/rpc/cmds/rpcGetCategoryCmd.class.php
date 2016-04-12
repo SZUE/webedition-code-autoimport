@@ -22,10 +22,10 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcGetCategoryCmd extends rpcCmd{
+class rpcGetCategoryCmd extends we_rpc_cmd{
 
 	function execute(){
-		$resp = new rpcResponse();
+		$resp = new we_rpc_response();
 		$_error = array();
 		// check for necessory params
 		if(!($obj=we_base_request::_(we_base_request::STRING, 'obj'))){
@@ -53,7 +53,7 @@ class rpcGetCategoryCmd extends rpcCmd{
 	}
 
 	function getCategory($obj, $categories, $catField = ''){
-		$cats = new we_chooser_multiDirExtended(410, $categories, 'delete_' . $obj . 'Cat', '', '', 'Icon,Path', CATEGORY_TABLE);
+		$cats = new we_chooser_multiDirExtended(410, $categories, 'delete_' . $obj . 'Cat', '', '', '"we/category"', CATEGORY_TABLE);
 		$cats->setRowPrefix($obj);
 		$cats->setCatField($catField);
 		return $cats->getTableRows();

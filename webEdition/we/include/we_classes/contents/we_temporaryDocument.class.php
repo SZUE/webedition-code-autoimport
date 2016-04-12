@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -46,9 +45,9 @@ abstract class we_temporaryDocument{
 		$ret = $db->query('INSERT INTO ' . TEMPORARY_DOC_TABLE . ' SET ' .
 			we_database_base::arraySetter(array(
 				'DocumentID' => $documentID,
-				'DocumentObject' => serialize($document),
+				//FIXME: this is due to customerfilter
+				'DocumentObject' => ($document ? we_serialize($document, SERIALIZE_PHP) : ''),
 				'Active' => 1,
-				'UnixTimestamp' => sql_function('UNIX_TIMESTAMP()'),
 				'DocTable' => stripTblPrefix($table))));
 		if($ret){
 			$db->query('DELETE FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . $documentID . ' AND Active=0 AND DocTable="' . $db->escape(stripTblPrefix($table)) . '"');
@@ -60,8 +59,12 @@ abstract class we_temporaryDocument{
 	}
 
 	static function resave($documentID, $table, $document, we_database_base $db){
-		$docSer = $db->escape(serialize($document));
-		return $db->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET DocumentObject="' . $docSer . '",UnixTimestamp=UNIX_TIMESTAMP() WHERE DocumentID=' . intval($documentID) . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"');
+		return $db->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET ' .
+				we_database_base::arraySetter(array(
+					//FIXME: this is due to customerfilter
+					'DocumentObject' => ($document ? we_serialize($document, SERIALIZE_PHP) : ''),
+				)) .
+				' WHERE DocumentID=' . intval($documentID) . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"');
 	}
 
 	/**
@@ -73,8 +76,9 @@ abstract class we_temporaryDocument{
 	 * @param int documentID Document ID
 	 * @return object mixed document object. if return value is flase, document doesn't exists in temporary table
 	 */
-	static function load($documentID, $table, we_database_base $db){
-		return f('SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($documentID) . ' AND Active=1 AND DocTable="' . $db->escape(stripTblPrefix($table)) . '"', '', $db);
+	static function load($documentID, $table, we_database_base $db, $keep = false){
+		$dat = f('SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($documentID) . ' AND Active=1 AND DocTable="' . $db->escape(stripTblPrefix($table)) . '"', '', $db);
+		return ($keep ? $dat : we_unserialize($dat));
 	}
 
 	/**

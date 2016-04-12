@@ -21,19 +21,19 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$notprotect = isset($GLOBALS["NOT_PROTECT"]) && $GLOBALS["NOT_PROTECT"] && (!isset($_REQUEST["NOT_PROTECT"]));
+$notprotect = !empty($GLOBALS["NOT_PROTECT"]) && (!isset($_REQUEST["NOT_PROTECT"]));
 
 if(!$notprotect){
 	we_html_tools::protect();
 }
 
-function moveTreeEntries($dontMoveClassFolders = false){
+function moveTreeEntries($dontMoveClassFolders = false){//FIXME: check if js function is duplicate in tree.js
 	return 'var obj = top.treeData;
 var cont = new top.container();
 for(var i=1;i<=obj.len;i++){
 	if(obj[i].checked!=1 ' . ($dontMoveClassFolders ? ' || obj[i].parentid==0' : '') . '){
 		if(obj[i].parentid != 0){
-			if(!parentChecked(obj[i].parentid)){
+			if(!top.treeData.parentChecked(obj[i].parentid)){
 				cont.add(obj[i]);
 			}
 		}else{
@@ -43,25 +43,13 @@ for(var i=1;i<=obj.len;i++){
 }
 top.treeData = cont;
 top.drawTree();
-function parentChecked(start){
-	var obj = top.treeData;
-	for(var i=1;i<=obj.len;i++){
-		if(obj[i].id == start){
-			if(obj[i].checked==1){
-				return true;
-			} else if(obj[i].parentid != 0){
-				parentChecked(obj[i].parentid);
-			}
-		}
-	}
-	return false;
-}';
+';
 }
 
 function checkMoveItem($DB_WE, $targetDirectoryID, $id, $table, &$items2move){
 	// check if entry is a folder
-	$row = getHash('SELECT Path, Text, IsFolder FROM ' . $DB_WE->escape($table) . ' WHERE  ID=' . intval($id), $DB_WE);
-	if(!$row || $row['IsFolder']){
+	$row = getHash('SELECT Path,Text,IsFolder FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), $DB_WE);
+	if(!$row /* || $row['IsFolder'] */){
 		return -1;
 	}
 
@@ -90,19 +78,25 @@ function checkMoveItem($DB_WE, $targetDirectoryID, $id, $table, &$items2move){
 }
 
 function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
-
-	$DB_WE = new DB_WE();
-
 	if(!$id){
 		return false;
 	}
+	return moveItem($targetDirectoryID, array($id), $table, $notMovedItems);
+}
+
+function moveItems($targetDirectoryID, array $ids, $table, &$notMovedItems){
+	if(!$ids){
+		return false;
+	}
+	$DB_WE = new DB_WE();
 
 	// get information about the target directory
 	if(defined('OBJECT_TABLE') && $table == OBJECT_TABLE && !$targetDirectoryID){
 		return false;
-	} elseif($targetDirectoryID){
+	}
+	if($targetDirectoryID){
 		$row = getHash('SELECT IsFolder,Path,ID FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($targetDirectoryID), $DB_WE);
-		if(!$row || !$row["IsFolder"]){
+		if(!$row /* || !$row["IsFolder"] */){
 			return false;
 		}
 		$newPath = $row['Path'];
@@ -112,141 +106,100 @@ function moveItem($targetDirectoryID, $id, $table, &$notMovedItems){
 		$parentID = 0;
 	}
 
-	// move Templates
-	switch($table){
-		case TEMPLATES_TABLE:
-			// bugfix 0001643
-			$_template = new we_template();
-			$_template->initByID($id, $_template->Table);
-			$_template->ParentID = $targetDirectoryID;
-			if(!$_template->save()){
-				$notMovedItems[] = array(
-					'ID' => $_template->ID,
-					'Text' => $_template->Text,
-					'Path' => $_template->Path,
-					'Icon' => $_template->Icon
-				);
-				return false;
-			}
-			return true;
-		// move documents
-		case FILE_TABLE:
-
-			// get information about the document which has to be moved
-			$row = getHash('SELECT Text,Path,Published,IsFolder,Icon,ContentType FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), $DB_WE);
-			$fileName = $row['Text'];
-			$oldPath = $row['Path'];
-			$isPublished = ($row['Published'] > 0 ? true : false);
-			$isFolder = ($row["IsFolder"] == 1 ? true : false);
-			$icon = $row['Icon'];
-			$item = array('ID' => $id, 'Text' => $fileName, 'Path' => $oldPath, 'Icon' => $icon);
-			if(!$row || $isFolder){
-				$notMovedItems[] = $item;
-				return false;
-			}
-
-			// move document file
-			if(!file_exists($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $oldPath)){
-				$notMovedItems[] = $item;
-				return false;
-			}
-			if(!copy($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $oldPath, $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $newPath . '/' . $fileName)){
-				$notMovedItems[] = $item;
-				return false;
-			}
-			if(!unlink($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $oldPath)){
-				$notMovedItems[] = $item;
-				return false;
-			}
-
-			// move published document file
-			if($isPublished){
-				if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $oldPath)){
-					$notMovedItems[] = $item;
-					return false;
+	foreach($ids as $id){
+		// move Templates
+		switch($table){
+			case TEMPLATES_TABLE:
+				// bugfix 0001643
+				$_template = new we_template();
+				$_template->initByID($id, $_template->Table);
+				$_template->ParentID = $targetDirectoryID;
+				if(!$_template->save()){
+					$notMovedItems[] = array(
+						'ID' => $_template->ID,
+						'Text' => $_template->Text,
+						'Path' => $_template->Path,
+						'ContentType' => $_template->ContentType
+					);
 				}
-				if(!copy($_SERVER['DOCUMENT_ROOT'] . $oldPath, $_SERVER['DOCUMENT_ROOT'] . $newPath . '/' . $fileName)){
-					$notMovedItems[] = $item;
-					return false;
+				continue;
+			// move documents
+			case FILE_TABLE:
+				// get information about the document which has to be moved
+				$row = getHash('SELECT Text,Path,Published,IsFolder,ContentType FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), $DB_WE);
+				$fileName = $row['Text'];
+				$oldPath = $row['Path'];
+				$isPublished = ($row['Published'] ? true : false);
+				$isFolder = ($row['IsFolder'] ? true : false);
+				if(!$row ||
+					/* $isFolder || */
+					// move document file
+					(file_exists($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $oldPath) && !we_base_file::moveFile($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $oldPath, $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $newPath . '/' . $fileName)) ||
+					// move published document file
+					(($isPublished || $isFolder) && file_exists($_SERVER['DOCUMENT_ROOT'] . $oldPath) && !we_base_file::moveFile($_SERVER['DOCUMENT_ROOT'] . $oldPath, $_SERVER['DOCUMENT_ROOT'] . $newPath . '/' . $fileName))){
+					$notMovedItems[] = array('ID' => $id, 'Text' => $fileName, 'Path' => $oldPath, 'ContentType' => $row['ContentType']);
+					continue;
 				}
-				if(!unlink($_SERVER['DOCUMENT_ROOT'] . $oldPath)){
-					$notMovedItems[] = $item;
-					return false;
+
+				if(!$isFolder && we_versions_version::CheckPreferencesCtypes($row['ContentType'])){
+					$version = new we_versions_version();
+					if(!we_versions_version::versionExists($id, $table)){
+						$object = we_exim_contentProvider::getInstance($row['ContentType'], $id, $table);
+						$object->Path = $newPath . '/' . $fileName;
+						$object->ParentID = $parentID;
+						$version->saveVersion($object);
+					} else {
+						we_versions_version::updateLastVersionPath($id, $table, $parentID, $newPath . '/' . $fileName);
+					}
 				}
-			}
 
-			$version = new we_versions_version();
-			if(in_array($row['ContentType'], $version->contentTypes)){
-				$object = we_exim_contentProvider::getInstance($row['ContentType'], $id, $table);
-				$version_exists = we_versions_version::versionExists($id, $table);
-				$tempOldParentID = $object->ParentID;
-				$tempNewParentID = $parentID;
-				$tempOldPath = $object->Path;
-				$tempNewPath = $newPath . '/' . $fileName;
-				$object->Path = $tempNewPath;
-				$object->ParentID = $tempNewParentID;
-				if(!$version_exists){
-					$object->Path = $tempOldPath;
-					$object->ParentID = $tempOldParentID;
-					$version->saveVersion($object);
-					$object->Path = $tempNewPath;
-					$object->ParentID = $tempNewParentID;
+				// update table
+				$DB_WE->query('UPDATE ' . $DB_WE->escape($table) . ' SET ' . we_database_base::arraySetter(array(
+						'ParentID' => intval($parentID),
+						'Path' => $newPath . '/' . $fileName
+					)) . ' WHERE ID=' . intval($id));
+
+				continue;
+
+			// move Objects
+			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
+//FIME: check no classfolder (top level element is moved)
+				// get information about the object which has to be moved
+				$row = getHash('SELECT TableID,Path,Text,IsFolder,IsClassFolder,ContentType FROM ' . OBJECT_FILES_TABLE . ' WHERE IsClassFolder=0 AND ID=' . intval($id), $DB_WE);
+
+				if(!$row || $row['IsClassFolder']){
+					$notMovedItems[] = array(
+						'ID' => $id,
+						'Text' => ($row ? $row['Text'] : ''),
+						'Path' => ($row ? $row['Path'] : ''),
+						'ContentType' => ($row ? $row['ContentType'] : '')
+					);
+					continue;
 				}
-				$version->saveVersion($object);
-			}
+				$tableID = $row['TableID'];
+				$oldPath = $row['Path'];
+				$fileName = $row['Text'];
+				$isFolder = $row['IsFolder'] == 1;
 
-			// update table
-			$DB_WE->query('UPDATE ' . $DB_WE->escape($table) . ' SET ParentID=' . intval($parentID) . ", Path='" . $DB_WE->escape($newPath) . "/" . $DB_WE->escape($fileName) . "' WHERE ID=" . intval($id));
 
-			return true;
-
-		// move Objects
-		case (defined('OBJECT_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-
-			// get information about the object which has to be moved
-			$row = getHash('SELECT TableID,Path,Text,IsFolder,Icon,ContentType FROM ' . $DB_WE->escape($table) . ' WHERE IsClassFolder=0 AND ID=' . intval($id), $DB_WE);
-
-			if(!$row || ($row['IsFolder'] == 1)){
-				$notMovedItems[] = array(
-					'ID' => $id,
-					'Text' => ($row ? $row['Text'] : ''),
-					'Path' => ($row ? $row['Path'] : ''),
-					'Icon' => ($row ? $row['Icon'] : '')
-				);
-				return false;
-			}
-			$tableID = $row['TableID'];
-			$oldPath = $row['Path'];
-			$fileName = $row['Text'];
-			$isFolder = $row['IsFolder'] == 1;
-			$icon = $row['Icon'];
-
-			$version = new we_versions_version();
-			if(in_array($row['ContentType'], $version->contentTypes)){
-				$object = we_exim_contentProvider::getInstance($row['ContentType'], $id, $table);
-				$version_exists = we_versions_version::versionExists($id, $table);
-				$tempOldParentID = $object->ParentID;
-				$tempNewParentID = $parentID;
-				$tempOldPath = $object->Path;
-				$tempNewPath = $newPath . '/' . $fileName;
-				$object->Path = $tempNewPath;
-				$object->ParentID = $tempNewParentID;
-				if(!$version_exists){
-					$object->Path = $tempOldPath;
-					$object->ParentID = $tempOldParentID;
-					$version->saveVersion($object);
-					$object->Path = $tempNewPath;
-					$object->ParentID = $tempNewParentID;
+				if(!$isFolder && we_versions_version::CheckPreferencesCtypes($row['ContentType'])){
+					$version = new we_versions_version();
+					if(!we_versions_version::versionExists($id, $table)){
+						$object = we_exim_contentProvider::getInstance($row['ContentType'], $id, $table);
+						$object->Path = $newPath . '/' . $fileName;
+						$object->ParentID = $parentID;
+						$version->saveVersion($object);
+					} else {
+						we_versions_version::updateLastVersionPath($id, $table, $parentID, $newPath . '/' . $fileName);
+					}
 				}
-				$version->saveVersion($object);
-			}
 
-			// update table
-			$DB_WE->query('UPDATE ' . $DB_WE->escape($table) . ' SET ParentID=' . intval($parentID) . ", Path='" . $DB_WE->escape($newPath . '/' . $fileName) . "' WHERE ID=" . intval($id));
-			$DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($tableID) . ' SET OF_ParentID=' . intval($parentID) . ", OF_Path='" . $DB_WE->escape($newPath . '/' . $fileName) . "' WHERE OF_ID=" . intval($id));
+				// update table
+				$DB_WE->query('UPDATE ' . $DB_WE->escape($table) . ' SET ParentID=' . intval($parentID) . ', Path="' . $DB_WE->escape($newPath . '/' . $fileName) . '" WHERE ID=' . intval($id));
+				$DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($tableID) . ' SET OF_ParentID=' . intval($parentID) . ', OF_Path="' . $DB_WE->escape($newPath . '/' . $fileName) . '" WHERE OF_ID=' . intval($id));
 
-			return true;
+				continue;
+		}
 	}
-
-	return false;
+	return empty($notMovedItems);
 }

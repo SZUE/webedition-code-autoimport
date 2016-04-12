@@ -46,7 +46,6 @@ abstract class we_listview_base{
 	var $workspaceID = ''; /* commaseperated string of id's of workspace */
 	var $count = 0; /* internal counter */
 	var $Record = array(); /* array to store results */
-	var $ClassName = __CLASS__; /* Name of class */
 	private $close_a = true; /* close </a> when endtag used */
 	var $customerFilterType = false; // shall we control customer-filter?
 	var $calendar_struct = array();
@@ -109,7 +108,7 @@ abstract class we_listview_base{
 		if($calendar != ''){
 			$this->calendar_struct['datefield'] = $datefield ? : '###Published###';
 			$this->calendar_struct['defaultDate'] = ($date ? strtotime($date) : time());
-			if($weekstart != ''){
+			if($weekstart){
 				$wdays = array('sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday');
 				$match = array_search($weekstart, $wdays);
 				if($match !== false){
@@ -173,7 +172,7 @@ abstract class we_listview_base{
 
 				foreach($this->calendar_struct['storage'] as $k => $v){
 					if($v >= $start_date && $v <= $end_date){
-						$found = array_search($k, $this->IDs);
+						$found = array_search($k, $this->IDs, false);
 						if($found !== false){
 							$this->calendar_struct['forceFetch'] = true;
 							$this->calendar_struct['count'] = $found;
@@ -198,7 +197,9 @@ abstract class we_listview_base{
 	 * @param   key  string - name of field to return
 	 *
 	 */
-	abstract function f($key);
+	function f($key){
+		return (isset($this->Record[$key]) ? $this->Record[$key] : '');
+	}
 
 	/**
 	 * hasNextPage()
@@ -208,7 +209,7 @@ abstract class we_listview_base{
 	 *
 	 */
 	public function hasNextPage($parentEnd = false){
-		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != ''){
+		if(!empty($this->calendar_struct['calendar'])){
 			return true;
 		}
 		if($parentEnd && ($end = we_base_request::_(we_base_request::INT, 'we_lv_pend_' . $this->name))){
@@ -225,7 +226,7 @@ abstract class we_listview_base{
 	 *
 	 */
 	public function hasPrevPage($parentStart = false){
-		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != ''){
+		if(!empty($this->calendar_struct['calendar'])){
 			return true;
 		}
 		if($parentStart && ($start = we_base_request::_(we_base_request::INT, 'we_lv_pstart_' . $this->name, 0))){
@@ -244,7 +245,7 @@ abstract class we_listview_base{
 	public function getBackLink($attribs){
 		$only = weTag_getAttribute('only', $attribs, '', we_base_request::STRING);
 		$urlID = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
-		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != ''){
+		if(!empty($this->calendar_struct['calendar'])){
 
 			$month = $this->calendar_struct['month_human'];
 			$day = $this->calendar_struct['day_human'];
@@ -324,6 +325,7 @@ abstract class we_listview_base{
 		}
 		$url_tail = '';
 		if(isset($_REQUEST)){
+			//Fixme: use http_build_query
 			foreach($_REQUEST as $key => $val){
 				if((!in_array($key, $usedKeys)) && (!in_array($key, $filterArr)) && (strpos($key, 'we_ui_') !== 0)){
 					if(is_array($val)){
@@ -350,7 +352,7 @@ abstract class we_listview_base{
 	public function getNextLink($attribs){
 		$only = weTag_getAttribute('only', $attribs, '', we_base_request::STRING);
 		$urlID = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
-		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != ''){
+		if(!empty($this->calendar_struct['calendar'])){
 
 			$month = $this->calendar_struct['month_human'];
 			$day = $this->calendar_struct['day_human'];
@@ -618,6 +620,23 @@ abstract class we_listview_base{
 	 */
 	public function getDBf($field){
 		return $this->DB_WE->f($field);
+	}
+
+	public function getCustomerRestrictionQuery($specificCustomersQuery, $classID, $mfilter, $listQuery){
+		return '';
+	}
+
+	public function getFoundDocument(){
+		static $doc = null;
+		static $id = 0;
+		if($id == ($docID = $this->f('WE_ID'))){
+			return $doc;
+		}
+		$id = $docID;
+		$model = new we_webEditionDocument();
+		$model->initByID($docID);
+		$doc = $model;
+		return $doc;
 	}
 
 }

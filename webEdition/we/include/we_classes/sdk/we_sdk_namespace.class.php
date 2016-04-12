@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-class we_sdk_namespace implements ArrayAccess{
+class we_sdk_namespace implements ArrayAccess,  Countable{
 
 	private $container = null;
 
@@ -68,6 +68,10 @@ class we_sdk_namespace implements ArrayAccess{
 
 	public function __unset($offset){
 		unset($this->container[$offset]);
+	}
+
+	public function count(){
+		return count($this->container);
 	}
 
 }

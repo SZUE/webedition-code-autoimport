@@ -77,7 +77,7 @@ switch(we_base_request::_(we_base_request::STRING, "mode")){
 }
 echo we_html_tools::getHtmlTop($heading) .
  STYLESHEET .
-	we_html_element::jsElement('top.opener.top.content.cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'edit_messaging_frameset.php?pnt=cmd&mcmd=refresh_mwork&we_transaction=' . we_base_request::_(we_base_request::TRANSACTION, 'we_transaction') . '";');
+	we_html_element::jsElement('top.opener.top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&mcmd=refresh_mwork&we_transaction=' . we_base_request::_(we_base_request::TRANSACTION, 'we_transaction') . '";');
 if($res['ok']){
 	echo we_html_element::jsElement('
 if (opener && opener.top && opener.top.content) {
@@ -94,22 +94,22 @@ if (opener && opener.top && opener.top.content) {
 	$res['err'] = array_map('oldHtmlspecialchars', $res['err']);
 
 
-	$tbl = '<table align="center" cellpadding="7" cellspacing="3">
+	$tbl = '<table style="text-align:center">
 		    <tr>
-		      <td class="defaultfont" valign="top">' . $s_action . ':</td>
+		      <td class="defaultfont" style="vertical-align:top">' . $s_action . ':</td>
 		      <td class="defaultfont"><ul><li>' . (empty($res['ok']) ? g_l('modules_messaging', '[nobody]') : implode("</li>\n<li>", $res['ok'])) . '</li></ul></td>
 		    </tr>
 		    ' . (empty($res['failed']) ? '' : '<tr>
-		        <td class="defaultfont" valign="top">' . $n_action . ':</td>
+		        <td class="defaultfont" style="vertical-align:top">' . $n_action . ':</td>
 		        <td class="defaultfont"><ul><li>' . implode("</li>\n<li>", $res['failed']) . '</li></ul></td>
 		    </tr>') .
 		(empty($res['err']) ? '' : '<tr>
-		        <td class="defaultfont" valign="top">' . g_l('modules_messaging', '[occured_errs]') . ':</td>
+		        <td class="defaultfont" style="vertical-align:top">' . g_l('modules_messaging', '[occured_errs]') . ':</td>
 		        <td class="defaultfont"><ul><li>' . implode('</li><li>', $res['err']) . '</li></ul></td>
 		    </tr>') . '
 	    </table>
 	';
-	echo we_html_tools::htmlDialogLayout($tbl, $heading, we_html_button::create_button("ok", "javascript:top.window.close()"), "100%", 30, "", "hidden");
+	echo we_html_tools::htmlDialogLayout($tbl, $heading, we_html_button::create_button(we_html_button::OK, "javascript:top.window.close()"), "100%", 30, "", "hidden");
 	?>
 </body>
 </html>

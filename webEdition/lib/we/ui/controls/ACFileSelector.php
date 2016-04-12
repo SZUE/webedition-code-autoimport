@@ -145,7 +145,7 @@ class we_ui_controls_ACFileSelector extends we_ui_abstract_AbstractFormElement{
 	 */
 	function __construct($properties = null){
 		//get instance from an autocompleter
-		$this->_suggestObj = &we_ui_controls_ACSuggest::getInstance();
+		$this->_suggestObj = &weSuggest::getInstance();
 		//get object from a button
 		$this->_buttonObj = new we_ui_controls_Button();
 
@@ -162,14 +162,10 @@ class we_ui_controls_ACFileSelector extends we_ui_abstract_AbstractFormElement{
 		$this->addJSFile(we_ui_abstract_AbstractElement::computeJSURL('we_ui_controls_TextField'));
 		$this->addJSFiles($this->_buttonObj->getJSFiles());
 
-		$this->addJSFile(JS_DIR . 'libs/yui/yahoo-min.js');
-		$this->addJSFile(JS_DIR . 'libs/yui/event-min.js');
-		$this->addJSFile(JS_DIR . 'libs/yui/dom-min.js');
-		$this->addJSFile(JS_DIR . 'libs/yui/datasource-min.js');
-		$this->addJSFile(JS_DIR . 'libs/yui/connection-min.js');
-		$this->addJSFile(JS_DIR . 'libs/yui/animation-min.js');
-		$this->addJSFile(JS_DIR . 'libs/yui/json-min.js');
-		$this->addJSFile(JS_DIR . 'libs/yui/autocomplete-min.js');
+		$this->addJSFile(LIB_DIR . 'additional/yui/dom-min.js');
+		$this->addJSFile(LIB_DIR . 'additional/yui/datasource-min.js');
+		$this->addJSFile(LIB_DIR . 'additional/yui/animation-min.js');
+		$this->addJSFile(LIB_DIR . 'additional/yui/autocomplete-min.js');
 		$this->addJSFile(LIB_DIR . 'we/core/JsonRpc.js');
 		$this->addJSFile(JS_DIR . 'utils/we_cmd_encode.js');
 	}
@@ -419,10 +415,10 @@ class we_ui_controls_ACFileSelector extends we_ui_abstract_AbstractFormElement{
 		$countCTs = count($contentTypesArray);
 		if($countCTs === 1 && $contentTypesArray[0] === we_base_ContentTypes::FOLDER){
 			$this->setSelector(weSuggest::DirSelector);
-			$selector = '"openDirselector"';
+			$selector = '"we_selector_directory"';
 		} else {
 			$this->setSelector(weSuggest::DocSelector);
-			$selector = '"openDocselector"';
+			$selector = '"we_selector_document"';
 		}
 
 		if($this->getAppName() !== ''){

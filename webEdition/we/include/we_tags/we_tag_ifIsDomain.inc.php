@@ -24,10 +24,10 @@
  */
 function we_tag_ifIsDomain($attribs){
 	if(($foo = attributFehltError($attribs, 'domain', __FUNCTION__))){
-		print($foo);
+		echo $foo;
 		return false;
 	}
-	if((isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
+	if((!empty($GLOBALS['we_editmode']))){
 		return true;
 	}
 

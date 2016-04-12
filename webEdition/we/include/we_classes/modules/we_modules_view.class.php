@@ -25,66 +25,43 @@
 /* the parent class of storagable webEdition classes */
 
 
-class we_modules_view implements we_modules_viewIF{//FIXME is this really a base class, or is it an interface???
+class we_modules_view implements we_modules_viewIF{
 	var $db;
 	var $frameset;
 	var $topFrame;
+	var $Model;
 
 	public function __construct($frameset = '', $topframe = 'top.content'){
 		$this->db = new DB_WE();
-		$this->setFramesetName($frameset);
-		$this->setTopFrame($topframe);
-	}
-
-	//----------- Utility functions ------------------
-
-	function htmlHidden($name, $value = ''){
-		return we_html_element::htmlHidden(array('name' => trim($name), 'value' => oldHtmlspecialchars($value)));
-	}
-
-	//-----------------Init -------------------------------
-
-	function setFramesetName($frameset){
 		$this->frameset = $frameset;
+		$this->topFrame = $topframe;
 	}
-
-	function setTopFrame($frame){
-		$this->topFrame = $frame;
-	}
-
-	//------------------------------------------------
 
 	function getCommonHiddens($cmds = array()){
-		return $this->htmlHidden('cmd', (isset($cmds['cmd']) ? $cmds['cmd'] : '')) .
-			$this->htmlHidden('cmdid', (isset($cmds['cmdid']) ? $cmds['cmdid'] : '')) .
-			$this->htmlHidden('pnt', (isset($cmds['pnt']) ? $cmds['pnt'] : '')) .
-			$this->htmlHidden('tabnr', (isset($cmds['tabnr']) ? $cmds['tabnr'] : ''));
+		return we_html_element::htmlHiddens(array(
+				'cmd' => (isset($cmds['cmd']) ? $cmds['cmd'] : ''),
+				'cmdid' => (isset($cmds['cmdid']) ? $cmds['cmdid'] : ''),
+				'pnt' => (isset($cmds['pnt']) ? $cmds['pnt'] : ''),
+				'tabnr' => (isset($cmds['tabnr']) ? $cmds['tabnr'] : '')
+		));
 	}
 
-	function getJSTop_tmp(){//taken from old edit_shop_frameset.php
-		return we_html_element::jsScript(JS_DIR . 'images.js') .
-			we_html_element::jsScript(JS_DIR . 'windows.js');
-	}
-
-	function getJSTop(){//TODO: is this shop-code or a copy paste from another module?
-		return we_html_element::jsScript(JS_DIR . 'windows.js');
+	function getJSTop(){
+		return '';
 	}
 
 	function getJSProperty(){
-		return we_html_element::jsScript(JS_DIR . "windows.js");
+		return '';
 	}
 
-	function getJSTreeHeader(){
-
-	}
-
-	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){
+	function getJSSubmitFunction($def_target = "edbody"){
+		//only by customer + user
 		return '
-function submitForm() {
-	var f = arguments[3] ? self.document.forms[arguments[3]] : self.document.we_form;
-	f.target = arguments[0]?arguments[0]:"' . $def_target . '";
-	f.action = arguments[1]?arguments[1]:"' . $this->frameset . '";
-	f.method = arguments[2]?arguments[2]:"' . $def_method . '";
+function submitForm(target,action,method,form) {
+	var f = form ? self.document.forms[form] : self.document.we_form;
+	f.target = target?target:"' . $def_target . '";
+	f.action = action?action:"' . $this->frameset . '";
+	f.method = method?method:"post";
 
 	f.submit();
 }';
@@ -100,6 +77,30 @@ function submitForm() {
 
 	public function processVariables(){
 		$this->page = we_base_request::_(we_base_request::INT, 'page', $this->page);
+	}
+
+	public function getActualHomeScreen($mod, $icon, $content, $body = ''){
+		$modData = we_base_moduleInfo::getModuleData($mod);
+		$title = isset($modData['text']) ? $modData['text'] : '';
+
+		$_row = 0;
+		$_starttable = new we_html_table(array("cellpadding" => 7), 3, 1);
+		$_starttable->setCol($_row++, 0, array("class" => "defaultfont titleline", "colspan" => 3), $title);
+		$_starttable->setCol($_row++, 0, array("class" => "defaultfont", "colspan" => 3), "");
+		$_starttable->setCol($_row++, 0, array("style" => "text-align:center"), $content);
+
+		ob_start();
+		echo we_html_tools::getHtmlTop('', '', '', STYLESHEET . we_html_element::cssLink(CSS_DIR . 'tools_home.css') . $this->getJSProperty() . (empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']));
+		?>
+		<body class="home" onload="loaded = true;
+				var we_is_home = 1;">
+			<div id="tabelle"><?php echo $_starttable->getHtml(); ?></div>
+			<div id="modimage"><img src="<?php echo IMAGE_DIR . "startscreen/" . $icon; ?>" style="width:335px;height:329px;" /></div>
+				<?php echo $body; ?>
+		</body>
+		</html>
+		<?php
+		return ob_get_clean();
 	}
 
 }

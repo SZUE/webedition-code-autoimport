@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  *
  */
 class we_newsletter_block extends we_newsletter_base{
-
 // Document based Newsletter Block
 
 	const DOCUMENT = 0;
@@ -56,6 +54,7 @@ class we_newsletter_block extends we_newsletter_base{
 	var $Field = '';
 	var $Source = '';
 	var $Html = '';
+	public $GroupsA = array();
 	public $Pack = '';
 
 	/*	 * *****************************************************
@@ -71,7 +70,7 @@ class we_newsletter_block extends we_newsletter_base{
 			'Groups' => we_base_request::INTLIST,
 			'Type' => we_base_request::INT,
 			'LinkID' => we_base_request::INT,
-			'Field' => we_base_request::STRINGC,//can be numeric or not, seems that paths can be transfered this way.
+			'Field' => we_base_request::STRING, //can be numeric or not, seems that paths can be transfered this way.
 			'Source' => we_base_request::RAW,
 			'Html' => we_base_request::RAW,
 			'Pack' => we_base_request::RAW,
@@ -80,6 +79,7 @@ class we_newsletter_block extends we_newsletter_base{
 		if($newsletterID){
 			$this->ID = $newsletterID;
 			$this->load($newsletterID);
+			$this->GroupsA = explode(',', $this->Groups);
 		}
 	}
 
@@ -90,7 +90,7 @@ class we_newsletter_block extends we_newsletter_base{
 
 	function save(){
 
-		$this->Groups = makeCSVFromArray(makeArrayFromCSV($this->Groups), true);
+		$this->Groups = implode(',', array_filter(explode(',', $this->Groups)));
 		parent::save();
 		return true;
 	}

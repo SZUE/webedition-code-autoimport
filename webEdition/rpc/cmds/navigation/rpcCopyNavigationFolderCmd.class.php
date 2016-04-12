@@ -22,10 +22,10 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcCopyNavigationFolderCmd extends rpcCmd{
+class rpcCopyNavigationFolderCmd extends we_rpc_cmd{
 
 	function execute(){
-		$resp = new rpcResponse();
+		$resp = new we_rpc_response();
 		$targetFolder = we_base_request::_(we_base_request::FILE, 'we_cmd', false, 0);
 		$sourceFolderID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3);
 
@@ -38,8 +38,7 @@ class rpcCopyNavigationFolderCmd extends rpcCmd{
 
 			$db = $GLOBALS['DB_WE'];
 			$sourceFolder = f('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . $sourceFolderID);
-			$db->query('SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE "' . $db->escape($sourceFolder) . '/%" ORDER BY IsFolder DESC, Path ASC');
-			$result = $db->getAll();
+			$result = $db->getAllq('SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE "' . $db->escape($sourceFolder) . '/%" ORDER BY IsFolder DESC, Path ASC');
 
 			$folders = array($targetFolderID);
 			$mapedId = array($sourceFolderID => array($targetFolderID, $targetFolder));

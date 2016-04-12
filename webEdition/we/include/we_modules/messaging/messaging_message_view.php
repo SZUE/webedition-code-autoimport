@@ -47,103 +47,91 @@ we_html_tools::protect();
 echo we_html_tools::getHtmlTop() .
  STYLESHEET;
 ?>
-<style>
-	.quote_lvl_0 {}
-	.quote_lvl_1 {color:#ff0000}
-	.quote_lvl_2 {color:#00ff00}
-	.quote_lvl_3 {color:#0000ff}
-</style>
-<script type="text/javascript"><!--
+<script><!--
 	function todo_markdone() {
-		top.content.cmd.location = '<?php echo WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&mcmd=todo_markdone&we_transaction=<?php echo $transaction; ?>';
-			}
+		top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=messaging&pnt=cmd&mcmd=todo_markdone&we_transaction=<?php echo $transaction; ?>';
+	}
 //-->
 </script>
 </head>
-<body class="weDialogBody">
-
-	<?php
+<body class="weDialogBody"><?php
 	if(isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->selected_message['hdrs']['ClassName'] === 'we_todo'){
 		$parts = array(
 			array("headline" => g_l('modules_messaging', '[subject]'),
 				"html" => "<b>" . oldHtmlspecialchars($format->get_subject()) . "</b>",
-				"noline" => 1,
-				"space" => 140
+				'noline' => 1,
+				'space' => 140
 			),
 			array("headline" => g_l('modules_messaging', '[deadline]'),
 				"html" => $format->get_deadline(),
-				"noline" => 1,
-				"space" => 140
+				'noline' => 1,
+				'space' => 140
 			),
 			array("headline" => g_l('modules_messaging', '[status]'),
-				"html" => '<table border="0" cellpadding="0" cellspacing="0"><tr><td class="defaultfont">' . $messaging->selected_message['hdrs']['status'] . '%</td><td>' . we_html_tools::getPixel(20, 2) .
-				(($messaging->selected_message['hdrs']['status'] < 100) ? '<td>' . we_html_button::create_button(
-								"percent100", "javascript:todo_markdone()") . '</td>' : '') . '</tr></table>',
-				"noline" => 1,
-				"space" => 140
+				"html" => '<table class="default"><tr><td class="defaultfont">' . $messaging->selected_message['hdrs']['status'] . '%</td>' .
+				($messaging->selected_message['hdrs']['status'] < 100 ? '<td>' . we_html_button::create_button('percent100', "javascript:todo_markdone()") . '</td>' : '') . '</tr></table>',
+				'noline' => 1,
+				'space' => 140
 			),
 			array("headline" => g_l('modules_messaging', '[created_by]'),
 				"html" => $format->get_from(),
-				"noline" => 1,
-				"space" => 140
+				'noline' => 1,
+				'space' => 140
 			),
 			array("headline" => g_l('modules_messaging', '[assigned_by]'),
 				"html" => $format->get_assigner(),
-				"noline" => 1,
-				"space" => 140
+				'noline' => 1,
+				'space' => 140
 			),
 			array("headline" => g_l('modules_messaging', '[creation_date]'),
 				"html" => $format->get_date(),
-				"space" => 140
+				'space' => 140
 			),
 			array("headline" => "",
 				"html" => $format->get_msg_text(),
-				"space" => 0
 			)
 		);
 
 		if(isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->selected_message['hdrs']['ClassName'] === 'we_todo' && ($h = $format->get_todo_history())){
 			$parts[] = array("headline" => "",
 				"html" => $format->get_todo_history(),
-				"noline" => 1,
-				"space" => 0
+				'noline' => 1,
 			);
 		}
 	} else { //	Message
 		$parts = array(
 			array("headline" => g_l('modules_messaging', '[subject]'),
 				"html" => "<b>" . oldHtmlspecialchars($format->get_subject()) . "</b>",
-				"noline" => 1,
-				"space" => 80
+				'noline' => 1,
+				'space' => 80
 			),
 			array("headline" => g_l('modules_messaging', '[from]'),
 				"html" => $format->get_from(),
-				"noline" => 1,
-				"space" => 80
+				'noline' => 1,
+				'space' => 80
 			),
 			array("headline" => g_l('modules_messaging', '[date]'),
 				"html" => $format->get_date(),
-				"noline" => (empty($messaging->selected_message['hdrs']['To']) ? null : 1),
-				"space" => 80
+				'noline' => (empty($messaging->selected_message['hdrs']['To']) ? null : 1),
+				'space' => 80
 			)
 		);
 
 		if(!empty($messaging->selected_message['hdrs']['To'])){
 			$parts[] = array("headline" => g_l('modules_messaging', '[recipients]'),
 				"html" => oldHtmlspecialchars($messaging->selected_message['hdrs']['To']),
-				"space" => 80
+				'space' => 80
 			);
 		}
 
 		$parts[] = array("headline" => "",
 			"html" => $format->get_msg_text(),
-			"noline" => 1,
-			"space" => 0
+			'noline' => 1,
 		);
 	}
 
 	echo we_html_multiIconBox::getJS() .
-			we_html_multiIconBox::getHTML("weMessageView", "100%", $parts, 30, "", -1, "", "", false, g_l('modules_messaging', (isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->selected_message['hdrs']['ClassName'] === 'we_todo' ? '[type_todo]' : '[type_message]')));
+	we_html_multiIconBox::getHTML("weMessageView", $parts, 30, "", -1, "", "", false, g_l('modules_messaging', (isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->selected_message['hdrs']['ClassName'] === 'we_todo' ? '[type_todo]' : '[type_message]')));
 	?>
 </body>
 </html>

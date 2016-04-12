@@ -27,10 +27,6 @@ body {
 	margin-top: 20px;
 	width: 100%;
 	height: 100%;
-
-	background-image: url('/webEdition/liveUpdate/images/updateBackground.gif');
-	background-position: right bottom;
-	background-repeat: no-repeat;
 	text-align: center;
 }
 
@@ -185,6 +181,6 @@ div#messageLog {
 	width: 40px;
 	text-align: right;
 	font-size: 9px;
-	font-family: verdana, arial, helvetica, sans-serif;
+	font-family: sans-serif;
 	font-weight: bold;
 }

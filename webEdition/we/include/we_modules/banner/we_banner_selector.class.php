@@ -22,57 +22,26 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_banner_selector extends we_selector_multiple{
+class we_banner_selector extends we_selector_file{
 
 	function __construct($id, $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = ""){
 		parent::__construct($id, BANNER_TABLE, $JSIDName, $JSTextName, $JSCommand, $order);
 		$this->title = g_l('fileselector', '[bannerSelector][title]');
 	}
 
-	protected function printFramesetJSDoClickFn(){
-		return we_html_element::jsElement('
-function doClick(id,ct){
-	if(ct==1){
-		if(wasdblclick){
-			setDir(id);
-			setTimeout("wasdblclick=0;",400);
-		}
-		}else{
-		e=top.getEntry(id);
-		if(e.isFolder){
-		if(top.currentID == id){
-		top.RenameFolder(id);
-		}
-		}else{
-		selectFile(id);
-		}
-		}
-		}
-		<?php
-	}
-}');
+	protected function getFramsetJSFile(){
+		return parent::getFramsetJSFile() .we_html_element::jsScript(JS_DIR . 'selectors/banner_selector.js');
 	}
 
 	function printHeaderHeadlines(){
 		return '
-<table border="0" cellpadding="0" cellspacing="0" width="550">
+<table class="headerLines" style="width:550px;">
+<colgroup><col style="width:25px;"/><col style="width:200px;"/><col style="width:300px;"/></colgroup>
 	<tr>
-		<td>' . we_html_tools::getPixel(25, 14) . '</td>
-		<td class="selector"colspan="2"><b><a href="#" onclick="javascript:top.orderIt(\'Text\');">' . g_l('modules_banner', '[name]') . '</a></b></td>
-	</tr>
-	<tr>
-		<td width="25">' . we_html_tools::getPixel(25, 1) . '</td>
-		<td width="200">' . we_html_tools::getPixel(200, 1) . '</td>
-		<td width="300">' . we_html_tools::getPixel(300, 1) . '</td>
+		<th class="selector treeIcon"></th>
+		<th class="selector"colspan="2"><a href="#" onclick="javascript:top.orderIt(\'Text\');">' . g_l('modules_banner', '[name]') . '</a></th>
 	</tr>
 </table>';
-	}
-
-	protected function printFramesetJSsetDir(){
-		return we_html_element::jsElement('
-function setDir(id){
-	top.fscmd.location.replace(top.queryString(' . we_selector_multiple::SETDIR . ',id));
-}');
 	}
 
 	function printSetDirHTML(){
@@ -81,32 +50,19 @@ function setDir(id){
 top.clearEntries();' .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() . '
-top.fsheader.' . (intval($this->dir) == 0 ? 'disable' : 'enable') . 'RootDirButs();
+top.' . (intval($this->dir) == 0 ? 'disable' : 'enable') . 'RootDirButs();
 top.currentDir = "' . $this->dir . '";
 top.parentID = "' . $this->values["ParentID"] . '";');
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
 
-	function printHTML($what = we_selector_file::FRAMESET){
+	function printHTML($what = we_selector_file::FRAMESET, $withPreview = true){
 		switch($what){
-			case we_selector_file::HEADER:
-				$this->printHeaderHTML();
-				break;
-			case we_selector_file::FOOTER:
-				$this->printFooterHTML();
-				break;
-			case we_selector_file::BODY:
-				$this->printBodyHTML();
-				break;
-			case we_selector_file::CMD:
-				$this->printCmdHTML();
-				break;
-			case we_selector_multiple::SETDIR:
+			case self::SETDIR:
 				$this->printSetDirHTML();
 				break;
-			case we_selector_file::FRAMESET:
 			default:
-				$this->printFramesetHTML();
+				parent::printHTML($what);
 		}
 	}
 

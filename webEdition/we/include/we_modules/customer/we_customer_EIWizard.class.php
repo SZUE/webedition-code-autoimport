@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,11 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-define("CSV_DELIMITER", ";");
-define("CSV_ENCLOSE", "");
-define("CSV_LINEEND", "windows");
-define("THE_CHARSET", "UTF-8");
-
 class we_customer_EIWizard{
 	var $frameset;
 	var $db;
@@ -36,6 +32,10 @@ class we_customer_EIWizard{
 	var $footerFrame = "top.footer";
 	var $exim_number = 5;
 
+	const CSV_DELIMITER = ';';
+	const CSV_ENCLOSE = '';
+	const CSV_LINEEND = 'windows';
+	const THE_CHARSET = 'UTF-8';
 	const SELECTION_MANUAL = 'manual';
 	const SELECTION_FILTER = 'filter';
 	const TYPE_CSV = 'csv'; //fixme: MOVE TO we_import_functions (name it TYPE_CSV)
@@ -44,13 +44,9 @@ class we_customer_EIWizard{
 	const ART_IMPORT = 'import';
 	const ART_EXPORT = 'export';
 
-	function __construct(){
-		$this->setFrameset(WE_CUSTOMER_MODULE_DIR . "edit_customer_frameset.php");
-		$this->db = new DB_WE();
-	}
-
-	function setFrameset($frameset){
+	function __construct($frameset){
 		$this->frameset = $frameset;
+		$this->db = new DB_WE();
 	}
 
 	function getHTML($what = '', $mode = '', $step = ''){
@@ -74,24 +70,17 @@ class we_customer_EIWizard{
 	}
 
 	function getHTMLFrameset($mode){
+		$body = we_html_element::htmlBody(array('id' => 'weMainBody')
+				, we_html_element::htmlIFrame('body', WEBEDITION_DIR . 'we_showMod.php?mod=customer&pnt=eibody&art=' . $mode . "&step=1", 'position:absolute;top:0px;bottom:45px;left:0px;right:0px;', 'border:0px;width:100%;height:100%;') .
+				we_html_element::htmlIFrame('footer', WEBEDITION_DIR . 'we_showMod.php?mod=customer&pnt=eifooter&art=' . $mode . "&step=1", 'position:absolute;height:45px;bottom:0px;left:0px;right:0px;overflow: hidden', '', '', false) .
+				we_html_element::htmlIFrame('load', WEBEDITION_DIR . 'we_showMod.php?mod=customer&pnt=eiload&step=1', 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
+		);
 
-		$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) .
-			we_html_element::jsElement('
+
+		return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', we_html_element::jsElement('
 			var table="' . FILE_TABLE . '";
 			self.focus();
-		') . STYLESHEET;
-
-		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;')
-				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-					, we_html_element::htmlIFrame('body', $this->frameset . "?pnt=eibody&art=" . $mode . "&step=1", 'position:absolute;top:0px;bottom:45px;left:0px;right:0px;overflow: auto', 'border:0px;width:100%;height:100%;overflow: auto;') .
-					we_html_element::htmlIFrame('footer', $this->frameset . "?pnt=eifooter&art=" . $mode . "&step=1", 'position:absolute;height:45px;bottom:0px;left:0px;right:0px;overflow: hidden') .
-					we_html_element::htmlIFrame('load', $this->frameset . "?pnt=eiload&step=1", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
-		));
-
-
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead($head) .
-				$body
+		') . STYLESHEET, $body
 		);
 	}
 
@@ -108,9 +97,7 @@ class we_customer_EIWizard{
 						$this->$function() :
 						$this->getHTMLStep0());
 			default:
-				return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-						we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]'))) .
-						we_html_element::htmlBody(array("bgcolor" => "white", "marginwidth" => 10, "marginheight" => 10, "leftmargin" => 10, "topmargin" => 10), "aba")
+				return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', '', we_html_element::htmlBody(array("bgcolor" => "white", "style" => 'margin:10px'), "aba")
 				);
 		}
 	}
@@ -118,28 +105,23 @@ class we_customer_EIWizard{
 	function getHTMLExportStep1(){
 		$type = we_base_request::_(we_base_request::STRING, "type", we_import_functions::TYPE_GENERIC_XML);
 
-		$generic = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
-		$generic->setCol(0, 0, array(), we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($type == we_import_functions::TYPE_GENERIC_XML), "type", g_l('modules_customer', '[gxml_export]'), true, "defaultfont", "if(document.we_form.type[0].checked) " . $this->topFrame . ".type='" . we_import_functions::TYPE_GENERIC_XML . "';", false, g_l('modules_customer', '[txt_gxml_export]'), 0, 430));
-		$generic->setCol(1, 0, array(), we_html_tools::getPixel(0, 4));
-		$generic->setCol(2, 0, array(), we_html_forms::radiobutton(self::TYPE_CSV, ($type == self::TYPE_CSV), "type", g_l('modules_customer', '[csv_export]'), true, "defaultfont", "if(document.we_form.type[1].checked) " . $this->topFrame . ".type='" . self::TYPE_CSV . "';", false, g_l('modules_customer', '[txt_csv_export]'), 0, 430));
+		$generic = new we_html_table(array('class' => 'default withSpace'), 2, 1);
+		$generic->setCol(0, 0, array(), we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($type == we_import_functions::TYPE_GENERIC_XML), "type", g_l('modules_customer', '[gxml_export]'), true, "defaultfont", "if(document.we_form.type[0].checked){top.type='" . we_import_functions::TYPE_GENERIC_XML . "';}", false, g_l('modules_customer', '[txt_gxml_export]'), 0, 430));
+		$generic->setCol(1, 0, array(), we_html_forms::radiobutton(self::TYPE_CSV, ($type == self::TYPE_CSV), "type", g_l('modules_customer', '[csv_export]'), true, "defaultfont", "if(document.we_form.type[1].checked) top.type='" . self::TYPE_CSV . "';", false, g_l('modules_customer', '[txt_csv_export]'), 0, 430));
 
 		$parts = array(
 			array(
 				"headline" => g_l('modules_customer', '[generic_export]'),
 				"html" => $generic->getHTML(),
-				"space" => 120,
-				"noline" => 1)
+				'space' => 120,
+				'noline' => 1)
 		);
 
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) . STYLESHEET) .
-				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
-						we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body"),
-							//we_html_element::htmlHidden(array("name"=>"pnt","value"=>"eibody")).
-							//we_html_element::htmlHidden(array("name"=>"step","value"=>"1")).
-							$this->getHiddens(array("art" => self::ART_EXPORT, "step" => 1)) .
-							we_html_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[export_step1]'))
-						)
+		return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', STYLESHEET, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body"),
+						//("name"=>"pnt","value"=>"eibody")).
+						//array("name"=>"step","value"=>"1")).
+						$this->getHiddens(array("art" => self::ART_EXPORT, "step" => 1)) .
+						we_html_multiIconBox::getHTML("", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[export_step1]'))
 					)
 				)
 		);
@@ -148,62 +130,48 @@ class we_customer_EIWizard{
 	function getHTMLExportStep2(){
 		$selection = we_base_request::_(we_base_request::STRING, "selection", self::SELECTION_FILTER);
 
-		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 2);
-		$table->setColContent(0, 0, we_html_tools::getPixel(25, 5));
-		$table->setColContent(0, 1, $this->getHTMLCustomerFilter()
-		);
+		$table = new we_html_table(array('class' => 'default', 'style' => 'margin:5px 25px 0 0;'), 1, 2);
+		$table->setColContent(0, 1, $this->getHTMLCustomerFilter());
 
-		$generic = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 8, 1);
-		$generic->setColContent(0, 0, we_html_tools::getPixel(5, 10));
-		$generic->setColContent(1, 0, we_html_forms::radiobutton(self::SELECTION_FILTER, ($selection == self::SELECTION_FILTER), "selection", g_l('modules_customer', '[filter_selection]'), true, "defaultfont", "if(document.we_form.selection[0].checked) " . $this->topFrame . ".selection='" . self::SELECTION_FILTER . "';"));
-		$generic->setColContent(2, 0, we_html_tools::getPixel(5, 10));
+		$generic = new we_html_table(array('class' => 'default withSpace'), 4, 1);
+		$generic->setColContent(0, 0, we_html_forms::radiobutton(self::SELECTION_FILTER, ($selection == self::SELECTION_FILTER), "selection", g_l('modules_customer', '[filter_selection]'), true, "defaultfont", "if(document.we_form.selection[0].checked) top.selection='" . self::SELECTION_FILTER . "';"));
+		$generic->setColContent(1, 0, $table->getHtml());
+
+		$table->setColContent(0, 1, we_html_tools::htmlFormElementTable($this->getHTMLCustomer(), g_l('modules_customer', '[customer]')));
+		$generic->setColContent(2, 0, we_html_forms::radiobutton(self::SELECTION_MANUAL, ($selection == self::SELECTION_MANUAL), "selection", g_l('modules_customer', '[manual_selection]'), true, "defaultfont", "if(document.we_form.selection[1].checked) top.selection='" . self::SELECTION_MANUAL . "';"));
 		$generic->setColContent(3, 0, $table->getHtml());
-		$generic->setColContent(4, 0, we_html_tools::getPixel(5, 10));
-
-		$table->setColContent(0, 1, we_html_tools::htmlFormElementTable(
-				$this->getHTMLCustomer(), g_l('modules_customer', '[customer]')
-			)
-		);
-		$generic->setColContent(5, 0, we_html_forms::radiobutton(self::SELECTION_MANUAL, ($selection == self::SELECTION_MANUAL), "selection", g_l('modules_customer', '[manual_selection]'), true, "defaultfont", "if(document.we_form.selection[1].checked) " . $this->topFrame . ".selection='" . self::SELECTION_MANUAL . "';"));
-		$generic->setColContent(6, 0, we_html_tools::getPixel(5, 10));
-		$generic->setColContent(7, 0, $table->getHtml());
 
 		$parts = array(array(
 				"headline" => "",
 				"html" => $generic->getHTML(),
-				"space" => 30,
-				"noline" => 1)
+				'space' => 30,
+				'noline' => 1)
 		);
 
 		$js = we_html_element::jsElement('
 
 			function doUnload() {
-				if (!!jsWindow_count) {
-					for (i = 0; i < jsWindow_count; i++) {
-						eval("jsWindow" + i + "Object.close()");
-					}
-				}
+				WE().util.jsWindow.prototype.closeAll(window);
 			}
 
 			function we_cmd(){
-				var args = "";
-				var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-				switch (arguments[0]){
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
+
+switch (args[0]){
 					case "del_customer":
-						selector_cmd(arguments[0],arguments[1],arguments[2]);
-					break;
+						selector_cmd(args[0],args[1],args[2]);
+						break;
+					default:
+						top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 				}
 			}
 
-			//' . $this->footerFrame . '.location="' . $this->frameset . '?pnt=eifooter&step="+' . $this->topFrame . '.step;
+			//' . $this->footerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&step="+top.step;
 
 		');
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) . STYLESHEET . $js) .
-				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
-						we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body"), $this->getHiddens(array("art" => self::ART_EXPORT, "step" => 2)) .
-							we_html_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[export_step2]'))
-						)
+		return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', STYLESHEET . $js, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body"), $this->getHiddens(array("art" => self::ART_EXPORT, "step" => 2)) .
+						we_html_multiIconBox::getHTML("", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[export_step2]'))
 					)
 				)
 		);
@@ -222,9 +190,9 @@ class we_customer_EIWizard{
 		$path = we_base_request::_(we_base_request::FILE, "path", "/");
 		$cdata = we_base_request::_(we_base_request::INT, "cdata", true);
 
-		$csv_delimiter = we_base_request::_(we_base_request::RAW, "csv_delimiter", CSV_DELIMITER);
-		$csv_enclose = we_base_request::_(we_base_request::RAW, "csv_enclose", CSV_ENCLOSE);
-		$csv_lineend = we_base_request::_(we_base_request::RAW, "csv_lineend", CSV_LINEEND);
+		$csv_delimiter = we_base_request::_(we_base_request::RAW_CHECKED, "csv_delimiter", self::CSV_DELIMITER);
+		$csv_enclose = we_base_request::_(we_base_request::RAW_CHECKED, "csv_enclose", self::CSV_ENCLOSE);
+		$csv_lineend = we_base_request::_(we_base_request::STRING, "csv_lineend", self::CSV_LINEEND);
 		$csv_fieldnames = we_base_request::_(we_base_request::BOOL, "csv_fieldnames", true);
 
 		$customers = $this->getExportCustomers();
@@ -242,17 +210,16 @@ class we_customer_EIWizard{
 			switch($type){
 				case we_import_functions::TYPE_GENERIC_XML:
 
-					$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
+					$table = new we_html_table(array('class' => 'default withSpace'), 2, 1);
 
-					$table->setColContent(1, 0, we_html_tools::getPixel(1, 10));
 					$table->setColContent(0, 0, we_html_forms::radiobutton(1, $cdata, "cdata", g_l('modules_customer', '[export_xml_cdata]'), true, "defaultfont", ""));
-					$table->setColContent(2, 0, we_html_forms::radiobutton(0, !$cdata, "cdata", g_l('modules_customer', '[export_xml_entities]'), true, "defaultfont", ""));
+					$table->setColContent(1, 0, we_html_forms::radiobutton(0, !$cdata, "cdata", g_l('modules_customer', '[export_xml_entities]'), true, "defaultfont", ""));
 
-					$parts[] = array("headline" => g_l('modules_customer', '[cdata]'), "html" => $table->getHtml(), "space" => $_space);
+					$parts[] = array("headline" => g_l('modules_customer', '[cdata]'), "html" => $table->getHtml(), 'space' => $_space);
 
 					break;
 				case self::TYPE_CSV:
-					$fileformattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 5, 1);
+					$fileformattable = new we_html_table(array('style' => 'margin-top:10px;'), 4, 1);
 
 					$_file_encoding = new we_html_select(array("name" => "csv_lineend", "size" => 1, "class" => "defaultfont", "style" => "width: 254px;"));
 					$_file_encoding->addOption("windows", g_l('modules_customer', '[windows]'));
@@ -260,49 +227,44 @@ class we_customer_EIWizard{
 					$_file_encoding->addOption("mac", g_l('modules_customer', '[mac]'));
 					$_file_encoding->selectOption($csv_lineend);
 
-					$fileformattable->setCol(0, 0, array("class" => "defaultfont"), we_html_tools::getPixel(10, 10));
-					$fileformattable->setCol(1, 0, array("class" => "defaultfont"), g_l('modules_customer', '[csv_lineend]') . "<br/>" . $_file_encoding->getHtml());
-					$fileformattable->setColContent(2, 0, $this->getHTMLChooser("csv_delimiter", $csv_delimiter, array("," => g_l('modules_customer', '[comma]'), ";" => g_l('modules_customer', '[semicolon]'), ":" => g_l('modules_customer', '[colon]'), "\\t" => g_l('modules_customer', '[tab]'), " " => g_l('modules_customer', '[space]')), g_l('modules_customer', '[csv_delimiter]')));
-					$fileformattable->setColContent(3, 0, $this->getHTMLChooser("csv_enclose", $csv_enclose, array("\"" => g_l('modules_customer', '[double_quote]'), "'" => g_l('modules_customer', '[single_quote]')), g_l('modules_customer', '[csv_enclose]')));
+					$fileformattable->setCol(0, 0, array("class" => "defaultfont"), g_l('modules_customer', '[csv_lineend]') . "<br/>" . $_file_encoding->getHtml());
+					$fileformattable->setColContent(1, 0, $this->getHTMLChooser("csv_delimiter", $csv_delimiter, array("," => g_l('modules_customer', '[comma]'), ";" => g_l('modules_customer', '[semicolon]'), ":" => g_l('modules_customer', '[colon]'), "\\t" => g_l('modules_customer', '[tab]'), " " => g_l('modules_customer', '[space]')), g_l('modules_customer', '[csv_delimiter]')));
+					$fileformattable->setColContent(2, 0, $this->getHTMLChooser("csv_enclose", $csv_enclose, array('"' => g_l('modules_customer', '[double_quote]'), "'" => g_l('modules_customer', '[single_quote]')), g_l('modules_customer', '[csv_enclose]')));
 
-					$fileformattable->setColContent(4, 0, we_html_forms::checkbox(1, $csv_fieldnames, "csv_fieldnames", g_l('modules_customer', '[csv_fieldnames]')));
+					$fileformattable->setColContent(3, 0, we_html_forms::checkbox(1, $csv_fieldnames, "csv_fieldnames", g_l('modules_customer', '[csv_fieldnames]')));
 
-					$parts[] = array("headline" => g_l('modules_customer', '[csv_params]'), "html" => $fileformattable->getHtml(), "space" => $_space);
+					$parts[] = array("headline" => g_l('modules_customer', '[csv_params]'), "html" => $fileformattable->getHtml(), 'space' => $_space);
 			}
 
-			$parts[] = array("headline" => g_l('modules_customer', '[export_to]'), "html" => "", "space" => 0, "noline" => 1);
+			$parts[] = array("headline" => g_l('modules_customer', '[export_to]'), "html" => "", 'noline' => 1);
 
-			$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 2);
-			$table->setColContent(0, 0, we_html_tools::getPixel(20, 2));
-			$table->setColContent(0, 1, we_html_forms::radiobutton(self::EXPORT_SERVER, ($export_to == self::EXPORT_SERVER), "export_to", g_l('modules_customer', '[export_to_server]'), true, "defaultfont", $this->topFrame . ".export_to='" . self::EXPORT_SERVER . "'"));
-			$parts[] = array("space" => $_space, "noline" => 1,
-				"headline" => $table->getHtml(),
+			$parts[] = array('space' => $_space, 'noline' => 1,
+				"headline" => we_html_element::htmlDiv(array('class' => 'default'), we_html_forms::radiobutton(self::EXPORT_SERVER, ($export_to == self::EXPORT_SERVER), "export_to", g_l('modules_customer', '[export_to_server]'), true, "defaultfont", "top.export_to='" . self::EXPORT_SERVER . "'")),
 				"html" =>
 				we_html_element::htmlBr() .
 				we_html_tools::htmlFormElementTable($this->formFileChooser(200, "path", $path, "", we_base_ContentTypes::FOLDER), g_l('modules_customer', '[path]'))
 			);
 
-			$table->setColContent(0, 1, we_html_forms::radiobutton(self::EXPORT_LOCAL, ($export_to == self::EXPORT_LOCAL), "export_to", g_l('modules_customer', '[export_to_local]'), true, "defaultfont", $this->topFrame . ".export_to='" . self::EXPORT_LOCAL . "'"));
-			$parts[] = array("headline" => $table->getHtml(), "space" => $_space, "noline" => 1, "html" => "");
+			$parts[] = array(
+				"headline" => we_html_forms::radiobutton(self::EXPORT_LOCAL, ($export_to == self::EXPORT_LOCAL), "export_to", g_l('modules_customer', '[export_to_local]'), true, "defaultfont", "top.export_to='" . self::EXPORT_LOCAL . "'"),
+				'space' => $_space,
+				'noline' => 1,
+				"html" => ""
+			);
 		} else {
 			$parts = array(
-				array('headline' => 'Fehler', "html" => '<b>Die Auswahl ist leer</b>', "space" => $_space)
+				array('headline' => 'Fehler', "html" => '<b>Die Auswahl ist leer</b>', 'space' => $_space)
 			);
 			$js = we_html_element::jsElement(
 					$this->bodyFrame . '.document.we_form.step.value--;
-	' . $this->footerFrame . '.location="' . $this->frameset . '?pnt=eifooter&art=' . self::ART_EXPORT . '&step="+' . $this->bodyFrame . '.document.we_form.step.value;
+	' . $this->footerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&art=' . self::ART_EXPORT . '&step="+' . $this->bodyFrame . '.document.we_form.step.value;
 	' . $this->bodyFrame . '.document.we_form.submit();'
 			); //FIXME: disable next button
 		}
-
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(STYLESHEET . $js) .
-				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
-						we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body"),
-							//we_html_element::htmlHidden(array("name"=>"step",""=>"4")).
-							$this->getHiddens(array('art' => self::ART_EXPORT, 'step' => 3)) .
-							we_html_multiIconBox::getHTML("weExportWizard", "100%", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[export_step3]'))
-						)
+		return we_html_tools::getHtmlTop('', '', '', STYLESHEET . $js, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body"),
+						//we_html_element::htmlHidden(array("name"=>"step",""=>"4")).
+						$this->getHiddens(array('art' => self::ART_EXPORT, 'step' => 3)) .
+						we_html_multiIconBox::getHTML("weExportWizard", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[export_step3]'))
 					)
 				)
 		);
@@ -312,20 +274,15 @@ class we_customer_EIWizard{
 		$export_to = we_base_request::_(we_base_request::STRING, 'export_to', self::EXPORT_SERVER);
 		$path = urldecode(we_base_request::_(we_base_request::FILE, "path", ''));
 		$filename = urldecode(we_base_request::_(we_base_request::FILE, "filename", ''));
-		$js = we_html_element::jsElement($this->footerFrame . '.location="' . $this->frameset . '?pnt=eifooter&art=' . self::ART_EXPORT . '&step=5";');
+		$js = we_html_element::jsElement($this->footerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&art=' . self::ART_EXPORT . '&step=5";');
 
 		if($export_to == self::EXPORT_LOCAL){
 			$message = we_html_element::htmlSpan(array("class" => "defaultfont"), g_l('modules_customer', '[export_finished]') . "<br/><br/>" .
 					g_l('modules_customer', '[download_starting]') .
-					we_html_element::htmlA(array("href" => $this->frameset . "?pnt=eibody&art=" . self::ART_EXPORT . "&step=5&exportfile=" . $filename), g_l('modules_customer', '[download]'))
+					we_html_element::htmlA(array("href" => WEBEDITION_DIR . 'we_showMod.php?mod=customer&pnt=eibody&art=' . self::ART_EXPORT . '&step=5&exportfile=' . $filename, 'download' => $filename), g_l('modules_customer', '[download]'))
 			);
-			return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-					we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) . STYLESHEET . $js .
-						we_html_element::htmlMeta(array("http-equiv" => "refresh", "content" => "2; URL=" . $this->frameset . "?pnt=eibody&art=" . self::ART_EXPORT . "&step=5&exportfile=" . $filename))
-					) .
-					we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
-							we_html_tools::htmlDialogLayout($message, g_l('modules_customer', '[export_step4]'))
-						)
+			return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', STYLESHEET . $js .
+					we_html_element::htmlMeta(array("http-equiv" => "refresh", "content" => "2; url=" . WEBEDITION_DIR . 'we_showMod.php?mod=customer&pnt=eibody&art=' . self::ART_EXPORT . '&step=5&exportfile=' . $filename)), we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_tools::htmlDialogLayout($message, g_l('modules_customer', '[export_step4]'))
 					)
 			);
 		} else {
@@ -334,11 +291,7 @@ class we_customer_EIWizard{
 					rtrim($path, '/') . '/' . $filename
 			);
 
-			return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-					we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) . STYLESHEET) . $js .
-					we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
-							we_html_tools::htmlDialogLayout($message, g_l('modules_customer', '[export_step4]'))
-						)
+			return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', STYLESHEET . $js, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_tools::htmlDialogLayout($message, g_l('modules_customer', '[export_step4]'))
 					)
 			);
 		}
@@ -366,7 +319,7 @@ class we_customer_EIWizard{
 				exit;
 			}
 		}
-		header("Location: " . $this->frameset . "?pnt=cmd&step=99&error=download_failed");
+		header("Location: " . WEBEDITION_DIR . 'we_showMod.php?mod=customer&pnt=cmd&step=99&error=download_failed');
 		exit;
 	}
 
@@ -379,10 +332,10 @@ class we_customer_EIWizard{
 				$xml_from = we_base_request::_(we_base_request::RAW, 'xml_from', 0);
 				$xml_to = we_base_request::_(we_base_request::RAW, 'xml_to', 1);
 				$dataset = we_base_request::_(we_base_request::RAW, 'dataset', '');
-				$csv_delimiter = we_base_request::_(we_base_request::RAW, 'csv_delimiter', CSV_DELIMITER);
-				$csv_enclose = we_base_request::_(we_base_request::RAW, 'csv_enclose', CSV_ENCLOSE);
-				$csv_lineend = we_base_request::_(we_base_request::RAW, 'csv_lineend', CSV_LINEEND);
-				$the_charset = we_base_request::_(we_base_request::RAW, 'the_charset', THE_CHARSET);
+				$csv_delimiter = we_base_request::_(we_base_request::RAW_CHECKED, 'csv_delimiter', self::CSV_DELIMITER);
+				$csv_enclose = we_base_request::_(we_base_request::RAW_CHECKED, 'csv_enclose', self::CSV_ENCLOSE);
+				$csv_lineend = we_base_request::_(we_base_request::STRING, 'csv_lineend', self::CSV_LINEEND);
+				$the_charset = we_base_request::_(we_base_request::STRING, 'the_charset', self::THE_CHARSET);
 
 				$csv_fieldnames = we_base_request::_(we_base_request::BOOL, "csv_fieldnames");
 
@@ -390,63 +343,69 @@ class we_customer_EIWizard{
 
 				switch($options["step"]){
 					case 1:
-						return we_html_element::htmlHidden(array("name" => "pnt", "value" => "eibody")) .
-							we_html_element::htmlHidden(array("name" => "step", "value" => $options["step"])) .
-							we_html_element::htmlHidden(array("name" => "art", "value" => self::ART_IMPORT)) .
-							($filename ? we_html_element::htmlHidden(array("name" => "filename", "value" => $filename)) : '') .
-							we_html_element::htmlHidden(array("name" => "source", "value" => $source)) .
-							we_html_element::htmlHidden(array("name" => "import_from", "value" => $import_from)) .
-							we_html_element::htmlHidden(array("name" => "xml_from", "value" => $xml_from)) .
-							we_html_element::htmlHidden(array("name" => "xml_to", "value" => $xml_to)) .
-							we_html_element::htmlHidden(array("name" => "dataset", "value" => $dataset)) .
-							we_html_element::htmlHidden(array("name" => "csv_delimiter", "value" => $csv_delimiter)) .
-							we_html_element::htmlHidden(array("name" => "csv_enclose", "value" => $csv_enclose)) .
-							we_html_element::htmlHidden(array("name" => "csv_lineend", "value" => $csv_lineend)) .
-							we_html_element::htmlHidden(array("name" => "the_charset", "value" => $the_charset)) .
-							we_html_element::htmlHidden(array("name" => "csv_fieldnames", "value" => $csv_fieldnames));
+						return we_html_element::htmlHiddens(array(
+								"pnt" => "eibody",
+								"step" => $options["step"],
+								"art" => self::ART_IMPORT,
+								($filename ? "filename" : '') => $filename,
+								"source" => $source,
+								"import_from" => $import_from,
+								"xml_from" => $xml_from,
+								"xml_to" => $xml_to,
+								"dataset" => $dataset,
+								"csv_delimiter" => $csv_delimiter,
+								"csv_enclose" => $csv_enclose,
+								"csv_lineend" => $csv_lineend,
+								"the_charset" => $the_charset,
+								"csv_fieldnames" => $csv_fieldnames));
 
 					case 2:
-						return we_html_element::htmlHidden(array("name" => "pnt", "value" => "eibody")) .
-							we_html_element::htmlHidden(array("name" => "step", "value" => $options["step"])) .
-							we_html_element::htmlHidden(array("name" => "art", "value" => self::ART_IMPORT)) .
-							we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
-							($filename ? we_html_element::htmlHidden(array("name" => "filename", "value" => $filename)) : '') .
-							we_html_element::htmlHidden(array("name" => "xml_from", "value" => $xml_from)) .
-							we_html_element::htmlHidden(array("name" => "xml_to", "value" => $xml_to)) .
-							we_html_element::htmlHidden(array("name" => "dataset", "value" => $dataset)) .
-							we_html_element::htmlHidden(array("name" => "csv_delimiter", "value" => $csv_delimiter)) .
-							we_html_element::htmlHidden(array("name" => "csv_enclose", "value" => $csv_enclose)) .
-							we_html_element::htmlHidden(array("name" => "csv_lineend", "value" => $csv_lineend)) .
-							we_html_element::htmlHidden(array("name" => "the_charset", "value" => $the_charset)) .
-							we_html_element::htmlHidden(array("name" => "csv_fieldnames", "value" => $csv_fieldnames));
+						return we_html_element::htmlHiddens(array(
+								"pnt" => "eibody",
+								"step" => $options["step"],
+								"art" => self::ART_IMPORT,
+								"type" => $type,
+								($filename ? "filename" : '') => $filename,
+								"xml_from" => $xml_from,
+								"xml_to" => $xml_to,
+								"dataset" => $dataset,
+								"csv_delimiter" => $csv_delimiter,
+								"csv_enclose" => $csv_enclose,
+								"csv_lineend" => $csv_lineend,
+								"the_charset" => $the_charset,
+								"csv_fieldnames" => $csv_fieldnames
+						));
 
 					case 3:
-						return we_html_element::htmlHidden(array("name" => "pnt", "value" => "eibody")) .
-							we_html_element::htmlHidden(array("name" => "step", "value" => $options["step"])) .
-							we_html_element::htmlHidden(array("name" => "art", "value" => self::ART_IMPORT)) .
-							we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
-							we_html_element::htmlHidden(array("name" => "source", "value" => $source)) .
-							($filename ? we_html_element::htmlHidden(array("name" => "filename", "value" => $filename)) : '') .
-							we_html_element::htmlHidden(array("name" => "import_from", "value" => $import_from)) .
-							we_html_element::htmlHidden(array("name" => "dataset", "value" => $dataset));
+						return we_html_element::htmlHiddens(array(
+								"pnt" => "eibody",
+								"step" => $options["step"],
+								"art" => self::ART_IMPORT,
+								"type" => $type,
+								"source" => $source,
+								($filename ? "filename" : '') => $filename,
+								"import_from" => $import_from,
+								"dataset" => $dataset));
 
 					case 4:
-						return we_html_element::htmlHidden(array("name" => "pnt", "value" => "eibody")) .
-							we_html_element::htmlHidden(array("name" => "step", "value" => $options["step"])) .
-							we_html_element::htmlHidden(array("name" => "art", "value" => self::ART_IMPORT)) .
-							we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
-							($filename ? we_html_element::htmlHidden(array("name" => "filename", "value" => $filename)) : '') .
-							we_html_element::htmlHidden(array("name" => "source", "value" => $source)) .
-							we_html_element::htmlHidden(array("name" => "import_from", "value" => $import_from)) .
-							we_html_element::htmlHidden(array("name" => "dataset", "value" => $dataset)) .
-							we_html_element::htmlHidden(array("name" => "xml_from", "value" => $xml_from)) .
-							we_html_element::htmlHidden(array("name" => "xml_to", "value" => $xml_to)) .
-							we_html_element::htmlHidden(array("name" => "csv_delimiter", "value" => $csv_delimiter)) .
-							'<input type="hidden" name="csv_enclose" value=' . ($csv_enclose === '"' ? "'\"'" : "\"$csv_enclose\"") . ' />' .
-							we_html_element::htmlHidden(array("name" => "csv_lineend", "value" => $csv_lineend)) .
-							we_html_element::htmlHidden(array("name" => "the_charset", "value" => $the_charset)) .
-							we_html_element::htmlHidden(array("name" => "csv_fieldnames", "value" => $csv_fieldnames)) .
-							we_html_element::htmlHidden(array("name" => "cmd", "value" => self::ART_IMPORT));
+						return we_html_element::htmlHiddens(array(
+								"pnt" => "eibody",
+								"step" => $options["step"],
+								"art" => self::ART_IMPORT,
+								"type" => $type,
+								"source" => $source,
+								"import_from" => $import_from,
+								"dataset" => $dataset,
+								"xml_from" => $xml_from,
+								"xml_to" => $xml_to,
+								"csv_delimiter" => $csv_delimiter,
+								"csv_lineend", "value" => $csv_lineend,
+								"the_charset" => $the_charset,
+								"csv_fieldnames" => $csv_fieldnames,
+								"cmd" => self::ART_IMPORT,
+								($filename ? "filename" : '') => $filename,
+								"csv_enclose" => ($csv_enclose === '"' ? '"' : $csv_enclose)
+						));
 				}
 				return '';
 
@@ -461,9 +420,9 @@ class we_customer_EIWizard{
 
 				$customers = we_base_request::_(we_base_request::INTLIST, "customers", "");
 
-				$csv_delimiter = we_base_request::_(we_base_request::RAW, "csv_delimiter", CSV_DELIMITER);
-				$csv_enclose = we_base_request::_(we_base_request::RAW, "csv_enclose", CSV_ENCLOSE);
-				$csv_lineend = we_base_request::_(we_base_request::RAW, "csv_lineend", CSV_LINEEND);
+				$csv_delimiter = we_base_request::_(we_base_request::RAW_CHECKED, "csv_delimiter", self::CSV_DELIMITER);
+				$csv_enclose = we_base_request::_(we_base_request::RAW_CHECKED, "csv_enclose", self::CSV_ENCLOSE);
+				$csv_lineend = we_base_request::_(we_base_request::STRING, "csv_lineend", self::CSV_LINEEND);
 				$csv_fieldnames = we_base_request::_(we_base_request::BOOL, "csv_fieldnames", true);
 
 				$filter_count = we_base_request::_(we_base_request::INT, "filter_count", 0);
@@ -474,74 +433,81 @@ class we_customer_EIWizard{
 					foreach($fields_names as $field){
 						$varname = "filter_" . $field . "_" . $i;
 						if(($f = we_base_request::_(we_base_request::STRING, $varname)) !== false){
-							$filter.=we_html_element::htmlHidden(array("name" => $varname, "value" => $f));
+							$filter.=we_html_element::htmlHidden($varname, $f);
 						}
 					}
 				}
 
-				switch($options["step"]){
+				switch($options['step']){
 					case 1:
-						return we_html_element::htmlHidden(array("name" => "pnt", "value" => "eibody")) .
-							we_html_element::htmlHidden(array("name" => "step", "value" => $options["step"])) .
-							we_html_element::htmlHidden(array("name" => "art", "value" => self::ART_EXPORT)) .
-							we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
-							we_html_element::htmlHidden(array("name" => "selection", "value" => $selection)) .
-							we_html_element::htmlHidden(array("name" => "export_to", "value" => $export_to)) .
-							we_html_element::htmlHidden(array("name" => "path", "value" => $path)) .
-							we_html_element::htmlHidden(array("name" => "cdata", "value" => $cdata)) .
-							we_html_element::htmlHidden(array("name" => "customers", "value" => $customers)) .
-							($filename ? we_html_element::htmlHidden(array("name" => "filename", "value" => $filename)) : '') .
-							we_html_element::htmlHidden(array("name" => "csv_delimiter", "value" => $csv_delimiter)) .
-							we_html_element::htmlHidden(array("name" => "csv_enclose", "value" => $csv_enclose)) .
-							we_html_element::htmlHidden(array("name" => "csv_lineend", "value" => $csv_lineend)) .
-							we_html_element::htmlHidden(array("name" => "csv_fieldnames", "value" => $csv_fieldnames)) .
-							we_html_element::htmlHidden(array("name" => "filter_count", "value" => $filter_count)) .
+						return we_html_element::htmlHiddens(array(
+								"pnt" => "eibody",
+								"step" => $options["step"],
+								"art" => self::ART_EXPORT,
+								"type" => $type,
+								"selection" => $selection,
+								"export_to" => $export_to,
+								"path" => $path,
+								"cdata" => $cdata,
+								"customers" => $customers,
+								($filename ? "filename" : '') => $filename,
+								"csv_delimiter" => $csv_delimiter,
+								"csv_enclose" => $csv_enclose,
+								"csv_lineend" => $csv_lineend,
+								"csv_fieldnames" => $csv_fieldnames,
+								"filter_count" => $filter_count)) .
 							$filter;
 
 					case 2:
-						return we_html_element::htmlHidden(array("name" => "pnt", "value" => "eibody")) .
-							we_html_element::htmlHidden(array("name" => "step", "value" => $options["step"])) .
-							we_html_element::htmlHidden(array("name" => "art", "value" => self::ART_EXPORT)) .
-							we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
-							we_html_element::htmlHidden(array("name" => "selection", "value" => $selection)) .
-							we_html_element::htmlHidden(array("name" => "export_to", "value" => $export_to)) .
-							we_html_element::htmlHidden(array("name" => "path", "value" => $path)) .
-							we_html_element::htmlHidden(array("name" => "cdata", "value" => $cdata)) .
-							we_html_element::htmlHidden(array("name" => "customers", "value" => $customers)) .
-							($filename ? we_html_element::htmlHidden(array("name" => "filename", "value" => $filename)) : '') .
-							we_html_element::htmlHidden(array("name" => "csv_delimiter", "value" => $csv_delimiter)) .
-							we_html_element::htmlHidden(array("name" => "csv_enclose", "value" => $csv_enclose)) .
-							we_html_element::htmlHidden(array("name" => "csv_lineend", "value" => $csv_lineend)) .
-							we_html_element::htmlHidden(array("name" => "csv_fieldnames", "value" => $csv_fieldnames)) .
-							we_html_element::htmlHidden(array("name" => "filter_count", "value" => $filter_count));
+						return we_html_element::htmlHiddens(array(
+								"pnt" => "eibody",
+								"step" => $options["step"],
+								"art" => self::ART_EXPORT,
+								"type" => $type,
+								"selection" => $selection,
+								"export_to" => $export_to,
+								"path" => $path,
+								"cdata" => $cdata,
+								"customers" => $customers,
+								($filename ? "filename" : '') => $filename,
+								"csv_delimiter" => $csv_delimiter,
+								"csv_enclose" => $csv_enclose,
+								"csv_lineend" => $csv_lineend,
+								"csv_fieldnames" => $csv_fieldnames,
+								"filter_count" => $filter_count));
 
 					case 3:
-						return we_html_element::htmlHidden(array("name" => "pnt", "value" => "eibody")) .
-							we_html_element::htmlHidden(array("name" => "step", "value" => $options["step"])) .
-							we_html_element::htmlHidden(array("name" => "art", "value" => self::ART_EXPORT)) .
-							we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
-							we_html_element::htmlHidden(array("name" => "selection", "value" => $selection)) .
-							we_html_element::htmlHidden(array("name" => "customers", "value" => $customers)) .
-							we_html_element::htmlHidden(array("name" => "filter_count", "value" => $filter_count)) .
-							we_html_element::htmlHidden(array("name" => "cmd", "value" => self::ART_EXPORT)) .
+						return we_html_element::htmlHiddens(array(
+								"pnt" => "eibody",
+								"step" => $options["step"],
+								"art" => self::ART_EXPORT,
+								"type" => $type,
+								"selection" => $selection,
+								"customers" => $customers,
+								"filter_count" => $filter_count,
+								"cmd" => self::ART_EXPORT
+							)) .
 							$filter;
 
 					case 4:
-						return we_html_element::htmlHidden(array("name" => "pnt", "value" => "eibody")) .
-							we_html_element::htmlHidden(array("name" => "step", "value" => $options["step"])) .
-							we_html_element::htmlHidden(array("name" => "art", "value" => self::ART_EXPORT)) .
-							we_html_element::htmlHidden(array("name" => "type", "value" => $type)) .
-							we_html_element::htmlHidden(array("name" => "selection", "value" => $selection)) .
-							we_html_element::htmlHidden(array("name" => "export_to", "value" => $export_to)) .
-							we_html_element::htmlHidden(array("name" => "path", "value" => $path)) .
-							we_html_element::htmlHidden(array("name" => "cdata", "value" => $cdata)) .
-							we_html_element::htmlHidden(array("name" => "customers", "value" => $customers)) .
-							($filename ? we_html_element::htmlHidden(array("name" => "filename", "value" => $filename)) : '') .
-							we_html_element::htmlHidden(array("name" => "csv_delimiter", "value" => $csv_delimiter)) .
-							we_html_element::htmlHidden(array("name" => "csv_enclose", "value" => $csv_enclose)) .
-							we_html_element::htmlHidden(array("name" => "csv_lineend", "value" => $csv_lineend)) .
-							we_html_element::htmlHidden(array("name" => "csv_fieldnames", "value" => $csv_fieldnames)) .
-							we_html_element::htmlHidden(array("name" => "filter_count", "value" => $filter_count)) .
+						return we_html_element::htmlHiddens(array(
+								"pnt" => "eibody",
+								"step" => $options["step"],
+								"art" => self::ART_EXPORT,
+								"type" => $type,
+								"selection" => $selection,
+								"export_to" => $export_to,
+								"path" => $path,
+								"cdata" => $cdata,
+								"customers" => $customers,
+								($filename ? "filename" : '') => $filename,
+								"csv_delimiter" => $csv_delimiter,
+								"csv_enclose" => $csv_enclose,
+								"csv_lineend" => $csv_lineend,
+								"csv_fieldnames" => $csv_fieldnames,
+								"filter_count" => $filter_count,
+								"cmd" => self::ART_EXPORT
+							)) .
 							$filter;
 				}
 				return '';
@@ -553,25 +519,20 @@ class we_customer_EIWizard{
 	function getHTMLImportStep1(){
 		$type = we_base_request::_(we_base_request::STRING, "type", we_import_functions::TYPE_GENERIC_XML);
 
-		$generic = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
-		$generic->setCol(0, 0, array(), we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($type == we_import_functions::TYPE_GENERIC_XML), "type", g_l('modules_customer', '[gxml_import]'), true, "defaultfont", "if(document.we_form.type[0].checked) " . $this->topFrame . ".type='" . we_import_functions::TYPE_GENERIC_XML . "';", false, g_l('modules_customer', '[txt_gxml_import]'), 0, 430));
-		$generic->setCol(1, 0, array(), we_html_tools::getPixel(0, 4));
-		$generic->setCol(2, 0, array(), we_html_forms::radiobutton(self::TYPE_CSV, ($type == self::TYPE_CSV), "type", g_l('modules_customer', '[csv_import]'), true, "defaultfont", "if(document.we_form.type[1].checked) " . $this->topFrame . ".type='" . self::TYPE_CSV . "';", false, g_l('modules_customer', '[txt_csv_import]'), 0, 430));
+		$generic = new we_html_table(array('class' => 'default withSpace'), 2, 1);
+		$generic->setCol(0, 0, array(), we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($type == we_import_functions::TYPE_GENERIC_XML), "type", g_l('modules_customer', '[gxml_import]'), true, "defaultfont", "if(document.we_form.type[0].checked) top.type='" . we_import_functions::TYPE_GENERIC_XML . "';", false, g_l('modules_customer', '[txt_gxml_import]'), 0, 430));
+		$generic->setCol(1, 0, array(), we_html_forms::radiobutton(self::TYPE_CSV, ($type == self::TYPE_CSV), "type", g_l('modules_customer', '[csv_import]'), true, "defaultfont", "if(document.we_form.type[1].checked) top.type='" . self::TYPE_CSV . "';", false, g_l('modules_customer', '[txt_csv_import]'), 0, 430));
 
 		$parts = array(
 			array(
 				"headline" => g_l('modules_customer', '[generic_import]'),
 				"html" => $generic->getHTML(),
-				"space" => 120,
-				"noline" => 1)
+				'space' => 120,
+				'noline' => 1)
 		);
 
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[import_title]')) . STYLESHEET) .
-				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
-						we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), $this->getHiddens(array("art" => self::ART_IMPORT, "step" => 1)) .
-							we_html_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[import_step1]'))
-						)
+		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', STYLESHEET, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), $this->getHiddens(array("art" => self::ART_IMPORT, "step" => 1)) .
+						we_html_multiIconBox::getHTML("", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[import_step1]'))
 					)
 				)
 		);
@@ -582,70 +543,57 @@ class we_customer_EIWizard{
 		$source = we_base_request::_(we_base_request::FILE, "source", "/");
 		$type = we_base_request::_(we_base_request::STRING, "type", "");
 
-		$fileUploader = new we_fileupload_include('upload', 'body', 'footer', 'we_form', 'next_footer', false, 'top.load.doNextAction()', 'document.we_form.import_from[1].checked = true;', 369, true, true, 200);
-		$fileUploader->setAction($this->frameset . '?pnt=eibody&art=import&step=3&import_from=' . self::EXPORT_LOCAL . '&type=' . $type);
-		$fileUploader->setDimensions(array('alertBoxWidth' => 430, 'marginTop' => 10));
+		$fileUploader = new we_fileupload_ui_base('upload');
+		$fileUploader->setExternalUiElements(array('btnUploadName' => 'next_footer'));
+		$fileUploader->setCallback('top.load.doNextAction()');
+		//$fileUploader->setForm(array('action' => WEBEDITION_DIR.'we_showMod.php?mod=customer&pnt=eibody&art=import&step=3&import_from=' . self::EXPORT_LOCAL . '&type=' . $type));
+		$fileUploader->setInternalProgress(array('isInternalProgress' => true, 'width' => 200));
+		$fileUploader->setFileSelectOnclick('document.we_form.import_from[1].checked = true;');
+		$fileUploader->setGenericFileName(TEMP_DIR . we_fileupload::REPLACE_BY_UNIQUEID . ($type == self::TYPE_CSV ? ".csv" : ".xml"));
+		$fileUploader->setDisableUploadBtnOnInit(false);
+		$fileUploader->setDimensions(array('width' => 369, 'alertBoxWidth' => 430, 'marginTop' => 10));
 
 		$parts = array();
-		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
-			we_html_element::jsElement('
-					function switchImportFrom(obj){
-						if(obj.value === "local"){
-							top.footer.weButton.disable("next_footer");
-						} else {
-							top.footer.weButton.enable("next_footer");
-						}
-					}
+		$js = we_html_element::jsElement('
 
-					function callBack(){
-						document.we_form.import_from[1].checked=true;
-					}
-				') . $fileUploader->getJs();
+function callBack(){
+	document.we_form.import_from[1].checked=true;
+}') . $fileUploader->getJs();
 		$css = STYLESHEET . $fileUploader->getCss();
 
-		$tmptable = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 4, 1);
-		$tmptable->setCol(0, 0, array("valign" => "middle"), $this->formFileChooser(250, "source", $source, "opener." . $this->bodyFrame . ".document.we_form.import_from[0].checked=true;", ($type == we_import_functions::TYPE_GENERIC_XML ? we_base_ContentTypes::XML : "")));
-		$tmptable->setCol(1, 0, array(), we_html_tools::getPixel(2, 5));
+		$table = new we_html_table(array('class' => 'default withSpace'), 2, 2);
+		$table->setCol(0, 0, array("colspan" => 2), we_html_forms::radiobutton(self::EXPORT_SERVER, ($import_from == self::EXPORT_SERVER), "import_from", g_l('modules_customer', '[server_import]'), true, "defaultfont"));
 
-		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 4, 2);
-		$table->setCol(0, 0, array("colspan" => 2), we_html_forms::radiobutton(self::EXPORT_SERVER, ($import_from == self::EXPORT_SERVER), "import_from", g_l('modules_customer', '[server_import]'), true, "defaultfont", "switchImportFrom(this);"));
-		$table->setColContent(1, 0, we_html_tools::getPixel(25, 5));
-		$table->setColContent(2, 1, $tmptable->getHtml());
+		$table->setCol(1, 1, array('style' => 'padding-bottom:5px;'), $this->formFileChooser(250, "source", $source, "opener." . $this->bodyFrame . ".document.we_form.import_from[0].checked=true;", ($type == we_import_functions::TYPE_GENERIC_XML ? we_base_ContentTypes::XML : "")));
 
 		$parts[] = array(
 			"headline" => g_l('modules_customer', '[source_file]'),
 			"html" => $table->getHtml(),
-			"space" => 120,
-			"noline" => 1
+			'space' => 120,
+			'noline' => 1
 		);
 
 		//upload table
+		$tmptable = new we_html_table(array('class' => 'default withSpace'), 2, 1);
 		//$tmptable->setCol(0, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 430));
 		$tmptable->setCol(0, 0, array(), $fileUploader->getHtmlAlertBoxes());
-		$tmptable->setCol(1, 0, array(), we_html_tools::getPixel(2, 5));
 
-		//$tmptable->setCol(2, 0, array("valign" => "middle"), we_html_tools::htmlTextInput("upload", 35, "", 255, "onclick=\"document.we_form.import_from[1].checked=true;\"", "file"));
-		$tmptable->setCol(2, 0, array("valign" => "middle"), $fileUploader->getHTML());
-		$tmptable->setCol(3, 0, array(), we_html_tools::getPixel(2, 5));
+		//$tmptable->setCol(2, 0, array('style'=>'vertical-align:middle;'), we_html_tools::htmlTextInput("upload", 35, "", 255, "onclick=\"document.we_form.import_from[1].checked=true;\"", "file"));
+		$tmptable->setCol(1, 0, array('style' => 'vertical-align:middle;'), $fileUploader->getHTML());
 
-		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 2);
-		$table->setCol(0, 0, array("colspan" => 2), we_html_forms::radiobutton(self::EXPORT_LOCAL, ($import_from == self::EXPORT_LOCAL), "import_from", g_l('modules_customer', '[upload_import]'), true, "defaultfont", "switchImportFrom(this)"));
-		$table->setColContent(1, 0, we_html_tools::getPixel(25, 5));
-		$table->setColContent(2, 1, $tmptable->getHtml());
+		$table = new we_html_table(array('class' => 'default withSpace'), 2, 2);
+		$table->setCol(0, 0, array("colspan" => 2), we_html_forms::radiobutton(self::EXPORT_LOCAL, ($import_from == self::EXPORT_LOCAL), "import_from", g_l('modules_customer', '[upload_import]'), true, "defaultfont"));
+		$table->setColContent(1, 1, $tmptable->getHtml());
 
 		$parts[] = array(
 			"headline" => "",
 			"html" => $table->getHTML(),
-			"space" => 120,
-			"noline" => 1
+			'space' => 120,
+			'noline' => 1
 		);
 
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[import_title]')) . $css . $js) .
-				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
-						we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "enctype" => "multipart/form-data"), $this->getHiddens(array("art" => self::ART_IMPORT, "step" => 2)) .
-							we_html_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[import_step2]'))
-						)
+		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', $css . $js, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "enctype" => "multipart/form-data"), $this->getHiddens(array("art" => self::ART_IMPORT, "step" => 2)) .
+						we_html_multiIconBox::getHTML("", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[import_step2]'))
 					)
 				)
 		);
@@ -655,33 +603,15 @@ class we_customer_EIWizard{
 		$import_from = we_base_request::_(we_base_request::STRING, "import_from", self::EXPORT_SERVER);
 		$source = we_base_request::_(we_base_request::FILE, "source", "/");
 		$type = we_base_request::_(we_base_request::STRING, "type", "");
-		$ext = $type == self::TYPE_CSV ? ".csv" : ".xml";
-		$filename = "";
-		$filesource = "";
 
 		if($import_from == self::EXPORT_LOCAL){
-			$fileUploader = new we_fileupload_include('upload');
-			$fileUploader->setFileNameTemp(array('postfix' => $ext));
-
-			if($fileUploader->processFileRequest()){
-				//we have finished upload or we are in fallback mode
-				$filesource = $fileUploader->getFileNameTemp();
-				$filename = str_replace($_SERVER['DOCUMENT_ROOT'], '', $filesource);
-
-				if(!$filename && isset($_FILES['upload']) && $_FILES["upload"]["size"]){
-					//fallback mode
-					$filename = TEMP_DIR . we_base_file::getUniqueId() . $ext;
-					$filesource = $_SERVER['DOCUMENT_ROOT'] . $filename;
-					move_uploaded_file($_FILES['upload']["tmp_name"], $filesource);
-				}
-			} else {
-				//ajax response allready written: return here to send response only
-				return;
-			}
+			$fileUploader = new we_fileupload_resp_base();
+			//$fileUploader->setTypeCondition();
+			$filename = $fileUploader->commitUploadedFile();
 		} else {
 			$filename = $source;
-			$filesource = $_SERVER['DOCUMENT_ROOT'] . $filename;
 		}
+		$filesource = $filename ? $_SERVER['DOCUMENT_ROOT'] . $filename : '';
 
 		$parts = array();
 		if(is_file($filesource) && is_readable($filesource)){
@@ -721,7 +651,7 @@ class we_customer_EIWizard{
 
 					//t_e($csv_delimiter, $csv_enclose, $max, $charCount, $r, $n, $csv_lineend, $csv_fieldnames,$line);
 
-					$fileformattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 6, 1);
+					$fileformattable = new we_html_table(array('style' => 'margin-top:10px;'), 5, 1);
 
 					$_file_encoding = new we_html_select(array("name" => "csv_lineend", "size" => 1, "class" => "defaultfont", "style" => "width: 254px;"));
 					$_file_encoding->addOption('windows', g_l('modules_customer', '[windows]'));
@@ -734,21 +664,18 @@ class we_customer_EIWizard{
 					//$charset = $GLOBALS['WE_BACKENDCHARSET'];
 					//$GLOBALS['weDefaultCharset'] = get_value("default_charset");
 					$_importCharset = we_html_tools::htmlTextInput('the_charset', 8, ($charset === 'ASCII' ? 'ISO8859-1' : $charset), 255, '', 'text', 100);
-					$_importCharsetChooser = we_html_tools::htmlSelect("ImportCharsetSelect", $_charsets, 1, ($charset === 'ASCII' ? 'ISO8859-1' : $charset), false, array("onchange" => "document.forms[0].elements['the_charset'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), "value", 160, "defaultfont", false);
-					$import_Charset = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_importCharset . '</td><td>' . $_importCharsetChooser . '</td></tr></table>';
+					$_importCharsetChooser = we_html_tools::htmlSelect("ImportCharsetSelect", $_charsets, 1, ($charset === 'ASCII' ? 'ISO8859-1' : $charset), false, array("onchange" => "document.forms[0].elements.the_charset.value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), "value", 160, "defaultfont", false);
+					$import_Charset = '<table class="default"><tr><td>' . $_importCharset . '</td><td>' . $_importCharsetChooser . '</td></tr></table>';
 
 
-					$fileformattable->setCol(0, 0, array("class" => "defaultfont"), we_html_tools::getPixel(10, 10));
-					$fileformattable->setCol(1, 0, array("class" => "defaultfont"), g_l('modules_customer', '[csv_lineend]') . we_html_element::htmlBr() . $_file_encoding->getHtml());
-					$fileformattable->setCol(2, 0, array("class" => "defaultfont"), g_l('modules_customer', '[import_charset]') . we_html_element::htmlBr() . $import_Charset);
-					//$fileformattable->setCol(2, 0, array("class" => "defaultfont"), "abc");
+					$fileformattable->setCol(0, 0, array("class" => "defaultfont"), g_l('modules_customer', '[csv_lineend]') . we_html_element::htmlBr() . $_file_encoding->getHtml());
+					$fileformattable->setCol(1, 0, array("class" => "defaultfont"), g_l('modules_customer', '[import_charset]') . we_html_element::htmlBr() . $import_Charset);
+					$fileformattable->setColContent(2, 0, $this->getHTMLChooser("csv_delimiter", $csv_delimiter, $csv_delimiters, g_l('modules_customer', '[csv_delimiter]')));
+					$fileformattable->setColContent(3, 0, $this->getHTMLChooser("csv_enclose", $csv_enclose, $csv_encloses, g_l('modules_customer', '[csv_enclose]')));
 
-					$fileformattable->setColContent(3, 0, $this->getHTMLChooser("csv_delimiter", $csv_delimiter, $csv_delimiters, g_l('modules_customer', '[csv_delimiter]')));
-					$fileformattable->setColContent(4, 0, $this->getHTMLChooser("csv_enclose", $csv_enclose, $csv_encloses, g_l('modules_customer', '[csv_enclose]')));
+					$fileformattable->setColContent(4, 0, we_html_forms::checkbox(1, $csv_fieldnames, "csv_fieldnames", g_l('modules_customer', '[csv_fieldnames]')));
 
-					$fileformattable->setColContent(5, 0, we_html_forms::checkbox(1, $csv_fieldnames, "csv_fieldnames", g_l('modules_customer', '[csv_fieldnames]')));
-
-					$parts = array(array("headline" => g_l('modules_customer', '[csv_params]'), "html" => $fileformattable->getHtml(), "space" => 150));
+					$parts = array(array("headline" => g_l('modules_customer', '[csv_params]'), "html" => $fileformattable->getHtml(), 'space' => 150));
 					break;
 				case we_import_functions::TYPE_GENERIC_XML:
 					//invoke parser
@@ -781,8 +708,8 @@ class we_customer_EIWizard{
 							'size' => 1,
 							'class' => 'defaultfont',
 							(($isSingleNode) ? "disabled" : "style") => "",
-							'onchange' => "this.form.elements['xml_to'].value=this.options[this.selectedIndex].value; this.form.elements['xml_from'].value=1;this.form.elements['dataset'].value=this.options[this.selectedIndex].text;" .
-							"if(this.options[this.selectedIndex].value==1) {this.form.elements['xml_from'].disabled=true;this.form.elements['xml_to'].disabled=true;} else {this.form.elements['xml_from'].disabled=false;this.form.elements['xml_to'].disabled=false;}")
+							'onchange' => "this.form.elements.xml_to.value=this.options[this.selectedIndex].value; this.form.elements.xml_from.value=1;this.form.elements.dataset.value=this.options[this.selectedIndex].text;" .
+							"if(this.options[this.selectedIndex].value==1) {this.form.elements.xml_from.disabled=true;this.form.elements.xml_to.disabled=true;} else {this.form.elements.xml_from.disabled=false;this.form.elements.xml_to.disabled=false;}")
 						);
 						$optid = 0;
 						foreach($recs as $value => $text){
@@ -812,25 +739,21 @@ class we_customer_EIWizard{
 						$tblFrame->setCol(2, 1, array(), $tblSelect->getHtml());
 
 						$_REQUEST["dataset"] = $firstItem;
-						$parts = array(array("html" => $tblFrame->getHtml(), "space" => 0, "noline" => 1));
+						$parts = array(array("html" => $tblFrame->getHtml(), 'noline' => 1));
 					}else {
-						$parts = array(array("html" => we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', (!$xmlWellFormed) ? '[not_well_formed]' : '[missing_child_node]'), we_html_tools::TYPE_ALERT, 570), "space" => 0, "noline" => 1));
-						$js = we_html_element::jsElement($this->footerFrame . '.location="' . $this->frameset . '?pnt=eifooter&art=' . self::ART_IMPORT . '&step=99";');
+						$parts = array(array("html" => we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', (!$xmlWellFormed) ? '[not_well_formed]' : '[missing_child_node]'), we_html_tools::TYPE_ALERT, 570), 'noline' => 1));
+						$js = we_html_element::jsElement($this->footerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&art=' . self::ART_IMPORT . '&step=99";');
 					}
 					break;
 			}
 		} else {
-			$js = we_html_element::jsElement($this->footerFrame . '.location="' . $this->frameset . '?pnt=eifooter&art=' . self::ART_IMPORT . '&step=99";');
-			$parts[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[missing_filesource]'), we_html_tools::TYPE_ALERT, 570), "space" => 0, "noline" => 1);
+			$js = we_html_element::jsElement($this->footerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&art=' . self::ART_IMPORT . '&step=99";');
+			$parts[] = array("html" => we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[missing_filesource]'), we_html_tools::TYPE_ALERT, 570), 'noline' => 1);
 		}
 
 		$_REQUEST["filename"] = $filename;
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[import_title]')) . STYLESHEET . $js) .
-				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
-						we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body"), $this->getHiddens(array("art" => self::ART_IMPORT, "step" => 3)) .
-							we_html_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[import_step3]'))
-						)
+		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', STYLESHEET . $js, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body"), $this->getHiddens(array("art" => self::ART_IMPORT, "step" => 3)) .
+						we_html_multiIconBox::getHTML("", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[import_step3]'))
 					)
 				)
 		);
@@ -840,12 +763,12 @@ class we_customer_EIWizard{
 		$filename = we_base_request::_(we_base_request::FILE, "filename", "");
 		$type = we_base_request::_(we_base_request::STRING, "type", "");
 		$dataset = we_base_request::_(we_base_request::RAW, "dataset", "");
-		$csv_delimiter = we_base_request::_(we_base_request::RAW, "csv_delimiter", CSV_DELIMITER);
-		$csv_enclose = we_base_request::_(we_base_request::RAW, "csv_enclose", CSV_ENCLOSE);
-		$csv_lineend = we_base_request::_(we_base_request::RAW, "csv_lineend", CSV_LINEEND);
-		$the_charset = we_base_request::_(we_base_request::RAW, "the_charset", THE_CHARSET);
+		$csv_delimiter = we_base_request::_(we_base_request::RAW_CHECKED, "csv_delimiter", self::CSV_DELIMITER);
+		$csv_enclose = we_base_request::_(we_base_request::RAW_CHECKED, "csv_enclose", self::CSV_ENCLOSE);
+		$csv_lineend = we_base_request::_(we_base_request::STRING, "csv_lineend", self::CSV_LINEEND);
+		$the_charset = we_base_request::_(we_base_request::STRING, "the_charset", self::THE_CHARSET);
 		$csv_fieldnames = we_base_request::_(we_base_request::BOOL, "csv_fieldnames");
-		$same = we_base_request::_(we_base_request::STRING, "same", "rename");
+		$same = we_base_request::_(we_base_request::STRING, 'same', 'rename');
 
 		$field_mappings = we_base_request::_(we_base_request::RAW, "field_mappings", "");
 		$att_mappings = we_base_request::_(we_base_request::RAW, "att_mappings", "");
@@ -888,12 +811,13 @@ class we_customer_EIWizard{
 			foreach(array_keys($nodes) as $node){
 				$we_fields->addOption(oldHtmlspecialchars(str_replace(" ", "", $node)), oldHtmlspecialchars($node));
 				if(isset($field_mappings[$record])){
-					if($node == $field_mappings[$record])
+					if($node == $field_mappings[$record]){
 						$we_fields->selectOption($node);
-				}
-				else {
-					if($node == $record)
+					}
+				} else {
+					if($node == $record){
 						$we_fields->selectOption($node);
+					}
 				}
 			}
 			if($type == we_import_functions::TYPE_GENERIC_XML){
@@ -911,7 +835,7 @@ class we_customer_EIWizard{
 			$i++;
 		}
 
-		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 4, 1);
+		$table = new we_html_table(array('class' => 'default'), 4, 1);
 		$table->setColContent(0, 0, we_html_forms::radiobutton("rename", ($same === "rename"), "same", g_l('modules_customer', '[same_rename]'), true, "defaultfont", ""));
 		$table->setColContent(1, 0, we_html_forms::radiobutton("overwrite", ($same === "overwrite"), "same", g_l('modules_customer', '[same_overwrite]'), true, "defaultfont", ""));
 		$table->setColContent(2, 0, we_html_forms::radiobutton("skip", ($same === "skip"), "same", g_l('modules_customer', '[same_skip]'), true, "defaultfont", ""));
@@ -920,21 +844,16 @@ class we_customer_EIWizard{
 			array(
 				"headline" => g_l('modules_customer', '[same_names]'),
 				"html" => $table->getHtml(),
-				"space" => 0
 			),
 			array(
 				"headline" => g_l('modules_customer', '[import_step4]'),
-				"html" => we_html_tools::getPixel(1, 8) . "<br/>" . we_html_tools::htmlDialogBorder3(510, 255, $rows, $tableheader, "defaultfont"),
-				"space" => 150),
+				"html" => "<br/>" . we_html_tools::htmlDialogBorder3(510, 255, $rows, $tableheader, "defaultfont"),
+				'space' => 150),
 		);
 
 
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[import_title]')) . STYLESHEET . we_html_multiIconBox::getJS()) .
-				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
-						we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body"), $this->getHiddens(array("art" => self::ART_IMPORT, "step" => 4)) .
-							we_html_multiIconBox::getHTML("xml", "100%", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[import_step4]'))
-						)
+		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', STYLESHEET . we_html_multiIconBox::getJS(), we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body"), $this->getHiddens(array("art" => self::ART_IMPORT, "step" => 4)) .
+						we_html_multiIconBox::getHTML("xml", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[import_step4]'))
 					)
 				)
 		);
@@ -944,7 +863,7 @@ class we_customer_EIWizard{
 		$tmpdir = we_base_request::_(we_base_request::FILE, "tmpdir");
 		$impno = we_base_request::_(we_base_request::INT, "impno", 0);
 
-		$table = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 3, 1);
+		$table = new we_html_table(array(), 3, 1);
 		$table->setCol(0, 0, array("class" => "defaultfont"), sprintf(g_l('modules_customer', '[import_finished_desc]'), $impno));
 
 		if($tmpdir && is_file(TEMP_PATH . $tmpdir . '/' . $tmpdir . '.log') && is_readable(TEMP_PATH . "$tmpdir/$tmpdir.log")){
@@ -960,7 +879,7 @@ class we_customer_EIWizard{
 			array(
 				"headline" => "",
 				"html" => $table->getHtml(),
-				"space" => 20
+				'space' => 20
 			)
 		);
 
@@ -968,11 +887,7 @@ class we_customer_EIWizard{
 			rmdir(TEMP_PATH . $tmpdir);
 		}
 
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[import_title]')) . STYLESHEET . we_html_multiIconBox::getJS()) .
-				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
-						we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load"), we_html_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[import_step5]'))
-						)
+		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', STYLESHEET . we_html_multiIconBox::getJS(), we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load"), we_html_multiIconBox::getHTML("", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[import_step5]'))
 					)
 				)
 		);
@@ -986,21 +901,16 @@ class we_customer_EIWizard{
 	}
 
 	function getHTMLExportFooter($step = 1){
-		$content = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 575, "align" => "right"), 1, 2);
+		$content = new we_html_table(array('class' => 'default', "width" => 575, "style" => "text-align:right"), 1, 2);
 
 		if($step == 1){
 			$buttons = we_html_button::position_yes_no_cancel(
-					we_html_button::create_button_table(array(
-						we_html_button::create_button("back", "", false, 100, 22, "", "", true),
-						we_html_button::create_button("next", "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=export_next&step=" . $step . "';"))
-					), we_html_button::create_button("cancel", "javascript:top.close();")
+					we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true) . we_html_button::create_button(we_html_button::NEXT, "javascript:" . $this->loadFrame . ".location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=customer&pnt=eiload&cmd=export_next&step=" . $step . "';"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 			);
 		} else if($step == 4){
 			$buttons = we_html_button::position_yes_no_cancel(
-					we_html_button::create_button_table(array(
-						we_html_button::create_button("back", "", false, 100, 22, "", "", true),
-						we_html_button::create_button("next", "", false, 100, 22, "", "", true))
-					), we_html_button::create_button("cancel", "javascript:top.close();")
+					we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true) .
+					we_html_button::create_button(we_html_button::NEXT, "", false, 100, 22, "", "", true), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 			);
 			$text = g_l('modules_customer', '[exporting]');
 			$progress = 0;
@@ -1011,26 +921,18 @@ class we_customer_EIWizard{
 			$content->setCol(0, 0, null, (isset($progressbar) ? $progressbar->getHtml() : ""));
 		} else if($step == 5){
 			$buttons = we_html_button::position_yes_no_cancel(
-					we_html_button::create_button_table(array(
-						we_html_button::create_button("back", "", false, 100, 22, "", "", true),
-						we_html_button::create_button("next", "", false, 100, 22, "", "", true))
-					), we_html_button::create_button("cancel", "javascript:top.close();")
+					we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true) .
+					we_html_button::create_button(we_html_button::NEXT, "", false, 100, 22, "", "", true), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 			);
 		} else {
 			$buttons = we_html_button::position_yes_no_cancel(
-					we_html_button::create_button_table(array(
-						we_html_button::create_button("back", "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=export_back&step=" . $step . "';"),
-						we_html_button::create_button("next", "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=export_next&step=" . $step . "';"))
-					), we_html_button::create_button("cancel", "javascript:top.close();")
+					we_html_button::create_button(we_html_button::BACK, "javascript:" . $this->loadFrame . ".location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=customer&pnt=eiload&cmd=export_back&step=" . $step . "';") .
+					we_html_button::create_button(we_html_button::NEXT, "javascript:" . $this->loadFrame . ".location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=customer&pnt=eiload&cmd=export_next&step=" . $step . "';"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 			);
 		}
-		$content->setCol(0, 1, array("align" => "right"), $buttons);
+		$content->setCol(0, 1, array("style" => "text-align:right"), $buttons);
 
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(//FIXME: missing title
-					we_html_tools::getHtmlInnerHead() . STYLESHEET . "\n" . (isset($progressbar) ? $progressbar->getJSCode() . "\n" : "")
-				) .
-				we_html_element::htmlBody(array("class" => "weDialogButtonsBody"), we_html_element::htmlForm(array(
+		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET . (isset($progressbar) ? $progressbar->getJSCode() : ''), we_html_element::htmlBody(array("class" => "weDialogButtonsBody"), we_html_element::htmlForm(array(
 						"name" => "we_form",
 						"method" => "post",
 						"target" => "load",
@@ -1042,31 +944,25 @@ class we_customer_EIWizard{
 	}
 
 	function getHTMLImportFooter($step = 1){
-		$content = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 575, "align" => "right"), 1, 2);
+		$content = new we_html_table(array('class' => 'default', "width" => 575, "style" => "text-align:right"), 1, 2);
 
 		switch($step){
 			case "1":
 				$buttons = we_html_button::position_yes_no_cancel(
-						we_html_button::create_button_table(array(
-							we_html_button::create_button("back", "", false, 100, 22, "", "", true),
-							we_html_button::create_button("next", "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=import_next&step=" . $step . "';"))
-						), we_html_button::create_button("cancel", "javascript:top.close();")
+						we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true) .
+						we_html_button::create_button(we_html_button::NEXT, "javascript:" . $this->loadFrame . ".location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=customer&pnt=eiload&cmd=import_next&step=" . $step . "';"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 				);
 				break;
 			case "2":
 				$buttons = we_html_button::position_yes_no_cancel(
-						we_html_button::create_button_table(array(
-							we_html_button::create_button("back", "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=import_back&step=" . $step . "';"),
-							we_html_button::create_button("next", "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=import_next&step=" . $step . "';", true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_footer'))
-						), we_html_button::create_button("cancel", "javascript:" . we_fileupload_include::getJsBtnCmdStatic('cancel', 'body'))
+						we_html_button::create_button(we_html_button::BACK, "javascript:" . $this->loadFrame . ".location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=customer&pnt=eiload&cmd=import_back&step=" . $step . "';") .
+						we_html_button::create_button(we_html_button::NEXT, "javascript:" . $this->loadFrame . ".location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=customer&pnt=eiload&cmd=import_next&step=" . $step . "';", true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_footer'), we_html_button::create_button(we_html_button::CANCEL, "javascript:" . we_fileupload_ui_base::getJsBtnCmdStatic('cancel', 'body'))
 				);
 				break;
 			case "5":
 				$buttons = we_html_button::position_yes_no_cancel(
-						we_html_button::create_button_table(array(
-							we_html_button::create_button("back", "", false, 100, 22, "", "", true),
-							we_html_button::create_button("next", "", false, 100, 22, "", "", true))
-						), we_html_button::create_button("cancel", "javascript:top.close();")
+						we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true) .
+						we_html_button::create_button(we_html_button::NEXT, "", false, 100, 22, "", "", true), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 				);
 				$text = g_l('modules_customer', '[importing]');
 				$progress = 0;
@@ -1078,32 +974,24 @@ class we_customer_EIWizard{
 				break;
 			case "6":
 				$buttons = we_html_button::position_yes_no_cancel(
-						we_html_button::create_button("close", "javascript:top.close();")
+						we_html_button::create_button(we_html_button::CLOSE, "javascript:top.close();")
 				);
 				break;
 			case "99":
 				$buttons = we_html_button::position_yes_no_cancel(
-						we_html_button::create_button_table(array(
-							we_html_button::create_button("back", "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=import_back&step=2';"),
-							we_html_button::create_button("next", "", false, 100, 22, "", "", true))
-						), we_html_button::create_button("cancel", "javascript:top.close();")
+						we_html_button::create_button(we_html_button::BACK, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "&pnt=eiload&cmd=import_back&step=2';") .
+						we_html_button::create_button(we_html_button::NEXT, "", false, 100, 22, "", "", true), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 				);
 				break;
 			default:
 				$buttons = we_html_button::position_yes_no_cancel(
-						we_html_button::create_button_table(array(
-							we_html_button::create_button("back", "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=import_back&step=" . $step . "';"),
-							we_html_button::create_button("next", "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=import_next&step=" . $step . "';"))
-						), we_html_button::create_button("cancel", "javascript:top.close();")
+						we_html_button::create_button(we_html_button::BACK, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "&pnt=eiload&cmd=import_back&step=" . $step . "';") .
+						we_html_button::create_button(we_html_button::NEXT, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "&pnt=eiload&cmd=import_next&step=" . $step . "';"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 				);
 		}
-		$content->setCol(0, 1, array("align" => "right"), $buttons);
+		$content->setCol(0, 1, array("style" => "text-align:right"), $buttons);
 
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(//FIXME: missing title
-					we_html_tools::getHtmlInnerHead() . STYLESHEET . (isset($progressbar) ? $progressbar->getJSCode() : "")
-				) .
-				we_html_element::htmlBody(array("class" => "weDialogButtonsBody"), we_html_element::htmlForm(array(
+		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET . (isset($progressbar) ? $progressbar->getJSCode() : ""), we_html_element::htmlBody(array("class" => "weDialogButtonsBody"), we_html_element::htmlForm(array(
 						"name" => "we_form",
 						"method" => "post",
 						"target" => "load",
@@ -1116,7 +1004,7 @@ class we_customer_EIWizard{
 
 	private function getLoadCode(){
 		if(($pid = we_base_request::_(we_base_request::INT, "pid"))){
-			return we_html_element::jsElement("self.location='" . WE_EXPORT_MODULE_DIR . "exportLoadTree.php?we_cmd[1]=" . we_base_request::_(we_base_request::TABLE, "tab") . "&we_cmd[2]=" . $pid . "&we_cmd[3]=" . we_base_request::_(we_base_request::STRING, "openFolders") . "'");
+			return we_html_element::jsElement("self.location='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=loadTree&we_cmd[1]=" . we_base_request::_(we_base_request::TABLE, "tab") . "&we_cmd[2]=" . $pid . "&we_cmd[3]=" . we_base_request::_(we_base_request::STRING, "openFolders") . "'");
 		}
 		return '';
 	}
@@ -1127,11 +1015,10 @@ class we_customer_EIWizard{
 			case 2:
 			case 3:
 			case 4:
-				$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) .
-					we_html_element::jsElement('
+				$head = we_html_element::jsElement('
 function doNext(){
 	' . $this->bodyFrame . '.document.we_form.step.value++;
-	' . $this->footerFrame . '.location="' . $this->frameset . '?pnt=eifooter&art=' . self::ART_EXPORT . '&step="+' . $this->bodyFrame . '.document.we_form.step.value;
+	' . $this->footerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&art=' . self::ART_EXPORT . '&step="+' . $this->bodyFrame . '.document.we_form.step.value;
 	if(' . $this->bodyFrame . '.document.we_form.step.value>3){
 		' . $this->bodyFrame . '.document.we_form.target="load";
 		' . $this->bodyFrame . '.document.we_form.pnt.value="eiload";
@@ -1140,9 +1027,7 @@ function doNext(){
 	' . $this->bodyFrame . '.document.we_form.submit();
 }');
 
-				return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-						we_html_element::htmlHead($head) .
-						we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5, "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), "")
+				return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', $head, we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px;', "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), "")
 						)
 				);
 
@@ -1152,17 +1037,14 @@ function doNext(){
 	}
 
 	private function getExportBackCode(){
-		$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) .
-			we_html_element::jsElement('
+		$head = we_html_element::jsElement('
 function doNext(){
 	' . $this->bodyFrame . '.document.we_form.step.value--;
-	' . $this->footerFrame . '.location="' . $this->frameset . '?pnt=eifooter&art=' . self::ART_EXPORT . '&step="+' . $this->bodyFrame . '.document.we_form.step.value;
+	' . $this->footerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&art=' . self::ART_EXPORT . '&step="+' . $this->bodyFrame . '.document.we_form.step.value;
 	' . $this->bodyFrame . '.document.we_form.submit();
 }');
 
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead($head) .
-				we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5, "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), "")
+		return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', $head, we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), "")
 				)
 		);
 	}
@@ -1170,48 +1052,49 @@ function doNext(){
 	private function getExportCode(){
 		$file_format = we_base_request::_(we_base_request::STRING, "type", we_import_functions::TYPE_GENERIC_XML);
 		$file_name = we_base_request::_(we_base_request::FILE, "filename", date('Y-m-d'));
-		$export_to = we_base_request::_(we_base_request::RAW, "export_to", self::EXPORT_SERVER);
+		$export_to = we_base_request::_(we_base_request::STRING, "export_to", self::EXPORT_SERVER);
 		$path = ($export_to == self::EXPORT_SERVER ? we_base_request::_(we_base_request::FILE, "path", "") : rtrim(TEMP_DIR, '/'));
 		$cdata = we_base_request::_(we_base_request::INT, "cdata", 0);
-		$csv_delimiter = we_base_request::_(we_base_request::RAW, "csv_delimiter", "");
-		$csv_enclose = we_base_request::_(we_base_request::RAW, "csv_enclose", "");
-		$csv_lineend = we_base_request::_(we_base_request::RAW, "csv_lineend", "");
+		$csv_delimiter = we_base_request::_(we_base_request::RAW_CHECKED, "csv_delimiter", "");
+		$csv_enclose = we_base_request::_(we_base_request::RAW_CHECKED, "csv_enclose", "");
+		$csv_lineend = we_base_request::_(we_base_request::STRING, "csv_lineend", "");
 		$csv_fieldnames = we_base_request::_(we_base_request::BOOL, "csv_fieldnames");
 
 		$customers = $this->getExportCustomers();
 		if(!$customers){
 //FIXME: add code to switch to previous page
-			t_e('noting to export', $customers, $_REQUEST);
+			t_e('noting to export', $customers);
 		}
 
-		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "eiload")) .
-			we_html_element::htmlHidden(array("name" => "art", "value" => self::ART_EXPORT)) .
-			we_html_element::htmlHidden(array("name" => "customers", "value" => implode(',', $customers))) .
-			we_html_element::htmlHidden(array("name" => "file_format", "value" => $file_format)) .
-			we_html_element::htmlHidden(array("name" => "filename", "value" => $file_name)) .
-			we_html_element::htmlHidden(array("name" => "export_to", "value" => $export_to)) .
-			we_html_element::htmlHidden(array("name" => "path", "value" => $path)) .
-			we_html_element::htmlHidden(array("name" => "all", "value" => count($customers))) .
-			we_html_element::htmlHidden(array("name" => "cmd", "value" => "do_export")) .
-			we_html_element::htmlHidden(array("name" => "step", "value" => 4));
+		$hiddens = we_html_element::htmlHiddens(array(
+				"pnt" => "eiload",
+				"art" => self::ART_EXPORT,
+				"customers" => implode(',', $customers),
+				"file_format" => $file_format,
+				"filename" => $file_name,
+				"export_to" => $export_to,
+				"path" => $path,
+				"all" => count($customers),
+				"cmd" => "do_export",
+				"step" => 4));
 
 		if($file_format == we_import_functions::TYPE_GENERIC_XML){
-			$hiddens.=we_html_element::htmlHidden(array("name" => "cdata", "value" => $cdata));
+			$hiddens.=we_html_element::htmlHidden("cdata", $cdata);
 		}
 
 		if($file_format == self::TYPE_CSV){
-			$hiddens.=we_html_element::htmlHidden(array("name" => "csv_delimiter", "value" => $csv_delimiter)) .
+			$hiddens.=
 				($csv_enclose === '"' ?
 					"<input type='hidden' name='csv_enclose' value='" . $csv_enclose . "' />" :
-					we_html_element::htmlHidden(array("name" => "csv_enclose", "value" => $csv_enclose))
+					we_html_element::htmlHidden("csv_enclose", $csv_enclose)
 				) .
-				we_html_element::htmlHidden(array("name" => "csv_lineend", "value" => $csv_lineend)) .
-				we_html_element::htmlHidden(array("name" => "csv_fieldnames", "value" => $csv_fieldnames ? 1 : 0));
+				we_html_element::htmlHiddens(array(
+					"csv_delimiter" => $csv_delimiter,
+					"csv_lineend" => $csv_lineend,
+					"csv_fieldnames" => $csv_fieldnames ? 1 : 0));
 		}
 
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) . STYLESHEET) .
-				we_html_element::htmlBody(array("onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens)
+		return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', STYLESHEET, we_html_element::htmlBody(array("onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens)
 				)
 		);
 	}
@@ -1226,26 +1109,29 @@ function doNext(){
 		$all = we_base_request::_(we_base_request::INT, "all", 0);
 		$cdata = we_base_request::_(we_base_request::INT, "cdata", 0);
 
-		$hiddens = we_html_element::htmlHidden(array("name" => "file_format", "value" => $file_format)) .
-			we_html_element::htmlHidden(array("name" => "filename", "value" => $filename)) .
-			we_html_element::htmlHidden(array("name" => "export_to", "value" => $export_to)) .
-			we_html_element::htmlHidden(array("name" => "path", "value" => $path));
+		$hiddens = we_html_element::htmlHiddens(array(
+				"file_format" => $file_format,
+				"filename" => $filename,
+				"export_to" => $export_to,
+				"path" => $path));
 
 		if($file_format == we_import_functions::TYPE_GENERIC_XML){
-			$hiddens.=we_html_element::htmlHidden(array("name" => "cdata", "value" => $cdata));
+			$hiddens.=we_html_element::htmlHidden("cdata", $cdata);
 		}
 		if($file_format == self::TYPE_CSV){
-			$csv_delimiter = we_base_request::_(we_base_request::RAW, 'csv_delimiter', '');
-			$csv_enclose = we_base_request::_(we_base_request::RAW, 'csv_enclose', '');
-			$csv_lineend = we_base_request::_(we_base_request::RAW, 'csv_lineend', '');
+			$csv_delimiter = we_base_request::_(we_base_request::RAW_CHECKED, 'csv_delimiter', '');
+			$csv_enclose = we_base_request::_(we_base_request::RAW_CHECKED, 'csv_enclose', '');
+			$csv_lineend = we_base_request::_(we_base_request::STRING, 'csv_lineend', '');
 			$csv_fieldnames = we_base_request::_(we_base_request::BOOL, 'csv_fieldnames', true);
 
-			$hiddens.=we_html_element::htmlHidden(array("name" => "csv_delimiter", "value" => $csv_delimiter)) .
+			$hiddens.=
 				($csv_enclose === '"' ?
 					"<input type='hidden' name='csv_enclose' value='" . $csv_enclose . "' />" :
-					we_html_element::htmlHidden(array("name" => "csv_enclose", "value" => $csv_enclose))
+					we_html_element::htmlHidden("csv_enclose", $csv_enclose)
 				) .
-				we_html_element::htmlHidden(array("name" => "csv_lineend", "value" => $csv_lineend));
+				we_html_element::htmlHiddens(array(
+					"csv_delimiter" => $csv_delimiter,
+					"csv_lineend" => $csv_lineend));
 		}
 		if($customers){
 			$options = array(
@@ -1268,19 +1154,21 @@ function doNext(){
 			$success = we_customer_EI::exportCustomers($options);
 		}
 
-		$hiddens.=we_html_element::htmlHidden(array("name" => "art", "value" => self::ART_EXPORT)) .
+		$hiddens.=we_html_element::htmlHidden("art", self::ART_EXPORT) .
 			($customers ?
 				(
-				we_html_element::htmlHidden(array("name" => "pnt", "value" => "eiload")) .
-				we_html_element::htmlHidden(array("name" => "cmd", "value" => "do_export")) .
-				we_html_element::htmlHidden(array("name" => "firstexec", "value" => 0)) .
-				we_html_element::htmlHidden(array("name" => "all", "value" => $all)) .
-				we_html_element::htmlHidden(array("name" => "customers", "value" => implode(',', $customers)))
+				we_html_element::htmlHiddens(array(
+					"pnt" => "eiload",
+					"cmd" => "do_export",
+					"firstexec" => 0,
+					"all" => $all,
+					"customers" => implode(',', $customers)))
 				) :
 				(
-				we_html_element::htmlHidden(array("name" => "pnt", "value" => "eiload")) .
-				we_html_element::htmlHidden(array("name" => "cmd", "value" => "end_export"))
-				//we_html_element::htmlHidden(array("name" => "success", "value" => $success))
+				we_html_element::htmlHiddens(array(
+					"pnt" => "eiload",
+					"cmd" => "end_export"))
+				//rray("name" => "success", "value" => $success))
 				)
 			);
 
@@ -1291,10 +1179,7 @@ function doNext(){
 
 		$progressjs = we_html_element::jsElement('if (top.footer.setProgress) top.footer.setProgress(' . $percent . ');');
 
-		$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) . STYLESHEET . $progressjs;
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead($head) .
-				we_html_element::htmlBody(array("onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens)
+		return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', STYLESHEET . $progressjs, we_html_element::htmlBody(array("onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens)
 				)
 		);
 	}
@@ -1308,18 +1193,16 @@ function doNext(){
 		if($file_format == we_import_functions::TYPE_GENERIC_XML){
 
 			$file_name = $_SERVER['DOCUMENT_ROOT'] . $path . '/' . $filename;
-			we_customer_EI::save2File($file_name, we_backup_backup::weXmlExImFooter);
+			we_customer_EI::save2File($file_name, we_backup_util::weXmlExImFooter);
 		}
 
-		$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[export_title]')) . STYLESHEET;
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead($head) .
-				we_html_element::htmlBody(array("onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), we_html_element::htmlHidden(array("name" => "pnt", "value" => "eibody")) .
-						we_html_element::htmlHidden(array("name" => "step", "value" => 4)) .
-						we_html_element::htmlHidden(array("name" => "art", "value" => self::ART_EXPORT)) .
-						we_html_element::htmlHidden(array("name" => "export_to", "value" => $export_to)) .
-						we_html_element::htmlHidden(array("name" => "filename", "value" => $filename)) .
-						we_html_element::htmlHidden(array("name" => "path", "value" => $path))
+		return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', STYLESHEET, we_html_element::htmlBody(array("onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), we_html_element::htmlHiddens(array(
+							"pnt" => "eibody",
+							"step" => 4,
+							"art" => self::ART_EXPORT,
+							"export_to" => $export_to,
+							"filename" => $filename,
+							"path" => $path))
 					)
 				)
 		);
@@ -1327,13 +1210,12 @@ function doNext(){
 
 	private function getImportNextCode(){
 		if(we_base_request::_(we_base_request::INT, "step") !== false){
-			$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[import_title]')) .
-				we_html_element::jsElement('
+			$head = we_html_element::jsElement('
 function doNext(){
 	if(' . $this->bodyFrame . '.document.we_form.step.value === "2" &&
-			typeof ' . $this->bodyFrame . '.we_FileUpload !== "undefined" &&
+			' . $this->bodyFrame . '.we_FileUpload !== undefined &&
 			' . $this->bodyFrame . '.document.we_form.import_from[1].checked){
-		' . we_fileupload_include::getJsBtnCmdStatic('upload', 'body', 'doNextAction();') . '
+		' . we_fileupload_ui_base::getJsBtnCmdStatic('upload', 'body', 'doNextAction();') . '
 		return;
 	}
 	doNextAction();
@@ -1341,7 +1223,7 @@ function doNext(){
 
 function doNextAction(){
 	' . $this->bodyFrame . '.document.we_form.step.value++;
-	' . $this->footerFrame . '.location="' . $this->frameset . '?pnt=eifooter&art=' . self::ART_IMPORT . '&step="+' . $this->bodyFrame . '.document.we_form.step.value;
+	' . $this->footerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&art=' . self::ART_IMPORT . '&step="+' . $this->bodyFrame . '.document.we_form.step.value;
 	if(' . $this->bodyFrame . '.document.we_form.step.value>4){
 		' . $this->bodyFrame . '.document.we_form.target="load";
 		' . $this->bodyFrame . '.document.we_form.pnt.value="eiload";
@@ -1349,9 +1231,7 @@ function doNextAction(){
 	' . $this->bodyFrame . '.document.we_form.submit();
 }');
 
-			return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-					we_html_element::htmlHead($head) .
-					we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5, "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), "")
+			return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', $head, we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin: 5px', "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), "")
 					)
 			);
 		}
@@ -1359,35 +1239,32 @@ function doNextAction(){
 	}
 
 	private function getImportBackCode(){
-		$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[import_title]')) .
-			we_html_element::jsElement('
+		$head = we_html_element::jsElement('
 function doNext(){
 	' . $this->bodyFrame . '.document.we_form.step.value--;
-	' . $this->footerFrame . '.location="' . $this->frameset . '?pnt=eifooter&art=' . self::ART_IMPORT . '&step="+' . $this->bodyFrame . '.document.we_form.step.value;
+	' . $this->footerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&art=' . self::ART_IMPORT . '&step="+' . $this->bodyFrame . '.document.we_form.step.value;
 	' . $this->bodyFrame . '.document.we_form.submit();
 }');
 
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead($head) .
-				we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5, "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), "")
+		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', $head, we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin: 5px', "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), "")
 				)
 		);
 	}
 
 	private function getImportCode(){
 		$filename = we_base_request::_(we_base_request::FILE, "filename", "");
-		$import_from = we_base_request::_(we_base_request::RAW, "import_from", "");
+//		$import_from = we_base_request::_(we_base_request::STRING, "import_from", "");
 		$type = we_base_request::_(we_base_request::RAW, "type", "");
 		$xml_from = we_base_request::_(we_base_request::RAW, "xml_from", "");
 		$xml_to = we_base_request::_(we_base_request::RAW, "xml_to", "");
 		$dataset = we_base_request::_(we_base_request::RAW, "dataset", "");
-		$csv_delimiter = we_base_request::_(we_base_request::RAW, "csv_delimiter", CSV_DELIMITER);
-		$csv_enclose = we_base_request::_(we_base_request::RAW, "csv_enclose", CSV_ENCLOSE);
-		$csv_lineend = we_base_request::_(we_base_request::RAW, "csv_lineend", CSV_LINEEND);
-		$the_charset = we_base_request::_(we_base_request::RAW, "the_charset", THE_CHARSET);
+		$csv_delimiter = we_base_request::_(we_base_request::RAW_CHECKED, "csv_delimiter", self::CSV_DELIMITER);
+		$csv_enclose = we_base_request::_(we_base_request::RAW_CHECKED, "csv_enclose", self::CSV_ENCLOSE);
+		$csv_lineend = we_base_request::_(we_base_request::STRING, "csv_lineend", self::CSV_LINEEND);
+		$the_charset = we_base_request::_(we_base_request::STRING, "the_charset", self::THE_CHARSET);
 		$csv_fieldnames = we_base_request::_(we_base_request::BOOL, "csv_fieldnames", true);
 
-		$same = we_base_request::_(we_base_request::RAW, "same", "rename");
+		$same = we_base_request::_(we_base_request::STRING, "same", "rename");
 
 		$field_mappings = we_base_request::_(we_base_request::RAW, "field_mappings", array());
 		$att_mappings = we_base_request::_(we_base_request::RAW, "att_mappings", array());
@@ -1410,33 +1287,31 @@ function doNext(){
 
 		$filesnum = we_customer_EI::prepareImport($options);
 
-		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "eiload")) .
-			we_html_element::htmlHidden(array("name" => "art", "value" => self::ART_IMPORT)) .
-			we_html_element::htmlHidden(array("name" => "cmd", "value" => "do_import")) .
-			we_html_element::htmlHidden(array("name" => "step", "value" => 5)) .
-			we_html_element::htmlHidden(array("name" => "tmpdir", "value" => $filesnum["tmp_dir"])) .
-			we_html_element::htmlHidden(array("name" => "fstart", "value" => 0)) .
-			we_html_element::htmlHidden(array("name" => "fcount", "value" => $filesnum["file_count"])) .
-			we_html_element::htmlHidden(array("name" => "same", "value" => $same));
+		$hiddens = we_html_element::htmlHiddens(array(
+				"pnt" => "eiload",
+				"art" => self::ART_IMPORT,
+				"cmd" => "do_import",
+				"step" => 5,
+				"tmpdir" => $filesnum["tmp_dir"],
+				"fstart" => 0,
+				"fcount" => $filesnum["file_count"],
+				"same" => $same));
 
 		foreach($field_mappings as $key => $field){
-			$hiddens.=we_html_element::htmlHidden(array("name" => "field_mappings[$key]", "value" => "$field"));
+			$hiddens.=we_html_element::htmlHidden("field_mappings[$key]", "$field");
 		}
 		foreach($att_mappings as $key => $field){
-			$hiddens.=we_html_element::htmlHidden(array("name" => "att_mappings[$key]", "value" => "$field"));
+			$hiddens.=we_html_element::htmlHidden("att_mappings[$key]", "$field");
 		}
 
-		$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[import_title]')) .
-			we_html_element::jsElement('
+		$head = we_html_element::jsElement('
 							function doNext(){
-								' . $this->topFrame . '.step++;
+								top.step++;
 								document.we_form.submit();
 							}
 					');
 
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead($head) .
-				we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5, "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens)
+		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', $head, we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens)
 				)
 		);
 	}
@@ -1447,7 +1322,7 @@ function doNext(){
 		$fcount = we_base_request::_(we_base_request::INT, "fcount", "");
 		$field_mappings = we_base_request::_(we_base_request::RAW, "field_mappings", array());
 		$att_mappings = we_base_request::_(we_base_request::RAW, "att_mappings", array());
-		$same = we_base_request::_(we_base_request::RAW, "same", "rename");
+		$same = we_base_request::_(we_base_request::STRING, "same", "rename");
 		$impno = we_base_request::_(we_base_request::INT, "impno", 0);
 
 		if(we_customer_EI::importCustomers(array(
@@ -1462,35 +1337,33 @@ function doNext(){
 		}
 		$fstart++;
 
-		$hiddens = we_html_element::htmlHidden(array("name" => "pnt", "value" => "eiload")) .
-			we_html_element::htmlHidden(array("name" => "art", "value" => self::ART_IMPORT)) .
-			we_html_element::htmlHidden(array("name" => "cmd", "value" => "do_import")) .
-			we_html_element::htmlHidden(array("name" => "tmpdir", "value" => $tmpdir)) .
-			we_html_element::htmlHidden(array("name" => "fstart", "value" => $fstart)) .
-			we_html_element::htmlHidden(array("name" => "fcount", "value" => $fcount)) .
-			we_html_element::htmlHidden(array("name" => "impno", "value" => $impno)) .
-			we_html_element::htmlHidden(array("name" => "same", "value" => $same));
+		$hiddens = we_html_element::htmlHiddens(array(
+				"pnt" => "eiload",
+				"art" => self::ART_IMPORT,
+				"cmd" => "do_import",
+				"tmpdir" => $tmpdir,
+				"fstart" => $fstart,
+				"fcount" => $fcount,
+				"impno" => $impno,
+				"same" => $same));
 
 		foreach($field_mappings as $key => $field){
-			$hiddens.=we_html_element::htmlHidden(array("name" => "field_mappings[$key]", "value" => "$field"));
+			$hiddens.=we_html_element::htmlHidden("field_mappings[$key]", "$field");
 		}
 		foreach($att_mappings as $key => $field){
-			$hiddens.=we_html_element::htmlHidden(array("name" => "att_mappings[$key]", "value" => "$field"));
+			$hiddens.=we_html_element::htmlHidden("att_mappings[$key]", "$field");
 		}
 
 		$percent = ($fcount == 0 || $fcount == '0' ? 0 : min(100, max(0, (int) (($fstart / $fcount) * 100))) );
 
-		$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[import_title]')) .
-			we_html_element::jsElement('
+		$head = we_html_element::jsElement('
 function doNext(){
 	' . (!($fstart < $fcount) ? 'document.we_form.cmd.value="import_end";' : 'document.we_form.cmd.value="do_import";') . '
 	if (' . $this->footerFrame . '.setProgress) ' . $this->footerFrame . '.setProgress(' . $percent . ');
 	document.we_form.submit();
 }');
 
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead($head) .
-				we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5, "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens
+		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', $head, we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens
 					)
 				)
 		);
@@ -1500,21 +1373,19 @@ function doNext(){
 		$tmpdir = we_base_request::_(we_base_request::FILE, "tmpdir", "");
 		$impno = we_base_request::_(we_base_request::INT, "impno", 0);
 
-		$head = we_html_tools::getHtmlInnerHead(g_l('modules_customer', '[import_title]')) .
-			we_html_element::jsElement('
+		$head = we_html_element::jsElement('
 function doNext(){
-		top.opener.top.content.treeheader.applySort();//TODO: check this adress
-		' . $this->footerFrame . '.location="' . $this->frameset . '?pnt=eifooter&art=' . self::ART_IMPORT . '&step=6";
+		top.opener.top.content.applySort();//TODO: check this adress
+		' . $this->footerFrame . '.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&art=' . self::ART_IMPORT . '&step=6";
 		document.we_form.submit();
 }');
 
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead($head) .
-				we_html_element::htmlBody(array("bgcolor" => "#ffffff", "marginwidth" => 5, "marginheight" => 5, "leftmargin" => 5, "topmargin" => 5, "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), we_html_element::htmlHidden(array("name" => "tmpdir", "value" => $tmpdir)) .
-						we_html_element::htmlHidden(array("name" => "impno", "value" => $impno)) .
-						we_html_element::htmlHidden(array("name" => "pnt", "value" => "eibody")) .
-						we_html_element::htmlHidden(array("name" => "art", "value" => self::ART_IMPORT)) .
-						we_html_element::htmlHidden(array("name" => "step", "value" => 5))
+		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', $head, we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "action" => $this->frameset), we_html_element::htmlHiddens(array(
+							"tmpdir" => $tmpdir,
+							"impno" => $impno,
+							"pnt" => "eibody",
+							"art" => self::ART_IMPORT,
+							"step" => 5))
 					)
 				)
 		);
@@ -1540,7 +1411,7 @@ function doNext(){
 				return $this->getImportNextCode();
 			case 'import_back':
 				return $this->getImportBackCode();
-			case self::ART_IMPORT:
+			case 'import':
 				return $this->getImportCode();
 			case 'do_import':
 				return $this->getDoImportCode();
@@ -1552,58 +1423,42 @@ function doNext(){
 	}
 
 	function getIDs($selIDs, $table){
-		$ret = array();
-		$tmp = array();
-		$db = $GLOBALS['DB_WE'];
-		$db->query('SELECT ID FROM ' . $db->escape($table) . ' WHERE ID IN (' . implode(',', $selIDs) . ') AND IsFolder=1');
-		$folders = $db->getAll(true);
-		foreach($selIDs as $v){
-			if($v){
-				if(!in_array($v, $folders)){
-					$tmp[] = $v;
-				}
-			}
-		}
-		we_readChilds($folders, $tmp, $table, false);
-		$db->query('SELECT ID FROM ' . $db->escape($table) . ' WHERE ID IN (' . implode(',', $tmp) . ') AND IsFolder=0');
-		return $db->getAll(true);
+		return array_filter($selIDs);
 	}
 
 	/* creates the FileChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 
-	function formFileChooser($width = "", $IDName = "ParentID", $IDValue = "/", $cmd = "", $filter = ""){
+	private function formFileChooser($width = "", $IDName = "ParentID", $IDValue = "/", $cmd = "", $filter = ""){
 
-		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
-			we_html_element::jsElement('
+		$js = we_html_element::jsElement('
 function formFileChooser() {
-	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-	switch (arguments[0]) {
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
+	switch (args[0]) {
 		case "browse_server":
-			new jsWindow(url,"server_selector",-1,-1,700,400,true,false,true);
+			new (WE().util.jsWindow)(window, url,"server_selector",-1,-1,700,400,true,false,true);
 		break;
 	}
 }');
 
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
 		$wecmdenc4 = we_base_request::encCmd(str_replace('\\', '', $cmd));
-		$button = we_html_button::create_button("select", "javascript:formFileChooser('browse_server','" . $wecmdenc1 . "','" . $filter . "',document.we_form.elements['" . $IDName . "'].value,'" . $wecmdenc4 . "');");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:formFileChooser('browse_server','" . $wecmdenc1 . "','" . $filter . "',document.we_form.elements['" . $IDName . "'].value,'" . $wecmdenc4 . "');");
 
-		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
+		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", "", permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
 	}
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 
 	function formDirChooser($width = "", $rootDirID = 0, $table = FILE_TABLE, $Pathname = "ParentPath", $Pathvalue = "", $IDName = "ParentID", $IDValue = "", $cmd = ""){
 
-		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
-			we_html_element::jsElement('
+		$js = we_html_element::jsElement('
 function formDirChooser() {
-	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-	switch (arguments[0]) {
-		case "openDirselector":
-			new jsWindow(url,"dir_selector",-1,-1,' . we_selector_file::WINDOW_DIRSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT . ',true,false,true,true);
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
+	switch (args[0]) {
+		case "we_selector_directory":
+			new (WE().util.jsWindow)(window, url,"dir_selector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,false,true,true);
 		break;
 	}
 }');
@@ -1611,8 +1466,8 @@ function formDirChooser() {
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
-		$button = we_html_button::create_button("select", "javascript:formDirChooser('openDirselector',document.we_form.elements['" . $IDName . "'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
-		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden(array("name" => $IDName, "value" => $IDValue)), we_html_tools::getPixel(20, 4), $button);
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:formDirChooser('we_selector_directory',document.we_form.elements['" . $IDName . "'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
+		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden($IDName, $IDValue), $button);
 	}
 
 	function getHTMLCustomer(){
@@ -1639,49 +1494,35 @@ function formDirChooser() {
 				$customers = we_base_request::_(we_base_request::INTLISTA, "customers", array());
 		}
 		$customers = array_filter($customers);
-		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
-			we_html_element::jsElement('
+		$js = we_html_element::jsElement('
 function selector_cmd(){
-	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-	switch (arguments[0]){
-		case "openSelector":
-			new jsWindow(url,"we_selector",-1,-1,' . we_selector_file::WINDOW_SELECTOR_WIDTH . ',' . we_selector_file::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
+	switch (args[0]){
+		case "we_selector_file":
+			new (WE().util.jsWindow)(window, url,"we_selector",-1,-1,' . we_selector_file::WINDOW_SELECTOR_WIDTH . ',' . we_selector_file::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
 		break;
 		case "add_customer":
 		case "del_customer":
 		case "del_all_customers":
-			document.we_form.wcmd.value=arguments[0];
-			document.we_form.cus.value=arguments[1];
+			document.we_form.wcmd.value=args[0];
+			document.we_form.cus.value=args[1];
 			document.we_form.submit();
 		break;
 	}
 }
-' . $this->topFrame . '.customers="' . implode(',', $customers) . '";');
+top.customers="' . implode(',', $customers) . '";');
 
-		$hiddens = we_html_element::htmlHidden(array("name" => "wcmd", "value" => "")) .
-			we_html_element::htmlHidden(array("name" => "cus", "value" => we_base_request::_(we_base_request::INTLIST, "cus", "")));
+		$hiddens = we_html_element::htmlHiddens(array("wcmd" => "",
+				"cus" => we_base_request::_(we_base_request::INTLIST, "cus", "")));
 
 
-		$delallbut = we_html_button::create_button("delete_all", "javascript:selector_cmd('del_all_customers')", true, 0, 0, "", "", ($customers ? false : true));
-		$addbut = we_html_button::create_button("add", "javascript:selector_cmd('openSelector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener." . $this->bodyFrame . ".selector_cmd(\\'add_customer\\',top.allIDs);')");
-		$custs = new we_chooser_multiDir(400, ($customers ? : array()), "del_customer", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CUSTOMER_TABLE);
+		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:selector_cmd('del_all_customers')", true, 0, 0, "", "", ($customers ? false : true));
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener." . $this->bodyFrame . ".selector_cmd(\'add_customer\',top.allIDs);')");
+		$custs = new we_chooser_multiDir(400, ($customers ? : array()), "del_customer", $delallbut . $addbut, "", '"we/customer"', CUSTOMER_TABLE);
 
 		$custs->isEditable = permissionhandler::hasPerm("EDIT_CUSTOMER");
 		return $js . $hiddens . $custs->get();
-	}
-
-	function formWeChooser($table = FILE_TABLE, $width = "", $rootDirID = 0, $IDName = "ID", $IDValue = 0, $Pathname = "Path", $Pathvalue = "/", $cmd = ""){
-		if(!$Pathvalue){
-			$Pathvalue = f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue), '', $this->db);
-		}
-
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
-		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
-		$button = we_html_button::create_button("select", "javascript:selector_cmd('openSelector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
-
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, "", 'readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden(array("name" => $IDName, "value" => $IDValue)), we_html_tools::getPixel(20, 4), $button);
 	}
 
 	private function getHTMLChooser($name, $value, $values, $title){
@@ -1690,14 +1531,13 @@ function selector_cmd(){
 
 		$select = new we_html_select(array("name" => $name . "_select", 'onchange' => "document.we_form." . $name . ".value=this.options[this.selectedIndex].value;this.selectedIndex=0", "style" => "width:200px;"));
 		$select->addOption("", "");
-		foreach($values as $k => $v)
+		foreach($values as $k => $v){
 			$select->addOption(oldHtmlspecialchars($k), oldHtmlspecialchars($v));
-
-		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 250), 1, 3);
+		}
+		$table = new we_html_table(array('class' => 'default', "width" => 250), 1, 3);
 
 		$table->setColContent(0, 0, we_html_tools::htmlTextInput($name, $input_size, $value));
-		$table->setColContent(0, 1, we_html_tools::getPixel(10, 10));
-		$table->setColContent(0, 2, $select->getHtml());
+		$table->setCol(0, 1, array('style' => 'padding-left:10px;'), $select->getHtml());
 
 		return we_html_tools::htmlFormElementTable($table->getHtml(), $title);
 	}
@@ -1720,12 +1560,12 @@ function selector_cmd(){
 		}
 
 		$js = we_html_element::jsElement('
-function filter_cmd(){
-	switch (arguments[0]){
+function filter_cmd(what){
+	switch (what){
 		case "add_filter":
 		case "del_filter":
 		case "del_all_filters":
-			document.we_form.fcmd.value=arguments[0];
+			document.we_form.fcmd.value=what;
 			document.we_form.submit();
 			break;
 	}
@@ -1733,21 +1573,24 @@ function filter_cmd(){
 document.we_form.filter_count.value="' . $count . '";');
 
 		$custfields = array();
-		$customers_fields = array();
-		$this->db->query("SHOW FIELDS FROM " . CUSTOMER_TABLE);
+		$this->db->query('SHOW FIELDS FROM ' . CUSTOMER_TABLE);
 		while($this->db->next_record()){
-			$customers_fields[] = $this->db->f("Field");
-		}
-		foreach($customers_fields as $fk => $fv){
-			if($fv != "ParentID" && $fv != "IsFolder" && $fv != "Path" && $fv != "Text" && $fv != "Icon"){
-				$custfields[$fv] = $fv;
+			$fv = $this->db->f("Field");
+			switch($fv){
+				case 'ParentID':
+				case 'IsFolder':
+				case 'Path':
+				case 'Text':
+					break;
+				default:
+					$custfields[$fv] = $fv;
 			}
 		}
 
 		$operators = array("=", "<>", "<", "<=", ">", ">=", "LIKE");
 		$logic = array("AND" => "AND", "OR" => "OR");
 
-		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 3);
+		$table = new we_html_table(array('class' => 'default'), 1, 3);
 		$colspan = "3";
 
 		$c = 0;
@@ -1766,7 +1609,7 @@ document.we_form.filter_count.value="' . $count . '";');
 				$c++;
 			} else {
 				$table->addRow();
-				$table->setCol($c, 0, array("colspan" => $colspan), we_html_element::htmlHidden(array("name" => "filter_logic_0", "value" => "")));
+				$table->setCol($c, 0, array("colspan" => $colspan), we_html_element::htmlHidden("filter_logic_0", ""));
 				$c++;
 			}
 
@@ -1777,19 +1620,16 @@ document.we_form.filter_count.value="' . $count . '";');
 			$c++;
 		}
 
-		$table->addRow();
-		$table->setCol($c, 0, array("colspan" => $colspan), we_html_tools::getPixel(5, 5));
-
-		$plus = we_html_button::create_button("image:btn_function_plus", "javascript:filter_cmd('add_filter')");
-		$trash = we_html_button::create_button("image:btn_function_trash", "javascript:filter_cmd('del_filter')");
+		$plus = we_html_button::create_button(we_html_button::PLUS, "javascript:filter_cmd('add_filter')");
+		$trash = we_html_button::create_button(we_html_button::TRASH, "javascript:filter_cmd('del_filter')");
 
 		$c++;
 		$table->addRow();
-		$table->setCol($c, 0, array("colspan" => $colspan), we_html_button::create_button_table(array($plus, $trash)));
+		$table->setCol($c, 0, array("colspan" => $colspan, 'style' => 'padding-top:5px;'), $plus . $trash);
 
 		return $js .
-			//we_html_element::htmlHidden(array("name"=>"filter_count","value"=>$count)).
-			we_html_element::htmlHidden(array("name" => "fcmd", "value" => "")) .
+			//(array("name"=>"filter_count","value"=>$count)).
+			we_html_element::htmlHidden("fcmd", "") .
 			$table->getHtml();
 	}
 

@@ -103,7 +103,7 @@ class we_workflow_documentStep extends we_workflow_base{
 			$workflowTask = new we_workflow_task($cur->workflowTaskID);
 			if($workflowTask->userID){
 				//send todo to next user
-				$path = "<b>" . g_l('modules_workflow', '[' . stripTblPrefix($workflowDoc->document->ContentType === 'objectFile' ? OBJECT_FILES_TABLE : FILE_TABLE) . '][messagePath]') . ':</b>&nbsp;<a href="javascript:top.opener.top.weEditorFrameController.openDocument(\'' . $workflowDoc->document->Table . '\',\'' . $workflowDoc->document->ID . '\',\'' . $workflowDoc->document->ContentType . '\');");" >' . $workflowDoc->document->Path . '</a>';
+				$path = "<b>" . g_l('modules_workflow', '[' . stripTblPrefix($workflowDoc->document->ContentType === we_base_ContentTypes::OBJECT_FILE ? OBJECT_FILES_TABLE : FILE_TABLE) . '][messagePath]') . ':</b>&nbsp;<a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . $workflowDoc->document->Table . '\',\'' . $workflowDoc->document->ID . '\',\'' . $workflowDoc->document->ContentType . '\');");" >' . $workflowDoc->document->Path . '</a>';
 				$mess = "<p><b>" . g_l('modules_workflow', '[todo_next]') . '</b></p><p>' . $desc . '</p><p>' . $path . "</p>";
 
 				$cur->todoID = $this->sendTodo($workflowTask->userID, g_l('modules_workflow', '[todo_subject]'), $mess . "<p>" . $path . "</p>", $deadline);
@@ -115,7 +115,7 @@ class we_workflow_documentStep extends we_workflow_base{
 						$mess = g_l('modules_workflow', '[todo_next]') . ' ID:' . $workflowDoc->document->ID . ', ' . g_l('weClass', '[path]') . ':' . $workflowDoc->document->Path . "\n\n" . $desc;
 
 
-						we_mail($foo, correctUml(g_l('modules_workflow', '[todo_next]') . ($workflowDoc->document->Path ? ' ' . $workflowDoc->document->Path : '')), $mess, '', (isset($this_user["Email"]) && $this_user["Email"] ? $this_user["First"] . " " . $this_user["Second"] . " <" . $this_user["Email"] . ">" : ""));
+						we_mail($foo, correctUml(g_l('modules_workflow', '[todo_next]') . ($workflowDoc->document->Path ? ' ' . $workflowDoc->document->Path : '')), $mess, '', (!empty($this_user["Email"]) ? $this_user["First"] . " " . $this_user["Second"] . " <" . $this_user["Email"] . ">" : ""));
 					}
 				}
 			}

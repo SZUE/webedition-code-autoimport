@@ -24,6 +24,9 @@
  */
 function we_tag_sessionStart($attribs){
 	$GLOBALS['WE_SESSION_START'] = true;
+	if((isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->InWebEdition) || !empty($GLOBALS['we_editmode'])){
+		return '';
+	}
 
 	if(!isset($_SESSION)){
 		new we_base_sessionHandler();
@@ -34,7 +37,7 @@ function we_tag_sessionStart($attribs){
 	}
 
 	if(!empty($_REQUEST['we_webUser_logout'])){
-		if(isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && isset($_SESSION['webuser']['ID']) && $_SESSION['webuser']['ID']){
+		if(!empty($_SESSION['webuser']['registered']) && !empty($_SESSION['webuser']['ID'])){
 			if(( (isset($_REQUEST['s']['AutoLogin']) && !$_REQUEST['s']['AutoLogin']) || (isset($_SESSION['webuser']['AutoLogin']) && !$_SESSION['webuser']['AutoLogin'])) && isset($_SESSION['webuser']['AutoLoginID'])){
 				$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE AutoLoginID="' . $GLOBALS['DB_WE']->escape(sha1($_SESSION['webuser']['AutoLoginID'])) . '"');
 				setcookie('_we_autologin', '', (time() - 3600), '/');
@@ -49,54 +52,50 @@ function we_tag_sessionStart($attribs){
 		return '';
 	}
 
-	if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition && we_base_request::_(we_base_request::BOOL, 'we_set_registeredUser')){
-		$_SESSION['weS']['we_set_registered'] = $_REQUEST['we_set_registeredUser'];
-	}
-
 	$SessionAutologin = 0;
 
-	if(!(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
-		if(!isset($_SESSION['webuser'])){
-			$_SESSION['webuser'] = array(
-				'registered' => false
-			);
-		}
-		$persistentlogins = weTag_getAttribute('persistentlogins', $attribs, false, we_base_request::BOOL);
-		if(!$_SESSION['webuser']['registered'] && isset($_REQUEST['s']['Username']) && isset($_REQUEST['s']['Password']) && !(isset($_REQUEST['s']['ID'])) && !isset($_REQUEST['s']['Password2'])//if set, we assume it is a password reset or use of an forgotten password routine, so we don't try to do an login
-		){
-			$GLOBALS['DB_WE']->query('DELETE FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND LoginDate < DATE_SUB(NOW(), INTERVAL ' . we_base_constants::LOGIN_FAILED_HOLDTIME . ' DAY)');
-			$hook = new weHook('customer_preLogin', '', array('customer' => &$_REQUEST['s'], 'type' => 'normal', 'tagname' => 'sessionStart'));
+
+	if(!isset($_SESSION['webuser'])){
+		$_SESSION['webuser'] = array(
+			'registered' => false
+		);
+	}
+	$persistentlogins = weTag_getAttribute('persistentlogins', $attribs, false, we_base_request::BOOL);
+	if(!$_SESSION['webuser']['registered'] && isset($_REQUEST['s']['Username']) && isset($_REQUEST['s']['Password']) && !(isset($_REQUEST['s']['ID'])) && !isset($_REQUEST['s']['Password2'])//if set, we assume it is a password reset or use of an forgotten password routine, so we don't try to do an login
+	){
+		$GLOBALS['DB_WE']->query('DELETE FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND LoginDate<(NOW() - INTERVAL ' . we_base_constants::LOGIN_FAILED_HOLDTIME . ' DAY)');
+		$hook = new weHook('customer_preLogin', '', array('customer' => &$_REQUEST['s'], 'type' => 'normal', 'tagname' => 'sessionStart'));
+		$hook->executeHook();
+
+		if(!wetagsessionStartdoLogin($persistentlogins, $SessionAutologin)){
+			wetagsessionHandleFailedLogin();
+		} else {
+			$GLOBALS['DB_WE']->query('UPDATE ' . FAILED_LOGINS_TABLE . ' SET isValid="false" WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '"');
+			//change session ID to prevent session
+			we_base_sessionHandler::makeNewID();
+			$hook = new weHook('customer_Login', '', array('customer' => &$_SESSION['webuser'], 'type' => 'normal', 'tagname' => 'sessionStart'));
 			$hook->executeHook();
-
-			if(!wetagsessionStartdoLogin($persistentlogins, $SessionAutologin)){
-				wetagsessionHandleFailedLogin();
-			} else {
-				$GLOBALS['DB_WE']->query('UPDATE ' . FAILED_LOGINS_TABLE . ' SET isValid="false" WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '"');
-				//change session ID to prevent session
-				we_base_sessionHandler::makeNewID();
-				$hook = new weHook('customer_Login', '', array('customer' => &$_SESSION['webuser'], 'type' => 'normal', 'tagname' => 'sessionStart'));
-				$hook->executeHook();
-			}
-			unset($_REQUEST['s']['Password']);
 		}
-		if($persistentlogins && ((isset($_SESSION['webuser']['registered']) && !$_SESSION['webuser']['registered']) || !isset($_SESSION['webuser']['registered']) ) && isset($_COOKIE['_we_autologin'])){
-			if(!wetagsessionStartdoAutoLogin()){
-				wetagsessionHandleFailedLogin();
-			} else {
-				we_base_sessionHandler::makeNewID();
-			}
-		}
-
-		if(isset($_SESSION['webuser']['registered']) && isset($_SESSION['webuser']['ID']) && isset($_SESSION['webuser']['Username']) && $_SESSION['webuser']['registered'] && $_SESSION['webuser']['ID'] && $_SESSION['webuser']['Username'] != ''){
-			if($_SESSION['webuser']['LastAccess'] + 60 < time()){
-				$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET LastAccess=UNIX_TIMESTAMP() WHERE ID=' . intval($_SESSION['webuser']['ID']));
-				$_SESSION['webuser']['LastAccess'] = time();
-			}
+		unset($_REQUEST['s']['Password']);
+	}
+	if($persistentlogins && (!$_SESSION['webuser']['registered']) && isset($_COOKIE['_we_autologin'])){
+		if(!wetagsessionStartdoAutoLogin()){
+			wetagsessionHandleFailedLogin();
+		} else {
+			we_base_sessionHandler::makeNewID();
 		}
 	}
 
+	if(!empty($_SESSION['webuser']['registered']) && !empty($_SESSION['webuser']['ID']) && !empty($_SESSION['webuser']['Username'])){
+		if($_SESSION['webuser']['LastAccess'] + 60 < time()){
+			$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET LastAccess=UNIX_TIMESTAMP() WHERE ID=' . intval($_SESSION['webuser']['ID']));
+			$_SESSION['webuser']['LastAccess'] = time();
+		}
+	}
+
+
 	if(!empty($_SESSION['webuser']['registered']) && weTag_getAttribute('onlinemonitor', $attribs, false, we_base_request::BOOL)){
-		$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_SESSION_TABLE . ' WHERE LastAccess<DATE_SUB(NOW(), INTERVAL 1 HOUR)');
+		$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_SESSION_TABLE . ' WHERE LastAccess<(NOW() - INTERVAL 1 HOUR)');
 		$monitorgroupfield = weTag_getAttribute('monitorgroupfield', $attribs, '', we_base_request::STRING);
 		$doc = we_getDocForTag(weTag_getAttribute('monitordoc', $attribs, '', we_base_request::STRING), false);
 
@@ -142,8 +141,8 @@ function wetagsessionHandleFailedLogin(){
 
 
 	if(
-		intval(f('SELECT COUNT(1)  FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '" AND isValid="true" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour)')) >= intval(SECURITY_LIMIT_CUSTOMER_NAME) ||
-		intval(f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND IP="' . $_SERVER['REMOTE_ADDR'] . '" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_IP_HOURS) . ' hour)')) >= intval(SECURITY_LIMIT_CUSTOMER_IP)
+		intval(f('SELECT COUNT(1)  FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '" AND isValid="true" AND LoginDate >(NOW() - INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour)')) >= intval(SECURITY_LIMIT_CUSTOMER_NAME) ||
+		intval(f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND IP="' . $_SERVER['REMOTE_ADDR'] . '" AND LoginDate >(NOW() - INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_IP_HOURS) . ' hour)')) >= intval(SECURITY_LIMIT_CUSTOMER_IP)
 	){
 		//don't serve user
 		if(SECURITY_LIMIT_CUSTOMER_REDIRECT){
@@ -165,8 +164,8 @@ function wetagsessionHandleFailedLogin(){
 
 function wetagsessionStartCheckDenied(){
 	if(
-		intval(f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '" AND isValid="true" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour)')) >= intval(SECURITY_LIMIT_CUSTOMER_NAME) ||
-		intval(f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND IP="' . $_SERVER['REMOTE_ADDR'] . '" AND LoginDate >DATE_SUB(NOW(), INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_IP_HOURS) . ' hour)')) >= intval(SECURITY_LIMIT_CUSTOMER_IP)
+		intval(f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '" AND isValid="true" AND LoginDate>(NOW() - INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour)')) >= intval(SECURITY_LIMIT_CUSTOMER_NAME) ||
+		intval(f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND IP="' . $_SERVER['REMOTE_ADDR'] . '" AND LoginDate>(NOW() - INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_IP_HOURS) . ' hour)')) >= intval(SECURITY_LIMIT_CUSTOMER_IP)
 	){
 		$GLOBALS['WE_LOGIN_DENIED'] = true;
 		return true;
@@ -185,7 +184,8 @@ function wetagsessionStartdoLogin($persistentlogins, &$SessionAutologin, $extern
 			if((SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_DBPASSWORD) == 0){
 				unset($u['Password']);
 			}
-			$_SESSION['webuser'] = $u;
+
+			$_SESSION['webuser'] = array_merge($u, we_customer_customer::getEncryptedFields());
 			//keep Password if known
 			if(SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_PASSWORD){
 				$_SESSION['webuser']['_Password'] = $_REQUEST['s']['Password'];
@@ -226,7 +226,7 @@ function wetagsessionStartdoAutoLogin(){
 				unset($u['Password']);
 			}
 
-			$_SESSION['webuser'] = $u;
+			$_SESSION['webuser'] = array_merge($u, we_customer_customer::getEncryptedFields());
 			//try to decrypt password if possible
 			if(SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_PASSWORD){
 				$_SESSION['webuser']['_Password'] = we_customer_customer::decryptData($_SESSION['webuser']['Password']);

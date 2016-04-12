@@ -77,6 +77,8 @@ class we_exim_refTable{
 					return $allowed && permissionhandler::hasPerm('CAN_SEE_OBJECTS');
 				case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 					return $allowed && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES');
+				case VFILE_TABLE:
+					return $allowed && permissionhandler::hasPerm('CAN_SEE_COLLECTIONS');
 				case DOC_TYPES_TABLE:
 					return $allowed && permissionhandler::hasPerm('EDIT_DOCTYPE');
 				case CATEGORY_TABLE:

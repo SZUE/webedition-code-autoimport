@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -31,7 +30,6 @@
  * Description: Provides functions for creating html tags
  */
 class we_html_baseElement{
-
 	var $uid;
 	var $tag_name = '';
 	var $need_end_tag = true;
@@ -130,7 +128,7 @@ class we_html_baseElement{
 					$val = trim($val);
 					if($val){
 						list($k, $v) = explode(':', $val);
-						$this->setStyle($k, $v);
+						$this->setStyle(trim($k), trim($v));
 					}
 				}
 				break;
@@ -245,6 +243,9 @@ class we_html_baseElement{
 						break;
 				}
 			}
+		}
+		if(is_array($this->content)){
+			t_e($this);
 		}
 		$out.=($this->need_end_tag === 'selfclose' ? '/' : '') . '>' .
 			$this->content .

@@ -57,13 +57,9 @@ function setFrameSize() {
 		fsRows[0] = tabsHeight;
 		fs.rows = fsRows.join(",");
 	} else {
-		setTimeout("setFrameSize()", 100);
+		setTimeout(setFrameSize, 100);
 	}
 }
-/**
- * var resizeDummy
- */
-var resizeDummy = 1;
 
 /**
  * name of the title path
@@ -97,37 +93,14 @@ function setTitlePath(group, name) {
 
 	if (titlePathGroupElem) {
 		if (titlePathGroup === "") {
-			titlePathGroup = titlePathGroupElem.innerHTML
+			titlePathGroup = titlePathGroupElem.innerHTML;
 		}
 		titlePathGroupElem.innerHTML = titlePathGroup;
 	}
 	if (titlePathNameElem) {
 		if (titlePathName === "") {
-			titlePathName = titlePathNameElem.innerHTML
+			titlePathName = titlePathNameElem.innerHTML;
 		}
 		titlePathNameElem.innerHTML = titlePathName;
 	}
-}
-
-/**
- * set the path name
- *
- * @static
- * @param {string} pathName
- * @return void
- */
-function setPathName(pathName) {
-	titlePathName = pathName;
-}
-
-/**
- * set the path group
- *
- * @static
- * @param {string} pathGroup
- * @return void
- */
-function setPathGroup(pathGroup) {
-	//DUMMY for compatibility
-	//titlePathGroup = pathGroup;
 }

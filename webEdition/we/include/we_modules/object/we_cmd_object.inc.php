@@ -39,7 +39,7 @@ switch($cmd){
 	case 'object_delete_link_at_class':
 	case 'object_change_link_at_class':
 	case 'object_change_multiobject_at_class':
-		return 'we_modules/object/we_editor_contentobject_load.inc.php';
+		return 'we_editors/we_editor_contentobject_load.inc.php';
 
 	case 'object_reload_entry_at_object':
 	case 'object_down_meta_at_object':
@@ -50,7 +50,7 @@ switch($cmd){
 	case 'object_remove_image_at_object':
 	case 'object_delete_link_at_object':
 	case 'object_change_link_at_object':
-		return 'we_modules/object/we_editor_contentobjectFile_load.inc.php';
+		return 'we_editors/we_editor_contentobjectFile_load.inc.php';
 
 	case 'object_add_css':
 	case 'object_del_css':
@@ -62,19 +62,14 @@ switch($cmd){
 	case 'object_ws_from_class':
 //	In this file we cant work with WE_OBJECT_MODULE_PATH, because a prefix is already set in : we_cmd.php
 		return 'we_editors/we_editor.inc.php';
-
 	case 'object_toggleExtraWorkspace':
 		return 'we_modules/object/we_object_cmds.inc.php';
-
 	case 'object_obj_search':
 		return 'we_modules/object/search_submit.php';
-
 	case 'object_preview_objectFile':
-		return 'we_modules/object/we_object_showDocument.inc.php';
-
+		return 'we_showObject.inc.php';
 	case 'object_create_tmpfromClass':
 		return 'we_modules/object/we_object_createTemplate.inc.php';
-
 	case 'object_editObjectTextArea':
 		return 'we_editors/we_editta.inc.php';
 }

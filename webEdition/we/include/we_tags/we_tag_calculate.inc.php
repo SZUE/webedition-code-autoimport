@@ -22,8 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/util/Strings.php');
-
 function we_parse_tag_calculate($a, $content, array $attribs){
 	$attribs['_type'] = 'stop';
 	return '<?php ' . we_tag_tagParser::printTag('calculate', array('_type' => 'start')) . ';?>' . $content . '<?php printElement(' . we_tag_tagParser::printTag('calculate', $attribs) . ');?>';
@@ -53,7 +51,7 @@ function we_tag_calculate($attribs, $content){
 				}
 				$GLOBALS['summe'][$sum] += $result;
 			}
-			return ($print ? ($num_format ? we_util_Strings::formatNumber($result, $num_format, intval(weTag_getAttribute('decimals', $attribs, 2, we_base_request::INT))) : $result) : '');
+			return ($print ? ($num_format ? we_base_util::formatNumber($result, $num_format, intval(weTag_getAttribute('decimals', $attribs, 2, we_base_request::INT))) : $result) : '');
 		default:
 			return attributFehltError($attribs, '_type', __FUNCTION__);
 	}

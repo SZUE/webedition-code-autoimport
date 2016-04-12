@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -27,6 +26,9 @@ we_html_tools::protect();
 
 srand((double) microtime() * 1000000);
 $path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ID=' . we_base_request::_(we_base_request::INT, 'id'));
-$loc = ($path ? $path . '?r=' . microtime(): WEBEDITION_DIR . 'notPublished.php');
 
-header('Location: ' . $loc);
+if($path){
+	header('Location: ' . $loc . '?r=' . microtime());
+} else {
+	echo g_l('global', '[site_not_published]');
+}

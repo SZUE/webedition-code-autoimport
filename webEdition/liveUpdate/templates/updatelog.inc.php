@@ -55,11 +55,12 @@ if($this->Data['allEntries']){ // entries exist
 	// there are entries available -> show them in table
 	$start = $this->Data['start'];
 	$content = '
-<form name="we_form">
-<input type="hidden" name="section" value="' . we_base_request::_(we_base_request::STRING, 'section') . '" />
-<input type="hidden" name="log_cmd" value="dummy" />
-<input type="hidden" name="start" value="' . $start . '" />
-<table class="defaultfont" width="100%">
+<form name="we_form">' . we_html_element::htmlHiddens(array(
+			"section" => we_base_request::_(we_base_request::STRING, 'section'),
+			"log_cmd" => "dummy",
+			"start" => $start
+		)) . '
+<table class="defaultfont" style="width:100%">
 <tr>
 	<td>' . g_l('liveUpdate', '[updatelog][entriesTotal]') . ': ' . $this->Data['amountEntries'] . '</td>
 	<td class="alignRight">' . g_l('liveUpdate', '[updatelog][page]') . ' ' . (($start / $this->Data['amountPerPage']) + 1) . '/ ' . ((ceil($this->Data['amountEntries'] / $this->Data['amountPerPage'])) ? ceil($this->Data['amountEntries'] / $this->Data['amountPerPage']) : 1) . '</td>
@@ -74,7 +75,7 @@ if($this->Data['allEntries']){ // entries exist
 
 	if(($this->Data['logEntries'])){ // entries match filter
 		$content .= '
-<table width="100%" class="defaultfont updateContent" id="updateLogTable">
+<table style="width:100%" class="defaultfont updateContent" id="updateLogTable">
 <tr>
 	<th>' . g_l('liveUpdate', '[updatelog][date]') . '</th>
 	<th>' . g_l('liveUpdate', '[updatelog][action]') . '</th>
@@ -94,9 +95,9 @@ if($this->Data['allEntries']){ // entries exist
 			}
 
 			$content .= '<tr' . $classStr . '>
-		<td valign="top">' . $logEntry['date'] . '</td>
+		<td style="vertical-align:top">' . $logEntry['date'] . '</td>
 		<td>' . $logEntry['action'] . '</td>
-		<td valign="top">' . $logEntry['version'] . '</td>
+		<td style="vertical-align:top">' . $logEntry['version'] . '</td>
 	</tr>';
 		}
 
@@ -104,15 +105,13 @@ if($this->Data['allEntries']){ // entries exist
 		 * Add buttons for next, back and delete
 		 */
 
-		$buttons = we_html_button::create_button_table(array(
-				we_html_button::create_button("delete", "javascript:confirmDelete();"),
-				($start > 0 ? //	backbutton
-					we_html_button::create_button("back", "javascript:lastEntries();") :
-					we_html_button::create_button("back", "#", true, 100, 22, "", "", true)),
-				($this->Data['amountEntries'] <= $start + $this->Data['amountPerPage'] ? //	next_button
-					we_html_button::create_button("next", "#", true, 100, 22, "", "", true) :
-					we_html_button::create_button("next", "javascript:nextEntries();"))
-		));
+		$buttons = we_html_button::create_button(we_html_button::DELETE, "javascript:confirmDelete();") .
+			($start > 0 ? //	backbutton
+				we_html_button::create_button(we_html_button::BACK, "javascript:lastEntries();") :
+				we_html_button::create_button(we_html_button::BACK, "#", true, 100, 22, "", "", true)) .
+			($this->Data['amountEntries'] <= $start + $this->Data['amountPerPage'] ? //	next_button
+				we_html_button::create_button(we_html_button::NEXT, "#", true, 100, 22, "", "", true) :
+				we_html_button::create_button(we_html_button::NEXT, "javascript:nextEntries();"));
 
 		$content .= '
 </table>';

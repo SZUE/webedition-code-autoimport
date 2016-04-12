@@ -8,8 +8,8 @@ $this->NeedsEndTag = false;
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 $included = new weTagData_selectAttribute('included', array(), false, '');
-$id = (defined('FILE_TABLE') ? new weTagData_selectorAttribute('id', FILE_TABLE, 'text/webedition', false, '') : null);
-$path = (defined('FILE_TABLE') ? new weTagData_selectorAttribute('path', FILE_TABLE, 'text/webedition', false, '', true) : null);
+$id = (defined('FILE_TABLE') ? new weTagData_selectorAttribute('id', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '') : null);
+$path = (defined('FILE_TABLE') ? new weTagData_selectorAttribute('path', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '', true) : null);
 //$path = new weTagData_textAttribute('path', false, '');
 $gethttp = new weTagData_selectAttribute('gethttp', weTagData_selectAttribute::getTrueFalse(), false, '');
 $seeMode = new weTagData_selectAttribute('seeMode', weTagData_selectAttribute::getTrueFalse(), false, '');

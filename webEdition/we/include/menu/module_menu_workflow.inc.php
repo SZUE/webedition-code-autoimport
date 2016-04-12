@@ -21,7 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$we_menu_workflow = array(
+return array(
 	'workflow' => array(
 		'text' => g_l('javaMenu_workflow', '[workflow]'),
 	),

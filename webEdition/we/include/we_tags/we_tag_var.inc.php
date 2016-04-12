@@ -38,9 +38,11 @@ function we_tag_var($attribs){
 	$type = weTag_getAttribute('type', $attribs);
 	$htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, true); // #3771
 	$format = weTag_getAttribute('format', $attribs);
+	$num_format = weTag_getAttribute('num_format', $attribs, '', we_base_request::STRING);
 	$doc = we_getDocForTag($docAttr, false);
 	$varType = weTag_getAttribute('varType', $attribs, we_base_request::STRING, we_base_request::STRING);
 	$prepareSQL = weTag_getAttribute('prepareSQL', $attribs, false, true);
+	$attribs = removeAttribs($attribs, array('varType', 'prepareSQL', 'htmlspecialchars',));
 
 	switch($type){
 		case 'session' :
@@ -59,15 +61,13 @@ function we_tag_var($attribs){
 			$return = getArrayValue($GLOBALS, null, $name_orig);
 			break;
 		case 'multiobject' :
-			$data = unserialize($doc->getField($attribs, $type, true));
-			return (isset($data['objects']) && $data['objects'] ? implode(',', $data['objects']) : '');
-
+			$data = we_unserialize($doc->getField($attribs, $type, true));
+			return is_array($data) ? (!empty($data['objects']) ? implode(',', $data['objects']) : implode(',', $data)) : '';
 		case 'property' :
 			$return = (isset($GLOBALS['we_obj']) ?
 					$GLOBALS['we_obj']->$name_orig :
 					$doc->$name_orig);
 			break;
-
 		case 'shopVat' :
 			if(defined('SHOP_TABLE')){
 				if(!we_shop_category::isCategoryMode()){
@@ -125,6 +125,9 @@ function we_tag_var($attribs){
 
 	if($format){//date
 		return date($format, intval($return));
+	}
+	if($num_format){
+		return we_base_util::formatNumber($return, $num_format);
 	}
 	$return = $htmlspecialchars ? oldHtmlspecialchars($return) : $return;
 	return $prepareSQL ? $GLOBALS['DB_WE']->escape($return) : $return;

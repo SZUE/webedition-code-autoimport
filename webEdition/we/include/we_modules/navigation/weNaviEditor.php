@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -31,9 +30,7 @@ $_input_size = 440;
 
 $_path = we_base_request::_(we_base_request::FILE, 'we_cmd', '', 1);
 
-$_id = (!empty($_path)) ? path_to_id($_path, NAVIGATION_TABLE) : 0;
-
-$_cmd = 'opener.we_cmd("add_navi",' . $_id . ',encodeURIComponent(document.we_form.Text.value),dir.options[dir.selectedIndex].value,document.we_form.Ordn.value);';
+$_id = (!empty($_path)) ? path_to_id($_path, NAVIGATION_TABLE, $GLOBALS['DB_WE']) : 0;
 
 $_navi = new we_navigation_navigation($_id);
 
@@ -65,13 +62,13 @@ while($_db->next_record()){
 $_parts = array(
 	array(
 		'headline' => g_l('navigation', '[name]'),
-		'html' => we_html_tools::htmlTextInput('Text', 24, $_navi->Text, '', 'style="width: ' . $_input_size . 'px;" onblur="if(document.we_form.Text.value!=\'\') switch_button_state(\'save\', \'save_enabled\', \'enabled\'); else switch_button_state(\'save\', \'save_disabled\', \'disabled\');" onkeyup="if(document.we_form.Text.value!=\'\') switch_button_state(\'save\', \'save_enabled\', \'enabled\'); else switch_button_state(\'save\', \'save_disabled\', \'disabled\');"'),
+		'html' => we_html_tools::htmlTextInput('Text', 24, $_navi->Text, '', 'style="width: ' . $_input_size . 'px;" onblur="if(document.we_form.Text.value!=\'\') WE().layout.button.switch_button_state(document, \'save\', \'enabled\'); else WE().layout.button.switch_button_state(document, \'save\', \'disabled\');" onkeyup="if(document.we_form.Text.value!=\'\') WE().layout.button.switch_button_state(document, \'save\', \'enabled\'); else WE().layout.button.switch_button_state(document, \'save\', \'disabled\');"'),
 		'space' => $_space_size,
 		'noline' => 1
 	),
 	array(
 		'headline' => g_l('navigation', '[group]'),
-		'html' => we_html_tools::htmlSelect('ParentID', $_dirs, 1, $_navi->ParentID, false, array((we_base_browserDetect::isIE() ? '' : 'style') => 'width: ' . $_input_size . 'px;', 'onchange' => "queryEntries(this.value)")),
+		'html' => we_html_tools::htmlSelect('ParentID', $_dirs, 1, $_navi->ParentID, false, array('style' => 'width: ' . $_input_size . 'px;', 'onchange' => "queryEntries(this.value)")),
 		'space' => $_space_size,
 		'noline' => 1
 	),
@@ -83,30 +80,26 @@ $_parts = array(
 	),
 	array(
 		'headline' => g_l('navigation', '[order]'),
-		'html' => we_html_tools::hidden('Ordn', $_navi->Ordn) . we_html_tools::htmlTextInput(
-			'OrdnTxt', 8, ($_navi->Ordn + 1), '', 'onchange="document.we_form.Ordn.value=(document.we_form.OrdnTxt.value-1);"', 'text', 117) . we_html_tools::getPixel(6, 5) . we_html_tools::htmlSelect(
-			'OrdnSelect', array(
-			'begin' => g_l('navigation', '[begin]'), 'end' => g_l('navigation', '[end]')
-			), 1, '', false, array('onchange' => "document.we_form.OrdnTxt.value=document.we_form.OrdnSelect.options[document.we_form.OrdnSelect.selectedIndex].text;document.we_form.Ordn.value=this.value;"), "value", 317),
+		'html' => we_html_tools::hidden('Ordn', $_navi->Ordn) .
+		we_html_tools::htmlTextInput('OrdnTxt', 8, ($_navi->Ordn + 1), '', 'onchange="document.we_form.Ordn.value=(document.we_form.OrdnTxt.value-1);"', 'text', 117) .
+		we_html_tools::htmlSelect('OrdnSelect', array('begin' => g_l('navigation', '[begin]'), 'end' => g_l('navigation', '[end]')), 1, '', false, array('onchange' => "document.we_form.OrdnTxt.value=document.we_form.OrdnSelect.options[document.we_form.OrdnSelect.selectedIndex].text;document.we_form.Ordn.value=this.value;"), "value", 317),
 		'space' => $_space_size,
 		'noline' => 1
 	)
 );
 
-$_js = we_html_button::create_state_changer(false) . '
+$_js = '
 function save() {
 	var dir = document.we_form.ParentID;
-	' . $_cmd . '
-	self.close();
-
+	opener.we_cmd("add_navi",' . $_id . ',encodeURIComponent(document.we_form.Text.value),dir.options[dir.selectedIndex].value,document.we_form.Ordn.value);	self.close();
 }
 
 var ajaxObj = {
 		handleSuccess:function(o){
 				this.processResult(o);
-				if(o["responseText"]) {
+				if(o.responseText) {
 					document.getElementById("details").innerHTML = "";
-					eval(o["responseText"]);
+					eval(o.responseText);
 
 					var items = weResponse.data.split(",");
 					var i = 0;
@@ -130,7 +123,7 @@ var ajaxObj = {
 		},
 
 		startRequest:function(id) {
-			 YAHOO.util.Connect.asyncRequest("POST", "' . WEBEDITION_DIR . 'rpc/rpc.php", callback, "cmd=GetNaviItems&nid="+id);
+			 YAHOO.util.Connect.asyncRequest("POST", WE().consts.dirs.WEBEDITION_DIR+"rpc.php", callback, "cmd=GetNaviItems&nid="+id);
 		}
 
 };
@@ -146,8 +139,8 @@ var callback = {
 function queryEntries(id) {
 	ajaxObj.startRequest(id);
 }';
-$buttonsBottom = '<div style="float:right">' . we_html_button::position_yes_no_cancel(
-		we_html_button::create_button('save', 'javascript:save();', true, 100, 22, '', '', ($_id ? false : true), false), null, we_html_button::create_button('close', 'javascript:self.close();')) . '</div>';
+$buttonsBottom = '<div style="float:right">' .
+	we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, 'javascript:save();', true, 100, 22, '', '', ($_id ? false : true), false), null, we_html_button::create_button(we_html_button::CLOSE, 'javascript:self.close();')) . '</div>';
 
 $_body = we_html_element::htmlBody(
 		array(
@@ -155,14 +148,8 @@ $_body = we_html_element::htmlBody(
 		), we_html_element::htmlForm(
 			array(
 			"name" => "we_form", "onsubmit" => "return false"
-			), we_html_multiIconBox::getHTML(
-				'', '100%', $_parts, 30, $buttonsBottom, -1, '', '', false, g_l('navigation', '[add_navigation]'), "", 311)));
+			), we_html_multiIconBox::getHTML('', $_parts, 30, $buttonsBottom, -1, '', '', false, g_l('navigation', '[add_navigation]'), "", 311)));
 
-$_head = //FIXME: missing title
-	we_html_tools::getHtmlInnerHead() . STYLESHEET .
-	we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
-	we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
-	we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js') .
-	we_html_element::jsElement($_js);
-
-echo we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead($_head) . $_body);
+echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
+	YAHOO_FILES .
+	we_html_element::jsElement($_js), $_body);

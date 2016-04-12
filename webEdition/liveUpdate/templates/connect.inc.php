@@ -27,7 +27,7 @@
  * different ways.
  */
 
-$checkButton = we_html_button::create_button('next', $_SERVER['SCRIPT_NAME'] . '?section=connect&update_cmd=checkConnection&clientLng=' . $GLOBALS['WE_LANGUAGE'] . ($GLOBALS['WE_BACKENDCHARSET'] === 'UTF-8' ? '_UTF-8' : ''));
+$checkButton = we_html_button::create_button(we_html_button::NEXT, $_SERVER['SCRIPT_NAME'] . '?section=connect&update_cmd=checkConnection&clientLng=' . $GLOBALS['WE_LANGUAGE'] . ($GLOBALS['WE_BACKENDCHARSET'] === 'UTF-8' ? '_UTF-8' : ''));
 
 $content = '
 <div class="defaultfont">

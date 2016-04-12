@@ -22,21 +22,17 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcGetSnippetCodeCmd extends rpcCmd{
+class rpcGetSnippetCodeCmd extends we_rpc_cmd{
 
 	function execute(){
 
-		$resp = new rpcResponse();
-		if(!($file = we_base_request::_(we_base_request::FILE, 'we_cmd', '', 1))){
+		$resp = new we_rpc_response();
+		if(!($file = we_base_request::_(we_base_request::FILE, 'we_cmd', '', 1)) ||
+			!is_file(WE_INCLUDES_PATH . we_wizard_code::SnippetPath . $file)){
 			exit();
 		}
 
-		$CodeWizard = new we_wizard_code();
-		if(!is_file($CodeWizard->SnippetPath . $file)){
-			exit();
-		}
-
-		$Snippet = new we_wizard_codeSnippet($CodeWizard->SnippetPath . we_base_request::_(we_base_request::FILE, 'we_cmd', '', 1));
+		$Snippet = new we_wizard_codeSnippet(WE_INCLUDES_PATH . we_wizard_code::SnippetPath . we_base_request::_(we_base_request::FILE, 'we_cmd', '', 1));
 		$Code = $Snippet->getCode("UTF-8");
 
 		$resp->setData("data", $Code);

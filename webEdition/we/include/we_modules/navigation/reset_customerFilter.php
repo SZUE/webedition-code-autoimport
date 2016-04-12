@@ -25,7 +25,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 if(permissionhandler::hasPerm("ADMINISTRATOR")){
-	$GLOBALS['DB_WE']->query("UPDATE " . NAVIGATION_TABLE . " SET  LimitAccess=0, ApplyFilter=0");
+	$GLOBALS['DB_WE']->query('UPDATE ' . NAVIGATION_TABLE . ' SET LimitAccess=0, ApplyFilter=0');
 
 	echo we_html_element::jsElement(
 			'top.openWindow(\'' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&step=2&type=rebuild_navigation&responseText=' . rawurlencode(

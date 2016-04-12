@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -23,16 +22,17 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-$protect = we_base_moduleInfo::isActive('shop') && we_users_util::canEditModule('shop') ? null : array(false);
+$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP) && we_users_util::canEditModule(we_base_moduleInfo::SHOP) ? null : array(false);
 we_html_tools::protect($protect);
 
 echo we_html_tools::getHtmlTop() .
  STYLESHEET;
 
 if(($fname = we_base_request::_(we_base_request::STRING, "fieldForname"))){ //	save data in arrays ..
-	$DB_WE->query('REPLACE INTO ' . WE_SHOP_PREFS_TABLE . " SET " . we_database_base::arraySetter(array(
-			'strFelder' => $fname . "|" . we_base_request::_(we_base_request::STRING, "fieldSurname") . "|" . we_base_request::_(we_base_request::STRING, "fieldStreet") . "|" . we_base_request::_(we_base_request::STRING, "fieldZip") . "|" . we_base_request::_(we_base_request::STRING, "fieldCity") . "|" . we_base_request::_(we_base_request::STRING, "lc") . "|" . we_base_request::_(we_base_request::STRING, "ppB") . "|" . we_base_request::_(we_base_request::STRING, "psb") . "|" . we_base_request::_(we_base_request::STRING, "lcS") . "|" . we_base_request::_(we_base_request::STRING, "spAID") . "|" . we_base_request::_(we_base_request::STRING, "spB") . "|" . we_base_request::_(we_base_request::STRING, "spC") . "|" . we_base_request::_(we_base_request::STRING, "spD") . "|" . we_base_request::_(we_base_request::STRING, "spCo") . "|" . we_base_request::_(we_base_request::STRING, "spPS") . "|" . we_base_request::_(we_base_request::STRING, "spcmdP") . "|" . we_base_request::_(we_base_request::STRING, "spconfP") . "|" . we_base_request::_(we_base_request::STRING, "spdesc") . "|" . we_base_request::_(we_base_request::STRING, "fieldEmail"),
-			'strDateiname' => 'payment_details',
+	$DB_WE->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(array(
+			'pref_value' => $fname . "|" . we_base_request::_(we_base_request::STRING, "fieldSurname") . "|" . we_base_request::_(we_base_request::STRING, "fieldStreet") . "|" . we_base_request::_(we_base_request::STRING, "fieldZip") . "|" . we_base_request::_(we_base_request::STRING, "fieldCity") . "|" . we_base_request::_(we_base_request::STRING, "lc") . "|" . we_base_request::_(we_base_request::STRING, "ppB") . "|" . we_base_request::_(we_base_request::STRING, "psb") . "|" . we_base_request::_(we_base_request::STRING, "lcS") . "|" . we_base_request::_(we_base_request::STRING, "spAID") . "|" . we_base_request::_(we_base_request::STRING, "spB") . "|" . we_base_request::_(we_base_request::STRING, "spC") . "|" . we_base_request::_(we_base_request::STRING, "spD") . "|" . we_base_request::_(we_base_request::STRING, "spCo") . "|" . we_base_request::_(we_base_request::STRING, "spPS") . "|" . we_base_request::_(we_base_request::STRING, "spcmdP") . "|" . we_base_request::_(we_base_request::STRING, "spconfP") . "|" . we_base_request::_(we_base_request::STRING, "spdesc") . "|" . we_base_request::_(we_base_request::STRING, "fieldEmail"),
+			'tool' => 'shop',
+			'pref_name' => 'payment_details',
 	)));
 
 
@@ -41,9 +41,8 @@ if(($fname = we_base_request::_(we_base_request::STRING, "fieldForname"))){ //	s
 	exit;
 }
 
-
 //	NumberFormat - currency and taxes
-$feldnamen = explode("|", f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . " WHERE strDateiname='payment_details'"));
+$feldnamen = explode('|', f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="payment_details"'));
 
 for($i = 0; $i <= 18; $i++){
 	$feldnamen[$i] = isset($feldnamen[$i]) ? $feldnamen[$i] : '';
@@ -54,12 +53,8 @@ $_row = 0;
 $Parts = array();
 
 if(defined('CUSTOMER_TABLE')){
-	$_htmlTable = new we_html_table(array('border' => 0,
-		'cellpadding' => 0,
-		'cellspacing' => 0,
-		'width' => "100%"), 14, 3);
+	$_htmlTable = new we_html_table(array('class' => 'default withSpace', 'width' => "100%"), 4, 3);
 	$_htmlTable->setCol($_row++, 0, array('colspan' => 4, 'class' => 'defaultfont'), g_l('modules_shop', '[FormFieldsTxt]'));
-	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 15));
 
 	$custfields = array();
 
@@ -70,46 +65,32 @@ if(defined('CUSTOMER_TABLE')){
 	}
 
 	$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[fieldForname]'));
-	$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
+	$_htmlTable->setCol($_row, 1, array('style' => 'width:10px;'));
 	$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('fieldForname', $custfields, 1, $feldnamen[0]));
-	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 4));
 
 	$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[fieldSurname]'));
-	$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 	$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('fieldSurname', $custfields, 1, $feldnamen[1]));
-	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 4));
 
 	$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[fieldStreet]'));
-	$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 	$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('fieldStreet', $custfields, 1, $feldnamen[2]));
-	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 4));
 
 	$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[fieldZip]'));
-	$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 	$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('fieldZip', $custfields, 1, $feldnamen[3]));
-	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 4));
 
 	$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[fieldCity]'));
-	$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 	$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('fieldCity', $custfields, 1, $feldnamen[4]));
-	$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 4));
 
 
 	$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[fieldEmail]'));
-	$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 	$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('fieldEmail', array_merge(array(""), $custfields), 1, $feldnamen[18]));
 
 	$Parts[] = array("html" => $_htmlTable->getHtml());
 }
 
 // PayPal
-$_htmlTable = new we_html_table(array('border' => 0,
-	'cellpadding' => 0,
-	'cellspacing' => 0,
-	'width' => "100%"), 20, 3);
-
+$_htmlTable = new we_html_table(array('class' => 'default withSpace', 'width' => "100%"), 4, 3);
+$_row=0;
 $_htmlTable->setCol($_row++, 0, array('class' => 'weDialogHeadline', 'colspan' => 4), g_l('modules_shop', '[paypal][name]'));
-$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 8));
 
 $list1 = array("AI" => "Anguilla", "AR" => "Argentina", "AU" => "Australia", "AT" => "Austria", "BE" => "Belgium", "BR" => "Brazil", "CA" => "Canada", "CL" => "Chile", "CN" => "China", "CR" => "Costa Rica", "CY" => "Cyprus", "CZ" => "Czech Republic", "DK" => "Denmark", "DO" => "Dominican Rep.", "EC" => "Equador", "EE" => "Estonia", "FI" => "Finland", "FR" => "France", "DE" => "Deutschland", "GR" => "Greece", "HK" => "Hong Kong");
 $list2 = array("HU" => "Hungary", "IS" => "Iceland", "IN" => "India", "IE" => "Ireland", "IL" => "Israel", "IT" => "Italy", "JM" => "Jamaica", "JP" => "Japan", "LV" => "Latvia", "LT" => "Lithuania", "LU" => "Luxemburg", "MY" => "Malaysia", "MT" => "Malta", "MX" => "Mexico");
@@ -117,100 +98,66 @@ $list3 = array("NL" => "Netherlands", "NZ" => "New Zealand", "NO" => "Norway", "
 $list = array_merge($list1, $list2, $list3);
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[lc]'));
-$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 $_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('lc', $list, 1, $feldnamen[5]) . '<span class="small">&nbsp;' . g_l('modules_shop', '[paypalLcTxt]') . ' </span>');
-$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 4));
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[paypalbusiness]'));
-$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 $_htmlTable->setColContent($_row++, 2, we_html_tools::htmlTextInput("ppB", 30, $feldnamen[6], "", "", "text", 128) . '<span class="small">&nbsp;' . g_l('modules_shop', '[paypalbTxt]') . ' </span>');
-$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 4));
 
 $paypalPV = array("default" => "PayPal-Shop", "test" => "Sandbox (Test) ");
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[paypalSB]'));
-$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 $_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('psb', $paypalPV, 1, $feldnamen[7]) . '<span class="small">&nbsp;' . g_l('modules_shop', '[paypalSBTxt]') . ' </span>');
 
 $Parts[] = array("html" => $_htmlTable->getHtml());
 
 // saferpay
-$_htmlTable = new we_html_table(array('border' => 0,
-	'cellpadding' => 0,
-	'cellspacing' => 0,
-	'width' => "100%"), 43, 3);
-
+$_htmlTable = new we_html_table(array('class' => 'default withSpace', 'width' => "100%"), 10, 3);
+$_row = 0;
 $_htmlTable->setCol($_row++, 0, array('class' => 'weDialogHeadline', 'colspan' => 4), g_l('modules_shop', '[saferpay]'));
-$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 8));
 
 $saferPayLang = array("en" => "english", "de" => "deutsch", "fr" => "francais", "it" => "italiano");
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[saferpayTermLang]'));
-$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 $_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('lcS', $saferPayLang, 1, $feldnamen[8]) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpayLcTxt]') . ' </span>');
-$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 4));
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[saferpayID]'));
-$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 $_htmlTable->setColContent($_row++, 2, we_html_tools::htmlTextInput("spAID", 30, $feldnamen[9], "", "", "text", 128) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpayIDTxt]') . ' </span>');
-$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 4));
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[saferpaybusiness]'));
-$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 $_htmlTable->setColContent($_row++, 2, we_html_tools::htmlTextInput("spB", 30, $feldnamen[10], "", "", "text", 128) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpaybTxt]') . ' </span>');
-$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 4));
 
 $saferPayCollect = array("no" => g_l('modules_shop', '[saferpayNo]'), "yes" => g_l('modules_shop', '[saferpayYes]'));
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[saferpayAllowCollect]'));
-$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 $_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('spC', $saferPayCollect, 1, $feldnamen[11]) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpayAllowCollectTxt]') . ' </span>');
-$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 4));
 
 $saferPayDelivery = array("no" => g_l('modules_shop', '[saferpayNo]'), "yes" => g_l('modules_shop', '[saferpayYes]'));
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[saferpayDelivery]'));
-$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 $_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('spD', $saferPayDelivery, 1, $feldnamen[12]) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpayDeliveryTxt]') . ' </span>');
-$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 4));
 
 $saferPayConfirm = array("no" => g_l('modules_shop', '[saferpayNo]'), "yes" => g_l('modules_shop', '[saferpayYes]'));
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[saferpayUnotify]'));
-$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 $_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('spCo', $saferPayConfirm, 1, $feldnamen[13]) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpayUnotifyTxt]') . ' </span>');
-$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 4));
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[saferpayProviderset]'));
-$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 $_htmlTable->setColContent($_row++, 2, we_html_tools::htmlTextInput("spPS", 30, $feldnamen[14], "", "", "text", 128) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpayProvidersetTxt]') . ' </span>');
-$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 4));
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[saferpayCMDPath]'));
-$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 $_htmlTable->setColContent($_row++, 2, we_html_tools::htmlTextInput("spcmdP", 30, $feldnamen[15], "", "", "text", 128) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpayCMDPathTxt]') . ' </span>');
-$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 4));
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[saferpayconfPath]'));
-$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 $_htmlTable->setColContent($_row++, 2, we_html_tools::htmlTextInput("spconfP", 30, $feldnamen[16], "", "", "text", 128) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpayconfPathTxt]') . ' </span>');
-$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 4));
 
-$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[saferpaydesc]'));
-$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
+$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'style' => 'padding-bottom:20px;'), g_l('modules_shop', '[saferpaydesc]'));
 $_htmlTable->setColContent($_row++, 2, we_class::htmlTextArea("spdesc", 2, 30, $feldnamen[17]) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpaydescTxt]') . ' </span>');
-$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 4));
-
-$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 15));
 
 $Parts[] = array("html" => $_htmlTable->getHtml());
 
-$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("save", "javascript:document.we_form.submit();"), "", we_html_button::create_button("cancel", "javascript:self.close();")
+$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, "javascript:document.we_form.submit();"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();")
 );
 
-$frame = we_html_multiIconBox::getHTML('', '100%', $Parts, 30, $_buttons, -1, '', '', false, g_l('modules_shop', '[paymentP]'), '', '', 'hidden');
-
-
-echo we_html_element::jsElement('self.focus();') . '
+echo '
 </head>
-<body class="weDialogBody">
+<body class="weDialogBody" onload="self.focus();">
 
 
 <form name="we_form" method="post" style="margin-top:16px;">
-' . $frame . '</form>
+' . we_html_multiIconBox::getHTML('', $Parts, 30, $_buttons, -1, '', '', false, g_l('modules_shop', '[paymentP]'), '', '', 'auto') . '</form>
 </body></html>';

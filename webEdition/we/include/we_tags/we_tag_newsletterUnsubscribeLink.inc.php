@@ -30,13 +30,13 @@ function we_tag_newsletterUnsubscribeLink($attribs){
 	$plain = weTag_getAttribute("plain", $attribs, true, we_base_request::BOOL);
 
 	$db = $GLOBALS['DB_WE'];
-	$db->query('SELECT pref_name,pref_value FROM ' . NEWSLETTER_PREFS_TABLE . ' WHERE pref_name IN ("use_port","use_https_refer")');
+	$db->query('SELECT pref_name,pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="newsletter" AND pref_name IN ("use_port","use_https_refer")');
 	$settings = $db->getAllFirst(false);
-	
+
 	//TODO: how to use $port and $protocol within multidomains and normal mode?
-	$port = (isset($settings["use_port"]) && $settings["use_port"]) ? ":" . $settings["use_port"] : '';
-	$protocol = (isset($settings["use_https_refer"]) && $settings["use_https_refer"]) ? 'https://' : 'http://';
-	
+	$port = (!empty($settings["use_port"])) ? ":" . $settings["use_port"] : '';
+	$protocol = (!empty($settings["use_https_refer"])) ? 'https://' : 'http://';
+
 	//Fix #9785
 	$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE'], true);
 	$url = preg_replace($urlReplace, array_keys($urlReplace), id_to_path($id, FILE_TABLE), -1, $cnt);

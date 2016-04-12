@@ -22,28 +22,31 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcGetSearchParametersCmd extends rpcCmd{
+class rpcGetSearchParametersCmd extends we_rpc_cmd{
 
 	function execute(){
 
-		$resp = new rpcResponse();
+		$resp = new we_rpc_response();
 
 		$pos = we_base_request::_(we_base_request::STRING, 'position', '');
 
-		$foundItems = (isset($_SESSION['weS']['versions']['foundItems'])) ? $_SESSION['weS']['versions']['foundItems'] : 0;
-
-		$_SESSION['weS']['versions']['anzahl'] = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'anzahl');
-		$_SESSION['weS']['versions']['searchstart'] = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'searchstart');
+		if(($trans = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0))){
+			$we_dt = isset($_SESSION['weS']['we_data'][$trans]) ? $_SESSION['weS']['we_data'][$trans] : '';
+		}
+		$class = $we_dt[0]['ClassName']; //we_base_request::_(we_base_request::STRING, 'classname');
+		$_document = new $class;
+		$_document->we_initSessDat($we_dt);
+		$versionsView = new we_versions_view($_document->versionsModel);
 
 		$GLOBALS['we_cmd_obj'] = 1;
-		$vview = new we_versions_view();
+		$foundItems = (isset($_SESSION['weS']['versions']['foundItems'])) ? $_SESSION['weS']['versions']['foundItems'] : 0;
 		switch($pos){
 			case "top":
-				$code = $vview->getParameterTop($foundItems);
+				$code = $versionsView->getParameterTop($foundItems);
 				break;
 			case "bottom":
 				$GLOBALS['setInputSearchstart'] = 1;
-				$code = $vview->getParameterBottom($foundItems);
+				$code = $versionsView->getParameterBottom($foundItems);
 				break;
 		}
 

@@ -34,99 +34,76 @@ class we_versions_search{
 	public $height = 1;
 	public $where;
 	public $version;
+	public $View;
 
 	/**
 	 *  Constructor for class 'weVersionsSearch'
 	 */
-	public function __construct(){
+	public function __construct($view = null){
 
 		$this->db = new DB_WE();
 		$this->version = new we_versions_version();
-	}
-
-	/**
-	 * @abstract initialize data from $REQUEST
-	 */
-	function initData(){
-		$this->mode = we_base_request::_(we_base_request::INT, "mode", $this->mode);
-		$this->order = we_base_request::_(we_base_request::STRING, "order", $this->order);
-		$this->anzahl = we_base_request::_(we_base_request::INT, "anzahl", $this->anzahl);
-		if(($sf = we_base_request::_(we_base_request::STRING, "searchFields"))){
-			$this->searchFields = $sf;
-			$this->height = count($this->searchFields);
-		} elseif(we_base_request::_(we_base_request::INT, "searchstart") !== false){
-			$this->height = 0;
-		}
-		$this->location = we_base_request::_(we_base_request::STRING, "location", $this->location);
-		$this->search = we_base_request::_(we_base_request::STRING, "search", $this->search);
+		$this->View = $view ? : new we_versions_view();
 	}
 
 	/**
 	 * @abstract make WHERE-Statement for mysql-SELECT
 	 */
-	function getWhere(){
-
+	function getWhere($model){
 		$where = "";
 		$modConst = array();
+		$currentSearch = $model->getProperty('currentSearch');
+		$currentSearchFields = $model->getProperty('currentSearchFields');
+		$currentLocation = $model->getProperty('currentLocation');
 
-		if(($this->mode) || we_base_request::_(we_base_request::INT, 'we_cmd', 0, "mode")){
-			$_REQUEST['searchFields'] = array();
-			foreach(we_base_request::_(we_base_request::STRING, 'we_cmd') as $k => $v){//FIXME: this must be rewritten to real arrays
-				if(stristr($k, 'searchFields[')){
-					$_REQUEST['searchFields'][] = $v;
-				}
-				if(stristr($k, 'location[')){
-					$_REQUEST['location'][] = $v;
-				}
-				if(stristr($k, 'search[')){
-					$_REQUEST['search'][] = $v;
-				}
-			}
-			if(isset($_REQUEST['searchFields'])){
-				foreach($_REQUEST['searchFields'] as $k => $v){
+		if(($model->mode)){
+			if(count($currentSearchFields)){
+				foreach($currentSearchFields as $k => $v){
 					switch($v){
 						case "modifierID":
-							if(isset($_REQUEST['search'][$k])){
-								$where .= " AND " . $v . "='" . escape_sql_query($_REQUEST['search'][$k]) . "'";
+							if(isset($currentSearch[$k])){
+								$where .= ' AND ' . $v . '="' . escape_sql_query($currentSearch[$k]) . '"';
 							}
 							break;
 						case "status":
-							if(isset($_REQUEST['search'][$k])){
-								$where .= " AND " . $v . "='" . escape_sql_query($_REQUEST['search'][$k]) . "'";
+							if(isset($currentSearch[$k])){
+								$where .= ' AND ' . $v . '="' . escape_sql_query($currentSearch[$k]) . '"';
 							}
 							break;
 						case "timestamp":
-							if(($loc = we_base_request::_(we_base_request::RAW, 'location', '', $k)) && ($search = we_base_request::_(we_base_request::STRING, 'search', '', $k))){
+							if(isset($currentLocation[$k]) && isset($currentSearch[$k]) && $currentSearch[$k]){
 
-								$date = explode('.', $search);
+								$date = explode('.', $currentSearch[$k]);
 								$day = $date[0];
 								$month = $date[1];
 								$year = $date[2];
 								$timestampStart = mktime(0, 0, 0, $month, $day, $year);
 								$timestampEnd = mktime(23, 59, 59, $month, $day, $year);
 
-								switch($loc){
+								switch($currentLocation[$k]){
 									case "IS":
 										$where .= ' AND ' . $v . ' BETWEEN ' . intval($timestampStart) . " AND " . intval($timestampEnd);
 										break;
-									case "<":
-										$where .= ' AND ' . $v . $loc . ' ' . intval($timestampStart);
+									case "LO":
+										$where .= ' AND ' . $v . $currentLocation[$k] . ' ' . intval($timestampStart);
 										break;
-									case "<=":
-										$where .= ' AND ' . $v . $loc . ' ' . intval($timestampEnd);
+									case "LEQ":
+										$where .= ' AND ' . $v . $currentLocation[$k] . ' ' . intval($timestampEnd);
 										break;
-									case ">":
-										$where .= ' AND ' . $v . $loc . ' ' . intval($timestampEnd);
+									case "HI":
+										$where .= ' AND ' . $v . $currentLocation[$k] . ' ' . intval($timestampEnd);
 										break;
-									case ">=":
-										$where .= ' AND ' . $v . $loc . ' ' . intval($timestampStart);
+									case "HEQ":
+										$where .= ' AND ' . $v . $currentLocation[$k] . ' ' . intval($timestampStart);
 										break;
 								}
+							} else {
+								$where .= ' AND 1 ';
 							}
 							break;
 						case 'allModsIn':
-							if(($search = we_base_request::_(we_base_request::STRING, 'search', false, $k)) !== false){
-								$modConst[] = $this->version->modFields[$search]['const'];
+							if(isset($currentSearch[$k]) && isset($this->version->modFields[$currentSearch[$k]])){
+								$modConst[] = $this->version->modFields[$currentSearch[$k]];
 							}
 							break;
 					}
@@ -167,9 +144,9 @@ class we_versions_search{
 								}
 							}
 							if($mtof){
-								$where .= ' AND ID IN (' . makeCSVFromArray($arr) . ') ';
+								$where .= ' AND ID IN (' . implode(',', $arr) . ') ';
 							} elseif(!empty($_ids[0])){
-								$where .= ' AND ID IN (' . makeCSVFromArray($_ids[0]) . ') ';
+								$where .= ' AND ID IN (' . implode(',', $_ids[0]) . ') ';
 							} else {
 								$where .= ' AND 0';
 							}

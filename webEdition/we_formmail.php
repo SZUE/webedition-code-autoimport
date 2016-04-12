@@ -110,12 +110,9 @@ function print_error($errortext){
 	$headline = 'Fehler / Error';
 	$content = g_l('global', '[formmailerror]') . getHtmlTag('br') . '&#8226; ' . $errortext;
 
-	echo we_html_tools::getHtmlTop() .
-	we_html_element::cssLink(WEBEDITION_DIR . 'css/global.php') .
-	'</head>' .
-	getHtmlTag('body', array('class' => 'weEditorBody'), '', false, true) .
-	we_html_tools::htmlDialogLayout(getHtmlTag('div', array('class' => 'defaultgray'), $content), $headline) .
-	'</body></html>';
+	echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, getHtmlTag('body', array('class' => 'weEditorBody'), '', false, true) .
+		we_html_tools::htmlDialogLayout(getHtmlTag('div', array('class' => 'defaultfont lowContrast'), $content), $headline) .
+		'</body>');
 
 	exit();
 }
@@ -162,9 +159,17 @@ function check_recipient($email){
 }
 
 function check_captcha(){
-	return ($name = we_base_request::_(we_base_request::STRING, we_base_request::_(we_base_request::STRING, 'captchaname', '__NOT_SET__')) ?
+	return ($name = we_base_request::_(we_base_request::STRING, we_base_request::_(we_base_request::STRING, 'captchaname')) ?
 		we_captcha_captcha::check($name) :
-		false);
+		true); // Fix: #10297
+}
+
+if(!check_captcha()){
+	if(($errorpage = we_base_request::_(we_base_request::URL, 'captcha_error_page'))){
+		redirect($errorpage);
+	} else {
+		print_error(g_l('global', '[captcha_invalid]'));
+	}
 }
 
 $_req = we_base_request::_(we_base_request::RAW, 'required', '');
@@ -173,7 +178,7 @@ if(!check_required($_req)){
 	error_page();
 }
 
-if(isset($_REQUEST['email']) && $_REQUEST['email']){//fixme: note this mail can be in "abc" <cc@de.de> format
+if(!empty($_REQUEST['email'])){//fixme: note this mail can be in "abc" <cc@de.de> format
 	if(!we_check_email($_REQUEST['email'])){
 		if(($foo = we_base_request::_(we_base_request::URL, 'mail_error_page'))){
 			redirect($foo);
@@ -185,13 +190,13 @@ if(isset($_REQUEST['email']) && $_REQUEST['email']){//fixme: note this mail can 
 
 $output = array();
 
-$removeArr = array_map('trim', array_filter(explode(',', we_base_request::_(we_base_request::STRINGC, 'we_remove'))));
+$removeArr = array_map('trim', array_filter(explode(',', we_base_request::_(we_base_request::STRING, 'we_remove'))));
 $we_reserved = array_merge(array('from', 'we_remove', 'captchaname', 'we_mode', 'charset', 'required', 'order', 'ok_page', 'error_page', 'captcha_error_page', 'mail_error_page', 'recipient', 'subject', 'mimetype', 'confirm_mail', 'pre_confirm', 'post_confirm', 'MAX_FILE_SIZE', session_name(), 'cookie', 'recipient_error_page', 'forcefrom'), $removeArr);
 
 $we_txt = '';
 $we_html = '<table>';
 
-if(($_order = we_base_request::_(we_base_request::RAW, 'order', ''))){
+if(($_order = we_base_request::_(we_base_request::STRING, 'order', ''))){
 	$we_orderarray = explode(',', $_order);
 
 	foreach($we_orderarray as $cur){
@@ -221,14 +226,14 @@ foreach($output as $n => $v){
 				$n = replace_bad_str($n);
 				$n2 = replace_bad_str($n2);
 				$we_txt .= $n . '[' . $n2 . ']: ' . $foo . "\n" . ($foo ? '' : "\n");
-				$we_html .= '<tr><td align="right"><b>' . $n . '[' . $n2 . ']:</b></td><td>' . $foo . '</td></tr>';
+				$we_html .= '<tr><td style="text-align:right"><b>' . $n . '[' . $n2 . ']:</b></td><td>' . $foo . '</td></tr>';
 			}
 		}
 	} else {
 		$foo = replace_bad_str($v);
 		$n = replace_bad_str($n);
 		$we_txt .= $n . ': ' . $foo . "\n" . ($foo ? '' : "\n");
-		$we_html .= '<tr><td valign="top" align="right"><b>' . $n . ':</b></td><td>' . ($n === 'email' ? '<a href="mailto:' . $foo . '">' . $foo . '</a>' : nl2br($foo)) . '</td></tr>';
+		$we_html .= '<tr><td style="vertical-align:top;text-align:right"><b>' . $n . ':</b></td><td>' . ($n === 'email' ? '<a href="mailto:' . $foo . '">' . $foo . '</a>' : nl2br($foo)) . '</td></tr>';
 	}
 }
 
@@ -238,16 +243,16 @@ $we_html .= '</table>';
 $we_html_confirm = '';
 $we_txt_confirm = '';
 
-if(isset($_REQUEST['email']) && $_REQUEST['email']){
-	if(isset($_REQUEST['confirm_mail']) && $_REQUEST['confirm_mail']){
+if(!empty($_REQUEST['email'])){
+	if(!empty($_REQUEST['confirm_mail'])){
 		$we_html_confirm = $we_html;
 		$we_txt_confirm = $we_txt;
-		if(isset($_REQUEST['pre_confirm']) && $_REQUEST['pre_confirm']){
+		if(!empty($_REQUEST['pre_confirm'])){
 			contains_bad_str($_REQUEST['pre_confirm']);
 			$we_html_confirm = $_REQUEST['pre_confirm'] . getHtmlTag('br') . $we_html_confirm;
 			$we_txt_confirm = $_REQUEST['pre_confirm'] . "\n\n" . $we_txt_confirm;
 		}
-		if(isset($_REQUEST['post_confirm']) && $_REQUEST['post_confirm']){
+		if(!empty($_REQUEST['post_confirm'])){
 			contains_bad_str($_REQUEST['post_confirm']);
 			$we_html_confirm = $we_html_confirm . getHtmlTag('br') . $_REQUEST['post_confirm'];
 			$we_txt_confirm = $we_txt_confirm . "\n\n" . $_REQUEST['post_confirm'];
@@ -255,109 +260,107 @@ if(isset($_REQUEST['email']) && $_REQUEST['email']){
 	}
 }
 
-$email = (isset($_REQUEST['email']) && $_REQUEST['email']) ?
-	$_REQUEST['email'] :
-	((isset($_REQUEST['from']) && $_REQUEST['from']) ?
-		$_REQUEST['from'] :
-		WE_DEFAULT_EMAIL);
+$email = preg_replace("/(\\n+|\\r+)/", '', (!empty($_REQUEST['email'])) ?
+		$_REQUEST['email'] :
+		((!empty($_REQUEST['from'])) ?
+			$_REQUEST['from'] :
+			WE_DEFAULT_EMAIL));
 
-$subject = we_base_request::_(we_base_request::STRING, 'subject', WE_DEFAULT_SUBJECT);
-$charset = str_replace(array("\n", "\r"), '', we_base_request::_(we_base_request::STRING, 'charset', $GLOBALS['WE_BACKENDCHARSET']));
-$recipient = (isset($_REQUEST['recipient']) && $_REQUEST['recipient']) ? $_REQUEST['recipient'] : '';
-$from = (isset($_REQUEST['from']) && $_REQUEST['from']) ? $_REQUEST['from'] : WE_DEFAULT_EMAIL;
-
+$subject = preg_replace("/(\\n+|\\r+)/", '', we_base_request::_(we_base_request::STRING, 'subject', WE_DEFAULT_SUBJECT));
+$charset = preg_replace("/(\\n+|\\r+)/", '', str_replace(array("\n", "\r"), '', we_base_request::_(we_base_request::STRING, 'charset', $GLOBALS['WE_BACKENDCHARSET'])));
+$recipient = (!empty($_REQUEST['recipient'])) ? $_REQUEST['recipient'] : '';
+$from = preg_replace("/(\\n+|\\r+)/", '', (!empty($_REQUEST['from'])) ? $_REQUEST['from'] : WE_DEFAULT_EMAIL);
 $mimetype = we_base_request::_(we_base_request::STRING, 'mimetype', '');
+$fromMail = preg_replace("/(\\n+|\\r+)/", '', (we_base_request::_(we_base_request::BOOL, 'forcefrom') ? $from : $email));
 
 $wasSent = false;
 
-if($recipient){
-	$subject = preg_replace("/(\\n+|\\r+)/", '', $subject);
-	$charset = preg_replace("/(\\n+|\\r+)/", '', $charset);
-	$fromMail = preg_replace("/(\\n+|\\r+)/", '', (we_base_request::_(we_base_request::BOOL, 'forcefrom') ? $from : $email));
-	$email = preg_replace("/(\\n+|\\r+)/", '', $email);
-	$from = preg_replace("/(\\n+|\\r+)/", '', $from);
+if(!$recipient){
+	print_error(g_l('global', '[email_no_recipient]'));
+}
 
-	contains_bad_str($email);
-	contains_bad_str($from);
-	contains_bad_str($fromMail);
-	contains_bad_str($subject);
-	contains_bad_str($charset);
+contains_bad_str($email);
+contains_bad_str($from);
+contains_bad_str($fromMail);
+contains_bad_str($subject);
+contains_bad_str($charset);
 
-	if(!we_check_email($fromMail)){
+if(!we_check_email($fromMail)){
+	print_error(g_l('global', '[email_invalid]'));
+}
+
+$recipients = makeArrayFromCSV($recipient);
+$senderForename = we_base_request::_(we_base_request::STRING, 'forename', '');
+$senderSurname = we_base_request::_(we_base_request::STRING, 'surname', '');
+$sender = ($senderForename != '' || $senderSurname ? $senderForename . ' ' . $senderSurname . '<' . $fromMail . '>' : $fromMail);
+
+$phpmail = new we_helpers_mail('', $subject, $sender);
+$phpmail->setCharSet($charset);
+
+$recipientsList = array();
+
+foreach($recipients as $recipientID){
+	$recipient = preg_replace("/(\\n+|\\r+)/", '', (is_numeric($recipientID) ?
+			f('SELECT Email FROM ' . RECIPIENTS_TABLE . ' WHERE ID=' . intval($recipientID)) :
+			// backward compatible
+			$recipientID)
+	);
+
+	if(!$recipient){
+		print_error(g_l('global', '[email_no_recipient]'));
+	}
+	if(!we_check_email($recipient)){
 		print_error(g_l('global', '[email_invalid]'));
 	}
 
-	$recipients = makeArrayFromCSV($recipient);
-	$senderForename = we_base_request::_(we_base_request::STRING, 'forename', '');
-	$senderSurname = we_base_request::_(we_base_request::STRING, 'surname', '');
-	$sender = ($senderForename != '' || $senderSurname ? $senderForename . ' ' . $senderSurname . '<' . $fromMail . '>' : $fromMail);
+	if(we_check_email($recipient) && check_recipient($recipient)){
+		$recipientsList[] = $recipient;
+	} else {
+		print_error(g_l('global', '[email_recipient_invalid]'));
+	}
+}
 
-	$phpmail = new we_util_Mailer('', $subject, $sender);
-	$phpmail->setCharSet($charset);
+if($recipientsList){
+	$maxFilesize = we_base_request::_(we_base_request::INT, 'MAX_FILE_SIZE', 0);
 
-	$recipientsList = array();
-
-	foreach($recipients as $recipientID){
-
-		$recipient = preg_replace("/(\\n+|\\r+)/", '', (is_numeric($recipientID) ?
-				f('SELECT Email FROM ' . RECIPIENTS_TABLE . ' WHERE ID=' . intval($recipientID), 'Email', $GLOBALS['DB_WE']) :
-				// backward compatible
-				$recipientID)
-		);
-
-		if(!$recipient){
-			print_error(g_l('global', '[email_no_recipient]'));
+	foreach($_FILES as $file){
+		if(!empty($file['tmp_name'])){
+			$tempName = TEMP_PATH . $file['name'];
+			if($maxFilesize && filesize($file['tmp_name']) > $maxFilesize){
+				error_page();
+			}
+			move_uploaded_file($file['tmp_name'], $tempName);
+			$phpmail->doaddAttachment($tempName);
 		}
-		if(!we_check_email($recipient)){
+	}
+	$phpmail->addAddressList($recipientsList);
+	if($mimetype === 'text/html'){
+		$phpmail->addHTMLPart($we_html);
+	} else {
+		$phpmail->addTextPart($we_txt);
+	}
+	$phpmail->buildMessage();
+	if($phpmail->Send()){
+		$wasSent = true;
+	}
+}
+
+if((!empty($_REQUEST['confirm_mail'])) && FORMMAIL_CONFIRM){
+	if($wasSent){
+		// validation
+		if(!we_check_email($email)){
 			print_error(g_l('global', '[email_invalid]'));
 		}
-
-		if(we_check_email($recipient) && check_recipient($recipient)){
-			$recipientsList[] = $recipient;
-		} else {
-			print_error(g_l('global', '[email_recipient_invalid]'));
-		}
-	}
-
-	if($recipientsList){
-		foreach($_FILES as $file){
-			if(isset($file['tmp_name']) && $file['tmp_name']){
-				$tempName = TEMP_PATH . $file['name'];
-				move_uploaded_file($file['tmp_name'], $tempName);
-				$phpmail->doaddAttachment($tempName);
-			}
-		}
-		$phpmail->addAddressList($recipientsList);
+		$phpmail = new we_helpers_mail($email, $subject, $from);
+		$phpmail->setCharSet($charset);
 		if($mimetype === 'text/html'){
-			$phpmail->addHTMLPart($we_html);
+			$phpmail->addHTMLPart($we_html_confirm);
 		} else {
-			$phpmail->addTextPart($we_txt);
+			$phpmail->addTextPart($we_txt_confirm);
 		}
 		$phpmail->buildMessage();
-		if($phpmail->Send()){
-			$wasSent = true;
-		}
+		$phpmail->Send();
 	}
-
-	if((isset($_REQUEST['confirm_mail']) && $_REQUEST['confirm_mail']) && FORMMAIL_CONFIRM){
-		if($wasSent){
-			// validation
-			if(!we_check_email($email)){
-				print_error(g_l('global', '[email_invalid]'));
-			}
-			$phpmail = new we_util_Mailer($email, $subject, $from);
-			$phpmail->setCharSet($charset);
-			if($mimetype === 'text/html'){
-				$phpmail->addHTMLPart($we_html_confirm);
-			} else {
-				$phpmail->addTextPart($we_txt_confirm);
-			}
-			$phpmail->buildMessage();
-			$phpmail->Send();
-		}
-	}
-} else {
-	print_error(g_l('global', '[email_no_recipient]'));
 }
 
 ok_page($subject);

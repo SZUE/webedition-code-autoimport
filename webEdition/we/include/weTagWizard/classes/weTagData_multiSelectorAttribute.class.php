@@ -59,31 +59,26 @@ class weTagData_multiSelectorAttribute extends weTagDataAttribute{
 	 * @return string
 	 */
 	function getCodeForTagWizard(){
-		$we_cmd = 'openSelector';
+		$we_cmd = 'we_selector_file';
 		switch($this->Table){
 			case USER_TABLE :
-				$we_cmd = 'browse_users';
+				$we_cmd = 'we_users_selector';
 				break;
 			case CATEGORY_TABLE :
-				$we_cmd = 'openCatselector';
+				$we_cmd = 'we_selector_category';
 				break;
 		}
 
-		$input = we_html_element::htmlTextArea(
-				array(
-					'name' => $this->Name, 'id' => $this->getIdName(), 'class' => 'wetextinput wetextarea'
-		));
-		$button = we_html_button::create_button(
-				"select", "javascript:we_cmd('" . $we_cmd . "', 0, '" . $this->Table . "', '', '', 'fillIDs();var foo2=\\'\\'; if(all" . $this->TextName . "s.length>=2){foo2=all" . $this->TextName . "s.substring(1,all" . $this->TextName . "s.length-1)};var foo=opener.document.getElementById(\\'" . $this->getIdName() . "\\'); if(foo.value){foo.value WE_PLUS= \\',\\'WE_PLUS foo2;}else{foo.value = foo2;};')");
+		$button = we_html_button::create_button('select', "javascript:we_cmd('" . $we_cmd . "', 0, '" . $this->Table . "', '', '', 'fillIDs();var foo2=\\'\\'; if(all" . $this->TextName . "s.length>=2){foo2=all" . $this->TextName . "s.substring(1,all" . $this->TextName . "s.length-1)};var foo=opener.document.getElementById(\\'" . $this->getIdName() . "\\'); if(foo.value){foo.value += \\',\\'+ foo2;}else{foo.value = foo2;};')");
 
 		return '
-					<table class="attribute">
-					<tr>
-						<td class="attributeName">' . $this->getLabelCodeForTagWizard() . '</td>
-						<td class="attributeField">' . $input . '</td>
-						<td class="attributeButton">' . $button . '</td>
-					</tr>
-					</table>';
+<table class="attribute">
+<tr>
+	<td class="attributeName">' . $this->getLabelCodeForTagWizard() . '</td>
+	<td class="attributeField">' . we_html_element::htmlTextArea(array('name' => $this->Name, 'id' => $this->getIdName(), 'class' => 'wetextinput wetextarea')) . '</td>
+	<td class="attributeButton">' . $button . '</td>
+</tr>
+</table>';
 	}
 
 }

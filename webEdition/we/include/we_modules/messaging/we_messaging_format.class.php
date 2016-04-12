@@ -26,7 +26,6 @@
 
 class we_messaging_format extends we_class{
 	/* Flag which is set when the file is not new */
-
 	var $Folder_ID = -1;
 	var $userid = -1;
 	var $username = '';
@@ -72,7 +71,7 @@ class we_messaging_format extends we_class{
 
 	/* Intialize the class. If $sessDat (array) is set, the class will be initialized from this array */
 
-	function init($sessDat){
+	function init($sessDat = ''){
 		switch($this->mode){
 			case 're':
 				$this->selected_recipient = $this->sel_msg['int_hdrs']['_reply_to'];
@@ -99,7 +98,7 @@ class we_messaging_format extends we_class{
 		}
 	}
 
-	function saveInSession(&$save){
+	function saveInSession(&$save, $toFile = false){
 		$save = array(
 			array(),
 			$this->elements

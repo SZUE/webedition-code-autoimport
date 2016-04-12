@@ -417,7 +417,7 @@ class we_messaging_messaging extends we_class{
 		return 1;
 	}
 
-	function init(){
+	function init($sessDat = ''){
 		if($this->we_transact && isset($this->we_transact['we_messaging'])){
 			$this->initSessionDat($this->we_transact['we_messaging']);
 		}
@@ -450,7 +450,7 @@ class we_messaging_messaging extends we_class{
 		}
 	}
 
-	function saveInSession(&$save){
+	function saveInSession(&$save, $toFile = false){
 		$save = array(
 			'we_messaging' => array(
 				array(),
@@ -472,13 +472,11 @@ class we_messaging_messaging extends we_class{
 		$this->DB_WE->query('DELETE FROM ' . MSG_ADDRBOOK_TABLE . ' WHERE UserID=' . intval($this->userid));
 		foreach($addressbook as $elem){
 			if(!empty($elem)){
-				$this->DB_WE->query('INSERT INTO ' . MSG_ADDRBOOK_TABLE . ' ' . we_database_base::arraySetter(array(
+				$this->DB_WE->query('INSERT INTO ' . MSG_ADDRBOOK_TABLE . ' SET ' . we_database_base::arraySetter(array(
 						'UserID' => $this->userid,
 						'strMsgType' => $elem[0],
 						'strID' => $elem[1],
 						'strAlias' => $elem[2],
-						/* 'strFirstname',
-						  'strSurname' */
 						)
 				));
 			}
@@ -616,19 +614,15 @@ class we_messaging_messaging extends we_class{
 	}
 
 	private function get_recipient_info($r, array &$rcpt_info, $msgobj_name = ''){
-		$addr_is_email = 0;
 		$rcpt_info['address'] = trim($r);
-
-		if(strpos($rcpt_info['address'], '@', 1) != 0){
-			$addr_is_email = 1;
-		}
+		$addr_is_email = (!empty($rcpt_info['address']) && strpos($rcpt_info['address'], '@', 1) !== false);
 
 		if(!empty($msgobj_name)){
 			$rcpt_info['msg_obj'] = $msgobj_name;
-			if(!empty($addr_is_email) && ($rcpt_info['msg_obj'] != 'we_msg_email')){
+			if($addr_is_email && ($rcpt_info['msg_obj'] != 'we_msg_email')){
 				return 0;
 			}
-		} else if(!empty($addr_is_email)){
+		} else if($addr_is_email){
 			$rcpt_info['msg_obj'] = 'we_msg_email';
 		} else {
 			$rcpt_info['msg_obj'] = 'we_message';

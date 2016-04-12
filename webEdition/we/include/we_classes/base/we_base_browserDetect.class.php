@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_base_browserDetect{
-
 	const UNKNOWN = 'unknown';
 	const OPERA = 'opera';
 	const IE = 'ie';
@@ -67,7 +66,7 @@ class we_base_browserDetect{
 		self::$detected = true;
 		self::$ua = $ua ? : (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '');
 		$regs = array();
-		if(preg_match('/^([^ ]+) ([^(]*)(\([^)]+\))(.*)$/', self::$ua, $regs)){
+		if(preg_match('|^([^ ]+) ([^(]*)(\([^)]+\))(.*)$|', self::$ua, $regs)){
 			$pre = $regs[1];
 			//$mid = $regs[2];
 			$bracket = str_replace(array('(', ')'), '', $regs[3]);
@@ -86,57 +85,56 @@ class we_base_browserDetect{
 					if($java[0] === 'Java'){
 						self::$br = self::JAVA;
 						self::$v = $java[1];
-					} elseif(preg_match('/msie (.*)$/i', $bracket, $regs) && (trim($post) === '' || preg_match('/\.net/i', $post)) || preg_match('/Trident.*rv:(\d+\.?\d?)/i', $bracket, $regs)){
+					} elseif(preg_match('|msie (.*)$|i', $bracket, $regs) && (trim($post) === '' || preg_match('|\.net|i', $post)) || preg_match('|Trident.*rv:(\d+\.?\d?)|i', $bracket, $regs)){
 						self::$br = self::IE;
 						self::$v = isset($regs[1]) ? $regs[1] : 0;
-					} elseif(preg_match('/konqueror\/(.*)$/i', $bracket, $regs)){
+					} elseif(preg_match('|konqueror/(.*)$|i', $bracket, $regs)){
 						self::$br = self::KONQUEROR;
 						self::$v = $regs[1];
-					} elseif(preg_match('/galeon\/(.*)$/i', $bracket, $regs)){
+					} elseif(preg_match('|galeon/(.*)$|i', $bracket, $regs)){
 						self::$br = self::UNKNOWN;
 						self::$v = $regs[1];
 					} else {
 						if(stristr($post, 'netscape6')){
 							self::$br = self::NETSCAPE;
-							if(preg_match('/netscape6\/(.+)/i', $post, $regs)){
+							if(preg_match('|netscape6/(.+)|i', $post, $regs)){
 								self::$v = trim($regs[1]);
 							} else {
 								self::$v = 6;
 							}
 						} elseif(stristr($post, 'netscape/7')){
 							self::$br = self::NETSCAPE;
-							self::$v = (preg_match('/netscape\/(7.+)/i', $post, $regs) ? trim($regs[1]) : 7);
-						} elseif(stristr($post, 'edge')) {
+							self::$v = (preg_match('|netscape/(7.+)|i', $post, $regs) ? trim($regs[1]) : 7);
+						} elseif(stristr($post, 'edge')){
 							self::$br = self::EDGE;
-							self::$v = (preg_match('-edge/(.+)-i', $post, $regs) ? trim($regs[1]) : 12);
-						} elseif(preg_match('/AppleWebKit\/([0-9.]+)/i', $post, $regs)){
-
+							self::$v = (preg_match('|edge/(.+)|i', $post, $regs) ? trim($regs[1]) : 12);
+						} elseif(preg_match('|AppleWebKit/([0-9.]+)|i', $post, $regs)){
 							if(stristr($post, 'chrome')){
-								self::$v = (preg_match('/chrome\/([0-9]+\.[0-9]+)/i', $post, $regs) ? $regs[1] : '1');
+								self::$v = (preg_match('|chrome/([0-9]+\.[0-9]+)|i', $post, $regs) ? $regs[1] : '1');
 								self::$br = self::CHROME;
 							} elseif(stristr($post, 'safari')){
-								self::$v = (preg_match('/version\/([0-9]+\.[0-9]+)/i', $post, $regs) ? $regs[1] : '1');
+								self::$v = (preg_match('|version/([0-9]+\.[0-9]+)|i', $post, $regs) ? $regs[1] : '1');
 								self::$br = self::SAFARI;
 							} else {
 								self::$v = $regs[1];
 								self::$br = self::APPLE;
 							}
-						} elseif(preg_match('/firefox\/([0-9]+.[0-9]+)/i', $post, $regs)){
+						} elseif(preg_match('|firefox/([0-9]+.[0-9]+)|i', $post, $regs)){
 							self::$v = $regs[1];
 							self::$br = self::FF;
 						} elseif(stristr($post, 'gecko')){
 							self::$br = self::MOZILLA;
-							if(preg_match('/rv:([0-9.]*)/i', $bracket, $regs)){
+							if(preg_match('|rv:([0-9.]*)|i', $bracket, $regs)){
 								self::$v = $regs[1];
 							}
-						} elseif(preg_match('/opera ([^ ]+)/i', $post, $regs)){
+						} elseif(preg_match('|opera ([^ ]+)|i', $post, $regs)){
 							$reg = array();
 							if(stristr($post, 'chrome')){
-								self::$v = (preg_match('/chrome\/([0-9]+\.[0-9]+)/i', $post, $regs) ? $regs[1] : '1');
+								self::$v = (preg_match('|chrome/([0-9]+\.[0-9]+)|i', $post, $regs) ? $regs[1] : '1');
 								self::$br = self::CHROME;
 							} else {
 								self::$br = self::OPERA;
-								self::$v = (preg_match('/version\/([^ ]+)/i', $post, $reg) ?
+								self::$v = (preg_match('|version/([^ ]+)|i', $post, $reg) ?
 										$reg[1] : $regs[1]);
 							}
 						} elseif(stristr($bracket, 'compatible')){
@@ -144,7 +142,7 @@ class we_base_browserDetect{
 							break;
 						} elseif(!stristr($bracket, 'msie')){
 							self::$br = self::NETSCAPE;
-							self::$v = preg_replace('/[^0-9.]/', '', $prever);
+							self::$v = preg_replace('|[^0-9.]|', '', $prever);
 						}
 					}
 
@@ -152,11 +150,11 @@ class we_base_browserDetect{
 					break;
 				case 'opera':
 					if(stristr($post, 'chrome')){
-						self::$v = (preg_match('/chrome\/([0-9]+\.[0-9]+)/i', $post, $regs) ? $regs[1] : '1');
+						self::$v = (preg_match('|chrome/([0-9]+\.[0-9]+)|i', $post, $regs) ? $regs[1] : '1');
 						self::$br = self::CHROME;
 					} else {
 						self::$br = self::OPERA;
-						self::$v = (preg_match('/version\/([^ ]+)/i', $post, $reg) ? $reg[1] : $prever);
+						self::$v = (preg_match('|version/([^ ]+)|i', $post, $reg) ? $reg[1] : $prever);
 					}
 					$this->_getSys($bracket);
 					break;
@@ -173,7 +171,7 @@ class we_base_browserDetect{
 					self::$sys = 'webtv';
 				}
 			}
-		} elseif(preg_match('/^lynx([^a-z]+)[a-z].*/i', $ua, $regs)){
+		} elseif(preg_match('|^lynx([^a-z]+)[a-z].*|i', $ua, $regs)){
 			self::$br = self::LYNX;
 			self::$v = str_replace('/', '', $regs[1]);
 		} else {
@@ -271,7 +269,7 @@ class we_base_browserDetect{
 
 	public function getWebKitVersion(){
 		$regs = array();
-		if(preg_match('#AppleWebKit/([^ ]+)#i', self::$ua, $regs)){
+		if(preg_match('|AppleWebKit/([^ ]+)|i', self::$ua, $regs)){
 			return intval($regs[1]);
 		}
 		return 0;
@@ -279,51 +277,6 @@ class we_base_browserDetect{
 
 	public static function isGecko(){
 		return stristr(self::inst()->getUserAgent(), 'gecko');
-	}
-
-	//todo: implement from we_browser_check
-	public static function isSupported(){
-		if(self::isGecko()){
-			return true;
-		}
-		$inst = self::inst();
-		switch($inst->getSystem()){
-			case self::SYS_WIN :
-				switch($inst->getBrowser()){
-					case self::IE:
-					case self::OPERA:
-					case self::SAFARI:
-						return true;
-				}
-				break;
-
-			case self::SYS_MAC:
-				switch($inst->getBrowser()){
-					case self::OPERA:
-					case self::SAFARI:
-						return true;
-				}
-				break;
-
-			case self::SYS_UNIX:
-				switch($inst->getBrowser()){
-					case self::OPERA:
-						return true;
-				}
-
-				break;
-
-			case self::UNKNOWN:
-				switch($inst->getBrowser()){
-					case self::IE:
-					case self::OPERA:
-					case self::SAFARI:
-						return true;
-				}
-
-				break;
-		}
-		return false;
 	}
 
 }

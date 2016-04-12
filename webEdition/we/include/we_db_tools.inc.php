@@ -66,31 +66,3 @@ function sql_function($name){
 	return (is_array($name) ? isset($name['sqlFunction']) && $name['sqlFunction'] === $data :
 			array('sqlFunction' => $data, 'val' => $name));
 }
-
-//unused
-function doUpdateQuery(we_database_base $DB_WE, $table, $hash, $where){
-	if(!$hash){
-		return;
-	}
-	$tableInfo = $DB_WE->metadata($table);
-	$fn = array();
-	foreach($tableInfo as $f){
-		$fieldName = $f['name'];
-		if($fieldName != 'ID' && isset($hash[$fieldName])){
-			$fn[$fieldName] = $hash[$fieldName];
-		}
-	}
-	return $DB_WE->query('UPDATE `' . $DB_WE->escape($table) . '` SET ' . we_database_base::arraySetter($fn) . ' ' . $where);
-}
-
-//unused
-function doInsertQuery(we_database_base $DB_WE, $table, $hash){
-	$tableInfo = $DB_WE->metadata($table);
-	$fn = array();
-	foreach($tableInfo as $t){
-		$fieldName = $t['name'];
-		$fn[$fieldName] = isset($hash[$fieldName . '_autobr']) ? nl2br($hash[$fieldName]) : $hash[$fieldName];
-	}
-
-	return $DB_WE->query('INSERT INTO `' . $DB_WE->escape($table) . '` SET ' . we_database_base::arraySetter($fn));
-}

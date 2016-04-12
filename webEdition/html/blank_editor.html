@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta http-equiv ="content-type" content="text/html; charset=UTF-8"/>
+		<meta charset="UTF-8"/>
 		<title>blank</title>
-		<style type="text/css">
+		<script src="/webEdition/js/global.js"></script>
+		<style>
+			html{
+				height:100%;
+			}
 			body {
-				background: #DDE7F1 url( "/webEdition/images/backgrounds/blank_editor_bg.gif" ) repeat-x fixed bottom right;
+				/** NEU **//*background-color: #DDE7F1;/* url( "/webEdition/images/backgrounds/blank_editor_bg.gif" ) repeat-x fixed bottom right;*/
+				/** NEU **/background: #d7dce0;
 				margin:0px;
 			}
 			img.blank_editor_logo {
@@ -14,12 +19,8 @@
 				bottom:0px;
 			}
 		</style>
-		<script type="text/javascript">
-			parent.openedWithWE = true;
-		</script>
-
 	</head>
-	<body>
-		<img class="blank_editor_logo" src="/webEdition/images/backgrounds/blank_editor.gif" alt="logo"/>
+	<body onload="parent.openedWithWE = true;initWE();">
+		<img class="blank_editor_logo" src="/webEdition/images/backgrounds/bg-editor.png" alt="logo"/>
 	</body>
 </html>

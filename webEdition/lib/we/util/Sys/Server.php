@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -23,9 +22,11 @@
 /**
  * @see we_util_Sys
  */
+
 /**
  * utility class for various web servers
- *
+ * * @deprecated since version 6.4.0
+
  * @category   we
  * @package none
  * @subpackage we_util_Sys
@@ -36,10 +37,12 @@ class we_util_Sys_Server extends we_util_Sys{
 	/**
 	 * tries to identify the web server and return its product name.
 	 * The product name return to the caller is the name used for these classes.
+	 * @deprecated since version 6.4.0
 	 *
 	 * @return string product name or false, if the server product is unknown.
 	 */
 	public static function product(){
+		t_e('deprecated', __FUNCTION__);
 		if(self::isApache()){
 			return "Apache";
 		}
@@ -60,10 +63,12 @@ class we_util_Sys_Server extends we_util_Sys{
 	 * ServerTokens Minimal - Apache/2.0.55
 	 * ServerTokens Major - Apache/2
 	 * ServerTokens Prod - Apache
+	 * @deprecated since version 6.4.0
 	 *
 	 * @return bool true/false
 	 */
 	public static function isApache($version = ""){
+		t_e('deprecated', __FUNCTION__);
 		if(!function_exists("apache_get_version")){
 			return false;
 		}
@@ -79,47 +84,58 @@ class we_util_Sys_Server extends we_util_Sys{
 
 	/**
 	 * checks if this is a Microsoft IIS
+	 * @deprecated since version 6.4.0
 	 *
 	 * @return bool true/false
 	 */
 	public static function isIIS(){
+		t_e('deprecated', __FUNCTION__);
 		return (defined('IIS_RUNNING') && IIS_RUNNING === true);
 	}
 
 	/**
 	 * Retrieve Hostname for current request
+	 * @deprecated since version 6.4.0
 	 *
 	 * @return string
 	 */
 	public static function getHost(){
+		t_e('deprecated', __FUNCTION__);
 		return $_SERVER['SERVER_NAME'];
 	}
 
 	/**
 	 * Retrieve Protocol for current request
+	 * @deprecated since version 6.4.0
 	 *
 	 * @return string
 	 */
 	public static function getProtocol(){
+		t_e('deprecated', __FUNCTION__);
 		return getServerProtocol();
 	}
 
 	/**
 	 * Retrieve Port for current request
+	 * @deprecated since version 6.4.0
 	 *
 	 * @return integer
 	 */
 	public static function getPort(){
+		t_e('deprecated', __FUNCTION__);
 		return $_SERVER['SERVER_PORT'];
 	}
 
 	/**
 	 * Retrieve complete URI for host and appends an url if set
 	 *
+	 *  * @deprecated since version 6.4.0
+
 	 * @param string $url  url to append. If empty a uri only with hostname is returned
 	 * @return string
 	 */
 	public static function getHostUri($url = ''){
+		t_e('deprecated', __FUNCTION__);
 		$uri = getServerUrl();
 		return $uri . ($url !== '' ?
 				'/' . ltrim($url, '/') : '');
@@ -132,11 +148,11 @@ class we_util_Sys_Server extends we_util_Sys{
 	 * @author Alexander Lindenstruth
 	 */
 	public static function getDocroot(){
-		if(isset($_SERVER['DOCUMENT' . '_ROOT']) && $_SERVER['DOCUMENT' . '_ROOT']){
+		if(!empty($_SERVER['DOCUMENT' . '_ROOT'])){
 			return $_SERVER['DOCUMENT' . '_ROOT'];
 		}
 		// mostly on Microsoft IIS servers (Windows) without DOCUMENT_ROOT:
-		return realpath(dirname(__FILE__) . "/.." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR);
+		return realpath(__DIR__ . "/.." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR);
 	}
 
 }

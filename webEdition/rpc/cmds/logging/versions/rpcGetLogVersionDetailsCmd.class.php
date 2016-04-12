@@ -22,10 +22,10 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcGetLogVersionDetailsCmd extends rpcCmd{
+class rpcGetLogVersionDetailsCmd extends we_rpc_cmd{
 
 	function execute(){
-		$resp = new rpcResponse();
+		$resp = new we_rpc_response();
 		$id = we_base_request::_(we_base_request::INT, 'id', 0);
 		$code = we_versions_logView::handleData($id);
 		$resp->setData("data", $code);

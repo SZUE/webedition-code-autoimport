@@ -23,8 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_parse_tag_orderitem($attribs, $content){
-	return '<?php global $lv;
-		if(' . we_tag_tagParser::printTag('orderitem', $attribs) . '){?>' . $content . '<?php }
+	return '<?php ' . (strpos($content, '$lv') !== false ? 'global $lv;' : '') .
+		'if(' . we_tag_tagParser::printTag('orderitem', $attribs) . '){?>' . $content . '<?php }
 		we_post_tag_listview(); ?>';
 }
 
@@ -37,21 +37,19 @@ function we_tag_orderitem($attribs){
 
 	$condition = weTag_getAttribute("condition", $attribs, 0, we_base_request::RAW);
 	$we_orderitemid = weTag_getAttribute("id", $attribs, 0, we_base_request::INT);
-
 	$hidedirindex = weTag_getAttribute("hidedirindex", $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, we_base_request::BOOL);
-
 	$condition = ($condition ? $condition . ' AND ' : '') . "IntID = " . $we_orderitemid;
+	$id = $we_orderitemid ? : we_base_request::_(we_base_request::INT, "we_orderitemid", 0);
 
-	if(!isset($GLOBALS["we_lv_array"])){
-		$GLOBALS["we_lv_array"] = array();
+	if($id){
+		$GLOBALS["lv"] = new we_listview_shopOrderitem(0, 1, 0, "", 0, '(IntID=' . intval($id) . ')' . ($condition ? ' AND ' . $condition : ''), '', 0, 0, $hidedirindex);
+		$avail = ($GLOBALS["lv"]->next_record());
+	} else {
+		$GLOBALS["lv"] = null;
+		$avail = false;
 	}
 
-	$we_orderitemid = $we_orderitemid ? : we_base_request::_(we_base_request::INT, "we_orderitemid", 0);
+	we_pre_tag_listview();
 
-
-	$GLOBALS["lv"] = new we_shop_orderitemtag(intval($we_orderitemid), $condition, $hidedirindex);
-	if(is_array($GLOBALS["we_lv_array"])){
-		$GLOBALS["we_lv_array"][] = clone($GLOBALS["lv"]);
-	}
-	return $GLOBALS["lv"]->avail;
+	return $avail;
 }

@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_shop_Basket{
-
 	//FIXME: this is set back to public due to some shop restrictions, see #6530, #6954
 	/**
 	 * 	this array contains all shopping items
@@ -196,7 +195,7 @@ class we_shop_Basket{
 				$Record = $DB_WE->getAllFirst(false);
 
 				if($variant){
-					we_shop_variants::useVariantForShop($Record, $variant);
+					we_base_variants::useVariantForShop($Record, $variant);
 				}
 
 				if(($hash = getHash('SELECT * FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $DB_WE, MYSQL_ASSOC))){
@@ -205,8 +204,8 @@ class we_shop_Basket{
 					}
 				}
 
-				$Record['WE_PATH'] = $Record['wedoc_Path'] . ($variant ? '?' . WE_SHOP_VARIANT_REQUEST . '=' . $variant : '');
-				$Record['WE_TEXT'] = f('SELECT Text FROM ' . INDEX_TABLE . ' WHERE ClassID=0 AND ID=' . intval($id), '', $DB_WE);
+				$Record['WE_PATH'] = $Record['wedoc_Path'] . ($variant ? '?' . we_base_constants::WE_VARIANT_REQUEST . '=' . $variant : '');
+				$Record['WE_TEXT'] = $Record['wedoc_Text'];
 				$Record['WE_VARIANT'] = $variant;
 				$Record['WE_ID'] = intval($id);
 
@@ -227,7 +226,7 @@ class we_shop_Basket{
 					return array();
 				}
 
-				$olv = new we_object_listview(0, 1, 0, '', false, $classID, '', '', ' ' . OBJECT_X_TABLE . $classID . '.OF_ID=' . $id, 0, 0, true, false, '', '', '', '', '', '', '', 0, '', '', '', '', TAGLINKS_DIRECTORYINDEX_HIDE, TAGLINKS_OBJECTSEOURLS);
+				$olv = new we_listview_object(0, 1, 0, '', false, $classID, '', '', ' ' . OBJECT_X_TABLE . $classID . '.OF_ID=' . $id, 0, 0, true, false, '', '', '', '', '', '', '', 0, '', '', '', '', TAGLINKS_DIRECTORYINDEX_HIDE, TAGLINKS_OBJECTSEOURLS);
 				$olv->next_record();
 
 				$Record = $olv->getDBRecord();
@@ -238,10 +237,10 @@ class we_shop_Basket{
 					$obj = new we_objectFile();
 					$obj->initByID($id, OBJECT_FILES_TABLE);
 
-					we_shop_variants::useVariantForShopObject($Record, $variant, $obj);
+					we_base_variants::useVariantForShopObject($Record, $variant, $obj);
 
 					// add variant to path ...
-					$Record['we_WE_PATH'] .= '?' . WE_SHOP_VARIANT_REQUEST . '=' . $variant;
+					$Record['we_WE_PATH'] .= '?' . we_base_constants::WE_VARIANT_REQUEST . '=' . $variant;
 				}
 				$Record['WE_VARIANT'] = $variant;
 				$Record['we_obj'] = $id;
@@ -313,7 +312,6 @@ class we_shop_Basket{
 	 * @param string $variant
 	 */
 	function Set_Item($id, $quantity = 1, $type = "w", $variant = '', $customFields = array()){
-
 		if(($key = $this->getShoppingItemIndex($id, $type, $variant, $customFields))){ // item already in cart
 			if($quantity > 0){
 				$this->ShoppingItems[$key]['quantity'] = $quantity;
@@ -332,9 +330,7 @@ class we_shop_Basket{
 	 * @param integer $cart_amount
 	 */
 	function Set_Cart_Item($cart_id, $cart_amount){
-
 		if(isset($this->ShoppingItems[$cart_id])){
-
 			$item = $this->ShoppingItems[$cart_id];
 			$this->Set_Item($item['id'], $cart_amount, $item['type'], $item['variant'], $item['customFields']);
 		}
@@ -349,7 +345,6 @@ class we_shop_Basket{
 	 * @return mixed
 	 */
 	function getShoppingItemIndex($id, $type = we_shop_shop::DOCUMENT, $variant = '', $customFields = array()){
-
 		foreach($this->ShoppingItems as $index => $item){
 			if($item['id'] == $id && $item['type'] == $type && $item['variant'] == $variant && $customFields == $item['customFields']){
 				return $index;

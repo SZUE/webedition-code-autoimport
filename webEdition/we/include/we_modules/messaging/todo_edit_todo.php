@@ -39,12 +39,11 @@ if(!we_base_request::_(we_base_request::TRANSACTION, 'we_transaction')){
 }
 
 echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]')) .
- STYLESHEET .
- we_html_element::jsScript(JS_DIR . 'windows.js');
+ STYLESHEET;
 ?>
 
-<script type="text/javascript"><!--
-	rcpt_sel = new Array();
+<script><!--
+	rcpt_sel = [];
 
 	function update_rcpts() {
 		var rcpt_str = rcpt_sel[0][2];
@@ -53,7 +52,7 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]')) .
 
 	function selectRecipient() {
 		var rs = encodeURI(document.compose_form.mn_recipients.value);
-		new jsWindow("<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_usel.php?we_transaction=<?php echo $transaction; ?>&maxsel=1&rs=" + rs, "messaging_usel", -1, -1, 530, 420, true, false, true, false);
+		new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "messaging_usel.php?we_transaction=<?php echo $transaction; ?>&maxsel=1&rs=" + rs, "messaging_usel", -1, -1, 530, 420, true, false, true, false);
 	}
 
 	function do_send() {
@@ -65,11 +64,7 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]')) .
 	}
 
 	function doUnload() {
-		if (jsWindow_count) {
-			for (i = 0; i < jsWindow_count; i++) {
-				eval("jsWindow" + i + "Object.close()");
-			}
-		}
+		WE().util.jsWindow.prototype.closeAll(window);
 	}
 //-->
 </script>
@@ -77,15 +72,18 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]')) .
 
 <body class="weDialogBody" <?php echo ($mode === 'reject' ? '' : 'onload="document.compose_form.mn_subject.focus()"') ?> onunload="doUnload();">
 	<?php
-	if($mode === 'forward'){
-		$compose = new we_messaging_format('forward', $messaging->selected_message);
-		$heading = g_l('modules_messaging', '[forward_todo]');
-	} else if($mode === 'reject'){
-		$compose = new we_messaging_format('reject', $messaging->selected_message);
-		$heading = g_l('modules_messaging', '[reject_todo]');
-	} else {
-		$compose = new we_messaging_format('new');
-		$heading = g_l('modules_messaging', '[new_todo]');
+	switch($mode){
+		case 'forward':
+			$compose = new we_messaging_format('forward', $messaging->selected_message);
+			$heading = g_l('modules_messaging', '[forward_todo]');
+			break;
+		case 'reject':
+			$compose = new we_messaging_format('reject', $messaging->selected_message);
+			$heading = g_l('modules_messaging', '[reject_todo]');
+			break;
+		default:
+			$compose = new we_messaging_format('new');
+			$heading = g_l('modules_messaging', '[new_todo]');
 	}
 	$compose->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 	?>
@@ -97,60 +95,60 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]')) .
 
 		if($mode === 'reject'){
 			$tbl = '
-<table cellpadding="6">
+<table>
 		<tr>
-		<td class="defaultgray">
+		<td class="defaultfont lowContrast">
 			' . g_l('modules_messaging', '[from]') . ':</td>
 		<td class="defaultfont">
 			' . $compose->get_from() . '</td>
 	</tr>
 	<tr>
-		<td class="defaultgray">
+		<td class="defaultfont lowContrast">
 			' . g_l('modules_messaging', '[reject_to]') . ':</a></td>
 		<td class="defaultfont">
 			' . $compose->get_recipient_line() . '</td>
 	</tr>
 	<tr>
-		<td class="defaultgray">
+		<td class="defaultfont lowContrast">
 			' . g_l('modules_messaging', '[subject]') . ':</td>
 		<td class="defaultfont">
 			' . oldHtmlspecialchars($compose->get_subject()) . '</td>
 	</tr>
 </table>
-<table cellpadding="6">';
+<table">';
 		} else {
 			$tbl = '
-<table cellpadding="6">
+<table>
 	<tr>
-		<td class="defaultgray">
+		<td class="defaultfont lowContrast">
 			' . g_l('modules_messaging', '[assigner]') . ':</td>
 		<td class="defaultfont">
 			' . $compose->get_from() . '</td>
 	</tr>
 	<tr>
-		<td class="defaultgray">
+		<td class="defaultfont lowContrast">
 			<a href="javascript:selectRecipient()">' . g_l('modules_messaging', '[recipient]') . ':</a></td>
 		<td>
 			' . we_html_tools::htmlTextInput('mn_recipients', 40, ($mode === 'forward' ? '' : $_SESSION["user"]["Username"])) . '</td>
 	</tr>
 	<tr>
-		<td class="defaultgray">
+		<td class="defaultfont lowContrast">
 			' . g_l('modules_messaging', '[subject]') . ':</td>
 		<td>
 			' . we_html_tools::htmlTextInput('mn_subject', 40, $compose->get_subject()) . '</td>
 	</tr>
 	<tr>
-		<td class="defaultgray">
+		<td class="defaultfont lowContrast">
 			' . g_l('modules_messaging', '[deadline]') . ':</td>
 		<td>
-			' . we_html_tools::getDateInput2('td_deadline%s', $compose->get_deadline()) . '</td>
+			' . we_html_tools::getDateInput('td_deadline%s', $compose->get_deadline()) . '</td>
 	</tr>
 	<tr>
-		<td class="defaultgray">' . g_l('modules_messaging', '[priority]') . ':</td>
+		<td class="defaultfont lowContrast">' . g_l('modules_messaging', '[priority]') . ':</td>
 		<td>' . we_html_tools::html_select('mn_priority', 1, array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10)) . '</td>
 	</tr>
 </table>
-<table cellpadding="6">';
+<table>';
 		}
 		if($mode != 'new'){
 			$tbl .= '
@@ -167,7 +165,7 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]')) .
 			<textarea cols="68" rows="10" name="mn_body" style="width:624px"></textarea></td>
 	</tr>
 </table>';
-		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:do_send()"), "", we_html_button::create_button("cancel", "javascript:top.window.close()")
+		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:do_send()"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:top.window.close()")
 		);
 		echo we_html_tools::htmlDialogLayout($tbl, "<div style='padding:6px'>" . $heading . "</div>", $buttons, 100, 24);
 		?>

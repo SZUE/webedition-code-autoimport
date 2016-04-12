@@ -24,17 +24,17 @@
  */
 class liveUpdateHttp{
 
-	function getServerProtocol($addslashes = true){
+	static function getServerProtocol($addslashes = true){
 		return getServerProtocol($addslashes);
 	}
 
-	function connectFopen($server, $url, $parameters = array()){
+	static function connectFopen($server, $url, $parameters = array()){
 		// try fopen first
 		$address = 'https://' . $server . $url . ($parameters ? '?' . http_build_query($parameters, '', '&') : '');
 		return file_get_contents($address);
 	}
 
-	function connectProxy($server, $url, $parameters){
+	static function connectProxy($server, $url, $parameters){
 		$proxyhost = defined("WE_PROXYHOST") ? WE_PROXYHOST : "";
 		$proxyport = (defined("WE_PROXYPORT") && WE_PROXYPORT) ? WE_PROXYPORT : "80";
 		$proxy_user = defined("WE_PROXYUSER") ? WE_PROXYUSER : "";
@@ -74,7 +74,7 @@ class liveUpdateHttp{
 		return substr($zeile, strpos($zeile, "\r\n\r\n") + 4);
 	}
 
-	function getCurlHttpResponse($server, $url, $parameters){
+	static function getCurlHttpResponse($server, $url, $parameters){
 
 		$_address = 'https://' . $server . $url;
 
@@ -109,7 +109,7 @@ class liveUpdateHttp{
 		return $_data;
 	}
 
-	function getHttpOption(){
+	static function getHttpOption(){
 		if(ini_get('allow_url_fopen') != 1 && strtolower(ini_get('allow_url_fopen')) != "on"){
 			@ini_set('allow_url_fopen', 1);
 			if(ini_get('allow_url_fopen') != 1 && strtolower(ini_get('allow_url_fopen')) != "on"){
@@ -123,7 +123,7 @@ class liveUpdateHttp{
 		return 'fopen';
 	}
 
-	function getHttpResponse($server, $url, $parameters = array()){
+	static function getHttpResponse($server, $url, $parameters = array()){
 		switch(liveUpdateHttp::getHttpOption()){
 			case 'fopen':
 				return liveUpdateHttp::getFopenHttpResponse($server, $url, $parameters);
@@ -135,7 +135,7 @@ class liveUpdateHttp{
 		}
 	}
 
-	function getFopenHttpResponse($server, $url, $parameters = array()){
+	static function getFopenHttpResponse($server, $url, $parameters = array()){
 		return (defined("WE_PROXYHOST") && WE_PROXYHOST ?
 				liveUpdateHttp::connectProxy($server, $url, $parameters) :
 				liveUpdateHttp::connectFopen($server, $url, $parameters)
@@ -147,25 +147,23 @@ class liveUpdateHttp{
 	 *
 	 * @return unknown
 	 */
-	function getServerSessionForm(){
+	static function getServerSessionForm(){
 		$params = '';
 		foreach($GLOBALS['LU_Variables'] as $LU_name => $LU_value){
 			$params .= '<input type="hidden" name="' . $LU_name . '" value="' . urlencode((is_array($LU_value) ? base64_encode(serialize($LU_value)) : $LU_value)) . '" />';
 		}
 
-		return we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']) . we_html_element::htmlDocType() . '<html>
-<head>
-	' . LIVEUPDATE_CSS . '
-<head>
+		return we_html_tools::getHtmlTop('', '', '', LIVEUPDATE_CSS, '
 <body onload="document.getElementById(\'liveUpdateForm\').submit();">
-<form id="liveUpdateForm" action="https://' . LIVEUPDATE_SERVER . LIVEUPDATE_SERVER_SCRIPT . '" method="post">
-	<input type="hidden" name="update_cmd" value="startSession" /><br />
-	<input type="hidden" name="next_cmd" value="' . we_base_request::_(we_base_request::STRING, 'update_cmd') . '" />
-	<input type="hidden" name="detail" value="' . we_base_request::_(we_base_request::STRING, 'detail') . '" />
-	' . $params . '
+<form id="liveUpdateForm" action="https://' . LIVEUPDATE_SERVER . LIVEUPDATE_SERVER_SCRIPT . '" method="post">' .
+				we_html_element::htmlHiddens(array(
+					"update_cmd" => "startSession",
+					"next_cmd" => we_base_request::_(we_base_request::STRING, 'update_cmd'),
+					"detail" => we_base_request::_(we_base_request::STRING, 'detail')
+				)) . $params . '
 </form>
 </body>
-</html>';
+');
 	}
 
 }

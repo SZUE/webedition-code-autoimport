@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -27,9 +26,9 @@
  * General Definition of WebEdition Customer
  *
  */
-class we_customer_customer extends weModelBase{
-
+class we_customer_customer extends we_base_model{
 	const NOPWD_CHANGE = '__WE__PWD_NO_CHANGE';
+	const ENCRYPTED_DATA = '**ENCRYPTED**';
 	const ENCRYPT_NONE = 0;
 	const ENCRYPT_SYMMETRIC = 1;
 	const ENCRYPT_HASH = 2;
@@ -46,12 +45,11 @@ class we_customer_customer extends weModelBase{
 	const PWD_NOT_SUFFICIENT = 7;
 
 	//properties
-	var $ID;
-	var $Text;
-	var $ParentID;
-	var $Icon;
-	var $IsFolder;
-	var $Path;
+	var $ID = 0;
+//	var $Text;
+	//var $ParentID;
+	//var $IsFolder;
+//	var $Path;
 	var $Username;
 	var $Password;
 	var $LoginDenied;
@@ -62,7 +60,7 @@ class we_customer_customer extends weModelBase{
 	var $LastAccess = 0;
 	var $ModifyDate;
 	var $ModifiedBy;
-	var $protected = array('ID', 'ParentID', 'Icon', 'IsFolder', 'Path', 'Text', 'ModifiedBy', 'ModifyDate');
+	var $protected = array('ID', 'Path', 'ModifiedBy', 'ModifyDate');
 	var $properties = array('Username', 'Password', 'Forename', 'Surname', 'LoginDenied', 'MemberSince', 'LastLogin', 'LastAccess', 'AutoLoginDenied', 'AutoLogin');
 	var $udates = array('MemberSince', 'LastLogin', 'LastAccess');
 
@@ -105,12 +103,11 @@ class we_customer_customer extends weModelBase{
 		$this->save();
 	}
 
-	function save($force_new = false){
-		$this->Icon = 'customer.gif';
-		$this->IsFolder = 0;
-		$this->Text = $this->Username;
-		$this->Path = '/' . $this->Username;
-
+	function save($force_new = false, $isAdvanced = false, $jsonSer = false){
+		/* 		$this->IsFolder = 0;
+		  $this->Text = $this->Username;
+		  $this->Path = '/' . $this->Username;
+		 */
 		if($this->MemberSince == 0){
 			$this->MemberSince = time();
 		}
@@ -121,10 +118,20 @@ class we_customer_customer extends weModelBase{
 		}
 
 		$hook = new weHook('customer_preSave', '', array('customer' => $this, 'from' => 'management', 'type' => ($this->ID ? 'existing' : 'new')));
-		if($hook->executeHook() === true){
-			return weModelBase::save();
+
+		return $hook->executeHook() && we_base_model::save() && $this->registerMediaLinks();
+	}
+
+	function registerMediaLinks(){
+		$this->unregisterMediaLinks();
+		foreach(self::getImageFields() as $field){
+			if($this->$field){
+				$this->MediaLinks[] = $this->$field;
+			}
 		}
-		return false;
+
+		parent::registerMediaLinks();
+		return true;
 	}
 
 	/**
@@ -132,7 +139,7 @@ class we_customer_customer extends weModelBase{
 	 * @param recursive bool if true, customerfilter are deleted as well
 	 */
 	function delete($recursive = true){ //FIXME: what about documents/objects of customer?
-		if(weModelBase::delete() && $recursive){
+		if(we_base_model::delete() && $recursive){
 			we_customer_documentFilter::deleteWebUser($this->ID);
 			return true;
 		}
@@ -157,24 +164,21 @@ class we_customer_customer extends weModelBase{
 		if(!isset($this->persistent_slots)){
 			return;
 		}
-		$orderedarray = $this->persistent_slots;
-		$sortarray = ($mysort ? makeArrayFromCSV($mysort) : range(0, count($orderedarray) - 1));
+		$sortarray = ($mysort ? makeArrayFromCSV($mysort) : range(0, count($this->persistent_slots) - 1));
 
-		if(count($sortarray) != count($orderedarray)){
-
-			if(count($sortarray) == count($orderedarray) - 1){
+		if(count($sortarray) != count($this->persistent_slots)){
+			if(count($sortarray) == count($this->persistent_slots) - 1){
 				$sortarray[] = max($sortarray) + 1;
 			} else {
-				$sortarray = range(0, count($orderedarray) - 1);
+				$sortarray = range(0, count($this->persistent_slots) - 1);
 			}
 		}
-		$orderedarray = array_combine($sortarray, $orderedarray);
+		$orderedarray = array_combine($sortarray, $this->persistent_slots);
 		ksort($orderedarray);
 
 		$branche = array();
 		foreach($orderedarray as $per){
-			$var_value = ((!$this->isnew && isset($this->$per)) ? $var_value = $this->$per : null);
-
+			$var_value = (isset($this->$per) ? $this->$per : null);
 			$field = $this->transFieldName($per, $branche);
 
 			if($field != $per){
@@ -221,8 +225,9 @@ class we_customer_customer extends weModelBase{
 		}
 
 		$ret = array();
+		$other = g_l('modules_customer', '[other]');
 		foreach(array_keys($arr) as $b){
-			if($branch == g_l('modules_customer', '[other]')){
+			if($branch === $other){
 				$ret[$b] = $b;
 			} else {
 				$ret[$branch . "_" . $b] = $b;
@@ -300,10 +305,10 @@ class we_customer_customer extends weModelBase{
 		return ($name ? f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $db->escape($name) . '" LIMIT 1', '', $db) : true);
 	}
 
-	function customerFieldValueExist($fieldname, $value, $condition = ''){
-		$db = new DB_WE();
-		return (f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE ' . $db->escape($fieldname) . '="' . $db->escape($value) . '"' . ($condition ? ' AND ' . $condition : '') . ' LIMIT 1', '', $db));
-	}
+	/* function customerFieldValueExist($fieldname, $value, $condition = ''){
+	  $db = new DB_WE();
+	  return (f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE ' . $db->escape($fieldname) . '="' . $db->escape($value) . '"' . ($condition ? ' AND ' . $condition : '') . ' LIMIT 1', '', $db));
+	  } */
 
 	function fieldExist($field){
 		return in_array($field, $this->persistent_slots);
@@ -331,10 +336,7 @@ class we_customer_customer extends weModelBase{
 			case self::ENCRYPT_SYMMETRIC:
 				return self::cryptData($pass);
 			case self::ENCRYPT_HASH:
-				$useSalt = 0;
-				$pwd = we_users_user::makeSaltedPassword($useSalt, '', $pass, 10);
-				return ($useSalt != we_users_user::SALT_CRYPT ?
-								$pass : $pwd);
+				return we_users_user::makeSaltedPassword($pass, 10);
 		}
 	}
 
@@ -350,7 +352,7 @@ class we_customer_customer extends weModelBase{
 			case '-1':
 				return $clearPassword === self::decryptData($storedPassword);
 			case '2y':
-				return we_users_user::comparePasswords(we_users_user::SALT_CRYPT, '', $storedPassword, $clearPassword);
+				return we_users_user::comparePasswords('', $storedPassword, $clearPassword);
 		}
 		return false;
 	}
@@ -363,7 +365,7 @@ class we_customer_customer extends weModelBase{
 	}
 
 	public static function cryptData($data, $key = SECURITY_ENCRYPTION_KEY, $keepBin = false){//Note we need 4 Bytes prefix + 16 Byte IV + 1$ = 21 Bytes. The rest is avail for data, which is hex'ed, so "half" of length is available
-		if(function_exists('mcrypt_module_open') && ($res = mcrypt_module_open(MCRYPT_BLOWFISH, '', MCRYPT_MODE_OFB, ''))){
+		if($data && function_exists('mcrypt_module_open') && ($res = mcrypt_module_open(MCRYPT_BLOWFISH, '', MCRYPT_MODE_OFB, ''))){
 			$iv = self::cryptGetIV();
 			mcrypt_generic_init($res, hex2bin($key), $iv);
 			$data = mcrypt_generic($res, $data);
@@ -395,6 +397,46 @@ class we_customer_customer extends weModelBase{
 			case '2y'://can't be decoded
 				return '';
 		}
+	}
+
+	public static function getEncryptedFields(){
+		static $fields = -1;
+		if(is_array($fields)){
+			return $fields;
+		}
+		$customerFields = we_unserialize(f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="webadmin" AND pref_name="FieldAdds"', '', $GLOBALS['DB_WE']));
+		$fields = array();
+		if(!$customerFields){
+			return $fields;
+		}
+
+		foreach($customerFields as $key => $value){
+			if(!empty($value['encryption'])){
+				$fields[$key] = self::ENCRYPTED_DATA;
+			}
+		}
+
+		return $fields;
+	}
+
+	public static function getImageFields(){
+		static $fields = -1;
+		if(is_array($fields)){
+			return $fields;
+		}
+		$customerFields = we_unserialize(f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="webadmin" AND pref_name="FieldAdds"', '', $GLOBALS['DB_WE']));
+		$fields = array();
+		if(!$customerFields){
+			return $fields;
+		}
+
+		foreach($customerFields as $key => $value){
+			if(isset($value['type']) && $value['type'] === 'img'){
+				$fields[] = $key;
+			}
+		}
+
+		return $fields;
 	}
 
 }

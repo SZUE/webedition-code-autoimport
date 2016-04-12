@@ -363,7 +363,7 @@ class toolfactory_models_Default extends we_app_Model{
 		if($this->makeTable){
 			$_sqlDumpFile = WE_APPS_PATH . $TOOLNAME . '/' . $TOOLNAME . '.sql';
 			$_sqlDump = file($_sqlDumpFile);
-			$_db = we_io_DB::sharedAdapter();
+			$_db = new DB_WE();
 			foreach($_sqlDump as $_sql){
 				//print "Execute query " . $_sql . "<br/>";
 				$_sql = str_replace('###TBLPREFIX###', TBL_PREFIX, $_sql);

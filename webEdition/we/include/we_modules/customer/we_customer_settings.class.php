@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -30,9 +29,7 @@ define('DATE_FORMAT', 'Y-m-d H:i:s');
 define('DATE_ONLY_FORMAT', 'Y-m-d');
 
 class we_customer_settings{
-
 	private $db;
-	private $table = CUSTOMER_ADMIN_TABLE;
 	public $customer;
 	public $properties = array();
 	private $changedFieldTypes = array(
@@ -120,7 +117,6 @@ class we_customer_settings{
 
 	function __construct(){
 		$this->db = new DB_WE();
-		//$this->table = CUSTOMER_ADMIN_TABLE;
 		$this->customer = new we_customer_customer();
 		$this->properties = array(
 			'default_saveRegisteredUser_register' => 'false',
@@ -143,13 +139,13 @@ class we_customer_settings{
 
 	function load($tryFromSession = true){
 		$modified = false;
-		$this->db->query('SELECT Name,Value FROM ' . $this->table);
+		$this->db->query('SELECT pref_name,pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="webadmin"');
 		while($this->db->next_record()){
-			$this->properties[$this->db->f('Name')] = $this->db->f('Value');
+			$this->properties[$this->db->f('pref_name')] = $this->db->f('pref_value');
 		}
 
 		if(isset($this->properties['SortView'])){
-			$this->SortView = unserialize($this->properties['SortView']);
+			$this->SortView = we_unserialize($this->properties['SortView']);
 		}
 		if(!is_array($this->SortView)){
 			$this->SortView = array();
@@ -160,12 +156,12 @@ class we_customer_settings{
 		} else {
 			$orderedarray = $this->customer->persistent_slots;
 			$sortarray = range(0, count($orderedarray) - 1);
-			$this->EditSort = makeCSVFromArray($sortarray, true);
+			$this->EditSort = implode(',', $sortarray);
 		}
 
 
 		if(isset($this->properties['FieldAdds'])){
-			$this->FieldAdds = unserialize($this->properties['FieldAdds']);
+			$this->FieldAdds = we_unserialize($this->properties['FieldAdds']);
 			//check if all fields are set
 			$fields = $this->customer->getFieldset();
 			foreach($fields as $name){
@@ -174,12 +170,16 @@ class we_customer_settings{
 					$tmp = $props = $this->customer->getFieldDbProperties($name);
 					$this->FieldAdds[$name]['type'] = $this->getOldFieldType($tmp['Type']);
 				}
+				if(!isset($this->FieldAdds[$name]['encrypt'])){
+					$modified = true;
+					$this->FieldAdds[$name]['encrypt'] = 0;
+				}
 			}
 		}
 
 		$defprefs = $this->Prefs;
 		if(isset($this->properties['Prefs'])){
-			$this->Prefs = unserialize($this->properties['Prefs']);
+			$this->Prefs = we_unserialize($this->properties['Prefs']);
 		}
 
 		foreach($defprefs as $k => $v){
@@ -188,7 +188,7 @@ class we_customer_settings{
 			}
 		}
 
-		$this->treeTextFormatSQL = 'COALESCE(NULLIF(TRIM(CONCAT("' . $this->Prefs['treetext_format'] . '")),""),Text)';
+		$this->treeTextFormatSQL = 'COALESCE(NULLIF(TRIM(CONCAT("' . $this->Prefs['treetext_format'] . '")),""),Username)';
 		$field_names = array_keys($this->customer->getFieldsDbProperties());
 
 		foreach($field_names as $fieldname){
@@ -204,13 +204,14 @@ class we_customer_settings{
 	}
 
 	function save(){
-		$this->properties['FieldAdds'] = serialize($this->FieldAdds);
-		$this->properties['SortView'] = serialize($this->SortView);
+		//FIXME: make Fieldadds more fields in DB
+		$this->properties['FieldAdds'] = we_serialize($this->FieldAdds);
+		$this->properties['SortView'] = we_serialize($this->SortView);
 		$this->properties['EditSort'] = $this->EditSort;
-		$this->properties['Prefs'] = serialize($this->Prefs);
+		$this->properties['Prefs'] = we_serialize($this->Prefs);
 
 		foreach($this->properties as $key => $value){
-			$this->db->query('REPLACE INTO ' . $this->table . ' SET Value="' . $this->db->escape($value) . '",Name="' . $key . '"');
+			$this->db->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET tool="webadmin",pref_value="' . $this->db->escape($value) . '",pref_name="' . $key . '"');
 		}
 		return true;
 	}
@@ -312,8 +313,8 @@ class we_customer_settings{
 		$this->FieldAdds[$fieldName][$addName] = $value;
 	}
 
-	function retriveFieldAdd($fieldName, $addName, $value){
-		return $this->FieldAdds[$fieldName][$addName];
+	function retriveFieldAdd($fieldName, $addName, $default = ''){
+		return isset($this->FieldAdds[$fieldName][$addName]) ? $this->FieldAdds[$fieldName][$addName] : $default;
 	}
 
 	function removeFieldAdd($fieldName){

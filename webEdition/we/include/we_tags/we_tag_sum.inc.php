@@ -30,5 +30,5 @@ function we_tag_sum($attribs){
 
 	$result = (isset($GLOBALS['summe'][$name]) ? we_base_util::std_numberformat($GLOBALS['summe'][$name]) : 0);
 
-	return we_util_Strings::formatNumber($result, weTag_getAttribute('num_format', $attribs, '', we_base_request::STRING), weTag_getAttribute('decimals', $attribs, 2, we_base_request::INT));
+	return we_base_util::formatNumber($result, weTag_getAttribute('num_format', $attribs, '', we_base_request::STRING), weTag_getAttribute('decimals', $attribs, 2, we_base_request::INT));
 }

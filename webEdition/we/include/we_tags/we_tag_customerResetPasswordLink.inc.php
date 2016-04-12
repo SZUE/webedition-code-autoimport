@@ -29,6 +29,7 @@ function we_tag_customerResetPasswordLink(array $attribs, $content, $internal = 
 
 	if($internal){
 		$docPath = WEBEDITION_DIR . 'resetpwd.php';
+		$cnt = 0;
 	} else {
 		$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
 		$docPath = we_tag('a', array('hrefonly' => true, 'id' => $id));
@@ -41,8 +42,8 @@ function we_tag_customerResetPasswordLink(array $attribs, $content, $internal = 
 
 	$attribs['href'] = $host . ($cnt ? $url : $docPath) . '?user=' . $_SESSION['webuser']['ID'] . '&token=' . $_SESSION['webuser']['WE_token'];
 
-	return (weTag_getAttribute("plain", $attribs, false, we_base_request::BOOL) ?
-			$attribs["href"] :
-			getHtmlTag('a', removeAttribs($attribs, array('id', 'plain', 'host')), $content ? : $attribs["href"])
+	return (weTag_getAttribute('plain', $attribs, false, we_base_request::BOOL) ?
+			$attribs['href'] :
+			getHtmlTag('a', removeAttribs($attribs, array('id', 'plain', 'host')), $content ? : $attribs['href'])
 		);
 }

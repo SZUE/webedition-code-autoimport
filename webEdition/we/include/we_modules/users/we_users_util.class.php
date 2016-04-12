@@ -218,13 +218,13 @@ abstract class we_users_util{
 		$db = ($db ? : new DB_WE());
 		$out = array();
 		//FIXME: why do we need the Workspaces of documents do determine allowed classes??
-		//$ws = get_ws(FILE_TABLE, false, true);
-		$ofWs = get_ws(OBJECT_FILES_TABLE, false, true);
-		$ofWsArray = id_to_path($ofWs, OBJECT_FILES_TABLE, $db, false, true);
+//		$ws = get_ws(FILE_TABLE, true);
+		$ofWs = get_ws(OBJECT_FILES_TABLE, true);
+		$ofWsArray = id_to_path($ofWs, OBJECT_FILES_TABLE, $db, true);
 		$db->query('SELECT ID,Workspaces,Path FROM ' . OBJECT_TABLE);
 
 		foreach($db->getAll() as $result){
-			//if(!$ws || permissionhandler::hasPerm('ADMINISTRATOR') || (!$result['Workspaces']) || (in_workspace($result['Workspaces'], $ws, FILE_TABLE, $GLOBALS['DB_WE'], true))){
+			//if(!$ws || permissionhandler::hasPerm('ADMINISTRATOR') || (!$result['Workspaces']) || (we_users_util::in_workspace($result['Workspaces'], $ws, FILE_TABLE, $GLOBALS['DB_WE'], true))){
 			if(!$ofWs || permissionhandler::hasPerm('ADMINISTRATOR')){
 				$out[] = $result['ID'];
 			} else {
@@ -242,6 +242,35 @@ abstract class we_users_util{
 		}
 
 		return $out;
+	}
+
+	public static function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, we_database_base $db = null, $norootcheck = false){
+		if(!$wsIDs || $IDs === ''){
+			return true;
+		}
+		$db = ($db ? : new DB_WE());
+
+		if(!is_array($IDs)){
+			$IDs = explode(',', trim($IDs, ','));
+		}
+		if(!is_array($wsIDs)){
+			$wsIDs = explode(',', trim($wsIDs, ','));
+		}
+		if(!$wsIDs || (in_array(0, $wsIDs))){
+			return true;
+		}
+
+		if((!$norootcheck) && in_array(0, $IDs)){
+			return false;
+		}
+		foreach($IDs as $id){
+			foreach($wsIDs as $ws){
+				if(in_parentID($id, $ws, $table, $db) || ($id == $ws) || ($id == 0)){
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 }

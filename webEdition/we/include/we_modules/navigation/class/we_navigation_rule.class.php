@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_navigation_rule extends weModelBase{
+class we_navigation_rule extends we_base_model{
 	var $Table = NAVIGATION_RULE_TABLE;
 	var $ContentType = 'weNavigationRule';
 	var $ClassName = __CLASS__;
@@ -38,21 +38,21 @@ class we_navigation_rule extends weModelBase{
 	var $Href;
 	var $SelfCurrent;
 	var $persistent_slots = array(
-		'ID',
-		'NavigationName',
-		'NavigationID',
-		'SelectionType',
-		'FolderID',
-		'DoctypeID',
-		'ClassID',
-		'Categories',
-		'WorkspaceID'
+		'ID' => we_base_request::INT,
+		'NavigationName' => we_base_request::STRING,
+		'NavigationID' => we_base_request::INT,
+		'SelectionType' => we_base_request::STRING,
+		'FolderID' => we_base_request::INT,
+		'DoctypeID' => we_base_request::INT,
+		'ClassID' => we_base_request::INT,
+		'Categories' => we_base_request::INTLIST,
+		'WorkspaceID' => we_base_request::INT
 	);
 
 	public function __construct($persData = array()){
-		parent::__construct(NAVIGATION_RULE_TABLE, null, false);
+		parent::__construct(NAVIGATION_RULE_TABLE, null, false, true);
 		if($persData){
-			foreach($this->persistent_slots as $val){
+			foreach(array_keys($this->persistent_slots) as $val){
 				if(isset($persData[$val])){
 					$this->$val = $persData[$val];
 				}
@@ -100,26 +100,18 @@ class we_navigation_rule extends weModelBase{
 				}
 			}
 
-			$categoryIds = array();
-
-			foreach($_categories as $cat){
-				if(($path = path_to_id($cat, CATEGORY_TABLE))){
-					$categoryIds[] = $path;
-				}
-			}
-			$categoryIds = array_unique($categoryIds);
-
-			$this->Categories = ($categoryIds ? ',' . implode(',', $categoryIds) . ',' : '');
+			$this->Categories = path_to_id($_categories, CATEGORY_TABLE, $GLOBALS['DB_WE']);
 		}
 
 		if(is_array($this->persistent_slots)){
-			foreach($this->persistent_slots as $val){
-				if(($tmp = we_base_request::_(we_base_request::RAW, $val)) !== false){
-					$this->$val = $tmp;
+			foreach($this->persistent_slots as $key => $type){
+				if(($tmp = we_base_request::_($type, $key)) !== false){
+					$this->$key = $tmp;
 				}
 			}
 		}
 
 		$this->isnew = ($this->ID == 0);
 	}
+
 }

@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcSelectorSuggestView extends rpcView{
+class rpcSelectorSuggestView extends we_rpc_view{
 
 	function getResponse($response){
 		header('Content-type: text/plain');
@@ -30,8 +30,7 @@ class rpcSelectorSuggestView extends rpcView{
 		$html = '';
 		if(is_array($suggests)){
 			foreach($suggests as $sug){
-				$html .= $sug['Path'] . "	" . $sug['ID'] .
-					"	" . (isset($sug['ContentType']) ? $sug['ContentType'] : (isset($sug['IsFolder']) && $sug['IsFolder'] ? "folder" : "")) . "\n";
+				$html .= $sug['Path'] . '	' . $sug['ID'] . '	' . (isset($sug['ContentType']) ? $sug['ContentType'] : (isset($sug['IsFolder']) && $sug['IsFolder'] ? 'folder' : '')) . "\n";
 			}
 		}
 		return $html;

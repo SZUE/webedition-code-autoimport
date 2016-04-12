@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-$protect = we_base_moduleInfo::isActive('users') && we_users_util::canEditModule('users') ? null : array(false);
+$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::USERS) && we_users_util::canEditModule(we_base_moduleInfo::USERS) ? null : array(false);
 we_html_tools::protect($protect);
 
 echo we_html_tools::getHtmlTop(g_l('modules_users', '[search_result]'), $GLOBALS['WE_BACKENDCHARSET']) . STYLESHEET;
@@ -77,14 +77,11 @@ foreach($array_not as $k => $value){
 			" (First LIKE '%$value%' OR Second LIKE '%$value%' OR username LIKE '%$value%' OR Address LIKE '%$value%' OR City LIKE '%$value%' OR State LIKE '%$value%' OR Country LIKE '%$value%' OR Tel_preselection LIKE '%$value%' OR Fax_preselection LIKE '%$value%' OR Telephone LIKE '%$value%' OR Fax LIKE '%$value%' OR Description LIKE '%$value%')");
 }
 
-if($condition != ""){
-	$condition = ' WHERE ' . $condition . ' ORDER BY Text';
-}
-$DB_WE->query("SELECT ID,Text FROM " . USER_TABLE . $condition);
+$DB_WE->query('SELECT ID,Text FROM ' . USER_TABLE . ($condition? : ' WHERE ' . $condition . ' ORDER BY Text'));
 
 $_select = '<div style="background-color:white;width:520px;height:220px;"/>';
 if($DB_WE->num_rows()){
-	$_select = '<select name="search_results" size="20" style="width:520px;height:220px;" ondblclick="opener.top.content.we_cmd(\'check_user_display\',document.we_form.search_results.value); top.close();">';
+	$_select = '<select name="search_results" size="20" style="width:520px;height:220px;" ondblclick="top.opener.top.we_cmd(\'check_user_display\',document.we_form.search_results.value); top.close();">';
 	while($DB_WE->next_record()){
 		$_select.='<option value="' . $DB_WE->f("ID") . '">' . $DB_WE->f("Text") . '</option>';
 	}
@@ -92,17 +89,13 @@ if($DB_WE->num_rows()){
 }
 
 $_buttons = we_html_button::position_yes_no_cancel(
-		we_html_button::create_button("edit", "javascript:opener.top.content.we_cmd('check_user_display',document.we_form.search_results.value); if(document.we_form.search_results.value){top.close()}"), null, we_html_button::create_button("cancel", "javascript:self.close();")
+		we_html_button::create_button(we_html_button::EDIT, "javascript:top.opener.top.we_cmd('check_user_display',document.we_form.search_results.value); if(document.we_form.search_results.value){top.close()}"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();")
 );
-
-
 
 $_content = we_html_tools::htmlFormElementTable(
-		we_html_tools::htmlTextInput('kwd', 24, $_kwd, "", "", "text", 485), g_l('modules_users', '[search_for]'), "left", "defaultfont", we_html_tools::getPixel(10, 1), we_html_button::create_button("image:btn_function_search", "javascript:document.we_form.submit();")
+		we_html_tools::htmlTextInput('kwd', 24, $_kwd, "", "", "text", 485), g_l('modules_users', '[search_for]'), "left", "defaultfont", we_html_button::create_button(we_html_button::SEARCH, "javascript:document.we_form.submit();")
 	) . '<div style="height:20px;"></div>' .
-	we_html_tools::htmlFormElementTable(
-		$_select, g_l('modules_users', '[search_result]')
-);
+	we_html_tools::htmlFormElementTable($_select, g_l('modules_users', '[search_result]'));
 ?>
 </head>
 <body class="weEditorBody" style="margin:10px 20px;">
@@ -110,3 +103,4 @@ $_content = we_html_tools::htmlFormElementTable(
 		<?php echo we_html_tools::htmlDialogLayout($_content, g_l('modules_users', '[search]'), $_buttons); ?>
 	</form>
 </body>
+</html>

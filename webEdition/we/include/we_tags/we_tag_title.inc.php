@@ -24,12 +24,12 @@
  */
 function we_tag_title($attribs, $content){
 	$htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, we_base_request::BOOL);
-	$prefix = weTag_getAttribute('prefix', $attribs, '', we_base_request::RAW);
-	$suffix = weTag_getAttribute('suffix', $attribs, '', we_base_request::RAW);
-	$delimiter = weTag_getAttribute('delimiter', $attribs, '', we_base_request::RAW);
+	$prefix = weTag_getAttribute('prefix', $attribs, '', we_base_request::RAW_CHECKED);
+	$suffix = weTag_getAttribute('suffix', $attribs, '', we_base_request::RAW_CHECKED);
+	$delimiter = weTag_getAttribute('delimiter', $attribs, '', we_base_request::RAW_CHECKED);
 
 	$attribs = removeAttribs($attribs, array('htmlspecialchars', 'prefix', 'suffix', 'delimiter'));
-	$title = isset($GLOBALS['TITLE']) && $GLOBALS['TITLE'] ? $GLOBALS['TITLE'] : '';
+	$title = !empty($GLOBALS['TITLE']) ? $GLOBALS['TITLE'] : '';
 	if(!$title && $content){
 		ob_start();
 		//FIXME:eval
@@ -37,7 +37,7 @@ function we_tag_title($attribs, $content){
 		$title = ob_get_clean();
 	}
 
-	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
+	if(!empty($GLOBALS['we_editmode'])){
 		//set meta data & exit
 		$GLOBALS['meta']['Title']['default'] = $title;
 		return;

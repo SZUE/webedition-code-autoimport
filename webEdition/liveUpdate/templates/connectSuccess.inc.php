@@ -27,7 +27,7 @@
  * different ways.
  */
 
-$checkButton = we_html_button::create_button('next', $_SERVER['SCRIPT_NAME'] . '?section=connect&update_cmd=checkConnection');
+$checkButton = we_html_button::create_button(we_html_button::NEXT, $_SERVER['SCRIPT_NAME'] . '?section=connect&update_cmd=checkConnection');
 
 if($errorMessage){ // servers response is error string
 	$content = '

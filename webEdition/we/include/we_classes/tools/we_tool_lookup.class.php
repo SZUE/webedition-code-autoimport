@@ -22,8 +22,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 abstract class we_tool_lookup{
+
 	const REGISTRY_NAME = 'weToolsRegistry';
 
 	static function getAllTools($force = false, $addInternTools = false, $includeDisabled = false){
@@ -46,7 +46,7 @@ abstract class we_tool_lookup{
 		closedir($_d);
 
 		// include autoload function
-		require_once($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/core/autoload.inc.php');
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_autoload.inc.php');
 
 		$lang = isset($GLOBALS['WE_LANGUAGE']) ? $GLOBALS['WE_LANGUAGE'] : we_core_Local::getComputedUILang();
 
@@ -58,13 +58,14 @@ abstract class we_tool_lookup{
 				if(isset($metaInfo)){
 					$langStr = '';
 					if(isset($metaInfo['name'])){
-						$translate = we_core_Local::addTranslation('default.xml', $metaInfo['name']);
-						if(is_object($translate)){
-							$langStr = $translate->_($metaInfo['name']);
-						}
+						/* $translate = we_core_Local::addTranslation('default.xml', $metaInfo['name']);
+						  if(is_object($translate)){
+						  $langStr = $translate->_($metaInfo['name']);
+						  } */
+						$langStr = $metaInfo['name'];
 					}
 					$metaInfo['text'] = oldHtmlspecialchars($langStr);
-					if(!$includeDisabled && isset($metaInfo['appdisabled']) && $metaInfo['appdisabled']){
+					if(!$includeDisabled && !empty($metaInfo['appdisabled'])){
 
 					} else {
 						$_tools[] = $metaInfo;
@@ -125,7 +126,7 @@ abstract class we_tool_lookup{
 				$_REQUEST['tool'] = $tmps[1];
 				return 'we_tools/' . $tmps[1] . '/hook/we_phpCmdHook_' . $tmps[1] . '.inc.php';
 			case 'navigation':
-				//TODO: does this work after refactoring navigation as a module
+				//FIMXE: remove this
 				$_REQUEST['mod'] = 'navigation';
 				return 'we_modules/navigation/hook/we_phpCmdHook_' . $tmps[1] . '.inc.php';
 		}
@@ -134,27 +135,46 @@ abstract class we_tool_lookup{
 			if(stripos($cmd0, 'tool_' . $_tool['name'] . '_') === 0){
 				$_REQUEST['tool'] = $_tool['name'];
 				return ($_tool['name'] === 'weSearch' || $_tool['name'] === 'navigation' ?
-						'we_tools/' : 'apps/' ) .
-					$_tool['name'] . '/hook/we_phpCmdHook_' . $_tool['name'] . '.inc.php';
+								'we_tools/' : 'apps/' ) .
+						$_tool['name'] . '/hook/we_phpCmdHook_' . $_tool['name'] . '.inc.php';
 			}
 		}
 
 		return '';
 	}
 
-	static function getJsCmdInclude(){
-
-		$_inc = array();
+	static function getJsCmdInclude(array &$includes){
 		$_tools = self::getAllTools(true, true);
+		$cmd = '';
+		//ob_start();
 		foreach($_tools as $_tool){
-			if(($_tool['name'] === 'weSearch' || $_tool['name'] === 'navigation') && file_exists(WE_INCLUDES_PATH . 'we_tools/' . $_tool['name'] . '/hook/we_jsCmdHook_' . $_tool['name'] . '.inc.php')){
-				$_inc[] = WE_INCLUDES_PATH . 'we_tools/' . $_tool['name'] . '/hook/we_jsCmdHook_' . $_tool['name'] . '.inc.php';
-			} elseif(file_exists(WEBEDITION_PATH . 'apps/' . $_tool['name'] . '/hook/we_jsCmdHook_' . $_tool['name'] . '.inc.php')){
-				$_inc[] = WEBEDITION_PATH . 'apps/' . $_tool['name'] . '/hook/we_jsCmdHook_' . $_tool['name'] . '.inc.php';
+			$cmd.='	 case "tool_' . $_tool['name'] . '_edit":
+ 			new (WE().util.jsWindow)(window,url,"tool_window",-1,-1,1048,760,true,true,true,true);
+		break;
+';
+
+			switch($_tool['name']){
+				case 'weSearch':
+					$path = WE_INCLUDES_DIR . 'we_tools/';
+					break;
+				default:
+					$path = WEBEDITION_DIR . 'apps/';
+			}
+			$path.=$_tool['name'] . '/hook/we_jsCmdHook_' . $_tool['name'];
+			if(file_exists($_SERVER['DOCUMENT_ROOT'] . $path . '.js')){
+				$includes['tool_' . $_tool['name']] = $path . '.js';
 			}
 		}
 
-		return $_inc;
+		return 'function we_cmd_tools(args,url) {
+	switch (args[0]) {
+		' . $cmd . '
+		default:
+			return false;
+	}
+	return true;
+}
+';
 	}
 
 	static function getDefineInclude(){
@@ -368,8 +388,8 @@ abstract class we_tool_lookup{
 
 	static function getBackupTables($name){
 		$toolFolder = (($name === 'weSearch' || $name === 'navigation') ?
-				WE_INCLUDES_PATH . 'we_tools/' :
-				WE_APPS_PATH);
+						WE_INCLUDES_PATH . 'we_tools/' :
+						WE_APPS_PATH);
 		if(file_exists($toolFolder . $name . '/conf/backup.conf.php')){
 			include($toolFolder . $name . '/conf/backup.conf.php');
 			if(!empty($toolTables)){
@@ -394,7 +414,7 @@ abstract class we_tool_lookup{
 						$allFiles[] = $_entry;
 					}
 
-					if(is_dir($_entry) && strtolower(strtolower($entry) != 'cvs')){
+					if(is_dir($_entry)){
 						self::getFilesOfDir($allFiles, $_entry);
 					}
 				}
@@ -410,7 +430,7 @@ abstract class we_tool_lookup{
 			$dh = opendir($baseDir);
 			while(($entry = readdir($dh))){
 
-				if($entry != '' && $entry != '.' && $entry != '..' && strtolower($entry != 'cvs')){
+				if($entry != '' && $entry != '.' && $entry != '..'){
 
 					$_entry = $baseDir . '/' . $entry;
 
@@ -449,6 +469,7 @@ abstract class we_tool_lookup{
 
 }
 
-abstract class weToolLookup extends we_tool_lookup{
+abstract
+		class weToolLookup extends we_tool_lookup{
 
 }

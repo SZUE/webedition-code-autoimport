@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -25,8 +24,9 @@
 switch($cmd){
 	case 'users_edit':
 	case 'users_edit_ifthere':
-		$GLOBALS['mod'] = 'users';
-		return 'we_modules/show_frameset.php';
+		$_REQUEST['mod'] = 'users';
+		$_REQUEST['pnt'] = 'show_frameset';
+		return '../../we_showMod.php';
 	case 'users_unlock':
 		return 'we_modules/users/we_users_unlock.inc.php';
 	case 'users_add_owner':
@@ -37,4 +37,6 @@ switch($cmd){
 		return 'we_editors/we_editor.inc.php';
 	case 'users_changeR':
 		return 'we_modules/users/changeRec_users.inc.php';
+	case 'we_users_selector':
+		return 'selectors.inc.php';
 }

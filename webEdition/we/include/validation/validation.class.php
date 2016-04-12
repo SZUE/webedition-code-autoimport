@@ -36,10 +36,8 @@ abstract class validation{
 
 	static function saveService($validationService){
 		// before saving check if another validationservice has this name
-		$exist = f('SELECT 1 FROM ' . VALIDATION_SERVICES_TABLE . ' WHERE name="' . $GLOBALS['DB_WE']->escape($validationService->name) . '"
-					AND PK_tblvalidationservices != ' . intval($validationService->id) . ' LIMIT 1');
-
-		if($exist === '1'){
+		if(f('SELECT 1 FROM ' . VALIDATION_SERVICES_TABLE . ' WHERE name="' . $GLOBALS['DB_WE']->escape($validationService->name) . '"
+					AND PK_tblvalidationservices != ' . intval($validationService->id) . ' LIMIT 1')){
 			$GLOBALS['errorMessage'] = g_l('validation', '[edit_service][servicename_already_exists]');
 			return false;
 		}
@@ -57,34 +55,26 @@ abstract class validation{
 				'fileEndings' => $validationService->fileEndings,
 				'active' => $validationService->active
 		));
-		if($validationService->id != 0){
-			$query = 'UPDATE ' . VALIDATION_SERVICES_TABLE . ' SET ' . $qSet .
-				' WHERE PK_tblvalidationservices = ' . intval($validationService->id);
-		} else {
-			$query = 'INSERT INTO ' . VALIDATION_SERVICES_TABLE . ' SET ' . $qSet;
-		}
+		$query = ($validationService->id != 0 ?
+				'UPDATE ' . VALIDATION_SERVICES_TABLE . ' SET ' . $qSet . ' WHERE PK_tblvalidationservices=' . intval($validationService->id) :
+				'INSERT INTO ' . VALIDATION_SERVICES_TABLE . ' SET ' . $qSet);
 
 		if($GLOBALS['DB_WE']->query($query)){
-			if($validationService->id == 0){
-				$validationService->id = $GLOBALS['DB_WE']->getInsertId();
-			}
+			$validationService->id = $validationService->id ? : $GLOBALS['DB_WE']->getInsertId();
 			return $validationService;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	static function deleteService($validationService){
 		if($validationService->id != 0){
-
 			if($GLOBALS['DB_WE']->query('DELETE FROM ' . VALIDATION_SERVICES_TABLE . ' WHERE PK_tblvalidationservices = ' . intval($validationService->id))){
 				return true;
 			}
-		} else {
-			//  not saved entry - must not be deleted from db
-			return true;
+			return false;
 		}
-		return false;
+		//  not saved entry - must not be deleted from db
+		return true;
 	}
 
 	static function getValidationServices($mode = 'edit'){
@@ -113,13 +103,13 @@ abstract class validation{
 	 * @desc    This function checks if given attribs are elements of a certain xhtml-element
 	  changes attribs if removeWrong is true
 
-	 */
+
 	public static function validateXhtmlAttribs($element, &$attribs, $xhtmlType, $showWrong, $removeWrong){
 
 		if($xhtmlType === 'transitional'){ //	use xml-transitional
 			include(WE_INCLUDES_PATH . 'validation/xhtml_10_transitional.inc.php');
 			//   the array $_validAtts and $_reqAtts are set inside this include-file
-		} else {		//	use xml-strict
+		} else { //	use xml-strict
 			include(WE_INCLUDES_PATH . 'validation/xhtml_10_strict.inc.php');
 			//   the array $_validAtts and $_reqAtts are set inside this include-file
 		}
@@ -137,13 +127,13 @@ abstract class validation{
 					}
 
 					if($showWrong){
-						if(isset($_SESSION['prefs']['xhtml_show_wrong_text']) && $_SESSION['prefs']['xhtml_show_wrong_text']){
+						if(!empty($_SESSION['prefs']['xhtml_show_wrong_text'])){
 							echo '<p>' . sprintf(g_l('xhtmlDebug', '[wrong_attribute][text]') . $removeText, $k, $element) . '</p>';
 						}
-						if(isset($_SESSION['prefs']['xhtml_show_wrong_js']) && $_SESSION['prefs][xhtml_show_wrong_js']){
+						if(!empty($_SESSION['prefs']['xhtml_show_wrong_js'])){
 							echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(sprintf(g_l('xhtmlDebug', '[wrong_attribute][error_log]'), $k, $element) . $removeText), we_message_reporting::WE_MESSAGE_ERROR));
 						}
-						if(isset($_SESSION['prefs']['xhtml_show_wrong_error_log']) && $_SESSION['prefs']['xhtml_show_wrong_error_log']){
+						if(!empty($_SESSION['prefs']['xhtml_show_wrong_error_log'])){
 							t_e(sprintf(g_l('xhtmlDebug', '[wrong_attribute][error_log]'), $k, $element) . $removeText);
 						}
 					}
@@ -157,13 +147,13 @@ abstract class validation{
 					if(!array_key_exists($required, $attribs)){
 
 						if($showWrong){
-							if(isset($_SESSION['prefs']['xhtml_show_wrong_text']) && $_SESSION['prefs']['xhtml_show_wrong_text']){
+							if(!empty($_SESSION['prefs']['xhtml_show_wrong_text'])){
 								echo '<p>' . sprintf(g_l('xhtmlDebug', '[missing_attribute][text]'), $required, $element) . '</p>';
 							}
-							if(isset($_SESSION['prefs']['xhtml_show_wrong_js']) && $_SESSION['prefs']['xhtml_show_wrong_js']){
+							if(!empty($_SESSION['prefs']['xhtml_show_wrong_js'])){
 								echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(g_l('xhtmlDebug', '[missing_attribute][error_log]'), $required, $element), we_message_reporting::WE_MESSAGE_ERROR));
 							}
-							if(isset($_SESSION['prefs']['xhtml_show_wrong_error_log']) && $_SESSION['prefs']['xhtml_show_wrong_error_log']){
+							if(!empty($_SESSION['prefs']['xhtml_show_wrong_error_log'])){
 								error_log(sprintf(g_l('xhtmlDebug', '[missing_attribute][error_log]'), $required, $element));
 							}
 						}
@@ -172,13 +162,13 @@ abstract class validation{
 			}
 		} else { //	element does not exist
 			if($showWrong){
-				if(isset($_SESSION['prefs']['xhtml_show_wrong_text']) && $_SESSION['prefs']['xhtml_show_wrong_text']){
+				if(!empty($_SESSION['prefs']['xhtml_show_wrong_text'])){
 					echo '<p>' . sprintf(g_l('xhtmlDebug', '[wrong_element][text]'), $element) . '</p>';
 				}
-				if(isset($_SESSION['prefs']['xhtml_show_wrong_js']) && $_SESSION['prefs']['xhtml_show_wrong_js']){
+				if(!empty($_SESSION['prefs']['xhtml_show_wrong_js'])){
 					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(g_l('xhtmlDebug', '[wrong_element][error_log]'), $element), we_message_reporting::WE_MESSAGE_ERROR));
 				}
-				if(isset($_SESSION['prefs']['xhtml_show_wrong_error_log']) && $_SESSION['prefs']['xhtml_show_wrong_error_log']){
+				if(!empty($_SESSION['prefs']['xhtml_show_wrong_error_log'])){
 					error_log(sprintf(g_l('xhtmlDebug', '[wrong_element][error_log]'), $element));
 				}
 			}
@@ -187,5 +177,5 @@ abstract class validation{
 			}
 		}
 	}
-
+*/
 }

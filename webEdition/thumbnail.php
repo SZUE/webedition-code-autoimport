@@ -23,12 +23,13 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
+session_write_close();
 //FIXME: send no perms img; but better an invalid picture, than access to unallowed images
 
 $imageId = we_base_request::_(we_base_request::INT, 'id', 0);
 $imagePath = we_base_request::_(we_base_request::FILE, 'path', '');
-$imageSizeW = we_base_request::_(we_base_request::INT, 'size', 0);
-$imageSizeH = we_base_request::_(we_base_request::INT, 'size2', $imageSizeW);
+$imageSizeW = we_base_request::_(we_base_request::INT, 'size', 0, 'width');
+$imageSizeH = we_base_request::_(we_base_request::INT, 'size', $imageSizeW, 'height');
 $extension = we_base_request::_(we_base_request::STRING, 'extension', '');
 
 if(!($imageId || $imagePath) && !$imageSizeW && !$extension){
@@ -42,8 +43,7 @@ if(!in_array(strtolower($extension), $whiteList)){
 }
 
 $imageExt = substr($extension, 1);
-$thumbpath = we_base_imageEdit::createPreviewThumb($imagePath, $imageId, $imageSizeW, $imageSizeH, $imageExt);
-$file = $_SERVER['DOCUMENT_ROOT'] . $thumbpath;
+$file = we_base_imageEdit::createPreviewThumb($imagePath, $imageId, $imageSizeW, $imageSizeH, $imageExt);
 if(file_exists($file) && is_readable($file)){
 	$stat = stat($file);
 	$etag = md5($imageId . $stat['size'] . $stat['ctime'] . $stat['mtime']);
@@ -52,7 +52,7 @@ if(file_exists($file) && is_readable($file)){
 	header('Cache-Control: max-age=60'); //they stay in cache for 60 seconds, before reasking the server for a new version!
 	header_remove('Pragma');
 	if(isset($_SERVER['HTTP_IF_NONE_MATCH']) && $_SERVER['HTTP_IF_NONE_MATCH'] == $etag){
-		header('HTTP/1.1 304 Not Modified');
+		we_html_tools::setHttpCode(304);
 	} else {
 		header('Content-type: image/' . $imageExt);
 		header('Content-Length: ' . filesize($file));

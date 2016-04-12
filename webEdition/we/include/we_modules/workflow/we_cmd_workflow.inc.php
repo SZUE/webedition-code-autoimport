@@ -31,6 +31,7 @@ switch($cmd){
 		return 'we_modules/workflow/we_workflow_win.inc.php';
 	case 'workflow_edit':
 	case 'workflow_edit_ifthere':
-		$GLOBALS['mod'] = 'workflow';
-		return 'we_modules/show_frameset.php';
+		$_REQUEST['mod'] = 'workflow';
+		$_REQUEST['pnt'] = 'show_frameset';
+		return '../../we_showMod.php';
 }

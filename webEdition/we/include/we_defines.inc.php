@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -23,6 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf.inc.php');
+define('SERIALIZE_PHP', 'serialize');
+define('SERIALIZE_JSON', 'json');
 
 define('WEBEDITION_DIR', '/webEdition/');
 
@@ -39,17 +40,16 @@ define('IMAGE_DIR', WEBEDITION_DIR . 'images/');
 define('ICON_DIR', IMAGE_DIR . 'icons/');
 define('HTML_DIR', WEBEDITION_DIR . 'html/');
 define('JS_DIR', WEBEDITION_DIR . 'js/');
+define('WE_JS_MODULES_DIR', JS_DIR . 'we_modules/');
+define('WE_JS_TINYMCE_DIR', JS_DIR . 'wysiwyg/tinymce/');
 define('BACKUP_DIR', WEBEDITION_DIR . 'we_backup/');
 define('VERSION_DIR', WEBEDITION_DIR . 'we/versions/');
 define('LIB_DIR', WEBEDITION_DIR . 'lib/');
-define('WE_THUMB_PREVIEW_DIR', WEBEDITION_DIR . 'preview/');
-define('TINYMCE_JS_DIR', WEBEDITION_DIR . 'editors/content/tinymce/jscripts/tiny_mce/');
+define('TINYMCE_SRC_DIR', LIB_DIR . 'additional/tinymce/');
 define('WE_USERS_MODULE_DIR', WE_MODULES_DIR . 'users/');
+define('WE_CACHE_DIR', WEBEDITION_DIR . 'we/cache/');
 
-define('TREE_IMAGE_DIR', IMAGE_DIR . 'tree/');
-define('TREE_ICON_DIR', TREE_IMAGE_DIR . 'icons/');
 define('EDIT_IMAGE_DIR', IMAGE_DIR . 'edit/');
-define('BUTTONS_DIR', IMAGE_DIR . 'button/');
 
 //all paths
 define('WEBEDITION_PATH', $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR);
@@ -60,13 +60,14 @@ define('WE_INCLUDES_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_INCLUDES_DIR);
 define('JS_PATH', $_SERVER['DOCUMENT_ROOT'] . JS_DIR);
 define('WE_LIB_PATH', $_SERVER['DOCUMENT_ROOT'] . LIB_DIR);
 define('WE_MODULES_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_MODULES_DIR);
-define('WE_THUMB_PREVIEW_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_THUMB_PREVIEW_DIR);
+define('WE_JS_MODULES_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_JS_MODULES_DIR);
 define('WE_USERS_MODULE_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_USERS_MODULE_DIR);
+define('BACKUP_PATH', $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR);
+define('WE_CACHE_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_CACHE_DIR);
 
 //paths without "DIRS"
-define('WE_FRAGMENT_PATH', WEBEDITION_PATH . 'fragments/');
-define('WE_CACHE_PATH', WEBEDITION_PATH . 'we/cache/');
-define('ZENDCACHE_PATH', WE_CACHE_PATH);//FIXME: remove
+define('WE_FRAGMENT_PATH', TEMP_PATH . 'fragments/');
+define('ZENDCACHE_PATH', WE_CACHE_PATH); //FIXME: remove
 
 include_once (WE_INCLUDES_PATH . 'we_version.php');
 
@@ -92,6 +93,7 @@ define('HISTORY_TABLE', TBL_PREFIX . 'tblhistory');
 define('FORMMAIL_LOG_TABLE', TBL_PREFIX . 'tblformmaillog');
 define('FORMMAIL_BLOCK_TABLE', TBL_PREFIX . 'tblformmailblock');
 define('METADATA_TABLE', TBL_PREFIX . 'tblMetadata');
+define('METAVALUES_TABLE', TBL_PREFIX . 'tblMetaValues');
 define('NOTEPAD_TABLE', TBL_PREFIX . 'tblwidgetnotepad');
 define('PWDRESET_TABLE', TBL_PREFIX . 'tblPasswordReset');
 define('VERSIONS_TABLE', TBL_PREFIX . 'tblversions');
@@ -102,6 +104,8 @@ define('NAVIGATION_RULE_TABLE', TBL_PREFIX . 'tblnavigationrules');
 define('USER_TABLE', TBL_PREFIX . 'tblUser');
 define('LOCK_TABLE', TBL_PREFIX . 'tblLock');
 define('SETTINGS_TABLE', TBL_PREFIX . 'tblSettings');
+define('VFILE_TABLE', TBL_PREFIX . 'tblVFile');
+define('FILELINK_TABLE', TBL_PREFIX . 'tblFileLink');
 
 //NOTE: you have to register the tables at we.inc!
 
@@ -113,7 +117,7 @@ define('SESSION_NAME', 'WESESSION');
 if(!isset($_SERVER['REQUEST_URI'])){
 	if(!isset($_SERVER['HTTP_REQUEST_URI'])){
 		$_SERVER['HTTP_REQUEST_URI'] = (isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : $_SERVER['PHP_SELF']) .
-				(isset($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
+			(isset($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
 	}
 }
 
@@ -130,5 +134,3 @@ if(!isset($GLOBALS['WE_LANGUAGE'])){
 if(!isset($GLOBALS['WE_BACKENDCHARSET'])){
 	$GLOBALS['WE_BACKENDCHARSET'] = WE_BACKENDCHARSET;
 }
-
-

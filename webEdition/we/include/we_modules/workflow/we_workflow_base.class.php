@@ -93,12 +93,12 @@ class we_workflow_base{
 		$foo = f('SELECT Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($userID), "", $this->db);
 		if($foo && we_check_email($foo)){
 			$this_user = getHash('SELECT First,Second,Email FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION["user"]["ID"]), $this->db);
-			we_mail($foo, correctUml($subject), $description, '', (isset($this_user["Email"]) && $this_user["Email"] ? $this_user["First"] . " " . $this_user["Second"] . " <" . $this_user["Email"] . ">" : ""));
+			we_mail($foo, correctUml($subject), $description, '', (!empty($this_user["Email"]) ? $this_user["First"] . " " . $this_user["Second"] . " <" . $this_user["Email"] . ">" : ""));
 		}
 	}
 
-	/* generate new ToDo */
-	/* return the ID of the created ToDo, 0 on error */
+	/* generate new To Do */
+	/* return the ID of the created To Do, 0 on error */
 
 	function sendTodo($userID, $subject, $description, $deadline){
 		$errs = array();
@@ -118,10 +118,10 @@ class we_workflow_base{
 		return $res['id'];
 	}
 
-	/* Mark ToDo as done */
+	/* Mark To Do as done */
 	/* $id - value of the 'ID' field in MSG_TODO_TABLE */
 
-	function doneTodo($id){
+	function doneTodo($id = 0){
 		$errs = '';
 		$m = new we_messaging_todo();
 
@@ -140,13 +140,13 @@ class we_workflow_base{
 			$errs = $res['msg'];
 		}
 
-		return ($res['err'] == 0);
+		return (!isset($res['err']) || $res['err'] == 0);
 	}
 
-	/* remove ToDo */
+	/* remove To Do */
 	/* $id - value of the 'ID' field in MSG_TODO_TABLE */
 
-	function removeTodo($id){
+	function removeTodo($id = 0){
 		$m = new we_messaging_todo();
 		$m->set_login_data($_SESSION["user"]["ID"], isset($_SESSION["user"]["Name"]) ? $_SESSION["user"]["Name"] : "");
 
@@ -155,10 +155,10 @@ class we_workflow_base{
 		return $m->delete_items($i_headers);
 	}
 
-	/* Mark ToDo as rejected */
+	/* Mark To Do as rejected */
 	/* $id - value of the 'ID' field in MSG_TODO_TABLE */
 
-	function rejectTodo($id){
+	function rejectTodo($id = 0){
 		$m = new we_messaging_todo();
 		$db = new DB_WE();
 		$userid = f('SELECT UserID FROM ' . MSG_TODO_TABLE . ' WHERE ID=' . intval($id), '', $db);

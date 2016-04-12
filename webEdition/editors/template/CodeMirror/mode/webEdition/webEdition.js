@@ -21,10 +21,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
-CodeMirror.defineMode("text/weTmpl", function(config, parserConfig) {
+CodeMirror.defineMode("text/weTmpl", function (config, parserConfig) {
 	var webeditionOverlay = {
-		startState: function() {
+		startState: function () {
 			return {
 				'insideTag': false,
 				'tagName': "",
@@ -36,7 +35,7 @@ CodeMirror.defineMode("text/weTmpl", function(config, parserConfig) {
 				'comment': false
 			};
 		},
-		token: function(stream, state) {
+		token: function (stream, state) {
 			if (state.insideTag) {
 				if (state.close) {
 					if (stream.skipTo(">")) {
@@ -66,15 +65,12 @@ CodeMirror.defineMode("text/weTmpl", function(config, parserConfig) {
 										state.attrActive = false;
 										switch (state.attrName) {
 											case "id":
-												if (state.typeName == "") {
+												if (state.typeName === "") {
 													state.typeName = (state.tagName === "object" ? "object" : "document");
 												}
-												return ((value - 0 == value) ? ("number" + " we" + state.typeName + "ID-" + value)+" WEID" : "string");
+												return ((value - 0 == value) ? ("number" + " we" + state.typeName + "ID-" + value) + " WEID" : "string");
 											case "type":
-												//console.log(value);
 												state.typeName = value;
-
-												//console.log(state.typeName);
 												return null;
 										}
 										return null;
@@ -102,6 +98,7 @@ CodeMirror.defineMode("text/weTmpl", function(config, parserConfig) {
 									if (stream.skipTo('>')) {
 										stream.next();
 									}
+									/* falls through */
 								case ">":
 									state.insideTag = false;
 									return "weTag " + attrName;
@@ -132,6 +129,7 @@ CodeMirror.defineMode("text/weTmpl", function(config, parserConfig) {
 									state.insideTag = false;
 									return "weSelfClose weTag weTag_" + state.tagName;
 								}
+								/* falls through */
 							case '>':
 								state.insideTag = false;
 								if (state.open) {
@@ -179,5 +177,5 @@ CodeMirror.defineMode("text/weTmpl", function(config, parserConfig) {
 			}
 		}
 	};
-	return CodeMirror.overlayParser(CodeMirror.getMode(config, parserConfig.backdrop || "application/x-httpd-php"), webeditionOverlay);
+	return CodeMirror.overlayMode(CodeMirror.getMode(config, parserConfig.backdrop || "application/x-httpd-php"), webeditionOverlay);
 });

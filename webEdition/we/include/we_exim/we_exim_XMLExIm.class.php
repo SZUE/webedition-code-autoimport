@@ -126,7 +126,8 @@ class we_exim_XMLExIm{
 			case 'we_thumbnailEx':
 			case 'we_thumbnail':
 				return THUMBNAILS_TABLE;
-			case 'weBinary':
+			case 'we_backup_binary':
+			case 'weBinary'://FIMXE remove
 				return '';
 			case 'we_object':
 				return OBJECT_TABLE;
@@ -144,13 +145,14 @@ class we_exim_XMLExIm{
 				return DOC_TYPES_TABLE;
 			case "category":
 				return CATEGORY_TABLE;
-			case "object":
+			case we_base_ContentTypes::OBJECT:
 				return (defined('OBJECT_TABLE')) ? OBJECT_TABLE : null;
 			case we_base_ContentTypes::TEMPLATE:
 				return TEMPLATES_TABLE;
-			case "objectFile":
+			case we_base_ContentTypes::OBJECT_FILE:
 				return (defined('OBJECT_FILES_TABLE')) ? OBJECT_FILES_TABLE : null;
-			case "weBinary":
+			case "we_backup_binary":
+			case 'weBinary'://FIMXE remove
 				return null;
 			case "weNavigation":
 				return NAVIGATION_TABLE;
@@ -206,24 +208,24 @@ class we_exim_XMLExIm{
 		}
 	}
 
-	function prepareExport($ids){
-
+	//FIXME given parameter is not used in the call stack!
+	function prepareExport(array $ids = array()){
 		$this->RefTable = new we_exim_refTable();
 		$_preparer = new we_export_preparer($this->options, $this->RefTable);
 		$_preparer->prepareExport($ids);
 	}
 
-	static function getHeader($encoding = '', $type = ''){
+	static function getHeader($encoding = '', $type = '', $skipWE = false){
 		return '<?xml version="1.0" encoding="' . ($encoding ? : $GLOBALS['WE_BACKENDCHARSET']) . '" standalone="yes"?>' . "\n" .
-			we_backup_backup::weXmlExImHead . ' version="' . WE_VERSION . '" type="' . $type . '" xmlns:we="we-namespace">' . "\n";
+			($skipWE ? '' : we_backup_util::weXmlExImHead . ' version="' . WE_VERSION . '" type="' . $type . '" xmlns:we="we-namespace">' . "\n");
 	}
 
 	static function getFooter(){
-		return we_backup_backup::weXmlExImFooter;
+		return we_backup_util::weXmlExImFooter;
 	}
 
 	function getIDs($selIDs, $table, $with_dirs = false){
-		$ret = $tmp = array();
+		$tmp = array();
 		$db = new DB_WE();
 		$allow = $this->queryForAllowed($table);
 		if($selIDs){
@@ -251,22 +253,13 @@ class we_exim_XMLExIm{
 		return $db->getAll(true);
 	}
 
-	function getQueryParents($path){
-		$out = array();
-		while($path != '/' && $path){
-			$out[] = 'Path="' . $path . '"';
-			$path = dirname($path);
-		}
-		return $out ? implode(' OR ', $out) : '';
-	}
-
-	function queryForAllowed($table){
+		function queryForAllowed($table){
 		$db = new DB_WE();
 		$parentpaths = $wsQuery = array();
 		if(($ws = get_ws($table))){
-			$wsPathArray = id_to_path($ws, $table, $db, false, true);
+			$wsPathArray = id_to_path($ws, $table, $db, true);
 			foreach($wsPathArray as $path){
-				$wsQuery[] = " Path LIKE '" . $db->escape($path) . "/%' OR " . we_exim_XMLExIm::getQueryParents($path);
+				$wsQuery[] = ' Path LIKE "' . $db->escape($path) . '/%" OR ' . we_tool_treeDataSource::getQueryParents($path);
 				while($path != '/' && $path){
 					$parentpaths[] = $path;
 					$path = dirname($path);
@@ -276,7 +269,7 @@ class we_exim_XMLExIm{
 			$ac = we_users_util::getAllowedClasses($db);
 			foreach($ac as $cid){
 				$path = id_to_path($cid, OBJECT_TABLE);
-				$wsQuery[] = " Path LIKE '" . $db->escape($path) . "/%' OR Path='" . $db->escape($path) . "'";
+				$wsQuery[] = ' Path LIKE "' . $db->escape($path) . '/%" OR Path="' . $db->escape($path) . '"';
 			}
 		}
 
@@ -293,10 +286,10 @@ class we_exim_XMLExIm{
 				$selClasses = defined('OBJECT_FILES_TABLE') ? $this->getIDs($selClasses, OBJECT_TABLE, false) : '';
 			} else {
 				switch($art){
-					case "docs":
+					case 'docs':
 						$selDocs = $this->getIDs($selDocs, FILE_TABLE);
 						break;
-					case "objects":
+					case 'objects':
 						$selObjs = defined('OBJECT_FILES_TABLE') ? $this->getIDs($selObjs, OBJECT_FILES_TABLE) : "";
 						break;
 				}
@@ -304,11 +297,11 @@ class we_exim_XMLExIm{
 			return;
 		}
 		switch($type){
-			case "doctype":
+			case 'doctype':
 				$cat_sql = ($categories ? we_category::getCatSQLTail('', FILE_TABLE, true, $db, 'Category', $categories) : '');
 				if($dir != 0){
 					$workspace = id_to_path($dir, FILE_TABLE, $db);
-					$ws_where = ' AND (' . FILE_TABLE . ".Path LIKE '" . $db->escape($workspace) . "/%' OR " . FILE_TABLE . ".ID=" . $dir . ") ";
+					$ws_where = ' AND (' . FILE_TABLE . '.Path LIKE "' . $db->escape($workspace) . '/%" OR ' . FILE_TABLE . '.ID="' . $dir . '") ';
 				} else {
 					$ws_where = '';
 				}
@@ -328,7 +321,7 @@ class we_exim_XMLExIm{
 	}
 
 	function isBinary(){
-
+		return false;
 	}
 
 	function saveObject(&$object){

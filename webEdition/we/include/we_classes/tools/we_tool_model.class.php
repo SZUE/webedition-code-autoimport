@@ -22,13 +22,11 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_tool_model extends weModelBase{
-
+class we_tool_model extends we_base_model{
 	var $ID = 0;
 	var $Text;
 	var $ParentID = 0;
 	var $Path;
-	var $Icon;
 	var $IsFolder;
 	var $ModelClassName = __CLASS__;
 	var $toolName = '';
@@ -48,7 +46,7 @@ class we_tool_model extends weModelBase{
 		}
 	}
 
-	function filenameNotValid(){
+	function filenameNotValid($text = ''){
 		return false;
 	}
 
@@ -133,7 +131,6 @@ class we_tool_model extends weModelBase{
 
 	function setIsFolder($value){
 		$this->IsFolder = $value;
-		$this->Icon = ($value ? we_base_ContentTypes::FOLDER_ICON : we_base_ContentTypes::FILE_ICON);
 	}
 
 	function deleteChilds(){

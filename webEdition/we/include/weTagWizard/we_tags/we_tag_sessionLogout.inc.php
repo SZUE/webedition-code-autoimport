@@ -7,7 +7,7 @@ $this->Module = 'customer';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 if(defined('FILE_TABLE')){
-	$this->Attributes[] = new weTagData_selectorAttribute('id', FILE_TABLE, 'text/webedition', true, '');
+	$this->Attributes[] = new weTagData_selectorAttribute('id', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, true, '');
 }
 $this->Attributes[] = new weTagData_choiceAttribute('target', array(new weTagDataOption('_top'),
 	new weTagDataOption('_parent'),

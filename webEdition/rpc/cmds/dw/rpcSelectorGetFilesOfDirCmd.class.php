@@ -22,11 +22,11 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcSelectorGetFilesOfDirCmd extends rpcCmd{
+class rpcSelectorGetFilesOfDirCmd extends we_rpc_cmd{
 
 	function execute(){
 
-		$resp = new rpcResponse();
+		$resp = new we_rpc_response();
 
 		$queryClass = new we_selector_query();
 		$table = we_base_request::_(we_base_request::TABLE, 'table', FILE_TABLE);
@@ -55,9 +55,9 @@ class rpcSelectorGetFilesOfDirCmd extends rpcCmd{
 
 		$first = true;
 
-		$data = "_files = new Object();";
+		$data = "_files = {};";
 		// 1st step, select this folder if folders are selectable
-		if(in_array("folder", $types)){
+		if(in_array('folder', $types)){
 			$data .= '_files["id_' . $id . '"] = {"type":"folder","text":".","id":"' . $id . '"};';
 		}
 		// one folder, or up to root

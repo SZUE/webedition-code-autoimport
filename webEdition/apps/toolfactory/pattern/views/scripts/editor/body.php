@@ -70,28 +70,15 @@ $form->addElement($newTab);
 
 $htmlPage = we_ui_layout_HTMLPage::getInstance();
 
-$htmlPage->addJSFile(JS_DIR.'windows.js');
-$htmlPage->addJSFile(JS_DIR.'we_showMessage.js');
-$htmlPage->addJSFile(JS_DIR.'images.js');
-$htmlPage->addJSFile(JS_DIR.'libs/yui/yahoo-min.js');
-$htmlPage->addJSFile(JS_DIR.'libs/yui/event-min.js');
-$htmlPage->addJSFile(JS_DIR.'libs/yui/connection-min.js');
-$htmlPage->addJSFile(JS_DIR.'libs/yui/json-min.js');
-$htmlPage->addJSFile(LIB_DIR.'we/core/JsonRpc.js');
+$htmlPage->addJSFile(LIB_DIR . 'additional/yui/JsonRpc.js');
 
 $filenameEmptyMessage = we_util_Strings::quoteForJSString($translate->_('The name must not be empty!'), false);
 
-$filenameEmptyMessageCall = we_core_MessageReporting::getShowMessageCall(
-				$filenameEmptyMessage,
-				we_core_MessageReporting::kMessageWarning
-		);
+$filenameEmptyMessageCall = we_core_MessageReporting::getShowMessageCall(				$filenameEmptyMessage,				we_core_MessageReporting::kMessageWarning		);
 
 $folderNotValidMessage = we_util_Strings::quoteForJSString($translate->_('The folder could not be saved.'), false);
 
-$folderNotValidMessageCall = we_core_MessageReporting::getShowMessageCall(
-				$folderNotValidMessage,
-				we_core_MessageReporting::kMessageWarning
-		);
+$folderNotValidMessageCall = we_core_MessageReporting::getShowMessageCall(				$folderNotValidMessage,				we_core_MessageReporting::kMessageWarning		);
 
 
 $js = '
@@ -139,7 +126,7 @@ weCmdController.register("save_body", "app_'.$appName.'_save", null, self, funct
 	var checkACFields = function() {
 		if(YAHOO && YAHOO.autocoml && YAHOO.autocoml.checkACFields()) {
 			if(YAHOO.autocoml.checkACFields().running) {
-				setTimeout(function(){checkACFields()}, 100);
+				setTimeout(checkACFields, 100);
 				return false;
 			}
 			else {
@@ -173,7 +160,6 @@ $htmlPage->addElement($form);
 
 $htmlPage->addInlineJS($js);
 $htmlPage->setBodyAttributes(array('class' => 'weEditorBody', 'onload' => 'loaded=1;'));
-$htmlPage->addJSFile(JS_DIR.'we_showMessage.js');
 
 echo $htmlPage->getHTML();
 

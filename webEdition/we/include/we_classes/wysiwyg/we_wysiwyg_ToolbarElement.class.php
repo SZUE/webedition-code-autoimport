@@ -19,7 +19,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_wysiwyg_ToolbarElement{
-
 	var $width;
 	var $height;
 	var $cmd;
@@ -27,6 +26,7 @@ class we_wysiwyg_ToolbarElement{
 	var $classname = __CLASS__;
 	var $showMe = false;
 	var $showMeInContextmenu = false;
+	var $isSeparator = false;
 
 	function __construct($editor, $cmd, $width, $height = ""){
 		$this->editor = $editor;

@@ -31,7 +31,7 @@ abstract class we_captcha_captcha{
 	 */
 	static function display($image, $type = "gif"){
 
-		$code = "";
+		$code = '';
 		$im = $image->get($code);
 		// save the code to the memory
 		self::save($code);
@@ -42,12 +42,12 @@ abstract class we_captcha_captcha{
 
 		switch($type){
 			case 'jpg':
-				header("Content-type: image/jpeg");
+				header('Content-type: image/jpeg');
 				imagejpeg($im);
 				imagedestroy($im);
 				return;
 			case 'png':
-				header("Content-type: image/png");
+				header('Content-type: image/png');
 				imagepng($im);
 				imagedestroy($im);
 				return;
@@ -60,15 +60,14 @@ abstract class we_captcha_captcha{
 		}
 	}
 
-	static function check($captcha){
+	static function check($captcha, $type = 'captcha'){
 		static $valid = array();
 		if(isset($valid[$captcha])){
 			return true;
 		}
-		$db = new DB_WE();
+		$db = $GLOBALS['DB_WE'];
 		self::cleanup($db);
-		$db->query('DELETE FROM ' . CAPTCHA_TABLE . ' WHERE IP=x\'' . bin2hex(inet_pton(strstr($_SERVER['REMOTE_ADDR'], ':') ? $_SERVER['REMOTE_ADDR'] : '::ffff:' . $_SERVER['REMOTE_ADDR'])) . '\' AND BINARY code="' . $db->escape($captcha) . '" AND agent="' . md5($_SERVER['HTTP_USER_AGENT']) . '"', '', $db);
-
+		$db->query('DELETE FROM ' . CAPTCHA_TABLE . ' WHERE IP=x\'' . bin2hex(inet_pton(strstr($_SERVER['REMOTE_ADDR'], ':') ? $_SERVER['REMOTE_ADDR'] : '::ffff:' . $_SERVER['REMOTE_ADDR'])) . '\' AND typ="' . $db->escape($type) . '" AND BINARY code="' . $db->escape($captcha) . '" AND agent=x\'' . $db->escape(md5($_SERVER['HTTP_USER_AGENT']), true) . '\'', '', $db);
 		if($db->affected_rows()){
 			$valid[$captcha] = true;
 			return true;
@@ -77,7 +76,7 @@ abstract class we_captcha_captcha{
 	}
 
 	static function cleanup(we_database_base $db){
-		$db->query('DELETE FROM ' . CAPTCHA_TABLE . ' WHERE created<NOW()-INTERVAL 30 MINUTE');
+		$db->query('DELETE FROM ' . CAPTCHA_TABLE . ' WHERE valid<NOW()');
 	}
 
 	/**
@@ -86,14 +85,16 @@ abstract class we_captcha_captcha{
 	 * @param string $captcha
 	 * @return void
 	 */
-	static function save($captcha){
-		$db = new DB_WE();
+	static function save($captcha, $type = 'captcha', $validity = 1800){
+		$db = $GLOBALS['DB_WE'];
 		self::cleanup($db);
 //FIMXE: make IP bin save
 		$db->query('REPLACE INTO ' . CAPTCHA_TABLE . ' SET ' . we_database_base::arraySetter(array(
 				'IP' => inet_pton(strstr($_SERVER['REMOTE_ADDR'], ':') ? $_SERVER['REMOTE_ADDR'] : '::ffff:' . $_SERVER['REMOTE_ADDR']),
-				'agent' => md5($_SERVER['HTTP_USER_AGENT']),
+				'agent' => empty($_SERVER['HTTP_USER_AGENT']) ? '' : sql_function('x\'' . md5($_SERVER['HTTP_USER_AGENT']) . '\''),
+				'typ' => $type,
 				'code' => $captcha,
+				'valid' => sql_function('NOW()+INTERVAL ' . $validity . ' SECOND'),
 		)));
 	}
 

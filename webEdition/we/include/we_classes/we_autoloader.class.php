@@ -36,11 +36,13 @@ abstract class we_autoloader{
 		'backup' => 'we_exim/backup',
 		'banner' => 'we_modules/banner',
 		'base' => 'we_classes/base',
+		'cache' => 'we_classes/cache',
 		'database' => 'we_classes/database',
 		'captcha' => 'we_classes/captcha',
 		'chooser' => 'we_classes/chooser',
 		'customer' => 'we_modules/customer',
 		'dialog' => 'we_classes/dialog',
+		'doclist' => 'we_classes/doclist',
 		'document' => 'we_classes/contents',
 		'editor' => 'we_editors',
 		'exim' => 'we_exim',
@@ -48,6 +50,7 @@ abstract class we_autoloader{
 		'fileupload' => 'we_classes/fileupload',
 		'fragment' => 'we_classes/fragment',
 		'glossary' => 'we_modules/glossary',
+		'gui' => 'we_classes/js_gui',
 		'helpers' => 'we_classes/helpers',
 		'html' => 'we_classes/html',
 		'http' => 'we_classes/http',
@@ -61,6 +64,9 @@ abstract class we_autoloader{
 		'newsletter' => 'we_modules/newsletter',
 		'object' => 'we_modules/object',
 		'rebuild' => 'we_classes/rebuild',
+		'rpc' => 'we_classes/rpc',
+		'rpcCmd' => 'we_classes/rpc/cmd',
+		'rpcView' => 'we_classes/rpc/view',
 		'sdk' => 'we_classes/sdk',
 		'search' => 'we_tools/weSearch/class',
 		'selector' => 'we_classes/selector',
@@ -85,13 +91,12 @@ abstract class we_autoloader{
 		'Image_Transform' => 'lib/additional/pear/Image_Transform.class.php',
 		'Image_IPTC' => 'lib/additional/pear/Image_IPTC.class.php',
 		'lessc' => 'lib/additional/Less/lessc.inc.php',
-		'PEAR5' => 'lib/additional/pear/PEAR5.php',
 		'PEAR_Error' => 'lib/additional/pear/PEAR.php',
 		'PEAR' => 'lib/additional/pear/PEAR.php',
 		'Services_JSON_Error' => 'lib/additional/pear/Services_JSON.class.php',
 		'Services_JSON' => 'lib/additional/pear/Services_JSON.class.php',
-		'XML_Parser_Error' => 'lib/additional/pear/XML_Parser.class.php',
-		'XML_Parser' => 'lib/additional/pear/XML_Parser.class.php',
+		'XML_Parser2' => 'lib/additional/pear/XML_Parser.class.php',
+		'Less_Parser' => 'lib/additional/Less/Parser.php',
 	);
 	private static $classes = array(
 		'we_classes/contents' => array(
@@ -111,10 +116,11 @@ abstract class we_autoloader{
 			'we_textDocument' => 'we_textDocument.class.php',
 			'we_thumbnail' => 'we_thumbnail.class.php',
 			'we_webEditionDocument' => 'we_webEditionDocument.class.php',
+			'we_collection' => 'we_collection.class.php',
 		),
 		'we_classes' => array(
+			'doclistView' => 'doclistView.class.php',
 			'DB_WE' => 'database/DB_WE.inc.php', //pseudo-element which loads a wrapper, doesn't contain a real class!
-			'metadatatag' => 'listview/metadatatag.class.php',
 			'permissionhandler' => 'permissionhandler/permissionhandler.class.php',
 			'weBinary' => 'weBinary.class.php',
 			'we_category' => 'we_category.class.php',
@@ -122,8 +128,6 @@ abstract class we_autoloader{
 			'we_element' => 'we_element.class.php',
 			'we_history' => 'we_history.class.php',
 			'weMainTree' => 'weMainTree.class.php',
-			'weModelBase' => 'modules/weModelBase.class.php',
-			'weOrderContainer' => 'js_gui/weOrderContainer.class.php',
 			'we_progressBar' => 'we_progressBar.class.php',
 			'we_SEEM' => 'SEEM/we_SEEM.class.php',
 			'weSuggest' => 'weSuggest.class.php',
@@ -132,6 +136,7 @@ abstract class we_autoloader{
 			'weTree' => 'weTree.class.php',
 			'we_updater' => 'we_updater.class.php',
 			'weToolLookup' => 'tools/we_tool_lookup.class.php',
+			'we_message_reporting' => 'we_message_reporting.class.php',
 		),
 		'we_modules' => array(
 			'we_class_folder' => 'object/we_class_folder.class.php',
@@ -164,16 +169,10 @@ abstract class we_autoloader{
 			'weTagData_textAttribute' => 'weTagData_textAttribute.class.php',
 			'weTagData_typeAttribute' => 'weTagData_typeAttribute.class.php',
 		),
-		'we_doclist' => array(
-			'doclistView' => 'doclistView.class.php',
-		),
-		'we_message_reporting' => array(
-			'we_message_reporting' => 'we_message_reporting.class.php',
-		),
 	);
 
 	public static function loadZend($class_name){
-		//t_e('load zend beacause of', $class_name);
+		//t_e('load zend because of', $class_name);
 		if(!class_exists('Zend_Loader_Autoloader', false)){
 			require_once('Zend/Loader/Autoloader.php');
 			$loader = Zend_Loader_Autoloader::getInstance(); #3815
@@ -211,9 +210,9 @@ abstract class we_autoloader{
 				//t_e(WE_APPS_PATH.'wephpmyadmin/phpMyAdmin/libraries/'.$domain.'.class.php');
 				include(WE_APPS_PATH . 'wephpmyadmin/phpMyAdmin/libraries/' . $name . '.class.php');
 				return true;
-			/*case 'Less':
-				include_once(WE_LIB_PATH . 'additional/Less/Autoloader.php');
-				return Less_Autoloader::loadClass($class_name);*/
+			/* case 'Less':
+			  include_once(WE_LIB_PATH . 'additional/Less/Autoloader.php');
+			  return Less_Autoloader::loadClass($class_name); */
 			case 'Zend':
 				self::loadZend($class_name);
 				return false;
@@ -246,11 +245,9 @@ abstract class we_autoloader{
 	public static function finalLoad($class_name){
 		if(isset(self::$fallBack[$class_name])){
 			include(WEBEDITION_PATH . self::$fallBack[$class_name]);
-
 			return true;
-		} else {
-			t_e('info', 'we_autoloader: class ' . $class_name . ' not found');
 		}
+		t_e('notice', 'we_autoloader: class ' . $class_name . ' not found');
 	}
 
 }

@@ -27,11 +27,10 @@ function we_parse_tag_include($attribs, $c, array $attr){
 	if($type === 'template'){
 		$attr['_parsed'] = 'true';
 	}
-	return ($type !== 'template' ?
-					'<?php eval(' . we_tag_tagParser::printTag('include', $attribs) . ');?>' : //include documents
-					//(($path ?
-					'<?php if(($we_inc=' . we_tag_tagParser::printTag('include', $attr) . ')){include' . (weTag_getParserAttribute('once', $attr, false, true) ? '_once' : '') . '($we_inc);}; ?>'//include templates of ID's
-			);
+	return ($type === 'template' ?
+			'<?php if(($we_inc=' . we_tag_tagParser::printTag('include', $attr) . ')){include' . (weTag_getParserAttribute('once', $attr, false, true) ? '_once' : '') . '($we_inc);}; ?>' : //include templates of ID's
+			'<?php eval(' . we_tag_tagParser::printTag('include', $attribs) . ');?>' //include documents
+		);
 }
 
 function we_setBackVar($we_unique){
@@ -69,10 +68,6 @@ function we_setBackVar($we_unique){
 }
 
 function we_resetBackVar($we_unique){
-	/* 	if(!is_object($GLOBALS['we']['backVars'][$we_unique]['we_doc'])){
-	  t_e($we_unique, $GLOBALS['we']['backVars']);
-	  return;
-	  } */
 	$GLOBALS['we_doc'] = clone($GLOBALS['we']['backVars'][$we_unique]['we_doc']);
 	foreach($GLOBALS['we']['backVars'][$we_unique]['GLOBAL'] as $key => $val){
 		$GLOBALS[$key] = $val;
@@ -98,8 +93,8 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 			echo 'cannot use we:include with type="template" dynamically';
 			return '';
 		}
-		$ret = preg_replace('/.tmpl$/i', '.php', ($id ? id_to_path($id, TEMPLATES_TABLE) : str_replace('..', '', $path))); //filter rel. paths
-		return ($ret && $ret != '/' ? TEMPLATES_PATH . $ret : '');
+		$ret = rtrim(preg_replace('/.tmpl$/i', '.php', ($id ? id_to_path($id, TEMPLATES_TABLE) : str_replace('..', '', $path))), '/'); //filter rel. paths
+		return (empty($ret) ? '' : TEMPLATES_PATH . $ret);
 	}
 
 	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
@@ -128,18 +123,19 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 	if($name && !($id || $path)){
 		$type = weTag_getAttribute('kind', $attribs, we_base_link::TYPE_ALL, we_base_request::STRING);
 		$_name = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
-		$path = we_tag('href', array('name' => $_name, 'hidedirindex' => 'false', 'type' => $type, 'isInternal' => 1));
 		$nint = $name . we_base_link::MAGIC_INT_LINK;
-		$int = ($GLOBALS['we_doc']->getElement($nint) == '') ? 0 : $GLOBALS['we_doc']->getElement($nint);
-		$intID = $GLOBALS['we_doc']->getElement($nint . 'ID');
-		if($int && $intID){
-			$ct = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND Published>0');
+		$int = intval($GLOBALS['we_doc']->getElement($nint));
+		if($int && ($intID = intval($GLOBALS['we_doc']->getElement($nint . 'ID')))){
+			$id = $intID;
+			$path = '';
+		} else {
+			$path = we_tag('href', array('name' => $_name, 'hidedirindex' => 'false', 'type' => $type, 'isInternal' => 1));
 		}
 	}
 
 	if(
-			(!$id && !$path) ||
-			($GLOBALS['WE_MAIN_DOC']->ID && $GLOBALS['WE_MAIN_DOC']->ID == $id)//don't include same id
+		(!$id && !$path) ||
+		($GLOBALS['WE_MAIN_DOC']->ID && $GLOBALS['WE_MAIN_DOC']->ID == $id)//don't include same id
 	){
 		return '';
 	}
@@ -150,7 +146,7 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 				break; //don't include any unknown document
 			case we_base_ContentTypes::TEMPLATE:
 				if($GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW ||
-						$GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE){
+					$GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE){
 					break;
 				}
 			default:
@@ -180,7 +176,7 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 	$isSeemode = (we_tag('ifSeeMode'));
 	// check early if there is a document - if not the rest is never needed
 	if($gethttp){
-		$content = /* ($isSeemode ? getHTTP(getServerUrl(true), $realPath) : */ 'echo getHTTP(getServerUrl(true), \'' . $realPath . '\');'/* )' */;
+		$content = 'echo getHTTP(getServerUrl(true), \'' . $realPath . '\');';
 	} else {
 		$realPath = WEBEDITION_PATH . '..' . $realPath; //(symlink) webEdition always points to the REAL DOC-Root!
 		if(!file_exists($realPath) || !is_file($realPath)){
@@ -188,20 +184,19 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 			return '';
 		}
 		//check Customer-Filter on static documents
-		$id = intval($id ? : (isset($intID) ? $intID : 0));
 		if(defined('CUSTOMER_TABLE') && $id){
 			$filter = we_customer_documentFilter::getFilterByIdAndTable($id, FILE_TABLE, $GLOBALS['DB_WE']);
 
 			if(is_object($filter)){
-				if($filter->accessForVisitor($intID, $ct, true) != we_customer_documentFilter::ACCESS){
+				if($filter->accessForVisitor($id, $ct, true) != we_customer_documentFilter::ACCESS){
 					return '';
 				}
 			}
 		}
-		$content = /* ($isSeemode ? file_get_contents($realPath) : */ 'include' . ($once ? '_once' : '') . '(\'' . $realPath . '\');'/* ) */;
+		$content = 'include' . ($once ? '_once' : '') . '(\'' . $realPath . '\');';
 	}
 
-	if(isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars'])){
+	if(!empty($GLOBALS['we']['backVars'])){
 		end($GLOBALS['we']['backVars']);
 		$we_unique = key($GLOBALS['we']['backVars']) + 1;
 		$GLOBALS['we']['backVars'][$we_unique] = array();
@@ -212,8 +207,8 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 		);
 	}
 
-	return 'we_setBackVar(' . $we_unique . ');' .
-			$content .
-			($isSeemode && $seeMode && ($id || $path) ? 'echo \'' . we_SEEM::getSeemAnchors(($id ? : path_to_id($path)), 'include') . '\';' : '') .
-			'we_resetBackVar(' . $we_unique . ');';
+	we_setBackVar($we_unique);
+	return $content .
+		($isSeemode && $seeMode && ($id || $path) ? 'echo \'' . we_SEEM::getSeemAnchors(($id ? : path_to_id($path, FILE_TABLE, $GLOBALS['DB_WE'])), 'include') . '\';' : '') .
+		'we_resetBackVar(' . $we_unique . ');';
 }

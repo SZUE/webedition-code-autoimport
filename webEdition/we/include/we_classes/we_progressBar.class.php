@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,30 +22,19 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-define("PROGRESS_H_IMAGE", IMAGE_DIR . 'balken.gif');
-define("PROGRESS_H_IMAGE_BG", IMAGE_DIR . 'balken_bg.gif');
-
-define("PROGRESS_V_IMAGE", IMAGE_DIR . 'balken_v.gif');
-define("PROGRESS_V_IMAGE_BG", IMAGE_DIR . 'balken_bg_v.gif');
-
 class we_progressBar{
 	var $progress = 0;
 	var $texts = array();
-	var $orientation = 0;
-	var $progress_image = PROGRESS_H_IMAGE;
-	var $progress_image_bg = PROGRESS_H_IMAGE_BG;
 	var $stud_width = 10;
 	var $stud_len = 100;
 	var $showProgressText = true;
 	var $progressTextPlace = 1;
-	var $showBack = true;
 	var $callback_code = "";
 	var $callback_timeout = "";
 	var $name = "";
 
-	public function __construct($progress = 0, $orientation = 0, $showProgressText = true){
+	public function __construct($progress = 0, $showProgressText = true){
 		$this->setProgress($progress);
-		$this->setOrientation($orientation);
 		$this->showProgressText = $showProgressText;
 	}
 
@@ -76,21 +66,18 @@ function setProgressText' . $this->name . '(name,text){
 
 function setProgress' . $this->name . '(progress){
 	var koef=' . ($this->stud_len / 100) . ';' .
-				$frame . 'document.images["progress_image' . $this->name . '"].' . ($this->orientation ? 'height' : 'width') . '=koef*progress;' .
-				($this->showBack ?
-					$frame . 'document.images["progress_image_bg' . $this->name . '"].' . ($this->orientation ? 'height' : 'width') . '=(koef*100)-(koef*progress);' :
-					''
-				) .
+				$frame . 'document.getElementById("progress_image' . $this->name . '").style.width=koef*progress+"px";' .
+				$frame . 'document.getElementById("progress_image_bg' . $this->name . '").style.width=(koef*100)-(koef*progress)+"px";' .
 				($this->showProgressText ?
 					'setProgressText' . $this->name . '("progress_text' . $this->name . '",progress+"%");' :
 					'') .
 				($this->callback_code ?
-					'if(progress<100) to=setTimeout(\'' . $this->callback_code . '\',' . $this->callback_timeout . ');
+					'if(progress<100) to=setTimeout(function(){' . $this->callback_code . '},' . $this->callback_timeout . ');
 							else var to=clearTimeout(to);
 					' : '') . '
 }' .
 				($this->callback_code ?
-					'var to=setTimeout(\'' . $this->callback_code . '\',' . $this->callback_timeout . ');' :
+					'var to=setTimeout(function(){' . $this->callback_code . '},' . $this->callback_timeout . ');' :
 					'')
 		);
 	}
@@ -107,25 +94,10 @@ function setProgress' . $this->name . '(progress){
 		$this->name = $name;
 	}
 
-	private function setOrientation($ort = 0){
-		$this->orientation = $ort;
-		$this->setProgresImages(($ort ? PROGRESS_V_IMAGE : PROGRESS_H_IMAGE), ($ort ? PROGRESS_V_IMAGE_BG : PROGRESS_H_IMAGE_BG));
-	}
-
-	private function setProgresImages($image = "", $image_bg = ""){
-		if($image){
-			$this->progress_image = $image;
-		}
-		if($image_bg){
-			$this->progress_image_bg = $image_bg;
-		}
-	}
-
 	public function setCallback($code, $timeout){
+		t_e('callback for pb set');
 		$this->callback_code = $code;
-		$this->callback_timeout = $code;
-
-		$this->callback = 'var to=setTimeout("' . $code . '",' . $timeout . ');';
+		$this->callback_timeout = $timeout;
 	}
 
 	public function setStudWidth($stud_width = 10){
@@ -144,10 +116,6 @@ function setProgress' . $this->name . '(progress){
 		$this->stud_len = $len;
 	}
 
-	function setBackVisible($visible = true){
-		$this->showBack = $visible;
-	}
-
 	function setProgressTextVisible($visible = true){
 		$this->showProgressText = $visible;
 	}
@@ -156,7 +124,7 @@ function setProgress' . $this->name . '(progress){
 		$this->texts = array();
 	}
 
-	public function getHTML(){
+	public function getHTML($class = '', $style = ''){
 		$left = $right = $top = $bottom = '';
 
 		if($this->showProgressText){
@@ -166,18 +134,16 @@ function setProgress' . $this->name . '(progress){
 		foreach($this->texts as $text){
 			switch($text["place"]){
 				case 0:
-					$top.='<td ' . ($text["name"] ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . '" style="color:' . $text["color"] . ';' . ($text["bold"] ? "font-weight:bold" : "" ) . '">' . $text["text"] . '</td>' .
-						'<td>' . we_html_tools::getPixel(5, $text["height"]) . '</td>';
+					$top.='<td ' . ($text["name"] ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . ($text["bold"] ? " bold" : "" ) . '" style="line-height:12px;color:' . $text["color"] . ';margin-right:5px;">' . $text["text"] . '</td>';
 					break;
 				case 1:
-					$right.='<td ' . ($text["name"] ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . '" style="color:' . $text["color"] . ';' . ($text["bold"] ? "font-weight:bold" : "" ) . '">' . $text["text"] . '</td>';
+					$right.='<td ' . ($text["name"] ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . $text["class"] . ($text["bold"] ? " bold" : "" ) . '" style="line-height:12px;color:' . $text["color"] . ';padding-left:5px;">' . $text["text"] . '</td>';
 					break;
 				case 2:
-					$bottom.='<td ' . ($text["name"] ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . '" style="color:' . $text["color"] . ';' . ($text["bold"] ? "font-weight:bold" : "" ) . '">' . $text["text"] . '</td>' .
-						'<td>' . we_html_tools::getPixel(5, $text["height"]) . '</td>';
+					$bottom.='<td ' . ($text["name"] ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . $text["class"] . ($text["bold"] ? " bold" : "" ) . '" style="line-height:12px;color:' . $text["color"] . ';margin-right:5px;">' . $text["text"] . '</td>';
 					break;
 				case 3:
-					$left.='<td ' . ($text["name"] ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . '" style="color:' . $text["color"] . ';' . ($text["bold"] ? "font-weight:bold" : "" ) . '">' . $text["text"] . '</td>';
+					$left.='<td ' . ($text["name"] ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . $text["class"] . ($text["bold"] ? " bold" : "" ) . '" style="line-height:12px;color:' . $text["color"] . ';margin-right:5px;">' . $text["text"] . '</td>';
 					break;
 			}
 		}
@@ -186,27 +152,14 @@ function setProgress' . $this->name . '(progress){
 		$progress_len = ($this->stud_len / 100) * $this->progress;
 		$rest_len = $this->stud_len - $progress_len;
 
-		return
-			($top ?
-				'<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr>' . $top . '</tr></table>' :
-				'') .
-			'<table style="border-spacing: 0px;border-style:none;" cellpadding="0" >
-			<tr>' . ($left ? $left . '<td>' . we_html_tools::getPixel(5, 1) . '</td>' : '') .
-			($this->orientation ?
-				'<td><table border="0" cellpadding="0" cellspacing="0">' . ($this->showBack ? '<tr><td><img name="progress_image_bg" src="' . $this->progress_image_bg . '" height="' . $rest_len . '" width="' . $this->stud_width . '" /></td></tr>' : "") . '<tr><td><img  name="progress_image" src="' . $this->progress_image . '" height="' . $progress_len . '" width="' . $this->stud_width . '" /></td></tr></table></td>' :
-				'<td><img name="progress_image' . $this->name . '" src="' . $this->progress_image . '" width="' . $progress_len . '" height="' . $this->stud_width . '" /></td>' .
-				($this->showBack ?
-					'<td><img  name="progress_image_bg' . $this->name . '" src="' . $this->progress_image_bg . '" width="' . $rest_len . '" height="' . $this->stud_width . '" /></td>' :
-					""
-				)
-			) .
-			($right ?
-				"<td>" . we_html_tools::getPixel(5, 1) . "</td>" . $right :
-				""
-			) .
+		return '<table class="default ' . $class . '" style="display:inline-table;font-size: 1px;line-height: 0;' . $style . '">' . ($top ?
+				'<tr>' . $top . '</tr>' : '') .
+			'<tr>' . $left .
+			'<td><div id="progress_image' . $this->name . '" class="progress_image" style="width:' . $progress_len . 'px;height:' . ($this->stud_width - 2) . 'px;"></div><div id="progress_image_bg' . $this->name . '" class="progress_image_bg" style="width:' . $rest_len . 'px;height:' . ($this->stud_width - 2) . 'px;"></div></td>' .
+			$right .
 			'</tr></table>' .
 			($bottom ?
-				'<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr>' . $bottom . '</tr></table>' :
+				'<table class="default"><tr>' . $bottom . '</tr></table>' :
 				''
 			);
 	}

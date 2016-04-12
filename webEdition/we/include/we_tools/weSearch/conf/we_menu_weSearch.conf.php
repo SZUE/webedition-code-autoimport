@@ -23,7 +23,7 @@
  */
 require (WE_INCLUDES_PATH . 'we_tools/weSearch/conf/meta.conf.php');
 
-$we_menu_weSearch = array(
+return array(
 	'search' => array(
 		'text' => g_l('searchtool', '[menu_suche]'),
 	),
@@ -51,6 +51,14 @@ $we_menu_weSearch = array(
 		'cmd' => 'tool_' . $metaInfo['name'] . '_new_forObjects',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
 		'hide' => (defined('OBJECT_FILES_TABLE') && defined('OBJECT_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES'))
+	),
+	array(
+		'text' => g_l('searchtool', '[forMedia]'),
+		'parent' => 'new',
+		'cmd' => 'tool_' . $metaInfo['name'] . '_new_forMedia',
+		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
+		'enabled' => 1,
+		'hide' => !permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')
 	),
 	array(
 		'text' => g_l('searchtool', '[menu_advSearch]'),

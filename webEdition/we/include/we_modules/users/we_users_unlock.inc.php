@@ -27,7 +27,7 @@ we_html_tools::protect();
 // prepare the queries, 4 as maximum.
 $_ids = we_base_request::_(we_base_request::INTLISTA, 'we_cmd', array(), 1); // we_cmd[1] is commaseperated list of ids
 //FIXME: make tblList???
-$_tables = explode(',', we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 3)); // we_cmd[3] is commaseparated list of tables
+$_tables = explode(',', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3)); // we_cmd[3] is commaseparated list of tables
 $_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', null, 4); // we_cmd[4] is a single transaction, to delete data from session
 
 $queries = array();
@@ -44,7 +44,7 @@ if($_transaction){ // clean session
 }
 
 for($i = 0; $i < count($_ids); $i++){
-	if($_tables[$i] && isset($_ids[$i]) && $_ids[$i]){
+	if($_tables[$i] && !empty($_ids[$i])){
 		$queries[$_tables[$i]][] = $_ids[$i];
 	}
 }

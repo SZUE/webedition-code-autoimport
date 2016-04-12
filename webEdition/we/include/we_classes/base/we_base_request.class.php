@@ -25,6 +25,8 @@
 class we_base_request{
 	private static $allTables = array();
 
+	const NOT_VALID = '__NOT_VALID__'; // to be used as default just for indicating that is IS an default
+
 	/* converts an csv of ints to an array */
 	const INTLISTA = 'intListA';
 	const INT = 'int';
@@ -51,13 +53,12 @@ class we_base_request{
 	const EMAILLIST = 'emailL';
 	const EMAILLISTA = 'emailLA';
 //only temporary
-	const STRINGC = 'stringC';
 	const RAW_CHECKED = 'rawC';
 	// the following types do not sanitize, so they will allow spaces,...
 	const WEFILE = 'wefile';
 	const WEFILELIST = 'wefilelist';
 	const WEFILELISTA = 'wefilelista';
-//remove these types!!!
+//remove these types!
 	const JS = 'js';
 	const SERIALIZED = 'serial';
 	const SERIALIZED_KEEP = 'serialK';
@@ -92,7 +93,7 @@ class we_base_request{
 				$var = we_unserialize($var);
 				return;
 			case self::SERIALIZED_KEEP:
-				$var = serialize(we_unserialize($var));
+				//$var = serialize(we_unserialize($var));
 				return;
 			case self::CMD:
 				$var = strpos($var, 'WECMDENC_') !== false ?
@@ -136,6 +137,8 @@ class we_base_request{
 				return;
 			case self::EMAILLISTA:
 			case self::EMAILLIST:
+				//FIXME we need to improve this for "test, x" <a@b.de>, "test2, x" <b@d.de>
+				//preg_match_all('/("[\S\s]+"\s*|[^,"<>@]*\s+|)<?([^@<>,]*)@([a-zA-Z\d.-]+)>?/', $mail, $regs,PREG_SET_ORDER);
 				$mails = array_map('trim', explode(',', str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $var)));
 				$regs = array();
 				foreach($mails as &$mail){
@@ -207,7 +210,7 @@ class we_base_request{
 				if(preg_match('-(' . we_base_link::TYPE_INT_PREFIX . '|' . we_base_link::TYPE_MAIL_PREFIX . '|' . we_base_link::TYPE_OBJ_PREFIX . '|' . we_base_link::TYPE_THUMB_PREFIX . ')-', $var)){
 					return;
 				}
-				$urls = parse_url(urldecode($var));
+				$urls = parse_url($var); //removed urldecode due to %20 elemination in paths
 				if(!empty($urls['host'])){
 					$urls['host'] = (function_exists('idn_to_ascii') ? idn_to_ascii($urls['host']) : $urls['host']);
 				}
@@ -218,7 +221,7 @@ class we_base_request{
 				}
 				$var = self::unparse_url($urls);
 				return;
-			case self::STRINGC:
+			case self::STRING:
 			case self::STRING://strips tags
 				$var = filter_var($var, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 				return;
@@ -266,7 +269,7 @@ class we_base_request{
 		$var = $_REQUEST;
 		$args = func_get_args();
 		unset($args[0], $args[2]);
-		if(false && isset($_SESSION['user']['isWeSession']) && $_SESSION['user']['isWeSession'] && WE_VERSION_SUPP){
+		if(false && !empty($_SESSION['user']['isWeSession']) && WE_VERSION_SUPP){
 			$argname = implode('.', $args);
 			//reduce duplicate requests on the same global scope
 			static $requests = array();
@@ -299,7 +302,7 @@ class we_base_request{
 			  break;
 			  case self::CMD://this must change&is ok!
 			  case self::RAW_CHECKED:
-			  case self::STRINGC:
+			  case self::STRING:
 			  case self::STRING_LIST:
 			  case self::INTLISTA:
 			  //we didn't change anything.
@@ -382,6 +385,10 @@ class we_base_request{
 		self::$allTables = array_merge(self::$allTables, $tables);
 	}
 
+	public static function getAllTables(){
+		return self::$allTables;
+	}
+
 	/**
 	 * @internal
 	 * @param type $str
@@ -392,16 +399,17 @@ class we_base_request{
 	}
 
 	private static function unparse_url($parsed_url){
-		$scheme = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
-		$host = isset($parsed_url['host']) ? $parsed_url['host'] : '';
-		$port = isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '';
 		$user = isset($parsed_url['user']) ? $parsed_url['user'] : '';
 		$pass = isset($parsed_url['pass']) ? ':' . $parsed_url['pass'] : '';
-		$pass = ($user || $pass) ? "$pass@" : '';
-		$path = isset($parsed_url['path']) ? $parsed_url['path'] : '';
-		$query = isset($parsed_url['query']) ? '?' . $parsed_url['query'] : '';
-		$fragment = isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : '';
-		return "$scheme$user$pass$host$port$path$query$fragment";
+
+		return
+			(isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '') .
+			(isset($parsed_url['host']) ? $parsed_url['host'] : '') .
+			(isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '') .
+			($user || $pass ? $pass . '@' : '') .
+			(isset($parsed_url['path']) ? $parsed_url['path'] : '') .
+			(isset($parsed_url['query']) ? '?' . $parsed_url['query'] : '') .
+			(isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : '');
 	}
 
 }

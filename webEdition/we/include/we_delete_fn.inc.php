@@ -26,7 +26,7 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 t_e('deprecated', 'call of ' . __FILE__ . ' is deprecated and will be removed. Use we_base_delete::deleteEntry() instead of deleteEntry()');
-$notprotect = isset($GLOBALS['NOT_PROTECT']) && $GLOBALS['NOT_PROTECT'] && (!we_base_request::_(we_base_request::BOOL, 'NOT_PROTECT'));
+$notprotect = !empty($GLOBALS['NOT_PROTECT']) && (!we_base_request::_(we_base_request::BOOL, 'NOT_PROTECT'));
 
 //this file is only existent for compatibility reasons
 

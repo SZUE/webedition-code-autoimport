@@ -20,7 +20,7 @@
  */
 function we_tag_ifNewsletterSalutation($attribs){
 	if(($foo = attributFehltError($attribs, array('type' => true, 'match' => false), __FUNCTION__))){
-		print($foo);
+		echo $foo;
 		return false;
 	}
 	$match = weTag_getParserAttribute('match', $attribs);

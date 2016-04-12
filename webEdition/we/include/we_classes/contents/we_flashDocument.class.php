@@ -24,7 +24,7 @@
  */
 /*  a class for handling flashDocuments. */
 
-class we_flashDocument extends we_document_video{
+class we_flashDocument extends we_document_deprecatedVideo{
 	/* Parameternames which are placed within the object-Tag */
 	var $ObjectParamNames = array('align', 'border', 'id', 'height', 'hspace', 'name', 'width', 'vspace', 'only', 'style');
 
@@ -70,7 +70,7 @@ class we_flashDocument extends we_document_video{
 
 	/* gets the HTML for including in HTML-Docs */
 
-	function getHtml($dyn = false){
+	function getHtml($dyn = false, $preload = false){
 		$_data = $this->getElement('data');
 		if($this->ID || ($_data && !is_dir($_data) && is_readable($_data))){
 			$pluginspage = $this->getElement('Pluginspage') ? : 'http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash';
@@ -160,7 +160,7 @@ class we_flashDocument extends we_document_video{
 			$this->html = getHtmlTag('object', $attribs, $this->html . $altContent);
 			if(isset($attribs['only'])){
 				$this->html = $attribs[$attribs['only']];
-			} else if(isset($attribs['pathonly']) && $attribs['pathonly']){
+			} else if(!empty($attribs['pathonly'])){
 				$this->html = $src;
 			}
 		} else {
@@ -170,57 +170,35 @@ class we_flashDocument extends we_document_video{
 	}
 
 	function formProperties(){
-		return '<table style="border-spacing: 0px;border-style:none" cellpadding="0">
-	<tr valign="top">
-		<td>' . $this->formInputInfo2(155, "width", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"", "origwidth") . '</td>
-		<td>' . we_html_tools::getPixel(18, 2) . '</td>
-		<td>' . $this->formInputInfo2(155, "height", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"", "origheight") . '</td>
-		<td>' . we_html_tools::getPixel(18, 2) . '</td>
+		return '<table class="default propertydualtable">
+	<tr>
+		<td>' . $this->formInputInfo2(155, "width", 10, "attrib", 'onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"', "origwidth") . '</td>
+		<td>' . $this->formInputInfo2(155, "height", 10, "attrib", 'onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"', "origheight") . '</td>
 		<td>' . $this->formSelectElement(155, "scale", array(
 				"" => "",
 				"showall" => g_l('global', '[showall]'),
 				"noborder" => g_l('global', '[noborder]'),
 				"exactfit" => g_l('global', '[exactfit]')
-				), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
+				), "attrib", 1, array('onchange' => 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);')) . '</td>
 	</tr>
-	<tr valign="top">
-		<td colspan="5">' . we_html_tools::getPixel(2, 5) . '</td>
+	<tr>
+		<td>' . $this->formInput2(155, "hspace", 10, "attrib", 'onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"') . '</td>
+		<td>' . $this->formInput2(155, "vspace", 10, "attrib", 'onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"') . '</td>
+		<td>' . $this->formInput2(155, "name", 10, "attrib", 'onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"') . '</td>
 	</tr>
-	<tr valign="top">
-		<td>' . $this->formInput2(155, "hspace", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-		<td>' . we_html_tools::getPixel(18, 2) . '</td>
-		<td>' . $this->formInput2(155, "vspace", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-		<td>' . we_html_tools::getPixel(18, 2) . '</td>
-		<td>' . $this->formInput2(155, "name", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
+	<tr>
+		<td>' . $this->formSelectElement(155, "play", array("" => g_l('global', '[true]'), "false" => g_l('global', '[false]')), "attrib", 1, array('onchange' => 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);')) . '</td>
+		<td>' . $this->formSelectElement(155, "quality", array("" => "", "low" => "low", "high" => "high", "autohigh" => "autohigh", "autolow" => "autolow", "best" => "best"), "attrib", 1, array('onchange' => 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);')) . '</td>
+		<td>' . $this->formColor(155, "bgcolor", "attrib") . '</td>
 	</tr>
-	<tr valign="top">
-		<td colspan="5">' . we_html_tools::getPixel(2, 5) . '</td>
+	<tr>
+		<td>' . $this->formSelectElement(155, "align", array("" => "", "left" => g_l('global', '[left]'), "right" => g_l('global', '[right]'), "top" => g_l('global', '[top]'), "bottom" => g_l('global', '[bottom]')), "attrib", 1, array('onchange' => 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);')) . '</td>
+		<td>' . $this->formSelectElement(155, "salign", array("" => "", "l" => g_l('global', '[left]'), "r" => g_l('global', '[right]'), "t" => g_l('global', '[top]'), "b" => g_l('global', '[bottom]'), "tl" => g_l('global', '[topleft]'), "tr" => g_l('global', '[topright]'), "bl" => g_l('global', '[bottomleft]'), "br" => g_l('global', '[bottomright]')), "attrib", 1, array('onchange' => 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);')) . '</td>
+		<td>' . $this->formSelectElement(155, "loop", array("" => g_l('global', '[true]'), "false" => g_l('global', '[false]')), "attrib", 1, array('onchange' => 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);')) . '</td>
 	</tr>
-	<tr valign="top">
-		<td>' . $this->formSelectElement(155, "play", array("" => g_l('global', '[true]'), "false" => g_l('global', '[false]')), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
-		<td>' . we_html_tools::getPixel(18, 2) . '</td>
-		<td>' . $this->formSelectElement(155, "quality", array("" => "", "low" => "low", "high" => "high", "autohigh" => "autohigh", "autolow" => "autolow", "best" => "best"), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
-		<td>' . we_html_tools::getPixel(18, 2) . '</td>
-		<td>' . $this->formColor(155, "bgcolor", 25, "attrib") . '</td>
-	</tr>
-	<tr valign="top">
-		<td colspan="5">' . we_html_tools::getPixel(2, 5) . '</td>
-	</tr>
-	<tr valign="top">
-		<td>' . $this->formSelectElement(155, "align", array("" => "", "left" => g_l('global', '[left]'), "right" => g_l('global', '[right]'), "top" => g_l('global', '[top]'), "bottom" => g_l('global', '[bottom]')), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
-		<td>' . we_html_tools::getPixel(18, 2) . '</td>
-		<td>' . $this->formSelectElement(155, "salign", array("" => "", "l" => g_l('global', '[left]'), "r" => g_l('global', '[right]'), "t" => g_l('global', '[top]'), "b" => g_l('global', '[bottom]'), "tl" => g_l('global', '[topleft]'), "tr" => g_l('global', '[topright]'), "bl" => g_l('global', '[bottomleft]'), "br" => g_l('global', '[bottomright]')), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
-		<td>' . we_html_tools::getPixel(18, 2) . '</td>
-		<td>' . $this->formSelectElement(155, "loop", array("" => g_l('global', '[true]'), "false" => g_l('global', '[false]')), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
-	</tr>
-	<tr valign="top">
-		<td colspan="5">' . we_html_tools::getPixel(2, 5) . '</td>
-	</tr>
-	<tr valign="top">
-		<td>' . $this->formSelectElement(155, "wmode", array("" => "", "window" => "window", "opaque" => "opaque", "transparent" => "transparent"), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
-		<td>' . we_html_tools::getPixel(18, 2) . '</td>
+	<tr>
+		<td>' . $this->formSelectElement(155, "wmode", array("" => "", "window" => "window", "opaque" => "opaque", "transparent" => "transparent"), "attrib", 1, array('onchange' => 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);')) . '</td>
 		<td></td>
-		<td>' . we_html_tools::getPixel(18, 2) . '</td>
 		<td></td>
 	</tr>
 
@@ -229,18 +207,13 @@ class we_flashDocument extends we_document_video{
 	}
 
 	function formOther(){
-		return '<table style="border-spacing: 0px;border-style:none" cellpadding="0">
-	<tr valign="top">
-		<td>' . $this->formInputField("txt", "Pluginspage", "Pluginspage", 24, 388, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-	</tr>
-	<tr valign="top">
-		<td>' . $this->formInputField("txt", "Codebase", "Codebase", 24, 388, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-	</tr>
-</table>
-';
+		return '<table class="default">
+	<tr><td>' . $this->formInputField("txt", "Pluginspage", "Pluginspage", 24, 388, "", 'onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"') . '</td></tr>
+	<tr><td>' . $this->formInputField("txt", "Codebase", "Codebase", 24, 388, "", 'onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"') . '</td></tr>
+</table>';
 	}
 
-	function getThumbnail($width = 150, $height = 100){
+	protected function getThumbnail($width = 150, $height = 100){
 		$_width = $this->getElement('width');
 		$_height = $this->getElement('height');
 		$_scale = $this->getElement('scale');
@@ -411,8 +384,8 @@ class we_flashDocument extends we_document_video{
 							$_SESSION[$videoDataId]["id"] = $videoid;
 						}
 
-						$_SESSION[$videoDataId]["fileName"] = preg_replace('#^(.+)\..+$#', '$1', $tmp_Filename);
-						$_SESSION[$videoDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? preg_replace('#^.+(\..+)$#', '$1', $tmp_Filename) : '';
+						$_SESSION[$videoDataId]["fileName"] = preg_replace('#^(.+)\..+$#', '${1}', $tmp_Filename);
+						$_SESSION[$videoDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? preg_replace('#^.+(\..+)$#', '${1}', $tmp_Filename) : '';
 						$_SESSION[$videoDataId]["text"] = $_SESSION[$videoDataId]["fileName"] . $_SESSION[$videoDataId]["extension"];
 
 						$we_size = getimagesize($_SESSION[$videoDataId]["serverPath"]);

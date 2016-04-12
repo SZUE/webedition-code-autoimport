@@ -22,10 +22,10 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcSelectorSuggestCmd extends rpcCmd{
+class rpcSelectorSuggestCmd extends we_rpc_cmd{
 
 	function execute(){
-		$resp = new rpcResponse();
+		$resp = new we_rpc_response();
 		$cmd1 = we_base_request::_(we_base_request::FILE, 'we_cmd', false, 1);
 		$cmd2 = we_base_request::_(we_base_request::TABLE, 'we_cmd', false, 2);
 		if(!$cmd1 || !$cmd2){
@@ -33,7 +33,7 @@ class rpcSelectorSuggestCmd extends rpcCmd{
 		}
 
 		$selectorSuggest = new we_selector_query();
-		$contentTypes = explode(",", we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 3));
+		$contentTypes = explode(",", we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3));
 		$cmd4 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4);
 		$cmd5 = we_base_request::_(we_base_request::INT, 'we_cmd', '', 5);
 		if($cmd4 && $cmd5){

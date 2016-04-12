@@ -153,7 +153,7 @@ class we_xml_parser{
 		}
 		// Check if the given parameter is a url.
 		if(preg_match('/^(((f|ht){1}tp:\/\/)' .
-				'[-a-zA-Z0-9@:%_\+.~#?&\/\/=]+)/i', $file)){
+						'[-a-zA-Z0-9@:%_\+.~#?&\/\/=]+)/i', $file)){
 			// Read the content of the url.
 			$data = @implode('', @file($file));
 			if(!$data){
@@ -174,9 +174,9 @@ class we_xml_parser{
 
 	function setEncoding($force_encoding, $data = ''){
 		$encoding = ($force_encoding ?
-				$force_encoding :
-				$this->getEncoding('', $data)
-			);
+						$force_encoding :
+						$this->getEncoding('', $data)
+				);
 
 		$this->mainXmlEncoding = $encoding;
 		return $encoding;
@@ -224,7 +224,7 @@ class we_xml_parser{
 		// Add a warning and return FALSE if the parse was not successful.
 		if(!xml_parse($parser, $data, true)){
 			$this->parseError = xml_get_current_line_number($parser) .
-				xml_Error_string(xml_get_error_code($parser));
+					xml_Error_string(xml_get_error_code($parser));
 			return false;
 		}
 
@@ -312,7 +312,7 @@ class we_xml_parser{
 					$this->nodes['xml-declaration'][$name] = $value;
 				}
 			}
-		} while(FALSE);
+		}while(FALSE);
 	}
 
 	/**
@@ -334,7 +334,7 @@ class we_xml_parser{
 	 */
 	function hasChildNodes($absoluteXPath){
 		return (!isset($this->nodes[$absoluteXPath]['children']) ?
-				false : (!empty($this->nodes[$absoluteXPath]['children'])));
+						false : (!empty($this->nodes[$absoluteXPath]['children'])));
 	}
 
 	/**
@@ -758,7 +758,7 @@ class we_xml_parser{
 				// The new expression now contains the right part.
 				$expression = $right;
 			}
-		} while($splitPos > -1);
+		}while($splitPos > -1);
 
 		// Add the remaining expression to the paths array.
 		$paths[] = $expression;
@@ -802,7 +802,7 @@ class we_xml_parser{
 				// The new expression now contains the right part.
 				$expression = $right;
 			}
-		} while($splitPos > -1);
+		}while($splitPos > -1);
 
 		// Add the remaining expression to the steps array.
 		$steps[] = $expression;
@@ -1106,7 +1106,7 @@ class we_xml_parser{
 						// Also look for other operators containing the equal
 						// sign.
 						if($this->inString($predicate, '!=') ==
-							($position - 1)){
+								($position - 1)){
 							// Get the new position.
 							$position = $this->inString($predicate, '!=');
 
@@ -1114,7 +1114,7 @@ class we_xml_parser{
 							$operator = '!=';
 						}
 						if($this->inString($predicate, '<=') ==
-							($position - 1)){
+								($position - 1)){
 							// Get the new position.
 							$position = $this->inString($predicate, '<=');
 
@@ -1122,7 +1122,7 @@ class we_xml_parser{
 							$operator = '<=';
 						}
 						if($this->inString($predicate, '>=') ==
-							($position - 1)){
+								($position - 1)){
 							// Get the new position.
 							$position = $this->inString($predicate, '>=');
 
@@ -1277,7 +1277,7 @@ class we_xml_parser{
 
 		// Check if the predicate is a digit.
 		if(preg_match('/^[0-9]+(\.[0-9]+)?$/', $predicate) ||
-			preg_match('|^\.[0-9]+$|', $predicate)){
+				preg_match('|^\.[0-9]+$|', $predicate)){
 			// Return the value of the digit.
 			return doubleval($predicate);
 		}
@@ -1326,7 +1326,7 @@ class we_xml_parser{
 
 				// Check if it is a string.
 				if(is_string($check) && (($check == '') ||
-					($check == $predicate))){
+						($check == $predicate))){
 					$check = FALSE;
 				}
 
@@ -1402,14 +1402,14 @@ class we_xml_parser{
 						// Check if the nodes' processing instructions match
 						// the literals
 						if($this->nodes[$context]['processing-instructions'] ==
-							$literal){
+								$literal){
 							// Add this node to the list of nodes.
 							return TRUE;
 						}
 					} else {
 						// Check if the node has processing instructions.
 						if(!empty($this->nodes[$context]
-								['processing-instructions'])){
+										['processing-instructions'])){
 							// Add this node to the list of nodes.
 							return TRUE;
 						}
@@ -1545,7 +1545,7 @@ class we_xml_parser{
 				}
 			}
 		} else if(!empty($this->nodes[$contextNode]['attributes']
-				[$axis['node-test']])){
+						[$axis['node-test']])){
 			// Add this node to the list of selected nodes.
 			$selectedNodes[] = $contextNode . '/attribute::' . $axis['node-test'];
 		}
@@ -1635,14 +1635,8 @@ class we_xml_parser{
 	 * @see        evaluateStep(), execAxis_ancestor(), execAxis_self()
 	 */
 	function execAxis_ancestor_or_self($axis, $contextNode){
-		$selectedNodes = array();
-
 		// Read the nodes.
-		$selectedNodes = array_merge(
-			$this->execAxis_ancestor($axis, $contextNode), $this->execAxis_self($axis, $contextNode)
-		);
-
-		return $selectedNodes;
+		return array_merge($this->execAxis_ancestor($axis, $contextNode), $this->execAxis_self($axis, $contextNode));
 	}
 
 	/**
@@ -1656,13 +1650,8 @@ class we_xml_parser{
 	 * @see        evaluateStep(), execAxis_descendant(), execAxis_self()
 	 */
 	function execAxis_descendant_or_self($axis, $contextNode){
-		$selectedNodes = array();
-
 		// Read the nodes.
-		$selectedNodes = array_merge(
-			$this->execAxis_descendant($axis, $contextNode), $this->execAxis_self($axis, $contextNode));
-
-		return $selectedNodes;
+		return array_merge($this->execAxis_descendant($axis, $contextNode), $this->execAxis_self($axis, $contextNode));
 	}
 
 	/**
@@ -1691,7 +1680,7 @@ class we_xml_parser{
 			if($flag){
 				// Check if the sibling is a real sibling.
 				if($this->nodes[$sibling]['name'] ==
-					$this->nodes[$contextNode]['name']){
+						$this->nodes[$contextNode]['name']){
 					// Check if the sibling matches the node-test.
 					if($this->checkNodeTest($sibling, $axis['node-test'])){
 						// Add the sibling to the list of selected nodes.
@@ -1742,7 +1731,7 @@ class we_xml_parser{
 			if($flag){
 				// Check if the sibling is a real sibling.
 				if($this->nodes[$sibling]['name'] ==
-					$this->nodes[$contextNode]['name']){
+						$this->nodes[$contextNode]['name']){
 					// Check if the sibling matches the node-test.
 					if($this->checkNodeTest($sibling, $axis['node-test'])){
 						// Add the sibling to the list of selected nodes.
@@ -2244,7 +2233,7 @@ class we_xml_parser{
 	function execMethod_number($node, $args){
 		// Check the type of argument.
 		if(preg_match('|^[0-9]+(\.[0-9]+)?$|', $args) ||
-			preg_match('|^\.[0-9]+$|', $args)){
+				preg_match('|^\.[0-9]+$|', $args)){
 			// Return the argument as a number.
 			return doubleval($args);
 		} else if(is_bool($args)){
@@ -2369,7 +2358,7 @@ class we_xml_parser{
 				$node = $this->nodes[$node]['parent'];
 
 				// Check if there is a language definition.
-				if(!empty($this->nodes[$node]['attributes']['xml:lang'])){
+				if($this->nodes[$node]['attributes']['xml:lang']){
 					// Check if it is the requested language.
 					return (stripos($this->nodes[$node]['attributes']['xml:lang'], $args) === 0);
 				}
@@ -2461,29 +2450,19 @@ class we_xml_parser{
 		$this->cdataSection = 0;
 	}
 
-	function error_handler($errtxt){
+	/*function error_handler($errtxt){
 		// check if more than one argument is given
 		if(func_num_args() > 1){
 			// read all arguments
 			$args = func_get_args();
-
-			// format string
-			$str = "\$errtxt = sprintf(\$errtxt";
-
-			// run through the array of arguments
-			for($i = 1; $i < count($args); $i++){
-				// add arguments to the format string
-				$str .= ", \$args[" . $i . "]";
-			}
-
-			eval($str);//FIXME: remove eval
+			call_user_func_array('sprintf',$args);
 		}
 
 		// show error message
 		//echo "<pre><br/><b>XML error</b>: ".$errtxt."</pre>";
 		// exit the script
 		exit;
-	}
+	}*/
 
 	/**
 	 * The method gets defined encoding from file or from data
@@ -2495,20 +2474,20 @@ class we_xml_parser{
 	 */
 	function getEncoding($file = '', $data = ''){
 
-		if(!empty($file)){
+		if($file){
 			$data = we_base_file::loadPart($file, 0, 256);
 		}
 
-		if(empty($data)){
+		if(!$data){
 			return false;
-		} else {
-			$data = substr($data, 0, 256);
 		}
+		$data = substr($data, 0, 256);
+
 
 		$match = array();
 		$encoding = 'ISO-8859-1';
-		$trenner = "[ |\n|\t|\r]*";
-		$pattern = "%(encoding" . $trenner . "=" . $trenner . "[\"|\'|\\\\]" . $trenner . ")([^\'\"> ? \\\]*)%i";
+		$trenner = "\s*";
+		$pattern = "%(encoding" . $trenner . "=" . $trenner . "[\"\'\\\\]" . $trenner . ")([^\'\"> ? \\\]*)%i";
 
 		if(preg_match($pattern, $data, $match)){
 			if(strtoupper($match[2]) != 'ISO-8859-1'){

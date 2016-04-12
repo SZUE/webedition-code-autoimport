@@ -26,7 +26,7 @@
  * General Definition of WebEdition Glossary
  *
  */
-class we_glossary_glossary extends weModelBase{
+class we_glossary_glossary extends we_base_model{
 	const TYPE_LINK = 'link';
 	const TYPE_ACRONYM = 'acronym';
 	const TYPE_ABBREVATION = 'abbreviation';
@@ -54,13 +54,6 @@ class we_glossary_glossary extends weModelBase{
 	 * @var boolean
 	 */
 	var $IsFolder = false;
-
-	/**
-	 * Icon of the item
-	 *
-	 * @var string
-	 */
-	var $Icon = "";
 
 	/**
 	 * Text of the item
@@ -193,8 +186,8 @@ class we_glossary_glossary extends weModelBase{
 	}
 
 	function getEntries($Language, $Mode = 'all', $Type = 'all'){
-		$Query = 'SELECT Type,Text,Title,Attributes FROM ' . GLOSSARY_TABLE . " WHERE Language='" . $GLOBALS['DB_WE']->escape($Language) . "' " .
-			($Type != 'all' ? "AND Type='" . $GLOBALS['DB_WE']->escape($Type) . "' " : '');
+		$Query = 'SELECT Type,Text,Title,Attributes FROM ' . GLOSSARY_TABLE . ' WHERE Language="' . $GLOBALS['DB_WE']->escape($Language) . '" ' .
+			($Type != 'all' ? 'AND Type="' . $GLOBALS['DB_WE']->escape($Type) . '" ' : '');
 
 		switch($Mode){
 			case 'published':
@@ -216,7 +209,7 @@ class we_glossary_glossary extends weModelBase{
 			);
 
 			if($GLOBALS['DB_WE']->f("Type") != self::TYPE_FOREIGNWORD){
-				$temp = unserialize($GLOBALS['DB_WE']->f("Attributes"));
+				$temp = we_unserialize($GLOBALS['DB_WE']->f("Attributes"));
 				$Item['Lang'] = (isset($temp['lang']) ? $temp['lang'] : '');
 			} else {
 				$Item['Lang'] = '';
@@ -228,7 +221,7 @@ class we_glossary_glossary extends weModelBase{
 
 	function publishItem($Language, $Text){
 		return $GLOBALS['DB_WE']->query('UPDATE ' . GLOSSARY_TABLE . ' SET Published=UNIX_TIMESTAMP()'
-				. " WHERE Language='" . $GLOBALS['DB_WE']->escape($Language) . "' AND Text='" . $GLOBALS['DB_WE']->escape($Text) . "'");
+				. ' WHERE Language="' . $GLOBALS['DB_WE']->escape($Language) . '" AND Text="' . $GLOBALS['DB_WE']->escape($Text) . '"');
 	}
 
 	/**
@@ -241,7 +234,7 @@ class we_glossary_glossary extends weModelBase{
 
 		// serialize all needed attributes
 		foreach($this->_Serialized as $Attribute){
-			$this->$Attribute = unserialize($this->$Attribute);
+			$this->$Attribute = we_unserialize($this->$Attribute);
 		}
 	}
 
@@ -249,14 +242,12 @@ class we_glossary_glossary extends weModelBase{
 	 * save the item to the database
 	 *
 	 */
-	function save(){
-		$this->Icon = ($this->IsFolder == 1 ? we_base_ContentTypes::FOLDER_ICON : 'prog.gif');
-
+	function save($force_new = false, $isAdvanced = false, $jsonSer = false){
 		$this->setPath();
 
 		// serialize all needed attributes
 		foreach($this->_Serialized as $Attribute){
-			$this->$Attribute = serialize($this->$Attribute);
+			$this->$Attribute = we_serialize($this->$Attribute);
 		}
 
 		if(!$this->ID){
@@ -273,12 +264,28 @@ class we_glossary_glossary extends weModelBase{
 			$this->ID = $this->db->getInsertId();
 		}
 
+		if($retVal){
+			$this->registerMediaLinks();
+		}
+
 		// unserialize all needed attributes
 		foreach($this->_Serialized as $Attribute){
-			$this->$Attribute = unserialize($this->$Attribute);
+			$this->$Attribute = we_unserialize($this->$Attribute);
 		}
 
 		return $retVal;
+	}
+
+	function registerMediaLinks(){
+		$this->unregisterMediaLinks();
+		if($this->Type === 'link' && !intval($this->IsFolder)){
+			$attribs = is_array($this->Attributes) ? $this->Attributes : we_unserialize($this->Attributes);
+			if(!empty($attribs) && $attribs['mode'] === 'intern' && $attribs['InternLinkID']){
+				$this->MediaLinks[] = $attribs['InternLinkID'];
+			}
+		}
+
+		parent::registerMediaLinks();
 	}
 
 	/**
@@ -380,7 +387,7 @@ class we_glossary_glossary extends weModelBase{
 	 * @return boolean
 	 */
 	function saveField($Name){
-		$value = (in_array($Name, $this->_Serialized) ? unserialize($this->$Name) : $this->$Name);
+		$value = (in_array($Name, $this->_Serialized) ? we_unserialize($this->$Name) : $this->$Name);
 		$this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . $this->db->escape($Name) . '="' . $this->db->escape($value) . '" WHERE ID=' . intval($this->ID));
 
 		return $this->db->affected_rows();
@@ -435,7 +442,7 @@ class we_glossary_glossary extends weModelBase{
 
 	function getExceptionFilename($language){
 		$fileDir = WE_GLOSSARY_MODULE_PATH . 'dict/';
-		if(!is_dir($fileDir) && !we_base_file::createLocalFolder($fileDir)){
+		if(!is_dir($fileDir) && !we_base_file::createLocalFolderByPath($fileDir)){
 			return false;
 		}
 

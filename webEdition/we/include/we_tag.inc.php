@@ -34,15 +34,16 @@ function we_include_tag_file($name){
 		require_once (WE_INCLUDES_PATH . 'we_tags/' . $fn . '.inc.php');
 		return true;
 	}
+	//error check is only required for custom tags
 	if(file_exists(WE_INCLUDES_PATH . 'we_tags/custom_tags/' . $fn . '.inc.php')){
 		require_once (WE_INCLUDES_PATH . 'we_tags/custom_tags/' . $fn . '.inc.php');
-		return true;
+		return function_exists($fn) ? true : parseError(sprintf(g_l('parser', '[tag_not_known]'), trim($name)));
 	}
 
 	$toolinc = '';
 	if(we_tool_lookup::getToolTag($name, $toolinc, true)){
 		require_once ($toolinc);
-		return true;
+		return function_exists($fn) ? true : parseError(sprintf(g_l('parser', '[tag_not_known]'), trim($name)));
 	}
 	if(strpos(trim($name), 'if') === 0){ // this ifTag does not exist
 		echo parseError(sprintf(g_l('parser', '[tag_not_known]'), trim($name)));
@@ -115,7 +116,7 @@ function we_tag($name, $attribs = array(), $content = '', $internal = false){
 	if(isset($attribs['name'])){
 		$attribs['_name_orig'] = $attribs['name'];
 		$attribs['name'] = we_tag_getPostName($attribs['name']);
-		if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'] && ($GLOBALS['we_doc'] instanceof we_webEditionDocument)){
+		if(!empty($GLOBALS['we_editmode']) && ($GLOBALS['we_doc'] instanceof we_webEditionDocument)){
 			$GLOBALS['we_doc']->addUsedElement($name, $attribs['name']);
 		}
 	}
@@ -274,8 +275,8 @@ function weTag_getAttribute($name, $attribs, $default = '', $type = we_base_requ
 	$regs = array();
 	if($useGlobal && !is_array($value) && preg_match('|^\\\\?\$([^\[]+)(\[.*\])?|', $value, $regs)){
 		$value = (isset($regs[2]) ?
-						getArrayValue($GLOBALS, $regs[1], $regs[2]) :
-						(isset($GLOBALS[$regs[1]]) ? $GLOBALS[$regs[1]] : ''));
+				getArrayValue($GLOBALS, $regs[1], $regs[2]) :
+				(isset($GLOBALS[$regs[1]]) ? $GLOBALS[$regs[1]] : ''));
 	}
 
 	$value = we_base_request::filterVar($value, (is_bool($type) ? we_base_request::BOOL : $type), $default);
@@ -299,12 +300,12 @@ function cutSimpleText($text, $len){
 	$text = substr($text, 0, $len);
 	//cut to last whitespace, if any.
 	return substr($text, 0, max(array(
-				strrpos($text, ' '),
-				strrpos($text, '.'),
-				strrpos($text, ','),
-				strrpos($text, "\n"),
-				strrpos($text, "\t"),
-			))? : $len
+			strrpos($text, ' '),
+			strrpos($text, '.'),
+			strrpos($text, ','),
+			strrpos($text, "\n"),
+			strrpos($text, "\t"),
+		))? : $len
 	);
 }
 
@@ -372,8 +373,8 @@ function we_getDocForTag($docAttr, $maindefault = false){
 			return $GLOBALS['WE_MAIN_DOC'];
 		default :
 			return ($maindefault ?
-							$GLOBALS['WE_MAIN_DOC'] :
-							$GLOBALS['we_doc']);
+					$GLOBALS['WE_MAIN_DOC'] :
+					$GLOBALS['we_doc']);
 	}
 }
 
@@ -500,9 +501,19 @@ function we_getSelectField($name, $value, $values, $attribs = array(), $addMissi
 	if((!$isin) && $addMissing && $value != ''){
 		$content .= getHtmlTag('option', array(
 			'value' => oldHtmlspecialchars($value), 'selected' => 'selected'
-				), oldHtmlspecialchars($value), true);
+			), oldHtmlspecialchars($value), true);
 	}
 	return getHtmlTag('select', $attribs, $content, true);
+}
+
+function we_pre_tag_listview(){
+	//prevent error if $GLOBALS["we_lv_array"] is no array
+	if(!isset($GLOBALS['we_lv_array']) || !is_array($GLOBALS['we_lv_array'])){
+		$GLOBALS['we_lv_array'] = array();
+	}
+
+	//FIXME: check why we need cloning here
+	$GLOBALS['we_lv_array'][] = clone($GLOBALS['lv']);
 }
 
 //this function is used by all tags adding elements to we_lv_array
@@ -511,7 +522,7 @@ function we_post_tag_listview(){
 		if(isset($GLOBALS['lv'])){
 			array_pop($GLOBALS['we_lv_array']);
 		}
-		if($GLOBALS['we_lv_array']){
+		if(!empty($GLOBALS['we_lv_array'])){
 			$GLOBALS['lv'] = clone(end($GLOBALS['we_lv_array']));
 		} else {
 			unset($GLOBALS['lv']);
@@ -549,7 +560,7 @@ function we_tag_ifLastCol(){
 }
 
 function we_tag_ifNotEmpty($attribs){
-	return (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) || !we_tag('ifEmpty', $attribs);
+	return (!empty($GLOBALS['we_editmode'])) || !we_tag('ifEmpty', $attribs);
 }
 
 function we_tag_ifReturnPage(){
@@ -581,6 +592,7 @@ function we_tag_listviewStart(){
 	return $GLOBALS['lv']->start + 1 - abs($GLOBALS['lv']->offset);
 }
 
+//FIXME: remove in 7.1
 function we_tag_ifshopexists(){
 	t_e('deprecated', __FUNCTION__);
 	return we_tag('ifIsActive', array('name' => 'shop'));

@@ -24,17 +24,27 @@
  */
 require_once(WE_INCLUDES_PATH . 'we_tools/weSearch/conf/define.conf.php');
 
-class rpcGetSearchResultCmd extends rpcCmd{
+class rpcGetSearchResultCmd extends we_rpc_cmd{
 
 	function execute(){
-		$resp = new rpcResponse();
+		$resp = new we_rpc_response();
 		$whichsearch = we_base_request::_(we_base_request::STRING, 'whichsearch', '');
 		$setView = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'setView' . $whichsearch);
 
-		$GLOBALS['we_cmd_obj'] = $_SESSION['weSearch_session'];
+		$GLOBALS['we_cmd_obj'] = $_SESSION['weS']['weSearch'];
 
 		$sview = new we_search_view();
-		$content = $sview->searchProperties($whichsearch);
+
+		// FIXME: let view initialize its model
+		if(isset($_SESSION['weS'][$sview->toolName . '_session'])){
+			$model = $_SESSION['weS'][$sview->toolName . '_session'];
+		} else {
+			$model = new we_search_model;
+		}
+		$model->initByHttp($whichsearch, true);
+		$sview->Model = $model;
+		$sview->rpcCmd = 'GetSearchResult';
+		$content = $sview->searchclass->searchProperties($whichsearch, $sview->Model);
 		$code = $sview->tabListContent($setView, $content, $class = 'middlefont', $whichsearch);
 
 		$resp->setData('data', $code);

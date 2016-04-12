@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 // Define needed JS
-//$acErrorMsg = we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR);
 require_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
 
 function getPreferencesFooterJS(){
@@ -36,10 +35,10 @@ var countSaveTrys = 0;
 function we_save() {
 		$tmp
 	// update setting for message_reporting
-	top.opener.top.messageSettings = document.getElementById('content').contentDocument.getElementById("message_reporting").value;
+	WE().session.messageSettings = document.getElementById('content').contentDocument.getElementById("message_reporting").value;
 
-	if(top.opener.top.weEditorFrameController.getActiveDocumentReference().quickstart){
-		var oCockpit=top.opener.top.weEditorFrameController.getActiveDocumentReference();
+	if(WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart){
+		var oCockpit=WE().layout.weEditorFrameController.getActiveDocumentReference();
 		var _fo=document.getElementById('content').contentDocument.forms[0];
 		var oSctCols=_fo.elements['newconf[cockpit_amount_columns]'];
 		var iCols=oSctCols.options[oSctCols.selectedIndex].value;
@@ -63,8 +62,8 @@ END_OF_SCRIPT;
  * *************************************************************************** */
 
 function getPreferencesFooter(){
-	$okbut = we_html_button::create_button('save', 'javascript:we_save();');
-	$cancelbut = we_html_button::create_button('close', 'javascript:top.close()');
+	$okbut = we_html_button::create_button(we_html_button::SAVE, 'javascript:we_save();');
+	$cancelbut = we_html_button::create_button(we_html_button::CLOSE, 'javascript:top.close()');
 
 	return we_html_element::htmlDiv(array('class' => 'weDialogButtonsBody', 'style' => 'height:100%;'), we_html_button::position_yes_no_cancel($okbut, '', $cancelbut, 10, '', '', 0));
 }

@@ -1,5 +1,4 @@
 <?php
-
 //NOTE you are inside the constructor of weTagData.class.php
 
 $this->NeedsEndTag = false;
@@ -7,9 +6,9 @@ $this->NeedsEndTag = false;
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$id_document = new weTagData_selectorAttribute('id', FILE_TABLE, 'text/webedition,image/*,text/css,text/js,application/*', true, '');
+$id_document = new weTagData_selectorAttribute('id', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT . ',image/*,text/css,text/js,application/*', true, '');
 $id_object = (defined('OBJECT_FILES_TABLE') ? new weTagData_selectorAttribute('id', OBJECT_FILES_TABLE, 'objectFile', true, '') : null);
-$triggerid = new weTagData_selectorAttribute('triggerid', FILE_TABLE, 'text/webedition', false, '');
+$triggerid = new weTagData_selectorAttribute('triggerid', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '');
 $hidedirindex = new weTagData_selectAttribute('hidedirindex', weTagData_selectAttribute::getTrueFalse(), false, '');
 $objectseourls = new weTagData_selectAttribute('objectseourls', weTagData_selectAttribute::getTrueFalse(), false, '');
 $this->Attributes = array();

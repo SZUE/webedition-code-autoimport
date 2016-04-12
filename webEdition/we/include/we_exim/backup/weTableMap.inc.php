@@ -33,7 +33,9 @@ $tableMap = array(
 		strtolower(stripTblPrefix(THUMBNAILS_TABLE)) => THUMBNAILS_TABLE,
 		strtolower(stripTblPrefix(NAVIGATION_TABLE)) => NAVIGATION_TABLE,
 		strtolower(stripTblPrefix(NAVIGATION_RULE_TABLE)) => NAVIGATION_RULE_TABLE,
-		strtolower(stripTblPrefix(METADATA_TABLE)) => METADATA_TABLE
+		strtolower(stripTblPrefix(METADATA_TABLE)) => METADATA_TABLE,
+		strtolower(stripTblPrefix(VFILE_TABLE)) => VFILE_TABLE,
+		strtolower(stripTblPrefix(FILELINK_TABLE)) => FILELINK_TABLE,
 	),
 	'versions' => array(
 		strtolower(stripTblPrefix(VERSIONS_TABLE)) => VERSIONS_TABLE,
@@ -74,7 +76,6 @@ if(defined('OBJECT_TABLE')){
 if(defined('CUSTOMER_TABLE')){
 	$tableMap['customer'] = array(
 		strtolower(stripTblPrefix(CUSTOMER_TABLE)) => CUSTOMER_TABLE,
-		strtolower(stripTblPrefix(CUSTOMER_ADMIN_TABLE)) => CUSTOMER_ADMIN_TABLE,
 		strtolower(stripTblPrefix(CUSTOMER_FILTER_TABLE)) => CUSTOMER_FILTER_TABLE,
 		strtolower(stripTblPrefix(CUSTOMER_AUTOLOGIN_TABLE)) => CUSTOMER_AUTOLOGIN_TABLE
 	);
@@ -82,7 +83,6 @@ if(defined('CUSTOMER_TABLE')){
 
 if(defined('SHOP_TABLE')){
 	$tableMap['shop'] = array(
-		strtolower(stripTblPrefix(WE_SHOP_PREFS_TABLE)) => WE_SHOP_PREFS_TABLE,
 		strtolower(stripTblPrefix(SHOP_TABLE)) => SHOP_TABLE,
 		strtolower(stripTblPrefix(WE_SHOP_VAT_TABLE)) => WE_SHOP_VAT_TABLE
 	);
@@ -117,7 +117,6 @@ if(defined('NEWSLETTER_TABLE')){
 		strtolower(stripTblPrefix(NEWSLETTER_GROUP_TABLE)) => NEWSLETTER_GROUP_TABLE,
 		strtolower(stripTblPrefix(NEWSLETTER_BLOCK_TABLE)) => NEWSLETTER_BLOCK_TABLE,
 		strtolower(stripTblPrefix(NEWSLETTER_LOG_TABLE)) => NEWSLETTER_LOG_TABLE,
-		strtolower(stripTblPrefix(NEWSLETTER_PREFS_TABLE)) => NEWSLETTER_PREFS_TABLE,
 		strtolower(stripTblPrefix(NEWSLETTER_CONFIRM_TABLE)) => NEWSLETTER_CONFIRM_TABLE
 	);
 }
@@ -126,7 +125,6 @@ if(defined('BANNER_TABLE')){
 	$tableMap['banner'] = array(
 		strtolower(stripTblPrefix(BANNER_TABLE)) => BANNER_TABLE,
 		strtolower(stripTblPrefix(BANNER_CLICKS_TABLE)) => BANNER_CLICKS_TABLE,
-		strtolower(stripTblPrefix(BANNER_PREFS_TABLE)) => BANNER_PREFS_TABLE,
 		strtolower(stripTblPrefix(BANNER_VIEWS_TABLE)) => BANNER_VIEWS_TABLE
 	);
 }

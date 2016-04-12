@@ -1,8 +1,8 @@
 <?php
 
 abstract class we_base_moduleInfo{
-
 	const BANNER = 'banner';
+	const COLLECTION = 'collection';
 	const CUSTOMER = 'customer';
 	const EDITOR = 'editor';
 	const EXPORT = 'export';
@@ -26,26 +26,15 @@ abstract class we_base_moduleInfo{
 		}
 	}
 
-	static function we_getModuleNameByContentType($ctype){
-		foreach($GLOBALS['_we_active_integrated_modules'] as $mod){
-			if(strstr($ctype, $mod)){
-				return $mod;
-			}
-		}
-		return '';
-	}
-
-	static function _orderModules($a, $b){
-		return (strcmp($a['text'], $b['text']));
-	}
-
 	/**
 	 * Orders a hash array of the scheme of we_available_modules
 	 *
 	 * @param hash $array
 	 */
 	static function orderModuleArray(&$array){
-		uasort($array, array('we_base_moduleInfo', '_orderModules'));
+		uasort($array, function ($a, $b){
+			return (strcmp($a['text'], $b['text']));
+		});
 	}
 
 	/**
@@ -59,50 +48,16 @@ abstract class we_base_moduleInfo{
 	}
 
 	/**
-	 * returns hash with all buyable modules
-	 *
+	 * returns hash of all modules
 	 * @return hash
 	 */
-	static function getNoneIntegratedModules(){
+	static function getIntegratedModules($active){
 		self::init();
-
 		$retArr = array();
 
 		foreach(self::$we_available_modules as $key => $modInfo){
-			if($modInfo['integrated'] == false){
+			if(self::isActive($key) == $active){
 				$retArr[$key] = $modInfo;
-			}
-		}
-
-		return $retArr;
-	}
-
-	/**
-	 * @param string $mKey
-	 * @return boolean
-	 */
-	static function isModuleInstalled($mKey){
-		self::init();
-		return (in_array($mKey, self::$we_available_modules) || $mKey === 'editor');
-	}
-
-	/**
-	 * returns hash of all integrated modules
-	 * @return hash
-	 */
-	static function getIntegratedModules($active = null){
-		self::init();
-
-		$retArr = array();
-
-		foreach(self::$we_available_modules as $key => $modInfo){
-			if($modInfo['integrated'] == true){
-
-				if($active === null){
-					$retArr[$key] = $modInfo;
-				} else if(self::isActive($key) == $active){
-					$retArr[$key] = $modInfo;
-				}
 			}
 		}
 
@@ -120,28 +75,22 @@ abstract class we_base_moduleInfo{
 		// - it is active
 		// - if it is in module window
 
-		if(self::$we_available_modules[$modulekey]["inModuleMenu"] && self::isActive($modulekey)){
-			return true;
-		}
-
-		//}
-
-		return false;
+		return (self::$we_available_modules[$modulekey]['inModuleMenu'] && self::isActive($modulekey));
 	}
 
 	static function isActive($modul){
-		$ret = in_array($modul, $GLOBALS['_we_active_integrated_modules']);
-		if($ret){
-			switch($modul){
-				case 'users'://removed config
-					return $ret;
-				default:
-					if(file_exists(WE_MODULES_PATH . $modul . '/we_conf_' . $modul . '.inc.php')){
-						require_once (WE_MODULES_PATH . $modul . '/we_conf_' . $modul . '.inc.php');
-					}
-			}
+		if(!in_array($modul, $GLOBALS['_we_active_integrated_modules'])){
+			return false;
 		}
-		return $ret;
+		switch($modul){
+			case 'users'://removed config
+				break;
+			default:
+				if(file_exists(WE_MODULES_PATH . $modul . '/we_conf_' . $modul . '.inc.php')){
+					require_once (WE_MODULES_PATH . $modul . '/we_conf_' . $modul . '.inc.php');
+				}
+		}
+		return true;
 	}
 
 	static function getModuleData($module){
@@ -149,6 +98,7 @@ abstract class we_base_moduleInfo{
 		if(isset(self::$we_available_modules[$module])){
 			return self::$we_available_modules[$module];
 		}
+		return false;
 	}
 
 }

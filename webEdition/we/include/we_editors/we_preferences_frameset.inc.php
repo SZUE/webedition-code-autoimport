@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -26,37 +25,62 @@
  * INCLUDES
  * *************************************************************************** */
 
-include(WE_INCLUDES_PATH . 'we_editors/we_preferences_header.inc.php');
 require_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
+
+
+$tabname = we_base_request::_(we_base_request::STRING, "tabname", "setting_ui");
+
+
+// generate the tabs
+
+$we_tabs = new we_tabs();
+
+foreach($GLOBALS['tabs'] as $name => $list){
+	list($icon, $perm) = $list;
+	if(empty($perm) || permissionhandler::hasPerm($perm)){
+		$we_tabs->addTab(new we_tab(($icon ? '<i class="fa fa-lg ' . $icon . '"></i> ' : '') . g_l('prefs', '[tab][' . $name . ']'), ($tabname === 'setting_' . $name ? we_tab::ACTIVE : we_tab::NORMAL), "top.we_cmd('" . $name . "');"));
+	}
+}
+
+function getPreferencesHeader(){
+	return '<div id="main" >' . $GLOBALS['we_tabs']->getHTML() . '</div>';
+}
 
 we_html_tools::protect();
 echo we_html_tools::getHtmlTop() .
- STYLESHEET . getPreferencesCSS();
+ STYLESHEET . we_tabs::getHeader();
 
 $tabname = we_base_request::_(we_base_request::STRING, "tabname", we_base_request::_(we_base_request::STRING, 'we_cmd', "setting_ui", 1));
 
 // Define needed JS
 $_javascript = <<< END_OF_SCRIPT
-
+var WE=opener.WE;
 function we_cmd() {
-	//var url = "/webEdition/we/include/we_editors/we_preferences.php?";
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
 
-	switch (arguments[0]) {
+	switch (args[0]) {
 END_OF_SCRIPT;
-foreach($GLOBALS['tabs'] as $name => $perm){
+foreach(array_keys($GLOBALS['tabs']) as $name){
 	if(empty($perm) || permissionhandler::hasPerm($perm)){
-		$_javascript.='case "' . $name . '":' . "\n";
+		$_javascript.='case "' . $name . '":
+';
 	}
 }
-foreach($GLOBALS['tabs'] as $name => $perm){
-	$_javascript.="try{content.document.getElementById('setting_" . $name . "').style.display = 'none';}catch(e){}";
+$_javascript.='default:
+';
+foreach(array_keys($GLOBALS['tabs']) as $name){
+	$_javascript.="try{
+		content.document.getElementById('setting_" . $name . "').style.display = 'none';
+	}catch(e){}
+";
 }
 
 $_javascript .= "
-	try{
-			content.document.getElementById('setting_' + arguments[0]).style.display = '';
-			}catch(e){}
-			break;
+		try{
+				content.document.getElementById('setting_' + args[0]).style.display = '';
+		}catch(e){}
+	break;
 	}
 }
 self.focus();
@@ -74,15 +98,15 @@ function saveOnKeyBoard() {
 
 
 echo we_html_element::jsElement($_javascript) .
- we_html_element::jsScript(JS_DIR . "keyListener.js") . "</head>";
+ "</head>";
 
 include(WE_INCLUDES_PATH . 'we_editors/we_preferences_footer.inc.php');
 
-$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', 'onload' => 'setFrameSize()', 'onresize' => 'setFrameSize()')
+$body = we_html_element::htmlBody(array('id' => 'weMainBody', 'onload' => 'weTabs.setFrameSize()', 'onresize' => 'weTabs.setFrameSize()')
 		, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-			, we_html_element::htmlExIFrame('navi', getPreferencesHeader(), 'position:absolute;top:0px;height:' . getPreferencesTabsDefaultHeight() . 'px;left:0px;right:0px;overflow: hidden;') .
-			we_html_element::htmlIFrame('content', WE_INCLUDES_DIR . "we_editors/we_preferences.php?" . ($tabname ? "tabname=" . $tabname : ""), 'position:absolute;top:' . getPreferencesTabsDefaultHeight() . 'px;bottom:40px;left:0px;right:0px;overflow: hidden;', 'border:0px;width:100%;height:100%;overflow: scroll;') .
+			, we_html_element::htmlExIFrame('navi', getPreferencesHeader(), 'right:0px;') .
+			we_html_element::htmlIFrame('content', WE_INCLUDES_DIR . "we_editors/we_preferences.php?" . ($tabname ? "tabname=" . $tabname : ""), 'position:absolute;top:22px;bottom:40px;left:0px;right:0px;overflow: hidden;', 'border:0px;width:100%;height:100%;overflow: scroll;') .
 			we_html_element::htmlExIFrame('we_preferences_footer', getPreferencesFooter(), 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;')
 	));
 
-echo we_html_element::htmlBody(array(), $body) . getPreferencesJS() . getPreferencesFooterJS() . '</html>';
+echo we_html_element::htmlBody(array(), $body) . getPreferencesFooterJS() . '</html>';

@@ -22,10 +22,10 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcSelectorGetSelectedIdCmd extends rpcCmd{
+class rpcSelectorGetSelectedIdCmd extends we_rpc_cmd{
 
 	function execute(){
-		$resp = new rpcResponse();
+		$resp = new we_rpc_response();
 
 		if(!($search = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1)) || !($table = we_base_request::_(we_base_request::TABLE, 'we_cmd', false, 2))){
 			exit();
@@ -34,8 +34,7 @@ class rpcSelectorGetSelectedIdCmd extends rpcCmd{
 		$selectorSuggest = new we_selector_query();
 		$contentTypes = explode(',', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3));
 		$selectorSuggest->queryTable($search, $table, $contentTypes);
-		$resp->setData("data", $selectorSuggest->getResult());
-
+		$resp->setData('data', $selectorSuggest->getResult());
 		return $resp;
 	}
 

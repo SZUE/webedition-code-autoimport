@@ -28,14 +28,14 @@ function we_tag_keywords($attribs, $content){
 		'htmlspecialchars'
 	));
 
-	$keys = isset($GLOBALS['KEYWORDS']) && $GLOBALS['KEYWORDS'] ? $GLOBALS['KEYWORDS'] : '';
+	$keys = !empty($GLOBALS['KEYWORDS']) ? $GLOBALS['KEYWORDS'] : '';
 	if(!$keys && $content){
 		ob_start();
 		//FIXME:eval
 		eval('?>' . $content);
 		$keys = ob_get_clean();
 	}
-	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
+	if(!empty($GLOBALS['we_editmode'])){
 		//set meta data & exit
 		$GLOBALS['meta']['Keywords']['default'] = $keys;
 		return;

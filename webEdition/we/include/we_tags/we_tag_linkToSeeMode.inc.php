@@ -37,7 +37,7 @@ function we_tag_linkToSeeMode($attribs){
 
 	$value = weTag_getAttribute('value', $attribs, '', we_base_request::STRING);
 
-	if(isset($id) && $id){
+	if(!empty($id) ){
 		$type = 'document';
 	} elseif(isset($GLOBALS['we_obj']) || $oid){ // use object if possible
 		$type = 'object';
@@ -52,14 +52,14 @@ function we_tag_linkToSeeMode($attribs){
 		$id = $doc->ID;
 	}
 
-	if(!empty($_SESSION['webuser']['registered']) && !we_base_request::_(we_base_request::STRING, 'we_transaction')){
-		if(!$permission || !empty($_SESSION['webuser'][$permission])){ // Has webUser the right permissions??
+	if(!empty($_SESSION["webuser"]) && $_SESSION["webuser"]["registered"] && !isset($_REQUEST["we_transaction"])){
+		if(!$permission || !empty($_SESSION["webuser"][$permission])){ // Has webUser the right permissions??
 			//	check if the customer is a user, too.
 			$tmpDB = $GLOBALS['DB_WE'];
 
-			$q = getHash('SELECT UseSalt, passwd FROM ' . USER_TABLE . ' WHERE IsFolder=0 AND LoginDenied=0 AND username="' . $tmpDB->escape($_SESSION["webuser"]["Username"]) . '"', $tmpDB);
+			$q = f('SELECT passwd FROM ' . USER_TABLE . ' WHERE IsFolder=0 AND LoginDenied=0 AND username="' . $tmpDB->escape($_SESSION["webuser"]["Username"]) . '"','', $tmpDB);
 
-			if($q && we_users_user::comparePasswords($q['UseSalt'], $_SESSION['webuser']['Username'], $q['passwd'], $_SESSION['webuser']['Password'])){// customer is also a user
+			if($q && we_users_user::comparePasswords($_SESSION['webuser']['Username'], $q, $_SESSION['webuser']['Password'])){// customer is also a user
 				unset($q);
 				$retStr = getHtmlTag(
 						'form', array(

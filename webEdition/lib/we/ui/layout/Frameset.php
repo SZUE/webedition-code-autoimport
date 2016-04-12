@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -30,7 +29,6 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_layout_Frameset extends we_ui_abstract_AbstractElement{
-
 	/**
 	 * _framespacing attribute
 	 *
@@ -106,13 +104,14 @@ class we_ui_layout_Frameset extends we_ui_abstract_AbstractElement{
 	 * @return string
 	 */
 	protected function _renderHTML($isTopFrame = false, $appName = ''){
+		t_e('deprecated', 'usage of this class is deprecated');
 		if(!$isTopFrame || !$appName || we_app_Common::isJMenu($appName)){
 			$html = '<frameset' . $this->_getNonBooleanAttribs('id,framespacing,border,frameborder,rows,cols,onload') . '>';
 			foreach($this->_frames as $frame){
 				if($frame instanceof we_ui_layout_Frameset){
 					$html .= $frame->getHTML();
 				} else {
-					$html .= we_xml_Tags::createStartTag('frame', $frame, NULL, true);
+					$html .= getHtmlTag('frame', $frame, true);
 				}
 			}
 			$html .= '</frameset>';
@@ -131,10 +130,10 @@ class we_ui_layout_Frameset extends we_ui_abstract_AbstractElement{
 				$sources = array($this->_frames[0]['src'], $this->_frames[1]['src'], $this->_frames[2]['src']);
 				$names = array('', $this->_frames[1]['name'], $this->_frames[2]['name']);
 			}
-			$html = we_html_element::htmlDiv(array('style' => 'position: absolute; ' . $positioning[0] . ' left: 0px; right: 0px;'), $this->getHTMLCssMenu($appName)) .
-				($isToolbar ? we_html_element::htmlIFrame($names[1], $sources[1], 'position: absolute; ' . $positioning[1] . ' left: 0px; right: 0px; overflow: hidden;') : '') .
+			$html = we_html_element::htmlDiv(array('name' => "headerDiv", 'id' => "headerDiv", 'style' => 'position: absolute; ' . $positioning[0] . ' left: 0px; right: 0px;'), $this->getHTMLCssMenu($appName)) .
+				($isToolbar ? we_html_element::htmlIFrame($names[1], $sources[1], 'position: absolute; ' . $positioning[1] . ' left: 0px; right: 0px; overflow: hidden;', '', '', false) : '') .
 				we_html_element::htmlIFrame($names[2], $sources[2], 'position: absolute; ' . $positioning[2] . ' left: 0px; right: 0px; overflow: hidden;') .
-				we_html_element::htmlIFrame('cmd_' . $appName, 'about:blank', 'position: absolute; bottom: 0px; height: 1px; left: 0px; right: 0px; overflow: hidden;');
+				we_html_element::htmlIFrame('cmd_' . $appName, 'about:blank', 'position: absolute; bottom: 0px; height: 1px; left: 0px; right: 0px; overflow: hidden;', '', '', false);
 		}
 		return $html;
 	}
@@ -254,11 +253,9 @@ class we_ui_layout_Frameset extends we_ui_abstract_AbstractElement{
 
 		$messageConsole = new we_ui_controls_MessageConsole(array('consoleName' => 'toolFrame'));
 
-		$table = new we_html_table(array("width" => "100%", "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 2);
-		$table->setCol(0, 0, array("align" => "left", "valign" => "top"), $jmenu->getHTML(false));
-		$table->setCol(0, 1, array("align" => "right", "valign" => "top", 'style' => 'padding-right: 10px; padding-top: 4px'), $messageConsole->getHTML());
-
-		return we_html_element::htmlDiv(array('class' => 'menuDiv'), $table->getHTML());
+		return
+			we_html_element::htmlDiv(array('class' => 'menuDiv'), $jmenu->getHTML(false)) .
+			we_html_element::htmlDiv(array('style' => 'width:5em;position: absolute;top: 0px;right: 0px;'), $messageConsole->getHTML());
 	}
 
 }

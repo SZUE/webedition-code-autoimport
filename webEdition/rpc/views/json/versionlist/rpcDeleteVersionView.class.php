@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcDeleteVersionView extends rpcView{
+class rpcDeleteVersionView extends we_rpc_view{
 
 	function getResponse($response){
 

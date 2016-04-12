@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -27,7 +26,6 @@
  * simplified representation of the navigation item
  */
 class we_navigation_item{
-
 	var $id;
 	var $icon;
 	var $docid;
@@ -68,7 +66,7 @@ class we_navigation_item{
 		$this->id = $id;
 		$this->parentid = 0;
 		$this->name = $text;
-		$this->text = (isset($display) && !empty($display) && $display != $text) ? $display : $text;
+		$this->text = (!empty($display) && $display != $text) ? $display : $text;
 		$this->display = $display;
 		$this->docid = $docid;
 		$this->table = $table;
@@ -280,11 +278,11 @@ class we_navigation_item{
 		$_compl = weTag_getAttribute('complete', $attribs, '', we_base_request::STRING);
 		// name
 		if($fieldname){
-			$val = (isset($this->$fieldname) && $this->$fieldname ?
-							$this->$fieldname :
-							(isset($this->attributes[$fieldname]) && $this->attributes[$fieldname] ?
-									$this->attributes[$fieldname] :
-									''));
+			$val = (!empty($this->$fieldname) ?
+					$this->$fieldname :
+					(!empty($this->attributes[$fieldname]) ?
+						$this->attributes[$fieldname] :
+						''));
 			switch($fieldname){
 				case 'title':
 					return oldHtmlspecialchars($val);
@@ -358,28 +356,28 @@ class we_navigation_item{
 							'link_attribute'
 						);
 						foreach($useFields as $field){
-							if(isset($this->$field) && $this->$field != ''){
+							if(!empty($this->$field)){
 								$attribs[$field] = ($field === 'title' ?
-												oldHtmlspecialchars($this->$field) :
-												$this->$field);
-							} elseif(isset($this->attributes[$field]) && $this->attributes[$field] != ''){
+										oldHtmlspecialchars($this->$field) :
+										$this->$field);
+							} elseif(!empty($this->attributes[$field])){
 								$attribs[$field] = ($field === 'link_attribute' ? // Bug #3741
-												$this->attributes[$field] :
-												oldHtmlspecialchars($this->attributes[$field]));
+										$this->attributes[$field] :
+										oldHtmlspecialchars($this->attributes[$field]));
 							}
 						}
 
-						if(isset($this->attributes['popup_open']) && $this->attributes['popup_open']){
+						if(!empty($this->attributes['popup_open'])){
 							$this->getPopupJs($attribs);
 						}
 						break;
 					case 'image' :
-						$_iconid = path_to_id($this->icon, FILE_TABLE);
+						$_iconid = path_to_id($this->icon, FILE_TABLE, $GLOBALS['DB_WE']);
 						if($_iconid){
 							$attribs['src'] = $this->icon;
 							$useFields = array('width', 'height', 'border', 'hspace', 'vspace', 'align', 'alt', 'title');
 							foreach($useFields as $field){
-								if(isset($this->attributes['icon_' . $field]) && $this->attributes['icon_' . $field] != ''){
+								if(!empty($this->attributes['icon_' . $field])){
 									$attribs[$field] = $this->attributes['icon_' . $field];
 								}
 							}
@@ -398,9 +396,9 @@ class we_navigation_item{
 						}
 						break;
 					default :
-						if(isset($this->$_field) && $this->$_field != ''){
+						if(!empty($this->$_field)){
 							$attribs[$_field] = oldHtmlspecialchars($this->$_field);
-						} elseif(isset($this->attributes[$_field]) && $this->attributes[$_field] != ''){
+						} elseif(!empty($this->attributes[$_field])){
 							$attribs[$_field] = oldHtmlspecialchars($this->attributes[$_field]);
 						}
 				}
@@ -436,21 +434,19 @@ if (window.screen) {
 				$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'top=' . $this->attributes['popup_yposition'] . '\';';
 			}
 		}
-		if(isset($this->attributes['popup_width']) && $this->attributes['popup_width']){
-			$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'width=' . $this->attributes['popup_width'] . '\';';
-		}
 
-		if(isset($this->attributes['popup_height']) && $this->attributes['popup_height']){
-			$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'height=' . $this->attributes['popup_height'] . '\';';
-		}
-
-		$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . ((isset($this->attributes['popup_status']) && $this->attributes['popup_status']) ? 'yes' : 'no') . '\';' .
-				'we_winOpts += \',scrollbars=' . ((isset($this->attributes['popup_scrollbars']) && $this->attributes['popup_scrollbars']) ? 'yes' : 'no') . '\';' .
-				'we_winOpts += \',menubar=' . ((isset($this->attributes['popup_menubar']) && $this->attributes['popup_menubar']) ? 'yes' : 'no') . '\';' .
-				'we_winOpts += \',resizable=' . ((isset($this->attributes['popup_resizable']) && $this->attributes['popup_resizable']) ? 'yes' : 'no') . '\';' .
-				'we_winOpts += \',location=' . ((isset($this->attributes['popup_location']) && $this->attributes['popup_location']) ? 'yes' : 'no') . '\';' .
-				'we_winOpts += \',toolbar=' . ((isset($this->attributes['popup_toolbar']) && $this->attributes['popup_toolbar']) ? 'yes' : 'no') . '\';' .
-				"var we_win = window.open('" . $this->href . "','" . "we_ll_" . $this->id . "',we_winOpts);";
+		$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . ((!empty($this->attributes['popup_status'])) ? 'yes' : 'no') .
+			',scrollbars=' . (!empty($this->attributes['popup_scrollbars']) ? 'yes' : 'no') .
+			',menubar=' . (!empty($this->attributes['popup_menubar']) ? 'yes' : 'no') .
+			',resizable=' . (!empty($this->attributes['popup_resizable']) ? 'yes' : 'no') .
+			',location=' . (!empty($this->attributes['popup_location']) ? 'yes' : 'no') .
+			',toolbar=' . (!empty($this->attributes['popup_toolbar']) ? 'yes' : 'no') .
+			(empty($this->attributes['popup_width']) ? '' :
+				',width=' . $this->attributes['popup_width'] ) .
+			(empty($this->attributes['popup_height']) ? '' :
+				',height=' . $this->attributes['popup_height']) .
+			'\';' .
+			"var we_win = window.open('" . $this->href . "','" . "we_ll_" . $this->id . "',we_winOpts);";
 
 		$attributes = removeAttribs($attributes, array(
 			'name', 'target', 'onClick', 'onclick'

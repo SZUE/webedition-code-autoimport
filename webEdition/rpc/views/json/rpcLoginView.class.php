@@ -22,11 +22,11 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcLoginView extends rpcView{
+class rpcLoginView extends we_rpc_view{
 
 	function getResponse($response){
 
-		if($response->getStatus() == rpcCmd::STATUS_OK){
+		if($response->getStatus() == we_rpc_cmd::STATUS_OK){
 
 			$html = 'LOGIN OK<br/>';
 		} else {

@@ -33,5 +33,5 @@ switch(we_base_request::_(we_base_request::STRING, 'frame', '')){
 		echo we_dialog_deleteProgress::cmd();
 		break;
 	default:
-		echo we_dialog_deleteProgress::frameset(we_base_request::_(we_base_request::TABLE, "table"), we_base_request::_(we_base_request::INT, "currentID", 0));
+		echo we_dialog_deleteProgress::getHTML(we_base_request::_(we_base_request::TABLE, "table"), we_base_request::_(we_base_request::INT, "currentID", 0));
 }
