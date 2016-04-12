@@ -58,7 +58,7 @@ if(we_base_request::_(we_base_request::BOOL, 'vers_we_obj')){
 	$we_doc = $obj;
 
 // deal with customerFilter
-// @see we_object_showDocument.inc.php
+// @see we_showObject.inc.php
 } else if($we_doc->documentCustomerFilter && !isset($GLOBALS['getDocContentVersioning'])){
 
 	// call session_start to init session, otherwise NO customer can exist
@@ -118,10 +118,10 @@ if(($we_include = $we_doc->editor())){
 			}
 			echo $content;
 		}
-	} else {
-		we_html_tools::protect(); //	only inside webEdition !!!
-		include(WE_INCLUDES_PATH . $we_include);
+		return;
 	}
-} else {
-	exit('Nothing to include ...');
+	we_html_tools::protect(); //	only inside webEdition !!!
+	include(WE_INCLUDES_PATH . $we_include);
+	return;
 }
+exit('Nothing to include ...');

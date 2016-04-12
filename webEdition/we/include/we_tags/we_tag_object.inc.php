@@ -104,13 +104,13 @@ function we_tag_object($attribs){
 				</tr>
 			</table><?php
 		}
-	} else {
-		$we_oid = $we_oid ? : we_base_request::_(we_base_request::INT, 'we_oid', 0);
 	}
 
-	$id = $we_oid;
-	if(!$id && ($oid = we_base_request::_(we_base_request::INT, 'we_objectID'))){
-		$id = $oid;
+	if(!$we_oid){//Fix #10526 check if objectID is given by request
+		$id = ($oid = we_base_request::_(we_base_request::INT, 'we_objectID')) ? $oid : we_base_request::_(we_base_request::INT, 'we_oid', 0);
+		$classid = $id ? f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=0 AND ID=' . intval($id), '', $GLOBALS['DB_WE']) : 0;
+	}else{
+		$id = $we_oid;
 	}
 
 	if($id && $classid){

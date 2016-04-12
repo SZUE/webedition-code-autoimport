@@ -32,18 +32,11 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 		}
 	}
 
-
 <?php if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'revert_published'){ ?>
-
 		var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction("<?php echo $we_transaction; ?>");
-
 		_EditorFrame.setEditorIsHot(false);
-
 	<?php echo $GLOBALS['we_doc']->getUpdateTreeScript(true); ?>
-
 		_EditorFrame.getDocumentReference().frames.editFooter.location.reload();
-
-
 <?php } ?>
 //-->
 </script>
