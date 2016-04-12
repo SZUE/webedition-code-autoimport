@@ -23,47 +23,51 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_backup_wizard{
-
 	const BACKUP = 1;
 	const RECOVER = 2;
 
-	var $mode; //1-backup;2-recover
-	var $frameset;
-	var $db;
+	private $mode; //1-backup;2-recover
+	private $frameset;
 	private $fileUploader = null;
 
-	function __construct($frameset = "", $mode = self::BACKUP){
-		$this->setFrameset($frameset);
-		$this->setMode($mode);
-		$this->db = new DB_WE();
-	}
-
-	function setFrameset($frameset){
-		$this->frameset = $frameset;
-	}
-
-	function setMode($mode){
+	function __construct($mode = self::BACKUP){
+		$this->frameset = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . ($mode == self::BACKUP ? 'make_backup' : 'recover_backup');
 		$this->mode = $mode;
 	}
 
-	public function setFileUploader($fileUploader){
-		$this->fileUploader = $fileUploader;
-	}
-
-	public function getFileUploader(){
-		return $this->fileUploader;
-	}
-
-	function getJSDep($mode, $docheck, $doclick, $douncheck = ''){
-		return we_html_element::jsElement('
-function we_submitForm(target,url) {
-	var f = self.document.we_form;
-	f.target = target;
-	f.action = url;
-	f.method = "post";
-	f.submit();
-}
-
+	private static function getJSDep($mode, $docheck, $doclick, $douncheck = ''){
+		return
+			we_html_element::jsScript(JS_DIR . 'backup_wizard.js') .
+			we_html_element::jsElement('
+WE().consts.g_l.backupWizard={
+	temporary_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_temporary_dep]')) . '",
+	versions_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_versions_dep]')) . '",
+	versions_binarys_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_versions_binarys_dep]')) . '",
+	binary_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_binary_dep]')) . '",
+	schedule_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_schedule_dep]')) . '",
+	shop_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_shop_dep]')) . '",
+	workflow_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_workflow_dep]')) . '",
+	todo_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_todo_dep]')) . '",
+  newsletter_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_newsletter_dep]')) . '",
+	banner_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_banner_dep]')) . '",
+	workflow_data:"' . g_l('backup', '[' . $mode . '_workflow_data]') . '",
+	newsletter_data:"' . g_l('backup', '[' . $mode . '_newsletter_data]') . '",
+	schedule_data:"' . g_l('backup', '[' . $mode . '_schedule_data]') . '",
+	versions_data:"' . g_l('backup', '[' . $mode . '_versions_data]') . '",
+	versions_binarys_data:"' . g_l('backup', '[' . $mode . '_versions_binarys_data]') . '",
+	temporary_data:"' . g_l('backup', '[' . $mode . '][temporary_data]') . '",
+	history_data:"' . g_l('backup', '[' . $mode . '][history_data]') . '",
+	todo_data:"' . g_l('backup', '[' . $mode . '_todo_data]') . '",
+	shop_data:"' . g_l('backup', '[' . $mode . '_shop_data]') . '",
+	unselect_dep2:"' . g_l('backup', '[unselect_dep2]') . '",
+	unselect_dep3:"' . g_l('backup', '[unselect_dep3]') . '",
+	core_data:"' . g_l('backup', '[' . $mode . '_core_data]') . '",
+	object_data:"' . g_l('backup', '[' . $mode . '_object_data]') . '",
+	versions_data:"' . g_l('backup', '[' . $mode . '_versions_data]') . '",
+	binary_data:"' . g_l('backup', '[' . $mode . '_binary_data]') . '",
+	user_data:"' . g_l('backup', '[' . $mode . '_user_data]') . '",
+	customer_data:"' . g_l('backup', '[' . $mode . '_customer_data]') . '",
+};
 
 function doCheck(opt){
 	switch (opt) {
@@ -81,255 +85,19 @@ function doClick(opt) {
 	switch (opt) {
 		' . $doclick . '
 	}
-	if (a.checked){
-		switch(opt) {
-			case 101:
-				if(!document.we_form.handle_core.checked) {
-					document.we_form.handle_core.value=1;
-					document.we_form.handle_core.checked=true;
-					' . we_message_reporting::getShowMessageCall(g_l('backup', '[' . $mode . '_temporary_dep]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-				}
-			break;
-			case 12:
-				if(!document.we_form.handle_core.checked || !document.we_form.handle_object.checked) {
-					document.we_form.handle_core.value=1;
-					document.we_form.handle_core.checked=true;
-					document.we_form.handle_object.value=1;
-					document.we_form.handle_object.checked=true;
-					' . we_message_reporting::getShowMessageCall(g_l('backup', '[' . $mode . '_versions_dep]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-				}
-			break;
-			case 13:
-				if(!document.we_form.handle_core.checked || !document.we_form.handle_object.checked  || !document.we_form.handle_versions.checked) {
-					document.we_form.handle_core.value=1;
-					document.we_form.handle_core.checked=true;
-					document.we_form.handle_object.value=1;
-					document.we_form.handle_object.checked=true;
-					document.we_form.handle_versions.value=1;
-					document.we_form.handle_versions.checked=true;
-					' . we_message_reporting::getShowMessageCall(g_l('backup', '[' . $mode . '_versions_binarys_dep]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-				}
-			break;
-			case 14:
-				if(!document.we_form.handle_core.checked) {
-					document.we_form.handle_core.value=1;
-					document.we_form.handle_core.checked=true;
-					' . we_message_reporting::getShowMessageCall(g_l('backup', '[' . $mode . '_binary_dep]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-				}
-			break;
-			case 55:
-				if(!document.we_form.handle_core.checked || !document.we_form.handle_object.checked) {
-					document.we_form.handle_core.value=1;
-					document.we_form.handle_core.checked=true;
-					document.we_form.handle_object.value=1;
-					document.we_form.handle_object.checked=true;
-					' . we_message_reporting::getShowMessageCall(g_l('backup', '[' . $mode . '_schedule_dep]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-				}
-			break;
-		' . ((defined('SHOP_TABLE')) ? ('
-			case 30:
-				' . ((defined('CUSTOMER_TABLE')) ? ('
-				if(!document.we_form.handle_customer.checked) {
-					document.we_form.handle_customer.value=1;
-					document.we_form.handle_customer.checked=true;
-					' . we_message_reporting::getShowMessageCall(g_l('backup', '[' . $mode . '_shop_dep]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-				}
-			') : ('')) . '
-				break;
-		') : '') .
-						((defined('WORKFLOW_TABLE')) ? ('
-			case 35:
-				if(!document.we_form.handle_user.checked || !document.we_form.handle_core.checked) {
-					document.we_form.handle_core.value=1;
-					document.we_form.handle_core.checked=true;
-					document.we_form.handle_user.value=1;
-					document.we_form.handle_user.checked=true;
-					' . we_message_reporting::getShowMessageCall(g_l('backup', '[' . $mode . '_workflow_dep]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-				}
-				break;
-		') : '') .
-						((defined('MESSAGING_SYSTEM')) ? ('
-			case 40:
-				if(!document.we_form.handle_user.checked) {
-					document.we_form.handle_user.value=1;
-					document.we_form.handle_user.checked=true;
-					' . we_message_reporting::getShowMessageCall(g_l('backup', '[' . $mode . '_todo_dep]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-				}
-				break;
-		') : '') .
-						((defined('NEWSLETTER_TABLE')) ? ('
-			case 45:
-				' . ((defined('CUSTOMER_TABLE')) ? ('
-				if(!document.we_form.handle_customer.checked || !document.we_form.handle_core.checked || !document.we_form.handle_object.checked){
-					document.we_form.handle_core.value=1;
-					document.we_form.handle_core.checked=true;
-					document.we_form.handle_object.value=1;
-					document.we_form.handle_object.checked=true;
-					document.we_form.handle_customer.value=1;
-					document.we_form.handle_customer.checked=true;
-					' . we_message_reporting::getShowMessageCall(g_l('backup', '[' . $mode . '_newsletter_dep]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-				}
-			') : ('')) . '
-				break;
-		') : '') .
-						((defined('BANNER_TABLE')) ? ('
-			case 50:
-				if(!document.we_form.handle_core.checked){
-					document.we_form.handle_core.value=1;
-					document.we_form.handle_core.checked=true;
-					' . we_message_reporting::getShowMessageCall(g_l('backup', '[' . $mode . '_banner_dep]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-				}
-				break;
-		') : '') . '
-		}
-	}
-	else{
-		var mess="";
-		switch(opt) {
-			case 10:
-			' . ((defined('WORKFLOW_TABLE')) ? ('
-			if(document.forms["we_form"].elements["handle_workflow"].checked){
-				document.forms["we_form"].elements["handle_workflow"].checked=false;
-				mess+="\n-' . g_l('backup', '[' . $mode . '_workflow_data]') . '";
-			}
-			') : ('')) . '
-			' . ((defined('NEWSLETTER_TABLE')) ? ('
-			if(document.forms["we_form"].elements["handle_newsletter"].checked){
-				document.forms["we_form"].elements["handle_newsletter"].checked=false;
-				mess+="\n-' . g_l('backup', '[' . $mode . '_newsletter_data]') . '";
-			}
-			') : ('')) . '
-			' . ((defined('BANNER_TABLE')) ? ('
-			if(document.forms["we_form"].elements["handle_banner"].checked){
-				document.forms["we_form"].elements["handle_banner"].checked=false;
-				mess+="\n-' . g_l('backup', '[' . $mode . '_banner_data]') . '";
-			}
-			') : ('')) . '
-			' . (we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) ? ('
-			if(document.forms["we_form"].elements["handle_schedule"].checked){
-				document.forms["we_form"].elements["handle_schedule"].checked=false;
-				mess+="\n-' . g_l('backup', '[' . $mode . '_schedule_data]') . '";
-			}
-			') : ('')) . '
-			if(document.forms["we_form"].elements["handle_versions"].checked){
-				document.forms["we_form"].elements["handle_versions"].checked=false;
-				mess+="\n-' . g_l('backup', '[' . $mode . '_versions_data]') . '";
-			}
+	doClicked(a.checked,opt);
+	if (!a.checked){
 
-			if(document.forms["we_form"].elements["handle_versions_binarys"].checked){
-				document.forms["we_form"].elements["handle_versions_binarys"].checked=false;
-				mess+="\n-' . g_l('backup', '[' . $mode . '_versions_binarys_data]') . '";
-			}
-			if(document.forms["we_form"].elements["handle_temporary"].checked){
-				document.forms["we_form"].elements["handle_temporary"].checked=false;
-				mess+="\n-' . g_l('backup', '[' . $mode . '][temporary_data]') . '";
-			}
-			if(document.forms["we_form"].elements["handle_history"].checked){
-				document.forms["we_form"].elements["handle_history"].checked=false;
-				mess+="\n-' . g_l('backup', '[' . $mode . '][history_data]') . '";
-			}
-			if(mess!="") {
-				tmpMess = "' . sprintf(g_l('backup', '[unselect_dep2]'), g_l('backup', '[' . $mode . '_core_data]')) . '"+mess+"\n' . g_l('backup', '[unselect_dep3]') . '";
-				' . we_message_reporting::getShowMessageCall("tmpMess", we_message_reporting::WE_MESSAGE_NOTICE, true) . '
-			}
-			break;
-
-			' . ((defined('OBJECT_TABLE')) ? ('
-			case 11:
-				' . (we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) ? ('
-				if(document.forms["we_form"].elements["handle_schedule"].checked){
-					document.forms["we_form"].elements["handle_schedule"].checked=false;
-					mess+="\n-' . g_l('backup', '[' . $mode . '_schedule_data]') . '";
-				}
-			') : ('')) . '
-			if(document.forms["we_form"].elements["handle_versions"].checked){
-				document.forms["we_form"].elements["handle_versions"].checked=false;
-				mess+="\n-' . g_l('backup', '[' . $mode . '_versions_data]') . '";
-			}
-			if(document.forms["we_form"].elements["handle_versions_binarys"].checked){
-				document.forms["we_form"].elements["handle_versions_binarys"].checked=false;
-				mess+="\n-' . g_l('backup', '[' . $mode . '_versions_binarys_data]') . '";
-			}
-			if(mess!="") {
-				tmpMess = "' . sprintf(g_l('backup', '[unselect_dep2]'), g_l('backup', '[' . $mode . '_object_data]')) . '"+mess+"\n' . g_l('backup', '[unselect_dep3]') . '";
-				' . we_message_reporting::getShowMessageCall("tmpMess", we_message_reporting::WE_MESSAGE_NOTICE, true) . '
-			}
-			break;
-			case 12:
-
-			if(document.forms["we_form"].elements["handle_versions_binarys"].checked){
-				document.forms["we_form"].elements["handle_versions_binarys"].checked=false;
-				mess+="\n-' . g_l('backup', '[' . $mode . '_versions_binarys_data]') . '";
-			}
-			if(mess!="") {
-				tmpMess = "' . sprintf(g_l('backup', '[unselect_dep2]'), g_l('backup', '[' . $mode . '_versions_data]')) . '"+mess+"\n' . g_l('backup', '[unselect_dep3]') . '";
-				' . we_message_reporting::getShowMessageCall("tmpMess", we_message_reporting::WE_MESSAGE_NOTICE, true) . '
-			}
-			break;
-			') : ('')) . '
-
-			case 14:
-				if(mess!="") {
-					tmpMess = "' . sprintf(g_l('backup', '[unselect_dep2]'), g_l('backup', '[' . $mode . '_binary_data]')) . '"+mess+"\n' . g_l('backup', '[unselect_dep3]') . '";
-					' . we_message_reporting::getShowMessageCall("tmpMess", we_message_reporting::WE_MESSAGE_NOTICE, true) . '
-				}
-			break;
-			case 20:
-				' . ((defined('WORKFLOW_TABLE')) ? ('
-				if(document.forms["we_form"].elements["handle_workflow"].checked){
-					document.forms["we_form"].elements["handle_workflow"].checked=false;
-					mess+="\n-' . g_l('backup', '[' . $mode . '_workflow_data]') . '";
-				}
-			' . ((defined('MESSAGING_SYSTEM')) ? ('
-				if(document.forms["we_form"].elements["handle_todo"].checked){
-					document.forms["we_form"].elements["handle_todo"].checked=false;
-					mess+="\n-' . g_l('backup', '[' . $mode . '_todo_data]') . '";
-				}
-			') : ('')) . '
-			if(mess!="") {
-				tmpMess = "' . sprintf(g_l('backup', '[unselect_dep2]'), g_l('backup', '[' . $mode . '_user_data]')) . '"+mess+"\n' . g_l('backup', '[unselect_dep3]') . '";
-				' . we_message_reporting::getShowMessageCall("tmpMess", we_message_reporting::WE_MESSAGE_NOTICE, true) . '
-			}
-			break;
-			') : ('')) . '
-			' . ((defined('CUSTOMER_TABLE')) ? ('
-			case 25:
-				' . ((defined('SHOP_TABLE')) ? ('
-				if(document.forms["we_form"].elements["handle_shop"].checked){
-					document.forms["we_form"].elements["handle_shop"].checked=false;
-					mess+="\n-' . g_l('backup', '[' . $mode . '_shop_data]') . '";
-				}
-			') : ('')) . '
-			' . ((defined('NEWSLETTER_TABLE')) ? ('
-				if(document.forms["we_form"].elements["handle_newsletter"].checked){
-					document.forms["we_form"].elements["handle_newsletter"].checked=false;
-					mess+="\n-' . g_l('backup', '[' . $mode . '_newsletter_data]') . '";
-				}
-			') : ('')) . '
-			if(mess!="") {
-				tmpMess = "' . sprintf(g_l('backup', '[unselect_dep2]'), g_l('backup', '[' . $mode . '_customer_data]')) . '"+mess+"\n' . g_l('backup', '[unselect_dep3]') . '";
-				' . we_message_reporting::getShowMessageCall("tmpMess", we_message_reporting::WE_MESSAGE_NOTICE, true) . '
-			}
-			break;
-			') : ('')) . '
-		}
 	}
 }');
 	}
 
 	function getHTMLFrameset(){
-		$head = we_html_tools::getHtmlInnerHead(g_l('backup', '[wizard_' . ($this->mode == self::BACKUP ? 'backup' : 'recover') . '_title]')) . STYLESHEET;
-
-		$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;')
-						, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-								, we_html_element::htmlIFrame('body', $this->frameset . "?pnt=body", 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto', 'border:0px;width:100%;height:100%;overflow: auto;') .
-								we_html_element::htmlIFrame('busy', $this->frameset, 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden') .
-								we_html_element::htmlIFrame('cmd', $this->frameset . "?pnt=cmd", 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden')
-		));
-
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-						we_html_element::htmlHead($head) .
-						$body
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_' . ($this->mode == self::BACKUP ? 'backup' : 'recover') . '_title]'), '', '', STYLESHEET, we_html_element::htmlBody(array('id' => 'weMainBody')
+					, we_html_element::htmlIFrame('body', $this->frameset . '&pnt=body', 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;', 'border:0px;width:100%;height:100%;') .
+					we_html_element::htmlIFrame('busy', $this->frameset, 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden', '', '', false) .
+					we_html_element::htmlIFrame('cmd', $this->frameset . '&pnt=cmd')
+				)
 		);
 	}
 
@@ -346,8 +114,8 @@ function doClick(opt) {
 
 	function getHTMLRecoverStep1(){
 		$parts = array(
-			array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[save_before]'), we_html_tools::TYPE_ALERT, 600), "space" => 0, "noline" => 1),
-			array("headline" => "", "html" => g_l('backup', '[save_question]'), "space" => 0, "noline" => 1),
+			array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[save_before]'), we_html_tools::TYPE_ALERT, 600), 'noline' => 1),
+			array("headline" => "", "html" => g_l('backup', '[save_question]'), 'noline' => 1),
 		);
 
 		$js = we_html_element::jsElement('
@@ -356,17 +124,12 @@ function setLocation(loc){
 }
 function startStep(){
 	self.focus();
-	top.busy.location="' . $this->frameset . '?pnt=busy&step=1";
+	top.busy.location="' . $this->frameset . '&pnt=busy&step=1";
 }');
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "startStep()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_multiIconBox::getHTML("backup_options", "100%", $parts, 30, "", -1, "", "", false, g_l('backup', '[step1]'))
-						)
-		);
-		$head = we_html_tools::getHtmlInnerHead(g_l('backup', '[wizard_title]')) . $js . STYLESHEET;
-
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-						we_html_element::htmlHead($head) .
-						$body
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', $js . STYLESHEET, we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "startStep()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_multiIconBox::getHTML("backup_options", $parts, 30, "", -1, "", "", false, g_l('backup', '[step1]'))
+					)
+				)
 		);
 	}
 
@@ -377,34 +140,32 @@ function setLocation(loc){
 }
 function we_submitForm(target,url) {
 	var f = self.document.we_form;
+	if (!f.checkValidity()) {
+		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+		return false;
+	}
 	f.target = target;
 	f.action = url;
 	f.method = "post";
 	f.submit();
+	return true;
 }
 
 function startStep(){
-	top.busy.location="' . $this->frameset . '?pnt=busy&step=2";
+	top.busy.location="' . $this->frameset . '&pnt=busy&step=2";
 }
 
 self.focus();
 		');
 		$parts = array(
-			array("headline" => "", "html" => we_html_forms::radiobutton("import_server", true, "import_from", g_l('backup', '[import_from_server]')), "space" => 0, "noline" => 1),
-			array("headline" => "", "html" => we_html_forms::radiobutton("import_upload", false, "import_from", g_l('backup', '[import_from_local]')), "space" => 0, "noline" => 1)
+			array("headline" => "", "html" => we_html_forms::radiobutton("import_server", true, "import_from", g_l('backup', '[import_from_server]')), 'noline' => 1),
+			array("headline" => "", "html" => we_html_forms::radiobutton("import_upload", false, "import_from", g_l('backup', '[import_from_local]')), 'noline' => 1)
 		);
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "startStep();"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden(array("name" => "pnt", "value" => "body")) .
-								we_html_element::htmlHidden(array("name" => "step", "value" => 3)) .
-								we_html_multiIconBox::getHTML("backup_options", "100%", $parts, 30, "", -1, "", "", false, g_l('backup', '[step2]'))
-						)
-		);
-
-		$head = we_html_tools::getHtmlInnerHead(g_l('backup', '[wizard_title]')) . $js . STYLESHEET;
-
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-						we_html_element::htmlHead($head) .
-						$body
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', $js . STYLESHEET, we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "startStep();"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHiddens(array("pnt" => "body", "step" => 3)) .
+						we_html_multiIconBox::getHTML("backup_options", $parts, 30, "", -1, "", "", false, g_l('backup', '[step2]'))
+					)
+				)
 		);
 	}
 
@@ -416,69 +177,50 @@ self.focus();
 			// workaround end
 			unset($_SESSION['weS']['weBackupVars']);
 		}
-		$parts = array();
+
+		$this->fileUploader = new we_fileupload_ui_base('we_upload_file');
+		$this->fileUploader->setTypeCondition('accepted', array(we_base_ContentTypes::XML), array('.gz', '.tgz'));
+		$this->fileUploader->setCallback('top.body.startImport(true)');
+		$this->fileUploader->setInternalProgress(array('isInternalProgress' => true, 'width' => 300));
+		$this->fileUploader->setDimensions(array('width' => 500, 'alertBoxWidth' => 600, 'dragWidth' => 594, 'dragHeight' => 70, 'marginTop' => 5));
+		$this->fileUploader->setGenericFileName(TEMP_DIR . we_fileupload::REPLACE_BY_FILENAME);
 
 		$js = "";
 
-		//FIXME: delete condition when new uploader is stable
-		if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
-			$maxsize = $this->fileUploader ? $this->fileUploader->getMaxUploadSize() : getUploadMaxFilesize();
-		} else {
-			$maxsize = getUploadMaxFilesize();
-		}
+		$maxsize = $this->fileUploader->getMaxUploadSize();
 
 		if(we_base_request::_(we_base_request::STRING, "import_from") === 'import_upload'){
 			if($maxsize || $this->fileUploader){
-				//FIXME: delete condition and else branch when new uploader is stable
-				if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
-					if($this->fileUploader){
-						$fileUploaderHead = $this->fileUploader->getCss() . $this->fileUploader->getJs();
-						$inputTypeFile = $this->fileUploader->getHTML();
-					} else {
-						$alertMaxSize = sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB));
-						$inputTypeFile = we_html_element::htmlInput(array("name" => "we_upload_file", "type" => "file", "size" => 35));
-					}
+				//FIXME:
+				$fileUploaderHead = $this->fileUploader->getCss() . $this->fileUploader->getJs();
+				$inputTypeFile = $this->fileUploader->getHTML();
 
-					$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[charset_warning]'), we_html_tools::TYPE_ALERT, 600, false), "space" => 0, "noline" => 1);
-					if(!(DEFAULT_CHARSET != '')){
-						$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[defaultcharset_warning]'), we_html_tools::TYPE_ALERT, 600, false), "space" => 0, "noline" => 1);
-					}
-					$parts[] = array("headline" => "", "html" => we_fileupload_base::getHtmlAlertBoxesStatic(600), "space" => 0, "noline" => 1);
-					$parts[] = array("headline" => "", "html" => $inputTypeFile, "space" => 0, "noline" => 1);
-					$parts[] = array("headline" => "", "html" => we_html_tools::getPixel(1, 1), "space" => 0, "noline" => 1);
-				} else {
-					$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[charset_warning]'), we_html_tools::TYPE_ALERT, 600, false), "space" => 0, "noline" => 1);
-					if(!(DEFAULT_CHARSET != '')){
-						$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[defaultcharset_warning]'), we_html_tools::TYPE_ALERT, 600, false), "space" => 0, "noline" => 1);
-					}
-					$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 600), "space" => 0, "noline" => 1);
-					$parts[] = array("headline" => "", "html" => we_html_element::htmlInput(array("name" => "we_upload_file", "type" => "file", "size" => 35)), "space" => 0, "noline" => 1);
-					$parts[] = array("headline" => "", "html" => we_html_tools::getPixel(1, 1), "space" => 0, "noline" => 1);
-				}
+				$parts = array(
+					array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[charset_warning]'), we_html_tools::TYPE_ALERT, 600, false), 'noline' => 1),
+					(DEFAULT_CHARSET ? null : array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[defaultcharset_warning]'), we_html_tools::TYPE_ALERT, 600, false), 'noline' => 1)),
+					array("headline" => "", "html" => $this->fileUploader->getHtmlAlertBoxes(), 'noline' => 1),
+					array("headline" => "", "html" => $inputTypeFile, 'noline' => 1)
+				);
 			}
 		} else {
-
 			$js = '
 function setLocation(loc){
 	location.href=loc;
 }
-extra_files=new Array();
-extra_files_desc=new Array();';
+extra_files=[];
+extra_files_desc=[];';
 			$select = new we_html_select(array("name" => "backup_select", "size" => 7, "style" => "width: 600px;"));
-
-
 			$files = array();
 			$extra_files = array();
 			$dateformat = g_l('date', '[format][default]');
 			for($i = 0; $i <= 1; $i++){
 				$adddatadir = ($i == 0 ? '' : 'data/');
-				$dstr = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $adddatadir;
+				$dstr = BACKUP_PATH . $adddatadir;
 				$d = dir($dstr);
 				while(($entry = $d->read())){
 					switch($entry){
 						case '.':
 						case '..':
-						case 'CVS':
 						case 'download':
 						case 'tmp':
 						case 'lastlog.php':
@@ -529,8 +271,8 @@ extra_files_desc=new Array();';
 
 			/* foreach($files as $fk=>$fv)	$select->addOption($fk,$fv); */
 
-			$default = we_html_select::getNewOptionGroup(array('style' => 'font-weight: bold; font-style: normal; color: darkblue;', 'label' => g_l('backup', '[we_backups]')));
-			$other = we_html_select::getNewOptionGroup(array('style' => 'font-weight: bold; font-style: normal; color: darkblue;', 'label' => g_l('backup', '[other_files]')));
+			$default = we_html_select::getNewOptionGroup(array('class' => 'bold', 'style' => 'font-style: normal; color: darkblue;', 'label' => g_l('backup', '[we_backups]')));
+			$other = we_html_select::getNewOptionGroup(array('class' => 'bold', 'style' => 'font-style: normal; color: darkblue;', 'label' => g_l('backup', '[other_files]')));
 
 			foreach($files as $fk => $fv){
 				if(strlen($fv) > 75){
@@ -555,21 +297,21 @@ extra_files_desc=new Array();';
 				$i++;
 			}
 
-			$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[charset_warning]'), we_html_tools::TYPE_ALERT, 600, false), "space" => 0, "noline" => 1);
-			if(!(DEFAULT_CHARSET != '')){
-				$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[defaultcharset_warning]'), we_html_tools::TYPE_ALERT, 600, false), "space" => 0, "noline" => 1);
-			}
-			$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[old_backups_warning]'), we_html_tools::TYPE_ALERT, 600, false), "space" => 0, "noline" => 1);
-			$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[select_server_file]'), we_html_tools::TYPE_INFO, 600, false), "space" => 0, "noline" => 1);
-			$parts[] = array("headline" => "", "html" => $select->getHtml(), "space" => 0, "noline" => 1);
-			//$parts[] =array("headline"=>"","html"=>we_html_forms::checkbox(1, false, "show_all", g_l('backup',"[show_all]"), false, "defaultfont", "showAll()"),"space"=>0,"noline"=>1);
-			$parts[] = array("headline" => "", "html" => we_html_button::create_button("delete_backup", "javascript:delSelected();", true, 100, 22, '', '', false, false), "space" => 0);
+			$parts = array(
+				array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[charset_warning]'), we_html_tools::TYPE_ALERT, 600, false), 'noline' => 1),
+				(DEFAULT_CHARSET ? null : array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[defaultcharset_warning]'), we_html_tools::TYPE_ALERT, 600, false), 'noline' => 1) ),
+				array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[old_backups_warning]'), we_html_tools::TYPE_ALERT, 600, false), 'noline' => 1),
+				array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[select_server_file]'), we_html_tools::TYPE_INFO, 600, false), 'noline' => 1),
+				array("headline" => "", "html" => $select->getHtml(), 'noline' => 1),
+				//array("headline"=>"","html"=>we_html_forms::checkbox(1, false, "show_all", g_l('backup',"[show_all]"), false, "defaultfont", "showAll()"),"space"=>0,"noline"=>1);
+				array("headline" => "", "html" => we_html_button::create_button('delete_backup', "javascript:delSelected();", true, 100, 22, '', '', false, false),)
+			);
 		}
 
-		$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, true, "rebuild", g_l('backup', '[rebuild]'), false), "space" => 0);
+		$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, true, "rebuild", g_l('backup', '[rebuild]'), false),);
 
-		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[delold_notice]'), we_html_tools::TYPE_QUESTION, 600, false), "space" => 0, "noline" => 1);
-		$parts[] = array("headline" => "", "html" => we_html_button::create_button("delete", "javascript:delOldFiles();", true, 100, 22, '', '', false, false), "space" => 0);
+		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[delold_notice]'), we_html_tools::TYPE_QUESTION, 600, false) .
+			we_html_button::create_button('delold', "javascript:delOldFiles();", true, 100, 22, '', '', false, false), 'noline' => 1);
 
 		$form_properties = array(
 			10 => 'handle_core',
@@ -587,7 +329,7 @@ extra_files_desc=new Array();';
 			55 => we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) ? 'handle_schedule' : '',
 			60 => we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT) ? 'handle_export' : '',
 			65 => defined('VOTING_TABLE') ? 'handle_voting' : '',
-			70 => defined('SPELLCHECKER') ? 'handle_spellchecker' : '',
+			//70 => defined('SPELLCHECKER') ? 'handle_spellchecker' : '',
 			75 => defined('GLOSSARY_TABLE') ? 'handle_glossary' : '',
 			98 => 'handle_hooks',
 			99 => 'handle_customtags',
@@ -610,11 +352,7 @@ extra_files_desc=new Array();';
 
 		$parts[] = array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[import_options]'), we_html_tools::TYPE_INFO, 600, false), 'space' => 70, 'noline' => 1);
 
-		$docheck = '';
-		$douncheck = '';
-		$doclick = '';
-		$doclickall1 = '';
-		$doclickall2 = '';
+		$docheck = $douncheck = $doclick = '';
 		foreach($form_properties as $k => $v){
 			if(!$v){
 				continue;
@@ -638,143 +376,108 @@ extra_files_desc=new Array();';
 				break;
 			';
 			if($k > 2 && $k < 101){
-				$parts[] = array('headline' => '', 'html' => we_html_forms::checkbox(1, true, $v, g_l('backup', '[' . str_replace('handle', 'import', $v) . '_data]'), false, 'defaultfont', "doClick($k);"), "space" => 70, "noline" => 1);
-				$doclickall1.="doCheck($k);";
-			} else {
-				$doclickall2.="doCheck($k);";
+				$parts[] = array('headline' => '', 'html' => we_html_forms::checkbox(1, true, $v, g_l('backup', '[' . str_replace('handle', 'import', $v) . '_data]'), false, 'defaultfont', "doClick($k);"), 'space' => 70, 'noline' => 1);
 			}
 		}
 
-		$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, true, "handle_temporary", g_l('backup', '[import][temporary_data]'), false, "defaultfont", "doClick(101);"), "space" => 70, "noline" => 1);
+		$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, true, "handle_temporary", g_l('backup', '[import][temporary_data]'), false, "defaultfont", "doClick(101);"), 'space' => 70, 'noline' => 1);
 
-		$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, true, "handle_history", g_l('backup', '[import][history_data]'), false, "defaultfont", "doClick(102);"), "space" => 70, "noline" => 1);
+		$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, true, "handle_history", g_l('backup', '[import][history_data]'), false, "defaultfont", "doClick(102);"), 'space' => 70, 'noline' => 1);
 
 
-		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[tools_import_desc]'), we_html_tools::TYPE_INFO, 600, false), "space" => 70, "noline" => 1);
+		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[tools_import_desc]'), we_html_tools::TYPE_INFO, 600, false), 'space' => 70, 'noline' => 1);
 		foreach($_tools as $_tool){
 			$text = ($_tool === 'weSearch' ?
-							g_l('searchtool', '[import_tool_' . $_tool . '_data]') :
-							g_l('backup', '[import][weapp]') . ' ' . $_tool);
+					g_l('searchtool', '[import_tool_' . $_tool . '_data]') :
+					g_l('backup', '[import][weapp]') . ' ' . $_tool);
 
-			$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, true, 'handle_tool[' . $_tool . ']', $text, false, "defaultfont", "doClick($k);"), "space" => 70, "noline" => 1);
+			$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, true, 'handle_tool[' . $_tool . ']', $text, false, "defaultfont", "doClick($k);"), 'space' => 70, 'noline' => 1);
 		}
 
-		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[extern_exp]'), we_html_tools::TYPE_ALERT, 600, false), "space" => 70, "noline" => 1);
-		$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, false, "handle_extern", g_l('backup', '[import_extern_data]'), false, "defaultfont", "doClick(300);"), "space" => 70, "noline" => 1);
+		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[extern_exp]'), we_html_tools::TYPE_ALERT, 600, false), 'space' => 70, 'noline' => 1);
+		$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, false, "handle_extern", g_l('backup', '[import_extern_data]'), false, "defaultfont", "doClick(300);"), 'space' => 70, 'noline' => 1);
 
-		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[convert_charset]'), we_html_tools::TYPE_ALERT, 600, false), "space" => 70, "noline" => 1);
-		$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, false, "convert_charset", g_l('backup', '[convert_charset_data]'), false, "defaultfont", "doClick(310);doUnCheck(101);doUnCheck(100);doUnCheck(70)"), "space" => 70, "noline" => 1);
+		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[convert_charset]'), we_html_tools::TYPE_ALERT, 600, false), 'space' => 70, 'noline' => 1);
+		$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, false, "convert_charset", g_l('backup', '[convert_charset_data]'), false, "defaultfont", "doClick(310);doUnCheck(101);doUnCheck(100);doUnCheck(70)"), 'space' => 70, 'noline' => 1);
 
-		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[backup_log_exp]'), we_html_tools::TYPE_INFO, 600, false), "space" => 70, "noline" => 1);
-		$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, true, "backup_log", g_l('backup', '[export_backup_log]'), false, "defaultfont", "doClick(320);"), "space" => 70, "noline" => 1);
+		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[backup_log_exp]'), we_html_tools::TYPE_INFO, 600, false), 'space' => 70, 'noline' => 1);
+		$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, true, "backup_log", g_l('backup', '[export_backup_log]'), false, "defaultfont", "doClick(320);"), 'space' => 70, 'noline' => 1);
 
 
 		$js = we_html_element::jsElement($js) .
-				we_html_element::jsScript(JS_DIR . "windows.js") .
-				(!we_fileupload_include::USE_LEGACY_FOR_BACKUP && isset($fileUploaderHead) ? $fileUploaderHead : '') .
-				we_backup_wizard::getJSDep("import", $docheck, $doclick, $douncheck) .
-				we_html_element::jsElement(we_html_button::create_state_changer(false) . '
+			(isset($fileUploaderHead) ? $fileUploaderHead : '') .
+			self::getJSDep("import", $docheck, $doclick, $douncheck) .
+			we_html_element::jsElement('
 function startBusy() {
-	top.busy.location="' . $this->frameset . '?pnt=busy&operation_mode=busy&step=4";
+	top.busy.location="' . $this->frameset . '&pnt=busy&operation_mode=busy&step=4";
 }
 
 function startImport(isFileReady) {
-	var _usedEditors = top.opener.top.weEditorFrameController.getEditorsInUse(),
+	var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse(),
 		isFileReady = isFileReady || false;
 	for (frameId in _usedEditors) {
 		_usedEditors[frameId].setEditorIsHot( false );
 
 	}
-	top.opener.top.weEditorFrameController.closeAllDocuments();
+	WE().layout.weEditorFrameController.closeAllDocuments();
 
 	' . ((we_base_request::_(we_base_request::STRING, "import_from") === "import_upload") ? ('
 	if(isFileReady || document.we_form.we_upload_file.value) {
 		startBusy();
-		top.body.delete_enabled = top.body.switch_button_state("delete", "delete_enabled", "disabled");
-		document.we_form.action = "' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php";
-		setTimeout("document.we_form.submit()",100);
-	}else
+		top.body.delete_enabled = WE().layout.button.switch_button_state(top.body.document, "delete", "disabled");
+		document.we_form.action = WE().consts.dirs.WE_INCLUDES_DIR+"we_editors/we_backup_cmd.php";
+		document.we_form.submit();
+	}else{
 		' . we_message_reporting::getShowMessageCall(g_l('backup', '[nothing_selected]'), we_message_reporting::WE_MESSAGE_WARNING) . '
-	') : ('
+	}') : ('
 	if(document.we_form.backup_select.value) {
 		startBusy();
-		top.body.delete_backup_enabled = top.body.switch_button_state("delete_backup", "delete_backup_enabled", "disabled");
-		top.body.delete_enabled = top.body.switch_button_state("delete", "delete_enabled", "disabled");
-		document.we_form.action = "' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php";
-		setTimeout("document.we_form.submit()",100);
-	}
-	else
+		top.body.delete_backup_enabled = WE().layout.button.switch_button_state(top.body.document, "delete_backup", "disabled");
+		top.body.delete_enabled = WE().layout.button.switch_button_state(top.body.document, "delete", "disabled");
+		document.we_form.action = WE().consts.dirs.WE_INCLUDES_DIR+"we_editors/we_backup_cmd.php";
+		document.we_form.submit();
+	}else{
 		' . we_message_reporting::getShowMessageCall(g_l('backup', '[nothing_selected_fromlist]'), we_message_reporting::WE_MESSAGE_WARNING) . '
-	')) . '
-}
-
-function showAll() {
-	var a=document.we_form.backup_select.options;
-	var b=document.we_form.show_all;
-
-	if(b.checked){
-		b.value=1;
-		for(i=0;i<extra_files.length;i++)
-			a[a.length]=new Option(extra_files_desc[i],extra_files[i]);
-	}else {
-		b.value=0;
-		for(i=a.length-1;i>-1;i--){
-			for(j=extra_files.length-1;j>-1;j--){
-				if(a[i].value==extra_files[j]) {
-					a[i]=null;
-					break;
-				}
-			}
-		}
-	}
+	}')) . '
 }
 
 function delOldFiles(){
-	if(confirm("' . g_l('backup', '[delold_confirm]') . '")) top.cmd.location="' . $this->frameset . '?pnt=cmd&operation_mode=deleteall";
+	if(confirm("' . g_l('backup', '[delold_confirm]') . '")){
+     top.cmd.location="' . $this->frameset . '&pnt=cmd&operation_mode=deleteall";
+		}
 }
 
 function startStep(){
-	top.busy.location="' . $this->frameset . '?pnt=busy&step=3";
+	top.busy.location="' . $this->frameset . '&pnt=busy&step=3";
 }
 
 function delSelected(){
 	var sel = document.we_form.backup_select;
 	if(sel.selectedIndex>-1){
-		if(confirm("' . g_l('backup', '[del_backup_confirm]') . '")) top.cmd.location="' . $this->frameset . '?pnt=cmd&operation_mode=deletebackup&bfile="+sel.options[sel.selectedIndex].value;
+		if(confirm("' . g_l('backup', '[del_backup_confirm]') . '")) top.cmd.location="' . $this->frameset . '&pnt=cmd&operation_mode=deletebackup&bfile="+sel.options[sel.selectedIndex].value;
 	} else {
 		' . we_message_reporting::getShowMessageCall(g_l('backup', '[nothing_selected_fromlist]'), we_message_reporting::WE_MESSAGE_WARNING) . '
 	}
 }
-
-function delSelItem(){
-	var sel = document.we_form.backup_select;
-	if(sel.selectedIndex>-1){
-		sel.remove(sel.selectedIndex);
-	}
-}
-
-self.focus();');
+');
 
 		$form_attribs = (we_base_request::_(we_base_request::STRING, "import_from") === "import_upload" ?
-						array("name" => "we_form", "method" => "post", "action" => $this->frameset, "target" => "cmd", "enctype" => "multipart/form-data") :
-						array("name" => "we_form", "method" => "post", "action" => $this->frameset, "target" => "cmd")
-				);
+				array("name" => "we_form", "method" => "post", "action" => $this->frameset, "target" => "cmd", "enctype" => "multipart/form-data") :
+				array("name" => "we_form", "method" => "post", "action" => $this->frameset, "target" => "cmd")
+			);
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "startStep();"), we_html_element::htmlForm($form_attribs, we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
-								we_html_element::htmlHidden(array("name" => "cmd", "value" => "import")) .
-								we_html_element::htmlHidden(array("name" => "step", "value" => 3)) .
-								we_html_element::htmlHidden(array("name" => "MAX_FILE_SIZE", "value" => $maxsize)) .
-								we_html_element::htmlInput(array("type" => "hidden", "name" => "operation_mode", "value" => "import")) .
-								we_html_multiIconBox::getJS() .
-								we_html_multiIconBox::getHTML("backup_options", "100%", $parts, 30, "", 7, g_l('backup', '[recover_option]'), "<b>" . g_l('backup', '[recover_option]') . "</b>", false, g_l('backup', '[step3]'))
-						)
+		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "startStep();self.focus();"), we_html_element::htmlForm($form_attribs, we_html_element::htmlHiddens(array(
+						"pnt" => "cmd",
+						"cmd" => "import",
+						"step" => 3,
+						"MAX_FILE_SIZE" => $maxsize)) .
+					we_html_element::htmlInput(array("type" => "hidden", "name" => "operation_mode", "value" => "import")) .
+					we_html_multiIconBox::getJS() .
+					we_html_multiIconBox::getHTML("backup_options", $parts, 30, "", 7, g_l('backup', '[recover_option]'), "<b>" . g_l('backup', '[recover_option]') . "</b>", false, g_l('backup', '[step3]'))
+				)
 		);
 
-		$head = we_html_tools::getHtmlInnerHead(g_l('backup', '[wizard_title]')) . $js . STYLESHEET;
-
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-						we_html_element::htmlHead($head) .
-						$body
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', $js . STYLESHEET, $body
 		);
 	}
 
@@ -789,8 +492,8 @@ self.focus();');
 		}
 
 		$parts = array(
-			array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[finished_success]'), we_html_tools::TYPE_INFO, 600), "space" => 0, "noline" => 1),
-			array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[old_backups_warning]'), we_html_tools::TYPE_ALERT, 600, false), "space" => 0, "noline" => 1)
+			array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[finished_success]'), we_html_tools::TYPE_INFO, 600), 'noline' => 1),
+			array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[old_backups_warning]'), we_html_tools::TYPE_ALERT, 600, false), 'noline' => 1)
 		);
 
 		$js = we_html_element::jsElement('
@@ -798,22 +501,16 @@ function setLocation(loc){
 	location.href=loc;
 }
 function stopBusy() {
-	top.busy.location="' . $this->frameset . '?pnt=busy&step=5";
+	top.busy.location="' . $this->frameset . '&pnt=busy&step=5";
 	/*if(top.opener.top.header)
 		top.opener.top.header.document.location.reload();*/
 }
 top.cmd.location ="about:blank";
 self.focus();');
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "stopBusy()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "enctype" => "multipart/form-data"), we_html_multiIconBox::getHTML("backup_options", "100%", $parts, 34, "", -1, "", "", false, g_l('backup', '[step3]'))
-						)
-		);
-
-		$head = we_html_tools::getHtmlInnerHead(g_l('backup', '[wizard_title]')) . $js . STYLESHEET;
-
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-						we_html_element::htmlHead($head) .
-						$body
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', $js . STYLESHEET, we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "stopBusy()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "enctype" => "multipart/form-data"), we_html_multiIconBox::getHTML("backup_options", $parts, 34, "", -1, "", "", false, g_l('backup', '[step3]'))
+					)
+				)
 		);
 	}
 
@@ -871,9 +568,9 @@ self.focus();');
 		if(defined('VOTING_TABLE')){
 			$form_properties[65] = "handle_voting";
 		}
-		if(defined('SPELLCHECKER')){
-			$form_properties[70] = "handle_spellchecker";
-		}
+		/* if(defined('SPELLCHECKER')){
+		  $form_properties[70] = "handle_spellchecker";
+		  } */
 		if(defined('GLOSSARY_TABLE')){
 			$form_properties[75] = "handle_glossary";
 		}
@@ -892,30 +589,27 @@ self.focus();');
 		$compression = we_base_file::hasCompression("gzip");
 
 		$parts = array(
-			array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', ($compression ? '[filename_compression]' : '[filename_info]')), we_html_tools::TYPE_INFO, 600, false), "space" => 0, "noline" => 1),
-			array("headline" => g_l('backup', '[filename]') . ":&nbsp;&nbsp;", "html" => we_html_tools::htmlTextInput("filename", 60, 'weBackup_' . str_replace('.', '-', $_SERVER['SERVER_NAME']) . '_' . date("Y_m_d__H_i", time()) . '_' . str_replace('.', '-', WE_VERSION) . ".xml", "", "", "text"), "space" => 100, "noline" => 1)
+			array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', ($compression ? '[filename_compression]' : '[filename_info]')), we_html_tools::TYPE_INFO, 600, false), 'noline' => 1),
+			array("headline" => g_l('backup', '[filename]') . ":&nbsp;&nbsp;", "html" => we_html_tools::htmlTextInput("filename", 0, 'weBackup_' . str_replace('.', '-', $_SERVER['SERVER_NAME']) . '_' . date("Y_m_d__H_i", time()) . '_' . str_replace('.', '-', WE_VERSION) . ".xml", "", "", "text", '30em'), 'space' => 100, 'noline' => 1)
 		);
 
 		if($compression){
 			$switchbut = 9;
-			$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(we_backup_base::COMPRESSION, true, "compress", g_l('backup', '[compress]'), false, "defaultfont", "", false, g_l('backup', '[ftp_hint]')), "space" => 100);
+			$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(we_backup_util::COMPRESSION, true, "compress", g_l('backup', '[compress]'), false, "defaultfont", "", false, g_l('backup', '[ftp_hint]')), 'space' => 100);
 		} else {
 			$switchbut = 7;
 		}
 
 
-		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[protect_txt]'), we_html_tools::TYPE_INFO, 600, false), "space" => 0, "noline" => 1);
-		$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, false, "protect", g_l('backup', '[protect]'), false, "defaultfont", ""), "space" => 70);
+		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[protect_txt]'), we_html_tools::TYPE_INFO, 600, false), 'noline' => 1);
+		$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, false, "protect", g_l('backup', '[protect]'), false, "defaultfont", ""), 'space' => 70);
 
-		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[export_location]'), we_html_tools::TYPE_INFO, 600, false), "space" => 0, "noline" => 1);
-		$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, true, "export_server", g_l('backup', '[export_location_server]'), false, "defaultfont", "doClick(1)"), "space" => 70, "noline" => 1);
-		$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, false, "export_send", g_l('backup', '[export_location_send]'), false, "defaultfont", "doClick(2)", (!permissionhandler::hasPerm("EXPORT"))), "space" => 70);
-		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[export_options]'), we_html_tools::TYPE_INFO, 600, false), "space" => 0, "noline" => 1);
+		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[export_location]'), we_html_tools::TYPE_INFO, 600, false), 'noline' => 1);
+		$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, true, "export_server", g_l('backup', '[export_location_server]'), false, "defaultfont", "doClick(1)"), 'space' => 70, 'noline' => 1);
+		$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, false, "export_send", g_l('backup', '[export_location_send]'), false, "defaultfont", "doClick(2)", (!permissionhandler::hasPerm("EXPORT"))), 'space' => 70);
+		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[export_options]'), we_html_tools::TYPE_INFO, 600, false), 'noline' => 1);
 
-		$docheck = '';
-		$doclick = '';
-		$doclickall1 = '';
-		$doclickall2 = '';
+		$docheck = $doclick = '';
 		foreach($form_properties as $k => $v){
 			$docheck.='
 				case ' . $k . ':
@@ -941,46 +635,39 @@ self.focus();');
 					"headline" => '',
 					"html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[' . str_replace('handle_', '', $v) . "_info]"), $boxNr, 600, false) .
 					we_html_forms::checkbox(1, $checked, $v, g_l('backup', '[' . str_replace('handle', 'export', $v) . "_data]"), false, "defaultfont", "doClick($k);"),
-					"space" => 70,
-					"noline" => 1
+					'space' => 70,
+					'noline' => 1
 				);
-				$doclickall1.="doCheck($k);";
-			} else {
-				$doclickall2.="doCheck($k);";
 			}
 		}
 
-		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[tools_export_desc]'), we_html_tools::TYPE_INFO, 600, false), "space" => 70, "noline" => 1);
+		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[tools_export_desc]'), we_html_tools::TYPE_INFO, 600, false), 'space' => 70, 'noline' => 1);
 		$k = 700;
 		foreach($_tools as $_tool){
 			$text = ($_tool === 'weSearch' ?
-							g_l('searchtool', '[import_tool_' . $_tool . '_data]') :
-							g_l('backup', '[export][weapp]') . ' ' . $_tool);
+					g_l('searchtool', '[import_tool_' . $_tool . '_data]') :
+					g_l('backup', '[export][weapp]') . ' ' . $_tool);
 
-			$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, true, 'handle_tool[' . $_tool . ']', $text, false, "defaultfont", "doClick($k);"), "space" => 70, "noline" => 1);
+			$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, true, 'handle_tool[' . $_tool . ']', $text, false, "defaultfont", "doClick($k);"), 'space' => 70, 'noline' => 1);
 			$k++;
 		}
 
-		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[temporary_info]'), we_html_tools::TYPE_INFO, 600, false) . we_html_forms::checkbox(1, true, "handle_temporary", g_l('backup', '[export][temporary_data]'), false, "defaultfont", "doClick(101);"), "space" => 70);
-		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[history_info]'), we_html_tools::TYPE_INFO, 600, false) . we_html_forms::checkbox(1, true, "handle_history", g_l('backup', '[export][history_data]'), false, "defaultfont", "doClick(102);"), "space" => 70);
+		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[temporary_info]'), we_html_tools::TYPE_INFO, 600, false) . we_html_forms::checkbox(1, true, "handle_temporary", g_l('backup', '[export][temporary_data]'), false, "defaultfont", "doClick(101);"), 'space' => 70);
+		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[history_info]'), we_html_tools::TYPE_INFO, 600, false) . we_html_forms::checkbox(1, true, "handle_history", g_l('backup', '[export][history_data]'), false, "defaultfont", "doClick(102);"), 'space' => 70);
 
-		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[extern_exp]'), we_html_tools::TYPE_ALERT, 600, false), "space" => 70, "noline" => 1);
-		$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, false, "handle_extern", g_l('backup', '[export_extern_data]'), false, "defaultfont", "doClick(300);"), "space" => 70, "noline" => 1);
+		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[extern_exp]'), we_html_tools::TYPE_ALERT, 600, false), 'space' => 70, 'noline' => 1);
+		$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, false, "handle_extern", g_l('backup', '[export_extern_data]'), false, "defaultfont", "doClick(300);"), 'space' => 70, 'noline' => 1);
 
-		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[backup_log_exp]'), we_html_tools::TYPE_INFO, 600, false), "space" => 70, "noline" => 1);
-		$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, true, "backup_log", g_l('backup', '[export_backup_log]'), false, "defaultfont", "doClick(320);"), "space" => 70, "noline" => 1);
+		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[backup_log_exp]'), we_html_tools::TYPE_INFO, 600, false), 'space' => 70, 'noline' => 1);
+		$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, true, "backup_log", g_l('backup', '[export_backup_log]'), false, "defaultfont", "doClick(320);"), 'space' => 70, 'noline' => 1);
 
 
 		$mode = "export";
-		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
-				we_backup_wizard::getJSDep("export", $docheck, $doclick) .
-				we_html_element::jsElement('
-function setLocation(loc){
-	location.href=loc;
-}
+		$js = self::getJSDep("export", $docheck, $doclick) .
+			we_html_element::jsElement('
 function startStep(){
 	self.focus();
-	top.busy.location="' . $this->frameset . '?pnt=busy&step=1";
+	top.busy.location="' . $this->frameset . '&pnt=busy&step=1";
 }
 function setLocation(loc){
 	location.href=loc;
@@ -988,30 +675,20 @@ function setLocation(loc){
 
 		$_edit_cookie = weGetCookieVariable("but_edit_image");
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "startStep()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", 'onsubmit' => 'return false;'), we_html_element::htmlHidden(array("name" => "pnt", "value" => "cmd")) .
-								we_html_element::htmlHidden(array("name" => "cmd", "value" => "export")) .
-								we_html_element::htmlHidden(array("name" => "operation_mode", "value" => "backup")) .
-								we_html_element::htmlHidden(array("name" => "do_import_after_backup", "value" => we_base_request::_(we_base_request::BOOL, "do_import_after_backup"))) .
-								we_html_multiIconBox::getJS() .
-								we_html_multiIconBox::getHTML("backup_options1", 580, $parts, 30, "", $switchbut, g_l('backup', '[option]'), "<b>" . g_l('backup', '[option]') . "</b>", $_edit_cookie != false ? ($_edit_cookie === "down") : $_edit_cookie, g_l('backup', '[export_step1]'))
-						)
-		);
-
-		$head = we_html_tools::getHtmlInnerHead(g_l('backup', '[wizard_title_export]')) . STYLESHEET . $js;
-
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-						we_html_element::htmlHead($head) .
-						$body
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title_export]'), '', '', STYLESHEET . $js, we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "startStep()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", 'onsubmit' => 'return false;'), we_html_element::htmlHiddens(array(
+							"pnt" => "cmd",
+							"cmd" => "export",
+							"operation_mode" => "backup",
+							"do_import_after_backup" => we_base_request::_(we_base_request::BOOL, "do_import_after_backup"))) .
+						we_html_multiIconBox::getJS() .
+						we_html_multiIconBox::getHTML("backup_options1", $parts, 30, "", $switchbut, g_l('backup', '[option]'), "<b>" . g_l('backup', '[option]') . "</b>", $_edit_cookie != false ? ($_edit_cookie === "down") : $_edit_cookie, g_l('backup', '[export_step1]'))
+					)
+				)
 		);
 	}
 
 	function getHTMLBackupStep2(){
-		$content = '';
-
-		$table = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0, 'class' => 'defaultfont'), 4, 1);
-
-		$table->setCol(0, 0, null, g_l('backup', '[finish]'));
-		$table->setCol(1, 0, null, we_html_tools::getPixel(5, 20));
+		$content = we_html_element::htmlDiv(array('style' => 'padding-bottom:20px;'), g_l('backup', '[finish]'));
 
 		if($_SESSION['weS']['weBackupVars']['options']['export2send']){
 			$_down = $_SESSION['weS']['weBackupVars']['backup_file'];
@@ -1023,37 +700,28 @@ function setLocation(loc){
 						'binary' => 1
 				));
 
-				$table->setCol(2, 0, array('class' => 'defaultfont'), self::getDownloadLinkText() . '<br/><br/>' .
-						we_html_element::htmlA(array('href' => $_link), g_l('backup', '[download_file]'))
+				$content.=we_html_element::htmlDiv(array('class' => 'defaultfont'), self::getDownloadLinkText() . '<br/><br/>' .
+						we_html_element::htmlA(array('href' => $_link, 'download' => basename($_down)), g_l('backup', '[download_file]'))
 				);
 			} else {
-				$table->setCol(2, 0, null, g_l('backup', '[download_failed]'));
+				$content.=we_html_element::htmlDiv(array(), g_l('backup', '[download_failed]'));
 			}
 		}
 
 
-		$table->setCol(3, 0, null, we_html_tools::getPixel(5, 5));
-
-		$content.=$table->getHtml();
-
-		$do_import_after_backup = (isset($_SESSION['weS']['weBackupVars']['options']['do_import_after_backup']) && $_SESSION['weS']['weBackupVars']['options']['do_import_after_backup']) ? 1 : 0;
+		$do_import_after_backup = (!empty($_SESSION['weS']['weBackupVars']['options']['do_import_after_backup'])) ? 1 : 0;
 		$js = we_html_element::jsElement('
 function setLocation(loc){
 	location.href=loc;
 }
 function startStep(){
 	self.focus();
-	top.busy.location="' . $this->frameset . '?pnt=busy&do_import_after_backup=' . $do_import_after_backup . '&step=3";
+	top.busy.location="' . $this->frameset . '&pnt=busy&do_import_after_backup=' . $do_import_after_backup . '&step=3";
 }');
 
-		$head = we_html_tools::getHtmlInnerHead(g_l('backup', '[wizard_title_export]')) . $js . STYLESHEET;
-		$body = we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'startStep();'), we_html_element::htmlForm(array('name' => 'we_form', 'method' => 'post'), we_html_tools::htmlDialogLayout($content, g_l('backup', '[export_step2]'))
-						)
-		);
-
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-						we_html_element::htmlHead($head) .
-						$body
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title_export]'), '', '', $js . STYLESHEET, we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'startStep();'), we_html_element::htmlForm(array('name' => 'we_form', 'method' => 'post'), we_html_tools::htmlDialogLayout($content, g_l('backup', '[export_step2]'))
+					)
+				)
 		);
 	}
 
@@ -1062,20 +730,20 @@ function startStep(){
 		if(we_base_request::_(we_base_request::BOOL, "backupfile")){
 			$_filename = urldecode(we_base_request::_(we_base_request::RAW, "backupfile"));
 
-			if(file_exists($_filename) && stripos($_filename, $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR) !== false){ // Does file exist and does it saved in backup dir?
+			if(file_exists($_filename) && stripos($_filename, BACKUP_PATH) !== false){ // Does file exist and does it saved in backup dir?
 				$_size = filesize($_filename);
 
 				header("Pragma: public");
 				header("Expires: 0");
 				header("Cache-control: private, max-age=0, must-revalidate");
 				header('Content-Type: application/octet-stream');
-				header("Content-Disposition: attachment; filename=\"" . trim(htmlentities(basename($_filename))) . "\"");
+				header('Content-Disposition: attachment; filename="' . trim(htmlentities(basename($_filename))) . '"');
 				header("Content-Description: " . trim(htmlentities(basename($_filename))));
 				header("Content-Length: " . $_size);
 
 				if(($_filehandler = fopen($_filename, 'rb'))){
 					while(!feof($_filehandler)){
-						print(fread($_filehandler, 8192));
+						echo fread($_filehandler, 8192);
 						flush();
 					}
 					fclose($_filehandler);
@@ -1090,9 +758,9 @@ function startStep(){
 		}
 
 		if(isset($_SESSION['weS']['weBackupVars']['backup_file']) && isset($_SESSION['weS']['weBackupVars']['options']['export2server']) &&
-				is_file($_SESSION['weS']['weBackupVars']['backup_file']) && $_SESSION['weS']['weBackupVars']['options']['export2server'] != 1){
+			is_file($_SESSION['weS']['weBackupVars']['backup_file']) && $_SESSION['weS']['weBackupVars']['options']['export2server'] != 1){
 
-			we_base_file::insertIntoCleanUp($_SESSION['weS']['weBackupVars']['backup_file'], time());
+			we_base_file::insertIntoCleanUp($_SESSION['weS']['weBackupVars']['backup_file'], 0);
 		}
 
 		if(isset($_SESSION['weS']['weBackupVars'])){
@@ -1105,12 +773,10 @@ function startStep(){
 	}
 
 	function build_error_message(){
-		$_header = we_html_tools::getHtmlTop() . STYLESHEET;
-
-		$_error_message = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "class" => "defaultfont"), 1, 1);
+		$_error_message = new we_html_table(array("class" => "default defaultfont"), 1, 1);
 		$_error_message->setCol(0, 0, null, g_l('backup', '[download_failed]'));
 
-		return $_header . '<body class="weDialogBody">' . we_html_tools::htmlDialogLayout($_error_message->getHtml(), g_l('backup', '[export_step2]'));
+		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, '<body class="weDialogBody">' . we_html_tools::htmlDialogLayout($_error_message->getHtml(), g_l('backup', '[export_step2]')));
 	}
 
 	function getHTMLExtern(){
@@ -1119,38 +785,26 @@ function startStep(){
 		$yesCmd = "self.close();";
 		$noCmd = "top.opener.top.body.clearExtern();" . $yesCmd;
 
-		$js = we_html_element::jsElement('self.focus();');
-
-		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onBlur" => "self.focus()", "onload" => "self.focus();"), we_html_element::htmlForm(
-								array("name" => "we_form"), we_html_tools::htmlYesNoCancelDialog($txt, IMAGE_DIR . "alert.gif", "ja", "nein", "", $yesCmd, $noCmd)
-						)
-		);
-
-		$head = we_html_tools::getHtmlInnerHead(g_l('backup', '[wizard_title]')) . $js . STYLESHEET;
-
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-						we_html_element::htmlHead($head) .
-						$body
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', STYLESHEET, we_html_element::htmlBody(array("class" => "weEditorBody", "onblur" => "self.focus()", "onload" => "self.focus();"), we_html_element::htmlForm(array("name" => "we_form"), we_html_tools::htmlYesNoCancelDialog($txt, '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', "ja", "nein", "", $yesCmd, $noCmd))
+				)
 		);
 	}
 
 	function getHTMLBusy(){
-		$head = we_html_tools::getHtmlInnerHead(g_l('backup', '[wizard_title]')) . STYLESHEET;
+		$head = STYLESHEET;
 		$body = '';
 
-		$table = new we_html_table(array("border" => 0, "align" => "right", "cellpadding" => 0, "cellspacing" => 0), 2, 4);
-		$table->setCol(0, 0, null, we_html_tools::getPixel(15, 5));
+		$table = new we_html_table(array('class' => 'default', "style" => "width:100%;text-align:right"), 1, 3);
 
 		if(we_base_request::_(we_base_request::STRING, "operation_mode") === "busy"){
 			$text = we_base_request::_(we_base_request::BOOL, "current_description", g_l('backup', '[working]'));
-
 			$progress = new we_progressBar(we_base_request::_(we_base_request::INT, "percent", 0));
 			$progress->setStudLen(200);
 			$progress->addText($text, 0, "current_description");
 			$head.=$progress->getJSCode('top.busy');
-			$body.=$progress->getHtml();
-			$table->setCol(0, 1, null, $body);
-			$table->setCol(1, 1, null, we_html_tools::getPixel(250, 1));
+			$pg = $progress->getHtml('', 'margin-left:15px');
+		} else {
+			$pg = '';
 		}
 
 
@@ -1168,29 +822,26 @@ function doExport() {
 	if((!top.body.document.we_form.export_send.checked) && (!top.body.document.we_form.export_server.checked)) {
 		' . we_message_reporting::getShowMessageCall(g_l('backup', '[save_not_checked]'), we_message_reporting::WE_MESSAGE_WARNING) . '
 	}else {
-		top.busy.location="' . $this->frameset . '?pnt=busy&operation_mode=busy&step=2";
+		top.busy.location="' . $this->frameset . '&pnt=busy&operation_mode=busy&step=2";
 		top.body.we_submitForm("cmd","' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php");
 	}
 }');
-						$table->setCol(0, 2, null, we_html_tools::getPixel(355, 5));
-						$table->setCol(0, 3, null, we_html_button::position_yes_no_cancel(we_html_button::create_button("make_backup", "javascript:doExport();"), null, we_html_button::create_button("cancel", "javascript:top.close();")));
+						$table->setCol(0, 1, null, we_html_button::position_yes_no_cancel(we_html_button::create_button('make_backup', "javascript:doExport();"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")));
 						break;
 					case 2:
-						$table->setCol(0, 2, null, we_html_tools::getPixel(265, 5));
-						$table->setCol(0, 3, null, we_html_button::create_button("cancel", "javascript:top.close();"));
+						$table->setCol(0, 1, null, we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();"));
 						break;
 					case 3:
 						if(we_base_request::_(we_base_request::BOOL, "do_import_after_backup")){
-							$body = we_html_button::create_button("next", "javascript:top.body.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=body&step=2';top.busy.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=cmd';top.cmd.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=busy';");
-						} else if(isset($_SESSION['weS']['inbackup']) && $_SESSION['weS']['inbackup']){
-							$body = we_html_button::create_button("next", "javascript:top.opener.weiter();top.close();");
+							$body = we_html_button::create_button(we_html_button::NEXT, "javascript:top.body.location='" . $this->frameset . "&pnt=body&step=2';top.busy.location='" . $this->frameset . "&pnt=cmd';top.cmd.location='" . $this->frameset . "&pnt=busy';");
+						} else if(!empty($_SESSION['weS']['inbackup'])){
+							$body = we_html_button::create_button(we_html_button::NEXT, "javascript:top.opener.weiter();top.close();");
 							unset($_SESSION['weS']['inbackup']);
 						} else {
 							$head.=we_html_element::jsElement("top.opener.top.afterBackup=true;");
-							$body = we_html_button::create_button("close", "javascript:top.close();");
+							$body = we_html_button::create_button(we_html_button::CLOSE, "javascript:top.close();");
 						}
-						$table->setCol(0, 2, null, we_html_tools::getPixel(495, 5));
-						$table->setCol(0, 3, null, $body);
+						$table->setCol(0, 1, null, $body);
 						break;
 					default:
 				}
@@ -1203,8 +854,7 @@ function setLocation(loc){
 	location.href=loc;
 }
 function press_yes() {
-
-	var _usedEditors = top.opener.top.weEditorFrameController.getEditorsInUse();
+	var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
 	var _unsavedChanges = false;
 	for (frameId in _usedEditors) {
 		if ( _usedEditors[frameId].getEditorIsHot() ) {
@@ -1215,85 +865,56 @@ function press_yes() {
 	if (_unsavedChanges) {
 		' . we_message_reporting::getShowMessageCall(g_l('backup', '[recover_backup_unsaved_changes]'), we_message_reporting::WE_MESSAGE_WARNING) . "
 	} else {
-		top.body.location='" . WE_INCLUDES_DIR . "we_editors/we_make_backup.php?pnt=body&do_import_after_backup=1';
-		top.busy.location='" . WE_INCLUDES_DIR . "we_editors/we_make_backup.php?pnt=busy';
-		top.cmd.location='" . WE_INCLUDES_DIR . "we_editors/we_make_backup.php?pnt=cmd';
+		top.body.location='" . $this->frameset . "&pnt=body&do_import_after_backup=1';
+		top.busy.location='" . $this->frameset . "&pnt=busy';
+		top.cmd.location='" . $this->frameset . "&pnt=cmd';
 	}
 
 }");
-						$buttons = we_html_button::position_yes_no_cancel(
-										we_html_button::create_button("yes", "javascript:press_yes();"), we_html_button::create_button("no", "javascript:top.body.location='" . $this->frameset . "?pnt=body&step=2';"), we_html_button::create_button("cancel", "javascript:top.close();")
-						);
-						$table->setCol(0, 2, null, we_html_tools::getPixel(290, 5));
-						$table->setCol(0, 3, null, $buttons);
+						$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::YES, "javascript:press_yes();"), we_html_button::create_button(we_html_button::NO, "javascript:top.body.location='" . $this->frameset . "&pnt=body&step=2';"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();"));
+						$table->setCol(0, 1, null, $buttons);
 						break;
 					case 2:
 
-						$nextbuts = we_html_button::create_button_table(array(
-									we_html_button::create_button("back", "javascript:top.body.location='" . $this->frameset . "?pnt=body&step=1'", true),
-									we_html_button::create_button("next", "javascript:top.body.we_submitForm('body','" . $this->frameset . "');")));
+						$nextbuts = we_html_button::create_button(we_html_button::BACK, "javascript:top.body.location='" . $this->frameset . "&pnt=body&step=1'", true) .
+							we_html_button::create_button(we_html_button::NEXT, "javascript:top.body.we_submitForm('body','" . $this->frameset . "');");
 
-						$buttons = we_html_button::position_yes_no_cancel($nextbuts, null, we_html_button::create_button("cancel", "javascript:top.close();"));
+						$buttons = we_html_button::position_yes_no_cancel($nextbuts, null, we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();"));
 
-						$table->setCol(0, 2, null, we_html_tools::getPixel(290, 5));
-						$table->setCol(0, 3, null, $buttons);
+						$table->setCol(0, 1, null, $buttons);
 						break;
 					case 3:
 						//FIXME: delete condition when new uploader is stable
-						if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
-							//$startImportCall = $this->fileUploader ? $this->fileUploader->getJsBtnCmd('upload') : "top.body.startImport();";
-							if(!(we_fileupload_include::isFallback() || we_fileupload_base::isLegacyMode())){
-								$startImportCall = we_fileupload_include::getJsBtnCmdStatic('upload', 'body', 'top.body.startImport()');
-								$cancelCall = we_fileupload_include::getJsBtnCmdStatic('cancel', 'body');
-							} else {
-								$startImportCall = 'top.body.startImport()';
-								$cancelCall = 'top.close()';
-							}
+						//$startImportCall = $this->fileUploader ? $this->fileUploader->getJsBtnCmd('upload') : "top.body.startImport();";
+						$startImportCall = we_fileupload_ui_base::getJsBtnCmdStatic('upload', 'body', 'top.body.startImport()');
+						$cancelCall = we_fileupload_ui_base::getJsBtnCmdStatic('cancel', 'body');
 
-							if(defined('WORKFLOW_TABLE')){
-								$db = new DB_WE();
-								$nextbut = (we_workflow_utility::getAllWorkflowDocs(FILE_TABLE, $db) || (defined('OBJECT_FILES_TABLE') && we_workflow_utility::getAllWorkflowDocs(OBJECT_FILES_TABLE, $db)) ?
-												we_html_button::create_button("restore_backup", "javascript:if(confirm('" . g_l('modules_workflow', '[ask_before_recover]') . "')) " . $startImportCall . ";") :
-												we_html_button::create_button("restore_backup", "javascript:" . $startImportCall));
-							} else {
-								$nextbut = we_html_button::create_button("restore_backup", "javascript:" . $startImportCall);
-							}
+						if(defined('WORKFLOW_TABLE')){
+							$db = new DB_WE();
+							$nextbut = (we_workflow_utility::getAllWorkflowDocs(FILE_TABLE, $db) || (defined('OBJECT_FILES_TABLE') && we_workflow_utility::getAllWorkflowDocs(OBJECT_FILES_TABLE, $db)) ?
+									we_html_button::create_button('restore_backup', "javascript:if(confirm('" . g_l('modules_workflow', '[ask_before_recover]') . "')) " . $startImportCall . ";") :
+									we_html_button::create_button('restore_backup', "javascript:" . $startImportCall));
 						} else {
-							if(defined('WORKFLOW_TABLE')){
-								$db = new DB_WE();
-								$nextbut = (we_workflow_utility::getAllWorkflowDocs(FILE_TABLE, $db) || (defined('OBJECT_FILES_TABLE') && we_workflow_utility::getAllWorkflowDocs(OBJECT_FILES_TABLE, $db)) ?
-												we_html_button::create_button("restore_backup", "javascript:if(confirm('" . g_l('modules_workflow', '[ask_before_recover]') . "')) top.body.startImport();") :
-												we_html_button::create_button("restore_backup", "javascript:top.body.startImport();"));
-							} else {
-								$nextbut = we_html_button::create_button("restore_backup", "javascript:top.body.startImport();");
-							}
+							$nextbut = we_html_button::create_button('restore_backup', "javascript:" . $startImportCall);
 						}
 
-						$nextprevbuts = we_html_button::create_button_table(array(
-									we_html_button::create_button("back", "javascript:top.body.location='" . $this->frameset . "?pnt=body&step=2';"),
-									$nextbut));
-						$buttons = we_html_button::position_yes_no_cancel($nextprevbuts, null, we_html_button::create_button("cancel", "javascript:" . $cancelCall));
+						$nextprevbuts = we_html_button::create_button(we_html_button::BACK, "javascript:top.body.location='" . $this->frameset . "&pnt=body&step=2';") . $nextbut;
+						$buttons = we_html_button::position_yes_no_cancel($nextprevbuts, null, we_html_button::create_button(we_html_button::CANCEL, "javascript:" . $cancelCall));
 
-						$table->setCol(0, 2, null, we_html_tools::getPixel(240, 5));
-						$table->setCol(0, 3, null, $buttons);
+						$table->setCol(0, 1, null, $buttons);
 						break;
 					case 4:
-						$table->setCol(0, 2, null, we_html_tools::getPixel(260, 5));
-						$table->setCol(0, 3, null, we_html_button::create_button("cancel", "javascript:top.close();"));
+						$table->setCol(0, 1, null, we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();"));
 						break;
 					case 5:
-						$table->setCol(0, 2, null, we_html_tools::getPixel(490, 5));
-						$table->setCol(0, 3, null, we_html_button::create_button("close", "javascript:top.close();"));
+						$table->setCol(0, 1, null, we_html_button::create_button(we_html_button::CLOSE, "javascript:top.close();"));
 						break;
 					default:
 				}
 				break;
 		}
 
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-						we_html_element::htmlHead($head) .
-						we_html_element::htmlBody(array("class" => "weDialogButtonsBody"), $table->getHtml()
-						)
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', $head, we_html_element::htmlBody(array("class" => "weDialogButtonsBody"), $pg . $table->getHtml())
 		);
 	}
 
@@ -1301,294 +922,32 @@ function press_yes() {
 		switch(we_base_request::_(we_base_request::STRING, "operation_mode", '-1')){
 			case '-1':
 				return;
-			case "backup":
-				if(!is_writable($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp")){
-					echo we_html_element::jsElement('
-function setLocation(loc){
-	location.href=loc;
-}
-top.busy.location="' . $this->frameset . '?pnt=busy";' .
-							we_message_reporting::getShowMessageCall(sprintf(g_l('backup', '[cannot_save_tmpfile]'), BACKUP_DIR), we_message_reporting::WE_MESSAGE_ERROR)
-					);
-					return "";
-				}
-
-				$handle_options = array(
-					"user" => we_base_request::_(we_base_request::BOOL, "handle_user"),
-					"customer" => we_base_request::_(we_base_request::BOOL, "handle_customer"),
-					"shop" => we_base_request::_(we_base_request::BOOL, "handle_shop"),
-					"workflow" => we_base_request::_(we_base_request::BOOL, "handle_workflow"),
-					"todo" => we_base_request::_(we_base_request::BOOL, "handle_todo"),
-					"newsletter" => we_base_request::_(we_base_request::BOOL, "handle_newsletter"),
-					"temporary" => we_base_request::_(we_base_request::BOOL, "handle_temporary"),
-					"history" => we_base_request::_(we_base_request::BOOL, "handle_history"),
-					"banner" => we_base_request::_(we_base_request::BOOL, "handle_banner"),
-					"core" => we_base_request::_(we_base_request::BOOL, "handle_core"),
-					"object" => we_base_request::_(we_base_request::BOOL, "handle_object"),
-					"schedule" => we_base_request::_(we_base_request::BOOL, "handle_schedule"),
-					"hooks" => we_base_request::_(we_base_request::BOOL, "handle_hooks"),
-					"customTags" => we_base_request::_(we_base_request::BOOL, "handle_customtags"),
-					"settings" => we_base_request::_(we_base_request::BOOL, "handle_settings"),
-					"export" => we_base_request::_(we_base_request::BOOL, "handle_export"),
-					"voting" => we_base_request::_(we_base_request::BOOL, "handle_voting"),
-				);
-				$we_backup_obj = new we_backup_backup($handle_options);
-				$temp_filename = we_base_request::_(we_base_request::FILE, "temp_filename", '');
-
-				if(!$temp_filename){
-					$we_backup_obj->backup_extern = we_base_request::_(we_base_request::BOOL, "handle_extern");
-					$we_backup_obj->convert_charset = we_base_request::_(we_base_request::BOOL, "convert_charset");
-					$we_backup_obj->export2server = we_base_request::_(we_base_request::BOOL, "export_server");
-					$we_backup_obj->export2send = we_base_request::_(we_base_request::BOOL, "export_send");
-					$we_backup_obj->filename = we_base_request::_(we_base_request::FILE, "filename");
-					$we_backup_obj->compress = we_base_request::_(we_base_request::STRING, 'compress', we_backup_base::NO_COMPRESSION);
-					$we_backup_obj->backup_binary = we_base_request::_(we_base_request::BOOL, "handle_binary");
-
-					//create file list
-					if($we_backup_obj->backup_extern){
-						$we_backup_obj->getFileList();
-					}
-					//create table list
-					//$we_backup_obj->getTableList();
-				} else {
-					$temp_filename = $we_backup_obj->restoreState($temp_filename);
-					$we_backup_obj->setDescriptions();
-				}
-
-				$ret = $we_backup_obj->makeBackup();
-				$temp_filename = $we_backup_obj->saveState($temp_filename);
-
-				$do_import_after_backup = we_base_request::_(we_base_request::BOOL, 'do_import_after_backup');
-
-				switch($ret){
-					case 1:
-						$percent = $we_backup_obj->getExportPercent();
-						echo we_html_element::jsElement('
-if(top.busy.setProgressText) top.busy.setProgressText("current_description","' . $we_backup_obj->current_description . '");
-if(top.busy.setProgress) top.busy.setProgress(' . $percent . ');
-top.cmd.location="' . $this->frameset . '?pnt=cmd&operation_mode=backup&do_import_after_backup=' . $do_import_after_backup . '&temp_filename=' . $temp_filename . '";');
-						break;
-					case -1:
-						echo we_html_element::jsElement('
-if(top.busy.setProgressText) top.busy.setProgressText("current_description","' . g_l('backup', '[finished]') . '");
-if(top.busy.setProgress) top.busy.setProgress(100);
-top.body.location="' . $this->frameset . '?pnt=body&step=2&ok=false&do_import_after_backup=' . $do_import_after_backup . '&temp_filename=' . $temp_filename . '";');
-						break;
-					default:
-						$we_backup_obj->writeFooter();
-						$we_backup_obj->printDump2BackupDir();
-						$temp_filename = $we_backup_obj->saveState($temp_filename);
-
-						echo we_html_element::jsElement('
-if(top.busy.setProgressText) top.busy.setProgressText("current_description","' . g_l('backup', '[finished]') . '");
-if(top.busy.setProgress) top.busy.setProgress(100);
-top.body.location="' . $this->frameset . '?pnt=body&step=2&ok=false&do_import_after_backup=' . $do_import_after_backup . '&temp_filename=' . $temp_filename . '";
-									');
-
-						break;
-				}
-				flush();
-				unset($we_backup_obj);
-				break;
 			case "rebuild":
-				echo we_html_element::jsElement('
+				return we_html_element::jsElement('
 function setLocation(loc){
 	location.href=loc;
 }
-top.opener.top.openWindow("' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_all&responseText=' . g_l('backup', '[finished_success]') . '","rebuildwin",-1,-1,600,130,0,true);
-setTimeout("top.close();",300);'
-				);
-				break;
-			case "import":
-				$continue = true;
-				if(!is_writable($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp")){
-					echo we_html_element::jsElement('
-function setLocation(loc){
-	location.href=loc;
-}
-top.busy.location="' . $this->frameset . '?pnt=busy";' .
-							we_message_reporting::getShowMessageCall(sprintf(g_l('backup', '[cannot_save_tmpfile]'), BACKUP_DIR), we_message_reporting::WE_MESSAGE_ERROR)
-					);
-					return '';
-				}
-
-				$handle_options = array(
-					"user" => we_base_request::_(we_base_request::BOOL, "handle_user"),
-					"customer" => we_base_request::_(we_base_request::BOOL, "handle_customer"),
-					"shop" => we_base_request::_(we_base_request::BOOL, "handle_shop"),
-					"workflow" => we_base_request::_(we_base_request::BOOL, "handle_workflow"),
-					"todo" => we_base_request::_(we_base_request::BOOL, "handle_todo"),
-					"newsletter" => we_base_request::_(we_base_request::BOOL, "handle_newsletter"),
-					"temporary" => we_base_request::_(we_base_request::BOOL, "handle_temporary"),
-					"history" => we_base_request::_(we_base_request::BOOL, "handle_history"),
-					"banner" => we_base_request::_(we_base_request::BOOL, "handle_banner"),
-					"core" => we_base_request::_(we_base_request::BOOL, "handle_core"),
-					"object" => we_base_request::_(we_base_request::BOOL, "handle_object"),
-					"schedule" => we_base_request::_(we_base_request::BOOL, "handle_schedule"),
-					"hooks" => we_base_request::_(we_base_request::BOOL, "handle_hooks"),
-					"customTags" => we_base_request::_(we_base_request::BOOL, "handle_customtags"),
-					"settings" => we_base_request::_(we_base_request::BOOL, "handle_settings"),
-					"export" => we_base_request::_(we_base_request::BOOL, "handle_export"),
-					"voting" => we_base_request::_(we_base_request::BOOL, "handle_voting"),
-				);
-				$we_backup_obj = new we_backup_backup($handle_options);
-				$temp_filename = we_base_request::_(we_base_request::FILE, "temp_filename");
-
-				if(!$temp_filename){
-					$we_backup_obj->backup_extern = we_base_request::_(we_base_request::BOOL, "handle_extern");
-					$we_backup_obj->convert_charset = we_base_request::_(we_base_request::BOOL, "convert_charset");
-					$we_backup_obj->compress = we_base_request::_(we_base_request::STRING, "compress");
-					$we_backup_obj->backup_binary = we_base_request::_(we_base_request::BOOL, "handle_binary");
-					$we_backup_obj->rebuild = we_base_request::_(we_base_request::BOOL, "rebuild");
-
-					$backup_select = we_base_request::_(we_base_request::STRING, "backup_select", '');
-					$we_upload_file = (isset($_FILES["we_upload_file"]) && $_FILES["we_upload_file"]) ? $_FILES["we_upload_file"] : "";
-					$ok = false;
-
-					if($backup_select){
-						$we_backup_obj->filename = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $backup_select;
-						$ok = true;
-					} else if($we_upload_file && ($we_upload_file != "none")){
-						//FIXME: delete condition when new uploader is stable
-						if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
-							if($this->fileUploader){
-								$continue = $this->fileUploader->processFileRequest();
-							} else {
-								$we_backup_obj->filename = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $_FILES['we_upload_file']['name'];
-								if(!move_uploaded_file($_FILES["we_upload_file"]["tmp_name"], $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $_FILES["we_upload_file"]["name"])){
-									echo we_html_element::jsElement('top.busy.location="' . $this->frameset . '?pnt=busy";' .
-											we_message_reporting::getShowMessageCall(sprintf(g_l('backup', '[cannot_save_tmpfile]'), BACKUP_DIR), we_message_reporting::WE_MESSAGE_ERROR));
-									return '';
-								}
-								we_base_file::insertIntoCleanUp($we_backup_obj->filename, time());
-								$ok = true;
-							}
-						} else {
-							$we_backup_obj->filename = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $_FILES['we_upload_file']['name'];
-							if(!move_uploaded_file($_FILES["we_upload_file"]["tmp_name"], $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $_FILES["we_upload_file"]["name"])){
-								echo we_html_element::jsElement('top.busy.location="' . $this->frameset . '?pnt=busy";' .
-										we_message_reporting::getShowMessageCall(sprintf(g_l('backup', '[cannot_save_tmpfile]'), BACKUP_DIR), we_message_reporting::WE_MESSAGE_ERROR));
-								return '';
-							}
-							we_base_file::insertIntoCleanUp($we_backup_obj->filename, time());
-							$ok = true;
-						}
-					} else {
-						$we_alerttext = sprintf(g_l('alert', '[we_backup_import_upload_err]'), ini_get("upload_max_filesize"));
-						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall($we_alerttext, we_message_reporting::WE_MESSAGE_ERROR));
-						$ok = false;
-					}
-
-					if($continue){
-						if($handle_options["core"]){
-							$we_backup_obj->getSiteFiles();
-							$we_backup_obj->getFileList(TEMPLATES_PATH, true, false);
-						}
-
-						$we_backup_obj->getVersion($we_backup_obj->filename);
-						$we_backup_obj->file_end = $we_backup_obj->splitFile2();
-						if($we_backup_obj->file_end < 0){
-							echo we_html_element::jsElement('top.busy.location = "' . $this->frameset . '?pnt=busy";' .
-									we_message_reporting::getShowMessageCall(sprintf(g_l('backup', '[cannot_split_file]'), basename($we_backup_obj->filename)) . ($we_backup_obj->file_end == -10 ? g_l('backup', '[cannot_split_file_ziped]') : ''), we_message_reporting::WE_MESSAGE_ERROR));
-							return '';
-						}
-						if($handle_options["core"]){
-							$we_backup_obj->clearTemporaryData("tblFile");
-						}
-						if($handle_options["object"]){
-							$we_backup_obj->clearTemporaryData("tblObjectFiles");
-						}
-					}
-				} else {
-					$temp_filename = $we_backup_obj->restoreState($temp_filename);
-					$we_backup_obj->setDescriptions();
-				}
-
-				if($continue){
-					if(!empty($we_backup_obj->file_list)){
-						for($i = 0; $i < $we_backup_obj->backup_steps; $i++){
-							if(empty($we_backup_obj->file_list)){
-								break;
-							}
-							we_base_file::delete(array_pop($we_backup_obj->file_list));
-						}
-						$temp_filename = $we_backup_obj->saveState($temp_filename);
-						$percent = $we_backup_obj->getImportPercent();
-						echo we_html_element::jsElement('
-	if(top.busy.setProgressText) top.busy.setProgressText("current_description", "' . g_l('backup', '[delete_old_files]') . '");
-	if(top.busy.setProgress) top.busy.setProgress(' . $percent . ');
-	top.cmd.location = "' . $this->frameset . '?pnt=cmd&operation_mode=import&temp_filename=' . $temp_filename . '";
-								');
-						flush();
-					} else if($we_backup_obj->file_counter < $we_backup_obj->file_end){
-						$filename_tmp = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . basename($we_backup_obj->filename) . "_" . $we_backup_obj->file_counter;
-						$we_backup_obj->file_counter++;
-						$ok = $we_backup_obj->restoreChunk($filename_tmp);
-						$temp_filename = $we_backup_obj->saveState($temp_filename);
-						we_base_file::delete($filename_tmp);
-
-						if($ok){
-							$percent = $we_backup_obj->getImportPercent();
-							if($percent == 100){
-								$we_backup_obj->current_description = g_l('backup', '[finished]');
-							}
-							if(!$we_backup_obj->current_description){
-								$we_backup_obj->current_description = g_l('backup', '[working]');
-							}
-
-							echo we_html_element::jsElement('
-	if(top.busy.setProgressText) top.busy.setProgressText("current_description", "' . $we_backup_obj->current_description . '");
-	if(top.busy.setProgress) top.busy.setProgress(' . $percent . ');
-	top.cmd.location = "' . $this->frameset . '?pnt=cmd&operation_mode=import&temp_filename=' . $temp_filename . '";'
-							);
-						} else {
-							echo we_html_element::jsElement('
-	top.busy.location = "' . $this->frameset . '?pnt=busy";
-	top.body.location = "' . $this->frameset . '?pnt=body&step=4&temp_filename=' . $temp_filename . '";'
-							);
-						}
-						flush();
-					} else {
-						$we_backup_obj->doUpdate();
-						if(is_file($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $temp_filename) && $we_backup_obj->rebuild && empty($we_backup_obj->errors)){
-							unlink($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $temp_filename);
-						}
-						echo we_html_element::jsElement('
-	top.opener.top.we_cmd("load", "' . FILE_TABLE . '");
-	top.opener.top.we_cmd("exit_delete");
-	top.busy.location = "' . $this->frameset . '?pnt=busy&operation_mode=busy&current_description=' . g_l('backup', '[finished]') . '&percent=100";' .
-								($we_backup_obj->rebuild && empty($we_backup_obj->errors) ?
-										'top.cmd.location = "' . $this->frameset . '?pnt=cmd&operation_mode=rebuild";' :
-										'top.body.location = "' . $this->frameset . '?pnt=body&step=4&temp_filename=' . $temp_filename . '";')
-						);
-						flush();
-					}
-				}
-				break;
+top.opener.top.openWindow(WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_all&responseText=' . g_l('backup', '[finished_success]') . '","rebuildwin",-1,-1,600,130,0,true);
+top.close();');
 			case "deleteall":
 				$_SESSION['weS']['backup_delete'] = 1;
 				$_SESSION['weS']['delete_files_nok'] = array();
 				$_SESSION['weS']["delete_files_info"] = g_l('backup', '[files_not_deleted]');
-				echo we_html_element::jsScript(JS_DIR . "windows.js") .
-				we_html_element::jsElement('new jsWindow("' . WEBEDITION_DIR . 'delFrag.php?currentID=-1", "we_del", -1, -1, 600, 130, true, true, true);');
-				break;
+				return we_html_element::jsElement('new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR+"delFrag.php?currentID=-1", "we_del", -1, -1, 600, 130, true, true, true);');
 			case "deletebackup":
 				$bfile = we_base_request::_(we_base_request::FILE, "bfile");
 				if(strpos($bfile, '..') === 0){
-					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[name_notok]'), we_message_reporting::WE_MESSAGE_ERROR));
-				} else {
-					if(!is_writable($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $bfile)){
-						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[error_delete]'), we_message_reporting::WE_MESSAGE_ERROR));
-					} else {
-						echo we_html_element::jsElement((unlink($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $bfile) ?
-										'if(top.body.delSelItem) top.body.delSelItem();' :
-										we_message_reporting::getShowMessageCall(g_l('backup', '[error_delete]'), we_message_reporting::WE_MESSAGE_ERROR))
-						);
-					}
+					return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[name_notok]'), we_message_reporting::WE_MESSAGE_ERROR));
 				}
-				break;
+				if(!is_writable(BACKUP_PATH . $bfile)){
+					return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[error_delete]'), we_message_reporting::WE_MESSAGE_ERROR));
+				}
+				return we_html_element::jsElement((unlink(BACKUP_PATH . $bfile) ?
+							'if(top.body.delSelItem) top.body.delSelItem();' :
+							we_message_reporting::getShowMessageCall(g_l('backup', '[error_delete]'), we_message_reporting::WE_MESSAGE_ERROR))
+				);
 			default:
-				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[error]'), we_message_reporting::WE_MESSAGE_ERROR)
+				return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[error]'), we_message_reporting::WE_MESSAGE_ERROR)
 				);
 		}
 	}
@@ -1599,55 +958,6 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 			$out.='&' . $k . '=' . $v;
 		}
 		return $out;
-	}
-
-	/**
-	 * Function: printErrors
-	 *
-	 * Description: This function tells the user, if and which error(s) took
-	 * place.
-	 */
-	function printErrors(&$we_backup_obj){
-		$errors = $we_backup_obj->getErrors();
-
-		$text = "";
-		if(!empty($errors)){
-			foreach($errors as $k => $v){
-				$text .= g_l('backup', '[error]') . ' [' . ++$k . ']: ' . $v . "\n";
-			}
-		} else {
-			$text.=g_l('backup', '[unspecified_error]');
-		}
-
-		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "class" => "defaultfont"), 3, 1);
-		$table->setCol(0, 0, null, g_l('backup', '[finish_error]'));
-		$table->setCol(1, 0, null, we_html_element::htmlTextArea(array("name" => "text_errors", "cols" => 45, "rows" => 7), $text));
-		$table->setCol(2, 0, null, we_html_tools::getPixel(400, 5));
-		return $table->getHtml();
-	}
-
-	/**
-	 * Function: printWarnings
-	 *
-	 * Description: This function tells the user, if and which warning(s)
-	 * took place.
-	 */
-	function printWarnings(&$we_backup_obj){
-		$warnings = $we_backup_obj->getWarnings();
-
-		if(!empty($warnings)){
-
-			foreach($warnings as $k => $v){
-				$text .= g_l('backup', '[warning]') . ' [' . ++$k . ']: ' . $v . "\n";
-			}
-
-			$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "class" => "defaultfont"), 3, 1);
-			$table->setCol(0, 0, null, g_l('backup', '[finish_warning]'));
-			$table->setCol(1, 0, null, we_html_element::htmlTextArea(array("name" => "text_errors", "cols" => 45, "rows" => 7), $text));
-			$table->setCol(2, 0, null, we_html_tools::getPixel(400, 5));
-			return $table->getHtml();
-		}
-		return "";
 	}
 
 	public static function getHTMLChecker($mode){
@@ -1665,11 +975,11 @@ function reloadFrame(){
 	if(reload < ' . $_retry . '){
 		top.cmd.location="' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php?cmd=' . ($mode == self::RECOVER ? 'import' : 'export') . '&reload="+reload;
 	} else{' .
-						we_message_reporting::getShowMessageCall(g_l('backup', '[error_timeout]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+				we_message_reporting::getShowMessageCall(g_l('backup', '[error_timeout]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 	}
 }
 
-setTimeout("reloadFrame()", ' . $_execute . ');');
+setTimeout(reloadFrame, ' . $_execute . ');');
 	}
 
 	static function getDownloadLinkText(){

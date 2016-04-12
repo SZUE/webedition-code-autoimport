@@ -56,7 +56,7 @@ function we_tag_pref($attribs){
 		case 'banner':
 			switch($name){
 				case 'DefaultBanner':
-					return f('SELECT bannerID FROM ' . BANNER_TABLE . ' b JOIN ' . BANNER_PREFS_TABLE . ' p ON p.pref_value=b.ID WHERE p.pref_name="DefaultBannerID"');
+					return f('SELECT bannerID FROM ' . BANNER_TABLE . ' b JOIN ' . SETTINGS_TABLE . ' p ON p.pref_value=b.ID WHERE p.tool="banner" AND p.pref_name="DefaultBannerID"');
 			}
 			break;
 		case 'newsletter':

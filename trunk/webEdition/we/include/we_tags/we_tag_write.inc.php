@@ -127,6 +127,7 @@ function we_tag_write($attribs){
 			$GLOBALS['we_' . $type . '_write_ok'] = true;
 			checkAndCreateBinary($name, ($type === 'document' ? 'we_document' : 'we_object'));
 
+			//FIXME: we should probably use checkFieldsOnSave?!
 			$GLOBALS['we_' . $type][$name]->i_checkPathDiffAndCreate();
 			if(!$objname){
 				$GLOBALS['we_' . $type][$name]->i_correctDoublePath();
@@ -149,8 +150,8 @@ function we_tag_write($attribs){
 				foreach($workspaces as $wsId){
 					$tmplArray[] = $GLOBALS['we_' . $type][$name]->getTemplateFromWs($wsId);
 				}
-				$GLOBALS['we_' . $type][$name]->Workspaces = makeCSVFromArray($workspaces, true);
-				$GLOBALS['we_' . $type][$name]->Templates = makeCSVFromArray($tmplArray, true);
+				$GLOBALS['we_' . $type][$name]->Workspaces = implode(',', $workspaces);
+				$GLOBALS['we_' . $type][$name]->Templates = implode(',', $tmplArray);
 			}
 
 			$GLOBALS['we_' . $type][$name]->Path = $GLOBALS['we_' . $type][$name]->getPath();
@@ -267,7 +268,7 @@ function we_tag_write($attribs){
 						$subject = g_l('global', '[std_subject_newDoc]');
 						break;
 				}
-				$phpmail = new we_util_Mailer($mail, $subject, $mailfrom);
+				$phpmail = new we_helpers_mail($mail, $subject, $mailfrom);
 				$phpmail->setCharSet($charset);
 				$phpmail->addTextPart($mailtext);
 				$phpmail->buildMessage();

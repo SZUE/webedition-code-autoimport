@@ -83,13 +83,13 @@ function we_tag_delete($attribs){
 		return '';
 	}
 
-	$isOwner = isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && isset($_SESSION['webuser']['ID']) && (
+	$isOwner = !empty($_SESSION['webuser']['registered']) && isset($_SESSION['webuser']['ID']) && (
 		($protected && $_SESSION['webuser']['ID'] == $doc->WebUserID) ||
 		($userid && $_SESSION['webuser']['ID'] == $doc->getElement($userid))
 		);
 
 
-	$isAdmin = isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && $admin && isset($_SESSION['webuser'][$admin]) && $_SESSION['webuser'][$admin];
+	$isAdmin = !empty($_SESSION['webuser']['registered']) && $admin && !empty($_SESSION['webuser'][$admin]);
 
 	if($isAdmin || $isOwner || $forceedit){
 		we_base_delete::deleteEntry($docID, $table);
@@ -98,7 +98,7 @@ function we_tag_delete($attribs){
 			if(!$mailfrom){
 				$mailfrom = 'dontReply@' . $_SERVER['SERVER_NAME'];
 			}
-			$phpmail = new we_util_Mailer($mail, $subject, $mailfrom);
+			$phpmail = new we_helpers_mail($mail, $subject, $mailfrom);
 			$phpmail->setCharSet($charset);
 			$phpmail->addTextPart(trim($mailtext));
 			$phpmail->buildMessage();

@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_exim_XMLImport extends we_exim_XMLExIm{
+
 	var $nodehierarchy = array();
 
 	function __construct(){
@@ -34,7 +35,6 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 		update_time_limit(0);
 
 		$objects = array();
-		$GLOBALS['isNewImport'] = version_compare(we_backup_preparer::getWeVersion($chunk_file, false), '6.3.3.1', '>');
 
 		$data = we_base_file::load($chunk_file);
 		$this->xmlBrowser = new we_backup_XMLParser();
@@ -76,7 +76,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 			$object->Table = $this->getTable($object->ClassName);
 
 			switch($object->ClassName){
-				case 'weModelBase':
+				case 'we_base_model':
 					$extra['ContentType'] = 'category';
 					break;
 				case 'we_docTypes':
@@ -141,8 +141,8 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 								$prefix = id_to_path($this->options["document_path"], FILE_TABLE, $db);
 							}
 							$object->Path = $prefix . ($this->options["restore_doc_path"] ?
-									$object->Path :
-									'/' . $object->Text);
+											$object->Path :
+											'/' . $object->Text);
 							break;
 						case TEMPLATES_TABLE:
 							if($this->options["template_path"]){
@@ -163,11 +163,11 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					$object->Path = we_base_file::clearPath($object->Path);
 
 					//fix Path if there is a conflict
-					$id = path_to_id($object->Path, $object->Table);
+					$id = path_to_id($object->Path, $object->Table, $GLOBALS['DB_WE']);
 
 					if($id){
 						if($this->options["handle_collision"] === "replace" ||
-							($object->ClassName == "we_folder" && $this->RefTable->exists(array("OldID" => $object->ID, "Table" => $object->Table)))
+								($object->ClassName == "we_folder" && $this->RefTable->exists(array("OldID" => $object->ID, "Table" => $object->Table)))
 						){
 							$object->ID = $id;
 							if(isset($object->isnew)){
@@ -227,7 +227,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					}
 				}
 
-				if($object->ClassName === 'weBinary'){
+				if($object->ClassName === 'we_backup_binary'){
 					if(is_file($_SERVER['DOCUMENT_ROOT'] . $object->Path)){
 						switch($this->options['handle_collision']){
 							case 'replace':
@@ -249,25 +249,22 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					}
 
 					if($save && !$this->RefTable->exists(array('ID' => $object->ID, 'Path' => $object->Path, 'ContentType' => 'weBinary'))){
-						$this->RefTable->add2(
-							array('ID' => $object->ID,
-								'ParentID' => 0,
-								'Path' => $object->Path,
-								'Table' => $object->Table,
-								'ContentType' => 'weBinary'
-							)
-						);
+						$this->RefTable->add2(array(
+							'ID' => $object->ID,
+							'ParentID' => 0,
+							'Path' => $object->Path,
+							'Table' => $object->Table,
+							'ContentType' => 'weBinary'
+						));
 					}
 				}
 			}
 
 			if(defined('OBJECT_TABLE') && ($object->ClassName === 'we_objectFile' || $object->ClassName === 'we_class_folder')){
-				$ref = $this->RefTable->getRef(
-					array(
-						'OldID' => $object->TableID,
-						'ContentType' => "object"
-					)
-				);
+				$ref = $this->RefTable->getRef(array(
+					'OldID' => $object->TableID,
+					'ContentType' => "object"
+				));
 				if($ref){
 					// assign TableID and ParentID from reference
 					$object->TableID = $ref->ID;
@@ -330,9 +327,9 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					$newid = f('SELECT ID FROM ' . THUMBNAILS_TABLE . ' t WHERE t.Name="' . escape_sql_query($newname) . '"', '', new DB_WE());
 					break;
 				default:
-					$newid = path_to_id(we_base_file::clearPath(dirname($object->Path) . "/" . $newname), $object->Table);
+					$newid = path_to_id(we_base_file::clearPath(dirname($object->Path) . '/' . $newname), $object->Table, FILE_TABLE, $GLOBALS['DB_WE']);
 			}
-		} while($newid);
+		}while($newid);
 		$this->renameObject($object, $newname);
 	}
 
@@ -352,12 +349,10 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 		}
 		if(isset($object->Path)){
 			$_path = dirname($object->Path);
-			$_ref = $this->RefTable->getRef(
-				array(
-					'OldID' => $object->ParentID,
-					'ContentType' => 'weNavigation'
-				)
-			);
+			$_ref = $this->RefTable->getRef(array(
+				'OldID' => $object->ParentID,
+				'ContentType' => 'weNavigation'
+					));
 			if($_ref){
 				$object->ParentID = $_ref->ID;
 				$object->Path = $_ref->Path . '/' . $new_name;
@@ -410,7 +405,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 						$this->nodehierarchy[] = $noddata;
 						switch($noddata){
 							case "we_object":
-								$object = (defined('OBJECT_TABLE') ? new we_object_exImport() : '');
+								$object = (defined('OBJECT_TABLE') ? new we_backup_object() : '');
 
 								break;
 							case "we_objectFile":
@@ -432,7 +427,8 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 							case 'we_thumbnailEx':
 								$object = new we_exim_thumbnailExport();
 								break;
-							case 'weBinary':
+							case 'we_backup_binary':
+							case 'weBinary'://FIXME: remove
 							default:
 								$object = new $noddata();
 								break;
@@ -440,8 +436,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					//no break!
 					default:
 						$node_data[$nodname] = $noddata;
-						$node_coding[$nodname] = $GLOBALS['isNewImport'] ? (isset($attributes[we_exim_contentProvider::CODING_ATTRIBUTE]) ? $attributes[we_exim_contentProvider::CODING_ATTRIBUTE] : we_exim_contentProvider::CODING_NONE) :
-							(we_exim_contentProvider::needCoding($node_data['ClassName'], $nodname, we_exim_contentProvider::CODING_OLD) ? we_exim_contentProvider::CODING_ENCODE : we_exim_contentProvider::CODING_NONE);
+						$node_coding[$nodname] = (isset($attributes[we_exim_contentProvider::CODING_ATTRIBUTE]) ? $attributes[we_exim_contentProvider::CODING_ATTRIBUTE] : we_exim_contentProvider::CODING_NONE);
 				}
 			}
 		}
@@ -479,7 +474,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					return $this->options['target_encoding'];
 				}
 				if(self::isSerialized($value)){
-					$usv = unserialize($value);
+					$usv = we_unserialize($value);
 					if(is_array($usv)){
 						foreach($usv as &$av){
 							if($this->options['xml_encoding'] === 'ISO-8859-1'){
@@ -488,14 +483,14 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 								$av = utf8_decode($av);
 							}
 						}
-						$sv = serialize($usv);
+						$sv = we_serialize($usv);
 						return $sv;
 					}
 					return $value;
 				}
 				return ($this->options['xml_encoding'] === 'ISO-8859-1' ?
-						utf8_encode($value) :
-						utf8_decode($value));
+								utf8_encode($value) :
+								utf8_decode($value));
 			}
 		}
 		return $value;
@@ -539,7 +534,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 				} else if($this->options['owners_overwrite'] && $this->options['owners_overwrite_id']){
 					$own = $this->options['owners_overwrite_id'];
 				}
-				if(isset($own) && $own && !in_array($own, $newowners)){
+				if(!empty($own) && !in_array($own, $newowners)){
 					if(!$object->CreatorID){
 						$object->CreatorID = $own;
 					}
@@ -549,9 +544,9 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					$newowners[] = $own;
 				}
 			}
-			$object->Owners = makeCSVFromArray($newowners);
+			$object->Owners = implode(',', $newowners);
 			if(isset($object->OwnersReadOnly)){
-				$readonly = unserialize($object->OwnersReadOnly);
+				$readonly = we_unserialize($object->OwnersReadOnly);
 				$readonly_new = array();
 				if(is_array($readonly)){
 					foreach($readonly as $key => $value){
@@ -567,7 +562,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 							$readonly_new[$newkey] = $value;
 						}
 					}
-					$object->OwnersReadOnly = serialize($readonly_new);
+					$object->OwnersReadOnly = we_serialize($readonly_new);
 				}
 			}
 		} else {
@@ -589,11 +584,11 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 		}
 
 		$path = $tmppath;
-		$marker = we_backup_backup::backupMarker;
+		$marker = we_backup_util::backupMarker;
 		$marker2 = "<!--webackup -->"; //Bug 5089
 		$pattern = basename($filename) . "_%s";
 
-		$compress = (we_base_file::isCompressed($filename) ? we_backup_base::COMPRESSION : we_backup_base::NO_COMPRESSION);
+		$compress = (we_base_file::isCompressed($filename) ? we_backup_util::COMPRESSION : we_backup_util::NO_COMPRESSION);
 		$head = we_base_file::loadPart($filename, 0, 256, $compress === 'gzip');
 
 		$encoding = we_xml_parser::getEncoding('', $head);
@@ -602,7 +597,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 		$footer = we_exim_XMLExIm::getFooter();
 
 		$buff = $filename_tmp = "";
-		$fh = ($compress != we_backup_base::NO_COMPRESSION ? gzopen($filename, "rb") : @fopen($filename, "rb"));
+		$fh = ($compress != we_backup_util::NO_COMPRESSION ? gzopen($filename, "rb") : @fopen($filename, "rb"));
 
 		$num = -1;
 		$fsize = $elnum = 0;
@@ -617,13 +612,13 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 				$findline = false;
 
 				while($findline == false && !@feof($fh)){
-					$line .= ($compress != we_backup_base::NO_COMPRESSION ? @gzgets($fh, 4096) : @fgets($fh, 4096));
+					$line .= ($compress != we_backup_util::NO_COMPRESSION ? @gzgets($fh, 4096) : @fgets($fh, 4096));
 					if(substr($line, -1) === "\n"){
 						$findline = true;
 					}
 				}
 
-				if(!$fh_temp && $line && trim($line) != we_backup_backup::weXmlExImFooter){
+				if(!$fh_temp && $line && trim($line) != we_backup_util::weXmlExImFooter){
 					$num++;
 					$filename_tmp = sprintf($path . $pattern, $num);
 					$fh_temp = fopen($filename_tmp, "wb");
@@ -639,7 +634,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 				}
 
 				if($fh_temp){
-					if((substr($line, 0, 2) != "<?") && (substr($line, 0, 11) != we_backup_backup::weXmlExImHead) && (substr($line, 0, 12) != we_backup_backup::weXmlExImFooter)){
+					if((substr($line, 0, 2) != "<?") && (substr($line, 0, 11) != we_backup_util::weXmlExImHead) && (substr($line, 0, 12) != we_backup_util::weXmlExImFooter)){
 
 						$buff.=$line;
 						$write = false;
@@ -665,7 +660,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 							$buff = "";
 						}
 					} else {
-						if(((substr($line, 0, 2) === "<?") || (substr($line, 0, 11) == we_backup_backup::weXmlExImHead)) && $num == 0){
+						if(((substr($line, 0, 2) === "<?") || (substr($line, 0, 11) == we_backup_util::weXmlExImHead)) && $num == 0){
 							$header.=$line;
 							fwrite($fh_temp, $line);
 						}
@@ -675,7 +670,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 		} else {
 			return -1;
 		}
-		if($fh_temp && trim($line) != we_backup_backup::weXmlExImFooter){
+		if($fh_temp && trim($line) != we_backup_util::weXmlExImFooter){
 			if($buff){
 				fwrite($fh_temp, $buff);
 			}
@@ -683,7 +678,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 			fclose($fh_temp);
 			$fh_temp = 0;
 		}
-		if($compress != we_backup_base::NO_COMPRESSION){
+		if($compress != we_backup_util::NO_COMPRESSION){
 			gzclose($fh);
 		} else {
 			fclose($fh);
@@ -746,7 +741,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 		foreach($patharr as $elem){
 			if($elem != '' && $elem != '/'){
 				$mkpath .= '/' . $elem;
-				$id = path_to_id($mkpath, $table);
+				$id = path_to_id($mkpath, $table, $GLOBALS['DB_WE']);
 				if(!$id){
 					$new = new we_folder();
 					$new->Text = $elem;

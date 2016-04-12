@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -41,15 +40,15 @@ if(we_base_request::_(we_base_request::BOOL, "startCopy")){ // start the fragmen
 	// now get all childs of this folder
 	$_db = new DB_WE();
 
-	$_db->query('SELECT ID,ContentType FROM ' . $_db->escape($_table) . ' WHERE ContentType IN("folder","' . we_base_ContentTypes::WEDOCUMENT . '","objectFile" ) AND PATH LIKE "' . $_theFolder->Path . '/%"');
+	$_db->query('SELECT ID,ContentType FROM ' . $_db->escape($_table) . ' WHERE ContentType IN("folder","' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::OBJECT_FILE . '" ) AND PATH LIKE "' . $_theFolder->Path . '/%"');
 
-	$_allChildsJS = 'var _allChilds = new Object();';
+	$_allChildsJS = 'var _allChilds = {};';
 
 	while($_db->next_record()){
 		$_allChildsJS .= "_allChilds['id_" . $_db->f("ID") . "'] = '" . $_db->f("ContentType") . "';";
 	}
 
-	$pb = new we_progressBar(0, 0, true);
+	$pb = new we_progressBar(0, true);
 	$pb->addText('&nbsp;', 0, 'copyWeDocumentCustomerFilterText');
 	$pb->setStudWidth(10);
 	$pb->setStudLen(300);
@@ -58,7 +57,7 @@ if(we_base_request::_(we_base_request::BOOL, "startCopy")){ // start the fragmen
 	// image and progressbar
 	$content = $pb->getHTML();
 
-	$buttonBar = we_html_button::create_button("cancel", "javascript:top.close();");
+	$buttonBar = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
 	$cmd3 = we_base_request::_(we_base_request::INT, 'we_cmd', false, 3);
 
 	$_iframeLocation = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 0) . '&we_cmd[1]=' . we_base_request::_(we_base_request::INT, 'we_cmd', '', 1) . "&we_cmd[2]=" . we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 2) . ($cmd3 !== false ? "&we_cmd[3]=" . $cmd3 : "" ) . '&startCopy=1';
@@ -68,8 +67,8 @@ if(we_base_request::_(we_base_request::BOOL, "startCopy")){ // start the fragmen
 	we_html_element::jsElement('
 function checkForOpenChilds() {
 	' . $_allChildsJS . '
-	var _openChilds = Array();
-	var _usedEditors = top.opener.top.weEditorFrameController.getEditorsInUse();
+	var _openChilds = [];
+	var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
 
 	for (frameId in _usedEditors) {
 
@@ -86,7 +85,7 @@ function checkForOpenChilds() {
 			// close all
 			for (i=0;i<_openChilds.length;i++) {
 				_usedEditors[_openChilds[i]].setEditorIsHot(false);
-				top.opener.top.weEditorFrameController.closeDocument(_openChilds[i]);
+				WE().layout.weEditorFrameController.closeDocument(_openChilds[i]);
 			}
 		} else {
 			window.close();

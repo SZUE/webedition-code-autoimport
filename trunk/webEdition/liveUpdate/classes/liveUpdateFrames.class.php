@@ -123,13 +123,8 @@ class liveUpdateFrames{
 
 		if(($langs = we_base_request::_(we_base_request::STRING, 'deleteLanguages'))){
 			// update prefs_table
-			$cond = '';
 
-			foreach($langs as $lng){
-				$cond .= ' OR Language="' . $GLOBALS['DB_WE']->escape($lng) . '"';
-			}
-
-			$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET value="' . WE_LANGUAGE . '" WHERE `key`="Language" AND ( 0 ' . $cond . ' )');
+			$GLOBALS['DB_WE']->query('UPDATE ' . PREFS_TABLE . ' SET value="' . WE_LANGUAGE . '" WHERE `key`="Language" AND value IN ("","' . implode('","', array_map('escape_sql_query', $langs)) . '")');
 
 			$liveUpdateFunc = new liveUpdateFunctions();
 			// delete folders
@@ -241,19 +236,16 @@ class liveUpdateFrames{
 	 * @return string
 	 */
 	function htmlFrameset(){
-
 		$activeTab = liveUpdateFrames::getValidTab($this->Data['activeTab']);
 
 		$show = "?section=$activeTab";
 		$active = "&active=$activeTab";
 		we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);
-		return we_html_tools::getHtmlTop('webEdition Update','','frameset') . '
-</head>
-<frameset rows="30, *, 0" border="0" framespacing="0" frameborder="no">
-	<frame name="updatetabs" src="' . $_SERVER['SCRIPT_NAME'] . '?section=tabs' . $active . '"  noresize scrolling="no" />
-	<frame name="updatecontent" src="' . $_SERVER['SCRIPT_NAME'] . $show . '"  noresize scrolling="no" />
-	<frame name="updateload" src="about:blank" />
-</frameset>
+		return we_html_tools::getHtmlTop('webEdition Update', '', 'frameset') . STYLESHEET . '
+</head><body>' .
+			we_html_element::htmlIFrame('updatetabs', $_SERVER['SCRIPT_NAME'] . '?section=tabs' . $active, 'position: absolute;top:0px;left:0px;right:0px;height:25px;', '', '', false) .
+			we_html_element::htmlIFrame('updatecontent', $_SERVER['SCRIPT_NAME'] . $show, 'position: absolute;top:25px;left:0px;right:0px;bottom:0px;', '', '', false) .
+			we_html_element::htmlIFrame('updateload', 'about:blank', 'display:none;', '', '', false) . '</body>
 </html>';
 	}
 
@@ -276,10 +268,6 @@ class liveUpdateFrames{
 
 	function htmlNextVersion(){
 		include(LIVEUPDATE_TEMPLATE_DIR . 'nextVersion.inc.php');
-	}
-
-	function htmlModules(){
-		include(LIVEUPDATE_TEMPLATE_DIR . 'modules.inc.php');
 	}
 
 	function htmlLanguages(){

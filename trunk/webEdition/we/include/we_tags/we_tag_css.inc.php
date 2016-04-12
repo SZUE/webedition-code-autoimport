@@ -27,7 +27,7 @@ function we_tag_css($attribs){
 		return $foo;
 	}
 
-	$row = getHash('SELECT Path,IsFolder,Published FROM ' . FILE_TABLE . ' WHERE ID=' . intval(weTag_getAttribute('id', $attribs, 0, we_base_request::INT)));
+	$row = getHash('SELECT Path,IsFolder,Published FROM ' . FILE_TABLE . ' WHERE Published>0 AND ID=' . intval(weTag_getAttribute('id', $attribs, 0, we_base_request::INT)));
 	if(!$row){
 		return '';
 	}
@@ -43,7 +43,7 @@ function we_tag_css($attribs){
 				case '':
 				case 'screen':
 				case 'all':
-					$GLOBALS['we_doc']->addDocumentCss($row['Path']);
+					$GLOBALS['we_doc']->addDocumentCss($row['Path'] . '?m=' . $row['Published']);
 					break;
 			}
 			break;

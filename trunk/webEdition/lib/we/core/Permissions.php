@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -44,14 +43,16 @@ abstract class we_core_Permissions{
 	 *
 	 * @return string
 	 */
-
-	//FIXME: needed for old apps!
+	//FIXME: remove in 6.6
 	static function protect(){
+		//FIXME: t_e is not available here
+		//t_e('deprecated', 'this will be removed in 6.6');
+
 		//correct some settings
 		if(!isset($GLOBALS['TOOLNAME']) && isset($GLOBALS['controller'])){
 			$GLOBALS['controller']->setParam('appDir', str_replace($_SERVER['DOCUMENT_ROOT'], '', dirname($_SERVER['SCRIPT_FILENAME'])));
 		}
-		//make sure apps work! correct old apps!!!
+		//make sure apps work! correct old apps!
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 		we_html_tools::protect();

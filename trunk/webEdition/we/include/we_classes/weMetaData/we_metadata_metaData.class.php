@@ -28,6 +28,10 @@
  * 			The implementations are to be found in its subclasses (i.e. 'weMetaData_IPTC')
  */
 class we_metadata_metaData{
+	const ALL_BUT_STANDARD_FIELDS = 0;
+	const ONLY_STANDARD_FIELDS = 1;
+	const ALL_FIELDS = 2;
+	const STANDARD_FIELDS = 'Title,Description,Keywords';
 
 	/**
 	 * @var array specifies possible access methods to metadata handled by this implementation class (i.e. exif: readonly)
@@ -330,13 +334,69 @@ class we_metadata_metaData{
 		return true;
 	}
 
-	static function getDefinedMetaDataFields(){
-		// if metadataFields are not cached, we have to get them from db
-		if(!isset($GLOBALS['WE_METADATA_DEFINED_FIELDS'])){
-			$GLOBALS['DB_WE']->query('SELECT * FROM ' . METADATA_TABLE . ' ORDER BY tag');
-			$GLOBALS['WE_METADATA_DEFINED_FIELDS'] = $GLOBALS['DB_WE']->getAll();
+	public static function getDefinedMetaDataFields($filter = we_metadata_metaData::ALL_BUT_STANDARD_FIELDS, $assoc = false){
+		static $fields = false;
+
+		if($fields === false){
+			$fields = $GLOBALS['DB_WE']->getAllFirstq('SELECT * FROM ' . METADATA_TABLE . ' ORDER BY tag', true, MYSQL_ASSOC);
+			foreach($fields as $k => $v){
+				$fields[$k]['tag'] = $k;
+			}
 		}
-		return $GLOBALS['WE_METADATA_DEFINED_FIELDS'];
+
+		switch($filter){
+			case we_metadata_metaData::ONLY_STANDARD_FIELDS:
+				$ret = array_filter($fields, function($v){return in_array($v['tag'], explode(',', we_metadata_metaData::STANDARD_FIELDS));});
+				break;
+			case we_metadata_metaData::ALL_FIELDS:
+				$ret = $fields;
+				break;
+			case we_metadata_metaData::ALL_BUT_STANDARD_FIELDS:
+				$ret = array_filter($fields, function($v){return !in_array($v['tag'], explode(',', we_metadata_metaData::STANDARD_FIELDS));});
+		}
+
+		return $assoc ? $ret : array_values($ret);
+	}
+
+	public static function getMetaDataField($field = ''){
+		$fields = self::getDefinedMetaDataFields(self::ALL_FIELDS, true);
+
+		return isset($fields[$field]) ? $fields[$field] : array();
+	}
+
+	public static function getDefinedMetaValues($getAssoc = false, $leading = false, $field = '', $getDelete = false, $getDeleteLast = false){
+		// defined_values change more often than defined_fields, so we do not cache them!
+		$_defined_values = array();
+		$GLOBALS['DB_WE']->query('SELECT * FROM ' . METAVALUES_TABLE . ($field ? ' WHERE tag = "' . $GLOBALS['DB_WE']->escape($field) . '"' : '') . ' ORDER BY value');
+		$isDel = false;
+
+		while($GLOBALS['DB_WE']->next_record()){
+			if(!isset($_defined_values[$GLOBALS['DB_WE']->f('tag')])){
+				if($leading){
+					$_defined_values[$GLOBALS['DB_WE']->f('tag')][] = $leading;
+				}
+				if($getAssoc){
+					if($getDelete){
+						$_defined_values[$GLOBALS['DB_WE']->f('tag')]['__del__'] = '-- ' . g_l('metadata', '[deleteEntry]') . ' --';
+						$isDel = true;
+					}
+					if($getDeleteLast){
+						$_defined_values[$GLOBALS['DB_WE']->f('tag')]['__del_last__'] = '-- ' . g_l('metadata', '[deleteLastEntry]') . ' --';
+						$isDel = true;
+					}
+					if($isDel){
+						$_defined_values[$GLOBALS['DB_WE']->f('tag')]['__empty__'] = '';
+					}
+				}
+			}
+			if($getAssoc){
+				$_defined_values[$GLOBALS['DB_WE']->f('tag')][$GLOBALS['DB_WE']->f('value')] = $GLOBALS['DB_WE']->f('value');
+			} else {
+				$_defined_values[$GLOBALS['DB_WE']->f('tag')][] = $GLOBALS['DB_WE']->f('value');
+			}
+		}
+
+		return $field ? (isset($_defined_values[$field]) ? $_defined_values[$field] : array()) : $_defined_values;
 	}
 
 }

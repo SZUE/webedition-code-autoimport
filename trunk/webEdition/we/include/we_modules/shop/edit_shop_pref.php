@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-$protect = we_base_moduleInfo::isActive('shop') && we_users_util::canEditModule('shop') ? null : array(false);
+$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP) && we_users_util::canEditModule(we_base_moduleInfo::SHOP) ? null : array(false);
 we_html_tools::protect($protect);
 
 function prepareFieldname($str){
@@ -60,18 +60,20 @@ if(($format = we_base_request::_(we_base_request::RAW, "format"))){ //	save data
 		)));
 	}
 
-	$DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array(
-			'strDateiname' => "shop_pref",
-			'strFelder' => we_base_request::_(we_base_request::STRING, "waehr") . '|' . we_base_request::_(we_base_request::STRING, "mwst") . '|' . $format . '|' . we_base_request::_(we_base_request::STRING, "classID", 0) . '|' . we_base_request::_(we_base_request::STRING, "pag")
+	$DB_WE->query('REPLACE ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(array(
+			'tool' => 'shop',
+			'pref_name' => "shop_pref",
+			'pref_value' => we_base_request::_(we_base_request::STRING, "waehr") . '|' . we_base_request::_(we_base_request::STRING, "mwst") . '|' . $format . '|' . we_base_request::_(we_base_request::STRING, "classID", 0) . '|' . we_base_request::_(we_base_request::STRING, "pag")
 	)));
 
 	$fields['customerFields'] = we_base_request::_(we_base_request::STRING, 'orderfields', array());
 	$fields['orderCustomerFields'] = we_base_request::_(we_base_request::STRING, 'ordercustomerfields', array());
 
 	// check if field exists
-	$DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array(
-			'strDateiname' => "edit_shop_properties",
-			'strFelder' => serialize($fields)
+	$DB_WE->query('REPLACE ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(array(
+			'tool' => 'shop',
+			'pref_name' => 'edit_shop_properties',
+			'pref_value' => we_serialize($fields, SERIALIZE_JSON)
 	)));
 
 	$CLFields['stateField'] = we_base_request::_(we_base_request::RAW, 'stateField', '-');
@@ -80,7 +82,7 @@ if(($format = we_base_request::_(we_base_request::RAW, "format"))){ //	save data
 	$CLFields['languageFieldIsISO'] = we_base_request::_(we_base_request::RAW, 'languageFieldIsISO', 0);
 
 	// check if field exists
-	$DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET strDateiname="shop_CountryLanguage", strFelder = "' . $DB_WE->escape(serialize($CLFields)) . '"');
+	$DB_WE->query('REPLACE ' . SETTINGS_TABLE . ' SET tool="shop",pref_name="shop_CountryLanguage", pref_value="' . $DB_WE->escape(we_serialize($CLFields)) . '"');
 	// Update Country Field in weShopVatRule
 	$weShopVatRule = we_shop_vatRule::getShopVatRule();
 	$weShopVatRule->stateField = $CLFields['stateField'];
@@ -100,28 +102,20 @@ if(($format = we_base_request::_(we_base_request::RAW, "format"))){ //	save data
 $shoplocation = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_location"');
 $categorymode = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="category_mode"');
 
-$strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"');
-if($strFelder !== ''){
-	$CLFields = unserialize($strFelder);
-} else {
-	$CLFields['stateField'] = '-';
-	$CLFields['stateFieldIsISO'] = 0;
-	$CLFields['languageField'] = '-';
-	$CLFields['languageFieldIsISO'] = 0;
-}
+$CLFields = we_unserialize(f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_CountryLanguage"'), array(
+	'stateField' => '-',
+	'stateFieldIsISO' => 0,
+	'languageField' => '-',
+	'languageFieldIsISO' => 0
+	));
 
 
 //	generate html-output table
-$_htmlTable = new we_html_table(array(
-	'border' => 0,
-	'cellpadding' => 0,
-	'cellspacing' => 0,
-	'width' => 410
-	), 35, 3);
+$_htmlTable = new we_html_table(array('class' => 'default withBigSpace', 'width' => 410), 10, 3);
 
 
 //	NumberFormat - currency and taxes
-$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"'));
+$feldnamen = explode('|', f('SELECT pref_value FROM ' . SETTINGS_TABLE. ' WHERE tool="shop" AND pref_name="shop_pref"'));
 
 $fe = (isset($feldnamen[3]) ? explode(',', $feldnamen[3]) : array());
 
@@ -133,51 +127,37 @@ $_row = 0;
 //we_html_tools::htmlSelectCountry('weShopVatCountry', '', 1, array(), false, array('id' => 'weShopVatCountry'), 200)
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[shopcats][use_shopCats]'));
-$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
+$_htmlTable->setCol($_row, 1, array('style' => 'width:10px;'));
 $yesno = array(0 => 'false', 1 => 'true');
 $_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('categorymode', $yesno, 1, $categorymode, false, array("id" => "categorymode", "onchange" => "document.getElementById('shop_holders_location').style.display = (this.value == 1 ? '' : 'none'); document.getElementById('shop_holders_location_br').style.display = (this.value == 1 ? '' : 'none');")));
 $_htmlTable->setRow($_row, array('id' => 'shop_holders_location_br', 'style' => 'display:' . ($categorymode ? '' : 'none')));
-$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 15));
 
 $_htmlTable->setRow($_row, array('id' => 'shop_holders_location', 'style' => 'display:' . ($categorymode ? '' : 'none')));
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[shopcats][shopHolderCountry]'));
-$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 $_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelectCountry('shoplocation', '', 1, array($shoplocation), false, array('id' => 'shoplocation'), 280));
-$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 15));
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[waehrung]'));
-$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 $_htmlTable->setColContent($_row++, 2, we_html_tools::htmlTextInput('waehr', 6, $feldnamen[0]));
-$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 15));
 
-$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'valign' => 'top'), g_l('modules_shop', '[mwst]'));
-$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
-$_htmlTable->setCol($_row++, 2, array('class' => 'defaultfont'), we_html_tools::htmlTextInput('mwst', 6, $feldnamen[1]) . '&nbsp;%');
-$_htmlTable->setCol($_row++, 0, array('colspan' => 3), we_html_tools::getPixel(5, 5));
-$_htmlTable->setCol($_row++, 0, array('colspan' => 3, 'class' => 'small'), we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[mwst_expl]'), we_html_tools::TYPE_INFO, "100%", false, 100));
-$_htmlTable->setCol($_row++, 0, array('colspan' => 3), we_html_tools::getPixel(20, 15));
+$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), g_l('modules_shop', '[mwst]'));
+$_htmlTable->setCol($_row++, 2, array('class' => 'defaultfont', 'style' => 'padding-bottom:5px;'), we_html_tools::htmlTextInput('mwst', 6, $feldnamen[1]) . '&nbsp;%');
+$_htmlTable->setCol($_row++, 0, array('colspan' => 3, 'class' => 'small'), we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[mwst_expl]'), we_html_tools::TYPE_INFO, "400", false, 45));
 
 $list = array('german' => 'german', 'english' => 'english', 'french' => 'french', 'swiss' => 'swiss');
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[format]'));
-$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 $_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('format', $list, 1, $feldnamen[2]));
-$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 15));
 
 
 $pager = array('default' => '-', 5 => 5, 10 => 10, 15 => 15, 20 => 20, 25 => 25, 30 => 30, 35 => 35, 40 => 40, 45 => 45, 50 => 50);
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[pageMod]'));
-$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 $_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('pag', $pager, 1, $feldnamen[4]));
-$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 15));
 
 
 if(defined('OBJECT_TABLE')){
 	$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[classID]'));
-	$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 	$_htmlTable->setColContent($_row++, 2, we_html_tools::htmlTextInput('classID', 100, (isset($feldnamen[3]) ? $feldnamen[3] : ''), '', '', 'text', 280) . '<br/><span class="small">&nbsp;' . g_l('modules_shop', '[classIDext]') . ' </span>');
 }
-$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 15));
 
 // look for all available fields in tblCustomer
 $DB_WE->query('SHOW FIELDS FROM ' . CUSTOMER_TABLE);
@@ -198,10 +178,10 @@ foreach($extraIgnore as $cur){
 
 
 //	get the already selected fields ...
-$_entry = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="edit_shop_properties"');
+$_entry = f('SELECT pref_value FROM ' . SETTINGS_TABLE. ' WHERE tool="shop" AND pref_name="edit_shop_properties"');
 
 // ...
-if(($fields = @unserialize($_entry))){
+if(($fields = we_unserialize($_entry))){
 	// we have an array with following syntax:
 	// array ( 'customerFields' => array('fieldname ...',...)
 	//         'orderCustomerFields' => array('fieldname', ...) )
@@ -209,39 +189,28 @@ if(($fields = @unserialize($_entry))){
 	t_e('unsupported Shop-Settings found');
 }
 
-$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'valign' => 'top'), g_l('modules_shop', '[preferences][customerFields]'));
-$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
+$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), g_l('modules_shop', '[preferences][customerFields]'));
 $_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('orderfields[]', $showFields, (count($showFields) > 5 ? 5 : count($showFields)), implode(',', $fields['customerFields']), true, array(), 'value', 280));
-$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 15));
 
-$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'valign' => 'top'), g_l('modules_shop', '[preferences][orderCustomerFields]'));
-$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
+$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), g_l('modules_shop', '[preferences][orderCustomerFields]'));
 $_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('ordercustomerfields[]', $orderFields, min(count($orderFields), 5), implode(',', $fields['orderCustomerFields']), true, array(), 'value', 280));
-$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 15));
 
-$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'valign' => 'top'), g_l('modules_shop', '[preferences][CountryField]'));
-$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
+$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), g_l('modules_shop', '[preferences][CountryField]'));
 
 $countrySelect = we_class::htmlSelect('stateField', $selectFields, 1, $CLFields['stateField']);
 $countrySelectISO = we_html_forms::checkboxWithHidden($CLFields['stateFieldIsISO'], 'stateFieldIsISO', g_l('modules_shop', '[preferences][ISO-Kodiert]'), false, "defaultfont");
-$_htmlTable->setColContent($_row++, 2, $countrySelect . '<br/>' . $countrySelectISO);
 
-$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 15));
-$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'valign' => 'top'), g_l('modules_shop', '[preferences][LanguageField]'));
+$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), g_l('modules_shop', '[preferences][LanguageField]'));
 $languageSelect = we_class::htmlSelect('languageField', $selectFields, 1, $CLFields['languageField']);
 $languageSelectISO = we_html_forms::checkboxWithHidden($CLFields['languageFieldIsISO'], 'languageFieldIsISO', g_l('modules_shop', '[preferences][ISO-Kodiert]'), false, "defaultfont");
 $_htmlTable->setColContent($_row++, 2, $languageSelect . '<br/>' . $languageSelectISO);
-$_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 
-$_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 25));
 
-$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button('save', 'javascript:if(document.getElementById("categorymode").value == 1 && document.getElementById("shoplocation").value === ""){' . we_message_reporting::getShowMessageCall(g_l('modules_shop', '[preferences][save_alert]'), we_message_reporting::WE_MESSAGE_ERROR) . '}else{document.we_form.submit();}'), '', we_html_button::create_button('cancel', 'javascript:self.close();'));
+$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, 'javascript:if(document.getElementById("categorymode").value == 1 && document.getElementById("shoplocation").value === ""){' . we_message_reporting::getShowMessageCall(g_l('modules_shop', '[preferences][save_alert]'), we_message_reporting::WE_MESSAGE_ERROR) . '}else{document.we_form.submit();}'), '', we_html_button::create_button(we_html_button::CANCEL, 'javascript:self.close();'));
 
-$frame = we_html_tools::htmlDialogLayout($_htmlTable->getHtml(), g_l('modules_shop', '[pref]'), $_buttons);
-
-echo we_html_element::jsElement('self.focus();') . '
+echo '
 	</head>
-	<body class="weDialogBody">
+	<body class="weDialogBody" onload="self.focus();">
 	<form name="we_form" method="post" style="margin-left:8px; margin-top:16px;">
-	' . $frame . '</form>
+	' . we_html_tools::htmlDialogLayout($_htmlTable->getHtml(), g_l('modules_shop', '[pref]'), $_buttons) . '</form>
  	</body></html>';

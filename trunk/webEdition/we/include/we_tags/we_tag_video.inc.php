@@ -47,13 +47,13 @@ function we_tag_video($attribs){
 		$startid = weTag_getAttribute('startid', $attribs, 0, we_base_request::INT);
 		$parentid = weTag_getAttribute('parentid', $attribs, 0, we_base_request::INT);
 		// Create "Edit" button
-		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $fname . "'].value");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $fname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener.setScrollTo(); opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('reload_editpage'); opener._EditorFrame.setEditorIsHot(true);");
 
-		$button = we_html_button::create_button('image:btn_edit_video', "javascript:we_cmd('openDocselector','" . ($id ? : $startid) . "', '" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "',''," . $parentid . ", '" . we_base_ContentTypes::VIDEO . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true);
+		$button = we_html_button::create_button('fa:btn_edit_video,fa-lg fa-pencil,fa-lg fa-file-video-o', "javascript:we_cmd('we_selector_document','" . ($id ? : $startid) . "', '" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "',''," . $parentid . ", '" . we_base_ContentTypes::VIDEO . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true);
 
 		// Create "Delete/Clear" button
-		$clear_button = we_html_button::create_button('image:btn_function_trash', "javascript:we_cmd('remove_image', '" . $name . "')", true);
+		$clear_button = we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('remove_image', '" . $name . "')", true);
 
 		return '
 <table class="weEditTable spacing2 padding0">
@@ -61,10 +61,7 @@ function we_tag_video($attribs){
 		<td class="weEditmodeStyle">' . $out . '<input type="hidden" name="' . $fname . '" value="' . $GLOBALS['we_doc']->getElement($name, 'bdid') . '" /></td>
 	</tr>
 	<tr>
-		<td class="weEditmodeStyle" align="center">' .
-			we_html_button::create_button_table(array(
-				$button, $clear_button
-				), 5) . '</td></tr></table>';
+		<td class="weEditmodeStyle" style="text-align:center">' . $button . $clear_button . '</td></tr></table>';
 	}
 	//	When in SEEM - Mode add edit-Button to tag - textarea
 	return $out;

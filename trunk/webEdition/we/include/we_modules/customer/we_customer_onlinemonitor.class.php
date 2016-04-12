@@ -50,7 +50,7 @@ class we_customer_onlinemonitor extends we_listview_base{
 		parent::__construct($name, $rows, $offset, $order, $desc, '', false, 0, $cols);
 
 		$this->docID = $docID;
-		$this->condition = $condition ? : (isset($GLOBALS['we_lv_condition']) ? $GLOBALS['we_lv_condition'] : '');
+		$this->condition = $condition;
 		$this->lastaccesslimit = $lastaccesslimit;
 		$this->lastloginlimit = $lastloginlimit;
 
@@ -72,10 +72,10 @@ class we_customer_onlinemonitor extends we_listview_base{
 		$orderstring = ($this->order ? ' ORDER BY ' . $this->order . ' ' : '');
 		$laStr = $llStr = '';
 		if($this->lastloginlimit != ''){
-			$llStr = 'LastLogin > DATE_SUB(NOW(), INTERVAL ' . $this->lastloginlimit . ' SECOND) ';
+			$llStr = 'LastLogin>(NOW() - INTERVAL ' . $this->lastloginlimit . ' SECOND) ';
 		}
 		if($this->lastaccesslimit != ''){
-			$laStr = 'LastAccess > DATE_SUB(NOW(), INTERVAL ' . $this->lastaccesslimit . ' SECOND) ';
+			$laStr = 'LastAccess>(NOW() - INTERVAL ' . $this->lastaccesslimit . ' SECOND) ';
 		}
 		if($this->lastloginlimit != ''){
 			$this->condition = ($this->condition ? $this->condition . ' AND ' : '') . $llStr;

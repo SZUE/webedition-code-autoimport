@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -23,23 +24,20 @@
  */
 $seeMode = !(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL);
 $we_menu = array(
-	'file' => array(// File
-		'text' => g_l('javaMenu_global', '[file]'),
-	),
 	'file_new' => array(// File > New
 		'text' => g_l('javaMenu_global', '[new]'),
-		'parent' => 'file',
+		//'parent' => 'file',
 	),
 	'file_new_wedoc' => array(// File > New > webEdition Document
 		'text' => g_l('javaMenu_global', '[webEdition_page]'),
 		'parent' => 'file_new',
-		'perm' => 'NEW_WEBEDITIONSITE || ADMINISTRATOR',
+		'perm' => 'NEW_WEBEDITIONSITE',
 	),
 	array(// File > New > webEdition Document > empty page
 		'text' => g_l('javaMenu_global', '[empty_page]'),
 		'parent' => 'file_new_wedoc',
 		'cmd' => 'new_webEditionPage',
-		'perm' => 'NO_DOCTYPE || ADMINISTRATOR',
+		'perm' => 'NO_DOCTYPE',
 	),
 	array(// separator
 		'parent' => 'file_new_wedoc',
@@ -48,92 +46,96 @@ $we_menu = array(
 	'file_new_weobj' => array(// File > new > Object
 		'text' => g_l('javaMenu_object', '[object]'),
 		'parent' => 'file_new',
-		'perm' => 'NEW_OBJECTFILE || ADMINISTRATOR',
+		'perm' => 'NEW_OBJECTFILE',
 		'hide' => !defined('OBJECT_TABLE')
 	),
-	array(// File > New > Others (Import)
-		'text' => g_l('javaMenu_global', '[other]'),
+	'file_new_media' => array(
+		'text' => g_l('javaMenu_global', '[media]'),
 		'parent' => 'file_new',
-		'cmd' => 'openFirstStepsWizardDetailTemplates',
-		'perm' => 'NO_DOCTYPE && ADMINISTRATOR',
-		'hide' => !$seeMode,
+		'perm' => 'ADMINISTRATOR || NEW_GRAFIK || NEW_FLASH || NEW_QUICKTIME || NEW_SONSTIGE',
 	),
 	array(// File > Image
 		'text' => g_l('javaMenu_global', '[image]'),
-		'parent' => 'file_new',
+		'parent' => 'file_new_media',
 		'cmd' => 'new_image',
-		'perm' => 'NEW_GRAFIK || ADMINISTRATOR',
+		'perm' => 'NEW_GRAFIK',
+	),
+	array(// File > New > Other > Other (Binary)
+		'text' => g_l('javaMenu_global', '[pdf]'),
+		'parent' => 'file_new_media',
+		'cmd' => 'new_binary_document',
+		'perm' => 'NEW_SONSTIGE',
+	),
+	array(// File > New > Other > Flash
+		'text' => g_l('javaMenu_global', '[flash_movie]'),
+		'parent' => 'file_new_media',
+		'cmd' => 'new_flash_movie',
+		'perm' => 'NEW_FLASH',
+	),
+	array(// File > New Other > quicktime
+		'text' => g_l('javaMenu_global', '[quicktime_movie]'),
+		'parent' => 'file_new_media',
+		'cmd' => 'new_quicktime_movie',
+		'perm' => 'NEW_QUICKTIME',
+	),
+	array(// File > New Other > video
+		'text' => g_l('contentTypes', '[' . we_base_ContentTypes::VIDEO . ']'),
+		'parent' => 'file_new_media',
+		'cmd' => 'new_video_movie',
+		'perm' => 'NEW_FLASH',
+	),
+	array(// File > New Other > audio
+		'text' => g_l('contentTypes', '[' . we_base_ContentTypes::AUDIO . ']'),
+		'parent' => 'file_new_media',
+		'cmd' => 'new_audio_audio',
+		'perm' => 'NEW_SONSTIGE',
 	),
 	'file_new_other' => array(// File > New > Other
 		'text' => g_l('javaMenu_global', '[other]'),
 		'parent' => 'file_new',
-		'perm' => 'ADMINISTRATOR || NEW_HTML || NEW_FLASH || NEW_QUICKTIME || NEW_JS || NEW_CSS || NEW_TEXT || NEW_HTACCESS || NEW_SONSTIGE',
+		'perm' => 'ADMINISTRATOR || NEW_HTML || NEW_JS || NEW_CSS || NEW_TEXT || NEW_HTACCESS || NEW_SONSTIGE',
 	),
 	array(// File > New > Other > html
 		'text' => g_l('javaMenu_global', '[html_page]'),
 		'parent' => 'file_new_other',
 		'cmd' => 'new_html_page',
-		'perm' => 'NEW_HTML || ADMINISTRATOR',
-	),
-	array(// File > New > Other > Flash
-		'text' => g_l('javaMenu_global', '[flash_movie]'),
-		'parent' => 'file_new_other',
-		'cmd' => 'new_flash_movie',
-		'perm' => 'NEW_FLASH || ADMINISTRATOR',
-	),
-	array(// File > New Other > quicktime
-		'text' => g_l('javaMenu_global', '[quicktime_movie]'),
-		'parent' => 'file_new_other',
-		'cmd' => 'new_quicktime_movie',
-		'perm' => 'NEW_QUICKTIME || ADMINISTRATOR',
-	),
-	array(// File > New Other > video
-		'text' => g_l('contentTypes', '[' . we_base_ContentTypes::VIDEO . ']'),
-		'parent' => 'file_new_other',
-		'cmd' => 'new_video_movie',
-		'perm' => 'NEW_FLASH || ADMINISTRATOR',
-	),
-	array(// File > New Other > audio
-		'text' => g_l('contentTypes', '[' . we_base_ContentTypes::AUDIO . ']'),
-		'parent' => 'file_new_other',
-		'cmd' => 'new_audio_audio',
-		'perm' => 'NEW_SONSTIGE || ADMINISTRATOR',
+		'perm' => 'NEW_HTML',
 	),
 	array(// File > New > Other > Javascript
 		'text' => g_l('javaMenu_global', '[javascript]'),
 		'parent' => 'file_new_other',
 		'cmd' => 'new_javascript',
-		'perm' => 'NEW_JS || ADMINISTRATOR',
+		'perm' => 'NEW_JS',
 	),
 	array(// File > New > Other > CSS
 		'text' => g_l('javaMenu_global', '[css_stylesheet]'),
 		'parent' => 'file_new_other',
 		'cmd' => 'new_css_stylesheet',
-		'perm' => 'NEW_CSS || ADMINISTRATOR',
+		'perm' => 'NEW_CSS',
 	),
 	array(// File > New > Other > Text
 		'text' => g_l('javaMenu_global', '[text_plain]'),
 		'parent' => 'file_new_other',
 		'cmd' => 'new_text_plain',
-		'perm' => 'NEW_TEXT || ADMINISTRATOR',
+		'perm' => 'NEW_TEXT',
 	),
 	array(// File > New > Other > XML
 		'text' => g_l('javaMenu_global', '[text_xml]'),
 		'parent' => 'file_new_other',
 		'cmd' => 'new_text_xml',
-		'perm' => 'NEW_TEXT || ADMINISTRATOR',
+		'perm' => 'NEW_TEXT',
 	),
 	array(// File > New > Other > htaccess
 		'text' => g_l('javaMenu_global', '[htaccess]'),
 		'parent' => 'file_new_other',
 		'cmd' => 'new_text_htaccess',
-		'perm' => 'NEW_HTACCESS || ADMINISTRATOR',
+		'perm' => 'NEW_HTACCESS',
 	),
 	array(// File > New > Other > Other (Binary)
 		'text' => g_l('javaMenu_global', '[other_files]'),
 		'parent' => 'file_new_other',
 		'cmd' => 'new_binary_document',
-		'perm' => 'NEW_SONSTIGE || ADMINISTRATOR',
+		'perm' => 'NEW_SONSTIGE',
 	),
 	array(// separator
 		'parent' => 'file_new',
@@ -148,42 +150,65 @@ $we_menu = array(
 		'text' => g_l('javaMenu_global', '[document_directory]'),
 		'parent' => 'file_new_dir',
 		'cmd' => 'new_document_folder',
-		'perm' => 'NEW_DOC_FOLDER || ADMINISTRATOR',
+		'perm' => 'NEW_DOC_FOLDER',
 		'hide' => $seeMode
 	),
 	array(// File > New > Directory > Template
 		'text' => g_l('javaMenu_global', '[template_directory]'),
 		'parent' => 'file_new_dir',
 		'cmd' => 'new_template_folder',
-		'perm' => 'NEW_TEMP_FOLDER || ADMINISTRATOR',
+		'perm' => 'NEW_TEMP_FOLDER',
 		'hide' => $seeMode
 	),
 	array(// File > new > directory > objectfolder
 		'text' => g_l('javaMenu_object', '[object_directory]'),
 		'parent' => 'file_new_dir',
 		'cmd' => 'new_objectfile_nested_folder',
-		'perm' => 'NEW_OBJECTFILE_FOLDER || ADMINISTRATOR',
+		'perm' => 'NEW_OBJECTFILE_FOLDER',
 		'hide' => !defined('OBJECT_TABLE') || ($_SESSION['weS']['we_mode'] != we_base_constants::MODE_NORMAL)
+	),
+	array(// File > New > Directory > Collection
+		'text' => g_l('javaMenu_global', '[collection_directory]'),
+		'parent' => 'file_new_dir',
+		'cmd' => 'new_collection_folder',
+		'perm' => 'NEW_COLLECTION_FOLDER',
+		'hide' => $seeMode || !we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION)
 	),
 	array(// separator
 		'parent' => 'file_new',
-		'perm' => 'NEW_OBJECT || NEW_TEMPLATE || ADMINISTRATOR',
+		'perm' => 'NEW_OBJECT || NEW_TEMPLATE',
 		'hide' => $seeMode
 	),
 	array(// File > New > Template
 		'text' => g_l('javaMenu_global', '[template]'),
 		'parent' => 'file_new',
 		'cmd' => 'new_template',
-		'perm' => 'NEW_TEMPLATE || ADMINISTRATOR',
+		'perm' => 'NEW_TEMPLATE',
 		'hide' => $seeMode
 	),
 	array(// File > new > Class
 		'text' => g_l('javaMenu_object', '[class]'),
 		'parent' => 'file_new',
 		'cmd' => 'new_object',
-		'perm' => 'NEW_OBJECT || ADMINISTRATOR',
+		'perm' => 'NEW_OBJECT',
 		'hide' => !defined('OBJECT_TABLE') || ($_SESSION['weS']['we_mode'] != we_base_constants::MODE_NORMAL)
 	),
+	array(// separator
+		'parent' => 'file_new',
+		'perm' => 'NEW_COLLECTION',
+		'hide' => $seeMode || !we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION)
+	),
+	array(// File > COLLECTION
+		'text' => g_l('javaMenu_global', '[collection]'),
+		'parent' => 'file_new',
+		'cmd' => 'new_collection',
+		'perm' => 'NEW_COLLECTION',
+		'hide' => !we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION)
+	),
+		'file' => array(// File
+		'text' => g_l('javaMenu_global', '[file]'),
+	),
+
 	/* 	$we_menu[1011100]['parent'] = 'file_new'; // separator
 	  // File > New > Wizards
 	  'text'=> g_l('javaMenu_global', '[wizards]') . '&hellip;',
@@ -205,105 +230,146 @@ $we_menu = array(
 		'text' => g_l('javaMenu_global', '[open_document]') . '&hellip;',
 		'parent' => 'file_open',
 		'cmd' => 'open_document',
-		'perm' => 'CAN_SEE_DOCUMENTS || ADMINISTRATOR',
+		'perm' => 'CAN_SEE_DOCUMENTS',
 	),
 	array(// File > open > Object
 		'text' => g_l('javaMenu_object', '[open_object]') . '&hellip;',
 		'parent' => 'file_open',
 		'cmd' => 'open_objectFile',
-		'perm' => 'CAN_SEE_OBJECTFILES || ADMINISTRATOR',
+		'perm' => 'CAN_SEE_OBJECTFILES',
 		'hide' => !defined('OBJECT_TABLE')
+	),
+	array(// File > Open > Collection
+		'text' => g_l('javaMenu_global', '[collection]') . '&hellip;',
+		'parent' => 1030000,
+		'cmd' => 'open_collection',
+		'perm' => 'CAN_SEE_COLLECTIONS',
+		'hide' => !we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION)
 	),
 	array(// separator
 		'parent' => 'file_open',
-		'perm' => 'CAN_SEE_TEMPLATES || CAN_SEE_OBJECTS || ADMINISTRATOR',
+		'perm' => 'CAN_SEE_TEMPLATES || CAN_SEE_OBJECTS',
 		'hide' => $seeMode
 	),
 	array(// File > Open > Template
 		'text' => g_l('javaMenu_global', '[open_template]') . '&hellip;',
 		'parent' => 'file_open',
 		'cmd' => 'open_template',
-		'perm' => 'CAN_SEE_TEMPLATES || ADMINISTRATOR',
+		'perm' => 'CAN_SEE_TEMPLATES',
 		'hide' => $seeMode
 	),
 	array(// File > Open > Class
 		'text' => g_l('javaMenu_object', '[open_class]') . '&hellip;',
 		'parent' => 'file_open',
 		'cmd' => 'open_object',
-		'perm' => 'CAN_SEE_OBJECTS || ADMINISTRATOR',
+		'perm' => 'CAN_SEE_OBJECTS',
 		'hide' => !defined('OBJECT_TABLE') || ($_SESSION['weS']['we_mode'] != we_base_constants::MODE_NORMAL)
 	),
 	'file_delete' => array(// File > Delete
 		'text' => g_l('javaMenu_global', '[delete]') . ($seeMode ? '&hellip;' : ''),
 		'parent' => 'file',
-		'cmd' => $seeMode ? 'openDelSelector' : '',
-		'perm' => $seeMode ? 'DELETE_DOCUMENT || ADMINISTRATOR' : 'DELETE_DOCUMENT || DELETE_OBJECTFILE || DELETE_TEMPLATE || DELETE_OBJECT || ADMINISTRATOR',
+		'cmd' => $seeMode ? 'we_selector_delete' : '',
+		'perm' => $seeMode ? 'DELETE_DOCUMENT' : 'DELETE_DOCUMENT || DELETE_OBJECTFILE || DELETE_TEMPLATE || DELETE_OBJECT',
 	),
 	array(// File > Delete > Documents
 		'text' => g_l('javaMenu_global', '[documents]'),
 		'parent' => 'file_delete',
 		'cmd' => 'delete_documents',
-		'perm' => 'DELETE_DOCUMENT || ADMINISTRATOR',
+		'perm' => 'DELETE_DOCUMENT',
 		'hide' => $seeMode,
 	),
 	array(// File > Delete > Objects
 		'text' => g_l('javaMenu_object', '[objects]'),
 		'parent' => 'file_delete',
 		'cmd' => 'delete_objectfile',
-		'perm' => 'DELETE_OBJECTFILE || ADMINISTRATOR',
+		'perm' => 'DELETE_OBJECTFILE',
 		'hide' => !defined('OBJECT_TABLE') || ($_SESSION['weS']['we_mode'] != we_base_constants::MODE_NORMAL)
 	),
 	array(// separator
 		'parent' => 'file_delete',
-		'perm' => 'CAN_SEE_TEMPLATES || CAN_SEE_OBJECTS || ADMINISTRATOR',
+		'perm' => 'CAN_SEE_TEMPLATES || CAN_SEE_OBJECTS',
 		'hide' => $seeMode
 	),
 	array(// File > Delete > Templates
 		'text' => g_l('javaMenu_global', '[templates]'),
 		'parent' => 'file_delete',
 		'cmd' => 'delete_templates',
-		'perm' => 'DELETE_TEMPLATE || ADMINISTRATOR',
+		'perm' => 'DELETE_TEMPLATE',
 		'hide' => $seeMode,
 	),
 	array(// File > Delete > Classes
 		'text' => g_l('javaMenu_object', '[classes]'),
 		'parent' => 'file_delete',
 		'cmd' => 'delete_object',
-		'perm' => 'DELETE_OBJECT || ADMINISTRATOR',
+		'perm' => 'DELETE_OBJECT',
 		'hide' => !defined('OBJECT_TABLE') || ($_SESSION['weS']['we_mode'] != we_base_constants::MODE_NORMAL)
+	),
+	array(// separator
+		'parent' => 'file_delete',
+		'perm' => 'DELETE_COLLECTION',
+		'hide' => $seeMode
+	),
+	array(// File > Delete > Collection
+		'text' => g_l('global', '[vfile]'),
+		'parent' => 'file_delete',
+		'cmd' => 'delete_collections',
+		'perm' => 'DELETE_COLLECTION',
+		'hide' => $seeMode || !we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION),
 	),
 	'file_mv' => array(// File > Move
 		'text' => g_l('javaMenu_global', '[move]'),
 		'parent' => 'file',
 		'hide' => $seeMode,
-		'perm' => 'MOVE_DOCUMENT || MOVE_OBJECTFILE || MOVE_TEMPLATE || ADMINISTRATOR',
+		'perm' => 'MOVE_DOCUMENT || MOVE_OBJECTFILE || MOVE_TEMPLATE',
 	),
 // File > Move > Documents
 	array(
 		'text' => g_l('javaMenu_global', '[documents]'),
 		'parent' => 'file_mv',
 		'cmd' => 'move_documents',
-		'perm' => 'MOVE_DOCUMENT || ADMINISTRATOR',
+		'perm' => 'MOVE_DOCUMENT',
 		'hide' => $seeMode,
 	),
 	array(// File > move > objects
 		'text' => g_l('javaMenu_object', '[objects]'),
 		'parent' => 'file_mv',
 		'cmd' => 'move_objectfile',
-		'perm' => 'MOVE_OBJECTFILE || ADMINISTRATOR',
+		'perm' => 'MOVE_OBJECTFILE',
 		'hide' => !defined('OBJECT_TABLE') || ($_SESSION['weS']['we_mode'] != we_base_constants::MODE_NORMAL)
 	),
 	array(// separator
 		'parent' => 'file_mv',
-		'perm' => 'MOVE_TEMPLATE || ADMINISTRATOR',
+		'perm' => 'MOVE_TEMPLATE',
 		'hide' => $seeMode
 	),
 	array(// File > Move > Templates
 		'text' => g_l('javaMenu_global', '[templates]'),
 		'parent' => 'file_mv',
 		'cmd' => 'move_templates',
-		'perm' => 'MOVE_TEMPLATE || ADMINISTRATOR',
+		'perm' => 'MOVE_TEMPLATE',
 		'hide' => $seeMode,
+	),
+	'file_addcoll' => array(// File > add to collection
+		'text' => g_l('javaMenu_global', '[add_to_collection]'),
+		'parent' => 'file',
+		'hide' => $seeMode,
+		'perm' => 'SAVE_COLLECTION',
+		'hide' => $seeMode || !we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION)
+	),
+
+	array(// File > add to collection > documents
+		'text' => g_l('javaMenu_global', '[documents]'),
+		'parent' => 'file_addcoll',
+		'cmd' => 'add_documents_to_collection',
+		'perm' => 'SAVE_COLLECTION',
+		'hide' => $seeMode || !we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION),
+	),
+	array(/// File > add to collection > objects
+		'text' => g_l('javaMenu_object', '[objects]'),
+		'parent' => 'file_addcoll',
+		'cmd' => 'add_objectfiles_to_collection',
+		'perm' => 'SAVE_COLLECTION',
+		'hide' => true, //!defined('OBJECT_TABLE') || ($_SESSION['weS']['we_mode'] != we_base_constants::MODE_NORMAL) || !we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION)
 	),
 	array(// separator
 		'parent' => 'file'
@@ -312,27 +378,27 @@ $we_menu = array(
 	  'text' => g_l('javaMenu_global', '[save]'),
 	  'parent' => 'file',
 	  'cmd' => 'trigger_save_document',
-	  'perm' => 'SAVE_DOCUMENT_TEMPLATE || ADMINISTRATOR',
+	  'perm' => 'SAVE_DOCUMENT_TEMPLATE',
 
 	  ),
 	  array(// File > Publish
 	  'text' => g_l('javaMenu_global', '[publish]'),
 	  'parent' => 'file',
 	  'cmd' => 'trigger_publish_document',
-	  'perm' => 'PUBLISH || ADMINISTRATOR',
+	  'perm' => 'PUBLISH',
 
 	  ), */
-	array(
+	/*array(
 		'text' => g_l('javaMenu_glossary', '[glossary_check]'),
 		'parent' => 'file',
 		'cmd' => 'glossary_check',
 		'hide' => !(defined('GLOSSARY_TABLE'))
-	),
+	),*/
 	array(// File > Delete Active Document
 		'text' => g_l('javaMenu_global', '[delete_active_document]'),
 		'parent' => 'file',
 		'cmd' => 'delete_single_document_question',
-		'perm' => 'DELETE_DOCUMENT || DELETE_OBJECTFILE || DELETE_TEMPLATE || DELETE_OBJECT || ADMINISTRATOR',
+		'perm' => 'DELETE_DOCUMENT || DELETE_OBJECTFILE || DELETE_TEMPLATE || DELETE_OBJECT',
 		'hide' => $seeMode
 	),
 	/* array(// File > Close
@@ -359,13 +425,13 @@ $we_menu = array(
 		'text' => g_l('javaMenu_global', '[unpublished_pages]') . '&hellip;',
 		'parent' => 'file',
 		'cmd' => 'openUnpublishedPages',
-		'perm' => 'CAN_SEE_DOCUMENTS || ADMINISTRATOR',
+		'perm' => 'CAN_SEE_DOCUMENTS',
 	),
 	array(// File > unpublished objects
 		'text' => g_l('javaMenu_object', '[unpublished_objects]') . '&hellip;',
 		'parent' => 'file',
 		'cmd' => 'openUnpublishedObjects',
-		'perm' => 'CAN_SEE_OBJECTFILES || ADMINISTRATOR',
+		'perm' => 'CAN_SEE_OBJECTFILES',
 		'hide' => !defined('OBJECT_TABLE')
 	),
 	array(// File > Search
@@ -379,61 +445,61 @@ $we_menu = array(
 	'file_imex' => array(// File > Import/Export
 		'text' => g_l('javaMenu_global', '[import_export]'),
 		'parent' => 'file',
-		'perm' => 'GENERICXML_EXPORT || CSV_EXPORT || FILE_IMPORT || SITE_IMPORT || GENERICXML_IMPORT || CSV_IMPORT || WXML_IMPORT || ADMINISTRATOR',
+		'perm' => 'GENERICXML_EXPORT || CSV_EXPORT || FILE_IMPORT || SITE_IMPORT || GENERICXML_IMPORT || CSV_IMPORT || WXML_IMPORT',
 	),
 	array(// File > Import/Export > Import
 		'text' => g_l('javaMenu_global', '[import]') . '&hellip;',
 		'cmd' => 'import',
 		'parent' => 'file_imex',
-		'perm' => 'FILE_IMPORT || SITE_IMPORT || GENERICXML_IMPORT || CSV_IMPORT || WXML_IMPORT || ADMINISTRATOR',
+		'perm' => 'FILE_IMPORT || SITE_IMPORT || GENERICXML_IMPORT || CSV_IMPORT || WXML_IMPORT',
 	),
 	array(// File > Import/Export > Export
 		'text' => g_l('javaMenu_global', '[export]') . '&hellip;',
 		'cmd' => 'export',
 		'parent' => 'file_imex',
-		'perm' => 'GENERICXML_EXPORT || CSV_EXPORT || ADMINISTRATOR',
+		'perm' => 'GENERICXML_EXPORT || CSV_EXPORT',
 	),
 	'file_backup' => array(// File > Backup
 		'text' => g_l('javaMenu_global', '[backup]'),
 		'parent' => 'file',
 		'hide' => $seeMode,
-		'perm' => 'BACKUPLOG || IMPORT || EXPORT || EXPORTNODOWNLOAD || ADMINISTRATOR',
+		'perm' => 'BACKUPLOG || IMPORT || EXPORT || EXPORTNODOWNLOAD',
 	),
 	array(// File > Backup > make
 		'text' => g_l('javaMenu_global', '[make_backup]') . '&hellip;',
 		'parent' => $seeMode ? 'file' : 'file_backup',
 		'cmd' => 'make_backup',
-		'perm' => 'EXPORT || EXPORTNODOWNLOAD || ADMINISTRATOR',
+		'perm' => 'EXPORT || EXPORTNODOWNLOAD',
 	),
 	array(// File > Backup > recover
 		'text' => g_l('javaMenu_global', '[recover_backup]') . '&hellip;',
 		'parent' => 'file_backup',
 		'cmd' => 'recover_backup',
-		'perm' => 'IMPORT || ADMINISTRATOR',
+		'perm' => 'IMPORT',
 		'hide' => $seeMode
 	),
 	array(// File > Backup > view Log
 		'text' => g_l('javaMenu_global', '[view_backuplog]') . '&hellip;',
 		'parent' => $seeMode ? 'file' : 'file_backup',
 		'cmd' => 'view_backuplog',
-		'perm' => 'BACKUPLOG || ADMINISTRATOR',
+		'perm' => 'BACKUPLOG',
 	),
 	array(// File > rebuild
 		'text' => g_l('javaMenu_global', '[rebuild]') . '&hellip;',
 		'parent' => 'file',
 		'cmd' => 'rebuild',
-		'perm' => 'REBUILD || ADMINISTRATOR',
+		'perm' => 'REBUILD',
 	),
 	array(// File > Browse server
 		'text' => g_l('javaMenu_global', '[browse_server]') . '&hellip;',
 		'parent' => 'file',
 		'cmd' => 'browse_server',
-		'perm' => 'BROWSE_SERVER || ADMINISTRATOR',
+		'perm' => 'BROWSE_SERVER',
 		'hide' => $seeMode,
 	),
 	array(// separator
 		'parent' => 'file',
-		'perm' => 'BROWSE_SERVER || ADMINISTRATOR',
+		'perm' => 'BROWSE_SERVER',
 		'hide' => $seeMode,
 	),
 	array(// File > Quit
@@ -539,19 +605,19 @@ $we_menu = array(
 		'text' => g_l('javaMenu_global', '[document_types]') . '&hellip;',
 		'parent' => 'extras',
 		'cmd' => 'doctypes',
-		'perm' => 'EDIT_DOCTYPE || ADMINISTRATOR',
+		'perm' => 'EDIT_DOCTYPE',
 	),
 	array(// Extras > Kategorien
 		'text' => g_l('javaMenu_global', '[categories]') . '&hellip;',
 		'parent' => 'extras',
 		'cmd' => 'editCat',
-		'perm' => 'EDIT_KATEGORIE || ADMINISTRATOR',
+		'perm' => 'EDIT_KATEGORIE',
 	),
 	array(// Extras > Thumbnails
 		'text' => g_l('javaMenu_global', '[thumbnails]') . '&hellip;',
 		'parent' => 'extras',
 		'cmd' => 'editThumbs',
-		'perm' => 'EDIT_THUMBS || ADMINISTRATOR',
+		'perm' => 'EDIT_THUMBS',
 	),
 	array(// Extras > Metadata fields
 		'text' => g_l('javaMenu_global', '[metadata]') . '&hellip;',
@@ -562,17 +628,17 @@ $we_menu = array(
 	),
 	array(// separator
 		'parent' => 'extras',
-		'perm' => 'EDIT_DOCTYPE || EDIT_KATEGORIE || EDIT_THUMBS || ADMINISTRATOR',
+		'perm' => 'EDIT_DOCTYPE || EDIT_KATEGORIE || EDIT_THUMBS',
 	),
 	array(// Extras > change password
 		'text' => g_l('javaMenu_global', '[change_password]') . '&hellip;',
 		'parent' => 'extras',
 		'cmd' => 'change_passwd',
-		'perm' => 'EDIT_PASSWD || ADMINISTRATOR',
+		'perm' => 'EDIT_PASSWD',
 	),
 	array(// separator
 		'parent' => 'extras',
-		'perm' => 'EDIT_PASSWD || ADMINISTRATOR',
+		'perm' => 'EDIT_PASSWD',
 	),
 	array(// Extras > versioning
 		'text' => g_l('javaMenu_global', '[versioning]') . '&hellip;',
@@ -594,11 +660,11 @@ $we_menu = array(
 		'text' => g_l('javaMenu_global', '[common]') . '&hellip;',
 		'parent' => 'settings',
 		'cmd' => 'openPreferences',
-		'perm' => 'EDIT_SETTINGS || ADMINISTRATOR',
+		'perm' => 'EDIT_SETTINGS',
 	),
 	array(// separator
 		'parent' => 'settings',
-		'perm' => 'EDIT_SETTINGS || ADMINISTRATOR',
+		'perm' => 'EDIT_SETTINGS',
 	),
 	'help' => array(// Help
 		'text' => g_l('javaMenu_global', '[help]'),
@@ -627,7 +693,7 @@ $we_menu = array(
 		'text' => g_l('javaMenu_global', '[onlinehelp_tagreference]') . '&hellip;',
 		'parent' => 'online-help',
 		'cmd' => 'help_tagreference',
-		'perm' => 'CAN_SEE_TEMPLATES || ADMINISTRATOR',
+		'perm' => 'CAN_SEE_TEMPLATES',
 		'hide' => $seeMode
 	),
 	array(
@@ -697,6 +763,7 @@ $we_menu = array(
 
 $dtq = we_docTypes::getDoctypeQuery($GLOBALS['DB_WE']);
 $GLOBALS['DB_WE']->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where'] . ' LIMIT 95');
+
 if($GLOBALS['DB_WE']->num_rows() && permissionhandler::hasPerm('NO_DOCTYPE')){
 	$we_menu[] = array('parent' => 'file_new_wedoc'); // separator
 }
@@ -705,8 +772,8 @@ while($GLOBALS['DB_WE']->next_record()){
 	$we_menu[] = array(
 		'text' => str_replace(array(',', '"', '\'',), array(' ', ''), $GLOBALS['DB_WE']->f('DocType')),
 		'parent' => 'file_new_wedoc',
-		'cmd' => 'new_dtPage' . $GLOBALS['DB_WE']->f('ID'),
-		'perm' => 'NEW_WEBEDITIONSITE || ADMINISTRATOR',
+		'cmd' => array('new_dtPage', $GLOBALS['DB_WE']->f('ID')),
+		'perm' => 'NEW_WEBEDITIONSITE',
 	);
 }
 
@@ -716,14 +783,14 @@ if(defined('OBJECT_TABLE')){
 	$ac = we_users_util::getAllowedClasses($GLOBALS['DB_WE']);
 	if($ac){
 		$GLOBALS['DB_WE']->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' ' . ($ac ? ' WHERE ID IN(' . implode(',', $ac) . ') ' : '') . 'ORDER BY Text LIMIT 95');
-		if($GLOBALS['DB_WE']->num_rows()){
 
+		if($GLOBALS['DB_WE']->num_rows()){
 			while($GLOBALS['DB_WE']->next_record()){
 				$we_menu[] = array(
 					'text' => str_replace(array('"', '\''), '', $GLOBALS['DB_WE']->f('Text')),
 					'parent' => 'file_new_weobj',
-					'cmd' => 'new_ClObjectFile' . $GLOBALS['DB_WE']->f('ID'),
-					'perm' => 'NEW_OBJECTFILE || ADMINISTRATOR',
+					'cmd' => array('new_ClObjectFile', $GLOBALS['DB_WE']->f('ID')),
+					'perm' => 'NEW_OBJECTFILE',
 				);
 			}
 		} else {
@@ -755,7 +822,7 @@ foreach($_tools as $_tool){
 		'text' => $_tool['text'] . '&hellip;',
 		'parent' => 'extras',
 		'cmd' => 'tool_' . $_tool['name'] . '_edit',
-		'perm' => $_tool['startpermission'] . ' || ADMINISTRATOR',
+		'perm' => $_tool['startpermission'],
 	);
 }
 
@@ -783,5 +850,4 @@ if($_activeIntModules){
 		}
 	}
 }
-//ksort($we_menu); //TODO: SORT_NATURAL requires PHP 5.4
 return $we_menu;

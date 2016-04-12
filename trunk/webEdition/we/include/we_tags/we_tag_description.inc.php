@@ -25,7 +25,7 @@
 function we_tag_description($attribs, $content){
 	$max = weTag_getAttribute('max', $attribs, 0, we_base_request::INT);
 
-	$descr = isset($GLOBALS['DESCRIPTION']) && $GLOBALS['DESCRIPTION'] ? $GLOBALS['DESCRIPTION'] : '';
+	$descr = !empty($GLOBALS['DESCRIPTION']) ? $GLOBALS['DESCRIPTION'] : '';
 	if(!$descr && $content){
 		ob_start();
 		//FIXME:eval
@@ -33,7 +33,7 @@ function we_tag_description($attribs, $content){
 		$descr = ob_get_clean();
 	}
 
-	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
+	if(!empty($GLOBALS['we_editmode'])){
 		//set meta data & exit
 		$GLOBALS['meta']['Description']['default'] = $descr;
 		return;

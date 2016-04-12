@@ -31,79 +31,80 @@ class we_customer_CSVImport extends we_import_CSV{
 	}
 
 	function parseCSV(){
-		if($this->CSVData){
-			$akt_line = 0;
-			$akt_field = 0;
-			$akt_field_value = '';
-			$last_char = '';
-			$quote = 0;
-			$field_input = 0;
-
-			$head_complete = ($this->hasHeader ? 0 : 1);
-
-			$end_cc = strlen($this->CSVData);
-
-			for($cc = 0; $cc < $end_cc; $cc++){
-				$akt_char = substr($this->CSVData, $cc, 1);
-
-				if(($akt_char == $this->Enclosure) && ($last_char != '\\')){
-					$quote = !$quote;
-					$akt_char = '';
-				}
-
-				if(!$quote){
-					if($akt_char == $this->FieldDelim){
-						$field_input = !$field_input;
-						$akt_char = '';
-						$akt_field++;
-						$akt_field_value = '';
-					} else if(($akt_char === '\\') && $field_input){
-						$field_input++;
-						$quote++;
-					} else if($akt_char == $this->Enclosure){
-						$quote--;
-
-						if($field_input){
-							$field_input--;
-						} else {
-							$field_input++;
-						}
-					} else if($akt_char === "\n"){
-						if($head_complete && (($akt_field + 1) > $this->CSVNumFields())){
-							$this->CSVError[] = 'Fehler in <b>Zeile ' . ($akt_line + 2) . '</b>';
-						}
-						$akt_line++;
-						$akt_field = 0;
-						if(!$head_complete)
-							$akt_line = 0;
-						$head_complete = 1;
-						$akt_char = '';
-						$akt_field_value = '';
-					}
-				}
-
-				$last_char = $akt_char;
-				if($akt_char === '\\'){
-					$akt_char = '';
-				}
-				$akt_field_value .= $akt_char;
-
-				if($head_complete){
-					$this->Fields[$akt_line][$akt_field] = iconv($this->FromCharset, $this->ToCharset . '//TRANSLIT', trim($akt_field_value));
-				} else {
-					$this->FieldNames[$akt_field] = iconv($this->FromCharset, $this->ToCharset . '//TRANSLIT', trim($akt_field_value));
-				}
-			}
-
-			if(!$akt_field){
-				unset($this->Fields[$akt_line]);
-			}
-
-			$this->fetchCursor = 0;
-		} else {
+		if(!$this->CSVData){
 			$this->CSVError[] = 'CSV data empty.';
-			return FALSE;
+			return false;
 		}
+		$akt_line = 0;
+		$akt_field = 0;
+		$akt_field_value = '';
+		$last_char = '';
+		$quote = 0;
+		$field_input = 0;
+
+		$head_complete = ($this->hasHeader ? 0 : 1);
+
+		$end_cc = strlen($this->CSVData);
+
+		for($cc = 0; $cc < $end_cc; $cc++){
+			$akt_char = substr($this->CSVData, $cc, 1);
+
+			if(($akt_char == $this->Enclosure) && ($last_char != '\\')){
+				$quote = !$quote;
+				$akt_char = '';
+			}
+
+			if(!$quote){
+				if($akt_char == $this->FieldDelim){
+					$field_input = !$field_input;
+					$akt_char = '';
+					$akt_field++;
+					$akt_field_value = '';
+				} else if(($akt_char === '\\') && $field_input){
+					$field_input++;
+					$quote++;
+				} else if($akt_char == $this->Enclosure){
+					$quote--;
+
+					if($field_input){
+						$field_input--;
+					} else {
+						$field_input++;
+					}
+				} else if($akt_char === "\n"){
+					if($head_complete && (($akt_field + 1) > $this->CSVNumFields())){
+						$this->CSVError[] = 'Fehler in <b>Zeile ' . ($akt_line + 2) . '</b>';
+					}
+					$akt_line++;
+					$akt_field = 0;
+					if(!$head_complete){
+						$akt_line = 0;
+					}
+					$head_complete = 1;
+					$akt_char = '';
+					$akt_field_value = '';
+				}
+			}
+
+			$last_char = $akt_char;
+			if($akt_char === '\\'){
+				$akt_char = '';
+			}
+			$akt_field_value .= $akt_char;
+
+			if($head_complete){
+				$this->Fields[$akt_line][$akt_field] = iconv($this->FromCharset, $this->ToCharset . '//TRANSLIT', trim($akt_field_value));
+			} else {
+				$this->FieldNames[$akt_field] = iconv($this->FromCharset, $this->ToCharset . '//TRANSLIT', trim($akt_field_value));
+			}
+		}
+
+		if(!$akt_field){
+			unset($this->Fields[$akt_line]);
+		}
+
+		$this->fetchCursor = 0;
+		return true;
 	}
 
 	function CSVFetchRow(){
@@ -111,10 +112,9 @@ class we_customer_CSVImport extends we_import_CSV{
 			$r = $this->Fields[$this->fetchCursor];
 			$this->fetchCursor++;
 			return $r;
-		} else {
-			$this->CSVError[] = 'No more data sets.';
-			return FALSE;
 		}
+		$this->CSVError[] = 'No more data sets.';
+		return false;
 	}
 
 }

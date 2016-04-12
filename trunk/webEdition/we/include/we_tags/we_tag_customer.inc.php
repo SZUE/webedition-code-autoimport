@@ -28,8 +28,8 @@ function we_parse_tag_customer($attribs, $content, array $arr){
 		return parseError(sprintf(g_l('parser', '[name_with_space]'), 'customer'));
 	}
 
-	return '<?php global $lv;
-		if(' . we_tag_tagParser::printTag('customer', $attribs) . '){?>' . $content . '<?php }
+	return '<?php ' . (strpos($content, '$lv') !== false ? 'global $lv;' : '') .
+		'if(' . we_tag_tagParser::printTag('customer', $attribs) . '){?>' . $content . '<?php }
 		we_post_tag_listview(); ?>';
 }
 
@@ -46,10 +46,6 @@ function we_tag_customer($attribs){
 	$size = weTag_getAttribute('size', $attribs, 30, we_base_request::UNIT);
 	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, we_base_request::BOOL);
 
-	if(!isset($GLOBALS['we_lv_array'])){
-		$GLOBALS['we_lv_array'] = array();
-	}
-
 	if($name){
 		if(strpos($name, ' ') !== false){
 			echo parseError(sprintf(g_l('parser', '[name_with_space]'), 'object'));
@@ -65,12 +61,12 @@ function we_tag_customer($attribs){
 		));
 
 		$we_cid = $we_cid ? : we_base_request::_(we_base_request::INT, 'we_cid', 0);
-		$path = f('SELECT Path FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $we_cid);
+		$path = f('SELECT Username FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $we_cid);
 		$textname = 'we_' . $GLOBALS['we_doc']->Name . '_customer[' . $name . '_path]';
 		$idname = 'we_' . $GLOBALS['we_doc']->Name . '_customer[' . $name . '#bdid]';
 		$table = CUSTOMER_TABLE;
-		$delbutton = we_html_button::create_button('image:btn_function_trash', "javascript:document.forms[0].elements['" . $idname . "'].value=0;document.forms[0].elements['" . $textname . "'].value='';_EditorFrame.setEditorIsHot(false);we_cmd('reload_editpage');");
-		$button = we_html_button::create_button('select', "javascript:we_cmd('openSelector',document.forms[0].elements['" . $idname . "'].value,'" . $table . "','document.forms[\'we_form\'].elements[\'" . $idname . "\'].value','document.forms[\'we_form\'].elements[\'" . $textname . "\'].value','opener.we_cmd(\'reload_editpage\');opener._EditorFrame.setEditorIsHot(true);','',0,'',1)");
+		$delbutton = we_html_button::create_button(we_html_button::TRASH, "javascript:document.forms[0].elements['" . $idname . "'].value=0;document.forms[0].elements['" . $textname . "'].value='';_EditorFrame.setEditorIsHot(false);we_cmd('reload_editpage');");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_customer_selector',document.forms[0].elements['" . $idname . "'].value,'" . $table . "','document.we_form.elements[\'" . $idname . "\'].value','document.we_form.elements[\'" . $textname . "\'].value','opener.we_cmd(\'reload_editpage\');opener._EditorFrame.setEditorIsHot(true);','',0,'',1)");
 
 		if($GLOBALS['we_editmode']){
 			?>
@@ -78,10 +74,8 @@ function we_tag_customer($attribs){
 				<tr>
 					<td style="padding:0 6px;"><b><?php echo $_showName; ?></b></td>
 					<td><?php echo we_html_tools::hidden($idname, $we_cid) ?></td>
-					<td><?php echo we_html_tools::htmlTextInput($textname, $size, $path, '', ' readonly', 'text', 0, 0); ?></td>
-					<td><?php we_html_tools::getPixel(6, 4); ?></td>
-					<td><?php echo $button; ?></td>
-					<td><?php we_html_tools::getPixel(6, 4); ?></td>
+					<td style="padding-left:6px;"><?php echo we_html_tools::htmlTextInput($textname, $size, $path, '', ' readonly', 'text', 0, 0); ?></td>
+					<td style="padding-left:6px;"><?php echo $button; ?></td>
 					<td><?php echo $delbutton; ?></td>
 				</tr>
 			</table><?php
@@ -91,12 +85,12 @@ function we_tag_customer($attribs){
 		$we_cid = $we_cid ? : we_base_request::_(we_base_request::INT, 'we_cid', 0);
 	}
 
-	$GLOBALS['lv'] = new we_customer_customertag($we_cid, $condition, $hidedirindex);
-	if(is_array($GLOBALS['we_lv_array'])){
-		$GLOBALS['we_lv_array'][] = clone($GLOBALS['lv']);
-	}
-	if($GLOBALS['lv']->avail){
+	$GLOBALS['lv'] = new we_listview_customer('', 1, 0, "", 0, '(ID=' . intval($we_cid) . ')' . ($condition ? " AND $condition" : ""), "", 0, $hidedirindex);
+
+	$avail = $GLOBALS['lv']->next_record();
+	we_pre_tag_listview();
+	if($avail){
 //implement seem
 	}
-	return $GLOBALS['lv']->avail;
+	return $avail;
 }

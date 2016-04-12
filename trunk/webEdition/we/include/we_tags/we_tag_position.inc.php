@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_position($attribs){
-	global $lv;
 
 	//	type is required !!!
 	if(($missingAttrib = attributFehltError($attribs, "type", __FUNCTION__))){
@@ -39,7 +38,7 @@ function we_tag_position($attribs){
 	switch(($type = weTag_getAttribute("type", $attribs, '', we_base_request::STRING))){
 
 		case "listview" : //	inside a listview, we take direct global listview object
-			$_retPos = ($lv->start + $lv->count);
+			$_retPos = ($GLOBALS['lv']->start + $GLOBALS['lv']->count);
 			break;
 
 		case "listdir" : //	inside a listview

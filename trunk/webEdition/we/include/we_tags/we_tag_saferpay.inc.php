@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-we_base_moduleInfo::isActive('shop');
+we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP);
 
 /**
  * This function writes the shop data (order) to the database and send values to saferpay
@@ -76,7 +76,7 @@ function we_tag_saferpay($attribs){
 			return;
 		}
 		/*		 * ***** get the currency ******* */
-		$feldnamen = explode("|", f("SELECT strFelder FROM " . WE_SHOP_PREFS_TABLE . " WHERE strDateiname='shop_pref'"));
+		$feldnamen = explode("|", f("SELECT pref_value FROM " . SETTINGS_TABLE. ' WHERE tool="shop" AND pref_name="shop_pref"'));
 		switch(isset($feldnamen[0]) ? $feldnamen[0] : 'x'){ // determine the currency
 			case "$":
 			case "USD":
@@ -102,7 +102,7 @@ function we_tag_saferpay($attribs){
 		/*		 * ***** get the currency ******* */
 
 		/*		 * **** get the preferences ***** */
-		$formField = explode("|", f("SELECT strFelder FROM " . WE_SHOP_PREFS_TABLE . " WHERE strDateiname='payment_details'"));
+		$formField = explode("|", f("SELECT pref_value FROM " . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="payment_details"'));
 		if(!$languagecode){
 			if(isset($formField[8])){ // determine the language
 				$langID = $formField[8];
@@ -156,7 +156,7 @@ function we_tag_saferpay($attribs){
 			if(we_shop_category::isCategoryMode()){
 				$wedocCategory = ((isset($item['serial']['we_wedoc_Category'])) ? $item['serial']['we_wedoc_Category'] : $item['serial']['wedoc_Category']);
 				$billingCountry = we_shop_category::getCountryFromCustomer(true);
-				$catId = isset($item['serial'][WE_SHOP_CATEGORY_FIELD_NAME]) && $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME] ? $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME] : 0;
+				$catId = !empty($item['serial'][WE_SHOP_CATEGORY_FIELD_NAME]) ? $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME] : 0;
 
 				$shopVat = we_shop_category::getShopVatByIdAndCountry($catId, $wedocCategory, $billingCountry, true);
 				$shopCategory = we_shop_category::getShopCatFieldByID($catId, $wedocCategory, 'ID');

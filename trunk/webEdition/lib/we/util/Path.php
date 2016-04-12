@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -34,14 +33,10 @@ class we_util_Path{
 	 *
 	 * @param integer $id  id to convert
 	 * @param string $dbTable name of table
-	 * @param Zend_Db_Adapter $db  Zend db adapter object
 	 * @return string
 	 */
 	static function id2Path($id, $dbTable, $db = NULL){
-		if(is_null($db)){
-			$db = we_io_DB::sharedAdapter();
-		}
-		return $db->fetchOne('SELECT Path FROM ' . addslashes($dbTable) . ' WHERE ID = ?', $id);
+		return f('SELECT Path FROM ' . addslashes($dbTable) . ' WHERE ID=' . intval($id), '', $db? : $GLOBALS['DB_WE']);
 	}
 
 	/**
@@ -49,14 +44,11 @@ class we_util_Path{
 	 *
 	 * @param string $path  path to convert
 	 * @param string $dbTable name of table
-	 * @param Zend_Db_Adapter $db  Zend db adapter object
 	 * @return integer
 	 */
-	static function path2Id($path, $dbTable, $db = NULL){
-		if(is_null($db)){
-			$db = we_io_DB::sharedAdapter();
-		}
-		return abs($db->fetchOne('SELECT ID FROM ' . addslashes($dbTable) . ' WHERE Path = ?', $path));
+	static function path2Id($path, $dbTable){
+		$db = $GLOBALS['DB_WE'];
+		return f('SELECT ID FROM ' . addslashes($dbTable) . ' WHERE Path="' . $db->escape($path) . '"', '', $db);
 	}
 
 	/**
@@ -64,15 +56,10 @@ class we_util_Path{
 	 *
 	 * @param string $path  path to convert
 	 * @param string $dbTable name of table
-	 * @param Zend_Db_Adapter $db  Zend db adapter object
 	 * @return boolean
 	 */
-	static function pathExists($path, $dbTable, $db = NULL){
-		if(is_null($db)){
-			$db = we_io_DB::sharedAdapter();
-		}
-
-		$id = we_util_Path::path2Id($path, $dbTable, $db);
+	static function pathExists($path, $dbTable){
+		$id = we_util_Path::path2Id($path, $dbTable);
 		return $id != 0;
 	}
 

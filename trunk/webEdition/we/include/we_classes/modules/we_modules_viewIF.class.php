@@ -27,8 +27,6 @@
 
 interface we_modules_viewIF{
 
-	function htmlHidden($name, $value = '');
-
 	function processCommands();
 
 	function processVariables();

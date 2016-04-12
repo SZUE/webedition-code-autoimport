@@ -21,7 +21,6 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_net_rpc_JsonRpc{
-
 	const kAccessibilityPublic = "public";
 	const kAccessibilityDomain = "domain";
 	const kAccessibilitySession = "session";
@@ -35,12 +34,8 @@ class we_net_rpc_JsonRpc{
 			/*
 			 * For POST data, the only acceptable content type is application/json.
 			 */
-			try{
-				$jsonRequest = file_get_contents('php://input');
-				$phpObj = Zend_Json::decode($jsonRequest);
-			} catch (Zend_Json_Exception $e){
-				exit('JSON-RPC request expected; unexpected data received: ' . $e->getMessage());
-			}
+			$jsonRequest = file_get_contents('php://input');
+			$phpObj = we_unserialize($jsonRequest);
 		} else {
 			/*
 			 * This request was not issued with JSON-RPC so echo the error rather than
@@ -124,7 +119,7 @@ class we_net_rpc_JsonRpc{
 			/* Load the class */
 			/* Instantiate the service */
 			$service = new $serviceClass();
-		} catch (Zend_Exception $e){
+		} catch (Exception $e){
 			/* Couldn't find the requested service */
 			$error->SetError(we_net_rpc_JsonRpcError::kErrorServiceNotFound, "Service `$serviceClass` not found with message: " . $e->getMessage());
 			return $error->getError();
@@ -229,7 +224,7 @@ class we_net_rpc_JsonRpc{
 
 		/* Give 'em what they came for! */
 		$ret = array("result" => $output, "id" => $phpObj['id'], "error" => NULL);
-		return Zend_Json::encode($ret);
+		return we_serialize($ret, SERIALIZE_JSON);
 	}
 
 }

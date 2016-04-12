@@ -1,8 +1,8 @@
 <?php echo '?>'; ?>
-<script type="text/javascript"><!--
+<script><!--
 	switch (WE_REMOVE) {
 		case "tool_<?php echo $TOOLNAME; ?>_edit":
-			new jsWindow(url, "tool_window", -1, -1, 970, 760, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "tool_window", -1, -1, 970, 760, true, true, true, true);
 			break;
 	}//WE_REMOVE
 

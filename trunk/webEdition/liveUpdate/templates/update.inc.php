@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -30,16 +29,16 @@
 $alsoBeta = (defined('WE_VERSION_SUPP') && WE_VERSION_SUPP != 'release' ? '&setTestUpdate=1' : '');
 
 require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
-$searchButton = we_html_button::create_button('search', $_SERVER['SCRIPT_NAME'] . '?section=update&update_cmd=update&detail=lookForUpdate' . $alsoBeta);
+$searchButton = we_html_button::create_button(we_html_button::SEARCH, $_SERVER['SCRIPT_NAME'] . '?section=update&update_cmd=update&detail=lookForUpdate' . $alsoBeta);
 $clientSubVersion = (isset($GLOBALS['LU_Variables']['clientSubVersion']) && $GLOBALS['LU_Variables']['clientSubVersion'] != '0000') ?
 	', SVN-Revision: ' . $GLOBALS['LU_Variables']['clientSubVersion'] : '';
 
-$clientVersionName = (isset($GLOBALS['LU_Variables']['clientVersionName']) && $GLOBALS['LU_Variables']['clientVersionName'] != '') ?
+$clientVersionName = (!empty($GLOBALS['LU_Variables']['clientVersionName'])) ?
 	$GLOBALS['LU_Variables']['clientVersionName'] : $GLOBALS['LU_Variables']['clientVersion'];
 
 
 $content = '
-<table class="defaultfont" width="100%">
+<table class="defaultfont" style="width:100%">
 <tr>
 	<td>' . g_l('liveUpdate', '[update][actualVersion]') . '</td>
 	<td>' . $clientVersionName . ' (' . $GLOBALS['LU_Variables']['clientVersion'] . $clientSubVersion . ')</td>

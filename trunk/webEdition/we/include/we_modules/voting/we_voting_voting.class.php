@@ -26,7 +26,7 @@
  * General Definition of WebEdition Voting
  *
  */
-class we_voting_voting extends weModelBase{
+class we_voting_voting extends we_base_model{
 //voting status codes
 
 	const SUCCESS = 1;
@@ -41,7 +41,6 @@ class we_voting_voting extends weModelBase{
 	var $ParentID;
 	var $Path;
 	var $IsFolder;
-	var $Icon;
 	var $Text;
 	var $PublishDate = 0;
 	var $QASet = array();
@@ -73,7 +72,7 @@ class we_voting_voting extends weModelBase{
 	var $answerCount = -1;
 	var $defVersion = 0;
 	var $LogDB = 0;
-	var $protected = array('ID', 'ParentID', 'Icon', 'IsFolder', 'Path', 'Text');
+	var $protected = array('ID', 'ParentID', 'IsFolder', 'Path', 'Text');
 	var $FallbackActive = 0;
 
 	/**
@@ -87,7 +86,6 @@ class we_voting_voting extends weModelBase{
 			'ParentID' => we_base_request::INT,
 			'Path' => we_base_request::FILE,
 			'IsFolder' => we_base_request::BOOL,
-			'Icon' => we_base_request::FILE,
 			'Text' => we_base_request::FILE,
 			'PublishDate' => we_base_request::INT,
 			'QASet' => we_base_request::RAW,
@@ -143,11 +141,11 @@ class we_voting_voting extends weModelBase{
 		$this->PublishDate = ($this->PublishDate ? : time());
 	}
 
-	function load($id = 0){
+	function load($id = 0, $isAdvanced = false){
 		if(parent::load($id, true)){
-			$this->QASet = unserialize($this->QASet);
-			$this->QASetAdditions = unserialize($this->QASetAdditions);
-			$this->Scores = unserialize($this->Scores);
+			$this->QASet = we_unserialize($this->QASet);
+			$this->QASetAdditions = we_unserialize($this->QASetAdditions);
+			$this->Scores = we_unserialize($this->Scores);
 			$this->Owners = makeArrayFromCSV($this->Owners);
 			$this->BlackList = makeArrayFromCSV($this->BlackList);
 			if(!$this->LogData || $this->LogData === 'a:0:{}'){
@@ -158,9 +156,7 @@ class we_voting_voting extends weModelBase{
 		}
 	}
 
-	function save($with_scores = true){
-		$this->Icon = ($this->IsFolder == 1 ? we_base_ContentTypes::FOLDER_ICON : we_base_ContentTypes::FILE_ICON);
-
+	function save($with_scores = true, $isAdvanced = false, $jsonSer = false){
 		if($this->ActiveTime && $this->Valid < time()){
 			$this->Active = 0;
 		}
@@ -190,18 +186,15 @@ class we_voting_voting extends weModelBase{
 			$this->Owners[] = $_SESSION['user']['ID'];
 		}
 
-		/* $_old_QASet = f('SELECT QASet FROM ' . VOTING_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($this->Text) . "'");
-		  $_new_QASet = $this->QASet;
-		 */
 		if($with_scores || $this->ID == 0){
-			$this->Scores = serialize($this->Scores);
+			$this->Scores = we_serialize($this->Scores);
 		} elseif(we_base_request::_(we_base_request::BOOL, 'updateScores')){
 			$ic = we_base_request::_(we_base_request::INT, 'item_count');
 			for($_xcount = 0; $_xcount < $ic; $_xcount++){
 				if(($tmp = we_base_request::_(we_base_request::FLOAT, 'scores_' . $_xcount))){
 					$temp[$_xcount] = $tmp;
 				}
-				$this->Scores = serialize($temp);
+				$this->Scores = we_serialize($temp);
 			}
 		} else {
 			$temp = $this->Scores;
@@ -214,23 +207,20 @@ class we_voting_voting extends weModelBase{
 		unset($this->LogData);
 		$oldid = $this->ID;
 
-		$this->Owners = array_unique($this->Owners);
-		$this->Owners = makeCSVFromArray($this->Owners, true);
-
-		$this->BlackList = array_unique($this->BlackList);
-		$this->BlackList = makeCSVFromArray($this->BlackList, true);
+		$this->Owners = implode(',', array_unique($this->Owners));
+		$this->BlackList = implode(',', array_unique($this->BlackList));
 
 		parent::save(false, true);
 
-		$this->Scores = ($with_scores || $oldid == 0 ? unserialize($this->Scores) : $temp);
+		$this->Scores = ($with_scores || $oldid == 0 ? we_unserialize($this->Scores) : $temp);
 
-		$this->Owners = makeArrayFromCSV($this->Owners);
-		$this->BlackList = makeArrayFromCSV($this->BlackList);
+		$this->Owners = explode(',', $this->Owners);
+		$this->BlackList = explode(',', $this->BlackList);
 		$this->LogData = $logdata;
 	}
 
 	function saveField($name, $serialize = false){
-		$field = ($serialize ? serialize($this->$name) : $this->$name);
+		$field = ($serialize ? we_serialize($this->$name) : $this->$name);
 		return $this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . $this->db->escape($name) . '="' . $this->db->escape($field) . '" WHERE ID=' . intval($this->ID) . ';');
 	}
 
@@ -265,8 +255,8 @@ class we_voting_voting extends weModelBase{
 		return (strpos(we_base_file::clearPath(dirname($this->Path) . '/'), '/' . $this->Text . '/') !== false);
 	}
 
-	function evalPath($id = 0){
-		$db_tmp = new DB_WE();
+	function evalPath($id = 0, we_database_base $db = null){
+		$db_tmp = $db? : new DB_WE();
 		$path = '';
 		if($id == 0){
 			$id = $this->ParentID;
@@ -317,7 +307,7 @@ class we_voting_voting extends weModelBase{
 		return $this->QASet[$this->defVersion]['answers'][$this->answerCount];
 	}
 
-	function getResult($type = 'count', $num_format = '', $precision = we_util_Strings::PRECISION){
+	function getResult($type = 'count', $num_format = '', $precision = 2){
 		switch($type){
 			case 'percent':
 				$total = $this->getResult('total');
@@ -339,7 +329,7 @@ class we_voting_voting extends weModelBase{
 		}
 
 		if($num_format){
-			$result = we_util_Strings::formatNumber($result, $num_format, $precision);
+			$result = we_base_util::formatNumber($result, $num_format, $precision);
 		}
 		return $result;
 	}
@@ -410,7 +400,7 @@ class we_voting_voting extends weModelBase{
 
 	function vote($answers, $addfields = NULL){
 		$votingsession = (isset($_SESSION['_we_voting_sessionID']) ? $_SESSION['_we_voting_sessionID'] : 0);
-		$answerID = makeCSVFromArray($answers);
+		$answerID = implode(',', $answers);
 		$answertext = '';
 		$successor = 0;
 		if(!is_array($answers) || !(count($answers) > 0)){
@@ -454,7 +444,7 @@ class we_voting_voting extends weModelBase{
 				$GLOBALS['_we_voting_SuccessorID'] = $mySuccessorID;
 			}
 		}
-		$answerID = makeCSVFromArray($answers);
+		$answerID = implode(',', $answers);
 		$this->saveField('Scores', true);
 		if($this->RevoteTime != 0){
 			if($this->RevoteControl == 1){
@@ -469,10 +459,7 @@ class we_voting_voting extends weModelBase{
 				$this->Revote[$_SERVER['REMOTE_ADDR']] = time();
 				$this->saveField('Revote', true);
 				if($this->UserAgent){
-					$this->RevoteUserAgent = unserialize($this->RevoteUserAgent);
-					if(!is_array($this->RevoteUserAgent)){
-						$this->RevoteUserAgent = array();
-					}
+					$this->RevoteUserAgent = we_unserialize($this->RevoteUserAgent);
 					if(!isset($this->RevoteUserAgent[$_SERVER['REMOTE_ADDR']]) || !is_array($this->RevoteUserAgent[$_SERVER['REMOTE_ADDR']])){
 						$this->RevoteUserAgent[$_SERVER['REMOTE_ADDR']] = array();
 					}
@@ -484,7 +471,7 @@ class we_voting_voting extends weModelBase{
 		if($mySuccessorID <= 0){
 			$mySuccessorID = '';
 		}
-		$addfieldsdata = (is_array($addfields) && $addfields ? serialize($addfields) : '');
+		$addfieldsdata = (is_array($addfields) && $addfields ? we_serialize($addfields) : '');
 
 		if($this->Log){
 			$this->logVoting($ret, $votingsession, $answerID, $answertext, $mySuccessorID, $addfieldsdata);
@@ -529,20 +516,14 @@ class we_voting_voting extends weModelBase{
 
 	function canVoteIP(){
 
-		$this->Revote = unserialize($this->Revote);
-		if(!is_array($this->Revote)){
-			$this->Revote = array();
-		}
+		$this->Revote = we_unserialize($this->Revote);
 
 		$revotetime = ($this->RevoteTime < 0 ? time() + 5 : $this->RevoteTime);
 
 		if(in_array($_SERVER['REMOTE_ADDR'], array_keys($this->Revote))){
 			if(($revotetime + $this->Revote[$_SERVER['REMOTE_ADDR']]) > time()){
-				$revoteua = unserialize($this->RevoteUserAgent);
+				$revoteua = we_unserialize($this->RevoteUserAgent);
 				if($this->UserAgent){
-					if(!is_array($revoteua)){
-						return self::ERROR_REVOTE;
-					}
 					if(isset($revoteua[$_SERVER['REMOTE_ADDR']]) && is_array($revoteua[$_SERVER['REMOTE_ADDR']])){
 						if(in_array($_SERVER['HTTP_USER_AGENT'], $revoteua[$_SERVER['REMOTE_ADDR']])){
 							return self::ERROR_REVOTE;
@@ -559,7 +540,7 @@ class we_voting_voting extends weModelBase{
 	}
 
 	function canVoteUserID(){
-		$userid = (defined('CUSTOMER_TABLE') && isset($_SESSION['webuser']['registered']) && isset($_SESSION['webuser']['ID']) && $_SESSION['webuser']['registered'] && $_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : -1;
+		$userid = (defined('CUSTOMER_TABLE') && !empty($_SESSION['webuser']['registered']) && !empty($_SESSION['webuser']['ID'])) ? $_SESSION['webuser']['ID'] : -1;
 
 		if(!$this->LogDB || ($userid <= 0)){
 			return self::SUCCESS;
@@ -614,10 +595,7 @@ class we_voting_voting extends weModelBase{
 		if($this->LogDB){
 			$this->logVotingDB($status, $votingsession, $answer, $answertext, $successor, $additionalfields);
 		} else {
-			$this->LogData = unserialize($this->LogData);
-			if(!is_array($this->LogData)){
-				$this->LogData = array();
-			}
+			$this->LogData = we_unserialize($this->LogData);
 			$this->LogData[] = array(
 				'time' => time(),
 				'ip' => $_SERVER['REMOTE_ADDR'],
@@ -649,7 +627,7 @@ class we_voting_voting extends weModelBase{
 	}
 
 	function deleteGroupLogData(){
-		$this->db->query('SELECT ID FROM ' . VOTING_TABLE . " WHERE `Path` LIKE '" . $this->db->escape($this->Path) . "%'");
+		$this->db->query('SELECT ID FROM ' . VOTING_TABLE . ' WHERE Path LIKE "' . $this->db->escape($this->Path) . '%"');
 		while($this->db->next_record()){
 			$child = new we_voting_voting($this->db->f('ID'));
 			$child->deleteLogDataDB();
@@ -675,7 +653,6 @@ class we_voting_voting extends weModelBase{
 	 * @since 5.1.1.2 - 02.05.2008
 	 */
 	function loadDB($id = '0'){
-
 		$logQuery = ($this->IsFolder ?
 				'SELECT v.*, l.* FROM `' . VOTING_TABLE . '` v JOIN `' . VOTING_LOG_TABLE . "` l ON v.ID=l.voting WHERE v.Path LIKE '" . $this->db->escape($this->Path) . "%' AND v.IsFolder=0 ORDER BY l.time" :
 				'SELECT * FROM `' . VOTING_LOG_TABLE . '` WHERE voting=' . intval($id) . ' ORDER BY time'
@@ -727,7 +704,7 @@ class we_voting_voting extends weModelBase{
 			$additionalfields = '';
 		}
 		$_cookieStatus = $this->cookieDisabled() ? 0 : 1;
-		$userid = (defined('CUSTOMER_TABLE') && isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"]["ID"]) && $_SESSION["webuser"]["registered"] && $_SESSION["webuser"]["ID"] ?
+		$userid = (defined('CUSTOMER_TABLE') && !empty($_SESSION["webuser"]["registered"]) && !empty($_SESSION["webuser"]["ID"]) ?
 				$_SESSION["webuser"]["ID"] : 0);
 		$this->db->query('INSERT INTO `' . VOTING_LOG_TABLE . '` SET ' . we_database_base::arraySetter(array(
 				'votingsession' => $votingsession,
@@ -766,30 +743,31 @@ class we_voting_voting extends weModelBase{
 	 * @since 6.1.0.2 - 019.09.2010
 	 */
 	function switchToLogDataDB(){
-		$LogData = @unserialize($this->LogData);
-		if(is_array($LogData) && !empty($LogData)){
-			foreach($LogData as $ld){
-				$this->db->query('INSERT INTO `' . VOTING_LOG_TABLE . '` SET ' . we_database_base::arraySetter(array(
-						'votingsession' => '',
-						'voting' => $this->ID,
-						'time' => $ld['time'],
-						'ip' => $ld['ip'],
-						'agent' => $ld['agent'],
-						'userid' => 0,
-						'cookie' => $ld['cookie'],
-						'fallback' => $ld['fallback'],
-						'answer' => '',
-						'answertext' => '',
-						'successor' => '',
-						'additionalfields' => '',
-						'status' => $ld['status'],
-				)));
-			}
-			$this->LogData = '';
-			$this->saveField('LogData', false);
-			$this->LogDB = true;
-			return true;
+		$LogData = we_unserialize($this->LogData);
+		if(!$LogData){
+			return false;
 		}
+		foreach($LogData as $ld){
+			$this->db->query('INSERT INTO `' . VOTING_LOG_TABLE . '` SET ' . we_database_base::arraySetter(array(
+					'votingsession' => '',
+					'voting' => $this->ID,
+					'time' => $ld['time'],
+					'ip' => $ld['ip'],
+					'agent' => $ld['agent'],
+					'userid' => 0,
+					'cookie' => $ld['cookie'],
+					'fallback' => $ld['fallback'],
+					'answer' => '',
+					'answertext' => '',
+					'successor' => '',
+					'additionalfields' => '',
+					'status' => $ld['status'],
+			)));
+		}
+		$this->LogData = '';
+		$this->saveField('LogData', false);
+		$this->LogDB = true;
+		return true;
 	}
 
 }

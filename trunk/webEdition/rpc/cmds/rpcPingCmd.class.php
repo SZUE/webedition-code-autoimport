@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -23,15 +22,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_base_moduleInfo::isActive(we_base_moduleInfo::USERS);
-class rpcPingCmd extends rpcCmd{
+
+class rpcPingCmd extends we_rpc_cmd{
 
 	function execute(){
-		$resp = new rpcResponse();
-
-		if($_SESSION["user"]["ID"]){
-			$GLOBALS['DB_WE']->query('UPDATE ' . USER_TABLE . ' SET Ping=UNIX_TIMESTAMP(NOW()) WHERE ID=' . intval($_SESSION["user"]["ID"]));
-			$GLOBALS['DB_WE']->query('UPDATE ' . LOCK_TABLE . ' SET lockTime=NOW() + INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND WHERE UserID=' . intval($_SESSION["user"]["ID"]) . ' AND sessionID="' . session_id() . '"');
-		}
+		$resp = new we_rpc_response();
+		we_users_user::updateActiveUser();
 
 		if(defined('MESSAGING_SYSTEM')){
 			$messaging = new we_messaging_messaging($we_transaction);
@@ -48,13 +44,14 @@ class rpcPingCmd extends rpcCmd{
 		$resp->setData('users', $users_online->getUsers());
 		$resp->setData('num_users', $users_online->getNumUsers());
 
-		$aDatTblPref = we_base_preferences::getUserPref('cockpit_dat'); // array as saved in the prefs
-		$aDat = $aDatTblPref ? unserialize($aDatTblPref) : array();
+		$aDat = we_unserialize(we_base_preferences::getUserPref('cockpit_dat')); // array as saved in the prefs
 		foreach($aDat as $d){
-			foreach($d as $aProps){
-				if($aProps[0] === 'mfd'){
-					include(WE_INCLUDES_PATH . 'we_widgets/mod/mfd.php');
-					$resp->setData('mfd_data', $lastModified);
+			if($d){
+				foreach($d as $aProps){
+					if($aProps[0] === 'mfd'){
+						$lastModified = include(WE_INCLUDES_PATH . 'we_widgets/mod/mfd.inc.php');
+						$resp->setData('mfd_data', $lastModified);
+					}
 				}
 			}
 		}

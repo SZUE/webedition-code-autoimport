@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -93,7 +92,7 @@ if($sessionName && $id){
 			$m = 0;
 			foreach($nodes as $k => $v){
 				$m++;
-				$response .= '' . $v['ID'] . '';
+				$response .= $v['ID'];
 				if($m < $nodesCount){
 					$response .= ',';
 				}

@@ -37,13 +37,12 @@ class we_fragment_copyFolderFinish extends we_fragment_copyFolder{
 	function doTask(){
 		if($this->correctTemplate()){
 
-			$pbText = sprintf(
-				g_l('copyFolder', '[correctTemplate]'), basename(id_to_path($this->data, TEMPLATES_TABLE)));
+			$pbText = sprintf(g_l('copyFolder', '[correctTemplate]'), basename(id_to_path($this->data, TEMPLATES_TABLE)));
 
-			echo we_html_element::jsElement(
-				'parent.document.getElementById("pbTd").style.display="block";parent.setProgress(' . ((int) ((100 / count(
-					$this->alldata)) * ($this->currentTask + 1))) . ');parent.setProgressText("pbar1","' . addslashes(
-					$pbText) . '");');
+			echo we_html_element::jsElement('
+parent.document.getElementById("pbTd").style.display="block";
+parent.setProgress(' . ((int) ((100 / count($this->alldata)) * ($this->currentTask + 1))) . ');
+parent.setProgressText("pbar1","' . addslashes($pbText) . '");');
 			flush();
 		} else {
 			exit("Error correcting Template with id: " . $this->data);
@@ -71,14 +70,14 @@ class we_fragment_copyFolderFinish extends we_fragment_copyFolder{
 		if(isset($_SESSION['weS']['WE_CREATE_TEMPLATE'])){
 			unset($_SESSION['weS']['WE_CREATE_TEMPLATE']);
 		}
-		echo we_html_element::jsElement(
-			'top.opener.top.we_cmd("load","' . FILE_TABLE . '");' . we_message_reporting::getShowMessageCall(
-				g_l('copyFolder', '[copy_success]'), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.close();');
+		echo we_html_element::jsElement(				'
+top.opener.top.we_cmd("load","' . FILE_TABLE . '");
+WE().util.showMessage(WE().consts.g_l.main.folder_copy_success, WE().consts.message.WE_MESSAGE_NOTICE, window);
+top.close();');
 	}
 
-	function printHeader(){
-		echo we_html_tools::getHtmlTop(g_l('copyFolder', '[headline]')) .
-		STYLESHEET;
+	static function printHeader(){
+		echo we_html_tools::getHtmlTop(g_l('copyFolder', '[headline]'), STYLESHEET);
 	}
 
 }

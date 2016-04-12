@@ -142,15 +142,14 @@ function we_tag_customerResetPassword(array $attribs, $content = '', $internal =
 				if(!checkPwds($pwdRegex)){
 					return;
 				}
-				$useSalt = '';
 				//set password from request, pwd in db was empty
 				$data['password'] = ($internal ?
-						we_users_user::makeSaltedPassword($useSalt, '', we_base_request::_(we_base_request::STRING, 's', '', 'Password')) :
+						we_users_user::makeSaltedPassword(we_base_request::_(we_base_request::STRING, 's', '', 'Password')) :
 						we_customer_customer::cryptPassword(we_base_request::_(we_base_request::STRING, 's', '', 'Password'))
 					);
 			}
 			if($internal){
-				$GLOBALS['DB_WE']->query('UPDATE ' . USER_TABLE . ' SET UseSalt=' . intval($useSalt) . ',passwd="' . $GLOBALS['DB_WE']->escape($data['password']) . '" WHERE LoginDenied=0 AND ID=' . $data['ID']);
+				$GLOBALS['DB_WE']->query('UPDATE ' . USER_TABLE . ' SET passwd="' . $GLOBALS['DB_WE']->escape($data['password']) . '" WHERE LoginDenied=0 AND ID=' . $data['ID']);
 				$GLOBALS['DB_WE']->query('UPDATE ' . FAILED_LOGINS_TABLE . ' SET isValid="false" WHERE UserTable="tblUser" AND Username=(SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . $data['ID'] . ')');
 			} else {
 				//ok, we have a password, all (optional requirements are met) & token was valid

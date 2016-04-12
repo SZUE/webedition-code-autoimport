@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -39,6 +38,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.inc
 
 if(!defined('E_SQL')){
 	define('E_SQL', -1);
+	define('E_JS', -2);
 }
 
 $GLOBALS['we']['errorhandler'] = array(
@@ -74,21 +74,27 @@ function we_error_handler($in_webEdition = true){
 	}
 	$called = true;
 	// Get way of how to show errors
-	if(defined('NO_SESS') || $in_webEdition){
+	if($in_webEdition){
 		$GLOBALS['we']['errorhandler']['display'] = false;
 		ini_set('display_errors', false);
+		if(!defined('WE_ERROR_LOG')){
+			define('WE_ERROR_LOG', 1);
+		}
+		if(!defined('WE_ERROR_HANDLER')){
+			define('WE_ERROR_HANDLER', 1);
+		}
 		//we want all errors inside WE
-		we_error_setHandleAll();
+		//we_error_setHandleAll();
 	} else {
 		$GLOBALS['we']['errorhandler']['display'] = defined('WE_ERROR_SHOW') ? (WE_ERROR_SHOW == 1 ? true : false) : true;
 	}
 
-	if((defined('WE_ERROR_HANDLER') && WE_ERROR_HANDLER == 1) || defined('NO_SESS') || $in_webEdition){
+	if((defined('WE_ERROR_HANDLER') && WE_ERROR_HANDLER)){
 		$_error_level = 0 +
-				((version_compare(PHP_VERSION, '5.3.0') >= 0) && $GLOBALS['we']['errorhandler']['deprecated'] && defined('E_DEPRECATED') ? E_DEPRECATED | E_USER_DEPRECATED | E_STRICT : 0) +
-				($GLOBALS['we']['errorhandler']['notice'] ? E_NOTICE | E_USER_NOTICE | E_STRICT : 0) +
-				($GLOBALS['we']['errorhandler']['warning'] ? E_WARNING | E_CORE_WARNING | E_COMPILE_WARNING | E_USER_WARNING : 0) +
-				($GLOBALS['we']['errorhandler']['error'] ? E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR : 0);
+			($GLOBALS['we']['errorhandler']['deprecated'] ? E_DEPRECATED | E_USER_DEPRECATED | E_STRICT : 0) +
+			($GLOBALS['we']['errorhandler']['notice'] ? E_NOTICE | E_USER_NOTICE | E_STRICT : 0) +
+			($GLOBALS['we']['errorhandler']['warning'] ? E_WARNING | E_CORE_WARNING | E_COMPILE_WARNING | E_USER_WARNING : 0) +
+			($GLOBALS['we']['errorhandler']['error'] ? E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR : 0);
 		error_reporting($_error_level);
 		ini_set('error_reporting', $_error_level);
 
@@ -97,12 +103,11 @@ function we_error_handler($in_webEdition = true){
 		set_exception_handler('we_exception_handler');
 	} else {
 		//disable strict & deprecated errors
-		if(version_compare(PHP_VERSION, '5.3.0') >= 0){
-			$cur_error = error_reporting();
-			if(($cur_error & (E_DEPRECATED | E_STRICT) ) > 0){
-				$new_error = $cur_error & ~(E_DEPRECATED | E_STRICT);
-				error_reporting($new_error);
-			}
+
+		$cur_error = error_reporting();
+		if(($cur_error & (E_DEPRECATED | E_STRICT) ) > 0){
+			$new_error = $cur_error & ~(E_DEPRECATED | E_STRICT);
+			error_reporting($new_error);
 		}
 	}
 }
@@ -132,23 +137,25 @@ function translate_error_type($type){
 			return 'User warning';
 		case E_USER_NOTICE:
 			return 'User notice';
-		case (defined('E_DEPRECATED') ? E_DEPRECATED : 8192):
+		case E_DEPRECATED:
 			return 'Deprecated notice';
-		case (defined('E_STRICT') ? E_STRICT : 2048):
+		case E_STRICT:
 			return 'Strict Error';
-		case (defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : 16384):
+		case E_USER_DEPRECATED:
 			return 'User deprecated notice';
 		case E_SQL:
 			return 'SQL Error';
+		case E_JS:
+			return 'JS Error';
 		default:
 			return 'unknown Error';
 	}
 }
 
-function getBacktrace($skip){
+function getBacktrace(array $skip = array()){
 	$_detailedError = $_caller = $_file = $_line = '';
 
-	$_backtrace = debug_backtrace(defined('DEBUG_BACKTRACE_IGNORE_ARGS') ? DEBUG_BACKTRACE_IGNORE_ARGS : false);
+	$_backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 	$cnt = 0;
 	$found = false;
 	//error handler called directly caused by an error
@@ -171,10 +178,10 @@ function getBacktrace($skip){
 			continue;
 		} else if($cnt == 0){ //this is the caller
 			$_caller = $arr['function'];
-			$_file = (isset($arr['file']) ? str_replace($_SERVER['DOCUMENT_ROOT'] . '/', '', $arr['file']) : '');
+			$_file = (isset($arr['file']) ? str_replace(array(realpath($_SERVER['DOCUMENT_ROOT']) . '/', $_SERVER['DOCUMENT_ROOT'] . '/', $_SERVER['DOCUMENT_ROOT']), '', $arr['file']) : '');
 			$_line = (isset($arr['line']) ? $arr['line'] : '');
 		}
-		$_detailedError .='#' . ($cnt++) . ' ' . $arr['function'] . ' called at [' . (isset($arr['file']) ? str_replace($_SERVER['DOCUMENT_ROOT'] . '/', '', $arr['file']) : '') . ':' . (isset($arr['line']) ? $arr['line'] : '') . "]\n";
+		$_detailedError .='#' . ($cnt++) . ' ' . $arr['function'] . ' called at [' . (isset($arr['file']) ? str_replace(array(realpath($_SERVER['DOCUMENT_ROOT']) . '/', $_SERVER['DOCUMENT_ROOT'] . '/', $_SERVER['DOCUMENT_ROOT']), '', $arr['file']) : '') . ':' . (isset($arr['line']) ? $arr['line'] : '') . "]\n";
 	}
 	return array($_detailedError, $_caller, $_file, $_line);
 }
@@ -195,38 +202,38 @@ function display_error_message($type, $message, $file, $line, $skipBT = false){
 	}
 
 	// Build the error table
-	echo '<br /><table align="center" bgcolor="#FFFFFF" cellpadding="4" cellspacing="0" style="border: 1px solid #265da6;" width="95%"><colgroup><col width="10%"/><col width="90%" /></colgroup>
-		<tr bgcolor="#f7f7f7" valign="top">
-			<td colspan="2" style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2">An error occurred while executing this script.</font></td>
+	echo '<br /><table bgcolor="#FFFFFF" cellpadding="4" style="text-align:center;border: 1px solid #265da6;width:95%"><colgroup><col sytle="width:10%"/><col style="width:90%" /></colgroup>
+		<tr bgcolor="#f7f7f7" style="vertical-align:top">
+			<td colspan="2" style="border-bottom: 1px solid #265da6;">An error occurred while executing this script.</td>
 		</tr>
-	<tr valign="top">
-		<td style="white-space:nowrap;border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Error type:</b></font></td>
-		<td style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><i>' . translate_error_type($type) . '</i></font></td>
+	<tr style="vertical-align:top">
+		<td style="white-space:nowrap;border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;text-weight:bold;">Error type:</td>
+		<td style="border-bottom: 1px solid #265da6;"><i>' . translate_error_type($type) . '</i></td>
 	</tr>
-	<tr valign="top">
-			<td style="white-space:nowrap;border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Error message:</b></font></td>
-			<td style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><i><pre>' . str_replace($_SERVER['DOCUMENT_ROOT'], "", $message) . '</pre></i></font></td>
+	<tr style="vertical-align:top">
+			<td style="white-space:nowrap;border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;text-weight:bold;">Error message:</td>
+			<td style="border-bottom: 1px solid #265da6;"><i><pre>' . str_replace($_SERVER['DOCUMENT_ROOT'], "", $message) . '</pre></i></td>
 	</tr>
-	<tr valign="top">
-			<td style="white-space:nowrap;border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Script name:</b></font></td>
-			<td style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><i>' . str_replace($_SERVER['DOCUMENT_ROOT'], "", $file) . '</i></font></td>
+	<tr style="vertical-align:top">
+			<td style="white-space:nowrap;border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;text-weight:bold;">Script name:</td>
+			<td style="border-bottom: 1px solid #265da6;"><i>' . str_replace($_SERVER['DOCUMENT_ROOT'], "", $file) . '</i></td>
 	</tr>
-	<tr valign="top">
-			<td style="white-space:nowrap;border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Line number:</b></font></td>
-			<td style="border-bottom: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><i>' . $line . '</i></font></td>
+	<tr style="vertical-align:top">
+			<td style="white-space:nowrap;border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;text-weight:bold;">Line number:</td>
+			<td style="border-bottom: 1px solid #265da6;"><i>' . $line . '</i></td>
 	</tr>
-	<tr valign="top">
-			<td style="white-space:nowrap;border-right: 1px solid #265da6;"><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><b>Backtrace</b></font></td>
-			<td ><font face="Verdana, Arial, Helvetica, sans-serif" size="2">' . str_replace(array("\r", "\n"), '', nl2br($detailedError)) . ' 	</font></td>
+	<tr style="vertical-align:top">
+			<td style="white-space:nowrap;border-right: 1px solid #265da6;text-weight:bold;">Backtrace</td>
+			<td>' . str_replace(array("\r", "\n"), '', nl2br($detailedError)) . '</td>
 	</tr>
 	</table><br />';
 }
 
 function we_NiceArray($var, $unindent = ''){
-	return preg_replace(array('|Array\n\(|', '|\n\)$|', '|\n(    )' . ($unindent ?  '{' . $unindent . '}':'+' ) . '|','|\n(    )|'), array('', '', "\n","\n\t"), $var);
+	return preg_replace(array('|Array\n\(|', '|\n\)$|', '|\n(    )' . ($unindent ? '{' . $unindent . '}' : '+' ) . '|', '|\n(    )|'), array('', '', "\n", "\n\t"), $var);
 }
 
-function getVariableMax($var, we_database_base $db = null){
+function getVariableMax($var){
 	static $max = 65500; //max lenght of text-col in mysql - this is enough debug-data, leave some space...
 	switch($var){
 		case 'Request':
@@ -241,24 +248,24 @@ function getVariableMax($var, we_database_base $db = null){
 			//FIXME: clone will be reduced to unsetting weS+webuser if all vars have moved
 			if(isset($_SESSION['webuser']) && isset($_SESSION['webuser']['ID']) && $_SESSION['webuser']['registered']){
 				$ret.= 'webUser: ' .
-						we_NiceArray(print_r(array('ID' => $_SESSION['webuser']['ID'], 'Username' => $_SESSION['webuser']['Username'] . '(' . $_SESSION['webuser']['Forename'] . ' ' . $_SESSION['webuser']['Surname'] . ')'), true)).
-						"----------------------------------------\n";
+					we_NiceArray(print_r(array('ID' => $_SESSION['webuser']['ID'], 'Username' => $_SESSION['webuser']['Username'] . '(' . $_SESSION['webuser']['Forename'] . ' ' . $_SESSION['webuser']['Surname'] . ')'), true)) .
+					"----------------------------------------\n";
 			}
 			if(isset($_SESSION['user']) && isset($_SESSION['user']['ID'])){
 				$ret.= 'webEdition-User: ' .
-						we_NiceArray(print_r(array('ID' => $_SESSION['user']['ID'], 'Username' => $_SESSION['user']['Username']), true)).
-						"----------------------------------------\n";
+					we_NiceArray(print_r(array('ID' => $_SESSION['user']['ID'], 'Username' => $_SESSION['user']['Username']), true)) .
+					"----------------------------------------\n";
 			}
 
 			if(isset($_SESSION['weS'])){
-				$ret.=  "Internal data:\n" .
-						we_NiceArray(print_r(array_diff_key($_SESSION['weS'], array('versions' => '', 'prefs' => '', 'we_data' => '', 'perms' => '', 'webuser' => '')), true), 1).
-						"----------------------------------------\n";
+				$ret.= "Internal data:\n" .
+					we_NiceArray(print_r(array_diff_key($_SESSION['weS'], array('versions' => '', 'prefs' => '', 'we_data' => '', 'perms' => '', 'webuser' => '')), true), 1) .
+					"----------------------------------------\n";
 			}
 
 			if(isset($_SESSION['perms'])){
 				$ret.="Effective Permissions:\n" . we_NiceArray(print_r(array_filter($_SESSION['perms']), true)) .
-						"\n------------------------------------\n";
+					"\n------------------------------------\n";
 			}
 			$ret.= we_NiceArray(print_r(array_diff_key($_SESSION, array('prefs' => '', 'perms' => '', 'webuser' => '', 'weS' => '')), true), 1);
 
@@ -306,24 +313,15 @@ function log_error_message($type, $message, $file, $_line, $skipBT = false){
 		$_detailedError = $skipBT;
 	}
 
-	// Error type
-	$_type = translate_error_type($type);
-
-	// Error message
-	$_text = str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $message);
-
-	// Script name
-	$_file = str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $file);
-
 	// Log the error
 	if(defined('DB_HOST') && defined('DB_USER') && defined('DB_PASSWORD') && defined('DB_DATABASE')){
 		$logVars = array('Request', 'Session', 'Server');
 		$tbl = defined('ERROR_LOG_TABLE') ? ERROR_LOG_TABLE : TBL_PREFIX . 'tblErrorLog';
-		$_query = 'INSERT INTO ' . $tbl . ' SET Type="' . escape_sql_query($_type) . '",
+		$_query = 'INSERT INTO ' . $tbl . ' SET Type="' . escape_sql_query(translate_error_type($type)) . '",
 			`Function`="' . escape_sql_query($_caller) . '",
-			File="' . escape_sql_query($_file) . '",
+			File="' . escape_sql_query(str_replace(array(realpath($_SERVER['DOCUMENT_ROOT']) . '/', $_SERVER['DOCUMENT_ROOT'] . '/', $_SERVER['DOCUMENT_ROOT']), 'SECURITY_REPL_DOC_ROOT', $file)) . '",
 			Line=' . intval($_line) . ',
-			Text="' . escape_sql_query($_text) . '",
+			Text="' . escape_sql_query(str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $message)) . '",
 			Backtrace="' . escape_sql_query($_detailedError) . '"';
 		if(isset($GLOBALS['DB_WE'])){
 			$db = new DB_WE();
@@ -332,7 +330,7 @@ function log_error_message($type, $message, $file, $_line, $skipBT = false){
 			} else {
 				$id = $db->getInsertId();
 				foreach($logVars as $var){
-					$db->query('UPDATE ' . $tbl . ' SET ' . getVariableMax($var, $db) . ' WHERE ID=' . $id);
+					$db->query('UPDATE ' . $tbl . ' SET ' . getVariableMax($var) . ' WHERE ID=' . $id);
 				}
 			}
 		} else {
@@ -381,25 +379,25 @@ function mail_error_message($type, $message, $file, $line, $skipBT = false, $ins
 
 	// Build the error table
 	$_detailedError = "An error occurred while executing a script in webEdition.\n\n\n" .
-			($insertID && function_exists('getServerUrl') ?
-					getServerUrl() . WEBEDITION_DIR . 'errorlog.php?function=pos&ID=' . $insertID . "\n\n" : '') .
+		($insertID && function_exists('getServerUrl') ?
+			getServerUrl() . WEBEDITION_DIR . 'errorlog.php?function=pos&ID=' . $insertID . "\n\n" : '') .
 // Domain
-			'webEdition address: ' . $_SERVER['SERVER_NAME'] . ",\n\n" .
-			'URI: ' . $_SERVER['REQUEST_URI'] . "\n" .
-			// Error type
-			'Error type: ' . $ttype . "\n" .
-			// Error message
-			'Error message: ' . str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $message) . "\n" .
-			// Script name
-			'Script name: ' . str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $file) . "\n" .
-			// Line
-			'Line number: ' . $line . "\n" .
-			'Caller: ' . $_caller . "\n" .
-			'Backtrace: ' . $detailedError;
+		'webEdition address: ' . $_SERVER['SERVER_NAME'] . ",\n\n" .
+		'URI: ' . $_SERVER['REQUEST_URI'] . "\n" .
+		// Error type
+		'Error type: ' . $ttype . "\n" .
+		// Error message
+		'Error message: ' . str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $message) . "\n" .
+		// Script name
+		'Script name: ' . str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $file) . "\n" .
+		// Line
+		'Line number: ' . $line . "\n" .
+		'Caller: ' . $_caller . "\n" .
+		'Backtrace: ' . $detailedError;
 
 	// Log the error
 	if(defined('WE_ERROR_MAIL_ADDRESS')){
-		if(!mail(WE_ERROR_MAIL_ADDRESS, 'webEdition: ' . $ttype . ' (' . $_caller . ') [' . $_SERVER['SERVER_NAME'] . ']', $_detailedError)){
+		if(!mail(WE_ERROR_MAIL_ADDRESS, $ttype . ': ' . $_SERVER['SERVER_NAME'] . '(webEdition)', $_detailedError)){
 			if(in_array($type, array('E_ERROR', 'E_CORE_ERROR', 'E_COMPILE_ERROR', 'E_USER_ERROR'))){
 				echo 'Cannot log error! Could not send e-mail: <pre>' . $_detailedError . '</pre>';
 			}
@@ -444,7 +442,7 @@ function error_handler($type, $message, $file, $line, $context){
 	switch($type){
 		case E_NOTICE:
 		case E_USER_NOTICE:
-			if(defined('WE_ERROR_NOTICES') && (WE_ERROR_NOTICES == 1)){
+			if($GLOBALS['we']['errorhandler']['notice']){
 				error_showDevice($type, $message, $file, $line);
 			}
 			break;
@@ -454,7 +452,7 @@ function error_handler($type, $message, $file, $line, $context){
 		case E_CORE_WARNING:
 		case E_COMPILE_WARNING:
 		case E_USER_WARNING:
-			if(defined('WE_ERROR_WARNINGS') && (WE_ERROR_WARNINGS == 1)){
+			if($GLOBALS['we']['errorhandler']['warning']){
 				error_showDevice($type, $message, $file, $line);
 			}
 
@@ -466,15 +464,15 @@ function error_handler($type, $message, $file, $line, $context){
 		case E_COMPILE_ERROR:
 		case E_USER_ERROR:
 		case E_RECOVERABLE_ERROR:
-			if(defined('WE_ERROR_ERRORS') && (WE_ERROR_ERRORS == 1)){
+			if($GLOBALS['we']['errorhandler']['error']){
 				error_showDevice($type, $message, $file, $line, true);
 			}
 
 			// Stop execution
 			return false;
-		case (defined('E_DEPRECATED') ? E_DEPRECATED : 8192):
-		case (defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : 16384):
-			if(defined('WE_ERROR_DEPRECATED') && (WE_ERROR_DEPRECATED == 1)){
+		case E_DEPRECATED:
+		case E_USER_DEPRECATED:
+			if($GLOBALS['we']['errorhandler']['deprecated']){
 				error_showDevice($type, $message, $file, $line);
 			}
 			break;

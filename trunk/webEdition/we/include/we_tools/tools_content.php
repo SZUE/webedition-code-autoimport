@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -39,6 +38,11 @@ if(!$tool || !in_array($tool, $whiteList)){
 	exit();
 }
 
+if($tool === 'weSearch'){
+	require_once(WE_INCLUDES_PATH . 'we_tools/weSearch/edit_weSearch_frameset.php');
+	return;
+}
+
 //check if bootstrap file exists of specific app
 if(file_exists(WEBEDITION_PATH . 'apps/' . $tool . '/index.php')){
 
@@ -46,9 +50,4 @@ if(file_exists(WEBEDITION_PATH . 'apps/' . $tool . '/index.php')){
 		(isset($REQUEST['modelid']) ? '/modelId/' . intval($REQUEST['modelid']) : '') .
 		(isset($REQUEST['tab']) ? '/tab/' . intval($REQUEST['tab']) : ''));
 	exit();
-}
-switch($tool){
-	case 'weSearch':
-	case 'navigation':
-		require_once(WE_INCLUDES_PATH . 'we_tools/' . $tool . '/edit_' . $tool . '_frameset.php');
 }

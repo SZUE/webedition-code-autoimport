@@ -39,13 +39,13 @@ class weTagData_linkAttribute extends weTagDataAttribute{
 	 */
 	function getCodeForTagWizard(){
 		return '<table class="attribute"><tr>
-						<td class="attributeName defaultfont">&nbsp;</td><td class="attributeField">' . we_html_element::htmlSpan(
-				array(
-				'name' => $this->Name,
-				'id' => $this->getIdName(),
-				'value' => '',
-				'class' => 'defaultfont'
-				), '<a href="http://' . $this->Value . '" target="TagRef">' . g_l('taged', '[tagreference_linktext]') . '</a>') . '</td>
+						<td class="attributeName defaultfont">&nbsp;</td><td class="attributeField">' .
+				we_html_element::htmlSpan(array(
+					'name' => $this->Name,
+					'id' => $this->getIdName(),
+					'value' => '',
+					'class' => 'defaultfont'
+						), '<a href="http://' . $this->Value . '" target="TagRef">' . g_l('taged', '[tagreference_linktext]') . '</a>') . '</td>
 					</tr></table>';
 	}
 

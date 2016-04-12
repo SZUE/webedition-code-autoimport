@@ -50,7 +50,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 		foreach($this->PatternSearch->doc_patterns['path'] as $pattern){
 			if(preg_match_all($pattern, $text, $match)){
 				foreach($match[2] as $path){
-					$include = path_to_id($path);
+					$include = path_to_id($path, FILE_TABLE, $GLOBALS['DB_WE']);
 					$this->addToDepArray($level, $include);
 				}
 			}
@@ -85,8 +85,8 @@ class we_export_preparer extends we_exim_XMLExIm{
 					foreach($match[2] as $external){
 						$path = $this->isPathLocal($external);
 						if($path && $path != '/'){
-							$id = path_to_id($path);
-							$this->addToDepArray($level, $id, (isset($id) && $id ? '' : 'weBinary'));
+							$id = path_to_id($path, FILE_TABLE, $GLOBALS['DB_WE']);
+							$this->addToDepArray($level, $id, (!empty($id) ? '' : 'weBinary'));
 						}
 					}
 				}
@@ -209,15 +209,15 @@ class we_export_preparer extends we_exim_XMLExIm{
 	private function getDepFromArray($array){
 		$ret = array("docs" => array(), "objs" => array());
 
-		if(isset($array['id']) && $array['id']){
+		if(!empty($array['id'])){
 			$ret["docs"][] = $array['id'];
 		}
 
-		if(isset($array['img_id']) && $array['id']){
+		if(!empty($array['img_id'])){
 			$ret["docs"][] = $array['img_id'];
 		}
 
-		if(isset($array['obj_id']) && $array['obj_id']){
+		if(!empty($array['obj_id'])){
 			$ret["objs"][] = $array['obj_id'];
 		} else {
 			foreach($array as $key => $value){
@@ -246,7 +246,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 					}
 
 					if(isset($ev["dat"])){
-						$dat = @unserialize($ev["dat"]);
+						$dat = we_unserialize($ev["dat"]);
 						if(!is_array($dat) && $this->options["handle_document_linked"]){
 							$this->getExternalLinked($ev["dat"], $level);
 						}
@@ -259,12 +259,12 @@ class we_export_preparer extends we_exim_XMLExIm{
 							$this->addToDepArray($level, $ev['dat']);
 						}
 					} else if(isset($ev["dat"])){
-						$dat = @unserialize($ev["dat"]);
+						$dat = we_unserialize($ev["dat"], array(), true);
 						if(is_array($dat)){
 							$elarray = $this->getDepFromArray($dat);
 							foreach($elarray as $elk => $elv){
 								foreach($elv as $id){
-									if(!empty($id)){
+									if($id){
 										$this->addToDepArray($level, $id, ($elk === "docs" ? '' : "objectFile"));
 									}
 								}
@@ -273,7 +273,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 							$this->getIncludesFromWysiwyg($ev["dat"], $level);
 						}
 					}
-					if(isset($ev["bdid"]) && $ev["bdid"]){
+					if(!empty($ev["bdid"])){
 						$this->addToDepArray($level, $ev['bdid']);
 					}
 				}
@@ -313,7 +313,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 			}
 		}
 
-		if(isset($object->TemplateID) && $object->TemplateID && $this->options["handle_def_templates"]){
+		if(!empty($object->TemplateID) && $this->options["handle_def_templates"]){
 			$this->addToDepArray($level, $object->TemplateID, we_base_ContentTypes::TEMPLATE, TEMPLATES_TABLE);
 		}
 
@@ -321,11 +321,11 @@ class we_export_preparer extends we_exim_XMLExIm{
 			$this->addToDepArray($level, $object->TableID, we_base_ContentTypes::OBJECT, OBJECT_TABLE);
 		}
 
-		if(isset($object->DocType) && $object->DocType && $object->ClassName != "we_docTypes" && $this->options["handle_doctypes"]){
+		if(!empty($object->DocType) && $object->ClassName != "we_docTypes" && $this->options["handle_doctypes"]){
 			$this->addToDepArray($level, $object->DocType, 'doctype', DOC_TYPES_TABLE);
 		}
 
-		if(isset($object->Category) && $object->Category && $object->ClassName != "we_category" && $this->options["handle_categorys"]){
+		if(!empty($object->Category) && $object->ClassName != "we_category" && $this->options["handle_categorys"]){
 			$cats = makeArrayFromCSV($object->Category);
 			foreach($cats as $cat){
 				$this->addToDepArray($level, $cat, 'category', CATEGORY_TABLE);
@@ -341,7 +341,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 				}
 				if(preg_match('|we_object_[0-9]+_path|', $key)){
 					if(isset($value['dat'])){
-						$this->addToDepArray($level, path_to_id($value['dat'], OBJECT_FILES_TABLE), we_base_ContentTypes::OBJECT_FILE, OBJECT_FILES_TABLE);
+						$this->addToDepArray($level, path_to_id($value['dat'], OBJECT_FILES_TABLE, $GLOBALS['DB_WE']), we_base_ContentTypes::OBJECT_FILE, OBJECT_FILES_TABLE);
 					}
 				}
 				switch((empty($value['type']) ? '' : $value['type'])){
@@ -398,7 +398,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 		}
 	}
 
-	public function prepareExport(){
+	public function prepareExport(array $ids = array()){
 		we_updater::fixInconsistentTables();
 
 		if($this->options['handle_def_templates'] ||

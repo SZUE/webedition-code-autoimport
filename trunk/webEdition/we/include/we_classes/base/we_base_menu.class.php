@@ -36,20 +36,15 @@ class we_base_menu{
 	}
 
 	public function getCode(){
-		return $this->getJS() . $this->getHTML();
+		return self::getJS() . $this->getHTML();
 	}
 
-	public function getJS(){
-		return we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
-			we_html_element::jsElement('
-function menuaction(cmd) {
-	' . $this->lcmdFrame . '.location.replace("' . WEBEDITION_DIR . 'we_lcmd.php?we_cmd[0]="+cmd);
-}');
+	public static function getJS(){
+		return we_html_element::jsScript(JS_DIR . 'we_lcmd.js');
 	}
 
 	public function getHTML(){
-		$out = '<span class="preload1"></span><span class="preload2"></span><span class="preload3"></span><span class="preload4"></span>' .
-			'<ul id="nav">';
+		$out = '<ul id="nav">';
 		$menus = array();
 		foreach($this->entries as $id => $e){
 			if(empty($e['parent'])){
@@ -67,10 +62,9 @@ function menuaction(cmd) {
 		}
 
 		foreach($menus as $menu){
-			$foo = $menu['code'];
-			$this->h_pCODE($this->entries, $foo, $menu['id'], '');
-			$foo .= '</ul></div></li>';
-			$out .= $foo;
+			$out .= $menu['code'] .
+				$this->h_pCODE($this->entries, $menu['id'], '') .
+				'</ul></div></li>';
 		}
 
 		$out .= '</ul>';
@@ -107,11 +101,14 @@ function menuaction(cmd) {
 		return $enabled;
 	}
 
-	private function h_pCODE($men, &$opt, $p, $zweig){
+	private function h_pCODE($men, $p, $zweig){
 		$nf = self::h_search($men, $p);
 		if(empty($nf)){
-			return;
+			return '';
 		}
+
+		$opt = '';
+
 
 		foreach($nf as $id => $e){
 			$newAst = $zweig;
@@ -119,20 +116,23 @@ function menuaction(cmd) {
 					($e['text'][$GLOBALS['WE_LANGUAGE']] ? : '') :
 					(isset($e['text']) ? $e['text'] : ''));
 
-			if(isset($e['hide']) && $e['hide']){
+			if(!empty($e['hide']) ||
+				(!empty($e['perm']) && !self::isEnabled($e['perm']))
+			){
+				continue;
+			}
 
-			} elseif((isset($e['perm']) ? self::isEnabled($e['perm']) : 1)){
-				if((!(isset($e['cmd']) && $e['cmd'])) && $mtext){
-					$opt .= '<li><a class="fly" href="#void">' . $mtext . '</a><ul>' . "\n";
-					$this->h_pCODE($men, $opt, $id, $newAst);
-					$opt .= '</ul></li>' . "\n";
-				} else if($mtext){
-					$opt .= '<li><a href="#void" onclick="' . $this->menuaction . 'menuaction(\'' . $e["cmd"] . '\')">' . $mtext . '</a></li>';
-				} else {//separator
-					$opt .= '<li class="disabled"></li>';
-				}
+			if((!(isset($e['cmd']) && $e['cmd'])) && $mtext){
+				$opt .= '<li><a class="fly" href="#void">' . $mtext . '<i class="fa fa-caret-right"></i></a><ul>' .
+					$this->h_pCODE($men, $id, $newAst) .
+					'</ul></li>';
+			} else if($mtext){
+				$opt .= '<li><a href="#void" onclick="' . $this->menuaction . 'menuaction(\'' . (is_array($e["cmd"]) ? implode('\',\'', $e["cmd"]) : $e["cmd"]) . '\')">' . $mtext . '</a></li>';
+			} else {//separator
+				$opt .= '<li class="disabled"></li>';
 			}
 		}
+		return $opt;
 	}
 
 }

@@ -31,7 +31,7 @@ if($we_doc->ClassName != 'we_imageDocument' && permissionhandler::hasPerm('CAN_E
 	if(!$_filter){
 		$_filter = we_customer_documentFilter::getEmptyDocumentCustomerFilter();
 	}
-	$_view = new we_customer_documentFilterView($_filter, '_EditorFrame.setEditorIsHot(true);', 520);
+	$_view = new we_customer_documentFilterView($_filter, 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);', 520);
 
 	$parts[] = array(
 		'headline' => g_l('modules_customerFilter', '[customerFilter]'),
@@ -50,29 +50,16 @@ $parts[] = array(
 
 
 echo we_html_tools::getHtmlTop() .
- STYLESHEET;
-require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-echo we_html_element::cssElement('
-.paddingLeft {
-	padding-left: 25px;
-}
-.paddingVertical {
-	padding-top: 10px;
-	padding-bottom: 10px;
-}
-
-');
-
-echo we_html_element::jsScript(JS_DIR . 'windows.js') .
-	we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
-	(isset($yuiSuggest) ? // webuser filter is not displayed at images, so $yuiSuggest is not defined!
-		weSuggest::getYuiFiles() : '') .
-	'</head><body class="weEditorBody"><form name="we_form" onsubmit="return false">' .
-	we_class::hiddenTrans() .
-	($we_doc->ClassName != 'we_imageDocument' && permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER') ?
-		we_html_tools::hidden('we_edit_weDocumentCustomerFilter', 1) : '') .
-	we_html_multiIconBox::getHTML('weDocProp', '100%', $parts, 20, '', -1, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]')) .
-	'<input type="hidden" name="we_complete_request" value="1"/></form>
+ STYLESHEET .
+ weSuggest::getYuiFiles();
+require(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
+echo we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
+ '</head><body class="weEditorBody"><form name="we_form" onsubmit="return false">' .
+ we_class::hiddenTrans() .
+ (!($we_doc instanceof we_imageDocument) && permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER') ?
+	we_html_tools::hidden('we_edit_weDocumentCustomerFilter', 1) : '') .
+ we_html_multiIconBox::getHTML('weDocProp', $parts, 20, '', -1, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]')) .
+ we_html_element::htmlHidden("we_complete_request", 1) . '</form>
 </body>
 </html>';
 
@@ -97,20 +84,19 @@ function formWebuser($canChange, $width = 388){
 	$idname = 'we_' . $GLOBALS['we_doc']->Name . '_WebUserID';
 
 	//$attribs = ' readonly';
-	//$inputFeld=$GLOBALS['we_doc']->htmlTextInput($textname,24,$webuser,"",$attribs,"",$width);
+	//$inputFeld=we_html_tools::htmlTextInput($textname,24,$webuser,"",$attribs,"",$width);
 	//$idfield = $GLOBALS['we_doc']->htmlHidden($idname,$GLOBALS['we_doc']->WebUserID);
 
-	$button = we_html_button::create_button("select", "javascript:we_cmd('openSelector',document.we_form.elements['" . $idname . "'].value,'" . CUSTOMER_TABLE . "','document.we_form.elements[\\'" . $idname . "\\'].value','document.we_form.elements[\\'" . $textname . "\\'].value')");
+	$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_customer_selector',document.we_form.elements['" . $idname . "'].value,'" . CUSTOMER_TABLE . "','document.we_form.elements[\\'" . $idname . "\\'].value','document.we_form.elements[\\'" . $textname . "\\'].value')");
 
-	$_trashBut = we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['" . $idname . "'].value=0;document.we_form.elements['" . $textname . "'].value='';_EditorFrame.setEditorIsHot(true);");
+	$_trashBut = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value=0;document.we_form.elements['" . $textname . "'].value='';WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);");
 	/*
 	  $out = we_html_tools::htmlFormElementTable($inputFeld,
 	  g_l('modules_customer','[connected_with_customer]'),
 	  "left",
 	  "defaultfont",
 	  $idfield,
-	  we_html_tools::getPixel(20,4),
-	  $button,we_html_tools::getPixel(5,4),$_trashBut);
+	  $button,$_trashBut);
 	 */
 	$yuiSuggest = & weSuggest::getInstance();
 	$yuiSuggest->setAcId("Customer");
@@ -126,5 +112,5 @@ function formWebuser($canChange, $width = 388){
 	$yuiSuggest->setTrashButton($_trashBut);
 	$yuiSuggest->setTable(CUSTOMER_TABLE);
 
-	return weSuggest::getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiCode();
+	return weSuggest::getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiJs();
 }

@@ -20,8 +20,8 @@
 we_html_tools::protect();
 $ok = false;
 
-if(permissionhandler::hasPerm("ADMINISTRATOR")){
-	$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', 0,1);
+if(permissionhandler::hasPerm('ADMINISTRATOR')){
+	$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', 0, 1);
 	// init document
 	$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
 
@@ -30,13 +30,5 @@ if(permissionhandler::hasPerm("ADMINISTRATOR")){
 	$ok = $we_doc->changeTriggerIDRecursive();
 }
 
-echo we_html_tools::getHtmlTop() .
- ($ok ? we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('weClass', '[grant_tid_ok]'), we_message_reporting::WE_MESSAGE_NOTICE)) :
-		we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('weClass', '[grant_tid_notok]'), we_message_reporting::WE_MESSAGE_ERROR)));
-?>
-</head>
-
-<body>
-</body>
-
-</html>
+echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', ($ok ? we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('weClass', '[grant_tid_ok]'), we_message_reporting::WE_MESSAGE_NOTICE)) :
+		we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('weClass', '[grant_tid_notok]'), we_message_reporting::WE_MESSAGE_ERROR))), we_html_element::htmlBody());

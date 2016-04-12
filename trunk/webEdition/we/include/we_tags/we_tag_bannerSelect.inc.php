@@ -46,7 +46,7 @@ function we_tag_bannerSelect($attribs){
 	$GLOBALS['DB_WE']->query('SELECT ID,Text,Path,Customers FROM ' . BANNER_TABLE . ' ' . $where . ' ORDER BY Path');
 	$res = $GLOBALS['DB_WE']->getAll();
 	foreach($res as $record){
-		if((!defined('CUSTOMER_TABLE')) || (!$customer) || ($customer && defined('CUSTOMER_TABLE') && isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] &&
+		if((!defined('CUSTOMER_TABLE')) || (!$customer) || ($customer && defined('CUSTOMER_TABLE') && !empty($_SESSION['webuser']['registered']) &&
 			we_banner_banner::customerOwnsBanner($_SESSION['webuser']['ID'], $record['ID'], $GLOBALS['DB_WE']))){
 			$rName = we_base_request::_(we_base_request::HTML, $name, $record['Path']);
 			$options .= ($rName == $record['Path'] ?

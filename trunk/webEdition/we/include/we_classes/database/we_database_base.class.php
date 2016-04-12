@@ -24,8 +24,8 @@
  */
 /* * this is the abstract super class for DB connections */
 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf.inc.php');
 if(!defined('DB_DATABASE')){
+	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf.inc.php');
 	require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.inc.php');
 }
 
@@ -230,7 +230,7 @@ abstract class we_database_base{
 	 */
 	protected function _connect(){
 		$this->Link_ID = array_pop(self::$pool);
-		if(!$this->isConnected()){
+		if(!$this->isConnected(false)){
 			self::$linkCount++;
 			$this->connect();
 		}
@@ -268,8 +268,8 @@ abstract class we_database_base{
 	 *
 	 * @return bool true, if the DB is connected
 	 */
-	protected function isConnected(){
-		return ($this->Link_ID) && $this->ping();
+	protected function isConnected($withPing = true){
+		return ($this->Link_ID) && ($withPing ? $this->ping() : true);
 	}
 
 	/**
@@ -295,7 +295,7 @@ abstract class we_database_base{
 			$this->free();
 		}
 		/* No empty queries, please, since PHP4 chokes on them. */
-		if(!$this->isConnected() && !$this->_connect()){
+		if(!$this->isConnected(false) && !$this->_connect()){
 			return false;
 		}
 
@@ -401,8 +401,9 @@ abstract class we_database_base{
 		} elseif(preg_match('/insert\s|delete\s|update\s|replace\s/i', $Query_String)){
 			$this->Insert_ID = $this->_getInsertId();
 			$this->Affected_Rows = $this->_affected_rows();
+			//don't kill query cache if we add errors
+			if(!strpos($Query_String, defined('ERROR_LOG_TABLE') ? ERROR_LOG_TABLE : 'ERROR_LOG_TABLE') || (stripos($Query_String, 'DELETE') === 0)){
 // delete getHash DB Cache
-			if(!strpos($Query_String, ERROR_LOG_TABLE)){
 				$this->getHash();
 			}
 			$repool = true;
@@ -429,7 +430,7 @@ abstract class we_database_base{
 				'rows' => $this->num_rows(),
 				'explain' => array()
 			);
-			if(stripos($Query_String, 'select') !== FALSE){
+			if($isSelect){
 				$this->Query_ID = $this->_query('EXPLAIN ' . $Query_String);
 
 				while($this->next_record(MYSQL_ASSOC)){
@@ -439,7 +440,7 @@ abstract class we_database_base{
 					$tmp['explain'][] = implode(' | ', $this->Record);
 				}
 				$this->Row = 0;
-				!$this->isConnected() && !$this->_connect();
+				!$this->isConnected(false) && !$this->_connect();
 				$this->Query_ID = $this->_query($Query_String, $unbuffered);
 			}
 			t_e($Query_String, $tmp);
@@ -628,11 +629,22 @@ abstract class we_database_base{
 		return $ret;
 	}
 
+	public function getAllq($query, $single = false, $resultType = MYSQL_ASSOC){
+		$this->query($query);
+		return $this->getAll($single, $resultType);
+	}
+
+	public function getAllFirstq($query, $useArray = true, $resultType = MYSQL_NUM){
+		$this->query($query);
+		return $this->getAllFirst($useArray, $resultType);
+	}
+
 	/**
 	 * is a handy setter, for executing `a`="\"b\"" set from an assoc array
 	 * @param type $arr
+	 * @param forValues set to true if used in VALUES (...)
 	 */
-	static function arraySetter(array $arr, $imp = ','){
+	static function arraySetter(array $arr, $imp = ',', $forValues = false){
 		$ret = array();
 		foreach($arr as $key => $val){
 			if($key === ''){
@@ -648,9 +660,9 @@ abstract class we_database_base{
 
 			$val = (is_bool($val) ? intval($val) : $val);
 			//we must escape int-values since the value might be an enum element
-			$ret[] = '`' . $key . '`=' . ($escape ? '"' . escape_sql_query($val) . '"' : $val);
+			$ret[] = ($forValues ? '' : '`' . $key . '`=' ) . ($escape ? '"' . escape_sql_query($val) . '"' : $val);
 		}
-		return implode($imp, $ret);
+		return ($forValues ? '(' : '') . implode($imp, $ret) . ($forValues ? ')' : '');
 	}
 
 	/* public: return table metadata */
@@ -824,15 +836,19 @@ abstract class we_database_base{
 	}
 
 	/**
-	 * @deprecated since version 6.3.0
 	 * @param type $tab
 	 * @param type $cols
 	 * @param array $keys
 	 * @return type
 	 */
-	public function addTable($tab, $cols, array $keys = array()){
+	public function addTable($tab, $cols, array $keys = array(), $engine = 'MYISAM', $temporary = false){
 		if(!is_array($cols) || empty($cols)){
+			t_e('create table needs an array');
 			return;
+		}
+		if($engine == 'MYISAM'){
+			$defaultEngine = f('show variables LIKE "default_storage_engine"', 'Value');
+			$engine = (in_array(strtolower($defaultEngine), array('myisam', 'aria')) ? $defaultEngine : 'myisam');
 		}
 		$cols_sql = array();
 		foreach($cols as $name => $type){
@@ -844,15 +860,15 @@ abstract class we_database_base{
 			}
 		}
 
-		return $this->query('CREATE TABLE ' . $this->escape($tab) . ' (' . implode(',', $cols_sql) . ') ENGINE = MYISAM ' . we_database_base::getCharsetCollation() . ';');
+		return $this->query('CREATE ' . ($temporary ? 'TEMPORARY' : '') . ' TABLE ' . $this->escape($tab) . ' (' . implode(',', $cols_sql) . ') ENGINE=' . $engine . ' ' . self::getCharsetCollation());
 	}
 
 	/**
 	 * delete an table, checks if it exists.
 	 * @param type $tab
 	 */
-	public function delTable($tab){
-		$this->query('DROP TABLE IF EXISTS ' . $this->escape($tab));
+	public function delTable($tab, $temporary = false){
+		$this->query('DROP ' . ($temporary ? 'TEMPORARY' : '') . ' TABLE IF EXISTS ' . $this->escape($tab));
 	}
 
 	public function addCol($tab, $col, $typ, $pos = ''){
@@ -860,7 +876,7 @@ abstract class we_database_base{
 		if($this->isColExist($tab, $col)){
 			return false;
 		}
-		return $this->query('ALTER TABLE ' . $this->escape($tab) . ' ADD `' . $col . '` ' . $typ . (($pos != '') ? ' ' . $pos : ''));
+		return $this->query('ALTER TABLE ' . $this->escape($tab) . ' ADD `' . $this->escape($col) . '` ' . $typ . (($pos != '') ? ' ' . $pos : ''));
 	}
 
 	public function changeColType($tab, $col, $newtyp){
@@ -994,6 +1010,9 @@ abstract class we_database_base{
 	 * @param string $newcol new col-name
 	 */
 	public function renameCol($tab, $oldcol, $newcol){
+		if($oldcol == $newcol){
+			return;
+		}
 		$this->query('ALTER TABLE ' . $this->escape($tab) . ' CHANGE `' . $oldcol . '` `' . $newcol . '`');
 	}
 
@@ -1001,7 +1020,7 @@ abstract class we_database_base{
 	 * move a column to a new position inside the table
 	 * @param string $tab tablename
 	 * @param string $colName the name of the col to move
-	 * @param string $newPos the new position (possible: FIRST, AFTER colname)
+	 * @param string $newPos the new position (possible: FIRST, colname)
 	 */
 	public function moveCol($tab, $colName, $newPos){
 		//get the old col def, use for alter table.
@@ -1083,32 +1102,8 @@ abstract class we_database_base{
 	 */
 	public static function getMysqlVer(/* $nodots = true */){
 		$DB_WE = new DB_WE();
-		$res = f('SELECT VERSION()', '', $DB_WE);
-
-		if($res){
-			$res = explode('-', $res);
-		} else {
-			$res = f('SHOW VARIABLES LIKE "version"', 'Value', $DB_WE);
-			if($res){
-				$res = explode('-', $res);
-			}
-		}
-		/* if(isset($res)){
-		  if($nodots){
-		  $strver = str_replace('.', '', $res[0]);
-		  $ver = (int) $strver;
-		  if(strlen($ver) < 4){
-		  $ver = sprintf('%04d', $ver);
-		  if(substr($ver, 0, 1) == '0'){
-		  $ver = (int) (substr($ver, 1) . '0');
-		  }
-		  }
-
-		  return $ver;
-		  }
-		  return $res[0];
-		  } */
-		return '';
+		list($res) = explode('-', f('SELECT VERSION()', '', $DB_WE)? : f('SHOW VARIABLES LIKE "version"', 'Value', $DB_WE));
+		return $res;
 	}
 
 	/**

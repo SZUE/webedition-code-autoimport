@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-we_base_moduleInfo::isActive('messaging');
+we_base_moduleInfo::isActive(we_base_moduleInfo::MESSAGING);
 /* todo object class */
 
 class we_messaging_todo extends we_messaging_proto{
@@ -109,11 +109,11 @@ class we_messaging_todo extends we_messaging_proto{
 	/* Getters And Setters */
 
 	function get_newmsg_count(){
-		return intval(f('SELECT COUNT(1) AS c FROM ' . $this->DB_WE->escape($this->table) . ' WHERE (seenStatus & ' . we_messaging_proto::STATUS_READ . '=0) AND obj_type=' . we_messaging_proto::TODO_NR . ' AND msg_type=' . intval($this->sql_class_nr) . ' AND ParentID=' . $this->default_folders[we_messaging_proto::FOLDER_INBOX] . ' AND UserID=' . intval($this->userid), 'c', $this->DB_WE));
+		return intval(f('SELECT COUNT(1) FROM ' . $this->DB_WE->escape($this->table) . ' WHERE (seenStatus & ' . we_messaging_proto::STATUS_READ . '=0) AND obj_type=' . we_messaging_proto::TODO_NR . ' AND msg_type=' . intval($this->sql_class_nr) . ' AND ParentID=' . $this->default_folders[we_messaging_proto::FOLDER_INBOX] . ' AND UserID=' . intval($this->userid), '', $this->DB_WE));
 	}
 
 	function get_count($folder_id){
-		$cnt = f('SELECT COUNT(1) AS c FROM ' . $this->DB_WE->escape($this->table) . ' WHERE ParentID=' . intval($folder_id) . ' AND obj_type=' . we_messaging_proto::TODO_NR . ' AND msg_type=' . intval($this->sql_class_nr) . ' AND UserID=' . intval($this->userid), 'c', $this->DB_WE);
+		$cnt = f('SELECT COUNT(1) FROM ' . $this->DB_WE->escape($this->table) . ' WHERE ParentID=' . intval($folder_id) . ' AND obj_type=' . we_messaging_proto::TODO_NR . ' AND msg_type=' . intval($this->sql_class_nr) . ' AND UserID=' . intval($this->userid), '', $this->DB_WE);
 		return $cnt === '' ? -1 : $cnt;
 	}
 
@@ -406,7 +406,7 @@ class we_messaging_todo extends we_messaging_proto{
 						'MessageText' => $data['body'],
 						'seenStatus' => 0,
 						'Priority' => $data['priority'] ? : sql_function('NULL'),
-						'Content_Type' => isset($data['Content_Type']) && $data['Content_Type'] ? $data['Content_Type'] : sql_function('NULL')
+						'Content_Type' => !empty($data['Content_Type']) ? $data['Content_Type'] : sql_function('NULL')
 			)));
 
 			$results['id'] = $this->DB_WE->getInsertId();

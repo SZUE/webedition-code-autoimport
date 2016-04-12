@@ -36,31 +36,28 @@ function we_tag_repeatShopItem($attribs){
 		echo modulFehltError('Shop', __FUNCTION__);
 		return;
 	}
-	$shopname = weTag_getAttribute("shopname", $attribs, '', we_base_request::STRING);
+	$shopname = weTag_getAttribute('shopname', $attribs, '', we_base_request::STRING);
 
 	//internal Attribute
 	$_type = weTag_getAttribute('_type', $attribs, '', we_base_request::STRING);
 	switch($_type){
 		case 'start':
-			if(($foo = attributFehltError($attribs, "shopname", __FUNCTION__))){
+			if(($foo = attributFehltError($attribs, 'shopname', __FUNCTION__))){
 				echo $foo;
 				return;
 			}
-			we_base_moduleInfo::isActive('shop');
+			we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP);
 
 			$_SESSION["we_shopname"] = $shopname;
 
 			if(!isset($GLOBALS[$shopname]) || empty($GLOBALS[$shopname])){
 				echo parseError(sprintf(g_l('parser', '[missing_createShop]'), 'repeatShopItem'));
 			}
-			$GLOBALS["lv"] = new we_shop_shop($GLOBALS[$shopname]);
+			$GLOBALS['lv'] = new we_shop_shop($GLOBALS[$shopname]);
+			we_pre_tag_listview();
 			break;
 		case 'stop':
-			if(isset($GLOBALS['we_lv_array'])){
-				we_post_tag_listview();
-			} else {
-				unset($GLOBALS["lv"]);
-			}
+			we_post_tag_listview();
 			break;
 	}
 }

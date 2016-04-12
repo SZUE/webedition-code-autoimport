@@ -28,7 +28,6 @@ class we_object_search extends we_search_base{
 	var $searchlocation;
 	var $searchfield;
 	var $show;
-
 	private static $intFields = array();
 	private static $realFields = array();
 
@@ -53,36 +52,32 @@ class we_object_search extends we_search_base{
 		}
 	}
 
-	function getFields($name = 'obj_searchField', $size = 1, $select = "", $Path, $multi = ""){
-
+	function getFields($name, $size, $select, $Path, $multi = '', $fields = true, $properties = true){
 		$objID = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape($Path) . '"');
+		if(!$objID){
+			return '';
+		}
 		$opts = '';
 		$all = array();
-		$tableInfo = $GLOBALS['DB_WE']->metadata(OBJECT_X_TABLE . $objID);
-		foreach($tableInfo as $cur){
-			if($cur["name"] != 'ID' && substr($cur["name"], 0, 3) != "OF_" && stripos($cur["name"], we_objectFile::TYPE_MULTIOBJECT) !== 0 && stripos($cur["name"], "object") !== 0){
-				$regs = explode('_', $cur["name"], 2);
-				if(count($regs) == 2){
-					$opts .= '<option value="' . $cur["name"] . '" '
-						. (($select == $cur["name"]) ? "selected" : "") . '>'
-						. $regs[1] . '</option>';
-				}
-				$all[] = $cur["name"];
-			} else {
+		$tableInfoFields = $GLOBALS['DB_WE']->metadata(OBJECT_X_TABLE . $objID);
+		$tableInfoProperties = $GLOBALS['DB_WE']->metadata(OBJECT_FILES_TABLE);
+
+		if($properties){
+			foreach($tableInfoProperties as $cur){
 				switch($cur["name"]){
-					case 'OF_Text':
+					case 'Text':
 						$opts .= '<option value="' . $cur["name"] . '" ' . (($select == $cur["name"]) ? "selected" : "") . '>' . g_l('modules_object', '[objectname]') . '</option>';
 						$all[] = $cur["name"];
 						break;
-					case 'OF_Path':
+					case 'Path':
 						$opts .= '<option value="' . $cur["name"] . '" ' . (($select == $cur["name"]) ? "selected" : "") . '>' . g_l('modules_object', '[objectpath]') . '</option>';
 						$all[] = $cur["name"];
 						break;
-					case 'OF_ID':
+					case 'ID':
 						$opts .= '<option value="' . $cur["name"] . '" ' . (($select == $cur["name"]) ? "selected" : "") . '>' . g_l('modules_object', '[objectid]') . '</option>';
 						$all[] = $cur["name"];
 						break;
-					case 'OF_Url':
+					case 'Url':
 						$opts .= '<option value="' . $cur["name"] . '" ' . (($select == $cur["name"]) ? "selected" : "") . '>' . g_l('modules_object', '[objecturl]') . '</option>';
 						$all[] = $cur["name"];
 						break;
@@ -90,88 +85,119 @@ class we_object_search extends we_search_base{
 			}
 		}
 
-		$opts = '<option value="' . implode(',', $all) . '">' . g_l('modules_object', '[allFields]') . '</option>' . $opts;
+		if($fields){
+			foreach($tableInfoFields as $cur){
+				if($cur["name"] != 'ID' && substr($cur["name"], 0, 3) != "OF_" && stripos($cur["name"], we_objectFile::TYPE_MULTIOBJECT) !== 0 && stripos($cur["name"], "object") !== 0){
+					$regs = explode('_', $cur["name"], 2);
+					if(count($regs) == 2){
+						$opts .= '<option value="' . $cur["name"] . '" '
+							. (($select == $cur["name"]) ? "selected" : "") . '>'
+							. $regs[1] . '</option>';
+					}
+					$all[] = $cur["name"];
+				}
+			}
+		}
+
+		if(count($all)){
+			$opts = '<option value="' . implode(',', $all) . '">' . g_l('modules_object', '[allFields]') . '</option>' . $opts;
+		}
 		$onchange = (substr($select, 0, 4) != "meta" && substr($select, 0, 4) != "date" && substr($select, 0, 8) != "checkbox" ? 'onchange="changeit(this.value);"' : 'onchange="changeitanyway(this.value);"');
 		return '<select name="' . $name . '" class="weSelect" size="' . $size . '" ' . $multi . ' ' . $onchange . '>' . $opts . '</select>';
 	}
 
 	function getJSinWEsearchobj($name){
-		return $this->getJSinWElistnavigation($name) . $this->getJSinWEworkspace($name) . $this->getJSinWEshowVisible($name);
-	}
-
-	function getJSinWEworkspace($name){
 		return we_html_element::jsElement('
-				function setWs(path,id) {
-					document.we_form.elements[\'we_' . $name . '_WorkspacePath\'].value=path;
-					document.we_form.elements[\'we_' . $name . '_WorkspaceID\'].value=id;
-					top.we_cmd("reload_editpage");
-				}');
-	}
+_EditorFrame.setEditorIsHot(false);
 
-	function getJSinWEshowVisible($name){
-		return we_html_element::jsElement('
-				function toggleShowVisible(c) {
-					c.value=(c.checked ? 1 : 0);
-					document.we_form.elements[\'SearchStart\'].value = 0;
-					top.we_cmd(\'reload_editpage\');
-				}');
+function next(){
+	document.we_form.elements.SearchStart.value = parseInt(document.we_form.elements.SearchStart.value) + ' . $this->anzahl . ';
+	top.we_cmd("reload_editpage");
+}
+function back(){
+	document.we_form.elements.SearchStart.value = parseInt(document.we_form.elements.SearchStart.value) - ' . $this->anzahl . ';
+	top.we_cmd("reload_editpage");
+}
+
+function setOrder(order){
+
+	foo = document.we_form.elements.Order.value;
+
+	if(((foo.substring(foo.length-5,foo.length) == " DESC") && (foo.substring(0,order.length-5) == order)) || foo != order){
+		document.we_form.elements.Order.value=order;
+	}else{
+		document.we_form.elements.Order.value=order+" DESC";
+	}
+	top.we_cmd("reload_editpage");
+}
+
+function setWs(path,id) {
+	document.we_form.elements["we_' . $name . '_WorkspacePath"].value=path;
+	document.we_form.elements["we_' . $name . '_WorkspaceID"].value=id;
+	top.we_cmd("reload_editpage");
+}
+
+function toggleShowVisible(c) {
+	c.value=(c.checked ? 1 : 0);
+	document.we_form.elements.SearchStart.value = 0;
+	top.we_cmd("reload_editpage");
+}');
 	}
 
 	function greenOnly($GreenOnly, $pid, $cid){
 		if($GreenOnly){
-			$pid_tail = makePIDTail($pid, $cid, $GLOBALS['DB_WE'], FILE_TABLE);
+			$pid_tail = we_objectFile::makePIDTail($pid, $cid, $GLOBALS['DB_WE']);
 			return ' AND ' . OBJECT_X_TABLE . intval($cid) . '.OF_Published > 0 AND ' . $pid_tail;
 		}
 	}
 
-	function getExtraWorkspace($exws, $we_extraWsLength, $id, $userWSArray){
+	function getExtraWorkspace($exws, $len, $id, $userWSArray){
 		if(empty($exws)){
 			return "-";
 		}
-		$out = '<table border="0" cellpadding="0" cellspacing="0">';
-		for($i = 0; $i < count($exws); $i++){
-			if($exws[$i] != ""){
-				if(permissionhandler::hasPerm("ADMINISTRATOR")){
-					$foo = true;
-				} else {
-					$foo = in_workspace($exws[$i], $userWSArray);
-				}
-				if($foo){
-					$checkbox = '<a href="javascript:we_cmd(\'object_toggleExtraWorkspace\',\'' . $GLOBALS["we_transaction"] . '\',\'' . $this->db->f("ID") . '\',\'' . $exws[$i] . '\',\'' . $id . '\')"><img name="check_' . $id . '_' . $this->db->f("ID") . '" src="' . TREE_IMAGE_DIR . 'check' . (strstr($this->db->f("OF_ExtraWorkspacesSelected"), "," . $exws[$i] . ",") ? "1" : "0") . '.gif" width="16" height="18" border="0" /></a>';
-				} else {
-					$checkbox = '<img name="check_' . $id . '_' . $this->db->f("ID") . '" src="' . TREE_IMAGE_DIR . 'check' . (strstr($this->db->f("OF_ExtraWorkspacesSelected"), "," . $exws[$i] . ",") ? "1" : "0") . '_disabled.gif" width="16" height="18" border="0" />';
-				}
-				$p = id_to_path($exws[$i]);
-				$out .= '
+		$isAdmin = permissionhandler::hasPerm("ADMINISTRATOR");
+		$out = '<table class="default">';
+		foreach($exws as $cur){
+			if($cur == ""){
+				continue;
+			}
+
+			$checkbox = ($isAdmin || we_users_util::in_workspace($cur, $userWSArray) ?
+					'<a href="javascript:we_cmd(\'object_toggleExtraWorkspace\',\'' . $GLOBALS["we_transaction"] . '\',\'' . $this->db->f("ID") . '\',\'' . $cur . '\',\'' . $id . '\')"><i name="check_' . $id . '_' . $this->db->f("ID") . '" class="fa fa-' . (strstr($this->db->f("OF_ExtraWorkspacesSelected"), "," . $cur . ",") ? 'check-' : '') . 'square-o wecheckIcon"></i></a>' :
+					'<i name="check_' . $id . '_' . $this->db->f("ID") . '" class="fa fa-' . (strstr($this->db->f("OF_ExtraWorkspacesSelected"), "," . $cur . ",") ? 'check-' : '') . 'square-o wecheckIcon"></i>'
+				);
+
+			$p = id_to_path($cur);
+			$out .= '
 <tr>
 	<td>' . $checkbox . '</td>
-	<td>' . we_html_tools::getPixel(5, 2) . '</td>
-	<td class="middlefont">&nbsp;<a href="javascript:setWs(\'' . $p . '\',\'' . $exws[$i] . '\')" class="middlefont" title="' . $p . '">' . we_util_Strings::shortenPath($p, $we_extraWsLength) . '</a><td>
+	<td style="width:5px;"></td>
+	<td class="middlefont">&nbsp;<a href="javascript:setWs(\'' . $p . '\',\'' . $cur . '\')" class="middlefont" title="' . $p . '">' . we_base_util::shortenPath($p, $len) . '</a><td>
 </tr>';
-			}
 		}
-		$out .= '</table>';
-		return $out;
+
+		return $out . '</table>';
 	}
 
-	function getWorkspaces($foo, $we_wsLength){
-		if(empty($foo)){
+	function getWorkspaces(array $foo, $len){
+		if(!$foo){
 			return '-';
 		}
-		$out = '<table border="0" cellpadding="0" cellspacing="0">';
+		$out = '<table class="default">';
 		foreach($foo as $cur){
-			if($cur != ""){
-				$p = id_to_path($cur);
+			if($cur == ""){
+				continue;
+			}
+			$p = id_to_path($cur);
 //				$pl = strlen($p);
-				$out .= '
+			$out .= '
 <tr>
 	<td class="middlefont">
-		&nbsp;<a href="javascript:setWs(\'' . $p . '\',\'' . $cur . '\')" class="middlefont" title="' . $p . '">' . we_util_Strings::shortenPath($p, $we_wsLength) . '</a><td>
+		&nbsp;<a href="javascript:setWs(\'' . $p . '\',\'' . $cur . '\')" class="middlefont" title="' . $p . '">' . we_base_util::shortenPath($p, $len) . '</a><td>
 </tr>';
-			}
 		}
-		$out .= '</table>';
-		return $out;
+
+		return $out . '</table>';
 	}
 
 	function searchfor($searchname, $searchfield, $searchlocation, $tablename, $rows = -1, $start = 0, $order = '', $desc = 0){
@@ -179,11 +205,11 @@ class we_object_search extends we_search_base{
 			$filteredFields = '';
 			$fieldsToFilterOut = array();
 
-			$type = !preg_match('/^[-+]?\d*\.?\d+$/', $searchname[$i]) ? 1 : (!preg_match('/^[-+]?\d+$/', $searchname[$i])? 2 : 0);
+			$type = !preg_match('/^[-+]?\d*\.?\d+$/', $searchname[$i]) ? 1 : (!preg_match('/^[-+]?\d+$/', $searchname[$i]) ? 2 : 0);
 			switch($type){
 				case 1:
 					$fieldsToFilterOut = array_merge($fieldsToFilterOut, $this->getRealFields($tablename));
-					//no break!
+				//no break!
 				case 2:
 					$fieldsToFilterOut = array_merge($fieldsToFilterOut, $this->getIntFields($tablename));
 			}

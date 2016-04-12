@@ -23,8 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_charset($attribs, $content){
-	$content = isset($GLOBALS['CHARSET']) && $GLOBALS['CHARSET'] ? $GLOBALS['CHARSET'] : $content;
-	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'] && $GLOBALS['we_doc']->EditPageNr === we_base_constants::WE_EDITPAGE_PROPERTIES){
+	$content = !empty($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET'] : $content;
+	if(!empty($GLOBALS['we_editmode']) && $GLOBALS['we_doc']->EditPageNr === we_base_constants::WE_EDITPAGE_PROPERTIES){
 		//set meta data & exit
 		$GLOBALS['meta']['Charset'] = array(
 			'default' => $content,
@@ -34,14 +34,12 @@ function we_tag_charset($attribs, $content){
 	}
 
 	if($content){ //	set charset
-		$attribs['http-equiv'] = 'Content-Type';
-		$attribs['content'] = 'text/html; charset=' . $content;
+		$attribs['charset'] = $content;
 		if(!headers_sent()){
-			header('Content-Type: ' . $attribs['content']);
+			header('Content-Type: ' . 'text/html; charset=' . $content);
 		}
-		$attribs = removeAttribs($attribs, array('defined'));
 
-		return getHtmlTag('meta', $attribs) . "\n";
+		return getHtmlTag('meta', removeAttribs($attribs, array('defined'))) . "\n";
 	}
 	return '';
 }

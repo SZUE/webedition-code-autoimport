@@ -27,7 +27,7 @@ abstract class we_textContentDocument extends we_textDocument{
 	public $DocType = '';
 
 	/* these fields are never read from temporary tables */
-	const primaryDBFiels = 'Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners,WebUserID,Language';
+	const primaryDBFiels = 'Path,Text,Filename,Extension,ParentID,Published,ModDate,CreatorID,ModifierID,Owners,RestrictOwners,WebUserID,Language,temp_template_id,DocType,TemplateID,OwnersReadOnly,temp_category,urlMap,viewType,IsProtected,CreationDate,RebuildDate';
 
 	function __construct(){
 		parent::__construct();
@@ -37,7 +37,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		$this->IsTextContentDoc = true;
 		if(isWE()){
 			if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
-				array_push($this->persistent_slots, 'FromOk', 'ToOk', 'From', 'To');
+				array_push($this->persistent_slots, 'From', 'To');
 			}
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PREVIEW, we_base_constants::WE_EDITPAGE_SCHEDULER);
 		}
@@ -48,25 +48,14 @@ abstract class we_textContentDocument extends we_textDocument{
 			case we_base_constants::WE_EDITPAGE_SCHEDULER:
 				return 'we_editors/we_editor_schedpro.inc.php';
 			case we_base_constants::WE_EDITPAGE_VALIDATION:
-				return 'we_templates/validateDocument.inc.php';
+				return 'we_editors/validateDocument.inc.php';
 			default:
 				return parent::editor();
 		}
 	}
 
-	public function makeSameNew(){
-		$Category = $this->Category;
-		$ContentType = $this->ContentType;
-		$DocType = $this->DocType;
-		$IsSearchable = $this->IsSearchable;
-		$Extension = $this->Extension;
-		parent::makeSameNew();
-		$this->DocType = $DocType;
-		$this->changeDoctype();
-		$this->Category = $Category;
-		$this->ContentType = $ContentType;
-		$this->IsSearchable = $IsSearchable;
-		$this->Extension = $Extension;
+	public function makeSameNew(array $keep = array()){
+		parent::makeSameNew(array_merge($keep, array('Category', 'ContentType', 'DocType', 'IsSearchable', 'Extension')));
 	}
 
 	public function insertAtIndex(array $only = null, array $fieldTypes = null){
@@ -89,19 +78,18 @@ abstract class we_textContentDocument extends we_textDocument{
 					continue;
 				}
 
-				if(isset($v['type']) && $v['type'] === 'txt' && !preg_match('|^a:\d:{|', $_dat)){
+				if(isset($v['type']) && $v['type'] === 'txt' && !preg_match('-^[asO]:\d+:|^[{\[].*[}\]]$-', $_dat)){
 					$text .= ' ' . $_dat;
 				}
 			}
-			//variants ar initialized, so nothing special to do
+			//variants are initialized, so nothing special to do
 		}
 
-		$maxDB = 65535; //min(1000000, $this->DB_WE->getMaxAllowedPacket() - 1024);
+		$maxDB = 65535;
 		return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
 					'ID' => intval($this->ID),
 					'DID' => intval($this->ID),
 					'Text' => substr(preg_replace(array('/(&#160;|&nbsp;)/', "/ *[\r\n]+/", '/  +/'), ' ', trim(strip_tags($text))), 0, $maxDB),
-					'Workspace' => $this->ParentPath,
 					'WorkspaceID' => intval($this->ParentID),
 					'Category' => $this->Category,
 					'Doctype' => $this->DocType,
@@ -172,24 +160,23 @@ abstract class we_textContentDocument extends we_textDocument{
 		}
 	}
 
-	function formDocType2($width = 300, $disable = false){
+	protected function formDocType($disable = false){
 		if($disable){
 			$name = ($this->DocType ? f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($this->DocType), 'DocType', $this->DB_WE) : g_l('weClass', '[nodoctype]'));
 			return g_l('weClass', '[doctype]') . we_html_element::htmlBr() . $name;
 		}
 		$dtq = we_docTypes::getDoctypeQuery($this->DB_WE);
 
-		return $this->formSelect2($width, 'DocType', DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'], 'ID','DocType', g_l('weClass', '[doctype]'),'dt.ID,dt.DocType', $dtq['where'], 1, $this->DocType, false, (($this->DocType !== '') ?
+		return $this->formSelect2(0, 'DocType', DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'], 'ID', 'DocType', g_l('weClass', '[doctype]'), 'dt.ID,dt.DocType', $dtq['where'], 1, $this->DocType, false, (($this->DocType !== '') ?
 					"if(confirm('" . g_l('weClass', '[doctype_changed_question]') . "')){we_cmd('doctype_changed');};" :
 					"we_cmd('doctype_changed');") .
-				"_EditorFrame.setEditorIsHot(true);", array(), 'left', "defaultfont", "", we_html_button::create_button("edit", "javascript:top.we_cmd('doctypes')", false, 0, 0, "", "", (!permissionhandler::hasPerm('EDIT_DOCTYPE'))), ((permissionhandler::hasPerm('NO_DOCTYPE') || ($this->ID && empty($this->DocType)) ) ) ? array('', g_l('weClass', '[nodoctype]')) : '');
+				"WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);", array(), 'left', "defaultfont", "", we_html_button::create_button(we_html_button::EDIT, "javascript:top.we_cmd('doctypes')", false, 0, 0, "", "", (!permissionhandler::hasPerm('EDIT_DOCTYPE'))), ((permissionhandler::hasPerm('NO_DOCTYPE') || ($this->ID && empty($this->DocType)) ) ) ? array('', g_l('weClass', '[nodoctype]')) : '');
 	}
 
 	function formDocTypeTempl(){
 		return '
-<table style="border-spacing: 0px;border-style:none" cellpadding="0">
-	<tr><td class="defaultfont" align="left">' . $this->formDocType2(388, $this->Published) . '</td></tr>
-	<tr><td>' . we_html_tools::getPixel(2, 6) . '</td></tr>
+<table class="default">
+	<tr><td class="defaultfont" style="text-align:left;padding-bottom:2px;">' . $this->formDocType($this->Published) . '</td></tr>
 	<tr><td>' . $this->formIsSearchable() . '</td></tr>
 	<tr><td>' . $this->formInGlossar() . '</td></tr>
 </table>';
@@ -206,10 +193,10 @@ abstract class we_textContentDocument extends we_textDocument{
 				parent::we_load($from);
 				break;
 			case we_class::LOAD_TEMP_DB:
-				$sessDat = @unserialize(we_temporaryDocument::load($this->ID, $this->Table, $this->DB_WE));
+				$sessDat = we_temporaryDocument::load($this->ID, $this->Table, $this->DB_WE);
 				if($sessDat){
 					$this->i_initSerializedDat($sessDat);
-					$this->i_getPersistentSlotsFromDB(self::primaryDBFiels);
+					$this->i_getPersistentSlotsFromDB(/*self::primaryDBFiels*/);
 					$this->OldPath = $this->Path;
 				} else {
 					$this->we_load(we_class::LOAD_MAID_DB);
@@ -220,10 +207,9 @@ abstract class we_textContentDocument extends we_textDocument{
 				break;
 			case we_class::LOAD_SCHEDULE_DB:
 				if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
-					$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . ' AND ClassName="' . $this->DB_WE->escape($this->ClassName) . '" AND Was=' . we_schedpro::SCHEDULE_FROM, 'SerializedData', $this->DB_WE);
-					if($sessDat &&
-						$this->i_initSerializedDat(unserialize(substr_compare($sessDat, 'a:', 0, 2) == 0 ? $sessDat : gzuncompress($sessDat)))){
-						$this->i_getPersistentSlotsFromDB(self::primaryDBFiels);
+					$sessDat = we_unserialize(f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . ' AND ClassName="' . $this->DB_WE->escape($this->ClassName) . '" AND Was=' . we_schedpro::SCHEDULE_FROM, '', $this->DB_WE));
+					if($sessDat && $this->i_initSerializedDat($sessDat)){
+						$this->i_getPersistentSlotsFromDB(/*self::primaryDBFiels*/);
 						$this->OldPath = $this->Path;
 
 						break;
@@ -236,9 +222,6 @@ abstract class we_textContentDocument extends we_textDocument{
 		$this->OldPath = $this->Path;
 		if(isWE()){//no need to load schedule data, if not in editmode
 			$this->loadSchedule();
-		}
-		if($this->Category){ // Category-Fix!
-			$this->Category = $this->i_fixCSVPrePost($this->Category);
 		}
 	}
 
@@ -300,7 +283,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		}
 		$this->oldCategory = f('SELECT Category FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->ID), '', $this->DB_WE);
 
-		if($saveinMainDB && !we_root::we_save(true)){
+		if(!($saveinMainDB ? we_root::we_save(true) : $this->we_save($DoNotMark))){
 			return false; // calls the root function, so the document will be saved in main-db but it will not be written!
 		}
 
@@ -324,7 +307,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		//FIXME: changes of customerFilter are missing here
 		$this->rewriteNavigation();
 		//	}
-		if(isset($_SESSION['weS']['versions']['fromScheduler']) && $_SESSION['weS']['versions']['fromScheduler'] && (($this->ContentType == we_base_ContentTypes::WEDOCUMENT && defined('VERSIONING_TEXT_WEBEDITION') && VERSIONING_TEXT_WEBEDITION) || ($this->ContentType == we_base_ContentTypes::HTML && defined('VERSIONING_TEXT_HTML') && VERSIONING_TEXT_HTML))){
+		if(!empty($_SESSION['weS']['versions']['fromScheduler']) && (($this->ContentType == we_base_ContentTypes::WEDOCUMENT && defined('VERSIONING_TEXT_WEBEDITION') && VERSIONING_TEXT_WEBEDITION) || ($this->ContentType == we_base_ContentTypes::HTML && defined('VERSIONING_TEXT_HTML') && VERSIONING_TEXT_HTML))){
 			$version = new we_versions_version();
 			$version->save($this, 'published');
 		}
@@ -383,7 +366,7 @@ abstract class we_textContentDocument extends we_textDocument{
 
 	function we_resaveTemporaryTable(){
 		$saveArr = array();
-		$this->saveInSession($saveArr);
+		$this->saveInSession($saveArr, true);
 		if(($this->ModDate > $this->Published) && $this->Published){
 			return (!we_temporaryDocument::isInTempDB($this->ID, $this->Table, $this->DB_WE) ?
 					we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE) :
@@ -407,7 +390,7 @@ abstract class we_textContentDocument extends we_textDocument{
 
 	private function i_saveTmp($write = true){
 		$saveArr = array();
-		$this->saveInSession($saveArr);
+		$this->saveInSession($saveArr, true);
 		if(!we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE)){
 			return false;
 		}
@@ -433,7 +416,7 @@ abstract class we_textContentDocument extends we_textDocument{
 			$parent = str_replace('\\', '/', dirname($parent));
 		}
 		for($i = (count($cf) - 1); $i >= 0; $i--){
-			we_base_file::createLocalFolder($cf[$i]);
+			we_base_file::createLocalFolderByPath($cf[$i]);
 		}
 		$doc = $this->i_getDocumentToSave();
 		return parent::i_writeMainDir($doc);

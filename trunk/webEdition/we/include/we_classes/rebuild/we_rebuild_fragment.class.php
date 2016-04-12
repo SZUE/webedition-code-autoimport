@@ -25,13 +25,17 @@
 class we_rebuild_fragment extends we_fragment_base{
 
 	function doTask(){
+		switch($this->data['cn']){
+			case 'we_folder':
+				$this->taskPerFragment = max(20, $this->taskPerFragment);
+		}
 		$this->updateProgressBar();
 		we_rebuild_base::rebuild($this->data);
 	}
 
 	function updateProgressBar(){
 		$percent = round((100 / count($this->alldata)) * (1 + $this->currentTask));
-		echo we_html_element::jsElement('if(parent.wizbusy.document.getElementById("progr")){parent.wizbusy.document.getElementById("progr").style.display="";};parent.wizbusy.setProgressText("pb1",(parent.wizbusy.document.getElementById("progr") ? "' . addslashes(we_util_Strings::shortenPath($this->data["path"], 33)) . '" : "' . g_l('rebuild', '[savingDocument]') . addslashes(we_util_Strings::shortenPath($this->data["path"], 60)) . '") );parent.wizbusy.setProgress(' . $percent . ');');
+		echo we_html_element::jsElement('if(parent.wizbusy.document.getElementById("progr")){parent.wizbusy.document.getElementById("progr").style.display="";};parent.wizbusy.setProgressText("pb1",(parent.wizbusy.document.getElementById("progr") ? "' . addslashes(we_base_util::shortenPath($this->data["path"], 33)) . '" : "' . g_l('rebuild', '[savingDocument]') . addslashes(we_base_util::shortenPath($this->data["path"], 60)) . '") );parent.wizbusy.setProgress(' . $percent . ');');
 		flush();
 	}
 
@@ -42,13 +46,12 @@ class we_rebuild_fragment extends we_fragment_base{
 			top.close();');
 	}
 
-	function printHeader(){
+	static function printHeader(){
 		we_html_tools::protect();
-		echo we_html_tools::getHtmlTop() .
-		'</head>';
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', ' ');
 	}
 
-	function printBodyTag($attributes = ""){
+	function printBodyTag($attributes = ''){
 
 	}
 

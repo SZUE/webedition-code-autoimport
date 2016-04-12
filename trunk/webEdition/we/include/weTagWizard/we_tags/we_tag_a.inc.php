@@ -7,7 +7,7 @@ $this->Groups[] = 'input_tags';
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$id = new weTagData_selectorAttribute('id', FILE_TABLE, 'text/webedition', true, '');
+$id = new weTagData_selectorAttribute('id', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, true, '');
 $target = new weTagData_choiceAttribute('target', array(
 	new weTagDataOption('_top'),
 	new weTagDataOption('_parent'),

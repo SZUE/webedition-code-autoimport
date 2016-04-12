@@ -22,15 +22,15 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcGetRssView extends rpcJsonView{
+class rpcGetRssView extends we_rpc_jsonView{
 
 	/**
-	 * @param rpcResponse $response
+	 * @param we_rpc_response $response
 	 * @return string
 	 */
 	function getResponse($response){
 		return
-			'weResponse = {
+			'var weResponse = {
 			"type":"' . ($response->Success ? "response" : "error") . '",
 			"data":"' . addslashes(str_replace(array("\n", "\r"), " ", $response->getData("data"))) . '",
 			"titel":"' . addslashes($response->getData("titel")) . '",

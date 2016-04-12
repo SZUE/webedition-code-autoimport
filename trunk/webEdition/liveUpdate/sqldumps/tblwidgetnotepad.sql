@@ -1,7 +1,7 @@
 CREATE TABLE ###TBLPREFIX###tblwidgetnotepad (
-  `ID` mediumint(6) unsigned NOT NULL auto_increment,
+  `ID` mediumint unsigned NOT NULL auto_increment,
   `WidgetName` varchar(100) NOT NULL default '',
-  `UserID` int(10) unsigned NOT NULL default '0',
+  `UserID` int unsigned NOT NULL default '0',
   `CreationDate` date NOT NULL default '0000-00-00',
   `Title` varchar(255) NOT NULL default '',
   `Text` text NOT NULL,

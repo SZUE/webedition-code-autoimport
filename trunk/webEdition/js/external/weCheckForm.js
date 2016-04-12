@@ -29,10 +29,7 @@ weCheckFormEvent.addEvent = function (e, name, f) {
 	if (e.addEventListener) {
 		e.addEventListener(name, f, true);
 	}
-	if (e.attachEvent) {
-		e.attachEvent("on" + name, f);
-	}
-}
+};
 
 weCheckFormEvent.stopEvent = function (ev) {
 	if (ev.stopPropagation) {
@@ -42,22 +39,22 @@ weCheckFormEvent.stopEvent = function (ev) {
 		ev.cancelBubble = true;
 		ev.returnValue = false;
 	}
-}
+};
 
 
-function initWeCheckForm_by_name(name) {
+function initWeCheckForm_by_name(func, name) {
 	forms = document.getElementsByTagName("form");
 	for (i = 0; i < forms.length; i++) {
 		if (forms[i].name == name) {
-			weCheckFormEvent.addEvent(forms[i], "submit", eval("weCheckForm_n_" + name));
+			weCheckFormEvent.addEvent(forms[i], "submit", func);
 			break;
 		}
 	}
 }
 
-function initWeCheckForm_by_id(id) {
+function initWeCheckForm_by_id(func, id) {
 	formular = document.getElementById(id);
-	weCheckFormEvent.addEvent(formular, "submit", eval("weCheckForm_id_" + id));
+	weCheckFormEvent.addEvent(formular, "submit", func);
 }
 
 function weCheckFormMandatory(form, reqFields) { //  return name of not set mandatory fields
@@ -74,7 +71,7 @@ function weCheckFormMandatory(form, reqFields) { //  return name of not set mand
 				ok = false;
 			}
 		} else if (elem && elem.type && (elem.type == "select-one" || elem.type == "select-multi")) {
-			if (elem.selectedIndex == undefined || elem.options[elem.selectedIndex].value == "") { // select
+			if (elem.selectedIndex === undefined || elem.options[elem.selectedIndex].value === "") { // select
 				ok = false;
 			}
 		} else if (!elem || !elem.value) {        //  text, password, select
@@ -97,13 +94,10 @@ function weCheckFormMandatory(form, reqFields) { //  return name of not set mand
 }
 
 function weCheckFormEmail(form, emailFields) {    //  return names of invalid email fields
-
 	invalidEmails = [];
 
 	if (emailFields.length > 0) {
-
-		pattern = "^([a-zA-Z0-9-���_\.]+)@([a-zA-Z0-9\-_\\.]+)\\.([a-zA-Z0-9]{2,4})";
-
+		pattern = "^([a-zA-Z0-9-_\.]+)@([a-zA-Z0-9\-_\\.]+)\\.([a-zA-Z0-9]{2,4})";
 		for (i = 0; i < emailFields.length; i++) {
 
 			elem = formular[emailFields[i]];

@@ -43,7 +43,7 @@ function we_tag_printVersion($attribs, $content){
 		$hideQuery[] = session_name();
 	}
 	if(isset($_REQUEST)){
-		$tmp = filterXss($_REQUEST);
+		$tmp = filterXss(array_merge($_GET, $_POST));
 		foreach($tmp as $k => $v){
 			if((!is_array($v)) && (!in_array($k, $hideQuery))){
 				$_query_string[$k] = $v;
@@ -61,7 +61,6 @@ function we_tag_printVersion($attribs, $content){
 			$_query_string['pv_id'] = $id;
 			$_query_string['pv_tid'] = $tid;
 		} else {
-
 			return $content;
 			/*
 			  $_query_string['we_cmd[0]'] = 'show';

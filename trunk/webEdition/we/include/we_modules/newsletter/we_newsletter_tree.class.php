@@ -22,129 +22,95 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_newsletter_tree extends weMainTree{
+class we_newsletter_tree extends weTree{
 
-	function __construct($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
-
-		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
+	protected function customJSFile(){
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_tree.js');
 	}
 
-	function getJSMakeNewEntry(){
-		return '
-			function makeNewEntry(icon,id,pid,txt,open,ct,tab){
-					if(treeData[indexOfEntry(pid)]){
-						if(treeData[indexOfEntry(pid)].loaded){
+	public static function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,IsFolder', $addWhere = '', $addOrderBy = ''){
+		$db = new DB_WE();
+		$table = NEWSLETTER_TABLE;
+		$wsQuery = '';
 
-	 						if(ct=="folder") ct="group";
-	 						else ct="item";
+		$items = $_aWsQuery = $parentpaths = array();
 
-							var attribs=new Array();
-
-							attribs["id"]=id;
-							attribs["icon"]=icon;
-							attribs["text"]=txt;
-							attribs["parentid"]=pid;
-							attribs["open"]=open;
-
-	 						attribs["tooltip"]=id;
-	 						attribs["typ"]=ct;
-
-	 						attribs["contenttype"]="newsletter";
-
-							attribs["disabled"]=0;
-							attribs["published"]=1;
-
-							attribs["selected"]=0;
-
-							treeData.addSort(new node(attribs));
-
-							drawTree();
-						}
-					}
-			}
-			';
-	}
-
-	function getJSUpdateItem(){
-		return '
- 				function updateEntry(id,text,pid){
-        			var ai = 1;
-        			while (ai <= treeData.len) {
-            			if (treeData[ai].id==id) {
-                 			treeData[ai].text=text;
-                 			treeData[ai].parentid=pid;
-             			}
-            	 		ai++;
-        			}
-					drawTree();
- 				}
-			';
-	}
-
-	function getJSTreeFunctions(){
-
-		$out = weTree::getJSTreeFunctions();
-
-		$out.='
-
-				function doClick(id,typ){
-					var node=' . $this->topFrame . '.get(id);
-    				' . $this->topFrame . '.we_cmd(\'newsletter_edit\',node.id,node.typ,node.table);
+		if(($ws = get_ws($table))){
+			$wsPathArray = id_to_path($ws, $table, $db, true);
+			foreach($wsPathArray as $path){
+				$_aWsQuery[] = ' Path LIKE "' . $path . '/%" OR ' . we_tool_treeDataSource::getQueryParents($path);
+				while($path != "/" && $path != "\\" && $path){
+					$parentpaths[] = $path;
+					$path = dirname($path);
 				}
-				' . $this->topFrame . '.loaded=1;
-			' . $this->getJSMakeNewEntry();
-		return $out;
-	}
-
-	function getJSStartTree(){
-
-		return 'function startTree(){
-				' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid=0";
-				drawTree();
-			}';
-	}
-
-	function getJSIncludeFunctions(){
-
-		$out = weTree::getJSIncludeFunctions();
-		$out.="\n" . $this->getJSStartTree() . "\n";
-
-		return $out;
-	}
-
-	function getJSInfo(){
-		return '
-			function info(text) {
-
 			}
-		';
-	}
-
-	function getJSOpenClose(){
-		return '
-function openClose(id){
-	var sort="";
-	if(id=="") return;
-	var eintragsIndex = indexOfEntry(id);
-	var openstatus;
-
-
-	if(treeData[eintragsIndex].open==0) openstatus=1;
-	else openstatus=0;
-
-	treeData[eintragsIndex].open=openstatus;
-
-	if(openstatus && treeData[eintragsIndex].loaded!=1){
-		if(sort!=""){
-			' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+id+"&sort="+sort;
-		}else{
-			' . $this->cmdFrame . '.location="' . $this->frameset . '?pnt=cmd&pid="+id;
+			$wsQuery = $_aWsQuery ? '(' . implode(' OR ', $_aWsQuery) . ') AND ' : '';
 		}
-	}else{
-		drawTree();
-	}
-	if(openstatus==1) treeData[eintragsIndex].loaded=1;
-}';
+
+		$prevoffset = max(0, $offset - $segment);
+		if($offset && $segment){
+			$items[] = array(
+				'id' => 'prev_' . $ParentID,
+				'parentid' => $ParentID,
+				'text' => 'display (' . $prevoffset . '-' . $offset . ')',
+				'contenttype' => 'arrowup',
+				'table' => NEWSLETTER_TABLE,
+				'typ' => 'threedots',
+				'open' => 0,
+				'published' => 0,
+				'disabled' => 0,
+				'tooltip' => '',
+				'offset' => $prevoffset
+			);
+		}
+
+		$where = " WHERE $wsQuery ParentID=" . intval($ParentID) . ' ' . $addWhere;
+
+		$db->query('SELECT ' . $db->escape($elem) . " FROM $table $where ORDER BY (text REGEXP '^[0-9]') DESC,abs(text),Text " . ($segment ? 'LIMIT ' . $offset . ',' . $segment : '' ));
+
+		while($db->next_record()){
+			$typ = array(
+				'typ' => ($db->f('IsFolder') == 1 ? 'group' : 'item'),
+				'open' => 0,
+				'disabled' => 0,
+				'tooltip' => $db->f('ID'),
+				'offset' => $offset,
+				'disabled' => in_array($db->f('Path'), $parentpaths) ? 1 : 0,
+				'text' => $db->f('Text'),
+				'path' => $db->f('Path'),
+				'published' => 1,
+				'contentType'=>($db->f('IsFolder') == 1 ? 'folder' : 'we/newsletter'),
+			);
+
+			$fileds = array();
+
+			foreach($db->Record as $k => $v){
+				if(!is_numeric($k)){
+					$fileds[strtolower($k)] = $v;
+				}
+			}
+
+			$items[] = array_merge($fileds, $typ);
+		}
+
+		$total = f('SELECT COUNT(1) FROM ' . $table . ' ' . $where, '', $db);
+		$nextoffset = $offset + $segment;
+		if($segment && ($total > $nextoffset)){
+			$items[] = array(
+				'id' => 'next_' . $ParentID,
+				'parentid' => 0,
+				'text' => 'display (' . $nextoffset . '-' . ($nextoffset + $segment) . ')',
+				'contenttype' => 'arrowdown',
+				'table' => NEWSLETTER_TABLE,
+				'typ' => 'threedots',
+				'open' => 0,
+				'disabled' => 0,
+				'tooltip' => '',
+				'offset' => $nextoffset
+			);
+		}
+
+		return $items;
 	}
 
 }

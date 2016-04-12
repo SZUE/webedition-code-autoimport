@@ -142,9 +142,8 @@ class we_net_Http{
 		$attribute = "_" . $attribute;
 		if(isset($this->$attribute)){
 			return $this->$attribute;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	/**
@@ -234,9 +233,8 @@ class we_net_Http{
 	public function head($param = array()){
 		if(!$this->_doRequest("HEAD", $param)){
 			return false;
-		} else {
-			return $this->_response;
 		}
+		return $this->_response;
 	}
 
 	/**
@@ -248,9 +246,8 @@ class we_net_Http{
 	public function get($param = array()){
 		if(!$this->_doRequest("GET", $param)){
 			throw new we_net_Exception();
-		} else {
-			return $this->_response;
 		}
+		return $this->_response;
 	}
 
 	/**
@@ -262,9 +259,8 @@ class we_net_Http{
 	public function post($param = array()){
 		if(!$this->_doRequest("POST", $param)){
 			return false;
-		} else {
-			return $this->_response;
 		}
+		return $this->_response;
 	}
 
 	/**
@@ -322,10 +318,8 @@ class we_net_Http{
 			$this->_response = $this->_client->request($method);
 			$this->_status = $this->_response->getStatus();
 			$this->_statustext = $this->_response->responseCodeAsText($this->_status);
-		} catch (Exception $e){
-			//we_util_Log::errorLog(get_class($this).": could send request to ".$this->_uri);
+		}catch(Exception $e){
 			throw new we_net_Exception(get_class($this) . ": could send request to " . $this->_uri);
-			return false;
 		}
 		return true;
 	}

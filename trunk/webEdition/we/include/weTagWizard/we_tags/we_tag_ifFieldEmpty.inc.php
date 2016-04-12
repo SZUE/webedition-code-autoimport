@@ -19,4 +19,5 @@ $this->Attributes[] = new weTagData_selectAttribute('type', array(new weTagDataO
 	new weTagDataOption('checkbox'),
 	new weTagDataOption('int'),
 	new weTagDataOption('float'),
+	new weTagDataOption('collection'),
 	), false, '');

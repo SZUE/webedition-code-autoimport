@@ -26,7 +26,7 @@ function we_tag_navigationWrite($attribs){
 	$name = weTag_getAttribute('navigationname', $attribs, 'default', we_base_request::STRING);
 	$depth = weTag_getAttribute('depth', $attribs, false, we_base_request::INT)? : false;
 
-	if(isset($GLOBALS['we_navigation'][$name])){
+	if(!empty($GLOBALS['we_navigation'][$name])){
 		$GLOBALS['weNavigationDepth'] = $depth;
 		$ret = $GLOBALS['we_navigation'][$name]->writeNavigation($depth);
 		unset($GLOBALS['weNavigationDepth']);

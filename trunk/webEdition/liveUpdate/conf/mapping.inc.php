@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -33,6 +32,7 @@ $LU_Variables = array(
 	'clientVersionName' => (defined('WE_VERSION_NAME')) ? WE_VERSION_NAME : '',
 	'clientVersionSupp' => (defined('WE_VERSION_SUPP')) ? WE_VERSION_SUPP : '',
 	'clientVersionSuppVersion' => (defined('WE_VERSION_SUPP_VERSION')) ? WE_VERSION_SUPP_VERSION : '',
+	'clientHotfixNr' => (defined('WE_VERSION_HOTFIX_NR')) ? WE_VERSION_HOTFIX_NR : 0,
 	'clientVersionBranch' => (defined('WE_VERSION_BRANCH')) ? WE_VERSION_BRANCH : '',
 	'clientPhpVersion' => PHP_VERSION,
 	'clientPhpExtensions' => implode(',', get_loaded_extensions()),
@@ -41,21 +41,19 @@ $LU_Variables = array(
 	'clientDBcharset' => we_database_base::getCharset(),
 	'clientDBcollation' => we_database_base::getCollation(),
 	'clientServerSoftware' => $_SERVER['SERVER_SOFTWARE'],
-	'clientUid' => (defined('UID') ? UID : false),
 	'clientSyslng' => WE_LANGUAGE,
 	'clientLng' => $GLOBALS['WE_LANGUAGE'] . ($GLOBALS['WE_BACKENDCHARSET'] === 'UTF-8' ? '_UTF-8' : ''),
-	'clientExtension' => '.php',
+	'clientExtension' => DEFAULT_DYNAMIC_EXT,
 	'clientDomain' => urlencode($_SERVER['SERVER_NAME']),
 	'clientInstalledModules' => $GLOBALS['_we_active_integrated_modules'],
 	'clientInstalledLanguages' => liveUpdateFunctions::getInstalledLanguages(),
 	'clientInstalledAppMeta' => we_tool_lookup::getAllTools(true, false, true),
-	'clientInstalledAppTOC' => we_app_Common::readAppTOCasString(),
 	'clientUpdateUrl' => getServerUrl() . $_SERVER['SCRIPT_NAME'],
 	'clientContent' => false,
 	'clientEncoding' => 'none',
 	'clientSessionName' => session_name(),
 	'clientSessionID' => session_id(),
-	'testUpdate' => isset($_SESSION['weS']['testUpdate']) ? $_SESSION['weS']['testUpdate'] : 0,
+	'testUpdate' => empty($_SESSION['weS']['testUpdate']) ? 0 : $_SESSION['weS']['testUpdate'],
 );
 
 // These request variables listed here are NOT submitted to the server - fill it

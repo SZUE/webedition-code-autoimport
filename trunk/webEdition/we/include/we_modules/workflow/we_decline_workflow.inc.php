@@ -39,7 +39,8 @@ if($cmd === "ok"){
 			$script = "opener.top.we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');";
 		} else if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 
-			$script = 'opener.top.weEditorFrameController.getActiveDocumentReference().frames[3].location.reload();';
+
+			$script = 'WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter.location.reload();';
 		}
 
 		if(($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_INFO)){
@@ -64,13 +65,13 @@ echo STYLESHEET;
 </head>
 
 <body class="weDialogBody">
-<center>
+<div style="text-align:center">
 	<?php if($cmd != 'ok'){ ?>
 		<form action="<?php echo WEBEDITION_DIR; ?>we_cmd.php" method="post">
 			<?php
-			$okbut = we_html_button::create_button("ok", "javascript:document.forms[0].submit()");
-			$cancelbut = we_html_button::create_button("cancel", "javascript:top.close()");
-			$content = '<table border="0" cellpadding="0" cellspacing="0">';
+			$okbut = we_html_button::create_button(we_html_button::OK, "javascript:document.forms[0].submit()");
+			$cancelbut = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close()");
+			$content = '<table class="default">';
 			$wf_textarea = '<textarea name="wf_text" rows="7" cols="50" style="width:360;height:190"></textarea>';
 			$content .= '
 						<tr>
@@ -85,14 +86,14 @@ echo STYLESHEET;
 
 			$_button = we_html_button::position_yes_no_cancel($okbut, "", $cancelbut);
 			$frame = we_html_tools::htmlDialogLayout($content, g_l('modules_workflow', '[decline_workflow]'), $_button);
-			echo $frame . '
-						<input type="hidden" name="cmd" value="ok" />
-						<input type="hidden" name="we_cmd[0]" value="' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . '" />
-						<input type="hidden" name="we_cmd[1]" value="' . $we_transaction . '" />';
+			echo $frame . we_html_element::htmlHiddens(array(
+				"cmd" => "ok",
+				"we_cmd[0]" => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
+				"we_cmd[1]" => $we_transaction));
 			?>
 		</form>
 	<?php } ?>
-</center>
+</div>
 
 </body>
 

@@ -30,6 +30,7 @@
 //ini_set('memory_limit', '21M');
 
 class we_helpers_pdf2text{
+
 	const READPORTION = 512000;
 	const NL = "\n";
 	const SPACE = ' ';
@@ -95,7 +96,9 @@ class we_helpers_pdf2text{
 	public function getInfo(){
 		$offset = max(0, filesize($this->file) - self::INFO_PORTION);
 		$file = fopen($this->file, 'r');
+		//read from start of file
 		$data = fread($file, self::INFO_PORTION);
+		//read portion from the end
 		fseek($file, $offset);
 		//best data is in the end, so try this first!
 		$data = fread($file, self::INFO_PORTION) . $data;
@@ -137,7 +140,7 @@ class we_helpers_pdf2text{
 
 	private static function getStringContent($str){
 		$str = trim($str);
-		switch(substr($str, 0, 1)){
+		switch($str{0}){
 			case '('://string
 				return CheckAndConvertISOfrontend(preg_replace_callback('#\\\\(\d{3})#', 'we_helpers_pdf2text::setOctChar', trim($str, self::TRIM_STRING)));
 			case '<'://hex
@@ -591,7 +594,7 @@ class we_helpers_pdf2text{
 				fclose($file);
 				$file = 0;
 			}
-			return'';
+			return '';
 		}
 
 		$file = $file ? : fopen($fname, 'r');
@@ -903,7 +906,7 @@ class we_helpers_pdf2text{
 			}
 		}
 		if($last){
-			print('Mem usage ' . round((($max / 1024) / 1024), 3) . ' MiB' . "\n");
+			echo 'Mem usage ' . round((($max / 1024) / 1024), 3) . ' MiB' . "\n";
 		}
 	}
 

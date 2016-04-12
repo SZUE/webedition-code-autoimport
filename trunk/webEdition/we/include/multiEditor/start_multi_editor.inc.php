@@ -31,7 +31,7 @@ we_html_tools::protect();
 function checkIfValidStartdocument($id, $type = 'document'){
 
 	return ($type === 'object' ?
-			(f('SELECT ContentType FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id)) === 'objectFile') :
+			(f('SELECT ContentType FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id)) === we_base_ContentTypes::OBJECT_FILE) :
 			(f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id)) === we_base_ContentTypes::WEDOCUMENT));
 }
 
@@ -41,19 +41,21 @@ function checkIfValidStartdocument($id, $type = 'document'){
 
 
 function _buildJsCommand($cmdArray = array('', '', 'cockpit', 'open_cockpit', '', '', '', '', '')){
-	return 'if(top && top.weEditorFrameController) top.weEditorFrameController.openDocument("' . implode('", "', $cmdArray) . '");';
+	return 'if(WE().layout.weEditorFrameController){
+		WE().layout.weEditorFrameController.openDocument("' . implode('", "', $cmdArray) . '");
+}';
 }
 
 $jsCommand = '';
 if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4) === 'SEEM_edit_include'){ // Edit-Include-Mode
 // in multiEditorFrameset we_cmd[1] can be set to reach this
 	$directCmd = array();
-	for($i = 1;/* $i < count($_REQUEST['we_cmd']) && */ $i < 4; $i++){
+	for($i = 1; $i < 4; $i++){
 		$directCmd[] = we_base_request::_(we_base_request::STRING, 'we_cmd', '', $i);
 	}
 	$jsCommand = _buildJsCommand($directCmd);
 } else { // check preferences for which document to open at startup
-// <we:linkToSeeMode> !!!!
+// <we:linkToSeeMode> !
 	if(isset($_SESSION['weS']['SEEM']) && isset($_SESSION['weS']['SEEM']['open_selected'])){
 		switch($_SESSION['weS']['SEEM']['startType']){
 			case 'document':
@@ -74,7 +76,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4) === 'SEEM_edit_i
 					$directCmd = array(
 						OBJECT_FILES_TABLE,
 						$_SESSION['weS']['SEEM']['startId'],
-						'objectFile'
+						we_base_ContentTypes::OBJECT_FILE
 					);
 					$jsCommand = _buildJsCommand($directCmd);
 				} else {
@@ -97,7 +99,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4) === 'SEEM_edit_i
 					$jsCommand = _buildJsCommand(array(
 						OBJECT_FILES_TABLE,
 						$_SESSION['prefs']['seem_start_file'],
-						'objectFile',
+						we_base_ContentTypes::OBJECT_FILE,
 					));
 				} else {
 					t_e('start doc not valid', $_SESSION['prefs']['seem_start_file']);
@@ -105,7 +107,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4) === 'SEEM_edit_i
 				}
 				break;
 			case '0':
-				$jsCommand = 'top.weEditorFrameController.toggleFrames();';
+				$jsCommand = 'WE().layout.weEditorFrameController.toggleFrames();';
 				break;
 			case 'document':
 				if($_SESSION['prefs']['seem_start_file'] != 0 && checkIfValidStartdocument($_SESSION['prefs']['seem_start_file'])){ //	if a stardocument is already selected - show this
@@ -128,4 +130,4 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4) === 'SEEM_edit_i
 		}
 	}
 }
-echo 	we_html_element::jsElement($jsCommand);
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') . we_html_element::jsElement($jsCommand), we_html_element::htmlBody());

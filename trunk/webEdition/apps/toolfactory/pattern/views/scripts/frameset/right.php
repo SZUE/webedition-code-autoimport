@@ -23,7 +23,6 @@ $controller = $this->modelId ? 'editor/index' . $params : 'home/index/';
 		'src' => $appDir . '/index.php/' . $controller,
 		'name' => 'editor',
 		'noresize' => 'noresize',
-		'scrolling' => 'no'
 	));
 
 $page = we_ui_layout_HTMLPage::getInstance();

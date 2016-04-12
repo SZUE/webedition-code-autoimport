@@ -30,10 +30,7 @@ function we_tag_form($attribs){
 	}
 	if(weTag_getAttribute('_type', $attribs, '', we_base_request::STRING) === 'stop'){
 		unset($GLOBALS['WE_FORM']);
-		if(isset($GLOBALS['we_form_action'])){
-			unset($GLOBALS['we_form_action']);
-		}
-		return '</form>';
+		return we_tag('formToken') . '</form>';
 	}
 	$ret = '';
 	$method = weTag_getAttribute('method', $attribs, 'post', we_base_request::STRING);
@@ -67,52 +64,48 @@ function we_tag_form($attribs){
 	$formAttribs['xml'] = $xml;
 	$formAttribs['method'] = $method;
 
-	$GLOBALS['we_form_action'] = ($id ?
+	$we_form_action = ($id ?
 					($id === 'self' || ($id == 0 && defined('WE_REDIRECTED_SEO')) ? (defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : $_SERVER['SCRIPT_NAME']) : f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id))) :
 					($action ? : $_SERVER['SCRIPT_NAME']));
 
 	if($type != 'search'){
 		$regs = array();
 		if(preg_match('/^(.*)return (.+)$/i', $onsubmit, $regs)){
-			$onsubmit = $regs[1] . ';if(self.weWysiwygSetHiddenText){weWysiwygSetHiddenText();};return ' . $regs[2];
+			$onsubmit = $regs[1] . ';return ' . $regs[2];
 		} else {
-			$onsubmit .= ';if(self.weWysiwygSetHiddenText){weWysiwygSetHiddenText();};return true;';
+			$onsubmit .= ';return true;';
 		}
 	}
 	switch($type){
 		case 'shopliste' :
-			$formAttribs['action'] = $GLOBALS['we_form_action'];
+			$formAttribs['action'] = $we_form_action;
 			$myID = ((isset($GLOBALS['lv']) && isset($GLOBALS['lv']->IDs) && ($last = end($GLOBALS['lv']->IDs))) ? $last : $GLOBALS['we_doc']->ID);
 			$formAttribs['name'] = 'form' . $myID;
 			if(!isset($GLOBALS['we_editmode']) || !$GLOBALS['we_editmode']){
 				$ret = getHtmlTag('form', $formAttribs, '', false, true) .
 						getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 'type',
 							'value' => (
-							isset($GLOBALS['lv']->classID) || (isset($GLOBALS['lv']) && $GLOBALS['lv'] instanceof we_object_tag) ?
+							isset($GLOBALS['lv']->classID) ?
 									we_shop_shop::OBJECT :
-									(isset($GLOBALS['lv']->ID) ?
+									($GLOBALS['lv'] instanceof we_listview_document ?
 											we_shop_shop::DOCUMENT :
-											(isset($GLOBALS['we_obj']) ? //Fix #9949
+											(isset($GLOBALS['we_doc']->OF_ID)) ?
 													we_shop_shop::OBJECT :
 													we_shop_shop::DOCUMENT
-											)
-									)
+							)
 							),
 						)) .
 						getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 'shop_artikelid',
 							'value' => (isset($GLOBALS['lv']->classID) || isset($GLOBALS['we_doc']->ClassID) ?
-									(isset($GLOBALS['lv']) && $GLOBALS['lv']->getDBf('OF_ID') != '' ?
-											$GLOBALS['lv']->getDBf('OF_ID') :
+									(isset($GLOBALS['lv']) && $GLOBALS['lv']->f('WE_ID') ?
+											$GLOBALS['lv']->f('WE_ID') :
 											(isset($GLOBALS['we_doc']->OF_ID) ?
 													$GLOBALS['we_doc']->OF_ID :
 													$GLOBALS['we_doc']->ID)) :
 									(isset($GLOBALS['lv']) ?
-											($GLOBALS['lv'] instanceof we_object_tag ?
-													$GLOBALS['lv']->id :
-													(isset($GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1]) && $GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1] != '' ?
-															$GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1] :
-															$GLOBALS['we_doc']->ID)
-											) :
+											($GLOBALS['lv'] instanceof we_listview_document && ($lastE = end($GLOBALS['lv']->IDs)) ?
+													$lastE :
+													$GLOBALS['we_doc']->ID) :
 											$GLOBALS['we_doc']->ID)
 							)
 						)) .
@@ -135,7 +128,7 @@ function we_tag_form($attribs){
 
 			$formAttribs['onsubmit'] = $onsubmit;
 			$formAttribs['name'] = $formname;
-			$formAttribs['action'] = $GLOBALS['we_form_action'];
+			$formAttribs['action'] = $we_form_action;
 
 			if($enctype){
 				$formAttribs['enctype'] = $enctype;
@@ -180,7 +173,7 @@ function we_tag_form($attribs){
 			$onmailerror = weTag_getAttribute('onmailerror', $attribs, 0, we_base_request::INT);
 			$onrecipienterror = weTag_getAttribute('onrecipienterror', $attribs, 0, we_base_request::INT);
 			$oncaptchaerror = weTag_getAttribute('oncaptchaerror', $attribs, 0, we_base_request::INT);
-			$recipient = weTag_getAttribute('recipient', $attribs, '', we_base_request::STRING); //FIXME:email_list???
+			$recipient = weTag_getAttribute('recipient', $attribs, '', we_base_request::EMAILLIST);
 
 			$preconfirm = $confirmmail && $preconfirm ? str_replace("'", "\\'", $GLOBALS['we_doc']->getElement($preconfirm)) : '';
 			$postconfirm = $confirmmail && $postconfirm ? str_replace("'", "\\'", $GLOBALS['we_doc']->getElement($postconfirm)) : '';
@@ -246,7 +239,7 @@ function we_tag_form($attribs){
 			}
 			$formAttribs['name'] = $formname;
 			$formAttribs['onsubmit'] = $onsubmit;
-			$formAttribs['action'] = $GLOBALS['we_form_action'];
+			$formAttribs['action'] = $we_form_action;
 
 
 			if(!isset($GLOBALS['we_editmode']) || !$GLOBALS['we_editmode']){

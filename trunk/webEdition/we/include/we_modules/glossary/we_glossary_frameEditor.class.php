@@ -25,24 +25,19 @@
 class we_glossary_frameEditor{
 
 	function buildHeader($weGlossaryFrames, $we_tabs, $titlePre, $titlePost){
-		$we_tabs->onResize();
-		$tabsHead = $we_tabs->getHeader();
-		$bodyContent = '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $titlePre) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . $titlePost . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) . $we_tabs->getHTML() . '</div>';
+		$bodyContent = '<div id="main" ><div id="headrow"><b>' . str_replace(" ", "&nbsp;", $titlePre) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . $titlePost . '</b></span></div>' . $we_tabs->getHTML() . '</div>';
 
-		$body = we_html_element::htmlBody(array("onresize" => "setFrameSize()", "onload" => "setFrameSize()", "bgcolor" => "#C8D8EC", "background" => IMAGE_DIR . "backgrounds/header_with_black_line.gif", "marginwidth" => 0, "marginheight" => 0, "leftmargin" => 0, "topmargin" => 0), $bodyContent
+		$body = we_html_element::htmlBody(array("onresize" => "weTabs.setFrameSize()", "onload" => "weTabs.setFrameSize()", "id" => "eHeaderBody"), $bodyContent
 				//$table->getHtml() .
 				//$tabsBody
 		);
-		$_js = "
-			function setTab(tab) {
-				" . $this->topFrame . ".activ_tab=tab;
-				//top.content.editor.edbody.we_cmd('switchPage',0);
-			}
-			top.content.hloaded = 1;\n";
+		$tabsHead = we_tabs::getHeader("
+function setTab(tab) {
+	" . $this->topFrame . ".activ_tab=tab;
+	//top.content.editor.edbody.we_cmd('switchPage',0);
+}");
 
-		$js = we_html_element::jsElement($_js);
-
-		return $weGlossaryFrames->getHTMLDocument($body, $tabsHead . $js);
+		return $weGlossaryFrames->getHTMLDocument($body, $tabsHead);
 	}
 
 	function buildBody($weGlossaryFrames, $content = ""){
@@ -74,19 +69,14 @@ class we_glossary_frameEditor{
 	}
 
 	function buildFooter($weGlossaryFrames, $content = ""){
-
-		$_body = array(
-			'bgcolor' => 'white',
-			'background' => IMAGE_DIR . 'edit/editfooterback.gif',
-			'marginwidth' => 0,
-			'marginheight' => 0,
-			'leftmargin' => 0,
-			'topmargin' => 0,
-		);
-
-		$body = we_html_element::htmlBody($_body, $content);
-
+		$body = we_html_element::htmlBody(array('id' => 'footerBody'), $content);
 		return $weGlossaryFrames->getHTMLDocument($body);
+	}
+
+	function Footer($weGlossaryFrames){
+		$form = we_html_element::htmlForm(array(), we_html_button::create_button(we_html_button::SAVE, "javascript:top.opener.top.we_cmd('save_exception')", true, 100, 22, '', '', (!permissionhandler::hasPerm('NEW_GLOSSARY') && !permissionhandler::hasPerm('EDIT_GLOSSARY'))));
+
+		return self::buildFooter($weGlossaryFrames, $form);
 	}
 
 }

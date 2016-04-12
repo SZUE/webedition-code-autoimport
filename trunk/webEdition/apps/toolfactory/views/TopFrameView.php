@@ -102,7 +102,7 @@ parent.document.title = "{$_SERVER['SERVER_NAME']} webEdition {$translate->_('Ap
 
 /* cmdError */
 weEventController.register("cmdError", function(data, sender) {
-	if (typeof(data.errorMessage) != "undefined") {
+	if (data.errorMessage !== undefined) {
 		err = data.errorMessage;
 	} else {
 		err = "Unknown Error";
@@ -113,7 +113,7 @@ weEventController.register("cmdError", function(data, sender) {
 
 /* cmdNotice */
 weEventController.register("cmdNotice", function(data, sender) {
-	if (typeof(data.errorMessage) != "undefined") {
+	if (data.errorMessage !== undefined) {
 		err = data.errorMessage;
 	} else {
 		err = "Unknown Error";
@@ -124,7 +124,7 @@ weEventController.register("cmdNotice", function(data, sender) {
 
 /* cmdWarning */
 weEventController.register("cmdWarning", function(data, sender) {
-	if (typeof(data.errorMessage) != "undefined") {
+	if (data.errorMessage !== undefined) {
 		err = data.errorMessage;
 	} else {
 		err = "Unknown Error";
@@ -145,7 +145,7 @@ weEventController.register("docChanged", function(data, sender) {
 /* remove Loading Wheel */
 function __removeLoadingWheel__(data, sender) {
 	var loadingWheel = {$loadingWheelFrame}document.getElementById('loadingWheelDiv');
-	if (typeof({$loadingWheelFrame}{$loadingWheelContainer}) != "undefined") {
+	if ({$loadingWheelFrame}{$loadingWheelContainer} !== undefined) {
 		{$loadingWheelFrame}{$loadingWheelContainer}.removeChild(loadingWheel);
 	}
 }
@@ -253,7 +253,7 @@ weCmdController.register('open_top', 'app_{$this->appName}_open', function(cmdOb
 
 /* save */
 weCmdController.register('save_top', 'app_{$this->appName}_save', function(cmdObj) {
-	if (typeof({$fs}.edbody) == "undefined") {
+	if ({$fs}.edbody === undefined) {
 		$nothingToSaveMessageCall;
 	} else {
 		addLoadingWheel();
@@ -270,7 +270,7 @@ weCmdController.register('save_top', 'app_{$this->appName}_save', function(cmdOb
 
 /* delete */
 weCmdController.register('checkdelete_top', 'app_{$this->appName}_checkdelete', function(cmdObj) {
-	if (typeof({$fs}.edbody) == "undefined") {
+	if ({$fs}.edbody === undefined) {
 		$nothingToDeleteMessageCall;
 	} else {
 		_weYesNoCancelDeleteDialog(cmdObj);
@@ -290,7 +290,7 @@ weCmdController.register('delete_top', 'app_{$this->appName}_delete', function(c
 /* unpublish */
 weCmdController.register('unpublish_top', 'app_{$this->appName}_unpublish', function(cmdObj) {
 
-	if (typeof({$fs}.edbody) == 'undefined') {
+	if ({$fs}.edbody === undefined) {
 		$nothingToSaveMessageCall;
 	} else {
 		weEventController.fire('markunpublished',{$fs}.edbody.document.we_form.classname.value);
@@ -308,7 +308,7 @@ weCmdController.register('unpublish_top', 'app_{$this->appName}_unpublish', func
 /* publish */
 weCmdController.register('publish_top', 'app_{$this->appName}_publish', function(cmdObj) {
 
-	if (typeof({$fs}.edbody) == 'undefined') {
+	if ({$fs}.edbody === undefined) {
 		$nothingToSaveMessageCall;
 	} else {
 		weEventController.fire('markpublished',{$fs}.edbody.document.we_form.classname.value);
@@ -354,13 +354,13 @@ weCmdController.register('exit_top', 'app_{$this->appName}_exit', function(cmdOb
 
 /* help */
 weCmdController.register('help_top', 'app_{$this->appName}_help', function(cmdObj) {
-	var dialog = new we_ui_layout_Dialog("/webEdition/getHelp.php", 900, 700, null);
+	var dialog = new we_ui_layout_Dialog('http://help.webedition.org/index.php?language=de', 900, 700, null);
 	dialog.open();
 });
 
 /* info */
 weCmdController.register('info_top', 'app_{$this->appName}_info', function(cmdObj) {
-	var dialog = new we_ui_layout_Dialog("/webEdition/we_cmd.php?we_cmd[0]=info", 432, 330, null);
+	var dialog = new we_ui_layout_Dialog(WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=info", 432, 330, null);
 	dialog.open();
 });
 

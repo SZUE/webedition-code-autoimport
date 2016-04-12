@@ -31,7 +31,6 @@ class we_listview_category extends we_listview_base{
 	var $parentID = 0;
 	var $catID = 0;
 	var $variant = 'default';
-	var $ClassName = __CLASS__;
 	var $hidedirindex = false;
 
 	/**
@@ -69,13 +68,13 @@ class we_listview_category extends we_listview_base{
 			foreach($cids as $cid){
 				$tail .= 'ID=' . intval($cid) . ' OR ';
 			}
-			$tail = preg_replace('/^(.+) OR /', '$1', $tail);
+			$tail = preg_replace('/^(.+) OR /', '${1}', $tail);
 			$tail = '(' . $tail . ')';
 		} else {
 			$tail = ' ParentID=' . intval($this->parentID) . ' ';
 		}
 
-		$this->anz_all = f('SELECT COUNT(1) AS max FROM ' . CATEGORY_TABLE . ' WHERE ' . $tail, 'max', $this->DB_WE);
+		$this->anz_all = f('SELECT COUNT(1) FROM ' . CATEGORY_TABLE . ' WHERE ' . $tail, '', $this->DB_WE);
 
 		$this->DB_WE->query('SELECT *' . ($this->order === 'random()' ? ', RAND() as RANDOM' : '') . ' FROM ' . CATEGORY_TABLE . ' WHERE ' . $tail . ' ' . ($this->order === 'random()' ? 'ORDER BY RANDOM' : $orderstring) . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : ''));
 		$this->anz = $this->DB_WE->num_rows();
@@ -85,8 +84,6 @@ class we_listview_category extends we_listview_base{
 
 	function next_record(){
 		if($this->DB_WE->next_record()){
-			$count = $this->count;
-
 			$this->Record = array(
 				'WE_PATH' => $this->DB_WE->f('Path'),
 				'WE_TITLE' => $this->DB_WE->f('Title'),
@@ -115,10 +112,6 @@ class we_listview_category extends we_listview_base{
 			return true;
 		}
 		return false;
-	}
-
-	function f($key){
-		return isset($this->Record[$key]) ? $this->Record[$key] : '';
 	}
 
 }

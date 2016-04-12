@@ -2,16 +2,16 @@
 /* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblMsgFolders (
-  ID int(11) unsigned NOT NULL auto_increment,
-  ParentID int(11) unsigned default NULL,
-  UserID int(11) unsigned NOT NULL default '0',
-  msg_type tinyint(1) unsigned NOT NULL default '0',
-  obj_type tinyint(1) unsigned NOT NULL default '0',
+  ID int unsigned NOT NULL auto_increment,
+  ParentID int unsigned default NULL,
+  UserID int unsigned NOT NULL default '0',
+  msg_type tinyint unsigned NOT NULL default '0',
+  obj_type tinyint unsigned NOT NULL default '0',
   Name varchar(255) NOT NULL default '',
   sortItem varchar(255) default NULL,
   sortOrder varchar(5) default NULL,
-  Properties int(10) unsigned default NULL,
-  tag tinyint(4) unsigned default NULL,
+  Properties int unsigned default NULL,
+  tag tinyint unsigned default NULL,
   PRIMARY KEY  (ID)
 ) ENGINE=MyISAM;
 /* query separator */

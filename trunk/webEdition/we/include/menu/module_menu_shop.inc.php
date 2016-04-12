@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -135,6 +136,8 @@ foreach($years as $cur){
 	$we_menu_shop[] = array(
 		'text' => $cur,
 		'parent' => 'jahr',
-		'cmd' => 'year' . $cur,
+		'cmd' => array('year', $cur),
 	);
 }
+
+return $we_menu_shop;

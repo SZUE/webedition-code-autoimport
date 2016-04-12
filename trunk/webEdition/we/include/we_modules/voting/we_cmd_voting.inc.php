@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -25,9 +24,9 @@
 switch($cmd){
 	case 'voting_edit_ifthere':
 	case 'voting_edit':
-		$GLOBALS['mod'] = 'voting';
-		return 'we_modules/show_frameset.php';
-	case 'voting_openDirselector':
-		//$INCLUDE = 'we_modules/voting/we_votingDirSelect.php';
-		return '';
+		$_REQUEST['mod'] = 'voting';
+		$_REQUEST['pnt'] = 'show_frameset';
+		return '../../we_showMod.php';
+	case 'we_voting_dirSelector':
+		return 'selectors.inc.php';
 }

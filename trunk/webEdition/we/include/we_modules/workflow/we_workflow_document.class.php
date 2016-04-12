@@ -117,7 +117,7 @@ class we_workflow_document extends we_workflow_base{
 			} else {
 				$this->document->we_publish();
 			}
-			$path = '<b>' . g_l('modules_workflow', '[' . stripTblPrefix($this->workflow->Type == 2 ? OBJECT_FILES_TABLE : FILE_TABLE) . '][messagePath]') . ':</b>&nbsp;<a href="javascript:top.opener.top.weEditorFrameController.openDocument(\'' . $this->document->Table . '\',\'' . $this->document->ID . '\',\'' . $this->document->ContentType . '\');");" >' . $this->document->Path . '</a>';
+			$path = '<b>' . g_l('modules_workflow', '[' . stripTblPrefix($this->workflow->Type == 2 ? OBJECT_FILES_TABLE : FILE_TABLE) . '][messagePath]') . ':</b>&nbsp;<a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . $this->document->Table . '\',\'' . $this->document->ID . '\',\'' . $this->document->ContentType . '\');");" >' . $this->document->Path . '</a>';
 			$mess = '<p><b>' . g_l('modules_workflow', '[auto_published]') . '</b></p><p>' . $desc . '</p><p>' . $path . '</p>';
 			$deadline = time();
 			$this->sendTodo($this->userID, g_l('modules_workflow', '[auto_published]'), $mess, $deadline, 1);
@@ -137,7 +137,7 @@ class we_workflow_document extends we_workflow_base{
 		if($this->steps[$i]->Status == we_workflow_documentStep::STATUS_CANCELED){
 			$this->finishWorkflow(1, $uID);
 
-			$path = '<b>' . g_l('modules_workflow', '[' . stripTblPrefix($this->workflow->Type == 2 ? OBJECT_FILES_TABLE : FILE_TABLE) . '][messagePath]') . ':</b>&nbsp;<a href="javascript:top.opener.top.weEditorFrameController.openDocument(\'' . $this->document->Table . '\',\'' . $this->document->ID . '\',\'' . $this->document->ContentType . '\');");" >' . $this->document->Path . '</a>';
+			$path = '<b>' . g_l('modules_workflow', '[' . stripTblPrefix($this->workflow->Type == 2 ? OBJECT_FILES_TABLE : FILE_TABLE) . '][messagePath]') . ':</b>&nbsp;<a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . $this->document->Table . '\',\'' . $this->document->ID . '\',\'' . $this->document->ContentType . '\');");" >' . $this->document->Path . '</a>';
 			$mess = '<p><b>' . g_l('modules_workflow', '[todo_returned]') . '</b></p><p>' . $desc . '</p><p>' . $path . '</p>';
 			$deadline = time() + 3600;
 			$this->sendTodo($this->userID, g_l('modules_workflow', '[todo_returned]'), $mess, $deadline, 1);

@@ -25,14 +25,14 @@
 switch($cmd){
 	case 'banner_edit_ifthere':
 	case 'banner_edit':
-		$GLOBALS['mod'] = 'banner';
-		return 'we_modules/show_frameset.php';
-	case 'banner_openDirselector':
-		return 'we_modules/banner/we_bannerDirSelect.php';
-	case 'banner_openSelector':
-		return 'we_modules/banner/we_bannerSelect.php';
+		$_REQUEST['mod'] = 'banner';
+		$_REQUEST['pnt'] = 'show_frameset';
+		return '../../we_showMod.php';
+	case 'we_banner_dirSelector':
+	case 'we_banner_selector':
+		return 'selectors.inc.php';
 	case 'banner_default':
-		return 'we_modules/banner/we_defaultbanner.php';
+		return 'we_modules/banner/we_defaultbanner.inc.php';
 	case 'banner_code':
-		return 'we_modules/banner/we_bannercode.php';
+		return 'we_modules/banner/we_bannercode.inc.php';
 }

@@ -40,17 +40,20 @@ class we_html_table extends we_html_baseCollection{
 	 */
 	function __construct(array $attribs = array(), $rows_num = 0, $cols_num = 0, array $content = null){
 		parent::__construct('table', true, $attribs);
-		$this->addRow($rows_num);
-		$this->addCol($cols_num);
+		if($rows_num){
+			$this->addRow($rows_num);
+			$this->addCol($cols_num);
+		}
 		$this->setTableContent($content);
 	}
 
 	public function setTableContent(array $content = null){
-		if($content){
-			foreach($content as $rowNo => $rowContent){
-				foreach($rowContent as $colNo => $col){
-					$this->setCol($rowNo, $colNo, $col[0], $col[1]);
-				}
+		if(!$content){
+			return;
+		}
+		foreach($content as $rowNo => $rowContent){
+			foreach($rowContent as $colNo => $col){
+				$this->setCol($rowNo, $colNo, $col[0], $col[1]);
 			}
 		}
 	}
@@ -107,7 +110,7 @@ class we_html_table extends we_html_baseCollection{
 	 *
 	 * @return     void
 	 */
-	function setRow($rowid, $attribs = array(), $cols_num = 0){
+	function setRow($rowid, array $attribs = array(), $cols_num = 0){
 		$row = & $this->getChild($rowid);
 		$row->setAttributes($attribs);
 
@@ -131,7 +134,17 @@ class we_html_table extends we_html_baseCollection{
 	 * @return     void
 	 */
 	function setCol($rowid, $colid, $attribs = array(), $content = ''){
-		$col = &$this->getChild($rowid)->getChild($colid);
+		while(!isset($this->childs[$rowid])){
+			$this->addRow();
+		}
+		$col = $this->getChild($rowid)->getChild($colid);
+		if(!$col){
+			t_e('not enough cols defined');
+			while(!$col){
+				$this->addCol(1);
+				$col = $this->getChild($rowid)->getChild($colid);
+			}
+		}
 		$col->setAttributes($attribs);
 		$col->setContent($content);
 	}
@@ -145,7 +158,7 @@ class we_html_table extends we_html_baseCollection{
 	 *
 	 * @return     void
 	 */
-	function setRowAttributes($rowid, $attribs = array()){
+	function setRowAttributes($rowid, array $attribs = array()){
 		$row = & $this->getChild($rowid);
 		$row->setAttributes($attribs);
 	}
@@ -175,6 +188,9 @@ class we_html_table extends we_html_baseCollection{
 	 */
 	function setColContent($rowid, $colid, $content = ""){
 		$col = & $this->getChild($rowid)->getChild($colid);
+		if($col===null){
+			t_e('err');
+		}
 		$col->setContent($content);
 	}
 
@@ -204,11 +220,11 @@ class we_html_table extends we_html_baseCollection{
 				} else {
 					$col = $row->getChild($j);
 					if(!is_object($col)){
-						t_e($col,$j,$row);
+						t_e($col, $j, $row);
 						continue;
 					}
 					if(in_array('colspan', array_keys($col->attribs))){
-						$colspan = $col->getAttribute('colspan')-1;
+						$colspan = $col->getAttribute('colspan') - 1;
 					}
 				}
 			}

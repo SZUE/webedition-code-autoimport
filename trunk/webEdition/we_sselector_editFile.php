@@ -23,11 +23,7 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-we_html_tools::protect();
-
-if(!permissionhandler::hasPerm("BROWSE_SERVER")){
-	exit();
-}
+we_html_tools::protect(array("BROWSE_SERVER"));
 
 echo we_html_tools::getHtmlTop() . STYLESHEET;
 
@@ -47,12 +43,10 @@ if(we_base_request::_(we_base_request::STRING, "cmd") === "save"){
 	}
 }
 
-$buttons = we_html_button::position_yes_no_cancel(
-		we_html_button::create_button("save", "javascript:document.forms[0].submit();"), null, we_html_button::create_button("cancel", "javascript:self.close();")
-);
+$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, "javascript:document.forms[0].submit();"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();"));
 $content = '<textarea name="editFile" id="editFile" style="width:540px;height:380px;overflow: auto;">' . oldHtmlspecialchars($we_fileData) . '</textarea>';
 ?>
-<script type="text/javascript"><!--
+<script><!--
 	function setSize() {
 		var ta = document.getElementById("editFile");
 		ta.style.width = (document.body.offsetWidth - 60) + "px";
@@ -72,10 +66,10 @@ if(isset($we_alerttext)){
 //-->
 </script>
 </head>
-<body class="weDialogBody" onResize="setSize()" style="width:100%; height:100%"><center>
+<body class="weDialogBody" onresize="setSize()" style="width:100%; height:100%"><div style="text-align:center">
 		<form method="post">
 			<input type="hidden" name="cmd" value="save" />
 			<?php echo we_html_tools::htmlDialogLayout($content, g_l('global', '[edit_file]') . ": <span class=\"weMultiIconBoxHeadline\">" . str_replace(str_replace("\\", "/", dirname($id)) . "/", "", $id), $buttons, 1) . "</span>"; ?>
-		</form></center>
+		</form></div>
 </body>
 </html>

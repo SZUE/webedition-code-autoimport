@@ -32,16 +32,16 @@ class we_htmlDocument extends we_textContentDocument{
 	function i_saveContentDataInDB(){
 		if(($code = $this->getElement('data'))){
 			$metas = $this->getMetas($code);
-			if(isset($metas['title']) && $metas['title']){
+			if(!empty($metas['title'])){
 				$this->setElement('Title', $metas['title']);
 			}
-			if(isset($metas['description']) && $metas['description']){
+			if(!empty($metas['description'])){
 				$this->setElement('Description', $metas['description']);
 			}
-			if(isset($metas['keywords']) && $metas['keywords']){
+			if(!empty($metas['keywords'])){
 				$this->setElement('Keywords', $metas['keywords']);
 			}
-			if(isset($metas['charset']) && $metas['charset']){
+			if(!empty($metas['charset'])){
 				$this->setElement('Charset', $metas['charset'], 'attrib');
 			}
 		}
@@ -57,9 +57,23 @@ class we_htmlDocument extends we_textContentDocument{
 	function getDocumentCode(){
 		$code = $this->getElement('data');
 		if(($cs = $this->getElement('Charset'))){
-			$code = preg_replace('|<meta http-equiv="Content-Type" content=".*>|i', we_html_tools::htmlMetaCtCharset('text/html', $cs), $code);
+			$code = preg_replace('/<meta http-equiv="Content-Type" content=".*>|<meta charset=".*>/i', we_html_tools::htmlMetaCtCharset($cs), $code);
 		}
 		return $code;
+	}
+
+	public function getPropertyPage(){
+		$wepos = weGetCookieVariable('but_weHtmlDocProp');
+
+		return we_html_multiIconBox::getHTML('PropertyPage', array(
+			array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => 140),
+			array('icon' => 'doc.gif', 'headline' => g_l('weClass', '[document]'), 'html' => $this->formDocTypeTempl(), 'space' => 140),
+			array('icon' => 'cat.gif', 'headline' => g_l('global', '[categorys]'), 'html' => $this->formCategory(), 'space' => 140),
+			array('icon' => 'navi.gif', 'headline' => g_l('global', '[navigation]'), 'html' => $this->formNavigation(), 'space' => 140),
+			array('icon' => 'copy.gif', 'headline' => g_l('weClass', '[copy' . $this->ContentType . ']'), 'html' => $this->formCopyDocument(), 'space' => 140),
+			array('icon' => 'charset.gif', 'headline' => g_l('weClass', '[Charset]'), 'html' => $this->formCharset(), 'space' => 140),
+			array('icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners(), 'space' => 140))
+		);
 	}
 
 }

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -35,8 +34,8 @@
 abstract class permissionhandler{
 
 	public static function hasPerm($perm){
-		return (isset($_SESSION['perms']['ADMINISTRATOR']) && $_SESSION['perms']['ADMINISTRATOR']) ||
-				((isset($_SESSION['perms'][$perm]) && $_SESSION['perms'][$perm]));
+		return (!empty($_SESSION['perms']['ADMINISTRATOR'])) ||
+			((!empty($_SESSION['perms'][$perm])));
 	}
 
 	/**
@@ -74,24 +73,25 @@ abstract class permissionhandler{
 		 */
 		//	The first entries are no we_cmd[0], but sometimes needed.
 		$knownActions = array(
-			"switch_edit_page" => array(
-				"we_base_constants::WE_EDITPAGE_PROPERTIES" => array("CAN_SEE_PROPERTIES"),
+			'switch_edit_page' => array(
+				'we_base_constants::WE_EDITPAGE_PROPERTIES' => array('CAN_SEE_PROPERTIES'),
 				0 => array("CAN_SEE_PROPERTIES"),
-				"we_base_constants::WE_EDITPAGE_INFO" => array("CAN_SEE_INFO"),
+				'we_base_constants::WE_EDITPAGE_INFO' => array('CAN_SEE_INFO'),
 				2 => array("CAN_SEE_INFO"),
-				"we_base_constants::WE_EDITPAGE_VALIDATION" => array("CAN_SEE_VALIDATION"),
-				10 => array("CAN_SEE_VALIDATION"),
+				'we_base_constants::WE_EDITPAGE_VALIDATION' => array('CAN_SEE_VALIDATION'),
+				10 => array('CAN_SEE_VALIDATION'),
+			),
+			//	Is user allowed to work in normal mode or only in SEEM
+			"work_mode" => array(
+				we_base_constants::MODE_NORMAL => array("CAN_WORK_NORMAL_MODE")
+			),
+			"header" => array(
+				"with_java" => array("CAN_SEE_MENUE")
 			)
 		);
 
-		//	Is user allowed to work in normal mode or only in SEEM
-		$knownActions["work_mode"][we_base_constants::MODE_NORMAL] = array("CAN_WORK_NORMAL_MODE");
-		$knownActions["header"]["with_java"] = array("CAN_SEE_MENUE");
-
-
-
 		return (isset($knownActions[$requestedAction][$parameter]) ?
-						$knownActions[$requestedAction][$parameter] : 'none');
+				$knownActions[$requestedAction][$parameter] : 'none');
 	}
 
 	/**
@@ -155,20 +155,22 @@ abstract class permissionhandler{
 
 			//	user belongs to owners of document, check if he has only read access !!!
 			if($row['OwnersReadOnly']){
-				$arr = unserialize($row['OwnersReadOnly']);
+				$arr = we_unserialize($row['OwnersReadOnly']);
 				if(is_array($arr)){
 
-					if(isset($arr[$_SESSION['user']['ID']]) && $arr[$_SESSION['user']['ID']]){ //	if user is readonly user -> no delete
+					if(!empty($arr[$_SESSION['user']['ID']])){ //	if user is readonly user -> no delete
 						return false;
-					} elseif(in_array($_SESSION['user']['ID'], $userArray)){ //	user NOT readonly and in restricted -> delete allowed
+					}
+					if(in_array($_SESSION['user']['ID'], $userArray)){ //	user NOT readonly and in restricted -> delete allowed
 						return true;
 					}
 
 					//	check if group has rights to delete
 					foreach($_SESSION['user']['groups'] as $nr => $_userGroup){ //	user is directly in first group
-						if(isset($arr[$_userGroup]) && $arr[$_userGroup]){ //	group not allowed
+						if(!empty($arr[$_userGroup])){ //	group not allowed
 							return false;
-						} elseif(in_array($_userGroup, $userArray)){ //	group is NOT readonly and in restricted -> delete allowed
+						}
+						if(in_array($_userGroup, $userArray)){ //	group is NOT readonly and in restricted -> delete allowed
 							return true;
 						}
 					}

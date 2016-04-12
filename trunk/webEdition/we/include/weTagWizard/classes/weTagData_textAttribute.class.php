@@ -31,13 +31,14 @@ class weTagData_textAttribute extends weTagDataAttribute{
 
 		return '<table class="attribute"><tr>
 						<td class="attributeName">' . $this->getLabelCodeForTagWizard() . '</td>
-						<td class="attributeField">' . we_html_element::htmlInput(
-				array(
+						<td class="attributeField">' .
+				we_html_element::htmlInput(array(
 					'name' => $this->Name,
 					'id' => $this->getIdName(),
 					'value' => $this->Value,
 					'class' => 'wetextinput'
-			)) . '</td>
+				)) .
+				'</td>
 					</tr></table>';
 	}
 

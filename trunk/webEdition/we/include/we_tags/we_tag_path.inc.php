@@ -34,8 +34,8 @@ function we_tag_path($attribs){
 	$oldHtmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, we_base_request::BOOL);
 	$fieldforfolder = weTag_getAttribute('fieldforfolder', $attribs, false, we_base_request::BOOL);
 	$docAttr = weTag_getAttribute('doc', $attribs, '', we_base_request::STRING);
-	$sep = weTag_getAttribute('separator', $attribs, '/', we_base_request::RAW);
-	$home = weTag_getAttribute('home', $attribs, 'home', we_base_request::RAW);
+	$sep = weTag_getAttribute('separator', $attribs, '/', we_base_request::RAW_CHECKED);
+	$home = weTag_getAttribute('home', $attribs, 'home', we_base_request::RAW_CHECKED);
 	$hidehome = weTag_getAttribute('hidehome', $attribs, false, we_base_request::BOOL);
 	$class = weTag_getAttribute('class', $attribs, '', we_base_request::STRING);
 	$style = weTag_getAttribute('style', $attribs, '', we_base_request::STRING);
@@ -52,9 +52,9 @@ function we_tag_path($attribs){
 	$path = '';
 	$q = array();
 	foreach($indexArray as $v){
-		$q[] = ' Text="' . $v . '"';
+		$q[] = '"' . $db->escape($v) . '"';
 	}
-	$q = implode(' OR ', $q);
+	$q = ' Text IN (' . implode(',', $q) . ')';
 	$show = $doc->getElement($field);
 	if(!in_array($doc->Text, $indexArray)){
 		if(!$show){
@@ -63,14 +63,13 @@ function we_tag_path($attribs){
 		$path = $oldHtmlspecialchars ? oldHtmlspecialchars($sep . $show) : $sep . $show;
 	}
 	while($pID){
-		$db->query('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ParentID=' . intval($pID) . ' AND IsFolder=0 AND (' . $q . ') AND (Published>0 AND IsSearchable=1)');
-		$db->next_record();
-		$fileID = $db->f('ID');
-		$filePath = $db->f('Path');
+		list($fileID, $filePath) = (getHash('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ParentID=' . intval($pID) . ' AND IsFolder=0 AND (' . $q . ') AND Published>0', NULL, MYSQLI_NUM)? :
+				array(0, '')
+			);
 		if($fileID){
-			$show = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DID=' . intval($fileID) . ' AND l.Name="' . $db->escape($dirfield) . '"');
+			$show = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DocumentTable="tblFile" AND l.DID=' . intval($fileID) . ' AND l.Name="' . $db->escape($dirfield) . '"');
 			if(!$show && $fieldforfolder){
-				$show = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID  WHERE l.DID=' . intval($fileID) . ' AND l.Name="' . $db->escape($field) . '"');
+				$show = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DocumentTable="tblFile" AND l.DID=' . intval($fileID) . ' AND l.Name="' . $db->escape($field) . '"');
 			}
 			if(!$show){
 				$show = f('SELECT Text FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pID));
@@ -101,7 +100,7 @@ function we_tag_path($attribs){
 	$filePath = ($hash ? $hash['Path'] : '');
 
 	if($fileID){
-		$show = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DID=' . intval($fileID) . ' AND l.Name="' . $db->escape($field) . '"');
+		$show = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DocumentTable="tblFile" AND l.DID=' . intval($fileID) . ' AND l.Name="' . $db->escape($field) . '"');
 		if(!$show){
 			$show = $home;
 		}

@@ -30,6 +30,10 @@
  */
 abstract class we_base_widget{
 
+	static $js = '';
+
+	const w_icon = 20;
+
 	/**
 	 * To add a widget give a unique id ($iId). Currently supported widget types ($sType) are Shortcuts (sct), RSS Reader (rss),
 	 * Last modified (mfd), ToDo/Messaging (msg), Users Online (usr), and Unpublished docs and objs (ubp).
@@ -47,65 +51,58 @@ abstract class we_base_widget{
 	 * @return     object Returns the we_html_table object
 	 */
 	static function create($iId, $sType, $oContent, $aLabel = array("", ""), $sCls = "white", $iRes = 0, $sCsv = "", $w = 0, $h = 0, $resize = true){
-		$w_i0 = 10;
-		$w_i1 = 5;
-		$w_icon = (3 * $w_i0) + (2 * $w_i1);
-		$h_i0 = 10;
-		$show_seizer = false;
-		$w_seizer = 30;
-		$h_tb = 16;
-		$h_title = 32;
-		$wh_edge = 11;
-		$gap = 10;
+		$w+=22;
 
-		$oDrag = new we_html_table(array("id" => $iId . "_h", "style" => "width:" . ($w - $w_icon) . "px;height:" . $h_tb . 'px;background-image:url(' . IMAGE_DIR . "pd/tb_pixel.gif);background-repeat:repeat-x;", "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 2);
-		$oDrag->setCol(0, 0, array("width" => $w_icon, "height" => $h_tb), $show_seizer ? we_html_element::htmlImg(array("src" => IMAGE_DIR . "pd/tb_seizer.gif", "width" => $w_seizer, "height" => $h_tb)) : we_html_tools::getPixel($w_seizer, $h_tb));
-		$oDrag->setCol(0, 1, array("id" => $iId . "_lbl_old", "align" => "center", "class" => "label", "style" => "width:" . ($w - (2 * $w_icon)) . "px;height:" . $h_tb . "px;"), "");
+		$oDrag = new we_html_table(array("id" => $iId . "_h", "style" => "width:100%"), 1, 1);
+		$oDrag->setCol(0, 0, array('style' => 'width:' . self::w_icon . 'px;height:16px;'));
 
-		$oIco_prc = new we_html_table(array('style' => 'width:' . $w_icon . 'px;height:' . $h_tb . 'px;background-image:url(' . IMAGE_DIR . 'pd/tb_pixel.gif);background-repeat:repeat-x;', "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 5);
-		$oIco_prc->setCol(0, 0, array("width" => $w_i0, "height" => $h_tb, "valign" => "middle"), we_html_element::htmlA(array("id" => $iId . "_props", "href" => "#", "onclick" => "propsWidget('" . $sType . "','" . $iId . "',gel('" . $iId . "_csv').value);this.blur();"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "pd/tb_props.gif", "width" => $w_i0, "height" => $h_i0, "border" => 0, "title" => g_l('cockpit', '[properties]')))));
-		$oIco_prc->setCol(0, 1, array("width" => $w_i1, "height" => $h_tb), we_html_tools::getPixel($w_i1, 1));
-		$oIco_prc->setCol(0, 2, array("width" => $w_i0, "height" => $h_tb, "valign" => "middle"), we_html_element::htmlA(array("id" => $iId . "_resize", "href" => "#", "onclick" => "resizeWidget('" . $iId . "');this.blur();"), we_html_element::htmlImg(array("id" => $iId . "_icon_resize", "src" => IMAGE_DIR . "pd/tb_resize.gif", "width" => $w_i0, "height" => $h_i0, "border" => 0, "title" => g_l('cockpit', ($iRes == 0 ? '[increase_size]' : '[reduce_size]'))))));
-		$oIco_prc->setCol(0, 3, array("width" => $w_i1, "height" => $h_tb), we_html_tools::getPixel($w_i1, 1));
-		$oIco_prc->setCol(0, 4, array("width" => $w_i0, "height" => $h_tb, "valign" => "middle"), we_html_element::htmlA(array("id" => $iId . "_remove", "href" => "#", "onclick" => "removeWidget('" . $iId . "');this.blur();"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "pd/tb_close.gif", "width" => $w_i0, "height" => $h_i0, "border" => 0, "title" => g_l('cockpit', '[close]')))));
+		$oIco_prc = new we_html_table(array(), 1, 3);
+		$oIco_prc->setCol(0, 0, array(), '<span class="fa-stack" title="' . g_l('cockpit', '[properties]') . '" onclick="propsWidget(\'' . $sType . '\',\'' . $iId . '\',document.getElementById(\'' . $iId . '_csv\').value);this.blur();">
+		  <i class="fa fa-align-justify"></i>
+		  </span>'
+		);
+		$oIco_prc->setCol(0, 1, array(), '<span id="' . $iId . '_icon_resize" class="fa-stack" title="' . g_l('cockpit', ($iRes == 0 ? '[increase_size]' : '[reduce_size]')) . '" onclick="resizeWidget(\'' . $iId . '\');this.blur();">
+		  <i class="fa fa-expand"></i>
+		  </span>'
+		);
+		$oIco_prc->setCol(0, 2, array(), '<span class="" title="' . g_l('cockpit', '[close]') . '" onclick="removeWidget(\'' . $iId . '\');this.blur();">
+		  <i class="fa fa-close"></i>
+		  </span>');
+		$oIco_pc = new we_html_table(array(), 1, 2);
+		$oIco_pc->setCol(0, 0, array(), '<span class="" title="' . g_l('cockpit', '[properties]') . '" onclick="propsWidget(\'' . $sType . '\',\'' . $iId . '\',document.getElementById(\'' . $iId . '_csv\').value);this.blur();">
+		  <i class="fa fa-align-justify"></i>
+		  </span>');
+		$oIco_pc->setCol(0, 1, array(), '<span class="" title="' . g_l('cockpit', '[close]') . '" onclick="removeWidget(\'' . $iId . '\');this.blur();">
+		  <i class="fa fa-close"></i>
+		  </span>');
 
-		$oIco_pc = new we_html_table(array('style' => 'width:' . $w_icon . 'px;height:' . $h_tb . 'px;background-image:url(' . IMAGE_DIR . 'pd/tb_pixel.gif);background-repeat:repeat-x;', "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 4);
-		$oIco_pc->setCol(0, 0, array("width" => ($w_i0 + $w_i1), "height" => $h_tb), we_html_tools::getPixel(($w_i0 + $w_i1), 1));
-		$oIco_pc->setCol(0, 1, array("width" => $w_i0, "height" => $h_tb, "valign" => "middle"), we_html_element::htmlA(array("id" => $iId . "_props", "href" => "#", "onclick" => "propsWidget('" . $sType . "','" . $iId . "',gel('" . $iId . "_csv').value);this.blur();"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "pd/tb_props.gif", "width" => $w_i0, "height" => $h_i0, "border" => 0, "title" => g_l('cockpit', '[properties]')))));
-		$oIco_pc->setCol(0, 2, array("width" => $w_i1, "height" => $h_tb), we_html_tools::getPixel($w_i1, 1));
-		$oIco_pc->setCol(0, 3, array("width" => $w_i0, "height" => $h_tb, "valign" => "middle"), we_html_element::htmlA(array("id" => $iId . "_remove", "href" => "#", "onclick" => "removeWidget('" . $iId . "');this.blur();"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "pd/tb_close.gif", "width" => $w_i0, "height" => $h_i0, "border" => 0, "title" => g_l('cockpit', '[close]')))));
-
-		$ico_obj = ($resize) ? 'oIco_prc' : 'oIco_pc';
-		$sIco = ($sType != "_reCloneType_") ? ${$ico_obj}->getHtml() :
+		$sIco = ($sType != "_reCloneType_") ? ($resize ? $oIco_prc->getHtml() : $oIco_pc->getHtml()) :
 				we_html_element::htmlDiv(array("id" => $iId . "_ico_prc", "style" => "display:block;"), $oIco_prc->getHtml()) .
 				we_html_element::htmlDiv(array("id" => $iId . "_ico_pc", "style" => "display:none;"), $oIco_pc->getHtml());
 
-		$oTb = new we_html_table(array("id" => $iId . "_tb", "style" => "width:" . ($w + (2 * $wh_edge)) . "px;height:" . $h_tb . "px;", "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 4);
-		$oTb->setCol(0, 0, array("width" => $wh_edge, "height" => $h_tb), we_html_element::htmlImg(array("src" => IMAGE_DIR . "pd/tb_corner_left.gif", "width" => $wh_edge, "height" => $h_tb)));
-		$oTb->setCol(0, 1, array("width" => $w - $w_icon, "height" => $h_tb, "style" => 'background-image:url(' . IMAGE_DIR . "pd/tb_pixel.gif);background-repeat:repeat-x;"), $oDrag->getHtml());
-		$oTb->setCol(0, 2, array("width" => $w_icon, "height" => $h_tb, "style" => 'background-image:url(' . IMAGE_DIR . "pd/tb_pixel.gif);background-repeat:repeat-x;"), $sIco);
-		$oTb->setCol(0, 3, array("width" => $wh_edge, "height" => $wh_edge), we_html_element::htmlImg(array("src" => IMAGE_DIR . "pd/tb_corner_right.gif", "width" => $wh_edge, "height" => $h_tb)));
+		$oTb = new we_html_table(array("id" => $iId . "_tb", 'class' => 'widget_controls'), 1, 2);
+		$oTb->setCol(0, 0, array(), $oDrag->getHtml());
+		$oTb->setCol(0, 1, array("width" => self::w_icon), $sIco);
 
-		$oBox = new we_html_table(array("id" => $iId . "_bx", "style" => "width:" . ($w + (2 * $wh_edge)) . "px;height:" . ($h + (2 * $wh_edge)) . "px;", "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 4, 3);
-		$oBox->setCol(0, 0, array("colspan" => 3, "width" => $wh_edge, "height" => $h_tb), $oTb->getHtml());
-		$oBox->setCol(1, 0, array("id" => $iId . "_lbl_mgnl", "align" => "left", "width" => $wh_edge, "height" => $h_title, "style" => 'background-image:url(' . IMAGE_DIR . "pd/header_" . $sCls . ".gif);background-repeat:repeat-x;"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "pd/line_v.gif", "style" => "width:1px;height:" . $h_title . "px;")));
-		$oBox->setCol(1, 1, array("id" => $iId . "_lbl", "class" => "label", "style" => "width:" . $w . 'px;background-image:url(' . IMAGE_DIR . "pd/header_" . $sCls . ".gif);background-repeat:repeat-x;"), we_html_element::jsElement("setLabel('" . $iId . "','" . str_replace("'", "\'", $aLabel[0]) . "','" . str_replace("'", "\'", $aLabel[1]) . "');"));
-		$oBox->setCol(1, 2, array("id" => $iId . "_lbl_mgnr", "align" => "right", "width" => $wh_edge, "height" => $h_title, "style" => 'background-image:url(' . IMAGE_DIR . "pd/header_" . $sCls . ".gif);background-repeat:repeat-x;"), we_html_element::htmlNobr(we_html_tools::getPixel(10, 1) . we_html_element::htmlImg(array("src" => IMAGE_DIR . "pd/line_v.gif", "style" => "width:1px;height:" . $h_title . "px;"))));
-		$oBox->setCol(2, 0, array("id" => $iId . "_vll", "align" => "left", "width" => $wh_edge, "height" => $h, "class" => "bgc_" . $sCls), we_html_element::htmlImg(array("id" => $iId . "_vline_l", "src" => IMAGE_DIR . "pd/line_v.gif", "style" => "width:1px;height:" . $h . "px;")));
-		$oBox->setCol(2, 1, array("id" => $iId . "_wrapper", "style" => "text-align:left;vertical-align:top;", "width" => $w, "height" => $h, "class" => "bgc_" . $sCls), we_html_tools::getPixel(1, $gap) . we_html_element::htmlBr() . we_html_element::htmlDiv(array("id" => $iId . "_content"), ((isset($oContent)) ? $oContent->getHtml() : "")) .
-				we_html_element::htmlHidden(array("id" => $iId . "_prefix", "value" => $aLabel[0])) .
-				we_html_element::htmlHidden(array("id" => $iId . "_postfix", "value" => $aLabel[1])) .
-				we_html_element::htmlHidden(array("id" => $iId . "_res", "value" => $iRes)) .
-				we_html_element::htmlHidden(array("id" => $iId . "_type", "value" => $sType)) .
-				we_html_element::htmlHidden(array("id" => $iId . "_cls", "value" => $sCls)) .
-				we_html_element::htmlHidden(array("id" => $iId . "_csv", "value" => $sCsv))
+		if($iId != 'clone'){
+			self::$js.="setLabel('" . $iId . "','" . str_replace("'", "\'", $aLabel[0]) . "','" . str_replace("'", "\'", $aLabel[1]) . "');" .
+					"initWidget('" . $iId . "');";
+		}
+		return we_html_element::htmlDiv(array("id" => $iId . "_bx", "style" => "width:" . $w . "px;", "class" => 'widget bgc_' . $sCls), $oTb->getHtml() .
+						we_html_element::htmlDiv(array("id" => $iId . "_lbl", "class" => "label widgetTitle",)) .
+						we_html_element::htmlDiv(array("id" => $iId . "_wrapper", "class" => "content"), we_html_element::htmlDiv(array("id" => $iId . "_content"), $oContent) .
+								we_html_element::htmlHidden($iId . '_prefix', $aLabel[0], $iId . '_prefix') .
+								we_html_element::htmlHidden($iId . '_postfix', $aLabel[1], $iId . '_postfix') .
+								we_html_element::htmlHidden($iId . '_res', $iRes, $iId . '_res') .
+								we_html_element::htmlHidden($iId . '_type', $sType, $iId . '_type') .
+								we_html_element::htmlHidden($iId . '_cls', $sCls, $iId . '_cls') .
+								we_html_element::htmlHidden($iId . '_csv', $sCsv, $iId . '_csv')
+						)
 		);
-		$oBox->setCol(2, 2, array("id" => $iId . "_vlr", "align" => "right", "width" => $wh_edge, "height" => $h, "class" => "bgc_" . $sCls), we_html_element::htmlNobr(we_html_tools::getPixel(10, 1) . we_html_element::htmlImg(array("id" => $iId . "_vline_r", "src" => IMAGE_DIR . "pd/line_v.gif", "style" => "width:1px;height:" . $h . "px;"))));
-		$oBox->setCol(3, 0, array("width" => $wh_edge, "height" => $wh_edge), we_html_element::htmlImg(array("id" => $iId . "_img_cl", "src" => IMAGE_DIR . "pd/bx_corner_left_" . $sCls . ".gif", "width" => $wh_edge, "height" => $wh_edge)));
-		$oBox->setCol(3, 1, array("id" => $iId . "_bottom", "valign" => "bottom", "width" => "100%", "height" => $wh_edge, "class" => "bgc_" . $sCls), we_html_element::htmlImg(array("src" => IMAGE_DIR . "pd/line_h.gif", "width" => "100%", "height" => 1)));
-		$oBox->setCol(3, 2, array("width" => $wh_edge, "height" => $wh_edge), we_html_element::htmlImg(array("id" => $iId . "_img_cr", "src" => IMAGE_DIR . "pd/bx_corner_right_" . $sCls . ".gif", "width" => $wh_edge, "height" => $wh_edge)));
+	}
 
-		return $oBox;
+	public static function getJs(){
+		return we_html_element::jsElement(self::$js);
 	}
 
 }

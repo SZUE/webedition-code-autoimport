@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -37,49 +36,27 @@ if(!($we_doc instanceof we_imageDocument)){
 	exit("ERROR: Couldn't initialize we_imageDocument object");
 }
 
-	echo we_html_tools::getHtmlTop() .
-	we_html_element::jsScript(JS_DIR . 'we_showMessage.js') . we_html_element::jsElement('
-document.onkeyup = function(e) {
-	var e = (typeof(event) != "undefined") ? event : e;
-	if (e.keyCode == 13) {
-		doOK();
-	} else if(e.keyCode == 27) {
-		top.close();
-	}
-}
-
-self.focus();');
-
 switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case "image_resize":
-		echo we_html_element::jsElement(we_getImageResizeDialogJS());
-		break;
-	case "image_convertJPEG":
-		echo we_html_element::jsElement(we_getImageConvertDialogJS());
-		break;
-	case "image_rotate":
-		echo we_html_element::jsElement(we_getImageRotateDialogJS());
-		break;
-}
-
-echo STYLESHEET . "</head>";
-
-
-switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
-	case "image_resize":
+		$js = we_getImageResizeDialogJS();
 		$_dialog = we_getImageResizeDialog();
 		break;
 	case "image_convertJPEG":
+		$js = we_getImageConvertDialogJS();
 		$_dialog = we_getImageConvertDialog();
 		break;
 	case "image_rotate":
+		$js = we_getImageRotateDialogJS();
 		$_dialog = we_getImageRotateDialog();
 		break;
 	default:
-		$_dialog = '';
+		$_dialog = $js = '';
 }
-
-echo we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form"), $_dialog)) . "</html>";
+echo we_html_tools::getHtmlTop() .
+ we_html_element::jsScript(JS_DIR . 'image_edit.js') .
+ we_html_element::jsElement($js) .
+ STYLESHEET . '</head>' .
+ we_html_element::htmlBody(array("class" => "weDialogBody", 'onload' => 'self.focus()'), we_html_element::htmlForm(array("name" => "we_form"), $_dialog)) . "</html>";
 
 function we_getImageResizeDialogJS(){
 	list($width, $height) = $GLOBALS['we_doc']->getOrigSize();
@@ -88,92 +65,6 @@ function we_getImageResizeDialogJS(){
 var height = ' . $height . ';
 var ratio_wh = width / height;
 var ratio_hw = height / width;
-
-function IsDigit(e,inp) {
-	var key;
-	if (navigator.product == \'Gecko\') {
-		if(e.metaKey || e.altKey || e.ctrlKey){
-			return true;
-		}
-		key = e.charCode;
-	} else {
-		key = event.keyCode;
-	}
-
-	return (((key >= 48) && (key <= 57)) || isSpecialKey(key) || (key == 46 && (inp.value.indexOf(".") == -1)));
-}
-
-function isSpecialKey(key) {
-	return (key >= 63232 && key <= 63235) || key == 8 || key == 63272 || key == 0 || key == 13;
-}
-
-function we_switchPixelPercent(inp,sel){
-
-	if(sel.options[sel.selectedIndex].value == "pixel"){
-		if(inp.name=="width"){
-			inp.value = Math.round((width / 100) * inp.value);
-		}else{
-			inp.value = Math.round((height / 100) * inp.value);
-		}
-	}else{
-		if(inp.name=="width"){
-			inp.value = Math.round(100 * (100/width) * inp.value) / 100.0;
-		}else{
-			inp.value = Math.round(100 * (100/height) * inp.value) / 100.0;
-		}
-	}
-
-}
-
-function we_keep_ratio(inp,sel){
-	var _newVal;
-
-	if(inp.value){
-		if(sel.options[sel.selectedIndex].value == "pixel"){
-			_newVal = Math.round(inp.value);
-		}else{
-			_newVal = Math.round(100 * inp.value) / 100.0;
-		}
-		if (_newVal != inp.value) {
-			inp.value = _newVal;
-		}
-	}
-
-	if(inp.form.ratio.checked){
-		var inp_change = null;
-		var sel_change = null;
-		var ratio = null;
-		var org = null
-
-		if(inp.name=="width"){
-			ratio = ratio_hw;
-			inp_change = inp.form.height;
-			sel_change = inp.form.heightSelect;
-			org = width;
-		}else{
-			ratio = ratio_wh;
-			inp_change = inp.form.width;
-			sel_change = inp.form.widthSelect;
-			org = height;
-		}
-		if(sel_change.options[sel_change.selectedIndex].value == "pixel"){
-			if(sel.options[sel.selectedIndex].value == "pixel"){
-				_newVal = Math.round(inp.value * ratio);
-			}else{
-				_newVal = Math.round((org/100) * inp.value * ratio);
-			}
-		}else{
-			if(sel.options[sel.selectedIndex].value == "percent"){
-				_newVal = inp.value;
-			}else{
-				_newVal = Math.round(100 * (100/org) * inp.value * ratio) / 100.0;
-			}
-		}
-		if (inp_change.value != _newVal) {
-			inp_change.value = _newVal;
-		}
-	}
-}
 
 function doOK(){
 	var f = document.we_form;
@@ -216,7 +107,6 @@ function we_getImageRotateDialogJS(){
 	var w = "' . $imageSize[0] . '";
 	var h= "' . $imageSize[1] . '";
 
-
 	for(var i=0; i<f.degrees.length;i++){
 		if(f.degrees[i].checked){
 			degrees = f.degrees[i].value;
@@ -243,20 +133,20 @@ function we_getImageResizeDialog(){
 
 	$_content = array();
 
-	$okbut = we_html_button::create_button("ok", "javascript:doOK();");
-	$cancelbut = we_html_button::create_button("cancel", "javascript:top.close();");
+	$okbut = we_html_button::create_button(we_html_button::OK, "javascript:doOK();");
+	$cancelbut = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
 
 	$buttons = we_html_button::position_yes_no_cancel($okbut, null, $cancelbut);
 
-	$widthInput = we_html_tools::htmlTextInput("width", 10, $width, "", 'onkeypress="return IsDigit(event,this);" onkeyup="we_keep_ratio(this,this.form.widthSelect);"', "text", 60);
-	$heightInput = we_html_tools::htmlTextInput("height", 10, $height, "", 'onkeypress="return IsDigit(event,this);" onkeyup="we_keep_ratio(this,this.form.heightSelect);"', "text", 60);
+	$widthInput = we_html_tools::htmlTextInput("width", 10, $width, "", 'onkeypress="return WE().util.IsDigit(event,this);" onkeyup="we_keep_ratio(this,this.form.widthSelect);"', "text", 60);
+	$heightInput = we_html_tools::htmlTextInput("height", 10, $height, "", 'onkeypress="return WE().util.IsDigit(event,this);" onkeyup="we_keep_ratio(this,this.form.heightSelect);"', "text", 60);
 
 	$widthSelect = '<select class="weSelect" size="1" name="widthSelect" onchange="we_switchPixelPercent(this.form.width,this);"><option value="pixel">' . g_l('weClass', '[pixel]') . '</option><option value="percent">' . g_l('weClass', '[percent]') . '</option></select>';
 	$heightSelect = '<select class="weSelect" size="1" name="heightSelect" onchange="we_switchPixelPercent(this.form.height,this);"><option value="pixel">' . g_l('weClass', '[pixel]') . '</option><option value="percent">' . g_l('weClass', '[percent]') . '</option></select>';
 
 	$ratio_checkbox = we_html_forms::checkbox(1, true, "ratio", g_l('thumbnails', '[ratio]'), false, "defaultfont", "if(this.checked){we_keep_ratio(this.form.width,this.form.widthSelect);}");
 
-	$_table = '<table border="0" cellpadding="2" cellspacing="0">
+	$_table = '<table>
 	<tr>
 		<td class="defaultfont">' . g_l('weClass', '[width]') . ':</td>
 		<td>' . $widthInput . '</td>
@@ -271,32 +161,31 @@ function we_getImageResizeDialog(){
 		<td colspan="3">' . $ratio_checkbox . '</td>
 	</tr>
 </table>' .
-			(($GLOBALS['we_doc']->getGDType() === "jpg") ?
-					'<br/><div class="defaultfont">' . g_l('weClass', '[quality]') . '</div>' . we_base_imageEdit::qualitySelect("quality") :
-					'');
-	$_content[] = array("headline" => "", "html" => $_table, "space" => 0);
-	return we_html_multiIconBox::getHTML("", "100%", $_content, 30, $buttons, -1, "", "", false, g_l('weClass', '[resize]'));
+		(($GLOBALS['we_doc']->getGDType() === "jpg") ?
+			'<br/><div class="defaultfont">' . g_l('weClass', '[quality]') . '</div>' . we_base_imageEdit::qualitySelect("quality") :
+			'');
+	$_content[] = array("headline" => "", "html" => $_table);
+	return we_html_multiIconBox::getHTML("", $_content, 30, $buttons, -1, "", "", false, g_l('weClass', '[resize]'));
 }
 
 function we_getImageConvertDialog(){
 	$_content = array();
 
-	$okbut = we_html_button::create_button("ok", "javascript:doOK();");
-	$cancelbut = we_html_button::create_button("cancel", "javascript:top.close();");
+	$okbut = we_html_button::create_button(we_html_button::OK, "javascript:doOK();");
+	$cancelbut = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
 	$buttons = we_html_button::position_yes_no_cancel($okbut, null, $cancelbut);
-	$cancelbut = we_html_button::create_button("cancel", "javascript:top.close();");
 	$_dialog = '<div class="defaultfont">' . g_l('weClass', '[quality]') . '</div>' . we_base_imageEdit::qualitySelect("quality");
-	$_content[] = array("headline" => "", "html" => $_dialog, "space" => 0);
+	$_content[] = array("headline" => "", "html" => $_dialog);
 
 
-	return we_html_multiIconBox::getHTML("", "100%", $_content, 30, $buttons, -1, "", "", false, g_l('weClass', '[convert]'));
+	return we_html_multiIconBox::getHTML("", $_content, 30, $buttons, -1, "", "", false, g_l('weClass', '[convert]'));
 }
 
 function we_getImageRotateDialog(){
 	$_content = array();
 
-	$okbut = we_html_button::create_button("ok", "javascript:doOK();");
-	$cancelbut = we_html_button::create_button("cancel", "javascript:top.close();");
+	$okbut = we_html_button::create_button(we_html_button::OK, "javascript:doOK();");
+	$cancelbut = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
 
 	$buttons = we_html_button::position_yes_no_cancel($okbut, null, $cancelbut);
 
@@ -305,12 +194,12 @@ function we_getImageRotateDialog(){
 	$_radio90r = we_html_forms::radiobutton(270, false, "degrees", g_l('weClass', '[rotate90r]'));
 
 	$_dialog = $_radio180 . $_radio90l . $_radio90r .
-			(($GLOBALS['we_doc']->getGDType() === "jpg") ?
-					'<br/><div class="defaultfont">' . g_l('weClass', '[quality]') . '</div>' . we_base_imageEdit::qualitySelect("quality") :
-					'');
+		(($GLOBALS['we_doc']->getGDType() === "jpg") ?
+			'<br/><div class="defaultfont">' . g_l('weClass', '[quality]') . '</div>' . we_base_imageEdit::qualitySelect("quality") :
+			'');
 
-	$_content[] = array("headline" => "", "html" => $_dialog, "space" => 0);
+	$_content[] = array("headline" => "", "html" => $_dialog);
 
 
-	return we_html_multiIconBox::getHTML("", "100%", $_content, 30, $buttons, -1, "", "", false, g_l('weClass', '[rotate]'));
+	return we_html_multiIconBox::getHTML("", $_content, 30, $buttons, -1, "", "", false, g_l('weClass', '[rotate]'));
 }

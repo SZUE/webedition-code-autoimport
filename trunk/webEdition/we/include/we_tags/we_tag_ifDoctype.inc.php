@@ -24,7 +24,7 @@
  */
 function we_tag_ifDoctype($attribs){
 	if(($foo = attributFehltError($attribs, 'doctypes', __FUNCTION__))){
-		print($foo);
+		echo $foo;
 		return false;
 	}
 	$matchArr = explode(',', weTag_getAttribute('doctypes', $attribs, '', we_base_request::STRING));
@@ -35,10 +35,7 @@ function we_tag_ifDoctype($attribs){
 		$doctype = $GLOBALS['lv']->f('wedoc_DocType');
 	} else {
 		$doc = we_getDocForTag($docAttr);
-		if($doc instanceof we_template){
-			return false;
-		}
-		$doctype = $doc->DocType;
+		$doctype = ($doc instanceof we_webEditionDocument) ? $doc->DocType : false;
 	}
 
 	if(isset($doctype) && $doctype !== false){

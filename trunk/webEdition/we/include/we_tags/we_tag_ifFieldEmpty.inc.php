@@ -50,41 +50,37 @@ function we_isFieldNotEmpty($attribs){
 						break;
 					case 'year':
 						$sd = mktime(0, 0, 0, 1, 1, $GLOBALS['lv']->calendar_struct['year_human']);
-						$sd = mktime(23, 59, 59, 12, 31, $GLOBALS['lv']->calendar_struct['year_human']);
+						$ed = mktime(23, 59, 59, 12, 31, $GLOBALS['lv']->calendar_struct['year_human']);
 						break;
 				}
 				if(isset($sd) && isset($ed)){
 					foreach($GLOBALS['lv']->calendar_struct['storage'] as $entry){
-						if($sd < $entry && $ed > $entry)
+						if($sd < $entry && $ed > $entry){
 							return true;
+						}
 					}
 				}
 			}
 			return false;
 		case 'multiobject':
-			$data = (isset($GLOBALS['lv']) ?
-							(($GLOBALS['lv'] instanceof we_shop_shop) ? //FIXME: change this - we don't need getObject any more!
-									unserialize($GLOBALS['lv']->getDBf($orig_match)) :
-									unserialize($GLOBALS['lv']->f($orig_match))) :
-							unserialize($GLOBALS['we_doc']->getElement($orig_match)));
-
-			if(isset($data['objects']) && is_array($data['objects']) && !empty($data['objects'])){
-				$test = array_count_values($data['objects']);
-				return (count($test) > 1 || (count($test) == 1 && !isset($test[''])));
-			}
-			return false;
+			$data = we_unserialize((isset($GLOBALS['lv']) ?
+					$GLOBALS['lv']->f($orig_match) :
+					$GLOBALS['we_doc']->getElement($orig_match)));
+			$objects = array_filter(isset($data['objects']) ? $data['objects'] : $data);
+			return !empty($objects);
 		case 'object' : //Bug 3837: erstmal die Klasse rausfinden um auf den Eintrag we_we_object_X zu kommen
 			if($GLOBALS['lv'] instanceof we_listview_document){ // listview/document with objects included using we:object
 				return (bool) $GLOBALS['lv']->f($match);
 			}
 			$match = strpos($orig_match, '/') === false ? $orig_match : substr(strrchr($orig_match, '/'), 1);
-			$objectid = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Text="' . $GLOBALS['DB_WE']->escape($match) . '"', 'ID', $GLOBALS['DB_WE']);
+			$objectid = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Text="' . $GLOBALS['DB_WE']->escape($match) . '"');
 			return (bool) $GLOBALS['lv']->f('we_object_' . $objectid);
 		case 'checkbox' :
 		case 'binary' :
 		case 'img' :
 		case 'flashmovie' :
 		case 'quicktime' :
+		case 'collection':
 			return (bool) $GLOBALS['lv']->f($match);
 		case 'float':
 			return floatval($GLOBALS['lv']->f($match)) !== floatval(0);
@@ -92,19 +88,18 @@ function we_isFieldNotEmpty($attribs){
 			return intval($GLOBALS['lv']->f($match)) !== 0;
 		case 'href' :
 			switch(get_class($GLOBALS['lv'])){
-				case 'we_object_listview':
-				case 'we_object_listviewMultiobject':
-				case 'we_object_tag':
-					$hrefArr = $GLOBALS['lv']->f($match) ? unserialize($GLOBALS['lv']->f($match)) : array();
+				case 'we_listview_object':
+				case 'we_listview_multiobject':
+					$hrefArr = $GLOBALS['lv']->f($match) ? we_unserialize($GLOBALS['lv']->f($match)) : array();
 					if(!$hrefArr){
 						return false;
 					}
 					$hreftmp = trim(we_document::getHrefByArray($hrefArr));
 					/**
-					* TODO: file_exists only work when the choosen webEdition document is in the correct DOCUMENT_ROOT
-					* but within multi domains we have cross DOCUMENT_ROOT references!!!
-					*/
-					$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE'],true);
+					 * TODO: file_exists only work when the choosen webEdition document is in the correct DOCUMENT_ROOT
+					 * but within multi domains we have cross DOCUMENT_ROOT references!!!
+					 */
+					$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE'], true);
 					if(!$hreftmp || $hreftmp === '/' || $hreftmp{0} === '/' && (!file_exists($_SERVER['DOCUMENT_ROOT'] . preg_replace($urlReplace, array_keys($urlReplace), $hreftmp)))){
 						return false;
 					}
@@ -127,7 +122,7 @@ function we_isFieldNotEmpty($attribs){
 
 			break; //see return of function
 		default :
-			$_tmp = @unserialize($GLOBALS['lv']->f($match));
+			$_tmp = we_unserialize($GLOBALS['lv']->f($match), '', true);
 			if(is_array($_tmp)){
 				return count($_tmp) > 0;
 			}
@@ -138,7 +133,7 @@ function we_isFieldNotEmpty($attribs){
 
 function we_tag_ifFieldEmpty($attribs){
 	if(($foo = attributFehltError($attribs, 'match', __FUNCTION__))){
-		print($foo);
+		echo $foo;
 		return false;
 	}
 	return !we_isFieldNotEmpty($attribs);

@@ -25,14 +25,11 @@ if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 	we_schedpro::trigger_schedule();
 }
 
-echo we_html_tools::getHtmlTop();
-
+echo we_html_tools::getHtmlTop() . STYLESHEET;
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-echo STYLESHEET .
- we_html_element::jsScript(JS_DIR . 'windows.js');
 ?>
 </head>
-<body  class="weEditorBody" onload="checkFooter()" onunload="doUnload()">
+<body  class="weEditorBody" onload="checkFooter();doScrollTo();" onunload="doUnload();">
 	<form name="we_form" onsubmit="return false"><?php
 		echo we_class::hiddenTrans();
 
@@ -44,19 +41,17 @@ echo STYLESHEET .
 			$parts[] = array(
 				'headline' => '',
 				'html' => $schedObj->getHTML($GLOBALS['we_doc']->Table == (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE')),
-				'space' => 0
 			);
 		}
 		$parts[] = array(
 			'headline' => '',
-			'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_schedule', '[descriptiontext]'), we_html_tools::TYPE_INFO, 700) . '<br/><br/>' . we_html_button::create_button('image:btn_add_schedule', "javascript:we_cmd('schedule_add')"),
-			'space' => 0
+			'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_schedule', '[descriptiontext]'), we_html_tools::TYPE_INFO, 700) . '<br/><br/>' . we_html_button::create_button('fa:btn_add_schedule,fa-plus,fa-lg fa-clock-o', "javascript:we_cmd('schedule_add')"),
 		);
 		echo we_html_multiIconBox::getJS() .
 		we_schedpro::getMainJS($we_doc) .
-		we_html_multiIconBox::getHTML('', '100%', $parts, 20, '', -1, '', '', false);
+		we_html_multiIconBox::getHTML('', $parts, 20, '', -1, '', '', false) .
+		we_html_element::htmlHidden("we_complete_request", 1);
 		?>
-		<input type="hidden" name="we_complete_request" value="1"/>
 	</form>
 </body>
 </html>

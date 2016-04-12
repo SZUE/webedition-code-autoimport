@@ -32,7 +32,7 @@ class <?php echo $CLASSNAME;?>_models_Default extends we_app_Model
 	 */
 	function __construct($<?php echo $TOOLNAME;?>ID = 0)
 	{
-		parent::__construct(<?php echo (isset($TABLECONSTANT) && $TABLEEXISTS && !empty($TABLECONSTANT)) ? $TABLECONSTANT : "''";?>);
+		parent::__construct(<?php echo ($TABLEEXISTS && !empty($TABLECONSTANT)) ? $TABLECONSTANT : "''";?>);
 		if ($<?php echo $TOOLNAME;?>ID) {
 			$this->{$this->_primaryKey} = $<?php echo $TOOLNAME;?>ID;
 			$this->load($<?php echo $TOOLNAME;?>ID);
@@ -51,7 +51,7 @@ class <?php echo $CLASSNAME;?>_models_Default extends we_app_Model
 	 */
 	public function setFields($fields) {
 		parent::setFields($fields);
-		<?php if(isset($TABLECONSTANT) && $TABLEEXISTS && !empty($TABLECONSTANT)) {?>
+		<?php if($TABLEEXISTS && !empty($TABLECONSTANT)) {?>
 			$this->setPath();
 		<?php } ?>
 	}

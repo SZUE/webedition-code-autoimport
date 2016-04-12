@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,45 +22,10 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-if(isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == str_replace(dirname(__FILE__), '', __FILE__)){
-	exit();
-}
-
-function weFileExists($id, $table = FILE_TABLE, we_database_base $db = NULL){
-	t_e('deprecated', __FUNCTION__);
-	return we_base_file::isWeFile($id, $table, $db);
-}
 
 function correctUml($in){//FIXME: need charset!!
-	//FIXME: can we use this (as in objectfile): preg_replace(array('~&szlig;~','~&(.)(uml|grave|acute|circ|tilde|ring|cedil|slash|caron);|&(..)(lig);|&#.*;~', '~[^0-9a-zA-Z/._-]~'), array('ss','$1$3', ''), htmlentities($text, ENT_COMPAT, $this->Charset));
+	//FIXME: can we use this (as in objectfile): preg_replace(array('~&szlig;~','~&(.)(uml|grave|acute|circ|tilde|ring|cedil|slash|caron);|&(..)(lig);|&#.*;~', '~[^0-9a-zA-Z/._-]~'), array('ss','${1}${3}', ''), htmlentities($text, ENT_COMPAT, $this->Charset));
 	return strtr($in, array('ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue', 'ß' => 'ss'));
-}
-
-function makePIDTail($pid, $cid, we_database_base $db = null, $table = FILE_TABLE){
-	if($table != FILE_TABLE){
-		return '1';
-	}
-
-	$db = $db ? : new DB_WE();
-	$parentIDs = array();
-	$pid = intval($pid);
-	$parentIDs[] = $pid;
-	while($pid != 0){
-		$pid = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pid), '', $db);
-		$parentIDs[] = $pid;
-	}
-	$cid = intval($cid);
-	$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($cid), '', $db);
-	$fooArr = unserialize($foo);
-	$flag = (isset($fooArr['WorkspaceFlag']) ? $fooArr['WorkspaceFlag'] : 1);
-	$pid_tail = array();
-	if($flag){
-		$pid_tail[] = OBJECT_X_TABLE . intval($cid) . '.OF_Workspaces=""';
-	}
-	foreach($parentIDs as $pid){
-		$pid_tail[] = 'FIND_IN_SET(' . intval($pid) . ',' . OBJECT_X_TABLE . intval($cid) . '.OF_Workspaces) OR FIND_IN_SET(' . intval($pid) . ',' . OBJECT_X_TABLE . intval($cid) . '.OF_ExtraWorkspacesSelected)';
-	}
-	return ($pid_tail ? ' (' . implode(' OR ', $pid_tail) . ') ' : 1);
 }
 
 function makeIDsFromPathCVS($paths, $table = FILE_TABLE){
@@ -96,15 +62,15 @@ function getHTTP($server, $url, $port = '', $username = '', $password = ''){
 	switch(getHttpOption()){
 		case 'fopen':
 			/* not yet tested
-			if(defined('WE_PROXYHOST')){
-				$proxyhost = defined('WE_PROXYHOST') ? WE_PROXYHOST : "";
-				$proxyport = (defined('WE_PROXYPORT') && WE_PROXYPORT) ? WE_PROXYPORT : "80";
-				$proxy_user = defined('WE_PROXYUSER') ? WE_PROXYUSER : "";
-				$proxy_pass = defined('WE_PROXYPASSWORD') ? WE_PROXYPASSWORD : "";
+			  if(defined('WE_PROXYHOST')){
+			  $proxyhost = defined('WE_PROXYHOST') ? WE_PROXYHOST : "";
+			  $proxyport = (defined('WE_PROXYPORT') && WE_PROXYPORT) ? WE_PROXYPORT : "80";
+			  $proxy_user = defined('WE_PROXYUSER') ? WE_PROXYUSER : "";
+			  $proxy_pass = defined('WE_PROXYPASSWORD') ? WE_PROXYPASSWORD : "";
 
-				return getHttpThroughProxy(($server . $url), $proxyhost, $proxyport, $proxy_user, $proxy_pass);
-			}
-			*/
+			  return getHttpThroughProxy(($server . $url), $proxyhost, $proxyport, $proxy_user, $proxy_pass);
+			  }
+			 */
 			$page = 'Server Error: Failed opening URL: ' . $server . $url;
 			$fh = @fopen($server . $url, 'rb');
 			if(!$fh){
@@ -163,7 +129,7 @@ function getHttpThroughProxy($url, $proxyhost, $proxyport, $proxy_user, $proxy_p
  * @return string stripped tablename
  */
 function stripTblPrefix($table){
-	return TBL_PREFIX != '' && (strpos($table, TBL_PREFIX) !== FALSE) ? substr($table, strlen(TBL_PREFIX)) : $table;
+	return TBL_PREFIX != '' && (strpos($table, TBL_PREFIX) === 0) ? substr($table, strlen(TBL_PREFIX)) : $table;
 }
 
 function addTblPrefix($table){
@@ -230,17 +196,13 @@ function we_getParentIDs($table, $id, &$ids, we_database_base $db = null){
  * @return type
  */
 function makeArrayFromCSV($csv){
-	$csv = trim(str_replace('\\,', '###komma###', $csv), ',');
+	$csv = trim($csv, ',');
 
 	if($csv === ''){
 		return array();
 	}
 
-	$foo = explode(',', $csv);
-	foreach($foo as &$f){
-		$f = trim(str_replace('###komma###', ',', $f));
-	}
-	return $foo;
+	return explode(',', $csv);
 }
 
 /**
@@ -295,91 +257,49 @@ function in_parentID($id, $pid, $table = FILE_TABLE, we_database_base $db = null
 }
 
 function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, we_database_base $db = null, $norootcheck = false){
-	if(!$wsIDs || $IDs === ''){
-		return true;
+	return we_users_util::in_workspace($IDs, $wsIDs, $table, $db, $norootcheck);
+}
+
+function path_to_id($path, $table = FILE_TABLE, we_database_base $db = null, $asArray = false){
+	if(empty($path)){
+		return $asArray ? array() : '';
+	}
+	if(!is_array($path)){
+		$path = array($path);
 	}
 	$db = ($db ? : new DB_WE());
-
-	if(!is_array($IDs)){
-		$IDs = explode(',', trim($IDs, ','));
-	}
-	if(!is_array($wsIDs)){
-		$wsIDs = explode(',', trim($wsIDs, ','));
-	}
-	if(!$wsIDs || (in_array(0, $wsIDs))){
-		return true;
-	}
-
-	if((!$norootcheck) && in_array(0, $IDs)){
-		return false;
-	}
-	foreach($IDs as $id){
-		foreach($wsIDs as $ws){
-			if(in_parentID($id, $ws, $table, $db) || ($id == $ws) || ($id == 0)){
-				return true;
-			}
-		}
-	}
-	return false;
+	$db->query('SELECT ID FROM ' . $db->escape($table) . ' WHERE Path IN ("' . implode('","', array_map('escape_sql_query', array_map('trim', $path))) . '")');
+	$ret = (in_array('/', $path) ? array(0) : array()) + $db->getAll(true);
+	return $asArray ? $ret : implode(',', $ret);
 }
 
-function path_to_id($path, $table = FILE_TABLE, we_database_base $db = null){
-	//FIXME: make them all use $db at call
-	if($path === '/'){
-		return 0;
-	}
-	$db = ($db ? : new DB_WE());
-	return intval(f('SELECT ID FROM ' . $db->escape($table) . ' WHERE Path="' . $db->escape($path) . '" LIMIT 1', '', $db));
-}
-
-function weConvertToIds($paths, $table){
-	if(!is_array($paths)){
-		return array();
-	}
-	$paths = array_unique($paths);
-	$ids = array();
-	foreach($paths as $p){
-		$ids[] = path_to_id($p, $table);
-	}
-	return $ids;
-}
-
-function path_to_id_ct($path, $table, &$contentType){
-	if($path === '/'){
-		return 0;
-	}
-	$db = new DB_WE();
-	$res = getHash('SELECT ID,ContentType FROM ' . $db->escape($table) . ' WHERE Path="' . $db->escape($path) . '"', $db);
-	$contentType = isset($res['ContentType']) ? $res['ContentType'] : null;
-
-	return intval(isset($res['ID']) ? $res['ID'] : 0);
-}
-
-function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $prePostKomma = false, $asArray = false, $endslash = false, $isPublished = false){
+function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $asArray = false, $endslash = false, $isPublished = false){
 	if(!is_array($IDs) && !$IDs){
-		return ($asArray ? array('/') : '/');
+		return ($asArray ? array(0 => '/') : '/');
 	}
 
-	$db = $db ? : new DB_WE();
+	$db = $db ? : $GLOBALS['DB_WE'];
 
 	if(!is_array($IDs)){
 		$IDs = makeArrayFromCSV($IDs);
 	}
-	$foo = array();
-	foreach($IDs as $id){
-		if($id == 0){
-			$foo[$id] = '/';
-		} else {
-			$foo2 = getHash('SELECT Path,IsFolder FROM ' . $db->escape($table) . ' WHERE ID=' . intval($id) . ($isPublished ? ' AND Published>0' : ''), $db);
-			if(isset($foo2['Path'])){
-				if($endslash && $foo2['IsFolder']){
-					$foo2['Path'] .= '/';
-				}
-				$foo[$id] = $foo2['Path'];
-			}
-		}
+	switch($table){
+		case defined('CUSTOMER_TABLE') ? CUSTOMER_TABLE : 'CUSTOMER_TABLE':
+			$select = 'Username';
+			break;
+		default:
+			$select = ($endslash ?
+					'IF(IsFolder=1,CONCAT(Path,"/"),Path)' :
+					'Path');
 	}
-	return $asArray ? $foo : makeCSVFromArray($foo, $prePostKomma);
+
+	$foo = (in_array(0, $IDs) ? array(0 => '/') : array()) +
+		($IDs ?
+			$db->getAllFirstq('SELECT ID,' . $select . ' FROM ' . $db->escape($table) . ' WHERE ID IN(' . implode(',', array_map('intval', $IDs)) . ')' . ($isPublished ? ' AND Published>0' : ''), false) :
+			array()
+		);
+
+	return $asArray ? $foo : implode(',', $foo);
 }
 
 /**
@@ -390,25 +310,20 @@ function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $pre
  * @return type
  * @deprecated sicne 6.4.3
  */
-function getHashArrayFromCSV($csv, $firstEntry, we_database_base $db = null){
+function getHashArrayFromCSV($csv, $firstEntry, we_database_base $db){
 	if(!$csv){
 		return array();
 	}
-	$db = $db ? : new DB_WE();
 	$IDArr = makeArrayFromCSV($csv);
-	$out = $firstEntry ? array(
-		0 => $firstEntry
-		) : array();
-	foreach($IDArr as $id){
-		if(strlen($id) && ($path = id_to_path($id, FILE_TABLE, $db))){
-			$out[$id] = $path;
-		}
-	}
+	$out = ($firstEntry ? array(
+			0 => $firstEntry
+			) : array()) +
+		id_to_path($IDArr, FILE_TABLE, $db, true);
+
 	return $out;
 }
 
-function getPathsFromTable($table = FILE_TABLE, we_database_base $db = null, $type = we_base_constants::FILE_ONLY, $wsIDs = '', $order = 'Path', $limitCSV = '', $first = ''){
-	$db = ($db ? : new DB_WE());
+function getPathsFromTable($table, we_database_base $db, $type = we_base_constants::FILE_ONLY, $wsIDs = '', $order = 'Path', $limitCSV = '', $first = ''){
 	$limitCSV = trim($limitCSV, ',');
 	$query = array();
 	if($wsIDs){
@@ -416,7 +331,7 @@ function getPathsFromTable($table = FILE_TABLE, we_database_base $db = null, $ty
 		$wsPaths = makeArrayFromCSV(id_to_path($wsIDs, $table, $db));
 		$qfoo = array();
 		for($i = 0; $i < count($wsPaths); $i++){
-			if((!$limitCSV) || in_workspace($idArr[$i], $limitCSV, FILE_TABLE, $db)){
+			if((!$limitCSV) || we_users_util::in_workspace($idArr[$i], $limitCSV, FILE_TABLE, $db)){
 				$qfoo[] = ' Path LIKE "' . $db->escape($wsPaths[$i]) . '%" ';
 			}
 		}
@@ -464,22 +379,13 @@ function pushChilds(&$arr, $id, $table = FILE_TABLE, $isFolder = '', we_database
 	}
 }
 
-function uniqueCSV($csv, $prePost = false){
-	$arr = array_unique(makeArrayFromCSV($csv));
-	$foo = array();
-	foreach($arr as $v){
-		$foo[] = $v;
-	}
-	return makeCSVFromArray($foo, $prePost);
-}
-
-function get_ws($table = FILE_TABLE, $prePostKomma = false, $asArray = false){
+function get_ws($table = FILE_TABLE, $asArray = false){
 	if(isset($_SESSION) && isset($_SESSION['perms'])){
 		if(permissionhandler::hasPerm('ADMINISTRATOR')){
 			return $asArray ? array() : '';
 		}
-		if($_SESSION['user']['workSpace'] && isset($_SESSION['user']['workSpace'][$table]) && $_SESSION['user']['workSpace'][$table] != ''){
-			return $asArray ? $_SESSION['user']['workSpace'][$table] : makeCSVFromArray($_SESSION['user']['workSpace'][$table], $prePostKomma);
+		if($_SESSION['user']['workSpace'] && !empty($_SESSION['user']['workSpace'][$table])){
+			return $asArray ? $_SESSION['user']['workSpace'][$table] : implode(',', $_SESSION['user']['workSpace'][$table]);
 		}
 	}
 	return $asArray ? array() : '';
@@ -487,15 +393,12 @@ function get_ws($table = FILE_TABLE, $prePostKomma = false, $asArray = false){
 
 function we_readParents($id, &$parentlist, $tab, $match = 'ContentType', $matchvalue = 'folder', we_database_base $db = null){
 	$db = $db ? : new DB_WE();
-	$pid = f('SELECT ParentID FROM ' . $db->escape($tab) . ' WHERE ID=' . intval($id), '', $db);
-	if($pid !== ''){
+	if(($pid = f('SELECT ParentID FROM ' . $db->escape($tab) . ' WHERE ID=' . intval($id), '', $db)) !== ''){
 		if($pid == 0){
 			$parentlist[] = $pid;
-		} else {
-			if(f('SELECT 1 FROM ' . $db->escape($tab) . ' WHERE ID=' . intval($pid) . ' AND ' . $db->escape($match) . ' = "' . $db->escape($matchvalue) . '" LIMIT 1', '', $db)){
-				$parentlist[] = $pid;
-				we_readParents($pid, $parentlist, $tab, $match, $matchvalue, $db);
-			}
+		} elseif(f('SELECT 1 FROM ' . $db->escape($tab) . ' WHERE ID=' . intval($pid) . ' AND ' . $db->escape($match) . ' = "' . $db->escape($matchvalue) . '" LIMIT 1', '', $db)){
+			$parentlist[] = $pid;
+			we_readParents($pid, $parentlist, $tab, $match, $matchvalue, $db);
 		}
 	}
 }
@@ -526,7 +429,7 @@ function getWsQueryForSelector($tab, $includingFolders = true){
 	if(!($ws = makeArrayFromCSV(get_ws($tab)))){
 		return (($tab == NAVIGATION_TABLE || (defined('NEWSLETTER_TABLE') && $tab == NEWSLETTER_TABLE)) ? '' : ' OR RestrictOwners=0 ');
 	}
-	$paths = id_to_path($ws, $tab, null, false, true);
+	$paths = id_to_path($ws, $tab, null, true);
 	$wsQuery = array();
 	foreach($paths as $path){
 		$parts = explode('/', $path);
@@ -556,8 +459,8 @@ function getWsQueryForSelector($tab, $includingFolders = true){
 	return ' AND (' . implode(' OR ', $wsQuery) . ')';
 }
 
-function get_def_ws($table = FILE_TABLE, $prePostKomma = false){
-	if(!get_ws($table, $prePostKomma)){ // WORKARROUND
+function get_def_ws($table = FILE_TABLE){
+	if(!get_ws($table)){ // WORKARROUND
 		return '';
 	}
 	if(permissionhandler::hasPerm('ADMINISTRATOR')){
@@ -565,10 +468,10 @@ function get_def_ws($table = FILE_TABLE, $prePostKomma = false){
 	}
 
 	$foo = f('SELECT workSpaceDef FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']['ID']), '', new DB_WE());
-	$ws = makeCSVFromArray(makeArrayFromCSV($foo), $prePostKomma);
+	$ws = implode(',', explode(',', $foo));
 
 	if(!$ws){
-		$wsA = makeArrayFromCSV(get_ws($table, $prePostKomma));
+		$wsA = explode(',', get_ws($table));
 		return ($wsA ? $wsA[0] : '');
 	}
 	return $ws;
@@ -606,12 +509,7 @@ function t_e($type = 'warning'){
 			break;
 		case 'deprecated':
 			$inc = true;
-			if(defined('E_USER_DEPRECATED')){ //not defined in php <5.3; write warning instead
-				$type = E_USER_DEPRECATED;
-			} else {
-				$data[] = 'DEPRECATED';
-				$type = E_USER_NOTICE;
-			}
+			$type = E_USER_DEPRECATED;
 			break;
 		case 'warning':
 			$inc = true;
@@ -630,7 +528,7 @@ function t_e($type = 'warning'){
 		}
 	}
 
-	if(count($data) > 0){
+	if($data){
 		trigger_error(implode("\n---------------------------------------------------\n", $data), $type);
 	}
 }
@@ -655,7 +553,7 @@ function we_mail($recipient, $subject, $txt, $from = '', $replyTo = ''){
 		$txt = str_replace("\n", "\r\n", $txt);
 	}
 
-	$phpmail = new we_util_Mailer($recipient, $subject, $from, $replyTo);
+	$phpmail = new we_helpers_mail($recipient, $subject, $from, $replyTo);
 	$phpmail->setCharSet($GLOBALS['WE_BACKENDCHARSET']);
 	$txtMail = strip_tags($txt);
 	if($txt != $txtMail){
@@ -698,7 +596,7 @@ function getContentTypeFromFile($dat){
 	if(is_dir($dat)){
 		return we_base_ContentTypes::FOLDER;
 	}
-	$ext = strtolower(preg_replace('#^.*(\..+)$#', '$1', $dat));
+	$ext = strtolower(preg_replace('#^.*(\..+)$#', '${1}', $dat));
 	if($ext){
 		$type = we_base_ContentTypes::inst()->getTypeForExtension($ext);
 		if($type){
@@ -717,16 +615,6 @@ function getUploadMaxFilesize($mysql = false, we_database_base $db = null){
 	return (intval(FILE_UPLOAD_MAX_UPLOAD_SIZE) == 0 ?
 			$min :
 			min(FILE_UPLOAD_MAX_UPLOAD_SIZE * 1024 * 1024, $min));
-}
-
-/**
- *
- * @param we_database_base $db
- * @return type
- * @deprecated since version 6.3.8
- */
-function getMaxAllowedPacket(we_database_base $db){
-	return $db->getMaxAllowedPacket();
 }
 
 function we_convertIniSizes($in){
@@ -769,12 +657,6 @@ function we_getDocumentByID($id, $includepath = '', we_database_base $db = null,
 	return $content;
 }
 
-function we_getObjectFileByID($id, $includepath = ''){
-	$mydoc = new we_objectFile();
-	$mydoc->initByID($id, OBJECT_FILES_TABLE, we_class::LOAD_MAID_DB);
-	return $mydoc->i_getDocument($includepath);
-}
-
 /**
  * @return str
  * @param bool $slash
@@ -803,7 +685,7 @@ function getServerUrl($useUserPwd = false){
 	return getServerProtocol(true) . ($useUserPwd && strlen($pwd) > 3 ? $pwd : '') . $_SERVER['SERVER_NAME'] . $port;
 }
 
-function we_check_email($email){ // Zend validates only the pure address
+function we_check_email($email){ // php validates only the pure address
 	if(($pos = strpos($email, '<'))){//format is "xxx xx" <test@test.de>
 		++$pos;
 		$email = substr($email, $pos, strrpos($email, '>') - $pos);
@@ -847,24 +729,18 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 			}
 			break;
 	}
-	if($xhtml){ //	xhtml, check if and what we shall debug
-		$_xmlClose = true;
+	/* if($xhtml){ //	xhtml, check if and what we shall debug
 
-		if(XHTML_DEBUG){ //  check if XHTML_DEBUG is activated - system pref
-			$showWrong = (isset($_SESSION['prefs']['xhtml_show_wrong']) && $_SESSION['prefs']['xhtml_show_wrong'] && isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition); //  check if XML_SHOW_WRONG is true (user) - only in webEdition
-// at the moment only transitional is supported
-			$xhtmlType = weTag_getAttribute('xmltype', $attribs, 'transitional', we_base_request::STRING);
-			$attribs = removeAttribs($attribs, $removeAttribs);
+	  if(XHTML_DEBUG){ //  check if XHTML_DEBUG is activated - system pref
+	  $showWrong = (!empty($_SESSION['prefs']['xhtml_show_wrong']) && isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition); //  check if XML_SHOW_WRONG is true (user) - only in webEdition
+	  // at the moment only transitional is supported
+	  $xhtmlType = weTag_getAttribute('xmltype', $attribs, 'transitional', we_base_request::STRING);
+	  $attribs = removeAttribs($attribs, $removeAttribs);
 
-			validation::validateXhtmlAttribs($element, $attribs, $xhtmlType, $showWrong, XHTML_REMOVE_WRONG);
-		} else {
-			$attribs = removeAttribs($attribs, $removeAttribs);
-		}
-	} else {
-//	default at the moment is xhtml-style
-		$_xmlClose = false;
-		$attribs = removeAttribs($attribs, $removeAttribs);
-	}
+	  validation::validateXhtmlAttribs($element, $attribs, $xhtmlType, $showWrong, XHTML_REMOVE_WRONG);
+	  }
+	  } */
+	$attribs = removeAttribs($attribs, $removeAttribs);
 
 	$tag = '<' . $element;
 
@@ -876,7 +752,7 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 	return $tag . ($content || $forceEndTag ? //	use endtag
 			'>' . $content . '</' . $element . '>' :
 //	xml style or not
-			( ($_xmlClose && !$onlyStartTag) ? ' />' : '>'));
+			( ($xhtml && !$onlyStartTag) ? ' />' : '>'));
 }
 
 /**
@@ -894,53 +770,19 @@ function removeAttribs($attribs, array $remove = array()){
 	return $attribs;
 }
 
-function we_loadLanguageConfig(){
-	$file = WE_INCLUDES_PATH . 'conf/we_conf_language.inc.php';
-	if(!file_exists($file) || !is_file($file)){
-		we_writeLanguageConfig((WE_LANGUAGE === 'Deutsch' || WE_LANGUAGE === 'Deutsch_UTF-8' ? 'de_DE' : 'en_GB'), array('de_DE', 'en_GB'));
-	}
-	include_once ($file);
-}
-
 function getWeFrontendLanguagesForBackend(){
 	$la = array();
 	if(!isset($GLOBALS['weFrontendLanguages'])){
 		return array();
 	}
 	$targetLang = array_search($GLOBALS['WE_LANGUAGE'], getWELangs());
-	if(!Zend_Locale::hasCache()){
-		Zend_Locale::setCache(getWEZendCache());
-	}
 	foreach($GLOBALS['weFrontendLanguages'] as $Locale){
 		$temp = explode('_', $Locale);
 		$la[$Locale] = (count($temp) == 1 ?
-				CheckAndConvertISObackend(Zend_Locale::getTranslation($temp[0], 'language', $targetLang) . ' ' . $Locale) :
-				CheckAndConvertISObackend(Zend_Locale::getTranslation($temp[0], 'language', $targetLang) . ' (' . Zend_Locale::getTranslation($temp[1], 'territory', $targetLang) . ') ' . $Locale));
+				CheckAndConvertISObackend(we_base_country::getTranslation($temp[0], we_base_country::LANGUAGE, $targetLang) . ' ' . $Locale) :
+				CheckAndConvertISObackend(we_base_country::getTranslation($temp[0], we_base_country::LANGUAGE, $targetLang) . ' (' . we_base_country::getTranslation($temp[1], we_base_country::TERRITORY, $targetLang) . ') ' . $Locale));
 	}
 	return $la;
-}
-
-function we_writeLanguageConfig($default, $available = array()){
-
-	$locales = '';
-	sort($available);
-	foreach($available as $Locale){
-		$locales .= "	'" . $Locale . "',\n";
-	}
-
-	return we_base_file::save(WE_INCLUDES_PATH . 'conf/we_conf_language.inc.php', '<?php
-/**
- * webEdition CMS configuration file
- * NOTE: this file is regenerated, so any extra contents will be overwritten
- */
-
-$GLOBALS[\'weFrontendLanguages\'] = array(
-' . $locales . '
-);
-
-$GLOBALS[\'weDefaultFrontendLanguage\'] = \'' . $default . '\';'
-			, 'w+'
-	);
 }
 
 function we_isHttps(){
@@ -965,7 +807,7 @@ function getVarArray($arr, $string){
 }
 
 function CheckAndConvertISOfrontend($utf8data){
-	$to = (isset($GLOBALS['CHARSET']) && $GLOBALS['CHARSET'] ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET);
+	$to = (!empty($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET);
 	return ($to === 'UTF-8' ? $utf8data : mb_convert_encoding($utf8data, $to, 'UTF-8'));
 }
 
@@ -974,9 +816,19 @@ function CheckAndConvertISObackend($utf8data){
 	return ($to === 'UTF-8' ? $utf8data : mb_convert_encoding($utf8data, $to, 'UTF-8'));
 }
 
+function register_g_l_dir($dir){
+	if(empty($_SESSION['weS']['gl'])){
+		$_SESSION['weS']['gl'] = array();
+	}
+	if(strpos($dir, $_SERVER['DOCUMENT_ROOT']) !== 0){
+		$dir = $_SERVER['DOCUMENT_ROOT'] . $dir;
+	}
+	$_SESSION['weS']['gl'][] = $dir;
+}
+
 /* * internal function - do not call */
 
-function g_l_encodeArray($tmp){//FIXME: move to closure as of php 5.3
+function g_l_encodeArray($tmp){
 	$charset = (isset($_SESSION['user']) && isset($_SESSION['user']['isWeSession']) ? $GLOBALS['WE_BACKENDCHARSET'] : (isset($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET'] : $GLOBALS['WE_BACKENDCHARSET']));
 	return (is_array($tmp) ?
 			array_map(__METHOD__, $tmp) :
@@ -998,7 +850,7 @@ function g_l($name, $specific, $omitErrors = false){
 //inside we
 			(isset($GLOBALS['we']['PageCharset']) ? $GLOBALS['we']['PageCharset'] : $GLOBALS['WE_BACKENDCHARSET']) :
 //front-end
-			(isset($GLOBALS['CHARSET']) && $GLOBALS['CHARSET'] ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET) );
+			(!empty($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET) );
 //	return $name.$specific;
 //cache last accessed lang var
 	static $cache = array();
@@ -1014,29 +866,39 @@ function g_l($name, $specific, $omitErrors = false){
 					$tmp);
 		}
 	}
-	$file = WE_INCLUDES_PATH . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/' . str_replace('_', '/', $name) . '.inc.php';
-	if(file_exists($file)){
-		include($file);
-		$tmp = (isset(${'l_' . $name}) ? getVarArray(${'l_' . $name}, $specific) : false);
-//get local variable
-		if($tmp !== false){
-			$cache['l_' . $name] = ${'l_' . $name};
-			return ($charset != 'UTF-8' ?
-					(is_array($tmp) ?
-						array_map('g_l_encodeArray', $tmp) :
-						mb_convert_encoding($tmp, $charset, 'UTF-8')
-					) :
-					$tmp);
+	$dirs = (empty($_SESSION['weS']['gl']) ? array() : $_SESSION['weS']['gl']);
+	$dirs[] = WE_INCLUDES_PATH . 'we_language/';
+	$found = false;
+	foreach($dirs as $dir){
+		$file = $dir . $GLOBALS['WE_LANGUAGE'] . '/' . str_replace('_', '/', $name) . '.inc.php';
+		if(file_exists($file)){
+			$found = true;
+			break;
 		}
+	}
+	if(!$found){
 		if(!$omitErrors){
-			t_e('notice', 'Requested lang entry l_' . $name . $specific . ' not found in ' . $file . ' !');
-			return '??';
+			t_e('Language file "' . $file . '" not found with entry ' . $specific);
+			return '?';
 		}
 		return false;
 	}
+
+	include($file);
+	$tmp = (isset(${'l_' . $name}) ? getVarArray(${'l_' . $name}, $specific) : false);
+//get local variable
+	if($tmp !== false){
+		$cache['l_' . $name] = ${'l_' . $name};
+		return ($charset != 'UTF-8' ?
+				(is_array($tmp) ?
+					array_map('g_l_encodeArray', $tmp) :
+					mb_convert_encoding($tmp, $charset, 'UTF-8')
+				) :
+				$tmp);
+	}
 	if(!$omitErrors){
-		t_e('Language file "' . $file . '" not found with entry ' . $specific);
-		return '?';
+		t_e('notice', 'Requested lang entry l_' . $name . $specific . ' not found in ' . $file . ' !');
+		return '??';
 	}
 	return false;
 }
@@ -1048,7 +910,7 @@ function we_templateInit(){
 		$GLOBALS['WE_TEMPLATE_INIT'] = 1;
 
 		// Activate the autoloader & webEdition error handler
-		require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.inc.php');
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_autoload.inc.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tag.inc.php');
 
 		if(!isset($GLOBALS['DB_WE'])){
@@ -1069,10 +931,14 @@ function we_templateInit(){
 			$GLOBALS['WE_MAIN_ID'] = $GLOBALS['we_doc']->ID;
 		}
 		if(!isset($GLOBALS['WE_MAIN_DOC'])){
-			$GLOBALS['WE_MAIN_DOC'] = clone($GLOBALS['we_doc']);
+			$GLOBALS['WE_MAIN_DOC'] = isset($GLOBALS['we_obj']) ? $GLOBALS['we_obj'] : clone($GLOBALS['we_doc']);
 		}
 		if(!isset($GLOBALS['WE_MAIN_DOC_REF'])){
-			$GLOBALS['WE_MAIN_DOC_REF'] = &$GLOBALS['we_doc'];
+			if(isset($GLOBALS['we_obj'])){
+				$GLOBALS['WE_MAIN_DOC_REF'] = &$GLOBALS['we_obj'];
+			} else {
+				$GLOBALS['WE_MAIN_DOC_REF'] = &$GLOBALS['we_doc'];
+			}
 		}
 		if(!isset($GLOBALS['WE_MAIN_EDITMODE'])){
 			$GLOBALS['WE_MAIN_EDITMODE'] = isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : false;
@@ -1101,23 +967,17 @@ function we_templateHead($fullHeader = false){
 		((!isset($GLOBALS['we_editmode']) || (!$GLOBALS['we_editmode']) && isset($_SESSION['weS']) && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE))){
 		return;
 	}
-	if($fullHeader){
-		if(isset($GLOBALS['WE_HTML_HEAD_BODY'])){
-			echo we_templatePreContent(); //to increment we_templatePreContent-var
-			return;
-		}
+	if($fullHeader && isset($GLOBALS['WE_HTML_HEAD_BODY'])){
+		echo we_templatePreContent(); //to increment we_templatePreContent-var
+		return;
 	}
-	echo ($fullHeader ? we_html_element::htmlDocType() . '<html><head><title>WE</title>' . we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['CHARSET']) : '') .
-	we_html_tools::getJSErrorHandler() .
-	STYLESHEET_BUTTONS_ONLY .
-	SCRIPT_BUTTONS_ONLY .
-	we_html_element::jsScript(JS_DIR . 'windows.js') .
-	we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
-	weSuggest::getYuiFiles() .
-	we_html_element::jsElement('parent.openedWithWE = 1;');
+	echo ($fullHeader ? we_html_element::htmlDocType() . '<html><head><title>WE</title>' . we_html_tools::htmlMetaCtCharset($GLOBALS['CHARSET']) : '') .
+	we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();parent.openedWithWE=true;') .
+	STYLESHEET_MINIMAL .
+	weSuggest::getYuiFiles();
 	require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 	if($fullHeader){
-		echo '</head><body onunload="doUnload()">';
+		echo '</head><body onload="doScrollTo();" onunload="doUnload()">';
 		we_templatePreContent();
 		$GLOBALS['WE_HTML_HEAD_BODY'] = true;
 	}
@@ -1140,8 +1000,9 @@ function we_templatePostContent($force = false, $fullPoster = false){//force on 
 		}
 		$yuiSuggest = &weSuggest::getInstance();
 		//FIXME: check this new field to determine if all data has been transmitted
-		echo $yuiSuggest->getYuiCode() . '<input type="hidden" name="we_complete_request" value="1"/></form>' .
-		we_html_element::jsElement('setTimeout("doScrollTo();",100);') .
+		echo $yuiSuggest->getYuiJs() .
+		we_html_element::htmlHidden("we_complete_request", 1) .
+		'</form>' .
 		($fullPoster ? '</body></html>' : '');
 	}
 }
@@ -1195,6 +1056,10 @@ function show_SeoLinks(){
 		);
 }
 
+function seoIndexHide($basename){
+	return show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($basename, array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)));
+}
+
 function we_TemplateExit($param = 0){
 	if(!empty($GLOBALS['FROM_WE_SHOW_DOC'])){
 		exit($param);
@@ -1205,20 +1070,6 @@ function we_TemplateExit($param = 0){
 	}
 //FIXME: use g_l
 	t_e('template forces document to exit, see Backtrace for template name. Message of statement', $param);
-}
-
-function getWEZendCache($lifetime = 1800){
-	return Zend_Cache::factory('Core', 'File', array('lifetime' => $lifetime, 'automatic_serialization' => true), array('cache_dir' => WE_CACHE_PATH));
-}
-
-/**
- * removes unneded js-open/close tags
- * @param string $js
- * @return string given param without duplicate js-open/close tags
- */
-function implodeJS($js){
-	list($pre, $post) = explode(';', we_html_element::jsElement(';'));
-	return preg_replace('|' . preg_quote($post, '|') . '[\n\t ]*' . preg_quote($pre, '|') . '|', "\n", $js);
 }
 
 /**
@@ -1247,7 +1098,7 @@ function update_mem_limit($newLimit){
  * @return bool true if inside WE
  */
 function isWE(){
-	return isset($_SESSION['user']['isWeSession']) && $_SESSION['user']['isWeSession'];
+	return !empty($_SESSION['user']['isWeSession']);
 }
 
 function getWELangs(){
@@ -1282,34 +1133,41 @@ function getMysqlVer($nodots = true){
 
 function we_unserialize($string, $default = array(), $quiet = false){
 	//already unserialized
-	if(is_array($string)){
+	if(is_array($string) || is_object($string)){
 		return $string;
 	}
-	//no content, return default
-	if(!$string){
-		return $default;
-	}
 	//compressed?
-	if($string[0] === 'x'){
+	if($string && $string[0] === 'x'){
 		$string = gzuncompress($string);
 	}
+	//no content, return default
+	if($string === '' || $string === false){
+		return $default;
+	}
 	//std-serialized data by php
-	if(preg_match('|^[asO]:\d+:|', $string)){
-		$ret = unserialize($string);
+	if(preg_match('/^[asO]:\d+:|^b:[01];/', $string)){
+		$ret = @unserialize($string);
+		//unserialize failed, we try to eliminate \r which seems to be a cause for this
+		if(!$ret && strlen($string) > 6){
+			$ret = @unserialize(str_replace("\r", '', $string));
+		}
 		return ($ret === false ? $default : $ret);
 	}
 	//json data
-	if(preg_match('|^[{\[].*[}\]]$|', $string)){
+	if(preg_match('|^[{\[].*[}\]]$|sm', $string)){
 		//maybe we should just do it & check if it failed
 		if(mb_check_encoding($string, 'UTF-8')){
 			return json_decode($string, true);
 		}
 		//non UTF-8 json decode
 		static $json = null;
-		$json = $json ? : new Services_JSON();
-		return (array) $json->decode($string);
+		$json = $json ? : new Services_JSON(16/* SERVICES_JSON_LOOSE_TYPE */);
+		return (array) $json->decode(str_replace("\n", '\n', $string));
 	}
 	//data is really not serialized!
+	if(preg_match('|^\d+(,\d+)*$|', $string)){
+		return explode(',', $string);
+	}
 	if(!$quiet){
 		t_e('unable to decode', $string);
 	}
@@ -1321,27 +1179,42 @@ function we_unserialize($string, $default = array(), $quiet = false){
  * @param array $array array to operate on
  * @param string $target can be of two types "serialize" or "json" - NO default jet (!)
  * @param bool $numeric forces data to be treated as numeric (not assotiative) array - no position data will be used
+ * @param bool $ksort sort the array by key (useful when numeric is used)
  * @return string serialized data
  */
-function we_serialize(array $array, $target = 'serialize', $numeric = false){
+function we_serialize($array, $target = SERIALIZE_PHP, $numeric = false, $compression = 0, $ksort = false){
 	if(!$array){
 		return '';
 	}
-	switch($target){
-		//remove defined after php 5.3 support ends
-		case 'json':
-			$ret = json_encode($numeric ? array_values($array) : $array, (defined('JSON_UNESCAPED_UNICODE') ? JSON_UNESCAPED_UNICODE : 0));
-			if($ret){
-				return $ret;
-			}
-			static $json = null;
-			$json = $json? : new Services_JSON(Services_JSON::SERVICES_JSON_USE_NO_CHARSET_CONVERSION);
-			return $json->encode($numeric ? array_values($array) : $array, false);
-		//no break, return default serialize
-		default:
-		case 'serialize':
-			return serialize($numeric ? array_values($array) : $array);
+	if($ksort){
+		ksort($array, SORT_NUMERIC);
 	}
+	$array = ($numeric ? array_values($array) : $array);
+
+	switch($target){
+		case SERIALIZE_JSON:
+			if(!is_object($array)){
+				//we don't encode objects as json!
+				$ret = json_encode($array, JSON_UNESCAPED_UNICODE);
+				if($ret){
+					break;
+				}
+				static $json = null;
+				$json = $json? : new Services_JSON(Services_JSON::SERVICES_JSON_USE_NO_CHARSET_CONVERSION);
+				$ret = $json->encode($array, false);
+				if($ret){
+					break;
+				}
+				t_e('json encode failed', $array);
+			} else {
+				t_e('tried to encode object as json', $array);
+			}
+		default:
+		case SERIALIZE_PHP:
+			$ret = serialize($array);
+			break;
+	}
+	return $compression ? gzcompress($ret, $compression) : $ret;
 }
 
 if(!function_exists('hex2bin')){//FIXME: remove if php >= 5.4
@@ -1350,4 +1223,16 @@ if(!function_exists('hex2bin')){//FIXME: remove if php >= 5.4
 		return pack("H*", $hex_string);
 	}
 
+}
+
+function updateAvailable(){
+	$versionInfo = json_decode((we_base_file::load(WE_CACHE_PATH . 'newwe_version.json')? : ''), true);
+	if($versionInfo && (version_compare($versionInfo['dotted'], WE_VERSION) > 0 /* ||
+		  //in branched mode, we compare svn revisions
+		  ( WE_VERSION_BRANCH != "" && intval(WE_SVNREV) < intval($versionInfo['svnrevision'])
+		  ) */
+		)){
+		return $versionInfo;
+	}
+	return false;
 }

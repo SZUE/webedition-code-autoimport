@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-we_base_moduleInfo::isActive('shop');
+we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP);
 
 function we_tag_createShop($attribs){
 	if(($foo = attributFehltError($attribs, 'shopname', __FUNCTION__))){
@@ -44,7 +44,7 @@ function we_tag_createShop($attribs){
 	if(isset($_SESSION[$shopname . '_save']) && (we_base_request::_(we_base_request::BOOL,'deleteshop') && (!$sName||$sName === $shopname) || $deleteshop)){ // delete shop
 		unset($_SESSION[$shopname . '_save']);
 	}
-	if(isset($GLOBALS['WE_LOGOUT']) && $GLOBALS['WE_LOGOUT'] && $deleteshoponlogout){
+	if(!empty($GLOBALS['WE_LOGOUT']) && $deleteshoponlogout){
 		unset($_SESSION[$shopname . '_save']);
 	}
 

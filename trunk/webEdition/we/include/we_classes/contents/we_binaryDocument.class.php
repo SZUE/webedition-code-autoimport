@@ -26,7 +26,6 @@
 
 class we_binaryDocument extends we_document{
 	/* The HTML-Code which can be included in a HTML Document */
-
 	protected $html = '';
 
 	/**
@@ -39,7 +38,8 @@ class we_binaryDocument extends we_document{
 	 * @var object instance of metadata reader for accessing metadata functionality
 	 */
 	private $metaDataReader = null;
-	var $documentCustomerFilter = ''; // DON'T SET TO NULL !!!!
+	var $documentCustomerFilter = ''; // DON'T SET TO NULL !
+	protected $IsProtected = false;
 
 	/**
 	 * @var array for metadata read via $metaDataReader
@@ -52,7 +52,7 @@ class we_binaryDocument extends we_document{
 	 */
 	function __construct(){
 		parent::__construct();
-		array_push($this->persistent_slots, 'html', 'DocChanged');
+		array_push($this->persistent_slots, 'html', 'DocChanged', 'IsProtected');
 		if(isWE()){
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_VERSIONS);
 			if(defined('CUSTOMER_TABLE') && (permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER') || permissionhandler::hasPerm('CAN_CHANGE_DOCS_CUSTOMER'))){
@@ -65,22 +65,20 @@ class we_binaryDocument extends we_document{
 
 	function editor(){
 		switch($this->EditPageNr){
+			default:
+				$_SESSION['weS']['EditPageNr'] = $this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
 			case we_base_constants::WE_EDITPAGE_PROPERTIES:
-				return 'we_templates/we_editor_properties.inc.php';
+				return 'we_editors/we_editor_properties.inc.php';
 			case we_base_constants::WE_EDITPAGE_IMAGEEDIT:
-				return 'we_templates/we_image_imageedit.inc.php';
+				return 'we_editors/we_image_imageedit.inc.php';
 			case we_base_constants::WE_EDITPAGE_INFO:
-				return 'we_templates/we_editor_info.inc.php';
+				return 'we_editors/we_editor_info.inc.php';
 			case we_base_constants::WE_EDITPAGE_CONTENT:
-				return 'we_templates/we_editor_binaryContent.inc.php';
+				return 'we_editors/we_editor_binaryContent.inc.php';
 			case we_base_constants::WE_EDITPAGE_WEBUSER:
 				return 'we_editors/editor_weDocumentCustomerFilter.inc.php';
 			case we_base_constants::WE_EDITPAGE_VERSIONS:
 				return 'we_editors/we_editor_versions.inc.php';
-			default:
-				$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
-				$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PROPERTIES;
-				return 'we_templates/we_editor_properties.inc.php';
 		}
 	}
 
@@ -107,6 +105,7 @@ class we_binaryDocument extends we_document{
 		if(parent::we_save($resave, $skipHook)){
 			$this->DocChanged = false;
 			$this->setElement('data', $this->getSitePath());
+			$this->i_writeMetaValues();
 			return $this->insertAtIndex();
 		}
 
@@ -120,16 +119,19 @@ class we_binaryDocument extends we_document{
 	function i_getDocument($size = -1){
 		$file = $this->getElement('data');
 		return ($file && file_exists($file) ?
-						($size == -1 ?
-								we_base_file::load($file) :
-								we_base_file::loadPart($file, 0, $size)
-						) :
-						'');
+				($size == -1 ?
+					we_base_file::load($file) :
+					we_base_file::loadPart($file, 0, $size)
+				) :
+				'');
 	}
 
 	protected function i_writeDocument(){
 		$file = $this->getElement('data');
 		if(!($file && file_exists($file))){
+			return false;
+		}
+		if($this->i_pathNotValid()){
 			return false;
 		}
 		if($file != $this->getSitePath()){
@@ -150,11 +152,11 @@ class we_binaryDocument extends we_document{
 		return true;
 	}
 
-	protected function i_writeSiteDir(){
+	protected function i_writeSiteDir($doc){
 		//do nothing - remove functionality added
 	}
 
-	protected function i_writeMainDir(){
+	protected function i_writeMainDir($doc){
 		//do nothing - remove functionality added
 	}
 
@@ -164,8 +166,8 @@ class we_binaryDocument extends we_document{
 		return (file_exists($file) ? filesize($file) : 0);
 	}
 
-	function insertAtIndex(){
-		if(!(isset($this->IsSearchable) && $this->IsSearchable && $this->Published)){
+	function insertAtIndex(array $only = null, array $fieldTypes = null){
+		if(!(!empty($this->IsSearchable) && $this->Published)){
 			$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=0 AND ID=' . intval($this->ID));
 			return true;
 		}
@@ -173,7 +175,7 @@ class we_binaryDocument extends we_document{
 		$text = "";
 		$this->resetElements();
 		while((list($k, $v) = $this->nextElement(''))){
-			$foo = (isset($v["dat"]) && substr($v["dat"], 0, 2) === 'a:') ? unserialize($v["dat"]) : "";
+			$foo = (isset($v["dat"]) && substr($v["dat"], 0, 2) === 'a:') ? we_unserialize($v["dat"]) : "";
 			if(!is_array($foo)){
 				if(isset($v["type"]) && $v["type"] === 'txt'){
 					$text .= ' ' . (isset($v["dat"]) ? $v["dat"] : '');
@@ -184,12 +186,11 @@ class we_binaryDocument extends we_document{
 			'ID' => intval($this->ID),
 			'DID' => intval($this->ID),
 			'Text' => $text,
-			'Workspace' => $this->ParentPath,
 			'WorkspaceID' => intval($this->ParentID),
 			'Category' => $this->Category,
 			'Doctype' => '',
 			'Title' => $this->getElement('Title'),
-			'Description' => $this->getElement("Description"),
+			'Description' => $this->getElement('Description'),
 			'Path' => $this->Path);
 		return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter($set));
 	}
@@ -242,16 +243,8 @@ class we_binaryDocument extends we_document{
 	 * returns HTML code for embedded metadata of current image with custom form fields
 	 */
 	function formMetaData(){
-		/*
-		 * the following steps are to be implemented in this method:
-		 * 1. fetch all metadata fields from db
-		 * 2. fetch metadata for this image from db (is already done via $this->elements)
-		 * 3. render form fields with metadata from db
-		 * 4. show button to copy metadata from image into the form fields
-		 */
 		// first we fetch all defined metadata fields from tblMetadata:
 		$_defined_fields = we_metadata_metaData::getDefinedMetaDataFields();
-
 
 		// show an alert if there are none
 		if(empty($_defined_fields)){
@@ -261,40 +254,32 @@ class we_binaryDocument extends we_document{
 		// second we build all input fields for them and take
 		// the elements of this imageDocument as values:
 		$_fieldcount = count($_defined_fields);
-		$_fieldcounter = (int) 0; // needed for numbering the table rows
-		$_content = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "style" => "margin-top:4px;"), ($_fieldcount * 2), 5);
-		$_mdcontent = "";
+		$_content = new we_html_table(array("class" => 'default', "style" => "margin-top:4px;"), $_fieldcount, 5);
+		$_mdcontent = '';
 		for($i = 0; $i < $_fieldcount; $i++){
 			$_tagName = $_defined_fields[$i]["tag"];
-			if($_tagName != "Title" && $_tagName != "Description" && $_tagName != "Keywords"){
-				$_type = $_defined_fields[$i]["type"];
-
+			if($_tagName != 'Title' && $_tagName != 'Description' && $_tagName != 'Keywords'){
+				$_type = $_defined_fields[$i]['type'];
+				//$_mode = $_defined_fields[$i]['mode'];
+				//$_csv = boolval($_defined_fields[$i]['csv']);
+				//$_closed = boolval($_defined_fields[$i]['closed']);
 
 				switch($_type){
-
 					case 'textarea':
-						$_inp = $this->formTextArea('txt', $_tagName, $_tagName, 10, 30, array('onchange' => '_EditorFrame.setEditorIsHot(true);', 'style' => 'width:508px;height:150px;border: #AAAAAA solid 1px'));
+						$_inp = $this->formTextArea('txt', $_tagName, $_tagName, 10, 30, array('onchange' => 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);', 'style' => 'width:508px;height:150px;border: #AAAAAA solid 1px'));
 						break;
-
 					case 'wysiwyg':
-						$_inp = $this->formTextArea('txt', $_tagName, $_tagName, 10, 30, array('onchange' => '_EditorFrame.setEditorIsHot(true);', 'style' => 'width:508px;height:150px;border: #AAAAAA solid 1px'));
+						$_inp = $this->formTextArea('txt', $_tagName, $_tagName, 10, 30, array('onchange' => 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);', 'style' => 'width:508px;height:150px;border: #AAAAAA solid 1px'));
 						break;
-
 					case 'date':
-						$_inp = we_html_tools::htmlFormElementTable(
-										we_html_tools::getDateInput2('we_' . $this->Name . '_date[' . $_tagName . ']', abs($this->getElement($_tagName)), true), $_tagName
-						);
+						$_inp = we_html_tools::htmlFormElementTable(we_html_tools::getDateInput('we_' . $this->Name . '_date[' . $_tagName . ']', abs($this->getElement($_tagName)), true), $_tagName);
 						break;
-
+					case 'textfield':
 					default:
-						$_inp = $this->formInput2(508, $_tagName, 23, "txt", ' onchange="_EditorFrame.setEditorIsHot(true);"');
+						$_inp = $this->formMetaField($_tagName);
 				}
 
-
-				$_content->setCol($_fieldcounter, 0, array("colspan" => 5), $_inp);
-				$_fieldcounter++;
-				$_content->setCol($_fieldcounter, 0, array("colspan" => 5), we_html_tools::getPixel(1, 5));
-				$_fieldcounter++;
+				$_content->setCol($i, 0, array("colspan" => 5, 'style' => 'padding-bottom:5px;'), $_inp);
 			}
 		}
 
@@ -314,32 +299,32 @@ class we_binaryDocument extends we_document{
 		$_mdtypes = array();
 
 		if($_metaData){
-			if(isset($_metaData["exif"]) && !empty($_metaData["exif"])){
+			if(!empty($_metaData["exif"])){
 				$_mdtypes[] = "Exif";
 			}
-			if(isset($_metaData["iptc"]) && !empty($_metaData["iptc"])){
+			if(!empty($_metaData["iptc"])){
 				$_mdtypes[] = "IPTC";
 			}
-			if(isset($_metaData["pdf"]) && !empty($_metaData["pdf"])){
+			if(!empty($_metaData["pdf"])){
 				$_mdtypes[] = "PDF";
 			}
 		}
 
-		$ft = g_l('metadata', '[filetype]') . ': ' . (empty($this->Extension) ? '' : substr($this->Extension, 1));
+		$ft = g_l('metadata', '[filetype]') . ': ' . ($this->Extension ? substr($this->Extension, 1) : '');
 
 		$md = ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE ?
-						'' :
-						g_l('metadata', '[supported_types]') . ': ' .
-						'<a href="javascript:parent.frames[0].setActiveTab(\'tab_2\');we_cmd(\'switch_edit_page\',2,\'' . $GLOBALS['we_transaction'] . '\');">' .
-						(count($_mdtypes) > 0 ? implode(', ', $_mdtypes) : g_l('metadata', '[none]')) .
-						'</a>');
+				'' :
+				g_l('metadata', '[supported_types]') . ': ' .
+				'<a href="javascript:parent.frames.editHeader.weTabs.setActiveTab(\'tab_2\');we_cmd(\'switch_edit_page\',2,\'' . $GLOBALS['we_transaction'] . '\');">' .
+				(count($_mdtypes) > 0 ? implode(', ', $_mdtypes) : g_l('metadata', '[none]')) .
+				'</a>');
 
-		$fileUpload = new we_fileupload_binaryDocument($this->ContentType, $this->Extension);
+		$fileUpload = new we_fileupload_ui_wedoc($this->ContentType);
 
 		return $fileUpload->getHTML($fs, $ft, $md, $this->getThumbnail(100, 100), $this->getThumbnail());
 	}
 
-	function getThumbnail(){
+	protected function getThumbnail($width = 150, $height = 100){
 		return '';
 	}
 
@@ -357,6 +342,60 @@ class we_binaryDocument extends we_document{
 
 	public function formProperties(){
 
+	}
+
+	function formIsProtected(){
+		return we_html_forms::checkboxWithHidden((bool) $this->IsProtected, 'we_' . $this->Name . '_IsProtected', g_l('weClass', '[protected]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
+	}
+
+	function formReferences(){
+		$search = new we_search_search();
+		$search->searchMediaLinks(0, true, $this->ID);
+		$ml = $search->getUsedMediaLinks();
+		$accessibles = isset($ml['accessible']['mediaID_' . $this->ID]) ? $ml['accessible']['mediaID_' . $this->ID] : array();
+		$notaccessibles = isset($ml['notaccessible']['mediaID_' . $this->ID]) ? $ml['notaccessible']['mediaID_' . $this->ID] : array();
+		$groups = isset($ml['groups']['mediaID_' . $this->ID]) ? $ml['groups']['mediaID_' . $this->ID] : array();
+
+		if(empty($groups)){
+			return array('form' => g_l('weClass', '[notReferenced]'), 'num' => 0);
+		}
+
+		$js = "";
+		$values = array();
+		$c = 0;
+		$num = 0;
+		$limit = 20;
+		foreach($groups as $group){
+			$cna = isset($notaccessibles[$group]) && is_array($notaccessibles[$group]) ? count($notaccessibles[$group]) : 0;
+			$ca = (isset($accessibles[$group]) && is_array($accessibles[$group]) ? count($accessibles[$group]) : 0) + $cna;
+			$num += $ca;
+			$values[$group . ' (' . ($ca) . ($cna ? ', davon ' . $cna . ' ' . g_l('weClass', '[medialinks_unaccessible]') . '' : '') . ')'] = we_html_tools::OPTGROUP;
+			$cc = 0;
+			foreach((isset($accessibles[$group]) && is_array($accessibles[$group]) ? $accessibles[$group] : array()) as $v){
+				if($cc++ >= $limit){
+					$values[-1] = '[ + ' . (count($accessibles[$group]) - $limit) . ' ' . g_l('weClass', '[medialinks_more]') . ' ]';
+					break;
+				}
+				$element = preg_replace('|NN[0-9]\]+$|', 'NN', $v['element']);
+				$values[++$c] = $v['path'] . ($element ? ', in: ' . $element : '');
+				$js .= "id_" . $c . ": {type: '" . $v['type'] . "', id: " . $v['id'] . ", table: '" . $v['table'] . "', ct: '" . $v['ct'] . "', mod: '" . $v['mod'] . "', referencedIn: '" . $v['referencedIn'] . "', isTempPossible: " . ($v['isTempPossible'] ? 1 : 0) . ", isModified: " . ($v['isModified'] ? 1 : 0) . "},";
+			}
+		}
+		$button = we_html_button::create_button(we_html_button::EDIT, "javascript:top.we_openMediaReference(document.getElementById('MediaReferences').value);");
+
+		$form = we_html_element::jsElement("top.we_mediaReferences = {" . $js . "};") . we_html_tools::htmlFormElementTable($this->htmlSelect('MediaReferences', $values, 1, '', false, array(), 'value', 388), '', 'left', 'defaultfont', '', $button);
+
+		return array('form' => $form, 'num' => $num);
+	}
+
+	public function getPropertyPage(){
+		return we_html_multiIconBox::getHTML('PropertyPage', array(
+				array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => 140),
+				array('icon' => 'doc.gif', 'headline' => g_l('weClass', '[document]'), 'html' => $this->formIsSearchable() . $this->formIsProtected(), 'space' => 140),
+				//array('icon' => 'meta.gif', 'headline' => g_l('weClass', '[metainfo]'), 'html' => $this->formMetaInfos(), 'space' => 140),
+				array('icon' => 'cat.gif', 'headline' => g_l('weClass', '[category]'), 'html' => $this->formCategory(), 'space' => 140),
+				array('icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners(), 'space' => 140))
+		);
 	}
 
 }

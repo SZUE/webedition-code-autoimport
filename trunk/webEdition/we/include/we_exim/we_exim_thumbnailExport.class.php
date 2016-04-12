@@ -18,7 +18,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_exim_thumbnailExport extends weModelBase{
+class we_exim_thumbnailExport extends we_base_model{
 
 	var $ClassName = __CLASS__;
 	var $Table = THUMBNAILS_TABLE;

@@ -28,7 +28,6 @@
  */
 
 class we_net_rpc_JsonRpcError{
-
 	private $json;
 	private $data;
 	private $id;
@@ -45,9 +44,7 @@ class we_net_rpc_JsonRpcError{
 	const kErrorParameterMismatch = 5;
 	const kErrorPermissionDenied = 6;
 
-	public function __construct(
-	$origin = self::kErrorOriginServer, $code = self::kErrorUnknown, $message = 'Unknown error'
-	){
+	public function __construct($origin = self::kErrorOriginServer, $code = self::kErrorUnknown, $message = 'Unknown error'){
 
 		$this->data = array(
 			'origin' => $origin,
@@ -75,7 +72,7 @@ class we_net_rpc_JsonRpcError{
 		$ret = array('error' => $this->data,
 			'id' => $this->id,
 			'result' => NULL);
-		return Zend_Json::encode($ret);
+		return we_serialize($ret, SERIALIZE_JSON);
 	}
 
 }

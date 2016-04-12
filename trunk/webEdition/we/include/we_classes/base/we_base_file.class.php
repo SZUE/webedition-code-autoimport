@@ -202,7 +202,6 @@ abstract class we_base_file{
 		// md5 encrypted hash with the start value microtime(). The function
 		// uniqid() prevents from simultanious access, within a microsecond.
 		return ($md5 ? md5(uniqid(__FILE__, true)) : str_replace('.', '', uniqid('', true)));
-		// #6590, changed from: uniqid(microtime()) and: FIXME: #6590: str_replace('.', '', uniqid('',true))'
 	}
 
 	/**
@@ -291,12 +290,13 @@ abstract class we_base_file{
 				($path ? self::createLocalFolderByPath($path) : false));
 	}
 
-	public static function insertIntoCleanUp($path, $date){
+	public static function insertIntoCleanUp($path, $date = 300){
 		$DB_WE = new DB_WE();
+		$date = max($date,300); //make each entry last at least 300 seconds
 		$DB_WE->query('INSERT INTO ' . CLEAN_UP_TABLE . ' SET ' . we_database_base::arraySetter(array(
 				'Path' => $DB_WE->escape($path),
-				'Date' => date('Y-m-d H:i:s', intval($date))
-			)) . ' ON DUPLICATE KEY UPDATE Date=VALUES(Date)');
+				'Date' => sql_function('(NOW()+ INTERVAL ' . intval($date) . ' SECOND)'),
+			)) . ' ON DUPLICATE KEY UPDATE Date=(NOW()+ INTERVAL ' . intval($date) . ' SECOND)');
 	}
 
 	public static function deleteLocalFile($filename){
@@ -321,14 +321,19 @@ abstract class we_base_file{
 
 // check for directories: create it if we could no write into it:
 		if(!mkdir($path, $mod, $recursive)){
-			t_e('warning', "Could not create local Folder at 'we_util_File/checkAndMakeFolder()': '" . $path . "'");
+			t_e('warning', "Could not create local Folder at '" . __FUNCTION__ . "': '" . $path . "'");
 			umask($umask);
 			return false;
 		}
 		umask($umask);
 		return true;
 	}
-
+	/**
+	 * @deprecated since version 7.0
+	 * @param type $RootDir
+	 * @param type $path
+	 * @return type
+	 */
 	public static function createLocalFolder($RootDir, $path = ''){
 		return self::createLocalFolderByPath($RootDir . $path);
 	}
@@ -608,21 +613,19 @@ abstract class we_base_file{
 
 	public static function cleanTempFiles($cleanSessFiles = false){
 		$db = $GLOBALS['DB_WE'];
-		$db->query('SELECT Path FROM ' . CLEAN_UP_TABLE . ' WHERE Date <= NOW()-INTERVAL 300 second');
-		$files = $db->getAll(true);
-		foreach($files as $p){
-			if(file_exists($p)){
-				self::deleteLocalFile($p);
+		$files = $db->getAllq('SELECT Path FROM ' . CLEAN_UP_TABLE . ' WHERE Date<=NOW()', true);
+		foreach($files as $file){
+			if(file_exists($file)){
+				self::deleteLocalFile($file);
 			}
-			$db->query('DELETE FROM ' . CLEAN_UP_TABLE . ' WHERE Path="' . $p . '"');
+			$db->query('DELETE FROM ' . CLEAN_UP_TABLE . ' WHERE Path="' . $file . '"');
 		}
 		if($cleanSessFiles){
 			$seesID = session_id();
-			$db->query('SELECT Path FROM ' . CLEAN_UP_TABLE . ' WHERE Path LIKE "%' . $GLOBALS['DB_WE']->escape($seesID) . '%"');
-			$files = $db->getAll(true);
-			foreach($files as $p){
-				if(file_exists($p)){
-					self::deleteLocalFile($p);
+			$files = $db->getAllq('SELECT Path FROM ' . CLEAN_UP_TABLE . ' WHERE Path LIKE "%' . $GLOBALS['DB_WE']->escape($seesID) . '%"', true);
+			foreach($files as $file){
+				if(file_exists($file)){
+					self::deleteLocalFile($file);
 				}
 			}
 			$db->query('DELETE FROM ' . CLEAN_UP_TABLE . ' WHERE Path LIKE "%' . $GLOBALS['DB_WE']->escape($seesID) . '%"');
@@ -632,40 +635,21 @@ abstract class we_base_file{
 			switch($entry){
 				case '.':
 				case '..':
+				case '.htaccess':
+				case 'fragments':
 					break;
 				default:
 					$foo = TEMP_PATH . $entry;
 					if(filemtime($foo) <= (time() - 300)){
 						if(is_dir($foo)){
 							self::deleteLocalFolder($foo, 1);
-						} else {
+						} elseif(file_exists($foo)){
 							self::deleteLocalFile($foo);
 						}
 					}
 			}
 		}
 		$d->close();
-		$dstr = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/';
-		if(self::checkAndMakeFolder($dstr)){
-			$d = dir($dstr);
-			while(false !== ($entry = $d->read())){
-				switch($entry){
-					case '.':
-					case '..':
-						break;
-					default:
-						$foo = $dstr . $entry;
-						if(filemtime($foo) <= (time() - 300)){
-							if(is_dir($foo)){
-								self::deleteLocalFolder($foo, 1);
-							} else {
-								self::deleteLocalFile($foo);
-							}
-						}
-				}
-			}
-			$d->close();
-		}
 
 // when a fragment task was stopped by the user, the tmp file will not be deleted! So we have to clean up
 		$d = dir(rtrim(WE_FRAGMENT_PATH, '/'));
@@ -673,13 +657,14 @@ abstract class we_base_file{
 			switch($entry){
 				case '.':
 				case '..':
+				case '.htaccess':
 					break;
 				default:
 					$foo = WE_FRAGMENT_PATH . $entry;
 					if(filemtime($foo) <= (time() - 3600 * 24)){
 						if(is_dir($foo)){
 							self::deleteLocalFolder($foo, true);
-						} else {
+						} elseif(file_exists($foo)){
 							self::deleteLocalFile($foo);
 						}
 					}
@@ -700,7 +685,7 @@ abstract class we_base_file{
 		self::save($file, preg_replace('/' . preg_quote($string1, '/') . '/i', $string2, self::load($file, 'r')), 'w');
 	}
 
-	public static function deleteLocalFolder($filename, $delAll = false){
+	public static function deleteLocalFolder($filename, $delAll = false, $withFolder = true){
 		if(!file_exists($filename)){
 			return false;
 		}
@@ -712,10 +697,14 @@ abstract class we_base_file{
 					case '.':
 					case '..':
 						break;
+					case '.htaccess':
+						if(!$withFolder){
+							break;
+						}
 					default:
 						$path = $foo . $entry;
 						if(is_dir($path)){
-							self::deleteLocalFolder($path, 1);
+							self::deleteLocalFolder($path, $delAll);
 						} else {
 							self::deleteLocalFile($path);
 						}
@@ -723,7 +712,7 @@ abstract class we_base_file{
 			}
 			$d->close();
 		}
-		return @rmdir($filename);
+		return $withFolder ? rmdir($filename) : true;
 	}
 
 	/**

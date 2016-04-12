@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,11 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-// exit if script called directly
-if(isset($_SERVER['SCRIPT_NAME']) && str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == str_replace(dirname(__FILE__), '', __FILE__)){
-	exit();
-}
-
 // remove trailing slash
 if(isset($_SERVER['DOCUMENT' . '_ROOT'])){ //so zerlegt stehen lassen: Bug #6318
 	$_SERVER['DOCUMENT' . '_ROOT'] = rtrim($_SERVER['DOCUMENT' . '_ROOT'], '/');
@@ -49,6 +45,7 @@ if(isset($_SERVER['HTTP_HOST']) && $_SERVER['SERVER_NAME'] != $_SERVER['HTTP_HOS
 @ini_set('allow_url_fopen', '1');
 @ini_set('file_uploads', '1');
 @ini_set('session.use_trans_sid', '0');
+@ini_set('max_input_vars', '9000');
 //@ini_set("arg_separator.output","&");
 //fix insecure cookies
 $cookie = session_get_cookie_params();
@@ -60,24 +57,54 @@ if(!isset($GLOBALS['we'])){
 	$GLOBALS['we'] = array();
 }
 
-if(!(defined('SYSTEM_WE_SESSION') && SYSTEM_WE_SESSION) && ini_get('session.gc_probability') != '0' /* && !@opendir(session_save_path()) */){
-//	$GLOBALS['FOUND_SESSION_PROBLEM'] = ini_get('session.gc_probability');
+if(!(defined('SYSTEM_WE_SESSION') && SYSTEM_WE_SESSION) && ini_get('session.gc_probability') != '0'){
 	ini_set('session.gc_probability', '0');
-	//won't work with apps like phpmyadmin session_save_path($_SERVER['DOCUMENT_ROOT'] . TEMP_DIR);
 }
 
 //start autoloader!
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.inc.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_autoload.inc.php');
 //register all used tables.
 we_base_request::registerTables(array(
-	CATEGORY_TABLE, CAPTCHA_TABLE, CLEAN_UP_TABLE, CONTENT_TABLE, DOC_TYPES_TABLE, ERROR_LOG_TABLE, FAILED_LOGINS_TABLE, FILE_TABLE, INDEX_TABLE, LINK_TABLE, LANGLINK_TABLE, PREFS_TABLE, RECIPIENTS_TABLE, TEMPLATES_TABLE, TEMPORARY_DOC_TABLE, UPDATE_LOG_TABLE, THUMBNAILS_TABLE, VALIDATION_SERVICES_TABLE, HISTORY_TABLE, FORMMAIL_LOG_TABLE, FORMMAIL_BLOCK_TABLE, METADATA_TABLE, NOTEPAD_TABLE, PWDRESET_TABLE, VERSIONS_TABLE, VERSIONSLOG_TABLE, SESSION_TABLE, NAVIGATION_TABLE, NAVIGATION_RULE_TABLE, USER_TABLE, LOCK_TABLE, SETTINGS_TABLE
+	'CATEGORY_TABLE' => CATEGORY_TABLE,
+	'CAPTCHA_TABLE' => CAPTCHA_TABLE,
+	'CLEAN_UP_TABLE' => CLEAN_UP_TABLE,
+	'CONTENT_TABLE' => CONTENT_TABLE,
+	'DOC_TYPES_TABLE' => DOC_TYPES_TABLE,
+	'ERROR_LOG_TABLE' => ERROR_LOG_TABLE,
+	'FAILED_LOGINS_TABLE' => FAILED_LOGINS_TABLE,
+	'FILE_TABLE' => FILE_TABLE,
+	'INDEX_TABLE' => INDEX_TABLE,
+	'LINK_TABLE' => LINK_TABLE,
+	'LANGLINK_TABLE' => LANGLINK_TABLE,
+	'PREFS_TABLE' => PREFS_TABLE,
+	'RECIPIENTS_TABLE' => RECIPIENTS_TABLE,
+	'TEMPLATES_TABLE' => TEMPLATES_TABLE,
+	'TEMPORARY_DOC_TABLE' => TEMPORARY_DOC_TABLE,
+	'UPDATE_LOG_TABLE' => UPDATE_LOG_TABLE,
+	'THUMBNAILS_TABLE' => THUMBNAILS_TABLE,
+	'VALIDATION_SERVICES_TABLE' => VALIDATION_SERVICES_TABLE,
+	'HISTORY_TABLE' => HISTORY_TABLE,
+	'FORMMAIL_LOG_TABLE' => FORMMAIL_LOG_TABLE,
+	'FORMMAIL_BLOCK_TABLE' => FORMMAIL_BLOCK_TABLE,
+	'METADATA_TABLE' => METADATA_TABLE,
+	'NOTEPAD_TABLE' => NOTEPAD_TABLE,
+	'PWDRESET_TABLE' => PWDRESET_TABLE,
+	'VERSIONS_TABLE' => VERSIONS_TABLE,
+	'VERSIONSLOG_TABLE' => VERSIONSLOG_TABLE,
+	'SESSION_TABLE' => SESSION_TABLE,
+	'NAVIGATION_TABLE' => NAVIGATION_TABLE,
+	'NAVIGATION_RULE_TABLE' => NAVIGATION_RULE_TABLE,
+	'USER_TABLE' => USER_TABLE,
+	'LOCK_TABLE' => LOCK_TABLE,
+	'SETTINGS_TABLE' => SETTINGS_TABLE,
+	'VFILE_TABLE' => VFILE_TABLE,
+	'FILELINK_TABLE' => FILELINK_TABLE
 ));
 
 require_once(WE_INCLUDES_PATH . 'we_global.inc.php');
 update_mem_limit(32);
 
-we_loadLanguageConfig();
-
+include_once (WE_INCLUDES_PATH . 'conf/we_conf_language.inc.php');
 
 //	Insert all config files for all modules.
 include_once(WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php');
@@ -86,17 +113,24 @@ include_once(WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php');
 // we_available_modules - modules and informations about integrated and none integrated modules
 // we_active_integrated_modules - all active integrated modules
 //if file corrupted try to load defaults
-if(empty($GLOBALS['_we_active_integrated_modules']) || !in_array('users', $GLOBALS['_we_active_integrated_modules'])){
+if(empty($GLOBALS['_we_active_integrated_modules'])){
 	include_once(WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php.default');
 }
+$GLOBALS['_we_active_integrated_modules'] = array_unique(array_merge($GLOBALS['_we_active_integrated_modules'], array(
+	we_base_moduleInfo::USERS,
+	we_base_moduleInfo::EDITOR,
+	we_base_moduleInfo::NAVIGATION,
+	we_base_moduleInfo::EXPORT
+		)));
+
 //FIXME: don't include all confs!
 foreach($GLOBALS['_we_active_integrated_modules'] as $active){
-	we_base_moduleInfo::isActive($active);
+	if($active !== 'spellchecker'){
+		we_base_moduleInfo::isActive($active);
+	}
 }
 
-if(!isset($GLOBALS['DB_WE'])){
-	$GLOBALS['DB_WE'] = new DB_WE();
-}
+$GLOBALS['DB_WE'] = new DB_WE();
 
 if(!(defined('NO_SESS') || isset($GLOBALS['FROM_WE_SHOW_DOC']))){
 	$GLOBALS['WE_BACKENDCHARSET'] = 'UTF-8'; //Bug 5771 schon in der Session wird ein vorläufiges Backendcharset benötigt
@@ -109,27 +143,28 @@ if(!(defined('NO_SESS') || isset($GLOBALS['FROM_WE_SHOW_DOC']))){
 	}
 }
 
-if(defined('WE_WEBUSER_LANGUAGE')){
-	$GLOBALS['WE_LANGUAGE'] = WE_WEBUSER_LANGUAGE;
-} else {
-	$sid = '';
-}
+$GLOBALS['WE_LANGUAGE'] = (!empty($_SESSION['prefs']['Language']) ?
+				(is_dir(WE_INCLUDES_PATH . 'we_language/' . $_SESSION['prefs']['Language']) ?
+						$_SESSION['prefs']['Language'] :
+						//  bugfix #4229
+						($_SESSION['prefs']['Language'] = WE_LANGUAGE)) :
+				WE_LANGUAGE);
 
+define('STYLESHEET_MINIMAL', we_html_element::cssLink(LIB_DIR . 'additional/fontLiberation/stylesheet.css') .
+		we_html_element::cssLink(CSS_DIR . 'we_button.css') . we_html_element::cssLink(LIB_DIR . 'additional/fontawesome/css/font-awesome.min.css'));
+define('STYLESHEET', //we_html_element::cssLink(CSS_DIR . 'global.php') .
+		STYLESHEET_MINIMAL .
+		we_html_element::cssLink(CSS_DIR . 'webEdition.css')
+);
 
-if(isset($_SESSION['prefs']['Language']) && !empty($_SESSION['prefs']['Language'])){
-	$GLOBALS['WE_LANGUAGE'] = (is_dir(WE_INCLUDES_PATH . 'we_language/' . $_SESSION['prefs']['Language']) ?
-			$_SESSION['prefs']['Language'] :
-			//  bugfix #4229
-			($_SESSION['prefs']['Language'] = WE_LANGUAGE));
-} else {
-	$GLOBALS['WE_LANGUAGE'] = WE_LANGUAGE;
-}
-
-include_once (WE_INCLUDES_PATH . 'define_styles.inc.php');
+define('YAHOO_FILES', we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
+		we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
+		we_html_element::jsScript(LIB_DIR . 'additional/yui/json-min.js') .
+		we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js'));
 
 if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
-	$GLOBALS['WE_BACKENDCHARSET'] = (isset($_SESSION['prefs']['BackendCharset']) && $_SESSION['prefs']['BackendCharset'] ?
-			$_SESSION['prefs']['BackendCharset'] : 'UTF-8');
+	$GLOBALS['WE_BACKENDCHARSET'] = (!empty($_SESSION['prefs']['BackendCharset']) ?
+					$_SESSION['prefs']['BackendCharset'] : 'UTF-8');
 
 	//send header?
 	switch(isset($_REQUEST['we_cmd']) && !is_array($_REQUEST['we_cmd']) ? we_base_request::_(we_base_request::STRING, 'we_cmd', '__default__') : ''){
@@ -149,12 +184,12 @@ if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 		case 'load_editor':
 			$trans = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', '__NO_TRANS__');
 			$header = (!(isset($_SESSION['weS']['we_data'][$trans]) &&
-				$_SESSION['weS']['we_data'][$trans][0]['Table'] == FILE_TABLE &&
-				$_SESSION['weS']['EditPageNr'] == we_base_constants::WE_EDITPAGE_PREVIEW
-				));
+					$_SESSION['weS']['we_data'][$trans][0]['Table'] == FILE_TABLE &&
+					$_SESSION['weS']['EditPageNr'] == we_base_constants::WE_EDITPAGE_PREVIEW
+					));
 			break;
 		case '__default__':
-			$header = !((isset($GLOBALS['show_stylesheet']) && $GLOBALS['show_stylesheet']));
+			$header = empty($GLOBALS['show_stylesheet']);
 			break;
 		default:
 			$header = true;

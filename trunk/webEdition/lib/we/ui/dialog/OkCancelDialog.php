@@ -88,7 +88,7 @@ class we_ui_dialog_OkCancelDialog extends we_ui_layout_Dialog{
 
 		$translate = we_core_Local::addTranslation('apps.xml');
 
-		$table = new we_ui_layout_Table(array('cellpadding' => 10));
+		$table = new we_ui_layout_Table();
 		$table->nextColumn();
 		if($this->_headline != ""){
 			$this->_bodyHTML = '<div class ="we_ui_dialog_Headline">' . nl2br($this->_headline) . "</div>" . $this->_bodyHTML;
@@ -97,7 +97,6 @@ class we_ui_dialog_OkCancelDialog extends we_ui_layout_Dialog{
 		$table->addHTML('<div>' . nl2br($this->_encodeMessage ? oldHtmlspecialchars($this->_message) : $this->_message) . '</div>');
 		$this->addElement($table);
 
-		// TODO localize buttons
 		$buttonOk = new we_ui_controls_Button(array('text' => $translate->_('Ok'), 'onClick' => $this->_okAction . '; ' . ($this->_topClose ? 'top.close()' : ''), 'type' => 'onClick', 'width' => 100));
 
 		if(!$this->_okAction){
@@ -111,7 +110,7 @@ class we_ui_dialog_OkCancelDialog extends we_ui_layout_Dialog{
 		$buttonTable->setCancelButton($buttonCancel);
 		$buttonTable->setStyle('margin-top:10px;margin-right:10px;margin-left:auto;');
 
-		$buttonsHTML = '<div style="left:0px;height:40px;background-image: url(' . IMAGE_DIR . 'edit/editfooterback.gif);position:absolute;bottom:0px;width:100%">' . $buttonTable->getHTML() . '</div>';
+		$buttonsHTML = '<div class="editfooter">' . $buttonTable->getHTML() . '</div>';
 		$this->addCSSFiles($buttonTable->getCSSFiles());
 		$this->addJSFiles($buttonTable->getJSFiles());
 		$this->addHTML($buttonsHTML);

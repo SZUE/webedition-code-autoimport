@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_tool_treeDataSource{
-
 	var $SourceType;
 	var $SourceName;
 
@@ -47,16 +46,17 @@ class we_tool_treeDataSource{
 		}
 	}
 
-	function getQueryParents($path){
+	public static function getQueryParents($path){
 		$out = array();
+		$db = $GLOBALS['DB_WE'];
 		while($path != '/' && $path != '\\' && $path){
-			$out[] = 'Path="' . $path . '"';
+			$out[] = '"' . $db->escape($path) . '"';
 			$path = dirname($path);
 		}
-		return implode(' OR ', $out);
+		return ($out ? 'Path IN(' . implode(',', $out) . ')' : '');
 	}
 
-	function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,Icon,IsFolder', $addWhere = '', $addOrderBy = ''){
+	function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,IsFolder', $addWhere = '', $addOrderBy = ''){
 
 		$db = new DB_WE();
 		$table = $this->SourceName;
@@ -68,9 +68,9 @@ class we_tool_treeDataSource{
 		$parentpaths = array();
 
 		if(($ws = get_ws($table))){
-			$wsPathArray = id_to_path($ws, $table, $db, false, true);
+			$wsPathArray = id_to_path($ws, $table, $db, true);
 			foreach($wsPathArray as $path){
-				$_aWsQuery[] = " Path LIKE '" . $db->escape($path) . "/%' OR " . we_tool_treeDataSource::getQueryParents($path);
+				$_aWsQuery[] = ' Path LIKE "' . $db->escape($path) . '/%" OR ' . self::getQueryParents($path);
 				while($path != '/' && $path != "\\" && $path){
 					$parentpaths[] = $path;
 					$path = dirname($path);
@@ -79,10 +79,9 @@ class we_tool_treeDataSource{
 			$wsQuery = !empty($_aWsQuery) ? '(' . implode(' OR ', $_aWsQuery) . ') AND ' : '';
 		}
 
-		$prevoffset = max(0,$offset - $segment);
+		$prevoffset = max(0, $offset - $segment);
 		if($offset && $segment){
 			$items[] = array(
-				'icon' => 'arrowup.gif',
 				'id' => 'prev_' . $ParentID,
 				'parentid' => $ParentID,
 				'text' => 'display (' . $prevoffset . '-' . $offset . ')',
@@ -97,23 +96,21 @@ class we_tool_treeDataSource{
 			);
 		}
 
-		$where = " WHERE $wsQuery ParentID=" . intval($ParentID) . " " . $addWhere;
+		$where = ' WHERE ' . $wsQuery . ' ParentID=' . intval($ParentID) . ' ' . $addWhere;
 
-		$db->query("SELECT $elem, abs(text) as Nr, (text REGEXP '^[0-9]') as isNr from " . $db->escape($table) . " $where ORDER BY isNr DESC,Nr,Text " . ($segment ? "LIMIT " . abs($offset) . "," . abs($segment) . ";" : ";" ));
-		$now = time();
+		$db->query('SELECT ' . $elem . ' FROM ' . $db->escape($table) . $where . ' ORDER BY (text REGEXP "^[0-9]") DESC,abs(text),Text ' . ($segment ? 'LIMIT ' . abs($offset) . ',' . abs($segment) : '' ));
 
 		while($db->next_record()){
-
 			$typ = array(
 				'typ' => ($db->f('IsFolder') == 1 ? 'group' : 'item'),
-				'icon' => $db->f('Icon'),
 				'open' => 0,
 				'disabled' => 0,
 				'tooltip' => $db->f('ID'),
 				'offset' => $offset,
 				'order' => $db->f('Ordn'),
 				'published' => 1,
-				'disabled' => 0
+				'disabled' => 0,
+				'contentType' => ($db->f('IsFolder') == 1 ? 'folder' : 'item'),
 			);
 
 			$fileds = array();
@@ -127,11 +124,10 @@ class we_tool_treeDataSource{
 			$items[] = array_merge($fileds, $typ);
 		}
 
-		$total = f("SELECT COUNT(1) as total FROM " . $db->escape($table) . ' ' . $where, 'total', $db);
+		$total = f('SELECT COUNT(1) FROM ' . $db->escape($table) . ' ' . $where, '', $db);
 		$nextoffset = $offset + $segment;
 		if($segment && ($total > $nextoffset)){
 			$items[] = array(
-				'icon' => 'arrowdown.gif',
 				'id' => 'next_' . $ParentID,
 				'parentid' => $ParentID,
 				'text' => 'display (' . $nextoffset . '-' . ($nextoffset + $segment) . ')',
@@ -149,11 +145,10 @@ class we_tool_treeDataSource{
 		return $items;
 	}
 
-	function getItemsFromFile($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,Icon,IsFolder', $addWhere = '', $addOrderBy = ''){
+	function getItemsFromFile($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,IsFolder', $addWhere = '', $addOrderBy = ''){
 
 		return array(
 			array(
-				'icon' => we_base_ContentTypes::FILE_ICON,
 				'id' => 1,
 				'parentid' => 0,
 				'text' => 'Test 1',
@@ -167,10 +162,9 @@ class we_tool_treeDataSource{
 		));
 	}
 
-	function getCustomItems($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,Icon,IsFolder', $addWhere = '', $addOrderBy = ''){
+	function getCustomItems($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,IsFolder', $addWhere = '', $addOrderBy = ''){
 		return array(
 			array(
-				'icon' => 'folder.gif',
 				'id' => 1,
 				'parentid' => 0,
 				'text' => 'Custom Group',
@@ -183,7 +177,7 @@ class we_tool_treeDataSource{
 				'tooltip' => ''
 			),
 			array(
-				'icon' => we_base_ContentTypes::FILE_ICON,
+				'icon' => '',
 				'id' => 2,
 				'parentid' => 1,
 				'text' => 'Custom Item',

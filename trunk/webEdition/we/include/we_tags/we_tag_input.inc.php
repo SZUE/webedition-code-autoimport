@@ -46,19 +46,19 @@ function we_tag_input($attribs, $content){
 		switch($type){
 			case 'date':
 				$d = abs($GLOBALS['we_doc']->getElement($name));
-				return we_html_tools::getDateInput2('we_' . $GLOBALS['we_doc']->Name . '_date[' . $name . ']', ($d ? : time()), true, $format);
+				return we_html_tools::getDateInput('we_' . $GLOBALS['we_doc']->Name . '_date[' . $name . ']', ($d ? : time()), true, $format);
 			case 'checkbox':
 				$attribs = removeAttribs($attribs, array('name', 'value', 'type', '_name_orig', 'reload'));
 				$attribs['type'] = 'checkbox';
 				$attribs['name'] = 'we_' . $GLOBALS['we_doc']->Name . '_attrib_' . $name;
 				$attribs['value'] = 1;
-				$attribs['onclick'] = '_EditorFrame.setEditorIsHot(true);this.form.elements[\'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']\'].value=(this.checked ? 1 : 0);' . ($reload ? (';setScrollTo();top.we_cmd(\'reload_editpage\');') : '');
+				$attribs['onclick'] = '_EditorFrame.setEditorIsHot(true);this.form.elements[\'we_' . $GLOBALS['we_doc']->Name . '_checkbox[' . $name . ']\'].value=(this.checked ? 1 : 0);' . ($reload ? (';setScrollTo();top.we_cmd(\'reload_editpage\');') : '');
 				if($val){
 					$attribs['checked'] = 'checked';
 				}
 
-				return we_html_element::htmlHidden(array('name' => 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']', 'value' => $val)) .
-						getHtmlTag('input', $attribs);
+				return we_html_element::htmlHidden('we_' . $GLOBALS['we_doc']->Name . '_checkbox[' . $name . ']', $val) .
+					getHtmlTag('input', $attribs);
 
 			case 'country':
 				$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'maxlength', 'wysiwyg'));
@@ -70,18 +70,14 @@ function we_tag_input($attribs, $content){
 				$langcode = ($lang ? substr($lang, 0, 2) : array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
 
 				$orgVal = $GLOBALS['we_doc']->getElement($name);
-				if(!Zend_Locale::hasCache()){
-					Zend_Locale::setCache(getWEZendCache());
-				}
-				$zendsupported = Zend_Locale::getTranslationList('territory', $langcode, 2);
 				$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
 				foreach($topCountries as $countrykey => &$countryvalue){
-					$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+					$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
 				}
 				unset($countryvalue);
 				$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
 				foreach($shownCountries as $countrykey => &$countryvalue){
-					$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+					$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
 				}
 				unset($countryvalue);
 				$oldLocale = setlocale(LC_ALL, NULL);
@@ -119,12 +115,9 @@ function we_tag_input($attribs, $content){
 					$lccode = explode('_', $lcvalue);
 					$lcvalue = $lccode[0];
 				}
-				if(!Zend_Locale::hasCache()){
-					Zend_Locale::setCache(getWEZendCache());
-				}
 				$frontendLL = array();
 				foreach($frontendL as &$lcvalue){
-					$frontendLL[$lcvalue] = Zend_Locale::getTranslation($lcvalue, 'language', $langcode);
+					$frontendLL[$lcvalue] = we_base_country::getTranslation($lcvalue, we_base_country::LANGUAGE, $langcode);
 				}
 
 				$oldLocale = setlocale(LC_ALL, NULL);
@@ -144,16 +137,16 @@ function we_tag_input($attribs, $content){
 					$vals = explode($seperator, $values);
 
 					$onChange = ($mode === 'add' ?
-									"this.form.elements['" . $tagname . "'].value += ((this.form.elements['" . $tagname . "'].value ? ' ' : '')+this.options[this.selectedIndex].text);" :
-									"this.form.elements['" . $tagname . "'].value = this.options[this.selectedIndex].text;") .
-							($reload ? 'setScrollTo();top.we_cmd(\'reload_editpage\');' : '');
+							"this.form.elements['" . $tagname . "'].value += ((this.form.elements['" . $tagname . "'].value ? ' ' : '')+this.options[this.selectedIndex].text);" :
+							"this.form.elements['" . $tagname . "'].value = this.options[this.selectedIndex].text;") .
+						($reload ? 'setScrollTo();top.we_cmd(\'reload_editpage\');' : '');
 
 					$sel = getHtmlTag('select', array(
 						'class' => "defaultfont",
 						'name' => 'we_choice_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']',
 						'size' => 1,
 						'onchange' => $onChange . ';this.selectedIndex=0;_EditorFrame.setEditorIsHot(true);'
-							), ($vals ? '<option>' . implode('</option><option>', $vals) . '</option>' : ''), true);
+						), ($vals ? '<option>' . implode('</option><option>', $vals) . '</option>' : ''), true);
 				}
 
 				$attribs['onchange'] = '_EditorFrame.setEditorIsHot(true);';
@@ -176,16 +169,14 @@ function we_tag_input($attribs, $content){
 				$attribs['value'] = $val;
 				$input = getHtmlTag('input', removeAttribs($attribs, array('mode', 'values', '_name_orig')));
 				return (defined('SPELLCHECKER') && $spellcheck ?
-								'<table class="weEditTable padding0 spacing0 border0">
+						'<table class="weEditTable padding0 spacing0 border0">
 	<tr>
 			<td class="weEditmodeStyle">' . $input . '</td>
-			<td class="weEditmodeStyle">' . we_html_tools::getPixel(6, 4) . '</td>
-			<td class="weEditmodeStyle">' . we_html_button::create_button(
-										'image:spellcheck', 'javascript:we_cmd("spellcheck","we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']")') . '</td>
+			<td class="weEditmodeStyle">' . we_html_button::create_button('fa:spellcheck,fa-lg fa-font,fa-lg fa-check fa-ok', 'javascript:we_cmd("spellcheck","we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']")') . '</td>
 	</tr>
 </table>' :
-								$input
-						);
+						$input
+					);
 		}
 	} else {
 		//not-editmode
@@ -209,10 +200,7 @@ function we_tag_input($attribs, $content){
 				if($GLOBALS['we_doc']->getElement($name) === '--'){
 					return '';
 				}
-				if(!Zend_Locale::hasCache()){
-					Zend_Locale::setCache(getWEZendCache());
-				}
-				return CheckAndConvertISOfrontend(Zend_Locale::getTranslation($GLOBALS['we_doc']->getElement($name), 'territory', $langcode));
+				return CheckAndConvertISOfrontend(we_base_country::getTranslation($GLOBALS['we_doc']->getElement($name), we_base_country::TERRITORY, $langcode));
 			case 'language':
 				$lang = weTag_getAttribute('outputlanguage', $attribs, '', we_base_request::STRING);
 				if(!$lang){
@@ -225,10 +213,7 @@ function we_tag_input($attribs, $content){
 					$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 					$langcode = array_search($lang[0], getWELangs());
 				}
-				if(!Zend_Locale::hasCache()){
-					Zend_Locale::setCache(getWEZendCache());
-				}
-				return CheckAndConvertISOfrontend(Zend_Locale::getTranslation($GLOBALS['we_doc']->getElement($name), 'language', $langcode));
+				return CheckAndConvertISOfrontend(we_base_country::getTranslation($GLOBALS['we_doc']->getElement($name), we_base_country::LANGUAGE, $langcode));
 			case 'choice':
 				return $GLOBALS['we_doc']->getElement($name);
 			case 'select':

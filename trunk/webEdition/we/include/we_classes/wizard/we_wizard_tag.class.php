@@ -45,61 +45,61 @@ abstract class we_wizard_tag{
 	}
 
 	static function getWeTagGroups($allTags = array()){
-		//initTagList
-		$tags = self::getExistingWeTags();
-		$cache = getWEZendCache();
-		return $cache->load('TagWizard_groups');
-
-
-		$taggroups = array();
-		$main = self::getMainTagModules();
-		// 1st make grps based on modules
-		foreach($main as $modulename => $tags){
-
-			if($modulename === 'basis'){
-				$taggroups['alltags'] = $tags;
-			}
-
-			if(we_base_moduleInfo::isActive($modulename)){
-				$taggroups[$modulename] = $tags;
-				$taggroups['alltags'] = array_merge($taggroups['alltags'], $tags);
-			}
+		if(($data = we_cache_file::load('TagWizard_groups')) === false){
+			self::getExistingWeTags();
+			$data = we_cache_file::load('TagWizard_groups');
 		}
-		//add applicationTags
-		$apptags = we_wizard_tag::getApplicationTags();
-		if(!empty($apptags)){
-			$taggroups['apptags'] = $apptags;
-			$taggroups['alltags'] = array_merge($taggroups['alltags'], $taggroups['apptags']);
-		}
+		return $data;
+
+		/*
+		  $taggroups = array();
+		  $main = self::getMainTagModules();
+		  // 1st make grps based on modules
+		  foreach($main as $modulename => $tags){
+
+		  if($modulename === 'basis'){
+		  $taggroups['alltags'] = $tags;
+		  }
+
+		  if(we_base_moduleInfo::isActive($modulename)){
+		  $taggroups[$modulename] = $tags;
+		  $taggroups['alltags'] = array_merge($taggroups['alltags'], $tags);
+		  }
+		  }
+		  //add applicationTags
+		  $apptags = we_wizard_tag::getApplicationTags();
+		  if(!empty($apptags)){
+		  $taggroups['apptags'] = $apptags;
+		  $taggroups['alltags'] = array_merge($taggroups['alltags'], $taggroups['apptags']);
+		  }
 
 
-		// 2nd add some taggroups to this array
-		if(empty($allTags)){
-			$allTags = we_wizard_tag::getExistingWeTags();
-		}
-		foreach($GLOBALS['tag_groups'] as $key => $tags){
+		  // 2nd add some taggroups to this array
+		  if(empty($allTags)){
+		  $allTags = we_wizard_tag::getExistingWeTags();
+		  }
+		  foreach($GLOBALS['tag_groups'] as $key => $tags){
 
-			foreach($tags as $tag){
-				if(in_array($tag, $allTags)){
-					$taggroups[$key][] = $tag;
-				}
-			}
-		}
+		  foreach($tags as $tag){
+		  if(in_array($tag, $allTags)){
+		  $taggroups[$key][] = $tag;
+		  }
+		  }
+		  }
 
-		// at last add custom tags.
-		$customTags = we_wizard_tag::getCustomTags();
-		if(!empty($customTags)){
-			$taggroups['custom'] = $customTags;
-			$taggroups['alltags'] = array_merge($taggroups['alltags'], $taggroups['custom']);
-		}
+		  // at last add custom tags.
+		  $customTags = we_wizard_tag::getCustomTags();
+		  if(!empty($customTags)){
+		  $taggroups['custom'] = $customTags;
+		  $taggroups['alltags'] = array_merge($taggroups['alltags'], $taggroups['custom']);
+		  }
 
-		natcasesort($taggroups['alltags']);
-		return $taggroups;
+		  natcasesort($taggroups['alltags']);
+		  return $taggroups; */
 	}
 
 	static function getMainTagModules($useDeprecated = true){
-		$cache = getWEZendCache();
-		if(!($main = $cache->load('TagWizard_mainTags'))){
+		if(!($main = we_cache_file::load('TagWizard_mainTags'))){
 			$main = array();
 			$tags = self::getTagsFromDir(WE_INCLUDES_PATH . 'weTagWizard/we_tags/');
 			foreach($tags as $tagname){
@@ -108,7 +108,7 @@ abstract class we_wizard_tag{
 					$main[$tag->getModule()][] = $tagname;
 				}
 			}
-			$cache->save($main);
+			we_cache_file::save('TagWizard_mainTags', $main);
 		}
 		return $main;
 	}
@@ -117,8 +117,7 @@ abstract class we_wizard_tag{
 	 * Initializes database for all tags
 	 */
 	static function initTagLists($tags){
-		$cache = getWEZendCache(24 * 3600);
-		if(($count = $cache->load('TagWizard_tagCount')) && (count($tags) == $count)){
+		if(($count = we_cache_file::load('TagWizard_tagCount')) && (count($tags) == $count[0])){
 			return;
 		}
 		$endTags = array();
@@ -142,27 +141,26 @@ abstract class we_wizard_tag{
 				$endTags[] = $tagname;
 			}
 		}
-		$cache->save(count($tags), 'TagWizard_tagCount');
-		$cache->save($endTags, 'TagWizard_needsEndTag');
-		$cache->save($groups, 'TagWizard_groups');
-		$cache->save($modules, 'TagWizard_modules');
+		$expiry = 24 * 3600;
+		we_cache_file::save('TagWizard_tagCount', array(count($tags)), $expiry);
+		we_cache_file::save('TagWizard_needsEndTag', $endTags, $expiry);
+		we_cache_file::save('TagWizard_groups', $groups, $expiry);
+		we_cache_file::save('TagWizard_modules', $modules, $expiry);
 	}
 
 	//FIXME: check if custom tags are updated correctly!
 	static function getTagsWithEndTag(){
-		$cache = getWEZendCache(24 * 3600);
-		if(!($tags = $cache->load('TagWizard_needsEndTag'))){
+		if(!($tags = we_cache_file::load('TagWizard_needsEndTag'))){
 			self::getExistingWeTags();
-			$tags = $cache->load('TagWizard_needsEndTag');
+			$tags = we_cache_file::load('TagWizard_needsEndTag');
 		}
 		return $tags;
 	}
 
 	static function getCustomTags(){
-		$cache = getWEZendCache();
-		if(!($customTags = $cache->load('TagWizard_customTags'))){
+		if(!($customTags = we_cache_file::load('TagWizard_customTags'))){
 			$customTags = self::getTagsFromDir(WE_INCLUDES_PATH . 'weTagWizard/we_tags/custom_tags');
-			$cache->save($customTags);
+			we_cache_file::save('TagWizard_customTags', $customTags);
 		}
 		return $customTags;
 	}

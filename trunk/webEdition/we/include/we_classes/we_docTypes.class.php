@@ -55,7 +55,7 @@ class we_docTypes extends we_class{
 		$this->Templates = implode(',', $newIdArr);
 
 		if(LANGLINK_SUPPORT){
-			if(($llink = we_base_request::_(we_base_request::RAW, "we_" . $this->Name . "_LangDocType"))){
+			if(($llink = we_base_request::_(we_base_request::RAW, 'we_' . $this->Name . '_LangDocType'))){
 				$this->setLanguageLink($llink, 'tblDocTypes');
 			}
 		} else {
@@ -70,7 +70,7 @@ class we_docTypes extends we_class{
 		return parent::we_save(false);
 	}
 
-	function saveInSession(&$save){
+	function saveInSession(&$save, $toFile = false){
 		$save = array(array());
 		foreach($this->persistent_slots as $cur){
 			$save[0][$cur] = $this->{$cur};
@@ -98,7 +98,6 @@ class we_docTypes extends we_class{
 		$i = 0;
 		while(!$this->Language){
 			if($ParentID == 0 || $i > 20){
-				we_loadLanguageConfig();
 				$this->Language = ($GLOBALS['weDefaultFrontendLanguage'] ? : 'de_DE');
 			} elseif(($h = getHash('SELECT Language,ParentID FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($ParentID), $this->DB_WE))){
 				$this->Language = $h['Language'];
@@ -109,8 +108,6 @@ class we_docTypes extends we_class{
 	}
 
 	private function formLangLinks(){
-		we_loadLanguageConfig();
-
 		$value = ($this->Language ? : $GLOBALS['weDefaultFrontendLanguage']);
 		$inputName = 'we_' . $this->Name . '_Language';
 		$_languages = getWeFrontendLanguagesForBackend();
@@ -129,31 +126,24 @@ class we_docTypes extends we_class{
 	}
 
 	private function formCategory(){
-		$addbut = we_html_button::create_button("add", "javascript:we_cmd('openCatselector', -1, '" . CATEGORY_TABLE . "', '', '', 'fillIDs();opener.we_cmd(\\'dt_add_cat\\', top.allIDs);')", false, 92, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category', -1, '" . CATEGORY_TABLE . "', '', '', 'fillIDs();opener.we_cmd(\\'dt_add_cat\\', top.allIDs);')", false, 92, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 
-		$cats = new we_chooser_multiDir(521, $this->Category, "dt_delete_cat", $addbut, "", "Icon,Path", CATEGORY_TABLE);
+		$cats = new we_chooser_multiDir(521, $this->Category, "dt_delete_cat", $addbut, "", '"we/category"', CATEGORY_TABLE);
 		return we_html_tools::htmlFormElementTable($cats->get(), g_l('weClass', '[category]'));
 	}
 
 	public function addCat(array $ids){
-		$cats = makeArrayFromCSV($this->Category);
-		foreach($ids as $id){
-			if($id && (!in_array($id, $cats))){
-				$cats[] = $id;
-			}
-		}
-		$this->Category = makeCSVFromArray($cats, true);
+		$this->Category = implode(',', array_unique(array_filter(explode(',', $this->Category)) + $ids, SORT_NUMERIC));
 	}
 
 	public function delCat($id){
-		$cats = makeArrayFromCSV($this->Category);
-		if(in_array($id, $cats)){
-			$pos = array_search($id, $cats);
-			if($pos !== false || $pos == '0'){
-				unset($cats[$pos]);
-			}
+		$cats = array_filter(explode(',', $this->Category));
+		if(($pos = array_search($id, $cats, false)) === false){
+			return;
 		}
-		$this->Category = makeCSVFromArray($cats, true);
+
+		unset($cats[$pos]);
+		$this->Category = implode(',', $cats);
 	}
 
 	/*
@@ -162,11 +152,10 @@ class we_docTypes extends we_class{
 
 	public function formDocTypeHeader(){
 		return '
-<table border="0" cellpadding="0" cellspacing="0">
-	<tr valign="top">
-		<td>' . $this->formDocTypes2() . '</td>
-		<td>' . we_html_tools::getPixel(20, 2) . '</td>
-		<td>' . $this->formNewDocType() . we_html_tools::getPixel(2, 10) . $this->formDeleteDocType() . '</td>
+<table class="default">
+	<tr>
+		<td style="padding-right:20px;">' . $this->formDocTypes2() . '</td>
+		<td><div style="padding-bottom:10px;">' . we_html_button::create_button('new_doctype', "javascript:we_cmd('newDocType')") . '</div>' . we_html_button::create_button('delete_doctype', "javascript:we_cmd('deleteDocType', '" . $this->ID . "')") . '</td>
 	</tr>
 </table>';
 	}
@@ -177,35 +166,25 @@ class we_docTypes extends we_class{
 
 	public function formDocTypeTemplates(){
 		$wecmdenc3 = we_base_request::encCmd("fillIDs();opener.we_cmd('add_dt_template', top.allIDs);");
-		$addbut = we_html_button::create_button("add", "javascript:we_cmd('openDocselector', 0, '" . TEMPLATES_TABLE . "','','','" . $wecmdenc3 . "', '', '', '" . we_base_ContentTypes::TEMPLATE . "', 1,1)");
-		$templ = new we_chooser_multiDir(521, $this->Templates, "delete_dt_template", $addbut, "", "Icon,Path", TEMPLATES_TABLE);
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_document', 0, '" . TEMPLATES_TABLE . "','','','" . $wecmdenc3 . "', '', '', '" . we_base_ContentTypes::TEMPLATE . "', 1,1)");
+		$templ = new we_chooser_multiDir(521, $this->Templates, "delete_dt_template", $addbut, "", 'ContentType', TEMPLATES_TABLE);
 		return $templ->get();
 	}
 
 	public function formDocTypeDefaults(){
 		return '
-<table border="0" cellpadding="0" cellspacing="0">
-	<tr><td colspan="3">' . $this->formDirChooser(we_base_browserDetect::isIE() ? 403 : 409) . '</td></tr>
-	<tr><td>' . we_html_tools::getPixel(300, 5) . '</td>
-		<td>' . we_html_tools::getPixel(20, 5) . '</td>
-		<td>' . we_html_tools::getPixel(200, 5) . '</td>
-	</tr>
+<table class="default">
+	<tr><td colspan="3" style="padding-bottom:5px;">' . $this->formDirChooser(409) . '</td></tr>
 	<tr>
-		<td>' . $this->formSubDir(300) . '</td>
-		<td>' . we_html_tools::getPixel(20, 2) . '</td>
+		<td style="padding-right:20px;">' . $this->formSubDir(300) . '</td>
 		<td>' . $this->formExtension(200) . '</td>
 	</tr>
-	<tr><td colspan="3">' . we_html_tools::getPixel(2, 5) . '</td></tr>
-	<tr><td colspan="3">' . $this->formTemplatePopup(521) . '</td></tr>
-	<tr><td colspan="3">' . we_html_tools::getPixel(2, 5) . '</td></tr>
+	<tr><td colspan="3" style="padding:5px 0px;">' . $this->formTemplatePopup() . '</td></tr>
 	<tr>
 		<td>' . $this->formIsDynamic() . '</td>
-		<td></td>
 		<td>' . $this->formIsSearchable() . '</td>
 	</tr>
-	<tr><td colspan="3">' . we_html_tools::getPixel(2, 5) . '</td></tr>
-	<tr><td colspan="3">' . $this->formLangLinks(521) . '</td></tr>
-	<tr><td colspan="3">' . we_html_tools::getPixel(2, 5) . '</td></tr>
+	<tr><td colspan="3" style="padding:5px 0px;">' . $this->formLangLinks(521) . '</td></tr>
 	<tr><td colspan="3">' . $this->formCategory(521) . '</td></tr>
 </table>';
 	}
@@ -249,9 +228,9 @@ class we_docTypes extends we_class{
 		$textname = 'we_' . $this->Name . '_ParentPath';
 		$idname = 'we_' . $this->Name . '_ParentID';
 
-		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $idname . "'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.forms['we_form'].elements['" . $textname . "'].value");
-		$button = we_html_button::create_button("select", "javascript:we_cmd('openDirselector', document.forms['we_form'].elements['" . $idname . "'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "', '" . $wecmdenc2 . "', '', '')");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $idname . "'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory', document.we_form.elements['" . $idname . "'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "', '" . $wecmdenc2 . "', '', '')");
 		$yuiSuggest->setAcId("Path");
 		$yuiSuggest->setContentType("folder");
 		$yuiSuggest->setInput($textname, $this->ParentPath);
@@ -259,7 +238,7 @@ class we_docTypes extends we_class{
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($idname, $this->ParentID);
 		$yuiSuggest->setSelector(weSuggest::DirSelector);
-		$yuiSuggest->setWidth($width - (we_base_browserDetect::isIE() ? 0 : 10));
+		$yuiSuggest->setWidth($width - 10);
 		$yuiSuggest->setSelectButton($button);
 
 		return $yuiSuggest->getHTML();
@@ -288,7 +267,7 @@ class we_docTypes extends we_class{
 	private function formIsDynamic(){
 		$n = 'we_' . $this->Name . '_IsDynamic';
 
-		return we_html_forms::checkbox(1, $this->IsDynamic, "check_" . $n, g_l('weClass', '[IsDynamic]'), true, "defaultfont", "this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0'); switchExt();") . $this->htmlHidden($n, ($this->IsDynamic ? 1 : 0)) .
+		return we_html_forms::checkbox(1, $this->IsDynamic, "check_" . $n, g_l('weClass', '[IsDynamic]'), true, "defaultfont", "this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0'); switchExt();") . we_html_element::htmlHidden($n, ($this->IsDynamic ? 1 : 0)) .
 			we_html_element::jsElement('
 function switchExt(){
 	var a=document.we_form.elements;' .
@@ -302,19 +281,11 @@ function switchExt(){
 
 	private function formIsSearchable(){
 		$n = 'we_' . $this->Name . '_IsSearchable';
-		return we_html_forms::checkbox(1, $this->IsSearchable, 'check_' . $n, g_l('weClass', '[IsSearchable]'), false, 'defaultfont', "this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0');") . $this->htmlHidden($n, ($this->IsSearchable ? 1 : 0));
+		return we_html_forms::checkbox(1, $this->IsSearchable, 'check_' . $n, g_l('weClass', '[IsSearchable]'), false, 'defaultfont', "this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0');") . we_html_element::htmlHidden($n, ($this->IsSearchable ? 1 : 0));
 	}
 
 	private function formSubDir($width = 100){
 		return we_html_tools::htmlFormElementTable($this->htmlSelect('we_' . $this->Name . '_SubDir', g_l('weClass', '[subdir]'), 1, $this->SubDir, false, array(), 'value', $width), g_l('weClass', '[subdirectory]'));
-	}
-
-	public function formNewDocType(){
-		return we_html_button::create_button('new_doctype', "javascript:we_cmd('newDocType')");
-	}
-
-	private function formDeleteDocType(){
-		return we_html_button::create_button('delete_doctype', "javascript:we_cmd('deleteDocType', '" . $this->ID . "')");
 	}
 
 	/**
@@ -329,7 +300,7 @@ function switchExt(){
 		$db = $db ? : new DB_WE();
 
 		$paths = array();
-		$ws = get_ws(FILE_TABLE, false, true);
+		$ws = get_ws(FILE_TABLE, true);
 		if(!$ws){
 			return array(
 				'join' => '',

@@ -102,6 +102,9 @@ class we_wysiwyg_ToolbarButton extends we_wysiwyg_ToolbarElement{
 			case 'insertspecialchar':
 			case 'insertbreak':
 				return parent::hasProp('', $contextMenu) || parent::hasProp('insert', $contextMenu);
+			case 'insertgallery':
+				return (parent::hasProp('', $contextMenu) || parent::hasProp('insert', $contextMenu))
+					&& !$this->editor->getIsFrontendEdit() && we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION);
 			case 'insertdate':
 			case 'inserttime':
 				return $this->editor->setPlugin('insertdatetime', parent::hasProp('', $contextMenu) || parent::hasProp('insert', $contextMenu));

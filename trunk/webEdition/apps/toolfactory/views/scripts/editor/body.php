@@ -224,11 +224,11 @@ if(!empty($this->model->ID)){
 						$authorentry = array();
 						for($i = 0; $i < count($authornames); $i++){
 							$htmla = '';
-							if(isset($authorlinks[$i]) && !empty($authorlinks[$i])){
+							if(!empty($authorlinks[$i])){
 								$htmla .= '<a href="' . $authorlinks[$i] . '" target="_blank" >';
 							}
 							$htmla .= $authornames[$i];
-							if(isset($authorlinks[$i]) && !empty($authorlinks[$i])){
+							if(!empty($authorlinks[$i])){
 								$htmla .= '</a>';
 							}
 							$authorentry[] = $htmla;
@@ -236,11 +236,11 @@ if(!empty($this->model->ID)){
 						$html = implode(', ', $authorentry);
 					} else {
 						$html = '';
-						if(isset($authorlinks) && !empty($authorlinks)){
+						if(!empty($authorlinks)){
 							$html .= '<a href="' . $authorlinks . '" target="_blank" >';
 						}
 						$html .= $authornames;
-						if(isset($authorlinks) && !empty($authorlinks)){
+						if(!empty($authorlinks)){
 							$html .= '</a>';
 						}
 					}
@@ -277,11 +277,11 @@ if(!empty($this->model->ID)){
 						$authorentry = array();
 						for($i = 0; $i < count($authornames); $i++){
 							$htmla = '';
-							if(isset($authorlinks[$i]) && !empty($authorlinks[$i])){
+							if(!empty($authorlinks[$i])){
 								$htmla .= '<a href="' . $authorlinks[$i] . '" target="_blank" >';
 							}
 							$htmla .= $authornames[$i];
-							if(isset($authorlinks[$i]) && !empty($authorlinks[$i])){
+							if(!empty($authorlinks[$i])){
 								$htmla .= '</a>';
 							}
 							$authorentry[] = $htmla;
@@ -289,11 +289,11 @@ if(!empty($this->model->ID)){
 						$html .= implode(', ', $authorentry);
 					} else {
 						$html .= '';
-						if(isset($authorlinks) && !empty($authorlinks)){
+						if(!empty($authorlinks)){
 							$html .= '<a href="' . $authorlinks . '" target="_blank" >';
 						}
 						$html .= $authornames;
-						if(isset($authorlinks) && !empty($authorlinks)){
+						if(!empty($authorlinks)){
 							$html .= '</a>';
 						}
 					}
@@ -335,13 +335,13 @@ if(!empty($this->model->ID)){
 			if(!empty($this->model->appconfig->dependencies->version)){
 				$we_version = we_util_Strings::version2number(WE_VERSION, false);
 				if($we_version < $this->model->appconfig->dependencies->version){
-					$html .= $translate->_('MinWeVersion') . ': <strong><span style="color:red">' . we_util_Strings::number2version($this->model->appconfig->dependencies->version, false) . '</span></strong> ' . $translate->_('AktWeVersion') . ' <strong>' . WE_VERSION . '</strong>';
+					$html .= $translate->_('MinWeVersion') . ': <strong><span style="color:red">' . $this->model->appconfig->dependencies->version . '</span></strong> ' . $translate->_('AktWeVersion') . ' <strong>' . WE_VERSION . '</strong>';
 				} else {
-					$html .= $translate->_('MinWeVersion') . ': <strong>' . we_util_Strings::number2version($this->model->appconfig->dependencies->version, false) . '</strong>';
+					$html .= $translate->_('MinWeVersion') . ': <strong>' .$this->model->appconfig->dependencies->version . '</strong>';
 				}
 			}
 			if(!empty($this->model->appconfig->dependencies->sdkversion)){
-				$html .= '<br/>' . $translate->_('SdkVersion') . ': <strong>' . we_util_Strings::number2version($this->model->appconfig->dependencies->sdkversion, false) . '</strong>';
+				$html .= '<br/>' . $translate->_('SdkVersion') . ': <strong>' . $this->model->appconfig->dependencies->sdkversion. '</strong>';
 			}
 			$html .= '<br/>' . ($this->model->appconfig ?
 							$translate->_('The application manifest is available') :
@@ -493,13 +493,6 @@ $tabNr = we_base_request::_(we_base_request::INT, 'tabnr', 1);
 
 $htmlPage = we_ui_layout_HTMLPage::getInstance();
 
-$htmlPage->addJSFile(JS_DIR . 'windows.js');
-$htmlPage->addJSFile(JS_DIR . 'we_showMessage.js');
-$htmlPage->addJSFile(JS_DIR . 'images.js');
-$htmlPage->addJSFile(JS_DIR . 'libs/yui/yahoo-min.js');
-$htmlPage->addJSFile(JS_DIR . 'libs/yui/event-min.js');
-$htmlPage->addJSFile(JS_DIR . 'libs/yui/connection-min.js');
-$htmlPage->addJSFile(JS_DIR . 'libs/yui/json-min.js');
 $htmlPage->addJSFile(LIB_DIR . 'we/core/JsonRpc.js');
 
 
@@ -650,7 +643,6 @@ $htmlPage->addElement($containerDiv);
 
 $htmlPage->addInlineJS($js);
 $htmlPage->setBodyAttributes(array('class' => 'weEditorBody', 'onload' => 'loaded=1;'));
-$htmlPage->addJSFile(JS_DIR . 'we_showMessage.js');
 
 $htmlPage->addInlineCSS($cssLoadingWheel);
 

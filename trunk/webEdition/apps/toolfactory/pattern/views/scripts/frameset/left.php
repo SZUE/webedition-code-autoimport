@@ -7,7 +7,6 @@ $frameset->addFrame(array(
 	'src' => 'about:blank',
 	'name' => 'treeheader',
 	'noresize' => 'noresize',
-	'scrolling' => 'no'
 ));
 
 $frameset->addFrame(array(
@@ -17,7 +16,6 @@ $frameset->addFrame(array(
 			''),
 	'name' => 'tree',
 	'noresize' => 'noresize',
-	'scrolling' => 'auto'
 ));
 
 

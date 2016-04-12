@@ -37,8 +37,8 @@ class we_versions_fragment extends we_fragment_base{
 		$percent = round((100 / count($this->alldata)) * (1 + $this->currentTask));
 		echo we_html_element::jsElement(
 			'if(parent.wizbusy.document.getElementById("progr")){parent.wizbusy.document.getElementById("progr").style.display="";};parent.wizbusy.setProgressText("pb1",(parent.wizbusy.document.getElementById("progr") ? "' . addslashes(
-				we_util_Strings::shortenPath($this->data["path"] . " - " . g_l('versions', '[version]') . " " . $this->data["version"], 33)) . '" : "' . "test" . addslashes(
-				we_util_Strings::shortenPath($this->data["path"] . " - " . g_l('versions', '[version]') . " " . $this->data["version"], 60)) . '") );parent.wizbusy.setProgress(' . $percent . ');');
+				we_base_util::shortenPath($this->data["path"] . " - " . g_l('versions', '[version]') . " " . $this->data["version"], 33)) . '" : "' . "test" . addslashes(
+				we_base_util::shortenPath($this->data["path"] . " - " . g_l('versions', '[version]') . " " . $this->data["version"], 60)) . '") );parent.wizbusy.setProgress(' . $percent . ');');
 	}
 
 	function finish(){
@@ -47,7 +47,7 @@ class we_versions_fragment extends we_fragment_base{
 			$versionslog->saveVersionsLog($_SESSION['weS']['versions']['logResetIds'], we_versions_log::VERSIONS_RESET);
 		}
 		unset($_SESSION['weS']['versions']['logResetIds']);
-		$responseText = we_base_request::_(we_base_request::STRING, "responseText", "");
+		$responseText = we_base_request::_(we_base_request::STRING, 'responseText', "");
 		echo we_html_tools::getHtmlTop();
 		switch(we_base_request::_(we_base_request::STRING, 'type')){
 			case "delete_versions":
@@ -61,7 +61,7 @@ class we_versions_fragment extends we_fragment_base{
 
 			// reload current document => reload all open Editors on demand
 
-			var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
+			var _usedEditors =  WE().layout.weEditorFrameController.getEditorsInUse();
 			for (frameId in _usedEditors) {
 
 				if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
@@ -75,16 +75,16 @@ class we_versions_fragment extends we_fragment_base{
 			_multiEditorreload = true;
 
 			//reload tree
-			top.opener.we_cmd("load", top.opener.treeData.table ,0);
+			top.opener.we_cmd("load", top.opener.top.treeData.table ,0);
 
 			top.close();
 		') .
 		'</head></html>';
 	}
 
-	function printHeader(){
+	static function printHeader(){
 		we_html_tools::protect();
-		echo we_html_tools::getHtmlTop() . '</head>';
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '',' ');
 	}
 
 	function printBodyTag($attributes = ""){

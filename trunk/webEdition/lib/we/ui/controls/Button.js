@@ -33,7 +33,7 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-we_ui_controls_Button = new Object();
+we_ui_controls_Button = {};
 
 /**
  * disables / enables Button element, hidden input element of button = submit and <a> tag of button=href
@@ -42,7 +42,7 @@ we_ui_controls_Button = new Object();
  *@param {object|string} idOrObject id or reference of button element
  *@return void
  */
-we_ui_controls_Button.setDisabled = function(idOrObject, disabled)
+we_ui_controls_Button.setDisabled = function (idOrObject, disabled)
 {
 	var element = idOrObject;
 	if (typeof (element) != "object") {
@@ -55,7 +55,7 @@ we_ui_controls_Button.setDisabled = function(idOrObject, disabled)
 			element.childNodes[1].className = "we_ui_controls_Disabled_Button_Middle";
 			element.childNodes[2].className = "we_ui_controls_Disabled_Button_Right";
 			var img = document.getElementById(element.id + "_img");
-			if (img != null && img.src.indexOf("Disabled.gif") == -1) {
+			if (img !== null && img.src.indexOf("Disabled.gif") === -1) {
 				img.src = img.src.replace(/\.gif/, "Disabled.gif");
 			}
 		}
@@ -66,7 +66,7 @@ we_ui_controls_Button.setDisabled = function(idOrObject, disabled)
 		}
 		if (document.getElementById("a_" + element.id)) {
 			var a = document.getElementById("a_" + element.id);
-			a.onclick = function() {
+			a.onclick = function () {
 				return false;
 			};
 		}
@@ -75,15 +75,14 @@ we_ui_controls_Button.setDisabled = function(idOrObject, disabled)
 			table.className = "we_ui_controls_Disabled_Button_InnerTable";
 		}
 
-	}
-	else {
+	} else {
 		element.className = "we_ui_controls_Button";
 		if (element.childNodes[0].className == "we_ui_controls_Clicked_Button_Left" || element.childNodes[0].className == "we_ui_controls_Disabled_Button_Left") {
 			element.childNodes[0].className = "we_ui_controls_Button_Left";
 			element.childNodes[1].className = "we_ui_controls_Button_Middle";
 			element.childNodes[2].className = "we_ui_controls_Button_Right";
 			var img = document.getElementById(element.id + "_img");
-			if (img != null && img.src.indexOf("Disabled.gif") == -1) {
+			if (img !== null && img.src.indexOf("Disabled.gif") === -1) {
 				img.src = img.src.replace(/\Disabled.gif/, ".gif");
 			}
 		}
@@ -93,7 +92,7 @@ we_ui_controls_Button.setDisabled = function(idOrObject, disabled)
 		}
 		if (document.getElementById("a_" + element.id)) {
 			var a = document.getElementById("a_" + element.id);
-			a.onclick = function() {
+			a.onclick = function () {
 				return true;
 			};
 		}
@@ -102,7 +101,7 @@ we_ui_controls_Button.setDisabled = function(idOrObject, disabled)
 			table.className = "we_ui_controls_Button_InnerTable";
 		}
 	}
-}
+};
 
 /**
  * marks the Button after mouseDown event as clicked
@@ -111,7 +110,7 @@ we_ui_controls_Button.setDisabled = function(idOrObject, disabled)
  *@param {object|string} idOrObject id or reference of button element
  *@return void
  */
-we_ui_controls_Button.down = function(idOrObject)
+we_ui_controls_Button.down = function (idOrObject)
 {
 	var element = idOrObject;
 	if (typeof (element) != "object") {
@@ -125,7 +124,7 @@ we_ui_controls_Button.down = function(idOrObject)
 			element.childNodes[2].className = "we_ui_controls_Clicked_Button_Right";
 		}
 	}
-}
+};
 
 /**
  * marks the Button after mouseOut event as default
@@ -134,7 +133,7 @@ we_ui_controls_Button.down = function(idOrObject)
  *@param {object|string} idOrObject id or reference of button element
  *@return void
  */
-we_ui_controls_Button.out = function(idOrObject)
+we_ui_controls_Button.out = function (idOrObject)
 {
 	var element = idOrObject;
 	if (typeof (element) != "object") {
@@ -148,7 +147,7 @@ we_ui_controls_Button.out = function(idOrObject)
 			element.childNodes[2].className = "we_ui_controls_Button_Right";
 		}
 	}
-}
+};
 
 /**
  * marks the Button after mouseUp event as default
@@ -157,7 +156,7 @@ we_ui_controls_Button.out = function(idOrObject)
  *@param {object|string} idOrObject id or reference of button element
  *@return boolean
  */
-we_ui_controls_Button.up = function(idOrObject)
+we_ui_controls_Button.up = function (idOrObject)
 {
 	var element = idOrObject;
 	if (typeof (element) != "object") {
@@ -168,7 +167,7 @@ we_ui_controls_Button.up = function(idOrObject)
 		return true;
 	}
 	return false;
-}
+};
 
 /**
  * hides the Button
@@ -177,16 +176,16 @@ we_ui_controls_Button.up = function(idOrObject)
  *@param {object|string} idOrObject id or reference of button element
  *@return void
  */
-we_ui_controls_Button.hide = function(idOrObject)
+we_ui_controls_Button.hide = function (idOrObject)
 {
 	var element = idOrObject;
 	if (typeof (element) != "object") {
 		element = document.getElementById(idOrObject);
 	}
-	if (element != null) {
+	if (element !== null) {
 		element.style.display = "none";
 	}
-}
+};
 
 /**
  * shows the Button
@@ -195,16 +194,16 @@ we_ui_controls_Button.hide = function(idOrObject)
  *@param {object|string} idOrObject id or reference of button element
  *@return void
  */
-we_ui_controls_Button.show = function(idOrObject)
+we_ui_controls_Button.show = function (idOrObject)
 {
 	var element = idOrObject;
 	if (typeof (element) != "object") {
 		element = document.getElementById(idOrObject);
 	}
-	if (element != null) {
+	if (element !== null) {
 		element.style.display = "";
 	}
-}
+};
 
 /**
  * checks if the Button is disabled
@@ -213,18 +212,17 @@ we_ui_controls_Button.show = function(idOrObject)
  *@param {object|string} idOrObject id or reference of button element
  *@return boolean
  */
-we_ui_controls_Button.isDisabled = function(idOrObject)
+we_ui_controls_Button.isDisabled = function (idOrObject)
 {
 	var element = idOrObject;
 	if (typeof (element) != "object") {
 		element = document.getElementById(idOrObject);
 	}
-	if (element != null && element.className == "we_ui_controls_Disabled_Button") {
+	if (element !== null && element.className == "we_ui_controls_Disabled_Button") {
 		return true
-	} else {
-		return false;
 	}
-}
+	return false;
+};
 
 /**
  * checks if the Button is enabled
@@ -233,10 +231,10 @@ we_ui_controls_Button.isDisabled = function(idOrObject)
  *@param {object|string} idOrObject id or reference of button element
  *@return boolean
  */
-we_ui_controls_Button.isEnabled = function(idOrObject)
+we_ui_controls_Button.isEnabled = function (idOrObject)
 {
 	return !this.isDisabled(idOrObject);
-}
+};
 
 /**
  * adds a Button
@@ -247,7 +245,7 @@ we_ui_controls_Button.isEnabled = function(idOrObject)
  *@param string positionID id of element within the button should be added
  *@return void
  */
-we_ui_controls_Button.addButton = function(buttonId, buttonHTML, positionID)
+we_ui_controls_Button.addButton = function (buttonId, buttonHTML, positionID)
 {
 	var container = positionID;
 	if (typeof (container) != "object") {
@@ -271,4 +269,4 @@ we_ui_controls_Button.addButton = function(buttonId, buttonHTML, positionID)
 		container.appendChild(mainDiv);
 	}
 
-}
+};

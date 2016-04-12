@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,6 @@
 
 // include files -> mainly stored in the application
 define('LIVEUPDATE_LANGUAGE', $GLOBALS['WE_LANGUAGE']);
-//define('LIVEUPDATE_LANGUAGE_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/liveUpdate/includes/language/' . LIVEUPDATE_LANGUAGE . '/');
 define('LIVEUPDATE_LANGUAGE_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . LIVEUPDATE_LANGUAGE . '/');
 
 // include some files
@@ -52,7 +50,6 @@ define('LIVEUPDATE_TABLE_PREFIX', TBL_PREFIX);
 
 // liveupdater contains the following actions
 $updatecmds = array('update', 'languages', 'updatelog', 'connect', 'beta');
-//$updatecmds = array('update', 'languages', 'updatelog', 'connect');
 if(is_callable("set_time_limit") && strtolower(ini_get("safe_mode")) != "on" && ini_get("safe_mode") != 1){
 	@set_time_limit(180);
 }

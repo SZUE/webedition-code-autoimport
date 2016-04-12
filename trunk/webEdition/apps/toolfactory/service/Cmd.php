@@ -40,8 +40,6 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 	 */
 	public function save($args){
 
-		$utf8_decode = true;
-
 		$translate = we_core_Local::addTranslation('apps.xml');
 
 		if(!isset($args[0])){
@@ -62,7 +60,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 
 		$newBeforeSaving = $model->ID === 0;
 		// check if user has the permissions to create new entries
-		if($model->ID === 0 && !we_core_Permissions::hasPerm('NEW_APP_' . strtoupper($appName))){
+		if($model->ID === 0 && !permissionhandler::hasPerm('NEW_APP_' . strtoupper($appName))){
 			$ex = new we_service_Exception(
 				$translate->_(
 					'You do not have the permission to create new entries or folders!'));
@@ -111,8 +109,9 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 		}
 
 		// check if maintable exists
-		if((isset($model->maintable) && $model->maintable != "")){
-			if(we_io_DB::tableExists($model->maintable)){
+		if((!empty($model->maintable))){
+			$db=new DB_WE();
+			if($db->isTabExist($model->maintable)){
 				$ex = new we_service_Exception(
 					$translate->_('The maintable exists!'), we_service_ErrorCodes::kModelTextEmpty);
 				$ex->setType('warning');
@@ -150,7 +149,6 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 						$translate->_('The name already exists! Please choose another name or folder.'), $e->getCode());
 					$ex->setType('warning');
 					throw $ex;
-					break;
 				default :
 					throw new we_service_Exception($e->getMessage(), $e->getCode());
 			}
@@ -191,8 +189,8 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 
 		try{
 			if($model->maintable != ''){
-				$db = we_io_DB::sharedAdapter();
-				$result = $db->getConnection()->exec('DROP TABLE ' . $model->maintable);
+				$db = new DB_WE();
+				$db->delTable($model->maintable);
 			}
 		} catch (we_core_ModelException $e){
 			throw new we_service_Exception(WE_APPS_PATH . '/' . $model->classname . $e->getMessage());
@@ -220,7 +218,6 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 				'The application toc.xml was succesfully rebuild!'));
 		$ex->setType('notice');
 		throw $ex;
-		return $args;
 	}
 
 	/**

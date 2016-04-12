@@ -39,7 +39,7 @@ $num_format = new weTagData_choiceAttribute('num_format', array(new weTagDataOpt
 	new weTagDataOption('swiss'),
 	), false, false, '');
 $thumbnail = new weTagData_sqlRowAttribute('thumbnail', THUMBNAILS_TABLE, false, 'Name', '', '', '');
-$id = (defined('FILE_TABLE') ? new weTagData_selectorAttribute('id', FILE_TABLE, 'text/webedition', false, '') : null);
+$id = (defined('FILE_TABLE') ? new weTagData_selectorAttribute('id', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '') : null);
 $parentidname = new weTagData_textAttribute('parentidname', false, '');
 $winprops = new weTagData_textAttribute('winprops', false, '');
 $alt = new weTagData_textAttribute('alt', false, '');
@@ -75,6 +75,7 @@ $only = new weTagData_selectAttribute('only', array(new weTagDataOption('name'),
 	new weTagDataOption('filename'),
 	new weTagDataOption('extension'),
 	new weTagDataOption('filesize'),
+	new weTagDataOption('id'),
 	), false, '');
 $onlyImg = new weTagData_selectAttribute('only', array(new weTagDataOption('name'),
 	new weTagDataOption('src'),
@@ -90,7 +91,7 @@ $outputlanguage = new weTagData_textAttribute('outputlanguage', false, '');
 $doc = new weTagData_selectAttribute('doc', array(new weTagDataOption('self'),
 	new weTagDataOption('top'),
 	), false, '');
-$triggerid = (defined('FILE_TABLE') ? new weTagData_selectorAttribute('triggerid', FILE_TABLE, 'text/webedition', false, '') : null);
+$triggerid = (defined('FILE_TABLE') ? new weTagData_selectorAttribute('triggerid', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '') : null);
 $usekey = new weTagData_selectAttribute('usekey', weTagData_selectAttribute::getTrueFalse(), false, '');
 $showpath = new weTagData_selectAttribute('showpath', weTagData_selectAttribute::getTrueFalse(), false, '');
 $rootdir = new weTagData_textAttribute('rootdir', false, '');
@@ -134,6 +135,7 @@ $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 	new weTagDataOption('binary', false, 'object', array($name, $hyperlink, $href, $target, $only), array($name)),
 	new weTagDataOption('float', false, '', array($name, $hyperlink, $href, $target, $num_format, $triggerid), array($name)),
 	new weTagDataOption('int', false, 'object', array($name, $hyperlink, $href, $target, $triggerid), array($name)),
+	new weTagDataOption('collection', false, '', array($name), array($name)),
 	new weTagDataOption('shopVat', false, '', array($vatfield), array()),
 	new weTagDataOption('shopCategory', false, '', array($catfield, $showpath, $rootdir), array()),
 	new weTagDataOption('checkbox', false, '', array($name), array($name)),
@@ -142,5 +144,6 @@ $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 	), false, '');
 
 $this->Attributes = array($name, $classid, $hyperlink, $tid, $href, $target, $class, $style, $format, $num_format, $thumbnail, $id, $parentidname, $winprops, $alt, $max, $src,
-	$width, $height, $border, $hspace, $vspace, $align, $only, $onlyImg, $htmlspecialchars, $seeMode, $xml, $win2iso, $listviewname, $striphtml, $outputlanguage, $doc, $triggerid, 
+	$width, $height, $border, $hspace, $vspace, $align, $only, $onlyImg, $htmlspecialchars, $seeMode, $xml, $win2iso, $listviewname, $striphtml, $outputlanguage, $doc, $triggerid,
 	$usekey, $vatfield, $catfield, $showpath, $rootdir);
+

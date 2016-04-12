@@ -98,7 +98,7 @@ class we_shop_category extends we_category{
 			$ids[] = $this->ID;
 			sort($ids);
 		} else {
-			if(($k = array_search($this->ID, $ids)) === false){
+			if(($k = array_search($this->ID, $ids, false)) === false){
 				return true;
 			}
 			unset($ids[$k]);
@@ -111,7 +111,7 @@ class we_shop_category extends we_category{
 	 * save field IsInactive of this shop category
 	 *
 	 * @return void
-	 */
+
 	private function saveIsInactiveToDB(){
 		$ids = self::getIsInactiveFromDB(true);
 		if($this->IsInactive){
@@ -121,7 +121,7 @@ class we_shop_category extends we_category{
 			$ids[] = $this->ID;
 			sort($ids);
 		} else {
-			if(($k = array_search($this->ID, $ids)) === false){
+			if(($k = array_search($this->ID, $ids, false)) === false){
 				return true;
 			}
 			unset($ids[$k]);
@@ -129,7 +129,7 @@ class we_shop_category extends we_category{
 
 		return self::saveSettingIsInactive(implode(',', $ids));
 	}
-
+*/
 	/**
 	 * get csv or array containing ids of all shop categories with DestinationPrinciple = true
 	 *
@@ -566,7 +566,7 @@ class we_shop_category extends we_category{
 			return $getIsFallbackToStandard ? true : ($getRate ? $vat->vat : $vat);
 		}
 
-		$shopPrefs = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"', '', $this->db, -1));
+		$shopPrefs = explode('|', f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_pref"', '', $this->db, -1));
 		if(($pref = $shopPrefs[1])){
 			self::$shopVatsByCategoryCountry[$this->ID][$country] = false;
 			if($getIsFallbackToPrefs){
@@ -618,18 +618,19 @@ class we_shop_category extends we_category{
 	 * @return object
 	 */
 	public static function getCountryFromCustomer($useFallback = false, $customer = false, $customerId = 0, $getAllData = false){
-		if(!$customer){
-			if(isset($_SESSION['webuser'])){
-				$customer = $_SESSION['webuser'];
-			} elseif($customerId){
-				$cust = new we_customer_customertag($GLOBALS[$customerId]);
-				$carray = $cust->getDBRecord();
-				unset($cust);
-				$customer = ($carray ? : false);
-			}
-		}
+		$customer = ($customer? :
+				(isset($_SESSION['webuser']) ?
+					$_SESSION['webuser'] :
+					($customerId ?
+						(getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($GLOBALS[$customerId]))? :
+							false) :
+						false
+					)
+				)
+			);
 
 		if($customer){
+			$customer = array_merge($customer, we_customer_customer::getEncryptedFields());
 			$stateField = we_shop_vatRule::getStateField();
 			if(isset($customer[$stateField]) && ($c = $customer[$stateField])){
 				return $getAllData ? array('country' => $c, 'isFallback' => false, "customer" => $customer) : $c;

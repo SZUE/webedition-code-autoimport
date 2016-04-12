@@ -42,6 +42,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 			strpos($doc->ContentType, "image/") === 0 ||
 			strpos($doc->ContentType, "application/") === 0 ||
 			strpos($doc->ContentType, "video/") === 0)){
+			//FIXME: this should be determined by document, not by type
 			$doc->setElement("data", we_base_file::load($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $doc->Path));
 		}
 
@@ -67,7 +68,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 		$attribute = (isset($doc->attribute_slots) ? $doc->attribute_slots : array());
 
 		switch($classname){
-			case 'we_backup_table':
+			case 'we_backup_tableAdv':
 				if((defined('OBJECT_X_TABLE') && strtolower(substr($doc->table, 0, 10)) == strtolower(stripTblPrefix(OBJECT_X_TABLE))) ||
 					defined('CUSTOMER_TABLE')){
 					$doc->getColumns();
@@ -76,7 +77,8 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 			default :
 				we_exim_contentProvider::object2xml($doc, $fh, $attribute);
 				break;
-			case 'weBinary':
+			case 'we_backup_binary':
+			case 'weBinary'://FIXME remove
 				if(!is_numeric($id)){
 					$doc->Path = $doc->ID;
 					$doc->ID = 0;
@@ -86,12 +88,12 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 				break;
 		}
 
-		fwrite($fh, we_backup_backup::backupMarker . "\n");
+		fwrite($fh, we_backup_util::backupMarker . "\n");
 
 		if($classname === 'we_backup_tableItem' && $export_binary &&
 			strtolower($doc->table) == strtolower(FILE_TABLE) &&
 			($doc->ContentType == we_base_ContentTypes::IMAGE || stripos($doc->ContentType, "application/") !== false)){
-			$bin = we_exim_contentProvider::getInstance("weBinary", $doc->ID);
+			$bin = we_exim_contentProvider::getInstance("we_backup_binary", $doc->ID);
 			$attribute = (isset($bin->attribute_slots) ? $bin->attribute_slots : array());
 			we_exim_contentProvider::binary2file($bin, $fh);
 		}
@@ -112,20 +114,20 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 					$selClasses = defined('OBJECT_FILES_TABLE') ? array_unique($this->getIDs($selClasses, OBJECT_TABLE, false)) : "";
 				} else {
 					switch($art){
-						case "docs":
+						case 'docs':
 							$selDocs = $this->getIDs($selDocs, FILE_TABLE);
 							break;
-						case "objects":
+						case 'objects':
 							$selObjs = defined('OBJECT_FILES_TABLE') ? $this->getIDs($selObjs, OBJECT_FILES_TABLE) : "";
 							break;
 					}
 				}
 				break;
-			case "doctype":
+			case 'doctype':
 				$cat_sql = ($categories ? we_category::getCatSQLTail('', FILE_TABLE, true, $this->db, 'Category', $categories) : '');
 				if($dir != 0){
 					$workspace = id_to_path($dir, FILE_TABLE, $this->db);
-					$ws_where = ' AND (' . FILE_TABLE . ".Path LIKE '" . $this->db->escape($workspace) . "/%' OR " . FILE_TABLE . ".ID=" . $dir . ")";
+					$ws_where = ' AND (' . FILE_TABLE . '.Path LIKE "' . $this->db->escape($workspace) . '/%" OR ' . FILE_TABLE . '.ID="' . $dir . '")';
 				} else {
 					$ws_where = '';
 				}
@@ -146,7 +148,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 		foreach($selDocs as $k => $v){
 			$this->RefTable->add2(array(
 				"ID" => $v,
-				"ContentType" => f('Select ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($v), "", $this->db),
+				"ContentType" => f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($v), "", $this->db),
 				"level" => 0
 				)
 			);
@@ -164,7 +166,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 			foreach($selObjs as $k => $v){
 				$this->RefTable->add2(array(
 					"ID" => $v,
-					"ContentType" => "objectFile",
+					"ContentType" => we_base_ContentTypes::OBJECT_FILE,
 					"level" => 0
 					)
 				);
@@ -186,12 +188,12 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 		$parentpaths = array();
 		$wsQuery = '';
 		if(($ws = get_ws($table))){
-			$wsPathArray = id_to_path($ws, $table, $db, false, true);
+			$wsPathArray = id_to_path($ws, $table, $db, true);
 			foreach($wsPathArray as $path){
 				if($wsQuery != ''){
 					$wsQuery .=' OR ';
 				}
-				$wsQuery .= " Path LIKE '" . $db->escape($path) . "/%' OR " . we_exim_XMLExIm::getQueryParents($path);
+				$wsQuery .= ' Path LIKE "' . $db->escape($path) . '/%" OR ' . we_tool_treeDataSource::getQueryParents($path);
 				while($path != "/" && $path){
 					$parentpaths[] = $path;
 					$path = dirname($path);
@@ -204,7 +206,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 				if($wsQuery != ''){
 					$wsQuery .=' OR ';
 				}
-				$wsQuery .= " Path LIKE '" . $db->escape($path) . "/%' OR Path='" . $db->escape($path) . "'";
+				$wsQuery .= ' Path LIKE "' . $db->escape($path) . '/%" OR Path="' . $db->escape($path) . '"';
 			}
 		}
 
@@ -241,7 +243,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 		return $db->getAll(true);
 	}
 
-	function prepareExport(){
+	function prepareExport(array $ids = array()){
 		//$this->RefTable = new RefTable();
 		$_preparer = new we_export_preparer($this->options, $this->RefTable);
 		$_preparer->prepareExport();
@@ -257,7 +259,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 			$out.='></we:map>';
 		}
 		$out.='</we:info>' .
-			we_backup_backup::backupMarker . "\n";
+			we_backup_util::backupMarker . "\n";
 		return $out;
 	}
 

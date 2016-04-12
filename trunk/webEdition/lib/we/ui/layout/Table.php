@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -30,7 +29,6 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_layout_Table extends we_ui_abstract_AbstractElement{
-
 	/**
 	 * Two dimensional array to hold the HTML for the cells
 	 *
@@ -44,27 +42,6 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement{
 	 * @var array
 	 */
 	protected $_cellAttributes = array();
-
-	/**
-	 * border attribute of the table
-	 *
-	 * @var integer
-	 */
-	protected $_border = 0;
-
-	/**
-	 * cellpadding attribute of the table
-	 *
-	 * @var integer
-	 */
-	protected $_cellPadding = 0;
-
-	/**
-	 * cellspacing attribute of the table
-	 *
-	 * @var integer
-	 */
-	protected $_cellSpacing = 0;
 
 	/**
 	 * Pointer to the current row
@@ -263,7 +240,7 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement{
 	 * @return string
 	 */
 	public function _renderHTML(){
-		$html = '<table border="' . oldHtmlspecialchars($this->_border) . '" cellpadding="' . oldHtmlspecialchars($this->_cellPadding) . '" cellspacing="' . oldHtmlspecialchars($this->_cellSpacing) . '"' . $this->_getNonBooleanAttribs('id') . $this->_getComputedStyleAttrib() . $this->_getComputedClassAttrib() . '>';
+		$html = '<table class="default" ' . $this->_getNonBooleanAttribs('id') . $this->_getComputedStyleAttrib() . $this->_getComputedClassAttrib() . '>';
 
 		$maxRowIndex = -1;
 		$maxColIndex = -1;
@@ -286,12 +263,9 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement{
 							$colspan = abs($this->_cellAttributes[$row][$col]['colspan']);
 						}
 						$attribs = $this->_cellAttributes[$row][$col];
-						if(!isset($attribs['valign'])){
-							$attribs['valign'] = 'top';
-						}
-						$html .= we_xml_Tags::createStartTag('td', $attribs);
+						$html .= getHtmlTag('td', $attribs, '', false, true);
 					} else {
-						$html .= '<td valign="top">';
+						$html .= '<td style="vertical-align:top">';
 					}
 					if(isset($this->_cellHTML[$row][$col])){
 						$html .= $this->_cellHTML[$row][$col];
@@ -314,25 +288,18 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement{
 	 * @return integer
 	 */
 	public function getBorder(){
-		return $this->_border;
+		t_e('deprecated', __FUNCTION__);
+		return 0;
 	}
 
-	/**
-	 * Retrieve cellpadding attribute
-	 *
-	 * @return integer
-	 */
 	public function getCellPadding(){
-		return $this->_cellPadding;
+		t_e('deprecated', __FUNCTION__);
+		return 0;
 	}
 
-	/**
-	 * Retrieve cellspacing attribute
-	 *
-	 * @return integer
-	 */
 	public function getCellSpacing(){
-		return $this->_cellSpacing;
+		t_e('deprecated', __FUNCTION__);
+		return 0;
 	}
 
 	/**
@@ -341,28 +308,16 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement{
 	 * @param integer $border
 	 * @return void
 	 */
-	public function setBorder($border){
-		$this->_border = $border;
+	public function setBorder(){
+		t_e('deprecated', __FUNCTION__);
 	}
 
-	/**
-	 * Sets the cellpadding attribute
-	 *
-	 * @param integer $cellPadding
-	 * @return void
-	 */
-	public function setCellPadding($cellPadding){
-		$this->_cellPadding = $cellPadding;
+	public function setCellPadding(){
+		t_e('deprecated', __FUNCTION__);
 	}
 
-	/**
-	 * Sets the cellspaceing attribute
-	 *
-	 * @param integer $cellSpacing
-	 * @return void
-	 */
-	public function setCellSpacing($cellSpacing){
-		$this->_cellSpacing = $cellSpacing;
+	public function setCellSpacing(){
+		t_e('deprecated', __FUNCTION__);
 	}
 
 }

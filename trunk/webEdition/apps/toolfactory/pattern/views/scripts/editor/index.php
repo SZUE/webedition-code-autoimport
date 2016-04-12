@@ -6,24 +6,21 @@ $frameset = new we_ui_layout_Frameset(array('rows' => '40,*,40'));
 
 $frameset->addFrame(array(
 	'src' => $appDir . '/index.php/editor/header' . $this->paramString,
-	'name' => 'edheader', 
-	'noresize' => 'noresize', 
-	'scrolling' => 'no'
+	'name' => 'edheader',
+	'noresize' => 'noresize',
 ));
 
 $frameset->addFrame(array(
 	'src' => $appDir . '/index.php/editor/body' . $this->paramString,
-	'name' => 'edbody', 
-	'scrolling' => 'auto'
+	'name' => 'edbody',
 ));
 
 $frameset->addFrame(array(
 	'src' => $appDir . '/index.php/editor/footer' . $this->paramString,
-	'name' => 'edfooter', 
-	'scrolling' => 'no'
+	'name' => 'edfooter',
 ));
 
-// set and return html code		
+// set and return html code
 $page = we_ui_layout_HTMLPage::getInstance();
 $page->setFrameset($frameset);
 

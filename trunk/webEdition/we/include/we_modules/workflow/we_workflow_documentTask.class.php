@@ -41,7 +41,7 @@ class we_workflow_documentTask extends we_workflow_base{
 	var $workflowTaskID = 0;
 	// date when task is done
 	var $Date = 0;
-	// todo id
+	// to do id
 	var $todoID = 0;
 	// Status of document task
 	var $Status = self::STATUS_UNKNOWN;
@@ -60,7 +60,7 @@ class we_workflow_documentTask extends we_workflow_base{
 			"workflowTaskID" => we_base_request::INT,
 			"Date" => we_base_request::INT,
 			"todoID" => we_base_request::INT,
-			"Status" => we_base_request::RAW,
+			"Status" => we_base_request::INT,
 		);
 
 		if($wfDocumentTask){
@@ -81,19 +81,19 @@ class we_workflow_documentTask extends we_workflow_base{
 		$this->rejectTodo();
 	}
 
-	function removeTodo(){
+	function removeTodo($id = 0){
 		if($this->todoID){
 			parent::removeTodo($this->todoID);
 		}
 	}
 
-	function doneTodo(){
+	function doneTodo($id = 0){
 		if($this->todoID){
 			parent::doneTodo($this->todoID);
 		}
 	}
 
-	function rejectTodo(){
+	function rejectTodo($id = 0){
 		if($this->todoID){
 			parent::rejectTodo($this->todoID);
 		}

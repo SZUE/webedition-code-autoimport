@@ -21,7 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$we_menu_customer = array(
+return array(
 	'customer' => array(
 		'text' => g_l('modules_customer', '[menu_customer]'),
 	),

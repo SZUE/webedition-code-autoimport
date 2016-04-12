@@ -23,25 +23,24 @@
  */
 //NOTE: there is no need to add any variables to we_conf_global.inc.php.default anymore.
 $GLOBALS['tabs'] = array(
-	'ui' => '',
-	'extensions' => 'EDIT_SETTINGS_DEF_EXT',
-	'editor' => '',
-	'proxy' => 'ADMINISTRATOR',
-	'defaultAttribs' => 'ADMINISTRATOR',
-	'advanced' => 'ADMINISTRATOR',
-	'system' => 'ADMINISTRATOR',
-	'security' => 'ADMINISTRATOR',
-	'seolinks' => 'ADMINISTRATOR',
-	'modules' => 'ADMINISTRATOR',
-	'language' => 'ADMINISTRATOR',
-	'countries' => 'ADMINISTRATOR',
-	'error_handling' => 'ADMINISTRATOR',
-//	'backup' => 'ADMINISTRATOR',
-	'validation' => 'ADMINISTRATOR',
-	'email' => 'ADMINISTRATOR',
-	'message_reporting' => '',
-	'recipients' => 'FORMMAIL',
-	'versions' => 'ADMINISTRATOR',
+	'ui' => array('fa-tv', ''),
+//	'extensions' => 'EDIT_SETTINGS_DEF_EXT',
+	'editor' => array('fa-edit', ''),
+	'seolinks' => array('fa-search', 'ADMINISTRATOR'),
+	'language' => array('fa-language', 'ADMINISTRATOR'),
+	'countries' => array('fa-flag-checkered', 'ADMINISTRATOR'),
+	'error_handling' => array('fa-bug', 'ADMINISTRATOR'),
+//	'validation' => array('fa-check', 'ADMINISTRATOR'),
+	'email' => array('fa-envelope-o', 'ADMINISTRATOR'),
+	//'message_reporting' => '',
+	'recipients' => array('fa-envelope-o', 'FORMMAIL'),
+	'versions' => array('fa-history', 'ADMINISTRATOR'),
+	'defaultAttribs' => array('fa-tags', 'ADMINISTRATOR'),
+	'advanced' => array('fa-wrench', 'ADMINISTRATOR'),
+	'system' => array('fa-cogs', 'ADMINISTRATOR'),
+	'security' => array('fa-key', 'ADMINISTRATOR'),
+	'proxy' => array('fa-bomb', 'ADMINISTRATOR'),
+	'modules' => array('fa-cubes', 'ADMINISTRATOR'),
 );
 
 $GLOBALS['configs'] = array(
@@ -66,9 +65,9 @@ $GLOBALS['configs'] = array(
 		'WE_ERROR_MAIL' => array('Mail errors', we_base_request::BOOL, false),
 		'WE_ERROR_MAIL_ADDRESS' => array('E-Mail address to which to mail errors', we_base_request::EMAIL, ''),
 		'ERROR_DOCUMENT_NO_OBJECTFILE' => array('Document to open when trying to open non-existing object', we_base_request::INT, 0),
-		'DISABLE_TEMPLATE_CODE_CHECK' => array('Disable the check for php-errors in templates', we_base_request::BOOL, false),
-// inlineedit default value
+		//'DISABLE_TEMPLATE_CODE_CHECK' => array('Disable the check for php-errors in templates', we_base_request::BOOL, false),
 		'INLINEEDIT_DEFAULT' => array('Default setting for inlineedit attribute', we_base_request::BOOL, true),
+		'IMAGESTARTID_DEFAULT' => array('Default setting for attribute imagestartdir in wetextarea', we_base_request::INT, 0),
 		'WE_PHP_DEFAULT' => array('Default setting for php attribute', we_base_request::BOOL, false),
 		'COMMANDS_DEFAULT' => array('Default setting for commands attribute', we_base_request::STRING, ''),
 		'REMOVEFIRSTPARAGRAPH_DEFAULT' => array('Default setting for removeparagraph attribute', we_base_request::BOOL, false),
@@ -81,11 +80,11 @@ $GLOBALS['configs'] = array(
 		'EXECUTE_HOOKS' => array('Default setting for hook execution', we_base_request::BOOL, false),
 // xhtml
 		'XHTML_DEFAULT' => array('Default setting for xml attribute', we_base_request::BOOL, true),
-		'XHTML_DEBUG' => array('Enable XHTML debug', we_base_request::BOOL, false),
+		/*'XHTML_DEBUG' => array('Enable XHTML debug', we_base_request::BOOL, false),
 		'XHTML_REMOVE_WRONG' => array('Remove wrong xhtml attributes from we:tags', we_base_request::BOOL, false),
+		 */
 //system
 		'FILE_UPLOAD_MAX_UPLOAD_SIZE' => array('Set the maximum size a file can have', we_base_request::INT, 128),
-		'FILE_UPLOAD_USE_LEGACY' => array('If the old uploader without d&d should be used (deprecated)', we_base_request::BOOL, false),
 		'WE_NEW_FOLDER_MOD' => array('File permissions when creating a new directory', we_base_request::INT, 755), //this should be string but deny access by user doesn't make sense
 		'WE_DOCTYPE_WORKSPACE_BEHAVIOR' => array('Which Doctypes should be shown for which workspace', we_base_request::BOOL, false),
 		'SCHEDULER_TRIGGER' => array('decide how the scheduler works', we_base_request::INT, 1), //postdoc
@@ -100,8 +99,8 @@ $GLOBALS['configs'] = array(
 		'SMTP_SERVER' => array('SMTP_SERVER', we_base_request::STRING, 'localhost'),
 		'SMTP_PORT' => array('SMTP server port', we_base_request::INT, 25),
 		'SMTP_AUTH' => array('SMTP authentication', we_base_request::BOOL, false),
-		'SMTP_USERNAME' => array('SMTP username', we_base_request::STRINGC, ''),
-		'SMTP_PASSWORD' => array('SMTP password', we_base_request::RAW, ''),
+		'SMTP_USERNAME' => array('SMTP username', we_base_request::STRING, ''),
+		'SMTP_PASSWORD' => array('SMTP password', we_base_request::RAW_CHECKED, ''),
 		'SMTP_ENCRYPTION' => array('SMTP encryption', we_base_request::STRING, 0),
 //formmail stuff
 		'FORMMAIL_CONFIRM' => array('Flag if formmail confirm function should be work', we_base_request::BOOL, true), //this is restricted to admin
@@ -113,7 +112,7 @@ $GLOBALS['configs'] = array(
 		'FORMMAIL_TRIALS' => array('Num of trials sending formmail with same ip address in span', we_base_request::INT, 3, 'FORMMAIL'),
 		'FORMMAIL_BLOCKTIME' => array('Time to block ip', we_base_request::INT, 86400, 'FORMMAIL'),
 // sidebar stuff
-		'SIDEBAR_DISABLED' => array('Sidebar is disabled', we_base_request::BOOL, true),
+		'SIDEBAR_DISABLED' => array('Sidebar is disabled', we_base_request::BOOL, false),
 		'SIDEBAR_SHOW_ON_STARTUP' => array('Show Sidebar on startup', we_base_request::BOOL, true),
 		'SIDEBAR_DEFAULT_DOCUMENT' => array('Default document id of the sidebar', we_base_request::INT, 0),
 		'SIDEBAR_DEFAULT_WIDTH' => array('Default width of the sidebar', we_base_request::INT, 300),
@@ -124,17 +123,21 @@ $GLOBALS['configs'] = array(
 //naviagtion stuff
 		'NAVIGATION_ENTRIES_FROM_DOCUMENT' => array('Flag if new NAV- entries added from Dokument should be items or folders', we_base_request::BOOL, false),
 		'NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH' => array('Flag if NAV- rules should be evaluated even after a first match', we_base_request::BOOL, false),
+//SEO stuff
 		'NAVIGATION_DIRECTORYINDEX_HIDE' => array('Flag if directoy-index files should be hidden in Nav-output', we_base_request::BOOL, false),
-		'NAVIGATION_DIRECTORYINDEX_NAMES' => array('Comma seperated list such as index.php,index.html', we_base_request::STRINGC, 'index.php,index.html'),
+		'NAVIGATION_DIRECTORYINDEX_NAMES' => array('Comma seperated list such as index.php,index.html', we_base_request::STRING, 'index.php,index.html'),
 		'WYSIWYGLINKS_DIRECTORYINDEX_HIDE' => array('Flag if directoy-index files should be hidden in Wysiwyg-editor output', we_base_request::BOOL, false),
 		'TAGLINKS_DIRECTORYINDEX_HIDE' => array('Flag if directoy-index files should be hidden in tag output', we_base_request::BOOL, false),
+		'OBJECTSEOURLS_LOWERCASE' => array('Flag if object SEO-URLs save in lower or camelcase', we_base_request::BOOL, false),
 		'NAVIGATION_OBJECTSEOURLS' => array('Flag if we_objectID should be hidden from output of navigation', we_base_request::BOOL, false),
 		'WYSIWYGLINKS_OBJECTSEOURLS' => array('Flag if we_objectID should be hidden from output of wysiwyg editior', we_base_request::BOOL, false),
 		'TAGLINKS_OBJECTSEOURLS' => array('Flag if we_objectID should be hidden from output of tags', we_base_request::BOOL, false),
 		'URLENCODE_OBJECTSEOURLS' => array('Flag if seo-urls should be urlencoded', we_base_request::BOOL, false),
-		'SUPPRESS404CODE' => array('Flag if 404 not found should be suppressd', we_base_request::BOOL, false),
+		'SUPPRESS404CODE' => array('Flag if 404 not found should be suppressed', we_base_request::BOOL, false),
+		'FORCE404REDIRECT' => array('Flag if redirect to 404 instead of include', we_base_request::BOOL, false),
 		'SEOINSIDE_HIDEINWEBEDITION' => array('Flag if should be displayed in webEdition ', we_base_request::BOOL, false),
 		'SEOINSIDE_HIDEINEDITMODE' => array('Flag if should be displayed in Editmode ', we_base_request::BOOL, false),
+//lang link stuff
 		'LANGLINK_SUPPORT' => array('Flag if automatic LanguageLinks should be supported ', we_base_request::BOOL, true),
 //default charset
 		'DEFAULT_CHARSET' => array('Default Charset', we_base_request::STRING, 'UTF-8'),
@@ -179,6 +182,7 @@ $GLOBALS['configs'] = array(
 		'SECURITY_ENCRYPTION_TYPE_PASSWORD' => array('Determines how passwords are handled', we_base_request::INT, (!defined('SECURITY_ENCRYPTION_TYPE_PASSWORD') && defined('CUSTOMER_TABLE') && (f('SELECT COUNT(1)  FROM ' . CUSTOMER_TABLE) > 5) ? we_customer_customer::ENCRYPT_NONE : we_customer_customer::ENCRYPT_HASH)),
 		'SECURITY_ENCRYPTION_KEY' => array('This is the encryption key used for password, if set to symmetric mode', we_base_request::STRING, ''),
 		'SECURITY_SESSION_PASSWORD' => array('Determine if a userpassword is allowed to be stored in current session', we_base_request::INT, we_customer_customer::STORE_PASSWORD),
+		'SECURITY_USER_PASS_REGEX' => array('Regex used to compare user password', we_base_request::STRING, we_users_user::DEFAULT_PASS_REGEX),
 //internal
 		'CONF_SAVED_VERSION' => array('config file version', we_base_request::INT, str_replace(array('$Rev$'), '', WE_SVNREV)),
 	),
@@ -194,11 +198,9 @@ $GLOBALS['configs'] = array(
 		'cockpit_amount_last_documents' => array(we_base_request::INT, 5),
 		'cockpit_dat' => array(we_base_request::STRING, ''),
 		//all rss feeds set in cockpit
-		'cockpit_rss' => array(we_base_request::STRING, ''),
-		//current url for rss feed
-		'cockpit_rss_feed_url' => array(we_base_request::STRING, ''),
+		'cockpit_rss' => array(we_base_request::SERIALIZED_KEEP, ''),
 		'editorMode' => array(we_base_request::STRING, 'codemirror2'),
-		'editorCodecompletion' => array(we_base_request::STRING, serialize(array('WE' => 1, 'htmlTag' => 1, 'html5Tag' => 1))),
+		'editorCodecompletion' => array(we_base_request::STRING, we_serialize(array('WE' => 1, 'htmlTag' => 1, 'html5Tag' => 1), SERIALIZE_JSON)),
 		'editorCommentFontcolor' => array(we_base_request::STRING, null),
 		'editorDocuintegration' => array(we_base_request::BOOL, true),
 		'editorFont' => array(we_base_request::BOOL, ''),
@@ -219,11 +221,11 @@ $GLOBALS['configs'] = array(
 		'editorTooltipFontname' => array(we_base_request::STRING, ''),
 		'editorTooltipFontsize' => array(we_base_request::INT, 0),
 		'editorWrap' => array(we_base_request::BOOL, false),
-		'message_reporting' => array(we_base_request::INT, 7),
-		'xhtml_show_wrong' => array(we_base_request::BOOL, false),
+		'message_reporting' => array(we_base_request::INT, we_message_reporting::WE_MESSAGE_WARNING | we_message_reporting::WE_MESSAGE_ERROR),
+		/*'xhtml_show_wrong' => array(we_base_request::BOOL, false),
 		'xhtml_show_wrong_text' => array(we_base_request::BOOL, false),
 		'xhtml_show_wrong_js' => array(we_base_request::BOOL, false),
-		'xhtml_show_wrong_error_log' => array(we_base_request::BOOL, false),
+		'xhtml_show_wrong_error_log' => array(we_base_request::BOOL, false),*/
 		'specify_jeditor_colors' => array(we_base_request::BOOL, false),
 		'seem_start_type' => array(we_base_request::STRING, 'cockpit', 'CHANGE_START_DOCUMENT'),
 		'seem_start_file' => array(we_base_request::INT, 0),
@@ -250,7 +252,7 @@ $GLOBALS['configs'] = array(
 	'conf' => array(
 		//description,request-type if any, default, encode
 		'HTTP_USERNAME' => array('if used password protection to the webEdition directory, the username', we_base_request::STRING, '', true),
-		'HTTP_PASSWORD' => array('if used password protection to the webEdition directory, the password', we_base_request::RAW, '', true),
+		'HTTP_PASSWORD' => array('if used password protection to the webEdition directory, the password', we_base_request::RAW_CHECKED, '', true),
 		'DB_CONNECT' => array('Mode how to access the database: mysqli_connect, mysqli_pconnect, deprecated: connect, pconnect', we_base_request::STRING, ''),
 		'DB_SET_CHARSET' => array('connection charset to db', we_base_request::STRING, 'utf8'),
 		//note these settings are user-settings, not changed by request/frontend
@@ -259,7 +261,7 @@ $GLOBALS['configs'] = array(
 		'DB_USER' => array('Username to access the database', '', 'root', true),
 		'DB_PASSWORD' => array('Password to access the database', '', 'root', true),
 		'TBL_PREFIX' => array('Prefix of tables in database for this webEdition.', '', ''),
-		'DB_CHARSET' => array('Charset of tables in database for this webEdition.', we_base_request::STRING, (defined('DB_CHARSET')?DB_CHARSET:'')),
+		'DB_CHARSET' => array('Charset of tables in database for this webEdition.', we_base_request::STRING, (defined('DB_CHARSET') ? DB_CHARSET : '')),
 		'DB_COLLATION' => array('Collation of tables in database for this webEdition.', '', ''),
 		'WE_LANGUAGE' => array('Original language of this version of webEdition, used for login-screen', '', 'English'),
 		'WE_BACKENDCHARSET' => array('Original backend charset of this version of webEdition, used for login-screen', '', 'UTF-8'),
@@ -271,7 +273,7 @@ $GLOBALS['configs'] = array(
 		'proxyhost' => array(we_base_request::URL, ''),
 		'proxyport' => array(we_base_request::INT, 0),
 		'proxyuser' => array(we_base_request::STRING, ''),
-		'proxypass' => array(we_base_request::RAW, ''),
+		'proxypass' => array(we_base_request::RAW_CHECKED, ''),
 		'active_integrated_modules' => array(we_base_request::STRING, ''),
 		'DB_CONNECT' => array(we_base_request::STRING, ''),
 		'useauth' => array(we_base_request::BOOL, false), //pseudo element

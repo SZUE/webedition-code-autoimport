@@ -24,12 +24,6 @@
  */
 class we_sidebar_frames{
 
-	var $_frameset = '';
-
-	public function __construct(){
-		$this->_frameset = WEBEDITION_DIR . 'sideBarFrame.php';
-	}
-
 	function getHTML($what){
 		switch($what){
 
@@ -45,38 +39,20 @@ class we_sidebar_frames{
 
 	function getHTMLFrameset(){
 		?>
-		<style type="text/css">
-			#Headline {
-				padding-left	: 5px;
-				line-height		: 20px;
-				vertical-align	: middle;
-				float			: left;
-				width			: 80%;
-			}
-			#CloseButton {
-				padding-top		: 3px;
-				padding-right	: 4px;
-				float			: right;
-			}
-		</style>
-		</head>
-		<body style="background-color:#bfbfbf; background-repeat:repeat;margin:0px 0px 0px 0px;overflow:hidden;">
-			<div id="weSidebarHeader" name="weSidebarHeader" style="overflow: hidden;position:absolute;top:0px;left:0px;right:0px;height:22px;background-color: silver;	background-image: url('<?php echo IMAGE_DIR; ?>backgrounds/multitabBG.gif');font-family: Verdana, Arial, sans-serif;font-size: 10px;">
-				<div id="Headline">
-					<?php echo g_l('sidebar', '[headline]'); ?>
-				</div>
+		<div id="weSidebarBody">
+			<div id="weSidebarHeader">
+				<div id="Headline"><?php echo g_l('sidebar', '[headline]'); ?></div>
 				<div id="CloseButton">
-					<img src="<?php echo IMAGE_DIR; ?>multiTabs/close.gif" border="0" vspace="0" hspace="0" onclick="top.weSidebar.close();" onmouseover="this.src = '<?php echo IMAGE_DIR; ?>multiTabs/closeOver.gif'" onmouseout="this.src = '<?php echo IMAGE_DIR; ?>multiTabs/close.gif'" />
+					<span class="close" onclick="WE().layout.sidebar.close();">
+						<i class="fa fa-close fa-lg "></i>
+					</span>
+
 				</div>
 			</div>
-			<div style="position:absolute;top:22px;left:0px;right:0px;bottom:40px;border-bottom: 1px solid black;border-top: 1px solid black;">
-				<iframe src="<?php echo $this->_frameset; ?>?pnt=content" style="border: 0px;background-color:white;width:100%;height:100%;overflow: auto;" name="weSidebarContent"></iframe>
+			<div id="weSidebarContentDiv">
+				<iframe id="weSidebarContent" src="<?php echo WEBEDITION_DIR; ?>sideBarFrame.php?pnt=content" name="weSidebarContent"></iframe>
 			</div>
-			<div name="weSidebarFooter" id="weSidebarFooter" style="overflow: hidden;position:absolute;bottom:0px;left:0px;right:0px;height:40px;background-color:#f0f0f0;background-image: url('<?php echo IMAGE_DIR; ?>edit/editfooterback.gif'); ">
-			</div>
-		</body>
-
-		</html>
+		</div>
 		<?php
 	}
 
@@ -92,11 +68,11 @@ class we_sidebar_frames{
 		}
 
 		if(strpos($file, '/') !== 0){
-			$file = id_to_path($file, FILE_TABLE, $GLOBALS['DB_WE'], false, false, false, true);
+			$file = id_to_path($file, FILE_TABLE, $GLOBALS['DB_WE'], false, false, true);
 		}
 
 		if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $file) || !is_file($_SERVER['DOCUMENT_ROOT'] . $file)){
-			$file = id_to_path(intval(SIDEBAR_DEFAULT_DOCUMENT), FILE_TABLE, $GLOBALS['DB_WE'], false, false, false, true);
+			$file = id_to_path(intval(SIDEBAR_DEFAULT_DOCUMENT), FILE_TABLE, $GLOBALS['DB_WE'], false, false, true);
 			if(!$file || substr($file, -1) === '/' || $file === 'default'){
 				$file = WEBEDITION_DIR . 'sidebar/default.php';
 			}

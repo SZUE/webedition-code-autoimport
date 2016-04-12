@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,10 +28,7 @@ $_yes = $_frame . '.hot=0;' . $_frame . '.we_cmd("' . (we_base_request::_(we_bas
 $_no = $_frame . '.hot=0;' . $_frame . '.we_cmd("' . (we_base_request::_(we_base_request::RAW, 'declineCmd') ? : 'close') . '","' . we_base_request::_(we_base_request::INT, 'declineParam') . '");self.close();';
 $_cancel = 'self.close();';
 
-echo we_html_tools::getHtmlTop() .
-		STYLESHEET .
-'</head>
+echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, '
 <body class="weEditorBody" onBlur="self.focus()" onload="self.focus()">' .
-		we_html_tools::htmlYesNoCancelDialog(g_l('modules_shop', '[exit_question]'), IMAGE_DIR . "alert.gif", "ja", "nein", "abbrechen", $_yes, $_no, $_cancel) . //GL
-		'</body>
-</html>';
+	we_html_tools::htmlYesNoCancelDialog(g_l('modules_shop', '[exit_question]'), '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', "ja", "nein", "abbrechen", $_yes, $_no, $_cancel) . //GL
+	'</body>');

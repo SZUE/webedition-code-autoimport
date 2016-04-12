@@ -21,7 +21,7 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 /**
- * @see Zend_Exception
+ * @see Exception
  */
 require_once 'Zend/Exception.php';
 
@@ -33,6 +33,6 @@ require_once 'Zend/Exception.php';
  * @subpackage we_util_Sys
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class we_util_Sys_Exception extends Zend_Exception{
+class we_util_Sys_Exception extends Exception{
 
 }

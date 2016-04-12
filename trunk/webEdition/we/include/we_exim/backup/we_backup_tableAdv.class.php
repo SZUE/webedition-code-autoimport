@@ -22,9 +22,71 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_backup_tableAdv extends we_backup_table{
-
+class we_backup_tableAdv{
 	var $ClassName = __CLASS__;
+	var $db;
+	var $table = "";
+	var $elements;
+	var $persistent_slots = array();
+	var $attribute_slots = array();
+
+	public function __construct($table, $force_columns = false){
+		$this->db = new DB_WE();
+		$this->table = $table;
+		$this->elements = array();
+
+		$this->attribute_slots["name"] = stripTblPrefix($table);
+
+		$update_table = true;
+
+		if(defined('OBJECT_X_TABLE') && !$force_columns){
+			if(strtolower(substr($table, 0, 10)) == strtolower(stripTblPrefix(OBJECT_X_TABLE))){
+				$update_table = false;
+			}
+		}
+
+		if(defined('CUSTOMER_TABLE') && !$force_columns && strtolower($table) == strtolower(CUSTOMER_TABLE)){
+			$update_table = false;
+		}
+
+		if($update_table){
+			$this->getColumns();
+		}
+	}
+
+	// add new fields to the table before import
+	function fetchNewColumns(){
+		// fix for bannerclicks table - primary key has been added
+		if(defined('BANNER_CLICKS_TABLE') && $this->table == BANNER_CLICKS_TABLE){
+			if(!isset($this->elements['clickid'])){
+				$this->elements['clickid'] = array(
+					'Field' => 'clickid',
+					'Type' => 'BIGINT',
+					'Null' => 'NO',
+					'Key' => 'PRI',
+					'Default' => '',
+					'Extra' => 'auto_increment'
+				);
+			}
+		}
+		// fix for bannerviews table - primary key has been added
+		if(defined('BANNER_VIEWS_TABLE') && $this->table == BANNER_VIEWS_TABLE){
+			if(!isset($this->elements['viewid'])){
+				$this->elements['viewid'] = array(
+					'Field' => 'viewid',
+					'Type' => 'BIGINT',
+					'Null' => 'NO',
+					'Key' => 'PRI',
+					'Default' => '',
+					'Extra' => 'auto_increment'
+				);
+			}
+		}
+	}
+
+	public function getLogString($prefix = ''){
+		return $prefix . $this->table;
+	}
 
 	public function getColumns(){
 		if($this->db->isTabExist($this->table)){
@@ -42,11 +104,10 @@ class we_backup_tableAdv extends we_backup_table{
 	}
 
 	function save(){
-		global $DB_WE;
 		if(!(isset($_SESSION['weS']['weBackupVars']['tablekeys']) && is_array($_SESSION['weS']['weBackupVars']['tablekeys']))){
 			$_SESSION['weS']['weBackupVars']['tablekeys'] = array();
 		}
-		if(isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset']){
+		if(!empty($_SESSION['weS']['weBackupVars']['options']['convert_charset'])){
 			$doConvert = true;
 			$searchArray = array('CHARACTER SET latin1', 'COLLATE latin1_bin', 'COLLATE latin1_danish_ci', 'COLLATE latin1_general_ci', 'COLLATE latin1_general_cs', 'COLLATE latin1_german1_ci', 'COLLATE latin1_german2_ci', 'COLLATE latin1_spanish_ci', 'COLLATE latin1_swedish_ci');
 		} else {
@@ -61,7 +122,7 @@ class we_backup_tableAdv extends we_backup_table{
 		foreach($myarray as &$cur){
 			if(substr($cur, 0, 6) === 'CREATE'){
 				//Regex because of backups <6.2.4
-				$cur = preg_replace('/(CREATE *\w* *`?)\w*' . stripTblPrefix($this->table) . '/i', '$1' . $this->table, $cur, 1);
+				$cur = preg_replace('|(CREATE *\w* *`?)\w*' . stripTblPrefix($this->table) . '|i', '${1}' . $this->table, $cur, 1);
 			}
 			if($doConvert){
 				$cur = str_replace($searchArray, '', $cur);
@@ -71,9 +132,8 @@ class we_backup_tableAdv extends we_backup_table{
 		//FIXME: this is NOT Save for MySQL Updates!!!!
 		array_pop($myarray); //get rid of old Engine statement
 		$myarray[] = ' ) ' . we_database_base::getCharsetCollation() . ' ENGINE=MyISAM;';
-
 		$query = implode(' ', $myarray);
-		return ($DB_WE->query($query));
+		return ($this->db->query($query));
 	}
 
 }

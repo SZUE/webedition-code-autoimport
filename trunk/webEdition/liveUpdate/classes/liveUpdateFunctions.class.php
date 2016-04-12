@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  * TBD if we divide this class in several classes
  */
 class liveUpdateFunctions{
-
 	var $QueryLog = array(
 		'success' => array(),
 		'tableChanged' => array(),
@@ -43,9 +41,9 @@ class liveUpdateFunctions{
 
 	function insertUpdateLogEntry($action, $version, $errorCode){
 		$GLOBALS['DB_WE']->query('INSERT INTO ' . UPDATE_LOG_TABLE . ' SET ' . we_database_base::arraySetter(array(
-					'aktion' => $action,
-					'versionsnummer' => $version,
-					'error' => $errorCode
+				'aktion' => $action,
+				'versionsnummer' => $version,
+				'error' => $errorCode
 		)));
 	}
 
@@ -74,7 +72,12 @@ class liveUpdateFunctions{
 	 * @return string
 	 */
 	function decodeCode($string){
-		return base64_decode($string);
+		$string = base64_decode($string);
+		if($string && $string[0] === 'x'){
+			$str = gzuncompress($string);
+			return ($str === false ? $string : $str);
+		}
+		return $string;
 	}
 
 	/**
@@ -113,8 +116,9 @@ class liveUpdateFunctions{
 	 * @return string
 	 */
 	function checkReplaceDocRoot($content){
+		//replaces any count of escaped docroot-strings
 		return ($this->replaceDocRootNeeded() ?
-				preg_replace('-\$(_SERVER|GLOBALS)\[([\\\"\']+)DOCUMENT' . '_ROOT([\\\"\']+)\]-', '\2' . LIVEUPDATE_SOFTWARE_DIR . '\3', $content) :
+				preg_replace('-\$(_SERVER|GLOBALS)\[([\\\"\']+)DOCUMENT' . '_ROOT([\\\"\']+)\]-', '${2}' . LIVEUPDATE_SOFTWARE_DIR . '${3}', $content) :
 				$content);
 	}
 
@@ -199,7 +203,7 @@ class liveUpdateFunctions{
 	 * @return boolean
 	 */
 	function filePutContent($filePath, $newContent){
-		if($this->checkMakeDir(dirname($filePath))){
+		if($this->checkMakeDir(dirname($filePath)) && $this->checkMakeFileWritable($filePath)){
 			$fh = fopen($filePath, 'wb');
 			if($fh){
 				fwrite($fh, $newContent, strlen($newContent));
@@ -208,7 +212,7 @@ class liveUpdateFunctions{
 				if(substr($filePath, -4) === '.php' && function_exists('opcache_invalidate')){
 					opcache_invalidate($filePath, true);
 				}
-				if(!chmod($filePath, 0755)){
+				if(!chmod($filePath, 0444)){
 					return false;
 				}
 				return true;
@@ -259,7 +263,7 @@ class liveUpdateFunctions{
 
 		foreach($pathArray as $subPath){
 			$path .= $subPath;
-			if($subPath != "" && !is_dir($path)){
+			if($subPath && !is_dir($path)){
 				if(!(file_exists($path) || mkdir($path, $mod))){
 					return false;
 				}
@@ -309,6 +313,9 @@ class liveUpdateFunctions{
 					$this->deleteFile($destination . 'x');
 					$this->deleteFile($source . 'x');
 					$this->insertUpdateLogEntry('Using ' . ($_SESSION['weS']['moveOk'] ? 'move' : 'copy') . ' for installation', WE_VERSION, 0);
+				}
+				if(substr($destination, -4) === '.php' && function_exists('opcache_invalidate')){
+					opcache_invalidate($destination, true);
 				}
 
 				if($_SESSION['weS']['moveOk']){
@@ -490,11 +497,8 @@ class liveUpdateFunctions{
 			}
 
 			if($isNew){
-				//Bug #4431, siehe unten
 				$queries[] = "ALTER TABLE `$tableName` ADD `" . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
 			} else {
-				//Bug #4431
-				// das  mysql_real_escape_string bei $fieldInfo['Type'] f�hrt f�r enum dazu, das die ' escaped werden und ein Syntaxfehler entsteht (nicht abgeschlossene Zeichenkette
 				$queries[] = "ALTER TABLE `$tableName` CHANGE `" . $fieldInfo['Field'] . '` `' . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
 			}
 		}
@@ -556,9 +560,19 @@ class liveUpdateFunctions{
 	 * @return boolean
 	 */
 	function executeQueriesInFiles($path){
-		$db = new DB_WE();
-		$content = $this->getFileContent($path);
-		$queries = explode("/* query separator */", $content);
+		static $db = null;
+		static $defaultEngine = '';
+		$db = $db? : new DB_WE();
+		if(!$defaultEngine){
+			$db->query('show variables LIKE "default_storage_engine"');
+			$db->next_record();
+			$defaultEngine = $db->f('Value');
+			if(!in_array(strtolower($defaultEngine), array('myisam', 'aria'))){
+				$defaultEngine = 'myisam';
+			}
+		}
+
+		$queries = explode("/* query separator */", str_replace("ENGINE=MyISAM", 'ENGINE=' . $defaultEngine, $this->getFileContent($path)));
 		$success = true;
 		foreach($queries as $query){
 			$success &= $this->executeUpdateQuery($query, $db);
@@ -585,13 +599,11 @@ class liveUpdateFunctions{
 
 		$query = str_replace(array('###TBLPREFIX###', '###UPDATEONLY###'), array(LIVEUPDATE_TABLE_PREFIX, ''), trim($query));
 		$matches = array();
-		if(preg_match('/###UPDATEDROPCOL\((.*),(.*)\)###/', $query, $matches)){
-			$db->query('SHOW COLUMNS FROM ' . $db->escape($matches[2]) . ' WHERE Field="' . $matches[1] . '"');
-			$query = ($db->num_rows() ? 'ALTER TABLE ' . $db->escape($matches[2]) . ' DROP COLUMN ' . $db->escape($matches[1]) : '');
+		if(preg_match('/###UPDATEDROPCOL\(([^,]*),([^)]*)\)###/', $query, $matches)){
+			$query = ($db->isColExist($matches[2], $matches[1]) ? 'ALTER TABLE ' . $db->escape($matches[2]) . ' DROP COLUMN ' . $db->escape($matches[1]) : '');
 		}
-		if(preg_match('/###ONCOL\((.*),(.*)\)(.+);###/', $query, $matches)){
-			$db->query('SHOW COLUMNS FROM ' . $db->escape($matches[2]) . ' WHERE Field="' . $matches[1] . '"');
-			$query = ($db->num_rows() ? $matches[3] : '');
+		if(preg_match('/###ONCOL\(([^,]*),([^)]*)\)(.+);###/', $query, $matches)){
+			$query = ($db->isColExist($matches[2], $matches[1]) ? $matches[3] : '');
 		}
 		//handle if key is not set, should be used after table def. so handling code, e.g. truncate, copy... can be put here
 		if(preg_match('/###ONKEYFAILED\(([^,]+),([^)]+)\)([^#]+)###/', $query, $matches)){
@@ -602,7 +614,7 @@ class liveUpdateFunctions{
 			$db->query('SHOW KEYS FROM ' . $db->escape($matches[2]) . ' WHERE Key_name="' . $matches[1] . '"');
 			$query = ($db->num_rows() ? 'ALTER TABLE ' . $db->escape($matches[2]) . ' DROP KEY ' . $db->escape($matches[1]) : '');
 		}
-		if(preg_match('/###ONTAB\((.*)\)(.+);###/', $query, $matches)){
+		if(preg_match('/###ONTAB\(([^)]*)\)(.+);###/', $query, $matches)){
 			$query = ($db->isTabExist($matches[1]) ? $matches[2] : '');
 		}
 
@@ -660,7 +672,7 @@ class liveUpdateFunctions{
 					$orgTable = preg_replace($namePattern, 'CREATE TABLE ' . $db->escape($backupName) . ' (', $orgTable);
 
 					// create temptable
-					$tmpQuery = preg_replace($namePattern, 'CREATE TABLE ' . $db->escape($tmpName) . ' (', $query);
+					$tmpQuery = preg_replace($namePattern, 'CREATE TEMPORARY TABLE ' . $db->escape($tmpName) . ' (', $query);
 					$db->query(trim($tmpQuery));
 
 					// get information from existing and new table
@@ -735,7 +747,6 @@ class liveUpdateFunctions{
 					if(isset($origTableKeys['_temp'])){
 						$alterQueries = array_merge(array('ALTER TABLE `' . $tableName . '` DROP INDEX _temp'), $alterQueries);
 					}
-
 					if($alterQueries){
 						// execute all queries
 						$success = true;
@@ -786,6 +797,7 @@ class liveUpdateFunctions{
 			case 1062:
 				$this->QueryLog['entryExists'][] = $db->Errno . ' ' . urlencode($db->Error) . "\n<!-- $query -->";
 				return false;
+			case 0:
 			case 1065:
 				//ignore empty queries
 				return true;
@@ -842,16 +854,20 @@ class liveUpdateFunctions{
 	function removeObsoleteFiles($path){
 		if(is_file($path . 'del.files')){
 			$all = array();
-			if($all = file($path . 'del.files', FILE_IGNORE_NEW_LINES)){
+			if(($all = file($path . 'del.files', FILE_IGNORE_NEW_LINES))){
 				$delFiles = array();
 				foreach($all as $cur){
+					$recursive = false;
+					if($cur{0} === '!'){
+						$cur = substr($cur, 1);
+					}
 					if(file_exists(WEBEDITION_PATH . $cur)){
 						if(is_file(WEBEDITION_PATH . $cur)){
 							$delFiles[] = $cur;
 							unlink(WEBEDITION_PATH . $cur);
 						} elseif(is_dir(WEBEDITION_PATH . $cur)){
 							$delFiles[] = 'Folder: ' . $cur;
-							we_util_File::deleteLocalFolder(WEBEDITION_PATH . $cur, false);
+							we_base_file::deleteLocalFolder(WEBEDITION_PATH . $cur, $recursive);
 						}
 					}
 				}
@@ -865,7 +881,7 @@ class liveUpdateFunctions{
 
 	function removeDirOnlineInstaller(){
 		if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller')){
-			we_util_File::deleteLocalFolder($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller', true);
+			we_base_file::deleteLocalFolder($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller', true);
 		}
 
 		return true;

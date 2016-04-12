@@ -32,7 +32,7 @@ $id = we_base_request::_(we_base_request::INT, 'id', 0);
 $bid = we_base_request::_(we_base_request::INT, 'bid', 0);
 $did = we_base_request::_(we_base_request::INT, 'did', 0);
 $paths = we_base_request::_(we_base_request::WEFILELIST, 'paths', '');
-$target = we_base_request::_(we_base_request::RAW, 'target', '');
+$target = we_base_request::_(we_base_request::STRING, 'target', '');
 $height = we_base_request::_(we_base_request::INT, 'height', 0);
 $width = we_base_request::_(we_base_request::INT, 'width', 0);
 $bannerclick = we_base_request::_(we_base_request::URL, 'bannerclick', WEBEDITION_DIR . 'bannerclick.php');
@@ -48,7 +48,7 @@ $xml = we_base_request::_(we_base_request::BOOL, 'xml');
 $c = we_base_request::_(we_base_request::RAW, 'c', 0);
 
 if($type && $type != 'pixel'){
-	$code = we_banner_banner::getBannerCode($did, $paths, $target, $width, $height, $dt, $cats, $bannername, $link, $referer, $bannerclick, $_SERVER['SCRIPT_NAME'], $type, $page, $nocount, $xml);
+	$code = we_banner_banner::getBannerCode($did, $paths, $target, $width, $height, $dt, $cats, $bannername, $link, $referer, $bannerclick, WEBEDITION_DIR . basename(__FILE__), $type, $page, $nocount, $xml);
 }
 switch($type){
 	case 'js':
@@ -70,7 +70,7 @@ switch($type){
 			$bid = $bannerData['bannerID'];
 		}
 		if(!$bid){
-			$id = f('SELECT pref_value FROM ' . BANNER_PREFS_TABLE . " WHERE pref_name='DefaultBannerID'");
+			$id = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="banner" AND pref_name="DefaultBannerID"');
 			$bid = f('SELECT bannerID FROM ' . BANNER_TABLE . ' WHERE ID=' . intval($id));
 		}
 
@@ -94,7 +94,7 @@ switch($type){
 				header("Location: $bannerpath");
 				exit();
 			}
-			$ext = preg_replace('/.*\.(.+)$/', '$1', $bannerpath);
+			$ext = preg_replace('/.*\.(.+)$/', '${1}', $bannerpath);
 			switch($ext){
 				case "jpg":
 				case "jpeg":

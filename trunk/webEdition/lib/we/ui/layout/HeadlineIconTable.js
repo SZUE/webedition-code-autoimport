@@ -63,7 +63,7 @@ function we_ui_layout_HeadlineIconTable(idOrObject) {
 	 *
 	 * @var array
 	 */
-	this.divs = new Array();
+	this.divs = [];
 	// setup divs
 	var divs = this.element.getElementsByTagName("DIV");
 	for (var i = 0; i < divs.length; i++) {

@@ -102,10 +102,6 @@ function we_tag_shopField($attribs){
 			$ascountry = weTag_getAttribute('ascountry', $attribs, false, we_base_request::BOOL);
 			$aslanguage = weTag_getAttribute('aslanguage', $attribs, false, we_base_request::BOOL);
 			if($ascountry || $aslanguage){
-				if(!Zend_Locale::hasCache()){
-					Zend_Locale::setCache(getWEZendCache());
-				}
-
 				$lang = weTag_getAttribute('outputlanguage', $attribs, '', we_base_request::STRING);
 				if(!$lang){
 					$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING));
@@ -116,7 +112,7 @@ function we_tag_shopField($attribs){
 					$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 					$langcode = array_search($lang[0], getWELangs());
 				}
-				return ($ascountry && $savedVal === '--' ? '' : CheckAndConvertISOfrontend(Zend_Locale::getTranslation($savedVal, ($ascountry ? 'territory' : 'language'), $langcode)));
+				return ($ascountry && $savedVal === '--' ? '' : CheckAndConvertISOfrontend(we_base_country::getTranslation($savedVal, ($ascountry ? we_base_country::TERRITORY : we_base_country::LANGUAGE), $langcode)));
 			}
 			return $savedVal;
 
@@ -130,23 +126,18 @@ function we_tag_shopField($attribs){
 			$doc = we_getDocForTag($docAttr);
 			$lang = $doc->Language;
 			$langcode = ($lang ?
-							substr($lang, 0, 2) :
-							array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
+					substr($lang, 0, 2) :
+					array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
 
-			if(!Zend_Locale::hasCache()){
-				Zend_Locale::setCache(getWEZendCache());
-			}
-
-			//$zendsupported = Zend_Locale::getTranslationList('territory', $langcode, 2);
 			$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
 			foreach($topCountries as $countrykey => &$countryvalue){
-				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+				$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
 			}
 			unset($countryvalue);
 
 			$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
 			foreach($shownCountries as $countrykey => &$countryvalue){
-				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+				$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
 			}
 			unset($countryvalue);
 			$oldLocale = setlocale(LC_ALL, NULL);
@@ -181,21 +172,17 @@ function we_tag_shopField($attribs){
 			$doc = we_getDocForTag($docAttr);
 			$lang = $doc->Language;
 			$langcode = ($lang ?
-							substr($lang, 0, 2) :
-							array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
+					substr($lang, 0, 2) :
+					array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
 
 			$frontendL = $GLOBALS['weFrontendLanguages'];
 			foreach($frontendL as &$lcvalue){
 				$lccode = explode('_', $lcvalue);
 				$lcvalue = $lccode[0];
 			}
-			if(!Zend_Locale::hasCache()){
-				Zend_Locale::setCache(getWEZendCache());
-			}
-
 			$frontendLL = array();
 			foreach($frontendL as &$lcvalue){
-				$frontendLL[$lcvalue] = Zend_Locale::getTranslation($lcvalue, 'language', $langcode);
+				$frontendLL[$lcvalue] = we_base_country::getTranslation($lcvalue, we_base_country::LANGUAGE, $langcode);
 			}
 
 			$oldLocale = setlocale(LC_ALL, NULL);

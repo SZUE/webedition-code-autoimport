@@ -25,9 +25,9 @@
 abstract class we_backup_preparer{
 
 	private static function checkFilePermission(){
-		if(!is_writable($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/')){
-			we_backup_util::addLog('Error: Can\'t write to ' . $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/');
-			t_e('Error: Can\'t write to ' . $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/');
+		if(!is_writable(TEMP_PATH)){
+			we_backup_util::addLog('Error: Can\'t write to ' . TEMP_PATH);
+			t_e('Error: Can\'t write to ' . TEMP_PATH);
 			return false;
 		}
 		return true;
@@ -48,7 +48,7 @@ abstract class we_backup_preparer{
 			'backup_steps' => 5,
 			'backup_log' => we_base_request::_(we_base_request::BOOL, 'backup_log'),
 			'backup_log_data' => '',
-			'backup_log_file' => $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . we_backup_backup::logFile,
+			'backup_log_file' => BACKUP_PATH . we_backup_util::logFile,
 			'limits' => array(
 				'mem' => min(60 * 1024 * 1024, we_convertIniSizes(ini_get('memory_limit'))),
 				'exec' => min(30, ($execTime > 120 ? ($execTime > 2000 ? 5 : 15) : $execTime)),
@@ -73,7 +73,6 @@ abstract class we_backup_preparer{
 	}
 
 	static function prepareExport(){
-
 		if(!self::prepare()){
 			return false;
 		}
@@ -81,9 +80,9 @@ abstract class we_backup_preparer{
 
 		$_SESSION['weS']['weBackupVars']['protect'] = we_base_request::_(we_base_request::BOOL, 'protect');
 
-		$_SESSION['weS']['weBackupVars']['options']['compress'] = (we_base_file::hasCompression(we_base_request::_(we_base_request::BOOL, 'compress'))) ? we_backup_base::COMPRESSION : we_backup_base::NO_COMPRESSION;
-		$_SESSION['weS']['weBackupVars']['filename'] = we_base_request::_(we_base_request::FILE, 'filename') . ($_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_base::NO_COMPRESSION ? '.' . we_base_file::getZExtension(we_backup_base::COMPRESSION) : '');
-		$_SESSION['weS']['weBackupVars']['backup_file'] = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $_SESSION['weS']['weBackupVars']['filename'];
+		$_SESSION['weS']['weBackupVars']['options']['compress'] = (we_base_file::hasCompression(we_base_request::_(we_base_request::BOOL, 'compress'))) ? we_backup_util::COMPRESSION : we_backup_util::NO_COMPRESSION;
+		$_SESSION['weS']['weBackupVars']['filename'] = we_base_request::_(we_base_request::FILE, 'filename') . ($_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_util::NO_COMPRESSION ? '.' . we_base_file::getZExtension(we_backup_util::COMPRESSION) : '');
+		$_SESSION['weS']['weBackupVars']['backup_file'] = TEMP_PATH . $_SESSION['weS']['weBackupVars']['filename'];
 		$prefix = we_base_file::getComPrefix($_SESSION['weS']['weBackupVars']['options']['compress']);
 		$_SESSION['weS']['weBackupVars']['open'] = $prefix . 'open';
 		$_SESSION['weS']['weBackupVars']['close'] = $prefix . 'close';
@@ -112,14 +111,13 @@ abstract class we_backup_preparer{
 		}
 
 		//always write protect code uncompressed
-		we_base_file::save($_SESSION['weS']['weBackupVars']['backup_file'], ($_SESSION['weS']['weBackupVars']['protect'] ? we_backup_backup::weXmlExImProtectCode : ''), 'wb');
+		we_base_file::save($_SESSION['weS']['weBackupVars']['backup_file'], ($_SESSION['weS']['weBackupVars']['protect'] ? we_backup_util::weXmlExImProtectCode : ''), 'wb');
 		we_base_file::save($_SESSION['weS']['weBackupVars']['backup_file'], we_exim_XMLExIm::getHeader('', 'backup'), 'ab', $_SESSION['weS']['weBackupVars']['options']['compress']);
 
 		return true;
 	}
 
 	static function prepareImport(){
-
 		if(!self::prepare()){
 			return false;
 		}
@@ -129,32 +127,23 @@ abstract class we_backup_preparer{
 			return false;
 		}
 
-		$_offset = strlen(we_backup_backup::weXmlExImProtectCode);
-		$_SESSION['weS']['weBackupVars']['offset'] = (we_base_file::loadLine($_SESSION['weS']['weBackupVars']['backup_file'], 0, ($_offset)) == we_backup_backup::weXmlExImProtectCode) ? $_offset : 0;
-		$_SESSION['weS']['weBackupVars']['options']['compress'] = we_base_file::isCompressed($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset']) ? we_backup_base::COMPRESSION : we_backup_base::NO_COMPRESSION;
-		if(false && $_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_base::NO_COMPRESSION){
-			$_SESSION['weS']['weBackupVars']['backup_file'] = self::makeCleanGzip($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset']);
-			we_base_file::insertIntoCleanUp($_SESSION['weS']['weBackupVars']['backup_file'], time() + (8 * 3600)); //valid for 8 hours
-			$_SESSION['weS']['weBackupVars']['offset'] = 0;
-		}
+		$_offset = strlen(we_backup_util::weXmlExImProtectCode);
+		$_SESSION['weS']['weBackupVars']['offset'] = (we_base_file::loadLine($_SESSION['weS']['weBackupVars']['backup_file'], 0, ($_offset)) == we_backup_util::weXmlExImProtectCode) ? $_offset : 0;
+		$_SESSION['weS']['weBackupVars']['options']['compress'] = we_base_file::isCompressed($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['offset']) ? we_backup_util::COMPRESSION : we_backup_util::NO_COMPRESSION;
 
-		$_SESSION['weS']['weBackupVars']['options']['format'] = we_backup_util::getFormat($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_base::NO_COMPRESSION);
+		$_SESSION['weS']['weBackupVars']['options']['format'] = we_backup_util::getFormat($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_util::NO_COMPRESSION);
 
-		if($_SESSION['weS']['weBackupVars']['options']['format'] != 'xml' && $_SESSION['weS']['weBackupVars']['options']['format'] != 'sql'){
-			return false;
-		}
-
-		$_SESSION['weS']['weBackupVars']['offset_end'] = we_backup_util::getEndOffset($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_base::NO_COMPRESSION);
+		$_SESSION['weS']['weBackupVars']['offset_end'] = we_backup_util::getEndOffset($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_util::NO_COMPRESSION);
 
 		if($_SESSION['weS']['weBackupVars']['options']['format'] === 'xml'){
-			$_SESSION['weS']['weBackupVars']['options']['xmltype'] = we_backup_util::getXMLImportType($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_base::NO_COMPRESSION, $_SESSION['weS']['weBackupVars']['offset_end']);
+			$_SESSION['weS']['weBackupVars']['options']['xmltype'] = we_backup_util::getXMLImportType($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_util::NO_COMPRESSION, $_SESSION['weS']['weBackupVars']['offset_end']);
 			if($_SESSION['weS']['weBackupVars']['options']['xmltype'] != 'backup'){
 				return false;
 			}
 		}
 
-		$_SESSION['weS']['weBackupVars']['encoding'] = self::getEncoding($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_base::NO_COMPRESSION);
-		$_SESSION['weS']['weBackupVars']['weVersion'] = self::getWeVersion($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_base::NO_COMPRESSION);
+		$_SESSION['weS']['weBackupVars']['encoding'] = self::getEncoding($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_util::NO_COMPRESSION);
+		$_SESSION['weS']['weBackupVars']['weVersion'] = self::getWeVersion($_SESSION['weS']['weBackupVars']['backup_file'], $_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_util::NO_COMPRESSION);
 
 		if($_SESSION['weS']['weBackupVars']['handle_options']['core']){
 			self::clearTemporaryData('tblFile');
@@ -175,11 +164,10 @@ abstract class we_backup_preparer{
 	}
 
 	static function getOptions(&$options, &$handle_options){
-
 		$options = array(
 			'backup_extern' => we_base_request::_(we_base_request::BOOL, 'handle_extern'),
 			'convert_charset' => we_base_request::_(we_base_request::BOOL, "convert_charset"),
-			'compress' => we_base_request::_(we_base_request::BOOL, 'compress') ? we_backup_base::COMPRESSION : we_backup_base::NO_COMPRESSION,
+			'compress' => we_base_request::_(we_base_request::BOOL, 'compress') ? we_backup_util::COMPRESSION : we_backup_util::NO_COMPRESSION,
 			'backup_binary' => we_base_request::_(we_base_request::BOOL, 'handle_binary'),
 			'rebuild' => we_base_request::_(we_base_request::BOOL, 'rebuild'),
 			'export2server' => we_base_request::_(we_base_request::BOOL, 'export_server'),
@@ -204,14 +192,13 @@ abstract class we_backup_preparer{
 			'configuration' => we_base_request::_(we_base_request::BOOL, 'handle_configuration'),
 			'export' => we_base_request::_(we_base_request::BOOL, 'handle_export'),
 			'voting' => we_base_request::_(we_base_request::BOOL, 'handle_voting'),
-			'spellchecker' => we_base_request::_(we_base_request::BOOL, 'handle_spellchecker'),
 			'versions' => we_base_request::_(we_base_request::BOOL, 'handle_versions'),
 			'versions_binarys' => we_base_request::_(we_base_request::BOOL, 'handle_versions_binarys'),
 			'tools' => array(),
-			'spellchecker' => we_base_request::_(we_base_request::BOOL, 'handle_spellchecker'),
+			//'spellchecker' => we_base_request::_(we_base_request::BOOL, 'handle_spellchecker'),
 			'glossary' => we_base_request::_(we_base_request::BOOL, 'handle_glossary'),
-			"hooks" => we_base_request::_(we_base_request::BOOL, "handle_hooks"),
-			"customTags" => we_base_request::_(we_base_request::BOOL, "handle_customtags"),
+			'hooks' => we_base_request::_(we_base_request::BOOL, "handle_hooks"),
+			'customTags' => we_base_request::_(we_base_request::BOOL, "handle_customtags"),
 			'backup' => $options['backup_extern'],
 		);
 
@@ -250,43 +237,19 @@ abstract class we_backup_preparer{
 
 	private static function getBackupFile(){
 		if(($backup_select = we_base_request::_(we_base_request::FILE, 'backup_select'))){
-			return $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $backup_select;
+			return BACKUP_PATH . $backup_select;
 		}
 
-		if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
-			$isFileAllreadyHere = false;
-			if(!(we_fileupload_include::isFallback() || we_fileupload_base::isLegacyMode())){
-				$uploader = new we_fileupload_include('we_upload_file');
-				$uploader->setTypeCondition('accepted', '', 'xml, gz, tgz, zip');
-				$uploader->setFileNameTemp(array('path' => $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/'), we_fileupload_include::USE_FILENAME_FROM_UPLOAD);
-				$isFileAllreadyHere = $uploader->processFileRequest(we_fileupload_include::ON_ERROR_RETURN);
-			}
+		$fileUploader = new we_fileupload_resp_base();
+		//$fileUploader->setTypeCondition('accepted', array(we_base_ContentTypes::XML), array('.gz', '.tgz'));
+		if(($commitedFile = $fileUploader->commitUploadedFile(true))){
+			we_base_file::insertIntoCleanUp($commitedFile, 0);
+			return $commitedFile;
+		} else {
+			t_e('we_fileupload failure', $this->fileUploader->getError());
 		}
 
-		$we_upload_file = (isset($_FILES['we_upload_file']) && $_FILES['we_upload_file']) ? $_FILES['we_upload_file'] : '';
-		if($we_upload_file && ($we_upload_file != 'none')){
-			$_SESSION['weS']['weBackupVars']['options']['upload'] = 1;
-			if(empty($_FILES['we_upload_file']['tmp_name']) || $_FILES['we_upload_file']['error']){
-				return false;
-			}
-
-			$filename = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $_FILES['we_upload_file']['name'];
-
-			//FIXME: delete condition when new uploader is stable
-			if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
-				if($isFileAllreadyHere || move_uploaded_file($_FILES['we_upload_file']['tmp_name'], $filename)){
-					we_base_file::insertIntoCleanUp($filename, time());
-					return $filename;
-				}
-			} else {
-				if(move_uploaded_file($_FILES['we_upload_file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $_FILES['we_upload_file']['name'])){
-					we_base_file::insertIntoCleanUp($filename, time());
-					return $filename;
-				}
-			}
-		}
-
-		return null;
+		return false;
 	}
 
 	static function getExternalFiles(){
@@ -298,7 +261,7 @@ abstract class we_backup_preparer{
 	static function getFileLists(){//FIXME:unused??
 		$list = array();
 		self::getFileList($list, TEMPLATES_PATH, true, false);
-		self::getFileList($list, $_SERVER['DOCUMENT_ROOT'] . we_navigation_cache::CACHEDIR, true, false);
+		self::getFileList($list, WE_CACHE_PATH, true, false);
 		self::getSiteFiles($list);
 		return $list;
 	}
@@ -372,7 +335,7 @@ abstract class we_backup_preparer{
 		$DB_WE->query('TRUNCATE TABLE ' . NAVIGATION_TABLE);
 		$DB_WE->query('TRUNCATE TABLE ' . NAVIGATION_RULE_TABLE);
 		$DB_WE->query('TRUNCATE TABLE ' . HISTORY_TABLE);
-		$DB_WE->query('TRUNCATE TABLE ' . INDEX_TABLE);
+		$DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID' . ($docTable === FILE_TABLE ? '=0' : '>0'));
 	}
 
 	static function clearVersionData(){
@@ -381,8 +344,14 @@ abstract class we_backup_preparer{
 		$path = $_SERVER['DOCUMENT_ROOT'] . VERSION_DIR;
 		if(($dir = opendir($path))){
 			while(($file = readdir($dir))){
-				if(!is_dir($file) && $file != "." && $file != ".." && $file != "dummy"){
-					unlink($path . $file);
+				switch($file){
+					case '.':
+					case '..':
+						break;
+					default:
+						if(!is_dir($file)){
+							unlink($path . $file);
+						}
 				}
 			}
 			closedir($dir);
@@ -392,15 +361,15 @@ abstract class we_backup_preparer{
 	static function isPathExist($path){
 		global $DB_WE;
 
-		return ((f('SELECT 1 FROM ' . FILE_TABLE . " WHERE Path='" . $DB_WE->escape($path) . "' LIMIT 1", '', $DB_WE) == '1') || (f('SELECT 1 FROM ' . TEMPLATES_TABLE . " WHERE Path='" . $DB_WE->escape($path) . "' LIMIT 1", '', $DB_WE) == '1'));
+		return ((f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape($path) . '" LIMIT 1', '', $DB_WE) == 1) ||
+			(f('SELECT 1 FROM ' . TEMPLATES_TABLE . ' WHERE Path="' . $DB_WE->escape($path) . '" LIMIT 1', '', $DB_WE) == 1));
 	}
 
 	static function getEncoding($file, $iscompressed){
 		if(!empty($file)){
 			$data = we_base_file::loadPart($file, 0, 256, $iscompressed);
 			$match = array();
-			$trenner = '[ |\n|\t|\r]*';
-			$pattern = "%(encoding" . $trenner . "=" . $trenner . "[\"|\'|\\\\]" . $trenner . ")([^\'\"> ? \\\]*)%";
+			$pattern = "%(encoding\s*=\s*[\"\'\\\\]\s*)([^\'\"> ? \\\]*)%";
 
 			if(preg_match($pattern, $data, $match)){
 				if(strtoupper($match[2]) != 'ISO-8859-1'){
@@ -416,8 +385,7 @@ abstract class we_backup_preparer{
 		if(!empty($file)){
 			$data = we_base_file::loadPart($file, 0, 256, $iscompressed);
 			$match = array();
-			$trenner = '[ |\n|\t|\r]*';
-			$pattern = "%webEdition" . $trenner . "version" . $trenner . "=" . $trenner . "[\"|\'|\\\\]" . $trenner . "([^\'\"> ? \\\]*)%";
+			$pattern = "%webEdition\s*version\s*=\s*[\"\'\\\\]\s*([^\'\"> ? \\\]*)%";
 
 			if(preg_match($pattern, $data, $match)){
 				return $match[1];
@@ -437,18 +405,18 @@ abstract class we_backup_preparer{
 								top.opener.top.we_cmd("import");
 								top.close();
 							} else {
-								top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";
+								top.body.location = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=2";
 							}');
 				} else {
 					return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING) .
-							'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
+							'top.body.location = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=2";');
 				}
 			case 'customer':
 				return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[customer_import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING) .
-						'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
+						'top.body.location = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=2";');
 			default:
 				return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[format_unknown]'), we_message_reporting::WE_MESSAGE_WARNING) .
-						'top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
+						'top.body.location = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=2";');
 		}
 	}
 
@@ -470,49 +438,19 @@ abstract class we_backup_preparer{
 		} else if($_SESSION['weS']['weBackupVars']['options']['xmltype'] != 'backup'){
 
 			return self::isOtherXMLImport($_SESSION['weS']['weBackupVars']['options']['xmltype']);
-		} else if($_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_base::NO_COMPRESSION && !we_base_file::hasGzip()){
+		} else if($_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_util::NO_COMPRESSION && !we_base_file::hasGzip()){
 
 			$_mess = g_l('backup', '[cannot_split_file_ziped]');
 		} else {
 			$_mess = g_l('backup', '[unspecified_error]');
 		}
 
-		if(isset($_SESSION['weS']['weBackupVars']['backup_log']) && $_SESSION['weS']['weBackupVars']['backup_log']){
+		if(!empty($_SESSION['weS']['weBackupVars']['backup_log'])){
 			we_backup_util::addLog('Error: ' . $_mess);
 		}
 
-		return we_html_element::jsElement(we_message_reporting::getShowMessageCall($_mess, we_message_reporting::WE_MESSAGE_ERROR) . '
-					top.body.location = "' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=body&step=2";');
-	}
-
-	static function makeCleanGzip($gzfile, $offset){
-
-		$file = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . we_base_file::getUniqueId();
-		$fs = @fopen($gzfile, "rb");
-
-		if(!$fs){
-			return false;
-		}
-		if(fseek($fs, $offset, SEEK_SET) == 0){
-			$fp = @fopen($file, "wb");
-			if($fp){
-				do{
-					$data = fread($fs, 8192);
-					if(strlen($data) == 0){
-						break;
-					}
-					fwrite($fp, $data);
-				} while(true);
-				fclose($fp);
-			} else {
-				fclose($fs);
-				return false;
-			}
-		}
-		fclose($fs);
-
-
-		return $file;
+		return we_html_element::jsElement(we_message_reporting::getShowMessageCall($_mess, we_message_reporting::WE_MESSAGE_ERROR) .
+				'top.body.location = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=2";');
 	}
 
 }

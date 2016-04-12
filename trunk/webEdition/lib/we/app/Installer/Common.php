@@ -41,9 +41,9 @@ abstract class we_app_Installer_Common{
 		if(empty($query)){
 			return false;
 		}
-		$db = we_io_DB::getAdapter();
+		$db = new DB_WE();
 		try{
-			$result = $db->getConnection()->exec($query);
+			$result = $db->query($query);
 		} catch (PDOException $e){
 			error_log($e->getCode() . ": " . $e->getMessage() . " in file " . $e->getFile());
 			return false;

@@ -29,5 +29,5 @@ function we_tag_ifNoJavaScript($attribs){
 	$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
 	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id));
 	$url = $row['Path'] . ($row['IsFolder'] ? '/' : '');
-	return '<noscript><meta http-equiv="refresh" content="0;URL=' . $url . '"></noscript>';
+	return '<noscript><meta http-equiv="refresh" content="0;url=' . $url . '"></noscript>';
 }

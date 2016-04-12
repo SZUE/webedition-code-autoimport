@@ -21,7 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$we_menu_users = array(
+return array(
 	'user' => array(
 		'text' => g_l('javaMenu_users', '[menu_user]'),
 	),
@@ -70,12 +70,12 @@ $we_menu_users = array(
 		'parent' => 'user',
 		'cmd' => 'exit_users',
 	),
-	'001500' => array(
+	'help' => array(
 		'text' => g_l('javaMenu_users', '[menu_help]'),
 	),
 	array(
 		'text' => g_l('javaMenu_users', '[menu_help]') . '&hellip;',
-		'parent' => '001500',
+		'parent' => 'help',
 		'cmd' => 'help_modules',
 	),
 	array(

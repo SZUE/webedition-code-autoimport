@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -26,6 +25,4 @@ define('GLOSSARY_TABLE', TBL_PREFIX . 'tblglossary');
 define('WE_GLOSSARY_MODULE_DIR', WE_MODULES_DIR . 'glossary/');
 define('WE_GLOSSARY_MODULE_PATH', WE_MODULES_PATH . 'glossary/');
 
-we_loadLanguageConfig();
-
-we_base_request::registerTables(array(GLOSSARY_TABLE));
+we_base_request::registerTables(array('GLOSSARY_TABLE' => GLOSSARY_TABLE));

@@ -26,26 +26,26 @@ function weTagWizard(tagName) {
 
 	this.tagName = tagName; // name of the we:tag
 
-	this.allAttributes = new Array();  // all attributes of the we:tag
-	this.reqAttributes = new Object();  // required attributes of the we:tag
+	this.allAttributes = [];  // all attributes of the we:tag
+	this.reqAttributes = {};  // required attributes of the we:tag
 	this.typeAttributeId = '';
-	this.typeAttributeAllows = new Object(); // type depending allowed fields (id)
-	this.typeAttributeRequires = new Object(); // type depending required fields (id)
+	this.typeAttributeAllows = {}; // type depending allowed fields (id)
+	this.typeAttributeRequires = {}; // type depending required fields (id)
 
 	this.needsEndTag = false;
 
-	this.missingFields = new Array(); // missing attributes -> these are genereated by method getWeTag
+	this.missingFields = []; // missing attributes -> these are genereated by method getWeTag
 
 	this.changeType = function (newType) {
 
 
 		// set the matching required fields.
 		// 1st remove all not always needed
-		for (i=0;i<this.allAttributes.length;i++) {
+		for (i = 0; i < this.allAttributes.length; i++) {
 
 			if (this.reqAttributes[this.allAttributes[i]]) {
 				// no need to change these elements
-			} else if (this.typeAttributeRequires[newType] && this.inArray(this.allAttributes[i], this.typeAttributeRequires[newType])) {
+			} else if (this.typeAttributeRequires[newType] && WE().util.in_array(this.allAttributes[i], this.typeAttributeRequires[newType])) {
 				this.setLabelRequired(this.allAttributes[i], true);
 			} else {
 				this.setLabelRequired(this.allAttributes[i], false);
@@ -58,11 +58,10 @@ function weTagWizard(tagName) {
 			var hasAttributes = false;
 
 			// show the correct attributes
-			for (i=0;i<this.allAttributes.length;i++) {
+			for (i = 0; i < this.allAttributes.length; i++) {
+				if (WE().util.in_array(this.allAttributes[i], this.typeAttributeAllows[newType])) {
 
-				if (this.inArray(this.allAttributes[i], this.typeAttributeAllows[newType])) {
-
-					if ( this.allAttributes[i] != this.typeAttributeId ) {
+					if (this.allAttributes[i] != this.typeAttributeId) {
 						hasAttributes = true;
 					}
 
@@ -84,53 +83,53 @@ function weTagWizard(tagName) {
 
 		} else { // show all
 
-			for (i=0;i<this.allAttributes.length;i++) {
+			for (i = 0; i < this.allAttributes.length; i++) {
 				this.hideAttribute(this.allAttributes[i]);
 			}
 			this.showElement('no_type_selected_attributes');
 			this.hideElement('no_attributes_for_type');
 		}
-	}
+	};
 
-	this.showElement = function(id) {
+	this.showElement = function (id) {
 		elem = document.getElementById(id);
 		if (elem) {
 			elem.style.display = "";
 		}
-	}
+	};
 
-	this.hideElement = function(id) {
+	this.hideElement = function (id) {
 		elem = document.getElementById(id);
 		if (elem) {
 			elem.style.display = "none";
 		}
-	}
+	};
 
-	this.showAttribute = function(id) {
+	this.showAttribute = function (id) {
 		elem = document.getElementById("li_" + id);
 		if (elem) {
 			elem.style.display = "";
 		}
-	}
+	};
 
-	this.hideAttribute = function(id) {
+	this.hideAttribute = function (id) {
 
 		elem = document.getElementById("li_" + id);
 		if (elem) {
 			elem.style.display = "none";
 		}
-	}
+	};
 
-	this.getPartFromId = function(elemIdName, getId) {
+	this.getPartFromId = function (elemIdName, getId) {
 
 		if (getId) {
 			return elemIdName.substr(0, elemIdName.indexOf("_"));
 		} else {
 			return elemIdName.substr(elemIdName.indexOf("_") + 1);
 		}
-	}
+	};
 
-	this.setLabelRequired = function(elemIdName, required) {
+	this.setLabelRequired = function (elemIdName, required) {
 
 		element = document.getElementById("label_" + elemIdName);
 
@@ -145,70 +144,55 @@ function weTagWizard(tagName) {
 			}
 
 		}
-	}
+	};
 
-	this.inArray = function(needle, haystack) {
-
-		for (var i=0; i<haystack.length; i++) {
-
-			if (needle == haystack[i]) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	this.getWeTag = function() { // build the we:tag in this function and return it.
+	this.getWeTag = function () { // build the we:tag in this function and return it.
 
 		ret = "<we:" + this.tagName;
 
-		this.missingFields = new Array();
-
+		this.missingFields = [];
+		var i;
 		// differbetween case with/without type-attribute
 
 		if (this.typeAttributeId && typeAttributeAllows[document.getElementById(this.typeAttributeId).value]) {
 
 			var typeValue = document.getElementById(this.typeAttributeId).value;
 
-			for (var i=0; i<this.typeAttributeAllows[typeValue].length; i++) {
+			for (i = 0; i < this.typeAttributeAllows[typeValue].length; i++) {
 
 				fieldId = this.typeAttributeAllows[typeValue][i];
 				fieldName = this.getPartFromId(fieldId);
 				fieldValue = document.getElementById(fieldId).value;
 
 				// check if attribute is required attribute of the we:tag
-				if (this.reqAttributes[fieldId] && (!fieldValue) ) {
+				if (this.reqAttributes[fieldId] && (!fieldValue)) {
 					this.missingFields.push(fieldName);
 				} else {
 
 					// check if attribute is required by the value of the type-Attribut
-					//if (this.typeAttributeRequires[typeValue] && (!fieldValue || fieldValue == '-') && this.inArray(fieldId, typeAttributeRequires[typeValue]) ) { //#4483
-					if (this.typeAttributeRequires[typeValue] && (!fieldValue) && this.inArray(fieldId, typeAttributeRequires[typeValue]) ) {
+					if (this.typeAttributeRequires[typeValue] && (!fieldValue) && WE().util.in_array(fieldId, typeAttributeRequires[typeValue])) {
 						this.missingFields.push(fieldName);
 					}
 				}
 
 				// at last add attribute to the we:tag
-				if ( fieldValue && !(fieldValue == '-' && this.typeAttributeId == fieldId ) ) {
+				if (fieldValue && !(fieldValue == '-' && this.typeAttributeId == fieldId)) {
 					ret += " " + fieldName + "=\"" + fieldValue + "\"";
 				}
 			}
 
 		} else if (this.typeAttributeId) {
-
 			// type is not selected
 			return false;
-
 		} else {
-
-			for ( i=0; i<this.allAttributes.length; i++) {
+			for (i = 0; i < this.allAttributes.length; i++) {
 
 				fieldId = this.allAttributes[i];
 				fieldName = this.getPartFromId(fieldId);
 				fieldValue = document.getElementById(fieldId).value;
 
 				//if( this.reqAttributes[fieldId] && (!fieldValue || fieldValue == '-') ) { //#4483
-				if( this.reqAttributes[fieldId] && (!fieldValue) ) {
+				if (this.reqAttributes[fieldId] && (!fieldValue)) {
 					this.missingFields.push(fieldName);
 				}
 
@@ -219,7 +203,7 @@ function weTagWizard(tagName) {
 		}
 
 		if (this.needsEndTag) {
-			ret += ">" + document.we_form.elements['weTagData_defaultValue'].value + "</we:" + this.tagName + ">";
+			ret += ">" + document.we_form.elements.weTagData_defaultValue.value + "</we:" + this.tagName + ">";
 		} else {
 			ret += " />";
 		}
@@ -229,16 +213,16 @@ function weTagWizard(tagName) {
 		} else {
 			return ret;
 		}
-	}
+	};
 
-	this.editMultiSelector = function(cmdObj) {
+	this.editMultiSelector = function (cmdObj) {
 
 		selItems = cmdObj.selectedItems;
 		textName = cmdObj.textName;
 
 		val = weTextInput.getValue(cmdObj.textFieldId);
 
-		for (selId in cmdObj.selectedItems) {
+		for (var selId in cmdObj.selectedItems) {
 
 			selItem = cmdObj.selectedItems[selId];
 			if (val) {
@@ -247,5 +231,23 @@ function weTagWizard(tagName) {
 			val += selItem[textName];
 		}
 		weTextInput.setValue(cmdObj.textFieldId, val);
+	};
+}
+
+function closeOnEscape() {
+	return true;
+}
+
+function applyOnEnter(evt) {
+	_elemName = "target";
+	if (evt.srcElement !== undefined) { // IE
+		_elemName = "srcElement";
 	}
+
+	if (evt[_elemName].tagName != "SELECT") {
+		we_cmd("saveTag");
+		return true;
+	}
+
+
 }

@@ -22,20 +22,20 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcSelectorGetSelectedIdView extends rpcView{
+class rpcSelectorGetSelectedIdView extends we_rpc_view{
 
 	function getResponse($response){
 
 		header('Content-type: text/plain');
-		$suggests = $response->getData("data");
+		$suggests = $response->getData('data');
 		if(is_array($suggests) && isset($suggests[0]['ID'])){
 			$status = "response";
-			$html = ' "id": "' . we_base_request::_(we_base_request::INT,'we_cmd',0,4) . '", "value": "' . $suggests[0]['ID'] . '"'.
-				isset($suggests[0]['ContentType']) ? ', "contentType": "' . $suggests[0]['ContentType'] . '"' : "";
+			$html = ' "id": "' . we_base_request::_(we_base_request::INT, 'we_cmd', 0, 4) . '", "value": "' . $suggests[0]['ID'] . '"' .
+				(isset($suggests[0]['ContentType']) ? ', "contentType": "' . $suggests[0]['ContentType'] . '"' : "");
 		} else {
 			$status = "error";
-			if(strpos(we_base_request::_(we_base_request::STRING,'we_cmd','',3), ',')){
-				switch(we_base_request::_(we_base_request::TABLE,'we_cmd','',2)){
+			if(strpos(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3), ',')){
+				switch(we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 2)){
 					case FILE_TABLE:
 						$msg = g_l('weSelectorSuggest', '[no_document]');
 						break;
@@ -55,7 +55,7 @@ class rpcSelectorGetSelectedIdView extends rpcView{
 			} else {
 				$msg = g_l('weSelectorSuggest', '[no_folder]');
 			}
-			$html = '"msg":"' . $msg . '","nr":"' . we_base_request::_(we_base_request::INT,'we_cmd',0,2) . '"';
+			$html = '"msg":"' . $msg . '","nr":"' . we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2) . '"';
 		}
 		return
 			'var weResponse = {

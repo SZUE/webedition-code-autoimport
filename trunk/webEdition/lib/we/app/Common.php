@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -32,7 +31,6 @@ class we_app_Common{
 	/*
 	 * some class variables:
 	 */
-
 	/**
 	 * @var configuration for application management
 	 * 		read from webEdition/lib/we/app/defaults/config.xml
@@ -117,7 +115,7 @@ class we_app_Common{
 		}
 		//error_log("loading toc from file.");
 		self::readConfig();
-		if(isset(self::$_config->applicationpath) && !empty(self::$_config->applicationpath)){
+		if(!empty(self::$_config->applicationpath)){
 			$filename = self::$_config->applicationpath . "/toc.xml";
 		} else {
 			$filename = WE_APPS_PATH . "toc.xml";
@@ -145,7 +143,7 @@ class we_app_Common{
 		}
 		//error_log("loading toc from file.");
 		self::readConfig();
-		if(isset(self::$_config->applicationpath) && !empty(self::$_config->applicationpath)){
+		if(!empty(self::$_config->applicationpath)){
 			$filename = self::$_config->applicationpath . "/toc.xml";
 		} else {
 			$filename = WE_APPS_PATH . "toc.xml";
@@ -156,7 +154,7 @@ class we_app_Common{
 		try{
 			self::$tocZC = new Zend_Config_Xml($filename, null, true);
 		} catch (Exception $e){
-			//error_log("Could not read application toc file from ".$filename.". Please check your installation.");
+			t_e("Could not read application toc file from " . $filename . ". Please check your installation.");
 			return null;
 		}
 		return self::$tocZC;
@@ -170,7 +168,7 @@ class we_app_Common{
 
 		//error_log("loading toc from file.");
 		self::readConfig();
-		if(isset(self::$_config->applicationpath) && !empty(self::$_config->applicationpath)){
+		if(!empty(self::$_config->applicationpath)){
 			$filename = self::$_config->applicationpath . "/toc.xml";
 		} else {
 			$filename = WE_APPS_PATH . "toc.xml";
@@ -342,9 +340,9 @@ class we_app_Common{
 		try{
 			self::$_config = new Zend_Config_Xml($filename, null, true);
 			// add $_SERVER['DOCUMENT_ROOT'] to <applicationpath> value
-			if(isset(self::$_config->applicationpath) && !empty(self::$_config->applicationpath)){
-				if(substr(self::$_config->applicationpath, 0, 1) != "/"){
-					$newpath = $_SERVER['DOCUMENT_ROOT'] . "/" . self::$_config->applicationpath;
+			if(!empty(self::$_config->applicationpath)){
+				if(self::$_config->applicationpath{0} != '/'){
+					$newpath = $_SERVER['DOCUMENT_ROOT'] . '/' . self::$_config->applicationpath;
 				} else {
 					$newpath = $_SERVER['DOCUMENT_ROOT'] . self::$_config->applicationpath;
 				}
@@ -370,7 +368,6 @@ class we_app_Common{
 		//error_log("checking if $appname is installed.");
 		$config = self::readConfig();
 		$apps = self::readAppTOC(true);
-
 		$path = $config->applicationpath . $appname . '/';
 		if(is_dir($path)){
 			//error_log("directory $path found.");
@@ -382,8 +379,8 @@ class we_app_Common{
 				}
 			}
 		}
-		error_log(get_class() . ' - application ' . $appname . ' does not seem to be installed.');
-		return false;
+		//error_log(get_class() . ' - application ' . $appname . ' does not seem to be installed.');
+		return true;
 	}
 
 	/**
@@ -520,7 +517,7 @@ class we_app_Common{
 		self::readConfig();
 		$manifest = self::getManifestXml($filename, $query);
 		// add "/manifest" to relative xpath queries:
-		if(substr($query, 0, 1) === "/"){
+		if($query{0} === "/"){
 			$query = "/manifest" . $query;
 		}
 		$result = @$manifest->xpath($query);

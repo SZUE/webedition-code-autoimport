@@ -134,19 +134,14 @@ function we_tag_banner($attribs, $content){
 		//$content = getHtmlTag('nolayer', array(),$noscript);    //  nolayer does not exist
 		$content = $noscript;
 
-		//    some more attribs for the iframe
-		$newAttribs['marginwidth'] = 0;
-		$newAttribs['marginheight'] = 0;
-		$newAttribs['frameborder'] = 0;
-		$newAttribs['scrolling'] = 'no';
 
 		return getHtmlTag('iframe', $newAttribs, $content);
 	}
-	return ($GLOBALS["WE_MAIN_DOC"]->IsDynamic ?
+	return ($GLOBALS['WE_MAIN_DOC']->IsDynamic ?
 					we_banner_banner::getBannerCode($GLOBALS["WE_MAIN_DOC"]->ID, $paths, $target, $width, $height, $GLOBALS["WE_MAIN_DOC"]->DocType, $GLOBALS["WE_MAIN_DOC"]->Category, $bannername, $link, "", $bannerclick, $getbanner, "", $page, $GLOBALS["WE_MAIN_DOC"]->InWebEdition, $xml) :
 					($type === "cookie" ?
 							$noscript :
-							we_html_element::jsElement('r = Math.random();document.write ("<" + "script type=\"text/javascript\"src=\"' . $getbanner . '?' . ($nocount ? 'nocount=' . $nocount . '&amp;' : '') . 'r="+r+"&amp;link=' . ($link ? 1 : 0) . '&amp;bannername=' . rawurlencode($bannername) . '&amp;type=js' . ($page ? ('&amp;page=' . rawurlencode($page)) : ('&amp;did=' . $GLOBALS["WE_MAIN_DOC"]->ID . '&amp;paths=' . rawurlencode($paths))) . '&amp;target=' . rawurlencode($target) . '&amp;bannerclick=' . rawurlencode($bannerclick) . '&amp;height=' . rawurlencode($height) . '&amp;width=' . rawurlencode($width) . '"+(document.referer ? ("&amp;referer="+encodeURI(document.referer)) : "")+"\"><" + "/script>");') . '<noscript>' . $noscript . '</noscript>'
+							we_html_element::jsElement('r = Math.random();document.write ("<" + "script src=\"' . $getbanner . '?' . ($nocount ? 'nocount=' . $nocount . '&amp;' : '') . 'r="+r+"&amp;link=' . ($link ? 1 : 0) . '&amp;bannername=' . rawurlencode($bannername) . '&amp;type=js' . ($page ? ('&amp;page=' . rawurlencode($page)) : ('&amp;did=' . $GLOBALS["WE_MAIN_DOC"]->ID . '&amp;paths=' . rawurlencode($paths))) . '&amp;target=' . rawurlencode($target) . '&amp;bannerclick=' . rawurlencode($bannerclick) . '&amp;height=' . rawurlencode($height) . '&amp;width=' . rawurlencode($width) . '"+(document.referer ? ("&amp;referer="+encodeURI(document.referer)) : "")+"\"><" + "/script>");') . '<noscript>' . $noscript . '</noscript>'
 					)
 			);
 }

@@ -4,7 +4,7 @@ include_once('define.conf.php');
 $metaInfo = array(
 	'name'=>'<?php echo $CLASSNAME; ?>',
 	'classname'=>'<?php echo $CLASSNAME; ?>',
-	'maintable'=><?php echo (isset($TABLECONSTANT) && !empty($TABLECONSTANT)) ? $TABLECONSTANT : '""'; ?>,
+	'maintable'=><?php echo !empty($TABLECONSTANT) ? $TABLECONSTANT : '""'; ?>,
 	'datasource'=><?php echo ($DATASOURCE=='table:'? "'table:'.$TABLECONSTANT":"'$DATASOURCE'");?>,
 	'startpermission'=>'<?php echo $PERMISSIONCONDITION; ?>',
     'supportshooks' => 1, //set to 0 if hooks are not supported by the app, important: do also in in manifest.xml

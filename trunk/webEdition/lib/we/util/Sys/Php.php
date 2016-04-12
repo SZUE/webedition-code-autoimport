@@ -21,7 +21,8 @@
  */
 /**
  * Class to check php settings
- *
+  * @deprecated since version 6.4.0
+*
  * @category   we
  * @package none
  * @subpackage we_util_Sys
@@ -30,10 +31,12 @@
 class we_util_Sys_Php{
 
 	/**
+ * @deprecated since version 6.4.0
 	 * get php version
 	 * @return String phpversion string without any manufacturer-part (i.e. set on ubuntu)
 	 */
 	public static function version(){
+	t_e('deprecated',__FUNCTION__);
 		return preg_replace('/[a-z-]/', '', PHP_VERSION);
 	}
 
@@ -42,10 +45,12 @@ class we_util_Sys_Php{
 	 * @param int $reference target version to be compared to current webEdition version
 	 * @param string $operator
 	 * @see we_util_Sys::_versionCompare()
+ * @deprecated since version 6.4.0
 	 * @example we_util_Sys_PHP::versionCompare("5.1");
 	 * @example we_util_Sys_PHP::versionCompare("5.1", "<");
 	 */
 	public static function versionCompare($version = "", $operator = ""){
+t_e('deprecated',__FUNCTION__);
 		$currentVersion = self::version();
 		return ($currentVersion === false || empty($version) ?
 				false :
@@ -54,20 +59,24 @@ class we_util_Sys_Php{
 
 	/**
 	 * checks if a given php extension is loaded
+ * @deprecated since version 6.4.0
 	 * @return boolean
 	 */
 	public static function extension($ext = ""){
+t_e('deprecated',__FUNCTION__);
 		return ($ext ? extension_loaded($ext) : false);
 	}
 
 	/**
 	 * checks if a given ini-variable is available and returns its value
 	 * @return value of the requested php.ini variable
+ * @deprecated since version 6.4.0
 	 * 			returns (bool)true if value is "1", "On" or "true"
 	 * 			returns (bool)false if value is "0", "Off" or "false"
 	 */
 	public static function ini($var = ""){
-		if(!$var){
+	t_e('deprecated',__FUNCTION__);
+	if(!$var){
 			return false;
 		}
 		$_value = ini_get($var);

@@ -32,25 +32,13 @@ if($cmd === "save_last"){
 	$_SESSION["user"]["LastDir"] = $last;
 }
 if(!$cmd || $cmd != "save_last"){
+	$selectOwn = we_base_request::_(we_base_request::BOOL, 'selectOwn', false);
+
+	echo we_html_element::jsScript(JS_DIR . 'selectors/sselector_cmd.js');
 	?>
-	<script type="text/javascript"><!--
-
-		function drawNewFolder() {
-			for (var i = 0; i < top.allentries.length; i++) {
-				if (elem = top.fsbody.document.getElementById(top.allentries[i])) {
-					elem.style.backgroundColor = 'white';
-				}
-			}
-			drawDir(top.currentDir, "new_folder");
-		}
-
-		function setFilter(filter) {
-			top.currentFilter = filter;
-			drawDir(top.currentDir);
-		}
-
+	<script><!--
 		function setDir(dir) {
-			var a = top.fsheader.document.forms["we_form"].elements["lookin"].options;
+			var a = top.document.getElementById("lookin").options;
 			if (a.length - 2 > -1) {
 				for (j = 0; j < a.length; j++) {
 					if (a[j].value === dir) {
@@ -59,8 +47,6 @@ if(!$cmd || $cmd != "save_last"){
 					}
 				}
 	<?php
-	$selectOwn = we_base_request::_(we_base_request::BOOL, 'selectOwn', false);
-
 	switch(we_base_request::_(we_base_request::STRING, 'filter')){
 		case we_base_ContentTypes::FOLDER:
 		case 'filefolder':
@@ -70,97 +56,31 @@ if(!$cmd || $cmd != "save_last"){
 				top.currentDir = dir;
 				selectDir();
 			} else {
-	<?php echo we_message_reporting::getShowMessageCall(g_l('fileselector', '[already_root]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+				top.we_showMessage(WE().consts.g_l.sfselector.already_root, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 		}
 
-		function goUp() {
-			var a = top.fsheader.document.forms["we_form"].elements["lookin"].options;
-			if (a.length - 2 > -1) {
-				setDir(a[a.length - 2].value);
-			} else {
-	<?php echo we_message_reporting::getShowMessageCall(g_l('fileselector', '[already_root]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-			}
-		}
-
-		function selectFile(fid) {
-			if (fid !== "/") {
-				top.currentID = top.sitepath + top.rootDir + top.currentDir + ((top.currentDir != "/") ? "/" : "") + fid;
-				top.currentName = fid;
-				top.fsfooter.document.forms["we_form"].elements["fname"].value = fid;
-				if (top.fsbody.document.getElementById(fid)) {
-					for (var i = 0; i < top.allentries.length; i++) {
-						if (top.fsbody.document.getElementById(top.allentries[i]))
-							top.fsbody.document.getElementById(top.allentries[i]).style.backgroundColor = 'white';
-					}
-					top.fsbody.document.getElementById(fid).style.backgroundColor = '#DFE9F5';
-				}
-			} else {
-				top.currentID = top.sitepath;
-				top.currentName = fid;
-				top.fsfooter.document.forms["we_form"].elements["fname"].value = fid;
-				if (top.fsbody.document.getElementById(fid)) {
-					for (var i = 0; i < top.allentries.length; i++) {
-						if (top.fsbody.document.getElementById(top.allentries[i]))
-							top.fsbody.document.getElementById(top.allentries[i]).style.backgroundColor = 'white';
-					}
-					top.fsbody.document.getElementById(fid).style.backgroundColor = '#DFE9F5';
-				}
-			}
-		}
-
-		function selectDir() {
-			if (arguments[0]) {
-				top.currentDir = top.currentDir + (top.currentDir === "/" ? "" : "/") + arguments[0];
-				top.fsheader.addOption(arguments[0], top.currentDir);
-			}
-
-			if (top.currentDir.substring(0, 12) === "<?php echo WEBEDITION_DIR; ?>" || top.currentDir === "<?php echo rtrim(WEBEDITION_DIR, '/'); ?>") {
-				top.fsheader.weButton.disable("btn_new_dir_ss");
-				top.fsheader.weButton.disable("btn_add_file_ss");
-				top.fsheader.weButton.disable("btn_function_trash_ss");
-			} else {
-				top.fsheader.weButton.enable("btn_new_dir_ss");
-				top.fsheader.weButton.enable("btn_add_file_ss");
-				top.fsheader.weButton.enable("btn_function_trash_ss");
-			}
-
-			drawDir(top.currentDir);
-
-		}
-
-		function reorderDir(dir, order) {
-			setTimeout('top.fsbody.location="we_sselector_body.php?dir=' + dir + '&ord=' + order + '&file=' + top.currentFilter + '&curID=' + encodeURI(top.currentID) + '"', 100);
-		}
-
-		function drawDir(dir) {
-			switch (arguments[1]) {
+		function drawDir(dir, what, sid) {
+			switch (what) {
 				case "new_folder":
 					top.fsbody.location = "we_sselector_body.php?dir=" + encodeURI(top.rootDir + dir) + "&nf=new_folder&file=" + top.currentFilter + "&curID=" + encodeURI(top.currentID) + "&selectOwn=<?php echo $selectOwn; ?>";
 					break;
 				case "rename_folder":
-					if (arguments[2]) {
-						top.fsbody.location = "we_sselector_body.php?dir=" + encodeURI(top.rootDir + dir) + "&nf=rename_folder&sid=" + encodeURI(arguments[2]) + "&file=" + top.currentFilter + "&curID=" + encodeURI(top.currentID) + "&selectOwn=<?php echo $selectOwn; ?>";
+					if (sid) {
+						top.fsbody.location = "we_sselector_body.php?dir=" + encodeURI(top.rootDir + dir) + "&nf=rename_folder&sid=" + encodeURI(sid) + "&file=" + top.currentFilter + "&curID=" + encodeURI(top.currentID) + "&selectOwn=<?php echo $selectOwn; ?>";
 					}
 					break;
 				case "rename_file":
-					if (arguments[2]) {
-						top.fsbody.location = "we_sselector_body.php?dir=" + encodeURI(top.rootDir + dir) + "&nf=rename_file&sid=" + encodeURI(arguments[2]) + "&file=" + top.currentFilter + "&curID=" + encodeURI(top.currentID) + "&selectOwn=<?php echo $selectOwn; ?>";
+					if (sid) {
+						top.fsbody.location = "we_sselector_body.php?dir=" + encodeURI(top.rootDir + dir) + "&nf=rename_file&sid=" + encodeURI(sid) + "&file=" + top.currentFilter + "&curID=" + encodeURI(top.currentID) + "&selectOwn=<?php echo $selectOwn; ?>";
 					}
 					break;
 				default:
-					setTimeout('top.fsbody.location="we_sselector_body.php?dir=' + encodeURI(top.rootDir + dir) + '&file=' + top.currentFilter + '&curID=' + encodeURI(top.currentID) + '&selectOwn=<?php echo $selectOwn; ?>"', 100);
+					setTimeout(function (url) {
+						top.fsbody.location = url;
+					}, 100, 'we_sselector_body.php?dir=' + encodeURI(top.rootDir + dir) + '&file=' + top.currentFilter + '&curID=' + encodeURI(top.currentID) + '&selectOwn=<?php echo $selectOwn; ?>');
 			}
 		}
-
-		function delFile() {
-			if ((top.currentID !== "") && (top.fsfooter.document.forms["we_form"].elements["fname"].value !== "")) {
-				top.fscmd.location = "we_sselector_cmd.php?cmd=delete_file&fid=" + top.currentID + "&ask=" + arguments[0];
-			} else {
-	<?php echo we_message_reporting::getShowMessageCall(g_l('fileselector', '[edit_file_nok]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
-			}
-		}
-
 	<?php
 
 	function delDir($dir){
@@ -197,9 +117,9 @@ if(!$cmd || $cmd != "save_last"){
 			}
 			$path = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . we_base_request::_(we_base_request::FILE, 'pat') . '/' . $txt);
 			if(!is_dir($path)){
-				echo (!we_base_file::createLocalFolder($path) ?
-						we_message_reporting::getShowMessageCall(g_l('alert', '[create_folder_nok]'), we_message_reporting::WE_MESSAGE_ERROR) :
-						'selectFile("' . $txt . '");top.currentID="' . $path . '";');
+				echo (!we_base_file::createLocalFolderByPath($path) ?
+					we_message_reporting::getShowMessageCall(g_l('alert', '[create_folder_nok]'), we_message_reporting::WE_MESSAGE_ERROR) :
+					'selectFile("' . $txt . '");top.currentID="' . $path . '";');
 			} else {
 				echo we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[path_exists]'), str_replace($_SERVER['DOCUMENT_ROOT'], '', $path)), we_message_reporting::WE_MESSAGE_ERROR);
 			}
@@ -221,8 +141,8 @@ if(!$cmd || $cmd != "save_last"){
 			if($old != $new){
 				if(!is_dir($new)){
 					echo (!rename($old, $new) ?
-							we_message_reporting::getShowMessageCall(g_l('alert', '[rename_folder_nok]'), we_message_reporting::WE_MESSAGE_ERROR) :
-							'selectFile("' . $txt . '");');
+						we_message_reporting::getShowMessageCall(g_l('alert', '[rename_folder_nok]'), we_message_reporting::WE_MESSAGE_ERROR) :
+						'selectFile("' . $txt . '");');
 				} else {
 					$we_responseText = sprintf(g_l('alert', '[path_exists]'), str_replace($_SERVER['DOCUMENT_ROOT'], '', $new));
 					echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
@@ -249,8 +169,8 @@ if(!$cmd || $cmd != "save_last"){
 			if($old != $new){
 				if(!file_exists($new)){
 					echo (!rename($old, $new) ?
-							we_message_reporting::getShowMessageCall(g_l('alert', '[rename_file_nok]'), we_message_reporting::WE_MESSAGE_ERROR) :
-							'selectFile("' . $txt . '");');
+						we_message_reporting::getShowMessageCall(g_l('alert', '[rename_file_nok]'), we_message_reporting::WE_MESSAGE_ERROR) :
+						'selectFile("' . $txt . '");');
 				} else {
 					$we_responseText = sprintf(g_l('alert', '[path_exists]'), str_replace($_SERVER['DOCUMENT_ROOT'], '', $new));
 					echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
@@ -259,19 +179,19 @@ if(!$cmd || $cmd != "save_last"){
 			echo "drawDir(top.currentDir);selectFile(top.currentName);";
 			break;
 		case "delete_file":
-			if(($fid = we_base_request::_(we_base_request::FILE, "fid"))){
+			if(!($fid = we_base_request::_(we_base_request::FILE, "fid"))){
 				break;
 			}
-			$foo = f('SELECT ID FROM ' . FILE_TABLE . " WHERE Path='" . $DB_WE->escape($fid) . "'");
+			$foo = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape($fid) . '"');
 			if(preg_match('|' . WEBEDITION_PATH . '|', $fid) || ($fid == rtrim(WEBEDITION_PATH, '/')) || strpos("..", $fid) || $foo || $fid == $_SERVER['DOCUMENT_ROOT'] || $fid . "/" == $_SERVER['DOCUMENT_ROOT']){
 				echo we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR);
 				break;
 			}
 			if(we_base_request::_(we_base_request::BOOL, "ask")){
 				if(!is_link($fid) && is_dir($fid)){
-					echo "if (confirm(\"" . g_l('alert', '[delete_folder]') . "\")){delFile(0);}";
+					echo 'if (confirm("' . g_l('alert', '[delete_folder]') . '")){delFile(0);}';
 				} else if(is_link($fid) || is_file($fid)){
-					echo "if (confirm(\"" . g_l('alert', '[delete]') . "\")){delFile(0);}";
+					echo 'if (confirm("' . g_l('alert', '[delete]') . '")){delFile(0);}';
 				}
 			} else {
 				if(!is_link($fid) && is_dir($fid)){

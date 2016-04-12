@@ -66,7 +66,6 @@
  */
 
 class we_shop_pager{
-
 	// Wer hier Werte setzt, der sollte sicher sein, dass sie richtig sind, geprueft werden sie nicht!
 	// Also lieber die dafuer vorgesehenen Methoden nutzen.
 	//////////////////////////////////////////////////
@@ -346,17 +345,17 @@ class we_shop_pager{
 	public static function getStandardPagerHTML($url, $actPage, $nrOfPage, $anz){
 		$offset = $actPage * $nrOfPage;
 
-		return '<table cellpadding="0" cellspacing="0" border="0"><tr><td>' .
+		return '<table class="default"><tr><td>' .
 			($actPage > 0 ?
-				we_html_button::create_button("back", $url . '&actPage=' . ($actPage - 1)) :
-				we_html_button::create_button("back", "#", false, 100, 22, "", "", true)) .
-			'</td><td>' . we_html_tools::getPixel(23, 1) . "</td><td class='defaultfont'><b>" . (($anz) ? $offset + 1 : 0) . "-" .
+				we_html_button::create_button(we_html_button::BACK, $url . '&actPage=' . ($actPage - 1)) :
+				we_html_button::create_button(we_html_button::BACK, "#", false, 100, 22, "", "", true)) .
+			'</td><td class="defaultfont" style="padding:0xp 23px;"><b>' . (($anz) ? $offset + 1 : 0) . "-" .
 			(($anz - $offset) < $nrOfPage ?
 				$anz : $offset + $nrOfPage) .
-			"&nbsp;&nbsp;" . g_l('global', '[from]') . "&nbsp;&nbsp;" . $anz . "</b></td><td>" . we_html_tools::getPixel(23, 1) . '</td><td>' .
+			"&nbsp;&nbsp;" . g_l('global', '[from]') . "&nbsp;&nbsp;" . $anz . "</b></td><td>" .
 			(($offset + $nrOfPage) < $anz ?
-				we_html_button::create_button("next", $url . '&actPage=' . ($actPage + 1)) :
-				we_html_button::create_button("next", "#", false, 100, 22, "", "", true)) .
+				we_html_button::create_button(we_html_button::NEXT, $url . '&actPage=' . ($actPage + 1)) :
+				we_html_button::create_button(we_html_button::NEXT, "#", false, 100, 22, "", "", true)) .
 			"</td></tr></table>";
 	}
 
@@ -1159,77 +1158,6 @@ class we_shop_pager{
 	 */
 	function get_Active_Page(){
 		return $this->active_page;
-	}
-
-	/** Zeigt den Wert aller Variablen an
-	 *
-	 * 	@access public
-	 */
-	function dump(){
-		$width = 30;
-		$vars = array(
-			'active_page',
-			'delimiter1',
-			'delimiter2',
-			'delimiter3',
-			'delimiter4',
-			'entries',
-			'epp',
-			'link_active_bracket_left',
-			'link_active_bracket_right',
-			'link_active_more',
-			'link_active_text',
-			'link_bracket_left',
-			'link_bracket_right',
-			'link_count',
-			'link_count_surround',
-			'link_first_last_more',
-			'link_first_text',
-			'link_href',
-			'link_last_text',
-			'link_more',
-			'link_next_prev_more',
-			'link_next_text',
-			'link_prev_text',
-			'link_text',
-			'page_first',
-			'page_last',
-			'page_next',
-			'page_prev',
-			'show_active_link',
-			'show_continuous',
-			'show_count',
-			'show_first_last',
-			'show_next_prev',
-			'show_outer',
-			'show_single_link',
-			'steps_next_prev');
-
-		echo "<pre>\n";
-
-		for($i = 0; $i < count($vars); $i++){
-			$temp = $this->$vars[$i];
-
-			if(is_bool($temp)){
-				$temp = $temp ? 'true' : 'false';
-			}
-			echo '$' . str_pad($vars[$i], $width, ' ', STR_PAD_RIGHT) . " = $temp\n";
-		}
-
-		if(is_array($this->links)){
-			echo '$links = ';
-			print_r($this->links);
-			echo '$links = Array' . "\n(\n";
-			for($i = 0; $i < count($this->links); $i++){
-				echo "    [$i] => " . htmlentities($this->links[$i]) . "\n";
-			}
-			echo ")\n";
-		} else {
-			echo '$' . str_pad('links', $width, ' ', STR_PAD_RIGHT) . " = $this->links\n" .
-			'$' . str_pad('links', $width, ' ', STR_PAD_RIGHT) . ' = ' . htmlentities(str_replace('<a href', "\n	<a href", $this->links)) . "\n";
-		}
-
-		echo "</pre>\n";
 	}
 
 }

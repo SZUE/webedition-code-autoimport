@@ -42,7 +42,6 @@ class we_navigation_customerFilter extends we_customer_abstractFilter{
 		// convert navigation data into data the filter model needs
 
 		$_custFilter = $navModel->CustomerFilter;
-		$_useDocumentFilter = $navModel->UseDocumentFilter;
 
 		$this->updateCustomerFilter($_custFilter);
 
@@ -63,15 +62,13 @@ class we_navigation_customerFilter extends we_customer_abstractFilter{
 
 		// end convert data
 
-		$_whitelist = isset($navModel->WhiteList) && is_array($navModel->WhiteList) ? $navModel->WhiteList : array();
-		$_blacklist = isset($navModel->BlackList) && is_array($navModel->BlackList) ? $navModel->BlackList : array();
+		$this->setBlackList(isset($navModel->BlackList) && is_array($navModel->BlackList) ? $navModel->BlackList : array());
+		$this->setWhiteList(isset($navModel->WhiteList) && is_array($navModel->WhiteList) ? $navModel->WhiteList : array());
+		$this->setSpecificCustomers($_specCust);
 
-		$this->setBlackList($_blacklist);
-		$this->setWhiteList($_whitelist);
 		$this->setFilter($_custFilter);
 		$this->setMode($_mode);
-		$this->setSpecificCustomers($_specCust);
-		$this->setUseDocumentFilter($_useDocumentFilter);
+		$this->setUseDocumentFilter($navModel->UseDocumentFilter);
 	}
 
 	/**
@@ -220,10 +217,11 @@ class we_navigation_customerFilter extends we_customer_abstractFilter{
 				'LimitAccess' => $_limitAccess,
 				'ApplyFilter' => $_applyFilter,
 				'AllCustomers' => $_allCustomers,
-				'Customers' => makeCSVFromArray($filterObj->getSpecificCustomers(), true),
-				'CustomerFilter' => serialize($filterObj->getFilter()),
-				'BlackList' => makeCSVFromArray($filterObj->getBlackList(), true),
-				'WhiteList' => makeCSVFromArray($filterObj->getWhiteList(), true)
+				'Customers' => implode(',', $filterObj->getSpecificCustomers()),
+				//FIXME: this is due to customerfilter
+				'CustomerFilter' => we_serialize($filterObj->getFilter(), SERIALIZE_PHP),
+				'BlackList' => implode(',', $filterObj->getBlackList()),
+				'WhiteList' => implode(',', $filterObj->getWhiteList())
 			)) .
 			' WHERE UseDocumentFilter=1 AND ' . we_navigation_navigation::getNavCondition($id, $table));
 	}

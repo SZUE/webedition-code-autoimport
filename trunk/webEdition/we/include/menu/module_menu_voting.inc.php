@@ -21,7 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$we_menu_voting = array(
+return array(
 	'voting' => array(
 		'text' => g_l('modules_voting', '[voting]'),
 

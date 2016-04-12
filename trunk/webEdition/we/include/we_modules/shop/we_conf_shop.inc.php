@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -23,15 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 define('SHOP_TABLE', TBL_PREFIX . 'tblOrders');
-define('ANZEIGE_PREFS_TABLE', TBL_PREFIX . 'tblAnzeigePrefs'); //deprecated
-define('WE_SHOP_PREFS_TABLE', ANZEIGE_PREFS_TABLE);
 define('WE_SHOP_VAT_TABLE', TBL_PREFIX . 'tblshopvats');
 define('WE_SHOP_MODULE_DIR', WE_MODULES_DIR . 'shop/');
 define('WE_SHOP_MODULE_PATH', WE_MODULES_PATH . 'shop/');
-
-define('WE_SHOP_VARIANTS_PREFIX', 'we__intern_variant___');
-define('WE_SHOP_VARIANTS_ELEMENT_NAME', 'weInternVariantElement');
-define('WE_SHOP_VARIANT_REQUEST', 'we_variant');
 
 // name of request array for shopping items
 define('WE_SHOP_ARTICLE_CUSTOM_FIELD', 'we_sacf');
@@ -47,4 +40,7 @@ define('WE_SHOP_PRICENAME', 'we_shopPricename');
 define('WE_SHOP_SHIPPING', 'we_shopPriceShipping');
 define('WE_SHOP_CALC_VAT', 'we_shopCalcVat');
 
-we_base_request::registerTables(array(SHOP_TABLE, WE_SHOP_PREFS_TABLE, WE_SHOP_VAT_TABLE));
+we_base_request::registerTables(array(
+	'SHOP_TABLE' => SHOP_TABLE,
+	'WE_SHOP_VAT_TABLE' => WE_SHOP_VAT_TABLE
+));

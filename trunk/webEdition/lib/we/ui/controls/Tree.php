@@ -1,5 +1,4 @@
 <?php
-
 /* webEdition SDK
  *
  * This source is part of the webEdition SDK. The webEdition SDK is
@@ -29,7 +28,6 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
-
 	/**
 	 * _nodes attribute
 	 *
@@ -124,13 +122,9 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 		$this->addJSFile(we_ui_controls_Tree::computeJSURL(__CLASS__));
 
 		// add needed JS Files
-		$this->addJSFile(JS_DIR . 'libs/yui/yahoo-min.js');
-		$this->addJSFile(JS_DIR . 'libs/yui/dom-min.js');
-		$this->addJSFile(JS_DIR . 'libs/yui/event-min.js');
-		$this->addJSFile(JS_DIR . 'libs/yui/connection-min.js');
-		$this->addJSFile(JS_DIR . 'libs/yui/json-min.js');
+		$this->addJSFile(LIB_DIR . 'additional/yui/dom-min.js');
 		$this->addJSFile(LIB_DIR . '/we/core/JsonRpc.js');
-		$this->addJSFile(JS_DIR . 'libs/yui/treeview/treeview-min.js');
+		$this->addJSFile(LIB_DIR . 'additional/yui/treeview/treeview-min.js');
 	}
 
 	/**
@@ -143,24 +137,16 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 	 * @return array
 	 */
 	public static function doSelect($_table, $parentID = 0, $start = 0, $anzahl = 0){
-		$db = we_io_DB::sharedAdapter();
+		$db = new DB_WE();
 
 		$table = $_table;
-		$limit = ($start === 0 && $anzahl === 0) ? '' : (is_numeric($start) && is_numeric($anzahl)) ? 'LIMIT ' . abs($start) . ',' . abs($anzahl) . '' : '';
+		$limit = ($start === 0 && $anzahl === 0) ? '' : (is_numeric($start) && is_numeric($anzahl)) ? 'LIMIT ' . abs($start) . ',' . abs($anzahl) : '';
 
-		$nodes = $db->fetchAll('SELECT ' . escape_sql_query($table) . ".*,LOWER(Text) AS lowtext, abs(Text) as Nr, (Text REGEXP '^[0-9]') as isNr FROM `" . escape_sql_query($table) . "` WHERE ParentID= ? ORDER BY IsFolder DESC, isNr DESC,Nr ,lowtext , Text $limit ", $parentID);
+		$nodes = $db->getAllq('SELECT * FROM ' . $db->escape($table) . ' WHERE ParentID= ' . intval($parentID) . ' ORDER BY IsFolder DESC,(Text REGEXP "^[0-9]") DESC,abs(Text),Text ' . $limit);
 
 		if(!empty($nodes)){
-			if(!array_key_exists('Published', $nodes[0])){
-				$addPublished = true;
-			} else {
-				$addPublished = false;
-			}
-			if(!array_key_exists('Status', $nodes[0])){
-				$addStatus = true;
-			} else {
-				$addStatus = false;
-			}
+			$addPublished = (!array_key_exists('Published', $nodes[0]));
+			$addStatus = (!array_key_exists('Status', $nodes[0]));
 			foreach($nodes as &$node){
 				if($addPublished){
 					$node['Published'] = 1;
@@ -326,7 +312,8 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 		$controller = Zend_Controller_Front::getInstance();
 		$appPath = $controller->getParam('appPath');
 		include($appPath . '/conf/meta.conf.php');
-		return (substr($metaInfo['datasource'], 0, 6) === 'table:' && we_io_DB::tableExists($metaInfo['maintable']) ?
+		$db = new DB_WE();
+		return (substr($metaInfo['datasource'], 0, 6) === 'table:' && $db->isTabExist($metaInfo['maintable']) ?
 				'table' :
 				(substr($metaInfo['datasource'], 0, 7) === 'custom:' ?
 					'custom' : 'custom'));
@@ -359,116 +346,114 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 		}
 
 		$js = '
-			var tree_' . $this->_id . ';
-			var tree_' . $this->_id . '_activEl = 0;
+var tree_' . $this->_id . ';
+var tree_' . $this->_id . '_activEl = 0;
 
-			(function() {
+(function() {
 
-				function tree_' . $this->_id . '_Init() {
-					tree_' . $this->_id . ' = new YAHOO.widget.TreeView("' . $this->_id . '");
-					tree_' . $this->_id . '.setDynamicLoad(loadNodeData);
+	function tree_' . $this->_id . '_Init() {
+		tree_' . $this->_id . ' = new YAHOO.widget.TreeView("' . $this->_id . '");
+		tree_' . $this->_id . '.setDynamicLoad(loadNodeData);
 
-					' . $this->getNodesJS() . '
+		' . $this->getNodesJS() . '
 
-					tree_' . $this->_id . '.subscribe("collapse", function(node) {
-						var sUrl = "' . LIB_DIR . 'we/ui/controls/TreeSuggest.php?sessionname=' . $this->_sessionName . '&id=" + node.data.id +  "&close=1";
-					    var callback = {
-					        success: function(oResponse) {
-					        	var _node = document.getElementById(node.labelElId);
-					        	if(_node) {
-									_node.className = "' . $this->getTreeIconClass('folder') . '";
-								}
-					        },
-					        failure: function(oResponse) {
-					        }
-					    };
-					    YAHOO.util.Connect.asyncRequest("GET", sUrl, callback);
-					});
+		tree_' . $this->_id . '.subscribe("collapse", function(node) {
+			var sUrl = "' . LIB_DIR . 'we/ui/controls/TreeSuggest.php?sessionname=' . $this->_sessionName . '&id=" + node.data.id +  "&close=1";
+				var callback = {
+						success: function(oResponse) {
+							var _node = document.getElementById(node.labelElId);
+							if(_node) {
+						_node.className = "' . $this->getTreeIconClass('folder') . '";
+					}
+						},
+						failure: function(oResponse) {
+						}
+				};
+				YAHOO.util.Connect.asyncRequest("GET", sUrl, callback);
+		});
 
-					tree_' . $this->_id . '.subscribe("expand", function(node) {
-						var sUrl = "' . LIB_DIR . 'we/ui/controls/TreeSuggest.php?sessionname=' . $this->_sessionName . '&id=" + node.data.id + "&close=0";
-					    var callback = {
-					        success: function(oResponse) {
-								var _node = document.getElementById(node.labelElId);
-								_node.className = "' . $this->getTreeIconClass('folderOpen') . '";
-					        },
-					        failure: function(oResponse) {
-					        }
-					    };
-					    YAHOO.util.Connect.asyncRequest("GET", sUrl, callback);
-					});
+		tree_' . $this->_id . '.subscribe("expand", function(node) {
+			var sUrl = "' . LIB_DIR . 'we/ui/controls/TreeSuggest.php?sessionname=' . $this->_sessionName . '&id=" + node.data.id + "&close=0";
+				var callback = {
+						success: function(oResponse) {
+					var _node = document.getElementById(node.labelElId);
+					_node.className = "' . $this->getTreeIconClass('folderOpen') . '";
+						},
+						failure: function(oResponse) {
+						}
+				};
+				YAHOO.util.Connect.asyncRequest("GET", sUrl, callback);
+		});
 
-					tree_' . $this->_id . '.draw();
-				}
+		tree_' . $this->_id . '.draw();
+	}
 
-				function loadNodeData(node, fnLoadComplete)  {
+	function loadNodeData(node, fnLoadComplete)  {
 
-					var nodeId = node.data.id;
-					var nodeTable = encodeURI("' . $this->getTable() . '");
-				    var nodeLabel = encodeURI(node.label);
+		var nodeId = node.data.id;
+		var nodeTable = encodeURI("' . $this->getTable() . '");
+			var nodeLabel = encodeURI(node.label);
 
-				    //prepare URL for XHR request:
-				    var sUrl = "' . LIB_DIR . 'we/ui/controls/TreeSuggest.php?treeclass=' . get_class($this) . '&datasource=' . $this->getDatasource() . '&sessionname=' . $this->_sessionName . '&id=" + nodeId + "&table=" + nodeTable;
+			//prepare URL for XHR request:
+			var sUrl = "' . LIB_DIR . 'we/ui/controls/TreeSuggest.php?treeclass=' . get_class($this) . '&datasource=' . $this->getDatasource() . '&sessionname=' . $this->_sessionName . '&id=" + nodeId + "&table=" + nodeTable;
 
-				    //prepare our callback object
-				    var callback = {
+			//prepare our callback object
+			var callback = {
 
-				        //if our XHR call is successful, we want to make use
-				        //of the returned data and create child nodes.
-				        success: function(oResponse) {
-				            YAHOO.log("XHR transaction was successful.", "info", "example");
-				          //console.log(oResponse.responseText);
-				            var oResults = eval("(" + oResponse.responseText + ")");
-				            if((oResults.ResultSet.Result) && (oResults.ResultSet.Result.length)) {
-				                //Result is an array if more than one result, string otherwise
-				                if(YAHOO.lang.isArray(oResults.ResultSet.Result)) {
-				                    for (var i=0, j=oResults.ResultSet.Result.length; i<j; i++) {
-				                    	' . $this->getNodeObjectSuggest('"+oResults.ResultSet.Id[i]+"', '"+oResults.ResultSet.Result[i]+"', '"+oResults.ResultSet.Classes[i]+"', '"+oResults.ResultSet.Status[i]+"') . '
-				                    	var tmpNode = new YAHOO.widget.TextNode(myobj, node, oResults.ResultSet.open[i]);
-				                    	tmpNode.labelStyle = oResults.ResultSet.LabelStyle[i];
-				                    	if(tmpNode.labelStyle!=="folder") {
-				                    		tmpNode.isLeaf = true;
-				                    	}
-				                    	if(oResults.ResultSet.open[i]) {
-				                    		tmpNode.labelStyle = "folderOpen";
-				                    	}
-				                    }
-				                } else {
-				                    //there is only one result; comes as string:
-									' . $this->getNodeObjectSuggest('"+oResults.ResultSet.Id+"', '"+oResults.ResultSet.Result+"', '"+oResults.ResultSet.Published+"', '"+oResults.ResultSet.Status+"') . '
-				                    var tmpNode = new YAHOO.widget.TextNode(myobj, node, false);
-				                    tmpNode.labelStyle = oResults.ResultSet.LabelStyle;
-				                    if(tmpNode.labelStyle!=="folder") {
-				                    	tmpNode.isLeaf = true;
-				                    }
-				                    if(oResults.ResultSet.open) {
-				                    	tmpNode.labelStyle = "folderOpen";
-				                    }
-				                }
-				            }
-				            oResponse.argument.fnLoadComplete();
-				        },
+					//if our XHR call is successful, we want to make use
+					//of the returned data and create child nodes.
+					success: function(oResponse) {
+							YAHOO.log("XHR transaction was successful.", "info", "example");
+							var oResults = JSON.parse(oResponse.responseText);
+							if((oResults.ResultSet.Result) && (oResults.ResultSet.Result.length)) {
+									//Result is an array if more than one result, string otherwise
+									if(YAHOO.lang.isArray(oResults.ResultSet.Result)) {
+											for (var i=0, j=oResults.ResultSet.Result.length; i<j; i++) {
+												' . $this->getNodeObjectSuggest('"+oResults.ResultSet.Id[i]+"', '"+oResults.ResultSet.Result[i]+"', '"+oResults.ResultSet.Classes[i]+"', '"+oResults.ResultSet.Status[i]+"') . '
+												var tmpNode = new YAHOO.widget.TextNode(myobj, node, oResults.ResultSet.open[i]);
+												tmpNode.labelStyle = oResults.ResultSet.LabelStyle[i];
+												if(tmpNode.labelStyle!=="folder") {
+													tmpNode.isLeaf = true;
+												}
+												if(oResults.ResultSet.open[i]) {
+													tmpNode.labelStyle = "folderOpen";
+												}
+											}
+									} else {
+											//there is only one result; comes as string:
+						' . $this->getNodeObjectSuggest('"+oResults.ResultSet.Id+"', '"+oResults.ResultSet.Result+"', '"+oResults.ResultSet.Published+"', '"+oResults.ResultSet.Status+"') . '
+											var tmpNode = new YAHOO.widget.TextNode(myobj, node, false);
+											tmpNode.labelStyle = oResults.ResultSet.LabelStyle;
+											if(tmpNode.labelStyle!=="folder") {
+												tmpNode.isLeaf = true;
+											}
+											if(oResults.ResultSet.open) {
+												tmpNode.labelStyle = "folderOpen";
+											}
+									}
+							}
+							oResponse.argument.fnLoadComplete();
+					},
 
-				        failure: function(oResponse) {
-				            YAHOO.log("Failed to process XHR transaction.", "info", "example");
-				            oResponse.argument.fnLoadComplete();
-				        },
+					failure: function(oResponse) {
+							YAHOO.log("Failed to process XHR transaction.", "info", "example");
+							oResponse.argument.fnLoadComplete();
+					},
 
-				        argument: {
-				            "node": node,
-				            "fnLoadComplete": fnLoadComplete
-				        },
+					argument: {
+							"node": node,
+							"fnLoadComplete": fnLoadComplete
+					},
 
-				        timeout: 7000
-				    };
+					timeout: 7000
+			};
 
-				    YAHOO.util.Connect.asyncRequest("GET", sUrl, callback);
-				}
+			YAHOO.util.Connect.asyncRequest("GET", sUrl, callback);
+	}
 
-				YAHOO.util.Event.addListener(window, "load", tree_' . $this->_id . '_Init);
+	YAHOO.util.Event.addListener(window, "load", tree_' . $this->_id . '_Init);
 
-			})();
-		';
+})();';
 
 		$page = we_ui_layout_HTMLPage::getInstance();
 		$page->addInlineJS($js);

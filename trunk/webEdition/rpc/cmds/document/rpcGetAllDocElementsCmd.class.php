@@ -22,13 +22,13 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcGetAllDocElementsCmd extends rpcCmd{
+class rpcGetAllDocElementsCmd extends we_rpc_cmd{
 
 	var $Parameters = array('docid');
 
 	function execute(){
 
-		$resp = new rpcResponse();
+		$resp = new we_rpc_response();
 
 		$_doc = new we_webEditionDocument();
 		$_doc->initByID(we_base_request::_(we_base_request::INT, 'docid',0));

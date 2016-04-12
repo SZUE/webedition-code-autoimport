@@ -23,13 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifCat($attribs){
-
-	$categories = weTag_getAttribute('categories', $attribs, '', we_base_request::RAW);
-	$category = weTag_getAttribute('category', $attribs, '', we_base_request::RAW);
-
-	if(strlen($categories) == 0 && strlen($category) == 0){
+	$categories = weTag_getAttribute('categories', $attribs, weTag_getAttribute('category', $attribs, array(), we_base_request::STRING_LIST), we_base_request::STRING_LIST);
+	$catids = weTag_getAttribute('categoryids', $attribs, array(), we_base_request::INTLISTA);
+	if(!$categories && !$catids){
 		if(($foo = attributFehltError($attribs, 'categories', __FUNCTION__))){
-			print($foo);
+			echo $foo;
 			return false;
 		}
 	}
@@ -37,27 +35,33 @@ function we_tag_ifCat($attribs){
 	$parent = weTag_getAttribute('parent', $attribs, false, we_base_request::BOOL);
 	$docAttr = weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING);
 
-	$match = $categories ? : $category;
-	$matchArray = makeArrayFromCSV($match);
-
 	if($docAttr === 'listview' && isset($GLOBALS['lv'])){
 		$cat = $GLOBALS['lv']->f('wedoc_Category');
 	} else {
 		$doc = we_getDocForTag($docAttr);
 		$cat = $doc->Category;
 	}
-	$DocCatsPaths = id_to_path($cat, CATEGORY_TABLE, $GLOBALS['DB_WE'], true, false, $parent);
 
-	foreach($matchArray as $match){
-		$match = '/' . ltrim($match, '/');
+	if($catids){
 		if($parent){
-			if(strpos($DocCatsPaths, ',' . $match . ',') !== false || strpos($DocCatsPaths, ',' . $match . '/') !== false){
-				return true;
-			}
+			$categories = id_to_path($catids, CATEGORY_TABLE, $GLOBALS['DB_WE'], true);
 		} else {
-			if(!(strpos($DocCatsPaths, ',' . $match . ',') === false)){
+			//no need to query db
+			$cat = array_filter(array_map('intval', explode(',', $cat)));
+			return (array_intersect($cat, array_filter($catids)) ? true : false);
+		}
+	}
+
+	$DocCatsPaths = id_to_path($cat, CATEGORY_TABLE, $GLOBALS['DB_WE'], !$parent);
+
+	foreach($categories as $match){
+		$match = '/' . trim($match, '/');
+		if($parent){
+			if(strpos($DocCatsPaths, $match . '/') !== false){
 				return true;
 			}
+		} else if(in_array($match, $DocCatsPaths)){
+			return true;
 		}
 	}
 	return false;

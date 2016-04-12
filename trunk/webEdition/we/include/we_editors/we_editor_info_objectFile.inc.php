@@ -24,8 +24,6 @@
 we_html_tools::protect();
 echo we_html_tools::getHtmlTop();
 
-
-
 $_html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">ID</div>' .
 	'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID ? : "-") . '</div>
 	<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[content_type]') . '</div>' .
@@ -35,8 +33,8 @@ $_html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">ID</div
 $parts = array(
 	array("headline" => "",
 		"html" => $_html,
-		"space" => 140,
-		"icon" => "meta.gif"
+		'space' => 140,
+		'icon' =>"meta.gif"
 	)
 );
 
@@ -47,7 +45,7 @@ $_html = '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_
 
 
 if($GLOBALS['we_doc']->CreatorID){
-	$GLOBALS['DB_WE']->query("SELECT First,Second,username FROM " . USER_TABLE . " WHERE ID=" . $GLOBALS['we_doc']->CreatorID);
+	$GLOBALS['DB_WE']->query('SELECT First,Second,username FROM ' . USER_TABLE . ' WHERE ID=' . $GLOBALS['we_doc']->CreatorID);
 	if($GLOBALS['DB_WE']->next_record()){
 		$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('modules_users', '[created_by]') . '</div>' .
 			'<div style="margin-bottom:10px;">' . $GLOBALS['DB_WE']->f("First") . ' ' . $GLOBALS['DB_WE']->f("Second") . ' (' . $GLOBALS['DB_WE']->f("username") . ')</div>';
@@ -59,7 +57,7 @@ $_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g
 
 
 if($GLOBALS['we_doc']->ModifierID){
-	$GLOBALS['DB_WE']->query("SELECT First,Second,username FROM " . USER_TABLE . " WHERE ID=" . $GLOBALS['we_doc']->ModifierID);
+	$GLOBALS['DB_WE']->query('SELECT First,Second,username FROM ' . USER_TABLE . ' WHERE ID=' . $GLOBALS['we_doc']->ModifierID);
 	if($GLOBALS['DB_WE']->next_record()){
 		$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('modules_users', '[changed_by]') . '</div>' .
 			'<div style="margin-bottom:10px;">' . $GLOBALS['DB_WE']->f("First") . ' ' . $GLOBALS['DB_WE']->f("Second") . ' (' . $GLOBALS['DB_WE']->f("username") . ')</div>';
@@ -72,8 +70,8 @@ $_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g
 
 $parts[] = array("headline" => "",
 	"html" => $_html,
-	"space" => 140,
-	"icon" => "cal.gif"
+	'space' => 140,
+	'icon' =>"cal.gif"
 );
 
 
@@ -84,21 +82,20 @@ if(defined('WORKFLOW_TABLE')){
 
 	$parts[] = array("headline" => g_l('modules_workflow', '[workflow]'),
 		"html" => $anzeige,
-		"space" => 140,
+		'space' => 140,
 		"forceRightHeadline" => 1,
-		"icon" => "workflow.gif"
+		'icon' =>"workflow.gif"
 	);
 }
 
-echo STYLESHEET .
-	we_html_element::jsScript(JS_DIR . 'windows.js');
+echo STYLESHEET;
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 ?>
 </head>
 <body class="weEditorBody" onunload="doUnload()">
 	<?php
 	echo we_html_multiIconBox::getJS() .
-		we_html_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false);
+	we_html_multiIconBox::getHTML("", $parts, 30, "", -1, "", "", false);
 	?>
 </body>
 </html>

@@ -33,7 +33,7 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-we_ui_controls_RadioButton = new Object();
+we_ui_controls_RadioButton = {};
 
 /**
  * enables / disables RadioButton

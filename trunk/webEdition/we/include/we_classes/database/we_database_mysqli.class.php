@@ -88,8 +88,10 @@ class DB_WE extends we_database_base{
 	protected function connect($Database = DB_DATABASE, $Host = DB_HOST, $User = DB_USER, $Password = DB_PASSWORD){
 		if(!$this->isConnected()){
 			switch(DB_CONNECT){
+				case 'pconnect'://old mysql if
 				case 'mysqli_pconnect':
 					$Host = 'p:' . $Host;
+				case 'connect'://old mysql if
 				case 'mysqli_connect':
 					$this->Query_ID = null;
 					$this->Link_ID = @new mysqli($Host, $User, $Password, $Database);
@@ -185,9 +187,13 @@ class DB_WE extends we_database_base{
 				return 'geometry';
 			//252 is currently mapped to all text and blob types (MySQL 5.0.51a)
 			case MYSQLI_TYPE_VAR_STRING:
-				return 'varchar';
+				return ($this->field_flags($no) & MYSQLI_BINARY_FLAG ?
+						'varbinary' :
+						'varchar');
 			case MYSQLI_TYPE_STRING:
-				return 'char';
+				return ($this->field_flags($no) & MYSQLI_BINARY_FLAG ?
+						'binary' :
+						'char');
 			default:
 				return '';
 		}

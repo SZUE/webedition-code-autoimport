@@ -53,7 +53,7 @@ abstract class we_export_functions{
 
 				// Check if can create the file now
 				if(!$_continue === false){
-					we_base_file::save($_file_name, '<?xml version="1.0" encoding="' . DEFAULT_CHARSET . "\"?>\n" . we_backup_backup::weXmlExImHead . ">\n");
+					we_base_file::save($_file_name, '<?xml version="1.0" encoding="' . DEFAULT_CHARSET . "\"?>\n" . we_backup_util::weXmlExImHead . ">\n");
 				}
 
 				break;
@@ -93,7 +93,7 @@ abstract class we_export_functions{
 	static function fileComplete($format = we_import_functions::TYPE_GENERIC_XML, $filename){
 		switch($format){
 			case we_import_functions::TYPE_GENERIC_XML:
-				we_base_file::save($filename, we_backup_backup::weXmlExImFooter, "ab");
+				we_base_file::save($filename, we_backup_util::weXmlExImFooter, "ab");
 
 				break;
 		}
@@ -120,9 +120,9 @@ abstract class we_export_functions{
 
 				// Get a matching doctype or classname
 				if(($doctype != null) && ($doctype != "") && ($doctype != 0)){
-					$_doctype = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($doctype), '', new DB_WE());
+					$_doctype = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' dt WHERE dt.ID=' . intval($doctype), "", new DB_WE());
 				} else if(($tableid != null) && ($tableid != "") && ($tableid != 0)){
-					$tableid = f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($tableid), "Text", new DB_WE());
+					$tableid = f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($tableid), "", new DB_WE());
 				}
 
 				if($doctype != null){
@@ -457,7 +457,7 @@ abstract class we_export_functions{
 		if($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT){
 			$DB_WE = new DB_WE();
 
-			$_template_code = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . intval($we_doc->TemplateID) . ' AND l.Name="completeData"', '', $DB_WE);
+			$_template_code = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . intval($we_doc->TemplateID) . ' AND l.Name=x\'' . md5("completeData") . '\'', '', $DB_WE);
 			$_tag_parser = new we_tag_tagParser($_template_code);
 			$_tags = $_tag_parser->getAllTags();
 			$_regs = $_records = array();
@@ -510,10 +510,8 @@ abstract class we_export_functions{
 							if(!in_array($regs[1], $hrefs)){
 								$hrefs[] = $regs[1];
 
-								$_int = ((!isset($we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]["dat"])) || $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]["dat"] == "") ? 0 : $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]["dat"];
-
-								if($_int){
-									$_intID = $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK_ID]['bdid'];
+								if($we_doc->getElement($regs[1] . we_base_link::MAGIC_INT_LINK, 'dat', 0)){
+									$_intID = $we_doc->getElement($regs[1] . we_base_link::MAGIC_INT_LINK_ID, 'bdid');
 
 									$_tag_name = self::correctTagname($k, "link", $_tag_counter);
 									$_file .= self::formatOutput($_tag_name, id_to_path($_intID, FILE_TABLE, $DB_WE), $format, 2, $cdata);
@@ -532,7 +530,7 @@ abstract class we_export_functions{
 									}
 								}
 							}
-						} else if(substr($we_doc->elements[$k]["dat"], 0, 2) === "a:" && is_array(unserialize($we_doc->elements[$k]["dat"]))){ // is a we:link field
+						} else if(substr($we_doc->elements[$k]["dat"], 0, 2) === "a:" && is_array(we_unserialize($we_doc->elements[$k]["dat"]))){ // is a we:link field
 							$_tag_name = self::correctTagname($k, "link", $_tag_counter);
 							$_file .= self::formatOutput($_tag_name, self::formatOutput("", $we_doc->getFieldByVal($we_doc->elements[$k]["dat"], "link"), "cdata"), $format, 2, $cdata);
 
@@ -609,7 +607,7 @@ abstract class we_export_functions{
 		$DB_WE = new DB_WE();
 
 		$dv = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($we_obj->TableID), '', $DB_WE);
-		$dv = $dv ? unserialize($dv) : array();
+		$dv = we_unserialize($dv);
 		if(!is_array($dv)){
 			$dv = array();
 		}

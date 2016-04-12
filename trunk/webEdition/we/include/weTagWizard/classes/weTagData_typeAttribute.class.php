@@ -54,32 +54,29 @@ class weTagData_typeAttribute extends weTagDataAttribute{
 	 * @return string
 	 */
 	function getCodeForTagWizard(){
-		$keys = array('');
-		$values = array(g_l('taged', '[select_type]'));
+		$entries = array('' => g_l('taged', '[select_type]'));
 
 		foreach($this->Options as $option){
-			$keys[] = $option->Value;
-			$values[] = ($option->getName() === '-' ? '' : $option->getName());
+			$entries[$option->Value] = ($option->getName() === '-' ? '' : $option->getName());
 		}
 
 		$js = "we_cmd('switch_type', this.value);";
 
-		$select = new we_html_select(
-				array(
+		$select = new we_html_select(array(
 			'name' => $this->Name,
 			'id' => $this->getIdName(),
 			'onchange' => $js,
 			'class' => 'defaultfont selectinput'
 		));
-		$select->addOptions(count($values), $keys, $values);
+		$select->addOptions($entries);
 
 		return '
-					<table class="attribute">
-					<tr>
-						<td class="attributeName">' . $this->getLabelCodeForTagWizard() . '</td>
-						<td class="attributeField">' . $select->getHtml() . '</td>
-					</tr>
-					</table>';
+<table class="attribute">
+<tr>
+	<td class="attributeName">' . $this->getLabelCodeForTagWizard() . '</td>
+	<td class="attributeField">' . $select->getHtml() . '</td>
+</tr>
+</table>';
 	}
 
 	/**
