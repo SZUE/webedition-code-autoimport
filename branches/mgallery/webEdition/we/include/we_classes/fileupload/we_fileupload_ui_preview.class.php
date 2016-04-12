@@ -24,18 +24,33 @@
  */
 class we_fileupload_ui_preview extends we_fileupload_ui_base{
 	protected $formElements = array(
-		'uploader' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
-		'importMeta' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
-		'isSearchable' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
-		'categories' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
-		'parentId' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
-		'sameName' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
-		'attributes' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
-		'thumbnails' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
-		'imageResize' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
-		'imageRotate' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
-		'imageQuality' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
+		'uploader' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true, 'value' => false),
+		'importMeta' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true, 'value' => false),
+		'isSearchable' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true, 'value' => false),
+		'categories' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true, 'value' => false),
+		'parentId' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true, 'value' => false),
+		'sameName' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true, 'value' => false),
+		'attributes' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true, 'value' => false),
+		'thumbnails' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true, 'value' => false),
+		'imageResize' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true, 'value' => false),
+		'imageRotate' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true, 'value' => false),
+		'imageQuality' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true, 'value' => false),
 		'tableProperties' => array('foldAtNr' => -1, 'foldAtOpen' => '', 'foldAtClose' => '')
+	);
+	protected $imageEditProps = array(
+		'parentID' => 0,
+		'sameName' => 'rename',
+		'importMetadata' => false,
+		'isSearchable' => false,
+		'thumbnails' => '',
+		'imageWidth' => 0,
+		'imageHeight' => 0,
+		'widthSelect' => '',
+		'heightSelect' => '',
+		'keepRatio' => 1,
+		'quality' => 8,
+		'degrees' => 0,
+		'categories' => ''
 	);
 	protected $isExternalBtnUpload = false;
 	protected $parentID = array(
@@ -66,7 +81,21 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 			array('fu_doc_importMetadata', 'text'),
 			array('fu_file_sameName', 'text'),
 		));
+		$this->loadImageEditPropsFromSession();
 	}
+
+	public function setImageEditProps($props = array()){
+		$this->imageEditProps = array_merge($this->imageEditProps, $props);
+	}
+
+	public function loadImageEditPropsFromSession(){
+		$this->imageEditProps = isset($_SESSION['weS']['we_fileupload']['imageEditProps']) ? $_SESSION['weS']['we_fileupload']['imageEditProps'] : $this->imageEditProps;
+	}
+
+	public function saveImageEditPropsInSession(){
+		$_SESSION['weS']['we_fileupload']['imageEditProps'] = $this->imageEditProps;
+	}
+
 
 	public function getCss(){
 		return we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') . we_html_element::cssElement('
@@ -232,11 +261,10 @@ function selectCategories() {
 		$html = we_html_element::htmlDiv(array('style' => 'margin:10px 0 0 0;'),
 				//we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[sameName_expl]'), we_html_tools::TYPE_INFO, 380) .
 				we_html_element::htmlDiv(array('style' => 'margin-top:10px'), //g_l('newFile', '[caseFileExists]') . '<br/>' .
-					we_html_forms::radiobutton('overwrite', false, "sameName", g_l('importFiles', '[sameName_overwrite]'), false, "defaultfont", 'document.we_form.fu_file_sameName.value=this.value;') .
-					we_html_forms::radiobutton('rename', true, "sameName", g_l('importFiles', '[sameName_rename]'), false, "defaultfont", 'document.we_form.fu_file_sameName.value=this.value;') .
-					we_html_forms::radiobutton('nothing', false, "sameName", g_l('importFiles', '[sameName_nothing]'), false, "defaultfont", 'document.we_form.fu_file_sameName.value=this.value;')
-				) .
-				we_html_tools::hidden('fu_file_sameName', 'rename')
+					we_html_forms::radiobutton('overwrite', ($this->imageEditProps['sameName'] === 'overwrite'), "fu_file_sameName", g_l('importFiles', '[sameName_overwrite]'), false, "defaultfont") .
+					we_html_forms::radiobutton('rename', ($this->imageEditProps['sameName'] === 'rename'), "fu_file_sameName", g_l('importFiles', '[sameName_rename]'), false, "defaultfont") .
+					we_html_forms::radiobutton('nothing', ($this->imageEditProps['sameName'] === 'nothing'), "fu_file_sameName", g_l('importFiles', '[sameName_nothing]'), false, "defaultfont")
+				)
 		);
 
 		$headline = g_l('importFiles', '[sameName_headline]');

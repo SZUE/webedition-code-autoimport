@@ -111,26 +111,26 @@ var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action=
 
 	function getStep1(){
 		unset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs']);
+		$cb = $this->callBack;
+		$pid = $this->parentID;
+		$ips = $this->isPreset;
 
 		$fileupload = new we_fileupload_ui_editor();
 		$fileupload->setFormElements(array(
 			'uploader' => array('set' => false),
 			'parentId' => array('set' => true, 'multiIconBox' => true, 'space' => 150, 'rightHeadline' => false, 'noline' => true),
-			'sameName' => array('set' => true, 'multiIconBox' => true, 'space' => 150, 'rightHeadline' => false,),
+			'sameName' => array('set' => true, 'multiIconBox' => true, 'space' => 150, 'rightHeadline' => false),
 			'importMeta' => array('set' => true, 'multiIconBox' => true, 'space' => 150, 'rightHeadline' => false, 'noline' => true),
-			'categories' => array('set' => true, 'multiIconBox' => true, 'space' => 150, 'rightHeadline' => false,),
-			'isSearchable' => array('set' => true, 'multiIconBox' => true, 'space' => 150, 'rightHeadline' => false,),
-			'attributes' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true,),
-			'thumbnails' => array('set' => true, 'multiIconBox' => true, 'space' => 150, 'rightHeadline' => false,),
+			'categories' => array('set' => true, 'multiIconBox' => true, 'space' => 150, 'rightHeadline' => false),
+			'isSearchable' => array('set' => true, 'multiIconBox' => true, 'space' => 150, 'rightHeadline' => false),
+			'attributes' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true),
+			'thumbnails' => array('set' => true, 'multiIconBox' => true, 'space' => 150, 'rightHeadline' => false),
 			'imageResize' => array('set' => true, 'multiIconBox' => true, 'space' => 150, 'rightHeadline' => false, 'noline' => true),
 			'imageRotate' => array('set' => true, 'multiIconBox' => true, 'space' => 150, 'rightHeadline' => false, 'noline' => true),
 			'imageQuality' => array('set' => true, 'multiIconBox' => true, 'space' => 150, 'rightHeadline' => false, 'noline' => true),
 		));
+		$fileupload->loadImageEditPropsFromSession();
 
-		$cb = $this->callBack;
-		$pid = $this->parentID;
-		$ips = $this->isPreset;
-		$this->loadPropsFromSession();
 		if($ips){
 			$this->callBack = $cb;
 			$this->parentID = $pid;
@@ -196,7 +196,25 @@ var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action=
 	}
 
 	function getStep2(){
-		$this->savePropsInSession();
+		//FIXME: let we_fileupload_ui_importer inherit from we_fileupload_ui_previe or we_fileupload_ui_editor
+		//		 so we can saveImageEditPropsInSession() on we_fileupload_ui_importer
+		$uploader = new we_fileupload_ui_preview('we_File');
+		$uploader->setImageEditProps(array(
+			'parentID' => $this->parentID,
+			'sameName' => $this->sameName,
+			'importMetadata' => $this->importMetadata,
+			'isSearchable' => $this->imgsSearchable,
+			'thumbnails' => $this->thumbs,
+			'imageWidth' => $this->width,
+			'imageHeight' => $this->height,
+			'widthSelect' => $this->widthSelect,
+			'heightSelect' => $this->heightSelect,
+			'keepRatio' => $this->keepRatio,
+			'quality' => $this->quality,
+			'degrees' => $this->degrees,
+			'categories' => $this->categories
+		));
+		$uploader->saveImageEditPropsInSession();
 
 		$uploader = new we_fileupload_ui_importer('we_File');
 		$uploader->setCallback($this->callBack);
@@ -249,6 +267,16 @@ function back() {
 		top.location.href=WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=import&we_cmd[1]=' . we_import_functions::TYPE_LOCAL_FILES . '";
 	} else {
 		top.location.href=WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=import_files";
+		/*
+		f = top.imgimportcontent.we_startform;
+		var i, q = [];
+		for (i = 0; i < f.elements.length; i++) {
+			if(f.elements[i].name !== "step"){
+				q.push(f.elements[i].name + "=" + encodeURIComponent(f.elements[i].value));
+			}
+		}
+		top.location.href=WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=import_files&" + q.join("&");
+		*/
 	}
 }
 
@@ -361,6 +389,7 @@ function next() {
 		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', STYLESHEET . weSuggest::getYuiFiles() . $js, $body);
 	}
 
+	/*
 	function savePropsInSession(){
 		$_SESSION['weS']['_we_import_files'] = array();
 		$_vars = get_object_vars($this);
@@ -369,6 +398,7 @@ function next() {
 		}
 	}
 
+	
 	function loadPropsFromSession(){
 		if(isset($_SESSION['weS']['_we_import_files'])){
 			foreach($_SESSION['weS']['_we_import_files'] as $_name => $_var){
@@ -376,5 +406,7 @@ function next() {
 			}
 		}
 	}
+	 * 
+	 */
 
 }
