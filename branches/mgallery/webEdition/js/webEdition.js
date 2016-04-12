@@ -445,14 +445,16 @@ function we_openMediaReference(id) {
 }
 
 function we_showInNewTab(args, url) {
-	if ((nextWindow = WE().layout.weEditorFrameController.getFreeWindow())) {
+	var ctrl = WE().layout.weEditorFrameController;
+	var nextWindow;
+	if ((nextWindow = ctrl.getFreeWindow())) {
 		we_repl(nextWindow.getDocumentReference(), url, args[0]);
 		// activate tab
 		var pos = (args[0] === "open_cockpit" ? 0 : undefined);
 		WE().layout.multiTabs.addTab(nextWindow.getFrameId(), ' &hellip; ', ' &hellip; ', pos);
 		// set Window Active and show it
-		WE().layout.weEditorFrameController.setActiveEditorFrame(nextWindow.FrameId);
-		WE().layout.weEditorFrameController.toggleFrames();
+		ctrl.setActiveEditorFrame(nextWindow.FrameId);
+		ctrl.toggleFrames();
 	} else {
 		WE().util.showMessage(WE().consts.g_l.main.no_editor_left, WE().consts.message.WE_MESSAGE_INFO, window);
 	}
@@ -493,30 +495,32 @@ function we_cmd_base(args, url) {
 			break;
 
 		case "delete_single_document_question":
-			var cType = WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorContentType();
-			var eTable = WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorEditorTable();
-			var path = WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorDocumentPath();
+			var ctrl = WE().layout.weEditorFrameController;
+			var cType = ctrl.getActiveEditorFrame().getEditorContentType();
+			var eTable = ctrl.getActiveEditorFrame().getEditorEditorTable();
+			var path = ctrl.getActiveEditorFrame().getEditorDocumentPath();
 
-			if (WE().layout.weEditorFrameController.getActiveDocumentReference()) {
+			if (ctrl.getActiveDocumentReference()) {
 				if (!hasPermDelete(eTable, (cType === "folder"))) {
 					top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, this);
 				} else if (this.confirm(WE().consts.g_l.main.delete_single_confirm_delete + "\n" + path)) {
 					url2 = url.replace(/we_cmd\[0\]=delete_single_document_question/g, "we_cmd[0]=delete_single_document");
-					we_sbmtFrm(self.load, url2 + "&we_cmd[2]=" + WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorEditorTable(), WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter);
+					we_sbmtFrm(self.load, url2 + "&we_cmd[2]=" + ctrl.getActiveEditorFrame().getEditorEditorTable(), ctrl.getActiveDocumentReference().frames.editFooter);
 				}
 			} else {
 				top.we_showMessage(WE().consts.g_l.main.no_document_opened, WE().consts.message.WE_MESSAGE_ERROR, this);
 			}
 			break;
 		case "delete_single_document":
-			var cType = WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorContentType();
-			var eTable = WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorEditorTable();
+			var ctrl = WE().layout.weEditorFrameController;
+			var cType = ctrl.getActiveEditorFrame().getEditorContentType();
+			var eTable = ctrl.getActiveEditorFrame().getEditorEditorTable();
 
-			if (WE().layout.weEditorFrameController.getActiveDocumentReference()) {
+			if (ctrl.getActiveDocumentReference()) {
 				if (!hasPermDelete(eTable, (cType === "folder"))) {
 					top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, this);
 				} else {
-					we_sbmtFrm(self.load, url + "&we_cmd[2]=" + WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorEditorTable(), WE().layout.weEditorFrameController.getActiveDocumentReference().editFooter);
+					we_sbmtFrm(self.load, url + "&we_cmd[2]=" + ctrl.getActiveEditorFrame().getEditorEditorTable(), ctrl.getActiveDocumentReference().editFooter);
 				}
 			} else {
 				top.we_showMessage(WE().consts.g_l.main.no_document_opened, WE().consts.message.WE_MESSAGE_ERROR, this);
@@ -775,8 +779,9 @@ function we_cmd_base(args, url) {
 				}
 			} catch (e) {
 			}
-
-			if ((nextWindow = WE().layout.weEditorFrameController.getFreeWindow())) {
+			var nextWindow;
+			var ctrl = WE().layout.weEditorFrameController;
+			if ((nextWindow = ctrl.getFreeWindow())) {
 				_nextContent = nextWindow.getDocumentReference();
 				// activate tab and set state to loading
 				WE().layout.multiTabs.addTab(nextWindow.getFrameId(), nextWindow.getFrameId(), nextWindow.getFrameId());
@@ -790,8 +795,8 @@ function we_cmd_base(args, url) {
 								}
 				);
 				// set Window Active and show it
-				WE().layout.weEditorFrameController.setActiveEditorFrame(nextWindow.FrameId);
-				WE().layout.weEditorFrameController.toggleFrames();
+				ctrl.setActiveEditorFrame(nextWindow.FrameId);
+				ctrl.toggleFrames();
 				if (_nextContent.frames && _nextContent.frames[1]) {
 					if (!we_sbmtFrm(_nextContent, url)) {
 						we_repl(_nextContent, url + "&frameId=" + nextWindow.getFrameId());
@@ -805,14 +810,16 @@ function we_cmd_base(args, url) {
 			break;
 		case "open_extern_document":
 		case "new_document":
-			if ((nextWindow = WE().layout.weEditorFrameController.getFreeWindow())) {
+			var nextWindow;
+			var ctrl=WE().layout.weEditorFrameController;
+			if ((nextWindow = ctrl.getFreeWindow())) {
 				_nextContent = nextWindow.getDocumentReference();
 				// activate tab and set it status loading ...
 				WE().layout.multiTabs.addTab(nextWindow.getFrameId(), nextWindow.getFrameId(), nextWindow.getFrameId());
 				nextWindow.updateEditorTab();
 				// set Window Active and show it
-				WE().layout.weEditorFrameController.setActiveEditorFrame(nextWindow.getFrameId());
-				WE().layout.weEditorFrameController.toggleFrames();
+				ctrl.setActiveEditorFrame(nextWindow.getFrameId());
+				ctrl.toggleFrames();
 				// load new document editor
 				we_repl(_nextContent, url + "&frameId=" + nextWindow.getFrameId());
 			} else {
