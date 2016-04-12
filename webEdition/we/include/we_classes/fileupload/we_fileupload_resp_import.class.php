@@ -62,6 +62,27 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 				'height' => we_base_request::_(we_base_request::INT, 'fu_doc_height', we_base_request::NOT_VALID),
 			), function($var){return $var !== we_base_request::NOT_VALID;}
 		);
+
+		$this->setImageEditProps();
+		$this->saveImageEditPropsInSession();
+	}
+
+	public function setImageEditProps(){
+		$this->imageEditProps = array_merge($this->imageEditProps, array(
+			'parentID' => $this->fileVars['parentID'],
+			'sameName' => $this->fileVars['sameName'],
+			'importMetadata' => $this->docVars['importMetadata'],
+			'isSearchable' => $this->docVars['isSearchable'],
+			'thumbnails' => $this->docVars['thumbs'],
+			'imageWidth' => $this->docVars['width'],
+			'imageHeight' => $this->docVars['height'],
+			'widthSelect' => $this->docVars['widthSelect'],
+			'heightSelect' => $this->docVars['heightSelect'],
+			'keepRatio' => $this->docVars['keepRatio'],
+			'quality' => $this->docVars['quality'],
+			'degrees' => $this->docVars['degrees'],
+			'categories' => $this->docVars['categories']
+		));
 	}
 
 	protected function postprocess(){
