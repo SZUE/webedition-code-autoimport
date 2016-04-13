@@ -22,8 +22,8 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 			ini_set('session.hash_bits_per_character', 4);
 			session_set_save_handler(array($this, 'open'), array($this, 'close'), array($this, 'read'), array($this, 'write'), array($this, 'destroy'), array($this, 'gc'));
 			$this->DB = new DB_WE();
-			$this->execTime = get_cfg_var('max_execution_time');
-			$this->execTime = min(60, $this->execTime); //time might be wrong (1&1)
+			$this->execTime = intval(get_cfg_var('max_execution_time'));
+			$this->execTime = max(min(60, $this->execTime), 5); //time might be wrong (1&1); make exectime at least 5 seconds which is quite small
 			$this->id = uniqid('', true);
 			if(!(extension_loaded('suhosin') && ini_get('suhosin.session.encrypt')) && defined('SYSTEM_WE_SESSION_CRYPT') && SYSTEM_WE_SESSION_CRYPT){
 				$key = $_SERVER['DOCUMENT_ROOT'] . (!empty($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'HTTP_USER_AGENT');
