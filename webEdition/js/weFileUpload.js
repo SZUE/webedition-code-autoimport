@@ -170,11 +170,11 @@ var weFileUpload = (function () {
 			};
 
 			this.checkIsPresetFiles = function () {
-
 				if (_.controller.isPreset && WE().layout.weEditorFrameController.getVisibleEditorFrame().document.presetFileupload) {
 					_.controller.fileSelectHandler(null, true, WE().layout.weEditorFrameController.getVisibleEditorFrame().document.presetFileupload);
+				} else if(_.controller.isPreset && top.opener.document.presetFileupload){
+					_.controller.fileSelectHandler(null, true, top.opener.document.presetFileupload);
 				}
-
 			};
 
 			this.fileSelectHandler = function (e, isPreset, presetFileupload) {

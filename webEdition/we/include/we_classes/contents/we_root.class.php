@@ -644,6 +644,7 @@ abstract class we_root extends we_class{
 		$yuiSuggest->setOpenButton($openbutton);
 		//$yuiSuggest->setDoOnTextfieldBlur("if(document.getElementById('yuiAcResultTemplate').value == '' || document.getElementById('yuiAcResultTemplate').value == 0) { document.getElementById('TemplateLabel').style.display = 'inline'; document.getElementById('TemplateLabelLink').style.display = 'none'; } else { document.getElementById('TemplateLabel').style.display = 'none'; document.getElementById('TemplateLabelLink').style.display = 'inline'; }");
 		//$yuiSuggest->setDoOnTextfieldBlur("if(YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById['yuiAcInputTemplate'].set].changed && YAHOO.autocoml.isValidById('yuiAcInputTemplate')) top.we_cmd('reload_editpage')");
+		//$yuiSuggest->setIsDropFromTree(true);//deactivated
 		return $yuiSuggest->getHTML();
 	}
 

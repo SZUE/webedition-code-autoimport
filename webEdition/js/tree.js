@@ -264,7 +264,7 @@ container.prototype = {
 				break;
 			default:
 				href = true;
-				row += "draggable=\"true\" ondragstart=\"treeStartDrag(event,'" + (cur.contenttype === 'folder' ? 'dragFolder' : 'dragItem') + "','" + cur.table + "'," + parseInt(cur.id) + ", '" + cur.contenttype + "')\" name=\"_" + cur.id + "\" ondblclick=\"" + this.topFrame + ".wasdblclick=true;clearTimeout(" + this.topFrame + ".tout);" + this.topFrame + ".doClick('" + cur.id + "');return true;\" onclick=\"" + this.topFrame + ".tout=setTimeout('if(!" + this.topFrame + ".wasdblclick){" + this.topFrame + ".doClick(\\'" + cur.id + "\\'); }else{ " + this.topFrame + ".wasdblclick=false;}',300);return true;\" onmouseover=\"" + this.topFrame + ".info('ID:" + cur.id + "')\" onmouseout=\"" + this.topFrame + ".info(' ');\"";
+				row += "draggable=\"true\" ondragstart=\"treeStartDrag(event,'" + (cur.contenttype === 'folder' ? 'dragFolder' : 'dragItem') + "','" + cur.table + "'," + parseInt(cur.id) + ",'" + cur.contenttype + "','" + cur.path + "')\" name=\"_" + cur.id + "\" ondblclick=\"" + this.topFrame + ".wasdblclick=true;clearTimeout(" + this.topFrame + ".tout);" + this.topFrame + ".doClick('" + cur.id + "');return true;\" onclick=\"" + this.topFrame + ".tout=setTimeout('if(!" + this.topFrame + ".wasdblclick){" + this.topFrame + ".doClick(\\'" + cur.id + "\\'); }else{ " + this.topFrame + ".wasdblclick=false;}',300);return true;\" onmouseover=\"" + this.topFrame + ".info('ID:" + cur.id + "')\" onmouseout=\"" + this.topFrame + ".info(' ');\"";
 		}
 		row += (select && href ? 'onclick="' + this.topFrame + ".treeData.checkNode('img_" + cur.id + "')\"" : '') +
 						//close open span tag
@@ -390,10 +390,10 @@ container.prototype = {
 	}
 
 };
-function treeStartDrag(evt, type, table, id, ct) { // TODO: throw out setData
+function treeStartDrag(evt, type, table, id, ct, path) { // TODO: throw out setData
 	if (top.dd !== undefined && top.dd !== null) {
-		top.dd.dataTransfer.text = type + ',' + table + ',' + id + ',' + ct;
-		evt.dataTransfer.setData('text', type + ',' + table + ',' + id + ',' + ct);
+		top.dd.dataTransfer.text = type + ',' + table + ',' + id + ',' + ct + ',' + path;
+		evt.dataTransfer.setData('text', type + ',' + table + ',' + id + ',' + ct + ',' + path);
 	}
 }
 

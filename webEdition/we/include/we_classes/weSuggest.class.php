@@ -97,6 +97,10 @@ class weSuggest{
 	var $width = 280;
 	var $doOnItemSelect = '';
 	var $doOnTextfieldBlur = '';
+	protected $isDropFromTree = false;
+	protected $isDropFromExt = false;
+	protected $doOnDropFromTree = '';
+	protected $doOnDropFromExt = '';
 	private static $giveStatic = true;
 
 	static function &getInstance(){
@@ -238,7 +242,6 @@ YAHOO.util.Event.addListener(this, "load", YAHOO.autocoml.init);' .
 		$resultField = we_html_tools::hidden($this->resultName, $this->resultValue, array('id' => $resultId));
 		$autoSuggest = '<div id="yuiAcLayer' . $this->acId . '" class="yuiAcLayer">' . $inputField . '<div id="yuiAcContainer' . $this->acId . '"></div></div>';
 
-
 		$html = we_html_tools::htmlFormElementTable(
 				array(
 				"text" => $resultField . $autoSuggest), $this->label, 'left', 'defaultfont', (
@@ -252,6 +255,21 @@ YAHOO.util.Event.addListener(this, "load", YAHOO.autocoml.init);' .
 				), (
 				$this->createButton ? : '')
 		);
+
+		if($this->isDropFromTree || $this->isDropFromExt){
+			$this->isDropFromExt = $this->table === FILE_TABLE ? $this->isDropFromExt : false;
+
+			$callbackTree = "if(id){document.we_form.elements['" . $resultId . "'].value=id;document.we_form.elements['" . $inputId . "'].value=path;" . $this->doOnDropFromTree . "}";
+			$callbackExt = "if(importedDocument.id){" . $this->doOnDropFromExt . "top.close();}";
+			$dropzone = we_fileupload_ui_base::getExternalDropZone('we_File', '[add some reasonable text]', 'width:auto;height:30px;padding:24px;', implode(',', $this->contentTypes), array('tree' => $callbackTree, 'external' => $callbackExt), $resultId, '', '', 'we_suggest_ext', $this->isDropFromTree, $this->isDropFromExt, $this->acId, $this->table);
+
+			$html = we_html_element::htmlDiv(array(), 
+				we_html_element::htmlDiv(array(), $html) .
+				we_html_element::htmlDiv(array('style' => 'margin-top:-4px;'), $dropzone)
+			);
+			$this->isDropFromTree = $this->isDropFromExt = false;//reset default for other instances on the same site
+		}
+
 
 		if($reset){
 			$this->contentType = we_base_ContentTypes::FOLDER;
@@ -324,6 +342,22 @@ YAHOO.util.Event.addListener(this, "load", YAHOO.autocoml.init);' .
 
 	function setDoOnTextfieldBlur($val){
 		$this->doOnTextfieldBlur = $val;
+	}
+
+	function setDoOnDropFromExt($val = ''){
+		$this->doOnDropFromExt = $val;
+	}
+
+	function setDoOnDropFromTree($val = ''){
+		$this->doOnDropFromTree = $val;
+	}
+
+	function setIsDropFromExt($val = false){
+		$this->isDropFromExt = $val;
+	}
+
+	function setIsDropFromTree($val = false){
+		$this->isDropFromTree = $val;
 	}
 
 	/**

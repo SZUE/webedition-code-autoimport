@@ -379,6 +379,7 @@ foreach($_SESSION['perms'] as $perm => $access){
 		sidebar:null,
 		cockpitFrame:null,
 		windows:[],
+		focusedWindow:null
 	},
 	handler:{
 		errorHandler:errorHandler,
