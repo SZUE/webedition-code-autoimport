@@ -219,7 +219,7 @@ class we_navigation_customerFilter extends we_customer_abstractFilter{
 				'AllCustomers' => $_allCustomers,
 				'Customers' => implode(',', $filterObj->getSpecificCustomers()),
 				//FIXME: this is due to customerfilter
-				'CustomerFilter' => we_serialize($filterObj->getFilter(), SERIALIZE_PHP),
+				'CustomerFilter' => we_serialize($filterObj->getFilter(), SERIALIZE_JSON),
 				'BlackList' => implode(',', $filterObj->getBlackList()),
 				'WhiteList' => implode(',', $filterObj->getWhiteList())
 			)) .
