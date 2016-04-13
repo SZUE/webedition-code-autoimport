@@ -372,6 +372,31 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="href"
 		}
 	}
 
+	public static function updateCustomerFilters(we_database_base $db){
+		$db->query("SELECT ID,CustomerFilter,WhiteList,BlackList,Customers FROM " . NAVIGATION_TABLE . " WHERE CustomerFilter LIKE 'a:%{i:%'");
+		$all = $db->getAll();
+		foreach($all as $a){
+			$db->query('UPDATE ' . NAVIGATION_TABLE . ' SET ' . we_database_base::arraySetter(array(
+				'CustomerFilter' => we_serialize(we_unserialize($a['CustomerFilter']), SERIALIZE_JSON),
+				'WhiteList' => trim($a['WhiteList'], ','),
+				'BlackList' => trim($a['BlackList'], ','),
+				'Customers' => trim($a['Customers'], ','),
+			)) . ' WHERE ID=' . $a['ID']);
+		}
+		if(defined('CUSTOMER_FILTER_TABLE')){
+			$db->query("SELECT modelId,filter,whiteList,blackList,specificCustomers FROM " . CUSTOMER_FILTER_TABLE . " WHERE filter LIKE 'a:%{i:%'");
+			$all = $db->getAll();
+			foreach($all as $a){
+				$db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET ' . we_database_base::arraySetter(array(
+					'filter' => we_serialize(we_unserialize($a['filter']), SERIALIZE_JSON),
+					'whiteList' => trim($a['whiteList'], ','),
+					'blackList' => trim($a['blackList'], ','),
+					'specificCustomers' => trim($a['specificCustomers'], ','),
+				)) . ' WHERE modelId=' . $a['modelId']);
+			}
+		}
+	}
+
 	public static function doUpdate($internalCall = false){
 		$db = new DB_WE();
 		self::meassure('start');
@@ -405,6 +430,8 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="href"
 		self::meassure('versions');
 		self::cleanUnreferencedVersions($db);
 		self::meassure('fixVersions');
+		self::updateCustomerFilters($db);
+		self::meassure('customerFilter');
 		self::replayUpdateDB();
 		self::meassure('replayUpdateDB');
 		self::meassure(-1);
