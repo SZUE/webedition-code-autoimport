@@ -201,6 +201,17 @@ doOnImportSuccess = function(importedDocument){
 			top.opener.imageChanged();
 			top.close();
 			break;
+		case "we_suggest_ext":
+			alert("import done: " + importedDocument.path + " (id: " + importedDocument.id + ")");
+			if(top.opener.document.we_form && top.opener.document.we_form.elements["we_dialog_args[fileSrc]"]){
+				top.opener.document.we_form.elements["we_dialog_args[fileSrc]"].value=importedDocument.path;
+				top.opener.document.we_form.elements["we_dialog_args[fileID]"].value=importedDocument.id;
+			} else if(WE().layout.weEditorFrameController.getVisibleEditorFrame().document.we_form && 
+					WE().layout.weEditorFrameController.getVisibleEditorFrame().document.we_form.elements["we_dialog_args[fileSrc]"]){
+				top.opener.document.we_form.elements["we_dialog_args[fileSrc]"].value=importedDocument.path;
+				top.opener.document.we_form.elements["we_dialog_args[fileID]"].value=importedDocument.id;
+			}
+			break;
 		default:
 			// do nothing
 	}

@@ -142,11 +142,11 @@ class we_fileupload_ui_base extends we_fileupload{
 		$this->isInternalBtnUpload = $flag;
 	}
 
-	public static function getExternalDropZone($name = 'we_File', $content = '', $style = '', $contentType = '', $callback = array(), $writebackId = '', $writebackTarget = ''){
+	public static function getExternalDropZone($name = 'we_File', $content = '', $style = '', $contentType = '', $callback = array(), $writebackId = '', $writebackTarget = '', $predefinedCallbackInt = '', $predefinedCallbackExt = '', $dropFromTree = true, $dropFromExt = true, $name = '', $table = ''){
 		if(!self::isDragAndDrop()){
 			return $content;
 		}
-
+		$table = $table ? : FILE_TABLE;
 		$callback = array_merge(array('external' => '', 'tree' => ''), $callback);
 
 		// // FIXME: make the following functions more concise und move to extarnal js file
@@ -167,7 +167,7 @@ handleDragLeave = function(e){
 	e.target.className = "we_file_drag";
 }
 
-handleDrop = function(e, writebackId, writebackTarget){
+handleDrop' . ($name ? : '') . ' = function(e, writebackId, writebackTarget){
 	var text, files;
 
 	e.target.className = "we_file_drag";
@@ -175,34 +175,39 @@ handleDrop = function(e, writebackId, writebackTarget){
 	e.stopPropagation();
 
 	if(text = e.dataTransfer.getData("text")){
-		switch(text.split(",")[0]){
-			case "dragItem": // drag from tree
-				doDragFromTree(text, writebackId);
-				break;
-			default:
-				// more cases to come
-		}
-	} else if(e.dataTransfer.files){top.console.log("from ext");
-		doDragFromExternal(e.dataTransfer.files, writebackTarget);
+		if(' . ($dropFromTree ? 'true' : 'false') . '){
+			switch(text.split(",")[0]){
+				case "dragItem": // drag from tree
+					doDragFromTree' . ($name ? : '') . '(text, writebackId);
+					break;
+				default:
+					// more cases to come
+			}
+		} else {alert("no drop from tree here");}
+	} else if(e.dataTransfer.files){
+		if(' . ($dropFromExt ? 'true' : 'false') . '){
+			doDragFromExternal' . ($name ? : '') . '(e.dataTransfer.files, writebackTarget);
+		} else {alert("no drop from external here");}
 	}
 }
 
-doDragFromExternal = function(files, writebackTarget){
+doDragFromExternal' . ($name ? : '') . ' = function(files, writebackTarget){
 	document.presetFileupload = files;
-	top.we_cmd("we_fileupload_editor", "' . $contentType . '", 1, "", writebackTarget, "' . $callback['external'] . '", 0, 0, "", true);
+	top.we_cmd("we_fileupload_editor", "' . $contentType . '", 1, "", writebackTarget, "' . $callback['external'] . '", 0, 0, "' . $predefinedCallbackExt . '", true);
 }
-doDragFromTree = function(text, writebackId){
+doDragFromTree' . ($name ? : '') . ' = function(text, writebackId){
 	var data = text.split(",");
 
-	if(data[2] && data[3] === "' . $contentType . '"){
-		var table = data[1], id = data[2], ct = data[3];
+	cts = "' . (empty($contentType) ? '' : ',' . $contentType . ',') . '";
+	if(data[2] && data[1] === "' . $table . '" && (cts === "" || cts.search("," + data[3])) != -1){
+		var table = data[1], id = data[2], ct = data[3], path = data[4];
 		' . (strpos($callback['tree'], 'WECMDENC_') !== false ? base64_decode(urldecode(substr($callback['tree'], 9))) : $callback['tree']) . '
 	}
 }
 		');
 
 		return we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') . $js .
-				we_html_element::htmlDiv(array('id' => 'div_' . $name . '_fileDrag', 'class' => 'we_file_drag', 'ondrop'=> 'handleDrop(event, \'' . $writebackId . '\', \'' . $writebackTarget . '\');', 'ondragover' => 'handleDragOver(event);', 'ondragleave' => 'handleDragLeave(event);', 'style' => 'margin-top:0.5em;display:' . (self::isDragAndDrop() ? 'block;' : 'none;') . $style), $content);
+				we_html_element::htmlDiv(array('id' => 'div_' . $name . '_fileDrag', 'class' => 'we_file_drag', 'ondrop'=> 'handleDrop' . ($name ? : '') . '(event, \'' . $writebackId . '\', \'' . $writebackTarget . '\');', 'ondragover' => 'handleDragOver(event);', 'ondragleave' => 'handleDragLeave(event);', 'style' => 'margin-top:0.5em;display:' . (self::isDragAndDrop() ? 'block;' : 'none;') . $style), $content);
 	}
 
 	public function getButtonWrapped($type, $disabled = false, $width = 170, $notWrapped = false){
