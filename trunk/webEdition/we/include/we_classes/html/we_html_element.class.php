@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -70,15 +69,15 @@ abstract class we_html_element{
 	 *
 	 * @return		string
 
-	public static function htmlRadioCheckbox(array $attribs = array()){
-		$attribs['type'] = 'checkbox';
+	  public static function htmlRadioCheckbox(array $attribs = array()){
+	  $attribs['type'] = 'checkbox';
 
-		$table = new we_html_table(array('class' => 'default'), 1, 2);
-		$table->setCol(0, 0, array('style' => "padding-left:2px;"), self::htmlInput($attribs));
-		$table->setColContent(0, 1, self::htmlLabel(array('for' => $name, 'title' => sprintf(g_l('htmlForms', '[click_here]'), $attribs['title']), $attribs['title'])));
+	  $table = new we_html_table(array('class' => 'default'), 1, 2);
+	  $table->setCol(0, 0, array('style' => "padding-left:2px;"), self::htmlInput($attribs));
+	  $table->setColContent(0, 1, self::htmlLabel(array('for' => $name, 'title' => sprintf(g_l('htmlForms', '[click_here]'), $attribs['title']), $attribs['title'])));
 
-		return $table->getHtml();
-	}*/
+	  return $table->getHtml();
+	  } */
 
 	/**
 	 * Function generates css code
@@ -118,9 +117,7 @@ abstract class we_html_element{
 	}
 
 	public static function cssLink($url, array $attribs = array()){
-		if(!is_file($_SERVER['DOCUMENT_ROOT'] . $url)
-				&& substr($url, -4) === '.css'
-				&& is_file(($scssUrl = $_SERVER['DOCUMENT_ROOT'] . substr($url, 0, -4) . '.scss'))){
+		if(!is_file($_SERVER['DOCUMENT_ROOT'] . $url) && substr($url, -4) === '.css' && is_file(($scssUrl = $_SERVER['DOCUMENT_ROOT'] . substr($url, 0, -4) . '.scss'))){
 			$scss = new we_helpers_scss();
 			$doc = $scss->compile(file_get_contents($scssUrl));
 			file_put_contents($_SERVER['DOCUMENT_ROOT'] . $url, $doc);
@@ -269,9 +266,9 @@ abstract class we_html_element{
 		foreach($vals as $key => $value){
 			if($key){
 				$ret.=we_html_baseElement::getHtmlCode(new we_html_baseElement('input', 'selfclose', array(
-							'name' => $key,
-							'value' => strpos($value, '"') !== false ? oldHtmlspecialchars($value) : $value,
-							'type' => 'hidden'
+						'name' => $key,
+						'value' => strpos($value, '"') !== false ? oldHtmlspecialchars($value) : $value,
+						'type' => 'hidden'
 				)));
 			}
 		}
@@ -437,11 +434,11 @@ abstract class we_html_element{
 
 	public static function htmlIFrame($name, $src, $style = '', $iframestyle = '', $onload = '', $scroll = true, $class = ''){
 		static $isApple = -1;
-		$isApple = ($isApple !== -1 ? $isApple : we_base_browserDetect::inst()->getBrowser() == we_base_browserDetect::APPLE);
+		$isApple = ($isApple !== -1 ? $isApple : we_base_browserDetect::inst()->getBrowser() == we_base_browserDetect::APPLE || we_base_browserDetect::inst()->isMAC() || we_base_browserDetect::inst()->getSystem() == we_base_browserDetect::SYS_IPHONE);
 		$iframestyle = $iframestyle ? : 'border:0px;width:100%;height:100%;overflow: ' . (false && we_base_browserDetect::isFF() ? 'auto' : 'hidden') . ';';
 
 		return self::htmlDiv(array('style' => $style, 'name' => $name . 'Div', 'id' => $name . 'Div', 'class' => $class)
-						, we_html_baseElement::getHtmlCode(new we_html_baseElement('iframe', true, array('name' => $name, 'id' => $name, 'src' => $src, 'style' => $iframestyle, 'onload' => 'try{' . ($scroll ? 'this.contentDocument.body.style.overflow=\'' . ($isApple ? 'scroll !important' : 'auto') . '\';' . ($isApple ? 'this.contentDocument.body.style[\'-webkit-overflow-scrolling\']=\'touch !important\';' : '') : 'this.contentDocument.body.style.overflow=\'hidden\';') . '}catch(e){}' . $onload))
+				, we_html_baseElement::getHtmlCode(new we_html_baseElement('iframe', true, array('name' => $name, 'id' => $name, 'src' => $src, 'style' => $iframestyle, 'onload' => 'try{' . ($scroll ? 'this.contentDocument.body.style.overflow=\'' . ($isApple ? 'scroll !important' : 'auto') . '\';' . ($isApple ? 'this.contentDocument.body.style[\'-webkit-overflow-scrolling\']=\'touch !important\';' : '') : 'this.contentDocument.body.style.overflow=\'hidden\';') . '}catch(e){}' . $onload))
 		));
 	}
 
