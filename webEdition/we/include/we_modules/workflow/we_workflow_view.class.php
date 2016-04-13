@@ -27,7 +27,7 @@ class we_workflow_view extends we_modules_view{
 	const PAGE_PROPERTIES = 0;
 	const PAGE_OVERVIEW = 1;
 	const BUTTON_DECLINE = 'fat:decline,fa-lg fa-close fa-cancel';
-	const BUTTON_FORWARD = 'fat:forward:fa-lg fa-mail-forward';
+	const BUTTON_FORWARD = 'fat:forward,fa-lg fa-mail-forward';
 
 	// workflow array; format workflow[workflowID]=workflow_name
 	var $workflows = array();
