@@ -186,7 +186,7 @@ switch(we_base_request::_(we_base_request::STRING, 'function', 'last')){
 		}
 		$data = '';
 		foreach($cur as $key => $val){
-			$data.=$key . ': ' . $val . $sep;
+			$data.=$key . ': ' . str_replace($_SERVER['SERVER_NAME'], 'HOST', $val) . $sep;
 		}
 		$data.='WE-Info:
 Version: ' . WE_VERSION . '
