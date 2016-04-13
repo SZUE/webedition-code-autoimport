@@ -545,8 +545,8 @@ return {
 	var doc=document;
 	var styles=[];
 	if(doc.styleSheets){
-		for(var i=0;i<doc.styleSheets.length;i++){
-			if(doc.styleSheets[i].href && !doc.styleSheets[i].href.match(/webEdition\//) && (doc.styleSheets[i].media.length==0||doc.styleSheets[i].media.mediaText.indexOf("all")>=0 || doc.styleSheets[i].media.mediaText.indexOf("screen")>=0)){
+		for(var i=0;i<doc.styleSheets.length;i++){top.console.log(doc.styleSheets[i]);
+			if(doc.styleSheets[i].href && doc.styleSheets[i].href.indexOf("&wysiwyg=0")===-1 && !doc.styleSheets[i].href.match(/webEdition\//) && (doc.styleSheets[i].media.length==0||doc.styleSheets[i].media.mediaText.indexOf("all")>=0 || doc.styleSheets[i].media.mediaText.indexOf("screen")>=0)){
 				styles.push(doc.styleSheets[i].href);
 			}
 		}
