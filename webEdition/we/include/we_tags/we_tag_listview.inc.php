@@ -272,6 +272,7 @@ function we_tag_listview($attribs){
 			$GLOBALS['lv'] = new we_listview_category($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $parentid, $categoryids, $cols, ($parentidname ? $parentidname : ''), $hidedirindex);
 			break;
 		case 'collection':
+			$id = !empty($GLOBALS['WE_COLLECTION_ID']) ? $GLOBALS['WE_COLLECTION_ID'] : $id; // take id from tiny we_gallery plugin if set
 			$GLOBALS['lv'] = new we_listview_collection($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $doctype, $we_lv_cats, $we_lv_catOr, $casesensitive, $we_lv_ws, $we_lv_ct, $cols, $we_lv_se, $cond, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $cfilter, $we_lv_subfolders, $customers, $id, $we_lv_languages, $we_lv_numorder, $hidedirindex, $triggerid);
 			break;
 
