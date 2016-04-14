@@ -424,7 +424,7 @@ node.prototype = {
 		return treeData.node_layouts[layout_key];
 	},
 	showSegment: function () {
-		parentnode = this.get(this.parentid);
+		parentnode = treeData.get(this.parentid);
 		parentnode.clear();
 		we_cmd("loadFolder", treeData.table, parentnode.id, "", "", "", this.offset);
 	},
