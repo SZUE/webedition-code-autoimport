@@ -24,14 +24,14 @@
  */
 class we_fileupload_resp_multiimport extends we_fileupload_resp_import{
 
-	public function processRequest() {
+	public function processRequest(){
 		// manage filenumber
 		if($this->controlVars['formcount']){
 			return parent::processRequest();
 		}
 	}
 
-	protected function postprocess() {
+	protected function postprocess(){
 		$response = parent::postprocess();
 
 		if($response['status'] === 'failure'){
@@ -58,15 +58,13 @@ class we_fileupload_resp_multiimport extends we_fileupload_resp_import{
 			} else {
 				$response['completed'] = array('message' => g_l('importFiles', '[finished]'), 'type' => we_message_reporting::WE_MESSAGE_NOTICE);
 			}
-			$response['success'] = $_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS'];
-			$response['imported_files'] = $_SESSION['weS']['WE_IMPORT_FILES_DOCUMENTS'];
+			$response['success'] = empty($_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS']) ? array() : $_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS'];
+			$response['imported_files'] = empty($_SESSION['weS']['WE_IMPORT_FILES_DOCUMENTS']) ? array() : $_SESSION['weS']['WE_IMPORT_FILES_DOCUMENTS'];
 			unset($_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS']);
 			unset($_SESSION['weS']['WE_IMPORT_FILES_DOCUMENTS']);
 		}
 
 		return $response;
 	}
-	
-	
-	
+
 }

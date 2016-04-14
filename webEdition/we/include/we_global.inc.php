@@ -22,7 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 function correctUml($in){//FIXME: need charset!!
 	//FIXME: can we use this (as in objectfile): preg_replace(array('~&szlig;~','~&(.)(uml|grave|acute|circ|tilde|ring|cedil|slash|caron);|&(..)(lig);|&#.*;~', '~[^0-9a-zA-Z/._-]~'), array('ss','${1}${3}', ''), htmlentities($text, ENT_COMPAT, $this->Charset));
 	return strtr($in, array('ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue', 'ß' => 'ss'));
@@ -1138,7 +1137,8 @@ function we_unserialize($string, $default = array(), $quiet = false){
 	}
 	//compressed?
 	if($string && $string[0] === 'x'){
-		$string = gzuncompress($string);
+		$try = @gzuncompress($string);
+		$string = $try? : $string;
 	}
 	//no content, return default
 	if($string === '' || $string === false){
