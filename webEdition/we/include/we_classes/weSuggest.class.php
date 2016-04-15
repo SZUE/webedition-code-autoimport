@@ -259,9 +259,18 @@ YAHOO.util.Event.addListener(this, "load", YAHOO.autocoml.init);' .
 		if($this->isDropFromTree || $this->isDropFromExt){
 			$this->isDropFromExt = $this->table === FILE_TABLE ? $this->isDropFromExt : false;
 
+			$texts = array( // FIXME: G_L(): [suggest][dnd_text_(0|1|2|3)] to avoid texts-array
+				'[something is wrong]',
+				'Dateien aus dem Dateibaum hierher ziehen',
+				'Dateien zum Upload von der Festplatte hierher ziehen',
+				'Dateien aus dem Dateibaum oder zum Upload von der Festplatte hierher ziehen'
+			);
+			$dropzoneText = 'Drag and Drop Auswahl<br>' . $texts[(($this->isDropFromTree ? 1 : 0) + ($this->isDropFromExt ? 2 : 0))];
+
 			$callbackTree = "if(id){document.we_form.elements['" . $resultId . "'].value=id;document.we_form.elements['" . $inputId . "'].value=path;" . $this->doOnDropFromTree . "}";
 			$callbackExt = "if(importedDocument.id){" . $this->doOnDropFromExt . "top.close();}";
-			$dropzone = we_fileupload_ui_base::getExternalDropZone('we_File', '[add some reasonable text]', 'width:auto;height:30px;padding:24px;', implode(',', $this->contentTypes), array('tree' => $callbackTree, 'external' => $callbackExt), $resultId, '', '', 'we_suggest_ext', $this->isDropFromTree, $this->isDropFromExt, $this->acId, $this->table);
+			$dropzone = we_fileupload_ui_base::getExternalDropZone('we_File', $dropzoneText, 'width:auto;height:30px;padding:24px;', implode(',', $this->contentTypes), array('tree' => $callbackTree, 'external' => $callbackExt), $resultId, '', '', 'we_suggest_ext', $this->isDropFromTree, $this->isDropFromExt, $this->acId, $this->table);
+			
 
 			$html = we_html_element::htmlDiv(array(), 
 				we_html_element::htmlDiv(array(), $html) .
