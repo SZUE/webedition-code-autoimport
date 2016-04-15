@@ -44,11 +44,11 @@ class we_collection extends we_root{
 	//private $tmpFoldersDone = array();
 	protected $view = 'grid';
 	private $gridItemDimensions = array(
-		2 => array('item' => 400, 'icon' => 56, 'font' => 30),
-		3 => array('item' => 264, 'icon' => 42, 'font' => 24),
-		4 => array('item' => 200, 'icon' => 32, 'font' => 18),
-		5 => array('item' => 159, 'icon' => 24, 'font' => 14),
-		6 => array('item' => 134, 'icon' => 20, 'font' => 11)
+		2 => array('item' => 400, 'icon' => 56, 'font' => 30, 'btnFontsize' => 30, 'btnHeight' => 60),
+		3 => array('item' => 264, 'icon' => 42, 'font' => 24, 'btnFontsize' => 22, 'btnHeight' => 44),
+		4 => array('item' => 200, 'icon' => 32, 'font' => 18, 'btnFontsize' => 16, 'btnHeight' => 31),
+		5 => array('item' => 159, 'icon' => 24, 'font' => 14, 'btnFontsize' => 13, 'btnHeight' => 25),
+		6 => array('item' => 134, 'icon' => 20, 'font' => 11, 'btnFontsize' => 13, 'btnHeight' => 25)
 	);
 	protected $itemsPerRow = 4;
 
