@@ -1079,17 +1079,20 @@ abstract class we_root extends we_class{
 		$filter = array('Name', 'DID', 'Ord');
 		while($this->DB_WE->next_record(MYSQLI_ASSOC)){
 			$Name = $this->DB_WE->f('Name');
-			$type = $this->DB_WE->f('Type');
 
-			if($type === 'formfield'){ // garbage fix!
-				$this->elements[$Name] = we_unserialize($this->DB_WE->f('Dat'));
-			} elseif($this->i_isElement($Name)){
-				foreach($this->DB_WE->Record as $k => $v){
-					if(!in_array($k, $filter)){
-						$this->elements[$Name][strtolower($k)] = $v;
+			switch($this->DB_WE->f('Type')){
+				case 'formfield': // garbage fix!
+					$this->elements[$Name] = we_unserialize($this->DB_WE->f('Dat'));
+					break;
+				default:
+					if($this->i_isElement($Name)){
+						foreach($this->DB_WE->Record as $k => $v){
+							if(!in_array($k, $filter)){
+								$this->elements[$Name][strtolower($k)] = $v;
+							}
+						}
+						$this->elements[$Name]['table'] = CONTENT_TABLE;
 					}
-				}
-				$this->elements[$Name]['table'] = CONTENT_TABLE;
 			}
 		}
 	}
