@@ -81,6 +81,7 @@ we/include/we_tags/we_tag_list.inc.php
 we/include/we_tags/we_tag_ifNotCustomerResetPasswordFailed.inc.php
 we/include/we_tags/we_tag_ifCustomerResetPasswordFailed.inc.php
 we/include/we_tags/we_tag_econda.inc.php
+we/include/we_tags/we_tag_collection.inc.php
 we/include/we_tags/custom_tags/dummy
 we/include/we_tag_elements.inc.php
 we/include/we_tagParser.inc.php
@@ -607,6 +608,7 @@ we/include/weTagWizard/we_tags/we_tag_pagelogger.inc.php
 we/include/weTagWizard/we_tags/we_tag_makeMail.inc.php
 we/include/weTagWizard/we_tags/we_tag_list.inc.php
 we/include/weTagWizard/we_tags/we_tag_ifCustomerResetPasswordFailed.inc.php
+we/include/weTagWizard/we_tags/we_tag_collection.inc.php
 we/include/weTagWizard/we_tags/custom_tags/dummy
 we/include/weTagWizard/classes/weTagWizard.class.php
 we/include/weCodeWizard/data/default/search/_information.php
