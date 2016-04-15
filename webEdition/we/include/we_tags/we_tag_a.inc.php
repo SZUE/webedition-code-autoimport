@@ -14,9 +14,12 @@
  * A copy is found in the textfile
  * webEdition/licenses/webEditionCMS/License.txt
  *
- * @category   webEdition
- * @package none
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ * @category	webEdition
+ * @package 	none
+ * @license		http://www.gnu.org/copyleft/gpl.html  GPL
+ * @param		$attribs
+ * @param		$content
+ * @return		string
  */
 function we_parse_tag_a($attribs, $content){
 	return '<?php printElement(' . we_tag_tagParser::printTag('a', $attribs, $content, true) . ');?>';
@@ -44,7 +47,6 @@ function we_tag_a($attribs, $content){
 	$target = weTag_getAttribute('target', $attribs);
 	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, we_base_request::BOOL);
 	$shop = weTag_getAttribute('shop', $attribs, false, we_base_request::BOOL);
-	$amount = weTag_getAttribute('amount', $attribs, 1);
 	$delarticle = weTag_getAttribute('delarticle', $attribs, false, we_base_request::BOOL);
 	$delshop = weTag_getAttribute('delshop', $attribs, false, we_base_request::BOOL);
 	$urladd = weTag_getAttribute('params', $attribs);
@@ -131,8 +133,7 @@ function we_tag_a($attribs, $content){
 
 			$shopname = weTag_getAttribute('shopname', $attribs);
 			$ifShopname = ($shopname ? '&shopname=' . $shopname : '');
-			if($delarticle){ // delarticle
-				$foo = $GLOBALS['lv']->count - 1;
+			if($delarticle){ // delete article
 
 				$customReq = '';
 				if(isset($GLOBALS['lv']) && ($GLOBALS['lv'] instanceof we_shop_shop)){
