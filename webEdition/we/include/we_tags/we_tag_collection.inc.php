@@ -18,24 +18,22 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+/*
 function we_parse_tag_collection($attribs, $content){
-	include_once('we_tag_repeat.inc.php');
-	return '<?php ' . (strpos($content, '$lv') !== false ? 'global $lv;' : '') . 
-		we_tag_tagParser::printTag('collection', $attribs) . ';?>' . /*we_parse_tag_repeat(array(), $content)*/ $content . '<?php we_post_tag_listview();?>';
+	return '';
 }
-
+*/
 function we_tag_collection($attribs){
-	$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
-	$name = weTag_getAttribute('name', $attribs, 0, we_base_request::STRING);
+	if($GLOBALS['we_editmode']){
+		$name = weTag_getAttribute('name', $attribs, 0, we_base_request::STRING);
+		// FIXME: why does he return when !$name is missing?
+		if((!$name && $foo = attributFehltError($attribs, array('name'), __FUNCTION__))){
+			return $foo;
+		}
 
-	if(!$id && !$name && ($foo = attributFehltError($attribs, array('name', 'id'), __FUNCTION__))){
-		return $foo;
-	}
+		$intID = $GLOBALS['we_doc']->getElement($name, 'bdid')? : weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
+		$rootDirID = 0;
 
-	$intID = $GLOBALS['we_doc']->getElement($name, 'bdid')? : $id;
-	$rootDirID = 0;
-
-	if($GLOBALS['we_editmode'] && $name){
 		$path = f('SELECT Path FROM ' . VFILE_TABLE . ' WHERE ID=' . $intID);
 		$textname = 'we_' . $GLOBALS['we_doc']->Name . '_collection[' . $name . '_path]';
 		$idname = 'we_' . $GLOBALS['we_doc']->Name . '_collection[' . $name . '#bdid]';
@@ -68,13 +66,8 @@ function we_tag_collection($attribs){
 				<td class="weEditmodeStyle"><?php echo $delbutton; ?></td>
 			</tr>
 		</table><?php
-
 		//FIXME: add sth. to the stack, we need an extra element in editmode
 	}
 
-	$intID = !empty($GLOBALS['WE_COLLECTION_ID']) ? $GLOBALS['WE_COLLECTION_ID'] : $intID;
-
-	$GLOBALS['lv'] = new we_listview_collection('', 9999, 0, '', false, 0, 0, 0, 0, 0, '', 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, $intID, '', '', '', '');
-	we_pre_tag_listview();
 	return true;
 }
