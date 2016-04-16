@@ -25,8 +25,10 @@
  * @link       http://pear.php.net/package/Image_Transform
  */
 
+// FIXME: che again if we can avoid this and if we need more adaption
+/*
 require_once 'Image/Transform.php';
-
+*/
 /**
  * GD implementation for Image_Transform package
  *

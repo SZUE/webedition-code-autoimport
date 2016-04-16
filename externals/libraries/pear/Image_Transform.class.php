@@ -240,13 +240,14 @@ class Image_Transform
                     break;
             }
         }
-
+		// FIXME: check again if we can avoid this
+		/*
         $file = 'Image/Transform/Driver/' . $driver . '.php';
         if (!@fclose(@fopen($file, 'r', true))) {
             return PEAR::raiseError('Driver failed to load file ' . $file,
                                     IMAGE_TRANSFORM_DRIVER_FILE_MISSING);
         }
-
+		*/
         $classname = 'Image_Transform_Driver_' . $driver;
 
         if (!class_exists($classname)) {
