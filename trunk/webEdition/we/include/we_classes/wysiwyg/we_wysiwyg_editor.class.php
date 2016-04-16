@@ -611,10 +611,9 @@ return {
 
 	/*
 	 * this function is used to prepare textaea content for db
-	 * is returns an array of img/href-ids (for use in registerMediaLinks)
+	 * it returns an array of img/href-ids (for use in registerMediaLinks)
 	 */
-
-	public static function reparseInternalLinks(&$content, $replace = false){// FIXME: move to we_document?
+	public static function reparseInternalLinks(&$content, $replace = false, $name = ''){// FIXME: move to we_document?
 		$regs = $internalIDs = array();
 		if(preg_match_all('{src="/[^">]+\\?id=(\\d+)["\|&]}i', $content, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
@@ -634,7 +633,27 @@ return {
 			}
 		}
 
-		return $internalIDs;
+		// In case content is parsed already. FIXME: What changed that it comes actually parsed already?
+		//									  => above parts and repclace may be obsolete! 
+		if(preg_match_all('|src="' . we_base_link::TYPE_INT_PREFIX . '(\\d+)["\|?]|i', $content, $regs, PREG_SET_ORDER)){
+			foreach($regs as $reg){t_e("hier");
+				$internalIDs[] = intval($reg[1]);
+			}
+		}
+		if(preg_match_all('|src="' . we_base_link::TYPE_THUMB_PREFIX . '(\\d+),(\\d+)["\|?]|i', $content, $regs, PREG_SET_ORDER)){
+			foreach($regs as $reg){
+				$internalIDs[] = intval($reg[1]);
+			}
+		}
+
+		//FIXME: make we_wysiwyg_editor::registerMedisLinks() just looking for IDs and writing the correct MediaLinks!
+		$ret = array();
+		$c = 0;
+		foreach($internalIDs as $id){
+			$ret['textarea[name=' . $name . '] [position ' . ++$c . ']'] = $id;
+		}
+
+		return $ret;
 	}
 
 	private function getToolbarRows(){

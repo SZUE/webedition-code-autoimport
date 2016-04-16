@@ -2204,32 +2204,32 @@ class we_object extends we_document{
 	function registerMediaLinks($temp = false, $linksReady = false){// FIXME: publish is obsolete for classes
 		$serializedArray = is_array($this->SerializedArray) ? $this->SerializedArray : array();
 		foreach($serializedArray as $k => $v){
-			if(($type = strstr($k, '_', true)) !== false){
-				switch($type){
+			if(count(($typeName = explode('_', $k, 2))) > 1){
+				switch($typeName[0]){
 					case 'binary':
 					case 'flashmovie':
 					case 'img':
 					case 'quicktime':
 						if($v['default']){
-							$this->MediaLinks[] = $v['default'];
+							$this->MediaLinks[$typeName[0] . '[name=' . $typeName[1] . ']'] = $v['default'];
 						}
 						break;
 					case 'link':
 						$default = we_unserialize($v['default'], array('type' => 0, 'ctype' => 0));
 						if($default['type'] === 'int' && $default['id']){
-							$this->MediaLinks[] = $default['id'];
+							$this->MediaLinks[$typeName[0] . '[name=' . $typeName[1] . ']'] = $default['id'];
 						}
 						if($default['ctype'] === 'int' && $default['img_id']){
-							$this->MediaLinks[] = $default['img_id'];
+							$this->MediaLinks[$typeName[0] . '[name=' . $typeName[1] . ']'] = $default['img_id'];
 						}
 						break;
 					case 'text':
 						if($v['dhtmledit'] == 'on' || $v['dhtmledit'] === true){//FIXME: make bool!
-							$this->MediaLinks = array_merge($this->MediaLinks, we_wysiwyg_editor::reparseInternalLinks($v['default']));
+							$this->MediaLinks = array_merge($this->MediaLinks, we_wysiwyg_editor::reparseInternalLinks($v['default'], false, $typeName[1]));
 						}
 						break;
 					default:
-//
+						//
 				}
 			}
 		}

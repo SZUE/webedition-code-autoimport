@@ -625,7 +625,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			if(isset($allElements['textarea'])){
 				foreach($allElements['textarea'] as $name){
 					$value = $this->getElement($name);
-					$this->MediaLinks = array_merge($this->MediaLinks, we_wysiwyg_editor::reparseInternalLinks($value, true)); //true: replace internal file paths
+					$this->MediaLinks = array_merge($this->MediaLinks, we_wysiwyg_editor::reparseInternalLinks($value, true, $name)); //true: replace internal file paths
 					$this->setElement($name, $value);
 				}
 			}
@@ -661,8 +661,9 @@ class we_webEditionDocument extends we_textContentDocument{
 		// Last step is to save the webEdition document
 		$out = parent::we_save($resave, $skipHook);
 		if($out){
-			$this->parseTextareaFields();
+			//$this->parseTextareaFields();
 			$this->unregisterMediaLinks(false, true);
+			$this->parseTextareaFields();
 			$out = $this->registerMediaLinks(true);
 		}
 
