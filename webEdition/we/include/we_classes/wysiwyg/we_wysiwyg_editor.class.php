@@ -636,7 +636,7 @@ return {
 		// In case content is parsed already. FIXME: What changed that it comes actually parsed already?
 		//									  => above parts and repclace may be obsolete! 
 		if(preg_match_all('|src="' . we_base_link::TYPE_INT_PREFIX . '(\\d+)["\|?]|i', $content, $regs, PREG_SET_ORDER)){
-			foreach($regs as $reg){t_e("hier");
+			foreach($regs as $reg){
 				$internalIDs[] = intval($reg[1]);
 			}
 		}

@@ -89,12 +89,12 @@ class we_imageDocument extends we_binaryDocument{
 		return false;
 	}
 
-	function registerMediaLinks($temp = false, $linksReady = false){
-		if(($id = $this->getElement('LinkID', 'bdid'))){
-			$this->MediaLinks[] = $id;
+	function registerMediaLinks(){
+		if(($id = $this->getElement('LinkID', 'bdid') ? : $this->getElement('LinkID', 'dat'))){
+			$this->MediaLinks['Hyperlink:Intern'] = $id;
 		}
-		if(($id = $this->getElement('RollOverID', 'bdid'))){
-			$this->MediaLinks[] = $id;
+		if(($id = $this->getElement('RollOverID', 'bdid') ? : $id = $this->getElement('RollOverID', 'dat'))){
+			$this->MediaLinks['Hyperlink:Rollover'] = $id;
 		}
 
 		return parent::registerMediaLinks(false, true);

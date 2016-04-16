@@ -834,7 +834,7 @@ WE().consts.weSearch= {
 					  }
 					 *
 					 */
-					$element = preg_replace('|NN[0-9]\]+$|', 'NN', $reference['element']);
+					$element = preg_replace('|NN[0-9]\]+$|', 'NN]', $reference['element']);
 					$out .= '<tr style="background-color:white;">' .
 						($makeLink ? '
 							<td style="padding:8px 0 6px 26px;width:410px;"><a href="javascript:' . $reference['onclick'] . '" title="ID ' . $reference["id"] . ': ' . $reference['path'] . ($element ? ', in: ' . $reference['element'] : '') . '"><span style="color:' . $color . ';"><u>' . $reference['path'] . '</u></span></a>' . ($element ? '<br>' . 'in: ' . $element : '') . '</span></td>
