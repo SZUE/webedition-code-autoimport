@@ -129,7 +129,8 @@ function getItems($table, $ParentID, $offset = 0, $segment = 0, $collectionIDs =
 			"disabled" => (in_array($Path, $parentpaths) ? 1 : 0),
 			"tooltip" => $ID,
 			'inSchedule' => intval($DB_WE->f("inSchedule")),
-			"offset" => $offset
+			"offset" => $offset,
+			"path" => $DB_WE->f("Path")
 		);
 	}
 

@@ -795,7 +795,7 @@ we_templateInit();?>';
 			switch($tag['name']){
 				case 'icon':
 				case 'img':
-				case 'flash':
+				case 'flashmovie':
 				case 'quicktime':
 				case 'video':
 					if(isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
@@ -803,9 +803,19 @@ we_templateInit();?>';
 					}
 					break;
 				case 'url':
-					if(isset($tag['attribs']['type']) && $tag['attribs']['type'] === 'document' &&
+					if((empty($tag['attribs']['type']) || $tag['attribs']['type'] === 'document') &&
 						isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
 						$this->MediaLinks[$element] = intval($tag['attribs']['id']);
+					}
+					break;
+				case 'include': //nur type=document: id, path
+					if(isset($tag['attribs']['type']) && $tag['attribs']['type'] === 'document'){
+						if(isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
+							$this->MediaLinks[$element] = intval($tag['attribs']['id']); // selector: text/webEdition only
+						}
+						if(isset($tag['attribs']['path']) && $tag['attribs']['path'] && ($id = path_to_id($tag['attribs']['path'], FILE_TABLE, $this->DB_WE))){
+							$this->MediaLinks[$element] = intval($id); // selector: text/webEdition only
+						}
 					}
 					break;
 				case 'link':
@@ -829,16 +839,6 @@ we_templateInit();?>';
 				case 'metadata':// selector: text/webEdition only
 					if(isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
 						$this->MediaLinks[$element] = intval($tag['attribs']['id']);
-					}
-					break;
-				case 'include': //nur type=document: id, path
-					if(isset($tag['attribs']['type']) && $tag['attribs']['type'] === 'document'){
-						if(isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
-							$this->MediaLinks[$element] = intval($tag['attribs']['id']); // selector: text/webEdition only
-						}
-						if(isset($tag['attribs']['path']) && $tag['attribs']['path'] && ($id = path_to_id($tag['attribs']['path'], FILE_TABLE, $this->DB_WE))){
-							$this->MediaLinks[$element] = intval($tag['attribs']['id']); // selector: text/webEdition only
-						}
 					}
 					break;
 				case 'listview':

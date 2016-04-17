@@ -45,6 +45,21 @@ abstract class we_fileupload{
 			'all' => '',
 		)
 	);
+	protected $imageEditProps = array(
+		'parentID' => 0,
+		'sameName' => 'rename',
+		'importMetadata' => false,
+		'isSearchable' => false,
+		'thumbnails' => '',
+		'imageWidth' => 0,
+		'imageHeight' => 0,
+		'widthSelect' => 'pixel',
+		'heightSelect' => 'pixel',
+		'keepRatio' => true,
+		'quality' => 8,
+		'degrees' => 0,
+		'categories' => ''
+	);
 
 	const CHUNK_SIZE = 128;
 	const ON_ERROR_RETURN = true; //obsolete?
@@ -114,6 +129,18 @@ abstract class we_fileupload{
 
 	public function setPredefinedConfig($predefinedConfig = ''){
 		$this->predefinedConfig = $predefinedConfig;
+	}
+
+	public function setImageEditProps($props = array()){
+		$this->imageEditProps = array_merge($this->imageEditProps, $props);
+	}
+
+	public function loadImageEditPropsFromSession(){
+		$this->imageEditProps = isset($_SESSION['weS']['we_fileupload']['imageEditProps']) ? $_SESSION['weS']['we_fileupload']['imageEditProps'] : $this->imageEditProps;
+	}
+
+	public function saveImageEditPropsInSession(){
+		$_SESSION['weS']['we_fileupload']['imageEditProps'] = $this->imageEditProps;
 	}
 
 }

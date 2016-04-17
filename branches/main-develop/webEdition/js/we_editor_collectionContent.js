@@ -388,10 +388,15 @@ weCollectionEdit = {
 			this.ct.grid.children[i].style.width = this.ct.grid.children[i].style.height = this.gridItemDimension.item + 'px';
 			//this.ct['grid'].children[i].style.backgroundSize = Math.max(item.icon.sizeX, item.icon.sizeY) < this.gridItemDimension.item ? 'auto' : 'contain';
 
-			attribDivs[i].style.display = this.itemsPerRow > 5 ? 'none' : 'block';
-			iconDivs[i].firstChild.style.fontSize = this.gridItemDimension.icon + 'px';
-			if ((next = iconDivs[i].firstChild.nextSibling)) {
-				next.style.fontSize = this.gridItemDimension.font + 'px';
+			attribDivs[i].style.display = this.itemsPerRow > 5 ? 'none' : 'block';top.console.log(iconDivs[i].firstChild.tagName);
+			if(iconDivs[i].firstChild.tagName === 'BUTTON'){
+				iconDivs[i].firstChild.style.fontSize = this.gridItemDimension.btnFontsize + 'px';
+				iconDivs[i].firstChild.style.height = this.gridItemDimension.btnHeight + 'px';
+			} else {
+				iconDivs[i].firstChild.style.fontSize = this.gridItemDimension.icon + 'px';
+				if ((next = iconDivs[i].firstChild.nextSibling)) {
+					next.style.fontSize = this.gridItemDimension.font + 'px';
+				}
 			}
 		}
 	},
@@ -450,7 +455,7 @@ weCollectionEdit = {
 	insertItem: function (elem, repaint, item, scope, color, last) {
 		var t = scope ? scope : this,
 			el = elem ? t.getItem(elem) : null,
-			div, newItem, cmd1, cmd2, cmd3, blank, elPreview;
+			div, newItem, cmd1, cmd2, cmd3, blank, elPreview, btn;
 
 		color = color ? color : false;
 		item = item ? item : this.storage['item_-1'];
@@ -531,6 +536,11 @@ weCollectionEdit = {
 
 			div.getElementsByClassName('toolbarAttribs')[0].style.display = this.itemsPerRow > 5 ? 'none' : 'block';
 			if (item.id === -1) {
+				btn = div.getElementsByClassName('divInner')[0].firstChild;
+				if(btn.tagName === 'BUTTON'){
+					btn.style.fontSize = this.gridItemDimension.btnFontsize + 'px';
+					btn.style.height = this.gridItemDimension.btnHeight + 'px';
+				}
 				div.getElementsByClassName('toolbarBtns')[0].removeChild(div.getElementsByClassName('toolbarBtns')[0].firstChild);
 				div.getElementsByClassName('toolbarAttribs')[0].style.display = 'none';
 			}

@@ -176,46 +176,55 @@ class we_newsletter_newsletter extends we_newsletter_base{
 
 	public function registerMediaLinks(){
 		$this->unregisterMediaLinks();
+		$c = 1;
 		foreach($this->blocks as $block){
 			switch($block->Type){
-				case 6:
-				case 1:
 				case 0:
+				case 1:
 					if($block->LinkID){
-						$this->MediaLinks[] = $block->LinkID;
+						$this->MediaLinks['Block ' . $c++ . ': [Dokument ID]'] = $block->LinkID;
 					}
 					break;
 				case 5:
-					if($block->Html){
-						$this->MediaLinks = array_merge($this->MediaLinks, we_wysiwyg_editor::reparseInternalLinks($content));
+					if($block->Html && ($refs = we_wysiwyg_editor::reparseInternalLinks($block->Html, false, 'NN'))){
+						$c++;
+						foreach($refs as $k => $v){
+							$this->MediaLinks['Block ' . $c . ': ' . $k] = $v;
+						}
 					}
+					break;
+				case 6:
+					if($block->LinkID){
+						$this->MediaLinks['Block ' . $c++ . ': [Anhang ID]'] = $block->LinkID;
+					}
+					break;
 			}
 		}
 
-		$c = count($this->MediaLinks);
-		for($i = 0; $i < $c; $i++){
-			if(!$this->MediaLinks[$i] || !is_numeric($this->MediaLinks[$i])){
-				unset($this->MediaLinks[$i]);
-			}
-		}
-
-		// the following would be obsolete, when class was based on we_modelBase
+		// FIXME: inherit from we_base_model and call parent::registerMediaLinks();
+		// filter MediaLinks by media contenttype
+		$verifiedIDs = array();
 		if(!empty($this->MediaLinks)){
 			$whereType = 'AND ContentType IN ("' . we_base_ContentTypes::APPLICATION . '","' . we_base_ContentTypes::FLASH . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::QUICKTIME . '","' . we_base_ContentTypes::VIDEO . '")';
-			$this->db->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', array_unique($this->MediaLinks)) . ') ' . $whereType);
-			$this->MediaLinks = array();
+			$this->db->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', array_unique(array_values($this->MediaLinks))) . ') ' . $whereType);
 			while($this->db->next_record()){
-				$this->MediaLinks[] = $this->db->f('ID');
+				$verifiedIDs[] = $this->db->f('ID');
 			}
 		}
+		$this->MediaLinks = array_intersect($this->MediaLinks, $verifiedIDs);
 
-		foreach(array_unique($this->MediaLinks) as $remObj){
+		if(empty($this->MediaLinks)){
+			return true;
+		}
+
+		foreach($this->MediaLinks as $element => $remObj){
 			$this->db->query('REPLACE INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
 					'ID' => $this->ID,
 					'DocumentTable' => stripTblPrefix($this->table),
 					'type' => 'media',
 					'remObj' => $remObj,
 					'remTable' => stripTblPrefix(FILE_TABLE),
+					'element' => (is_numeric($element) ? '' : $element),
 					'position' => 0,
 					'isTemp' => 0
 			)));

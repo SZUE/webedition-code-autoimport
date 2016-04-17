@@ -59,7 +59,7 @@ class we_glossary_cache{
 	 * @abstract
 	 */
 	public static function cacheIdToFilename($id){
-		return WE_CACHE_PATH. 'glossar_' . $id . '.php';
+		return WE_CACHE_PATH . 'glossar_' . $id . '.php';
 	}
 
 	/**
@@ -390,7 +390,7 @@ if (window.screen) {
 			$data = we_base_file::load($cacheFilename);
 			$this->content = $data ? we_unserialize($data[0] === 'x' ? gzuncompress($data) : gzinflate($data)) : '';
 		}
-		return ($this->content ?
+		return ($this->content && !empty($this->content[$type]) ?
 				$this->content[$type] :
 				array());
 	}

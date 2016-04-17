@@ -125,13 +125,13 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 			return false;
 		}
 
-		$html = we_html_forms::checkboxWithHidden(true, 'fu_doc_importMetadata', g_l('importFiles', '[import_metadata]'), false, 'defaultfont', '');
+		$html = we_html_forms::checkboxWithHidden(($this->imageEditProps['importMetadata'] ? true : false), 'fu_doc_importMetadata', g_l('importFiles', '[import_metadata]'), false, 'defaultfont', '');
 		$headline = 'Metadaten';
 
 		return $this->formElements[$name]['multiIconBox'] ? $this->makeMultiIconRow($name, $headline, $html) : $html;
 	}
 
-	function getFormCategories($categories = ''){
+	function getFormCategories(){
 		$name = 'categories';
 		if(!isset($this->formElements[$name]) || !$this->formElements[$name]['set'] || !permissionhandler::hasPerm("NEW_GRAFIK")){
 			return;
@@ -145,7 +145,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 var categories_edit = new multi_edit("categoriesDiv",document.forms[0],0,"' . $del_but . '",' . ($_width_size - 10) . ',false);
 categories_edit.addVariant();';
 
-		$_cats = makeArrayFromCSV($categories);
+		$_cats = makeArrayFromCSV($this->imageEditProps['categories']);
 		if(is_array($_cats)){
 			foreach($_cats as $cat){
 				$variant_js .='
@@ -217,7 +217,7 @@ function selectCategories() {
 			return;
 		}
 
-		$html = we_html_element::htmlDiv(array(), we_html_forms::checkboxWithHidden(true, 'fu_doc_isSearchable', g_l('importFiles', '[imgsSearchable_label]'), false, 'defaultfont', ''));
+		$html = we_html_element::htmlDiv(array(), we_html_forms::checkboxWithHidden(($this->imageEditProps['isSearchable'] ? true : false), 'fu_doc_isSearchable', g_l('importFiles', '[imgsSearchable_label]'), false, 'defaultfont', ''));
 		$headline = g_l('importFiles', '[imgsSearchable]');
 
 		return $this->formElements[$name]['multiIconBox'] ? $this->makeMultiIconRow($name, $headline, $html) : $html;
@@ -244,13 +244,13 @@ function selectCategories() {
 		return $this->formElements[$name]['multiIconBox'] ? $this->makeMultiIconRow($name, $headline, $html) : $html;
 	}
 
-	public function getFormParentID($parentID = 0, $formName = 'we_form'){// TODO: set formName as class prop
+	public function getFormParentID($formName = 'we_form'){// TODO: set formName as class prop
 		$name = 'parentId';
 		if(!isset($this->formElements[$name]) || !$this->formElements[$name]['set']){
 			return;
 		}
 
-		$parentID = $parentID ? : ($this->parentID['preset'] ? (is_numeric($this->parentID['preset']) ? $this->parentID['preset'] : path_to_id($this->parentID['preset'])) : (IMAGESTARTID_DEFAULT ? : 0));
+		$parentID = $this->imageEditProps['parentID'] ? : ($this->parentID['preset'] ? (is_numeric($this->parentID['preset']) ? $this->parentID['preset'] : path_to_id($this->parentID['preset'])) : (IMAGESTARTID_DEFAULT ? : 0));
 		if(($ws = get_ws(FILE_TABLE, true))){
 			if(!(we_users_util::in_workspace($parentID, $ws, FILE_TABLE))){
 				$parentID = intval(reset($ws));
@@ -325,7 +325,7 @@ function selectCategories() {
 		$DB_WE = new DB_WE();
 		$DB_WE->query('SELECT ID,Name,description FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
 
-		$thumbsArr = explode(',', trim($thumbs, ' ,'));
+		$thumbsArr = explode(',', trim($this->imageEditProps['thumbnails'], ' ,'));
 		while($DB_WE->next_record()){
 			$attribs = array(
 				'title' => $DB_WE->f('description'),
@@ -334,7 +334,7 @@ function selectCategories() {
 			$thumbnails->addOption($DB_WE->f('ID'), $DB_WE->f('Name'), $attribs);
 		}
 
-		$html = g_l('importFiles', '[thumbnails]') . "<br/><br/>" . $thumbnails->getHtml() . we_html_element::htmlHidden('fu_doc_thumbs', $thumbs);
+		$html = g_l('importFiles', '[thumbnails]') . "<br/><br/>" . $thumbnails->getHtml() . we_html_element::htmlHidden('fu_doc_thumbs', $this->imageEditProps['thumbnails']);
 		$headline = g_l('thumbnails', '[create_thumbnails]');
 
 		return $this->formElements[$name]['multiIconBox'] ? $this->makeMultiIconRow($name, $headline, $html) : $html;
@@ -353,17 +353,17 @@ function selectCategories() {
 		return $this->formElements[$name]['multiIconBox'] ? $this->makeMultiIconRow($name, $headline, $html) : $html;
 	}
 
-	public function getFormImageResize($width = '', $height = '', $unitWidth = 'pixel', $unitHeight = 'pixel', $ratio = false){
+	public function getFormImageResize(){
 		$name = 'imageResize';
 		if(!isset($this->formElements[$name]) || !$this->formElements[$name]['set'] || !permissionhandler::hasPerm("NEW_GRAFIK")){
 			return;
 		}
 
-		$widthInput = we_html_tools::htmlTextInput("fu_doc_width", 10, $width, '', '', "text", 60);
-		$heightInput = we_html_tools::htmlTextInput("fu_doc_height", 10, $height, '', '', "text", 60);
-		$widthSelect = '<select size="1" class="weSelect" name="fu_doc_widthSelect"><option value="pixel"' . ($unitWidth === 'pixel' ? ' selected="selected"' : '') . '>' . g_l('weClass', '[pixel]') . '</option><option value="percent"' . ($unitWidth !== 'pixel' ? ' selected="selected"' : '') . '>' . g_l('weClass', '[percent]') . '</option></select>';
-		$heightSelect = '<select size="1" class="weSelect" name="fu_doc_heightSelect"><option value="pixel"' . ($unitHeight === 'pixel' ? ' selected="selected"' : '') . '>' . g_l('weClass', '[pixel]') . '</option><option value="percent"' . ($unitHeight !== 'pixel' ? ' selected="selected"' : '') . '>' . g_l('weClass', '[percent]') . '</option></select>';
-		$ratio_checkbox = we_html_forms::checkboxWithHidden($ratio, 'fu_doc_keepRatio', g_l('thumbnails', '[ratio]'), false, 'defaultfont', '');
+		$widthInput = we_html_tools::htmlTextInput("fu_doc_width", 10, intval($this->imageEditProps['imageWidth']), '', '', "text", 60);
+		$heightInput = we_html_tools::htmlTextInput("fu_doc_height", 10, intval($this->imageEditProps['imageHeight']), '', '', "text", 60);
+		$widthSelect = '<select size="1" class="weSelect" name="fu_doc_widthSelect"><option value="pixel"' . ($this->imageEditProps['widthSelect'] === 'pixel' ? ' selected="selected"' : '') . '>' . g_l('weClass', '[pixel]') . '</option><option value="percent"' . ($this->imageEditProps['widthSelect'] !== 'pixel' ? ' selected="selected"' : '') . '>' . g_l('weClass', '[percent]') . '</option></select>';
+		$heightSelect = '<select size="1" class="weSelect" name="fu_doc_heightSelect"><option value="pixel"' . ($this->imageEditProps['heightSelect'] === 'pixel' ? ' selected="selected"' : '') . '>' . g_l('weClass', '[pixel]') . '</option><option value="percent"' . ($this->imageEditProps['heightSelect'] !== 'pixel' ? ' selected="selected"' : '') . '>' . g_l('weClass', '[percent]') . '</option></select>';
+		$ratio_checkbox = we_html_forms::checkboxWithHidden(($this->imageEditProps['keepRatio'] ? true : false), 'fu_doc_keepRatio', g_l('thumbnails', '[ratio]'), false, 'defaultfont', '');
 
 		$html = '<table>
 			<tr>
@@ -386,16 +386,17 @@ function selectCategories() {
 		return $this->formElements[$name]['multiIconBox'] ? $this->makeMultiIconRow($name, $headline, $html) : $html;
 	}
 
-	public function getFormImageRotate($degrees = 0){
+	public function getFormImageRotate(){
 		$name = 'imageRotate';
 		if(!isset($this->formElements[$name]) || !$this->formElements[$name]['set'] || !permissionhandler::hasPerm("NEW_GRAFIK")){
 			return;
 		}
 
-		$_radio0 = we_html_forms::radiobutton(0, $degrees == 0, "fu_doc_degrees", g_l('weClass', '[rotate0]'));
-		$_radio180 = we_html_forms::radiobutton(180, $degrees == 180, "fu_doc_degrees", g_l('weClass', '[rotate180]'));
-		$_radio90l = we_html_forms::radiobutton(90, $degrees == 90, "fu_doc_degrees", g_l('weClass', '[rotate90l]'));
-		$_radio90r = we_html_forms::radiobutton(270, $degrees == 270, "fu_doc_degrees", g_l('weClass', '[rotate90r]'));
+		$degrees = intval($this->imageEditProps['degrees']);
+		$_radio0 = we_html_forms::radiobutton(0, $degrees === 0, "fu_doc_degrees", g_l('weClass', '[rotate0]'));
+		$_radio180 = we_html_forms::radiobutton(180, $degrees === 180, "fu_doc_degrees", g_l('weClass', '[rotate180]'));
+		$_radio90l = we_html_forms::radiobutton(90, $degrees === 90, "fu_doc_degrees", g_l('weClass', '[rotate90l]'));
+		$_radio90r = we_html_forms::radiobutton(270, $degrees === 270, "fu_doc_degrees", g_l('weClass', '[rotate90r]'));
 
 		$html = $_radio0 . $_radio180 . $_radio90l . $_radio90r;
 		$headline = g_l('weClass', '[rotate]');
@@ -403,13 +404,13 @@ function selectCategories() {
 		return $this->formElements[$name]['multiIconBox'] ? $this->makeMultiIconRow($name, $headline, $html) : $html;
 	}
 
-	public function getFormImageQuality($quality = 8){
+	public function getFormImageQuality(){
 		$name = 'imageQuality';
 		if(!isset($this->formElements[$name]) || !$this->formElements[$name]['set'] || !permissionhandler::hasPerm("NEW_GRAFIK")){
 			return;
 		}
 
-		$html = we_base_imageEdit::qualitySelect("fu_doc_quality", $quality);
+		$html = we_base_imageEdit::qualitySelect("fu_doc_quality", $this->imageEditProps['quality']);
 		$headline = g_l('weClass', '[quality]');
 
 		return $this->formElements[$name]['multiIconBox'] ? $this->makeMultiIconRow($name, $headline, $html) : $html;

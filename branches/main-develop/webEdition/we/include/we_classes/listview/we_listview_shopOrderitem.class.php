@@ -24,7 +24,7 @@
 
 /**
  * class    we_listview_shopOrderitem
- * @desc    class for tag <we:listview type="banner">
+ * @desc    class for tag <we:listview type="orderitem">
  *
  */
 class we_listview_shopOrderitem extends we_listview_base{
@@ -102,9 +102,9 @@ class we_listview_shopOrderitem extends we_listview_base{
 			$orderstring = '';
 		}
 
-		$where = ($this->orderID ?
-				($this->condition ? (' WHERE IntOrderID=' . $this->name . ' AND ' . $this->condition ) : ' WHERE IntOrderID=' . $this->orderID . ' ') :
-				($this->condition ? (' WHERE ' . $this->condition ) : ' '));
+		$where = ($this->condition ?
+			' WHERE ' . $this->condition . ($this->orderID ? ' AND IntOrderID=' . $this->orderID : '') :
+			($this->orderID ? ' WHERE IntOrderID=' . $this->orderID : '')); 
 
 		$this->anz_all = f('SELECT COUNT(1) FROM ' . SHOP_TABLE . $where, '', $this->DB_WE);
 
