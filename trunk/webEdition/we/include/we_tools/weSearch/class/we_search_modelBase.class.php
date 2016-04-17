@@ -97,7 +97,7 @@ class we_search_modelBase extends we_tool_model{
 			case 'currentAnzahl':
 				return $this->currentAnzahl;
 			case 'currentAnzahlMedialinks':
-				return $this->currentAnzahlMedialinks;
+				return intval($this->currentAnzahlMedialinks);
 			case 'currentSetView':
 				return $this->currentSetView;
 			case 'currentFolderID':
