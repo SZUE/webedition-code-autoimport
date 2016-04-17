@@ -161,14 +161,14 @@ top.clearEntries();
 			$folder->Text = $txt;
 			$folder->Filename = $txt;
 			$folder->Path = $folder->getPath();
-			$this->db->query("SELECT ID,Text FROM " . $this->db->escape($this->table) . ' WHERE Path="' . $folder->Path . '" AND ID!=' . $this->we_editDirID);
+			$this->db->query('SELECT ID,Text FROM ' . $this->db->escape(VOTING_TABLE) . ' WHERE Path="' . $folder->Path . '" AND ID!=' . $this->we_editDirID);
 			if($this->db->next_record()){
 				$we_responseText = sprintf(g_l('modules_voting', '[folder_exists]'), $folder->Path);
 				echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 			} elseif(preg_match('/[%/\\"\']/', $folder->Text)){
 				$we_responseText = g_l('modules_voting', '[wrongtext]');
 				echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
-			} elseif(f("SELECT Text FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($this->we_editDirID), "", $this->db) != $txt){
+			} elseif(f('SELECT Text FROM ' . $this->db->escape(VOTING_TABLE) . ' WHERE ID=' . intval($this->we_editDirID), "", $this->db) != $txt){
 				$folder->we_save();
 				echo 'var ref;
 if(top.opener.top.content.treeData){
