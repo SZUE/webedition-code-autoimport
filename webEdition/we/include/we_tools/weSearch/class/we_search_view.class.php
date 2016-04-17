@@ -806,7 +806,7 @@ WE().consts.weSearch= {
 				$c = 0;
 
 				foreach($references as $reference){
-					if($limit != -1 || $c++ >= $limit){
+					if($limit > -1 && $c++ >= $limit){
 						$out .= '<tr><td style="padding-left:26px;width:410px;">[ + ' . ($numAccessibles - $limit) . ' ' . g_l('weClass', '[medialinks_more]') . ' ]</td></tr>';
 						break;
 					}
