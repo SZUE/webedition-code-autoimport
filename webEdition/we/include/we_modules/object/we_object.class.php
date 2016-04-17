@@ -99,6 +99,7 @@ class we_object extends we_document{
 			$cf->Filename = $this->Text;
 			$cf->setParentID($pID);
 			$cf->Path = $cf->getPath();
+			$cf->TableID = $this->ID;
 			$cf->we_save(true);
 			$cf->modifyChildrenPath();
 		}
@@ -213,7 +214,6 @@ class we_object extends we_document{
 			$this->DB_WE->query('INSERT INTO ' . $ctable . ' SET OF_ID=0');
 			$q = $indexe = array();
 			$this->wasUpdate = true;
-
 		}
 
 		$ctable = OBJECT_X_TABLE . intval($this->ID);
@@ -2229,7 +2229,7 @@ class we_object extends we_document{
 						}
 						break;
 					default:
-						//
+					//
 				}
 			}
 		}
