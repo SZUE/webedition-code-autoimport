@@ -88,57 +88,6 @@ $_parts = array(
 	)
 );
 
-$_js = '
-function save() {
-	var dir = document.we_form.ParentID;
-	opener.we_cmd("add_navi",' . $_id . ',encodeURIComponent(document.we_form.Text.value),dir.options[dir.selectedIndex].value,document.we_form.Ordn.value);	self.close();
-}
-
-var ajaxObj = {
-		handleSuccess:function(o){
-				this.processResult(o);
-				if(o.responseText) {
-					document.getElementById("details").innerHTML = "";
-					eval(o.responseText);
-
-					var items = weResponse.data.split(",");
-					var i = 0;
-
-					for(s in items) {
-						i++;
-						var row = items[s].split(":");
-						if(row.length>1) {
-							document.getElementById("details").innerHTML += "<div style=\"width: 40px; float: left;\">"+i+"</div><div style=\"width: 220px;\">"+row[1]+"</div>";
-						}
-					}
-				}
-		},
-
-		handleFailure:function(o){
-				// Failure handler
-		},
-
-		processResult:function(o){
-				// This member is called by handleSuccess
-		},
-
-		startRequest:function(id) {
-			 YAHOO.util.Connect.asyncRequest("POST", WE().consts.dirs.WEBEDITION_DIR+"rpc.php", callback, "cmd=GetNaviItems&nid="+id);
-		}
-
-};
-
-
-var callback = {
-		success:ajaxObj.handleSuccess,
-		failure:ajaxObj.handleFailure,
-		scope: ajaxObj
-};
-
-
-function queryEntries(id) {
-	ajaxObj.startRequest(id);
-}';
 $buttonsBottom = '<div style="float:right">' .
 	we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, 'javascript:save();', true, 100, 22, '', '', ($_id ? false : true), false), null, we_html_button::create_button(we_html_button::CLOSE, 'javascript:self.close();')) . '</div>';
 
@@ -152,4 +101,6 @@ $_body = we_html_element::htmlBody(
 
 echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
 	YAHOO_FILES .
-	we_html_element::jsElement($_js), $_body);
+	we_html_element::jsElement('var WE_NAVIID='. intval($_id) .';').
+	we_html_element::jsScript(WE_JS_MODULES_DIR .'navigation/weNaviEditor.js')
+	, $_body);

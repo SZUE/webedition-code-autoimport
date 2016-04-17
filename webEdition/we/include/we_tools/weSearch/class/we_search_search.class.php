@@ -189,7 +189,7 @@ class we_search_search extends we_search_base{
 									$where .= ($where ? ' AND ' : '') . 'WETABLE.ContentType IN (' . $contentTypes . ')';
 									break;
 								case 'IsUsed':
-									$where .= $this->searchMediaLinks($searchString, $_view !== we_search_view::VIEW_ICONS);
+									$where .= $this->searchMediaLinks($searchString, $_view !== we_search_view::VIEW_ICONS, '', true);
 									break;
 								case 'IsProtected':
 									switch($searchString){
@@ -1041,7 +1041,7 @@ class we_search_search extends we_search_base{
 		return '';
 	}
 
-	function searchMediaLinks($useState = 0, $holdAllLinks = true, $inIDs = ''){
+	function searchMediaLinks($useState = 0, $holdAllLinks = true, $inIDs = '', $returnQuery = false){
 		$db = new DB_WE();
 		$useState = intval($useState);
 		$this->usedMedia = $this->usedMediaLinks = $tmpMediaLinks = $groups = $paths = array();
@@ -1191,11 +1191,11 @@ class we_search_search extends we_search_base{
 			$this->usedMedia = $db->getAll(true);
 		}
 
-		if(!$useState){
+		if(!$useState || !$returnQuery){
 			return;
 		}
 
-		return $this->usedMedia ? (' AND ' . FILE_TABLE . '.ID ' . ($useState === 2 ? 'NOT ' : ' ') . 'IN(' . implode(',', $this->usedMedia) . ')') : ($useState === 2 ? '' : ' AND 0');
+		return $this->usedMedia ? (' AND WETABLE.ID ' . ($useState === 2 ? 'NOT ' : ' ') . 'IN(' . implode(',', $this->usedMedia) . ')') : ($useState === 2 ? '' : ' AND 0');
 	}
 
 	function searchHasReferenceToId($id, $table){

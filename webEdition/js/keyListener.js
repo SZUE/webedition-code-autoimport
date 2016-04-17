@@ -172,7 +172,7 @@ function keyEditorListener(_successor) {
 		_editor = false;
 		_editorType = "";
 
-		if(!WE()){
+		if(!top || !WE()){
 			return;
 		}
 		// check if an editor is open

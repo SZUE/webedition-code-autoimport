@@ -118,6 +118,14 @@ class we_search_model extends we_search_modelBase{
 	protected $anzahlAdvSearch = 10;
 
 	/**
+	 * @var int: gives the number of entries in each search for one page
+	 */
+	protected $anzahlMedialinksDocSearch = 0;
+	protected $anzahlMedialinksTmplSearch = 0;
+	protected $anzahlMedialinksMediaSearch = 10;
+	protected $anzahlMedialinksAdvSearch = 0;
+
+	/**
 	 * @var string: gives the order
 	 */
 	protected $OrderDocSearch = "Text";
@@ -136,6 +144,7 @@ class we_search_model extends we_search_modelBase{
 	protected $searchTablesTmplSearch = array();
 	protected $searchTablesMediaSearch = array();
 	protected $searchTablesAdvSearch = array();
+
 	protected $searchForFieldTmplSearch = array(
 		'text' => 0,
 		'title' => 0,
@@ -278,6 +287,7 @@ class we_search_model extends we_search_modelBase{
 			$this->OrderMediaSearch = we_base_request::_(we_base_request::STRING, 'we_cmd', $this->OrderMediaSearch, 'OrderMediaSearch');
 			$this->setViewMediaSearch = we_base_request::_(we_base_request::STRING, 'we_cmd', $this->setViewMediaSearch, 'setViewMediaSearch');
 			$this->anzahlMediaSearch = we_base_request::_(we_base_request::INT, 'we_cmd', $this->anzahlMediaSearch, 'anzahlMediaSearch');
+			$this->anzahlMedialinksMediaSearch = we_base_request::_(we_base_request::INT, 'we_cmd', $this->anzahlMedialinksMediaSearch, 'anzahlMedialinksMediaSearch');
 			$this->searchstartMediaSearch = we_base_request::_(we_base_request::INT, 'we_cmd', $this->searchstartMediaSearch, 'searchstartMediaSearch');
 			$this->searchMediaSearch = array_merge(is_array($this->searchMediaSearch) ? $this->searchMediaSearch : array());
 			$this->locationMediaSearch = array_merge(is_array($this->locationMediaSearch) ? $this->locationMediaSearch : array());
@@ -404,6 +414,7 @@ class we_search_model extends we_search_modelBase{
 				$this->currentSetView = $this->setViewMediaSearch;
 				$this->currentSearchstart = $this->searchstartMediaSearch;
 				$this->currentAnzahl = $this->anzahlMediaSearch;
+				$this->currentAnzahlMedialinks = $this->anzahlMedialinksMediaSearch;
 				$this->currentSearchForField = $this->searchForFieldMediaSearch;
 				$this->currentSearchForContentType = $this->searchForContentTypeMediaSearch;
 				break;

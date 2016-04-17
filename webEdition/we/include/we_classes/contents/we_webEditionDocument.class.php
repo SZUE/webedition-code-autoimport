@@ -265,7 +265,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$yuiSuggest->setSelectButton($button);
 		//$yuiSuggest->setDoOnTextfieldBlur("if(document.getElementById('yuiAcResultTemplate').value == '' || document.getElementById('yuiAcResultTemplate').value == 0) { document.getElementById('TemplateLabel').style.display = 'inline'; document.getElementById('TemplateLabelLink').style.display = 'none'; } else { document.getElementById('TemplateLabel').style.display = 'none'; document.getElementById('TemplateLabelLink').style.display = 'inline'; }");
 		$yuiSuggest->setDoOnTextfieldBlur("if(YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById['yuiAcInputTemplate'].set].changed && YAHOO.autocoml.isValidById('yuiAcInputTemplate')){ top.we_cmd('reload_editpage')}");
-
+		//$yuiSuggest->setIsDropFromTree(true);// deactivated
 		return $yuiSuggest->getHTML();
 	}
 
@@ -616,7 +616,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	 * this function is used to replace to prepare wysiwyg img sources for db
 	 * it also writes img sources and hrefs to $this->MediaLinks
 	 *
-	 * when $isRebuildMediaLinks it only writes $this->MediaLinks (img sources come from db and must not be vhanged)
+	 * when $isRebuildMediaLinks it only writes $this->MediaLinks (img sources come from db and must not be changed)
 	 */
 
 	function parseTextareaFields($rebuildMode = false){
@@ -625,7 +625,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			if(isset($allElements['textarea'])){
 				foreach($allElements['textarea'] as $name){
 					$value = $this->getElement($name);
-					$this->MediaLinks = array_merge($this->MediaLinks, we_wysiwyg_editor::reparseInternalLinks($value, true)); //true: replace internal file paths
+					$this->MediaLinks = array_merge($this->MediaLinks, we_wysiwyg_editor::reparseInternalLinks($value, true, $name)); //true: replace internal file paths
 					$this->setElement($name, $value);
 				}
 			}
@@ -636,13 +636,16 @@ class we_webEditionDocument extends we_textContentDocument{
 		//FIXME: implement textarea as element-type for textareas!
 		if($rebuildMode === 'main'){
 			foreach($this->elements as $name => $elem){
-				if($elem['type'] === 'txt' && (strpos($elem['dat'], 'src="' . we_base_link::TYPE_INT_PREFIX) !== false || strpos($elem['dat'], 'href="' . we_base_link::TYPE_INT_PREFIX) !== false)){
-					$this->MediaLinks = array_merge($this->MediaLinks, we_document::parseInternalLinks($elem['dat'], 0, '', true));
+				if($elem['type'] === 'txt' && (strpos($elem['dat'], 'src="' . we_base_link::TYPE_INT_PREFIX) !== false || strpos($elem['dat'], 'src="' . we_base_link::TYPE_THUMB_PREFIX) !== false || strpos($elem['dat'], 'href="' . we_base_link::TYPE_INT_PREFIX) !== false)){
+					// do we need this for normal rebuild? it's obsolete for rebuilding medialinks!
+					we_document::parseInternalLinks($elem['dat'], 0, '', true);
+					// FIXME: use we_wysiwyg_editor::registerMediaLinks when available
+					$this->MediaLinks = array_merge($this->MediaLinks, we_wysiwyg_editor::reparseInternalLinks($elem['dat'], false, $name));
 				}
 			}
 		} else {//rebuilding from tblTemporaryDoc
 			foreach($this->elements as $name => $elem){
-				if($elem['type'] === 'txt' && (strpos($elem['dat'], 'src="') !== false || strpos($elem['dat'], 'href="' . we_base_link::TYPE_INT_PREFIX) !== false)){
+				if($elem['type'] === 'txt' && (strpos($elem['dat'], 'src="') !== false || strpos($elem['dat'], 'src="' . we_base_link::TYPE_THUMB_PREFIX) !== false || strpos($elem['dat'], 'href="' . we_base_link::TYPE_INT_PREFIX) !== false)){
 					$this->MediaLinks = array_merge($this->MediaLinks, we_wysiwyg_editor::reparseInternalLinks($elem['dat'], true));
 				}
 			}
@@ -661,8 +664,8 @@ class we_webEditionDocument extends we_textContentDocument{
 		// Last step is to save the webEdition document
 		$out = parent::we_save($resave, $skipHook);
 		if($out){
-			$this->parseTextareaFields();
 			$this->unregisterMediaLinks(false, true);
+			$this->parseTextareaFields();
 			$out = $this->registerMediaLinks(true);
 		}
 

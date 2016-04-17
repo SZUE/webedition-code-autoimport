@@ -43,6 +43,7 @@ function we_tag_css($attribs){
 				case '':
 				case 'screen':
 				case 'all':
+					// we still need addDocumentCss() because JS getDocumentCss() won't apply it when applyTo=wysiwyg!
 					$GLOBALS['we_doc']->addDocumentCss($row['Path'] . '?m=' . $row['Published']);
 					break;
 			}
@@ -54,6 +55,12 @@ function we_tag_css($attribs){
 	$attribs['rel'] = weTag_getAttribute('rel', $attribs, 'stylesheet', we_base_request::STRING);
 	$attribs['type'] = 'text/css';
 	$attribs['href'] = $row['Path'] . ($row['IsFolder'] ? '/' : '') . '?m=' . $row['Published'];
+
+	if($GLOBALS['we_editmode']){
+		// these stylesheets are applied to wysiwyg using addDocumentCss depending on attribute "applyto": 
+		// so prevent JS getDocumentCss() from applying it again or when applyto=around!
+		$attribs['href'] .= '&wysiwyg=0'; 
+	}
 
 	return $nolink ? '' : getHtmlTag('link', $attribs) . "\n";
 }

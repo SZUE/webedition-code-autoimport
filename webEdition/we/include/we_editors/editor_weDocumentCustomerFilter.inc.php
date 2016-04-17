@@ -109,6 +109,7 @@ function formWebuser($canChange, $width = 388){
 	$yuiSuggest->setSelector(weSuggest::DocSelector);
 	$yuiSuggest->setWidth(434);
 	$yuiSuggest->setSelectButton($button);
+	$yuiSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:top.we_cmd('customer_edit_ifthere', document.we_form.elements['yuiAcResultCustomer'].value);"));
 	$yuiSuggest->setTrashButton($_trashBut);
 	$yuiSuggest->setTable(CUSTOMER_TABLE);
 

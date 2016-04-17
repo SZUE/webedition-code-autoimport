@@ -137,7 +137,7 @@ function getTreeWidth() {
 
 function incTree() {
 	var w = parseInt(getTreeWidth());
-	if ((w > WE().consts.size.tree.min) && (w < WE().consts.size.tree.max)) {
+	if ((w >= WE().consts.size.tree.min) && (w < WE().consts.size.tree.max)) {
 		w += WE().consts.size.tree.step;
 		setTreeWidth(w);
 	}
@@ -145,8 +145,10 @@ function incTree() {
 		w = WE().consts.size.tree.max;
 		setTreeWidth(w);
 		self.document.getElementById("incBaum").style.backgroundColor = "grey";
-	} else {
-
+	} else
+	if (w < WE().consts.size.tree.min) {
+		w = WE().consts.size.tree.min;
+		setTreeWidth(w);
 	}
 }
 
@@ -811,7 +813,7 @@ function we_cmd_base(args, url) {
 		case "open_extern_document":
 		case "new_document":
 			var nextWindow;
-			var ctrl=WE().layout.weEditorFrameController;
+			var ctrl = WE().layout.weEditorFrameController;
 			if ((nextWindow = ctrl.getFreeWindow())) {
 				_nextContent = nextWindow.getDocumentReference();
 				// activate tab and set it status loading ...

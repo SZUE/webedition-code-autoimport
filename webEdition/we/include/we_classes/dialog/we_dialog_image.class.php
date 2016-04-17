@@ -274,7 +274,7 @@ class we_dialog_image extends we_dialog_base{
 			$radioButtonInt = we_html_forms::radiobutton(we_base_link::TYPE_INT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_INT), "radio_type", g_l('wysiwyg', '[internal_image]'), true, "defaultfont", "if(this.form.elements.radio_type[0].checked){this.form.elements['we_dialog_args[type]'].value='" . we_base_link::TYPE_INT . "';top.document.getElementById('imageInt').style.display='block';top.document.getElementById('imageExt').style.display='none';}imageChanged();");
 
 			$yuiSuggest->setAcId("Image");
-			$yuiSuggest->setContentType("folder," . we_base_ContentTypes::IMAGE);
+			$yuiSuggest->setContentType(we_base_ContentTypes::IMAGE);
 			$yuiSuggest->setInput("we_dialog_args[fileSrc]", str_replace('"', '&quot;', (isset($this->args["fileSrc"]) ? $this->args["fileSrc"] : "")));
 			//Bug #3556:
 			//$yuiSuggest->setDoOnTextfieldBlur('imageChanged();');
@@ -289,6 +289,10 @@ class we_dialog_image extends we_dialog_base{
 			$yuiSuggest->setSelectButton($but);
 			$yuiSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:if(top.document.we_form.elements.yuiAcResultImage.value){if(opener.top.doClickDirect!==undefined){var p=opener.top;}else if(opener.top.opener.top.doClickDirect!==undefined){var p=opener.top.opener.top;}else{return;}p.doClickDirect(document.we_form.elements.yuiAcResultImage.value,'" . we_base_ContentTypes::IMAGE . "','" . FILE_TABLE . "'); }"));
 			$yuiSuggest->setAdditionalButton($btnUpload);
+			$yuiSuggest->setIsDropFromTree(true);
+			$yuiSuggest->setIsDropFromExt(true);
+			$yuiSuggest->setDoOnDropFromTree('imageChanged();');
+			$yuiSuggest->setDoOnDropFromExt('top.opener.imageChanged();self.close();');
 			$intSrc = $yuiSuggest->getHTML();
 
 			/**

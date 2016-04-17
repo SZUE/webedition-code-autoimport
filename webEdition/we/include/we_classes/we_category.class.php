@@ -110,7 +110,7 @@ class we_category extends we_base_model{
 
 	public function registerMediaLinks(){
 		if($this->Description){
-			$this->MediaLinks = we_wysiwyg_editor::reparseInternalLinks($this->Description);
+			$this->MediaLinks = array_values(we_wysiwyg_editor::reparseInternalLinks($this->Description));
 		}
 
 		$this->unregisterMediaLinks();

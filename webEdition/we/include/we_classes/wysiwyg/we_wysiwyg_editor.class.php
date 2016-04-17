@@ -544,9 +544,11 @@ return {
 				'function getDocumentCss(preKomma){
 	var doc=document;
 	var styles=[];
-	for(var i=0;i<doc.styleSheets.length;i++){
-		if(doc.styleSheets[i].href && !doc.styleSheets[i].href.match(/webEdition\//) && (doc.styleSheets[i].media.length==0||doc.styleSheets[i].media.mediaText.indexOf("all")>=0 || doc.styleSheets[i].media.mediaText.indexOf("screen")>=0)){
-			styles.push(doc.styleSheets[i].href);
+	if(doc.styleSheets){
+		for(var i=0;i<doc.styleSheets.length;i++){top.console.log(doc.styleSheets[i]);
+			if(doc.styleSheets[i].href && doc.styleSheets[i].href.indexOf("&wysiwyg=0")===-1 && !doc.styleSheets[i].href.match(/webEdition\//) && (doc.styleSheets[i].media.length==0||doc.styleSheets[i].media.mediaText.indexOf("all")>=0 || doc.styleSheets[i].media.mediaText.indexOf("screen")>=0)){
+				styles.push(doc.styleSheets[i].href);
+			}
 		}
 	}
 	return styles.length?((preKomma?",":"")+styles.join(",")):"";
@@ -609,30 +611,45 @@ return {
 
 	/*
 	 * this function is used to prepare textaea content for db
-	 * is returns an array of img/href-ids (for use in registerMediaLinks)
+	 * it returns an array of img/href-ids (for use in registerMediaLinks)
 	 */
-
-	public static function reparseInternalLinks(&$content, $replace = false){// FIXME: move to we_document?
+	public static function reparseInternalLinks(&$origContent, $replace = false, $name = ''){// FIXME: move to we_document?
 		$regs = $internalIDs = array();
-		if(preg_match_all('{src="/[^">]+\\?id=(\\d+)["\|&]}i', $content, $regs, PREG_SET_ORDER)){
+		$content = $origContent;
+
+		// replace real links by internals when necessery (in documents links are parsed already, in modules not)
+		if(preg_match_all('{src="/[^">]+\\?id=(\\d+)(&amp;|&)?("|[^"]+")}i', $content, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
-				$content = $replace ? str_replace($reg[0], 'src="' . we_base_link::TYPE_INT_PREFIX . $reg[1] . '"', $content) : $content;
-				$internalIDs[] = intval($reg[1]);
+				$content = str_replace($reg[0], 'src="' . we_base_link::TYPE_INT_PREFIX . $reg[1] . '"', $content);
 			}
 		}
-		if(preg_match_all('{src="/[^">]+\\?thumb=(\\d+,\\d+)["\|&]}i', $content, $regs, PREG_SET_ORDER)){
+		if(preg_match_all('{src="/[^">]+\\?thumb=(\\d+,\\d+)(&amp;|&)?("|[^"]+")}i', $content, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
-				$content = $replace ? str_replace($reg[0], 'src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '"', $content) : $content;
-				$internalIDs[] = intval(strstr($reg[1], ',', true));
-			}
-		}
-		if(preg_match_all('|href="' . we_base_link::TYPE_INT_PREFIX . '(\\d+)|i', $content, $regs, PREG_SET_ORDER)){
-			foreach($regs as $reg){
-				$internalIDs[] = intval($reg[1]);
+				$content = str_replace($reg[0], 'src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '"', $content);
 			}
 		}
 
-		return $internalIDs;
+		// replace original content if necessary
+		$origContent = $replace ? $content : $origContent;
+
+		// FIXME: the obove stuff has to be done before parsing medialinks!
+		// FIXME: make we_wysiwyg_editor::registerMedisLinks() just looking for IDs and writing the correct MediaLinks (after making internal link elsewhere)!
+
+		// parse internal IDs in one step to preserve order!
+		$content = str_replace(array(we_base_link::TYPE_THUMB_PREFIX), we_base_link::TYPE_INT_PREFIX, $content);
+		if(preg_match_all('/(src|href)="' . we_base_link::TYPE_INT_PREFIX . '(\\d+),?(\\d*)["|?]/i', $content, $regs, PREG_SET_ORDER)){
+			foreach($regs as $reg){
+				$internalIDs[] = intval($reg[2]);
+			}
+		}
+
+		$ret = array();
+		$c = 0;
+		foreach($internalIDs as $id){
+			$ret['textarea[name=' . $name . '] [src/href ' . ++$c . ']'] = $id;
+		}
+
+		return $ret;
 	}
 
 	private function getToolbarRows(){

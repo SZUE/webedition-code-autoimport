@@ -144,19 +144,19 @@ var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action=
 
 		// create Start Screen ##############################################################################
 		$parts = array();
-		$parts = is_array($form = $fileupload->getFormParentID($this->parentID, 'we_startform')) ? array_merge($parts, array($form)) : $parts;
+		$parts = is_array($form = $fileupload->getFormParentID('we_startform')) ? array_merge($parts, array($form)) : $parts;
 		$parts = is_array($form = $fileupload->getFormSameName()) ? array_merge($parts, array($form)) : $parts;
-		$parts = is_array($form = $fileupload->getFormCategories($this->categories)) ? array_merge($parts, array($form)) : $parts;
+		$parts = is_array($form = $fileupload->getFormCategories()) ? array_merge($parts, array($form)) : $parts;
 
 		if(permissionhandler::hasPerm("NEW_GRAFIK")){
 			$parts = is_array($form = $fileupload->getFormImportMeta()) ? array_merge($parts, array($form)) : $parts;
 			$parts = is_array($form = $fileupload->getFormIsSearchable()) ? array_merge($parts, array($form)) : $parts;
 
 			if(we_base_imageEdit::gd_version() > 0){
-				$parts = is_array($form = $fileupload->getFormThumbnails($this->thumbs)) ? array_merge($parts, array($form)) : $parts;
-				$parts = is_array($form = $fileupload->getFormImageResize($this->width, $this->height, $this->widthSelect, $this->heightSelect, $this->keepRatio)) ? array_merge($parts, array($form)) : $parts;
-				$parts = is_array($form = $fileupload->getFormImageRotate($this->degrees)) ? array_merge($parts, array($form)) : $parts;
-				$parts = is_array($form = $fileupload->getFormImageQuality($this->quality)) ? array_merge($parts, array($form)) : $parts;
+				$parts = is_array($form = $fileupload->getFormThumbnails()) ? array_merge($parts, array($form)) : $parts;
+				$parts = is_array($form = $fileupload->getFormImageResize()) ? array_merge($parts, array($form)) : $parts;
+				$parts = is_array($form = $fileupload->getFormImageRotate()) ? array_merge($parts, array($form)) : $parts;
+				$parts = is_array($form = $fileupload->getFormImageQuality()) ? array_merge($parts, array($form)) : $parts;
 			} else {
 				$parts[] = array(
 					"headline" => "",
@@ -196,9 +196,23 @@ var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action=
 	}
 
 	function getStep2(){
-		$this->savePropsInSession();
-
 		$uploader = new we_fileupload_ui_importer('we_File');
+		$uploader->setImageEditProps(array(
+			'parentID' => $this->parentID,
+			'sameName' => $this->sameName,
+			'importMetadata' => $this->importMetadata,
+			'isSearchable' => $this->imgsSearchable,
+			'thumbnails' => $this->thumbs,
+			'imageWidth' => $this->width,
+			'imageHeight' => $this->height,
+			'widthSelect' => $this->widthSelect,
+			'heightSelect' => $this->heightSelect,
+			'keepRatio' => $this->keepRatio,
+			'quality' => $this->quality,
+			'degrees' => $this->degrees,
+			'categories' => $this->categories
+		));
+		$uploader->saveImageEditPropsInSession();
 		$uploader->setCallback($this->callBack);
 		$body = $uploader->getHTML($this->_getHiddens(true));
 

@@ -2124,9 +2124,9 @@ class we_objectFile extends we_document{
 	}
 
 	function parseTextareaFields($rebuildMode = 'whocares'){
-		foreach($this->elements as $element){
+		foreach($this->elements as $name => $element){
 			if($element['type'] === 'text'){
-				$this->MediaLinks = array_merge($this->MediaLinks, we_wysiwyg_editor::reparseInternalLinks($element['dat']));
+				$this->MediaLinks = array_merge($this->MediaLinks, we_wysiwyg_editor::reparseInternalLinks($element['dat'], false, $name));
 			}
 		}
 	}
@@ -2185,8 +2185,8 @@ class we_objectFile extends we_document{
 		$this->wasUpdate = true;
 		$this->setUrl();
 
-		$this->parseTextareaFields('temp');
 		$this->unregisterMediaLinks(false);
+		$this->parseTextareaFields('temp');
 		$this->registerMediaLinks(true);
 
 		if(!$resave && $_resaveWeDocumentCustomerFilter){
@@ -2236,14 +2236,15 @@ class we_objectFile extends we_document{
 			$dv = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), "DefaultValues", $this->DB_WE));
 			foreach($dv as $k => $v){
 				if(strpos($k, 'link_') === 0){
-					$link = $this->getElement(str_replace('link_', '', $k));
+					$name = str_replace('link_', '', $k);
+					$link = $this->getElement($name);
 					$link = is_array($link) ? $link : we_unserialize($link, array(), true);
 					if(isset($link['type']) && isset($link['id']) && isset($link['img_id'])){ //FIXME: $link should be an object so we can check class
 						if($link['type'] === 'int' && $link['id']){
-							$this->MediaLinks[] = $link['id'];
+							$this->MediaLinks['link[name=' . $name . ']'] = $link['id'];
 						}
 						if($link['img_id']){
-							$this->MediaLinks[] = $link['img_id'];
+							$this->MediaLinks['link[name=' . $name . ']'] = $link['img_id'];
 						}
 					}
 				}
@@ -2386,10 +2387,10 @@ class we_objectFile extends we_document{
 			return false;
 		}
 		if($DoNotMark){
+			$this->unregisterMediaLinks(true, false);
 			$this->parseTextareaFields('main');
 			// TODO: we should try to throw out obsolete elements from temporary! but this affects static docs only!
 			// TODO: when doing rebuild media link test all elements against template!
-			$this->unregisterMediaLinks(true, false);
 			$this->registerMediaLinks(); // last param: when rebuilding static docs do not delete temp entries!
 		} else {
 			if(!$this->markAsPublished()){

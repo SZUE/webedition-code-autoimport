@@ -126,7 +126,7 @@ class we_customer_customer extends we_base_model{
 		$this->unregisterMediaLinks();
 		foreach(self::getImageFields() as $field){
 			if($this->$field){
-				$this->MediaLinks[] = $this->$field;
+				$this->MediaLinks[$field] = $this->$field;
 			}
 		}
 

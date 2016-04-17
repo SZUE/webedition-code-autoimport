@@ -45,6 +45,7 @@ class we_search_modelBase extends we_tool_model{
 	protected $currentSearchFields = array();
 	protected $currentOrder = 'Text';
 	protected $currentAnzahl = 10;
+	protected $currentAnzahlMedialinks = 0;
 	protected $currentSetView = 0;
 	protected $currentFolderID = 0;
 	protected $currentSearchForField = array(
@@ -95,6 +96,8 @@ class we_search_modelBase extends we_tool_model{
 				return $this->currentOrder;
 			case 'currentAnzahl':
 				return $this->currentAnzahl;
+			case 'currentAnzahlMedialinks':
+				return intval($this->currentAnzahlMedialinks);
 			case 'currentSetView':
 				return $this->currentSetView;
 			case 'currentFolderID':

@@ -337,9 +337,9 @@ WE().consts.weSearch= {
 		$btnNext = we_html_button::create_button(we_html_button::NEXT, 'javascript:weSearch.next();', true, 100, 22, '', '', $disableNext, true, '', false, '', 'btnSearchNext');
 		$select = we_html_tools::htmlSelect('page', $pages, 1, $page, false, array('onchange' => "this.form.elements.searchstart" . $whichSearch . ".value = this.value; weSearch.search(false);"), 'value', 0, 'selectSearchPages');
 
-		$tbl = new we_html_table(array(), 1, 4);
+		$tbl = new we_html_table(array('style' => 'margin-top:-2px;'), 1, 4);
 		$tbl->setCol(0, 0, array(), $btnBack);
-		$tbl->setCol(0, 1, array('class' => 'defaultfont'), we_html_element::htmlSpan(array('class' => 'spanSearchText bold'), $text));
+		$tbl->setCol(0, 1, array('class' => 'defaultfont', 'style' => 'padding-top:6px;'), we_html_element::htmlSpan(array('class' => 'spanSearchText bold'), $text));
 		$tbl->setCol(0, 2, array(), $btnNext);
 		$tbl->setCol(0, 3, array(), $select);
 
@@ -695,7 +695,7 @@ WE().consts.weSearch= {
 							array('elem' => 'table', '' => '', 'dat' => array(
 									array('elem' => 'row', 'dat' => array(
 											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . '" class="bold"', 'dat' => '<a href="javascript:weSearch.openToEdit(\'' . addTblPrefix($result[$f]['docTable']) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $result[$f]['Path'] . ' (ID: ' . $result[$f]['docID'] . ')"><u>' . $result[$f]["Text"] . '</u></a>'),
-											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'width:75px;text-align:left"', 'dat' => ($result[$f]['IsUsed'] ? we_html_button::create_button(we_html_button::DIRRIGHT, "javascript:weSearch.toggleAdditionalContent(this, " . $result[$f]['docID'] . ")", true, 21, 22, "", "", false, false, '__' . $result[$f]['docID'], false, 'Verwendet in:') : '')),
+											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'width:75px;text-align:left"', 'dat' => (($result[$f]['IsUsed'] && $this->Model->getProperty('currentAnzahlMedialinks')) ? we_html_button::create_button(we_html_button::DIRRIGHT, "javascript:weSearch.toggleAdditionalContent(this, " . $result[$f]['docID'] . ")", true, 21, 22, "", "", false, false, '__' . $result[$f]['docID'], false, 'Verwendet in:') : '')),
 											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'width:70px;text-align:left"', 'dat' => $result[$f]['fileSize']),
 											array('elem' => 'td', 'attribs' => ($result[$f]['IsUsed'] ? 'title="Dokument wird benutzt." onclick="weSearch.showAdditional(' . $result[$f]['docID'] . ')" style="cursor:pointer;width:45px;text-align:left;' . $standardStyle . 'height:auto;"' : 'title="Dokument wird nicht benutzt!" style="width:45px;text-align:left;' . $standardStyle . '"'), 'dat' => '<i class="fa fa-lg fa-circle" style="color:' . ($result[$f]['IsUsed'] ? 'green' : 'yellow') . ';"></i>'),
 											array('elem' => 'td', 'attribs' => 'title="' . ($result[$f]['media_alt'] ? : 'Alt-Attribut nicht gesetzt" ') . '" style="width:45px;text-align:left;' . $standardStyle . '"', 'dat' => '<i class="fa fa-lg fa-circle" style="color:' . ($result[$f]['media_alt'] ? 'green' : 'red') . ';"></i>'),
@@ -704,9 +704,9 @@ WE().consts.weSearch= {
 											array('elem' => 'td', 'attribs' => 'style="width:90px;' . $standardStyle . '"', 'dat' => $result[$f]['ModDate'] ? date(g_l('searchtool', '[date_format]'), $result[$f]['ModDate']) : '-'),
 											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'width:30px;text-align:left"', 'dat' => we_html_button::create_button(we_html_button::EDIT, "javascript:weSearch.openToEdit('" . FILE_TABLE . "'," . $result[$f]["docID"] . ",'" . $result[$f]["ContentType"] . "');", true, 27, 22)),
 										)),
-									array('elem' => 'row', 'dat' => array(
+									array('elem' => 'row', 'dat' => ($this->Model->getProperty('currentAnzahlMedialinks') ? array(
 											array('elem' => 'td', 'attribs' => 'id="infoTable_' . $result[$f]["docID"] . '" style="display:none;width:100%;text-align:left;"' . $standardStyle . 'height:auto;overflow:visible;" colspan="7"', 'dat' => $this->makeAdditionalContentMedia($result[$f])),
-										))
+										) : ''))
 								), 'colgroup' => '</colgroup>
 	<col style="text-align:left;"/>
 	<col style="width:48px;text-align:left;"/>
@@ -802,11 +802,12 @@ WE().consts.weSearch= {
 				$out .= '<tr><td style="padding:4px 0 0 6px;"><em>' . $group . ' (' . ($numNotaccessible + $numAccessibles) . ($numNotaccessible ? ', davon ' . $numNotaccessible . ' ' . g_l('weClass', '[medialinks_unaccessible]') : '') . '):</em></td></tr>';
 
 				$references = isset($accessibles[$group]) && is_array($accessibles[$group]) ? $accessibles[$group] : array();
-				$limit = 20;
+				ksort($references);
+				$limit = $this->Model->getProperty('currentAnzahlMedialinks');
 				$c = 0;
 
 				foreach($references as $reference){
-					if($c++ >= $limit){
+					if($limit > -1 && $c++ >= $limit){
 						$out .= '<tr><td style="padding-left:26px;width:410px;">[ + ' . ($numAccessibles - $limit) . ' ' . g_l('weClass', '[medialinks_more]') . ' ]</td></tr>';
 						break;
 					}
@@ -834,11 +835,11 @@ WE().consts.weSearch= {
 					  }
 					 *
 					 */
-					$element = preg_replace('|NN[0-9]\]+$|', 'NN', $reference['element']);
+					$element = preg_replace('|NN[0-9]\]+$|', 'NN]', $reference['element']);
 					$out .= '<tr style="background-color:white;">' .
 						($makeLink ? '
 							<td style="padding:8px 0 6px 26px;width:410px;"><a href="javascript:' . $reference['onclick'] . '" title="ID ' . $reference["id"] . ': ' . $reference['path'] . ($element ? ', in: ' . $reference['element'] : '') . '"><span style="color:' . $color . ';"><u>' . $reference['path'] . '</u></span></a>' . ($element ? '<br>' . 'in: ' . $element : '') . '</span></td>
-							<td style="padding:6px 0 0 0">' . we_html_button::create_button(we_html_button::EDIT, "javascript:weSearch.openToEdit('" . $reference['table'] . "'," . $reference["id"] . ",'');", true, 27, 22) . '</td>' :
+							<td style="padding:6px 0 0 0">' . we_html_button::create_button(we_html_button::EDIT, "javascript:" . $reference['onclick'] . ";", true, 27, 22) . '</td>' :
 							'<td style="padding:8px 0 6px 26px;width:410px;"><span style="color:' . $color . ';">' . $reference['path'] . '</span></td>
 							<td style="padding:6px 0 0 0">' . we_html_button::create_button(we_html_button::EDIT, '', true, 27, 22, '', '', true, false, '', false, g_l('searchtool', '[linkPublishedOnly]')) . '</td>') .
 						'</tr>';
@@ -877,19 +878,23 @@ WE().consts.weSearch= {
 		$currentSetView = $this->Model->getProperty('currentSetView');
 		$currentSearchstart = $this->Model->getProperty('currentSearchstart');
 		$currentAnzahl = $this->Model->getProperty('currentAnzahl');
+		$currentAnzahlMedialinks = $this->Model->getProperty('currentAnzahlMedialinks');
 		$currentFolderID = $this->Model->getProperty('currentFolderID');
 		$currentSearchTables = $this->Model->getProperty('currentSearchTables');
 
-		$select = we_html_tools::htmlSelect('anzahl' . $whichSearch, array(10 => 10, 25 => 25, 50 => 50, 100 => 100), 1, $currentAnzahl, false, array('onchange' => "this.form.elements['searchstart" . $whichSearch . "'].value=0;weSearch.search(false);"), 'value', 0, 'selectSearchNumber');
+		$selectAnzahl = we_html_tools::htmlSelect('anzahl' . $whichSearch, array(10 => 10, 25 => 25, 50 => 50, 100 => 100), 1, $currentAnzahl, false, array('onchange' => "this.form.elements['searchstart" . $whichSearch . "'].value=0;weSearch.search(false);"), 'value', 0, 'selectSearchNumber');
+		$selectAnzahlMedialinks = we_html_tools::htmlSelect('anzahlMedialinks' . $whichSearch, array(0 => g_l('searchtool', '[no_template]'), 10 => 10, -1 => g_l('searchtool', '[all]')), 1, $currentAnzahlMedialinks, false, array('onchange' => "this.form.elements['searchstart" . $whichSearch . "'].value=0;weSearch.search(false);"), 'value', 0, 'selectSearchNumberMedialinks');
 
-		$tbl = new we_html_table(array('class' => 'default', 'style' => 'margin:12px 0px 12px 19px;'), 1, 7);
-		$tbl->setCol(0, ($c = 0), array('style' => 'font-size:12px; width:125px;'), g_l('searchtool', '[eintraege_pro_seite]') . ':');
-		$tbl->setCol(0, ++$c, array('class' => 'defaultfont lowContrast', 'style' => 'width:60px;'), $select);
+		$tbl = new we_html_table(array('class' => 'default', 'style' => 'margin:12px 0px 12px 19px;'), 1, 9);
+		$tbl->setCol(0, ($c = 0), array('style' => 'font-size:12px; padding:6px 6px 0 0;'), g_l('searchtool', '[eintraege_pro_seite]') . ':');
+		$tbl->setCol(0, ++$c, array('class' => 'defaultfont lowContrast', 'style' => 'padding:0 10px 0 0;'), $selectAnzahl);
 		$tbl->setCol(0, ++$c, array(), $this->getNextPrev($foundItems, $whichSearch));
+		if($whichSearch === self::SEARCH_MEDIA){
+			$tbl->setCol(0, ++$c, array('style' => 'font-size:12px; padding:6px 6px 0 12px;'), 'Medialinks:');
+			$tbl->setCol(0, ++$c, array('class' => 'defaultfont lowContrast', 'style' => 'padding:0 12px 0 0;'), $selectAnzahlMedialinks);
+		}
 		$tbl->setCol(0, ++$c, array(), we_html_button::create_button('fa:iconview,fa-lg fa-th', "javascript:weSearch.setView('" . we_search_view::VIEW_ICONS . "');", true, 40, '', '', '', false));
 		$tbl->setCol(0, ++$c, array(), we_html_button::create_button('fa:listview,fa-lg fa-align-justify', "javascript:weSearch.setView('" . we_search_view::VIEW_LIST . "');", true, 40, '', '', '', false));
-
-		$moreHiddens = '';
 		if($whichSearch === self::SEARCH_DOCLIST){
 			if($currentFolderID && $currentSearchTables[0] === FILE_TABLE){
 				$tbl->setCol(0, ++$c, array('style' => 'width:50px;'), we_fileupload_ui_importer::getBtnImportFiles($currentFolderID));
@@ -901,6 +906,7 @@ WE().consts.weSearch= {
 					'we_transaction' => $this->Model->transaction,
 			));
 		}
+		$moreHiddens = '';
 
 		return we_html_element::htmlHiddens(array(
 				'setView' . $whichSearch => $currentSetView,
