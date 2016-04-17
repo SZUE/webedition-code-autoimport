@@ -802,6 +802,7 @@ WE().consts.weSearch= {
 				$out .= '<tr><td style="padding:4px 0 0 6px;"><em>' . $group . ' (' . ($numNotaccessible + $numAccessibles) . ($numNotaccessible ? ', davon ' . $numNotaccessible . ' ' . g_l('weClass', '[medialinks_unaccessible]') : '') . '):</em></td></tr>';
 
 				$references = isset($accessibles[$group]) && is_array($accessibles[$group]) ? $accessibles[$group] : array();
+				ksort($references);
 				$limit = $this->Model->getProperty('currentAnzahlMedialinks');
 				$c = 0;
 

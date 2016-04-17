@@ -814,7 +814,7 @@ we_templateInit();?>';
 							$this->MediaLinks[$element] = intval($tag['attribs']['id']); // selector: text/webEdition only
 						}
 						if(isset($tag['attribs']['path']) && $tag['attribs']['path'] && ($id = path_to_id($tag['attribs']['path'], FILE_TABLE, $this->DB_WE))){
-							$this->MediaLinks[$element] = intval($tag['attribs']['id']); // selector: text/webEdition only
+							$this->MediaLinks[$element] = intval($id); // selector: text/webEdition only
 						}
 					}
 					break;
