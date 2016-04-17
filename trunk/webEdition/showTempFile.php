@@ -53,4 +53,3 @@ if($isCompressed){
 } else {
 	readfile($filename);
 }
-echo filesize($filename);
