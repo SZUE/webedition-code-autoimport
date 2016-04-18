@@ -176,6 +176,7 @@ class we_dialog_image extends we_dialog_base{
 		$name = $this->getHttpVar(we_base_request::STRING, 'name');
 		$type = $this->getHttpVar(we_base_request::STRING, 'type');
 		$thumbnail = $this->getHttpVar(we_base_request::INT, 'thumbnail');
+		$isPresetFromDnD = $this->getHttpVar(we_base_request::INT, 'isPresetFromDnD', 0);
 
 		$type = ($type ? : we_base_link::TYPE_EXT);
 		if($src && !$thumbnail){
@@ -230,6 +231,7 @@ class we_dialog_image extends we_dialog_base{
 		$this->args['name'] = '';
 		$this->args['type'] = we_base_link::TYPE_EXT;
 		$this->args['ratio'] = 1;
+		$this->args['isPresetByDnD'] = 0;
 	}
 
 	function getHeaderHTML($printJS_Style = false, $additionals = ''){
@@ -253,8 +255,6 @@ class we_dialog_image extends we_dialog_base{
 			$but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ?
 				we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','',document.we_form.elements['we_dialog_args[extSrc]'].value,'" . $wecmdenc4 . "')"
 				) : "";
-			//$openbutton = we_html_button::create_button(we_html_button::EDIT, "javascript:var f=top.document.we_form.elements['we_dialog_args[extSrc]']; if(f.value && f.value !== '" . we_base_link::EMPTY_EXT . "'){new (WE().util.jsWindow)(window, f.value, '_blank', -1, -1, 500, 550, true, true, true);}", true, 0, 0, '', '', true, false, '_ext', false, g_l('wysiwyg', '[openNewWindow]'));
-			//$radioButtonExt = we_html_forms::radiobutton(we_base_link::TYPE_EXT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_EXT), "radio_type", g_l('wysiwyg', '[external_image]'), true, "defaultfont", "if(this.form.elements['radio_type'][2].checked){this.form.elements['we_dialog_args[type]'].value='" . we_base_link::TYPE_EXT . "';top.document.getElementById('imageExt').style.display='block';top.document.getElementById('imageInt').style.display='none';top.document.getElementsByClassName('weFileuploadEditor')[0].style.display='none';}imageChanged();");
 			$radioButtonExt = we_html_forms::radiobutton(we_base_link::TYPE_EXT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_EXT), "radio_type", g_l('wysiwyg', '[external_image]'), true, "defaultfont", "if(this.form.elements['radio_type'][1].checked){this.form.elements['we_dialog_args[type]'].value='" . we_base_link::TYPE_EXT . "';top.document.getElementById('imageExt').style.display='block';top.document.getElementById('imageInt').style.display='none';}imageChanged();");
 			$textInput = we_html_tools::htmlTextInput("we_dialog_args[extSrc]", 30, (isset($this->args["extSrc"]) ? $this->args["extSrc"] : ""), "", ' onfocus="if(this.form.elements.radio_type[1].checked){imageChanged();}" onchange="imageChanged();if(this.value !== \'\' && this.value !== \'' . we_base_link::EMPTY_EXT . '\'){weButton.enable(\'btn_edit_ext\')}else{weButton.disable(\'btn_edit_ext\')}" ', "text", 315);
 			$extSrc = we_html_tools::htmlFormElementTable($textInput, '', "left", "defaultfont", $but, /* $openbutton */ '', '', '', '', 0);
@@ -264,7 +264,7 @@ class we_dialog_image extends we_dialog_base{
 			 */
 			$cmd1 = "document.we_form.elements['we_dialog_args[fileID]'].value";
 			$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[fileSrc]'].value");
-			$wecmdenc3 = we_base_request::encCmd("opener.document.we_form.elements.radio_type[0].checked=true;opener.document.we_form.elements['we_dialog_args[type]'].value='" . we_base_link::TYPE_INT . "';opener.imageChanged();");
+			$wecmdenc3 = we_base_request::encCmd("opener.document.we_form.elements.radio_type[0].checked=true;opener.document.we_form.elements['we_dialog_args[type]'].value='" . we_base_link::TYPE_INT . "';" . (weSuggest::USE_DRAG_AND_DROP ? "opener.dropzoneAddPreview('Image', -1);" : "") . "opener.imageChanged();"); // FIXME: dropzoneAddPreview() must be called by weSuggest
 			$startID = $this->args['selectorStartID'] ? : (IMAGESTARTID_DEFAULT ? : 0);
 
 			$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "'," . $startID . ",'','" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
@@ -292,7 +292,7 @@ class we_dialog_image extends we_dialog_base{
 			$yuiSuggest->setIsDropFromTree(true);
 			$yuiSuggest->setIsDropFromExt(true);
 			$yuiSuggest->setDoOnDropFromTree('imageChanged();');
-			$yuiSuggest->setDoOnDropFromExt('top.opener.imageChanged();self.close();');
+			$yuiSuggest->setDoOnDropFromExt(weSuggest::USE_DRAG_AND_DROP ? 'opener.dropzoneAddPreview(\'Image\', -1);top.opener.imageChanged();self.close();' : ''); // FIXME: dropzoneAddPreview() must be called by weSuggest
 			$intSrc = $yuiSuggest->getHTML();
 
 			/**

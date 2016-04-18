@@ -11,6 +11,7 @@ $this->Attributes[] = new weTagData_choiceAttribute('only', array(
 	new weTagDataOption('width', false, ''),
 	new weTagDataOption('height', false, ''),
 	new weTagDataOption('alt', false, ''),
+	new weTagDataOption('title', false, ''),
 	new weTagDataOption('src', false, ''),
 	new weTagDataOption('id', false, ''),
 	new weTagDataOption('path', false, ''),

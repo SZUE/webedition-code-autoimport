@@ -361,12 +361,12 @@ function startFrameset() {
 function disableRootDirButs() {
 	WE().layout.button.switch_button_state(document, "root_dir", "disabled");
 	WE().layout.button.switch_button_state(document, "btn_fs_back", "disabled");
-	rootDirButsState = 0;
+	rootDirButsState = false;
 }
 function enableRootDirButs() {
 	WE().layout.button.switch_button_state(document, "root_dir", "enabled");
 	WE().layout.button.switch_button_state(document, "btn_fs_back", "enabled");
-	rootDirButsState = 1;
+	rootDirButsState = true;
 }
 function disableNewFolderBut() {
 	WE().layout.button.switch_button_state(document, "btn_new_dir", "disabled");
@@ -390,12 +390,12 @@ function enableNewBut() {
 
 function disableNewFileBut() {
 	WE().layout.button.switch_button_state(document, "btn_add_file", "disabled");
-	newFileState = 0;
+	newFileState = false;
 }
 
 function enableNewFileBut() {
 	WE().layout.button.switch_button_state(document, "btn_add_file", "enabled");
-	newFileState = 1;
+	newFileState = true;
 }
 
 function clearOptions() {

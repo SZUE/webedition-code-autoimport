@@ -117,8 +117,7 @@ class we_class_folder extends we_folder{
 					$folder->ParentID = $last_pid;
 					$folder->Text = $p[$i];
 					$folder->Filename = $p[$i];
-					$folder->IsClassFolder = $i == 0;
-
+					$folder->IsClassFolder = ($i === 0);
 					$folder->Path = $pa;
 					$folder->save($skipHook);
 					$last_pid = $folder->ID;
@@ -136,8 +135,7 @@ class we_class_folder extends we_folder{
 		//#4076
 		$this->setClassProp();
 
-		$this->save(0, $skipHook);
-		return true;
+		return $this->save(0, $skipHook);
 	}
 
 	protected function i_canSaveDirinDir(){

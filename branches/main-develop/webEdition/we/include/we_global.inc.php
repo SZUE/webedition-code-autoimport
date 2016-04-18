@@ -687,12 +687,19 @@ function getServerUrl($useUserPwd = false){
 	return getServerProtocol(true) . ($useUserPwd && strlen($pwd) > 3 ? $pwd : '') . $_SERVER['SERVER_NAME'] . $port;
 }
 
-function we_check_email($email){ // php validates only the pure address
-	if(($pos = strpos($email, '<'))){//format is "xxx xx" <test@test.de>
+/**
+ * Validates email address
+ * @param $email
+ * @return bool
+ */
+function we_check_email($email){
+	if(($pos = strpos($email, '<'))){//check format is "xxx xx" <test@test.de> because php validates only the pure address
 		++$pos;
 		$email = substr($email, $pos, strrpos($email, '>') - $pos);
 	}
-	return (filter_var($email, FILTER_VALIDATE_EMAIL) !== false);
+	list($name, $host) = explode('@', $email);
+	$host = (function_exists('idn_to_ascii') ? idn_to_ascii($host) : $host);
+	return (filter_var(trim($name . '@' . $hostl), FILTER_VALIDATE_EMAIL) !== false);
 }
 
 /** This function should be used ONLY in generating code for the FRONTEND
