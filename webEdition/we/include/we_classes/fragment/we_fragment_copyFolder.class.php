@@ -92,7 +92,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 				$_SESSION['weS']['WE_COPY_OBJECTS'] = true;
 				$fromPath = id_to_path($fromID, OBJECT_FILES_TABLE);
 
-				$qfolders = ($ObjectCopyNoFolders ? ' ParentID = ' . $fromID . ' AND IsFolder = 0 AND ' : '');
+				$qfolders = ($ObjectCopyNoFolders ? ' ParentID=' . $fromID . ' AND IsFolder=0 AND ' : '');
 
 				$db = new DB_WE();
 				$this->alldata = array();
@@ -104,7 +104,6 @@ class we_fragment_copyFolder extends we_fragment_base{
 					"TheTable" => OBJECT_FILES_TABLE,
 					"OverwriteObjects" => $OverwriteObjects,
 					"ObjectCopyNoFolders" => $ObjectCopyNoFolders,
-					"IsFolder" => $db->f('IsFolder'),
 					"CreateTemplate" => 0,
 					"CreateDoctypes" => 0,
 					"CreateTemplateInFolderID" => 0,
@@ -112,7 +111,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 					"newCategories" => '',
 				);
 				$db->query('SELECT ID,ParentID,Text,Path,IsFolder,ClassName,ContentType,Published FROM ' . OBJECT_FILES_TABLE . ' WHERE ' . $qfolders . " (Path LIKE'" . $db->escape($fromPath) . "/%') ORDER BY IsFolder DESC,Path");
-				while($db->next_record()){
+				while($db->next_record(MYSQL_ASSOC)){
 					$this->alldata[] = array_merge($db->getRecord(), $merge);
 				}
 			}
@@ -156,8 +155,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 		$this->copyToPath = id_to_path($this->data['CopyToId'], OBJECT_FILES_TABLE);
 		$path = preg_replace('|^' . $this->data['CopyFromPath'] . '/|', $this->copyToPath . '/', $this->data['Path']);
 		if($this->data['IsFolder']){
-			$GLOBALS['we_doc']->initByPath($path, OBJECT_FILES_TABLE);
-			if(!$GLOBALS['we_doc']->we_save()){
+			if(!$GLOBALS['we_doc']->initByPath($path, OBJECT_FILES_TABLE) || !$GLOBALS['we_doc']->we_save()){
 				return false;
 			}
 		} else {

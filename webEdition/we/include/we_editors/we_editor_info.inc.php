@@ -47,7 +47,7 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 <div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">ID</div>
 <div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID ? : "-") . '</div>
 <div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[content_type]') . '</div>
-<div style="margin-bottom:10px;">' . g_l('weEditorInfo', '[' . $GLOBALS['we_doc']->ContentType . ']') . '</div>';
+<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ContentType ? g_l('weEditorInfo', '[' . $GLOBALS['we_doc']->ContentType . ']') : '') . '</div>';
 
 	if($GLOBALS['we_doc']->ContentType !== "folder" && $GLOBALS['we_doc']->ContentType !== we_base_ContentTypes::COLLECTION){
 		$fs = $GLOBALS['we_doc']->getFilesize();
@@ -194,7 +194,7 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 				}
 		}
 
-		if (is_a($GLOBALS['we_doc'], 'we_binaryDocument')) {
+		if(is_a($GLOBALS['we_doc'], 'we_binaryDocument')){
 			$formReference = $GLOBALS['we_doc']->formReferences();
 			$parts[] = array(
 				'headline' => g_l('weClass', '[isUsed]') . ' (' . $formReference['num'] . ')',

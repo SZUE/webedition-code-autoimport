@@ -434,7 +434,7 @@ abstract class we_html_element{
 
 	public static function htmlIFrame($name, $src, $style = '', $iframestyle = '', $onload = '', $scroll = true, $class = ''){
 		static $isApple = -1;
-		$isApple = ($isApple !== -1 ? $isApple : ((we_base_browserDetect::inst()->getBrowser() == we_base_browserDetect::APPLE) || we_base_browserDetect::inst()->isMAC() || we_base_browserDetect::inst()->isSafari() || (we_base_browserDetect::inst()->getSystem() == we_base_browserDetect::SYS_IPHONE)));
+		$isApple = ($isApple !== -1 ? $isApple : (we_base_browserDetect::inst()->isSafari() || (we_base_browserDetect::inst()->getSystem() == we_base_browserDetect::SYS_IPHONE)));
 		$iframestyle = $iframestyle ? : 'border:0px;width:100%;height:100%;overflow:hidden;';
 
 		return self::htmlDiv(array('style' => $style, 'name' => $name . 'Div', 'id' => $name . 'Div', 'class' => $class)

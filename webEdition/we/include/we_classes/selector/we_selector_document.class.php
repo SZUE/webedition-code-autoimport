@@ -119,7 +119,7 @@ class we_selector_document extends we_selector_directory{
 
 				$this->titleName = ($hash ? $hash['DefaultTitle'] : '');
 				if($this->titleName && strpos($this->titleName, '_')){
-					$this->db->query('SELECT OF_ID, o.' . $this->titleName . ' FROM ' . OBJECT_X_TABLE . $hash['ID'] . ' o JOIN '.OBJECT_FILES_TABLE.' of ON of.ID=o.OF_ID WHERE of.ParentID=' . intval($this->dir));
+					$this->db->query('SELECT OF_ID, o.' . $this->titleName . ' FROM ' . OBJECT_X_TABLE . $hash['ID'] . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON of.ID=o.OF_ID WHERE of.ParentID=' . intval($this->dir));
 					$this->titles = $this->db->getAllFirst(false);
 				}
 				break;
@@ -221,6 +221,8 @@ function exit_open() {
 			case VFILE_TABLE:
 				return parent::printHeaderJSDef() . '
 var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
+			default:
+				return parent::printHeaderJSDef();
 		}
 	}
 

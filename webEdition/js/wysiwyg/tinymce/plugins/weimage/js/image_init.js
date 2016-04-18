@@ -46,6 +46,11 @@ var ImageDialog = {
 		TinyMCE_EditableSelects.init();
 		this.addClassesToList('we_dialog_args[cssclass]', 'advlink_styles');
 
+		if(nl["we_dialog_args[isPresetFromDnD]"].value == 1){
+			nl["we_dialog_args[isPresetFromDnD]"].value = 0;
+			top.imageChanged();
+		}
+
 		if (n.nodeName == 'IMG' && !ed.isWeDataInitialized) {
 			var imgWidth, imgHeight, longdesc, src_arr;
 

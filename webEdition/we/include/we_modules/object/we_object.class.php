@@ -2188,6 +2188,7 @@ class we_object extends we_document{
 			we_history::insertIntoHistory($this);
 		}
 		/* hook */
+		$this->unregisterMediaLinks();
 		$ret = $this->registerMediaLinks(true, false);
 		if($skipHook){
 			return true;
