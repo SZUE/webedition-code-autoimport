@@ -271,7 +271,7 @@ YAHOO.util.Event.addListener(this, "load", YAHOO.autocoml.init);' .
 			$dropzoneStyle  = 'width:auto;padding-top:14px;height:60px;';
 
 			// FIXME: add code for icons so we can have preview for all cts
-			if(false && $this->resultValue && $this->contentType === we_base_ContentTypes::IMAGE){
+			if($this->resultValue && $this->contentType === we_base_ContentTypes::IMAGE){
 				$DE_WE = new DB_WE;
 				$file = $DE_WE->getHash('SELECT Path,Extension,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . $this->resultValue);
 				if($file['ContentType'] === we_base_ContentTypes::IMAGE){
