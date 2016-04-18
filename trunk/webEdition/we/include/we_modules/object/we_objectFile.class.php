@@ -1802,7 +1802,7 @@ class we_objectFile extends we_document{
 					$this->DefArray = $this->getDefaultValueArray();
 				}
 				$vals = $this->DefArray["meta_" . $t]["meta"];
-				return $vals[$this->getElement($t)];
+				return empty($vals[$this->getElement($t)]) ? '' : $vals[$this->getElement($t)];
 			default:
 				return $elem;
 		}
