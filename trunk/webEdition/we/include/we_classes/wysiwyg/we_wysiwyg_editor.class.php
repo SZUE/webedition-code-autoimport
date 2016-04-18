@@ -545,7 +545,7 @@ return {
 	var doc=document;
 	var styles=[];
 	if(doc.styleSheets){
-		for(var i=0;i<doc.styleSheets.length;i++){top.console.log(doc.styleSheets[i]);
+		for(var i=0;i<doc.styleSheets.length;i++){
 			if(doc.styleSheets[i].href && doc.styleSheets[i].href.indexOf("&wysiwyg=0")===-1 && !doc.styleSheets[i].href.match(/webEdition\//) && (doc.styleSheets[i].media.length==0||doc.styleSheets[i].media.mediaText.indexOf("all")>=0 || doc.styleSheets[i].media.mediaText.indexOf("screen")>=0)){
 				styles.push(doc.styleSheets[i].href);
 			}
@@ -1071,6 +1071,23 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		ed.onDblClick.add(tinyEdonDblClick);
 
 		ed.onInit.add(function(ed, o){
+			ed.dom.bind(ed.getWin(), ["drop"], function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+				if (e.dataTransfer && e.dataTransfer.getData("text")) {
+					var data = e.dataTransfer.getData("text").split(",");
+					if(data[0] && data[0] === "dragItem" && data[1] === WE().consts.tables.FILE_TABLE){
+						if(data[3] === WE().consts.contentTypes.IMAGE){
+							ed.execCommand("mceWeimage", true, data[2]);
+						} else {
+							ed.execCommand("mceWelink", true, data[2]);
+						}
+					}
+
+					return false;
+				}
+			});
+
 			//ed.execCommand("mceWevisualaid", true);
 
 			//TODO: clean up the mess in here!

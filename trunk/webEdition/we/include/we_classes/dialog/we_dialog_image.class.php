@@ -176,6 +176,7 @@ class we_dialog_image extends we_dialog_base{
 		$name = $this->getHttpVar(we_base_request::STRING, 'name');
 		$type = $this->getHttpVar(we_base_request::STRING, 'type');
 		$thumbnail = $this->getHttpVar(we_base_request::INT, 'thumbnail');
+		$isPresetFromDnD = $this->getHttpVar(we_base_request::INT, 'isPresetFromDnD', 0);
 
 		$type = ($type ? : we_base_link::TYPE_EXT);
 		if($src && !$thumbnail){
@@ -230,6 +231,7 @@ class we_dialog_image extends we_dialog_base{
 		$this->args['name'] = '';
 		$this->args['type'] = we_base_link::TYPE_EXT;
 		$this->args['ratio'] = 1;
+		$this->args['isPresetByDnD'] = 0;
 	}
 
 	function getHeaderHTML($printJS_Style = false, $additionals = ''){
