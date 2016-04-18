@@ -198,6 +198,7 @@ doOnImportSuccess = function(importedDocument){
 			top.opener.document.getElementById("imageExt").style.display="none";
 			top.opener.document.getElementById("yuiAcResultImage").value = importedDocument.id;
 			top.opener.document.getElementById("yuiAcInputImage").value = importedDocument.path;
+			' . (weSuggest::USE_DRAG_AND_DROP ? 'top.opener.dropzoneAddPreview(\'Image\', -1);' : '') . '
 			top.opener.imageChanged();
 			top.close();
 			break;
@@ -211,6 +212,9 @@ doOnImportSuccess = function(importedDocument){
 				top.opener.document.we_form.elements["we_dialog_args[fileSrc]"].value=importedDocument.path;
 				top.opener.document.we_form.elements["we_dialog_args[fileID]"].value=importedDocument.id;
 			}
+			' . (weSuggest::USE_DRAG_AND_DROP ? 'top.opener.dropzoneAddPreview(\'Image\', -1);' : '') . '
+			top.opener.imageChanged();
+			self.close();
 			break;
 		default:
 			// do nothing

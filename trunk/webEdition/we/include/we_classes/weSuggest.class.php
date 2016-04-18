@@ -51,6 +51,8 @@ class weSuggest{
 	const DocSelector = 'docSelector';
 	const DirSelector = 'dirSelector';
 
+	const USE_DRAG_AND_DROP = true;
+
 	private $noautoinit = false;
 	private $noAutoInits = array();
 	var $inputfields = array();
@@ -256,21 +258,38 @@ YAHOO.util.Event.addListener(this, "load", YAHOO.autocoml.init);' .
 				$this->createButton ? : '')
 		);
 
-		if($this->isDropFromTree || $this->isDropFromExt){
+		if(self::USE_DRAG_AND_DROP && ($this->isDropFromTree || $this->isDropFromExt)){
 			$this->isDropFromExt = $this->table === FILE_TABLE ? $this->isDropFromExt : false;
 
 			$texts = array( // FIXME: G_L(): [suggest][dnd_text_(0|1|2|3)] to avoid texts-array
 				'[something is wrong]',
 				'Dateien aus dem Dateibaum hierher ziehen',
 				'Dateien zum Upload von der Festplatte hierher ziehen',
-				'Dateien aus dem Dateibaum oder zum Upload von der Festplatte hierher ziehen'
+				'Dateien aus dem Dateibaum oder <br>zum Upload von der Festplatte hierher ziehen'
 			);
-			$dropzoneText = 'Drag and Drop Auswahl<br>' . $texts[(($this->isDropFromTree ? 1 : 0) + ($this->isDropFromExt ? 2 : 0))];
+			$dropzoneContent = 'Drag and Drop Auswahl<br>' . $texts[(($this->isDropFromTree ? 1 : 0) + ($this->isDropFromExt ? 2 : 0))];
+			$dropzoneStyle  = 'width:auto;padding-top:14px;height:60px;';
 
-			$callbackTree = "if(id){document.we_form.elements['" . $resultId . "'].value=id;document.we_form.elements['" . $inputId . "'].value=path;" . $this->doOnDropFromTree . "}";
+			// FIXME: add code for icons so we can have preview for all cts
+			if(false && $this->resultValue && $this->contentType === we_base_ContentTypes::IMAGE){
+				$DE_WE = new DB_WE;
+				$file = $DE_WE->getHash('SELECT Path,Extension,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . $this->resultValue);
+				if($file['ContentType'] === we_base_ContentTypes::IMAGE){
+					$url = WEBEDITION_DIR . 'thumbnail.php?id=' . $this->resultValue . "&size[width]=100&size[heihjt]=100&path=" . urlencode($file['Path']) . "&extension=" . $file['Extension'];
+					$imgDiv = we_html_element::htmlDiv(array('style' => 'float:left;height:100%;'), 
+							we_html_element::htmlSpan(array('style' => 'display:inline-block;height: 100%;vertical-align: middle;')) .
+							we_html_element::htmlSpan(array('id' => 'preview_' . $this->acId), we_html_element::htmlImg(array('src' => $url, 'style' => 'vertical-align:middle;')))
+					);
+					$dropzoneContent = $imgDiv . we_html_element::htmlDiv(array('style' => 'display:inline-block;padding-top:30px;'), $dropzoneContent);
+					$dropzoneStyle  = 'width:auto;padding:0px 0 0 12px;';
+				}
+				
+			}
+
+			$callbackTree = "if(id){document.we_form.elements['" . $resultId . "'].value=id;document.we_form.elements['" . $inputId . "'].value=path;top.dropzoneAddPreview('" . $this->acId . "', id, table, ct, path);" . $this->doOnDropFromTree . "}";
 			$callbackExt = "if(importedDocument.id){" . $this->doOnDropFromExt . "top.close();}";
-			$dropzone = we_fileupload_ui_base::getExternalDropZone('we_File', $dropzoneText, 'width:auto;height:30px;padding:24px;', implode(',', $this->contentTypes), array('tree' => $callbackTree, 'external' => $callbackExt), $resultId, '', '', 'we_suggest_ext', $this->isDropFromTree, $this->isDropFromExt, $this->acId, $this->table);
-			
+			$dropzone = we_fileupload_ui_base::getExternalDropZone('we_File', $dropzoneContent, $dropzoneStyle, implode(',', $this->contentTypes), array('tree' => $callbackTree, 'external' => $callbackExt), $resultId, '', '', 'we_suggest_ext', $this->isDropFromTree, $this->isDropFromExt, $this->acId, $this->table);
+
 
 			$html = we_html_element::htmlDiv(array(), 
 				we_html_element::htmlDiv(array(), $html) .
@@ -558,6 +577,13 @@ YAHOO.util.Event.addListener(this, "load", YAHOO.autocoml.init);' .
 				array($this->ct, "doc");
 				break;
 		}
+
+		/* FIXME: dropzone callback must be placed here: but this is never called, because we have imageChanged() onChange() in other fields
+		if($this->isDropFromExt || $this->isDropFromTree){
+			$this->doOnItemSelect .= top.dropzoneAddPreview('" . $this->acId . "', document.we_form['yuiAcResult" . $this->acId . "'].value, '" . $this->table . "', 'image/*', document.we_form['yuiAcId" . $this->acId . "'].value);";
+		}
+		 * 
+		 */
 		$this->_doOnItemSelect[] = $this->doOnItemSelect;
 		$this->doOnItemSelect = '';
 		$this->_doOnTextfieldBlur[] = $this->doOnTextfieldBlur;
