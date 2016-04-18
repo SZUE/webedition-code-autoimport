@@ -250,7 +250,7 @@ function selectCategories() {
 			return;
 		}
 
-		$parentID = $this->imageEditProps['parentID'] ? : ($this->parentID['preset'] ? (is_numeric($this->parentID['preset']) ? $this->parentID['preset'] : path_to_id($this->parentID['preset'])) : (IMAGESTARTID_DEFAULT ? : 0));
+		$parentID = $this->parentID['preset'] ? (is_numeric($this->parentID['preset']) ? $this->parentID['preset'] : path_to_id($this->parentID['preset'])) : ($this->imageEditProps['parentID'] ? : (IMAGESTARTID_DEFAULT ? : 0));
 		if(($ws = get_ws(FILE_TABLE, true))){
 			if(!(we_users_util::in_workspace($parentID, $ws, FILE_TABLE))){
 				$parentID = intval(reset($ws));
