@@ -270,20 +270,24 @@ YAHOO.util.Event.addListener(this, "load", YAHOO.autocoml.init);' .
 			$dropzoneContent = 'Drag and Drop Auswahl<br>' . $texts[(($this->isDropFromTree ? 1 : 0) + ($this->isDropFromExt ? 2 : 0))];
 			$dropzoneStyle  = 'width:auto;padding-top:14px;height:60px;';
 
-			// FIXME: add code for icons so we can have preview for all cts
-			if($this->resultValue && $this->contentType === we_base_ContentTypes::IMAGE){
-				$DE_WE = new DB_WE;
-				$file = $DE_WE->getHash('SELECT Path,Extension,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . $this->resultValue);
-				if($file['ContentType'] === we_base_ContentTypes::IMAGE){
-					$url = WEBEDITION_DIR . 'thumbnail.php?id=' . $this->resultValue . "&size[width]=100&size[heihjt]=100&path=" . urlencode($file['Path']) . "&extension=" . $file['Extension'];
-					$imgDiv = we_html_element::htmlDiv(array('style' => 'float:left;height:100%;'), 
-							we_html_element::htmlSpan(array('style' => 'display:inline-block;height: 100%;vertical-align: middle;')) .
-							we_html_element::htmlSpan(array('id' => 'preview_' . $this->acId), we_html_element::htmlImg(array('src' => $url, 'style' => 'vertical-align:middle;')))
-					);
-					$dropzoneContent = $imgDiv . we_html_element::htmlDiv(array('style' => 'display:inline-block;padding-top:30px;'), $dropzoneContent);
-					$dropzoneStyle  = 'width:auto;padding:0px 0 0 12px;';
+			$img = '';
+			if(true && $this->contentType === we_base_ContentTypes::IMAGE){ // FIXME: add code for icons so we can have preview for all cts
+				if($this->resultValue){
+					$DE_WE = new DB_WE;
+					$file = $DE_WE->getHash('SELECT Path,Extension,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . $this->resultValue);
+
+					if($file['ContentType'] === we_base_ContentTypes::IMAGE){
+						$url = WEBEDITION_DIR . 'thumbnail.php?id=' . $this->resultValue . "&size[width]=100&size[heihjt]=100&path=" . urlencode($file['Path']) . "&extension=" . $file['Extension'];
+						$img = we_html_element::htmlImg(array('src' => $url, 'style' => 'vertical-align:middle;'));
+					}
 				}
-				
+
+				$imgDiv = we_html_element::htmlDiv(array('style' => 'float:left;height:100%;'), 
+						we_html_element::htmlSpan(array('style' => 'display:inline-block;height: 100%;vertical-align: middle;')) .
+						we_html_element::htmlSpan(array('id' => 'preview_' . $this->acId), $img)
+				);
+				$dropzoneContent = $imgDiv . we_html_element::htmlDiv(array('style' => 'display:inline-block;padding-top:30px;'), $dropzoneContent);
+				$dropzoneStyle  = 'width:auto;padding:0px 0 0 12px;';
 			}
 
 			$callbackTree = "if(id){document.we_form.elements['" . $resultId . "'].value=id;document.we_form.elements['" . $inputId . "'].value=path;top.dropzoneAddPreview('" . $this->acId . "', id, table, ct, path);" . $this->doOnDropFromTree . "}";
