@@ -942,7 +942,7 @@ self.close();');
 	</tr>
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" style="text-align:center">' .
-					we_html_button::create_button('fa:btn_select_image,fa-lg fa-exchange,fa-lg fa-file-image-o', "javascript:we_cmd('we_selector_image', '" . $imgId . "', '" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','','" . $wecmdenc3 . "','', '', '" . we_base_ContentTypes::IMAGE . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true) . we_html_button::create_button(we_html_button::TRASH, "javascript:" . $cmd1 . "='';refreshForm();", true) .
+					we_html_button::create_button('fa:btn_select_image,fa-lg fa-hand-o-right,fa-lg fa-file-image-o', "javascript:we_cmd('we_selector_image', '" . $imgId . "', '" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','','" . $wecmdenc3 . "','', '', '" . we_base_ContentTypes::IMAGE . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true) . we_html_button::create_button(we_html_button::TRASH, "javascript:" . $cmd1 . "='';refreshForm();", true) .
 					'</td>
 	</tr>
 </table>';

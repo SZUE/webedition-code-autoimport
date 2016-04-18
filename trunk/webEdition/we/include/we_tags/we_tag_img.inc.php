@@ -190,7 +190,7 @@ function we_tag_img($attribs){
 						// disable edit_image_button
 						we_html_button::create_button('fa:btn_edit_image,fa-lg fa-pencil,fa-lg fa-file-image-o', "#", false, 100, 20, "", "", true)
 				) .
-				we_html_button::create_button('fa:btn_select_image,fa-lg fa-exchange,fa-lg fa-file-image-o', "javascript:we_cmd('we_selector_image', '" . ($id ? : $startid) . "', '" . FILE_TABLE . "','" . $btnSelectWecmdenc1 . "','','" . $btnSelectWecmdenc3 . "',''," . $parentid . ",'" . we_base_ContentTypes::IMAGE . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true) .
+				we_html_button::create_button('fa:btn_select_image,fa-lg fa-hand-o-right,fa-lg fa-file-image-o', "javascript:we_cmd('we_selector_image', '" . ($id ? : $startid) . "', '" . FILE_TABLE . "','" . $btnSelectWecmdenc1 . "','','" . $btnSelectWecmdenc3 . "',''," . $parentid . ",'" . we_base_ContentTypes::IMAGE . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true) .
 				we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('remove_image', '" . $name . "')", true) .
 				'</td></tr></table>';
 	}
