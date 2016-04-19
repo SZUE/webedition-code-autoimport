@@ -152,7 +152,10 @@ TabView.prototype = {
 	 * sets the id to the icon
 	 */
 	setId: function (frameId, val) {
-		this.myDoc.getElementById('load_' + frameId).title = val;
+		var el = this.myDoc.getElementById('load_' + frameId);
+		if (el) {
+			el.title = val;
+		}
 	},
 	/**
 	 * marks a tab as modified an not safed

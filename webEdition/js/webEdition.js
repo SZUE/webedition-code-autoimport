@@ -40,7 +40,9 @@ function doClickDirect(id, ct, table, fenster) {
 	} else {
 		//  If a include-file is edited and another link is chosen, it will appear on the main window. And the pop-up will be closed.
 		top.we_showMessage(WE().consts.g_l.main.open_link_in_SEEM_edit_include, WE().consts.message.WE_MESSAGE_WARNING, window);
-		top.opener.top.doClickDirect(id, ct, table, top.opener);
+		if (top.opener.top.doClickDirect) {
+			top.opener.top.doClickDirect(id, ct, table, top.opener);
+		}
 		// clean session
 		// get the EditorFrame - this is important due to edit_include_mode!
 		var _ActiveEditor = WE().layout.weEditorFrameController.getActiveEditorFrame();
@@ -56,7 +58,6 @@ function doClickDirect(id, ct, table, fenster) {
 
 function doClickWithParameters(id, ct, table, parameters) {
 	WE().layout.weEditorFrameController.openDocument(table, id, ct, '', '', '', '', '', parameters);
-
 }
 
 function doExtClick(url) {

@@ -183,7 +183,7 @@ function findInclude($cmd){
 		case 'delete_all_navi':
 		case 'revert_published':
 		case 'load_editor':
-			//variants
+		//variants
 		case 'insert_variant':
 		case 'move_variant_up':
 		case 'move_variant_down':
@@ -295,15 +295,33 @@ function findInclude($cmd){
 }
 
 if(($inc = findInclude($cmd))){
+	require((substr($inc, 0, 5) === 'apps/' ? WEBEDITION_PATH : WE_INCLUDES_PATH) . $inc);
 	//  When pressing a link in edit-mode, the page is being reloaded from
 	//  webedition. If a webedition link was pressed this page shall not be
 	//  reloaded. All entries in this array represent values for we_cmd[0]
 	//  when the javascript command shall NOT be inserted (p.ex while saving the file.)
 	//	This is ONLY used in the edit-mode of the documents.
-	$cmds_no_js = array('siteImport', 'mod_home', 'import_images', 'getWeDocFromID', 'rebuild', 'open_url_in_editor', 'open_form_in_editor', 'users_unlock', 'edit_document', 'load_editor', 'load_edit_header', 'load_edit_footer', 'exchange', 'validateDocument', 'show', 'we_fileupload_editor');
-
-	require((substr($inc, 0, 5) === 'apps/' ? WEBEDITION_PATH : WE_INCLUDES_PATH) . $inc);
 	//  This statement prevents the page from being reloaded
-	echo (!in_array($cmd, $cmds_no_js) ? we_html_element::jsElement('parent.openedWithWE=true;') : '');
-	//.	(in_array($cmd, array('edit_document', 'switch_edit_page', 'load_editor')) ? we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') : '');
+	switch($cmd){
+		case 'siteImport':
+		case 'mod_home':
+		case 'import_images':
+		case 'getWeDocFromID':
+		case 'rebuild':
+		case 'open_url_in_editor':
+		case 'open_form_in_editor':
+		case 'users_unlock':
+		case 'edit_document':
+		case 'load_editor':
+		case 'load_edit_header':
+		case 'load_edit_footer':
+		case 'exchange':
+		case 'validateDocument':
+		case 'show':
+		case 'we_fileupload_editor':
+			break;
+		default:
+			echo we_html_element::jsElement('parent.openedWithWE=true;');
+			break;
+	}
 }

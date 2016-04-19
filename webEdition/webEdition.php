@@ -187,6 +187,7 @@ var WebEdition = {
 			WE_SHOP_MODULE_DIR: "<?php echo defined('WE_SHOP_MODULE_DIR') ? WE_SHOP_MODULE_DIR : 'WE_SHOP_MODULE_DIR'; ?>",
 			WE_WORKFLOW_MODULE_DIR: "<?php echo defined('WE_WORKFLOW_MODULE_DIR') ? WE_WORKFLOW_MODULE_DIR : 'WE_WORKFLOW_MODULE_DIR'; ?>",
 			WE_JS_TINYMCE_DIR: "<?php echo WE_JS_TINYMCE_DIR; ?>",
+			WE_SPELLCHECKER_MODULE_DIR:"<?php echo defined('SPELLCHECKER') ? WE_SPELLCHECKER_MODULE_DIR : ''; ?>",
 		},
 		g_l:{
 			main:{

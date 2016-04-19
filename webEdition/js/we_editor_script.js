@@ -1,4 +1,4 @@
-/* global top, WE */
+/* global top, WE, ImageEditTools */
 
 /**
  * webEdition CMS
@@ -335,8 +335,8 @@ function we_cmd() {
 			parent.we_cmd.apply(this, args);
 			break;
 		case "spellcheck":
-			if (WE_SPELLCHECKER_MODULE_DIR) {
-				var win = new (WE().util.jsWindow)(this, WE_SPELLCHECKER_MODULE_DIR + "/weSpellchecker.php?editname=" + (args[1]), "spellcheckdialog", -1, -1, 500, 450, true, false, true, false);
+			if (WE().consts.dirs.WE_SPELLCHECKER_MODULE_DIR) {
+				var win = new (WE().util.jsWindow)(this, WE().consts.dirs.WE_SPELLCHECKER_MODULE_DIR + "/weSpellchecker.php?editname=" + (args[1]), "spellcheckdialog", -1, -1, 500, 450, true, false, true, false);
 			}
 			break;
 			// it must be the last command

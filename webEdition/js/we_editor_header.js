@@ -64,3 +64,5 @@ var we_editor_header = {
 		}
 	}
 };
+
+var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(parent.name);
