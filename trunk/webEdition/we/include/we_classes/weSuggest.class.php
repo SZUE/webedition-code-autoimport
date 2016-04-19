@@ -271,6 +271,8 @@ YAHOO.util.Event.addListener(this, "load", YAHOO.autocoml.init);' .
 			$dropzoneStyle  = 'width:auto;padding-top:14px;height:60px;';
 
 			$img = '';
+			$eventAttribs = array('ondragover' => 'handleDragOver(event);', 'ondragleave' => 'handleDragLeave(event);');
+
 			if(true && $this->contentType === we_base_ContentTypes::IMAGE){ // FIXME: add code for icons so we can have preview for all cts
 				if($this->resultValue){
 					$DE_WE = new DB_WE;
@@ -282,11 +284,11 @@ YAHOO.util.Event.addListener(this, "load", YAHOO.autocoml.init);' .
 					}
 				}
 
-				$imgDiv = we_html_element::htmlDiv(array('style' => 'float:left;height:100%;'), 
+				$imgDiv = we_html_element::htmlDiv(array_merge($eventAttribs, array('style' => 'float:left;height:100%;')), 
 						we_html_element::htmlSpan(array('style' => 'display:inline-block;height: 100%;vertical-align: middle;')) .
 						we_html_element::htmlSpan(array('id' => 'preview_' . $this->acId), $img)
 				);
-				$dropzoneContent = $imgDiv . we_html_element::htmlDiv(array('style' => 'display:inline-block;padding-top:30px;'), $dropzoneContent);
+				$dropzoneContent = $imgDiv . we_html_element::htmlDiv(array_merge($eventAttribs, array('style' => 'display:inline-block;padding-top:30px;')), $dropzoneContent);
 				$dropzoneStyle  = 'width:auto;padding:0px 0 0 12px;';
 			}
 
