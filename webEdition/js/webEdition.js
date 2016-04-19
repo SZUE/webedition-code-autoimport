@@ -891,10 +891,10 @@ function we_cmd_base(args, url) {
 			new (WE().util.jsWindow)(this, url, "import_docs", -1, -1, 480, 390, true, false, true);
 			break;
 		case "import":
-			new (WE().util.jsWindow)(this, url, "import", -1, -1, 600, 620, true, false, true);
+			new (WE().util.jsWindow)(this, url, "import", -1, -1, 620, 640, true, false, true);
 			break;
 		case "import_files":
-			new (WE().util.jsWindow)(this, url, "import_files", -1, -1, 600, 620, true, false, true);
+			new (WE().util.jsWindow)(this, url, "import_files", -1, -1, 620, 640, true, false, true);
 			break;
 		case "export":
 			new (WE().util.jsWindow)(this, url, "export", -1, -1, 600, 540, true, false, true);

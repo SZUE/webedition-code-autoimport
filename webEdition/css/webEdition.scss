@@ -1970,7 +1970,7 @@ div.collection-content{
 
 			&.colNum{
 				width: 46px;
-				padding: 0 16px 0 0;
+				padding: 26px 16px 0 0;
 				text-align: right;
 			}
 
@@ -1980,10 +1980,11 @@ div.collection-content{
 			}
 			&.colContent{
 				width: 400px;
+				padding-top:13px;
 			}
 			&.colControls{
 				width: 220px;
-				padding: 4px 10px 0 0;
+				padding: 15px 10px 0 0;
 			}
 		}
 
@@ -2039,17 +2040,29 @@ div.collection-content{
 		tr.rowAttribsMeta{
 			display: none
 		}
+
+		td.colNum {
+			padding: 10px 2px 0 0;
+		}
 		td.colPreview {
-			width: 60px;
+			width: 50px;
 			padding: 3px 9px 3px 0;
 		}
+		td.colContent {
+			width: 520px;
+			padding: 2px 0 0 0;
+		}
+		td.colControls {
+			width: 120px;
+			padding: 4px 0 0 0;
+		}
 		div.previewDiv{
-			width: 50px;
+			width: 54px;
 			height: 30px;
 			span{
 				text-align: center;
 				font-size: 14px;
-				padding: 4px;
+				padding: 4px 4px 4px 0;
 			}
 			div.divBtnSelect{
 				padding: 2px 0 0 0;
