@@ -427,7 +427,7 @@ weCollectionEdit = {
 			this.dd.placeholder.appendChild(inner);
 		} else {
 			this.dd.placeholder.setAttribute("ondrop", "weCollectionEdit.dropOnItem(\'item\',\'grid\',event, this)");
-			this.dd.placeholder.style.height = this.viewSub === 'minimal' ? '50px' : '90px';
+			this.dd.placeholder.style.height = this.viewSub === 'minimal' ? '40px' : '90px';
 			this.dd.placeholder.style.margin = '4px 0 0 0';
 			this.dd.placeholder.style.border = this.styles.standard.border;
 			this.dd.placeholder.style.borderStyle = 'dotted';
@@ -467,7 +467,11 @@ weCollectionEdit = {
 		}
 
 		div = document.createElement("div");
-		blank = t.blankItem[t.view].replace(/##INDEX##/g, t.maxIndex).replace(/##ID##/g, item.id).replace(/##PATH##/g, item.path).
+
+		// FIXME: reduce obsolete replacements for listMinimal
+
+		var viewPlusSub = t.view !== 'list' ? 'grid' : (t.viewSub === 'minimal' ? 'listMinimal' : 'list');
+		blank = t.blankItem[viewPlusSub].replace(/##INDEX##/g, t.maxIndex).replace(/##ID##/g, item.id).replace(/##PATH##/g, item.path).
 			replace(/##CT##/g, item.ct).replace(/##ICONURL##/g, (item.icon ? item.icon.url.replace('%2F', '/') : '')).
 			replace(/##ATTRIB_TITLE##/g, item.elements.attrib_title.Dat).replace(/##S_ATTRIB_TITLE##/g, item.elements.attrib_title.state).
 			replace(/##ATTRIB_ALT##/g, item.elements.attrib_alt.Dat).replace(/##S_ATTRIB_ALT##/g, item.elements.attrib_alt.state).
@@ -647,8 +651,10 @@ weCollectionEdit = {
 					break;
 				case 'list':
 					val = parseInt(document.getElementById('yuiAcResultItem_' + ct.childNodes[i].id.substr(10)).value);
-					btns_up[i].disabled = i === 0;
-					btns_down[i].disabled = (i === (ct.childNodes.length - 1));
+					if(this.viewSub !== 'minimal'){
+						btns_up[i].disabled = i === 0;
+						btns_down[i].disabled = (i === (ct.childNodes.length - 1));
+					}
 					break;
 			}
 			labels[i].innerHTML = i + 1;
