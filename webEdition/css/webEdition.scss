@@ -1446,11 +1446,14 @@ span{
 .objectFileElement{
 	padding:10px 30px;
 	border-bottom:1px solid #AFB0AF;
-	&[id^="img_"] img{
-		background-color: lightgrey;
-		background-image: linear-gradient(45deg, #898989 25%, transparent 25%, transparent 75%, #898989 75%, #898989), linear-gradient(-45deg, #898989 25%, transparent 25%, transparent 75%, #898989 75%, #898989);
-		background-size: 6px 6px;
-	}
+}
+
+//image upload & objectFile image-background
+div.filedrag_content_right img,
+.objectFileElement[id^="img_"] img{
+	background-color: lightgrey;
+	background-image: linear-gradient(45deg, #898989 25%, transparent 25%, transparent 75%, #898989 75%, #898989), linear-gradient(-45deg, #898989 25%, transparent 25%, transparent 75%, #898989 75%, #898989);
+	background-size: 6px 6px;
 }
 
 .clearfix:after {
