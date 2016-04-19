@@ -438,7 +438,7 @@ abstract class we_html_element{
 		$iframestyle = $iframestyle ? : 'border:0px;width:100%;height:100%;overflow:hidden;';
 
 		return self::htmlDiv(array('style' => $style, 'name' => $name . 'Div', 'id' => $name . 'Div', 'class' => $class)
-				, we_html_baseElement::getHtmlCode(new we_html_baseElement('iframe', true, array('name' => $name, 'id' => $name, 'src' => $src, 'style' => $iframestyle, 'onload' => 'try{' . ($scroll ? 'this.contentDocument.body.style.overflow=\'' . ($isApple ? 'scroll' : 'auto') . '\';' . ($isApple ? 'this.contentDocument.body.style[\'-webkit-overflow-scrolling\']=\'touch\';' : '') : 'this.contentDocument.body.style.overflow=\'hidden\';') . '}catch(e){}' . $onload))
+				, we_html_baseElement::getHtmlCode(new we_html_baseElement('iframe', true, array('name' => $name, 'id' => $name, 'src' => $src, 'style' => $iframestyle, 'onload' => 'try{' . ($scroll ? 'this.contentDocument.body.classList.add(\'' . ($isApple ? 'iframeScrollIpad' : 'iframeScroll') . '\');' : 'this.contentDocument.body.classList.add(\'iframeNoScroll\');') . '}catch(e){}' . $onload))
 		));
 	}
 

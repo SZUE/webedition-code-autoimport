@@ -2243,3 +2243,16 @@ div.collection-content{
 		display: inline-block;
 	}
 }
+
+.iframeNoScroll{
+	overflow:hidden;
+}
+
+.iframeScroll{
+	overflow:auto !important;
+}
+
+.iframeScrollIpad{
+	overflow:scroll !important;
+	-webkit-overflow-scrolling:touch !important;
+}
