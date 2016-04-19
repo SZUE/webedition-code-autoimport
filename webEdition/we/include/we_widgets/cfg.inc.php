@@ -204,7 +204,7 @@ for($i = 0; $i < count($aTopRssFeeds); $i++){
 
 $jsPrefs = "
 function weConf(){
-	this.general_={'cls_collapse':" . ($small + 23) . ",'cls_expand':" . ($large + 22) . ",'w_collapse':" . $small . ",'w_expand':" . $large . ",'wh_edge':11,'w_icon_bar':40,'iDlgWidth':" . $iDlgWidth . "};
+	this.general_={'cls_collapse':" . ($small + 23) . ",'cls_expand':" . ($large + 22) . ",'w_collapse':" . ($small + 23) . ",'w_expand':" . ($large + 22) . ",'wh_edge':11,'w_icon_bar':40,'iDlgWidth':" . $iDlgWidth . "};
 ";
 
 foreach($aPrefs as $type => $_prefs){
