@@ -69,5 +69,5 @@ function we_tag_collectionSelect($attribs){
 		//FIXME: add sth. to the stack, we need an extra element in editmode
 	}
 
-	return true;
+	return;
 }
