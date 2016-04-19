@@ -155,22 +155,17 @@ handleDragOver = function(e){
 	if(e.preventDefault){
 		e.preventDefault();
 	}
-	if(e.target.className === "we_file_drag"){
-		e.target.className = "we_file_drag we_file_drag_hover";
-	}
-	if(e.target.parentNode.className === "we_file_drag"){
-		e.target.parentNode.className = "we_file_drag we_file_drag_hover";
-	}
+	document.getElementById("div_' . $name . '_fileDrag").className = "we_file_drag we_file_drag_hover";
 }
 
 handleDragLeave = function(e){
-	e.target.className = "we_file_drag";
+	document.getElementById("div_' . $name . '_fileDrag").className = "we_file_drag";
 }
 
 handleDrop' . ($name ? : '') . ' = function(e, writebackId, writebackTarget){
 	var text, files;
 
-	e.target.className = "we_file_drag";
+	document.getElementById("div_' . $name . '_fileDrag").className = "we_file_drag";
 	e.preventDefault();
 	e.stopPropagation();
 
