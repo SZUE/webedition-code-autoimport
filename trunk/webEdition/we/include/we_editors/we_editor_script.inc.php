@@ -51,7 +51,6 @@ echo we_html_element::cssLink(CSS_DIR . 'editor.css') .
 
 	var isWEObject =<?php echo intval(isset($GLOBALS['we_doc']) && ($GLOBALS['we_doc']->ContentType === we_base_ContentTypes::OBJECT/* FIXME: only supported for type object || $GLOBALS['we_doc']->ContentType === we_base_ContentTypes::OBJECT_FILE */)); ?>;
 	var WE_EDIT_IMAGE =<?php echo intval(defined('WE_EDIT_IMAGE')); ?>;
-	var WE_SPELLCHECKER_MODULE_DIR = "<?php echo defined('SPELLCHECKER') ? WE_SPELLCHECKER_MODULE_DIR : ''; ?>";
 	//-->
 </script><?php
 $js = '';
@@ -85,7 +84,6 @@ if(we_base_request::_(we_base_request::STRING, 'cmd') === 'ShowPreparedPreview')
 window.open = function(){};
 window.onerror = function () {
 	return true;
-
 }
 
 window.addEventListener("load", we_rpc_dw_onload);

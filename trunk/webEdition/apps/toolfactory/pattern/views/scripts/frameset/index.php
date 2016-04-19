@@ -6,7 +6,6 @@ $appName = Zend_Controller_Front::getInstance()->getParam('appName');
 $frameset = new we_ui_layout_Frameset();
 
 $frameset->setRows('32,*,0');
-	//$frameset->setOnLoad('start();');
 
 $param = 	($this->tab ?
 				'/tab/' . $this->tab :
